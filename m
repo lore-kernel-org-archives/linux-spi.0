@@ -2,231 +2,224 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-	autolearn_force=no version=3.4.0
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 144B8C432BE
-	for <linux-spi@archiver.kernel.org>; Tue, 17 Aug 2021 00:52:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 514B5C43214
+	for <linux-spi@archiver.kernel.org>; Tue, 17 Aug 2021 01:30:06 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id E411A60295
-	for <linux-spi@archiver.kernel.org>; Tue, 17 Aug 2021 00:52:21 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 384FB60FA0
+	for <linux-spi@archiver.kernel.org>; Tue, 17 Aug 2021 01:30:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233019AbhHQAww (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 16 Aug 2021 20:52:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39388 "EHLO
+        id S235740AbhHQBag (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 16 Aug 2021 21:30:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232974AbhHQAww (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 16 Aug 2021 20:52:52 -0400
-Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA347C061764;
-        Mon, 16 Aug 2021 17:52:19 -0700 (PDT)
-Received: by mail-yb1-xb36.google.com with SMTP id c5so23226781ybn.5;
-        Mon, 16 Aug 2021 17:52:19 -0700 (PDT)
+        with ESMTP id S230304AbhHQBaf (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 16 Aug 2021 21:30:35 -0400
+Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EA49C061764;
+        Mon, 16 Aug 2021 18:30:03 -0700 (PDT)
+Received: by mail-lj1-x233.google.com with SMTP id f2so8516229ljn.1;
+        Mon, 16 Aug 2021 18:30:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=HinwW8PEQ5TbL83px5ZX1LnwF3iy1N97HumVOQEeuS0=;
-        b=Qv7l1OnPPmEjqSE03PxZdhP+8SGNkjQKJQdjg0iHsO/stBYHgcAtVCjxeNcJndtCIa
-         4O/Qrm9MusETqQznj/842Y5fi+yJR94JfvJE4Om2M7TCiewcPXg+8VbqYSFAgLp5pXh7
-         j3JcyUvpdvuR+NgJ5XcRUfE0UE6aDWHRd003YcVCI5jaFI17gEKoHN0OCyQSiNO1fNz2
-         6Ijh9U/Kjeb/gkoCs2lyZA6wy6S+OqJJUUx/4OledGbI2q8oxnMFIw78qwTWbjbDqQ6B
-         EFVYapxQkAGzPKhlCH/kTKf4pMTOS4PYTsbdpkSTsFwx6BV53IDcZ5qmsakSeF1pBSJN
-         OnzQ==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=bO5VmfaNpjVVREGufhEjpS0RVmiy0+tDrVzrBmR/Klk=;
+        b=DGL5unFzfWW6yGqVG2gtuY8Y7AYqNgW1kYmTAFI1UmotEReGMPQ7+/nurfdNtSw6kX
+         7t41EQ68yYpDkvs9bN8NZdDPqTqVXnPDOJyXnEBa7RaAsCXrib6QePdF4vbI2GIqUGJ/
+         MPRdlcA74ujsVmtLo3Swnwn/AAas5jW+pCF/Ln6WWt5EGHFoZNs+CovnkzUBoMWGJbOR
+         l3cHhI403t5GFk3fPzqdH+uHeSvXbH+QSIOscqju5HtKqtPZlgeiwTgbYFuVwhYOAlz0
+         uy0kJNeVrbzHlxDgJz3intJg8+X3fA1Hn7KHJHdpqaD4aGtti/w8DsC5NTsZ+HxU3PfJ
+         E64Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=HinwW8PEQ5TbL83px5ZX1LnwF3iy1N97HumVOQEeuS0=;
-        b=FEtEGWltmTVyciPPM1YL9T8VVZrsFrSjrignHCww2e5Noqy2iIfDrHvWF4+tbX/ME2
-         SC321eoSgv/xUoTMGEDVcYssfC9pZ+DsEd6HvL7bQFr5ZsyycFGXYXPOHtAuigOxJ/Zc
-         WEzV0LSY2jGIeE4eaSBB/NsOPKd9n0jjY2/gIG9qxSGZeH9E3iW2qp3FkxMeWLETY6zh
-         yU4eb6R+t12sFcEQasNIb9vuOfU51uZzkDGoG2axrckUCFdCTInLFejsS0gWXhv/UFPk
-         G1MTVyyr6AxsOmBH0jc19/TIND4i3iJXMTwNu0oC1cFa/sA0HnlbfeXqbMZMGRMPXo+c
-         en8Q==
-X-Gm-Message-State: AOAM533az0bvhNq0S4lvIcEg5qKGjLEDm3yrHfWWuMl/OBGR6qFRQ8gy
-        AexqfcnCSjRqbINRUcc5sTUXIIDGq1WeXg/4+vA=
-X-Google-Smtp-Source: ABdhPJyvd+RlYj7zSTrYmgpFZ+h0LzvbUGhnoGD4IXYxW7eMQY/mIwx4HSolYlYkfx4EfX94jdzZBwmZLYdlWLjwYCg=
-X-Received: by 2002:a25:3c5:: with SMTP id 188mr954399ybd.437.1629161538607;
- Mon, 16 Aug 2021 17:52:18 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210812134546.31340-1-jon.lin@rock-chips.com>
-In-Reply-To: <20210812134546.31340-1-jon.lin@rock-chips.com>
-From:   Peter Geis <pgwipeout@gmail.com>
-Date:   Mon, 16 Aug 2021 20:52:07 -0400
-Message-ID: <CAMdYzYobqhLAHhDU9E-iu-HMKSaGCDBMU-2OacGEZOQnF2ZyMw@mail.gmail.com>
-Subject: Re: [PATCH v13 0/6] Add Rockchip SFC(serial flash controller) support
-To:     Jon Lin <jon.lin@rock-chips.com>
-Cc:     linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=bO5VmfaNpjVVREGufhEjpS0RVmiy0+tDrVzrBmR/Klk=;
+        b=hZfvOIsgGrS9H6em1OWnLBGH/l4VYAjafHwT1tRLj6ZvLRqnB2tGIF2m2oyqZxQUsB
+         pG5b7lUbuRrRwQsMOk/EQzuWMQZCb3/U74SrOEDVmPyIrSOD4mXj5LNuB3+vJiTGMNJI
+         DQ5xPdbDHjUl4VHUZArdy0Xe5TZooq/1hPtRWXnfWcjapUtWc0/sgSYYXobv9HWUA3GU
+         0MAQTl0tEoJg5XUacOUQ5BWa0vj7jI54LYZqvx1KC4jE1OjdZhLUtHlS59g/USTuM++v
+         vW9xqEQc2Y9Tho8VXN4STlbE9/+iAarP55Um/OpJfhjpkqdOJueTBMyuPvVtSy6o694A
+         F5FQ==
+X-Gm-Message-State: AOAM532MHNzYZXluzHCdyWthUixU265yXTKOpV86E/QEVs2/dt4WXXD8
+        ii4Z1NAWK50xuxAbysUZMwo=
+X-Google-Smtp-Source: ABdhPJzfD+REHIwuiGYg1fuxQjjlpDVZHYlge+vtvAZqlGgG4tIZ0Of68hupSFQ0Tvw+LsNO5cfhqA==
+X-Received: by 2002:a05:651c:985:: with SMTP id b5mr890013ljq.78.1629163801449;
+        Mon, 16 Aug 2021 18:30:01 -0700 (PDT)
+Received: from localhost.localdomain (46-138-85-91.dynamic.spd-mgts.ru. [46.138.85.91])
+        by smtp.gmail.com with ESMTPSA id g30sm46607lfj.298.2021.08.16.18.30.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Aug 2021 18:30:01 -0700 (PDT)
+From:   Dmitry Osipenko <digetx@gmail.com>
+To:     Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Viresh Kumar <vireshk@kernel.org>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Peter De Schrijver <pdeschrijver@nvidia.com>,
+        Mikko Perttunen <mperttunen@nvidia.com>,
+        Peter Chen <peter.chen@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Nishanth Menon <nm@ti.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Richard Weinberger <richard@nod.at>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Lucas Stach <dev@lynxeye.de>, Stefan Agner <stefan@agner.ch>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Johan Jonker <jbx6244@gmail.com>,
-        Sandy Huang <hjc@rock-chips.com>, yifeng.zhao@rock-chips.com,
-        Sugar Zhang <sugar.zhang@rock-chips.com>,
-        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
-        linux-mtd@lists.infradead.org, p.yadav@ti.com,
-        Chris Morgan <macroalpha82@gmail.com>,
-        devicetree <devicetree@vger.kernel.org>,
-        arm-mail-list <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        Michael Turquette <mturquette@baylibre.com>
+Cc:     linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-staging@lists.linux.dev, linux-spi@vger.kernel.org,
+        linux-pwm@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-mmc@vger.kernel.org, linux-media@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-clk@vger.kernel.org
+Subject: [PATCH v8 00/34] NVIDIA Tegra power management patches for 5.16
+Date:   Tue, 17 Aug 2021 04:27:20 +0300
+Message-Id: <20210817012754.8710-1-digetx@gmail.com>
+X-Mailer: git-send-email 2.32.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, Aug 12, 2021 at 9:49 AM Jon Lin <jon.lin@rock-chips.com> wrote:
->
+This series adds runtime PM support to Tegra drivers and enables core
+voltage scaling for Tegra20/30 SoCs, resolving overheating troubles.
 
-Good Evening,
+All patches should go via Tegra tree because they are interdependent,
+please review and ack.
 
-Tested successfully on the rk3566 based Quartz64 Model A.
-Tested-by: Peter Geis <pgwipeout@gmail.com>
+If you haven't seen this series before, that's because I wanted to
+finalize the GENPD part at first and didn't bother you previously.
 
-Very Respectfully,
-Peter Geis
+Changelog:
 
->
->
-> Changes in v13:
-> - Provide independent interfaces to obtain RX TX FIFO status respectively
-> - Add more debug information
-> - Depress DMA limitation
->
-> Changes in v12:
-> - Remove useless oneOf lable
-> - Add sfc controller discription
-> - Remove the limitation of SFC_MIN_SPEED_HZ
-> - Add IRQ_NONE method for irq handler
-> - Add SPI_MASTER_HALF_DUPLEX flags
-> - Add sfc interrupt mask bits and status register initial progress
->
-> Changes in v11:
-> - The tx is set to 1 for Odroid Go Advance device
->
-> Changes in v10:
-> - Fix dma transfer logic
->
-> Changes in v9:
-> - Separate DMA IRQ setting and wait_completion from DMA fifo transfer
->   function to make dma_status_poll be possible(Which I will implement
->   in u-boot)
-> - Add SFC Kconfig detail comment
->
-> Changes in v8:
-> - Fix indent 4 to 2 in yaml
->
-> Changes in v7:
-> - Fix up the sclk_sfc parent error in rk3036
-> - Unify to "rockchip,sfc" compatible id because all the feature update
->   will have a new IP version, so the driver is used for the SFC IP in
->   all SoCs
-> - Change to use node "sfc" to name the SFC pinctrl group
-> - Add subnode reg property check
-> - Add rockchip_sfc_adjust_op_size to workaround in CMD + DUMMY case
-> - Limit max_iosize to 32KB
->
-> Changes in v6:
-> - Add support in device trees for rv1126(Declared in series 5 but not
->   submitted)
-> - Change to use "clk_sfc" "hclk_sfc" as clock lable, since it does not
->   affect interpretation and has been widely used
-> - Support sfc tx_dual, tx_quad(Declared in series 5 but not submitted)
-> - Simplify the code, such as remove "rockchip_sfc_register_all"(Declared
->   in series 5 but not submitted)
-> - Support SFC ver4 ver5(Declared in series 5 but not submitted)
-> - Add author Chris Morgan and Jon Lin to spi-rockchip-sfc.c
-> - Change to use devm_spi_alloc_master and spi_unregister_master
->
-> Changes in v5:
-> - Add support in device trees for rv1126
-> - Support sfc tx_dual, tx_quad
-> - Simplify the code, such as remove "rockchip_sfc_register_all"
-> - Support SFC ver4 ver5
->
-> Changes in v4:
-> - Changing patch back to an "RFC". An engineer from Rockchip
->   reached out to me to let me know they are working on this patch for
->   upstream, I am submitting this v4 for the community to see however
->   I expect Jon Lin (jon.lin@rock-chips.com) will submit new patches
->   soon and these are the ones we should pursue for mainlining. Jon's
->   patch series should include support for more hardware than this
->   series.
-> - Clean up documentation more and ensure it is correct per
->   make dt_binding_check.
-> - Add support in device trees for rk3036, rk3308, and rv1108.
-> - Add ahb clock (hclk_sfc) support for rk3036.
-> - Change rockchip_sfc_wait_fifo_ready() to use a switch statement.
-> - Change IRQ code to only mark IRQ as handled if it handles the
->   specific IRQ (DMA transfer finish) it is supposed to handle.
->
-> Changes in v3:
-> - Changed the name of the clocks to sfc/ahb (from clk-sfc/clk-hsfc).
-> - Changed the compatible string from rockchip,sfc to
->   rockchip,rk3036-sfc. A quick glance at the datasheets suggests this
->   driver should work for the PX30, RK180x, RK3036, RK312x, RK3308 and
->   RV1108 SoCs, and possibly more. However, I am currently only able
->   to test this on a PX30 (an RK3326). The technical reference manuals
->   appear to list the same registers for each device.
-> - Corrected devicetree documentation for formatting and to note these
->   changes.
-> - Replaced the maintainer with Heiko Stuebner and myself, as we will
->   take ownership of this going forward.
-> - Noted that the device (per the reference manual) supports 4 CS, but
->   I am only able to test a single CS (CS 0).
-> - Reordered patches to comply with upstream rules.
->
-> Changes in v2:
-> - Reimplemented driver using spi-mem subsystem.
-> - Removed power management code as I couldn't get it working properly.
-> - Added device tree bindings for Odroid Go Advance.
->
-> Changes in v1:
-> hanges made in this new series versus the v8 of the old series:
-> - Added function to read spi-rx-bus-width from device tree, in the
->   event that the SPI chip supports 4x mode but only has 2 pins
->   wired (such as the Odroid Go Advance).
-> - Changed device tree documentation from txt to yaml format.
-> - Made "reset" message a dev_dbg from a dev_info.
-> - Changed read and write fifo functions to remove redundant checks.
-> - Changed the write and read from relaxed to non-relaxed when
->   starting the DMA transfer or reading the DMA IRQ.
-> - Changed from dma_coerce_mask_and_coherent to just
->   dma_set_mask_and_coherent.
-> - Changed name of get_if_type to rockchip_sfc_get_if_type.
->
-> Chris Morgan (6):
->   dt-bindings: rockchip-sfc: Bindings for Rockchip serial flash
->     controller
->   spi: rockchip-sfc: add rockchip serial flash controller
->   arm64: dts: rockchip: Add SFC to PX30
->   arm: dts: rockchip: Add SFC to RV1108
->   arm64: dts: rockchip: Add SFC to RK3308
->   arm64: dts: rockchip: Enable SFC for Odroid Go Advance
->
->  .../devicetree/bindings/spi/rockchip-sfc.yaml |  91 +++
->  arch/arm/boot/dts/rv1108.dtsi                 |  37 +
->  arch/arm64/boot/dts/rockchip/px30.dtsi        |  38 +
->  arch/arm64/boot/dts/rockchip/rk3308.dtsi      |  37 +
->  .../boot/dts/rockchip/rk3326-odroid-go2.dts   |  16 +
->  drivers/spi/Kconfig                           |  12 +
->  drivers/spi/Makefile                          |   1 +
->  drivers/spi/spi-rockchip-sfc.c                | 694 ++++++++++++++++++
->  8 files changed, 926 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/spi/rockchip-sfc.yaml
->  create mode 100644 drivers/spi/spi-rockchip-sfc.c
->
-> --
-> 2.17.1
->
->
->
->
-> _______________________________________________
-> Linux-rockchip mailing list
-> Linux-rockchip@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-rockchip
+v8: - Added new generic dev_pm_opp_sync() helper that syncs OPP state with
+      hardware. All drivers changed to use it. This replaces GENPD attach_dev
+      callback hacks that were used in v7.
+
+    - Added new patch patch "soc/tegra: regulators: Prepare for suspend"
+      that fixes dying Tegra20 SoC after enabling VENC power domain during
+      resume from suspend. It matches to what downstream kernel does on
+      suspend/resume.
+
+    - After a second thought, I dropped patches which added RPM to memory
+      drivers since hardware is always-on and RPM not needed.
+
+    - Replaced the "dummy host1x driver" patch with new "Disable unused
+      host1x hardware" patch, since it's a cleaner solution.
+
+Dmitry Osipenko (34):
+  opp: Add dev_pm_opp_sync() helper
+  soc/tegra: pmc: Disable PMC state syncing
+  soc/tegra: Don't print error message when OPPs not available
+  soc/tegra: Add devm_tegra_core_dev_init_opp_table_simple()
+  soc/tegra: Use dev_pm_opp_sync()
+  dt-bindings: clock: tegra-car: Document new tegra-clocks sub-node
+  clk: tegra: Support runtime PM and power domain
+  dt-bindings: host1x: Document OPP and power domain properties
+  dt-bindings: host1x: Document Memory Client resets of Host1x, GR2D and
+    GR3D
+  gpu: host1x: Add host1x_channel_stop()
+  gpu: host1x: Add runtime PM and OPP support
+  drm/tegra: dc: Support OPP and SoC core voltage scaling
+  drm/tegra: hdmi: Add OPP support
+  drm/tegra: gr2d: Support power management
+  drm/tegra: gr3d: Support power management
+  drm/tegra: vic: Support system suspend
+  usb: chipidea: tegra: Add runtime PM and OPP support
+  bus: tegra-gmi: Add runtime PM and OPP support
+  pwm: tegra: Add runtime PM and OPP support
+  mmc: sdhci-tegra: Add runtime PM and OPP support
+  mtd: rawnand: tegra: Add runtime PM and OPP support
+  spi: tegra20-slink: Add OPP support
+  media: dt: bindings: tegra-vde: Convert to schema
+  media: dt: bindings: tegra-vde: Document OPP and power domain
+  media: staging: tegra-vde: Support generic power domain and OPP
+  soc/tegra: fuse: Add OPP support
+  soc/tegra: fuse: Reset hardware
+  soc/tegra: regulators: Prepare for suspend
+  soc/tegra: pmc: Enable core domain support for Tegra20 and Tegra30
+  ARM: tegra: Add OPP tables and power domains to Tegra20 device-trees
+  ARM: tegra: Add OPP tables and power domains to Tegra30 device-trees
+  ARM: tegra: Add Memory Client resets to Tegra20 GR2D, GR3D and Host1x
+  ARM: tegra: Add Memory Client resets to Tegra30 GR2D, GR3D and Host1x
+  ARM: tegra20/30: Disable unused host1x hardware
+
+ .../bindings/clock/nvidia,tegra20-car.yaml    |   51 +
+ .../display/tegra/nvidia,tegra20-host1x.txt   |   53 +
+ .../bindings/media/nvidia,tegra-vde.txt       |   64 -
+ .../bindings/media/nvidia,tegra-vde.yaml      |  119 ++
+ .../boot/dts/tegra20-acer-a500-picasso.dts    |    1 +
+ arch/arm/boot/dts/tegra20-colibri.dtsi        |    3 +-
+ arch/arm/boot/dts/tegra20-harmony.dts         |    3 +-
+ arch/arm/boot/dts/tegra20-paz00.dts           |    1 +
+ .../arm/boot/dts/tegra20-peripherals-opp.dtsi |  941 +++++++++++
+ arch/arm/boot/dts/tegra20-seaboard.dts        |    3 +-
+ arch/arm/boot/dts/tegra20-tamonten.dtsi       |    3 +-
+ arch/arm/boot/dts/tegra20-trimslice.dts       |    9 +
+ arch/arm/boot/dts/tegra20-ventana.dts         |    1 +
+ arch/arm/boot/dts/tegra20.dtsi                |  119 +-
+ .../tegra30-asus-nexus7-grouper-common.dtsi   |    1 +
+ arch/arm/boot/dts/tegra30-beaver.dts          |    1 +
+ arch/arm/boot/dts/tegra30-cardhu.dtsi         |    1 +
+ arch/arm/boot/dts/tegra30-colibri.dtsi        |   17 +-
+ arch/arm/boot/dts/tegra30-ouya.dts            |    1 +
+ .../arm/boot/dts/tegra30-peripherals-opp.dtsi | 1412 +++++++++++++++++
+ arch/arm/boot/dts/tegra30.dtsi                |  181 ++-
+ drivers/bus/tegra-gmi.c                       |   92 +-
+ drivers/clk/tegra/Makefile                    |    1 +
+ drivers/clk/tegra/clk-device.c                |  222 +++
+ drivers/clk/tegra/clk-pll.c                   |    2 +-
+ drivers/clk/tegra/clk-super.c                 |    2 +-
+ drivers/clk/tegra/clk-tegra20.c               |   39 +-
+ drivers/clk/tegra/clk-tegra30.c               |   70 +-
+ drivers/clk/tegra/clk.c                       |   64 +
+ drivers/clk/tegra/clk.h                       |    2 +
+ drivers/gpu/drm/tegra/dc.c                    |   74 +
+ drivers/gpu/drm/tegra/dc.h                    |    2 +
+ drivers/gpu/drm/tegra/gr2d.c                  |  154 +-
+ drivers/gpu/drm/tegra/gr3d.c                  |  393 ++++-
+ drivers/gpu/drm/tegra/hdmi.c                  |   15 +-
+ drivers/gpu/drm/tegra/vic.c                   |    4 +
+ drivers/gpu/host1x/channel.c                  |    8 +
+ drivers/gpu/host1x/debug.c                    |   15 +
+ drivers/gpu/host1x/dev.c                      |  157 +-
+ drivers/gpu/host1x/dev.h                      |    3 +-
+ drivers/gpu/host1x/hw/channel_hw.c            |   44 +-
+ drivers/gpu/host1x/intr.c                     |    3 -
+ drivers/gpu/host1x/syncpt.c                   |    5 +-
+ drivers/mmc/host/sdhci-tegra.c                |  146 +-
+ drivers/mtd/nand/raw/tegra_nand.c             |   62 +-
+ drivers/opp/core.c                            |   42 +-
+ drivers/pwm/pwm-tegra.c                       |  104 +-
+ drivers/soc/tegra/common.c                    |   34 +-
+ drivers/soc/tegra/fuse/fuse-tegra.c           |   36 +
+ drivers/soc/tegra/fuse/fuse.h                 |    1 +
+ drivers/soc/tegra/pmc.c                       |   17 +
+ drivers/soc/tegra/regulators-tegra20.c        |   99 ++
+ drivers/soc/tegra/regulators-tegra30.c        |  122 ++
+ drivers/spi/spi-tegra20-slink.c               |   15 +-
+ drivers/staging/media/tegra-vde/vde.c         |   65 +-
+ drivers/usb/chipidea/ci_hdrc_tegra.c          |   61 +-
+ include/linux/host1x.h                        |    1 +
+ include/linux/pm_opp.h                        |    6 +
+ include/soc/tegra/common.h                    |   13 +
+ 59 files changed, 4796 insertions(+), 384 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/media/nvidia,tegra-vde.txt
+ create mode 100644 Documentation/devicetree/bindings/media/nvidia,tegra-vde.yaml
+ create mode 100644 drivers/clk/tegra/clk-device.c
+
+-- 
+2.32.0
+

@@ -2,123 +2,74 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 29BB5C4338F
-	for <linux-spi@archiver.kernel.org>; Fri, 20 Aug 2021 06:32:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C6E5C4338F
+	for <linux-spi@archiver.kernel.org>; Fri, 20 Aug 2021 08:06:17 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 09AC36103C
-	for <linux-spi@archiver.kernel.org>; Fri, 20 Aug 2021 06:32:31 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 55DA7610CF
+	for <linux-spi@archiver.kernel.org>; Fri, 20 Aug 2021 08:06:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232727AbhHTGdH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 20 Aug 2021 02:33:07 -0400
-Received: from mx08-00178001.pphosted.com ([91.207.212.93]:49360 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S232649AbhHTGdH (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 20 Aug 2021 02:33:07 -0400
-Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 17K6QVIh021334;
-        Fri, 20 Aug 2021 08:32:10 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=date : from : to :
- cc : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=selector1; bh=VlO4/Ljo2tdrHraB5iL9pG/9mCpzVfNYC9kEXsTA9pU=;
- b=M/eGuxXTBbwIB0IfxJiGgmpuJKljQ2ikzH93elP8+W0PRq+BDPar/tAGF4bGLQBY6o5R
- uXa1HllyhfLbrfGnZhsi6U1bTFIFSuRywqR+s9hqzAhYtKIAJ/uuY0yQaiyMmMiR3rUL
- NjOQC+hJGsnmtFRQj/ha2Z/ubWYek3ZBd854wOMhNdYNHjZsDzmEB4cxC5n1U3+A4Qr9
- qOX7s/3erlZnt8ydS1VUvWueARqtcNFp77YCt2WE6q9HRgLSwCtH2TpteoKc0DoGhKA8
- M/wkR2Y0XqIqCdkY81ji7yV4R/gBqeu0z+pjQHntB8+NLgFlERifHy7h6R0b9C5HGVSt Ag== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 3aj2j1sbj2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 20 Aug 2021 08:32:10 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 4E2AA10002A;
-        Fri, 20 Aug 2021 08:32:08 +0200 (CEST)
-Received: from Webmail-eu.st.com (sfhdag2node3.st.com [10.75.127.6])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 3BBCF20F6E2;
-        Fri, 20 Aug 2021 08:32:08 +0200 (CEST)
-Received: from gnbcxd0016.gnb.st.com (10.75.127.45) by SFHDAG2NODE3.st.com
- (10.75.127.6) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Fri, 20 Aug
- 2021 08:32:07 +0200
-Date:   Fri, 20 Aug 2021 08:32:02 +0200
-From:   Alain Volmat <alain.volmat@foss.st.com>
-To:     CGEL <cgel.zte@gmail.com>
-CC:     Mark Brown <broonie@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        <linux-spi@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        jing yangyang <jing.yangyang@zte.com.cn>,
-        Zeal Robot <zealci@zte.com.cn>
-Subject: Re: [PATCH linux-next] spi-stm32: fix Coccinelle warnings
-Message-ID: <20210820063202.GA21711@gnbcxd0016.gnb.st.com>
-Mail-Followup-To: CGEL <cgel.zte@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        linux-spi@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        jing yangyang <jing.yangyang@zte.com.cn>,
-        Zeal Robot <zealci@zte.com.cn>
-References: <20210820031952.12746-1-jing.yangyang@zte.com.cn>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20210820031952.12746-1-jing.yangyang@zte.com.cn>
-X-Disclaimer: ce message est personnel / this message is private
-X-Originating-IP: [10.75.127.45]
-X-ClientProxiedBy: SFHDAG2NODE2.st.com (10.75.127.5) To SFHDAG2NODE3.st.com
- (10.75.127.6)
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
- definitions=2021-08-20_02:2021-08-20,2021-08-20 signatures=0
+        id S230079AbhHTIGx (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 20 Aug 2021 04:06:53 -0400
+Received: from inva020.nxp.com ([92.121.34.13]:42088 "EHLO inva020.nxp.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230019AbhHTIGx (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Fri, 20 Aug 2021 04:06:53 -0400
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 078331A2CEA;
+        Fri, 20 Aug 2021 10:06:15 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id CD6C51A2CCC;
+        Fri, 20 Aug 2021 10:06:14 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
+        by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id EB688183AD05;
+        Fri, 20 Aug 2021 16:06:13 +0800 (+08)
+From:   haibo.chen@nxp.com
+To:     ashish.kumar@nxp.com, yogeshgaur.83@gmail.com, broonie@kernel.org
+Cc:     linux-spi@vger.kernel.org, linux-imx@nxp.com, haibo.chen@nxp.com
+Subject: [PATCH 2/4] spi: spi-nxp-fspi: change the default lut index
+Date:   Fri, 20 Aug 2021 15:44:01 +0800
+Message-Id: <1629445443-10300-2-git-send-email-haibo.chen@nxp.com>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1629445443-10300-1-git-send-email-haibo.chen@nxp.com>
+References: <1629445443-10300-1-git-send-email-haibo.chen@nxp.com>
+X-Virus-Scanned: ClamAV using ClamSMTP
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi,
+From: Haibo Chen <haibo.chen@nxp.com>
 
-thanks for the patch. We've had this issue reported previously with a patch
-provided at
-(https://lore.kernel.org/linux-spi/20210713191004.GA14729@5eb5c2cbef84/).
-I've put my reviewed-by so it should make its way to the linux-next soon.
+The fspi dynamic lut use the last lut for all IPS operations, the
+imx8ulp only supports 15 luts, so change the last lut index from
+31 to 15.
 
-Regards,
-Alain
+Signed-off-by: Han Xu <han.xu@nxp.com>
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+---
+ drivers/spi/spi-nxp-fspi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-On Thu, Aug 19, 2021 at 08:19:52PM -0700, CGEL wrote:
-> From: jing yangyang <jing.yangyang@zte.com.cn>
-> 
-> WARNING !A || A && B is equivalent to !A || B
-> 
-> This issue was detected with the help of Coccinelle.
-> 
-> Reported-by: Zeal Robot <zealci@zte.com.cn>
-> Signed-off-by: jing yangyang <jing.yangyang@zte.com.cn>
-> ---
->  drivers/spi/spi-stm32.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-> index 14ca7ea..cc4a731 100644
-> --- a/drivers/spi/spi-stm32.c
-> +++ b/drivers/spi/spi-stm32.c
-> @@ -912,8 +912,8 @@ static irqreturn_t stm32h7_spi_irq_thread(int irq, void *dev_id)
->  		if (!spi->cur_usedma && (spi->rx_buf && (spi->rx_len > 0)))
->  			stm32h7_spi_read_rxfifo(spi);
->  		if (!spi->cur_usedma ||
-> -		    (spi->cur_usedma && (spi->cur_comm == SPI_SIMPLEX_TX ||
-> -		     spi->cur_comm == SPI_3WIRE_TX)))
-> +			(spi->cur_comm == SPI_SIMPLEX_TX ||
-> +			spi->cur_comm == SPI_3WIRE_TX))
->  			end = true;
->  	}
->  
-> -- 
-> 1.8.3.1
-> 
-> 
+diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+index 1eecf20f1dab..a764eb475aed 100644
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -63,9 +63,9 @@
+ /*
+  * The driver only uses one single LUT entry, that is updated on
+  * each call of exec_op(). Index 0 is preset at boot with a basic
+- * read operation, so let's use the last entry (31).
++ * read operation, so let's use the last entry (15).
+  */
+-#define	SEQID_LUT			31
++#define	SEQID_LUT			15
+ 
+ /* Registers used by the driver */
+ #define FSPI_MCR0			0x00
+-- 
+2.17.1
+

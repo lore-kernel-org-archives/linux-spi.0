@@ -3,77 +3,185 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=unavailable autolearn_force=no version=3.4.0
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7E0D9C432BE
-	for <linux-spi@archiver.kernel.org>; Tue, 24 Aug 2021 17:00:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 79779C4320A
+	for <linux-spi@archiver.kernel.org>; Tue, 24 Aug 2021 17:22:01 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 69BE161A40
-	for <linux-spi@archiver.kernel.org>; Tue, 24 Aug 2021 17:00:17 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 628A261357
+	for <linux-spi@archiver.kernel.org>; Tue, 24 Aug 2021 17:22:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238765AbhHXRAx (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 24 Aug 2021 13:00:53 -0400
-Received: from mail-oo1-f43.google.com ([209.85.161.43]:35622 "EHLO
-        mail-oo1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239033AbhHXQ7m (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 24 Aug 2021 12:59:42 -0400
-Received: by mail-oo1-f43.google.com with SMTP id o17-20020a4a64110000b0290263e1ba7ff9so6716403ooc.2;
-        Tue, 24 Aug 2021 09:58:58 -0700 (PDT)
+        id S240233AbhHXRWp (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 24 Aug 2021 13:22:45 -0400
+Received: from mail-ot1-f53.google.com ([209.85.210.53]:34782 "EHLO
+        mail-ot1-f53.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236192AbhHXRUo (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 24 Aug 2021 13:20:44 -0400
+Received: by mail-ot1-f53.google.com with SMTP id k12-20020a056830150c00b0051abe7f680bso42972036otp.1;
+        Tue, 24 Aug 2021 10:19:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=Ff9JKUI/YKVZ1f9QB3+ggQG4cbY+edkZDleJXyfV8CI=;
-        b=UfRtpKu7f6MWUALctxzeuzf/0SBCRAbsVDELmNyq9HqQMLp5RL0/mmzYMq982AjAYR
-         jRiMrWG6+61yLBSnLX0mV5N3T7jgfKX5OLnWoftN/hjE2Im5ExIXK4jLrOLYNYgYs0iO
-         uoMChHRsksQ7to3rv/s4d79nql4WmSN062b0wzGqGmmqig3RzmeHTw+wEjLJrPrC4QDN
-         CTdVBZjOu5iiToM+BpnfVARlQEk4C4tcEUlZCJ+UpZQzNIoUIQKPYqYBwi8kDXtI5mM+
-         nzR9pufH2Fm00mEHjeMJ2rrPfwuEwLCdP43l11WkJo5J85oRLjm8xhEcSmmsLnByXlHS
-         WLjA==
-X-Gm-Message-State: AOAM532JNuSthYGSOez2k43Ma6MTIc+7EMM3dge8duAn0hQgNG4pAhh1
-        85oqnlPAmGVnlRbyKn0LzQ==
-X-Google-Smtp-Source: ABdhPJwYumjG9VNceksmJBMvBD1W4nsmUqiq3U/CYXDeBtKUEVseR8qOkTVNr93EahjSAidk1/Uxww==
-X-Received: by 2002:a4a:b481:: with SMTP id b1mr30805640ooo.79.1629824337981;
-        Tue, 24 Aug 2021 09:58:57 -0700 (PDT)
+        bh=VNcuv0HqBUSJ/AboskcrVII1u6Cg/7GBIg74AqxzSDA=;
+        b=aRmgP13Ez3dvZYjywPm0BjMtAe6nvyWW2IL64UqSgMBb/QEF+phgXkVEX5m3LvQVBA
+         KjhcytmxUo5iGjhLy03HFKAtOsJ2CCF9sy3u6ZA7EzbYIL3NOEtkOeeHR3c8IhhII3Ci
+         /wTCuXL+TqkqWsZSyRK/G7+L1MBWi+XZFTtA1qOiQ8QDV3nIuOXV/cKPBHlBf1VviOhD
+         9U099VFge3ggOfR1TPX8zWgiabr0df6IDJiKe+jTQZFwxO9LDd7HPfmqtRAHp1r2Wgcv
+         n/HX6CNnOSbTksJcCvIzl5VmBhC02DBXVV4PkvHTLpHvfweoeNOfzhe0uIDi0PG+yggc
+         UJ3g==
+X-Gm-Message-State: AOAM5301h0HUTS+MWjOTCFbsuI0l8hInPbw8XFRDQatqC5oSB7cao6pP
+        CfFG2/O/VpmWpi7N4iC0Ehvz05oTRw==
+X-Google-Smtp-Source: ABdhPJzBkwBpMgX9rEjwIv9ZCvRgSwnxW0Hor7k/ODRN4iOCh25hDZc6L+2YbhxQefHk7yWhzuNHKA==
+X-Received: by 2002:aca:33d7:: with SMTP id z206mr3588120oiz.82.1629825599271;
+        Tue, 24 Aug 2021 10:19:59 -0700 (PDT)
 Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id l67sm4667332otl.3.2021.08.24.09.58.56
+        by smtp.gmail.com with ESMTPSA id x3sm4087999ooe.32.2021.08.24.10.19.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Aug 2021 09:58:57 -0700 (PDT)
-Received: (nullmailer pid 626496 invoked by uid 1000);
-        Tue, 24 Aug 2021 16:58:56 -0000
-Date:   Tue, 24 Aug 2021 11:58:56 -0500
+        Tue, 24 Aug 2021 10:19:58 -0700 (PDT)
+Received: (nullmailer pid 659131 invoked by uid 1000);
+        Tue, 24 Aug 2021 17:19:57 -0000
+Date:   Tue, 24 Aug 2021 12:19:57 -0500
 From:   Rob Herring <robh@kernel.org>
-To:     nandhini.srikandan@intel.com
-Cc:     furong.zhou@intel.com, devicetree@vger.kernel.org,
-        rashmi.a@intel.com, mgross@linux.intel.com, robh+dt@kernel.org,
-        mahesh.r.vaidya@intel.com, broonie@kernel.org,
-        mallikarjunappa.sangannavar@intel.com,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        kenchappa.demakkanavar@intel.com, fancer.lancer@gmail.com,
-        kris.pan@intel.com
-Subject: Re: [PATCH v2 1/2] dt-bindings: spi: Add bindings for Intel Thunder
- Bay SoC
-Message-ID: <YSUlUDQEB/5sNCRQ@robh.at.kernel.org>
-References: <20210824085856.12714-1-nandhini.srikandan@intel.com>
- <20210824085856.12714-2-nandhini.srikandan@intel.com>
+To:     Chunyan Zhang <zhang.lyra@gmail.com>
+Cc:     Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, Baolin Wang <baolin.wang7@gmail.com>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Chunyan Zhang <chunyan.zhang@unisoc.com>,
+        Luting Guo <luting.guo@unisoc.com>,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 2/3] dt-bindings: spi: Convert sprd ADI bindings to yaml
+Message-ID: <YSUqPTr+aNLpjsj+@robh.at.kernel.org>
+References: <20210824092745.2093640-1-zhang.lyra@gmail.com>
+ <20210824092745.2093640-3-zhang.lyra@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210824085856.12714-2-nandhini.srikandan@intel.com>
+In-Reply-To: <20210824092745.2093640-3-zhang.lyra@gmail.com>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Tue, 24 Aug 2021 16:58:55 +0800, nandhini.srikandan@intel.com wrote:
-> From: Nandhini Srikandan <nandhini.srikandan@intel.com>
+On Tue, Aug 24, 2021 at 05:27:44PM +0800, Chunyan Zhang wrote:
+> From: Chunyan Zhang <chunyan.zhang@unisoc.com>
 > 
-> Add documentation for SPI controller in Intel Thunder Bay SoC.
+> Convert spi-sprd-adi.txt to yaml.
 > 
-> Signed-off-by: Nandhini Srikandan <nandhini.srikandan@intel.com>
+> Signed-off-by: Chunyan Zhang <chunyan.zhang@unisoc.com>
 > ---
->  Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml | 2 ++
->  1 file changed, 2 insertions(+)
-> 
+>  .../devicetree/bindings/spi/spi-sprd-adi.txt  | 63 ------------
+>  .../devicetree/bindings/spi/sprd,spi-adi.yaml | 99 +++++++++++++++++++
+>  2 files changed, 99 insertions(+), 63 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/spi/spi-sprd-adi.txt
+>  create mode 100644 Documentation/devicetree/bindings/spi/sprd,spi-adi.yaml
 
-Acked-by: Rob Herring <robh@kernel.org>
+[...]
+
+> diff --git a/Documentation/devicetree/bindings/spi/sprd,spi-adi.yaml b/Documentation/devicetree/bindings/spi/sprd,spi-adi.yaml
+> new file mode 100644
+> index 000000000000..f464fb6033f9
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/spi/sprd,spi-adi.yaml
+> @@ -0,0 +1,99 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +
+> +%YAML 1.2
+> +---
+> +$id: "http://devicetree.org/schemas/spi/sprd,spi-adi.yaml#"
+> +$schema: "http://devicetree.org/meta-schemas/core.yaml#"
+> +
+> +title: Spreadtrum ADI controller
+> +
+> +maintainers:
+> +  - Orson Zhai <orsonzhai@gmail.com>
+> +  - Baolin Wang <baolin.wang7@gmail.com>
+> +  - Chunyan Zhang <zhang.lyra@gmail.com>
+> +
+> +description: |
+> +  ADI is the abbreviation of Anolog-Digital interface, which is used to access
+> +  analog chip (such as PMIC) from digital chip. ADI controller follows the SPI
+> +  framework for its hardware implementation is alike to SPI bus and its timing
+> +  is compatile to SPI timing.
+> +
+> +  ADI controller has 50 channels including 2 software read/write channels and
+> +  48 hardware channels to access analog chip. For 2 software read/write channels,
+> +  users should set ADI registers to access analog chip. For hardware channels,
+> +  we can configure them to allow other hardware components to use it independently,
+> +  which means we can just link one analog chip address to one hardware channel,
+> +  then users can access the mapped analog chip address by this hardware channel
+> +  triggered by hardware components instead of ADI software channels.
+> +
+> +  Thus we introduce one property named "sprd,hw-channels" to configure hardware
+> +  channels, the first value specifies the hardware channel id which is used to
+> +  transfer data triggered by hardware automatically, and the second value specifies
+> +  the analog chip address where user want to access by hardware components.
+> +
+> +  Since we have multi-subsystems will use unique ADI to access analog chip, when
+> +  one system is reading/writing data by ADI software channels, that should be under
+> +  one hardware spinlock protection to prevent other systems from reading/writing
+> +  data by ADI software channels at the same time, or two parallel routine of setting
+> +  ADI registers will make ADI controller registers chaos to lead incorrect results.
+> +  Then we need one hardware spinlock to synchronize between the multiple subsystems.
+> +
+> +  The new version ADI controller supplies multiple master channels for different
+> +  subsystem accessing, that means no need to add hardware spinlock to synchronize,
+> +  thus change the hardware spinlock support to be optional to keep backward
+> +  compatibility.
+> +
+> +allOf:
+> +  - $ref: /spi/spi-controller.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - sprd,sc9860-adi
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  hwlocks:
+> +    description: Reference to a phandle of a hwlock provider node.
+
+Drop, and add 'maxItems: 1'.
+
+> +
+> +  hwlock-names:
+> +    description: |
+> +      Reference to hwlock name strings defined in the same order
+> +      as the hwlocks, should be "adi".
+
+Should be a schema. So drop and add:
+
+const: adi
+
+> +
+> +  sprd,hw-channels:
+> +    $ref: /schemas/types.yaml#/definitions/uint32-array
+> +    maxItems: 1
+
+This means 1 uint32.
+
+> +    description: |
+> +      This is an array of channel values up to 49 channels.
+
+But this implies 49 entries.
+
+> +      The first value specifies the hardware channel id which is used to
+> +      transfer data triggered by hardware automatically, and the second
+> +      value specifies the analog chip address where user want to access
+> +      by hardware components.
+
+Or 49x2 and that's a uint32-matrix given it's pairs of values. That 
+should look something like this:
+
+minItems: 1
+maxItems: 49
+items:
+  items:
+    - description: the hardware channel id...
+      minimum: ??
+      maximum: ?? (range of channel ids?)
+    - description: the analog chip address where user want to access...
+
+Rob

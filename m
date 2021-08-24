@@ -2,186 +2,144 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-8.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 79779C4320A
-	for <linux-spi@archiver.kernel.org>; Tue, 24 Aug 2021 17:22:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DA690C432BE
+	for <linux-spi@archiver.kernel.org>; Tue, 24 Aug 2021 17:40:52 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 628A261357
-	for <linux-spi@archiver.kernel.org>; Tue, 24 Aug 2021 17:22:01 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C428261245
+	for <linux-spi@archiver.kernel.org>; Tue, 24 Aug 2021 17:40:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240233AbhHXRWp (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 24 Aug 2021 13:22:45 -0400
-Received: from mail-ot1-f53.google.com ([209.85.210.53]:34782 "EHLO
-        mail-ot1-f53.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236192AbhHXRUo (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 24 Aug 2021 13:20:44 -0400
-Received: by mail-ot1-f53.google.com with SMTP id k12-20020a056830150c00b0051abe7f680bso42972036otp.1;
-        Tue, 24 Aug 2021 10:19:59 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=VNcuv0HqBUSJ/AboskcrVII1u6Cg/7GBIg74AqxzSDA=;
-        b=aRmgP13Ez3dvZYjywPm0BjMtAe6nvyWW2IL64UqSgMBb/QEF+phgXkVEX5m3LvQVBA
-         KjhcytmxUo5iGjhLy03HFKAtOsJ2CCF9sy3u6ZA7EzbYIL3NOEtkOeeHR3c8IhhII3Ci
-         /wTCuXL+TqkqWsZSyRK/G7+L1MBWi+XZFTtA1qOiQ8QDV3nIuOXV/cKPBHlBf1VviOhD
-         9U099VFge3ggOfR1TPX8zWgiabr0df6IDJiKe+jTQZFwxO9LDd7HPfmqtRAHp1r2Wgcv
-         n/HX6CNnOSbTksJcCvIzl5VmBhC02DBXVV4PkvHTLpHvfweoeNOfzhe0uIDi0PG+yggc
-         UJ3g==
-X-Gm-Message-State: AOAM5301h0HUTS+MWjOTCFbsuI0l8hInPbw8XFRDQatqC5oSB7cao6pP
-        CfFG2/O/VpmWpi7N4iC0Ehvz05oTRw==
-X-Google-Smtp-Source: ABdhPJzBkwBpMgX9rEjwIv9ZCvRgSwnxW0Hor7k/ODRN4iOCh25hDZc6L+2YbhxQefHk7yWhzuNHKA==
-X-Received: by 2002:aca:33d7:: with SMTP id z206mr3588120oiz.82.1629825599271;
-        Tue, 24 Aug 2021 10:19:59 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id x3sm4087999ooe.32.2021.08.24.10.19.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Aug 2021 10:19:58 -0700 (PDT)
-Received: (nullmailer pid 659131 invoked by uid 1000);
-        Tue, 24 Aug 2021 17:19:57 -0000
-Date:   Tue, 24 Aug 2021 12:19:57 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Chunyan Zhang <zhang.lyra@gmail.com>
-Cc:     Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, Baolin Wang <baolin.wang7@gmail.com>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Chunyan Zhang <chunyan.zhang@unisoc.com>,
-        Luting Guo <luting.guo@unisoc.com>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/3] dt-bindings: spi: Convert sprd ADI bindings to yaml
-Message-ID: <YSUqPTr+aNLpjsj+@robh.at.kernel.org>
-References: <20210824092745.2093640-1-zhang.lyra@gmail.com>
- <20210824092745.2093640-3-zhang.lyra@gmail.com>
+        id S242351AbhHXRlf (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 24 Aug 2021 13:41:35 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44522 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S242624AbhHXRjd (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 24 Aug 2021 13:39:33 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 4779B610C9;
+        Tue, 24 Aug 2021 17:16:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1629825406;
+        bh=kn+XwzsVevnsYgage2fYiKaQAdypJdXXDutxJUgBKaA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=WZLrNQJ1iEetXM6GBKMAocgKpBYBaoeqG/BEsyLHHCD4+94xqZ0L+If5trrPppTTL
+         4FzvC3o3BKsV6f9lENaJA2d79QY0v8ezUrOuMBkRwp+9l1JZtBrVoOiTTttZdeOP9b
+         e2AqhhxBOHjtti93T3X2Vzqr1Eq4iUzzQfU1+gg6mmoDrqcv0t2wUcYr+zxxBhOWuU
+         3jPisWpfvK5jiEcdzx4DByclaUj817smieAnDimvH9l3BLLcTpOLd4fw3en/xkGHGl
+         uvWjHepN2wL1HzBSnbVA7CRy87+zQxWa3JXxLDo7I7SAb1DuMYjAth014qMjaqHKaj
+         UzqLO/qCjUEVw==
+Date:   Tue, 24 Aug 2021 18:16:19 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Lucas Tanure <tanureal@opensource.cirrus.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Sanjay R Mehta <sanju.mehta@amd.com>,
+        Nehal Bakulchandra Shah <Nehal-Bakulchandra.shah@amd.com>,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        patches@opensource.cirrus.com
+Subject: Re: [PATCH 8/9] spi: amd: Refactor to overcome 70 bytes per CS
+ limitation
+Message-ID: <20210824171619.GK4393@sirena.org.uk>
+References: <20210824104041.708945-1-tanureal@opensource.cirrus.com>
+ <20210824104041.708945-9-tanureal@opensource.cirrus.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="vk/v8fjDPiDepTtA"
 Content-Disposition: inline
-In-Reply-To: <20210824092745.2093640-3-zhang.lyra@gmail.com>
+In-Reply-To: <20210824104041.708945-9-tanureal@opensource.cirrus.com>
+X-Cookie: Sentient plasmoids are a gas.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Tue, Aug 24, 2021 at 05:27:44PM +0800, Chunyan Zhang wrote:
-> From: Chunyan Zhang <chunyan.zhang@unisoc.com>
-> 
-> Convert spi-sprd-adi.txt to yaml.
-> 
-> Signed-off-by: Chunyan Zhang <chunyan.zhang@unisoc.com>
-> ---
->  .../devicetree/bindings/spi/spi-sprd-adi.txt  | 63 ------------
->  .../devicetree/bindings/spi/sprd,spi-adi.yaml | 99 +++++++++++++++++++
->  2 files changed, 99 insertions(+), 63 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/spi/spi-sprd-adi.txt
->  create mode 100644 Documentation/devicetree/bindings/spi/sprd,spi-adi.yaml
 
-[...]
+--vk/v8fjDPiDepTtA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> diff --git a/Documentation/devicetree/bindings/spi/sprd,spi-adi.yaml b/Documentation/devicetree/bindings/spi/sprd,spi-adi.yaml
-> new file mode 100644
-> index 000000000000..f464fb6033f9
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/sprd,spi-adi.yaml
-> @@ -0,0 +1,99 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +
-> +%YAML 1.2
-> +---
-> +$id: "http://devicetree.org/schemas/spi/sprd,spi-adi.yaml#"
-> +$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-> +
-> +title: Spreadtrum ADI controller
-> +
-> +maintainers:
-> +  - Orson Zhai <orsonzhai@gmail.com>
-> +  - Baolin Wang <baolin.wang7@gmail.com>
-> +  - Chunyan Zhang <zhang.lyra@gmail.com>
-> +
-> +description: |
-> +  ADI is the abbreviation of Anolog-Digital interface, which is used to access
-> +  analog chip (such as PMIC) from digital chip. ADI controller follows the SPI
-> +  framework for its hardware implementation is alike to SPI bus and its timing
-> +  is compatile to SPI timing.
-> +
-> +  ADI controller has 50 channels including 2 software read/write channels and
-> +  48 hardware channels to access analog chip. For 2 software read/write channels,
-> +  users should set ADI registers to access analog chip. For hardware channels,
-> +  we can configure them to allow other hardware components to use it independently,
-> +  which means we can just link one analog chip address to one hardware channel,
-> +  then users can access the mapped analog chip address by this hardware channel
-> +  triggered by hardware components instead of ADI software channels.
-> +
-> +  Thus we introduce one property named "sprd,hw-channels" to configure hardware
-> +  channels, the first value specifies the hardware channel id which is used to
-> +  transfer data triggered by hardware automatically, and the second value specifies
-> +  the analog chip address where user want to access by hardware components.
-> +
-> +  Since we have multi-subsystems will use unique ADI to access analog chip, when
-> +  one system is reading/writing data by ADI software channels, that should be under
-> +  one hardware spinlock protection to prevent other systems from reading/writing
-> +  data by ADI software channels at the same time, or two parallel routine of setting
-> +  ADI registers will make ADI controller registers chaos to lead incorrect results.
-> +  Then we need one hardware spinlock to synchronize between the multiple subsystems.
-> +
-> +  The new version ADI controller supplies multiple master channels for different
-> +  subsystem accessing, that means no need to add hardware spinlock to synchronize,
-> +  thus change the hardware spinlock support to be optional to keep backward
-> +  compatibility.
-> +
-> +allOf:
-> +  - $ref: /spi/spi-controller.yaml#
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - sprd,sc9860-adi
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  hwlocks:
-> +    description: Reference to a phandle of a hwlock provider node.
+On Tue, Aug 24, 2021 at 11:40:40AM +0100, Lucas Tanure wrote:
+> AMD SPI controller has 70 bytes for its FIFO and it has an
+> automatic way of controlling it`s internal CS, which can
+> only be activated during the time that the FIFO is being
+> transfered.
 
-Drop, and add 'maxItems: 1'.
+> SPI_MASTER_HALF_DUPLEX here means that it can only read
+> RX bytes after TX bytes were written, and RX+TX must be
+> less than 70. If you write 4 bytes the first byte of read
+> is in position 5 of the FIFO.
+>=20
+> All of that means that for devices that require an address
+> for reads and writes, the 2 transfers must be put in the same
+> FIFO so the CS can be hold for address and data, otherwise
+> the data would lose it`s meaning.
 
+This commit message is confusing, it's hard to tell what the refactoring
+is.  It also doesn't seem at all joined up with the rest of the series
+or the contents of the patch.  The rest of this series adds a new
+interface which says that the controller is only capable of doing a
+single transfer which means that the core should ensure that the
+controller never sees a message with more than one transfer in it but
+this patch appears to be attempting to parse multiple transfers and pack
+them together due to controller limitations in some way.  That is never
+going to do anything useful, if anything is paying attention to the flag
+the controller will never see messages like that.  Indeed code that pays
+attention to the flag and needs this is likely to refuse to work with
+the hardware at all since the device is half duplex so anything that
+needs messages mixing reads and writes just won't work at all.
+
+It also looks like the code is adding support for a new revision of the
+hardware which isn't mentioned anywhere in the commit message at all and
+really should be, it should most likely be a separate commit.
+
+As far as I can tell what you're trying to do here is better expressed
+as saying that the controller has a limit on the maximum message size
+then having the transfer_one_message() pack those down into whatever the
+controller needs so it can send them without bouncing chip select.  The
+new flag is not needed for this device and indeed looks like it will
+actively work against what's needed to make the controller useful in
+these applications.
+
+Please also use normal apostrophies.
+
+> +	amd_spi_set_tx_count(amd_spi, tx1_len + tx2_len);
+> +	ret =3D amd_spi_execute_opcode(amd_spi);
 > +
-> +  hwlock-names:
-> +    description: |
-> +      Reference to hwlock name strings defined in the same order
-> +      as the hwlocks, should be "adi".
+> +	return ret ? ret : tx1_len + 1 + tx2_len;
 
-Should be a schema. So drop and add:
+Please write normal conditional statements so people can read the code
+more easily.
 
-const: adi
-
+> +static const struct amd_spi_devtype_data spi_v1 =3D {
+> +       .exec_op        =3D amd_spi_execute_opcode_v1,
+> +       .set_op         =3D amd_spi_set_opcode_v1,
+> +};
 > +
-> +  sprd,hw-channels:
-> +    $ref: /schemas/types.yaml#/definitions/uint32-array
-> +    maxItems: 1
+> +static const struct amd_spi_devtype_data spi_v2 =3D {
+> +       .version        =3D 1,
 
-This means 1 uint32.
+v2 sets the version to 1 and v1 doesn't set the version at all and the
+only use of the version field AFAICT is that we should try to call
+amd_spi_clear_chip() after a transfer.  This isn't entirely clear.  If
+it's just a flag for the need to do that clear make it an explicit flag
+for that.
 
-> +    description: |
-> +      This is an array of channel values up to 49 channels.
+--vk/v8fjDPiDepTtA
+Content-Type: application/pgp-signature; name="signature.asc"
 
-But this implies 49 entries.
+-----BEGIN PGP SIGNATURE-----
 
-> +      The first value specifies the hardware channel id which is used to
-> +      transfer data triggered by hardware automatically, and the second
-> +      value specifies the analog chip address where user want to access
-> +      by hardware components.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmElKWIACgkQJNaLcl1U
+h9DwkAf/dcn31D3dwArT6L8leGiiqSooISv+bR8bCSNl/zMJaZMOP1dVQNDQsuKp
+fhGWgt1WjGZK7mitS4gtBlvNLK39puap7QApUSZTyb466GR7sNuQVDEKdCekAXel
+JMsOTlvduZ6X3BdNQ3dFl+67JxWk1Ho0ZReEh/NwzdpSN9wfB8PXiIcvBbwJkSsA
+exAiu9txc0upjAxVQ460QSKmC3ODyNHtCjRYiYnvitF9V2SxqIXQfzXuSKWAFP8E
+B4AD0y4XgXVJ3qK+xiNCXateaigtuADMgqeKSbuO/qysy7wUJQk5kQUQCXiSRPHD
+2rSjs6U6RPeaAAK8RoeUZrEyjaNJ3w==
+=Z3HA
+-----END PGP SIGNATURE-----
 
-Or 49x2 and that's a uint32-matrix given it's pairs of values. That 
-should look something like this:
-
-minItems: 1
-maxItems: 49
-items:
-  items:
-    - description: the hardware channel id...
-      minimum: ??
-      maximum: ?? (range of channel ids?)
-    - description: the analog chip address where user want to access...
-
-Rob
+--vk/v8fjDPiDepTtA--

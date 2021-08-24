@@ -2,39 +2,39 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-13.9 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,UNWANTED_LANGUAGE_BODY,
+	URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CF5F1C4338F
-	for <linux-spi@archiver.kernel.org>; Tue, 24 Aug 2021 10:41:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4027CC4320E
+	for <linux-spi@archiver.kernel.org>; Tue, 24 Aug 2021 10:41:09 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id BD50F61262
-	for <linux-spi@archiver.kernel.org>; Tue, 24 Aug 2021 10:41:08 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 21ADF61262
+	for <linux-spi@archiver.kernel.org>; Tue, 24 Aug 2021 10:41:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236413AbhHXKlv (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S236359AbhHXKlv (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Tue, 24 Aug 2021 06:41:51 -0400
-Received: from mx0b-001ae601.pphosted.com ([67.231.152.168]:54182 "EHLO
+Received: from mx0b-001ae601.pphosted.com ([67.231.152.168]:59432 "EHLO
         mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S236383AbhHXKlt (ORCPT
+        by vger.kernel.org with ESMTP id S236388AbhHXKlt (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Tue, 24 Aug 2021 06:41:49 -0400
 Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
-        by mx0b-001ae601.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 17O9oMhV012561;
+        by mx0b-001ae601.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 17O9oMhU012561;
         Tue, 24 Aug 2021 05:41:02 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding : content-type; s=PODMain02222019;
- bh=xsX6p9puSfXRorYbQx0X/dwTanfMPZQ43pueV+mZkqs=;
- b=FQzs8GNjLTzhMll0Ty+JbUZY35uvmNDXQkwgge/EXzrsvhCNygsd/6eYpPwRsrVWtyqI
- MNd7LJlUxSVwFORB4vyZ5/n+yUNSFJDm9iydGhsSyB4lRVPVHm6LJT7UwdFbVjtr9WDb
- OnF48WrvI9pkiWMjIGJpaPFcm/tJaLBXO/+2S+//CJ9KnEU2Y0qb8AgEV5wxisUaP/Oi
- Uw8KaMTfY7FMib1qaBdUGR0rcJugFZITnqufP2ZrBgiZOYII9U1o+0tndkNVOlkONtcG
- huTTDrKY+gB4+qSoTdL6RPe28xEefvCbGhgZY6JpEMxaUuSan9KaH4HMLHNTjzPvkwM2 Fg== 
+ bh=Y1dzi87RQSLOVgc1XSY6AIdI/7WVI0LjnVnxGx7qTbo=;
+ b=d9MB0pdnOlz72yZbtV5+qLWlb1Cdu51SBr5bTq6VSTQUxcVI92l9cSUbWYSCYuaKguaP
+ WjOTLHk87twmjlKIfd4E+X5VgTbrKiCYMUXCnvqBKDAT3wlZNcMhct9245Zi6xNhh827
+ xuBCPRkyd2DeQFR/bd2xSVo926UtLjyxADo9EAYejT/d5T/lIVtEdjHyk1kc17CkSsMA
+ RvTYUjYvvkgDc/qMBg+Ya9RmB85mmtTEfPkaRlE2qSxMqIayH8U/njchntu4ie8o2DYf
+ tPyzbhO+a3Dwu1+9B0MGc5GajR0sEiL/pHW7bxp8BnE3gD3eqMhnvjIEqxzyoekulk3q ig== 
 Received: from ediex02.ad.cirrus.com ([87.246.76.36])
-        by mx0b-001ae601.pphosted.com with ESMTP id 3amxg601k1-4
+        by mx0b-001ae601.pphosted.com with ESMTP id 3amxg601k1-3
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Tue, 24 Aug 2021 05:41:02 -0500
+        Tue, 24 Aug 2021 05:41:01 -0500
 Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX02.ad.cirrus.com
  (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.12; Tue, 24 Aug
@@ -43,7 +43,7 @@ Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
  (198.61.84.80) with Microsoft SMTP Server id 15.1.2242.12 via Frontend
  Transport; Tue, 24 Aug 2021 11:41:00 +0100
 Received: from aryzen.ad.cirrus.com (unknown [198.61.65.58])
-        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 5B1D846E;
+        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 1AC082A9;
         Tue, 24 Aug 2021 10:41:00 +0000 (UTC)
 From:   Lucas Tanure <tanureal@opensource.cirrus.com>
 To:     Mark Brown <broonie@kernel.org>,
@@ -54,55 +54,64 @@ To:     Mark Brown <broonie@kernel.org>,
 CC:     <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
         <patches@opensource.cirrus.com>,
         Lucas Tanure <tanureal@opensource.cirrus.com>
-Subject: [PATCH 7/9] spi: amd: Check for idle bus before execute opcode
-Date:   Tue, 24 Aug 2021 11:40:39 +0100
-Message-ID: <20210824104041.708945-8-tanureal@opensource.cirrus.com>
+Subject: [PATCH 6/9] spi: amd: Remove uneeded variable
+Date:   Tue, 24 Aug 2021 11:40:38 +0100
+Message-ID: <20210824104041.708945-7-tanureal@opensource.cirrus.com>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20210824104041.708945-1-tanureal@opensource.cirrus.com>
 References: <20210824104041.708945-1-tanureal@opensource.cirrus.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-GUID: 2S-f3Ix36nQZ-BZ9nG-nXue5ZByLN4mp
-X-Proofpoint-ORIG-GUID: 2S-f3Ix36nQZ-BZ9nG-nXue5ZByLN4mp
+X-Proofpoint-GUID: MrbsGSsAFNFFq7jPDiZPQknEJAAaDpae
+X-Proofpoint-ORIG-GUID: MrbsGSsAFNFFq7jPDiZPQknEJAAaDpae
 X-Proofpoint-Spam-Reason: safe
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Check if the bus is not in use before starting the transfer
-Also wait after so the READ bytes in the FIFO are ready to
-be copied
+Remove internal cs from amd_spi
 
 Signed-off-by: Lucas Tanure <tanureal@opensource.cirrus.com>
 ---
- drivers/spi/spi-amd.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/spi/spi-amd.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/spi/spi-amd.c b/drivers/spi/spi-amd.c
-index ebbc64a9fa7b..75390fcb0481 100644
+index 9476b283840b..ebbc64a9fa7b 100644
 --- a/drivers/spi/spi-amd.c
 +++ b/drivers/spi/spi-amd.c
-@@ -110,11 +110,17 @@ static int amd_spi_busy_wait(struct amd_spi *amd_spi)
- 				 !(val & AMD_SPI_BUSY), 10, 100000);
+@@ -39,7 +39,6 @@ struct amd_spi {
+ 	void __iomem *io_remap_addr;
+ 	unsigned long io_base_addr;
+ 	u32 rom_addr;
+-	u8 chip_select;
+ };
+ 
+ static inline u8 amd_spi_readreg8(struct amd_spi *amd_spi, int idx)
+@@ -78,10 +77,9 @@ static inline void amd_spi_setclear_reg32(struct amd_spi *amd_spi, int idx, u32
+ 	amd_spi_writereg32(amd_spi, idx, tmp);
  }
  
--static void amd_spi_execute_opcode(struct amd_spi *amd_spi)
-+static int amd_spi_execute_opcode(struct amd_spi *amd_spi)
+-static void amd_spi_select_chip(struct amd_spi *amd_spi)
++static void amd_spi_select_chip(struct amd_spi *amd_spi, u8 cs)
  {
-+	int ret = amd_spi_busy_wait(amd_spi);
-+
-+	if (ret)
-+		return ret;
-+
- 	/* Set ExecuteOpCode bit in the CTRL0 register */
- 	amd_spi_setclear_reg32(amd_spi, AMD_SPI_CTRL0_REG, AMD_SPI_EXEC_CMD, AMD_SPI_EXEC_CMD);
--	amd_spi_busy_wait(amd_spi);
-+
-+	return amd_spi_busy_wait(amd_spi);
+-	amd_spi_setclear_reg8(amd_spi, AMD_SPI_ALT_CS_REG, amd_spi->chip_select,
+-			      AMD_SPI_ALT_CS_MASK);
++	amd_spi_setclear_reg8(amd_spi, AMD_SPI_ALT_CS_REG, cs, AMD_SPI_ALT_CS_MASK);
  }
  
- static int amd_spi_master_setup(struct spi_device *spi)
+ static void amd_spi_clear_fifo_ptr(struct amd_spi *amd_spi)
+@@ -196,8 +194,7 @@ static int amd_spi_master_transfer(struct spi_master *master,
+ 	struct amd_spi *amd_spi = spi_master_get_devdata(master);
+ 	struct spi_device *spi = msg->spi;
+ 
+-	amd_spi->chip_select = spi->chip_select;
+-	amd_spi_select_chip(amd_spi);
++	amd_spi_select_chip(amd_spi, spi->chip_select);
+ 
+ 	/*
+ 	 * Extract spi_transfers from the spi message and
 -- 
 2.33.0
 

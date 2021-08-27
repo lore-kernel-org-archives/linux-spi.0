@@ -2,60 +2,80 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.7 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C027EC432BE
-	for <linux-spi@archiver.kernel.org>; Thu, 26 Aug 2021 14:20:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1F41EC432BE
+	for <linux-spi@archiver.kernel.org>; Fri, 27 Aug 2021 05:12:03 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A467860E78
-	for <linux-spi@archiver.kernel.org>; Thu, 26 Aug 2021 14:20:09 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D75D760187
+	for <linux-spi@archiver.kernel.org>; Fri, 27 Aug 2021 05:12:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242845AbhHZOU4 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 26 Aug 2021 10:20:56 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40082 "EHLO mail.kernel.org"
+        id S230161AbhH0FMu (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 27 Aug 2021 01:12:50 -0400
+Received: from mail.manjaro.org ([116.203.91.91]:58616 "EHLO mail.manjaro.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229832AbhHZOUz (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Thu, 26 Aug 2021 10:20:55 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 8B80660E78;
-        Thu, 26 Aug 2021 14:20:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1629987608;
-        bh=9yHHYqVIO3J7cX4Vw3GYjfDL5aAVr6DYyjQtAt4gKOM=;
-        h=Subject:From:Date:To:From;
-        b=b4nNCkLqKrd9VmqLLGjd+kbcUc41Rbyssd+ehrrfu1IifuSIynwtlnGuYb+o6p+K5
-         Kh0BaOyCnkmTxeyNZuMEjwlNebQog19luX4YlEzkGTgKQIX8UhQRFr9xbjROt+/0yG
-         dQn87N4+7u3aQ93SLchskbds8Od1Gvrl7vogl5LSjbI2j+1dA0rTdlJmtTIYvKu/9q
-         FAPZfkX3OfA2GVY7HOnGXOO1XFg8sY95Bq/ZV81IDOFsZNoAZT2BiDuEdzDh0g+Bad
-         Rroj7wEeRgsp26scWlYpOSFDq+njnl+RGNKa+FlfLSlZz3kSgLWBuf6GwHaO9u4Ujz
-         1VN6XV9EDWfpg==
-Content-Type: text/plain; charset="utf-8"
+        id S229645AbhH0FMt (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Fri, 27 Aug 2021 01:12:49 -0400
+X-Greylist: delayed 455 seconds by postgrey-1.27 at vger.kernel.org; Fri, 27 Aug 2021 01:12:49 EDT
+From:   Tobias Schramm <t.schramm@manjaro.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
+        t=1630040663;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=CCGe3l7vX7fN0xeU/nOfzM7VX7yQ/ff/as6wuEAK9KE=;
+        b=LjpDAzCiCaVwFIh4DfutFmxf9GqvTbwqKiyGitq+ye1tCOhDH8F9LPEGW0zDNbCvM07E9z
+        eyRekW34kHW87+7Nt6LDGMn12tDeIYrVYd81jt9swNaHFBKgA/56hIJ3uiDDO5n0oZ+OIB
+        F4riSGuyThtwOGfIFVKyOgKhA6UHtr3q0ZmjEeOjnZoKYUEnU3F7vK//V6UAwGGDprdv/f
+        gIsukLETAWJNgwTx8rZcJuwCCa2mA7Jhm46pBPvqkeArOvMFmdX+Dib2l/dDm4qbpSwsNl
+        maIlDaZjL2Yejpn1YVV68XA5HsE9hEwIAbOe/2IoyO/rFOBYyIfUbRm1ofFpUA==
+To:     linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc:     Mark Brown <broonie@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
+        Tobias Schramm <t.schramm@manjaro.org>
+Subject: [PATCH] spi: rockchip: handle zero length transfers without timing out
+Date:   Fri, 27 Aug 2021 07:03:57 +0200
+Message-Id: <20210827050357.165409-1-t.schramm@manjaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From:   patchwork-bot+spi-devel-general@kernel.org
-Message-Id: <162998760843.14289.17138022675709532391.git-patchwork-summary@kernel.org>
-Date:   Thu, 26 Aug 2021 14:20:08 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
+Authentication-Results: ORIGINATING;
+        auth=pass smtp.auth=t.schramm@manjaro.org smtp.mailfrom=t.schramm@manjaro.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hello:
+Previously zero length transfers submitted to the Rokchip SPI driver would
+time out in the SPI layer. This happens because the SPI peripheral does
+not trigger a transfer completion interrupt for zero length transfers.
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (refs/heads/for-next):
+Fix that by completing zero length transfers immediately at start of
+transfer.
 
-Patch: [RESEND] spi: spi-zynq-qspi: use wait_for_completion_timeout to make zynq_qspi_exec_mem_op not interruptible
-  Submitter: quanyang.wang <quanyang.wang@windriver.com>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=537429
-  Lore link: https://lore.kernel.org/r/20210826005930.20572-1-quanyang.wang@windriver.com
+Signed-off-by: Tobias Schramm <t.schramm@manjaro.org>
+---
+ drivers/spi/spi-rockchip.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Total patches: 1
-
---
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index 540861ca2ba3..553b6b9d0222 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -600,6 +600,12 @@ static int rockchip_spi_transfer_one(
+ 	int ret;
+ 	bool use_dma;
+ 
++	/* Zero length transfers won't trigger an interrupt on completion */
++	if (!xfer->len) {
++		spi_finalize_current_transfer(ctlr);
++		return 1;
++	}
++
+ 	WARN_ON(readl_relaxed(rs->regs + ROCKCHIP_SPI_SSIENR) &&
+ 		(readl_relaxed(rs->regs + ROCKCHIP_SPI_SR) & SR_BUSY));
+ 
+-- 
+2.33.0
 

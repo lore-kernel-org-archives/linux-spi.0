@@ -2,53 +2,109 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.4 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D0816C432BE
-	for <linux-spi@archiver.kernel.org>; Wed,  1 Sep 2021 13:56:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5DA0EC432BE
+	for <linux-spi@archiver.kernel.org>; Thu,  2 Sep 2021 12:04:05 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B19E361056
-	for <linux-spi@archiver.kernel.org>; Wed,  1 Sep 2021 13:56:57 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 3AE48610CF
+	for <linux-spi@archiver.kernel.org>; Thu,  2 Sep 2021 12:04:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240837AbhIAN5x (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 1 Sep 2021 09:57:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46124 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232598AbhIAN5x (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 1 Sep 2021 09:57:53 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id B613C60FD7;
-        Wed,  1 Sep 2021 13:56:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1630504614;
-        bh=+Hzf1IQEiX9OhnqUcaDgyVjX3UwT97cWpP91aB9BeY8=;
-        h=Subject:From:Date:To:From;
-        b=XRQDPnMfKGUWcPWnpJJu7VPv3TM33D+hmD31Epvq/uUSOEdvZ11LT/4sIjYpN1V0D
-         9pk2kNQR5NFDmYMqtHFnQxrOEyz+CmgMmYg0+46jlKiIlf0hz1Y+o3uOVV07ed/N44
-         OERg44ApscHDAnO9Ts525ZUEB8WKjmwthGUfjKFkMk5elYEB9KSueimPWe1HKa/DVU
-         wdY0GpubPXtrLg0Lh0g5+Sya/lxuFtVRTmp8fvCziTNCBerpQJjWn1vJabMLRgq4MD
-         PD9aT3X2NJZWM8MBwei4nDcT9K/bEuvqI3ZIvXTonMJxYeT0Qo9WCBTYFO1VR1JVMg
-         narGA/Gz4M3fA==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From:   patchwork-bot+spi-devel-general@kernel.org
-Message-Id: <163050461468.26717.15911094382233286268.git-patchwork-housekeeping@kernel.org>
-Date:   Wed, 01 Sep 2021 13:56:54 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
+        id S1344017AbhIBMFC (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 2 Sep 2021 08:05:02 -0400
+Received: from mail-oi1-f181.google.com ([209.85.167.181]:42548 "EHLO
+        mail-oi1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1344009AbhIBMFB (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 2 Sep 2021 08:05:01 -0400
+Received: by mail-oi1-f181.google.com with SMTP id bi4so2175573oib.9;
+        Thu, 02 Sep 2021 05:04:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+         :message-id;
+        bh=BUqaoDHq1kYFFgkimw5x11z+/dNmgaH0b/piYmufZsc=;
+        b=ONnHFr23J9Mb0NCyELQ9ukDFrIP+M4mf6BqmI41R1D+UgovQt2rcYIQbdOD5QXStbF
+         Xe8AGLPQSmIRyRaATqzDoy1dpTADHL2AvAWWKMYgmkxWKWnGWNDaiyBacySlJEnGunEB
+         koDORoxWSduWfViKDq49NHm4rZvhEfqND7QzPrG6BLlR9q602JH6cI7O+wkTKOks2irZ
+         /JNPQyXjddcyCnRvBa8FhlCnn/kvwSgS/79tvJ1IXiuD18UBo5cZsGYiZQWf50pFONhK
+         c5hXT5pL6eQpun7HjTtV16jG4g7O9awbuhiOZ8s3SdT94czvDx3eIN+56hR/ql/+MOPq
+         VJKw==
+X-Gm-Message-State: AOAM530RHZBXlgfeoPiFH5eKCCwhC/Ge7dq7g6WVKhYATTSuWBF1CSc5
+        3Ikpjj5EBQsz2pjk0BeFlw==
+X-Google-Smtp-Source: ABdhPJzZjPOnSEHSOOdDAwed/sSzwFVLOD22JH0MBNpNoffHUul1Kchpby31Nq0NZJa/G9emURVtpw==
+X-Received: by 2002:aca:220a:: with SMTP id b10mr1859658oic.101.1630584242534;
+        Thu, 02 Sep 2021 05:04:02 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id b25sm338667ooq.6.2021.09.02.05.04.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Sep 2021 05:04:01 -0700 (PDT)
+Received: (nullmailer pid 685601 invoked by uid 1000);
+        Thu, 02 Sep 2021 12:03:59 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     Parshuram Thombare <pthombar@cadence.com>
+Cc:     p.yadav@ti.com, devicetree@vger.kernel.org,
+        Konrad Kociolek <konrad@cadence.com>,
+        linux-spi@vger.kernel.org, broonie@kernel.org, jpawar@cadence.com,
+        lukas@wunner.de, robh+dt@kernel.org, mparab@cadence.com,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <1630499829-20059-1-git-send-email-pthombar@cadence.com>
+References: <1630499755-18751-1-git-send-email-pthombar@cadence.com> <1630499829-20059-1-git-send-email-pthombar@cadence.com>
+Subject: Re: [PATCH v3 1/2] spi: cadence: add dt-bindings documentation for Cadence XSPI controller
+Date:   Thu, 02 Sep 2021 07:03:59 -0500
+Message-Id: <1630584239.096691.685600.nullmailer@robh.at.kernel.org>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Latest series: [v3] add support for Cadence's XSPI controller (2021-09-01T12:35:55)
-  Superseding: [v2] add support for Cadence's XSPI controller (2021-07-21T08:11:58):
-    [v2,1/2] spi: cadence: add dt-bindings documentation for Cadence XSPI controller
-    [v2,2/2] spi: cadence: add support for Cadence XSPI controller
+On Wed, 01 Sep 2021 14:37:09 +0200, Parshuram Thombare wrote:
+> Add DT binding for Cadence's XSPI controller driver.
+> 
+> Signed-off-by: Konrad Kociolek <konrad@cadence.com>
+> Signed-off-by: Jayshri Pawar <jpawar@cadence.com>
+> Signed-off-by: Parshuram Thombare <pthombar@cadence.com>
+> ---
+>  .../devicetree/bindings/spi/cdns,xspi.yaml         | 66 ++++++++++++++++++++++
+>  1 file changed, 66 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/spi/cdns,xspi.yaml
+> 
 
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/spi/cdns,xspi.yaml: 'additionalProperties' is a required property
+	hint: A schema without a "$ref" to another schema must define all properties and use "additionalProperties"
+	from schema $id: http://devicetree.org/meta-schemas/base.yaml#
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/spi/cdns,xspi.yaml: ignoring, error in schema: 
+warning: no schema found in file: ./Documentation/devicetree/bindings/spi/cdns,xspi.yaml
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/spi/cdns,xspi.example.dt.yaml: example-0: spi@a0010000:reg:0: [0, 2684420096, 0, 65536] is too long
+	From schema: /usr/local/lib/python3.8/dist-packages/dtschema/schemas/reg.yaml
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/spi/cdns,xspi.example.dt.yaml: example-0: spi@a0010000:reg:1: [0, 2952790016, 0, 65536] is too long
+	From schema: /usr/local/lib/python3.8/dist-packages/dtschema/schemas/reg.yaml
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/spi/cdns,xspi.example.dt.yaml: example-0: spi@a0010000:reg:2: [0, 2684485632, 0, 65536] is too long
+	From schema: /usr/local/lib/python3.8/dist-packages/dtschema/schemas/reg.yaml
+Documentation/devicetree/bindings/spi/cdns,xspi.example.dt.yaml:0:0: /example-0/spi@a0010000: failed to match any schema with compatible: ['cdns,xspi-nor']
+Documentation/devicetree/bindings/spi/cdns,xspi.example.dt.yaml:0:0: /example-0/spi@a0010000/mt35xu512@0: failed to match any schema with compatible: ['spi-nor', 'micron,mt35xu512']
+Documentation/devicetree/bindings/spi/cdns,xspi.example.dt.yaml:0:0: /example-0/spi@a0010000/mt35xu512@0: failed to match any schema with compatible: ['spi-nor', 'micron,mt35xu512']
+Documentation/devicetree/bindings/spi/cdns,xspi.example.dt.yaml:0:0: /example-0/spi@a0010000/mt35xu512@1: failed to match any schema with compatible: ['spi-nor', 'micron,mt35xu512']
+Documentation/devicetree/bindings/spi/cdns,xspi.example.dt.yaml:0:0: /example-0/spi@a0010000/mt35xu512@1: failed to match any schema with compatible: ['spi-nor', 'micron,mt35xu512']
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/patch/1523137
+
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit.
 

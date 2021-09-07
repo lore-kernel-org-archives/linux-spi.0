@@ -3,150 +3,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,
-	UNWANTED_LANGUAGE_BODY,USER_AGENT_SANE_1 autolearn=unavailable
-	autolearn_force=no version=3.4.0
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 56A7BC433FE
-	for <linux-spi@archiver.kernel.org>; Mon,  6 Sep 2021 15:31:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DCACDC433FE
+	for <linux-spi@archiver.kernel.org>; Tue,  7 Sep 2021 04:54:02 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3D4BE60FBF
-	for <linux-spi@archiver.kernel.org>; Mon,  6 Sep 2021 15:31:25 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id BC85F610C8
+	for <linux-spi@archiver.kernel.org>; Tue,  7 Sep 2021 04:54:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240212AbhIFPc1 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 6 Sep 2021 11:32:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46750 "EHLO
+        id S229800AbhIGEzH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 7 Sep 2021 00:55:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231446AbhIFPc0 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 6 Sep 2021 11:32:26 -0400
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BA9AC0613C1
-        for <linux-spi@vger.kernel.org>; Mon,  6 Sep 2021 08:31:21 -0700 (PDT)
-Received: by mail-wm1-x330.google.com with SMTP id z9-20020a7bc149000000b002e8861aff59so5325155wmi.0
-        for <linux-spi@vger.kernel.org>; Mon, 06 Sep 2021 08:31:21 -0700 (PDT)
+        with ESMTP id S229502AbhIGEzH (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 7 Sep 2021 00:55:07 -0400
+Received: from mail-ot1-x32b.google.com (mail-ot1-x32b.google.com [IPv6:2607:f8b0:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A7C4C061575;
+        Mon,  6 Sep 2021 21:54:01 -0700 (PDT)
+Received: by mail-ot1-x32b.google.com with SMTP id c19-20020a9d6153000000b0051829acbfc7so11268070otk.9;
+        Mon, 06 Sep 2021 21:54:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=PQ0Sz3nSdC4M1Li6PaTkmdjXBaQB3/I9C/9VyXKR078=;
-        b=UXRljDfh9pslkpfpiZW87xjIeGBWGwIaAMRlhWJCKG7426frC0Kf3IPd4Y1I1la0VX
-         yR+sttTvRZyIIqXtqEvMNgsD46eYnTi/cTMP9nhkOXv4qZJ2YwpO6rzL+Ad9sxuj2FUM
-         6W6/m+rhws4O7vtCY4Xiva5VZ95hBKwVmVRc5gCM+RrOnt67C1wg/drGrneMfWvU+jG5
-         l7O1qd0bsLRgpjxFf8Bd6t5jthk5fKIaMSBNPrDlWhhP0XLPqT4MFYj+oA0vYzozk3X2
-         bZpg5O3sTif4O/ZWaOrDw3jH9S/DBp5s9fEn++665aVy0K0x/CMSqlpEfnUx6laQG736
-         0S6w==
+        d=gmail.com; s=20210112;
+        h=sender:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=HwvMp5IA0hnYzD/MgD58P5n8j2xNmred2ctzvwoT1CU=;
+        b=cZYwdPnb1b3umP57IStOfOejXuTnIqns8GGgRWhneEd4+B5/jxMyHZJubUZyE72LFw
+         uHkv/zN0F8S3uhGH4GNKleFqIFy56ci7X3xQQ5UoXYGnFy6jsBlwIK9o5AkyTHTe+tmO
+         Sy0NTdA0jIRt23iAdTM7/bELUq/rwxsurybr1xD4EG/kyu6Sxjd+Mx5A6fRtNRxP0Dmj
+         1wLoO3KtCCMC9cKO7smVlqVgzrFFdAcuNbDlcaza89ceWVHqa5jmpapX06F/LCcOSOZx
+         z65qw/LoR0J2rDs+XlxpMvAvr8eQ/L8Rlex6txLMzFJvbRH8zGLWi6CtTYs5zcVYET3/
+         6IoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=PQ0Sz3nSdC4M1Li6PaTkmdjXBaQB3/I9C/9VyXKR078=;
-        b=blC/J03ojXkzndiJuDNmD3lu00MU+kfajF2tOgNd/IPacxKxfGLE+DazwFj0eHWZbP
-         KhPgj9ZbcQYBPLGy3IEFXrBqa8A0hehLW/oo7kKj+o3LsOcZ4swjyApigTtQMhEzOH9k
-         KtQw9cN224JXhd5S/TGC2zcibllNqfXAeW6R7qsjKGhtud29TbNAYiYpo0Rm41wUY+7A
-         FKfVPA9EH+t8U96teUNUPVuB91GuThViibQ3ONq5i/ZFOqXUFhxb8uR94InF6YKHQlQE
-         0aG2xHeu9xVTEMK+89yAHA8l3q5Kt4hCslIrZq3a52GGec2kCO29lvwqhneaBLFfhNcv
-         iWUQ==
-X-Gm-Message-State: AOAM531cwEfWtOd9dv1TBCRdjVUibWyx+DqGTiysZ8ehUFhYLxil6NpA
-        W5oZ+NPimu/uB3ytP6aw8wPQCQ==
-X-Google-Smtp-Source: ABdhPJw1GKspi6vCehDcEOXPQ+NCWmQvHbO1FyzGfSYpe1CVz0Iflaaie8Hoz/ZDPTqau9R2oirf6Q==
-X-Received: by 2002:a1c:1f49:: with SMTP id f70mr12167723wmf.13.1630942279756;
-        Mon, 06 Sep 2021 08:31:19 -0700 (PDT)
-Received: from [192.168.86.34] (cpc86377-aztw32-2-0-cust226.18-1.cable.virginm.net. [92.233.226.227])
-        by smtp.googlemail.com with ESMTPSA id f20sm7471638wmb.32.2021.09.06.08.31.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Sep 2021 08:31:19 -0700 (PDT)
-Subject: Re: [PATCH] dt-bindings: Use 'enum' instead of 'oneOf' plus 'const'
- entries
-To:     Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org
-Cc:     alsa-devel@alsa-project.org, Vignesh R <vigneshr@ti.com>,
-        linux-pci@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-phy@lists.infradead.org, Lee Jones <lee.jones@linaro.org>,
-        Marc Zyngier <maz@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        linux-serial@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
-        linux-media@vger.kernel.org, Maxime Ripard <mripard@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        Vinod Koul <vkoul@kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        netdev@vger.kernel.org, dmaengine@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>
-References: <20210824202014.978922-1-robh@kernel.org>
-From:   Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Message-ID: <b2e70818-521d-eff8-d7d5-be5a8d95df19@linaro.org>
-Date:   Mon, 6 Sep 2021 16:31:17 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :mime-version:content-transfer-encoding;
+        bh=HwvMp5IA0hnYzD/MgD58P5n8j2xNmred2ctzvwoT1CU=;
+        b=gFTWvdQU7Rz+VGCo3c7vg0ObVG0dA9dr2WS7aGaLugN67Jcpr3vDXMcUQC9VeSs7rE
+         xsVeyagOWmF9KL2rCksnVR0Rs1Ksdmm+1Nswa9rYg9RFBRD5RkUCv1u47jf83xO+o3Tz
+         rmzmjRMJ07mE3Fp5ik/JX7qXGpASOu7SMOuiotq32ic7TnzO1qRrW7CLkabVH5tQg1n2
+         c2+h2AbEsKHDIwsZ42ncoyP9AKM+37gJ0XBLbdtRhYVpNktx+hYsIGN5r7U51TlA03Iy
+         n/Uf3VNgZQVn2gAFuRkC0V2xYDpWtFAmMlQ+ci688fsFzed1GigKHgJWKI+bEBMmVMY2
+         dc2w==
+X-Gm-Message-State: AOAM5323x6e0TBLQciC8x+SMOxFFdX8GN4ZnO9GeTIlbYYenrj/CFJAQ
+        zWCiGXbrj3KPYFZCGIvQuuk1fagK33M=
+X-Google-Smtp-Source: ABdhPJztUXWHe1y/MwgJ82OrG6ipdHUyLDX7LpTXBUndg5E27UkvWxbxdqpuMUdkJgllcIWIZH6siw==
+X-Received: by 2002:a9d:6c19:: with SMTP id f25mr14331759otq.192.1630990440828;
+        Mon, 06 Sep 2021 21:54:00 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id v10sm2230807otp.25.2021.09.06.21.54.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Sep 2021 21:54:00 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Laxman Dewangan <ldewangan@nvidia.com>
+Cc:     Mark Brown <broonie@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH] spi: tegra20-slink: Declare runtime suspend and resume functions conditionally
+Date:   Mon,  6 Sep 2021 21:53:58 -0700
+Message-Id: <20210907045358.2138282-1-linux@roeck-us.net>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-In-Reply-To: <20210824202014.978922-1-robh@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+The following build error is seen with CONFIG_PM=n.
 
+drivers/spi/spi-tegra20-slink.c:1188:12: error:
+	'tegra_slink_runtime_suspend' defined but not used
+drivers/spi/spi-tegra20-slink.c:1200:12: error:
+	'tegra_slink_runtime_resume' defined but not used
 
-On 24/08/2021 21:20, Rob Herring wrote:
-> 'enum' is equivalent to 'oneOf' with a list of 'const' entries, but 'enum'
-> is more concise and yields better error messages.
-> 
-> Cc: Vinod Koul <vkoul@kernel.org>
-> Cc: Maxime Ripard <mripard@kernel.org>
-> Cc: Vignesh R <vigneshr@ti.com>
-> Cc: Marc Zyngier <maz@kernel.org>
-> Cc: Sakari Ailus <sakari.ailus@linux.intel.com>
-> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-> Cc: Lee Jones <lee.jones@linaro.org>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: Bjorn Helgaas <bhelgaas@google.com>
-> Cc: Kishon Vijay Abraham I <kishon@ti.com>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
-> Cc: dmaengine@vger.kernel.org
-> Cc: linux-i2c@vger.kernel.org
-> Cc: linux-media@vger.kernel.org
-> Cc: netdev@vger.kernel.org
-> Cc: linux-pci@vger.kernel.org
-> Cc: linux-phy@lists.infradead.org
-> Cc: linux-serial@vger.kernel.org
-> Cc: alsa-devel@alsa-project.org
-> Cc: linux-spi@vger.kernel.org
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
->   .../bindings/display/msm/dsi-phy-10nm.yaml           |  6 +++---
->   .../bindings/display/msm/dsi-phy-14nm.yaml           |  6 +++---
->   .../bindings/display/msm/dsi-phy-28nm.yaml           |  8 ++++----
->   .../bindings/dma/allwinner,sun6i-a31-dma.yaml        | 12 ++++++------
->   .../devicetree/bindings/firmware/arm,scpi.yaml       |  6 +++---
->   .../devicetree/bindings/i2c/ti,omap4-i2c.yaml        | 10 +++++-----
->   .../interrupt-controller/loongson,liointc.yaml       |  8 ++++----
->   .../devicetree/bindings/media/i2c/mipi-ccs.yaml      |  8 ++++----
->   .../devicetree/bindings/mfd/ti,lp87565-q1.yaml       |  6 +++---
->   .../devicetree/bindings/net/realtek-bluetooth.yaml   |  8 ++++----
->   .../bindings/net/ti,k3-am654-cpsw-nuss.yaml          |  8 ++++----
->   .../devicetree/bindings/net/ti,k3-am654-cpts.yaml    |  6 +++---
->   Documentation/devicetree/bindings/pci/loongson.yaml  |  8 ++++----
->   .../devicetree/bindings/phy/intel,lgm-emmc-phy.yaml  |  6 +++---
->   .../devicetree/bindings/serial/8250_omap.yaml        |  9 +++++----
+Declare the functions only if PM is enabled. While at it, remove the
+unnecessary forward declarations.
 
->   .../devicetree/bindings/sound/qcom,sm8250.yaml       |  6 +++---
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+---
+ drivers/spi/spi-tegra20-slink.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-for sm8250 sound card,
+diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
+index ebd27f883033..8ce840c7ecc8 100644
+--- a/drivers/spi/spi-tegra20-slink.c
++++ b/drivers/spi/spi-tegra20-slink.c
+@@ -204,9 +204,6 @@ struct tegra_slink_data {
+ 	struct dma_async_tx_descriptor		*tx_dma_desc;
+ };
+ 
+-static int tegra_slink_runtime_suspend(struct device *dev);
+-static int tegra_slink_runtime_resume(struct device *dev);
+-
+ static inline u32 tegra_slink_readl(struct tegra_slink_data *tspi,
+ 		unsigned long reg)
+ {
+@@ -1185,6 +1182,7 @@ static int tegra_slink_resume(struct device *dev)
+ }
+ #endif
+ 
++#ifdef CONFIG_PM
+ static int tegra_slink_runtime_suspend(struct device *dev)
+ {
+ 	struct spi_master *master = dev_get_drvdata(dev);
+@@ -1210,6 +1208,7 @@ static int tegra_slink_runtime_resume(struct device *dev)
+ 	}
+ 	return 0;
+ }
++#endif /* CONFIG_PM */
+ 
+ static const struct dev_pm_ops slink_pm_ops = {
+ 	SET_RUNTIME_PM_OPS(tegra_slink_runtime_suspend,
+-- 
+2.33.0
 
-Acked-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-
->   .../devicetree/bindings/sound/tlv320adcx140.yaml     |  8 ++++----
->   .../devicetree/bindings/spi/realtek,rtl-spi.yaml     | 12 ++++++------
->   .../devicetree/bindings/timer/arm,sp804.yaml         |  6 +++---
->   19 files changed, 74 insertions(+), 73 deletions(-)
-> 

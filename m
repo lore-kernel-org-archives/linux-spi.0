@@ -7,34 +7,34 @@ X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C56DDC4332F
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5EEACC433FE
 	for <linux-spi@archiver.kernel.org>; Wed,  8 Sep 2021 11:35:05 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id AE82E61074
+	by mail.kernel.org (Postfix) with ESMTP id 42CE261074
 	for <linux-spi@archiver.kernel.org>; Wed,  8 Sep 2021 11:35:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348491AbhIHLgM (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S1349307AbhIHLgM (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Wed, 8 Sep 2021 07:36:12 -0400
-Received: from mx0b-001ae601.pphosted.com ([67.231.152.168]:65068 "EHLO
+Received: from mx0b-001ae601.pphosted.com ([67.231.152.168]:24582 "EHLO
         mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1349173AbhIHLgG (ORCPT
+        by vger.kernel.org with ESMTP id S1349197AbhIHLgG (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Wed, 8 Sep 2021 07:36:06 -0400
 Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
-        by mx0b-001ae601.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 188696pE006454;
-        Wed, 8 Sep 2021 06:34:56 -0500
+        by mx0b-001ae601.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 188696pD006454;
+        Wed, 8 Sep 2021 06:34:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding : content-type; s=PODMain02222019;
- bh=66kIxK3yveLicWslQIjzVDIWEYFHtDg1+tr0+IgstQg=;
- b=ekPTrM2yDfL72iP8xZFEgmkh2edRm5fB7PBI37QOFg+h6GNpPe44TLKoN+ec/ewQqBYB
- oglxrMCS714ZxYYofi0oFUeuAxug0OuYoHvgnBHRHZxiddty6nVxj0t8vXzPb75QdXM+
- e5W7OTdtDwQevaLTrXH29xFeYOJugd0qVDkMFrjsG+dHz3mWlKy7rWMUwtXiKIbQbK7a
- hKRqbekN0/oQYEfu2aHW28rWaSHoFpzFS2t6lxFmBbiXY2S5J86RlRQjpm7m+PCOtbsg
- zCa1T6go+llsMo2P0plue6yjpfsxMNpcMymPfeSo4WKZn6NVpQEYKQMVaX4Cym+5Sgxz HQ== 
+ bh=lYP8FSmBUjs8SycWJ3rt3zCuR4OjzNIaYSJ1r1nSyW8=;
+ b=TNGVljtyZLgj1zHbe1uRGDCGb3yxi0eYM115eITXLV0VljQY7bfSdJwAgPOTx6OtLmVf
+ kNXqcI83VH+Z3XGWSaoteTBjdO/t35MZzA+hFU6mYh4yVo89HenxGUXzdkqO/EU9+avQ
+ fTArRU8E2ScvgB+VsStDI6NvVDYR+PtyMXn/Una73fRZi0etI4m1mLOno8cNUcwas1JM
+ Uf+n3YX3yI+VOLeP5RXpJB+++SYk3xlFLUMNRQEukYTkJGdRZJ7sqiJ+jqfqIcmlhXq0
+ +XWkYCIplVpJSJ/7rKLwW4y3R2KWg20uXvKw1Ct5oUo3VEAODcrzWvgjPIesxxJdBIF4 Iw== 
 Received: from ediex01.ad.cirrus.com ([87.246.76.36])
-        by mx0b-001ae601.pphosted.com with ESMTP id 3axcp997pg-2
+        by mx0b-001ae601.pphosted.com with ESMTP id 3axcp997pg-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Wed, 08 Sep 2021 06:34:56 -0500
+        Wed, 08 Sep 2021 06:34:55 -0500
 Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX01.ad.cirrus.com
  (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.12; Wed, 8 Sep
@@ -43,8 +43,8 @@ Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
  (198.61.84.80) with Microsoft SMTP Server id 15.1.2242.12 via Frontend
  Transport; Wed, 8 Sep 2021 12:34:54 +0100
 Received: from aryzen.ad.cirrus.com (unknown [198.61.64.231])
-        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 659332BA;
-        Wed,  8 Sep 2021 11:34:54 +0000 (UTC)
+        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id CEBBC2BA;
+        Wed,  8 Sep 2021 11:34:53 +0000 (UTC)
 From:   Lucas Tanure <tanureal@opensource.cirrus.com>
 To:     Mark Brown <broonie@kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -54,65 +54,89 @@ To:     Mark Brown <broonie@kernel.org>,
 CC:     <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
         <patches@opensource.cirrus.com>,
         Lucas Tanure <tanureal@opensource.cirrus.com>
-Subject: [PATCH 03/10] spi: Add flag for no TX after a RX in the same Chip Select
-Date:   Wed, 8 Sep 2021 12:34:44 +0100
-Message-ID: <20210908113450.788452-4-tanureal@opensource.cirrus.com>
+Subject: [PATCH 01/10] regmap: spi: Set regmap max raw r/w from max_transfer_size
+Date:   Wed, 8 Sep 2021 12:34:42 +0100
+Message-ID: <20210908113450.788452-2-tanureal@opensource.cirrus.com>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20210908113450.788452-1-tanureal@opensource.cirrus.com>
 References: <20210908113450.788452-1-tanureal@opensource.cirrus.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-GUID: WkrK2ww5DjFe4JrzJP0-1nokYJs-jDAo
-X-Proofpoint-ORIG-GUID: WkrK2ww5DjFe4JrzJP0-1nokYJs-jDAo
+X-Proofpoint-GUID: 5JH76MzFIRS97VJE7QeL0SPHl6wuzbYF
+X-Proofpoint-ORIG-GUID: 5JH76MzFIRS97VJE7QeL0SPHl6wuzbYF
 X-Proofpoint-Spam-Reason: safe
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Some controllers can't write to the bus after a read without
-releasing the chip select, so add flag and a check in spi core
+Set regmap raw read/write from spi max_transfer_size
+so regmap_raw_read/write can split the access into chunks
 
 Signed-off-by: Lucas Tanure <tanureal@opensource.cirrus.com>
 ---
- drivers/spi/spi.c       | 11 +++++++++++
- include/linux/spi/spi.h |  1 +
- 2 files changed, 12 insertions(+)
+ drivers/base/regmap/regmap-spi.c | 36 ++++++++++++++++++++++++++++----
+ 1 file changed, 32 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 65d14af9c015..1dbc8b6f1398 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -3724,6 +3724,17 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
- 			return -EINVAL;
- 	}
+diff --git a/drivers/base/regmap/regmap-spi.c b/drivers/base/regmap/regmap-spi.c
+index c1894e93c378..0e6552e57ecf 100644
+--- a/drivers/base/regmap/regmap-spi.c
++++ b/drivers/base/regmap/regmap-spi.c
+@@ -109,13 +109,37 @@ static const struct regmap_bus regmap_spi = {
+ 	.val_format_endian_default = REGMAP_ENDIAN_BIG,
+ };
  
-+	if (ctlr->flags & SPI_CONTROLLER_NO_TX_RX_CS) {
-+		bool read = false;
++static const struct regmap_bus *regmap_get_spi_bus(struct spi_device *spi,
++						   const struct regmap_config *config)
++{
++	struct spi_master *master = spi->master;
++	struct regmap_bus *bus = NULL;
++	size_t max_size = spi_max_transfer_size(spi);
 +
-+		list_for_each_entry(xfer, &message->transfers, transfer_list) {
-+			if (read && xfer->tx_buf)
-+				return -EINVAL;
-+			if (xfer->rx_buf && !xfer->cs_change)
-+				read = true;
-+		}
++	if (max_size != SIZE_MAX) {
++		bus = kmemdup(&regmap_spi, sizeof(*bus), GFP_KERNEL);
++		if (!bus)
++			return ERR_PTR(-ENOMEM);
++		bus->free_on_exit = true;
++		bus->max_raw_read = max_size;
++		bus->max_raw_write = max_size;
++		return bus;
 +	}
 +
- 	message->status = -EINPROGRESS;
++	return &regmap_spi;
++}
++
+ struct regmap *__regmap_init_spi(struct spi_device *spi,
+ 				 const struct regmap_config *config,
+ 				 struct lock_class_key *lock_key,
+ 				 const char *lock_name)
+ {
+-	return __regmap_init(&spi->dev, &regmap_spi, &spi->dev, config,
+-			     lock_key, lock_name);
++	const struct regmap_bus *bus = regmap_get_spi_bus(spi, config);
++
++	if (IS_ERR(bus))
++		return ERR_CAST(bus);
++
++	return __regmap_init(&spi->dev, bus, &spi->dev, config, lock_key, lock_name);
+ }
+ EXPORT_SYMBOL_GPL(__regmap_init_spi);
  
- 	return 0;
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 8371bca13729..916b982dc2a1 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -514,6 +514,7 @@ struct spi_controller {
- #define SPI_CONTROLLER_MUST_TX		BIT(4)	/* requires tx */
+@@ -124,8 +148,12 @@ struct regmap *__devm_regmap_init_spi(struct spi_device *spi,
+ 				      struct lock_class_key *lock_key,
+ 				      const char *lock_name)
+ {
+-	return __devm_regmap_init(&spi->dev, &regmap_spi, &spi->dev, config,
+-				  lock_key, lock_name);
++	const struct regmap_bus *bus = regmap_get_spi_bus(spi, config);
++
++	if (IS_ERR(bus))
++		return ERR_CAST(bus);
++
++	return __devm_regmap_init(&spi->dev, bus, &spi->dev, config, lock_key, lock_name);
+ }
+ EXPORT_SYMBOL_GPL(__devm_regmap_init_spi);
  
- #define SPI_MASTER_GPIO_SS		BIT(5)	/* GPIO CS must select slave */
-+#define SPI_CONTROLLER_NO_TX_RX_CS	BIT(6)	/* can't write after a read in the same CS */
- 
- 	/* flag indicating if the allocation of this struct is devres-managed */
- 	bool			devm_allocated;
 -- 
 2.33.0
 

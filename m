@@ -2,98 +2,120 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.2 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-13.7 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 777D7C4332F
-	for <linux-spi@archiver.kernel.org>; Thu,  9 Sep 2021 14:19:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 59511C433F5
+	for <linux-spi@archiver.kernel.org>; Thu,  9 Sep 2021 16:42:12 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6252C6113A
-	for <linux-spi@archiver.kernel.org>; Thu,  9 Sep 2021 14:19:38 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 3A98E61074
+	for <linux-spi@archiver.kernel.org>; Thu,  9 Sep 2021 16:42:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346721AbhIIOUr (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 9 Sep 2021 10:20:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41614 "EHLO
+        id S238744AbhIIQnU (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 9 Sep 2021 12:43:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238789AbhIIOUn (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 9 Sep 2021 10:20:43 -0400
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59D71C028BF4;
-        Thu,  9 Sep 2021 05:45:49 -0700 (PDT)
-Received: by mail-lf1-x12e.google.com with SMTP id h16so3445580lfk.10;
-        Thu, 09 Sep 2021 05:45:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=gPbmP5OYCk3pZuf75KqV5gSYDzljR3Z2Mm9WPnd4Bk4=;
-        b=mOwcyAdjD6ycDn1sjpwVp4EgAvANh85SbnkohQwhEbeJaW7A+Fz5GKSMFnHtJrouNe
-         p44Zj/D9JVKGBYVhVQ+rnBCfbx8EDNo2/VAVNH0DRlyhiTLC10qDe6vqWlUQwTEWGqXs
-         86Mn46JNLdTZzmY6+ogR2CNh58AMdntTAbBApv3S+Fnf/oaB3nKHt3o9Dm0Uh0dFXC/j
-         nkzZ5TXXgqoCjSOWaK/GHcGhvefYjZZqFMlggeKHtlR7lbzSvhNUMdn1Zmx+go6zuts2
-         WuH5x0A6q92yEOX5fPrjZxWdFTgPewLdf0KmCYf78MIJDpGiCJkEnQjaRfsahoSKzFNc
-         gU4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=gPbmP5OYCk3pZuf75KqV5gSYDzljR3Z2Mm9WPnd4Bk4=;
-        b=wpKzWOSaRNgFZb37G4Vjk5kegGI3HAuC9th3u7VCwNsThHA7umPDzk0PsldEtKMoib
-         ZKAvyNlESUpC8AxSHXibzu51XXhxRekEuZV1w7nvStJAToNDxyoP36liMhA48q9+/lv5
-         4OpG6zIJrCO8zcbnWB5H6yCBYz24X7Xtx/8kVq+MitexzHXF7IWVAKOZJV3jEt9FdZ6N
-         fzoNth6r1Ttzz99x0f6hxnGL6HAQpgP+3gj7fTk4iQeMOSZ7IwHXpBPTfWFmXHJRfTBq
-         hyDKo3LDR5118FE/cQvDRwP1pORxUu14gr34WzXQuHQvj65S6t6Isruj2pdQCVbCVO/v
-         vMtw==
-X-Gm-Message-State: AOAM531J1p04pBPospK4oT5OPA/e3IaZJTZt/ufAkmwZN/wk8kaaV5Z7
-        fWOZqajneKpitybRfcUTlcOBFHLsejw=
-X-Google-Smtp-Source: ABdhPJxN40TrAFfGyOSxHMPCwsTC56MX5CalN8xiR+3NYIq0lPYpwdHR2nPTVBg1/plZdVwCkMf2rQ==
-X-Received: by 2002:ac2:5923:: with SMTP id v3mr2173632lfi.459.1631191547269;
-        Thu, 09 Sep 2021 05:45:47 -0700 (PDT)
-Received: from [192.168.2.145] (46-138-3-129.dynamic.spd-mgts.ru. [46.138.3.129])
-        by smtp.googlemail.com with ESMTPSA id d24sm193710ljj.8.2021.09.09.05.45.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Sep 2021 05:45:46 -0700 (PDT)
-Subject: Re: [PATCH AUTOSEL 5.14 133/252] spi: tegra20-slink: Improve runtime
- PM usage
-To:     Mark Brown <broonie@kernel.org>, Sasha Levin <sashal@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org
+        with ESMTP id S238706AbhIIQnU (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 9 Sep 2021 12:43:20 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A44DBC061575
+        for <linux-spi@vger.kernel.org>; Thu,  9 Sep 2021 09:42:10 -0700 (PDT)
+Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <l.stach@pengutronix.de>)
+        id 1mON7j-0002Ju-Ae; Thu, 09 Sep 2021 18:42:03 +0200
+Message-ID: <500c68753cac86d9b3021ddf1e8580779e685332.camel@pengutronix.de>
+Subject: Re: [PATCH AUTOSEL 5.14 058/252] spi: imx: fix ERR009165
+From:   Lucas Stach <l.stach@pengutronix.de>
+To:     Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Cc:     Robin Gong <yibin.gong@nxp.com>, Mark Brown <broonie@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>, linux-spi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Date:   Thu, 09 Sep 2021 18:42:01 +0200
+In-Reply-To: <20210909114106.141462-58-sashal@kernel.org>
 References: <20210909114106.141462-1-sashal@kernel.org>
- <20210909114106.141462-133-sashal@kernel.org>
- <20210909123751.GA5176@sirena.org.uk>
-From:   Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <f75c5c9c-8430-f650-5d0a-3490ac6aa3de@gmail.com>
-Date:   Thu, 9 Sep 2021 15:45:45 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+         <20210909114106.141462-58-sashal@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.40.4 (3.40.4-1.fc34) 
 MIME-Version: 1.0
-In-Reply-To: <20210909123751.GA5176@sirena.org.uk>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
+X-SA-Exim-Mail-From: l.stach@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-spi@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-09.09.2021 15:37, Mark Brown пишет:
-> On Thu, Sep 09, 2021 at 07:39:07AM -0400, Sasha Levin wrote:
->> From: Dmitry Osipenko <digetx@gmail.com>
->>
->> [ Upstream commit e4bb903fda0e9bbafa1338dcd2ee5e4d3ccc50da ]
->>
->> The Tegra SPI driver supports runtime PM, which controls the clock
->> enable state, but the clk is also enabled separately from the RPM
->> at the driver probe time, and thus, stays always on. Fix it.
->>
->> Runtime PM now is always available on Tegra, hence there is no need to
->> check the RPM presence in the driver anymore. Remove these checks.
+Hi Sasha,
+
+Am Donnerstag, dem 09.09.2021 um 07:37 -0400 schrieb Sasha Levin:
+> From: Robin Gong <yibin.gong@nxp.com>
 > 
-> This feels new featureish to me - it'll give you runtime PM where
-> previously there was none.
+> [ Upstream commit 980f884866eed4dda2a18de888c5a67dde67d640 ]
+> 
+> Change to XCH  mode even in dma mode, please refer to the below
+> errata:
+> https://www.nxp.com/docs/en/errata/IMX6DQCE.pdf
 > 
 
-Apparently all patches which have a word 'fix' in commit message are
-auto-selected. I agree that it's better not to port this patch.
+This patch is part of a quite extensive series touching multiple
+drivers and devicetree descriptions and will do more harm than good if
+backported without the rest of the series. The options here are:
+a) backport the entire series (this will most likely not match the
+stable criteria)
+b) drop the patch from the stable queue
+
+Regards,
+Lucas
+
+> Signed-off-by: Robin Gong <yibin.gong@nxp.com>
+> Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
+> Acked-by: Mark Brown <broonie@kernel.org>
+> Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  drivers/spi/spi-imx.c | 10 +++-------
+>  1 file changed, 3 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+> index fa68e9817929..d89b11205815 100644
+> --- a/drivers/spi/spi-imx.c
+> +++ b/drivers/spi/spi-imx.c
+> @@ -622,8 +622,8 @@ static int mx51_ecspi_prepare_transfer(struct spi_imx_data *spi_imx,
+>  	ctrl |= mx51_ecspi_clkdiv(spi_imx, spi_imx->spi_bus_clk, &clk);
+>  	spi_imx->spi_bus_clk = clk;
+>  
+> -	if (spi_imx->usedma)
+> -		ctrl |= MX51_ECSPI_CTRL_SMC;
+> +	/* ERR009165: work in XHC mode as PIO */
+> +	ctrl &= ~MX51_ECSPI_CTRL_SMC;
+>  
+>  	writel(ctrl, spi_imx->base + MX51_ECSPI_CTRL);
+>  
+> @@ -637,7 +637,7 @@ static void mx51_setup_wml(struct spi_imx_data *spi_imx)
+>  	 * and enable DMA request.
+>  	 */
+>  	writel(MX51_ECSPI_DMA_RX_WML(spi_imx->wml - 1) |
+> -		MX51_ECSPI_DMA_TX_WML(spi_imx->wml) |
+> +		MX51_ECSPI_DMA_TX_WML(0) |
+>  		MX51_ECSPI_DMA_RXT_WML(spi_imx->wml) |
+>  		MX51_ECSPI_DMA_TEDEN | MX51_ECSPI_DMA_RXDEN |
+>  		MX51_ECSPI_DMA_RXTDEN, spi_imx->base + MX51_ECSPI_DMA);
+> @@ -1253,10 +1253,6 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
+>  {
+>  	int ret;
+>  
+> -	/* use pio mode for i.mx6dl chip TKT238285 */
+> -	if (of_machine_is_compatible("fsl,imx6dl"))
+> -		return 0;
+> -
+>  	spi_imx->wml = spi_imx->devtype_data->fifo_size / 2;
+>  
+>  	/* Prepare for TX DMA: */
+
+

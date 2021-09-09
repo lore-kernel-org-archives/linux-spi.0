@@ -2,88 +2,90 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.9 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-14.4 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B067CC433FE
-	for <linux-spi@archiver.kernel.org>; Thu,  9 Sep 2021 13:21:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 16D3FC433F5
+	for <linux-spi@archiver.kernel.org>; Thu,  9 Sep 2021 14:08:25 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 9DC5260F4A
-	for <linux-spi@archiver.kernel.org>; Thu,  9 Sep 2021 13:21:50 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E505D611C7
+	for <linux-spi@archiver.kernel.org>; Thu,  9 Sep 2021 14:08:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355050AbhIINW6 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 9 Sep 2021 09:22:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38868 "EHLO mail.kernel.org"
+        id S1351810AbhIIOJd (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 9 Sep 2021 10:09:33 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60816 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1357723AbhIINPZ (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Thu, 9 Sep 2021 09:15:25 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C472F61051;
-        Thu,  9 Sep 2021 13:05:26 +0000 (UTC)
+        id S1344135AbhIIOJa (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Thu, 9 Sep 2021 10:09:30 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id CB87C610CE;
+        Thu,  9 Sep 2021 14:08:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1631192727;
-        bh=nzbSQqsPS5FcwzRSALz3d74l1Nj0HIR4mATqTsW+N68=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=PFOpPWYY9dyEvy3fwZeTSNhsetGczhzX8WirNeICmuj3QyY0hQe3oq6njlMJr4sJv
-         rngIuwSqLv5IisBtMjsbmdG9EYpptVO1y6g/r/Ql68xaZwIT3l8HrsaYpkWzp0p/Zq
-         BQ3eYjfvmU7c2TEY142j1a09uAmBnj4EG0SfqWtlDkoDpvgd17d4Bb0kviH6N8Fsrv
-         2WHQ09JixxBWO/YrwJGJtusBjXsp4rDPcKj/UGlXjLCe1G2tH6n4HWoRlTqRLTO3Yx
-         oN+GuKnawQjYmhYtBGDjpZGA3VnXGdwGdUpC4u4ZlEctbfDHqZ828ZIF4q1o4zZdiM
-         49X4cHTDUQQ9g==
-Date:   Thu, 9 Sep 2021 14:04:50 +0100
+        s=k20201202; t=1631196501;
+        bh=BsTmdX5bO+FmxT3XZKgWd5tSrIJfiR3FHnshKEPMjMU=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Cs8Ak0xUucXNGp1hLxMoq9eFtjJaqxiPE1CGY4rxPctngW8jvHcnHP89kswLZVOqU
+         SfR1h1d5vrE6pLtInQBQZ2zycrpdVeWDiikRL6r8iWl8onoY81FMpSbv/oLUVuashE
+         U1FAJ2bPTp1YzNzKuIjFwCh7xbCteH+iat8OMdI53VBYYh7obxWFWdjiJGA6By/YOa
+         B8FFTO20k4qD0Ql5KcW0+Em1Pqjk2j+l9IbtntBDhJe4Pnj4APYAk7kFKKZ5LJNdWq
+         3smunlQE+d4vb9g4QQEuFcTH2hfa9Lg7BaZE4fPiAbGgBg3x2Le6MFU1FRnGKxvs7R
+         y38WTWoQzwqzw==
 From:   Mark Brown <broonie@kernel.org>
-To:     Dmitry Osipenko <digetx@gmail.com>
-Cc:     Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-tegra@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 5.14 133/252] spi: tegra20-slink: Improve runtime
- PM usage
-Message-ID: <20210909130450.GB5176@sirena.org.uk>
-References: <20210909114106.141462-1-sashal@kernel.org>
- <20210909114106.141462-133-sashal@kernel.org>
- <20210909123751.GA5176@sirena.org.uk>
- <f75c5c9c-8430-f650-5d0a-3490ac6aa3de@gmail.com>
+To:     Guenter Roeck <linux@roeck-us.net>,
+        Laxman Dewangan <ldewangan@nvidia.com>
+Cc:     Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-tegra@vger.kernel.org,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        linux-spi@vger.kernel.org
+Subject: Re: [PATCH] spi: tegra20-slink: Declare runtime suspend and resume functions conditionally
+Date:   Thu,  9 Sep 2021 15:07:44 +0100
+Message-Id: <163119634904.38811.4267330416570346420.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20210907045358.2138282-1-linux@roeck-us.net>
+References: <20210907045358.2138282-1-linux@roeck-us.net>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="QTprm0S8XgL7H0Dt"
-Content-Disposition: inline
-In-Reply-To: <f75c5c9c-8430-f650-5d0a-3490ac6aa3de@gmail.com>
-X-Cookie: I have become me without my consent.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+On Mon, 6 Sep 2021 21:53:58 -0700, Guenter Roeck wrote:
+> The following build error is seen with CONFIG_PM=n.
+> 
+> drivers/spi/spi-tegra20-slink.c:1188:12: error:
+> 	'tegra_slink_runtime_suspend' defined but not used
+> drivers/spi/spi-tegra20-slink.c:1200:12: error:
+> 	'tegra_slink_runtime_resume' defined but not used
+> 
+> [...]
 
---QTprm0S8XgL7H0Dt
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Applied to
 
-On Thu, Sep 09, 2021 at 03:45:45PM +0300, Dmitry Osipenko wrote:
-> 09.09.2021 15:37, Mark Brown =D0=BF=D0=B8=D1=88=D0=B5=D1=82:
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-> > This feels new featureish to me - it'll give you runtime PM where
-> > previously there was none.
+Thanks!
 
-> Apparently all patches which have a word 'fix' in commit message are
-> auto-selected. I agree that it's better not to port this patch.
+[1/1] spi: tegra20-slink: Declare runtime suspend and resume functions conditionally
+      commit: 2bab94090b01bc593d8bc25f68df41f198721173
 
-Yeah, it's a fairly common source of false positives :/
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
---QTprm0S8XgL7H0Dt
-Content-Type: application/pgp-signature; name="signature.asc"
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
------BEGIN PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmE6BnEACgkQJNaLcl1U
-h9Cdrgf9E78HM3YH3HOA9i4ZNOnPUQjItYOxxsBBBniZXXz5oIpT9MVSFkNL9mXD
-4440XtsdeGNpdZyoiFPmkUQzUvpLymgvRbcEkh+aTODZvb6ZeLhU+GJBs2Ua0Q0w
-yNfV29Kp7sfi9rKLE7s+8Xm1N3ODy11i4zn2LmmWFsH+ImB5+CWdw2wXqYJLo0c8
-yhSqpszFYf/OhkUt16wR72lGVUPymHEGao8sd42X8tPf2dLH3rHZxdc1zSWhdcjT
-W53YcSMcPIqanpGa23LKQS2Ut6TtCoUlfvsR3x6bTVCRSS1+a0xlc8xdD4GikFHp
-w1JOxc50IcCGugd55WOrqdnsf9t6DA==
-=6meK
------END PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---QTprm0S8XgL7H0Dt--
+Thanks,
+Mark

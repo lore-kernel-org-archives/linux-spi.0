@@ -8,54 +8,54 @@ X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D0F09C433FE
-	for <linux-spi@archiver.kernel.org>; Sun, 12 Sep 2021 20:13:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C282C433EF
+	for <linux-spi@archiver.kernel.org>; Sun, 12 Sep 2021 20:13:26 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id BF06C61050
-	for <linux-spi@archiver.kernel.org>; Sun, 12 Sep 2021 20:13:25 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6C70C61050
+	for <linux-spi@archiver.kernel.org>; Sun, 12 Sep 2021 20:13:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236340AbhILUOi (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 12 Sep 2021 16:14:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54014 "EHLO
+        id S236334AbhILULC (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 12 Sep 2021 16:11:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236789AbhILUMQ (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 12 Sep 2021 16:12:16 -0400
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37E3BC0617A8;
-        Sun, 12 Sep 2021 13:10:31 -0700 (PDT)
-Received: by mail-wm1-x330.google.com with SMTP id y132so5131892wmc.1;
-        Sun, 12 Sep 2021 13:10:31 -0700 (PDT)
+        with ESMTP id S231560AbhILUKw (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 12 Sep 2021 16:10:52 -0400
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B18AC061574;
+        Sun, 12 Sep 2021 13:09:37 -0700 (PDT)
+Received: by mail-wm1-x32d.google.com with SMTP id r128-20020a1c4486000000b003065f0bc631so760050wma.0;
+        Sun, 12 Sep 2021 13:09:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=b4VIKmbdMAsFKCV4yDWvgLSko+6dlgzXMHJz6Zc9RO8=;
-        b=WYlYCIHhy2AwhmX7L/AlwoRTFLRNk1Tw8KZ1cNf4Z2BgAk5gJUFFsDyiI8pBahl6s5
-         CWTx8U8kQqpUC9d1Kf8UW3oIe3rg5dwKzaXaPmyg7lVuMXIceWpolx5f3LJKPUU87Bod
-         3O7Lw+5Tjw2jpvqVMGOGBC9qMPlfztC63JbLV1QRppX1gNBIwTkmSK7wVXdpf2xO/RIR
-         mKmyCaWGc1Dt2qQD3YL0XF5a3RJ5eAHEezXtRX5g508Tq82JkTJOiVmuZd4spjcZH8JY
-         vwFG+NAvPyDBBTFXNnfKkQuETEecgQZy7+Tuc19oJuaNa11vCKL8YU+lmpseq99X/jCn
-         Udiw==
+        bh=wufLMjvcV2REchuzKnLPe9Ps3w6SDfXDXOXmKrrN/u8=;
+        b=Te4kM4Nr6aIqXg49I8m87guNmqFxy0h+d9DGdgHSIbewOq+nr/va99QpZbK8pzZmV3
+         b398ia5KZX+0nwzSaNg/TrSJ2tNyR6apHyyN0eZcPyRoD9YmejPMsOXr9gQx7FiCCgAV
+         fo8jTSfTCg57c95TqVPbZ8zN7Q945Q1ytMwbTchunpFZRz2skircdVjo6SmdIYaUk7rQ
+         kViB7N5e3mAUYX/EQou5Oe0g6kKmCLCFi3FUap4vH6dHgyQk0gklPK7SRRPV+loPB7ol
+         9Qkl0Ow0yyEqZMfcVTL6nf/I0yxE4PDzemIWipuzHIf8H3ViQUoVuM/aLYtUN/Rn8Rmk
+         d4Kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=b4VIKmbdMAsFKCV4yDWvgLSko+6dlgzXMHJz6Zc9RO8=;
-        b=g5BRbmq/FhGjU41DhPUAR1Pf6OhyyBo6nnNPDE9L8Pyg/tvNXO9ITYprxpeKCLgwqn
-         sK7T9nFAsZHvPnbTPfPXOZCqw3V0ZDq8jodb7f4270IL2z5ejyC+3AdfCr2eNXlu2ubt
-         V4PfVlcZ7hpemwQjLcd7woqRbcG5+/m/rK4dxzVo59CZb7BJo5cyTTeYaNUzKb1BFT2A
-         ABa/s4AROAu9HgOeoLq9IhBQu3wCuLxQpVXEGxnTX+1yoP+EWQe2zLHkYmoTjx33hzBg
-         WXLFANN9RyAlfSivn6IQkefrd0o/3pXQzSrKhk1o3u7ssrl2Qlx2Tvp1DY/f7O038/nd
-         Wpjg==
-X-Gm-Message-State: AOAM531V3GDXbGj18w6YjJ8PdUb8QxnTmuFmC6HEuk/8HZTA03BQaYbq
-        HncDkQWEc4Cu2hobdsltfyQ=
-X-Google-Smtp-Source: ABdhPJwilD7uMmHHQ3Z72aCq5cGCPEr6BZMewoEYkEkrhgvxyF+teVEQagLVBgnOWAIx7IIGBJO7+w==
-X-Received: by 2002:a05:600c:4e8b:: with SMTP id f11mr7626369wmq.165.1631477429807;
-        Sun, 12 Sep 2021 13:10:29 -0700 (PDT)
+        bh=wufLMjvcV2REchuzKnLPe9Ps3w6SDfXDXOXmKrrN/u8=;
+        b=vaPC4WMEF1MGb4/godWA02/jgxP6l6OvTg5wliHqDC0h289OVMffBqooOCA7uMBnBp
+         ECwiwVHv+nHRITd/ISNYthQIu4eAN4h4Lcbr30OZBYbhlp7PIndSzk3r4AHqpDLwviWg
+         u1hC8qqhtMQ9IvP+7z7IJVcoCtAS+XBzm0k54oq58JCdAM8WMhvEfKIXKnfRxITJc6cq
+         sGrWso0JNkuvyMkfv9eN1c8PO1gqr/D8x2wgmR72cmlPe6S9ZIfdl1X7tzY4xCHB/F9G
+         SRlKyzhzDdEh/IoYrQLKK/LGSdfLSi1F3p0MFE285y43bp/nGBPXfHA1E8ylctYffuKP
+         qYUg==
+X-Gm-Message-State: AOAM533PVBNLJRAs7y+f3IkpVUmaPwDZT1oEVcAo8RQIrYyJpyZrILyT
+        OFnHxdJlcdKam+dJ3fxxdMc=
+X-Google-Smtp-Source: ABdhPJwcu2cRr2OyH//+tdB0mQdhpS15h8hGhu7BuEAmhQPvEMINbwbdJ8Gf9xEVUPipv7LZGocS9A==
+X-Received: by 2002:a7b:cb89:: with SMTP id m9mr8022074wmi.123.1631477375600;
+        Sun, 12 Sep 2021 13:09:35 -0700 (PDT)
 Received: from localhost.localdomain (46-138-83-36.dynamic.spd-mgts.ru. [46.138.83.36])
-        by smtp.gmail.com with ESMTPSA id v10sm5463476wrg.15.2021.09.12.13.10.27
+        by smtp.gmail.com with ESMTPSA id v10sm5463476wrg.15.2021.09.12.13.09.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Sep 2021 13:10:29 -0700 (PDT)
+        Sun, 12 Sep 2021 13:09:35 -0700 (PDT)
 From:   Dmitry Osipenko <digetx@gmail.com>
 To:     Thierry Reding <thierry.reding@gmail.com>,
         Jonathan Hunter <jonathanh@nvidia.com>,
@@ -84,9 +84,9 @@ Cc:     linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org,
         linux-mmc@vger.kernel.org, linux-media@vger.kernel.org,
         dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
         linux-clk@vger.kernel.org
-Subject: [PATCH v11 23/34] media: dt: bindings: tegra-vde: Document OPP and power domain
-Date:   Sun, 12 Sep 2021 23:08:21 +0300
-Message-Id: <20210912200832.12312-24-digetx@gmail.com>
+Subject: [PATCH v11 01/34] opp: Change type of dev_pm_opp_attach_genpd(names) argument
+Date:   Sun, 12 Sep 2021 23:07:59 +0300
+Message-Id: <20210912200832.12312-2-digetx@gmail.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20210912200832.12312-1-digetx@gmail.com>
 References: <20210912200832.12312-1-digetx@gmail.com>
@@ -96,43 +96,77 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Document new OPP table and power domain properties of the video decoder
-hardware.
+Elements of the 'names' array are not changed by the code, constify them
+for consistency.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 ---
- .../devicetree/bindings/media/nvidia,tegra-vde.yaml  | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/opp/core.c     | 6 +++---
+ include/linux/pm_opp.h | 8 ++++----
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/media/nvidia,tegra-vde.yaml b/Documentation/devicetree/bindings/media/nvidia,tegra-vde.yaml
-index 3b6c1f031e04..0b7d4d815707 100644
---- a/Documentation/devicetree/bindings/media/nvidia,tegra-vde.yaml
-+++ b/Documentation/devicetree/bindings/media/nvidia,tegra-vde.yaml
-@@ -68,6 +68,16 @@ properties:
-     description:
-       Phandle of the SRAM MMIO node.
+diff --git a/drivers/opp/core.c b/drivers/opp/core.c
+index 04b4691a8aac..3057beabd370 100644
+--- a/drivers/opp/core.c
++++ b/drivers/opp/core.c
+@@ -2348,12 +2348,12 @@ static void _opp_detach_genpd(struct opp_table *opp_table)
+  * "required-opps" are added in DT.
+  */
+ struct opp_table *dev_pm_opp_attach_genpd(struct device *dev,
+-		const char **names, struct device ***virt_devs)
++		const char * const *names, struct device ***virt_devs)
+ {
+ 	struct opp_table *opp_table;
+ 	struct device *virt_dev;
+ 	int index = 0, ret = -EINVAL;
+-	const char **name = names;
++	const char * const *name = names;
  
-+  operating-points-v2:
-+    description:
-+      Should contain freqs and voltages and opp-supported-hw property,
-+      which is a bitfield indicating SoC speedo or process ID mask.
-+
-+  power-domains:
-+    maxItems: 1
-+    description:
-+      Phandle to the SoC core power domain.
-+
- required:
-   - compatible
-   - reg
-@@ -104,4 +114,6 @@ examples:
-       reset-names = "vde", "mc";
-       resets = <&rst 61>, <&mem 13>;
-       iommus = <&mem 15>;
-+      operating-points-v2 = <&dvfs_opp_table>;
-+      power-domains = <&domain>;
-     };
+ 	opp_table = _add_opp_table(dev, false);
+ 	if (IS_ERR(opp_table))
+@@ -2457,7 +2457,7 @@ static void devm_pm_opp_detach_genpd(void *data)
+  *
+  * Return: 0 on success and errorno otherwise.
+  */
+-int devm_pm_opp_attach_genpd(struct device *dev, const char **names,
++int devm_pm_opp_attach_genpd(struct device *dev, const char * const *names,
+ 			     struct device ***virt_devs)
+ {
+ 	struct opp_table *opp_table;
+diff --git a/include/linux/pm_opp.h b/include/linux/pm_opp.h
+index a95d6fdd20b6..879c138c7b8e 100644
+--- a/include/linux/pm_opp.h
++++ b/include/linux/pm_opp.h
+@@ -156,9 +156,9 @@ int devm_pm_opp_set_clkname(struct device *dev, const char *name);
+ struct opp_table *dev_pm_opp_register_set_opp_helper(struct device *dev, int (*set_opp)(struct dev_pm_set_opp_data *data));
+ void dev_pm_opp_unregister_set_opp_helper(struct opp_table *opp_table);
+ int devm_pm_opp_register_set_opp_helper(struct device *dev, int (*set_opp)(struct dev_pm_set_opp_data *data));
+-struct opp_table *dev_pm_opp_attach_genpd(struct device *dev, const char **names, struct device ***virt_devs);
++struct opp_table *dev_pm_opp_attach_genpd(struct device *dev, const char * const *names, struct device ***virt_devs);
+ void dev_pm_opp_detach_genpd(struct opp_table *opp_table);
+-int devm_pm_opp_attach_genpd(struct device *dev, const char **names, struct device ***virt_devs);
++int devm_pm_opp_attach_genpd(struct device *dev, const char * const *names, struct device ***virt_devs);
+ struct dev_pm_opp *dev_pm_opp_xlate_required_opp(struct opp_table *src_table, struct opp_table *dst_table, struct dev_pm_opp *src_opp);
+ int dev_pm_opp_xlate_performance_state(struct opp_table *src_table, struct opp_table *dst_table, unsigned int pstate);
+ int dev_pm_opp_set_rate(struct device *dev, unsigned long target_freq);
+@@ -376,7 +376,7 @@ static inline int devm_pm_opp_set_clkname(struct device *dev, const char *name)
+ 	return -EOPNOTSUPP;
+ }
+ 
+-static inline struct opp_table *dev_pm_opp_attach_genpd(struct device *dev, const char **names, struct device ***virt_devs)
++static inline struct opp_table *dev_pm_opp_attach_genpd(struct device *dev, const char * const *names, struct device ***virt_devs)
+ {
+ 	return ERR_PTR(-EOPNOTSUPP);
+ }
+@@ -384,7 +384,7 @@ static inline struct opp_table *dev_pm_opp_attach_genpd(struct device *dev, cons
+ static inline void dev_pm_opp_detach_genpd(struct opp_table *opp_table) {}
+ 
+ static inline int devm_pm_opp_attach_genpd(struct device *dev,
+-					   const char **names,
++					   const char * const *names,
+ 					   struct device ***virt_devs)
+ {
+ 	return -EOPNOTSUPP;
 -- 
 2.32.0
 

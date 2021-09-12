@@ -2,85 +2,368 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.4 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4CCC8C433F5
-	for <linux-spi@archiver.kernel.org>; Sun, 12 Sep 2021 20:56:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 01AADC433F5
+	for <linux-spi@archiver.kernel.org>; Sun, 12 Sep 2021 21:53:28 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2FB4360F58
-	for <linux-spi@archiver.kernel.org>; Sun, 12 Sep 2021 20:56:52 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id CB142610A3
+	for <linux-spi@archiver.kernel.org>; Sun, 12 Sep 2021 21:53:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236217AbhILU6G (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 12 Sep 2021 16:58:06 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55350 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231560AbhILU6F (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Sun, 12 Sep 2021 16:58:05 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 22FA860F58;
-        Sun, 12 Sep 2021 20:56:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1631480211;
-        bh=o/nPlq5L2V70pg98+BN34NYx4I3HB0I47c5HBmhhuUA=;
-        h=Subject:From:Date:To:From;
-        b=imzxBh52vEJfNvRI0d7CWgjHvqBJx4pbjQ9aRK6V95ExOVUMyQqss2A8Fi8I/5wEW
-         We1ptIFadQ60orCYa9v8RM+vTKKoYvVXj7IN/zoyycZB52JdJercf9dNb+Iw/PW0FP
-         lZ5JjlqKnyefYCrv6H/BM74Kmxpj5ZyNMJ7lCgGG+EOm+y/f9tT6AFqNN4BXQ8F+Vw
-         lQTKCO8j4AUCspJXrqiyV2+OQk6e6M8d+KEbpmt2gHIRXDXdxYEkeIQi355Ix03uDK
-         7FtHoKYYFPhSuSTwNbJF+Y1fDuUTfMDsgCthKyvxIfvRNCcB5z/YjbljZFUCtERJMQ
-         TNOecmnekcD6w==
-Content-Type: text/plain; charset="utf-8"
+        id S233942AbhILVym (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 12 Sep 2021 17:54:42 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:40254 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233111AbhILVym (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 12 Sep 2021 17:54:42 -0400
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: krisman)
+        with ESMTPSA id E20851F42569
+From:   Gabriel Krisman Bertazi <krisman@collabora.com>
+To:     Lucas Tanure <tanureal@opensource.cirrus.com>
+Cc:     Mark Brown <broonie@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Sanjay R Mehta <sanju.mehta@amd.com>,
+        Nehal Bakulchandra Shah <Nehal-Bakulchandra.shah@amd.com>,
+        <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+        <patches@opensource.cirrus.com>
+Subject: Re: [PATCH 09/10] spi: amd: Add support for latest platform
+References: <20210908113450.788452-1-tanureal@opensource.cirrus.com>
+        <20210908113450.788452-10-tanureal@opensource.cirrus.com>
+Date:   Sun, 12 Sep 2021 17:53:19 -0400
+In-Reply-To: <20210908113450.788452-10-tanureal@opensource.cirrus.com> (Lucas
+        Tanure's message of "Wed, 8 Sep 2021 12:34:50 +0100")
+Message-ID: <878s01ihps.fsf@collabora.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From:   patchwork-bot+spi-devel-general@kernel.org
-Message-Id: <163148021110.12620.4914334277490882746.git-patchwork-housekeeping@kernel.org>
-Date:   Sun, 12 Sep 2021 20:56:51 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Latest series: [v11] NVIDIA Tegra power management patches for 5.16 (2021-09-12T20:07:58)
-  Superseding: [v8] NVIDIA Tegra power management patches for 5.16 (2021-08-17T01:27:20):
-    [v8,01/34] opp: Add dev_pm_opp_sync() helper
-    [v8,02/34] soc/tegra: pmc: Disable PMC state syncing
-    [v8,03/34] soc/tegra: Don't print error message when OPPs not available
-    [v8,04/34] soc/tegra: Add devm_tegra_core_dev_init_opp_table_simple()
-    [v8,05/34] soc/tegra: Use dev_pm_opp_sync()
-    [v8,06/34] dt-bindings: clock: tegra-car: Document new tegra-clocks sub-node
-    [v8,07/34] clk: tegra: Support runtime PM and power domain
-    [v8,08/34] dt-bindings: host1x: Document OPP and power domain properties
-    [v8,09/34] dt-bindings: host1x: Document Memory Client resets of Host1x, GR2D and GR3D
-    [v8,10/34] gpu: host1x: Add host1x_channel_stop()
-    [v8,11/34] gpu: host1x: Add runtime PM and OPP support
-    [v8,12/34] drm/tegra: dc: Support OPP and SoC core voltage scaling
-    [v8,13/34] drm/tegra: hdmi: Add OPP support
-    [v8,14/34] drm/tegra: gr2d: Support power management
-    [v8,15/34] drm/tegra: gr3d: Support power management
-    [v8,16/34] drm/tegra: vic: Support system suspend
-    [v8,17/34] usb: chipidea: tegra: Add runtime PM and OPP support
-    [v8,18/34] bus: tegra-gmi: Add runtime PM and OPP support
-    [v8,19/34] pwm: tegra: Add runtime PM and OPP support
-    [v8,20/34] mmc: sdhci-tegra: Add runtime PM and OPP support
-    [v8,21/34] mtd: rawnand: tegra: Add runtime PM and OPP support
-    [v8,22/34] spi: tegra20-slink: Add OPP support
-    [v8,23/34] media: dt: bindings: tegra-vde: Convert to schema
-    [v8,24/34] media: dt: bindings: tegra-vde: Document OPP and power domain
-    [v8,25/34] media: staging: tegra-vde: Support generic power domain and OPP
-    [v8,26/34] soc/tegra: fuse: Add OPP support
-    [v8,27/34] soc/tegra: fuse: Reset hardware
-    [v8,28/34] soc/tegra: regulators: Prepare for suspend
-    [v8,29/34] soc/tegra: pmc: Enable core domain support for Tegra20 and Tegra30
-    [v8,30/34] ARM: tegra: Add OPP tables and power domains to Tegra20 device-trees
-    [v8,31/34] ARM: tegra: Add OPP tables and power domains to Tegra30 device-trees
-    [v8,32/34] ARM: tegra: Add Memory Client resets to Tegra20 GR2D, GR3D and Host1x
-    [v8,33/34] ARM: tegra: Add Memory Client resets to Tegra30 GR2D, GR3D and Host1x
-    [v8,34/34] ARM: tegra20/30: Disable unused host1x hardware
+Lucas Tanure <tanureal@opensource.cirrus.com> writes:
 
+> From: Nehal Bakulchandra Shah <Nehal-Bakulchandra.shah@amd.com>
+>
+> Add support for AMDI0062 controller
+
+Hi,
+
+This patch is way more complex than it needs to be, making it much
+harder to review.  A few comments inline.
+
+I hope I didn't miss a newer version of this patch?
+
+> Signed-off-by: Nehal Bakulchandra Shah <Nehal-Bakulchandra.shah@amd.com>
+> Signed-off-by: Lucas Tanure <tanureal@opensource.cirrus.com>
+
+Broken signoff chain, missing Co-developed-by tag.
+
+> ---
+>  drivers/spi/spi-amd.c | 128 ++++++++++++++++++++++++++++++++++--------
+>  1 file changed, 104 insertions(+), 24 deletions(-)
+>
+> diff --git a/drivers/spi/spi-amd.c b/drivers/spi/spi-amd.c
+> index 0face11740ea..788a5c42d811 100644
+> --- a/drivers/spi/spi-amd.c
+> +++ b/drivers/spi/spi-amd.c
+> @@ -2,9 +2,10 @@
+>  //
+>  // AMD SPI controller driver
+>  //
+> -// Copyright (c) 2020, Advanced Micro Devices, Inc.
+> +// Copyright (c) 2020-2021, Advanced Micro Devices, Inc.
+>  //
+>  // Authors: Sanjay R Mehta <sanju.mehta@amd.com>
+> +//          Nehal Bakulchandra Shah <nehal-bakulchandra.shah@amd.com>
+>  //          Lucas Tanure <tanureal@opensource.cirrus.com>
+>  
+>  #include <linux/acpi.h>
+> @@ -14,33 +15,48 @@
+>  #include <linux/delay.h>
+>  #include <linux/spi/spi.h>
+>  
+> -#define AMD_SPI_CTRL0_REG	0x00
+> -#define AMD_SPI_EXEC_CMD	BIT(16)
+> -#define AMD_SPI_FIFO_CLEAR	BIT(20)
+> -#define AMD_SPI_BUSY		BIT(31)
+> +#define AMD_SPI_CTRL0_REG		0x00
+> +#define AMD_SPI_EXEC_CMD		BIT(16)
+> +#define AMD_SPI_FIFO_CLEAR		BIT(20)
+> +#define AMD_SPI_BUSY			BIT(31)
+> +#define AMD_SPI_ENABLE_REG		0x20
+>  
+> -#define AMD_SPI_OPCODE_MASK	0xFF
+> +#define AMD_SPI_DUMMY_CYCL_REG		0x32
+> +#define AMD_SPI_OPCODE_REG		0x45
+> +#define AMD_SPI_CMD_TRIGGER_REG		0x47
+> +#define AMD_SPI_TRIGGER_CMD		BIT(7)
+> +#define AMD_SPI_OPCODE_MASK		0xFF
+>  
+> -#define AMD_SPI_ALT_CS_REG	0x1D
+> -#define AMD_SPI_ALT_CS_MASK	0x3
+> +#define AMD_SPI_ALT_CS_REG		0x1D
+> +#define AMD_SPI_ALT_CS_MASK		GENMASK(1, 0)
+>  
+> -#define AMD_SPI_FIFO_BASE	0x80
+> -#define AMD_SPI_TX_COUNT_REG	0x48
+> -#define AMD_SPI_RX_COUNT_REG	0x4B
+> -#define AMD_SPI_STATUS_REG	0x4C
+> +#define AMD_SPI_FIFO_BASE		0x80
+> +#define AMD_SPI_TX_COUNT_REG		0x48
+> +#define AMD_SPI_RX_COUNT_REG		0x4B
+> +#define AMD_SPI_STATUS_REG		0x4C
+>  
+> -#define AMD_SPI_FIFO_SIZE	70
+> -#define AMD_SPI_MEM_SIZE	200
+> +#define AMD_SPI_FIFO_SIZE		70
+> +#define AMD_SPI_MEM_SIZE		200
+>  
+>  /* M_CMD OP codes for SPI */
+> -#define AMD_SPI_XFER_TX		1
+> -#define AMD_SPI_XFER_RX		2
+> +#define AMD_SPI_XFER_TX			1
+> +#define AMD_SPI_XFER_RX			2
+
+If you drop the indentation changes, the real diff seems to be:
+
++#define AMD_SPI_ENABLE_REG     0x20
+
+...
+
++#define AMD_SPI_DUMMY_CYCL_REG         0x32
++#define AMD_SPI_OPCODE_REG             0x45
++#define AMD_SPI_CMD_TRIGGER_REG        0x47
++#define AMD_SPI_TRIGGER_CMD            BIT(7)
+
+...
+
+-#define AMD_SPI_ALT_CS_MASK    0x3
++#define AMD_SPI_ALT_CS_MASK    GENMASK(1, 0)
+
+Which is WAY simpler to review.  Even if it is nice to have the defines
+aligned, I suggest not doing it if the patch becomes much harder to
+review.
+
+>
+>  struct amd_spi {
+>  	void __iomem *io_remap_addr;
+>  	unsigned long io_base_addr;
+>  	u32 rom_addr;
+>  	struct list_head rbuf_head;
+> +	const struct amd_spi_devtype_data *devtype_data;
+> +	struct spi_device *spi_dev;
+> +	struct spi_master *master;
+> +};
+> +
+> +struct amd_spi_devtype_data {
+> +	u8 version;
+> +	int (*exec_op)(struct amd_spi *amd_spi);
+> +	void (*set_op)(struct amd_spi *amd_spi, u8 cmd_opcode);
+> +	int (*busy_wait)(struct amd_spi *amd_spi);
+>  };
+>  
+>  struct amd_spi_read_buffer {
+> @@ -90,16 +106,26 @@ static void amd_spi_select_chip(struct amd_spi *amd_spi, u8 cs)
+>  	amd_spi_setclear_reg8(amd_spi, AMD_SPI_ALT_CS_REG, cs, AMD_SPI_ALT_CS_MASK);
+>  }
+>  
+> +static inline void amd_spi_clear_chip(struct amd_spi *amd_spi, u8 chip_select)
+> +{
+> +	amd_spi_writereg8(amd_spi, AMD_SPI_ALT_CS_REG, chip_select & ~AMD_SPI_ALT_CS_MASK);
+> +}
+> +
+>  static void amd_spi_clear_fifo_ptr(struct amd_spi *amd_spi)
+>  {
+>  	amd_spi_setclear_reg32(amd_spi, AMD_SPI_CTRL0_REG, AMD_SPI_FIFO_CLEAR, AMD_SPI_FIFO_CLEAR);
+>  }
+>  
+> -static void amd_spi_set_opcode(struct amd_spi *amd_spi, u8 cmd_opcode)
+> +static void amd_spi_set_opcode_v1(struct amd_spi *amd_spi, u8 cmd_opcode)
+>  {
+>  	amd_spi_setclear_reg32(amd_spi, AMD_SPI_CTRL0_REG, cmd_opcode, AMD_SPI_OPCODE_MASK);
+>  }
+>  
+> +static void amd_spi_set_opcode_v2(struct amd_spi *amd_spi, u8 cmd_opcode)
+> +{
+> +	amd_spi_writereg8(amd_spi, AMD_SPI_OPCODE_REG, cmd_opcode);
+> +}
+> +
+
+Instead of creating two copies of each function and having indirect
+branches, it would be way simpler to just save the version in
+amd_spi and:
+
+static void amd_spi_set_opcode(struct amd_spi *amd_spi, u8 cmd_opcode)
+{
+	switch (amd_spi->version) {
+        case AMD_SPI_V1:
+        	amd_spi_setclear_reg32(amd_spi, AMD_SPI_CTRL0_REG,
+				       cmd_opcode, AMD_SPI_OPCODE_MASK);
+ 		break;
+	case AMD_SPI_V2:
+		amd_spi_writereg8(amd_spi, AMD_SPI_OPCODE_REG, cmd_opcode);
+                break;
+	default:
+        	WARN_ON(1);
+        }
+}
+
+Likewise for the other amd_spi_devtype_data hooks.
+
+It is simpler, faster (avoids the indirect branches), avoids code
+duplication, and you get the benefit of not touching the callers, which
+will eliminate several of the hunks below.
+
+>  static inline void amd_spi_set_rx_count(struct amd_spi *amd_spi, u8 rx_count)
+>  {
+>  	amd_spi_setclear_reg8(amd_spi, AMD_SPI_RX_COUNT_REG, rx_count, 0xff);
+> @@ -110,7 +136,7 @@ static inline void amd_spi_set_tx_count(struct amd_spi *amd_spi, u8 tx_count)
+>  	amd_spi_setclear_reg8(amd_spi, AMD_SPI_TX_COUNT_REG, tx_count, 0xff);
+>  }
+>  
+> -static int amd_spi_busy_wait(struct amd_spi *amd_spi)
+> +static int amd_spi_busy_wait_v1(struct amd_spi *amd_spi)
+>  {
+>  	int timeout = 100000;
+>  
+> @@ -124,11 +150,11 @@ static int amd_spi_busy_wait(struct amd_spi *amd_spi)
+>  	return 0;
+>  }
+>  
+> -static int amd_spi_execute_opcode(struct amd_spi *amd_spi)
+> +static int amd_spi_execute_opcode_v1(struct amd_spi *amd_spi)
+>  {
+>  	int ret;
+>  
+> -	ret = amd_spi_busy_wait(amd_spi);
+> +	ret = amd_spi_busy_wait_v1(amd_spi);
+>  	if (ret)
+>  		return ret;
+>  
+> @@ -138,6 +164,33 @@ static int amd_spi_execute_opcode(struct amd_spi *amd_spi)
+>  	return 0;
+>  }
+>  
+> +static int amd_spi_busy_wait_v2(struct amd_spi *amd_spi)
+> +{
+> +	int timeout = 100000;
+> +
+> +	while (amd_spi_readreg32(amd_spi, AMD_SPI_STATUS_REG) & AMD_SPI_BUSY) {
+> +		usleep_range(10, 20);
+> +		if (timeout-- < 0)
+> +			return -ETIMEDOUT;
+> +	}
+> +
+> +	return 0;
+> +}
+
+This duplicates amd_spi_busy_wait_v1, except for the readreg call.  If
+you follow the suggestion above, you'll avoid all this code duplication.
+
+> +
+> +static int amd_spi_execute_opcode_v2(struct amd_spi *amd_spi)
+> +{
+> +	int ret;
+> +
+> +	ret = amd_spi_busy_wait_v2(amd_spi);
+> +	if (ret)
+> +		return ret;
+> +
+> +	amd_spi_setclear_reg8(amd_spi, AMD_SPI_CMD_TRIGGER_REG, AMD_SPI_TRIGGER_CMD,
+> +			      AMD_SPI_TRIGGER_CMD);
+> +
+> +	return 0;
+> +}
+> +
+>  static int amd_spi_master_setup(struct spi_device *spi)
+>  {
+>  	struct amd_spi *amd_spi = spi_master_get_devdata(spi->master);
+> @@ -159,20 +212,21 @@ static void amd_spi_clear_list(struct amd_spi *amd_spi)
+>  
+>  static int amd_spi_transfer(struct amd_spi *amd_spi, u8 opcode, u8 tx_len, u8 rx_len, u8 fifo_pos)
+>  {
+> +	const struct amd_spi_devtype_data *priv = amd_spi->devtype_data;
+>  	struct amd_spi_read_buffer *rbuf;
+>  	struct list_head *p;
+>  	int ret, i;
+>  
+> -	amd_spi_set_opcode(amd_spi, opcode);
+> +	priv->set_op(amd_spi, opcode);
+>  	amd_spi_set_tx_count(amd_spi, tx_len);
+>  	amd_spi_set_rx_count(amd_spi, rx_len);
+>  
+> -	ret = amd_spi_execute_opcode(amd_spi);
+> +	ret = priv->exec_op(amd_spi);
+>  	if (ret)
+>  		return ret;
+>  
+>  	if (!list_empty(&amd_spi->rbuf_head)) {
+> -		ret = amd_spi_busy_wait(amd_spi);
+> +		ret = priv->busy_wait(amd_spi);
+>  		if (ret)
+>  			return ret;
+>  		list_for_each(p, &amd_spi->rbuf_head) {
+> @@ -262,6 +316,9 @@ static int amd_spi_transfer_one_message(struct spi_controller *ctrl, struct spi_
+>  	msg->status = ret;
+>  	spi_finalize_current_message(ctrl);
+>
+
+And the above hunk will disappear.
+
+> +	if (amd_spi->devtype_data->version)
+> +		amd_spi_clear_chip(amd_spi, msg->spi->chip_select);
+> +
+
+This should be explicit (amd_spi->devtype_data->version == AMD_SPI_V2)
+
+>  	return ret;
+>  }
+>  
+> @@ -293,6 +350,12 @@ static int amd_spi_probe(struct platform_device *pdev)
+>  	}
+>  	dev_dbg(dev, "io_remap_address: %p\n", amd_spi->io_remap_addr);
+>  
+> +	amd_spi->devtype_data = device_get_match_data(dev);
+> +	if (!amd_spi->devtype_data) {
+> +		err = -ENODEV;
+> +		goto err_free_master;
+> +	}
+> +
+>  	/* Initialize the spi_master fields */
+>  	master->bus_num = 0;
+>  	master->num_chipselect = 4;
+> @@ -320,9 +383,25 @@ static int amd_spi_probe(struct platform_device *pdev)
+>  	return err;
+>  }
+>  
+> +static const struct amd_spi_devtype_data spi_v1 = {
+> +	.exec_op	= amd_spi_execute_opcode_v1,
+> +	.set_op		= amd_spi_set_opcode_v1,
+> +	.busy_wait	= amd_spi_busy_wait_v1,
+> +};
+> +
+> +static const struct amd_spi_devtype_data spi_v2 = {
+> +	.version	= 1,
+
+This is confusing.  The structure is called _v2, but the version field
+says 1.  Please, be explicit:
+
+#define AMD_SPI_V1  1
+#define AMD_SPI_V2  2
+
+And use the constants here.
+
+Also, a nit regarding the summary line:  Surely someday there will
+be a new "latest platform". It would be more meaningful to say
+"Add support for AMDI0062" or maybe "Add support for rev2", if that makes
+sense.
+
+Thanks,
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Gabriel Krisman Bertazi

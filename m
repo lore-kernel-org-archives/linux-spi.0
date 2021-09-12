@@ -8,54 +8,54 @@ X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C282C433EF
-	for <linux-spi@archiver.kernel.org>; Sun, 12 Sep 2021 20:13:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 00274C433FE
+	for <linux-spi@archiver.kernel.org>; Sun, 12 Sep 2021 20:13:28 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6C70C61050
-	for <linux-spi@archiver.kernel.org>; Sun, 12 Sep 2021 20:13:26 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E53F461050
+	for <linux-spi@archiver.kernel.org>; Sun, 12 Sep 2021 20:13:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236334AbhILULC (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 12 Sep 2021 16:11:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53828 "EHLO
+        id S236919AbhILUOk (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 12 Sep 2021 16:14:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231560AbhILUKw (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 12 Sep 2021 16:10:52 -0400
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B18AC061574;
-        Sun, 12 Sep 2021 13:09:37 -0700 (PDT)
-Received: by mail-wm1-x32d.google.com with SMTP id r128-20020a1c4486000000b003065f0bc631so760050wma.0;
-        Sun, 12 Sep 2021 13:09:36 -0700 (PDT)
+        with ESMTP id S236846AbhILULu (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 12 Sep 2021 16:11:50 -0400
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD54EC0613E7;
+        Sun, 12 Sep 2021 13:10:18 -0700 (PDT)
+Received: by mail-wr1-x435.google.com with SMTP id x6so11278748wrv.13;
+        Sun, 12 Sep 2021 13:10:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=wufLMjvcV2REchuzKnLPe9Ps3w6SDfXDXOXmKrrN/u8=;
-        b=Te4kM4Nr6aIqXg49I8m87guNmqFxy0h+d9DGdgHSIbewOq+nr/va99QpZbK8pzZmV3
-         b398ia5KZX+0nwzSaNg/TrSJ2tNyR6apHyyN0eZcPyRoD9YmejPMsOXr9gQx7FiCCgAV
-         fo8jTSfTCg57c95TqVPbZ8zN7Q945Q1ytMwbTchunpFZRz2skircdVjo6SmdIYaUk7rQ
-         kViB7N5e3mAUYX/EQou5Oe0g6kKmCLCFi3FUap4vH6dHgyQk0gklPK7SRRPV+loPB7ol
-         9Qkl0Ow0yyEqZMfcVTL6nf/I0yxE4PDzemIWipuzHIf8H3ViQUoVuM/aLYtUN/Rn8Rmk
-         d4Kw==
+        bh=TplqdteIbqpMA+cRsM4zt2txSdRrivaAa9SZu7q2V5k=;
+        b=G0spcEnCzOQCkuNQgfrt9aJ1s9cBMwbonJ21TiGcPfDH6BwdcSAKB34wnjhKexl1aX
+         l4QKGmRZilMs7SIMnsyw/rzMW6Tq89W0VtF00UUpWh39GqdRIeJlpORK0Sm6pzwg12UU
+         A9ns1EUAcijc8JvCglvlpmlJp8eB5LZeDDHQQe4+0e/fcg+b75UHm/se/iYa5CJAyyvO
+         g/Bv0tRIsHs06qgWJ49GwtSqQp0iStg29EIqZA8Iv1iGZ+DC2i7FLd9aX8PKc82j9r5K
+         N4R9eOcakSQ2dMJpvhQ6vKuDg6bAPiCCyUoMFFFgJoc3QG11NvM5MKSucOKzgHCGn6Ed
+         gZcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=wufLMjvcV2REchuzKnLPe9Ps3w6SDfXDXOXmKrrN/u8=;
-        b=vaPC4WMEF1MGb4/godWA02/jgxP6l6OvTg5wliHqDC0h289OVMffBqooOCA7uMBnBp
-         ECwiwVHv+nHRITd/ISNYthQIu4eAN4h4Lcbr30OZBYbhlp7PIndSzk3r4AHqpDLwviWg
-         u1hC8qqhtMQ9IvP+7z7IJVcoCtAS+XBzm0k54oq58JCdAM8WMhvEfKIXKnfRxITJc6cq
-         sGrWso0JNkuvyMkfv9eN1c8PO1gqr/D8x2wgmR72cmlPe6S9ZIfdl1X7tzY4xCHB/F9G
-         SRlKyzhzDdEh/IoYrQLKK/LGSdfLSi1F3p0MFE285y43bp/nGBPXfHA1E8ylctYffuKP
-         qYUg==
-X-Gm-Message-State: AOAM533PVBNLJRAs7y+f3IkpVUmaPwDZT1oEVcAo8RQIrYyJpyZrILyT
-        OFnHxdJlcdKam+dJ3fxxdMc=
-X-Google-Smtp-Source: ABdhPJwcu2cRr2OyH//+tdB0mQdhpS15h8hGhu7BuEAmhQPvEMINbwbdJ8Gf9xEVUPipv7LZGocS9A==
-X-Received: by 2002:a7b:cb89:: with SMTP id m9mr8022074wmi.123.1631477375600;
-        Sun, 12 Sep 2021 13:09:35 -0700 (PDT)
+        bh=TplqdteIbqpMA+cRsM4zt2txSdRrivaAa9SZu7q2V5k=;
+        b=RXJEmH6rEB+tNUJn2BV5cxXCzI9XJdDrta7SpH17Z2FlXoVhiGTxZAjJkH+abZ7KFr
+         rYsZpnrbdKszRPCBpjh0PaBFYuW6Z9ikU5JQ9zuU9nO3UXEj5oBvVV1hCLtsbsLP7kG0
+         7u9iiWni+TgJdfdJ3tV7FkS3nfkB74h7qqXQPOiA7fqrryDiIqNtlRKjWsOBli6LPUlP
+         r8USRwAAGlCkSNaYM74gUuqRcd0RXcY6ApglNyYB4rNnokoOfsojvzevjsir0TjYRcoH
+         z/Iw1PYa7TqTr36iGr1Jy1OGQn/ap6XluHzmOvxXy2mGJAGpQhaBBrhBJA+7S4tbSsNC
+         NyHw==
+X-Gm-Message-State: AOAM532BjMATP/4X8lkrjrGW6YsKfDu2hO+OhTbc/qp8tvxb/EBqJj7z
+        Mann6lPuYxNdyMqVmM7XfJg=
+X-Google-Smtp-Source: ABdhPJygGmsQdbqJ3F8jYp9/me38locbgNBHzvCseDlDLbb0hvBjdzuJidprL1L6Sn7B6LE3nPX+FA==
+X-Received: by 2002:adf:c18d:: with SMTP id x13mr8991443wre.380.1631477417535;
+        Sun, 12 Sep 2021 13:10:17 -0700 (PDT)
 Received: from localhost.localdomain (46-138-83-36.dynamic.spd-mgts.ru. [46.138.83.36])
-        by smtp.gmail.com with ESMTPSA id v10sm5463476wrg.15.2021.09.12.13.09.32
+        by smtp.gmail.com with ESMTPSA id v10sm5463476wrg.15.2021.09.12.13.10.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Sep 2021 13:09:35 -0700 (PDT)
+        Sun, 12 Sep 2021 13:10:17 -0700 (PDT)
 From:   Dmitry Osipenko <digetx@gmail.com>
 To:     Thierry Reding <thierry.reding@gmail.com>,
         Jonathan Hunter <jonathanh@nvidia.com>,
@@ -84,9 +84,9 @@ Cc:     linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org,
         linux-mmc@vger.kernel.org, linux-media@vger.kernel.org,
         dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
         linux-clk@vger.kernel.org
-Subject: [PATCH v11 01/34] opp: Change type of dev_pm_opp_attach_genpd(names) argument
-Date:   Sun, 12 Sep 2021 23:07:59 +0300
-Message-Id: <20210912200832.12312-2-digetx@gmail.com>
+Subject: [PATCH v11 18/34] pwm: tegra: Add runtime PM and OPP support
+Date:   Sun, 12 Sep 2021 23:08:16 +0300
+Message-Id: <20210912200832.12312-19-digetx@gmail.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20210912200832.12312-1-digetx@gmail.com>
 References: <20210912200832.12312-1-digetx@gmail.com>
@@ -96,77 +96,210 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Elements of the 'names' array are not changed by the code, constify them
-for consistency.
+The PWM on Tegra belongs to the core power domain and we're going to
+enable GENPD support for the core domain. Now PWM must be resumed using
+runtime PM API in order to initialize the PWM power state. The PWM clock
+rate must be changed using OPP API that will reconfigure the power domain
+performance state in accordance to the rate. Add runtime PM and OPP
+support to the PWM driver.
 
 Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 ---
- drivers/opp/core.c     | 6 +++---
- include/linux/pm_opp.h | 8 ++++----
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ drivers/pwm/pwm-tegra.c | 88 ++++++++++++++++++++++++++++++++---------
+ 1 file changed, 70 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/opp/core.c b/drivers/opp/core.c
-index 04b4691a8aac..3057beabd370 100644
---- a/drivers/opp/core.c
-+++ b/drivers/opp/core.c
-@@ -2348,12 +2348,12 @@ static void _opp_detach_genpd(struct opp_table *opp_table)
-  * "required-opps" are added in DT.
-  */
- struct opp_table *dev_pm_opp_attach_genpd(struct device *dev,
--		const char **names, struct device ***virt_devs)
-+		const char * const *names, struct device ***virt_devs)
- {
- 	struct opp_table *opp_table;
- 	struct device *virt_dev;
- 	int index = 0, ret = -EINVAL;
--	const char **name = names;
-+	const char * const *name = names;
+diff --git a/drivers/pwm/pwm-tegra.c b/drivers/pwm/pwm-tegra.c
+index 11a10b575ace..afb5ecde007e 100644
+--- a/drivers/pwm/pwm-tegra.c
++++ b/drivers/pwm/pwm-tegra.c
+@@ -42,12 +42,16 @@
+ #include <linux/module.h>
+ #include <linux/of.h>
+ #include <linux/of_device.h>
++#include <linux/pm_opp.h>
+ #include <linux/pwm.h>
+ #include <linux/platform_device.h>
+ #include <linux/pinctrl/consumer.h>
++#include <linux/pm_runtime.h>
+ #include <linux/slab.h>
+ #include <linux/reset.h>
  
- 	opp_table = _add_opp_table(dev, false);
- 	if (IS_ERR(opp_table))
-@@ -2457,7 +2457,7 @@ static void devm_pm_opp_detach_genpd(void *data)
-  *
-  * Return: 0 on success and errorno otherwise.
-  */
--int devm_pm_opp_attach_genpd(struct device *dev, const char **names,
-+int devm_pm_opp_attach_genpd(struct device *dev, const char * const *names,
- 			     struct device ***virt_devs)
- {
- 	struct opp_table *opp_table;
-diff --git a/include/linux/pm_opp.h b/include/linux/pm_opp.h
-index a95d6fdd20b6..879c138c7b8e 100644
---- a/include/linux/pm_opp.h
-+++ b/include/linux/pm_opp.h
-@@ -156,9 +156,9 @@ int devm_pm_opp_set_clkname(struct device *dev, const char *name);
- struct opp_table *dev_pm_opp_register_set_opp_helper(struct device *dev, int (*set_opp)(struct dev_pm_set_opp_data *data));
- void dev_pm_opp_unregister_set_opp_helper(struct opp_table *opp_table);
- int devm_pm_opp_register_set_opp_helper(struct device *dev, int (*set_opp)(struct dev_pm_set_opp_data *data));
--struct opp_table *dev_pm_opp_attach_genpd(struct device *dev, const char **names, struct device ***virt_devs);
-+struct opp_table *dev_pm_opp_attach_genpd(struct device *dev, const char * const *names, struct device ***virt_devs);
- void dev_pm_opp_detach_genpd(struct opp_table *opp_table);
--int devm_pm_opp_attach_genpd(struct device *dev, const char **names, struct device ***virt_devs);
-+int devm_pm_opp_attach_genpd(struct device *dev, const char * const *names, struct device ***virt_devs);
- struct dev_pm_opp *dev_pm_opp_xlate_required_opp(struct opp_table *src_table, struct opp_table *dst_table, struct dev_pm_opp *src_opp);
- int dev_pm_opp_xlate_performance_state(struct opp_table *src_table, struct opp_table *dst_table, unsigned int pstate);
- int dev_pm_opp_set_rate(struct device *dev, unsigned long target_freq);
-@@ -376,7 +376,7 @@ static inline int devm_pm_opp_set_clkname(struct device *dev, const char *name)
- 	return -EOPNOTSUPP;
++#include <soc/tegra/common.h>
++
+ #define PWM_ENABLE	(1 << 31)
+ #define PWM_DUTY_WIDTH	8
+ #define PWM_DUTY_SHIFT	16
+@@ -145,7 +149,7 @@ static int tegra_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
+ 		required_clk_rate =
+ 			(NSEC_PER_SEC / period_ns) << PWM_DUTY_WIDTH;
+ 
+-		err = clk_set_rate(pc->clk, required_clk_rate);
++		err = dev_pm_opp_set_rate(pc->dev, required_clk_rate);
+ 		if (err < 0)
+ 			return -EINVAL;
+ 
+@@ -181,8 +185,8 @@ static int tegra_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
+ 	 * before writing the register. Otherwise, keep it enabled.
+ 	 */
+ 	if (!pwm_is_enabled(pwm)) {
+-		err = clk_prepare_enable(pc->clk);
+-		if (err < 0)
++		err = pm_runtime_resume_and_get(pc->dev);
++		if (err)
+ 			return err;
+ 	} else
+ 		val |= PWM_ENABLE;
+@@ -193,7 +197,7 @@ static int tegra_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
+ 	 * If the PWM is not enabled, turn the clock off again to save power.
+ 	 */
+ 	if (!pwm_is_enabled(pwm))
+-		clk_disable_unprepare(pc->clk);
++		pm_runtime_put(pc->dev);
+ 
+ 	return 0;
+ }
+@@ -204,8 +208,8 @@ static int tegra_pwm_enable(struct pwm_chip *chip, struct pwm_device *pwm)
+ 	int rc = 0;
+ 	u32 val;
+ 
+-	rc = clk_prepare_enable(pc->clk);
+-	if (rc < 0)
++	rc = pm_runtime_resume_and_get(pc->dev);
++	if (rc)
+ 		return rc;
+ 
+ 	val = pwm_readl(pc, pwm->hwpwm);
+@@ -224,7 +228,7 @@ static void tegra_pwm_disable(struct pwm_chip *chip, struct pwm_device *pwm)
+ 	val &= ~PWM_ENABLE;
+ 	pwm_writel(pc, pwm->hwpwm, val);
+ 
+-	clk_disable_unprepare(pc->clk);
++	pm_runtime_put_sync(pc->dev);
  }
  
--static inline struct opp_table *dev_pm_opp_attach_genpd(struct device *dev, const char **names, struct device ***virt_devs)
-+static inline struct opp_table *dev_pm_opp_attach_genpd(struct device *dev, const char * const *names, struct device ***virt_devs)
- {
- 	return ERR_PTR(-EOPNOTSUPP);
- }
-@@ -384,7 +384,7 @@ static inline struct opp_table *dev_pm_opp_attach_genpd(struct device *dev, cons
- static inline void dev_pm_opp_detach_genpd(struct opp_table *opp_table) {}
+ static const struct pwm_ops tegra_pwm_ops = {
+@@ -256,11 +260,23 @@ static int tegra_pwm_probe(struct platform_device *pdev)
+ 	if (IS_ERR(pwm->clk))
+ 		return PTR_ERR(pwm->clk);
  
- static inline int devm_pm_opp_attach_genpd(struct device *dev,
--					   const char **names,
-+					   const char * const *names,
- 					   struct device ***virt_devs)
++	ret = devm_pm_runtime_enable(&pdev->dev);
++	if (ret)
++		return ret;
++
++	ret = devm_tegra_core_dev_init_opp_table_common(&pdev->dev);
++	if (ret)
++		return ret;
++
++	ret = pm_runtime_resume_and_get(&pdev->dev);
++	if (ret)
++		return ret;
++
+ 	/* Set maximum frequency of the IP */
+-	ret = clk_set_rate(pwm->clk, pwm->soc->max_frequency);
++	ret = dev_pm_opp_set_rate(pwm->dev, pwm->soc->max_frequency);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "Failed to set max frequency: %d\n", ret);
+-		return ret;
++		goto put_pm;
+ 	}
+ 
+ 	/*
+@@ -278,7 +294,7 @@ static int tegra_pwm_probe(struct platform_device *pdev)
+ 	if (IS_ERR(pwm->rst)) {
+ 		ret = PTR_ERR(pwm->rst);
+ 		dev_err(&pdev->dev, "Reset control is not found: %d\n", ret);
+-		return ret;
++		goto put_pm;
+ 	}
+ 
+ 	reset_control_deassert(pwm->rst);
+@@ -291,34 +307,67 @@ static int tegra_pwm_probe(struct platform_device *pdev)
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "pwmchip_add() failed: %d\n", ret);
+ 		reset_control_assert(pwm->rst);
+-		return ret;
++		goto put_pm;
+ 	}
+ 
++	pm_runtime_put(&pdev->dev);
++
+ 	return 0;
++put_pm:
++	pm_runtime_put(&pdev->dev);
++	return ret;
+ }
+ 
+ static int tegra_pwm_remove(struct platform_device *pdev)
  {
- 	return -EOPNOTSUPP;
+ 	struct tegra_pwm_chip *pc = platform_get_drvdata(pdev);
++	int err;
+ 
+ 	pwmchip_remove(&pc->chip);
+ 
++	err = pm_runtime_resume_and_get(pc->dev);
++	if (err)
++		return err;
++
+ 	reset_control_assert(pc->rst);
++	pm_runtime_put(pc->dev);
+ 
+ 	return 0;
+ }
+ 
+-#ifdef CONFIG_PM_SLEEP
+-static int tegra_pwm_suspend(struct device *dev)
++static int __maybe_unused tegra_pwm_runtime_suspend(struct device *dev)
+ {
+-	return pinctrl_pm_select_sleep_state(dev);
++	struct tegra_pwm_chip *pc = dev_get_drvdata(dev);
++	int err;
++
++	clk_disable_unprepare(pc->clk);
++
++	err = pinctrl_pm_select_sleep_state(dev);
++	if (err) {
++		clk_prepare_enable(pc->clk);
++		return err;
++	}
++
++	return 0;
+ }
+ 
+-static int tegra_pwm_resume(struct device *dev)
++static int __maybe_unused tegra_pwm_runtime_resume(struct device *dev)
+ {
+-	return pinctrl_pm_select_default_state(dev);
++	struct tegra_pwm_chip *pc = dev_get_drvdata(dev);
++	int err;
++
++	err = pinctrl_pm_select_default_state(dev);
++	if (err)
++		return err;
++
++	err = clk_prepare_enable(pc->clk);
++	if (err) {
++		pinctrl_pm_select_sleep_state(dev);
++		return err;
++	}
++
++	return 0;
+ }
+-#endif
+ 
+ static const struct tegra_pwm_soc tegra20_pwm_soc = {
+ 	.num_channels = 4,
+@@ -344,7 +393,10 @@ static const struct of_device_id tegra_pwm_of_match[] = {
+ MODULE_DEVICE_TABLE(of, tegra_pwm_of_match);
+ 
+ static const struct dev_pm_ops tegra_pwm_pm_ops = {
+-	SET_SYSTEM_SLEEP_PM_OPS(tegra_pwm_suspend, tegra_pwm_resume)
++	SET_RUNTIME_PM_OPS(tegra_pwm_runtime_suspend, tegra_pwm_runtime_resume,
++			   NULL)
++	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
++				pm_runtime_force_resume)
+ };
+ 
+ static struct platform_driver tegra_pwm_driver = {
 -- 
 2.32.0
 

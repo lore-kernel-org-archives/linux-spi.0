@@ -2,96 +2,169 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-21.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A5ABCC433F5
-	for <linux-spi@archiver.kernel.org>; Sun, 12 Sep 2021 21:57:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 62AFFC433F5
+	for <linux-spi@archiver.kernel.org>; Mon, 13 Sep 2021 04:33:21 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 8857860F51
-	for <linux-spi@archiver.kernel.org>; Sun, 12 Sep 2021 21:57:59 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 41F8F60FC1
+	for <linux-spi@archiver.kernel.org>; Mon, 13 Sep 2021 04:33:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236560AbhILV7M (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 12 Sep 2021 17:59:12 -0400
-Received: from tartarus.angband.pl ([51.83.246.204]:39914 "EHLO
-        tartarus.angband.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236320AbhILV7L (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 12 Sep 2021 17:59:11 -0400
-X-Greylist: delayed 1816 seconds by postgrey-1.27 at vger.kernel.org; Sun, 12 Sep 2021 17:59:10 EDT
-Received: from 89-73-149-240.dynamic.chello.pl ([89.73.149.240] helo=barad-dur.angband.pl)
-        by tartarus.angband.pl with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <kilobyte@angband.pl>)
-        id 1mPWyY-00C2a9-07; Sun, 12 Sep 2021 23:25:23 +0200
-Received: from [2a02:a31c:8245:f980::4] (helo=valinor.angband.pl)
-        by barad-dur.angband.pl with esmtp (Exim 4.94.2)
-        (envelope-from <kilobyte@angband.pl>)
-        id 1mPWyX-0003D0-7N; Sun, 12 Sep 2021 23:25:21 +0200
-Received: from kilobyte by valinor.angband.pl with local (Exim 4.95-RC2)
-        (envelope-from <kilobyte@valinor.angband.pl>)
-        id 1mPWyW-00034n-IF;
-        Sun, 12 Sep 2021 23:25:20 +0200
-From:   Adam Borowski <kilobyte@angband.pl>
-To:     Laxman Dewangan <ldewangan@nvidia.com>,
+        id S236010AbhIMEee (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 13 Sep 2021 00:34:34 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:57172 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230022AbhIMEee (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 13 Sep 2021 00:34:34 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 18D4X234102717;
+        Sun, 12 Sep 2021 23:33:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1631507582;
+        bh=69WhAtP/XV2lc3VDriRBaF77eUBDt+20lz9YeiUgYXo=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=V/Ed3+V9Mfi4Lo3Yk2sjcpbZ98c+KrgEXKFp4pfczIfLPZ4SqyCaNnT7g9xlGmBYY
+         jn3omaqTNz1HQ4QC+abxwIy8wheZ0FpCeGCEvU0S0w9bhLooxDUjoVJP9U2oQxyhE4
+         MKoCk7026w/mywpXI9DyDjK4G6eLhFWiUWQXhoX4=
+Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 18D4X2Qj005183
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Sun, 12 Sep 2021 23:33:02 -0500
+Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Sun, 12
+ Sep 2021 23:33:01 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE101.ent.ti.com
+ (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
+ Frontend Transport; Sun, 12 Sep 2021 23:33:01 -0500
+Received: from [10.250.232.51] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 18D4WuO2118326;
+        Sun, 12 Sep 2021 23:32:58 -0500
+Subject: Re: [PATCH] dt-bindings: More use 'enum' instead of 'oneOf' plus
+ 'const' entries
+To:     Rob Herring <robh@kernel.org>, <devicetree@vger.kernel.org>
+CC:     Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
         Mark Brown <broonie@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org
-Cc:     Adam Borowski <kilobyte@angband.pl>
-Date:   Sun, 12 Sep 2021 23:25:19 +0200
-Message-Id: <20210912212519.11797-1-kilobyte@angband.pl>
-X-Mailer: git-send-email 2.33.0
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jonathan Marek <jonathan@marek.ca>,
+        Marc Zyngier <maz@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        <dri-devel@lists.freedesktop.org>,
+        <freedreno@lists.freedesktop.org>, <linux-spi@vger.kernel.org>,
+        <linux-watchdog@vger.kernel.org>
+References: <20210910165153.2843871-1-robh@kernel.org>
+From:   Aswath Govindraju <a-govindraju@ti.com>
+Message-ID: <b56ee1c2-ce2d-a3ed-ff54-7b0d956f959a@ti.com>
+Date:   Mon, 13 Sep 2021 10:02:55 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 89.73.149.240
-X-SA-Exim-Mail-From: kilobyte@angband.pl
-Subject: [PATCH] spi: tegra20-slink: fix "defined but not used" if !CONFIG_PM
-X-SA-Exim-Version: 4.2.1 (built Sat, 13 Feb 2021 17:57:42 +0000)
-X-SA-Exim-Scanned: Yes (on tartarus.angband.pl)
+In-Reply-To: <20210910165153.2843871-1-robh@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Because of warnings, esp. with new default -Werror.
+On 10/09/21 10:21 pm, Rob Herring wrote:
+> 'enum' is equivalent to 'oneOf' with a list of 'const' entries, but 'enum'
+> is more concise and yields better error messages.
+> 
+> Fix a couple more cases which have appeared.
+> 
+> Cc: Rob Clark <robdclark@gmail.com>
+> Cc: Sean Paul <sean@poorly.run>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Wim Van Sebroeck <wim@linux-watchdog.org>
+> Cc: Guenter Roeck <linux@roeck-us.net>
+> Cc: Jonathan Marek <jonathan@marek.ca>
+> Cc: Aswath Govindraju <a-govindraju@ti.com>
+> Cc: Marc Zyngier <maz@kernel.org>
+> Cc: Linus Walleij <linus.walleij@linaro.org>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: freedreno@lists.freedesktop.org
+> Cc: linux-spi@vger.kernel.org
+> Cc: linux-watchdog@vger.kernel.org
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> ---
+>  .../bindings/display/msm/dsi-phy-7nm.yaml          |  8 ++++----
+>  .../devicetree/bindings/spi/omap-spi.yaml          |  6 +++---
 
-Signed-off-by: Adam Borowski <kilobyte@angband.pl>
----
- drivers/spi/spi-tegra20-slink.c | 4 ++++
- 1 file changed, 4 insertions(+)
+For omap-spi:
 
-diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
-index ebd27f883033..c8b54c7c53d0 100644
---- a/drivers/spi/spi-tegra20-slink.c
-+++ b/drivers/spi/spi-tegra20-slink.c
-@@ -204,8 +204,10 @@ struct tegra_slink_data {
- 	struct dma_async_tx_descriptor		*tx_dma_desc;
- };
- 
-+#ifdef CONFIG_PM
- static int tegra_slink_runtime_suspend(struct device *dev);
- static int tegra_slink_runtime_resume(struct device *dev);
-+#endif
- 
- static inline u32 tegra_slink_readl(struct tegra_slink_data *tspi,
- 		unsigned long reg)
-@@ -1185,6 +1187,7 @@ static int tegra_slink_resume(struct device *dev)
- }
- #endif
- 
-+#ifdef CONFIG_PM
- static int tegra_slink_runtime_suspend(struct device *dev)
- {
- 	struct spi_master *master = dev_get_drvdata(dev);
-@@ -1210,6 +1213,7 @@ static int tegra_slink_runtime_resume(struct device *dev)
- 	}
- 	return 0;
- }
-+#endif
- 
- static const struct dev_pm_ops slink_pm_ops = {
- 	SET_RUNTIME_PM_OPS(tegra_slink_runtime_suspend,
--- 
-2.33.0
+Acked-by: Aswath Govindraju <a-govindraju@ti.com>
+
+>  .../bindings/watchdog/maxim,max63xx.yaml           | 14 +++++++-------
+>  3 files changed, 14 insertions(+), 14 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/display/msm/dsi-phy-7nm.yaml b/Documentation/devicetree/bindings/display/msm/dsi-phy-7nm.yaml
+> index 4265399bb154..c851770bbdf2 100644
+> --- a/Documentation/devicetree/bindings/display/msm/dsi-phy-7nm.yaml
+> +++ b/Documentation/devicetree/bindings/display/msm/dsi-phy-7nm.yaml
+> @@ -14,10 +14,10 @@ allOf:
+>  
+>  properties:
+>    compatible:
+> -    oneOf:
+> -      - const: qcom,dsi-phy-7nm
+> -      - const: qcom,dsi-phy-7nm-8150
+> -      - const: qcom,sc7280-dsi-phy-7nm
+> +    enum:
+> +      - qcom,dsi-phy-7nm
+> +      - qcom,dsi-phy-7nm-8150
+> +      - qcom,sc7280-dsi-phy-7nm
+>  
+>    reg:
+>      items:
+> diff --git a/Documentation/devicetree/bindings/spi/omap-spi.yaml b/Documentation/devicetree/bindings/spi/omap-spi.yaml
+> index e55538186cf6..9952199cae11 100644
+> --- a/Documentation/devicetree/bindings/spi/omap-spi.yaml
+> +++ b/Documentation/devicetree/bindings/spi/omap-spi.yaml
+> @@ -84,9 +84,9 @@ unevaluatedProperties: false
+>  if:
+>    properties:
+>      compatible:
+> -      oneOf:
+> -        - const: ti,omap2-mcspi
+> -        - const: ti,omap4-mcspi
+> +      enum:
+> +        - ti,omap2-mcspi
+> +        - ti,omap4-mcspi
+>  
+>  then:
+>    properties:
+> diff --git a/Documentation/devicetree/bindings/watchdog/maxim,max63xx.yaml b/Documentation/devicetree/bindings/watchdog/maxim,max63xx.yaml
+> index f2105eedac2c..ab9641e845db 100644
+> --- a/Documentation/devicetree/bindings/watchdog/maxim,max63xx.yaml
+> +++ b/Documentation/devicetree/bindings/watchdog/maxim,max63xx.yaml
+> @@ -15,13 +15,13 @@ maintainers:
+>  
+>  properties:
+>    compatible:
+> -    oneOf:
+> -      - const: maxim,max6369
+> -      - const: maxim,max6370
+> -      - const: maxim,max6371
+> -      - const: maxim,max6372
+> -      - const: maxim,max6373
+> -      - const: maxim,max6374
+> +    enum:
+> +      - maxim,max6369
+> +      - maxim,max6370
+> +      - maxim,max6371
+> +      - maxim,max6372
+> +      - maxim,max6373
+> +      - maxim,max6374
+>  
+>    reg:
+>      description: This is a 1-byte memory-mapped address
+> 
 

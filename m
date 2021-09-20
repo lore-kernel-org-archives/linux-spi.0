@@ -2,63 +2,92 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.0 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BEDB8C433F5
-	for <linux-spi@archiver.kernel.org>; Mon, 20 Sep 2021 14:35:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A578AC433FE
+	for <linux-spi@archiver.kernel.org>; Mon, 20 Sep 2021 14:45:03 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A981660F5D
-	for <linux-spi@archiver.kernel.org>; Mon, 20 Sep 2021 14:35:30 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 553C961077
+	for <linux-spi@archiver.kernel.org>; Mon, 20 Sep 2021 14:45:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237833AbhITOg4 convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 20 Sep 2021 10:36:56 -0400
-Received: from mail.bytesnap.co.uk ([94.198.185.106]:45507 "EHLO
-        mail.bytesnap.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231952AbhITOg4 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 20 Sep 2021 10:36:56 -0400
-Received: from exch2016.ByteSnap.local (10.0.28.253) by
- exch2016.ByteSnap.local (10.0.28.253) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.14; Mon, 20 Sep 2021 15:35:28 +0100
-Received: from exch2016.ByteSnap.local ([fe80::fccc:6d14:b55e:d5a0]) by
- exch2016.ByteSnap.local ([fe80::fccc:6d14:b55e:d5a0%8]) with mapi id
- 15.01.2308.014; Mon, 20 Sep 2021 15:35:28 +0100
-From:   Ville Baillie <VilleB@bytesnap.co.uk>
-To:     "tudor.ambarus@microchip.com" <tudor.ambarus@microchip.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "nicolas.ferre@microchip.com" <nicolas.ferre@microchip.com>,
-        "alexandre.belloni@bootlin.com" <alexandre.belloni@bootlin.com>,
-        "ludovic.desroches@microchip.com" <ludovic.desroches@microchip.com>
-CC:     "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "dan.sneddon@microchip.com" <dan.sneddon@microchip.com>
-Subject: RE: [PATCH v3] spi: atmel: Fix PDC transfer setup bug
-Thread-Topic: [PATCH v3] spi: atmel: Fix PDC transfer setup bug
-Thread-Index: AdeuLBk8YnhgPjL7Rzy2vzFY84KgkAAAHhXg
-Date:   Mon, 20 Sep 2021 14:35:28 +0000
-Message-ID: <0f470fb0bb394d279ff0b734e5c6b871@bytesnap.co.uk>
-References: <60f0c65bbd52479cb83683b8475af435@bytesnap.co.uk>
-In-Reply-To: <60f0c65bbd52479cb83683b8475af435@bytesnap.co.uk>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.0.27.202]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S237807AbhITOq3 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 20 Sep 2021 10:46:29 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39144 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S237708AbhITOq2 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 20 Sep 2021 10:46:28 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 83BC760F6B;
+        Mon, 20 Sep 2021 14:45:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1632149102;
+        bh=7cDcGS8H3dVH16lHnrmM5SjCWdPr+91GxGQ+fdE0o4o=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=H4pyCnG33eGm6pwYU4CfGQyxRPxkIWjJD/Hl4BrjL+/FG3RuRGoXE3Vc4LmzOClR2
+         nZrdyOSYKZecUwPaJNfYA62XbP8KTgeNulG6YZwtCTeoYX490WAyUPt5dyolG4ShXF
+         UcYgwJRwcQUqqQGc4arypKSeP9MblRKHv+hBJaPZVEZA9sL8cUct0l6uYBIJ6O7oMW
+         fq1l7GzJnQoZ9rHzG1J3hK2CMSuMvgkZHTS4NnlxcXCSxffnMrifZ9jA1Cv5ohJUd9
+         EbYCMmd2fVmWsEycF5XI9bDl0xaNrqruag0dRfxYYwgkuvfdxy91Uf3lesM+sLK17k
+         Zj6909SBS+dBA==
+Date:   Mon, 20 Sep 2021 15:44:18 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Apurva Nandan <a-nandan@ti.com>
+Cc:     Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Serge Semin <fancer.lancer@gmail.com>,
+        linux-mtd@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        michael@walle.cc
+Subject: Re: [PATCH v2 2/2] dt-bindings: snps,dw-apb-ssi: Use 'flash' node
+ name instead of 'spi-flash' in example
+Message-ID: <20210920144418.GI4192@sirena.org.uk>
+References: <20210920142713.129295-1-a-nandan@ti.com>
+ <20210920142713.129295-3-a-nandan@ti.com>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="lrvsYIebpInmECXG"
+Content-Disposition: inline
+In-Reply-To: <20210920142713.129295-3-a-nandan@ti.com>
+X-Cookie: diplomacy, n:
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-My apologies, it appears my email client is mangling the patch.
 
-I will resend if I can get 'git send-email' working.
+--lrvsYIebpInmECXG
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Thanks
-Ville
+On Mon, Sep 20, 2021 at 07:57:13PM +0530, Apurva Nandan wrote:
+> Change the nodename in the example with spi-nand from 'spi-flash@1'
+> to 'flash@1' to make the schema uniform with both spi-nand and spi-nor
+> flashes. jedec,spi-nor.yaml uses 'flash@' nodename for spi-nor flashes,
+> so make the spi-nand examples in dt-bindings use it too for uniformity.
+
+Please submit patches using subject lines reflecting the style for the
+subsystem, this makes it easier for people to identify relevant patches.
+Look at what existing commits in the area you're changing are doing and
+make sure your subject lines visually resemble what they're doing.
+There's no need to resubmit to fix this alone.
+
+--lrvsYIebpInmECXG
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmFInkEACgkQJNaLcl1U
+h9B3kgf8C0+e9onyf5hzlsH/Wy+bz8cm0v2pE7e7Jmbmb9T+l6SG5uVDV5XFg+hT
+TRA+OdGbxzmVJmozgcBeJW3rZHyfcv38uWuAJp7iQx6HjtOB5zRskChX76HvZUHE
+IlFilNB2KEW33E3eC+vBV8fzzwoG2Uu22OAHLAEIwZJmb+GdeQ5xPeGMuzjhdfva
+QCTEAOSopxfcphryTUeWGGLl5roXvR/8QCuySX/SOD7/5IIPmPnNo2mxmc+AdlfL
+rMAVTMBlzNvxY7MU2/zv75OEp2dgAixWaw+BhNKA5ns2HaNNTxGpJ1t3/oY0+3H7
+VXHvTG5vturPUxiDm/v7b9D5RDzHrw==
+=4fpd
+-----END PGP SIGNATURE-----
+
+--lrvsYIebpInmECXG--

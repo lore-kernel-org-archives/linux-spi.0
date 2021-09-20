@@ -2,48 +2,48 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-20.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E3184C433FE
-	for <linux-spi@archiver.kernel.org>; Mon, 20 Sep 2021 14:27:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D31A4C433EF
+	for <linux-spi@archiver.kernel.org>; Mon, 20 Sep 2021 14:27:50 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C613261077
-	for <linux-spi@archiver.kernel.org>; Mon, 20 Sep 2021 14:27:46 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B9E1361077
+	for <linux-spi@archiver.kernel.org>; Mon, 20 Sep 2021 14:27:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240043AbhITO3M (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 20 Sep 2021 10:29:12 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:59928 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237881AbhITO3K (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 20 Sep 2021 10:29:10 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 18KERKTl105711;
-        Mon, 20 Sep 2021 09:27:20 -0500
+        id S240306AbhITO3Q (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 20 Sep 2021 10:29:16 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:38144 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240160AbhITO3O (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 20 Sep 2021 10:29:14 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 18KERW4a015725;
+        Mon, 20 Sep 2021 09:27:32 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1632148040;
-        bh=Y7l7RaNnp7XledpwNXnncmI84XTK+TQrRyIYiiow6jY=;
-        h=From:To:CC:Subject:Date;
-        b=iVj8t8mzZOzjB+LSPSNKaxSFv43hNK0hKIkYx4eGnA+GMm9cXZUYLhB+HMs29Bzvk
-         C4abHK9XR5zIl4HYnH/N4/EwPYuLIipL3SsphEtVw/WchKhqUCwbR3uNwPH8ZS2qPj
-         KcgzlyNXel64RMJ1OKIhmQixUUuw/pfyhS3c88Ks=
-Received: from DLEE113.ent.ti.com (dlee113.ent.ti.com [157.170.170.24])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 18KERKjv044860
+        s=ti-com-17Q1; t=1632148052;
+        bh=5hWRp8SQ/F6dA2b0wXfuXXIFLTZSU7wZCK+QJTioq9U=;
+        h=From:To:CC:Subject:Date:In-Reply-To:References;
+        b=OsMEr8gVfIuD5DEBJClcQxXNGhaZarK7/obCy+xm8ZIj5WS/R6TXqYcnsqNAEn1LP
+         0TMaFu58z7V1dlNRKzCJDfrTkuxJbOA4PRy3GUtzs+V1p0T6psHcOsnlcy51AxZk06
+         uTewsMvDULfiHTPZ7fCNefw3+oIr2fUj9jYwak90=
+Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 18KERWBG026216
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 20 Sep 2021 09:27:20 -0500
-Received: from DLEE114.ent.ti.com (157.170.170.25) by DLEE113.ent.ti.com
- (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
+        Mon, 20 Sep 2021 09:27:32 -0500
+Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE105.ent.ti.com
+ (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Mon, 20
- Sep 2021 09:27:20 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE114.ent.ti.com
- (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+ Sep 2021 09:27:31 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
- Frontend Transport; Mon, 20 Sep 2021 09:27:20 -0500
+ Frontend Transport; Mon, 20 Sep 2021 09:27:31 -0500
 Received: from LT5CD112GSQZ.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 18KERE42100694;
-        Mon, 20 Sep 2021 09:27:15 -0500
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 18KERE44100694;
+        Mon, 20 Sep 2021 09:27:27 -0500
 From:   Apurva Nandan <a-nandan@ti.com>
 To:     Miquel Raynal <miquel.raynal@bootlin.com>,
         Richard Weinberger <richard@nod.at>,
@@ -55,10 +55,12 @@ To:     Miquel Raynal <miquel.raynal@bootlin.com>,
         <linux-mtd@lists.infradead.org>, <devicetree@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>
 CC:     <michael@walle.cc>
-Subject: [PATCH v2 0/2] dt-bindings: mtd: spi-nand: Convert to DT schema
-Date:   Mon, 20 Sep 2021 19:57:11 +0530
-Message-ID: <20210920142713.129295-1-a-nandan@ti.com>
+Subject: [PATCH v2 2/2] dt-bindings: snps,dw-apb-ssi: Use 'flash' node name instead of 'spi-flash' in example
+Date:   Mon, 20 Sep 2021 19:57:13 +0530
+Message-ID: <20210920142713.129295-3-a-nandan@ti.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20210920142713.129295-1-a-nandan@ti.com>
+References: <20210920142713.129295-1-a-nandan@ti.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -67,26 +69,29 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Series to convert spi-nand.txt binding to YAML format and also fix up
-snps-dw-apb-ssi for related dt_schema errors.
+Change the nodename in the example with spi-nand from 'spi-flash@1'
+to 'flash@1' to make the schema uniform with both spi-nand and spi-nor
+flashes. jedec,spi-nor.yaml uses 'flash@' nodename for spi-nor flashes,
+so make the spi-nand examples in dt-bindings use it too for uniformity.
 
-Changes in v2:
-- Fixed dtschema erros in snps-dw-apb-ssi.
-- Improved additionalProperties, reg, and compatible fields in
-  spi-nand.yaml.
+Signed-off-by: Apurva Nandan <a-nandan@ti.com>
+---
+ Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Apurva Nandan (2):
-  dt-bindings: mtd: spi-nand: Convert to DT schema format
-  dt-bindings: snps,dw-apb-ssi: Use 'flash' node name instead of
-    'spi-flash' in example
-
- .../devicetree/bindings/mtd/spi-nand.txt      |  5 --
- .../devicetree/bindings/mtd/spi-nand.yaml     | 62 +++++++++++++++++++
- .../bindings/spi/snps,dw-apb-ssi.yaml         |  2 +-
- 3 files changed, 63 insertions(+), 6 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/mtd/spi-nand.txt
- create mode 100644 Documentation/devicetree/bindings/mtd/spi-nand.yaml
-
+diff --git a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
+index ca91201a9926..d7e08b03e204 100644
+--- a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
++++ b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
+@@ -171,7 +171,7 @@ examples:
+       cs-gpios = <&gpio0 13 0>,
+                  <&gpio0 14 0>;
+       rx-sample-delay-ns = <3>;
+-      spi-flash@1 {
++      flash@1 {
+         compatible = "spi-nand";
+         reg = <1>;
+         rx-sample-delay-ns = <7>;
 -- 
 2.25.1
 

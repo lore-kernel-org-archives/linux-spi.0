@@ -2,64 +2,105 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.5 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-20.5 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 740AFC433F5
-	for <linux-spi@archiver.kernel.org>; Wed, 22 Sep 2021 19:52:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A800C433F5
+	for <linux-spi@archiver.kernel.org>; Thu, 23 Sep 2021 03:40:36 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 5B5A261050
-	for <linux-spi@archiver.kernel.org>; Wed, 22 Sep 2021 19:52:38 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 325EB61019
+	for <linux-spi@archiver.kernel.org>; Thu, 23 Sep 2021 03:40:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237284AbhIVTyH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 22 Sep 2021 15:54:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45560 "EHLO mail.kernel.org"
+        id S239386AbhIWDmD (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 22 Sep 2021 23:42:03 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42268 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237263AbhIVTyG (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 22 Sep 2021 15:54:06 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 0A49E61050;
-        Wed, 22 Sep 2021 19:52:36 +0000 (UTC)
+        id S239445AbhIWDlA (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 22 Sep 2021 23:41:00 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 1325E6113E;
+        Thu, 23 Sep 2021 03:39:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1632340356;
-        bh=/q2BA3H1L1NsDGy7AxOZPCxE0Poq8Co0vt1z/9cs3uk=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=QNsQrLfXqxOYCADW9Dlm8LO957GukYcK+SSeD1xiia6cUuuqVmR1Xh3ZxiUSy47vu
-         6cH4jjDrHF9BV0BjlZMaveTFnkGTQ14ONhYJ6FWPBIUkCAMXAIQkGNq5OLEbnBDrMg
-         I8TYFyCucxiLGupSEt+PyjNREbnRQR6lBRH+sTcLSDQoO16uNEyDQif0VXKmicz4cB
-         rknwoWy1YRAUBSKk/Fq6SnfwN/5TV6AndWFy3mbRPRjyysHadNDfDQAZMBSmbzen1M
-         27y/LLhVJnvuCGet6zt7cOnKi/T4F0FRjBKvgmcbZV2KOwTeJoIkLcEy0Q7dy26nSY
-         b5BrLC8gT1XCw==
-Subject: Re: [GIT PULL] SPI fixes for v5.15-rc1
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20210922182417.23A476124A@mail.kernel.org>
-References: <20210922182417.23A476124A@mail.kernel.org>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20210922182417.23A476124A@mail.kernel.org>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v5.15-rc1
-X-PR-Tracked-Commit-Id: 96c8395e2166efa86082f3b71567ffd84936439b
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 9bedf10b5797a4660c2acc6c3573376f7e5d1c97
-Message-Id: <163234035589.31909.16750974250302294467.pr-tracker-bot@kernel.org>
-Date:   Wed, 22 Sep 2021 19:52:35 +0000
-To:     Mark Brown <broonie@kernel.org>
+        s=k20201202; t=1632368369;
+        bh=bEO/CpEwVfE84XS0eaEnlSOmcAdIuv1jyb+dJToDzpk=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=ttXb5xcHiMsh3rEzrCZ41P+c5+7VobQdMWIx44PvbTtkZmgoTlffyRqXB3O2QBH/g
+         NLDoTqQeG0Rsw4FrJ7aMOMdltl9WeDsmUas/8KPeajvRp2TwTGmBsKEZJ+V9NgXCdz
+         HI5vn/oNXC8vT0Q+dDp5d+8Vvwjb6rFIYNpuZK4st8unfpwLqioo3TXvuwW9Job8Kz
+         /beN7na0WYagC0ZjDwqNXtFUzw/c7PFquRw7mv71fteLo4A5aF8tPZZ0/Nc7bQeK6f
+         OdCajR3owJIyLP2s47fuCGKEH1wziGc9i9Bo2jJG970mMsX6SFo19lwdbho4u73fDq
+         DL6P5qPKob+3A==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>
+        Guenter Roeck <linux@roeck-us.net>,
+        Sasha Levin <sashal@kernel.org>, ldewangan@nvidia.com,
+        broonie@kernel.org, thierry.reding@gmail.com, jonathanh@nvidia.com,
+        linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 19/19] spi: Fix tegra20 build with CONFIG_PM=n
+Date:   Wed, 22 Sep 2021 23:38:53 -0400
+Message-Id: <20210923033853.1421193-19-sashal@kernel.org>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210923033853.1421193-1-sashal@kernel.org>
+References: <20210923033853.1421193-1-sashal@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The pull request you sent on Wed, 22 Sep 2021 19:23:19 +0100:
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v5.15-rc1
+[ Upstream commit efafec27c5658ed987e720130772f8933c685e87 ]
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/9bedf10b5797a4660c2acc6c3573376f7e5d1c97
+Without CONFIG_PM enabled, the SET_RUNTIME_PM_OPS() macro ends up being
+empty, and the only use of tegra_slink_runtime_{resume,suspend} goes
+away, resulting in
 
-Thank you!
+  drivers/spi/spi-tegra20-slink.c:1200:12: error: ‘tegra_slink_runtime_resume’ defined but not used [-Werror=unused-function]
+   1200 | static int tegra_slink_runtime_resume(struct device *dev)
+        |            ^~~~~~~~~~~~~~~~~~~~~~~~~~
+  drivers/spi/spi-tegra20-slink.c:1188:12: error: ‘tegra_slink_runtime_suspend’ defined but not used [-Werror=unused-function]
+   1188 | static int tegra_slink_runtime_suspend(struct device *dev)
+        |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+mark the functions __maybe_unused to make the build happy.
+
+This hits the alpha allmodconfig build (and others).
+
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/spi/spi-tegra20-slink.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
+index 2a1905c43a0b..9b59539c8735 100644
+--- a/drivers/spi/spi-tegra20-slink.c
++++ b/drivers/spi/spi-tegra20-slink.c
+@@ -1205,7 +1205,7 @@ static int tegra_slink_resume(struct device *dev)
+ }
+ #endif
+ 
+-static int tegra_slink_runtime_suspend(struct device *dev)
++static int __maybe_unused tegra_slink_runtime_suspend(struct device *dev)
+ {
+ 	struct spi_master *master = dev_get_drvdata(dev);
+ 	struct tegra_slink_data *tspi = spi_master_get_devdata(master);
+@@ -1217,7 +1217,7 @@ static int tegra_slink_runtime_suspend(struct device *dev)
+ 	return 0;
+ }
+ 
+-static int tegra_slink_runtime_resume(struct device *dev)
++static int __maybe_unused tegra_slink_runtime_resume(struct device *dev)
+ {
+ 	struct spi_master *master = dev_get_drvdata(dev);
+ 	struct tegra_slink_data *tspi = spi_master_get_devdata(master);
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.30.2
+

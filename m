@@ -5,32 +5,32 @@ X-Spam-Level:
 X-Spam-Status: No, score=-20.5 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A800C433F5
-	for <linux-spi@archiver.kernel.org>; Thu, 23 Sep 2021 03:40:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 033B2C433EF
+	for <linux-spi@archiver.kernel.org>; Thu, 23 Sep 2021 03:42:06 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 325EB61019
-	for <linux-spi@archiver.kernel.org>; Thu, 23 Sep 2021 03:40:36 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DC1E460FE8
+	for <linux-spi@archiver.kernel.org>; Thu, 23 Sep 2021 03:42:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239386AbhIWDmD (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 22 Sep 2021 23:42:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42268 "EHLO mail.kernel.org"
+        id S239581AbhIWDnf (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 22 Sep 2021 23:43:35 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41464 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239445AbhIWDlA (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 22 Sep 2021 23:41:00 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 1325E6113E;
-        Thu, 23 Sep 2021 03:39:27 +0000 (UTC)
+        id S239296AbhIWDl6 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 22 Sep 2021 23:41:58 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3B37A6134F;
+        Thu, 23 Sep 2021 03:39:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1632368369;
-        bh=bEO/CpEwVfE84XS0eaEnlSOmcAdIuv1jyb+dJToDzpk=;
+        s=k20201202; t=1632368398;
+        bh=9AtloOx4nKpyDowAK6RtfaHu26eLyUL/U/Nx60hTpaA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ttXb5xcHiMsh3rEzrCZ41P+c5+7VobQdMWIx44PvbTtkZmgoTlffyRqXB3O2QBH/g
-         NLDoTqQeG0Rsw4FrJ7aMOMdltl9WeDsmUas/8KPeajvRp2TwTGmBsKEZJ+V9NgXCdz
-         HI5vn/oNXC8vT0Q+dDp5d+8Vvwjb6rFIYNpuZK4st8unfpwLqioo3TXvuwW9Job8Kz
-         /beN7na0WYagC0ZjDwqNXtFUzw/c7PFquRw7mv71fteLo4A5aF8tPZZ0/Nc7bQeK6f
-         OdCajR3owJIyLP2s47fuCGKEH1wziGc9i9Bo2jJG970mMsX6SFo19lwdbho4u73fDq
-         DL6P5qPKob+3A==
+        b=pL9qv8jsYFxM35HgytIhVHfJLC1QcXKaB4dAoktorRJ0B6gfsB0W7+YfEkFN73JsF
+         l3m19dvz5/IHgnpjXkktSVt/NGyKOwHnVEZ99ic0nNGNqwe6r13VeuB2SToDB8FLpH
+         w4GVp5WUOEA8TI/fiY2lXJqWNPh2iKxOvr3xNgtFH3wYCpurEJpNFZr/PlRtNDEQZG
+         SERFLc4fJGQhIbqY2waipY1080CmfA9BLItnFwAEa6EmHp4nzBzKylnZfOOSwR1xMV
+         pWsXU+ekMJW2mD09rJ1UtpV/5XOQgUHZrnV2W81pbzrvvVTj55J3wqpJ4hctrykoQ7
+         gHWeP8tb4Kb/g==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
@@ -38,12 +38,12 @@ Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         Sasha Levin <sashal@kernel.org>, ldewangan@nvidia.com,
         broonie@kernel.org, thierry.reding@gmail.com, jonathanh@nvidia.com,
         linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 19/19] spi: Fix tegra20 build with CONFIG_PM=n
-Date:   Wed, 22 Sep 2021 23:38:53 -0400
-Message-Id: <20210923033853.1421193-19-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 15/15] spi: Fix tegra20 build with CONFIG_PM=n
+Date:   Wed, 22 Sep 2021 23:39:29 -0400
+Message-Id: <20210923033929.1421446-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210923033853.1421193-1-sashal@kernel.org>
-References: <20210923033853.1421193-1-sashal@kernel.org>
+In-Reply-To: <20210923033929.1421446-1-sashal@kernel.org>
+References: <20210923033929.1421446-1-sashal@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 X-stable: review
@@ -80,10 +80,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
-index 2a1905c43a0b..9b59539c8735 100644
+index c6b80a60951b..bc3097e5cc26 100644
 --- a/drivers/spi/spi-tegra20-slink.c
 +++ b/drivers/spi/spi-tegra20-slink.c
-@@ -1205,7 +1205,7 @@ static int tegra_slink_resume(struct device *dev)
+@@ -1210,7 +1210,7 @@ static int tegra_slink_resume(struct device *dev)
  }
  #endif
  
@@ -92,7 +92,7 @@ index 2a1905c43a0b..9b59539c8735 100644
  {
  	struct spi_master *master = dev_get_drvdata(dev);
  	struct tegra_slink_data *tspi = spi_master_get_devdata(master);
-@@ -1217,7 +1217,7 @@ static int tegra_slink_runtime_suspend(struct device *dev)
+@@ -1222,7 +1222,7 @@ static int tegra_slink_runtime_suspend(struct device *dev)
  	return 0;
  }
  

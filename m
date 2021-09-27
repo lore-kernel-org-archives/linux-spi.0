@@ -2,42 +2,41 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E657CC433EF
-	for <linux-spi@archiver.kernel.org>; Mon, 27 Sep 2021 17:47:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C5CF8C43219
+	for <linux-spi@archiver.kernel.org>; Mon, 27 Sep 2021 17:47:05 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D07B860F92
-	for <linux-spi@archiver.kernel.org>; Mon, 27 Sep 2021 17:47:04 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id AD51860F44
+	for <linux-spi@archiver.kernel.org>; Mon, 27 Sep 2021 17:47:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236376AbhI0Rsl (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 27 Sep 2021 13:48:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57170 "EHLO mail.kernel.org"
+        id S236896AbhI0Rsm (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 27 Sep 2021 13:48:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57298 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237857AbhI0RsS (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 27 Sep 2021 13:48:18 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C7FBD60F11;
-        Mon, 27 Sep 2021 17:46:39 +0000 (UTC)
+        id S238191AbhI0RsX (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 27 Sep 2021 13:48:23 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id E4C3360F6B;
+        Mon, 27 Sep 2021 17:46:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1632764800;
-        bh=M2fE1KzUmsHGmDPy1ydIAlzP+8L8KfPS3vRsSeNHrVY=;
+        s=k20201202; t=1632764805;
+        bh=ifPF+UcUXnzwfj8bP71GwRKwkLT1YQAGO8JasLucqUE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nfYgbY3BV5F21rHtxhATAGpxlp5Y/96qyDNt6j6uIhW7WwXKEuI06/DkmDNwxElUb
-         7yOWonQCDSq+AGzFew5Jd2WF25H3ly5GlPsZaOfKBjEzq3ojxy3NX7R/VUJZnNBaeD
-         z/keUwRIVhAmHL322fGjAWHFhTnDAQyA3yywlHPW1xg3ZMsHr4s6xgiClXf29Pyjl3
-         czS5BSBUiQ5sRz7ehehlTPlCMN663EGYecMSxKB7d+sAuXiya3hzeiLOsFwjUby/uh
-         2J7BA3sBpjzhj5Pj4p6BN5T5kFT2glSQULj09+CCCdy9oyOpwnfMGmO+c7XjZ/f/JI
-         XOqpzezO/vWsg==
+        b=cNxvzD74ZLCXlxOjndqKfol0T1xS7wIERqWUY4dsllEENGIa2DJtXP4/Se8RsrmLt
+         MTxrOMfOW47oKbrtoSpbvMylX2s2/kIA7NDvltz6qdKTPEtLWmnf4CtxouJgSalUy5
+         Ze1owwWdJnCfXE7ySk2kWN38VY6jlZ04QRQHa9uCk/mbMDs6IrKmAhxGkz8IC95i4v
+         JQNGcXm0VYv11SxnFCEGfQ0SA4njcC4+wG3+EY0E1qBW8CTYPUCFfqB7vhj+zTqffq
+         EnDUEH0Qyg6LeV7XinCXifIeNUQYSiXxUbVdbpDUazDk65m8FXn1i0rBFhUJyjYDpz
+         SLoXyDZsSAxTQ==
 From:   Mark Brown <broonie@kernel.org>
-To:     Parshuram Thombare <pthombar@cadence.com>, lukas@wunner.de,
-        robh+dt@kernel.org, p.yadav@ti.com
-Cc:     Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
-        jpawar@cadence.com, mparab@cadence.com
-Subject: Re: [PATCH v6 0/2] add support for Cadence's XSPI controller
-Date:   Mon, 27 Sep 2021 18:45:17 +0100
-Message-Id: <163276467076.29936.8659985409450963520.b4-ty@kernel.org>
+To:     linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+Cc:     Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
+Subject: Re: [PATCH] spi: s3c64xx: describe driver in KConfig
+Date:   Mon, 27 Sep 2021 18:45:19 +0100
+Message-Id: <163276467077.29936.11453903446746575185.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <1632038668-23756-1-git-send-email-pthombar@cadence.com>
-References: <1632038668-23756-1-git-send-email-pthombar@cadence.com>
+In-Reply-To: <20210924133114.111777-1-krzysztof.kozlowski@canonical.com>
+References: <20210924133114.111777-1-krzysztof.kozlowski@canonical.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -45,33 +44,11 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Sun, 19 Sep 2021 10:04:28 +0200, Parshuram Thombare wrote:
-> This patch series adds support for Cadence's XSPI controller.
-> It supports 3 work modes.
-> 1. ACMD (auto command) work mode
->     ACMD name is because it uses auto command engine in the controller.
->     It further has 2 modes PIO and CDMA (command DMA).
->     The CDMA work mode is dedicated for high-performance application
->     where very low software overhead is required. In this mode the
->     Command Engine is programmed by the series of linked descriptors
->     stored in system memory. These descriptors provide commands to execute
->     and store status information for finished commands.
->     The PIO mode work mode is dedicated for single operation where
->     constructing a linked list of descriptors would require too
->     much effort.
-> 2. STIG (Software Triggered Instruction Generator) work mode
->     In STIG mode, controller sends low-level instructions to memory.
->     Each instruction is 128-bit width. There is special instruction
->     DataSequence which carries information about data phase.
->     Driver uses Slave DMA interface to transfer data as only this
->     interface can be used in STIG work mode.
-> 3. Direct work mode
->     This work mode allows sending data without invoking any command through
->     the slave interface.
-> Currently only STIG work mode is enabled, remaining work modes will
-> be added later.
+On Fri, 24 Sep 2021 15:31:14 +0200, Krzysztof Kozlowski wrote:
+> Describe better which driver applies to which SoC, to make configuring
+> kernel for Samsung SoC easier.
 > 
-> [...]
+> 
 
 Applied to
 
@@ -79,10 +56,8 @@ Applied to
 
 Thanks!
 
-[1/2] spi: cadence: add dt-bindings documentation for Cadence XSPI controller
-      commit: 1f01818b410ac05344c38f65e5ae135e034d47ce
-[2/2] spi: cadence: add support for Cadence XSPI controller
-      commit: a16cc807762730a6291762d4bedd7b00624a6426
+[1/1] spi: s3c64xx: describe driver in KConfig
+      commit: 5b71cbf08a1e0508d1f0f63ac417ad836d801e1a
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

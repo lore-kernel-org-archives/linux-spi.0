@@ -2,111 +2,160 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5F2C6C433EF
-	for <linux-spi@archiver.kernel.org>; Thu, 30 Sep 2021 13:43:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 795E4C433F5
+	for <linux-spi@archiver.kernel.org>; Thu, 30 Sep 2021 13:55:19 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4A47F611C7
-	for <linux-spi@archiver.kernel.org>; Thu, 30 Sep 2021 13:43:16 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 60127619E7
+	for <linux-spi@archiver.kernel.org>; Thu, 30 Sep 2021 13:55:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351586AbhI3No4 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 30 Sep 2021 09:44:56 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47726 "EHLO mail.kernel.org"
+        id S1351533AbhI3N5B (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 30 Sep 2021 09:57:01 -0400
+Received: from www.zeus03.de ([194.117.254.33]:34142 "EHLO mail.zeus03.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1351414AbhI3Nox (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Thu, 30 Sep 2021 09:44:53 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 8DEA861211;
-        Thu, 30 Sep 2021 13:43:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1633009391;
-        bh=Ipx8IDO4kCqX8IkrH3s5LY+e6LHzDltWwtgallL5o8o=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Y6hGwT3q0LAQFScM7gMsY8r+D7IMvf/gmTOFHOqRpQOATFGKDDNFxUJP4vIvIzPu+
-         pGrTzj2EayoM9brB3TAWb91OUlKulaJDesFYmoPI9lWq6Q+14LVWNjhxiGvtd9wycf
-         JyJSB0NYj3cShK30KMYXOooUyw52+25WABrPsfxuJpLPiGD+MY3rqVy/7R7WcQE6Bw
-         qzngf4bsALEGhofwWt7gGWlhAiV+9dzZyXiQ2p3rBajOavbwnujBjoQhnv9rQjPNup
-         +J1w3dfDWOuJFD58iuFEJlcsHQukOCxU62WGKUJKo6ZLSd8CTPOEZG0HuHrclo9cuV
-         JJx5IpVsHvsqw==
-Date:   Thu, 30 Sep 2021 14:42:20 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Dafna Hirschfeld <dafna.hirschfeld@collabora.com>
-Cc:     kernel@collabora.com, linux-spi@vger.kernel.org,
-        enric.balletbo@collabora.com, dafna3@gmail.com,
-        Mason Zhang <Mason.Zhang@mediatek.com>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, wsd_upstream@mediatek.com,
-        Matthias Brugger <matthias.bgg@gmail.com>
-Subject: Re: [PATCH] Revert "spi: modify set_cs_timing parameter"
-Message-ID: <20210930134220.GZ4199@sirena.org.uk>
-References: <20210930120700.2564-1-dafna.hirschfeld@collabora.com>
- <20210930122513.GX4199@sirena.org.uk>
- <28f8af42-4535-ef9f-e521-712d37e2cb72@collabora.com>
- <20210930124630.GY4199@sirena.org.uk>
- <bce800ff-9b3e-500b-6a42-9a60d3a0c590@collabora.com>
+        id S1351532AbhI3N5A (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Thu, 30 Sep 2021 09:57:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
+        date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=k1; bh=lACN/fAUucdc9g/2SkCkqipA6nj3
+        JMT9I8knLNGVIRc=; b=RamTHQIWkQK+fuLGLW0ws8vId009JxFNyus/bGbMvQpe
+        N/LLTH3ZSg4tG2e3fbGaN5ZCtiBc28jZfSELK1ogZgFP8AJXfmoclxqt5Pgj9osX
+        rcypf/pOERZPljCCM6gwAEmuYGC1mwz1zgBG0q1p6DGUe7775T6r9XpsjNaJib8=
+Received: (qmail 2098631 invoked from network); 30 Sep 2021 15:55:15 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 30 Sep 2021 15:55:15 +0200
+X-UD-Smtp-Session: l3s3148p1@OM3WyzbN1oQgARa4RV6LAWawlO8I9jL3
+Date:   Thu, 30 Sep 2021 15:55:15 +0200
+From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
+To:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Mark Brown <broonie@kernel.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Sergei Shtylyov <sergei.shtylyov@gmail.com>,
+        devicetree@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org,
+        Prabhakar <prabhakar.csengg@gmail.com>,
+        Biju Das <biju.das.jz@bp.renesas.com>
+Subject: Re: [PATCH 5/6] memory: renesas-rpc-if: Drop usage of
+ RPCIF_DIRMAP_SIZE macro
+Message-ID: <YVXBwx7rxJLRhlTI@shikoro>
+Mail-Followup-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Mark Brown <broonie@kernel.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Sergei Shtylyov <sergei.shtylyov@gmail.com>,
+        devicetree@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org,
+        Prabhakar <prabhakar.csengg@gmail.com>,
+        Biju Das <biju.das.jz@bp.renesas.com>
+References: <20210928140721.8805-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+ <20210928140721.8805-6-prabhakar.mahadev-lad.rj@bp.renesas.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="vM12nk/63StVgfqY"
+        protocol="application/pgp-signature"; boundary="okOuMtWAHaaiVQFC"
 Content-Disposition: inline
-In-Reply-To: <bce800ff-9b3e-500b-6a42-9a60d3a0c590@collabora.com>
-X-Cookie: 98% lean.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20210928140721.8805-6-prabhakar.mahadev-lad.rj@bp.renesas.com>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
 
---vM12nk/63StVgfqY
+--okOuMtWAHaaiVQFC
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 30, 2021 at 03:06:52PM +0200, Dafna Hirschfeld wrote:
-> On 30.09.21 14:46, Mark Brown wrote:
-> > On Thu, Sep 30, 2021 at 02:36:01PM +0200, Dafna Hirschfeld wrote:
+On Tue, Sep 28, 2021 at 03:07:20PM +0100, Lad Prabhakar wrote:
+> RPCIF_DIRMAP_SIZE may differ on various SoC's. Instead of using
+> RPCIF_DIRMAP_SIZE macro use resource size to get dirmap size
+> which is already part of struct rpcif.
+>=20
+> Also make sure we return error in case devm_ioremap_resource()
+> fails for dirmap.
+>=20
+> Fixes: ca7d8b980b67 ("memory: add Renesas RPC-IF driver")
+> Fixes: 59e27d7c94aa ("memory: renesas-rpc-if: fix possible NULL pointer d=
+ereference of resource")
+> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
 
-> > > Actually the original commit not only change that callback 'set_cs_timing' but it also
-> > > calls 'mtk_spi_set_hw_cs_timing' directly from the function "mtk_spi_prepare_message".
-> > > So this actually influences all devices bound to this driver (in upstream)
-> > > I did some printing and it does change values that are written to registers.
+In general, all fine. I just think this should be split into two
+patches:
 
-> > OK, so that's something that should have been in the commit log,
-> > preferrably in a more detailed form that identifies what the change is.
-> > However changing the values written out is clearly not the intent of the
-> > patch and it is a substantially better API so can we not just fix things
-> > so that the old values are written out?  Why are we jumping straight to
-> > a revert here?
+> @@ -147,8 +147,6 @@
+>  #define RPCIF_PHYINT		0x0088	/* R/W */
+>  #define RPCIF_PHYINT_WPVAL	BIT(1)
+> =20
+> -#define RPCIF_DIRMAP_SIZE	0x4000000
+> -
+>  static const struct regmap_range rpcif_volatile_ranges[] =3D {
+>  	regmap_reg_range(RPCIF_SMRDR0, RPCIF_SMRDR1),
+>  	regmap_reg_range(RPCIF_SMWDR0, RPCIF_SMWDR1),
+> @@ -547,8 +545,8 @@ EXPORT_SYMBOL(rpcif_manual_xfer);
+> =20
+>  ssize_t rpcif_dirmap_read(struct rpcif *rpc, u64 offs, size_t len, void =
+*buf)
+>  {
+> -	loff_t from =3D offs & (RPCIF_DIRMAP_SIZE - 1);
+> -	size_t size =3D RPCIF_DIRMAP_SIZE - from;
+> +	loff_t from =3D offs & (rpc->size - 1);
+> +	size_t size =3D rpc->size - from;
+> =20
+>  	if (len > size)
+>  		len =3D size;
 
-> It could be that the values written to the register in the new version of "mtk_spi_set_hw_cs_timing" are the same
-> as with the previous version. I didn't check that. The difference is that before that patch
-> the function was not called so it was a dead code. Now it is called and causes erros.
+This is the second patch to split which fixes ca7d8b980b67.
 
-> Without the datasheet it is hard to know how to fix it. I responded to that patch two days ago explaining
-> that but Mason Zhang didn't respond yet.
 
-The hardware supports register readback (it's doing a read/modify/write
-to set the new values) so it should be possible to look at what the
-default values that get written out are and work out what the default
-parameters should be set to to give the same effect (instead of 1 which
-is what's currently used).  I would say just skip the delays if they are
-zero but that means that if only one device on a bus has a delay
-configured there'd be problems.
+> @@ -244,7 +242,7 @@ int rpcif_sw_init(struct rpcif *rpc, struct device *d=
+ev)
+>  	res =3D platform_get_resource_byname(pdev, IORESOURCE_MEM, "dirmap");
+>  	rpc->dirmap =3D devm_ioremap_resource(&pdev->dev, res);
+>  	if (IS_ERR(rpc->dirmap))
+> -		rpc->dirmap =3D NULL;
+> +		return PTR_ERR(rpc->dirmap);
+>  	rpc->size =3D resource_size(res);
+> =20
+>  	rpc->rstc =3D devm_reset_control_get_exclusive(&pdev->dev, NULL);
 
-Please fix your mail client to word wrap within paragraphs at something
-substantially less than 80 columns.  Doing this makes your messages much
-easier to read and reply to.
+This is the first patch to split which fixes 59e27d7c94aa.
 
---vM12nk/63StVgfqY
+Makes sense?
+
+If you agree, you can add my tag already to the new patches:
+
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+
+
+--okOuMtWAHaaiVQFC
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmFVvrsACgkQJNaLcl1U
-h9Dvgwf8D/QgRgGL7+atgjRw9nrUP2dqOjbRukvgflD12pYe5ijMEvL6BFICSt4L
-T1sOe/K5W6GTKGOKlEZXqHZOtyYSvZfeOkIj/NhvmQzxfwLoDO20UuK/5nILt7Xb
-h5qP9YOjJHOfWUlZCg/r07K7V5r3CyIwjRbayLxAdC1kpaihkQH1Z5js5q2Is4w/
-SAamMil0l6tzMEXEorBK4fT3KJfA4rtIMe1u/npdwXw+50dO/zPEWWtTFyHIGzuJ
-O0oG+4pAEF9brMYzPTnq+c6AHGRQdCoD/nEoGrVHm8IBkqxnq7FM10/NjBH2RVPc
-pwUyQs1Cn163hgBK2eh8xWk9oMJy9g==
-=XIiO
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmFVwcMACgkQFA3kzBSg
+KbZM5A//fXS4viqAsvu5+MJsDqWy1PnkkxWVX0eKh7vxVxdV7ykHo6BWNIor3Trb
+RNDFycLEbVe+9SrnhLKUZiShiFR4xNQsBmJGds25YGFdQogDFGmnyapKA6zXtGj8
+KBe34UCyjUo5dv8Mvl5DGo5HEhYmu4OVZpGxPBfFqzmUEpk5dW9nUbiuH8rROVpW
+cs4UyGIAWC+NjGCm04VXy8pAWikVwCrs0RLBTGlk1KITESWts2Sz2q9EXuJdymy8
+yLfHKeTWl8oUAhLBlULhvaOp9z55U4utgBUtzP7xEwXdyWbSAmzluYIrQVaS/xtQ
+Mp6zCCwl4rpsYjWPPv5CKioj/qtBp2S9hbB4E/iigjMcpPCL7Znu+42/ehVu5HDf
+NLS4dizP/N+qTjZYIv1oCrkYFsdvOGwryAHYStOsZS9aSjO71lNLFBNdxnzi2B7p
+ySFR7l/Eb1VdNa82ZAfz1HbTxPKVhzHZHont7LW8LvqcfM3lZ1Xjm7+vvKmh1mq3
+Ypb0Hs6VlCIeBsvUUSTtmKYHA9E8+goahA4t5VPwtJVVXXVps5EnBFjoOEYZWAS2
+5t+rHMCIPX3+HB+kcr82WSZwoTydzO8lbwyIg7as1/U9nC0riYLPueeI3Wf/sxWt
+lpreIkbOSze9ThMEedlaTRzQouFaQW4JTTYG6IlCk/wpzadT/hE=
+=Pshj
 -----END PGP SIGNATURE-----
 
---vM12nk/63StVgfqY--
+--okOuMtWAHaaiVQFC--

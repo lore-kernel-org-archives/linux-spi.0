@@ -2,227 +2,87 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C031AC433EF
-	for <linux-spi@archiver.kernel.org>; Tue,  5 Oct 2021 09:41:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C79F7C433FE
+	for <linux-spi@archiver.kernel.org>; Tue,  5 Oct 2021 14:46:53 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 9B1BD611F0
-	for <linux-spi@archiver.kernel.org>; Tue,  5 Oct 2021 09:41:48 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id AE6EB6120A
+	for <linux-spi@archiver.kernel.org>; Tue,  5 Oct 2021 14:46:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232723AbhJEJni (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 5 Oct 2021 05:43:38 -0400
-Received: from mga06.intel.com ([134.134.136.31]:40560 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232658AbhJEJng (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 5 Oct 2021 05:43:36 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10127"; a="286576438"
-X-IronPort-AV: E=Sophos;i="5.85,348,1624345200"; 
-   d="scan'208";a="286576438"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2021 02:41:46 -0700
-X-IronPort-AV: E=Sophos;i="5.85,348,1624345200"; 
-   d="scan'208";a="438633858"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2021 02:41:42 -0700
-Received: by lahna (sSMTP sendmail emulation); Tue, 05 Oct 2021 12:41:39 +0300
-Date:   Tue, 5 Oct 2021 12:41:39 +0300
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Tudor Ambarus <tudor.ambarus@microchip.com>,
-        Mark Brown <broonie@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Michael Walle <michael@walle.cc>,
-        Pratyush Yadav <p.yadav@ti.com>,
+        id S235265AbhJEOsm (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 5 Oct 2021 10:48:42 -0400
+Received: from mail-vs1-f51.google.com ([209.85.217.51]:42963 "EHLO
+        mail-vs1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233705AbhJEOsj (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 5 Oct 2021 10:48:39 -0400
+Received: by mail-vs1-f51.google.com with SMTP id y14so10027862vsm.9;
+        Tue, 05 Oct 2021 07:46:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Khxc7wZumOtpS5mwACBEuWfNWBNzntWbNHisFSzTh08=;
+        b=5nvLDLj6NOtMwszfcD/jyNwDxMjdK25XmS6Jru/upYZt9VORevIgBKswKydErTOnZ6
+         ZkNUT2oyNgOSJioCRH7y67ZPfGT/qpyUzMk8rdKE2VsEgcawqXKB53YoXlG2qWYcNLXk
+         cekHvdQZ4cuRXjZQkL/yAuq9z1Pi6vTK2p/6w928HGAal1/+FIZOeTZlC2nGzeuDYEMa
+         EiMgaawSuqYKXT4E0DjcUYlD26v8ioZ7YveZpSbGvSngKGf4RezyMJPTlo9uZZ2wItCU
+         ZkCFzV6znHrg0BwPTYs1jpUIX23vpfJUGgB0MVccubA+JJf6tcX/6CVzZzt9J7xmYz0c
+         TLeA==
+X-Gm-Message-State: AOAM533fhUG8oI1XtmPTcJgy7yeIMoENPqniLk/1dc1F4eq1ntowQT3x
+        eKC6zUg9M4EN1JdUSrFU/fjlNMAc/KMO3078DqM=
+X-Google-Smtp-Source: ABdhPJxIHGhZacfkPIP0QwC6n8pXB9a9H3QfA2yMDeJQ7gBJ7CYF5IWxa2O5+r8IhAP9kqfW3mmB/ggpMuuDqe6hnpk=
+X-Received: by 2002:a67:c295:: with SMTP id k21mr16360605vsj.37.1633445208279;
+ Tue, 05 Oct 2021 07:46:48 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210928140721.8805-1-prabhakar.mahadev-lad.rj@bp.renesas.com> <20210928140721.8805-2-prabhakar.mahadev-lad.rj@bp.renesas.com>
+In-Reply-To: <20210928140721.8805-2-prabhakar.mahadev-lad.rj@bp.renesas.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Tue, 5 Oct 2021 16:46:37 +0200
+Message-ID: <CAMuHMdVy7RxUSWQOUDKB3-8igjYGBXO4ZYy=DamgQPqknXaUkw@mail.gmail.com>
+Subject: Re: [PATCH 1/6] dt-bindings: memory: renesas,rpc-if: Add support for
+ the R9A07G044
+To:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>,
         Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Mauro Lima <mauro.lima@eclypsium.com>,
-        Alexander Sverdlin <alexander.sverdlin@nokia.com>,
-        "open list:MEMORY TECHNOLOGY..." <linux-mtd@lists.infradead.org>,
-        linux-spi <linux-spi@vger.kernel.org>
-Subject: Re: [PATCH 2/3] mtd: spi-nor: intel-spi: Convert to SPI MEM
-Message-ID: <YVwd09KZwOQVvh4g@lahna>
-References: <20210930100719.2176-1-mika.westerberg@linux.intel.com>
- <20210930100719.2176-3-mika.westerberg@linux.intel.com>
- <CAHp75VdtOHn4ED-ixdDngBQw10OnKmbtTv=ydLs6dYbkjyqW4Q@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHp75VdtOHn4ED-ixdDngBQw10OnKmbtTv=ydLs6dYbkjyqW4Q@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+        Mark Brown <broonie@kernel.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Sergei Shtylyov <sergei.shtylyov@gmail.com>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        MTD Maling List <linux-mtd@lists.infradead.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Prabhakar <prabhakar.csengg@gmail.com>,
+        Biju Das <biju.das.jz@bp.renesas.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi Andy,
+On Tue, Sep 28, 2021 at 4:07 PM Lad Prabhakar
+<prabhakar.mahadev-lad.rj@bp.renesas.com> wrote:
+> SPI Multi I/O Bus Controller on RZ/G2L SoC is almost identical to
+> the RPC-IF interface found on R-Car Gen3 SoC's.
+>
+> This patch adds a new compatible string to identify the RZ/G2L family
+> so that the timing values on RZ/G2L can be adjusted.
+>
+> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
 
-On Mon, Oct 04, 2021 at 05:29:47PM +0300, Andy Shevchenko wrote:
-> On Thu, Sep 30, 2021 at 1:08 PM Mika Westerberg
-> <mika.westerberg@linux.intel.com> wrote:
-> >
-> > The preferred way to implement SPI-NOR controller drivers is through SPI
-> > subsubsystem utilizing the SPI MEM core functions. This converts the
-> > Intel SPI flash controller driver over the SPI MEM by moving the driver
-> > from SPI-NOR subsystem to SPI subsystem and in one go make it use the
-> > SPI MEM functions. The driver name will be changed from intel-spi to
-> > spi-intel to match the convention used in the SPI subsystem.
-> 
-> ...
-> 
-> > +config SPI_INTEL_PCI
-> > +       tristate "Intel PCH/PCU SPI flash PCI driver (DANGEROUS)"
-> > +       depends on PCI && (X86 || COMPILE_TEST)
-> 
-> Perhaps two entries, one of which will be the same as for platform case?
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-Sure will do that in v2.
+Gr{oetje,eeting}s,
 
-> > +       depends on SPI_MEM
-> > +       select SPI_INTEL
-> > +       help
-> > +         This enables PCI support for the Intel PCH/PCU SPI controller in
-> > +         master mode. This controller is present in modern Intel hardware
-> > +         and is used to hold BIOS and other persistent settings. Using
-> > +         this driver it is possible to upgrade BIOS directly from Linux.
-> > +
-> > +         Say N here unless you know what you are doing. Overwriting the
-> > +         SPI flash may render the system unbootable.
-> > +
-> > +         To compile this driver as a module, choose M here: the module
-> > +         will be called spi-intel-pci.
-> > +
-> > +config SPI_INTEL_PLATFORM
-> > +       tristate "Intel PCH/PCU SPI flash platform driver (DANGEROUS)"
-> > +       depends on X86 || COMPILE_TEST
-> > +       depends on SPI_MEM
-> > +       select SPI_INTEL
-> > +       help
-> > +         This enables platform support for the Intel PCH/PCU SPI
-> > +         controller in master mode. This controller is present in modern
-> > +         Intel hardware and is used to hold BIOS and other persistent
-> > +         settings. Using this driver it is possible to upgrade BIOS
-> > +         directly from Linux.
-> > +
-> > +         Say N here unless you know what you are doing. Overwriting the
-> > +         SPI flash may render the system unbootable.
-> > +
-> > +         To compile this driver as a module, choose M here: the module
-> > +         will be called spi-intel-platform.
-> 
-> ...
-> 
-> + Blank line ?
+                        Geert
 
-OK
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-> 
-> >  #include <linux/mtd/partitions.h>
-> >  #include <linux/mtd/spi-nor.h>
-> 
-> + Blank line?
-
-OK
-
-> > +#include <linux/spi/flash.h>
-> > +#include <linux/spi/spi.h>
-> > +#include <linux/spi/spi-mem.h>
-> 
-> The rationale is to show that we use two sub(sub)sytems here.
-
-Yup, got it.
-
-> ...
-> 
-> > -                       dev_err(ispi->dev, "read error: %llx: %#x\n", from,
-> > +                       dev_err(ispi->dev, "read error: %x: %#x\n", from,
-> >                                 status);
-> 
-> Now one line?
-> 
-> ...
-> 
-> > -                       dev_err(ispi->dev, "write error: %llx: %#x\n", to,
-> > +                       dev_err(ispi->dev, "write error: %x: %#x\n", to,
-> >                                 status);
-> 
-> Ditto.
-
-Sure for both.
-> 
-> ...
-> 
-> > +               ret = intel_spi_sw_cycle(ispi, opcode, 0,
-> > +                                        OPTYPE_WRITE_WITH_ADDR);
-> > +               return ret ? ret : 0;
-> 
-> Why not simply return intel_spi_dw_cycle(...); ?
-
-Good point. Will fix that.
-
-> ...
-> 
-> > +       val = readl(ispi->base + HSFSTS_CTL);
-> > +       val &= ~(HSFSTS_CTL_FDBC_MASK | HSFSTS_CTL_FCYCLE_MASK);
-> > +       val |= HSFSTS_CTL_AEL | HSFSTS_CTL_FCERR | HSFSTS_CTL_FDONE;
-> 
-> > +       val |= cmd;
-> > +       val |= HSFSTS_CTL_FGO;
-> 
-> Maybe swap these lines to group constants?
-
-OK
-
-> ...
-> 
-> > +       status = readl(ispi->base + HSFSTS_CTL);
-> > +       if (status & HSFSTS_CTL_FCERR)
-> > +               return -EIO;
-> 
-> > +       else if (status & HSFSTS_CTL_AEL)
-> 
-> Redundant 'else'
-
-Right.
-
-> > +               return -EACCES;
-> 
-> ...
-> 
-> > +static int intel_spi_exec_mem_op(struct spi_mem *mem, const struct spi_mem_op *op)
-> > +{
-> > +       struct intel_spi *ispi = spi_master_get_devdata(mem->spi->master);
-> > +       size_t nbytes = op->data.nbytes;
-> > +       u8 opcode = op->cmd.opcode;
-> > +
-> > +       if (op->addr.nbytes) {
-> > +               if  (op->data.dir == SPI_MEM_DATA_IN)
-> > +                       return intel_spi_read(ispi, op->addr.val, nbytes,
-> > +                                             op->data.buf.in);
-> 
-> > +               else if (op->data.dir == SPI_MEM_DATA_OUT)
-> 
-> Redundant 'else' here and nearby.
-
-Right. I'll fix these in v2.
-
-> > +                       return intel_spi_write(ispi, op->addr.val, nbytes,
-> > +                                              op->data.buf.out);
-> > +               else if (op->data.dir == SPI_MEM_NO_DATA)
-> > +                       return intel_spi_erase(ispi, opcode, op->addr.val);
-> > +       } else {
-> > +               if  (op->data.dir == SPI_MEM_DATA_IN)
-> > +                       return intel_spi_read_reg(ispi, opcode, op->data.buf.in,
-> > +                                                 nbytes);
-> > +               else if (op->data.dir == SPI_MEM_DATA_OUT)
-> > +                       return intel_spi_write_reg(ispi, opcode, op->data.buf.out,
-> > +                                                  nbytes);
-> > +               else if (op->data.dir == SPI_MEM_NO_DATA)
-> > +                       return intel_spi_write_reg(ispi, opcode, NULL, 0);
-> >         }
-> 
-> > +       return -EINVAL;
-> > +}
-> 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

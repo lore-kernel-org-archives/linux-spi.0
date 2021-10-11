@@ -2,49 +2,49 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3A7E5C43219
-	for <linux-spi@archiver.kernel.org>; Mon, 11 Oct 2021 13:28:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4F407C433F5
+	for <linux-spi@archiver.kernel.org>; Mon, 11 Oct 2021 13:28:14 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 25693610C8
-	for <linux-spi@archiver.kernel.org>; Mon, 11 Oct 2021 13:28:13 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2EF9760F21
+	for <linux-spi@archiver.kernel.org>; Mon, 11 Oct 2021 13:28:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236901AbhJKNaM (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 11 Oct 2021 09:30:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57896 "EHLO
+        id S236907AbhJKNaN (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 11 Oct 2021 09:30:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235427AbhJKNaL (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 11 Oct 2021 09:30:11 -0400
+        with ESMTP id S236903AbhJKNaM (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 11 Oct 2021 09:30:12 -0400
 Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45574C06161C
-        for <linux-spi@vger.kernel.org>; Mon, 11 Oct 2021 06:28:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91EABC061570
+        for <linux-spi@vger.kernel.org>; Mon, 11 Oct 2021 06:28:12 -0700 (PDT)
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
         by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <ukl@pengutronix.de>)
-        id 1mZvLZ-0006g3-Rl; Mon, 11 Oct 2021 15:28:05 +0200
+        id 1mZvLZ-0006fo-Rl; Mon, 11 Oct 2021 15:28:05 +0200
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
         by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
         (envelope-from <ukl@pengutronix.de>)
-        id 1mZvLX-0003nv-7f; Mon, 11 Oct 2021 15:28:03 +0200
+        id 1mZvLW-0003ns-BL; Mon, 11 Oct 2021 15:28:02 +0200
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
         (envelope-from <ukl@pengutronix.de>)
-        id 1mZvLX-0000TG-6f; Mon, 11 Oct 2021 15:28:03 +0200
+        id 1mZvLW-0000Su-AS; Mon, 11 Oct 2021 15:28:02 +0200
 From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>
+To:     Yasunari Takiguchi <Yasunari.Takiguchi@sony.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>
 Cc:     Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        kernel@pengutronix.de, linux-serial@vger.kernel.org
-Subject: [PATCH 11/13] serial: sc16is7xx: Make sc16is7xx_remove() return void
-Date:   Mon, 11 Oct 2021 15:27:52 +0200
-Message-Id: <20211011132754.2479853-12-u.kleine-koenig@pengutronix.de>
+        kernel@pengutronix.de, linux-media@vger.kernel.org
+Subject: [PATCH 06/13] media: cxd2880: Eliminate dead code
+Date:   Mon, 11 Oct 2021 15:27:47 +0200
+Message-Id: <20211011132754.2479853-7-u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20211011132754.2479853-1-u.kleine-koenig@pengutronix.de>
 References: <20211011132754.2479853-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Patch-Hashes: v=1; h=sha256; i=4Pou8jXQbhOkXAt6/muRjkP0OfJUPHt75pctr7W+qqQ=; m=FIxK0yiWgNMRKKImS8BCXtEUBZW2wFh2le6TX2NO04A=; p=xcjGL8QM0ju7yd9mMj+VQ44EbtM+ByszDKF/lE8HgZk=; g=225f2b3f7950dae6086a79241ab3e42afbf56a88
-X-Patch-Sig: m=pgp; i=u.kleine-koenig@pengutronix.de; s=0x0D2511F322BFAB1C1580266BE2DCDD9132669BD6; b=iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmFkO38ACgkQwfwUeK3K7An3SAf+Md4 Byw4aGyMFodFj61gn6trVIWdl0YwUf/cldCbo5kouYfhoQ/q0VDF986ma948oRxpbmHTJeL3+bghL 8DEdVh0gqiMUJ4ltygAQu2hx54UcgUfUiGH9o8RZQVXFK6PtZxAxOGeBIeFRfXFZms4JBNRhY4pvh 2jUY6WIPbl3I/Se2Jvhg4GpNKqLffJTqbehGbab7yECiuSjizieTXSIwbqyGEE61UMFw2PwWB2WRM 1ErBDscPmzQb5bOSU6grlxe1keHL2ZRh3Futtljmf9khvC4YIq+mA5U1irDPu1NGhQkJGm88VGCwv XArVECtjmsWKT1QjX/tzgMmdua9RzpA==
+X-Patch-Hashes: v=1; h=sha256; i=i/V0IwiXrJHb2puTsy4r3UAQrVBpJK4uRHfeGK5dIi4=; m=6Brp6ipiIrN4N0gba2jlJ7ZY/JS2k/XshUNdN7/roa8=; p=8ZiFid/gojahfXRtSIUMwOZadkeWb7YdowfHaijfOII=; g=d6494736086a7092e3c965bf6057c1246baeecdc
+X-Patch-Sig: m=pgp; i=u.kleine-koenig@pengutronix.de; s=0x0D2511F322BFAB1C1580266BE2DCDD9132669BD6; b=iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmFkO3AACgkQwfwUeK3K7An0qwgAj8V mDxoME459ANjclTFtNbTpA1pzAKyZwdClCAQ9VnZIJIZhfNdG81qCXcPjvYi4zdwJeEHFUwBONzPT PrvEmxFgDrETZHjQbuEHlAjQI7Eqw7VrPeD5Lu+geB4XEdUC/kMatvjqMme7wAX5hkoKxmKMzWk12 MeqPBzXo73w6z/eug2ODOdUypkdm2MLZSRl9NrqVR46wXOi0MWMG44YbfeJBwrWYe8bykfqnFGEOC WWgyK97pP7n/mnemkzTkJ3JZDLmajZjMs5PO+VVH5HG35Wr8lc0PATn8OOZm8haAkZC1otmbYUV0m L2zPwQ1EFUnRMZ8Xo+yMyHEsUxXa4nw==
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
 X-SA-Exim-Mail-From: ukl@pengutronix.de
@@ -54,52 +54,44 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Up to now sc16is7xx_remove() returns zero unconditionally. Make it
-return void instead which makes it easier to see in the callers that
-there is no error to handle.
+An spi remove callback is never called with an spi_device pointer that
+is NULL. Also it is only called for devices that probed successfully. As
+cxd2880_spi_probe() always sets driver data, spi_get_drvdata() cannot be
+NULL.
 
-Also the return value of spi remove callbacks is ignored anyway.
+Also the return value of spi remove callbacks is ignored anyway and not
+freeing resources in .remove() is a bad idea.
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
- drivers/tty/serial/sc16is7xx.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/media/spi/cxd2880-spi.c | 13 +------------
+ 1 file changed, 1 insertion(+), 12 deletions(-)
 
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index acbb615dd28f..f8cbe451107b 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -1365,7 +1365,7 @@ static int sc16is7xx_probe(struct device *dev,
- 	return ret;
- }
- 
--static int sc16is7xx_remove(struct device *dev)
-+static void sc16is7xx_remove(struct device *dev)
+diff --git a/drivers/media/spi/cxd2880-spi.c b/drivers/media/spi/cxd2880-spi.c
+index b91a1e845b97..67cacf29a61e 100644
+--- a/drivers/media/spi/cxd2880-spi.c
++++ b/drivers/media/spi/cxd2880-spi.c
+@@ -628,19 +628,8 @@ cxd2880_spi_probe(struct spi_device *spi)
+ static int
+ cxd2880_spi_remove(struct spi_device *spi)
  {
- 	struct sc16is7xx_port *s = dev_get_drvdata(dev);
- 	int i;
-@@ -1444,7 +1444,9 @@ static int sc16is7xx_spi_probe(struct spi_device *spi)
+-	struct cxd2880_dvb_spi *dvb_spi;
++	struct cxd2880_dvb_spi *dvb_spi = spi_get_drvdata(spi);
  
- static int sc16is7xx_spi_remove(struct spi_device *spi)
- {
--	return sc16is7xx_remove(&spi->dev);
-+	sc16is7xx_remove(&spi->dev);
-+
-+	return 0;
- }
- 
- static const struct spi_device_id sc16is7xx_spi_id_table[] = {
-@@ -1497,7 +1499,9 @@ static int sc16is7xx_i2c_probe(struct i2c_client *i2c,
- 
- static int sc16is7xx_i2c_remove(struct i2c_client *client)
- {
--	return sc16is7xx_remove(&client->dev);
-+	sc16is7xx_remove(&client->dev);
-+
-+	return 0;
- }
- 
- static const struct i2c_device_id sc16is7xx_i2c_id_table[] = {
+-	if (!spi) {
+-		pr_err("invalid arg\n");
+-		return -EINVAL;
+-	}
+-
+-	dvb_spi = spi_get_drvdata(spi);
+-
+-	if (!dvb_spi) {
+-		pr_err("failed\n");
+-		return -EINVAL;
+-	}
+ 	dvb_spi->demux.dmx.remove_frontend(&dvb_spi->demux.dmx,
+ 					   &dvb_spi->dmx_fe);
+ 	dvb_dmxdev_release(&dvb_spi->dmxdev);
 -- 
 2.30.2
 

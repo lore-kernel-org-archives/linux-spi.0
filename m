@@ -2,43 +2,44 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EF556C433EF
-	for <linux-spi@archiver.kernel.org>; Mon, 11 Oct 2021 20:49:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C8B4CC433EF
+	for <linux-spi@archiver.kernel.org>; Mon, 11 Oct 2021 21:40:42 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D77D260462
-	for <linux-spi@archiver.kernel.org>; Mon, 11 Oct 2021 20:49:11 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A9D0E60E54
+	for <linux-spi@archiver.kernel.org>; Mon, 11 Oct 2021 21:40:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232898AbhJKUvL (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 11 Oct 2021 16:51:11 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:44178 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235103AbhJKUt0 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 11 Oct 2021 16:49:26 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 19BKlFUd120594;
-        Mon, 11 Oct 2021 15:47:15 -0500
+        id S235342AbhJKVmm (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 11 Oct 2021 17:42:42 -0400
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:52728 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229641AbhJKVml (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 11 Oct 2021 17:42:41 -0400
+X-Greylist: delayed 3227 seconds by postgrey-1.27 at vger.kernel.org; Mon, 11 Oct 2021 17:42:41 EDT
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 19BKlSFS071163;
+        Mon, 11 Oct 2021 15:47:28 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1633985235;
-        bh=w7E6JyxIZUA2SdyIeNyt39TQ5DAkOg+qhHKv0x4dNcg=;
+        s=ti-com-17Q1; t=1633985248;
+        bh=JsMJVwDttgmG/vVRT1b55ya+HKmXPSJxJ7o0HOFrZPc=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=OVQDwQByzoAHGuXrcyHr7ywvQdjNu304uTfkpW5s7TDx6lcFcUO71dg+2+jbZJZJ2
-         NSWtoP8PC6V9weaQAlORVzPYzGgqnZWM1XO17aVi5r/pRvDCKANJUpa4RrFaho1i/h
-         /J3mwA4QmOSh+OmSUZ5Dke0/8ST3M11fPt2rrP8s=
-Received: from DLEE102.ent.ti.com (dlee102.ent.ti.com [157.170.170.32])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 19BKlFEA096742
+        b=ZQjRBXuHJxJb5yA6WKWJqItXM6OGAChveEydtd36qYfsgp/00/bzx4xX+r/znG7IB
+         vaBghenKIP+0YWw9InzK3KdbpKnbERKTkYGAVHm1U6b4mNySXIWh3VvLemospM4fOq
+         swjp5UN89acG5e6zLtxtSPg63JEc0QvGArfY8IRo=
+Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 19BKlSst106134
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 11 Oct 2021 15:47:15 -0500
-Received: from DLEE114.ent.ti.com (157.170.170.25) by DLEE102.ent.ti.com
- (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
+        Mon, 11 Oct 2021 15:47:28 -0500
+Received: from DLEE115.ent.ti.com (157.170.170.26) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Mon, 11
- Oct 2021 15:47:15 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE114.ent.ti.com
- (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+ Oct 2021 15:47:28 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
- Frontend Transport; Mon, 11 Oct 2021 15:47:15 -0500
+ Frontend Transport; Mon, 11 Oct 2021 15:47:28 -0500
 Received: from LT5CD112GSQZ.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 19BKkKEn069811;
-        Mon, 11 Oct 2021 15:47:10 -0500
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 19BKkKEp069811;
+        Mon, 11 Oct 2021 15:47:23 -0500
 From:   Apurva Nandan <a-nandan@ti.com>
 To:     Miquel Raynal <miquel.raynal@bootlin.com>,
         Richard Weinberger <richard@nod.at>,
@@ -51,9 +52,9 @@ To:     Miquel Raynal <miquel.raynal@bootlin.com>,
         <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
         <linux-spi@vger.kernel.org>
 CC:     <p.yadav@ti.com>
-Subject: [PATCH v2 09/14] mtd: spinand: winbond: Add octal_dtr_enable() for manufacturer_ops
-Date:   Tue, 12 Oct 2021 02:16:14 +0530
-Message-ID: <20211011204619.81893-10-a-nandan@ti.com>
+Subject: [PATCH v2 11/14] mtd: spinand: Perform Power-on-Reset on the flash in mtd_suspend()
+Date:   Tue, 12 Oct 2021 02:16:16 +0530
+Message-ID: <20211011204619.81893-12-a-nandan@ti.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211011204619.81893-1-a-nandan@ti.com>
 References: <20211011204619.81893-1-a-nandan@ti.com>
@@ -65,86 +66,68 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Add implementation of octal_dtr_enable() manufacturer_ops for Winbond.
-To switch to Ocatl DTR mode, setting programmable dummy cycles and
-SPI IO mode using the volatile configuration register is required. To
-function at max 120MHz SPI clock in Octal DTR mode, 12 programmable
-dummy clock cycle setting is required. (Default number of dummy cycle
-are 8 clocks)
+A soft reset using FFh command doesn't erase the flash's configuration
+and doesn't reset the SPI IO mode also. This can result in the flash
+being in a different SPI IO mode, e.g. Octal DTR, when resuming from
+sleep. This could put the flash in an unrecognized SPI IO mode, making
+it unusable.
 
-Set the programmable dummy cycle to 12 clocks, and SPI IO mode to
-Octal DTR with Data Strobe in the VCR. Also, perform a READ ID
-operation in Octal DTR SPI mode to ensure the switch was successful.
-
-Datasheet: https://www.winbond.com/export/sites/winbond/datasheet/W35N01JW_Datasheet_Brief.pdf
+Perform a Power-on-Reset (PoR), if available in the flash, when
+performing mtd_suspend(). This would set the flash to clean
+state for reinitialization during resume and would also ensure that it
+is in standard SPI IO mode (1S-1S-1S) before the resume begins.
 
 Signed-off-by: Apurva Nandan <a-nandan@ti.com>
 ---
- drivers/mtd/nand/spi/winbond.c | 42 ++++++++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+ drivers/mtd/nand/spi/core.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/drivers/mtd/nand/spi/winbond.c b/drivers/mtd/nand/spi/winbond.c
-index 89d8ee801f56..e2cb82d68f96 100644
---- a/drivers/mtd/nand/spi/winbond.c
-+++ b/drivers/mtd/nand/spi/winbond.c
-@@ -16,6 +16,14 @@
+diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
+index 9b570570ee81..60408531979a 100644
+--- a/drivers/mtd/nand/spi/core.c
++++ b/drivers/mtd/nand/spi/core.c
+@@ -1316,6 +1316,11 @@ static void spinand_mtd_resume(struct mtd_info *mtd)
+ 	int ret;
  
- #define WINBOND_CFG_BUF_READ		BIT(3)
- 
-+/* Octal DTR SPI mode (8D-8D-8D) with Data Strobe output*/
-+#define WINBOND_IO_MODE_VCR_OCTAL_DTR	0xE7
-+#define WINBOND_IO_MODE_VCR_ADDR	0x00
-+
-+/* Use 12 dummy clk cycles for using Octal DTR SPI at max 120MHZ */
-+#define WINBOND_DUMMY_CLK_COUNT		12
-+#define WINBOND_DUMMY_CLK_VCR_ADDR	0x01
-+
- static SPINAND_OP_VARIANTS(read_cache_variants,
- 		SPINAND_PAGE_READ_FROM_CACHE_QUADIO_OP(0, 2, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_X4_OP(0, 1, NULL, 0),
-@@ -156,8 +164,42 @@ static int winbond_write_vcr_op(struct spinand_device *spinand, u8 reg, u8 val)
- 	return 0;
+ 	spinand->reg_proto = SPINAND_SINGLE_STR;
++	/*
++	 * PoR Reset (if available by the manufacturer) is performed at the suspend
++	 * time. Hence, those flashes remain in power-on-state at this point, in a
++	 * standard SPI IO mode. So, now the core unanimously performs a soft reset.
++	 */
+ 	ret = spinand_reset_op(spinand);
+ 	if (ret)
+ 		return;
+@@ -1327,6 +1332,21 @@ static void spinand_mtd_resume(struct mtd_info *mtd)
+ 	spinand_ecc_enable(spinand, false);
  }
  
-+static int winbond_spinand_octal_dtr_enable(struct spinand_device *spinand)
++static int spinand_mtd_suspend(struct mtd_info *mtd)
 +{
++	struct spinand_device *spinand = mtd_to_spinand(mtd);
 +	int ret;
-+	struct spi_mem_op op;
 +
-+	ret = winbond_write_vcr_op(spinand, WINBOND_DUMMY_CLK_VCR_ADDR,
-+				   WINBOND_DUMMY_CLK_COUNT);
++	if (!(spinand->flags & SPINAND_HAS_POR_CMD_BIT))
++		return 0;
++
++	ret = spinand_power_on_rst_op(spinand);
 +	if (ret)
-+		return ret;
++		dev_err(&spinand->spimem->spi->dev, "suspend() failed\n");
 +
-+	ret = winbond_write_vcr_op(spinand, WINBOND_IO_MODE_VCR_ADDR,
-+				   WINBOND_IO_MODE_VCR_OCTAL_DTR);
-+	if (ret)
-+		return ret;
-+
-+	/* Read flash ID to make sure the switch was successful. */
-+	op = (struct spi_mem_op)
-+		SPI_MEM_OP(SPI_MEM_OP_CMD_DTR(2, 0x9f9f, 8),
-+			   SPI_MEM_OP_NO_ADDR,
-+			   SPI_MEM_OP_DUMMY_DTR(16, 8),
-+			   SPI_MEM_OP_DATA_IN_DTR(SPINAND_MAX_ID_LEN,
-+						  spinand->scratchbuf, 8));
-+
-+	ret = spi_mem_exec_op(spinand->spimem, &op);
-+	if (ret)
-+		return ret;
-+
-+	if (memcmp(spinand->scratchbuf, spinand->id.data, SPINAND_MAX_ID_LEN))
-+		return -EINVAL;
-+
-+	return 0;
++	return ret;
 +}
 +
- static const struct spinand_manufacturer_ops winbond_spinand_manuf_ops = {
- 	.init = winbond_spinand_init,
-+	.octal_dtr_enable = winbond_spinand_octal_dtr_enable,
- };
+ static int spinand_init(struct spinand_device *spinand)
+ {
+ 	struct device *dev = &spinand->spimem->spi->dev;
+@@ -1399,6 +1419,7 @@ static int spinand_init(struct spinand_device *spinand)
+ 	mtd->_erase = spinand_mtd_erase;
+ 	mtd->_max_bad_blocks = nanddev_mtd_max_bad_blocks;
+ 	mtd->_resume = spinand_mtd_resume;
++	mtd->_suspend = spinand_mtd_suspend;
  
- const struct spinand_manufacturer winbond_spinand_manufacturer = {
+ 	if (nand->ecc.engine) {
+ 		ret = mtd_ooblayout_count_freebytes(mtd);
 -- 
 2.25.1
 

@@ -2,43 +2,43 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B319C433F5
-	for <linux-spi@archiver.kernel.org>; Mon, 11 Oct 2021 20:47:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EF556C433EF
+	for <linux-spi@archiver.kernel.org>; Mon, 11 Oct 2021 20:49:11 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2338060462
-	for <linux-spi@archiver.kernel.org>; Mon, 11 Oct 2021 20:47:51 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D77D260462
+	for <linux-spi@archiver.kernel.org>; Mon, 11 Oct 2021 20:49:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235152AbhJKUtu (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 11 Oct 2021 16:49:50 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:44256 "EHLO
+        id S232898AbhJKUvL (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 11 Oct 2021 16:51:11 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:44178 "EHLO
         fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235151AbhJKUtu (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 11 Oct 2021 16:49:50 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 19BKldmj120808;
-        Mon, 11 Oct 2021 15:47:39 -0500
+        with ESMTP id S235103AbhJKUt0 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 11 Oct 2021 16:49:26 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 19BKlFUd120594;
+        Mon, 11 Oct 2021 15:47:15 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1633985259;
-        bh=dMVkJuUTqKoo3F2P0BflCjFyT83ni7c2ZoatqXxrVJg=;
+        s=ti-com-17Q1; t=1633985235;
+        bh=w7E6JyxIZUA2SdyIeNyt39TQ5DAkOg+qhHKv0x4dNcg=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=xnvCZcMTePJms8lfhBp0nMlFR78ZEVRXsIInBUK9B+e4MmS06VlHLgBKImy7hhJr+
-         wLSXsPzJkOGIzsrpieyssuzWvx1Hljfj0vQmgPTrRLPIuQdoJzMUghFny190cFwJ3B
-         TtZKGD2Fb7mrcEHP6thp2OwgSAll/4SLumSosKzw=
-Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 19BKldJM097494
+        b=OVQDwQByzoAHGuXrcyHr7ywvQdjNu304uTfkpW5s7TDx6lcFcUO71dg+2+jbZJZJ2
+         NSWtoP8PC6V9weaQAlORVzPYzGgqnZWM1XO17aVi5r/pRvDCKANJUpa4RrFaho1i/h
+         /J3mwA4QmOSh+OmSUZ5Dke0/8ST3M11fPt2rrP8s=
+Received: from DLEE102.ent.ti.com (dlee102.ent.ti.com [157.170.170.32])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 19BKlFEA096742
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 11 Oct 2021 15:47:39 -0500
-Received: from DFLE107.ent.ti.com (10.64.6.28) by DFLE100.ent.ti.com
- (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+        Mon, 11 Oct 2021 15:47:15 -0500
+Received: from DLEE114.ent.ti.com (157.170.170.25) by DLEE102.ent.ti.com
+ (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Mon, 11
- Oct 2021 15:47:39 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE107.ent.ti.com
- (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
+ Oct 2021 15:47:15 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE114.ent.ti.com
+ (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
- Frontend Transport; Mon, 11 Oct 2021 15:47:39 -0500
+ Frontend Transport; Mon, 11 Oct 2021 15:47:15 -0500
 Received: from LT5CD112GSQZ.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 19BKkKEr069811;
-        Mon, 11 Oct 2021 15:47:34 -0500
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 19BKkKEn069811;
+        Mon, 11 Oct 2021 15:47:10 -0500
 From:   Apurva Nandan <a-nandan@ti.com>
 To:     Miquel Raynal <miquel.raynal@bootlin.com>,
         Richard Weinberger <richard@nod.at>,
@@ -51,9 +51,9 @@ To:     Miquel Raynal <miquel.raynal@bootlin.com>,
         <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
         <linux-spi@vger.kernel.org>
 CC:     <p.yadav@ti.com>
-Subject: [PATCH v2 13/14] mtd: spinand: winbond: Rename cache op_variants struct variable
-Date:   Tue, 12 Oct 2021 02:16:18 +0530
-Message-ID: <20211011204619.81893-14-a-nandan@ti.com>
+Subject: [PATCH v2 09/14] mtd: spinand: winbond: Add octal_dtr_enable() for manufacturer_ops
+Date:   Tue, 12 Oct 2021 02:16:14 +0530
+Message-ID: <20211011204619.81893-10-a-nandan@ti.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211011204619.81893-1-a-nandan@ti.com>
 References: <20211011204619.81893-1-a-nandan@ti.com>
@@ -65,72 +65,86 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Till now, supported Winbond SPI NAND flashes had same supported
-op_variants. W35N01JW introduces Octal DTR SPI IO mode, so now
-different op_variants struct variables are required for different
-Winbond flashes. Hence, rename and append the flash name in the
-op_variants struct variable.
+Add implementation of octal_dtr_enable() manufacturer_ops for Winbond.
+To switch to Ocatl DTR mode, setting programmable dummy cycles and
+SPI IO mode using the volatile configuration register is required. To
+function at max 120MHz SPI clock in Octal DTR mode, 12 programmable
+dummy clock cycle setting is required. (Default number of dummy cycle
+are 8 clocks)
+
+Set the programmable dummy cycle to 12 clocks, and SPI IO mode to
+Octal DTR with Data Strobe in the VCR. Also, perform a READ ID
+operation in Octal DTR SPI mode to ensure the switch was successful.
 
 Datasheet: https://www.winbond.com/export/sites/winbond/datasheet/W35N01JW_Datasheet_Brief.pdf
 
 Signed-off-by: Apurva Nandan <a-nandan@ti.com>
 ---
- drivers/mtd/nand/spi/winbond.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/mtd/nand/spi/winbond.c | 42 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
 
 diff --git a/drivers/mtd/nand/spi/winbond.c b/drivers/mtd/nand/spi/winbond.c
-index d962221d4082..1857836f19d0 100644
+index 89d8ee801f56..e2cb82d68f96 100644
 --- a/drivers/mtd/nand/spi/winbond.c
 +++ b/drivers/mtd/nand/spi/winbond.c
-@@ -31,7 +31,7 @@
- #define WINBOND_DUMMY_CLK_COUNT		12
- #define WINBOND_DUMMY_CLK_VCR_ADDR	0x01
+@@ -16,6 +16,14 @@
  
--static SPINAND_OP_VARIANTS(read_cache_variants,
-+static SPINAND_OP_VARIANTS(read_cache_variants_w25xxgv,
+ #define WINBOND_CFG_BUF_READ		BIT(3)
+ 
++/* Octal DTR SPI mode (8D-8D-8D) with Data Strobe output*/
++#define WINBOND_IO_MODE_VCR_OCTAL_DTR	0xE7
++#define WINBOND_IO_MODE_VCR_ADDR	0x00
++
++/* Use 12 dummy clk cycles for using Octal DTR SPI at max 120MHZ */
++#define WINBOND_DUMMY_CLK_COUNT		12
++#define WINBOND_DUMMY_CLK_VCR_ADDR	0x01
++
+ static SPINAND_OP_VARIANTS(read_cache_variants,
  		SPINAND_PAGE_READ_FROM_CACHE_QUADIO_OP(0, 2, NULL, 0),
  		SPINAND_PAGE_READ_FROM_CACHE_X4_OP(0, 1, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_DUALIO_OP(0, 1, NULL, 0),
-@@ -39,11 +39,11 @@ static SPINAND_OP_VARIANTS(read_cache_variants,
- 		SPINAND_PAGE_READ_FROM_CACHE_OP(true, 0, 1, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_OP(false, 0, 1, NULL, 0));
+@@ -156,8 +164,42 @@ static int winbond_write_vcr_op(struct spinand_device *spinand, u8 reg, u8 val)
+ 	return 0;
+ }
  
--static SPINAND_OP_VARIANTS(write_cache_variants,
-+static SPINAND_OP_VARIANTS(write_cache_variants_w25xxgv,
- 		SPINAND_PROG_LOAD_X4(true, 0, NULL, 0),
- 		SPINAND_PROG_LOAD(true, 0, NULL, 0));
- 
--static SPINAND_OP_VARIANTS(update_cache_variants,
-+static SPINAND_OP_VARIANTS(update_cache_variants_w25xxgv,
- 		SPINAND_PROG_LOAD_X4(false, 0, NULL, 0),
- 		SPINAND_PROG_LOAD(false, 0, NULL, 0));
- 
-@@ -95,9 +95,9 @@ static const struct spinand_info winbond_spinand_table[] = {
- 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xab),
- 		     NAND_MEMORG(1, 2048, 64, 64, 1024, 20, 1, 1, 2),
- 		     NAND_ECCREQ(1, 512),
--		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
--					      &write_cache_variants,
--					      &update_cache_variants),
-+		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants_w25xxgv,
-+					      &write_cache_variants_w25xxgv,
-+					      &update_cache_variants_w25xxgv),
- 		     0,
- 		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL),
- 		     SPINAND_SELECT_TARGET(w25m02gv_select_target)),
-@@ -105,9 +105,9 @@ static const struct spinand_info winbond_spinand_table[] = {
- 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xaa),
- 		     NAND_MEMORG(1, 2048, 64, 64, 1024, 20, 1, 1, 1),
- 		     NAND_ECCREQ(1, 512),
--		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
--					      &write_cache_variants,
--					      &update_cache_variants),
-+		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants_w25xxgv,
-+					      &write_cache_variants_w25xxgv,
-+					      &update_cache_variants_w25xxgv),
- 		     0,
- 		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL)),
++static int winbond_spinand_octal_dtr_enable(struct spinand_device *spinand)
++{
++	int ret;
++	struct spi_mem_op op;
++
++	ret = winbond_write_vcr_op(spinand, WINBOND_DUMMY_CLK_VCR_ADDR,
++				   WINBOND_DUMMY_CLK_COUNT);
++	if (ret)
++		return ret;
++
++	ret = winbond_write_vcr_op(spinand, WINBOND_IO_MODE_VCR_ADDR,
++				   WINBOND_IO_MODE_VCR_OCTAL_DTR);
++	if (ret)
++		return ret;
++
++	/* Read flash ID to make sure the switch was successful. */
++	op = (struct spi_mem_op)
++		SPI_MEM_OP(SPI_MEM_OP_CMD_DTR(2, 0x9f9f, 8),
++			   SPI_MEM_OP_NO_ADDR,
++			   SPI_MEM_OP_DUMMY_DTR(16, 8),
++			   SPI_MEM_OP_DATA_IN_DTR(SPINAND_MAX_ID_LEN,
++						  spinand->scratchbuf, 8));
++
++	ret = spi_mem_exec_op(spinand->spimem, &op);
++	if (ret)
++		return ret;
++
++	if (memcmp(spinand->scratchbuf, spinand->id.data, SPINAND_MAX_ID_LEN))
++		return -EINVAL;
++
++	return 0;
++}
++
+ static const struct spinand_manufacturer_ops winbond_spinand_manuf_ops = {
+ 	.init = winbond_spinand_init,
++	.octal_dtr_enable = winbond_spinand_octal_dtr_enable,
  };
+ 
+ const struct spinand_manufacturer winbond_spinand_manufacturer = {
 -- 
 2.25.1
 

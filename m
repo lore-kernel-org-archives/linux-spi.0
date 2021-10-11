@@ -2,44 +2,44 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 10CE9C4332F
-	for <linux-spi@archiver.kernel.org>; Mon, 11 Oct 2021 21:40:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 39C33C43217
+	for <linux-spi@archiver.kernel.org>; Mon, 11 Oct 2021 21:40:46 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id E567060E54
-	for <linux-spi@archiver.kernel.org>; Mon, 11 Oct 2021 21:40:44 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2576060E54
+	for <linux-spi@archiver.kernel.org>; Mon, 11 Oct 2021 21:40:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235368AbhJKVmo (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 11 Oct 2021 17:42:44 -0400
+        id S235378AbhJKVmp (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 11 Oct 2021 17:42:45 -0400
 Received: from lelv0143.ext.ti.com ([198.47.23.248]:52728 "EHLO
         lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235353AbhJKVmn (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 11 Oct 2021 17:42:43 -0400
+        with ESMTP id S235377AbhJKVmp (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 11 Oct 2021 17:42:45 -0400
 X-Greylist: delayed 3227 seconds by postgrey-1.27 at vger.kernel.org; Mon, 11 Oct 2021 17:42:41 EDT
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 19BKknQn070955;
-        Mon, 11 Oct 2021 15:46:49 -0500
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 19BKl5tQ071016;
+        Mon, 11 Oct 2021 15:47:05 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1633985209;
-        bh=zuAnALlNlpxKf8XxKC5WEtmIbZqVguvc3Q0C3DzvGGs=;
+        s=ti-com-17Q1; t=1633985225;
+        bh=DFZQnhqlxo23Wmwjp8fS/CEqoUGjmQJfz+RoEPGUJNY=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=UoLlY5j4IzTnUDuQDYGeq+cA6N1uER9VLr7a5yRy4D+o0pOjrQ8GRvEeXDtAV3r2v
-         1raSQOPIFVo9vPvYjZUHCNLR7bkxwbzEYUfBS7fIlqOlK56vXSo+j2swtcb4g0TjRc
-         ieR4nfFB8YcIyv2M9cYLAw4fttIY/H4gqsIwnSnI=
-Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 19BKknFl105109
+        b=kfL7inrw9Uy0mByZ9k/uXRYknUVv3fhl/s9YeXBtqys0S7OprKf9vkjBfqQSsXzmx
+         xfrjSXaIFUbX4EXf3U4QCCxFoGm0uP3jk8+Dj9jlVoSMjCev7OsTvbsgslxRC2mE5c
+         B8MxSOcUzPobiRs8HCBIPhIZbPVqaQK/PlKN33ZQ=
+Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 19BKl5uM096784
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 11 Oct 2021 15:46:49 -0500
-Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE105.ent.ti.com
- (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
+        Mon, 11 Oct 2021 15:47:05 -0500
+Received: from DLEE108.ent.ti.com (157.170.170.38) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Mon, 11
- Oct 2021 15:46:49 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE111.ent.ti.com
- (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ Oct 2021 15:47:04 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
- Frontend Transport; Mon, 11 Oct 2021 15:46:48 -0500
+ Frontend Transport; Mon, 11 Oct 2021 15:47:04 -0500
 Received: from LT5CD112GSQZ.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 19BKkKEi069811;
-        Mon, 11 Oct 2021 15:46:43 -0500
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 19BKkKEl069811;
+        Mon, 11 Oct 2021 15:47:00 -0500
 From:   Apurva Nandan <a-nandan@ti.com>
 To:     Miquel Raynal <miquel.raynal@bootlin.com>,
         Richard Weinberger <richard@nod.at>,
@@ -52,9 +52,9 @@ To:     Miquel Raynal <miquel.raynal@bootlin.com>,
         <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
         <linux-spi@vger.kernel.org>
 CC:     <p.yadav@ti.com>
-Subject: [PATCH v2 04/14] mtd: spinand: Fix odd byte addr and data phase in read and write reg op for Octal DTR mode
-Date:   Tue, 12 Oct 2021 02:16:09 +0530
-Message-ID: <20211011204619.81893-5-a-nandan@ti.com>
+Subject: [PATCH v2 07/14] mtd: spinand: Allow enabling Octal DTR mode in the core
+Date:   Tue, 12 Oct 2021 02:16:12 +0530
+Message-ID: <20211011204619.81893-8-a-nandan@ti.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211011204619.81893-1-a-nandan@ti.com>
 References: <20211011204619.81893-1-a-nandan@ti.com>
@@ -66,82 +66,121 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-In Octal DTR SPI mode, 2 bytes of data gets transmitted over one clock
-cycle, and half-cycle instruction phases aren't supported yet. So,
-every DTR spi_mem_op needs to have even nbytes in all phases for
-non-erratic behaviour from the SPI controller.
+Enable Octal DTR SPI mode, i.e. 8D-8D-8D mode, if the SPI NAND flash
+device supports it. Mixed OSPI (1S-1S-8S & 1S-8S-8S), mixed DTR modes
+(1S-1D-8D), etc. aren't supported yet.
 
-The odd length cmd and dummy phases get handled by spimem_patch_op()
-but the odd length address and data phases need to be handled according
-to the use case. For example in Octal DTR mode, read register operation
-has one byte long address and data phase. So it needs to extend it
-by adding a suitable extra byte in addr and reading 2 bytes of data,
-discarding the second byte.
+The method to switch to Octal DTR SPI mode may vary across
+manufacturers. For example, for Winbond, it is enabled by writing
+values to the volatile configuration register. So, let the
+manufacturer's code have their own implementation for switching to
+Octal DTR SPI mode.
 
-Handle address and data phases for Octal DTR mode in read and write
-register operations by adding a suitable extra byte in the address and
-data phase.
-
-Create spimem_patch_reg_op() helper function to ease setting up
-read/write register operations in other functions, e.g. wait().
+Check for the SPI NAND device's support for Octal DTR mode using
+spinand flags, and if the op_templates allows 8D-8D-8D, call
+octal_dtr_enable() manufacturer op. If the SPI controller doesn't
+supports these modes, the selected op_templates will prevent switching
+to the Octal DTR mode. And finally update the spinand reg_proto
+on success.
 
 Signed-off-by: Apurva Nandan <a-nandan@ti.com>
 ---
- drivers/mtd/nand/spi/core.c | 21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
+ drivers/mtd/nand/spi/core.c | 46 +++++++++++++++++++++++++++++++++++++
+ include/linux/mtd/spinand.h |  3 +++
+ 2 files changed, 49 insertions(+)
 
 diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
-index 11746d858f87..4da794ae728d 100644
+index 8e6cf7941a0f..1210946f8447 100644
 --- a/drivers/mtd/nand/spi/core.c
 +++ b/drivers/mtd/nand/spi/core.c
-@@ -63,12 +63,29 @@ static void spinand_patch_op(const struct spinand_device *spinand,
- 	}
+@@ -257,6 +257,48 @@ static int spinand_init_quad_enable(struct spinand_device *spinand)
+ 			       enable ? CFG_QUAD_ENABLE : 0);
  }
  
-+static void spinand_patch_reg_op(const struct spinand_device *spinand,
-+				 struct spi_mem_op *op)
++static bool spinand_op_is_octal_dtr(const struct spi_mem_op *op)
 +{
-+	if (spinand->reg_proto == SPINAND_OCTAL_DTR) {
-+		/*
-+		 * Assigning same first and second byte will result in constant
-+		 * bits on the SPI bus between positive and negative clock edges
-+		 */
-+		op->addr.val = (op->addr.val << 8) | op->addr.val;
-+		op->addr.nbytes = 2;
-+		op->data.nbytes = 2;
-+	}
-+
-+	spinand_patch_op(spinand, op);
++	return  op->cmd.buswidth == 8 && op->cmd.dtr &&
++		op->addr.buswidth == 8 && op->addr.dtr &&
++		op->data.buswidth == 8 && op->data.dtr;
 +}
 +
- static int spinand_read_reg_op(struct spinand_device *spinand, u8 reg, u8 *val)
++static int spinand_init_octal_dtr_enable(struct spinand_device *spinand)
++{
++	struct device *dev = &spinand->spimem->spi->dev;
++	int ret;
++
++	if (!(spinand->flags & SPINAND_HAS_OCTAL_DTR_BIT))
++		return 0;
++
++	if (!(spinand_op_is_octal_dtr(spinand->op_templates.read_cache) &&
++	      spinand_op_is_octal_dtr(spinand->op_templates.write_cache) &&
++	      spinand_op_is_octal_dtr(spinand->op_templates.update_cache)))
++		return 0;
++
++	if (!spinand->manufacturer->ops->octal_dtr_enable) {
++		dev_dbg(dev,
++			"Missing ->octal_dtr_enable(), unable to switch mode\n");
++		return -EINVAL;
++	}
++
++	ret = spinand->manufacturer->ops->octal_dtr_enable(spinand);
++	if (ret) {
++		dev_err(dev,
++			"Failed to enable Octal DTR SPI mode (err = %d)\n",
++			ret);
++		return ret;
++	}
++
++	spinand->reg_proto = SPINAND_OCTAL_DTR;
++
++	dev_dbg(dev,
++		"%s SPI NAND switched to Octal DTR SPI (8D-8D-8D) mode\n",
++		spinand->manufacturer->name);
++	return 0;
++}
++
+ static int spinand_ecc_enable(struct spinand_device *spinand,
+ 			      bool enable)
  {
- 	struct spi_mem_op op = SPINAND_GET_FEATURE_OP(reg,
- 						      spinand->scratchbuf);
- 	int ret;
- 
-+	spinand_patch_reg_op(spinand, &op);
- 	ret = spi_mem_exec_op(spinand->spimem, &op);
+@@ -1192,6 +1234,10 @@ static int spinand_init_flash(struct spinand_device *spinand)
  	if (ret)
  		return ret;
-@@ -82,7 +99,8 @@ static int spinand_write_reg_op(struct spinand_device *spinand, u8 reg, u8 val)
- 	struct spi_mem_op op = SPINAND_SET_FEATURE_OP(reg,
- 						      spinand->scratchbuf);
  
--	*spinand->scratchbuf = val;
-+	spinand_patch_reg_op(spinand, &op);
-+	memset(spinand->scratchbuf, val, op.data.nbytes);
- 	return spi_mem_exec_op(spinand->spimem, &op);
- }
++	ret = spinand_init_octal_dtr_enable(spinand);
++	if (ret)
++		return ret;
++
+ 	ret = spinand_upd_cfg(spinand, CFG_OTP_ENABLE, 0);
+ 	if (ret)
+ 		return ret;
+diff --git a/include/linux/mtd/spinand.h b/include/linux/mtd/spinand.h
+index 35816b8cfe81..daa2ac5c3110 100644
+--- a/include/linux/mtd/spinand.h
++++ b/include/linux/mtd/spinand.h
+@@ -271,6 +271,7 @@ struct spinand_devid {
+  * @init: initialize a SPI NAND device
+  * @adjust_op: modify the ops for any variation in their cmd, address, dummy or
+  *	       data phase by the manufacturer
++ * @octal_dtr_enable: switch the SPI NAND flash into Octal DTR SPI mode
+  * @cleanup: cleanup a SPI NAND device
+  *
+  * Each SPI NAND manufacturer driver should implement this interface so that
+@@ -280,6 +281,7 @@ struct spinand_manufacturer_ops {
+ 	int (*init)(struct spinand_device *spinand);
+ 	void (*adjust_op)(struct spi_mem_op *op,
+ 			  const enum spinand_proto reg_proto);
++	int (*octal_dtr_enable)(struct spinand_device *spinand);
+ 	void (*cleanup)(struct spinand_device *spinand);
+ };
  
-@@ -547,6 +565,7 @@ static int spinand_wait(struct spinand_device *spinand,
- 	u8 status;
- 	int ret;
+@@ -348,6 +350,7 @@ struct spinand_ecc_info {
  
-+	spinand_patch_reg_op(spinand, &op);
- 	ret = spi_mem_poll_status(spinand->spimem, &op, STATUS_BUSY, 0,
- 				  initial_delay_us,
- 				  poll_delay_us,
+ #define SPINAND_HAS_QE_BIT		BIT(0)
+ #define SPINAND_HAS_CR_FEAT_BIT		BIT(1)
++#define SPINAND_HAS_OCTAL_DTR_BIT	BIT(2)
+ 
+ /**
+  * struct spinand_ondie_ecc_conf - private SPI-NAND on-die ECC engine structure
 -- 
 2.25.1
 

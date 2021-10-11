@@ -2,43 +2,43 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 670F1C433EF
-	for <linux-spi@archiver.kernel.org>; Mon, 11 Oct 2021 20:47:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AFC86C433EF
+	for <linux-spi@archiver.kernel.org>; Mon, 11 Oct 2021 20:47:33 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4AB5B60462
-	for <linux-spi@archiver.kernel.org>; Mon, 11 Oct 2021 20:47:31 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 9215760462
+	for <linux-spi@archiver.kernel.org>; Mon, 11 Oct 2021 20:47:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234729AbhJKUtb (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 11 Oct 2021 16:49:31 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:44056 "EHLO
+        id S235088AbhJKUtd (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 11 Oct 2021 16:49:33 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:44214 "EHLO
         fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235088AbhJKUtV (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 11 Oct 2021 16:49:21 -0400
+        with ESMTP id S235066AbhJKUtc (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 11 Oct 2021 16:49:32 -0400
 Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 19BKlAax120562;
-        Mon, 11 Oct 2021 15:47:10 -0500
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 19BKlMaR120704;
+        Mon, 11 Oct 2021 15:47:22 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1633985230;
-        bh=Jl27qxWYXXgX0CrAWa8WspGuO5ufeybya3LllQ9alsY=;
+        s=ti-com-17Q1; t=1633985242;
+        bh=hBEDCpCpkhr3SrNZvFGRX6rQTq6Kf0koSfT3CM+ThKQ=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=zHoNajlvtAeI9nc1iQovOs7WA7wAWTRtTAPPI6ksCDk7KsdGYsiy188e4NFuN7J5u
-         mw4CXsQEm+eW818+iPI+tpeCGD1L6kaeN2P5hVKZY9EQ9zWfFZbTiHCdZr7+fpacpL
-         ADruIBkHx2fXjZVylEKWZKz8sfI1BMQZQQKXJRPk=
-Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 19BKlAfZ096615
+        b=pWIhzd3oeF7jkKgeAsZvwS1ZbJqh6F6rAMek4Chk38aYOdU7o5SipFdQYnnCScPgL
+         Hudnwts3jkcUyLkcXHxZweaS0yJ5WCIl0d/zV8aljQWOOyDoy4x31S49WUx/Yccp6e
+         jaQ6MIIRykLABlifs4MrD73TgrYPQsxsvTWU8AR4=
+Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 19BKlME9096816
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 11 Oct 2021 15:47:10 -0500
-Received: from DLEE101.ent.ti.com (157.170.170.31) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+        Mon, 11 Oct 2021 15:47:22 -0500
+Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Mon, 11
- Oct 2021 15:47:09 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE101.ent.ti.com
- (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
+ Oct 2021 15:47:22 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
- Frontend Transport; Mon, 11 Oct 2021 15:47:09 -0500
+ Frontend Transport; Mon, 11 Oct 2021 15:47:22 -0500
 Received: from LT5CD112GSQZ.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 19BKkKEm069811;
-        Mon, 11 Oct 2021 15:47:05 -0500
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 19BKkKEo069811;
+        Mon, 11 Oct 2021 15:47:16 -0500
 From:   Apurva Nandan <a-nandan@ti.com>
 To:     Miquel Raynal <miquel.raynal@bootlin.com>,
         Richard Weinberger <richard@nod.at>,
@@ -51,9 +51,9 @@ To:     Miquel Raynal <miquel.raynal@bootlin.com>,
         <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
         <linux-spi@vger.kernel.org>
 CC:     <p.yadav@ti.com>
-Subject: [PATCH v2 08/14] mtd: spinand: winbond: Add support for write volatile configuration register op
-Date:   Tue, 12 Oct 2021 02:16:13 +0530
-Message-ID: <20211011204619.81893-9-a-nandan@ti.com>
+Subject: [PATCH v2 10/14] mtd: spinand: Add support for Power-on-Reset (PoR) instruction
+Date:   Tue, 12 Oct 2021 02:16:15 +0530
+Message-ID: <20211011204619.81893-11-a-nandan@ti.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211011204619.81893-1-a-nandan@ti.com>
 References: <20211011204619.81893-1-a-nandan@ti.com>
@@ -65,112 +65,134 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Volatile configuration register are a different set of configuration
-registers, i.e. they differ from the status registers. A different
-SPI instruction is required to write to these registers. Any changes
-to the Volatile Configuration Register get transferred directly to
-the Internal Configuration Register and instantly reflect on the
-device operation.
+Manufacturers like Gigadevice and Winbond are adding Power-on-Reset
+functionality in their SPI NAND flash chips. PoR instruction consists
+of a 66h command followed by 99h command, and is different from the FFh
+reset. The reset command FFh just clears the status only registers,
+while the PoR command erases all the configurations written to the
+flash and is equivalent to a power-down -> power-up cycle.
 
-In Winbond W35N01JW, these volatile configuration register must be
-configured in order to switch to Octal DTR SPI mode.
-
-Add support for writing to volatile configuration registers using a
-new WRITE_VCR_OP template.
+Add support for the Power-on-Reset command for any flash that provides
+this feature.
 
 Datasheet: https://www.winbond.com/export/sites/winbond/datasheet/W35N01JW_Datasheet_Brief.pdf
 
 Signed-off-by: Apurva Nandan <a-nandan@ti.com>
 ---
- drivers/mtd/nand/spi/core.c    |  2 +-
- drivers/mtd/nand/spi/winbond.c | 42 ++++++++++++++++++++++++++++++++++
- include/linux/mtd/spinand.h    |  1 +
- 3 files changed, 44 insertions(+), 1 deletion(-)
+ drivers/mtd/nand/spi/core.c | 43 +++++++++++++++++++++++++++++++++++++
+ include/linux/mtd/spinand.h | 17 +++++++++++++++
+ 2 files changed, 60 insertions(+)
 
 diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
-index 1210946f8447..2bea21bd9747 100644
+index 2bea21bd9747..9b570570ee81 100644
 --- a/drivers/mtd/nand/spi/core.c
 +++ b/drivers/mtd/nand/spi/core.c
-@@ -445,7 +445,7 @@ static void spinand_ondie_ecc_save_status(struct nand_device *nand, u8 status)
- 		engine_conf->status = status;
- }
+@@ -9,6 +9,7 @@
  
--static int spinand_write_enable_op(struct spinand_device *spinand)
-+int spinand_write_enable_op(struct spinand_device *spinand)
- {
- 	struct spi_mem_op op = SPINAND_WR_EN_DIS_OP(true);
- 
-diff --git a/drivers/mtd/nand/spi/winbond.c b/drivers/mtd/nand/spi/winbond.c
-index 76684428354e..89d8ee801f56 100644
---- a/drivers/mtd/nand/spi/winbond.c
-+++ b/drivers/mtd/nand/spi/winbond.c
-@@ -7,6 +7,7 @@
-  *	Boris Brezillon <boris.brezillon@bootlin.com>
-  */
+ #define pr_fmt(fmt)	"spi-nand: " fmt
  
 +#include <linux/delay.h>
  #include <linux/device.h>
+ #include <linux/jiffies.h>
  #include <linux/kernel.h>
- #include <linux/mtd/spinand.h>
-@@ -114,6 +115,47 @@ static int winbond_spinand_init(struct spinand_device *spinand)
- 	return 0;
+@@ -668,6 +669,48 @@ static int spinand_reset_op(struct spinand_device *spinand)
+ 			    NULL);
  }
  
-+/**
-+ * winbond_write_vcr_op() - write values onto the volatile configuration
-+ *			    registers (VCR)
-+ * @spinand: the spinand device
-+ * @reg: the address of the particular reg in the VCR to be written on
-+ * @val: the value to be written on the reg in the VCR
-+ *
-+ * Volatile configuration registers are a separate set of configuration
-+ * registers, i.e. they differ from the status registers SR-1/2/3. A different
-+ * SPI instruction is required to write to these registers. Any changes
-+ * to the Volatile Configuration Register get transferred directly to
-+ * the Internal Configuration Register and instantly reflect on the
-+ * device operation.
-+ */
-+static int winbond_write_vcr_op(struct spinand_device *spinand, u8 reg, u8 val)
++static int spinand_power_on_rst_op(struct spinand_device *spinand)
 +{
++	struct spi_mem_op op;
 +	int ret;
-+	struct spi_mem_op op = SPI_MEM_OP(SPI_MEM_OP_CMD(0x81, 1),
-+					  SPI_MEM_OP_ADDR(3, reg, 1),
-+					  SPI_MEM_OP_NO_DUMMY,
-+					  SPI_MEM_OP_DATA_OUT(1, spinand->scratchbuf, 1));
 +
-+	*spinand->scratchbuf = val;
++	if (!(spinand->flags & SPINAND_HAS_POR_CMD_BIT))
++		return -EOPNOTSUPP;
 +
-+	ret = spinand_write_enable_op(spinand);
++	/*
++	 * If flash is in a busy state, wait for it to finish the operation.
++	 * As the operation is unknown, use reset poll delays here.
++	 */
++	ret = spinand_wait(spinand,
++			   SPINAND_RESET_INITIAL_DELAY_US,
++			   SPINAND_RESET_POLL_DELAY_US,
++			   NULL);
 +	if (ret)
 +		return ret;
 +
++	op = (struct spi_mem_op)SPINAND_EN_POWER_ON_RST_OP;
++
++	spinand_patch_op(spinand, &op);
 +	ret = spi_mem_exec_op(spinand->spimem, &op);
 +	if (ret)
 +		return ret;
 +
-+	/*
-+	 * Write VCR operation doesn't set the busy bit in SR, so can't perform
-+	 * a status poll. Minimum time of 50ns is needed to complete the write.
-+	 * So, give thrice the minimum required delay.
-+	 */
-+	ndelay(150);
++	op = (struct spi_mem_op)SPINAND_POWER_ON_RST_OP;
++
++	spinand_patch_op(spinand, &op);
++	ret = spi_mem_exec_op(spinand->spimem, &op);
++	if (ret)
++		return ret;
++
++	/* PoR can take max 500 us to complete, so sleep for 600 to 700 us*/
++	usleep_range(SPINAND_POR_MIN_DELAY_US, SPINAND_POR_MAX_DELAY_US);
++
++	dev_dbg(&spinand->spimem->spi->dev,
++		"%s SPI NAND reset to Power-On-Reset state.\n",
++		spinand->manufacturer->name);
 +	return 0;
 +}
 +
- static const struct spinand_manufacturer_ops winbond_spinand_manuf_ops = {
- 	.init = winbond_spinand_init,
- };
+ static int spinand_lock_block(struct spinand_device *spinand, u8 lock)
+ {
+ 	return spinand_write_reg_op(spinand, REG_BLOCK_LOCK, lock);
 diff --git a/include/linux/mtd/spinand.h b/include/linux/mtd/spinand.h
-index daa2ac5c3110..21a4e5adcd59 100644
+index 21a4e5adcd59..baaf8e94f301 100644
 --- a/include/linux/mtd/spinand.h
 +++ b/include/linux/mtd/spinand.h
-@@ -560,5 +560,6 @@ int spinand_match_and_init(struct spinand_device *spinand,
+@@ -26,6 +26,18 @@
+ 		   SPI_MEM_OP_NO_DUMMY,					\
+ 		   SPI_MEM_OP_NO_DATA)
  
- int spinand_upd_cfg(struct spinand_device *spinand, u8 mask, u8 val);
- int spinand_select_target(struct spinand_device *spinand, unsigned int target);
-+int spinand_write_enable_op(struct spinand_device *spinand);
++#define SPINAND_EN_POWER_ON_RST_OP					\
++	SPI_MEM_OP(SPI_MEM_OP_CMD(0x66, 1),				\
++		   SPI_MEM_OP_NO_ADDR,					\
++		   SPI_MEM_OP_NO_DUMMY,					\
++		   SPI_MEM_OP_NO_DATA)
++
++#define SPINAND_POWER_ON_RST_OP						\
++	SPI_MEM_OP(SPI_MEM_OP_CMD(0x99, 1),				\
++		   SPI_MEM_OP_NO_ADDR,					\
++		   SPI_MEM_OP_NO_DUMMY,					\
++		   SPI_MEM_OP_NO_DATA)
++
+ #define SPINAND_WR_EN_DIS_OP(enable)					\
+ 	SPI_MEM_OP(SPI_MEM_OP_CMD((enable) ? 0x06 : 0x04, 1),		\
+ 		   SPI_MEM_OP_NO_ADDR,					\
+@@ -218,6 +230,8 @@ struct spinand_device;
+  * reading/programming/erasing when the RESET occurs. Since we always
+  * issue a RESET when the device is IDLE, 5us is selected for both initial
+  * and poll delay.
++ * Power on Reset can take upto 500 us to complete, so sleep for 600 us
++ * to 700 us safely.
+  */
+ #define SPINAND_READ_INITIAL_DELAY_US	6
+ #define SPINAND_READ_POLL_DELAY_US	5
+@@ -227,6 +241,8 @@ struct spinand_device;
+ #define SPINAND_WRITE_POLL_DELAY_US	15
+ #define SPINAND_ERASE_INITIAL_DELAY_US	250
+ #define SPINAND_ERASE_POLL_DELAY_US	50
++#define SPINAND_POR_MIN_DELAY_US	600
++#define SPINAND_POR_MAX_DELAY_US	700
  
- #endif /* __LINUX_MTD_SPINAND_H */
+ #define SPINAND_WAITRDY_TIMEOUT_MS	400
+ 
+@@ -351,6 +367,7 @@ struct spinand_ecc_info {
+ #define SPINAND_HAS_QE_BIT		BIT(0)
+ #define SPINAND_HAS_CR_FEAT_BIT		BIT(1)
+ #define SPINAND_HAS_OCTAL_DTR_BIT	BIT(2)
++#define SPINAND_HAS_POR_CMD_BIT		BIT(3)
+ 
+ /**
+  * struct spinand_ondie_ecc_conf - private SPI-NAND on-die ECC engine structure
 -- 
 2.25.1
 

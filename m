@@ -2,83 +2,131 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0FC15C433EF
-	for <linux-spi@archiver.kernel.org>; Mon, 11 Oct 2021 12:15:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9D067C433FE
+	for <linux-spi@archiver.kernel.org>; Mon, 11 Oct 2021 13:28:09 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id DE31360EBB
-	for <linux-spi@archiver.kernel.org>; Mon, 11 Oct 2021 12:15:38 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 7959560FD7
+	for <linux-spi@archiver.kernel.org>; Mon, 11 Oct 2021 13:28:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236457AbhJKMRi (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 11 Oct 2021 08:17:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48006 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235092AbhJKMRh (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 11 Oct 2021 08:17:37 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 99E2A60EBB;
-        Mon, 11 Oct 2021 12:15:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1633954537;
-        bh=GIyRuvfib8GRNJz7ecQG89JjO013H49WTTUqm4s95lE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=J9lQ3EUOdqaP704DLMq5cH1RZLeT15um3TdK0/HL96AWF7HZmLHJSiKJbHQM7wjRW
-         0NuTbLzdE9pSM8dlEO78qxrluR1D1j8jNibWcf9GHjWGmPUuUPHeIH/rZP+BbcIySe
-         f6to+Cj8eeL4L+o9i5fuf2nS4UA4Okju5xFrr//kUbgmcLxDTf4T7xsmxW0GtoVsIF
-         RFvPiOd3VtpMUNg04qt6c0Gz97sGnxSe6Ak5Su3XtZ4plBgs9omxl3mbnRt1F4Q2DD
-         9oCdR7PcGGLZa9GnC9wuculRyruZGj1DFWETzwjeatO9n29trO5Nj4JFk2NVygk9YD
-         PJjC1K+mYymrA==
-Date:   Mon, 11 Oct 2021 13:15:33 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Kamal Dasu <kdasu.kdev@gmail.com>
-Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        f.fainelli@gmail.com, bcm-kernel-feedback-list@broadcom.com,
-        yendapally.reddy@broadcom.com, Kamal Dasu <kdasu@broadcom.com>
-Subject: Re: [PATCH 2/3] spi: bcm-qspi: clear MSPI spifie interrupt during
- probe
-Message-ID: <YWQq5cOvDTgf5rql@sirena.org.uk>
-References: <20211008203603.40915-1-kdasu.kdev@gmail.com>
- <20211008203603.40915-3-kdasu.kdev@gmail.com>
+        id S235197AbhJKNaI (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 11 Oct 2021 09:30:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57878 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235413AbhJKNaI (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 11 Oct 2021 09:30:08 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E5F7C06161C
+        for <linux-spi@vger.kernel.org>; Mon, 11 Oct 2021 06:28:08 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1mZvLZ-0006fj-Rm; Mon, 11 Oct 2021 15:28:05 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1mZvLV-0003ng-C7; Mon, 11 Oct 2021 15:28:01 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1mZvLV-0000SC-BC; Mon, 11 Oct 2021 15:28:01 +0200
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Thierry Reding <thierry.reding@gmail.com>
+Cc:     Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        Sam Ravnborg <sam@ravnborg.org>, kernel@pengutronix.de,
+        dri-devel@lists.freedesktop.org
+Subject: [PATCH 01/13] drm/panel: s6e63m0: Make s6e63m0_remove() return void
+Date:   Mon, 11 Oct 2021 15:27:42 +0200
+Message-Id: <20211011132754.2479853-2-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20211011132754.2479853-1-u.kleine-koenig@pengutronix.de>
+References: <20211011132754.2479853-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="xOqAsnaWS/lHizBU"
-Content-Disposition: inline
-In-Reply-To: <20211008203603.40915-3-kdasu.kdev@gmail.com>
-X-Cookie: Your ignorance cramps my conversation.
+Content-Type: text/plain; charset=UTF-8
+X-Patch-Hashes: v=1; h=sha256; i=s7lxpA3SlxdAgalZdfZtQ9BEymVUSL76ohaDIVT+Hbk=; m=QwS8VQ147nh5eUkRo9mxGTfBcUgnx3Jl4gdGJ73rKHM=; p=gB1Eh6qhdZKXG7+Sv2MnM6FjygYEx1l/LzdGrasJ/Qc=; g=4d3b9377dd7211c6773f6965376e81757de8d724
+X-Patch-Sig: m=pgp; i=u.kleine-koenig@pengutronix.de; s=0x0D2511F322BFAB1C1580266BE2DCDD9132669BD6; b=iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmFkO2AACgkQwfwUeK3K7Ame9Qf/eAD tFQYqwS+uD6PKIsI4sLe39e5/3VEZ6+nKm9vaW16R3ClIdLI5TNn+Ve60BlNob14yiCgANJyrHf0A 6uTH+vpvp8Ydmhg8R+4p7bDJZL6VLlcDSdbgp9z82EKnRDEJa3yHA+9bQaI5YE3rMsUlJRllChWlc gl5/UIK336D1rG6NgLfb8XPCtpO+hNdUE30JRpyPPx6ZI/MQ0XAgjgsLnoDT6keRzAN/cF02MSo0/ MMOPHHZmstFum/q4oxqUIWkLt9ZWvv6e7TS4dr11GZ/hESKI9qZ8ArXXOmcDgyxWcC5BXWqKTvLLV 5GqAwDrkucRj8rSvRG7B4n2uVA3LviA==
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-spi@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+Up to now s6e63m0_remove() returns zero unconditionally. Make it return
+void instead which makes it easier to see in the callers that there is
+no error to handle.
 
---xOqAsnaWS/lHizBU
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Also the return value of spi remove callbacks is ignored anyway.
 
-On Fri, Oct 08, 2021 at 04:36:02PM -0400, Kamal Dasu wrote:
-> From: Kamal Dasu <kdasu@broadcom.com>
->=20
-> Intermittent Kernel crash has been observed on probe in
-> bcm_qspi_mspi_l2_isr() handler when the MSPI spifie interrupt bit
-> has not been cleared before registering for interrupts.
-> Fix the driver to move SoC specific custom interrupt handling code
-> before we register IRQ in probe. Also clear MSPI interrupt status
-> resgiter prior to registering IRQ handlers.
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+ drivers/gpu/drm/panel/panel-samsung-s6e63m0-dsi.c | 3 ++-
+ drivers/gpu/drm/panel/panel-samsung-s6e63m0-spi.c | 3 ++-
+ drivers/gpu/drm/panel/panel-samsung-s6e63m0.c     | 4 +---
+ drivers/gpu/drm/panel/panel-samsung-s6e63m0.h     | 2 +-
+ 4 files changed, 6 insertions(+), 6 deletions(-)
 
-Fixes should come at the start of a series before any new code so that
-they can be sent as bug fixes without pulling in any of the new work.
+diff --git a/drivers/gpu/drm/panel/panel-samsung-s6e63m0-dsi.c b/drivers/gpu/drm/panel/panel-samsung-s6e63m0-dsi.c
+index e0b1a7e354f3..e0f773678168 100644
+--- a/drivers/gpu/drm/panel/panel-samsung-s6e63m0-dsi.c
++++ b/drivers/gpu/drm/panel/panel-samsung-s6e63m0-dsi.c
+@@ -116,7 +116,8 @@ static int s6e63m0_dsi_probe(struct mipi_dsi_device *dsi)
+ static int s6e63m0_dsi_remove(struct mipi_dsi_device *dsi)
+ {
+ 	mipi_dsi_detach(dsi);
+-	return s6e63m0_remove(&dsi->dev);
++	s6e63m0_remove(&dsi->dev);
++	return 0;
+ }
+ 
+ static const struct of_device_id s6e63m0_dsi_of_match[] = {
+diff --git a/drivers/gpu/drm/panel/panel-samsung-s6e63m0-spi.c b/drivers/gpu/drm/panel/panel-samsung-s6e63m0-spi.c
+index 3669cc3719ce..c178d962b0d5 100644
+--- a/drivers/gpu/drm/panel/panel-samsung-s6e63m0-spi.c
++++ b/drivers/gpu/drm/panel/panel-samsung-s6e63m0-spi.c
+@@ -64,7 +64,8 @@ static int s6e63m0_spi_probe(struct spi_device *spi)
+ 
+ static int s6e63m0_spi_remove(struct spi_device *spi)
+ {
+-	return s6e63m0_remove(&spi->dev);
++	s6e63m0_remove(&spi->dev);
++	return 0;
+ }
+ 
+ static const struct of_device_id s6e63m0_spi_of_match[] = {
+diff --git a/drivers/gpu/drm/panel/panel-samsung-s6e63m0.c b/drivers/gpu/drm/panel/panel-samsung-s6e63m0.c
+index 35d72ac663d6..b34fa4d5de07 100644
+--- a/drivers/gpu/drm/panel/panel-samsung-s6e63m0.c
++++ b/drivers/gpu/drm/panel/panel-samsung-s6e63m0.c
+@@ -749,13 +749,11 @@ int s6e63m0_probe(struct device *dev, void *trsp,
+ }
+ EXPORT_SYMBOL_GPL(s6e63m0_probe);
+ 
+-int s6e63m0_remove(struct device *dev)
++void s6e63m0_remove(struct device *dev)
+ {
+ 	struct s6e63m0 *ctx = dev_get_drvdata(dev);
+ 
+ 	drm_panel_remove(&ctx->panel);
+-
+-	return 0;
+ }
+ EXPORT_SYMBOL_GPL(s6e63m0_remove);
+ 
+diff --git a/drivers/gpu/drm/panel/panel-samsung-s6e63m0.h b/drivers/gpu/drm/panel/panel-samsung-s6e63m0.h
+index 306605ed1117..c926eca1c817 100644
+--- a/drivers/gpu/drm/panel/panel-samsung-s6e63m0.h
++++ b/drivers/gpu/drm/panel/panel-samsung-s6e63m0.h
+@@ -35,6 +35,6 @@ int s6e63m0_probe(struct device *dev, void *trsp,
+ 				   const u8 *data,
+ 				   size_t len),
+ 		  bool dsi_mode);
+-int s6e63m0_remove(struct device *dev);
++void s6e63m0_remove(struct device *dev);
+ 
+ #endif /* _PANEL_SAMSUNG_S6E63M0_H */
+-- 
+2.30.2
 
---xOqAsnaWS/lHizBU
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmFkKuQACgkQJNaLcl1U
-h9DQXgf/eTSW4vbBBCQmn3yS4uGqsr8gvwfs+OSutnuLs9VwMhWpCQ5mmUReZ/do
-UqEJg9KpkBugYA9YCCtrooc1lHoEFRzVdgdYiBiX4FFOwCvoSgx4rA0PXigZ3TB5
-n977UKdIWlbAD50f+YEf3KdmXoSb8kW//a17BTkm0g5J44Q2jgRkKIJ/XCUT/wHh
-tt5sRG1PFtSXk1JjWaPiT8WTDNRDSlp/8+AodGxiaPDx04RcHAZhRVL2Hr1kZ5kQ
-c+9G0efJGip4k+XgYigjibn7VzdLjhcUbx8dSYkAooVcKI/3io01ISg1+atRYhT4
-Omn1lllpWd0E4slaC58/9miCHCLHBg==
-=ikRg
------END PGP SIGNATURE-----
-
---xOqAsnaWS/lHizBU--

@@ -2,133 +2,135 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B7353C4332F
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5ACE3C433FE
 	for <linux-spi@archiver.kernel.org>; Mon, 11 Oct 2021 13:28:12 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A090C60FD7
+	by mail.kernel.org (Postfix) with ESMTP id 4290360273
 	for <linux-spi@archiver.kernel.org>; Mon, 11 Oct 2021 13:28:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236895AbhJKNaM (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 11 Oct 2021 09:30:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57894 "EHLO
+        id S235413AbhJKNaL (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 11 Oct 2021 09:30:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236892AbhJKNaL (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 11 Oct 2021 09:30:11 -0400
+        with ESMTP id S236854AbhJKNaK (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 11 Oct 2021 09:30:10 -0400
 Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40A3BC061570
-        for <linux-spi@vger.kernel.org>; Mon, 11 Oct 2021 06:28:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCD56C061745
+        for <linux-spi@vger.kernel.org>; Mon, 11 Oct 2021 06:28:10 -0700 (PDT)
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
         by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <ukl@pengutronix.de>)
-        id 1mZvLa-0006g5-4V; Mon, 11 Oct 2021 15:28:06 +0200
+        id 1mZvLZ-0006fm-Rm; Mon, 11 Oct 2021 15:28:05 +0200
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
         by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
         (envelope-from <ukl@pengutronix.de>)
-        id 1mZvLZ-0003o1-IA; Mon, 11 Oct 2021 15:28:05 +0200
+        id 1mZvLV-0003np-VQ; Mon, 11 Oct 2021 15:28:01 +0200
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
         (envelope-from <ukl@pengutronix.de>)
-        id 1mZvLW-0000T4-GR; Mon, 11 Oct 2021 15:28:02 +0200
+        id 1mZvLV-0000Si-Ub; Mon, 11 Oct 2021 15:28:01 +0200
 From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>
-To:     Lee Jones <lee.jones@linaro.org>
 Cc:     Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        kernel@pengutronix.de, linux-kernel@vger.kernel.org,
-        Wolfram Sang <wsa@kernel.org>, linux-i2c@vger.kernel.org
-Subject: [PATCH 07/13] mfd: mc13xxx: Make mc13xxx_common_exit() return void
-Date:   Mon, 11 Oct 2021 15:27:48 +0200
-Message-Id: <20211011132754.2479853-8-u.kleine-koenig@pengutronix.de>
+        kernel@pengutronix.de, Wolfram Sang <wsa@kernel.org>,
+        linux-i2c@vger.kernel.org
+Subject: [PATCH 04/13] input: adxl34xx: Make adxl34x_remove() return void
+Date:   Mon, 11 Oct 2021 15:27:45 +0200
+Message-Id: <20211011132754.2479853-5-u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20211011132754.2479853-1-u.kleine-koenig@pengutronix.de>
 References: <20211011132754.2479853-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Patch-Hashes: v=1; h=sha256; i=J0ahGtF24eL+BKixNT+eVqqWAgunLx1WrSLObTBrLHE=; m=iAYXBDyS7vtYm0Q4B+/bh1iHsdzFe765AJZBSjfwEOk=; p=8kKdW/WtJXFWuGJPQK2wUzWAROZ7oQx017enqo1HbSA=; g=73aca2f699ec96f28f86a963cdbadcba1e264bad
-X-Patch-Sig: m=pgp; i=u.kleine-koenig@pengutronix.de; s=0x0D2511F322BFAB1C1580266BE2DCDD9132669BD6; b=iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmFkO3MACgkQwfwUeK3K7AltHwgAoGz FUwbxbAqMyOHx4sitIeberQakX/PoLYv20EYZsmoRQSvc/h4ncaXiRGA7ZyoutBXBRM9fXvBF6ixX 7/Otz/CA/UtpP1eU0w6/vV8YIsHxhzJzY9kkQhyPMgp2eQLc3nhsvrc0+7rSMCFV9kd0Q2xhhyYhD TRSyweceBWoQeXBd60uACQIkk9oFeZDJSS7D6psK3NoILnvF1EEanbia76Gv6dQPudGPnYP4J9J78 db4ZFxIpbL7EDnb+B9/EasbWC5ZM+TjEpxuAiN+nOhD4u30w6u6wQypcWtCLi3j7cbG4IOOJLP0MV mRN59458Z5KdwAK67lLa3qTNQXjg3OA==
+X-Patch-Hashes: v=1; h=sha256; i=wc1dQ8068Cu8i6oLG4jCUQi32w4OqgSEom4N8oawnTg=; m=Z35zEqGg82zhKujZki3WXSREWKfbS0aTa8UkTMklTJg=; p=QT+3ZtPBPblOHahXh7QoMrpcjZbKAO38bG2mksoUihY=; g=d0f6a150c9b3211526c2456a0a1697e753433591
+X-Patch-Sig: m=pgp; i=u.kleine-koenig@pengutronix.de; s=0x0D2511F322BFAB1C1580266BE2DCDD9132669BD6; b=iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmFkO2oACgkQwfwUeK3K7Amjfwf+INL 5+mM7MZTzfOIOy9XQt1fxv/W6wejE3GeQOE8M0jdUI2dIcGIyHeApTUiE+s8MclhhUJdDl9dT8E0+ +NdMpx2wTOKlbDktuRhtM+90n8J1z8UIeV/31ZRPPRLQnbb1CgxEbxHCf6BqflDApcgHVJ35Kgzrx Np91kEU8L7OfMqarf/fDeeBWSli19tjLRCzqJbeYCXRNoc07AKM/osbTEFXRVhrYiYECUgTK4VyLu +/ziJVCAJyioAQzjGEi56XaI5x3smZS3Scpg6rReG1TBrpB1pnEtb9A8wpA09ksxBhGzzACvO1obN TP9l1yUCTxn13jobBbW9YCEHzJ4gLtg==
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
 X-SA-Exim-Mail-From: ukl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: linux-spi@vger.kernel.org
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Up to now mc13xxx_common_exit() returns zero unconditionally. Make it
-return void instead which makes it easier to see in the callers that
-there is no error to handle.
+Up to now adxl34x_remove() returns zero unconditionally. Make it return
+void instead which makes it easier to see in the callers that there is
+no error to handle.
 
 Also the return value of i2c and spi remove callbacks is ignored anyway.
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
- drivers/mfd/mc13xxx-core.c | 4 +---
- drivers/mfd/mc13xxx-i2c.c  | 3 ++-
- drivers/mfd/mc13xxx-spi.c  | 3 ++-
- drivers/mfd/mc13xxx.h      | 2 +-
- 4 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/input/misc/adxl34x-i2c.c | 4 +++-
+ drivers/input/misc/adxl34x-spi.c | 4 +++-
+ drivers/input/misc/adxl34x.c     | 4 +---
+ drivers/input/misc/adxl34x.h     | 2 +-
+ 4 files changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/mfd/mc13xxx-core.c b/drivers/mfd/mc13xxx-core.c
-index 1abe7432aad8..8a4f1d90dcfd 100644
---- a/drivers/mfd/mc13xxx-core.c
-+++ b/drivers/mfd/mc13xxx-core.c
-@@ -496,15 +496,13 @@ int mc13xxx_common_init(struct device *dev)
- }
- EXPORT_SYMBOL_GPL(mc13xxx_common_init);
- 
--int mc13xxx_common_exit(struct device *dev)
-+void mc13xxx_common_exit(struct device *dev)
+diff --git a/drivers/input/misc/adxl34x-i2c.c b/drivers/input/misc/adxl34x-i2c.c
+index e64368a63346..a3b5f88d2bd1 100644
+--- a/drivers/input/misc/adxl34x-i2c.c
++++ b/drivers/input/misc/adxl34x-i2c.c
+@@ -103,7 +103,9 @@ static int adxl34x_i2c_remove(struct i2c_client *client)
  {
- 	struct mc13xxx *mc13xxx = dev_get_drvdata(dev);
+ 	struct adxl34x *ac = i2c_get_clientdata(client);
  
- 	mfd_remove_devices(dev);
- 	regmap_del_irq_chip(mc13xxx->irq, mc13xxx->irq_data);
- 	mutex_destroy(&mc13xxx->lock);
--
--	return 0;
- }
- EXPORT_SYMBOL_GPL(mc13xxx_common_exit);
- 
-diff --git a/drivers/mfd/mc13xxx-i2c.c b/drivers/mfd/mc13xxx-i2c.c
-index 65b4dd8e5afb..fb937f66277e 100644
---- a/drivers/mfd/mc13xxx-i2c.c
-+++ b/drivers/mfd/mc13xxx-i2c.c
-@@ -87,7 +87,8 @@ static int mc13xxx_i2c_probe(struct i2c_client *client,
- 
- static int mc13xxx_i2c_remove(struct i2c_client *client)
- {
--	return mc13xxx_common_exit(&client->dev);
-+	mc13xxx_common_exit(&client->dev);
+-	return adxl34x_remove(ac);
++	adxl34x_remove(ac);
++
 +	return 0;
  }
  
- static struct i2c_driver mc13xxx_i2c_driver = {
-diff --git a/drivers/mfd/mc13xxx-spi.c b/drivers/mfd/mc13xxx-spi.c
-index 286ddcf5ddc6..f60227723b4a 100644
---- a/drivers/mfd/mc13xxx-spi.c
-+++ b/drivers/mfd/mc13xxx-spi.c
-@@ -168,7 +168,8 @@ static int mc13xxx_spi_probe(struct spi_device *spi)
- 
- static int mc13xxx_spi_remove(struct spi_device *spi)
+ static int __maybe_unused adxl34x_i2c_suspend(struct device *dev)
+diff --git a/drivers/input/misc/adxl34x-spi.c b/drivers/input/misc/adxl34x-spi.c
+index df6afa455e46..6e51c9bc619f 100644
+--- a/drivers/input/misc/adxl34x-spi.c
++++ b/drivers/input/misc/adxl34x-spi.c
+@@ -91,7 +91,9 @@ static int adxl34x_spi_remove(struct spi_device *spi)
  {
--	return mc13xxx_common_exit(&spi->dev);
-+	mc13xxx_common_exit(&spi->dev);
-+	return 0
+ 	struct adxl34x *ac = spi_get_drvdata(spi);
+ 
+-	return adxl34x_remove(ac);
++	adxl34x_remove(ac);
++
++	return 0;
  }
  
- static struct spi_driver mc13xxx_spi_driver = {
-diff --git a/drivers/mfd/mc13xxx.h b/drivers/mfd/mc13xxx.h
-index ce6eec52e8eb..bd5ba9a0e14f 100644
---- a/drivers/mfd/mc13xxx.h
-+++ b/drivers/mfd/mc13xxx.h
-@@ -44,6 +44,6 @@ struct mc13xxx {
- };
+ static int __maybe_unused adxl34x_spi_suspend(struct device *dev)
+diff --git a/drivers/input/misc/adxl34x.c b/drivers/input/misc/adxl34x.c
+index 4cc4e8ff42b3..34beac80e6f0 100644
+--- a/drivers/input/misc/adxl34x.c
++++ b/drivers/input/misc/adxl34x.c
+@@ -896,15 +896,13 @@ struct adxl34x *adxl34x_probe(struct device *dev, int irq,
+ }
+ EXPORT_SYMBOL_GPL(adxl34x_probe);
  
- int mc13xxx_common_init(struct device *dev);
--int mc13xxx_common_exit(struct device *dev);
-+void mc13xxx_common_exit(struct device *dev);
+-int adxl34x_remove(struct adxl34x *ac)
++void adxl34x_remove(struct adxl34x *ac)
+ {
+ 	sysfs_remove_group(&ac->dev->kobj, &adxl34x_attr_group);
+ 	free_irq(ac->irq, ac);
+ 	input_unregister_device(ac->input);
+ 	dev_dbg(ac->dev, "unregistered accelerometer\n");
+ 	kfree(ac);
+-
+-	return 0;
+ }
+ EXPORT_SYMBOL_GPL(adxl34x_remove);
  
- #endif /* __DRIVERS_MFD_MC13XXX_H */
+diff --git a/drivers/input/misc/adxl34x.h b/drivers/input/misc/adxl34x.h
+index 83a0eeccf613..febf85270fff 100644
+--- a/drivers/input/misc/adxl34x.h
++++ b/drivers/input/misc/adxl34x.h
+@@ -25,6 +25,6 @@ void adxl34x_resume(struct adxl34x *ac);
+ struct adxl34x *adxl34x_probe(struct device *dev, int irq,
+ 			      bool fifo_delay_default,
+ 			      const struct adxl34x_bus_ops *bops);
+-int adxl34x_remove(struct adxl34x *ac);
++void adxl34x_remove(struct adxl34x *ac);
+ 
+ #endif
 -- 
 2.30.2
 

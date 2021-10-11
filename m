@@ -2,44 +2,44 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9DF96C433FE
-	for <linux-spi@archiver.kernel.org>; Mon, 11 Oct 2021 21:40:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D839C4332F
+	for <linux-spi@archiver.kernel.org>; Mon, 11 Oct 2021 21:40:47 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 8A73260E54
-	for <linux-spi@archiver.kernel.org>; Mon, 11 Oct 2021 21:40:46 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 7709960EFE
+	for <linux-spi@archiver.kernel.org>; Mon, 11 Oct 2021 21:40:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235384AbhJKVmq (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 11 Oct 2021 17:42:46 -0400
+        id S235353AbhJKVmr (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 11 Oct 2021 17:42:47 -0400
 Received: from lelv0143.ext.ti.com ([198.47.23.248]:52728 "EHLO
         lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235360AbhJKVmo (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 11 Oct 2021 17:42:44 -0400
+        with ESMTP id S235380AbhJKVmq (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 11 Oct 2021 17:42:46 -0400
 X-Greylist: delayed 3227 seconds by postgrey-1.27 at vger.kernel.org; Mon, 11 Oct 2021 17:42:41 EDT
 Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 19BKlj8w071329;
-        Mon, 11 Oct 2021 15:47:45 -0500
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 19BKkhNc070935;
+        Mon, 11 Oct 2021 15:46:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1633985265;
-        bh=tuvJGDtfmxbDxCYN89TxVrBjoYFXrDF0qurPeskISLc=;
+        s=ti-com-17Q1; t=1633985203;
+        bh=CASUc+JvQlKfMHsjOUu+uMJGKuCWgnI+FiOL7ZWrJQo=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=kKP2rKImMUnTwX9DAdlXkCDeabMU7funQMvaz1zCJvBl/nsAK5KxpzCvGE9Cd3Ykf
-         uCe9iN0c/UOJ2aMXSzj3ptuTE/LvnaUJIu5BcvUevsm+zQxoiRxNv7HtdL3NGowKjE
-         GQWYVhykAfFYgUoKR4zhoSE25ohcbmPtu78fTmZU=
-Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 19BKli6H056294
+        b=bU+vpQKS461/fk50n4GpL/J16aZYZ+9aHDE6pwvpsSuPxG+D/cN4xnSHUoNmOuUYF
+         TcC6q+NjzlIXSuw9ZW3iYrkK2j8pJZ8xcHlmp4dqOZojnGzVmrb/kkwq7/KhM6VhQp
+         7BTzltvEiBwmytCaxkTdI1WXgM0ZgGPbO2AFGnwg=
+Received: from DLEE113.ent.ti.com (dlee113.ent.ti.com [157.170.170.24])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 19BKkhdE055206
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 11 Oct 2021 15:47:45 -0500
-Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE104.ent.ti.com
- (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+        Mon, 11 Oct 2021 15:46:43 -0500
+Received: from DLEE107.ent.ti.com (157.170.170.37) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Mon, 11
- Oct 2021 15:47:44 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ Oct 2021 15:46:43 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE107.ent.ti.com
+ (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
- Frontend Transport; Mon, 11 Oct 2021 15:47:44 -0500
+ Frontend Transport; Mon, 11 Oct 2021 15:46:43 -0500
 Received: from LT5CD112GSQZ.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 19BKkKEs069811;
-        Mon, 11 Oct 2021 15:47:40 -0500
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 19BKkKEh069811;
+        Mon, 11 Oct 2021 15:46:38 -0500
 From:   Apurva Nandan <a-nandan@ti.com>
 To:     Miquel Raynal <miquel.raynal@bootlin.com>,
         Richard Weinberger <richard@nod.at>,
@@ -52,9 +52,9 @@ To:     Miquel Raynal <miquel.raynal@bootlin.com>,
         <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
         <linux-spi@vger.kernel.org>
 CC:     <p.yadav@ti.com>
-Subject: [PATCH v2 14/14] mtd: spinand: winbond: Add support for Winbond W35N01JW SPI NAND flash
-Date:   Tue, 12 Oct 2021 02:16:19 +0530
-Message-ID: <20211011204619.81893-15-a-nandan@ti.com>
+Subject: [PATCH v2 03/14] mtd: spinand: Patch spi_mem_op for the SPI IO protocol using reg_proto
+Date:   Tue, 12 Oct 2021 02:16:08 +0530
+Message-ID: <20211011204619.81893-4-a-nandan@ti.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211011204619.81893-1-a-nandan@ti.com>
 References: <20211011204619.81893-1-a-nandan@ti.com>
@@ -66,102 +66,127 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Winbond W35N01JW is a SPI NAND flash supporting Octal DTR SPI protocol.
-Add op_variants for W35N01JW, which include the Octal DTR read/write
-page ops as well. Add W35N01JW's OOB layout functions for the
-mtd_ooblayout_ops. Finally, add an entry for W35N01JW in spinand_info
-table.
+Currently, the op macros in spinand.h don't give the option to setup
+any non-array access instructions for Dual/Quad/Octal DTR SPI bus.
+Having a function that patches the op based on reg_proto would be
+better than trying to write all the setup logic in op macros.
 
-Datasheet: https://www.winbond.com/export/sites/winbond/datasheet/W35N01JW_Datasheet_Brief.pdf
+Create a spimem_patch_op() that would patch cmd, addr, dummy and data
+phase of the spi_mem op, for the given spinand->reg_proto. And hence,
+call the spimem_patch_op() before executing any spi_mem op.
+
+Note: In this commit, spimem_patch_op() isn't called in the
+read_reg_op(), write_reg_op() and wait() functions, as they need
+modifications in address value and data nbytes when in Octal DTR mode.
+This will be fixed in a later commit.
 
 Signed-off-by: Apurva Nandan <a-nandan@ti.com>
 ---
- drivers/mtd/nand/spi/winbond.c | 53 ++++++++++++++++++++++++++++++++++
- 1 file changed, 53 insertions(+)
+ drivers/mtd/nand/spi/core.c | 49 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 49 insertions(+)
 
-diff --git a/drivers/mtd/nand/spi/winbond.c b/drivers/mtd/nand/spi/winbond.c
-index 1857836f19d0..8f687b6a6697 100644
---- a/drivers/mtd/nand/spi/winbond.c
-+++ b/drivers/mtd/nand/spi/winbond.c
-@@ -47,6 +47,19 @@ static SPINAND_OP_VARIANTS(update_cache_variants_w25xxgv,
- 		SPINAND_PROG_LOAD_X4(false, 0, NULL, 0),
- 		SPINAND_PROG_LOAD(false, 0, NULL, 0));
+diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
+index d82a3e6d9bb5..11746d858f87 100644
+--- a/drivers/mtd/nand/spi/core.c
++++ b/drivers/mtd/nand/spi/core.c
+@@ -20,6 +20,49 @@
+ #include <linux/spi/spi.h>
+ #include <linux/spi/spi-mem.h>
  
-+static SPINAND_OP_VARIANTS(read_cache_variants_w35n01jw,
-+		SPINAND_PAGE_READ_FROM_CACHE_OCTALIO_DTR_OP(0, 24, NULL, 0),
-+		SPINAND_PAGE_READ_FROM_CACHE_OP(true, 0, 1, NULL, 0),
-+		SPINAND_PAGE_READ_FROM_CACHE_OP(false, 0, 1, NULL, 0));
++/**
++ * spinand_patch_op() - Helper function to patch the spi_mem op based on the
++ *			spinand->reg_proto
++ * @spinand: the spinand device
++ * @op: the spi_mem op to patch
++ *
++ * Set up buswidth and dtr fields for cmd, addr, dummy and data phase. Also
++ * adjust cmd opcode and dummy nbytes. This function doesn't make any changes
++ * to addr val or data buf.
++ */
++static void spinand_patch_op(const struct spinand_device *spinand,
++			     struct spi_mem_op *op)
++{
++	u8 op_buswidth = SPINAND_PROTO_BUSWIDTH(spinand->reg_proto);
++	u8 op_is_dtr = SPINAND_PROTO_IS_DTR(spinand->reg_proto);
 +
-+static SPINAND_OP_VARIANTS(write_cache_variants_w35n01jw,
-+		SPINAND_PROG_LOAD_OCTALIO_DTR(true, 0, NULL, 0),
-+		SPINAND_PROG_LOAD(true, 0, NULL, 0));
++	if (spinand->reg_proto == SPINAND_SINGLE_STR)
++		return;
 +
-+static SPINAND_OP_VARIANTS(update_cache_variants_w35n01jw,
-+		SPINAND_PROG_LOAD_OCTALIO_DTR(false, 0, NULL, 0),
-+		SPINAND_PROG_LOAD(false, 0, NULL, 0));
++	op->cmd.buswidth = op_buswidth;
++	op->cmd.dtr = op_is_dtr;
++	if (spinand->reg_proto == SPINAND_OCTAL_DTR) {
++		op->cmd.opcode = (op->cmd.opcode << 8) | op->cmd.opcode;
++		op->cmd.nbytes = 2;
++	}
 +
- static int w25m02gv_ooblayout_ecc(struct mtd_info *mtd, int section,
- 				  struct mtd_oob_region *region)
++	if (op->addr.nbytes) {
++		op->addr.buswidth = op_buswidth;
++		op->addr.dtr = op_is_dtr;
++	}
++
++	if (op->dummy.nbytes) {
++		op->dummy.buswidth = op_buswidth;
++		op->dummy.dtr = op_is_dtr;
++		op->dummy.nbytes <<= op_is_dtr;
++	}
++
++	if (op->data.nbytes) {
++		op->data.buswidth = op_buswidth;
++		op->data.dtr = op_is_dtr;
++	}
++}
++
+ static int spinand_read_reg_op(struct spinand_device *spinand, u8 reg, u8 *val)
  {
-@@ -71,11 +84,40 @@ static int w25m02gv_ooblayout_free(struct mtd_info *mtd, int section,
- 	return 0;
+ 	struct spi_mem_op op = SPINAND_GET_FEATURE_OP(reg,
+@@ -343,6 +386,7 @@ static int spinand_write_enable_op(struct spinand_device *spinand)
+ {
+ 	struct spi_mem_op op = SPINAND_WR_EN_DIS_OP(true);
+ 
++	spinand_patch_op(spinand, &op);
+ 	return spi_mem_exec_op(spinand->spimem, &op);
  }
  
-+static int w35n01jw_ooblayout_ecc(struct mtd_info *mtd, int section,
-+				  struct mtd_oob_region *region)
-+{
-+	if (section > 7)
-+		return -ERANGE;
-+
-+	region->offset = (16 * section) + 12;
-+	region->length = 4;
-+
-+	return 0;
-+}
-+
-+static int w35n01jw_ooblayout_free(struct mtd_info *mtd, int section,
-+				   struct mtd_oob_region *region)
-+{
-+	if (section > 7)
-+		return -ERANGE;
-+
-+	region->offset = (16 * section) + 2;
-+	region->length = 10;
-+
-+	return 0;
-+}
-+
- static const struct mtd_ooblayout_ops w25m02gv_ooblayout = {
- 	.ecc = w25m02gv_ooblayout_ecc,
- 	.free = w25m02gv_ooblayout_free,
- };
+@@ -353,6 +397,7 @@ static int spinand_load_page_op(struct spinand_device *spinand,
+ 	unsigned int row = nanddev_pos_to_row(nand, &req->pos);
+ 	struct spi_mem_op op = SPINAND_PAGE_READ_OP(row);
  
-+static const struct mtd_ooblayout_ops w35n01jw_ooblayout = {
-+	.ecc = w35n01jw_ooblayout_ecc,
-+	.free = w35n01jw_ooblayout_free,
-+};
-+
- static int w25m02gv_select_target(struct spinand_device *spinand,
- 				  unsigned int target)
- {
-@@ -110,6 +152,17 @@ static const struct spinand_info winbond_spinand_table[] = {
- 					      &update_cache_variants_w25xxgv),
- 		     0,
- 		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL)),
-+	SPINAND_INFO("W35N01JW",
-+		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xdc),
-+		     NAND_MEMORG(1, 4096, 128, 64, 512, 20, 1, 1, 1),
-+		     NAND_ECCREQ(1, 512),
-+		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants_w35n01jw,
-+					      &write_cache_variants_w35n01jw,
-+					      &update_cache_variants_w35n01jw),
-+		     SPINAND_HAS_OCTAL_DTR_BIT | SPINAND_HAS_POR_CMD_BIT |
-+		     SPINAND_HAS_CR_FEAT_BIT,
-+		     SPINAND_ECCINFO(&w35n01jw_ooblayout, NULL)),
-+
- };
++	spinand_patch_op(spinand, &op);
+ 	return spi_mem_exec_op(spinand->spimem, &op);
+ }
  
- static int winbond_spinand_init(struct spinand_device *spinand)
+@@ -477,6 +522,7 @@ static int spinand_program_op(struct spinand_device *spinand,
+ 	unsigned int row = nanddev_pos_to_row(nand, &req->pos);
+ 	struct spi_mem_op op = SPINAND_PROG_EXEC_OP(row);
+ 
++	spinand_patch_op(spinand, &op);
+ 	return spi_mem_exec_op(spinand->spimem, &op);
+ }
+ 
+@@ -487,6 +533,7 @@ static int spinand_erase_op(struct spinand_device *spinand,
+ 	unsigned int row = nanddev_pos_to_row(nand, pos);
+ 	struct spi_mem_op op = SPINAND_BLK_ERASE_OP(row);
+ 
++	spinand_patch_op(spinand, &op);
+ 	return spi_mem_exec_op(spinand->spimem, &op);
+ }
+ 
+@@ -533,6 +580,7 @@ static int spinand_read_id_op(struct spinand_device *spinand, u8 naddr,
+ 		naddr, ndummy, spinand->scratchbuf, SPINAND_MAX_ID_LEN);
+ 	int ret;
+ 
++	spinand_patch_op(spinand, &op);
+ 	ret = spi_mem_exec_op(spinand->spimem, &op);
+ 	if (!ret)
+ 		memcpy(buf, spinand->scratchbuf, SPINAND_MAX_ID_LEN);
+@@ -545,6 +593,7 @@ static int spinand_reset_op(struct spinand_device *spinand)
+ 	struct spi_mem_op op = SPINAND_RESET_OP;
+ 	int ret;
+ 
++	spinand_patch_op(spinand, &op);
+ 	ret = spi_mem_exec_op(spinand->spimem, &op);
+ 	if (ret)
+ 		return ret;
 -- 
 2.25.1
 

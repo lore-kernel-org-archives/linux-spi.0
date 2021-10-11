@@ -2,44 +2,44 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 39C33C43217
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9DF96C433FE
 	for <linux-spi@archiver.kernel.org>; Mon, 11 Oct 2021 21:40:46 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2576060E54
+	by mail.kernel.org (Postfix) with ESMTP id 8A73260E54
 	for <linux-spi@archiver.kernel.org>; Mon, 11 Oct 2021 21:40:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235378AbhJKVmp (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 11 Oct 2021 17:42:45 -0400
+        id S235384AbhJKVmq (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 11 Oct 2021 17:42:46 -0400
 Received: from lelv0143.ext.ti.com ([198.47.23.248]:52728 "EHLO
         lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235377AbhJKVmp (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 11 Oct 2021 17:42:45 -0400
+        with ESMTP id S235360AbhJKVmo (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 11 Oct 2021 17:42:44 -0400
 X-Greylist: delayed 3227 seconds by postgrey-1.27 at vger.kernel.org; Mon, 11 Oct 2021 17:42:41 EDT
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 19BKl5tQ071016;
-        Mon, 11 Oct 2021 15:47:05 -0500
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 19BKlj8w071329;
+        Mon, 11 Oct 2021 15:47:45 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1633985225;
-        bh=DFZQnhqlxo23Wmwjp8fS/CEqoUGjmQJfz+RoEPGUJNY=;
+        s=ti-com-17Q1; t=1633985265;
+        bh=tuvJGDtfmxbDxCYN89TxVrBjoYFXrDF0qurPeskISLc=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=kfL7inrw9Uy0mByZ9k/uXRYknUVv3fhl/s9YeXBtqys0S7OprKf9vkjBfqQSsXzmx
-         xfrjSXaIFUbX4EXf3U4QCCxFoGm0uP3jk8+Dj9jlVoSMjCev7OsTvbsgslxRC2mE5c
-         B8MxSOcUzPobiRs8HCBIPhIZbPVqaQK/PlKN33ZQ=
-Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 19BKl5uM096784
+        b=kKP2rKImMUnTwX9DAdlXkCDeabMU7funQMvaz1zCJvBl/nsAK5KxpzCvGE9Cd3Ykf
+         uCe9iN0c/UOJ2aMXSzj3ptuTE/LvnaUJIu5BcvUevsm+zQxoiRxNv7HtdL3NGowKjE
+         GQWYVhykAfFYgUoKR4zhoSE25ohcbmPtu78fTmZU=
+Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 19BKli6H056294
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 11 Oct 2021 15:47:05 -0500
-Received: from DLEE108.ent.ti.com (157.170.170.38) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+        Mon, 11 Oct 2021 15:47:45 -0500
+Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Mon, 11
- Oct 2021 15:47:04 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE108.ent.ti.com
- (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ Oct 2021 15:47:44 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
- Frontend Transport; Mon, 11 Oct 2021 15:47:04 -0500
+ Frontend Transport; Mon, 11 Oct 2021 15:47:44 -0500
 Received: from LT5CD112GSQZ.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 19BKkKEl069811;
-        Mon, 11 Oct 2021 15:47:00 -0500
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 19BKkKEs069811;
+        Mon, 11 Oct 2021 15:47:40 -0500
 From:   Apurva Nandan <a-nandan@ti.com>
 To:     Miquel Raynal <miquel.raynal@bootlin.com>,
         Richard Weinberger <richard@nod.at>,
@@ -52,9 +52,9 @@ To:     Miquel Raynal <miquel.raynal@bootlin.com>,
         <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
         <linux-spi@vger.kernel.org>
 CC:     <p.yadav@ti.com>
-Subject: [PATCH v2 07/14] mtd: spinand: Allow enabling Octal DTR mode in the core
-Date:   Tue, 12 Oct 2021 02:16:12 +0530
-Message-ID: <20211011204619.81893-8-a-nandan@ti.com>
+Subject: [PATCH v2 14/14] mtd: spinand: winbond: Add support for Winbond W35N01JW SPI NAND flash
+Date:   Tue, 12 Oct 2021 02:16:19 +0530
+Message-ID: <20211011204619.81893-15-a-nandan@ti.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211011204619.81893-1-a-nandan@ti.com>
 References: <20211011204619.81893-1-a-nandan@ti.com>
@@ -66,121 +66,102 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Enable Octal DTR SPI mode, i.e. 8D-8D-8D mode, if the SPI NAND flash
-device supports it. Mixed OSPI (1S-1S-8S & 1S-8S-8S), mixed DTR modes
-(1S-1D-8D), etc. aren't supported yet.
+Winbond W35N01JW is a SPI NAND flash supporting Octal DTR SPI protocol.
+Add op_variants for W35N01JW, which include the Octal DTR read/write
+page ops as well. Add W35N01JW's OOB layout functions for the
+mtd_ooblayout_ops. Finally, add an entry for W35N01JW in spinand_info
+table.
 
-The method to switch to Octal DTR SPI mode may vary across
-manufacturers. For example, for Winbond, it is enabled by writing
-values to the volatile configuration register. So, let the
-manufacturer's code have their own implementation for switching to
-Octal DTR SPI mode.
-
-Check for the SPI NAND device's support for Octal DTR mode using
-spinand flags, and if the op_templates allows 8D-8D-8D, call
-octal_dtr_enable() manufacturer op. If the SPI controller doesn't
-supports these modes, the selected op_templates will prevent switching
-to the Octal DTR mode. And finally update the spinand reg_proto
-on success.
+Datasheet: https://www.winbond.com/export/sites/winbond/datasheet/W35N01JW_Datasheet_Brief.pdf
 
 Signed-off-by: Apurva Nandan <a-nandan@ti.com>
 ---
- drivers/mtd/nand/spi/core.c | 46 +++++++++++++++++++++++++++++++++++++
- include/linux/mtd/spinand.h |  3 +++
- 2 files changed, 49 insertions(+)
+ drivers/mtd/nand/spi/winbond.c | 53 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 53 insertions(+)
 
-diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
-index 8e6cf7941a0f..1210946f8447 100644
---- a/drivers/mtd/nand/spi/core.c
-+++ b/drivers/mtd/nand/spi/core.c
-@@ -257,6 +257,48 @@ static int spinand_init_quad_enable(struct spinand_device *spinand)
- 			       enable ? CFG_QUAD_ENABLE : 0);
+diff --git a/drivers/mtd/nand/spi/winbond.c b/drivers/mtd/nand/spi/winbond.c
+index 1857836f19d0..8f687b6a6697 100644
+--- a/drivers/mtd/nand/spi/winbond.c
++++ b/drivers/mtd/nand/spi/winbond.c
+@@ -47,6 +47,19 @@ static SPINAND_OP_VARIANTS(update_cache_variants_w25xxgv,
+ 		SPINAND_PROG_LOAD_X4(false, 0, NULL, 0),
+ 		SPINAND_PROG_LOAD(false, 0, NULL, 0));
+ 
++static SPINAND_OP_VARIANTS(read_cache_variants_w35n01jw,
++		SPINAND_PAGE_READ_FROM_CACHE_OCTALIO_DTR_OP(0, 24, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_OP(true, 0, 1, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_OP(false, 0, 1, NULL, 0));
++
++static SPINAND_OP_VARIANTS(write_cache_variants_w35n01jw,
++		SPINAND_PROG_LOAD_OCTALIO_DTR(true, 0, NULL, 0),
++		SPINAND_PROG_LOAD(true, 0, NULL, 0));
++
++static SPINAND_OP_VARIANTS(update_cache_variants_w35n01jw,
++		SPINAND_PROG_LOAD_OCTALIO_DTR(false, 0, NULL, 0),
++		SPINAND_PROG_LOAD(false, 0, NULL, 0));
++
+ static int w25m02gv_ooblayout_ecc(struct mtd_info *mtd, int section,
+ 				  struct mtd_oob_region *region)
+ {
+@@ -71,11 +84,40 @@ static int w25m02gv_ooblayout_free(struct mtd_info *mtd, int section,
+ 	return 0;
  }
  
-+static bool spinand_op_is_octal_dtr(const struct spi_mem_op *op)
++static int w35n01jw_ooblayout_ecc(struct mtd_info *mtd, int section,
++				  struct mtd_oob_region *region)
 +{
-+	return  op->cmd.buswidth == 8 && op->cmd.dtr &&
-+		op->addr.buswidth == 8 && op->addr.dtr &&
-+		op->data.buswidth == 8 && op->data.dtr;
-+}
++	if (section > 7)
++		return -ERANGE;
 +
-+static int spinand_init_octal_dtr_enable(struct spinand_device *spinand)
-+{
-+	struct device *dev = &spinand->spimem->spi->dev;
-+	int ret;
++	region->offset = (16 * section) + 12;
++	region->length = 4;
 +
-+	if (!(spinand->flags & SPINAND_HAS_OCTAL_DTR_BIT))
-+		return 0;
-+
-+	if (!(spinand_op_is_octal_dtr(spinand->op_templates.read_cache) &&
-+	      spinand_op_is_octal_dtr(spinand->op_templates.write_cache) &&
-+	      spinand_op_is_octal_dtr(spinand->op_templates.update_cache)))
-+		return 0;
-+
-+	if (!spinand->manufacturer->ops->octal_dtr_enable) {
-+		dev_dbg(dev,
-+			"Missing ->octal_dtr_enable(), unable to switch mode\n");
-+		return -EINVAL;
-+	}
-+
-+	ret = spinand->manufacturer->ops->octal_dtr_enable(spinand);
-+	if (ret) {
-+		dev_err(dev,
-+			"Failed to enable Octal DTR SPI mode (err = %d)\n",
-+			ret);
-+		return ret;
-+	}
-+
-+	spinand->reg_proto = SPINAND_OCTAL_DTR;
-+
-+	dev_dbg(dev,
-+		"%s SPI NAND switched to Octal DTR SPI (8D-8D-8D) mode\n",
-+		spinand->manufacturer->name);
 +	return 0;
 +}
 +
- static int spinand_ecc_enable(struct spinand_device *spinand,
- 			      bool enable)
- {
-@@ -1192,6 +1234,10 @@ static int spinand_init_flash(struct spinand_device *spinand)
- 	if (ret)
- 		return ret;
- 
-+	ret = spinand_init_octal_dtr_enable(spinand);
-+	if (ret)
-+		return ret;
++static int w35n01jw_ooblayout_free(struct mtd_info *mtd, int section,
++				   struct mtd_oob_region *region)
++{
++	if (section > 7)
++		return -ERANGE;
 +
- 	ret = spinand_upd_cfg(spinand, CFG_OTP_ENABLE, 0);
- 	if (ret)
- 		return ret;
-diff --git a/include/linux/mtd/spinand.h b/include/linux/mtd/spinand.h
-index 35816b8cfe81..daa2ac5c3110 100644
---- a/include/linux/mtd/spinand.h
-+++ b/include/linux/mtd/spinand.h
-@@ -271,6 +271,7 @@ struct spinand_devid {
-  * @init: initialize a SPI NAND device
-  * @adjust_op: modify the ops for any variation in their cmd, address, dummy or
-  *	       data phase by the manufacturer
-+ * @octal_dtr_enable: switch the SPI NAND flash into Octal DTR SPI mode
-  * @cleanup: cleanup a SPI NAND device
-  *
-  * Each SPI NAND manufacturer driver should implement this interface so that
-@@ -280,6 +281,7 @@ struct spinand_manufacturer_ops {
- 	int (*init)(struct spinand_device *spinand);
- 	void (*adjust_op)(struct spi_mem_op *op,
- 			  const enum spinand_proto reg_proto);
-+	int (*octal_dtr_enable)(struct spinand_device *spinand);
- 	void (*cleanup)(struct spinand_device *spinand);
++	region->offset = (16 * section) + 2;
++	region->length = 10;
++
++	return 0;
++}
++
+ static const struct mtd_ooblayout_ops w25m02gv_ooblayout = {
+ 	.ecc = w25m02gv_ooblayout_ecc,
+ 	.free = w25m02gv_ooblayout_free,
  };
  
-@@ -348,6 +350,7 @@ struct spinand_ecc_info {
++static const struct mtd_ooblayout_ops w35n01jw_ooblayout = {
++	.ecc = w35n01jw_ooblayout_ecc,
++	.free = w35n01jw_ooblayout_free,
++};
++
+ static int w25m02gv_select_target(struct spinand_device *spinand,
+ 				  unsigned int target)
+ {
+@@ -110,6 +152,17 @@ static const struct spinand_info winbond_spinand_table[] = {
+ 					      &update_cache_variants_w25xxgv),
+ 		     0,
+ 		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL)),
++	SPINAND_INFO("W35N01JW",
++		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xdc),
++		     NAND_MEMORG(1, 4096, 128, 64, 512, 20, 1, 1, 1),
++		     NAND_ECCREQ(1, 512),
++		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants_w35n01jw,
++					      &write_cache_variants_w35n01jw,
++					      &update_cache_variants_w35n01jw),
++		     SPINAND_HAS_OCTAL_DTR_BIT | SPINAND_HAS_POR_CMD_BIT |
++		     SPINAND_HAS_CR_FEAT_BIT,
++		     SPINAND_ECCINFO(&w35n01jw_ooblayout, NULL)),
++
+ };
  
- #define SPINAND_HAS_QE_BIT		BIT(0)
- #define SPINAND_HAS_CR_FEAT_BIT		BIT(1)
-+#define SPINAND_HAS_OCTAL_DTR_BIT	BIT(2)
- 
- /**
-  * struct spinand_ondie_ecc_conf - private SPI-NAND on-die ECC engine structure
+ static int winbond_spinand_init(struct spinand_device *spinand)
 -- 
 2.25.1
 

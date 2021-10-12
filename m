@@ -2,50 +2,52 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AB2B7C433FE
-	for <linux-spi@archiver.kernel.org>; Tue, 12 Oct 2021 15:40:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3A9FCC433F5
+	for <linux-spi@archiver.kernel.org>; Tue, 12 Oct 2021 15:40:14 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 958AB6108F
-	for <linux-spi@archiver.kernel.org>; Tue, 12 Oct 2021 15:40:13 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 275EF6108F
+	for <linux-spi@archiver.kernel.org>; Tue, 12 Oct 2021 15:40:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237461AbhJLPmN (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 12 Oct 2021 11:42:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47620 "EHLO
+        id S237562AbhJLPmO (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 12 Oct 2021 11:42:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237566AbhJLPmI (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 12 Oct 2021 11:42:08 -0400
+        with ESMTP id S237592AbhJLPmK (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 12 Oct 2021 11:42:10 -0400
 Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EBCBC061765
-        for <linux-spi@vger.kernel.org>; Tue, 12 Oct 2021 08:40:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D218C061773
+        for <linux-spi@vger.kernel.org>; Tue, 12 Oct 2021 08:40:06 -0700 (PDT)
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
         by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <ukl@pengutronix.de>)
-        id 1maJsk-0000IJ-BW; Tue, 12 Oct 2021 17:39:58 +0200
+        id 1maJsj-0008P8-SS; Tue, 12 Oct 2021 17:39:57 +0200
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
         by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
         (envelope-from <ukl@pengutronix.de>)
-        id 1maJsj-0004kE-QN; Tue, 12 Oct 2021 17:39:57 +0200
+        id 1maJse-0004je-Tx; Tue, 12 Oct 2021 17:39:52 +0200
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
         (envelope-from <ukl@pengutronix.de>)
-        id 1maJsc-0004YN-Lr; Tue, 12 Oct 2021 17:39:50 +0200
+        id 1maJse-0004Z6-Sr; Tue, 12 Oct 2021 17:39:52 +0200
 From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>
-To:     Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc:     Mark Brown <broonie@kernel.org>, kernel@pengutronix.de,
-        linux-spi@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com
-Subject: [PATCH v2 09/20] mfd: stmpe: Make stmpe_remove() return void
-Date:   Tue, 12 Oct 2021 17:39:34 +0200
-Message-Id: <20211012153945.2651412-10-u.kleine-koenig@pengutronix.de>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Len Baker <len.baker@gmx.com>, Mark Brown <broonie@kernel.org>,
+        Phil Reid <preid@electromag.com.au>,
+        dri-devel@lists.freedesktop.org, kernel@pengutronix.de,
+        linux-fbdev@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-staging@lists.linux.dev
+Subject: [PATCH v2 19/20] staging: fbtft: Make fbtft_remove_common() return void
+Date:   Tue, 12 Oct 2021 17:39:44 +0200
+Message-Id: <20211012153945.2651412-20-u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20211012153945.2651412-1-u.kleine-koenig@pengutronix.de>
 References: <20211012153945.2651412-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Patch-Hashes: v=1; h=sha256; i=SOnI2C3pbw0/O28+bQURH4mfZHs+NU3wIaeoHQEhKVQ=; m=WtM/zIhnsdBjs14lkJxT6oj9lbrAmktyLAk6bUH98nQ=; p=12TNER7mUCvsHC1mdfBXwGyRLzDN5LFZT6ziTZdlCA0=; g=86f514a8b5b16374e79dbf0810b2cbb16248162e
-X-Patch-Sig: m=pgp; i=u.kleine-koenig@pengutronix.de; s=0x0D2511F322BFAB1C1580266BE2DCDD9132669BD6; b=iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmFlrBMACgkQwfwUeK3K7AkJ2Qf+LCW +85vQ6tu/jWfSSgYAvn8LHz3+AajKY0uE/DwGlbw+H0cZTonSutyxs/n2tpOzZ3KT5dhXwEf8priE SUQcvBXiI9YcTNsRQLpm+kJnEcs1J/gbqLx9+/SXuw7zFzYwlCidx6xbvE0p1wQFAEeTjtfpI4cXc H4rA8+4Y8shGLzw1iaqwM5xoe6azGfj9Ys0K5os0/pADRFcF5k1bSqFrP5HPZgDA9SSRf9S31PEHZ 39uiQ4zAyuXJ7WAOFkE8AyX5vzFuJy13MmGM+DphylR7gRTgdlQDeDKfhXU/jx4miCXTl5HBQ3hTh /3mOtnGZsPUQEWgGE10bQ+Xb7F9gvbw==
+X-Patch-Hashes: v=1; h=sha256; i=/RLR4bDyADQRwzANF6ER5sKrX+JFDYSh90Q0J5N84UY=; m=6FiNYI6au9uFB2IoKzr/cKU1LkGxlwoXSYCPM/+GX+Y=; p=wOY1n0CZ/7bAct64lOvb3N+O46QD12yDtQU8vjW2ZLM=; g=617a3f39318dbfdbd2bc6b4d809ee0c624c7a08a
+X-Patch-Sig: m=pgp; i=u.kleine-koenig@pengutronix.de; s=0x0D2511F322BFAB1C1580266BE2DCDD9132669BD6; b=iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmFlrDIACgkQwfwUeK3K7AlRlgf+KW+ zCwB5yRA4XahfU4N7wEcoQOaol/eZYbQB+BPqzOx3W7M/m2wfjvvQ4H2s3r9EqyqgIM+TdFj5pBGc 7DCoGIopGX9VUUf2piVRYIvFNXdr9FvJz7CZK6TfIcKQK4J6cOiRVQEba8JjlhRHw59NjDI6KlJTU jPeqHDZhY68JfSFoZjIQ6pmCNnhZ5CE6N3gqi1Ya3Gc5kyniecxUE3DLV8FDoNoOtab73ZAHG8Tn8 WPJEb6Hkvv1mbjbxu20jJu7ZWcse728icuFy6MoAq4T7D8JmOqL4YPg1uzpj2M2Jd1S5DjHnDIvCa V2qrI+mqEmgZM+9mAQmYbhCacNgrA6A==
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
 X-SA-Exim-Mail-From: ukl@pengutronix.de
@@ -55,85 +57,83 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Up to now stmpe_remove() returns zero unconditionally. Make it return
-void instead which makes it easier to see in the callers that there is
-no error to handle.
+fbtft_remove_common() is only called with a non-NULL fb_info. (All
+callers are in remove callbacks and the matching probe callbacks set
+driver data accordingly.) So fbtft_remove_common() always returns zero.
+Make it return void instead which makes it easier to see in the callers
+that there is no error to handle.
 
-Also the return value of i2c and spi remove callbacks is ignored anyway.
+Also the return value of platform and spi remove callbacks is ignored
+anyway and not freeing resources in .remove() is a bad idea.
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
- drivers/mfd/stmpe-i2c.c | 4 +++-
- drivers/mfd/stmpe-spi.c | 4 +++-
- drivers/mfd/stmpe.c     | 4 +---
- drivers/mfd/stmpe.h     | 2 +-
- 4 files changed, 8 insertions(+), 6 deletions(-)
+ drivers/staging/fbtft/fbtft-core.c | 8 +-------
+ drivers/staging/fbtft/fbtft.h      | 8 +++++---
+ 2 files changed, 6 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/mfd/stmpe-i2c.c b/drivers/mfd/stmpe-i2c.c
-index cd2f45257dc1..d3eedf3d607e 100644
---- a/drivers/mfd/stmpe-i2c.c
-+++ b/drivers/mfd/stmpe-i2c.c
-@@ -95,7 +95,9 @@ static int stmpe_i2c_remove(struct i2c_client *i2c)
+diff --git a/drivers/staging/fbtft/fbtft-core.c b/drivers/staging/fbtft/fbtft-core.c
+index ed992ca605eb..9c9eab1182a6 100644
+--- a/drivers/staging/fbtft/fbtft-core.c
++++ b/drivers/staging/fbtft/fbtft-core.c
+@@ -1318,23 +1318,17 @@ EXPORT_SYMBOL(fbtft_probe_common);
+  * @info: Framebuffer
+  *
+  * Unregisters and releases the framebuffer
+- *
+- * Return: 0 if successful, negative if error
+  */
+-int fbtft_remove_common(struct device *dev, struct fb_info *info)
++void fbtft_remove_common(struct device *dev, struct fb_info *info)
  {
- 	struct stmpe *stmpe = dev_get_drvdata(&i2c->dev);
+ 	struct fbtft_par *par;
  
--	return stmpe_remove(stmpe);
-+	stmpe_remove(stmpe);
-+
-+	return 0;
- }
- 
- static const struct i2c_device_id stmpe_i2c_id[] = {
-diff --git a/drivers/mfd/stmpe-spi.c b/drivers/mfd/stmpe-spi.c
-index 7351734f7593..6c5915016be5 100644
---- a/drivers/mfd/stmpe-spi.c
-+++ b/drivers/mfd/stmpe-spi.c
-@@ -106,7 +106,9 @@ static int stmpe_spi_remove(struct spi_device *spi)
- {
- 	struct stmpe *stmpe = spi_get_drvdata(spi);
- 
--	return stmpe_remove(stmpe);
-+	stmpe_remove(stmpe);
-+
-+	return 0;
- }
- 
- static const struct of_device_id stmpe_spi_of_match[] = {
-diff --git a/drivers/mfd/stmpe.c b/drivers/mfd/stmpe.c
-index 58d09c615e67..e928df95e316 100644
---- a/drivers/mfd/stmpe.c
-+++ b/drivers/mfd/stmpe.c
-@@ -1496,7 +1496,7 @@ int stmpe_probe(struct stmpe_client_info *ci, enum stmpe_partnum partnum)
- 	return ret;
- }
- 
--int stmpe_remove(struct stmpe *stmpe)
-+void stmpe_remove(struct stmpe *stmpe)
- {
- 	if (!IS_ERR(stmpe->vio))
- 		regulator_disable(stmpe->vio);
-@@ -1506,8 +1506,6 @@ int stmpe_remove(struct stmpe *stmpe)
- 	__stmpe_disable(stmpe, STMPE_BLOCK_ADC);
- 
- 	mfd_remove_devices(stmpe->dev);
+-	if (!info)
+-		return -EINVAL;
+ 	par = info->par;
+ 	if (par)
+ 		fbtft_par_dbg(DEBUG_DRIVER_INIT_FUNCTIONS, par,
+ 			      "%s()\n", __func__);
+ 	fbtft_unregister_framebuffer(info);
+ 	fbtft_framebuffer_release(info);
 -
 -	return 0;
  }
+ EXPORT_SYMBOL(fbtft_remove_common);
  
- #ifdef CONFIG_PM
-diff --git a/drivers/mfd/stmpe.h b/drivers/mfd/stmpe.h
-index 83491e99ba3c..1b4f91d03bbf 100644
---- a/drivers/mfd/stmpe.h
-+++ b/drivers/mfd/stmpe.h
-@@ -98,7 +98,7 @@ struct stmpe_client_info {
- };
+diff --git a/drivers/staging/fbtft/fbtft.h b/drivers/staging/fbtft/fbtft.h
+index 76f8c090a837..6869f3603b0e 100644
+--- a/drivers/staging/fbtft/fbtft.h
++++ b/drivers/staging/fbtft/fbtft.h
+@@ -252,7 +252,7 @@ void fbtft_unregister_backlight(struct fbtft_par *par);
+ int fbtft_init_display(struct fbtft_par *par);
+ int fbtft_probe_common(struct fbtft_display *display, struct spi_device *sdev,
+ 		       struct platform_device *pdev);
+-int fbtft_remove_common(struct device *dev, struct fb_info *info);
++void fbtft_remove_common(struct device *dev, struct fb_info *info);
  
- int stmpe_probe(struct stmpe_client_info *ci, enum stmpe_partnum partnum);
--int stmpe_remove(struct stmpe *stmpe);
-+void stmpe_remove(struct stmpe *stmpe);
- 
- #define STMPE_ICR_LSB_HIGH	(1 << 2)
- #define STMPE_ICR_LSB_EDGE	(1 << 1)
+ /* fbtft-io.c */
+ int fbtft_write_spi(struct fbtft_par *par, void *buf, size_t len);
+@@ -283,7 +283,8 @@ static int fbtft_driver_remove_spi(struct spi_device *spi)                 \
+ {                                                                          \
+ 	struct fb_info *info = spi_get_drvdata(spi);                       \
+ 									   \
+-	return fbtft_remove_common(&spi->dev, info);                       \
++	fbtft_remove_common(&spi->dev, info);                              \
++	return 0;                                                          \
+ }                                                                          \
+ 									   \
+ static int fbtft_driver_probe_pdev(struct platform_device *pdev)           \
+@@ -295,7 +296,8 @@ static int fbtft_driver_remove_pdev(struct platform_device *pdev)          \
+ {                                                                          \
+ 	struct fb_info *info = platform_get_drvdata(pdev);                 \
+ 									   \
+-	return fbtft_remove_common(&pdev->dev, info);                      \
++	fbtft_remove_common(&pdev->dev, info);                             \
++	return 0;                                                          \
+ }                                                                          \
+ 									   \
+ static const struct of_device_id dt_ids[] = {                              \
 -- 
 2.30.2
 

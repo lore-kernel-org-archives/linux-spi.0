@@ -2,121 +2,141 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AA164C433F5
-	for <linux-spi@archiver.kernel.org>; Tue, 12 Oct 2021 07:25:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 81129C4332F
+	for <linux-spi@archiver.kernel.org>; Tue, 12 Oct 2021 15:39:57 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 9686C6109E
-	for <linux-spi@archiver.kernel.org>; Tue, 12 Oct 2021 07:25:20 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 694FD610C7
+	for <linux-spi@archiver.kernel.org>; Tue, 12 Oct 2021 15:39:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234089AbhJLH1S (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 12 Oct 2021 03:27:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46438 "EHLO
+        id S237494AbhJLPl6 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 12 Oct 2021 11:41:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234043AbhJLH1P (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 12 Oct 2021 03:27:15 -0400
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74F22C061745;
-        Tue, 12 Oct 2021 00:25:13 -0700 (PDT)
-Received: from localhost (unknown [IPv6:2a01:e0a:2c:6930:5cf4:84a1:2763:fe0d])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: bbrezillon)
-        by bhuna.collabora.co.uk (Postfix) with ESMTPSA id 904081F42FFF;
-        Tue, 12 Oct 2021 08:25:11 +0100 (BST)
-Date:   Tue, 12 Oct 2021 09:25:08 +0200
-From:   Boris Brezillon <boris.brezillon@collabora.com>
-To:     Apurva Nandan <a-nandan@ti.com>
-Cc:     Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Mark Brown <broonie@kernel.org>,
-        Patrice Chotard <patrice.chotard@foss.st.com>,
-        Christophe Kerello <christophe.kerello@foss.st.com>,
-        <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>, <p.yadav@ti.com>
-Subject: Re: [PATCH v2 11/14] mtd: spinand: Perform Power-on-Reset on the
- flash in mtd_suspend()
-Message-ID: <20211012092508.1647047b@collabora.com>
-In-Reply-To: <20211011204619.81893-12-a-nandan@ti.com>
-References: <20211011204619.81893-1-a-nandan@ti.com>
-        <20211011204619.81893-12-a-nandan@ti.com>
-Organization: Collabora
-X-Mailer: Claws Mail 3.18.0 (GTK+ 2.24.33; x86_64-redhat-linux-gnu)
+        with ESMTP id S237484AbhJLPl5 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 12 Oct 2021 11:41:57 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F18AC061749
+        for <linux-spi@vger.kernel.org>; Tue, 12 Oct 2021 08:39:56 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1maJsd-0008NP-Up; Tue, 12 Oct 2021 17:39:52 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1maJsb-0004iY-5t; Tue, 12 Oct 2021 17:39:49 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1maJsb-0004Xa-4r; Tue, 12 Oct 2021 17:39:49 +0200
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Bartosz Golaszewski <brgl@bgdev.pl>,
+        Linus Walleij <linus.walleij@linaro.org>
+Cc:     Mark Brown <broonie@kernel.org>, kernel@pengutronix.de,
+        linux-gpio@vger.kernel.org, linux-spi@vger.kernel.org
+Subject: [PATCH v2 02/20] gpio: max730x: Make __max730x_remove() return void
+Date:   Tue, 12 Oct 2021 17:39:27 +0200
+Message-Id: <20211012153945.2651412-3-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20211012153945.2651412-1-u.kleine-koenig@pengutronix.de>
+References: <20211012153945.2651412-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+X-Patch-Hashes: v=1; h=sha256; i=tqcLhBG6DHD9svNAkG7NX2lapdSljmx+R8lQuV0tyGU=; m=glB6j2gf38uOQhExkc8b6Ih2Xw+z3n90qct7TLl53sM=; p=r2yVQD05AL+Evhwa0VXFPaN8Mh5hwPH1743xH+oyVXE=; g=fe2da4bd8c15949a113d004f924867e64330ca3f
+X-Patch-Sig: m=pgp; i=u.kleine-koenig@pengutronix.de; s=0x0D2511F322BFAB1C1580266BE2DCDD9132669BD6; b=iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmFlq/4ACgkQwfwUeK3K7AnyGAf8D4Y /1vPk7Isyb+yrfTxAk/QvVR5qLbSLluQxbVa5yiO1pHGEfyJ+EQEdc2UOkCrJGguN1WWux7LldQP5 PFNK5rOpEHK3gVznK9Je8KN7ULKB1BzpWNZfbsN4e1uG4U6sfs4kgOH4YDnS1dSy6/YNRB9VqFdhl FlEXktFPFjL4+IvPliipW5ltkK3MkmrTRxWXIynSgBvovI+khRFY+ULoO0hlQGjsnk8tZ+VGJMJKR 80SeADe/NBtdwSWLOIDHsxZwQmuPCRBR7EinTFYeAb6hMqPWJq5xpW+5tvlIK38Apnh0cUlBuglt0 3QAD4e5PXSdgkz3V5AuOplU6bQA3l9Q==
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-spi@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Tue, 12 Oct 2021 02:16:16 +0530
-Apurva Nandan <a-nandan@ti.com> wrote:
+An spi or i2c remove callback is only called for devices that probed
+successfully. In this case this implies that __max730x_probe() set a
+non-NULL driver data. So the check ts == NULL is never true. With this
+check dropped, __max730x_remove() returns zero unconditionally. Make it
+return void instead which makes it easier to see in the callers that
+there is no error to handle.
 
-> A soft reset using FFh command doesn't erase the flash's configuration
-> and doesn't reset the SPI IO mode also. This can result in the flash
-> being in a different SPI IO mode, e.g. Octal DTR, when resuming from
-> sleep. This could put the flash in an unrecognized SPI IO mode, making
-> it unusable.
-> 
-> Perform a Power-on-Reset (PoR), if available in the flash, when
-> performing mtd_suspend(). This would set the flash to clean
-> state for reinitialization during resume and would also ensure that it
-> is in standard SPI IO mode (1S-1S-1S) before the resume begins.
-> 
-> Signed-off-by: Apurva Nandan <a-nandan@ti.com>
-> ---
->  drivers/mtd/nand/spi/core.c | 21 +++++++++++++++++++++
->  1 file changed, 21 insertions(+)
-> 
-> diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
-> index 9b570570ee81..60408531979a 100644
-> --- a/drivers/mtd/nand/spi/core.c
-> +++ b/drivers/mtd/nand/spi/core.c
-> @@ -1316,6 +1316,11 @@ static void spinand_mtd_resume(struct mtd_info *mtd)
->  	int ret;
->  
->  	spinand->reg_proto = SPINAND_SINGLE_STR;
-> +	/*
-> +	 * PoR Reset (if available by the manufacturer) is performed at the suspend
-> +	 * time. Hence, those flashes remain in power-on-state at this point, in a
-> +	 * standard SPI IO mode. So, now the core unanimously performs a soft reset.
-> +	 */
->  	ret = spinand_reset_op(spinand);
->  	if (ret)
->  		return;
-> @@ -1327,6 +1332,21 @@ static void spinand_mtd_resume(struct mtd_info *mtd)
->  	spinand_ecc_enable(spinand, false);
->  }
->  
-> +static int spinand_mtd_suspend(struct mtd_info *mtd)
-> +{
-> +	struct spinand_device *spinand = mtd_to_spinand(mtd);
-> +	int ret;
-> +
-> +	if (!(spinand->flags & SPINAND_HAS_POR_CMD_BIT))
-> +		return 0;
-> +
-> +	ret = spinand_power_on_rst_op(spinand);
-> +	if (ret)
-> +		dev_err(&spinand->spimem->spi->dev, "suspend() failed\n");
-> +
-> +	return ret;
-> +}
+Also the return value of i2c and spi remove callbacks is ignored anyway.
 
-I suspect you need to implement the spi_mem_driver.shutdown() method
-and do a PoR in that case too. If the device doesn't support the PoR
-command, we should at least switch back to the 1-1-1-STR mode manually.
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+ drivers/gpio/gpio-max7300.c | 4 +++-
+ drivers/gpio/gpio-max7301.c | 4 +++-
+ drivers/gpio/gpio-max730x.c | 6 +-----
+ include/linux/spi/max7301.h | 2 +-
+ 4 files changed, 8 insertions(+), 8 deletions(-)
 
-> +
->  static int spinand_init(struct spinand_device *spinand)
->  {
->  	struct device *dev = &spinand->spimem->spi->dev;
-> @@ -1399,6 +1419,7 @@ static int spinand_init(struct spinand_device *spinand)
->  	mtd->_erase = spinand_mtd_erase;
->  	mtd->_max_bad_blocks = nanddev_mtd_max_bad_blocks;
->  	mtd->_resume = spinand_mtd_resume;
-> +	mtd->_suspend = spinand_mtd_suspend;
->  
->  	if (nand->ecc.engine) {
->  		ret = mtd_ooblayout_count_freebytes(mtd);
+diff --git a/drivers/gpio/gpio-max7300.c b/drivers/gpio/gpio-max7300.c
+index 19cc2ed6a3f5..b2b547dd6e84 100644
+--- a/drivers/gpio/gpio-max7300.c
++++ b/drivers/gpio/gpio-max7300.c
+@@ -50,7 +50,9 @@ static int max7300_probe(struct i2c_client *client,
+ 
+ static int max7300_remove(struct i2c_client *client)
+ {
+-	return __max730x_remove(&client->dev);
++	__max730x_remove(&client->dev);
++
++	return 0;
+ }
+ 
+ static const struct i2c_device_id max7300_id[] = {
+diff --git a/drivers/gpio/gpio-max7301.c b/drivers/gpio/gpio-max7301.c
+index 1307c243b4e9..5862d73bf325 100644
+--- a/drivers/gpio/gpio-max7301.c
++++ b/drivers/gpio/gpio-max7301.c
+@@ -66,7 +66,9 @@ static int max7301_probe(struct spi_device *spi)
+ 
+ static int max7301_remove(struct spi_device *spi)
+ {
+-	return __max730x_remove(&spi->dev);
++	__max730x_remove(&spi->dev);
++
++	return 0;
+ }
+ 
+ static const struct spi_device_id max7301_id[] = {
+diff --git a/drivers/gpio/gpio-max730x.c b/drivers/gpio/gpio-max730x.c
+index b8c1fe20f49a..bb5cf14ae4c8 100644
+--- a/drivers/gpio/gpio-max730x.c
++++ b/drivers/gpio/gpio-max730x.c
+@@ -220,18 +220,14 @@ int __max730x_probe(struct max7301 *ts)
+ }
+ EXPORT_SYMBOL_GPL(__max730x_probe);
+ 
+-int __max730x_remove(struct device *dev)
++void __max730x_remove(struct device *dev)
+ {
+ 	struct max7301 *ts = dev_get_drvdata(dev);
+ 
+-	if (ts == NULL)
+-		return -ENODEV;
+-
+ 	/* Power down the chip and disable IRQ output */
+ 	ts->write(dev, 0x04, 0x00);
+ 	gpiochip_remove(&ts->chip);
+ 	mutex_destroy(&ts->lock);
+-	return 0;
+ }
+ EXPORT_SYMBOL_GPL(__max730x_remove);
+ 
+diff --git a/include/linux/spi/max7301.h b/include/linux/spi/max7301.h
+index 21449067aedb..e392c53758bc 100644
+--- a/include/linux/spi/max7301.h
++++ b/include/linux/spi/max7301.h
+@@ -31,6 +31,6 @@ struct max7301_platform_data {
+ 	u32		input_pullup_active;
+ };
+ 
+-extern int __max730x_remove(struct device *dev);
++extern void __max730x_remove(struct device *dev);
+ extern int __max730x_probe(struct max7301 *ts);
+ #endif
+-- 
+2.30.2
 

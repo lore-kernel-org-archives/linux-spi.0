@@ -2,33 +2,33 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B35EBC47080
-	for <linux-spi@archiver.kernel.org>; Wed, 13 Oct 2021 20:32:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2AE9DC43217
+	for <linux-spi@archiver.kernel.org>; Wed, 13 Oct 2021 20:32:48 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A5EE9610D0
-	for <linux-spi@archiver.kernel.org>; Wed, 13 Oct 2021 20:32:47 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 105B4610D0
+	for <linux-spi@archiver.kernel.org>; Wed, 13 Oct 2021 20:32:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229795AbhJMUeu (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 13 Oct 2021 16:34:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50228 "EHLO
+        id S229841AbhJMUev (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 13 Oct 2021 16:34:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229818AbhJMUer (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 13 Oct 2021 16:34:47 -0400
+        with ESMTP id S229790AbhJMUet (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 13 Oct 2021 16:34:49 -0400
 Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20318C061762
-        for <linux-spi@vger.kernel.org>; Wed, 13 Oct 2021 13:32:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3AC7C061570
+        for <linux-spi@vger.kernel.org>; Wed, 13 Oct 2021 13:32:45 -0700 (PDT)
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
         by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <ukl@pengutronix.de>)
-        id 1makvS-0007Ef-H9; Wed, 13 Oct 2021 22:32:34 +0200
+        id 1makvU-0007IC-Qf; Wed, 13 Oct 2021 22:32:36 +0200
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
         by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
         (envelope-from <ukl@pengutronix.de>)
-        id 1makvR-0005me-PV; Wed, 13 Oct 2021 22:32:33 +0200
+        id 1makvU-0005nw-0y; Wed, 13 Oct 2021 22:32:36 +0200
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
         (envelope-from <ukl@pengutronix.de>)
-        id 1makvR-0000Qc-OH; Wed, 13 Oct 2021 22:32:33 +0200
+        id 1makvQ-0000QQ-VO; Wed, 13 Oct 2021 22:32:32 +0200
 From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>
 To:     Jonathan Cameron <jic23@kernel.org>,
@@ -37,16 +37,16 @@ To:     Jonathan Cameron <jic23@kernel.org>,
 Cc:     Mark Brown <broonie@kernel.org>, Wolfram Sang <wsa@kernel.org>,
         kernel@pengutronix.de, linux-i2c@vger.kernel.org,
         linux-iio@vger.kernel.org, linux-spi@vger.kernel.org
-Subject: [PATCH 10/15] iio: dac: ad5686: Make ad5686_remove() return void
-Date:   Wed, 13 Oct 2021 22:32:18 +0200
-Message-Id: <20211013203223.2694577-11-u.kleine-koenig@pengutronix.de>
+Subject: [PATCH 06/15] iio: accel: ad5064: Make ad5064_core_remove() return void
+Date:   Wed, 13 Oct 2021 22:32:14 +0200
+Message-Id: <20211013203223.2694577-7-u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20211013203223.2694577-1-u.kleine-koenig@pengutronix.de>
 References: <20211013203223.2694577-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Patch-Hashes: v=1; h=sha256; i=QMuejyC7ti9iGWS4aq/Mg0auEumbcjLiUXg/6aTZyBQ=; m=18nqVQag2sEsyeOjvHnHOLnTqoP0ugWwZtchoOSDR3k=; p=FQEaBCbRRXyB/WZS/lmheIp7jSbyhBnXSI6quIwXiRI=; g=630156e673f7eef71dec8aae3b38e903b2786a9f
-X-Patch-Sig: m=pgp; i=u.kleine-koenig@pengutronix.de; s=0x0D2511F322BFAB1C1580266BE2DCDD9132669BD6; b=iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmFnQgUACgkQwfwUeK3K7AllSAf/axM 0Cnkf6812caWnaHugOJkOGsnpP6O0D1tzoTc48ZIrn6/mWmCD0e3idtA/gHfc0ECqcwYSthl+sHxB UulHOXvkmelkDVG5CNSuJ3hCPo8MRoLGxAd62VF9cDavkq4ipdKdA2M52vAUq//pH7wjKCZhkOPE7 McihWXbd90DERLNcIIXyliYHsCnLkMLxsmRNL27sjGpb0saa9DM69efe+NJ/RoEK51h3/mXTg4jpq tju3FclQk62HiunfEh5F6TFn3koVMWnU1ZV8q4PHKIBY4ivFgR9NaSyEW5Fgota5wVmNrKEE8TqEe HPhFma58kuTC3Jgi3ZCdua0Wbiy3ODQ==
+X-Patch-Hashes: v=1; h=sha256; i=wALG4gz7iqyUvwiTn3Je59AipFj3jq2HLGDkJBMKnos=; m=h1tkDeOfl4YaLT3aOB/5yD/xhKvZDwH7eKg7/DHHYwM=; p=e74TrROuU6T6V9lnkyiudHD8P8opoQJc7TvaaUz2mxw=; g=0f6a0b9c50fa16e50189537d670916018d7daa2c
+X-Patch-Sig: m=pgp; i=u.kleine-koenig@pengutronix.de; s=0x0D2511F322BFAB1C1580266BE2DCDD9132669BD6; b=iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmFnQfQACgkQwfwUeK3K7Altgwf/XJw GVG0dOpYsB/nTd4t7baFIotjtNKa2sGk6lTJkdROyWkKSRtKaE0b4Lqv2AROxDZMfTqT/XJfcGrRU 21u7A+eVM8tZVHYOa6AS00aNIMW37HlN6K+ik8yT4uSzg3rgzN0f6S+Zxx5uOIRmrZNLzwpqieNT3 /qQYbBnzykQhoPfXGiyW1GktyOeWwV1xppLMj3S+4hYq2UOiY5e72kJjT33er5fzJMsrQEyKqY7vw xehLNjuRUbB9v0kuH9AogppdnR0WmA2hsxRrwkY2dhCNnGFjWMmD30rtR0MufKuyBCAvriTWSpIm5 nriFPK2yMfOFIRtbKgsszR4R6jxbh5Q==
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
 X-SA-Exim-Mail-From: ukl@pengutronix.de
@@ -56,85 +56,61 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Up to now ad5686_remove() returns zero unconditionally. Make it return
-void instead which makes it easier to see in the callers that there is
-no error to handle.
+Up to now ad5064_core_remove() returns zero unconditionally. Make it
+return void instead which makes it easier to see in the callers that
+there is no error to handle.
 
 Also the return value of i2c and spi remove callbacks is ignored anyway.
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
- drivers/iio/dac/ad5686-spi.c | 4 +++-
- drivers/iio/dac/ad5686.c     | 4 +---
- drivers/iio/dac/ad5686.h     | 2 +-
- drivers/iio/dac/ad5696-i2c.c | 4 +++-
- 4 files changed, 8 insertions(+), 6 deletions(-)
+ drivers/iio/dac/ad5064.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/dac/ad5686-spi.c b/drivers/iio/dac/ad5686-spi.c
-index 0188ded5137c..2628810fdbb1 100644
---- a/drivers/iio/dac/ad5686-spi.c
-+++ b/drivers/iio/dac/ad5686-spi.c
-@@ -97,7 +97,9 @@ static int ad5686_spi_probe(struct spi_device *spi)
- 
- static int ad5686_spi_remove(struct spi_device *spi)
- {
--	return ad5686_remove(&spi->dev);
-+	ad5686_remove(&spi->dev);
-+
-+	return 0;
+diff --git a/drivers/iio/dac/ad5064.c b/drivers/iio/dac/ad5064.c
+index dff623b65e4f..6f66796942c0 100644
+--- a/drivers/iio/dac/ad5064.c
++++ b/drivers/iio/dac/ad5064.c
+@@ -900,7 +900,7 @@ static int ad5064_probe(struct device *dev, enum ad5064_type type,
+ 	return ret;
  }
  
- static const struct spi_device_id ad5686_spi_id[] = {
-diff --git a/drivers/iio/dac/ad5686.c b/drivers/iio/dac/ad5686.c
-index fcb64f20ff64..8f001db775f4 100644
---- a/drivers/iio/dac/ad5686.c
-+++ b/drivers/iio/dac/ad5686.c
-@@ -538,7 +538,7 @@ int ad5686_probe(struct device *dev,
- }
- EXPORT_SYMBOL_GPL(ad5686_probe);
- 
--int ad5686_remove(struct device *dev)
-+void ad5686_remove(struct device *dev)
+-static int ad5064_remove(struct device *dev)
++static void ad5064_remove(struct device *dev)
  {
  	struct iio_dev *indio_dev = dev_get_drvdata(dev);
- 	struct ad5686_state *st = iio_priv(indio_dev);
-@@ -546,8 +546,6 @@ int ad5686_remove(struct device *dev)
- 	iio_device_unregister(indio_dev);
- 	if (!IS_ERR(st->reg))
- 		regulator_disable(st->reg);
+ 	struct ad5064_state *st = iio_priv(indio_dev);
+@@ -909,8 +909,6 @@ static int ad5064_remove(struct device *dev)
+ 
+ 	if (!st->use_internal_vref)
+ 		regulator_bulk_disable(ad5064_num_vref(st), st->vref_reg);
 -
 -	return 0;
  }
- EXPORT_SYMBOL_GPL(ad5686_remove);
  
-diff --git a/drivers/iio/dac/ad5686.h b/drivers/iio/dac/ad5686.h
-index f89a6f92b427..cd5fff9e9d53 100644
---- a/drivers/iio/dac/ad5686.h
-+++ b/drivers/iio/dac/ad5686.h
-@@ -154,7 +154,7 @@ int ad5686_probe(struct device *dev,
- 		 const char *name, ad5686_write_func write,
- 		 ad5686_read_func read);
+ #if IS_ENABLED(CONFIG_SPI_MASTER)
+@@ -934,7 +932,9 @@ static int ad5064_spi_probe(struct spi_device *spi)
  
--int ad5686_remove(struct device *dev);
-+void ad5686_remove(struct device *dev);
- 
- 
- #endif /* __DRIVERS_IIO_DAC_AD5686_H__ */
-diff --git a/drivers/iio/dac/ad5696-i2c.c b/drivers/iio/dac/ad5696-i2c.c
-index 24a6a4a5a2e0..93f0e0e66c22 100644
---- a/drivers/iio/dac/ad5696-i2c.c
-+++ b/drivers/iio/dac/ad5696-i2c.c
-@@ -67,7 +67,9 @@ static int ad5686_i2c_probe(struct i2c_client *i2c,
- 
- static int ad5686_i2c_remove(struct i2c_client *i2c)
+ static int ad5064_spi_remove(struct spi_device *spi)
  {
--	return ad5686_remove(&i2c->dev);
-+	ad5686_remove(&i2c->dev);
+-	return ad5064_remove(&spi->dev);
++	ad5064_remove(&spi->dev);
 +
 +	return 0;
  }
  
- static const struct i2c_device_id ad5686_i2c_id[] = {
+ static const struct spi_device_id ad5064_spi_ids[] = {
+@@ -1021,7 +1021,9 @@ static int ad5064_i2c_probe(struct i2c_client *i2c,
+ 
+ static int ad5064_i2c_remove(struct i2c_client *i2c)
+ {
+-	return ad5064_remove(&i2c->dev);
++	ad5064_remove(&i2c->dev);
++
++	return 0;
+ }
+ 
+ static const struct i2c_device_id ad5064_i2c_ids[] = {
 -- 
 2.30.2
 

@@ -2,158 +2,118 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9303AC433EF
-	for <linux-spi@archiver.kernel.org>; Wed, 13 Oct 2021 09:27:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 968B2C433EF
+	for <linux-spi@archiver.kernel.org>; Wed, 13 Oct 2021 11:44:30 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 65ABB60EB4
-	for <linux-spi@archiver.kernel.org>; Wed, 13 Oct 2021 09:27:18 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 708CB61105
+	for <linux-spi@archiver.kernel.org>; Wed, 13 Oct 2021 11:44:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235662AbhJMJ3U (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 13 Oct 2021 05:29:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35948 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235222AbhJMJ3U (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 13 Oct 2021 05:29:20 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50453C061570
-        for <linux-spi@vger.kernel.org>; Wed, 13 Oct 2021 02:27:17 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1maaXb-0002hu-M5; Wed, 13 Oct 2021 11:27:15 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1maaXZ-0005KI-DW; Wed, 13 Oct 2021 11:27:13 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1maaXZ-00075Y-CL; Wed, 13 Oct 2021 11:27:13 +0200
-From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     linux-spi@vger.kernel.org, kernel@pengutronix.de
-Subject: [PATCH] spi: Make spi_replaced_transfers private
-Date:   Wed, 13 Oct 2021 11:27:11 +0200
-Message-Id: <20211013092711.2672557-1-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+        id S229580AbhJMLqc (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 13 Oct 2021 07:46:32 -0400
+Received: from mga12.intel.com ([192.55.52.136]:55506 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229571AbhJMLqc (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 13 Oct 2021 07:46:32 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10135"; a="207522315"
+X-IronPort-AV: E=Sophos;i="5.85,370,1624345200"; 
+   d="scan'208";a="207522315"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2021 04:44:29 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.85,370,1624345200"; 
+   d="scan'208";a="592143038"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga004.jf.intel.com with ESMTP; 13 Oct 2021 04:44:25 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+        id 3AE9536E; Wed, 13 Oct 2021 14:44:33 +0300 (EEST)
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Tudor Ambarus <tudor.ambarus@microchip.com>,
+        Mark Brown <broonie@kernel.org>
+Cc:     Lee Jones <lee.jones@linaro.org>, Michael Walle <michael@walle.cc>,
+        Pratyush Yadav <p.yadav@ti.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Mauro Lima <mauro.lima@eclypsium.com>,
+        Alexander Sverdlin <alexander.sverdlin@nokia.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org
+Subject: [PATCH v3 3/3] Documentation / MTD: Rename the intel-spi driver
+Date:   Wed, 13 Oct 2021 14:44:32 +0300
+Message-Id: <20211013114432.31352-4-mika.westerberg@linux.intel.com>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <20211013114432.31352-1-mika.westerberg@linux.intel.com>
+References: <20211013114432.31352-1-mika.westerberg@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Patch-Hashes: v=1; h=sha256; i=ymK2IBzqELL5gfIJ+sRiPwsYDtyxsH9Gx7tSw0OHwic=; m=9/kcDGPTMSjRuunucC051XyUlQuzioPNplqqgcRqRS0=; p=yg7DF1ZDJCHV/jauiV+RKxNpcQMKfG5HHFGZmtZXbXY=; g=679c092c5cce55df5e0e6f720f4e9ea1bcac2a91
-X-Patch-Sig: m=pgp; i=u.kleine-koenig@pengutronix.de; s=0x0D2511F322BFAB1C1580266BE2DCDD9132669BD6; b=iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmFmpmsACgkQwfwUeK3K7AnlsQf9Fkj 28N1aU1LOhuz4H8sX7/gQaIztV8u4bzO2KL7uESDoie1azivAjv1X1L4/Zzklh+7BTefdARBBcQ/Z isc5POXOA34gj+rA+lnDUb66yG1Ex0tDPctXUB76AjFKH3vrNTj5e9783VU2yP/7UCUAoquQw5+yO 0cHwOq2KPxZOMBDRhv3P3g9c85j4gyF6EsvMkYDg/658f6vQnh5xNuGXXnWXXnGKTcmnOxtM9J/Js 2oFBSPKr2YcPrpwsFsGdRInyjlVrCOeJ+eCIh02/MGMdigx/o21sQ9LERsYSTqes/L6GwR5QhGk6j TSMKDpH6impPlKITO/wvUhoGdyuOdEQ==
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-spi@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-There are no users of struct spi_replaced_transfers and the
-spi_replaced_release_t typedef apart from spi.c. So move their
-definition there to not clutter the public namespace.
+Since the driver is renamed (and moved) update the BIOS upgrade guide
+accordingly from intel-spi to spi-intel. Keep the guide under MTD
+documentation because this is pretty much still about MTD and SPI-NOR.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/spi/spi.c       | 34 ++++++++++++++++++++++++++++++++++
- include/linux/spi/spi.h | 36 ------------------------------------
- 2 files changed, 34 insertions(+), 36 deletions(-)
+ Documentation/driver-api/mtd/index.rst                    | 2 +-
+ .../driver-api/mtd/{intel-spi.rst => spi-intel.rst}       | 8 ++++----
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+ rename Documentation/driver-api/mtd/{intel-spi.rst => spi-intel.rst} (94%)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 50591de16e0f..e73498e6dee5 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -3115,6 +3115,40 @@ EXPORT_SYMBOL_GPL(spi_controller_resume);
+diff --git a/Documentation/driver-api/mtd/index.rst b/Documentation/driver-api/mtd/index.rst
+index 436ba5a851d7..6a4278f409d7 100644
+--- a/Documentation/driver-api/mtd/index.rst
++++ b/Documentation/driver-api/mtd/index.rst
+@@ -7,6 +7,6 @@ Memory Technology Device (MTD)
+ .. toctree::
+    :maxdepth: 1
  
- /* Core methods for spi_message alterations */
+-   intel-spi
++   spi-intel
+    nand_ecc
+    spi-nor
+diff --git a/Documentation/driver-api/mtd/intel-spi.rst b/Documentation/driver-api/mtd/spi-intel.rst
+similarity index 94%
+rename from Documentation/driver-api/mtd/intel-spi.rst
+rename to Documentation/driver-api/mtd/spi-intel.rst
+index 0465f6879262..df854f20ead1 100644
+--- a/Documentation/driver-api/mtd/intel-spi.rst
++++ b/Documentation/driver-api/mtd/spi-intel.rst
+@@ -1,5 +1,5 @@
+ ==============================
+-Upgrading BIOS using intel-spi
++Upgrading BIOS using spi-intel
+ ==============================
  
-+struct spi_replaced_transfers;
-+typedef void (*spi_replaced_release_t)(struct spi_controller *ctlr,
-+				       struct spi_message *msg,
-+				       struct spi_replaced_transfers *res);
-+/**
-+ * struct spi_replaced_transfers - structure describing the spi_transfer
-+ *                                 replacements that have occurred
-+ *                                 so that they can get reverted
-+ * @release:            some extra release code to get executed prior to
-+ *                      relasing this structure
-+ * @extradata:          pointer to some extra data if requested or NULL
-+ * @replaced_transfers: transfers that have been replaced and which need
-+ *                      to get restored
-+ * @replaced_after:     the transfer after which the @replaced_transfers
-+ *                      are to get re-inserted
-+ * @inserted:           number of transfers inserted
-+ * @inserted_transfers: array of spi_transfers of array-size @inserted,
-+ *                      that have been replacing replaced_transfers
-+ *
-+ * note: that @extradata will point to @inserted_transfers[@inserted]
-+ * if some extra allocation is requested, so alignment will be the same
-+ * as for spi_transfers
-+ */
-+struct spi_replaced_transfers {
-+	spi_replaced_release_t release;
-+	void *extradata;
-+	struct list_head replaced_transfers;
-+	struct list_head *replaced_after;
-+	size_t inserted;
-+	struct spi_transfer inserted_transfers[];
-+};
-+
-+/*---------------------------------------------------------------------------*/
-+
- static void __spi_replace_transfers_release(struct spi_controller *ctlr,
- 					    struct spi_message *msg,
- 					    void *res)
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 29e21d49aafc..54fbec8acc20 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -1144,42 +1144,6 @@ static inline bool spi_is_bpw_supported(struct spi_device *spi, u32 bpw)
+ Many Intel CPUs like Baytrail and Braswell include SPI serial flash host
+@@ -11,12 +11,12 @@ avoid accidental (or on purpose) overwrite of the content.
+ Not all manufacturers protect the SPI serial flash, mainly because it
+ allows upgrading the BIOS image directly from an OS.
  
- /*---------------------------------------------------------------------------*/
+-The intel-spi driver makes it possible to read and write the SPI serial
++The spi-intel driver makes it possible to read and write the SPI serial
+ flash, if certain protection bits are not set and locked. If it finds
+ any of them set, the whole MTD device is made read-only to prevent
+ partial overwrites. By default the driver exposes SPI serial flash
+ contents as read-only but it can be changed from kernel command line,
+-passing "intel-spi.writeable=1".
++passing "spi_intel.writeable=1".
  
--/* SPI transfer replacement methods which make use of spi_res */
--
--struct spi_replaced_transfers;
--typedef void (*spi_replaced_release_t)(struct spi_controller *ctlr,
--				       struct spi_message *msg,
--				       struct spi_replaced_transfers *res);
--/**
-- * struct spi_replaced_transfers - structure describing the spi_transfer
-- *                                 replacements that have occurred
-- *                                 so that they can get reverted
-- * @release:            some extra release code to get executed prior to
-- *                      relasing this structure
-- * @extradata:          pointer to some extra data if requested or NULL
-- * @replaced_transfers: transfers that have been replaced and which need
-- *                      to get restored
-- * @replaced_after:     the transfer after which the @replaced_transfers
-- *                      are to get re-inserted
-- * @inserted:           number of transfers inserted
-- * @inserted_transfers: array of spi_transfers of array-size @inserted,
-- *                      that have been replacing replaced_transfers
-- *
-- * note: that @extradata will point to @inserted_transfers[@inserted]
-- * if some extra allocation is requested, so alignment will be the same
-- * as for spi_transfers
-- */
--struct spi_replaced_transfers {
--	spi_replaced_release_t release;
--	void *extradata;
--	struct list_head replaced_transfers;
--	struct list_head *replaced_after;
--	size_t inserted;
--	struct spi_transfer inserted_transfers[];
--};
--
--/*---------------------------------------------------------------------------*/
--
- /* SPI transfer transformation methods */
+ Please keep in mind that overwriting the BIOS image on SPI serial flash
+ might render the machine unbootable and requires special equipment like
+@@ -32,7 +32,7 @@ Linux.
+     serial flash. Distros like Debian and Fedora have this prepackaged with
+     name "mtd-utils".
  
- extern int spi_split_transfers_maxsize(struct spi_controller *ctlr,
-
-base-commit: da21fde0fdb393c2fbe0ae0735cc826cd55fd46f
+- 3) Add "intel-spi.writeable=1" to the kernel command line and reboot
++ 3) Add "spi_intel.writeable=1" to the kernel command line and reboot
+     the board (you can also reload the driver passing "writeable=1" as
+     module parameter to modprobe).
+ 
 -- 
-2.30.2
+2.33.0
 

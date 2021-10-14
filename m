@@ -2,83 +2,144 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2667AC433FE
-	for <linux-spi@archiver.kernel.org>; Thu, 14 Oct 2021 13:18:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 84559C433F5
+	for <linux-spi@archiver.kernel.org>; Thu, 14 Oct 2021 14:14:11 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 0E29A60EE5
-	for <linux-spi@archiver.kernel.org>; Thu, 14 Oct 2021 13:18:23 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6261261056
+	for <linux-spi@archiver.kernel.org>; Thu, 14 Oct 2021 14:14:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230245AbhJNNU1 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 14 Oct 2021 09:20:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49552 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229637AbhJNNU0 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Thu, 14 Oct 2021 09:20:26 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 981D5610CC;
-        Thu, 14 Oct 2021 13:18:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1634217502;
-        bh=2Y4MOAQW4HFkZljiNR3nqwQNImxzaqyGsG+crhjKtwI=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JNTtYog2vhcv1cfih+Qr7jmL1FqR5wZp5jZlws7h3mIz72opcpjj3jwz7Xx83aSxv
-         SiJhKXu0qdX8H1YTx5qouahWJ9JvtVNYcdWneVGb0HS/dAZ+NEQOnkruVOZQik4AhK
-         c2icQV3WbWF3u+8+0jqheqg2mcZU1pYJHFeXjHZGsV9vc1ClwVDXWb2lXZv0od/fGH
-         nDtaPjPvd3gyk3PGIjzUEkTIKQmOUZFMrx8ehwRridlzaoiOw4CSdwhYWxjc1QEoYq
-         GnWlOFsjVdUwicVYIL3Yl7HI558IIKjyzyOExwJkQqQ66FZD1PIeKHyGzab5rgkyBO
-         kIiI/Mityj5Rw==
-From:   Mark Brown <broonie@kernel.org>
-To:     =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        id S230177AbhJNOQO (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 14 Oct 2021 10:16:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36578 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231774AbhJNOQO (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 14 Oct 2021 10:16:14 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35E80C061570
+        for <linux-spi@vger.kernel.org>; Thu, 14 Oct 2021 07:14:09 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1mb1UW-00088K-8y; Thu, 14 Oct 2021 16:13:52 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1mb1UT-0006xj-Ms; Thu, 14 Oct 2021 16:13:49 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1mb1UT-0003bk-LZ; Thu, 14 Oct 2021 16:13:49 +0200
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>
-Cc:     Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        kernel@pengutronix.de
-Subject: Re: (subset) [PATCH 1/2] spi: Make spi_add_lock a per-controller lock
-Date:   Thu, 14 Oct 2021 14:18:15 +0100
-Message-Id: <163421748241.2468431.371668707165941948.b4-ty@kernel.org>
+To:     "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     kernel@pengutronix.de, Andrew Lunn <andrew@lunn.ch>,
+        Arnd Bergmann <arnd@arndb.de>, Marek Vasut <marex@denx.de>,
+        Mark Brown <broonie@kernel.org>,
+        Michael Walle <michael@walle.cc>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Tom Rix <trix@redhat.com>,
+        Zheng Yongjun <zhengyongjun3@huawei.com>,
+        linux-spi@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH 1/2] net: ks8851: Make ks8851_remove_common() return void
+Date:   Thu, 14 Oct 2021 16:13:40 +0200
+Message-Id: <20211014141341.2740841-2-u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20211013133710.2679703-1-u.kleine-koenig@pengutronix.de>
-References: <20211013133710.2679703-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20211014141341.2740841-1-u.kleine-koenig@pengutronix.de>
+References: <20211014141341.2740841-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
+X-Patch-Hashes: v=1; h=sha256; i=l1tsNSm6p9jZd7n0IvRloxefcIOve97LikwVr8Otfrs=; m=Z81b43hlP8nqmd+BjML51DkyMew5mmrKlqUo0v0p6Ks=; p=WjVbobG3gAkSQOuoV+6Dje5/yqH7dJ1lV1J3rNlpgp0=; g=e490466e8cd7409f48c443c77fc7d7d95c311b3a
+X-Patch-Sig: m=pgp; i=u.kleine-koenig@pengutronix.de; s=0x0D2511F322BFAB1C1580266BE2DCDD9132669BD6; b=iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmFoOwsACgkQwfwUeK3K7Al1wQf/Vuj pb/uePkoVkq+sytehMpkSXoqm8RdxDXBtwxyESAcJbc97BZTu7t5lsuMAilPgBraQdGR52S4hP6Gg 3u2kUs0un66KYgW3DLHMhXJ7N/csCWdF0nZgjHo+k+We2ZBp5T9OtpmIh1wrxWhLdwH3KLwl652bx 2jn3c0geNc3BHOqVNQjalTIwyCcwHl0QHCmG+6aQFjgN+pD5GTsGt/fJ5FgK16Tw8dLn/fogFjrKI 873QjYj+G3JEjoSOEMnXGkrkrbmF5AiajqM4T4oc3epcNGsTWXN3jUx9gCflU1WbGNBZcmh18rjY0 60qcI65iq9LA+mo+JfydECd0ZN5J5yQ==
 Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-spi@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, 13 Oct 2021 15:37:09 +0200, Uwe Kleine-König wrote:
-> The spi_add_lock that is removed with this change was held when
-> spi_add_device() called device_add() (via __spi_add_device()).
-> 
-> In the case where the added device is an spi-mux calling device_add()
-> might result in calling the spi-mux's probe function which adds another
-> controller and for that spi_add_device() might be called. This results
-> in a dead-lock.
-> 
-> [...]
+Up to now ks8851_remove_common() returns zero unconditionally. Make it
+return void instead which makes it easier to see in the callers that
+there is no error to handle.
 
-Applied to
+Also the return value of platform and spi remove callbacks is ignored
+anyway.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+ drivers/net/ethernet/micrel/ks8851.h        | 2 +-
+ drivers/net/ethernet/micrel/ks8851_common.c | 4 +---
+ drivers/net/ethernet/micrel/ks8851_par.c    | 4 +++-
+ drivers/net/ethernet/micrel/ks8851_spi.c    | 4 +++-
+ 4 files changed, 8 insertions(+), 6 deletions(-)
 
-Thanks!
+diff --git a/drivers/net/ethernet/micrel/ks8851.h b/drivers/net/ethernet/micrel/ks8851.h
+index e2eb0caeac82..6f34a61739b6 100644
+--- a/drivers/net/ethernet/micrel/ks8851.h
++++ b/drivers/net/ethernet/micrel/ks8851.h
+@@ -427,7 +427,7 @@ struct ks8851_net {
+ 
+ int ks8851_probe_common(struct net_device *netdev, struct device *dev,
+ 			int msg_en);
+-int ks8851_remove_common(struct device *dev);
++void ks8851_remove_common(struct device *dev);
+ int ks8851_suspend(struct device *dev);
+ int ks8851_resume(struct device *dev);
+ 
+diff --git a/drivers/net/ethernet/micrel/ks8851_common.c b/drivers/net/ethernet/micrel/ks8851_common.c
+index a6db1a8156e1..77f3d2f820fb 100644
+--- a/drivers/net/ethernet/micrel/ks8851_common.c
++++ b/drivers/net/ethernet/micrel/ks8851_common.c
+@@ -1247,7 +1247,7 @@ int ks8851_probe_common(struct net_device *netdev, struct device *dev,
+ }
+ EXPORT_SYMBOL_GPL(ks8851_probe_common);
+ 
+-int ks8851_remove_common(struct device *dev)
++void ks8851_remove_common(struct device *dev)
+ {
+ 	struct ks8851_net *priv = dev_get_drvdata(dev);
+ 
+@@ -1261,8 +1261,6 @@ int ks8851_remove_common(struct device *dev)
+ 		gpio_set_value(priv->gpio, 0);
+ 	regulator_disable(priv->vdd_reg);
+ 	regulator_disable(priv->vdd_io);
+-
+-	return 0;
+ }
+ EXPORT_SYMBOL_GPL(ks8851_remove_common);
+ 
+diff --git a/drivers/net/ethernet/micrel/ks8851_par.c b/drivers/net/ethernet/micrel/ks8851_par.c
+index 2e8fcce50f9d..2e25798c610e 100644
+--- a/drivers/net/ethernet/micrel/ks8851_par.c
++++ b/drivers/net/ethernet/micrel/ks8851_par.c
+@@ -327,7 +327,9 @@ static int ks8851_probe_par(struct platform_device *pdev)
+ 
+ static int ks8851_remove_par(struct platform_device *pdev)
+ {
+-	return ks8851_remove_common(&pdev->dev);
++	ks8851_remove_common(&pdev->dev);
++
++	return 0;
+ }
+ 
+ static const struct of_device_id ks8851_match_table[] = {
+diff --git a/drivers/net/ethernet/micrel/ks8851_spi.c b/drivers/net/ethernet/micrel/ks8851_spi.c
+index 479406ecbaa3..0303e727e99f 100644
+--- a/drivers/net/ethernet/micrel/ks8851_spi.c
++++ b/drivers/net/ethernet/micrel/ks8851_spi.c
+@@ -454,7 +454,9 @@ static int ks8851_probe_spi(struct spi_device *spi)
+ 
+ static int ks8851_remove_spi(struct spi_device *spi)
+ {
+-	return ks8851_remove_common(&spi->dev);
++	ks8851_remove_common(&spi->dev);
++
++	return 0;
+ }
+ 
+ static const struct of_device_id ks8851_match_table[] = {
+-- 
+2.30.2
 
-[2/2] spi-mux: Fix false-positive lockdep splats
-      commit: 16a8e2fbb2d49111004efc1c7342e083eafabeb0
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark

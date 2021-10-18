@@ -2,118 +2,142 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BCAF1C433F5
-	for <linux-spi@archiver.kernel.org>; Sun, 17 Oct 2021 04:23:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 34A21C433F5
+	for <linux-spi@archiver.kernel.org>; Mon, 18 Oct 2021 01:43:34 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 7B58F610E8
-	for <linux-spi@archiver.kernel.org>; Sun, 17 Oct 2021 04:23:54 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 093DB61027
+	for <linux-spi@archiver.kernel.org>; Mon, 18 Oct 2021 01:43:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244370AbhJQE0B (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 17 Oct 2021 00:26:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47576 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233548AbhJQE0B (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 17 Oct 2021 00:26:01 -0400
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 366C7C061765;
-        Sat, 16 Oct 2021 21:23:52 -0700 (PDT)
-Received: by mail-pg1-x532.google.com with SMTP id m21so12573195pgu.13;
-        Sat, 16 Oct 2021 21:23:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=ND/C0Cw1igbnIAxbgjJyHzhuGZ4HoMLAKVHeD+CrT8Y=;
-        b=DT6/WJd8CM/xsDrxbUL0zoH63WLKlaXMxY/XuZuCPNsBwwxtX6XPXQ+tGxGCi1JAQR
-         2wG7sPSv0YxOiKQYvmV8iGHvwnOXSuj3doDUqWE0kwMJe8jLY4aPspdedwDsfy+/nHgm
-         DxWTRr50Slm2MoaCNOCygbaDlgZpq2Njd2wLHGLC+IVdTuuLBiOUi2uhM3m6DRVKh+qQ
-         0cxEjcVqhwSMLxBtAHB6GYlhRHNf8/k4voLUFs3qWGAG0D8AAlePZ+J3cLI2rKm0gvUG
-         pyAS4CbGE+k6PuQO0B2K32qGOE7WeI3T0JcaMWSwpSwRim9m6ef2ru0trdbgNS45D/L+
-         Xwgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=ND/C0Cw1igbnIAxbgjJyHzhuGZ4HoMLAKVHeD+CrT8Y=;
-        b=NY+DYffq9DzicaORoWXUqunHjZ+vfd+mE7AqmeKn0FoRZMdqjWcr1+l+HTpiXL9I8V
-         iLX3lA50ppuCFbB48CgirXNKikkCH4KAe0uPt0I7JacetqhHwmdDLNzhqHlMpu13YgQC
-         CLiUrH4yc5ywH5sV83UX8HEyisGr7U/OyhKkmGGylAQFbP4P/rpqTPvWYQGETnm1j7D4
-         30jEfbzuDRT2DYroE+nKC1LufHo+bM91YkGMEvaGdeW7NpP8a/aRITq3vgQaxKAlfFhE
-         cYKzGy8JfsyJ/Ta31CFVXgscLHwgbH4DdBYNZp/dQ8ctnd3OYF5yGqDG0ZBKjWM0MaSd
-         /HAg==
-X-Gm-Message-State: AOAM532gWfytIDnBrw8emZy1eETk0YdnYBB9dBjQjsntgW1uH5bcWM06
-        W8bUoWqjp/aFicFJ11qee60=
-X-Google-Smtp-Source: ABdhPJwVucY9TRzRmYMqKJKDTt8nnezyWgKMknlx03/WfAC7F1g8Wm2HtQ2OKKqoi5qShBto4bccPg==
-X-Received: by 2002:a63:ad49:: with SMTP id y9mr15726225pgo.352.1634444631213;
-        Sat, 16 Oct 2021 21:23:51 -0700 (PDT)
-Received: from google.com ([2620:15c:202:201:e49a:151f:b7d7:af9a])
-        by smtp.gmail.com with ESMTPSA id k14sm8823063pgg.92.2021.10.16.21.23.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 Oct 2021 21:23:50 -0700 (PDT)
-Date:   Sat, 16 Oct 2021 21:23:47 -0700
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Oleksij Rempel <o.rempel@pengutronix.de>
-Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Mark Brown <broonie@kernel.org>,
-        kernel test robot <lkp@intel.com>, kernel@pengutronix.de,
-        linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-spi@vger.kernel.org, David Jander <david@protonic.nl>
-Subject: Re: [PATCH v1] Input: ads7846: ads7846_get_value - fix unaligned
- pointer value warning
-Message-ID: <YWulU30/yZaDeoAS@google.com>
-References: <20210707124115.20028-1-o.rempel@pengutronix.de>
- <YTrnUFI53iwvwxrj@google.com>
- <20210910075154.GF26100@pengutronix.de>
+        id S238617AbhJRBpn (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 17 Oct 2021 21:45:43 -0400
+Received: from twhmllg3.macronix.com ([211.75.127.131]:11089 "EHLO
+        TWHMLLG3.macronix.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235368AbhJRBpn (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 17 Oct 2021 21:45:43 -0400
+Received: from twhfmlp1.macronix.com (twhfmlp1.macronix.com [172.17.20.91])
+        by TWHMLLG3.macronix.com with ESMTP id 19I1gdGm015281;
+        Mon, 18 Oct 2021 09:42:39 +0800 (GMT-8)
+        (envelope-from jaimeliao@mxic.com.tw)
+Received: from MXML06C.mxic.com.tw (mxml06c.mxic.com.tw [172.17.14.55])
+        by Forcepoint Email with ESMTP id D550E851C17E8086009A;
+        Mon, 18 Oct 2021 09:42:39 +0800 (CST)
+In-Reply-To: <YWC8jgI74FgTudSD@robh.at.kernel.org>
+References: <20211008162228.1753083-1-miquel.raynal@bootlin.com> <20211008162228.1753083-4-miquel.raynal@bootlin.com> <YWC8jgI74FgTudSD@robh.at.kernel.org>
+To:     "Rob Herring" <robh@kernel.org>
+Cc:     "Boris Brezillon" <bbrezillon@kernel.org>,
+        "Mark Brown" <broonie@kernel.org>, devicetree@vger.kernel.org,
+        juliensu@mxic.com.tw, linux-kernel@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
+        "Miquel Raynal" <miquel.raynal@bootlin.com>,
+        "Richard Weinberger" <richard@nod.at>,
+        "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>,
+        "Tudor Ambarus" <Tudor.Ambarus@microchip.com>,
+        "Vignesh Raghavendra" <vigneshr@ti.com>,
+        "Xiangsheng Hou" <Xiangsheng.Hou@mediatek.com>
+Subject: =?Big5?B?pl6rSDogUmU6IFtSRkMgUEFUQ0ggMDMvMTBdIGR0LWJpbmRpbmdzOiB2ZW5kb3It?=
+ =?Big5?B?cHJlZml4ZXM6IFVwZGF0ZSBNYWNyb25peCBwcmVmaXg=?=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210910075154.GF26100@pengutronix.de>
+X-KeepSent: 9A15BF2B:E4A73AE9-48258772:00093984;
+ type=4; name=$KeepSent
+X-Mailer: Lotus Notes Release 8.5.3FP6 SHF907 April 26, 2018
+Message-ID: <OF9A15BF2B.E4A73AE9-ON48258772.00093984-48258772.00096628@mxic.com.tw>
+From:   jaimeliao@mxic.com.tw
+Date:   Mon, 18 Oct 2021 09:42:39 +0800
+X-MIMETrack: Serialize by Router on MXML06C/TAIWAN/MXIC(Release 9.0.1FP10 HF265|July 25, 2018) at
+ 2021/10/18 AM 09:42:39,
+        Serialize complete at 2021/10/18 AM 09:42:39
+Content-Type: text/plain; charset="US-ASCII"
+X-MAIL: TWHMLLG3.macronix.com 19I1gdGm015281
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Fri, Sep 10, 2021 at 09:51:54AM +0200, Oleksij Rempel wrote:
-> Hi Dmitry,
+
+Hi Rob
+
 > 
-> On Thu, Sep 09, 2021 at 10:04:16PM -0700, Dmitry Torokhov wrote:
-> > Hi Oleksij,
-> > 
-> > On Wed, Jul 07, 2021 at 02:41:15PM +0200, Oleksij Rempel wrote:
-> > > Fix warning reported by the kernel test robot:
-> > > drivers/input/touchscreen/ads7846.c:705:24: warning: taking address
-> > > of packed member 'data' of class or structure 'ads7846_buf' may result
-> > > in an unaligned pointer value [-Waddress-of-packed-member]
-> > > 
-> > > Fixes: 6965eece2a89 ("Input: ads7846 - convert to one message")
-> > > Reported-by: kernel test robot <lkp@intel.com>
-> > > Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> > > ---
-> > >  drivers/input/touchscreen/ads7846.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > 
-> > > diff --git a/drivers/input/touchscreen/ads7846.c b/drivers/input/touchscreen/ads7846.c
-> > > index adb4c2230c31..1987dedac94f 100644
-> > > --- a/drivers/input/touchscreen/ads7846.c
-> > > +++ b/drivers/input/touchscreen/ads7846.c
-> > > @@ -702,7 +702,7 @@ static int ads7846_get_value(struct ads7846_buf *buf)
-> > >  {
-> > >  	int value;
-> > >  
-> > > -	value = be16_to_cpup(&buf->data);
-> > > +	value = get_unaligned_be16(&buf->data);
-> > 
-> > ds7846_buf is declared as packed so I believe using be16_to_cpu(buf->data)
-> > will suffice.
+> Re: [RFC PATCH 03/10] dt-bindings: vendor-prefixes: Update Macronix 
+prefix
 > 
-> The pointer to the data is is off by 8 bits, so it is not naturally
-> aligned. This is why we need to use function which is dealing with
-> unaligned pointers. 
+> On Fri, Oct 08, 2021 at 06:22:21PM +0200, Miquel Raynal wrote:
+> > When looking at compatible prefixes, Macronix is sometimes referred as
+> > mxicy:
+> > - mxicy,mx25r1635f
+> > - mxicy,mx25u6435f
+> > - mxicy,mx25v8035f
+> > - mxicy,mx25f0a-spi
+> > and sometimes as mxic:
+> > - mxic,multi-itfc-v009-nand-controller
+> > - mxic,enable-randomizer-otp
+> > 
+> > It looks like the more up-to-date way is mxic so declare this prefix 
+and
+> > mark the other one as deprecated.
+> 
+> mxicy is more widely used with flash parts. There's not a single dts 
+> file with 'mxic' which only seems to be some nand controller.
+Yes, you are right.
 
-As I mentioned, the structure is packed, so the compiler will take care
-of doing unaligned access safely on architectures that can not tolerate
-it.
+Hi Miquel
 
-Thanks.
+Please keep using "mxicy,*" consistently for the compatible property, 
+thanks.
 
--- 
-Dmitry
+> 
+> > 
+> > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> > ---
+> >  Documentation/devicetree/bindings/vendor-prefixes.yaml | 3 +++
+> >  1 file changed, 3 insertions(+)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/vendor-
+> prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+> > index b868cefc7c55..013a87850cd5 100644
+> > --- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
+> > +++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+> > @@ -758,8 +758,11 @@ patternProperties:
+> >      description: Mundo Reader S.L.
+> >    "^murata,.*":
+> >      description: Murata Manufacturing Co., Ltd.
+> > +  "^mxic,.*":
+> > +    description: Macronix International Co., Ltd.
+> >    "^mxicy,.*":
+> >      description: Macronix International Co., Ltd.
+> > +    deprecated: true
+> >    "^myir,.*":
+> >      description: MYIR Tech Limited
+> >    "^national,.*":
+> > -- 
+> > 2.27.0
+> > 
+> > 
+
+
+CONFIDENTIALITY NOTE:
+
+This e-mail and any attachments may contain confidential information 
+and/or personal data, which is protected by applicable laws. Please be 
+reminded that duplication, disclosure, distribution, or use of this e-mail 
+(and/or its attachments) or any part thereof is prohibited. If you receive 
+this e-mail in error, please notify us immediately and delete this mail as 
+well as its attachment(s) from your system. In addition, please be 
+informed that collection, processing, and/or use of personal data is 
+prohibited unless expressly permitted by personal data protection laws. 
+Thank you for your attention and cooperation.
+
+Macronix International Co., Ltd.
+
+=====================================================================
+
+
+
+============================================================================
+
+CONFIDENTIALITY NOTE:
+
+This e-mail and any attachments may contain confidential information and/or personal data, which is protected by applicable laws. Please be reminded that duplication, disclosure, distribution, or use of this e-mail (and/or its attachments) or any part thereof is prohibited. If you receive this e-mail in error, please notify us immediately and delete this mail as well as its attachment(s) from your system. In addition, please be informed that collection, processing, and/or use of personal data is prohibited unless expressly permitted by personal data protection laws. Thank you for your attention and cooperation.
+
+Macronix International Co., Ltd.
+
+=====================================================================
+

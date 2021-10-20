@@ -2,50 +2,35 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E85EAC433F5
-	for <linux-spi@archiver.kernel.org>; Wed, 20 Oct 2021 08:06:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 98541C433EF
+	for <linux-spi@archiver.kernel.org>; Wed, 20 Oct 2021 09:42:00 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C72F56103B
-	for <linux-spi@archiver.kernel.org>; Wed, 20 Oct 2021 08:06:30 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6B0DD611C6
+	for <linux-spi@archiver.kernel.org>; Wed, 20 Oct 2021 09:42:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229544AbhJTIIo (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 20 Oct 2021 04:08:44 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:55880 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229603AbhJTIIn (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 20 Oct 2021 04:08:43 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 19K8656a101524;
-        Wed, 20 Oct 2021 03:06:05 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1634717165;
-        bh=GXfKDQ1ul15UO9SWMiOrsfAfNsRqeQ5arl3FvVUzDyI=;
-        h=Date:From:To:CC:Subject:References:In-Reply-To;
-        b=CCnYHSICmJoJEAAvrvqF0WGrz7KOIEpmwcflgpcmTATX/qgDLP181mjMiU1Dy+cuu
-         k4/o1My1Yn1pcWIA78C46aOnWA/8N1ar0XT7qKOxizMALRKfvSOx849NiUVPYmD+rw
-         m0brO9muM6umiDHpMZJvoJIEZrcFgfW/l26H75gg=
-Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 19K864UU060597
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 20 Oct 2021 03:06:05 -0500
-Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE114.ent.ti.com
- (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Wed, 20
- Oct 2021 03:06:04 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
- Frontend Transport; Wed, 20 Oct 2021 03:06:04 -0500
-Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 19K863Vd001959;
-        Wed, 20 Oct 2021 03:06:04 -0500
-Date:   Wed, 20 Oct 2021 13:36:03 +0530
-From:   Pratyush Yadav <p.yadav@ti.com>
+        id S229555AbhJTJoN (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 20 Oct 2021 05:44:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41586 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229702AbhJTJoN (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 20 Oct 2021 05:44:13 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E223C061746
+        for <linux-spi@vger.kernel.org>; Wed, 20 Oct 2021 02:41:59 -0700 (PDT)
+Received: from localhost (unknown [IPv6:2a01:e0a:2c:6930:5cf4:84a1:2763:fe0d])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: bbrezillon)
+        by bhuna.collabora.co.uk (Postfix) with ESMTPSA id 48CAA1F43FE7;
+        Wed, 20 Oct 2021 10:41:57 +0100 (BST)
+Date:   Wed, 20 Oct 2021 11:41:53 +0200
+From:   Boris Brezillon <boris.brezillon@collabora.com>
 To:     Mika Westerberg <mika.westerberg@linux.intel.com>
-CC:     Tudor Ambarus <tudor.ambarus@microchip.com>,
+Cc:     Tudor Ambarus <tudor.ambarus@microchip.com>,
         Mark Brown <broonie@kernel.org>,
         Lee Jones <lee.jones@linaro.org>,
         Michael Walle <michael@walle.cc>,
+        Pratyush Yadav <p.yadav@ti.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>,
         Richard Weinberger <richard@nod.at>,
         Vignesh Raghavendra <vigneshr@ti.com>,
@@ -53,22 +38,24 @@ CC:     Tudor Ambarus <tudor.ambarus@microchip.com>,
         Mauro Lima <mauro.lima@eclypsium.com>,
         Alexander Sverdlin <alexander.sverdlin@nokia.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        <linux-mtd@lists.infradead.org>, <linux-spi@vger.kernel.org>
+        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org
 Subject: Re: [PATCH v3 2/3] mtd: spi-nor: intel-spi: Convert to SPI MEM
-Message-ID: <20211020080601.c2uxccl3zaa557b2@ti.com>
-References: <20211013114432.31352-1-mika.westerberg@linux.intel.com>
- <20211013114432.31352-3-mika.westerberg@linux.intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
+Message-ID: <20211020114153.0f99c5df@collabora.com>
 In-Reply-To: <20211013114432.31352-3-mika.westerberg@linux.intel.com>
-User-Agent: NeoMutt/20171215
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+References: <20211013114432.31352-1-mika.westerberg@linux.intel.com>
+        <20211013114432.31352-3-mika.westerberg@linux.intel.com>
+Organization: Collabora
+X-Mailer: Claws Mail 3.18.0 (GTK+ 2.24.33; x86_64-redhat-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On 13/10/21 02:44PM, Mika Westerberg wrote:
+On Wed, 13 Oct 2021 14:44:31 +0300
+Mika Westerberg <mika.westerberg@linux.intel.com> wrote:
+
 > The preferred way to implement SPI-NOR controller drivers is through SPI
 > subsubsystem utilizing the SPI MEM core functions. This converts the
 > Intel SPI flash controller driver over the SPI MEM by moving the driver
@@ -76,29 +63,25 @@ On 13/10/21 02:44PM, Mika Westerberg wrote:
 > SPI MEM functions. The driver name will be changed from intel-spi to
 > spi-intel to match the convention used in the SPI subsystem.
 > 
+
+I skimmed over the driver changes, and I'm skeptical about this "let's
+convert all spi-nor controller drivers into spi-mem drivers even if
+they don't fit the spi-mem model" strategy. Clearly, the intel
+controller is much more limited than any other spi-mem controller (I
+mean feature-wise not perf-wise of course). The fact that you have to
+check the opcode to decide whether the operation is supported or not,
+or the way you deduce when to issue an erase vs a regular read/write is
+kind of hack-ish. Not saying we shouldn't support this case in spi-mem,
+but it should at least be done in a more controlled way. Maybe with an
+explicit array of supported spi_mem operations, and driver specific
+hooks for each of these operations so anything falling outside is
+clearly identified and rejected (we have this sort of things in the raw
+NAND framework).
+
 > Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 > ---
->  drivers/mtd/spi-nor/controllers/Kconfig       |  36 --
->  drivers/mtd/spi-nor/controllers/Makefile      |   3 -
->  drivers/mtd/spi-nor/controllers/intel-spi.h   |  21 --
->  drivers/spi/Kconfig                           |  39 +++
->  drivers/spi/Makefile                          |   3 +
->  .../intel-spi-pci.c => spi/spi-intel-pci.c}   |  20 +-
->  .../spi-intel-platform.c}                     |  21 +-
->  .../intel-spi.c => spi/spi-intel.c}           | 316 +++++++++++-------
->  drivers/spi/spi-intel.h                       |  19 ++
->  include/linux/mfd/lpc_ich.h                   |   2 +-
->  .../x86/{intel-spi.h => spi-intel.h}          |   6 +-
->  11 files changed, 266 insertions(+), 220 deletions(-)
->  delete mode 100644 drivers/mtd/spi-nor/controllers/intel-spi.h
->  rename drivers/{mtd/spi-nor/controllers/intel-spi-pci.c => spi/spi-intel-pci.c} (86%)
->  rename drivers/{mtd/spi-nor/controllers/intel-spi-platform.c => spi/spi-intel-platform.c} (65%)
->  rename drivers/{mtd/spi-nor/controllers/intel-spi.c => spi/spi-intel.c} (79%)
->  create mode 100644 drivers/spi/spi-intel.h
->  rename include/linux/platform_data/x86/{intel-spi.h => spi-intel.h} (89%)
-> 
-[...]
+
 > +static bool intel_spi_supports_mem_op(struct spi_mem *mem,
 > +				      const struct spi_mem_op *op)
 > +{
@@ -115,13 +98,6 @@ On 13/10/21 02:44PM, Mika Westerberg wrote:
 > +	if (op->cmd.buswidth > 4 ||
 > +	    (op->addr.nbytes && op->addr.buswidth > 4) ||
 > +	    (op->dummy.nbytes && op->dummy.buswidth > 4))
-
-Also need to check data buswidth here?
-
-Other than this,
-
-Acked-by: Pratyush Yadav <p.yadav@ti.com>
-
 > +		return false;
 > +
 > +	if (ispi->swseq_reg && ispi->locked) {
@@ -145,6 +121,12 @@ Acked-by: Pratyush Yadav <p.yadav@ti.com>
 > +	case SPINOR_OP_RDSR:
 > +	case SPINOR_OP_WRSR:
 > +		return true;
+
+Ouch. I hate how spi-nor specific stuff leak into the supposedly
+spi-mem generic driver. Now if we want to allow such specialization, we
+should at least make sure the whole operation is consistent instead of
+checking the opcode, address, dummy and data cycles separately.
+
 >  
 > -	while (len > 0) {
 > -		writel(offs, ispi->base + FADDR);
@@ -188,9 +170,38 @@ Acked-by: Pratyush Yadav <p.yadav@ti.com>
 > +	return false;
 > +}
 > +
-[...]
+> +static int intel_spi_exec_mem_op(struct spi_mem *mem, const struct spi_mem_op *op)
+> +{
+> +	struct intel_spi *ispi = spi_master_get_devdata(mem->spi->master);
+> +	size_t nbytes = op->data.nbytes;
+> +	u8 opcode = op->cmd.opcode;
+> +
+> +	if (op->addr.nbytes) {
+> +		if  (op->data.dir == SPI_MEM_DATA_IN)
+> +			return intel_spi_read(ispi, op->addr.val, nbytes,
+> +					      op->data.buf.in);
+> +		if (op->data.dir == SPI_MEM_DATA_OUT)
+> +			return intel_spi_write(ispi, op->addr.val, nbytes,
+> +					       op->data.buf.out);
+> +		if (op->data.dir == SPI_MEM_NO_DATA)
+> +			return intel_spi_erase(ispi, opcode, op->addr.val);
 
--- 
-Regards,
-Pratyush Yadav
-Texas Instruments Inc.
+That's risky IMHO, how can you be sure that NO_DATA means erase? Again,
+it looks like the whole operation should be checked, not just the data
+field.
+
+> +	} else {
+> +		if  (op->data.dir == SPI_MEM_DATA_IN)
+> +			return intel_spi_read_reg(ispi, opcode, op->data.buf.in,
+> +						  nbytes);
+> +		if (op->data.dir == SPI_MEM_DATA_OUT)
+> +			return intel_spi_write_reg(ispi, opcode, op->data.buf.out,
+> +						   nbytes);
+> +		if (op->data.dir == SPI_MEM_NO_DATA)
+> +			return intel_spi_write_reg(ispi, opcode, NULL, 0);
+>  	}
+>  
+> -	return 0;
+> +	return -EINVAL;
+> +}
+> +

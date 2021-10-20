@@ -2,21 +2,21 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EB7DCC4332F
-	for <linux-spi@archiver.kernel.org>; Wed, 20 Oct 2021 14:28:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EBF54C433F5
+	for <linux-spi@archiver.kernel.org>; Wed, 20 Oct 2021 14:28:39 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D682A60EE9
-	for <linux-spi@archiver.kernel.org>; Wed, 20 Oct 2021 14:28:41 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D672760EE9
+	for <linux-spi@archiver.kernel.org>; Wed, 20 Oct 2021 14:28:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230305AbhJTOay (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 20 Oct 2021 10:30:54 -0400
-Received: from relay7-d.mail.gandi.net ([217.70.183.200]:56825 "EHLO
+        id S230316AbhJTOau (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 20 Oct 2021 10:30:50 -0400
+Received: from relay7-d.mail.gandi.net ([217.70.183.200]:43759 "EHLO
         relay7-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230365AbhJTOao (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 20 Oct 2021 10:30:44 -0400
+        with ESMTP id S230314AbhJTOah (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 20 Oct 2021 10:30:37 -0400
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 1B6B120003;
-        Wed, 20 Oct 2021 14:28:28 +0000 (UTC)
+        by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 7239520003;
+        Wed, 20 Oct 2021 14:28:20 +0000 (UTC)
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Richard Weinberger <richard@nod.at>,
         Vignesh Raghavendra <vigneshr@ti.com>,
@@ -31,9 +31,9 @@ Cc:     <linux-mtd@lists.infradead.org>, <linux-spi@vger.kernel.org>,
         Boris Brezillon <boris.brezillon@collabora.com>,
         Xiangsheng Hou <Xiangsheng.Hou@mediatek.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 13/18] mtd: nand: mxic-ecc: Support SPI pipelined mode
-Date:   Wed, 20 Oct 2021 16:28:04 +0200
-Message-Id: <20211020142809.349347-14-miquel.raynal@bootlin.com>
+Subject: [PATCH 07/18] dt-bindings: spi: mxic: Convert to yaml
+Date:   Wed, 20 Oct 2021 16:27:58 +0200
+Message-Id: <20211020142809.349347-8-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20211020142809.349347-1-miquel.raynal@bootlin.com>
 References: <20211020142809.349347-1-miquel.raynal@bootlin.com>
@@ -44,290 +44,132 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Introduce the support for another possible configuration: the ECC
-engine may work as DMA master (pipelined) and move itself the data
-to/from the NAND chip into the buffer, applying the necessary
-corrections/computations on the fly.
-
-This driver offers an ECC engine implementation that must be
-instatiated from a SPI controller driver.
+Straightforward conversion from regular text to yaml schema of the
+Macronix SPI controller DT bindings.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- drivers/mtd/nand/ecc-mxic.c       | 148 +++++++++++++++++++++++++++++-
- include/linux/mtd/nand-ecc-mxic.h |  36 ++++++++
- 2 files changed, 181 insertions(+), 3 deletions(-)
- create mode 100644 include/linux/mtd/nand-ecc-mxic.h
+ .../bindings/spi/mxicy,mx25f0a-spi.yaml       | 67 +++++++++++++++++++
+ .../devicetree/bindings/spi/spi-mxic.txt      | 36 ----------
+ 2 files changed, 67 insertions(+), 36 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/spi/mxicy,mx25f0a-spi.yaml
+ delete mode 100644 Documentation/devicetree/bindings/spi/spi-mxic.txt
 
-diff --git a/drivers/mtd/nand/ecc-mxic.c b/drivers/mtd/nand/ecc-mxic.c
-index d9b251ab9201..555ba7f19027 100644
---- a/drivers/mtd/nand/ecc-mxic.c
-+++ b/drivers/mtd/nand/ecc-mxic.c
-@@ -39,7 +39,9 @@
- #define INTRPT_SIG_EN 0x0C
- /* Host Controller Configuration */
- #define HC_CONFIG 0x10
-+#define   DEV2MEM 0 /* TRANS_TYP_DMA in the spec */
- #define   MEM2MEM BIT(4) /* TRANS_TYP_IO in the spec */
-+#define   MAPPING BIT(5) /* TRANS_TYP_MAPPING in the spec */
- #define   ECC_PACKED 0 /* LAYOUT_TYP_INTEGRATED in the spec */
- #define   ECC_INTERLEAVED BIT(2) /* LAYOUT_TYP_DISTRIBUTED in the spec */
- #define   BURST_TYP_FIXED 0
-@@ -101,6 +103,7 @@ struct mxic_ecc_engine {
- 	u8 *oobwithstat;
- 	struct scatterlist sg[2];
- 	struct nand_page_io_req *req;
-+	unsigned int pageoffs;
- };
- 
- static int mxic_ecc_ooblayout_ecc(struct mtd_info *mtd, int section,
-@@ -188,6 +191,31 @@ static irqreturn_t mxic_ecc_isr(int irq, void *dev_id)
- 	return IRQ_HANDLED;
- }
- 
-+static struct device *mxic_ecc_get_engine_dev(struct device *dev)
-+{
-+	struct platform_device *eccpdev;
-+	struct device_node *np;
-+
-+	/*
-+	 * If the device node contains this property, it means the device does
-+	 * not represent the actual ECC engine.
-+	 */
-+	np = of_parse_phandle(dev->of_node, "nand-ecc-engine", 0);
-+	if (!np)
-+		return dev;
-+
-+	eccpdev = of_find_device_by_node(np);
-+	if (!eccpdev) {
-+		of_node_put(np);
-+		return NULL;
-+	}
-+
-+	platform_device_put(eccpdev);
-+	of_node_put(np);
-+
-+	return &eccpdev->dev;
-+}
-+
- static int mxic_ecc_init_ctx(struct nand_device *nand, struct device *dev)
- {
- 	struct platform_device *pdev = to_platform_device(dev);
-@@ -379,6 +407,41 @@ static int mxic_ecc_init_ctx_external(struct nand_device *nand)
- 	return 0;
- }
- 
-+static int mxic_ecc_init_ctx_pipelined(struct nand_device *nand)
-+{
-+	struct mxic_ecc_engine *eng;
-+	struct device *dev;
-+	int ret;
-+
-+	/*
-+	 * In the case of a pipelined engine, the device registering the ECC
-+	 * engine is not the actual ECC engine device but the host controller.
-+	 */
-+	dev = mxic_ecc_get_engine_dev(nand->ecc.engine->dev);
-+	if (!dev)
-+		return -EINVAL;
-+
-+	dev_info(dev, "Macronix ECC engine in pipelined/mapping mode\n");
-+
-+	ret = mxic_ecc_init_ctx(nand, dev);
-+	if (ret)
-+		return ret;
-+
-+	eng = nand->ecc.ctx.priv;
-+
-+	/* All steps should be handled in one go directly by the internal DMA */
-+	writel(eng->steps, eng->regs + CHUNK_CNT);
-+
-+	/*
-+	 * Interleaved ECC scheme cannot be used otherwise factory bad block
-+	 * markers would be lost. A packed layout is mandatory.
-+	 */
-+	writel(BURST_TYP_INCREASING | ECC_PACKED | MAPPING,
-+	       eng->regs + HC_CONFIG);
-+
-+	return 0;
-+}
-+
- static void mxic_ecc_cleanup_ctx(struct nand_device *nand)
- {
- 	struct mxic_ecc_engine *eng = nand->ecc.ctx.priv;
-@@ -414,18 +477,22 @@ static int mxic_ecc_data_xfer_wait_for_completion(struct mxic_ecc_engine *eng)
- 	return 0;
- }
- 
--static int mxic_ecc_process_data(struct mxic_ecc_engine *eng)
-+int mxic_ecc_process_data(struct mxic_ecc_engine *eng, dma_addr_t dirmap)
- {
- 	/* Retrieve the direction */
- 	unsigned int dir = (eng->req->type == NAND_PAGE_READ) ?
- 			   READ_NAND : WRITE_NAND;
- 
-+	if (dirmap)
-+		writel(dirmap, eng->regs + HC_SLV_ADDR);
-+
- 	/* Trigger processing */
- 	writel(SDMA_STRT | dir, eng->regs + SDMA_CTRL);
- 
- 	/* Wait for completion */
- 	return mxic_ecc_data_xfer_wait_for_completion(eng);
- }
-+EXPORT_SYMBOL_GPL(mxic_ecc_process_data);
- 
- static void mxic_ecc_extract_status_bytes(struct mxic_ecc_engine *eng, u8 *buf)
- {
-@@ -528,7 +595,7 @@ static int mxic_ecc_prepare_io_req_external(struct nand_device *nand,
- 		       eng->regs + SDMA_MAIN_ADDR);
- 		writel(sg_dma_address(&eng->sg[1]) + (step * (eng->oob_step_sz + STAT_BYTES)),
- 		       eng->regs + SDMA_SPARE_ADDR);
--		ret = mxic_ecc_process_data(eng);
-+		ret = mxic_ecc_process_data(eng, 0);
- 		if (ret)
- 			break;
- 	}
-@@ -582,7 +649,7 @@ static int mxic_ecc_finish_io_req_external(struct nand_device *nand,
- 		       eng->regs + SDMA_MAIN_ADDR);
- 		writel(sg_dma_address(&eng->sg[1]) + (step * (eng->oob_step_sz + STAT_BYTES)),
- 		       eng->regs + SDMA_SPARE_ADDR);
--		ret = mxic_ecc_process_data(eng);
-+		ret = mxic_ecc_process_data(eng, 0);
- 		if (ret)
- 			break;
- 	}
-@@ -600,6 +667,64 @@ static int mxic_ecc_finish_io_req_external(struct nand_device *nand,
- 	return mxic_ecc_count_biterrs(eng, mtd);
- }
- 
-+/* Pipelined ECC engine helpers */
-+static int mxic_ecc_prepare_io_req_pipelined(struct nand_device *nand,
-+					     struct nand_page_io_req *req)
-+{
-+	struct mxic_ecc_engine *eng = nand->ecc.ctx.priv;
-+	int nents;
-+
-+	if (req->mode == MTD_OPS_RAW)
-+		return 0;
-+
-+	nand_ecc_tweak_req(&eng->req_ctx, req);
-+	eng->req = req;
-+
-+	/* Copy the OOB buffer and add room for the ECC engine status bytes */
-+	mxic_ecc_add_room_in_oobbuf(eng, eng->oobwithstat, eng->req->oobbuf.in);
-+
-+	sg_set_buf(&eng->sg[0], req->databuf.in, req->datalen);
-+	sg_set_buf(&eng->sg[1], eng->oobwithstat,
-+		   req->ooblen + (eng->steps * STAT_BYTES));
-+
-+	nents = dma_map_sg(eng->dev, eng->sg, 2, DMA_BIDIRECTIONAL);
-+	if (!nents)
-+		return -EINVAL;
-+
-+	writel(sg_dma_address(&eng->sg[0]), eng->regs + SDMA_MAIN_ADDR);
-+	writel(sg_dma_address(&eng->sg[1]), eng->regs + SDMA_SPARE_ADDR);
-+
-+	mxic_ecc_enable_engine(eng);
-+
-+	return 0;
-+}
-+
-+static int mxic_ecc_finish_io_req_pipelined(struct nand_device *nand,
-+					    struct nand_page_io_req *req)
-+{
-+	struct mxic_ecc_engine *eng = nand->ecc.ctx.priv;
-+	struct mtd_info *mtd = nanddev_to_mtd(nand);
-+	int ret = 0;
-+
-+	if (req->mode == MTD_OPS_RAW)
-+		return 0;
-+
-+	mxic_ecc_disable_engine(eng);
-+
-+	dma_unmap_sg(eng->dev, eng->sg, 2, DMA_BIDIRECTIONAL);
-+
-+	if (req->type == NAND_PAGE_READ) {
-+		mxic_ecc_extract_status_bytes(eng, eng->oobwithstat);
-+		mxic_ecc_reconstruct_oobbuf(eng, eng->req->oobbuf.in,
-+					    eng->oobwithstat);
-+		ret = mxic_ecc_count_biterrs(eng, mtd);
-+	}
-+
-+	nand_ecc_restore_req(&eng->req_ctx, req);
-+
-+	return ret;
-+}
-+
- static struct nand_ecc_engine_ops mxic_ecc_engine_external_ops = {
- 	.init_ctx = mxic_ecc_init_ctx_external,
- 	.cleanup_ctx = mxic_ecc_cleanup_ctx,
-@@ -607,6 +732,23 @@ static struct nand_ecc_engine_ops mxic_ecc_engine_external_ops = {
- 	.finish_io_req = mxic_ecc_finish_io_req_external,
- };
- 
-+static struct nand_ecc_engine_ops mxic_ecc_engine_pipelined_ops = {
-+	.init_ctx = mxic_ecc_init_ctx_pipelined,
-+	.cleanup_ctx = mxic_ecc_cleanup_ctx,
-+	.prepare_io_req = mxic_ecc_prepare_io_req_pipelined,
-+	.finish_io_req = mxic_ecc_finish_io_req_pipelined,
-+};
-+
-+struct nand_ecc_engine_ops *mxic_ecc_get_pipelined_ops(void)
-+{
-+	return &mxic_ecc_engine_pipelined_ops;
-+}
-+EXPORT_SYMBOL_GPL(mxic_ecc_get_pipelined_ops);
-+
-+/*
-+ * Only the external ECC engine is exported as the pipelined is SoC specific, so
-+ * it is registered directly by the drivers that wrap it.
-+ */
- static int mxic_ecc_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-diff --git a/include/linux/mtd/nand-ecc-mxic.h b/include/linux/mtd/nand-ecc-mxic.h
+diff --git a/Documentation/devicetree/bindings/spi/mxicy,mx25f0a-spi.yaml b/Documentation/devicetree/bindings/spi/mxicy,mx25f0a-spi.yaml
 new file mode 100644
-index 000000000000..d48b7fe05644
+index 000000000000..4036c14fc533
 --- /dev/null
-+++ b/include/linux/mtd/nand-ecc-mxic.h
-@@ -0,0 +1,36 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright © 2019 Macronix
-+ * Author: Miquèl Raynal <miquel.raynal@bootlin.com>
-+ *
-+ * Header for the Macronix external ECC engine.
-+ */
++++ b/Documentation/devicetree/bindings/spi/mxicy,mx25f0a-spi.yaml
+@@ -0,0 +1,67 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/spi/mxicy,mx25f0a-spi.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+#ifndef __MTD_NAND_ECC_MXIC_H__
-+#define __MTD_NAND_ECC_MXIC_H__
++title: Macronix SPI controller device tree bindings
 +
-+#include <linux/device.h>
++maintainers:
++  - Miquel Raynal <miquel.raynal@bootlin.com>
 +
-+struct mxic_ecc_engine;
++allOf:
++  - $ref: "spi-controller.yaml#"
 +
-+#if IS_ENABLED(CONFIG_MTD_NAND_ECC_MXIC)
++properties:
++  compatible:
++    const: mxicy,mx25f0a-spi
 +
-+struct nand_ecc_engine_ops *mxic_ecc_get_pipelined_ops(void);
-+int mxic_ecc_process_data(struct mxic_ecc_engine *eng, dma_addr_t dirmap);
++  reg:
++    minItems: 2
++    maxItems: 2
 +
-+#else /* !CONFIG_MTD_NAND_ECC_MXIC */
++  reg-names:
++    items:
++      - const: regs
++      - const: dirmap
 +
-+struct nand_ecc_engine_ops *mxic_ecc_get_pipelined_ops(void)
-+{
-+	return NULL;
-+}
++  interrupts:
++    maxItems: 1
 +
-+static inline
-+int mxic_ecc_process_data(struct mxic_ecc_engine *eng, dma_addr_t dirmap)
-+{
-+	return -ENOTSUPP;
-+}
++  clocks:
++    minItems: 3
++    maxItems: 3
 +
-+#endif /* CONFIG_MTD_NAND_ECC_MXIC */
++  clock-names:
++    items:
++      - const: send_clk
++      - const: send_dly_clk
++      - const: ps_clk
 +
-+#endif /* __MTD_NAND_ECC_MXIC_H__ */
++  "#address-cells":
++    const: 1
++  "#size-cells":
++    const: 0
++
++required:
++  - compatible
++  - reg
++  - reg-names
++  - clocks
++  - clock-names
++  - "#address-cells"
++  - "#size-cells"
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    spi@43c30000 {
++      compatible = "mxicy,mx25f0a-spi";
++      reg = <0x43c30000 0x10000>, <0xa0000000 0x20000000>;
++      reg-names = "regs", "dirmap";
++      clocks = <&clkwizard 0>, <&clkwizard 1>, <&clkc 18>;
++      clock-names = "send_clk", "send_dly_clk", "ps_clk";
++      #address-cells = <1>;
++      #size-cells = <0>;
++    };
+diff --git a/Documentation/devicetree/bindings/spi/spi-mxic.txt b/Documentation/devicetree/bindings/spi/spi-mxic.txt
+deleted file mode 100644
+index 7bcbb229b78b..000000000000
+--- a/Documentation/devicetree/bindings/spi/spi-mxic.txt
++++ /dev/null
+@@ -1,36 +0,0 @@
+-Macronix SPI controller Device Tree Bindings
+---------------------------------------------
+-
+-Required properties:
+-- compatible: should be "mxicy,mx25f0a-spi"
+-- #address-cells: should be 1
+-- #size-cells: should be 0
+-- reg: should contain 2 entries, one for the registers and one for the direct
+-       mapping area
+-- reg-names: should contain "regs" and "dirmap"
+-- clock-names: should contain "ps_clk", "send_clk" and "send_dly_clk"
+-- clocks: should contain 3 entries for the "ps_clk", "send_clk" and
+-	  "send_dly_clk" clocks
+-
+-Optional properties:
+-- interrupts: interrupt line connected to the SPI controller
+-
+-Example:
+-
+-	spi@43c30000 {
+-		compatible = "mxicy,mx25f0a-spi";
+-		reg = <0x43c30000 0x10000>, <0xa0000000 0x20000000>;
+-		reg-names = "regs", "dirmap";
+-		clocks = <&clkwizard 0>, <&clkwizard 1>, <&clkc 18>;
+-		clock-names = "send_clk", "send_dly_clk", "ps_clk";
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-
+-		flash@0 {
+-			compatible = "jedec,spi-nor";
+-			reg = <0>;
+-			spi-max-frequency = <25000000>;
+-			spi-tx-bus-width = <4>;
+-			spi-rx-bus-width = <4>;
+-		};
+-	};
 -- 
 2.27.0
 

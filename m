@@ -2,21 +2,21 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EB79AC4332F
-	for <linux-spi@archiver.kernel.org>; Wed, 20 Oct 2021 14:28:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6F6B6C433EF
+	for <linux-spi@archiver.kernel.org>; Wed, 20 Oct 2021 14:28:29 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id DA117611B0
-	for <linux-spi@archiver.kernel.org>; Wed, 20 Oct 2021 14:28:27 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 506FF61391
+	for <linux-spi@archiver.kernel.org>; Wed, 20 Oct 2021 14:28:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230359AbhJTOaj (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 20 Oct 2021 10:30:39 -0400
-Received: from relay7-d.mail.gandi.net ([217.70.183.200]:51309 "EHLO
+        id S230345AbhJTOam (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 20 Oct 2021 10:30:42 -0400
+Received: from relay7-d.mail.gandi.net ([217.70.183.200]:54183 "EHLO
         relay7-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230293AbhJTOaf (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 20 Oct 2021 10:30:35 -0400
+        with ESMTP id S230264AbhJTOaj (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 20 Oct 2021 10:30:39 -0400
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 46A0920007;
-        Wed, 20 Oct 2021 14:28:19 +0000 (UTC)
+        by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id D738720005;
+        Wed, 20 Oct 2021 14:28:22 +0000 (UTC)
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Richard Weinberger <richard@nod.at>,
         Vignesh Raghavendra <vigneshr@ti.com>,
@@ -31,9 +31,9 @@ Cc:     <linux-mtd@lists.infradead.org>, <linux-spi@vger.kernel.org>,
         Boris Brezillon <boris.brezillon@collabora.com>,
         Xiangsheng Hou <Xiangsheng.Hou@mediatek.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 06/18] dt-bindings: spi: mxic: The interrupt property is not mandatory
-Date:   Wed, 20 Oct 2021 16:27:57 +0200
-Message-Id: <20211020142809.349347-7-miquel.raynal@bootlin.com>
+Subject: [PATCH 09/18] dt-bindings: spi: mxic: Document the nand-ecc-engine property
+Date:   Wed, 20 Oct 2021 16:28:00 +0200
+Message-Id: <20211020142809.349347-10-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20211020142809.349347-1-miquel.raynal@bootlin.com>
 References: <20211020142809.349347-1-miquel.raynal@bootlin.com>
@@ -44,35 +44,33 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The interrupt property is not mandatory at all, this property should not
-be part of the required properties list, so move it into the optional
-properties list.
+This SPI controller supports interacting with an external ECC
+engine. The nand-ecc-engine property already exist in the NAND world but
+also applies to SPI controller nodes which have external correction
+capabilities like Macronix's.
 
-Fixes: 326e5c8d4a87 ("dt-binding: spi: Document Macronix controller bindings")
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- Documentation/devicetree/bindings/spi/spi-mxic.txt | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ .../devicetree/bindings/spi/mxicy,mx25f0a-spi.yaml          | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-mxic.txt b/Documentation/devicetree/bindings/spi/spi-mxic.txt
-index 529f2dab2648..7bcbb229b78b 100644
---- a/Documentation/devicetree/bindings/spi/spi-mxic.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-mxic.txt
-@@ -8,11 +8,13 @@ Required properties:
- - reg: should contain 2 entries, one for the registers and one for the direct
-        mapping area
- - reg-names: should contain "regs" and "dirmap"
--- interrupts: interrupt line connected to the SPI controller
- - clock-names: should contain "ps_clk", "send_clk" and "send_dly_clk"
- - clocks: should contain 3 entries for the "ps_clk", "send_clk" and
- 	  "send_dly_clk" clocks
+diff --git a/Documentation/devicetree/bindings/spi/mxicy,mx25f0a-spi.yaml b/Documentation/devicetree/bindings/spi/mxicy,mx25f0a-spi.yaml
+index 4036c14fc533..01618a77627d 100644
+--- a/Documentation/devicetree/bindings/spi/mxicy,mx25f0a-spi.yaml
++++ b/Documentation/devicetree/bindings/spi/mxicy,mx25f0a-spi.yaml
+@@ -43,6 +43,12 @@ properties:
+   "#size-cells":
+     const: 0
  
-+Optional properties:
-+- interrupts: interrupt line connected to the SPI controller
++  nand-ecc-engine:
++    allOf:
++      - $ref: /schemas/types.yaml#/definitions/phandle
++    description: NAND ECC engine used by the SPI controller in order to perform
++      on-the-fly correction when using a SPI-NAND memory.
 +
- Example:
- 
- 	spi@43c30000 {
+ required:
+   - compatible
+   - reg
 -- 
 2.27.0
 

@@ -2,103 +2,153 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D7BBCC433F5
-	for <linux-spi@archiver.kernel.org>; Wed, 20 Oct 2021 21:14:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0695FC433F5
+	for <linux-spi@archiver.kernel.org>; Thu, 21 Oct 2021 00:21:54 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B81D461284
-	for <linux-spi@archiver.kernel.org>; Wed, 20 Oct 2021 21:14:56 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D41FB61354
+	for <linux-spi@archiver.kernel.org>; Thu, 21 Oct 2021 00:21:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231422AbhJTVRJ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 20 Oct 2021 17:17:09 -0400
-Received: from mail-ot1-f51.google.com ([209.85.210.51]:33359 "EHLO
-        mail-ot1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231400AbhJTVRH (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 20 Oct 2021 17:17:07 -0400
-Received: by mail-ot1-f51.google.com with SMTP id 34-20020a9d0325000000b00552cae0decbso8160063otv.0;
-        Wed, 20 Oct 2021 14:14:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=dmICp/48/qSEs70Ri+eIX62qUssRgZltzHF+47kbHhk=;
-        b=yxHc1va7a3v357yHBJaBHcAvuQTWXhhLafwiLIYRfRD+Z76JhORJFTG4HeQ4Ccg8x1
-         WoFHNMXy2beAjh6YoimU92gEY4x1yW4YrpJ6URH7W+X42lxn302lzzcS87ZRPv3Az91B
-         UTZqD/Wwu1mTZZ0HMv5xZ40u33RaMl/dL9JTvcuR1/U8OXIkqhGkOFOs9YA9uInPTye9
-         xTnFNEkS2lyk55J8xnFzRpedYjDDoYlsHJ3rpvSWV+Fx4k53s9O909sRJSgUA+XSoSzd
-         xJPYfgHx0uNnuk6Uq3tgxsImcQO8CdGEePTiPgAfxO62cunex5lUMsYlFeg0hVc4v5uf
-         /KSA==
-X-Gm-Message-State: AOAM531gpSBti1jYz24VBBN4WF0v/gty5odjY9GdLqVusrlFK7Ni2Li/
-        kIpS8Yrg+NA0mMmRgi79xg==
-X-Google-Smtp-Source: ABdhPJzFQpY139+LDDMM4EG73vjZiHXnA+KX2/jVPuaZ0J/OUKjeaw7YvzggrjVYGN3KqAOf2IVyhw==
-X-Received: by 2002:a05:6830:236b:: with SMTP id r11mr1333531oth.145.1634764492353;
-        Wed, 20 Oct 2021 14:14:52 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id n187sm639709oif.52.2021.10.20.14.14.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Oct 2021 14:14:51 -0700 (PDT)
-Received: (nullmailer pid 2962587 invoked by uid 1000);
-        Wed, 20 Oct 2021 21:14:47 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     Miquel Raynal <miquel.raynal@bootlin.com>
-Cc:     Tudor Ambarus <Tudor.Ambarus@microchip.com>,
-        linux-mtd@lists.infradead.org, Julien Su <juliensu@mxic.com.tw>,
-        linux-spi@vger.kernel.org, Jaime Liao <jaimeliao@mxic.com.tw>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Boris Brezillon <boris.brezillon@collabora.com>,
-        Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org,
-        Xiangsheng Hou <Xiangsheng.Hou@mediatek.com>,
-        Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org
-In-Reply-To: <20211020142809.349347-5-miquel.raynal@bootlin.com>
-References: <20211020142809.349347-1-miquel.raynal@bootlin.com> <20211020142809.349347-5-miquel.raynal@bootlin.com>
-Subject: Re: [PATCH 04/18] dt-bindings: mtd: spi-nand: Convert spi-nand description file to yaml
-Date:   Wed, 20 Oct 2021 16:14:47 -0500
-Message-Id: <1634764487.038982.2962586.nullmailer@robh.at.kernel.org>
+        id S231911AbhJUAYH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 20 Oct 2021 20:24:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42628 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231540AbhJUAXu (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 20 Oct 2021 20:23:50 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 1D41B613A4;
+        Thu, 21 Oct 2021 00:21:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1634775695;
+        bh=WZWeuxSRxl5SZVNa+xq55nivzTLb8h/2BA88j/0BeOc=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=rrHy45QQMUHx73DZTVWBiVJwMRPAbe0H2hHzwnZSHr5zW5lkmSIzyWOL1nJEcxuDw
+         qq+Uz2n5ESFhVbjWsLuSfijzOwOFW6yTtK28BY3e23qSOyXRZoH8YI9FUyxWtdXQA3
+         t26o8RUNJGyI5EMQ7io9VViORcSWo6vsAXdCBiZOlzYiUkktJ+wk/SEa0lIB0UYLlt
+         aC7a5Z0v1OXnhFefCue+HHuA1IEFsTj8jzFkwnJn3T33jk17Dtc5juuWWP4YhZ02Zy
+         e0S/V6z75wSAXVfFH30lHQtHdjn0QSgYcMsgxYoKMGMNOXqm1wPYnUcWAdsUpp18oq
+         mVUilMFU5p7Tg==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Mark Brown <broonie@kernel.org>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Sasha Levin <sashal@kernel.org>,
+        linux-spi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.14 20/26] spi: Fix deadlock when adding SPI controllers on SPI buses
+Date:   Wed, 20 Oct 2021 20:20:17 -0400
+Message-Id: <20211021002023.1128949-20-sashal@kernel.org>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <20211021002023.1128949-1-sashal@kernel.org>
+References: <20211021002023.1128949-1-sashal@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, 20 Oct 2021 16:27:55 +0200, Miquel Raynal wrote:
-> Let's get rid of spi-nand.txt by converting it to yaml schema. While at
-> converting this file, let's actually pull all the generic properties
-> from nand-chip.yaml which might apply to a SPI-NAND chip.
-> 
-> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-> ---
->  .../devicetree/bindings/mtd/spi-nand.txt      |  5 ----
->  .../devicetree/bindings/mtd/spi-nand.yaml     | 27 +++++++++++++++++++
->  2 files changed, 27 insertions(+), 5 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/mtd/spi-nand.txt
->  create mode 100644 Documentation/devicetree/bindings/mtd/spi-nand.yaml
-> 
+From: Mark Brown <broonie@kernel.org>
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+[ Upstream commit 6098475d4cb48d821bdf453c61118c56e26294f0 ]
 
-yamllint warnings/errors:
+Currently we have a global spi_add_lock which we take when adding new
+devices so that we can check that we're not trying to reuse a chip
+select that's already controlled.  This means that if the SPI device is
+itself a SPI controller and triggers the instantiation of further SPI
+devices we trigger a deadlock as we try to register and instantiate
+those devices while in the process of doing so for the parent controller
+and hence already holding the global spi_add_lock.  Since we only care
+about concurrency within a single SPI bus move the lock to be per
+controller, avoiding the deadlock.
 
-dtschema/dtc warnings/errors:
-Unknown file referenced: [Errno 2] No such file or directory: '/usr/local/lib/python3.8/dist-packages/dtschema/schemas/mtd/nand-chip.yaml'
-xargs: dt-doc-validate: exited with status 255; aborting
-make[1]: *** Deleting file 'Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.example.dt.yaml'
-Unknown file referenced: [Errno 2] No such file or directory: '/usr/local/lib/python3.8/dist-packages/dtschema/schemas/mtd/nand-chip.yaml'
-make[1]: *** [scripts/Makefile.lib:385: Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.example.dt.yaml] Error 255
-make[1]: *** Waiting for unfinished jobs....
-make: *** [Makefile:1441: dt_binding_check] Error 2
+This can be easily triggered in the case of spi-mux.
 
-doc reference errors (make refcheckdocs):
+Reported-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/spi/spi.c       | 17 ++++++-----------
+ include/linux/spi/spi.h |  3 +++
+ 2 files changed, 9 insertions(+), 11 deletions(-)
 
-See https://patchwork.ozlabs.org/patch/1543922
-
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index f95f7666cb5b..2c342bded058 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -480,12 +480,6 @@ static LIST_HEAD(spi_controller_list);
+  */
+ static DEFINE_MUTEX(board_lock);
+ 
+-/*
+- * Prevents addition of devices with same chip select and
+- * addition of devices below an unregistering controller.
+- */
+-static DEFINE_MUTEX(spi_add_lock);
+-
+ /**
+  * spi_alloc_device - Allocate a new SPI device
+  * @ctlr: Controller to which device is connected
+@@ -638,9 +632,9 @@ int spi_add_device(struct spi_device *spi)
+ 	 * chipselect **BEFORE** we call setup(), else we'll trash
+ 	 * its configuration.  Lock against concurrent add() calls.
+ 	 */
+-	mutex_lock(&spi_add_lock);
++	mutex_lock(&ctlr->add_lock);
+ 	status = __spi_add_device(spi);
+-	mutex_unlock(&spi_add_lock);
++	mutex_unlock(&ctlr->add_lock);
+ 	return status;
+ }
+ EXPORT_SYMBOL_GPL(spi_add_device);
+@@ -660,7 +654,7 @@ static int spi_add_device_locked(struct spi_device *spi)
+ 	/* Set the bus ID string */
+ 	spi_dev_set_name(spi);
+ 
+-	WARN_ON(!mutex_is_locked(&spi_add_lock));
++	WARN_ON(!mutex_is_locked(&ctlr->add_lock));
+ 	return __spi_add_device(spi);
+ }
+ 
+@@ -2832,6 +2826,7 @@ int spi_register_controller(struct spi_controller *ctlr)
+ 	spin_lock_init(&ctlr->bus_lock_spinlock);
+ 	mutex_init(&ctlr->bus_lock_mutex);
+ 	mutex_init(&ctlr->io_mutex);
++	mutex_init(&ctlr->add_lock);
+ 	ctlr->bus_lock_flag = 0;
+ 	init_completion(&ctlr->xfer_completion);
+ 	if (!ctlr->max_dma_len)
+@@ -2968,7 +2963,7 @@ void spi_unregister_controller(struct spi_controller *ctlr)
+ 
+ 	/* Prevent addition of new devices, unregister existing ones */
+ 	if (IS_ENABLED(CONFIG_SPI_DYNAMIC))
+-		mutex_lock(&spi_add_lock);
++		mutex_lock(&ctlr->add_lock);
+ 
+ 	device_for_each_child(&ctlr->dev, NULL, __unregister);
+ 
+@@ -2999,7 +2994,7 @@ void spi_unregister_controller(struct spi_controller *ctlr)
+ 	mutex_unlock(&board_lock);
+ 
+ 	if (IS_ENABLED(CONFIG_SPI_DYNAMIC))
+-		mutex_unlock(&spi_add_lock);
++		mutex_unlock(&ctlr->add_lock);
+ }
+ EXPORT_SYMBOL_GPL(spi_unregister_controller);
+ 
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 97b8d12b5f2b..5d80c6fd2a22 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -527,6 +527,9 @@ struct spi_controller {
+ 	/* I/O mutex */
+ 	struct mutex		io_mutex;
+ 
++	/* Used to avoid adding the same CS twice */
++	struct mutex		add_lock;
++
+ 	/* lock and mutex for SPI bus locking */
+ 	spinlock_t		bus_lock_spinlock;
+ 	struct mutex		bus_lock_mutex;
+-- 
+2.33.0
 

@@ -2,25 +2,25 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E399EC433EF
-	for <linux-spi@archiver.kernel.org>; Mon, 25 Oct 2021 20:56:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8022EC43217
+	for <linux-spi@archiver.kernel.org>; Mon, 25 Oct 2021 20:56:54 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C556D60F4F
-	for <linux-spi@archiver.kernel.org>; Mon, 25 Oct 2021 20:56:51 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6D80D610A1
+	for <linux-spi@archiver.kernel.org>; Mon, 25 Oct 2021 20:56:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234636AbhJYU7N (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 25 Oct 2021 16:59:13 -0400
+        id S234690AbhJYU7P (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 25 Oct 2021 16:59:15 -0400
 Received: from relmlor2.renesas.com ([210.160.252.172]:33583 "EHLO
         relmlie6.idc.renesas.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S234606AbhJYU7K (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 25 Oct 2021 16:59:10 -0400
+        by vger.kernel.org with ESMTP id S234594AbhJYU7O (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 25 Oct 2021 16:59:14 -0400
 X-IronPort-AV: E=Sophos;i="5.87,181,1631545200"; 
-   d="scan'208";a="98385693"
+   d="scan'208";a="98385697"
 Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
-  by relmlie6.idc.renesas.com with ESMTP; 26 Oct 2021 05:56:46 +0900
+  by relmlie6.idc.renesas.com with ESMTP; 26 Oct 2021 05:56:50 +0900
 Received: from localhost.localdomain (unknown [10.226.36.204])
-        by relmlir6.idc.renesas.com (Postfix) with ESMTP id 3CB0A41003BF;
-        Tue, 26 Oct 2021 05:56:43 +0900 (JST)
+        by relmlir6.idc.renesas.com (Postfix) with ESMTP id 1F4B441003BB;
+        Tue, 26 Oct 2021 05:56:46 +0900 (JST)
 From:   Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
         Rob Herring <robh+dt@kernel.org>,
@@ -38,9 +38,9 @@ Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         Prabhakar <prabhakar.csengg@gmail.com>,
         Biju Das <biju.das.jz@bp.renesas.com>,
         Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Subject: [PATCH v2 2/7] dt-bindings: memory: renesas,rpc-if: Add optional interrupts property
-Date:   Mon, 25 Oct 2021 21:56:26 +0100
-Message-Id: <20211025205631.21151-3-prabhakar.mahadev-lad.rj@bp.renesas.com>
+Subject: [PATCH v2 3/7] spi: spi-rpc-if: Check return value of rpcif_sw_init()
+Date:   Mon, 25 Oct 2021 21:56:27 +0100
+Message-Id: <20211025205631.21151-4-prabhakar.mahadev-lad.rj@bp.renesas.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20211025205631.21151-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
 References: <20211025205631.21151-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
@@ -48,33 +48,35 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-For completeness add optional interrupts property.
+rpcif_sw_init() can fail so make sure we check the return value
+of it and on error exit rpcif_spi_probe() callback with error code.
 
+Fixes: eb8d6d464a27 ("spi: add Renesas RPC-IF driver")
 Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
 Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Rob Herring <robh@kernel.org>
 Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
 v1->v2:
  * Included RB tags
 ---
- .../devicetree/bindings/memory-controllers/renesas,rpc-if.yaml | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/spi/spi-rpc-if.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/memory-controllers/renesas,rpc-if.yaml b/Documentation/devicetree/bindings/memory-controllers/renesas,rpc-if.yaml
-index 43391a2d5bc5..294f1036420d 100644
---- a/Documentation/devicetree/bindings/memory-controllers/renesas,rpc-if.yaml
-+++ b/Documentation/devicetree/bindings/memory-controllers/renesas,rpc-if.yaml
-@@ -56,6 +56,9 @@ properties:
+diff --git a/drivers/spi/spi-rpc-if.c b/drivers/spi/spi-rpc-if.c
+index c53138ce0030..83796a4ead34 100644
+--- a/drivers/spi/spi-rpc-if.c
++++ b/drivers/spi/spi-rpc-if.c
+@@ -139,7 +139,9 @@ static int rpcif_spi_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
  
-   clocks: true
+ 	rpc = spi_controller_get_devdata(ctlr);
+-	rpcif_sw_init(rpc, parent);
++	error = rpcif_sw_init(rpc, parent);
++	if (error)
++		return error;
  
-+  interrupts:
-+    maxItems: 1
-+
-   power-domains:
-     maxItems: 1
+ 	platform_set_drvdata(pdev, ctlr);
  
 -- 
 2.17.1

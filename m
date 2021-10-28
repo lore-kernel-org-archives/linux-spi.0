@@ -2,43 +2,43 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AD5CCC433F5
-	for <linux-spi@archiver.kernel.org>; Thu, 28 Oct 2021 12:45:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CA2E2C433FE
+	for <linux-spi@archiver.kernel.org>; Thu, 28 Oct 2021 12:45:58 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 996F3610C8
-	for <linux-spi@archiver.kernel.org>; Thu, 28 Oct 2021 12:45:57 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id AF0FD610C8
+	for <linux-spi@archiver.kernel.org>; Thu, 28 Oct 2021 12:45:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230256AbhJ1MsV (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 28 Oct 2021 08:48:21 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:45208 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230282AbhJ1MsS (ORCPT
+        id S230297AbhJ1MsW (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 28 Oct 2021 08:48:22 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:44492 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230274AbhJ1MsS (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Thu, 28 Oct 2021 08:48:18 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 19SCjaML096846;
-        Thu, 28 Oct 2021 07:45:36 -0500
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 19SCjVW2012061;
+        Thu, 28 Oct 2021 07:45:31 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1635425136;
-        bh=KYpi63S67jEFLXgUwSqYZm2jT92fcc60hhrJnZCLW8U=;
+        s=ti-com-17Q1; t=1635425131;
+        bh=55cY97sZuQSu5sHGYm8QYttrQaervHm8LmId67H+MBM=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=YsQ8cmpovfVomGE2A5PzuDhy+SSjMyGjQ8lfBkSOjRDG0D66V/B7UCew5fPSnjmTr
-         ul299tnVdfShpRWhcG99CkzjkyD4JEmROcBBHHv43MbzxwXQR8XC7lF3rSUy49hpPv
-         LeCqM7HVNShGapLEOyog6kMTXAt/LI7Y/sBA89EA=
-Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 19SCjam3036663
+        b=CK52x0H2aNJt6TfP8RpBOgfVGb0cuWiGJRNZBPgaNtaSBvMXdKwlR+CNltOvw4dfS
+         nCkyQjaaLACqBQxD8vKWpndex82aK8x/xIG89IeNNlylYczuBU4KrDJLeO4C0+Y/F7
+         aD7M/qxLT11zMVbneWbUtBC/7OsYxBhbUTGAmCv4=
+Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 19SCjVp8120137
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 28 Oct 2021 07:45:36 -0500
-Received: from DLEE110.ent.ti.com (157.170.170.21) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
+        Thu, 28 Oct 2021 07:45:31 -0500
+Received: from DFLE105.ent.ti.com (10.64.6.26) by DFLE105.ent.ti.com
+ (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Thu, 28
- Oct 2021 07:45:36 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE110.ent.ti.com
- (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
+ Oct 2021 07:45:31 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE105.ent.ti.com
+ (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
- Frontend Transport; Thu, 28 Oct 2021 07:45:36 -0500
+ Frontend Transport; Thu, 28 Oct 2021 07:45:31 -0500
 Received: from pratyush-OptiPlex-790.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 19SCjJbD115317;
-        Thu, 28 Oct 2021 07:45:32 -0500
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 19SCjJbC115317;
+        Thu, 28 Oct 2021 07:45:27 -0500
 From:   Pratyush Yadav <p.yadav@ti.com>
 To:     Rob Herring <robh+dt@kernel.org>
 CC:     Pratyush Yadav <p.yadav@ti.com>, Mark Brown <broonie@kernel.org>,
@@ -49,9 +49,9 @@ CC:     Pratyush Yadav <p.yadav@ti.com>, Mark Brown <broonie@kernel.org>,
         Vignesh Raghavendra <vigneshr@ti.com>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <linux-mtd@lists.infradead.org>, <linux-spi@vger.kernel.org>
-Subject: [PATCH v2 3/3] dt-bindings: mtd: spi-nor: Add a reference to spi-slave-props.yaml
-Date:   Thu, 28 Oct 2021 18:15:18 +0530
-Message-ID: <20211028124518.17370-4-p.yadav@ti.com>
+Subject: [PATCH v2 2/3] spi: dt-bindings: cdns,qspi-nor: Move slave-specific properties out
+Date:   Thu, 28 Oct 2021 18:15:17 +0530
+Message-ID: <20211028124518.17370-3-p.yadav@ti.com>
 X-Mailer: git-send-email 2.33.1.835.ge9e5ba39a7
 In-Reply-To: <20211028124518.17370-1-p.yadav@ti.com>
 References: <20211028124518.17370-1-p.yadav@ti.com>
@@ -64,46 +64,127 @@ List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
 The spi-slave-props.yaml schema contains slave-specific properties
-for SPI controllers that should be present in the slave node. Add a
-reference to that so its constraints are followed.
-
-additionalProperties: false cannot be used since it marks the controller
-properties as unknown. Use unevaluatedProperties: false instead. This
-has the side effect of allowing extra properties that are not specified
-in the schema. The alternative is to list all the controller properties
-in this schema but that would mean every slave binding would have to
-repeat the same set of properties for each controller.
+for SPI controllers that should be present in the slave node. Move
+slave-specific properties to a separate file and refer to it in
+spi-slave-props.yaml.
 
 Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
 
 ---
 
-(no changes since v1)
+Changes in v2:
+- New in v2.
 
- Documentation/devicetree/bindings/mtd/jedec,spi-nor.yaml | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ .../spi/cdns,qspi-nor-slave-props.yaml        | 42 +++++++++++++++++++
+ .../bindings/spi/cdns,qspi-nor.yaml           | 33 ---------------
+ .../bindings/spi/spi-slave-props.yaml         |  2 +
+ 3 files changed, 44 insertions(+), 33 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/spi/cdns,qspi-nor-slave-props.yaml
 
-diff --git a/Documentation/devicetree/bindings/mtd/jedec,spi-nor.yaml b/Documentation/devicetree/bindings/mtd/jedec,spi-nor.yaml
-index ed590d7c6e37..e69a8fbb91f1 100644
---- a/Documentation/devicetree/bindings/mtd/jedec,spi-nor.yaml
-+++ b/Documentation/devicetree/bindings/mtd/jedec,spi-nor.yaml
-@@ -11,6 +11,7 @@ maintainers:
+diff --git a/Documentation/devicetree/bindings/spi/cdns,qspi-nor-slave-props.yaml b/Documentation/devicetree/bindings/spi/cdns,qspi-nor-slave-props.yaml
+new file mode 100644
+index 000000000000..263382a5729a
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/cdns,qspi-nor-slave-props.yaml
+@@ -0,0 +1,42 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/spi/cdns,qspi-nor-slave-props.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Slave-specific properties for the Cadence QSPI controller.
++
++description:
++  See spi-slave-props.yaml for more info.
++
++maintainers:
++  - Pratyush Yadav <p.yadav@ti.com>
++
++properties:
++  # cdns,qspi-nor.yaml
++  cdns,read-delay:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description:
++      Delay for read capture logic, in clock cycles.
++
++  cdns,tshsl-ns:
++    description:
++      Delay in nanoseconds for the length that the master mode chip select
++      outputs are de-asserted between transactions.
++
++  cdns,tsd2d-ns:
++    description:
++      Delay in nanoseconds between one chip select being de-activated
++      and the activation of another.
++
++  cdns,tchsh-ns:
++    description:
++      Delay in nanoseconds between last bit of current transaction and
++      deasserting the device chip select (qspi_n_ss_out).
++
++  cdns,tslch-ns:
++    description:
++      Delay in nanoseconds between setting qspi_n_ss_out low and
++      first bit transfer.
++
++additionalProperties: true
+diff --git a/Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml b/Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml
+index ca155abbda7a..a439e3ed753f 100644
+--- a/Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml
++++ b/Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml
+@@ -86,39 +86,6 @@ properties:
+     items:
+       enum: [ qspi, qspi-ocp ]
  
- allOf:
-   - $ref: "mtd.yaml#"
-+  - $ref: /schemas/spi/spi-slave-props.yaml#
+-# subnode's properties
+-patternProperties:
+-  "@[0-9a-f]+$":
+-    type: object
+-    description:
+-      Flash device uses the below defined properties in the subnode.
+-
+-    properties:
+-      cdns,read-delay:
+-        $ref: /schemas/types.yaml#/definitions/uint32
+-        description:
+-          Delay for read capture logic, in clock cycles.
+-
+-      cdns,tshsl-ns:
+-        description:
+-          Delay in nanoseconds for the length that the master mode chip select
+-          outputs are de-asserted between transactions.
+-
+-      cdns,tsd2d-ns:
+-        description:
+-          Delay in nanoseconds between one chip select being de-activated
+-          and the activation of another.
+-
+-      cdns,tchsh-ns:
+-        description:
+-          Delay in nanoseconds between last bit of current transaction and
+-          deasserting the device chip select (qspi_n_ss_out).
+-
+-      cdns,tslch-ns:
+-        description:
+-          Delay in nanoseconds between setting qspi_n_ss_out low and
+-          first bit transfer.
+-
+ required:
+   - compatible
+   - reg
+diff --git a/Documentation/devicetree/bindings/spi/spi-slave-props.yaml b/Documentation/devicetree/bindings/spi/spi-slave-props.yaml
+index 5166ec9b0353..4cc12a161da9 100644
+--- a/Documentation/devicetree/bindings/spi/spi-slave-props.yaml
++++ b/Documentation/devicetree/bindings/spi/spi-slave-props.yaml
+@@ -87,5 +87,7 @@ properties:
+       Delay, in microseconds, after a write transfer.
  
- properties:
-   compatible:
-@@ -88,7 +89,7 @@ patternProperties:
-   "^otp(-[0-9]+)?$":
-     type: object
+ # The controller specific properties go here.
++allOf:
++  - $ref: cdns,qspi-nor-slave-props.yaml#
  
--additionalProperties: false
-+unevaluatedProperties: false
- 
- examples:
-   - |
+ additionalProperties: true
 -- 
 2.33.1.835.ge9e5ba39a7
 

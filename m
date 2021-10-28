@@ -2,43 +2,43 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 20CD4C433FE
-	for <linux-spi@archiver.kernel.org>; Thu, 28 Oct 2021 12:45:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AD5CCC433F5
+	for <linux-spi@archiver.kernel.org>; Thu, 28 Oct 2021 12:45:57 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 000AC61037
-	for <linux-spi@archiver.kernel.org>; Thu, 28 Oct 2021 12:45:53 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 996F3610C8
+	for <linux-spi@archiver.kernel.org>; Thu, 28 Oct 2021 12:45:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230248AbhJ1MsN (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 28 Oct 2021 08:48:13 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:45442 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229868AbhJ1MsM (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 28 Oct 2021 08:48:12 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 19SCjR0v046437;
-        Thu, 28 Oct 2021 07:45:27 -0500
+        id S230256AbhJ1MsV (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 28 Oct 2021 08:48:21 -0400
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:45208 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230282AbhJ1MsS (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 28 Oct 2021 08:48:18 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 19SCjaML096846;
+        Thu, 28 Oct 2021 07:45:36 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1635425127;
-        bh=w+hSvbfR+PYJFi7fskwYrwY5oRC/obVuUWrRwUBB7R0=;
+        s=ti-com-17Q1; t=1635425136;
+        bh=KYpi63S67jEFLXgUwSqYZm2jT92fcc60hhrJnZCLW8U=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=HZ6gDYUsOYof0zGIA034zc8qvYA+Xv1hDNn0CF1M9gm6zACtR/1i4x/7gHLOL3BFR
-         3MhPPHU2j8fCRSyrvgzPYB5F+Q/yFHrRMKXQGpZfahHguOYgczf6jAO4wM/pNf2vDH
-         jF6Iir1V8GsdYSgCkrzOcyDxUDDnP6vhmTNYHcO8=
-Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 19SCjR4u079556
+        b=YsQ8cmpovfVomGE2A5PzuDhy+SSjMyGjQ8lfBkSOjRDG0D66V/B7UCew5fPSnjmTr
+         ul299tnVdfShpRWhcG99CkzjkyD4JEmROcBBHHv43MbzxwXQR8XC7lF3rSUy49hpPv
+         LeCqM7HVNShGapLEOyog6kMTXAt/LI7Y/sBA89EA=
+Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 19SCjam3036663
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 28 Oct 2021 07:45:27 -0500
-Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE100.ent.ti.com
- (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+        Thu, 28 Oct 2021 07:45:36 -0500
+Received: from DLEE110.ent.ti.com (157.170.170.21) by DLEE100.ent.ti.com
+ (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Thu, 28
- Oct 2021 07:45:27 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+ Oct 2021 07:45:36 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE110.ent.ti.com
+ (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
- Frontend Transport; Thu, 28 Oct 2021 07:45:27 -0500
+ Frontend Transport; Thu, 28 Oct 2021 07:45:36 -0500
 Received: from pratyush-OptiPlex-790.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 19SCjJbB115317;
-        Thu, 28 Oct 2021 07:45:24 -0500
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 19SCjJbD115317;
+        Thu, 28 Oct 2021 07:45:32 -0500
 From:   Pratyush Yadav <p.yadav@ti.com>
 To:     Rob Herring <robh+dt@kernel.org>
 CC:     Pratyush Yadav <p.yadav@ti.com>, Mark Brown <broonie@kernel.org>,
@@ -49,9 +49,9 @@ CC:     Pratyush Yadav <p.yadav@ti.com>, Mark Brown <broonie@kernel.org>,
         Vignesh Raghavendra <vigneshr@ti.com>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <linux-mtd@lists.infradead.org>, <linux-spi@vger.kernel.org>
-Subject: [PATCH v2 1/3] spi: dt-bindings: add schema listing slave-specific properties
-Date:   Thu, 28 Oct 2021 18:15:16 +0530
-Message-ID: <20211028124518.17370-2-p.yadav@ti.com>
+Subject: [PATCH v2 3/3] dt-bindings: mtd: spi-nor: Add a reference to spi-slave-props.yaml
+Date:   Thu, 28 Oct 2021 18:15:18 +0530
+Message-ID: <20211028124518.17370-4-p.yadav@ti.com>
 X-Mailer: git-send-email 2.33.1.835.ge9e5ba39a7
 In-Reply-To: <20211028124518.17370-1-p.yadav@ti.com>
 References: <20211028124518.17370-1-p.yadav@ti.com>
@@ -63,224 +63,47 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Many SPI controllers need to add properties to slave devices. This could
-be the delay in clock or data lines, etc. These properties are
-controller specific but need to be defined in the slave node because
-they are per-slave and there can be multiple slaves attached to a
-controller.
+The spi-slave-props.yaml schema contains slave-specific properties
+for SPI controllers that should be present in the slave node. Add a
+reference to that so its constraints are followed.
 
-If these properties are not added to the slave binding, then the dtbs
-check emits a warning. But these properties do not make much sense in
-the slave binding because they are controller-specific and they will
-just pollute every slave binding. So this binding is added to collect
-all such properties from all such controllers. Slave bindings should
-simply refer to this binding and they should be rid of the warnings.
-
-There are some limitations with this approach. Firstly, there is no way
-to specify required properties. The schema contains properties for all
-controllers and there is no way to know which controller is being used.
-Secondly, there is no way to restrict additional properties. Since this
-schema will be used with an allOf operator, additionalProperties needs
-to be true. In addition, the slave schema will have to set
-unevaluatedProperties: false.
-
-Despite these limitations, this appears to be the best solution to this
-problem that doesn't involve modifying existing tools or schema specs.
+additionalProperties: false cannot be used since it marks the controller
+properties as unknown. Use unevaluatedProperties: false instead. This
+has the side effect of allowing extra properties that are not specified
+in the schema. The alternative is to list all the controller properties
+in this schema but that would mean every slave binding would have to
+repeat the same set of properties for each controller.
 
 Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
 
 ---
 
-Changes in v2:
-- Move other subnode properties listed in spi-controller.yaml to
-  spi-slave-props.yaml
-- Move the Cadence controller-specific properties out of
-  spi-slave-props.yaml. They will be added in a separate file.
-- Add a reference to spi-slave-props.yaml in spi-controller.yaml.
-- Update description.
+(no changes since v1)
 
- .../bindings/spi/spi-controller.yaml          | 69 +-------------
- .../bindings/spi/spi-slave-props.yaml         | 91 +++++++++++++++++++
- 2 files changed, 93 insertions(+), 67 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-slave-props.yaml
+ Documentation/devicetree/bindings/mtd/jedec,spi-nor.yaml | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-controller.yaml b/Documentation/devicetree/bindings/spi/spi-controller.yaml
-index 8246891602e7..ff770657e214 100644
---- a/Documentation/devicetree/bindings/spi/spi-controller.yaml
-+++ b/Documentation/devicetree/bindings/spi/spi-controller.yaml
-@@ -94,73 +94,8 @@ patternProperties:
-   "^.*@[0-9a-f]+$":
+diff --git a/Documentation/devicetree/bindings/mtd/jedec,spi-nor.yaml b/Documentation/devicetree/bindings/mtd/jedec,spi-nor.yaml
+index ed590d7c6e37..e69a8fbb91f1 100644
+--- a/Documentation/devicetree/bindings/mtd/jedec,spi-nor.yaml
++++ b/Documentation/devicetree/bindings/mtd/jedec,spi-nor.yaml
+@@ -11,6 +11,7 @@ maintainers:
+ 
+ allOf:
+   - $ref: "mtd.yaml#"
++  - $ref: /schemas/spi/spi-slave-props.yaml#
+ 
+ properties:
+   compatible:
+@@ -88,7 +89,7 @@ patternProperties:
+   "^otp(-[0-9]+)?$":
      type: object
  
--    properties:
--      compatible:
--        description:
--          Compatible of the SPI device.
--
--      reg:
--        minItems: 1
--        maxItems: 256
--        items:
--          minimum: 0
--          maximum: 256
--        description:
--          Chip select used by the device.
--
--      spi-3wire:
--        $ref: /schemas/types.yaml#/definitions/flag
--        description:
--          The device requires 3-wire mode.
--
--      spi-cpha:
--        $ref: /schemas/types.yaml#/definitions/flag
--        description:
--          The device requires shifted clock phase (CPHA) mode.
--
--      spi-cpol:
--        $ref: /schemas/types.yaml#/definitions/flag
--        description:
--          The device requires inverse clock polarity (CPOL) mode.
--
--      spi-cs-high:
--        $ref: /schemas/types.yaml#/definitions/flag
--        description:
--          The device requires the chip select active high.
--
--      spi-lsb-first:
--        $ref: /schemas/types.yaml#/definitions/flag
--        description:
--          The device requires the LSB first mode.
--
--      spi-max-frequency:
--        $ref: /schemas/types.yaml#/definitions/uint32
--        description:
--          Maximum SPI clocking speed of the device in Hz.
--
--      spi-rx-bus-width:
--        description:
--          Bus width to the SPI bus used for read transfers.
--          If 0 is provided, then no RX will be possible on this device.
--        $ref: /schemas/types.yaml#/definitions/uint32
--        enum: [0, 1, 2, 4, 8]
--        default: 1
--
--      spi-rx-delay-us:
--        description:
--          Delay, in microseconds, after a read transfer.
--
--      spi-tx-bus-width:
--        description:
--          Bus width to the SPI bus used for write transfers.
--          If 0 is provided, then no TX will be possible on this device.
--        $ref: /schemas/types.yaml#/definitions/uint32
--        enum: [0, 1, 2, 4, 8]
--        default: 1
--
--      spi-tx-delay-us:
--        description:
--          Delay, in microseconds, after a write transfer.
-+    allOf:
-+      - $ref: spi-slave-props.yaml
+-additionalProperties: false
++unevaluatedProperties: false
  
-     required:
-       - compatible
-diff --git a/Documentation/devicetree/bindings/spi/spi-slave-props.yaml b/Documentation/devicetree/bindings/spi/spi-slave-props.yaml
-new file mode 100644
-index 000000000000..5166ec9b0353
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-slave-props.yaml
-@@ -0,0 +1,91 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/spi/spi-slave-props.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Slave-specific properties for a SPI bus.
-+
-+description: |
-+  Many SPI controllers need to add properties to slave devices. They could be
-+  common properties like spi-max-frequency, spi-cpha, etc. or they could be
-+  controller specific like delay in clock or data lines, etc. These properties
-+  need to be defined in the slave node because they are per-slave and there can
-+  be multiple slaves attached to a controller. All those properties are listed
-+  here. The controller specific properties should go in their own separate
-+  schema that should be referenced from here.
-+
-+maintainers:
-+  - Pratyush Yadav <p.yadav@ti.com>
-+
-+properties:
-+  compatible:
-+    description:
-+      Compatible of the SPI device.
-+
-+  reg:
-+    minItems: 1
-+    maxItems: 256
-+    items:
-+      minimum: 0
-+      maximum: 256
-+    description:
-+      Chip select used by the device.
-+
-+  spi-3wire:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description:
-+      The device requires 3-wire mode.
-+
-+  spi-cpha:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description:
-+      The device requires shifted clock phase (CPHA) mode.
-+
-+  spi-cpol:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description:
-+      The device requires inverse clock polarity (CPOL) mode.
-+
-+  spi-cs-high:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description:
-+      The device requires the chip select active high.
-+
-+  spi-lsb-first:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description:
-+      The device requires the LSB first mode.
-+
-+  spi-max-frequency:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description:
-+      Maximum SPI clocking speed of the device in Hz.
-+
-+  spi-rx-bus-width:
-+    description:
-+      Bus width to the SPI bus used for read transfers.
-+      If 0 is provided, then no RX will be possible on this device.
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    enum: [0, 1, 2, 4, 8]
-+    default: 1
-+
-+  spi-rx-delay-us:
-+    description:
-+      Delay, in microseconds, after a read transfer.
-+
-+  spi-tx-bus-width:
-+    description:
-+      Bus width to the SPI bus used for write transfers.
-+      If 0 is provided, then no TX will be possible on this device.
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    enum: [0, 1, 2, 4, 8]
-+    default: 1
-+
-+  spi-tx-delay-us:
-+    description:
-+      Delay, in microseconds, after a write transfer.
-+
-+# The controller specific properties go here.
-+
-+additionalProperties: true
+ examples:
+   - |
 -- 
 2.33.1.835.ge9e5ba39a7
 

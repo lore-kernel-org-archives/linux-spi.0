@@ -2,120 +2,90 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 46DD3C433EF
-	for <linux-spi@archiver.kernel.org>; Sun, 31 Oct 2021 13:20:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EC907C433FE
+	for <linux-spi@archiver.kernel.org>; Mon,  1 Nov 2021 06:18:48 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1C30160E78
-	for <linux-spi@archiver.kernel.org>; Sun, 31 Oct 2021 13:20:28 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C949D60F45
+	for <linux-spi@archiver.kernel.org>; Mon,  1 Nov 2021 06:18:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230326AbhJaNW6 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 31 Oct 2021 09:22:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35400 "EHLO
+        id S229933AbhKAGVU (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 1 Nov 2021 02:21:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229626AbhJaNW6 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 31 Oct 2021 09:22:58 -0400
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ECD4C061570;
-        Sun, 31 Oct 2021 06:20:26 -0700 (PDT)
-Received: by mail-lf1-x136.google.com with SMTP id x27so31130106lfu.5;
-        Sun, 31 Oct 2021 06:20:26 -0700 (PDT)
+        with ESMTP id S229865AbhKAGVU (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 1 Nov 2021 02:21:20 -0400
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 981DDC061714;
+        Sun, 31 Oct 2021 23:18:47 -0700 (PDT)
+Received: by mail-pg1-x52a.google.com with SMTP id f5so16293770pgc.12;
+        Sun, 31 Oct 2021 23:18:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=4Ml4HoePorbB3uwkIfZq01AIVq0ZLevX5o6NsPpTI0c=;
-        b=Z3igLXnvuoQJi5FZI1JWL5XpYtUVODbUdysV9oUu5OA3HDGCPOzuRbO7WVkArCUQrg
-         wgiG7jp1XeX1iz2oD4i/mtdZvM9Skf2wEz4OZ/nhZcTXLbDG7s7NeSC6ty1ZINRWX7oE
-         tzY8CPLppOpZY0ufRBzwHiPe88ubKrX5Sw5iMA6rD4dq05XCHtjw1xm1tBE5a7Fc9hvt
-         dD+7JuGa+vtqjJt8cqXk3BL7i2lFCnzxnMIbu6cbNCkohEiWPeOKEca9l7qWWZNNBGvS
-         wv7X1r98dboww6i/4/5HX3+XP/1Hsq7JuH9Iu5vUS9LFnRLGg1Eng7C9PKrT/P8fJWX4
-         Ywmw==
+        h=from:to:cc:subject:date:message-id;
+        bh=+o7bRuWMi3XtZNTZ4BZ+3zRK+P10CglGss8sDausKkA=;
+        b=o7n/NT5mnU/yyPLrCzJId+m/yrfjFKQIjaAZRHQAGJqm2NVqqyqd+gMElrDuHSbAOw
+         BaDhvAgcalt2dtlUEFYUXZXre+kSw3KnyPNqu4k2eTwH4JSqyewI7DoGL5TWoZhZwhL0
+         CuLfdUD4A1sn/HU0rkImBZP+/5JJEsdFpmu8w0tjZ1yh7P482HEkVUY+WSTFZg3HIuV4
+         Q45cmTT8OP9EVijDKgDGD5hb2XgeDaICWTBJo6GWNgj33sZrjjOdPh2bTN2z7yvs92QP
+         MdftomzwOWQF2Kv66q8KWrPdUONLInkd9DRsUXMw8SN08Jo0YqZmYpIj8UvSrwahBDab
+         7M9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=4Ml4HoePorbB3uwkIfZq01AIVq0ZLevX5o6NsPpTI0c=;
-        b=SvUOyMaFUifPGvy3eGjC41x4BYOhFvlOyWxJxvTt028E9iF0SVtXmaxy9LPS4IuQHJ
-         ibry2PigUSJYIFwAwzCr3ugc3qChYk0MAq1eXNJr4vnCbTcmvrfXqqq8mSCQuSUZNHbS
-         XlJoP23NpgFwBvkbh+cUsF56sB35IhbNjrnfgKuwHQZJdPu+lXRqhSxUKLxoufy9BWmU
-         Ouzg9o5ruOawykOaR3Qf2A5tGDzo+0m9v221/nEBMfl1CDv/ot4caN4m4sTPEaNGPHQe
-         uzTM05khL/2wIX+kRdzEUDY0ur4HBd9mjceeekCo9NPwSzqh/uaJt7jzhiUZaOTjF00W
-         8z2Q==
-X-Gm-Message-State: AOAM531RE+Yq1zvMTS5O+f2VmSou3rqLMsz2YzNSJP1+MoIV0mQYQIuw
-        aHKNv7Ripjtma/g0v61uGM8ujdQO0w91hZRSpvA9xQuf/J9BcQ==
-X-Google-Smtp-Source: ABdhPJwP5ltZLEYCpy4Y5wYCMLT1QMQ2cfYoIJAC3xlPjQsGl38qoc2SBcUim8j5r+MqhRS8M8IuZ3nlHwBbfTcu4u4=
-X-Received: by 2002:a05:6512:260e:: with SMTP id bt14mr22784564lfb.129.1635686424771;
- Sun, 31 Oct 2021 06:20:24 -0700 (PDT)
-MIME-Version: 1.0
-References: <20211025015156.33133-1-brad@pensando.io> <20211025015156.33133-11-brad@pensando.io>
-In-Reply-To: <20211025015156.33133-11-brad@pensando.io>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sun, 31 Oct 2021 15:19:48 +0200
-Message-ID: <CAHp75Vejm7exqWY9XcaJQCqLgUvoM5E93=0JV2Wew7T6WzTKpg@mail.gmail.com>
-Subject: Re: [PATCH v3 10/11] spi: dw: Add support for Pensando Elba SoC
-To:     Brad Larson <brad@pensando.io>
-Cc:     linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Mark Brown <broonie@kernel.org>,
-        Serge Semin <fancer.lancer@gmail.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Olof Johansson <olof@lixom.net>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=+o7bRuWMi3XtZNTZ4BZ+3zRK+P10CglGss8sDausKkA=;
+        b=Fmt/4W3ovmTrazD3lO9ziPN77ZBsvUAHQPRpnyuMvV+2pjfV26juRSgGKo8vSO0k9O
+         Yh930JO37HvT3jAbNZl5JtQZ39d9lL3Y+2cxE4N8lN4TnA/shwNVrslGtgI8aMHKkLLm
+         jFAkIw6p3N5hxuCenLpvK5FYdzp4sRXQvVzv6SIqoWqpLV/eA/XV90vhh9JGl9via9lX
+         wiZQ/jd7HCZcwoU+EU6Jak4/CArBBemLz6P7CebAwNCz6staJYv4VpxaPDpJ2392wzvj
+         sFmDc8txuYkYUXWnGOCVX209i3ulj/K+MeHklzkkOGaWLn2PLA3OjAKFd5YWw4/5FTWz
+         fzEg==
+X-Gm-Message-State: AOAM5336/wORK94A+ud/RghqJdMA2auHQnh5aF6+Hn45pHWcDSAyxk84
+        6jOGvhzyuh25+7XcLSqzZ6NdVeeCGKDB9K5w
+X-Google-Smtp-Source: ABdhPJzLZT5OOXpYzoV8oaqpZ4T+px5eglGNrqXjsnrtA9JIpB6Div2vnXhi9C/FCzU6WAzKjubIvg==
+X-Received: by 2002:a63:854a:: with SMTP id u71mr7225857pgd.428.1635747526962;
+        Sun, 31 Oct 2021 23:18:46 -0700 (PDT)
+Received: from scdiu3.sunplus.com ([113.196.136.192])
+        by smtp.googlemail.com with ESMTPSA id h6sm13773731pfi.174.2021.10.31.23.18.44
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 31 Oct 2021 23:18:46 -0700 (PDT)
+From:   "LH.Kuo" <lhjeff911@gmail.com>
+X-Google-Original-From: "LH.Kuo" <lh.kuo@sunplus.com>
+To:     p.zabel@pengutronix.de, broonie@kernel.org, robh+dt@kernel.org,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     dvorkin@tibbo.com, qinjian@cqplus1.com, wells.lu@sunplus.com,
+        "LH.Kuo" <lh.kuo@sunplus.com>
+Subject: [PATCH 0/2] Add SPI control driver for Sunplus SP7021 SoC
+Date:   Mon,  1 Nov 2021 14:18:43 +0800
+Message-Id: <1635747525-31243-1-git-send-email-lh.kuo@sunplus.com>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Mon, Oct 25, 2021 at 4:54 AM Brad Larson <brad@pensando.io> wrote:
->
-> The Pensando Elba SoC includes a DW apb_ssi v4 controller
-> with device specific chip-select control.  The Elba SoC
-> provides four chip-selects where the native DW IP supports
-> two chip-selects.
+This is a patch series for SPI driver for Sunplus SP7021 SoC.
 
-...
+Sunplus SP7021 is an ARM Cortex A7 (4 cores) based SoC. It integrates
+many peripherals (ex: UART, I2C, SPI, SDIO, eMMC, USB, SD card and
+etc.) into a single chip. It is designed for industrial control.
 
-> +static void dw_spi_elba_set_cs(struct spi_device *spi, bool enable)
-> +{
-> +       struct dw_spi *dws = spi_master_get_devdata(spi->master);
-> +       struct dw_spi_mmio *dwsmmio = container_of(dws, struct dw_spi_mmio, dws);
-> +       struct dw_spi_elba *dwselba = dwsmmio->priv;
+Refer to:
+https://sunplus-tibbo.atlassian.net/wiki/spaces/doc/overview
+https://tibbo.com/store/plus1.html
 
-> +       u8 cs = spi->chip_select;
+LH.Kuo (2):
+  SPI: Add SPI driver for Sunplus SP7021
+  devicetree bindings SPI Add bindings doc for Sunplus SP7021
 
-Much easier to maintain and follow the code (in the future) if this
-assignment is broken to two parts, i.e...
-
-> +
-
-...like this
-
-       cs = spi->chip_select;
-       if (cs < 2) {
-         ...
-
-> +       if (cs < 2) {
-> +               /* overridden native chip-select */
-> +               elba_spics_set_cs(dwselba, spi->chip_select, enable);
-> +       }
-
-...
-
-> +       regmap = syscon_node_to_regmap(args.np);
-> +       if (IS_ERR(regmap)) {
-> +               dev_err(&pdev->dev, "could not map pensando,spics\n");
-> +               return PTR_ERR(regmap);
-> +       }
-
-Why not return dev_err_probe()?
+ .../bindings/spi/spi-sunplus-sp7021.yaml           |   95 ++
+ MAINTAINERS                                        |    7 +
+ drivers/spi/Kconfig                                |   11 +
+ drivers/spi/Makefile                               |    1 +
+ drivers/spi/spi-sunplus-sp7021.c                   | 1356 ++++++++++++++++++++
+ 5 files changed, 1470 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-sunplus-sp7021.yaml
+ create mode 100644 drivers/spi/spi-sunplus-sp7021.c
 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.7.4
+

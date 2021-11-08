@@ -2,119 +2,87 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 69F1CC433F5
-	for <linux-spi@archiver.kernel.org>; Fri,  5 Nov 2021 15:49:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 947C9C433FE
+	for <linux-spi@archiver.kernel.org>; Mon,  8 Nov 2021 09:32:10 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4656D61245
-	for <linux-spi@archiver.kernel.org>; Fri,  5 Nov 2021 15:49:58 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 80F686108C
+	for <linux-spi@archiver.kernel.org>; Mon,  8 Nov 2021 09:32:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233664AbhKEPwh (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 5 Nov 2021 11:52:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45824 "EHLO
+        id S238442AbhKHJex (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 8 Nov 2021 04:34:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232592AbhKEPwg (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 5 Nov 2021 11:52:36 -0400
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC0A7C061714
-        for <linux-spi@vger.kernel.org>; Fri,  5 Nov 2021 08:49:56 -0700 (PDT)
-Received: by mail-yb1-xb2a.google.com with SMTP id v64so23889922ybi.5
-        for <linux-spi@vger.kernel.org>; Fri, 05 Nov 2021 08:49:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=4Xbj3Ku6YUiO61w3VboU4YqQRIR5DoMkSauNTxL+tzM=;
-        b=p2F2Ase15R0EHimAtQAKHQxPj9dcSNr+RBRwgNC1cTuXzdsHB52ZyN2wB92pDEs7y3
-         ftBcwSPQ8PKU6iuIwWUWOW76GSjFQ9oRnvFe0BMWdjew/XzAcovhj41tkF/9UPyzGNNE
-         fjGIp0MVnQ2uy2HvZd/t5huvIfy4bTNGIr7M/tYBBoGf7fAWazUzPJD/m0dnCYF9XghP
-         o+Ez+fiW3xk4Dh3Axy3Qa+hLpC+ZIct3TaLFu7/mZUlKMY2LgTME2/XSBupCevI1kSVV
-         pFb+w1qu59XF0gYCchAX9cD8xwcypevfYgu1lwfBCYxe0zqxR+zDOtU3EyXDnTCbiqQs
-         gaGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=4Xbj3Ku6YUiO61w3VboU4YqQRIR5DoMkSauNTxL+tzM=;
-        b=r1GC4EMvStdVkPMiFAXFH/l5vtoDu/R23a7DDyjyYbMA4P0OfTugSBhWRTDzuB5OA7
-         X+jDaPei40tbfjxtL7jROeo5ms5bA6yF5mlr4KNub9ub38jeOc0OdLICtbp8sCR3YiqN
-         QST8D4XvUhNvrabtSUKNhA+tLN5Bp1KMzYZT0jLQDzkICHy9iWK7NJ7w40SUagiC1c+5
-         DU7p5TpC0+qP/Flju7EEArcFmzwcOr8jCNKi72mF154i3WyP9vgxvF4Dj0Kqzb2FYG84
-         unege9ySsvNcPXxnR6KytJc1KnOshnBEu+4PxNJLDPe09d2+aVV1cbR0Ug8mwi+gkvUS
-         jCeQ==
-X-Gm-Message-State: AOAM531xecqYu0PWJ4ekVhWI9dxrrC6GkuDZyMPM3JbCrJMd74Tu9S2m
-        grY8ifkUVMJ8jbtMXUrl8B5X3+xKql6Z3lzjPAfr6J9L
-X-Google-Smtp-Source: ABdhPJxtiNDroeJX4H18Xt84YCkwCJlRhuWVuJ8QEB7uy1dcFf9xVAeLuhJ/ChKR4zR19cJuvI1mOmeYlh8YisbG9D8=
-X-Received: by 2002:a25:b3ce:: with SMTP id x14mr63292886ybf.358.1636127396071;
- Fri, 05 Nov 2021 08:49:56 -0700 (PDT)
+        with ESMTP id S238445AbhKHJex (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 8 Nov 2021 04:34:53 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B460C061570
+        for <linux-spi@vger.kernel.org>; Mon,  8 Nov 2021 01:32:09 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1mk10S-0007gO-Q1; Mon, 08 Nov 2021 10:32:00 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1mk10Q-0005Ze-S4; Mon, 08 Nov 2021 10:31:58 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1mk10Q-0001EO-Ql; Mon, 08 Nov 2021 10:31:58 +0100
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>
+Cc:     Mark Brown <broonie@kernel.org>, linux-mtd@lists.infradead.org,
+        kernel@pengutronix.de, linux-spi@vger.kernel.org
+Subject: [PATCH 3/4] mtd: mchp48l640: Warn about failure to unregister mtd device
+Date:   Mon,  8 Nov 2021 10:31:51 +0100
+Message-Id: <20211108093153.63792-3-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20211108093153.63792-1-u.kleine-koenig@pengutronix.de>
+References: <20211108093153.63792-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-References: <CAETHaKpiZEWHUrKtNw+W3XHAPUA4h=OC=RL4Jbcs94o1MgDj6w@mail.gmail.com>
- <CAMuHMdXwYH2n+C5AEzhCjtH+eX5mBFH=cB1hYAy-XYtPYRn9jw@mail.gmail.com>
- <CAETHaKrQ-UDPjMm_jpNe3P0VzQg7qDLZGaViqXvz+qVuUuZCgg@mail.gmail.com> <CAMuHMdW5HERzd=1wxSRAwUnffAMP87uKLuvDt1Wkf-RLHZJopg@mail.gmail.com>
-In-Reply-To: <CAMuHMdW5HERzd=1wxSRAwUnffAMP87uKLuvDt1Wkf-RLHZJopg@mail.gmail.com>
-From:   Dave Bender <codehero@gmail.com>
-Date:   Fri, 5 Nov 2021 11:49:45 -0400
-Message-ID: <CAETHaKrbHqcsnrA=yWY2Lr0aOqcX3J8R7i6G9p2BtjiY_N2tgA@mail.gmail.com>
-Subject: Re: spi-ar934x: Using GPIO CS issue
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     linux-spi <linux-spi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+X-Patch-Hashes: v=1; h=sha256; i=KPueYbzN9LsEzHTCniRvcOu6N1K1tzW4s5WqwnR8va8=; m=7KSLr5cayipWkedCHz7+d6af4pRbjwTwvLxY0jhuRso=; p=hGZdSTOrMcSxD0z98kFDa/PL7nWvDIhwAQlm55SyVEI=; g=055d2b75ea63c5577b57932fc070711b7ba69e95
+X-Patch-Sig: m=pgp; i=u.kleine-koenig@pengutronix.de; s=0x0D2511F322BFAB1C1580266BE2DCDD9132669BD6; b=iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmGI7oEACgkQwfwUeK3K7AnCygf8Dvv 9ndtG9tZ7CfbWkaaldDLo9S8zeI9cjSH1ILmHhH5XoB1+01J+bSPIA2T4VVrhjTKn0ze+QygwTjxy Z/c7rsPvfJQqA7q7eBJqvcH0R5k3nK7VR42MKtLVLmE0NyyBtwfH5TawTRFEMsWULtj080rK3hZjz B+Zc2qMFm45vTEd0x+WDVru3VuPHOodiNfy7J2UGOg6J53v8Tz6wm3WjWqoeX2bmLjUR9Z4J8LQyD ACxuGKYP5vANDkeRdlZRkFJxu0X9YzCuRqwOz1AveL2jSLIvJo34PW20xiMPZqrAXiqMT9+vE4OFk 3cZaItlaSbGQ7D6cVimnFy/lvux7l7A==
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-spi@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-I've tried different combinations of GPIO_ACTIVE_HIGH/LOW.
-I modified the ar9134x-spi.c driver to allow gpiod descriptors.
-I've tried creating a virtual CS of 3, using cs-gpios.
+mtd_device_unregister() shouldn't fail. Wail loudly if it does anyhow.
 
-Nothing seems to work and all I get are JEDEC IDs of 0's.
+This matches how other drivers (e.g. nand/raw/nandsim.c) use
+mtd_device_unregister().
 
-Is there something I else I am missing here?
-For reference, this is a Carambola 2 module on a custom board, with an
-extra SPI 32Mb chip on GPIO11, which is not "HW" chip select pin.
+By returning 0 in the spi remove callback a generic error message by the
+spi framework (and nothing else) is suppressed.
 
-On Thu, Nov 4, 2021 at 11:20 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
->
-> Hi Dave,
->
-> On Thu, Nov 4, 2021 at 3:58 PM Dave Bender <codehero@gmail.com> wrote:
-> > On Thu, Nov 4, 2021 at 5:50 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> > > Does it work if you change GPIO_ACTIVE_LOW to GPIO_ACTIVE_HIGH?
-> >
-> >   There is a pullup resistor on that CS line, so that GPIO must be active low.
->
-> I do believe you.  But there's been some issues with inverted CS
-> gpio behavior when switching from board files to DT, so I thought
-> I'd better ask to try...
->
-> >   Digging deeper into the code, it looks like David Bauer made some
-> > changes that limit the spi driver's CS usage to only the CS0, CS1, CS2
-> > pins.
-> >   There is also no bounds checking on the CS value.
-> >   I don't understand how this driver can even use generic GPIO if it
-> > forces use of the CS bits on the SPI_IOC register.
->
-> OK, that sounds like a reasonable culprit...
->
-> >
-> > static int ar934x_spi_transfer_one_message(struct spi_controller *master,
-> >              struct spi_message *m)
-> > {
-> >    ....
-> >    ....
-> >     for (trx_done = 0; trx_done < t->len; trx_done += 4) {
-> >
-> >    .....
-> >       reg = AR934X_SPI_SHIFT_VAL(spi->chip_select, term,
-> >                trx_cur * 8);
-> >       iowrite32(reg, sp->base + AR934X_SPI_REG_SHIFT_CTRL);
->
-> Gr{oetje,eeting}s,
->
->                         Geert
->
-> --
-> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
->
-> In personal conversations with technical people, I call myself a hacker. But
-> when I'm talking to journalists I just say "programmer" or something like that.
->                                 -- Linus Torvalds
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+ drivers/mtd/devices/mchp48l640.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/mtd/devices/mchp48l640.c b/drivers/mtd/devices/mchp48l640.c
+index 99400d0fb8c1..231a10790196 100644
+--- a/drivers/mtd/devices/mchp48l640.c
++++ b/drivers/mtd/devices/mchp48l640.c
+@@ -345,7 +345,9 @@ static int mchp48l640_remove(struct spi_device *spi)
+ {
+ 	struct mchp48l640_flash *flash = spi_get_drvdata(spi);
+ 
+-	return mtd_device_unregister(&flash->mtd);
++	WARN_ON(mtd_device_unregister(&flash->mtd));
++
++	return 0;
+ }
+ 
+ static const struct of_device_id mchp48l640_of_table[] = {
+-- 
+2.30.2
+

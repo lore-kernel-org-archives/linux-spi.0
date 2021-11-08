@@ -2,96 +2,115 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E64FCC433EF
-	for <linux-spi@archiver.kernel.org>; Mon,  8 Nov 2021 09:32:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E446BC4332F
+	for <linux-spi@archiver.kernel.org>; Mon,  8 Nov 2021 10:26:29 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D0D0B6108C
-	for <linux-spi@archiver.kernel.org>; Mon,  8 Nov 2021 09:32:10 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C72FD61352
+	for <linux-spi@archiver.kernel.org>; Mon,  8 Nov 2021 10:26:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238443AbhKHJey (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 8 Nov 2021 04:34:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57624 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238447AbhKHJex (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 8 Nov 2021 04:34:53 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B971C061764
-        for <linux-spi@vger.kernel.org>; Mon,  8 Nov 2021 01:32:09 -0800 (PST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1mk10S-0007gM-Q1; Mon, 08 Nov 2021 10:32:00 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1mk10Q-0005ZY-IF; Mon, 08 Nov 2021 10:31:58 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1mk10Q-0001E2-HC; Mon, 08 Nov 2021 10:31:58 +0100
-From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>
-Cc:     Mark Brown <broonie@kernel.org>, linux-mtd@lists.infradead.org,
-        kernel@pengutronix.de, linux-spi@vger.kernel.org
-Subject: [PATCH 1/4] mtd: dataflash: Warn about failure to unregister mtd device
-Date:   Mon,  8 Nov 2021 10:31:49 +0100
-Message-Id: <20211108093153.63792-1-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+        id S237427AbhKHK3K (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 8 Nov 2021 05:29:10 -0500
+Received: from foss.arm.com ([217.140.110.172]:48408 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S237572AbhKHK2s (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 8 Nov 2021 05:28:48 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 257AB1FB;
+        Mon,  8 Nov 2021 02:26:01 -0800 (PST)
+Received: from FVFF77S0Q05N (unknown [10.57.58.140])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C89913F800;
+        Mon,  8 Nov 2021 02:25:58 -0800 (PST)
+Date:   Mon, 8 Nov 2021 10:25:52 +0000
+From:   Mark Rutland <mark.rutland@arm.com>
+To:     Brad Larson <brad@pensando.io>
+Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Mark Brown <broonie@kernel.org>,
+        Serge Semin <fancer.lancer@gmail.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Olof Johansson <olof@lixom.net>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 11/11] arm64: dts: Add Pensando Elba SoC support
+Message-ID: <YYj7MA4D1zCF39lh@FVFF77S0Q05N>
+References: <20211025015156.33133-1-brad@pensando.io>
+ <20211025015156.33133-12-brad@pensando.io>
+ <20211025091731.GA2001@C02TD0UTHF1T.local>
+ <CAK9rFnx7DgS3TYMmu5NBacV_6WC_UwJ=u7n3e_fGd0RpEcg3kA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Patch-Hashes: v=1; h=sha256; i=2VqFZIno/yGWsKtWn0NIvGoO0BsdZpAyUJM3JsTcgVQ=; m=7KSLr5cayipWkedCHz7+d6af4pRbjwTwvLxY0jhuRso=; p=dp+d9QTfUVIlCaBs3wY1yKyRjs7CL31c/ZsgBiAwaOo=; g=e364a11306a2fa96d20bff34d5a4eb2b8e9f1f6d
-X-Patch-Sig: m=pgp; i=u.kleine-koenig@pengutronix.de; s=0x0D2511F322BFAB1C1580266BE2DCDD9132669BD6; b=iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmGI7ncACgkQwfwUeK3K7AmbDQf/ZUY 7/ChKRQDpyu4txJFq3DpQaEpdIKV1t/C8DVyqVOXaHcVWBRNkuHLxwJKKqBYfp/fMRQANwLyaCAcf qUgCnxzuvqHFrj4d4NSYtJGl/6UAMRmaRvaRtfNsaqiU3E0J6lf4DNKR5g9/0oCSSKQij/FWmYtAn z4J3u2AZ46TtqrI/ORKTz0gCX+KG/rl+IA3FpHJxECBvRvQwF7vqDJNscgFgTzGK0tljgsZgA0of6 fd1jrJnnudtJyyVA1kTZHpR1qC3VlfU859ng6hMfl3Sa7mu1pPPXTn3lAUcfReRkGPD9SzSBnBzaK ijplz+6fNtXdNsBc/wRsYdKHosWy74A==
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-spi@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAK9rFnx7DgS3TYMmu5NBacV_6WC_UwJ=u7n3e_fGd0RpEcg3kA@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-mtd_device_unregister() shouldn't fail. Wail loudly if it does anyhow.
+On Thu, Nov 04, 2021 at 03:53:13PM -0700, Brad Larson wrote:
+> On Mon, Oct 25, 2021 at 2:17 AM Mark Rutland <mark.rutland@arm.com> wrote:
+> > On Sun, Oct 24, 2021 at 06:51:56PM -0700, Brad Larson wrote:
+> > > +     timer {
+> > > +             compatible = "arm,armv8-timer";
+> > > +             interrupts = <GIC_PPI 13 (GIC_CPU_MASK_SIMPLE(1) |
+> > > +                                     IRQ_TYPE_LEVEL_LOW)>,
+> > > +                          <GIC_PPI 14 (GIC_CPU_MASK_SIMPLE(1) |
+> > > +                                     IRQ_TYPE_LEVEL_LOW)>,
+> > > +                          <GIC_PPI 11 (GIC_CPU_MASK_SIMPLE(1) |
+> > > +                                     IRQ_TYPE_LEVEL_LOW)>,
+> > > +                          <GIC_PPI 10 (GIC_CPU_MASK_SIMPLE(1) |
+> > > +                                     IRQ_TYPE_LEVEL_LOW)>;
+> > > +     };
+> >
+> > The GIC_CPU_MASK_SIMPLE() stuff is meant for GICv2, but as below you
+> > have GICv3, where this is not valid, so this should go.
+> >
+> > Also, beware that GIC_CPU_MASK_SIMPLE(1) means a single CPU, which
+> > doesn't mak sense for the 16 CPUs you have.
+> >
+> 
+> Thanks for pointing this out.  Elba SoC is a GICv3 implementation and looking
+> at other device tree files we should be using this:
+> 
+>         timer {
+>                 compatible = "arm,armv8-timer";
+>                 interrupts = <GIC_PPI 13 (GIC_CPU_MASK_SIMPLE(16) |
+>                                         IRQ_TYPE_LEVEL_LOW)>,
+>                              <GIC_PPI 14 (GIC_CPU_MASK_SIMPLE(16) |
+>                                         IRQ_TYPE_LEVEL_LOW)>,
+>                              <GIC_PPI 11 (GIC_CPU_MASK_SIMPLE(16) |
+>                                         IRQ_TYPE_LEVEL_LOW)>,
+>                              <GIC_PPI 10 (GIC_CPU_MASK_SIMPLE(16) |
+>                                         IRQ_TYPE_LEVEL_LOW)>;
+>         };
 
-This matches how other drivers (e.g. nand/raw/nandsim.c) use
-mtd_device_unregister().
+No; as above, you should *not* use GIC_CPU_MASK_SIMPLE() at all for GICv3. i.e.
 
-By returning 0 in the spi remove callback a generic error message by the
-spi framework (and nothing else) is suppressed.
+>         timer {
+>                 compatible = "arm,armv8-timer";
+>                 interrupts = <GIC_PPI 13 IRQ_TYPE_LEVEL_LOW>,
+>                              <GIC_PPI 14 IRQ_TYPE_LEVEL_LOW>,
+>                              <GIC_PPI 11 IRQ_TYPE_LEVEL_LOW>,
+>                              <GIC_PPI 10 IRQ_TYPE_LEVEL_LOW>;
+>         };
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
- drivers/mtd/devices/mtd_dataflash.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+Please see the GICv3 binding documentation:
 
-diff --git a/drivers/mtd/devices/mtd_dataflash.c b/drivers/mtd/devices/mtd_dataflash.c
-index 9802e265fca8..293cab758299 100644
---- a/drivers/mtd/devices/mtd_dataflash.c
-+++ b/drivers/mtd/devices/mtd_dataflash.c
-@@ -912,14 +912,14 @@ static int dataflash_probe(struct spi_device *spi)
- static int dataflash_remove(struct spi_device *spi)
- {
- 	struct dataflash	*flash = spi_get_drvdata(spi);
--	int			status;
- 
- 	dev_dbg(&spi->dev, "remove\n");
- 
--	status = mtd_device_unregister(&flash->mtd);
--	if (status == 0)
--		kfree(flash);
--	return status;
-+	WARN_ON(mtd_device_unregister(&flash->mtd));
-+
-+	kfree(flash);
-+
-+	return 0;
- }
- 
- static struct spi_driver dataflash_driver = {
+  Documentation/devicetree/bindings/interrupt-controller/arm,gic-v3.yaml
 
-base-commit: 6b75d88fa81b122cce37ebf17428a849ccd3d0f1
--- 
-2.30.2
+... and note that it does not have the cpumask field as use by the binding for
+prior generations of GIC:
 
+  Documentation/devicetree/bindings/interrupt-controller/arm,gic.yaml
+
+
+If you've seen other dts files using GIC_CPU_MASK_SIMPLE() with GICv3, those
+are incorrect, and need to be fixed.
+
+Thanks,
+Mark.

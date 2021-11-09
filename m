@@ -2,30 +2,30 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 80289C43219
-	for <linux-spi@archiver.kernel.org>; Tue,  9 Nov 2021 01:24:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 58C90C433F5
+	for <linux-spi@archiver.kernel.org>; Tue,  9 Nov 2021 01:24:44 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 67DAA610A2
-	for <linux-spi@archiver.kernel.org>; Tue,  9 Nov 2021 01:24:39 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 42F43610A2
+	for <linux-spi@archiver.kernel.org>; Tue,  9 Nov 2021 01:24:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242284AbhKIB1W (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 8 Nov 2021 20:27:22 -0500
-Received: from mail.kernel.org ([198.145.29.99]:44184 "EHLO mail.kernel.org"
+        id S242248AbhKIB1X (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 8 Nov 2021 20:27:23 -0500
+Received: from mail.kernel.org ([198.145.29.99]:50424 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S240602AbhKIBPd (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 8 Nov 2021 20:15:33 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 426AD61A40;
-        Tue,  9 Nov 2021 01:06:35 +0000 (UTC)
+        id S243604AbhKIBX1 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 8 Nov 2021 20:23:27 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 13746613B3;
+        Tue,  9 Nov 2021 01:09:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1636419996;
-        bh=dLuPjWBz/m5H5FwyUvB6OyIPGZxR95Ap2K4I5sWT250=;
+        s=k20201202; t=1636420150;
+        bh=i0jV/KhtSx0BQq0o+enM7ZIbvtFGSUk3n/q7u2joUbI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=c1GEuptiVTa0OE7X2phGGmWqBQz00fnN27DSKaNokYBIsAKxOncdhNgv6MWN4DG7r
-         vG3YsHs67P5s/tJm4H7einOBEXMVqsBwnLZgJYQOO/FxsQnahW1FJnu/xlYz1/16ES
-         Wxaxmx/o+8qTeG6hUljxj3iR+FZOXMFGcka1/K6nKvhhkgULP5uzE5q2eele3+O22x
-         GYZjCfAnMHMiZOwtu1FaGJ6Khx1DQhQrFXofcp38OUEFWWBA8qHB5+cFDbe06oBcqn
-         jF1wxNziewUdmMbrul+5c9VGNXt4rGlUToE3faWYwoPHY5HVtkcKbERsibnCY2s+JL
-         UINQInQKEcoZQ==
+        b=eGjsop9NB6eEPWtLiFocHvewQqN08fkxVmNCWNEObDAsVtqwOTQadccPSNr/GeVFd
+         jJriKbaY9N4Rul3c793dLceqUe+b8FNGEY2w+ElJ0j7FDJUGUt5me/tSwacVWc7o3e
+         zficRV+w1Jkg4dj9B5NID5ZJ0MBM7GJnBkvr+MaMwsPsR4Fhq/dRKta6+qBAidGeCG
+         dtMXRDx8zFJ5dHM38X1hAx04q2EIPwRAPL/gzKouS3e5rdvXZgc0Yj2WoVj0DTwGwg
+         JkxRSgQ0kqaP+vkdQF+ZcYhAbtkU9pmYDVkTJJX4r/qz6pcLxRdSf+bOD7FPOJBef2
+         98j8G99Gg98YA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Yang Yingliang <yangyingliang@huawei.com>,
@@ -33,12 +33,12 @@ Cc:     Yang Yingliang <yangyingliang@huawei.com>,
         Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, kdasu.kdev@gmail.com,
         bcm-kernel-feedback-list@broadcom.com, linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 42/47] spi: bcm-qspi: Fix missing clk_disable_unprepare() on error in bcm_qspi_probe()
-Date:   Mon,  8 Nov 2021 12:50:26 -0500
-Message-Id: <20211108175031.1190422-42-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 31/33] spi: bcm-qspi: Fix missing clk_disable_unprepare() on error in bcm_qspi_probe()
+Date:   Mon,  8 Nov 2021 20:08:05 -0500
+Message-Id: <20211109010807.1191567-31-sashal@kernel.org>
 X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211108175031.1190422-1-sashal@kernel.org>
-References: <20211108175031.1190422-1-sashal@kernel.org>
+In-Reply-To: <20211109010807.1191567-1-sashal@kernel.org>
+References: <20211109010807.1191567-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -64,10 +64,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-bcm-qspi.c b/drivers/spi/spi-bcm-qspi.c
-index 4ee92f7ca20bd..b2fd7a3691964 100644
+index 5453910d8abc3..d521adf6ac245 100644
 --- a/drivers/spi/spi-bcm-qspi.c
 +++ b/drivers/spi/spi-bcm-qspi.c
-@@ -1305,7 +1305,7 @@ int bcm_qspi_probe(struct platform_device *pdev,
+@@ -1266,7 +1266,7 @@ int bcm_qspi_probe(struct platform_device *pdev,
  					       &qspi->dev_ids[val]);
  			if (ret < 0) {
  				dev_err(&pdev->dev, "IRQ %s not found\n", name);
@@ -76,7 +76,7 @@ index 4ee92f7ca20bd..b2fd7a3691964 100644
  			}
  
  			qspi->dev_ids[val].dev = qspi;
-@@ -1320,7 +1320,7 @@ int bcm_qspi_probe(struct platform_device *pdev,
+@@ -1281,7 +1281,7 @@ int bcm_qspi_probe(struct platform_device *pdev,
  	if (!num_ints) {
  		dev_err(&pdev->dev, "no IRQs registered, cannot init driver\n");
  		ret = -EINVAL;
@@ -85,7 +85,7 @@ index 4ee92f7ca20bd..b2fd7a3691964 100644
  	}
  
  	/*
-@@ -1371,6 +1371,7 @@ int bcm_qspi_probe(struct platform_device *pdev,
+@@ -1332,6 +1332,7 @@ int bcm_qspi_probe(struct platform_device *pdev,
  
  qspi_reg_err:
  	bcm_qspi_hw_uninit(qspi);

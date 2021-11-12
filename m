@@ -2,19 +2,18 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B1D18C433F5
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D62CAC433FE
 	for <linux-spi@archiver.kernel.org>; Fri, 12 Nov 2021 20:55:22 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 79D4661073
+	by mail.kernel.org (Postfix) with ESMTP id AA29D61054
 	for <linux-spi@archiver.kernel.org>; Fri, 12 Nov 2021 20:55:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235712AbhKLU6M (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 12 Nov 2021 15:58:12 -0500
-Received: from mail.baikalelectronics.com ([87.245.175.226]:58664 "EHLO
+        id S235335AbhKLU6N (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 12 Nov 2021 15:58:13 -0500
+Received: from mail.baikalelectronics.com ([87.245.175.226]:58656 "EHLO
         mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235619AbhKLU6L (ORCPT
+        with ESMTP id S235612AbhKLU6L (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Fri, 12 Nov 2021 15:58:11 -0500
-X-Greylist: delayed 324 seconds by postgrey-1.27 at vger.kernel.org; Fri, 12 Nov 2021 15:58:11 EST
 From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
 Authentication-Results: mail.baikalelectronics.ru; dkim=permerror (bad message/signature format)
 To:     Serge Semin <fancer.lancer@gmail.com>,
@@ -24,9 +23,11 @@ CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Andy Shevchenko <andy@kernel.org>, <linux-spi@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>
-Subject: [PATCH 0/4] spi: dw: Cleanup macros/funcs naming and add IP-core version support
-Date:   Fri, 12 Nov 2021 23:49:23 +0300
-Message-ID: <20211112204927.8830-1-Sergey.Semin@baikalelectronics.ru>
+Subject: [PATCH 4/4] spi: dw: Add Synopsys Component version reading and parsing
+Date:   Fri, 12 Nov 2021 23:49:27 +0300
+Message-ID: <20211112204927.8830-5-Sergey.Semin@baikalelectronics.ru>
+In-Reply-To: <20211112204927.8830-1-Sergey.Semin@baikalelectronics.ru>
+References: <20211112204927.8830-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -35,48 +36,62 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This patchset consists of the changes which I was going to introduce for a
-long time, but due to lack of free time couldn't make it so far.
-Nandhini's series [1] made me to proceed with this task so mate would
-finally have his patchset accepted and merged into the mainline kernel.
+Each Synopsys DWC SSI controller is equipped with a Synopsys Component
+version register, which encodes a version ID of an IP-core the
+controller has been synthesized from. That can be useful in future for the
+version-based conditional features implementation in the driver.
 
-There are three cleanup patches here and one feature patch. In framework
-of the former patches we suggest to better organize the code. In
-particular they concern the methods and macros naming unification (using a
-unified prefixes of the code object names) and CSR fields macro
-implementation using the bitfield helpers available in the kernel. The
-later patch introduces the Synopsys Component Version register parsing
-procedure so the corresponding data could be used for a version-specific
-features implementation.  Nandhini will be mostly interested in the later
-patch in the framework of his series [1].
-
-Nandhini, could you please test the patchset out on your DWC SSI hardware?
-After it's merged into the spi/for-next branch of the Mark' repository you
-will be able to rebase your series on top of it and use the last patch
-functionality for your benefit.
-
-[1] https://lore.kernel.org/linux-spi/20211111065201.10249-4-nandhini.srikandan@intel.com/
+Note the component version is encoded as an ASCII string so we need to
+convert it from the string to a normal unsigned integer to be easily used
+then in the driver statements.
 
 Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Andy Shevchenko <andy@kernel.org>
-Cc: linux-spi@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
+---
+ drivers/spi/spi-dw-core.c | 18 ++++++++++++++++++
+ drivers/spi/spi-dw.h      |  1 +
+ 2 files changed, 19 insertions(+)
 
-Serge Semin (4):
-  spi: dw: Discard redundant DW SSI Frame Formats enumeration
-  spi: dw: Put the driver entities naming in order
-  spi: dw: Convert to using the Bitfield access macros
-  spi: dw: Add Synopsys Component version reading and parsing
-
- drivers/spi/spi-dw-bt1.c  |   8 +-
- drivers/spi/spi-dw-core.c | 165 ++++++++++++++++++++++----------------
- drivers/spi/spi-dw-dma.c  |  50 ++++++------
- drivers/spi/spi-dw-mmio.c |  20 ++---
- drivers/spi/spi-dw-pci.c  |  59 +++++++-------
- drivers/spi/spi-dw.h      | 150 +++++++++++++++++-----------------
- 6 files changed, 236 insertions(+), 216 deletions(-)
-
+diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
+index b4cbcd38eaba..1766a29ca790 100644
+--- a/drivers/spi/spi-dw-core.c
++++ b/drivers/spi/spi-dw-core.c
+@@ -823,6 +823,24 @@ static void dw_spi_hw_init(struct device *dev, struct dw_spi *dws)
+ {
+ 	dw_spi_reset_chip(dws);
+ 
++	/*
++	 * Retrieve the Synopsys component version if it hasn't been specified
++	 * by the platform. Note the CoreKit version ID is encoded as a 4bytes
++	 * ASCII string enclosed with '*' symbol.
++	 */
++	if (!dws->ver) {
++		u32 comp;
++
++		comp = dw_readl(dws, DW_SPI_VERSION);
++		dws->ver = (DW_SPI_GET_BYTE(comp, 3) - '0') * 100;
++		dws->ver += (DW_SPI_GET_BYTE(comp, 2) - '0') * 10;
++		dws->ver += (DW_SPI_GET_BYTE(comp, 1) - '0');
++
++		dev_dbg(dev, "Synopsys DWC%sSSI v%u.%02u\n",
++			(dws->caps & DW_SPI_CAP_DWC_HSSI) ? " " : " APB ",
++			dws->ver / 100, dws->ver % 100);
++	}
++
+ 	/*
+ 	 * Try to detect the FIFO depth if not set by interface driver,
+ 	 * the depth could be from 2 to 256 from HW spec
+diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
+index 634085eadad1..d06857d8d173 100644
+--- a/drivers/spi/spi-dw.h
++++ b/drivers/spi/spi-dw.h
+@@ -149,6 +149,7 @@ struct dw_spi {
+ 	u32			max_mem_freq;	/* max mem-ops bus freq */
+ 	u32			max_freq;	/* max bus freq supported */
+ 
++	u32			ver;		/* Synopsys component version */
+ 	u32			caps;		/* DW SPI capabilities */
+ 
+ 	u32			reg_io_width;	/* DR I/O width in bytes */
 -- 
 2.33.0
 

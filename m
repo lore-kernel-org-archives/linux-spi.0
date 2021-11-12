@@ -2,72 +2,81 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6A6ABC433F5
-	for <linux-spi@archiver.kernel.org>; Fri, 12 Nov 2021 18:17:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B1D18C433F5
+	for <linux-spi@archiver.kernel.org>; Fri, 12 Nov 2021 20:55:22 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 445F261057
-	for <linux-spi@archiver.kernel.org>; Fri, 12 Nov 2021 18:17:49 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 79D4661073
+	for <linux-spi@archiver.kernel.org>; Fri, 12 Nov 2021 20:55:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235552AbhKLSUj (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 12 Nov 2021 13:20:39 -0500
-Received: from mail.kernel.org ([198.145.29.99]:53938 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235265AbhKLSUj (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Fri, 12 Nov 2021 13:20:39 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 6528260F41;
-        Fri, 12 Nov 2021 18:17:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1636741068;
-        bh=MDRYkTIa+OsXDBQGmlQUZAcG4lkASJfrWxpxjW0ebe0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=o++CeXK6lR+2w5APKJ2Zos6qg+iUpamU92e4IaRzNrngbUFWgS/NR9hWgM5DH0+81
-         irPCmGGpd+m9WGpg2+7LkF3oKBC7D3W9VyxI8rh7oQLrfS49cR44bN2T3IgVhAUSZX
-         5Onub7XXWIbiTjYOCHQP0HEpvo786PcfEy4B0DDyIyYdgoFvrHup7c71JeOK9LVeIX
-         eDLpBQwYQM6nS7db3j74ql5QsaZUljXGmaAs08nKGvzJqUXVgYsk7JTIhP4/V2myy5
-         0luQyT7nDwPknTrcBbBHZBTzHJqKqznBUjadVuEWhrJKkBBLUiR8yZJ2sSmPcCAwvY
-         ZQkKQAgAQ9vxA==
-Date:   Fri, 12 Nov 2021 18:17:44 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc:     linux-spi@vger.kernel.org
-Subject: Re: [PATCH 1/1] spi: lpspi: release requested DMA channels
-Message-ID: <YY6vyLt6lhUp8xXW@sirena.org.uk>
-References: <20211109103134.184216-1-alexander.stein@ew.tq-group.com>
+        id S235712AbhKLU6M (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 12 Nov 2021 15:58:12 -0500
+Received: from mail.baikalelectronics.com ([87.245.175.226]:58664 "EHLO
+        mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235619AbhKLU6L (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 12 Nov 2021 15:58:11 -0500
+X-Greylist: delayed 324 seconds by postgrey-1.27 at vger.kernel.org; Fri, 12 Nov 2021 15:58:11 EST
+From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
+Authentication-Results: mail.baikalelectronics.ru; dkim=permerror (bad message/signature format)
+To:     Serge Semin <fancer.lancer@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Nandhini Srikandan <nandhini.srikandan@intel.com>
+CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Andy Shevchenko <andy@kernel.org>, <linux-spi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH 0/4] spi: dw: Cleanup macros/funcs naming and add IP-core version support
+Date:   Fri, 12 Nov 2021 23:49:23 +0300
+Message-ID: <20211112204927.8830-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="PqO5UuyQuufaVqM3"
-Content-Disposition: inline
-In-Reply-To: <20211109103134.184216-1-alexander.stein@ew.tq-group.com>
-X-Cookie: Ring around the collar.
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ClientProxiedBy: MAIL.baikal.int (192.168.51.25) To mail (192.168.51.25)
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+This patchset consists of the changes which I was going to introduce for a
+long time, but due to lack of free time couldn't make it so far.
+Nandhini's series [1] made me to proceed with this task so mate would
+finally have his patchset accepted and merged into the mainline kernel.
 
---PqO5UuyQuufaVqM3
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+There are three cleanup patches here and one feature patch. In framework
+of the former patches we suggest to better organize the code. In
+particular they concern the methods and macros naming unification (using a
+unified prefixes of the code object names) and CSR fields macro
+implementation using the bitfield helpers available in the kernel. The
+later patch introduces the Synopsys Component Version register parsing
+procedure so the corresponding data could be used for a version-specific
+features implementation.  Nandhini will be mostly interested in the later
+patch in the framework of his series [1].
 
-On Tue, Nov 09, 2021 at 11:31:34AM +0100, Alexander Stein wrote:
-> The requested DMA channels are never released. Do this in .remove as well
-> as in .probe. spi_register_controller() can return -EPROBE_DEFER if
-> cs-gpios are not probed yet.
+Nandhini, could you please test the patchset out on your DWC SSI hardware?
+After it's merged into the spi/for-next branch of the Mark' repository you
+will be able to rebase your series on top of it and use the last patch
+functionality for your benefit.
 
-This doesn't apply against current code, please check and resend.
+[1] https://lore.kernel.org/linux-spi/20211111065201.10249-4-nandhini.srikandan@intel.com/
 
---PqO5UuyQuufaVqM3
-Content-Type: application/pgp-signature; name="signature.asc"
+Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Andy Shevchenko <andy@kernel.org>
+Cc: linux-spi@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
 
------BEGIN PGP SIGNATURE-----
+Serge Semin (4):
+  spi: dw: Discard redundant DW SSI Frame Formats enumeration
+  spi: dw: Put the driver entities naming in order
+  spi: dw: Convert to using the Bitfield access macros
+  spi: dw: Add Synopsys Component version reading and parsing
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmGOr8cACgkQJNaLcl1U
-h9CEWAgAgY/GfU8BXFYGIRsRJvI1cWat2E8FDdx6w4hGOXZu1PkCE/clQw49sl8s
-TtkBnnWdHaqEdTMjxGuYfuBjeCJ+wRX04gs4rrlyFX3kUYQ7/Aw6f/kUAn7UkFJX
-Fd4529ooHiVRGzoyP3qWfGIgM9fnA/j34lptaIkUmzun0eA4pQQkmHfGb7QPfS3k
-sRS71vw6B/OsKm4pDHqE+Y70xSYP0wxVzNb9m/3Jg8Uc/jV4OVKGmUKbKZ5YaN97
-Mh74Ggiymg0INA68ejMHTrqZZHuSinNv6gE0Z9oWpDfuF9pSpGQxJQIh2nLD3DEc
-oAQPEIK/FZq0tcc1VpkSKhqqcF+g2Q==
-=Ur35
------END PGP SIGNATURE-----
+ drivers/spi/spi-dw-bt1.c  |   8 +-
+ drivers/spi/spi-dw-core.c | 165 ++++++++++++++++++++++----------------
+ drivers/spi/spi-dw-dma.c  |  50 ++++++------
+ drivers/spi/spi-dw-mmio.c |  20 ++---
+ drivers/spi/spi-dw-pci.c  |  59 +++++++-------
+ drivers/spi/spi-dw.h      | 150 +++++++++++++++++-----------------
+ 6 files changed, 236 insertions(+), 216 deletions(-)
 
---PqO5UuyQuufaVqM3--
+-- 
+2.33.0
+

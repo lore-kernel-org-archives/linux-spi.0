@@ -2,18 +2,18 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5941CC43219
-	for <linux-spi@archiver.kernel.org>; Sun, 14 Nov 2021 22:30:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A57F0C433F5
+	for <linux-spi@archiver.kernel.org>; Sun, 14 Nov 2021 22:30:50 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4168261105
-	for <linux-spi@archiver.kernel.org>; Sun, 14 Nov 2021 22:30:47 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8DBE660F46
+	for <linux-spi@archiver.kernel.org>; Sun, 14 Nov 2021 22:30:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234835AbhKNWdj (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 14 Nov 2021 17:33:39 -0500
-Received: from mail.baikalelectronics.com ([87.245.175.226]:35876 "EHLO
+        id S234985AbhKNWdm (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 14 Nov 2021 17:33:42 -0500
+Received: from mail.baikalelectronics.com ([87.245.175.226]:35962 "EHLO
         mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233189AbhKNWdh (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 14 Nov 2021 17:33:37 -0500
+        with ESMTP id S233593AbhKNWdj (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 14 Nov 2021 17:33:39 -0500
 From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
 Authentication-Results: mail.baikalelectronics.ru; dkim=permerror (bad message/signature format)
 To:     Serge Semin <fancer.lancer@gmail.com>,
@@ -24,9 +24,9 @@ CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Andy Shevchenko <andy@kernel.org>, <linux-spi@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2 1/6] spi: dw: Add a symbols namespace for the core module
-Date:   Mon, 15 Nov 2021 01:30:21 +0300
-Message-ID: <20211114223026.13359-2-Sergey.Semin@baikalelectronics.ru>
+Subject: [PATCH v2 5/6] spi: dw: Introduce Synopsys IP-core versions interface
+Date:   Mon, 15 Nov 2021 01:30:25 +0300
+Message-ID: <20211114223026.13359-6-Sergey.Semin@baikalelectronics.ru>
 In-Reply-To: <20211114223026.13359-1-Sergey.Semin@baikalelectronics.ru>
 References: <20211114223026.13359-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
@@ -37,154 +37,151 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The exported from the DW SPI driver core symbols are only used by the
-spi-dw-{dma,mmio,pci,bt1}.o objects. Add these symbols to a separate
-namespace then and make sure the depended modules have it imported.
+The driver currently supports two IP-core versions. It's DW APB SSI which
+is older version of the controller with APB system bus interface, and DW
+SSI controller with AHB bus interface. The later one is supposed to be a
+new generation high-speed SSI. Even though both of these IP-cores have got
+an almost identical registers space there are some differences. The driver
+differentiates these distinctions by the DW_SPI_CAP_DWC_HSSI capability
+flag. In addition to that each DW SSI IP-core is equipped with a Synopsys
+Component version register, which encodes the IP-core release ID the has
+been synthesized from. Seeing we are going to need the later one to
+differentiate some controller peculiarities it would be better to have a
+unified interface for both IP-core line and release versions instead of
+using each of them separately.
+
+Introduced here IP-core versioning interface consists of two parts:
+1) IDs of the IP-core (virtual) and component versions.
+2) a set of macro helpers to identify current IP-core and component
+versions.
+
+So the platform code is supposed to assign a proper IP-core version based
+on it's platform -knowledge. The main driver initialization method reads
+the IP-core release ID from the SSI component version register. That data
+is used by the helpers to distinguish one IP-core release from another.
+Thus the rest of the driver can use these macros to implement the
+conditional code execution based on the specified IP-core and version IDs.
+
+Collect the IP-core versions interface and the defined capabilities at the
+top of the header file since they represent a common device description
+data and so to immediately available for the driver hackers.
 
 Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
 ---
 
-Changelog v2:
-- This is a new patch created as of Andy' suggestion.
----
- drivers/spi/spi-dw-bt1.c  |  1 +
- drivers/spi/spi-dw-core.c | 14 +++++++-------
- drivers/spi/spi-dw-dma.c  |  7 +++++--
- drivers/spi/spi-dw-mmio.c |  1 +
- drivers/spi/spi-dw-pci.c  |  1 +
- 5 files changed, 15 insertions(+), 9 deletions(-)
+Note I intentionally haven't used the "%p4cc" format specifier due to
+three reasons. First the component version 4cc string is preserved in the
+little endian format in the DW SSI register thus having '*' in the least
+significant byte.  Such representation do look well when you print it in
+hex, but that's not what the 4cc format print implementation expects
+(fourcc_string() wants to see a most-significant char at the lowest byte).
+Second the 4cc format also prints some pixel-format specific info like
+endiannes, which is irrelevant to the synopsys component version. Finally
+a string in the "v%c.%c%c" format represents the component version better.
 
-diff --git a/drivers/spi/spi-dw-bt1.c b/drivers/spi/spi-dw-bt1.c
-index 5be6b7b80c21..ac7e4f30d1da 100644
---- a/drivers/spi/spi-dw-bt1.c
-+++ b/drivers/spi/spi-dw-bt1.c
-@@ -339,3 +339,4 @@ module_platform_driver(dw_spi_bt1_driver);
- MODULE_AUTHOR("Serge Semin <Sergey.Semin@baikalelectronics.ru>");
- MODULE_DESCRIPTION("Baikal-T1 System Boot SPI Controller driver");
- MODULE_LICENSE("GPL v2");
-+MODULE_IMPORT_NS(SPI_DW_CORE);
+Changelog v2:
+- Replace the ASCII-to-integer conversion with a unified IP-core versions
+  interface.
+---
+ drivers/spi/spi-dw-core.c | 14 ++++++++++++++
+ drivers/spi/spi-dw.h      | 36 ++++++++++++++++++++++++++++--------
+ 2 files changed, 42 insertions(+), 8 deletions(-)
+
 diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
-index a305074c482e..a14940403ab4 100644
+index b9f809989fda..42536b448ddd 100644
 --- a/drivers/spi/spi-dw-core.c
 +++ b/drivers/spi/spi-dw-core.c
-@@ -106,7 +106,7 @@ void dw_spi_set_cs(struct spi_device *spi, bool enable)
- 	else
- 		dw_writel(dws, DW_SPI_SER, 0);
- }
--EXPORT_SYMBOL_GPL(dw_spi_set_cs);
-+EXPORT_SYMBOL_NS_GPL(dw_spi_set_cs, SPI_DW_CORE);
- 
- /* Return the max entries we can fill into tx fifo */
- static inline u32 tx_max(struct dw_spi *dws)
-@@ -210,7 +210,7 @@ int dw_spi_check_status(struct dw_spi *dws, bool raw)
- 
- 	return ret;
- }
--EXPORT_SYMBOL_GPL(dw_spi_check_status);
-+EXPORT_SYMBOL_NS_GPL(dw_spi_check_status, SPI_DW_CORE);
- 
- static irqreturn_t dw_spi_transfer_handler(struct dw_spi *dws)
+@@ -823,6 +823,20 @@ static void dw_spi_hw_init(struct device *dev, struct dw_spi *dws)
  {
-@@ -345,7 +345,7 @@ void dw_spi_update_config(struct dw_spi *dws, struct spi_device *spi,
- 		dws->cur_rx_sample_dly = chip->rx_sample_dly;
- 	}
- }
--EXPORT_SYMBOL_GPL(dw_spi_update_config);
-+EXPORT_SYMBOL_NS_GPL(dw_spi_update_config, SPI_DW_CORE);
+ 	dw_spi_reset_chip(dws);
  
- static void dw_spi_irq_setup(struct dw_spi *dws)
- {
-@@ -945,7 +945,7 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
- 	spi_controller_put(master);
- 	return ret;
- }
--EXPORT_SYMBOL_GPL(dw_spi_add_host);
-+EXPORT_SYMBOL_NS_GPL(dw_spi_add_host, SPI_DW_CORE);
- 
- void dw_spi_remove_host(struct dw_spi *dws)
- {
-@@ -960,7 +960,7 @@ void dw_spi_remove_host(struct dw_spi *dws)
- 
- 	free_irq(dws->irq, dws->master);
- }
--EXPORT_SYMBOL_GPL(dw_spi_remove_host);
-+EXPORT_SYMBOL_NS_GPL(dw_spi_remove_host, SPI_DW_CORE);
- 
- int dw_spi_suspend_host(struct dw_spi *dws)
- {
-@@ -973,14 +973,14 @@ int dw_spi_suspend_host(struct dw_spi *dws)
- 	spi_shutdown_chip(dws);
- 	return 0;
- }
--EXPORT_SYMBOL_GPL(dw_spi_suspend_host);
-+EXPORT_SYMBOL_NS_GPL(dw_spi_suspend_host, SPI_DW_CORE);
- 
- int dw_spi_resume_host(struct dw_spi *dws)
- {
- 	spi_hw_init(&dws->master->dev, dws);
- 	return spi_controller_resume(dws->master);
- }
--EXPORT_SYMBOL_GPL(dw_spi_resume_host);
-+EXPORT_SYMBOL_NS_GPL(dw_spi_resume_host, SPI_DW_CORE);
- 
- MODULE_AUTHOR("Feng Tang <feng.tang@intel.com>");
- MODULE_DESCRIPTION("Driver for DesignWare SPI controller core");
-diff --git a/drivers/spi/spi-dw-dma.c b/drivers/spi/spi-dw-dma.c
-index a09831c62192..5687ec05d627 100644
---- a/drivers/spi/spi-dw-dma.c
-+++ b/drivers/spi/spi-dw-dma.c
-@@ -10,6 +10,7 @@
- #include <linux/dmaengine.h>
- #include <linux/irqreturn.h>
- #include <linux/jiffies.h>
-+#include <linux/module.h>
- #include <linux/pci.h>
- #include <linux/platform_data/dma-dw.h>
- #include <linux/spi/spi.h>
-@@ -17,6 +18,8 @@
- 
- #include "spi-dw.h"
- 
-+MODULE_IMPORT_NS(SPI_DW_CORE);
++	/*
++	 * Retrieve the Synopsys component version if it hasn't been specified
++	 * by the platform. CoreKit version ID is encoded as a 3-chars ASCII
++	 * code enclosed with '*' (typical for the most of Synopsys IP-cores).
++	 */
++	if (!dws->ver) {
++		dws->ver = dw_readl(dws, DW_SPI_VERSION);
 +
- #define RX_BUSY		0
- #define RX_BURST_LEVEL	16
- #define TX_BUSY		1
-@@ -638,7 +641,7 @@ void dw_spi_dma_setup_mfld(struct dw_spi *dws)
- {
- 	dws->dma_ops = &dw_spi_dma_mfld_ops;
- }
--EXPORT_SYMBOL_GPL(dw_spi_dma_setup_mfld);
-+EXPORT_SYMBOL_NS_GPL(dw_spi_dma_setup_mfld, SPI_DW_CORE);
++		dev_dbg(dev, "Synopsys DWC%sSSI v%c.%c%c\n",
++			(dws->caps & DW_SPI_CAP_DWC_HSSI) ? " " : " APB ",
++			DW_SPI_GET_BYTE(dws->ver, 3), DW_SPI_GET_BYTE(dws->ver, 2),
++			DW_SPI_GET_BYTE(dws->ver, 1));
++	}
++
+ 	/*
+ 	 * Try to detect the FIFO depth if not set by interface driver,
+ 	 * the depth could be from 2 to 256 from HW spec
+diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
+index 634085eadad1..2f7d77024b48 100644
+--- a/drivers/spi/spi-dw.h
++++ b/drivers/spi/spi-dw.h
+@@ -11,6 +11,30 @@
+ #include <linux/spi/spi-mem.h>
+ #include <linux/bitfield.h>
  
- static const struct dw_spi_dma_ops dw_spi_dma_generic_ops = {
- 	.dma_init	= dw_spi_dma_init_generic,
-@@ -653,4 +656,4 @@ void dw_spi_dma_setup_generic(struct dw_spi *dws)
- {
- 	dws->dma_ops = &dw_spi_dma_generic_ops;
- }
--EXPORT_SYMBOL_GPL(dw_spi_dma_setup_generic);
-+EXPORT_SYMBOL_NS_GPL(dw_spi_dma_setup_generic, SPI_DW_CORE);
-diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
-index 17c06039a74d..711f4d3404c5 100644
---- a/drivers/spi/spi-dw-mmio.c
-+++ b/drivers/spi/spi-dw-mmio.c
-@@ -377,3 +377,4 @@ module_platform_driver(dw_spi_mmio_driver);
- MODULE_AUTHOR("Jean-Hugues Deschenes <jean-hugues.deschenes@octasic.com>");
- MODULE_DESCRIPTION("Memory-mapped I/O interface driver for DW SPI Core");
- MODULE_LICENSE("GPL v2");
-+MODULE_IMPORT_NS(SPI_DW_CORE);
-diff --git a/drivers/spi/spi-dw-pci.c b/drivers/spi/spi-dw-pci.c
-index 8a91cd58102f..5552240fee55 100644
---- a/drivers/spi/spi-dw-pci.c
-+++ b/drivers/spi/spi-dw-pci.c
-@@ -213,3 +213,4 @@ module_pci_driver(dw_spi_driver);
- MODULE_AUTHOR("Feng Tang <feng.tang@intel.com>");
- MODULE_DESCRIPTION("PCI interface driver for DW SPI Core");
- MODULE_LICENSE("GPL v2");
-+MODULE_IMPORT_NS(SPI_DW_CORE);
++/* Synopsys DW SSI IP-core virtual IDs */
++#define DW_PSSI_ID			0
++#define DW_HSSI_ID			1
++
++/* Synopsys DW SSI component versions (FourCC sequence) */
++#define DW_HSSI_102A			0x3130322a
++
++/* DW SSI IP-core ID and version check helpers */
++#define dw_spi_ip_is(_dws, _ip) \
++	((_dws)->ip == DW_ ## _ip ## _ID)
++
++#define __dw_spi_ver_cmp(_dws, _ip, _ver, _op) \
++	(dw_spi_ip_is(_dws, _ip) && (_dws)->ver _op DW_ ## _ip ## _ver)
++
++#define dw_spi_ver_is(_dws, _ip, _ver) __dw_spi_ver_cmp(_dws, _ip, _ver, ==)
++
++#define dw_spi_ver_is_ge(_dws, _ip, _ver) __dw_spi_ver_cmp(_dws, _ip, _ver, >=)
++
++/* DW SPI controller capabilities */
++#define DW_SPI_CAP_CS_OVERRIDE		BIT(0)
++#define DW_SPI_CAP_KEEMBAY_MST		BIT(1)
++#define DW_SPI_CAP_DWC_HSSI		BIT(2)
++#define DW_SPI_CAP_DFS32		BIT(3)
++
+ /* Register offsets (Generic for both DWC APB SSI and DWC SSI IP-cores) */
+ #define DW_SPI_CTRLR0			0x00
+ #define DW_SPI_CTRLR1			0x04
+@@ -113,12 +137,6 @@
+ #define DW_SPI_GET_BYTE(_val, _idx) \
+ 	((_val) >> (BITS_PER_BYTE * (_idx)) & 0xff)
+ 
+-/* DW SPI capabilities */
+-#define DW_SPI_CAP_CS_OVERRIDE		BIT(0)
+-#define DW_SPI_CAP_KEEMBAY_MST		BIT(1)
+-#define DW_SPI_CAP_DWC_HSSI		BIT(2)
+-#define DW_SPI_CAP_DFS32		BIT(3)
+-
+ /* Slave spi_transfer/spi_mem_op related */
+ struct dw_spi_cfg {
+ 	u8 tmode;
+@@ -141,6 +159,10 @@ struct dw_spi_dma_ops {
+ struct dw_spi {
+ 	struct spi_controller	*master;
+ 
++	u32			ip;		/* Synopsys DW SSI IP-core ID */
++	u32			ver;		/* Synopsys component version */
++	u32			caps;		/* DW SPI capabilities */
++
+ 	void __iomem		*regs;
+ 	unsigned long		paddr;
+ 	int			irq;
+@@ -149,8 +171,6 @@ struct dw_spi {
+ 	u32			max_mem_freq;	/* max mem-ops bus freq */
+ 	u32			max_freq;	/* max bus freq supported */
+ 
+-	u32			caps;		/* DW SPI capabilities */
+-
+ 	u32			reg_io_width;	/* DR I/O width in bytes */
+ 	u16			bus_num;
+ 	u16			num_cs;		/* supported slave numbers */
 -- 
 2.33.0
 

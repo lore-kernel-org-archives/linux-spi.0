@@ -2,30 +2,30 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BA132C433EF
-	for <linux-spi@archiver.kernel.org>; Mon, 15 Nov 2021 08:55:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 31CD0C433FE
+	for <linux-spi@archiver.kernel.org>; Mon, 15 Nov 2021 08:56:39 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A4EA961C48
-	for <linux-spi@archiver.kernel.org>; Mon, 15 Nov 2021 08:55:44 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 1C5F76321A
+	for <linux-spi@archiver.kernel.org>; Mon, 15 Nov 2021 08:56:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230480AbhKOI6A (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 15 Nov 2021 03:58:00 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55378 "EHLO mail.kernel.org"
+        id S236993AbhKOI7F (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 15 Nov 2021 03:59:05 -0500
+Received: from mail.kernel.org ([198.145.29.99]:55700 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230149AbhKOI5y (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 15 Nov 2021 03:57:54 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 9224463222;
-        Mon, 15 Nov 2021 08:54:53 +0000 (UTC)
+        id S234749AbhKOI6O (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 15 Nov 2021 03:58:14 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 22ED66322D;
+        Mon, 15 Nov 2021 08:55:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1636966499;
-        bh=SSVFq8V5QgZ8AMrKjuNifJwPRFV2bwVTfXVHbqPj2aU=;
+        s=k20201202; t=1636966519;
+        bh=dVdHkl1ZmLXmEp0TH/FEFVdiPBDZ+d25p7vGAAo1Op0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IWPlOAoNVZ+ir7KGxrildoWGM1mQnaf7ewCJRGxAlh7sp55Kq08VXBsh2HJq0UNxl
-         eJrtqrhd9f07DrNoIIYQxXcw0Dj7MyBMWvAjpLeDa0bPZnGyAXGf8Nn/iif0W7tUNF
-         aASGKwu2D0mv1fB6bh3667PFZmstR+abS6MkboFwlFENPAACABf6i0vQqciiacp6D+
-         CIa/shXrYU7IuqNvw2zRLT7DL94AW8AmV/eR1AVEhs5f+SoYebk81ievQQ/PH1ufo+
-         sAfTJSFcuSqXozuveEFZbfN7PIQy3f0IbF7les+K9TRndRM/0BhX+9Zl6TK4QdhdOX
-         HbQ0zPRM57fFg==
+        b=mRK/MrLIW0u6LLOVooQ0gN1KOgXTYhYKylaX2S32I4HonnlCFZurjXmSS8SVAK8uT
+         oms9xEfRjWR6ZFbM4n5WvC4swJa/tAasyMhklsk5Ir56gwJUPrslsn7ElKpFldUp/E
+         NlCAON7rV+dPkbJZagetmzGzxn9jWITAvoJTC1bh7hJM72/9cXRXvCjnZS1ul8EL2p
+         VBOA3hBnrk0Eb28v5ySeU5CAXlmyQ/9KxPR888YYSAX5yJSbDRY/Q7gBtrNNVxZYXZ
+         1ZwPE4au/UVHJxcKYNQikMHfKZ7UNLmAPuOP8AEjGq++T8L8DQUNKbV7hN6zPua+j8
+         yXgozqEEWHHIg==
 From:   Arnd Bergmann <arnd@kernel.org>
 To:     Vinod Koul <vkoul@kernel.org>
 Cc:     Arnd Bergmann <arnd@arndb.de>, Andy Gross <agross@kernel.org>,
@@ -57,9 +57,9 @@ Cc:     Arnd Bergmann <arnd@arndb.de>, Andy Gross <agross@kernel.org>,
         linux-rpi-kernel@lists.infradead.org, linux-serial@vger.kernel.org,
         linux-spi@vger.kernel.org, linux-staging@lists.linux.dev,
         linux-tegra@vger.kernel.org
-Subject: [PATCH 02/11] spi: pic32: stop setting dma_config->slave_id
-Date:   Mon, 15 Nov 2021 09:53:54 +0100
-Message-Id: <20211115085403.360194-3-arnd@kernel.org>
+Subject: [PATCH 05/11] dmaengine: pxa/mmp: stop referencing config->slave_id
+Date:   Mon, 15 Nov 2021 09:53:57 +0100
+Message-Id: <20211115085403.360194-6-arnd@kernel.org>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20211115085403.360194-1-arnd@kernel.org>
 References: <20211115085403.360194-1-arnd@kernel.org>
@@ -71,39 +71,53 @@ X-Mailing-List: linux-spi@vger.kernel.org
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-Setting slave_id makes no sense with DT based probing, and
-should eventually get removed entirely. Address this driver
-by no longer setting the field here.
+The last driver referencing the slave_id on Marvell PXA and MMP platforms
+was the SPI driver, but this stopped doing so a long time ago, so the
+TODO from the earlier patch can no be removed.
 
-I could not find which DMA driver is used on PIC32, if it's
-in the tree at all, but none of the obvious ones even care
-about slave_id any more.
-
+Fixes: b729bf34535e ("spi/pxa2xx: Don't use slave_id of dma_slave_config")
+Fixes: 13b3006b8ebd ("dma: mmp_pdma: add filter function")
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- drivers/spi/spi-pic32.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/dma/mmp_pdma.c | 6 ------
+ drivers/dma/pxa_dma.c  | 7 -------
+ 2 files changed, 13 deletions(-)
 
-diff --git a/drivers/spi/spi-pic32.c b/drivers/spi/spi-pic32.c
-index 5eb7b61bbb4d..f86433b29260 100644
---- a/drivers/spi/spi-pic32.c
-+++ b/drivers/spi/spi-pic32.c
-@@ -370,7 +370,6 @@ static int pic32_spi_dma_config(struct pic32_spi *pic32s, u32 dma_width)
- 	cfg.src_addr_width = dma_width;
- 	cfg.dst_addr_width = dma_width;
- 	/* tx channel */
--	cfg.slave_id = pic32s->tx_irq;
- 	cfg.direction = DMA_MEM_TO_DEV;
- 	ret = dmaengine_slave_config(master->dma_tx, &cfg);
- 	if (ret) {
-@@ -378,7 +377,6 @@ static int pic32_spi_dma_config(struct pic32_spi *pic32s, u32 dma_width)
- 		return ret;
- 	}
- 	/* rx channel */
--	cfg.slave_id = pic32s->rx_irq;
- 	cfg.direction = DMA_DEV_TO_MEM;
- 	ret = dmaengine_slave_config(master->dma_rx, &cfg);
- 	if (ret)
+diff --git a/drivers/dma/mmp_pdma.c b/drivers/dma/mmp_pdma.c
+index a23563cd118b..5a53d7fcef01 100644
+--- a/drivers/dma/mmp_pdma.c
++++ b/drivers/dma/mmp_pdma.c
+@@ -727,12 +727,6 @@ static int mmp_pdma_config_write(struct dma_chan *dchan,
+ 
+ 	chan->dir = direction;
+ 	chan->dev_addr = addr;
+-	/* FIXME: drivers should be ported over to use the filter
+-	 * function. Once that's done, the following two lines can
+-	 * be removed.
+-	 */
+-	if (cfg->slave_id)
+-		chan->drcmr = cfg->slave_id;
+ 
+ 	return 0;
+ }
+diff --git a/drivers/dma/pxa_dma.c b/drivers/dma/pxa_dma.c
+index 52d04641e361..6078cc81892e 100644
+--- a/drivers/dma/pxa_dma.c
++++ b/drivers/dma/pxa_dma.c
+@@ -909,13 +909,6 @@ static void pxad_get_config(struct pxad_chan *chan,
+ 		*dcmd |= PXA_DCMD_BURST16;
+ 	else if (maxburst == 32)
+ 		*dcmd |= PXA_DCMD_BURST32;
+-
+-	/* FIXME: drivers should be ported over to use the filter
+-	 * function. Once that's done, the following two lines can
+-	 * be removed.
+-	 */
+-	if (chan->cfg.slave_id)
+-		chan->drcmr = chan->cfg.slave_id;
+ }
+ 
+ static struct dma_async_tx_descriptor *
 -- 
 2.30.2
 

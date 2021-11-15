@@ -2,30 +2,30 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5CF8BC43219
-	for <linux-spi@archiver.kernel.org>; Mon, 15 Nov 2021 08:56:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 896D2C433EF
+	for <linux-spi@archiver.kernel.org>; Mon, 15 Nov 2021 08:57:18 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4A02C61C48
-	for <linux-spi@archiver.kernel.org>; Mon, 15 Nov 2021 08:56:39 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 64E9D60F0F
+	for <linux-spi@archiver.kernel.org>; Mon, 15 Nov 2021 08:57:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236947AbhKOI7C (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 15 Nov 2021 03:59:02 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55628 "EHLO mail.kernel.org"
+        id S237152AbhKOI7T (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 15 Nov 2021 03:59:19 -0500
+Received: from mail.kernel.org ([198.145.29.99]:55948 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230288AbhKOI6H (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 15 Nov 2021 03:58:07 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A02B96322E;
-        Mon, 15 Nov 2021 08:55:06 +0000 (UTC)
+        id S236473AbhKOI6d (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 15 Nov 2021 03:58:33 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A00EC61BE2;
+        Mon, 15 Nov 2021 08:55:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1636966512;
-        bh=0aNffjFyOwM4u0Oo7aAQAYOuioDBDQQgvS3dt9nDAoY=;
+        s=k20201202; t=1636966538;
+        bh=2mwiQpykEAXMR4c+gQ0r0Cque843ND6M/qUoWmqOlf8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lAj0mIyHUENlkP6yrlZxkqYSD5hocgglcT83E2dvJW5vsfypS+bCmhcsFYUNOkxLb
-         VGm36iEtIrx5MsVBXb22F/vG+l2XPNfSwWhLmNnpXY2YEg1WtV9h7uDQ4GwxtuNv9L
-         drDvkpdeYSJiDY3sEkXjDYk0eXhjJUhkOOej7yEfUcc6kxARiOwLRZ91ApCbkZq51a
-         1DlM4aygC8K+7tMPsuyHuPXgtlhUMsrKFmzWe5QnTopYr5GRXxpXJp9kRg4sUJG2px
-         7btIXMzPZaupxro9KeNOsc8eN7Q4CrodjLRdG9uMjUnyKFs+UCAV79ctDov27Vvgoc
-         1WIStRJ1SW5ww==
+        b=pHgGGVZQvgwKAmuviD4hubeWYMREgXxWJfeEBFZjz9j7lBnAjNfaItSixiYQ6tjsd
+         jlNLqSO0tvDtiPP2nku90UBbbEHEImWKTSBEcAumAqCmZQgGOYbpyk8Rb61A5J0ESC
+         99O3hsO+/+1bwks/a9SZtbcyG0O+O/00i2AbMnY7eG3n//Jaz8vyE/OfHd8obW8zPq
+         3Ut6okySvy2UdYHuRjo3kbCZGY58jshqcW/NX5g436dbVwon7Kj6IlVof7U6GVjRvg
+         28QwkGliURHIe9Bf7nzdJhzb6dqoRlNUVZg2hdB7bsOSgpPSdfvbPnSPLYKcfSwNZz
+         a4RwOAKAjsSCg==
 From:   Arnd Bergmann <arnd@kernel.org>
 To:     Vinod Koul <vkoul@kernel.org>
 Cc:     Arnd Bergmann <arnd@arndb.de>, Andy Gross <agross@kernel.org>,
@@ -57,9 +57,9 @@ Cc:     Arnd Bergmann <arnd@arndb.de>, Andy Gross <agross@kernel.org>,
         linux-rpi-kernel@lists.infradead.org, linux-serial@vger.kernel.org,
         linux-spi@vger.kernel.org, linux-staging@lists.linux.dev,
         linux-tegra@vger.kernel.org
-Subject: [PATCH 04/11] dmaengine: shdma: remove legacy slave_id parsing
-Date:   Mon, 15 Nov 2021 09:53:56 +0100
-Message-Id: <20211115085403.360194-5-arnd@kernel.org>
+Subject: [PATCH 08/11] dmaengine: xilinx_dpdma: stop using slave_id field
+Date:   Mon, 15 Nov 2021 09:54:00 +0100
+Message-Id: <20211115085403.360194-9-arnd@kernel.org>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20211115085403.360194-1-arnd@kernel.org>
 References: <20211115085403.360194-1-arnd@kernel.org>
@@ -71,37 +71,114 @@ X-Mailing-List: linux-spi@vger.kernel.org
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-The slave device is picked through either devicetree or a filter
-function, and any remaining out-of-tree drivers would have warned
-about this usage since 2015.
+The display driver wants to pass a custom flag to the DMA engine driver,
+which it started doing by using the slave_id field that was traditionally
+used for a different purpose.
 
-Stop interpreting the field finally so it can be removed from
-the interface.
+As there is no longer a correct use for the slave_id field, it should
+really be removed, and the remaining users changed over to something
+different.
+
+The new mechanism for passing nonstandard settings is using the
+.peripheral_config field, so use that to pass a newly defined structure
+here, making it clear that this will not work in portable drivers.
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- drivers/dma/sh/shdma-base.c | 8 --------
- 1 file changed, 8 deletions(-)
+ drivers/dma/xilinx/xilinx_dpdma.c  | 12 ++++++++----
+ drivers/gpu/drm/xlnx/zynqmp_disp.c |  9 +++++++--
+ include/linux/dma/xilinx_dpdma.h   | 11 +++++++++++
+ 3 files changed, 26 insertions(+), 6 deletions(-)
+ create mode 100644 include/linux/dma/xilinx_dpdma.h
 
-diff --git a/drivers/dma/sh/shdma-base.c b/drivers/dma/sh/shdma-base.c
-index 7f72b3f4cd1a..41c6bc650fa3 100644
---- a/drivers/dma/sh/shdma-base.c
-+++ b/drivers/dma/sh/shdma-base.c
-@@ -786,14 +786,6 @@ static int shdma_config(struct dma_chan *chan,
- 	if (!config)
- 		return -EINVAL;
+diff --git a/drivers/dma/xilinx/xilinx_dpdma.c b/drivers/dma/xilinx/xilinx_dpdma.c
+index ce5c66e6897d..e2c1ef7a659c 100644
+--- a/drivers/dma/xilinx/xilinx_dpdma.c
++++ b/drivers/dma/xilinx/xilinx_dpdma.c
+@@ -12,6 +12,7 @@
+ #include <linux/clk.h>
+ #include <linux/debugfs.h>
+ #include <linux/delay.h>
++#include <linux/dma/xilinx_dpdma.h>
+ #include <linux/dmaengine.h>
+ #include <linux/dmapool.h>
+ #include <linux/interrupt.h>
+@@ -1273,6 +1274,7 @@ static int xilinx_dpdma_config(struct dma_chan *dchan,
+ 			       struct dma_slave_config *config)
+ {
+ 	struct xilinx_dpdma_chan *chan = to_xilinx_chan(dchan);
++	struct xilinx_dpdma_peripheral_config *pconfig;
+ 	unsigned long flags;
  
--	/*
--	 * overriding the slave_id through dma_slave_config is deprecated,
--	 * but possibly some out-of-tree drivers still do it.
--	 */
--	if (WARN_ON_ONCE(config->slave_id &&
--			 config->slave_id != schan->real_slave_id))
--		schan->real_slave_id = config->slave_id;
--
  	/*
- 	 * We could lock this, but you shouldn't be configuring the
- 	 * channel, while using it...
+@@ -1285,11 +1287,13 @@ static int xilinx_dpdma_config(struct dma_chan *dchan,
+ 	spin_lock_irqsave(&chan->lock, flags);
+ 
+ 	/*
+-	 * Abuse the slave_id to indicate that the channel is part of a video
+-	 * group.
++	 * Abuse the peripheral_config to indicate that the channel is part
++	 * of a video group.
+ 	 */
+-	if (chan->id <= ZYNQMP_DPDMA_VIDEO2)
+-		chan->video_group = config->slave_id != 0;
++	pconfig = config->peripheral_config;
++	if (chan->id <= ZYNQMP_DPDMA_VIDEO2 &&
++	    config->peripheral_size == sizeof(*pconfig))
++		chan->video_group = pconfig->video_group;
+ 
+ 	spin_unlock_irqrestore(&chan->lock, flags);
+ 
+diff --git a/drivers/gpu/drm/xlnx/zynqmp_disp.c b/drivers/gpu/drm/xlnx/zynqmp_disp.c
+index ff2b308d8651..11c409cbc88e 100644
+--- a/drivers/gpu/drm/xlnx/zynqmp_disp.c
++++ b/drivers/gpu/drm/xlnx/zynqmp_disp.c
+@@ -24,6 +24,7 @@
+ 
+ #include <linux/clk.h>
+ #include <linux/delay.h>
++#include <linux/dma/xilinx_dpdma.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/dmaengine.h>
+ #include <linux/module.h>
+@@ -1058,14 +1059,18 @@ static void zynqmp_disp_layer_set_format(struct zynqmp_disp_layer *layer,
+ 	zynqmp_disp_avbuf_set_format(layer->disp, layer, layer->disp_fmt);
+ 
+ 	/*
+-	 * Set slave_id for each DMA channel to indicate they're part of a
++	 * Set pconfig for each DMA channel to indicate they're part of a
+ 	 * video group.
+ 	 */
+ 	for (i = 0; i < info->num_planes; i++) {
+ 		struct zynqmp_disp_layer_dma *dma = &layer->dmas[i];
++		struct xilinx_dpdma_peripheral_config pconfig = {
++			.video_group = true,
++		};
+ 		struct dma_slave_config config = {
+ 			.direction = DMA_MEM_TO_DEV,
+-			.slave_id = 1,
++			.peripheral_config = &pconfig,
++			.peripheral_size = sizeof(pconfig),
+ 		};
+ 
+ 		dmaengine_slave_config(dma->chan, &config);
+diff --git a/include/linux/dma/xilinx_dpdma.h b/include/linux/dma/xilinx_dpdma.h
+new file mode 100644
+index 000000000000..83a1377f03f8
+--- /dev/null
++++ b/include/linux/dma/xilinx_dpdma.h
+@@ -0,0 +1,11 @@
++// SPDX-License-Identifier: GPL-2.0
++#ifndef __LINUX_DMA_XILINX_DPDMA_H
++#define __LINUX_DMA_XILINX_DPDMA_H
++
++#include <linux/types.h>
++
++struct xilinx_dpdma_peripheral_config {
++	bool video_group;
++};
++
++#endif /* __LINUX_DMA_XILINX_DPDMA_H */
 -- 
 2.30.2
 

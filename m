@@ -2,30 +2,30 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4FFAAC43217
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5CF8BC43219
 	for <linux-spi@archiver.kernel.org>; Mon, 15 Nov 2021 08:56:39 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3EA5561BE2
+	by mail.kernel.org (Postfix) with ESMTP id 4A02C61C48
 	for <linux-spi@archiver.kernel.org>; Mon, 15 Nov 2021 08:56:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237110AbhKOI7J (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 15 Nov 2021 03:59:09 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55798 "EHLO mail.kernel.org"
+        id S236947AbhKOI7C (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 15 Nov 2021 03:59:02 -0500
+Received: from mail.kernel.org ([198.145.29.99]:55628 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236317AbhKOI6V (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 15 Nov 2021 03:58:21 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 9EF0B6322A;
-        Mon, 15 Nov 2021 08:55:19 +0000 (UTC)
+        id S230288AbhKOI6H (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 15 Nov 2021 03:58:07 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A02B96322E;
+        Mon, 15 Nov 2021 08:55:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1636966525;
-        bh=5QR5v6614zTOntPsUILdpgvMgyj2h7YC8v32L7VdrY8=;
+        s=k20201202; t=1636966512;
+        bh=0aNffjFyOwM4u0Oo7aAQAYOuioDBDQQgvS3dt9nDAoY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BVo2LZMTKnvi18fTU1oVyCcq5hSRkXwUKaqwxPxFj8ksBb3j3ZAMGnnyUBzxyju35
-         JD89ztkndvHbilbR165m9u29eYAyiAZP/352auOvSmoASz8QbySIAkx8sx6HqA3Fi+
-         NajC4qp9b42h6JI1IOXBv9o4BCffOY7AZgYVuLKQ7HNB7CtLqpCFYPXpzybPothEc7
-         iVAogxjPLeJtqekWAMFQpZU9AzNb/YLn/6ECUKqDOQJhupZ04BtGq9L1VopOyBhPBv
-         zquvlt2qbQvpw7jHxz0Ax3OX5az2YhpYpHthYZCr7jXdKg9XrvsUnmDM+vt780Vm2H
-         YQtg0r4AXxFjg==
+        b=lAj0mIyHUENlkP6yrlZxkqYSD5hocgglcT83E2dvJW5vsfypS+bCmhcsFYUNOkxLb
+         VGm36iEtIrx5MsVBXb22F/vG+l2XPNfSwWhLmNnpXY2YEg1WtV9h7uDQ4GwxtuNv9L
+         drDvkpdeYSJiDY3sEkXjDYk0eXhjJUhkOOej7yEfUcc6kxARiOwLRZ91ApCbkZq51a
+         1DlM4aygC8K+7tMPsuyHuPXgtlhUMsrKFmzWe5QnTopYr5GRXxpXJp9kRg4sUJG2px
+         7btIXMzPZaupxro9KeNOsc8eN7Q4CrodjLRdG9uMjUnyKFs+UCAV79ctDov27Vvgoc
+         1WIStRJ1SW5ww==
 From:   Arnd Bergmann <arnd@kernel.org>
 To:     Vinod Koul <vkoul@kernel.org>
 Cc:     Arnd Bergmann <arnd@arndb.de>, Andy Gross <agross@kernel.org>,
@@ -57,9 +57,9 @@ Cc:     Arnd Bergmann <arnd@arndb.de>, Andy Gross <agross@kernel.org>,
         linux-rpi-kernel@lists.infradead.org, linux-serial@vger.kernel.org,
         linux-spi@vger.kernel.org, linux-staging@lists.linux.dev,
         linux-tegra@vger.kernel.org
-Subject: [PATCH 06/11] dmaengine: sprd: stop referencing config->slave_id
-Date:   Mon, 15 Nov 2021 09:53:58 +0100
-Message-Id: <20211115085403.360194-7-arnd@kernel.org>
+Subject: [PATCH 04/11] dmaengine: shdma: remove legacy slave_id parsing
+Date:   Mon, 15 Nov 2021 09:53:56 +0100
+Message-Id: <20211115085403.360194-5-arnd@kernel.org>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20211115085403.360194-1-arnd@kernel.org>
 References: <20211115085403.360194-1-arnd@kernel.org>
@@ -71,29 +71,37 @@ X-Mailing-List: linux-spi@vger.kernel.org
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-It appears that the code that reads the slave_id from the channel config
-was copied incorrectly from other drivers. Nothing ever sets this field
-on platforms that use this driver, so remove the reference.
+The slave device is picked through either devicetree or a filter
+function, and any remaining out-of-tree drivers would have warned
+about this usage since 2015.
+
+Stop interpreting the field finally so it can be removed from
+the interface.
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- drivers/dma/sprd-dma.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/dma/sh/shdma-base.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/drivers/dma/sprd-dma.c b/drivers/dma/sprd-dma.c
-index 4357d2395e6b..7f158ef5672d 100644
---- a/drivers/dma/sprd-dma.c
-+++ b/drivers/dma/sprd-dma.c
-@@ -795,9 +795,6 @@ static int sprd_dma_fill_desc(struct dma_chan *chan,
- 		return dst_datawidth;
- 	}
+diff --git a/drivers/dma/sh/shdma-base.c b/drivers/dma/sh/shdma-base.c
+index 7f72b3f4cd1a..41c6bc650fa3 100644
+--- a/drivers/dma/sh/shdma-base.c
++++ b/drivers/dma/sh/shdma-base.c
+@@ -786,14 +786,6 @@ static int shdma_config(struct dma_chan *chan,
+ 	if (!config)
+ 		return -EINVAL;
  
--	if (slave_cfg->slave_id)
--		schan->dev_id = slave_cfg->slave_id;
+-	/*
+-	 * overriding the slave_id through dma_slave_config is deprecated,
+-	 * but possibly some out-of-tree drivers still do it.
+-	 */
+-	if (WARN_ON_ONCE(config->slave_id &&
+-			 config->slave_id != schan->real_slave_id))
+-		schan->real_slave_id = config->slave_id;
 -
- 	hw->cfg = SPRD_DMA_DONOT_WAIT_BDONE << SPRD_DMA_WAIT_BDONE_OFFSET;
- 
  	/*
+ 	 * We could lock this, but you shouldn't be configuring the
+ 	 * channel, while using it...
 -- 
 2.30.2
 

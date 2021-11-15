@@ -2,30 +2,30 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2299AC433F5
-	for <linux-spi@archiver.kernel.org>; Mon, 15 Nov 2021 08:57:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 99A22C43219
+	for <linux-spi@archiver.kernel.org>; Mon, 15 Nov 2021 08:58:19 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 0C32D6321A
-	for <linux-spi@archiver.kernel.org>; Mon, 15 Nov 2021 08:57:51 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 80AB160F0F
+	for <linux-spi@archiver.kernel.org>; Mon, 15 Nov 2021 08:58:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236840AbhKOI67 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 15 Nov 2021 03:58:59 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55536 "EHLO mail.kernel.org"
+        id S237281AbhKOI7s (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 15 Nov 2021 03:59:48 -0500
+Received: from mail.kernel.org ([198.145.29.99]:56052 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231600AbhKOI6B (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 15 Nov 2021 03:58:01 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 1C1DE63227;
-        Mon, 15 Nov 2021 08:54:59 +0000 (UTC)
+        id S230147AbhKOI6k (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 15 Nov 2021 03:58:40 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 2223663223;
+        Mon, 15 Nov 2021 08:55:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1636966506;
-        bh=6T6nVYUZYeuHx0KVvy6d2aAfM4hqSW/xkD9UxCrEiew=;
+        s=k20201202; t=1636966545;
+        bh=dcMQMZncG8IjNijKZNej/gmwTiTYDPeCFK23hEXOfto=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XE1rkoS26Hg1qVOUe/8JhihPWyqzwdxtSu6KpZSliRxpkj1mrD33TUzc4f3D7Z563
-         QLiO1buUzxFjE4Smwu3DKTXQuDLm+gytZAgIqSOnAvyzoAXeDNMVaxRSz5FfYVxdzx
-         fxlDZ6etPDPs4+Tui9Els9qLGXd+sLiGd5gsTfkJ6/smITicktBYHNkHB4AAvmw0pc
-         NRLtSgumom3wapnQ8lOIVnzIUsTm+82JiaSwVIuKcuOx5tpNurM5w5orGkJkyh4UkT
-         ImBiCpR78cdAYk6E0uXXpxENctgamiDTvLJByR5cyn6kcnDn0EUp+6TdkBa4HYzUNn
-         uP4cknrvguDtA==
+        b=VYuJvxO5lVR/GiGcXXlpTenpQL8tS/RiB2q/z0CMEjbvV3OtExgDGliJ9mPslll9Z
+         gJF9jW4NvrAMcYVtan/DOPn491D5evV0DjVoLO4PKbj3djKSiupC9gs/o/JDRousmF
+         VfKHtJYY+yuBV0OABHqDiHSUkpE6qGp8SFfe7NSJEmA0l/mxODuVE3wHHx7vsA5sov
+         Wa36nu6IAmzkpbTK/7+6RaXeDPwWYCIT8QDeBGczguXuJlI760X3i1oAk8E/g82B3L
+         MDBneNRRk20n1rSG1Z9mUgJiWRhrqnptEhFZTTbLf+wXfy+4WmVGvjS1fVUD20TPas
+         ktKoOqahs6Lsg==
 From:   Arnd Bergmann <arnd@kernel.org>
 To:     Vinod Koul <vkoul@kernel.org>
 Cc:     Arnd Bergmann <arnd@arndb.de>, Andy Gross <agross@kernel.org>,
@@ -57,9 +57,9 @@ Cc:     Arnd Bergmann <arnd@arndb.de>, Andy Gross <agross@kernel.org>,
         linux-rpi-kernel@lists.infradead.org, linux-serial@vger.kernel.org,
         linux-spi@vger.kernel.org, linux-staging@lists.linux.dev,
         linux-tegra@vger.kernel.org
-Subject: [PATCH 03/11] mmc: bcm2835: stop setting chan_config->slave_id
-Date:   Mon, 15 Nov 2021 09:53:55 +0100
-Message-Id: <20211115085403.360194-4-arnd@kernel.org>
+Subject: [PATCH 09/11] dmaengine: tegra20-apb: stop checking config->slave_id
+Date:   Mon, 15 Nov 2021 09:54:01 +0100
+Message-Id: <20211115085403.360194-10-arnd@kernel.org>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20211115085403.360194-1-arnd@kernel.org>
 References: <20211115085403.360194-1-arnd@kernel.org>
@@ -71,34 +71,31 @@ X-Mailing-List: linux-spi@vger.kernel.org
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-The field is not interpreted by the DMA engine driver, as all the data
-is passed from devicetree instead. Remove the assignment so the field
-can eventually be deleted.
+Nothing sets the slave_id field any more, so stop accessing
+it to allow the removal of this field.
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- drivers/mmc/host/bcm2835.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/dma/tegra20-apb-dma.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/drivers/mmc/host/bcm2835.c b/drivers/mmc/host/bcm2835.c
-index 8c2361e66277..463b707d9e99 100644
---- a/drivers/mmc/host/bcm2835.c
-+++ b/drivers/mmc/host/bcm2835.c
-@@ -1293,14 +1293,12 @@ static int bcm2835_add_host(struct bcm2835_host *host)
+diff --git a/drivers/dma/tegra20-apb-dma.c b/drivers/dma/tegra20-apb-dma.c
+index b7260749e8ee..eaafcbe4ca94 100644
+--- a/drivers/dma/tegra20-apb-dma.c
++++ b/drivers/dma/tegra20-apb-dma.c
+@@ -343,12 +343,6 @@ static int tegra_dma_slave_config(struct dma_chan *dc,
+ 	}
  
- 		host->dma_cfg_tx.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
- 		host->dma_cfg_tx.dst_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
--		host->dma_cfg_tx.slave_id = 13;		/* DREQ channel */
- 		host->dma_cfg_tx.direction = DMA_MEM_TO_DEV;
- 		host->dma_cfg_tx.src_addr = 0;
- 		host->dma_cfg_tx.dst_addr = host->phys_addr + SDDATA;
+ 	memcpy(&tdc->dma_sconfig, sconfig, sizeof(*sconfig));
+-	if (tdc->slave_id == TEGRA_APBDMA_SLAVE_ID_INVALID &&
+-	    sconfig->device_fc) {
+-		if (sconfig->slave_id > TEGRA_APBDMA_CSR_REQ_SEL_MASK)
+-			return -EINVAL;
+-		tdc->slave_id = sconfig->slave_id;
+-	}
+ 	tdc->config_init = true;
  
- 		host->dma_cfg_rx.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
- 		host->dma_cfg_rx.dst_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
--		host->dma_cfg_rx.slave_id = 13;		/* DREQ channel */
- 		host->dma_cfg_rx.direction = DMA_DEV_TO_MEM;
- 		host->dma_cfg_rx.src_addr = host->phys_addr + SDDATA;
- 		host->dma_cfg_rx.dst_addr = 0;
+ 	return 0;
 -- 
 2.30.2
 

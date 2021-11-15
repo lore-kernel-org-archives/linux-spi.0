@@ -2,85 +2,106 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0BBF0C433F5
-	for <linux-spi@archiver.kernel.org>; Tue, 16 Nov 2021 01:02:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EF17EC4332F
+	for <linux-spi@archiver.kernel.org>; Tue, 16 Nov 2021 01:43:30 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id ECB5D61BF4
-	for <linux-spi@archiver.kernel.org>; Tue, 16 Nov 2021 01:02:40 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D910B61A7C
+	for <linux-spi@archiver.kernel.org>; Tue, 16 Nov 2021 01:43:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244225AbhKPBFe (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 15 Nov 2021 20:05:34 -0500
-Received: from mail.kernel.org ([198.145.29.99]:44610 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232833AbhKOTUo (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 15 Nov 2021 14:20:44 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3FE8363281;
-        Mon, 15 Nov 2021 18:36:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637001402;
-        bh=m25J7+O2hvMNLKMDJQayRDxFJN/yb87xSbgF9d58gsc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=FbAR9YqSUsrMjA1DCECubq1pTmLtCT0SN9eCXT7F58ig3y5h6e65mmioMJ9IyBV52
-         gvYAWytst8eRCTML2UxpCnv36XvjE5X8NMl5WoP55T8AYNk2ttfNWbpHGQulC64prY
-         12jUYFmzBTpMj1flfj+8Wg2hEcaTDBJDqNX26/syUF2F6ybGY/E7Dwe1VnRHmKFqac
-         lqYbS0kNfAWZJCF+pcq1tIeP4DXDr4bxavf3FJFH130rq0WLo+tT341ww4tOowY96p
-         lQW0JQJ9qocJ9hNMk5Fq1OTVVssr0R/49IPoGJz22lY2xiDq/77ma35DTop2iyuaVY
-         cvkAyzvF8tunw==
-Date:   Mon, 15 Nov 2021 18:36:38 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     christopher tyerman <linuxkernel@fbautosys.co.uk>,
-        Lee Jones <lee.jones@linaro.org>, Pavel Machek <pavel@ucw.cz>,
-        linux-spi <linux-spi@vger.kernel.org>
-Subject: Re: Remap, SPI and parity bit
-Message-ID: <YZKotsvqQJDUSglx@sirena.org.uk>
-References: <d9ef0f42-4ebe-b7db-f18f-8652dcf38ca0@fbautosys.co.uk>
- <CAHp75VeAJ5QBcWmXwcVs8A_nzy9DRQ-eGjK1iuN2F1k1mXiv8g@mail.gmail.com>
+        id S1357975AbhKPBqY (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 15 Nov 2021 20:46:24 -0500
+Received: from mail.baikalelectronics.com ([87.245.175.226]:45062 "EHLO
+        mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S241608AbhKOSYN (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 15 Nov 2021 13:24:13 -0500
+From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
+Authentication-Results: mail.baikalelectronics.ru; dkim=permerror (bad message/signature format)
+To:     Serge Semin <fancer.lancer@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Nandhini Srikandan <nandhini.srikandan@intel.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Andy Shevchenko <andy@kernel.org>, <linux-spi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH v3 0/7] spi: dw: Cleanup macros/funcs naming and add IP-core version support
+Date:   Mon, 15 Nov 2021 21:19:10 +0300
+Message-ID: <20211115181917.7521-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="hINotA3XJaBI928f"
-Content-Disposition: inline
-In-Reply-To: <CAHp75VeAJ5QBcWmXwcVs8A_nzy9DRQ-eGjK1iuN2F1k1mXiv8g@mail.gmail.com>
-X-Cookie: Custer committed Siouxicide.
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ClientProxiedBy: MAIL.baikal.int (192.168.51.25) To mail (192.168.51.25)
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+I was going to submit a cleanup patchset for the DW SSI driver for a
+long time, but due to lack of free time couldn't make it so far.
+Nandhini's series [1] made me to proceed with this task so mate would
+finally have his patchset accepted and merged into the mainline kernel.
 
---hINotA3XJaBI928f
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+There are four cleanup patches here and three feature patches. In the
+framework of the former patches we convert the DW SPI driver to using
+module namespaces and provide a better code organization. In particular
+the second part concerns the methods and macros naming unification (using
+a unified prefixes of the code object names) and the CSR fields macro
+implementation using the bitfield helpers available in the kernel. The
+later patches introduce the DW SSI IP-core versions interface so it
+could be used for a version-specific features implementation. Nandhini
+will be mostly interested in the later patches in the framework of his
+series [1].
 
-On Mon, Nov 15, 2021 at 05:14:52PM +0200, Andy Shevchenko wrote:
-> On Sun, Nov 14, 2021 at 8:41 PM christopher tyerman
->=20
-> > I'm trying to use regmaps where possible and I can define a regmap, e.g.
+Nandhini, could you please test the patchset out on your DWC SSI hardware?
+After it's merged into the spi/for-next branch of the Mark' repository you
+will be able to rebase your series on top of it and use the last IP-core
+version interface for your benefit.
 
-=2E..
+Andy, I have added your tag to all the patches except the last one since
+it's new (though suggested by you).
 
-> > however so far i cannot currently see how to automatically calculate it
-> > without replacing large chunks of code
+[1] https://lore.kernel.org/linux-spi/20211111065201.10249-4-nandhini.srikandan@intel.com
 
-This seems like a sign that you should be extending the core so that it
-supports having a parity bit, it looks like there's at least some other
-parts with this functionality. The pattern seems to be a bit that that
-it's a bit at some specified offset which is the parity of all other
-non-pad bits in the write.
+Link: https://lore.kernel.org/linux-spi/20211112204927.8830-1-Sergey.Semin@baikalelectronics.ru
+Changelog v2:
+- Replace "assi" suffixes with "pssi" in the spi-dw-mmio.c methods.
+  (Thanks Andy for noticing this pity mistake)
+- Add new patches:
+  [PATCH v2 6/6] spi: dw: Replace DWC_HSSI capability with IP-core version checker
+  [PATCH v2 1/6] spi: dw: Add symbol namespaces for the core and DMA modules
+- Replace the ASCII-to-integer conversion with a unified IP-core versioning
+  interface (Suggested by Andy).
 
---hINotA3XJaBI928f
-Content-Type: application/pgp-signature; name="signature.asc"
+Link: https://lore.kernel.org/linux-spi/20211114223026.13359-1-Sergey.Semin@baikalelectronics.ru
+Changelog v3:
+- Discard the symbols importing from the spi-dw-dma object since it's
+  linked into the spi-dw-core module anyway thus having the same symbols
+  namespace.
+- Move the DW_SPI_CAP_DFS32 capability flag position fix to a separate
+  patch.
 
------BEGIN PGP SIGNATURE-----
+Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Andy Shevchenko <andy@kernel.org>
+Cc: linux-spi@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmGSqLUACgkQJNaLcl1U
-h9Ae7wf/SwUx7TKAjt0Sl/DunhfzUlM93AAInev9O5kAqfMoQWZZ5mwV9BQvB58n
-Bt4E9as2IVx+oMwNYVZQ4kO3RHf7bAxa0jwVPRdZtMBUqNNfbDC9Ewbh6aKmvXPq
-TZ+/5mlGBHSGC9vwhXq72CPAjt/9hU0WGj8PEXJZt/2iwsqvxwOpqJU4yg42lAox
-qY+2UaeXfvF9gS+mOfV1BCxaJvW32oiNhgXZG3eI7UGOiRl8DNKZAOxVCP/24cWu
-AOJJCeAavcggccYGgu+KqcDmoQQDQn0NKAdD0A/2hQs1PyGXOGRM77RwNQJrEUMR
-ddmwL7Y6lzd/tzYhsf3mVj7yQbRXgQ==
-=HhwD
------END PGP SIGNATURE-----
+Serge Semin (7):
+  spi: dw: Add a symbols namespace for the core module
+  spi: dw: Discard redundant DW SSI Frame Formats enumeration
+  spi: dw: Put the driver entities naming in order
+  spi: dw: Convert to using the Bitfield access macros
+  spi: dw: Introduce Synopsys IP-core versions interface
+  spi: dw: Replace DWC_HSSI capability with IP-core version checker
+  spi: dw: Define the capabilities in a continuous bit-flags set
 
---hINotA3XJaBI928f--
+ drivers/spi/spi-dw-bt1.c  |   9 +-
+ drivers/spi/spi-dw-core.c | 175 ++++++++++++++++++++----------------
+ drivers/spi/spi-dw-dma.c  |  55 ++++++------
+ drivers/spi/spi-dw-mmio.c |  22 ++---
+ drivers/spi/spi-dw-pci.c  |  60 ++++++-------
+ drivers/spi/spi-dw.h      | 182 ++++++++++++++++++++------------------
+ 6 files changed, 271 insertions(+), 232 deletions(-)
+
+-- 
+2.33.0
+

@@ -2,76 +2,85 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1F441C4332F
-	for <linux-spi@archiver.kernel.org>; Tue, 16 Nov 2021 00:31:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0BBF0C433F5
+	for <linux-spi@archiver.kernel.org>; Tue, 16 Nov 2021 01:02:41 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 09191619E1
-	for <linux-spi@archiver.kernel.org>; Tue, 16 Nov 2021 00:31:15 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id ECB5D61BF4
+	for <linux-spi@archiver.kernel.org>; Tue, 16 Nov 2021 01:02:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345228AbhKPAeG (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 15 Nov 2021 19:34:06 -0500
-Received: from mail.kernel.org ([198.145.29.99]:45400 "EHLO mail.kernel.org"
+        id S244225AbhKPBFe (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 15 Nov 2021 20:05:34 -0500
+Received: from mail.kernel.org ([198.145.29.99]:44610 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1345114AbhKOT0e (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 15 Nov 2021 14:26:34 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 9DAB4603E9;
-        Mon, 15 Nov 2021 19:21:08 +0000 (UTC)
+        id S232833AbhKOTUo (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 15 Nov 2021 14:20:44 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3FE8363281;
+        Mon, 15 Nov 2021 18:36:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637004069;
-        bh=n4RSNS1q7HCJvn1KQvDmyb9KjGebaLgi1rOppNq++UU=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=SBG6SDGc4iPsi5ym3hlNu6MyXK/NRrPT8cY9Da1LLIhvc9SxlebJq1UwquTW/ptd4
-         b+HOAf8ZUy5pgGPGI5SjOzCmQdfaBj5O1VYAX3IZyrB4gb0SpCSVy29eDUKFVrEmFj
-         KparZuwHl+iR2jzL/uCnJ2L7M4J/Ba87Ngbqw7Oj29qeaDQxmcfM1Yu0l+Nnu6thnS
-         gwIO9CQZTYNDMJXUJuLgJTybBQB4igZqmc89UNJzlTCJApn8lpiLvIY8yeVQtX5Qa4
-         t9HjC975WYCOEmN2ManStcwHxwliyt2QRjRj2H6X9TM7jY/jQ/ZegV9u7lqsm936Lw
-         oKbolq7eEfedA==
+        s=k20201202; t=1637001402;
+        bh=m25J7+O2hvMNLKMDJQayRDxFJN/yb87xSbgF9d58gsc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=FbAR9YqSUsrMjA1DCECubq1pTmLtCT0SN9eCXT7F58ig3y5h6e65mmioMJ9IyBV52
+         gvYAWytst8eRCTML2UxpCnv36XvjE5X8NMl5WoP55T8AYNk2ttfNWbpHGQulC64prY
+         12jUYFmzBTpMj1flfj+8Wg2hEcaTDBJDqNX26/syUF2F6ybGY/E7Dwe1VnRHmKFqac
+         lqYbS0kNfAWZJCF+pcq1tIeP4DXDr4bxavf3FJFH130rq0WLo+tT341ww4tOowY96p
+         lQW0JQJ9qocJ9hNMk5Fq1OTVVssr0R/49IPoGJz22lY2xiDq/77ma35DTop2iyuaVY
+         cvkAyzvF8tunw==
+Date:   Mon, 15 Nov 2021 18:36:38 +0000
 From:   Mark Brown <broonie@kernel.org>
-To:     Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc:     linux-spi@vger.kernel.org
-In-Reply-To: <20211109103134.184216-1-alexander.stein@ew.tq-group.com>
-References: <20211109103134.184216-1-alexander.stein@ew.tq-group.com>
-Subject: Re: [PATCH 1/1] spi: lpspi: release requested DMA channels
-Message-Id: <163700406833.683472.6864557606413819705.b4-ty@kernel.org>
-Date:   Mon, 15 Nov 2021 19:21:08 +0000
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     christopher tyerman <linuxkernel@fbautosys.co.uk>,
+        Lee Jones <lee.jones@linaro.org>, Pavel Machek <pavel@ucw.cz>,
+        linux-spi <linux-spi@vger.kernel.org>
+Subject: Re: Remap, SPI and parity bit
+Message-ID: <YZKotsvqQJDUSglx@sirena.org.uk>
+References: <d9ef0f42-4ebe-b7db-f18f-8652dcf38ca0@fbautosys.co.uk>
+ <CAHp75VeAJ5QBcWmXwcVs8A_nzy9DRQ-eGjK1iuN2F1k1mXiv8g@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="hINotA3XJaBI928f"
+Content-Disposition: inline
+In-Reply-To: <CAHp75VeAJ5QBcWmXwcVs8A_nzy9DRQ-eGjK1iuN2F1k1mXiv8g@mail.gmail.com>
+X-Cookie: Custer committed Siouxicide.
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Tue, 9 Nov 2021 11:31:34 +0100, Alexander Stein wrote:
-> The requested DMA channels are never released. Do this in .remove as well
-> as in .probe. spi_register_controller() can return -EPROBE_DEFER if
-> cs-gpios are not probed yet.
-> 
-> 
 
-Applied to
+--hINotA3XJaBI928f
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+On Mon, Nov 15, 2021 at 05:14:52PM +0200, Andy Shevchenko wrote:
+> On Sun, Nov 14, 2021 at 8:41 PM christopher tyerman
+>=20
+> > I'm trying to use regmaps where possible and I can define a regmap, e.g.
 
-Thanks!
+=2E..
 
-[1/1] spi: lpspi: release requested DMA channels
-      commit: f02bff30114f385d53ae3e45141db602923bca5d
+> > however so far i cannot currently see how to automatically calculate it
+> > without replacing large chunks of code
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+This seems like a sign that you should be extending the core so that it
+supports having a parity bit, it looks like there's at least some other
+parts with this functionality. The pattern seems to be a bit that that
+it's a bit at some specified offset which is the parity of all other
+non-pad bits in the write.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+--hINotA3XJaBI928f
+Content-Type: application/pgp-signature; name="signature.asc"
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+-----BEGIN PGP SIGNATURE-----
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmGSqLUACgkQJNaLcl1U
+h9Ae7wf/SwUx7TKAjt0Sl/DunhfzUlM93AAInev9O5kAqfMoQWZZ5mwV9BQvB58n
+Bt4E9as2IVx+oMwNYVZQ4kO3RHf7bAxa0jwVPRdZtMBUqNNfbDC9Ewbh6aKmvXPq
+TZ+/5mlGBHSGC9vwhXq72CPAjt/9hU0WGj8PEXJZt/2iwsqvxwOpqJU4yg42lAox
+qY+2UaeXfvF9gS+mOfV1BCxaJvW32oiNhgXZG3eI7UGOiRl8DNKZAOxVCP/24cWu
+AOJJCeAavcggccYGgu+KqcDmoQQDQn0NKAdD0A/2hQs1PyGXOGRM77RwNQJrEUMR
+ddmwL7Y6lzd/tzYhsf3mVj7yQbRXgQ==
+=HhwD
+-----END PGP SIGNATURE-----
 
-Thanks,
-Mark
+--hINotA3XJaBI928f--

@@ -2,79 +2,199 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EC7D1C433EF
-	for <linux-spi@archiver.kernel.org>; Wed, 17 Nov 2021 01:05:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1CBE1C433EF
+	for <linux-spi@archiver.kernel.org>; Wed, 17 Nov 2021 01:22:02 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D482F61465
-	for <linux-spi@archiver.kernel.org>; Wed, 17 Nov 2021 01:05:47 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 06CC461BFE
+	for <linux-spi@archiver.kernel.org>; Wed, 17 Nov 2021 01:22:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229543AbhKQBIo (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 16 Nov 2021 20:08:44 -0500
-Received: from relmlor1.renesas.com ([210.160.252.171]:15400 "EHLO
-        relmlie5.idc.renesas.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S231755AbhKQBIo (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 16 Nov 2021 20:08:44 -0500
-X-IronPort-AV: E=Sophos;i="5.87,239,1631545200"; 
-   d="scan'208";a="100509804"
-Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie5.idc.renesas.com with ESMTP; 17 Nov 2021 10:05:45 +0900
-Received: from localhost.localdomain (unknown [10.226.36.204])
-        by relmlir5.idc.renesas.com (Postfix) with ESMTP id 59074400F4FF;
-        Wed, 17 Nov 2021 10:05:43 +0900 (JST)
-From:   Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-To:     Geert Uytterhoeven <geert+renesas@glider.be>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        linux-spi@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org,
-        Prabhakar <prabhakar.csengg@gmail.com>,
-        Biju Das <biju.das.jz@bp.renesas.com>,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Subject: [PATCH 3/3] spi: spi-rspi: Drop redeclaring ret variable in qspi_transfer_in()
-Date:   Wed, 17 Nov 2021 01:05:27 +0000
-Message-Id: <20211117010527.27365-4-prabhakar.mahadev-lad.rj@bp.renesas.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20211117010527.27365-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
-References: <20211117010527.27365-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+        id S232730AbhKQBY6 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 16 Nov 2021 20:24:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47446 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232797AbhKQBYx (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 16 Nov 2021 20:24:53 -0500
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0360C06122F
+        for <linux-spi@vger.kernel.org>; Tue, 16 Nov 2021 17:21:53 -0800 (PST)
+Received: by mail-ed1-x533.google.com with SMTP id t5so3375367edd.0
+        for <linux-spi@vger.kernel.org>; Tue, 16 Nov 2021 17:21:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=pensando.io; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=M0DL4Z+z7lD4X8gzZ0br5lXdNaFuU3WYYnUldjpHc2U=;
+        b=nwq+nix4pOQgFe2cQDcY0ONGPbpxJ8sYMy/yq7her6nK8IAaY2rNQ3/k8ehU7eMZuc
+         BZHmd+0AWLJceWNi/O1CPHLx4uT4KZq0v5u8cRnw9uGsUiBzDqZk/ninenAMx52mId9J
+         57cXo85nb5SzFi1ufwA9w5fSFx7vpsSJjFmrlhb72RHqgDuyFlDrnjLEBhBJ2sP7og5o
+         pqa6mqzGcg6w0zAxvbBhNRYx7ySeq1E/LFCO1Sa4+OFj8Pk4f9D+nDkLsevVN2iwA/3w
+         UgkZT03wrnhv4U1re89+eWg263xXyl874+2ECrp1/IaYe1NM2h0Aas1G2dM8F/HaRfY8
+         vF/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=M0DL4Z+z7lD4X8gzZ0br5lXdNaFuU3WYYnUldjpHc2U=;
+        b=Xrw8kLMBQTKnl4tRqzVTbTVEDPGrrcff/TLXX5dMJSSuh7NBesd3DlTs8pPjVI5d2I
+         lngNdBswMl6x9itYAsaophIXWyVsvieAlwRLyuIGhLgSIx+d+sHRZqFemm8P9COKIXWc
+         DmIMwaRNPzBVAUg8S34PMdS1tGTCwtUlbkWc84etyKWOcs003HKccjnMvXTA80Fnp9ih
+         uBIyziwIdTTqeiwXdGUETNljvA4D2daf1ooyyIUSmxFiZ2bMWWYLGLgqSN8u1x+JHN2L
+         yh20hmJKhhV7wfNvLxVhRkPIiuWBCf8/ubBh89EwraFWUhPhSXrGqKVpigf1O4s4/vru
+         yK8w==
+X-Gm-Message-State: AOAM530sGUzJl15rABHPne9xOav55QeC7Sq7a0NdNw7VWMRCnX7lGe8X
+        1Y+eLLCouAviFDsVUThhQxnuC1KRe6VZ6JHa1x3SiA==
+X-Google-Smtp-Source: ABdhPJz+Zpnh28paqLB4qDHLzR3XVq2bt0ht3aoYvckA16R5n/koE3WziQ9CnstPTiZ+BYY0ZXMPZLKJl704orREtZg=
+X-Received: by 2002:a17:907:d89:: with SMTP id go9mr16600378ejc.330.1637112112433;
+ Tue, 16 Nov 2021 17:21:52 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20211025015156.33133-1-brad@pensando.io> <20211025015156.33133-4-brad@pensando.io>
+ <YXhErvvSfKIBvHae@robh.at.kernel.org>
+In-Reply-To: <YXhErvvSfKIBvHae@robh.at.kernel.org>
+From:   Brad Larson <brad@pensando.io>
+Date:   Tue, 16 Nov 2021 17:21:41 -0800
+Message-ID: <CAK9rFnyk=gW_ZRZUci3byu=DNwdrmKBb30HQgxK0iWJuVVPbfQ@mail.gmail.com>
+Subject: Re: [PATCH v3 03/11] dt-bindings: mmc: Add Pensando Elba SoC binding
+To:     Rob Herring <robh@kernel.org>
+Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Mark Brown <broonie@kernel.org>,
+        Serge Semin <fancer.lancer@gmail.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Olof Johansson <olof@lixom.net>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-"ret" variable is already declared in qspi_transfer_in() at the
-beginning of function, drop redeclaring ret in the if block, fixing
-below:
+Hi Rob,
 
-spi-rspi.c: In function ‘qspi_transfer_in’:
-spi-rspi.c:838:7: warning: declaration of ‘ret’ shadows a previous local
-  838 |   int ret = rspi_dma_transfer(rspi, NULL, &xfer->rx_sg);
-      |       ^~~
-spi-rspi.c:835:6: note: shadowed declaration is here
-  835 |  int ret;
+On Tue, Oct 26, 2021 at 11:10 AM Rob Herring <robh@kernel.org> wrote:
+>
+> On Sun, Oct 24, 2021 at 06:51:48PM -0700, Brad Larson wrote:
+> > Pensando Elba ARM 64-bit SoC is integrated with this IP and
+> > explicitly controls byte-lane enables resulting in an additional
+> > reg property resource.
+> >
+> > Signed-off-by: Brad Larson <brad@pensando.io>
+> > ---
+> >  .../devicetree/bindings/mmc/cdns,sdhci.yaml         | 13 ++++++++-----
+> >  1 file changed, 8 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/Documentation/devicetree/bindings/mmc/cdns,sdhci.yaml b/Documentation/devicetree/bindings/mmc/cdns,sdhci.yaml
+> > index af7442f73881..6c68b7b5abec 100644
+> > --- a/Documentation/devicetree/bindings/mmc/cdns,sdhci.yaml
+> > +++ b/Documentation/devicetree/bindings/mmc/cdns,sdhci.yaml
+> > @@ -15,13 +15,16 @@ allOf:
+> >
+> >  properties:
+> >    compatible:
+> > -    items:
+> > -      - enum:
+> > -          - socionext,uniphier-sd4hc
+> > -      - const: cdns,sd4hc
+> > +    oneOf:
+> > +      - items:
+> > +        - enum:
+> > +            - socionext,uniphier-sd4hc
+> > +            - pensando,elba-emmc
+> > +        - const: cdns,sd4hc
+> >
+> >    reg:
+> > -    maxItems: 1
+> > +    minItems: 1
+> > +    maxItems: 2
+>
+> If there is more than 1, then you need to describe what each entry is.
 
-Fixes: db30083813b55 ("spi: rspi: avoid uninitialized variable access")
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
----
- drivers/spi/spi-rspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The dtschema update and yamllint install shows the errors your bot
+reported.  With the updated cdns,sdhci.yaml to add the description for
+Elba's two reg items this is what I'm getting with in 5.16.0-rc1
+(next-20211116):
 
-diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index 592682d96562..815698366412 100644
---- a/drivers/spi/spi-rspi.c
-+++ b/drivers/spi/spi-rspi.c
-@@ -835,7 +835,7 @@ static int qspi_transfer_in(struct rspi_data *rspi, struct spi_transfer *xfer)
- 	int ret;
- 
- 	if (rspi->ctlr->can_dma && __rspi_can_dma(rspi, xfer)) {
--		int ret = rspi_dma_transfer(rspi, NULL, &xfer->rx_sg);
-+		ret = rspi_dma_transfer(rspi, NULL, &xfer->rx_sg);
- 		if (ret != -EAGAIN)
- 			return ret;
- 	}
--- 
-2.17.1
+diff --git a/Documentation/devicetree/bindings/mmc/cdns,sdhci.yaml
+b/Documentation/devicetree/bindings/mmc/cdns,sdhci.yaml
+index 4207fed62dfe..c01a7283c468 100644
+--- a/Documentation/devicetree/bindings/mmc/cdns,sdhci.yaml
++++ b/Documentation/devicetree/bindings/mmc/cdns,sdhci.yaml
+@@ -12,17 +12,44 @@ maintainers:
 
+ allOf:
+   - $ref: mmc-controller.yaml
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - socionext,uniphier-sd4hc
++    then:
++      properties:
++        reg:
++          maxItems: 1
++          items:
++            - description: SDHCI CDNS HRS registers
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - pensando,elba-emmc
++    then:
++      properties:
++        reg:
++          maxItems: 2
++          items:
++            - description: SDHCI CDNS HRS registers
++            - description: Byte lane control register
+
+ properties:
+   compatible:
+-    items:
+-      - enum:
+-          - microchip,mpfs-sd4hc
+-          - socionext,uniphier-sd4hc
+-      - const: cdns,sd4hc
++    oneOf:
++      - items:
++          - enum:
++              - socionext,uniphier-sd4hc
++              - pensando,elba-emmc
++          - const: cdns,sd4hc
+
+   reg:
+-    maxItems: 1
++    minItems: 1
++    maxItems: 2
+
+   interrupts:
+     maxItems: 1
+
+$ make DT_CHECKER_FLAGS=-m dt_binding_check
+DT_SCHEMA_FILES=Documentation/devicetree/bindings/mmc/cdns,sdhci.yaml
+  LINT    Documentation/devicetree/bindings
+  CHKDT   Documentation/devicetree/bindings/processed-schema-examples.json
+  SCHEMA  Documentation/devicetree/bindings/processed-schema-examples.json
+...
+  DTEX    Documentation/devicetree/bindings/mmc/cdns,sdhci.example.dts
+  DTC     Documentation/devicetree/bindings/mmc/cdns,sdhci.example.dt.yaml
+  CHECK   Documentation/devicetree/bindings/mmc/cdns,sdhci.example.dt.yaml
+
+These errors are reported for unrelated files not on DT_SCHEMA_FILES
+
+bindings/net/qcom,ipa.yaml: ignoring, error in schema: properties:
+qcom,smem-state-names
+bindings/iio/adc/st,stm32-dfsdm-adc.yaml: ignoring, error in schema:
+patternProperties: ^filter@[0-9]+$: properties: st,adc-channel-names
+bindings/interconnect/qcom,rpmh.yaml: ignoring, error in schema:
+properties: qcom,bcm-voter-names
+
+Thanks,
+Brad

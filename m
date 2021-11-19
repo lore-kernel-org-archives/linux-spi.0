@@ -2,24 +2,24 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E138EC433FE
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EB047C433F5
 	for <linux-spi@archiver.kernel.org>; Fri, 19 Nov 2021 18:43:00 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B3D48610E9
+	by mail.kernel.org (Postfix) with ESMTP id C883E61AD2
 	for <linux-spi@archiver.kernel.org>; Fri, 19 Nov 2021 18:43:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234815AbhKSSqA (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S234472AbhKSSqA (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Fri, 19 Nov 2021 13:46:00 -0500
-Received: from mslow1.mail.gandi.net ([217.70.178.240]:37755 "EHLO
+Received: from mslow1.mail.gandi.net ([217.70.178.240]:55719 "EHLO
         mslow1.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234796AbhKSSp7 (ORCPT
+        with ESMTP id S234697AbhKSSp7 (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Fri, 19 Nov 2021 13:45:59 -0500
 Received: from relay9-d.mail.gandi.net (unknown [217.70.183.199])
-        by mslow1.mail.gandi.net (Postfix) with ESMTP id C4B29C59F1
-        for <linux-spi@vger.kernel.org>; Fri, 19 Nov 2021 18:35:33 +0000 (UTC)
+        by mslow1.mail.gandi.net (Postfix) with ESMTP id 9461FCF5B0
+        for <linux-spi@vger.kernel.org>; Fri, 19 Nov 2021 18:35:28 +0000 (UTC)
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id DA493FF804;
-        Fri, 19 Nov 2021 18:35:10 +0000 (UTC)
+        by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 218D9FF80D;
+        Fri, 19 Nov 2021 18:35:05 +0000 (UTC)
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
         Miquel Raynal <miquel.raynal@bootlin.com>,
@@ -27,22 +27,22 @@ To:     =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
         Vignesh Raghavendra <vigneshr@ti.com>
 Cc:     Mark Brown <broonie@kernel.org>, linux-mtd@lists.infradead.org,
         kernel@pengutronix.de, linux-spi@vger.kernel.org
-Subject: Re: [PATCH 2/4] mtd: mchp23k256: Warn about failure to unregister mtd device
-Date:   Fri, 19 Nov 2021 19:35:10 +0100
-Message-Id: <20211119183510.1329796-1-miquel.raynal@bootlin.com>
+Subject: Re: [PATCH 3/4] mtd: mchp48l640: Warn about failure to unregister mtd device
+Date:   Fri, 19 Nov 2021 19:35:05 +0100
+Message-Id: <20211119183505.1329724-1-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20211108093153.63792-2-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20211108093153.63792-3-u.kleine-koenig@pengutronix.de>
 References: 
 MIME-Version: 1.0
 X-linux-mtd-patch-notification: thanks
-X-linux-mtd-patch-commit: b'45c26c1f6b2d995ba44c20186ee72bfb561bdc9b'
+X-linux-mtd-patch-commit: b'81e0f02ea2d28847d4fd2d36fcd2859f40b9488b'
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Mon, 2021-11-08 at 09:31:50 UTC, =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= wrote:
+On Mon, 2021-11-08 at 09:31:51 UTC, =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= wrote:
 > mtd_device_unregister() shouldn't fail. Wail loudly if it does anyhow.
 > 
 > This matches how other drivers (e.g. nand/raw/nandsim.c) use

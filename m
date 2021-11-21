@@ -2,56 +2,85 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C080BC433EF
-	for <linux-spi@archiver.kernel.org>; Sat, 20 Nov 2021 11:56:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 18F2AC433FE
+	for <linux-spi@archiver.kernel.org>; Sun, 21 Nov 2021 22:51:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237194AbhKTL77 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sat, 20 Nov 2021 06:59:59 -0500
-Received: from mail.kernel.org ([198.145.29.99]:51684 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237110AbhKTL77 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Sat, 20 Nov 2021 06:59:59 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPS id 038CE60E96;
-        Sat, 20 Nov 2021 11:56:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637409416;
-        bh=VNCnkQ5dE1XbRBnOpfRnOUxztSfXGHSpYkvjM88z/pg=;
-        h=Subject:From:Date:To:From;
-        b=MuKT4R+vEo5VIkTF/ZtIZ6A2EVhb/Lw/yb+qnDn1eBUXb64iOKk8qzJNvIVfN0RiO
-         28QNhhazfnham2+jsfQUA9ij+NSAxdWHdwM4jWlncAKMBp8TItfqk/NzQgQegW5s++
-         KQ810Y3FgUm/x1yeP2Gs6X66typzQaQcwV7yDTiApfoAe7qodEdKiNjugL5I63zcFt
-         RnLII2KBreUsltkgfSkhA/oRi5DkDA16h2C7gxnNs7E0qJh+7o5YE0zzuwU0FdHSNM
-         HE/NDgFnyg7cyrfMQ0TXeE8RrVujkoAwAYNjOJjS/dVgNL0xTue6ne8rv/WMBq3s18
-         jLzL9XLq76SaQ==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id E7C12604EB;
-        Sat, 20 Nov 2021 11:56:55 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        id S235187AbhKUWyH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 21 Nov 2021 17:54:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35212 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235047AbhKUWyG (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 21 Nov 2021 17:54:06 -0500
+Received: from mail-ot1-x32e.google.com (mail-ot1-x32e.google.com [IPv6:2607:f8b0:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44539C061748
+        for <linux-spi@vger.kernel.org>; Sun, 21 Nov 2021 14:51:01 -0800 (PST)
+Received: by mail-ot1-x32e.google.com with SMTP id w6-20020a9d77c6000000b0055e804fa524so26064406otl.3
+        for <linux-spi@vger.kernel.org>; Sun, 21 Nov 2021 14:51:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=GPWdnLAG4F0+O/cKfXO41ARuBr52660bNdQdvywOP4Y=;
+        b=KOB6vV4KS8hxKMpT0VDKo61v+J3w0emW1YgL/HvpwnQlY7FZUmFVBcVfteUKoNkqYG
+         X1RQyE5cKCrlbMC//GYbSdEe4DjunnFt5bFqFb/T/aB9hljIjiijGW9OxbXqMpVkm/sE
+         n52BhCrngNN3aBfsfRDEm/QnCaPRDekq5hRqU/dAu+3tPlns3KgqmWIl7LZffCZZPVgQ
+         8TCNkX/L56KJhckqSfPijLbXvBG0ug4DMQtFWpWkIsj/r1UYMbFwQdD6/CHvSe+7ZTY1
+         SreqClOPDK1m1bwZl74XjBrgSbNYnDQoYz7y5QAO2x5yhUFOyOQV7e4Cr5/gyYiKCKVx
+         3m5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=GPWdnLAG4F0+O/cKfXO41ARuBr52660bNdQdvywOP4Y=;
+        b=OdhsbkXR8kRsSrK8YzvC4Q5HxHssBvK6CGA6pFdH8qHqH0rblsYpscbSBjgQ2twybf
+         a+JxuDuxunKo6VewA+cwdPXUr8K06/jVtJzfv7JzXI/TzWBaxDpNSnq8W9NNpdu3ypU7
+         DTKK7ZGAYncPv5rGtWLiZFL3/LaxvLfO/bgLTGBd5TIeRFVC1cGlK3PY6vQB1h63HmfJ
+         IsrqigWbWNs9aYsOIo7LQgCDN90AU3+/Dy++xOH+MjnMdVxoz4oUOW+pNBNzMw14liGD
+         vUwB8eiMqN5jKSOli5vPiDsF/nUC2gtsfhAWyrCzLoUwFfTqp0X1Qnmdfm7Nc/NiYhnm
+         lNuQ==
+X-Gm-Message-State: AOAM532eeTxss03lHBdHdfSGkts+n+ddngqgtXEAmyWb4iekWA7XNLqU
+        KwdissFN6MS0pzonrOdCswjLWu4eSRy6FWjQK5X7YQ==
+X-Google-Smtp-Source: ABdhPJw+IURZg7LAXOySyG68vfWW1OBtjBY5hqcbBojTczIDo4sqsxNk20a2JBnKqNRdEf8UrKSDBSMPsc577lx54AI=
+X-Received: by 2002:a9d:ed6:: with SMTP id 80mr20420713otj.35.1637535060584;
+ Sun, 21 Nov 2021 14:51:00 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From:   patchwork-bot+spi-devel-general@kernel.org
-Message-Id: <163740941594.7974.9775766739484789480.git-patchwork-housekeeping@kernel.org>
-Date:   Sat, 20 Nov 2021 11:56:55 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
+References: <20211109161707.2209170-1-robh@kernel.org>
+In-Reply-To: <20211109161707.2209170-1-robh@kernel.org>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Sun, 21 Nov 2021 23:50:49 +0100
+Message-ID: <CACRpkdZdZH9e5fHaFArcRxBcdEdfWDmxmDkTwL9EwchkTceCHg@mail.gmail.com>
+Subject: Re: [PATCH] dt-bindings: Remove Netlogic bindings
+To:     Rob Herring <robh@kernel.org>
+Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        linux-mips@vger.kernel.org, Bartosz Golaszewski <brgl@bgdev.pl>,
+        George Cherian <gcherian@marvell.com>,
+        Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-spi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Latest series: [v5] dt-bindinds/dts: support i.MX8ULP (2021-11-20T11:34:46)
-  Superseding: [v4] dt-bindinds/dts: support i.MX8ULP (2021-11-12T08:29:21):
-    [V4,1/9] dt-bindings: i2c: imx-lpi2c: Add imx8ulp compatible string
-    [V4,2/9] dt-bindings: mmc: imx-esdhc: Add imx8ulp compatible string
-    [V4,3/9] dt-bindings: serial: fsl-lpuart: Add imx8ulp compatible string
-    [V4,4/9] dt-bindings: spi: fsl-lpspi: Add imx8ulp compatible string
-    [V4,5/9] dt-bindings: timer: tpm-timer: Add imx8ulp compatible string
-    [V4,6/9] dt-bindings: watchdog: imx7ulp-wdt: Add imx8ulp compatible string
-    [V4,7/9] dt-bindings: arm: fsl: Add binding for imx8ulp evk
-    [V5,8/9] arm64: dts: imx8ulp: Add the basic dtsi file for imx8ulp
-    [V5,9/9] arm64: dts: imx8ulp: Add the basic dts for imx8ulp evk board
+On Tue, Nov 9, 2021 at 5:17 PM Rob Herring <robh@kernel.org> wrote:
 
+> Support for Netlogic was removed in commit 95b8a5e0111a ("MIPS: Remove
+> NETLOGIC support"). Remove the now unused bindings.
+>
+> The GPIO binding also includes "brcm,vulcan-gpio", but it appears to be
+> unused as well as Broadcom Vulkan became Cavium ThunderX2 which is ACPI
+> based.
+>
+> Cc: Linus Walleij <linus.walleij@linaro.org>
+> Cc: Bartosz Golaszewski <brgl@bgdev.pl>
+> Cc: George Cherian <gcherian@marvell.com>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: linux-gpio@vger.kernel.org
+> Cc: linux-i2c@vger.kernel.org
+> Cc: linux-spi@vger.kernel.org
+> Signed-off-by: Rob Herring <robh@kernel.org>
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
 
+Yours,
+Linus Walleij

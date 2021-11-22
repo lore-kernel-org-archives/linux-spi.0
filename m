@@ -2,97 +2,58 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BDEF3C4332F
-	for <linux-spi@archiver.kernel.org>; Mon, 22 Nov 2021 22:23:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E06A8C433EF
+	for <linux-spi@archiver.kernel.org>; Mon, 22 Nov 2021 22:56:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240432AbhKVW1E (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 22 Nov 2021 17:27:04 -0500
-Received: from mail.kernel.org ([198.145.29.99]:37300 "EHLO mail.kernel.org"
+        id S229851AbhKVXAD (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 22 Nov 2021 18:00:03 -0500
+Received: from mail.kernel.org ([198.145.29.99]:54062 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S240133AbhKVW0o (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 22 Nov 2021 17:26:44 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 8354861078;
-        Mon, 22 Nov 2021 22:23:31 +0000 (UTC)
+        id S229672AbhKVXAC (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 22 Nov 2021 18:00:02 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPS id 9419160FDA;
+        Mon, 22 Nov 2021 22:56:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637619817;
-        bh=efjqB8lclC/CTZtvxidalnRW6k3GNlgXbza8zFiCoZM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=U8NP1Zc1gLJF725LnCrWHgavWOnwK2Ly1UnDTKcbTcdYbgu+miYfDh7Q5MZ9ByoyK
-         GvjVX6mKNAxeCgehUkVbusSV4QnRfJUYbwPUXViEyL36MN8wB2u6OmqubcsatL9+Mq
-         yeV+rIZkvLJeCdnf9o9aNwg+uxPfN+v8kmtNfC7MLTzE2itRKsloRWob2HCygsanXX
-         VTKTLI7mi+52T1tblQaF6Ba0ZDdU3kkLWFXoKX2E3e7ejJJSpfWQ0xjrJeJKfQB24g
-         xd90ghdcOKTXQirzhVKhiK98fux08E5EopBbXH5f2PC+N20hBxkQSuiFisX18MW7Gu
-         qmf6Z6dWyCwbA==
-From:   Arnd Bergmann <arnd@kernel.org>
-To:     Vinod Koul <vkoul@kernel.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Andy Gross <agross@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hyun Kwon <hyun.kwon@xilinx.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Jon Hunter <jonathanh@nvidia.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Nicolas Saenz Julienne <nsaenz@kernel.org>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Scott Branden <sbranden@broadcom.com>,
-        Takashi Iwai <tiwai@suse.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        alsa-devel@alsa-project.org, bcm-kernel-feedback-list@broadcom.com,
-        dmaengine@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-rpi-kernel@lists.infradead.org, linux-serial@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-tegra@vger.kernel.org
-Subject: [PATCH v2 10/11] dmaengine: tegra20-apb: stop checking config->slave_id
-Date:   Mon, 22 Nov 2021 23:22:02 +0100
-Message-Id: <20211122222203.4103644-11-arnd@kernel.org>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20211122222203.4103644-1-arnd@kernel.org>
-References: <20211122222203.4103644-1-arnd@kernel.org>
+        s=k20201202; t=1637621815;
+        bh=RWHFdTb495MB1AhR6pELI9Br2Wed4bg79XAzIBnCOnA=;
+        h=Subject:From:Date:To:From;
+        b=B2VwTiYqO1J0pXbwXBv/Dwqx5nDJMOhRs1mzhr/N1AjMF2zy2q9+LCBy9Jgxizxhg
+         ZIvdYSTJVROrk8zLUieoidrBdOgx2YxYm7gtrRS1WY8FEiADfisJj3MtBMxkvdNf9o
+         idcOe2Z+dMTyA7Kcru8FovHZi7DRM339wP/yo8pdcPfun6wP3ImHODC7nJAOtGJGuA
+         s2H+U7Q4HPR3RsEevK/zd6NKJaEBS8HoODNYjOAZC51ZsiY0mV9c9+4sUQKIW9egfM
+         LZ37HVZGD5XlKja0vIfh79HSX1s+aIGf3czv3A02UjaMmBeE3W6XUF3Ppz4/AxXBH5
+         NVL/lJs8oEVQA==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 8835E60A3B;
+        Mon, 22 Nov 2021 22:56:55 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <163762181555.1547.14715663075960614921.git-patchwork-housekeeping@kernel.org>
+Date:   Mon, 22 Nov 2021 22:56:55 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+Latest series: [v2] dmaengine: kill off dma_slave_config->slave_id (2021-11-22T22:21:52)
+  Superseding: [v1] dmaengine: kill off dma_slave_config->slave_id (2021-11-15T08:53:52):
+    [01/11] ASoC: dai_dma: remove slave_id field
+    [02/11] spi: pic32: stop setting dma_config->slave_id
+    [03/11] mmc: bcm2835: stop setting chan_config->slave_id
+    [04/11] dmaengine: shdma: remove legacy slave_id parsing
+    [05/11] dmaengine: pxa/mmp: stop referencing config->slave_id
+    [06/11] dmaengine: sprd: stop referencing config->slave_id
+    [07/11] dmaengine: qcom-adm: stop abusing slave_id config
+    [08/11] dmaengine: xilinx_dpdma: stop using slave_id field
+    [09/11] dmaengine: tegra20-apb: stop checking config->slave_id
+    [10/11] staging: ralink-gdma: stop using slave_id config
+    [11/11] dmaengine: remove slave_id config field
 
-Nothing sets the slave_id field any more, so stop accessing
-it to allow the removal of this field.
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- drivers/dma/tegra20-apb-dma.c | 6 ------
- 1 file changed, 6 deletions(-)
-
-diff --git a/drivers/dma/tegra20-apb-dma.c b/drivers/dma/tegra20-apb-dma.c
-index b7260749e8ee..eaafcbe4ca94 100644
---- a/drivers/dma/tegra20-apb-dma.c
-+++ b/drivers/dma/tegra20-apb-dma.c
-@@ -343,12 +343,6 @@ static int tegra_dma_slave_config(struct dma_chan *dc,
- 	}
- 
- 	memcpy(&tdc->dma_sconfig, sconfig, sizeof(*sconfig));
--	if (tdc->slave_id == TEGRA_APBDMA_SLAVE_ID_INVALID &&
--	    sconfig->device_fc) {
--		if (sconfig->slave_id > TEGRA_APBDMA_CSR_REQ_SEL_MASK)
--			return -EINVAL;
--		tdc->slave_id = sconfig->slave_id;
--	}
- 	tdc->config_init = true;
- 
- 	return 0;
 -- 
-2.29.2
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

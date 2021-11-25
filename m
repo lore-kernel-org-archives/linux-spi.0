@@ -2,131 +2,135 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1FED2C433EF
-	for <linux-spi@archiver.kernel.org>; Wed, 24 Nov 2021 19:34:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9F44BC433EF
+	for <linux-spi@archiver.kernel.org>; Thu, 25 Nov 2021 07:59:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351377AbhKXThi (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 24 Nov 2021 14:37:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34218 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351386AbhKXTh1 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 24 Nov 2021 14:37:27 -0500
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCC7BC06173E;
-        Wed, 24 Nov 2021 11:34:17 -0800 (PST)
-Received: by mail-pf1-x42b.google.com with SMTP id g19so3603870pfb.8;
-        Wed, 24 Nov 2021 11:34:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=DCHp1Lcs8S1SXdSfepI4jxNdAk2DlPFZbhtpgChIs7k=;
-        b=AhdkVoxf1EJ9155BXODN+pah4uFdbNuhWBvwVzh5mhDJMPxVxXRLbcC4Eeu/h/jf6L
-         PoFtjNQFJy/3uHPKHzrYb09wlKgc+0kMPW4u0kS3ZxGtiktu4bmCeXDE0AIZKUUWbVjW
-         nP0LLabxs6XvBAkX0qz8CuF6zaihXS/eelLny9bW93iHIg4jELRyt6PuZXtlL5yzDsNX
-         cHbFSx7a5ZVgQVePeyb2U98aKpezW31w5RTHbecufhn7V5yLJbYCXcoxKDbdUL5u7ArY
-         5ZuAE0dRtfOvFwNjZfxUKYEk5S/7pYUZPD+LvnXbg9PfphAkdPY9+dHlkXYTzGJMgHR7
-         RENw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=DCHp1Lcs8S1SXdSfepI4jxNdAk2DlPFZbhtpgChIs7k=;
-        b=npuAhIo4dmfqjSjbjEhW9pSruho9yIEhIyktvJztVbY0yPPqOHItD0v/qb74OGQl41
-         wqc0ODE87xL6E73j4wUZe00bNJ4e87T3RiwNR2icvSuZ+6nGOFBKgFBdUHaQrbil0eKE
-         /oB+gnvTJDkbb7uTxkBRlK4G/oNHY8Mx74RxWuNN0A8DLyKo2D5drSNtZl3QnnLVBYIs
-         QEPWWC0YMyiiYptj2db5RxbVbK5skHwll4WB+qFdRB5yEl2FtWLNAAdKcXDaVfxgvWz1
-         PycMcJuVuLhV8Wg4IcYhr6qV7ey8u3bFoMeC6lS0hLD05Cd88/lbWqBZX2apsyyM8s+R
-         oL0g==
-X-Gm-Message-State: AOAM532aHVlxTHFQcCzpcxAlBtQil2CYB/9dkfxiiNkwnaCp+t+RZTv1
-        XP6D5lpuAsCPHToAepivCts=
-X-Google-Smtp-Source: ABdhPJyzE/mxdh5YvE8CJWHgThqRsDXM5bmDDW6HosQG2qsKffcrD9rJOfpm7/8SOBOPscLNuo+nEw==
-X-Received: by 2002:a63:374c:: with SMTP id g12mr12089545pgn.35.1637782457419;
-        Wed, 24 Nov 2021 11:34:17 -0800 (PST)
-Received: from mail.broadcom.net ([192.19.11.250])
-        by smtp.gmail.com with ESMTPSA id v38sm349510pgl.38.2021.11.24.11.34.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Nov 2021 11:34:17 -0800 (PST)
-From:   Kamal Dasu <kdasu.kdev@gmail.com>
-To:     broonie@kernel.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     f.fainelli@gmail.com, bcm-kernel-feedback-list@broadcom.com,
-        yendapally.reddy@broadcom.com, Kamal Dasu <kdasu.kdev@gmail.com>
-Subject: [PATCH 1/2] spi: bcm-qspi: choose sysclk setting based on requested speed
-Date:   Wed, 24 Nov 2021 14:33:52 -0500
-Message-Id: <20211124193353.32311-2-kdasu.kdev@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20211124193353.32311-1-kdasu.kdev@gmail.com>
-References: <20211124193353.32311-1-kdasu.kdev@gmail.com>
+        id S1350027AbhKYICn (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 25 Nov 2021 03:02:43 -0500
+Received: from mga11.intel.com ([192.55.52.93]:9131 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1347620AbhKYIAn (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Thu, 25 Nov 2021 03:00:43 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10178"; a="232960681"
+X-IronPort-AV: E=Sophos;i="5.87,262,1631602800"; 
+   d="scan'208";a="232960681"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2021 23:57:32 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.87,262,1631602800"; 
+   d="scan'208";a="741636594"
+Received: from lkp-server02.sh.intel.com (HELO 9e1e9f9b3bcb) ([10.239.97.151])
+  by fmsmga006.fm.intel.com with ESMTP; 24 Nov 2021 23:57:28 -0800
+Received: from kbuild by 9e1e9f9b3bcb with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1mq9dG-000607-RJ; Thu, 25 Nov 2021 07:57:26 +0000
+Date:   Thu, 25 Nov 2021 15:57:09 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Arnd Bergmann <arnd@kernel.org>, Vinod Koul <vkoul@kernel.org>
+Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
+        alsa-devel@alsa-project.org, dri-devel@lists.freedesktop.org,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        linux-tegra@vger.kernel.org,
+        Thierry Reding <thierry.reding@gmail.com>,
+        linux-mtd@lists.infradead.org,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        linux-spi@vger.kernel.org, Robert Jarzmik <robert.jarzmik@free.fr>
+Subject: Re: [PATCH 07/11] dmaengine: qcom-adm: stop abusing slave_id config
+Message-ID: <202111251538.x6sJNCka-lkp@intel.com>
+References: <20211115085403.360194-8-arnd@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211115085403.360194-8-arnd@kernel.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Check requested speed for a given transfer before setting
-27MHz or 108Mhz sysclk on SoCs that support both. This way
-for baud rates below 212Khz we can use 27Mhz clock.
+Hi Arnd,
 
-Signed-off-by: Kamal Dasu <kdasu.kdev@gmail.com>
+I love your patch! Perhaps something to improve:
+
+[auto build test WARNING on vkoul-dmaengine/next]
+[also build test WARNING on tiwai-sound/for-next staging/staging-testing linus/master v5.16-rc2 next-20211125]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
+
+url:    https://github.com/0day-ci/linux/commits/Arnd-Bergmann/dmaengine-kill-off-dma_slave_config-slave_id/20211115-165731
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/vkoul/dmaengine.git next
+config: riscv-randconfig-r016-20211115 (https://download.01.org/0day-ci/archive/20211125/202111251538.x6sJNCka-lkp@intel.com/config)
+compiler: clang version 14.0.0 (https://github.com/llvm/llvm-project fbe72e41b99dc7994daac300d208a955be3e4a0a)
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # install riscv cross compiling tool for clang build
+        # apt-get install binutils-riscv64-linux-gnu
+        # https://github.com/0day-ci/linux/commit/f2e7f9ee67ce784864f75db39f20d1060c932279
+        git remote add linux-review https://github.com/0day-ci/linux
+        git fetch --no-tags linux-review Arnd-Bergmann/dmaengine-kill-off-dma_slave_config-slave_id/20211115-165731
+        git checkout f2e7f9ee67ce784864f75db39f20d1060c932279
+        # save the config file to linux build tree
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 ARCH=riscv 
+
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/dma/qcom/qcom_adm.c:712:18: warning: no previous prototype for function 'adm_dma_xlate' [-Wmissing-prototypes]
+   struct dma_chan *adm_dma_xlate(struct of_phandle_args *dma_spec,
+                    ^
+   drivers/dma/qcom/qcom_adm.c:712:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
+   struct dma_chan *adm_dma_xlate(struct of_phandle_args *dma_spec,
+   ^
+   static 
+   1 warning generated.
+
+
+vim +/adm_dma_xlate +712 drivers/dma/qcom/qcom_adm.c
+
+   700	
+   701	/**
+   702	 * adm_dma_xlate
+   703	 * @dma_spec:	pointer to DMA specifier as found in the device tree
+   704	 * @ofdma:	pointer to DMA controller data
+   705	 *
+   706	 * This can use either 1-cell or 2-cell formats, the first cell
+   707	 * identifies the slave device, while the optional second cell
+   708	 * contains the crci value.
+   709	 *
+   710	 * Returns pointer to appropriate dma channel on success or NULL on error.
+   711	 */
+ > 712	struct dma_chan *adm_dma_xlate(struct of_phandle_args *dma_spec,
+   713				       struct of_dma *ofdma)
+   714	{
+   715		struct dma_device *dev = ofdma->of_dma_data;
+   716		struct dma_chan *chan, *candidate = NULL;
+   717		struct adm_chan *achan;
+   718	
+   719		if (!dev || dma_spec->args_count > 2)
+   720			return NULL;
+   721	
+   722		list_for_each_entry(chan, &dev->channels, device_node)
+   723			if (chan->chan_id == dma_spec->args[0]) {
+   724				candidate = chan;
+   725				break;
+   726			}
+   727	
+   728		if (!candidate)
+   729			return NULL;
+   730	
+   731		achan = to_adm_chan(candidate);
+   732		if (dma_spec->args_count == 2)
+   733			achan->crci = dma_spec->args[1];
+   734		else
+   735			achan->crci = 0;
+   736	
+   737		return dma_get_slave_channel(candidate);
+   738	}
+   739	
+
 ---
- drivers/spi/spi-bcm-qspi.c | 32 ++++++++++++++++++++++++++------
- 1 file changed, 26 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/spi/spi-bcm-qspi.c b/drivers/spi/spi-bcm-qspi.c
-index f3de3305d0f5..38e6e2cb62ca 100644
---- a/drivers/spi/spi-bcm-qspi.c
-+++ b/drivers/spi/spi-bcm-qspi.c
-@@ -287,6 +287,18 @@ static inline int bcm_qspi_spbr_min(struct bcm_qspi *qspi)
- 		return 8;
- }
- 
-+static u32 bcm_qspi_calc_spbr(u32 clk_speed_hz,
-+			      const struct bcm_qspi_parms *xp)
-+{
-+	u32 spbr = 0;
-+
-+	/* SPBR = System Clock/(2 * SCK Baud Rate) */
-+	if (xp->speed_hz)
-+		spbr = clk_speed_hz / (xp->speed_hz * 2);
-+
-+	return spbr;
-+}
-+
- /* Read qspi controller register*/
- static inline u32 bcm_qspi_read(struct bcm_qspi *qspi, enum base_type type,
- 				unsigned int offset)
-@@ -621,9 +633,17 @@ static void bcm_qspi_hw_set_parms(struct bcm_qspi *qspi,
- 			spcr |= MSPI_SPCR3_HALFDUPLEX |  MSPI_SPCR3_HDOUTTYPE;
- 
- 		if (bcm_qspi_has_sysclk_108(qspi)) {
--			/* SYSCLK_108 */
--			spcr |= MSPI_SPCR3_SYSCLKSEL_108;
--			qspi->base_clk = MSPI_BASE_FREQ * 4;
-+			/* check requested baud rate before moving to 108Mhz */
-+			spbr = bcm_qspi_calc_spbr(MSPI_BASE_FREQ * 4, xp);
-+			if (spbr > QSPI_SPBR_MAX) {
-+				/* use SYSCLK_27Mhz for slower baud rates */
-+				spcr &= ~MSPI_SPCR3_SYSCLKSEL_MASK;
-+				qspi->base_clk = MSPI_BASE_FREQ;
-+			} else {
-+				/* SYSCLK_108Mhz */
-+				spcr |= MSPI_SPCR3_SYSCLKSEL_108;
-+				qspi->base_clk = MSPI_BASE_FREQ * 4;
-+			}
- 		}
- 
- 		if (xp->bits_per_word > 16) {
-@@ -649,9 +669,9 @@ static void bcm_qspi_hw_set_parms(struct bcm_qspi *qspi,
- 		bcm_qspi_write(qspi, MSPI, MSPI_SPCR3, spcr);
- 	}
- 
--	if (xp->speed_hz)
--		spbr = qspi->base_clk / (2 * xp->speed_hz);
--
-+	/* SCK Baud Rate = System Clock/(2 * SPBR) */
-+	qspi->max_speed_hz = qspi->base_clk / (bcm_qspi_spbr_min(qspi) * 2);
-+	spbr = bcm_qspi_calc_spbr(qspi->base_clk, xp);
- 	spbr = clamp_val(spbr, bcm_qspi_spbr_min(qspi), QSPI_SPBR_MAX);
- 	bcm_qspi_write(qspi, MSPI, MSPI_SPCR0_LSB, spbr);
- 
--- 
-2.17.1
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org

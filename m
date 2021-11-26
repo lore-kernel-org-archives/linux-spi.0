@@ -2,21 +2,21 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D9DF7C433EF
-	for <linux-spi@archiver.kernel.org>; Fri, 26 Nov 2021 11:57:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 94DB3C4321E
+	for <linux-spi@archiver.kernel.org>; Fri, 26 Nov 2021 11:57:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351393AbhKZMAW (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 26 Nov 2021 07:00:22 -0500
-Received: from mslow1.mail.gandi.net ([217.70.178.240]:33293 "EHLO
+        id S1377036AbhKZMAZ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 26 Nov 2021 07:00:25 -0500
+Received: from mslow1.mail.gandi.net ([217.70.178.240]:57015 "EHLO
         mslow1.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376959AbhKZL6V (ORCPT
+        with ESMTP id S1377065AbhKZL6V (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Fri, 26 Nov 2021 06:58:21 -0500
 Received: from relay9-d.mail.gandi.net (unknown [217.70.183.199])
-        by mslow1.mail.gandi.net (Postfix) with ESMTP id 84A28C72E7;
-        Fri, 26 Nov 2021 11:40:13 +0000 (UTC)
+        by mslow1.mail.gandi.net (Postfix) with ESMTP id 660BBC8293;
+        Fri, 26 Nov 2021 11:40:16 +0000 (UTC)
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 97F65FF81C;
-        Fri, 26 Nov 2021 11:39:42 +0000 (UTC)
+        by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 8DCE8FF81B;
+        Fri, 26 Nov 2021 11:39:48 +0000 (UTC)
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Richard Weinberger <richard@nod.at>,
         Vignesh Raghavendra <vigneshr@ti.com>,
@@ -32,9 +32,9 @@ Cc:     Rob Herring <robh+dt@kernel.org>, <devicetree@vger.kernel.org>,
         Boris Brezillon <bbrezillon@kernel.org>,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH v2 11/20] mtd: nand: ecc: Add infrastructure to support hardware engines
-Date:   Fri, 26 Nov 2021 12:39:15 +0100
-Message-Id: <20211126113924.310459-12-miquel.raynal@bootlin.com>
+Subject: [PATCH v2 15/20] mtd: spinand: Create direct mapping descriptors for ECC operations
+Date:   Fri, 26 Nov 2021 12:39:19 +0100
+Message-Id: <20211126113924.310459-16-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20211126113924.310459-1-miquel.raynal@bootlin.com>
 References: <20211126113924.310459-1-miquel.raynal@bootlin.com>
@@ -45,219 +45,109 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Add the necessary helpers to register/unregister hardware ECC engines
-that will be called from ECC engine drivers.
-
-Also add helpers to get the right engine from the user
-perspective. Keep a reference of the in use ECC engine in order to
-prevent modules to be unloaded. Put the reference when the engine gets
-retired.
-
-A static list of hardware (only) ECC engines is setup to keep track of
-the registered engines.
+In order for pipelined ECC engines to be able to enable/disable the ECC
+engine only when needed and avoid races when future parallel-operations
+will be supported, we need to provide the information about the use of
+the ECC engine in the direct mapping hooks. As direct mapping
+configurations are meant to be static, it is best to create two new
+mappings: one for regular 'raw' accesses and one for accesses involving
+correction. It is up to the driver to use or not the new ECC enable
+boolean contained in the spi-mem operation.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- drivers/mtd/nand/core.c  | 10 +++--
- drivers/mtd/nand/ecc.c   | 88 ++++++++++++++++++++++++++++++++++++++++
- include/linux/mtd/nand.h | 28 +++++++++++++
- 3 files changed, 123 insertions(+), 3 deletions(-)
+ drivers/mtd/nand/spi/core.c | 28 ++++++++++++++++++++++++++--
+ include/linux/mtd/spinand.h |  2 ++
+ include/linux/spi/spi-mem.h |  3 +++
+ 3 files changed, 31 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/nand/core.c b/drivers/mtd/nand/core.c
-index df9646685c91..5628bd410f7e 100644
---- a/drivers/mtd/nand/core.c
-+++ b/drivers/mtd/nand/core.c
-@@ -232,7 +232,9 @@ static int nanddev_get_ecc_engine(struct nand_device *nand)
- 		nand->ecc.engine = nand_ecc_get_on_die_hw_engine(nand);
- 		break;
- 	case NAND_ECC_ENGINE_TYPE_ON_HOST:
--		pr_err("On-host hardware ECC engines not supported yet\n");
-+		nand->ecc.engine = nand_ecc_get_on_host_hw_engine(nand);
-+		if (PTR_ERR(nand->ecc.engine) == -EPROBE_DEFER)
-+			return -EPROBE_DEFER;
- 		break;
- 	default:
- 		pr_err("Missing ECC engine type\n");
-@@ -252,7 +254,7 @@ static int nanddev_put_ecc_engine(struct nand_device *nand)
- {
- 	switch (nand->ecc.ctx.conf.engine_type) {
- 	case NAND_ECC_ENGINE_TYPE_ON_HOST:
--		pr_err("On-host hardware ECC engines not supported yet\n");
-+		nand_ecc_put_on_host_hw_engine(nand);
- 		break;
- 	case NAND_ECC_ENGINE_TYPE_NONE:
- 	case NAND_ECC_ENGINE_TYPE_SOFT:
-@@ -297,7 +299,9 @@ int nanddev_ecc_engine_init(struct nand_device *nand)
- 	/* Look for the ECC engine to use */
- 	ret = nanddev_get_ecc_engine(nand);
- 	if (ret) {
--		pr_err("No ECC engine found\n");
-+		if (ret != -EPROBE_DEFER)
-+			pr_err("No ECC engine found\n");
-+
- 		return ret;
+diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
+index 7027c09925e2..10ccffb6bf0d 100644
+--- a/drivers/mtd/nand/spi/core.c
++++ b/drivers/mtd/nand/spi/core.c
+@@ -381,7 +381,10 @@ static int spinand_read_from_cache_op(struct spinand_device *spinand,
+ 		}
  	}
  
-diff --git a/drivers/mtd/nand/ecc.c b/drivers/mtd/nand/ecc.c
-index 6c43dfda01d4..078f5ec38de3 100644
---- a/drivers/mtd/nand/ecc.c
-+++ b/drivers/mtd/nand/ecc.c
-@@ -96,6 +96,12 @@
- #include <linux/module.h>
- #include <linux/mtd/nand.h>
- #include <linux/slab.h>
-+#include <linux/of.h>
-+#include <linux/of_device.h>
-+#include <linux/of_platform.h>
-+
-+static LIST_HEAD(on_host_hw_engines);
-+static DEFINE_MUTEX(on_host_hw_engines_mutex);
+-	rdesc = spinand->dirmaps[req->pos.plane].rdesc;
++	if (req->mode == MTD_OPS_RAW)
++		rdesc = spinand->dirmaps[req->pos.plane].rdesc;
++	else
++		rdesc = spinand->dirmaps[req->pos.plane].rdesc_ecc;
  
- /**
-  * nand_ecc_init_ctx - Init the ECC engine context
-@@ -611,6 +617,88 @@ struct nand_ecc_engine *nand_ecc_get_on_die_hw_engine(struct nand_device *nand)
+ 	while (nbytes) {
+ 		ret = spi_mem_dirmap_read(rdesc, column, nbytes, buf);
+@@ -452,7 +455,10 @@ static int spinand_write_to_cache_op(struct spinand_device *spinand,
+ 			       req->ooblen);
+ 	}
+ 
+-	wdesc = spinand->dirmaps[req->pos.plane].wdesc;
++	if (req->mode == MTD_OPS_RAW)
++		wdesc = spinand->dirmaps[req->pos.plane].wdesc;
++	else
++		wdesc = spinand->dirmaps[req->pos.plane].wdesc_ecc;
+ 
+ 	while (nbytes) {
+ 		ret = spi_mem_dirmap_write(wdesc, column, nbytes, buf);
+@@ -866,6 +872,24 @@ static int spinand_create_dirmap(struct spinand_device *spinand,
+ 
+ 	spinand->dirmaps[plane].rdesc = desc;
+ 
++	info.op_tmpl = *spinand->op_templates.update_cache;
++	info.op_tmpl.ecc_en = true;
++	desc = devm_spi_mem_dirmap_create(&spinand->spimem->spi->dev,
++					  spinand->spimem, &info);
++	if (IS_ERR(desc))
++		return PTR_ERR(desc);
++
++	spinand->dirmaps[plane].wdesc_ecc = desc;
++
++	info.op_tmpl = *spinand->op_templates.read_cache;
++	info.op_tmpl.ecc_en = true;
++	desc = devm_spi_mem_dirmap_create(&spinand->spimem->spi->dev,
++					  spinand->spimem, &info);
++	if (IS_ERR(desc))
++		return PTR_ERR(desc);
++
++	spinand->dirmaps[plane].rdesc_ecc = desc;
++
+ 	return 0;
  }
- EXPORT_SYMBOL(nand_ecc_get_on_die_hw_engine);
  
-+int nand_ecc_register_on_host_hw_engine(struct nand_ecc_engine *engine)
-+{
-+	struct nand_ecc_engine *item;
-+
-+	if (!engine)
-+		return -EINVAL;
-+
-+	/* Prevent multiple registrations of one engine */
-+	list_for_each_entry(item, &on_host_hw_engines, node)
-+		if (item == engine)
-+			return 0;
-+
-+	mutex_lock(&on_host_hw_engines_mutex);
-+	list_add_tail(&engine->node, &on_host_hw_engines);
-+	mutex_unlock(&on_host_hw_engines_mutex);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(nand_ecc_register_on_host_hw_engine);
-+
-+int nand_ecc_unregister_on_host_hw_engine(struct nand_ecc_engine *engine)
-+{
-+	if (!engine)
-+		return -EINVAL;
-+
-+	mutex_lock(&on_host_hw_engines_mutex);
-+	list_del(&engine->node);
-+	mutex_unlock(&on_host_hw_engines_mutex);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(nand_ecc_unregister_on_host_hw_engine);
-+
-+static struct nand_ecc_engine *nand_ecc_match_on_host_hw_engine(struct device *dev)
-+{
-+	struct nand_ecc_engine *item;
-+
-+	list_for_each_entry(item, &on_host_hw_engines, node)
-+		if (item->dev == dev)
-+			return item;
-+
-+	return NULL;
-+}
-+
-+struct nand_ecc_engine *nand_ecc_get_on_host_hw_engine(struct nand_device *nand)
-+{
-+	struct nand_ecc_engine *engine = NULL;
-+	struct device *dev = &nand->mtd.dev;
-+	struct platform_device *pdev;
-+	struct device_node *np;
-+
-+	if (list_empty(&on_host_hw_engines))
-+		return NULL;
-+
-+	/* Check for an explicit nand-ecc-engine property */
-+	np = of_parse_phandle(dev->of_node, "nand-ecc-engine", 0);
-+	if (np) {
-+		pdev = of_find_device_by_node(np);
-+		if (!pdev)
-+			return ERR_PTR(-EPROBE_DEFER);
-+
-+		engine = nand_ecc_match_on_host_hw_engine(&pdev->dev);
-+		platform_device_put(pdev);
-+		of_node_put(np);
-+
-+		if (!engine)
-+			return ERR_PTR(-EPROBE_DEFER);
-+	}
-+
-+	if (engine)
-+		get_device(engine->dev);
-+
-+	return engine;
-+}
-+EXPORT_SYMBOL(nand_ecc_get_on_host_hw_engine);
-+
-+void nand_ecc_put_on_host_hw_engine(struct nand_device *nand)
-+{
-+	put_device(nand->ecc.engine->dev);
-+}
-+EXPORT_SYMBOL(nand_ecc_put_on_host_hw_engine);
-+
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Miquel Raynal <miquel.raynal@bootlin.com>");
- MODULE_DESCRIPTION("Generic ECC engine");
-diff --git a/include/linux/mtd/nand.h b/include/linux/mtd/nand.h
-index 32fc7edf65b3..e952f37d9aab 100644
---- a/include/linux/mtd/nand.h
-+++ b/include/linux/mtd/nand.h
-@@ -263,12 +263,36 @@ struct nand_ecc_engine_ops {
- 			     struct nand_page_io_req *req);
+diff --git a/include/linux/mtd/spinand.h b/include/linux/mtd/spinand.h
+index 6988956b8492..3aa28240a77f 100644
+--- a/include/linux/mtd/spinand.h
++++ b/include/linux/mtd/spinand.h
+@@ -389,6 +389,8 @@ struct spinand_info {
+ struct spinand_dirmap {
+ 	struct spi_mem_dirmap_desc *wdesc;
+ 	struct spi_mem_dirmap_desc *rdesc;
++	struct spi_mem_dirmap_desc *wdesc_ecc;
++	struct spi_mem_dirmap_desc *rdesc_ecc;
  };
  
-+/**
-+ * enum nand_ecc_engine_integration - How the NAND ECC engine is integrated
-+ * @NAND_ECC_ENGINE_INTEGRATION_INVALID: Invalid value
-+ * @NAND_ECC_ENGINE_INTEGRATION_PIPELINED: Pipelined engine, performs on-the-fly
-+ *                                         correction, does not need to copy
-+ *                                         data around
-+ * @NAND_ECC_ENGINE_INTEGRATION_PIPELINED: External engine, needs to bring the
-+ *                                         data into its own area before use
-+ */
-+enum nand_ecc_engine_integration {
-+	NAND_ECC_ENGINE_INTEGRATION_INVALID,
-+	NAND_ECC_ENGINE_INTEGRATION_PIPELINED,
-+	NAND_ECC_ENGINE_INTEGRATION_EXTERNAL,
-+};
-+
  /**
-  * struct nand_ecc_engine - ECC engine abstraction for NAND devices
-+ * @dev: Host device
-+ * @node: Private field for registration time
-  * @ops: ECC engine operations
-+ * @integration: How the engine is integrated with the host
-+ *               (only relevant on %NAND_ECC_ENGINE_TYPE_ON_HOST engines)
-+ * @priv: Private data
+diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
+index 85e2ff7b840d..3be594be24c0 100644
+--- a/include/linux/spi/spi-mem.h
++++ b/include/linux/spi/spi-mem.h
+@@ -94,6 +94,7 @@ enum spi_mem_data_dir {
+  *		 operation does not involve transferring data
+  * @data.buf.in: input buffer (must be DMA-able)
+  * @data.buf.out: output buffer (must be DMA-able)
++ * @ecc_en: error correction is required
   */
- struct nand_ecc_engine {
-+	struct device *dev;
-+	struct list_head node;
- 	struct nand_ecc_engine_ops *ops;
-+	enum nand_ecc_engine_integration integration;
-+	void *priv;
+ struct spi_mem_op {
+ 	struct {
+@@ -126,6 +127,8 @@ struct spi_mem_op {
+ 			const void *out;
+ 		} buf;
+ 	} data;
++
++	bool ecc_en;
  };
  
- void of_get_nand_ecc_user_config(struct nand_device *nand);
-@@ -279,8 +303,12 @@ int nand_ecc_prepare_io_req(struct nand_device *nand,
- int nand_ecc_finish_io_req(struct nand_device *nand,
- 			   struct nand_page_io_req *req);
- bool nand_ecc_is_strong_enough(struct nand_device *nand);
-+int nand_ecc_register_on_host_hw_engine(struct nand_ecc_engine *engine);
-+int nand_ecc_unregister_on_host_hw_engine(struct nand_ecc_engine *engine);
- struct nand_ecc_engine *nand_ecc_get_sw_engine(struct nand_device *nand);
- struct nand_ecc_engine *nand_ecc_get_on_die_hw_engine(struct nand_device *nand);
-+struct nand_ecc_engine *nand_ecc_get_on_host_hw_engine(struct nand_device *nand);
-+void nand_ecc_put_on_host_hw_engine(struct nand_device *nand);
- 
- #if IS_ENABLED(CONFIG_MTD_NAND_ECC_SW_HAMMING)
- struct nand_ecc_engine *nand_ecc_sw_hamming_get_engine(void);
+ #define SPI_MEM_OP(__cmd, __addr, __dummy, __data)		\
 -- 
 2.27.0
 

@@ -2,232 +2,65 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 01C7DC433F5
-	for <linux-spi@archiver.kernel.org>; Fri, 26 Nov 2021 11:57:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9CF5DC433F5
+	for <linux-spi@archiver.kernel.org>; Fri, 26 Nov 2021 12:59:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377221AbhKZMBH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 26 Nov 2021 07:01:07 -0500
-Received: from mslow1.mail.gandi.net ([217.70.178.240]:55539 "EHLO
-        mslow1.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353056AbhKZL7H (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 26 Nov 2021 06:59:07 -0500
-Received: from relay9-d.mail.gandi.net (unknown [217.70.183.199])
-        by mslow1.mail.gandi.net (Postfix) with ESMTP id 18CF6C8535;
-        Fri, 26 Nov 2021 11:40:20 +0000 (UTC)
-Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 15184FF812;
-        Fri, 26 Nov 2021 11:39:54 +0000 (UTC)
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Tudor Ambarus <Tudor.Ambarus@microchip.com>,
-        Pratyush Yadav <p.yadav@ti.com>,
-        Michael Walle <michael@walle.cc>,
-        <linux-mtd@lists.infradead.org>
-Cc:     Rob Herring <robh+dt@kernel.org>, <devicetree@vger.kernel.org>,
-        Mark Brown <broonie@kernel.org>, <linux-spi@vger.kernel.org>,
-        Xiangsheng Hou <Xiangsheng.Hou@mediatek.com>,
-        Julien Su <juliensu@mxic.com.tw>,
-        Jaime Liao <jaimeliao@mxic.com.tw>,
-        Boris Brezillon <bbrezillon@kernel.org>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Zhengxun Li <zhengxunli@mxic.com.tw>
-Subject: [PATCH v2 19/20] spi: mxic: Add support for direct mapping
-Date:   Fri, 26 Nov 2021 12:39:23 +0100
-Message-Id: <20211126113924.310459-20-miquel.raynal@bootlin.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20211126113924.310459-1-miquel.raynal@bootlin.com>
-References: <20211126113924.310459-1-miquel.raynal@bootlin.com>
-MIME-Version: 1.0
+        id S234358AbhKZNC0 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 26 Nov 2021 08:02:26 -0500
+Received: from mail.kernel.org ([198.145.29.99]:43656 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234445AbhKZNAY (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Fri, 26 Nov 2021 08:00:24 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPS id 16C356112D;
+        Fri, 26 Nov 2021 12:57:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1637931432;
+        bh=4U2DWaTkhVXACVez+SvrrkqOwzMWt8XdXy6z4otxBdE=;
+        h=Subject:From:Date:To:From;
+        b=MfEn285ESohsFnGzZ9rR9IAiLN6zrgmwHzA7bK40pZhLxvGkJvW1k4njKXEadms3V
+         yxYrDMHlMv5k2eveWI1uBzLDcfhvKc1CjFnKOe1dpqfONQNjTTIHs3kLoPO4jqOc8e
+         CfIi7eoqN6ZMD6s9Nvr/J+uaE6k1rP0yTQ5YO9K7CxH0+tUG+nSwoqRG+CzVndkRPN
+         cCAPFyGGck3Cy5l0XamdNNfHe3jlN07TCFvgSCY9Lm2+Ph70E4oHMIDSgkA3oYd6BJ
+         VE4Dyj94hpyCv0OJuu1Bry6ImrHIrN9nmCybkGVLd+U0zHoFvz3bZnsen9EXdYk3nh
+         ZoqBcV1rZjo8Q==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 1066860A4E;
+        Fri, 26 Nov 2021 12:57:12 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <163793143206.6316.13645460634815492794.git-patchwork-housekeeping@kernel.org>
+Date:   Fri, 26 Nov 2021 12:57:12 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Implement the ->dirmap_create() and ->dirmap_read/write() hooks to
-provide a fast path for read and write accesses.
+Latest series: [v2] External ECC engines & Macronix support (2021-11-26T11:39:04)
+  Superseding: [v1] External ECC engines & Macronix support (2021-10-20T14:27:51):
+    [01/18] dt-bindings: mtd: nand-controller: Fix the reg property description
+    [02/18] dt-bindings: mtd: nand-controller: Fix a comment in the examples
+    [03/18] dt-bindings: mtd: nand-chip: Create a NAND chip description
+    [04/18] dt-bindings: mtd: spi-nand: Convert spi-nand description file to yaml
+    [05/18] dt-bindings: vendor-prefixes: Clarify Macronix prefix
+    [06/18] dt-bindings: spi: mxic: The interrupt property is not mandatory
+    [07/18] dt-bindings: spi: mxic: Convert to yaml
+    [08/18] dt-bindings: mtd: Describe Macronix NAND ECC engine
+    [09/18] dt-bindings: spi: mxic: Document the nand-ecc-engine property
+    [10/18] mtd: spinand: macronix: Use random program load
+    [11/18] mtd: nand: ecc: Add infrastructure to support hardware engines
+    [12/18] mtd: nand: mxic-ecc: Add Macronix external ECC engine support
+    [13/18] mtd: nand: mxic-ecc: Support SPI pipelined mode
+    [14/18] spi: mxic: Fix the transmit path
+    [15/18] spi: mxic: Create a helper to configure the controller before an operation
+    [16/18] spi: mxic: Create a helper to ease the start of an operation
+    [17/18] spi: mxic: Add support for direct mapping
+    [18/18] spi: mxic: Add support for pipelined ECC operations
 
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Tested-by: Zhengxun Li <zhengxunli@mxic.com.tw>
-Reviewed-by: Zhengxun Li <zhengxunli@mxic.com.tw>
----
- drivers/spi/spi-mxic.c | 112 +++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 109 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-mxic.c b/drivers/spi/spi-mxic.c
-index 3c4e64cbe812..485a7f2afb44 100644
---- a/drivers/spi/spi-mxic.c
-+++ b/drivers/spi/spi-mxic.c
-@@ -172,6 +172,11 @@ struct mxic_spi {
- 	struct clk *send_dly_clk;
- 	void __iomem *regs;
- 	u32 cur_speed_hz;
-+	struct {
-+		void __iomem *map;
-+		dma_addr_t dma;
-+		size_t size;
-+	} linear;
- };
- 
- static int mxic_spi_clk_enable(struct mxic_spi *mxic)
-@@ -296,7 +301,8 @@ static u32 mxic_spi_prep_hc_cfg(struct spi_device *spi, u32 flags)
- 	       HC_CFG_SLV_ACT(spi->chip_select) | HC_CFG_IDLE_SIO_LVL(1);
- }
- 
--static u32 mxic_spi_mem_prep_op_cfg(const struct spi_mem_op *op)
-+static u32 mxic_spi_mem_prep_op_cfg(const struct spi_mem_op *op,
-+				    unsigned int data_len)
- {
- 	u32 cfg = OP_CMD_BYTES(op->cmd.nbytes) |
- 		  OP_CMD_BUSW(fls(op->cmd.buswidth) - 1) |
-@@ -310,7 +316,8 @@ static u32 mxic_spi_mem_prep_op_cfg(const struct spi_mem_op *op)
- 	if (op->dummy.nbytes)
- 		cfg |= OP_DUMMY_CYC(op->dummy.nbytes);
- 
--	if (op->data.nbytes) {
-+	/* Direct mapping data.nbytes field is not populated */
-+	if (data_len) {
- 		cfg |= OP_DATA_BUSW(fls(op->data.buswidth) - 1) |
- 		       (op->data.dtr ? OP_DATA_DDR : 0);
- 		if (op->data.dir == SPI_MEM_DATA_IN) {
-@@ -371,6 +378,77 @@ static int mxic_spi_data_xfer(struct mxic_spi *mxic, const void *txbuf,
- 	return 0;
- }
- 
-+static ssize_t mxic_spi_mem_dirmap_read(struct spi_mem_dirmap_desc *desc,
-+					u64 offs, size_t len, void *buf)
-+{
-+	struct mxic_spi *mxic = spi_master_get_devdata(desc->mem->spi->master);
-+	int ret;
-+	u32 sts;
-+
-+	if (WARN_ON(offs + desc->info.offset + len > U32_MAX))
-+		return -EINVAL;
-+
-+	writel(mxic_spi_prep_hc_cfg(desc->mem->spi, 0), mxic->regs + HC_CFG);
-+
-+	writel(mxic_spi_mem_prep_op_cfg(&desc->info.op_tmpl, len),
-+	       mxic->regs + LRD_CFG);
-+	writel(desc->info.offset + offs, mxic->regs + LRD_ADDR);
-+	len = min_t(size_t, len, mxic->linear.size);
-+	writel(len, mxic->regs + LRD_RANGE);
-+	writel(LMODE_CMD0(desc->info.op_tmpl.cmd.opcode) |
-+	       LMODE_SLV_ACT(desc->mem->spi->chip_select) |
-+	       LMODE_EN,
-+	       mxic->regs + LRD_CTRL);
-+
-+	memcpy_fromio(buf, mxic->linear.map, len);
-+
-+	writel(INT_LRD_DIS, mxic->regs + INT_STS);
-+	writel(0, mxic->regs + LRD_CTRL);
-+
-+	ret = readl_poll_timeout(mxic->regs + INT_STS, sts,
-+				 sts & INT_LRD_DIS, 0, USEC_PER_SEC);
-+	if (ret)
-+		return ret;
-+
-+	return len;
-+}
-+
-+static ssize_t mxic_spi_mem_dirmap_write(struct spi_mem_dirmap_desc *desc,
-+					 u64 offs, size_t len,
-+					 const void *buf)
-+{
-+	struct mxic_spi *mxic = spi_master_get_devdata(desc->mem->spi->master);
-+	u32 sts;
-+	int ret;
-+
-+	if (WARN_ON(offs + desc->info.offset + len > U32_MAX))
-+		return -EINVAL;
-+
-+	writel(mxic_spi_prep_hc_cfg(desc->mem->spi, 0), mxic->regs + HC_CFG);
-+
-+	writel(mxic_spi_mem_prep_op_cfg(&desc->info.op_tmpl, len),
-+	       mxic->regs + LWR_CFG);
-+	writel(desc->info.offset + offs, mxic->regs + LWR_ADDR);
-+	len = min_t(size_t, len, mxic->linear.size);
-+	writel(len, mxic->regs + LWR_RANGE);
-+	writel(LMODE_CMD0(desc->info.op_tmpl.cmd.opcode) |
-+	       LMODE_SLV_ACT(desc->mem->spi->chip_select) |
-+	       LMODE_EN,
-+	       mxic->regs + LWR_CTRL);
-+
-+	memcpy_toio(mxic->linear.map, buf, len);
-+
-+	writel(INT_LWR_DIS, mxic->regs + INT_STS);
-+	writel(0, mxic->regs + LWR_CTRL);
-+
-+	ret = readl_poll_timeout(mxic->regs + INT_STS, sts,
-+				 sts & INT_LWR_DIS, 0, USEC_PER_SEC);
-+	if (ret)
-+		return ret;
-+
-+	return len;
-+}
-+
- static bool mxic_spi_mem_supports_op(struct spi_mem *mem,
- 				     const struct spi_mem_op *op)
- {
-@@ -396,6 +474,22 @@ static bool mxic_spi_mem_supports_op(struct spi_mem *mem,
- 		return spi_mem_dtr_supports_op(mem, op);
- }
- 
-+static int mxic_spi_mem_dirmap_create(struct spi_mem_dirmap_desc *desc)
-+{
-+	struct mxic_spi *mxic = spi_master_get_devdata(desc->mem->spi->master);
-+
-+	if (!mxic->linear.map)
-+		return -EINVAL;
-+
-+	if (desc->info.offset + desc->info.length > U32_MAX)
-+		return -EINVAL;
-+
-+	if (!mxic_spi_mem_supports_op(desc->mem, &desc->info.op_tmpl))
-+		return -EOPNOTSUPP;
-+
-+	return 0;
-+}
-+
- static int mxic_spi_mem_exec_op(struct spi_mem *mem,
- 				const struct spi_mem_op *op)
- {
-@@ -412,7 +506,7 @@ static int mxic_spi_mem_exec_op(struct spi_mem *mem,
- 
- 	writel(HC_EN_BIT, mxic->regs + HC_EN);
- 
--	writel(mxic_spi_mem_prep_op_cfg(op),
-+	writel(mxic_spi_mem_prep_op_cfg(op, op->data.nbytes),
- 	       mxic->regs + SS_CTRL(mem->spi->chip_select));
- 
- 	writel(readl(mxic->regs + HC_CFG) | HC_CFG_MAN_CS_ASSERT,
-@@ -454,6 +548,9 @@ static int mxic_spi_mem_exec_op(struct spi_mem *mem,
- static const struct spi_controller_mem_ops mxic_spi_mem_ops = {
- 	.supports_op = mxic_spi_mem_supports_op,
- 	.exec_op = mxic_spi_mem_exec_op,
-+	.dirmap_create = mxic_spi_mem_dirmap_create,
-+	.dirmap_read = mxic_spi_mem_dirmap_read,
-+	.dirmap_write = mxic_spi_mem_dirmap_write,
- };
- 
- static void mxic_spi_set_cs(struct spi_device *spi, bool lvl)
-@@ -583,6 +680,15 @@ static int mxic_spi_probe(struct platform_device *pdev)
- 	if (IS_ERR(mxic->regs))
- 		return PTR_ERR(mxic->regs);
- 
-+	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "dirmap");
-+	mxic->linear.map = devm_ioremap_resource(&pdev->dev, res);
-+	if (!IS_ERR(mxic->linear.map)) {
-+		mxic->linear.dma = res->start;
-+		mxic->linear.size = resource_size(res);
-+	} else {
-+		mxic->linear.map = NULL;
-+	}
-+
- 	pm_runtime_enable(&pdev->dev);
- 	master->auto_runtime_pm = true;
- 
 -- 
-2.27.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

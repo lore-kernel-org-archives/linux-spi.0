@@ -2,91 +2,68 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 227FFC433EF
-	for <linux-spi@archiver.kernel.org>; Fri, 26 Nov 2021 13:05:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EF0CCC433F5
+	for <linux-spi@archiver.kernel.org>; Fri, 26 Nov 2021 14:13:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231240AbhKZNIo (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 26 Nov 2021 08:08:44 -0500
-Received: from mail.kernel.org ([198.145.29.99]:46134 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232653AbhKZNGo (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Fri, 26 Nov 2021 08:06:44 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id ED3506112D;
-        Fri, 26 Nov 2021 13:03:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637931811;
-        bh=QAD0fqmVf1jw+Lf34IzKs9qrKK0uHS/qI3FqYFyGPUA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=QKANirDWpF/myNR5ipSftGhbDebfwA7La+sx0YQlzbe2cPhCC19xPhAgrwGFO8kvR
-         wQbuX/mhjxpj39j9KBsZeY+OzDWuuqpxsIFRVJKoUUMbi2RFWEdtnlNAyfRn3gUQZS
-         DouWfymP4T1+Vk65IW29q02hXY3jDiRor0ts5Qlkxcd4gIp8/XbCjNZfVUNUIV9PjU
-         g+vmI08PxT3ABDVegyJGE1DgEPQQw0OG/KGM9jdbYtRcrjW1GMVQXb2J7oG7f7GZDv
-         rvmKa7IngxRhbwZeVxprBzfH8TIHtZjbn6C1cv6imSClWISvOrV7oXMjLlxYjkxGJV
-         XF3zO5TdMkJRg==
-Date:   Fri, 26 Nov 2021 13:03:25 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Philipp Zabel <p.zabel@pengutronix.de>
-Cc:     Lh Kuo =?utf-8?B?6YOt5Yqb6LGq?= <lh.Kuo@sunplus.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        "LH.Kuo" <lhjeff911@gmail.com>, Rob Herring <robh+dt@kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "dvorkin@tibbo.com" <dvorkin@tibbo.com>,
-        "qinjian@cqplus1.com" <qinjian@cqplus1.com>,
-        Wells Lu =?utf-8?B?5ZGC6Iqz6aiw?= <wells.lu@sunplus.com>
-Subject: Re: [PATCH v3 1/2] SPI: Add SPI driver for Sunplus SP7021
-Message-ID: <YaDbHe+COa3pke+s@sirena.org.uk>
-References: <1635747525-31243-1-git-send-email-lh.kuo@sunplus.com>
- <cover.1637547799.git.lh.kuo@sunplus.com>
- <e5f2549224cf875d81306ef5f6e98db1cfd81c2e.1637547799.git.lh.kuo@sunplus.com>
- <CAHp75Vd2=OHbrpGtsU8AMXdtNfvSPhpc7vhzkWnahaV48XbfUQ@mail.gmail.com>
- <YZz0n6Mpjl3tKmMe@sirena.org.uk>
- <CAHp75Vf6+monqu4Hq-yoFSohD9tNFqZTuKjqDDKAJE3Om2BUYQ@mail.gmail.com>
- <6eb68a8153ba46c48862d00f7aa6e0fe@sphcmbx02.sunplus.com.tw>
- <CAHp75VftSORts5cbDxvfyHgqhxmb7K74BfPd=mST+75C+Ch9dQ@mail.gmail.com>
- <33d50e94059b4734939db60b5c531bc9@sphcmbx02.sunplus.com.tw>
- <63a467164c985cadce0e28e50508363a8d2f6622.camel@pengutronix.de>
+        id S1377785AbhKZOQX convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 26 Nov 2021 09:16:23 -0500
+Received: from relay9-d.mail.gandi.net ([217.70.183.199]:39707 "EHLO
+        relay9-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236190AbhKZOOX (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 26 Nov 2021 09:14:23 -0500
+X-Greylist: delayed 9101 seconds by postgrey-1.27 at vger.kernel.org; Fri, 26 Nov 2021 09:14:22 EST
+Received: (Authenticated sender: miquel.raynal@bootlin.com)
+        by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 0AEA6FF807;
+        Fri, 26 Nov 2021 14:10:59 +0000 (UTC)
+Date:   Fri, 26 Nov 2021 15:10:59 +0100
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Tudor Ambarus <Tudor.Ambarus@microchip.com>,
+        Pratyush Yadav <p.yadav@ti.com>,
+        Michael Walle <michael@walle.cc>,
+        linux-mtd@lists.infradead.org, Rob Herring <robh+dt@kernel.org>,
+        devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
+        Xiangsheng Hou <Xiangsheng.Hou@mediatek.com>,
+        Julien Su <juliensu@mxic.com.tw>,
+        Jaime Liao <jaimeliao@mxic.com.tw>,
+        Boris Brezillon <bbrezillon@kernel.org>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v2 00/20] External ECC engines & Macronix support
+Message-ID: <20211126151059.10c19ec7@xps13>
+In-Reply-To: <YaDjDhOhpHMdxiqA@sirena.org.uk>
+References: <20211126113924.310459-1-miquel.raynal@bootlin.com>
+        <YaDjDhOhpHMdxiqA@sirena.org.uk>
+Organization: Bootlin
+X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="ljQ879YUAyNrToFD"
-Content-Disposition: inline
-In-Reply-To: <63a467164c985cadce0e28e50508363a8d2f6622.camel@pengutronix.de>
-X-Cookie: You fill a much-needed gap.
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+Hi Mark,
 
---ljQ879YUAyNrToFD
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+broonie@kernel.org wrote on Fri, 26 Nov 2021 13:37:18 +0000:
 
-On Fri, Nov 26, 2021 at 11:36:29AM +0100, Philipp Zabel wrote:
+> On Fri, Nov 26, 2021 at 12:39:04PM +0100, Miquel Raynal wrote:
+> 
+> > As a first example, Macronix ECC engine can be used as an
+> > external engine (takes the data, proceeds to the calculations, writes
+> > back the ECC bytes) or as a pipelined engine doing on-the-fly
+> > calculations (which is very common in the raw NAND world).  
+> 
+> The SPI bits of this look fine (most of the smarts are in the MTD
+> code!), what's the plan for getting this merged?
 
-> > 	pm_runtime_disable(&pdev->dev);
+Great! Thanks for the feedback.
 
-> I'm not sure if the SPI framework requires the spi_controller to be
-> unregistered before hardware is powered off, maybe it is enough to call
-> spi_controller_suspend() in the right place?
+If you acknowledge the SPI bits I believe I can carry the entire series
+through the MTD tree. If you fear conflicts and need an immutable tag I
+can also do that.
 
-It would *probably* do the right thing but the expectation really is
-that you'll unregister before making the controller stop working, that
-should be much more robust..
-
---ljQ879YUAyNrToFD
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmGg2x0ACgkQJNaLcl1U
-h9Cxlwf/XZs/9xTqiksXDYhiMOpt6+eD4gpanC5q5BSuqZkuUFHjGzpqL/v/s/+V
-edvkwQJDwb82Y2oKRhw/hZc4xA395j9lKmeJSWLyzCklvYlSIOAt4CPZx9w91Qsz
-NNONWU+zLwo/tt1ZM09eIclf6fQ0ef04cmjNxgpv0cq/VhmlrbjsjKGj3ViRU0p5
-Bz+ODOy0weYPH0VS9NDJlq2yzy7/M6dDN1vae/vApUDGUcSgiYr3+tZ/9LOugTTv
-D+SUjWC/L8Wv0/TAbwBVpRwj0hyaWCkaPAkzT5nZxIvk7TKFprjOWvl3JHYqXBkB
-/dyYP4Y8jc47Ya55wbhIZ+rpOExJ4g==
-=ZANf
------END PGP SIGNATURE-----
-
---ljQ879YUAyNrToFD--
+Thanks,
+Miquèl

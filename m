@@ -2,21 +2,21 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 62DB1C4167D
-	for <linux-spi@archiver.kernel.org>; Fri, 26 Nov 2021 11:57:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C9BB8C433F5
+	for <linux-spi@archiver.kernel.org>; Fri, 26 Nov 2021 11:57:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345594AbhKZMA0 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 26 Nov 2021 07:00:26 -0500
-Received: from mslow1.mail.gandi.net ([217.70.178.240]:46551 "EHLO
+        id S1348468AbhKZMBB (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 26 Nov 2021 07:01:01 -0500
+Received: from mslow1.mail.gandi.net ([217.70.178.240]:39679 "EHLO
         mslow1.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377063AbhKZL6V (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 26 Nov 2021 06:58:21 -0500
+        with ESMTP id S1349744AbhKZL7A (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 26 Nov 2021 06:59:00 -0500
 Received: from relay9-d.mail.gandi.net (unknown [217.70.183.199])
-        by mslow1.mail.gandi.net (Postfix) with ESMTP id C4703C7A75;
-        Fri, 26 Nov 2021 11:40:13 +0000 (UTC)
+        by mslow1.mail.gandi.net (Postfix) with ESMTP id 93AF4C228A;
+        Fri, 26 Nov 2021 11:40:19 +0000 (UTC)
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id D70B7FF81E;
-        Fri, 26 Nov 2021 11:39:43 +0000 (UTC)
+        by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 95A79FF825;
+        Fri, 26 Nov 2021 11:39:51 +0000 (UTC)
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Richard Weinberger <richard@nod.at>,
         Vignesh Raghavendra <vigneshr@ti.com>,
@@ -32,9 +32,9 @@ Cc:     Rob Herring <robh+dt@kernel.org>, <devicetree@vger.kernel.org>,
         Boris Brezillon <bbrezillon@kernel.org>,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH v2 12/20] mtd: nand: Add a new helper to retrieve the ECC context
-Date:   Fri, 26 Nov 2021 12:39:16 +0100
-Message-Id: <20211126113924.310459-13-miquel.raynal@bootlin.com>
+Subject: [PATCH v2 17/20] spi: mxic: Create a helper to configure the controller before an operation
+Date:   Fri, 26 Nov 2021 12:39:21 +0100
+Message-Id: <20211126113924.310459-18-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20211126113924.310459-1-miquel.raynal@bootlin.com>
 References: <20211126113924.310459-1-miquel.raynal@bootlin.com>
@@ -45,32 +45,72 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Introduce nand_to_ecc_ctx() which will allow to easily jump to the
-private pointer of an ECC context given a NAND device. This is very
-handy, from the prepare or finish ECC hook, to get the internal context
-out of the NAND device object.
+Create the mxic_spi_set_hc_cfg() helper to configure the HC_CFG
+register. This helper will soon be used by the dirmap implementation and
+having this code factorized out earlier will clarify this addition.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- include/linux/mtd/nand.h | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/spi/spi-mxic.c | 31 +++++++++++++++++++------------
+ 1 file changed, 19 insertions(+), 12 deletions(-)
 
-diff --git a/include/linux/mtd/nand.h b/include/linux/mtd/nand.h
-index e952f37d9aab..273bf699860f 100644
---- a/include/linux/mtd/nand.h
-+++ b/include/linux/mtd/nand.h
-@@ -990,6 +990,11 @@ int nanddev_markbad(struct nand_device *nand, const struct nand_pos *pos);
- int nanddev_ecc_engine_init(struct nand_device *nand);
- void nanddev_ecc_engine_cleanup(struct nand_device *nand);
+diff --git a/drivers/spi/spi-mxic.c b/drivers/spi/spi-mxic.c
+index 03fce4493aa7..068543c40ce7 100644
+--- a/drivers/spi/spi-mxic.c
++++ b/drivers/spi/spi-mxic.c
+@@ -280,6 +280,22 @@ static void mxic_spi_hw_init(struct mxic_spi *mxic)
+ 	       mxic->regs + HC_CFG);
+ }
  
-+static inline void *nand_to_ecc_ctx(struct nand_device *nand)
++static u32 mxic_spi_prep_hc_cfg(struct spi_device *spi, u32 flags)
 +{
-+	return nand->ecc.ctx.priv;
++	int nio = 1;
++
++	if (spi->mode & (SPI_TX_OCTAL | SPI_RX_OCTAL))
++		nio = 8;
++	else if (spi->mode & (SPI_TX_QUAD | SPI_RX_QUAD))
++		nio = 4;
++	else if (spi->mode & (SPI_TX_DUAL | SPI_RX_DUAL))
++		nio = 2;
++
++	return flags | HC_CFG_NIO(nio) |
++	       HC_CFG_TYPE(spi->chip_select, HC_CFG_TYPE_SPI_NOR) |
++	       HC_CFG_SLV_ACT(spi->chip_select) | HC_CFG_IDLE_SIO_LVL(1);
 +}
 +
- /* BBT related functions */
- enum nand_bbt_block_status {
- 	NAND_BBT_BLOCK_STATUS_UNKNOWN,
+ static int mxic_spi_data_xfer(struct mxic_spi *mxic, const void *txbuf,
+ 			      void *rxbuf, unsigned int len)
+ {
+@@ -357,7 +373,7 @@ static int mxic_spi_mem_exec_op(struct spi_mem *mem,
+ 				const struct spi_mem_op *op)
+ {
+ 	struct mxic_spi *mxic = spi_master_get_devdata(mem->spi->master);
+-	int nio = 1, i, ret;
++	int i, ret;
+ 	u32 ss_ctrl;
+ 	u8 addr[8], cmd[2];
+ 
+@@ -365,18 +381,9 @@ static int mxic_spi_mem_exec_op(struct spi_mem *mem,
+ 	if (ret)
+ 		return ret;
+ 
+-	if (mem->spi->mode & (SPI_TX_OCTAL | SPI_RX_OCTAL))
+-		nio = 8;
+-	else if (mem->spi->mode & (SPI_TX_QUAD | SPI_RX_QUAD))
+-		nio = 4;
+-	else if (mem->spi->mode & (SPI_TX_DUAL | SPI_RX_DUAL))
+-		nio = 2;
+-
+-	writel(HC_CFG_NIO(nio) |
+-	       HC_CFG_TYPE(mem->spi->chip_select, HC_CFG_TYPE_SPI_NOR) |
+-	       HC_CFG_SLV_ACT(mem->spi->chip_select) | HC_CFG_IDLE_SIO_LVL(1) |
+-	       HC_CFG_MAN_CS_EN,
++	writel(mxic_spi_prep_hc_cfg(mem->spi, HC_CFG_MAN_CS_EN),
+ 	       mxic->regs + HC_CFG);
++
+ 	writel(HC_EN_BIT, mxic->regs + HC_EN);
+ 
+ 	ss_ctrl = OP_CMD_BYTES(op->cmd.nbytes) |
 -- 
 2.27.0
 

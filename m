@@ -2,82 +2,87 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1FF34C433FE
-	for <linux-spi@archiver.kernel.org>; Sat, 27 Nov 2021 01:33:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2DBE5C433F5
+	for <linux-spi@archiver.kernel.org>; Sat, 27 Nov 2021 07:52:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350533AbhK0BhC (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 26 Nov 2021 20:37:02 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:56604 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237873AbhK0BfA (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 26 Nov 2021 20:35:00 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 51A67B829B6;
-        Sat, 27 Nov 2021 01:30:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4D36C53FC1;
-        Sat, 27 Nov 2021 01:30:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637976611;
-        bh=vwRpw/vMG7BMpy94vMwEdfDk2R9azx4kXEPJdSzmuV8=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=McCDfVkTf+1hcvQYRvwKZAVm3p/xeTmiJUgHJ9F5Q14tLCOyM1d/1PJoATaz6rwre
-         Ax2DAQ53Crk4JkrkLBhqOa3Mvofxb7UmdWhFLJWFm4uTE1tujDIjvl7WTMYZXdyzYG
-         70qUI0aWwwLj06vB8zF+sOTQ8Gk/TRA1TbyK2+bNeQZp4/iSxuwT4lLX6UFp6jPJJQ
-         eedgFdykBzJWW0V7vGnMd32L5f6uL2+Hd78e5WbE0hepO55GVuxaT3dogHOXWgUqLT
-         t/1EZBqlZz/k3ua9MCcVT4BAFBsmIVBa3JCFTWd5816gS5OkV6hdyVtQC8c4eor/xp
-         veXPlpqyXuFfQ==
-From:   Mark Brown <broonie@kernel.org>
-To:     Jonathan Hunter <jonathanh@nvidia.com>,
-        Krishna Yarlagadda <kyarlagadda@nvidia.com>,
-        Sowjanya Komatineni <skomatineni@nvidia.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Laxman Dewangan <ldewangan@nvidia.com>
-Cc:     linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org,
+        id S1352618AbhK0H4B (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sat, 27 Nov 2021 02:56:01 -0500
+Received: from mga01.intel.com ([192.55.52.88]:29208 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233469AbhK0HyB (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Sat, 27 Nov 2021 02:54:01 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10180"; a="259654566"
+X-IronPort-AV: E=Sophos;i="5.87,268,1631602800"; 
+   d="scan'208";a="259654566"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2021 23:50:47 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.87,268,1631602800"; 
+   d="scan'208";a="498676067"
+Received: from lkp-server02.sh.intel.com (HELO 9e1e9f9b3bcb) ([10.239.97.151])
+  by orsmga007.jf.intel.com with ESMTP; 26 Nov 2021 23:50:43 -0800
+Received: from kbuild by 9e1e9f9b3bcb with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1mqsTr-0009E3-7b; Sat, 27 Nov 2021 07:50:43 +0000
+Date:   Sat, 27 Nov 2021 15:49:50 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Tudor Ambarus <Tudor.Ambarus@microchip.com>,
+        Pratyush Yadav <p.yadav@ti.com>,
+        Michael Walle <michael@walle.cc>, linux-mtd@lists.infradead.org
+Cc:     kbuild-all@lists.01.org, Rob Herring <robh+dt@kernel.org>,
+        devicetree@vger.kernel.org, Mark Brown <broonie@kernel.org>,
         linux-spi@vger.kernel.org
-In-Reply-To: <1637834152-32093-1-git-send-email-kyarlagadda@nvidia.com>
-References: <1637834152-32093-1-git-send-email-kyarlagadda@nvidia.com>
-Subject: Re: (subset) [PATCH 1/2] spi: tegra210-quad: use devm call for cdata memory
-Message-Id: <163797660965.2988146.12328673256786092886.b4-ty@kernel.org>
-Date:   Sat, 27 Nov 2021 01:30:09 +0000
+Subject: Re: [PATCH v2 20/20] spi: mxic: Add support for pipelined ECC
+ operations
+Message-ID: <202111271552.AOgIHVI2-lkp@intel.com>
+References: <20211126113924.310459-21-miquel.raynal@bootlin.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211126113924.310459-21-miquel.raynal@bootlin.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, 25 Nov 2021 15:25:51 +0530, Krishna Yarlagadda wrote:
-> Use devm alloc call to allocate memory for spi controller data and
-> remove free calls from cleanup.
-> 
-> 
+Hi Miquel,
 
-Applied to
+I love your patch! Yet something to improve:
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+[auto build test ERROR on mtd/nand/next]
+[also build test ERROR on broonie-spi/for-next mtd/mtd/next mtd/mtd/fixes v5.16-rc2 next-20211126]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-Thanks!
+url:    https://github.com/0day-ci/linux/commits/Miquel-Raynal/External-ECC-engines-Macronix-support/20211126-195956
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux.git nand/next
+config: csky-buildonly-randconfig-r004-20211126 (https://download.01.org/0day-ci/archive/20211127/202111271552.AOgIHVI2-lkp@intel.com/config)
+compiler: csky-linux-gcc (GCC) 11.2.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/0day-ci/linux/commit/0804d6ccdf15e7a65743d048d01d876a54070b6b
+        git remote add linux-review https://github.com/0day-ci/linux
+        git fetch --no-tags linux-review Miquel-Raynal/External-ECC-engines-Macronix-support/20211126-195956
+        git checkout 0804d6ccdf15e7a65743d048d01d876a54070b6b
+        # save the config file to linux build tree
+        mkdir build_dir
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=csky SHELL=/bin/bash
 
-[1/2] spi: tegra210-quad: use devm call for cdata memory
-      commit: f89d2cc3967af9948ffc58e4cc9a1331f1c4971a
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+All errors (new ones prefixed by >>):
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+   csky-linux-ld: drivers/spi/spi-mxic.o: in function `mxic_spi_remove':
+>> spi-mxic.c:(.text+0xba4): undefined reference to `nand_ecc_unregister_on_host_hw_engine'
+   csky-linux-ld: drivers/spi/spi-mxic.o: in function `mxic_ecc_put_pipelined_engine':
+   spi-mxic.c:(.text+0xbc8): undefined reference to `nand_ecc_unregister_on_host_hw_engine'
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org

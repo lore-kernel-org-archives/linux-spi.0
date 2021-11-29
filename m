@@ -2,147 +2,177 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 46D2CC43217
-	for <linux-spi@archiver.kernel.org>; Mon, 29 Nov 2021 20:10:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 70FAAC433F5
+	for <linux-spi@archiver.kernel.org>; Mon, 29 Nov 2021 22:23:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233330AbhK2UON (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 29 Nov 2021 15:14:13 -0500
-Received: from mail-oi1-f179.google.com ([209.85.167.179]:34675 "EHLO
-        mail-oi1-f179.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233549AbhK2UMI (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 29 Nov 2021 15:12:08 -0500
-Received: by mail-oi1-f179.google.com with SMTP id t19so36815629oij.1;
-        Mon, 29 Nov 2021 12:08:50 -0800 (PST)
+        id S231779AbhK2W1N (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 29 Nov 2021 17:27:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58468 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232956AbhK2WXZ (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 29 Nov 2021 17:23:25 -0500
+Received: from mail-ua1-x929.google.com (mail-ua1-x929.google.com [IPv6:2607:f8b0:4864:20::929])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEDAAC09676D
+        for <linux-spi@vger.kernel.org>; Mon, 29 Nov 2021 12:38:59 -0800 (PST)
+Received: by mail-ua1-x929.google.com with SMTP id l24so36877580uak.2
+        for <linux-spi@vger.kernel.org>; Mon, 29 Nov 2021 12:38:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=UONcs7N6LGxVu2k8VNIBFR8w78/QJ3sPH/s1Z5GJbro=;
+        b=noH8p60w0Jb98Gun1YSBguriftRk73erhwNTOPAf0Xyfpd3cQ8YQLdk0dHdFCR1L/V
+         VrbMrAhXcw1OzPppMd1vEqZMILJq4Be4I+3XY4YrVFi+ez8sbi2I10v75Hzf1oAKt7Md
+         Q+cvz1xKXfTgGvcmKkzceKwtuG2XPov5wncs00SjT30lSAPi0nz1rgj5LYqDrXjXbwrd
+         7qJ2K/OlJwBdQB+TZLO+Uy7e1hft0Au/MPm+8zOCJqUVXLzTHyR5Ted8dz9vzXFYRmAv
+         pFLYaHJJ3SzU0UlR3r5WXbyN0td2n1zWE0TOOJKSdPvYoBjSfIBXLpFKtsOyF1bjh5D1
+         IQuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Z6xdOSQsfsaoPSj9BpA6Xmod/xwiCQkOb+qTA/iCb/o=;
-        b=mMamZOPZMcT6WNosUBYp4n0oFl4pn33lkbNiYL2v2y6B4/u2/owYEVJXz+LHXOi5Pd
-         2CFy4rszd1uh9pUDAtI8mtq4ICVebFJzEwIkEOxdYG/zQE3JoNNf3TnNiUG5sUXXHP5v
-         mUGaYr7rRa8Wz0KvhXfikXqvya9TU9gvm8+QowWOQYGNb4uR8QN/eK83g80bdzRptWxJ
-         2lx2uPGg8BWerrg8dpCv7IJVtbl9qaxDb+GZPKXKFpSY7hTPhE+0+ZalKLfWquFSWTDW
-         EnPCIG7L0qCcg7l3Uud00uJ01eQ3lBFBdHQrhZ70Py7R/Rald8zrXHM5/Hivb8MgnCCr
-         x0oA==
-X-Gm-Message-State: AOAM531xdmA4PNRTdrpeSH7i0VQkE+WqucNk1Z+YriLf6dZWJSC3prmv
-        U4LsHMhKaMspYayAXRq4KA==
-X-Google-Smtp-Source: ABdhPJy2T7U5QNpYE8mKhDs4Y0kpsY4X+RruhTn7EbB9g52UuWIuwRJoXI1gDNqGmpcZq9IEms65YQ==
-X-Received: by 2002:a05:6808:3c2:: with SMTP id o2mr241205oie.112.1638216529867;
-        Mon, 29 Nov 2021 12:08:49 -0800 (PST)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id n6sm2837920otj.78.2021.11.29.12.08.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Nov 2021 12:08:49 -0800 (PST)
-Received: (nullmailer pid 520021 invoked by uid 1000);
-        Mon, 29 Nov 2021 20:08:47 -0000
-Date:   Mon, 29 Nov 2021 14:08:47 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Conor.Dooley@microchip.com
-Cc:     krzysztof.kozlowski@canonical.com, broonie@kernel.org,
-        aou@eecs.berkeley.edu, linus.walleij@linaro.org,
-        bgolaszewski@baylibre.com, palmer@dabbelt.com,
-        paul.walmsley@sifive.com, jassisinghbrar@gmail.com,
-        atish.patra@wdc.com, Daire.McNamara@microchip.com,
-        Lewis.Hanly@microchip.com, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, geert@linux-m68k.org,
-        linux-gpio@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-crypto@vger.kernel.org, linux-usb@vger.kernel.org,
-        bin.meng@windriver.com, linux-i2c@vger.kernel.org,
-        alexandre.belloni@bootlin.com, Ivan.Griffin@microchip.com,
-        linux-rtc@vger.kernel.org, linux-spi@vger.kernel.org,
-        a.zummo@towertech.it, gregkh@linuxfoundation.org
-Subject: Re: [PATCH 06/13] dt-bindings: rng: add bindings for microchip mpfs
- rng
-Message-ID: <YaUzT6+WvICiTk1q@robh.at.kernel.org>
-References: <20211108150554.4457-1-conor.dooley@microchip.com>
- <20211108150554.4457-7-conor.dooley@microchip.com>
- <f60cf7e0-4f67-f4b3-2596-01114cff6623@canonical.com>
- <71c6917e-1463-c708-550a-726e5fe1566d@microchip.com>
- <ca17d6ac-ef8e-b01c-3278-7cbb0d5745e3@canonical.com>
- <ea871add-bddc-c4ae-ac9d-e86b4fad5a02@microchip.com>
- <a0713a10-3409-4401-e612-0a9c06f88ea1@canonical.com>
- <9d6f2e66-860c-2b8a-0b45-7dc56dd5298f@microchip.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=UONcs7N6LGxVu2k8VNIBFR8w78/QJ3sPH/s1Z5GJbro=;
+        b=tcjmDKreNnRn3uYcabzxTn2UM2g6u2eJYFhnSwtwNppmAzz7DNFx7jpvtvqYEq3Xwn
+         5siZpAzR+TK8pFsIYfWRENLontyFCyvEE2wd6P9VemFni88QJP4djENC+2X9xKO5Ffpj
+         mxEY/NeuLNrIhbm5rjNxwpkJ454U9YpAImKcTEvjgoX+F7uJ1g/TXSTth/1vTq5nmq4G
+         1D9eF1RclmbT2PwSdM+PWpW4UlOTdbU7LUSLYqyWMnzkyas+d4iOw9mql9GAf9dkvDve
+         nQN3cGd/HWn056QeJBoNVjH3p0ik3Pre3vA+kRjxf/J4hl0mGnoNCblvhTJNZHDLnQkx
+         WH4Q==
+X-Gm-Message-State: AOAM531ciRE7TeTyPkTWa5C9VLHejoU0cB+fAKBL17eMzEAK2oqPhr1R
+        AUVbRuyITCAdQ3dJmeRDpGvlbxT/cUG6rubSR8hRIw==
+X-Google-Smtp-Source: ABdhPJzhebEttD8OzDSAnlep6FeEbByTFuexl48l99GbNggwLSd6/VU+oEF2UMCz1+jFsh7LSdV7Dujt31QbGYN5BvA=
+X-Received: by 2002:a67:be0f:: with SMTP id x15mr36219046vsq.86.1638218338933;
+ Mon, 29 Nov 2021 12:38:58 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9d6f2e66-860c-2b8a-0b45-7dc56dd5298f@microchip.com>
+References: <20211127223253.19098-1-semen.protsenko@linaro.org>
+ <20211127223253.19098-6-semen.protsenko@linaro.org> <9a51b37b-d2c4-fb73-bd3f-447c94a66c82@canonical.com>
+ <CAPLW+4=Xp0m3ycm5c1WSJGtr6vRxx1fsW0MOo65fXMfaB1sR+w@mail.gmail.com>
+In-Reply-To: <CAPLW+4=Xp0m3ycm5c1WSJGtr6vRxx1fsW0MOo65fXMfaB1sR+w@mail.gmail.com>
+From:   Sam Protsenko <semen.protsenko@linaro.org>
+Date:   Mon, 29 Nov 2021 22:38:47 +0200
+Message-ID: <CAPLW+4n+y2cARyeV53hBfUdbyy5ZtCCisDQ20ANF7mM0uh_V4g@mail.gmail.com>
+Subject: Re: [PATCH 5/8] tty: serial: samsung: Enable console as module
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+Cc:     Rob Herring <robh+dt@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jaewon Kim <jaewon02.kim@samsung.com>,
+        Chanho Park <chanho61.park@samsung.com>,
+        David Virag <virag.david003@gmail.com>,
+        Youngmin Nam <youngmin.nam@samsung.com>,
+        devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-serial@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        linux-i2c@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, Nov 10, 2021 at 09:46:23AM +0000, Conor.Dooley@microchip.com wrote:
-> On 10/11/2021 07:43, Krzysztof Kozlowski wrote:
-> > EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
-> > 
-> > On 09/11/2021 14:36, Conor.Dooley@microchip.com wrote:
-> >> On 09/11/2021 12:56, Krzysztof Kozlowski wrote:
-> >>> EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
-> >>>
-> >>> On 09/11/2021 13:54, Conor.Dooley@microchip.com wrote:
-> >>>> On 08/11/2021 21:16, Krzysztof Kozlowski wrote:
-> >>>>> EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
-> >>>>>
-> >>>>> On 08/11/2021 16:05, conor.dooley@microchip.com wrote:
-> >>>>>> From: Conor Dooley <conor.dooley@microchip.com>
-> >>>>>>
-> >>>>>> Add device tree bindings for the hardware rng device accessed via
-> >>>>>> the system services on the Microchip PolarFire SoC.
-> >>>>>>
-> >>>>>> Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-> >>>>>> ---
-> >>>>>>     .../bindings/rng/microchip,mpfs-rng.yaml      | 31 +++++++++++++++++++
-> >>>>>>     1 file changed, 31 insertions(+)
-> >>>>>>     create mode 100644 Documentation/devicetree/bindings/rng/microchip,mpfs-rng.yaml
-> >>>>>>
-> >>>>>> diff --git a/Documentation/devicetree/bindings/rng/microchip,mpfs-rng.yaml b/Documentation/devicetree/bindings/rng/microchip,mpfs-rng.yaml
-> >>>>>> new file mode 100644
-> >>>>>> index 000000000000..e8ecb3538a86
-> >>>>>> --- /dev/null
-> >>>>>> +++ b/Documentation/devicetree/bindings/rng/microchip,mpfs-rng.yaml
-> >>>>>> @@ -0,0 +1,31 @@
-> >>>>>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> >>>>>> +%YAML 1.2
-> >>>>>> +---
-> >>>>>> +$id: "http://devicetree.org/schemas/rng/microchip,mpfs-rng.yaml#"
-> >>>>>> +$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-> >>>>>> +
-> >>>>>> +title: Microchip MPFS random number generator
-> >>>>>> +
-> >>>>>> +maintainers:
-> >>>>>> +  - Conor Dooley <conor.dooley@microchip.com>
-> >>>>>> +
-> >>>>>> +properties:
-> >>>>>> +  compatible:
-> >>>>>> +    const: microchip,polarfire-soc-rng
-> >>>>>> +
-> >>>>>> +  syscontroller:
-> >>>>>> +    maxItems: 1
-> >>>>>> +    description: name of the system controller device node
-> >>>>>
-> >>>>> There are several issues with this:
-> >>>>> 1. You need to describe the type.
-> >>>>> 2. Description is not helpful (just copying the name of property) and
-> >>>>> actually misleading because you do not put there the name of device node.
-> >>>>> 3. What is it? Looks like syscon (or sometimes called sysreg). If yes,
-> >>>>> please use existing syscon bindings.
-> >>>> 1 & 2 - Correct, it is bad & I'll write a better description for it.
-> >>>> 3 - Its a system controller implemented as a mailbox. The syscontroller
-> >>>> is the mailbox client, which the rng and generic drivers both use.
-> >>>
-> >>> I understood that pointed device node is a mailbox, not this node. But
-> >>> here, what is it here? How do you use it here?
-> >> The system controller is the means of access to the random number
-> >> generator. The phandle to the sys controller is provided here so that
-> >> the rng driver can locate the mailbox client through which it requests
-> >> random numbers.
-> > 
-> > I am asking this to understand whether there is a generic or existing
-> > property which should be used instead.
-> > 
-> > If I understand correctly, the rng driver needs a mailbox client?
-> Correct, it needs one. Binding for that is here:
-> Documentation/devicetree/bindings/soc/microchip/microchip,polarfire-soc-sys-controller.yaml
+On Mon, 29 Nov 2021 at 22:18, Sam Protsenko <semen.protsenko@linaro.org> wrote:
+>
+> On Mon, 29 Nov 2021 at 10:52, Krzysztof Kozlowski
+> <krzysztof.kozlowski@canonical.com> wrote:
+> >
+> > On 27/11/2021 23:32, Sam Protsenko wrote:
+> > > Enable serial driver to be built as a module. To do so, init the console
+> > > support on driver/module load instead of using console_initcall().
+> > >
+> > > This is needed for proper support of USIv2 driver (which can be built as
+> > > a module, which in turn makes SERIAL_SAMSUNG be a module too). It also
+> > > might be useful for Android GKI modularization efforts.
+> > >
+> > > Inspired by commit 87a0b9f98ac5 ("tty: serial: meson: enable console as
+> > > module").
+> > >
+> > > Signed-off-by: Sam Protsenko <semen.protsenko@linaro.org>
+> > > ---
+> > >  drivers/tty/serial/Kconfig       |  2 +-
+> > >  drivers/tty/serial/samsung_tty.c | 21 +++++++++++++++++++--
+> > >  2 files changed, 20 insertions(+), 3 deletions(-)
+> > >
+> > > diff --git a/drivers/tty/serial/Kconfig b/drivers/tty/serial/Kconfig
+> > > index fc543ac97c13..0e5ccb25bdb1 100644
+> > > --- a/drivers/tty/serial/Kconfig
+> > > +++ b/drivers/tty/serial/Kconfig
+> > > @@ -263,7 +263,7 @@ config SERIAL_SAMSUNG_UARTS
+> > >
+> > >  config SERIAL_SAMSUNG_CONSOLE
+> > >       bool "Support for console on Samsung SoC serial port"
+> > > -     depends on SERIAL_SAMSUNG=y
+> > > +     depends on SERIAL_SAMSUNG
+> > >       select SERIAL_CORE_CONSOLE
+> > >       select SERIAL_EARLYCON
+> > >       help
+> > > diff --git a/drivers/tty/serial/samsung_tty.c b/drivers/tty/serial/samsung_tty.c
+> > > index f986a9253dc8..92a63e9392ed 100644
+> > > --- a/drivers/tty/serial/samsung_tty.c
+> > > +++ b/drivers/tty/serial/samsung_tty.c
+> > > @@ -1720,10 +1720,10 @@ static int __init s3c24xx_serial_console_init(void)
+> > >       register_console(&s3c24xx_serial_console);
+> > >       return 0;
+> > >  }
+> > > -console_initcall(s3c24xx_serial_console_init);
+> > >
+> > >  #define S3C24XX_SERIAL_CONSOLE &s3c24xx_serial_console
+> > >  #else
+> > > +static inline int s3c24xx_serial_console_init(void) { return 0; }
+> > >  #define S3C24XX_SERIAL_CONSOLE NULL
+> > >  #endif
+> > >
+> > > @@ -2898,7 +2898,24 @@ static struct platform_driver samsung_serial_driver = {
+> > >       },
+> > >  };
+> > >
+> > > -module_platform_driver(samsung_serial_driver);
+> > > +static int __init samsung_serial_init(void)
+> > > +{
+> > > +     int ret;
+> > > +
+> > > +     ret = s3c24xx_serial_console_init();
+> > > +     if (ret)
+> > > +             return ret;
+> >
+> > This will trigger warns on module re-loading, won't it? Either suppress
+> > unbind or cleanup in module exit.
+> >
+>
+> I guess that's already taken care of in  samsung_serial_remove(): it's
+> doing uart_remove_one_port(), which in turn does unregister_console().
+> So I don't think anything extra should be done on module exit. Or I'm
+> missing something?
+>
+> That case (unload/load) actually doesn't work well in my case: serial
+> console doesn't work after doing "modprobe -r samsung_tty; modprobe
+> samsung_tty" (but it works fine e.g. in case of i2c_exynos5 driver).
+> Not sure what is wrong, but I can see that my board keeps running
+> (heartbeat LED is still blinking). Not even sure if that use case
+> (unload/load) was ever functional before.
+>
+> Anyway, please let me know if you think something should be done about
+> this particular patch. Right now I don't see anything missing.
+>
 
-The rng node and others should be a child of the sys controller node.
+...But I'll actually add proper error path handling in
+samsung_serial_init(), i.e. unregister console if
+platform_driver_register() fails. And I'll add the same console
+unregister in samsung_serial_exit(), just in case.
 
-Rob
+> > > +
+> > > +     return platform_driver_register(&samsung_serial_driver);
+> > > +}
+> > > +
+> > > +static void __exit samsung_serial_exit(void)
+> > > +{
+> > > +     platform_driver_unregister(&samsung_serial_driver);
+> > > +}
+> > > +
+> > > +module_init(samsung_serial_init);
+> > > +module_exit(samsung_serial_exit);
+> > >
+> > >  #ifdef CONFIG_SERIAL_SAMSUNG_CONSOLE
+> > >  /*
+> > >
+> >
+> >
+> > Best regards,
+> > Krzysztof

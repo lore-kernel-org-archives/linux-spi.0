@@ -2,177 +2,94 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 70FAAC433F5
-	for <linux-spi@archiver.kernel.org>; Mon, 29 Nov 2021 22:23:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9234FC433FE
+	for <linux-spi@archiver.kernel.org>; Mon, 29 Nov 2021 22:32:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231779AbhK2W1N (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 29 Nov 2021 17:27:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58468 "EHLO
+        id S233484AbhK2WfZ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 29 Nov 2021 17:35:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232956AbhK2WXZ (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 29 Nov 2021 17:23:25 -0500
-Received: from mail-ua1-x929.google.com (mail-ua1-x929.google.com [IPv6:2607:f8b0:4864:20::929])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEDAAC09676D
-        for <linux-spi@vger.kernel.org>; Mon, 29 Nov 2021 12:38:59 -0800 (PST)
-Received: by mail-ua1-x929.google.com with SMTP id l24so36877580uak.2
-        for <linux-spi@vger.kernel.org>; Mon, 29 Nov 2021 12:38:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=UONcs7N6LGxVu2k8VNIBFR8w78/QJ3sPH/s1Z5GJbro=;
-        b=noH8p60w0Jb98Gun1YSBguriftRk73erhwNTOPAf0Xyfpd3cQ8YQLdk0dHdFCR1L/V
-         VrbMrAhXcw1OzPppMd1vEqZMILJq4Be4I+3XY4YrVFi+ez8sbi2I10v75Hzf1oAKt7Md
-         Q+cvz1xKXfTgGvcmKkzceKwtuG2XPov5wncs00SjT30lSAPi0nz1rgj5LYqDrXjXbwrd
-         7qJ2K/OlJwBdQB+TZLO+Uy7e1hft0Au/MPm+8zOCJqUVXLzTHyR5Ted8dz9vzXFYRmAv
-         pFLYaHJJ3SzU0UlR3r5WXbyN0td2n1zWE0TOOJKSdPvYoBjSfIBXLpFKtsOyF1bjh5D1
-         IQuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=UONcs7N6LGxVu2k8VNIBFR8w78/QJ3sPH/s1Z5GJbro=;
-        b=tcjmDKreNnRn3uYcabzxTn2UM2g6u2eJYFhnSwtwNppmAzz7DNFx7jpvtvqYEq3Xwn
-         5siZpAzR+TK8pFsIYfWRENLontyFCyvEE2wd6P9VemFni88QJP4djENC+2X9xKO5Ffpj
-         mxEY/NeuLNrIhbm5rjNxwpkJ454U9YpAImKcTEvjgoX+F7uJ1g/TXSTth/1vTq5nmq4G
-         1D9eF1RclmbT2PwSdM+PWpW4UlOTdbU7LUSLYqyWMnzkyas+d4iOw9mql9GAf9dkvDve
-         nQN3cGd/HWn056QeJBoNVjH3p0ik3Pre3vA+kRjxf/J4hl0mGnoNCblvhTJNZHDLnQkx
-         WH4Q==
-X-Gm-Message-State: AOAM531ciRE7TeTyPkTWa5C9VLHejoU0cB+fAKBL17eMzEAK2oqPhr1R
-        AUVbRuyITCAdQ3dJmeRDpGvlbxT/cUG6rubSR8hRIw==
-X-Google-Smtp-Source: ABdhPJzhebEttD8OzDSAnlep6FeEbByTFuexl48l99GbNggwLSd6/VU+oEF2UMCz1+jFsh7LSdV7Dujt31QbGYN5BvA=
-X-Received: by 2002:a67:be0f:: with SMTP id x15mr36219046vsq.86.1638218338933;
- Mon, 29 Nov 2021 12:38:58 -0800 (PST)
+        with ESMTP id S233479AbhK2We6 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 29 Nov 2021 17:34:58 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88D2CC03AA1C;
+        Mon, 29 Nov 2021 10:15:59 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id C0EC1CE13AB;
+        Mon, 29 Nov 2021 18:15:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6452EC53FAD;
+        Mon, 29 Nov 2021 18:15:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1638209755;
+        bh=4ZvxN/3yB6BIkS5mjsWCkybDGiWY3Py98ZFJY+s6Vj4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=E3PEpP+W+hDsvuPyeAajJimQVmbwxj2vGUyUBwsK5ThTOCuv+YHmnBNMyLUG7G8rF
+         5o01BTshaoBe4BVtxyMikV3YpDda7S2O7n4eJe7DEADKrRJkrc8hg8g9lx+h5AYnRp
+         JtJNrW2SfymVAqN0xI4bM+fie8mRqdne78USgugV5E5JwVWJT5abjwphwrAcmT+OwE
+         ZL4CZ2ydWXwx6fSODO6V6qeQ5ytH7zXy7etv/RfSxAqg3b2nnPSHcxLwwyF2ldGQPJ
+         0pgUSn0IkJKU1xSBqlha2PjmY6Uigr9n+kpysW/wNU5DBimNjt+01icl/evZTh+Ifd
+         D9pEACPTwiJdg==
+Date:   Mon, 29 Nov 2021 18:15:50 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Pratyush Yadav <p.yadav@ti.com>
+Cc:     Rob Herring <robh+dt@kernel.org>, Nishanth Menon <nm@ti.com>,
+        Michael Walle <michael@walle.cc>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Tudor Ambarus <tudor.ambarus@microchip.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org
+Subject: Re: [PATCH v3 0/3] Add bindings for peripheral-specific SPI
+ controller properties
+Message-ID: <YaUY1gKnyoOEvo/M@sirena.org.uk>
+References: <20211109181911.2251-1-p.yadav@ti.com>
+ <20211129180935.nmymboy336hllly7@ti.com>
 MIME-Version: 1.0
-References: <20211127223253.19098-1-semen.protsenko@linaro.org>
- <20211127223253.19098-6-semen.protsenko@linaro.org> <9a51b37b-d2c4-fb73-bd3f-447c94a66c82@canonical.com>
- <CAPLW+4=Xp0m3ycm5c1WSJGtr6vRxx1fsW0MOo65fXMfaB1sR+w@mail.gmail.com>
-In-Reply-To: <CAPLW+4=Xp0m3ycm5c1WSJGtr6vRxx1fsW0MOo65fXMfaB1sR+w@mail.gmail.com>
-From:   Sam Protsenko <semen.protsenko@linaro.org>
-Date:   Mon, 29 Nov 2021 22:38:47 +0200
-Message-ID: <CAPLW+4n+y2cARyeV53hBfUdbyy5ZtCCisDQ20ANF7mM0uh_V4g@mail.gmail.com>
-Subject: Re: [PATCH 5/8] tty: serial: samsung: Enable console as module
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Cc:     Rob Herring <robh+dt@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jaewon Kim <jaewon02.kim@samsung.com>,
-        Chanho Park <chanho61.park@samsung.com>,
-        David Virag <virag.david003@gmail.com>,
-        Youngmin Nam <youngmin.nam@samsung.com>,
-        devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-serial@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        linux-i2c@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="qhLQH2s+5hgBKos4"
+Content-Disposition: inline
+In-Reply-To: <20211129180935.nmymboy336hllly7@ti.com>
+X-Cookie: Thank god!! ... It's HENNY YOUNGMAN!!
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Mon, 29 Nov 2021 at 22:18, Sam Protsenko <semen.protsenko@linaro.org> wrote:
->
-> On Mon, 29 Nov 2021 at 10:52, Krzysztof Kozlowski
-> <krzysztof.kozlowski@canonical.com> wrote:
-> >
-> > On 27/11/2021 23:32, Sam Protsenko wrote:
-> > > Enable serial driver to be built as a module. To do so, init the console
-> > > support on driver/module load instead of using console_initcall().
-> > >
-> > > This is needed for proper support of USIv2 driver (which can be built as
-> > > a module, which in turn makes SERIAL_SAMSUNG be a module too). It also
-> > > might be useful for Android GKI modularization efforts.
-> > >
-> > > Inspired by commit 87a0b9f98ac5 ("tty: serial: meson: enable console as
-> > > module").
-> > >
-> > > Signed-off-by: Sam Protsenko <semen.protsenko@linaro.org>
-> > > ---
-> > >  drivers/tty/serial/Kconfig       |  2 +-
-> > >  drivers/tty/serial/samsung_tty.c | 21 +++++++++++++++++++--
-> > >  2 files changed, 20 insertions(+), 3 deletions(-)
-> > >
-> > > diff --git a/drivers/tty/serial/Kconfig b/drivers/tty/serial/Kconfig
-> > > index fc543ac97c13..0e5ccb25bdb1 100644
-> > > --- a/drivers/tty/serial/Kconfig
-> > > +++ b/drivers/tty/serial/Kconfig
-> > > @@ -263,7 +263,7 @@ config SERIAL_SAMSUNG_UARTS
-> > >
-> > >  config SERIAL_SAMSUNG_CONSOLE
-> > >       bool "Support for console on Samsung SoC serial port"
-> > > -     depends on SERIAL_SAMSUNG=y
-> > > +     depends on SERIAL_SAMSUNG
-> > >       select SERIAL_CORE_CONSOLE
-> > >       select SERIAL_EARLYCON
-> > >       help
-> > > diff --git a/drivers/tty/serial/samsung_tty.c b/drivers/tty/serial/samsung_tty.c
-> > > index f986a9253dc8..92a63e9392ed 100644
-> > > --- a/drivers/tty/serial/samsung_tty.c
-> > > +++ b/drivers/tty/serial/samsung_tty.c
-> > > @@ -1720,10 +1720,10 @@ static int __init s3c24xx_serial_console_init(void)
-> > >       register_console(&s3c24xx_serial_console);
-> > >       return 0;
-> > >  }
-> > > -console_initcall(s3c24xx_serial_console_init);
-> > >
-> > >  #define S3C24XX_SERIAL_CONSOLE &s3c24xx_serial_console
-> > >  #else
-> > > +static inline int s3c24xx_serial_console_init(void) { return 0; }
-> > >  #define S3C24XX_SERIAL_CONSOLE NULL
-> > >  #endif
-> > >
-> > > @@ -2898,7 +2898,24 @@ static struct platform_driver samsung_serial_driver = {
-> > >       },
-> > >  };
-> > >
-> > > -module_platform_driver(samsung_serial_driver);
-> > > +static int __init samsung_serial_init(void)
-> > > +{
-> > > +     int ret;
-> > > +
-> > > +     ret = s3c24xx_serial_console_init();
-> > > +     if (ret)
-> > > +             return ret;
-> >
-> > This will trigger warns on module re-loading, won't it? Either suppress
-> > unbind or cleanup in module exit.
-> >
->
-> I guess that's already taken care of in  samsung_serial_remove(): it's
-> doing uart_remove_one_port(), which in turn does unregister_console().
-> So I don't think anything extra should be done on module exit. Or I'm
-> missing something?
->
-> That case (unload/load) actually doesn't work well in my case: serial
-> console doesn't work after doing "modprobe -r samsung_tty; modprobe
-> samsung_tty" (but it works fine e.g. in case of i2c_exynos5 driver).
-> Not sure what is wrong, but I can see that my board keeps running
-> (heartbeat LED is still blinking). Not even sure if that use case
-> (unload/load) was ever functional before.
->
-> Anyway, please let me know if you think something should be done about
-> this particular patch. Right now I don't see anything missing.
->
 
-...But I'll actually add proper error path handling in
-samsung_serial_init(), i.e. unregister console if
-platform_driver_register() fails. And I'll add the same console
-unregister in samsung_serial_exit(), just in case.
+--qhLQH2s+5hgBKos4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> > > +
-> > > +     return platform_driver_register(&samsung_serial_driver);
-> > > +}
-> > > +
-> > > +static void __exit samsung_serial_exit(void)
-> > > +{
-> > > +     platform_driver_unregister(&samsung_serial_driver);
-> > > +}
-> > > +
-> > > +module_init(samsung_serial_init);
-> > > +module_exit(samsung_serial_exit);
-> > >
-> > >  #ifdef CONFIG_SERIAL_SAMSUNG_CONSOLE
-> > >  /*
-> > >
-> >
-> >
-> > Best regards,
-> > Krzysztof
+On Mon, Nov 29, 2021 at 11:39:35PM +0530, Pratyush Yadav wrote:
+> On 09/11/21 11:49PM, Pratyush Yadav wrote:
+
+> > This is the best approach that I came up with with my limited knowledge
+> > of JSON schema. It has some limitations that are mentioned in patch 1. I
+> > don't know of any better ways to model this. Suggestions are welcome!
+
+> Do you plan to take this series through your tree or should I poke Mark=
+=20
+> about it?
+
+I'd expect to take it through my tree but please allow a reasonable time
+for reviews...
+
+--qhLQH2s+5hgBKos4
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmGlGNUACgkQJNaLcl1U
+h9BdUAf8CPx2aYIuPUWc4Ka8OhpPDQXy+JJkgrtPsqFeOqDqSk2dwAUHat/zea2+
+GJatBwnEcSdBPtjJ9Lhu7MOI+Lj4255qllxHtem4dr4HtKUhFPFzxrlfaHpZ7b6g
+g3ilAzVvilA/svq+UldUzrI2X0x4eJx9vfb5DU57IJV55iYzKokCLUfcUxXPwGWi
+LXNwGOX8Gd8I+o9bnEUeAakeac+UEl0jwfyzea9wQb7+9QovJAFt0EfxnZ5aXXSL
+9Mg90x6V6YzzL06tntkPs4FNF7N5QrS+Lnb3temdqn21Wr3ezdCuf9wHwizXzyCz
+SA+x9BeNFM4Z6o72ym0004LMiYmb9w==
+=4TaM
+-----END PGP SIGNATURE-----
+
+--qhLQH2s+5hgBKos4--

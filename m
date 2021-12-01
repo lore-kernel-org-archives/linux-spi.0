@@ -2,137 +2,93 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C1683C433EF
-	for <linux-spi@archiver.kernel.org>; Tue, 30 Nov 2021 21:06:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E38B3C433F5
+	for <linux-spi@archiver.kernel.org>; Wed,  1 Dec 2021 15:41:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343826AbhK3VJa (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 30 Nov 2021 16:09:30 -0500
-Received: from mail-ot1-f47.google.com ([209.85.210.47]:47045 "EHLO
-        mail-ot1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235624AbhK3VJ3 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 30 Nov 2021 16:09:29 -0500
-Received: by mail-ot1-f47.google.com with SMTP id x3-20020a05683000c300b0057a5318c517so1824455oto.13;
-        Tue, 30 Nov 2021 13:06:09 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=RNGtXujFQD58NXv8jcekWW8P2vmfD3L7taqVXsPr+KI=;
-        b=f18I0OFf7vQ4smJ6Z+Us+22YHTY0WhnO8rnnpMh0v56Eyg5po/dslr3uFx5yP1FRt/
-         d+YxYXh89vdaj/XMirOU3vEvNfqTRl9oZOnfzyDNVffjzosIYLqolTCpvhBrCAPEAXne
-         z4ZGxPHTHs1VttTQsTkbWZurtpVOeUrc9kZd/HaWWGry6t46QGAt5TYK4qoi0O6fhxrh
-         3bRLLnL1htPo35schxlQQPDlQ9/RY94hhhSwt7TdWwnOXhYhU2cNTwN9UDpedHFYewyL
-         kel7oE0YHeaRj9JbC2z6Vwv+DL/QyR+YaDBERgA+wlfYKBD/omW1Pu3pbqWP6Xr6tYHp
-         6hwQ==
-X-Gm-Message-State: AOAM531QAZ7kAEyI+4rwXRO2R4HggAYVzprQzhwjtqeqBv4KfMqRK0lo
-        uLE52IiqO6njbgIzp7lnuhapBgX24g==
-X-Google-Smtp-Source: ABdhPJyNcSN7GDvvk6HnphChTh1EOpfM2TVLdfw5MQ06e8tSxilgg+c6ksf6tj2HdDlNsdtKhY2nwQ==
-X-Received: by 2002:a9d:5d7:: with SMTP id 81mr1581707otd.283.1638306369563;
-        Tue, 30 Nov 2021 13:06:09 -0800 (PST)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id i3sm2917218ooq.39.2021.11.30.13.06.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Nov 2021 13:06:08 -0800 (PST)
-Received: (nullmailer pid 3011632 invoked by uid 1000);
-        Tue, 30 Nov 2021 21:06:08 -0000
-Date:   Tue, 30 Nov 2021 15:06:08 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Dinh Nguyen <dinguyen@kernel.org>
-Cc:     broonie@kernel.org, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH 1/2] ARM: dts: socfpga: change qspi to
- "intel,socfpga-qspi"
-Message-ID: <YaaSQBhzCbanp8E3@robh.at.kernel.org>
-References: <20211122160427.2808342-1-dinguyen@kernel.org>
+        id S239129AbhLAPov (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 1 Dec 2021 10:44:51 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:52668 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236266AbhLAPot (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 1 Dec 2021 10:44:49 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id E4424B81DF7
+        for <linux-spi@vger.kernel.org>; Wed,  1 Dec 2021 15:41:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C93FAC53FCC;
+        Wed,  1 Dec 2021 15:41:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1638373286;
+        bh=8afl9RC76irW22Aoqi4EZBWsAvd5L8Q+12CUW00/ufY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=BLQ8Zb9k+HIZ5yeC5X9koxlku4Y/gYwUOdwuFijQycjI+v/YUp9IEhmpEHMNe6HrD
+         dGklyN5BqftndmLvvmtedWE3hL1TWzYsxsp57ii8Fs8xWJZzCxmEFKUv/3Inti9Oo8
+         zO5epUuDBjOOUcVmmXyXlE9IHjE1Q2PZGDeuhwgTTGx6KziVlCgQ8Dd0nvm/3JRNwo
+         aP7yZ/73/OfUmKd6a7fO1aFPPRDD4pb/bhnYDCj78/GDUU3VZXiViYm0M8ZvlDt+or
+         fhNTLIF4mVPiVyf/c43t/RnhB6FgQTqt2E6bg+IO/0AU+RRcEf9nTnilHRYNHzFoka
+         XfjWFyaIAE7yw==
+Date:   Wed, 1 Dec 2021 15:41:22 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Heiner Kallweit <hkallweit1@gmail.com>
+Cc:     "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+Subject: Re: [PATCH] spi: fix erroneous logic inversion in spi_match_id()
+ usage
+Message-ID: <YaeXoiFRAcxVG3I3@sirena.org.uk>
+References: <44b2ad71-dc4b-801c-237f-9c233f675c0d@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="xY5nXMwOp7b+XbvL"
 Content-Disposition: inline
-In-Reply-To: <20211122160427.2808342-1-dinguyen@kernel.org>
+In-Reply-To: <44b2ad71-dc4b-801c-237f-9c233f675c0d@gmail.com>
+X-Cookie: All true wisdom is found on T-shirts.
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Mon, Nov 22, 2021 at 10:04:26AM -0600, Dinh Nguyen wrote:
-> Because of commit 9cb2ff111712 ("spi: cadence-quadspi: Disable Auto-HW polling"),
-> which does a write to the CQSPI_REG_WR_COMPLETION_CTRL register
-> regardless of any condition. Well, the Cadence QuadSPI controller on
-> Intel's SoCFPGA platforms does not implement the
-> CQSPI_REG_WR_COMPLETION_CTRL register, thus a write to this register
-> results in a crash!
-> 
-> So starting with v5.16, I introduced the patch
-> 98d948eb833 ("spi: cadence-quadspi: fix write completion support"),
-> which adds the dts property "intel,socfpga-qspi" that is specific for
-> the QSPI on SoCFPGA that doesn't have the CQSPI_REG_WR_COMPLETION_CTRL
-> register implemented.
-> 
-> Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
-> ---
->  arch/arm/boot/dts/socfpga.dtsi                    | 2 +-
->  arch/arm/boot/dts/socfpga_arria10.dtsi            | 2 +-
->  arch/arm64/boot/dts/altera/socfpga_stratix10.dtsi | 2 +-
->  arch/arm64/boot/dts/intel/socfpga_agilex.dtsi     | 2 +-
->  4 files changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/arm/boot/dts/socfpga.dtsi b/arch/arm/boot/dts/socfpga.dtsi
-> index 0b021eef0b53..108c3610bf52 100644
-> --- a/arch/arm/boot/dts/socfpga.dtsi
-> +++ b/arch/arm/boot/dts/socfpga.dtsi
-> @@ -782,7 +782,7 @@ ocram: sram@ffff0000 {
->  		};
->  
->  		qspi: spi@ff705000 {
-> -			compatible = "cdns,qspi-nor";
-> +			compatible = "intel,socfpga-qpsi";
->  			#address-cells = <1>;
->  			#size-cells = <0>;
->  			reg = <0xff705000 0x1000>,
-> diff --git a/arch/arm/boot/dts/socfpga_arria10.dtsi b/arch/arm/boot/dts/socfpga_arria10.dtsi
-> index a574ea91d9d3..e1a70f3a641d 100644
-> --- a/arch/arm/boot/dts/socfpga_arria10.dtsi
-> +++ b/arch/arm/boot/dts/socfpga_arria10.dtsi
-> @@ -756,7 +756,7 @@ usb0-ecc@ff8c8800 {
->  		};
->  
->  		qspi: spi@ff809000 {
-> -			compatible = "cdns,qspi-nor";
-> +			compatible = "intel,socfpga-qspi";
->  			#address-cells = <1>;
->  			#size-cells = <0>;
->  			reg = <0xff809000 0x100>,
-> diff --git a/arch/arm64/boot/dts/altera/socfpga_stratix10.dtsi b/arch/arm64/boot/dts/altera/socfpga_stratix10.dtsi
-> index d301ac0d406b..d391153c9e6d 100644
-> --- a/arch/arm64/boot/dts/altera/socfpga_stratix10.dtsi
-> +++ b/arch/arm64/boot/dts/altera/socfpga_stratix10.dtsi
-> @@ -594,7 +594,7 @@ emac0-tx-ecc@ff8c0400 {
->  		};
->  
->  		qspi: spi@ff8d2000 {
-> -			compatible = "cdns,qspi-nor";
-> +			compatible = "intel,socfpga-qspi";
->  			#address-cells = <1>;
->  			#size-cells = <0>;
->  			reg = <0xff8d2000 0x100>,
-> diff --git a/arch/arm64/boot/dts/intel/socfpga_agilex.dtsi b/arch/arm64/boot/dts/intel/socfpga_agilex.dtsi
-> index 163f33b46e4f..de6dd2189e74 100644
-> --- a/arch/arm64/boot/dts/intel/socfpga_agilex.dtsi
-> +++ b/arch/arm64/boot/dts/intel/socfpga_agilex.dtsi
-> @@ -628,7 +628,7 @@ sdmmca-ecc@ff8c8c00 {
->  		};
->  
->  		qspi: spi@ff8d2000 {
-> -			compatible = "cdns,qspi-nor";
-> +			compatible = "intel,socfpga-qspi";
 
-A few more comments...
+--xY5nXMwOp7b+XbvL
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Now instead of reusing the same generic compatible, you are reusing the 
-same compatible across 4 different SoCs and setting yourself up for the 
-same compatibility breakage again if there is some difference among 
-these SoCs.
+On Tue, Nov 30, 2021 at 09:13:35PM +0100, Heiner Kallweit wrote:
 
-Also, keep "cdns,qspi-nor" as a fall back and you will solve the new DT 
-+ old kernel combination and the schema errors.
+> We want to continue in case of a match. Fix the erroneously inverted
+> logic.
 
-Rob
+We do?  Why?  I can't tell from this changelog what the problem is or
+why the patch would fix it.
 
+> @@ -471,10 +471,7 @@ int __spi_register_driver(struct module *owner, stru=
+ct spi_driver *sdrv)
+>  				of_name =3D of_id->compatible;
+> =20
+>  			if (sdrv->id_table) {
+> -				const struct spi_device_id *spi_id;
+> -
+> -				spi_id =3D spi_match_id(sdrv->id_table, of_name);
+> -				if (!spi_id)
+> +				if (spi_match_id(sdrv->id_table, of_name))
+>  					continue;
+>  			} else {
+>  				if (strcmp(sdrv->driver.name, of_name) =3D=3D 0)
+
+This appears to correspond to the current code anyway?
+
+--xY5nXMwOp7b+XbvL
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmGnl6EACgkQJNaLcl1U
+h9CJzgf/dpe7rjHaPFn57DqMHVkdS6TFfqmZOeOdZDn3P2ZwFDwxYGmz04nni6cD
+t0YXQ/HAYiBzb3Os41JTqAjD2jsu5qXoRzV4wrldOAfV6mDuEQHcEUnAA19lIse+
+mZ6lGZ/5mUtbljl0vUQEt+UC1u4Idcx9Xoev3Qcmzt6zAeOtwPFbWgL7iFxjUOhi
+FF7MzbkWyOQl3gSWKtLkRCF3iKhjg2SMlQ98BnzCtUOKqyDmUA5d6ttb120mHfrR
+KhaLvl3r1quQAYx6KFWffnblEiDriepjkqvIHoxUB+QznIuCamAmNjgoKAWE2qEN
+aOUYGINN74dhkQfdSF5/Mlkxjx2aJA==
+=YmXl
+-----END PGP SIGNATURE-----
+
+--xY5nXMwOp7b+XbvL--

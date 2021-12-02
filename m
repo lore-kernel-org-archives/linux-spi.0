@@ -2,118 +2,143 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4761EC433F5
-	for <linux-spi@archiver.kernel.org>; Thu,  2 Dec 2021 15:52:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 703E5C4332F
+	for <linux-spi@archiver.kernel.org>; Thu,  2 Dec 2021 16:25:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347679AbhLBPza (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 2 Dec 2021 10:55:30 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:46074 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1359294AbhLBPzY (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 2 Dec 2021 10:55:24 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 815F76268F;
-        Thu,  2 Dec 2021 15:51:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5886C00446;
-        Thu,  2 Dec 2021 15:51:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638460318;
-        bh=g3x2golTGf5LugWWOotMX5nRZX1ofZdncgn84uvvPlw=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=g6yl5S3JYHbzjRbXILCSprPqXuXohk/c8wPkgDh3Wx7E7ZAVwZ0YvZkSMHkcliUhu
-         8iN8cz92mLSvsOv1EdQXKIj2//eUuorBmlQEP7bSRjTSSLvCoOLwuY2sySf1nmxfFP
-         yxJ85XxtnxRQAFxVOZZ/mw+iDqTndt+quoFAzwRrFAmYSNsM06722ogs2TJh7XCC6d
-         x8qOQSgr42rq8v+p5NtTdsw/4ghC3gqP4sBv4gQ2Oukgsg4+6T7f1jDtmyVBP6yD8w
-         GQ69kB4Jja4TlQSIS3+Bk2orG0ojUvjgf1DkuswlDqjGTPHG41VHpM1lhEa/OeKTVx
-         BDfEl2Z6fXpkg==
-Received: by mail-ed1-f41.google.com with SMTP id y12so117393334eda.12;
-        Thu, 02 Dec 2021 07:51:58 -0800 (PST)
-X-Gm-Message-State: AOAM530zA4qaVCWBxDlsQ+ZwFUp2eVDCOY42I1vFbVm95Es2UVY3wGp9
-        qJnbAsrNAToN5VyjJbQWiHbpRRlSr1UZ0capyg==
-X-Google-Smtp-Source: ABdhPJwQBKOUdKbAtcY9buMEqJoescJX1oqIF6R8Pi1NUjzxQDmpidmsR3w6UdwGQEcoQbYSmGssgYFJ11kH/XOXeDU=
-X-Received: by 2002:aa7:cc82:: with SMTP id p2mr18177641edt.201.1638460310108;
- Thu, 02 Dec 2021 07:51:50 -0800 (PST)
+        id S1359423AbhLBQ2d (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 2 Dec 2021 11:28:33 -0500
+Received: from mx0a-001ae601.pphosted.com ([67.231.149.25]:11990 "EHLO
+        mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1347508AbhLBQ2c (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 2 Dec 2021 11:28:32 -0500
+Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
+        by mx0a-001ae601.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 1B21RQLj001056;
+        Thu, 2 Dec 2021 10:24:59 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding : content-type; s=PODMain02222019;
+ bh=HgsqgsBHa3o1t6IcTiy7koTbQrYwrYq5EqnRuh/dMAw=;
+ b=PSXQubl0KohNC4QZDgHQ4HU16En3EOa+0D1lmS72Cxo3ossICCXzPyd9Tn9HWuV3CN8Z
+ nSMyKqD/IciKX1wFTPB/QxMr37apQ94SlPvKEHKEoesznGzGS1e3MRqLIU61ml2wroNg
+ nJ0pD0YIB9OIsHJFp6mgdBZ6UyGeQpZXljany3eim/jiZFHBZYBp7L48ZOJBS/8ukyiM
+ OAw4yLrq+MKqcSFtVHLdK1d7DtKnuybOjvo4CoU8El4yO6f49vapO31RjivNBVcV7dmT
+ USzIO6wstMIrc0jqxGeIBocW7m9rCJuvbOFso/cMcC31QY8Lw5fmVF33c2ToWYDNNUTn lw== 
+Received: from ediex01.ad.cirrus.com ([84.19.233.68])
+        by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 3cp6c89wp5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Thu, 02 Dec 2021 10:24:59 -0600
+Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.17; Thu, 2 Dec
+ 2021 16:24:57 +0000
+Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server id 15.1.2375.17 via Frontend
+ Transport; Thu, 2 Dec 2021 16:24:57 +0000
+Received: from LONN2DGDQ73.ad.cirrus.com (unknown [198.90.238.136])
+        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 3992D475;
+        Thu,  2 Dec 2021 16:24:57 +0000 (UTC)
+From:   Stefan Binding <sbinding@opensource.cirrus.com>
+To:     Mark Brown <broonie@kernel.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <markgross@kernel.org>
+CC:     <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+        <linux-acpi@vger.kernel.org>,
+        <platform-driver-x86@vger.kernel.org>,
+        <patches@opensource.cirrus.com>,
+        Stefan Binding <sbinding@opensource.cirrus.com>
+Subject: [PATCH 2/3] spi: Make spi_alloc_device and spi_add_device public again
+Date:   Thu, 2 Dec 2021 16:24:20 +0000
+Message-ID: <20211202162421.7628-2-sbinding@opensource.cirrus.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20211202162421.7628-1-sbinding@opensource.cirrus.com>
+References: <20211202162421.7628-1-sbinding@opensource.cirrus.com>
 MIME-Version: 1.0
-References: <20211126163450.394861-1-miquel.raynal@bootlin.com>
- <20211126163450.394861-3-miquel.raynal@bootlin.com> <YagN1c7/Ltt/mhNp@robh.at.kernel.org>
- <20211202082521.77c2837f@xps13>
-In-Reply-To: <20211202082521.77c2837f@xps13>
-From:   Rob Herring <robh@kernel.org>
-Date:   Thu, 2 Dec 2021 09:51:37 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqLL3rxA4p7T1girYOJ2cHTWSEJWWvSUpFOfz9ZTjMXAHQ@mail.gmail.com>
-Message-ID: <CAL_JsqLL3rxA4p7T1girYOJ2cHTWSEJWWvSUpFOfz9ZTjMXAHQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/5] dt-bindings: mtd: spi-nor: Allow external properties
-To:     Miquel Raynal <miquel.raynal@bootlin.com>
-Cc:     Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Tudor Ambarus <Tudor.Ambarus@microchip.com>,
-        Pratyush Yadav <p.yadav@ti.com>,
-        Michael Walle <michael@walle.cc>,
-        linux-mtd@lists.infradead.org, Mark Brown <broonie@kernel.org>,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Michal Simek <monstr@monstr.eu>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: U2pXAwrv201fVDq3keUN-Ur5yeWtXZjZ
+X-Proofpoint-GUID: U2pXAwrv201fVDq3keUN-Ur5yeWtXZjZ
+X-Proofpoint-Spam-Reason: safe
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, Dec 2, 2021 at 1:25 AM Miquel Raynal <miquel.raynal@bootlin.com> wrote:
->
-> Hi Rob,
->
-> robh@kernel.org wrote on Wed, 1 Dec 2021 18:05:41 -0600:
->
-> > On Fri, Nov 26, 2021 at 05:34:47PM +0100, Miquel Raynal wrote:
-> > > Setting "additionalProperties: false" will refuse any generic SPI
-> > > property while they should be of course authorized. In practice it looks
-> > > like many people used compatibles different than "jedec,spi-nor" in
-> > > order to workaround this limitation because otherwise no SPI property
-> > > could be used in the examples. Use "unevaluatedProperties: false"
-> > > instead to allow defined properties to be used. It is likely that at the
-> > > time of the conversion to yaml of the jedec file, the unevaluated
-> > > keyword was not yet introduced.
-> > >
-> > > Fixes: 3ff9ee2a8890 ("dt-bindings: mtd: spi-nor: Convert to DT schema format")
-> > > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-> > > ---
-> > >  Documentation/devicetree/bindings/mtd/jedec,spi-nor.yaml | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/mtd/jedec,spi-nor.yaml b/Documentation/devicetree/bindings/mtd/jedec,spi-nor.yaml
-> > > index ed590d7c6e37..81be0620b264 100644
-> > > --- a/Documentation/devicetree/bindings/mtd/jedec,spi-nor.yaml
-> > > +++ b/Documentation/devicetree/bindings/mtd/jedec,spi-nor.yaml
-> > > @@ -88,7 +88,7 @@ patternProperties:
-> > >    "^otp(-[0-9]+)?$":
-> > >      type: object
-> > >
-> > > -additionalProperties: false
-> > > +unevaluatedProperties: false
-> >
-> > This has no effect unless you have referenced some other schema here.
-> > The series I referenced will solve what your trying to solve I think.
->
-> Maybe this is not the right fix indeed, but my understanding of json
-> reaches its bounds here.
->
-> Without this change, any example in this file that references a
-> spi-controller.yaml property (which is correctly defined) will throw an
-> error. The fact is, all the examples out there with a spi-nor flash
-> using the jedec,spi-nor compatible *cannot* contain any
-> spi-controller.yaml property, otherwise the tooling errors out. This is
-> a real issue.
+This functions were previously made private since they
+were not used. However, these functions will be needed
+again.
 
-That's probably because unevaluatedProperties is unimplemented in the
-last dtschema release, but now supported in main branch. I'll be
-tagging a release soon. So once the newer version is used, you should
-be back to the same error.
+Partial revert of commit da21fde0fdb3
+("spi: Make several public functions private to spi.c")
 
-> I will give Pratyush's series a try.
+Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+---
+ drivers/spi/spi.c       |  6 ++++--
+ include/linux/spi/spi.h | 12 ++++++++++++
+ 2 files changed, 16 insertions(+), 2 deletions(-)
 
-Referencing spi-peripheral.yaml with 'unevaluatedProperties: false'
-should give you what you need.
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 7c81173edb0c..ebce296662c4 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -531,7 +531,7 @@ static DEFINE_MUTEX(board_lock);
+  *
+  * Return: a pointer to the new device, or NULL.
+  */
+-static struct spi_device *spi_alloc_device(struct spi_controller *ctlr)
++struct spi_device *spi_alloc_device(struct spi_controller *ctlr)
+ {
+ 	struct spi_device	*spi;
+ 
+@@ -556,6 +556,7 @@ static struct spi_device *spi_alloc_device(struct spi_controller *ctlr)
+ 	device_initialize(&spi->dev);
+ 	return spi;
+ }
++EXPORT_SYMBOL_GPL(spi_alloc_device);
+ 
+ static void spi_dev_set_name(struct spi_device *spi)
+ {
+@@ -651,7 +652,7 @@ static int __spi_add_device(struct spi_device *spi)
+  *
+  * Return: 0 on success; negative errno on failure
+  */
+-static int spi_add_device(struct spi_device *spi)
++int spi_add_device(struct spi_device *spi)
+ {
+ 	struct spi_controller *ctlr = spi->controller;
+ 	struct device *dev = ctlr->dev.parent;
+@@ -672,6 +673,7 @@ static int spi_add_device(struct spi_device *spi)
+ 	mutex_unlock(&ctlr->add_lock);
+ 	return status;
+ }
++EXPORT_SYMBOL_GPL(spi_add_device);
+ 
+ static int spi_add_device_locked(struct spi_device *spi)
+ {
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 5f2781cb750f..eb348cee1c57 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -1454,7 +1454,19 @@ spi_register_board_info(struct spi_board_info const *info, unsigned n)
+  * use spi_new_device() to describe each device.  You can also call
+  * spi_unregister_device() to start making that device vanish, but
+  * normally that would be handled by spi_unregister_controller().
++ *
++ * You can also use spi_alloc_device() and spi_add_device() to use a two
++ * stage registration sequence for each spi_device.  This gives the caller
++ * some more control over the spi_device structure before it is registered,
++ * but requires that caller to initialize fields that would otherwise
++ * be defined using the board info.
+  */
++extern struct spi_device *
++spi_alloc_device(struct spi_controller *ctlr);
++
++extern int
++spi_add_device(struct spi_device *spi);
++
+ extern struct spi_device *
+ spi_new_device(struct spi_controller *, struct spi_board_info *);
+ 
+-- 
+2.25.1
 
-Rob

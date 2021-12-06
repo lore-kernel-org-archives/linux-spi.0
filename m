@@ -2,18 +2,18 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 55C29C433F5
-	for <linux-spi@archiver.kernel.org>; Mon,  6 Dec 2021 09:59:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3E272C433EF
+	for <linux-spi@archiver.kernel.org>; Mon,  6 Dec 2021 09:59:32 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241686AbhLFKC5 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 6 Dec 2021 05:02:57 -0500
-Received: from relay1-d.mail.gandi.net ([217.70.183.193]:37103 "EHLO
+        id S241696AbhLFKC7 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 6 Dec 2021 05:02:59 -0500
+Received: from relay1-d.mail.gandi.net ([217.70.183.193]:35143 "EHLO
         relay1-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230400AbhLFKC4 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 6 Dec 2021 05:02:56 -0500
+        with ESMTP id S241693AbhLFKC7 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 6 Dec 2021 05:02:59 -0500
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id 7FF7324000B;
-        Mon,  6 Dec 2021 09:59:25 +0000 (UTC)
+        by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id E99E0240004;
+        Mon,  6 Dec 2021 09:59:28 +0000 (UTC)
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Richard Weinberger <richard@nod.at>,
         Vignesh Raghavendra <vigneshr@ti.com>,
@@ -25,11 +25,10 @@ To:     Richard Weinberger <richard@nod.at>,
         <devicetree@vger.kernel.org>
 Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         Michal Simek <monstr@monstr.eu>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Rob Herring <robh@kernel.org>
-Subject: [PATCH v3 1/3] dt-bindings: mtd: spi-nor: Allow two CS per device
-Date:   Mon,  6 Dec 2021 10:59:19 +0100
-Message-Id: <20211206095921.33302-2-miquel.raynal@bootlin.com>
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH v3 3/3] spi: dt-bindings: Add an example with two stacked flashes
+Date:   Mon,  6 Dec 2021 10:59:21 +0100
+Message-Id: <20211206095921.33302-4-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20211206095921.33302-1-miquel.raynal@bootlin.com>
 References: <20211206095921.33302-1-miquel.raynal@bootlin.com>
@@ -40,45 +39,29 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The Xilinx QSPI controller has two advanced modes which allow the
-controller to behave differently and consider two flashes as one single
-storage.
-
-One of these two modes is quite complex to support from a binding point
-of view and is the dual parallel memories. In this mode, each byte of
-data is stored in both devices: the even bits in one, the odd bits in
-the other. The split is automatically handled by the QSPI controller and
-is transparent for the user.
-
-The other mode is simpler to support, it is called dual stacked
-memories. The controller shares the same SPI bus but each of the devices
-contain half of the data. Once in this mode, the controller does not
-follow CS requests but instead internally wires the two CS levels with
-the value of the most significant address bit.
-
-Supporting these two modes will involve core changes which include the
-possibility of providing two CS for a single SPI device
+Provide an example of how to describe two flashes in eg. stacked mode.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Acked-by: Rob Herring <robh@kernel.org>
 ---
- Documentation/devicetree/bindings/mtd/jedec,spi-nor.yaml | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ Documentation/devicetree/bindings/spi/spi-controller.yaml | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/mtd/jedec,spi-nor.yaml b/Documentation/devicetree/bindings/mtd/jedec,spi-nor.yaml
-index 39421f7233e4..4abfb4cfc157 100644
---- a/Documentation/devicetree/bindings/mtd/jedec,spi-nor.yaml
-+++ b/Documentation/devicetree/bindings/mtd/jedec,spi-nor.yaml
-@@ -47,7 +47,8 @@ properties:
-       identified by the JEDEC READ ID opcode (0x9F).
- 
-   reg:
--    maxItems: 1
-+    minItems: 1
-+    maxItems: 2
- 
-   spi-max-frequency: true
-   spi-rx-bus-width: true
+diff --git a/Documentation/devicetree/bindings/spi/spi-controller.yaml b/Documentation/devicetree/bindings/spi/spi-controller.yaml
+index 36b72518f565..35743448fdd2 100644
+--- a/Documentation/devicetree/bindings/spi/spi-controller.yaml
++++ b/Documentation/devicetree/bindings/spi/spi-controller.yaml
+@@ -139,4 +139,11 @@ examples:
+             spi-max-frequency = <100000>;
+             reg = <1>;
+         };
++
++        flash@2 {
++          compatible = "jedec,spi-nor";
++          spi-max-frequency = <50000000>;
++          reg = <2>, <3>;
++          stacked-memories;
++        };
+     };
 -- 
 2.27.0
 

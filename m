@@ -2,86 +2,90 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6B426C4321E
-	for <linux-spi@archiver.kernel.org>; Mon,  6 Dec 2021 09:59:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 58A0EC433F5
+	for <linux-spi@archiver.kernel.org>; Mon,  6 Dec 2021 10:19:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241690AbhLFKC6 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 6 Dec 2021 05:02:58 -0500
-Received: from relay1-d.mail.gandi.net ([217.70.183.193]:34503 "EHLO
-        relay1-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241681AbhLFKC6 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 6 Dec 2021 05:02:58 -0500
-Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id B73FB24001E;
-        Mon,  6 Dec 2021 09:59:27 +0000 (UTC)
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Tudor Ambarus <Tudor.Ambarus@microchip.com>,
-        Pratyush Yadav <p.yadav@ti.com>,
-        Michael Walle <michael@walle.cc>,
-        <linux-mtd@lists.infradead.org>, Mark Brown <broonie@kernel.org>,
-        <linux-spi@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        <devicetree@vger.kernel.org>
-Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Michal Simek <monstr@monstr.eu>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH v3 2/3] spi: dt-bindings: Describe stacked/parallel memories modes
-Date:   Mon,  6 Dec 2021 10:59:20 +0100
-Message-Id: <20211206095921.33302-3-miquel.raynal@bootlin.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20211206095921.33302-1-miquel.raynal@bootlin.com>
-References: <20211206095921.33302-1-miquel.raynal@bootlin.com>
+        id S229561AbhLFKXQ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 6 Dec 2021 05:23:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43518 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235864AbhLFKXQ (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 6 Dec 2021 05:23:16 -0500
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2501BC061746;
+        Mon,  6 Dec 2021 02:19:48 -0800 (PST)
+Received: by mail-pj1-x1035.google.com with SMTP id np3so7336729pjb.4;
+        Mon, 06 Dec 2021 02:19:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=xHiQF5KcZbTv3Qqm535H5M3DFvNPj9KMau4f6OVUWv4=;
+        b=gQu1F9uRKL5U1u+WTSRGquMaxFwy0fYtJdWtXGRoQ2WXrdl+OgeoO4XJ1U5Q+QFNH3
+         vU7YuOoN02u2NV1t3sWCbC3z0GzCQBPKxwFgm9jbGo0nn2CKsyFwZINWmx7Uk1Vnkq0q
+         hpYnnRO5p1d4+vwIkG50k2/AQNZEj8zKG5osMvuoLcdIWU8QA1DOCe6MrSJnxNGs2V51
+         GP4Tg91eiZURpZDO5ilUjwfpwb3t/qc+XehR5eb+bzw9HSgNdsAqihYJKuuI54RNIJ+I
+         nbwCaKT7uZrFXbXrBI0DUGJE1omD1szZzMTHxzx2ofEHNtYn2W1wrCNnJeyiLC2K38jf
+         myjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=xHiQF5KcZbTv3Qqm535H5M3DFvNPj9KMau4f6OVUWv4=;
+        b=1wxG781bnPWWfZ/M3GwUTj6WP8zuIYq6WhpogD4ZcleYOK1OjYCm5XUpw6f8j68EyH
+         n6dhagLtQiaCWwBV+038E4G+mPcN37bY2hOybB0WG9C+2UpzIXkrFIXraqEmJCtQNjkZ
+         OVqUqULba3Od/hpKUOuOxT67JTgKiPdbP8qmacIvXSDWPh8hsJGqYDYsT1ON5bDP0rzV
+         7gqa6ptAA7FohKr3vI9KFmu7CEnIdk578BmSDZzPqyKEvS/0oC+vK6Y2KxnI0+P3nblF
+         +9Nziqh8M6yxn0UBfQ+zSdcsCZKfwbc07XaxafiaG1ha3Z0k1WlrAr5yxZ9ozYWdwGqd
+         wzog==
+X-Gm-Message-State: AOAM531mm+HFeDwSzMCizbskC2pcyucyBWFpNjZe+nwRzkCajc0A6JB6
+        2/DTqgahhZkQZJ+hoNymJts=
+X-Google-Smtp-Source: ABdhPJzEHG3loiSWcOl+laN0WgxshO0veKOHiZhb5CFmx+qDYXu6qYWDGl8qiU11GvgPvyHyTXJPUA==
+X-Received: by 2002:a17:90a:6b44:: with SMTP id x4mr36109851pjl.27.1638785987545;
+        Mon, 06 Dec 2021 02:19:47 -0800 (PST)
+Received: from localhost.localdomain ([94.177.118.54])
+        by smtp.gmail.com with ESMTPSA id j17sm11559441pfe.174.2021.12.06.02.19.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Dec 2021 02:19:47 -0800 (PST)
+From:   Dongliang Mu <mudongliangabcd@gmail.com>
+To:     Mark Brown <broonie@kernel.org>,
+        Romain Perier <romain.perier@free-electrons.com>
+Cc:     Dongliang Mu <mudongliangabcd@gmail.com>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] driver:spi: change clk_disable_unprepare to clk_unprepare
+Date:   Mon,  6 Dec 2021 18:19:31 +0800
+Message-Id: <20211206101931.2816597-1-mudongliangabcd@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Describe two new memories modes:
-- A stacked mode when the bus is common but the address space extended
-  with an additinals wires.
-- A parallel mode with parallel busses accessing parallel flashes where
-  the data is spread.
+The corresponding API for clk_prepare is clk_unprepare, other than
+clk_disable_unprepare.
 
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Fix this by changing clk_disable_unprepare to clk_unprepare.
+
+Fixes: 5762ab71eb24 ("spi: Add support for Armada 3700 SPI Controller")
+Signed-off-by: Dongliang Mu <mudongliangabcd@gmail.com>
 ---
- .../bindings/spi/spi-peripheral-props.yaml    | 21 +++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ drivers/spi/spi-armada-3700.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-index 5dd209206e88..13aa6a2374c9 100644
---- a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-+++ b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-@@ -82,6 +82,27 @@ properties:
-     description:
-       Delay, in microseconds, after a write transfer.
+diff --git a/drivers/spi/spi-armada-3700.c b/drivers/spi/spi-armada-3700.c
+index 46feafe4e201..d8cc4b270644 100644
+--- a/drivers/spi/spi-armada-3700.c
++++ b/drivers/spi/spi-armada-3700.c
+@@ -901,7 +901,7 @@ static int a3700_spi_probe(struct platform_device *pdev)
+ 	return 0;
  
-+  stacked-memories:
-+    type: boolean
-+    description: Several SPI memories can be wired in stacked mode.
-+      This basically means that either a device features several chip
-+      selects, or that different devices must be seen as a single
-+      bigger chip. This basically doubles (or more) the total address
-+      space with only a single additional wire, while still needing
-+      to repeat the commands when crossing a chip boundary. XIP is
-+      usually not supported in this mode.
-+
-+  parallel-memories:
-+    type: boolean
-+    description: Several SPI memories can be wired in parallel mode.
-+      The devices are physically on a different buses but will always
-+      act synchronously as each data word is spread across the
-+      different memories (eg. even bits are stored in one memory, odd
-+      bits in the other). This basically doubles the address space and
-+      the throughput while greatly complexifying the wiring because as
-+      many busses as devices must be wired. XIP is usually not
-+      supported in this mode.
-+
- # The controller specific properties go here.
- allOf:
-   - $ref: cdns,qspi-nor-peripheral-props.yaml#
+ error_clk:
+-	clk_disable_unprepare(spi->clk);
++	clk_unprepare(spi->clk);
+ error:
+ 	spi_master_put(master);
+ out:
 -- 
-2.27.0
+2.25.1
 

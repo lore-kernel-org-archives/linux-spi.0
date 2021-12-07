@@ -2,18 +2,18 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6F86CC433F5
-	for <linux-spi@archiver.kernel.org>; Tue,  7 Dec 2021 09:34:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2393FC433EF
+	for <linux-spi@archiver.kernel.org>; Tue,  7 Dec 2021 09:34:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234105AbhLGJiF (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 7 Dec 2021 04:38:05 -0500
-Received: from relay3-d.mail.gandi.net ([217.70.183.195]:33977 "EHLO
+        id S234133AbhLGJiG (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 7 Dec 2021 04:38:06 -0500
+Received: from relay3-d.mail.gandi.net ([217.70.183.195]:38619 "EHLO
         relay3-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234034AbhLGJh6 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 7 Dec 2021 04:37:58 -0500
+        with ESMTP id S234079AbhLGJiD (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 7 Dec 2021 04:38:03 -0500
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id A633F60018;
-        Tue,  7 Dec 2021 09:34:26 +0000 (UTC)
+        by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id CB8626000A;
+        Tue,  7 Dec 2021 09:34:30 +0000 (UTC)
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Richard Weinberger <richard@nod.at>,
         Vignesh Raghavendra <vigneshr@ti.com>,
@@ -30,9 +30,9 @@ Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         Boris Brezillon <boris.brezillon@collabora.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>,
         Rob Herring <robh@kernel.org>
-Subject: [PATCH v3 02/22] dt-bindings: mtd: nand-controller: Fix a comment in the examples
-Date:   Tue,  7 Dec 2021 10:34:02 +0100
-Message-Id: <20211207093422.166934-3-miquel.raynal@bootlin.com>
+Subject: [PATCH v3 05/22] dt-bindings: mtd: spi-nand: Convert spi-nand description file to yaml
+Date:   Tue,  7 Dec 2021 10:34:05 +0100
+Message-Id: <20211207093422.166934-6-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20211207093422.166934-1-miquel.raynal@bootlin.com>
 References: <20211207093422.166934-1-miquel.raynal@bootlin.com>
@@ -43,30 +43,63 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The controller properties should be in the controller 'parent' node,
-while properties in the children nodes are specific to the NAND
-*chip*. This error was already present during the yaml conversion.
+Let's get rid of spi-nand.txt by converting it to yaml schema. While at
+converting this file, let's actually pull all the generic properties
+from nand-chip.yaml which might apply to a SPI-NAND chip.
 
-Fixes: 2d472aba15ff ("mtd: nand: document the NAND controller/NAND chip DT representation")
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Acked-by: Rob Herring <robh@kernel.org>
+Reviewed-by: Rob Herring <robh@kernel.org>
 ---
- Documentation/devicetree/bindings/mtd/nand-controller.yaml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../devicetree/bindings/mtd/spi-nand.txt      |  5 ----
+ .../devicetree/bindings/mtd/spi-nand.yaml     | 27 +++++++++++++++++++
+ 2 files changed, 27 insertions(+), 5 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/mtd/spi-nand.txt
+ create mode 100644 Documentation/devicetree/bindings/mtd/spi-nand.yaml
 
-diff --git a/Documentation/devicetree/bindings/mtd/nand-controller.yaml b/Documentation/devicetree/bindings/mtd/nand-controller.yaml
-index 811f03978fc6..5cd144a9ec99 100644
---- a/Documentation/devicetree/bindings/mtd/nand-controller.yaml
-+++ b/Documentation/devicetree/bindings/mtd/nand-controller.yaml
-@@ -184,7 +184,7 @@ examples:
-         nand-use-soft-ecc-engine;
-         nand-ecc-algo = "bch";
- 
--        /* controller specific properties */
-+        /* NAND chip specific properties */
-       };
- 
-       nand@1 {
+diff --git a/Documentation/devicetree/bindings/mtd/spi-nand.txt b/Documentation/devicetree/bindings/mtd/spi-nand.txt
+deleted file mode 100644
+index 8b51f3b6d55c..000000000000
+--- a/Documentation/devicetree/bindings/mtd/spi-nand.txt
++++ /dev/null
+@@ -1,5 +0,0 @@
+-SPI NAND flash
+-
+-Required properties:
+-- compatible: should be "spi-nand"
+-- reg: should encode the chip-select line used to access the NAND chip
+diff --git a/Documentation/devicetree/bindings/mtd/spi-nand.yaml b/Documentation/devicetree/bindings/mtd/spi-nand.yaml
+new file mode 100644
+index 000000000000..19ac57dcffc3
+--- /dev/null
++++ b/Documentation/devicetree/bindings/mtd/spi-nand.yaml
+@@ -0,0 +1,27 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/mtd/spi-nand.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: SPI-NAND flash device tree bindings
++
++maintainers:
++  - Miquel Raynal <miquel.raynal@bootlin.com>
++
++allOf:
++  - $ref: "nand-chip.yaml#"
++
++properties:
++  compatible:
++    const: spi-nand
++
++  reg:
++    maxItems: 1
++    description: Encode the chip-select line on the SPI bus
++
++required:
++  - compatible
++  - reg
++
++unevaluatedProperties: false
 -- 
 2.27.0
 

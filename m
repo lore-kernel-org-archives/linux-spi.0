@@ -2,18 +2,18 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 07231C43219
-	for <linux-spi@archiver.kernel.org>; Tue,  7 Dec 2021 09:35:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6BB2DC433F5
+	for <linux-spi@archiver.kernel.org>; Tue,  7 Dec 2021 09:35:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234137AbhLGJi3 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 7 Dec 2021 04:38:29 -0500
-Received: from relay3-d.mail.gandi.net ([217.70.183.195]:33693 "EHLO
+        id S234233AbhLGJib (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 7 Dec 2021 04:38:31 -0500
+Received: from relay3-d.mail.gandi.net ([217.70.183.195]:39693 "EHLO
         relay3-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234132AbhLGJiP (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 7 Dec 2021 04:38:15 -0500
+        with ESMTP id S234160AbhLGJiT (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 7 Dec 2021 04:38:19 -0500
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id 385BE60006;
-        Tue,  7 Dec 2021 09:34:43 +0000 (UTC)
+        by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id A745C60007;
+        Tue,  7 Dec 2021 09:34:47 +0000 (UTC)
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Richard Weinberger <richard@nod.at>,
         Vignesh Raghavendra <vigneshr@ti.com>,
@@ -29,9 +29,9 @@ Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         Jaime Liao <jaimeliao@mxic.com.tw>,
         Boris Brezillon <boris.brezillon@collabora.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH v3 13/22] mtd: nand: Add a new helper to retrieve the ECC context
-Date:   Tue,  7 Dec 2021 10:34:13 +0100
-Message-Id: <20211207093422.166934-14-miquel.raynal@bootlin.com>
+Subject: [PATCH v3 16/22] mtd: spinand: Delay a little bit dirmap creation
+Date:   Tue,  7 Dec 2021 10:34:16 +0100
+Message-Id: <20211207093422.166934-17-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20211207093422.166934-1-miquel.raynal@bootlin.com>
 References: <20211207093422.166934-1-miquel.raynal@bootlin.com>
@@ -42,32 +42,50 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Introduce nand_to_ecc_ctx() which will allow to easily jump to the
-private pointer of an ECC context given a NAND device. This is very
-handy, from the prepare or finish ECC hook, to get the internal context
-out of the NAND device object.
+As we will soon tweak the dirmap creation to act a little bit
+differently depending on the picked ECC engine, we need to initialize
+dirmaps after ECC engines. This should not have any effect as dirmaps
+are not yet used at this point.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- include/linux/mtd/nand.h | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/mtd/nand/spi/core.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/mtd/nand.h b/include/linux/mtd/nand.h
-index 4ddd20fe9c9e..b617efa0a881 100644
---- a/include/linux/mtd/nand.h
-+++ b/include/linux/mtd/nand.h
-@@ -990,6 +990,11 @@ int nanddev_markbad(struct nand_device *nand, const struct nand_pos *pos);
- int nanddev_ecc_engine_init(struct nand_device *nand);
- void nanddev_ecc_engine_cleanup(struct nand_device *nand);
+diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
+index 7027c09925e2..715cad26fdef 100644
+--- a/drivers/mtd/nand/spi/core.c
++++ b/drivers/mtd/nand/spi/core.c
+@@ -1209,14 +1209,6 @@ static int spinand_init(struct spinand_device *spinand)
+ 	if (ret)
+ 		goto err_free_bufs;
  
-+static inline void *nand_to_ecc_ctx(struct nand_device *nand)
-+{
-+	return nand->ecc.ctx.priv;
-+}
+-	ret = spinand_create_dirmaps(spinand);
+-	if (ret) {
+-		dev_err(dev,
+-			"Failed to create direct mappings for read/write operations (err = %d)\n",
+-			ret);
+-		goto err_manuf_cleanup;
+-	}
+-
+ 	ret = nanddev_init(nand, &spinand_ops, THIS_MODULE);
+ 	if (ret)
+ 		goto err_manuf_cleanup;
+@@ -1251,6 +1243,14 @@ static int spinand_init(struct spinand_device *spinand)
+ 	mtd->ecc_strength = nanddev_get_ecc_conf(nand)->strength;
+ 	mtd->ecc_step_size = nanddev_get_ecc_conf(nand)->step_size;
+ 
++	ret = spinand_create_dirmaps(spinand);
++	if (ret) {
++		dev_err(dev,
++			"Failed to create direct mappings for read/write operations (err = %d)\n",
++			ret);
++		goto err_cleanup_ecc_engine;
++	}
 +
- /* BBT related functions */
- enum nand_bbt_block_status {
- 	NAND_BBT_BLOCK_STATUS_UNKNOWN,
+ 	return 0;
+ 
+ err_cleanup_ecc_engine:
 -- 
 2.27.0
 

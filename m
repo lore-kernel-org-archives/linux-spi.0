@@ -2,85 +2,71 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4606FC433FE
-	for <linux-spi@archiver.kernel.org>; Tue,  7 Dec 2021 08:44:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 72D2FC433FE
+	for <linux-spi@archiver.kernel.org>; Tue,  7 Dec 2021 09:34:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232448AbhLGIrk convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 7 Dec 2021 03:47:40 -0500
-Received: from relay12.mail.gandi.net ([217.70.178.232]:39147 "EHLO
-        relay12.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229846AbhLGIrj (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 7 Dec 2021 03:47:39 -0500
+        id S234081AbhLGJiC (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 7 Dec 2021 04:38:02 -0500
+Received: from relay3-d.mail.gandi.net ([217.70.183.195]:37113 "EHLO
+        relay3-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234000AbhLGJh5 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 7 Dec 2021 04:37:57 -0500
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay12.mail.gandi.net (Postfix) with ESMTPSA id 9A91E20000C;
-        Tue,  7 Dec 2021 08:44:06 +0000 (UTC)
-Date:   Tue, 7 Dec 2021 09:44:05 +0100
+        by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id 4A73C6001A;
+        Tue,  7 Dec 2021 09:34:25 +0000 (UTC)
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     <Tudor.Ambarus@microchip.com>
-Cc:     <richard@nod.at>, <vigneshr@ti.com>, <p.yadav@ti.com>,
-        <michael@walle.cc>, <linux-mtd@lists.infradead.org>,
-        <broonie@kernel.org>, <linux-spi@vger.kernel.org>,
-        <robh+dt@kernel.org>, <devicetree@vger.kernel.org>,
-        <thomas.petazzoni@bootlin.com>, <monstr@monstr.eu>,
-        <robh@kernel.org>
-Subject: Re: [PATCH v3 1/3] dt-bindings: mtd: spi-nor: Allow two CS per
- device
-Message-ID: <20211207094405.6083b141@xps13>
-In-Reply-To: <e5d05d00-8823-f9a2-156e-ac0c268d705c@microchip.com>
-References: <20211206095921.33302-1-miquel.raynal@bootlin.com>
-        <20211206095921.33302-2-miquel.raynal@bootlin.com>
-        <e5d05d00-8823-f9a2-156e-ac0c268d705c@microchip.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+To:     Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Tudor Ambarus <Tudor.Ambarus@microchip.com>,
+        Pratyush Yadav <p.yadav@ti.com>,
+        Michael Walle <michael@walle.cc>,
+        <linux-mtd@lists.infradead.org>, Mark Brown <broonie@kernel.org>,
+        <linux-spi@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        <devicetree@vger.kernel.org>
+Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Xiangsheng Hou <Xiangsheng.Hou@mediatek.com>,
+        Julien Su <juliensu@mxic.com.tw>,
+        Jaime Liao <jaimeliao@mxic.com.tw>,
+        Boris Brezillon <boris.brezillon@collabora.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Rob Herring <robh@kernel.org>
+Subject: [PATCH v3 01/22] dt-bindings: mtd: nand-controller: Fix the reg property description
+Date:   Tue,  7 Dec 2021 10:34:01 +0100
+Message-Id: <20211207093422.166934-2-miquel.raynal@bootlin.com>
+X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20211207093422.166934-1-miquel.raynal@bootlin.com>
+References: <20211207093422.166934-1-miquel.raynal@bootlin.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hello Tudor,
+The reg property of a NAND device always references the chip-select(s).
+The ready/busy lines are described in the nand-rb property. I believe
+this was a harmless copy/paste error during the conversion to yaml.
 
-Tudor.Ambarus@microchip.com wrote on Tue, 7 Dec 2021 07:16:11 +0000:
+Fixes: 212e49693592 ("dt-bindings: mtd: Add YAML schemas for the generic NAND options")
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Acked-by: Rob Herring <robh@kernel.org>
+---
+ Documentation/devicetree/bindings/mtd/nand-controller.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> Hi, Miquel,
-> 
-> On 12/6/21 11:59 AM, Miquel Raynal wrote:
-> > EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
-> > 
-> > The Xilinx QSPI controller has two advanced modes which allow the
-> > controller to behave differently and consider two flashes as one single
-> > storage.
-> > 
-> > One of these two modes is quite complex to support from a binding point
-> > of view and is the dual parallel memories. In this mode, each byte of
-> > data is stored in both devices: the even bits in one, the odd bits in
-> > the other. The split is automatically handled by the QSPI controller and
-> > is transparent for the user.
-> > 
-> > The other mode is simpler to support, it is called dual stacked
-> > memories. The controller shares the same SPI bus but each of the devices
-> > contain half of the data. Once in this mode, the controller does not
-> > follow CS requests but instead internally wires the two CS levels with
-> > the value of the most significant address bit.  
-> 
-> The stacked mode that you describe seems particular to a specific
-> vendor. There are multi die NOR flashes which do not require any
-> controller intervention, the logic is held at the flash level:
-> https://media-www.micron.com/-/media/client/global/documents/products/technical-note/nor-flash/tn2505_n25q_mt25q_stacked_devices.pdf?rev=7a23cc95238e46f7b22e2a9f6bc736b7
-> 
-> Can you point us to which kind of memories you're willing to add
-> support for? Some datasheets will be best.
+diff --git a/Documentation/devicetree/bindings/mtd/nand-controller.yaml b/Documentation/devicetree/bindings/mtd/nand-controller.yaml
+index bd217e6f5018..811f03978fc6 100644
+--- a/Documentation/devicetree/bindings/mtd/nand-controller.yaml
++++ b/Documentation/devicetree/bindings/mtd/nand-controller.yaml
+@@ -55,7 +55,7 @@ patternProperties:
+     properties:
+       reg:
+         description:
+-          Contains the native Ready/Busy IDs.
++          Contains the chip-select IDs.
+ 
+       nand-ecc-engine:
+         allOf:
+-- 
+2.27.0
 
-Unfortunately I don't have any datasheets to propose, I think this mode
-must be seen like a controller abstraction of any device with several
-physical cs.
-
-The question: "should these properties be common to all devices" is
-still open, I don't have a strong opinion, whether we should make these
-Xilinx specific, or not. For now they are, but in the near future, it
-is not so sure (and my crystal ball is under maintenance ;) ).
-
-Thanks,
-Miquèl

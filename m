@@ -2,92 +2,111 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 45D72C433F5
-	for <linux-spi@archiver.kernel.org>; Tue,  7 Dec 2021 14:31:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E2FF7C433FE
+	for <linux-spi@archiver.kernel.org>; Wed,  8 Dec 2021 06:59:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232417AbhLGOfE (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 7 Dec 2021 09:35:04 -0500
-Received: from sin.source.kernel.org ([145.40.73.55]:45320 "EHLO
-        sin.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231591AbhLGOfD (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 7 Dec 2021 09:35:03 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S240432AbhLHHCf (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 8 Dec 2021 02:02:35 -0500
+Received: from mx1.tq-group.com ([93.104.207.81]:41651 "EHLO mx1.tq-group.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231193AbhLHHCf (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 8 Dec 2021 02:02:35 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1638946744; x=1670482744;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=ys3xoYYUg/XfO70GY89Mdf0y1dgqNyrnRzK/L7xZwVs=;
+  b=FwoPrpXVpmtkL3MqtiDLSUv61ZbQg4LgARWX1tgCIHPZ1FMpGN5LOf/B
+   7TOBRPluMPo3pW171xPV9EyuoJ3SMZ9tuMaanHJfvdH0gz9kR/sXJ/2Sw
+   pHbMnaDLal3co+Wh2AfVRhLrVYCdngMjk6u/DsR9bWJd10rul2Z+gBHVG
+   98D48aZWkAUyJZmkQF7A1SmwD4nXkkHEzUuoZpLh5ngchB7pbiII5BKkv
+   xwDlK3or9Yl1lM0x8Cs35MrqqUOfolVFUX2XGN2u/rF4Z+c6k8c0gEfzh
+   Us+7mwj/O4yE0EdJig5Ax5zNrzHEv9UrUCSwniDcz5iWUsnDUbIH6s5rs
+   Q==;
+X-IronPort-AV: E=Sophos;i="5.87,296,1631570400"; 
+   d="scan'208";a="20913638"
+Received: from unknown (HELO tq-pgp-pr1.tq-net.de) ([192.168.6.15])
+  by mx1-pgp.tq-group.com with ESMTP; 08 Dec 2021 07:59:03 +0100
+Received: from mx1.tq-group.com ([192.168.6.7])
+  by tq-pgp-pr1.tq-net.de (PGP Universal service);
+  Wed, 08 Dec 2021 07:59:03 +0100
+X-PGP-Universal: processed;
+        by tq-pgp-pr1.tq-net.de on Wed, 08 Dec 2021 07:59:03 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1638946743; x=1670482743;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=ys3xoYYUg/XfO70GY89Mdf0y1dgqNyrnRzK/L7xZwVs=;
+  b=oIrAN/gyPtqe2f2310fOgYVStvxLjgG4uZf54xDA/9Ya2XL/NCsy8zo7
+   HhUZjOS2hB9OhJd1873411hZQxZh4AZ+qZ7nCjMMZROnXd25UaK7sA4rU
+   PNMeFq6tV8vEIssIbolYo1NaCK7Vo9XaQkUU2MY1BZdKoX/q9yOTsjoxl
+   GmpsJLL4xQr82Rxe8AV/12TZwJp5bQ0/GkFsPJMljtf7F8fIIhWq64yqy
+   F535e+ZECbivKscCqn7wFY0F3E3ttEVh/cocKBeQnakNmbQV4KAmQcQ+g
+   LNOvJyfkDmxwPaG8t6G2OiW3NWPefF5LWm+yzgTTXhP11MiAgGhurVOiG
+   g==;
+X-IronPort-AV: E=Sophos;i="5.87,296,1631570400"; 
+   d="scan'208";a="20913637"
+Received: from vtuxmail01.tq-net.de ([10.115.0.20])
+  by mx1.tq-group.com with ESMTP; 08 Dec 2021 07:59:02 +0100
+Received: from steina-w (unknown [10.123.49.12])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id ED063CE1B1A;
-        Tue,  7 Dec 2021 14:31:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 950E9C341C1;
-        Tue,  7 Dec 2021 14:31:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638887490;
-        bh=2Bh4lh5Rkbfd222vBGTTXMX5WNUB+LpWa4lBwnCFCk8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=DUKm/3ZOViVMPj/2iSbnfYwuu6LUpqK1EKt5eWIRgJX17jQchbt+HGore89+qOtWZ
-         VLsP4wguNH8jcjCJ+wNCw9FgPorPt2pwgAKtAQxddV579euQjkY+lmD+Zs+sakTKu1
-         jndGPhRLP+rrq65xNVohCzLFoHenMcE7zz71mJjx01q2MJ7Xj8Mbyi8hCeQSoAP0i8
-         e4ZhUd39Z5Fjd65MHUn2ZooMTHw1YEHHXPz7raS/S8RnQp/Jv9iXS0Or17je5kXvtg
-         zO6DBaa1Am2BHFuXyBDxQofq7pNyXzM+ZOvaSh8psUp4acI0zBVfPyVgZRaq1NBeCU
-         WGTno7r0a66iA==
-Date:   Tue, 7 Dec 2021 14:31:24 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Tudor Ambarus <Tudor.Ambarus@microchip.com>,
-        Pratyush Yadav <p.yadav@ti.com>,
-        Michael Walle <michael@walle.cc>,
-        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Michal Simek <monstr@monstr.eu>
-Subject: Re: [PATCH v3 0/3] Stacked/parallel memories bindings
-Message-ID: <Ya9wPJRbXU/PPQyE@sirena.org.uk>
-References: <20211206095921.33302-1-miquel.raynal@bootlin.com>
- <Ya6BNGHhflkXOItV@robh.at.kernel.org>
+        by vtuxmail01.tq-net.de (Postfix) with ESMTPSA id D41E0280065;
+        Wed,  8 Dec 2021 07:59:02 +0100 (CET)
+Message-ID: <701d2fc1336de30789444e43efe98473fdeb554b.camel@ew.tq-group.com>
+Subject: Re: (EXT) Re: [PATCH 1/1] spi: lpspi: Add support for 'num-cs'
+ property
+From:   Alexander Stein <alexander.stein@ew.tq-group.com>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     linux-spi@vger.kernel.org
+Date:   Wed, 08 Dec 2021 07:59:00 +0100
+In-Reply-To: <Ya9aV9yAEt9aWUQz@sirena.org.uk>
+References: <20211207104114.2720764-1-alexander.stein@ew.tq-group.com>
+         <Ya9aV9yAEt9aWUQz@sirena.org.uk>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="7A/CUCjAopGcjyUx"
-Content-Disposition: inline
-In-Reply-To: <Ya6BNGHhflkXOItV@robh.at.kernel.org>
-X-Cookie: Only God can make random selections.
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+Am Dienstag, dem 07.12.2021 um 12:57 +0000 schrieb Mark Brown:
+> * PGP Signed by an unknown key
+> 
+> On Tue, Dec 07, 2021 at 11:41:14AM +0100, Alexander Stein wrote:
+> 
+> > +	if (!device_property_read_u32(&pdev->dev, "num-cs", &num_cs))
+> > +		controller->num_chipselect = num_cs;
+> > +	else
+> > +		controller->num_chipselect = 1;
+> 
+> Do we need to use the num_cs property or can we just set num_chipselect
+> to whatever the maximum value that can be set is?  I've never been 100%
+> clear on why num-cs is in the binding.
 
---7A/CUCjAopGcjyUx
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I see two things which needs to be considered when setting
+num_chipselect:
 
-On Mon, Dec 06, 2021 at 03:31:32PM -0600, Rob Herring wrote:
+1.
+The hardware limitation in the uC. The i.MX8XQP RM says:
+>  The entire CS field is not fully supported in every LPSPI module
+> instance. Refer to the chip-specific information for LPSPI.
 
-> Mark, can you either provide a stable branch with this or apply the=20
-> series? Note that there's going to be some other patches needing=20
-> spi-peripheral-props.yaml, so providing a branch might be better if you=
-=20
-> don't want to collect the patches.
+This indicates there are some i.MX, not necessarily i.MX8 only, which
+have more than 2 hardware chip selects. This might be set depending on
+the compatible.
 
-I'll apply the series but there's still debate about it so it looks like
-there will be further revisions.  Unfortunately the patch is buried in
-the middle of history so it's hard to pull out a sensible stable branch,
-Linus gets upset about topic branches which makes doing this sort of
-thing retroactively painful.
+2.
+The hardware limitation on the SOM and/or mainboard. E.g. even if the
+uC supports 2 chip selects, only one may be available on the board
+connector. This is something which can only be set in the DT.
+This case is what this patch is about: Providing 2 hardware chip
+selects, as the default (if unset) is just one.
 
---7A/CUCjAopGcjyUx
-Content-Type: application/pgp-signature; name="signature.asc"
+Best regards,
+Alexander
 
------BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmGvcDsACgkQJNaLcl1U
-h9DvkAf/WNSVex+DPxkrNpBCMq//Q078vBs2gu5YblTGl1/Q+9SZj7itBvS7nhkR
-UivBWCuOjGetI9o9Hk2iaMdmOkB+pKMyZrgcNlPG1gN/R5ATuxQbXWpClPD0vieU
-ycB/OZkrPm65/8+7W3cnKvjafg1Hp6xsSiJjKSLobR50WqecnA8sc2SemIB4JR2U
-7PKBkhK9TJsTrLmAWp43f0oQ6RX5vL537cA8bM8VlalX1L2zCpGfYNB3tzhAQwWe
-7vfJqkFJrl0vu6Cr2ai9oVeFfjA8marBUVlAlHzDsaVSoh3FRPXp33QArxm9uTMk
-cBICj53P2du8lFyzrfYDBsoRumowAw==
-=lecr
------END PGP SIGNATURE-----
-
---7A/CUCjAopGcjyUx--

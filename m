@@ -2,18 +2,18 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F0B68C4321E
-	for <linux-spi@archiver.kernel.org>; Thu,  9 Dec 2021 17:41:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E8564C433FE
+	for <linux-spi@archiver.kernel.org>; Thu,  9 Dec 2021 17:41:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237627AbhLIRoh (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 9 Dec 2021 12:44:37 -0500
-Received: from relay10.mail.gandi.net ([217.70.178.230]:37447 "EHLO
+        id S234955AbhLIRoi (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 9 Dec 2021 12:44:38 -0500
+Received: from relay10.mail.gandi.net ([217.70.178.230]:50695 "EHLO
         relay10.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237514AbhLIRod (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 9 Dec 2021 12:44:33 -0500
+        with ESMTP id S237473AbhLIRog (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 9 Dec 2021 12:44:36 -0500
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay10.mail.gandi.net (Postfix) with ESMTPSA id 31EE6240008;
-        Thu,  9 Dec 2021 17:40:58 +0000 (UTC)
+        by relay10.mail.gandi.net (Postfix) with ESMTPSA id BAA48240006;
+        Thu,  9 Dec 2021 17:41:00 +0000 (UTC)
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Richard Weinberger <richard@nod.at>,
         Vignesh Raghavendra <vigneshr@ti.com>,
@@ -24,10 +24,12 @@ To:     Richard Weinberger <richard@nod.at>,
 Cc:     Mark Brown <broonie@kernel.org>, <linux-spi@vger.kernel.org>,
         Julien Su <juliensu@mxic.com.tw>,
         Jaime Liao <jaimeliao@mxic.com.tw>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH v4 05/12] spi: spi-mem: Export the spi_mem_generic_supports_op() helper
-Date:   Thu,  9 Dec 2021 18:40:39 +0100
-Message-Id: <20211209174046.535229-6-miquel.raynal@bootlin.com>
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        stable@vger.kernel.org, Mason Yang <masonccyang@mxic.com.tw>,
+        Zhengxun Li <zhengxunli@mxic.com.tw>
+Subject: [PATCH v4 07/12] spi: mxic: Fix the transmit path
+Date:   Thu,  9 Dec 2021 18:40:41 +0100
+Message-Id: <20211209174046.535229-8-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20211209174046.535229-1-miquel.raynal@bootlin.com>
 References: <20211209174046.535229-1-miquel.raynal@bootlin.com>
@@ -38,84 +40,64 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The combination of checks against the number of supported operations is
-going to increase exponentially each time we add a new parameter. So far
-we only had a dtr parameter. Now we are introducing an ECC parameter. We
-need to make this helper available for drivers with specific needs,
-instead of creating another set of helpers each time we want to check
-something new. In the future if we see that many different drivers use
-the same parameter values, we might be tempted to create a specific
-helper for that. But for now, let's just make the generic one available.
+By working with external hardware ECC engines, we figured out that
+Under certain circumstances, it is needed for the SPI controller to
+check INT_TX_EMPTY and INT_RX_NOT_EMPTY in both receive and transmit
+path (not only in the receive path). The delay penalty being
+negligible, move this code in the common path.
 
+Fixes: b942d80b0a39 ("spi: Add MXIC controller driver")
+Cc: stable@vger.kernel.org
+Suggested-by: Mason Yang <masonccyang@mxic.com.tw>
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reviewed-by: Zhengxun Li <zhengxunli@mxic.com.tw>
+Reviewed-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-mem.c       |  7 ++++---
- include/linux/spi/spi-mem.h | 13 +++++++++++++
- 2 files changed, 17 insertions(+), 3 deletions(-)
+ drivers/spi/spi-mxic.c | 28 ++++++++++++----------------
+ 1 file changed, 12 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-index 9e06cd918273..48b55395178f 100644
---- a/drivers/spi/spi-mem.c
-+++ b/drivers/spi/spi-mem.c
-@@ -160,9 +160,9 @@ static bool spi_mem_check_buswidth(struct spi_mem *mem,
- 	return true;
- }
+diff --git a/drivers/spi/spi-mxic.c b/drivers/spi/spi-mxic.c
+index 45889947afed..03fce4493aa7 100644
+--- a/drivers/spi/spi-mxic.c
++++ b/drivers/spi/spi-mxic.c
+@@ -304,25 +304,21 @@ static int mxic_spi_data_xfer(struct mxic_spi *mxic, const void *txbuf,
  
--static bool spi_mem_generic_supports_op(struct spi_mem *mem,
--					const struct spi_mem_op *op,
--					bool dtr, bool ecc)
-+bool spi_mem_generic_supports_op(struct spi_mem *mem,
-+				 const struct spi_mem_op *op,
-+				 bool dtr, bool ecc)
- {
- 	if (!dtr) {
- 		if (op->cmd.dtr || op->addr.dtr ||
-@@ -183,6 +183,7 @@ static bool spi_mem_generic_supports_op(struct spi_mem *mem,
+ 		writel(data, mxic->regs + TXD(nbytes % 4));
  
- 	return spi_mem_check_buswidth(mem, op);
- }
-+EXPORT_SYMBOL_GPL(spi_mem_generic_supports_op);
- 
- bool spi_mem_dtr_supports_op(struct spi_mem *mem,
- 			     const struct spi_mem_op *op)
-diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
-index 3be594be24c0..07f637cbe77d 100644
---- a/include/linux/spi/spi-mem.h
-+++ b/include/linux/spi/spi-mem.h
-@@ -320,6 +320,10 @@ void spi_controller_dma_unmap_mem_op_data(struct spi_controller *ctlr,
- 					  const struct spi_mem_op *op,
- 					  struct sg_table *sg);
- 
-+bool spi_mem_generic_supports_op(struct spi_mem *mem,
-+				 const struct spi_mem_op *op,
-+				 bool dtr, bool ecc);
++		ret = readl_poll_timeout(mxic->regs + INT_STS, sts,
++					 sts & INT_TX_EMPTY, 0, USEC_PER_SEC);
++		if (ret)
++			return ret;
 +
- bool spi_mem_default_supports_op(struct spi_mem *mem,
- 				 const struct spi_mem_op *op);
- 
-@@ -327,6 +331,7 @@ bool spi_mem_dtr_supports_op(struct spi_mem *mem,
- 			     const struct spi_mem_op *op);
- 
- #else
++		ret = readl_poll_timeout(mxic->regs + INT_STS, sts,
++					 sts & INT_RX_NOT_EMPTY, 0,
++					 USEC_PER_SEC);
++		if (ret)
++			return ret;
 +
- static inline int
- spi_controller_dma_map_mem_op_data(struct spi_controller *ctlr,
- 				   const struct spi_mem_op *op,
-@@ -342,6 +347,14 @@ spi_controller_dma_unmap_mem_op_data(struct spi_controller *ctlr,
- {
- }
++		data = readl(mxic->regs + RXD);
+ 		if (rxbuf) {
+-			ret = readl_poll_timeout(mxic->regs + INT_STS, sts,
+-						 sts & INT_TX_EMPTY, 0,
+-						 USEC_PER_SEC);
+-			if (ret)
+-				return ret;
+-
+-			ret = readl_poll_timeout(mxic->regs + INT_STS, sts,
+-						 sts & INT_RX_NOT_EMPTY, 0,
+-						 USEC_PER_SEC);
+-			if (ret)
+-				return ret;
+-
+-			data = readl(mxic->regs + RXD);
+ 			data >>= (8 * (4 - nbytes));
+ 			memcpy(rxbuf + pos, &data, nbytes);
+-			WARN_ON(readl(mxic->regs + INT_STS) & INT_RX_NOT_EMPTY);
+-		} else {
+-			readl(mxic->regs + RXD);
+ 		}
+ 		WARN_ON(readl(mxic->regs + INT_STS) & INT_RX_NOT_EMPTY);
  
-+static inline
-+bool spi_mem_generic_supports_op(struct spi_mem *mem,
-+				 const struct spi_mem_op *op,
-+				 bool dtr, bool ecc)
-+{
-+	return false;
-+}
-+
- static inline
- bool spi_mem_default_supports_op(struct spi_mem *mem,
- 				 const struct spi_mem_op *op)
 -- 
 2.27.0
 

@@ -2,77 +2,89 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D42A3C433EF
-	for <linux-spi@archiver.kernel.org>; Thu,  9 Dec 2021 17:57:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 35D5DC433F5
+	for <linux-spi@archiver.kernel.org>; Fri, 10 Dec 2021 09:02:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237632AbhLISAx (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 9 Dec 2021 13:00:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57344 "EHLO
+        id S236258AbhLJJGU (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 10 Dec 2021 04:06:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237566AbhLISAw (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 9 Dec 2021 13:00:52 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2211C061746
-        for <linux-spi@vger.kernel.org>; Thu,  9 Dec 2021 09:57:18 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 40384CE27AA
-        for <linux-spi@vger.kernel.org>; Thu,  9 Dec 2021 17:57:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 6AFB6C341C7;
-        Thu,  9 Dec 2021 17:57:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1639072635;
-        bh=ByBilnVsqDHz5fgRdEgcQTJxKOXi+Kdi/Yi9rm+ANp8=;
-        h=Subject:From:Date:To:From;
-        b=hYDhXK98Z09CzaBckVyKtLqRv1ixHjvgd02P4rIAS/WbOPD724vYChiN/uBdsQEnU
-         aWK4CzYHrQhUKQct/jOYxbq0iVbVWtG/j7adOhDBcSt/6JfLD9iN/o0R/ivbhDc98L
-         9Hthf4EW8QXIo0hzFtpgUuklkpoK5SzfPWHbA+MDHdqFAJ6fvB00HUhVlRFuTt4iLr
-         EbmI0KgMBJ+e7Nq8SXCAjff8K9idhh9j6XRtYq/Ww2LF6x+MxkhyrgbRU2EaSpDn7g
-         ClOoo4VHNCRZeyP7qBIiUPodSnWL9MmCPnDfGdcaY74USDQUWSePMvCZ3nOVqmf5+0
-         c9eb0SQjz5+tQ==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 44A3F609B3;
-        Thu,  9 Dec 2021 17:57:15 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From:   patchwork-bot+spi-devel-general@kernel.org
-Message-Id: <163907263527.1657.16919189244366777128.git-patchwork-housekeeping@kernel.org>
-Date:   Thu, 09 Dec 2021 17:57:15 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
+        with ESMTP id S231148AbhLJJGT (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 10 Dec 2021 04:06:19 -0500
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 328B9C061746;
+        Fri, 10 Dec 2021 01:02:45 -0800 (PST)
+Received: by mail-pl1-x62f.google.com with SMTP id m24so5831931pls.10;
+        Fri, 10 Dec 2021 01:02:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id;
+        bh=zjGrLEJQQKxdlnPKbJJ8rsTwPtpYOohHU907jjB+Mzc=;
+        b=ZE4Fp+fTi63cl/sylsyNDEtXaauHjbcMpEoFh/4WnWdtV70Ez/pT6YdAO6TDpZk1/u
+         cYS1jS2fE8iD9M5lnzbR3vswN6cgDpmbQ6hWcTM+hPx21C2mfM7xum6iEw9w9qnZimAV
+         tJJAZ1Zhd/xi62aoBETOXioltb21rVyYBwyizKn/8UvJcBy3YGHb8u/qPgLbP4yQOS7Q
+         S9OO/DYsrdX0VBg9qekO3iHcUPElULKdIdI0eIZqg9sqdBdrhp6fu+c6an0WxaPyEjuo
+         dB0LVi1bnA4YyG2V5cZef7STnhfQcTfvSRKiu9Ey0C9V2/1DsG4aj5+nEtbH7Zasv4kR
+         6QKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=zjGrLEJQQKxdlnPKbJJ8rsTwPtpYOohHU907jjB+Mzc=;
+        b=xgfyP20aa8pY0DJYvEzG8MUw8E3vJVjUvNe9Lquyk1ptgK3FuTgduF3dYFq4oVnz8i
+         pvbjp6iQe0CV2toyZe8GQhUySm5fabNQAj70vH0X3DWHhh9Hw5wcweqqbHRN3FWIoSOG
+         X7guRfpT+vVqu4fDeyQYi0PWbHSB5xM/0QxUcPDCrFj/+Hr91DtqGuxuswe6Zucuew4x
+         eulv1SRfjhB8kbp0UQS7JevcdR0w6XYx2YlEkzbMG/c3/85VAitH5R3w+/COkY8fxeGu
+         le0HIyonszFGKmMeG3UMxZw7fIqa6XebbABjhLyJk8e2+pISq1qqFMj8z/j1ZycIpySj
+         Qf0w==
+X-Gm-Message-State: AOAM530IbeuBAUeoM0CRLIciij/pFpwzB3j42R0ecc9kZ/CKiAmdlgPA
+        cMXY3fFqPABFGiPA48mk0CY=
+X-Google-Smtp-Source: ABdhPJx1oMfzN1r5NOaYNNJNEkhs4jlLGQX5RklNyt7Nyls++EZH5cc9hJTANChqv/BpPZ7PgeyYbg==
+X-Received: by 2002:a17:90b:30c4:: with SMTP id hi4mr22435897pjb.12.1639126964605;
+        Fri, 10 Dec 2021 01:02:44 -0800 (PST)
+Received: from scdiu3.sunplus.com ([113.196.136.192])
+        by smtp.googlemail.com with ESMTPSA id h15sm2540790pfc.134.2021.12.10.01.02.42
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 10 Dec 2021 01:02:44 -0800 (PST)
+From:   Li-hao Kuo <lhjeff911@gmail.com>
+To:     p.zabel@pengutronix.de, broonie@kernel.org,
+        andyshevchenko@gmail.com, robh+dt@kernel.org,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     wells.lu@sunplus.com, lh.kuo@sunplus.com,
+        "Li-hao Kuo" <lhjeff911@gmail.com>
+Subject: [PATCH v4 0/2] Add SPI control driver for Sunplus SP7021 SoC
+Date:   Fri, 10 Dec 2021 17:02:46 +0800
+Message-Id: <cover.1639123362.git.lhjeff911@gmail.com>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Latest series: [v4] External ECC engines & Macronix support (2021-12-09T17:40:34)
-  Superseding: [v3] External ECC engines & Macronix support (2021-12-07T09:34:01):
-    [v3,01/22] dt-bindings: mtd: nand-controller: Fix the reg property description
-    [v3,02/22] dt-bindings: mtd: nand-controller: Fix a comment in the examples
-    [v3,03/22] dt-bindings: mtd: nand-controller: Harmonize the property types
-    [v3,04/22] dt-bindings: mtd: nand-chip: Create a NAND chip description
-    [v3,05/22] dt-bindings: mtd: spi-nand: Convert spi-nand description file to yaml
-    [v3,06/22] dt-bindings: vendor-prefixes: Clarify Macronix prefix
-    [v3,07/22] dt-bindings: spi: mxic: The interrupt property is not mandatory
-    [v3,08/22] dt-bindings: spi: mxic: Convert to yaml
-    [v3,09/22] dt-bindings: spi: mxic: Document the nand-ecc-engine property
-    [v3,10/22] dt-bindings: mtd: Describe Macronix NAND ECC engine
-    [v3,11/22] mtd: spinand: macronix: Use random program load
-    [v3,12/22] mtd: nand: ecc: Add infrastructure to support hardware engines
-    [v3,13/22] mtd: nand: Add a new helper to retrieve the ECC context
-    [v3,14/22] mtd: nand: mxic-ecc: Add Macronix external ECC engine support
-    [v3,15/22] mtd: nand: mxic-ecc: Support SPI pipelined mode
-    [v3,16/22] mtd: spinand: Delay a little bit dirmap creation
-    [v3,17/22] mtd: spinand: Create direct mapping descriptors for ECC operations
-    [v3,18/22] spi: mxic: Fix the transmit path
-    [v3,19/22] spi: mxic: Create a helper to configure the controller before an operation
-    [v3,20/22] spi: mxic: Create a helper to ease the start of an operation
-    [v3,21/22] spi: mxic: Add support for direct mapping
-    [v3,22/22] spi: mxic: Add support for pipelined ECC operations
+From: "Li-hao Kuo" <lhjeff911@gmail.com>
 
+This is a patch series for SPI driver for Sunplus SP7021 SoC.
+
+Sunplus SP7021 is an ARM Cortex A7 (4 cores) based SoC. It integrates
+many peripherals (ex: UART, I2C, SPI, SDIO, eMMC, USB, SD card and
+etc.) into a single chip. It is designed for industrial control.
+
+Refer to:
+https://sunplus-tibbo.atlassian.net/wiki/spaces/doc/overview
+https://tibbo.com/store/plus1.html
+
+LH.Kuo (2):
+  SPI: Add SPI driver for Sunplus SP7021
+  devicetree: bindings SPI Add bindings doc for Sunplus SP7021
+
+ .../bindings/spi/spi-sunplus-sp7021.yaml           |  81 +++
+ MAINTAINERS                                        |   7 +
+ drivers/spi/Kconfig                                |  11 +
+ drivers/spi/Makefile                               |   1 +
+ drivers/spi/spi-sunplus-sp7021.c                   | 609 +++++++++++++++++++++
+ 5 files changed, 709 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-sunplus-sp7021.yaml
+ create mode 100644 drivers/spi/spi-sunplus-sp7021.c
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+2.7.4
 

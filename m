@@ -2,57 +2,78 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A8344C433F5
-	for <linux-spi@archiver.kernel.org>; Fri, 10 Dec 2021 09:57:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 827D0C433F5
+	for <linux-spi@archiver.kernel.org>; Fri, 10 Dec 2021 15:36:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239739AbhLJKAj (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 10 Dec 2021 05:00:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49046 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231352AbhLJKAj (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 10 Dec 2021 05:00:39 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C7AEC061746
-        for <linux-spi@vger.kernel.org>; Fri, 10 Dec 2021 01:57:04 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S242939AbhLJPka (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 10 Dec 2021 10:40:30 -0500
+Received: from marcansoft.com ([212.63.210.85]:34174 "EHLO mail.marcansoft.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S242917AbhLJPk3 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Fri, 10 Dec 2021 10:40:29 -0500
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 90FF5B82644
-        for <linux-spi@vger.kernel.org>; Fri, 10 Dec 2021 09:57:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 435E3C00446;
-        Fri, 10 Dec 2021 09:57:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1639130221;
-        bh=JyOXkvY9sCWx2kBwb8wfBrigWxRrUu/XEPFUtjBrfYo=;
-        h=Subject:From:Date:To:From;
-        b=aFcCyW8WfIVhCzoqwJJvkdi6sGS/eO4H5lTflqwvI9LGFcwXtqEYiQWrymQjLRQre
-         1lqL2Mc68xNwrLMQQKp7sU/2AfClJF6YTVedVrINiZikif88+Ge8Oujx73oTnqw79b
-         dF4WNB+a9QIoae8AKuwXcOaiXEPnVn84qwykG//XZz5B8zr3x9ZVc0ZH3T16vOpKWv
-         BiD8pvH0Zn6aMJq7PvEQ+MRP2N41AydgTESbcS0kAj0Mr0LF3ngovtydXz7bCJ+CPt
-         2uUaSUuWWSD7B+ZAwDhqK2te0TAgpjQSW1SK8/dG1Rk2Yw9EvfWHHO8htyqNI2BUJa
-         /T+NNYoFBzjXg==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 2295260A39;
-        Fri, 10 Dec 2021 09:57:01 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        (Authenticated sender: hector@marcansoft.com)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id 9889141E96;
+        Fri, 10 Dec 2021 15:36:51 +0000 (UTC)
+From:   Hector Martin <marcan@marcan.st>
+To:     Mark Brown <broonie@kernel.org>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Joey Gouly <joey.gouly@arm.com>,
+        Hector Martin <marcan@marcan.st>
+Subject: [PATCH] spi: Fix incorrect cs_setup delay handling
+Date:   Sat, 11 Dec 2021 00:36:34 +0900
+Message-Id: <20211210153634.171580-1-marcan@marcan.st>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From:   patchwork-bot+spi-devel-general@kernel.org
-Message-Id: <163913022113.24111.15552180603934717826.git-patchwork-housekeeping@kernel.org>
-Date:   Fri, 10 Dec 2021 09:57:01 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Latest series: [v4] Add SPI control driver for Sunplus SP7021 SoC (2021-12-10T09:02:46)
-  Superseding: [v3] Add SPI control driver for Sunplus SP7021 SoC (2021-11-22T02:33:31):
-    [v3,1/2] SPI: Add SPI driver for Sunplus SP7021
-    [v3,2/2] devicetree: bindings SPI Add bindings doc for Sunplus SP7021
+We need to wait *after* asserting CS and before the transfer, not before
+asserting CS which isn't very useful.
 
+Fixes: 25093bdeb6bc ("spi: implement SW control for CS times")
+Signed-off-by: Hector Martin <marcan@marcan.st>
+---
+ drivers/spi/spi.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index b23e675953e1..cfb708d928b5 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -947,12 +947,9 @@ static void spi_set_cs(struct spi_device *spi, bool enable, bool force)
+ 	spi->controller->last_cs_enable = enable;
+ 	spi->controller->last_cs_mode_high = spi->mode & SPI_CS_HIGH;
+ 
+-	if (spi->cs_gpiod || gpio_is_valid(spi->cs_gpio) ||
+-	    !spi->controller->set_cs_timing) {
+-		if (activate)
+-			spi_delay_exec(&spi->cs_setup, NULL);
+-		else
+-			spi_delay_exec(&spi->cs_hold, NULL);
++	if ((spi->cs_gpiod || gpio_is_valid(spi->cs_gpio) ||
++	    !spi->controller->set_cs_timing) && !activate) {
++		spi_delay_exec(&spi->cs_hold, NULL);
+ 	}
+ 
+ 	if (spi->mode & SPI_CS_HIGH)
+@@ -994,7 +991,9 @@ static void spi_set_cs(struct spi_device *spi, bool enable, bool force)
+ 
+ 	if (spi->cs_gpiod || gpio_is_valid(spi->cs_gpio) ||
+ 	    !spi->controller->set_cs_timing) {
+-		if (!activate)
++		if (activate)
++			spi_delay_exec(&spi->cs_setup, NULL);
++		else
+ 			spi_delay_exec(&spi->cs_inactive, NULL);
+ 	}
+ }
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+2.33.0
 

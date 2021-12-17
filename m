@@ -2,18 +2,18 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3DFA3C43219
-	for <linux-spi@archiver.kernel.org>; Fri, 17 Dec 2021 15:53:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E22B0C433FE
+	for <linux-spi@archiver.kernel.org>; Fri, 17 Dec 2021 15:53:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238399AbhLQPxN (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 17 Dec 2021 10:53:13 -0500
-Received: from relay12.mail.gandi.net ([217.70.178.232]:45611 "EHLO
+        id S238574AbhLQPxd (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 17 Dec 2021 10:53:33 -0500
+Received: from relay12.mail.gandi.net ([217.70.178.232]:51723 "EHLO
         relay12.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238403AbhLQPxK (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 17 Dec 2021 10:53:10 -0500
+        with ESMTP id S238576AbhLQPxY (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 17 Dec 2021 10:53:24 -0500
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay12.mail.gandi.net (Postfix) with ESMTPSA id BA38120000B;
-        Fri, 17 Dec 2021 15:53:02 +0000 (UTC)
+        by relay12.mail.gandi.net (Postfix) with ESMTPSA id 3DE4C200007;
+        Fri, 17 Dec 2021 15:53:21 +0000 (UTC)
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Miquel Raynal <miquel.raynal@bootlin.com>,
         Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
@@ -27,32 +27,31 @@ To:     Miquel Raynal <miquel.raynal@bootlin.com>,
 Cc:     Julien Su <juliensu@mxic.com.tw>,
         Jaime Liao <jaimeliao@mxic.com.tw>,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v6 14/28] mtd: nand: mxic-ecc: Add Macronix external ECC engine support
-Date:   Fri, 17 Dec 2021 16:53:01 +0100
-Message-Id: <20211217155301.366176-1-miquel.raynal@bootlin.com>
+Subject: Re: [PATCH v6 12/28] mtd: nand: ecc: Add infrastructure to support hardware engines
+Date:   Fri, 17 Dec 2021 16:53:19 +0100
+Message-Id: <20211217155319.366306-1-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20211216111654.238086-15-miquel.raynal@bootlin.com>
+In-Reply-To: <20211216111654.238086-13-miquel.raynal@bootlin.com>
 References: 
 MIME-Version: 1.0
 X-linux-mtd-patch-notification: thanks
-X-linux-mtd-patch-commit: b'b78baf1891f0b7c3f0e2e3e6022eab38ee6c871f'
+X-linux-mtd-patch-commit: b'078454455f7e0ce62c05bc19c27cb99f96ec4954'
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, 2021-12-16 at 11:16:40 UTC, Miquel Raynal wrote:
-> Some SPI-NAND chips do not support on-die ECC. For these chips,
-> correction must apply on the SPI controller end. In order to avoid
-> doing all the calculations by software, Macronix provides a specific
-> engine that can offload the intensive work.
+On Thu, 2021-12-16 at 11:16:38 UTC, Miquel Raynal wrote:
+> Add the necessary helpers to register/unregister hardware ECC engines
+> that will be called from ECC engine drivers.
 > 
-> Add Macronix ECC engine support, this engine can work in conjunction
-> with a SPI controller and a raw NAND controller, it can be pipelined
-> or external and supports linear and syndrome layouts.
+> Also add helpers to get the right engine from the user
+> perspective. Keep a reference of the in use ECC engine in order to
+> prevent modules to be unloaded. Put the reference when the engine gets
+> retired.
 > 
-> Right now the simplest configuration is supported: SPI controller
-> external and linear ECC engine.
+> A static list of hardware (only) ECC engines is setup to keep track of
+> the registered engines.
 > 
 > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 

@@ -2,18 +2,18 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B3207C433EF
-	for <linux-spi@archiver.kernel.org>; Fri, 17 Dec 2021 15:53:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 487B5C433F5
+	for <linux-spi@archiver.kernel.org>; Fri, 17 Dec 2021 15:54:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238485AbhLQPxj (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 17 Dec 2021 10:53:39 -0500
-Received: from relay12.mail.gandi.net ([217.70.178.232]:60471 "EHLO
+        id S238427AbhLQPx7 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 17 Dec 2021 10:53:59 -0500
+Received: from relay12.mail.gandi.net ([217.70.178.232]:47513 "EHLO
         relay12.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238481AbhLQPxR (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 17 Dec 2021 10:53:17 -0500
+        with ESMTP id S238646AbhLQPxe (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 17 Dec 2021 10:53:34 -0500
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay12.mail.gandi.net (Postfix) with ESMTPSA id 1A75720000D;
-        Fri, 17 Dec 2021 15:53:13 +0000 (UTC)
+        by relay12.mail.gandi.net (Postfix) with ESMTPSA id 7AFDF20000D;
+        Fri, 17 Dec 2021 15:53:30 +0000 (UTC)
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Miquel Raynal <miquel.raynal@bootlin.com>,
         Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
@@ -26,27 +26,30 @@ To:     Miquel Raynal <miquel.raynal@bootlin.com>,
         devicetree@vger.kernel.org
 Cc:     Julien Su <juliensu@mxic.com.tw>,
         Jaime Liao <jaimeliao@mxic.com.tw>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v6 13/28] mtd: nand: Add a new helper to retrieve the ECC context
-Date:   Fri, 17 Dec 2021 16:53:12 +0100
-Message-Id: <20211217155312.366240-1-miquel.raynal@bootlin.com>
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Mason Yang <masonccyang@mxic.com.tw>
+Subject: Re: [PATCH v6 11/28] mtd: spinand: macronix: Use random program load
+Date:   Fri, 17 Dec 2021 16:53:29 +0100
+Message-Id: <20211217155329.366371-1-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20211216111654.238086-14-miquel.raynal@bootlin.com>
+In-Reply-To: <20211216111654.238086-12-miquel.raynal@bootlin.com>
 References: 
 MIME-Version: 1.0
 X-linux-mtd-patch-notification: thanks
-X-linux-mtd-patch-commit: b'31fa3e2d8d0407e3fa0a03a0d2e188321652ffdd'
+X-linux-mtd-patch-commit: b'b0c4e68492a22cc623ce41044daef9974a616522'
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, 2021-12-16 at 11:16:39 UTC, Miquel Raynal wrote:
-> Introduce nand_to_ecc_ctx() which will allow to easily jump to the
-> private pointer of an ECC context given a NAND device. This is very
-> handy, from the prepare or finish ECC hook, to get the internal context
-> out of the NAND device object.
+On Thu, 2021-12-16 at 11:16:37 UTC, Miquel Raynal wrote:
+> From: Mason Yang <masonccyang@mxic.com.tw>
 > 
+> Macronix SPI-NAND chips might benefit from an external ECC
+> engine. Such an engine might need to access random columns, thus needing
+> to use random commands (0x84 instead of 0x02).
+> 
+> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
 > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 
 Applied to https://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux.git spi-mem-ecc.

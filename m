@@ -2,119 +2,84 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6D362C433F5
-	for <linux-spi@archiver.kernel.org>; Wed, 22 Dec 2021 15:55:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B57EC433F5
+	for <linux-spi@archiver.kernel.org>; Wed, 22 Dec 2021 15:57:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241550AbhLVPzJ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 22 Dec 2021 10:55:09 -0500
-Received: from mail1.kuutio.org ([54.37.79.207]:43228 "EHLO mail1.kuutio.org"
+        id S1343773AbhLVP5g (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 22 Dec 2021 10:57:36 -0500
+Received: from mga14.intel.com ([192.55.52.115]:28384 "EHLO mga14.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S241570AbhLVPzJ (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 22 Dec 2021 10:55:09 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by mail1.kuutio.org (Postfix) with ESMTP id 948BB1FDDB;
-        Wed, 22 Dec 2021 16:55:07 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lemmela.net; h=
-        content-language:content-transfer-encoding:content-type
-        :content-type:in-reply-to:mime-version:user-agent:date:date
-        :message-id:from:from:references:subject:subject:received
-        :received; s=dkim; t=1640188505; x=1642780506; bh=t0tWYi1nQeiXbz
-        jKOmHhA4b83kQIAoUejvQ9det/JvU=; b=kLRNOgVkSHKdFrlXAT0+KV4/+uyfS8
-        AP46SkDuPVTSnH/WvJs75hYdZdk4lBuU7MkvZdZ4ixGfoLBBjPcOVeGmvuRGDCof
-        zm/lSfENYuH7eZHi1tkkBpyNcawofBCau35fRjoeoLOhdz5OpLeeJ6ucxKkss53V
-        +EI9z6Ww9YIPXifa3TthUNutIef3xs5MNI8AkXJT0oH2o9xT7izfbruVDtIwg8cr
-        ixFbkQwSM4ARcDKAeRaaPVNX7R17K0B+Z+zRNT/+Mx3YuZ/pu7F9pYq4iG8t3ckH
-        fghH6dyV5jptquY5HX6R3Wt9WdiTvD9KotCd27nVyExxhZjpuEYUAzxi6KYllK+q
-        ENAU/JSJ7aLMn7Xma7sUYEJp81uevXUdLG4oa2QF13qr4pRFlatBh0Pdh/b3gxKX
-        CSYjVC2abAbCS5zR5FLbKtyw7Hzt58PDQYD3l6wTDGpdaMg7/IAoxVHQnh3AX7mV
-        ZUxrO/iA0L9Ksd6c6H+x13Pb12RMg+SqEgDCOB3glLMLKoHImrg2o0/8IaPVYxFT
-        cppHlK0S6p23u7s+sDUE2RncIUeUVcXBiFs7bt3dw6Jv9FwxH4eKr1xGwEIkSqqW
-        Q8NSk4X7ZpizkgaPlFaDcz1iaZCR/QiB0rq2M4oOiE2I5Kng24DwJis71xlQUnTV
-        /8wlZCRCwjxMw=
-X-Virus-Scanned: amavisd-new at kuutio.org
-Received: from mail1.kuutio.org ([127.0.0.1])
-        by localhost (mail1.kuutio.org [127.0.0.1]) (amavisd-new, port 10024)
-        with LMTP id CmN2dwW8F8dw; Wed, 22 Dec 2021 16:55:05 +0100 (CET)
-Received: from [IPv6:2001:998:13:e1::beee] (unknown [IPv6:2001:998:13:e1::beee])
-        by mail1.kuutio.org (Postfix) with ESMTPSA id 8A8221FBFE;
-        Wed, 22 Dec 2021 16:55:05 +0100 (CET)
-Subject: Re: [PATCH 1/2] spi: ar934x: fix transfer size
-To:     Mark Brown <broonie@kernel.org>
-Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20211222055958.1383233-1-oskari@lemmela.net>
- <20211222055958.1383233-2-oskari@lemmela.net>
- <YcMa1TIg3x3oBKBl@sirena.org.uk>
- <98a574a2-45c3-5d7c-6405-0cd279a81816@lemmela.net>
- <YcM9Ug3JhaxynLt0@sirena.org.uk>
-From:   =?UTF-8?Q?Oskari_Lemmel=c3=a4?= <oskari@lemmela.net>
-Message-ID: <6079952b-edef-4a3b-ff7d-16acee5821b8@lemmela.net>
-Date:   Wed, 22 Dec 2021 17:55:04 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        id S241582AbhLVP5f (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 22 Dec 2021 10:57:35 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1640188655; x=1671724655;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=/Bu50qtTOTojY1kLhf5L6JDQtk4kCn6zrEZoyyOYPRo=;
+  b=hi8dRdGxvgt6YGiXhyB3IUumfRy7kq4B5pQl4jMDbdezMRp9TLEPTWX+
+   6CahdvPz+zO4CWUeRQfmvIKfxU3BoXyKbJlCE1RM3jjP23AuuOXU6Iak6
+   f/eDIMsNT/hvAzN+iBWPpau1plX6Eq02TyOXF1Hzx7kP3O/MwuBsPpOnj
+   BareTt9azmtTfeG5jqcJ/xAEDscH1gau8MP2weN8yw+SDCSq9yoI7AbkF
+   B3tBuDn4WFEqt4BaPM+mp8xK320ObZ8kBUvVPfi6RcI6l2yT/I3F6juZm
+   KaZqLtqu5Wf2QlhOQVI9ZYL6VOCKUHFDiJHU//fkvMceYmm8vbcfIlyMi
+   g==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10206"; a="240871442"
+X-IronPort-AV: E=Sophos;i="5.88,226,1635231600"; 
+   d="scan'208";a="240871442"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2021 07:57:35 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,226,1635231600"; 
+   d="scan'208";a="607449551"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by FMSMGA003.fm.intel.com with ESMTP; 22 Dec 2021 07:57:32 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 20D7C120; Wed, 22 Dec 2021 17:57:41 +0200 (EET)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        Serge Semin <Sergey.Semin@baikalelectronics.ru>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Cc:     Serge Semin <fancer.lancer@gmail.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>
+Subject: [PATCH v2 3/3] spi: pxa2xx: Propagate firmware node
+Date:   Wed, 22 Dec 2021 17:57:39 +0200
+Message-Id: <20211222155739.7699-3-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20211222155739.7699-1-andriy.shevchenko@linux.intel.com>
+References: <20211222155739.7699-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <YcM9Ug3JhaxynLt0@sirena.org.uk>
-Content-Type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On 22.12.2021 16.59, Mark Brown wrote:
-> On Wed, Dec 22, 2021 at 04:27:36PM +0200, Oskari Lemmelä wrote:
->> On 22.12.2021 14.32, Mark Brown wrote:
->>> Does this actually materially affect what the hardware does?  How much
->>> data is transferred in an internal loop in the driver is completely
->>> immaterial, bits per word only matters for formatting of the transferred
->>> data.
->> I don't have logic analyzator to verify what hardware actual does.
->> I tested this with transferring 32bits to ATSAMD20J15 slave.
->> Running loop in 8bits or 16bits, transfer is done correctly without
->> any errors. When running loop in 24bits or 32bits directly I got
->> error from spi_sync_transfer.
-> This doesn't inspire confidence TBH.  Given the lack of any change in
-> the interaction with the hardware it doesn't seem likely that the word
-> length is being changed at any point.  Possibly there's a bug somewhere
-> that needs fixing but it's been misdiagnosed.
-I did find datasheet for AR9344 and hardware supports shifting bits.
+Propagate firmware node by using a specific API call, i.e. device_set_node().
 
-8.25.6 SPI Content to Shift Out or In (SPI_SHIFT_CNT_ADDR)
-Address: 0x1FFF0014
-Access: Read/Write
-Reset: 0x0
--------------------------------------------
-Bit  | Bit Name     | Desc
-31   | SHIFT_EN     | Enables shifting data out
-30   | SHIFT_CHNL   | If set to 1, enables chip select 2
-29   |              | If set to 1, enables chip select 1
-28   |              | If set to 1, enables chip select 0
-27   | SHIFT_CLKOUT | Initial value of the clock signal
-26   | TERMINATE    | When set to 1, deassert the chip select
-25:7 | RES          | Reserved
-6:0  | SHIFT_COUNT  | The number of bits to be shifted out or shifted in
-on the data line
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+v2: no changes
+ drivers/spi/spi-pxa2xx.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-This is currently implemented in defines
-#define AR934X_SPI_REG_SHIFT_CTRL       0x14
-#define AR934X_SPI_SHIFT_EN             BIT(31)
-#define AR934X_SPI_SHIFT_CS(n)          BIT(28 + (n))
-#define AR934X_SPI_SHIFT_TERM           26
-#define AR934X_SPI_SHIFT_VAL(cs, term, count)                   \
-        (AR934X_SPI_SHIFT_EN | AR934X_SPI_SHIFT_CS(cs) |        \
-        (term) << AR934X_SPI_SHIFT_TERM | (count))
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index b3186bd0c2a8..e88f86274eeb 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1664,8 +1664,7 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
+ 	drv_data->controller_info = platform_info;
+ 	drv_data->ssp = ssp;
+ 
+-	controller->dev.of_node = dev->of_node;
+-	controller->dev.fwnode = dev->fwnode;
++	device_set_node(&controller->dev, dev_fwnode(dev));
+ 
+ 	/* The spi->mode bits understood by this driver: */
+ 	controller->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LOOP;
+-- 
+2.34.1
 
-In the transfer loop count value is set to number of bits per word.
-
-reg = AR934X_SPI_SHIFT_VAL(spi->chip_select, term, trx_cur * 8);
-iowrite32(reg, sp->base + AR934X_SPI_REG_SHIFT_CTRL);
-
-So actually hardware support any word size between 1-32bits.
-> Note also that the commit log is not good here, now I look at the code
-> the driver only supports 8 bits per word at the minute and the change
-> adds support for higher word lengths.  If you are seeing an issue that
-> might point towards what it is.
-Should I split this in two commits? First one fixing SPI_BPW_MASK(32) typo.
-Then second commit which implements 8bits, 16bits and 24bits word sizes?
-Or should driver implement support for any word size between 1-32bits?
-
-Oskari

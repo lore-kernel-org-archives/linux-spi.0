@@ -2,80 +2,83 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E56BCC433EF
-	for <linux-spi@archiver.kernel.org>; Wed, 22 Dec 2021 12:32:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 14E08C433F5
+	for <linux-spi@archiver.kernel.org>; Wed, 22 Dec 2021 13:54:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233889AbhLVMc2 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 22 Dec 2021 07:32:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35394 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233751AbhLVMc2 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 22 Dec 2021 07:32:28 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1E10C061574;
-        Wed, 22 Dec 2021 04:32:27 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 99387B819C9;
-        Wed, 22 Dec 2021 12:32:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81FB8C36AE8;
-        Wed, 22 Dec 2021 12:32:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1640176345;
-        bh=W7F//Rlq5WYu/4RjwUNC1gQcNwfJyIZJX7Z0BZK3Kk8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=NMO4jt7pwj1eGopvEW1DaeHEYYS+zDKgz6of5HMvWtISM4ic2IPIrRz+qvkjFOxtw
-         7/J3dGRQzN9p8QaDlSwsVz0Tteqyvt+R0RqZy7QBA9k8/XFQRfwDXH0yRJzOEfld0o
-         b8aU3xY6mNw6Js2/en5ieXHIPTWfxIV00dXFwym9vFyym4MTxc3T15bqfvQNt8EjvW
-         k64INXlaMvs7CYoyTBHtYwOBPnInvrEaUYaDKliRQPW3HzlhYgmk7yE4xeLkD20qxG
-         1s6L0+pw6ktKJWrpCbvyyWRYTvEVUR7qj9R9PPIYr4uY7FNtzwJ/Ri33cI9q76Hh1O
-         rogIXcHSIfgfQ==
-Date:   Wed, 22 Dec 2021 12:32:21 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Oskari Lemmela <oskari@lemmela.net>
-Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] spi: ar934x: fix transfer size
-Message-ID: <YcMa1TIg3x3oBKBl@sirena.org.uk>
-References: <20211222055958.1383233-1-oskari@lemmela.net>
- <20211222055958.1383233-2-oskari@lemmela.net>
+        id S245488AbhLVNyZ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 22 Dec 2021 08:54:25 -0500
+Received: from mga14.intel.com ([192.55.52.115]:16792 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234159AbhLVNyZ (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 22 Dec 2021 08:54:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1640181265; x=1671717265;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=dVTnm7Vj85GUu0rogxumgYtqYxX+kTZ7Uoxyo2KfUh0=;
+  b=RAdNxK8uZKBNeOEK/hKThoePw/DxDG5rsYTtGlQCyWNmcCbFhGfMbu+W
+   xGOh6Nkf6kDNvcZFG9+F2f2mkxVwqIuZUrQAHpuVRU66NbtVLXA3qGaS7
+   6WMHSzM3ML++Q426qnTRU5IuuvQNjCKc6KjhyvlJquUzBF1BFysLHP2X1
+   PeVEmGcl7Al+LJp0O1W7e7M2dR8nfzKdtuQIEiT7CVawhmhgOcmRgOIkv
+   dSWGEk561DZ2NBlEFG54XvW/Wk1I8kXc78xDsnNORJd0wXZYEJm1m2vBP
+   bQTBbxgXSzIrmK2W06H6S0y4EP8ZGS6fPBAOTCLepxQPNTsoIcfM1zVBf
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10205"; a="240845054"
+X-IronPort-AV: E=Sophos;i="5.88,226,1635231600"; 
+   d="scan'208";a="240845054"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2021 05:54:24 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,226,1635231600"; 
+   d="scan'208";a="484761402"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga002.jf.intel.com with ESMTP; 22 Dec 2021 05:54:21 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 23AD0331; Wed, 22 Dec 2021 15:54:30 +0200 (EET)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        Serge Semin <Sergey.Semin@baikalelectronics.ru>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Cc:     Serge Semin <fancer.lancer@gmail.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>
+Subject: [PATCH v1 3/3] spi: pxa2xx: Propagate firmware node
+Date:   Wed, 22 Dec 2021 15:54:23 +0200
+Message-Id: <20211222135423.62487-3-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20211222135423.62487-1-andriy.shevchenko@linux.intel.com>
+References: <20211222135423.62487-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="1lzwZ4JX7pCGOlVU"
-Content-Disposition: inline
-In-Reply-To: <20211222055958.1383233-2-oskari@lemmela.net>
-X-Cookie: Weekend, where are you?
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+Propagate firmware node by using a specific API call, i.e. device_set_node().
 
---1lzwZ4JX7pCGOlVU
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/spi/spi-pxa2xx.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-On Wed, Dec 22, 2021 at 07:59:57AM +0200, Oskari Lemmela wrote:
-> If bits_per_word is configured, transfer only word amount
-> of data per iteration.
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index b3186bd0c2a8..e88f86274eeb 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1664,8 +1664,7 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
+ 	drv_data->controller_info = platform_info;
+ 	drv_data->ssp = ssp;
+ 
+-	controller->dev.of_node = dev->of_node;
+-	controller->dev.fwnode = dev->fwnode;
++	device_set_node(&controller->dev, dev_fwnode(dev));
+ 
+ 	/* The spi->mode bits understood by this driver: */
+ 	controller->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LOOP;
+-- 
+2.34.1
 
-Does this actually materially affect what the hardware does?  How much
-data is transferred in an internal loop in the driver is completely
-immaterial, bits per word only matters for formatting of the transferred
-data.
-
---1lzwZ4JX7pCGOlVU
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEyBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmHDGtQACgkQJNaLcl1U
-h9DWywf1H2cmOZR+vwhWCGZJZXUwAGQJNX/i0zxtnHxwpwhgMqcVglgORuqAH0H6
-HvFC5LwYKg0a997Jw9yFwjfFQkmXj0zOrqtxIy5HBG/u7k3EW0Fo45l8Ks0qFjRx
-oDP78b/kDfoeAUUmZUfjncvF46lTdfEruGO0jf8Gh96QET1dQoYtUZAhdfwiOE2K
-9qdYrJ11BblECAmRj7TxYvl+IVxbhprHxnzDlhI4BSWcjsDTihKfmPQgRyhFNBh/
-KGTviYb8mj3bl7MMa154/vbK/8aI509MNUSXnH/pRDFZKtTDoousZ03kfJcFKnLx
-jZjE4ANjrcaC25Wf9GnR/9CnQ0vC
-=LRZo
------END PGP SIGNATURE-----
-
---1lzwZ4JX7pCGOlVU--

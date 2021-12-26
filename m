@@ -2,65 +2,50 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 31133C433EF
-	for <linux-spi@archiver.kernel.org>; Fri, 24 Dec 2021 09:34:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1CDB8C433EF
+	for <linux-spi@archiver.kernel.org>; Sun, 26 Dec 2021 09:43:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352271AbhLXJen (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 24 Dec 2021 04:34:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44260 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352266AbhLXJen (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 24 Dec 2021 04:34:43 -0500
-X-Greylist: delayed 442 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 24 Dec 2021 01:34:42 PST
-Received: from relay05.th.seeweb.it (relay05.th.seeweb.it [IPv6:2001:4b7a:2000:18::166])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E180EC061401
-        for <linux-spi@vger.kernel.org>; Fri, 24 Dec 2021 01:34:42 -0800 (PST)
-Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id B84233EF19;
-        Fri, 24 Dec 2021 10:27:15 +0100 (CET)
-Subject: Re: [PATCH v7 3/4] dt-bindings: pinctrl: mt8195: add wrapping node of
- pin configurations
-To:     Tinghan Shen <tinghan.shen@mediatek.com>, robh+dt@kernel.org,
-        linus.walleij@linaro.org, matthias.bgg@gmail.com,
-        broonie@kernel.org
-Cc:     bgolaszewski@baylibre.com, sean.wang@mediatek.com,
-        bayi.cheng@mediatek.com, gch981213@gmail.com,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-spi@vger.kernel.org,
-        Project_Global_Chrome_Upstream_Group@mediatek.com
-References: <20211220121825.6446-1-tinghan.shen@mediatek.com>
- <20211220121825.6446-4-tinghan.shen@mediatek.com>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-Message-ID: <6317bb3b-38b1-3f5e-9f6c-ebacec9ebfef@somainline.org>
-Date:   Fri, 24 Dec 2021 10:27:15 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        id S231749AbhLZJnH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 26 Dec 2021 04:43:07 -0500
+Received: from slot0.jllresort.com ([62.197.136.5]:48785 "EHLO
+        slot0.jllresort.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233202AbhLZJnG (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 26 Dec 2021 04:43:06 -0500
+X-Greylist: delayed 744 seconds by postgrey-1.27 at vger.kernel.org; Sun, 26 Dec 2021 04:43:06 EST
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=dkim; d=jllresort.com;
+ h=Reply-To:From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding; i=ele.mon@jllresort.com;
+ bh=UWzyoygNcpfD0ggLfBPP8O1Xyf8=;
+ b=KKcWdbJIOlmozMOqZNmw8lMgCjoA4l30AiMb7Q9P4sykmdtSspdkSi427dF/wk7XyNNke3KJyWRh
+   2RsjeDRmp2gSm+jqr/pXNBd7NhukaIWxrMX5fos5tRjxu/cKu08HjGCLKgXxbsSUjpaObVKVwke3
+   5wXI2V+xFyyvQ72CmZnRsPD4M1Zhq8RxgwEv3vdoXM2lgi58eEdi00xooDoZVouFE2Yp4Xgy/nC0
+   hFPbKf+b3DiRTpcko6FCTtABQi7PfCbOujshNf+touosBKkaprkalPv0jQV4sfH7QuuHZQXstbih
+   CgWP68xK6CO3rn5UtzZXM0HGkCsxKGtVpi384g==
+DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=dkim; d=jllresort.com;
+ b=nfONQPeZ2xj0mlHg0JqCjvzrcwQpilmShd48Xqtqk1GTCMe6UK+QEvtzc7AO1qPKAMGELrBbelfH
+   VGuHk3sYSusx5G9JTg36gMVtwYhnwTO09wl2CJxfHt6QdX6NWIRN/D9pW+ZDc4lXr/ndU1sFnxcW
+   7NVKMBtD3qze39MGLS6Glb6OGbou+OSI/U05nIo9ZKzfqm6kWekpMj5aMCyi+tDmj4Xo9mvtfUJ+
+   0Dxf9ptLGEqqD8KJu5lVgfPz+1en51mUq/hYCietDAFwo7J/2b9QbzXaw250DYCK5K2BPk8Iw7Gc
+   pxScQjaLFN5+mBtCeu3tbaI1I1qiPtFlAUnNwA==;
+Reply-To: mustafa.ayvaz@ayvazburosu.com
+From:   ele.mon@jllresort.com
+To:     linux-spi@vger.kernel.org
+Subject: Happy Weekend:
+Date:   26 Dec 2021 10:29:35 +0100
+Message-ID: <20211226102855.48605CD78B40B3E9@jllresort.com>
 MIME-Version: 1.0
-In-Reply-To: <20211220121825.6446-4-tinghan.shen@mediatek.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Il 20/12/21 13:18, Tinghan Shen ha scritto:
-> On mt8195, the pinctrl node has pinctrl groups to group pin
-> configurations by users' need. In each pinctrl group, it has
-> subnode(s) to list pins needed and pin configurations. By supporting
-> multiple subnodes, we can configure different pin characteristics
-> (driving/pull-up/pull-down/etc.) in a pinctrl group.
-> 
-> Update pinctrl-mt8195.yaml to add subnode in pinctrl groups and an
-> example to illustrate the usage.
-> 
-> Signed-off-by: Tinghan Shen <tinghan.shen@mediatek.com>
-> Reviewed-by: Rob Herring <robh@kernel.org>
+Greetings to you linux-spi,
 
-Acked-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+I was wondering if you got my previous email? I have been trying=20
+to reach you by email linux-spi@vger.kernel.org, kindly get back=20
+to me swiftly, it is very important and urgent.
 
+Thanks
+Mustafa Ayvaz
+Email: mustafa.ayvaz@ayvazburosu.com

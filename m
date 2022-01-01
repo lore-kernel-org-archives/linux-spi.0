@@ -2,40 +2,40 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3C150C433EF
-	for <linux-spi@archiver.kernel.org>; Sat,  1 Jan 2022 07:44:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2EDA4C433FE
+	for <linux-spi@archiver.kernel.org>; Sat,  1 Jan 2022 07:44:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232120AbiAAHoU (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sat, 1 Jan 2022 02:44:20 -0500
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:58006 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232098AbiAAHoP (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sat, 1 Jan 2022 02:44:15 -0500
+        id S232127AbiAAHoX (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sat, 1 Jan 2022 02:44:23 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:41922 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232100AbiAAHoV (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sat, 1 Jan 2022 02:44:21 -0500
 Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 2017hs9c034659;
-        Sat, 1 Jan 2022 01:43:54 -0600
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 2017i6IB103902;
+        Sat, 1 Jan 2022 01:44:06 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1641023035;
-        bh=yaG+MRp6i5Q9AgNtz6EkmbKt/8BQv9sW+DzhOTyeyS4=;
+        s=ti-com-17Q1; t=1641023046;
+        bh=hsTbhvozs1BNRSIPW4iIPsBoLECSYX0lY7ljDAlqnV4=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=LOYJXjrzk4h0sLRJA6JKlrd3/AC7UjFB6I/UhkftrJF65PS5UPCSmw7PWaeXhLILI
-         qeE6YrR0UcHmqYzWNbwDvLriCLLma2eRz6kkiFnNyf3j97eoPX9lKCuGMsuUrKN9TC
-         KUPvz6j5UHoF9npBMPl6R21Lx8Uu6ndvgw1epiyY=
-Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 2017hsI8039599
+        b=YLulw8v5l9xMwns6j/wiEZvkRU3GWZjqW6kzr6mUcNbHRmBl5QDivD80ITxpTN+o7
+         byFEtmvbItuxQ1Xm40/ay8SMXFFTvpH05MYNjAIObaXUicdzc5amwoPZT1jv/e9wh0
+         sDbJiGSHZU+Yv5svSNkdLEBzyVUCBgUDAI9ACk/I=
+Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 2017i6kF040630
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Sat, 1 Jan 2022 01:43:54 -0600
-Received: from DLEE100.ent.ti.com (157.170.170.30) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+        Sat, 1 Jan 2022 01:44:06 -0600
+Received: from DLEE110.ent.ti.com (157.170.170.21) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Sat, 1
- Jan 2022 01:43:54 -0600
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
+ Jan 2022 01:44:06 -0600
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE110.ent.ti.com
+ (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
- Frontend Transport; Sat, 1 Jan 2022 01:43:54 -0600
+ Frontend Transport; Sat, 1 Jan 2022 01:44:06 -0600
 Received: from LT5CD112GSQZ.ent.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 2017gpwf033162;
-        Sat, 1 Jan 2022 01:43:48 -0600
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 2017gpwh033162;
+        Sat, 1 Jan 2022 01:44:01 -0600
 From:   Apurva Nandan <a-nandan@ti.com>
 To:     Miquel Raynal <miquel.raynal@bootlin.com>,
         Richard Weinberger <richard@nod.at>,
@@ -50,9 +50,9 @@ To:     Miquel Raynal <miquel.raynal@bootlin.com>,
         <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
         <linux-spi@vger.kernel.org>
 CC:     <p.yadav@ti.com>
-Subject: [PATCH v3 10/17] mtd: spinand: Add pointer to probed flash's spinand_info
-Date:   Sat, 1 Jan 2022 13:12:43 +0530
-Message-ID: <20220101074250.14443-11-a-nandan@ti.com>
+Subject: [PATCH v3 12/17] mtd: spinand: Add mtd_suspend() to disable Octal DTR mode at suspend
+Date:   Sat, 1 Jan 2022 13:12:45 +0530
+Message-ID: <20220101074250.14443-13-a-nandan@ti.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220101074250.14443-1-a-nandan@ti.com>
 References: <20220101074250.14443-1-a-nandan@ti.com>
@@ -64,51 +64,46 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The data_ops_variants and ctrl_ops_variants defined in manufacturer's
-code are required again when changing flash modes, because they hold
-the op templates for the new protocol. It would be useful to have a
-pointer to the device description entry i.e. probed flash's
-spinand_info table in the spinand_device struct itself.
+The flash might or might not have gone a power-down during sleep.
+Hence, its SPI IO mode is unpredictable for the core at the time of
+resume. To ensure proper reinitialization during resume, disable the
+Octal DTR SPI IO mode and bring the flash to 1S-1S-1S mode when
+performing suspend using mtd_suspend().
 
 Signed-off-by: Apurva Nandan <a-nandan@ti.com>
 ---
- drivers/mtd/nand/spi/core.c | 1 +
- include/linux/mtd/spinand.h | 3 +++
- 2 files changed, 4 insertions(+)
+ drivers/mtd/nand/spi/core.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
 diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
-index 9688fdfc174e..1a602e4dd6bd 100644
+index 2fd08085db6f..9d1c72634e5a 100644
 --- a/drivers/mtd/nand/spi/core.c
 +++ b/drivers/mtd/nand/spi/core.c
-@@ -1107,6 +1107,7 @@ int spinand_match_and_init(struct spinand_device *spinand,
- 		spinand->flags = table[i].flags;
- 		spinand->id.len = 1 + table[i].devid.len;
- 		spinand->select_target = table[i].select_target;
-+		spinand->desc_entry = &table[i];
+@@ -1307,6 +1307,16 @@ static void spinand_mtd_resume(struct mtd_info *mtd)
+ 	spinand_ecc_enable(spinand, false);
+ }
  
- 		op = spinand_select_data_op_variant(spinand,
- 					info->data_ops_variants.read_cache);
-diff --git a/include/linux/mtd/spinand.h b/include/linux/mtd/spinand.h
-index ad924271a248..a8c071983a27 100644
---- a/include/linux/mtd/spinand.h
-+++ b/include/linux/mtd/spinand.h
-@@ -534,6 +534,8 @@ struct spinand_dirmap {
-  *		passed in spi_mem_op be DMA-able, so we can't based the bufs on
-  *		the stack
-  * @manufacturer: SPI NAND manufacturer information
-+ * @desc_entry: pointer to device description entry in the manufacturer's
-+ *		spinand_info tables
-  * @priv: manufacturer private data
-  */
- struct spinand_device {
-@@ -566,6 +568,7 @@ struct spinand_device {
- 	u8 *oobbuf;
- 	u8 *scratchbuf;
- 	const struct spinand_manufacturer *manufacturer;
-+	const struct spinand_info *desc_entry;
- 	void *priv;
- };
++static int spinand_mtd_suspend(struct mtd_info *mtd)
++{
++	struct spinand_device *spinand = mtd_to_spinand(mtd);
++
++	if (spinand->ctrl_ops->protocol == SPINAND_8D_8D_8D)
++		return spinand_init_octal_dtr_disable(spinand);
++
++	return 0;
++}
++
+ static int spinand_init(struct spinand_device *spinand)
+ {
+ 	struct device *dev = &spinand->spimem->spi->dev;
+@@ -1381,6 +1391,7 @@ static int spinand_init(struct spinand_device *spinand)
+ 	mtd->_erase = spinand_mtd_erase;
+ 	mtd->_max_bad_blocks = nanddev_mtd_max_bad_blocks;
+ 	mtd->_resume = spinand_mtd_resume;
++	mtd->_suspend = spinand_mtd_suspend;
  
+ 	if (nand->ecc.engine) {
+ 		ret = mtd_ooblayout_count_freebytes(mtd);
 -- 
 2.25.1
 

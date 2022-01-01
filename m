@@ -2,40 +2,40 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2D800C433F5
-	for <linux-spi@archiver.kernel.org>; Sat,  1 Jan 2022 07:43:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4C251C433EF
+	for <linux-spi@archiver.kernel.org>; Sat,  1 Jan 2022 07:43:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231192AbiAAHnk (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sat, 1 Jan 2022 02:43:40 -0500
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:57956 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231136AbiAAHnk (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sat, 1 Jan 2022 02:43:40 -0500
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 2017h3DX034524;
-        Sat, 1 Jan 2022 01:43:03 -0600
+        id S231249AbiAAHnq (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sat, 1 Jan 2022 02:43:46 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:41818 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231238AbiAAHnp (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sat, 1 Jan 2022 02:43:45 -0500
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 2017hEsP103763;
+        Sat, 1 Jan 2022 01:43:14 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1641022983;
-        bh=sxImKlYR9bxi/r/0O9cHejg8wu1LEinRPbVkHanMnrk=;
+        s=ti-com-17Q1; t=1641022994;
+        bh=fGDfRVAjjhgDDv63T/ddhpIqXTX/Z73J6OSl6cnmvHk=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=OS12gKsGcZA4+GtYSGTk6lZX3VIT4G5t0CJoj84jDPzOXAjsXqKIhL/xnCVwZeZyK
-         V7rl+52Vp2+RQJI/wCSfqR6ZfDwh6bPVQ+7n22DnubW7mc5ChDghxb/6n/0kjZUBQC
-         6qlT+CDNH+EOKsf7jPCk1BczmlhJZKgWeC3VxZtY=
-Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 2017h2JR038760
+        b=k/tJp3wQVfePDxxGqEukGSu1w8S1CJdqKRbhLAeG/Qd5irWP6o03SDhsnvPNGAHIH
+         fBIB+lkO4jTI1XfM6v38Qsfie59vQohQjeaWCBl/vj6OaETRQ6k/+7g8c12dcp7h8O
+         ZODRyyJIo2dNkFRk+jh/MPwS8uyy788NPCWBkjgA=
+Received: from DLEE111.ent.ti.com (dlee111.ent.ti.com [157.170.170.22])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 2017hE1Q089512
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Sat, 1 Jan 2022 01:43:03 -0600
-Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE115.ent.ti.com
- (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
+        Sat, 1 Jan 2022 01:43:14 -0600
+Received: from DLEE115.ent.ti.com (157.170.170.26) by DLEE111.ent.ti.com
+ (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Sat, 1
- Jan 2022 01:43:02 -0600
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+ Jan 2022 01:43:14 -0600
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
- Frontend Transport; Sat, 1 Jan 2022 01:43:02 -0600
+ Frontend Transport; Sat, 1 Jan 2022 01:43:14 -0600
 Received: from LT5CD112GSQZ.ent.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 2017gpwW033162;
-        Sat, 1 Jan 2022 01:42:57 -0600
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 2017gpwY033162;
+        Sat, 1 Jan 2022 01:43:08 -0600
 From:   Apurva Nandan <a-nandan@ti.com>
 To:     Miquel Raynal <miquel.raynal@bootlin.com>,
         Richard Weinberger <richard@nod.at>,
@@ -50,9 +50,9 @@ To:     Miquel Raynal <miquel.raynal@bootlin.com>,
         <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
         <linux-spi@vger.kernel.org>
 CC:     <p.yadav@ti.com>
-Subject: [PATCH v3 01/17] spi: spi-mem: Add DTR templates for cmd, address, dummy and data phase
-Date:   Sat, 1 Jan 2022 13:12:34 +0530
-Message-ID: <20220101074250.14443-2-a-nandan@ti.com>
+Subject: [PATCH v3 03/17] mtd: spinand: Add enum spinand_protocol to indicate current SPI IO mode
+Date:   Sat, 1 Jan 2022 13:12:36 +0530
+Message-ID: <20220101074250.14443-4-a-nandan@ti.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220101074250.14443-1-a-nandan@ti.com>
 References: <20220101074250.14443-1-a-nandan@ti.com>
@@ -64,99 +64,82 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Setting dtr field of spi_mem_op is useful when creating templates
-for DTR ops in spinand.h. Also, 2 bytes cmd phases are required when
-operating in Octal DTR SPI mode.
+Unlike Dual and Quad SPI modes flashes, Octal DTR SPI NAND flashes
+require all instructions to be made in 8D-8D-8D protocol when the
+flash is in Octal DTR mode. Hence, storing the current SPI IO mode
+becomes necessary for operating the flash and switching between modes.
 
-Create new templates for dtr mode cmd, address, dummy and data phase
-in spi_mem_op, which set the dtr field to 1 and also allow passing
-the nbytes for the cmd phase.
+Store the current SPI IO mode in the spinand struct using a
+spinand_protocol enum. This would act as a flag, denoting that the
+core should use the given SPI protocol all types of flash operations.
 
 Signed-off-by: Apurva Nandan <a-nandan@ti.com>
 ---
- include/linux/spi/spi-mem.h | 41 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 41 insertions(+)
+ drivers/mtd/nand/spi/core.c |  2 ++
+ include/linux/mtd/spinand.h | 16 ++++++++++++++++
+ 2 files changed, 18 insertions(+)
 
-diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
-index 85e2ff7b840d..682378a9c600 100644
---- a/include/linux/spi/spi-mem.h
-+++ b/include/linux/spi/spi-mem.h
-@@ -20,6 +20,14 @@
- 		.nbytes = 1,					\
- 	}
+diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
+index 2c8685f1f2fa..7d8c2873ab29 100644
+--- a/drivers/mtd/nand/spi/core.c
++++ b/drivers/mtd/nand/spi/core.c
+@@ -1155,6 +1155,7 @@ static void spinand_mtd_resume(struct mtd_info *mtd)
+ 	struct spinand_device *spinand = mtd_to_spinand(mtd);
+ 	int ret;
  
-+#define SPI_MEM_OP_CMD_DTR(__nbytes, __opcode, __buswidth)	\
-+	{							\
-+		.nbytes = __nbytes,				\
-+		.opcode = __opcode,				\
-+		.buswidth = __buswidth,				\
-+		.dtr = 1,					\
-+	}
++	spinand->protocol = SPINAND_1S_1S_1S;
+ 	ret = spinand_reset_op(spinand);
+ 	if (ret)
+ 		return;
+@@ -1181,6 +1182,7 @@ static int spinand_init(struct spinand_device *spinand)
+ 	if (!spinand->scratchbuf)
+ 		return -ENOMEM;
+ 
++	spinand->protocol = SPINAND_1S_1S_1S;
+ 	ret = spinand_detect(spinand);
+ 	if (ret)
+ 		goto err_free_bufs;
+diff --git a/include/linux/mtd/spinand.h b/include/linux/mtd/spinand.h
+index 69e06e741717..77927afcea0f 100644
+--- a/include/linux/mtd/spinand.h
++++ b/include/linux/mtd/spinand.h
+@@ -194,6 +194,18 @@
+ 		   SPI_MEM_OP_NO_DUMMY,					\
+ 		   SPI_MEM_OP_DATA_OUT_DTR(len, buf, 8))
+ 
++/**
++ * enum spinand_protocol - List of SPI protocols to denote the op protocol and
++ *			   SPI NAND flash IO modes.
++ */
++enum spinand_protocol {
++	SPINAND_1S_1S_1S,
++	SPINAND_2S_2S_2S,
++	SPINAND_4S_4S_4S,
++	SPINAND_8S_8S_8S,
++	SPINAND_8D_8D_8D,
++};
 +
- #define SPI_MEM_OP_ADDR(__nbytes, __val, __buswidth)		\
- 	{							\
- 		.nbytes = __nbytes,				\
-@@ -27,6 +35,14 @@
- 		.buswidth = __buswidth,				\
- 	}
- 
-+#define SPI_MEM_OP_ADDR_DTR(__nbytes, __val, __buswidth)	\
-+	{							\
-+		.nbytes = __nbytes,				\
-+		.val = __val,					\
-+		.buswidth = __buswidth,				\
-+		.dtr = 1,					\
-+	}
-+
- #define SPI_MEM_OP_NO_ADDR	{ }
- 
- #define SPI_MEM_OP_DUMMY(__nbytes, __buswidth)			\
-@@ -35,6 +51,13 @@
- 		.buswidth = __buswidth,				\
- 	}
- 
-+#define SPI_MEM_OP_DUMMY_DTR(__nbytes, __buswidth)		\
-+	{							\
-+		.nbytes = __nbytes,				\
-+		.buswidth = __buswidth,				\
-+		.dtr = 1,					\
-+	}
-+
- #define SPI_MEM_OP_NO_DUMMY	{ }
- 
- #define SPI_MEM_OP_DATA_IN(__nbytes, __buf, __buswidth)		\
-@@ -45,6 +68,15 @@
- 		.buswidth = __buswidth,				\
- 	}
- 
-+#define SPI_MEM_OP_DATA_IN_DTR(__nbytes, __buf, __buswidth)	\
-+	{							\
-+		.dir = SPI_MEM_DATA_IN,				\
-+		.nbytes = __nbytes,				\
-+		.buf.in = __buf,				\
-+		.buswidth = __buswidth,				\
-+		.dtr = 1,					\
-+	}
-+
- #define SPI_MEM_OP_DATA_OUT(__nbytes, __buf, __buswidth)	\
- 	{							\
- 		.dir = SPI_MEM_DATA_OUT,			\
-@@ -53,6 +85,15 @@
- 		.buswidth = __buswidth,				\
- 	}
- 
-+#define SPI_MEM_OP_DATA_OUT_DTR(__nbytes, __buf, __buswidth)	\
-+	{							\
-+		.dir = SPI_MEM_DATA_OUT,			\
-+		.nbytes = __nbytes,				\
-+		.buf.out = __buf,				\
-+		.buswidth = __buswidth,				\
-+		.dtr = 1,					\
-+	}
-+
- #define SPI_MEM_OP_NO_DATA	{ }
- 
  /**
+  * Standard SPI NAND flash commands
+  */
+@@ -461,6 +473,8 @@ struct spinand_dirmap {
+  *		   this die. Only required if your chip exposes several dies
+  * @cur_target: currently selected target/die
+  * @eccinfo: on-die ECC information
++ * @protocol: SPI IO protocol in operation. Update on successful transition into
++ *	      a different SPI IO protocol.
+  * @cfg_cache: config register cache. One entry per die
+  * @databuf: bounce buffer for data
+  * @oobbuf: bounce buffer for OOB data
+@@ -492,6 +506,8 @@ struct spinand_device {
+ 
+ 	struct spinand_ecc_info eccinfo;
+ 
++	enum spinand_protocol protocol;
++
+ 	u8 *cfg_cache;
+ 	u8 *databuf;
+ 	u8 *oobbuf;
 -- 
 2.25.1
 

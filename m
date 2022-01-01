@@ -2,84 +2,161 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E9DD4C433EF
-	for <linux-spi@archiver.kernel.org>; Sat,  1 Jan 2022 07:33:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2D800C433F5
+	for <linux-spi@archiver.kernel.org>; Sat,  1 Jan 2022 07:43:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231218AbiAAHdh (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sat, 1 Jan 2022 02:33:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35584 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231148AbiAAHdg (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sat, 1 Jan 2022 02:33:36 -0500
-X-Greylist: delayed 462 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 31 Dec 2021 23:33:36 PST
-Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [IPv6:2a01:37:1000::53df:5f64:0])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72853C061574
-        for <linux-spi@vger.kernel.org>; Fri, 31 Dec 2021 23:33:36 -0800 (PST)
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client CN "*.hostsharing.net", Issuer "RapidSSL TLS DV RSA Mixed SHA256 2020 CA-1" (verified OK))
-        by bmailout1.hostsharing.net (Postfix) with ESMTPS id C725E300002A0;
-        Sat,  1 Jan 2022 08:25:48 +0100 (CET)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-        id B966A30123; Sat,  1 Jan 2022 08:25:48 +0100 (CET)
-Date:   Sat, 1 Jan 2022 08:25:48 +0100
-From:   Lukas Wunner <lukas@wunner.de>
-To:     Hector Martin <marcan@marcan.st>
-Cc:     Sven Peter <sven@svenpeter.dev>, Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] spi: apple: Add driver for Apple SPI controller
-Message-ID: <20220101072548.GA28593@wunner.de>
-References: <20211212034726.26306-1-marcan@marcan.st>
- <20211212034726.26306-4-marcan@marcan.st>
+        id S231192AbiAAHnk (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sat, 1 Jan 2022 02:43:40 -0500
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:57956 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231136AbiAAHnk (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sat, 1 Jan 2022 02:43:40 -0500
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 2017h3DX034524;
+        Sat, 1 Jan 2022 01:43:03 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1641022983;
+        bh=sxImKlYR9bxi/r/0O9cHejg8wu1LEinRPbVkHanMnrk=;
+        h=From:To:CC:Subject:Date:In-Reply-To:References;
+        b=OS12gKsGcZA4+GtYSGTk6lZX3VIT4G5t0CJoj84jDPzOXAjsXqKIhL/xnCVwZeZyK
+         V7rl+52Vp2+RQJI/wCSfqR6ZfDwh6bPVQ+7n22DnubW7mc5ChDghxb/6n/0kjZUBQC
+         6qlT+CDNH+EOKsf7jPCk1BczmlhJZKgWeC3VxZtY=
+Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 2017h2JR038760
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Sat, 1 Jan 2022 01:43:03 -0600
+Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Sat, 1
+ Jan 2022 01:43:02 -0600
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
+ Frontend Transport; Sat, 1 Jan 2022 01:43:02 -0600
+Received: from LT5CD112GSQZ.ent.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 2017gpwW033162;
+        Sat, 1 Jan 2022 01:42:57 -0600
+From:   Apurva Nandan <a-nandan@ti.com>
+To:     Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Mark Brown <broonie@kernel.org>,
+        Apurva Nandan <a-nandan@ti.com>,
+        Patrice Chotard <patrice.chotard@foss.st.com>,
+        Christophe Kerello <christophe.kerello@foss.st.com>,
+        Boris Brezillon <boris.brezillon@collabora.com>,
+        Daniel Palmer <daniel@0x0f.com>,
+        Alexander Lobakin <alobakin@pm.me>,
+        <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>
+CC:     <p.yadav@ti.com>
+Subject: [PATCH v3 01/17] spi: spi-mem: Add DTR templates for cmd, address, dummy and data phase
+Date:   Sat, 1 Jan 2022 13:12:34 +0530
+Message-ID: <20220101074250.14443-2-a-nandan@ti.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220101074250.14443-1-a-nandan@ti.com>
+References: <20220101074250.14443-1-a-nandan@ti.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211212034726.26306-4-marcan@marcan.st>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Sun, Dec 12, 2021 at 12:47:26PM +0900, Hector Martin wrote:
-> +	ret = devm_spi_register_controller(&pdev->dev, ctlr);
-[...]
-> +static int apple_spi_remove(struct platform_device *pdev)
-> +{
-> +	struct spi_controller *ctlr = platform_get_drvdata(pdev);
-> +	struct apple_spi *spi = spi_controller_get_devdata(ctlr);
-> +
-> +	pm_runtime_disable(&pdev->dev);
-> +
-> +	/* Disable all the interrupts just in case */
-> +	reg_write(spi, APPLE_SPI_IE_FIFO, 0);
-> +	reg_write(spi, APPLE_SPI_IE_XFER, 0);
-> +
-> +	clk_disable_unprepare(spi->clk);
+Setting dtr field of spi_mem_op is useful when creating templates
+for DTR ops in spinand.h. Also, 2 bytes cmd phases are required when
+operating in Octal DTR SPI mode.
 
-You need to use spi_register_controller() in apple_spi_probe()
-(*not* the devm variant) and invoke spi_unregister_controller()
-first thing in apple_spi_remove().
+Create new templates for dtr mode cmd, address, dummy and data phase
+in spi_mem_op, which set the dtr field to 1 and also allow passing
+the nbytes for the cmd phase.
 
-Otherwise you've got an ordering issue on driver unbind:
-__device_release_driver() first calls the ->remove hook and only
-then devres_release_all().  You're disabling the clock and interrupts
-in the ->remove hook, rendering the controller unusable.  Yet the
-expectation is that until spi_unregister_controller() returns,
-the controller works and its slaves are accessible.
+Signed-off-by: Apurva Nandan <a-nandan@ti.com>
+---
+ include/linux/spi/spi-mem.h | 41 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
-This is especially important if there are slaves attached to the
-controller which perform SPI transfers in their ->remove hooks,
-e.g. to quiesce interrupts on the slaves.  Those transfers won't
-work the way you've structured the code now.
+diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
+index 85e2ff7b840d..682378a9c600 100644
+--- a/include/linux/spi/spi-mem.h
++++ b/include/linux/spi/spi-mem.h
+@@ -20,6 +20,14 @@
+ 		.nbytes = 1,					\
+ 	}
+ 
++#define SPI_MEM_OP_CMD_DTR(__nbytes, __opcode, __buswidth)	\
++	{							\
++		.nbytes = __nbytes,				\
++		.opcode = __opcode,				\
++		.buswidth = __buswidth,				\
++		.dtr = 1,					\
++	}
++
+ #define SPI_MEM_OP_ADDR(__nbytes, __val, __buswidth)		\
+ 	{							\
+ 		.nbytes = __nbytes,				\
+@@ -27,6 +35,14 @@
+ 		.buswidth = __buswidth,				\
+ 	}
+ 
++#define SPI_MEM_OP_ADDR_DTR(__nbytes, __val, __buswidth)	\
++	{							\
++		.nbytes = __nbytes,				\
++		.val = __val,					\
++		.buswidth = __buswidth,				\
++		.dtr = 1,					\
++	}
++
+ #define SPI_MEM_OP_NO_ADDR	{ }
+ 
+ #define SPI_MEM_OP_DUMMY(__nbytes, __buswidth)			\
+@@ -35,6 +51,13 @@
+ 		.buswidth = __buswidth,				\
+ 	}
+ 
++#define SPI_MEM_OP_DUMMY_DTR(__nbytes, __buswidth)		\
++	{							\
++		.nbytes = __nbytes,				\
++		.buswidth = __buswidth,				\
++		.dtr = 1,					\
++	}
++
+ #define SPI_MEM_OP_NO_DUMMY	{ }
+ 
+ #define SPI_MEM_OP_DATA_IN(__nbytes, __buf, __buswidth)		\
+@@ -45,6 +68,15 @@
+ 		.buswidth = __buswidth,				\
+ 	}
+ 
++#define SPI_MEM_OP_DATA_IN_DTR(__nbytes, __buf, __buswidth)	\
++	{							\
++		.dir = SPI_MEM_DATA_IN,				\
++		.nbytes = __nbytes,				\
++		.buf.in = __buf,				\
++		.buswidth = __buswidth,				\
++		.dtr = 1,					\
++	}
++
+ #define SPI_MEM_OP_DATA_OUT(__nbytes, __buf, __buswidth)	\
+ 	{							\
+ 		.dir = SPI_MEM_DATA_OUT,			\
+@@ -53,6 +85,15 @@
+ 		.buswidth = __buswidth,				\
+ 	}
+ 
++#define SPI_MEM_OP_DATA_OUT_DTR(__nbytes, __buf, __buswidth)	\
++	{							\
++		.dir = SPI_MEM_DATA_OUT,			\
++		.nbytes = __nbytes,				\
++		.buf.out = __buf,				\
++		.buswidth = __buswidth,				\
++		.dtr = 1,					\
++	}
++
+ #define SPI_MEM_OP_NO_DATA	{ }
+ 
+ /**
+-- 
+2.25.1
 
-spi-sifive.c, from which you've derived this, is broken.  As are
-a couple dozen other drivers.  I've fixed some of them,
-but haven't gotten around to fixing them all.  Just trying to
-prevent more brokenness from entering the codebase.
-
-Thanks,
-
-Lukas

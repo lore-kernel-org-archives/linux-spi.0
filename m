@@ -2,69 +2,82 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CD9C3C433F5
-	for <linux-spi@archiver.kernel.org>; Sat,  1 Jan 2022 07:56:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6A557C433F5
+	for <linux-spi@archiver.kernel.org>; Sun,  2 Jan 2022 05:17:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229498AbiAAH4U (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sat, 1 Jan 2022 02:56:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40580 "EHLO
+        id S229510AbiABFRI (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 2 Jan 2022 00:17:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229446AbiAAH4T (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sat, 1 Jan 2022 02:56:19 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AADC7C061574
-        for <linux-spi@vger.kernel.org>; Fri, 31 Dec 2021 23:56:19 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7432960A6B
-        for <linux-spi@vger.kernel.org>; Sat,  1 Jan 2022 07:56:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id CE466C36AE9;
-        Sat,  1 Jan 2022 07:56:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1641023777;
-        bh=xfa0cCrIb7Akct8/XBt3JL/fkQiAJXFkd0AumIUUwxc=;
-        h=Subject:From:Date:To:From;
-        b=NwZKsuM8ECo1UsakPh91v5nDsbAtn/cSTtX84tSC5CdOvTfN9s7pmmxSU9GOs2NdK
-         7XUgJsXc2ASQIosugpRpTBr1Ou71X35w9SPvnBLj0KvElLZ/03M59Xr6w9JAPpIKep
-         5JGdwq4akDPkCUSk+mOdgpz1GXhpOWYSHqApT1JVvD5ZYfHxiDeEVo4mXIeEEnwRCt
-         zIjJ17E112gR8VyooqNpQipdi8RHmcqSiP7U0ncTCA+CD5BGl8+yCzdlbuIBxvkeVs
-         VcfycwzjK1mIkMQ9Zc1pKp18/20QaeA5bgi9VRseLw/AR0yaC2PMY2qH6fj+SSkhnE
-         HD8l+WiWLcpsA==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id AA921C395DE;
-        Sat,  1 Jan 2022 07:56:17 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S229473AbiABFRI (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 2 Jan 2022 00:17:08 -0500
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 655A0C061574
+        for <linux-spi@vger.kernel.org>; Sat,  1 Jan 2022 21:17:07 -0800 (PST)
+Received: by mail-lf1-x12c.google.com with SMTP id o12so68433609lfk.1
+        for <linux-spi@vger.kernel.org>; Sat, 01 Jan 2022 21:17:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=9OUJm1l1Lkz1YaEdfh/UEwDaTVMcLzVdwO6tOQfKl7o=;
+        b=EhPaLrzIg6G1hnSZHwGOBFaFHxH4UcQg44k8y7RnCfMMJ26s5yYuh3KY+LGCoUO72S
+         zJ6UWj/g3J+AduMZdZqDx9LQwmBSwgLNID7w37AIoSfThf/Id7LBJF1IqdhQF/4U8IRB
+         YyxQq5z7zRdxF77bI6jV79EMMjbhK3HRul9oK57hQO+cDjpiN/zUwHELKzk9UcWHf7fx
+         dncoZMGHqFNmmiLDT/ehp5122zyz/vLMKwkgXoUhuRhVC2B55nmx/oqyLkdIkRrmPKp5
+         1k64Q55v8bTDmR+ZAnkBIWNQ5fi+1UCfb8LXztefaq7WGWOkRL0Q8P8TIPqxSD2AuWe4
+         d1rA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=9OUJm1l1Lkz1YaEdfh/UEwDaTVMcLzVdwO6tOQfKl7o=;
+        b=D9T0kNPxtj+R1CPz+WO4yk8IHS5doHQpjz7gobzLx1nYjk39vUuGQyGW4GN26WDMMQ
+         /SIaiI3d5TVMImxKKRZJTG31DJP7/ZMu3pQ8GQgWWJq/A9dFSJCLQC5Ybw3T0IlJI++P
+         a1WaN6VbN3zdgvJCNZn7egJfL51VBz7I3fbeoVjqW0dylSvq9hGICi7c6CZDIHKq2WS6
+         PK6XimXb0mZRZ2axJic2txglIrYPW/KZn0Ir6hIw6atXAGyliMiiKOPtuxsXannhIg3u
+         yn9qklVrvlpnqvbs7sH1+lGsYPtNGa2KQ5ADcBcaeNqwhv/MdcczZAyMrZoB8xu+CbFR
+         GSQQ==
+X-Gm-Message-State: AOAM532QBo33uU724Oz11Yj02VPepHsCbdOF1XxFUK/VHXNu+rb9ZHF/
+        nIJejuIdYHVAM2lDiIJRzAsoqVjtGiOeZPOBEFx5LbjiuAI=
+X-Google-Smtp-Source: ABdhPJx1AorkEc1HSDDatFay0OziPayU+K/x43xNs6lLbJwcnlEBOfMLwN9/X8ZQciCUI5gZ71NO+Ml7PdU9DJ0OS/g=
+X-Received: by 2002:a05:6512:39ce:: with SMTP id k14mr18954362lfu.508.1641100625527;
+ Sat, 01 Jan 2022 21:17:05 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From:   patchwork-bot+spi-devel-general@kernel.org
-Message-Id: <164102377760.24187.15387842138563121611.git-patchwork-housekeeping@kernel.org>
-Date:   Sat, 01 Jan 2022 07:56:17 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
+References: <20211220121825.6446-1-tinghan.shen@mediatek.com> <20211220121825.6446-4-tinghan.shen@mediatek.com>
+In-Reply-To: <20211220121825.6446-4-tinghan.shen@mediatek.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Sun, 2 Jan 2022 06:16:53 +0100
+Message-ID: <CACRpkdaGui4ULm7E7Y7YFLZ1BXKfvKKqv4KC=eTMBDExJThPdA@mail.gmail.com>
+Subject: Re: [PATCH v7 3/4] dt-bindings: pinctrl: mt8195: add wrapping node of
+ pin configurations
+To:     Tinghan Shen <tinghan.shen@mediatek.com>
+Cc:     robh+dt@kernel.org, matthias.bgg@gmail.com, broonie@kernel.org,
+        bgolaszewski@baylibre.com, sean.wang@mediatek.com,
+        bayi.cheng@mediatek.com, gch981213@gmail.com,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-spi@vger.kernel.org,
+        Project_Global_Chrome_Upstream_Group@mediatek.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Latest series: [v3] mtd: spinand: Add Octal DTR SPI (8D-8D-8D) mode support (2022-01-01T07:42:34)
-  Superseding: [v2] mtd: spinand: Add Octal DTR SPI (8D-8D-8D) mode support (2021-10-11T20:46:05):
-    [v2,01/14] spi: spi-mem: Add DTR templates for cmd, address, dummy and data phase
-    [v2,02/14] mtd: spinand: Add enum spinand_proto to indicate current SPI IO mode
-    [v2,03/14] mtd: spinand: Patch spi_mem_op for the SPI IO protocol using reg_proto
-    [v2,04/14] mtd: spinand: Fix odd byte addr and data phase in read and write reg op for Octal DTR mode
-    [v2,05/14] mtd: spinand: Add adjust_op() in manufacturer_ops to modify the ops for manufacturer specific changes
-    [v2,06/14] mtd: spinand: Add macros for Octal DTR page read and write operations
-    [v2,07/14] mtd: spinand: Allow enabling Octal DTR mode in the core
-    [v2,08/14] mtd: spinand: winbond: Add support for write volatile configuration register op
-    [v2,09/14] mtd: spinand: winbond: Add octal_dtr_enable() for manufacturer_ops
-    [v2,10/14] mtd: spinand: Add support for Power-on-Reset (PoR) instruction
-    [v2,11/14] mtd: spinand: Perform Power-on-Reset on the flash in mtd_suspend()
-    [v2,12/14] mtd: spinand: Add adjust_op() in Winbond manufacturer_ops
-    [v2,13/14] mtd: spinand: winbond: Rename cache op_variants struct variable
-    [v2,14/14] mtd: spinand: winbond: Add support for Winbond W35N01JW SPI NAND flash
+On Mon, Dec 20, 2021 at 1:18 PM Tinghan Shen <tinghan.shen@mediatek.com> wrote:
 
+> On mt8195, the pinctrl node has pinctrl groups to group pin
+> configurations by users' need. In each pinctrl group, it has
+> subnode(s) to list pins needed and pin configurations. By supporting
+> multiple subnodes, we can configure different pin characteristics
+> (driving/pull-up/pull-down/etc.) in a pinctrl group.
+>
+> Update pinctrl-mt8195.yaml to add subnode in pinctrl groups and an
+> example to illustrate the usage.
+>
+> Signed-off-by: Tinghan Shen <tinghan.shen@mediatek.com>
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+This patch applied.
 
+Yours,
+Linus Walleij

@@ -2,291 +2,120 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C7E8C433EF
-	for <linux-spi@archiver.kernel.org>; Tue, 11 Jan 2022 09:20:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4C2F5C433EF
+	for <linux-spi@archiver.kernel.org>; Tue, 11 Jan 2022 10:13:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349228AbiAKJUk (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 11 Jan 2022 04:20:40 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:29715 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1349229AbiAKJUi (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 11 Jan 2022 04:20:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1641892838;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=uJ1YqPO7Xit3OrTXhT/TYDES9bJJk2fXlWiLmQ/iCOQ=;
-        b=irrRj5IBTgFCw1FGWFFAsRdn+4KcNsPgfKkekt5xbxexi2V761sdKHmFuY+wy/FynwogEg
-        LYJck1MR9YSQ4VW423NYgx4ruef5ACM76JhJVOuwnCMw5HPkvznR0Qe8yxQ/yC/Z6OFYx6
-        m/PnRIxsBWWZWc2VxYy+aEfSkZsu+NY=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-244-ovjkb7wwN9G6PPGtr-cBhQ-1; Tue, 11 Jan 2022 04:20:37 -0500
-X-MC-Unique: ovjkb7wwN9G6PPGtr-cBhQ-1
-Received: by mail-ed1-f72.google.com with SMTP id l14-20020aa7cace000000b003f7f8e1cbbdso12700057edt.20
-        for <linux-spi@vger.kernel.org>; Tue, 11 Jan 2022 01:20:36 -0800 (PST)
+        id S1348572AbiAKKNo (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 11 Jan 2022 05:13:44 -0500
+Received: from smtp-relay-internal-0.canonical.com ([185.125.188.122]:60944
+        "EHLO smtp-relay-internal-0.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1348527AbiAKKNo (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 11 Jan 2022 05:13:44 -0500
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com [209.85.208.72])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 5360E3F1EE
+        for <linux-spi@vger.kernel.org>; Tue, 11 Jan 2022 10:13:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1641896023;
+        bh=QVrXucYojgYJ3MvsfMwPKw5wo2fuH+ML9mi4xwVkLOQ=;
+        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+         MIME-Version;
+        b=Gq3lptDrM/UFNL9K/3/ZPoRFEhBHvgw1ITCAoyZg4SnJETIO2T1/FyDwqprOXD/Fx
+         6zzIyZsk/Cgn2u4PV/YlwPm29ifz3M2F9PJEO4148SQU9Taz5x1Rfi312DkzHOVrrm
+         5wExd6u9BCtdwMVRJ3X/iPAdbfQ9JvCaH2xVR4+L2Xbt/Y87OG1oKc7Q77l221q2yZ
+         Ums6GX+gyFc05V2sYbqIYNcbvzqJUMfR+D3Y69Tvf2LiOWstlsifpfS5LSJM3IOJkS
+         78PSXHOr5UllMBjS9w/xpcl84wPnZp1z/yq77L4vovd04hbfEG39y9x3fyi+xX+Cey
+         UUJc/IVigvU/Q==
+Received: by mail-ed1-f72.google.com with SMTP id s7-20020a056402520700b003f841380832so12870144edd.5
+        for <linux-spi@vger.kernel.org>; Tue, 11 Jan 2022 02:13:43 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=uJ1YqPO7Xit3OrTXhT/TYDES9bJJk2fXlWiLmQ/iCOQ=;
-        b=S6RLLm+KFvdvy0SzT4tqEA9NqeLWbFXYdqjfgQZCTSlWXOQH8BRUDM5wksPjs3REA4
-         9vOPO8oYcY6rH7wYBXCRiZrJ7bZAJWsCyPtV3Y9F8YlIXlaTuJrRhcUyb2+M2KTbymkS
-         f0KWM2hvEqry+Pd0cFMKlZHxsfFFR5jzAKN5MtQuBNb4tv7ovHhtrJmMbksrLW9RRO/Y
-         wO34iv+peAP3sMph8QM4WJic2oOzXLSqHyl+LPTjtSdwbsk4tWgGAYT5YURDaCZv0c6a
-         DLXtO+rGvtxw0gJTFRgOs6vactMi6P5F6tshqe+Uo5KiWIAeijLlw/ANPEOQZY0GEGhl
-         4xMQ==
-X-Gm-Message-State: AOAM532iRPLqR/ox7u8L73DKUA/VeCZGjNVATVQTJnEt54ZcRkzeOZJ4
-        Z3go0YZxMPO2Rlmn9KcyjJ7bCjTtDtgtybyNtWJsr4oydCoJdeaFAu0dCbM4CoDRKm9FlnXvI8e
-        5VQHBZF8gS8dqc5ODRZja
-X-Received: by 2002:a17:906:4fd6:: with SMTP id i22mr2843867ejw.70.1641892835805;
-        Tue, 11 Jan 2022 01:20:35 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJwXuRWJ4cHHSS27BhJ/iVwz/12FvR8jmZfdmnIZZPxYco9NzHX7vZnxSjKW05qyZhnGf2vOKg==
-X-Received: by 2002:a17:906:4fd6:: with SMTP id i22mr2843853ejw.70.1641892835568;
-        Tue, 11 Jan 2022 01:20:35 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1? (2001-1c00-0c1e-bf00-1db8-22d3-1bc9-8ca1.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1])
-        by smtp.gmail.com with ESMTPSA id kv11sm2255731ejc.156.2022.01.11.01.20.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Jan 2022 01:20:35 -0800 (PST)
-Message-ID: <a066f0bc-7b27-771c-544d-cacd15aa2374@redhat.com>
-Date:   Tue, 11 Jan 2022 10:20:34 +0100
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=QVrXucYojgYJ3MvsfMwPKw5wo2fuH+ML9mi4xwVkLOQ=;
+        b=r87d+d0irJKWX7GN0w3Ra3zLygXBIgAaJ814M5wvi3MuI5/EJpNGepaixW5ym6CCAL
+         KAYMvA/4ByAQyZX/Tm00t8JG+ffJXdlkCYp5XMmLIKYaiDJPuvBL0QVRFK2FBrMo6t/q
+         6yXaKYT77DDV8Zkpr+BMJCNkcrwPGMDOiafNeArrhT3kGlLPiBWNXGNaBozislx9eV6M
+         UBjWMbAPqVIyWgIRqDhJtqgJx4c8Qmy0VG+9bF/dvg7OUk1qXD0kHkXMnPYK6J3kxjai
+         9kLBdP3jlz1utq/1suWCDTLOKqK/WIpiR2HRUDiV/5ZuSzqB1ZYk+GjrXW0kUHP5cmiL
+         cEfg==
+X-Gm-Message-State: AOAM531VQEcZ2PSrAscPkGBF/1YjRV4Dpdeq/sUOWm+1HUnLZS4Umfyd
+        e00WBPg4LAa5FkXbHCF4x20BngvgwyZqrlWRQbIZdFAQTVhSk06W+1dbAlBJrVbHk00XYPib0Wp
+        44AI2NDqZF1/FMZgzYeqcRl083nypH+pir7g9hw==
+X-Received: by 2002:aa7:df8f:: with SMTP id b15mr3664561edy.315.1641896022751;
+        Tue, 11 Jan 2022 02:13:42 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJzpyMwCXUtd7Y6AQyuZuNoCVyccezBv3KC5C5r5rIpS2xwUTuoqjT0UFg4qT8tvTh/Gn938UA==
+X-Received: by 2002:aa7:df8f:: with SMTP id b15mr3664549edy.315.1641896022625;
+        Tue, 11 Jan 2022 02:13:42 -0800 (PST)
+Received: from localhost.localdomain (xdsl-188-155-168-84.adslplus.ch. [188.155.168.84])
+        by smtp.gmail.com with ESMTPSA id 26sm3431268ejk.138.2022.01.11.02.13.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Jan 2022 02:13:42 -0800 (PST)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Andi Shyti <andi@etezian.org>, Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Pratyush Yadav <p.yadav@ti.com>, linux-spi@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Cc:     Sam Protsenko <semen.protsenko@linaro.org>
+Subject: [PATCH v2 1/4] ARM: dts: exynos: split dmas into array of phandles in Exynos5250
+Date:   Tue, 11 Jan 2022 11:13:35 +0100
+Message-Id: <20220111101338.58630-2-krzysztof.kozlowski@canonical.com>
+X-Mailer: git-send-email 2.32.0
+In-Reply-To: <20220111101338.58630-1-krzysztof.kozlowski@canonical.com>
+References: <20220111101338.58630-1-krzysztof.kozlowski@canonical.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [PATCH v2 6/6] ACPI: bus-multi-instantiate: Add SPI support
-To:     Stefan Binding <sbinding@opensource.cirrus.com>,
-        'Mark Brown' <broonie@kernel.org>,
-        "'Rafael J . Wysocki'" <rafael@kernel.org>,
-        'Len Brown' <lenb@kernel.org>,
-        'Mark Gross' <markgross@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        patches@opensource.cirrus.com
-References: <20211210154050.3713-1-sbinding@opensource.cirrus.com>
- <20211210154050.3713-7-sbinding@opensource.cirrus.com>
- <c311642f-38ab-4914-cf92-852e6a20cfc9@redhat.com>
- <00af01d8062f$75aed010$610c7030$@opensource.cirrus.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <00af01d8062f$75aed010$610c7030$@opensource.cirrus.com>
-Authentication-Results: relay.mimecast.com;
-        auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=hdegoede@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi,
+"dmas" property should be rather an array of phandles, as dtschema
+points.
 
-On 1/10/22 15:36, Stefan Binding wrote:
-> Hi,
-> 
->> -----Original Message-----
->> From: Hans de Goede <hdegoede@redhat.com>
->> Sent: 21 December 2021 18:32
->> To: Stefan Binding <sbinding@opensource.cirrus.com>; Mark Brown
->> <broonie@kernel.org>; Rafael J . Wysocki <rafael@kernel.org>; Len Brown
->> <lenb@kernel.org>; Mark Gross <markgross@kernel.org>
->> Cc: linux-kernel@vger.kernel.org; linux-spi@vger.kernel.org; linux-
->> acpi@vger.kernel.org; platform-driver-x86@vger.kernel.org;
->> patches@opensource.cirrus.com
->> Subject: Re: [PATCH v2 6/6] ACPI: bus-multi-instantiate: Add SPI support
-> 
->>> +	ret = bmi_spi_count_resources(adev);
->>> +	if (ret <= 0)
->>> +		return ret;
->>> +	count = ret;
->>
->> Ok, so why not do the following here instead (and drop a whole bunch of
->> functions above):
->>
->> 	ret = acpi_dev_get_resources(adev, &r, bmi_spi_count, &count);
->> 	if (ret < 0)
->> 		return ret;
->>
->> 	if (count <= 0) {
->> 		acpi_dev_free_resource_list(&r);
->> 		return count;
->> 	}
->>
->> 	/* Note we are not freeing the resource list yet here !!! */
->>
->>> +
->>> +	bmi->spi_devs = devm_kcalloc(dev, count, sizeof(*bmi->spi_devs),
->> GFP_KERNEL);
->>> +	if (!bmi->spi_devs)
->>> +		return -ENOMEM;
->>> +
->>> +	acpi_data = bmi_spi_get_resources(dev, adev, count);
->>> +	if (!acpi_data)
->>> +		return -ENOMEM;
->>
->> Remove the bmi_spi_get_resources() call here.
->>
->>> +
->>> +	for (i = 0; i < count && inst_array[i].type; i++) {
->>
->> Write a new:
->>
->> int bmi_get_spi_resource_by_index(list_head *resource_list, struct
->> acpi_resource_spi_serialbus *sb_ret, int index)
->> {}
->>
->> Helper which walks the list and fills in *sb_ret with the Nth (matching index)
->> SpiSerialBus resource found in the
->> list.
->>
->> And then do:
->>
->> 		ret = bmi_get_spi_resource_by_index(&r, &sb, i);
->> 		if (ret)
->> 			return ret;
->>
->> 		ctrl =
->> bmi_find_spi_controller(sb.resource_source.string_ptr);
->>
->>
->>> +		ctlr = bmi_find_spi_controller(acpi_data-
->>> acpi_data[i].resource_source);
->>> +		if (!ctlr) {
->>> +			ret = -EPROBE_DEFER;
->>> +			goto error;
->>> +		}
->>> +
->>> +		spi_dev = spi_alloc_device(ctlr);
->>> +		if (!spi_dev) {
->>> +			dev_err(&ctlr->dev, "failed to allocate SPI device for
->> %s\n",
->>> +				dev_name(&adev->dev));
->>> +			ret = -ENOMEM;
->>> +			goto error;
->>> +		}
->>> +
->>> +		strscpy(spi_dev->modalias, inst_array[i].type,
->> sizeof(spi_dev->modalias));
->>> +
->>
->> And replace all the "acpi_data->acpi_data[i].sb." reference below with
->> simple "sb.".
->>
->>
->>> +		if (ctlr->fw_translate_cs) {
->>> +			ret = ctlr->fw_translate_cs(ctlr,
->>> +						    acpi_data-
->>> acpi_data[i].sb.device_selection);
->>> +			if (ret < 0) {
->>> +				spi_dev_put(spi_dev);
->>> +				goto error;
->>> +			}
->>> +			spi_dev->chip_select = ret;
->>> +		} else {
->>> +			spi_dev->chip_select = acpi_data-
->>> acpi_data[i].sb.device_selection;
->>> +		}
->>> +
->>> +		spi_dev->max_speed_hz = acpi_data-
->>> acpi_data[i].sb.connection_speed;
->>> +		spi_dev->bits_per_word = acpi_data-
->>> acpi_data[i].sb.data_bit_length;
->>> +
->>> +		if (acpi_data->acpi_data[i].sb.clock_phase ==
->> ACPI_SPI_SECOND_PHASE)
->>> +			spi_dev->mode |= SPI_CPHA;
->>> +		if (acpi_data->acpi_data[i].sb.clock_polarity ==
->> ACPI_SPI_START_HIGH)
->>> +			spi_dev->mode |= SPI_CPOL;
->>> +		if (acpi_data->acpi_data[i].sb.device_polarity ==
->> ACPI_SPI_ACTIVE_HIGH)
->>> +			spi_dev->mode |= SPI_CS_HIGH;
->>> +
->>> +		ret = bmi_get_irq(pdev, adev, &inst_array[i]);
->>> +		if (ret < 0) {
->>> +			spi_dev_put(spi_dev);
->>> +			goto error;
->>> +		}
->>> +		spi_dev->irq = ret;
->>> +
->>> +		snprintf(name, sizeof(name), "%s-%s-%s.%d",
->> dev_name(&ctlr->dev), dev_name(dev),
->>> +			 inst_array[i].type, i);
->>> +		spi_dev->dev.init_name = name;
->>> +
->>> +		ret = spi_add_device(spi_dev);
->>> +		if (ret) {
->>> +			dev_err(&ctlr->dev, "failed to add SPI device %s from
->> ACPI: %d\n",
->>> +				dev_name(&adev->dev), ret);
->>> +			spi_dev_put(spi_dev);
->>> +			goto error;
->>> +		}
->>> +
->>> +		dev_dbg(dev, "SPI device %s using chip select %u", name,
->> spi_dev->chip_select);
->>> +
->>> +		bmi->spi_devs[i] = spi_dev;
->>> +		bmi->spi_num++;
->>> +	}
->>> +
->>> +	if (bmi->spi_num < count) {
->>> +		dev_err(dev, "Error finding driver, idx %d\n", i);
->>> +		ret = -ENODEV;
->>> +		goto error;
->>> +	}
->>> +
->>> +	dev_info(dev, "Instantiate %d SPI devices.\n", bmi->spi_num);
->>
->> And here replace the bmi_spi_res_free(acpi_data); call in both exit paths
->> with:
->> acpi_dev_free_resource_list(&r); .
->>
->> To me this way, simply using the already allocated resources from the list,
->> rather then making a temp copy of them and throwing that away seems like
->> a simpler solution ?
->>
->> If you go this route, please also remove the struct bmi_spi_acpi and
->> struct bmi_spi_sb_acpi data types which you now no longer need.
->>
-> 
-> I tried to implement this idea, and reuse the resource list, but I hit an issue. 
-> The resources saved in the list are not "struct acpi_resource", but instead the 
-> generic "struct resource".
-> We need the acpi_resource structure to pull the parameters from to be able to
-> create the spi devices.
-> As far as I know there is no way to convert the "struct resource" into a
-> "struct acpi_resource". Is there another way to do this?
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+Reviewed-by: Andi Shyti <andi@etezian.org>
+---
+ arch/arm/boot/dts/exynos5250.dtsi | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-Ugh, you're right. Sorry about that. I still don't realy like the code
-from your original v2 patch for this.
-
-So maybe this comment from my second reply on this patch can help
-clean things up:
-
-"So thinking a bit more about this, then looking up the nth SpiSerialBus
-resource, and then turning that into a spi_client is something which
-the SPI core ACPI code should already be doing for index==0. So I think
-that you should be able to modify the SPI core ACPI code to take index
-as a parameter and then have it export a helper for this which you
-can use rather then duplicate the SPI core ACPI code  ? Note this is
-also what the I2C code is already doing.
-
-And if you go that route you may also want to consider to add the SPI
-equivalent of the i2c_acpi_client_count() helper."
-
-Maybe that is a possible route to go to clean this up?
-
-Note there are also 2 other small remarks pending:
-
-1. My comment about adding the _t_ at the end of detect
-2. + Mark's remark about patch 3/6 missing your Signed-off-by.
-
-Regards,
-
-Hans
+diff --git a/arch/arm/boot/dts/exynos5250.dtsi b/arch/arm/boot/dts/exynos5250.dtsi
+index 139778928b93..102bb57bf704 100644
+--- a/arch/arm/boot/dts/exynos5250.dtsi
++++ b/arch/arm/boot/dts/exynos5250.dtsi
+@@ -496,8 +496,7 @@ spi_0: spi@12d20000 {
+ 			status = "disabled";
+ 			reg = <0x12d20000 0x100>;
+ 			interrupts = <GIC_SPI 66 IRQ_TYPE_LEVEL_HIGH>;
+-			dmas = <&pdma0 5
+-				&pdma0 4>;
++			dmas = <&pdma0 5>, <&pdma0 4>;
+ 			dma-names = "tx", "rx";
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
+@@ -512,8 +511,7 @@ spi_1: spi@12d30000 {
+ 			status = "disabled";
+ 			reg = <0x12d30000 0x100>;
+ 			interrupts = <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>;
+-			dmas = <&pdma1 5
+-				&pdma1 4>;
++			dmas = <&pdma1 5>, <&pdma1 4>;
+ 			dma-names = "tx", "rx";
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
+@@ -528,8 +526,7 @@ spi_2: spi@12d40000 {
+ 			status = "disabled";
+ 			reg = <0x12d40000 0x100>;
+ 			interrupts = <GIC_SPI 68 IRQ_TYPE_LEVEL_HIGH>;
+-			dmas = <&pdma0 7
+-				&pdma0 6>;
++			dmas = <&pdma0 7>, <&pdma0 6>;
+ 			dma-names = "tx", "rx";
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
+-- 
+2.32.0
 

@@ -2,178 +2,59 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9EE4FC43217
-	for <linux-spi@archiver.kernel.org>; Wed, 12 Jan 2022 10:36:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0FBE7C433EF
+	for <linux-spi@archiver.kernel.org>; Wed, 12 Jan 2022 10:56:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352582AbiALKgY (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 12 Jan 2022 05:36:24 -0500
-Received: from mailgw02.mediatek.com ([210.61.82.184]:37930 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1352561AbiALKgV (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 12 Jan 2022 05:36:21 -0500
-X-UUID: 3fb05f5c6a4f43c9979a826d9750533d-20220112
-X-UUID: 3fb05f5c6a4f43c9979a826d9750533d-20220112
-Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw02.mediatek.com
-        (envelope-from <leilk.liu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1447400250; Wed, 12 Jan 2022 18:36:16 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.2.792.15; Wed, 12 Jan 2022 18:36:14 +0800
-Received: from localhost.localdomain (10.17.3.154) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Wed, 12 Jan 2022 18:36:14 +0800
-From:   Leilk Liu <leilk.liu@mediatek.com>
-To:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>
-CC:     Matthias Brugger <matthias.bgg@gmail.com>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-spi@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
-        Leilk Liu <leilk.liu@mediatek.com>
-Subject: [PATCH V2 1/3] dt-bindings: spi: Convert spi-slave-mt27xx to json-schema
-Date:   Wed, 12 Jan 2022 18:36:07 +0800
-Message-ID: <20220112103609.17421-2-leilk.liu@mediatek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220112103609.17421-1-leilk.liu@mediatek.com>
-References: <20220112103609.17421-1-leilk.liu@mediatek.com>
+        id S239422AbiALK4Q (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 12 Jan 2022 05:56:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54944 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238370AbiALK4Q (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 12 Jan 2022 05:56:16 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B7E8C06173F
+        for <linux-spi@vger.kernel.org>; Wed, 12 Jan 2022 02:56:15 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 23BBF61722
+        for <linux-spi@vger.kernel.org>; Wed, 12 Jan 2022 10:56:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8AA6EC36AEA;
+        Wed, 12 Jan 2022 10:56:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1641984973;
+        bh=DLmrbhUjrJ96ey6BRWMsxsj+hC6xtwkMhtTazhIHqCQ=;
+        h=Subject:From:Date:To:From;
+        b=ZECvPfrUpVGRBFutIK9g+HrrAg/D5WFyMVMmbTXmnNnsXYAxO5KsfGCK4oM6SZbrM
+         tprD20iY3E9yodj1dSFKUasWMxJuYSwlc5i4mjhTEJ5UVToyAJaswVPLVHzm7EcVnH
+         od7NtJBNEWeWfpw1XgroEGz56zyWO363QZ98gBq2jBiFQ7amDPNtfmlNMLo8B3+hvA
+         cAMsnDP1G8xJTIJIdgtfeVF0b1CV62QSnHkHOmQt4rLoDnWK1bJe2UqRtMADX4gWip
+         K9EN8gdywWmM9AKpk1P38NuMMF3r+lG7SgSd3s3hNjvXbaVkdhj1LcEi2r8m8lLMz5
+         8Y+mZH1Aei9JA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 7463DF6078B;
+        Wed, 12 Jan 2022 10:56:13 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-MTK:  N
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <164198497347.19709.17014403398913242581.git-patchwork-housekeeping@kernel.org>
+Date:   Wed, 12 Jan 2022 10:56:13 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Convert Mediatek ARM SOC's SPI Slave controller binding
-to json-schema format.
+Latest series: [v3] spi: dt-bindings: samsung: convert to dtschema (2022-01-12T10:00:42)
+  Superseding: [v2] spi: dt-bindings: samsung: convert to dtschema (2022-01-11T10:13:35):
+    [v2,1/4] ARM: dts: exynos: split dmas into array of phandles in Exynos5250
+    [v2,2/4] spi: dt-bindings: samsung: convert to dtschema
+    [v2,3/4] spi: dt-bindings: samsung: allow controller-data to be optional
+    [v2,4/4] spi: s3c64xx: allow controller-data to be optional
 
-Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
----
- .../spi/mediatek,spi-slave-mt27xx.yaml        | 73 +++++++++++++++++++
- .../bindings/spi/spi-slave-mt27xx.txt         | 33 ---------
- 2 files changed, 73 insertions(+), 33 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/spi/mediatek,spi-slave-mt27xx.yaml
- delete mode 100644 Documentation/devicetree/bindings/spi/spi-slave-mt27xx.txt
 
-diff --git a/Documentation/devicetree/bindings/spi/mediatek,spi-slave-mt27xx.yaml b/Documentation/devicetree/bindings/spi/mediatek,spi-slave-mt27xx.yaml
-new file mode 100644
-index 000000000000..3364fff08cca
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/mediatek,spi-slave-mt27xx.yaml
-@@ -0,0 +1,73 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/spi/mediatek,spi-slave-mt27xx.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: SPI Slave controller for MediaTek ARM SoCs
-+
-+maintainers:
-+  - Leilk Liu <leilk.liu@mediatek.com>
-+
-+allOf:
-+  - $ref: /spi/spi-controller.yaml#
-+
-+properties:
-+  compatible:
-+    oneOf:
-+      - items:
-+          - enum:
-+              - mediatek,mt2712-spi-slave
-+      - items:
-+          - enum:
-+              - mediatek,mt8195-spi-slave
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  clocks:
-+    items:
-+      - description: clock used for the clock gate
-+
-+  clock-names:
-+    items:
-+      - const: spi
-+
-+  assigned-clocks:
-+    maxItems: 1
-+    description: |
-+      The mux clock for the given platform.
-+
-+  assigned-clock-parents:
-+    maxItems: 1
-+    description: |
-+      The parent of mux clock for the given platform.
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+  - clocks
-+  - clock-names
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/clock/mt2712-clk.h>
-+    #include <dt-bindings/gpio/gpio.h>
-+    #include <dt-bindings/interrupt-controller/arm-gic.h>
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+
-+    spi@10013000 {
-+      compatible = "mediatek,mt2712-spi-slave";
-+      reg = <0x10013000 0x100>;
-+      interrupts = <GIC_SPI 283 IRQ_TYPE_LEVEL_LOW>;
-+      clocks = <&infracfg CLK_INFRA_AO_SPI1>;
-+      clock-names = "spi";
-+      assigned-clocks = <&topckgen CLK_TOP_SPISLV_SEL>;
-+      assigned-clock-parents = <&topckgen CLK_TOP_UNIVPLL1_D2>;
-+    };
-diff --git a/Documentation/devicetree/bindings/spi/spi-slave-mt27xx.txt b/Documentation/devicetree/bindings/spi/spi-slave-mt27xx.txt
-deleted file mode 100644
-index 9192724540fd..000000000000
---- a/Documentation/devicetree/bindings/spi/spi-slave-mt27xx.txt
-+++ /dev/null
-@@ -1,33 +0,0 @@
--Binding for MTK SPI Slave controller
--
--Required properties:
--- compatible: should be one of the following.
--    - mediatek,mt2712-spi-slave: for mt2712 platforms
--    - mediatek,mt8195-spi-slave: for mt8195 platforms
--- reg: Address and length of the register set for the device.
--- interrupts: Should contain spi interrupt.
--- clocks: phandles to input clocks.
--  It's clock gate, and should be <&infracfg CLK_INFRA_AO_SPI1>.
--- clock-names: should be "spi" for the clock gate.
--
--Optional properties:
--- assigned-clocks: it's mux clock, should be <&topckgen CLK_TOP_SPISLV_SEL>.
--- assigned-clock-parents: parent of mux clock.
--  It's PLL, and should be one of the following.
--   -  <&topckgen CLK_TOP_UNIVPLL1_D2>: specify parent clock 312MHZ.
--				       It's the default one.
--   -  <&topckgen CLK_TOP_UNIVPLL1_D4>: specify parent clock 156MHZ.
--   -  <&topckgen CLK_TOP_UNIVPLL2_D4>: specify parent clock 104MHZ.
--   -  <&topckgen CLK_TOP_UNIVPLL1_D8>: specify parent clock 78MHZ.
--
--Example:
--- SoC Specific Portion:
--spis1: spi@10013000 {
--	compatible = "mediatek,mt2712-spi-slave";
--	reg = <0 0x10013000 0 0x100>;
--	interrupts = <GIC_SPI 283 IRQ_TYPE_LEVEL_LOW>;
--	clocks = <&infracfg CLK_INFRA_AO_SPI1>;
--	clock-names = "spi";
--	assigned-clocks = <&topckgen CLK_TOP_SPISLV_SEL>;
--	assigned-clock-parents = <&topckgen CLK_TOP_UNIVPLL1_D2>;
--};
 -- 
-2.25.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

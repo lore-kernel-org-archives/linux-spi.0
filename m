@@ -2,194 +2,85 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ADC51C41535
-	for <linux-spi@archiver.kernel.org>; Sat, 15 Jan 2022 21:06:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 348D8C433F5
+	for <linux-spi@archiver.kernel.org>; Sun, 16 Jan 2022 12:12:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233740AbiAOVGQ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sat, 15 Jan 2022 16:06:16 -0500
-Received: from mxout01.lancloud.ru ([45.84.86.81]:45150 "EHLO
-        mxout01.lancloud.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233684AbiAOVGK (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sat, 15 Jan 2022 16:06:10 -0500
-Received: from LanCloud
-DKIM-Filter: OpenDKIM Filter v2.11.0 mxout01.lancloud.ru 2176D209C7CC
-Received: from LanCloud
-Received: from LanCloud
-Received: from LanCloud
-Subject: Re: [PATCH] driver core: platform: Rename platform_get_irq_optional()
- to platform_get_irq_silent()
-To:     =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
-        "Geert Uytterhoeven" <geert@linux-m68k.org>
-CC:     Andrew Lunn <andrew@lunn.ch>, Ulf Hansson <ulf.hansson@linaro.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        KVM list <kvm@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        <linux-iio@vger.kernel.org>,
-        "Linus Walleij" <linus.walleij@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        "ALSA Development Mailing List" <alsa-devel@alsa-project.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Guenter Roeck <groeck@chromium.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        MTD Maling List <linux-mtd@lists.infradead.org>,
-        Linux I2C <linux-i2c@vger.kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        <linux-phy@lists.infradead.org>, Jiri Slaby <jirislaby@kernel.org>,
-        <openipmi-developer@lists.sourceforge.net>,
-        "Khuong Dinh" <khuong@os.amperecomputing.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-        Joakim Zhang <qiangqing.zhang@nxp.com>,
-        Kamal Dasu <kdasu.kdev@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        "Bartosz Golaszewski" <brgl@bgdev.pl>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        "Tony Luck" <tony.luck@intel.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
-        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Linux PWM List <linux-pwm@vger.kernel.org>,
-        Robert Richter <rric@kernel.org>,
-        "Saravanan Sekar" <sravanhome@gmail.com>,
-        Corey Minyard <minyard@acm.org>,
-        Linux PM list <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        John Garry <john.garry@huawei.com>,
-        Peter Korsgaard <peter@korsgaard.com>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        Mark Gross <markgross@kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Mark Brown <broonie@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        "Sebastian Reichel" <sre@kernel.org>,
-        Eric Auger <eric.auger@redhat.com>,
-        "Matthias Brugger" <matthias.bgg@gmail.com>,
-        Takashi Iwai <tiwai@suse.com>,
-        <platform-driver-x86@vger.kernel.org>,
-        Benson Leung <bleung@chromium.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        <linux-edac@vger.kernel.org>,
-        Mun Yew Tham <mun.yew.tham@intel.com>,
-        "Hans de Goede" <hdegoede@redhat.com>,
-        netdev <netdev@vger.kernel.org>,
-        "Yoshihiro Shimoda" <yoshihiro.shimoda.uh@renesas.com>,
-        Cornelia Huck <cohuck@redhat.com>,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        "Liam Girdwood" <lgirdwood@gmail.com>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        James Morse <james.morse@arm.com>,
-        Zha Qipeng <qipeng.zha@intel.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Richard Weinberger <richard@nod.at>,
-        =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund@ragnatech.se>,
-        <linux-mediatek@lists.infradead.org>,
-        "Brian Norris" <computersforpeace@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>
-References: <CAMuHMdWsMGPiQaPS0-PJ_+Mc5VQ37YdLfbHr_aS40kB+SfW-aw@mail.gmail.com>
- <20220112213121.5ruae5mxwj6t3qiy@pengutronix.de>
- <Yd9L9SZ+g13iyKab@sirena.org.uk>
- <20220113110831.wvwbm75hbfysbn2d@pengutronix.de>
- <YeA7CjOyJFkpuhz/@sirena.org.uk>
- <20220113194358.xnnbhsoyetihterb@pengutronix.de>
- <YeCI47ltlWzjzjYy@sirena.org.uk>
- <1df04d74-8aa2-11f1-54e9-34d0e8f4e58b@omp.ru>
- <20220113224319.akljsjtu7ps75vun@pengutronix.de>
- <CAMuHMdWjo36UGde3g5ysdXpLJn=mrPp31SDODuQNPUqoc-ARrQ@mail.gmail.com>
- <20220115152102.m47snsdrw2elagak@pengutronix.de>
-From:   Sergey Shtylyov <s.shtylyov@omp.ru>
-Organization: Open Mobile Platform
-Message-ID: <77cea138-977a-1454-4808-bd16dd7d2734@omp.ru>
-Date:   Sun, 16 Jan 2022 00:06:00 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        id S233029AbiAPMMf (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 16 Jan 2022 07:12:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56836 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229584AbiAPMMe (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 16 Jan 2022 07:12:34 -0500
+Received: from mail-ot1-x332.google.com (mail-ot1-x332.google.com [IPv6:2607:f8b0:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33059C061574
+        for <linux-spi@vger.kernel.org>; Sun, 16 Jan 2022 04:12:34 -0800 (PST)
+Received: by mail-ot1-x332.google.com with SMTP id g1-20020a9d6481000000b00592d01f2b6eso12139038otl.5
+        for <linux-spi@vger.kernel.org>; Sun, 16 Jan 2022 04:12:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=dN4hyAkZ1Miqzb3/QhoFsGXlrqJg5gaQIvzhl2DDXYI=;
+        b=CPNaiXWo2pnIicCgCE4TOFjmWNuRA9dzQpr3F9MQWVZndQVObEbrqc0LkwEobvrbAm
+         b6jkPIJMdB2Xorzqzp3V0BiqMe5ONj9bKIWeOOKnukHWMiMqb9y3m4SwNrdoQkHfxhXq
+         CDquO4Y5+rWhQ+usux8FaGzPpZ95FJFNAJGvYvwxZ9I3+VcEl9PH/Pvh6d4vmzz5tDtF
+         V/8iIeMg4OwY/XNOgqmwFtCvGlXid6h50FVXjS+tHS/Kzh585Uwe2iOovV48wXEuLeyt
+         nSve4ONIxR8/CbPDzw/rOM9rrux2qd5frYCAqc10IqjcAEKiOuYUepeHxW4aqbyBlcZl
+         bWvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=dN4hyAkZ1Miqzb3/QhoFsGXlrqJg5gaQIvzhl2DDXYI=;
+        b=kpCQmBZFZkxfaO2oq7cacamBTIGAS4LnTW/Or4lKJbA9BH5IRut68dNct8Eo2b72Ox
+         9lL7kxCN/BbE78AKdnJYgL9898qJR/KVCgiD8nHiLStkN3r+VPf1AFsYw17pTKRiUtfd
+         YrwiO114FljE3XzS/yQnCvewBgALKlytb7gVrshVZfc2zAb3AajikPPTdhNNskz8Ktfs
+         sU9GG9qWWBDAtBpsY5yMwsG53HqOtxnmLxsHq13cdOcLUhhWYX/5fy0dUyUUzDKYujy/
+         36/YvUk7/WcOm+qzhK8k38kU33z4jzJzgwPy1G4UCvQ2irBDFlCs1Tx83mRdLoxqoqqb
+         FbHg==
+X-Gm-Message-State: AOAM530frVI0sGH0s2kRcIj9/WGITyyXJ7oac26zbYwmOE1NAeoAUL+E
+        9YE9FuQoaolJ47yuDgDmpelxHQktQImppUOXkcuzAQ==
+X-Google-Smtp-Source: ABdhPJy8usbAaNUR44V9Qk15vyIj3ak49FQUUJBJouk/HUiIm/veRgYnOMPkzs5+HmpbNVpOzFFdybTHvuzzOVkJiXc=
+X-Received: by 2002:a9d:465:: with SMTP id 92mr12902887otc.35.1642335153484;
+ Sun, 16 Jan 2022 04:12:33 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20220115152102.m47snsdrw2elagak@pengutronix.de>
-Content-Type: text/plain; charset="windows-1252"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [192.168.11.198]
-X-ClientProxiedBy: LFEXT02.lancloud.ru (fd00:f066::142) To
- LFEX1907.lancloud.ru (fd00:f066::207)
+References: <CGME20220113122435epcas5p18e6a2699f193b9e1287588278a570235@epcas5p1.samsung.com>
+ <20220113121143.22280-1-alim.akhtar@samsung.com> <20220113121143.22280-19-alim.akhtar@samsung.com>
+In-Reply-To: <20220113121143.22280-19-alim.akhtar@samsung.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Sun, 16 Jan 2022 13:12:21 +0100
+Message-ID: <CACRpkdYSR5hiVKoZTffxudNOUQCNFqX-yuys-xgeocn2vG_ecg@mail.gmail.com>
+Subject: Re: [PATCH 18/23] spi: s3c64xx: Add spi port configuration for Tesla
+ FSD SoC
+To:     Alim Akhtar <alim.akhtar@samsung.com>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        soc@kernel.org, linux-clk@vger.kernel.org,
+        devicetree@vger.kernel.org, olof@lixom.net,
+        catalin.marinas@arm.com, robh+dt@kernel.org,
+        krzysztof.kozlowski@canonical.com, s.nawrocki@samsung.com,
+        linux-samsung-soc@vger.kernel.org, pankaj.dubey@samsung.com,
+        linux-fsd@tesla.com, broonie@kernel.org, linux-spi@vger.kernel.org,
+        Aswani Reddy <aswani.reddy@samsung.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On 1/15/22 6:21 PM, Uwe Kleine-König wrote:
+On Thu, Jan 13, 2022 at 1:24 PM Alim Akhtar <alim.akhtar@samsung.com> wrote:
 
-[...]
->>>>>> The subsystems regulator, clk and gpio have the concept of a dummy
->>>>>> resource. For regulator, clk and gpio there is a semantic difference
->>>>>> between the regular _get() function and the _get_optional() variant.
->>>>>> (One might return the dummy resource, the other won't. Unfortunately
->>>>>> which one implements which isn't the same for these three.) The
->>>>>> difference between platform_get_irq() and platform_get_irq_optional() is
->>>>>> only that the former might emit an error message and the later won't.
->>>>
->>>>    This is only a current difference but I'm still going to return 0 ISO
->>>> -ENXIO from latform_get_irq_optional(), no way I'd leave that -ENXIO there
->>>> alone... :-)
->>>
->>> This would address a bit of the critic in my commit log. But as 0 isn't
->>> a dummy value like the dummy values that exist for clk, gpiod and
->>> regulator I still think that the naming is a bad idea because it's not
->>> in the spirit of the other *_get_optional functions.
->>>
->>> Seeing you say that -ENXIO is a bad return value for
->>> platform_get_irq_optional() and 0 should be used instead, I wonder why
->>> not changing platform_get_irq() to return 0 instead of -ENXIO, too.
->>> This question is for now only about a sensible semantic. That actually
->>> changing platform_get_irq() is probably harder than changing
->>> platform_get_irq_optional() is a different story.
->>>
->>> If only platform_get_irq_optional() is changed and given that the
->>> callers have to do something like:
->>>
->>>         if (this_irq_exists()):
->>>                 ... (e.g. request_irq)
->>>         else:
->>>                 ... (e.g. setup polling)
->>>
->>> I really think it's a bad idea that this_irq_exists() has to be
->>> different for platform_get_irq() vs. platform_get_irq_optional().
->>
->> For platform_get_irq(), the IRQ being absent is an error condition,
->> hence it should return an error code.
->> For platform_get_irq_optional(), the IRQ being absent is not an error
->> condition, hence it should not return an error code, and 0 is OK.
-> 
-> Please show a few examples how this simplifies the code. If it's only
+> This patch adds compatible and port configuration for
+> spi controller for Tesla Full Self-Driving SoC.
+>
+> Cc: linux-fsd@tesla.com
+> Cc: broonie@kernel.org
+> Cc: linux-spi@vger.kernel.org
+> Signed-off-by: Aswani Reddy <aswani.reddy@samsung.com>
+> Signed-off-by: Alim Akhtar <alim.akhtar@samsung.com>
 
-   As for platform_get_irq(), returning -ENXIO simplifies things a lot: you don't
-have to check for 0 at every freaking call site and have s/th like (every
-time!):
+Note to self: now that I see that the Samsung "S3C" SPI controller,
+which I was thinking of as "some kind of early 2000s legacy" is used
+by the very latest silicon I bumped up fixing it to use GPIO descriptors
+a bit on my TODO list.
 
-	irq = platform_get_irq();
-	if (irq <= 0)
-		return irq ?: -ENXIO; // any error code you choose
-
-instead of just:
-
-	irq = platform_get_irq();
-	if (irq < 0)
-		return irq;
-
-This scales better in my book.
-
-> that a driver has to check for == 0 instead of == -ENXIO, than that's
-> not a good enough motivation to make platform_get_irq_optional()
-> different to platform_get_irq().
-
-   Again, it scales better... good motivation in my eyes.
-
-> Best regards
-> Uwe
-
-MBR, Sergey
+Yours,
+Linus Walleij

@@ -2,231 +2,247 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 465F5C433EF
-	for <linux-spi@archiver.kernel.org>; Tue, 18 Jan 2022 12:49:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9C4B1C433F5
+	for <linux-spi@archiver.kernel.org>; Tue, 18 Jan 2022 14:00:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240386AbiARMth convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 18 Jan 2022 07:49:37 -0500
-Received: from mail-ua1-f49.google.com ([209.85.222.49]:35487 "EHLO
-        mail-ua1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235104AbiARMtb (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 18 Jan 2022 07:49:31 -0500
-Received: by mail-ua1-f49.google.com with SMTP id m90so36320088uam.2;
-        Tue, 18 Jan 2022 04:49:29 -0800 (PST)
+        id S244496AbiAROAu (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 18 Jan 2022 09:00:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50282 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S243931AbiAROAs (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 18 Jan 2022 09:00:48 -0500
+Received: from mail-ua1-x92e.google.com (mail-ua1-x92e.google.com [IPv6:2607:f8b0:4864:20::92e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EF6BC061574
+        for <linux-spi@vger.kernel.org>; Tue, 18 Jan 2022 06:00:48 -0800 (PST)
+Received: by mail-ua1-x92e.google.com with SMTP id m90so36802738uam.2
+        for <linux-spi@vger.kernel.org>; Tue, 18 Jan 2022 06:00:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=vH6mrMnTcRnYhQ/60P21Ou25hu431NT7bRGY1A4qENQ=;
+        b=mcU1UpjzykY9s8XxjUDd/DoITMVGq0PCdIu+RF++pIQDPH2d24mrM58p2Y7SBoj2Yd
+         7XPEIsf1rCHYNsgUQIn3it7O99sQciNRXtE0p3j2IeB8w5/17N9XZudCAW0+Odl+PZeC
+         bgYSDzNCR65SU4NfSdihwBkyIGaFjXImoAXcEZWjMkq/JYoIjv5fLfvGPR6vkbKE/Rpw
+         Y4jo7gY4jxIoFX5PAabCvcv9K06cxywMQ0a+mwAXG/BvYM+2rvUiHC9qcuR9aWVna/gL
+         R6vgvf8+03ER0vByR/VHunDqsDvzCKNNqVu3m7Q39u3f3ggrddQimFRomtN0YZ3blDxr
+         fi2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=iDNGF1VjVomGlE1aVlmhPbvwByegTECQGcsrxubfQG0=;
-        b=W/7+KwcQIFe8k9do6GnoupOVJaOKBdiP+MrAUzGwizq4jkG1DvOd/PQS8vg7vJJvPe
-         8C5XbpuNcDb8ZlT+gBIZGaYfLBDaASe9KEv2NsKpjpF2tRaZ+Zuud8NIJms2l4qkzLAx
-         XMv9JWaVH9cGPKjKWYMq/5DePXPe+QcRDbfM7E/Ty5DHg2hX3jTvc+WkxeBZAwkUGvve
-         QRei+gV7soYC+7p6+3G6d1wC+bgK5TkBu1QySj3AJkSRF2gvILWYsUQfNeBdCNFetwxb
-         1YNiYjF+yFkbraOPVF38W15G82u/rOkTNnSpQ0FS+TlAQ0nrg9CvT8YPJTzh++cG9Tv2
-         lZ5A==
-X-Gm-Message-State: AOAM531I+1ECNNQTj+97N5eGsVOavtQ4zTarjbORuoCQFkwudfNUGeEL
-        ykKgZwG8KROlSfpcRJvFjxNtHdQQD6iLJ4YM
-X-Google-Smtp-Source: ABdhPJwKQbCOkjDtdikM1lfRv1KCWaWVwhaMtYkyK+iOxRUckVe3GwFbVQNSVQ9kAuVjm+afJgCLKg==
-X-Received: by 2002:a05:6102:ecf:: with SMTP id m15mr8610496vst.68.1642510169047;
-        Tue, 18 Jan 2022 04:49:29 -0800 (PST)
-Received: from mail-ua1-f46.google.com (mail-ua1-f46.google.com. [209.85.222.46])
-        by smtp.gmail.com with ESMTPSA id p14sm3586095uad.20.2022.01.18.04.49.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 18 Jan 2022 04:49:27 -0800 (PST)
-Received: by mail-ua1-f46.google.com with SMTP id c36so36154877uae.13;
-        Tue, 18 Jan 2022 04:49:27 -0800 (PST)
-X-Received: by 2002:a05:6102:3581:: with SMTP id h1mr9266907vsu.5.1642510166831;
- Tue, 18 Jan 2022 04:49:26 -0800 (PST)
+         :message-id:subject:to:cc;
+        bh=vH6mrMnTcRnYhQ/60P21Ou25hu431NT7bRGY1A4qENQ=;
+        b=jkl5t5VP8UEXwRDE9VK5+fwJYo+NBlxPlhgLd3T0aGmJ/hmipj+Elyxm7qquHOx2AK
+         Rp2iHJPSlwg6Un+gwNvpDah/guuuiMlPb8tgw4DjCx58W4IXK85GchpJ3UPMZXx1LRNe
+         fX8QxhxPPIpcOaKQDKgFALW0M2TdWRfYdQRlC8eW6GFdO6ShaBTl8cobUTIGRDZRQAtz
+         RfJlQF80SIhFwZF0Dd+tB1Xf+ST5m2fL2GnEjW+rL9mvpSveTqF22wi1Q7JD7sqmXU58
+         KRXm+OgC5GeXIgBARbEkzHRvaTx8iqzyrzEx+AEaXrPcBm9sNLa2f92zPo0nE3ZeUXcW
+         BaSA==
+X-Gm-Message-State: AOAM531J2zfpgJ0lVMQQ7fYCkO8+IbWnbUKkGBCDUBBMdYqOBncu18N2
+        aWR99Fkga1346C+JYVGRB95XyjuT/2Qdz+snfc0MWQ==
+X-Google-Smtp-Source: ABdhPJwT+pj0knnZ6KtzMGVJehL1QVPwQ06NFEozN8EW30EpG+ix63pb9GVliVDFk2PPoXYHUEM/05EfpEXUUjlEYdU=
+X-Received: by 2002:a67:dd90:: with SMTP id i16mr9454274vsk.86.1642514446138;
+ Tue, 18 Jan 2022 06:00:46 -0800 (PST)
 MIME-Version: 1.0
-References: <c9026f17-2b3f-ee94-0ea3-5630f981fbc1@omp.ru> <CAMuHMdXVbRudGs69f9ZzaP1PXhteDNZiXA658eMFAwP4nr9r3w@mail.gmail.com>
- <20220117092444.opoedfcf5k5u6otq@pengutronix.de> <CAMuHMdUgZUeraHadRAi2Z=DV+NuNBrKPkmAKsvFvir2MuquVoA@mail.gmail.com>
- <20220117114923.d5vajgitxneec7j7@pengutronix.de> <CAMuHMdWCKERO20R2iVHq8P=BaoauoBAtiampWzfMRYihi3Sb0g@mail.gmail.com>
- <20220117170609.yxaamvqdkivs56ju@pengutronix.de> <CAMuHMdXbuZqEpYivyS6hkaRN+CwTOGaHq_OROwVAWvDD6OXODQ@mail.gmail.com>
- <20220118090913.pjumkq4zf4iqtlha@pengutronix.de> <CAMuHMdUW8+Y_=uszD+JOZO3Lpa9oDayk+GO+cg276i2f2T285w@mail.gmail.com>
- <20220118120806.pbjsat4ulg3vnhsh@pengutronix.de>
-In-Reply-To: <20220118120806.pbjsat4ulg3vnhsh@pengutronix.de>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 18 Jan 2022 13:49:15 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdWkwV9XE_R5FZ=jPtDwLpDbEngG6+X2JmiDJCZJZvUjYA@mail.gmail.com>
-Message-ID: <CAMuHMdWkwV9XE_R5FZ=jPtDwLpDbEngG6+X2JmiDJCZJZvUjYA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] platform: make platform_get_irq_optional() optional
-To:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     Andrew Lunn <andrew@lunn.ch>, Ulf Hansson <ulf.hansson@linaro.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        KVM list <kvm@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>, linux-iio@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        ALSA Development Mailing List <alsa-devel@alsa-project.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Guenter Roeck <groeck@chromium.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        MTD Maling List <linux-mtd@lists.infradead.org>,
-        Linux I2C <linux-i2c@vger.kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        linux-phy@lists.infradead.org,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Khuong Dinh <khuong@os.amperecomputing.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-        Kamal Dasu <kdasu.kdev@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
-        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        platform-driver-x86@vger.kernel.org,
-        Linux PWM List <linux-pwm@vger.kernel.org>,
-        Robert Richter <rric@kernel.org>,
-        Saravanan Sekar <sravanhome@gmail.com>,
-        Corey Minyard <minyard@acm.org>,
-        Linux PM list <linux-pm@vger.kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        John Garry <john.garry@huawei.com>,
-        Peter Korsgaard <peter@korsgaard.com>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        Mark Gross <markgross@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Mark Brown <broonie@kernel.org>,
-        Borislav Petkov <bp@alien8.de>, Takashi Iwai <tiwai@suse.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        openipmi-developer@lists.sourceforge.net,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Benson Leung <bleung@chromium.org>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-edac@vger.kernel.org, Tony Luck <tony.luck@intel.com>,
-        Richard Weinberger <richard@nod.at>,
-        Mun Yew Tham <mun.yew.tham@intel.com>,
-        Eric Auger <eric.auger@redhat.com>,
-        netdev <netdev@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Cornelia Huck <cohuck@redhat.com>,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        Joakim Zhang <qiangqing.zhang@nxp.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Sergey Shtylyov <s.shtylyov@omp.ru>,
-        Vinod Koul <vkoul@kernel.org>,
-        James Morse <james.morse@arm.com>,
-        Zha Qipeng <qipeng.zha@intel.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
-        linux-mediatek@lists.infradead.org,
-        Brian Norris <computersforpeace@gmail.com>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+References: <20220118110928.120640-1-linus.walleij@linaro.org>
+In-Reply-To: <20220118110928.120640-1-linus.walleij@linaro.org>
+From:   Sam Protsenko <semen.protsenko@linaro.org>
+Date:   Tue, 18 Jan 2022 16:00:34 +0200
+Message-ID: <CAPLW+4kS73Tg2C7dJ_gkMHF6=KT0pB4gQ18hAoTMTv-j5Q73pg@mail.gmail.com>
+Subject: Re: [PATCH 1/3 v2] spi: s3c64xx: Delete unused boardfile helpers
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Sylwester Nawrocki <snawrocki@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi Uwe,
+On Tue, 18 Jan 2022 at 13:11, Linus Walleij <linus.walleij@linaro.org> wrote:
+>
+> The helpers to use SPI host 1 and 2 are unused in the kernel
+> and taking up space and maintenance hours. New systems should
+> use device tree and not this, so delete the code.
+>
+> Cc: linux-samsung-soc@vger.kernel.org
+> Cc: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+> Cc: Sylwester Nawrocki <snawrocki@kernel.org>
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+> ChangeLog v1-v2:
+> - Split out to separate patch
+> ---
 
-On Tue, Jan 18, 2022 at 1:08 PM Uwe Kleine-König
-<u.kleine-koenig@pengutronix.de> wrote:
-> On Tue, Jan 18, 2022 at 10:37:25AM +0100, Geert Uytterhoeven wrote:
-> > On Tue, Jan 18, 2022 at 10:09 AM Uwe Kleine-König
-> > <u.kleine-koenig@pengutronix.de> wrote:
-> > > For the (clk|gpiod|regulator)_get_optional() you don't have to check
-> > > against the magic not-found value (so no implementation detail magic
-> > > leaks into the caller code) and just pass it to the next API function.
-> > > (And my expectation would be that if you chose to represent not-found by
-> > > (void *)66 instead of NULL, you won't have to adapt any user, just the
-> > > framework internal checks. This is a good thing!)
-> >
-> > Ah, there is the wrong assumption: drivers sometimes do need to know
-> > if the resource was found, and thus do need to know about (void *)66,
-> > -ENODEV, or -ENXIO.  I already gave examples for IRQ and clk before.
-> > I can imagine these exist for gpiod and regulator, too, as soon as
-> > you go beyond the trivial "enable" and "disable" use-cases.
->
-> My premise is that every user who has to check for "not found"
-> explicitly should not use (clk|gpiod)_get_optional() but
-> (clk|gpiod)_get() and do proper (and explicit) error handling for
-> -ENODEV. (clk|gpiod)_get_optional() is only for these trivial use-cases.
->
-> > And 0/NULL vs. > 0 is the natural check here: missing, but not
-> > an error.
->
-> For me it it 100% irrelevant if "not found" is an error for the query
-> function or not. I just have to be able to check for "not found" and
-> react accordingly.
->
-> And adding a function
->
->         def platform_get_irq_opional():
->                 ret = platform_get_irq()
->                 if ret == -ENXIO:
->                         return 0
->                 return ret
->
-> it's not a useful addition to the API if I cannot use 0 as a dummy
-> because it doesn't simplify the caller enough to justify the additional
-> function.
->
-> The only thing I need to be able is to distinguish the cases "there is
-> an irq", "there is no irq" and anything else is "there is a problem I
-> cannot handle and so forward it to my caller". The semantic of
-> platform_get_irq() is able to satisfy this requirement[1], so why introduce
-> platform_get_irq_opional() for the small advantage that I can check for
-> not-found using
->
->         if (!irq)
->
-> instead of
->
->         if (irq != -ENXIO)
->
-> ? The semantic of platform_get_irq() is easier ("Either a usable
-> non-negative irq number or a negative error number") compared to
-> platform_get_irq_optional() ("Either a usable positive irq number or a
-> negative error number or 0 meaning not found"). Usage of
-> platform_get_irq() isn't harder or more expensive (neither for a human
-> reader nor for a maching running the resulting compiled code).
-> For a human reader
->
->         if (irq != -ENXIO)
->
-> is even easier to understand because for
->
->         if (!irq)
->
-> they have to check where the value comes from, see it's
-> platform_get_irq_optional() and understand that 0 means not-found.
+Reviewed-by: Sam Protsenko <semen.protsenko@linaro.org>
 
-"vIRQ zero does not exist."
-
-> This function just adds overhead because as a irq framework user I have
-> to understand another function. For me the added benefit is too small to
-> justify the additional function. And you break out-of-tree drivers.
-> These are all no major counter arguments, but as the advantage isn't
-> major either, they still matter.
+>  arch/arm/mach-s3c/Kconfig                 | 12 ----
+>  arch/arm/mach-s3c/devs.c                  | 72 -----------------------
+>  arch/arm/mach-s3c/setup-spi-s3c64xx.c     |  9 ---
+>  arch/arm/mach-s3c/spi-core-s3c24xx.h      |  6 --
+>  include/linux/platform_data/spi-s3c64xx.h |  8 ---
+>  5 files changed, 107 deletions(-)
 >
-> Best regards
-> Uwe
+> diff --git a/arch/arm/mach-s3c/Kconfig b/arch/arm/mach-s3c/Kconfig
+> index 25606e668cf9..1899fc3f44fd 100644
+> --- a/arch/arm/mach-s3c/Kconfig
+> +++ b/arch/arm/mach-s3c/Kconfig
+> @@ -191,18 +191,6 @@ config S3C64XX_DEV_SPI0
+>           Compile in platform device definitions for S3C64XX's type
+>           SPI controller 0
 >
-> [1] the only annoying thing is the error message.
-
-So there's still a need for two functions.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+> -config S3C64XX_DEV_SPI1
+> -       bool
+> -       help
+> -         Compile in platform device definitions for S3C64XX's type
+> -         SPI controller 1
+> -
+> -config S3C64XX_DEV_SPI2
+> -       bool
+> -       help
+> -         Compile in platform device definitions for S3C64XX's type
+> -         SPI controller 2
+> -
+>  config SAMSUNG_DEV_TS
+>         bool
+>         help
+> diff --git a/arch/arm/mach-s3c/devs.c b/arch/arm/mach-s3c/devs.c
+> index 06dec64848f9..9f086aee862b 100644
+> --- a/arch/arm/mach-s3c/devs.c
+> +++ b/arch/arm/mach-s3c/devs.c
+> @@ -1125,75 +1125,3 @@ void __init s3c64xx_spi0_set_platdata(int (*cfg_gpio)(void), int src_clk_nr,
+>         s3c_set_platdata(&pd, sizeof(pd), &s3c64xx_device_spi0);
+>  }
+>  #endif /* CONFIG_S3C64XX_DEV_SPI0 */
+> -
+> -#ifdef CONFIG_S3C64XX_DEV_SPI1
+> -static struct resource s3c64xx_spi1_resource[] = {
+> -       [0] = DEFINE_RES_MEM(S3C_PA_SPI1, SZ_256),
+> -       [1] = DEFINE_RES_IRQ(IRQ_SPI1),
+> -};
+> -
+> -struct platform_device s3c64xx_device_spi1 = {
+> -       .name           = "s3c6410-spi",
+> -       .id             = 1,
+> -       .num_resources  = ARRAY_SIZE(s3c64xx_spi1_resource),
+> -       .resource       = s3c64xx_spi1_resource,
+> -       .dev = {
+> -               .dma_mask               = &samsung_device_dma_mask,
+> -               .coherent_dma_mask      = DMA_BIT_MASK(32),
+> -       },
+> -};
+> -
+> -void __init s3c64xx_spi1_set_platdata(int (*cfg_gpio)(void), int src_clk_nr,
+> -                                               int num_cs)
+> -{
+> -       struct s3c64xx_spi_info pd;
+> -
+> -       /* Reject invalid configuration */
+> -       if (!num_cs || src_clk_nr < 0) {
+> -               pr_err("%s: Invalid SPI configuration\n", __func__);
+> -               return;
+> -       }
+> -
+> -       pd.num_cs = num_cs;
+> -       pd.src_clk_nr = src_clk_nr;
+> -       pd.cfg_gpio = (cfg_gpio) ? cfg_gpio : s3c64xx_spi1_cfg_gpio;
+> -
+> -       s3c_set_platdata(&pd, sizeof(pd), &s3c64xx_device_spi1);
+> -}
+> -#endif /* CONFIG_S3C64XX_DEV_SPI1 */
+> -
+> -#ifdef CONFIG_S3C64XX_DEV_SPI2
+> -static struct resource s3c64xx_spi2_resource[] = {
+> -       [0] = DEFINE_RES_MEM(S3C_PA_SPI2, SZ_256),
+> -       [1] = DEFINE_RES_IRQ(IRQ_SPI2),
+> -};
+> -
+> -struct platform_device s3c64xx_device_spi2 = {
+> -       .name           = "s3c6410-spi",
+> -       .id             = 2,
+> -       .num_resources  = ARRAY_SIZE(s3c64xx_spi2_resource),
+> -       .resource       = s3c64xx_spi2_resource,
+> -       .dev = {
+> -               .dma_mask               = &samsung_device_dma_mask,
+> -               .coherent_dma_mask      = DMA_BIT_MASK(32),
+> -       },
+> -};
+> -
+> -void __init s3c64xx_spi2_set_platdata(int (*cfg_gpio)(void), int src_clk_nr,
+> -                                               int num_cs)
+> -{
+> -       struct s3c64xx_spi_info pd;
+> -
+> -       /* Reject invalid configuration */
+> -       if (!num_cs || src_clk_nr < 0) {
+> -               pr_err("%s: Invalid SPI configuration\n", __func__);
+> -               return;
+> -       }
+> -
+> -       pd.num_cs = num_cs;
+> -       pd.src_clk_nr = src_clk_nr;
+> -       pd.cfg_gpio = (cfg_gpio) ? cfg_gpio : s3c64xx_spi2_cfg_gpio;
+> -
+> -       s3c_set_platdata(&pd, sizeof(pd), &s3c64xx_device_spi2);
+> -}
+> -#endif /* CONFIG_S3C64XX_DEV_SPI2 */
+> diff --git a/arch/arm/mach-s3c/setup-spi-s3c64xx.c b/arch/arm/mach-s3c/setup-spi-s3c64xx.c
+> index efcf78d41585..497aff71c29c 100644
+> --- a/arch/arm/mach-s3c/setup-spi-s3c64xx.c
+> +++ b/arch/arm/mach-s3c/setup-spi-s3c64xx.c
+> @@ -16,12 +16,3 @@ int s3c64xx_spi0_cfg_gpio(void)
+>         return 0;
+>  }
+>  #endif
+> -
+> -#ifdef CONFIG_S3C64XX_DEV_SPI1
+> -int s3c64xx_spi1_cfg_gpio(void)
+> -{
+> -       s3c_gpio_cfgall_range(S3C64XX_GPC(4), 3,
+> -                               S3C_GPIO_SFN(2), S3C_GPIO_PULL_UP);
+> -       return 0;
+> -}
+> -#endif
+> diff --git a/arch/arm/mach-s3c/spi-core-s3c24xx.h b/arch/arm/mach-s3c/spi-core-s3c24xx.h
+> index 057667469cc3..919c5fd0c9af 100644
+> --- a/arch/arm/mach-s3c/spi-core-s3c24xx.h
+> +++ b/arch/arm/mach-s3c/spi-core-s3c24xx.h
+> @@ -16,12 +16,6 @@ static inline void s3c24xx_spi_setname(char *name)
+>  #ifdef CONFIG_S3C64XX_DEV_SPI0
+>         s3c64xx_device_spi0.name = name;
+>  #endif
+> -#ifdef CONFIG_S3C64XX_DEV_SPI1
+> -       s3c64xx_device_spi1.name = name;
+> -#endif
+> -#ifdef CONFIG_S3C64XX_DEV_SPI2
+> -       s3c64xx_device_spi2.name = name;
+> -#endif
+>  }
+>
+>  #endif /* __PLAT_S3C_SPI_CORE_S3C24XX_H */
+> diff --git a/include/linux/platform_data/spi-s3c64xx.h b/include/linux/platform_data/spi-s3c64xx.h
+> index 773daf7915a3..19d690f34670 100644
+> --- a/include/linux/platform_data/spi-s3c64xx.h
+> +++ b/include/linux/platform_data/spi-s3c64xx.h
+> @@ -52,17 +52,9 @@ struct s3c64xx_spi_info {
+>   */
+>  extern void s3c64xx_spi0_set_platdata(int (*cfg_gpio)(void), int src_clk_nr,
+>                                                 int num_cs);
+> -extern void s3c64xx_spi1_set_platdata(int (*cfg_gpio)(void), int src_clk_nr,
+> -                                               int num_cs);
+> -extern void s3c64xx_spi2_set_platdata(int (*cfg_gpio)(void), int src_clk_nr,
+> -                                               int num_cs);
+>
+>  /* defined by architecture to configure gpio */
+>  extern int s3c64xx_spi0_cfg_gpio(void);
+> -extern int s3c64xx_spi1_cfg_gpio(void);
+> -extern int s3c64xx_spi2_cfg_gpio(void);
+>
+>  extern struct s3c64xx_spi_info s3c64xx_spi0_pdata;
+> -extern struct s3c64xx_spi_info s3c64xx_spi1_pdata;
+> -extern struct s3c64xx_spi_info s3c64xx_spi2_pdata;
+>  #endif /*__SPI_S3C64XX_H */
+> --
+> 2.34.1
+>

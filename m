@@ -2,41 +2,41 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 29A95C4167D
-	for <linux-spi@archiver.kernel.org>; Tue, 18 Jan 2022 14:54:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 76562C433F5
+	for <linux-spi@archiver.kernel.org>; Tue, 18 Jan 2022 14:54:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344655AbiAROy0 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 18 Jan 2022 09:54:26 -0500
-Received: from mx0a-001ae601.pphosted.com ([67.231.149.25]:63344 "EHLO
+        id S1344776AbiAROy1 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 18 Jan 2022 09:54:27 -0500
+Received: from mx0a-001ae601.pphosted.com ([67.231.149.25]:22172 "EHLO
         mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1344337AbiAROyA (ORCPT
+        by vger.kernel.org with ESMTP id S1344413AbiAROyA (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Tue, 18 Jan 2022 09:54:00 -0500
 Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
-        by mx0a-001ae601.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 20I1MV5t021792;
-        Tue, 18 Jan 2022 08:53:40 -0600
+        by mx0a-001ae601.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 20I1MV5r021792;
+        Tue, 18 Jan 2022 08:53:36 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding : content-type; s=PODMain02222019;
- bh=YkKWuYqHlYN+uhZ693dYf8OMpvb2YiGDbgFVPAVglcA=;
- b=HUVtNz0iCMLrdAuhwgzakdXSUDuRRe+G5mI8CFuy42g1DM51Xr8+FvrZyRrWHvYlBEa5
- GOU/pXC+RwXfml/IdUk7to9XE90GQmR4XCcOLyohSONhW6PHCS6ATFJXiz70rKvKcxU1
- n2VRjmzxnA2hZSHFgBk098KxeDO1c6Qe4HtopmlaeoK0L7AISiRYFoxOcmpyLBUbwRXL
- sGpXyESmBYcngKyBxH7fMnHSJmrqzUk7/+Z8qJMZI9S9+jrT2uEvuKg5XFVhIoQJuW2P
- 3jMwaJ+lw1MF9l9il3GcrFh+bDD/qCrCqOdLR+Y+Zzg2WNpYRZFhQa5Q5jbu6fZ/bbTs FQ== 
-Received: from ediex02.ad.cirrus.com ([84.19.233.68])
-        by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 3dnaxhs9nc-2
+ bh=0TVxBDOiUr12OuPIFyA5/1w1LgYsgtcjV4mdb8rtSok=;
+ b=qDkFadmL0/AgDz3iGm2PqcfT5jD93kZENaZ1VVlhLsHu0YaP2weGHS3ZAvfR2ZjK91/t
+ 3i8U8OxjkWprjVkbrpwcMwmljHNKlT7kH0WMC2mi4nzgxJArpJxaxFJnl7lyG3BJNhCU
+ b/qt5F/YgCVh6Xt02jVguJ3i6wCUKnEfMkf3npLrCYdIGFbQtwvqagRasm9zgmOrLx4E
+ TythIy33G/ka07Dnks9uiDmsZG2tnhGPt49cerOHGaYm4SvjHtRZ1YV6Bi/dF3rT7MxV
+ f+dYcWpqOnV0Iwm29gV0lKLKQ3l5DKvZP/8g5t6FyAf1MVPBSaY9N01Glz5FTFrB88vR WQ== 
+Received: from ediex01.ad.cirrus.com ([84.19.233.68])
+        by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 3dnaxhs9na-2
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Tue, 18 Jan 2022 08:53:40 -0600
-Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX02.ad.cirrus.com
- (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
+        Tue, 18 Jan 2022 08:53:36 -0600
+Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.18; Tue, 18 Jan
- 2022 14:53:39 +0000
+ 2022 14:53:35 +0000
 Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
  (198.61.84.80) with Microsoft SMTP Server id 15.1.2375.18 via Frontend
- Transport; Tue, 18 Jan 2022 14:53:39 +0000
+ Transport; Tue, 18 Jan 2022 14:53:35 +0000
 Received: from LONN2DGDQ73.ad.cirrus.com (unknown [198.90.238.138])
-        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 9109AB13;
-        Tue, 18 Jan 2022 14:53:37 +0000 (UTC)
+        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id F055A7C;
+        Tue, 18 Jan 2022 14:53:33 +0000 (UTC)
 From:   Stefan Binding <sbinding@opensource.cirrus.com>
 To:     Mark Brown <broonie@kernel.org>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
@@ -48,141 +48,190 @@ CC:     <alsa-devel@alsa-project.org>, <linux-kernel@vger.kernel.org>,
         <linux-spi@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
         <platform-driver-x86@vger.kernel.org>,
         <patches@opensource.cirrus.com>,
-        Lucas Tanure <tanureal@opensource.cirrus.com>,
         Stefan Binding <sbinding@opensource.cirrus.com>
-Subject: [PATCH v3 05/10] platform/x86: i2c-multi-instantiate: Move it to drivers/acpi folder
-Date:   Tue, 18 Jan 2022 14:52:46 +0000
-Message-ID: <20220118145251.1548-6-sbinding@opensource.cirrus.com>
+Subject: [PATCH v3 03/10] spi: Support selection of the index of the ACPI Spi Resource before alloc
+Date:   Tue, 18 Jan 2022 14:52:44 +0000
+Message-ID: <20220118145251.1548-4-sbinding@opensource.cirrus.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220118145251.1548-1-sbinding@opensource.cirrus.com>
 References: <20220118145251.1548-1-sbinding@opensource.cirrus.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-GUID: h4wy_AJ5f5ZEYElDJVqkuKqZaNfd4b8X
-X-Proofpoint-ORIG-GUID: h4wy_AJ5f5ZEYElDJVqkuKqZaNfd4b8X
+X-Proofpoint-GUID: UVvcDV_Co8DZNT7JBlCqRXOznYoUWqtl
+X-Proofpoint-ORIG-GUID: UVvcDV_Co8DZNT7JBlCqRXOznYoUWqtl
 X-Proofpoint-Spam-Reason: safe
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Lucas Tanure <tanureal@opensource.cirrus.com>
+If a node contains more than one Spi Resources, it may be necessary to
+use an index to select which one you want to allocate a spi device for.
 
-Moving I2C multi instantiate driver to drivers/acpi folder for
-upcoming conversion into a generic bus multi instantiate
-driver for SPI and I2C
-
-Signed-off-by: Lucas Tanure <tanureal@opensource.cirrus.com>
 Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
 ---
- MAINTAINERS                                           |  2 +-
- drivers/acpi/Kconfig                                  | 11 +++++++++++
- drivers/acpi/Makefile                                 |  1 +
- .../{platform/x86 => acpi}/i2c-multi-instantiate.c    |  0
- drivers/acpi/scan.c                                   |  2 +-
- drivers/platform/x86/Kconfig                          | 11 -----------
- drivers/platform/x86/Makefile                         |  1 -
- 7 files changed, 14 insertions(+), 14 deletions(-)
- rename drivers/{platform/x86 => acpi}/i2c-multi-instantiate.c (100%)
+ drivers/spi/spi.c       | 56 +++++++++++++++++++++++++++++++++++------
+ include/linux/spi/spi.h |  6 +++--
+ 2 files changed, 52 insertions(+), 10 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 4e828542b089..546f9e149d28 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -392,7 +392,7 @@ ACPI I2C MULTI INSTANTIATE DRIVER
- M:	Hans de Goede <hdegoede@redhat.com>
- L:	platform-driver-x86@vger.kernel.org
- S:	Maintained
--F:	drivers/platform/x86/i2c-multi-instantiate.c
-+F:	drivers/acpi/i2c-multi-instantiate.c
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 13f4701f0694..898cc9931490 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2320,6 +2320,9 @@ struct acpi_spi_lookup {
+ 	int			irq;
+ 	u8			bits_per_word;
+ 	u8			chip_select;
++	int			n;
++	int			index;
++	int			irq_index;
+ };
  
- ACPI PCC(Platform Communication Channel) MAILBOX DRIVER
- M:	Sudeep Holla <sudeep.holla@arm.com>
-diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-index ba45541b1f1f..2fd78366af6f 100644
---- a/drivers/acpi/Kconfig
-+++ b/drivers/acpi/Kconfig
-@@ -295,6 +295,17 @@ config ACPI_PROCESSOR
- 	  To compile this driver as a module, choose M here:
- 	  the module will be called processor.
+ static void acpi_spi_parse_apple_properties(struct acpi_device *dev,
+@@ -2351,6 +2354,8 @@ static void acpi_spi_parse_apple_properties(struct acpi_device *dev,
+ 		lookup->mode |= SPI_CPHA;
+ }
  
-+config ACPI_I2C_MULTI_INST
-+	tristate "I2C multi instantiate pseudo device driver"
-+	depends on I2C
-+	help
-+	  Some ACPI-based systems list multiple i2c-devices in a single ACPI
-+	  firmware-node. This driver will instantiate separate i2c-clients
-+	  for each device in the firmware-node.
++static struct spi_controller *acpi_spi_find_controller_by_adev(struct acpi_device *adev);
 +
-+	  To compile this driver as a module, choose M here: the module
-+	  will be called i2c-multi-instantiate.
+ static int acpi_spi_add_resource(struct acpi_resource *ares, void *data)
+ {
+ 	struct acpi_spi_lookup *lookup = data;
+@@ -2364,14 +2369,35 @@ static int acpi_spi_add_resource(struct acpi_resource *ares, void *data)
+ 		sb = &ares->data.spi_serial_bus;
+ 		if (sb->type == ACPI_RESOURCE_SERIAL_TYPE_SPI) {
+ 
++			if (lookup->index != -1 && lookup->n++ != lookup->index)
++				return 1;
 +
- config ACPI_IPMI
- 	tristate "IPMI"
- 	depends on IPMI_HANDLER
-diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
-index bb757148e7ba..d4db7fb0baf0 100644
---- a/drivers/acpi/Makefile
-+++ b/drivers/acpi/Makefile
-@@ -104,6 +104,7 @@ obj-$(CONFIG_ACPI_SPCR_TABLE)	+= spcr.o
- obj-$(CONFIG_ACPI_DEBUGGER_USER) += acpi_dbg.o
- obj-$(CONFIG_ACPI_PPTT) 	+= pptt.o
- obj-$(CONFIG_ACPI_PFRUT)	+= pfr_update.o pfr_telemetry.o
-+obj-$(CONFIG_ACPI_I2C_MULTI_INST)	+= i2c-multi-instantiate.o
++			if (lookup->index == -1 && !ctlr)
++				return -ENODEV;
++
+ 			status = acpi_get_handle(NULL,
+ 						 sb->resource_source.string_ptr,
+ 						 &parent_handle);
  
- # processor has its own "processor." module_param namespace
- processor-y			:= processor_driver.o
-diff --git a/drivers/platform/x86/i2c-multi-instantiate.c b/drivers/acpi/i2c-multi-instantiate.c
-similarity index 100%
-rename from drivers/platform/x86/i2c-multi-instantiate.c
-rename to drivers/acpi/i2c-multi-instantiate.c
-diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-index 1331756d4cfc..3e85a02f6ba2 100644
---- a/drivers/acpi/scan.c
-+++ b/drivers/acpi/scan.c
-@@ -1738,7 +1738,7 @@ static bool acpi_device_enumeration_by_parent(struct acpi_device *device)
- 	 * must be instantiated for each, each with its own i2c_device_id.
- 	 * Normally we only instantiate an i2c-client for the first resource,
- 	 * using the ACPI HID as id. These special cases are handled by the
--	 * drivers/platform/x86/i2c-multi-instantiate.c driver, which knows
-+	 * drivers/acpi/i2c-multi-instantiate.c driver, which knows
- 	 * which i2c_device_id to use for each resource.
- 	 */
- 		{"BSG1160", },
-diff --git a/drivers/platform/x86/Kconfig b/drivers/platform/x86/Kconfig
-index 24deeeb29af2..37c1c150508d 100644
---- a/drivers/platform/x86/Kconfig
-+++ b/drivers/platform/x86/Kconfig
-@@ -990,17 +990,6 @@ config TOPSTAR_LAPTOP
+-			if (ACPI_FAILURE(status) ||
+-			    ACPI_HANDLE(ctlr->dev.parent) != parent_handle)
++			if (ACPI_FAILURE(status))
+ 				return -ENODEV;
  
- 	  If you have a Topstar laptop, say Y or M here.
++			if (ctlr) {
++				if (ACPI_HANDLE(ctlr->dev.parent) != parent_handle)
++					return -ENODEV;
++			} else {
++				struct acpi_device *adev;
++
++				if (acpi_bus_get_device(parent_handle, &adev))
++					return -ENODEV;
++
++				ctlr = acpi_spi_find_controller_by_adev(adev);
++				if (!ctlr)
++					return -ENODEV;
++
++				lookup->ctlr = ctlr;
++			}
++
+ 			/*
+ 			 * ACPI DeviceSelection numbering is handled by the
+ 			 * host controller driver in Windows and can vary
+@@ -2402,7 +2428,7 @@ static int acpi_spi_add_resource(struct acpi_resource *ares, void *data)
+ 	} else if (lookup->irq < 0) {
+ 		struct resource r;
  
--config I2C_MULTI_INSTANTIATE
--	tristate "I2C multi instantiate pseudo device driver"
--	depends on I2C && ACPI
--	help
--	  Some ACPI-based systems list multiple i2c-devices in a single ACPI
--	  firmware-node. This driver will instantiate separate i2c-clients
--	  for each device in the firmware-node.
--
--	  To compile this driver as a module, choose M here: the module
--	  will be called i2c-multi-instantiate.
--
- config MLX_PLATFORM
- 	tristate "Mellanox Technologies platform support"
- 	depends on I2C && REGMAP
-diff --git a/drivers/platform/x86/Makefile b/drivers/platform/x86/Makefile
-index c12a9b044fd8..6c7870190564 100644
---- a/drivers/platform/x86/Makefile
-+++ b/drivers/platform/x86/Makefile
-@@ -110,7 +110,6 @@ obj-$(CONFIG_TOPSTAR_LAPTOP)	+= topstar-laptop.o
+-		if (acpi_dev_resource_interrupt(ares, 0, &r))
++		if (acpi_dev_resource_interrupt(ares, lookup->irq_index, &r))
+ 			lookup->irq = r.start;
+ 	}
  
- # Platform drivers
- obj-$(CONFIG_FW_ATTR_CLASS)		+= firmware_attributes_class.o
--obj-$(CONFIG_I2C_MULTI_INSTANTIATE)	+= i2c-multi-instantiate.o
- obj-$(CONFIG_MLX_PLATFORM)		+= mlx-platform.o
- obj-$(CONFIG_TOUCHSCREEN_DMI)		+= touchscreen_dmi.o
- obj-$(CONFIG_WIRELESS_HOTKEY)		+= wireless-hotkey.o
+@@ -2414,14 +2440,22 @@ static int acpi_spi_add_resource(struct acpi_resource *ares, void *data)
+  * acpi_spi_device_alloc - Allocate a spi device, and fill it in with ACPI information
+  * @ctlr: controller to which the spi device belongs
+  * @adev: ACPI Device for the spi device
++ * @index: Index of the spi resource inside the ACPI Node
++ * @irq_index: Index of the GPIO resource for the IRQ inside the ACPI Node
+  *
+  * This should be used to allocate a new spi device from and ACPI Node.
+  * The caller is responsible for calling spi_add_device to register the spi device.
+  *
++ * If ctlr is set to NULL, the Controller for the spi device will be looked up
++ * using the resource.
++ * If index is set to -1, index is not used.
++ * Note: If index is -1, ctlr must be set.
++ *
+  * Return: a pointer to the new device, or ERR_PTR on error.
+  */
+ struct spi_device *acpi_spi_device_alloc(struct spi_controller *ctlr,
+-					 struct acpi_device *adev)
++					 struct acpi_device *adev,
++					 int index, int irq_index)
+ {
+ 	acpi_handle parent_handle = NULL;
+ 	struct list_head resource_list;
+@@ -2429,8 +2463,14 @@ struct spi_device *acpi_spi_device_alloc(struct spi_controller *ctlr,
+ 	struct spi_device *spi;
+ 	int ret;
+ 
++	if (!ctlr && index == -1)
++		return ERR_PTR(-EINVAL);
++
+ 	lookup.ctlr		= ctlr;
+ 	lookup.irq		= -1;
++	lookup.index		= index;
++	lookup.n		= 0;
++	lookup.irq_index	= irq_index;
+ 
+ 	INIT_LIST_HEAD(&resource_list);
+ 	ret = acpi_dev_get_resources(adev, &resource_list,
+@@ -2443,7 +2483,7 @@ struct spi_device *acpi_spi_device_alloc(struct spi_controller *ctlr,
+ 
+ 	if (!lookup.max_speed_hz &&
+ 	    ACPI_SUCCESS(acpi_get_parent(adev->handle, &parent_handle)) &&
+-	    ACPI_HANDLE(ctlr->dev.parent) == parent_handle) {
++	    ACPI_HANDLE(lookup.ctlr->dev.parent) == parent_handle) {
+ 		/* Apple does not use _CRS but nested devices for SPI slaves */
+ 		acpi_spi_parse_apple_properties(adev, &lookup);
+ 	}
+@@ -2451,9 +2491,9 @@ struct spi_device *acpi_spi_device_alloc(struct spi_controller *ctlr,
+ 	if (!lookup.max_speed_hz)
+ 		return ERR_PTR(-ENODEV);
+ 
+-	spi = spi_alloc_device(ctlr);
++	spi = spi_alloc_device(lookup.ctlr);
+ 	if (!spi) {
+-		dev_err(&ctlr->dev, "failed to allocate SPI device for %s\n",
++		dev_err(&lookup.ctlr->dev, "failed to allocate SPI device for %s\n",
+ 			dev_name(&adev->dev));
+ 		return ERR_PTR(-ENOMEM);
+ 	}
+@@ -2478,7 +2518,7 @@ static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
+ 	    acpi_device_enumerated(adev))
+ 		return AE_OK;
+ 
+-	spi = acpi_spi_device_alloc(ctlr, adev);
++	spi = acpi_spi_device_alloc(ctlr, adev, -1, 0);
+ 	if (IS_ERR(spi)) {
+ 		if (PTR_ERR(spi) == -ENOMEM)
+ 			return AE_NO_MEMORY;
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 200725692b93..1a34fd0f6ca2 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -762,10 +762,12 @@ extern void spi_unregister_controller(struct spi_controller *ctlr);
+ 
+ #if IS_ENABLED(CONFIG_ACPI)
+ extern struct spi_device *acpi_spi_device_alloc(struct spi_controller *ctlr,
+-						struct acpi_device *adev);
++						struct acpi_device *adev,
++						int index, int irq_index);
+ #else
+ static inline struct spi_device *acpi_spi_device_alloc(struct spi_controller *ctlr,
+-						       struct acpi_device *adev);
++						       struct acpi_device *adev,
++						       int index, int irq_index);
+ {
+ 	return ERR_PTR(-EOPNOTSUPP);
+ }
 -- 
 2.25.1
 

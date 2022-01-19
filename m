@@ -2,78 +2,79 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 308BCC433FE
-	for <linux-spi@archiver.kernel.org>; Wed, 19 Jan 2022 09:33:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E1384C433FE
+	for <linux-spi@archiver.kernel.org>; Wed, 19 Jan 2022 10:20:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351796AbiASJdk (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 19 Jan 2022 04:33:40 -0500
-Received: from mx07-00178001.pphosted.com ([185.132.182.106]:38698 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S235918AbiASJdh (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 19 Jan 2022 04:33:37 -0500
-Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 20J3l3fW008034;
-        Wed, 19 Jan 2022 10:33:15 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-transfer-encoding :
- content-type; s=selector1;
- bh=+ehtLtX70tce80lzBmhHxiTVMfeIYIulAFgG6k5Hb1Y=;
- b=Bd2rZYNTXDa3wfl79ZYAhTWvOwrZNIlvzImgiAU6ZHTZKcLxA4pECjMdBhJjTf+bQieC
- rqJY73L487mZKjnNUXAGHGssDEMR391eSQajKdX+7Wif9DsesnU9OmKdXhRJfZS1++Mb
- dbBrjr2RzdOce095s6sXyE4oMkWBJOPI8RQjFUXTiJUDdPrr4Z6BuSxQooK/7aU7mVAK
- 7jWuU5wB55YdCIYLDCpk5NCSsO+61td+dluozbEbEuYy9EhV8nQ5yNo3MUr1uUaO7fpM
- 9hYk3wSNWpQa8PTRIo6TGLdFyjsLCw6OcPwXUeIbFjb4Gf+9tz6oBox3z+6zpsiQS7Xm hg== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3dnsd0e3j6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 19 Jan 2022 10:33:15 +0100
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 78A9310002A;
-        Wed, 19 Jan 2022 10:33:14 +0100 (CET)
-Received: from Webmail-eu.st.com (gpxdag2node5.st.com [10.75.127.69])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 70E3220ED10;
-        Wed, 19 Jan 2022 10:33:14 +0100 (CET)
-Received: from localhost (10.75.127.48) by GPXDAG2NODE5.st.com (10.75.127.69)
- with Microsoft SMTP Server (TLS) id 15.0.1497.26; Wed, 19 Jan 2022 10:33:13
- +0100
-From:   Alain Volmat <alain.volmat@foss.st.com>
-To:     <broonie@kernel.org>, <amelie.delaunay@foss.st.com>
-CC:     <mcoquelin.stm32@gmail.com>, <alexandre.torgue@foss.st.com>,
-        <linux-spi@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <fabrice.gasnier@foss.st.com>,
-        <alain.volmat@foss.st.com>
-Subject: [PATCH 0/2] spi: stm32: comments & SIMPLEX_RX fixes
-Date:   Wed, 19 Jan 2022 10:32:43 +0100
-Message-ID: <20220119093245.624878-1-alain.volmat@foss.st.com>
-X-Mailer: git-send-email 2.25.1
+        id S245022AbiASKUp (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 19 Jan 2022 05:20:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44564 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1345816AbiASKUo (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 19 Jan 2022 05:20:44 -0500
+Received: from mail-vk1-xa2c.google.com (mail-vk1-xa2c.google.com [IPv6:2607:f8b0:4864:20::a2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A7A1C061574
+        for <linux-spi@vger.kernel.org>; Wed, 19 Jan 2022 02:20:44 -0800 (PST)
+Received: by mail-vk1-xa2c.google.com with SMTP id n9so1185547vkq.8
+        for <linux-spi@vger.kernel.org>; Wed, 19 Jan 2022 02:20:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=AmVHWOnUtiBgSGHEmeCT15nHc03Hy4faMmC7ZVSjOWU=;
+        b=s0WTcZw9W/67pT4Ll1semW0LJhuqEWo88jJGvyGJmZK6ndeGAnvdTnGzQuMaDHrrGw
+         L7kbz50eiOuSmst0KIyo0T+FYBh8zO4gH7h6msn9icKJlYTNHLrkCz3k/0sivkG/iXQw
+         771Iv74UbzmcnE2g59L58+FfzYm1wtv9YHJVIll2C7vOShY34lxZ1RbWxUHjDPSG4q38
+         2ZS7UV2Fx1J40TLlZDVgNkA9qCAdQDn1PatjG7Scxkoz442tDqweRhgPhWrwNT1RuMb+
+         erK3pm3qDdzcmRBrarpZkQj9iNK2xEXlb4HvMPKFbWxfSnJ0SFkYQzVbg3kWjjU4KjS+
+         UIQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=AmVHWOnUtiBgSGHEmeCT15nHc03Hy4faMmC7ZVSjOWU=;
+        b=7kfDygVmDr8TshsYPWvP5CH4KPSPkXVpfRS19MUfShmMhD9Nodp5Byx7/f7lrsi31Q
+         h9o6j5reLBfqASk/3GN7AkTayizmgQjTotiSAo83CoeselZUJciyAmTRRbvfaa9/4GfJ
+         Gtev53jWAQhb/9YCefEsQfDUFsYN/bD/0nJSDdXj1meCgfc7uW5uwmb3VY8KfHJuBq6F
+         QpN3hUwDE0K2P3bcYAzZRqwNGk+NfRc7arl8+zMzoeNRaV248vix3bA9CEjJrH3fnfIK
+         1QgB/tDKaCxJKKevN2poeNp0J3mpBTa9uGonVW1yGGaws+zpBkVrgy99X4Pw0lpiaDB3
+         Rehg==
+X-Gm-Message-State: AOAM532b5VNpnEuDLnzzFh2vA2MvUiynRu2gIO9uZO4MTtq0Pc3Kb7eX
+        uika0lk8OzIEAp3dUqsOYrEI+plFyqFZeUzAgR858w==
+X-Google-Smtp-Source: ABdhPJz7/UUqwnG/h9JInWVKxiGqIW5MsJRj+siQVr9dNB704Fl7vZjSX1OdQ5acyv53wpMwXLpX8v/fgYfYRBCKOts=
+X-Received: by 2002:a05:6122:7d3:: with SMTP id l19mr11505967vkr.35.1642587642669;
+ Wed, 19 Jan 2022 02:20:42 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.75.127.48]
-X-ClientProxiedBy: SFHDAG2NODE3.st.com (10.75.127.6) To GPXDAG2NODE5.st.com
- (10.75.127.69)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-01-19_06,2022-01-18_01,2021-12-02_01
+References: <20220118230915.157797-1-linus.walleij@linaro.org>
+In-Reply-To: <20220118230915.157797-1-linus.walleij@linaro.org>
+From:   Sam Protsenko <semen.protsenko@linaro.org>
+Date:   Wed, 19 Jan 2022 12:20:31 +0200
+Message-ID: <CAPLW+4=x90Q17GRW9mAapyb376u2sJE2f8UOmNcvMGB1u_ErZQ@mail.gmail.com>
+Subject: Re: [PATCH 1/3 v3] spi: s3c64xx: Delete unused boardfile helpers
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Sylwester Nawrocki <snawrocki@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This series contains 2 fixes within the spi-stm32.c driver.  One is
-removing comments regarding struct variables that do not exist and the
-second one correct a previous STM32F4 related commit for SIMPLEX_RX which
-happens to break SIMPLEX_RX for H7 since it enforces MUST_TX flags.
+On Wed, 19 Jan 2022 at 01:11, Linus Walleij <linus.walleij@linaro.org> wrote:
+>
+> The helpers to use SPI host 1 and 2 are unused in the kernel
+> and taking up space and maintenance hours. New systems should
+> use device tree and not this, so delete the code.
+>
+> Cc: linux-samsung-soc@vger.kernel.org
+> Cc: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+> Cc: Sylwester Nawrocki <snawrocki@kernel.org>
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+> ChangeLog v2->v3:
+> - No changes
+> ChangeLog v1->v2:
+> - Split out to separate patch
+> ---
 
-Alain Volmat (2):
-  spi: stm32: remove inexistant variables in struct stm32_spi_cfg
-    comment
-  spi: stm32: make SPI_MASTER_MUST_TX flags only specific to STM32F4
-
- drivers/spi/spi-stm32.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
--- 
-2.25.1
-
+Reviewed-by: Sam Protsenko <semen.protsenko@linaro.org>

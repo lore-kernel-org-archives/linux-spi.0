@@ -2,41 +2,41 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 22E9BC433FE
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3E3AFC4167D
 	for <linux-spi@archiver.kernel.org>; Fri, 21 Jan 2022 17:25:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1380014AbiAURZJ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 21 Jan 2022 12:25:09 -0500
-Received: from mx0b-001ae601.pphosted.com ([67.231.152.168]:14416 "EHLO
-        mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1379690AbiAURZI (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 21 Jan 2022 12:25:08 -0500
-Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
-        by mx0b-001ae601.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 20LH9K5G013193;
-        Fri, 21 Jan 2022 11:24:51 -0600
+        id S1380104AbiAURZL (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 21 Jan 2022 12:25:11 -0500
+Received: from mx0a-001ae601.pphosted.com ([67.231.149.25]:5204 "EHLO
+        mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1380017AbiAURZJ (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 21 Jan 2022 12:25:09 -0500
+Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
+        by mx0a-001ae601.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 20LHACZD027684;
+        Fri, 21 Jan 2022 11:24:55 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding : content-type; s=PODMain02222019;
- bh=esQa06hrgOMJ8WsoJmpq9RLqCEOqwnnCnVua0114bvg=;
- b=apYGzumxPAaG4NV9XFYCRtjgx9/wFlQIUhkVHyK6jcbcJluI6GG5lGK6JtNpPBDSbQgh
- Rq+u67Y05OUC5k3sKobW7QF0vRcB8FBQuBd9YANgFiCqyAUxw5rksvQnzPTU//YYiO9x
- sXto1i7nPsVoEg9mZF/G8h4WxVC+X2o3H8SSGMr6lyP3aIEDudC46+p/GhExX1eESEj6
- LXyhprXLzH4xLg60q2/BVDEhAEUvHxI14CoR4S0G+sgP8+XW/r/0iRWBqFBiB8Z8ylww
- C+ZwbpobL/Sy63J4E0tCGzUdWT1ZuNlU6aDCy61487F2teu129qnBb8ex0Irv/JXG27B OQ== 
+ bh=ImeccfKCvDaXakS8R3MR1+1Pe3/f5fwFgpYe0ncTsrk=;
+ b=BCNLfFK/32G5L1jdP8IqhUdN9pAGjmFqD3UMaF7tHO/vvCVvcGpLtTiqiTVCAdfFsyrs
+ V44rTmJQhuo9kxqUsPBzJSsx255eaiwyk3ob+z3a7H9LEKWisn3QzGdgMnGZA+4IvIAL
+ NByzsb+DS+leQ8ZYDXNojvgLXXBTePEWPhQSFIQxzHfFoHv831f9rhTMuUjA8im6fmt8
+ sK2+WEj63799FZwrEkjYkcfD3OqDumRVNWAGQmmvBEQ0ngwta5Uy+TDWSuRXPkRJzMDW
+ 0sb6Ahp4YnxE+0V+pvFTdY4ALHM0MEc6/GGYR68fN5Hq8WJvE7SWL3Owr8UJIGfD7aA/ Kw== 
 Received: from ediex02.ad.cirrus.com ([84.19.233.68])
-        by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 3dqhynrw8d-1
+        by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 3dqhyq14dq-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 21 Jan 2022 11:24:51 -0600
+        Fri, 21 Jan 2022 11:24:54 -0600
 Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX02.ad.cirrus.com
  (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.18; Fri, 21 Jan
- 2022 17:24:50 +0000
+ 2022 17:24:52 +0000
 Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
  (198.61.84.80) with Microsoft SMTP Server id 15.1.2375.18 via Frontend
- Transport; Fri, 21 Jan 2022 17:24:50 +0000
+ Transport; Fri, 21 Jan 2022 17:24:52 +0000
 Received: from LONN2DGDQ73.ad.cirrus.com (unknown [198.90.238.138])
-        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 9F122B0E;
-        Fri, 21 Jan 2022 17:24:49 +0000 (UTC)
+        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 4C0DA11D7;
+        Fri, 21 Jan 2022 17:24:52 +0000 (UTC)
 From:   Stefan Binding <sbinding@opensource.cirrus.com>
 To:     Mark Brown <broonie@kernel.org>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
@@ -49,147 +49,306 @@ CC:     <alsa-devel@alsa-project.org>, <linux-kernel@vger.kernel.org>,
         <platform-driver-x86@vger.kernel.org>,
         <patches@opensource.cirrus.com>,
         Stefan Binding <sbinding@opensource.cirrus.com>
-Subject: [PATCH v6 2/9] spi: Create helper API to lookup ACPI info for spi device
-Date:   Fri, 21 Jan 2022 17:24:24 +0000
-Message-ID: <20220121172431.6876-3-sbinding@opensource.cirrus.com>
+Subject: [PATCH v6 7/9] platform/x86: serial-multi-instantiate: Add SPI support
+Date:   Fri, 21 Jan 2022 17:24:29 +0000
+Message-ID: <20220121172431.6876-8-sbinding@opensource.cirrus.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220121172431.6876-1-sbinding@opensource.cirrus.com>
 References: <20220121172431.6876-1-sbinding@opensource.cirrus.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: 8bb6J0N7VfGZFvd5MF1j64IEo8fjc7R9
-X-Proofpoint-GUID: 8bb6J0N7VfGZFvd5MF1j64IEo8fjc7R9
+X-Proofpoint-GUID: iYL4rgJYmNKFy9OZxI74ou0X4Ps5Uk3U
+X-Proofpoint-ORIG-GUID: iYL4rgJYmNKFy9OZxI74ou0X4Ps5Uk3U
 X-Proofpoint-Spam-Reason: safe
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This can then be used to find a spi resource inside an
-ACPI node, and allocate a spi device.
+Add support for spi bus in serial-multi-instantiate driver
+
+Some peripherals can have either a I2C or a SPI connection
+to the host (but not both) but use the same HID for both
+types. So it is not possible to use the HID to determine
+whether it is I2C or SPI. The driver must check the node
+to see if it contains I2cSerialBus or SpiSerialBus entries.
+
+For backwards-compatibility with the existing nodes I2C is
+checked first and if such entries are found ONLY I2C devices
+are created. Since some existing nodes that were already
+handled by this driver could also contain unrelated
+SpiSerialBus nodes that were previously ignored, and this
+preserves that behavior. If there is ever a need to handle
+a node where both I2C and SPI devices must be instantiated
+this can be added in future.
 
 Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
 ---
- drivers/spi/spi.c       | 46 ++++++++++++++++++++++++++++++++---------
- include/linux/spi/spi.h |  6 ++++++
- 2 files changed, 42 insertions(+), 10 deletions(-)
+ drivers/platform/x86/Kconfig                  |   2 +-
+ .../platform/x86/serial-multi-instantiate.c   | 174 +++++++++++++++---
+ 2 files changed, 151 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 1eb84101c4ad..13f4701f0694 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2410,8 +2410,18 @@ static int acpi_spi_add_resource(struct acpi_resource *ares, void *data)
- 	return 1;
- }
+diff --git a/drivers/platform/x86/Kconfig b/drivers/platform/x86/Kconfig
+index 2e656909a866..8d1eec208854 100644
+--- a/drivers/platform/x86/Kconfig
++++ b/drivers/platform/x86/Kconfig
+@@ -992,7 +992,7 @@ config TOPSTAR_LAPTOP
  
--static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
--					    struct acpi_device *adev)
-+/**
-+ * acpi_spi_device_alloc - Allocate a spi device, and fill it in with ACPI information
-+ * @ctlr: controller to which the spi device belongs
-+ * @adev: ACPI Device for the spi device
-+ *
-+ * This should be used to allocate a new spi device from and ACPI Node.
-+ * The caller is responsible for calling spi_add_device to register the spi device.
-+ *
-+ * Return: a pointer to the new device, or ERR_PTR on error.
-+ */
-+struct spi_device *acpi_spi_device_alloc(struct spi_controller *ctlr,
-+					 struct acpi_device *adev)
+ config SERIAL_MULTI_INSTANTIATE
+ 	tristate "Serial bus multi instantiate pseudo device driver"
+-	depends on I2C && ACPI
++	depends on I2C && SPI && ACPI
+ 	help
+ 	  Some ACPI-based systems list multiple devices in a single ACPI
+ 	  firmware-node. This driver will instantiate separate clients
+diff --git a/drivers/platform/x86/serial-multi-instantiate.c b/drivers/platform/x86/serial-multi-instantiate.c
+index 4cd6d72a0741..3f05385ca2cf 100644
+--- a/drivers/platform/x86/serial-multi-instantiate.c
++++ b/drivers/platform/x86/serial-multi-instantiate.c
+@@ -14,6 +14,7 @@
+ #include <linux/module.h>
+ #include <linux/platform_device.h>
+ #include <linux/property.h>
++#include <linux/spi/spi.h>
+ #include <linux/types.h>
+ 
+ #define IRQ_RESOURCE_TYPE	GENMASK(1, 0)
+@@ -21,15 +22,28 @@
+ #define IRQ_RESOURCE_GPIO	1
+ #define IRQ_RESOURCE_APIC	2
+ 
++enum smi_bus_type {
++	SMI_I2C,
++	SMI_SPI,
++	SMI_AUTO_DETECT,
++};
++
+ struct smi_instance {
+ 	const char *type;
+ 	unsigned int flags;
+ 	int irq_idx;
+ };
+ 
++struct smi_node {
++	enum smi_bus_type bus_type;
++	struct smi_instance instances[];
++};
++
+ struct smi {
+ 	int i2c_num;
++	int spi_num;
+ 	struct i2c_client **i2c_devs;
++	struct spi_device **spi_devs;
+ };
+ 
+ static int smi_get_irq(struct platform_device *pdev, struct acpi_device *adev,
+@@ -59,6 +73,95 @@ static void smi_devs_unregister(struct smi *smi)
  {
- 	acpi_handle parent_handle = NULL;
- 	struct list_head resource_list;
-@@ -2419,10 +2429,6 @@ static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
- 	struct spi_device *spi;
- 	int ret;
- 
--	if (acpi_bus_get_status(adev) || !adev->status.present ||
--	    acpi_device_enumerated(adev))
--		return AE_OK;
--
- 	lookup.ctlr		= ctlr;
- 	lookup.irq		= -1;
- 
-@@ -2433,7 +2439,7 @@ static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
- 
- 	if (ret < 0)
- 		/* found SPI in _CRS but it points to another controller */
--		return AE_OK;
-+		return ERR_PTR(-ENODEV);
- 
- 	if (!lookup.max_speed_hz &&
- 	    ACPI_SUCCESS(acpi_get_parent(adev->handle, &parent_handle)) &&
-@@ -2443,16 +2449,15 @@ static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
- 	}
- 
- 	if (!lookup.max_speed_hz)
--		return AE_OK;
-+		return ERR_PTR(-ENODEV);
- 
- 	spi = spi_alloc_device(ctlr);
- 	if (!spi) {
- 		dev_err(&ctlr->dev, "failed to allocate SPI device for %s\n",
- 			dev_name(&adev->dev));
--		return AE_NO_MEMORY;
-+		return ERR_PTR(-ENOMEM);
- 	}
- 
--
- 	ACPI_COMPANION_SET(&spi->dev, adev);
- 	spi->max_speed_hz	= lookup.max_speed_hz;
- 	spi->mode		|= lookup.mode;
-@@ -2460,6 +2465,27 @@ static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
- 	spi->bits_per_word	= lookup.bits_per_word;
- 	spi->chip_select	= lookup.chip_select;
- 
-+	return spi;
+ 	while (smi->i2c_num > 0)
+ 		i2c_unregister_device(smi->i2c_devs[--smi->i2c_num]);
++
++	while (smi->spi_num > 0)
++		spi_unregister_device(smi->spi_devs[--smi->spi_num]);
 +}
-+EXPORT_SYMBOL_GPL(acpi_spi_device_alloc);
 +
-+static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
-+					    struct acpi_device *adev)
++/**
++ * smi_spi_probe - Instantiate multiple SPI devices from inst array
++ * @pdev:	Platform device
++ * @adev:	ACPI device
++ * @smi:	Internal struct for Serial multi instantiate driver
++ * @inst_array:	Array of instances to probe
++ *
++ * Returns the number of SPI devices instantiate, Zero if none is found or a negative error code.
++ */
++static int smi_spi_probe(struct platform_device *pdev, struct acpi_device *adev, struct smi *smi,
++			 const struct smi_instance *inst_array)
 +{
-+	struct spi_device *spi;
++	struct device *dev = &pdev->dev;
++	struct spi_controller *ctlr;
++	struct spi_device *spi_dev;
++	char name[50];
++	int i, ret, count;
 +
-+	if (acpi_bus_get_status(adev) || !adev->status.present ||
-+	    acpi_device_enumerated(adev))
-+		return AE_OK;
++	ret = acpi_spi_count_resources(adev);
++	if (ret < 0)
++		return ret;
++	else if (!ret)
++		return -ENODEV;
 +
-+	spi = acpi_spi_device_alloc(ctlr, adev);
-+	if (IS_ERR(spi)) {
-+		if (PTR_ERR(spi) == -ENOMEM)
-+			return AE_NO_MEMORY;
-+		else
-+			return AE_OK;
++	count = ret;
++
++	smi->spi_devs = devm_kcalloc(dev, count, sizeof(*smi->spi_devs), GFP_KERNEL);
++	if (!smi->spi_devs)
++		return -ENOMEM;
++
++	for (i = 0; i < count && inst_array[i].type; i++) {
++
++		spi_dev = acpi_spi_device_alloc(NULL, adev, i);
++		if (IS_ERR(spi_dev)) {
++			ret = PTR_ERR(spi_dev);
++			dev_err_probe(dev, ret, "failed to allocate SPI device %s from ACPI: %d\n",
++				      dev_name(&adev->dev), ret);
++			goto error;
++		}
++
++		ctlr = spi_dev->controller;
++
++		strscpy(spi_dev->modalias, inst_array[i].type, sizeof(spi_dev->modalias));
++
++		ret = smi_get_irq(pdev, adev, &inst_array[i]);
++		if (ret < 0) {
++			spi_dev_put(spi_dev);
++			goto error;
++		}
++		spi_dev->irq = ret;
++
++		snprintf(name, sizeof(name), "%s-%s-%s.%d", dev_name(&ctlr->dev), dev_name(dev),
++			 inst_array[i].type, i);
++		spi_dev->dev.init_name = name;
++
++		ret = spi_add_device(spi_dev);
++		if (ret) {
++			dev_err_probe(&ctlr->dev, ret,
++				      "failed to add SPI device %s from ACPI: %d\n",
++				      dev_name(&adev->dev), ret);
++			spi_dev_put(spi_dev);
++			goto error;
++		}
++
++		dev_dbg(dev, "SPI device %s using chip select %u", name, spi_dev->chip_select);
++
++		smi->spi_devs[i] = spi_dev;
++		smi->spi_num++;
 +	}
 +
- 	acpi_set_modalias(adev, acpi_device_hid(adev), spi->modalias,
- 			  sizeof(spi->modalias));
- 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 0346a3ff27fd..d159cef12f1a 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -16,6 +16,7 @@
- #include <linux/gpio/consumer.h>
- 
- #include <uapi/linux/spi/spi.h>
-+#include <linux/acpi.h>
- 
- struct dma_chan;
- struct software_node;
-@@ -759,6 +760,11 @@ extern int devm_spi_register_controller(struct device *dev,
- 					struct spi_controller *ctlr);
- extern void spi_unregister_controller(struct spi_controller *ctlr);
- 
-+#if IS_ENABLED(CONFIG_ACPI)
-+extern struct spi_device *acpi_spi_device_alloc(struct spi_controller *ctlr,
-+						struct acpi_device *adev);
-+#endif
++	if (smi->spi_num < count) {
++		dev_dbg(dev, "Error finding driver, idx %d\n", i);
++		ret = -ENODEV;
++		goto error;
++	}
 +
++	dev_info(dev, "Instantiated %d SPI devices.\n", smi->spi_num);
++
++	return 0;
++error:
++	smi_devs_unregister(smi);
++
++	return ret;
++
+ }
+ 
+ /**
+@@ -126,8 +229,8 @@ static int smi_i2c_probe(struct platform_device *pdev, struct acpi_device *adev,
+ 
+ static int smi_probe(struct platform_device *pdev)
+ {
+-	const struct smi_instance *inst_array;
+ 	struct device *dev = &pdev->dev;
++	const struct smi_node *node;
+ 	struct acpi_device *adev;
+ 	struct smi *smi;
+ 
+@@ -135,8 +238,8 @@ static int smi_probe(struct platform_device *pdev)
+ 	if (!adev)
+ 		return -ENODEV;
+ 
+-	inst_array = device_get_match_data(dev);
+-	if (!inst_array) {
++	node = device_get_match_data(dev);
++	if (!node) {
+ 		dev_dbg(dev, "Error ACPI match data is missing\n");
+ 		return -ENODEV;
+ 	}
+@@ -147,7 +250,21 @@ static int smi_probe(struct platform_device *pdev)
+ 
+ 	platform_set_drvdata(pdev, smi);
+ 
+-	return smi_i2c_probe(pdev, adev, smi, inst_array);
++	switch (node->bus_type) {
++	case SMI_I2C:
++		return smi_i2c_probe(pdev, adev, smi, node->instances);
++	case SMI_SPI:
++		return smi_spi_probe(pdev, adev, smi, node->instances);
++	case SMI_AUTO_DETECT:
++		if (i2c_acpi_client_count(adev) > 0)
++			return smi_i2c_probe(pdev, adev, smi, node->instances);
++		else
++			return smi_spi_probe(pdev, adev, smi, node->instances);
++	default:
++		break;
++	}
++
++	return 0; /* never reached */
+ }
+ 
+ static int smi_remove(struct platform_device *pdev)
+@@ -159,27 +276,36 @@ static int smi_remove(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
+-static const struct smi_instance bsg1160_data[]  = {
+-	{ "bmc150_accel", IRQ_RESOURCE_GPIO, 0 },
+-	{ "bmc150_magn" },
+-	{ "bmg160" },
+-	{}
++static const struct smi_node bsg1160_data = {
++	.instances = {
++		{ "bmc150_accel", IRQ_RESOURCE_GPIO, 0 },
++		{ "bmc150_magn" },
++		{ "bmg160" },
++		{}
++	},
++	.bus_type = SMI_I2C,
+ };
+ 
+-static const struct smi_instance bsg2150_data[]  = {
+-	{ "bmc150_accel", IRQ_RESOURCE_GPIO, 0 },
+-	{ "bmc150_magn" },
+-	/* The resources describe a 3th client, but it is not really there. */
+-	{ "bsg2150_dummy_dev" },
+-	{}
++static const struct smi_node bsg2150_data = {
++	.instances = {
++		{ "bmc150_accel", IRQ_RESOURCE_GPIO, 0 },
++		{ "bmc150_magn" },
++		/* The resources describe a 3th client, but it is not really there. */
++		{ "bsg2150_dummy_dev" },
++		{}
++	},
++	.bus_type = SMI_I2C,
+ };
+ 
+-static const struct smi_instance int3515_data[]  = {
+-	{ "tps6598x", IRQ_RESOURCE_APIC, 0 },
+-	{ "tps6598x", IRQ_RESOURCE_APIC, 1 },
+-	{ "tps6598x", IRQ_RESOURCE_APIC, 2 },
+-	{ "tps6598x", IRQ_RESOURCE_APIC, 3 },
+-	{}
++static const struct smi_node int3515_data = {
++	.instances = {
++		{ "tps6598x", IRQ_RESOURCE_APIC, 0 },
++		{ "tps6598x", IRQ_RESOURCE_APIC, 1 },
++		{ "tps6598x", IRQ_RESOURCE_APIC, 2 },
++		{ "tps6598x", IRQ_RESOURCE_APIC, 3 },
++		{}
++	},
++	.bus_type = SMI_I2C,
+ };
+ 
  /*
-  * SPI resource management while processing a SPI message
+@@ -187,9 +313,9 @@ static const struct smi_instance int3515_data[]  = {
+  * drivers/acpi/scan.c: acpi_device_enumeration_by_parent().
   */
+ static const struct acpi_device_id smi_acpi_ids[] = {
+-	{ "BSG1160", (unsigned long)bsg1160_data },
+-	{ "BSG2150", (unsigned long)bsg2150_data },
+-	{ "INT3515", (unsigned long)int3515_data },
++	{ "BSG1160", (unsigned long)&bsg1160_data },
++	{ "BSG2150", (unsigned long)&bsg2150_data },
++	{ "INT3515", (unsigned long)&int3515_data },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(acpi, smi_acpi_ids);
 -- 
 2.25.1
 

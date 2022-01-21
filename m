@@ -2,107 +2,113 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 93581C433FE
-	for <linux-spi@archiver.kernel.org>; Fri, 21 Jan 2022 20:12:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8CB05C433F5
+	for <linux-spi@archiver.kernel.org>; Fri, 21 Jan 2022 22:18:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232107AbiAUUMX (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 21 Jan 2022 15:12:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38142 "EHLO
+        id S232784AbiAUWSY (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 21 Jan 2022 17:18:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231717AbiAUUMW (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 21 Jan 2022 15:12:22 -0500
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB374C06173B;
-        Fri, 21 Jan 2022 12:12:21 -0800 (PST)
-Received: by mail-ej1-x635.google.com with SMTP id s13so3033123ejy.3;
-        Fri, 21 Jan 2022 12:12:21 -0800 (PST)
+        with ESMTP id S231428AbiAUWSX (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 21 Jan 2022 17:18:23 -0500
+Received: from mail-ua1-x92d.google.com (mail-ua1-x92d.google.com [IPv6:2607:f8b0:4864:20::92d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 856FDC06173B
+        for <linux-spi@vger.kernel.org>; Fri, 21 Jan 2022 14:18:23 -0800 (PST)
+Received: by mail-ua1-x92d.google.com with SMTP id p7so12218866uao.6
+        for <linux-spi@vger.kernel.org>; Fri, 21 Jan 2022 14:18:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
+        d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=TWFhQ8AyYyJtKJhYHxbzZAy/uyi61n/qj66gr+QR1JU=;
-        b=C8EOiSjCDvxrWY2Ruh48zw6GmmqDRMiC4Xh4oNcfGcsAk4QxT/4WpK9v30k7R8BJTP
-         Ox33CjNanCQL5JyR5uyLDlkgeLcOdifO5g9DsCa0rbRNbnWai+SokHAOH8jjHzhYibLU
-         +zS9PNDuW/W449Hl6zRgYlVFU1GH8q3F2fwCNvg0PKdCaFYlX1Oi9gpQMYDiEgeBBn4E
-         gepuFb5h9afDmvRCUqdyNzK+46+J1POQ0Dw50E6frm5NfGq4duBsbIy48/Su6VdUdePn
-         8FaHt4DcROcLF95bgfpKvTH6CankmVX8ujX+aQajQ6ivme+VErteaMSP9P5K3Gatceg+
-         C3/g==
+        bh=PV9w5EmTb4eZmKb/6aoUZvIPl80XkhsxfeqjuTrAbWA=;
+        b=CbiJpoINDO3fnC6YidMztKRmjuScvLne0CTBdvYV7HQcZZBRBPhJaxeBTukX/orT2S
+         GyCFX/uhbZgyio1zkCJEcRvJSujjW3NrKEg7c2gF/u2ilyBpVBso+yZE9o91o9KUEP/Q
+         yLw39XLbvA9DeYRxAUmHq46Dug4HK3Ra0/TZizou9yKVpQSY3FBkxGxw/vi/3FcB8Ajg
+         ZfXwzF8xq3xatmlwC+S60vkjXq92SaT1QbwxcU9rN5irYH64F6aWBmNT2t975h6WAq7k
+         9m32EBu1zFyigaVvWO8GNpkhjjmxJXwMP1+X83tibz+haRdv2m97CiGX/9ATSuHcVeBh
+         UmYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=TWFhQ8AyYyJtKJhYHxbzZAy/uyi61n/qj66gr+QR1JU=;
-        b=gWDzKTdcP9JrRU/Q4pUA6Ov+KCNcvk2raJiEhNKJS4ncMXPDZ40zkQhM5h0pxYCQ5y
-         azS8bM1Aq2qRYMkrqf8VqxDgep5vnYMApmPkAvwB1NFAqIL64Lye0w+saeyv2/PbixiC
-         CkSc6kvB7L8MY7O4Ld0i5L853tbQ/GGh8LKHd3AenCM9dsf1cV4DDOA9t/qcWVTxBang
-         i+o1z5HVkQ8X8jAGKwSd9Eke1zOzV0/lUtlC8ZPc4i5rstwWtjB876bo946gPimueacX
-         8WZFFB4ngj0T1+0dv9wuxQauIcCP/7uASO6c0THpioT9pA5vM8XYaxZtYmtTGep/MF9K
-         3B0Q==
-X-Gm-Message-State: AOAM532ZzETPGpZkaYQ6dKHa41rx4ZnupIL9IeKOlXqAodRgd+gdYzq7
-        uG5hwMos9A0fi+6I1S9E5jxTlU7R0G0VtKduQpkmNTkhLB8=
-X-Google-Smtp-Source: ABdhPJxiTTwzTmbtx9DNC7Ah5PIXbFyKWQWSb2hxPEtw2WvBrKl7feHCqB0yc+Flx4KZez6dtVy+19KCludTGmAPY9M=
-X-Received: by 2002:a17:906:3004:: with SMTP id 4mr4419944ejz.579.1642795940215;
- Fri, 21 Jan 2022 12:12:20 -0800 (PST)
+        bh=PV9w5EmTb4eZmKb/6aoUZvIPl80XkhsxfeqjuTrAbWA=;
+        b=6VllRPDXnVMKk57MTiCN5OkrmFh5S+ZqRCkdZN18CD7Yi9wr3OFWDoAmhUDVh/Fxyy
+         FWr1nfV9tr+i9v+1LPqRVS85gB1lsRiO1ufH6xnExGE7y7FHN0lIGcCbm0Rz2ViQukdx
+         d0ThdNOAFZKmJXNcmuGZiVPqXWOZqFVvQ+EhPqL69VCHGcMqKkhqUHeaEdKhnZA4gLcb
+         HOZ7RmQ2Nhd13i1ex/sxVDBAYeo4GmbNMyRsidY4WrKKNV0bmqTpWIQTTRF3j8V8gouV
+         dL2GFc5aNgbdr2FnnezwIkuqYI98E/MU/cY0aRT3GLCye55IIQHdFm7VFRRe+SS2zBqX
+         jQkA==
+X-Gm-Message-State: AOAM532Q7kTLvkSqYt1ygW/rgkv1+m6GD59z7BnjrNsTOfRHVo7CBmjg
+        U328KQli8Z25PpCFPK4CLdNA5Wm9lgRFZ8Jw0VGvRw==
+X-Google-Smtp-Source: ABdhPJw9WJPHugvZi6jJqd9dpYrgpDyuT79IesWnkGmWdbKPFjfyS8SCR6ZwzsQkROFmqZ59yzBHoSq68FhpY1I12Tc=
+X-Received: by 2002:a05:6102:204d:: with SMTP id q13mr2663269vsr.57.1642803502390;
+ Fri, 21 Jan 2022 14:18:22 -0800 (PST)
 MIME-Version: 1.0
-References: <20220118145251.1548-1-sbinding@opensource.cirrus.com>
- <20220118145251.1548-6-sbinding@opensource.cirrus.com> <CAJZ5v0g0n201FPcG9LBNG3e4UdNYSWmj_1sN3MxLxmK=GoF+tA@mail.gmail.com>
- <a3522b5e-fb36-b959-d2ea-d141d3ad9999@opensource.cirrus.com> <CAJZ5v0h8MWb3sSuqWHUcm9TVWP0uJ+=GmzAuqVtNag2LP+0kYQ@mail.gmail.com>
-In-Reply-To: <CAJZ5v0h8MWb3sSuqWHUcm9TVWP0uJ+=GmzAuqVtNag2LP+0kYQ@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 21 Jan 2022 22:11:43 +0200
-Message-ID: <CAHp75VekU6j4vB_ej8k1f5JcTrAfm10aeekZo8_=jenK1KRbUA@mail.gmail.com>
-Subject: Re: [PATCH v3 05/10] platform/x86: i2c-multi-instantiate: Move it to
- drivers/acpi folder
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Lucas tanure <tanureal@opensource.cirrus.com>,
-        Stefan Binding <sbinding@opensource.cirrus.com>,
-        Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        "moderated list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." 
-        <alsa-devel@alsa-project.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+References: <20220118230915.157797-1-linus.walleij@linaro.org>
+ <20220118230915.157797-3-linus.walleij@linaro.org> <CAPLW+4=6A=FLKOum48VNUaGBUUXBa=sMYRn4n1_nTtR8a+0YQA@mail.gmail.com>
+ <CAHp75VftUNC6xFVRJqJhTqHwLvehtT+2+M9j_TsnhAyOf039rQ@mail.gmail.com>
+In-Reply-To: <CAHp75VftUNC6xFVRJqJhTqHwLvehtT+2+M9j_TsnhAyOf039rQ@mail.gmail.com>
+From:   Sam Protsenko <semen.protsenko@linaro.org>
+Date:   Sat, 22 Jan 2022 00:18:11 +0200
+Message-ID: <CAPLW+4mP0thEi0RbFa0p=_awMwRQ21T6JwW9tTz0gweP6ycVzA@mail.gmail.com>
+Subject: Re: [PATCH 3/3 v3] spi: s3c64xx: Convert to use GPIO descriptors
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
         linux-spi <linux-spi@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        patches@opensource.cirrus.com
+        Linux Samsung SOC <linux-samsung-soc@vger.kernel.org>,
+        Sylwester Nawrocki <snawrocki@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Fri, Jan 21, 2022 at 9:53 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> On Wed, Jan 19, 2022 at 6:33 PM Lucas tanure
-> <tanureal@opensource.cirrus.com> wrote:
-> > On 1/19/22 16:53, Rafael J. Wysocki wrote:
-> > > On Tue, Jan 18, 2022 at 3:53 PM Stefan Binding
-> > > <sbinding@opensource.cirrus.com> wrote:
-
-...
-
-> > > Why are you moving it away from platform/x86?
-> > >
-> > > Adding SPI to the mix doesn't seem to be a sufficient reason.
-> > >
-> > > If this were going to be needed on non-x86, that would be a good
-> > > reason for moving it, but is that actually the case?  If so, why isn't
-> > > that mentioned in the changelog above?
-> > >
-> >
-> > It was a request made by Andy Shevchenko:
-> > https://lkml.org/lkml/2021/12/3/347
+On Fri, 21 Jan 2022 at 19:26, Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 >
-> But he hasn't given any reasons why that'd be better.
+> On Fri, Jan 21, 2022 at 1:52 PM Sam Protsenko
+> <semen.protsenko@linaro.org> wrote:
+> > On Wed, 19 Jan 2022 at 01:11, Linus Walleij <linus.walleij@linaro.org> wrote:
+> > >
+> > > Convert the S3C64xx SPI host to use GPIO descriptors.
+> > >
+> > > Provide GPIO descriptor tables for the one user with CS
+> > > 0 and 1.
+>
+> ...
+>
+> > >         /* Configure feedback delay */
+> > > -       writel(cs->fb_delay & 0x3, sdd->regs + S3C64XX_SPI_FB_CLK);
+> > > +       if (!cs)
+> > > +               /* No delay if not defined */
+> > > +               writel(0, sdd->regs + S3C64XX_SPI_FB_CLK);
+> > > +       else
+> > > +               writel(cs->fb_delay & 0x3, sdd->regs + S3C64XX_SPI_FB_CLK);
+> >
+> > Looks good to me. I'd add {} braces and change "if (!cs)" to "if
+> > (cs)", but that's hair splitting and not worth v4, it's fine as it is.
+>
+> If you are going to change code, then why not use positive conditions?
+>
+>   if (cs)
+>     ...
+>   else {
+>     ...
+>   }
+>
 
-My thoughts were that these are related to ACPI handling the serial
-buses in one place. However, counter arguments might be that the cases
-of the resources like this are found only on x86 hardware (while ACPI
-should be agnostic to that) and that the i2c and spi already do ACPI
-stuff on their own. That said, there are pros and cons and I'm fine
-with either choice at the end of the day.
+It was already pointed out earlier AFAIR. Personally I don't think
+it's too major to send v4. But theoretically speaking, maybe it would
+be even better this way:
 
--- 
-With Best Regards,
-Andy Shevchenko
+    u32 fb_delay = cs ? cs->fb_delay & 0x3 : 0;
+
+    /* Configure feedback delay */
+    writel(fb_delay, sdd->regs + S3C64XX_SPI_FB_CLK);
+
+Again, I think it's not worth another submission, the same code will
+be generated, and style is ok as it is.
+
+> --
+> With Best Regards,
+> Andy Shevchenko

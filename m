@@ -2,41 +2,41 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 18F51C433EF
-	for <linux-spi@archiver.kernel.org>; Fri, 21 Jan 2022 14:33:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 25EDEC433F5
+	for <linux-spi@archiver.kernel.org>; Fri, 21 Jan 2022 14:33:32 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1381206AbiAUOd0 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 21 Jan 2022 09:33:26 -0500
-Received: from mx0a-001ae601.pphosted.com ([67.231.149.25]:19104 "EHLO
+        id S1381215AbiAUOd1 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 21 Jan 2022 09:33:27 -0500
+Received: from mx0a-001ae601.pphosted.com ([67.231.149.25]:31114 "EHLO
         mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1381161AbiAUOdV (ORCPT
+        by vger.kernel.org with ESMTP id S1381164AbiAUOdV (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Fri, 21 Jan 2022 09:33:21 -0500
 Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
-        by mx0a-001ae601.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 20LDS7PI017315;
-        Fri, 21 Jan 2022 08:33:00 -0600
+        by mx0a-001ae601.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 20LDS7PH017315;
+        Fri, 21 Jan 2022 08:32:59 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding : content-type; s=PODMain02222019;
- bh=hpkiyedjwFNaW1dW6W1BZYk7mgOTqs24UOHKVbPt4Kk=;
- b=fjgCUiYkw07idAqoePK+Rxkanygu53psuOsxQeMI1+N6Wk8iy67gLNaXD7Nkkrwy0F+T
- WVXcWi7edj63AyraCraWQ07zs9Yzy5yZW7s6TFbZyshlERnrm2lO0ynq22nJsJ9xVUjN
- 0WHyN7QQycyboN+mEY9VsQmOQQIM8w9dv/ZjyEpdpWHfPFCUg4P7d+I37TRGB20vtlwz
- W9T+QuhB2Ks3SzkA0eiCTVo9QQSfj6XEe4IIGfPKM94Qr2ZFcYF31Y8a8hu1BzfyX6VP
- O/9o7hW8yfcC+Z1QNgMKc7Ha9ExBow3694O1vwFhUgws4/KWwooDT5wfj0a3Lm+rmTFD gg== 
+ bh=esQa06hrgOMJ8WsoJmpq9RLqCEOqwnnCnVua0114bvg=;
+ b=Jh+A4WhUzL+ohowftN4vLlo3pgGNcSdAE6RbAarP2Q8o7IM9wphlLBXh8+PZhQw60CLg
+ 0dEBwFI3Udut+pbS6pk1RuFg0v4w4h2EbPG9lQoUkWvq+d42hPwvnZbTHLRoyyscikBA
+ AdAWIdjQetkdoGqXu7SHI8ASz+Qrom3bQWqOkg1W0uE/+a+1drBCr39D/X8JrpVHLDhG
+ wLHIO3I/irPv9Me2OqZzJ5ysmU/Xv6Ujy97t9ki8oTeQHt5oRRfn0xMWh25KSh1hYcIg
+ dh6dfI+8VwtGbS7aEHo/RYVRhCSXH4nALeEdMGOL6aaUjR8n1RbQWc1P+kpTpsBb7aAk /w== 
 Received: from ediex02.ad.cirrus.com ([84.19.233.68])
-        by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 3dqhyq0up1-4
+        by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 3dqhyq0up1-3
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
         Fri, 21 Jan 2022 08:32:59 -0600
 Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX02.ad.cirrus.com
  (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.18; Fri, 21 Jan
- 2022 14:32:58 +0000
+ 2022 14:32:57 +0000
 Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
  (198.61.84.80) with Microsoft SMTP Server id 15.1.2375.18 via Frontend
- Transport; Fri, 21 Jan 2022 14:32:58 +0000
+ Transport; Fri, 21 Jan 2022 14:32:57 +0000
 Received: from LONN2DGDQ73.ad.cirrus.com (unknown [198.90.238.138])
-        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 91E1DB0E;
-        Fri, 21 Jan 2022 14:32:57 +0000 (UTC)
+        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 1389D11D8;
+        Fri, 21 Jan 2022 14:32:56 +0000 (UTC)
 From:   Stefan Binding <sbinding@opensource.cirrus.com>
 To:     Mark Brown <broonie@kernel.org>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
@@ -49,95 +49,147 @@ CC:     <alsa-devel@alsa-project.org>, <linux-kernel@vger.kernel.org>,
         <platform-driver-x86@vger.kernel.org>,
         <patches@opensource.cirrus.com>,
         Stefan Binding <sbinding@opensource.cirrus.com>
-Subject: [PATCH v5 4/9] spi: Add API to count spi acpi resources
-Date:   Fri, 21 Jan 2022 14:32:49 +0000
-Message-ID: <20220121143254.6432-5-sbinding@opensource.cirrus.com>
+Subject: [PATCH v5 2/9] spi: Create helper API to lookup ACPI info for spi device
+Date:   Fri, 21 Jan 2022 14:32:47 +0000
+Message-ID: <20220121143254.6432-3-sbinding@opensource.cirrus.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220121143254.6432-1-sbinding@opensource.cirrus.com>
 References: <20220121143254.6432-1-sbinding@opensource.cirrus.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-GUID: YXs0xOKaxUze4Bglh0tWMW4u0kkZMcxt
-X-Proofpoint-ORIG-GUID: YXs0xOKaxUze4Bglh0tWMW4u0kkZMcxt
+X-Proofpoint-GUID: o6ioXOnKxJh9O_1iIHLim2wSEGISFNQ3
+X-Proofpoint-ORIG-GUID: o6ioXOnKxJh9O_1iIHLim2wSEGISFNQ3
 X-Proofpoint-Spam-Reason: safe
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Some ACPI nodes may have more than one Spi Resource.
-To be able to handle these case, its necessary to have
-a way of counting these resources.
+This can then be used to find a spi resource inside an
+ACPI node, and allocate a spi device.
 
 Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
 ---
- drivers/spi/spi.c       | 40 ++++++++++++++++++++++++++++++++++++++++
- include/linux/spi/spi.h |  1 +
- 2 files changed, 41 insertions(+)
+ drivers/spi/spi.c       | 46 ++++++++++++++++++++++++++++++++---------
+ include/linux/spi/spi.h |  6 ++++++
+ 2 files changed, 42 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 06c0a308b38b..ec9f2ed579e3 100644
+index 1eb84101c4ad..13f4701f0694 100644
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -2324,6 +2324,46 @@ struct acpi_spi_lookup {
- 	int			index;
- };
+@@ -2410,8 +2410,18 @@ static int acpi_spi_add_resource(struct acpi_resource *ares, void *data)
+ 	return 1;
+ }
  
-+static int acpi_spi_count(struct acpi_resource *ares, void *data)
-+{
-+	struct acpi_resource_spi_serialbus *sb;
-+	int *count = data;
-+
-+	if (ares->type != ACPI_RESOURCE_TYPE_SERIAL_BUS)
-+		return 1;
-+
-+	sb = &ares->data.spi_serial_bus;
-+	if (sb->type != ACPI_RESOURCE_SERIAL_TYPE_SPI)
-+		return 1;
-+
-+	*count = *count + 1;
-+
-+	return 1;
-+}
-+
+-static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
+-					    struct acpi_device *adev)
 +/**
-+ * acpi_spi_count_resources - Count the number of SpiSerialBus resources
-+ * @adev:	ACPI device
++ * acpi_spi_device_alloc - Allocate a spi device, and fill it in with ACPI information
++ * @ctlr: controller to which the spi device belongs
++ * @adev: ACPI Device for the spi device
 + *
-+ * Returns the number of SpiSerialBus resources in the ACPI-device's
-+ * resource-list; or a negative error code.
++ * This should be used to allocate a new spi device from and ACPI Node.
++ * The caller is responsible for calling spi_add_device to register the spi device.
++ *
++ * Return: a pointer to the new device, or ERR_PTR on error.
 + */
-+int acpi_spi_count_resources(struct acpi_device *adev)
-+{
-+	LIST_HEAD(r);
-+	int count = 0;
-+	int ret;
-+
-+	ret = acpi_dev_get_resources(adev, &r, acpi_spi_count, &count);
-+	if (ret < 0)
-+		return ret;
-+
-+	acpi_dev_free_resource_list(&r);
-+
-+	return count;
-+}
-+EXPORT_SYMBOL_GPL(acpi_spi_count_resources);
-+
- static void acpi_spi_parse_apple_properties(struct acpi_device *dev,
- 					    struct acpi_spi_lookup *lookup)
++struct spi_device *acpi_spi_device_alloc(struct spi_controller *ctlr,
++					 struct acpi_device *adev)
  {
+ 	acpi_handle parent_handle = NULL;
+ 	struct list_head resource_list;
+@@ -2419,10 +2429,6 @@ static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
+ 	struct spi_device *spi;
+ 	int ret;
+ 
+-	if (acpi_bus_get_status(adev) || !adev->status.present ||
+-	    acpi_device_enumerated(adev))
+-		return AE_OK;
+-
+ 	lookup.ctlr		= ctlr;
+ 	lookup.irq		= -1;
+ 
+@@ -2433,7 +2439,7 @@ static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
+ 
+ 	if (ret < 0)
+ 		/* found SPI in _CRS but it points to another controller */
+-		return AE_OK;
++		return ERR_PTR(-ENODEV);
+ 
+ 	if (!lookup.max_speed_hz &&
+ 	    ACPI_SUCCESS(acpi_get_parent(adev->handle, &parent_handle)) &&
+@@ -2443,16 +2449,15 @@ static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
+ 	}
+ 
+ 	if (!lookup.max_speed_hz)
+-		return AE_OK;
++		return ERR_PTR(-ENODEV);
+ 
+ 	spi = spi_alloc_device(ctlr);
+ 	if (!spi) {
+ 		dev_err(&ctlr->dev, "failed to allocate SPI device for %s\n",
+ 			dev_name(&adev->dev));
+-		return AE_NO_MEMORY;
++		return ERR_PTR(-ENOMEM);
+ 	}
+ 
+-
+ 	ACPI_COMPANION_SET(&spi->dev, adev);
+ 	spi->max_speed_hz	= lookup.max_speed_hz;
+ 	spi->mode		|= lookup.mode;
+@@ -2460,6 +2465,27 @@ static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
+ 	spi->bits_per_word	= lookup.bits_per_word;
+ 	spi->chip_select	= lookup.chip_select;
+ 
++	return spi;
++}
++EXPORT_SYMBOL_GPL(acpi_spi_device_alloc);
++
++static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
++					    struct acpi_device *adev)
++{
++	struct spi_device *spi;
++
++	if (acpi_bus_get_status(adev) || !adev->status.present ||
++	    acpi_device_enumerated(adev))
++		return AE_OK;
++
++	spi = acpi_spi_device_alloc(ctlr, adev);
++	if (IS_ERR(spi)) {
++		if (PTR_ERR(spi) == -ENOMEM)
++			return AE_NO_MEMORY;
++		else
++			return AE_OK;
++	}
++
+ 	acpi_set_modalias(adev, acpi_device_hid(adev), spi->modalias,
+ 			  sizeof(spi->modalias));
+ 
 diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index e5bbb9cbd3d7..394b4241d989 100644
+index 0346a3ff27fd..d159cef12f1a 100644
 --- a/include/linux/spi/spi.h
 +++ b/include/linux/spi/spi.h
-@@ -764,6 +764,7 @@ extern void spi_unregister_controller(struct spi_controller *ctlr);
- extern struct spi_device *acpi_spi_device_alloc(struct spi_controller *ctlr,
- 						struct acpi_device *adev,
- 						int index);
-+int acpi_spi_count_resources(struct acpi_device *adev);
- #endif
+@@ -16,6 +16,7 @@
+ #include <linux/gpio/consumer.h>
  
+ #include <uapi/linux/spi/spi.h>
++#include <linux/acpi.h>
+ 
+ struct dma_chan;
+ struct software_node;
+@@ -759,6 +760,11 @@ extern int devm_spi_register_controller(struct device *dev,
+ 					struct spi_controller *ctlr);
+ extern void spi_unregister_controller(struct spi_controller *ctlr);
+ 
++#if IS_ENABLED(CONFIG_ACPI)
++extern struct spi_device *acpi_spi_device_alloc(struct spi_controller *ctlr,
++						struct acpi_device *adev);
++#endif
++
  /*
+  * SPI resource management while processing a SPI message
+  */
 -- 
 2.25.1
 

@@ -2,41 +2,41 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 71AEAC43217
-	for <linux-spi@archiver.kernel.org>; Fri, 21 Jan 2022 14:33:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 18F51C433EF
+	for <linux-spi@archiver.kernel.org>; Fri, 21 Jan 2022 14:33:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1381185AbiAUOdY (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 21 Jan 2022 09:33:24 -0500
-Received: from mx0a-001ae601.pphosted.com ([67.231.149.25]:16544 "EHLO
+        id S1381206AbiAUOd0 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 21 Jan 2022 09:33:26 -0500
+Received: from mx0a-001ae601.pphosted.com ([67.231.149.25]:19104 "EHLO
         mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1381137AbiAUOdV (ORCPT
+        by vger.kernel.org with ESMTP id S1381161AbiAUOdV (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Fri, 21 Jan 2022 09:33:21 -0500
 Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
-        by mx0a-001ae601.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 20LDS7PG017315;
-        Fri, 21 Jan 2022 08:32:58 -0600
+        by mx0a-001ae601.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 20LDS7PI017315;
+        Fri, 21 Jan 2022 08:33:00 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding : content-type; s=PODMain02222019;
- bh=LqwQlGSPZbY4FUWN/PCbYAVSFcGSRCshh6dVtPJgmMk=;
- b=PCVBCNXRnJUAug10vNBf9+SdV1P7Kq3cOEZQ04COsE7Z29Ytg628xxs0/kb3O4F5J2XY
- 2luji4rp1SVIw8Mj7mHDg+OfrWkcdU17TuyMx8tlbAyKIGJAXGyaQ4IGxKTdlvkL8AGM
- nYRKXxv1AZYlTLCpc4m6ko9nX0HRFF3gV7umufe5CfMzhCxoD63FJAIR19w9neWDICck
- /Lv6EP539BmbIAeSveZ/ykBwCDzjX5Br2SlfP6kO9jb+cJ4ZtYb+RG5tzvmioGNEQ2uy
- V09+b73aDubi/BqjR4FmAd9yg1NUg6Du2Lo/k7EL//PE9KKujfQN8XWNH5+mbUvs4ITD HA== 
+ bh=hpkiyedjwFNaW1dW6W1BZYk7mgOTqs24UOHKVbPt4Kk=;
+ b=fjgCUiYkw07idAqoePK+Rxkanygu53psuOsxQeMI1+N6Wk8iy67gLNaXD7Nkkrwy0F+T
+ WVXcWi7edj63AyraCraWQ07zs9Yzy5yZW7s6TFbZyshlERnrm2lO0ynq22nJsJ9xVUjN
+ 0WHyN7QQycyboN+mEY9VsQmOQQIM8w9dv/ZjyEpdpWHfPFCUg4P7d+I37TRGB20vtlwz
+ W9T+QuhB2Ks3SzkA0eiCTVo9QQSfj6XEe4IIGfPKM94Qr2ZFcYF31Y8a8hu1BzfyX6VP
+ O/9o7hW8yfcC+Z1QNgMKc7Ha9ExBow3694O1vwFhUgws4/KWwooDT5wfj0a3Lm+rmTFD gg== 
 Received: from ediex02.ad.cirrus.com ([84.19.233.68])
-        by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 3dqhyq0up1-2
+        by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 3dqhyq0up1-4
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 21 Jan 2022 08:32:58 -0600
+        Fri, 21 Jan 2022 08:32:59 -0600
 Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX02.ad.cirrus.com
  (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.18; Fri, 21 Jan
- 2022 14:32:56 +0000
+ 2022 14:32:58 +0000
 Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
  (198.61.84.80) with Microsoft SMTP Server id 15.1.2375.18 via Frontend
- Transport; Fri, 21 Jan 2022 14:32:56 +0000
+ Transport; Fri, 21 Jan 2022 14:32:58 +0000
 Received: from LONN2DGDQ73.ad.cirrus.com (unknown [198.90.238.138])
-        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 8AD5845D;
-        Fri, 21 Jan 2022 14:32:55 +0000 (UTC)
+        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 91E1DB0E;
+        Fri, 21 Jan 2022 14:32:57 +0000 (UTC)
 From:   Stefan Binding <sbinding@opensource.cirrus.com>
 To:     Mark Brown <broonie@kernel.org>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
@@ -49,97 +49,95 @@ CC:     <alsa-devel@alsa-project.org>, <linux-kernel@vger.kernel.org>,
         <platform-driver-x86@vger.kernel.org>,
         <patches@opensource.cirrus.com>,
         Stefan Binding <sbinding@opensource.cirrus.com>
-Subject: [PATCH v5 1/9] spi: Make spi_alloc_device and spi_add_device public again
-Date:   Fri, 21 Jan 2022 14:32:46 +0000
-Message-ID: <20220121143254.6432-2-sbinding@opensource.cirrus.com>
+Subject: [PATCH v5 4/9] spi: Add API to count spi acpi resources
+Date:   Fri, 21 Jan 2022 14:32:49 +0000
+Message-ID: <20220121143254.6432-5-sbinding@opensource.cirrus.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220121143254.6432-1-sbinding@opensource.cirrus.com>
 References: <20220121143254.6432-1-sbinding@opensource.cirrus.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-GUID: dkr6noE4rEqk2O20yaZBqUicumI8abBv
-X-Proofpoint-ORIG-GUID: dkr6noE4rEqk2O20yaZBqUicumI8abBv
+X-Proofpoint-GUID: YXs0xOKaxUze4Bglh0tWMW4u0kkZMcxt
+X-Proofpoint-ORIG-GUID: YXs0xOKaxUze4Bglh0tWMW4u0kkZMcxt
 X-Proofpoint-Spam-Reason: safe
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This functions were previously made private since they
-were not used. However, these functions will be needed
-again.
-
-Partial revert of commit da21fde0fdb3
-("spi: Make several public functions private to spi.c")
+Some ACPI nodes may have more than one Spi Resource.
+To be able to handle these case, its necessary to have
+a way of counting these resources.
 
 Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
 ---
- drivers/spi/spi.c       |  6 ++++--
- include/linux/spi/spi.h | 12 ++++++++++++
- 2 files changed, 16 insertions(+), 2 deletions(-)
+ drivers/spi/spi.c       | 40 ++++++++++++++++++++++++++++++++++++++++
+ include/linux/spi/spi.h |  1 +
+ 2 files changed, 41 insertions(+)
 
 diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 4599b121d744..1eb84101c4ad 100644
+index 06c0a308b38b..ec9f2ed579e3 100644
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -532,7 +532,7 @@ static DEFINE_MUTEX(board_lock);
-  *
-  * Return: a pointer to the new device, or NULL.
-  */
--static struct spi_device *spi_alloc_device(struct spi_controller *ctlr)
-+struct spi_device *spi_alloc_device(struct spi_controller *ctlr)
- {
- 	struct spi_device	*spi;
+@@ -2324,6 +2324,46 @@ struct acpi_spi_lookup {
+ 	int			index;
+ };
  
-@@ -557,6 +557,7 @@ static struct spi_device *spi_alloc_device(struct spi_controller *ctlr)
- 	device_initialize(&spi->dev);
- 	return spi;
- }
-+EXPORT_SYMBOL_GPL(spi_alloc_device);
- 
- static void spi_dev_set_name(struct spi_device *spi)
- {
-@@ -652,7 +653,7 @@ static int __spi_add_device(struct spi_device *spi)
-  *
-  * Return: 0 on success; negative errno on failure
-  */
--static int spi_add_device(struct spi_device *spi)
-+int spi_add_device(struct spi_device *spi)
- {
- 	struct spi_controller *ctlr = spi->controller;
- 	struct device *dev = ctlr->dev.parent;
-@@ -673,6 +674,7 @@ static int spi_add_device(struct spi_device *spi)
- 	mutex_unlock(&ctlr->add_lock);
- 	return status;
- }
-+EXPORT_SYMBOL_GPL(spi_add_device);
- 
- static int spi_add_device_locked(struct spi_device *spi)
++static int acpi_spi_count(struct acpi_resource *ares, void *data)
++{
++	struct acpi_resource_spi_serialbus *sb;
++	int *count = data;
++
++	if (ares->type != ACPI_RESOURCE_TYPE_SERIAL_BUS)
++		return 1;
++
++	sb = &ares->data.spi_serial_bus;
++	if (sb->type != ACPI_RESOURCE_SERIAL_TYPE_SPI)
++		return 1;
++
++	*count = *count + 1;
++
++	return 1;
++}
++
++/**
++ * acpi_spi_count_resources - Count the number of SpiSerialBus resources
++ * @adev:	ACPI device
++ *
++ * Returns the number of SpiSerialBus resources in the ACPI-device's
++ * resource-list; or a negative error code.
++ */
++int acpi_spi_count_resources(struct acpi_device *adev)
++{
++	LIST_HEAD(r);
++	int count = 0;
++	int ret;
++
++	ret = acpi_dev_get_resources(adev, &r, acpi_spi_count, &count);
++	if (ret < 0)
++		return ret;
++
++	acpi_dev_free_resource_list(&r);
++
++	return count;
++}
++EXPORT_SYMBOL_GPL(acpi_spi_count_resources);
++
+ static void acpi_spi_parse_apple_properties(struct acpi_device *dev,
+ 					    struct acpi_spi_lookup *lookup)
  {
 diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 7ab3fed7b804..0346a3ff27fd 100644
+index e5bbb9cbd3d7..394b4241d989 100644
 --- a/include/linux/spi/spi.h
 +++ b/include/linux/spi/spi.h
-@@ -1452,7 +1452,19 @@ spi_register_board_info(struct spi_board_info const *info, unsigned n)
-  * use spi_new_device() to describe each device.  You can also call
-  * spi_unregister_device() to start making that device vanish, but
-  * normally that would be handled by spi_unregister_controller().
-+ *
-+ * You can also use spi_alloc_device() and spi_add_device() to use a two
-+ * stage registration sequence for each spi_device. This gives the caller
-+ * some more control over the spi_device structure before it is registered,
-+ * but requires that caller to initialize fields that would otherwise
-+ * be defined using the board info.
-  */
-+extern struct spi_device *
-+spi_alloc_device(struct spi_controller *ctlr);
-+
-+extern int
-+spi_add_device(struct spi_device *spi);
-+
- extern struct spi_device *
- spi_new_device(struct spi_controller *, struct spi_board_info *);
+@@ -764,6 +764,7 @@ extern void spi_unregister_controller(struct spi_controller *ctlr);
+ extern struct spi_device *acpi_spi_device_alloc(struct spi_controller *ctlr,
+ 						struct acpi_device *adev,
+ 						int index);
++int acpi_spi_count_resources(struct acpi_device *adev);
+ #endif
  
+ /*
 -- 
 2.25.1
 

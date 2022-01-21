@@ -2,41 +2,41 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D66C2C43217
-	for <linux-spi@archiver.kernel.org>; Fri, 21 Jan 2022 17:25:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E7EF3C433F5
+	for <linux-spi@archiver.kernel.org>; Fri, 21 Jan 2022 17:25:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379971AbiAURZM (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 21 Jan 2022 12:25:12 -0500
-Received: from mx0a-001ae601.pphosted.com ([67.231.149.25]:8350 "EHLO
+        id S1380174AbiAURZn (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 21 Jan 2022 12:25:43 -0500
+Received: from mx0a-001ae601.pphosted.com ([67.231.149.25]:35110 "EHLO
         mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1380037AbiAURZJ (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 21 Jan 2022 12:25:09 -0500
+        by vger.kernel.org with ESMTP id S1381189AbiAURZh (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 21 Jan 2022 12:25:37 -0500
 Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
-        by mx0a-001ae601.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 20LHACZE027684;
-        Fri, 21 Jan 2022 11:24:56 -0600
+        by mx0a-001ae601.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 20LH9VJG024708;
+        Fri, 21 Jan 2022 11:24:52 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding : content-type; s=PODMain02222019;
- bh=/FscdIwUTX/T+KXtKcNQWJfwM3iEhr7GIwyOVP/4iic=;
- b=pbFVDhykG8JDd7oq+EtEg89whxuf62xD5hOJruy7qHoSvZk4K7bqGUzMHaY/GEzYIJhv
- nIZh+O1MoquGVZSPVLD/xFdFb5PpBPxXMp99gq5C5x33IZWmVoLPXOuEi2Agll6tHmFv
- bXdCM+1sQVPG/XooJTVUn0trHF6b5tz1cTIaDfeCxRexRtwzVvLvVigeN0r6/7EO9A6F
- TlDpaGhnj8Up77gzQV7SIdNekV/l6yr2pqTqPaCz+nkwjVnEtMrH7U5FycBpFuoNCzpC
- hN28imYl+eU7b6Z5xRD5/OnRleVYCTKXeRfxCJk2kF3mRyKSPKXK709g67AxVWWNB14u 4g== 
-Received: from ediex02.ad.cirrus.com ([84.19.233.68])
-        by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 3dqhyq14dq-2
+ bh=LqwQlGSPZbY4FUWN/PCbYAVSFcGSRCshh6dVtPJgmMk=;
+ b=K1BwODWblvOiwR591g8qVpcrV2/Z8m0/HwlFkpgJwxd+Dz5f69aFrl4IQnl4rNzrQ87U
+ 6P2AoMD3hJRVDmESJhZyhV9dxqmCCNAMcXHcdr4/2Fda02dqS4UD3Js/yLTBrP6T+bKA
+ v05xQv/mABBwYlKXBYgqumx6fcQFNx1hIW7ef++pBVu6XmS01CFTEmR7L4xy2pHRbZL5
+ ZAZAJyGJGg0VV5OOCjDfhN41tRgcGszYqdyYNW5jyQfngnq3dKi5dzO1UUk9djYmyyXC
+ IL8yWFGABUT0C/LklIl7Mj+lg1uJiZnzxhpyFWQGzwp61UCTEpVOfbmtBajE9S+/l7uk Kw== 
+Received: from ediex01.ad.cirrus.com ([84.19.233.68])
+        by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 3dqhyq14dj-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 21 Jan 2022 11:24:55 -0600
-Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX02.ad.cirrus.com
- (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
+        Fri, 21 Jan 2022 11:24:51 -0600
+Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.18; Fri, 21 Jan
- 2022 17:24:53 +0000
+ 2022 17:24:49 +0000
 Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
  (198.61.84.80) with Microsoft SMTP Server id 15.1.2375.18 via Frontend
- Transport; Fri, 21 Jan 2022 17:24:53 +0000
+ Transport; Fri, 21 Jan 2022 17:24:49 +0000
 Received: from LONN2DGDQ73.ad.cirrus.com (unknown [198.90.238.138])
-        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id CFBD3B0E;
-        Fri, 21 Jan 2022 17:24:52 +0000 (UTC)
+        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id A968145D;
+        Fri, 21 Jan 2022 17:24:46 +0000 (UTC)
 From:   Stefan Binding <sbinding@opensource.cirrus.com>
 To:     Mark Brown <broonie@kernel.org>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
@@ -48,110 +48,98 @@ CC:     <alsa-devel@alsa-project.org>, <linux-kernel@vger.kernel.org>,
         <linux-spi@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
         <platform-driver-x86@vger.kernel.org>,
         <patches@opensource.cirrus.com>,
-        Lucas Tanure <tanureal@opensource.cirrus.com>,
         Stefan Binding <sbinding@opensource.cirrus.com>
-Subject: [PATCH v6 8/9] ALSA: hda/realtek: Add support for HP Laptops
-Date:   Fri, 21 Jan 2022 17:24:30 +0000
-Message-ID: <20220121172431.6876-9-sbinding@opensource.cirrus.com>
+Subject: [PATCH v6 1/9] spi: Make spi_alloc_device and spi_add_device public again
+Date:   Fri, 21 Jan 2022 17:24:23 +0000
+Message-ID: <20220121172431.6876-2-sbinding@opensource.cirrus.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220121172431.6876-1-sbinding@opensource.cirrus.com>
 References: <20220121172431.6876-1-sbinding@opensource.cirrus.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-GUID: oBJsRaSVYgT4d31VUfCS_IKYVzEwd2t5
-X-Proofpoint-ORIG-GUID: oBJsRaSVYgT4d31VUfCS_IKYVzEwd2t5
+X-Proofpoint-GUID: q1CdZV91haAymerfcNt8Cp-_FalUMHXZ
+X-Proofpoint-ORIG-GUID: q1CdZV91haAymerfcNt8Cp-_FalUMHXZ
 X-Proofpoint-Spam-Reason: safe
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Lucas Tanure <tanureal@opensource.cirrus.com>
+This functions were previously made private since they
+were not used. However, these functions will be needed
+again.
 
-Add support for two and four CS35L41 using the component
-binding method
+Partial revert of commit da21fde0fdb3
+("spi: Make several public functions private to spi.c")
 
-Signed-off-by: Lucas Tanure <tanureal@opensource.cirrus.com>
 Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
 ---
- sound/pci/hda/patch_realtek.c | 43 ++++++++++++++++++++++++++++++++++-
- 1 file changed, 42 insertions(+), 1 deletion(-)
+ drivers/spi/spi.c       |  6 ++++--
+ include/linux/spi/spi.h | 12 ++++++++++++
+ 2 files changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 668274e52674..db0fce42887c 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -6611,6 +6611,16 @@ static void cs35l41_fixup_i2c_two(struct hda_codec *cdc, const struct hda_fixup
- 	cs35l41_generic_fixup(cdc, action, "i2c", "CSC3551", 2);
- }
- 
-+static void cs35l41_fixup_spi_two(struct hda_codec *codec, const struct hda_fixup *fix, int action)
-+{
-+	cs35l41_generic_fixup(codec, action, "spi0", "CSC3551", 2);
-+}
-+
-+static void cs35l41_fixup_spi_four(struct hda_codec *codec, const struct hda_fixup *fix, int action)
-+{
-+	cs35l41_generic_fixup(codec, action, "spi0", "CSC3551", 4);
-+}
-+
- static void alc287_legion_16achg6_playback_hook(struct hda_pcm_stream *hinfo, struct hda_codec *cdc,
- 						struct snd_pcm_substream *sub, int action)
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 4599b121d744..1eb84101c4ad 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -532,7 +532,7 @@ static DEFINE_MUTEX(board_lock);
+  *
+  * Return: a pointer to the new device, or NULL.
+  */
+-static struct spi_device *spi_alloc_device(struct spi_controller *ctlr)
++struct spi_device *spi_alloc_device(struct spi_controller *ctlr)
  {
-@@ -6948,6 +6958,9 @@ enum {
- 	ALC285_FIXUP_LEGION_Y9000X_AUTOMUTE,
- 	ALC287_FIXUP_LEGION_16ACHG6,
- 	ALC287_FIXUP_CS35L41_I2C_2,
-+	ALC245_FIXUP_CS35L41_SPI_2,
-+	ALC245_FIXUP_CS35L41_SPI_4,
-+	ALC245_FIXUP_CS35L41_SPI_4_HP_GPIO_LED,
- 	ALC285_FIXUP_HP_SPEAKERS_MICMUTE_LED,
- };
+ 	struct spi_device	*spi;
  
-@@ -8699,6 +8712,20 @@ static const struct hda_fixup alc269_fixups[] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = cs35l41_fixup_i2c_two,
- 	},
-+	[ALC245_FIXUP_CS35L41_SPI_2] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = cs35l41_fixup_spi_two,
-+	},
-+	[ALC245_FIXUP_CS35L41_SPI_4] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = cs35l41_fixup_spi_four,
-+	},
-+	[ALC245_FIXUP_CS35L41_SPI_4_HP_GPIO_LED] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = alc245_fixup_hp_gpio_led,
-+		.chained = true,
-+		.chain_id = ALC245_FIXUP_CS35L41_SPI_4,
-+	},
- 	[ALC285_FIXUP_HP_SPEAKERS_MICMUTE_LED] = {
- 		.type = HDA_FIXUP_VERBS,
- 		.v.verbs = (const struct hda_verb[]) {
-@@ -8926,7 +8953,21 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x8896, "HP EliteBook 855 G8 Notebook PC", ALC285_FIXUP_HP_MUTE_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8898, "HP EliteBook 845 G8 Notebook PC", ALC285_FIXUP_HP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x103c, 0x88d0, "HP Pavilion 15-eh1xxx (mainboard 88D0)", ALC287_FIXUP_HP_GPIO_LED),
--	SND_PCI_QUIRK(0x103c, 0x89c3, "HP", ALC285_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x896e, "HP EliteBook x360 830 G9", ALC245_FIXUP_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x103c, 0x8971, "HP EliteBook 830 G9", ALC245_FIXUP_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x103c, 0x8972, "HP EliteBook 840 G9", ALC245_FIXUP_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x103c, 0x8973, "HP EliteBook 860 G9", ALC245_FIXUP_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x103c, 0x8974, "HP EliteBook 840 Aero G9", ALC245_FIXUP_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x103c, 0x8975, "HP EliteBook x360 840 Aero G9", ALC245_FIXUP_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x103c, 0x8981, "HP Elite Dragonfly G3", ALC245_FIXUP_CS35L41_SPI_4),
-+	SND_PCI_QUIRK(0x103c, 0x898e, "HP EliteBook 835 G9", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x103c, 0x898f, "HP EliteBook 835 G9", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x103c, 0x8991, "HP EliteBook 845 G9", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x103c, 0x8992, "HP EliteBook 845 G9", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x103c, 0x8994, "HP EliteBook 855 G9", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x103c, 0x8995, "HP EliteBook 855 G9", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x103c, 0x89c3, "Zbook Studio G9", ALC245_FIXUP_CS35L41_SPI_4_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x89c6, "Zbook Fury 17 G9", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x103c, 0x89ca, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- 	SND_PCI_QUIRK(0x1043, 0x103e, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x103f, "ASUS TX300", ALC282_FIXUP_ASUS_TX300),
+@@ -557,6 +557,7 @@ static struct spi_device *spi_alloc_device(struct spi_controller *ctlr)
+ 	device_initialize(&spi->dev);
+ 	return spi;
+ }
++EXPORT_SYMBOL_GPL(spi_alloc_device);
+ 
+ static void spi_dev_set_name(struct spi_device *spi)
+ {
+@@ -652,7 +653,7 @@ static int __spi_add_device(struct spi_device *spi)
+  *
+  * Return: 0 on success; negative errno on failure
+  */
+-static int spi_add_device(struct spi_device *spi)
++int spi_add_device(struct spi_device *spi)
+ {
+ 	struct spi_controller *ctlr = spi->controller;
+ 	struct device *dev = ctlr->dev.parent;
+@@ -673,6 +674,7 @@ static int spi_add_device(struct spi_device *spi)
+ 	mutex_unlock(&ctlr->add_lock);
+ 	return status;
+ }
++EXPORT_SYMBOL_GPL(spi_add_device);
+ 
+ static int spi_add_device_locked(struct spi_device *spi)
+ {
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 7ab3fed7b804..0346a3ff27fd 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -1452,7 +1452,19 @@ spi_register_board_info(struct spi_board_info const *info, unsigned n)
+  * use spi_new_device() to describe each device.  You can also call
+  * spi_unregister_device() to start making that device vanish, but
+  * normally that would be handled by spi_unregister_controller().
++ *
++ * You can also use spi_alloc_device() and spi_add_device() to use a two
++ * stage registration sequence for each spi_device. This gives the caller
++ * some more control over the spi_device structure before it is registered,
++ * but requires that caller to initialize fields that would otherwise
++ * be defined using the board info.
+  */
++extern struct spi_device *
++spi_alloc_device(struct spi_controller *ctlr);
++
++extern int
++spi_add_device(struct spi_device *spi);
++
+ extern struct spi_device *
+ spi_new_device(struct spi_controller *, struct spi_board_info *);
+ 
 -- 
 2.25.1
 

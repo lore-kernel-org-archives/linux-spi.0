@@ -2,94 +2,85 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AD8DCC433EF
-	for <linux-spi@archiver.kernel.org>; Sun, 23 Jan 2022 17:10:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5468FC433EF
+	for <linux-spi@archiver.kernel.org>; Sun, 23 Jan 2022 17:52:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239175AbiAWRKt (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 23 Jan 2022 12:10:49 -0500
-Received: from smtp-relay-internal-0.canonical.com ([185.125.188.122]:43086
-        "EHLO smtp-relay-internal-0.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S239158AbiAWRKr (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 23 Jan 2022 12:10:47 -0500
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com [209.85.208.69])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 3CE083F17B
-        for <linux-spi@vger.kernel.org>; Sun, 23 Jan 2022 17:10:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1642957846;
-        bh=xDXKi7JGbcFAIN75n+fskAz4fLROZVWhmg1xwTYWTaM=;
-        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-         MIME-Version:Content-Type;
-        b=vFHlFNPcWzZN3i48+prT9iLU9UcWWm9/wUdeswEtzF1sluDTAMVuqxD21SVMfMNnt
-         xftHaxXY7eHvG1brn5ZFq4A8Nb86c/o94cv0dOVHHud+WHl3+myTpVzgb+HDsmCXeZ
-         mQD3We8Zjm+pz+1J4wB2TI2DbMrjnOtqaXZ0WrwuC8FIfDimXuIe4UAAz8MrkPu5IV
-         jACLzHZ+8JJU6Ktzt17Ktbzkl6kqh1af42BSF3WCGd4pvubbKuGpV4yYZIXhww9n83
-         SBDnG2iFRvKy8vtn0XuZUCFnsgY0Ljq8Sr3PyMWyWXQud5FlKgvyCoLb3oCeMQ5dDA
-         xA3XoE3z8rbXg==
-Received: by mail-ed1-f69.google.com with SMTP id c11-20020a056402120b00b0040321cea9d4so11586256edw.23
-        for <linux-spi@vger.kernel.org>; Sun, 23 Jan 2022 09:10:46 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=xDXKi7JGbcFAIN75n+fskAz4fLROZVWhmg1xwTYWTaM=;
-        b=YGWBJO1dI6yNGHlYXffRwADDGznTtI5+4QNRrRQM2iIscUYPCq0AUotgQp1p8HIyLJ
-         5eb+d+KcOzD1JE4xIC95pqHyJwVzkoEfAnAYVtSwmJAhevxLnsedxx6FI3q9GlwlHFA6
-         eOAXzzuOIvJxEsgiex50HRwrbfHGLqNrgzCpvxXcDcduJPledQ/qHr0jFp7+eqFK99Et
-         8v5X1xhwBFQW9XriCTYNeqDBI+oFmYkTNTWV284XB9Jm2fYQljJ0JAvcbk8QrXY6aGgb
-         ZsJfQfLnlk2jBPgXLHWebkGVL4p1j5adRzAStgJ/DRd0SdNBJ6YGHssJ0J0v5xcGgvLp
-         diYg==
-X-Gm-Message-State: AOAM531cHOJht5hUjvCN1LI8a4+EarggcjvBZdzL+34ZNp/iTEswSaYp
-        US2sc+WxhhnNvaBJWv4pKiT3715ZW+6fC1+YctYLfwhzuZt4p7VFpIul+i87HgjLao5MTcscnNi
-        Gm5eEWdaNB+C51iUD7JlMrhTrDNteVU/4r10wvA==
-X-Received: by 2002:a17:906:c0d3:: with SMTP id bn19mr5822201ejb.617.1642957846006;
-        Sun, 23 Jan 2022 09:10:46 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJzEwgwyC6py20Us9CXTtk8hy7gvk7QbsUsT9zTj+fmJrSTrQrjp6cdTGsUPJFslHAJdT1BKlg==
-X-Received: by 2002:a17:906:c0d3:: with SMTP id bn19mr5822197ejb.617.1642957845861;
-        Sun, 23 Jan 2022 09:10:45 -0800 (PST)
-Received: from localhost.localdomain (xdsl-188-155-168-84.adslplus.ch. [188.155.168.84])
-        by smtp.gmail.com with ESMTPSA id l2sm5208665eds.28.2022.01.23.09.10.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Jan 2022 09:10:45 -0800 (PST)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        linux-samsung-soc@vger.kernel.org, Pratyush Yadav <p.yadav@ti.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Andi Shyti <andi@etezian.org>, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>,
-        Benson Leung <bleung@chromium.org>,
-        Lee Jones <lee.jones@linaro.org>, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Sam Protsenko <semen.protsenko@linaro.org>,
-        linux-kernel@vger.kernel.org
-Cc:     Alim Akhtar <alim.akhtar@samsung.com>
-Subject: Re: (subset) [PATCH v5 1/4] ARM: dts: exynos: split dmas into array of phandles in Exynos5250
-Date:   Sun, 23 Jan 2022 18:10:38 +0100
-Message-Id: <164295777263.25838.3565314490773058737.b4-ty@canonical.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20220120175747.43403-2-krzysztof.kozlowski@canonical.com>
-References: <20220120175747.43403-1-krzysztof.kozlowski@canonical.com> <20220120175747.43403-2-krzysztof.kozlowski@canonical.com>
+        id S239344AbiAWRwP (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 23 Jan 2022 12:52:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42690 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232441AbiAWRwN (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 23 Jan 2022 12:52:13 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2560C061401
+        for <linux-spi@vger.kernel.org>; Sun, 23 Jan 2022 09:52:12 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1nBh29-0007aE-Qo; Sun, 23 Jan 2022 18:52:09 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1nBh28-00BycB-7D; Sun, 23 Jan 2022 18:52:07 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1nBh26-000tzX-Kp; Sun, 23 Jan 2022 18:52:06 +0100
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     linux-spi@vger.kernel.org, kernel@pengutronix.de,
+        linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-fbdev@vger.kernel.org, Noralf Tronnes <notro@tronnes.org>,
+        linux-staging@lists.linux.dev, dri-devel@lists.freedesktop.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>
+Subject: [PATCH 1/5] staging: fbtft: Fix error path in fbtft_driver_module_init()
+Date:   Sun, 23 Jan 2022 18:51:57 +0100
+Message-Id: <20220123175201.34839-2-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20220123175201.34839-1-u.kleine-koenig@pengutronix.de>
+References: <20220123175201.34839-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1472; h=from:subject; bh=i2X5yNCIOCOFDIMQl+gbf/QxZ3EJl4WBdI8+Ry87svQ=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBh7ZWrOh19itJwy3A6u3yWbUTSiEplUaCg/AdalVp/ 1dxUs4SJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCYe2VqwAKCRDB/BR4rcrsCcnVCA CGzmOKybWQk3bG9qPzyrR4sinHLhsqEKAvXaLEm5q8uy0OpszNQ7nW1a0QM6JkRi3oCfPUu6EgwGl0 Te30YS0YHfiZzBt2r5ajXFNJChzYJwr2BcogYA4ep+/F6Y4S2zkX/zZ7rAeh4qRPXj1A5SyHvrSvTW wMihZM7kIOX4GbOy++5PGjG/Bojb0MFgVoHuEemX7mkjQ4FEE0kYBDL1+FY4yVAnn8NrTGg2EyFbRY ePWfgrh5brbPbyibSbwh5Uxp5xLiE9CP6vNZzvhGjCSb7CpGAls8G/l1H7743sjHSdn2gBreuYrocS 6AFKf/IGRfm3gnK8hvjx9Oz1/2Db27
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-spi@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, 20 Jan 2022 18:57:44 +0100, Krzysztof Kozlowski wrote:
-> "dmas" property should be rather an array of phandles, as dtschema
-> points.
-> 
-> 
+If registering the platform driver fails, the function must not return
+without undoing the spi driver registration first.
 
-Applied, thanks!
+Fixes: c296d5f9957c ("staging: fbtft: core support")
+Link: https://lore.kernel.org/r/20220118181338.207943-1-u.kleine-koenig@pengutronix.de
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+ drivers/staging/fbtft/fbtft.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-[1/4] ARM: dts: exynos: split dmas into array of phandles in Exynos5250
-      commit: 88829baee3db050a06fd5ce8a2be0c39992f90da
-
-Best regards,
+diff --git a/drivers/staging/fbtft/fbtft.h b/drivers/staging/fbtft/fbtft.h
+index 4cdec34e23d2..55677efc0138 100644
+--- a/drivers/staging/fbtft/fbtft.h
++++ b/drivers/staging/fbtft/fbtft.h
+@@ -334,7 +334,10 @@ static int __init fbtft_driver_module_init(void)                           \
+ 	ret = spi_register_driver(&fbtft_driver_spi_driver);               \
+ 	if (ret < 0)                                                       \
+ 		return ret;                                                \
+-	return platform_driver_register(&fbtft_driver_platform_driver);    \
++	ret = platform_driver_register(&fbtft_driver_platform_driver);     \
++	if (ret < 0)                                                       \
++		spi_unregister_driver(&fbtft_driver_spi_driver);           \
++	return ret;                                                        \
+ }                                                                          \
+ 									   \
+ static void __exit fbtft_driver_module_exit(void)                          \
 -- 
-Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+2.34.1
+

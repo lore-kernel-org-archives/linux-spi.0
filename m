@@ -2,244 +2,169 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C7BEFC433EF
-	for <linux-spi@archiver.kernel.org>; Mon, 24 Jan 2022 06:12:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 28DEDC433F5
+	for <linux-spi@archiver.kernel.org>; Mon, 24 Jan 2022 07:50:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232076AbiAXGMu (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 24 Jan 2022 01:12:50 -0500
-Received: from mailgw01.mediatek.com ([60.244.123.138]:35194 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S241551AbiAXGMq (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 24 Jan 2022 01:12:46 -0500
-X-UUID: d3845ea795214aceb2265b20f93b4f9e-20220124
-X-UUID: d3845ea795214aceb2265b20f93b4f9e-20220124
-Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw01.mediatek.com
-        (envelope-from <leilk.liu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1025319884; Mon, 24 Jan 2022 14:12:42 +0800
-Received: from mtkexhb01.mediatek.inc (172.21.101.102) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
- Mon, 24 Jan 2022 14:12:41 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by mtkexhb01.mediatek.inc
- (172.21.101.102) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 24 Jan
- 2022 14:12:41 +0800
-Received: from localhost.localdomain (10.17.3.154) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Mon, 24 Jan 2022 14:12:41 +0800
-From:   Leilk Liu <leilk.liu@mediatek.com>
-To:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>
-CC:     Matthias Brugger <matthias.bgg@gmail.com>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-spi@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
-        Leilk Liu <leilk.liu@mediatek.com>
-Subject: [PATCH V3 1/2] dt-bindings: spi: Convert spi-mt65xx to json-schema
-Date:   Mon, 24 Jan 2022 14:12:37 +0800
-Message-ID: <20220124061238.7854-2-leilk.liu@mediatek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220124061238.7854-1-leilk.liu@mediatek.com>
-References: <20220124061238.7854-1-leilk.liu@mediatek.com>
+        id S241886AbiAXHt7 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 24 Jan 2022 02:49:59 -0500
+Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123]:41764
+        "EHLO smtp-relay-internal-1.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232425AbiAXHt6 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 24 Jan 2022 02:49:58 -0500
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com [209.85.128.72])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 648463F1BE
+        for <linux-spi@vger.kernel.org>; Mon, 24 Jan 2022 07:49:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1643010596;
+        bh=hKmvn2EoYf7YnUau65urQ+B42XJ4hxu5EUImPMPZJrY=;
+        h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+         In-Reply-To:Content-Type;
+        b=dkzXA8PzM1N+o6Ng4fc+qU8OTC1dprbxYaCETcG3KKNRKHdrFBC554SynrTF9N0VJ
+         s9Lgx/BnrzHaJ2yzZ7gw5SCmt+qrPxBRsWU29Wcue9BCmWzd1c3CxJvf8hyKkIqqT8
+         8jTslLdLByiI0dSY462Z65p930TpaH1dfMyPei4VnSW3lqS3BLVDEBczdGofU9A+oP
+         RZ5S6nIv8WVn9Vvxf/mLWLVanHYYLeJOIOLQgC0EWvbFQudkHgwk4Yfj2yrcbXwYCV
+         eG9oAFx/R1nUy1gT1cGjTFdD+XI4oGIXDiFh0T95yrE/OXlrHmSui+wMy4cnyVgy6P
+         RZz1ctzDkLdaw==
+Received: by mail-wm1-f72.google.com with SMTP id f7-20020a1cc907000000b0034b63f314ccso10310094wmb.6
+        for <linux-spi@vger.kernel.org>; Sun, 23 Jan 2022 23:49:56 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=hKmvn2EoYf7YnUau65urQ+B42XJ4hxu5EUImPMPZJrY=;
+        b=dqB8/eLS6eNBVfKo1G5YE2zrS4HdpkX4c5pX2gKnjj6Qky0GKIwt8I0oMAr2SOiqAt
+         eMuehO7ukcJRLOD7wtFadNOxQ5pBaRy3lr1y9779YK5mjN+pA3rDASAPKd54qXd9a9dz
+         RRmJjzWWX0q8lPTHXY0WpAjEf3sDwYcCn6IsaMQxW0+A126x4iXbDqXxZ+sALAH44HND
+         At2+UeNE2IfTfIIZYFrGlbHNGXTdwlfjNunsdkbasOhPfw0hbTuMK3Ev6/CKxb4crahb
+         9/bFvKs8t0OcyLog0NWz5QlfLCWE34wb1cDQ3u30MV6lessKQ9tjVTh42VUGozu4gDpH
+         UeWw==
+X-Gm-Message-State: AOAM532+em8M3Yn/HZ259WyVlAGTZklR4K8vEtsRNXkpwMdGmmzXBcy2
+        wf4AAPiHq1CYWsMJQFiWh6EdCjFjsN1ijDLzNf90DCpBq0JRvD+JImH1TY2b76vnr4pkTYshlVy
+        G5hfljYYdRkKoyXbbIN3vTaYCS6orXMeyQxRFWA==
+X-Received: by 2002:a5d:65d0:: with SMTP id e16mr12613747wrw.67.1643010596064;
+        Sun, 23 Jan 2022 23:49:56 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJwIcnH15AU66jsAisZSr3fkWw8w6vsjdp8aAT+bk5H4F86P8SAZvjK6IXPkfLT58mMfJo2OZA==
+X-Received: by 2002:a5d:65d0:: with SMTP id e16mr12613733wrw.67.1643010595853;
+        Sun, 23 Jan 2022 23:49:55 -0800 (PST)
+Received: from [192.168.0.52] (xdsl-188-155-168-84.adslplus.ch. [188.155.168.84])
+        by smtp.gmail.com with ESMTPSA id d200sm17545981wmd.28.2022.01.23.23.49.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 23 Jan 2022 23:49:54 -0800 (PST)
+Message-ID: <f04f128f-af7b-93df-0452-4c0e915f2eb7@canonical.com>
+Date:   Mon, 24 Jan 2022 08:49:53 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-MTK:  N
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH v5 3/4] mfd: dt-bindings: google,cros-ec: reference
+ Samsung SPI bindings
+Content-Language: en-US
+To:     Rob Herring <robh@kernel.org>
+Cc:     Lee Jones <lee.jones@linaro.org>,
+        Benson Leung <bleung@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Andi Shyti <andi@etezian.org>, Mark Brown <broonie@kernel.org>,
+        Sam Protsenko <semen.protsenko@linaro.org>,
+        Pratyush Yadav <p.yadav@ti.com>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
+        Alim Akhtar <alim.akhtar@samsung.com>
+References: <20220120175747.43403-1-krzysztof.kozlowski@canonical.com>
+ <20220120175747.43403-4-krzysztof.kozlowski@canonical.com>
+ <YenkV2rgEXQJ6Bc5@robh.at.kernel.org>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+In-Reply-To: <YenkV2rgEXQJ6Bc5@robh.at.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Convert Mediatek ARM SOC's SPI Master controller binding
-to json-schema format.
+On 20/01/2022 23:38, Rob Herring wrote:
+> On Thu, Jan 20, 2022 at 06:57:46PM +0100, Krzysztof Kozlowski wrote:
+>> The ChromeOS Embedded Controller appears on boards with Samsung Exynos
+>> SoC, where Exynos SPI bindings expect controller-data node.  Reference
+>> newly added dtschema for this property.
+>>
+>> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+>> ---
+>>  .../bindings/mfd/google,cros-ec.yaml          | 29 ++++++++++---------
+>>  1 file changed, 16 insertions(+), 13 deletions(-)
+>>
+>> diff --git a/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml b/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
+>> index 58a1a9405228..66a995bbbbe9 100644
+>> --- a/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
+>> +++ b/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
+>> @@ -31,7 +31,7 @@ properties:
+>>  
+>>    controller-data:
+>>      description:
+>> -      SPI controller data, see bindings/spi/spi-samsung.txt
+>> +      SPI controller data, see bindings/spi/samsung,spi-peripheral-props.yaml
+>>      type: object
+> 
+> We should be able to drop all of this if unevaluatedProperties is used.
+> 
+>>  
+>>    google,cros-ec-spi-pre-delay:
+>> @@ -148,18 +148,21 @@ patternProperties:
+>>  required:
+>>    - compatible
+>>  
+>> -if:
+>> -  properties:
+>> -    compatible:
+>> -      contains:
+>> -        enum:
+>> -          - google,cros-ec-i2c
+>> -          - google,cros-ec-rpmsg
+>> -then:
+>> -  properties:
+>> -    google,cros-ec-spi-pre-delay: false
+>> -    google,cros-ec-spi-msg-delay: false
+>> -    spi-max-frequency: false
+>> +allOf:
+>> +  - if:
+>> +      properties:
+>> +        compatible:
+>> +          contains:
+>> +            enum:
+>> +              - google,cros-ec-i2c
+>> +              - google,cros-ec-rpmsg
+>> +    then:
+>> +      properties:
+>> +        google,cros-ec-spi-pre-delay: false
+>> +        google,cros-ec-spi-msg-delay: false
+>> +        spi-max-frequency: false
+>> +
+>> +  - $ref: /schemas/spi/samsung,spi-peripheral-props.yaml
+> 
+> SPI device schemas should reference spi-peripheral-props.yaml only. 
+> spi-peripheral-props.yaml in turn should reference all the vendor 
+> specific peripheral property schemas.
+> 
+> You should be able to do just:
+> 
+> else:
+>   $ref: /schemas/spi/spi-peripheral-props.yaml
 
-Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
----
- .../bindings/spi/mediatek,spi-mt65xx.yaml     | 101 ++++++++++++++++++
- .../devicetree/bindings/spi/spi-mt65xx.txt    |  68 ------------
- 2 files changed, 101 insertions(+), 68 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml
- delete mode 100644 Documentation/devicetree/bindings/spi/spi-mt65xx.txt
+I tried now with your changes (no controller-data and else-ref), but
+dt_binding_check complains:
 
-diff --git a/Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml b/Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml
-new file mode 100644
-index 000000000000..ea977fba49a7
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml
-@@ -0,0 +1,101 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/spi/mediatek,spi-mt65xx.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: SPI Bus controller for MediaTek ARM SoCs
-+
-+maintainers:
-+  - Leilk Liu <leilk.liu@mediatek.com>
-+
-+allOf:
-+  - $ref: "/schemas/spi/spi-controller.yaml#"
-+
-+properties:
-+  compatible:
-+    oneOf:
-+      - items:
-+          - enum:
-+              - mediatek,mt7629-spi
-+          - const: mediatek,mt7622-spi
-+      - items:
-+          - enum:
-+              - mediatek,mt8516-spi
-+          - const: mediatek,mt2712-spi
-+      - items:
-+          - enum:
-+              - mediatek,mt6779-spi
-+              - mediatek,mt8192-spi
-+              - mediatek,mt8195-spi
-+          - const: mediatek,mt6765-spi
-+      - items:
-+          - enum:
-+              - mediatek,mt2701-spi
-+              - mediatek,mt2712-spi
-+              - mediatek,mt6589-spi
-+              - mediatek,mt6765-spi
-+              - mediatek,mt6893-spi
-+              - mediatek,mt7622-spi
-+              - mediatek,mt8135-spi
-+              - mediatek,mt8173-spi
-+              - mediatek,mt8183-spi
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  clocks:
-+    items:
-+      - description: clock used for the parent clock
-+      - description: clock used for the muxes clock
-+      - description: clock used for the clock gate
-+
-+  clock-names:
-+    items:
-+      - const: parent-clk
-+      - const: sel-clk
-+      - const: spi-clk
-+
-+  mediatek,pad-select:
-+    $ref: /schemas/types.yaml#/definitions/uint32-array
-+    maxItems: 4
-+    items:
-+      enum: [0, 1, 2, 3]
-+    description:
-+      specify which pins group(ck/mi/mo/cs) spi controller used.
-+      This is an array.
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+  - clocks
-+  - clock-names
-+  - '#address-cells'
-+  - '#size-cells'
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/clock/mt8173-clk.h>
-+    #include <dt-bindings/gpio/gpio.h>
-+    #include <dt-bindings/interrupt-controller/arm-gic.h>
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+
-+    spi@1100a000 {
-+      compatible = "mediatek,mt8173-spi";
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+      reg = <0x1100a000 0x1000>;
-+      interrupts = <GIC_SPI 110 IRQ_TYPE_LEVEL_LOW>;
-+      clocks = <&topckgen CLK_TOP_SYSPLL3_D2>,
-+               <&topckgen CLK_TOP_SPI_SEL>,
-+               <&pericfg CLK_PERI_SPI0>;
-+      clock-names = "parent-clk", "sel-clk", "spi-clk";
-+      cs-gpios = <&pio 105 GPIO_ACTIVE_LOW>, <&pio 72 GPIO_ACTIVE_LOW>;
-+      mediatek,pad-select = <1>, <0>;
-+    };
-diff --git a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
-deleted file mode 100644
-index 2a24969159cc..000000000000
---- a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
-+++ /dev/null
-@@ -1,68 +0,0 @@
--Binding for MTK SPI controller
--
--Required properties:
--- compatible: should be one of the following.
--    - mediatek,mt2701-spi: for mt2701 platforms
--    - mediatek,mt2712-spi: for mt2712 platforms
--    - mediatek,mt6589-spi: for mt6589 platforms
--    - mediatek,mt6765-spi: for mt6765 platforms
--    - mediatek,mt7622-spi: for mt7622 platforms
--    - "mediatek,mt7629-spi", "mediatek,mt7622-spi": for mt7629 platforms
--    - mediatek,mt8135-spi: for mt8135 platforms
--    - mediatek,mt8173-spi: for mt8173 platforms
--    - mediatek,mt8183-spi: for mt8183 platforms
--    - mediatek,mt6893-spi: for mt6893 platforms
--    - "mediatek,mt8192-spi", "mediatek,mt6765-spi": for mt8192 platforms
--    - "mediatek,mt8195-spi", "mediatek,mt6765-spi": for mt8195 platforms
--    - "mediatek,mt8516-spi", "mediatek,mt2712-spi": for mt8516 platforms
--    - "mediatek,mt6779-spi", "mediatek,mt6765-spi": for mt6779 platforms
--
--- #address-cells: should be 1.
--
--- #size-cells: should be 0.
--
--- reg: Address and length of the register set for the device
--
--- interrupts: Should contain spi interrupt
--
--- clocks: phandles to input clocks.
--  The first should be one of the following. It's PLL.
--   -  <&clk26m>: specify parent clock 26MHZ.
--   -  <&topckgen CLK_TOP_SYSPLL3_D2>: specify parent clock 109MHZ.
--				      It's the default one.
--   -  <&topckgen CLK_TOP_SYSPLL4_D2>: specify parent clock 78MHZ.
--   -  <&topckgen CLK_TOP_UNIVPLL2_D4>: specify parent clock 104MHZ.
--   -  <&topckgen CLK_TOP_UNIVPLL1_D8>: specify parent clock 78MHZ.
--  The second should be <&topckgen CLK_TOP_SPI_SEL>. It's clock mux.
--  The third is <&pericfg CLK_PERI_SPI0>. It's clock gate.
--
--- clock-names: shall be "parent-clk" for the parent clock, "sel-clk" for the
--  muxes clock, and "spi-clk" for the clock gate.
--
--Optional properties:
---cs-gpios: see spi-bus.txt.
--
--- mediatek,pad-select: specify which pins group(ck/mi/mo/cs) spi
--  controller used. This is an array, the element value should be 0~3,
--  only required for MT8173.
--    0: specify GPIO69,70,71,72 for spi pins.
--    1: specify GPIO102,103,104,105 for spi pins.
--    2: specify GPIO128,129,130,131 for spi pins.
--    3: specify GPIO5,6,7,8 for spi pins.
--
--Example:
--
--- SoC Specific Portion:
--spi: spi@1100a000 {
--	compatible = "mediatek,mt8173-spi";
--	#address-cells = <1>;
--	#size-cells = <0>;
--	reg = <0 0x1100a000 0 0x1000>;
--	interrupts = <GIC_SPI 110 IRQ_TYPE_LEVEL_LOW>;
--	clocks = <&topckgen CLK_TOP_SYSPLL3_D2>,
--		 <&topckgen CLK_TOP_SPI_SEL>,
--		 <&pericfg CLK_PERI_SPI0>;
--	clock-names = "parent-clk", "sel-clk", "spi-clk";
--	cs-gpios = <&pio 105 GPIO_ACTIVE_LOW>, <&pio 72 GPIO_ACTIVE_LOW>;
--	mediatek,pad-select = <1>, <0>;
--};
--- 
-2.25.1
+linux/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml:
+'additionalProperties' is a required property
 
+	hint: A schema without a "$ref" to another schema must define all
+properties and use "additionalProperties"
+
+	from schema $id: http://devicetree.org/meta-schemas/base.yaml#
+
+
+Which makes sense because only one part - SPI devices - get the ref to
+spi-perpheral-props.
+
+Best regards,
+Krzysztof

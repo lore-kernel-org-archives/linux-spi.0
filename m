@@ -2,54 +2,45 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B158BC433F5
-	for <linux-spi@archiver.kernel.org>; Tue, 25 Jan 2022 10:32:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9197EC433FE
+	for <linux-spi@archiver.kernel.org>; Tue, 25 Jan 2022 10:32:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344585AbiAYKb3 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 25 Jan 2022 05:31:29 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:32956 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345277AbiAYKVR (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 25 Jan 2022 05:21:17 -0500
+        id S1344313AbiAYKbc (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 25 Jan 2022 05:31:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37144 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1345774AbiAYKVV (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 25 Jan 2022 05:21:21 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 822F2C061776;
+        Tue, 25 Jan 2022 02:21:21 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A8A4361645;
-        Tue, 25 Jan 2022 10:21:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85412C340E0;
-        Tue, 25 Jan 2022 10:21:04 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 3FC66B8174B;
+        Tue, 25 Jan 2022 10:21:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3E48C340E0;
+        Tue, 25 Jan 2022 10:21:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643106071;
-        bh=dDZYgGbA0BHGN18HiUB3PXb8Mel6TNqbFMOFcstIxX0=;
+        s=k20201202; t=1643106079;
+        bh=qW9cVwE+5dH0IFpPL717Qa3dRXeY9HY/mvR982mEXgg=;
         h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=Dk+O+jx9RNfAIRNl+G5yibdxkkq8aTGXmW91f6mxjLCST3oy+fJt+u4/SRVhCxwpw
-         V4COe9T6WaXtk7IlXR17mBCgwBp4NdpQVxrZVQBMRo4fukpDBetZZE/3AhUipDYJfZ
-         xDjnOl5awl586lrBjMlr+/CxVsQxyeLRfUN/t+E2n5TSLam4ejfcYmGSP8J+81pjOo
-         E1JEbrV6QM5bmj7eTrXB6ABpB8aUHr/6lJay6YVAuVOwXsam2ucGeIdLB6MC6PKHJh
-         rs61dpnbb/ib/qZXwyOem11DRLndWGy6AorM4XzUTNqRuyGvWbZ7/xy4q12565R+d4
-         GBF9r1mIDxWGQ==
+        b=V9GfVxyUJnASYIat8Btt3+WCQtL+zj5T+rpF3/pF/WJoqaf9VtgJZgm3xsddJ3fA+
+         Xmwe3uY4NuYHM3FFkQAK1Q6aoQNtFsbxFXkgSp9Z/yTEIw+Mtuo96BLQGYFoqLoSkZ
+         EZhma67xO+X5p3KrQwzMLgV7w4UpjcEEZ8DkyLjs2S+3L3338t52EMlMx5t2zJzzdy
+         Mj1k0rqW1OCjCOhxqTs035xtGm4ZHpcw4fy7QEidogFRaHd6jS+DPOejFTlpSf46FR
+         E/rL4UgbF3Ag1kL3sSQocX6TiQTFO4y71Tu+fN2hjATeClF8kADjPabP5gtUPjFzPA
+         +isGN27WsBORg==
 From:   Mark Brown <broonie@kernel.org>
-To:     devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-rtc@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linus.walleij@linaro.org, conor.dooley@microchip.com,
-        linux-kernel@vger.kernel.org, a.zummo@towertech.it,
-        alexandre.belloni@bootlin.com, aou@eecs.berkeley.edu,
-        lee.jones@linaro.org, jassisinghbrar@gmail.com,
-        linux-usb@vger.kernel.org, thierry.reding@gmail.com,
-        palmer@dabbelt.com, linux-pwm@vger.kernel.org,
-        linux-gpio@vger.kernel.org, gregkh@linuxfoundation.org,
-        bgolaszewski@baylibre.com, linux-crypto@vger.kernel.org,
-        robh+dt@kernel.org, u.kleine-koenig@pengutronix.de,
-        linux-i2c@vger.kernel.org, paul.walmsley@sifive.com
-Cc:     geert@linux-m68k.org, bin.meng@windriver.com,
-        lewis.hanly@microchip.com, ivan.griffin@microchip.com,
-        krzysztof.kozlowski@canonical.com, heiko@sntech.de,
-        atishp@rivosinc.com, daire.mcnamara@microchip.com
-In-Reply-To: <20220117110755.3433142-1-conor.dooley@microchip.com>
-References: <20220117110755.3433142-1-conor.dooley@microchip.com>
-Subject: Re: (subset) [PATCH v4 00/14] Update the Icicle Kit device tree
-Message-Id: <164310606421.75071.15666469655719890555.b4-ty@kernel.org>
-Date:   Tue, 25 Jan 2022 10:21:04 +0000
+To:     Linus Walleij <linus.walleij@linaro.org>, linux-spi@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Sylwester Nawrocki <snawrocki@kernel.org>,
+        linux-samsung-soc@vger.kernel.org
+In-Reply-To: <20220119000914.192553-1-linus.walleij@linaro.org>
+References: <20220119000914.192553-1-linus.walleij@linaro.org>
+Subject: Re: [PATCH] spi: s3c24xx: Convert to GPIO descriptors
+Message-Id: <164310607765.75071.12847134364885643457.b4-ty@kernel.org>
+Date:   Tue, 25 Jan 2022 10:21:17 +0000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -57,13 +48,15 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Mon, 17 Jan 2022 11:07:41 +0000, conor.dooley@microchip.com wrote:
-> From: Conor Dooley <conor.dooley@microchip.com>
+On Wed, 19 Jan 2022 01:09:14 +0100, Linus Walleij wrote:
+> This driver has a bunch of custom oldstyle GPIO number-passing
+> fields and a custom set-up callback.
 > 
-> This series updates the Microchip Icicle Kit device tree by adding a
-> host of peripherals, and some updates to the memory map. In addition,
-> the device tree has been split into a third part, which contains "soft"
-> peripherals that are in the fpga fabric.
+> The good thing is: nothing in the kernel is using it.
+> 
+> Convert the driver to use GPIO descriptors with a SPI_MASTER_GPIO_SS
+> flag so that the local CS callback also get invoked as the hardware
+> needs this.
 > 
 > [...]
 
@@ -73,8 +66,8 @@ Applied to
 
 Thanks!
 
-[06/14] dt-bindings: spi: add bindings for microchip mpfs spi
-        commit: 2da187304e556ac59cf2dacb323cc78ded988169
+[1/1] spi: s3c24xx: Convert to GPIO descriptors
+      commit: 7f2a3cf4e6077a1525092f114be7819e505773a1
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

@@ -2,92 +2,114 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DC03DC433EF
-	for <linux-spi@archiver.kernel.org>; Thu, 27 Jan 2022 19:56:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A9ED1C433F5
+	for <linux-spi@archiver.kernel.org>; Thu, 27 Jan 2022 21:36:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239876AbiA0T45 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 27 Jan 2022 14:56:57 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:43426 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234826AbiA0T44 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 27 Jan 2022 14:56:56 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A992A611AD
-        for <linux-spi@vger.kernel.org>; Thu, 27 Jan 2022 19:56:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95000C340EA;
-        Thu, 27 Jan 2022 19:56:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643313416;
-        bh=fQvPrDPY3P7I2OY/crq01C16Uf3nbOd3geYbps0hn84=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=cLm16VNvPFiWZIIoLf1FQDiiHOveToQmehB+BhVemDz1yS1kQ7IPSmszcNptPiH5z
-         NpjliAWaonia93XXetSQRsqz4mLOcUCjvWQM6OHDNeQ4yt1JYymALLHb9Z2ojNAcVd
-         US+TqURO+o6akXygcjN+RxVaMS5rcfuKNge/E/ovmRVB4VEyxMe92Vq54YAxJ/wwIO
-         dmX1dEXg0vSUPsherI3zMxFtTryd9akkUPDO/Z7vQB8ERGW3YgkrUJwqSyJAoIff96
-         h1WSuuKj7geSMMr/89CDihkTJNl6sstVUMKibEHTVBr4yqLC6UU5e+MUPnCqz0ChBs
-         lI63QNC61eXsA==
-Date:   Thu, 27 Jan 2022 19:56:50 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Miquel Raynal <miquel.raynal@bootlin.com>
-Cc:     linux-spi@vger.kernel.org, Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Tudor Ambarus <Tudor.Ambarus@microchip.com>,
-        Pratyush Yadav <p.yadav@ti.com>,
-        Michael Walle <michael@walle.cc>,
-        linux-mtd@lists.infradead.org,
-        Boris Brezillon <boris.brezillon@collabora.com>,
+        id S240790AbiA0Vge (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 27 Jan 2022 16:36:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36896 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1344401AbiA0Vgd (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 27 Jan 2022 16:36:33 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 633D8C061714
+        for <linux-spi@vger.kernel.org>; Thu, 27 Jan 2022 13:36:33 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1nDCRC-0006Rf-Ku; Thu, 27 Jan 2022 22:36:14 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1nDCRB-00CpYf-FH; Thu, 27 Jan 2022 22:36:12 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1nDCRA-001olD-2d; Thu, 27 Jan 2022 22:36:12 +0100
+Date:   Thu, 27 Jan 2022 22:36:07 +0100
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Mark Brown <broonie@kernel.org>, linux-fbdev@vger.kernel.org,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Julien Su <juliensu@mxic.com.tw>,
-        Jaime Liao <jaimeliao@mxic.com.tw>
-Subject: Re: [PATCH v10 00/13] External ECC engines & Macronix support
-Message-ID: <YfL5ApsG7c619+R0@sirena.org.uk>
-References: <20220127091808.1043392-1-miquel.raynal@bootlin.com>
+        Noralf Tronnes <notro@tronnes.org>,
+        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-spi@vger.kernel.org,
+        kernel@pengutronix.de, Heiner Kallweit <hkallweit1@gmail.com>
+Subject: Re: [PATCH 2/5] staging: fbtft: Deduplicate driver registration
+ macros
+Message-ID: <20220127213607.xbggvbm454u7qfid@pengutronix.de>
+References: <20220123175201.34839-1-u.kleine-koenig@pengutronix.de>
+ <20220123175201.34839-3-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="Nk9jfp1SD/P4u818"
+        protocol="application/pgp-signature"; boundary="67mr4ifnx6prswud"
 Content-Disposition: inline
-In-Reply-To: <20220127091808.1043392-1-miquel.raynal@bootlin.com>
-X-Cookie: Stay on the trail.
+In-Reply-To: <20220123175201.34839-3-u.kleine-koenig@pengutronix.de>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-spi@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
 
---Nk9jfp1SD/P4u818
-Content-Type: text/plain; charset=us-ascii
+--67mr4ifnx6prswud
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 27, 2022 at 10:17:55AM +0100, Miquel Raynal wrote:
-> Hello all,
+Hello Greg,
+
+On Sun, Jan 23, 2022 at 06:51:58PM +0100, Uwe Kleine-K=F6nig wrote:
+> The two macros FBTFT_REGISTER_DRIVER and FBTFT_REGISTER_SPI_DRIVER
+> contain quite some duplication: Both define an spi driver and an of device
+> table and the differences are quite subtle.
 >=20
-> I've applied the beginning of the series (bindings + ECC part) in a
-> branch named spi-mem-ecc on the MTD korg repository. I already applied
-> this second halve on top of the spi-mem-ecc branch but there was a
-> misunderstanding and they ended up not being fully reviewed. Hence here
-> there are once again, there are no changes since v9 beside the rebase.
+> So create two new macros and use both twice.
+>=20
+> Link: https://lore.kernel.org/r/20220118181338.207943-2-u.kleine-koenig@p=
+engutronix.de
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
 
-This looks good, please send a pull request.
+You picked this patch into your staging-next branch, I guess from the
+original submission. Not sure how Mark wants to continue with the series
+=66rom this thread, but at least my plan was that he will create an
+immutable branch on top of 5.17-rc2 (assuming 5.17-rc2 will contain
+"staging: fbtft: Fix error path in fbtft_driver_module_init()") with the
+remaining 4 patches in this series.
 
-In general for future reference if there's patches for one of my
-subsystems that I've not explicitly commented on I'm probably expecting
-to apply them.
+In a private mail you agreed to this procedure, but this didn't stop you
+taking this patch?! What is your plan here? The obvious (to me) options
+are:
 
---Nk9jfp1SD/P4u818
+ - Delay this series until after the next merge window.
+ - You back out this patch from staging-next and ack here for Mark to
+   apply it to an immutable branch.
+ - You keep this patch in staging-next and still ack here for Mark to
+   apply it to an immutable branch. Then the patch would be included
+   twice.
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--67mr4ifnx6prswud
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmHy+QEACgkQJNaLcl1U
-h9DEHQf/cWLgMk58qMhl3lNstMR2aWtfBWg68fuAosZWOfkMdKjQjcHst/p0dmB8
-8WrJ0Iuou6xjLyLLAn6n5TyMxUddrlezcjSX6FE7nXqEHruqDfFQ+XYL33uGBO6B
-gtfozdsxwUX1oHIo8EFCQOMkH8755bHuQNA8xDUDzkwSX2icjHM1cwfZqZTZVFuT
-27TnqvoEIYPJBoBuFYOeltr/S4r1adZaHjpyn/573khI5gx9R4f/QxrlxLVNShvs
-ZNWiSNn5r9Q8xNyEoQyyUa5AosUEQupoI/dYIjWB8N6a26H34fw0pJol8ZLs7m73
-muR6cqfrBirPiVtGZsZkWdJmwPUUWw==
-=J4gM
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmHzEEQACgkQwfwUeK3K
+7AkdBQf/QYxLjRjjSpz8FTj3K6vGIxGPAC7hZKjN9Sekvmf8ql2qAJ0veXMox5Hs
+AVo6BooWW8n6qnIE6j05wMMcJz16iBdVNo5kOSFo1vt7rP0sXbp/i1UIiU1hBcTT
+Mt/oYvsLpnwdh0OyI7h3ZfOdHo05HG8l/fjCBsHMozW1wuGvVIHnbN9zMyLEClyC
+58/88JKuKUU0REoLty0vkSjzfwmbQoXTbrkXgGHUkUyzk5g4JekV2R+xIkhmVWp6
+49EtKM6Xg8ykJKh51BNltCBDtrvNRuw/oKa5atlrCgKAfhynZv29X/oPNg4jXVPw
+k3jTHuwnI9NtkZxvtNMmRylFxVvrtw==
+=JziW
 -----END PGP SIGNATURE-----
 
---Nk9jfp1SD/P4u818--
+--67mr4ifnx6prswud--

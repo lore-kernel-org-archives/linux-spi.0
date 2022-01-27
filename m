@@ -2,98 +2,105 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BC18CC4167B
-	for <linux-spi@archiver.kernel.org>; Thu, 27 Jan 2022 15:17:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AD690C43217
+	for <linux-spi@archiver.kernel.org>; Thu, 27 Jan 2022 15:17:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242933AbiA0PRT (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 27 Jan 2022 10:17:19 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:41614 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242862AbiA0PRO (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 27 Jan 2022 10:17:14 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 15D71B821D8;
-        Thu, 27 Jan 2022 15:17:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAD09C340E8;
-        Thu, 27 Jan 2022 15:17:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643296626;
-        bh=4k0tSXLcNsarciiJDhYBERcvL1GeH1zf/piiMpfQoXE=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=nLwgz938ewNDCP9Eo0yKQEdPmSikefTRwOBnAqzAHDS6IA+dWnxKu+qiiTvys5mL5
-         vYV9uHqDjD18x4Blro49u9B9A1E3yEFWNsGlrXbYB7DZdzlU1WQIpPN9twPym2M0Bg
-         UyTTrV/MJ3SZ5vcf8QH2eU1ugYM50Kyc0QRU0wY/XoD0voEjzp5HO+pBQKdzQq63EO
-         Om29w2edtCom3ua/RZjIq8Nqs9f4lH44g7Q9upp8UJAmoMyN9bmmiE7cvHZVuuFo5g
-         e7rmxAcT4QiWLXQ1RCwFYqiE8lpS54bmdMBUeJBNiDplyG4yvePloxqLjR8Xatmtdf
-         Tyz5Ltw5phfww==
-Received: by mail-ed1-f54.google.com with SMTP id u24so4069644eds.11;
-        Thu, 27 Jan 2022 07:17:06 -0800 (PST)
-X-Gm-Message-State: AOAM532qU6eqiJTXuKgwHjP3QoniWpu5YXZauIQcDNN0Hwb+/ZVlBrga
-        HS1WbXOPb72gcySt6wi5yNj01NypRO9VrGAQHw==
-X-Google-Smtp-Source: ABdhPJxT8UU2Pm9t6Q4diijpvyEI6xJNabRw5nYwteYuzPs8b2dLiEIJH8GGCho9wjcU9edzE3kF+sW4/l4DLW2tjiE=
-X-Received: by 2002:a05:6402:4401:: with SMTP id y1mr4039309eda.215.1643296625254;
- Thu, 27 Jan 2022 07:17:05 -0800 (PST)
+        id S243066AbiA0PRX (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 27 Jan 2022 10:17:23 -0500
+Received: from out28-197.mail.aliyun.com ([115.124.28.197]:40751 "EHLO
+        out28-197.mail.aliyun.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S242976AbiA0PRR (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 27 Jan 2022 10:17:17 -0500
+X-Alimail-AntiSpam: AC=CONTINUE;BC=0.08545136|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_regular_dialog|0.0149326-0.000578924-0.984489;FP=0|0|0|0|0|-1|-1|-1;HT=ay29a033018047213;MF=icenowy@nucleisys.com;NM=1;PH=DS;RN=10;RT=10;SR=0;TI=SMTPD_---.Mj85P.l_1643296632;
+Received: from ice-e5v2.lan(mailfrom:icenowy@nucleisys.com fp:SMTPD_---.Mj85P.l_1643296632)
+          by smtp.aliyun-inc.com(33.45.46.134);
+          Thu, 27 Jan 2022 23:17:14 +0800
+From:   Icenowy Zheng <icenowy@nucleisys.com>
+To:     Rob Herring <robh+dt@kernel.org>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Albert Ou <aou@eecs.berkeley.edu>
+Cc:     linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-riscv@lists.infradead.org, linux-serial@vger.kernel.org,
+        linux-spi@vger.kernel.org, Icenowy Zheng <icenowy@nucleisys.com>
+Subject: [PATCH 10/12] RISC-V: workaround Nuclei UX600 cores with broken SATP CSR
+Date:   Thu, 27 Jan 2022 23:16:45 +0800
+Message-Id: <20220127151647.2375449-11-icenowy@nucleisys.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20220127151647.2375449-1-icenowy@nucleisys.com>
+References: <20220127151647.2375449-1-icenowy@nucleisys.com>
 MIME-Version: 1.0
-References: <cover.1642494310.git.lhjeff911@gmail.com> <ef6d893b10afb7f76a910da031a0040c4596cd76.1642494310.git.lhjeff911@gmail.com>
-In-Reply-To: <ef6d893b10afb7f76a910da031a0040c4596cd76.1642494310.git.lhjeff911@gmail.com>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Thu, 27 Jan 2022 09:16:53 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqKwg_bzJmehTG8tR2cpr+HwwvpF_cpoESidZouc_SpKcQ@mail.gmail.com>
-Message-ID: <CAL_JsqKwg_bzJmehTG8tR2cpr+HwwvpF_cpoESidZouc_SpKcQ@mail.gmail.com>
-Subject: Re: [PATCH v6 2/2] dt-bindings:spi: Add Sunplus SP7021 schema
-To:     Li-hao Kuo <lhjeff911@gmail.com>
-Cc:     Philipp Zabel <p.zabel@pengutronix.de>,
-        Mark Brown <broonie@kernel.org>, andyshevchenko@gmail.com,
-        linux-spi <linux-spi@vger.kernel.org>,
-        devicetree@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        =?UTF-8?B?V2VsbHMgTHUg5ZGC6Iqz6aiw?= <wells.lu@sunplus.com>,
-        "LH.Kuo" <lh.kuo@sunplus.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Tue, Jan 18, 2022 at 2:42 AM Li-hao Kuo <lhjeff911@gmail.com> wrote:
->
-> Add bindings for Sunplus SP7021 spi driver
->
-> Signed-off-by: Li-hao Kuo <lhjeff911@gmail.com>
-> ---
-> Changes in v6:
->  - Change the interrupt-names
->    mas_risc to master_risc
->  - Addressed comments from Mr. Andy Shevchenko
->    Change the function name: mas is master and sla is slave.
->    Add temporary varilable (as suggested by Mr. Andy Shevchenko)
->    Modify clk setting
->    Modify the master-slave detection of the probe function.(as suggested by Mr. Andy Shevchenko)
->    Modify the return value of the probe function.(as suggested by Mr. Andy Shevchenko)
->    Change GPL version(as suggested by Mr. Andy Shevchenko)
->
->  .../bindings/spi/spi-sunplus-sp7021.yaml           | 81 ++++++++++++++++++++++
->  MAINTAINERS                                        |  1 +
->  2 files changed, 82 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/spi/spi-sunplus-sp7021.yaml
+Current release of Nuclei UX600 CPU cores have two errata against RISC-V
+Privledged Specification 1.10: one is left over mvendorid value (not the
+JEDEC ID), the other, which is a more breaking one that needs to be
+workaround in software, is that satp will accept written value with
+MODE=9 (Sv48, which is not supported by UX600), and silently change it
+to MODE=8 (Sv39). As current kernel MMU initialization code relies on
+the behavior defined on the spec (reject write request with unsupported
+MODE value and do not change the CSR's value at all) to detect the
+existence of Sv48, the erratum breaks the Sv48 detection code.
 
-This is now failing in linux-next, please fix:
+As both two errata are to be fixed in the next revision, use the first
+to detect the existence of the second at runtime, and force Sv39 when
+these errata are detected.
 
-/builds/robherring/linux-dt/Documentation/devicetree/bindings/spi/spi-sunplus-sp7021.yaml:
-properties:reg:items: 'anyOf' conditional failed, one must be fixed:
- ['the SPI master registers', 'the SPI slave registers'] is not of
-type 'object', 'boolean'
- 'the SPI master registers' is not of type 'object', 'boolean'
- 'the SPI slave registers' is not of type 'object', 'boolean'
- from schema $id: http://json-schema.org/draft-07/schema#
-/builds/robherring/linux-dt/Documentation/devicetree/bindings/spi/spi-sunplus-sp7021.yaml:
-ignoring, error in schema: properties: reg: items
-Documentation/devicetree/bindings/spi/spi-sunplus-sp7021.example.dts:19:18:
-fatal error: dt-bindings/clock/sp-sp7021.h: No such file or directory
- 19 | #include <dt-bindings/clock/sp-sp7021.h>
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-compilation terminated.
-make[1]: *** [scripts/Makefile.lib:390:
-Documentation/devicetree/bindings/spi/spi-sunplus-sp7021.example.dt.yaml]
-Error 1
+Signed-off-by: Icenowy Zheng <icenowy@nucleisys.com>
+---
+ arch/riscv/include/asm/vendorid_list.h |  1 +
+ arch/riscv/mm/init.c                   | 17 +++++++++++++++++
+ 2 files changed, 18 insertions(+)
+
+diff --git a/arch/riscv/include/asm/vendorid_list.h b/arch/riscv/include/asm/vendorid_list.h
+index 9d934215b3c8..47ff43795d70 100644
+--- a/arch/riscv/include/asm/vendorid_list.h
++++ b/arch/riscv/include/asm/vendorid_list.h
+@@ -6,5 +6,6 @@
+ #define ASM_VENDOR_LIST_H
+ 
+ #define SIFIVE_VENDOR_ID	0x489
++#define NUCLEI_OLD_VENDOR_ID	0x2d33
+ 
+ #endif
+diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+index cf4d018b7d66..0085b14ae265 100644
+--- a/arch/riscv/mm/init.c
++++ b/arch/riscv/mm/init.c
+@@ -28,6 +28,8 @@
+ #include <asm/io.h>
+ #include <asm/ptdump.h>
+ #include <asm/numa.h>
++#include <asm/sbi.h>
++#include <asm/vendorid_list.h>
+ 
+ #include "../kernel/head.h"
+ 
+@@ -591,6 +593,21 @@ static __init void set_satp_mode(void)
+ 	u64 identity_satp, hw_satp;
+ 	uintptr_t set_satp_mode_pmd;
+ 
++	if (sbi_get_mvendorid() == NUCLEI_OLD_VENDOR_ID) {
++		/*
++		 * Old Nuclei UX600 processor releases have broken
++		 * implementation of SATP register which prevents
++		 * proper runtime detection of Sv48 existence. In
++		 * addition these processor releases have an old
++		 * vendor id instead of proper JEDEC ID.
++		 *
++		 * As these releases do not support Sv48 at all,
++		 * force Sv39 on them.
++		 */
++		disable_pgtable_l4();
++		return;
++	}
++
+ 	set_satp_mode_pmd = ((unsigned long)set_satp_mode) & PMD_MASK;
+ 	create_pgd_mapping(early_pg_dir,
+ 			   set_satp_mode_pmd, (uintptr_t)early_pud,
+-- 
+2.30.2
+

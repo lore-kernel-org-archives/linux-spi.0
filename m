@@ -2,33 +2,30 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F303C433FE
-	for <linux-spi@archiver.kernel.org>; Mon, 31 Jan 2022 16:22:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 15CB2C43217
+	for <linux-spi@archiver.kernel.org>; Mon, 31 Jan 2022 16:22:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1380317AbiAaQWf (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 31 Jan 2022 11:22:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34710 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1380268AbiAaQWJ (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 31 Jan 2022 11:22:09 -0500
-Received: from relay12.mail.gandi.net (relay12.mail.gandi.net [IPv6:2001:4b98:dc4:8::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 968D5C06174E
-        for <linux-spi@vger.kernel.org>; Mon, 31 Jan 2022 08:21:52 -0800 (PST)
+        id S1380268AbiAaQWg (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 31 Jan 2022 11:22:36 -0500
+Received: from relay3-d.mail.gandi.net ([217.70.183.195]:39847 "EHLO
+        relay3-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1380292AbiAaQWK (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 31 Jan 2022 11:22:10 -0500
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay12.mail.gandi.net (Postfix) with ESMTPSA id C383220000F;
-        Mon, 31 Jan 2022 16:21:49 +0000 (UTC)
+        by mail.gandi.net (Postfix) with ESMTPSA id 1E10B60011;
+        Mon, 31 Jan 2022 16:22:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1643646111;
+        t=1643646129;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=DDTeMeOOIw6olsfuxFu+Cxedy4z1OviP+2QO6mZOzh0=;
-        b=n4gJ/GMrsQYbIyp83VTpluxmz32Jit+CuKylpBKfdD8qs6wm4pxG6KeHaNLft+Tw68554j
-        749DnKCjpbyYwg+V3mITJmrx0UL6F+VuPCrEuBqsgv/NhzWdVMkXSG2cRWB77kn4ucsl+Q
-        3/60LQ2Jtvc5FMH6QE430xxF/+cM9iQBSkTfafjDT0xXjiCwQrJ58gUaM0wONOYmeiz1ix
-        s5mxlvF/wzWcCsqQ9gHXjI9aRiIzWrEa7pU/I5iPkuYQHN+doGEF+84Gl7W3pLHp7aRSSs
-        EY+O29AO5W6DSFX6jKsBqRiCl1o77OTLS9AS07D6ElstgM0KYlLPDNei2OqW3g==
+        bh=ckYBW4QVjvNg2b0zvA71CQv3fW8uXEkP/szPey4KL3A=;
+        b=hRdZ7snvTe/l55NDaJ54a0V4Ja6TRYLwnanJZauX0mCxizulfEQNcbEVol/ry21RYjn09S
+        e8nP4r1UnZ2xV25jmeq7CAoKneARg2g8kFd2jn5tpKq2jOnSrLwca2mJA9BwctV74ZFUfn
+        W9v0veujl5gmHJ+evAHMhUDNgbreSyr1ZEl+Ss6pkuKHsB9yHFfCX6pvViMaAZhjao1cpP
+        zP0Merlyh0DNj7RrlgrdgJL6jpokBBZOqSGsHPxnrlP4kpw4tCgykrC/35hTtqYnIfUznP
+        BIrUSzHv6m14FKChk94y0yOpyHQhLZwTJZIKBZf+YUyNiOesZ8NQUD7h1licYg==
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Miquel Raynal <miquel.raynal@bootlin.com>,
         Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
@@ -41,31 +38,37 @@ Cc:     Richard Weinberger <richard@nod.at>,
         Boris Brezillon <boris.brezillon@collabora.com>,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         Julien Su <juliensu@mxic.com.tw>,
-        Jaime Liao <jaimeliao@mxic.com.tw>,
+        Jaime Liao <jaimeliao@mxic.com.tw>, stable@vger.kernel.org,
+        Mason Yang <masonccyang@mxic.com.tw>,
         Zhengxun Li <zhengxunli@mxic.com.tw>
-Subject: Re: [PATCH v10 12/13] spi: mxic: Add support for direct mapping
-Date:   Mon, 31 Jan 2022 17:21:49 +0100
-Message-Id: <20220131162149.23649-1-miquel.raynal@bootlin.com>
+Subject: Re: [PATCH v10 09/13] spi: mxic: Fix the transmit path
+Date:   Mon, 31 Jan 2022 17:22:06 +0100
+Message-Id: <20220131162206.23850-1-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20220127091808.1043392-13-miquel.raynal@bootlin.com>
+In-Reply-To: <20220127091808.1043392-10-miquel.raynal@bootlin.com>
 References: 
 MIME-Version: 1.0
 X-linux-mtd-patch-notification: thanks
-X-linux-mtd-patch-commit: b'70cf0b339497d02d8a3e754ba8c1212b6ddace0f'
+X-linux-mtd-patch-commit: b'c2f816543ff9a4dec31cfde31ff889cd09ea6c1f'
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, 2022-01-27 at 09:18:07 UTC, Miquel Raynal wrote:
-> Implement the ->dirmap_create() and ->dirmap_read/write() hooks to
-> provide a fast path for read and write accesses.
+On Thu, 2022-01-27 at 09:18:04 UTC, Miquel Raynal wrote:
+> By working with external hardware ECC engines, we figured out that
+> Under certain circumstances, it is needed for the SPI controller to
+> check INT_TX_EMPTY and INT_RX_NOT_EMPTY in both receive and transmit
+> path (not only in the receive path). The delay penalty being
+> negligible, move this code in the common path.
 > 
+> Fixes: b942d80b0a39 ("spi: Add MXIC controller driver")
+> Cc: stable@vger.kernel.org
+> Suggested-by: Mason Yang <masonccyang@mxic.com.tw>
 > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-> Tested-by: Zhengxun Li <zhengxunli@mxic.com.tw>
 > Reviewed-by: Zhengxun Li <zhengxunli@mxic.com.tw>
 > Reviewed-by: Mark Brown <broonie@kernel.org>
-> Link: https://lore.kernel.org/linux-mtd/20220104083631.40776-13-miquel.raynal@bootlin.com
+> Link: https://lore.kernel.org/linux-mtd/20220104083631.40776-10-miquel.raynal@bootlin.com
 
 Applied to https://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux.git spi-mem-ecc.
 

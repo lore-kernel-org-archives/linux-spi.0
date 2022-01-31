@@ -2,30 +2,33 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 078ABC433F5
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F303C433FE
 	for <linux-spi@archiver.kernel.org>; Mon, 31 Jan 2022 16:22:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1380285AbiAaQWf (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S1380317AbiAaQWf (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Mon, 31 Jan 2022 11:22:35 -0500
-Received: from relay3-d.mail.gandi.net ([217.70.183.195]:52001 "EHLO
-        relay3-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1380286AbiAaQWF (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 31 Jan 2022 11:22:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34710 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1380268AbiAaQWJ (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 31 Jan 2022 11:22:09 -0500
+Received: from relay12.mail.gandi.net (relay12.mail.gandi.net [IPv6:2001:4b98:dc4:8::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 968D5C06174E
+        for <linux-spi@vger.kernel.org>; Mon, 31 Jan 2022 08:21:52 -0800 (PST)
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by mail.gandi.net (Postfix) with ESMTPSA id F080260004;
-        Mon, 31 Jan 2022 16:22:01 +0000 (UTC)
+        by relay12.mail.gandi.net (Postfix) with ESMTPSA id C383220000F;
+        Mon, 31 Jan 2022 16:21:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1643646123;
+        t=1643646111;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=UtIloJsR4Q0PYnZsjM6Fj0jrI6qRtZQg4gllAGP6NFI=;
-        b=N6KrtvLQbB25E+R6Vk3Zx3Ps5kFSgEOjHODLLNNfc+uB1Bk8vmrX1JZ2kUMUVYA70M6Xp4
-        MZ3WuXlvblW2i7wlr/bPnMtGbs9Wx6+PVJLYHO+g7lGk1v861ULgsvXToQHSyjKwUqQ9YM
-        qyYA8NKozyDtLuGRdG7LOhjUJY91LtK0f3xinJ3CyuFGYNq36DH0kIv/i++6mxYxQjtyGb
-        9AF/N0nNH7HHNduUXc8uDsb4n6/fV+S4WNXLztANSfKGJQwqodX9kTDHznBHSV8+goC5RZ
-        HIVIdemZC2yLeo2DuCjKgGfBrUs5o8cOu20vmfxaHwnMxTCikIfHRaQaPJcdOQ==
+        bh=DDTeMeOOIw6olsfuxFu+Cxedy4z1OviP+2QO6mZOzh0=;
+        b=n4gJ/GMrsQYbIyp83VTpluxmz32Jit+CuKylpBKfdD8qs6wm4pxG6KeHaNLft+Tw68554j
+        749DnKCjpbyYwg+V3mITJmrx0UL6F+VuPCrEuBqsgv/NhzWdVMkXSG2cRWB77kn4ucsl+Q
+        3/60LQ2Jtvc5FMH6QE430xxF/+cM9iQBSkTfafjDT0xXjiCwQrJ58gUaM0wONOYmeiz1ix
+        s5mxlvF/wzWcCsqQ9gHXjI9aRiIzWrEa7pU/I5iPkuYQHN+doGEF+84Gl7W3pLHp7aRSSs
+        EY+O29AO5W6DSFX6jKsBqRiCl1o77OTLS9AS07D6ElstgM0KYlLPDNei2OqW3g==
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Miquel Raynal <miquel.raynal@bootlin.com>,
         Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
@@ -38,29 +41,31 @@ Cc:     Richard Weinberger <richard@nod.at>,
         Boris Brezillon <boris.brezillon@collabora.com>,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         Julien Su <juliensu@mxic.com.tw>,
-        Jaime Liao <jaimeliao@mxic.com.tw>
-Subject: Re: [PATCH v10 10/13] spi: mxic: Create a helper to configure the controller before an operation
-Date:   Mon, 31 Jan 2022 17:22:01 +0100
-Message-Id: <20220131162201.23780-1-miquel.raynal@bootlin.com>
+        Jaime Liao <jaimeliao@mxic.com.tw>,
+        Zhengxun Li <zhengxunli@mxic.com.tw>
+Subject: Re: [PATCH v10 12/13] spi: mxic: Add support for direct mapping
+Date:   Mon, 31 Jan 2022 17:21:49 +0100
+Message-Id: <20220131162149.23649-1-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20220127091808.1043392-11-miquel.raynal@bootlin.com>
+In-Reply-To: <20220127091808.1043392-13-miquel.raynal@bootlin.com>
 References: 
 MIME-Version: 1.0
 X-linux-mtd-patch-notification: thanks
-X-linux-mtd-patch-commit: b'28410cbf1eb5feae955b2a75e9c24b6494df78e8'
+X-linux-mtd-patch-commit: b'70cf0b339497d02d8a3e754ba8c1212b6ddace0f'
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, 2022-01-27 at 09:18:05 UTC, Miquel Raynal wrote:
-> Create the mxic_spi_set_hc_cfg() helper to configure the HC_CFG
-> register. This helper will soon be used by the dirmap implementation and
-> having this code factorized out earlier will clarify this addition.
+On Thu, 2022-01-27 at 09:18:07 UTC, Miquel Raynal wrote:
+> Implement the ->dirmap_create() and ->dirmap_read/write() hooks to
+> provide a fast path for read and write accesses.
 > 
 > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> Tested-by: Zhengxun Li <zhengxunli@mxic.com.tw>
+> Reviewed-by: Zhengxun Li <zhengxunli@mxic.com.tw>
 > Reviewed-by: Mark Brown <broonie@kernel.org>
-> Link: https://lore.kernel.org/linux-mtd/20220104083631.40776-11-miquel.raynal@bootlin.com
+> Link: https://lore.kernel.org/linux-mtd/20220104083631.40776-13-miquel.raynal@bootlin.com
 
 Applied to https://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux.git spi-mem-ecc.
 

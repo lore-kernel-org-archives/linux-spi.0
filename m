@@ -2,92 +2,90 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4ADB0C433F5
-	for <linux-spi@archiver.kernel.org>; Sat, 29 Jan 2022 11:29:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 14A05C433F5
+	for <linux-spi@archiver.kernel.org>; Mon, 31 Jan 2022 11:46:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235543AbiA2L32 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sat, 29 Jan 2022 06:29:28 -0500
-Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123]:60328
-        "EHLO smtp-relay-internal-1.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229379AbiA2L31 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sat, 29 Jan 2022 06:29:27 -0500
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id B1E123F2FF
-        for <linux-spi@vger.kernel.org>; Sat, 29 Jan 2022 11:29:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1643455765;
-        bh=mQWIhzfALzmhNvVwAVuvuNXj69s9Y0aV8nVP8i/ovfg=;
-        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-         MIME-Version:Content-Type;
-        b=W3b4Ht/4cyHvn6oQOBk+eEI9msPrFZI9VYd+hfm+ilmrQrV6oRgRPC1Sds+/pLImu
-         M6aRk/MmGFw2c7jOAUreBP10a3xp0g0pO51mRwEU1Cso3fuVei3d1Y3Y3UV+1fW+Kb
-         YtgXfa2jLdPDDbrlGj9Ro3el43AeeoHUCIYMhgL9HTe/KtvKutVXPtOisdj6Ito0Ph
-         ogItWaCXcCqeyztXAvI75s6sWVkGVoQfWed1woqgrodenMVTxHCExspscz/M0O1rrv
-         EVPwMc8ScaRPBdtXKwwKEbFeokQSnYhddv1SVIknuav0lh4OMiMYnUll5luJHvvFZF
-         lpH6swsDN91QQ==
-Received: by mail-ed1-f70.google.com with SMTP id ed6-20020a056402294600b004090fd8a936so4376822edb.23
-        for <linux-spi@vger.kernel.org>; Sat, 29 Jan 2022 03:29:25 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=mQWIhzfALzmhNvVwAVuvuNXj69s9Y0aV8nVP8i/ovfg=;
-        b=eAvU/Zl1DAdEEjaprxJ5ZSEkHrbALvkl5mGtFHjj1dXNa9J8fDbdWATKjlatFs+aAT
-         b11Mn5b/cIzD7BCoLgyQB5IIB3/ge9I4zsN3y2djnC05ocnPs4sDmqg9vXNuQK9qJqc9
-         V8LsuKE0m/UqliZBDbVeAi9akVEUAUa2ohEryo1v49cFnbDEf5YoVD/ggikXJ2IXIx0e
-         mlTtTGBhmGFyTmnnrrWIUIAhAL2SLdnTEr3e7JK/ZMCozDJZ+iznQQ0Gw5frJ1SoJqxQ
-         ELYiZ/8mbsFnxUfJObDTgmBmz4pO5sQaW+sbk374j7kpQyBc5IDopGYhEbzAbrUc7uO/
-         d8Cw==
-X-Gm-Message-State: AOAM530ohvsxWtd2pEqMI+E/F22iXlejS8v8gMPuCJVkjeYfAZmmjo9P
-        SFkX90l54XPJUTL+w/WYfGeI0uJyImSRVJI9zT9O+bEvJGRmN1ispGRX+DL7+9bT0ORl1bVrWx3
-        dfq9BPHG8s6uyWFJLpv3LUkz8oRgfzvAtSSSJQw==
-X-Received: by 2002:a17:907:3f99:: with SMTP id hr25mr10190852ejc.588.1643455765341;
-        Sat, 29 Jan 2022 03:29:25 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJzUWK6qByvVxIBS+9uu2vdLsOAJFd0ApGv7Ogy0hcRemfHrZnMyIWyq6RHHSeL54zf6jeCBQw==
-X-Received: by 2002:a17:907:3f99:: with SMTP id hr25mr10190835ejc.588.1643455765142;
-        Sat, 29 Jan 2022 03:29:25 -0800 (PST)
-Received: from localhost.localdomain (xdsl-188-155-168-84.adslplus.ch. [188.155.168.84])
-        by smtp.gmail.com with ESMTPSA id jt17sm10943147ejb.161.2022.01.29.03.29.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 29 Jan 2022 03:29:24 -0800 (PST)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-To:     linux-kernel@vger.kernel.org,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        linux-arm-kernel@lists.infradead.org
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        linus.walleij@linaro.org, Aswani Reddy <aswani.reddy@samsung.com>,
-        linux-fsd@tesla.com, robh+dt@kernel.org, linux-spi@vger.kernel.org,
-        pankaj.dubey@samsung.com, devicetree@vger.kernel.org,
-        andi@etezian.org, linux-samsung-soc@vger.kernel.org,
-        broonie@kernel.org
-Subject: Re: (subset) [PATCH v3 3/3] arm64: dts: fsd: Add SPI device nodes
-Date:   Sat, 29 Jan 2022 12:29:22 +0100
-Message-Id: <164345575829.11115.173136141798893555.b4-ty@canonical.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20220125031604.76009-4-alim.akhtar@samsung.com>
-References: <20220125031604.76009-1-alim.akhtar@samsung.com> <CGME20220125032828epcas5p22fbacf42ebfb1b78c1f74f48d37aa381@epcas5p2.samsung.com> <20220125031604.76009-4-alim.akhtar@samsung.com>
+        id S1376657AbiAaLqh (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 31 Jan 2022 06:46:37 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:53120 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1380347AbiAaLpV (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 31 Jan 2022 06:45:21 -0500
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 20VBjBt6033104;
+        Mon, 31 Jan 2022 05:45:11 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1643629511;
+        bh=0lGG21FbBmtcnqY5LOZGFiDh425t7aE/LEQNN+eDmA0=;
+        h=From:To:CC:Subject:Date;
+        b=v2G1sbiv4K9KpR69BQ4AreddokOiMb4Z8WZvd3gwPxr3D9Gz/34DQcJ2cEoRqEsFE
+         sQB/lOyfstfvdVQX/Q1gGfCwNTZmJfd2N8irxJHUlQqxnWdFzevr084hFHAi7N1KUS
+         5xKSWRjzKKyhtHj+LCbGZeMPzuC7gFK4Y5xc3X8A=
+Received: from DFLE102.ent.ti.com (dfle102.ent.ti.com [10.64.6.23])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 20VBjB7g065494
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 31 Jan 2022 05:45:11 -0600
+Received: from DFLE109.ent.ti.com (10.64.6.30) by DFLE102.ent.ti.com
+ (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Mon, 31
+ Jan 2022 05:45:11 -0600
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE109.ent.ti.com
+ (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
+ Frontend Transport; Mon, 31 Jan 2022 05:45:11 -0600
+Received: from pratyush-4F-325.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 20VBj8FN008117;
+        Mon, 31 Jan 2022 05:45:09 -0600
+From:   Pratyush Yadav <p.yadav@ti.com>
+To:     Mark Brown <broonie@kernel.org>
+CC:     Pratyush Yadav <p.yadav@ti.com>,
+        Tudor Ambarus <tudor.ambarus@microchip.com>,
+        Michael Walle <michael@walle.cc>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Takahiro Kuwano <tkuw584924@gmail.com>,
+        <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH] spi: spi-mem: check if data buffers are on stack
+Date:   Mon, 31 Jan 2022 17:15:08 +0530
+Message-ID: <20220131114508.1028306-1-p.yadav@ti.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Tue, 25 Jan 2022 08:46:04 +0530, Alim Akhtar wrote:
-> From: Aswani Reddy <aswani.reddy@samsung.com>
-> 
-> Adds device tree node for SPI IPs
-> 
-> 
+The buffers passed in the data phase must be DMA-able. Programmers often
+don't realise this requirement and pass in buffers that reside on the
+stack. This can be hard to spot when reviewing code. Reject ops if their
+data buffer is on the stack to avoid this.
 
-Applied, thanks!
+Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
+---
+ drivers/spi/spi-mem.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-[3/3] arm64: dts: fsd: Add SPI device nodes
-      commit: bd1e3696a052b9b2bd3c1c72ef4bf800a3a1e286
-
-Best regards,
+diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+index 37f4443ce9a0..b3793a2979ee 100644
+--- a/drivers/spi/spi-mem.c
++++ b/drivers/spi/spi-mem.c
+@@ -207,6 +207,15 @@ static int spi_mem_check_op(const struct spi_mem_op *op)
+ 	    !spi_mem_buswidth_is_valid(op->data.buswidth))
+ 		return -EINVAL;
+ 
++	/* Buffers must be DMA-able. */
++	if (op->data.dir == SPI_MEM_DATA_IN &&
++	    object_is_on_stack(op->data.buf.in))
++		return -EINVAL;
++
++	if (op->data.dir == SPI_MEM_DATA_OUT &&
++	    object_is_on_stack(op->data.buf.out))
++		return -EINVAL;
++
+ 	return 0;
+ }
+ 
 -- 
-Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+2.34.1
+

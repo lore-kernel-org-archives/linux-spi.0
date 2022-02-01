@@ -2,44 +2,50 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 39445C4332F
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 55D6CC43217
 	for <linux-spi@archiver.kernel.org>; Tue,  1 Feb 2022 17:18:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241027AbiBARSq (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S241099AbiBARSq (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Tue, 1 Feb 2022 12:18:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36276 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240805AbiBARSq (ORCPT
+        with ESMTP id S241021AbiBARSq (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Tue, 1 Feb 2022 12:18:46 -0500
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AEA0C06173B
-        for <linux-spi@vger.kernel.org>; Tue,  1 Feb 2022 09:18:46 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A849C061714;
+        Tue,  1 Feb 2022 09:18:46 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D0926126B
-        for <linux-spi@vger.kernel.org>; Tue,  1 Feb 2022 17:18:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85901C340F0;
-        Tue,  1 Feb 2022 17:18:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5031E61265;
+        Tue,  1 Feb 2022 17:18:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96DBEC340F1;
+        Tue,  1 Feb 2022 17:18:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643735904;
-        bh=9gQwwfcbH9sKUiSH9MVtDlw0g0gv6oeHCHeIojLZ8CY=;
+        s=k20201202; t=1643735911;
+        bh=QCTlWYmS9EOoe3FSAuKyF+iS/GsMDs+Q+vbUb7YCgig=;
         h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=FqKSm71gCCgL1fnuIVL9DKRCkmEyvTQD0KYJKq2z3U9CfCO+cwXxxrKVHLqC+c+kT
-         7yLPL12PvcxC+jGhH1zYX4XVCPMOYRdDvbCX8xzKpiFDGHPffr/Yrs6WVLe7TZDd6k
-         d13VAgPewIvrpSunJSTUo/trEJ1FK1x/HhhRYsj6Flsau+B03fiBVKuVRFyRhSR9r3
-         apGJYCfBKm1MRFjX+pF1DiYWZcZY8AJ2bo2by8QOizvhrjSk3BLKx+3umNty2egGSc
-         BWNM/jb9nbmQlgtWHt8p0+jb6vt2BGWmS0ggNhGx8rQT/ovTXRMAB4VYLFi3ibEc0F
-         0whc/KEIAKurA==
+        b=Fkf5IMU3dvwqyIUm7rtcGVWFj/F+gC931f/JlE40yXNSsMPv3+LhaL5vY8eidcHL7
+         7/XgoH1Romk6+3DUD0mlIH8CFvhOU4RLbuZDAqD/bqR9hMH3RLdY5OqDvn1jj6EkxJ
+         DTY96Kse3fsyqNzM04kQAVKa6xXH7pBIoWuQhnunhWN8Kcz8V9OpxvuUAv/WYo/yEZ
+         YoRLIvIMmIOaibIUmu2tPYiXBry9J3NAh9vA5XUzjQ9UIyfAmcZ+7A3y2LwPYuxfMi
+         EkJvp+DjdbIKPrxkUCF+IwC9mrPBBO6bPV989n9OPLc4iqBGlvg1Q57oWcFzehXRk4
+         bDv8OkhC+yI0w==
 From:   Mark Brown <broonie@kernel.org>
-To:     linux-spi@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>
-Cc:     Martin Sperl <kernel@martin.sperl.org>,
-        Lukas Wunner <lukas@wunner.de>
-In-Reply-To: <20220121224126.312227-1-linus.walleij@linaro.org>
-References: <20220121224126.312227-1-linus.walleij@linaro.org>
-Subject: Re: [PATCH] spi: bcm2835aux: Convert to use GPIO descriptors
-Message-Id: <164373590325.2398858.13463837677080973733.b4-ty@kernel.org>
-Date:   Tue, 01 Feb 2022 17:18:23 +0000
+To:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Mark Gross <markgross@kernel.org>,
+        Stefan Binding <sbinding@opensource.cirrus.com>,
+        Takashi Iwai <tiwai@suse.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Hans de Goede <hdegoede@redhat.com>
+Cc:     alsa-devel@alsa-project.org, patches@opensource.cirrus.com,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org
+In-Reply-To: <20220121172431.6876-1-sbinding@opensource.cirrus.com>
+References: <20220121172431.6876-1-sbinding@opensource.cirrus.com>
+Subject: Re: (subset) [PATCH v6 0/9] Support Spi in i2c-multi-instantiate driver
+Message-Id: <164373590827.2398858.14272664575079463567.b4-ty@kernel.org>
+Date:   Tue, 01 Feb 2022 17:18:28 +0000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -47,13 +53,16 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Fri, 21 Jan 2022 23:41:26 +0100, Linus Walleij wrote:
-> This one is pretty straight forward to switch over, the driver
-> already relies on inspecting cs_gpio just check cs_gpiod instead
-> and stop the special handling of requesting the GPIO and stuff
-> the core will take care of.
+On Fri, 21 Jan 2022 17:24:22 +0000, Stefan Binding wrote:
+> Add support for SPI bus in the i2c-multi-instantiate driver as
+> upcoming laptops will need to multi instantiate SPI devices from
+> a single device node, which has multiple SpiSerialBus entries at
+> the ACPI table.
 > 
+> With the new SPI support, i2c-multi-instantiate becomes
+> bus-multi-instantiate and is moved to the ACPI folder.
 > 
+> [...]
 
 Applied to
 
@@ -61,8 +70,14 @@ Applied to
 
 Thanks!
 
-[1/1] spi: bcm2835aux: Convert to use GPIO descriptors
-      commit: b651d1da86aa525c5a5b2bd61f528353c28d589d
+[1/9] spi: Make spi_alloc_device and spi_add_device public again
+      commit: 941bffd7d7f5d6030a54184c5d81b0eb9116ca9a
+[2/9] spi: Create helper API to lookup ACPI info for spi device
+      commit: 70dd264bc07aee4f89e65138db11e908701388dd
+[3/9] spi: Support selection of the index of the ACPI Spi Resource before alloc
+      commit: 92640f98a78c6a3ea1ca32143144241eceb129bd
+[4/9] spi: Add API to count spi acpi resources
+      commit: 113962301d2d9a5c11381d9c25ddea7af71be2ff
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

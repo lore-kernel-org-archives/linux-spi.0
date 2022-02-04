@@ -2,122 +2,421 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 59ABFC433F5
-	for <linux-spi@archiver.kernel.org>; Fri,  4 Feb 2022 10:31:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C9DEFC43219
+	for <linux-spi@archiver.kernel.org>; Fri,  4 Feb 2022 12:07:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234820AbiBDKbJ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 4 Feb 2022 05:31:09 -0500
-Received: from mail-bn8nam12on2071.outbound.protection.outlook.com ([40.107.237.71]:1185
-        "EHLO NAM12-BN8-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S234458AbiBDKbI (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Fri, 4 Feb 2022 05:31:08 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ef+Bkqts1LGrlKFbkNT0qriR8upD3czkXvlo9j7HTVOsYzG45UxFdVlCGq7E1Aut1FSr6acCNE0bzBoNWPmwTbqhJIA+Q3eX3ocMaHjlmdUL1MHL/a40v+o5EkzVs0A/zZ/8GCtemzBVgrAlGpfZg8UZcwuyWo/3Mf5cP7IyUJtxE8gV6kXiRa3zChA3AbBkB1PHq1IT+U32nSl/jnyfMVNNFyRt0qNqDNq4u97SHP+0ICbbpaUpwaqS+a/0dEB8wpiSodsASWsfcHZMlSvAs1TFBumWD1JEV6CMl3OL7vzLWHzzKsKjh2JYxKZr6WHKGiaR7ToTqHJ8t4W8MoN5zg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YTQBL31gW3bilk2wXMlm10E0vy05SBm3Qn7ePLaT90U=;
- b=J7mLL/W+ZdMoub5b044hUd1okIGGgf2gVI5m3gu2orsw03qcN98Q8SH1ZBEfXhYMdKEaV3ktYprTbmhd7FvkdMX4n2UPAoiAarGmv2zf6ezY6PNKDiqrvSwLjnD1xPpZgZdZ185h8N39mTbxfCOeP3jfYz852DMISfxf81t7ubK4jZRoNj2lu3+6OMZ8SOXlfHxK79WGydxS4DtgMaJPF6TzjGxWT2vA1JmVeTs/ffHf2Zbq7R9PsfvXZbcx3xY9PcWQaZVLIjrDbjlfaVoSFhOMYgUQTNb3E8ahNBT++UIoCj9h+ApZ+njltfsy2RwjwYrJyqocAIA3e13nrTpRTw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 12.22.5.238) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YTQBL31gW3bilk2wXMlm10E0vy05SBm3Qn7ePLaT90U=;
- b=XDnM+zoJzTPy2czYGOCtTOOJQI4US8nSwow+SRHtnolEeWC+QnmM2oX7a+8NjBYTtpdEJnSY9w41O5na/cd/NTo6Sf4c/5ayb7MZPbqdieP6LBqMJ8X1N0U0VgYuuVFt4+2buYSpFFaViaKWdMOc0YXoewPmHoYfoJDNpm8FisCZW1xbWUenGK/wU3gwwCo/hT7Claxh+GOR/nGXGUj2F8yqnv9XLDhTAOFWFXvkVlDopQPBiATuhgaF/usICpfC3nRqkYjkKo6hHm7mpN85qR9z80hZJMs4mnmNH4c9d+PkCAgo2PcqEv0Yh21fLXIKdbgXt8S0liHfIJNTAfqTFQ==
-Received: from BN6PR20CA0052.namprd20.prod.outlook.com (2603:10b6:404:151::14)
- by DM6PR12MB4353.namprd12.prod.outlook.com (2603:10b6:5:2a6::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4951.12; Fri, 4 Feb
- 2022 10:31:07 +0000
-Received: from BN8NAM11FT028.eop-nam11.prod.protection.outlook.com
- (2603:10b6:404:151:cafe::7b) by BN6PR20CA0052.outlook.office365.com
- (2603:10b6:404:151::14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4951.17 via Frontend
- Transport; Fri, 4 Feb 2022 10:31:06 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 12.22.5.238)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 12.22.5.238 as permitted sender) receiver=protection.outlook.com;
- client-ip=12.22.5.238; helo=mail.nvidia.com;
-Received: from mail.nvidia.com (12.22.5.238) by
- BN8NAM11FT028.mail.protection.outlook.com (10.13.176.225) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.20.4951.12 via Frontend Transport; Fri, 4 Feb 2022 10:31:06 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by DRHQMAIL105.nvidia.com
- (10.27.9.14) with Microsoft SMTP Server (TLS) id 15.0.1497.18; Fri, 4 Feb
- 2022 10:30:03 +0000
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.9; Fri, 4 Feb 2022
- 02:30:03 -0800
-Received: from kyarlagadda-linux.nvidia.com (10.127.8.10) by mail.nvidia.com
- (10.129.68.9) with Microsoft SMTP Server id 15.2.986.9 via Frontend
- Transport; Fri, 4 Feb 2022 02:29:59 -0800
-From:   Krishna Yarlagadda <kyarlagadda@nvidia.com>
-To:     <broonie@kernel.org>, <thierry.reding@gmail.com>,
-        <jonathanh@nvidia.com>, <linux-spi@vger.kernel.org>,
-        <linux-tegra@vger.kernel.org>
-CC:     <skomatineni@nvidia.com>, <ldewangan@nvidia.com>,
-        <robh+dt@kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <p.zabel@pengutronix.de>,
-        Krishna Yarlagadda <kyarlagadda@nvidia.com>
-Subject: [PATCH 2/6] dt-bindings: spi: Tegra234 QUAD SPI compatible
-Date:   Fri, 4 Feb 2022 15:59:32 +0530
-Message-ID: <1643970576-31503-3-git-send-email-kyarlagadda@nvidia.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1643970576-31503-1-git-send-email-kyarlagadda@nvidia.com>
-References: <1643970576-31503-1-git-send-email-kyarlagadda@nvidia.com>
+        id S1353840AbiBDMHG (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 4 Feb 2022 07:07:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42430 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230179AbiBDMHF (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 4 Feb 2022 07:07:05 -0500
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6D3AC061714;
+        Fri,  4 Feb 2022 04:07:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=/R6k+zfCQLtzC5fphtSolIP5mV88jokWbtj5V/Bndfo=; b=vV7FwD6+1HFcDi0WBK1n+WSa7j
+        6nwzQzVzi5+eBGfJjLkVBTDdciJmM/ODHbnAIn87wlDZaVGFppfZ+kIcVCeEP48y2KiwVKc1CXNfQ
+        HwbFgydFmju4PHbiyUdIr78S1W5mmqAZMOHdMJ60inw6Pv5vWMco470p1tf3mR8GjcuActvmp9Gnr
+        Z9+xF0g185xIO5+pwflcRJvACgdLLsPqZdl98F1xB1/Oqr2qR03hqug7ilKFZdiBMIRSQqoHVRy6N
+        J+0BDyiJuXcdfPlkRiuNVwP3B59jQ/pap32T5wWhmLteCCuu+rRjcExlmQpfogonB4SlWXln36qcV
+        sZ5TRa+A==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:57036)
+        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1nFxLl-0004VH-H0; Fri, 04 Feb 2022 12:06:01 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1nFxLX-0004xK-P8; Fri, 04 Feb 2022 12:05:47 +0000
+Date:   Fri, 4 Feb 2022 12:05:47 +0000
+From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
+To:     nick.hawkins@hpe.com
+Cc:     verdun@hpe.com, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Corey Minyard <minyard@acm.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Lee Jones <lee.jones@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mark Brown <broonie@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
+        soc@kernel.org, Shawn Guo <shawnguo@kernel.org>,
+        Stanislav Jakubek <stano.jakubek@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Hao Fang <fanghao11@huawei.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Wang Kefeng <wangkefeng.wang@huawei.com>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-i2c@vger.kernel.org,
+        openipmi-developer@lists.sourceforge.net,
+        linux-mtd@lists.infradead.org, netdev@vger.kernel.org,
+        linux-pwm@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] HPE BMC GXP SUPPORT
+Message-ID: <Yf0Wm1kOV1Pss9HJ@shell.armlinux.org.uk>
+References: <nick.hawkins@hpe.com>
+ <20220202165315.18282-1-nick.hawkins@hpe.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: e9deb210-fb1f-4c42-99e5-08d9e7c973f2
-X-MS-TrafficTypeDiagnostic: DM6PR12MB4353:EE_
-X-Microsoft-Antispam-PRVS: <DM6PR12MB43535E8AF4512F9D9E7ABD2EC3299@DM6PR12MB4353.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:1079;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 9oiTcnei9Sr4B/qDcswvB7gY4cjYevEa4tfPMbnNZGJcVq1b3gBxU3+JQJlfwHPEz9wIOkbL1B8h7fFiLVfziBmALJmHXV+GaDvhJKGMpZM0HvuNBveCd2ZmLN16gqcGcisC3r54/SiUsCKB4DfrgyJxWXKlaAhALuNMff5vDBLKjisnk8XW5YMpFw+5bdiJQ1svAer//0a8B29ZoJbrOUTO7+uUwUY2HRFQXGJAOiA+qnLm9bFczUm7SC8DHFCKV/Bfa64vbEbMUrXSXcBDDBsphb3C/R4leDVtE1LwjSTR4J9Bnxt43IztUGPbhtmFioopy4RhekDFK+FK7CsrUgvIzXrSTstDWt9MmPH9Y3+6p+8wPwy2+2ooFQ1/c/umGfIzn+ly/Vxd/OtSqpilXrGstgZD9ZjyzlrqtHeBU++gfUtle3TkRxu0BLcCChJUVvi0pm6pHQyMJtJMco6VMUIuFouZClj3eQVe+UFGqj30+qDxr8mfMZcU016xAg/Zvfgy466N/KfgkWKzgUoydlxF56GmV4RGq3ntPi6B+8/JcFXVl0lIACfWoaU484kp+KYnKZBYm4SpLxCnIPrMDgEGHqvwegeP6n7s01b5ftDnVq7DZZs3boYnbmUaOrOujRZsn3qDBONfLX6JNd8chsCWQu/pMLLkRTbsVLz5NU97A+ihJp3sEOn5apcqjqhbvHwo4P4CsH0G6AscCKAQxQ==
-X-Forefront-Antispam-Report: CIP:12.22.5.238;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:mail.nvidia.com;PTR:InfoNoRecords;CAT:NONE;SFS:(13230001)(4636009)(46966006)(40470700004)(36840700001)(86362001)(82310400004)(40460700003)(356005)(54906003)(70206006)(8936002)(8676002)(4326008)(70586007)(316002)(110136005)(81166007)(5660300002)(4744005)(7696005)(36860700001)(107886003)(47076005)(508600001)(2616005)(6666004)(186003)(26005)(336012)(426003)(36756003)(2906002)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Feb 2022 10:31:06.7638
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e9deb210-fb1f-4c42-99e5-08d9e7c973f2
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[12.22.5.238];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT028.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4353
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220202165315.18282-1-nick.hawkins@hpe.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Add compatible string for Tegra234 for Tegra QUAD SPI
+Hi,
 
-Signed-off-by: Krishna Yarlagadda <kyarlagadda@nvidia.com>
----
- Documentation/devicetree/bindings/spi/nvidia,tegra210-quad.yaml | 1 +
- 1 file changed, 1 insertion(+)
+On Wed, Feb 02, 2022 at 10:52:50AM -0600, nick.hawkins@hpe.com wrote:
+> diff --git a/arch/arm/mach-hpe/Makefile b/arch/arm/mach-hpe/Makefile
+> new file mode 100644
+> index 000000000000..8b0a91234df4
+> --- /dev/null
+> +++ b/arch/arm/mach-hpe/Makefile
+> @@ -0,0 +1 @@
+> +obj-$(CONFIG_ARCH_HPE_GXP) += gxp.o
+> diff --git a/arch/arm/mach-hpe/gxp.c b/arch/arm/mach-hpe/gxp.c
+> new file mode 100644
+> index 000000000000..a37838247948
+> --- /dev/null
+> +++ b/arch/arm/mach-hpe/gxp.c
+> @@ -0,0 +1,62 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/* Copyright (C) 2022 Hewlett-Packard Enterprise Development Company, L.P.
+> + *
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License version 2 as
+> + * published by the Free Software Foundation.
+> + */
+> +
+> +
+> +#include <linux/init.h>
+> +#include <asm/mach/arch.h>
+> +#include <asm/mach/map.h>
+> +#include <linux/of.h>
+> +#include <linux/of_platform.h>
+> +#include <linux/clk-provider.h>
+> +#include <linux/clocksource.h>
 
-diff --git a/Documentation/devicetree/bindings/spi/nvidia,tegra210-quad.yaml b/Documentation/devicetree/bindings/spi/nvidia,tegra210-quad.yaml
-index 35a8045..6efea89 100644
---- a/Documentation/devicetree/bindings/spi/nvidia,tegra210-quad.yaml
-+++ b/Documentation/devicetree/bindings/spi/nvidia,tegra210-quad.yaml
-@@ -19,6 +19,7 @@ properties:
-       - nvidia,tegra210-qspi
-       - nvidia,tegra186-qspi
-       - nvidia,tegra194-qspi
-+      - nvidia,tegra234-qspi
- 
-   reg:
-     maxItems: 1
+It's normal to list all linux/ includes before asm/ includes. Please
+rearrange.
+
+> +
+> +#define IOP_REGS_PHYS_BASE 0xc0000000
+> +#define IOP_REGS_VIRT_BASE 0xf0000000
+> +#define IOP_REGS_SIZE (240*SZ_1M)
+> +
+> +#define IOP_EHCI_USBCMD 0x0efe0010
+> +
+> +static struct map_desc gxp_io_desc[] __initdata = {
+> +	{
+> +	.virtual	= (unsigned long)IOP_REGS_VIRT_BASE,
+> +	.pfn		= __phys_to_pfn(IOP_REGS_PHYS_BASE),
+> +	.length		= IOP_REGS_SIZE,
+> +	.type		= MT_DEVICE,
+
+If you keep this, please indent the above four lines by one more tab.
+
+> +	},
+> +};
+> +
+> +void __init gxp_map_io(void)
+> +{
+> +	iotable_init(gxp_io_desc, ARRAY_SIZE(gxp_io_desc));
+> +}
+> +
+> +static void __init gxp_dt_init(void)
+> +{
+> +	/*reset EHCI host controller for clear start*/
+> +	__raw_writel(0x00080002,
+> +		(void __iomem *)(IOP_REGS_VIRT_BASE + IOP_EHCI_USBCMD));
+
+Please consider making IOP_REGS_VIRT_BASE a 'void __iomem' pointer, it
+being a _virtual_ iomem address. This should save you needing repeated
+casts except for the initialiser above.
+
+> +	of_platform_populate(NULL, of_default_bus_match_table, NULL, NULL);
+> +}
+> +
+> +static void gxp_restart(enum reboot_mode mode, const char *cmd)
+> +{
+> +	__raw_writel(1, (void __iomem *) IOP_REGS_VIRT_BASE);
+> +}
+> +
+> +static const char * const gxp_board_dt_compat[] = {
+> +	"HPE,GXP",
+> +	NULL,
+> +};
+> +
+> +DT_MACHINE_START(GXP_DT, "HPE GXP")
+> +	.init_machine	= gxp_dt_init,
+> +	.map_io		= gxp_map_io,
+> +	.restart	= gxp_restart,
+> +	.dt_compat	= gxp_board_dt_compat,
+> +MACHINE_END
+> diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+> index cfb8ea0df3b1..5916dade7608 100644
+> --- a/drivers/clocksource/Kconfig
+> +++ b/drivers/clocksource/Kconfig
+> @@ -617,6 +617,14 @@ config CLKSRC_ST_LPC
+>  	  Enable this option to use the Low Power controller timer
+>  	  as clocksource.
+>  
+> +config GXP_TIMER
+> +	bool "GXP timer driver"
+> +	depends on ARCH_HPE
+> +	default y
+> +	help
+> +	  Provides a driver for the timer control found on HPE
+> +	  GXP SOCs. This is required for all GXP SOCs.
+> +
+>  config ATCPIT100_TIMER
+>  	bool "ATCPIT100 timer driver"
+>  	depends on NDS32 || COMPILE_TEST
+> diff --git a/drivers/clocksource/Makefile b/drivers/clocksource/Makefile
+> index fa5f624eadb6..ffca09ec34de 100644
+> --- a/drivers/clocksource/Makefile
+> +++ b/drivers/clocksource/Makefile
+> @@ -89,3 +89,4 @@ obj-$(CONFIG_GX6605S_TIMER)		+= timer-gx6605s.o
+>  obj-$(CONFIG_HYPERV_TIMER)		+= hyperv_timer.o
+>  obj-$(CONFIG_MICROCHIP_PIT64B)		+= timer-microchip-pit64b.o
+>  obj-$(CONFIG_MSC313E_TIMER)		+= timer-msc313e.o
+> +obj-$(CONFIG_GXP_TIMER)			+= gxp_timer.o
+> diff --git a/drivers/clocksource/gxp_timer.c b/drivers/clocksource/gxp_timer.c
+> new file mode 100644
+> index 000000000000..e3c617036e0d
+> --- /dev/null
+> +++ b/drivers/clocksource/gxp_timer.c
+> @@ -0,0 +1,158 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/* Copyright (C) 2022 Hewlett-Packard Enterprise Development Company, L.P.
+> + *
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License version 2 as
+> + * published by the Free Software Foundation.
+> + */
+> +
+> +#include <linux/bitops.h>
+> +#include <linux/clockchips.h>
+> +#include <linux/clocksource.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/irqreturn.h>
+> +#include <linux/kernel.h>
+> +#include <linux/module.h>
+> +#include <linux/of_address.h>
+> +#include <linux/of_irq.h>
+> +#include <linux/of_platform.h>
+> +#include <linux/slab.h>
+> +#include <linux/string.h>
+> +#include <linux/sched_clock.h>
+> +
+> +#include <asm/irq.h>
+
+Why do you need asm/irq.h ?
+
+> +
+> +#define TIMER0_FREQ 1000000
+> +#define TIMER1_FREQ 1000000
+> +
+> +#define MASK_TCS_ENABLE		0x01
+> +#define MASK_TCS_PERIOD		0x02
+> +#define MASK_TCS_RELOAD		0x04
+> +#define MASK_TCS_TC		0x80
+> +
+> +struct gxp_timer {
+> +	void __iomem *counter;
+> +	void __iomem *control;
+> +	struct clock_event_device evt;
+> +};
+> +
+> +static void __iomem *system_clock __read_mostly;
+> +
+> +static u64 notrace gxp_sched_read(void)
+> +{
+> +	return readl_relaxed(system_clock);
+> +}
+> +
+> +static int gxp_time_set_next_event(unsigned long event,
+> +					struct clock_event_device *evt_dev)
+> +{
+> +	struct gxp_timer *timer = container_of(evt_dev, struct gxp_timer, evt);
+> +	/*clear TC by write 1 and disable timer int and counting*/
+> +	writeb_relaxed(MASK_TCS_TC, timer->control);
+> +	/*update counter value*/
+> +	writel_relaxed(event, timer->counter);
+> +	/*enable timer counting and int*/
+> +	writeb_relaxed(MASK_TCS_TC|MASK_TCS_ENABLE, timer->control);
+
+Spaces around the | please. checkpatch probably should've noticed that.
+
+> +
+> +	return 0;
+> +}
+> +
+> +static irqreturn_t gxp_time_interrupt(int irq, void *dev_id)
+> +{
+> +	struct gxp_timer *timer = dev_id;
+> +	void (*event_handler)(struct clock_event_device *timer);
+> +
+> +
+
+One too many blank lines.
+
+> +	if (readb_relaxed(timer->control) & MASK_TCS_TC) {
+> +		writeb_relaxed(MASK_TCS_TC, timer->control);
+> +
+> +		event_handler = READ_ONCE(timer->evt.event_handler);
+> +		if (event_handler)
+> +			event_handler(&timer->evt);
+> +		return IRQ_HANDLED;
+> +	} else {
+> +		return IRQ_NONE;
+> +	}
+> +}
+> +
+> +static int __init gxp_timer_init(struct device_node *node)
+> +{
+> +	void __iomem *base_counter;
+> +	void __iomem *base_control;
+> +	u32 freq;
+> +	int ret, irq;
+> +	struct gxp_timer *gxp_timer;
+> +
+> +	base_counter = of_iomap(node, 0);
+> +	if (!base_counter) {
+> +		pr_err("Can't remap counter registers");
+> +		return -ENXIO;
+> +	}
+> +
+> +	base_control = of_iomap(node, 1);
+> +	if (!base_control) {
+> +		pr_err("Can't remap control registers");
+
+iounmap base_counter?
+
+> +		return -ENXIO;
+> +	}
+> +
+> +	system_clock = of_iomap(node, 2);
+> +	if (!system_clock) {
+> +		pr_err("Can't remap control registers");
+
+iounmap base_counter and base_control?
+
+> +		return -ENXIO;
+> +	}
+> +
+> +	if (of_property_read_u32(node, "clock-frequency", &freq)) {
+> +		pr_err("Can't read clock-frequency\n");
+> +		goto err_iounmap;
+> +	}
+> +
+> +	sched_clock_register(gxp_sched_read, 32, freq);
+> +	clocksource_mmio_init(system_clock, node->name, freq,
+> +				300, 32, clocksource_mmio_readl_up);
+
+We normally align continutation lines in function arguments to the
+opening ( thusly:
+
+	clocksource_mmio_init(system_clock, node->name, freq,
+			      300, 32, clocksource_mmio_readl_up);
+
+> +
+> +	irq = irq_of_parse_and_map(node, 0);
+> +	if (irq <= 0) {
+> +		ret = -EINVAL;
+> +		pr_err("GXP Timer Can't parse IRQ %d", irq);
+> +		goto err_iounmap;
+> +	}
+> +
+> +	gxp_timer = kzalloc(sizeof(*gxp_timer), GFP_KERNEL);
+> +	if (!gxp_timer) {
+> +		ret = -ENOMEM;
+> +		goto err_iounmap;
+> +	}
+> +
+> +	gxp_timer->counter = base_counter;
+> +	gxp_timer->control = base_control;
+> +	gxp_timer->evt.name = node->name;
+> +	gxp_timer->evt.rating = 300;
+> +	gxp_timer->evt.features = CLOCK_EVT_FEAT_ONESHOT;
+> +	gxp_timer->evt.set_next_event = gxp_time_set_next_event;
+> +	gxp_timer->evt.cpumask = cpumask_of(0);
+> +
+> +	if (request_irq(irq, gxp_time_interrupt, IRQF_TIMER | IRQF_SHARED,
+> +		node->name, gxp_timer)) {
+
+Again:
+
+	if (request_irq(irq, gxp_time_interrupt, IRQF_TIMER | IRQF_SHARED,
+			node->name, gxp_timer)) {
+
+> +		pr_err("%s: request_irq() failed\n", "GXP Timer Tick");
+
+Consider storing the error code from request_irq() and printing it here.
+So:
+
+	err = request_irq(...);
+	if (err) {
+		pr_err("%s: request_irq() failed: %pe\n", "GXP Timer Tick",
+		       ERR_PTR(err));
+
+> +		goto err_timer_free;
+> +	}
+> +
+> +	clockevents_config_and_register(&gxp_timer->evt, TIMER0_FREQ,
+> +					0xf, 0xffffffff);
+> +
+> +	pr_info("gxp: system timer (irq = %d)\n", irq);
+> +	return 0;
+> +
+> +
+> +err_timer_free:
+> +	kfree(gxp_timer);
+> +
+> +err_iounmap:
+> +	iounmap(system_clock);
+> +	iounmap(base_control);
+> +	iounmap(base_counter);
+> +	return ret;
+> +}
+> +
+> +TIMER_OF_DECLARE(gxp, "hpe,gxp-timer", gxp_timer_init);
+
+Thanks.
+
 -- 
-2.7.4
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!

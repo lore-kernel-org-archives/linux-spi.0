@@ -2,39 +2,70 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F541C43217
-	for <linux-spi@archiver.kernel.org>; Mon,  7 Feb 2022 18:15:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C83B4C43219
+	for <linux-spi@archiver.kernel.org>; Mon,  7 Feb 2022 19:49:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236768AbiBGSOZ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 7 Feb 2022 13:14:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44206 "EHLO
+        id S238868AbiBGTsq (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 7 Feb 2022 14:48:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236167AbiBGSJQ (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 7 Feb 2022 13:09:16 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9A61C0401DA;
-        Mon,  7 Feb 2022 10:09:15 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S240458AbiBGTpm (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 7 Feb 2022 14:45:42 -0500
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2D63C0401E7
+        for <linux-spi@vger.kernel.org>; Mon,  7 Feb 2022 11:45:41 -0800 (PST)
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id ADD7AB81633;
-        Mon,  7 Feb 2022 18:09:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5936CC340ED;
-        Mon,  7 Feb 2022 18:09:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1644257353;
-        bh=Kl0piouUQfOB7fbbAm8eY6+azL6dVYJyutb9M6s+a0A=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=sGgSc+JBy7Ew6szwM3g69hmlSyZ2mEXB7uq03KRN2paiXZIGo6GalaHhq1MS+NE0E
-         CsrgvUDvGoOt3GnBhRooyDQ7Eok9g4R5kIfwQntxIKbxVLrCnWpUOJeIDHpEq51Jlb
-         UWUDFyHWDmO+QdSCWHKs6yVNx2kQVWnm9ZCG5S73iCl6j6Fy/6Lz6/mxHyuUoIPqEn
-         t2f/3uIeXpttpJYlSONJKxWcRGlL0shBIqa4K9hXo/MD8KVsvA2EH65GEQCoi7yj+d
-         bk+p/r5kiF6GU69gQERH0RXEZTfiJRURWu8LGIhWoXGMkRWiEIElL1/+4nAKkTs38D
-         4OGSPAYPRB3Og==
-Date:   Mon, 7 Feb 2022 18:09:06 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Cc:     Lee Jones <lee.jones@linaro.org>, Rob Herring <robh+dt@kernel.org>,
+        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 485E73FE41
+        for <linux-spi@vger.kernel.org>; Mon,  7 Feb 2022 19:45:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1644263134;
+        bh=ZFe7GrDYXMM8CLQ5SMwXw4UQni/9UZT69dDdKHMLJTo=;
+        h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+         In-Reply-To:Content-Type;
+        b=CXNu75oEuLgWLAAwUIzGlsCrsh6PsFr867GTO1mueUbFGXRKvlITzZsVZddpE3JrP
+         PqizrVsInxFq/pkeoTx89IUwlMhbkfYZis3IIF4zKw1ZRd8IaVRg32nDI2mUGdcnON
+         c4kKuuU1kIsVHDgjJE9gt2n2B6X/3EHPnIaefbwB6KmMcjuNtB8jw00c5v7vP7i+Mt
+         x2SN9pMybsVyANw8uoBaUIPEWW3Pzcge2X8wAo7sscFusK3hMe58jIzX2Rr5zw8oFi
+         nQc3J3ux2ScW7S0cPLrZJMRKT4aDXynVF2Sez3CeFrlIZqSuY/IXgqimqLoEqtJhbh
+         bx25iwXfh+Xkg==
+Received: by mail-ed1-f70.google.com with SMTP id l14-20020aa7cace000000b003f7f8e1cbbdso8395395edt.20
+        for <linux-spi@vger.kernel.org>; Mon, 07 Feb 2022 11:45:34 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=ZFe7GrDYXMM8CLQ5SMwXw4UQni/9UZT69dDdKHMLJTo=;
+        b=HG9WSPaTa1PVb4Lbb3voD13IsC3opzz7YTG0xQgn2F8czqx5DMUVneHgunOxmFBt+p
+         a1oNRnqI2ksmZAKUgC68sByJdyFaA/QdibREkWiYJ7m6euqTqGL2C6ECola4uJ0ZO7Lb
+         owvxyCDFv0s69s/C24AAvw1dgsgfisFvP7S0qivrTgQz264ATNq2PcgR1TSh2DirZ/X2
+         mgZQoRLh3q4yrgaouniT/gnQnyJd9117N6VBDXv3EllMy6lQARh15gbv8rOpN5XkUjxH
+         97n6/O66Tmuqpq4kPSjJp9A5pgoq64wLzrRn+YpmM9oDCrWsvUxhA9pkUkmG77TcP+MO
+         p//Q==
+X-Gm-Message-State: AOAM533lcBGDUyOFanAe1lEeXYJtOWx2T8KV/cQ7USO5dj3fUaGdz4eA
+        9YJ+6C2zj6zK5ruQj6EvFXC6UXamNKLIpK0HcuHwwtqIj0CZWLd80t3Jlpv/IUsQ9w3Amg9K94B
+        sn7U1vBG7S4r7ImFowYR6QwQs2hS64zdh/tEp2w==
+X-Received: by 2002:a17:907:98e8:: with SMTP id ke8mr968012ejc.524.1644263132764;
+        Mon, 07 Feb 2022 11:45:32 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJzFbHJhhicQcTAJbCV7XtoidiI0ekXusMyI1v7J4cYe1pPDkuk3WrSncw/sfZC1Yn4c59YKVQ==
+X-Received: by 2002:a17:907:98e8:: with SMTP id ke8mr967987ejc.524.1644263132572;
+        Mon, 07 Feb 2022 11:45:32 -0800 (PST)
+Received: from [192.168.0.91] (xdsl-188-155-168-84.adslplus.ch. [188.155.168.84])
+        by smtp.gmail.com with ESMTPSA id t22sm5595617edv.105.2022.02.07.11.45.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 07 Feb 2022 11:45:32 -0800 (PST)
+Message-ID: <22952187-80c2-a456-f389-f70a2a30f467@canonical.com>
+Date:   Mon, 7 Feb 2022 20:45:31 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH v6 1/4] spi: dt-bindings: samsung: convert to dtschema
+Content-Language: en-US
+To:     Mark Brown <broonie@kernel.org>, Lee Jones <lee.jones@linaro.org>
+Cc:     Rob Herring <robh+dt@kernel.org>,
         Benson Leung <bleung@chromium.org>,
         Guenter Roeck <groeck@chromium.org>,
         Alim Akhtar <alim.akhtar@samsung.com>,
@@ -43,44 +74,28 @@ Cc:     Lee Jones <lee.jones@linaro.org>, Rob Herring <robh+dt@kernel.org>,
         Pratyush Yadav <p.yadav@ti.com>, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org
-Subject: Re: [PATCH v6 1/4] spi: dt-bindings: samsung: convert to dtschema
-Message-ID: <YgFgQsV2bJS6mjQs@sirena.org.uk>
 References: <20220124082347.32747-1-krzysztof.kozlowski@canonical.com>
  <20220124082347.32747-2-krzysztof.kozlowski@canonical.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="0Fh6jDwau3COtXX+"
-Content-Disposition: inline
-In-Reply-To: <20220124082347.32747-2-krzysztof.kozlowski@canonical.com>
-X-Cookie: Never give an inch!
+ <YgFgQsV2bJS6mjQs@sirena.org.uk>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+In-Reply-To: <YgFgQsV2bJS6mjQs@sirena.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+On 07/02/2022 19:09, Mark Brown wrote:
+> On Mon, Jan 24, 2022 at 09:23:44AM +0100, Krzysztof Kozlowski wrote:
+>> Convert the Samsung SoC (S3C24xx, S3C64xx, S5Pv210, Exynos) SPI
+>> controller bindings to DT schema format.
+> 
+> Reviewed-by: Mark Brown <broonie@kernel.org>
 
---0Fh6jDwau3COtXX+
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Hi Mark and Lee,
 
-On Mon, Jan 24, 2022 at 09:23:44AM +0100, Krzysztof Kozlowski wrote:
-> Convert the Samsung SoC (S3C24xx, S3C64xx, S5Pv210, Exynos) SPI
-> controller bindings to DT schema format.
+Thanks for the review. The dt-bindings part have Rob's review. I think
+this means Lee can pick up the entire set (SPI+MFD)?
 
-Reviewed-by: Mark Brown <broonie@kernel.org>
-
---0Fh6jDwau3COtXX+
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmIBYEEACgkQJNaLcl1U
-h9BWCwf/QlO6tpWgGKNywXLMUCQhFw1RGfA95Q+PNRnzwaCmGN0l4/An56Rgb4SW
-UhhtOACAolo021awaq675c6d0alEl4KBHg9koUWCZk1jWFSoDprNEatcf7gJ1+f9
-utrTIN4mAjZr8qfhrhLcFEk1+rtPTAUXunuC5pk6xFdEwNai3BQOrEJU8XMZozNo
-d/wB/Pnch0lhMIcyFlxJd9FNyw9OMTDqEwcLF6xqYQAgJCk298dgo3O/igNdACpg
-aJTA6p7kb4zUsbxoEcZByGukfR/3nX+PRdpJVs4KiTl8VX6SCSFWjUDRyYPGUJTR
-f7lrrFr3kSwkML3mUj6A7WIc0dDwHA==
-=FDZd
------END PGP SIGNATURE-----
-
---0Fh6jDwau3COtXX+--
+Best regards,
+Krzysztof

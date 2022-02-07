@@ -2,131 +2,87 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9421FC433F5
-	for <linux-spi@archiver.kernel.org>; Mon,  7 Feb 2022 16:05:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 227C8C433F5
+	for <linux-spi@archiver.kernel.org>; Mon,  7 Feb 2022 18:14:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233232AbiBGQD4 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 7 Feb 2022 11:03:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36686 "EHLO
+        id S233885AbiBGSNz (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 7 Feb 2022 13:13:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1384942AbiBGPzO (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 7 Feb 2022 10:55:14 -0500
-X-Greylist: delayed 584 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 07 Feb 2022 07:55:13 PST
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89ACFC0401CF
-        for <linux-spi@vger.kernel.org>; Mon,  7 Feb 2022 07:55:13 -0800 (PST)
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com [209.85.218.70])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        with ESMTP id S236768AbiBGSLx (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 7 Feb 2022 13:11:53 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C488C0401DF;
+        Mon,  7 Feb 2022 10:11:53 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 245B13F203
-        for <linux-spi@vger.kernel.org>; Mon,  7 Feb 2022 15:45:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1644248728;
-        bh=6Y+2dKF+oax8zT1A/qm081V7yzQIygshkjwkuuK0Jjs=;
-        h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-         In-Reply-To:Content-Type;
-        b=ObLcz3uko4ptfvBF35/pdsXgcaPGSEf/pUqNeqMVjwb/d85L1Zv29MRSjQOz0PDTT
-         ZMt83cfofhbsc8cqX81jD3tTC6SjOni7amzMdiuZeTrFmQMNBbejzsvX68DHF61N77
-         c7LNkMBzODC/CadlDkcmO0rV5Kcw4N62ZkdcVegKWXQ/ITE6PoxzghMIsJW+2sIaMA
-         vaAGXdxF+S+YxLeriSD04HlqJgbdUxt8+LoqqIlpSzpNTBRV5gqAmR8j5FzeJe06Dj
-         rVmAn0pIPY8vXn0jmYhJPS/2/wwGI/heZB8AeQB/lshl5heT5O/Qb0qOuyIbUt3rGl
-         j1rv/WZEmUC7g==
-Received: by mail-ej1-f70.google.com with SMTP id ky6-20020a170907778600b0068e4bd99fd1so4473748ejc.15
-        for <linux-spi@vger.kernel.org>; Mon, 07 Feb 2022 07:45:28 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=6Y+2dKF+oax8zT1A/qm081V7yzQIygshkjwkuuK0Jjs=;
-        b=hnLJEIH4IvXXWKs10GYEbp4Y4pDg2XEl3FT5SkNpg19oJIBosFpcj1MjhbqromfLAQ
-         YBB37rhukh1iACYSegs2FjoO6TlLWC0E6D/N9ABl6vjTmAGlCSKvsjahapJGgxc8uulb
-         +LnJrVoK2qb/iHc18wH3/+PrquONGkjtHJi/8y0s7oz8MVzDVUZm5taX9XnMcR30SJKW
-         humc75lX+TpAPLsgEtP1J9sorxJQIQQJ1NbZ9yo7MlmHAAqCCgiLDmGmDIlYbwNnANXO
-         aZBjWLnAgJY65S/o9ur672ZdIG7PtzWXKEWAedN2JfWdAFRVJCCgLPUAxnwiDn7uTPmx
-         QS1g==
-X-Gm-Message-State: AOAM532iy/eHjTbjwOJEKFTYSEl9BB4J6WRwn4Ienw6wsb5MJMWUpHHe
-        JQNzXn0yNfdgGSuUkxgRxlseZNEs7iGs3F7r0SXes89wzMmByMl8aglGnV9yy0BmXNyzzq9u7Xw
-        +LVuID8op0tgtnePTWVKEXBjRS5dAgqZ9R5yCZg==
-X-Received: by 2002:a17:907:7241:: with SMTP id ds1mr253311ejc.491.1644248727450;
-        Mon, 07 Feb 2022 07:45:27 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJyWwLB3X8srR0F9tgq40qKr7ABY3oB3F7i+C8YvII4SCUp1VGjoXcEv3mNNgvu3qM4y28Q/Ww==
-X-Received: by 2002:a17:907:7241:: with SMTP id ds1mr253275ejc.491.1644248727021;
-        Mon, 07 Feb 2022 07:45:27 -0800 (PST)
-Received: from [192.168.0.90] (xdsl-188-155-168-84.adslplus.ch. [188.155.168.84])
-        by smtp.gmail.com with ESMTPSA id h7sm1280103ejb.40.2022.02.07.07.45.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 07 Feb 2022 07:45:26 -0800 (PST)
-Message-ID: <a49f77c8-3d92-8c84-28fe-0e6735f09610@canonical.com>
-Date:   Mon, 7 Feb 2022 16:45:25 +0100
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9255A61344;
+        Mon,  7 Feb 2022 18:11:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFC64C004E1;
+        Mon,  7 Feb 2022 18:11:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1644257511;
+        bh=zTbjKhDfqGCsDFN7i/VJmHQxr5pfwFOsmqnPT/Z6K/I=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=quON+9SF2XamyeVcfD+tNAVaBbqJZScaKFWF4xzg3sUzWwQ6Jm80t+P8MZE8WTASf
+         BFyxFX5+LEcE2Es41sStvA8eOaEIbqPUdLlx67RfIRZ3pqy2R3JZzoijUG6rxLMG6T
+         ARZtDmQwmFWpSMOgOFY29Pl6ZSSqdZeiQlNMtDnx+W194nixtlPgqmKD+p5fVSNLnT
+         vPa/qwSW57nEyTvQ6D5BsL/rZzWp47Trd/YEUlhckkqTClzJvCGxo3ipGw+HFasPsf
+         Xf8jr/9rDve9Jhgf07HXVZMbu02PeQGR5i4FX2kCrdcLkutI46XE0t+BbYW/1LjHep
+         kxE1yRzearVZw==
+Date:   Mon, 7 Feb 2022 18:11:45 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+Cc:     Lee Jones <lee.jones@linaro.org>, Rob Herring <robh+dt@kernel.org>,
+        Benson Leung <bleung@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Andi Shyti <andi@etezian.org>,
+        Sam Protsenko <semen.protsenko@linaro.org>,
+        Pratyush Yadav <p.yadav@ti.com>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
+        Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH v6 4/4] spi: s3c64xx: allow controller-data to be optional
+Message-ID: <YgFg4ev1yxohRRcH@sirena.org.uk>
+References: <20220124082347.32747-1-krzysztof.kozlowski@canonical.com>
+ <20220124082347.32747-5-krzysztof.kozlowski@canonical.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH next] dt-bindings:spi: Fix test error for sp7021.
-Content-Language: en-US
-To:     Li-hao Kuo <lhjeff911@gmail.com>, broonie@kernel.org,
-        robh+dt@kernel.org, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     wells.lu@sunplus.com, lh.kuo@sunplus.com
-References: <b8a94fbfcab68b1279b09b6297099310c209927b.1644198244.git.lhjeff911@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-In-Reply-To: <b8a94fbfcab68b1279b09b6297099310c209927b.1644198244.git.lhjeff911@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="Md1/Vl269h3xtQCX"
+Content-Disposition: inline
+In-Reply-To: <20220124082347.32747-5-krzysztof.kozlowski@canonical.com>
+X-Cookie: Never give an inch!
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On 07/02/2022 02:46, Li-hao Kuo wrote:
-> Remove the include path and modify parameters for fix error for bt binding test
 
-1. No trailing dots in commit title. Space after each ":".
-2. s/bt/dt/
-3. Wrap the commit msg:
-https://elixir.bootlin.com/linux/v5.13/source/Documentation/process/submitting-patches.rst#L124
+--Md1/Vl269h3xtQCX
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-4. What is exactly the error you are fixing?
+On Mon, Jan 24, 2022 at 09:23:47AM +0100, Krzysztof Kozlowski wrote:
+> The Samsung SoC SPI driver requires to provide controller-data node
+> for each of SPI peripheral device nodes.  Make this controller-data node
+> optional, so DTS could be simpler.
 
-> 
-> Fixes: a708078eeb99  ("spi: Add Sunplus SP7021 schema")
+Reviwed-by: Mark Brown <broonie@kernel.org>
 
-5. Only one space after SHA.
+--Md1/Vl269h3xtQCX
+Content-Type: application/pgp-signature; name="signature.asc"
 
-6. Wasn't it reported to you? Looks like it was, so you need to add
-"Reported-by" tag:
-https://lore.kernel.org/all/CAL_JsqKwg_bzJmehTG8tR2cpr+HwwvpF_cpoESidZouc_SpKcQ@mail.gmail.com/
+-----BEGIN PGP SIGNATURE-----
 
-> Signed-off-by: Li-hao Kuo <lhjeff911@gmail.com>
-> ---
->  Documentation/devicetree/bindings/spi/spi-sunplus-sp7021.yaml | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/spi-sunplus-sp7021.yaml b/Documentation/devicetree/bindings/spi/spi-sunplus-sp7021.yaml
-> index 38589fd..298eac2 100644
-> --- a/Documentation/devicetree/bindings/spi/spi-sunplus-sp7021.yaml
-> +++ b/Documentation/devicetree/bindings/spi/spi-sunplus-sp7021.yaml
-> @@ -59,8 +59,6 @@ unevaluatedProperties: false
->  
->  examples:
->    - |
-> -    #include <dt-bindings/clock/sp-sp7021.h>
-> -    #include <dt-bindings/reset/sp-sp7021.h>
->      #include <dt-bindings/interrupt-controller/irq.h>
->      spi@9C002D80 {
->          compatible = "sunplus,sp7021-spi";
-> @@ -73,8 +71,8 @@ examples:
->          interrupts = <144 IRQ_TYPE_LEVEL_HIGH>,
->                       <146 IRQ_TYPE_LEVEL_HIGH>,
->                       <145 IRQ_TYPE_LEVEL_HIGH>;
-> -        clocks = <&clkc SPI_COMBO_0>;
-> -        resets = <&rstc RST_SPI_COMBO_0>;
-> +        clocks = <&clkc 0x32>;
-> +        resets = <&rstc 0x22>;
->          pinctrl-names = "default";
->          pinctrl-0 = <&pins_spi0>;
->      };
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmIBYOEACgkQJNaLcl1U
+h9B4zQf+LxRW+/UCv7GdznE4/1/MaI2bwd55sQIq9rNBbkIN8mD6U0XaWJVoRchN
+ZPLRfdGeXeGvmQiaARD9A73su4XK3sBbwrR2qFB2ULx0XGj4twZ/f2X9yv2n9beJ
+ep5UB1zX7DNgv1OMyG2Oir5upHSFCEPqAs/sU/fmMlObXIo3ges3dWGju9w66na+
+UlS0BqHMNt7UEG71FTeH/D5TG8J9IZy3QKaVbJ8eo7DujX8B+HDLZoZmJp31Lsm1
+VTjCBq1FSSVMoJZh1NnfjIP/VhNQGOvBb6pw5/mUdCNsbS4NYIriImcxyBBS0JL6
+4wFh/Aw7Yg2GMFHiCimB2OidqopSew==
+=+exr
+-----END PGP SIGNATURE-----
 
-
-Best regards,
-Krzysztof
+--Md1/Vl269h3xtQCX--

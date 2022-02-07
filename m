@@ -2,76 +2,131 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 532A0C4332F
-	for <linux-spi@archiver.kernel.org>; Mon,  7 Feb 2022 15:48:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9421FC433F5
+	for <linux-spi@archiver.kernel.org>; Mon,  7 Feb 2022 16:05:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229545AbiBGPs2 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 7 Feb 2022 10:48:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54140 "EHLO
+        id S233232AbiBGQD4 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 7 Feb 2022 11:03:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1357337AbiBGPjv (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 7 Feb 2022 10:39:51 -0500
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::223])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7330DC0401D1
-        for <linux-spi@vger.kernel.org>; Mon,  7 Feb 2022 07:39:50 -0800 (PST)
-Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by mail.gandi.net (Postfix) with ESMTPSA id 3274160004;
-        Mon,  7 Feb 2022 15:39:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1644248389;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=P6v3WSju2B7mSE36VZ7dx7Lp44QoojX43k9fATwrWOw=;
-        b=o/rXLu07Eyo+I46bH5RdHiVgOo50cTJXJ+LCyfSjwRxVM6AYZ6D3DEJjnlRskxk+UtCtCK
-        cPijAl/ds1puX65m3yQJORcsMlUifaf+Noxcpmi8o8tvI+bv8Rgte1EEJTUOktO3PmlQjC
-        LndxjUGY+60VxbPoVVNc0CKUJbcLWQggjJv6bdTOPFpUfCQMPTWSPJe5GI1gupmZEaLgy3
-        FSWzLsYWLB4CgimoL3hT/bncNKa+UV1tj9fDahA4RtrIBkWFumDgfij0cJeuKIdwOBLQPK
-        vX+w5V+lxnW1Opmhm177ii60hoChiUnwMzolibXjT6VyAmoRVXLMVO1UmOtZ+g==
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Tudor Ambarus <Tudor.Ambarus@microchip.com>,
-        Pratyush Yadav <p.yadav@ti.com>,
-        Michael Walle <michael@walle.cc>, linux-mtd@lists.infradead.org
-Cc:     Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        Julien Su <juliensu@mxic.com.tw>,
-        Jaime Liao <jaimeliao@mxic.com.tw>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v11] spi: mxic: Add support for pipelined ECC operations
-Date:   Mon,  7 Feb 2022 16:39:46 +0100
-Message-Id: <20220207153946.710556-1-miquel.raynal@bootlin.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20220202144536.393792-1-miquel.raynal@bootlin.com>
-References: 
+        with ESMTP id S1384942AbiBGPzO (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 7 Feb 2022 10:55:14 -0500
+X-Greylist: delayed 584 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 07 Feb 2022 07:55:13 PST
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89ACFC0401CF
+        for <linux-spi@vger.kernel.org>; Mon,  7 Feb 2022 07:55:13 -0800 (PST)
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com [209.85.218.70])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 245B13F203
+        for <linux-spi@vger.kernel.org>; Mon,  7 Feb 2022 15:45:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1644248728;
+        bh=6Y+2dKF+oax8zT1A/qm081V7yzQIygshkjwkuuK0Jjs=;
+        h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+         In-Reply-To:Content-Type;
+        b=ObLcz3uko4ptfvBF35/pdsXgcaPGSEf/pUqNeqMVjwb/d85L1Zv29MRSjQOz0PDTT
+         ZMt83cfofhbsc8cqX81jD3tTC6SjOni7amzMdiuZeTrFmQMNBbejzsvX68DHF61N77
+         c7LNkMBzODC/CadlDkcmO0rV5Kcw4N62ZkdcVegKWXQ/ITE6PoxzghMIsJW+2sIaMA
+         vaAGXdxF+S+YxLeriSD04HlqJgbdUxt8+LoqqIlpSzpNTBRV5gqAmR8j5FzeJe06Dj
+         rVmAn0pIPY8vXn0jmYhJPS/2/wwGI/heZB8AeQB/lshl5heT5O/Qb0qOuyIbUt3rGl
+         j1rv/WZEmUC7g==
+Received: by mail-ej1-f70.google.com with SMTP id ky6-20020a170907778600b0068e4bd99fd1so4473748ejc.15
+        for <linux-spi@vger.kernel.org>; Mon, 07 Feb 2022 07:45:28 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=6Y+2dKF+oax8zT1A/qm081V7yzQIygshkjwkuuK0Jjs=;
+        b=hnLJEIH4IvXXWKs10GYEbp4Y4pDg2XEl3FT5SkNpg19oJIBosFpcj1MjhbqromfLAQ
+         YBB37rhukh1iACYSegs2FjoO6TlLWC0E6D/N9ABl6vjTmAGlCSKvsjahapJGgxc8uulb
+         +LnJrVoK2qb/iHc18wH3/+PrquONGkjtHJi/8y0s7oz8MVzDVUZm5taX9XnMcR30SJKW
+         humc75lX+TpAPLsgEtP1J9sorxJQIQQJ1NbZ9yo7MlmHAAqCCgiLDmGmDIlYbwNnANXO
+         aZBjWLnAgJY65S/o9ur672ZdIG7PtzWXKEWAedN2JfWdAFRVJCCgLPUAxnwiDn7uTPmx
+         QS1g==
+X-Gm-Message-State: AOAM532iy/eHjTbjwOJEKFTYSEl9BB4J6WRwn4Ienw6wsb5MJMWUpHHe
+        JQNzXn0yNfdgGSuUkxgRxlseZNEs7iGs3F7r0SXes89wzMmByMl8aglGnV9yy0BmXNyzzq9u7Xw
+        +LVuID8op0tgtnePTWVKEXBjRS5dAgqZ9R5yCZg==
+X-Received: by 2002:a17:907:7241:: with SMTP id ds1mr253311ejc.491.1644248727450;
+        Mon, 07 Feb 2022 07:45:27 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJyWwLB3X8srR0F9tgq40qKr7ABY3oB3F7i+C8YvII4SCUp1VGjoXcEv3mNNgvu3qM4y28Q/Ww==
+X-Received: by 2002:a17:907:7241:: with SMTP id ds1mr253275ejc.491.1644248727021;
+        Mon, 07 Feb 2022 07:45:27 -0800 (PST)
+Received: from [192.168.0.90] (xdsl-188-155-168-84.adslplus.ch. [188.155.168.84])
+        by smtp.gmail.com with ESMTPSA id h7sm1280103ejb.40.2022.02.07.07.45.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 07 Feb 2022 07:45:26 -0800 (PST)
+Message-ID: <a49f77c8-3d92-8c84-28fe-0e6735f09610@canonical.com>
+Date:   Mon, 7 Feb 2022 16:45:25 +0100
 MIME-Version: 1.0
-X-linux-mtd-patch-notification: thanks
-X-linux-mtd-patch-commit: b'd6986e74ec6ee6a48ce9ee1d8051b2988d747558'
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH next] dt-bindings:spi: Fix test error for sp7021.
+Content-Language: en-US
+To:     Li-hao Kuo <lhjeff911@gmail.com>, broonie@kernel.org,
+        robh+dt@kernel.org, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     wells.lu@sunplus.com, lh.kuo@sunplus.com
+References: <b8a94fbfcab68b1279b09b6297099310c209927b.1644198244.git.lhjeff911@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+In-Reply-To: <b8a94fbfcab68b1279b09b6297099310c209927b.1644198244.git.lhjeff911@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, 2022-02-02 at 14:45:36 UTC, Miquel Raynal wrote:
-> Some SPI-NAND chips do not have a proper on-die ECC engine providing
-> error correction/detection. This is particularly an issue on embedded
-> devices with limited resources because all the computations must
-> happen in software, unless an external hardware engine is provided.
-> 
-> These external engines are new and can be of two categories: external
-> or pipelined. Macronix is providing both, the former being already
-> supported. The second, however, is very SoC implementation dependent
-> and must be instantiated by the SPI host controller directly.
-> 
-> An entire subsystem has been contributed to support these engines which
-> makes the insertion into another subsystem such as SPI quite
-> straightforward without the need for a lot of specific functions.
-> 
-> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-> Reviewed-by: Mark Brown <broonie@kernel.org>
+On 07/02/2022 02:46, Li-hao Kuo wrote:
+> Remove the include path and modify parameters for fix error for bt binding test
 
-Applied to https://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux.git spi-mem-ecc.
+1. No trailing dots in commit title. Space after each ":".
+2. s/bt/dt/
+3. Wrap the commit msg:
+https://elixir.bootlin.com/linux/v5.13/source/Documentation/process/submitting-patches.rst#L124
 
-Miquel
+4. What is exactly the error you are fixing?
+
+> 
+> Fixes: a708078eeb99  ("spi: Add Sunplus SP7021 schema")
+
+5. Only one space after SHA.
+
+6. Wasn't it reported to you? Looks like it was, so you need to add
+"Reported-by" tag:
+https://lore.kernel.org/all/CAL_JsqKwg_bzJmehTG8tR2cpr+HwwvpF_cpoESidZouc_SpKcQ@mail.gmail.com/
+
+> Signed-off-by: Li-hao Kuo <lhjeff911@gmail.com>
+> ---
+>  Documentation/devicetree/bindings/spi/spi-sunplus-sp7021.yaml | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/spi/spi-sunplus-sp7021.yaml b/Documentation/devicetree/bindings/spi/spi-sunplus-sp7021.yaml
+> index 38589fd..298eac2 100644
+> --- a/Documentation/devicetree/bindings/spi/spi-sunplus-sp7021.yaml
+> +++ b/Documentation/devicetree/bindings/spi/spi-sunplus-sp7021.yaml
+> @@ -59,8 +59,6 @@ unevaluatedProperties: false
+>  
+>  examples:
+>    - |
+> -    #include <dt-bindings/clock/sp-sp7021.h>
+> -    #include <dt-bindings/reset/sp-sp7021.h>
+>      #include <dt-bindings/interrupt-controller/irq.h>
+>      spi@9C002D80 {
+>          compatible = "sunplus,sp7021-spi";
+> @@ -73,8 +71,8 @@ examples:
+>          interrupts = <144 IRQ_TYPE_LEVEL_HIGH>,
+>                       <146 IRQ_TYPE_LEVEL_HIGH>,
+>                       <145 IRQ_TYPE_LEVEL_HIGH>;
+> -        clocks = <&clkc SPI_COMBO_0>;
+> -        resets = <&rstc RST_SPI_COMBO_0>;
+> +        clocks = <&clkc 0x32>;
+> +        resets = <&rstc 0x22>;
+>          pinctrl-names = "default";
+>          pinctrl-0 = <&pins_spi0>;
+>      };
+
+
+Best regards,
+Krzysztof

@@ -2,58 +2,73 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D8F54C433EF
-	for <linux-spi@archiver.kernel.org>; Wed,  9 Feb 2022 03:08:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9109CC4321E
+	for <linux-spi@archiver.kernel.org>; Wed,  9 Feb 2022 04:08:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343874AbiBIDDh (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 8 Feb 2022 22:03:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56832 "EHLO
+        id S236126AbiBIEIG (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 8 Feb 2022 23:08:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234431AbiBIC4V (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 8 Feb 2022 21:56:21 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7700EC0613CC
-        for <linux-spi@vger.kernel.org>; Tue,  8 Feb 2022 18:56:20 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 0636FB81E39
-        for <linux-spi@vger.kernel.org>; Wed,  9 Feb 2022 02:56:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 8B87BC004E1;
-        Wed,  9 Feb 2022 02:56:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1644375377;
-        bh=F+ZqoJRQxreQ+mwfuQWeV4lehFMjUcBm+OEwyxbS1ec=;
-        h=Subject:From:Date:To:From;
-        b=UqAQ8k74XvIUcGZf8y3M1ET3CPLkH43ZzoHJVktyNccQXelUiAqqpo/QHm4/GDeDQ
-         /iDAYj3FYW5xBjvOGekBUl80+InxI/JBLnJrnaY+GuQIWqGb+ByeIxA9SVQ46XOfYM
-         z+UE503pcIowAjUySB2oOwh7uCrlRfrQ+813XyU2ivO0UTia4/3Ch71YmjKM7/aUKz
-         ixEWoH/S9tmsx5Guo8Su1lgiNsZCz89Gmq6PWnPH8F+TU1LchuOOxTRc9xjfJ52Esf
-         22/oSo96OxkYEiuc9TzR1JEOmIwcSKk1Fm/eme39NvaUUYEwPc4y7WA59StwbigCpy
-         G3Iu5EDNnonrw==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 73A83E6BB38;
-        Wed,  9 Feb 2022 02:56:17 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S239680AbiBIEHS (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 8 Feb 2022 23:07:18 -0500
+Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 762F1C061579;
+        Tue,  8 Feb 2022 20:07:17 -0800 (PST)
+Received: by mail-ot1-f48.google.com with SMTP id b12-20020a9d754c000000b0059eb935359eso705117otl.8;
+        Tue, 08 Feb 2022 20:07:17 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=1SlUTfORdsnc28tLEfE1geAYG+A9VRD+iXQo9kSBBGU=;
+        b=MrQlSdFCQqrAIpnACo431kz4pdy3zVemfvm6CokPpfXSDWCxhgd+pWZYgrG4VXusDo
+         1BMKJGg24Q9uYoiKn4XGj/TKLV8i10IuDUqN2nn9xcF62Sa4nP3xF6TShqd8vhLwmOQU
+         BMyMWFOmIBCBc8QWTwn4X6dc3HFYoqOoXFikcaYSX4JMUrBaNKhqRFqT6CA20aAVhdt5
+         80GzFBN4BondvCJKWidyDN2iXKr77E1ttEa3Z2bx1RRzBMznB148GTTtpBDYTpldpMW3
+         +CNy+tjM57NbGOwHBGRQ7bFKxhkWXYYUrAsE/rLbG1H4m9vaMXXz31X3iInh6eJi9VB4
+         wzFQ==
+X-Gm-Message-State: AOAM531Yba1QYjTlH/9qXHXoH6poLVdHz/iFYWaUMpYLPc7bmbizRkQD
+        RmEQkzFABb5E5oDOdzILsA==
+X-Google-Smtp-Source: ABdhPJw6Scyx5dzsHwxnzN7Mj5MuFSM9+a94On89xDB7U2azXkCI0FCjcs4h2HE0ouBxZojmq/wkrA==
+X-Received: by 2002:a05:6830:12c1:: with SMTP id a1mr213959otq.374.1644379636810;
+        Tue, 08 Feb 2022 20:07:16 -0800 (PST)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id x19sm6148453otj.59.2022.02.08.20.07.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Feb 2022 20:07:16 -0800 (PST)
+Received: (nullmailer pid 3636515 invoked by uid 1000);
+        Wed, 09 Feb 2022 04:07:15 -0000
+Date:   Tue, 8 Feb 2022 22:07:15 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Icenowy Zheng <icenowy@nucleisys.com>
+Cc:     Palmer Dabbelt <palmer@dabbelt.com>, linux-serial@vger.kernel.org,
+        linux-spi@vger.kernel.org, Albert Ou <aou@eecs.berkeley.edu>,
+        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>
+Subject: Re: [PATCH 08/12] dt-bindings: riscv: add binding for Nuclei
+ platform boards
+Message-ID: <YgM980WbioH/gkPL@robh.at.kernel.org>
+References: <20220127151647.2375449-1-icenowy@nucleisys.com>
+ <20220127151647.2375449-9-icenowy@nucleisys.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From:   patchwork-bot+spi-devel-general@kernel.org
-Message-Id: <164437537746.18096.3296652916390173700.git-patchwork-housekeeping@kernel.org>
-Date:   Wed, 09 Feb 2022 02:56:17 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220127151647.2375449-9-icenowy@nucleisys.com>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Latest series: [v5] Add compatible for Mediatek MT8186 (2022-02-09T01:44:42)
-  Superseding: [v4] Add compatible for Mediatek MT8186 (2022-01-25T01:23:30):
-    [V4,1/3] dt-bindings: spi: Convert spi-slave-mt27xx to json-schema
-    [V4,2/3] dt-bindings: spi: Convert spi-mt65xx to json-schema
-    [V4,3/3] dt-bindings: spi: Add compatible for Mediatek MT8186
+On Thu, 27 Jan 2022 23:16:43 +0800, Icenowy Zheng wrote:
+> As we added support for RISC-V SoCs from Nuclei, add device tree binding
+> for the currently supported board-bitstream combo (DemoSoC with UX600 on
+> DDR200T board).
+> 
+> Signed-off-by: Icenowy Zheng <icenowy@nucleisys.com>
+> ---
+>  .../devicetree/bindings/riscv/nuclei.yaml     | 27 +++++++++++++++++++
+>  1 file changed, 27 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/riscv/nuclei.yaml
+> 
 
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Acked-by: Rob Herring <robh@kernel.org>

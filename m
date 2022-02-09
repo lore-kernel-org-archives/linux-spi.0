@@ -2,73 +2,120 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 17A6BC4332F
-	for <linux-spi@archiver.kernel.org>; Wed,  9 Feb 2022 04:08:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 86D18C433F5
+	for <linux-spi@archiver.kernel.org>; Wed,  9 Feb 2022 10:55:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343592AbiBIEIQ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 8 Feb 2022 23:08:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52524 "EHLO
+        id S229640AbiBIKzq (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 9 Feb 2022 05:55:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231840AbiBIEFZ (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 8 Feb 2022 23:05:25 -0500
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A21DAC061577;
-        Tue,  8 Feb 2022 20:05:24 -0800 (PST)
-Received: by mail-ot1-f53.google.com with SMTP id o9-20020a9d7189000000b0059ee49b4f0fso726643otj.2;
-        Tue, 08 Feb 2022 20:05:24 -0800 (PST)
+        with ESMTP id S229525AbiBIKzo (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 9 Feb 2022 05:55:44 -0500
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42748E0A665D;
+        Wed,  9 Feb 2022 02:33:51 -0800 (PST)
+Received: by mail-pf1-x431.google.com with SMTP id z13so3543337pfa.3;
+        Wed, 09 Feb 2022 02:33:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=h6uHadWE/39njI3VU+9mX9j/6jVx+OkIYtMIBoXqPnk=;
+        b=DP0yY9iOmpg4V3Ef5qPI0vrA+9KFzNb4Dj+xVQVwJtkAl8VpeO3Nu/zFfEuicePhC/
+         YS8bcFc4rydhmbSPoXuxcTz5ymgTQ7PxQ9h6aPmoZ6Y3vgAN5mdnL/jgddbq/LecnB/w
+         w0C7HWUnv4jQcHjzpCtY6HPj5ssVQHLbX26tsdm6m0el3GEACKIKNuoGJlIuyv5auM87
+         qorTfV76kKzXwayoPjfGYwrivMZpalBlune8219w2acqkdrJcNVRe2yeiCuEw4pxZ/3v
+         sdpiPZ2nVQJoLLkyNq7BaZS/a+b6uzROkHPMhFIrayMERY1NqIE8kmhzwYIuRZaEBUN4
+         zSVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=2qiG7G2GNRQ6LqjEvueRABe8KlaGUPbqxlWckqcNpAQ=;
-        b=tf74ohZJaKRghj+XCDO0JZyg8sDNh8lzrUqW7K6h0fWEn6z5zDMwpnH6tEXHd8WGYW
-         XxO0SQL26kpZ9vokZ1zTNJV8jFO5hXL5Pq6h/v8ZvPdQUuOX8PDhZDcdgGgpmpNo69GW
-         Sl7QinJ1uLup7p6OWyJhQfdWJiXQ0GC4MEnBTqRwdxeg4QUdXEp+RcYFE8AfY46Nkj90
-         2q/30xZmceRvqJ4c28BrjSnh6vTB82+uQodc/mmHLJ+lrMl2bOQHBCQDywfd9RVp/9r9
-         IIAs8kXwgwhc54o4ZDbZZFVdXc7JdXAXOWCAeM83XYpgfrxJK3OD+OAojjggHkqsaocq
-         aY3w==
-X-Gm-Message-State: AOAM531qkLVhF3ymQZmhggu+wVnuYe3QdDTEBEUvjE5DxWFEzPKcRKow
-        nJl/P+Lrb0Fust20ychDjg==
-X-Google-Smtp-Source: ABdhPJynH5fEDWLtkyVZ8PCGjm16IhKQQhYktEgLlsd+uWoGQKCSWN+0Xt8uX2xw3Pvao+5XKQLBZg==
-X-Received: by 2002:a9d:6041:: with SMTP id v1mr216308otj.35.1644379523866;
-        Tue, 08 Feb 2022 20:05:23 -0800 (PST)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id 128sm5696608oor.15.2022.02.08.20.05.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Feb 2022 20:05:22 -0800 (PST)
-Received: (nullmailer pid 3633432 invoked by uid 1000);
-        Wed, 09 Feb 2022 04:05:21 -0000
-Date:   Tue, 8 Feb 2022 22:05:21 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Icenowy Zheng <icenowy@nucleisys.com>
-Cc:     linux-serial@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-riscv@lists.infradead.org, Albert Ou <aou@eecs.berkeley.edu>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH 03/12] dt-bindings: riscv: add compatible strings for
- Nuclei UX600 series
-Message-ID: <YgM9gZ0e/yoiHys9@robh.at.kernel.org>
-References: <20220127151647.2375449-1-icenowy@nucleisys.com>
- <20220127151647.2375449-4-icenowy@nucleisys.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=h6uHadWE/39njI3VU+9mX9j/6jVx+OkIYtMIBoXqPnk=;
+        b=LAIJ5wLUQs53msiBOoO5b82kfDcNzW0kf14P1eTTHLQyA0+hsEOSG5uRsof/tiAyTE
+         Z685t0Zei3M8C13VDAmVy9PZSRiek/KU9LVonHErUlm93IUblKVQLId+no6fWV+zePZQ
+         QVbjq2slTC2wMzP5xRmbtyI2s3LeQYuIhejUuUgz63mWlWiKOXCz8BiJ7hIGSL48P7Rq
+         /jVT171mY4UBeGUdM6JpvHF7dD2OC3KABc3yjkXbJngOU8f1SoX/Jm4KiswORf3lw1oK
+         dF3Cu0sItMs9AneZw1x3T/W56Tzyk3IEBbP7h2gMmEwku3rCdAEKlt/Ga6n3hxG9XObz
+         thMg==
+X-Gm-Message-State: AOAM530HA6kSgXssD+AmfnTcUYt1Jq7etWgqO/FuakAa8pZGY64xtWPd
+        /lc9rZQDzyhlq5Ukm55tLpYRzFUw7jENBW1nE4E=
+X-Google-Smtp-Source: ABdhPJx6txqMEFnOUoWn8WwwTdBxOp1W0O2unJFtdjod4jdQ5PB5EM3kBKUlCAqk0DV/S662JMa0eMJ6vyqhrZPvpDo=
+X-Received: by 2002:a63:5d61:: with SMTP id o33mr1386466pgm.442.1644402830673;
+ Wed, 09 Feb 2022 02:33:50 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220127151647.2375449-4-icenowy@nucleisys.com>
+References: <alpine.DEB.2.22.394.2202082148490.52266@hadrien>
+In-Reply-To: <alpine.DEB.2.22.394.2202082148490.52266@hadrien>
+From:   Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
+Date:   Wed, 9 Feb 2022 11:33:34 +0100
+Message-ID: <CAPybu_30=ua4emx3hP2eFeJ4gtoOncah+X+NmsBdQq7cTuqZ+g@mail.gmail.com>
+Subject: Re: [PATCH] spi: spi-xilinx: fix for_each_child.cocci warnings
+To:     Julia Lawall <julia.lawall@inria.fr>
+Cc:     Amit Kumar Mahapatra <amit.kumar-mahapatra@xilinx.com>,
+        Michal Simek <monstr@monstr.eu>,
+        Sai Krishna Potthuri <lakshmi.sai.krishna.potthuri@xilinx.com>,
+        Tejas Prajapati Rameshchandra <tejaspra@xilinx.com>,
+        Naga Sureshkumar Relli <nagasure@xilinx.com>,
+        Shubhrajyoti Datta <shubhrajyoti.datta@xilinx.com>,
+        Mark Brown <broonie@kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        "moderated list:ARM/S5P EXYNOS AR..." 
+        <linux-arm-kernel@lists.infradead.org>,
+        LKML <linux-kernel@vger.kernel.org>, kbuild-all@lists.01.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, 27 Jan 2022 23:16:38 +0800, Icenowy Zheng wrote:
-> Nuclei UX600 series are 64-bit, MMU-equipped CPUs, which can run Linux.
-> 
-> Add compatible strings for these CPU cores.
-> 
-> Signed-off-by: Icenowy Zheng <icenowy@nucleisys.com>
-> ---
->  Documentation/devicetree/bindings/riscv/cpus.yaml | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
+On Tue, Feb 8, 2022 at 9:51 PM Julia Lawall <julia.lawall@inria.fr> wrote:
+>
+> From: kernel test robot <lkp@intel.com>
+>
+> After for_each_available_child_of_node, of_node_put is needed before break
+> and return.
+>
+> Generated by: scripts/coccinelle/iterators/for_each_child.cocci
+>
+> Fixes: 3973536c4560 ("spi: spi-xilinx: Updated axi-qspi controller driver")
+> CC: Amit Kumar Mahapatra <amit.kumar-mahapatra@xilinx.com>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: Julia Lawall <julia.lawall@inria.fr>
 
-Acked-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> ---
+>
+> tree:   https://github.com/Xilinx/linux-xlnx xlnx_rebase_v5.15
+> head:   1183ce490adb103e5e569b8ebd74c50c885ddc05
+> commit: 3973536c456079bf3d09e9a97bf33d29422b183f [861/872] spi: spi-xilinx: Updated axi-qspi controller driver
+> :::::: branch date: 7 days ago
+> :::::: commit date: 7 days ago
+>
+>  spi-xilinx.c |    5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+>
+> --- a/drivers/spi/spi-xilinx.c
+> +++ b/drivers/spi/spi-xilinx.c
+> @@ -693,13 +693,16 @@ static int xilinx_spi_probe(struct platf
+>                 if (startup_block) {
+>                         ret = of_property_read_u32(nc, "reg",
+>                                                    &cs_num);
+> -                       if (ret < 0)
+> +                       if (ret < 0) {
+> +                               of_node_put(nc);
+>                                 return -EINVAL;
+> +                       }
+>                 }
+>                 ret = of_property_read_u32(nc, "spi-rx-bus-width",
+>                                            &rx_bus_width);
+>                 if (!ret) {
+>                         xspi->rx_bus_width = rx_bus_width;
+> +                       of_node_put(nc);
+>                         break;
+>                 }
+>         }
+
+
+
+-- 
+Ricardo Ribalda

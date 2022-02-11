@@ -2,105 +2,103 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DC9C5C433FE
-	for <linux-spi@archiver.kernel.org>; Fri, 11 Feb 2022 03:53:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D5349C433F5
+	for <linux-spi@archiver.kernel.org>; Fri, 11 Feb 2022 04:50:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241819AbiBKDxg (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 10 Feb 2022 22:53:36 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:39952 "EHLO
+        id S244238AbiBKEuJ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 10 Feb 2022 23:50:09 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241365AbiBKDxe (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 10 Feb 2022 22:53:34 -0500
-Received: from mail-m17664.qiye.163.com (mail-m17664.qiye.163.com [59.111.176.64])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C740055BE;
-        Thu, 10 Feb 2022 19:53:34 -0800 (PST)
-Received: from localhost.localdomain (unknown [58.22.7.114])
-        by mail-m17664.qiye.163.com (Hmail) with ESMTPA id 3B3D91401A7;
-        Fri, 11 Feb 2022 11:43:50 +0800 (CST)
-From:   Jon Lin <jon.lin@rock-chips.com>
-To:     broonie@kernel.org
-Cc:     heiko@sntech.de, linux-spi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
-        shengfei Xu <xsf@rock-chips.com>,
-        Jon Lin <jon.lin@rock-chips.com>
-Subject: [PATCH 4/6] spi: rockchip: Suspend and resume the bus during NOIRQ_SYSTEM_SLEEP_PM ops
-Date:   Fri, 11 Feb 2022 11:43:40 +0800
-Message-Id: <20220211034344.4130-4-jon.lin@rock-chips.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20220211034344.4130-1-jon.lin@rock-chips.com>
-References: <20220211034344.4130-1-jon.lin@rock-chips.com>
-X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgPGg8OCBgUHx5ZQUlOS1dZCBgUCR5ZQVlLVUtZV1
-        kWDxoPAgseWUFZKDYvK1lXWShZQUhPN1dZLVlBSVdZDwkaFQgSH1lBWUJPTB1WT01CQ0wYSRpPHU
-        8aVRMBExYaEhckFA4PWVdZFhoPEhUdFFlBWVVLWQY+
-X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6NzY6ATo4LD5CAh4dCA8cF08C
-        Sy0KCx9VSlVKTU9PTk5KS0hLTUNKVTMWGhIXVREUFVUXEhU7CRQYEFYYExILCFUYFBZFWVdZEgtZ
-        QVlOQ1VJSVVMVUpKT1lXWQgBWUFISk5MNwY+
-X-HM-Tid: 0a7ee6e1469dda2fkuws3b3d91401a7
+        with ESMTP id S244157AbiBKEuG (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 10 Feb 2022 23:50:06 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 85B9021AE
+        for <linux-spi@vger.kernel.org>; Thu, 10 Feb 2022 20:50:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1644555003;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=dTN6FickAcVPgVjW2UUCx0PlKyGKDjTzkZ/0MQ6fTqs=;
+        b=Z8i4tThqiQM0z95hsb0AunDuM5bg4X/wlrSmZTeI5ZJ30zcLG+HfpWjIqrdLnCZMkUdHqx
+        UBtAG+Rl0P1usA4GNdnJ4Jbd/R2gFxinmha9gAp7oeQtxh9sww9p5QLeBzqbynC8SnfvAK
+        Pswz0i4BA9C9Js/++FUG/ghdHw07nHc=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-100-gRHfkos8OWKS1mnhlbch7A-1; Thu, 10 Feb 2022 23:50:02 -0500
+X-MC-Unique: gRHfkos8OWKS1mnhlbch7A-1
+Received: by mail-qk1-f200.google.com with SMTP id p23-20020a05620a15f700b00506d8ec3749so4994529qkm.4
+        for <linux-spi@vger.kernel.org>; Thu, 10 Feb 2022 20:50:02 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=dTN6FickAcVPgVjW2UUCx0PlKyGKDjTzkZ/0MQ6fTqs=;
+        b=q/VuwH/Mm9hFgNHkQZg5jUeDbjQo8VE4t7kOgdxatASHa+SqCJBVP1Fo8e/9czRu/C
+         1kGi/weGxWuJr9QJ/GGjfM88vsK7hNUF1qCG558X5lSP3joX2JPsOQXD8t1J2ORN4xoB
+         VpQP+mrpsIf7x90HH2jOK32tHK09YtfiSsfTUZQ0Q/WEubQO7A/cjcqlqx0UrvZto/g5
+         f3s+i0YmLG6OLNVl4jMd1HZFtNyzQdk7Vpn/BUGengw5qYi2lW8apVko3jz0lowzNeFG
+         U6dr7b95WOowfB4WhF4fJCkHSrLQLXpDeV8iqbt6F16U3I15Ovf2g+aN7jqD0mgOnN0/
+         ELRg==
+X-Gm-Message-State: AOAM530xVpBck/dgVswCibcnf3Xeq5jPaBDZFgDdaZu0Z7DsWtAEbFZx
+        Hw67hhLThQNa+8SN+/nkPgOJaUfo7J5t7m5n9eltvhBQbiFPfkg6bsY76TjRrr9Jj2DBMMhOEXv
+        uopCzDSJe6VcNs75Clb/N
+X-Received: by 2002:a05:622a:5ce:: with SMTP id d14mr7366626qtb.7.1644555001917;
+        Thu, 10 Feb 2022 20:50:01 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJx7bVqaMXRkOzVf++7UD3m0x4aXle0i8TevJDeQKqz/0UREQhvZ7AVvKjH9oIg1JO06qDwrkA==
+X-Received: by 2002:a05:622a:5ce:: with SMTP id d14mr7366622qtb.7.1644555001709;
+        Thu, 10 Feb 2022 20:50:01 -0800 (PST)
+Received: from localhost.localdomain (024-205-208-113.res.spectrum.com. [24.205.208.113])
+        by smtp.gmail.com with ESMTPSA id bp18sm3323284qtb.72.2022.02.10.20.49.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 10 Feb 2022 20:50:01 -0800 (PST)
+Subject: Re: [PATCH] spi: Fix warning for Clang build
+To:     =?UTF-8?B?TGggS3VvIOmDreWKm+ixqg==?= <lh.Kuo@sunplus.com>,
+        Mark Brown <broonie@kernel.org>,
+        Li-hao Kuo <lhjeff911@gmail.com>
+Cc:     "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        =?UTF-8?B?V2VsbHMgTHUg5ZGC6Iqz6aiw?= <wells.lu@sunplus.com>
+References: <691d52b72f978f562136c587319852f5c65f08fe.1644460444.git.lhjeff911@gmail.com>
+ <YgT0LMcDpCEYHFYg@sirena.org.uk>
+ <99ab624e2af4414bb2a785f64f35bd95@sphcmbx02.sunplus.com.tw>
+From:   Tom Rix <trix@redhat.com>
+Message-ID: <aaaefa2b-e043-2bf8-28aa-d89deb3fbc2a@redhat.com>
+Date:   Thu, 10 Feb 2022 20:49:58 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
+MIME-Version: 1.0
+In-Reply-To: <99ab624e2af4414bb2a785f64f35bd95@sphcmbx02.sunplus.com.tw>
+Authentication-Results: relay.mimecast.com;
+        auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=trix@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=big5; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: shengfei Xu <xsf@rock-chips.com>
 
-the wakeup interrupt handler which is guaranteed not to run while
-@resume noirq() is being executed. the patch can help to avoid the
-wakeup source try to access spi when the spi is in suspend mode.
+On 2/10/22 7:32 PM, Lh Kuo ³¢¤O»¨ wrote:
+>> The return here means that the initialization is now redundant and will stop the compiler spotting any
+>> future similar issues which isn't ideal.
+> I got it, so do I need to submit a new patch?
 
-Signed-off-by: shengfei Xu <xsf@rock-chips.com>
-Signed-off-by: Jon Lin <jon.lin@rock-chips.com>
----
+Assuming yes, so something else..
 
- drivers/spi/spi-rockchip.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+Looking again at the function, there are 3 sets of if-check blocks these 
+could be combined into the first one.
 
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 5f6a70664871..5457af616a44 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -959,14 +959,14 @@ static int rockchip_spi_suspend(struct device *dev)
- {
- 	int ret;
- 	struct spi_controller *ctlr = dev_get_drvdata(dev);
-+	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
- 
- 	ret = spi_controller_suspend(ctlr);
- 	if (ret < 0)
- 		return ret;
- 
--	ret = pm_runtime_force_suspend(dev);
--	if (ret < 0)
--		return ret;
-+	clk_disable_unprepare(rs->spiclk);
-+	clk_disable_unprepare(rs->apb_pclk);
- 
- 	pinctrl_pm_select_sleep_state(dev);
- 
-@@ -981,10 +981,14 @@ static int rockchip_spi_resume(struct device *dev)
- 
- 	pinctrl_pm_select_default_state(dev);
- 
--	ret = pm_runtime_force_resume(dev);
-+	ret = clk_prepare_enable(rs->apb_pclk);
- 	if (ret < 0)
- 		return ret;
- 
-+	ret = clk_prepare_enable(rs->spiclk);
-+	if (ret < 0)
-+		clk_disable_unprepare(rs->apb_pclk);
-+
- 	ret = spi_controller_resume(ctlr);
- 	if (ret < 0) {
- 		clk_disable_unprepare(rs->spiclk);
-@@ -1026,7 +1030,7 @@ static int rockchip_spi_runtime_resume(struct device *dev)
- #endif /* CONFIG_PM */
- 
- static const struct dev_pm_ops rockchip_spi_pm = {
--	SET_SYSTEM_SLEEP_PM_OPS(rockchip_spi_suspend, rockchip_spi_resume)
-+	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(rockchip_spi_suspend, rockchip_spi_resume)
- 	SET_RUNTIME_PM_OPS(rockchip_spi_runtime_suspend,
- 			   rockchip_spi_runtime_resume, NULL)
- };
--- 
-2.17.1
+The later two are variations on is this an rx or a tx, the first check 
+does that.
+
+T
+
+>
+>
 

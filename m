@@ -2,108 +2,105 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AA61DC433F5
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DC9C5C433FE
 	for <linux-spi@archiver.kernel.org>; Fri, 11 Feb 2022 03:53:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241729AbiBKDxg (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S241819AbiBKDxg (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Thu, 10 Feb 2022 22:53:36 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:39944 "EHLO
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:39952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241220AbiBKDxe (ORCPT
+        with ESMTP id S241365AbiBKDxe (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Thu, 10 Feb 2022 22:53:34 -0500
 Received: from mail-m17664.qiye.163.com (mail-m17664.qiye.163.com [59.111.176.64])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B73B81125;
-        Thu, 10 Feb 2022 19:53:33 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C740055BE;
+        Thu, 10 Feb 2022 19:53:34 -0800 (PST)
 Received: from localhost.localdomain (unknown [58.22.7.114])
-        by mail-m17664.qiye.163.com (Hmail) with ESMTPA id 301231401E1;
-        Fri, 11 Feb 2022 11:43:54 +0800 (CST)
+        by mail-m17664.qiye.163.com (Hmail) with ESMTPA id 3B3D91401A7;
+        Fri, 11 Feb 2022 11:43:50 +0800 (CST)
 From:   Jon Lin <jon.lin@rock-chips.com>
 To:     broonie@kernel.org
 Cc:     heiko@sntech.de, linux-spi@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
+        shengfei Xu <xsf@rock-chips.com>,
         Jon Lin <jon.lin@rock-chips.com>
-Subject: [PATCH v10 6/6] spi: rockchip: Support SPI_CS_HIGH
-Date:   Fri, 11 Feb 2022 11:43:44 +0800
-Message-Id: <20220211034344.4130-8-jon.lin@rock-chips.com>
+Subject: [PATCH 4/6] spi: rockchip: Suspend and resume the bus during NOIRQ_SYSTEM_SLEEP_PM ops
+Date:   Fri, 11 Feb 2022 11:43:40 +0800
+Message-Id: <20220211034344.4130-4-jon.lin@rock-chips.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20220211034344.4130-1-jon.lin@rock-chips.com>
 References: <20220211034344.4130-1-jon.lin@rock-chips.com>
 X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgPGg8OCBgUHx5ZQUlOS1dZCBgUCR5ZQVlLVUtZV1
-        kWDxoPAgseWUFZKDYvK1lXWShZQUhPN1dZLVlBSVdZDwkaFQgSH1lBWUNNTx1WGktCTE5DSU5OSk
-        8eVRMBExYaEhckFA4PWVdZFhoPEhUdFFlBWVVLWQY+
-X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6PVE6Pio4Pz5WMB44GA8hF1ZO
-        OCtPC0JVSlVKTU9PTk5KS0hPTkxMVTMWGhIXVREUFVUXEhU7CRQYEFYYExILCFUYFBZFWVdZEgtZ
-        QVlOQ1VJSVVMVUpKT1lXWQgBWUFIS09MNwY+
-X-HM-Tid: 0a7ee6e155edda2fkuws301231401e1
+        kWDxoPAgseWUFZKDYvK1lXWShZQUhPN1dZLVlBSVdZDwkaFQgSH1lBWUJPTB1WT01CQ0wYSRpPHU
+        8aVRMBExYaEhckFA4PWVdZFhoPEhUdFFlBWVVLWQY+
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6NzY6ATo4LD5CAh4dCA8cF08C
+        Sy0KCx9VSlVKTU9PTk5KS0hLTUNKVTMWGhIXVREUFVUXEhU7CRQYEFYYExILCFUYFBZFWVdZEgtZ
+        QVlOQ1VJSVVMVUpKT1lXWQgBWUFISk5MNwY+
+X-HM-Tid: 0a7ee6e1469dda2fkuws3b3d91401a7
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-1.Add standard spi-cs-high support
-2.Refer to spi-controller.yaml for details
+From: shengfei Xu <xsf@rock-chips.com>
 
+the wakeup interrupt handler which is guaranteed not to run while
+@resume noirq() is being executed. the patch can help to avoid the
+wakeup source try to access spi when the spi is in suspend mode.
+
+Signed-off-by: shengfei Xu <xsf@rock-chips.com>
 Signed-off-by: Jon Lin <jon.lin@rock-chips.com>
 ---
 
-Changes in v10: None
-Changes in v9: None
-Changes in v8: None
-Changes in v7: None
-Changes in v6: None
-Changes in v5: None
-Changes in v4: None
-Changes in v3: None
-
- drivers/spi/spi-rockchip.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/spi/spi-rockchip.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index fbd750b1d28e..540861ca2ba3 100644
+index 5f6a70664871..5457af616a44 100644
 --- a/drivers/spi/spi-rockchip.c
 +++ b/drivers/spi/spi-rockchip.c
-@@ -107,6 +107,8 @@
- #define CR0_OPM_MASTER				0x0
- #define CR0_OPM_SLAVE				0x1
- 
-+#define CR0_SOI_OFFSET				23
-+
- #define CR0_MTM_OFFSET				0x21
- 
- /* Bit fields in SER, 2bit */
-@@ -236,7 +238,7 @@ static void rockchip_spi_set_cs(struct spi_device *spi, bool enable)
+@@ -959,14 +959,14 @@ static int rockchip_spi_suspend(struct device *dev)
  {
- 	struct spi_controller *ctlr = spi->controller;
- 	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
--	bool cs_asserted = !enable;
-+	bool cs_asserted = spi->mode & SPI_CS_HIGH ? enable : !enable;
+ 	int ret;
+ 	struct spi_controller *ctlr = dev_get_drvdata(dev);
++	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
  
- 	/* Return immediately for no-op */
- 	if (cs_asserted == rs->cs_asserted[spi->chip_select])
-@@ -507,6 +509,8 @@ static int rockchip_spi_config(struct rockchip_spi *rs,
- 	cr0 |= (spi->mode & 0x3U) << CR0_SCPH_OFFSET;
- 	if (spi->mode & SPI_LSB_FIRST)
- 		cr0 |= CR0_FBM_LSB << CR0_FBM_OFFSET;
-+	if (spi->mode & SPI_CS_HIGH)
-+		cr0 |= BIT(spi->chip_select) << CR0_SOI_OFFSET;
+ 	ret = spi_controller_suspend(ctlr);
+ 	if (ret < 0)
+ 		return ret;
  
- 	if (xfer->rx_buf && xfer->tx_buf)
- 		cr0 |= CR0_XFM_TR << CR0_XFM_OFFSET;
-@@ -795,6 +799,14 @@ static int rockchip_spi_probe(struct platform_device *pdev)
- 		ctlr->can_dma = rockchip_spi_can_dma;
- 	}
+-	ret = pm_runtime_force_suspend(dev);
+-	if (ret < 0)
+-		return ret;
++	clk_disable_unprepare(rs->spiclk);
++	clk_disable_unprepare(rs->apb_pclk);
  
-+	switch (readl_relaxed(rs->regs + ROCKCHIP_SPI_VERSION)) {
-+	case ROCKCHIP_SPI_VER2_TYPE2:
-+		ctlr->mode_bits |= SPI_CS_HIGH;
-+		break;
-+	default:
-+		break;
-+	}
+ 	pinctrl_pm_select_sleep_state(dev);
+ 
+@@ -981,10 +981,14 @@ static int rockchip_spi_resume(struct device *dev)
+ 
+ 	pinctrl_pm_select_default_state(dev);
+ 
+-	ret = pm_runtime_force_resume(dev);
++	ret = clk_prepare_enable(rs->apb_pclk);
+ 	if (ret < 0)
+ 		return ret;
+ 
++	ret = clk_prepare_enable(rs->spiclk);
++	if (ret < 0)
++		clk_disable_unprepare(rs->apb_pclk);
 +
- 	ret = devm_spi_register_controller(&pdev->dev, ctlr);
+ 	ret = spi_controller_resume(ctlr);
  	if (ret < 0) {
- 		dev_err(&pdev->dev, "Failed to register controller\n");
+ 		clk_disable_unprepare(rs->spiclk);
+@@ -1026,7 +1030,7 @@ static int rockchip_spi_runtime_resume(struct device *dev)
+ #endif /* CONFIG_PM */
+ 
+ static const struct dev_pm_ops rockchip_spi_pm = {
+-	SET_SYSTEM_SLEEP_PM_OPS(rockchip_spi_suspend, rockchip_spi_resume)
++	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(rockchip_spi_suspend, rockchip_spi_resume)
+ 	SET_RUNTIME_PM_OPS(rockchip_spi_runtime_suspend,
+ 			   rockchip_spi_runtime_resume, NULL)
+ };
 -- 
 2.17.1
 

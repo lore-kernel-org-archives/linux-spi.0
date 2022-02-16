@@ -2,156 +2,202 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D365DC433EF
-	for <linux-spi@archiver.kernel.org>; Wed, 16 Feb 2022 10:38:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CCF0AC433F5
+	for <linux-spi@archiver.kernel.org>; Wed, 16 Feb 2022 10:41:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230134AbiBPKi2 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 16 Feb 2022 05:38:28 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:44242 "EHLO
+        id S229494AbiBPKlu (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 16 Feb 2022 05:41:50 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:55164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230131AbiBPKi1 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 16 Feb 2022 05:38:27 -0500
-X-Greylist: delayed 4201 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 16 Feb 2022 02:38:14 PST
-Received: from 8.mo552.mail-out.ovh.net (8.mo552.mail-out.ovh.net [46.105.37.156])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2BF517185B
-        for <linux-spi@vger.kernel.org>; Wed, 16 Feb 2022 02:38:13 -0800 (PST)
-Received: from mxplan5.mail.ovh.net (unknown [10.109.156.219])
-        by mo552.mail-out.ovh.net (Postfix) with ESMTPS id 3D56D24B44;
-        Wed, 16 Feb 2022 08:12:56 +0000 (UTC)
-Received: from kaod.org (37.59.142.96) by DAG4EX1.mxp5.local (172.16.2.31)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.18; Wed, 16 Feb
- 2022 09:12:54 +0100
-Authentication-Results: garm.ovh; auth=pass (GARM-96R0010590fb10-4626-4deb-8236-9a8be91dbf44,
-                    CB3E44AF90526EF3DA3218D7163352937EBBBEE5) smtp.auth=clg@kaod.org
-X-OVh-ClientIp: 82.64.250.170
-Message-ID: <d517d453-ddd5-8c9e-7b1f-56f5f83d2f1e@kaod.org>
-Date:   Wed, 16 Feb 2022 09:12:48 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH 10/10] spi: aspeed: Activate new spi-mem driver
+        with ESMTP id S229475AbiBPKlt (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 16 Feb 2022 05:41:49 -0500
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 016B092D3A;
+        Wed, 16 Feb 2022 02:41:36 -0800 (PST)
+Received: from pps.filterd (m0250810.ppops.net [127.0.0.1])
+        by mx0a-0064b401.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 21G9iq7u002789;
+        Wed, 16 Feb 2022 02:41:34 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com; h=subject : to : cc
+ : references : from : message-id : date : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=PPS06212021;
+ bh=AygaQ6JH1CFSPuKgf/NdpVeOZojTaBWRfX9nJn85fMw=;
+ b=NrQhrRjoUV7TRYxC961R2mdUtW682rC8E5rloxoRk+p2nDRMMPY5Dc6Y8c0RWnlxmfoF
+ IxdPVGaK3TUYy6Mf8AN7CHdaYQIaRAHVHJNAumGCegzn/zOg665gvpfRUfcsxXjejOHY
+ ZSMzXzZtKsTO9KIB0dINkeOQQvloxT7AQzNlwYqWEzqrhV6Vsvliz3Cjy/Xkw6F/UZ1F
+ rhpubfuCM1cA0pJLzFBMWilcuhylN0CBCWU9x3172JYoJOpyPV7CzEXg/r/sPEZf7I+X
+ ptvStAFd1YWv6vZyU6wiz7n0G5W7P3njQKQtOAmTp62SVgywuM01FB0zxQIE4FIlm/qt ag== 
+Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10lp2106.outbound.protection.outlook.com [104.47.58.106])
+        by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 3e8n1x0d6r-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 16 Feb 2022 02:41:34 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=gOIcXY4gb9AuSjVJV3aKAvd8DvLfBAFVWDsXK5vU7+R4FOA52sPWyGe6TpyFO/6Mz4y08O9iRCcNDhrGafNQBugCBxwoTQ/cPYAQWtyRzDC2o7BKwJ6RGs1bQc3EfVHGpNQPI74oWpLzGQnDPb5MLQ6sVz0U8GQr26rIdYbTj6VXHpL7yu6MLrkApdADSzmo84zmXoFNFpd8B0htIhcRKk7lKYgCFe2vB9llQnX2k5mW/sLXNkFOthHGhQ9s5936D97qfxVAVHK3tCymg8+m7mLEhLSuG7pubDR9ljJ9SfJc3hdpYpAM+FH3Z7kbmi3ZNeUVu+2SxTs6WWus2+799A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=AygaQ6JH1CFSPuKgf/NdpVeOZojTaBWRfX9nJn85fMw=;
+ b=IIQWO3EFSMfqXMvhd9sVmjJSWAzgI+JZ2Ss0jehbsJByVoVwXH9fOq7+s+BdArxVRG0liIo8xnxBsQ3W7Rfo7OCB1DCtHbyO+jM8TVJYvnC+qOJLsYWJsPTPVeU75CmINh9h1RG4uJV1FFxSnMplGY5NM8ZUPkGdlSbzJyosojJKtu81JtSgW6B7coMm99ievDeV67nYAIDvLHlqOu35Gg7/dQAmCeYzDr4p9SGXV+1SBpGPYYw1tlyENWnkzus4NHlFbYzFaWsICPiPFcZ5Qkb9HvEGgjo+2i7W6C2yRX3tdjVbJ7vxO2Sl109MF/jS6TuYepO6eWDGEzqWHufWOA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+Received: from SN6PR11MB3008.namprd11.prod.outlook.com (2603:10b6:805:cf::18)
+ by BYAPR11MB2599.namprd11.prod.outlook.com (2603:10b6:a02:c6::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4975.15; Wed, 16 Feb
+ 2022 10:41:30 +0000
+Received: from SN6PR11MB3008.namprd11.prod.outlook.com
+ ([fe80::d8f7:376f:d7ee:cfb3]) by SN6PR11MB3008.namprd11.prod.outlook.com
+ ([fe80::d8f7:376f:d7ee:cfb3%5]) with mapi id 15.20.4995.015; Wed, 16 Feb 2022
+ 10:41:29 +0000
+Subject: =?UTF-8?B?UmU6IOWbnuWkjTogW1BBVENIXSBzcGk6IGRpc2FibGUgY2hpcHNlbGVj?=
+ =?UTF-8?Q?t_after_complete_transfer?=
+To:     Mark Brown <broonie@kernel.org>
+Cc:     "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "Xue, Ying" <Ying.Xue@windriver.com>
+References: <SN6PR11MB3008AF5619B0B026836FD7429F2F9@SN6PR11MB3008.namprd11.prod.outlook.com>
+ <YgU1+cIlANAkJCAL@sirena.org.uk>
+ <19c69765-8584-2e6b-25b8-7053a5afa5d4@windriver.com>
+ <YgVH310gQ1sK6dlr@sirena.org.uk>
+ <a5aa6dcf-e3dd-e8ff-edcb-edad96f8ddfe@windriver.com>
+ <YgpOzw2rq+vAIPBU@sirena.org.uk>
+ <8fd9c3ef-df64-b8ad-de6e-ef86806d53b5@windriver.com>
+ <Ygpo9YT9PrQAAIH3@sirena.org.uk>
+From:   Yun Zhou <yun.zhou@windriver.com>
+Message-ID: <111c2102-5782-2740-65b0-47b0e5194ce9@windriver.com>
+Date:   Wed, 16 Feb 2022 18:41:21 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
+In-Reply-To: <Ygpo9YT9PrQAAIH3@sirena.org.uk>
+Content-Type: text/plain; charset=windows-1252; format=flowed
 Content-Language: en-US
-To:     Joel Stanley <joel@jms.id.au>
-CC:     <linux-spi@vger.kernel.org>,
-        linux-mtd <linux-mtd@lists.infradead.org>,
-        Mark Brown <broonie@kernel.org>,
-        Tudor Ambarus <tudor.ambarus@microchip.com>,
-        Pratyush Yadav <p.yadav@ti.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-aspeed <linux-aspeed@lists.ozlabs.org>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>,
-        devicetree <devicetree@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <20220214094231.3753686-1-clg@kaod.org>
- <20220214094231.3753686-11-clg@kaod.org>
- <CACPK8XdvczyZ1QHtFm7JJAC7AY+QmWSx0MarUwLjUyOtC9DnSQ@mail.gmail.com>
-From:   =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <CACPK8XdvczyZ1QHtFm7JJAC7AY+QmWSx0MarUwLjUyOtC9DnSQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.96]
-X-ClientProxiedBy: DAG3EX1.mxp5.local (172.16.2.21) To DAG4EX1.mxp5.local
- (172.16.2.31)
-X-Ovh-Tracer-GUID: 365dd3b7-2a44-4f14-8514-26cf6445fd31
-X-Ovh-Tracer-Id: 12828503540660800388
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvvddrjeehgdduudegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvfhfhjggtgfhisehtkeertddtfeejnecuhfhrohhmpeevrogurhhitggpnfgvpgfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepieegvdffkeegfeetuddttddtveduiefhgeduffekiedtkeekteekhfffleevleelnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrdelieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdpnhgspghrtghpthhtohepuddprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: HK0PR03CA0111.apcprd03.prod.outlook.com
+ (2603:1096:203:b0::27) To SN6PR11MB3008.namprd11.prod.outlook.com
+ (2603:10b6:805:cf::18)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 15e83db7-b0b4-443b-3881-08d9f138e401
+X-MS-TrafficTypeDiagnostic: BYAPR11MB2599:EE_
+X-Microsoft-Antispam-PRVS: <BYAPR11MB259986723DCE043D31DFBE9B9F359@BYAPR11MB2599.namprd11.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:6430;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 2o2Kv7KdvuEbI6MHSOE6FdWMaY3uXDEYensRSPxikSl3JYUbM8LMuxYvfWK6uicMKYOqHyJde+/AzgtdFrgzpk6gYIJI1k+sYU1U8GY3NujSeI+dvueeobWEqiQGU0zRm5m2bGcS0AX3K8s9PzoVPoNEl39+Ss56GY0LzwYbYoPhApja+c/L+nUlpXOi7k79wNYqPT5AWGUH4tklYN+by84Q5YpZzFtKcl846Aq0KNaa0PeI7W6B1onIyc/yHbE4xAOrMoVUAXo1pMI0M7qKHVJF3MqOcU4FuCfmvrT38P+dqhMjP+JQQItrUW6MbQeo9v/SvonRJBKArPjLc3ohFdhJyho1edU2QrLrCxjGY1hcur2nwhXTUjUpddUD/1arh8PGP7oEs1GpfsBfu00FYsEKblfI0vEHnoDucC4mSb2RHG7G/uXTySxSiw97Of07kuZcMX/hw1Tb9JDz/Dfm0mNanALbYbtcgh+ENIi8ZDzO4prjoO3pZyVXsPafWCxRNCP6QfMIigllDD8NK/qW8lACYuSKnvx9BR0ufGoK8pCrRFSU2k+2h8h9IY0L7HfMp9rNnZ5vigSMWx+XUco0XaD1HTHfWMOBmD0wtp2WSUG7I/TW38hylTMD9Ut3zQ1Bp8szEGlncsZosNXr7gT4zvoDH/SQt7fFHZvDGWjWS1RgY9MJaCNCPdFYQa8UINvgOJdFIaoTUd4lliPFQJxICpARuo70DvSeB4Q5P+kfC3LsRN8OYR5jVhoHhdXBl9Ic
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR11MB3008.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(31686004)(38350700002)(2906002)(38100700002)(36756003)(44832011)(5660300002)(224303003)(8936002)(52116002)(86362001)(6506007)(6666004)(31696002)(53546011)(2616005)(508600001)(186003)(66476007)(66556008)(66946007)(26005)(54906003)(6916009)(6512007)(316002)(6486002)(83380400001)(107886003)(4326008)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?Windows-1252?Q?6jsIujm3NcxS2NAhpE6JUwyWpKLsrAlLwFE/e+BwTZjT0XCPhnnQ6fp8?=
+ =?Windows-1252?Q?T+aikbMN/5zxvR16Iak5bM4pEI8w45JnFXr8Nh3hdUUi33v+9cuhCwck?=
+ =?Windows-1252?Q?KVzAOFsuW82Ol5grvc4ckjGxLNy9ZnB1yiVBxzcAskO8vrlWlrhfbEy3?=
+ =?Windows-1252?Q?jLIlPBvrceoRWvKwPF0F3v7JqYaMB1clfM34ZvpEm8DkOHRytrGzL/7F?=
+ =?Windows-1252?Q?YWDyln6vkau/K0Yg1I/SH063y0A7/V+gzPoUjv0MX6YSHE5/Gu5Pq+GA?=
+ =?Windows-1252?Q?BCGd6OXhNoZCpZQ9x2F9CSX8uVCEuwJpoNngaobXlPr54Dy6GgDebRxz?=
+ =?Windows-1252?Q?yy9e6+9foNi9PX9HKgEawFCetPSCubftdyZczg1U7P5dmtg2LDmr7Jte?=
+ =?Windows-1252?Q?JDw/WX79rXZRYttTJXaB4zOKTcaIbTAAWGSngHjw5o9pgAUCL9O2LD/c?=
+ =?Windows-1252?Q?Se7OXmLBN6G9/ZRD535Bl8lPcbA2lcoIqSMbGuk+XwcJlJiy8Zflu9JA?=
+ =?Windows-1252?Q?2RCKsKBkt8WwsYagOiuQoV+32GV3VDPxTZyxpopWTTlGlLM8q0IVA7Sz?=
+ =?Windows-1252?Q?gNfIxF0nc0TzzE+wQQnDAvXLYXt5uah1WNfzJAfX1sbBwgJWR7vyT+bn?=
+ =?Windows-1252?Q?ybCKDmDjGVqVSZT9+LhmJnHbElSeY28++uppYF8eVACTqokpIlxKpdF/?=
+ =?Windows-1252?Q?r1Oqs50HYDFmHUVEvDGrMwB9VgoNEvc4aI0vvdGjLHjdPMhIgLVrmtfG?=
+ =?Windows-1252?Q?jjGke670qfsCDXhHO3nq+owRhc9a1MoRP1yJlFFLkOktaqxCM6eyBcsp?=
+ =?Windows-1252?Q?0ecWeLwKlvtm4NeNyORl8WzrJkWQHOn0KMVA5fx+VFZ4MPUBT5je17lV?=
+ =?Windows-1252?Q?T4pteRimW0LbIEOc1uhLJ7b2rjo2x83+HmgF1xkkIOsx6njbehPgTXuQ?=
+ =?Windows-1252?Q?blPVd7BfEMFFk3c39mJymNJ8RQJ0Q4qulwrFLSpLy8O90+3MU88g8mno?=
+ =?Windows-1252?Q?UH9tULbj3p/8tMEbb2VTlHq7nRJ05aS6ZnWDvnMWdvviR16u+kSP1pIU?=
+ =?Windows-1252?Q?BAyvdJEbgeXEyNr+iXbBWS+JKyXsgBVcdhsJ1p4MelUGwZtOI5JWmNPo?=
+ =?Windows-1252?Q?JZJkL9ZH1OqyFjfd1++Tajb64IqHqUjzydTtBjY5tssamiY8x7lzMpNj?=
+ =?Windows-1252?Q?T2SVI2hk8DZHwrj7gaY8fUDDBsFYy+zJ28O6K9xcGVaIG1qfmSZv+um8?=
+ =?Windows-1252?Q?zQykPzbFGPpJptkr4nq3wd9pcqsRSwbPgPRN7AgPv8ogx4fpZaQSBPv/?=
+ =?Windows-1252?Q?ZFHrp9tRBWA6B2msp2jmbgAFN1IldOFJeudB8xQeiv+peqnZ0fpS6KtP?=
+ =?Windows-1252?Q?W1SgyOmFLw57mWByYuJ1EeFau81yDJZDPtP34csZl4VHmgTvTbvSRXXQ?=
+ =?Windows-1252?Q?Ygl1IgO34YG/y5i0HfzmhWUPqf94mDoF7p0pcO/ikdbZCEk57D9Vammg?=
+ =?Windows-1252?Q?XUN7dCO6/ndVXAwl+SL2ePd+wOti8gbfObGXnfajBlQ986SYNODwb45Y?=
+ =?Windows-1252?Q?5SLstjJGs8Fw4D9JVFdZ0xhjRm9bDA1P8zxE3cafFduZoyuxYnPJj9dU?=
+ =?Windows-1252?Q?tyneeoRWNGlkZW8Ge+bv80+z8FQQsOPCAi9gicfdJxczEH3xDdUna9Ad?=
+ =?Windows-1252?Q?5HFh5pQzMS1RTswJZ4NgvJdHHGyU6AmUW2BcUDbDiwa1LFSTpjJJjfL/?=
+ =?Windows-1252?Q?ipUD3DRM26oEvSU5Vkk=3D?=
+X-OriginatorOrg: windriver.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 15e83db7-b0b4-443b-3881-08d9f138e401
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR11MB3008.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Feb 2022 10:41:29.7883
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7zsZUwazruuymQoCnFclCGFg4vL+T8M2mtZp6dULXkXteuT6pm7mbaUmVdhKu1kwV6XZxwv6W6MU+02978nq7g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR11MB2599
+X-Proofpoint-ORIG-GUID: odhgMBUgXAj1Z8jn6T9I8LGrw1239BL3
+X-Proofpoint-GUID: odhgMBUgXAj1Z8jn6T9I8LGrw1239BL3
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-02-16_04,2022-02-16_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 spamscore=0
+ mlxscore=0 phishscore=0 clxscore=1015 adultscore=0 lowpriorityscore=0
+ bulkscore=0 priorityscore=1501 malwarescore=0 mlxlogscore=999
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2201110000 definitions=main-2202160061
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On 2/16/22 08:02, Joel Stanley wrote:
-> On Mon, 14 Feb 2022 at 09:43, Cédric Le Goater <clg@kaod.org> wrote:
->>
->> The previous driver using the MTD SPI NOR interface is kept in case we
->> find some issues but we should remove it quickly once the new driver
->> using the spi-mem interface has been sufficiently exposed.
->>
->> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+
+
+On 2/14/22 10:36 PM, Mark Brown wrote:
+> On Mon, Feb 14, 2022 at 10:20:21PM +0800, Yun Zhou wrote:
 > 
-> I suggest we drop the defconfig changes from both this patch and the
-> first. This way we'll always have the new driver being built, with
-> less churn.
+>> I can't see from anywhere that when cs_change is true, we must keep CS
+>> active. If an individual controller needs to keep CS active after the whole
+>> message transmission complete, I think we should set cs_change to false
+>> rather than true, because cs_change means to change CS, not keep CS,
+>> otherwise let us rename cs_change to cs_keep.
 > 
-> If you strongly prefer the way you've done it then that's fine too.
+> *sigh*  Please also look back at how this has historically been handled,
+> this is not new behaviour.
+ From the first commit(8ae12a0d85987dc13) for spi subsystem, we can see 
+that:
+   - An spi_message is a sequence of of protocol operations, executed
+     as one atomic sequence.  SPI driver controls include:
 
-I am fine with that, but, with only patch 1, the defconfig files would
-be referencing an non-existing CONFIG. Is that ok ?
+       + when bidirectional reads and writes start ... by how its
+         sequence of spi_transfer requests is arranged;
 
-Thanks,
+       + optionally defining short delays after transfers ... using
+         the spi_transfer.delay_usecs setting;
 
-C.
+       + whether the chipselect becomes inactive after a transfer and
+         any delay ... by using the spi_transfer.cs_change flag; 
+ 
 
 
+       + hinting whether the next message is likely to go to this same
+         device ... using the spi_transfer.cs_change flag on the last
+         transfer in that atomic group, and potentially saving costs
+         for chip deselect and select operations
+When we want chipselect to become inactive after a transfer completes,
+should cs_change be true or false? Although it is not stated here, I 
+think it is obviously true, otherwise we should call it cs_keep not 
+cs_change.
 
+> I'm not saying that this is the greatest API
+> ever or that it'd be done this way if it were new but that doesn't mean
+> we can just randomly change the interface and potentially disrupt users.
+> Whatever else is going on the current behaviour is intentional.
 > 
->> ---
->>   arch/arm/configs/aspeed_g4_defconfig | 2 +-
->>   arch/arm/configs/aspeed_g5_defconfig | 2 +-
->>   arch/arm/configs/multi_v5_defconfig  | 2 +-
->>   arch/arm/configs/multi_v7_defconfig  | 2 +-
->>   4 files changed, 4 insertions(+), 4 deletions(-)
->>
->> diff --git a/arch/arm/configs/aspeed_g4_defconfig b/arch/arm/configs/aspeed_g4_defconfig
->> index 964536444cd7..b4a1b2ed1a17 100644
->> --- a/arch/arm/configs/aspeed_g4_defconfig
->> +++ b/arch/arm/configs/aspeed_g4_defconfig
->> @@ -64,7 +64,7 @@ CONFIG_MTD_BLOCK=y
->>   CONFIG_MTD_PARTITIONED_MASTER=y
->>   CONFIG_MTD_SPI_NOR=y
->>   # CONFIG_MTD_SPI_NOR_USE_4K_SECTORS is not set
->> -CONFIG_SPI_ASPEED_SMC_MTD_SPI_NOR=y
->> +CONFIG_SPI_ASPEED_SMC=y
->>   CONFIG_MTD_UBI=y
->>   CONFIG_MTD_UBI_FASTMAP=y
->>   CONFIG_MTD_UBI_BLOCK=y
->> diff --git a/arch/arm/configs/aspeed_g5_defconfig b/arch/arm/configs/aspeed_g5_defconfig
->> index e809236ca88b..ccc4240ee4b5 100644
->> --- a/arch/arm/configs/aspeed_g5_defconfig
->> +++ b/arch/arm/configs/aspeed_g5_defconfig
->> @@ -103,7 +103,7 @@ CONFIG_MTD_BLOCK=y
->>   CONFIG_MTD_PARTITIONED_MASTER=y
->>   CONFIG_MTD_SPI_NOR=y
->>   # CONFIG_MTD_SPI_NOR_USE_4K_SECTORS is not set
->> -CONFIG_SPI_ASPEED_SMC_MTD_SPI_NOR=y
->> +CONFIG_SPI_ASPEED_SMC=y
->>   CONFIG_MTD_UBI=y
->>   CONFIG_MTD_UBI_FASTMAP=y
->>   CONFIG_MTD_UBI_BLOCK=y
->> diff --git a/arch/arm/configs/multi_v5_defconfig b/arch/arm/configs/multi_v5_defconfig
->> index 49083ef05fb0..80a3ae02d759 100644
->> --- a/arch/arm/configs/multi_v5_defconfig
->> +++ b/arch/arm/configs/multi_v5_defconfig
->> @@ -103,7 +103,7 @@ CONFIG_MTD_RAW_NAND=y
->>   CONFIG_MTD_NAND_ATMEL=y
->>   CONFIG_MTD_NAND_ORION=y
->>   CONFIG_MTD_SPI_NOR=y
->> -CONFIG_SPI_ASPEED_SMC_MTD_SPI_NOR=y
->> +CONFIG_SPI_ASPEED_SMC=y
->>   CONFIG_MTD_UBI=y
->>   CONFIG_BLK_DEV_LOOP=y
->>   CONFIG_ATMEL_SSC=m
->> diff --git a/arch/arm/configs/multi_v7_defconfig b/arch/arm/configs/multi_v7_defconfig
->> index fc1b69256b64..33572998dbbe 100644
->> --- a/arch/arm/configs/multi_v7_defconfig
->> +++ b/arch/arm/configs/multi_v7_defconfig
->> @@ -217,7 +217,7 @@ CONFIG_MTD_NAND_DAVINCI=y
->>   CONFIG_MTD_NAND_STM32_FMC2=y
->>   CONFIG_MTD_NAND_PL35X=y
->>   CONFIG_MTD_SPI_NOR=y
->> -CONFIG_SPI_ASPEED_SMC_MTD_SPI_NOR=m
->> +CONFIG_SPI_ASPEED_SMC=m
->>   CONFIG_MTD_UBI=y
->>   CONFIG_BLK_DEV_LOOP=y
->>   CONFIG_BLK_DEV_RAM=y
->> --
->> 2.34.1
->>
-
+Although the logic dealing with cs_change in spi_transfer_one_message() 
+has existed a long time and nobody reports issue on it, that doesn't 
+mean it is correct. I think the main reason is, cs_change is only used 
+to change chipselect inactive in the middle of message, and nobody set 
+it at the end of message. Even if the cs_change of the end of message is 
+set to true, probably there is no impact before 
+d347b4aaa1a042ea528e385d9070b74c77a14321, since no matter the chipselect 
+is active or inactive, we will set it to active before a new message. 
+Even if meet an issue, most of users think it is the incorrect usage 
+himself, and then the issue can be solved easily by clearing cs_change 
+of the end of message.
+So there are several reasons why we must correct it:
+1. We cannot accept an API with the name opposite to its actual performance.
+2. The wrong cs_change and the lax last_cs_enable have caused serious bug.
+3. My patch only affects the last transfer only when cs_change is true. 
+I can't think of anyone who will set a flag to complete operations with 
+opposite semantics.

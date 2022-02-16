@@ -2,84 +2,106 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 84A7BC433FE
-	for <linux-spi@archiver.kernel.org>; Wed, 16 Feb 2022 01:40:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 98253C4321E
+	for <linux-spi@archiver.kernel.org>; Wed, 16 Feb 2022 01:40:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245655AbiBPBlI (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S245661AbiBPBlI (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Tue, 15 Feb 2022 20:41:08 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:44332 "EHLO
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:44356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245566AbiBPBkq (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 15 Feb 2022 20:40:46 -0500
+        with ESMTP id S245572AbiBPBkr (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 15 Feb 2022 20:40:47 -0500
 Received: from mail-m17640.qiye.163.com (mail-m17640.qiye.163.com [59.111.176.40])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 492D5237EC;
-        Tue, 15 Feb 2022 17:40:35 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0069F237EE;
+        Tue, 15 Feb 2022 17:40:36 -0800 (PST)
 Received: from localhost.localdomain (unknown [58.22.7.114])
-        by mail-m17640.qiye.163.com (Hmail) with ESMTPA id 699545402F4;
-        Wed, 16 Feb 2022 09:40:33 +0800 (CST)
+        by mail-m17640.qiye.163.com (Hmail) with ESMTPA id 3C30C54031F;
+        Wed, 16 Feb 2022 09:40:35 +0800 (CST)
 From:   Jon Lin <jon.lin@rock-chips.com>
 To:     broonie@kernel.org
 Cc:     heiko@sntech.de, linux-spi@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
         Jon Lin <jon.lin@rock-chips.com>
-Subject: [PATCH v3 1/6] spi: rockchip: Fix error in getting num-cs property
-Date:   Wed, 16 Feb 2022 09:40:23 +0800
-Message-Id: <20220216014028.8123-2-jon.lin@rock-chips.com>
+Subject: [PATCH v3 4/6] spi: rockchip: Preset cs-high and clk polarity in setup progress
+Date:   Wed, 16 Feb 2022 09:40:26 +0800
+Message-Id: <20220216014028.8123-5-jon.lin@rock-chips.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20220216014028.8123-1-jon.lin@rock-chips.com>
 References: <20220216014028.8123-1-jon.lin@rock-chips.com>
 X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgPGg8OCBgUHx5ZQUlOS1dZCBgUCR5ZQVlLVUtZV1
-        kWDxoPAgseWUFZKDYvK1lXWShZQUhPN1dZLVlBSVdZDwkaFQgSH1lBWUMYQk1WQkhPTUsZTEkYHU
-        wYVRMBExYaEhckFA4PWVdZFhoPEhUdFFlBWVVLWQY+
-X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6NhA6Tjo6Pj5ONBYYLg0pGRA4
-        EwNPCR9VSlVKTU9PQkxOTUhIQ0JJVTMWGhIXVREUFVUXEhU7CRQYEFYYExILCFUYFBZFWVdZEgtZ
-        QVlOQ1VJSVVMVUpKT1lXWQgBWUFJT0tPNwY+
-X-HM-Tid: 0a7f003034c2d995kuws699545402f4
+        kWDxoPAgseWUFZKDYvK1lXWShZQUhPN1dZLVlBSVdZDwkaFQgSH1lBWRoeGhhWTkhPQk5NGEJISh
+        gYVRMBExYaEhckFA4PWVdZFhoPEhUdFFlBWVVLWQY+
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6PFE6PBw5Oj5DTxZMPggRGQsW
+        QiwwCj1VSlVKTU9PQkxOTUhOTU5OVTMWGhIXVREUFVUXEhU7CRQYEFYYExILCFUYFBZFWVdZEgtZ
+        QVlOQ1VJSVVMVUpKT1lXWQgBWUFISkxLNwY+
+X-HM-Tid: 0a7f00303bd6d995kuws3c30c54031f
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Get num-cs u32 from dts of_node property rather than u16.
+After power up, the cs and clock is in default status, and the cs-high
+and clock polarity dts property configuration will take no effect until
+the calling of rockchip_spi_config in the first transmission.
+So preset them to make sure a correct voltage before the first
+transmission coming.
 
 Signed-off-by: Jon Lin <jon.lin@rock-chips.com>
 ---
 
-Changes in v3: None
+Changes in v3:
+- Support clear the bits of configure bits filed
+
 Changes in v2:
-- Fix patches should be at the start of the series
+- Limit cs-high presetting to the chip select n <= 1
 
-Changes in v1:
-- The origin patch
+Changes in v1: None
 
- drivers/spi/spi-rockchip.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/spi/spi-rockchip.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
 diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 553b6b9d0222..4f65ba3dd19c 100644
+index 5ecd0692cca1..83da8fdb3c02 100644
 --- a/drivers/spi/spi-rockchip.c
 +++ b/drivers/spi/spi-rockchip.c
-@@ -654,7 +654,7 @@ static int rockchip_spi_probe(struct platform_device *pdev)
- 	struct spi_controller *ctlr;
- 	struct resource *mem;
- 	struct device_node *np = pdev->dev.of_node;
--	u32 rsd_nsecs;
-+	u32 rsd_nsecs, num_cs;
- 	bool slave_mode;
+@@ -713,6 +713,29 @@ static bool rockchip_spi_can_dma(struct spi_controller *ctlr,
+ 	return xfer->len / bytes_per_word >= rs->fifo_len;
+ }
  
- 	slave_mode = of_property_read_bool(np, "spi-slave");
-@@ -764,8 +764,9 @@ static int rockchip_spi_probe(struct platform_device *pdev)
- 		 * rk spi0 has two native cs, spi1..5 one cs only
- 		 * if num-cs is missing in the dts, default to 1
- 		 */
--		if (of_property_read_u16(np, "num-cs", &ctlr->num_chipselect))
--			ctlr->num_chipselect = 1;
-+		if (of_property_read_u32(np, "num-cs", &num_cs))
-+			num_cs = 1;
-+		ctlr->num_chipselect = num_cs;
- 		ctlr->use_gpio_descriptors = true;
- 	}
- 	ctlr->dev.of_node = pdev->dev.of_node;
++static int rockchip_spi_setup(struct spi_device *spi)
++{
++	struct rockchip_spi *rs = spi_controller_get_devdata(spi->controller);
++	u32 cr0;
++
++	pm_runtime_get_sync(rs->dev);
++
++	cr0 = readl_relaxed(rs->regs + ROCKCHIP_SPI_CTRLR0);
++
++	cr0 &= ~(0x3 << CR0_SCPH_OFFSET);
++	cr0 |= ((spi->mode & 0x3) << CR0_SCPH_OFFSET);
++	if (spi->mode & SPI_CS_HIGH && spi->chip_select <= 1)
++		cr0 |= BIT(spi->chip_select) << CR0_SOI_OFFSET;
++	else if (spi->chip_select <= 1)
++		cr0 &= ~(BIT(spi->chip_select) << CR0_SOI_OFFSET);
++
++	writel_relaxed(cr0, rs->regs + ROCKCHIP_SPI_CTRLR0);
++
++	pm_runtime_put(rs->dev);
++
++	return 0;
++}
++
+ static int rockchip_spi_probe(struct platform_device *pdev)
+ {
+ 	int ret;
+@@ -840,6 +863,7 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 	ctlr->min_speed_hz = rs->freq / BAUDR_SCKDV_MAX;
+ 	ctlr->max_speed_hz = min(rs->freq / BAUDR_SCKDV_MIN, MAX_SCLK_OUT);
+ 
++	ctlr->setup = rockchip_spi_setup;
+ 	ctlr->set_cs = rockchip_spi_set_cs;
+ 	ctlr->transfer_one = rockchip_spi_transfer_one;
+ 	ctlr->max_transfer_size = rockchip_spi_max_transfer_size;
 -- 
 2.17.1
 

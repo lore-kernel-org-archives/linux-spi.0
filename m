@@ -2,100 +2,82 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E1DD8C433FE
-	for <linux-spi@archiver.kernel.org>; Fri, 18 Feb 2022 15:01:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AB58BC433F5
+	for <linux-spi@archiver.kernel.org>; Fri, 18 Feb 2022 15:19:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236365AbiBRPBt (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 18 Feb 2022 10:01:49 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:50524 "EHLO
+        id S235018AbiBRPTP (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 18 Feb 2022 10:19:15 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:51646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236789AbiBRPAY (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 18 Feb 2022 10:00:24 -0500
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E5F3E61C0;
-        Fri, 18 Feb 2022 06:59:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1645196349; x=1676732349;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=1kB/UXvtaiyeXTg8NuvWf/Arx24JYsUgr40cN0Fyi6s=;
-  b=TdnaZrZsh2FuRviuIhCzd4htnrysYkQibMjtwxBWtx+e7t0qF7GZSZXV
-   DRdcB9F9STv/GFK7yauuqbFxBHV0nsD5ssBJbaPTRgueq9QlS4nktj+SB
-   H91ELhbbSikBpJIq1MzIxoAYMCe21UJ/MYN2QvBpeJteqBcRWpnsH8Q0h
-   gD8+y+TwOeGZNxLy5gf2JDImmouOOKK8EGzkzDPj8+EM3XCKEvpoH5PWV
-   j0/T8fjvqsEdaMoueku18Tx+h9SS2PJGx1/08+oe+apW4D9XvhoQUI5mW
-   Y1sLllrfYouK46McTrWZuqq6bfjCNQPZOlYn9OyqOnUNQ9EnyUbQMiIY1
-   g==;
-X-IronPort-AV: E=Sophos;i="5.88,379,1635231600"; 
-   d="scan'208";a="154088331"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 18 Feb 2022 07:59:08 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.17; Fri, 18 Feb 2022 07:59:08 -0700
-Received: from ROB-ULT-M18064N.mchp-main.com (10.10.115.15) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
- 15.1.2375.17 via Frontend Transport; Fri, 18 Feb 2022 07:59:05 -0700
-From:   Tudor Ambarus <tudor.ambarus@microchip.com>
-To:     <p.yadav@ti.com>, <michael@walle.cc>, <broonie@kernel.org>
-CC:     <miquel.raynal@bootlin.com>, <richard@nod.at>, <vigneshr@ti.com>,
-        <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>, <nicolas.ferre@microchip.com>,
-        <zhengxunli@mxic.com.tw>, <jaimeliao@mxic.com.tw>,
-        Tudor Ambarus <tudor.ambarus@microchip.com>
-Subject: [PATCH 1/4] spi: spi-mem: Allow specifying the byte order in DTR mode
-Date:   Fri, 18 Feb 2022 16:58:57 +0200
-Message-ID: <20220218145900.1440045-2-tudor.ambarus@microchip.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220218145900.1440045-1-tudor.ambarus@microchip.com>
-References: <20220218145900.1440045-1-tudor.ambarus@microchip.com>
+        with ESMTP id S232013AbiBRPTP (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 18 Feb 2022 10:19:15 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 772DA3DA6B;
+        Fri, 18 Feb 2022 07:18:58 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 17A0361B7A;
+        Fri, 18 Feb 2022 15:18:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69094C340E9;
+        Fri, 18 Feb 2022 15:18:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1645197537;
+        bh=D4BKjKmfO9VPwjNBNaV2DWrd8VLCYTCR0ePXzbsAIYQ=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=S7sGT/gsI2grYWYaTbAd1nfgMsDmLuaiQsj0hYGmj9N3TA63870HdRO0Dx6XnnNpq
+         RNviPNXdIxgIHtK/mW81bQPf9RoW1l/UhGyx5Juy319WUfhjHRPndb7CUi/8yO0YK9
+         gklWtykV0W0jgGfrtDWb7R39PX7XREG2JakCTIeJjTi5fk08MLFlmDkUS3Qcf27DiD
+         tfa4s1uUNOa3WZ21oJS8HMJrOeWTeyOOd0EBqvsvUcgN++yzIYonPO1eJ+92tsgyG3
+         Ic0i5HyFxmrNL0j0rYlqMICVPIFSh++mcPuevDKjju4jijMzhYBWQ5v8Ys/l0ACL2q
+         6k3Ehizk6DQ3Q==
+From:   Mark Brown <broonie@kernel.org>
+To:     lhjeff911@gmail.com, Yang Li <yang.lee@linux.alibaba.com>
+Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Abaci Robot <abaci@linux.alibaba.com>
+In-Reply-To: <20220217010024.111904-1-yang.lee@linux.alibaba.com>
+References: <20220217010024.111904-1-yang.lee@linux.alibaba.com>
+Subject: Re: [PATCH -next] spi: clean up some inconsistent indenting
+Message-Id: <164519753613.3453177.8421347157521956741.b4-ty@kernel.org>
+Date:   Fri, 18 Feb 2022 15:18:56 +0000
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-There are NOR flashes (Macronix) that swap the bytes on a 16-bit boundary
-when configured in DTR mode. The byte order of 16-bit words is swapped
-when read or written in Double Transfer Rate (DTR) mode compared to
-Single Transfer Rate (STR) mode. If one writes D0 D1 D2 D3 bytes using
-1-1-1 mode, and uses 8D-8D-8D SPI mode for reading, it will read back
-D1 D0 D3 D2. Swapping the bytes is a bad design decision because this may
-introduce some endianness problems. It can affect the boot sequence if the
-entire boot sequence is not handled in either 8D-8D-8D mode or 1-1-1 mode.
-Fortunately there are controllers that can swap back the bytes at runtime,
-fixing the endiannesses. Provide a way for the upper layers to specify the
-byte order in DTR mode.
+On Thu, 17 Feb 2022 09:00:24 +0800, Yang Li wrote:
+> Eliminate the follow smatch warning:
+> drivers/spi/spi-sunplus-sp7021.c:379 sp7021_spi_slave_transfer_one()
+> warn: inconsistent indenting
+> 
+> 
 
-Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
----
- include/linux/spi/spi-mem.h | 3 +++
- 1 file changed, 3 insertions(+)
+Applied to
 
-diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
-index 85e2ff7b840d..e1878417420c 100644
---- a/include/linux/spi/spi-mem.h
-+++ b/include/linux/spi/spi-mem.h
-@@ -89,6 +89,8 @@ enum spi_mem_data_dir {
-  * @dummy.dtr: whether the dummy bytes should be sent in DTR mode or not
-  * @data.buswidth: number of IO lanes used to send/receive the data
-  * @data.dtr: whether the data should be sent in DTR mode or not
-+ * @data.dtr_bswap16: whether the byte order of 16-bit words is swapped when
-+ *		      read or written in DTR mode compared to STR mode.
-  * @data.dir: direction of the transfer
-  * @data.nbytes: number of data bytes to send/receive. Can be zero if the
-  *		 operation does not involve transferring data
-@@ -119,6 +121,7 @@ struct spi_mem_op {
- 	struct {
- 		u8 buswidth;
- 		u8 dtr : 1;
-+		u8 dtr_bswap16 : 1;
- 		enum spi_mem_data_dir dir;
- 		unsigned int nbytes;
- 		union {
--- 
-2.25.1
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
+Thanks!
+
+[1/1] spi: clean up some inconsistent indenting
+      commit: 07025ceaac9f4f7a9e1a3285c3216469bf066320
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

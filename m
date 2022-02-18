@@ -2,109 +2,90 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AEA77C433F5
-	for <linux-spi@archiver.kernel.org>; Sat, 26 Feb 2022 03:24:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CFDC3C433F5
+	for <linux-spi@archiver.kernel.org>; Fri, 18 Feb 2022 12:22:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229493AbiBZDZ0 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 25 Feb 2022 22:25:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33496 "EHLO
+        id S233555AbiBRMW5 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 18 Feb 2022 07:22:57 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:51996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229490AbiBZDZ0 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 25 Feb 2022 22:25:26 -0500
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B3922A66FA;
-        Fri, 25 Feb 2022 19:24:51 -0800 (PST)
-X-UUID: 4e154502a2f54f34b9485a1a52a4924e-20220226
-X-UUID: 4e154502a2f54f34b9485a1a52a4924e-20220226
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
-        (envelope-from <leilk.liu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 354081521; Sat, 26 Feb 2022 11:24:48 +0800
-Received: from mtkcas10.mediatek.inc (172.21.101.39) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
- Sat, 26 Feb 2022 11:24:46 +0800
-Received: from mhfsdcap04 (10.17.3.154) by mtkcas10.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Sat, 26 Feb 2022 11:24:46 +0800
-Message-ID: <55a65e5aa412f101e02c81ddb5fa38c128743db2.camel@mediatek.com>
-Subject: Re: [PATCH V2 3/6] dt-bindings: spi: Add compatible for Mediatek
- IPM IP with quad mode
-From:   Leilk Liu <leilk.liu@mediatek.com>
-To:     Rob Herring <robh@kernel.org>
-CC:     Mark Brown <broonie@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-spi@vger.kernel.org>, <linux-mediatek@lists.infradead.org>
-Date:   Sat, 26 Feb 2022 11:24:46 +0800
-In-Reply-To: <YhknmEtjpN7Lmoru@robh.at.kernel.org>
-References: <20220221040717.3729-1-leilk.liu@mediatek.com>
-         <20220221040717.3729-4-leilk.liu@mediatek.com>
-         <YhknmEtjpN7Lmoru@robh.at.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
+        with ESMTP id S235169AbiBRMWy (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 18 Feb 2022 07:22:54 -0500
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52915299254
+        for <linux-spi@vger.kernel.org>; Fri, 18 Feb 2022 04:22:28 -0800 (PST)
+Received: by mail-ej1-x632.google.com with SMTP id qx21so14559898ejb.13
+        for <linux-spi@vger.kernel.org>; Fri, 18 Feb 2022 04:22:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:content-language:to:from
+         :subject:content-transfer-encoding;
+        bh=UzA7BmRI9hk0xBkLCSbXXeOCfpQjshavBf6kAMg7AzI=;
+        b=iyJOgGeDCnevgCw/NhTsBynJNzDlpmMkQB4sY5keiVs//XBQkW2y3NqT307IojZm10
+         eJgI1rRnhdJ2gaPJ1DSs2xOdMS0tTjxX3AxWWU/12LCjKiLjYfKHxKHDcPZFzdu03LPB
+         NuuJu53gDwIgPj+0xQjLp0wrqaWIApErUmB7ttM47w6DakKNBRnhXlvcDRe9fDzob26R
+         8mwBUxJg2mMMHHISj4nRB6otBzmiUc971Q1/iG0RjRp5ZnIZy0RCgT1Zjgl3awJI6lMD
+         Ku/x36wHUaOoaK6GOh50Tf32V0C1VIBMrshToLc4y/pQcM+2P/xrvdVNAyheLYbM3txU
+         r1mw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent
+         :content-language:to:from:subject:content-transfer-encoding;
+        bh=UzA7BmRI9hk0xBkLCSbXXeOCfpQjshavBf6kAMg7AzI=;
+        b=vNhxxkIuGibcOErdd37HZPsnEadMY9NLqXgNusW8rOC4nltnAJiqGcxbSHb10uOd13
+         NCt2JHLd3cG9vVoMSEIbDU1YgC/TNcH6e61Dwsb3a50DAK4/66bQIX3Dv6vzZ1WGXCiz
+         M7zBGjktX6W6RkdZXP2qy3BRm63HwMpDATNl9TVcRdmMYDNsdcmZa+mm3voSNz13gczF
+         SsQExvSJqFN/t0HVUASiaeud96SbmJemc3utblCg4hsE1fFQgWRSW3zlk6r8Zn8H/UJX
+         G6f7kwilrDZ6Zf/KOc7ow+lg10NIyQI8OCZ4og1Y3gR/K91gR7pevMAXl3Z4YESqaHoO
+         lv8A==
+X-Gm-Message-State: AOAM531vRy+snQjSScHckQ1p2LRMqnuvDP14Rfn2SXCHBpaMHmKqV8vy
+        WEY11x6JgXp0lgSuTjtjHdPYBrCIBTc=
+X-Google-Smtp-Source: ABdhPJzTuKWCRRvlX0kKB0M6iuXZ5+CLiAPgdjOqwF1iTUT+bhae7wEt0Cq+3AfOK/g7OBzyTyCbYg==
+X-Received: by 2002:a17:906:2b58:b0:6d0:938:887e with SMTP id b24-20020a1709062b5800b006d00938887emr6020990ejg.644.1645186946797;
+        Fri, 18 Feb 2022 04:22:26 -0800 (PST)
+Received: from ?IPV6:2003:ea:8f4d:2b00:bc37:63fb:bca2:6f08? (p200300ea8f4d2b00bc3763fbbca26f08.dip0.t-ipconnect.de. [2003:ea:8f4d:2b00:bc37:63fb:bca2:6f08])
+        by smtp.googlemail.com with ESMTPSA id p12sm1714313edc.49.2022.02.18.04.22.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 18 Feb 2022 04:22:26 -0800 (PST)
+Message-ID: <9d622df2-be3a-5327-59f7-dbe51fb0be4f@gmail.com>
+Date:   Fri, 18 Feb 2022 13:22:20 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.1
+Content-Language: en-US
+To:     Mark Brown <broonie@kernel.org>
+From:   Heiner Kallweit <hkallweit1@gmail.com>
+Subject: [PATCH] spi: use sysfs_emit() for printing statistics and add
+ trailing newline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-MTK:  N
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Fri, 2022-02-25 at 13:01 -0600, Rob Herring wrote:
-> On Mon, Feb 21, 2022 at 12:07:14PM +0800, Leilk Liu wrote:
-> > This patch adds dt-binding documentation for Mediatek SPI IPM IP
-> > with
-> > quad mode.
-> > 
-> > Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
-> > ---
-> >  Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml | 1
-> > +
-> >  1 file changed, 1 insertion(+)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/spi/mediatek,spi-
-> > mt65xx.yaml b/Documentation/devicetree/bindings/spi/mediatek,spi-
-> > mt65xx.yaml
-> > index 0a2fc0404cb3..241c0f5880d3 100644
-> > --- a/Documentation/devicetree/bindings/spi/mediatek,spi-
-> > mt65xx.yaml
-> > +++ b/Documentation/devicetree/bindings/spi/mediatek,spi-
-> > mt65xx.yaml
-> > @@ -42,6 +42,7 @@ properties:
-> >                - mediatek,mt8173-spi
-> >                - mediatek,mt8183-spi
-> >                - mediatek,ipm-spi-single
-> > +              - mediatek,ipm-spi-quad
-> 
-> Can't you use the existing width properties to distinguish? Or is
-> the 
-> programming not a superset?
-> 
-"mediatek,ipm-spi-quad" include the feature of "mediatek,ipm-spi-
-single".
+Use dedicated function sysfs_emit() that does some extra checking,
+e.g. to ensure that no more than PAGESIZE bytes are written.
+In addition add a trailing newline to the output, that makes it
+better readable from the console.
 
-> Is 'ipm' an SoC? If not, these need to be SoC specific.
-> 
-IPM is an version of SPI ip, we use this IP with ICs now.
-So I define a compatible strings "mediatek,ipm-spi-xxx", then I can
-reuse this strings with many ICs.
-Currently, we plan to upstream MT7986 IC, this IC has two spi
-controller ports, one support single mode only, the other support
-single & quad mode both.
-for example:
-spi0 {
-  ...
-  compatible = "mediatek,ipm-spi-single";
-  ...
-}
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+---
+ drivers/spi/spi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-spi1 {
-  ...
-  compatible = "mediatek,ipm-spi-quad";
-  ...
-}
-
-
-> Rob
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index c98c55f44..fae290a33 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -144,7 +144,7 @@ static ssize_t spi_statistics_##name##_show(struct spi_statistics *stat, \
+ 	unsigned long flags;						\
+ 	ssize_t len;							\
+ 	spin_lock_irqsave(&stat->lock, flags);				\
+-	len = sprintf(buf, format_string, stat->field);			\
++	len = sysfs_emit(buf, format_string "\n", stat->field);		\
+ 	spin_unlock_irqrestore(&stat->lock, flags);			\
+ 	return len;							\
+ }									\
+-- 
+2.35.1
 

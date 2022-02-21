@@ -2,62 +2,83 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9B43BC433EF
-	for <linux-spi@archiver.kernel.org>; Mon, 21 Feb 2022 07:44:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 72093C433EF
+	for <linux-spi@archiver.kernel.org>; Mon, 21 Feb 2022 15:24:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344822AbiBUHpA (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 21 Feb 2022 02:45:00 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:48964 "EHLO
+        id S1379078AbiBUPZB (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 21 Feb 2022 10:25:01 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:42666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344588AbiBUHpA (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 21 Feb 2022 02:45:00 -0500
-Received: from ssl.serverraum.org (ssl.serverraum.org [176.9.125.105])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 979FB2196;
-        Sun, 20 Feb 2022 23:44:37 -0800 (PST)
-Received: from ssl.serverraum.org (web.serverraum.org [172.16.0.2])
+        with ESMTP id S1379062AbiBUPY7 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 21 Feb 2022 10:24:59 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1D431EAC7;
+        Mon, 21 Feb 2022 07:24:35 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ssl.serverraum.org (Postfix) with ESMTPSA id BA42C2223A;
-        Mon, 21 Feb 2022 08:44:35 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
-        t=1645429475;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=CYxJg6RXHwuQQPHgm7btkpehETiBp1YmrUpCpg1PZHg=;
-        b=SmDq0SK53YoVS9qM7butDx4U4t9guXFj6hquSPFA6/Q7Cd9xxqpQT8lxQcQhwMawAvCoKO
-        yB4iq/kf6bsLDi1j/XEvL1wtdzpM/ajbmDRu37+xBVtrar6+9P93R/JXKT/JCDRAwXSNz6
-        1oEpPYgWdDnKfVwT4qgTtvZbNDybl7E=
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 21F7A611F5;
+        Mon, 21 Feb 2022 15:24:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85113C340F5;
+        Mon, 21 Feb 2022 15:24:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1645457074;
+        bh=/BtsoU7g2MfbZ+8V1diNwCXGmkpDAVaYj4S5Gx1pPSY=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=aMQms1L+Qv3zAUoQAyx+8UkJ0/Kc+bM7qzBZx5w+gWrXKDwbNqcRhe0BYVOtEZfob
+         Kc8iwbybnM2TTNr1izzQ+cYrh5a2d9K0o+9XN4Eohda88oGImRHchBb04FjDjcHwLJ
+         NMZ0O/LTpGfG3yuY9sztA5WBsS4SgINsVSwY2QBWsCMlgcP8BqemnzwbMv+2ElW4Ld
+         2nwugZUtGkpmo0mjcw4swkf1P1dQjA9JWUGfsiaS5yT9bHT7mGDNEwdE3P/Ur6+oGu
+         DRgwqNu66s8eWNw8nixaxeZ4LiK4gMC+1u9EGNSuMTyoTimLqFTbGgS/CbjGypjfHE
+         enKWL9xcLGTAQ==
+From:   Mark Brown <broonie@kernel.org>
+To:     cgel.zte@gmail.com
+Cc:     linux-kernel@vger.kernel.org, Zeal Robot <zealci@zte.com.cn>,
+        linux-spi@vger.kernel.org,
+        "Minghao Chi (CGEL ZTE)" <chi.minghao@zte.com.cn>
+In-Reply-To: <20220221020233.1925154-1-chi.minghao@zte.com.cn>
+References: <20220221020233.1925154-1-chi.minghao@zte.com.cn>
+Subject: Re: [PATCH] drivers/spi: Use of_device_get_match_data()
+Message-Id: <164545707326.739789.1243249169632517581.b4-ty@kernel.org>
+Date:   Mon, 21 Feb 2022 15:24:33 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Mon, 21 Feb 2022 08:44:35 +0100
-From:   Michael Walle <michael@walle.cc>
-To:     Tudor Ambarus <tudor.ambarus@microchip.com>
-Cc:     p.yadav@ti.com, broonie@kernel.org, miquel.raynal@bootlin.com,
-        richard@nod.at, vigneshr@ti.com, linux-mtd@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        nicolas.ferre@microchip.com, zhengxunli@mxic.com.tw,
-        jaimeliao@mxic.com.tw
-Subject: Re: [PATCH 0/4] spi-mem: Allow specifying the byte order in DTR mode
-In-Reply-To: <20220218145900.1440045-1-tudor.ambarus@microchip.com>
-References: <20220218145900.1440045-1-tudor.ambarus@microchip.com>
-User-Agent: Roundcube Webmail/1.4.12
-Message-ID: <44f655d027b49b87065915f6ba2744d2@walle.cc>
-X-Sender: michael@walle.cc
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Am 2022-02-18 15:58, schrieb Tudor Ambarus:
-> Fortunately there are controllers
-> that can swap back the bytes at runtime, fixing the endiannesses. 
-> Provide
-> a way for the upper layers to specify the byte order in DTR mode.
+On Mon, 21 Feb 2022 02:02:33 +0000, cgel.zte@gmail.com wrote:
+> From: "Minghao Chi (CGEL ZTE)" <chi.minghao@zte.com.cn>
+> 
+> Use of_device_get_match_data() to simplify the code.
+> 
+> 
 
-Are there any patches for the atmel-quadspi yet? What happens if
-the controller doesn't support it? Will there be a software fallback?
+Applied to
 
--michael
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+
+Thanks!
+
+[1/1] drivers/spi: Use of_device_get_match_data()
+      commit: c5a3106aa4923bec979c2a76667a493cb5d134fd
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

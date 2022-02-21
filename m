@@ -2,96 +2,69 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BDB69C433F5
-	for <linux-spi@archiver.kernel.org>; Mon, 21 Feb 2022 15:24:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 054DEC433F5
+	for <linux-spi@archiver.kernel.org>; Mon, 21 Feb 2022 15:30:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379084AbiBUPZC (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 21 Feb 2022 10:25:02 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:42670 "EHLO
+        id S231584AbiBUPbB (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 21 Feb 2022 10:31:01 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:49746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1379071AbiBUPY7 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 21 Feb 2022 10:24:59 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB2B51EEC4;
-        Mon, 21 Feb 2022 07:24:35 -0800 (PST)
+        with ESMTP id S1379283AbiBUPao (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 21 Feb 2022 10:30:44 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A887A22B2D
+        for <linux-spi@vger.kernel.org>; Mon, 21 Feb 2022 07:30:12 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 63AE3B8121F;
-        Mon, 21 Feb 2022 15:24:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2486C340E9;
-        Mon, 21 Feb 2022 15:24:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 457396118B
+        for <linux-spi@vger.kernel.org>; Mon, 21 Feb 2022 15:30:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B0C81C340E9;
+        Mon, 21 Feb 2022 15:30:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1645457073;
-        bh=Es8CyilU8tZmWWN+sDFjUFuj8k3qcZA/ED3G9yH3wUc=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=bsyw51rHynR4gU1dpOSE4lGIlDuHjZmX1tnH/xvOiGC01TJaNAsU6jmy/5MXYHerI
-         QlyFk08czpWIHA0IeDj1Du4CYp4yBIVzWvhU7WjGCSNBpGH+hsabql38LHtD+BohZu
-         4qmNOeMinFV0bHn82Q4At5DfNHCoyV/rYJQ5fRoUK4tOA7qjPVSIF8XNuOfVjYo/35
-         8bdvAZcDpw/ILn8SOauf3+IwFrnYs9PA4wnhgMr3BYBKkIESBlwzg7mSl8jk9pR94W
-         P8W1xKjd1gza+tOLixrX7sMS2BvD8FsoSlw9yGak4x9LlPYbqPo5sqaBLf8qURjreK
-         dKOwtakDNJQUw==
-From:   Mark Brown <broonie@kernel.org>
-To:     Pratyush Yadav <p.yadav@ti.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Michael Walle <michael@walle.cc>,
-        Tudor Ambarus <Tudor.Ambarus@microchip.com>,
-        linux-mtd@lists.infradead.org,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Cc:     Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Michal Simek <monstr@monstr.eu>, linux-spi@vger.kernel.org
-In-Reply-To: <20220126112608.955728-1-miquel.raynal@bootlin.com>
-References: <20220126112608.955728-1-miquel.raynal@bootlin.com>
-Subject: Re: [PATCH v6 0/3] Stacked/parallel memories bindings
-Message-Id: <164545707048.739789.8289707487294516050.b4-ty@kernel.org>
-Date:   Mon, 21 Feb 2022 15:24:30 +0000
-MIME-Version: 1.0
+        s=k20201202; t=1645457411;
+        bh=N5DxF4Se/4nx9bOXVU94woZxMv0Ptp76zpvgD9FCol0=;
+        h=Subject:From:Date:To:From;
+        b=IKgG2bXeWNL2x0o/bnvAhHS+oKhw/q5JSonVmz1eZlXgRkR8hW8BpLuqNvi2wZYe0
+         6Xv/Yi8U6xbvUwn8vIYBX5ga/LBT9c/yCHMnaPREST3QAPnMek+9lpUKjScUPjpucJ
+         iNgcsmwVx7iebu6lTTGY7ZwJ20X08dyFDRVIwaMgrmGg70kRdcocLKQTy5LNRnvhoW
+         KBlHk2f2Nm5u3BtW4kTw61yDkSmF6jkLYoLTeF9lHhynF+WfIOmLgMssfAGMlMMtIc
+         2ERE3vTnLjL9fo32ItRIoKU/PshgCKHRI7jlgb/D31E5qQxyBDGftfihXbxhUpq+Dz
+         9S7k2FcIlpuGA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 957EAE6D3E8;
+        Mon, 21 Feb 2022 15:30:11 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <164545741152.428.15274895012933745103.git-patchwork-summary@kernel.org>
+Date:   Mon, 21 Feb 2022 15:30:11 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, 26 Jan 2022 12:26:04 +0100, Miquel Raynal wrote:
-> Here is a sixth versions for these bindings, which applies on top of
-> the v5.17-rc1 now that Pratyush's work as been merged.
-> (https://lore.kernel.org/all/20211109181911.2251-1-p.yadav@ti.com/)
-> 
-> Cheers,
-> Miquèl
-> 
-> [...]
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+Series: Stacked/parallel memories bindings
+  Submitter: Miquel Raynal <miquel.raynal@bootlin.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=608625
+  Lore link: https://lore.kernel.org/r/20220126112608.955728-1-miquel.raynal@bootlin.com
+    Patches: [v6,1/3] dt-bindings: mtd: spi-nor: Allow two CS per device
+             [v6,2/3] spi: dt-bindings: Describe stacked/parallel memories modes
+             [v6,3/3] spi: dt-bindings: Add an example with two stacked flashes
 
-Thanks!
 
-[1/3] dt-bindings: mtd: spi-nor: Allow two CS per device
-      commit: b252ada293d5d30566121c61fa7552e74396d533
-[2/3] spi: dt-bindings: Describe stacked/parallel memories modes
-      commit: e2edd1b64f1c79e8abda365149ed62a2a9a494b4
-[3/3] spi: dt-bindings: Add an example with two stacked flashes
-      commit: eba5368503b4291db7819512600fa014ea17c5a8
+Total patches: 3
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark

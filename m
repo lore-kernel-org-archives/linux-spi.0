@@ -2,140 +2,123 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A64BFC4167B
-	for <linux-spi@archiver.kernel.org>; Wed, 23 Feb 2022 19:15:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6FA23C433EF
+	for <linux-spi@archiver.kernel.org>; Wed, 23 Feb 2022 19:16:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244293AbiBWTQW (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 23 Feb 2022 14:16:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58706 "EHLO
+        id S233011AbiBWTQ4 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 23 Feb 2022 14:16:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244297AbiBWTQM (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 23 Feb 2022 14:16:12 -0500
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93A4241FAF
-        for <linux-spi@vger.kernel.org>; Wed, 23 Feb 2022 11:15:41 -0800 (PST)
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com [209.85.208.69])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 0575540806
-        for <linux-spi@vger.kernel.org>; Wed, 23 Feb 2022 19:15:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1645643740;
-        bh=WWBR/3RyyId0ctzqGYcSjorUZAyYEVp2bjQXWveQ/28=;
-        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-         MIME-Version;
-        b=pVjMCgYzqof1V+7Sr6zskvN4auZKMkmvxFetwxMlLgm43iRoOU0cHfKf/FjW2Izgm
-         NwZmNVC3Fqp+/2iCyYLp4m49XZ5yiUT2zkX+d3dX0mszf+fB7uCNB53PfToZc9DtY5
-         Z0ZKXQB8d4E9d8q2zJpPJuaDvFkbZmTHooQfxSLKUf0+SCDWd/Ib5uIagnVezKm7u1
-         zY2EBhQbWkUJ/bM4XmXynvohpoowflKNaVIzYK9dHlIiIraOftWYxrEC5qC+L25yqF
-         TZGWn0Ln1e8BFgnx8SWXmwlO4BnbHL2NgbjUCOlW9VQhZPSnySc2R4oKIB0P1Gq+hN
-         u7x+5/9yZ38ww==
-Received: by mail-ed1-f69.google.com with SMTP id d11-20020a50c88b000000b00410ba7a14acso14059192edh.6
-        for <linux-spi@vger.kernel.org>; Wed, 23 Feb 2022 11:15:40 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=WWBR/3RyyId0ctzqGYcSjorUZAyYEVp2bjQXWveQ/28=;
-        b=TDjKg2gVHekTCnt0I70KdeMsQpf9P0hpymtPKITSHUrXIA8EqmdKU0kTnW0gfERVfr
-         yRVNgiIQVyAtRek7T81t8dv+j5j2kwaPmqmoTg77ZyPEB2ZpOZBy0dh+F5Zd///98eQy
-         dnkzsS4ui3sxQUkB8f5HW5AWuQuZ7Wrz8wez6xQNqcmThBMcLn+sP/UcyNGd4U6i09h3
-         IFBNZ4ddqajRs8EhirLluXOiKZdFJSkM4cOGTDItVQ8GEsS38+WRcSEyPBP2dmV8r3vW
-         RyoDES+HoW+HDCRLht39o0hhbDusMR2joUEZlXWEFTKzG4TBJGZcJ+1xWsa2D8yDIt4M
-         r8+w==
-X-Gm-Message-State: AOAM530R6ixnnqUXpgmUvNQq2Kg7oEw+3lVT+IGJX0/6gwurs1XFbV53
-        orUVJZFJbx2QwZhercTU1m+JlWZ51Ckx3P7m15ZhSro+72LOv+N1XtqSjyYhfxDmnFUIPo9AD6u
-        3Ln/BGAzz7E0KQkl1YvPLnr5Ha3NtOWxq8yVd6Q==
-X-Received: by 2002:a05:6402:70d:b0:410:ba4d:736f with SMTP id w13-20020a056402070d00b00410ba4d736fmr891865edx.0.1645643727235;
-        Wed, 23 Feb 2022 11:15:27 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJw8vcySNYfbv43Pk2WXynTAOxXboVgUUSRQKZSxFWxW+kHULs5hedJTU2eFScz4UFZao2eyYQ==
-X-Received: by 2002:a05:6402:70d:b0:410:ba4d:736f with SMTP id w13-20020a056402070d00b00410ba4d736fmr891811edx.0.1645643727044;
-        Wed, 23 Feb 2022 11:15:27 -0800 (PST)
-Received: from localhost.localdomain (xdsl-188-155-181-108.adslplus.ch. [188.155.181.108])
-        by smtp.gmail.com with ESMTPSA id b3sm208368ejl.67.2022.02.23.11.15.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Feb 2022 11:15:26 -0800 (PST)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Stuart Yoder <stuyoder@gmail.com>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        Abel Vesa <abel.vesa@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Vineeth Vijayan <vneethv@linux.ibm.com>,
-        Peter Oberparleiter <oberpar@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Andy Gross <agross@kernel.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Mark Brown <broonie@kernel.org>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>, linux-kernel@vger.kernel.org,
-        linux-clk@vger.kernel.org, NXP Linux Team <linux-imx@nxp.com>,
-        linux-arm-kernel@lists.infradead.org, linux-hyperv@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        alsa-devel@alsa-project.org, linux-spi@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        stable@vger.kernel.org
-Subject: [PATCH v2 09/11] clk: imx: scu: fix kfree() of static memory on setting driver_override
-Date:   Wed, 23 Feb 2022 20:14:39 +0100
-Message-Id: <20220223191441.348109-3-krzysztof.kozlowski@canonical.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20220223191310.347669-1-krzysztof.kozlowski@canonical.com>
-References: <20220223191310.347669-1-krzysztof.kozlowski@canonical.com>
+        with ESMTP id S238486AbiBWTQ4 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 23 Feb 2022 14:16:56 -0500
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C078240E6A;
+        Wed, 23 Feb 2022 11:16:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1645643787; x=1677179787;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=gZBIMrcrVBsCcm/0v+C7YCDz5CPNzQ5le9dI5vkUN7k=;
+  b=mHCPuDNc0WdLAWaXd9g5y5HYFRdXsK7LJ+OUcNloc5UUxNRWykXMAhkw
+   itsrdPsReUBma6nBSorK8PJunRXiHM3OkvdJunO9GmnJXvKyNjg6RfX6y
+   3Fin7J/j248+5r0Uga/ROOdq58NdmMGOf4PmNplcKSwT1QGRe4rOcWh8D
+   L6TpSlIQKIZ36Q/Bp45NV53kOeg+akTHMQQh/SC5fi2GvBNCdG9FyMdsb
+   lI7ktw8wK21tfMLM5qY3KC9D8Uykhjp7M6UmHDKUfSwpOYgIYqsEA0Had
+   /IBQKcBrNlX+YhDcYDYEEEQjn2atCX/xcVaYohNz4Um6/m1qxgf1MVaOd
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10267"; a="250888784"
+X-IronPort-AV: E=Sophos;i="5.88,391,1635231600"; 
+   d="scan'208";a="250888784"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2022 11:16:25 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,391,1635231600"; 
+   d="scan'208";a="491326659"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga003.jf.intel.com with ESMTP; 23 Feb 2022 11:16:23 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 90E7A94; Wed, 23 Feb 2022 21:16:39 +0200 (EET)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Mark Brown <broonie@kernel.org>, Wang Qing <wangqing@vivo.com>
+Subject: [PATCH v1 1/1] spi: pxa2xx-pci: Balance reference count for PCI DMA device
+Date:   Wed, 23 Feb 2022 21:16:37 +0200
+Message-Id: <20220223191637.31147-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The driver_override field from platform driver should not be initialized
-from static memory (string literal) because the core later kfree() it,
-for example when driver_override is set via sysfs.
+The pci_get_slot() increases its reference count, the caller
+must decrement the reference count by calling pci_dev_put().
 
-Use dedicated helper to set driver_override properly.
-
-Fixes: 77d8f3068c63 ("clk: imx: scu: add two cells binding support")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+Fixes: 743485ea3bee ("spi: pxa2xx-pci: Do a specific setup in a separate function")
+Fixes: 25014521603f ("spi: pxa2xx-pci: Enable DMA for Intel Merrifield")
+Reported-by: Wang Qing <wangqing@vivo.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/clk/imx/clk-scu.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/spi/spi-pxa2xx-pci.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/imx/clk-scu.c b/drivers/clk/imx/clk-scu.c
-index 083da31dc3ea..15e1d670e51f 100644
---- a/drivers/clk/imx/clk-scu.c
-+++ b/drivers/clk/imx/clk-scu.c
-@@ -683,7 +683,12 @@ struct clk_hw *imx_clk_scu_alloc_dev(const char *name,
- 		return ERR_PTR(ret);
+diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
+index 2e134eb4bd2c..6502fda6243e 100644
+--- a/drivers/spi/spi-pxa2xx-pci.c
++++ b/drivers/spi/spi-pxa2xx-pci.c
+@@ -76,14 +76,23 @@ static bool lpss_dma_filter(struct dma_chan *chan, void *param)
+ 	return true;
+ }
+ 
++static void lpss_dma_put_device(void *dma_dev)
++{
++	pci_dev_put(dma_dev);
++}
++
+ static int lpss_spi_setup(struct pci_dev *dev, struct pxa_spi_info *c)
+ {
+ 	struct pci_dev *dma_dev;
++	int ret;
+ 
+ 	c->num_chipselect = 1;
+ 	c->max_clk_rate = 50000000;
+ 
+ 	dma_dev = pci_get_slot(dev->bus, PCI_DEVFN(PCI_SLOT(dev->devfn), 0));
++	ret = devm_add_action_or_reset(&dev->dev, lpss_dma_put_device, dma_dev);
++	if (ret)
++		return ret;
+ 
+ 	if (c->tx_param) {
+ 		struct dw_dma_slave *slave = c->tx_param;
+@@ -107,8 +116,9 @@ static int lpss_spi_setup(struct pci_dev *dev, struct pxa_spi_info *c)
+ 
+ static int mrfld_spi_setup(struct pci_dev *dev, struct pxa_spi_info *c)
+ {
+-	struct pci_dev *dma_dev = pci_get_slot(dev->bus, PCI_DEVFN(21, 0));
+ 	struct dw_dma_slave *tx, *rx;
++	struct pci_dev *dma_dev;
++	int ret;
+ 
+ 	switch (PCI_FUNC(dev->devfn)) {
+ 	case 0:
+@@ -133,6 +143,11 @@ static int mrfld_spi_setup(struct pci_dev *dev, struct pxa_spi_info *c)
+ 		return -ENODEV;
  	}
  
--	pdev->driver_override = "imx-scu-clk";
-+	ret = driver_set_override(&pdev->dev, &pdev->driver_override,
-+				  "imx-scu-clk");
-+	if (ret) {
-+		platform_device_put(pdev);
++	dma_dev = pci_get_slot(dev->bus, PCI_DEVFN(21, 0));
++	ret = devm_add_action_or_reset(&dev->dev, lpss_dma_put_device, dma_dev);
++	if (ret)
 +		return ret;
-+	}
++
+ 	tx = c->tx_param;
+ 	tx->dma_dev = &dma_dev->dev;
  
- 	ret = imx_clk_scu_attach_pd(&pdev->dev, rsrc_id);
- 	if (ret)
 -- 
-2.32.0
+2.34.1
 

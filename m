@@ -2,58 +2,59 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 49327C433F5
-	for <linux-spi@archiver.kernel.org>; Wed, 23 Feb 2022 18:02:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A8842C433F5
+	for <linux-spi@archiver.kernel.org>; Wed, 23 Feb 2022 18:02:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240281AbiBWSDI (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 23 Feb 2022 13:03:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32838 "EHLO
+        id S240484AbiBWSDK (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 23 Feb 2022 13:03:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236327AbiBWSDG (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 23 Feb 2022 13:03:06 -0500
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 107AC35856;
-        Wed, 23 Feb 2022 10:02:39 -0800 (PST)
-Received: by mail-ed1-x52a.google.com with SMTP id s14so28112196edw.0;
-        Wed, 23 Feb 2022 10:02:38 -0800 (PST)
+        with ESMTP id S241883AbiBWSDJ (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 23 Feb 2022 13:03:09 -0500
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95CD043EE4;
+        Wed, 23 Feb 2022 10:02:41 -0800 (PST)
+Received: by mail-ej1-x62a.google.com with SMTP id r13so31081589ejd.5;
+        Wed, 23 Feb 2022 10:02:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=message-id:date:mime-version:user-agent:subject:content-language
          :from:to:cc:references:in-reply-to:content-transfer-encoding;
-        bh=6/CbbKb963ZeCrGB3DpHf3S/LmT0OSOkIfiP6ix0yNw=;
-        b=ja7eWC8yM81uxKYq1CCj7+E+5nx65m6I8TNqx8d1RSupI8Vu0xgsD4tbMjzlLJwNhq
-         vGNC6G8/8yNSBTQ3ffia3tNjLQ6zCcl5cl7vLEcJs7zvEiOsLWMHIX8hcj6fVysJ9YpC
-         LjwEe9AbpSRZWE9Z71vkOPl7H/KlZUg7SoF0biFC3edx50WUsiwAj2mDgPQNMHJzyZcx
-         da5dUsscp3Twr3zXlsZMp7pFexSsch0gIKY1bubBIdQp/1fyNhQbj0JK3Hz5DuaAtry4
-         2G8QoaDP2RvOcxtBor7mFfgycQcWMDYCSljvCaUgsPc7N0MK7c5/er+2Soq+kPplpYSB
-         ppmw==
+        bh=kKy0SIhSKIu0kr4V4JEIbxoglz4OmTrfglh5tt6nsYg=;
+        b=k5evABcfUyMDmcpbRWLMKTTEaE66zAD51+aTidnEBLz/X0eLhEfO4FfyJROQfgKKkZ
+         6NFb0sXaXWJXY4YS2U50ElYdvQcEPC3gtcXu/5zIued4WEl/3wU3n4B2GwqLFVuu2Mp5
+         hAJTUC7df+NVZTVWBjobcwliXZEz4e4GljvtB1kbs5m/qTrDGWxz6AsrMnZZfTtlVqMf
+         wvws7+tf6RPO1f5b48wBrNRKEdOSFUDUtdnma0e8Zd7I0eKgJwfqRp4eEwarceFzh+Qv
+         YlPE0PSGOIA3drZxTWuyFj+SfjB/u86wgMNEE6wgRLvgk81gIEn5/LJyeFVCnRvwg6Gx
+         goag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:from:to:cc:references:in-reply-to
          :content-transfer-encoding;
-        bh=6/CbbKb963ZeCrGB3DpHf3S/LmT0OSOkIfiP6ix0yNw=;
-        b=JNGpKqmim9PJH+fPeNdzgkZycHCKem2yCnmFmpfZjE/wI5lRqV/1d9L2oOHwlAj9oa
-         u9SN4eEdP57Supc8vpQnfZbKzfRl+lPUFlTs5EF+IjzVdYpVBm3Pe21aQv3lJudKGKDh
-         m61Ry5MfDQxvIC0xqp6oJBXU5UM4y+fHAvMJh0yQxzqx9PLXhXVEDJbJfAWWncOz/WwJ
-         2E0RbEGQnruPItzlhqB79fFy5jSu3eekRcvVloKsKtlb4rJNJYxDUdzJtMzC19uj29rN
-         y5pzWjy9UAwWi4RIU+FR9Qr3rXaghsjPhdM/NIWE6iO0eE1GnvjDw+8ulFSi7HWMH/Fa
-         K9Eg==
-X-Gm-Message-State: AOAM532K8WVoMw9xTjJPS+OzYqy9G41X0f0ZGc5Ju7QdiI39eNpKTnYn
-        djMwSVZ7F7LJ9UBWbTumiy8=
-X-Google-Smtp-Source: ABdhPJxIxkN5KO0RrQP8fJuziJbk305Fhl7odZ4cFGCqWDzoQmWYzPbvl+qns8Vw3cc46SN25FRaoA==
-X-Received: by 2002:a05:6402:3485:b0:40d:e8eb:1dc1 with SMTP id v5-20020a056402348500b0040de8eb1dc1mr602087edc.424.1645639357148;
-        Wed, 23 Feb 2022 10:02:37 -0800 (PST)
+        bh=kKy0SIhSKIu0kr4V4JEIbxoglz4OmTrfglh5tt6nsYg=;
+        b=S483reHrwKeieU01UVoGIN+uZGZHZqL5PLQ4YEGOI3ygmrmgE5XDdANViIrSuPhXgK
+         MAAdjtFLWcDk+RGD0u60Ex6vikl+ethncO5KIvFO2WFOIlHYMK32wG7kufPa5y+ILn1f
+         VeNxcd/uamCECpiRe/3aBRw7kg8rqPppzGfUfHTh3nFhY4XloRWs2KOgDNUqCS+1xQ9D
+         Jjq2uFiblLqfJa3JXpBKRuFMqwiIeYiikIAvnFn3M02he66V1qPlp1iEnckAtkTKkP/p
+         M5uqLuy5S4/X6gK8/DJTQamXZoVhKE4TRc1g2m/n10/MyteAi7mvKry4AkgKFfzvNBap
+         Rj5g==
+X-Gm-Message-State: AOAM533/NQYnyivdTtdoj5Ueilph8mtMzFi/pfrb6P0mVHGA13AnpF+i
+        ZUOuLe+NDoh5Vz9kVIdE1U8=
+X-Google-Smtp-Source: ABdhPJw5Ridx0IVbRGILzyG7eR4owfLekmgpSCrFo3IamQ1/zAZc80600sF7xC0hx1HShrZ57axLlA==
+X-Received: by 2002:a17:906:91c8:b0:6c5:76a6:688b with SMTP id b8-20020a17090691c800b006c576a6688bmr719712ejx.174.1645639360129;
+        Wed, 23 Feb 2022 10:02:40 -0800 (PST)
 Received: from ?IPV6:2003:ea:8f4d:2b00:d12c:c0a:f603:b44d? (p200300ea8f4d2b00d12c0c0af603b44d.dip0.t-ipconnect.de. [2003:ea:8f4d:2b00:d12c:c0a:f603:b44d])
-        by smtp.googlemail.com with ESMTPSA id n2sm170707ejl.55.2022.02.23.10.02.36
+        by smtp.googlemail.com with ESMTPSA id d18sm148151ejd.95.2022.02.23.10.02.39
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Feb 2022 10:02:36 -0800 (PST)
-Message-ID: <87fc1755-4047-2bcc-56cb-8e1d1cc66f7f@gmail.com>
-Date:   Wed, 23 Feb 2022 19:00:10 +0100
+        Wed, 23 Feb 2022 10:02:39 -0800 (PST)
+Message-ID: <b0cb189b-8015-bf2b-5852-b2e42bc79bb2@gmail.com>
+Date:   Wed, 23 Feb 2022 19:02:16 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.6.1
-Subject: [PATCH v3 3/5] docs: ABI: document tm1628 attribute display-text
+Subject: [PATCH v3 5/5] arm64: dts: meson-gxl-s905w-tx3-mini: add support for
+ the 7 segment display
 Content-Language: en-US
 From:   Heiner Kallweit <hkallweit1@gmail.com>
 To:     Rob Herring <robh+dt@kernel.org>,
@@ -78,28 +79,90 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Document the attribute for reading / writing the text to be displayed on
-the 7 segment display.
+This patch adds support for the 7 segment display of the device.
 
 Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
 ---
- Documentation/ABI/testing/sysfs-devices-auxdisplay-tm1628 | 7 +++++++
- 1 file changed, 7 insertions(+)
- create mode 100644 Documentation/ABI/testing/sysfs-devices-auxdisplay-tm1628
+ .../dts/amlogic/meson-gxl-s905w-tx3-mini.dts  | 59 +++++++++++++++++++
+ 1 file changed, 59 insertions(+)
 
-diff --git a/Documentation/ABI/testing/sysfs-devices-auxdisplay-tm1628 b/Documentation/ABI/testing/sysfs-devices-auxdisplay-tm1628
-new file mode 100644
-index 000000000..382757e72
---- /dev/null
-+++ b/Documentation/ABI/testing/sysfs-devices-auxdisplay-tm1628
-@@ -0,0 +1,7 @@
-+What:		/sys/devices/.../display-text
-+Date:		February 2022
-+Contact:	Heiner Kallweit <hkallweit1@gmail.com>
-+Description:
-+		The text to be displayed on the 7 segment display.
-+		Any printable character is allowed as input, but some
-+		can not be displayed in a readable way with 7 segments.
+diff --git a/arch/arm64/boot/dts/amlogic/meson-gxl-s905w-tx3-mini.dts b/arch/arm64/boot/dts/amlogic/meson-gxl-s905w-tx3-mini.dts
+index 6705c2082..20bbd931e 100644
+--- a/arch/arm64/boot/dts/amlogic/meson-gxl-s905w-tx3-mini.dts
++++ b/arch/arm64/boot/dts/amlogic/meson-gxl-s905w-tx3-mini.dts
+@@ -10,6 +10,7 @@
+ 
+ #include "meson-gxl-s905x.dtsi"
+ #include "meson-gx-p23x-q20x.dtsi"
++#include <dt-bindings/leds/common.h>
+ 
+ / {
+ 	compatible = "oranth,tx3-mini", "amlogic,s905w", "amlogic,meson-gxl";
+@@ -19,6 +20,64 @@ memory@0 {
+ 		device_type = "memory";
+ 		reg = <0x0 0x0 0x0 0x40000000>; /* 1 GiB or 2 GiB */
+ 	};
++
++	spi {
++		compatible = "spi-gpio";
++		sck-gpios = <&gpio GPIODV_27  GPIO_ACTIVE_HIGH>;
++		mosi-gpios = <&gpio GPIODV_26 GPIO_ACTIVE_HIGH>;
++		cs-gpios = <&gpio_ao GPIOAO_4 GPIO_ACTIVE_LOW>;
++		num-chipselects = <1>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		tm1628: led-controller@0 {
++			compatible = "titanmec,tm1628";
++			reg = <0>;
++			spi-3wire;
++			spi-lsb-first;
++			spi-rx-delay-us = <1>;
++			spi-max-frequency = <500000>;
++			#address-cells = <2>;
++			#size-cells = <0>;
++
++			segment-mapping = /bits/ 8 <4 5 6 1 2 3 7>;
++			grid = /bits/ 8 <4 3 2 1>;
++
++			alarm@5,1 {
++				reg = <5 1>;
++				function = LED_FUNCTION_ALARM;
++			};
++
++			usb@5,2 {
++				reg = <5 2>;
++				function = LED_FUNCTION_USB;
++			};
++			play@5,3 {
++				reg = <5 3>;
++				function = "play";
++			};
++
++			pause@5,4 {
++				reg = <5 4>;
++				function = "pause";
++			};
++
++			colon@5,5 {
++				reg = <5 5>;
++				function = "colon";
++			};
++
++			lan@5,6 {
++				reg = <5 6>;
++				function = LED_FUNCTION_LAN;
++			};
++
++			wlan@5,7 {
++				reg = <5 7>;
++				function = LED_FUNCTION_WLAN;
++			};
++		};
++	};
+ };
+ 
+ &ir {
 -- 
 2.35.1
 

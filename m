@@ -2,48 +2,47 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E1E11C433F5
-	for <linux-spi@archiver.kernel.org>; Thu, 24 Feb 2022 22:59:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A3695C433EF
+	for <linux-spi@archiver.kernel.org>; Thu, 24 Feb 2022 22:59:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235869AbiBXXAF (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 24 Feb 2022 18:00:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39446 "EHLO
+        id S235524AbiBXXAK (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 24 Feb 2022 18:00:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235895AbiBXXAA (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 24 Feb 2022 18:00:00 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 270CE18BA70;
-        Thu, 24 Feb 2022 14:59:30 -0800 (PST)
+        with ESMTP id S235811AbiBXXAG (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 24 Feb 2022 18:00:06 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B99220C188;
+        Thu, 24 Feb 2022 14:59:35 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B52AE61BE9;
-        Thu, 24 Feb 2022 22:59:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01172C340E9;
-        Thu, 24 Feb 2022 22:59:26 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 53AEFB829E5;
+        Thu, 24 Feb 2022 22:59:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98593C340E9;
+        Thu, 24 Feb 2022 22:59:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1645743569;
-        bh=mwMf2sXFT+R1GnLD1CG83eIfYZaiUYX3qLQFhuBiwI8=;
+        s=k20201202; t=1645743573;
+        bh=2f6xStWYcmNk3QXHVrbs7tqBtLU3rD4OrScTPyl5VWU=;
         h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=PUB5SVssO6+xc31SxlVYxCAaG2kOvlkuhNj+vxO8vdOkfUZ0JnH+xmhelaehmoeMD
-         9GuakJvWc9MfSU2J6pGzUNMOR7yngxN9ufBKDihVuVTND4viomw/CWesm7E/K2r/vN
-         sVMQf1EAI9FAWCszr4dOeHi0upiaXDQntz2Tu9aRY29Bd3apJ3Gx7J/qSdCcYim10I
-         +4BhkGf5QxK2xrOpfs3EslIhyps7aQ9GUVDDF2B2ByMWMotJBlAfi3mCGPDGoIBK/J
-         hoU59IlZL7cwE+K3BAky4CCtEeXY2RitMaP9GHr84gCkk53bL9OipScDeGwFlD/oUF
-         RbUcEF6/qH/Eg==
+        b=sdYEQvBp0A1nozCZwMm3ETyZ4hnWkyrb1oim+gI64dnhoMIykrF9kYhGyCXhlvz9x
+         kQxrJuQW9+khT8AOX87cZJVtccNky/bMzxB16hV5wJ8+S2PhOTEgi1K440KgL3OXmY
+         5HQuXP2hX0CGoe+iCdbJZgdCydF5aLuKD6s0OWWjsUSxZZogZCns5XoBdJOZd979qX
+         gYzuWLusf5yBzIWZJwf9DUOxUhEuWFDq7RZaKHE8ue27nuYcXd/UGfntj4yNb1oijc
+         RN3hE+mZ2Dq6p7pclGqB4Sng546iRpazcHs579dMHMDeOpiXhJTyVyyFi/dt/OpLo/
+         EWmp1Va1i719w==
 From:   Mark Brown <broonie@kernel.org>
-To:     jonathanh@nvidia.com, thierry.reding@gmail.com,
-        linux-tegra@vger.kernel.org,
-        Krishna Yarlagadda <kyarlagadda@nvidia.com>,
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-spi@vger.kernel.org
-Cc:     robh+dt@kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, p.zabel@pengutronix.de,
-        skomatineni@nvidia.com, ldewangan@nvidia.com
-In-Reply-To: <1643970576-31503-1-git-send-email-kyarlagadda@nvidia.com>
-References: <1643970576-31503-1-git-send-email-kyarlagadda@nvidia.com>
-Subject: Re: (subset) [PATCH 0/6] Tegra QUAD SPI combined sequence mode
-Message-Id: <164574356672.4024751.8070854824917838488.b4-ty@kernel.org>
-Date:   Thu, 24 Feb 2022 22:59:26 +0000
+Cc:     Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>
+In-Reply-To: <20220223191948.31325-1-andriy.shevchenko@linux.intel.com>
+References: <20220223191948.31325-1-andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v1 1/1] spi: pxa2xx-pci: Do not dereference fwnode in struct device
+Message-Id: <164574357134.4024751.5930412567641783271.b4-ty@kernel.org>
+Date:   Thu, 24 Feb 2022 22:59:31 +0000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -51,19 +50,12 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Fri, 4 Feb 2022 15:59:30 +0530, Krishna Yarlagadda wrote:
-> Add ACPI support for Tegra210 QUAD SPI driver and support
-> new Tegra194 feature, combined sequence mode.
+On Wed, 23 Feb 2022 21:19:48 +0200, Andy Shevchenko wrote:
+> In order to make the underneath API easier to change in the future,
+> prevent users from dereferencing fwnode from struct device.
+> Instead, use the specific dev_fwnode() API for that.
 > 
-> Krishna Yarlagadda (6):
->   spi: tegra210-quad: use device_reset method
->   dt-bindings: spi: Tegra234 QUAD SPI compatible
->   spi: tegra210-quad: add new chips to compatible
->   spi: tegra210-quad: add acpi support
->   dt-bindings: spi: Tegra QUAD SPI combined sequence
->   spi: tegra210-quad: combined sequence mode
 > 
-> [...]
 
 Applied to
 
@@ -71,14 +63,8 @@ Applied to
 
 Thanks!
 
-[1/6] spi: tegra210-quad: use device_reset method
-      commit: ac982578e7d340dc4f4fd243f4a4b24787d28c3f
-[2/6] dt-bindings: spi: Tegra234 QUAD SPI compatible
-      (no commit info)
-[3/6] spi: tegra210-quad: add new chips to compatible
-      commit: ea23f0e148b82e5bcbc6c814926f53133552f0f3
-[4/6] spi: tegra210-quad: add acpi support
-      (no commit info)
+[1/1] spi: pxa2xx-pci: Do not dereference fwnode in struct device
+      commit: a586f944f3a30cfffdbda081aa094bc6845f5ba9
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

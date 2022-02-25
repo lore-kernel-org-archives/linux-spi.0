@@ -2,159 +2,91 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5BAD8C433EF
-	for <linux-spi@archiver.kernel.org>; Fri, 25 Feb 2022 09:36:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 04D9EC433F5
+	for <linux-spi@archiver.kernel.org>; Fri, 25 Feb 2022 13:22:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233982AbiBYJhN (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 25 Feb 2022 04:37:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33208 "EHLO
+        id S241176AbiBYNXM (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 25 Feb 2022 08:23:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239161AbiBYJhK (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 25 Feb 2022 04:37:10 -0500
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6788626D
-        for <linux-spi@vger.kernel.org>; Fri, 25 Feb 2022 01:36:34 -0800 (PST)
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com [209.85.128.69])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        with ESMTP id S241203AbiBYNXL (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 25 Feb 2022 08:23:11 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FC1B1A7D93;
+        Fri, 25 Feb 2022 05:22:36 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 1159E3F1A1
-        for <linux-spi@vger.kernel.org>; Fri, 25 Feb 2022 09:36:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1645781793;
-        bh=mwBGuSv1vzWcEgYl2MgCXz9QnnQmXLrpGmSTa9ywwuI=;
-        h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-         In-Reply-To:Content-Type;
-        b=qk45lsTpLT74Z731Io80odzcwBaoFTxG+Ex9+UdRPhdmJoGO9vW6y4Mb2oCr/hm3P
-         a3qd6+kEXaJtSUP9Zl/ZtXqLzBxM3SABsJxlR5a8Il+l1tZX8I88h/yKKSUUV6I01g
-         DRFJxqp7rC4/ai+ha0dw0AHBcOvES48XJhLinWjnK6HIYzDvQdZv8YY+X82rBA815f
-         dmRZwh/gCIT80u78M+aOlLhHR7VlFPIT54eSAKS0o1ICxbK2oej410Ty4oKK942k66
-         7iCUwLl8iMrf0pv37dqGhyIPijzTANBJE7OHXSNGASwWf0nUHLabKJoDTXWAK/SRre
-         c8UfUrM4p9Awg==
-Received: by mail-wm1-f69.google.com with SMTP id c5-20020a1c3505000000b0034a0dfc86aaso1301217wma.6
-        for <linux-spi@vger.kernel.org>; Fri, 25 Feb 2022 01:36:33 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=mwBGuSv1vzWcEgYl2MgCXz9QnnQmXLrpGmSTa9ywwuI=;
-        b=ziwH23UwUuigdYrNSnzzsK/ppQLIS63lbBbzX8+7CzlY4MaRUyuhjY/0nY7KRgAmnI
-         9l0jHdLfmntODTm+ro4NGXtOswq5PodGjpqn8OaUvhRtCVKBgbv5vmyOVJym7uPH3imv
-         f39CE8UpRJKe0pvmyFsZQtitoTUAgBr8OV2AO91RBmuu8GJxXBKxeB4/MVPwZ15OJe7l
-         Qr2O6dzxcIc5gNHisgPXMI3ERA1gAApS8EfUQXv1ur0+ISoat0YUttdKKhADkSU8h9K3
-         yqCnrO2ZFtln8XyUkBxJSjKjMhY1meOhkTqZMaYFMzoH/e6ahjVgz3f6RMHJwvPgLtj5
-         qNvg==
-X-Gm-Message-State: AOAM532ie+Wge9MFU6sT9rd8KMvvKvzwj+Fy+CXKUXKU0w57tpdLZK4z
-        C9SOFrSjJfFpTP5hWb4M00ayBdcmNSbpfOnfziKBaAOuufwhVazw3P5Q3m5RpMrJGt7EPU57tpU
-        PRNLN2nrGrmfzAwvEzWVEAWwz05ZG55QGmS5zkw==
-X-Received: by 2002:a17:906:4cca:b0:6ce:6a06:bf7 with SMTP id q10-20020a1709064cca00b006ce6a060bf7mr5644759ejt.109.1645781782638;
-        Fri, 25 Feb 2022 01:36:22 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJxvGXs5zpBbIxYfXArg3HJWTHPHMBjqJChT5RpHzF7M3/UrStNiNcxogS5o2fNS3FLp8Ip6Ag==
-X-Received: by 2002:a17:906:4cca:b0:6ce:6a06:bf7 with SMTP id q10-20020a1709064cca00b006ce6a060bf7mr5644737ejt.109.1645781782424;
-        Fri, 25 Feb 2022 01:36:22 -0800 (PST)
-Received: from [192.168.0.130] (xdsl-188-155-181-108.adslplus.ch. [188.155.181.108])
-        by smtp.gmail.com with ESMTPSA id bo9-20020a170906d04900b006ce6b8e05c1sm773655ejb.150.2022.02.25.01.36.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 25 Feb 2022 01:36:21 -0800 (PST)
-Message-ID: <0aff95ff-5b79-8ae9-48fd-720a9f27cbce@canonical.com>
-Date:   Fri, 25 Feb 2022 10:36:20 +0100
+        by ams.source.kernel.org (Postfix) with ESMTPS id 3674BB830AF;
+        Fri, 25 Feb 2022 13:22:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5DB5C340E8;
+        Fri, 25 Feb 2022 13:22:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1645795353;
+        bh=BE4hrEf++LTFDnQPp/ZoaVBPWw8PZwKwJBycLMFea9E=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=NcFz/JrzExXH97+JJ7qlsESz+8CuhDSU/01BWfkr2ImhObWUjXNILKNFnuPBT3RYr
+         xQUTU069umQyMHFkRpY1lypH2KDkkdH74NhUmrGCkCgG2MqWGj4c2pLwFk6/3wO4NQ
+         kKuHUtMuKJXvSlv2NP4LODYTOA6KzwMfyDxF0IuUpm/CSidjJeciTDNVPH1fi6NEis
+         7XwSjgw7OvVT6Gpf+fzvGS6c8ilhPBaNUvePC8w0fjPUJB14Q4gASJ47oySeSZKv2n
+         GrqIzDNaTG5bKUXDVkXjhPAQgH6O7y8CobhbocBxxrcrUVmBJmGG2n0Bo3XtB6rAe3
+         b9QfbpHj6Toww==
+Date:   Fri, 25 Feb 2022 13:22:29 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Yun Zhou <yun.zhou@windriver.com>
+Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        ying.xue@windriver.com, richard.danter@windriver.com
+Subject: Re: [v2][PATCH] spi: use specific last_cs instead of last_cs_enable
+Message-ID: <YhjYFc2HaGjydMqO@sirena.org.uk>
+References: <20220217141234.72737-1-yun.zhou@windriver.com>
+ <4d621283-2a48-35ec-2131-1471a6b94c51@windriver.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH v2 05/11] pci: use helper for safer setting of
- driver_override
-Content-Language: en-US
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Stuart Yoder <stuyoder@gmail.com>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        Abel Vesa <abel.vesa@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Vineeth Vijayan <vneethv@linux.ibm.com>,
-        Peter Oberparleiter <oberpar@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Andy Gross <agross@kernel.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Mark Brown <broonie@kernel.org>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>, linux-kernel@vger.kernel.org,
-        linux-clk@vger.kernel.org, NXP Linux Team <linux-imx@nxp.com>,
-        linux-arm-kernel@lists.infradead.org, linux-hyperv@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        alsa-devel@alsa-project.org, linux-spi@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>
-References: <20220224235206.GA302751@bhelgaas>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-In-Reply-To: <20220224235206.GA302751@bhelgaas>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="M58BZv/y8CRnoqht"
+Content-Disposition: inline
+In-Reply-To: <4d621283-2a48-35ec-2131-1471a6b94c51@windriver.com>
+X-Cookie: I smell a wumpus.
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On 25/02/2022 00:52, Bjorn Helgaas wrote:
-> On Thu, Feb 24, 2022 at 08:49:15AM +0100, Krzysztof Kozlowski wrote:
->> On 23/02/2022 22:51, Bjorn Helgaas wrote:
->>> In subject, to match drivers/pci/ convention, do something like:
->>>
->>>   PCI: Use driver_set_override() instead of open-coding
->>>
->>> On Wed, Feb 23, 2022 at 08:13:04PM +0100, Krzysztof Kozlowski wrote:
->>>> Use a helper for seting driver_override to reduce amount of duplicated
->>>> code.
->>>> @@ -567,31 +567,15 @@ static ssize_t driver_override_store(struct device *dev,
->>>>  				     const char *buf, size_t count)
->>>>  {
->>>>  	struct pci_dev *pdev = to_pci_dev(dev);
->>>> -	char *driver_override, *old, *cp;
->>>> +	int ret;
->>>>  
->>>>  	/* We need to keep extra room for a newline */
->>>>  	if (count >= (PAGE_SIZE - 1))
->>>>  		return -EINVAL;
->>>
->>> This check makes no sense in the new function.  Michael alluded to
->>> this as well.
->>
->> I am not sure if I got your comment properly. You mean here:
->> 1. Move this check to driver_set_override()?
->> 2. Remove the check entirely?
-> 
-> I was mistaken about the purpose of the comment and the check.  I
-> thought it had to do with *this* function, and this function doesn't
-> add a newline, and there's no obvious connection with PAGE_SIZE.
-> 
-> But looking closer, I think the "extra room for a newline" is really
-> to make sure that *driver_override_show()* can add a newline and have
-> it still fit within the PAGE_SIZE sysfs limit.
-> 
-> Most driver_override_*() functions have the same comment, so maybe
-> this was obvious to everybody except me :)  I do see that spi.c adds
-> "when displaying value" at the end, which helps a lot.
-> 
-> Sorry for the wild goose chase.
 
-I think I will move this check anyway to driver_set_override() helper,
-because there is no particular benefit to have duplicated all over. The
-helper will receive "count" argument so can perform all checks.
+--M58BZv/y8CRnoqht
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+On Fri, Feb 25, 2022 at 04:22:01PM +0800, Yun Zhou wrote:
 
-Best regards,
-Krzysztof
+> Do you have any comments on the new patch? It just fixes the
+> regression introduced by d40f0b6f2e21, and it no longer affect cs_change.
+
+Please don't send content free pings and please allow a reasonable time
+for review.  People get busy, go on holiday, attend conferences and so=20
+on so unless there is some reason for urgency (like critical bug fixes)
+please allow at least a couple of weeks for review.  If there have been
+review comments then people may be waiting for those to be addressed.
+
+Sending content free pings adds to the mail volume (if they are seen at
+all) which is often the problem and since they can't be reviewed
+directly if something has gone wrong you'll have to resend the patches
+anyway, so sending again is generally a better approach though there are
+some other maintainers who like them - if in doubt look at how patches
+for the subsystem are normally handled.
+
+--M58BZv/y8CRnoqht
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmIY2BQACgkQJNaLcl1U
+h9Da7Af/XNWdUV3sNmp0eF542/LjeEc9cNbzIdfJkQyNhxi6m3W8ca3XHaQUTfLJ
+w/8G3q5uIw6vN0wjHSFkof0S0j6fSdONKL3t6z62o6mBcfPTtTCkZVnnmd5iSOAK
+yDWXG90BvorEMgp81w1DfEz7s0GYUOZOgaA8iZseNRnnnNyq8v3Dcj98nukbXQrr
+ou3RepnK31XKIOXN4yJwNyEaCIwPkz7knMdjbBSuBVQYxPxaIno3FC6CBxuDAqXV
+lTDKhQLdUFQlOT2QlpSMjXBQWzein7gi4W7fRRH12ES81M3qed9CcwH9uzF2WIvU
+5Jlet0uvsCoN6+IQuji3MnYz8XfuMQ==
+=7NE0
+-----END PGP SIGNATURE-----
+
+--M58BZv/y8CRnoqht--

@@ -2,119 +2,87 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4D18FC433EF
-	for <linux-spi@archiver.kernel.org>; Fri, 25 Feb 2022 17:24:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 44AB1C4332F
+	for <linux-spi@archiver.kernel.org>; Fri, 25 Feb 2022 17:36:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243644AbiBYRZE (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 25 Feb 2022 12:25:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58358 "EHLO
+        id S243833AbiBYRgr (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 25 Feb 2022 12:36:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235641AbiBYRZB (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 25 Feb 2022 12:25:01 -0500
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DF671AAA43;
-        Fri, 25 Feb 2022 09:24:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1645809869; x=1677345869;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=OlurqVaDNqAkiulsXHgdN0qyGkN75qpZRRBUn3kZErg=;
-  b=H66otDR65GatZVxkB1xllDxbIWgCj3bOVGWnoE7yLWDEJiFtWFzpx2FA
-   QsLtD9QlQNOw4u6LLle+pg2y4WenwDGXxCPCs9s01JwpG++fhu10zgzpu
-   CI3n4XB9vrnY8SmmrQXD8iwG9DjfXBDUxYP6AfgZMhgJj+kDA0w7wQSka
-   XtopMpZ90ViPQgAtsIGTswH7iNM9EM7rnEz4lvzPFjCdYF8sE2+70/QxZ
-   36eYbfLZtoVlkYsRlzx/vv5lUWQD9e33Ckw/LnEp4sS7Dj3SmZamwlEGu
-   ijhYbfylFuZtB/0FgGUrq7ZpewZSrWE+MBbNlB7fAudhVJg/QK1OXeeRL
-   A==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10268"; a="252736969"
-X-IronPort-AV: E=Sophos;i="5.90,136,1643702400"; 
-   d="scan'208";a="252736969"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2022 09:24:01 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.90,136,1643702400"; 
-   d="scan'208";a="707929863"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga005.jf.intel.com with ESMTP; 25 Feb 2022 09:23:58 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 9D20894; Fri, 25 Feb 2022 19:24:15 +0200 (EET)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        with ESMTP id S243832AbiBYRgn (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 25 Feb 2022 12:36:43 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 290B01DF853;
+        Fri, 25 Feb 2022 09:36:11 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B6DBCB832CB;
+        Fri, 25 Feb 2022 17:36:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06304C340E7;
+        Fri, 25 Feb 2022 17:36:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1645810568;
+        bh=QPiQ0/Y3PgpODkPwCxa8qFsECGEgnhU38/p/hdBcPNs=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=d3j+jLgkWmnUiY2e7rDCPZH5HeVPykaBRziJwuA/tAYyUvC0wk2XsslZDFX1aPUkQ
+         mEfvfV/imwvCB6G20ZmD9OskZ2ZQJBC2l7EYJRtQpPKDDS9yLZytKZktWiL0I8zqY8
+         RK4brKxEJfUhlD6UeRG51cUBlvljYK2+szZhGtMES7/9zeMCHVZV/p+KxSxFMSzFOV
+         ebrsbzfApyrmgCjV821thZFxopup27Eskm5Q8EBdj77DRX3PwEpXrdNKw4vEhMJR1K
+         krY7NFweAE5uwisyTvwTFDPoTGpYtMjPIJZA3H9VaT5MiUL22ao9LinC1Wrgj0iESy
+         B/fNJpe9UllGQ==
+From:   Mark Brown <broonie@kernel.org>
+To:     linux-spi@vger.kernel.org, Li-hao Kuo <lhjeff911@gmail.com>,
+        devicetree@vger.kernel.org, robh+dt@kernel.org,
         linux-kernel@vger.kernel.org
-Cc:     Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH v1 01/11] spi: pxa2xx-pci: Refactor CE4100 to use ->setup()
-Date:   Fri, 25 Feb 2022 19:23:40 +0200
-Message-Id: <20220225172350.69797-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
+Cc:     wells.lu@sunplus.com, lh.kuo@sunplus.com
+In-Reply-To: <097bbc8b703b17e8fb3e3f6f6d2f97fe668bd5c5.1645770648.git.lhjeff911@gmail.com>
+References: <097bbc8b703b17e8fb3e3f6f6d2f97fe668bd5c5.1645770648.git.lhjeff911@gmail.com>
+Subject: Re: [PATCH] spi: dt-bindings: remove unused required property
+Message-Id: <164581056673.2562676.17852885347289085467.b4-ty@kernel.org>
+Date:   Fri, 25 Feb 2022 17:36:06 +0000
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Refactor CE4100 handling code to use ->setup() instead of spreading
-potentially confusing conditional.
+On Fri, 25 Feb 2022 14:31:53 +0800, Li-hao Kuo wrote:
+> fix issue
+> /builds/robherring/linux-dt/Documentation/devicetree/bindings/spi/spi-sunplus-sp7021.example.dt.yaml:
+> spi@9C002D80: 'clocks-names' is a required property
+> From schema: /builds/robherring/linux-dt/Documentation/devicetree/bindings/spi/spi-sunplus-sp7021.yaml
+> delete unused required(clock-name)
+> 
+> Fixes: 3b8ab4da34 ("spi: Fix test error for sp7021")
+> 
+> [...]
 
-Besides that, it will allow to refactor further to avoid intermediate
-storage for the used configuration parameters.
+Applied to
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/spi/spi-pxa2xx-pci.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
-index 6d60972e4e20..bd20379d9342 100644
---- a/drivers/spi/spi-pxa2xx-pci.c
-+++ b/drivers/spi/spi-pxa2xx-pci.c
-@@ -30,7 +30,7 @@ enum {
- struct pxa_spi_info {
- 	enum pxa_ssp_type type;
- 	int port_id;
--	int num_chipselect;
-+	unsigned int num_chipselect;
- 	unsigned long max_clk_rate;
- 
- 	/* DMA channel request parameters */
-@@ -114,6 +114,14 @@ static int lpss_spi_setup(struct pci_dev *dev, struct pxa_spi_info *c)
- 	return 0;
- }
- 
-+static int ce4100_spi_setup(struct pci_dev *dev, struct pxa_spi_info *c)
-+{
-+	c->num_chipselect = dev->devfn;
-+	c->max_clk_rate = 3686400;
-+
-+	return 0;
-+}
-+
- static int mrfld_spi_setup(struct pci_dev *dev, struct pxa_spi_info *c)
- {
- 	struct dw_dma_slave *tx, *rx;
-@@ -163,8 +171,7 @@ static struct pxa_spi_info spi_info_configs[] = {
- 	[PORT_CE4100] = {
- 		.type = PXA25x_SSP,
- 		.port_id =  -1,
--		.num_chipselect = -1,
--		.max_clk_rate = 3686400,
-+		.setup = ce4100_spi_setup,
- 	},
- 	[PORT_BYT] = {
- 		.type = LPSS_BYT_SSP,
-@@ -248,7 +255,7 @@ static int pxa2xx_spi_pci_probe(struct pci_dev *dev,
- 	}
- 
- 	memset(&spi_pdata, 0, sizeof(spi_pdata));
--	spi_pdata.num_chipselect = (c->num_chipselect > 0) ? c->num_chipselect : dev->devfn;
-+	spi_pdata.num_chipselect = c->num_chipselect;
- 	spi_pdata.dma_filter = c->dma_filter;
- 	spi_pdata.tx_param = c->tx_param;
- 	spi_pdata.rx_param = c->rx_param;
--- 
-2.34.1
+Thanks!
 
+[1/1] spi: dt-bindings: remove unused required property
+      commit: 83854c231262d2ad43c4fb32414ba25304f925d8
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

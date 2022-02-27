@@ -2,151 +2,288 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 75D90C433FE
-	for <linux-spi@archiver.kernel.org>; Sun, 27 Feb 2022 10:01:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 90305C43217
+	for <linux-spi@archiver.kernel.org>; Sun, 27 Feb 2022 13:52:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229900AbiB0KBp (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 27 Feb 2022 05:01:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47874 "EHLO
+        id S231255AbiB0NxY (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 27 Feb 2022 08:53:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229922AbiB0KBn (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 27 Feb 2022 05:01:43 -0500
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB5FE5B8AA;
-        Sun, 27 Feb 2022 02:01:06 -0800 (PST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-        by localhost (Postfix) with ESMTP id 4K5zY51grbz9sSf;
-        Sun, 27 Feb 2022 11:00:57 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-        by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id t_JPdnIHkgKu; Sun, 27 Feb 2022 11:00:57 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-        by pegase2.c-s.fr (Postfix) with ESMTP id 4K5zY25c6pz9sSN;
-        Sun, 27 Feb 2022 11:00:54 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id E960F8B763;
-        Sun, 27 Feb 2022 11:00:53 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-        with ESMTP id W5oqlttZPhHn; Sun, 27 Feb 2022 11:00:53 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.232.62])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 9C6348B770;
-        Sun, 27 Feb 2022 11:00:53 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-        by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 21RA0kq1262871
-        (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-        Sun, 27 Feb 2022 11:00:46 +0100
-Received: (from chleroy@localhost)
-        by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 21RA0jEV262870;
-        Sun, 27 Feb 2022 11:00:45 +0100
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
-From:   Christophe Leroy <christophe.leroy@csgroup.eu>
-To:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Pratyush Yadav <p.yadav@ti.com>
-Cc:     Christophe Leroy <christophe.leroy@csgroup.eu>,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: [PATCH v1 1/2] spi: Add new mode to generate additional clock cycles
-Date:   Sun, 27 Feb 2022 11:00:34 +0100
-Message-Id: <2bbe791f1c2b3c809c8863020184cdcfdadd1510.1645950971.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <cover.1645950971.git.christophe.leroy@csgroup.eu>
-References: <cover.1645950971.git.christophe.leroy@csgroup.eu>
+        with ESMTP id S231243AbiB0NxX (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 27 Feb 2022 08:53:23 -0500
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4113D65B9
+        for <linux-spi@vger.kernel.org>; Sun, 27 Feb 2022 05:52:43 -0800 (PST)
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com [209.85.208.71])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id A9579407C6
+        for <linux-spi@vger.kernel.org>; Sun, 27 Feb 2022 13:52:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1645969953;
+        bh=CdJmQ2T6u9FeKBCl3rxyT2dhiXMmAcmjIg9rruFo2ow=;
+        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+         MIME-Version;
+        b=bX0QrzvrpUcHh35v2nzno7/ws+TS/QbIISZOIJobpmVhlPGVescOoLwhCkLq4q25K
+         RDWgwdtp45A4NEuSdlUWpqQYyQZELOtGz50LPKXXXqm8gAQK30r3zVmKPNbt7Vyybo
+         SC8Ix53OWCR8Doh1rWFa+8o8l5bmJ1yhJH6xx4zafRQEG9GZWEg+fJoTVSCJJko5v8
+         CbJHAQwmsd97iCoKv/Xd7xEyrb2ZYI7ByU9GkLb7TSOryG7+6bO9X787JEUhaYKm4S
+         pJ+aH/gD5NqzecNjjwwJYzlXrGLx+ZdtobEvPRod4tz8AAViM8NHPcI9gz+weUqR00
+         CMYw6PPdKi4aA==
+Received: by mail-ed1-f71.google.com with SMTP id s7-20020a508dc7000000b0040f29ccd65aso4264361edh.1
+        for <linux-spi@vger.kernel.org>; Sun, 27 Feb 2022 05:52:33 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=CdJmQ2T6u9FeKBCl3rxyT2dhiXMmAcmjIg9rruFo2ow=;
+        b=8Jmi7u/qnOaGUNsDXg/6sfQnbauPPBHkfXJQksyyE6OmeRXbRmOaqEyX28jczU+sbM
+         rgC9hLYp2pf2IyjxmNOp/Qv7F93QWOHs0PpnyMpWIHuXfm2aypin4PDpnLFtxUdPAZC0
+         JNCQCWzJpAUtXz3erFSFhllUtSUnvvtj5Ey+7n3o9/Fd7qdysRrMUSfwW8oGXWpwzwLy
+         IOmyF7CPbszZ89RSbwZjSLUKMMhiZUF7VYdF1uBgxtS9IXPjkJ4OWEseUw+UkyDN9Bxc
+         2cW2JVV96IRJUlfWH+Ivj38ogm/zPoMKi23cCvWruiQx9GNzTvWVOnX5A9uPd72Qn9R1
+         UMdw==
+X-Gm-Message-State: AOAM531uJjLakS1j9kNBCbAzOqGyTI1X5Z4DmENNgTs0zNTFZTOWPTNz
+        AFOvVgTpUussh43n7eWua/8ko3kMyOzkICDuCma2+pnWKF/LfImhHy4zDhjUcyRNmoO6/+xd3hr
+        W1vgl+B+UW8F5EXd5rJ4bGLPZL9/QR/aNcG3Ldg==
+X-Received: by 2002:a05:6402:369a:b0:413:81b5:7b64 with SMTP id ej26-20020a056402369a00b0041381b57b64mr9401228edb.163.1645969952737;
+        Sun, 27 Feb 2022 05:52:32 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJyF4Q2ceWWkBw+ukKwS0w45tHqUR1K1BR9aZlTk16YhD7kVeeZkMAYbPmW3o4XMDt8dIFgVAQ==
+X-Received: by 2002:a05:6402:369a:b0:413:81b5:7b64 with SMTP id ej26-20020a056402369a00b0041381b57b64mr9401196edb.163.1645969952506;
+        Sun, 27 Feb 2022 05:52:32 -0800 (PST)
+Received: from localhost.localdomain (xdsl-188-155-181-108.adslplus.ch. [188.155.181.108])
+        by smtp.gmail.com with ESMTPSA id r22-20020a17090638d600b006d584aaa9c9sm3393333ejd.133.2022.02.27.05.52.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 27 Feb 2022 05:52:31 -0800 (PST)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Stuart Yoder <stuyoder@gmail.com>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        Abel Vesa <abel.vesa@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Vineeth Vijayan <vneethv@linux.ibm.com>,
+        Peter Oberparleiter <oberpar@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Andy Gross <agross@kernel.org>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>, linux-kernel@vger.kernel.org,
+        linux-clk@vger.kernel.org, NXP Linux Team <linux-imx@nxp.com>,
+        linux-arm-kernel@lists.infradead.org, linux-hyperv@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        alsa-devel@alsa-project.org, linux-spi@vger.kernel.org,
+        virtualization@lists.linux-foundation.org,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+Subject: [PATCH v3 01/11] driver: platform: Add helper for safer setting of driver_override
+Date:   Sun, 27 Feb 2022 14:52:04 +0100
+Message-Id: <20220227135214.145599-2-krzysztof.kozlowski@canonical.com>
+X-Mailer: git-send-email 2.32.0
+In-Reply-To: <20220227135214.145599-1-krzysztof.kozlowski@canonical.com>
+References: <20220227135214.145599-1-krzysztof.kozlowski@canonical.com>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1645956034; l=3649; s=20211009; h=from:subject:message-id; bh=UpeHInRYCMHgzsyoIq8kRNojKZE72iMXwQWDi6TVlqk=; b=i7tLSbR8+v/1DDEB7oHUwrjhbyyYwOlVlN7xPMNsiAn38Kos0bN0rLigbxvlYhudGKbSnVcnTJZ/ 88DH2DlGBtaT8bSNK2VYgRFBbbqRak9QIi4/ffocP1++9xXPfk11
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Some components require a few clock cycles with chipselect off before
-or/and after the data transfer done with CS on.
+Several core drivers and buses expect that driver_override is a
+dynamically allocated memory thus later they can kfree() it.
 
-Typically IDT 801034 QUAD PCM CODEC datasheet states "Note *: CCLK
-should have one cycle before CS goes low, and two cycles after
-CS goes high".
+However such assumption is not documented, there were in the past and
+there are already users setting it to a string literal. This leads to
+kfree() of static memory during device release (e.g. in error paths or
+during unbind):
 
-The cycles "before" are implicitely provided by all previous activity
-on the SPI bus. But the cycles "after" must be provided in order to
-achieve the SPI transfer.
+    kernel BUG at ../mm/slub.c:3960!
+    Internal error: Oops - BUG: 0 [#1] PREEMPT SMP ARM
+    ...
+    (kfree) from [<c058da50>] (platform_device_release+0x88/0xb4)
+    (platform_device_release) from [<c0585be0>] (device_release+0x2c/0x90)
+    (device_release) from [<c0a69050>] (kobject_put+0xec/0x20c)
+    (kobject_put) from [<c0f2f120>] (exynos5_clk_probe+0x154/0x18c)
+    (exynos5_clk_probe) from [<c058de70>] (platform_drv_probe+0x6c/0xa4)
+    (platform_drv_probe) from [<c058b7ac>] (really_probe+0x280/0x414)
+    (really_probe) from [<c058baf4>] (driver_probe_device+0x78/0x1c4)
+    (driver_probe_device) from [<c0589854>] (bus_for_each_drv+0x74/0xb8)
+    (bus_for_each_drv) from [<c058b48c>] (__device_attach+0xd4/0x16c)
+    (__device_attach) from [<c058a638>] (bus_probe_device+0x88/0x90)
+    (bus_probe_device) from [<c05871fc>] (device_add+0x3dc/0x62c)
+    (device_add) from [<c075ff10>] (of_platform_device_create_pdata+0x94/0xbc)
+    (of_platform_device_create_pdata) from [<c07600ec>] (of_platform_bus_create+0x1a8/0x4fc)
+    (of_platform_bus_create) from [<c0760150>] (of_platform_bus_create+0x20c/0x4fc)
+    (of_platform_bus_create) from [<c07605f0>] (of_platform_populate+0x84/0x118)
+    (of_platform_populate) from [<c0f3c964>] (of_platform_default_populate_init+0xa0/0xb8)
+    (of_platform_default_populate_init) from [<c01031f8>] (do_one_initcall+0x8c/0x404)
+    (do_one_initcall) from [<c0f012c0>] (kernel_init_freeable+0x3d0/0x4d8)
+    (kernel_init_freeable) from [<c0a7def0>] (kernel_init+0x8/0x114)
+    (kernel_init) from [<c01010b4>] (ret_from_fork+0x14/0x20)
 
-In order to use that kind of component, implement a new option for
-SPI slaves in order to implement a trailing clock of a few bits
-with ChipSelect off at the end of the transfer.
+Provide a helper which clearly documents the usage of driver_override.
+This will allow later to reuse the helper and reduce amount of
+duplicated code.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Convert the platform driver to use new helper and make the
+driver_override field const char (it is not modified by the core).
+
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 ---
- .../devicetree/bindings/spi/spi-peripheral-props.yaml        | 4 ++++
- drivers/spi/spi.c                                            | 5 ++++-
- include/uapi/linux/spi/spi.h                                 | 3 ++-
- 3 files changed, 10 insertions(+), 2 deletions(-)
+ drivers/base/driver.c           | 51 +++++++++++++++++++++++++++++++++
+ drivers/base/platform.c         | 28 +++---------------
+ include/linux/device/driver.h   |  2 ++
+ include/linux/platform_device.h |  7 ++++-
+ 4 files changed, 63 insertions(+), 25 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-index 5dd209206e88..4e4fc357d667 100644
---- a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-+++ b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-@@ -82,6 +82,10 @@ properties:
-     description:
-       Delay, in microseconds, after a write transfer.
+diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+index 8c0d33e182fd..353750b0bbc5 100644
+--- a/drivers/base/driver.c
++++ b/drivers/base/driver.c
+@@ -30,6 +30,57 @@ static struct device *next_device(struct klist_iter *i)
+ 	return dev;
+ }
  
-+  spi-trailing-clock:
-+    description:
-+      Add a few clock cycles (minimum 2) with chipselect OFF after transfers.
++/**
++ * driver_set_override() - Helper to set or clear driver override.
++ * @dev: Device to change
++ * @override: Address of string to change (e.g. &device->driver_override);
++ *            The contents will be freed and hold newly allocated override.
++ * @s: NUL terminated string, new driver name to force a match, pass empty
++ *     string to clear it
++ * @len: length of @s
++ *
++ * Helper to set or clear driver override in a device, intended for the cases
++ * when the driver_override field is allocated by driver/bus code.
++ *
++ * Returns: 0 on success or a negative error code on failure.
++ */
++int driver_set_override(struct device *dev, const char **override,
++			const char *s, size_t len)
++{
++	const char *new, *old;
++	char *cp;
 +
- # The controller specific properties go here.
- allOf:
-   - $ref: cdns,qspi-nor-peripheral-props.yaml#
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 4599b121d744..1b943e112751 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2109,6 +2109,8 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
- 		spi->mode |= SPI_LSB_FIRST;
- 	if (of_property_read_bool(nc, "spi-cs-high"))
- 		spi->mode |= SPI_CS_HIGH;
-+	if (of_property_read_bool(nc, "spi-trailing-clock"))
-+		spi->mode |= SPI_TRAILING;
++	if (!dev || !override || !s)
++		return -EINVAL;
++
++	/* We need to keep extra room for a newline */
++	if (len >= (PAGE_SIZE - 1))
++		return -EINVAL;
++
++	new = kstrndup(s, len, GFP_KERNEL);
++	if (!new)
++		return -ENOMEM;
++
++	cp = strchr(new, '\n');
++	if (cp)
++		*cp = '\0';
++
++	device_lock(dev);
++	old = *override;
++	if (cp != new) {
++		*override = new;
++	} else {
++		kfree(new);
++		*override = NULL;
++	}
++	device_unlock(dev);
++
++	kfree(old);
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(driver_set_override);
++
+ /**
+  * driver_for_each_device - Iterator for devices bound to a driver.
+  * @drv: Driver we're iterating.
+diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+index 6cb04ac48bf0..8dd87f44bd74 100644
+--- a/drivers/base/platform.c
++++ b/drivers/base/platform.c
+@@ -1275,31 +1275,11 @@ static ssize_t driver_override_store(struct device *dev,
+ 				     const char *buf, size_t count)
+ {
+ 	struct platform_device *pdev = to_platform_device(dev);
+-	char *driver_override, *old, *cp;
+-
+-	/* We need to keep extra room for a newline */
+-	if (count >= (PAGE_SIZE - 1))
+-		return -EINVAL;
+-
+-	driver_override = kstrndup(buf, count, GFP_KERNEL);
+-	if (!driver_override)
+-		return -ENOMEM;
+-
+-	cp = strchr(driver_override, '\n');
+-	if (cp)
+-		*cp = '\0';
+-
+-	device_lock(dev);
+-	old = pdev->driver_override;
+-	if (strlen(driver_override)) {
+-		pdev->driver_override = driver_override;
+-	} else {
+-		kfree(driver_override);
+-		pdev->driver_override = NULL;
+-	}
+-	device_unlock(dev);
++	int ret;
  
- 	/* Device DUAL/QUAD mode */
- 	if (!of_property_read_u32(nc, "spi-tx-bus-width", &value)) {
-@@ -3538,12 +3540,13 @@ int spi_setup(struct spi_device *spi)
+-	kfree(old);
++	ret = driver_set_override(dev, &pdev->driver_override, buf, count);
++	if (ret)
++		return ret;
  
- 	trace_spi_setup(spi, status);
+ 	return count;
+ }
+diff --git a/include/linux/device/driver.h b/include/linux/device/driver.h
+index 15e7c5e15d62..700453017e1c 100644
+--- a/include/linux/device/driver.h
++++ b/include/linux/device/driver.h
+@@ -151,6 +151,8 @@ extern int __must_check driver_create_file(struct device_driver *driver,
+ extern void driver_remove_file(struct device_driver *driver,
+ 			       const struct driver_attribute *attr);
  
--	dev_dbg(&spi->dev, "setup mode %lu, %s%s%s%s%u bits/w, %u Hz max --> %d\n",
-+	dev_dbg(&spi->dev, "setup mode %lu, %s%s%s%s%s%u bits/w, %u Hz max --> %d\n",
- 			spi->mode & SPI_MODE_X_MASK,
- 			(spi->mode & SPI_CS_HIGH) ? "cs_high, " : "",
- 			(spi->mode & SPI_LSB_FIRST) ? "lsb, " : "",
- 			(spi->mode & SPI_3WIRE) ? "3wire, " : "",
- 			(spi->mode & SPI_LOOP) ? "loopback, " : "",
-+			(spi->mode & SPI_TRAILING) ? "trailing clock, " : "",
- 			spi->bits_per_word, spi->max_speed_hz,
- 			status);
++int driver_set_override(struct device *dev, const char **override,
++			const char *s, size_t len);
+ extern int __must_check driver_for_each_device(struct device_driver *drv,
+ 					       struct device *start,
+ 					       void *data,
+diff --git a/include/linux/platform_device.h b/include/linux/platform_device.h
+index 7c96f169d274..e39963889aa3 100644
+--- a/include/linux/platform_device.h
++++ b/include/linux/platform_device.h
+@@ -31,7 +31,12 @@ struct platform_device {
+ 	struct resource	*resource;
  
-diff --git a/include/uapi/linux/spi/spi.h b/include/uapi/linux/spi/spi.h
-index 236a85f08ded..0933a619a154 100644
---- a/include/uapi/linux/spi/spi.h
-+++ b/include/uapi/linux/spi/spi.h
-@@ -27,6 +27,7 @@
- #define	SPI_TX_OCTAL		_BITUL(13)	/* transmit with 8 wires */
- #define	SPI_RX_OCTAL		_BITUL(14)	/* receive with 8 wires */
- #define	SPI_3WIRE_HIZ		_BITUL(15)	/* high impedance turnaround */
-+#define	SPI_TRAILING		_BITUL(16)	/* trailing clock needed */
+ 	const struct platform_device_id	*id_entry;
+-	char *driver_override; /* Driver name to force a match */
++	/*
++	 * Driver name to force a match.
++	 * Do not set directly, because core frees it.
++	 * Use driver_set_override() to set or clear it.
++	 */
++	const char *driver_override;
  
- /*
-  * All the bits defined above should be covered by SPI_MODE_USER_MASK.
-@@ -36,6 +37,6 @@
-  * These bits must not overlap. A static assert check should make sure of that.
-  * If adding extra bits, make sure to increase the bit index below as well.
-  */
--#define SPI_MODE_USER_MASK	(_BITUL(16) - 1)
-+#define SPI_MODE_USER_MASK	(_BITUL(17) - 1)
- 
- #endif /* _UAPI_SPI_H */
+ 	/* MFD cell pointer */
+ 	struct mfd_cell *mfd_cell;
 -- 
-2.34.1
+2.32.0
 

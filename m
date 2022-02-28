@@ -2,45 +2,45 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7D82AC433EF
-	for <linux-spi@archiver.kernel.org>; Mon, 28 Feb 2022 15:16:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9F8E0C433EF
+	for <linux-spi@archiver.kernel.org>; Mon, 28 Feb 2022 15:16:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237495AbiB1PQs (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 28 Feb 2022 10:16:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36768 "EHLO
+        id S237499AbiB1PQv (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 28 Feb 2022 10:16:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234688AbiB1PQr (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 28 Feb 2022 10:16:47 -0500
+        with ESMTP id S237500AbiB1PQu (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 28 Feb 2022 10:16:50 -0500
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1A3675C1B;
-        Mon, 28 Feb 2022 07:16:04 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C42C98093F;
+        Mon, 28 Feb 2022 07:16:11 -0800 (PST)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-        by localhost (Postfix) with ESMTP id 4K6kVB6QSZz9sSL;
-        Mon, 28 Feb 2022 16:16:02 +0100 (CET)
+        by localhost (Postfix) with ESMTP id 4K6kVC4fwLz9sSP;
+        Mon, 28 Feb 2022 16:16:03 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
         by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id Fzavmv33hufI; Mon, 28 Feb 2022 16:16:02 +0100 (CET)
+        with ESMTP id LgwbOdoO3nLH; Mon, 28 Feb 2022 16:16:03 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-        by pegase2.c-s.fr (Postfix) with ESMTP id 4K6kVB5XX2z9sS3;
+        by pegase2.c-s.fr (Postfix) with ESMTP id 4K6kVB5cWNz9sSC;
         Mon, 28 Feb 2022 16:16:02 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 9CDCA8B773;
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id A1D468B763;
         Mon, 28 Feb 2022 16:16:02 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
         by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-        with ESMTP id blT9pc0ZQP4q; Mon, 28 Feb 2022 16:16:02 +0100 (CET)
+        with ESMTP id nHONc_EOSkbi; Mon, 28 Feb 2022 16:16:02 +0100 (CET)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.232.66])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 5CB818B763;
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 613658B770;
         Mon, 28 Feb 2022 16:16:02 +0100 (CET)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-        by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 21SFFteL354888
+        by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 21SFFtIF354880
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
         Mon, 28 Feb 2022 16:15:55 +0100
 Received: (from chleroy@localhost)
-        by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 21SFFt9J354887;
-        Mon, 28 Feb 2022 16:15:55 +0100
+        by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 21SFFsX1354878;
+        Mon, 28 Feb 2022 16:15:54 +0100
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
 From:   Christophe Leroy <christophe.leroy@csgroup.eu>
 To:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
@@ -48,68 +48,52 @@ To:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
 Cc:     Christophe Leroy <christophe.leroy@csgroup.eu>,
         linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
         devicetree@vger.kernel.org
-Subject: [PATCH v2 2/2] spi: fsl-spi: Implement trailing bits
-Date:   Mon, 28 Feb 2022 16:15:46 +0100
-Message-Id: <fe4a3946a66ede73f6d6871700f2aaf0171372a1.1646060734.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v2 0/2] Add support for components requiring trailing clock after transfer
+Date:   Mon, 28 Feb 2022 16:15:44 +0100
+Message-Id: <cover.1646060734.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <cover.1646060734.git.christophe.leroy@csgroup.eu>
-References: <cover.1646060734.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1646061343; l=1346; s=20211009; h=from:subject:message-id; bh=qCaXmMDXzweW6jL3WZK6Vn2roRlk3PB7M8Y/Eji0zEk=; b=41JKsiGTp/F8WyixBoVKFmKHZF87yBY9H3hqz+7s+U4wHyJ6oQODeX+E8/15H9n7+efsbQBjUKZm lyTQf3PfBWcVApZqr1fyGsypfGIl1nJPsCgL32NmzdFbHRr/nez0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1646061342; l=1446; s=20211009; h=from:subject:message-id; bh=qDunO6r098wmVPVnsxzw9olRCVT2oSAjs1K9oYKVlU8=; b=55Xj/X223/S+GiqUP9UDs8T55GfI1p4C+F6GZhhpEIvoCAxyrq7maoonuMP/fMU8ALyyIIwtHfWj fGMsfU7bBthF4ZA6tzgNopyd5Ectxwqc0BVKQeX65OfseYXYxPF9
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-In order to support IDT 801034 QUAD PCM CODEC, implement
-trailing clock for the amount of requested bits.
+Some components require a few clock cycles with chipselect off before
+or/and after the data transfer done with CS on.
 
-On fsl SPI, the minimum we can implement is a 4 bits shot.
-If the requested number is greated than 8, use 16.
+Typically IDT 801034 QUAD PCM CODEC datasheet states "Note *: CCLK
+should have one cycle before CS goes low, and two cycles after
+CS goes high".
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- drivers/spi/spi-fsl-spi.c | 21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+The cycles "before" are implicitely provided by all previous activity
+on the SPI bus. But the cycles "after" must be provided in order to
+achieve the SPI transfer.
 
-diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
-index bdf94cc7be1a..aefaea439672 100644
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -424,13 +424,30 @@ static int fsl_spi_do_one_msg(struct spi_master *master,
- 		}
- 	}
- 
--	m->status = status;
--
- 	if (status || !cs_change) {
- 		ndelay(nsecs);
- 		fsl_spi_chipselect(spi, BITBANG_CS_INACTIVE);
- 	}
- 
-+	if (!status && spi->trailing_bits) {
-+		struct spi_transfer t = {
-+			.len = 1,
-+			.tx_buf = empty_zero_page,
-+		};
-+
-+		if (spi->trailing_bits < 4)
-+			t.bits_per_word = 4;
-+		else if (spi->trailing_bits > 8)
-+			t.bits_per_word = 16;
-+		else
-+			t.bits_per_word = spi->trailing_bits;
-+
-+		status = fsl_spi_setup_transfer(spi, &t);
-+		if (!status)
-+			status = fsl_spi_bufs(spi, &t, 0);
-+	}
-+	m->status = status;
-+
- 	fsl_spi_setup_transfer(spi, NULL);
- 	spi_finalize_current_message(master);
- 	return 0;
+In order to use that kind of component, implement a new option for
+SPI slaves in order to implement trailing clock of a given number of
+bits with ChipSelect off at the end of the transfer.
+
+This is based on a discussion we had a few years ago, see
+https://lore.kernel.org/linux-spi/20160824112701.GE22076@sirena.org.uk/
+
+IDT 801034 QUAD PCM CODEC datasheet can be found at
+https://www.renesas.com/eu/en/document/dst/821034-data-sheet?language=en&r=24763
+
+Changes in v2:
+- Provide the number of wanted clock cycles instead of just a bool. 
+
+Christophe Leroy (2):
+  spi: Add optional number of additional clock cycles to be generated
+  spi: fsl-spi: Implement trailing bits
+
+ .../bindings/spi/spi-peripheral-props.yaml    |  5 +++++
+ drivers/spi/spi-fsl-spi.c                     | 21 +++++++++++++++++--
+ drivers/spi/spi.c                             |  7 +++++--
+ include/linux/spi/spi.h                       |  1 +
+ 4 files changed, 30 insertions(+), 4 deletions(-)
+
 -- 
 2.34.1
 

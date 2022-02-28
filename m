@@ -2,60 +2,60 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 036C2C433EF
-	for <linux-spi@archiver.kernel.org>; Mon, 28 Feb 2022 12:43:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 818ECC4332F
+	for <linux-spi@archiver.kernel.org>; Mon, 28 Feb 2022 12:44:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236569AbiB1Mod (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 28 Feb 2022 07:44:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58418 "EHLO
+        id S236586AbiB1Moj (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 28 Feb 2022 07:44:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231143AbiB1Mod (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 28 Feb 2022 07:44:33 -0500
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6434846B1F;
-        Mon, 28 Feb 2022 04:43:54 -0800 (PST)
-Received: by mail-pl1-x629.google.com with SMTP id bd1so10581584plb.13;
-        Mon, 28 Feb 2022 04:43:54 -0800 (PST)
+        with ESMTP id S236579AbiB1Moi (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 28 Feb 2022 07:44:38 -0500
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 256354755A;
+        Mon, 28 Feb 2022 04:44:00 -0800 (PST)
+Received: by mail-pg1-x52a.google.com with SMTP id e6so9866720pgn.2;
+        Mon, 28 Feb 2022 04:44:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=lnFsM8IpNjKcaqxOnVlKHRTrCgn6GK/en/A/KCipAmY=;
-        b=XjmZB7tbh8KzPMjDzNG5navFiQ0CQofW0187RFubC1Zra4jPyg2ZkjtzspXvPGNa9S
-         ICiPFlDRRSYfEsoAv/uV0zFCZPS8T/+SYqSkSpbpCsayeQ9Bt3O4+663YkyGjtX15ch7
-         NyUaSxHFPgGvtHOjdHSFvTudKE+UhEvtsr6bUvcJXZrdboitnJk/vDHHrkA4WM6VglN4
-         67lbrb13yIH/HoUYk2DARcjdztEJRi/hZKqRx84BLPHun0xh/eOLi3XwtqacXvkgtTwT
-         dO+Fdmuq4E2gYfXhKYqm0ds7D+7+YPTRdA8QOH2TNItz9YU/ILdo3t7NJanlwi/CfAKG
-         LQ5Q==
+        bh=qP6HrvQPRvcyooG75RH7rCRDnFKMKhHlpTnOTmKWJ5E=;
+        b=TKQpbKejpJRp4QDPKI8yohmG5/EW4zPfAu2U/DpBuHKDZSxLIHAkqKLxAr+u4lWR4x
+         IMWlw2biisuqVqpmict5mhC7vd8xAtUurrB1EgIMmfVhLPDMymqDekJkytiIFz6cjyk4
+         xCSbLXVbgaU3vnM2FBJLZIfER7uDRbLnYoUdu8cAZeeeqrx44fSIvOWqC8AR4zht9nBN
+         eV27wl40nRq9lcd4TkDSv7tjMFodI7tSY8FMoAGdBe37vkoqR/kW5QZcnvLVSbjW4ALZ
+         PYp9kW6Ky5wTWYH8K8/NGb+w/PAMRaEG6mjNshefOq/kYBrCn9NaCktL05l8PMpo76Vw
+         uvnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=lnFsM8IpNjKcaqxOnVlKHRTrCgn6GK/en/A/KCipAmY=;
-        b=tkIVDogBm1BaNkfrDD7o46n0LkXuHHllmp/VQD/nNu+kWTSs41EUQGmmdNxTLPQ0gM
-         lSd186cd44wJOBm6HGlUXMboHjuwudK+Tj479ztt2tOQLI65wRCFNwoAzLwL0wqRYE1a
-         ftBRroU8LOoorVwrA+anu0iNiNA+hWhF1Bq9K01o7rAgKtBbxyNYpiS58QKRb9tp81NE
-         hLkeVq7xZymub5ltgICKCsEgeb2WJfkFPzTBegf1Qm/hYTVMIAtfIqFSjRMy4kQmRop+
-         JWekhx7/QV0BH/lYDgIrnbShZsRH7WmyKqyZC33qqnI+jjn9svzleZ1K6hODfAxxSxIj
-         F5oQ==
-X-Gm-Message-State: AOAM5303yirb9JbTb7QxUUeM97wfOjv219b+jHKVDJg9IZJyNVSIUOWs
-        XZiDWtX6b4Max9fjimEbjuc=
-X-Google-Smtp-Source: ABdhPJzdeMjVo+TFg+cjmC4ATgICfkJCTpifmYxu3bDqHQ8PvvsHqwwME9OLPcgzJEXra+fuVzJFhA==
-X-Received: by 2002:a17:90a:9708:b0:1bc:7e5c:e012 with SMTP id x8-20020a17090a970800b001bc7e5ce012mr16452448pjo.168.1646052233877;
-        Mon, 28 Feb 2022 04:43:53 -0800 (PST)
+        bh=qP6HrvQPRvcyooG75RH7rCRDnFKMKhHlpTnOTmKWJ5E=;
+        b=btENuZn6I+1TSv5A/IPQkcaf9T0hI2dVXlSTrjSwOslvHqH4Dps5Twgg96e6HYpp1+
+         T9NCRpvqFFRiR/fUJ4Es+ay7hvP8XMCWijpKcetBCPNrs5WIPNYtMvp8XjpbtqMk4wEW
+         N4NVGa8zJzGnXm8ziuIzEyS/Hi4n1mKQYC5uO2gy6T92Ww6ZlfHrLZrVFFTAm002gJW3
+         2PV78sGslYnAmOnJv/liylyC36OOD37xfT0sNpx/oMzhtRCUpR3NupO4BVkNsKe06iW+
+         IIM9izstVDNyJsZbkDMGQ6JJN8thpRcJs0RHYcR8BgyHXLNZx0IJJi05TLyJsJBgjbSx
+         gAFQ==
+X-Gm-Message-State: AOAM530s+3woFz9qE3ay9UlsgmD6RpYyVcLRkXTpuqfuv8ZIOn/wTWiI
+        5G12Bss4f/O6IvenFxMbSUkjMmobUFoJ3A==
+X-Google-Smtp-Source: ABdhPJzp96y/zE/eVlnUwluVho7ei6LG8OeQKtPLlwooDFfhvzVyToNALwKYpnUo1Q/PPW0Czl58Yg==
+X-Received: by 2002:a62:3085:0:b0:4e0:1218:6d03 with SMTP id w127-20020a623085000000b004e012186d03mr21101080pfw.19.1646052239644;
+        Mon, 28 Feb 2022 04:43:59 -0800 (PST)
 Received: from localhost.localdomain ([122.161.51.77])
-        by smtp.gmail.com with ESMTPSA id z23-20020aa79597000000b004e1bf2f5818sm14129214pfj.87.2022.02.28.04.43.51
+        by smtp.gmail.com with ESMTPSA id z23-20020aa79597000000b004e1bf2f5818sm14129214pfj.87.2022.02.28.04.43.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Feb 2022 04:43:53 -0800 (PST)
+        Mon, 28 Feb 2022 04:43:59 -0800 (PST)
 From:   Kuldeep Singh <singh.kuldeep87k@gmail.com>
 To:     Mark Brown <broonie@kernel.org>,
         linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc:     Rob Herring <robh+dt@kernel.org>,
         Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 1/3] dt-bindings: spi: Update clocks property for ARM pl022
-Date:   Mon, 28 Feb 2022 18:13:43 +0530
-Message-Id: <20220228124345.99474-2-singh.kuldeep87k@gmail.com>
+Subject: [PATCH 3/3] dt-bindings: spi: Add spiclk to clock-names property in pl022
+Date:   Mon, 28 Feb 2022 18:13:45 +0530
+Message-Id: <20220228124345.99474-4-singh.kuldeep87k@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220228124345.99474-1-singh.kuldeep87k@gmail.com>
 References: <20220228124345.99474-1-singh.kuldeep87k@gmail.com>
@@ -65,12 +65,14 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Add missing minItems property to clocks in ARM pl022 bindings.
+Fix below dtc warning by making necessary addition of "spiclk" in
+clock-names property.
 
-This also helps in resolving below dtc warnings:
-arch/arm64/boot/dts/amd/amd-overdrive.dt.yaml: spi@e1020000: clocks: [[4]] is too short
+arch/arm64/boot/dts/broadcom/stingray/bcm958742t.dt.yaml: spi@190000:
+clock-names:0: 'spiclk' is not one of ['SSPCLK', 'sspclk']
     From schema: Documentation/devicetree/bindings/spi/spi-pl022.yaml
-arch/arm64/boot/dts/amd/amd-overdrive.dt.yaml: spi@e1020000: clock-names: ['apb_pclk'] is too short
+arch/arm64/boot/dts/broadcom/northstar2/ns2-svk.dt.yaml: spi@66190000:
+clock-names:0: 'spiclk' is not one of ['SSPCLK', 'sspclk']
     From schema: Documentation/devicetree/bindings/spi/spi-pl022.yaml
 
 Signed-off-by: Kuldeep Singh <singh.kuldeep87k@gmail.com>
@@ -79,17 +81,17 @@ Signed-off-by: Kuldeep Singh <singh.kuldeep87k@gmail.com>
  1 file changed, 1 insertion(+)
 
 diff --git a/Documentation/devicetree/bindings/spi/spi-pl022.yaml b/Documentation/devicetree/bindings/spi/spi-pl022.yaml
-index 6d633728fc2b..7d36e15db5b3 100644
+index 5f6926a58b15..fb3075a0c7fd 100644
 --- a/Documentation/devicetree/bindings/spi/spi-pl022.yaml
 +++ b/Documentation/devicetree/bindings/spi/spi-pl022.yaml
-@@ -34,6 +34,7 @@ properties:
-     maxItems: 1
+@@ -45,6 +45,7 @@ properties:
+           - enum:
+               - sspclk
+               - SSPCLK
++              - spiclk
+           - const: apb_pclk
  
-   clocks:
-+    minItems: 1
-     maxItems: 2
- 
-   clock-names:
+   pl022,autosuspend-delay:
 -- 
 2.25.1
 

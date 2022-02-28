@@ -2,147 +2,66 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 123DEC433EF
-	for <linux-spi@archiver.kernel.org>; Mon, 28 Feb 2022 15:16:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6559CC433EF
+	for <linux-spi@archiver.kernel.org>; Mon, 28 Feb 2022 15:27:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237537AbiB1PRC (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 28 Feb 2022 10:17:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36914 "EHLO
+        id S237535AbiB1P2A (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 28 Feb 2022 10:28:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234688AbiB1PQx (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 28 Feb 2022 10:16:53 -0500
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EF77811A2;
-        Mon, 28 Feb 2022 07:16:15 -0800 (PST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-        by localhost (Postfix) with ESMTP id 4K6kVD4Dksz9sSC;
-        Mon, 28 Feb 2022 16:16:04 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-        by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 0AcxrXPsdYDS; Mon, 28 Feb 2022 16:16:04 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-        by pegase2.c-s.fr (Postfix) with ESMTP id 4K6kVB5rHqz9sSK;
-        Mon, 28 Feb 2022 16:16:02 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id AA4818B770;
-        Mon, 28 Feb 2022 16:16:02 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-        with ESMTP id 63hMoXfIVCKP; Mon, 28 Feb 2022 16:16:02 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.232.66])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 5E8228B76E;
-        Mon, 28 Feb 2022 16:16:02 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-        by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 21SFFt2i354884
-        (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-        Mon, 28 Feb 2022 16:15:55 +0100
-Received: (from chleroy@localhost)
-        by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 21SFFtoP354883;
-        Mon, 28 Feb 2022 16:15:55 +0100
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
-From:   Christophe Leroy <christophe.leroy@csgroup.eu>
-To:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Pratyush Yadav <p.yadav@ti.com>
-Cc:     Christophe Leroy <christophe.leroy@csgroup.eu>,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: [PATCH v2 1/2] spi: Add optional number of additional clock cycles to be generated
-Date:   Mon, 28 Feb 2022 16:15:45 +0100
-Message-Id: <6b6bad3844828c22de3acfb9e7fbac877a48d5a4.1646060734.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <cover.1646060734.git.christophe.leroy@csgroup.eu>
-References: <cover.1646060734.git.christophe.leroy@csgroup.eu>
+        with ESMTP id S237520AbiB1P1y (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 28 Feb 2022 10:27:54 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D5687811AD;
+        Mon, 28 Feb 2022 07:27:15 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6F133ED1;
+        Mon, 28 Feb 2022 07:27:15 -0800 (PST)
+Received: from [10.57.39.47] (unknown [10.57.39.47])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 00FD03F73D;
+        Mon, 28 Feb 2022 07:27:13 -0800 (PST)
+Message-ID: <1763f668-2582-c05e-7ac8-d635bc84ef82@arm.com>
+Date:   Mon, 28 Feb 2022 15:27:08 +0000
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1646061343; l=3225; s=20211009; h=from:subject:message-id; bh=obQ6U01CPn6rN30ENVOTw64zmFRTclLzFL8f6RdDfTo=; b=kg/PJTUvFLbWYhJ4xH82zwkGtgldZMuJfIc/I4rtJ+/MI4mav0il39OLUaG+WVdb9EPMU9gQhgNG cS/61TXTCLnapWWDPU2WZY4mgKU1Vc+yLPlfjsNKADmufAZCS/Rk
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.1
+Subject: Re: [PATCH 1/3] dt-bindings: spi: Update clocks property for ARM
+ pl022
+Content-Language: en-GB
+To:     Mark Brown <broonie@kernel.org>
+Cc:     Kuldeep Singh <singh.kuldeep87k@gmail.com>,
+        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>
+References: <20220228124345.99474-1-singh.kuldeep87k@gmail.com>
+ <20220228124345.99474-2-singh.kuldeep87k@gmail.com>
+ <6e14bdd4-5924-dd58-41ef-5bdb5561913b@arm.com>
+ <YhzmHgV3L+3nmt+Y@sirena.org.uk>
+From:   Robin Murphy <robin.murphy@arm.com>
+In-Reply-To: <YhzmHgV3L+3nmt+Y@sirena.org.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Some components require a few clock cycles with chipselect off before
-or/and after the data transfer done with CS on.
+On 2022-02-28 15:11, Mark Brown wrote:
+> On Mon, Feb 28, 2022 at 02:26:12PM +0000, Robin Murphy wrote:
+> 
+>> Who says that minItems is missing? Looking at the PL022 TRM[1] it seems
+>> clear that SSPCLK is pretty fundamental to useful operation. If that DT ever
+>> worked, it must be that the same clock is wired to both inputs, and the fact
+>> that that's how the neighbouring PL011 is described is strongly suggestive.
+> 
+> Well, it could also be that the clock is wired to some other clock which
+> is always on (which I guess is why the driver allows this in the first
+> place, there's a lot of sloppy code around stuff like that in the tree).
 
-Typically IDT 801034 QUAD PCM CODEC datasheet states "Note *: CCLK
-should have one cycle before CS goes low, and two cycles after
-CS goes high".
+I wouldn't say the driver "allows" it, so much as it just blindly grabs 
+the first clock assuming it's SSPCLK per the binding, and thus it will 
+happen to work out if the underlying physical clock is the same as, or 
+equivalent to, the APB PCLK. Otherwise, it's already into some degree of 
+not working properly, by virtue of reading the wrong clock rate.
 
-The cycles "before" are implicitely provided by all previous activity
-on the SPI bus. But the cycles "after" must be provided in order to
-achieve the SPI transfer.
-
-In order to use that kind of component, implement a new option for
-SPI slaves in order to implement trailing clock of a given number of
-bits with ChipSelect off at the end of the transfer.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- .../devicetree/bindings/spi/spi-peripheral-props.yaml      | 5 +++++
- drivers/spi/spi.c                                          | 7 +++++--
- include/linux/spi/spi.h                                    | 1 +
- 3 files changed, 11 insertions(+), 2 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-index 5dd209206e88..2fd5a5084dbe 100644
---- a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-+++ b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-@@ -82,6 +82,11 @@ properties:
-     description:
-       Delay, in microseconds, after a write transfer.
- 
-+  spi-trailing-bits:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description:
-+      Number of clock cycles with chipselect OFF after transfers.
-+
- # The controller specific properties go here.
- allOf:
-   - $ref: cdns,qspi-nor-peripheral-props.yaml#
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 4599b121d744..2b204fd20337 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2159,6 +2159,9 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
- 		}
- 	}
- 
-+	if (!of_property_read_u32(nc, "spi-trailing-bits", &value))
-+		spi->trailing_bits = value;
-+
- 	if (spi_controller_is_slave(ctlr)) {
- 		if (!of_node_name_eq(nc, "slave")) {
- 			dev_err(&ctlr->dev, "%pOF is not called 'slave'\n",
-@@ -3538,14 +3541,14 @@ int spi_setup(struct spi_device *spi)
- 
- 	trace_spi_setup(spi, status);
- 
--	dev_dbg(&spi->dev, "setup mode %lu, %s%s%s%s%u bits/w, %u Hz max --> %d\n",
-+	dev_dbg(&spi->dev, "setup mode %lu, %s%s%s%s%u bits/w, %u Hz max, %d trailing bits --> %d\n",
- 			spi->mode & SPI_MODE_X_MASK,
- 			(spi->mode & SPI_CS_HIGH) ? "cs_high, " : "",
- 			(spi->mode & SPI_LSB_FIRST) ? "lsb, " : "",
- 			(spi->mode & SPI_3WIRE) ? "3wire, " : "",
- 			(spi->mode & SPI_LOOP) ? "loopback, " : "",
- 			spi->bits_per_word, spi->max_speed_hz,
--			status);
-+			spi->trailing_bits, status);
- 
- 	return status;
- }
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 7ab3fed7b804..3f1e3d788f08 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -166,6 +166,7 @@ struct spi_device {
- 	u32			max_speed_hz;
- 	u8			chip_select;
- 	u8			bits_per_word;
-+	u8			trailing_bits;
- 	bool			rt;
- #define SPI_NO_TX	BIT(31)		/* no transmit wire */
- #define SPI_NO_RX	BIT(30)		/* no receive wire */
--- 
-2.34.1
-
+Robin.

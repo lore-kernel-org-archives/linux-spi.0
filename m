@@ -2,153 +2,94 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 46CB8C4321E
-	for <linux-spi@archiver.kernel.org>; Tue,  1 Mar 2022 17:28:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BEB87C433FE
+	for <linux-spi@archiver.kernel.org>; Tue,  1 Mar 2022 20:14:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234802AbiCAR3K (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 1 Mar 2022 12:29:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44448 "EHLO
+        id S237727AbiCAUPS (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 1 Mar 2022 15:15:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236083AbiCAR3J (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 1 Mar 2022 12:29:09 -0500
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4806F532CD
-        for <linux-spi@vger.kernel.org>; Tue,  1 Mar 2022 09:28:27 -0800 (PST)
-Received: by mail-wm1-x336.google.com with SMTP id q7-20020a7bce87000000b00382255f4ca9so1160525wmj.2
-        for <linux-spi@vger.kernel.org>; Tue, 01 Mar 2022 09:28:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=Y86hBfPWj9E4aTo+XMBrAu6Y5p4SQMawkPD4Q/SuKPY=;
-        b=ifR445Ptk0kZIwyK/iR5LauUeexT4h+Xm5fWIS9UfHsJTwIXI+TBUH0b1B1nklV58Q
-         e3posB9tDmWAuXNqOByYa8OEIeuEgFpyIkDoWKkxe1RAiCnFE6ZEzQVCpMvS62fGzNFV
-         nWcw5JV2lmoD9jxvmDMFuNVsgy/NwYWUQ6a0I1zB2e5jSr3/JFEIp9xW/NRIDhtT+/y6
-         uvAB7/5ZICC2qcmaHb2EAlpVYU+L8My5syB7aELi6iajmzjea09g2vNncJq3GY6hv/nP
-         g2d17hu4ZYUIRYCXpyuRUhAY/Kr9r3k7MyrtDEVfLOZZZFWPJ239r6w7DpTzLNolCHHw
-         A62A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=Y86hBfPWj9E4aTo+XMBrAu6Y5p4SQMawkPD4Q/SuKPY=;
-        b=GNOmFpih6xmt42uyiewwdNvKCZ3FsCA7upfZfCGr3PjqvPc/OqeVtbVY4xFVLqNstK
-         Ij0DyHd6/OYawzu5/6GN9HQ2ujiHRPH9je47aBx/QgaleymadEj4CqpOIcUkc5DXrHYq
-         /aCZ+Mxw53gaal7r4UqoBD9G8Sm6IBVJPPR5VcTzyHqUKtOhzt6RsmAyIVNx5f2T8xM1
-         BMBhkMpnVS4cLmHJMQgDyUNYkOliZKEMXDtJDoUTmpIPPLlGc+/q6S9zy1DP/qTRz0hV
-         ydLHvvnT7yULo4Xp4RpCGToqXxCg6vznyANDsXSHmqed/Q/SY2LkPpvv41k2NYTXKCAF
-         SyEg==
-X-Gm-Message-State: AOAM531r8BBHPlZS8ZxU6/s98ntdisENxQRMgW4B5RoTpRUDGYLmEZhT
-        RaWG7YYEDFRpOy6/DnvrETZkyQ==
-X-Google-Smtp-Source: ABdhPJyP4zzjkBPeDrhk1IU4HHA4Z4mVRSeyWw7DiZ4BmjKx+FbF6/CkwhxttMvqrC0XO+mqNoqKvQ==
-X-Received: by 2002:a05:600c:a4b:b0:37b:ea2b:5583 with SMTP id c11-20020a05600c0a4b00b0037bea2b5583mr18173339wmq.139.1646155705687;
-        Tue, 01 Mar 2022 09:28:25 -0800 (PST)
-Received: from [192.168.86.34] (cpc90716-aztw32-2-0-cust825.18-1.cable.virginm.net. [86.26.103.58])
-        by smtp.googlemail.com with ESMTPSA id c4-20020adfed84000000b001e5b8d5b8dasm20457807wro.36.2022.03.01.09.28.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Mar 2022 09:28:24 -0800 (PST)
-Message-ID: <5f481315-021c-39d6-8c6c-91918851ab13@linaro.org>
-Date:   Tue, 1 Mar 2022 17:28:22 +0000
+        with ESMTP id S237693AbiCAUPM (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 1 Mar 2022 15:15:12 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8363575C35;
+        Tue,  1 Mar 2022 12:14:30 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0CDEC61707;
+        Tue,  1 Mar 2022 20:14:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19A0AC340EE;
+        Tue,  1 Mar 2022 20:14:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1646165669;
+        bh=Xu0+i5k46GDbxoq5qyFGw7zlYHWQ576m6QBwAW8Us3k=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=O1uaehbcynWOhf4b1dNa0JoTLbD8vUttnuioyV73lUoR7WRDQ/WjnEsp6iVt9qOmE
+         JULvDJuEfIZ+jgT2zwRl/ONscXQfukyRCMJtmwI1ALU4+fO9rgU6cxIwA1yIAfBMJN
+         wrHr4TAhPW/qxElvw7tOufifEcvLTebL4WHQLuTQDied3zB2pG+tADzEgKnrI/7bgI
+         5A5BLaX4GQ0S0b316JxQaolOImqohsN7L7RGvGjAQRwpfbcim/qjUVfZoqV/rIUSoQ
+         g6I4vk8gYuA6UeY1K+LcRXbmQgwm7wuu+8dgAIawHdYX+oUMrJIo+n975QjENJUf2y
+         q9J6JzE2osaHw==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Jon Lin <jon.lin@rock-chips.com>, Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, heiko@sntech.de,
+        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.16 08/28] spi: rockchip: Fix error in getting num-cs property
+Date:   Tue,  1 Mar 2022 15:13:13 -0500
+Message-Id: <20220301201344.18191-8-sashal@kernel.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20220301201344.18191-1-sashal@kernel.org>
+References: <20220301201344.18191-1-sashal@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH v3 10/11] slimbus: qcom-ngd: Fix kfree() of static memory
- on setting driver_override
-Content-Language: en-US
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Stuart Yoder <stuyoder@gmail.com>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        Abel Vesa <abel.vesa@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Vineeth Vijayan <vneethv@linux.ibm.com>,
-        Peter Oberparleiter <oberpar@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Andy Gross <agross@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>, linux-kernel@vger.kernel.org,
-        linux-clk@vger.kernel.org, NXP Linux Team <linux-imx@nxp.com>,
-        linux-arm-kernel@lists.infradead.org, linux-hyperv@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        alsa-devel@alsa-project.org, linux-spi@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Rasmus Villemoes <linux@rasmusvillemoes.dk>, stable@vger.kernel.org
-References: <20220227135214.145599-1-krzysztof.kozlowski@canonical.com>
- <20220227135329.145862-4-krzysztof.kozlowski@canonical.com>
-From:   Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-In-Reply-To: <20220227135329.145862-4-krzysztof.kozlowski@canonical.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+From: Jon Lin <jon.lin@rock-chips.com>
 
+[ Upstream commit 9382df0a98aad5bbcd4d634790305a1d786ad224 ]
 
-On 27/02/2022 13:53, Krzysztof Kozlowski wrote:
-> The driver_override field from platform driver should not be initialized
-> from static memory (string literal) because the core later kfree() it,
-> for example when driver_override is set via sysfs.
-> 
-> Use dedicated helper to set driver_override properly.
-> 
-> Fixes: 917809e2280b ("slimbus: ngd: Add qcom SLIMBus NGD driver")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+Get num-cs u32 from dts of_node property rather than u16.
 
-LGTM,
+Signed-off-by: Jon Lin <jon.lin@rock-chips.com>
+Link: https://lore.kernel.org/r/20220216014028.8123-2-jon.lin@rock-chips.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/spi/spi-rockchip.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index 553b6b9d02222..4f65ba3dd19c2 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -654,7 +654,7 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 	struct spi_controller *ctlr;
+ 	struct resource *mem;
+ 	struct device_node *np = pdev->dev.of_node;
+-	u32 rsd_nsecs;
++	u32 rsd_nsecs, num_cs;
+ 	bool slave_mode;
+ 
+ 	slave_mode = of_property_read_bool(np, "spi-slave");
+@@ -764,8 +764,9 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 		 * rk spi0 has two native cs, spi1..5 one cs only
+ 		 * if num-cs is missing in the dts, default to 1
+ 		 */
+-		if (of_property_read_u16(np, "num-cs", &ctlr->num_chipselect))
+-			ctlr->num_chipselect = 1;
++		if (of_property_read_u32(np, "num-cs", &num_cs))
++			num_cs = 1;
++		ctlr->num_chipselect = num_cs;
+ 		ctlr->use_gpio_descriptors = true;
+ 	}
+ 	ctlr->dev.of_node = pdev->dev.of_node;
+-- 
+2.34.1
 
-> ---
->   drivers/slimbus/qcom-ngd-ctrl.c | 13 ++++++++++++-
->   1 file changed, 12 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/slimbus/qcom-ngd-ctrl.c b/drivers/slimbus/qcom-ngd-ctrl.c
-> index 7040293c2ee8..e5d9fdb81eb0 100644
-> --- a/drivers/slimbus/qcom-ngd-ctrl.c
-> +++ b/drivers/slimbus/qcom-ngd-ctrl.c
-> @@ -1434,6 +1434,7 @@ static int of_qcom_slim_ngd_register(struct device *parent,
->   	const struct of_device_id *match;
->   	struct device_node *node;
->   	u32 id;
-> +	int ret;
->   
->   	match = of_match_node(qcom_slim_ngd_dt_match, parent->of_node);
->   	data = match->data;
-> @@ -1455,7 +1456,17 @@ static int of_qcom_slim_ngd_register(struct device *parent,
->   		}
->   		ngd->id = id;
->   		ngd->pdev->dev.parent = parent;
-> -		ngd->pdev->driver_override = QCOM_SLIM_NGD_DRV_NAME;
-> +
-> +		ret = driver_set_override(&ngd->pdev->dev,
-> +					  &ngd->pdev->driver_override,
-> +					  QCOM_SLIM_NGD_DRV_NAME,
-> +					  strlen(QCOM_SLIM_NGD_DRV_NAME));
-> +		if (ret) {
-> +			platform_device_put(ngd->pdev);
-> +			kfree(ngd);
-> +			of_node_put(node);
-> +			return ret;
-> +		}
->   		ngd->pdev->dev.of_node = node;
->   		ctrl->ngd = ngd;
->   

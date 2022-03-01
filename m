@@ -2,47 +2,47 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 781AEC433F5
-	for <linux-spi@archiver.kernel.org>; Tue,  1 Mar 2022 20:19:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1C1A6C433EF
+	for <linux-spi@archiver.kernel.org>; Tue,  1 Mar 2022 20:21:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237966AbiCAUTw (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 1 Mar 2022 15:19:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50958 "EHLO
+        id S238171AbiCAUWH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 1 Mar 2022 15:22:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238135AbiCAUSC (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 1 Mar 2022 15:18:02 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BA448A31F;
-        Tue,  1 Mar 2022 12:17:04 -0800 (PST)
+        with ESMTP id S238074AbiCAUVu (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 1 Mar 2022 15:21:50 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEF588F61E;
+        Tue,  1 Mar 2022 12:19:08 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C221461752;
-        Tue,  1 Mar 2022 20:17:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 369A3C340F1;
-        Tue,  1 Mar 2022 20:16:59 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id D1B93B81D41;
+        Tue,  1 Mar 2022 20:18:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9499CC340EF;
+        Tue,  1 Mar 2022 20:18:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1646165823;
-        bh=Xu0+i5k46GDbxoq5qyFGw7zlYHWQ576m6QBwAW8Us3k=;
+        s=k20201202; t=1646165930;
+        bh=FTy4iMlhuHS/L/W/z6cl/6cZ3QZspAbdvD8Y7KiVPIk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=px7bi9MJvKRcvCAoHft/wsj0Jk/nUuDzLZYRgJMOAHNFZOT/3E/2fDwQYIyKhSv8L
-         d+mHVIy9qzP2gGW3TEd3UrmfRkat6NxLbnQjPi4OL14+s9r2UiweR7xAPjr+l9tD/0
-         JxSwHynuoFoapvMPuDFtg75OK2vwJDfIxJneSThM4Ds3oSebZMsPzczx7et0V4Bxmk
-         qyVKaBj6QbtxrNmpx6fvRrATF/rcvtX+v5UUOKO7juhi/bVJaq2gg2cmkfPFot3jrz
-         RLDXHx4mogeEJz96QbRHYyHPTVggia2AJodjdmeAk9oYphKg2NAbkIEOL6cnUUIQlY
-         bqjxsekA+hHGw==
+        b=flNa+q88rrzFEwK9IsdcwxpJ7nlcoD+CwI3fKPDDE1WV5CifxJp6uUP2RLbe0N4lU
+         f2GbhM0tKu61HDL3zWWXEoQcukK+hxgteAlW0jefdDwM8A6dIRg4abMH+YfNRqdxrZ
+         DqVNaeikv0pu4OKcLdtZZgamFJUblofBfx4VX17/2tuPuJWIotFevg4YwUrky6aDip
+         67nRq8xwlZS4uvxrlg9lrid9Wi8XmMi7iXercMZkXdsqWmZa8Am9kVNTCIpwnk95y9
+         w4eD4cdZ2dCfLFYaNarVK/wc1R7YVe5dZ8PcBceWS8xYxU8nkNKT4xvMe8Pgiy8K/e
+         26mEy/Pm/23Eg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Jon Lin <jon.lin@rock-chips.com>, Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, heiko@sntech.de,
         linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-rockchip@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.15 07/23] spi: rockchip: Fix error in getting num-cs property
-Date:   Tue,  1 Mar 2022 15:16:06 -0500
-Message-Id: <20220301201629.18547-7-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 03/14] spi: rockchip: Fix error in getting num-cs property
+Date:   Tue,  1 Mar 2022 15:18:15 -0500
+Message-Id: <20220301201833.18841-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220301201629.18547-1-sashal@kernel.org>
-References: <20220301201629.18547-1-sashal@kernel.org>
+In-Reply-To: <20220301201833.18841-1-sashal@kernel.org>
+References: <20220301201833.18841-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -66,10 +66,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 553b6b9d02222..4f65ba3dd19c2 100644
+index 624273d0e727f..a594310754111 100644
 --- a/drivers/spi/spi-rockchip.c
 +++ b/drivers/spi/spi-rockchip.c
-@@ -654,7 +654,7 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+@@ -636,7 +636,7 @@ static int rockchip_spi_probe(struct platform_device *pdev)
  	struct spi_controller *ctlr;
  	struct resource *mem;
  	struct device_node *np = pdev->dev.of_node;
@@ -78,7 +78,7 @@ index 553b6b9d02222..4f65ba3dd19c2 100644
  	bool slave_mode;
  
  	slave_mode = of_property_read_bool(np, "spi-slave");
-@@ -764,8 +764,9 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+@@ -744,8 +744,9 @@ static int rockchip_spi_probe(struct platform_device *pdev)
  		 * rk spi0 has two native cs, spi1..5 one cs only
  		 * if num-cs is missing in the dts, default to 1
  		 */

@@ -2,81 +2,124 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 77C8AC433EF
-	for <linux-spi@archiver.kernel.org>; Wed,  2 Mar 2022 09:27:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2D975C433F5
+	for <linux-spi@archiver.kernel.org>; Wed,  2 Mar 2022 10:03:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231410AbiCBJ20 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 2 Mar 2022 04:28:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60684 "EHLO
+        id S239430AbiCBKEG (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 2 Mar 2022 05:04:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234664AbiCBJ2Z (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 2 Mar 2022 04:28:25 -0500
-X-Greylist: delayed 403 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 02 Mar 2022 01:27:39 PST
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6B4452BB2D
-        for <linux-spi@vger.kernel.org>; Wed,  2 Mar 2022 01:27:38 -0800 (PST)
-Received: from localhost.localdomain (unknown [124.16.138.126])
-        by APP-05 (Coremail) with SMTP id zQCowACXefL0Nh9iViXtAQ--.26036S2;
-        Wed, 02 Mar 2022 17:20:52 +0800 (CST)
-From:   Jiasheng Jiang <jiasheng@iscas.ac.cn>
-To:     broonie@kernel.org, michal.simek@xilinx.com
-Cc:     linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, Jiasheng Jiang <jiasheng@iscas.ac.cn>
-Subject: [PATCH] spi: spi-zynqmp-gqspi: Handle error for dma_set_mask
-Date:   Wed,  2 Mar 2022 17:20:51 +0800
-Message-Id: <20220302092051.121343-1-jiasheng@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S237229AbiCBKEF (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 2 Mar 2022 05:04:05 -0500
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27E7B5AEF4;
+        Wed,  2 Mar 2022 02:03:22 -0800 (PST)
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 222A2vmS063787;
+        Wed, 2 Mar 2022 04:02:57 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1646215377;
+        bh=kzmAL4ny+b45rxh4hmDCUUkeFdO+HSD8mHyPXmdqx28=;
+        h=Date:From:To:CC:Subject:References:In-Reply-To;
+        b=jP/E/dCOqyWe+EM99Tf5536jGnNFwZFtO+EukKIujh7KfhMoZiOWoPWxWUucTveM5
+         0o44PJtBJsGIO4nsSo/rRHL+ESqLTr0DIgX8M2MeWsSsEfJS8woKhzJwUm154fNRic
+         8em28FYVPjiu1Xil631fwUzWDzrBjhXfvghoVeew=
+Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 222A2vJD092066
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 2 Mar 2022 04:02:57 -0600
+Received: from DFLE100.ent.ti.com (10.64.6.21) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Wed, 2
+ Mar 2022 04:02:57 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
+ Frontend Transport; Wed, 2 Mar 2022 04:02:56 -0600
+Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 222A2uoV112376;
+        Wed, 2 Mar 2022 04:02:56 -0600
+Date:   Wed, 2 Mar 2022 15:32:55 +0530
+From:   Pratyush Yadav <p.yadav@ti.com>
+To:     Tudor Ambarus <tudor.ambarus@microchip.com>
+CC:     <michael@walle.cc>, <broonie@kernel.org>,
+        <miquel.raynal@bootlin.com>, <richard@nod.at>, <vigneshr@ti.com>,
+        <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>, <nicolas.ferre@microchip.com>,
+        <zhengxunli@mxic.com.tw>, <jaimeliao@mxic.com.tw>
+Subject: Re: [PATCH 1/4] spi: spi-mem: Allow specifying the byte order in DTR
+ mode
+Message-ID: <20220302100255.gseqjbdyxrgmt3zf@ti.com>
+References: <20220218145900.1440045-1-tudor.ambarus@microchip.com>
+ <20220218145900.1440045-2-tudor.ambarus@microchip.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: zQCowACXefL0Nh9iViXtAQ--.26036S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrtr45GF45CF45Xry8JFW8WFg_yoWDJFg_Cw
-        47ZFn5Grs0v39Fy3Z7Kry3AryqvrZ8ZF4UZFWkKa1FqrWDJr9xZayUZryxCr10v3y7urs3
-        Cr1jq3ykAr13WjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUIcSsGvfJTRUUUb48FF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-        6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-        A2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_
-        Gr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-        Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-        I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
-        4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY02Avz4vE14v_GFWl
-        42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJV
-        WUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAK
-        I48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r
-        4UMIIF0xvE42xK8VAvwI8IcIk0rVWrJr0_WFyUJwCI42IY6I8E87Iv67AKxVWUJVW8JwCI
-        42IY6I8E87Iv6xkF7I0E14v26r4UJVWxJrUvcSsGvfC2KfnxnUUI43ZEXa7VUjItC5UUUU
-        U==
-X-Originating-IP: [124.16.138.126]
-X-CM-SenderInfo: pmld2xxhqjqxpvfd2hldfou0/
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20220218145900.1440045-2-tudor.ambarus@microchip.com>
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-As the potential failure of the dma_set_mask(),
-it should be better to check it and return error
-if fails.
+Hi Tudor,
 
-Fixes: 126bdb606fd2 ("spi: spi-zynqmp-gqspi: return -ENOMEM if dma_map_single fails")
-Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
----
- drivers/spi/spi-zynqmp-gqspi.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+I'm reviewing the code here. I still have not thought through the 
+discussion about Kconfig option yet.
 
-diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
-index 328b6559bb19..2b5afae8ff7f 100644
---- a/drivers/spi/spi-zynqmp-gqspi.c
-+++ b/drivers/spi/spi-zynqmp-gqspi.c
-@@ -1172,7 +1172,10 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
- 		goto clk_dis_all;
- 	}
- 
--	dma_set_mask(&pdev->dev, DMA_BIT_MASK(44));
-+	ret = dma_set_mask(&pdev->dev, DMA_BIT_MASK(44));
-+	if (ret)
-+		goto clk_dis_all;
-+
- 	ctlr->bits_per_word_mask = SPI_BPW_MASK(8);
- 	ctlr->num_chipselect = GQSPI_DEFAULT_NUM_CS;
- 	ctlr->mem_ops = &zynqmp_qspi_mem_ops;
+On 18/02/22 04:58PM, Tudor Ambarus wrote:
+> There are NOR flashes (Macronix) that swap the bytes on a 16-bit boundary
+> when configured in DTR mode. The byte order of 16-bit words is swapped
+
+s/DTR mode/ Octal DTR mode/
+
+I don't think this would apply to a 4D-4D-4D flash since it would only 
+transmit one byte per clock cycle.
+
+> when read or written in Double Transfer Rate (DTR) mode compared to
+> Single Transfer Rate (STR) mode. If one writes D0 D1 D2 D3 bytes using
+> 1-1-1 mode, and uses 8D-8D-8D SPI mode for reading, it will read back
+> D1 D0 D3 D2. Swapping the bytes is a bad design decision because this may
+> introduce some endianness problems. It can affect the boot sequence if the
+> entire boot sequence is not handled in either 8D-8D-8D mode or 1-1-1 mode.
+> Fortunately there are controllers that can swap back the bytes at runtime,
+> fixing the endiannesses. Provide a way for the upper layers to specify the
+> byte order in DTR mode.
+> 
+> Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
+> ---
+>  include/linux/spi/spi-mem.h | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
+> index 85e2ff7b840d..e1878417420c 100644
+> --- a/include/linux/spi/spi-mem.h
+> +++ b/include/linux/spi/spi-mem.h
+> @@ -89,6 +89,8 @@ enum spi_mem_data_dir {
+>   * @dummy.dtr: whether the dummy bytes should be sent in DTR mode or not
+>   * @data.buswidth: number of IO lanes used to send/receive the data
+>   * @data.dtr: whether the data should be sent in DTR mode or not
+> + * @data.dtr_bswap16: whether the byte order of 16-bit words is swapped when
+> + *		      read or written in DTR mode compared to STR mode.
+>   * @data.dir: direction of the transfer
+>   * @data.nbytes: number of data bytes to send/receive. Can be zero if the
+>   *		 operation does not involve transferring data
+> @@ -119,6 +121,7 @@ struct spi_mem_op {
+>  	struct {
+>  		u8 buswidth;
+>  		u8 dtr : 1;
+> +		u8 dtr_bswap16 : 1;
+
+You also need to add this capability to spi_controller_mem_caps and 
+update spi_mem_default_supports_op() to check for it.
+
+>  		enum spi_mem_data_dir dir;
+>  		unsigned int nbytes;
+>  		union {
+> -- 
+> 2.25.1
+> 
+
 -- 
-2.25.1
-
+Regards,
+Pratyush Yadav
+Texas Instruments Inc.

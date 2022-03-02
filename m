@@ -2,49 +2,49 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 77292C433FE
-	for <linux-spi@archiver.kernel.org>; Wed,  2 Mar 2022 17:32:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2B4ABC433F5
+	for <linux-spi@archiver.kernel.org>; Wed,  2 Mar 2022 17:32:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244165AbiCBRdd convert rfc822-to-8bit (ORCPT
+        id S244168AbiCBRdf convert rfc822-to-8bit (ORCPT
         <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 2 Mar 2022 12:33:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48012 "EHLO
+        Wed, 2 Mar 2022 12:33:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244107AbiCBRd3 (ORCPT
+        with ESMTP id S244118AbiCBRd3 (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Wed, 2 Mar 2022 12:33:29 -0500
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D21B7D3AD8;
-        Wed,  2 Mar 2022 09:32:12 -0800 (PST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 222Gmews002118;
-        Wed, 2 Mar 2022 17:31:22 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 3ejce98tqj-1
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCF704AE30;
+        Wed,  2 Mar 2022 09:32:13 -0800 (PST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 222GilZL003358;
+        Wed, 2 Mar 2022 17:31:36 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3ejaa4m7x2-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 02 Mar 2022 17:31:22 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-        by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 222HDEOI008064;
-        Wed, 2 Mar 2022 17:31:20 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
-        by ppma04ams.nl.ibm.com with ESMTP id 3egbj1amfe-1
+        Wed, 02 Mar 2022 17:31:35 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+        by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 222HD55M032484;
+        Wed, 2 Mar 2022 17:31:33 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+        by ppma06ams.nl.ibm.com with ESMTP id 3efbfjqhb4-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 02 Mar 2022 17:31:20 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
-        by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 222HKMxa50856382
+        Wed, 02 Mar 2022 17:31:33 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
+        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 222HVVUi42664402
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 2 Mar 2022 17:20:22 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 00C8C42049;
-        Wed,  2 Mar 2022 17:31:18 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 57AFC42041;
-        Wed,  2 Mar 2022 17:31:17 +0000 (GMT)
+        Wed, 2 Mar 2022 17:31:31 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 4EEA3AE051;
+        Wed,  2 Mar 2022 17:31:31 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id A7293AE04D;
+        Wed,  2 Mar 2022 17:31:30 +0000 (GMT)
 Received: from smtp.tlslab.ibm.com (unknown [9.101.4.1])
-        by d06av24.portsmouth.uk.ibm.com (Postfix) with SMTP;
-        Wed,  2 Mar 2022 17:31:17 +0000 (GMT)
+        by d06av26.portsmouth.uk.ibm.com (Postfix) with SMTP;
+        Wed,  2 Mar 2022 17:31:30 +0000 (GMT)
 Received: from yukon.ibmuc.com (unknown [9.171.58.125])
-        by smtp.tlslab.ibm.com (Postfix) with ESMTP id 9CCB52200FE;
-        Wed,  2 Mar 2022 18:31:15 +0100 (CET)
+        by smtp.tlslab.ibm.com (Postfix) with ESMTP id 35C132200FE;
+        Wed,  2 Mar 2022 18:31:29 +0100 (CET)
 From:   =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To:     linux-spi@vger.kernel.org, linux-mtd@lists.infradead.org
 Cc:     Mark Brown <broonie@kernel.org>,
@@ -59,131 +59,204 @@ Cc:     Mark Brown <broonie@kernel.org>,
         devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PATCH v2 00/10] spi: spi-mem: Add driver for Aspeed SMC controllers
-Date:   Wed,  2 Mar 2022 18:31:04 +0100
-Message-Id: <20220302173114.927476-1-clg@kaod.org>
+Subject: [PATCH v2 10/10] ARM: dts: aspeed: Enable Dual SPI RX transfers
+Date:   Wed,  2 Mar 2022 18:31:14 +0100
+Message-Id: <20220302173114.927476-11-clg@kaod.org>
 X-Mailer: git-send-email 2.34.1
-Content-Type: text/plain; charset=UTF-8
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: wDLBteKCrxXYtKjAXv-rfFdghRBIgirB
-X-Proofpoint-ORIG-GUID: wDLBteKCrxXYtKjAXv-rfFdghRBIgirB
-Content-Transfer-Encoding: 8BIT
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+In-Reply-To: <20220302173114.927476-1-clg@kaod.org>
+References: <20220302173114.927476-1-clg@kaod.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: uQAF39tSoHn8K62b_eSIuS_mFCCzJmmJ
+X-Proofpoint-GUID: uQAF39tSoHn8K62b_eSIuS_mFCCzJmmJ
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.64.514
  definitions=2022-03-02_12,2022-02-26_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- lowpriorityscore=0 priorityscore=1501 phishscore=0 bulkscore=0 spamscore=0
- impostorscore=0 mlxlogscore=999 malwarescore=0 clxscore=1034 mlxscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 spamscore=0
+ priorityscore=1501 malwarescore=0 suspectscore=0 clxscore=1034
+ phishscore=0 adultscore=0 mlxlogscore=649 lowpriorityscore=0 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2201110000 definitions=main-2203020076
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi,
+All these controllers support at least Dual SPI. Update the DTs.
 
-This series adds a new SPI driver using the spi-mem interface for the
-Aspeed static memory controllers of the AST2600, AST2500 and AST2400
-SoCs.
+Reviewed-by: Joel Stanley <joel@jms.id.au>
+Signed-off-by: Cédric Le Goater <clg@kaod.org>
+---
+ arch/arm/boot/dts/aspeed-g4.dtsi | 6 ++++++
+ arch/arm/boot/dts/aspeed-g5.dtsi | 7 +++++++
+ arch/arm/boot/dts/aspeed-g6.dtsi | 8 ++++++++
+ 3 files changed, 21 insertions(+)
 
- * AST2600 Firmware SPI Memory Controller (FMC)
- * AST2600 SPI Flash Controller (SPI1 and SPI2)
- * AST2500 Firmware SPI Memory Controller (FMC)
- * AST2500 SPI Flash Controller (SPI1 and SPI2)
- * AST2400 New Static Memory Controller (also referred as FMC)
- * AST2400 SPI Flash Controller (SPI)
-
-It is based on the current OpenBMC kernel driver [1], using directly
-the MTD SPI-NOR interface and on a patchset [2] previously proposed
-adding support for the AST2600 only. This driver takes a slightly
-different approach to cover all 6 controllers.
-
-It does not make use of the controller register disabling Address and
-Data byte lanes because is not available on the AST2400 SoC. We could
-introduce a specific handler for new features available on recent SoCs
-if needed. As there is not much difference on performance, the driver
-chooses the common denominator: "User mode" which has been heavily
-tested in [1]. "User mode" is also used as a fall back method when
-flash device mapping window is too small.
-
-Problems to address with spi-mem were the configuration of the mapping
-windows and the calibration of the read timings. The driver handles
-them in the direct mapping handler when some knowledge on the size of
-the flash device is know. It is not perfect but not incorrect either.
-The algorithm is one from [1] because it doesn't require the DMA
-registers which are not available on all controllers.
-
-Direct mapping for writes is not supported (yet). I have seen some
-corruption with writes and I preferred to use the safer and proven
-method of the initial driver [1]. We can improve that later.
-
-The driver supports Quad SPI RX transfers on the AST2600 SoC but it
-didn't have the expected results. Therefore it is not activated yet.
-There are some issues on the pinctrl to investigate first. 
-
-The series does not remove the current Aspeed SMC driver but prepares
-ground for its removal by changing its CONFIG option. This last step
-can be addressed as a followup when the new driver using the spi-mem
-interface has been sufficiently exposed. 
-
-Tested on:
- 
- * OpenPOWER Palmetto (AST2400)
- * Facebook Wedge 100 BMC (AST2400) by Tao Ren <rentao.bupt@gmail.com>
- * Evaluation board (AST2500) 
- * Inspur FP5280G2 BMC  (AST2500) by John Wang <wangzq.jn@gmail.com>
- * Facebook Backpack CMM BMC (AST2500) by Tao Ren <rentao.bupt@gmail.com>
- * OpenPOWER Witherspoon (AST2500)
- * Evaluation board (AST2600 A0 and A3)
- * Rainier board (AST2600)
- 
-[1] https://github.com/openbmc/linux/blob/dev-5.15/drivers/mtd/spi-nor/controllers/aspeed-smc.c
-[2] https://patchwork.ozlabs.org/project/linux-aspeed/list/?series=212394
-
-Thanks,
-
-C. 
-
-Changes in v2:
-
- - Fixed dt_binding_check warnings (Rob)
- - New entry in MAINTAINERS 
- - Addressed Lukas comments regarding the SPI controller registration
-   and device removal. Checked with driver bind/unbind   
- - Introduced setup and cleanup handlers and removed routine looping
-   on the DT children properties (Pratyush)
- - Clarified in commit log requirements for training.
- - Removed defconfig changes of patch 1 since they were reverted in
-   the last patch (Joel)
-
-Cédric Le Goater (10):
-  mtd: spi-nor: aspeed: Rename Kconfig option
-  ARM: dts: aspeed: Adjust "reg" property of FMC/SPI controllers
-  dt-bindings: spi: Add Aspeed SMC controllers device tree binding
-  spi: spi-mem: Add driver for Aspeed SMC controllers
-  spi: aspeed: Add support for direct mapping
-  spi: aspeed: Adjust direct mapping to device size
-  spi: aspeed: Workaround AST2500 limitations
-  spi: aspeed: Add support for the AST2400 SPI controller
-  spi: aspeed: Calibrate read timings
-  ARM: dts: aspeed: Enable Dual SPI RX transfers
-
- drivers/spi/spi-aspeed-smc.c                  | 1186 +++++++++++++++++
- .../bindings/spi/aspeed,ast2600-fmc.yaml      |   90 ++
- MAINTAINERS                                   |   10 +
- arch/arm/boot/dts/aspeed-g4.dtsi              |   12 +-
- arch/arm/boot/dts/aspeed-g5.dtsi              |   16 +-
- arch/arm/boot/dts/aspeed-g6.dtsi              |   17 +-
- drivers/mtd/spi-nor/controllers/Kconfig       |    4 +-
- drivers/mtd/spi-nor/controllers/Makefile      |    2 +-
- drivers/spi/Kconfig                           |   11 +
- drivers/spi/Makefile                          |    1 +
- 10 files changed, 1330 insertions(+), 19 deletions(-)
- create mode 100644 drivers/spi/spi-aspeed-smc.c
- create mode 100644 Documentation/devicetree/bindings/spi/aspeed,ast2600-fmc.yaml
-
+diff --git a/arch/arm/boot/dts/aspeed-g4.dtsi b/arch/arm/boot/dts/aspeed-g4.dtsi
+index 9ae67e83cf60..31e6569db97e 100644
+--- a/arch/arm/boot/dts/aspeed-g4.dtsi
++++ b/arch/arm/boot/dts/aspeed-g4.dtsi
+@@ -64,27 +64,32 @@ fmc: spi@1e620000 {
+ 			flash@0 {
+ 				reg = < 0 >;
+ 				compatible = "jedec,spi-nor";
++				spi-rx-bus-width = <2>;
+ 				spi-max-frequency = <50000000>;
+ 				status = "disabled";
+ 			};
+ 			flash@1 {
+ 				reg = < 1 >;
+ 				compatible = "jedec,spi-nor";
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 			flash@2 {
+ 				reg = < 2 >;
+ 				compatible = "jedec,spi-nor";
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 			flash@3 {
+ 				reg = < 3 >;
+ 				compatible = "jedec,spi-nor";
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 			flash@4 {
+ 				reg = < 4 >;
+ 				compatible = "jedec,spi-nor";
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 		};
+@@ -100,6 +105,7 @@ flash@0 {
+ 				reg = < 0 >;
+ 				compatible = "jedec,spi-nor";
+ 				spi-max-frequency = <50000000>;
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 		};
+diff --git a/arch/arm/boot/dts/aspeed-g5.dtsi b/arch/arm/boot/dts/aspeed-g5.dtsi
+index c3e0a8e13c8a..29bf017899b6 100644
+--- a/arch/arm/boot/dts/aspeed-g5.dtsi
++++ b/arch/arm/boot/dts/aspeed-g5.dtsi
+@@ -66,18 +66,21 @@ flash@0 {
+ 				reg = < 0 >;
+ 				compatible = "jedec,spi-nor";
+ 				spi-max-frequency = <50000000>;
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 			flash@1 {
+ 				reg = < 1 >;
+ 				compatible = "jedec,spi-nor";
+ 				spi-max-frequency = <50000000>;
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 			flash@2 {
+ 				reg = < 2 >;
+ 				compatible = "jedec,spi-nor";
+ 				spi-max-frequency = <50000000>;
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 		};
+@@ -93,12 +96,14 @@ flash@0 {
+ 				reg = < 0 >;
+ 				compatible = "jedec,spi-nor";
+ 				spi-max-frequency = <50000000>;
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 			flash@1 {
+ 				reg = < 1 >;
+ 				compatible = "jedec,spi-nor";
+ 				spi-max-frequency = <50000000>;
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 		};
+@@ -114,12 +119,14 @@ flash@0 {
+ 				reg = < 0 >;
+ 				compatible = "jedec,spi-nor";
+ 				spi-max-frequency = <50000000>;
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 			flash@1 {
+ 				reg = < 1 >;
+ 				compatible = "jedec,spi-nor";
+ 				spi-max-frequency = <50000000>;
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 		};
+diff --git a/arch/arm/boot/dts/aspeed-g6.dtsi b/arch/arm/boot/dts/aspeed-g6.dtsi
+index 1ad05dde19d2..ce93c56a21a7 100644
+--- a/arch/arm/boot/dts/aspeed-g6.dtsi
++++ b/arch/arm/boot/dts/aspeed-g6.dtsi
+@@ -106,18 +106,21 @@ flash@0 {
+ 				reg = < 0 >;
+ 				compatible = "jedec,spi-nor";
+ 				spi-max-frequency = <50000000>;
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 			flash@1 {
+ 				reg = < 1 >;
+ 				compatible = "jedec,spi-nor";
+ 				spi-max-frequency = <50000000>;
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 			flash@2 {
+ 				reg = < 2 >;
+ 				compatible = "jedec,spi-nor";
+ 				spi-max-frequency = <50000000>;
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 		};
+@@ -133,12 +136,14 @@ flash@0 {
+ 				reg = < 0 >;
+ 				compatible = "jedec,spi-nor";
+ 				spi-max-frequency = <50000000>;
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 			flash@1 {
+ 				reg = < 1 >;
+ 				compatible = "jedec,spi-nor";
+ 				spi-max-frequency = <50000000>;
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 		};
+@@ -154,18 +159,21 @@ flash@0 {
+ 				reg = < 0 >;
+ 				compatible = "jedec,spi-nor";
+ 				spi-max-frequency = <50000000>;
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 			flash@1 {
+ 				reg = < 1 >;
+ 				compatible = "jedec,spi-nor";
+ 				spi-max-frequency = <50000000>;
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 			flash@2 {
+ 				reg = < 2 >;
+ 				compatible = "jedec,spi-nor";
+ 				spi-max-frequency = <50000000>;
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 		};
 -- 
 2.34.1
 

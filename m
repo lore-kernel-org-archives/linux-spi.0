@@ -2,56 +2,49 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1296EC433EF
-	for <linux-spi@archiver.kernel.org>; Fri,  4 Mar 2022 08:37:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8ACC8C433EF
+	for <linux-spi@archiver.kernel.org>; Fri,  4 Mar 2022 08:38:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234023AbiCDIim convert rfc822-to-8bit (ORCPT
+        id S233622AbiCDIi6 convert rfc822-to-8bit (ORCPT
         <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 4 Mar 2022 03:38:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46056 "EHLO
+        Fri, 4 Mar 2022 03:38:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233938AbiCDIig (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 4 Mar 2022 03:38:36 -0500
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF4FB13F08;
-        Fri,  4 Mar 2022 00:37:46 -0800 (PST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 2247ChgT003272;
-        Fri, 4 Mar 2022 08:37:01 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 3ek78b8447-1
+        with ESMTP id S234055AbiCDIiq (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 4 Mar 2022 03:38:46 -0500
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFBF124094;
+        Fri,  4 Mar 2022 00:37:58 -0800 (PST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 2245JNOH021192;
+        Fri, 4 Mar 2022 08:36:52 GMT
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3ek8mxpp6e-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 04 Mar 2022 08:37:01 +0000
-Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 2248AKHu012078;
-        Fri, 4 Mar 2022 08:37:00 GMT
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 3ek78b843s-1
+        Fri, 04 Mar 2022 08:36:52 +0000
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+        by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2248XJ2V027393;
+        Fri, 4 Mar 2022 08:36:50 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+        by ppma01fra.de.ibm.com with ESMTP id 3ek4k8124g-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 04 Mar 2022 08:37:00 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-        by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2248X3S1013595;
-        Fri, 4 Mar 2022 08:36:58 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
-        by ppma03ams.nl.ibm.com with ESMTP id 3ek4k417h9-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 04 Mar 2022 08:36:58 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2248aumf57672142
+        Fri, 04 Mar 2022 08:36:50 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
+        by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2248amEB47186186
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 4 Mar 2022 08:36:56 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 5853BAE053;
-        Fri,  4 Mar 2022 08:36:56 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id AF4B3AE04D;
-        Fri,  4 Mar 2022 08:36:55 +0000 (GMT)
+        Fri, 4 Mar 2022 08:36:48 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 1AEAD42042;
+        Fri,  4 Mar 2022 08:36:48 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 73D0D42045;
+        Fri,  4 Mar 2022 08:36:47 +0000 (GMT)
 Received: from smtp.tlslab.ibm.com (unknown [9.101.4.1])
-        by d06av26.portsmouth.uk.ibm.com (Postfix) with SMTP;
-        Fri,  4 Mar 2022 08:36:55 +0000 (GMT)
+        by d06av24.portsmouth.uk.ibm.com (Postfix) with SMTP;
+        Fri,  4 Mar 2022 08:36:47 +0000 (GMT)
 Received: from yukon.home (unknown [9.171.91.16])
-        by smtp.tlslab.ibm.com (Postfix) with ESMTP id D96B72201B4;
-        Fri,  4 Mar 2022 09:36:53 +0100 (CET)
+        by smtp.tlslab.ibm.com (Postfix) with ESMTP id 89B872200FD;
+        Fri,  4 Mar 2022 09:36:45 +0100 (CET)
 From:   =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To:     linux-spi@vger.kernel.org, linux-mtd@lists.infradead.org
 Cc:     Mark Brown <broonie@kernel.org>,
@@ -65,143 +58,142 @@ Cc:     Mark Brown <broonie@kernel.org>,
         Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>,
         devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
-        Tao Ren <rentao.bupt@gmail.com>
-Subject: [PATCH v3 05/11] spi: aspeed: Add support for direct mapping
-Date:   Fri,  4 Mar 2022 09:36:37 +0100
-Message-Id: <20220304083643.1079142-6-clg@kaod.org>
+        =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Subject: [PATCH v3 00/11] spi: spi-mem: Add driver for Aspeed SMC controllers
+Date:   Fri,  4 Mar 2022 09:36:32 +0100
+Message-Id: <20220304083643.1079142-1-clg@kaod.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220304083643.1079142-1-clg@kaod.org>
-References: <20220304083643.1079142-1-clg@kaod.org>
-MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 6yY8G907jljsVK9o6RAwlcASsDP6EnNq
-X-Proofpoint-GUID: j1K9uRvHqhRRW72XmpctzbGXoo-UJhJ2
+X-Proofpoint-GUID: RFuuLzC8JejxWrm4oynsn6-IAqVUMeMt
+X-Proofpoint-ORIG-GUID: RFuuLzC8JejxWrm4oynsn6-IAqVUMeMt
+Content-Transfer-Encoding: 8BIT
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.64.514
  definitions=2022-03-04_02,2022-02-26_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- impostorscore=0 bulkscore=0 spamscore=0 suspectscore=0 adultscore=0
- phishscore=0 clxscore=1034 malwarescore=0 lowpriorityscore=0
- mlxlogscore=999 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ mlxlogscore=999 lowpriorityscore=0 mlxscore=0 impostorscore=0 adultscore=0
+ spamscore=0 priorityscore=1501 phishscore=0 suspectscore=0 bulkscore=0
+ clxscore=1034 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2202240000 definitions=main-2203040044
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Use direct mapping to read the flash device contents. This operation
-mode is called "Command mode" on Aspeed SoC SMC controllers. It uses a
-Control Register for the settings to apply when a memory operation is
-performed on the flash device mapping window.
+Hi,
 
-If the window is not big enough, fall back to the "User mode" to
-perform the read.
+This series adds a new SPI driver using the spi-mem interface for the
+Aspeed static memory controllers of the AST2600, AST2500 and AST2400
+SoCs.
 
-Since direct mapping now handles all reads of the flash device
-contents, also use memcpy_fromio for other address spaces, such as
-SFDP.
+ * AST2600 Firmware SPI Memory Controller (FMC)
+ * AST2600 SPI Flash Controller (SPI1 and SPI2)
+ * AST2500 Firmware SPI Memory Controller (FMC)
+ * AST2500 SPI Flash Controller (SPI1 and SPI2)
+ * AST2400 New Static Memory Controller (also referred as FMC)
+ * AST2400 SPI Flash Controller (SPI)
 
-Direct mapping for writes will come later when validated.
+It is based on the current OpenBMC kernel driver [1], using directly
+the MTD SPI-NOR interface and on a patchset [2] previously proposed
+adding support for the AST2600 only. This driver takes a slightly
+different approach to cover all 6 controllers.
 
-Reviewed-by: Joel Stanley <joel@jms.id.au>
-Tested-by: Joel Stanley <joel@jms.id.au>
-Tested-by: Tao Ren <rentao.bupt@gmail.com>
-Signed-off-by: Cédric Le Goater <clg@kaod.org>
----
- drivers/spi/spi-aspeed-smc.c | 67 ++++++++++++++++++++++++++++++++++--
- 1 file changed, 65 insertions(+), 2 deletions(-)
+It does not make use of the controller register disabling Address and
+Data byte lanes because is not available on the AST2400 SoC. We could
+introduce a specific handler for new features available on recent SoCs
+if needed. As there is not much difference on performance, the driver
+chooses the common denominator: "User mode" which has been heavily
+tested in [1]. "User mode" is also used as a fall back method when
+flash device mapping window is too small.
 
-diff --git a/drivers/spi/spi-aspeed-smc.c b/drivers/spi/spi-aspeed-smc.c
-index 997ec2e45118..0951766baef4 100644
---- a/drivers/spi/spi-aspeed-smc.c
-+++ b/drivers/spi/spi-aspeed-smc.c
-@@ -322,8 +322,8 @@ static int do_aspeed_spi_exec_op(struct spi_mem *mem, const struct spi_mem_op *o
- 		if (!op->addr.nbytes)
- 			ret = aspeed_spi_read_reg(chip, op);
- 		else
--			ret = aspeed_spi_read_user(chip, op, op->addr.val,
--						   op->data.nbytes, op->data.buf.in);
-+			memcpy_fromio(op->data.buf.in, chip->ahb_base + op->addr.val,
-+				      op->data.nbytes);
- 	} else {
- 		if (!op->addr.nbytes)
- 			ret = aspeed_spi_write_reg(chip, op);
-@@ -403,10 +403,73 @@ static int aspeed_spi_chip_set_default_window(struct aspeed_spi_chip *chip)
- 	return chip->ahb_window_size ? 0 : -1;
- }
+Problems to address with spi-mem were the configuration of the mapping
+windows and the calibration of the read timings. The driver handles
+them in the direct mapping handler when some knowledge on the size of
+the flash device is know. It is not perfect but not incorrect either.
+The algorithm is one from [1] because it doesn't require the DMA
+registers which are not available on all controllers.
+
+Direct mapping for writes is not supported (yet). I have seen some
+corruption with writes and I preferred to use the safer and proven
+method of the initial driver [1]. We can improve that later.
+
+The driver supports Quad SPI RX transfers on the AST2600 SoC but it
+didn't have the expected results. Therefore it is not activated yet.
+There are some issues on the pinctrl to investigate first. 
+
+The series does not remove the current Aspeed SMC driver but prepares
+ground for its removal by changing its CONFIG option. This last step
+can be addressed as a followup when the new driver using the spi-mem
+interface has been sufficiently exposed. 
+
+Tested on:
  
-+static int aspeed_spi_dirmap_create(struct spi_mem_dirmap_desc *desc)
-+{
-+	struct aspeed_spi *aspi = spi_controller_get_devdata(desc->mem->spi->master);
-+	struct aspeed_spi_chip *chip = &aspi->chips[desc->mem->spi->chip_select];
-+	struct spi_mem_op *op = &desc->info.op_tmpl;
-+	u32 ctl_val;
-+	int ret = 0;
-+
-+	chip->clk_freq = desc->mem->spi->max_speed_hz;
-+
-+	/* Only for reads */
-+	if (op->data.dir != SPI_MEM_DATA_IN)
-+		return -EOPNOTSUPP;
-+
-+	if (desc->info.length > chip->ahb_window_size)
-+		dev_warn(aspi->dev, "CE%d window (%dMB) too small for mapping",
-+			 chip->cs, chip->ahb_window_size >> 20);
-+
-+	/* Define the default IO read settings */
-+	ctl_val = readl(chip->ctl) & ~CTRL_IO_CMD_MASK;
-+	ctl_val |= aspeed_spi_get_io_mode(op) |
-+		op->cmd.opcode << CTRL_COMMAND_SHIFT |
-+		CTRL_IO_DUMMY_SET(op->dummy.nbytes / op->dummy.buswidth) |
-+		CTRL_IO_MODE_READ;
-+
-+	/* Tune 4BYTE address mode */
-+	if (op->addr.nbytes) {
-+		u32 addr_mode = readl(aspi->regs + CE_CTRL_REG);
-+
-+		if (op->addr.nbytes == 4)
-+			addr_mode |= (0x11 << chip->cs);
-+		else
-+			addr_mode &= ~(0x11 << chip->cs);
-+		writel(addr_mode, aspi->regs + CE_CTRL_REG);
-+	}
-+
-+	/* READ mode is the controller default setting */
-+	chip->ctl_val[ASPEED_SPI_READ] = ctl_val;
-+	writel(chip->ctl_val[ASPEED_SPI_READ], chip->ctl);
-+
-+	dev_info(aspi->dev, "CE%d read buswidth:%d [0x%08x]\n",
-+		 chip->cs, op->data.buswidth, chip->ctl_val[ASPEED_SPI_READ]);
-+
-+	return ret;
-+}
-+
-+static ssize_t aspeed_spi_dirmap_read(struct spi_mem_dirmap_desc *desc,
-+				      u64 offset, size_t len, void *buf)
-+{
-+	struct aspeed_spi *aspi = spi_controller_get_devdata(desc->mem->spi->master);
-+	struct aspeed_spi_chip *chip = &aspi->chips[desc->mem->spi->chip_select];
-+
-+	/* Switch to USER command mode if mapping window is too small */
-+	if (chip->ahb_window_size < offset + len)
-+		aspeed_spi_read_user(chip, &desc->info.op_tmpl, offset, len, buf);
-+	else
-+		memcpy_fromio(buf, chip->ahb_base + offset, len);
-+
-+	return len;
-+}
-+
- static const struct spi_controller_mem_ops aspeed_spi_mem_ops = {
- 	.supports_op = aspeed_spi_supports_op,
- 	.exec_op = aspeed_spi_exec_op,
- 	.get_name = aspeed_spi_get_name,
-+	.dirmap_create = aspeed_spi_dirmap_create,
-+	.dirmap_read = aspeed_spi_dirmap_read,
- };
+ * OpenPOWER Palmetto (AST2400)
+ * Facebook Wedge 100 BMC (AST2400) by Tao Ren <rentao.bupt@gmail.com>
+ * Evaluation board (AST2500) 
+ * Inspur FP5280G2 BMC (AST2500) by John Wang <wangzq.jn@gmail.com>
+ * Facebook Backpack CMM BMC (AST2500) by Tao Ren <rentao.bupt@gmail.com>
+ * OpenPOWER Witherspoon (AST2500)
+ * Evaluation board (AST2600 A0 and A3)
+ * Rainier board (AST2600)
  
- static void aspeed_spi_chip_set_type(struct aspeed_spi *aspi, unsigned int cs, int type)
+[1] https://github.com/openbmc/linux/blob/dev-5.15/drivers/mtd/spi-nor/controllers/aspeed-smc.c
+[2] https://patchwork.ozlabs.org/project/linux-aspeed/list/?series=212394
+
+Thanks,
+
+C. 
+
+Changes in v3:
+
+ - Fixed compile warning on aspeed_spi_dirmap_read() prototype reported
+   by kernel test robot 
+ - Removed unnecessary entry in ast2600-fmc.yaml
+ - New patch from Tao to set spi-max-frequency on all FMC devices
+
+Changes in v2:
+
+ - Fixed dt_binding_check warnings (Rob)
+ - New entry in MAINTAINERS 
+ - Addressed Lukas comments regarding the SPI controller registration
+   and device removal. Checked with driver bind/unbind   
+ - Introduced setup and cleanup handlers and removed routine looping
+   on the DT children properties (Pratyush)
+ - Clarified in commit log requirements for training.
+ - Removed defconfig changes of patch 1 since they were reverted in
+   the last patch (Joel)
+
+Cédric Le Goater (10):
+  mtd: spi-nor: aspeed: Rename Kconfig option
+  ARM: dts: aspeed: Adjust "reg" property of FMC/SPI controllers
+  dt-bindings: spi: Add Aspeed SMC controllers device tree binding
+  spi: spi-mem: Add driver for Aspeed SMC controllers
+  spi: aspeed: Add support for direct mapping
+  spi: aspeed: Adjust direct mapping to device size
+  spi: aspeed: Workaround AST2500 limitations
+  spi: aspeed: Add support for the AST2400 SPI controller
+  spi: aspeed: Calibrate read timings
+  ARM: dts: aspeed: Enable Dual SPI RX transfers
+
+Tao Ren (1):
+  ARM: dts: aspeed-g4: Set spi-max-frequency for all flashes
+
+ drivers/spi/spi-aspeed-smc.c                  | 1184 +++++++++++++++++
+ .../bindings/spi/aspeed,ast2600-fmc.yaml      |   87 ++
+ MAINTAINERS                                   |   10 +
+ arch/arm/boot/dts/aspeed-g4.dtsi              |   16 +-
+ arch/arm/boot/dts/aspeed-g5.dtsi              |   16 +-
+ arch/arm/boot/dts/aspeed-g6.dtsi              |   17 +-
+ drivers/mtd/spi-nor/controllers/Kconfig       |    4 +-
+ drivers/mtd/spi-nor/controllers/Makefile      |    2 +-
+ drivers/spi/Kconfig                           |   11 +
+ drivers/spi/Makefile                          |    1 +
+ 10 files changed, 1329 insertions(+), 19 deletions(-)
+ create mode 100644 drivers/spi/spi-aspeed-smc.c
+ create mode 100644 Documentation/devicetree/bindings/spi/aspeed,ast2600-fmc.yaml
+
 -- 
 2.34.1
 

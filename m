@@ -2,53 +2,53 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F33DC43219
-	for <linux-spi@archiver.kernel.org>; Fri,  4 Mar 2022 08:37:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 19B10C433EF
+	for <linux-spi@archiver.kernel.org>; Fri,  4 Mar 2022 08:37:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233822AbiCDIic convert rfc822-to-8bit (ORCPT
+        id S233847AbiCDIic convert rfc822-to-8bit (ORCPT
         <rfc822;linux-spi@archiver.kernel.org>);
         Fri, 4 Mar 2022 03:38:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45740 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233764AbiCDIia (ORCPT
+        with ESMTP id S233771AbiCDIia (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Fri, 4 Mar 2022 03:38:30 -0500
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D47BBDF84;
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C94D36168;
         Fri,  4 Mar 2022 00:37:40 -0800 (PST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 2245maLb017570;
-        Fri, 4 Mar 2022 08:37:08 GMT
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 2248Nfrw022009;
+        Fri, 4 Mar 2022 08:37:03 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 3ekcxutn1e-1
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3ekf7j06v5-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 04 Mar 2022 08:37:07 +0000
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 2248Zsac032120;
-        Fri, 4 Mar 2022 08:37:07 GMT
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 3ekcxutn11-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 04 Mar 2022 08:37:07 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-        by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2248X6u5013671;
-        Fri, 4 Mar 2022 08:37:05 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
-        by ppma03ams.nl.ibm.com with ESMTP id 3ek4k417hj-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 04 Mar 2022 08:37:05 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
-        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2248b2pn35520864
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 04 Mar 2022 08:37:03 +0000
+Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 2248YcLf023379;
         Fri, 4 Mar 2022 08:37:02 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3ekf7j06uh-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 04 Mar 2022 08:37:02 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+        by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2248XpCV010670;
+        Fri, 4 Mar 2022 08:37:00 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+        by ppma04ams.nl.ibm.com with ESMTP id 3ek4kg97hj-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 04 Mar 2022 08:37:00 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
+        by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2248avVP48693588
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 4 Mar 2022 08:36:58 GMT
 Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id C2E265204E;
-        Fri,  4 Mar 2022 08:37:02 +0000 (GMT)
+        by IMSVA (Postfix) with ESMTP id DE0B252050;
+        Fri,  4 Mar 2022 08:36:57 +0000 (GMT)
 Received: from smtp.tlslab.ibm.com (unknown [9.101.4.1])
-        by d06av21.portsmouth.uk.ibm.com (Postfix) with SMTP id 1C5AA52050;
-        Fri,  4 Mar 2022 08:37:02 +0000 (GMT)
+        by d06av21.portsmouth.uk.ibm.com (Postfix) with SMTP id 3E4A452054;
+        Fri,  4 Mar 2022 08:36:57 +0000 (GMT)
 Received: from yukon.home (unknown [9.171.91.16])
-        by smtp.tlslab.ibm.com (Postfix) with ESMTP id 7BCAA2201B4;
-        Fri,  4 Mar 2022 09:37:00 +0100 (CET)
+        by smtp.tlslab.ibm.com (Postfix) with ESMTP id A78222200FD;
+        Fri,  4 Mar 2022 09:36:55 +0100 (CET)
 From:   =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To:     linux-spi@vger.kernel.org, linux-mtd@lists.infradead.org
 Cc:     Mark Brown <broonie@kernel.org>,
@@ -64,9 +64,9 @@ Cc:     Mark Brown <broonie@kernel.org>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
         Tao Ren <rentao.bupt@gmail.com>
-Subject: [PATCH v3 09/11] spi: aspeed: Calibrate read timings
-Date:   Fri,  4 Mar 2022 09:36:41 +0100
-Message-Id: <20220304083643.1079142-10-clg@kaod.org>
+Subject: [PATCH v3 06/11] spi: aspeed: Adjust direct mapping to device size
+Date:   Fri,  4 Mar 2022 09:36:38 +0100
+Message-Id: <20220304083643.1079142-7-clg@kaod.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220304083643.1079142-1-clg@kaod.org>
 References: <20220304083643.1079142-1-clg@kaod.org>
@@ -74,422 +74,144 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8BIT
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: qT6C-K-W-BaVH6pgo8-ZuumT-BmFA5Ms
-X-Proofpoint-GUID: Z2N230sI3qRch1LMRsflVDNRNbUmEsfw
+X-Proofpoint-GUID: ct2EAHYCSUWyU7RIvLyAusI7qOo6DQAy
+X-Proofpoint-ORIG-GUID: 3nipNoVki59muBsYk_Z7XmXktv9TzCPu
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.64.514
  definitions=2022-03-04_02,2022-02-26_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1034 adultscore=0
- mlxlogscore=999 bulkscore=0 suspectscore=0 impostorscore=0 mlxscore=0
- priorityscore=1501 spamscore=0 lowpriorityscore=0 malwarescore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
+ adultscore=0 priorityscore=1501 suspectscore=0 malwarescore=0 phishscore=0
+ spamscore=0 mlxlogscore=999 impostorscore=0 clxscore=1034
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2202240000 definitions=main-2203040044
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-To accommodate the different response time of SPI transfers on different
-boards and different SPI NOR devices, the Aspeed controllers provide a
-set of Read Timing Compensation registers to tune the timing delays
-depending on the frequency being used. The AST2600 SoC has one of these
-registers per device. On the AST2500 and AST2400 SoCs, the timing
-register is shared by all devices which is problematic to get good
-results other than for one device.
+The segment registers of the FMC/SPI controllers provide a way to
+configure the mapping window of the flash device contents on the AHB
+bus. Adjust this window to the size of the spi-mem mapping.
 
-The algorithm first reads a golden buffer at low speed and then performs
-reads with different clocks and delay cycle settings to find a breaking
-point. This selects a default good frequency for the CEx control register.
-The current settings are a bit optimistic as we pick the first delay giving
-good results. A safer approach would be to determine an interval and
-choose the middle value.
+Things get more complex with multiple devices. The driver needs to
+also adjust the window of the next device to make sure that there is
+no overlap, even if there is no available device. The proposal below
+is not perfect but it is covering all the cases we have seen on
+different boards with one and two devices on the same bus.
 
-Calibration is performed when the direct mapping for reads is created.
-Since the underlying spi-nor object needs to be initialized to create
-the spi_mem operation for direct mapping, we should be fine. Having a
-specific API would clarify the requirements though.
-
-Cc: Pratyush Yadav <p.yadav@ti.com>
 Reviewed-by: Joel Stanley <joel@jms.id.au>
 Tested-by: Joel Stanley <joel@jms.id.au>
 Tested-by: Tao Ren <rentao.bupt@gmail.com>
 Signed-off-by: Cédric Le Goater <clg@kaod.org>
 ---
- drivers/spi/spi-aspeed-smc.c | 281 +++++++++++++++++++++++++++++++++++
- 1 file changed, 281 insertions(+)
+ drivers/spi/spi-aspeed-smc.c | 88 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 88 insertions(+)
 
 diff --git a/drivers/spi/spi-aspeed-smc.c b/drivers/spi/spi-aspeed-smc.c
-index 7f306da7c44e..660451667a39 100644
+index 0951766baef4..9f7910e79ae8 100644
 --- a/drivers/spi/spi-aspeed-smc.c
 +++ b/drivers/spi/spi-aspeed-smc.c
-@@ -33,6 +33,8 @@
- #define   CTRL_IO_ADDRESS_4B		BIT(13)	/* AST2400 SPI only */
- #define   CTRL_IO_DUMMY_SET(dummy)					\
- 	(((((dummy) >> 2) & 0x1) << 14) | (((dummy) & 0x3) << 6))
-+#define   CTRL_FREQ_SEL_SHIFT		8
-+#define   CTRL_FREQ_SEL_MASK		GENMASK(11, CTRL_FREQ_SEL_SHIFT)
- #define   CTRL_CE_STOP_ACTIVE		BIT(2)
- #define   CTRL_IO_MODE_CMD_MASK		GENMASK(1, 0)
- #define   CTRL_IO_MODE_NORMAL		0x0
-@@ -45,6 +47,9 @@
- /* CEx Address Decoding Range Register */
- #define CE0_SEGMENT_ADDR_REG		0x30
- 
-+/* CEx Read timing compensation register */
-+#define CE0_TIMING_COMPENSATION_REG	0x94
-+
- enum aspeed_spi_ctl_reg_value {
- 	ASPEED_SPI_BASE,
- 	ASPEED_SPI_READ,
-@@ -70,10 +75,15 @@ struct aspeed_spi_data {
- 	bool	hastype;
- 	u32	mode_bits;
- 	u32	we0;
-+	u32	timing;
-+	u32	hclk_mask;
-+	u32	hdiv_max;
- 
- 	u32 (*segment_start)(struct aspeed_spi *aspi, u32 reg);
- 	u32 (*segment_end)(struct aspeed_spi *aspi, u32 reg);
- 	u32 (*segment_reg)(struct aspeed_spi *aspi, u32 start, u32 end);
-+	int (*calibrate)(struct aspeed_spi_chip *chip, u32 hdiv,
-+			 const u8 *golden_buf, u8 *test_buf);
- };
- 
- #define ASPEED_SPI_MAX_NUM_CS	5
-@@ -517,6 +527,8 @@ static int aspeed_spi_chip_adjust_window(struct aspeed_spi_chip *chip,
- 	return 0;
+@@ -403,6 +403,92 @@ static int aspeed_spi_chip_set_default_window(struct aspeed_spi_chip *chip)
+ 	return chip->ahb_window_size ? 0 : -1;
  }
  
-+static int aspeed_spi_do_calibration(struct aspeed_spi_chip *chip);
++static int aspeed_spi_set_window(struct aspeed_spi *aspi,
++				 const struct aspeed_spi_window *win)
++{
++	u32 start = aspi->ahb_base_phy + win->offset;
++	u32 end = start + win->size;
++	void __iomem *seg_reg = aspi->regs + CE0_SEGMENT_ADDR_REG + win->cs * 4;
++	u32 seg_val_backup = readl(seg_reg);
++	u32 seg_val = aspi->data->segment_reg(aspi, start, end);
++
++	if (seg_val == seg_val_backup)
++		return 0;
++
++	writel(seg_val, seg_reg);
++
++	/*
++	 * Restore initial value if something goes wrong else we could
++	 * loose access to the chip.
++	 */
++	if (seg_val != readl(seg_reg)) {
++		dev_err(aspi->dev, "CE%d invalid window [ 0x%.8x - 0x%.8x ] %dMB",
++			win->cs, start, end - 1, win->size >> 20);
++		writel(seg_val_backup, seg_reg);
++		return -EIO;
++	}
++
++	if (win->size)
++		dev_dbg(aspi->dev, "CE%d new window [ 0x%.8x - 0x%.8x ] %dMB",
++			win->cs, start, end - 1,  win->size >> 20);
++	else
++		dev_dbg(aspi->dev, "CE%d window closed", win->cs);
++
++	return 0;
++}
++
++/*
++ * Yet to be done when possible :
++ * - Align mappings on flash size (we don't have the info)
++ * - ioremap each window, not strictly necessary since the overall window
++ *   is correct.
++ */
++static int aspeed_spi_chip_adjust_window(struct aspeed_spi_chip *chip,
++					 u32 local_offset, u32 size)
++{
++	struct aspeed_spi *aspi = chip->aspi;
++	struct aspeed_spi_window windows[ASPEED_SPI_MAX_NUM_CS] = { 0 };
++	struct aspeed_spi_window *win = &windows[chip->cs];
++	int ret;
++
++	aspeed_spi_get_windows(aspi, windows);
++
++	/* Adjust this chip window */
++	win->offset += local_offset;
++	win->size = size;
++
++	if (win->offset + win->size > aspi->ahb_window_size) {
++		win->size = aspi->ahb_window_size - win->offset;
++		dev_warn(aspi->dev, "CE%d window resized to %dMB", chip->cs, win->size >> 20);
++	}
++
++	ret = aspeed_spi_set_window(aspi, win);
++	if (ret)
++		return ret;
++
++	/* Update chip mapping info */
++	chip->ahb_base = aspi->ahb_base + win->offset;
++	chip->ahb_window_size = win->size;
++
++	/*
++	 * Also adjust next chip window to make sure that it does not
++	 * overlap with the current window.
++	 */
++	if (chip->cs < aspi->data->max_cs - 1) {
++		struct aspeed_spi_window *next = &windows[chip->cs + 1];
++
++		/* Change offset and size to keep the same end address */
++		if ((next->offset + next->size) > (win->offset + win->size))
++			next->size = (next->offset + next->size) - (win->offset + win->size);
++		else
++			next->size = 0;
++		next->offset = win->offset + win->size;
++
++		aspeed_spi_set_window(aspi, next);
++	}
++	return 0;
++}
 +
  static int aspeed_spi_dirmap_create(struct spi_mem_dirmap_desc *desc)
  {
  	struct aspeed_spi *aspi = spi_controller_get_devdata(desc->mem->spi->master);
-@@ -565,6 +577,8 @@ static int aspeed_spi_dirmap_create(struct spi_mem_dirmap_desc *desc)
- 	chip->ctl_val[ASPEED_SPI_READ] = ctl_val;
- 	writel(chip->ctl_val[ASPEED_SPI_READ], chip->ctl);
+@@ -417,6 +503,8 @@ static int aspeed_spi_dirmap_create(struct spi_mem_dirmap_desc *desc)
+ 	if (op->data.dir != SPI_MEM_DATA_IN)
+ 		return -EOPNOTSUPP;
  
-+	ret = aspeed_spi_do_calibration(chip);
++	aspeed_spi_chip_adjust_window(chip, desc->info.offset, desc->info.length);
 +
- 	dev_info(aspi->dev, "CE%d read buswidth:%d [0x%08x]\n",
- 		 chip->cs, op->data.buswidth, chip->ctl_val[ASPEED_SPI_READ]);
- 
-@@ -812,6 +826,249 @@ static u32 aspeed_spi_segment_ast2600_reg(struct aspeed_spi *aspi,
- 		((end - 1) & AST2600_SEG_ADDR_MASK);
- }
- 
-+/*
-+ * Read timing compensation sequences
-+ */
-+
-+#define CALIBRATE_BUF_SIZE SZ_16K
-+
-+static bool aspeed_spi_check_reads(struct aspeed_spi_chip *chip,
-+				   const u8 *golden_buf, u8 *test_buf)
-+{
-+	int i;
-+
-+	for (i = 0; i < 10; i++) {
-+		memcpy_fromio(test_buf, chip->ahb_base, CALIBRATE_BUF_SIZE);
-+		if (memcmp(test_buf, golden_buf, CALIBRATE_BUF_SIZE) != 0) {
-+#if defined(VERBOSE_DEBUG)
-+			print_hex_dump_bytes(DEVICE_NAME "  fail: ", DUMP_PREFIX_NONE,
-+					     test_buf, 0x100);
-+#endif
-+			return false;
-+		}
-+	}
-+	return true;
-+}
-+
-+#define FREAD_TPASS(i)	(((i) / 2) | (((i) & 1) ? 0 : 8))
-+
-+/*
-+ * The timing register is shared by all devices. Only update for CE0.
-+ */
-+static int aspeed_spi_calibrate(struct aspeed_spi_chip *chip, u32 hdiv,
-+				const u8 *golden_buf, u8 *test_buf)
-+{
-+	struct aspeed_spi *aspi = chip->aspi;
-+	const struct aspeed_spi_data *data = aspi->data;
-+	int i;
-+	int good_pass = -1, pass_count = 0;
-+	u32 shift = (hdiv - 1) << 2;
-+	u32 mask = ~(0xfu << shift);
-+	u32 fread_timing_val = 0;
-+
-+	/* Try HCLK delay 0..5, each one with/without delay and look for a
-+	 * good pair.
-+	 */
-+	for (i = 0; i < 12; i++) {
-+		bool pass;
-+
-+		if (chip->cs == 0) {
-+			fread_timing_val &= mask;
-+			fread_timing_val |= FREAD_TPASS(i) << shift;
-+			writel(fread_timing_val, aspi->regs + data->timing);
-+		}
-+		pass = aspeed_spi_check_reads(chip, golden_buf, test_buf);
-+		dev_dbg(aspi->dev,
-+			"  * [%08x] %d HCLK delay, %dns DI delay : %s",
-+			fread_timing_val, i / 2, (i & 1) ? 0 : 4,
-+			pass ? "PASS" : "FAIL");
-+		if (pass) {
-+			pass_count++;
-+			if (pass_count == 3) {
-+				good_pass = i - 1;
-+				break;
-+			}
-+		} else {
-+			pass_count = 0;
-+		}
-+	}
-+
-+	/* No good setting for this frequency */
-+	if (good_pass < 0)
-+		return -1;
-+
-+	/* We have at least one pass of margin, let's use first pass */
-+	if (chip->cs == 0) {
-+		fread_timing_val &= mask;
-+		fread_timing_val |= FREAD_TPASS(good_pass) << shift;
-+		writel(fread_timing_val, aspi->regs + data->timing);
-+	}
-+	dev_dbg(aspi->dev, " * -> good is pass %d [0x%08x]",
-+		good_pass, fread_timing_val);
-+	return 0;
-+}
-+
-+static bool aspeed_spi_check_calib_data(const u8 *test_buf, u32 size)
-+{
-+	const u32 *tb32 = (const u32 *)test_buf;
-+	u32 i, cnt = 0;
-+
-+	/* We check if we have enough words that are neither all 0
-+	 * nor all 1's so the calibration can be considered valid.
-+	 *
-+	 * I use an arbitrary threshold for now of 64
-+	 */
-+	size >>= 2;
-+	for (i = 0; i < size; i++) {
-+		if (tb32[i] != 0 && tb32[i] != 0xffffffff)
-+			cnt++;
-+	}
-+	return cnt >= 64;
-+}
-+
-+static const u32 aspeed_spi_hclk_divs[] = {
-+	0xf, /* HCLK */
-+	0x7, /* HCLK/2 */
-+	0xe, /* HCLK/3 */
-+	0x6, /* HCLK/4 */
-+	0xd, /* HCLK/5 */
-+};
-+
-+#define ASPEED_SPI_HCLK_DIV(i) \
-+	(aspeed_spi_hclk_divs[(i) - 1] << CTRL_FREQ_SEL_SHIFT)
-+
-+static int aspeed_spi_do_calibration(struct aspeed_spi_chip *chip)
-+{
-+	struct aspeed_spi *aspi = chip->aspi;
-+	const struct aspeed_spi_data *data = aspi->data;
-+	u32 ahb_freq = aspi->clk_freq;
-+	u32 max_freq = chip->clk_freq;
-+	u32 ctl_val;
-+	u8 *golden_buf = NULL;
-+	u8 *test_buf = NULL;
-+	int i, rc, best_div = -1;
-+
-+	dev_dbg(aspi->dev, "calculate timing compensation - AHB freq: %d MHz",
-+		ahb_freq / 1000000);
-+
-+	/*
-+	 * use the related low frequency to get check calibration data
-+	 * and get golden data.
-+	 */
-+	ctl_val = chip->ctl_val[ASPEED_SPI_READ] & data->hclk_mask;
-+	writel(ctl_val, chip->ctl);
-+
-+	test_buf = kzalloc(CALIBRATE_BUF_SIZE * 2, GFP_KERNEL);
-+	if (!test_buf)
-+		return -ENOMEM;
-+
-+	golden_buf = test_buf + CALIBRATE_BUF_SIZE;
-+
-+	memcpy_fromio(golden_buf, chip->ahb_base, CALIBRATE_BUF_SIZE);
-+	if (!aspeed_spi_check_calib_data(golden_buf, CALIBRATE_BUF_SIZE)) {
-+		dev_info(aspi->dev, "Calibration area too uniform, using low speed");
-+		goto no_calib;
-+	}
-+
-+#if defined(VERBOSE_DEBUG)
-+	print_hex_dump_bytes(DEVICE_NAME "  good: ", DUMP_PREFIX_NONE,
-+			     golden_buf, 0x100);
-+#endif
-+
-+	/* Now we iterate the HCLK dividers until we find our breaking point */
-+	for (i = ARRAY_SIZE(aspeed_spi_hclk_divs); i > data->hdiv_max - 1; i--) {
-+		u32 tv, freq;
-+
-+		freq = ahb_freq / i;
-+		if (freq > max_freq)
-+			continue;
-+
-+		/* Set the timing */
-+		tv = chip->ctl_val[ASPEED_SPI_READ] | ASPEED_SPI_HCLK_DIV(i);
-+		writel(tv, chip->ctl);
-+		dev_dbg(aspi->dev, "Trying HCLK/%d [%08x] ...", i, tv);
-+		rc = data->calibrate(chip, i, golden_buf, test_buf);
-+		if (rc == 0)
-+			best_div = i;
-+	}
-+
-+	/* Nothing found ? */
-+	if (best_div < 0) {
-+		dev_warn(aspi->dev, "No good frequency, using dumb slow");
-+	} else {
-+		dev_dbg(aspi->dev, "Found good read timings at HCLK/%d", best_div);
-+
-+		/* Record the freq */
-+		for (i = 0; i < ASPEED_SPI_MAX; i++)
-+			chip->ctl_val[i] = (chip->ctl_val[i] & data->hclk_mask) |
-+				ASPEED_SPI_HCLK_DIV(best_div);
-+	}
-+
-+no_calib:
-+	writel(chip->ctl_val[ASPEED_SPI_READ], chip->ctl);
-+	kfree(test_buf);
-+	return 0;
-+}
-+
-+#define TIMING_DELAY_DI		BIT(3)
-+#define TIMING_DELAY_HCYCLE_MAX	5
-+#define TIMING_REG_AST2600(chip)				\
-+	((chip)->aspi->regs + (chip)->aspi->data->timing +	\
-+	 (chip)->cs * 4)
-+
-+static int aspeed_spi_ast2600_calibrate(struct aspeed_spi_chip *chip, u32 hdiv,
-+					const u8 *golden_buf, u8 *test_buf)
-+{
-+	struct aspeed_spi *aspi = chip->aspi;
-+	int hcycle;
-+	u32 shift = (hdiv - 2) << 3;
-+	u32 mask = ~(0xfu << shift);
-+	u32 fread_timing_val = 0;
-+
-+	for (hcycle = 0; hcycle <= TIMING_DELAY_HCYCLE_MAX; hcycle++) {
-+		int delay_ns;
-+		bool pass = false;
-+
-+		fread_timing_val &= mask;
-+		fread_timing_val |= hcycle << shift;
-+
-+		/* no DI input delay first  */
-+		writel(fread_timing_val, TIMING_REG_AST2600(chip));
-+		pass = aspeed_spi_check_reads(chip, golden_buf, test_buf);
-+		dev_dbg(aspi->dev,
-+			"  * [%08x] %d HCLK delay, DI delay none : %s",
-+			fread_timing_val, hcycle, pass ? "PASS" : "FAIL");
-+		if (pass)
-+			return 0;
-+
-+		/* Add DI input delays  */
-+		fread_timing_val &= mask;
-+		fread_timing_val |= (TIMING_DELAY_DI | hcycle) << shift;
-+
-+		for (delay_ns = 0; delay_ns < 0x10; delay_ns++) {
-+			fread_timing_val &= ~(0xf << (4 + shift));
-+			fread_timing_val |= delay_ns << (4 + shift);
-+
-+			writel(fread_timing_val, TIMING_REG_AST2600(chip));
-+			pass = aspeed_spi_check_reads(chip, golden_buf, test_buf);
-+			dev_dbg(aspi->dev,
-+				"  * [%08x] %d HCLK delay, DI delay %d.%dns : %s",
-+				fread_timing_val, hcycle, (delay_ns + 1) / 2,
-+				(delay_ns + 1) & 1 ? 5 : 5, pass ? "PASS" : "FAIL");
-+			/*
-+			 * TODO: This is optimistic. We should look
-+			 * for a working interval and save the middle
-+			 * value in the read timing register.
-+			 */
-+			if (pass)
-+				return 0;
-+		}
-+	}
-+
-+	/* No good setting for this frequency */
-+	return -1;
-+}
-+
- /*
-  * Platform definitions
-  */
-@@ -820,6 +1077,10 @@ static const struct aspeed_spi_data ast2400_fmc_data = {
- 	.hastype       = true,
- 	.we0	       = 16,
- 	.ctl0	       = CE0_CTRL_REG,
-+	.timing	       = CE0_TIMING_COMPENSATION_REG,
-+	.hclk_mask     = 0xfffff0ff,
-+	.hdiv_max      = 1,
-+	.calibrate     = aspeed_spi_calibrate,
- 	.segment_start = aspeed_spi_segment_start,
- 	.segment_end   = aspeed_spi_segment_end,
- 	.segment_reg   = aspeed_spi_segment_reg,
-@@ -830,6 +1091,10 @@ static const struct aspeed_spi_data ast2400_spi_data = {
- 	.hastype       = false,
- 	.we0	       = 0,
- 	.ctl0	       = 0x04,
-+	.timing	       = 0x14,
-+	.hclk_mask     = 0xfffff0ff,
-+	.hdiv_max      = 1,
-+	.calibrate     = aspeed_spi_calibrate,
- 	/* No segment registers */
- };
- 
-@@ -838,6 +1103,10 @@ static const struct aspeed_spi_data ast2500_fmc_data = {
- 	.hastype       = true,
- 	.we0	       = 16,
- 	.ctl0	       = CE0_CTRL_REG,
-+	.timing	       = CE0_TIMING_COMPENSATION_REG,
-+	.hclk_mask     = 0xfffff0ff,
-+	.hdiv_max      = 1,
-+	.calibrate     = aspeed_spi_calibrate,
- 	.segment_start = aspeed_spi_segment_start,
- 	.segment_end   = aspeed_spi_segment_end,
- 	.segment_reg   = aspeed_spi_segment_reg,
-@@ -848,6 +1117,10 @@ static const struct aspeed_spi_data ast2500_spi_data = {
- 	.hastype       = false,
- 	.we0	       = 16,
- 	.ctl0	       = CE0_CTRL_REG,
-+	.timing	       = CE0_TIMING_COMPENSATION_REG,
-+	.hclk_mask     = 0xfffff0ff,
-+	.hdiv_max      = 1,
-+	.calibrate     = aspeed_spi_calibrate,
- 	.segment_start = aspeed_spi_segment_start,
- 	.segment_end   = aspeed_spi_segment_end,
- 	.segment_reg   = aspeed_spi_segment_reg,
-@@ -859,6 +1132,10 @@ static const struct aspeed_spi_data ast2600_fmc_data = {
- 	.mode_bits     = SPI_RX_QUAD | SPI_RX_QUAD,
- 	.we0	       = 16,
- 	.ctl0	       = CE0_CTRL_REG,
-+	.timing	       = CE0_TIMING_COMPENSATION_REG,
-+	.hclk_mask     = 0xf0fff0ff,
-+	.hdiv_max      = 2,
-+	.calibrate     = aspeed_spi_ast2600_calibrate,
- 	.segment_start = aspeed_spi_segment_ast2600_start,
- 	.segment_end   = aspeed_spi_segment_ast2600_end,
- 	.segment_reg   = aspeed_spi_segment_ast2600_reg,
-@@ -870,6 +1147,10 @@ static const struct aspeed_spi_data ast2600_spi_data = {
- 	.mode_bits     = SPI_RX_QUAD | SPI_RX_QUAD,
- 	.we0	       = 16,
- 	.ctl0	       = CE0_CTRL_REG,
-+	.timing	       = CE0_TIMING_COMPENSATION_REG,
-+	.hclk_mask     = 0xf0fff0ff,
-+	.hdiv_max      = 2,
-+	.calibrate     = aspeed_spi_ast2600_calibrate,
- 	.segment_start = aspeed_spi_segment_ast2600_start,
- 	.segment_end   = aspeed_spi_segment_ast2600_end,
- 	.segment_reg   = aspeed_spi_segment_ast2600_reg,
+ 	if (desc->info.length > chip->ahb_window_size)
+ 		dev_warn(aspi->dev, "CE%d window (%dMB) too small for mapping",
+ 			 chip->cs, chip->ahb_window_size >> 20);
 -- 
 2.34.1
 

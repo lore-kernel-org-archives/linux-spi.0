@@ -2,116 +2,207 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 290E5C433EF
-	for <linux-spi@archiver.kernel.org>; Fri,  4 Mar 2022 07:57:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 89736C433EF
+	for <linux-spi@archiver.kernel.org>; Fri,  4 Mar 2022 08:37:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235389AbiCDH6m (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 4 Mar 2022 02:58:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35960 "EHLO
+        id S233780AbiCDIia convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 4 Mar 2022 03:38:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232845AbiCDH6m (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 4 Mar 2022 02:58:42 -0500
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A89E065D05;
-        Thu,  3 Mar 2022 23:57:54 -0800 (PST)
-Received: by mail-pl1-x62c.google.com with SMTP id ay5so7074527plb.1;
-        Thu, 03 Mar 2022 23:57:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=b5JJahJbPSg5PuTw+HrbCqpeRRIjKIFlWzoeU01rKTU=;
-        b=DY4pRigayZTq/5rjtD2bjuRYX10CoBCJokMk8l+MP82c190ULI8mFEuacqaLNPAXPD
-         g19dQFm0zMVhGKiOsNUY9WJgsc90AJDeeLgEAB5cpBbXEMt6heWnf2gMNbOruuNvF17k
-         tXwKAv2lg7nTWKjS4zTcwxp73K/Vbt1z1Gar1VAgmd5Ag6hG/VXjy+dML3IARlgqC2B6
-         cGI/FVM8Zba/wkYhqCgAMgtvHPZVw74vWCg4uHmsYZyJaQoCdjis0QGRG8L1OWv6BWMe
-         j0uwGPD8wkT83IJ+e+RJJqDuugr6zMJGNHLqy9gJLwrC/UgMPBBtoo1bFd9Z8PQlBUsR
-         KiUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=b5JJahJbPSg5PuTw+HrbCqpeRRIjKIFlWzoeU01rKTU=;
-        b=g6Shr8ENbCs+DYD9W6qRgJVrxQaAImHDF+cM7NFrPH4uGMx41gqZXdQGkxdI4lyKb9
-         qN8LCBq1l3fZz/uKarhs4ynEdMXdZyCKNSm+OYKFqbptvZePyd1Qy8f2PfDRgTCZia83
-         UKnk6INHPC0zTWk7JK0k2jvK5+6cI+ItWxXpBQSPj72Li0XzTWNbh/FC4F5c63qSZX6Y
-         ea1GIkquuyJvKi21XH6pqJHHmQqRahAYDU5xrF97zVdWHb5m30LogQeS8V6v/MxybBu6
-         WppMmzcDbMvhqVpIwdYTeuRk9Rd1HYr2R75EhF3deELK4qvYOe7t49fA2Lo4DGNHd4QU
-         Yt+g==
-X-Gm-Message-State: AOAM532UYvIZfteLvtws9pK057J0fWcriYuuORk9nXVH+ZjMcfZZLFCv
-        7dXFnUm330UXIRjDIq6FOvE=
-X-Google-Smtp-Source: ABdhPJxvuPW+GS4d0R4GqvhhYiQKHdTrokQg6qHNRrkq/DtJ47Gkay/NlA31+zVRMc3ZiLuUSflWGA==
-X-Received: by 2002:a17:90a:4286:b0:1b8:8ba1:730c with SMTP id p6-20020a17090a428600b001b88ba1730cmr9376289pjg.181.1646380673939;
-        Thu, 03 Mar 2022 23:57:53 -0800 (PST)
-Received: from taoren-fedora-PC23YAB4 ([98.47.137.113])
-        by smtp.gmail.com with ESMTPSA id q7-20020a056a0002a700b004f357e3e42fsm4936341pfs.36.2022.03.03.23.57.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Mar 2022 23:57:53 -0800 (PST)
-Date:   Thu, 3 Mar 2022 23:57:50 -0800
-From:   Tao Ren <rentao.bupt@gmail.com>
-To:     Joel Stanley <joel@jms.id.au>
-Cc:     =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
-        John Wang <wangzq.jn@gmail.com>, linux-spi@vger.kernel.org,
-        linux-mtd <linux-mtd@lists.infradead.org>,
-        Mark Brown <broonie@kernel.org>,
+        with ESMTP id S233760AbiCDIi3 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 4 Mar 2022 03:38:29 -0500
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DDBDDED1;
+        Fri,  4 Mar 2022 00:37:40 -0800 (PST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 2248Jeq0029177;
+        Fri, 4 Mar 2022 08:37:06 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 3ekf5mr8c0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 04 Mar 2022 08:37:06 +0000
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 2248b5C6025162;
+        Fri, 4 Mar 2022 08:37:05 GMT
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 3ekf5mr8bh-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 04 Mar 2022 08:37:05 +0000
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+        by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2248Xj1j028198;
+        Fri, 4 Mar 2022 08:37:03 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+        by ppma01fra.de.ibm.com with ESMTP id 3ek4k8124x-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 04 Mar 2022 08:37:03 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2248b1lf35520852
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 4 Mar 2022 08:37:01 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 3187B4C046;
+        Fri,  4 Mar 2022 08:37:01 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 840184C044;
+        Fri,  4 Mar 2022 08:37:00 +0000 (GMT)
+Received: from smtp.tlslab.ibm.com (unknown [9.101.4.1])
+        by d06av22.portsmouth.uk.ibm.com (Postfix) with SMTP;
+        Fri,  4 Mar 2022 08:37:00 +0000 (GMT)
+Received: from yukon.home (unknown [9.171.91.16])
+        by smtp.tlslab.ibm.com (Postfix) with ESMTP id DA4082200FD;
+        Fri,  4 Mar 2022 09:36:58 +0100 (CET)
+From:   =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+To:     linux-spi@vger.kernel.org, linux-mtd@lists.infradead.org
+Cc:     Mark Brown <broonie@kernel.org>,
         Tudor Ambarus <tudor.ambarus@microchip.com>,
         Pratyush Yadav <p.yadav@ti.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>,
         Richard Weinberger <richard@nod.at>,
         Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-aspeed <linux-aspeed@lists.ozlabs.org>,
+        linux-aspeed@lists.ozlabs.org, Joel Stanley <joel@jms.id.au>,
         Andrew Jeffery <andrew@aj.id.au>,
         Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>,
-        devicetree <devicetree@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 00/10] spi: spi-mem: Add driver for Aspeed SMC
- controllers
-Message-ID: <YiHGfh/4xZRim6Ka@taoren-fedora-PC23YAB4>
-References: <20220302173114.927476-1-clg@kaod.org>
- <CACPK8Xdo=krCNVVs5=jiSnmyiPkNPd9Dxxyx0Tv8eUHKR5J3cQ@mail.gmail.com>
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+        Tao Ren <rentao.bupt@gmail.com>
+Subject: [PATCH v3 08/11] spi: aspeed: Add support for the AST2400 SPI controller
+Date:   Fri,  4 Mar 2022 09:36:40 +0100
+Message-Id: <20220304083643.1079142-9-clg@kaod.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20220304083643.1079142-1-clg@kaod.org>
+References: <20220304083643.1079142-1-clg@kaod.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACPK8Xdo=krCNVVs5=jiSnmyiPkNPd9Dxxyx0Tv8eUHKR5J3cQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 8rnIf6sENX_OwEgO478IOjc_c3uilcGk
+X-Proofpoint-ORIG-GUID: zioBTFMdx6VOUhFFz1E13XVs5dWK3l2A
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.64.514
+ definitions=2022-03-04_02,2022-02-26_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1034 spamscore=0
+ phishscore=0 impostorscore=0 priorityscore=1501 mlxscore=0 mlxlogscore=999
+ malwarescore=0 bulkscore=0 lowpriorityscore=0 adultscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2202240000
+ definitions=main-2203040044
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, Mar 03, 2022 at 10:01:20AM +0000, Joel Stanley wrote:
-> On Wed, 2 Mar 2022 at 17:31, Cédric Le Goater <clg@kaod.org> wrote:
-> >
-> > Hi,
-> >
-> > This series adds a new SPI driver using the spi-mem interface for the
-> > Aspeed static memory controllers of the AST2600, AST2500 and AST2400
-> > SoCs.
-> >
-> >  * AST2600 Firmware SPI Memory Controller (FMC)
-> >  * AST2600 SPI Flash Controller (SPI1 and SPI2)
-> 
-> I've performed read and write tests on the 2600 controllers, and the
-> driver seems stable at the settings you have in the device tree.
-> 
-> Tested-by: Joel Stanley <joel@jms.id.au>
-> 
-> I've added Tao and John to cc as they have tested the 2400 and 2500,
-> and I'm sure will be able to provide some Tested-by.
-> 
-> Cheers,
-> 
-> Joel
+Extend the driver for the AST2400 SPI Flash Controller (SPI). This
+controller has a slightly different interface which requires
+adaptation of the 4B handling. Summary of features :
 
-I've tested the patch series on ast2400 (wedge100) and ast2500 (cmm) by
-reading/writing FMC flash0 and flash1 for several times, and no issues
-observed so far.
+   . host Firmware
+   . 1 chip select pin (CE0)
+   . slightly different register set, between AST2500 and the legacy
+     controller
+   . no segment registers
+   . single, dual mode.
 
+Reviewed-by: Joel Stanley <joel@jms.id.au>
+Tested-by: Joel Stanley <joel@jms.id.au>
 Tested-by: Tao Ren <rentao.bupt@gmail.com>
+Signed-off-by: CÃ©dric Le Goater <clg@kaod.org>
+---
+ drivers/spi/spi-aspeed-smc.c | 33 ++++++++++++++++++++++++++++++++-
+ 1 file changed, 32 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/spi/spi-aspeed-smc.c b/drivers/spi/spi-aspeed-smc.c
+index ab6fa5cfad9c..7f306da7c44e 100644
+--- a/drivers/spi/spi-aspeed-smc.c
++++ b/drivers/spi/spi-aspeed-smc.c
+@@ -30,6 +30,7 @@
+ #define   CTRL_IO_DUAL_DATA		BIT(29)
+ #define   CTRL_IO_QUAD_DATA		BIT(30)
+ #define   CTRL_COMMAND_SHIFT		16
++#define   CTRL_IO_ADDRESS_4B		BIT(13)	/* AST2400 SPI only */
+ #define   CTRL_IO_DUMMY_SET(dummy)					\
+ 	(((((dummy) >> 2) & 0x1) << 14) | (((dummy) & 0x3) << 6))
+ #define   CTRL_CE_STOP_ACTIVE		BIT(2)
+@@ -270,6 +271,8 @@ static bool aspeed_spi_supports_op(struct spi_mem *mem, const struct spi_mem_op
+ 	return spi_mem_default_supports_op(mem, op);
+ }
+ 
++static const struct aspeed_spi_data ast2400_spi_data;
++
+ static int do_aspeed_spi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ {
+ 	struct aspeed_spi *aspi = spi_controller_get_devdata(mem->spi->master);
+@@ -299,6 +302,9 @@ static int do_aspeed_spi_exec_op(struct spi_mem *mem, const struct spi_mem_op *o
+ 			addr_mode |= (0x11 << chip->cs);
+ 		else
+ 			addr_mode &= ~(0x11 << chip->cs);
++
++		if (op->addr.nbytes == 4 && chip->aspi->data == &ast2400_spi_data)
++			ctl_val |= CTRL_IO_ADDRESS_4B;
+ 	}
+ 
+ 	if (op->dummy.buswidth && op->dummy.nbytes)
+@@ -390,7 +396,13 @@ static int aspeed_spi_chip_set_default_window(struct aspeed_spi_chip *chip)
+ 	struct aspeed_spi_window windows[ASPEED_SPI_MAX_NUM_CS] = { 0 };
+ 	struct aspeed_spi_window *win = &windows[chip->cs];
+ 
+-	aspeed_spi_get_windows(aspi, windows);
++	/* No segment registers for the AST2400 SPI controller */
++	if (aspi->data == &ast2400_spi_data) {
++		win->offset = 0;
++		win->size = aspi->ahb_window_size;
++	} else {
++		aspeed_spi_get_windows(aspi, windows);
++	}
+ 
+ 	chip->ahb_base = aspi->ahb_base + win->offset;
+ 	chip->ahb_window_size = win->size;
+@@ -453,6 +465,10 @@ static int aspeed_spi_chip_adjust_window(struct aspeed_spi_chip *chip,
+ 	struct aspeed_spi_window *win = &windows[chip->cs];
+ 	int ret;
+ 
++	/* No segment registers for the AST2400 SPI controller */
++	if (aspi->data == &ast2400_spi_data)
++		return 0;
++
+ 	/*
+ 	 * Due to an HW issue on the AST2500 SPI controller, the CE0
+ 	 * window size should be smaller than the maximum 128MB.
+@@ -537,6 +553,12 @@ static int aspeed_spi_dirmap_create(struct spi_mem_dirmap_desc *desc)
+ 		else
+ 			addr_mode &= ~(0x11 << chip->cs);
+ 		writel(addr_mode, aspi->regs + CE_CTRL_REG);
++
++		/* AST2400 SPI controller sets 4BYTE address mode in
++		 * CE0 Control Register
++		 */
++		if (op->addr.nbytes == 4 && chip->aspi->data == &ast2400_spi_data)
++			ctl_val |= CTRL_IO_ADDRESS_4B;
+ 	}
+ 
+ 	/* READ mode is the controller default setting */
+@@ -803,6 +825,14 @@ static const struct aspeed_spi_data ast2400_fmc_data = {
+ 	.segment_reg   = aspeed_spi_segment_reg,
+ };
+ 
++static const struct aspeed_spi_data ast2400_spi_data = {
++	.max_cs	       = 1,
++	.hastype       = false,
++	.we0	       = 0,
++	.ctl0	       = 0x04,
++	/* No segment registers */
++};
++
+ static const struct aspeed_spi_data ast2500_fmc_data = {
+ 	.max_cs	       = 3,
+ 	.hastype       = true,
+@@ -847,6 +877,7 @@ static const struct aspeed_spi_data ast2600_spi_data = {
+ 
+ static const struct of_device_id aspeed_spi_matches[] = {
+ 	{ .compatible = "aspeed,ast2400-fmc", .data = &ast2400_fmc_data },
++	{ .compatible = "aspeed,ast2400-spi", .data = &ast2400_spi_data },
+ 	{ .compatible = "aspeed,ast2500-fmc", .data = &ast2500_fmc_data },
+ 	{ .compatible = "aspeed,ast2500-spi", .data = &ast2500_spi_data },
+ 	{ .compatible = "aspeed,ast2600-fmc", .data = &ast2600_fmc_data },
+-- 
+2.34.1
 
-Cheers,
-
-Tao

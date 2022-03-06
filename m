@@ -2,458 +2,114 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5B062C433EF
-	for <linux-spi@archiver.kernel.org>; Sat,  5 Mar 2022 08:22:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EA7A0C433EF
+	for <linux-spi@archiver.kernel.org>; Sun,  6 Mar 2022 14:23:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229615AbiCEIXJ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sat, 5 Mar 2022 03:23:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53326 "EHLO
+        id S231946AbiCFOYU (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 6 Mar 2022 09:24:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229458AbiCEIXJ (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sat, 5 Mar 2022 03:23:09 -0500
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F258221BB5;
-        Sat,  5 Mar 2022 00:22:15 -0800 (PST)
-X-UUID: 3f0045f906424d1d869dd924349f3313-20220305
-X-UUID: 3f0045f906424d1d869dd924349f3313-20220305
-Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw02.mediatek.com
-        (envelope-from <leilk.liu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 754612243; Sat, 05 Mar 2022 16:22:06 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Sat, 5 Mar 2022 16:22:04 +0800
-Received: from mhfsdcap04 (10.17.3.154) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Sat, 5 Mar 2022 16:22:04 +0800
-Message-ID: <88c09cbb11c76e17ce78376103d17ac408f3cfd5.camel@mediatek.com>
-Subject: Re: [PATCH V2 4/6] spi: mediatek: add spi memory support
-From:   Leilk Liu <leilk.liu@mediatek.com>
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Mark Brown <broonie@kernel.org>
-CC:     Rob Herring <robh+dt@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-spi@vger.kernel.org>, <linux-mediatek@lists.infradead.org>
-Date:   Sat, 5 Mar 2022 16:22:04 +0800
-In-Reply-To: <2c1a0925aeb1f3ba640a29e0f6f9765eb609293b.camel@mediatek.com>
-References: <20220221040717.3729-1-leilk.liu@mediatek.com>
-         <20220221040717.3729-5-leilk.liu@mediatek.com>
-         <2e994be0-8b60-a3dc-2ab7-34d93192dc09@collabora.com>
-         <2c1a0925aeb1f3ba640a29e0f6f9765eb609293b.camel@mediatek.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
+        with ESMTP id S229463AbiCFOYT (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 6 Mar 2022 09:24:19 -0500
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFA874AE28;
+        Sun,  6 Mar 2022 06:23:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1646576597;
+        bh=fviFSK5y5Aaq+IIWP/+WE3VsHMV+uByyn72NZHtxZGo=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=gFuohdMiQxK092zL861CnVC6HhvUDaFQXDoPR5uoy4b2ltLTxiCWQ8D8CqB0b3D/k
+         bhk5v6/IL1S13BeBo3jA5DMR6z1dQ1YO+K2aiTgWa54qRuke3D830VRCnXUe7X/7Xa
+         nba8RO7xfwWICGkrxRCqVJVP/uFKnrlgbmgswJpo=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from longitude ([89.0.78.102]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N2mBQ-1o9nuj1CJg-0139Ak; Sun, 06
+ Mar 2022 15:23:17 +0100
+From:   =?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>
+To:     linux-spi@vger.kernel.org
+Cc:     =?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+        Avi Fishman <avifishman70@gmail.com>,
+        Tomer Maimon <tmaimon77@gmail.com>,
+        Tali Perry <tali.perry1@gmail.com>,
+        Patrick Venture <venture@google.com>,
+        Nancy Yuen <yuenn@google.com>,
+        Benjamin Fair <benjaminfair@google.com>,
+        Mark Brown <broonie@kernel.org>, openbmc@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] spi: npcm-fiu: Fix typo ("npxm")
+Date:   Sun,  6 Mar 2022 15:23:12 +0100
+Message-Id: <20220306142312.109017-1-j.neuschaefer@gmx.net>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-MTK:  N
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:zRDIEOS8jqLfAJl4QOpA4SuB/spvp9/RlpdN88YIsCOrFgmGdrb
+ ZbySwwkT42wTut3PNqASXXlG5Yq07czXCjm2JNUN1tYf1EUIgHL70Lh67dZLphRkmNRupa5
+ xijxWZRxen9Tv/OLMfZ95QrsgE+r2V78K35aOA99tIrltg7sOdQhgpN5TOF25kswQm3tVaf
+ RynjU6K172AYYubLOAZEg==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:oD/RSu1sJY4=:mI9NtcgMTu+ubTueJ7hMFF
+ uoyUXKzGDJzDdKfeQI9rRKfpD1LE8ntAX7+t+XQmGgYz8wlN41Z+aId+Kjilf/G7M+pz4D7Er
+ 3SAyoa8RN8NSU4ndxJhYd7SacLsqBUoK98kfoh5icQjvtk3lW5eVkWE1uwLd1jRBR6f8SCw0a
+ pLYQsSlhYgevKtk7zmqyHbAtKbqo6NJATTHqffYe5Oz0sLZ+BoL+TN9+DJCRMAHSCAfVWX/R5
+ dWC+CrtU5IxqZTxToJ7xVRRXOjspx9/SZ6zibOgbfrD0XWWPzmhe+y+tFAOD21cErStMckOUA
+ 3OP384m9Z0rG5eh6DggWT7f/zr5BGDgn7OxJNB2hmdyrZaNW+jfm3vsDKw1lrKi8/Y4YSKCuB
+ 3gpkj6f/RhbMhvgz5wBbAujsXLEJut/2Mh3JWjIlQChqovV2BDj/xmhtDTDgTNvjtttlM079E
+ 4+/At1HKSvpm5PCMmpBR8H9/PDEmlXy4s+K4nb0W0TNl36KgZouyqatw9FUB7X6DafoJ+MdIA
+ hkCEK92qh+X4i/+CbZrM2RU6oXt3AK5WHRD4Y16DPubBDadcKGu8d8GphNXIyjVLYJEuGerYM
+ u/3TnIpIcQJRkCmz5yFSIJPjX/lmhojoc/PRgvx/rB/wU5yPKHCtvJfVPoTzyn9NARAQ4sSGq
+ v0yLfZWvxgbvv7TWMIxuS/nTXjbWo0ChyZsyjibc8HrhmmopNL1U+uEt1gCbFWrIZyTshc9AD
+ xmzbQJGnNru6Jra4TpEjXZjc+dl2wMNm+bFpOS558DIx+1frX2CBEA7hinRjMtmmuGPdMxpnN
+ NIndXSuFbTNTGPVrR+f75b8h5l8HIYrL2K1CeTAf+T8J2DAvF06HM5F0oCGYpb241rx766Ch2
+ 6jQf7jv2TjmHz4BiWvkpiGOwGFYoRDxYVZx0YCPrXuqnngqeBH2o1R8enQE+leSHwNLStOrLh
+ NxZt4oTY74hSQeER9Mlq1LcCxpT9AKfgX9Gs0tIpIdEnJ6MQsKoui2ILJa+lw840M6Pir60yU
+ ASsSrFV142sv+TJuZvqRhz+RNbymJRXqTSr7kwWVLP3PWEV8kZpePEdOxZ4KqPEWc2SWE1Tpv
+ U9KncsdR7BOtbU=
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, 2022-02-23 at 09:59 +0800, Leilk Liu wrote:
-> On Tue, 2022-02-22 at 11:49 +0100, AngeloGioacchino Del Regno wrote:
-> > Il 21/02/22 05:07, Leilk Liu ha scritto:
-> > > this patch add the support of spi-mem.
-> > > 
-> > > Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
-> > > ---
-> > >   drivers/spi/spi-mt65xx.c | 310
-> > > ++++++++++++++++++++++++++++++++++++++-
-> > >   1 file changed, 309 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-> > > index 5fa677a589a4..852fc008329a 100644
-> > > --- a/drivers/spi/spi-mt65xx.c
-> > > +++ b/drivers/spi/spi-mt65xx.c
-> > > @@ -17,6 +17,7 @@
-> > >   #include <linux/platform_data/spi-mt65xx.h>
-> > >   #include <linux/pm_runtime.h>
-> > >   #include <linux/spi/spi.h>
-> > > +#include <linux/spi/spi-mem.h>
-> > >   #include <linux/dma-mapping.h>
-> > >   
-> > >   #define SPI_CFG0_REG                      0x0000
-> > > @@ -75,8 +76,21 @@
-> > >   #define SPI_CMD_IPM_GET_TICKDLY_OFFSET    22
-> > >   
-> > >   #define SPI_CMD_IPM_GET_TICKDLY_MASK	GENMASK(24, 22)
-> > > +
-> > > +#define PIN_MODE_CFG(x)	((x) / 2)
-> > > +
-> > > +#define SPI_CFG3_IPM_PIN_MODE_OFFSET		0
-> > >   #define SPI_CFG3_IPM_HALF_DUPLEX_DIR		BIT(2)
-> > >   #define SPI_CFG3_IPM_HALF_DUPLEX_EN		BIT(3)
-> > > +#define SPI_CFG3_IPM_XMODE_EN			BIT(4)
-> > > +#define SPI_CFG3_IPM_NODATA_FLAG		BIT(5)
-> > > +#define SPI_CFG3_IPM_CMD_BYTELEN_OFFSET		8
-> > > +#define SPI_CFG3_IPM_ADDR_BYTELEN_OFFSET	12
-> > > +
-> > > +#define SPI_CFG3_IPM_CMD_PIN_MODE_MASK		GENMASK(1, 0)
-> > > +#define SPI_CFG3_IPM_CMD_BYTELEN_MASK		GENMASK(11, 8)
-> > > +#define SPI_CFG3_IPM_ADDR_BYTELEN_MASK		GENMASK(15, 12)
-> > > +
-> > >   #define MT8173_SPI_MAX_PAD_SEL 3
-> > >   
-> > >   #define MTK_SPI_PAUSE_INT_STATUS 0x2
-> > > @@ -87,6 +101,8 @@
-> > >   #define MTK_SPI_MAX_FIFO_SIZE 32U
-> > >   #define MTK_SPI_PACKET_SIZE 1024
-> > >   #define MTK_SPI_IPM_PACKET_SIZE SZ_64K
-> > > +#define MTK_SPI_IPM_PACKET_LOOP SZ_256
-> > > +
-> > >   #define MTK_SPI_32BITS_MASK  (0xffffffff)
-> > >   
-> > >   #define DMA_ADDR_EXT_BITS (36)
-> > > @@ -104,7 +120,8 @@ struct mtk_spi_compatible {
-> > >   	bool no_need_unprepare;
-> > >   	/* IPM design improve some single mode features */
-> > >   	bool ipm_design;
-> > > -
-> > > +	/* IPM design that support quad mode */
-> > > +	bool support_quad;
-> > >   };
-> > >   
-> > >   struct mtk_spi {
-> > > @@ -120,6 +137,11 @@ struct mtk_spi {
-> > >   	u32 tx_sgl_len, rx_sgl_len;
-> > >   	const struct mtk_spi_compatible *dev_comp;
-> > >   	u32 spi_clk_hz;
-> > > +	struct completion spimem_done;
-> > > +	bool use_spimem;
-> > > +	struct device *dev;
-> > > +	dma_addr_t tx_dma;
-> > > +	dma_addr_t rx_dma;
-> > >   };
-> > >   
-> > >   static const struct mtk_spi_compatible mtk_common_compat;
-> > > @@ -134,6 +156,13 @@ static const struct mtk_spi_compatible
-> > > ipm_compat_single = {
-> > >   	.ipm_design = true,
-> > >   };
-> > >   
-> > > +static const struct mtk_spi_compatible ipm_compat_quad = {
-> > > +	.enhance_timing = true,
-> > > +	.dma_ext = true,
-> > > +	.ipm_design = true,
-> > > +	.support_quad = true,
-> > > +};
-> > > +
-> > >   static const struct mtk_spi_compatible mt6765_compat = {
-> > >   	.need_pad_sel = true,
-> > >   	.must_tx = true,
-> > > @@ -178,6 +207,9 @@ static const struct of_device_id
-> > > mtk_spi_of_match[] = {
-> > >   	{ .compatible = "mediatek,ipm-spi-single",
-> > >   		.data = (void *)&ipm_compat_single,
-> > >   	},
-> > > +	{ .compatible = "mediatek,ipm-spi-quad",
-> > > +		.data = (void *)&ipm_compat_quad,
-> > > +	},
-> > >   	{ .compatible = "mediatek,mt2701-spi",
-> > >   		.data = (void *)&mtk_common_compat,
-> > >   	},
-> > > @@ -694,6 +726,13 @@ static irqreturn_t mtk_spi_interrupt(int
-> > > irq,
-> > > void *dev_id)
-> > >   	else
-> > >   		mdata->state = MTK_SPI_IDLE;
-> > >   
-> > > +	/* SPI-MEM ops */
-> > > +	if (mdata->use_spimem) {
-> > > +		complete(&mdata->spimem_done);
-> > > +
-> > > +		return IRQ_HANDLED;
-> > > +	}
-> > > +
-> > 
-> > I would instead make a new ISR for the SPI-MEM case... as you're
-> > bypassing the
-> > entire mtk_spi_interrupt() function like that.
-> > 
-> > Example:
-> > 
-> > static void mtk_spi_check_and_set_state(struct mtk_spi *mdata)
-> > {
-> > 	u32 reg_val;
-> > 
-> > 	reg_val = readl(mdata->base + SPI_STATUS0_REG);
-> > 
-> > 	if (reg_val & MTK_SPI_PAUSE_INT_STATUS)
-> > 
-> > 		mdata->state = MTK_SPI_PAUSED;
-> > 
-> > 	else
-> > 
-> > 		mdata->state = MTK_SPI_IDLE;
-> > }
-> > 
-> > static irqreturn_t mtk_spi_interrupt(int irq, void *dev_id)
-> > 
-> > {
-> > 	u32 cmd, reg_val, cnt, remainder, len;
-> > 
-> > 	struct spi_master *master = dev_id;
-> > 
-> > 	struct mtk_spi *mdata = spi_master_get_devdata(master);
-> > 
-> > 	struct spi_transfer *trans = mdata->cur_transfer;
-> > 
-> > 	mtk_spi_check_and_set_state(mdata);
-> > 
-> > 	if (!master->can_dma(........
-> > 	.... blurb...
-> > }
-> > 
-> > static irqreturn_t mtk_spimem_interrupt(int irq, void *dev_id)
-> > {
-> > 	struct spi_master *master = dev_id;
-> > 
-> > 	struct mtk_spi *mdata = spi_master_get_devdata(master);
-> > 
-> > 	mtk_spi_check_and_set_state(mdata);
-> > 	complete(&mdata->spimem_done);
-> > 
-> > 	return IRQ_HANDLED;
-> > }
-> > 
-> > ... of course, in mtk_spi_probe(), you would do something like
-> > 
-> > if (mdata->use_spimem)
-> > 	ret = devm_request_irq(&pdev->dev, irq, mtk_spimem_interrupt,
-> > 		...... blah ......
-> > else
-> > 	ret = devm_request_irq(&pdev->dev, irq, mtk_spi_interrupt,
-> > 		..... blah ......
-> > 
-> > This way, you're separating the two - increasing human readability
-> > and showing
-> > the simplifications (in that regard) in the IPM IP's SPI-MEM
-> > handling.
-> > 
-> 
-> thanks for your advise, I'll do it in the next version.
-Hi AngeloGioacchino,
- It can't request mtk_spimem_interrupt() only while support spimem
-core, since spi driver should support spi_sync and spi_mem_exec_op
-both.
+The platform is called NPCM, not NPXM.
 
-> 
-> > >   	if (!master->can_dma(master, NULL, trans)) {
-> > >   		if (trans->rx_buf) {
-> > >   			cnt = mdata->xfer_len / 4;
-> > > @@ -777,6 +816,266 @@ static irqreturn_t mtk_spi_interrupt(int
-> > > irq,
-> > > void *dev_id)
-> > >   	return IRQ_HANDLED;
-> > >   }
-> > >   
-> > > +static int mtk_spi_mem_adjust_op_size(struct spi_mem *mem,
-> > > +				      struct spi_mem_op *op)
-> > > +{
-> > > +	int opcode_len;
-> > > +
-> > > +	if (op->data.dir != SPI_MEM_NO_DATA) {
-> > > +		opcode_len = 1 + op->addr.nbytes + op->dummy.nbytes;
-> > > +		if (opcode_len + op->data.nbytes >
-> > > MTK_SPI_IPM_PACKET_SIZE) {
-> > > +			op->data.nbytes = MTK_SPI_IPM_PACKET_SIZE -
-> > > opcode_len;
-> > > +			/* force data buffer dma-aligned. */
-> > > +			op->data.nbytes -= op->data.nbytes % 4;
-> > > +		}
-> > > +	}
-> > > +
-> > > +	return 0;
-> > > +}
-> > > +
-> > > +static bool mtk_spi_mem_supports_op(struct spi_mem *mem,
-> > > +				    const struct spi_mem_op *op)
-> > > +{
-> > > +	if (op->data.buswidth > 4 || op->addr.buswidth > 4 ||
-> > > +	    op->dummy.buswidth > 4 || op->cmd.buswidth > 4)
-> > > +		return false;
-> > > +
-> > > +	if (op->addr.nbytes && op->dummy.nbytes &&
-> > > +	    op->addr.buswidth != op->dummy.buswidth)
-> > > +		return false;
-> > > +
-> > > +	if (op->addr.nbytes + op->dummy.nbytes > 16)
-> > > +		return false;
-> > > +
-> > > +	if (op->data.nbytes > MTK_SPI_IPM_PACKET_SIZE) {
-> > > +		if (op->data.nbytes / MTK_SPI_IPM_PACKET_SIZE >
-> > > +		    MTK_SPI_IPM_PACKET_LOOP ||
-> > > +		    op->data.nbytes % MTK_SPI_IPM_PACKET_SIZE != 0)
-> > > +			return false;
-> > > +	}
-> > > +
-> > > +	return true;
-> > > +}
-> > > +
-> > > +static void mtk_spi_mem_setup_dma_xfer(struct spi_master
-> > > *master,
-> > > +				       const struct spi_mem_op *op)
-> > > +{
-> > > +	struct mtk_spi *mdata = spi_master_get_devdata(master);
-> > > +
-> > > +	writel((u32)(mdata->tx_dma & MTK_SPI_32BITS_MASK),
-> > > +	       mdata->base + SPI_TX_SRC_REG);
-> > > +#ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
-> > > +	if (mdata->dev_comp->dma_ext)
-> > > +		writel((u32)(mdata->tx_dma >> 32),
-> > > +		       mdata->base + SPI_TX_SRC_REG_64);
-> > > +#endif
-> > > +
-> > > +	if (op->data.dir == SPI_MEM_DATA_IN) {
-> > > +		writel((u32)(mdata->rx_dma & MTK_SPI_32BITS_MASK),
-> > > +		       mdata->base + SPI_RX_DST_REG);
-> > > +#ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
-> > > +		if (mdata->dev_comp->dma_ext)
-> > > +			writel((u32)(mdata->rx_dma >> 32),
-> > > +			       mdata->base + SPI_RX_DST_REG_64);
-> > > +#endif
-> > > +	}
-> > > +}
-> > > +
-> > > +static int mtk_spi_transfer_wait(struct spi_mem *mem,
-> > > +				 const struct spi_mem_op *op)
-> > > +{
-> > > +	struct mtk_spi *mdata = spi_master_get_devdata(mem->spi-
-> > > > master);
-> > > 
-> > > +	unsigned long long ms = 1;
-> > 
-> > Initializing ms to 1 here is useless, as you're anyway
-> > reinitializing
-> > it
-> > right after. I would do it as following:
-> > 
-> > u64 ms = 8000LL;
-> > 
-> > if (op->data.dir == SPI_MEM_NO_DATA)
-> > 	ms *= 32;
-> > else
-> > 	ms *= op->data.nbytes;
-> > 
-> 
-> OK,I'll fix it.
-> 
-> > Besides, can you please add a comment to the code explaining why
-> > the
-> > reason for the waits (why 8, why 1000, why 32)?
-> > 
-> 
-> OK,THANKS
-> 
-> > > +
-> > > +	if (op->data.dir == SPI_MEM_NO_DATA)
-> > > +		ms = 8LL * 1000LL * 32;
-> > > +	else
-> > > +		ms = 8LL * 1000LL * op->data.nbytes;
-> > > +	do_div(ms, mem->spi->max_speed_hz);
-> > 
-> > I appreciate the usage of safe division helpers, but this is the
-> > wrong one:
-> > you have a unsigned long long (64-bits) dividend and a u32 divisor,
-> > so the
-> > right function to use here is div_u64().
-> > 
-> 
-> OK, I'll fix it. thanks!
-> 
-> > 	ms = div_u64(ms, mem->spi->max_speed_hz);
-> > 
-> > > +	ms += ms + 1000; /* 1s tolerance */
-> > > +
-> > > +	if (ms > UINT_MAX)
-> > > +		ms = UINT_MAX;
-> > > +
-> > > +	if (!wait_for_completion_timeout(&mdata->spimem_done,
-> > > +					 msecs_to_jiffies(ms))) {
-> > > +		dev_err(mdata->dev, "spi-mem transfer timeout\n");
-> > > +		return -ETIMEDOUT;
-> > > +	}
-> > > +
-> > > +	return 0;
-> > > +}
-> > > +
-> > > +static int mtk_spi_mem_exec_op(struct spi_mem *mem,
-> > > +			       const struct spi_mem_op *op)
-> > > +{
-> > > +	struct mtk_spi *mdata = spi_master_get_devdata(mem->spi-
-> > > > master);
-> > > 
-> > > +	u32 reg_val, nio = 1, tx_size;
-> > > +	char *tx_tmp_buf, *rx_tmp_buf;
-> > > +	int ret = 0;
-> > > +
-> > > +	mdata->use_spimem = true;
-> > > +	reinit_completion(&mdata->spimem_done);
-> > > +
-> > > +	mtk_spi_reset(mdata);
-> > > +	mtk_spi_hw_init(mem->spi->master, mem->spi);
-> > > +	mtk_spi_prepare_transfer(mem->spi->master, mem->spi-
-> > > > max_speed_hz);
-> > > 
-> > > +
-> > > +	reg_val = readl(mdata->base + SPI_CFG3_IPM_REG);
-> > > +	/* opcode byte len */
-> > > +	reg_val &= ~SPI_CFG3_IPM_CMD_BYTELEN_MASK;
-> > > +	reg_val |= 1 << SPI_CFG3_IPM_CMD_BYTELEN_OFFSET;
-> > > +
-> > > +	/* addr & dummy byte len */
-> > > +	reg_val &= ~SPI_CFG3_IPM_ADDR_BYTELEN_MASK;
-> > > +	if (op->addr.nbytes || op->dummy.nbytes)
-> > > +		reg_val |= (op->addr.nbytes + op->dummy.nbytes) <<
-> > > +			    SPI_CFG3_IPM_ADDR_BYTELEN_OFFSET;
-> > > +
-> > > +	/* data byte len */
-> > > +	if (op->data.dir == SPI_MEM_NO_DATA) {
-> > > +		reg_val |= SPI_CFG3_IPM_NODATA_FLAG;
-> > > +		writel(0, mdata->base + SPI_CFG1_REG);
-> > > +	} else {
-> > > +		reg_val &= ~SPI_CFG3_IPM_NODATA_FLAG;
-> > > +		mdata->xfer_len = op->data.nbytes;
-> > > +		mtk_spi_setup_packet(mem->spi->master);
-> > > +	}
-> > > +
-> > > +	if (op->addr.nbytes || op->dummy.nbytes) {
-> > > +		if (op->addr.buswidth == 1 || op->dummy.buswidth == 1)
-> > > +			reg_val |= SPI_CFG3_IPM_XMODE_EN;
-> > > +		else
-> > > +			reg_val &= ~SPI_CFG3_IPM_XMODE_EN;
-> > > +	}
-> > > +
-> > > +	if (op->addr.buswidth == 2 ||
-> > > +	    op->dummy.buswidth == 2 ||
-> > > +	    op->data.buswidth == 2)
-> > > +		nio = 2;
-> > > +	else if (op->addr.buswidth == 4 ||
-> > > +		 op->dummy.buswidth == 4 ||
-> > > +		 op->data.buswidth == 4)
-> > > +		nio = 4;
-> > 
-> > 	else
-> > 		nio = 1;
-> > 
-> > ...so that you can avoid double initialization of the `nio`
-> > variable.
-> > 
-> 
-> OK, I'll fix it,thanks
-> 
-> > > +
-> > > +	reg_val &= ~SPI_CFG3_IPM_CMD_PIN_MODE_MASK;
-> > > +	reg_val |= PIN_MODE_CFG(nio) << SPI_CFG3_IPM_PIN_MODE_OFFSET;
-> > > +
-> > 
-> > Regards,
-> > Angelo
-> 
-> _______________________________________________
-> Linux-mediatek mailing list
-> Linux-mediatek@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-mediatek
+Signed-off-by: Jonathan Neusch=C3=A4fer <j.neuschaefer@gmx.net>
+=2D--
+ drivers/spi/spi-npcm-fiu.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/spi/spi-npcm-fiu.c b/drivers/spi/spi-npcm-fiu.c
+index b62471ab6d7f2..f11246884df82 100644
+=2D-- a/drivers/spi/spi-npcm-fiu.c
++++ b/drivers/spi/spi-npcm-fiu.c
+@@ -201,7 +201,7 @@ struct fiu_data {
+ 	int fiu_max;
+ };
+
+-static const struct npcm_fiu_info npxm7xx_fiu_info[] =3D {
++static const struct npcm_fiu_info npcm7xx_fiu_info[] =3D {
+ 	{.name =3D "FIU0", .fiu_id =3D FIU0,
+ 		.max_map_size =3D MAP_SIZE_128MB, .max_cs =3D 2},
+ 	{.name =3D "FIU3", .fiu_id =3D FIU3,
+@@ -209,8 +209,8 @@ static const struct npcm_fiu_info npxm7xx_fiu_info[] =
+=3D {
+ 	{.name =3D "FIUX", .fiu_id =3D FIUX,
+ 		.max_map_size =3D MAP_SIZE_16MB, .max_cs =3D 2} };
+
+-static const struct fiu_data npxm7xx_fiu_data =3D {
+-	.npcm_fiu_data_info =3D npxm7xx_fiu_info,
++static const struct fiu_data npcm7xx_fiu_data =3D {
++	.npcm_fiu_data_info =3D npcm7xx_fiu_info,
+ 	.fiu_max =3D 3,
+ };
+
+@@ -664,7 +664,7 @@ static const struct spi_controller_mem_ops npcm_fiu_me=
+m_ops =3D {
+ };
+
+ static const struct of_device_id npcm_fiu_dt_ids[] =3D {
+-	{ .compatible =3D "nuvoton,npcm750-fiu", .data =3D &npxm7xx_fiu_data  },
++	{ .compatible =3D "nuvoton,npcm750-fiu", .data =3D &npcm7xx_fiu_data  },
+ 	{ /* sentinel */ }
+ };
+
+=2D-
+2.34.1
 

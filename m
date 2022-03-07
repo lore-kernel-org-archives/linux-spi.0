@@ -2,74 +2,61 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3D3E4C433EF
-	for <linux-spi@archiver.kernel.org>; Mon,  7 Mar 2022 06:52:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F0AEC433F5
+	for <linux-spi@archiver.kernel.org>; Mon,  7 Mar 2022 06:56:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235703AbiCGGxq (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 7 Mar 2022 01:53:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36654 "EHLO
+        id S230224AbiCGG50 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 7 Mar 2022 01:57:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234283AbiCGGxj (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 7 Mar 2022 01:53:39 -0500
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 334971EC43;
-        Sun,  6 Mar 2022 22:52:43 -0800 (PST)
-X-UUID: c2e474c2e3e9438696bc84b874ac7f01-20220307
-X-UUID: c2e474c2e3e9438696bc84b874ac7f01-20220307
-Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw01.mediatek.com
-        (envelope-from <leilk.liu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1279457259; Mon, 07 Mar 2022 14:52:36 +0800
-Received: from mtkcas10.mediatek.inc (172.21.101.39) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
- Mon, 7 Mar 2022 14:52:35 +0800
-Received: from localhost.localdomain (10.17.3.154) by mtkcas10.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Mon, 7 Mar 2022 14:52:34 +0800
-From:   Leilk Liu <leilk.liu@mediatek.com>
-To:     Mark Brown <broonie@kernel.org>
-CC:     Rob Herring <robh+dt@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-spi@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
-        Leilk Liu <leilk.liu@mediatek.com>,
-        Rob Herring <robh@kernel.org>
-Subject: [PATCH V3 2/7] dt-bindings: spi: Add compatible for MT7986 with single mode
-Date:   Mon, 7 Mar 2022 14:52:25 +0800
-Message-ID: <20220307065230.12655-3-leilk.liu@mediatek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220307065230.12655-1-leilk.liu@mediatek.com>
-References: <20220307065230.12655-1-leilk.liu@mediatek.com>
+        with ESMTP id S230121AbiCGG50 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 7 Mar 2022 01:57:26 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB06B606C9
+        for <linux-spi@vger.kernel.org>; Sun,  6 Mar 2022 22:56:32 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 024A4CE0BB1
+        for <linux-spi@vger.kernel.org>; Mon,  7 Mar 2022 06:56:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 28279C340EB;
+        Mon,  7 Mar 2022 06:56:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1646636189;
+        bh=evFxX2ngGymKCDktD9ZYgjOD85AjEepAv2iBKtQuR0s=;
+        h=Subject:From:Date:To:From;
+        b=KB3mo1bhY/IRato/7wgohtZgRf1/QbDxl31dhvehISamj7/ty4qMpgVkIZsxlYJ+z
+         /o2nVbrvQAOY8cHQavpV6i62xjBZeOCJQuqFH0tRPVqzoygnHDW90h+tgPPUTyb+SK
+         SQ67MhegY9IlDD8sjDtG5OV+ZGIKfq6/hJrVs7HSSbw/vG/c1azTzgZ7/Hv6Weo9lM
+         rrLQK1DYNWVPzn5FIvVwvuMeNUrRtaiE2SIRF9ZFVTV5+KqGZNdU00ghJ8cWaONss8
+         n1AatxRDNNP0ZgZH//SbJyA4qgEKLvBeKGNTRxGN4yo6YJEQzGGmiIP/ED64n2Rk42
+         kJZhKrGVTIiqA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 10F87E6D3DE;
+        Mon,  7 Mar 2022 06:56:29 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-MTK:  N
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <164663618906.11829.10644520487181262913.git-patchwork-housekeeping@kernel.org>
+Date:   Mon, 07 Mar 2022 06:56:29 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This patch adds dt-binding documentation for MT7986 with single mode.
+Latest series: [v3] spi: mediatek: add single/quad mode support (2022-03-07T06:52:23)
+  Superseding: [v2] spi: mediatek: add single/quad mode support (2022-02-21T04:07:14):
+    [V2,1/6] dt-bindings: spi: Add compatible for Mediatek IPM IP with single mode
+    [V2,2/6] spi: mediatek: add IPM single mode design support
+    [V2,3/6] dt-bindings: spi: Add compatible for Mediatek IPM IP with quad mode
+    [V2,4/6] spi: mediatek: add spi memory support
+    [V2,5/6] dt-bindings: spi: support spi-hclk
+    [V2,6/6] spi: mediatek: support spi-hclk
 
-Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
-Acked-by: Rob Herring <robh@kernel.org>
----
- Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml b/Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml
-index bfa44acb1bdd..48024b98408a 100644
---- a/Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml
-+++ b/Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml
-@@ -41,6 +41,7 @@ properties:
-               - mediatek,mt8135-spi
-               - mediatek,mt8173-spi
-               - mediatek,mt8183-spi
-+              - mediatek,mt7986-spi-single
- 
-   reg:
-     maxItems: 1
 -- 
-2.25.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

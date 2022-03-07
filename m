@@ -2,53 +2,53 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A62A0C43217
-	for <linux-spi@archiver.kernel.org>; Mon,  7 Mar 2022 09:23:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9D410C433F5
+	for <linux-spi@archiver.kernel.org>; Mon,  7 Mar 2022 09:23:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236608AbiCGJYO (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 7 Mar 2022 04:24:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50590 "EHLO
+        id S236637AbiCGJYP (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 7 Mar 2022 04:24:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237332AbiCGJXp (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 7 Mar 2022 04:23:45 -0500
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BC30527C5
-        for <linux-spi@vger.kernel.org>; Mon,  7 Mar 2022 01:22:50 -0800 (PST)
-Received: by mail-wr1-x436.google.com with SMTP id q14so6581050wrc.4
-        for <linux-spi@vger.kernel.org>; Mon, 07 Mar 2022 01:22:50 -0800 (PST)
+        with ESMTP id S237066AbiCGJXW (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 7 Mar 2022 04:23:22 -0500
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80BC366630
+        for <linux-spi@vger.kernel.org>; Mon,  7 Mar 2022 01:21:46 -0800 (PST)
+Received: by mail-wr1-x42c.google.com with SMTP id b5so22169980wrr.2
+        for <linux-spi@vger.kernel.org>; Mon, 07 Mar 2022 01:21:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=2H3bOlfOoJGazb69yKfS/sfq+9Q8+S0RoO93d6v477E=;
-        b=qitkM+VpPRyZ/7PZxnPXOdyD3DXCy+67o2nET6cp2jEHCTTb96yr41T9AXJKcRZ1hp
-         WtyeZpk2YKhEzas9JXy9ICW3KI0X/3Wzyc9WDibpfnb2G0CE29bV37s7HfSgRyeLO5rA
-         FuhXPOGGHm96mkDBm7ZmCjkUpIRg3diZIX12Q4cPLHN76zYpmUyPawOfOhTZ6ydVkIn1
-         M94R2/vtVzuXVSv/qfYLNWiXAfxND42doEg7n4P7aZnq0s4onroDm9r77+mxTEyAYZEI
-         5Gg/6aJSHVh+Ow4TQE49JKlw+ShZ7Oe+tU1tMGw8k8jBgPxnFLR0W/cmlWWDaL/tG9pN
-         fTcQ==
+        bh=FEjD5UnY3g+LJSLtm81A4hBh6vcWY851fxWX9klidBY=;
+        b=S7UDc4e5bGd9CFcmgYIIsHJSuiXGjtH5EdyDFEEpI1ILcpNuKoVaSebz8vvnCfklhA
+         Q3ZhwpthHRwsoyg1QRPPpReHy/Hkk4DNuZNfye2Y9ubNuPFN1VFTTzeu+tT88/6yEglK
+         +g91WFyJRb4sfb0ET90aImvI8rW6kdLZ5NKTqLen4mOzqfwFbFrBm3fUuBkXsZqYRHeL
+         CpALospQSfVtoSpsR5KbRfjwsDBfm+uss1lpYi8vYG9iyTNu9AxBmC+1/WpZprY7DYN5
+         A2t/svZ1+oe1/9KkKFmiN1nwoYbUwcBs9Xd6xmfxXEa1s6uilZUFxBTRygnTSNQIyXea
+         46tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:content-transfer-encoding
          :in-reply-to;
-        bh=2H3bOlfOoJGazb69yKfS/sfq+9Q8+S0RoO93d6v477E=;
-        b=JqDjObZTchlqfLzzuE5Tn8F7loDOlw/daPtHgNxon3uf7C47wUWlWGGl8N32zSMl1k
-         mXc5qhDW0HIOsW9NObrtGIp5YXtWX5bU0WAsyjdAcoMC2UIcD8TZVSs5pI6mqrJIE67e
-         TXrMxh9V2vSOMxVqZIZUpuSoueHRidlG5cR6xFAopBPJoWz+M0PbfcGpeOmI8ToZy93t
-         m0PLAshEV4AOyrLJw6Vqpl5IBHHbfu7c6wBw+0viWYFwTML2x7+AIhbXsWgFBYPKuZtG
-         DMQevRmqhVmo9czK6qgCEr0MsqvHCV4byHOBloQ2ZxpyYTTj3yVdQTnOi3PNm02Zu8Q6
-         Ys6Q==
-X-Gm-Message-State: AOAM533KA6kFTbyGmzVLAgiLOUG+yF1iFsAsSqB8L3xBspw5CzcwKNRn
-        ZvMBq52gkxVVKOsOUFObtzUL9w==
-X-Google-Smtp-Source: ABdhPJxPhwAw8l9WqBnwJbxiH9KL3OutpuQdPLX3w899jAz9Onsp44AI9k8My/RHezDWBSOGBG/UKw==
-X-Received: by 2002:a5d:5449:0:b0:1f0:1a0c:963f with SMTP id w9-20020a5d5449000000b001f01a0c963fmr7231900wrv.98.1646644968650;
-        Mon, 07 Mar 2022 01:22:48 -0800 (PST)
+        bh=FEjD5UnY3g+LJSLtm81A4hBh6vcWY851fxWX9klidBY=;
+        b=deWNB9LSTTz7GhB84QYiqx4rkk/ADx645FlHcEjzTpGGtltDGZOecKtLthb3ZQ01pa
+         zoO5NL7h2HeaTn6ZaypS6yGP3BtDoVZMsiBd4YiknErqTM4YCEgxZl2m+n+r+Sssbfz3
+         XzJ1miMdLKQa2t8rvDcQYpQH0m0Mxr8VZ3D2b78Xto0t6UQi0xmhYxQocazlnmHOWu2f
+         nj5vI+7NDn4u7ZwOLvxDW09Dsgrmed2AWHQeI+lFcfNtDttQCCazZpVej0ACQMfuXt2w
+         GfPt9SbgSY0m0LLsERspRM6hF2P8m43QUzmM/eZzyi2ewCVDTJQ25S3eLC+uAOBbWRIJ
+         6KlA==
+X-Gm-Message-State: AOAM530j2pyJ+xzaPoRGbCIH8avC9PnLll+bYd1e4QmVnNusnddODwIb
+        aM8ujv9BrzwwPqHna+lMbQ7qxw==
+X-Google-Smtp-Source: ABdhPJxNUOpnh3+aVjnLQhhuXGLFg25COoG20HVZw9DPDpFrcABTTJyv32aW4ES/yVz79d/Hwc0WPQ==
+X-Received: by 2002:a5d:4487:0:b0:1f1:232b:794f with SMTP id j7-20020a5d4487000000b001f1232b794fmr7769355wrq.715.1646644905072;
+        Mon, 07 Mar 2022 01:21:45 -0800 (PST)
 Received: from google.com (cpc155339-bagu17-2-0-cust87.1-3.cable.virginm.net. [86.27.177.88])
-        by smtp.gmail.com with ESMTPSA id b1-20020a5d40c1000000b001f1dd6ea504sm5440695wrq.59.2022.03.07.01.22.47
+        by smtp.gmail.com with ESMTPSA id ay23-20020a5d6f17000000b001ea79f73fbcsm10517130wrb.25.2022.03.07.01.21.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Mar 2022 01:22:48 -0800 (PST)
-Date:   Mon, 7 Mar 2022 09:22:46 +0000
+        Mon, 07 Mar 2022 01:21:44 -0800 (PST)
+Date:   Mon, 7 Mar 2022 09:21:42 +0000
 From:   Lee Jones <lee.jones@linaro.org>
 To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 Cc:     Rob Herring <robh+dt@kernel.org>,
@@ -59,34 +59,31 @@ Cc:     Rob Herring <robh+dt@kernel.org>,
         Sam Protsenko <semen.protsenko@linaro.org>,
         Pratyush Yadav <p.yadav@ti.com>, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
-        Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v6 4/4] spi: s3c64xx: allow controller-data to be optional
-Message-ID: <YiXO5plQdpsVfwo1@google.com>
+        linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org
+Subject: Re: [PATCH v6 2/4] mfd: dt-bindings: google,cros-ec: reference
+ Samsung SPI bindings
+Message-ID: <YiXOph97XObDB2X4@google.com>
 References: <20220124082347.32747-1-krzysztof.kozlowski@canonical.com>
- <20220124082347.32747-5-krzysztof.kozlowski@canonical.com>
+ <20220124082347.32747-3-krzysztof.kozlowski@canonical.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220124082347.32747-5-krzysztof.kozlowski@canonical.com>
+In-Reply-To: <20220124082347.32747-3-krzysztof.kozlowski@canonical.com>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
 On Mon, 24 Jan 2022, Krzysztof Kozlowski wrote:
 
-> The Samsung SoC SPI driver requires to provide controller-data node
-> for each of SPI peripheral device nodes.  Make this controller-data node
-> optional, so DTS could be simpler.
+> The ChromeOS Embedded Controller appears on boards with Samsung Exynos
+> SoC, where Exynos SPI bindings expect controller-data node.  Reference
+> SPI peripheral bindings which include now Samsung SPI peripheral parts.
 > 
-> Suggested-by: Rob Herring <robh@kernel.org>
 > Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-> Reviewed-by: Sam Protsenko <semen.protsenko@linaro.org>
-> Reviewed-by: Andi Shyti <andi@etezian.org>
 > ---
->  drivers/spi/spi-s3c64xx.c | 14 ++++++--------
->  1 file changed, 6 insertions(+), 8 deletions(-)
+>  .../bindings/mfd/google,cros-ec.yaml          | 29 ++++++++++---------
+>  1 file changed, 16 insertions(+), 13 deletions(-)
 
 Applied, thanks.
 

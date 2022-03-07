@@ -2,91 +2,100 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 09F07C433FE
-	for <linux-spi@archiver.kernel.org>; Mon,  7 Mar 2022 09:23:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 41D24C43217
+	for <linux-spi@archiver.kernel.org>; Mon,  7 Mar 2022 11:07:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236541AbiCGJYR (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 7 Mar 2022 04:24:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50632 "EHLO
+        id S233411AbiCGLI1 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 7 Mar 2022 06:08:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237251AbiCGJXg (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 7 Mar 2022 04:23:36 -0500
-Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37B8566AE8
-        for <linux-spi@vger.kernel.org>; Mon,  7 Mar 2022 01:22:12 -0800 (PST)
-Received: by mail-wr1-x42a.google.com with SMTP id p9so22121337wra.12
-        for <linux-spi@vger.kernel.org>; Mon, 07 Mar 2022 01:22:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=TzLMm8d5/5RhTE3DYDsmUp6D8X8Ydwg5/r6Fi48udB8=;
-        b=QgeD1W69kNSsFj6i3XGdU7D+hth1glWGCqT4P7Vm0wMB4RPSONn5E/Iwpqq7CO0qbt
-         BHq4ZYSB3XEASxpnrq2urNEdVYZt7F0JaYDdV+dZ5n11Ab055gxPWK2WTZgWKWadI4YJ
-         XsB3konkMeFniH33UHxIECdGh6R0l89qgA2pERzu8DTW+y5VOXwOqJayevO9VLfYrxWZ
-         utuhocvMHNQ17tIUFL/30DyxhZcJ/2tddzKOb5pvY9frgDRNZY8Bd2j3lncNsL94VvQv
-         Bt6ewUUVH/jDC1hx/Pl7O9mOimjwGYnLRnJQeB+VQZstjvfC7VnFr+42bsyu+I4vd0rp
-         QiPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=TzLMm8d5/5RhTE3DYDsmUp6D8X8Ydwg5/r6Fi48udB8=;
-        b=fpOENy5eYyikaY63gprIoQPkrYZCtJb63pxEmTQNlFPOSKW90eedoXtOpgZgJcXzJz
-         PKmRpkGjKpwbEblItLdFcHgYnIAdvB3LRya2kkjUcsyJMdf7FtPao1lUA7sB2NB5wbcr
-         YhBvuf/WGikRZzfSO2vPtNNBgej1PjIYoi65ArYB+378khC0TPm7M0h6R7SEWErvY3cW
-         Xd+2q7mc5O5EjP/C5g4ruo6UJASeGltMcjP9RV8dLFsnj2mLyaGTvWmyrfUHXnXO10FR
-         QNtQqG+H7b2FgYho8p4HejgHc2K4DRCJQW8pm+8F+cswE50dizawn1EiRtPN5Xm09qEm
-         Eu7Q==
-X-Gm-Message-State: AOAM530KXCzqP4wuucuzpL05/E7vQnZi/Yc6mMdvSyxOGDWFRQwe4skB
-        /iNRpD/1VI1DsxgeluCqjlq/wg==
-X-Google-Smtp-Source: ABdhPJz4EFu0SE80BY7+ikiCREJ1pMzmlDCfMLmycAfsArDTW2sXSNoBB0FYUyjw+lidQB23WvmTpg==
-X-Received: by 2002:adf:f150:0:b0:1f0:6925:722 with SMTP id y16-20020adff150000000b001f069250722mr7237824wro.465.1646644930760;
-        Mon, 07 Mar 2022 01:22:10 -0800 (PST)
-Received: from google.com (cpc155339-bagu17-2-0-cust87.1-3.cable.virginm.net. [86.27.177.88])
-        by smtp.gmail.com with ESMTPSA id u18-20020adfdd52000000b001f04e9f215fsm10449523wrm.53.2022.03.07.01.22.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Mar 2022 01:22:10 -0800 (PST)
-Date:   Mon, 7 Mar 2022 09:22:08 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Andi Shyti <andi@etezian.org>, Mark Brown <broonie@kernel.org>,
-        Sam Protsenko <semen.protsenko@linaro.org>,
-        Pratyush Yadav <p.yadav@ti.com>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org
-Subject: Re: [PATCH v6 3/4] mfd: dt-bindings: google,cros-ec: fix indentation
- in example
-Message-ID: <YiXOwFvDIvrB0t2E@google.com>
-References: <20220124082347.32747-1-krzysztof.kozlowski@canonical.com>
- <20220124082347.32747-4-krzysztof.kozlowski@canonical.com>
+        with ESMTP id S241931AbiCGLH6 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 7 Mar 2022 06:07:58 -0500
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B24DC7E4A;
+        Mon,  7 Mar 2022 02:29:17 -0800 (PST)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: kholk11)
+        with ESMTPSA id 084031F43910
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1646648933;
+        bh=ubDDcRsBY8hq/HNKN5ZLqctS0m6TTgeM8kkuJN+7rnc=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=ZdPjxL42/EtC95u2ilJLnDzPsXUhoYOFYNkaY7fGA/B2/0HBqe2Q1z753afQCHUAP
+         RkiN62wI3E8VgdttdBbUQ6nDVw07t6yXSTMpZFGsdwTUDz1y5yEHp9oFDzOfYQLhH/
+         G/04KIL5SQeoNqTIG6Ddpj0TxF2wB7tsaZ0TYvMso4tyMm+NXdd0AtNLvcuhaxc/5H
+         SP8YGbkghTj89WYp+Z4CA/k0k0rxHGj0cbZMrvdIYvmOlvia2jGA9iXmTenFI8hkzL
+         OUcLovkKNlEp6M8I4df66UKXFFyTJt3RNYXoBoI3wWMahuBHvZemGw7Z0iZ8TohTyM
+         MvE+xknEW/DxA==
+Message-ID: <bb705a6b-282d-5f9e-9231-036329cca5ef@collabora.com>
+Date:   Mon, 7 Mar 2022 11:28:50 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220124082347.32747-4-krzysztof.kozlowski@canonical.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.1
+Subject: Re: [PATCH V3 1/7] spi: mediatek: support tick_delay without
+ enhance_timing
+Content-Language: en-US
+To:     Leilk Liu <leilk.liu@mediatek.com>, Mark Brown <broonie@kernel.org>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        linux-mediatek@lists.infradead.org
+References: <20220307065230.12655-1-leilk.liu@mediatek.com>
+ <20220307065230.12655-2-leilk.liu@mediatek.com>
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+In-Reply-To: <20220307065230.12655-2-leilk.liu@mediatek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Mon, 24 Jan 2022, Krzysztof Kozlowski wrote:
-
-> Correct level of indentation in the example.
+Il 07/03/22 07:52, Leilk Liu ha scritto:
+> this patch support tick_delay bit[31:30] without enhance_timing feature.
 > 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+> Fixes: f84d866ab43f("spi: mediatek: add tick_delay support")
+> Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
+
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+
 > ---
->  Documentation/devicetree/bindings/mfd/google,cros-ec.yaml | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-
-Applied, thanks.
-
--- 
-Lee Jones [李琼斯]
-Principal Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+>   drivers/spi/spi-mt65xx.c | 15 ++++++++++++---
+>   1 file changed, 12 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
+> index bbfeb8046c17..3fd89548ec3c 100644
+> --- a/drivers/spi/spi-mt65xx.c
+> +++ b/drivers/spi/spi-mt65xx.c
+> @@ -43,8 +43,11 @@
+>   #define SPI_CFG1_PACKET_LOOP_OFFSET       8
+>   #define SPI_CFG1_PACKET_LENGTH_OFFSET     16
+>   #define SPI_CFG1_GET_TICK_DLY_OFFSET      29
+> +#define SPI_CFG1_GET_TICK_DLY_OFFSET_V1   30
+>   
+>   #define SPI_CFG1_GET_TICK_DLY_MASK        0xe0000000
+> +#define SPI_CFG1_GET_TICK_DLY_MASK_V1     0xc0000000
+> +
+>   #define SPI_CFG1_CS_IDLE_MASK             0xff
+>   #define SPI_CFG1_PACKET_LOOP_MASK         0xff00
+>   #define SPI_CFG1_PACKET_LENGTH_MASK       0x3ff0000
+> @@ -346,9 +349,15 @@ static int mtk_spi_prepare_message(struct spi_master *master,
+>   
+>   	/* tick delay */
+>   	reg_val = readl(mdata->base + SPI_CFG1_REG);
+> -	reg_val &= ~SPI_CFG1_GET_TICK_DLY_MASK;
+> -	reg_val |= ((chip_config->tick_delay & 0x7)
+> -		<< SPI_CFG1_GET_TICK_DLY_OFFSET);
+> +	if (mdata->dev_comp->enhance_timing) {
+> +		reg_val &= ~SPI_CFG1_GET_TICK_DLY_MASK;
+> +		reg_val |= ((chip_config->tick_delay & 0x7)
+> +			    << SPI_CFG1_GET_TICK_DLY_OFFSET);
+> +	} else {
+> +		reg_val &= ~SPI_CFG1_GET_TICK_DLY_MASK_V1;
+> +		reg_val |= ((chip_config->tick_delay & 0x3)
+> +			    << SPI_CFG1_GET_TICK_DLY_OFFSET_V1);
+> +	}
+>   	writel(reg_val, mdata->base + SPI_CFG1_REG);
+>   
+>   	/* set hw cs timing */

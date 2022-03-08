@@ -2,48 +2,48 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 325A5C433EF
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7A482C35276
 	for <linux-spi@archiver.kernel.org>; Tue,  8 Mar 2022 17:23:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349032AbiCHRYj (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S1349040AbiCHRYj (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Tue, 8 Mar 2022 12:24:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54626 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349472AbiCHRXL (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 8 Mar 2022 12:23:11 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 836F855BFA;
-        Tue,  8 Mar 2022 09:21:36 -0800 (PST)
+        with ESMTP id S1349538AbiCHRXS (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 8 Mar 2022 12:23:18 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B981554F9D;
+        Tue,  8 Mar 2022 09:21:46 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D891E610A5;
-        Tue,  8 Mar 2022 17:21:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2BF7C36AE2;
-        Tue,  8 Mar 2022 17:21:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3CB8D60C59;
+        Tue,  8 Mar 2022 17:21:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D549C340EB;
+        Tue,  8 Mar 2022 17:21:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1646760094;
-        bh=KlRfzov3KRSL1cuBCuyq8zTY4jx270V+a07sLCTkRkM=;
+        s=k20201202; t=1646760084;
+        bh=FNYz6OULLa+Rcya9s7lAeIE0QFHR5q6J+q4WCzlyLFA=;
         h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=ZZHpB33iVP+vk43vDhAvl6lvBs1UVmfXfOsgzP8ejineh60wdgV3YHsvt2b6IRABA
-         2pxTwdG9hCyrUKHG1JerAnQhgHJlvUnxJuUkIYhveHjlaMwhnhUu2+VBZgp8mqBKzF
-         rVijxpy7/dzwpVtFDcI7mqRWi9BpA1aJeeTHG3cAQVXb7x9wNCvDTTink9umBWFxlf
-         CYmIEeHxmXDJtblCveDZaYJd3a1j94+nm4u2Ma0d3N6WPndXNBOafyoRQk1qO3JnGh
-         mnQaHzY+mO54CL6kGG9hzKWpgc/O+4JoWsgI58+3vXDs43SKOQI7ynPH88zIYfRymd
-         4EEtwqWti4GZg==
+        b=QX6PQ2XVQSPb3kMLPTkuFOKZqg88AXJMs8KXFGb2tBi9gE7aUaYbz1op+QwwLECZQ
+         2K0bf6WgVl/gISygMJr6/pCHHreoWii9c2LmPQ9/APYybufYhRobO45qynY0YUkyvI
+         xYGE66y8fe2z9XYOhxsI/iPYleNs3i1J6Iim3GSw8xBK6yFJW0Lpa3I9oBYniYtcJJ
+         VHldwxSF6Hb/GzJMghTAYDhongf73oLjfgS7VBSdWSQuIX1qyuhKFzgBZoHwZfoKXQ
+         4CtDg4EMUftwiNbgKVC3OJvNlqR6wzNyodemWrejlUTyKLrtnJp1gCrv97J8aDjcjA
+         GteKq5C27DSQw==
 From:   Mark Brown <broonie@kernel.org>
-To:     thierry.reding@gmail.com,
-        Krishna Yarlagadda <kyarlagadda@nvidia.com>,
-        linux-tegra@vger.kernel.org, linux-spi@vger.kernel.org,
-        ashishsingha@nvidia.com, jonathanh@nvidia.com
-Cc:     ldewangan@nvidia.com, robh+dt@kernel.org, skomatineni@nvidia.com,
-        p.zabel@pengutronix.de, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org
-In-Reply-To: <20220307165519.38380-1-kyarlagadda@nvidia.com>
-References: <20220307165519.38380-1-kyarlagadda@nvidia.com>
-Subject: Re: (subset) [PATCH v3 0/3] Tegra QUAD SPI combined sequence mode
-Message-Id: <164676009171.54618.4072327060855634430.b4-ty@kernel.org>
-Date:   Tue, 08 Mar 2022 17:21:31 +0000
+To:     Biju Das <biju.das.jz@bp.renesas.com>
+Cc:     linux-spi@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Biju Das <biju.das@bp.renesas.com>,
+        linux-renesas-soc@vger.kernel.org,
+        Chris Paterson <Chris.Paterson2@renesas.com>,
+        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>
+In-Reply-To: <20220307180116.8388-1-biju.das.jz@bp.renesas.com>
+References: <20220307180116.8388-1-biju.das.jz@bp.renesas.com>
+Subject: Re: [PATCH] spi: Fix invalid sgs value
+Message-Id: <164676008296.54593.5754827707694046382.b4-ty@kernel.org>
+Date:   Tue, 08 Mar 2022 17:21:22 +0000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -51,33 +51,25 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Mon, 7 Mar 2022 22:25:16 +0530, Krishna Yarlagadda wrote:
-> Add ACPI support for Tegra210 QUAD SPI driver
-> Support new Tegra194 feature, combined sequence mode.
-> Add Tegra234 bindings.
+On Mon, 7 Mar 2022 18:01:16 +0000, Biju Das wrote:
+> max_seg_size is unsigned int and it can have a value up to 2^32
+> (for eg:-RZ_DMAC driver sets dma_set_max_seg_size as U32_MAX)
+> When this value is used in min_t() as an integer type, it becomes
+> -1 and the value of sgs becomes 0.
 > 
-> v3 changes:
-> - document runtime pm disabled in ACPI
-> - clear cmb register for non combined sequence
-> - fixes for errors reported by kernel test robot
-> - skip approved patches
-> v2 changes:
-> - use combined sequence mode as default
-> - remove property to switch transfer modes
-> - fix compilation warnings
+> Fix this issue by replacing the 'int' data type with 'unsigned int'
+> in min_t().
 > 
 > [...]
 
 Applied to
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-linus
 
 Thanks!
 
-[1/3] spi: tegra210-quad: add acpi support
-      commit: 75a1b44a54bd97500e524cf42e8c81cc632672b3
-[2/3] spi: tegra210-quad: combined sequence mode
-      commit: 1b8342cc4a387933780c50f0cf51c94455be7d11
+[1/1] spi: Fix invalid sgs value
+      commit: 1a4e53d2fc4f68aa654ad96d13ad042e1a8e8a7d
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

@@ -2,160 +2,58 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 33383C433FE
-	for <linux-spi@archiver.kernel.org>; Tue,  8 Mar 2022 12:12:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 47F17C433F5
+	for <linux-spi@archiver.kernel.org>; Tue,  8 Mar 2022 12:56:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234183AbiCHMMz (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 8 Mar 2022 07:12:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51438 "EHLO
+        id S233421AbiCHM5e (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 8 Mar 2022 07:57:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346713AbiCHMMw (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 8 Mar 2022 07:12:52 -0500
-Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3283E3F309
-        for <linux-spi@vger.kernel.org>; Tue,  8 Mar 2022 04:11:55 -0800 (PST)
-Received: from epcas5p1.samsung.com (unknown [182.195.41.39])
-        by mailout4.samsung.com (KnoxPortal) with ESMTP id 20220308121153epoutp04b1265bbff3a3bf09df0abe408b0b4ec2~aZq6Okiz_0153101531epoutp04j
-        for <linux-spi@vger.kernel.org>; Tue,  8 Mar 2022 12:11:53 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20220308121153epoutp04b1265bbff3a3bf09df0abe408b0b4ec2~aZq6Okiz_0153101531epoutp04j
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1646741513;
-        bh=nbpUiPJb6DAB35cqz3m0Iso2I5r9whjfQKQ36UphvM4=;
-        h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
-        b=ODn8ESy4BhkAsgJkLxX5udXfbAbpRvkiadUQX0XPtd1qg1dyfgZ0wlmAan/nDc1Of
-         kQAiZD9B2iD2cyiUyqUJhBhzEGihj47540JHCuom7NJkuqjZTyswmtQ4Pd/5OTb80h
-         a9rCrXxEFdPIQJUuVCBifUDFsZxmcvdSWX75JnHQ=
-Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
-        epcas5p3.samsung.com (KnoxPortal) with ESMTP id
-        20220308121152epcas5p382b2493083563f7570bdf116c457fa2c~aZq5T9r6P2162121621epcas5p3p;
-        Tue,  8 Mar 2022 12:11:52 +0000 (GMT)
-Received: from epsmges5p1new.samsung.com (unknown [182.195.38.181]) by
-        epsnrtp4.localdomain (Postfix) with ESMTP id 4KCZ1v5gJpz4x9Q1; Tue,  8 Mar
-        2022 12:11:47 +0000 (GMT)
-Received: from epcas5p4.samsung.com ( [182.195.41.42]) by
-        epsmges5p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-        A9.92.06423.1F747226; Tue,  8 Mar 2022 21:11:29 +0900 (KST)
-Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
-        epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
-        20220308121129epcas5p3d75125bb41b8a1dff64aaf3a5e39233c~aZqjuVJ-A1148011480epcas5p3y;
-        Tue,  8 Mar 2022 12:11:29 +0000 (GMT)
-Received: from epsmgms1p2.samsung.com (unknown [182.195.42.42]) by
-        epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20220308121129epsmtrp172f5ed8d3668975f9cfaf3c7bf8ac186~aZqjthJwS0976509765epsmtrp13;
-        Tue,  8 Mar 2022 12:11:29 +0000 (GMT)
-X-AuditID: b6c32a49-b13ff70000001917-64-622747f17b1d
-Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
-        epsmgms1p2.samsung.com (Symantec Messaging Gateway) with SMTP id
-        66.F0.03370.1F747226; Tue,  8 Mar 2022 21:11:29 +0900 (KST)
-Received: from alimakhtar03 (unknown [107.122.12.5]) by epsmtip1.samsung.com
-        (KnoxPortal) with ESMTPA id
-        20220308121127epsmtip1e9e971685fe88f2fbdad4bc95a12be13~aZqiCxuKO1793517935epsmtip1N;
-        Tue,  8 Mar 2022 12:11:27 +0000 (GMT)
-From:   "Alim Akhtar" <alim.akhtar@samsung.com>
-To:     "'Mark Brown'" <broonie@kernel.org>,
-        "'Lee Jones'" <lee.jones@linaro.org>
-Cc:     <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linus.walleij@linaro.org>, <robh+dt@kernel.org>,
-        <krzysztof.kozlowski@canonical.com>,
-        <linux-samsung-soc@vger.kernel.org>, <pankaj.dubey@samsung.com>,
-        <andi@etezian.org>, <linux-spi@vger.kernel.org>
-In-Reply-To: <YfABHDjdTgxytcUY@sirena.org.uk>
-Subject: RE: [PATCH v3 0/3] Add FSD SPI support
-Date:   Tue, 8 Mar 2022 17:41:26 +0530
-Message-ID: <00ec01d832e5$a44f7540$ecee5fc0$@samsung.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQJV3yAl5ku9A9ijKFdi1q5JHbSM/QF8HCEnAbm4M2OroF1WYA==
-Content-Language: en-us
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrDJsWRmVeSWpSXmKPExsWy7bCmlu5Hd/Ukg59zzSwW/3jOZDH14RM2
-        i/lHzrFabHz7g8ni/tejjBZT/ixnstj0+BqrxeVdc9gsZpzfx2TR+PEmu8WirV/YLVr3HmF3
-        4PGY1dDL5nF9ySdmj02rOtk87lzbw+axeUm9R9+WVYwenzfJBbBHZdtkpCampBYppOYl56dk
-        5qXbKnkHxzvHm5oZGOoaWlqYKynkJeam2iq5+AToumXmAB2qpFCWmFMKFApILC5W0rezKcov
-        LUlVyMgvLrFVSi1IySkwKdArTswtLs1L18tLLbEyNDAwMgUqTMjOWLJnM2vBYt6K9x9mMTYw
-        bubuYuTkkBAwkdh2+ykbiC0ksJtR4u8agy5GLiD7E6PEzT1/WSGcz4wSu/vOscB0HPuwmR0i
-        sYtR4vvsc1BVLxklzt37zwpSxSagK7FjcRvYXBEBf4mDuyeygBQxC+xkkti17QY7SIITqOj0
-        tgdgtrCAvsSKN5vBGlgEVCQ2dJ9gArF5BSwlTjTcY4OwBSVOznwCdgazgLzE9rdzmCFOUpD4
-        +XQZK8QyJ4mt755B1YhLvDx6BOxUCYEzHBIbDm5kg2hwkVi76RpUs7DEq+Nb2CFsKYmX/W1A
-        NgeQnS3Rs8sYIlwjsXTeMaj37SUOXJnDAlLCLKApsX6XPsQqPone30+YIDp5JTrahCCqVSWa
-        312F6pSWmNjdzQphe0hs6vvEPoFRcRaSx2YheWwWkgdmISxbwMiyilEytaA4Nz212LTAMC+1
-        HB7fyfm5mxjByVjLcwfj3Qcf9A4xMnEwHmKU4GBWEuG9f14lSYg3JbGyKrUoP76oNCe1+BCj
-        KTC0JzJLiSbnA/NBXkm8oYmlgYmZmZmJpbGZoZI47+n0DYlCAumJJanZqakFqUUwfUwcnFIN
-        TLMCTzgE+uWEBJdpM2o0WT4R33fKj33eD0GXkns1f89v6laIO2biXvr2zDffLT9O3Uq8ffOx
-        f/P6rSmbCuvvimkd1KjrOdLJc51lXm3UpYPfPPyUWxbHcD3cs9BwduYXc8vM/8kGybta2iW2
-        zmfexMZzxKlHYoJJcRlzxTTX5ulCv4pOcG3Uye2t4v6qlLVg56r4r6c2rPT8vuv9+2nnZyea
-        ab/cw34pYkNTnrCC7aygR00Jp2NOzoy12e9zlDvx48odH1vWSwv+fC+UH7h42tppLOu4l7pP
-        FONIb34/79WGP7s5F8fsUOhfeXrRH++Ncn4NAlf7VJi8I9deK/J0N5NNn7ekfXa8RmGUg7hj
-        oRJLcUaioRZzUXEiADlKaWlPBAAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrCIsWRmVeSWpSXmKPExsWy7bCSnO5Hd/Ukg/UPJCwW/3jOZDH14RM2
-        i/lHzrFabHz7g8ni/tejjBZT/ixnstj0+BqrxeVdc9gsZpzfx2TR+PEmu8WirV/YLVr3HmF3
-        4PGY1dDL5nF9ySdmj02rOtk87lzbw+axeUm9R9+WVYwenzfJBbBHcdmkpOZklqUW6dslcGUs
-        2bOZtWAxb8X7D7MYGxg3c3cxcnJICJhIHPuwmb2LkYtDSGAHo8S8bfvYIRLSEtc3ToCyhSVW
-        /nsOVfScUeL2/6NMIAk2AV2JHYvb2EBsEQF/ia//u1lBipgFDjNJ7GjbwgKSEBJYzyix6b8u
-        iM0J1HB62wOwqcIC+hIr3mwGa2YRUJHY0H0CbCivgKXEiYZ7bBC2oMTJmU+A5nAADdWTaNvI
-        CBJmFpCX2P52DjPEcQoSP58uY4W4wUli67tnLBA14hIvjx5hn8AoPAvJpFkIk2YhmTQLSccC
-        RpZVjJKpBcW56bnFhgVGeanlesWJucWleel6yfm5mxjBEamltYNxz6oPeocYmTgYDzFKcDAr
-        ifDeP6+SJMSbklhZlVqUH19UmpNafIhRmoNFSZz3QtfJeCGB9MSS1OzU1ILUIpgsEwenVAOT
-        P0uo0eKPXRL7JXds2dxRU3aosn/LGSOxgL1n7M5GMGX/2rBD8AV3a2Fz56vsmoX8t+R3qb+y
-        W7pi1gLHZV91jUWXs3hNVexcG8+lsCIj9Fezt9YEp/i4KyYreBaW/2/z+dfP+l6nNmPrHKnm
-        J5utFNm35M+ZPKmhSvqp4GZWS/7bdS49bTYbmibG8ds7cVw8MWXexOON05MLyr09bpUaHFky
-        X0GtOJSV0XY5n6Oz0o2vq5yl3z6f6LM3dWbWjGRp02LObZvvzyhV1t4svlLqVMnpqUvErBT/
-        V566XPjkjsdzpY5ZCTkqctPDXA6kbT2TeWdKT87J3O2xnPpud1bw7hd9MnF618qDzvsDvCYq
-        sRRnJBpqMRcVJwIAJYYXkjcDAAA=
-X-CMS-MailID: 20220308121129epcas5p3d75125bb41b8a1dff64aaf3a5e39233c
-X-Msg-Generator: CA
+        with ESMTP id S1346965AbiCHM5c (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 8 Mar 2022 07:57:32 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81C7447AD3
+        for <linux-spi@vger.kernel.org>; Tue,  8 Mar 2022 04:56:36 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 24D6CB818B3
+        for <linux-spi@vger.kernel.org>; Tue,  8 Mar 2022 12:56:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C84AEC340EB;
+        Tue,  8 Mar 2022 12:56:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1646744193;
+        bh=ZWcERKwtFng7Dj9BcSwW42OljclOsv7AbvXK75Dr3gE=;
+        h=Subject:From:Date:To:From;
+        b=X6lpjOojpqv5Y99NhXi6BvAXZy249YSsWFcUvz0aSLzMCyMUSGcR10H6bilCjaWHM
+         nKOp5oaeFPsFtRlF1+VqQJLHNMZyxbHtUtovBcVtyyDyLQxNMJ0t/eFyBeriOqsmXM
+         ycn9HWHrR7HcrufKEdoBltJfMdLbOSVqNQXalpUTSyX6TvJs1o+iEA4F9IW2NFyKqk
+         a2jbn7P3xX6f6qRln9yS0OwJ5+jUtcn2fgf1JXT9w55aBl63ue/mvKWK/Po7HiiOdm
+         1ONOg2mtbpNpfj7Y1yIG83jjxYG5zCkPuirfJTow3Zj8uTad1c0p0Qzd1XEgHX1klR
+         L+6Fk9AU9pJ3g==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id AE383EAC081;
+        Tue,  8 Mar 2022 12:56:33 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
-CMS-TYPE: 105P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20220125032811epcas5p3ef7b2f4e4906c1da8ccb4a0b3ed9a591
-References: <CGME20220125032811epcas5p3ef7b2f4e4906c1da8ccb4a0b3ed9a591@epcas5p3.samsung.com>
-        <20220125031604.76009-1-alim.akhtar@samsung.com>
-        <YfABHDjdTgxytcUY@sirena.org.uk>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <164674419370.16854.14747410248620050905.git-patchwork-housekeeping@kernel.org>
+Date:   Tue, 08 Mar 2022 12:56:33 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi Mark and Lee Jones
+Latest series: [v3] spi: dt-bindings: samsung: Add fsd spi compatible (2022-03-08T12:16:39)
+  Superseding: [v3] spi: dt-bindings: samsung: Add fsd spi compatible (2022-01-25T03:16:02):
+    [v3,1/3] spi: dt-bindings: samsung: Add fsd spi compatible
+    [v3,2/3] spi: s3c64xx: Add spi port configuration for Tesla FSD SoC
+    [v3,3/3] arm64: dts: fsd: Add SPI device nodes
 
->-----Original Message-----
->From: Mark Brown [mailto:broonie@kernel.org]
->Sent: Tuesday, January 25, 2022 7:25 PM
->To: Alim Akhtar <alim.akhtar@samsung.com>
->Cc: linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org;
->devicetree@vger.kernel.org; linus.walleij@linaro.org; robh+dt@kernel.org;
->krzysztof.kozlowski@canonical.com; linux-samsung-soc@vger.kernel.org;
->pankaj.dubey@samsung.com; andi@etezian.org; linux-spi@vger.kernel.org
->Subject: Re: [PATCH v3 0/3] Add FSD SPI support
->
->On Tue, Jan 25, 2022 at 08:46:01AM +0530, Alim Akhtar wrote:
->
->> Note: This series is depended on [1] patches which adds support of FSD
->> SoC and on Krzysztof's v6 [2] of spi schema changes
->>
->> [1]
->> https://protect2.fireeye.com/v1/url?k=43e76061-1c7c5970-43e6eb2e-0cc47
->> a31cdbc-d2d9ba5a4358198f&q=1&e=9e61db9b-cfb7-4110-a13c-
->a1cb0d92a251&u=
->> https%3A%2F%2Flkml.org%2Flkml%2F2022%2F1%2F24%2F583
->> [2]
->> https://protect2.fireeye.com/v1/url?k=e2ddfc2b-bd46c53a-e2dc7764-0cc47
->> a31cdbc-0d6dbb90b0110bab&q=1&e=9e61db9b-cfb7-4110-a13c-
->a1cb0d92a251&u=
->> https%3A%2F%2Flkml.org%2Flkml%2F2022%2F1%2F24%2F120
->
->Please resend this when it can be applied, either wait until the
-dependencies
->are in place or rebase on top of current code.  In general only build time
->dependencies matter here, the SoC support being merged shouldn't be an
->issue one way or another.
 
-I re-send these patches (couple of them) as I see the dependencies has
-landed into MFD tree.
-Because of the immutable branch between MFD, SPI and DT due to the current
-merge window, I assume this will go via MFD tree. Let me know if any
-concerns. 
-Thanks!
-
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

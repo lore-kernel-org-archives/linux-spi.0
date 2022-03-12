@@ -2,60 +2,60 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 08F72C433F5
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 27F5FC433FE
 	for <linux-spi@archiver.kernel.org>; Sat, 12 Mar 2022 13:30:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231961AbiCLNar (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sat, 12 Mar 2022 08:30:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45012 "EHLO
+        id S231954AbiCLNbL (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sat, 12 Mar 2022 08:31:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231907AbiCLNaq (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sat, 12 Mar 2022 08:30:46 -0500
+        with ESMTP id S231881AbiCLNar (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sat, 12 Mar 2022 08:30:47 -0500
 Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBE0E69CD2
-        for <linux-spi@vger.kernel.org>; Sat, 12 Mar 2022 05:29:30 -0800 (PST)
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com [209.85.208.69])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 909D8192E08
+        for <linux-spi@vger.kernel.org>; Sat, 12 Mar 2022 05:29:35 -0800 (PST)
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com [209.85.128.72])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 630B83F312
-        for <linux-spi@vger.kernel.org>; Sat, 12 Mar 2022 13:29:29 +0000 (UTC)
+        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 64D433FFDE
+        for <linux-spi@vger.kernel.org>; Sat, 12 Mar 2022 13:29:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1647091769;
-        bh=LvGhGHRX+cWouXlMRKBzVPzfChdflKFXN6IyahVuGew=;
+        s=20210705; t=1647091774;
+        bh=7mUFbCJbIndj6M7s/RjbSIBZAkFNvJ9seQGSdX0sCHc=;
         h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
          MIME-Version;
-        b=nhMiXw8yDZecC2QVxbNEFRRj0bFBQsVLJOtPuTSQ9rbs621U37TAz/TvQ4EH81STi
-         C0r7y1KfYbSfw1UOyABf2zb6excAvV0pFrdZZRfkiL4KaE2yiHoQkemX9bOuumhhRT
-         c5l5kFnZxymiyQ6EdH0A6IIH+BNyW+JgXb0MrnaleqnCxVF4hFDWScE+umPvFxlpI0
-         w7xtriWlk6YCkUUQ7QLtxpssPGgYhRmwLUCG2eCWFgESPxU+dL0DJFRsebm4knOytX
-         4rtTXcJp6ubkoPY1+2dqCzWOy9hkIoW1vq/V4d4S6Aw++wzHsFCeU4p1YN1XY3d6Yv
-         ZD5Ro+ukl4GrQ==
-Received: by mail-ed1-f69.google.com with SMTP id l14-20020a056402344e00b0041593c729adso6159537edc.18
-        for <linux-spi@vger.kernel.org>; Sat, 12 Mar 2022 05:29:29 -0800 (PST)
+        b=Yl3Zh2WqL8waWdtZEaASo8bLBSaAz+R/xuO+vIR41Puv6PvH9TWdeiPdeSkmoTsCy
+         oBMz76NXgNswOZKuIlgV+43Rz+rcO+XkbPuG2e4V7964Tb+KZJjg/kEZ2QpIAr27gE
+         wwz/THRE4kG+PvDmeKiTNYc/yhl8EWAr2Jn/SATaK8CBQBEOj6M0R7wKYgL1IFoDjE
+         AZf7E5puEqvTYIHV5Y9O4iW3bSMLbN5H9vZ7KDPM+WDtFpNvxR2cvo9JFoRPJZCrY8
+         wl1KkPWBRC3RXxxpgD0J18YTnQhdsXd23GDwEezVHfKLwccIzYaKvkomY3gypRgx/L
+         4BwjWb7parcug==
+Received: by mail-wm1-f72.google.com with SMTP id v125-20020a1cac83000000b0037e3d70e7e1so6910528wme.1
+        for <linux-spi@vger.kernel.org>; Sat, 12 Mar 2022 05:29:34 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=LvGhGHRX+cWouXlMRKBzVPzfChdflKFXN6IyahVuGew=;
-        b=6oE56MIB7pW9kjTc41K162iUxA+/T2l+FHQa3JkpxfPJSCJ/yvUJHdHShl24Sud/8Y
-         YDUylwpWjadXfXcWPyShOjx8OBsjyRM2U5ZYLz5sIS4CN3tFWNLu274kqvqZZvHnUPuS
-         thtt2u9z/7f60qsTgDHOo5Eu5XSazMUtkLuTd3+530IvlsLfV1zCwS7jG9svuVh7kGRl
-         9vvYdGRduWxL4U+DHNyyIFzsKEaGosoJPeWwOpQ6zUbxEALLhLTHCyu4I3XwbOI1H9j2
-         ShYLA6LH30dXtZcAY/FxDROvarJ+okTVDemFwtRM9eOeIXktUtFGSeNh7EYWvQw0lCUL
-         oxww==
-X-Gm-Message-State: AOAM532nPo6WqPRGZ1u3jeu13o8f3e2bEfsdrfMPQegPy0TxY6qgXEd7
-        m77zbPnCteEoxHEVV4lF9ouABqB+wrZqS60MobgJGBCVIOH/hDxIbSCDvh64wrLtys7Fxju80DZ
-        srRZIq/Tuux+NXHgvXKom+x/UTKX7aI1Kd048TA==
-X-Received: by 2002:adf:c444:0:b0:203:9078:47a7 with SMTP id a4-20020adfc444000000b00203907847a7mr8545405wrg.355.1647091758533;
-        Sat, 12 Mar 2022 05:29:18 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJxcbUuA5Azax9SMwrH1Yx4BInTaqxjL2pAuKiWGJSR5gaJ62UjEiFqy7nmiSZn+2WWM/iG5SA==
-X-Received: by 2002:adf:c444:0:b0:203:9078:47a7 with SMTP id a4-20020adfc444000000b00203907847a7mr8545367wrg.355.1647091758331;
-        Sat, 12 Mar 2022 05:29:18 -0800 (PST)
+        bh=7mUFbCJbIndj6M7s/RjbSIBZAkFNvJ9seQGSdX0sCHc=;
+        b=o+FD1COpvtg18bCf3qAAgyf71aSEF2q03YmcpNfwZ5Ejch2wR9F0r2F7g4UvjSGsdZ
+         eM4JipbnyjULRbBNjwvowdzLX8yU+EPn5l8zfEnaGdZvK4BLS3CN8ePEaYVKwNxJKMlz
+         KaW6+9rabVRNBxwY6+WSmemMgJt+8tcE5mTsxy6P3h5IM7ANAba00yLS8nrYnbGpRTPK
+         r3lcrf/8Ahj7KdFiWhpEmdmuIZe6l4PAAGNL0KlyJywtMTYWvm2Es3kwEa1AYRlfPRGy
+         O5bXzvqDXywkiVDiGZxV/8oTSYHR2NKsEZw4AotlaiwrgSREd/I9kI6POymHsiB45GDk
+         BR1A==
+X-Gm-Message-State: AOAM531Txtv7ljgiS5EQJ9hwPfg+Rt3zrj+uq/SXhjeBbYClCOPNYdQt
+        k8SkgqHBdSxHlPcnGZi+SNnmZAFCrre66fsJ3BFAsn/Cj6DPdYJHg1ZldZm7s1FJ9qdiY7fW6EA
+        lliBnXw8HUCArZqg/sEig6LzEWo49C0HBGW9/uw==
+X-Received: by 2002:a5d:5512:0:b0:1ef:5f08:29fb with SMTP id b18-20020a5d5512000000b001ef5f0829fbmr10682421wrv.653.1647091762100;
+        Sat, 12 Mar 2022 05:29:22 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJwL9N8cHHsfR6QUZ51LIW64l7WzEaKnb3KtvzXdONbhu6n0rj400RLdEGB8nEbZlW8twybECA==
+X-Received: by 2002:a5d:5512:0:b0:1ef:5f08:29fb with SMTP id b18-20020a5d5512000000b001ef5f0829fbmr10682372wrv.653.1647091761844;
+        Sat, 12 Mar 2022 05:29:21 -0800 (PST)
 Received: from localhost.localdomain (xdsl-188-155-174-239.adslplus.ch. [188.155.174.239])
-        by smtp.gmail.com with ESMTPSA id p22-20020a1c5456000000b00389e7e62800sm5751550wmi.8.2022.03.12.05.29.16
+        by smtp.gmail.com with ESMTPSA id p22-20020a1c5456000000b00389e7e62800sm5751550wmi.8.2022.03.12.05.29.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 12 Mar 2022 05:29:17 -0800 (PST)
+        Sat, 12 Mar 2022 05:29:21 -0800 (PST)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>
@@ -92,9 +92,9 @@ Cc:     Stuart Yoder <stuyoder@gmail.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Subject: [PATCH v4 03/11] fsl-mc: Use driver_set_override() instead of open-coding
-Date:   Sat, 12 Mar 2022 14:28:48 +0100
-Message-Id: <20220312132856.65163-4-krzysztof.kozlowski@canonical.com>
+Subject: [PATCH v4 05/11] PCI: Use driver_set_override() instead of open-coding
+Date:   Sat, 12 Mar 2022 14:28:50 +0100
+Message-Id: <20220312132856.65163-6-krzysztof.kozlowski@canonical.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20220312132856.65163-1-krzysztof.kozlowski@canonical.com>
 References: <20220312132856.65163-1-krzysztof.kozlowski@canonical.com>
@@ -109,26 +109,23 @@ Make the driver_override field const char, because it is not modified by
 the core and it matches other subsystems.
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 ---
- drivers/bus/fsl-mc/fsl-mc-bus.c | 25 ++++---------------------
- include/linux/fsl/mc.h          |  6 ++++--
- 2 files changed, 8 insertions(+), 23 deletions(-)
+ drivers/pci/pci-sysfs.c | 28 ++++------------------------
+ include/linux/pci.h     |  6 +++++-
+ 2 files changed, 9 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
-index 8fd4a356a86e..ba01c7f4de92 100644
---- a/drivers/bus/fsl-mc/fsl-mc-bus.c
-+++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
-@@ -166,31 +166,14 @@ static ssize_t driver_override_store(struct device *dev,
+diff --git a/drivers/pci/pci-sysfs.c b/drivers/pci/pci-sysfs.c
+index 602f0fb0b007..5c42965c32c2 100644
+--- a/drivers/pci/pci-sysfs.c
++++ b/drivers/pci/pci-sysfs.c
+@@ -567,31 +567,11 @@ static ssize_t driver_override_store(struct device *dev,
  				     const char *buf, size_t count)
  {
- 	struct fsl_mc_device *mc_dev = to_fsl_mc_device(dev);
--	char *driver_override, *old = mc_dev->driver_override;
--	char *cp;
-+	int ret;
- 
- 	if (WARN_ON(dev->bus != &fsl_mc_bus_type))
- 		return -EINVAL;
- 
+ 	struct pci_dev *pdev = to_pci_dev(dev);
+-	char *driver_override, *old, *cp;
+-
+-	/* We need to keep extra room for a newline */
 -	if (count >= (PAGE_SIZE - 1))
 -		return -EINVAL;
 -
@@ -140,44 +137,41 @@ index 8fd4a356a86e..ba01c7f4de92 100644
 -	if (cp)
 -		*cp = '\0';
 -
+-	device_lock(dev);
+-	old = pdev->driver_override;
 -	if (strlen(driver_override)) {
--		mc_dev->driver_override = driver_override;
+-		pdev->driver_override = driver_override;
 -	} else {
 -		kfree(driver_override);
--		mc_dev->driver_override = NULL;
+-		pdev->driver_override = NULL;
 -	}
--
+-	device_unlock(dev);
++	int ret;
+ 
 -	kfree(old);
-+	ret = driver_set_override(dev, &mc_dev->driver_override, buf, count);
++	ret = driver_set_override(dev, &pdev->driver_override, buf, count);
 +	if (ret)
 +		return ret;
  
  	return count;
  }
-diff --git a/include/linux/fsl/mc.h b/include/linux/fsl/mc.h
-index 7b6c42bfb660..7a87ab9eba99 100644
---- a/include/linux/fsl/mc.h
-+++ b/include/linux/fsl/mc.h
-@@ -170,7 +170,9 @@ struct fsl_mc_obj_desc {
-  * @regions: pointer to array of MMIO region entries
-  * @irqs: pointer to array of pointers to interrupts allocated to this device
-  * @resource: generic resource associated with this MC object device, if any.
-- * @driver_override: driver name to force a match
-+ * @driver_override: driver name to force a match; do not set directly,
-+ *                   because core frees it; use driver_set_override() to
-+ *                   set or clear it.
-  *
-  * Generic device object for MC object devices that are "attached" to a
-  * MC bus.
-@@ -204,7 +206,7 @@ struct fsl_mc_device {
- 	struct fsl_mc_device_irq **irqs;
- 	struct fsl_mc_resource *resource;
- 	struct device_link *consumer_link;
--	char   *driver_override;
-+	const char *driver_override;
- };
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 60d423d8f0c4..415491fb85f4 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -516,7 +516,11 @@ struct pci_dev {
+ 	u16		acs_cap;	/* ACS Capability offset */
+ 	phys_addr_t	rom;		/* Physical address if not from BAR */
+ 	size_t		romlen;		/* Length if not from BAR */
+-	char		*driver_override; /* Driver name to force a match */
++	/*
++	 * Driver name to force a match.  Do not set directly, because core
++	 * frees it.  Use driver_set_override() to set or clear it.
++	 */
++	const char	*driver_override;
  
- #define to_fsl_mc_device(_dev) \
+ 	unsigned long	priv_flags;	/* Private flags for the PCI driver */
+ 
 -- 
 2.32.0
 

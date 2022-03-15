@@ -2,99 +2,98 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4AECEC433F5
-	for <linux-spi@archiver.kernel.org>; Tue, 15 Mar 2022 02:31:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7A2A8C433FE
+	for <linux-spi@archiver.kernel.org>; Tue, 15 Mar 2022 03:24:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344470AbiCOCcz (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 14 Mar 2022 22:32:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44884 "EHLO
+        id S1344536AbiCODZd (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 14 Mar 2022 23:25:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344497AbiCOCcx (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 14 Mar 2022 22:32:53 -0400
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74B9D473A7;
-        Mon, 14 Mar 2022 19:31:43 -0700 (PDT)
-Received: by mail-pl1-x62f.google.com with SMTP id u2so144867ple.10;
-        Mon, 14 Mar 2022 19:31:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=NsGzSUuRAUEHH/9SM8pnSMjXSu1YX9VwAzHp5uJO3Bo=;
-        b=SG5515+bdjCSQH5TVjdvzA0SK6Uio2R/TvBkAU2wCBacAYVukzHSTcac/Rf3MlRazC
-         PwTYCKE02yWjMCAQxUAdmNKlzZe2z8zy07nyYoVzXEw7Y1OVRoePD7V9lF7VNNahUv3L
-         B5m4SB4SvfZacPiMXdsNjUD0OBXHmgXCB5Dsana21MIN/2VB5O9M7J61lYqlm/IlPtTQ
-         PZOQUFLuOvDQCv0lJ7+5G175b6NUweNXRyIoJ/TkKyR63lQPMxgK7tZNRt1SUTTocPv7
-         SXl9hjC72Q1xBKXUs7M1clgyEMNUgTGjX24rIfYKrOGt7q9sDpo/7IR2RopvhwHXpIaM
-         bNaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=NsGzSUuRAUEHH/9SM8pnSMjXSu1YX9VwAzHp5uJO3Bo=;
-        b=wMNcOjFzgCKqWTzh4g42S9OWHplxhEiioqkByLFqP2AqNmjZHqU4R28K1oO4WSZeBD
-         MdJUnIIGip718hL4sdyQR2zprRsXrn5sKJJif/QHE6ETqPgr6D21Jl37QX+kSOJ2bjdw
-         9+iHz74woDZAx6pwjTmrsckCI0vXmUpabIUYZzhjb3L3eYm6zhcDXi5chWdvKN7ePuUS
-         Df+4kCKmPwJh6QlCEMyjnFaPZ8yZAweEQL2qeimCkkaN6GUU9g1rlegE6Z2sVHOU0JMQ
-         FOjAg4qfbqfNyZMhNTIHOcIOv4QkqLNxBJQYmfzjSbeTrigX/EyXYrJ638UFFh1hZW65
-         h25A==
-X-Gm-Message-State: AOAM532H681xlzJM5FqXXCKgMU4sLNB65cM3MN4Ibj/VAxBpD+KQoz86
-        jrSRU7ds9BbpdV7O24e0DRA=
-X-Google-Smtp-Source: ABdhPJx3e0thfMZRyXjYf49ySSC0Jr5740y5Bhz/nQTIW5Em1or5HO+v6U26gDMredBMgOeFWZSOrg==
-X-Received: by 2002:a17:90a:5ae4:b0:1bf:9c61:6973 with SMTP id n91-20020a17090a5ae400b001bf9c616973mr2149929pji.73.1647311503033;
-        Mon, 14 Mar 2022 19:31:43 -0700 (PDT)
-Received: from localhost.localdomain ([193.203.214.57])
-        by smtp.gmail.com with ESMTPSA id q2-20020a056a00150200b004f8d80ced3csm2050220pfu.40.2022.03.14.19.31.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Mar 2022 19:31:42 -0700 (PDT)
-From:   cgel.zte@gmail.com
-X-Google-Original-From: chi.minghao@zte.com.cn
-To:     broonie@kernel.org
-Cc:     ldewangan@nvidia.com, thierry.reding@gmail.com,
-        jonathanh@nvidia.com, linux-spi@vger.kernel.org,
-        linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Minghao Chi <chi.minghao@zte.com.cn>,
-        Zeal Robot <zealci@zte.com.cn>
-Subject: [PATCH] spi: tegra20: Use of_device_get_match_data()
-Date:   Tue, 15 Mar 2022 02:31:38 +0000
-Message-Id: <20220315023138.2118293-1-chi.minghao@zte.com.cn>
+        with ESMTP id S1344085AbiCODZc (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 14 Mar 2022 23:25:32 -0400
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A114235862;
+        Mon, 14 Mar 2022 20:24:20 -0700 (PDT)
+X-UUID: 0983651cd3a0403c98de546432227d00-20220315
+X-UUID: 0983651cd3a0403c98de546432227d00-20220315
+Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw01.mediatek.com
+        (envelope-from <leilk.liu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 505020276; Tue, 15 Mar 2022 11:24:16 +0800
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by
+ mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Tue, 15 Mar 2022 11:24:15 +0800
+Received: from localhost.localdomain (10.17.3.154) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Tue, 15 Mar 2022 11:24:14 +0800
+From:   Leilk Liu <leilk.liu@mediatek.com>
+To:     Mark Brown <broonie@kernel.org>
+CC:     Rob Herring <robh+dt@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-spi@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
+        Leilk Liu <leilk.liu@mediatek.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH V4 1/6] spi: mediatek: support tick_delay without enhance_timing
+Date:   Tue, 15 Mar 2022 11:24:06 +0800
+Message-ID: <20220315032411.2826-2-leilk.liu@mediatek.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220315032411.2826-1-leilk.liu@mediatek.com>
+References: <20220315032411.2826-1-leilk.liu@mediatek.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Minghao Chi <chi.minghao@zte.com.cn>
+this patch support tick_delay bit[31:30] without enhance_timing feature.
 
-Use of_device_get_match_data() to simplify the code.
-
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: Minghao Chi <chi.minghao@zte.com.cn>
+Fixes: f84d866ab43f("spi: mediatek: add tick_delay support")
+Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 ---
- drivers/spi/spi-tegra20-slink.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ drivers/spi/spi-mt65xx.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
-index 2a03739a0c60..80c3787deea9 100644
---- a/drivers/spi/spi-tegra20-slink.c
-+++ b/drivers/spi/spi-tegra20-slink.c
-@@ -1006,14 +1006,8 @@ static int tegra_slink_probe(struct platform_device *pdev)
- 	struct resource		*r;
- 	int ret, spi_irq;
- 	const struct tegra_slink_chip_data *cdata = NULL;
--	const struct of_device_id *match;
+diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
+index bbfeb8046c17..3fd89548ec3c 100644
+--- a/drivers/spi/spi-mt65xx.c
++++ b/drivers/spi/spi-mt65xx.c
+@@ -43,8 +43,11 @@
+ #define SPI_CFG1_PACKET_LOOP_OFFSET       8
+ #define SPI_CFG1_PACKET_LENGTH_OFFSET     16
+ #define SPI_CFG1_GET_TICK_DLY_OFFSET      29
++#define SPI_CFG1_GET_TICK_DLY_OFFSET_V1   30
  
--	match = of_match_device(tegra_slink_of_match, &pdev->dev);
--	if (!match) {
--		dev_err(&pdev->dev, "Error: No device match found\n");
--		return -ENODEV;
--	}
--	cdata = match->data;
-+	cdata = of_device_get_match_data(&pdev->dev);
+ #define SPI_CFG1_GET_TICK_DLY_MASK        0xe0000000
++#define SPI_CFG1_GET_TICK_DLY_MASK_V1     0xc0000000
++
+ #define SPI_CFG1_CS_IDLE_MASK             0xff
+ #define SPI_CFG1_PACKET_LOOP_MASK         0xff00
+ #define SPI_CFG1_PACKET_LENGTH_MASK       0x3ff0000
+@@ -346,9 +349,15 @@ static int mtk_spi_prepare_message(struct spi_master *master,
  
- 	master = spi_alloc_master(&pdev->dev, sizeof(*tspi));
- 	if (!master) {
+ 	/* tick delay */
+ 	reg_val = readl(mdata->base + SPI_CFG1_REG);
+-	reg_val &= ~SPI_CFG1_GET_TICK_DLY_MASK;
+-	reg_val |= ((chip_config->tick_delay & 0x7)
+-		<< SPI_CFG1_GET_TICK_DLY_OFFSET);
++	if (mdata->dev_comp->enhance_timing) {
++		reg_val &= ~SPI_CFG1_GET_TICK_DLY_MASK;
++		reg_val |= ((chip_config->tick_delay & 0x7)
++			    << SPI_CFG1_GET_TICK_DLY_OFFSET);
++	} else {
++		reg_val &= ~SPI_CFG1_GET_TICK_DLY_MASK_V1;
++		reg_val |= ((chip_config->tick_delay & 0x3)
++			    << SPI_CFG1_GET_TICK_DLY_OFFSET_V1);
++	}
+ 	writel(reg_val, mdata->base + SPI_CFG1_REG);
+ 
+ 	/* set hw cs timing */
 -- 
 2.25.1
 

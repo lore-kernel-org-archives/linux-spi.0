@@ -2,35 +2,35 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1B0DCC433F5
-	for <linux-spi@archiver.kernel.org>; Wed, 16 Mar 2022 14:18:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 074D7C433F5
+	for <linux-spi@archiver.kernel.org>; Wed, 16 Mar 2022 14:19:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235262AbiCPOTs (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 16 Mar 2022 10:19:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40652 "EHLO
+        id S1356806AbiCPOUX (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 16 Mar 2022 10:20:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1356552AbiCPORn (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 16 Mar 2022 10:17:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2E216928F;
-        Wed, 16 Mar 2022 07:16:28 -0700 (PDT)
+        with ESMTP id S1356728AbiCPOUR (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 16 Mar 2022 10:20:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C21F71EEC8;
+        Wed, 16 Mar 2022 07:18:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8A6C8612F0;
-        Wed, 16 Mar 2022 14:16:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04988C340E9;
-        Wed, 16 Mar 2022 14:16:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D9ADD61387;
+        Wed, 16 Mar 2022 14:18:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9281C340EC;
+        Wed, 16 Mar 2022 14:18:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1647440188;
-        bh=QLUbeQL0nE8++80CEN0No5WFiksOD40PoaaxYQ/2MMM=;
+        s=k20201202; t=1647440291;
+        bh=cVDdsbpYFuHyz0xlac1F0bWymJbKHPQtOUNFav6KMT0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eo9q1+bNLwtkr2Z+MueXRdKVlY9odCDexEBRRJdGebaqhDG20mX9grdgc2lfSFVqq
-         7MC77f4wgTEk3QMnyD0hD3LNdUSYF2KfXCxG84SOeQYZ0eYKSnCLSwVia5UdhzCL5D
-         u4AFdzy76JN7GlcztjftPWDHPwtjpjLNksR5wkYn2p3LH9VdWujjfYx2u7we40Ffuw
-         nmMk5CaVE1KeorCeYZ4tuaJMRR6su+aoLg3Cl4A6lXAb00/m0VEPSmPg2apkmUlmk0
-         YNcUBFu1VuaNxPs7J3hhQ5+vi01iHjgFoTKgWGqEUbeizYaQTyzxiiaavaWt2duMpc
-         Wqn90LeAuYybA==
+        b=AnoHw7jvHtBqxfU0Lq/J4k7YHfRiIPvoJc/RAK9oRkLSK1mAhqIPkatXl4hXOObtZ
+         1FNRYIv2Kx3cD4kHV/MYIEN+wqWuYVVP0XtI22PDfXUhGeHjBgsEwzPeoS3ac3gduO
+         +FBhMSlYGjA4c4457qEEVeM0ozrnRaSJwjb277/yBUNFeB7ISdt4L1tQtuLGDnAkbM
+         JFx2SsAzUlhJU9vw2NaXEZGTjuaTllXD8mZ/gywNyEq6IDnsr4LJks4kzAc7014o5I
+         6JUV0BTIF1WWeU9ymY0+XVZw5IMk2zyG90wkqJyRuKJ4xC5geqp+FWWONvKUw4UFz5
+         ECmDHvrdBIXiw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
@@ -38,12 +38,12 @@ Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
         Geert Uytterhoeven <geert+renesas@glider.be>,
         Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 12/13] spi: Fix invalid sgs value
-Date:   Wed, 16 Mar 2022 10:15:12 -0400
-Message-Id: <20220316141513.247965-12-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 6/7] spi: Fix invalid sgs value
+Date:   Wed, 16 Mar 2022 10:17:37 -0400
+Message-Id: <20220316141738.248513-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220316141513.247965-1-sashal@kernel.org>
-References: <20220316141513.247965-1-sashal@kernel.org>
+In-Reply-To: <20220316141738.248513-1-sashal@kernel.org>
+References: <20220316141738.248513-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -75,10 +75,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index a42b9e8521ce..c7c8d13b2f83 100644
+index ac05c9c86488..837fa947dec7 100644
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -942,10 +942,10 @@ int spi_map_buf(struct spi_controller *ctlr, struct device *dev,
+@@ -844,10 +844,10 @@ int spi_map_buf(struct spi_controller *ctlr, struct device *dev,
  	int i, ret;
  
  	if (vmalloced_buf || kmap_buf) {

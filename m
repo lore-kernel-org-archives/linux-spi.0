@@ -2,290 +2,97 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D2CDC433EF
-	for <linux-spi@archiver.kernel.org>; Thu, 17 Mar 2022 09:14:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D6BA3C433F5
+	for <linux-spi@archiver.kernel.org>; Thu, 17 Mar 2022 09:19:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229938AbiCQJQH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 17 Mar 2022 05:16:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36638 "EHLO
+        id S230515AbiCQJUu (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 17 Mar 2022 05:20:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229666AbiCQJQH (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 17 Mar 2022 05:16:07 -0400
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7C10F65D6;
-        Thu, 17 Mar 2022 02:14:46 -0700 (PDT)
-X-UUID: 6d811081027345b2a724fe939a06c0be-20220317
-X-UUID: 6d811081027345b2a724fe939a06c0be-20220317
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
-        (envelope-from <leilk.liu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 248666534; Thu, 17 Mar 2022 17:14:44 +0800
-Received: from mtkexhb02.mediatek.inc (172.21.101.103) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.2.792.15; Thu, 17 Mar 2022 17:14:43 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by mtkexhb02.mediatek.inc
- (172.21.101.103) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Thu, 17 Mar
- 2022 17:14:42 +0800
-Received: from mhfsdcap04 (10.17.3.154) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Thu, 17 Mar 2022 17:14:42 +0800
-Message-ID: <42ab6ee6bdad6157a9d24197cd9d0311da0423e7.camel@mediatek.com>
-Subject: Re: [PATCH V4 6/6] spi: mediatek: support hclk
-From:   Leilk Liu <leilk.liu@mediatek.com>
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        "Mark Brown" <broonie@kernel.org>
-CC:     Rob Herring <robh+dt@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-spi@vger.kernel.org>, <linux-mediatek@lists.infradead.org>
-Date:   Thu, 17 Mar 2022 17:14:42 +0800
-In-Reply-To: <e3facd86-9e93-bda7-b6dd-c18f1660466a@collabora.com>
-References: <20220315032411.2826-1-leilk.liu@mediatek.com>
-         <20220315032411.2826-7-leilk.liu@mediatek.com>
-         <e3facd86-9e93-bda7-b6dd-c18f1660466a@collabora.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
+        with ESMTP id S230508AbiCQJUt (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 17 Mar 2022 05:20:49 -0400
+X-Greylist: delayed 2187 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 17 Mar 2022 02:19:34 PDT
+Received: from mail.kapsi.fi (mail.kapsi.fi [IPv6:2001:67c:1be8::25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 039C7340D3
+        for <linux-spi@vger.kernel.org>; Thu, 17 Mar 2022 02:19:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=kapsi.fi;
+         s=20161220; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=qebBj+gkc2kvx9ifqFk+dfJTkCNI1DqTF7SnP32Vuks=; b=ZNJJWv2ZbPFVF2LACX980lcIsM
+        UsQmGVp8skm6bSyA8lOWxxJOq+O4BplK76ULd6lo/DUg7r3uh4EdpnBTmkgvD3I/fMUHVeW+hYzwV
+        3lXDMAkXt/6PKg41/gAEJ4GQfgYavL/kPj9PzT299BpPLllQfPr2IqnnEW6XJEqGFw9dSODtJqlfI
+        jl+nSYzp7JPODWmmScSnmjkbk+Mhqul3wZhdqt9UsHFlBEWBHcsesZIB9xca+it3IAh5UCfAmjp4n
+        nZiX57FoL3TMC5S+7I4yIB8qAkyyFp/8F6BLI4u1kxPufseFpzqd4CgUyOK7vQ2PAQarg/hthpcAz
+        W5WfA9ig==;
+Received: from 91-158-25-70.elisa-laajakaista.fi ([91.158.25.70] helo=[192.168.1.10])
+        by mail.kapsi.fi with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <cyndis@kapsi.fi>)
+        id 1nUlim-0003mn-Ta; Thu, 17 Mar 2022 10:43:00 +0200
+Message-ID: <8dff97ca-6de5-fa52-bdb8-49b11beddc16@kapsi.fi>
+Date:   Thu, 17 Mar 2022 10:42:59 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.1
+Subject: Re: [PATCH 3/3] spi: dt-bindings: Add wait state polling flag
+Content-Language: en-US
+To:     Krishna Yarlagadda <kyarlagadda@nvidia.com>, broonie@kernel.org,
+        thierry.reding@gmail.com, jonathanh@nvidia.com,
+        linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org,
+        ashishsingha@nvidia.com
+Cc:     skomatineni@nvidia.com, ldewangan@nvidia.com, robh+dt@kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20220317012006.15080-1-kyarlagadda@nvidia.com>
+ <20220317012006.15080-4-kyarlagadda@nvidia.com>
+From:   Mikko Perttunen <cyndis@kapsi.fi>
+In-Reply-To: <20220317012006.15080-4-kyarlagadda@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-MTK:  N
+X-SA-Exim-Connect-IP: 91.158.25.70
+X-SA-Exim-Mail-From: cyndis@kapsi.fi
+X-SA-Exim-Scanned: No (on mail.kapsi.fi); SAEximRunCond expanded to false
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Tue, 2022-03-15 at 10:37 +0100, AngeloGioacchino Del Regno wrote:
-> Il 15/03/22 04:24, Leilk Liu ha scritto:
-> > this patch adds hclk support.
-> > 
-> > Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
-> > ---
-> >   drivers/spi/spi-mt65xx.c | 85 ++++++++++++++++++++++++++++++++---
-> > -----
-> >   1 file changed, 69 insertions(+), 16 deletions(-)
-> > 
-> > diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-> > index 8958c3fa4fea..d4a602e78aa7 100644
-> > --- a/drivers/spi/spi-mt65xx.c
-> > +++ b/drivers/spi/spi-mt65xx.c
-> > @@ -130,7 +130,7 @@ struct mtk_spi {
-> >   	u32 state;
-> >   	int pad_num;
-> >   	u32 *pad_sel;
-> > -	struct clk *parent_clk, *sel_clk, *spi_clk;
-> > +	struct clk *parent_clk, *sel_clk, *spi_clk, *spi_hclk;
-> >   	struct spi_transfer *cur_transfer;
-> >   	u32 xfer_len;
-> >   	u32 num_xfered;
-> > @@ -1252,25 +1252,38 @@ static int mtk_spi_probe(struct
-> > platform_device *pdev)
-> >   		goto err_put_master;
-> >   	}
-> >   
-> > +	mdata->spi_hclk = devm_clk_get(&pdev->dev, "hclk");
-> > +	if (!IS_ERR(mdata->spi_hclk)) {
+On 3/17/22 03:20, Krishna Yarlagadda wrote:
+> Add flag to enable tpm wait state polling and Tegra Grace binding.
 > 
-> What you're doing here can be simplified by using
-> devm_clk_get_optional() instead.
-> Please use that.
+> Signed-off-by: Krishna Yarlagadda <kyarlagadda@nvidia.com>
+> ---
+>   .../devicetree/bindings/spi/nvidia,tegra210-quad.yaml       | 6 ++++++
+>   1 file changed, 6 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/spi/nvidia,tegra210-quad.yaml b/Documentation/devicetree/bindings/spi/nvidia,tegra210-quad.yaml
+> index 0296edd1de22..88b00fcad210 100644
+> --- a/Documentation/devicetree/bindings/spi/nvidia,tegra210-quad.yaml
+> +++ b/Documentation/devicetree/bindings/spi/nvidia,tegra210-quad.yaml
+> @@ -20,6 +20,7 @@ properties:
+>         - nvidia,tegra186-qspi
+>         - nvidia,tegra194-qspi
+>         - nvidia,tegra234-qspi
+> +      - nvidia,tegra-grace-qspi
 
-Hi AngeloGioacchino, thanks for your suggestion, I'll fix it.
+nvidia,tegra241-qspi. Similarly in other places that refer to the chip name.
 
-> 
-> > +		ret = clk_prepare_enable(mdata->spi_hclk);
-> > +		if (ret < 0) {
-> > +			dev_err(&pdev->dev, "failed to enable hclk
-> > (%d)\n", ret);
-> > +			goto err_put_master;
-> > +		}
-> > +	}
-> > +
-> >   	ret = clk_prepare_enable(mdata->spi_clk);
-> >   	if (ret < 0) {
-> >   		dev_err(&pdev->dev, "failed to enable spi_clk (%d)\n",
-> > ret);
-> > -		goto err_put_master;
-> > +		goto err_disable_spi_hclk;
-> >   	}
-> >   
-> >   	ret = clk_set_parent(mdata->sel_clk, mdata->parent_clk);
-> >   	if (ret < 0) {
-> >   		dev_err(&pdev->dev, "failed to clk_set_parent (%d)\n",
-> > ret);
-> > -		clk_disable_unprepare(mdata->spi_clk);
-> > -		goto err_put_master;
-> > +		goto err_disable_spi_clk;
-> >   	}
-> >   
-> >   	mdata->spi_clk_hz = clk_get_rate(mdata->spi_clk);
-> >   
-> > -	if (mdata->dev_comp->no_need_unprepare)
-> > +	if (mdata->dev_comp->no_need_unprepare) {
-> >   		clk_disable(mdata->spi_clk);
-> > -	else
-> > +		if (!IS_ERR(mdata->spi_hclk))
-> > +			clk_disable(mdata->spi_hclk);
-> > +	} else {
-> >   		clk_disable_unprepare(mdata->spi_clk);
-> > +		if (!IS_ERR(mdata->spi_hclk))
-> > +			clk_disable_unprepare(mdata->spi_hclk);
-> > +	}
-> >   
-> >   	pm_runtime_enable(&pdev->dev);
-> >   
-> > @@ -1310,6 +1323,11 @@ static int mtk_spi_probe(struct
-> > platform_device *pdev)
-> >   
-> >   err_disable_runtime_pm:
-> >   	pm_runtime_disable(&pdev->dev);
-> > +err_disable_spi_clk:
-> > +	clk_disable_unprepare(mdata->spi_clk);
-> > +err_disable_spi_hclk:
-> > +	if (!IS_ERR(mdata->spi_hclk))
-> 
-> When using devm_clk_get_optional(), you can simply omit this check,
-> since it will
-> be impossible to reach this point with an error pointer stored in
-> spi_hclk.
-OK, I'll fix it.
+Mikko
 
-> 
-> > +		clk_disable_unprepare(mdata->spi_hclk);
-> >   err_put_master:
-> >   	spi_master_put(master);
-> >   
-> > @@ -1325,8 +1343,11 @@ static int mtk_spi_remove(struct
-> > platform_device *pdev)
-> >   
-> >   	mtk_spi_reset(mdata);
-> >   
-> > -	if (mdata->dev_comp->no_need_unprepare)
-> > +	if (mdata->dev_comp->no_need_unprepare) {
-> >   		clk_unprepare(mdata->spi_clk);
-> > +		if (!IS_ERR(mdata->spi_hclk))
-> > +			clk_unprepare(mdata->spi_hclk);
-> > +	}
-> >   
-> >   	return 0;
-> >   }
-> > @@ -1342,8 +1363,11 @@ static int mtk_spi_suspend(struct device
-> > *dev)
-> >   	if (ret)
-> >   		return ret;
-> >   
-> > -	if (!pm_runtime_suspended(dev))
-> > +	if (!pm_runtime_suspended(dev)) {
-> >   		clk_disable_unprepare(mdata->spi_clk);
-> > +		if (!IS_ERR(mdata->spi_hclk))
-> > +			clk_disable_unprepare(mdata->spi_hclk);
-> > +	}
-> >   
-> >   	return ret;
-> >   }
-> > @@ -1360,11 +1384,23 @@ static int mtk_spi_resume(struct device
-> > *dev)
-> >   			dev_err(dev, "failed to enable spi_clk (%d)\n",
-> > ret);
-> >   			return ret;
-> >   		}
-> > +
-> > +		if (!IS_ERR(mdata->spi_hclk)) {
-> 
-> Since you will be using devm_clk_get_optional(), you can also omit
-> this check.
-OK, I'll fix it.
-
-> 
-> > +			clk_prepare_enable(mdata->spi_hclk);
-> 
-> There's a typo. ret = clk_prepare_enable....
-OK, I'll fix it.
-
-> 
-> > +			if (ret < 0) {
-> > +				dev_err(dev, "failed to enable spi_hclk
-> > (%d)\n", ret);
-> > +				clk_disable_unprepare(mdata->spi_clk);
-> > +				return ret;
-> > +			}
-> > +		}
-> >   	}
-> >   
-> >   	ret = spi_master_resume(master);
-> > -	if (ret < 0)
-> > +	if (ret < 0) {
-> >   		clk_disable_unprepare(mdata->spi_clk);
-> > +		if (!IS_ERR(mdata->spi_hclk))
-> 
-> Same here and everywhere else, no error check if you set this as
-> optional clock.
-OK, I'll fix it.
-
-> 
-> > +			clk_disable_unprepare(mdata->spi_hclk);
-> > +	}
-> >   
-> >   	return ret;
-> >   }
-> > @@ -1376,10 +1412,15 @@ static int mtk_spi_runtime_suspend(struct
-> > device *dev)
-> >   	struct spi_master *master = dev_get_drvdata(dev);
-> >   	struct mtk_spi *mdata = spi_master_get_devdata(master);
-> >   
-> > -	if (mdata->dev_comp->no_need_unprepare)
-> > +	if (mdata->dev_comp->no_need_unprepare) {
-> >   		clk_disable(mdata->spi_clk);
-> > -	else
-> > +		if (!IS_ERR(mdata->spi_hclk))
-> > +			clk_disable(mdata->spi_hclk);
-> > +	} else {
-> >   		clk_disable_unprepare(mdata->spi_clk);
-> > +		if (!IS_ERR(mdata->spi_hclk))
-> > +			clk_disable_unprepare(mdata->spi_hclk);
-> > +	}
-> >   
-> >   	return 0;
-> >   }
-> > @@ -1390,13 +1431,25 @@ static int mtk_spi_runtime_resume(struct
-> > device *dev)
-> >   	struct mtk_spi *mdata = spi_master_get_devdata(master);
-> >   	int ret;
-> >   
-> > -	if (mdata->dev_comp->no_need_unprepare)
-> > +	if (mdata->dev_comp->no_need_unprepare) {
-> >   		ret = clk_enable(mdata->spi_clk);
-> > -	else
-> > +		if (!IS_ERR(mdata->spi_hclk))
-> > +			clk_enable(mdata->spi_hclk);
-> > +	} else {
-> >   		ret = clk_prepare_enable(mdata->spi_clk);
-> > -	if (ret < 0) {
-> > -		dev_err(dev, "failed to enable spi_clk (%d)\n", ret);
-> > -		return ret;
-> > +		if (ret < 0) {
-> > +			dev_err(dev, "failed to enable spi_clk (%d)\n",
-> > ret);
-> > +			return ret;
-> > +		}
-> > +
-> > +		if (!IS_ERR(mdata->spi_hclk)) {
-> > +			ret = clk_prepare_enable(mdata->spi_hclk);
-> > +			if (ret < 0) {
-> > +				dev_err(dev, "failed to enable spi_hclk
-> > (%d)\n", ret);
-> > +				clk_disable_unprepare(mdata->spi_clk);
-> > +				return ret;
-> > +			}
-> > +		}
-> >   	}
-> >   
-> >   	return 0;
-> > 
-> 
-> 
-> Regards,
-> Angelo
-> 
-> 
+>   
+>     reg:
+>       maxItems: 1
+> @@ -57,6 +58,11 @@ patternProperties:
+>         spi-tx-bus-width:
+>           enum: [1, 2, 4]
+>   
+> +      nvidia,wait-polling:
+> +        description:
+> +          Enable TPM wait state polling on supported chips.
+> +	type: boolean
+> +
+>         nvidia,tx-clk-tap-delay:
+>           description:
+>             Delays the clock going out to device with this tap value.
 

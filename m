@@ -2,195 +2,184 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5044FC433F5
-	for <linux-spi@archiver.kernel.org>; Thu, 17 Mar 2022 08:55:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5F326C433EF
+	for <linux-spi@archiver.kernel.org>; Thu, 17 Mar 2022 09:02:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231305AbiCQI41 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 17 Mar 2022 04:56:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52108 "EHLO
+        id S231675AbiCQJDy (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 17 Mar 2022 05:03:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231293AbiCQI41 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 17 Mar 2022 04:56:27 -0400
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2063.outbound.protection.outlook.com [40.107.244.63])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEABC1CAF16;
-        Thu, 17 Mar 2022 01:55:10 -0700 (PDT)
+        with ESMTP id S229805AbiCQJDy (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 17 Mar 2022 05:03:54 -0400
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2048.outbound.protection.outlook.com [40.107.243.48])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01C911D08CB;
+        Thu, 17 Mar 2022 02:02:38 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=WKrd2tCPizukw7ABkO/zKFwEsTMlVJHRH23sXi4sFmnqhdkj2247/ZUpC+/rJjY8cQmzXRW8MM8dMLABJ3iP9cYXtAnOTkQWkThckZgIbwHxpD8wQcJIWufni4iWjV7FtI0sOPGTFI9/p9HOG1xnNvQy57/hgjY8Q5gm4MRaD+fvKVTYtrIZbjwDUrso3Wmpa0sVeU9aQz54V4KeBkNUB3KXiIlQtVsVfiwNnCS78QZ86S7DiQZ+iO0ptutU0hYU4+hEpYHQk8PpinjSOdD9n5+voaRJR7sLLLX1QDlmvSCskBzMiiXx/wDl4vhbGOR1bY9bKACrSAFOrr0n9yWvwA==
+ b=SpYJt4D872SkWrYugXetN6bz7FkAAlcp0f3Nq3ylynT0ptXPJ0z9Ouv1DgNF7yccTBDvAJsQjiEGMaFmuEqLxlo5pZlLu/PaLsZEkLxqUGA8nRL/t9Cs09G6j1sAdyrjosVNrlOUvh6m58FxF2KDs14faMWU8baR4XA3K/cVRz/zohwO6hqvaLVZn0K/fXeW3Tnb0KvHIBx4x8p0ynQYfQkUCzcnmZy8vp+XPtnMZwpV9+1/PeyoCaz/J1S1oNQs7xSbHyKzgjTTNUrUB8UMEX+MMk2b3pOX700qVy+RJIjzt1wHIUWfQyan4Vpixd0cJfpF9aTFAHPtsQ821WHMhA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6xKPzte52Yg5cyZjqWNgtGGvqpwAya9AQi77fS0GGAM=;
- b=J02FElRmrGCYX7P3eTgxKJTX9fOkhcZdN4O8od/65Djg1q6ycqxkm5xaAcrGyPpsfBMt9MDd+a+ev/F72BGbukA5PTiUB7XGkxoTMvnKAQouaOli2Pko5QuewidvPUsVfW4bzT3kCUXyIoAxWTr+QblTtIghKjm89PyMlVS7357g7D0RznnRBGJNNaOLXCzF6p4qx0lDo/Xapd0DJdC6klh6VAJ61Z7LvUq9LGTJJ/rofDVfKhSZiv7J30eM2t+o9J6HnEIlHbiqfmJlCenBLvpl++FIoMFboWeSr7bQcnp3501U/HPqh/3rAZ0fWiFpkVwiUwDqBcUbQC/i18YYDQ==
+ bh=cFI78NywOZwwRqIclrudWHU4tkW0qM+K2GRQbFb7k5o=;
+ b=FrrThX9SyEfWacU0cXaamWWEYCv73xVpegyk2zXb9iu/OPQXQKLv2bq3tjqEbqon0KxjtNv4EjeAxZZiRtluEYihI/YF5iuUXKvcVl2wkxh3wlLBDPl9V3qSz9KNxmq4PSrZNnIPEQA0jA6KAcoakXNC2S9f27/YnddcfaMGr/YNBeAWd+DzYtOA6+wa8H3Z3pYEcS4+bU5GO1gzCmyAI3+YqSycD+YPE1U8lBK4yCYWGc8sF43Cf5PepNjTod1rpb9EYQV1zQa7Im+W1ARC0HlogS66poH2Kd9osysMnBFUn7P5q1rl9Hc0coyGBfyKVvZ5SUQTX7Cq7tMjV2jGwQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6xKPzte52Yg5cyZjqWNgtGGvqpwAya9AQi77fS0GGAM=;
- b=qzSiycTqMotepIyEQaeTFgL/mW84Zh6ZQRCcEVApAfd7BN9EYQgDT/dU/T920Yds1RK6fqZ2sgBYHoGAscv7hN8Iw4PNyQyQrSQVuw8+1+QZzT13ov2h6lBYwTxKoeSRjc85S8FSMzpCSGyPrRebKTR5CDDWVysovlTfTgmHd/LjvlWE1rqiAV2AovmhrrZQyg+YhhGuUsk9onh9iPAk670Kxfum80NiQw+6leBQRCmb4+IBrw9Ms8kYPll+hyplWBBpbSS1PeGAsM/LkrC278DmQoH8DwxWYmj6m5yTvROIqrai6DUozEMguiAT3AffInyVtmffXScqLFQ8X0067A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CO6PR12MB5444.namprd12.prod.outlook.com (2603:10b6:5:35e::8) by
- CY4PR1201MB2500.namprd12.prod.outlook.com (2603:10b6:903:d0::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5081.17; Thu, 17 Mar
- 2022 08:55:08 +0000
-Received: from CO6PR12MB5444.namprd12.prod.outlook.com
- ([fe80::88c:baca:7f34:fba7]) by CO6PR12MB5444.namprd12.prod.outlook.com
- ([fe80::88c:baca:7f34:fba7%5]) with mapi id 15.20.5061.032; Thu, 17 Mar 2022
- 08:55:08 +0000
-Message-ID: <391736bc-84c2-ec8b-9f04-614365953da3@nvidia.com>
-Date:   Thu, 17 Mar 2022 08:54:59 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH 2/3] spi: tegra210-quad: Add wait polling support
-Content-Language: en-US
-To:     Krishna Yarlagadda <kyarlagadda@nvidia.com>, broonie@kernel.org,
-        thierry.reding@gmail.com, linux-spi@vger.kernel.org,
-        linux-tegra@vger.kernel.org, ashishsingha@nvidia.com
-Cc:     skomatineni@nvidia.com, ldewangan@nvidia.com, robh+dt@kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+ bh=cFI78NywOZwwRqIclrudWHU4tkW0qM+K2GRQbFb7k5o=;
+ b=r0KstSP0j2eI0KIEhQ26I1jRkRGvWj8UKEUA+NdApXCitN8Xf33X3qc33VKcfv421xv5E6DmhCQS+Fb4R3xt2jEOdhwTHC5n5MX1vqtf1JEtmWySt919xH2tOOQuN69SfwVYdIVlBtyBZIeM09nJmxxW5mRpFa+X0At9KMeNl1P/y4ptQtOAAsfICdEgZl8T9+cQjYqrYXQcNan2lfr4Pn+dF2WfgPFz6HuT/gxRHNovqjE2lGOUse5jR5EecXDbzmUMAl7XcLZ82Uuw3nVoBFnSnRNM9fD6MlrTDjtAorFg5qYeNJKB3XxfaXBVwuD2FCNTOcltZpUpaFbYKGpd4w==
+Received: from DM4PR12MB5769.namprd12.prod.outlook.com (2603:10b6:8:60::6) by
+ DM6PR12MB3852.namprd12.prod.outlook.com (2603:10b6:5:14a::17) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.5081.15; Thu, 17 Mar 2022 09:02:36 +0000
+Received: from DM4PR12MB5769.namprd12.prod.outlook.com
+ ([fe80::801f:6a57:dcf6:6229]) by DM4PR12MB5769.namprd12.prod.outlook.com
+ ([fe80::801f:6a57:dcf6:6229%9]) with mapi id 15.20.5081.017; Thu, 17 Mar 2022
+ 09:02:36 +0000
+From:   Krishna Yarlagadda <kyarlagadda@nvidia.com>
+To:     Jonathan Hunter <jonathanh@nvidia.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+        Ashish Singhal <ashishsingha@nvidia.com>
+CC:     Sowjanya Komatineni <skomatineni@nvidia.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH 2/3] spi: tegra210-quad: Add wait polling support
+Thread-Topic: [PATCH 2/3] spi: tegra210-quad: Add wait polling support
+Thread-Index: AQHYOZ0zTorLfdRhBU606fY3d7aIxazDRiKAgAABqDA=
+Date:   Thu, 17 Mar 2022 09:02:36 +0000
+Message-ID: <DM4PR12MB57692EB17ABCA36E0515412EC3129@DM4PR12MB5769.namprd12.prod.outlook.com>
 References: <20220317012006.15080-1-kyarlagadda@nvidia.com>
  <20220317012006.15080-3-kyarlagadda@nvidia.com>
-From:   Jon Hunter <jonathanh@nvidia.com>
-In-Reply-To: <20220317012006.15080-3-kyarlagadda@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AS8PR05CA0020.eurprd05.prod.outlook.com
- (2603:10a6:20b:311::25) To CO6PR12MB5444.namprd12.prod.outlook.com
- (2603:10b6:5:35e::8)
+ <391736bc-84c2-ec8b-9f04-614365953da3@nvidia.com>
+In-Reply-To: <391736bc-84c2-ec8b-9f04-614365953da3@nvidia.com>
+Accept-Language: en-IN, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 3eb8b18f-b222-4f3f-4f3b-08da07f4e1b3
+x-ms-traffictypediagnostic: DM6PR12MB3852:EE_
+x-microsoft-antispam-prvs: <DM6PR12MB3852C38CAB049EFCBFD5685AC3129@DM6PR12MB3852.namprd12.prod.outlook.com>
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: xyW+61CMNwl383qWdiJpM7XDhzZ1IvWiKx2hm/KJWMF9Y2HTv/ht1Cu7gc5C+g1vgzGA5ZBjHGYplbNBEeCzx36j7v6f2YDojMyl8f4debz9MPhTqJllMYVsZl5K70BXPmPDzuYiapJ4nUbAAlCX5QqnpmpAB7FEv74lzCE/FiFyC9ngVGLKcVLU2KkOPSU+9gZQ2cZDrUQVvOWr3HcrhzqKj25jiXT/pNAF7iOLrWi5tATeRwk6yGcbSiiwGXjeJhbmHCYqP6kb9u1yE0tsKE+srS+Yx2DMVjQAFM6ekrVrK7CxTl4sZMlyzU7u90v4tl1TQvQ8+GxxcDbe5ugLHAD6fv49ZnnzwPDoEQycn7LR5AiqGwjBxv1JOGINYp0JFw8u5lDd2ljBipxc+ZqLBSH5o3wFENtR+0SotEPOhjIvkyH0ajm3mQINsj3NKTyA+Su8OBYAFfbmZ1Ir24dSyPlfVUS587P3MISpS0t7QjL0phUgTmMnkWzQJi8LoGZ3G/iXjNZlmvsEoNhfOUXa2pKCkm2pwbgjMGlbl5AnAdeJfD+lyO3oBckqYbe0StN5BJRef46sHhzVKwQ1XjHKR257HjcJIlGKACb5KCHnNkJtOfFfMe6KLGOr/laq5m+nLbqULkNj9GC5xcHhVH4puYgccXfpakJYZmF90ZU7FhCMY+9gxvWclcYGSJ6EWhVJc5urvXzCDmrU70p3+IoL2Q==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5769.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(76116006)(2906002)(508600001)(8676002)(66946007)(4326008)(55016003)(110136005)(71200400001)(64756008)(66446008)(66476007)(66556008)(86362001)(33656002)(6506007)(7696005)(55236004)(53546011)(9686003)(6636002)(316002)(186003)(83380400001)(122000001)(38100700002)(26005)(38070700005)(8936002)(54906003)(5660300002)(52536014);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?U2VBU01Pd2N3Y2E3eWRDd1ZBbmJPQStqWVhkRWh6cG82eWd5dXNja3MzVlYv?=
+ =?utf-8?B?UWRyUUdObk85emtGVS92Y0R6NWVPOTROeEFkN3VLQ2JFOEQxejFkNzAxKzJT?=
+ =?utf-8?B?NnduTk50RXFEbGR6TzBPMjZsblM4RU5CRmVNODI5WVpLb0Y1Qmc1Z1RmT1hw?=
+ =?utf-8?B?SU9HYWFGSExDVlF4bitjUDZtQ2E3YzRRb0l0Qk9mWXRDYzhnR2NvZnNQcXpv?=
+ =?utf-8?B?TVd0STY4bWRGNmtjTGhHa0RiM3M4VnVkcXQ4TGxndGVwb3JRQ1NCZ1pWOFFQ?=
+ =?utf-8?B?TGlOL2dERFJ1dStHa25OVUp6bGhYRktVV3hIS3VRZytHcTJYU29Pc0lCUHhr?=
+ =?utf-8?B?dE1XRVBWYUQvYm42ckI0MENhSitpSStxQTVRMDVQQ1ljc2dlazF2TlpxNmhE?=
+ =?utf-8?B?Mmx5d1VYVFBxNjRtYWszRzhleGRlVlY4REF4VDloWW9kL1ovQ25WeFIwMTNj?=
+ =?utf-8?B?dVJ4UXE4UWtPUEd4N2dZUEpLdHljTWRZaU45YUxpMmcvQk5zVWtabjk3WWdV?=
+ =?utf-8?B?M0F0SXNEQ05vZUg1Yi92OEh4dnFEaGgvcmdsRFIvQWZuY0tXaStZQWdLVnkz?=
+ =?utf-8?B?MkZXSXNGbXZTNkY3ZVMySmxGTElhRkhKTlVjOHlGS01DQmtuRjNraEZhcFp6?=
+ =?utf-8?B?U0dnMVRYcjM0K1Z6MWYxekVtTExrOUVWbC9kb0ZvdU5raHYydWw4V0p4Q0tT?=
+ =?utf-8?B?T3IrM3hIMTlsRThUL1NEcnpuR1Y0L2czMUVLUzJURldOZERXOUNPaVpPSFVP?=
+ =?utf-8?B?L3BmZjhVdk94MU1iNjQ1SEFNcEdWRlB4RFdFMEo0aVF0S1k4UnRVZHNsblpK?=
+ =?utf-8?B?d2R0UU1Qemd1ODRrVWZCa09oTDFvODF5NitzcEdrTVEvRDhRL2ZxVWxIZnk4?=
+ =?utf-8?B?dnh1VDM4bzI1SXBpc0drT3lQWFBES2R6a3NlYnEyQlJJbVEvZ01nUS9yZFZT?=
+ =?utf-8?B?TldXWStQb3hKYlZPYlpnYTNlam0ySHkxdU9TU015am5reDNKVU9NV3F5STB0?=
+ =?utf-8?B?TlNXTjhkZnk3ZWIrYjJEc3gzdnYvWG9UTHlvU0NRNmhULzVjWVgzc0pXTlow?=
+ =?utf-8?B?MWhQUjZxd2ptWGVyVzN0ZjdIZ0pOUFJMM1JiY1RvM0NldVdyenV1a2ZUTHph?=
+ =?utf-8?B?bWx6THUvanFKRVJYKzFnOEZEUFpDQ01XTVhwallRQlE5OEp0MFl5eXZ3dTFW?=
+ =?utf-8?B?azNDK2dZSGQzM0wrQk80eUJHN1ZGMm03Y1BxakUyVDFMVkRVWXpCa3YrYWtF?=
+ =?utf-8?B?SlZlRmkxWEFBM2xmTG9wbWo2QXpQbVNDQWQ2dGhFYUlQeUswc3VTa05kTzdD?=
+ =?utf-8?B?NFNvcjV4TDdId3RuMGQ5UjdCS29CaUlJZWFIZWJ3VGFJMGZ3WDZpM2x0L3Iw?=
+ =?utf-8?B?a0U2VFJDYkFkeTVQYjhTbzNrd0IxYWRoYno0TCsxS2tubEQ4TG03aWkva21n?=
+ =?utf-8?B?NUNLSGpHZ0NuekxOenpMbXAwc2VBbzh2NGx2eHU5MTFGb1FWMEc3dlFaQmRm?=
+ =?utf-8?B?TlQ3VzVGR0h3TWhJb0hQUTdCQXFCaEZMaUJmaHg2VUYzK2hOajFjUDhUa20z?=
+ =?utf-8?B?Ylo5WFdSZm5XM1NyeEVlZDhWY3ZEQWRQS3pTRnVPZTFBMy9MdXAzSGh0bnJr?=
+ =?utf-8?B?T2tMU0tpdnJ4VHhpY0ZLczF1U2hTOWN2TmFlSDdRdHkyTjdnUlJCNXhPa2Yy?=
+ =?utf-8?B?bXJXNnNNWHkvOCt3aW52dmlWWUQ1ZHlIcHNjY1ZCUjJydDhWUWlCcEZvM01T?=
+ =?utf-8?B?NmQ5UEs4Y2FNbWRMcGVxb2MwQ283WFBqcVoxeDBEU09BWXd2VUpTUWIrd2Jh?=
+ =?utf-8?B?dWIrRGMwS3hYY0dMbXdPZ0RNZVNTcWVJVGJUNnBaVnU5K2VIbm5BWGhLS1BK?=
+ =?utf-8?B?MzFJS0U4TUZqNHpZUkRhVWVNUGNGb2xSUWxQNitqTE1yRStUcm1BT1h5RWZP?=
+ =?utf-8?Q?D1tM2yWAFblriuaF4lwKM8SEuD75Htni?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: cec1e81b-ef6f-4b0a-d07d-08da07f3d69c
-X-MS-TrafficTypeDiagnostic: CY4PR1201MB2500:EE_
-X-Microsoft-Antispam-PRVS: <CY4PR1201MB2500E22A551CB86CD2E4137AD9129@CY4PR1201MB2500.namprd12.prod.outlook.com>
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 839oTVNtSS4RqHqsFmzeovCCQ1Gjn4vBgX8Jw1cB2ALJnNdMtpCHHBKdK6gdL9amK8fzJBNBGc4XnxuCvq5crjqflQR1g2VGfc0g4LrEqZ5NUsdjHwnm/nS14HHQ0zwuVIJtu9XS+no7TOcoJ1bi/gZCZHBH5WIe2e9Y64bTY3CbUFx5a4Z+bLn/OQgy0hp3ytBC1IYE8tsVSYEzxWITkDrvgV5khNvOTH+vkrckKV39MHviHsW8GJxUFGia6XFVJl7Ye3hmTeSsO9UOX+NoKqI66enI4BagtGxpj7dzLEIiiTjYsSwFpMQv05Tz39OcrAMr7xrCrb6YppvcUPvCmOx+luduRBj979Lr2w3ztnAyYUoXyMMlelAxoxDpfqQSz4snysM+EHQJiuFo2c5Gn1v+aITip1NV/Pj8JgvVKwehNyDLBp1FEcI4FACIbD087PaA20VrikdxI9WaSRxSvwxMzZdE1RltJn9EB9/DoDVi9xSREeLrG9JIAdmtljeZtng1JTAYNfD8c2LXHUh/lXo3qKW4FrmA5m5Ld66QF16A+bODxOqQJEiWvz4zqYvRfV4nazNty+XJyocvFpHc0H7GJXVZnhRPw0itk/a0RBK055eguyMhyiMAvtMhw2eNjFWexrlWIq3EuOXWDdWS//gVACXjmzGDKExTq1Y4whK0PRPMLwZaOVRvw9BkNof/rHwO1/kKMpUEBhzAYKY0MGq5d8GKG76axPwJBrrP5uvMVkoVuuVhPNeroH1ZW6au
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR12MB5444.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(66946007)(66556008)(8676002)(508600001)(66476007)(4326008)(31696002)(6486002)(2616005)(5660300002)(53546011)(6666004)(8936002)(55236004)(86362001)(26005)(186003)(38100700002)(6512007)(316002)(31686004)(2906002)(6506007)(6636002)(36756003)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UDQ2Nko4TWw5Q3huNTEvMGtDOGRsdHo5cS9JUVNYRTJzdVgwRzI5cEJqeVI4?=
- =?utf-8?B?VzdIcG5WZVMvbHZ0bnpZdVBCVWxjYnpvUm5VbnJCVzBOdk1yZ09EUDdMRGJD?=
- =?utf-8?B?MWU2WGlLaHJwUm94QkcxWkxrSitRU2xkdWhlSm5abkZ5cDRvMmdjYXVNQ2RO?=
- =?utf-8?B?V2IrWW9TZXNpMlozalJZTnUvWUlCYU1JRDVrZyt4N2tuYXBQNVdrMWZ6Y0JO?=
- =?utf-8?B?WXBNWGRSOCtJczlSVWtLS1dFZXpWbUYwUWcwUnpzR1JJY21FbUM3VFNZek1G?=
- =?utf-8?B?Nzg3L21VcHByejk5RkRFMytvelhsSFBhQ1hVa2ZhWGQ2WXZJbW1CdklQY2hy?=
- =?utf-8?B?eXpWMG1xYVhZV25tbnk5T1RBa3cvbG5iSXU1N3NDQk9VMzIwVmN2Vmc4ZUVX?=
- =?utf-8?B?c2NJS2o2QmxxWUtrdnFkQmdodW1RdC9mWGZJRG1OYUpHaHdWUmFpTEJibEFy?=
- =?utf-8?B?YW9PaUkzSmdSdi9GbE4rWTkxdmRDTngrZVBpMS9ySlB3cEJBWEwxUndQZEZP?=
- =?utf-8?B?d3laanNxeWxqaEhQWHZtejJBV2ZvQkxxanFGZFljOUJtck1IMVFCMEhIc1Bt?=
- =?utf-8?B?MjNmNlE0RVlrSmM5N1E5QlZOVnZ6cEVSUmN1RU5VOWI4TStZenNVN0hjbVNq?=
- =?utf-8?B?L3llY1FWMUExaHFLUVdjaWVCazFJS0VUUThQWEFoS2hObnYyWFhuamN5THlp?=
- =?utf-8?B?N004VTBwdDdFSjM0YnJHTlQ5bmhFbmplNkhTUDN6NXFFRHE3RWlrUkdSSHUy?=
- =?utf-8?B?VFNmL2NFcHErVGptYy9VcFdGK1JpSVhZTUpZWERxSXVjY2ZLUU04bFpBUHhD?=
- =?utf-8?B?SnRkTHFoeTNuUjN4V1I0aWFiS3VVNTEzdHNzQVNCT2haS2ptM2QvRktEczRS?=
- =?utf-8?B?U29HSlNDUng0bVo1VnlUcFYyMnorUUc5azU4WnVSbTlSakNjWm53Q0tUMnVo?=
- =?utf-8?B?WWNQdmhiekZONzVqYzhGSVl1SnBuMFY5aWIwS3B5R3ZRU1VEb0FFNis0UTl0?=
- =?utf-8?B?S1BqRTBzS21XSmxvWUN2MGxqcU92bXVQdEo5eEJDSWhBRnhENGdIVVRCWmt5?=
- =?utf-8?B?a3lPcDZNZ0tkcU80M09oSDJLUXNZUTFzeHpDYXJrTlhxTFpVeXVFQ1luTUxF?=
- =?utf-8?B?bExpbHM4d0VSWXJFNU1sY1M1dmpaRkpEZ1JzTnRPT2NJbUkrelhlalBXaVJH?=
- =?utf-8?B?UTBmcG41ekVhNkRyb2lidnVJdTVTNHBOc2ZWUUxIQ0ZqYjZoNWZ5RFNUN21E?=
- =?utf-8?B?amNLdFRycE52YnJKQndpSm85aEd2aDZLVTl6bTBpWkhvQUlyRWZCbzlTeERi?=
- =?utf-8?B?YUtiV1cvU1ZBVkNyRERQamV6RnFSUTh5bDZOcW5HYkNvaWNHVFNlUm82QVBG?=
- =?utf-8?B?ZUpuQWRzUXpqUmxNR1MzbFh1Q1VhRTdJZ0Vya3pNU2FaRDROT2g1VVRMMFZr?=
- =?utf-8?B?Z1RlcHRTRk9rSzJlaXEveFBhK2F4Uy9XTXIwdHZzSUhNZmh2ektKS1ZBQURR?=
- =?utf-8?B?NlIzRUlCdlBUT2YyUjNTWG5JamRQYVZkMkpXOWlGTDVqVjVaY1ZUdkl5Y2ZI?=
- =?utf-8?B?ZHRtNldXRFZkYWJ0OVZMSDMrdVUvendnYk9JejNmeTVpQjhBQlR2b3c5aEY4?=
- =?utf-8?B?d0Nnc3dKaHJHOTdnamxoUTRuTlZDZFp1THlWNittc2RwV240NUpNQzJZUk0v?=
- =?utf-8?B?aERVY0U3cFF6ODEya2tRVjRWZ3cxNEFnU082cm9pS0drUk5MK0YyUUpqNFBo?=
- =?utf-8?B?STJObTJ3NW1qczh3NFBvamZsenBxMmFUdU5RMk9ScUEyNWl1ZXJQNmNjSlRY?=
- =?utf-8?B?M3JyWnJ1amw1WVVCTWVJY2l0Y0UrZ0trMGl5NHJ3N05ZZEJhaHNiNUIwU2hV?=
- =?utf-8?B?bTZrR1hBVGVEOTJQeEdvdWVRV2oyN0lHRmlaUTZPU1dnYWpCZm9tdWI5dk5k?=
- =?utf-8?B?Mk5HL3FsZkk5VGprc0JGRmF1bU5OSHBwL3JkZWVJVnExWDZFWklqZTJWQWZQ?=
- =?utf-8?B?YWNna0xjZkFBPT0=?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cec1e81b-ef6f-4b0a-d07d-08da07f3d69c
-X-MS-Exchange-CrossTenant-AuthSource: CO6PR12MB5444.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2022 08:55:08.6643
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5769.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3eb8b18f-b222-4f3f-4f3b-08da07f4e1b3
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Mar 2022 09:02:36.4833
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7aR8zJ24EGwrh2gP3OQTB5wCtt/jLgZz3+Geb/tGlYMAfbyrMtoa9Q9pd1tfN4SM4W9WYUmSh+96AJGyR7kRbg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR1201MB2500
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: K29tl9eh/I/pih5X35CGf1gn4hTyYdwrLUr9W79lVFhSt61icPTANcAM4M+HvbindvczItempx9bnhNlmue3Tw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB3852
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-
-On 17/03/2022 01:20, Krishna Yarlagadda wrote:
-> Controller can poll for wait state inserted by TPM device and
-> handle it.
-> 
-> Signed-off-by: Krishna Yarlagadda <kyarlagadda@nvidia.com>
-> ---
->   drivers/spi/spi-tegra210-quad.c | 31 +++++++++++++++++++++++++++++++
->   1 file changed, 31 insertions(+)
-> 
-> diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
-> index a2e225e8f7f0..ecf171bfcdce 100644
-> --- a/drivers/spi/spi-tegra210-quad.c
-> +++ b/drivers/spi/spi-tegra210-quad.c
-> @@ -142,6 +142,7 @@
->   
->   #define QSPI_GLOBAL_CONFIG			0X1a4
->   #define QSPI_CMB_SEQ_EN				BIT(0)
-> +#define QSPI_TPM_WAIT_POLL_EN			BIT(1)
->   
->   #define QSPI_CMB_SEQ_ADDR			0x1a8
->   #define QSPI_ADDRESS_VALUE_SET(X)		(((x) & 0xFFFF) << 0)
-> @@ -165,11 +166,13 @@ struct tegra_qspi_soc_data {
->   	bool has_dma;
->   	bool cmb_xfer_capable;
->   	bool cs_count;
-> +	bool has_wait_polling;
->   };
->   
->   struct tegra_qspi_client_data {
->   	int tx_clk_tap_delay;
->   	int rx_clk_tap_delay;
-> +	bool wait_polling;
->   };
->   
->   struct tegra_qspi {
-> @@ -833,6 +836,11 @@ static u32 tegra_qspi_setup_transfer_one(struct spi_device *spi, struct spi_tran
->   		else
->   			command1 |= QSPI_CONTROL_MODE_0;
->   
-> +		if (tqspi->soc_data->cmb_xfer_capable)
-> +			command1 &= ~QSPI_CS_SW_HW;
-> +		else
-> +			command1 |= QSPI_CS_SW_HW;
-> +
->   		if (spi->mode & SPI_CS_HIGH)
->   			command1 |= QSPI_CS_SW_VAL;
->   		else
-> @@ -917,6 +925,7 @@ static int tegra_qspi_start_transfer_one(struct spi_device *spi,
->   
->   static struct tegra_qspi_client_data *tegra_qspi_parse_cdata_dt(struct spi_device *spi)
->   {
-> +	struct tegra_qspi *tqspi = spi_master_get_devdata(spi->master);
->   	struct tegra_qspi_client_data *cdata;
->   
->   	cdata = devm_kzalloc(&spi->dev, sizeof(*cdata), GFP_KERNEL);
-> @@ -927,6 +936,11 @@ static struct tegra_qspi_client_data *tegra_qspi_parse_cdata_dt(struct spi_devic
->   				 &cdata->tx_clk_tap_delay);
->   	device_property_read_u32(&spi->dev, "nvidia,rx-clk-tap-delay",
->   				 &cdata->rx_clk_tap_delay);
-> +	if (tqspi->soc_data->has_wait_polling)
-> +		cdata->wait_polling = device_property_read_bool
-> +					(&spi->dev,
-> +					 "nvidia,wait-polling");
-> +
-
-
-This looks odd. Why do we need this device-tree property if it is 
-already specified in the SoC data?
-
-Jon
-
--- 
-nvpublic
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBKb25hdGhhbiBIdW50ZXIgPGpv
+bmF0aGFuaEBudmlkaWEuY29tPg0KPiBTZW50OiAxNyBNYXJjaCAyMDIyIDE0OjI1DQo+IFRvOiBL
+cmlzaG5hIFlhcmxhZ2FkZGEgPGt5YXJsYWdhZGRhQG52aWRpYS5jb20+OyBicm9vbmllQGtlcm5l
+bC5vcmc7IHRoaWVycnkucmVkaW5nQGdtYWlsLmNvbTsgbGludXgtc3BpQHZnZXIua2VybmVsLm9y
+ZzsgbGludXgtDQo+IHRlZ3JhQHZnZXIua2VybmVsLm9yZzsgQXNoaXNoIFNpbmdoYWwgPGFzaGlz
+aHNpbmdoYUBudmlkaWEuY29tPg0KPiBDYzogU293amFueWEgS29tYXRpbmVuaSA8c2tvbWF0aW5l
+bmlAbnZpZGlhLmNvbT47IExheG1hbiBEZXdhbmdhbiA8bGRld2FuZ2FuQG52aWRpYS5jb20+OyBy
+b2JoK2R0QGtlcm5lbC5vcmc7DQo+IGRldmljZXRyZWVAdmdlci5rZXJuZWwub3JnOyBsaW51eC1r
+ZXJuZWxAdmdlci5rZXJuZWwub3JnDQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggMi8zXSBzcGk6IHRl
+Z3JhMjEwLXF1YWQ6IEFkZCB3YWl0IHBvbGxpbmcgc3VwcG9ydA0KPiANCj4gDQo+IE9uIDE3LzAz
+LzIwMjIgMDE6MjAsIEtyaXNobmEgWWFybGFnYWRkYSB3cm90ZToNCj4gPiBDb250cm9sbGVyIGNh
+biBwb2xsIGZvciB3YWl0IHN0YXRlIGluc2VydGVkIGJ5IFRQTSBkZXZpY2UgYW5kDQo+ID4gaGFu
+ZGxlIGl0Lg0KPiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogS3Jpc2huYSBZYXJsYWdhZGRhIDxreWFy
+bGFnYWRkYUBudmlkaWEuY29tPg0KPiA+IC0tLQ0KPiA+ICAgZHJpdmVycy9zcGkvc3BpLXRlZ3Jh
+MjEwLXF1YWQuYyB8IDMxICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysNCj4gPiAgIDEg
+ZmlsZSBjaGFuZ2VkLCAzMSBpbnNlcnRpb25zKCspDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvZHJp
+dmVycy9zcGkvc3BpLXRlZ3JhMjEwLXF1YWQuYyBiL2RyaXZlcnMvc3BpL3NwaS10ZWdyYTIxMC1x
+dWFkLmMNCj4gPiBpbmRleCBhMmUyMjVlOGY3ZjAuLmVjZjE3MWJmY2RjZSAxMDA2NDQNCj4gPiAt
+LS0gYS9kcml2ZXJzL3NwaS9zcGktdGVncmEyMTAtcXVhZC5jDQo+ID4gKysrIGIvZHJpdmVycy9z
+cGkvc3BpLXRlZ3JhMjEwLXF1YWQuYw0KPiA+IEBAIC0xNDIsNiArMTQyLDcgQEANCj4gPg0KPiA+
+ICAgI2RlZmluZSBRU1BJX0dMT0JBTF9DT05GSUcJCQkwWDFhNA0KPiA+ICAgI2RlZmluZSBRU1BJ
+X0NNQl9TRVFfRU4JCQkJQklUKDApDQo+ID4gKyNkZWZpbmUgUVNQSV9UUE1fV0FJVF9QT0xMX0VO
+CQkJQklUKDEpDQo+ID4NCj4gPiAgICNkZWZpbmUgUVNQSV9DTUJfU0VRX0FERFIJCQkweDFhOA0K
+PiA+ICAgI2RlZmluZSBRU1BJX0FERFJFU1NfVkFMVUVfU0VUKFgpCQkoKCh4KSAmIDB4RkZGRikg
+PDwgMCkNCj4gPiBAQCAtMTY1LDExICsxNjYsMTMgQEAgc3RydWN0IHRlZ3JhX3FzcGlfc29jX2Rh
+dGEgew0KPiA+ICAgCWJvb2wgaGFzX2RtYTsNCj4gPiAgIAlib29sIGNtYl94ZmVyX2NhcGFibGU7
+DQo+ID4gICAJYm9vbCBjc19jb3VudDsNCj4gPiArCWJvb2wgaGFzX3dhaXRfcG9sbGluZzsNCj4g
+PiAgIH07DQo+ID4NCj4gPiAgIHN0cnVjdCB0ZWdyYV9xc3BpX2NsaWVudF9kYXRhIHsNCj4gPiAg
+IAlpbnQgdHhfY2xrX3RhcF9kZWxheTsNCj4gPiAgIAlpbnQgcnhfY2xrX3RhcF9kZWxheTsNCj4g
+PiArCWJvb2wgd2FpdF9wb2xsaW5nOw0KPiA+ICAgfTsNCj4gPg0KPiA+ICAgc3RydWN0IHRlZ3Jh
+X3FzcGkgew0KPiA+IEBAIC04MzMsNiArODM2LDExIEBAIHN0YXRpYyB1MzIgdGVncmFfcXNwaV9z
+ZXR1cF90cmFuc2Zlcl9vbmUoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSwgc3RydWN0IHNwaV90cmFu
+DQo+ID4gICAJCWVsc2UNCj4gPiAgIAkJCWNvbW1hbmQxIHw9IFFTUElfQ09OVFJPTF9NT0RFXzA7
+DQo+ID4NCj4gPiArCQlpZiAodHFzcGktPnNvY19kYXRhLT5jbWJfeGZlcl9jYXBhYmxlKQ0KPiA+
+ICsJCQljb21tYW5kMSAmPSB+UVNQSV9DU19TV19IVzsNCj4gPiArCQllbHNlDQo+ID4gKwkJCWNv
+bW1hbmQxIHw9IFFTUElfQ1NfU1dfSFc7DQo+ID4gKw0KPiA+ICAgCQlpZiAoc3BpLT5tb2RlICYg
+U1BJX0NTX0hJR0gpDQo+ID4gICAJCQljb21tYW5kMSB8PSBRU1BJX0NTX1NXX1ZBTDsNCj4gPiAg
+IAkJZWxzZQ0KPiA+IEBAIC05MTcsNiArOTI1LDcgQEAgc3RhdGljIGludCB0ZWdyYV9xc3BpX3N0
+YXJ0X3RyYW5zZmVyX29uZShzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpLA0KPiA+DQo+ID4gICBzdGF0
+aWMgc3RydWN0IHRlZ3JhX3FzcGlfY2xpZW50X2RhdGEgKnRlZ3JhX3FzcGlfcGFyc2VfY2RhdGFf
+ZHQoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSkNCj4gPiAgIHsNCj4gPiArCXN0cnVjdCB0ZWdyYV9x
+c3BpICp0cXNwaSA9IHNwaV9tYXN0ZXJfZ2V0X2RldmRhdGEoc3BpLT5tYXN0ZXIpOw0KPiA+ICAg
+CXN0cnVjdCB0ZWdyYV9xc3BpX2NsaWVudF9kYXRhICpjZGF0YTsNCj4gPg0KPiA+ICAgCWNkYXRh
+ID0gZGV2bV9remFsbG9jKCZzcGktPmRldiwgc2l6ZW9mKCpjZGF0YSksIEdGUF9LRVJORUwpOw0K
+PiA+IEBAIC05MjcsNiArOTM2LDExIEBAIHN0YXRpYyBzdHJ1Y3QgdGVncmFfcXNwaV9jbGllbnRf
+ZGF0YSAqdGVncmFfcXNwaV9wYXJzZV9jZGF0YV9kdChzdHJ1Y3Qgc3BpX2RldmljDQo+ID4gICAJ
+CQkJICZjZGF0YS0+dHhfY2xrX3RhcF9kZWxheSk7DQo+ID4gICAJZGV2aWNlX3Byb3BlcnR5X3Jl
+YWRfdTMyKCZzcGktPmRldiwgIm52aWRpYSxyeC1jbGstdGFwLWRlbGF5IiwNCj4gPiAgIAkJCQkg
+JmNkYXRhLT5yeF9jbGtfdGFwX2RlbGF5KTsNCj4gPiArCWlmICh0cXNwaS0+c29jX2RhdGEtPmhh
+c193YWl0X3BvbGxpbmcpDQo+ID4gKwkJY2RhdGEtPndhaXRfcG9sbGluZyA9IGRldmljZV9wcm9w
+ZXJ0eV9yZWFkX2Jvb2wNCj4gPiArCQkJCQkoJnNwaS0+ZGV2LA0KPiA+ICsJCQkJCSAibnZpZGlh
+LHdhaXQtcG9sbGluZyIpOw0KPiA+ICsNCj4gDQo+IA0KPiBUaGlzIGxvb2tzIG9kZC4gV2h5IGRv
+IHdlIG5lZWQgdGhpcyBkZXZpY2UtdHJlZSBwcm9wZXJ0eSBpZiBpdCBpcw0KPiBhbHJlYWR5IHNw
+ZWNpZmllZCBpbiB0aGUgU29DIGRhdGE/DQpTb2MgZGF0YSBzcGVjaWZpZXMgY2hpcCBpcyBjYXBh
+YmxlIG9mIHdhaXQtcG9sbGluZy4NCldhaXQgcG9sbGluZyBzdGlsbCBoYXMgdG8gYmUgc2VsZWN0
+ZWQgb24gc2xhdmUgZGV2aWNlcyB0aGF0IGNhbiBzdXBwb3J0IGl0Lg0KSSB3aWxsIGFkZCBvbmUg
+bGluZSBkZXNjcmlwdGlvbiBmb3IgdGhlIHByb3BlcnRpZXMgaW4gbmV4dCB2ZXJzaW9uLg0KPiAN
+Cj4gSm9uDQo+IA0KPiAtLQ0KPiBudnB1YmxpYw0K

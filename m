@@ -2,118 +2,129 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9CD73C433FE
-	for <linux-spi@archiver.kernel.org>; Thu, 17 Mar 2022 16:24:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 41FF1C433EF
+	for <linux-spi@archiver.kernel.org>; Thu, 17 Mar 2022 16:49:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236530AbiCQQZt (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 17 Mar 2022 12:25:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34326 "EHLO
+        id S236623AbiCQQvL (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 17 Mar 2022 12:51:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236516AbiCQQZp (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 17 Mar 2022 12:25:45 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 231C9C748B;
-        Thu, 17 Mar 2022 09:24:28 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DA233165C;
-        Thu, 17 Mar 2022 09:24:27 -0700 (PDT)
-Received: from donnerap.arm.com (donnerap.cambridge.arm.com [10.1.196.172])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E36B13FA1C;
-        Thu, 17 Mar 2022 09:24:25 -0700 (PDT)
-From:   Andre Przywara <andre.przywara@arm.com>
-To:     Maxime Ripard <mripard@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Samuel Holland <samuel@sholland.org>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Mesih Kilinc <mesihkilinc@gmail.com>,
-        Icenowy Zheng <icenowy@aosc.io>,
-        Jesse Taube <mr.bossman075@gmail.com>,
-        Giulio Benetti <giulio.benetti@benettiengineering.com>,
-        George Hilliard <thirtythreeforty@gmail.com>,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-sunxi@lists.linux.dev, Mark Brown <broonie@kernel.org>,
-        linux-spi@vger.kernel.org
-Subject: [PATCH v2 11/12] ARM: dts: suniv: F1C100: add SPI support
-Date:   Thu, 17 Mar 2022 16:23:48 +0000
-Message-Id: <20220317162349.739636-12-andre.przywara@arm.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220317162349.739636-1-andre.przywara@arm.com>
-References: <20220317162349.739636-1-andre.przywara@arm.com>
+        with ESMTP id S232196AbiCQQvK (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 17 Mar 2022 12:51:10 -0400
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5594F20A94E;
+        Thu, 17 Mar 2022 09:49:53 -0700 (PDT)
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 22HGnV6B012906;
+        Thu, 17 Mar 2022 11:49:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1647535771;
+        bh=+aNB9KHNL1PTMNUTpdQe7rMub1NeQ/aOpyqSHiNlDt4=;
+        h=Date:Subject:To:CC:References:From:In-Reply-To;
+        b=WAzERI4+ZGn+2aQoq1WNPad9nvnMv9/ma9CauR3UQ9K2RC4j5KzbicgEchYsr/23Y
+         nxSryQLyTxxzfxez4mspNAdP1DmUS3hENsebv3bjM/Fujn7FVP4sWlQ/4MQn1LlNTt
+         llZfIqRapCAnKp4ZrkBpICUqJmjJDqXZBpB2G9zI=
+Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 22HGnVHP072116
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 17 Mar 2022 11:49:31 -0500
+Received: from DLEE100.ent.ti.com (157.170.170.30) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Thu, 17
+ Mar 2022 11:49:31 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE100.ent.ti.com
+ (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
+ Frontend Transport; Thu, 17 Mar 2022 11:49:31 -0500
+Received: from [10.250.234.22] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 22HGnQdg028012;
+        Thu, 17 Mar 2022 11:49:27 -0500
+Message-ID: <d755a917-7763-764e-7030-3afd5154053c@ti.com>
+Date:   Thu, 17 Mar 2022 22:19:25 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH v2 0/6] spi-mem: Allow specifying the byte order in DTR
+ mode
+Content-Language: en-US
+To:     David Laight <David.Laight@ACULAB.COM>,
+        "'Michael Walle'" <michael@walle.cc>
+CC:     Tudor Ambarus <tudor.ambarus@microchip.com>,
+        "p.yadav@ti.com" <p.yadav@ti.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
+        "richard@nod.at" <richard@nod.at>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "nicolas.ferre@microchip.com" <nicolas.ferre@microchip.com>
+References: <20220311080147.453483-1-tudor.ambarus@microchip.com>
+ <76eb13b6-9263-975f-3196-312259634301@ti.com>
+ <b60064231d33581c20279172cf8f765e@walle.cc>
+ <0f271365-354b-82e2-02a2-9d69a6ac85b1@ti.com>
+ <9bc530d1fdaf4490a00fee150f963ac7@AcuMS.aculab.com>
+ <bc2083a8903fdabc65083f7e5232ca2d@walle.cc>
+ <8b765d24cb9a422bb383aad07251b65f@AcuMS.aculab.com>
+ <c17fe9c6-0757-dbb6-6efb-69d05d7ff589@ti.com>
+ <fcae2d955b3f43af8d64f1aa50fbc685@AcuMS.aculab.com>
+From:   Vignesh Raghavendra <vigneshr@ti.com>
+In-Reply-To: <fcae2d955b3f43af8d64f1aa50fbc685@AcuMS.aculab.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The F1C100 series contains two SPI controllers, and many boards use SPI0
-for a SPI flash, as the BROM is able to boot from that.
 
-Describe the two controllers in the SoC .dtsi, and also add the PortC
-pins for SPI0, since this is where BROM looks at when trying to boot
-from the commonly used SPI flash.
 
-The SPI controller seems to be the same as in the H3 chips, but it lacks
-a separate mod clock. The manual says it's connected to AHB directly.
-We don't export that AHB clock directly, but can use the AHB *gate* clock
-as a clock source, since the SPI driver is not supposed to change the AHB
-frequency anyway.
+On 17/03/22 4:40 pm, David Laight wrote:
+> From: Vignesh Raghavendra
+>> Sent: 17 March 2022 10:24
+> ...
+>> Modern OSPI/QSPI flash controllers provide MMIO interface to read from
+>> flash where DMA can pull data as if though you are reading from On chip RAM
+> 
+> So the cpu does an MMIO read cycle to the controller which doesn't
+> complete until (for the nibble-mode spi device I have):
+> 1) Chipselect is asserted.
+> 2) The 8-bit command has been clocked out.
+> 3) The 32bit address have been clocked out (8 clocks in nibbles).
+> 4) A few (probably 4) extra delay clocks are added.
+> 5) The data is read - 8 clocks for 32bits in nibble mode.
+> 6) Chipselect is removed.
+> 
+> Now you can do long sequential reads without all the red tape.
+> But a random read in nibble mode is about 30 clocks.
+> 16 bit mode saves 6 clocks for the data and maybe 6 for the address?
+> 
+> The controller could do 'clever stuff' for sequential reads.
+> At a cost of slowing down random reads.
+> 
+> So even at 400MHz it isn't that fast.
 
-Signed-off-by: Andre Przywara <andre.przywara@arm.com>
----
- arch/arm/boot/dts/suniv-f1c100s.dtsi | 33 ++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+Random CPU reads would be inherently slow, its just how HW is.
 
-diff --git a/arch/arm/boot/dts/suniv-f1c100s.dtsi b/arch/arm/boot/dts/suniv-f1c100s.dtsi
-index 59e0bd952f50..0edc1724407b 100644
---- a/arch/arm/boot/dts/suniv-f1c100s.dtsi
-+++ b/arch/arm/boot/dts/suniv-f1c100s.dtsi
-@@ -69,6 +69,34 @@ otg_sram: sram-section@0 {
- 			};
- 		};
- 
-+		spi0: spi@1c05000 {
-+			compatible = "allwinner,suniv-f1c100s-spi",
-+				     "allwinner,sun8i-h3-spi";
-+			reg = <0x01c05000 0x1000>;
-+			interrupts = <10>;
-+			clocks = <&ccu CLK_BUS_SPI0>, <&ccu CLK_BUS_SPI0>;
-+			clock-names = "ahb", "mod";
-+			resets = <&ccu RST_BUS_SPI0>;
-+			status = "disabled";
-+			num-cs = <1>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+		};
-+
-+		spi1: spi@1c06000 {
-+			compatible = "allwinner,suniv-f1c100s-spi",
-+				     "allwinner,sun8i-h3-spi";
-+			reg = <0x01c06000 0x1000>;
-+			interrupts = <11>;
-+			clocks = <&ccu CLK_BUS_SPI1>, <&ccu CLK_BUS_SPI1>;
-+			clock-names = "ahb", "mod";
-+			resets = <&ccu RST_BUS_SPI1>;
-+			status = "disabled";
-+			num-cs = <1>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+		};
-+
- 		mmc0: mmc@1c0f000 {
- 			compatible = "allwinner,suniv-f1c100s-mmc",
- 				     "allwinner,sun7i-a20-mmc";
-@@ -138,6 +166,11 @@ mmc0_pins: mmc0-pins {
- 				drive-strength = <30>;
- 			};
- 
-+			spi0_pc_pins: spi0-pc-pins {
-+				pins = "PC0", "PC1", "PC2", "PC3";
-+				function = "spi0";
-+			};
-+
- 			uart0_pe_pins: uart0-pe-pins {
- 				pins = "PE0", "PE1";
- 				function = "uart0";
--- 
-2.25.1
+But, there are cases like image load from flash and Filesystem over
+flash which would use DMA to maximize performance, such cases would be
+greatly affected if we do SW byte swap
 
+> 
+> If the MMIO interface to the flash controller is PCIe you can
+> add in a load of extra latency for the cpu read itself.
+> 
+> While PCIe allows multiple read requests to be outstanding,
+> the Intel cpu I've looked at serialise the reads from each
+> cpu core (each cpu always uses the same TLP tag).
+> 
+> Now longer read TLP help a lot (IIRC max is 256 bytes).
+> But the x86 cpu will only generate read TLP for register reads.
+> You need to use AVX512 registers (or cache line fetches) to
+> get better throughput!
+> 
+
+Direct CPU fetch from SPI would not be able to make use of full
+Bandwidth for high speed flashes and its not the only usecase.
+
+Regards
+Vignesh

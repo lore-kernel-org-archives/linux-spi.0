@@ -2,97 +2,194 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D6BA3C433F5
-	for <linux-spi@archiver.kernel.org>; Thu, 17 Mar 2022 09:19:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A92B0C433EF
+	for <linux-spi@archiver.kernel.org>; Thu, 17 Mar 2022 09:27:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230515AbiCQJUu (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 17 Mar 2022 05:20:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51786 "EHLO
+        id S230413AbiCQJ2p (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 17 Mar 2022 05:28:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230508AbiCQJUt (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 17 Mar 2022 05:20:49 -0400
-X-Greylist: delayed 2187 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 17 Mar 2022 02:19:34 PDT
-Received: from mail.kapsi.fi (mail.kapsi.fi [IPv6:2001:67c:1be8::25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 039C7340D3
-        for <linux-spi@vger.kernel.org>; Thu, 17 Mar 2022 02:19:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=kapsi.fi;
-         s=20161220; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=qebBj+gkc2kvx9ifqFk+dfJTkCNI1DqTF7SnP32Vuks=; b=ZNJJWv2ZbPFVF2LACX980lcIsM
-        UsQmGVp8skm6bSyA8lOWxxJOq+O4BplK76ULd6lo/DUg7r3uh4EdpnBTmkgvD3I/fMUHVeW+hYzwV
-        3lXDMAkXt/6PKg41/gAEJ4GQfgYavL/kPj9PzT299BpPLllQfPr2IqnnEW6XJEqGFw9dSODtJqlfI
-        jl+nSYzp7JPODWmmScSnmjkbk+Mhqul3wZhdqt9UsHFlBEWBHcsesZIB9xca+it3IAh5UCfAmjp4n
-        nZiX57FoL3TMC5S+7I4yIB8qAkyyFp/8F6BLI4u1kxPufseFpzqd4CgUyOK7vQ2PAQarg/hthpcAz
-        W5WfA9ig==;
-Received: from 91-158-25-70.elisa-laajakaista.fi ([91.158.25.70] helo=[192.168.1.10])
-        by mail.kapsi.fi with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <cyndis@kapsi.fi>)
-        id 1nUlim-0003mn-Ta; Thu, 17 Mar 2022 10:43:00 +0200
-Message-ID: <8dff97ca-6de5-fa52-bdb8-49b11beddc16@kapsi.fi>
-Date:   Thu, 17 Mar 2022 10:42:59 +0200
+        with ESMTP id S229457AbiCQJ2o (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 17 Mar 2022 05:28:44 -0400
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 438451D4C0B;
+        Thu, 17 Mar 2022 02:27:25 -0700 (PDT)
+X-UUID: d1ba9e9be6124dc793fbad94c5fc3cae-20220317
+X-UUID: d1ba9e9be6124dc793fbad94c5fc3cae-20220317
+Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw01.mediatek.com
+        (envelope-from <leilk.liu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1914048782; Thu, 17 Mar 2022 17:27:23 +0800
+Received: from mtkexhb01.mediatek.inc (172.21.101.102) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
+ Thu, 17 Mar 2022 17:27:21 +0800
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by mtkexhb01.mediatek.inc
+ (172.21.101.102) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Thu, 17 Mar
+ 2022 17:27:21 +0800
+Received: from mhfsdcap04 (10.17.3.154) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Thu, 17 Mar 2022 17:27:20 +0800
+Message-ID: <602f93f020967789eff49e2fd821d1b03f5b009f.camel@mediatek.com>
+Subject: Re: [PATCH V4 4/6] spi: mediatek: add spi memory support for ipm
+ design
+From:   Leilk Liu <leilk.liu@mediatek.com>
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        "Mark Brown" <broonie@kernel.org>
+CC:     Rob Herring <robh+dt@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-spi@vger.kernel.org>, <linux-mediatek@lists.infradead.org>
+Date:   Thu, 17 Mar 2022 17:27:20 +0800
+In-Reply-To: <b237c1fe-9ddd-0a2e-ecf2-05bfb984c5dd@collabora.com>
+References: <20220315032411.2826-1-leilk.liu@mediatek.com>
+         <20220315032411.2826-5-leilk.liu@mediatek.com>
+         <b237c1fe-9ddd-0a2e-ecf2-05bfb984c5dd@collabora.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.1
-Subject: Re: [PATCH 3/3] spi: dt-bindings: Add wait state polling flag
-Content-Language: en-US
-To:     Krishna Yarlagadda <kyarlagadda@nvidia.com>, broonie@kernel.org,
-        thierry.reding@gmail.com, jonathanh@nvidia.com,
-        linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org,
-        ashishsingha@nvidia.com
-Cc:     skomatineni@nvidia.com, ldewangan@nvidia.com, robh+dt@kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20220317012006.15080-1-kyarlagadda@nvidia.com>
- <20220317012006.15080-4-kyarlagadda@nvidia.com>
-From:   Mikko Perttunen <cyndis@kapsi.fi>
-In-Reply-To: <20220317012006.15080-4-kyarlagadda@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 91.158.25.70
-X-SA-Exim-Mail-From: cyndis@kapsi.fi
-X-SA-Exim-Scanned: No (on mail.kapsi.fi); SAEximRunCond expanded to false
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On 3/17/22 03:20, Krishna Yarlagadda wrote:
-> Add flag to enable tpm wait state polling and Tegra Grace binding.
+On Tue, 2022-03-15 at 10:31 +0100, AngeloGioacchino Del Regno wrote:
+> Il 15/03/22 04:24, Leilk Liu ha scritto:
+> > this patch add the support of spi-mem for ipm design.
+> > 
+> > Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
+> > ---
+> >   drivers/spi/spi-mt65xx.c | 349
+> > ++++++++++++++++++++++++++++++++++++++-
+> >   1 file changed, 348 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
+> > index 1a0b3208dfca..8958c3fa4fea 100644
+> > --- a/drivers/spi/spi-mt65xx.c
+> > +++ b/drivers/spi/spi-mt65xx.c
 > 
-> Signed-off-by: Krishna Yarlagadda <kyarlagadda@nvidia.com>
-> ---
->   .../devicetree/bindings/spi/nvidia,tegra210-quad.yaml       | 6 ++++++
->   1 file changed, 6 insertions(+)
+> ...snip...
 > 
-> diff --git a/Documentation/devicetree/bindings/spi/nvidia,tegra210-quad.yaml b/Documentation/devicetree/bindings/spi/nvidia,tegra210-quad.yaml
-> index 0296edd1de22..88b00fcad210 100644
-> --- a/Documentation/devicetree/bindings/spi/nvidia,tegra210-quad.yaml
-> +++ b/Documentation/devicetree/bindings/spi/nvidia,tegra210-quad.yaml
-> @@ -20,6 +20,7 @@ properties:
->         - nvidia,tegra186-qspi
->         - nvidia,tegra194-qspi
->         - nvidia,tegra234-qspi
-> +      - nvidia,tegra-grace-qspi
+> > +
+> > +static void of_mtk_spi_parse_dt(struct spi_master *master, struct
+> > device_node *nc)
+> > +{
+> > +	struct mtk_spi *mdata = spi_master_get_devdata(master);
+> > +	u32 value;
+> > +
+> > +	if (!of_property_read_u32(nc, "spi-tx-bus-width", &value)) {
+> 
+> Hello Leilk,
+> 
+> thanks for considering my advice about "spi-{tx,rx}-bus-width", but
+> there's
+> something that you have misunderstood about it.
+> 
+> Simply, you don't need this function at all. Whatever you are doing
+> here is
+> already being performed in the Linux SPI framework: at the end of the
+> probe
+> function, this driver is calling the (legacy)
+> devm_spi_register_master(),
+> which calls devm_spi_register_controller().
+> 
+> In drivers/spi/spi.c, function spi_register_controller(), will in
+> turn call
+> of_register_spi_devices(ctlr) -> of_register_spi_device(ctlr, nc)...
+> that
+> will end up finally calling function of_spi_parse_dt(ctlr, spi, nc).
+> 
+> The last mentioned function already contains the logic and setup to
+> check
+> devicetree properties "spi-tx-bus-width" and "spi-rx-bus-width" (and
+> some
+> others, as well).
+> 
+> This means that spi-mt65xx.c already probed these even before your
+> IPM
+> implementation, hence ***function of_mtk_spi_parse_dt() is not
+> needed***.
+> 
+> Simply drop it and don't check for these properties: that's already
+> done.
+> 
+> 
+> Regards,
+> Angelo
+> 
+Hi Angelo,
 
-nvidia,tegra241-qspi. Similarly in other places that refer to the chip name.
+Thanks for your advice.
 
-Mikko
+There are two spi controllor on MT7986. One supports single/dual mode,
+the other supports quad mode. Both of them can support spi memory
+framework(one's tx/rx bus width is 1/2, the other one's tx/rx bus width
+is 1/2/4). 
 
->   
->     reg:
->       maxItems: 1
-> @@ -57,6 +58,11 @@ patternProperties:
->         spi-tx-bus-width:
->           enum: [1, 2, 4]
->   
-> +      nvidia,wait-polling:
-> +        description:
-> +          Enable TPM wait state polling on supported chips.
-> +	type: boolean
-> +
->         nvidia,tx-clk-tap-delay:
->           description:
->             Delays the clock going out to device with this tap value.
+Can I use of_mtk_spi_parse_dt() to parse the information? What's your
+suggestion?
+
+Thanks!
+
+
+> > +		switch (value) {
+> > +		case 1:
+> > +			break;
+> > +		case 2:
+> > +			master->mode_bits |= SPI_TX_DUAL;
+> > +			break;
+> > +		case 4:
+> > +			master->mode_bits |= SPI_TX_QUAD;
+> > +			break;
+> > +		default:
+> > +			dev_warn(mdata->dev,
+> > +				 "spi-tx-bus-width %d not supported\n",
+> > +				value);
+> > +			break;
+> > +		}
+> > +	}
+> > +
+> > +	if (!of_property_read_u32(nc, "spi-rx-bus-width", &value)) {
+> > +		switch (value) {
+> > +		case 1:
+> > +			break;
+> > +		case 2:
+> > +			master->mode_bits |= SPI_RX_DUAL;
+> > +			break;
+> > +		case 4:
+> > +			master->mode_bits |= SPI_RX_QUAD;
+> > +			break;
+> > +		case 8:
+> > +			master->mode_bits |= SPI_RX_OCTAL;
+> > +			break;
+> > +		default:
+> > +			dev_warn(mdata->dev,
+> > +				 "spi-rx-bus-width %d not supported\n",
+> > +				value);
+> > +			break;
+> > +		}
+> > +	}
+> > +}
+> > +
+> >   static int mtk_spi_probe(struct platform_device *pdev)
+> >   {
+> >   	struct spi_master *master;
+> > @@ -830,6 +1170,13 @@ static int mtk_spi_probe(struct
+> > platform_device *pdev)
+> >   	if (mdata->dev_comp->ipm_design)
+> >   		master->mode_bits |= SPI_LOOP;
+> >   
+> > +	if (mdata->dev_comp->ipm_design) {
+> > +		mdata->dev = &pdev->dev;
+> > +		master->mem_ops = &mtk_spi_mem_ops;
+> > +		of_mtk_spi_parse_dt(master, pdev->dev.of_node);
+> > +		init_completion(&mdata->spimem_done);
+> > +	}
+> > +
+> >   	if (mdata->dev_comp->need_pad_sel) {
+> >   		mdata->pad_num = of_property_count_u32_elems(
+> >   			pdev->dev.of_node,
 

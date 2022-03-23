@@ -2,172 +2,88 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 805F1C4332F
-	for <linux-spi@archiver.kernel.org>; Wed, 23 Mar 2022 14:02:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E55EAC433EF
+	for <linux-spi@archiver.kernel.org>; Wed, 23 Mar 2022 14:02:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244618AbiCWOEJ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 23 Mar 2022 10:04:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59592 "EHLO
+        id S243138AbiCWOER (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 23 Mar 2022 10:04:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244635AbiCWOEG (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 23 Mar 2022 10:04:06 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E370D7EA18;
-        Wed, 23 Mar 2022 07:02:34 -0700 (PDT)
+        with ESMTP id S244540AbiCWOEO (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 23 Mar 2022 10:04:14 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59E227EA36;
+        Wed, 23 Mar 2022 07:02:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1648044156; x=1679580156;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=VfQvSnfBEM1D70TX51wsgIozq39RVuCScR8TXh6ANO0=;
-  b=gKgSb8FrLrpC+0ZLvw5XTd5VDb+rgTt0HZNUThFwG+yqK6IjBcIF/knB
-   rPKFjJW3Ty+0IjsxVzo6mja8abd/ybQELW6EIpmS12CSZFWpQ7WU664/M
-   6rBzLqrW64I1FdzKrwxdvAOycurOAHAPVKCWl6CwsfxRTlQUDYAHh9/mR
-   dj01xC9hB3KJUco24YmGL6T+EYH9hd3Wxmtjw5Ht1xfeRPlF9SSYrvsQq
-   lP4qybv7jYd207E6+GEgAjPjKF3vJxx2nZMZSkEFeNu3JXPql5Rn1+T1Z
-   Zw08GYE1Vn+MwjeIe/COIHQgqjRT3u1qN+yGS0Kkm7oC65TTnQMbGopyy
+  t=1648044165; x=1679580165;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=4sgeijGceUMtFiNi8CbAsikud7SBu6t9v97p4z5Rf9E=;
+  b=IQDPTna+wUsNikgKk2/ilBySVBpPbg1nC74xaqNKbfaQoyTRI1PUoitg
+   K6nQvTFR2vIC762QsYP5Q6y27aGmjJXo1YLzrLVWKHQh6AmItO9OJYGPr
+   oW51HOxW4cUnwq/NMtGzi1lBBccNKrO5YY0yJs455vHqdXK5irueCHhFN
+   tzZtUdv3d9zSN/YbzdNkLOSKFUAkLz9rmzpRtyzIxfWM5BQCnJO+/SxeM
+   U39nGGn+4qu9rnJ3nzkgiOnv22jDt/ds1yoavQo/DxFGqMdrTJ4oA47GH
+   2808WWctg0kTy2Z7iI1Q4JpqhbEr3biTV/nU2Br0bF3t0wz/jvXIK6Puu
    w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10294"; a="256938318"
+X-IronPort-AV: E=McAfee;i="6200,9189,10294"; a="238058428"
 X-IronPort-AV: E=Sophos;i="5.90,204,1643702400"; 
-   d="scan'208";a="256938318"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2022 07:01:59 -0700
+   d="scan'208";a="238058428"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2022 07:01:59 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.90,204,1643702400"; 
-   d="scan'208";a="825321754"
+   d="scan'208";a="515786170"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga005.fm.intel.com with ESMTP; 23 Mar 2022 07:01:57 -0700
+  by orsmga002.jf.intel.com with ESMTP; 23 Mar 2022 07:01:57 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id F40B92A6; Wed, 23 Mar 2022 16:02:17 +0200 (EET)
+        id DA9481D9; Wed, 23 Mar 2022 16:02:17 +0200 (EET)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc:     Mark Brown <broonie@kernel.org>
-Subject: [PATCH v1 3/4] spidev: Replace ACPI specific code by device_get_match_data()
-Date:   Wed, 23 Mar 2022 16:02:14 +0200
-Message-Id: <20220323140215.2568-3-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 1/4] spidev: Do not use atomic bit operations when allocating minor
+Date:   Wed, 23 Mar 2022 16:02:12 +0200
+Message-Id: <20220323140215.2568-1-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220323140215.2568-1-andriy.shevchenko@linux.intel.com>
-References: <20220323140215.2568-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Instead of calling the ACPI specific APIs, use device_get_match_data().
+There is no need to use atomic bit operations when allocating a minor
+number since it's done under a mutex. Moreover, one of the operations
+that is in use is non-atomic anyway.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/spi/spidev.c | 47 ++++++++++++++++++--------------------------
- 1 file changed, 19 insertions(+), 28 deletions(-)
+ drivers/spi/spidev.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index 125da8d0e719..13dea81b21be 100644
+index 53a551714265..daeaa4a30290 100644
 --- a/drivers/spi/spidev.c
 +++ b/drivers/spi/spidev.c
-@@ -8,19 +8,20 @@
-  */
- 
- #include <linux/init.h>
--#include <linux/module.h>
- #include <linux/ioctl.h>
- #include <linux/fs.h>
- #include <linux/device.h>
- #include <linux/err.h>
- #include <linux/list.h>
- #include <linux/errno.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/module.h>
- #include <linux/mutex.h>
-+#include <linux/property.h>
- #include <linux/slab.h>
- #include <linux/compat.h>
- #include <linux/of.h>
- #include <linux/of_device.h>
--#include <linux/acpi.h>
- 
- #include <linux/spi/spi.h>
- #include <linux/spi/spidev.h>
-@@ -709,10 +710,12 @@ static const struct of_device_id spidev_dt_ids[] = {
- MODULE_DEVICE_TABLE(of, spidev_dt_ids);
- #endif
- 
--#ifdef CONFIG_ACPI
--
- /* Dummy SPI devices not to be used in production systems */
--#define SPIDEV_ACPI_DUMMY	1
-+static int spidev_acpi_check(struct device *dev)
-+{
-+	dev_warn(dev, "do not use this driver in production systems!\n");
-+	return 0;
-+}
- 
- static const struct acpi_device_id spidev_acpi_ids[] = {
- 	/*
-@@ -721,35 +724,18 @@ static const struct acpi_device_id spidev_acpi_ids[] = {
- 	 * description of the connected peripheral and they should also use
- 	 * a proper driver instead of poking directly to the SPI bus.
- 	 */
--	{ "SPT0001", SPIDEV_ACPI_DUMMY },
--	{ "SPT0002", SPIDEV_ACPI_DUMMY },
--	{ "SPT0003", SPIDEV_ACPI_DUMMY },
-+	{ "SPT0001", (kernel_ulong_t)&spidev_acpi_check },
-+	{ "SPT0002", (kernel_ulong_t)&spidev_acpi_check },
-+	{ "SPT0003", (kernel_ulong_t)&spidev_acpi_check },
- 	{},
- };
- MODULE_DEVICE_TABLE(acpi, spidev_acpi_ids);
- 
--static void spidev_probe_acpi(struct spi_device *spi)
--{
--	const struct acpi_device_id *id;
--
--	if (!has_acpi_companion(&spi->dev))
--		return;
--
--	id = acpi_match_device(spidev_acpi_ids, &spi->dev);
--	if (WARN_ON(!id))
--		return;
--
--	if (id->driver_data == SPIDEV_ACPI_DUMMY)
--		dev_warn(&spi->dev, "do not use this driver in production systems!\n");
--}
--#else
--static inline void spidev_probe_acpi(struct spi_device *spi) {}
--#endif
--
- /*-------------------------------------------------------------------------*/
- 
- static int spidev_probe(struct spi_device *spi)
- {
-+	int (*match)(struct device *dev);
- 	struct spidev_data	*spidev;
- 	int			status;
- 	unsigned long		minor;
-@@ -764,7 +750,12 @@ static int spidev_probe(struct spi_device *spi)
- 		return -EINVAL;
+@@ -795,7 +795,7 @@ static int spidev_probe(struct spi_device *spi)
+ 		status = -ENODEV;
  	}
+ 	if (status == 0) {
+-		set_bit(minor, minors);
++		__set_bit(minor, minors);
+ 		list_add(&spidev->device_entry, &device_list);
+ 	}
+ 	mutex_unlock(&device_list_lock);
+@@ -823,7 +823,7 @@ static void spidev_remove(struct spi_device *spi)
  
--	spidev_probe_acpi(spi);
-+	match = device_get_match_data(&spi->dev);
-+	if (match) {
-+		status = match(&spi->dev);
-+		if (status)
-+			return status;
-+	}
- 
- 	/* Allocate driver data */
- 	spidev = kzalloc(sizeof(*spidev), GFP_KERNEL);
-@@ -834,7 +825,7 @@ static struct spi_driver spidev_spi_driver = {
- 	.driver = {
- 		.name =		"spidev",
- 		.of_match_table = of_match_ptr(spidev_dt_ids),
--		.acpi_match_table = ACPI_PTR(spidev_acpi_ids),
-+		.acpi_match_table = spidev_acpi_ids,
- 	},
- 	.probe =	spidev_probe,
- 	.remove =	spidev_remove,
+ 	list_del(&spidev->device_entry);
+ 	device_destroy(spidev_class, spidev->devt);
+-	clear_bit(MINOR(spidev->devt), minors);
++	__clear_bit(MINOR(spidev->devt), minors);
+ 	if (spidev->users == 0)
+ 		kfree(spidev);
+ 	mutex_unlock(&device_list_lock);
 -- 
 2.35.1
 

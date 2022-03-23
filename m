@@ -2,50 +2,50 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F1962C433F5
-	for <linux-spi@archiver.kernel.org>; Wed, 23 Mar 2022 14:02:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E9E98C433FE
+	for <linux-spi@archiver.kernel.org>; Wed, 23 Mar 2022 14:02:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236904AbiCWODs (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 23 Mar 2022 10:03:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59126 "EHLO
+        id S244571AbiCWODv (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 23 Mar 2022 10:03:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236909AbiCWODr (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 23 Mar 2022 10:03:47 -0400
+        with ESMTP id S241629AbiCWODt (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 23 Mar 2022 10:03:49 -0400
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3CA77EA34;
-        Wed, 23 Mar 2022 07:02:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 244737EA2A;
+        Wed, 23 Mar 2022 07:02:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1648044137; x=1679580137;
+  t=1648044140; x=1679580140;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=ze1002XyM8dK8szVuNAh2rfCJViHlNl/Z7OGWqP1oJY=;
-  b=h5z9RzxI3Km0N2aCDCmjHtg4y9up0F1LNkTha0B+ZYDluX51tSOCBDny
-   aOJfmpqkTNKsfQWlF+NYKSKFQI1AY25NcyiaDVeot/z61LyR+R02jxSN4
-   2baIXyYHoZhxvxBMXIV7fkv9nrpvR07Uz4QCvtoltYAzHoijrGDRqFUM3
-   B5PqlZuUFK90pGvB+cISMg+GxJMmZfV1SIAKJkUJwTKjmwZFSFcZi24td
-   97deriLRJr3JoF2FnNaH7ddOYqdyvBpArqPez5C9T45V6eqNjMAWcZLvc
-   WNdi9TovqkwdEG+8zKyhMO3TXXfis+kLao2an1uPvrVK2vhpD/+j+zEk8
-   Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10294"; a="258304807"
+  bh=6JzlOM0Zp9+nJWpyflWqezPxav66g3ZVKXHPUjsbyW8=;
+  b=J9x4eMkEvFxCiYjNs22Y4oOHlQeEc0E1PX55Fa35vyrF4jZEsfAu+jFG
+   4B3KgIe1z5nYpdrvFNsgXFPmLZYEBnLkF0xAxHq5aod01exlJDh/Q8/86
+   mPgv2ucYVyHL+si1+w31qYsQ50SlNF7PmQs5itQ55M1aQgmgNe+SNuntu
+   3z4FEoDCxXZ+3fg7VlRq0vmd6vpWGCBaOwcKGqyQI+7df6tNxv5woYyhG
+   cgXEaTP3GTatoAsKoQAO61k+IVpBASxH97zlofuTZgKup5MWbdJhwd6wh
+   KCCV3vslh6vNQFOTLlLYb0X4gH9U1Ok2tzp93CzhhFSZOFtqd/kFW4odP
+   g==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10294"; a="258304809"
 X-IronPort-AV: E=Sophos;i="5.90,204,1643702400"; 
-   d="scan'208";a="258304807"
+   d="scan'208";a="258304809"
 Received: from fmsmga006.fm.intel.com ([10.253.24.20])
   by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2022 07:01:59 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.90,204,1643702400"; 
-   d="scan'208";a="785796350"
+   d="scan'208";a="785796352"
 Received: from black.fi.intel.com ([10.237.72.28])
   by fmsmga006.fm.intel.com with ESMTP; 23 Mar 2022 07:01:57 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id E5E5518E; Wed, 23 Mar 2022 16:02:17 +0200 (EET)
+        id 09864252; Wed, 23 Mar 2022 16:02:18 +0200 (EET)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc:     Mark Brown <broonie@kernel.org>
-Subject: [PATCH v1 2/4] spidev: Convert BUILD_BUG_ON() to static_assert()
-Date:   Wed, 23 Mar 2022 16:02:13 +0200
-Message-Id: <20220323140215.2568-2-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 4/4] spidev: Replace OF specific code by device property API
+Date:   Wed, 23 Mar 2022 16:02:15 +0200
+Message-Id: <20220323140215.2568-4-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220323140215.2568-1-andriy.shevchenko@linux.intel.com>
 References: <20220323140215.2568-1-andriy.shevchenko@linux.intel.com>
@@ -55,34 +55,97 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-static_assert() is a preferred method to fail build when the certain
-constraints are not met. Convert BUILD_BUG_ON() to static_assert().
+Instead of calling the OF specific APIs, use device property ones.
+
+It also prevents misusing PRP0001 in ACPI when trying to instantiate
+spidev directly. We only support special SPI test devices there.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/spi/spidev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spidev.c | 45 ++++++++++++++++++++++----------------------
+ 1 file changed, 22 insertions(+), 23 deletions(-)
 
 diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index daeaa4a30290..125da8d0e719 100644
+index 13dea81b21be..ffa124665cf3 100644
 --- a/drivers/spi/spidev.c
 +++ b/drivers/spi/spidev.c
-@@ -46,6 +46,7 @@
+@@ -20,8 +20,6 @@
+ #include <linux/property.h>
+ #include <linux/slab.h>
+ #include <linux/compat.h>
+-#include <linux/of.h>
+-#include <linux/of_device.h>
  
- static DECLARE_BITMAP(minors, N_SPI_MINORS);
+ #include <linux/spi/spi.h>
+ #include <linux/spi/spidev.h>
+@@ -695,20 +693,31 @@ static const struct spi_device_id spidev_spi_ids[] = {
+ };
+ MODULE_DEVICE_TABLE(spi, spidev_spi_ids);
  
-+static_assert(N_SPI_MINORS > 0 && N_SPI_MINORS <= 256);
+-#ifdef CONFIG_OF
++/*
++ * spidev should never be referenced in DT without a specific compatible string,
++ * it is a Linux implementation thing rather than a description of the hardware.
++ */
++static int spidev_of_check(struct device *dev)
++{
++	if (device_property_match_string(dev, "compatible", "spidev") < 0)
++		return 0;
++
++	dev_err(dev, "spidev listed directly in DT is not supported\n");
++	return -EINVAL;
++}
++
+ static const struct of_device_id spidev_dt_ids[] = {
+-	{ .compatible = "rohm,dh2228fv" },
+-	{ .compatible = "lineartechnology,ltc2488" },
+-	{ .compatible = "semtech,sx1301" },
+-	{ .compatible = "lwn,bk4" },
+-	{ .compatible = "dh,dhcom-board" },
+-	{ .compatible = "menlo,m53cpld" },
+-	{ .compatible = "cisco,spi-petra" },
+-	{ .compatible = "micron,spi-authenta" },
++	{ .compatible = "rohm,dh2228fv", .data = &spidev_of_check },
++	{ .compatible = "lineartechnology,ltc2488", .data = &spidev_of_check },
++	{ .compatible = "semtech,sx1301", .data = &spidev_of_check },
++	{ .compatible = "lwn,bk4", .data = &spidev_of_check },
++	{ .compatible = "dh,dhcom-board", .data = &spidev_of_check },
++	{ .compatible = "menlo,m53cpld", .data = &spidev_of_check },
++	{ .compatible = "cisco,spi-petra", .data = &spidev_of_check },
++	{ .compatible = "micron,spi-authenta", .data = &spidev_of_check },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, spidev_dt_ids);
+-#endif
  
- /* Bit masks for spi_device.mode management.  Note that incorrect
-  * settings for some settings can cause *lots* of trouble for other
-@@ -856,7 +857,6 @@ static int __init spidev_init(void)
- 	 * that will key udev/mdev to add/remove /dev nodes.  Last, register
- 	 * the driver which manages those device numbers.
- 	 */
--	BUILD_BUG_ON(N_SPI_MINORS > 256);
- 	status = register_chrdev(SPIDEV_MAJOR, "spi", &spidev_fops);
- 	if (status < 0)
- 		return status;
+ /* Dummy SPI devices not to be used in production systems */
+ static int spidev_acpi_check(struct device *dev)
+@@ -740,16 +749,6 @@ static int spidev_probe(struct spi_device *spi)
+ 	int			status;
+ 	unsigned long		minor;
+ 
+-	/*
+-	 * spidev should never be referenced in DT without a specific
+-	 * compatible string, it is a Linux implementation thing
+-	 * rather than a description of the hardware.
+-	 */
+-	if (spi->dev.of_node && of_device_is_compatible(spi->dev.of_node, "spidev")) {
+-		dev_err(&spi->dev, "spidev listed directly in DT is not supported\n");
+-		return -EINVAL;
+-	}
+-
+ 	match = device_get_match_data(&spi->dev);
+ 	if (match) {
+ 		status = match(&spi->dev);
+@@ -824,7 +823,7 @@ static void spidev_remove(struct spi_device *spi)
+ static struct spi_driver spidev_spi_driver = {
+ 	.driver = {
+ 		.name =		"spidev",
+-		.of_match_table = of_match_ptr(spidev_dt_ids),
++		.of_match_table = spidev_dt_ids,
+ 		.acpi_match_table = spidev_acpi_ids,
+ 	},
+ 	.probe =	spidev_probe,
 -- 
 2.35.1
 

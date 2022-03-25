@@ -2,56 +2,56 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 18151C43217
-	for <linux-spi@archiver.kernel.org>; Fri, 25 Mar 2022 10:10:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 31851C43219
+	for <linux-spi@archiver.kernel.org>; Fri, 25 Mar 2022 10:10:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358719AbiCYKLa convert rfc822-to-8bit (ORCPT
+        id S1358730AbiCYKLb convert rfc822-to-8bit (ORCPT
         <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 25 Mar 2022 06:11:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33342 "EHLO
+        Fri, 25 Mar 2022 06:11:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353842AbiCYKL1 (ORCPT
+        with ESMTP id S1357855AbiCYKL1 (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Fri, 25 Mar 2022 06:11:27 -0400
 Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0228E57499;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02BED5749B;
         Fri, 25 Mar 2022 03:09:51 -0700 (PDT)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 22P79ikE011990;
-        Fri, 25 Mar 2022 10:09:09 GMT
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 22P9PGaH024658;
+        Fri, 25 Mar 2022 10:09:13 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 3f0sd4e322-1
+        by mx0b-001b2d01.pphosted.com with ESMTP id 3f0q5nt3r7-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 25 Mar 2022 10:09:08 +0000
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 22PA4wSI022939;
-        Fri, 25 Mar 2022 10:09:08 GMT
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 3f0sd4e30x-1
+        Fri, 25 Mar 2022 10:09:13 +0000
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 22P9OsiC006914;
+        Fri, 25 Mar 2022 10:09:12 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 3f0q5nt3qh-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 25 Mar 2022 10:09:08 +0000
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
-        by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 22P9xuIU023402;
-        Fri, 25 Mar 2022 10:09:06 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
-        by ppma04fra.de.ibm.com with ESMTP id 3ew6t8u170-1
+        Fri, 25 Mar 2022 10:09:12 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+        by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 22P9xLMM008133;
+        Fri, 25 Mar 2022 10:09:10 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+        by ppma04ams.nl.ibm.com with ESMTP id 3ew6t94x3k-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 25 Mar 2022 10:09:06 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-        by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 22PA93FE28180806
+        Fri, 25 Mar 2022 10:09:10 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
+        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 22PA98nc37552462
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 25 Mar 2022 10:09:03 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id CEDFA4C044;
-        Fri, 25 Mar 2022 10:09:03 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 293FE4C04A;
-        Fri, 25 Mar 2022 10:09:03 +0000 (GMT)
+        Fri, 25 Mar 2022 10:09:08 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 7F9DA11C052;
+        Fri, 25 Mar 2022 10:09:08 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id D2F2F11C04A;
+        Fri, 25 Mar 2022 10:09:07 +0000 (GMT)
 Received: from smtp.tlslab.ibm.com (unknown [9.101.4.1])
-        by d06av22.portsmouth.uk.ibm.com (Postfix) with SMTP;
-        Fri, 25 Mar 2022 10:09:03 +0000 (GMT)
+        by d06av25.portsmouth.uk.ibm.com (Postfix) with SMTP;
+        Fri, 25 Mar 2022 10:09:07 +0000 (GMT)
 Received: from yukon.ibmuc.com (unknown [9.171.95.248])
-        by smtp.tlslab.ibm.com (Postfix) with ESMTP id 8730A220121;
-        Fri, 25 Mar 2022 11:09:01 +0100 (CET)
+        by smtp.tlslab.ibm.com (Postfix) with ESMTP id 35E39220158;
+        Fri, 25 Mar 2022 11:09:06 +0100 (CET)
 From:   =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To:     linux-spi@vger.kernel.org, linux-mtd@lists.infradead.org
 Cc:     Mark Brown <broonie@kernel.org>,
@@ -67,9 +67,9 @@ Cc:     Mark Brown <broonie@kernel.org>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
         Tao Ren <rentao.bupt@gmail.com>
-Subject: [PATCH v4 06/11] spi: aspeed: Workaround AST2500 limitations
-Date:   Fri, 25 Mar 2022 11:08:44 +0100
-Message-Id: <20220325100849.2019209-7-clg@kaod.org>
+Subject: [PATCH v4 09/11] ARM: dts: aspeed: Enable Dual SPI RX transfers
+Date:   Fri, 25 Mar 2022 11:08:47 +0100
+Message-Id: <20220325100849.2019209-10-clg@kaod.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220325100849.2019209-1-clg@kaod.org>
 References: <20220325100849.2019209-1-clg@kaod.org>
@@ -77,62 +77,196 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8BIT
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Vr9KBTYkV2lf7SbNCeOzO07bOXmW3gQQ
-X-Proofpoint-ORIG-GUID: 6UxjmutcfKyqw4AT4F2r9mAtbUEivXFX
+X-Proofpoint-ORIG-GUID: 7MKjZb6aQeMwCG60lQWHdgVNTiGhn_4C
+X-Proofpoint-GUID: s6QnE5sEmAkQxrz_oiW6VunijzSKQYF6
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
  definitions=2022-03-25_02,2022-03-24_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 malwarescore=0
- suspectscore=0 mlxlogscore=999 bulkscore=0 priorityscore=1501
- clxscore=1034 impostorscore=0 phishscore=0 mlxscore=0 lowpriorityscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2203250057
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
+ clxscore=1034 impostorscore=0 suspectscore=0 adultscore=0 mlxlogscore=756
+ priorityscore=1501 lowpriorityscore=0 phishscore=0 bulkscore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2202240000
+ definitions=main-2203250057
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-It is not possible to configure a full 128MB window for a chip of the
-same size on the AST2500 SPI controller. For this case, the maximum
-window size is restricted to 120MB for CE0.
+All these controllers support at least Dual SPI. Update the DTs.
 
 Reviewed-by: Joel Stanley <joel@jms.id.au>
 Tested-by: Joel Stanley <joel@jms.id.au>
 Tested-by: Tao Ren <rentao.bupt@gmail.com>
 Signed-off-by: Cédric Le Goater <clg@kaod.org>
 ---
- drivers/spi/spi-aspeed-smc.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ arch/arm/boot/dts/aspeed-g4.dtsi | 6 ++++++
+ arch/arm/boot/dts/aspeed-g5.dtsi | 7 +++++++
+ arch/arm/boot/dts/aspeed-g6.dtsi | 8 ++++++++
+ 3 files changed, 21 insertions(+)
 
-diff --git a/drivers/spi/spi-aspeed-smc.c b/drivers/spi/spi-aspeed-smc.c
-index 9f7910e79ae8..ab6fa5cfad9c 100644
---- a/drivers/spi/spi-aspeed-smc.c
-+++ b/drivers/spi/spi-aspeed-smc.c
-@@ -443,6 +443,8 @@ static int aspeed_spi_set_window(struct aspeed_spi *aspi,
-  * - ioremap each window, not strictly necessary since the overall window
-  *   is correct.
-  */
-+static const struct aspeed_spi_data ast2500_spi_data;
-+
- static int aspeed_spi_chip_adjust_window(struct aspeed_spi_chip *chip,
- 					 u32 local_offset, u32 size)
- {
-@@ -451,6 +453,16 @@ static int aspeed_spi_chip_adjust_window(struct aspeed_spi_chip *chip,
- 	struct aspeed_spi_window *win = &windows[chip->cs];
- 	int ret;
- 
-+	/*
-+	 * Due to an HW issue on the AST2500 SPI controller, the CE0
-+	 * window size should be smaller than the maximum 128MB.
-+	 */
-+	if (aspi->data == &ast2500_spi_data && chip->cs == 0 && size == SZ_128M) {
-+		size = 120 << 20;
-+		dev_info(aspi->dev, "CE%d window resized to %dMB (AST2500 HW quirk)",
-+			 chip->cs, size >> 20);
-+	}
-+
- 	aspeed_spi_get_windows(aspi, windows);
- 
- 	/* Adjust this chip window */
+diff --git a/arch/arm/boot/dts/aspeed-g4.dtsi b/arch/arm/boot/dts/aspeed-g4.dtsi
+index 9ae67e83cf60..31e6569db97e 100644
+--- a/arch/arm/boot/dts/aspeed-g4.dtsi
++++ b/arch/arm/boot/dts/aspeed-g4.dtsi
+@@ -64,27 +64,32 @@ fmc: spi@1e620000 {
+ 			flash@0 {
+ 				reg = < 0 >;
+ 				compatible = "jedec,spi-nor";
++				spi-rx-bus-width = <2>;
+ 				spi-max-frequency = <50000000>;
+ 				status = "disabled";
+ 			};
+ 			flash@1 {
+ 				reg = < 1 >;
+ 				compatible = "jedec,spi-nor";
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 			flash@2 {
+ 				reg = < 2 >;
+ 				compatible = "jedec,spi-nor";
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 			flash@3 {
+ 				reg = < 3 >;
+ 				compatible = "jedec,spi-nor";
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 			flash@4 {
+ 				reg = < 4 >;
+ 				compatible = "jedec,spi-nor";
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 		};
+@@ -100,6 +105,7 @@ flash@0 {
+ 				reg = < 0 >;
+ 				compatible = "jedec,spi-nor";
+ 				spi-max-frequency = <50000000>;
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 		};
+diff --git a/arch/arm/boot/dts/aspeed-g5.dtsi b/arch/arm/boot/dts/aspeed-g5.dtsi
+index c3e0a8e13c8a..29bf017899b6 100644
+--- a/arch/arm/boot/dts/aspeed-g5.dtsi
++++ b/arch/arm/boot/dts/aspeed-g5.dtsi
+@@ -66,18 +66,21 @@ flash@0 {
+ 				reg = < 0 >;
+ 				compatible = "jedec,spi-nor";
+ 				spi-max-frequency = <50000000>;
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 			flash@1 {
+ 				reg = < 1 >;
+ 				compatible = "jedec,spi-nor";
+ 				spi-max-frequency = <50000000>;
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 			flash@2 {
+ 				reg = < 2 >;
+ 				compatible = "jedec,spi-nor";
+ 				spi-max-frequency = <50000000>;
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 		};
+@@ -93,12 +96,14 @@ flash@0 {
+ 				reg = < 0 >;
+ 				compatible = "jedec,spi-nor";
+ 				spi-max-frequency = <50000000>;
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 			flash@1 {
+ 				reg = < 1 >;
+ 				compatible = "jedec,spi-nor";
+ 				spi-max-frequency = <50000000>;
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 		};
+@@ -114,12 +119,14 @@ flash@0 {
+ 				reg = < 0 >;
+ 				compatible = "jedec,spi-nor";
+ 				spi-max-frequency = <50000000>;
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 			flash@1 {
+ 				reg = < 1 >;
+ 				compatible = "jedec,spi-nor";
+ 				spi-max-frequency = <50000000>;
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 		};
+diff --git a/arch/arm/boot/dts/aspeed-g6.dtsi b/arch/arm/boot/dts/aspeed-g6.dtsi
+index 1ad05dde19d2..ce93c56a21a7 100644
+--- a/arch/arm/boot/dts/aspeed-g6.dtsi
++++ b/arch/arm/boot/dts/aspeed-g6.dtsi
+@@ -106,18 +106,21 @@ flash@0 {
+ 				reg = < 0 >;
+ 				compatible = "jedec,spi-nor";
+ 				spi-max-frequency = <50000000>;
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 			flash@1 {
+ 				reg = < 1 >;
+ 				compatible = "jedec,spi-nor";
+ 				spi-max-frequency = <50000000>;
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 			flash@2 {
+ 				reg = < 2 >;
+ 				compatible = "jedec,spi-nor";
+ 				spi-max-frequency = <50000000>;
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 		};
+@@ -133,12 +136,14 @@ flash@0 {
+ 				reg = < 0 >;
+ 				compatible = "jedec,spi-nor";
+ 				spi-max-frequency = <50000000>;
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 			flash@1 {
+ 				reg = < 1 >;
+ 				compatible = "jedec,spi-nor";
+ 				spi-max-frequency = <50000000>;
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 		};
+@@ -154,18 +159,21 @@ flash@0 {
+ 				reg = < 0 >;
+ 				compatible = "jedec,spi-nor";
+ 				spi-max-frequency = <50000000>;
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 			flash@1 {
+ 				reg = < 1 >;
+ 				compatible = "jedec,spi-nor";
+ 				spi-max-frequency = <50000000>;
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 			flash@2 {
+ 				reg = < 2 >;
+ 				compatible = "jedec,spi-nor";
+ 				spi-max-frequency = <50000000>;
++				spi-rx-bus-width = <2>;
+ 				status = "disabled";
+ 			};
+ 		};
 -- 
 2.34.1
 

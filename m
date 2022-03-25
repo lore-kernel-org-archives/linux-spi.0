@@ -2,56 +2,56 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7470FC433EF
-	for <linux-spi@archiver.kernel.org>; Fri, 25 Mar 2022 10:10:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8BC88C433EF
+	for <linux-spi@archiver.kernel.org>; Fri, 25 Mar 2022 10:10:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358735AbiCYKLd convert rfc822-to-8bit (ORCPT
+        id S1358722AbiCYKLe convert rfc822-to-8bit (ORCPT
         <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 25 Mar 2022 06:11:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33498 "EHLO
+        Fri, 25 Mar 2022 06:11:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358712AbiCYKL3 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 25 Mar 2022 06:11:29 -0400
+        with ESMTP id S1358704AbiCYKL2 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 25 Mar 2022 06:11:28 -0400
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1693574A0;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8945457494;
         Fri, 25 Mar 2022 03:09:53 -0700 (PDT)
 Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 22P7AZZ2016746;
-        Fri, 25 Mar 2022 10:09:15 GMT
+        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 22PA28NN016760;
+        Fri, 25 Mar 2022 10:09:03 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3f0t9e4w9w-1
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3f0t9e4w47-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 25 Mar 2022 10:09:15 +0000
+        Fri, 25 Mar 2022 10:09:03 +0000
 Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 22P9v2aJ029411;
-        Fri, 25 Mar 2022 10:09:15 GMT
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 22PA1hnr014611;
+        Fri, 25 Mar 2022 10:09:02 GMT
 Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3f0t9e4w92-1
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3f0t9e4w38-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 25 Mar 2022 10:09:14 +0000
+        Fri, 25 Mar 2022 10:09:02 +0000
 Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
-        by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 22PA94FQ002679;
-        Fri, 25 Mar 2022 10:09:12 GMT
+        by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 22P9x5b8023209;
+        Fri, 25 Mar 2022 10:08:59 GMT
 Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
-        by ppma06fra.de.ibm.com with ESMTP id 3ew6ej333s-1
+        by ppma06fra.de.ibm.com with ESMTP id 3ew6ej333d-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 25 Mar 2022 10:09:12 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 22PA9Amu31457700
+        Fri, 25 Mar 2022 10:08:59 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 22PA8vmP35979620
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 25 Mar 2022 10:09:10 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 05E1EAE053;
-        Fri, 25 Mar 2022 10:09:10 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 5A2FFAE045;
-        Fri, 25 Mar 2022 10:09:09 +0000 (GMT)
+        Fri, 25 Mar 2022 10:08:57 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 58B744C044;
+        Fri, 25 Mar 2022 10:08:57 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id A2B784C040;
+        Fri, 25 Mar 2022 10:08:56 +0000 (GMT)
 Received: from smtp.tlslab.ibm.com (unknown [9.101.4.1])
-        by d06av26.portsmouth.uk.ibm.com (Postfix) with SMTP;
-        Fri, 25 Mar 2022 10:09:09 +0000 (GMT)
+        by d06av22.portsmouth.uk.ibm.com (Postfix) with SMTP;
+        Fri, 25 Mar 2022 10:08:56 +0000 (GMT)
 Received: from yukon.ibmuc.com (unknown [9.171.95.248])
-        by smtp.tlslab.ibm.com (Postfix) with ESMTP id C3077220121;
-        Fri, 25 Mar 2022 11:09:07 +0100 (CET)
+        by smtp.tlslab.ibm.com (Postfix) with ESMTP id EFEEE220121;
+        Fri, 25 Mar 2022 11:08:54 +0100 (CET)
 From:   =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To:     linux-spi@vger.kernel.org, linux-mtd@lists.infradead.org
 Cc:     Mark Brown <broonie@kernel.org>,
@@ -65,25 +65,26 @@ Cc:     Mark Brown <broonie@kernel.org>,
         Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>,
         devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Tao Ren <rentao.bupt@gmail.com>,
-        =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PATCH v4 10/11] ARM: dts: aspeed-g4: Set spi-max-frequency for all flashes
-Date:   Fri, 25 Mar 2022 11:08:48 +0100
-Message-Id: <20220325100849.2019209-11-clg@kaod.org>
+        =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+        Tao Ren <rentao.bupt@gmail.com>, Rob Herring <robh@kernel.org>
+Subject: [PATCH v4 02/11] dt-bindings: spi: Add Aspeed SMC controllers device tree binding
+Date:   Fri, 25 Mar 2022 11:08:40 +0100
+Message-Id: <20220325100849.2019209-3-clg@kaod.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220325100849.2019209-1-clg@kaod.org>
 References: <20220325100849.2019209-1-clg@kaod.org>
-MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: xGQYi3qNJbO3AWOcwviaj5AfQ_f4P8zQ
-X-Proofpoint-ORIG-GUID: vFsPwF6JcPNgmdIzh24HbP7Y22XtgJyv
+X-Proofpoint-GUID: q-27StTgKDb35ieqFiSdYeia6W_noiKn
+X-Proofpoint-ORIG-GUID: kCf6gJuDrwltAHACiC67eMfQ65Vzxeh-
+Content-Transfer-Encoding: 8BIT
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
  definitions=2022-03-25_02,2022-03-24_01,2022-02-23_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
- spamscore=0 priorityscore=1501 suspectscore=0 mlxlogscore=578
+ spamscore=0 priorityscore=1501 suspectscore=0 mlxlogscore=999
  impostorscore=0 mlxscore=0 lowpriorityscore=0 clxscore=1034 bulkscore=0
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2202240000 definitions=main-2203250057
@@ -91,51 +92,134 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Tao Ren <rentao.bupt@gmail.com>
+The "interrupt" property is optional because it is only necessary for
+controllers supporting DMAs (Not implemented yet in the new driver).
 
-Set "spi-max-frequency" to 50 MHz for all the flashes under the FMC
-controller to ensure the clock frequency is calculated correctly.
-
-Suggested-by: Cédric Le Goater <clg@kaod.org>
-Signed-off-by: Tao Ren <rentao.bupt@gmail.com>
+Cc: Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>
+Tested-by: Joel Stanley <joel@jms.id.au>
+Tested-by: Tao Ren <rentao.bupt@gmail.com>
+Reviewed-by: Joel Stanley <joel@jms.id.au>
+Reviewed-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Cédric Le Goater <clg@kaod.org>
 ---
- arch/arm/boot/dts/aspeed-g4.dtsi | 4 ++++
- 1 file changed, 4 insertions(+)
+ .../bindings/spi/aspeed,ast2600-fmc.yaml      | 87 +++++++++++++++++++
+ MAINTAINERS                                   |  9 ++
+ 2 files changed, 96 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/aspeed,ast2600-fmc.yaml
 
-diff --git a/arch/arm/boot/dts/aspeed-g4.dtsi b/arch/arm/boot/dts/aspeed-g4.dtsi
-index 31e6569db97e..d3d919dcb8d4 100644
---- a/arch/arm/boot/dts/aspeed-g4.dtsi
-+++ b/arch/arm/boot/dts/aspeed-g4.dtsi
-@@ -72,24 +72,28 @@ flash@1 {
- 				reg = < 1 >;
- 				compatible = "jedec,spi-nor";
- 				spi-rx-bus-width = <2>;
-+				spi-max-frequency = <50000000>;
- 				status = "disabled";
- 			};
- 			flash@2 {
- 				reg = < 2 >;
- 				compatible = "jedec,spi-nor";
- 				spi-rx-bus-width = <2>;
-+				spi-max-frequency = <50000000>;
- 				status = "disabled";
- 			};
- 			flash@3 {
- 				reg = < 3 >;
- 				compatible = "jedec,spi-nor";
- 				spi-rx-bus-width = <2>;
-+				spi-max-frequency = <50000000>;
- 				status = "disabled";
- 			};
- 			flash@4 {
- 				reg = < 4 >;
- 				compatible = "jedec,spi-nor";
- 				spi-rx-bus-width = <2>;
-+				spi-max-frequency = <50000000>;
- 				status = "disabled";
- 			};
- 		};
+diff --git a/Documentation/devicetree/bindings/spi/aspeed,ast2600-fmc.yaml b/Documentation/devicetree/bindings/spi/aspeed,ast2600-fmc.yaml
+new file mode 100644
+index 000000000000..e16bbcd38560
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/aspeed,ast2600-fmc.yaml
+@@ -0,0 +1,87 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/spi/aspeed,ast2600-fmc.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Aspeed SMC controllers bindings
++
++maintainers:
++  - Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>
++  - Cédric Le Goater <clg@kaod.org>
++
++description: |
++  This binding describes the Aspeed Static Memory Controllers (FMC and
++  SPI) of the AST2400, AST2500 and AST2600 SOCs.
++
++allOf:
++  - $ref: "spi-controller.yaml#"
++
++properties:
++  compatible:
++    enum:
++      - aspeed,ast2600-fmc
++      - aspeed,ast2600-spi
++      - aspeed,ast2500-fmc
++      - aspeed,ast2500-spi
++      - aspeed,ast2400-fmc
++      - aspeed,ast2400-spi
++
++  reg:
++    items:
++      - description: registers
++      - description: memory mapping
++
++  clocks:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++patternProperties:
++  "@[0-9a-f]+":
++    type: object
++
++    properties:
++      spi-rx-bus-width:
++        enum: [1, 2, 4]
++
++required:
++  - compatible
++  - reg
++  - clocks
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/arm-gic.h>
++    #include <dt-bindings/interrupt-controller/aspeed-scu-ic.h>
++    #include <dt-bindings/clock/ast2600-clock.h>
++
++    spi@1e620000 {
++        reg = <0x1e620000 0xc4>, <0x20000000 0x10000000>;
++        #address-cells = <1>;
++        #size-cells = <0>;
++        compatible = "aspeed,ast2600-fmc";
++        clocks = <&syscon ASPEED_CLK_AHB>;
++        interrupts = <GIC_SPI 39 IRQ_TYPE_LEVEL_HIGH>;
++        flash@0 {
++                reg = < 0 >;
++                compatible = "jedec,spi-nor";
++                spi-max-frequency = <50000000>;
++                spi-rx-bus-width = <2>;
++        };
++        flash@1 {
++                reg = < 1 >;
++                compatible = "jedec,spi-nor";
++                spi-max-frequency = <50000000>;
++                spi-rx-bus-width = <2>;
++        };
++        flash@2 {
++                reg = < 2 >;
++                compatible = "jedec,spi-nor";
++                spi-max-frequency = <50000000>;
++                spi-rx-bus-width = <2>;
++        };
++    };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index ea9d74b6236f..7d5f81dcd837 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3021,6 +3021,15 @@ S:	Maintained
+ F:	Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml
+ F:	drivers/mmc/host/sdhci-of-aspeed*
+ 
++ASPEED SMC SPI DRIVER
++M:	Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>
++M:	Cédric Le Goater <clg@kaod.org>
++L:	linux-aspeed@lists.ozlabs.org (moderated for non-subscribers)
++L:	openbmc@lists.ozlabs.org (moderated for non-subscribers)
++L:	linux-spi@vger.kernel.org
++S:	Maintained
++F:	Documentation/devicetree/bindings/spi/aspeed,ast2600-fmc.yaml
++
+ ASPEED VIDEO ENGINE DRIVER
+ M:	Eddie James <eajames@linux.ibm.com>
+ L:	linux-media@vger.kernel.org
 -- 
 2.34.1
 

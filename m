@@ -2,35 +2,35 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 33F39C433EF
-	for <linux-spi@archiver.kernel.org>; Mon, 28 Mar 2022 11:39:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6DD5AC433F5
+	for <linux-spi@archiver.kernel.org>; Mon, 28 Mar 2022 11:39:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241452AbiC1Lk7 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 28 Mar 2022 07:40:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40538 "EHLO
+        id S241465AbiC1LlC (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 28 Mar 2022 07:41:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241750AbiC1Lde (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 28 Mar 2022 07:33:34 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD0A2583BE;
-        Mon, 28 Mar 2022 04:24:49 -0700 (PDT)
+        with ESMTP id S242105AbiC1LeF (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 28 Mar 2022 07:34:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1EB05A08E;
+        Mon, 28 Mar 2022 04:25:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 92B23B80EAE;
-        Mon, 28 Mar 2022 11:24:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33910C34100;
-        Mon, 28 Mar 2022 11:24:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 164DE611E2;
+        Mon, 28 Mar 2022 11:25:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68A13C36AE7;
+        Mon, 28 Mar 2022 11:25:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648466679;
-        bh=X1P+uoFM8eTv0k4flg3ON4z680a6QwZcO0ujur2zgxA=;
+        s=k20201202; t=1648466710;
+        bh=0JX6Bc0zgHCRRRrkNX4F+crInzlrpeFphYoh277iDUQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pQzR3XxfGrrCBwKW2Fg6BGOr25kpETP+JicoCUwehkcLj+Ih6oR+VGUg5jwkdCXj/
-         7/guVOILUuTLxxMtXcRU45uW+lSQ1Cx2UN/z8WwD4WPKBm7ysNPcj7T+7wB+UVtSlV
-         0B2O80SXxa8YnsbKJ67V8rXCue7Hws9xURMfDz997C3f5tKSh2ZCCw/iuMJDyMSydv
-         wvKEbN9rPMQ5LIyfDIo63+5uVKGUO8Xzjqr6XTXdFKGlNO6uELJ6U3ZJTNhMQkoEdx
-         LteW9AtE0uqMRZsCbtYnAHecXtE8C+fluAK3ZjSwGnO+u4NJaV0OeZUqvlXbMQs/+P
-         WgbBo4n0jULNQ==
+        b=J2gN9J1X2nDTA6mVWl0+vDZ6RM+hDcY3aT4wTpAZMyFolBkW3pIMjAIM7woxaSBvf
+         S2Sqo3I9Ek66uQx17DKpxWNGLhfhZyCRA94f1sD6L7jle9RADl3iGwt/soFw9hr3Nl
+         QG1xaT1ndSvrZUyDSDFN9mIvkKaJNRjirP9XUzaJlytRVPyO4MNL1SVF2qVbGD5lEA
+         qX2ZUqM3yQmRRnzNRezQ1uOaBmzwvksyNgkTcbQ8CBNrrqMD9wdXO6x/IGkWkaDwP+
+         9i8gRE6p8SQO2ACLW1WiC/I7skVi6jJL4bs9h2QpaSQ+1Bb0qoe89cNFmZUaljh7xr
+         LBUBhH4SFfEKA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Minghao Chi <chi.minghao@zte.com.cn>,
@@ -39,12 +39,12 @@ Cc:     Minghao Chi <chi.minghao@zte.com.cn>,
         Sasha Levin <sashal@kernel.org>, ldewangan@nvidia.com,
         thierry.reding@gmail.com, jonathanh@nvidia.com,
         linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 12/12] spi: tegra20: Use of_device_get_match_data()
-Date:   Mon, 28 Mar 2022 07:24:17 -0400
-Message-Id: <20220328112417.1556946-12-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 8/8] spi: tegra20: Use of_device_get_match_data()
+Date:   Mon, 28 Mar 2022 07:24:56 -0400
+Message-Id: <20220328112456.1557226-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220328112417.1556946-1-sashal@kernel.org>
-References: <20220328112417.1556946-1-sashal@kernel.org>
+In-Reply-To: <20220328112456.1557226-1-sashal@kernel.org>
+References: <20220328112456.1557226-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -69,7 +69,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 7 deletions(-)
 
 diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
-index bc3097e5cc26..436d559503db 100644
+index 88bfe7682a9e..b8a3a78730b5 100644
 --- a/drivers/spi/spi-tegra20-slink.c
 +++ b/drivers/spi/spi-tegra20-slink.c
 @@ -1016,14 +1016,8 @@ static int tegra_slink_probe(struct platform_device *pdev)

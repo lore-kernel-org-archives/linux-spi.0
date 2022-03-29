@@ -2,171 +2,112 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2AAC6C433F5
-	for <linux-spi@archiver.kernel.org>; Tue, 29 Mar 2022 19:09:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 83941C433F5
+	for <linux-spi@archiver.kernel.org>; Tue, 29 Mar 2022 19:12:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237945AbiC2TLc (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 29 Mar 2022 15:11:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56770 "EHLO
+        id S240869AbiC2TNl (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 29 Mar 2022 15:13:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240852AbiC2TLc (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 29 Mar 2022 15:11:32 -0400
-X-Greylist: delayed 638 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 29 Mar 2022 12:09:48 PDT
-Received: from mail.mleia.com (mleia.com [178.79.152.223])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1312AF1DF
-        for <linux-spi@vger.kernel.org>; Tue, 29 Mar 2022 12:09:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
-        t=1648580348; bh=zxM3pn+KIF9KAbgXNUU2mWVIVmI13y2vEetlzWdhaMc=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=BdAptG5zJq2fUy+zuPBdfXL6/5rWYhJJXO8OxSJHy1UiKP5n/qXLE90aYh40HzNFP
-         qu5UW4XOGAopJZjErrcdAVgaRDH0vNAokfCvkBGL+7szWrd/Vw8dWCp/bZCWbXL4QW
-         +G0s8Itfyo5fRNmsrgTj0NnKLnXkIYsvLEUeY5oGkag0QtTm6XXjmLZ0YympCMv1Kp
-         Waz+lec3ZKXsPlO92HyQJZwPd8MTJJFqtkgdnC3VcSmgnbvHpubscjLQR0Vj9bUYgS
-         S9q48d7eCdl5//mLIn/5bGydirTuW5l2/c4rM1DyosTOcL9YrbOFST6yuX7JtzSEyW
-         SMBs75XuNT8tA==
-Received: from mail.mleia.com (localhost [127.0.0.1])
-        by mail.mleia.com (Postfix) with ESMTP id 8843C3A3A17;
-        Tue, 29 Mar 2022 18:59:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
-        t=1648580348; bh=zxM3pn+KIF9KAbgXNUU2mWVIVmI13y2vEetlzWdhaMc=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=BdAptG5zJq2fUy+zuPBdfXL6/5rWYhJJXO8OxSJHy1UiKP5n/qXLE90aYh40HzNFP
-         qu5UW4XOGAopJZjErrcdAVgaRDH0vNAokfCvkBGL+7szWrd/Vw8dWCp/bZCWbXL4QW
-         +G0s8Itfyo5fRNmsrgTj0NnKLnXkIYsvLEUeY5oGkag0QtTm6XXjmLZ0YympCMv1Kp
-         Waz+lec3ZKXsPlO92HyQJZwPd8MTJJFqtkgdnC3VcSmgnbvHpubscjLQR0Vj9bUYgS
-         S9q48d7eCdl5//mLIn/5bGydirTuW5l2/c4rM1DyosTOcL9YrbOFST6yuX7JtzSEyW
-         SMBs75XuNT8tA==
-Received: from [192.168.1.102] (88-113-46-102.elisa-laajakaista.fi [88.113.46.102])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by mail.mleia.com (Postfix) with ESMTPSA id 45D4B3A3A05;
-        Tue, 29 Mar 2022 18:59:08 +0000 (UTC)
-Message-ID: <c796837e-7cd8-517f-dbd0-85ec3dbc4b86@mleia.com>
-Date:   Tue, 29 Mar 2022 21:59:07 +0300
+        with ESMTP id S240860AbiC2TNl (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 29 Mar 2022 15:13:41 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51211E33A5
+        for <linux-spi@vger.kernel.org>; Tue, 29 Mar 2022 12:11:57 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id g20so21810137edw.6
+        for <linux-spi@vger.kernel.org>; Tue, 29 Mar 2022 12:11:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=Zs4+wicwiuzKeibf/6a5M7Gi78Hfv23A59sxjvNvMUU=;
+        b=wRMGvtYne2xt5h30GhOYcCw/PFtzV2Z5DknJEIfkjSyA9c59a8gelUpGWkjL9N3J27
+         XBf0a2apTd/mbbpjfJAkeIivA4hkd7eIiteudnX+Glepx99Z+Z/qDDZug0p54xkjwyYF
+         mlGMdKDSTnFpKs5iPYqXqYa0vWC+6mlqnPdC8jlYiNRcxNnyijdyJdMRW/4N6+7IoMQQ
+         MI0LNClF9+F3C+2DkRecHDITk0WYfwFxLUWk0lsuPh8y1kHJZemXFOfzPn3WRpPfl33g
+         pJFH0dWWHTqEGiwElq2W7nu+QkkDB+sdCJ0x2OnqaC9FAwJfgusIlEEHuZn9WzXobkaO
+         pE3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=Zs4+wicwiuzKeibf/6a5M7Gi78Hfv23A59sxjvNvMUU=;
+        b=K3Wi86ZeI3cM+CfVQehporjsJ77VnxjVa6v2e8IafAhBEX8PaA6dFX8eDr+n+/aEr1
+         xy0NEBXvi1/yV1PRiUwEImUEmJVwTslwI3vyJE0Fo30+wX88ceHb9romV4X3Q8nvGBVD
+         lKNRsODxw9WcwpoS+VgGggE6dOcsLFdVJkvRIRGi2ob/L69rS9FW0+Tkw5x1GUoTQEJc
+         siNHLErV85sqJ1+ZROb/ukYxQAZoUHOBlyfZHhUNrrfY9jBhYokANcqo9Ml7sbK9jf4F
+         pg4b2cMCW0pDJ1OxgbGpAiP+sQfqdYWRYoxAAbk9ZkaizjUXYnYkjaiX7UWdLcybXV6R
+         mUfg==
+X-Gm-Message-State: AOAM533GSQ7YzpS4i9JBGL4d2cXN8JGkNgmwMgI153wEGsdZn1aTdJ8E
+        wAC8Wh8slFQ0DVIfCMU8HOGGjw==
+X-Google-Smtp-Source: ABdhPJwCTzbCOxjzUYik789yfqeDFi1lbcyCdm8UwGFPA7I3vtWU95A1xbvTgjVm0+950GczLqagPQ==
+X-Received: by 2002:a05:6402:3719:b0:412:fc6b:f271 with SMTP id ek25-20020a056402371900b00412fc6bf271mr6572253edb.345.1648581115904;
+        Tue, 29 Mar 2022 12:11:55 -0700 (PDT)
+Received: from [192.168.0.162] (xdsl-188-155-201-27.adslplus.ch. [188.155.201.27])
+        by smtp.gmail.com with ESMTPSA id k3-20020a05640212c300b0041605b2d9c1sm8867928edx.58.2022.03.29.12.11.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 29 Mar 2022 12:11:55 -0700 (PDT)
+Message-ID: <d810a2c2-688b-e07e-0444-5013ef02362f@linaro.org>
+Date:   Tue, 29 Mar 2022 21:11:54 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: spi-pl022 on lpc32xx
+ Thunderbird/91.5.0
+Subject: Re: [PATCH 4/4] spi: dt-bindings: qcom,spi-qup: convert to dtschema
 Content-Language: en-US
-To:     Trevor Woerner <twoerner@gmail.com>, linux-spi@vger.kernel.org
-Cc:     linus.walleij@linaro.org, alexandre.belloni@bootlin.com
-References: <20220328190104.GA11946@localhost>
-From:   Vladimir Zapolskiy <vz@mleia.com>
-In-Reply-To: <20220328190104.GA11946@localhost>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To:     Rob Herring <robh@kernel.org>
+Cc:     Mark Brown <broonie@kernel.org>, linux-arm-msm@vger.kernel.org,
+        linux-spi@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>
+References: <20220329112902.252937-1-krzysztof.kozlowski@linaro.org>
+ <20220329112902.252937-5-krzysztof.kozlowski@linaro.org>
+ <1648580700.650850.1067578.nullmailer@robh.at.kernel.org>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <1648580700.650850.1067578.nullmailer@robh.at.kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-49551924 
-X-CRM114-CacheID: sfid-20220329_185908_577425_F6B826EB 
-X-CRM114-Status: GOOD (  32.84  )
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi Trevor,
-
-On 3/28/22 22:01, Trevor Woerner wrote:
-> Hi,
+On 29/03/2022 21:05, Rob Herring wrote:
+> On Tue, 29 Mar 2022 13:29:02 +0200, Krzysztof Kozlowski wrote:
+>> Convert the Qualcomm Universal Peripheral (QUP) Serial Peripheral
+>> Interface (SPI) bindings to DT Schema.
+>>
+>> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>> ---
+>>  .../devicetree/bindings/spi/qcom,spi-qup.txt  | 103 ------------------
+>>  .../devicetree/bindings/spi/qcom,spi-qup.yaml |  82 ++++++++++++++
+>>  2 files changed, 82 insertions(+), 103 deletions(-)
+>>  delete mode 100644 Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
+>>  create mode 100644 Documentation/devicetree/bindings/spi/qcom,spi-qup.yaml
+>>
 > 
-> I have a spi-nor chip (m25p16) connected to the SPI1 bus of an LPC32xx-based
-> machine that I can't get working.
+> Running 'make dtbs_check' with the schema in this patch gives the
+> following warnings. Consider if they are expected or the schema is
+> incorrect. These may not be new warnings.
 > 
-> The LPC32xx has both an SPI controller and an SSP controller, but only one can
-> be active at a time. The SSP is an ARM primecell component which is a "SPI on
-> steroids" device. The SSP can be run in several modes, one of which is "SPI"
-> mode.
+> Note that it is not yet a requirement to have 0 warnings for dtbs_check.
+> This will change in the future.
 > 
-> The LPC32xx machine does not have a SPI driver in the kernel, but it does have
-> a driver for the SSP controller. Since there is no SPI driver, I'm using the
-> SSP driver in "SPI" mode, but not having much luck.
-
-I have a feeling that Sylvain Lemieux once reported that the PrimeCell SPI
-driver worked for him, but here I might be wrong.
-
-> I can see the SPI subsystem sending the 0x9f command (READ ID), the spi-pl022
-> driver writes the command to the SSP data register, but the flag in the SSP
-> status register to say data has been received never goes up.
+> Full log is available here: https://patchwork.ozlabs.org/patch/1610591
 > 
-> I'm wondering if anyone is successfully using the current spi-pl022 driver to
-> interact with an SPI device (preferably on a lpc32xx-based machine)?
 > 
-> I've spent the better part of the last week poking at this. I've tried many
-> combinations of device tree, but what I think should work is:
+> spi@78b5000: clock-names:0: 'core' was expected
+> 	arch/arm64/boot/dts/qcom/qcs404-evb-1000.dt.yaml
+> 	arch/arm64/boot/dts/qcom/qcs404-evb-4000.dt.yaml
 > 
-> 	&ssp0 {
-> 		status = "okay";
-> 		num-cs = <1>;
-> 		cs-gpios = <&gpio 3 4 1>;
-> 
-> 		m25p16@0 {
-> 			compatible = "jedec,spi-nor";
-> 			reg = <0>;
-> 			spi-max-frequency = <500000>;
-> 
-> 			pl022,interface = <0>;
-> 			pl022,com-mode = <1>;
-> 		};
-> 	};
-> 
+> spi@78b5000: clock-names:1: 'iface' was expected
+> 	arch/arm64/boot/dts/qcom/qcs404-evb-1000.dt.yaml
+> 	arch/arm64/boot/dts/qcom/qcs404-evb-4000.dt.yaml
 
-FWIW on my board I do use both SSP0 and SSP1 at once, but I didn't rebase
-the dts/kernel for a long time, so the examples might be outdated:
+All of these (and dma-names) should be fixed with my DTS patches in the
+series.
 
-&ssp0 {
-	num-cs = <1>;
-	cs-gpios = <&gpio 3 5 GPIO_ACTIVE_HIGH>; /* SSEL0 */
 
-	sc16is752@0 {
-		compatible = "nxp,sc16is752";
-		reg = <0>;
-		spi-max-frequency = <4000000>;
-
-		/* 18.432 MHz external oscillator */
-		clocks = <&xtal_18432k>;
-
-		/* Interrupt to GPI_07 */
-		interrupt-parent = <&sic2>;
-		interrupts = <15 IRQ_TYPE_EDGE_FALLING>;
-	};
-};
-
-&ssp1 {
-	num-cs = <1>;
-	cs-gpios = <&gpio 3 4 GPIO_ACTIVE_HIGH>;
-
-	s25fl216k@0 {
-		compatible = "s25fl216k", "jedec,spi-nor";
-		reg = <0>;
-		spi-max-frequency = <150000>;
-		spi-cpol;
-		spi-cpha;
-	};
-};
-
-Also SSP0 is enabled on PhyTec phy3250 board, there is an at25 eeprom on it,
-I've just briefly checked the device tree node, and apparently it contains
-some references/properties specific to the PL022 SPI driver.
-
-> I've tried a couple other compatible strings ("micron,m25p16", "st,m25p16"),
-> I've tried a range of frequencies (from 0.5MHz to 33MHz). The 3 options for
-> interface are 0 (SPI), 1 (TI), or 2 (Microwire) and I've tried all of them. I
-> don't believe the DMA system works generically on the lpc32xx but I've tried
-> both interrupt <0> and polling <1> for the com-mode. I believe SPI1 and SSP0
-> are the same and SPI2 and SSP1 are the same (which is why I'm using SSP0
-> here).
-> 
-> The pl-022 driver is quite aggressive about shutting off the SSP and raising
-> the chip select after a message is sent, so I modified my driver to leave the
-> SSP enabled and keeping the (active-low) chip select low (in case those were
-> affecting the reply) but there's no change.
-> 
-> One thing that's curious is that the platform_info->bus_id is -1. This bus
-> number comes from the parent device (spi core). I wonder if this driver is not
-> registering itself correctly with the spi core?
-> 
-> Best regards,
->   	Trevor
-
---
-Best wishes,
-Vladimir
+Best regards,
+Krzysztof

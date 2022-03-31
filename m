@@ -2,54 +2,61 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9F52CC433EF
-	for <linux-spi@archiver.kernel.org>; Thu, 31 Mar 2022 17:58:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D98FFC433FE
+	for <linux-spi@archiver.kernel.org>; Thu, 31 Mar 2022 19:40:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232758AbiCaSAN (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 31 Mar 2022 14:00:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44980 "EHLO
+        id S234036AbiCaTme (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 31 Mar 2022 15:42:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232783AbiCaSAM (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 31 Mar 2022 14:00:12 -0400
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0ABDB58395;
-        Thu, 31 Mar 2022 10:58:24 -0700 (PDT)
-Received: by mail-pj1-x102d.google.com with SMTP id gb19so174697pjb.1;
-        Thu, 31 Mar 2022 10:58:24 -0700 (PDT)
+        with ESMTP id S240983AbiCaTm1 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 31 Mar 2022 15:42:27 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 235C534BA0
+        for <linux-spi@vger.kernel.org>; Thu, 31 Mar 2022 12:40:11 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id a17so486885edm.9
+        for <linux-spi@vger.kernel.org>; Thu, 31 Mar 2022 12:40:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=dGkOVC70bzVuGq7W5va5FW2YqhPw4t1EaQSF8Oh5XFc=;
-        b=A5n6vOXWM0DhT0+Ngm3q171Z8z9n2EvKxyNFWmEW/QjXgV3iQOMj9uzzIQWuuuI5N+
-         Tclx8N4zuuFp5uY3IFLCezVBWNgQ5MZS6Qx+Mc/5Z48x7Od1o728XaztXg64VYZaB0O0
-         k4N/lcc8+F+sHzgQSDIp8EPtIPq58kZ4uZbZgKVy2uAqKJo6NyxWHnlAqvuubhyT3+je
-         BUpciCdjfg+OQlqA5LwhK071e+cs5MzKyizWY6y1jpVqH6YAEUUeAAWZArLGGn9qQA1M
-         TWUMm3xydS9mWuXhCXSAy0vwd5tRG9Sv4p85knhqDh5Xu4eR0aSR4J6+SUWv3eLVoeyD
-         GqzA==
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=ZJPRDVJ4i3CoCpBpHTerrKP5+xFbRI1ypwTw9ETZHIs=;
+        b=LgUqkPajNt93eXRRHm8ZYg6x6pggOukr4LiPjE9VwNUjKKDtGSvJjZgFrlfDzkrw+Q
+         QxFsSXnRdRhBaafA1/1Qq6UlVwCYpP4kElG90RmPS4EXSFjgR+VACiUY/ppc85f1li4+
+         rYfgVhS9bysVCw47LDUgf9XCn/ozyhNvE7tHCFqQ1bYnHe1b5Yjb9E+eZ5Jr2FxQ44qZ
+         pNHccjpPMS/cxCLk5wPwA4zgFgX2HRZ/6nQBrrh5rnBSm3QCEt04rNshHKbb8DJH63dc
+         afuy0wIMk9vIfmB0CJNnuGSglM4PcpPM3nI2p5y2BxbwlTaaO0dMe9sav9Tn24IpyE6e
+         h66Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=dGkOVC70bzVuGq7W5va5FW2YqhPw4t1EaQSF8Oh5XFc=;
-        b=3Mx0R/khYcwf9LYPzkZsaRypxuyuV6mVKBOStwuurXTwwc6zDTc6cuHYYNSHCLl4bP
-         CLfs/lKXVzisNG9tyVyXL2QqNc38DH8ocHjwX/SG+xCLvJ8DeXZHqKffA1Gi6WK7mvXw
-         pP9lhiYmf1iUyU61J0TAYM+V17dFaSzcrVxVqMEulaA7UtVKmFccHDYVhY2QnELLy3f1
-         a9lk7Sc5r6VY3J8WeNb67stUlmqWYm32OcO3kCxafM5afsHfob7738QjL869SinZ6zjt
-         uppC4Lo5kYokShR9aTRVcoH4Sv46O+jbO5SskZvFti2ptpuZ1pZBWRcJmHi8REBYn5gR
-         wEQA==
-X-Gm-Message-State: AOAM530JWNth+j1c4vDgMylbV4Se50upDO4tf13XV7snybybFi6Ex940
-        niPklgu8j9O3kerCmbhkWv0=
-X-Google-Smtp-Source: ABdhPJzUq/bCYFJfxLHEcil0Owpt5lmWROIU8bfkVBlOrIcuSkJUYs3LtQReAWDIuE6hBYlfkNzaYQ==
-X-Received: by 2002:a17:90b:3a82:b0:1c7:bc91:a87e with SMTP id om2-20020a17090b3a8200b001c7bc91a87emr7390289pjb.7.1648749503248;
-        Thu, 31 Mar 2022 10:58:23 -0700 (PDT)
-Received: from 9a2d8922b8f1 ([122.161.51.18])
-        by smtp.gmail.com with ESMTPSA id v8-20020a056a00148800b004fa9bd7ddc9sm121741pfu.113.2022.03.31.10.58.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Mar 2022 10:58:23 -0700 (PDT)
-Date:   Thu, 31 Mar 2022 23:28:17 +0530
-From:   Kuldeep Singh <singh.kuldeep87k@gmail.com>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=ZJPRDVJ4i3CoCpBpHTerrKP5+xFbRI1ypwTw9ETZHIs=;
+        b=i9OIdOIpCqevQHfV6HavgozKKSBT0BkgLM2vkCfZ1DzZpC7foj6QqIfhy6IO4t2J9z
+         SrTHrEtwrYkdhjGpTz1GxWontDijhFQz8U4aEq5FF63/N5yOJdDgs7CAB3eFLrthGTeD
+         mdsz5Z43CZSuCcPSCjavYKtM+LHGg1D9vTvUG6BtBP3lbBbu6cT9ys4PO2H6uK7ZUt9g
+         c/vjUJs62AiTD8Mi/SLOknxfWYiD0AukW9vNoBRHQZPEi2OtHRhXXywN37tL97NmlOME
+         T0mrnSrAqGAc6DEdUwmgrguz70imZRYH2+rlye17/9pXMky5KJXJxmgfGETeZPEA7t7c
+         j3PQ==
+X-Gm-Message-State: AOAM530NyWOl52yKAAlubmogXZC8LpfAuqGDiNG9yRPtz9tcrQyIB8Hi
+        qwybI1q2HtfR22zyCTspsSg+WQ==
+X-Google-Smtp-Source: ABdhPJyyU7vh2YKhs2wXuvlY2VhSEWOYdBjCLkaHIh9iLI8tueZDx8Hr4XOIVJO8fkYZLCfr8/2h5A==
+X-Received: by 2002:a05:6402:2743:b0:419:4edd:c487 with SMTP id z3-20020a056402274300b004194eddc487mr18118161edd.325.1648755609668;
+        Thu, 31 Mar 2022 12:40:09 -0700 (PDT)
+Received: from [192.168.0.167] (xdsl-188-155-201-27.adslplus.ch. [188.155.201.27])
+        by smtp.gmail.com with ESMTPSA id e22-20020a170906505600b006da7d71f25csm137088ejk.41.2022.03.31.12.40.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 31 Mar 2022 12:40:09 -0700 (PDT)
+Message-ID: <ddc12aab-3cff-16a1-9ec9-a246240f9521@linaro.org>
+Date:   Thu, 31 Mar 2022 21:40:08 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH v2 1/2] spi: dt-bindings: qcom,spi-geni-qcom: convert to
+ dtschema
+Content-Language: en-US
+To:     Kuldeep Singh <singh.kuldeep87k@gmail.com>
 Cc:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -57,164 +64,167 @@ Cc:     Andy Gross <agross@kernel.org>,
         Mark Brown <broonie@kernel.org>, linux-arm-msm@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-spi@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] spi: dt-bindings: qcom,spi-geni-qcom: convert to
- dtschema
-Message-ID: <20220331175817.GA91341@9a2d8922b8f1>
 References: <20220331160248.716234-1-krzysztof.kozlowski@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220331160248.716234-1-krzysztof.kozlowski@linaro.org>
+ <20220331175817.GA91341@9a2d8922b8f1>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220331175817.GA91341@9a2d8922b8f1>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, Mar 31, 2022 at 06:02:47PM +0200, Krzysztof Kozlowski wrote:
-> Convert the GENI based Qualcomm Universal Peripheral (QUP) Serial
-> Peripheral Interface (SPI) bindings to DT Schema.
+On 31/03/2022 19:58, Kuldeep Singh wrote:
+> On Thu, Mar 31, 2022 at 06:02:47PM +0200, Krzysztof Kozlowski wrote:
+>> Convert the GENI based Qualcomm Universal Peripheral (QUP) Serial
+>> Peripheral Interface (SPI) bindings to DT Schema.
+>>
+>> The original bindings in TXT were not complete, so add during conversion
+>> properties already used in DTS and/or in the driver: reg-names, dmas,
+>> interconnects, operating points and power-domains.
+>>
+>> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>>
+>> ---
+>>
+>> Changes since v1:
+>> 1. Correct $ref path and remove interconnect minItems (Kuldeep).
+>> 2. Remove child tpm device from example.
+>> 3. Pad reg hex addresses with 00.
+>> ---
+>>  .../bindings/spi/qcom,spi-geni-qcom.txt       |  39 ------
+>>  .../bindings/spi/qcom,spi-geni-qcom.yaml      | 120 ++++++++++++++++++
+>>  2 files changed, 120 insertions(+), 39 deletions(-)
+>>  delete mode 100644 Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.txt
+>>  create mode 100644 Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.yaml
+>>
+>> diff --git a/Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.txt b/Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.txt
+>> deleted file mode 100644
+>> index c8c1e913f4e7..000000000000
+>> --- a/Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.txt
+>> +++ /dev/null
+>> @@ -1,39 +0,0 @@
+>> -GENI based Qualcomm Universal Peripheral (QUP) Serial Peripheral Interface (SPI)
+>> -
+>> -The QUP v3 core is a GENI based AHB slave that provides a common data path
+>> -(an output FIFO and an input FIFO) for serial peripheral interface (SPI)
+>> -mini-core.
+>> -
+>> -SPI in master mode supports up to 50MHz, up to four chip selects, programmable
+>> -data path from 4 bits to 32 bits and numerous protocol variants.
+>> -
+>> -Required properties:
+>> -- compatible:		Must contain "qcom,geni-spi".
+>> -- reg:			Must contain SPI register location and length.
+>> -- interrupts:		Must contain SPI controller interrupts.
+>> -- clock-names:		Must contain "se".
+>> -- clocks:		Serial engine core clock needed by the device.
+>> -- #address-cells:	Must be <1> to define a chip select address on
+>> -			the SPI bus.
+>> -- #size-cells:		Must be <0>.
+>> -
+>> -SPI Controller nodes must be child of GENI based Qualcomm Universal
+>> -Peripharal. Please refer GENI based QUP wrapper controller node bindings
+>> -described in Documentation/devicetree/bindings/soc/qcom/qcom,geni-se.yaml.
+>> -
+>> -SPI slave nodes must be children of the SPI master node and conform to SPI bus
+>> -binding as described in Documentation/devicetree/bindings/spi/spi-bus.txt.
+>> -
+>> -Example:
+>> -	spi0: spi@a84000 {
+>> -		compatible = "qcom,geni-spi";
+>> -		reg = <0xa84000 0x4000>;
+>> -		interrupts = <GIC_SPI 354 IRQ_TYPE_LEVEL_HIGH>;
+>> -		clock-names = "se";
+>> -		clocks = <&clock_gcc GCC_QUPV3_WRAP0_S0_CLK>;
+>> -		pinctrl-names = "default", "sleep";
+>> -		pinctrl-0 = <&qup_1_spi_2_active>;
+>> -		pinctrl-1 = <&qup_1_spi_2_sleep>;
+>> -		#address-cells = <1>;
+>> -		#size-cells = <0>;
+>> -	};
+>> diff --git a/Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.yaml b/Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.yaml
+>> new file mode 100644
+>> index 000000000000..62c4a9598e16
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.yaml
+>> @@ -0,0 +1,120 @@
+>> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/spi/qcom,spi-geni-qcom.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: GENI based Qualcomm Universal Peripheral (QUP) Serial Peripheral Interface (SPI)
+>> +
+>> +maintainers:
+>> +  - Andy Gross <agross@kernel.org>
+>> +  - Bjorn Andersson <bjorn.andersson@linaro.org>
+>> +  - Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>> +
+>> +description:
+>> +  The QUP v3 core is a GENI based AHB slave that provides a common data path
+>> +  (an output FIFO and an input FIFO) for serial peripheral interface (SPI)
+>> +  mini-core.
+>> +
+>> +  SPI in master mode supports up to 50MHz, up to four chip selects,
+>> +  programmable data path from 4 bits to 32 bits and numerous protocol variants.
+>> +
+>> +  SPI Controller nodes must be child of GENI based Qualcomm Universal
+>> +  Peripharal. Please refer GENI based QUP wrapper controller node bindings
+>> +  described in Documentation/devicetree/bindings/soc/qcom/qcom,geni-se.yaml.
+>> +
+>> +allOf:
+>> +  - $ref: /schemas/spi/spi-controller.yaml#
+>> +
+>> +properties:
+>> +  compatible:
+>> +    const: qcom,geni-spi
+>> +
+>> +  clocks:
+>> +    maxItems: 1
+>> +
+>> +  clock-names:
+>> +    const: se
+>> +
+>> +  dmas:
+>> +    maxItems: 2
+>> +
+>> +  dma-names:
+>> +    items:
+>> +      - const: tx
+>> +      - const: rx
+>> +
+>> +  interconnects:
+>> +    maxItems: 2
+>> +
+>> +  interconnect-names:
+>> +    items:
+>> +      - const: qup-core
+>> +      - const: qup-config
+>> +
+>> +  interrupts:
+>> +    maxItems: 1
+>> +
+>> +  operating-points-v2: true
+>> +
+>> +  power-domains:
+>> +    maxItems: 1
+>> +
+>> +  reg:
+>> +    maxItems: 1
+>> +
+>> +  reg-names:
+>> +    const: se
 > 
-> The original bindings in TXT were not complete, so add during conversion
-> properties already used in DTS and/or in the driver: reg-names, dmas,
-> interconnects, operating points and power-domains.
+> Why reg-names is required?
+> Reg contain max 1 value, we can skip reg-names like other users.
 > 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> 
-> ---
-> 
-> Changes since v1:
-> 1. Correct $ref path and remove interconnect minItems (Kuldeep).
-> 2. Remove child tpm device from example.
-> 3. Pad reg hex addresses with 00.
-> ---
->  .../bindings/spi/qcom,spi-geni-qcom.txt       |  39 ------
->  .../bindings/spi/qcom,spi-geni-qcom.yaml      | 120 ++++++++++++++++++
->  2 files changed, 120 insertions(+), 39 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.txt
->  create mode 100644 Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.txt b/Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.txt
-> deleted file mode 100644
-> index c8c1e913f4e7..000000000000
-> --- a/Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.txt
-> +++ /dev/null
-> @@ -1,39 +0,0 @@
-> -GENI based Qualcomm Universal Peripheral (QUP) Serial Peripheral Interface (SPI)
-> -
-> -The QUP v3 core is a GENI based AHB slave that provides a common data path
-> -(an output FIFO and an input FIFO) for serial peripheral interface (SPI)
-> -mini-core.
-> -
-> -SPI in master mode supports up to 50MHz, up to four chip selects, programmable
-> -data path from 4 bits to 32 bits and numerous protocol variants.
-> -
-> -Required properties:
-> -- compatible:		Must contain "qcom,geni-spi".
-> -- reg:			Must contain SPI register location and length.
-> -- interrupts:		Must contain SPI controller interrupts.
-> -- clock-names:		Must contain "se".
-> -- clocks:		Serial engine core clock needed by the device.
-> -- #address-cells:	Must be <1> to define a chip select address on
-> -			the SPI bus.
-> -- #size-cells:		Must be <0>.
-> -
-> -SPI Controller nodes must be child of GENI based Qualcomm Universal
-> -Peripharal. Please refer GENI based QUP wrapper controller node bindings
-> -described in Documentation/devicetree/bindings/soc/qcom/qcom,geni-se.yaml.
-> -
-> -SPI slave nodes must be children of the SPI master node and conform to SPI bus
-> -binding as described in Documentation/devicetree/bindings/spi/spi-bus.txt.
-> -
-> -Example:
-> -	spi0: spi@a84000 {
-> -		compatible = "qcom,geni-spi";
-> -		reg = <0xa84000 0x4000>;
-> -		interrupts = <GIC_SPI 354 IRQ_TYPE_LEVEL_HIGH>;
-> -		clock-names = "se";
-> -		clocks = <&clock_gcc GCC_QUPV3_WRAP0_S0_CLK>;
-> -		pinctrl-names = "default", "sleep";
-> -		pinctrl-0 = <&qup_1_spi_2_active>;
-> -		pinctrl-1 = <&qup_1_spi_2_sleep>;
-> -		#address-cells = <1>;
-> -		#size-cells = <0>;
-> -	};
-> diff --git a/Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.yaml b/Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.yaml
-> new file mode 100644
-> index 000000000000..62c4a9598e16
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.yaml
-> @@ -0,0 +1,120 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/spi/qcom,spi-geni-qcom.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: GENI based Qualcomm Universal Peripheral (QUP) Serial Peripheral Interface (SPI)
-> +
-> +maintainers:
-> +  - Andy Gross <agross@kernel.org>
-> +  - Bjorn Andersson <bjorn.andersson@linaro.org>
-> +  - Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> +
-> +description:
-> +  The QUP v3 core is a GENI based AHB slave that provides a common data path
-> +  (an output FIFO and an input FIFO) for serial peripheral interface (SPI)
-> +  mini-core.
-> +
-> +  SPI in master mode supports up to 50MHz, up to four chip selects,
-> +  programmable data path from 4 bits to 32 bits and numerous protocol variants.
-> +
-> +  SPI Controller nodes must be child of GENI based Qualcomm Universal
-> +  Peripharal. Please refer GENI based QUP wrapper controller node bindings
-> +  described in Documentation/devicetree/bindings/soc/qcom/qcom,geni-se.yaml.
-> +
-> +allOf:
-> +  - $ref: /schemas/spi/spi-controller.yaml#
-> +
-> +properties:
-> +  compatible:
-> +    const: qcom,geni-spi
-> +
-> +  clocks:
-> +    maxItems: 1
-> +
-> +  clock-names:
-> +    const: se
-> +
-> +  dmas:
-> +    maxItems: 2
-> +
-> +  dma-names:
-> +    items:
-> +      - const: tx
-> +      - const: rx
-> +
-> +  interconnects:
-> +    maxItems: 2
-> +
-> +  interconnect-names:
-> +    items:
-> +      - const: qup-core
-> +      - const: qup-config
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  operating-points-v2: true
-> +
-> +  power-domains:
-> +    maxItems: 1
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  reg-names:
-> +    const: se
+> Also, "se" is used as clock name and using it again for reg-names?
+> I think this is wrong and reg-names shouldn't be documented.
 
-Why reg-names is required?
-Reg contain max 1 value, we can skip reg-names like other users.
+reg-names are not required. If you ask why they are documented? As I
+wrote in commit msg - bindings were not fully updated to DTSes being used.
 
-Also, "se" is used as clock name and using it again for reg-names?
-I think this is wrong and reg-names shouldn't be documented.
-
--Kuldeep
+Best regards,
+Krzysztof

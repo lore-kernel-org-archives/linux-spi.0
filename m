@@ -2,264 +2,135 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 84B7CC433EF
-	for <linux-spi@archiver.kernel.org>; Thu, 31 Mar 2022 16:09:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5EB67C433EF
+	for <linux-spi@archiver.kernel.org>; Thu, 31 Mar 2022 16:42:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239322AbiCaQK4 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 31 Mar 2022 12:10:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54756 "EHLO
+        id S240146AbiCaQoD (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 31 Mar 2022 12:44:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239662AbiCaQKz (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 31 Mar 2022 12:10:55 -0400
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 184962B190
-        for <linux-spi@vger.kernel.org>; Thu, 31 Mar 2022 09:09:04 -0700 (PDT)
-Received: by mail-lf1-x129.google.com with SMTP id bq24so28434lfb.5
-        for <linux-spi@vger.kernel.org>; Thu, 31 Mar 2022 09:09:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=LsohyqOTYtjeLY/FdtDq9Hs2S+lnj2GyDL8XIkBv7/s=;
-        b=SP0DnT+zXeheKpY08siB7JfjgUoxE/xUvqlEpO3D2qYuG3hYVRt8OIEVKqUcSLB4wU
-         bgqFSkgeK3wzbMo4z10UQhP0u/V/Pk9mW2HCjtXkmOZPsMgubNbmyvQofMo+GCMdfllz
-         O4hg0wPw9KOPbo3I34u6BtAh5H09tlr5V671oXSeo54Qwn+/1rjLC2cY62hIyxE7MxCq
-         8EkK94jwiy8YA6eMRm9IP+VRhCms5NHWwG0jzrOxpncTS+yuVdP7/F2x0ldWipPmQdS7
-         MLzG+v/XeR5cxmLD0GrnBIHSuRZsMf0YX5YVxKzq1r8AWg94mZIVmJSUsgE2V/md1qiK
-         ZJFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=LsohyqOTYtjeLY/FdtDq9Hs2S+lnj2GyDL8XIkBv7/s=;
-        b=wgoFsrBP0Gcru9CT/hs1/IJ9ZnwrkuYAlVvwQmogCN/F0AzISCiJijJ/UG5yruOlsM
-         9xM/IYIP9l9SWytKa2yRF+OI1VsIR5S1dPyAIPiTRoTMuD+yYr7iKwGqaEga1Qe3mWsp
-         s/05gVTiw4bU/0q15u0JJIKHjsOJM0WWkTYGsuEg5WWosfiEcNPxYSq9jNhNXVqH+fHy
-         Of2hjwpB8ONP2ZjoCpivdhqN7YiAZzIoJYb7hMj2vzM9i2XNP01HrEDpckqsMSsnw6L2
-         0QZRbNVxTpX4m4G8ne1mPBTY/FJXadG6+FAj5471yAO4IzQ9xX8TZ3sMYwvdpStvwtJn
-         A/LA==
-X-Gm-Message-State: AOAM531j6Yis7tAHmYrKbX73OfDlBhV1HG6zBFtL9zy+6upzlASzftu7
-        lYosVFoLgnVKTmIDhuPMGDyPn50kvGvoeQB2
-X-Google-Smtp-Source: ABdhPJxB0u62yvNMPi8+ehPNmcqqLZYj23E/zLB13I42inTDaqG5vRRNOI45+sI6ALrh2HwMKlXYEA==
-X-Received: by 2002:a05:6402:289d:b0:419:437:ef4f with SMTP id eg29-20020a056402289d00b004190437ef4fmr17270028edb.110.1648742579833;
-        Thu, 31 Mar 2022 09:02:59 -0700 (PDT)
-Received: from localhost.localdomain (xdsl-188-155-201-27.adslplus.ch. [188.155.201.27])
-        by smtp.gmail.com with ESMTPSA id n6-20020aa7c786000000b00410d2403ccfsm11441148eds.21.2022.03.31.09.02.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Mar 2022 09:02:59 -0700 (PDT)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Mark Brown <broonie@kernel.org>, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org
-Cc:     Kuldeep Singh <singh.kuldeep87k@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH v2 1/2] spi: dt-bindings: qcom,spi-geni-qcom: convert to dtschema
-Date:   Thu, 31 Mar 2022 18:02:47 +0200
-Message-Id: <20220331160248.716234-1-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.32.0
+        with ESMTP id S232615AbiCaQoC (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 31 Mar 2022 12:44:02 -0400
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9E0420E947;
+        Thu, 31 Mar 2022 09:42:13 -0700 (PDT)
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 22VGfHbT077632;
+        Thu, 31 Mar 2022 11:41:17 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1648744877;
+        bh=q4I8OmbE9lpXlZiTsZ65bC0HGywDTKwPLArPoG/uE2k=;
+        h=Date:From:To:CC:Subject:References:In-Reply-To;
+        b=q0Xzj8+bwKSW6n1SqCu0ajMaUE0JPYpjhHRhw91vS23GJPbmNB2y4KvnSyMwK4b0G
+         tICwB/nlIKOZogc7v+AgBb7Nkgi4L+dNaEnoD/OTRXYvqtb41WlnIaWJh/1ja6UlnB
+         Z/18XT7txfkmCyGW5GBJXH9G+eMWUZRcGGK66ZrM=
+Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 22VGfHo6024529
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 31 Mar 2022 11:41:17 -0500
+Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE115.ent.ti.com
+ (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Thu, 31
+ Mar 2022 11:41:17 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
+ Frontend Transport; Thu, 31 Mar 2022 11:41:17 -0500
+Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 22VGfG1R087297;
+        Thu, 31 Mar 2022 11:41:16 -0500
+Date:   Thu, 31 Mar 2022 22:11:15 +0530
+From:   Pratyush Yadav <p.yadav@ti.com>
+To:     =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>
+CC:     <linux-spi@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
+        Mark Brown <broonie@kernel.org>,
+        Tudor Ambarus <tudor.ambarus@microchip.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        <linux-aspeed@lists.ozlabs.org>, Joel Stanley <joel@jms.id.au>,
+        Andrew Jeffery <andrew@aj.id.au>,
+        Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>,
+        <devicetree@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, Tao Ren <rentao.bupt@gmail.com>
+Subject: Re: [PATCH v4 08/11] spi: aspeed: Calibrate read timings
+Message-ID: <20220331164115.w5q3wxlmwcg3w4ns@ti.com>
+References: <20220325100849.2019209-1-clg@kaod.org>
+ <20220325100849.2019209-9-clg@kaod.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220325100849.2019209-9-clg@kaod.org>
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Convert the GENI based Qualcomm Universal Peripheral (QUP) Serial
-Peripheral Interface (SPI) bindings to DT Schema.
+Hi,
 
-The original bindings in TXT were not complete, so add during conversion
-properties already used in DTS and/or in the driver: reg-names, dmas,
-interconnects, operating points and power-domains.
+On 25/03/22 11:08AM, Cédric Le Goater wrote:
+> To accommodate the different response time of SPI transfers on different
+> boards and different SPI NOR devices, the Aspeed controllers provide a
+> set of Read Timing Compensation registers to tune the timing delays
+> depending on the frequency being used. The AST2600 SoC has one of these
+> registers per device. On the AST2500 and AST2400 SoCs, the timing
+> register is shared by all devices which is problematic to get good
+> results other than for one device.
+> 
+> The algorithm first reads a golden buffer at low speed and then performs
+> reads with different clocks and delay cycle settings to find a breaking
+> point. This selects a default good frequency for the CEx control register.
+> The current settings are a bit optimistic as we pick the first delay giving
+> good results. A safer approach would be to determine an interval and
+> choose the middle value.
+> 
+> Calibration is performed when the direct mapping for reads is created.
+> Since the underlying spi-nor object needs to be initialized to create
+> the spi_mem operation for direct mapping, we should be fine. Having a
+> specific API would clarify the requirements though.
+> 
+> Cc: Pratyush Yadav <p.yadav@ti.com>
+> Reviewed-by: Joel Stanley <joel@jms.id.au>
+> Tested-by: Joel Stanley <joel@jms.id.au>
+> Tested-by: Tao Ren <rentao.bupt@gmail.com>
+> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+> ---
+>  drivers/spi/spi-aspeed-smc.c | 281 +++++++++++++++++++++++++++++++++++
+>  1 file changed, 281 insertions(+)
+> 
+[...]
+> @@ -517,6 +527,8 @@ static int aspeed_spi_chip_adjust_window(struct aspeed_spi_chip *chip,
+>  	return 0;
+>  }
+>  
+> +static int aspeed_spi_do_calibration(struct aspeed_spi_chip *chip);
+> +
+>  static int aspeed_spi_dirmap_create(struct spi_mem_dirmap_desc *desc)
+>  {
+>  	struct aspeed_spi *aspi = spi_controller_get_devdata(desc->mem->spi->master);
+> @@ -565,6 +577,8 @@ static int aspeed_spi_dirmap_create(struct spi_mem_dirmap_desc *desc)
+>  	chip->ctl_val[ASPEED_SPI_READ] = ctl_val;
+>  	writel(chip->ctl_val[ASPEED_SPI_READ], chip->ctl);
+>  
+> +	ret = aspeed_spi_do_calibration(chip);
+> +
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+I am still not convinced this is a good idea. The API does not say 
+anywhere what dirmap_create must be called after the flash is completely 
+initialized, though that is what is done currently in practice. I think 
+an explicit API to mark flash as "ready for calibration" would be a 
+better idea.
 
----
+Tudor/Mark/Miquel, what do you think?
 
-Changes since v1:
-1. Correct $ref path and remove interconnect minItems (Kuldeep).
-2. Remove child tpm device from example.
-3. Pad reg hex addresses with 00.
----
- .../bindings/spi/qcom,spi-geni-qcom.txt       |  39 ------
- .../bindings/spi/qcom,spi-geni-qcom.yaml      | 120 ++++++++++++++++++
- 2 files changed, 120 insertions(+), 39 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.txt
- create mode 100644 Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.yaml
+>  	dev_info(aspi->dev, "CE%d read buswidth:%d [0x%08x]\n",
+>  		 chip->cs, op->data.buswidth, chip->ctl_val[ASPEED_SPI_READ]);
+>  
+[...]
 
-diff --git a/Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.txt b/Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.txt
-deleted file mode 100644
-index c8c1e913f4e7..000000000000
---- a/Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.txt
-+++ /dev/null
-@@ -1,39 +0,0 @@
--GENI based Qualcomm Universal Peripheral (QUP) Serial Peripheral Interface (SPI)
--
--The QUP v3 core is a GENI based AHB slave that provides a common data path
--(an output FIFO and an input FIFO) for serial peripheral interface (SPI)
--mini-core.
--
--SPI in master mode supports up to 50MHz, up to four chip selects, programmable
--data path from 4 bits to 32 bits and numerous protocol variants.
--
--Required properties:
--- compatible:		Must contain "qcom,geni-spi".
--- reg:			Must contain SPI register location and length.
--- interrupts:		Must contain SPI controller interrupts.
--- clock-names:		Must contain "se".
--- clocks:		Serial engine core clock needed by the device.
--- #address-cells:	Must be <1> to define a chip select address on
--			the SPI bus.
--- #size-cells:		Must be <0>.
--
--SPI Controller nodes must be child of GENI based Qualcomm Universal
--Peripharal. Please refer GENI based QUP wrapper controller node bindings
--described in Documentation/devicetree/bindings/soc/qcom/qcom,geni-se.yaml.
--
--SPI slave nodes must be children of the SPI master node and conform to SPI bus
--binding as described in Documentation/devicetree/bindings/spi/spi-bus.txt.
--
--Example:
--	spi0: spi@a84000 {
--		compatible = "qcom,geni-spi";
--		reg = <0xa84000 0x4000>;
--		interrupts = <GIC_SPI 354 IRQ_TYPE_LEVEL_HIGH>;
--		clock-names = "se";
--		clocks = <&clock_gcc GCC_QUPV3_WRAP0_S0_CLK>;
--		pinctrl-names = "default", "sleep";
--		pinctrl-0 = <&qup_1_spi_2_active>;
--		pinctrl-1 = <&qup_1_spi_2_sleep>;
--		#address-cells = <1>;
--		#size-cells = <0>;
--	};
-diff --git a/Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.yaml b/Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.yaml
-new file mode 100644
-index 000000000000..62c4a9598e16
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.yaml
-@@ -0,0 +1,120 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/spi/qcom,spi-geni-qcom.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: GENI based Qualcomm Universal Peripheral (QUP) Serial Peripheral Interface (SPI)
-+
-+maintainers:
-+  - Andy Gross <agross@kernel.org>
-+  - Bjorn Andersson <bjorn.andersson@linaro.org>
-+  - Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-+
-+description:
-+  The QUP v3 core is a GENI based AHB slave that provides a common data path
-+  (an output FIFO and an input FIFO) for serial peripheral interface (SPI)
-+  mini-core.
-+
-+  SPI in master mode supports up to 50MHz, up to four chip selects,
-+  programmable data path from 4 bits to 32 bits and numerous protocol variants.
-+
-+  SPI Controller nodes must be child of GENI based Qualcomm Universal
-+  Peripharal. Please refer GENI based QUP wrapper controller node bindings
-+  described in Documentation/devicetree/bindings/soc/qcom/qcom,geni-se.yaml.
-+
-+allOf:
-+  - $ref: /schemas/spi/spi-controller.yaml#
-+
-+properties:
-+  compatible:
-+    const: qcom,geni-spi
-+
-+  clocks:
-+    maxItems: 1
-+
-+  clock-names:
-+    const: se
-+
-+  dmas:
-+    maxItems: 2
-+
-+  dma-names:
-+    items:
-+      - const: tx
-+      - const: rx
-+
-+  interconnects:
-+    maxItems: 2
-+
-+  interconnect-names:
-+    items:
-+      - const: qup-core
-+      - const: qup-config
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  operating-points-v2: true
-+
-+  power-domains:
-+    maxItems: 1
-+
-+  reg:
-+    maxItems: 1
-+
-+  reg-names:
-+    const: se
-+
-+required:
-+  - compatible
-+  - clocks
-+  - clock-names
-+  - interrupts
-+  - reg
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/clock/qcom,gcc-sc7180.h>
-+    #include <dt-bindings/interconnect/qcom,sc7180.h>
-+    #include <dt-bindings/interrupt-controller/arm-gic.h>
-+    #include <dt-bindings/power/qcom-rpmpd.h>
-+
-+    spi@880000 {
-+        compatible = "qcom,geni-spi";
-+        reg = <0x00880000 0x4000>;
-+        clock-names = "se";
-+        clocks = <&gcc GCC_QUPV3_WRAP0_S0_CLK>;
-+        pinctrl-names = "default";
-+        pinctrl-0 = <&qup_spi0_default>;
-+        interrupts = <GIC_SPI 601 IRQ_TYPE_LEVEL_HIGH>;
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+        power-domains = <&rpmhpd SC7180_CX>;
-+        operating-points-v2 = <&qup_opp_table>;
-+        interconnects = <&qup_virt MASTER_QUP_CORE_0 0 &qup_virt SLAVE_QUP_CORE_0 0>,
-+                        <&gem_noc MASTER_APPSS_PROC 0 &config_noc SLAVE_QUP_0 0>;
-+        interconnect-names = "qup-core", "qup-config";
-+    };
-+
-+  - |
-+    #include <dt-bindings/dma/qcom-gpi.h>
-+
-+    spi@884000 {
-+        compatible = "qcom,geni-spi";
-+        reg = <0x00884000 0x4000>;
-+        reg-names = "se";
-+        clock-names = "se";
-+        clocks = <&gcc GCC_QUPV3_WRAP0_S1_CLK>;
-+        dmas = <&gpi_dma0 0 1 QCOM_GPI_SPI>,
-+               <&gpi_dma0 1 1 QCOM_GPI_SPI>;
-+        dma-names = "tx", "rx";
-+        pinctrl-names = "default";
-+        pinctrl-0 = <&qup_spi1_default>;
-+        interrupts = <GIC_SPI 602 IRQ_TYPE_LEVEL_HIGH>;
-+        spi-max-frequency = <50000000>;
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+    };
 -- 
-2.32.0
-
+Regards,
+Pratyush Yadav
+Texas Instruments Inc.

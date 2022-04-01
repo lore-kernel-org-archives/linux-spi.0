@@ -2,45 +2,47 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EDDFAC433FE
-	for <linux-spi@archiver.kernel.org>; Fri,  1 Apr 2022 07:16:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 46324C43217
+	for <linux-spi@archiver.kernel.org>; Fri,  1 Apr 2022 07:16:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343773AbiDAHST (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 1 Apr 2022 03:18:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41246 "EHLO
+        id S1343780AbiDAHSU (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 1 Apr 2022 03:18:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235587AbiDAHSS (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 1 Apr 2022 03:18:18 -0400
+        with ESMTP id S1343768AbiDAHST (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 1 Apr 2022 03:18:19 -0400
 Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63A6725CBA0;
-        Fri,  1 Apr 2022 00:16:26 -0700 (PDT)
-X-UUID: d5c908bba9ca447f8dc5113c76938d63-20220401
-X-UUID: d5c908bba9ca447f8dc5113c76938d63-20220401
-Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw02.mediatek.com
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9A9E25CBA4;
+        Fri,  1 Apr 2022 00:16:29 -0700 (PDT)
+X-UUID: a947add92e7147bc904b0a7a1695a0ea-20220401
+X-UUID: a947add92e7147bc904b0a7a1695a0ea-20220401
+Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw02.mediatek.com
         (envelope-from <leilk.liu@mediatek.com>)
         (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 650611933; Fri, 01 Apr 2022 15:16:21 +0800
-Received: from mtkexhb01.mediatek.inc (172.21.101.102) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
- Fri, 1 Apr 2022 15:16:21 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by mtkexhb01.mediatek.inc
- (172.21.101.102) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Fri, 1 Apr
- 2022 15:16:21 +0800
+        with ESMTP id 533825167; Fri, 01 Apr 2022 15:16:23 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+ mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Fri, 1 Apr 2022 15:16:22 +0800
 Received: from localhost.localdomain (10.17.3.154) by mtkcas11.mediatek.inc
  (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 1 Apr 2022 15:16:20 +0800
+ Transport; Fri, 1 Apr 2022 15:16:21 +0800
 From:   Leilk Liu <leilk.liu@mediatek.com>
 To:     Mark Brown <broonie@kernel.org>
 CC:     Rob Herring <robh+dt@kernel.org>,
         Matthias Brugger <matthias.bgg@gmail.com>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
-        <linux-spi@vger.kernel.org>, <linux-mediatek@lists.infradead.org>
-Subject: [PATCH V7 0/3] spi: mediatek: add single/quad mode support 
-Date:   Fri, 1 Apr 2022 15:16:13 +0800
-Message-ID: <20220401071616.8874-1-leilk.liu@mediatek.com>
+        <linux-spi@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
+        Leilk Liu <leilk.liu@mediatek.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Rob Herring <robh@kernel.org>
+Subject: [PATCH V7 2/3] dt-bindings: spi: support hclk
+Date:   Fri, 1 Apr 2022 15:16:15 +0800
+Message-ID: <20220401071616.8874-3-leilk.liu@mediatek.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220401071616.8874-1-leilk.liu@mediatek.com>
+References: <20220401071616.8874-1-leilk.liu@mediatek.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -49,44 +51,40 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This series of patches are based on spi for-next, and provide 3 patches to support MT7986.
+this patch support hclk for AHB bus.
 
-V7:
-1. add Reviewed-by: Rob Herring
+Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Rob Herring <robh@kernel.org>
+---
+ .../devicetree/bindings/spi/mediatek,spi-mt65xx.yaml          | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-V6:
- 1. remove SPI_CFG3_IPM_PIN_MODE_OFFSET.
- 2. add Reviewed-by: AngeloGioacchino Del Regno
-
-V5:
- 1. remove 3 patches that already applied.
- 2. use devm_clk_get_optional.
- 3. remove of_mtk_spi_parse_dt()
-
-v4:
- 1. fix Rob comment in v3;
- 2. use "mediatek,mt7986-spi-ipm","mediatek,spi-ipm"
-
-v3:
- 1. add Rob Acked-by in "dt-bindings: spi: Add compatible for MT7986 with single mode";
- 2. add a fix patch "spi: mediatek: support tick_delay without enhance_timing";
- 3. fix Angelogioacchino comments;
- 4. use mt7986 instead of ipm in dt-binding.
-
-v2:
- 1. rebase this series on spi for-next.
- 2. fix Rob and Krzysztof comments in v1.
-
-Leilk Liu (3):
-  spi: mediatek: add spi memory support for ipm design
-  dt-bindings: spi: support hclk
-  spi: mediatek: support hclk
-
- .../bindings/spi/mediatek,spi-mt65xx.yaml     |   4 +
- drivers/spi/spi-mt65xx.c                      | 386 +++++++++++++++++-
- 2 files changed, 373 insertions(+), 17 deletions(-)
-
---
+diff --git a/Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml b/Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml
+index 7247a177466b..ecb4a5002cc1 100644
+--- a/Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml
++++ b/Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml
+@@ -53,16 +53,20 @@ properties:
+     maxItems: 1
+ 
+   clocks:
++    minItems: 3
+     items:
+       - description: clock used for the parent clock
+       - description: clock used for the muxes clock
+       - description: clock used for the clock gate
++      - description: clock used for the AHB bus, this clock is optional
+ 
+   clock-names:
++    minItems: 3
+     items:
+       - const: parent-clk
+       - const: sel-clk
+       - const: spi-clk
++      - const: hclk
+ 
+   mediatek,pad-select:
+     $ref: /schemas/types.yaml#/definitions/uint32-array
+-- 
 2.25.1
-
 

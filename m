@@ -2,51 +2,51 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 18E42C4167D
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AA52BC4332F
 	for <linux-spi@archiver.kernel.org>; Sat,  2 Apr 2022 18:40:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355261AbiDBSmh (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S1355985AbiDBSmh (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Sat, 2 Apr 2022 14:42:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40596 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1355859AbiDBSme (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sat, 2 Apr 2022 14:42:34 -0400
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CC834ECE5
-        for <linux-spi@vger.kernel.org>; Sat,  2 Apr 2022 11:40:26 -0700 (PDT)
-Received: by mail-wm1-x331.google.com with SMTP id v64-20020a1cac43000000b0038cfd1b3a6dso5309713wme.5
-        for <linux-spi@vger.kernel.org>; Sat, 02 Apr 2022 11:40:26 -0700 (PDT)
+        with ESMTP id S1345405AbiDBSmQ (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sat, 2 Apr 2022 14:42:16 -0400
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95FF5483A4
+        for <linux-spi@vger.kernel.org>; Sat,  2 Apr 2022 11:40:22 -0700 (PDT)
+Received: by mail-wr1-x42a.google.com with SMTP id v30so757836wra.8
+        for <linux-spi@vger.kernel.org>; Sat, 02 Apr 2022 11:40:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=risKkAqOEjWleKmnT8bK4h1KlQ5AGYxyoMhBddPo4NY=;
-        b=crRmsryJtbKcnhb0bGcpTCYhixdMvRx86AheptFtDOcs7zUDb8AX52Hgz3zpG4YQq0
-         enrzShGgZ7acmJQIFgq8btYpe+CcCG+CnD29wqVM2f56VCdiPJUr9bvXPe7nzO85KMLl
-         yfSLV/VtX+dMdDd214mGIoVOgWFa3D504YaW47gZPUQqCFVmj94KGo55c5P05JoOnj0z
-         5wFOeZ0up4z65FAHe1790YdMLY56ktB4REXDN0ebLzgeYxxjTIahFeTGFgQ1rT+uFeJG
-         UOfF+vIMhpE1IIbCp4Nbk5/55l917vSwx+XhZottRV7K+vT5fw+owozOYcnyF5ga/jAT
-         Ja1A==
+        bh=oehOK4VAqzTxqC5buHxSssXxgO+RDZMIgj7zOteyqjI=;
+        b=QX+XZ2MJAuoGxznp0+bDOYTTk/lB8ghvn8FRCX/2INb7hsJ5n48AAKa45seArdlTf7
+         o1qARoYK4z3NyBGCvEm9yCxy1mnAqOTqgwnPnPkzI+7AQmkAv9UVWA0hLhlkU12WkYMw
+         FrrupzS5OOI1ifO0ltTZbPpqs0UmR61wH0oYpiP9Sg5FtIpCK3kNrlvexMQHaKAWo+ob
+         U0yS3y8K2gLKj7Js6VfcKp0/3wv+R7Vdua0iknQbe5Xg1ImjEOrI5ZVyA+3Jkkf6EaiN
+         soMxonm/AsIh1FbrifW3ASou6SmzlrwghvHu5YoU8Zt7cCGfifkNNbx5UlKKf9pc/Ceq
+         0e8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=risKkAqOEjWleKmnT8bK4h1KlQ5AGYxyoMhBddPo4NY=;
-        b=W1NO5x0qIPp2lWZBCsLiaFI60uO4h5+wqu9rxzJp5+S0SWiAu8EzPpqivNj92NzvfD
-         gEWyWc+kHhj3RB0i1KuKzJugou+5NKnC/Rpj/jXfpqeVBnsZCOhpB5Lm1HPahpM9Tr36
-         YVifWcvokg/VfeRbAuEIgZZbigFYq6Zb6zhHE34gARY5jxlghQbLJjV6n4WeFUH71K6y
-         Ew/6/KIaDyiOPEAe/BZbUIIDPFUgj/wCIpnw6KFHcg3LJuhD1WxZequsx5vsOXdhF305
-         MQEY+SVmR5RuAsGBXCyQ9gMHqE8GLF6DS9ZsHUOcCAd/3Sa3wG9AU44E9Du49k7j6emA
-         zeTQ==
-X-Gm-Message-State: AOAM5313CA5CDXUO22rDlUq6xcTZatjZ08GFYB/Iud3z2mehZg3LlHy1
-        gUExD2QvBhbYl3UyPnYTfFcD7w==
-X-Google-Smtp-Source: ABdhPJxJQX61Lgc2fAm69igVVaag+E3gYfkAZRc9p6w8zF72MDwfxkT2QRbAS8dxPrqO/W3uXoelLA==
-X-Received: by 2002:a7b:c1d3:0:b0:38c:5b15:de91 with SMTP id a19-20020a7bc1d3000000b0038c5b15de91mr13178881wmj.40.1648924824755;
-        Sat, 02 Apr 2022 11:40:24 -0700 (PDT)
+        bh=oehOK4VAqzTxqC5buHxSssXxgO+RDZMIgj7zOteyqjI=;
+        b=OXfZbhTQ5PwyI0d4tPaCBQM4H2Qc2ncYMalVush8cGpvHwXhf0uwVAuPsDkaxsAR/q
+         oBf57dTZHw62CJ2nJ2S31e7+PqTydYKrNu/4ZnW9agKwuo8021Ze8LWcYw3RkrZOVDLk
+         ysoZguOrV4rlUJEHpeWbAZscNX/IpB/Yl93tz2N0A+o5Qc0cH5bUay+gQwTabJa6+bhj
+         GcBGRTpGxzWlclqzBR20nsGrB9UkP3klPoD4pWS2DxzBo+UeqYmOCD2+NpNs1j7wQ/Vm
+         ZSG78Ods8CmamdL05J02lBarQCn3KurF/SD9mCllw/Z6KBRoFF7moLBPj8ZYFhQAI30N
+         B/2g==
+X-Gm-Message-State: AOAM531N4ZBkvn8lSxrVeQex6y5+PIOdbtsQLUbxBHbGkTrUor95/YA/
+        Q2EHA2dfEID3ZTpdd4CgalhrLglOjawegQN2
+X-Google-Smtp-Source: ABdhPJxrUeFwqSX+rD03NAs4YoRrPMJ6QWY4w7aYjRhLNc0vbueAXFtS7rXOX2O7syQlX9O178aItg==
+X-Received: by 2002:adf:eed0:0:b0:203:f2e2:197b with SMTP id a16-20020adfeed0000000b00203f2e2197bmr12528432wrp.604.1648924821158;
+        Sat, 02 Apr 2022 11:40:21 -0700 (PDT)
 Received: from localhost.localdomain (xdsl-188-155-201-27.adslplus.ch. [188.155.201.27])
-        by smtp.gmail.com with ESMTPSA id m20-20020a05600c4f5400b0038b5162260csm6760502wmq.23.2022.04.02.11.40.23
+        by smtp.gmail.com with ESMTPSA id m20-20020a05600c4f5400b0038b5162260csm6760502wmq.23.2022.04.02.11.40.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 02 Apr 2022 11:40:24 -0700 (PDT)
+        Sat, 02 Apr 2022 11:40:20 -0700 (PDT)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 To:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
@@ -59,9 +59,9 @@ To:     Andy Gross <agross@kernel.org>,
         linux-spi@vger.kernel.org
 Cc:     Kuldeep Singh <singh.kuldeep87k@gmail.com>,
         Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH v3 7/9] dt-bindings: serial: qcom,msm-uartdm: convert to dtschema
-Date:   Sat,  2 Apr 2022 20:40:09 +0200
-Message-Id: <20220402184011.132465-8-krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v3 4/9] ARM: dts: qcom: ipq4019: align clocks in I2C with DT schema
+Date:   Sat,  2 Apr 2022 20:40:06 +0200
+Message-Id: <20220402184011.132465-5-krzysztof.kozlowski@linaro.org>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20220402184011.132465-1-krzysztof.kozlowski@linaro.org>
 References: <20220402184011.132465-1-krzysztof.kozlowski@linaro.org>
@@ -71,221 +71,43 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Convert the Qualcomm MSM Serial UARTDM bindings to DT Schema.
+The DT schema expects clocks core-iface order.  No functional change.
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- .../bindings/serial/qcom,msm-uartdm.txt       |  81 -------------
- .../bindings/serial/qcom,msm-uartdm.yaml      | 112 ++++++++++++++++++
- 2 files changed, 112 insertions(+), 81 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/serial/qcom,msm-uartdm.txt
- create mode 100644 Documentation/devicetree/bindings/serial/qcom,msm-uartdm.yaml
+ arch/arm/boot/dts/qcom-ipq4019.dtsi | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/serial/qcom,msm-uartdm.txt b/Documentation/devicetree/bindings/serial/qcom,msm-uartdm.txt
-deleted file mode 100644
-index 9d098cf73b53..000000000000
---- a/Documentation/devicetree/bindings/serial/qcom,msm-uartdm.txt
-+++ /dev/null
-@@ -1,81 +0,0 @@
--* MSM Serial UARTDM
--
--The MSM serial UARTDM hardware is designed for high-speed use cases where the
--transmit and/or receive channels can be offloaded to a dma-engine. From a
--software perspective it's mostly compatible with the MSM serial UART except
--that it supports reading and writing multiple characters at a time.
--
--Required properties:
--- compatible: Should contain at least "qcom,msm-uartdm".
--              A more specific property should be specified as follows depending
--	      on the version:
--		"qcom,msm-uartdm-v1.1"
--		"qcom,msm-uartdm-v1.2"
--		"qcom,msm-uartdm-v1.3"
--		"qcom,msm-uartdm-v1.4"
--- reg: Should contain UART register locations and lengths. The first
--       register shall specify the main control registers. An optional second
--       register location shall specify the GSBI control region.
--       "qcom,msm-uartdm-v1.3" is the only compatible value that might
--       need the GSBI control region.
--- interrupts: Should contain UART interrupt.
--- clocks: Should contain the core clock and the AHB clock.
--- clock-names: Should be "core" for the core clock and "iface" for the
--	       AHB clock.
--
--Optional properties:
--- dmas: Should contain dma specifiers for transmit and receive channels
--- dma-names: Should contain "tx" for transmit and "rx" for receive channels
--- qcom,tx-crci: Identificator <u32> for Client Rate Control Interface to be
--           used with TX DMA channel. Required when using DMA for transmission
--           with UARTDM v1.3 and below.
--- qcom,rx-crci: Identificator <u32> for Client Rate Control Interface to be
--           used with RX DMA channel. Required when using DMA for reception
--           with UARTDM v1.3 and below.
--
--Note: Aliases may be defined to ensure the correct ordering of the UARTs.
--The alias serialN will result in the UART being assigned port N.  If any
--serialN alias exists, then an alias must exist for each enabled UART.  The
--serialN aliases should be in a .dts file instead of in a .dtsi file.
--
--Examples:
--
--- A uartdm v1.4 device with dma capabilities.
--
--	serial@f991e000 {
--		compatible = "qcom,msm-uartdm-v1.4", "qcom,msm-uartdm";
--		reg = <0xf991e000 0x1000>;
--		interrupts = <0 108 0x0>;
--		clocks = <&blsp1_uart2_apps_cxc>, <&blsp1_ahb_cxc>;
--		clock-names = "core", "iface";
--		dmas = <&dma0 0>, <&dma0 1>;
--		dma-names = "tx", "rx";
--	};
--
--- A uartdm v1.3 device without dma capabilities and part of a GSBI complex.
--
--	serial@19c40000 {
--		compatible = "qcom,msm-uartdm-v1.3", "qcom,msm-uartdm";
--		reg = <0x19c40000 0x1000>,
--		<0x19c00000 0x1000>;
--		interrupts = <0 195 0x0>;
--		clocks = <&gsbi5_uart_cxc>, <&gsbi5_ahb_cxc>;
--		clock-names = "core", "iface";
--	};
--
--- serialN alias.
--
--	aliases {
--		serial0 = &uarta;
--		serial1 = &uartc;
--		serial2 = &uartb;
--	};
--
--	uarta: serial@12490000 {
--	};
--
--	uartb: serial@16340000 {
--	};
--
--	uartc: serial@1a240000 {
--	};
-diff --git a/Documentation/devicetree/bindings/serial/qcom,msm-uartdm.yaml b/Documentation/devicetree/bindings/serial/qcom,msm-uartdm.yaml
-new file mode 100644
-index 000000000000..e73366fe7f7d
---- /dev/null
-+++ b/Documentation/devicetree/bindings/serial/qcom,msm-uartdm.yaml
-@@ -0,0 +1,112 @@
-+# SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/serial/qcom,msm-uartdm.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Qualcomm MSM Serial UARTDM
-+
-+maintainers:
-+  - Andy Gross <agross@kernel.org>
-+  - Bjorn Andersson <bjorn.andersson@linaro.org>
-+  - Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-+
-+description: |
-+  The MSM serial UARTDM hardware is designed for high-speed use cases where the
-+  transmit and/or receive channels can be offloaded to a dma-engine. From a
-+  software perspective it's mostly compatible with the MSM serial UART except
-+  that it supports reading and writing multiple characters at a time.
-+
-+  Note:: Aliases may be defined to ensure the correct ordering of the UARTs.
-+  The alias serialN will result in the UART being assigned port N.  If any
-+  serialN alias exists, then an alias must exist for each enabled UART.  The
-+  serialN aliases should be in a .dts file instead of in a .dtsi file.
-+
-+properties:
-+  compatible:
-+    items:
-+      - enum:
-+          - qcom,msm-uartdm-v1.1
-+          - qcom,msm-uartdm-v1.2
-+          - qcom,msm-uartdm-v1.3
-+          - qcom,msm-uartdm-v1.4
-+      - const: qcom,msm-uartdm
-+
-+  clocks:
-+    maxItems: 2
-+
-+  clock-names:
-+    items:
-+      - const: core
-+      - const: iface
-+
-+  dmas:
-+    maxItems: 2
-+
-+  dma-names:
-+    items:
-+      - const: tx
-+      - const: rx
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  qcom,rx-crci:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description:
-+      Identificator for Client Rate Control Interface to be used with RX DMA
-+      channel. Required when using DMA for reception with UARTDM v1.3 and
-+      below.
-+
-+  qcom,tx-crci:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description:
-+      Identificator for Client Rate Control Interface to be used with TX DMA
-+      channel. Required when using DMA for transmission with UARTDM v1.3 and
-+      below.
-+
-+  reg:
-+    minItems: 1
-+    items:
-+      - description: Main control registers
-+      - description: An optional second register location shall specify the GSBI control region.
-+
-+required:
-+  - compatible
-+  - clock-names
-+  - clocks
-+  - interrupts
-+  - reg
-+
-+unevaluatedProperties: false
-+
-+allOf:
-+  - $ref: /schemas/serial/serial.yaml#
-+
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: qcom,msm-uartdm-v1.3
-+    then:
-+      properties:
-+        reg:
-+          minItems: 2
-+    else:
-+      properties:
-+        reg:
-+          maxItems: 1
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/arm-gic.h>
-+
-+    serial@f991e000 {
-+        compatible = "qcom,msm-uartdm-v1.4", "qcom,msm-uartdm";
-+        reg = <0xf991e000 0x1000>;
-+        interrupts = <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>;
-+        clocks = <&blsp1_uart2_apps_cxc>, <&blsp1_ahb_cxc>;
-+        clock-names = "core", "iface";
-+        dmas = <&dma0 1>, <&dma0 0>;
-+        dma-names = "rx", "tx";
-+    };
+diff --git a/arch/arm/boot/dts/qcom-ipq4019.dtsi b/arch/arm/boot/dts/qcom-ipq4019.dtsi
+index 1f6c4ab7f37e..897442157f5f 100644
+--- a/arch/arm/boot/dts/qcom-ipq4019.dtsi
++++ b/arch/arm/boot/dts/qcom-ipq4019.dtsi
+@@ -276,9 +276,9 @@ blsp1_i2c3: i2c@78b7000 { /* BLSP1 QUP3 */
+ 			compatible = "qcom,i2c-qup-v2.2.1";
+ 			reg = <0x78b7000 0x600>;
+ 			interrupts = <GIC_SPI 97 IRQ_TYPE_LEVEL_HIGH>;
+-			clocks = <&gcc GCC_BLSP1_AHB_CLK>,
+-				 <&gcc GCC_BLSP1_QUP1_I2C_APPS_CLK>;
+-			clock-names = "iface", "core";
++			clocks = <&gcc GCC_BLSP1_QUP1_I2C_APPS_CLK>,
++				 <&gcc GCC_BLSP1_AHB_CLK>;
++			clock-names = "core", "iface";
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
+ 			dmas = <&blsp_dma 8>, <&blsp_dma 9>;
+@@ -290,9 +290,9 @@ blsp1_i2c4: i2c@78b8000 { /* BLSP1 QUP4 */
+ 			compatible = "qcom,i2c-qup-v2.2.1";
+ 			reg = <0x78b8000 0x600>;
+ 			interrupts = <GIC_SPI 98 IRQ_TYPE_LEVEL_HIGH>;
+-			clocks = <&gcc GCC_BLSP1_AHB_CLK>,
+-				 <&gcc GCC_BLSP1_QUP2_I2C_APPS_CLK>;
+-			clock-names = "iface", "core";
++			clocks = <&gcc GCC_BLSP1_QUP2_I2C_APPS_CLK>,
++				 <&gcc GCC_BLSP1_AHB_CLK>;
++			clock-names = "core", "iface";
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
+ 			dmas = <&blsp_dma 10>, <&blsp_dma 11>;
 -- 
 2.32.0
 

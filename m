@@ -2,51 +2,51 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C0C05C4167E
-	for <linux-spi@archiver.kernel.org>; Sat,  2 Apr 2022 18:40:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 13F95C43217
+	for <linux-spi@archiver.kernel.org>; Sat,  2 Apr 2022 18:41:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357262AbiDBSmr (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sat, 2 Apr 2022 14:42:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40622 "EHLO
+        id S1356884AbiDBSmt (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sat, 2 Apr 2022 14:42:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1356500AbiDBSme (ORCPT
+        with ESMTP id S1355756AbiDBSme (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Sat, 2 Apr 2022 14:42:34 -0400
-Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44DD84F45F
-        for <linux-spi@vger.kernel.org>; Sat,  2 Apr 2022 11:40:27 -0700 (PDT)
-Received: by mail-wm1-x334.google.com with SMTP id v64-20020a1cac43000000b0038cfd1b3a6dso5309726wme.5
-        for <linux-spi@vger.kernel.org>; Sat, 02 Apr 2022 11:40:27 -0700 (PDT)
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FAB54EA09
+        for <linux-spi@vger.kernel.org>; Sat,  2 Apr 2022 11:40:25 -0700 (PDT)
+Received: by mail-wr1-x436.google.com with SMTP id r13so8574427wrr.9
+        for <linux-spi@vger.kernel.org>; Sat, 02 Apr 2022 11:40:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=ioo4qYHnBpK0bxlPRJXj59EcubEzOJoJqknqq3RnCBw=;
-        b=xma+QvotMCwq4nd+T0G157q34QrtyX/iVRaUZgz9leMHEKtLfnGWtCQp1qauSyt8Oj
-         xZty09uDqkupVvcrNaESq5Nik+Zoh0e8dZ3Dx8YlbNIgMIOF/nnxiwJTdUTgdxzzrute
-         0fyVQVUC1+HecFIivTKLVoka9sQaTn8frreKf8BxLXcOGYe3fsol6PSCK7/sjycNRBka
-         oZfeqyaNf796DBAyPBJf3SRBqJiqUumAUj6sXEK6D+7zuotYZmppvdETD5odmtIFWKnp
-         /+MkcBXTotxDgZSFs0qfIsPJeTrlEg2kOLBHQAaGbG29ztAYkkyWjgMYRgu8zjVIKP20
-         Jw9w==
+        bh=8UQnzpzJ7atASYcdmmpmKJN+w3hsF0/X9rG8MRnHqSQ=;
+        b=sJkGlXQ6t/GZu/niHOpOZmjDOll5gznf77yzZ+d3nFHFi9zhmIBYWzO8zJm1lUtvHj
+         mokqESv8EymQtzEj4HdDpdh2imD09qSWclAOV5dBnXy4uA+tnXRLnjsm8L52Jrcz1aBD
+         kft5rp5Ubmhhn8OQ0zGKHEb/EyaRcr/tlJodiNTpHbeCiPHltu97uL/1OlqRkY4079Ap
+         PPg1j02nGQGh2DU4qKEIpT+GG18rbfHnbmqU64fyVrAwR6ypo8aNywPOWJvt4ri3a6+U
+         xDyAB98bBcx+xekpEefl5Ep6auS2KksQI4H1HtBOtqA38NlidZDO3ztz35Os8Cy+EN0Q
+         pISg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=ioo4qYHnBpK0bxlPRJXj59EcubEzOJoJqknqq3RnCBw=;
-        b=s62qHGpvD7dpSGe6fUfRsydUTCVz7XNUUVD9GXX26kIgDYTl0SlhKFFNx2oMuQ3krZ
-         TB2CC13oEdcS07Vl0/WN9Bwot+PoAQJ3RtpJTXgDxAtQLoO45ijMRffpHVp+fefiovAy
-         zBQdLy/L50/UmDSDecRaT7Z/2rr5Ku3Kc6fz4LIoeDN974wxzURaVkpHAykXNncZ/xfi
-         ApR7ZfEbli9fzfgsu6gIf1MU6dZFaQK0Xs7CtoXQ0FlqT9r28sErJffUvAxtbezeTYMe
-         X9gqKtT2lCum74sv7FTLv0BMcptq7lVQBhWdDh757MYQvADl7ftqpmqbBNF6JknOr2Jo
-         orxg==
-X-Gm-Message-State: AOAM531oYQ6oQdjyamC++/oqvhN5CaiBtjO332HdyqH/6MjIhRVhyX2X
-        RHqpO/O0Vu9LFhOzrQWEIRaFO2QjskDHosBg
-X-Google-Smtp-Source: ABdhPJzpCLjjgITs+9CV2ej1DV1wUHUNq1oeHEUvFhvgoGV8sGtKsUPTboSbrVztBQfDTSWpsae2Xg==
-X-Received: by 2002:a05:600c:4f0f:b0:38c:c8f5:73e7 with SMTP id l15-20020a05600c4f0f00b0038cc8f573e7mr13045640wmq.201.1648924825831;
-        Sat, 02 Apr 2022 11:40:25 -0700 (PDT)
+        bh=8UQnzpzJ7atASYcdmmpmKJN+w3hsF0/X9rG8MRnHqSQ=;
+        b=2np1HY6YZUi82aQL/ffri/QK0dX5LME04oEN+f1noc8A2SoTjOXCZsF0d5J2HbJYEC
+         qZJXHh/Nl08oYI6pOQuI3yQLmRxTB5gYgGcM1jVg8hBeXCjbtMDokcIr4ZxXZVUITsix
+         yE+ZtctePst1YuhZoC2LGLpHdIVOeR7cjcZWcKGyigihBccljx01kMUPxBLdopS1Zd+7
+         SnOoYMMQfia3lUBc/pJh5osfvqt0qtR9vL3FT3RCN+gv9op1YHQZ8mvF1B5J0NElMFul
+         NWG1sae1M+R6R4lEKnWavf1gUhGJ7ub9IXOjd8oWuO4M81zFF7RokWhDo73GdC7Cwr4U
+         LTPQ==
+X-Gm-Message-State: AOAM532qkFiStufWfFReUE0WtBFUZ4gLYgOurqDBRe5gjbXWmijYhxSt
+        JyuHd0J/RtURVF8Dngr2F+/j1g==
+X-Google-Smtp-Source: ABdhPJzgfFjUaD8MoK9zh4Fy6hmHDi8obj/pudrAdpzyXg8ImEW0WyON+B6gInWAdwqVSGua/RsS/A==
+X-Received: by 2002:a5d:5111:0:b0:205:a1aa:ab71 with SMTP id s17-20020a5d5111000000b00205a1aaab71mr11786912wrt.67.1648924823523;
+        Sat, 02 Apr 2022 11:40:23 -0700 (PDT)
 Received: from localhost.localdomain (xdsl-188-155-201-27.adslplus.ch. [188.155.201.27])
-        by smtp.gmail.com with ESMTPSA id m20-20020a05600c4f5400b0038b5162260csm6760502wmq.23.2022.04.02.11.40.24
+        by smtp.gmail.com with ESMTPSA id m20-20020a05600c4f5400b0038b5162260csm6760502wmq.23.2022.04.02.11.40.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 02 Apr 2022 11:40:25 -0700 (PDT)
+        Sat, 02 Apr 2022 11:40:23 -0700 (PDT)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 To:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
@@ -59,9 +59,9 @@ To:     Andy Gross <agross@kernel.org>,
         linux-spi@vger.kernel.org
 Cc:     Kuldeep Singh <singh.kuldeep87k@gmail.com>,
         Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH v3 8/9] dt-bindings: i2c: qcom,i2c-qup: convert to dtschema
-Date:   Sat,  2 Apr 2022 20:40:10 +0200
-Message-Id: <20220402184011.132465-9-krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v3 6/9] spi: dt-bindings: qcom,spi-qup: convert to dtschema
+Date:   Sat,  2 Apr 2022 20:40:08 +0200
+Message-Id: <20220402184011.132465-7-krzysztof.kozlowski@linaro.org>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20220402184011.132465-1-krzysztof.kozlowski@linaro.org>
 References: <20220402184011.132465-1-krzysztof.kozlowski@linaro.org>
@@ -71,94 +71,162 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Convert the Qualcomm Universal Peripheral (QUP) I2C controller to DT
-Schema.
-
-Add missing properties: dma and dma-names, pinctrl states (to indicate
-support for sleep pinctrl).
+Convert the Qualcomm Universal Peripheral (QUP) Serial Peripheral
+Interface (SPI) bindings to DT Schema.
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Acked-by: Kuldeep Singh <singh.kuldeep87k@gmail.com>
 ---
- .../devicetree/bindings/i2c/qcom,i2c-qup.txt  | 40 ---------
- .../devicetree/bindings/i2c/qcom,i2c-qup.yaml | 89 +++++++++++++++++++
- 2 files changed, 89 insertions(+), 40 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/i2c/qcom,i2c-qup.txt
- create mode 100644 Documentation/devicetree/bindings/i2c/qcom,i2c-qup.yaml
+ .../devicetree/bindings/spi/qcom,spi-qup.txt  | 103 ------------------
+ .../devicetree/bindings/spi/qcom,spi-qup.yaml |  81 ++++++++++++++
+ 2 files changed, 81 insertions(+), 103 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
+ create mode 100644 Documentation/devicetree/bindings/spi/qcom,spi-qup.yaml
 
-diff --git a/Documentation/devicetree/bindings/i2c/qcom,i2c-qup.txt b/Documentation/devicetree/bindings/i2c/qcom,i2c-qup.txt
+diff --git a/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt b/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
 deleted file mode 100644
-index dc71754a56af..000000000000
---- a/Documentation/devicetree/bindings/i2c/qcom,i2c-qup.txt
+index 5c090771c016..000000000000
+--- a/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
 +++ /dev/null
-@@ -1,40 +0,0 @@
--Qualcomm Universal Peripheral (QUP) I2C controller
+@@ -1,103 +0,0 @@
+-Qualcomm Universal Peripheral (QUP) Serial Peripheral Interface (SPI)
+-
+-The QUP core is an AHB slave that provides a common data path (an output FIFO
+-and an input FIFO) for serial peripheral interface (SPI) mini-core.
+-
+-SPI in master mode supports up to 50MHz, up to four chip selects, programmable
+-data path from 4 bits to 32 bits and numerous protocol variants.
 -
 -Required properties:
-- - compatible: Should be:
--   * "qcom,i2c-qup-v1.1.1" for 8660, 8960 and 8064.
--   * "qcom,i2c-qup-v2.1.1" for 8974 v1.
--   * "qcom,i2c-qup-v2.2.1" for 8974 v2 and later.
-- - reg: Should contain QUP register address and length.
-- - interrupts: Should contain I2C interrupt.
+-- compatible:     Should contain:
+-		  "qcom,spi-qup-v1.1.1" for 8660, 8960 and 8064.
+-		  "qcom,spi-qup-v2.1.1" for 8974 and later
+-		  "qcom,spi-qup-v2.2.1" for 8974 v2 and later.
 -
-- - clocks: A list of phandles + clock-specifiers, one for each entry in
--   clock-names.
-- - clock-names: Should contain:
--   * "core" for the core clock
--   * "iface" for the AHB clock
+-- reg:            Should contain base register location and length
+-- interrupts:     Interrupt number used by this controller
 -
-- - #address-cells: Should be <1> Address cells for i2c device address
-- - #size-cells: Should be <0> as i2c addresses have no size component
+-- clocks:         Should contain the core clock and the AHB clock.
+-- clock-names:    Should be "core" for the core clock and "iface" for the
+-                  AHB clock.
+-
+-- #address-cells: Number of cells required to define a chip select
+-                  address on the SPI bus. Should be set to 1.
+-- #size-cells:    Should be zero.
 -
 -Optional properties:
-- - clock-frequency: Should specify the desired i2c bus clock frequency in Hz,
--                    defaults to 100kHz if omitted.
+-- spi-max-frequency: Specifies maximum SPI clock frequency,
+-                     Units - Hz. Definition as per
+-                     Documentation/devicetree/bindings/spi/spi-bus.txt
+-- num-cs:	total number of chipselects
+-- cs-gpios:	should specify GPIOs used for chipselects.
+-		The gpios will be referred to as reg = <index> in the SPI child
+-		nodes.  If unspecified, a single SPI device without a chip
+-		select can be used.
 -
--Child nodes should conform to i2c bus binding.
+-- dmas:         Two DMA channel specifiers following the convention outlined
+-                in bindings/dma/dma.txt
+-- dma-names:    Names for the dma channels, if present. There must be at
+-                least one channel named "tx" for transmit and named "rx" for
+-                receive.
+-
+-SPI slave nodes must be children of the SPI master node and can contain
+-properties described in Documentation/devicetree/bindings/spi/spi-bus.txt
 -
 -Example:
 -
-- i2c@f9924000 {
-- 	compatible = "qcom,i2c-qup-v2.2.1";
-- 	reg = <0xf9924000 0x1000>;
-- 	interrupts = <0 96 0>;
+-	spi_8: spi@f9964000 { /* BLSP2 QUP2 */
 -
-- 	clocks = <&gcc GCC_BLSP1_QUP2_I2C_APPS_CLK>, <&gcc GCC_BLSP1_AHB_CLK>;
-- 	clock-names = "core", "iface";
+-		compatible = "qcom,spi-qup-v2";
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-		reg = <0xf9964000 0x1000>;
+-		interrupts = <0 102 0>;
+-		spi-max-frequency = <19200000>;
 -
-- 	clock-frequency = <355000>;
+-		clocks = <&gcc GCC_BLSP2_QUP2_SPI_APPS_CLK>, <&gcc GCC_BLSP2_AHB_CLK>;
+-		clock-names = "core", "iface";
 -
-- 	#address-cells = <1>;
-- 	#size-cells = <0>;
-- };
-diff --git a/Documentation/devicetree/bindings/i2c/qcom,i2c-qup.yaml b/Documentation/devicetree/bindings/i2c/qcom,i2c-qup.yaml
+-		dmas = <&blsp1_bam 13>, <&blsp1_bam 12>;
+-		dma-names = "rx", "tx";
+-
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&spi8_default>;
+-
+-		device@0 {
+-			compatible = "arm,pl022-dummy";
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-			reg = <0>; /* Chip select 0 */
+-			spi-max-frequency = <19200000>;
+-			spi-cpol;
+-		};
+-
+-		device@1 {
+-			compatible = "arm,pl022-dummy";
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-			reg = <1>; /* Chip select 1 */
+-			spi-max-frequency = <9600000>;
+-			spi-cpha;
+-		};
+-
+-		device@2 {
+-			compatible = "arm,pl022-dummy";
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-			reg = <2>; /* Chip select 2 */
+-			spi-max-frequency = <19200000>;
+-			spi-cpol;
+-			spi-cpha;
+-		};
+-
+-		device@3 {
+-			compatible = "arm,pl022-dummy";
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-			reg = <3>; /* Chip select 3 */
+-			spi-max-frequency = <19200000>;
+-			spi-cpol;
+-			spi-cpha;
+-			spi-cs-high;
+-		};
+-	};
+diff --git a/Documentation/devicetree/bindings/spi/qcom,spi-qup.yaml b/Documentation/devicetree/bindings/spi/qcom,spi-qup.yaml
 new file mode 100644
-index 000000000000..f43947514d48
+index 000000000000..93f14dd01afc
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/i2c/qcom,i2c-qup.yaml
-@@ -0,0 +1,89 @@
-+# SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
++++ b/Documentation/devicetree/bindings/spi/qcom,spi-qup.yaml
+@@ -0,0 +1,81 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/i2c/qcom,i2c-qup.yaml#
++$id: http://devicetree.org/schemas/spi/qcom,spi-qup.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Qualcomm Universal Peripheral (QUP) I2C controller
++title: Qualcomm Universal Peripheral (QUP) Serial Peripheral Interface (SPI)
 +
 +maintainers:
 +  - Andy Gross <agross@kernel.org>
 +  - Bjorn Andersson <bjorn.andersson@linaro.org>
 +  - Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 +
++description:
++  The QUP core is an AHB slave that provides a common data path (an output FIFO
++  and an input FIFO) for serial peripheral interface (SPI) mini-core.
++
++  SPI in master mode supports up to 50MHz, up to four chip selects,
++  programmable data path from 4 bits to 32 bits and numerous protocol variants.
++
 +allOf:
-+  - $ref: /schemas/i2c/i2c-controller.yaml#
++  - $ref: /schemas/spi/spi-controller.yaml#
 +
 +properties:
 +  compatible:
 +    enum:
-+      - qcom,i2c-qup-v1.1.1     # for 8660, 8960 and 8064
-+      - qcom,i2c-qup-v2.1.1     # for 8974 v1
-+      - qcom,i2c-qup-v2.2.1     # for 8974 v2 and later
++      - qcom,spi-qup-v1.1.1 # for 8660, 8960 and 8064
++      - qcom,spi-qup-v2.1.1 # for 8974 and later
++      - qcom,spi-qup-v2.2.1 # for 8974 v2 and later
 +
 +  clocks:
 +    maxItems: 2
@@ -167,9 +235,6 @@ index 000000000000..f43947514d48
 +    items:
 +      - const: core
 +      - const: iface
-+
-+  clock-frequency:
-+    default: 100000
 +
 +  dmas:
 +    maxItems: 2
@@ -182,22 +247,13 @@ index 000000000000..f43947514d48
 +  interrupts:
 +    maxItems: 1
 +
-+  pinctrl-0: true
-+  pinctrl-1: true
-+
-+  pinctrl-names:
-+    minItems: 1
-+    items:
-+      - const: default
-+      - const: sleep
-+
 +  reg:
 +    maxItems: 1
 +
 +required:
 +  - compatible
-+  - clock-names
 +  - clocks
++  - clock-names
 +  - interrupts
 +  - reg
 +
@@ -205,24 +261,21 @@ index 000000000000..f43947514d48
 +
 +examples:
 +  - |
-+    #include <dt-bindings/clock/qcom,gcc-msm8998.h>
++    #include <dt-bindings/clock/qcom,gcc-msm8996.h>
 +    #include <dt-bindings/interrupt-controller/arm-gic.h>
 +
-+    i2c@c175000 {
-+        compatible = "qcom,i2c-qup-v2.2.1";
-+        reg = <0x0c175000 0x600>;
++    spi@7575000 {
++        compatible = "qcom,spi-qup-v2.2.1";
++        reg = <0x07575000 0x600>;
 +        interrupts = <GIC_SPI 95 IRQ_TYPE_LEVEL_HIGH>;
-+
-+        clocks = <&gcc GCC_BLSP1_QUP1_I2C_APPS_CLK>,
++        clocks = <&gcc GCC_BLSP1_QUP1_SPI_APPS_CLK>,
 +                 <&gcc GCC_BLSP1_AHB_CLK>;
 +        clock-names = "core", "iface";
-+        dmas = <&blsp1_dma 6>, <&blsp1_dma 7>;
-+        dma-names = "tx", "rx";
 +        pinctrl-names = "default", "sleep";
-+        pinctrl-0 = <&blsp1_i2c1_default>;
-+        pinctrl-1 = <&blsp1_i2c1_sleep>;
-+        clock-frequency = <400000>;
-+
++        pinctrl-0 = <&blsp1_spi1_default>;
++        pinctrl-1 = <&blsp1_spi1_sleep>;
++        dmas = <&blsp1_dma 12>, <&blsp1_dma 13>;
++        dma-names = "tx", "rx";
 +        #address-cells = <1>;
 +        #size-cells = <0>;
 +    };

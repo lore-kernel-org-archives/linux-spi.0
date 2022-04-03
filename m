@@ -2,134 +2,62 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8930CC43219
-	for <linux-spi@archiver.kernel.org>; Sat,  2 Apr 2022 21:01:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E31B0C433EF
+	for <linux-spi@archiver.kernel.org>; Sun,  3 Apr 2022 10:11:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234720AbiDBVC4 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sat, 2 Apr 2022 17:02:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51428 "EHLO
+        id S1356254AbiDCKNL (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 3 Apr 2022 06:13:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230163AbiDBVCz (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sat, 2 Apr 2022 17:02:55 -0400
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94DF0654B3;
-        Sat,  2 Apr 2022 14:01:02 -0700 (PDT)
-Received: by mail-pj1-x1032.google.com with SMTP id nt14-20020a17090b248e00b001ca601046a4so1535439pjb.0;
-        Sat, 02 Apr 2022 14:01:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=ep31zfzXgtGPRrK4JzjcT4OsqwVUibu1oi7iQV6wMvk=;
-        b=omQXM9rtM1ebTOd9z8Ztav/WBoT+BCHziqEXwKWAlkioz9DLMeAftY4UcrbPRF9dvo
-         iMHIqhBJ9HMNXG//Hjyk0XTZSaeCqnlM2A5aofHxAibbOUdnvHBjxiXOGuQ5tYYhIyO1
-         SoXc5o5jQ0DrsbD4yjkJKCSXvYG4amJfPA2Kl0VW5lUg4Ji/H072psVjvLOq6Wyy1tRq
-         OINubE8bnpoZEu78zYfE05TRpk/YnxYkPzAbOMIat9Dv63xoS16Tkya1xAs9dogtMaQW
-         BNpctb9fvWMaxbp4kOsrdI33JWavTeVRlusI9oeNfS4484++uizErQPu/8lBwlZB9K7w
-         TX9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=ep31zfzXgtGPRrK4JzjcT4OsqwVUibu1oi7iQV6wMvk=;
-        b=pS+aCfcY64YNuluT25mIeNvPiwO1FvhYmZRJf04esUAYUJNRGO+Fb20feZgXrVLJEU
-         6Uq0XA3W+IQhVBS8DR/sO95liNb+4LrXjJhSO054kFgq+qrMexwTez2/GJmIvdXF5FIP
-         8J5xmxbjdM7gCPIDIrntKOYs7WFpLsxmrNve9yJ3Wl9prSlAzwEIJSsrlrJkCZ/NfkIJ
-         lxMu7vB0+z0YRDp05b1OWZvsJvnnecfXVQxDNWlLxAbeA8KJMuraeRDJVtpfNJYdVEqU
-         +IF+4ioLDJO9b2iSdM59WM6Ia8ET+I71+gN6yjzWfuz5aQ+dcjX59QLEl5lHUGl3jS7D
-         8GlA==
-X-Gm-Message-State: AOAM531i0021svKiu1G/hS/byACrDxNz8ZG8BY0srKPoLHUMAI6u0W7e
-        7Rgc4e4u6p9r1M0OghOWMPMYZd2fU4E=
-X-Google-Smtp-Source: ABdhPJxj78ez9xkFhutTGi0ECjYCluuCwbPoK7lVzjaR9HcfVHQxlmELJUaq1hfN74k4vofie6i9Kg==
-X-Received: by 2002:a17:902:bb92:b0:153:4eae:c77e with SMTP id m18-20020a170902bb9200b001534eaec77emr51730419pls.93.1648933261795;
-        Sat, 02 Apr 2022 14:01:01 -0700 (PDT)
-Received: from 9a2d8922b8f1 ([122.161.51.18])
-        by smtp.gmail.com with ESMTPSA id f15-20020a056a001acf00b004fb2ad05521sm7259339pfv.215.2022.04.02.14.00.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 02 Apr 2022 14:01:01 -0700 (PDT)
-Date:   Sun, 3 Apr 2022 02:30:54 +0530
-From:   Kuldeep Singh <singh.kuldeep87k@gmail.com>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Mark Brown <broonie@kernel.org>, linux-arm-msm@vger.kernel.org,
-        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
+        with ESMTP id S1353647AbiDCKNK (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 3 Apr 2022 06:13:10 -0400
+Received: from smtp.smtpout.orange.fr (smtp07.smtpout.orange.fr [80.12.242.129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E680B35A90
+        for <linux-spi@vger.kernel.org>; Sun,  3 Apr 2022 03:11:16 -0700 (PDT)
+Received: from pop-os.home ([90.126.236.122])
+        by smtp.orange.fr with ESMTPA
+        id axCUnFYCnRGzQaxCUnw7xL; Sun, 03 Apr 2022 12:11:15 +0200
+X-ME-Helo: pop-os.home
+X-ME-Auth: YWZlNiIxYWMyZDliZWIzOTcwYTEyYzlhMmU3ZiQ1M2U2MzfzZDfyZTMxZTBkMTYyNDBjNDJlZmQ3ZQ==
+X-ME-Date: Sun, 03 Apr 2022 12:11:15 +0200
+X-ME-IP: 90.126.236.122
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     Mark Brown <broonie@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
         linux-spi@vger.kernel.org
-Subject: Re: [PATCH v3 9/9] dt-bindings: qcom: qcom,gsbi: convert to dtschema
-Message-ID: <20220402210054.GA36286@9a2d8922b8f1>
-References: <20220402184011.132465-1-krzysztof.kozlowski@linaro.org>
- <20220402184011.132465-10-krzysztof.kozlowski@linaro.org>
- <20220402202917.GA36054@9a2d8922b8f1>
- <9a584eac-6ac9-e4ed-ef90-49569f4a4baa@linaro.org>
+Subject: [PATCH] spi: mxic: Fix an error handling path in mxic_spi_probe()
+Date:   Sun,  3 Apr 2022 12:11:13 +0200
+Message-Id: <09c81f751241f6ec0bac7a48d4ec814a742e0d17.1648980664.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9a584eac-6ac9-e4ed-ef90-49569f4a4baa@linaro.org>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Sat, Apr 02, 2022 at 10:38:23PM +0200, Krzysztof Kozlowski wrote:
-> On 02/04/2022 22:29, Kuldeep Singh wrote:
-> > On Sat, Apr 02, 2022 at 08:40:11PM +0200, Krzysztof Kozlowski wrote:
-> >> Convert the Qualcomm General Serial Bus Interface (GSBI) to DT
-> >> Schema.
-> >>
-> >> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> >> ---
-> >>  .../bindings/soc/qcom/qcom,gsbi.txt           |  87 ------------
-> >>  .../bindings/soc/qcom/qcom,gsbi.yaml          | 133 ++++++++++++++++++
-> >>  2 files changed, 133 insertions(+), 87 deletions(-)
-> >>  delete mode 100644 Documentation/devicetree/bindings/soc/qcom/qcom,gsbi.txt
-> >>  create mode 100644 Documentation/devicetree/bindings/soc/qcom/qcom,gsbi.yaml
-> > 
-> > Great initiative to convert everything in one go!
-> > 
-> > [...]
-> > 
-> >> diff --git a/Documentation/devicetree/bindings/soc/qcom/qcom,gsbi.yaml b/Documentation/devicetree/bindings/soc/qcom/qcom,gsbi.yaml
-> >> new file mode 100644
-> >> index 000000000000..b97e359f3f90
-> >> --- /dev/null
-> >> +++ b/Documentation/devicetree/bindings/soc/qcom/qcom,gsbi.yaml
-> >> @@ -0,0 +1,133 @@
-> >> +# SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
-> >> +%YAML 1.2
-> >> +---
-> >> +$id: http://devicetree.org/schemas/soc/qcom/qcom,gsbi.yaml#
-> >> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> >> +
-> >> +title: Qualcomm General Serial Bus Interface (GSBI)
-> >> +
-> >> +maintainers:
-> >> +  - Andy Gross <agross@kernel.org>
-> >> +  - Bjorn Andersson <bjorn.andersson@linaro.org>
-> >> +  - Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> >> +
-> >> +description:
-> >> +  The GSBI controller is modeled as a node with zero or more child nodes, each
-> >> +  representing a serial sub-node device that is mux'd as part of the GSBI
-> >> +  configuration settings.  The mode setting will govern the input/output mode
-> >> +  of the 4 GSBI IOs.
-> >> +
-> >> +  A GSBI controller node can contain 0 or more child nodes representing serial
-> >> +  devices.  These serial devices can be a QCOM UART, I2C controller, spi
-> >> +  controller, or some combination of aforementioned devices.
-> >> +
-> >> +properties:
-> >> +  compatible:
-> >> +    enum:
-> >> +      - qcom,gsbi-v1.0.0
-> > 
-> > Only 1 entry? const.
-> 
-> v1.0.0 looks like there could be some more, although they did not reach
-> mainline. The GSBI seems to be replaced by different blocks, so maybe
-> there will be no new entries here.
+If spi_register_master() fails, we must undo a previous
+mxic_spi_mem_ecc_probe() call, as already done in the remove function.
 
-Yes, GSBI seems pretty old and only v1 rolled out.
-Don't think there are more revisions on the cards. Still can't say so.
+Fixes: 00360ebae483 ("spi: mxic: Add support for pipelined ECC operations")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/spi/spi-mxic.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/spi/spi-mxic.c b/drivers/spi/spi-mxic.c
+index 55c092069301..65be8e085ab8 100644
+--- a/drivers/spi/spi-mxic.c
++++ b/drivers/spi/spi-mxic.c
+@@ -813,6 +813,7 @@ static int mxic_spi_probe(struct platform_device *pdev)
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "spi_register_master failed\n");
+ 		pm_runtime_disable(&pdev->dev);
++		mxic_spi_mem_ecc_remove(mxic);
+ 	}
+ 
+ 	return ret;
+-- 
+2.32.0
+

@@ -2,124 +2,96 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2867AC433EF
-	for <linux-spi@archiver.kernel.org>; Sun,  3 Apr 2022 18:39:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CD27DC433F5
+	for <linux-spi@archiver.kernel.org>; Sun,  3 Apr 2022 23:38:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376279AbiDCSln (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 3 Apr 2022 14:41:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46748 "EHLO
+        id S1376679AbiDCXkq (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 3 Apr 2022 19:40:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376273AbiDCSkn (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 3 Apr 2022 14:40:43 -0400
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9E49E089
-        for <linux-spi@vger.kernel.org>; Sun,  3 Apr 2022 11:38:30 -0700 (PDT)
-Received: by mail-wm1-x32f.google.com with SMTP id q20so4660266wmq.1
-        for <linux-spi@vger.kernel.org>; Sun, 03 Apr 2022 11:38:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=qtEucOUUPP5N/mYQNy60J2tmYru2tvlYgmO9h18XcJE=;
-        b=MzbOCsPtGwGO108/lSDaSaf1+XSDrXAe5yX1DdV0mfrCl06/DuHGGptcVp1iZ+OCZs
-         Sr3xXPu+/LUQWaSua+Z9riHXtxnsjZYcgfudGMg0eGSJroXkQN+sAwRy7pi2DkWUc69u
-         LRP1Jq0DgipVHVcL0TbLHQFLItz8svl7Y6g5raLhE3+qSjyR1t772d2IkpZCUfha5jsL
-         eHrNfWm2+KC5ijYi8x8UCWcrLmspOUoun6wYfkN8lLtnfvh5BLRGN+hYx0WJnkU+ntJv
-         MdIvqte1KodMeoX1CiPjM+5xKuzO5A1rzXr8OFxIaWEBogUpc8y4KWBCNDNf1jGVaH3J
-         ayiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=qtEucOUUPP5N/mYQNy60J2tmYru2tvlYgmO9h18XcJE=;
-        b=4gNPXl714kqpBVD/JDjUwJxkD85kT53uIKhXCexSOFPfgza1QR3Q76mSOscqklhxMZ
-         sagPP8KI3EjFOzdK413D+wxRBU/cfT9MjCBIBfZmT8D/fYGRfqNK6wsYU60sE5R3FXtd
-         dAcXuM3fHNxmHe9wlhEQ/79h8KrAOX8fM0lIMxGHIQ050hQVlghdLGk8t5H3/plGn+oW
-         NydB1A1dO6Mh8fToCw0LxgvSz/g0VGxpM/yqv5NTRIL2aesB+ia6pZu7PQAinhlJgsY3
-         dgJg517vCPhwrBlt51irlxlyhNujhslW+F5+6eVy0lXUc48uq9QO9o/xjCHrWzTy3HeK
-         Pkhw==
-X-Gm-Message-State: AOAM533+B6xwCZvZOqvrFwVgbRcjv9915rJccx5xTQNEi3dwb5JnLU2e
-        QqNX9TBYu6b4XppYZjrz3cbzJA==
-X-Google-Smtp-Source: ABdhPJyXl7rsWywHQpujLV7EDE78zSf60/dgWAa8SR6HS+xUHZ+OK90mFzRYvM677eBKG6B3suxzyQ==
-X-Received: by 2002:a05:600c:3547:b0:38c:ac1c:53e9 with SMTP id i7-20020a05600c354700b0038cac1c53e9mr16601811wmq.159.1649011109253;
-        Sun, 03 Apr 2022 11:38:29 -0700 (PDT)
-Received: from localhost.localdomain (xdsl-188-155-201-27.adslplus.ch. [188.155.201.27])
-        by smtp.gmail.com with ESMTPSA id l28-20020a05600c1d1c00b0038e72a95ec4sm593851wms.13.2022.04.03.11.38.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 03 Apr 2022 11:38:28 -0700 (PDT)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Stuart Yoder <stuyoder@gmail.com>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Vineeth Vijayan <vneethv@linux.ibm.com>,
-        Peter Oberparleiter <oberpar@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Andy Gross <agross@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-clk@vger.kernel.org, NXP Linux Team <linux-imx@nxp.com>,
-        linux-arm-kernel@lists.infradead.org, linux-hyperv@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        alsa-devel@alsa-project.org, linux-spi@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>
-Subject: [PATCH v6 09/12] clk: imx: scu: Fix kfree() of static memory on setting driver_override
-Date:   Sun,  3 Apr 2022 20:37:55 +0200
-Message-Id: <20220403183758.192236-10-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20220403183758.192236-1-krzysztof.kozlowski@linaro.org>
-References: <20220403183758.192236-1-krzysztof.kozlowski@linaro.org>
+        with ESMTP id S230117AbiDCXko (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 3 Apr 2022 19:40:44 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 103291081;
+        Sun,  3 Apr 2022 16:38:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1649029130; x=1680565130;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=dk8wwoPAa+9gWRt+JbyfUk76inxYSrqYeknZJrDq4/I=;
+  b=badX6T0/+4YUthVB4EG8SCsfzblDdG1HK5qmZyQWj+zu8/imPIWmvP/6
+   HtsoQUAbeRtzltIL1OU6FaUiy5EENMv26fph+5opn82deXJKtKM8UMumi
+   f4fsnQ1oJCuoaDLTzhNc8tvGpcfIPpycsbPvqR6nd3NfBuhpwE3GexBgc
+   aSnWt12xLI4O0ge7eP+t5QJPyclvS+J3bzLaQnj/L66F6AZuTmxxqtMiO
+   TT8GGY06+w+WSrVmLPOwGfLRsupvr1bbBeqDxXjQiQwrojCgtQigsCWAn
+   UFPpCybigqM5NntFpX8kzwgcS33hwgQiOK5PimPOKCj6FGe1hU4wEq5RE
+   Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10306"; a="240352748"
+X-IronPort-AV: E=Sophos;i="5.90,233,1643702400"; 
+   d="scan'208";a="240352748"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2022 16:38:49 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.90,233,1643702400"; 
+   d="scan'208";a="548456613"
+Received: from lkp-server02.sh.intel.com (HELO a44fdfb70b94) ([10.239.97.151])
+  by orsmga007.jf.intel.com with ESMTP; 03 Apr 2022 16:38:48 -0700
+Received: from kbuild by a44fdfb70b94 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1nb9nz-0001I9-M1;
+        Sun, 03 Apr 2022 23:38:47 +0000
+Date:   Mon, 4 Apr 2022 07:38:23 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Chuanhong Guo <gch981213@gmail.com>, linux-spi@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-mtd@lists.infradead.org
+Subject: Re: [PATCH resend 1/4] mtd: nand: make mtk_ecc.c a separated module
+Message-ID: <202204040718.xQeZrzYD-lkp@intel.com>
+References: <20220403131453.1269229-2-gch981213@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220403131453.1269229-2-gch981213@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The driver_override field from platform driver should not be initialized
-from static memory (string literal) because the core later kfree() it,
-for example when driver_override is set via sysfs.
+Hi Chuanhong,
 
-Use dedicated helper to set driver_override properly.
+Thank you for the patch! Yet something to improve:
 
-Fixes: 77d8f3068c63 ("clk: imx: scu: add two cells binding support")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Acked-by: Stephen Boyd <sboyd@kernel.org>
----
- drivers/clk/imx/clk-scu.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+[auto build test ERROR on next-20220401]
+[cannot apply to mtd/nand/next broonie-spi/for-next robh/for-next v5.17 v5.17-rc8 v5.17-rc7 v5.17]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-diff --git a/drivers/clk/imx/clk-scu.c b/drivers/clk/imx/clk-scu.c
-index 083da31dc3ea..4b2268b7d0d0 100644
---- a/drivers/clk/imx/clk-scu.c
-+++ b/drivers/clk/imx/clk-scu.c
-@@ -683,7 +683,12 @@ struct clk_hw *imx_clk_scu_alloc_dev(const char *name,
- 		return ERR_PTR(ret);
- 	}
- 
--	pdev->driver_override = "imx-scu-clk";
-+	ret = driver_set_override(&pdev->dev, &pdev->driver_override,
-+				  "imx-scu-clk", strlen("imx-scu-clk"));
-+	if (ret) {
-+		platform_device_put(pdev);
-+		return ERR_PTR(ret);
-+	}
- 
- 	ret = imx_clk_scu_attach_pd(&pdev->dev, rsrc_id);
- 	if (ret)
+url:    https://github.com/intel-lab-lkp/linux/commits/Chuanhong-Guo/spi-add-support-for-Mediatek-SPI-NAND-controller/20220403-211703
+base:    e5071887cd2296a7704dbcd10c1cedf0f11cdbd5
+config: alpha-allmodconfig (https://download.01.org/0day-ci/archive/20220404/202204040718.xQeZrzYD-lkp@intel.com/config)
+compiler: alpha-linux-gcc (GCC) 11.2.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/48656e578a2cec7121f79d875d14403f5b56096e
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Chuanhong-Guo/spi-add-support-for-Mediatek-SPI-NAND-controller/20220403-211703
+        git checkout 48656e578a2cec7121f79d875d14403f5b56096e
+        # save the config file to linux build tree
+        mkdir build_dir
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=alpha SHELL=/bin/bash
+
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
+
+All errors (new ones prefixed by >>):
+
+   alpha-linux-ld: drivers/mtd/nand/ecc-mtk.o: in function `mtk_ecc_driver_exit':
+>> ecc-mtk.o:(.exit.text+0x0): multiple definition of `cleanup_module'; drivers/mtd/nand/ecc-mxic.o:ecc-mxic.o:(.exit.text+0x0): first defined here
+   alpha-linux-ld: drivers/mtd/nand/ecc-mtk.o: in function `mtk_ecc_driver_init':
+>> ecc-mtk.o:(.init.text+0x0): multiple definition of `init_module'; drivers/mtd/nand/ecc-mxic.o:ecc-mxic.o:(.init.text+0x0): first defined here
+
 -- 
-2.32.0
-
+0-DAY CI Kernel Test Service
+https://01.org/lkp

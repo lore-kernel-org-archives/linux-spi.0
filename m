@@ -2,51 +2,51 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6D2E6C433FE
-	for <linux-spi@archiver.kernel.org>; Sun,  3 Apr 2022 18:38:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BE79DC433F5
+	for <linux-spi@archiver.kernel.org>; Sun,  3 Apr 2022 18:39:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359845AbiDCSkh (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 3 Apr 2022 14:40:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46750 "EHLO
+        id S1376298AbiDCSlG (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 3 Apr 2022 14:41:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1359852AbiDCSk1 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 3 Apr 2022 14:40:27 -0400
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A97836312
-        for <linux-spi@vger.kernel.org>; Sun,  3 Apr 2022 11:38:25 -0700 (PDT)
-Received: by mail-wr1-x434.google.com with SMTP id h4so11347432wrc.13
-        for <linux-spi@vger.kernel.org>; Sun, 03 Apr 2022 11:38:25 -0700 (PDT)
+        with ESMTP id S1359855AbiDCSkn (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 3 Apr 2022 14:40:43 -0400
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A27D2E91
+        for <linux-spi@vger.kernel.org>; Sun,  3 Apr 2022 11:38:28 -0700 (PDT)
+Received: by mail-wr1-x42d.google.com with SMTP id r13so11374568wrr.9
+        for <linux-spi@vger.kernel.org>; Sun, 03 Apr 2022 11:38:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=38ZdSROX5+RqupZAHBAG40n0Dr6hAO3z18g5N59SQU4=;
-        b=ei5TWh/RyCQlwp3y422jw5QGl7/k0WXUWEblAev+CNFeP2X9EgGX+8M7Z2XNdCZAi7
-         CbDCIj5EC3m3v+TpRB9RoVCI7jYOQoKBkGDSqAV1goSlans7oohCfu3xUfOoRSnxxSl0
-         kcPELnt6468fgPhQxCMCI7fSY15NKLkDTny24r9YgN+Cg9ssR11eT2LTynDMo3THlFhs
-         EcfmWm7eKYXMnBaJjguVcr63Gnbs67lF+XA2drS+tPN7YRUYY8h2cG7Wy4H4amtI+1CW
-         +f886YTVoclbfHwndOskF26DKchSgx6oq+exaYD/b4FyyFDVu6DcRTdqHe3WRCnOG1Y5
-         CskQ==
+        bh=7atrdHIPQWrKPdmTA65creUl3MO148uK4lDHmIisbDg=;
+        b=hVNX9Cidu2X/sm6u9wyAYEGqM/0IBQR2YvOEDgs8X1o5lfX2h1WHmc/4g0P47OrafO
+         F+LHnXVltwQtgcm4vDmUAJxCpS3dj/NvpeYdiV7BjSEw65jnEU9Y2hfnPDeRaCANOHM4
+         mc8xkmvx0E50fhFCSilb4TNIPXVpKBzFK2JWisIgiHGHdMTr3WCheZOmvXNx1ZOPUZnm
+         UyAOB70hUZLLUn089nOrWn/JVQqqGcLUe6BqjthrWDW5YJAZnN1eAsrTvK7/RT421Uvo
+         I7cb77/HfmJZ+FUQFn3z02MoVja74qNVLv49IJwubMkGcSoRfDyhGrwGLUzitdsMPsWH
+         LXpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=38ZdSROX5+RqupZAHBAG40n0Dr6hAO3z18g5N59SQU4=;
-        b=tgxEwobedtThnqjV2HQeC6X/Ntnz/uSJMoPo9gS/AwMRNTylQyu01loYkT+oazqgBO
-         TjdWftaHy53x9AO2hEvgmt/T7z57Jv919cVmBTeE+c60g1rcWgGQ8DbiDv0UcbdXBHWv
-         Lo4juxl1law/bTNfMaGvpmC1B4qUzojoT4NgRSEf8M7zqKn2qNDFbZBp0BNpgL/7Yd1v
-         7q7gasHYZhNHLuLrsd69ZG/2N6zBwIu3gpNDXlLiom0h2pHxGlNqeyqZSVE2W80Rgupn
-         +q3z3LneBi4ogwReL49ZZG//nqvXTjWb6Dzr5OnhGcgFg1jPo/dGRGwh8o4hhdsBh6p3
-         1RPw==
-X-Gm-Message-State: AOAM532d0g5dVy7SHVn60pY288L/g1Yr4wcUMSlkRasJjnbqwyDU9eig
-        VHlX+XxC2KmqD/bhyChsQd1xEA==
-X-Google-Smtp-Source: ABdhPJz8HTJQAQ0l7WSag85IkwQr0Wn5SW8NcKKVBkBkemtGXsZNVmmMlGPE7/H/HpfCJWw4OUIdTg==
-X-Received: by 2002:a5d:59a1:0:b0:204:1777:fc08 with SMTP id p1-20020a5d59a1000000b002041777fc08mr14640454wrr.545.1649011104054;
-        Sun, 03 Apr 2022 11:38:24 -0700 (PDT)
+        bh=7atrdHIPQWrKPdmTA65creUl3MO148uK4lDHmIisbDg=;
+        b=LLPwAyw7Aa9mmkB5zidlxPf9KDXhfMUtIlRC1/znZC13NEViSU07RUETx7t3fehrbs
+         HTglQqMZ8o1GZwatZPu8AtpyaISowO6Kk54gqfM7pdFKnJDwTRE9Tjsqfnx9d3zj1R1W
+         3IVs1IGhJBwtmfBZYoCOM/gLJdItNw3Pdp2d7WRZNJokKc8l9q6aaPZLY2prlLRnNXI8
+         tGVGnpkkyOfxkgfRBg2Aiwua12HTAeMonwdEt2QPzAKfST45QS5fwabgHlxm4RDoi5Lk
+         1eb6xFbu+5bIuAcMd1o3zxB64zbJ8/Ax3APIKHCk7H+rh2inp9LIaEoB8fI09amBHJnu
+         +jpA==
+X-Gm-Message-State: AOAM530J5Zvp29OnYDH282SBF8Knmp2t02B3j1PdPG0cFGR8HZwewHKP
+        SkvRIu3w9exLhj108Etm8XJ6Yg==
+X-Google-Smtp-Source: ABdhPJy4yd5YoqphkuK9k4HQTLrBtQPx3QnrGk9JujddMnXXbGWsTVahGCOz4/3Jom2tz+Nx6nWEBw==
+X-Received: by 2002:a5d:4dcd:0:b0:206:6c0:b814 with SMTP id f13-20020a5d4dcd000000b0020606c0b814mr5500047wru.493.1649011107352;
+        Sun, 03 Apr 2022 11:38:27 -0700 (PDT)
 Received: from localhost.localdomain (xdsl-188-155-201-27.adslplus.ch. [188.155.201.27])
-        by smtp.gmail.com with ESMTPSA id l28-20020a05600c1d1c00b0038e72a95ec4sm593851wms.13.2022.04.03.11.38.22
+        by smtp.gmail.com with ESMTPSA id l28-20020a05600c1d1c00b0038e72a95ec4sm593851wms.13.2022.04.03.11.38.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 03 Apr 2022 11:38:23 -0700 (PDT)
+        Sun, 03 Apr 2022 11:38:26 -0700 (PDT)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>
@@ -75,10 +75,11 @@ Cc:     Stuart Yoder <stuyoder@gmail.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH v6 06/12] s390/cio: Use driver_set_override() instead of open-coding
-Date:   Sun,  3 Apr 2022 20:37:52 +0200
-Message-Id: <20220403183758.192236-7-krzysztof.kozlowski@linaro.org>
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        "Michael S . Tsirkin" <mst@redhat.com>
+Subject: [PATCH v6 08/12] vdpa: Use helper for safer setting of driver_override
+Date:   Sun,  3 Apr 2022 20:37:54 +0200
+Message-Id: <20220403183758.192236-9-krzysztof.kozlowski@linaro.org>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20220403183758.192236-1-krzysztof.kozlowski@linaro.org>
 References: <20220403183758.192236-1-krzysztof.kozlowski@linaro.org>
@@ -89,43 +90,27 @@ List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
 Use a helper to set driver_override to the reduce amount of duplicated
-code.  Make the driver_override field const char, because it is not
-modified by the core and it matches other subsystems.
+code.
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Acked-by: Vineeth Vijayan <vneethv@linux.ibm.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- drivers/s390/cio/cio.h |  6 +++++-
- drivers/s390/cio/css.c | 28 ++++------------------------
- 2 files changed, 9 insertions(+), 25 deletions(-)
+ drivers/vdpa/vdpa.c  | 29 ++++-------------------------
+ include/linux/vdpa.h |  4 +++-
+ 2 files changed, 7 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/s390/cio/cio.h b/drivers/s390/cio/cio.h
-index 1cb9daf9c645..fa8df50bb49e 100644
---- a/drivers/s390/cio/cio.h
-+++ b/drivers/s390/cio/cio.h
-@@ -103,7 +103,11 @@ struct subchannel {
- 	struct work_struct todo_work;
- 	struct schib_config config;
- 	u64 dma_mask;
--	char *driver_override; /* Driver name to force a match */
-+	/*
-+	 * Driver name to force a match.  Do not set directly, because core
-+	 * frees it.  Use driver_set_override() to set or clear it.
-+	 */
-+	const char *driver_override;
- } __attribute__ ((aligned(8)));
- 
- DECLARE_PER_CPU_ALIGNED(struct irb, cio_irb);
-diff --git a/drivers/s390/cio/css.c b/drivers/s390/cio/css.c
-index fa8293335077..913b6ddd040b 100644
---- a/drivers/s390/cio/css.c
-+++ b/drivers/s390/cio/css.c
-@@ -338,31 +338,11 @@ static ssize_t driver_override_store(struct device *dev,
+diff --git a/drivers/vdpa/vdpa.c b/drivers/vdpa/vdpa.c
+index 2b75c00b1005..33d1ad60cba7 100644
+--- a/drivers/vdpa/vdpa.c
++++ b/drivers/vdpa/vdpa.c
+@@ -77,32 +77,11 @@ static ssize_t driver_override_store(struct device *dev,
  				     const char *buf, size_t count)
  {
- 	struct subchannel *sch = to_subchannel(dev);
--	char *driver_override, *old, *cp;
--
+ 	struct vdpa_device *vdev = dev_to_vdpa(dev);
+-	const char *driver_override, *old;
+-	char *cp;
++	int ret;
+ 
 -	/* We need to keep extra room for a newline */
 -	if (count >= (PAGE_SIZE - 1))
 -		return -EINVAL;
@@ -139,23 +124,37 @@ index fa8293335077..913b6ddd040b 100644
 -		*cp = '\0';
 -
 -	device_lock(dev);
--	old = sch->driver_override;
+-	old = vdev->driver_override;
 -	if (strlen(driver_override)) {
--		sch->driver_override = driver_override;
+-		vdev->driver_override = driver_override;
 -	} else {
 -		kfree(driver_override);
--		sch->driver_override = NULL;
+-		vdev->driver_override = NULL;
 -	}
 -	device_unlock(dev);
-+	int ret;
- 
+-
 -	kfree(old);
-+	ret = driver_set_override(dev, &sch->driver_override, buf, count);
++	ret = driver_set_override(dev, &vdev->driver_override, buf, count);
 +	if (ret)
 +		return ret;
  
  	return count;
  }
+diff --git a/include/linux/vdpa.h b/include/linux/vdpa.h
+index 8943a209202e..c0a5083632ab 100644
+--- a/include/linux/vdpa.h
++++ b/include/linux/vdpa.h
+@@ -64,7 +64,9 @@ struct vdpa_mgmt_dev;
+  * struct vdpa_device - representation of a vDPA device
+  * @dev: underlying device
+  * @dma_dev: the actual device that is performing DMA
+- * @driver_override: driver name to force a match
++ * @driver_override: driver name to force a match; do not set directly,
++ *                   because core frees it; use driver_set_override() to
++ *                   set or clear it.
+  * @config: the configuration ops for this device.
+  * @cf_mutex: Protects get and set access to configuration layout.
+  * @index: device index
 -- 
 2.32.0
 

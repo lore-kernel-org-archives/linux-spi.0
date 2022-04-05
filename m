@@ -2,94 +2,254 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D9DF6C433F5
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E91C5C433FE
 	for <linux-spi@archiver.kernel.org>; Wed,  6 Apr 2022 02:08:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357993AbiDFCFO (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 5 Apr 2022 22:05:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53186 "EHLO
+        id S1384003AbiDFCFT (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 5 Apr 2022 22:05:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1573543AbiDETUD (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 5 Apr 2022 15:20:03 -0400
-Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A765EEBB90;
-        Tue,  5 Apr 2022 12:18:03 -0700 (PDT)
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 235JHxYK082442;
-        Tue, 5 Apr 2022 14:17:59 -0500
+        with ESMTP id S1573658AbiDETja (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 5 Apr 2022 15:39:30 -0400
+Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAEFE245BD;
+        Tue,  5 Apr 2022 12:37:31 -0700 (PDT)
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 235JbNjd108077;
+        Tue, 5 Apr 2022 14:37:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1649186279;
-        bh=E9zif9I5bUgBOTveI/9CsfWv9DV8Jc8LKT9ySYgZmtY=;
+        s=ti-com-17Q1; t=1649187443;
+        bh=vtus/60BuspHiW8pCcteyIqj6DRsxR0bpl4QDFqiV0c=;
         h=Date:From:To:CC:Subject:References:In-Reply-To;
-        b=mGH/m1LnUZ0aqJzLlvnsqjtJr02p9p4rvmihNAh+eTCUiV9wJqfjsuTthz8zlG2Zf
-         TgU20lX6XohEfDssOB1uD97wUkPGjYehfw8ver6y2FnF33Vp/OX5b4no3k6eepe2LZ
-         ie5MK98lk/hrhJZHrVX/gBSzn6GANX1sxbl3ItXs=
-Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 235JHx8t010500
+        b=sRiFsishexfnwFwes5Cfd4trvIkLpL9nmCMdGpyI5QBXLBpmzcWYA+IGYq0gWX93O
+         FYRtMuHM8z5A56zJmmQL3+3teVDmNwyYOGsnKYmTFMvs4+scJ4aNEIF64sMpHk9/rQ
+         e3A0MY/ChDfxOo/WTKf50KnOA6+/gvYM2dDbSX7Y=
+Received: from DLEE112.ent.ti.com (dlee112.ent.ti.com [157.170.170.23])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 235JbMhJ003784
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 5 Apr 2022 14:17:59 -0500
-Received: from DLEE112.ent.ti.com (157.170.170.23) by DLEE104.ent.ti.com
- (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Tue, 5
- Apr 2022 14:17:58 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE112.ent.ti.com
+        Tue, 5 Apr 2022 14:37:22 -0500
+Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE112.ent.ti.com
  (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Tue, 5
+ Apr 2022 14:37:22 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
- Frontend Transport; Tue, 5 Apr 2022 14:17:58 -0500
+ Frontend Transport; Tue, 5 Apr 2022 14:37:22 -0500
 Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 235JHwCh019604;
-        Tue, 5 Apr 2022 14:17:58 -0500
-Date:   Wed, 6 Apr 2022 00:47:57 +0530
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 235JbLSc041064;
+        Tue, 5 Apr 2022 14:37:22 -0500
+Date:   Wed, 6 Apr 2022 01:07:21 +0530
 From:   Pratyush Yadav <p.yadav@ti.com>
-To:     Sai Krishna Potthuri <lakshmi.sai.krishna.potthuri@xilinx.com>
-CC:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>,
-        Michal Simek <michal.simek@xilinx.com>, <git@xilinx.com>,
-        <saikrishna12468@gmail.com>, <sgoud@xilinx.com>
-Subject: Re: [PATCH 2/2] spi: cadence-quadspi: Add support for OSPI device
- reset
-Message-ID: <20220405191757.3rzc6q477reusywp@ti.com>
-References: <1649156437-15609-1-git-send-email-lakshmi.sai.krishna.potthuri@xilinx.com>
- <1649156437-15609-3-git-send-email-lakshmi.sai.krishna.potthuri@xilinx.com>
+To:     Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+CC:     Mark Brown <broonie@kernel.org>,
+        Tudor Ambarus <tudor.ambarus@microchip.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Ramuthevar Vadivel Murugan 
+        <vadivel.muruganx.ramuthevar@linux.intel.com>,
+        <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] spi: cadence-quadspi: fix protocol setup for non-1-1-X
+ operations
+Message-ID: <20220405193721.5jf3umfn3dvv6fxd@ti.com>
+References: <20220331110819.133392-1-matthias.schiffer@ew.tq-group.com>
+ <20220401100606.iz52jbrdcz6pd5sg@ti.com>
+ <6b2bfa6614fbb9339b94a191ab933a2c25b8b4d7.camel@ew.tq-group.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <1649156437-15609-3-git-send-email-lakshmi.sai.krishna.potthuri@xilinx.com>
+In-Reply-To: <6b2bfa6614fbb9339b94a191ab933a2c25b8b4d7.camel@ew.tq-group.com>
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On 05/04/22 04:30PM, Sai Krishna Potthuri wrote:
-> Cadence OSPI controller always start in SDR mode and it doesn't know
-> the current mode of the flash device (SDR or DDR). This creates issue
-> during Cadence OSPI driver probe if OSPI flash device is in DDR mode.
-> This patch add OSPI flash device reset using HW reset pin for Xilinx
-> Versal platform, this will make sure both Controller and Flash device
-> are in same mode (SDR).
-
-Is this supposed to reset the OSPI flash or the controller? If you are 
-resetting it in the flash then you should handle this from the flash 
-driver, not from here.
-
-Also, as of now at least, SPI NOR only works when the flash is in SDR 
-mode. For TI platforms, we reset the flash in the bootloader (U-Boot), 
-before handing control off to the kernel. If you do want to properly 
-handle flashes that are handed to the kernel in DDR mode, I would 
-suggest you update SPI NOR instead to detect the flash mode and work 
-from there. This would also allow us to support flashes that boot in DDR 
-mode, so would still be in DDR mode even after a reset.
-
-> Xilinx Versal platform has a dedicated pin used for OSPI device reset.
-> As part of the reset sequence, configure the pin to enable
-> hysteresis and set the direction of the pin to output before toggling
-> the pin. Provided the required delay ranges while toggling the pin to
-> meet the most of the OSPI flash devices reset pulse width, reset recovery
-> and CS high to reset high timings.
+On 01/04/22 12:20PM, Matthias Schiffer wrote:
+> On Fri, 2022-04-01 at 15:36 +0530, Pratyush Yadav wrote:
+> > Hi Matthias,
+> > 
+> > On 31/03/22 01:08PM, Matthias Schiffer wrote:
+> > > cqspi_set_protocol() only set the data width, but ignored the
+> > > command
+> > > and address width (except for 8-8-8 DTR ops), leading to corruption
+> > > of
+> > > all transfers using 1-X-X or X-X-X ops. Fix by setting the other
+> > > two
+> > > widths as well.
+> > > 
+> > > While we're at it, simplify the code a bit by replacing the
+> > > CQSPI_INST_TYPE_* constants with ilog2().
+> > > 
+> > > Tested on a TI AM64x with a Macronix MX25U51245G QSPI flash with 1-
+> > > 4-4
+> > > read and write operations.
+> > > 
+> > > Fixes: a314f6367787 ("mtd: spi-nor: Convert cadence-quadspi to use
+> > > spi-mem framework")
+> > 
+> > I think a fixes tag is wrong here. The old driver did not support 1-
+> > X-X 
+> > modes either. So you are not fixing anything, you are adding a new 
+> > feature. I don't think we should backport this patch to stable.
 > 
-> Signed-off-by: Sai Krishna Potthuri <lakshmi.sai.krishna.potthuri@xilinx.com>
-[...]
+> 
+> Giving a precise fixes tag is a bit difficult. The referenced commit
+> made the driver (accidentally) accept commands like 1-4-4 without
+> handing them correctly, causing data corruption for flashs that support
+> these modes. The data corruption is fixed by my patch.
+
+Ah, you're right. I missed the fact that the original driver explicitly 
+checked for 1-1-1, 1-1-4, and 1-1-8, and returned an error for the rest. 
+So your patch does indeed fix a bug.
+
+> 
+> As the change was unintended, one option would be to split this patch
+> into two parts: One fix patch that makes cqspi_set_protocol() -EINVAL
+> again for all commands that are not 1-1-X, and one feature patch that
+> adds actual support for these commands.
+> 
+> My thought process was that making these commands work correctly can't
+> break anything that is not already broken in current stable kernels.
+> But if you prefer the minimal change, I can send a v2 that splits the
+> patch.
+
+Yes, but as I commented below, I would prefer you rework the driver to 
+drop cqspi_set_protocol() entirely. For doing that the 2 patch approach 
+would work best so we don't end up getting the new code backported to 
+stable as well.
+
+> 
+> Regards,
+> Matthias
+> 
+> 
+> 
+> > 
+> > > Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com
+> > > >
+> > > ---
+> > >  drivers/spi/spi-cadence-quadspi.c | 46 ++++++++-------------------
+> > > ----
+> > >  1 file changed, 12 insertions(+), 34 deletions(-)
+> > > 
+> > > diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-
+> > > cadence-quadspi.c
+> > > index b0c9f62ccefb..616ada891974 100644
+> > > --- a/drivers/spi/spi-cadence-quadspi.c
+> > > +++ b/drivers/spi/spi-cadence-quadspi.c
+> > > @@ -19,6 +19,7 @@
+> > >  #include <linux/iopoll.h>
+> > >  #include <linux/jiffies.h>
+> > >  #include <linux/kernel.h>
+> > > +#include <linux/log2.h>
+> > >  #include <linux/module.h>
+> > >  #include <linux/of_device.h>
+> > >  #include <linux/of.h>
+> > > @@ -102,12 +103,6 @@ struct cqspi_driver_platdata {
+> > >  #define CQSPI_TIMEOUT_MS			500
+> > >  #define CQSPI_READ_TIMEOUT_MS			10
+> > >  
+> > > -/* Instruction type */
+> > > -#define CQSPI_INST_TYPE_SINGLE			0
+> > > -#define CQSPI_INST_TYPE_DUAL			1
+> > > -#define CQSPI_INST_TYPE_QUAD			2
+> > > -#define CQSPI_INST_TYPE_OCTAL			3
+> > > -
+> > >  #define CQSPI_DUMMY_CLKS_PER_BYTE		8
+> > >  #define CQSPI_DUMMY_BYTES_MAX			4
+> > >  #define CQSPI_DUMMY_CLKS_MAX			31
+> > > @@ -376,10 +371,6 @@ static unsigned int cqspi_calc_dummy(const
+> > > struct spi_mem_op *op, bool dtr)
+> > >  static int cqspi_set_protocol(struct cqspi_flash_pdata *f_pdata,
+> > >  			      const struct spi_mem_op *op)
+> > >  {
+> > > -	f_pdata->inst_width = CQSPI_INST_TYPE_SINGLE;
+> > > -	f_pdata->addr_width = CQSPI_INST_TYPE_SINGLE;
+> > > -	f_pdata->data_width = CQSPI_INST_TYPE_SINGLE;
+> > > -
+> > >  	/*
+> > >  	 * For an op to be DTR, cmd phase along with every other non-
+> > > empty
+> > >  	 * phase should have dtr field set to 1. If an op phase has
+> > > zero
+> > > @@ -389,32 +380,23 @@ static int cqspi_set_protocol(struct
+> > > cqspi_flash_pdata *f_pdata,
+> > >  		       (!op->addr.nbytes || op->addr.dtr) &&
+> > >  		       (!op->data.nbytes || op->data.dtr);
+> > >  
+> > > -	switch (op->data.buswidth) {
+> > > -	case 0:
+> > > -		break;
+> > > -	case 1:
+> > > -		f_pdata->data_width = CQSPI_INST_TYPE_SINGLE;
+> > > -		break;
+> > > -	case 2:
+> > > -		f_pdata->data_width = CQSPI_INST_TYPE_DUAL;
+> > > -		break;
+> > > -	case 4:
+> > > -		f_pdata->data_width = CQSPI_INST_TYPE_QUAD;
+> > > -		break;
+> > > -	case 8:
+> > > -		f_pdata->data_width = CQSPI_INST_TYPE_OCTAL;
+> > > -		break;
+> > > -	default:
+> > > -		return -EINVAL;
+> > > -	}
+> > > +	f_pdata->inst_width = 0;
+> > > +	if (op->cmd.buswidth)
+> > > +		f_pdata->inst_width = ilog2(op->cmd.buswidth);
+> > > +
+> > > +	f_pdata->addr_width = 0;
+> > > +	if (op->addr.buswidth)
+> > > +		f_pdata->addr_width = ilog2(op->addr.buswidth);
+> > > +
+> > > +	f_pdata->data_width = 0;
+> > > +	if (op->data.buswidth)
+> > > +		f_pdata->data_width = ilog2(op->data.buswidth);
+> > 
+> > Honestly, I think we should get rid of cqspi_set_protocol() entirely.
+> > I 
+> > see no need to store f_pdata->{instr,addr,data}_width since we 
+> > recalculate those for each op execution anyway. So why not just use
+> > the 
+> > spi_mem_op to get those values directly and be rid of all this mess?
+> > 
+> > >  
+> > >  	/* Right now we only support 8-8-8 DTR mode. */
+> > >  	if (f_pdata->dtr) {
+> > >  		switch (op->cmd.buswidth) {
+> > >  		case 0:
+> > > -			break;
+> > >  		case 8:
+> > > -			f_pdata->inst_width = CQSPI_INST_TYPE_OCTAL;
+> > >  			break;
+> > >  		default:
+> > >  			return -EINVAL;
+> > > @@ -422,9 +404,7 @@ static int cqspi_set_protocol(struct
+> > > cqspi_flash_pdata *f_pdata,
+> > >  
+> > >  		switch (op->addr.buswidth) {
+> > >  		case 0:
+> > > -			break;
+> > >  		case 8:
+> > > -			f_pdata->addr_width = CQSPI_INST_TYPE_OCTAL;
+> > >  			break;
+> > >  		default:
+> > >  			return -EINVAL;
+> > > @@ -432,9 +412,7 @@ static int cqspi_set_protocol(struct
+> > > cqspi_flash_pdata *f_pdata,
+> > >  
+> > >  		switch (op->data.buswidth) {
+> > >  		case 0:
+> > > -			break;
+> > >  		case 8:
+> > > -			f_pdata->data_width = CQSPI_INST_TYPE_OCTAL;
+> > >  			break;
+> > >  		default:
+> > >  			return -EINVAL;
+> > > -- 
+> > > 2.25.1
+> > > 
+> 
 
 -- 
 Regards,

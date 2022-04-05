@@ -2,113 +2,83 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C3D9CC43217
-	for <linux-spi@archiver.kernel.org>; Tue,  5 Apr 2022 07:20:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 86C28C43217
+	for <linux-spi@archiver.kernel.org>; Tue,  5 Apr 2022 09:12:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229979AbiDEHWt (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 5 Apr 2022 03:22:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48156 "EHLO
+        id S237098AbiDEJKM (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 5 Apr 2022 05:10:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231799AbiDEHWo (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 5 Apr 2022 03:22:44 -0400
-X-Greylist: delayed 84052 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 05 Apr 2022 00:20:37 PDT
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A28F01D8;
-        Tue,  5 Apr 2022 00:20:36 -0700 (PDT)
-Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by mail.gandi.net (Postfix) with ESMTPSA id D202024000C;
-        Tue,  5 Apr 2022 07:20:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1649143234;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=zpvfYdyA2PB7667ZTFEYC37nx0xbGndnvQLkh+GtoUc=;
-        b=h7hY9Jo6S5R/X/FMHAFNGYaEyyD9HrfcpGcmAW5frfsecCC8u0xeUQQZ7JJb45pOrHonQB
-        5BUPWLjFDMmnXKq8WFiKDZ403XDFDD3uIdBDZGdjYfUK2vA9d+Kl12efhuNWtX6uUBeAD1
-        ZagFg9uip+bqYD9yNMQuWKLcKDvGVechHM2qXYq5Z7w0TZ7+vA4RMnPoIGlT4x8B7KblfB
-        V24FmKwjDy+xZkws3pak/3FMAGk01NGyF9vPRPS4j6lir8BcHO7X57ZJqSo0K/d1ua1lm8
-        udxlvKJRsxYPs3EMlnJ/PgeLM42VMwMEJGAUGncNYDAaN0Gxb83tniqf8XtcTg==
-Date:   Tue, 5 Apr 2022 09:20:24 +0200
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Chuanhong Guo <gch981213@gmail.com>
-Cc:     Rob Herring <robh@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        linux-spi@vger.kernel.org,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Richard Weinberger <richard@nod.at>,
-        Pratyush Yadav <p.yadav@ti.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Cai Huoqing <cai.huoqing@linux.dev>,
-        Roger Quadros <rogerq@kernel.org>,
-        Yu Kuai <yukuai3@huawei.com>,
-        linux-mediatek@lists.infradead.org,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        devicetree@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        linux-kernel@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Colin Ian King <colin.king@intel.com>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        linux-mtd@lists.infradead.org
-Subject: Re: [PATCH v3 4/5] dt-bindings: spi: add binding doc for
- spi-mtk-snfi
-Message-ID: <20220405092024.25d97c33@xps13>
-In-Reply-To: <CAJsYDVLaXAoL=TcPun6rckcA_cdUS-zFy_7M6uCpfzX+jbQEag@mail.gmail.com>
-References: <20220404131818.1817794-1-gch981213@gmail.com>
-        <20220404131818.1817794-5-gch981213@gmail.com>
-        <1649088538.050456.1436949.nullmailer@robh.at.kernel.org>
-        <CAJsYDVLaXAoL=TcPun6rckcA_cdUS-zFy_7M6uCpfzX+jbQEag@mail.gmail.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        with ESMTP id S243464AbiDEIua (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 5 Apr 2022 04:50:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A78F11C36;
+        Tue,  5 Apr 2022 01:38:53 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 82853614E4;
+        Tue,  5 Apr 2022 08:38:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F022C385A1;
+        Tue,  5 Apr 2022 08:38:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1649147899;
+        bh=5oEKvyvDsm4nX1f5sd5X9vxlvOxfYV0575LO2WUqqGQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=c3NTkZV7kSPJrt2W33ieNRkzNEKcCCZ8f9a0rAbjXtGXYd5QerIahjqwE0fg8mzoA
+         c0t5Z8xkhPKUhHrVD9SUFI3hk202bDJ0wb1DvP/zUJxbKQ8XXKJeCbUmqSQ5VvLK0E
+         W6w7dJ0Sd0B7ufNRXK9FG+Z/KnbWt3v73UhdPz6guUUKKRef7qyGzAGwpW3kLHO0p4
+         fOTUoVjACDLAB5Co/UgnYKYiznriPXfsYQH1gB3NkOTkqHiQ7qJGezCpG1OMusqs0B
+         iEgaXreNEj46/pkZWsWq3AQkJyoC5LfkkRWJPvahHSMiiS7E3PEZDIWV1MRiBtJIIR
+         9yVLR3IKQe3iQ==
+Date:   Tue, 5 Apr 2022 09:38:14 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+Subject: Re: [PATCH v2] dt-bindings: qcom: update maintainers (drop Akash and
+ Mukesh)
+Message-ID: <Ykv/9gB01cFRdQiT@sirena.org.uk>
+References: <20220405063724.12850-1-krzysztof.kozlowski@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="MzPEjjyGDoi8R4A1"
+Content-Disposition: inline
+In-Reply-To: <20220405063724.12850-1-krzysztof.kozlowski@linaro.org>
+X-Cookie: diplomacy, n:
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hello,
 
-gch981213@gmail.com wrote on Tue, 5 Apr 2022 10:55:51 +0800:
+--MzPEjjyGDoi8R4A1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> Hi Rob!
->=20
-> On Tue, Apr 5, 2022 at 12:09 AM Rob Herring <robh@kernel.org> wrote:
-> > [...]
-> > My bot found errors running 'make DT_CHECKER_FLAGS=3D-m dt_binding_chec=
-k'
-> > on your patch (DT_CHECKER_FLAGS is new in v5.13):
-> >
-> > yamllint warnings/errors:
-> >
-> > dtschema/dtc warnings/errors:
-> > /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/sp=
-i/mediatek,spi-mtk-snfi.example.dt.yaml: spi@1100d000: 'ecc-engine' is a re=
-quired property
-> >         From schema: /builds/robherring/linux-dt-review/Documentation/d=
-evicetree/bindings/spi/mediatek,spi-mtk-snfi.yaml
-> > Documentation/devicetree/bindings/spi/mediatek,spi-mtk-snfi.example.dt.=
-yaml:0:0: /example-0/soc/spi@1100d000/flash@0: failed to match any schema w=
-ith compatible: ['spi-nand'] =20
->=20
-> I ran the tests myself and it's only complaining about the ecc-engine nam=
-e:
->=20
-> /home/user/src/kernels/linux/Documentation/devicetree/bindings/spi/mediat=
-ek,spi-mtk-snfi.example.dtb:
-> spi@1100d000: 'ecc-engine' is a required property
-> From schema: /home/user/src/kernels/linux/Documentation/devicetree/bindin=
-gs/spi/mediatek,spi-mtk-snfi.yaml
->=20
-> It says nothing about the spi-nand part.
-> I'd like to keep the flash@0 node in the example to demonstrate the
-> nand-ecc-engine usage. What should I do?
+On Tue, Apr 05, 2022 at 08:37:24AM +0200, Krzysztof Kozlowski wrote:
+> Emails to Akash Asthana and Mukesh Savaliya bounce (550: Recipient
+> address rejected: User unknown in virtual alias table), so switch
+> maintainer to Bjorn (as active Qualcomm platform maintainer).
 
-You can try including spi-nand.yaml (like you do with
-spi-controller.yaml). You should no longer need to define
-nand-ecc-engine then as it is already described there?
+Acked-by: Mark Brown <broonie@kernel.org>
 
-Thanks,
-Miqu=C3=A8l
+--MzPEjjyGDoi8R4A1
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmJL//UACgkQJNaLcl1U
+h9AwrQf/aOVI3k9H5QjN71ONU/w9xjBiWoqyUl3Nsg8bH38SG/SpKjiyIEuI65zS
+L5OjehWZO0GLFJcayYCsJFPNhePpsc06H1FNspExegH9oeWfbiMech6FFRfK54Ku
+i2fqAeLUt+OLAMyxcIwT3N7vPpXP92eHhLgDm8C3646BgWjpUQtnRC3u5tJBkFSr
+TGNK1KG6n0SBRVKsLqsCLVy6caFt3aPij2TR6zfpQlyucY9CqZEU8m6LmxS3nQLX
+TVOt7LYt68nNgJSfdPvWsMXlcSmYeaUpFO9f+fFGx7q+4db+MRPZueNm/gQMQNTi
+TvfIg3ee7IKdHuoNZSc0UhWnHN1+Qg==
+=UYIt
+-----END PGP SIGNATURE-----
+
+--MzPEjjyGDoi8R4A1--

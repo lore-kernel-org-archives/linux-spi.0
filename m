@@ -2,84 +2,75 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AC848C4332F
-	for <linux-spi@archiver.kernel.org>; Tue,  5 Apr 2022 11:04:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 49497C43219
+	for <linux-spi@archiver.kernel.org>; Tue,  5 Apr 2022 11:04:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237717AbiDEKz4 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 5 Apr 2022 06:55:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39314 "EHLO
+        id S241168AbiDEK4F (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 5 Apr 2022 06:56:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347137AbiDEJqC (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 5 Apr 2022 05:46:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CBB9DCE2E;
-        Tue,  5 Apr 2022 02:32:31 -0700 (PDT)
+        with ESMTP id S1349084AbiDEJtF (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 5 Apr 2022 05:49:05 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6535FA9956
+        for <linux-spi@vger.kernel.org>; Tue,  5 Apr 2022 02:40:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1A41B616E3;
-        Tue,  5 Apr 2022 09:32:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1117C385A4;
-        Tue,  5 Apr 2022 09:32:29 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 138B8B81B14
+        for <linux-spi@vger.kernel.org>; Tue,  5 Apr 2022 09:40:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id D11D4C385A2;
+        Tue,  5 Apr 2022 09:40:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1649151150;
-        bh=pwpVhI8k5umqPw1rCqRZHC3hmjlAQwEh7jZoPos1oUE=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=UGox+5N0wsUGeWdDZg2mnDqInQ9WZWFTTjg8C68QzublVGk+GLk+65CL8O9G8FYQ1
-         4VRIH97uM/8caPtgdElJ6OLDgHLXAWzJ6KBvfXZT6HFHxtRhWGLKGaEpwGlJxh6Qaw
-         LepBqp3tc0Ag1p7d4NEtuE8oJN0cR60XqWEJXdZks1XyEb+Sxlb6kxPzXhGPJN9rkt
-         3vxfUmh//EuKganUO/UIh5cZ3nGKG7sIN28Ryn474XMeAzYoBCNxJeioLNhMazU/4G
-         x/DXTJ9rHtB5eUBLqHwAg44bNmY2YO8/2OEzZQJ1ktCr/RMr5eq203rnZ0R3yPQIS+
-         KsYthHxNmJvIA==
-From:   Mark Brown <broonie@kernel.org>
-To:     christophe.leroy@csgroup.eu
-Cc:     linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-In-Reply-To: <5ed3298d8b5b1b5bf681d79584c61cb495852f4e.1648833423.git.christophe.leroy@csgroup.eu>
-References: <5ed3298d8b5b1b5bf681d79584c61cb495852f4e.1648833423.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] spi: Prepare cleanup of powerpc's asm/prom.h
-Message-Id: <164915114958.276894.7475754044101563566.b4-ty@kernel.org>
-Date:   Tue, 05 Apr 2022 10:32:29 +0100
-MIME-Version: 1.0
+        s=k20201202; t=1649151622;
+        bh=zA6F8jZneUFz9hLbaCCIKyxb1G3zQUSaQg8VuSGuFyo=;
+        h=Subject:From:Date:To:From;
+        b=Ic/9NUaRqTbHfjE1UmcETkatTa9RtpuAD+ZMA4Bcb7BD+Oqi7OnKpWS8uFqUoU390
+         djDO2QD9AAyj5KaR13ehvpJoVszx+VXybYQVxOaF82KAkYllYUyUmAIkKyMiK5f4SW
+         0bmRZVZyyILEUc6GFfh4BSiQVIQgJKMylpElU9EyQTRLMO3I/GlOWBrJQ+zmgIjCnI
+         SxFyiIUjuNel2FbDpRpPwpGGZmwh4WBtFl/HGJ0l3C35yeIYzkwj4ZJDGZ5l3kURzX
+         8RTEwGVb9HozAwtvnlGbMhFONPbgfMMxAtZFx9G84gg+as0KE52CSriafU7TI8sO7J
+         5re3+WOZwZPXg==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id B4C4FE85BCB;
+        Tue,  5 Apr 2022 09:40:22 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <164915162268.21598.5874587750297922510.git-patchwork-summary@kernel.org>
+Date:   Tue, 05 Apr 2022 09:40:22 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Sat, 2 Apr 2022 11:50:21 +0200, Christophe Leroy wrote:
-> powerpc's asm/prom.h brings some headers that it doesn't
-> need itself.
-> 
-> In order to clean it up, first add missing headers in
-> users of asm/prom.h
-> 
-> 
-> [...]
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+Patch: [v2] dt-bindings: spi: qcom-qspi: Add minItems to interconnect-names
+  Submitter: Kuldeep Singh <singh.kuldeep87k@gmail.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=626984
+  Lore link: https://lore.kernel.org/r/20220328192006.18523-1-singh.kuldeep87k@gmail.com
 
-Thanks!
+Series: spi: mediatek: add single/quad mode support
+  Submitter: Leilk Liu <leilk.liu@mediatek.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=628101
+  Lore link: https://lore.kernel.org/r/20220401071616.8874-1-leilk.liu@mediatek.com
+    Patches: [V7,1/3] spi: mediatek: add spi memory support for ipm design
+             [V7,2/3] dt-bindings: spi: support hclk
+             [V7,3/3] spi: mediatek: support hclk
 
-[1/1] spi: Prepare cleanup of powerpc's asm/prom.h
-      commit: 02b3024824f48a270f6170901f1abeb1edb1619f
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+Total patches: 4
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark

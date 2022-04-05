@@ -2,81 +2,68 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9786AC4167E
-	for <linux-spi@archiver.kernel.org>; Tue,  5 Apr 2022 11:04:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2184CC3527A
+	for <linux-spi@archiver.kernel.org>; Tue,  5 Apr 2022 11:04:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241188AbiDEK4X (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 5 Apr 2022 06:56:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54030 "EHLO
+        id S241815AbiDEK4o (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 5 Apr 2022 06:56:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347159AbiDEJqD (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 5 Apr 2022 05:46:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEE30DCE2B;
-        Tue,  5 Apr 2022 02:32:33 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 98173615E5;
-        Tue,  5 Apr 2022 09:32:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 014EDC385AC;
-        Tue,  5 Apr 2022 09:32:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1649151152;
-        bh=JncMrmfzGwPQjE8v5Pu7YmvmRGLYwvdId2BOQWsQm3g=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=Lwe2vorGKyGz1bl2S5iuUkKHrbRH7fJipkVD/5CprU9IVf1St+0vLejwdA5JNej4E
-         2TC2gE/DAVvJijHf6f7ncy2/3gEaLoHAFsKOEMM/kJcoGijA1Sth6yuHjqq91Rwqf+
-         a+I311V25B6/YKfySaEQMlVHnDJYeGHiwn/5zvQ29TLp13jMHvPBmA2SjSVWgIx/sC
-         R31xZuDvm8NqXlplbULmp0BI6pXvcUTJyGpEcw8HxQsPBbPfUps8N8ltJIm8vsLyjS
-         KmwSwVK3BXUHZAmyMVJVTBhvJy7fNRutKOlxp+JPb10YAYlr7ZgF/VB9Wbb5O0n5Vx
-         9J/T+CMQJqRNQ==
-From:   Mark Brown <broonie@kernel.org>
-To:     miquel.raynal@bootlin.com, christophe.jaillet@wanadoo.fr
-Cc:     linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-In-Reply-To: <09c81f751241f6ec0bac7a48d4ec814a742e0d17.1648980664.git.christophe.jaillet@wanadoo.fr>
-References: <09c81f751241f6ec0bac7a48d4ec814a742e0d17.1648980664.git.christophe.jaillet@wanadoo.fr>
-Subject: Re: [PATCH] spi: mxic: Fix an error handling path in mxic_spi_probe()
-Message-Id: <164915115073.276894.2017003822406152149.b4-ty@kernel.org>
-Date:   Tue, 05 Apr 2022 10:32:30 +0100
+        with ESMTP id S244424AbiDEKir (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 5 Apr 2022 06:38:47 -0400
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06B71E08A
+        for <linux-spi@vger.kernel.org>; Tue,  5 Apr 2022 03:23:40 -0700 (PDT)
+Received: by mail-wr1-x441.google.com with SMTP id d3so7752393wrb.7
+        for <linux-spi@vger.kernel.org>; Tue, 05 Apr 2022 03:23:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:sender:mime-version:content-transfer-encoding
+         :content-description:subject:to:from:date:reply-to;
+        bh=VJDh606lNo2EKJ4RxeBt2fymOmAP/5sWfSpIfrO9ZeQ=;
+        b=BRzI6xhnV8wlqpVhRIlJwJOvVPT4ET4IKXbxprfDqdAhD+5w3Cju9D1bAeayslxVWD
+         PA9vkuU60d1HXJ0prciXmsFuQ8CnoK5eMvZv/9MYqPgup00qdZWD95Jk72wCZlDLy78n
+         lpUBbnMQgWUv5RZiWy22zIwLURVhLx3UXKY/riY/Xz6E45r8nxdVsqbIwoQyi8kLnBS+
+         pchgtGAlPqFk+MKJVPoWHuj2mcCYbn59z/KIZ55+qynVlVmqfN2C/HYmX+zC8sr5D1bS
+         pcUS1mfTdUlsEUFiiB4mapCRyQ6JQ3HegERPadgWuUi6Zn9KPIBRMnzTVlZo8+5TTCX8
+         jUXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:sender:mime-version
+         :content-transfer-encoding:content-description:subject:to:from:date
+         :reply-to;
+        bh=VJDh606lNo2EKJ4RxeBt2fymOmAP/5sWfSpIfrO9ZeQ=;
+        b=JpZoTFClRezcrjYngvXFSRoeau6is1fmlW9Gr+jRG0B0zy92QaTcIUg4k0HO4OTmCE
+         rbP/B/aX8IS+wZ2tfWn/hpc8eWmqh0nC4vgDzbgGPX6IyvvHDd7NWeVzyAxl5ZCVjf0s
+         +DqIdr/o2DYhywU2ru8jcKSQOoUYoNbbk1RxMlX36eR40CKhREkLtD2ZZ/RgrPm06JKF
+         xVwR9n1nOP8A4X+fCTo3pJYoFTyTaUDdi7cJPhBvru2eZ2r/94GLSvaFVaEsB61Eibfh
+         1p0VZglSXKi8+Gwyh43k8tbPS+qxrPwZKiQIb9p2bdD1DPErW6Qq1Qqe3eoPcnXn1oyb
+         JC9w==
+X-Gm-Message-State: AOAM531Z3rdguveN2mT4yfGwAYeI9a96lH6zqf7e+zBgY82HDZpyKhxV
+        du9viRg2MbanVobFvTMXaT3Yom2BfHrOIKF2
+X-Google-Smtp-Source: ABdhPJyWNIcm9AMpVspfbWKm+6PabZYbo0f1co7TroMmyXvKCFtCap9925ykXSjenvpynAsuM5njMw==
+X-Received: by 2002:a5d:4248:0:b0:206:e1f:e5d5 with SMTP id s8-20020a5d4248000000b002060e1fe5d5mr2098723wrr.596.1649154218450;
+        Tue, 05 Apr 2022 03:23:38 -0700 (PDT)
+Received: from [192.168.101.1] ([102.64.155.5])
+        by smtp.gmail.com with ESMTPSA id n37-20020a05600c3ba500b0038cc9d6ff5bsm1796423wms.4.2022.04.05.03.23.36
+        for <linux-spi@vger.kernel.org>
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Tue, 05 Apr 2022 03:23:37 -0700 (PDT)
+Message-ID: <624c18a9.1c69fb81.89092.69eb@mx.google.com>
+Sender: Marlene Littlejohn <marlenelittlejon@gmail.com>
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: Ik wacht op je antwoord
+To:     linux-spi@vger.kernel.org
+From:   "Marlene Willis" <marlenewilliscapt@gmail.com>
+Date:   Tue, 05 Apr 2022 10:23:33 +0000
+Reply-To: marlenewilliscapt@gmail.com
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Sun, 3 Apr 2022 12:11:13 +0200, Christophe JAILLET wrote:
-> If spi_register_master() fails, we must undo a previous
-> mxic_spi_mem_ecc_probe() call, as already done in the remove function.
-> 
-> 
-
-Applied to
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
-
-Thanks!
-
-[1/1] spi: mxic: Fix an error handling path in mxic_spi_probe()
-      commit: 35d516bdcd92fde46202d06b68df1166760208fd
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+Nice to contact you, I wish you to share ideas with you in the atmosphere o=
+f friendship and sincerity that will lead to a partnership for mutual benef=
+its.

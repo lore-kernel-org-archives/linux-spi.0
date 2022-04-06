@@ -2,193 +2,75 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B6BBAC433EF
-	for <linux-spi@archiver.kernel.org>; Wed,  6 Apr 2022 14:09:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1EDE5C433EF
+	for <linux-spi@archiver.kernel.org>; Wed,  6 Apr 2022 14:31:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234523AbiDFOLS (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 6 Apr 2022 10:11:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55024 "EHLO
+        id S234901AbiDFOdQ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 6 Apr 2022 10:33:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234525AbiDFOLA (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 6 Apr 2022 10:11:00 -0400
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF7C6464C06;
-        Wed,  6 Apr 2022 03:05:41 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: kholk11)
-        with ESMTPSA id 318F51F4390F
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1649239457;
-        bh=E8FhNhaGBVpp9KYAfMViAIYnlBsslTuXK5L56LwxxPk=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iDroqQIjwGb1F45SMf1ymLcMRoiCrTI2tU6b17nIfl9XUwDoeczop+FCOASkmf+9v
-         6+X4j77EdD+bcta1wEuiDuyhCrIZdbeJgKcLFniP4MwWnNpzjQXrUEAVW4c313/raH
-         vfsjIlE3v2a3NeIs48Vu9k8BCgIGfrJoGMPDt65ixnTc5um3CcZKxP0tP8/4tagVbR
-         R0lrZxrBNnSpxteEga3SI9ShWtcuPtpwJ0c/dacT9QMGZMdrgN9pJvzpllHM9XmSM9
-         2hix9HziDZMV/sonCUyxfErF1PTCPxDmozbB4g9FZ+srzoD6LMGjlNIE6L1n6LdRHR
-         zFh8SamPhFS4w==
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-To:     broonie@kernel.org
-Cc:     matthias.bgg@gmail.com, linux-spi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        nfraprado@collabora.com, kernel@collabora.com,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 5/7] spi: mt65xx: Simplify probe function with dev_err_probe()
-Date:   Wed,  6 Apr 2022 12:04:07 +0200
-Message-Id: <20220406100409.93113-6-angelogioacchino.delregno@collabora.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220406100409.93113-1-angelogioacchino.delregno@collabora.com>
-References: <20220406100409.93113-1-angelogioacchino.delregno@collabora.com>
+        with ESMTP id S234988AbiDFOcT (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 6 Apr 2022 10:32:19 -0400
+X-Greylist: delayed 525 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 06 Apr 2022 03:52:39 PDT
+Received: from mail.tkos.co.il (mail.tkos.co.il [84.110.109.230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 943796B4666
+        for <linux-spi@vger.kernel.org>; Wed,  6 Apr 2022 03:52:39 -0700 (PDT)
+Received: from tarshish (unknown [10.0.8.5])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.tkos.co.il (Postfix) with ESMTPS id 1C9C3440605
+        for <linux-spi@vger.kernel.org>; Wed,  6 Apr 2022 13:43:25 +0300 (IDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tkos.co.il;
+        s=default; t=1649241805;
+        bh=TIVbimN2TuEsaOH2kllYlf/QxH77HDsYW0xp62PprPk=;
+        h=From:To:Subject:Date:From;
+        b=YVw4B3pMwfQXQWeH2UhB7BtccDOAAW38O1yUwa+KyNI2SeXP1ChMLBrKbAAiA/nc2
+         bBNVdtMxEdAMtphB7GM+wZWLj22XzfOwpG2/eYEOFI+hsYMKmRTMHOdGZOINCFvAOL
+         frF9QxmtDhy99Jjjvfx85boxb1CWMuTmifnuhkVncGPXbtuxcO2owPt6v7InVheeOj
+         B9QVygHSQZtLGfaMhhVb/q/TlceslvgOJPEJjpL1ktq+JK92exogsWxtyFPf3X0/56
+         z41ja19ACYu4kvMVIxEyT4eMKIK8HKJ1F2UIhAf8ITkfGbjFoGrG0y5UpjIr8AkJLS
+         +V9x1vv+X3gHA==
+User-agent: mu4e 1.6.10; emacs 27.1
+From:   Baruch Siach <baruch@tkos.co.il>
+To:     linux-spi@vger.kernel.org
+Subject: Change CPHA in the middle of transaction
+Date:   Wed, 06 Apr 2022 13:38:57 +0300
+Message-ID: <87sfqqfq54.fsf@tarshish>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Switch to dev_err_probe() to remove all dev_err() -> return repeated
-patterns, simplifying and shortening the probe function.
+Hi linux-spi list,
 
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
----
- drivers/spi/spi-mt65xx.c | 70 ++++++++++++++--------------------------
- 1 file changed, 25 insertions(+), 45 deletions(-)
+I am trying to communicate with an SPI device that latches MOSI bits on the
+rising edge of the clock, while MISO bits are latched on the falling
+edge. Fortunately, MOSI and MISO bits are not simultaneous. So Tx/Rx
+work if SPI master changes CPHA at the right time with chip-select asserted.
 
-diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index b8ec04795141..c5b8aecfada6 100644
---- a/drivers/spi/spi-mt65xx.c
-+++ b/drivers/spi/spi-mt65xx.c
-@@ -795,10 +795,8 @@ static int mtk_spi_probe(struct platform_device *pdev)
- 	int i, irq, ret, addr_bits;
- 
- 	master = devm_spi_alloc_master(dev, sizeof(*mdata));
--	if (!master) {
--		dev_err(dev, "failed to alloc spi master\n");
--		return -ENOMEM;
--	}
-+	if (!master)
-+		return dev_err_probe(dev, -ENOMEM, "failed to alloc spi master\n");
- 
- 	master->auto_runtime_pm = true;
- 	master->dev.of_node = dev->of_node;
-@@ -826,11 +824,9 @@ static int mtk_spi_probe(struct platform_device *pdev)
- 	if (mdata->dev_comp->need_pad_sel) {
- 		mdata->pad_num = of_property_count_u32_elems(dev->of_node,
- 			"mediatek,pad-select");
--		if (mdata->pad_num < 0) {
--			dev_err(dev,
-+		if (mdata->pad_num < 0)
-+			return dev_err_probe(dev, -EINVAL,
- 				"No 'mediatek,pad-select' property\n");
--			return -EINVAL;
--		}
- 
- 		mdata->pad_sel = devm_kmalloc_array(dev, mdata->pad_num,
- 						    sizeof(u32), GFP_KERNEL);
-@@ -841,11 +837,10 @@ static int mtk_spi_probe(struct platform_device *pdev)
- 			of_property_read_u32_index(dev->of_node,
- 						   "mediatek,pad-select",
- 						   i, &mdata->pad_sel[i]);
--			if (mdata->pad_sel[i] > MT8173_SPI_MAX_PAD_SEL) {
--				dev_err(dev, "wrong pad-sel[%d]: %u\n",
--					i, mdata->pad_sel[i]);
--				return -EINVAL;
--			}
-+			if (mdata->pad_sel[i] > MT8173_SPI_MAX_PAD_SEL)
-+				return dev_err_probe(dev, -EINVAL,
-+						     "wrong pad-sel[%d]: %u\n",
-+						     i, mdata->pad_sel[i]);
- 		}
- 	}
- 
-@@ -863,40 +858,30 @@ static int mtk_spi_probe(struct platform_device *pdev)
- 
- 	ret = devm_request_irq(dev, irq, mtk_spi_interrupt,
- 			       IRQF_TRIGGER_NONE, dev_name(dev), master);
--	if (ret) {
--		dev_err(dev, "failed to register irq (%d)\n", ret);
--		return ret;
--	}
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to register irq\n");
- 
- 	mdata->parent_clk = devm_clk_get(dev, "parent-clk");
--	if (IS_ERR(mdata->parent_clk)) {
--		dev_err(dev, "failed to get parent-clk: %d\n", ret);
--		return PTR_ERR(mdata->parent_clk);
--	}
-+	if (IS_ERR(mdata->parent_clk))
-+		return dev_err_probe(dev, PTR_ERR(mdata->parent_clk),
-+				     "failed to get parent-clk\n");
- 
- 	mdata->sel_clk = devm_clk_get(dev, "sel-clk");
--	if (IS_ERR(mdata->sel_clk)) {
--		dev_err(dev, "failed to get sel-clk: %d\n", ret);
--		return PTR_ERR(mdata->sel_clk);
--	}
-+	if (IS_ERR(mdata->sel_clk))
-+		return dev_err_probe(dev, PTR_ERR(mdata->sel_clk), "failed to get sel-clk\n");
- 
- 	mdata->spi_clk = devm_clk_get(dev, "spi-clk");
--	if (IS_ERR(mdata->spi_clk)) {
--		dev_err(dev, "failed to get spi-clk: %d\n", ret);
--		return PTR_ERR(mdata->spi_clk);
--	}
-+	if (IS_ERR(mdata->spi_clk))
-+		return dev_err_probe(dev, PTR_ERR(mdata->spi_clk), "failed to get spi-clk\n");
- 
- 	ret = clk_prepare_enable(mdata->spi_clk);
--	if (ret < 0) {
--		dev_err(dev, "failed to enable spi_clk (%d)\n", ret);
--		return ret;
--	}
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret, "failed to enable spi_clk\n");
- 
- 	ret = clk_set_parent(mdata->sel_clk, mdata->parent_clk);
- 	if (ret < 0) {
--		dev_err(dev, "failed to clk_set_parent (%d)\n", ret);
- 		clk_disable_unprepare(mdata->spi_clk);
--		return ret;
-+		return dev_err_probe(dev, ret, "failed to clk_set_parent\n");
- 	}
- 
- 	mdata->spi_clk_hz = clk_get_rate(mdata->spi_clk);
-@@ -907,18 +892,14 @@ static int mtk_spi_probe(struct platform_device *pdev)
- 		clk_disable_unprepare(mdata->spi_clk);
- 
- 	if (mdata->dev_comp->need_pad_sel) {
--		if (mdata->pad_num != master->num_chipselect) {
--			dev_err(dev,
-+		if (mdata->pad_num != master->num_chipselect)
-+			return dev_err_probe(dev, -EINVAL,
- 				"pad_num does not match num_chipselect(%d != %d)\n",
- 				mdata->pad_num, master->num_chipselect);
--			return -EINVAL;
--		}
- 
--		if (!master->cs_gpiods && master->num_chipselect > 1) {
--			dev_err(dev,
-+		if (!master->cs_gpiods && master->num_chipselect > 1)
-+			return dev_err_probe(dev, -EINVAL,
- 				"cs_gpios not specified and num_chipselect > 1\n");
--			return -EINVAL;
--		}
- 	}
- 
- 	if (mdata->dev_comp->dma_ext)
-@@ -935,8 +916,7 @@ static int mtk_spi_probe(struct platform_device *pdev)
- 	ret = devm_spi_register_master(dev, master);
- 	if (ret) {
- 		pm_runtime_disable(dev);
--		dev_err(dev, "failed to register master (%d)\n", ret);
--		return ret;
-+		return dev_err_probe(dev, ret, "failed to register master\n");
- 	}
- 
- 	return 0;
+It looks like generic SPI code provides no way to flip CPHA for different
+spi_transfer in the context of a single spi_message. At the drivers level,
+some drivers program SPI mode per spi_transfer (e.g. spi-imx mx1/mx21/mx31
+variants), while others do that per spi_message (e.g. spi-imx mx51 variant).
+
+I can hack around the problem from userspace with manual control of the GPIO
+chip-select signal, and separate spidev SPI_IOC_MESSAGE calls with
+SPI_IOC_RD_MODE in between. Not very nice.
+
+I think about adding SPI_RX_CPHA_FLIP mode bit for that. Hardware that
+supports separate MISO/MOSI CPHA can program that permanently for spi_device
+that needs it (is there any such SPI master?). If not, the driver flips CPHA
+when spi_transfer tx_buf is NULL.
+
+Would that be acceptable?
+
+Any other suggestion?
+
+Thanks,
+baruch
+
 -- 
-2.35.1
-
+                                                     ~. .~   Tk Open Systems
+=}------------------------------------------------ooO--U--Ooo------------{=
+   - baruch@tkos.co.il - tel: +972.52.368.4656, http://www.tkos.co.il -

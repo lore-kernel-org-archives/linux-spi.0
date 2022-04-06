@@ -2,115 +2,85 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 95B7AC433F5
-	for <linux-spi@archiver.kernel.org>; Wed,  6 Apr 2022 14:09:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2D87BC433EF
+	for <linux-spi@archiver.kernel.org>; Wed,  6 Apr 2022 14:09:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234638AbiDFOLK (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 6 Apr 2022 10:11:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55952 "EHLO
+        id S234346AbiDFOLM (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 6 Apr 2022 10:11:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234193AbiDFOLC (ORCPT
+        with ESMTP id S234557AbiDFOLC (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Wed, 6 Apr 2022 10:11:02 -0400
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7436210DA6B;
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82CC410FAF7;
         Wed,  6 Apr 2022 03:05:48 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: kholk11)
-        with ESMTPSA id D4C671F43913
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1649239458;
-        bh=HsnypJDObY+gS8EShVy4Rcq2TEJ4ccVeiDXFBBCM2qg=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=itzf/Py+3LlJBLGZWuLt3X1VLEua3FbCQFwhOdQZZ7MQv5ktJekedJdd4stOr5Pg/
-         Wh6j8NGD9m/1Cikso0U4tVd1seUA/wOX8C/RsM5LaTRpDE6PgWTDA9dnRa73GkQ9Uh
-         JH6RPbGkDd886G3eGX4HwBMoe6Pp3jZ0fPChoesJS7pRZRO08+rX7La0hHH5sP1a8B
-         4F5/ilG+GmcwZSvNBf8hdUwS9wb4eY4ZkCPkASp7GPXHyzHW85VsMTPIuBp+kg3gZk
-         giMdMCOaT8fDYJ1F0xsqU+8quI7hNdRr55hVcOt5HOBAfxm5mBc51Q8yBDbzI0oM7a
-         OJDCs/0uQD0Xw==
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-To:     broonie@kernel.org
-Cc:     matthias.bgg@gmail.com, linux-spi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        nfraprado@collabora.com, kernel@collabora.com,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 6/7] spi: mt65xx: Add kerneldoc for driver structures
-Date:   Wed,  6 Apr 2022 12:04:08 +0200
-Message-Id: <20220406100409.93113-7-angelogioacchino.delregno@collabora.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220406100409.93113-1-angelogioacchino.delregno@collabora.com>
-References: <20220406100409.93113-1-angelogioacchino.delregno@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1649239549; x=1680775549;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=UzpLkLsQSybYrDctDJM7hazMV+345ZJBUluwhHnkHow=;
+  b=zV7ZUNi0+RKZ+oCQB4whtuJTcbI6/vCjFes8qlF2BG7eWjbV5IOkP3MS
+   XqUg7ZzCIKqGQN91shMqA9PGfV8kBAqgjg96OPIaHpInqx8/FYm6FKRwP
+   taIopUY0tQffylehSitNVsyzIk0TjHFhMy5nEA9WsJhKeb337ngOPxYvw
+   e9qwq4ZzpiXvGTggpazLZ8QGTx8BDXP2v0ys1RrDDaNpi1pZn8YptOny3
+   qgEhRzrhfzKaCC20oyDT2bClg5vUP0MhkQKXLG/AljQHcuWn+lSjA2k0L
+   WMIghSev/ylqVlomf3HAWNO3qrL0dWyGIVhqOSzll6zYjItoiPzWeFiui
+   g==;
+X-IronPort-AV: E=Sophos;i="5.90,239,1643698800"; 
+   d="scan'208";a="91453048"
+Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 06 Apr 2022 03:03:45 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.17; Wed, 6 Apr 2022 03:03:44 -0700
+Received: from ROB-ULT-M18064N.mchp-main.com (10.10.115.15) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
+ 15.1.2375.17 via Frontend Transport; Wed, 6 Apr 2022 03:03:42 -0700
+From:   Tudor Ambarus <tudor.ambarus@microchip.com>
+To:     <broonie@kernel.org>
+CC:     <nicolas.ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
+        <claudiu.beznea@microchip.com>, <linux-spi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>,
+        "Tudor Ambarus" <tudor.ambarus@microchip.com>,
+        <stable@vger.kernel.org>
+Subject: [PATCH 1/2] spi: atmel-quadspi.c: Fix the buswidth adjustment between spi-mem and controller
+Date:   Wed, 6 Apr 2022 13:03:39 +0300
+Message-ID: <20220406100340.224975-1-tudor.ambarus@microchip.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-One of the two structures was already partially documented, but not
-in kerneldoc format: enhance readability by adding the missing
-documentation bits and use kerneldoc.
+Use the spi_mem_default_supports_op() core helper in order to take into
+account the buswidth specified by the user in device tree.
 
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: <stable@vger.kernel.org>
+Fixes: 0e6aae08e9ae ("spi: Add QuadSPI driver for Atmel SAMA5D2")
+Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
 ---
- drivers/spi/spi-mt65xx.c | 34 ++++++++++++++++++++++++++++------
- 1 file changed, 28 insertions(+), 6 deletions(-)
+ drivers/spi/atmel-quadspi.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index c5b8aecfada6..8bd0b7335ea0 100644
---- a/drivers/spi/spi-mt65xx.c
-+++ b/drivers/spi/spi-mt65xx.c
-@@ -95,21 +95,43 @@
- #define DMA_ADDR_EXT_BITS (36)
- #define DMA_ADDR_DEF_BITS (32)
+diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
+index 92d9610df1fd..938017a60c8e 100644
+--- a/drivers/spi/atmel-quadspi.c
++++ b/drivers/spi/atmel-quadspi.c
+@@ -277,6 +277,9 @@ static int atmel_qspi_find_mode(const struct spi_mem_op *op)
+ static bool atmel_qspi_supports_op(struct spi_mem *mem,
+ 				   const struct spi_mem_op *op)
+ {
++	if (!spi_mem_default_supports_op(mem, op))
++		return false;
++
+ 	if (atmel_qspi_find_mode(op) < 0)
+ 		return false;
  
-+/**
-+ * struct mtk_spi_compatible - device data structure
-+ * @need_pad_sel:	Enable pad (pins) selection in SPI controller
-+ * @must_tx:		Must explicitly send dummy TX bytes to do RX only transfer
-+ * @enhance_timing:	Enable adjusting cfg register to enhance time accuracy
-+ * @dma_ext:		DMA address extension supported
-+ * @no_need_unprepare:	Don't unprepare the SPI clk during runtime
-+ * @ipm_design:		Adjust/extend registers to support IPM design IP features
-+ */
- struct mtk_spi_compatible {
- 	bool need_pad_sel;
--	/* Must explicitly send dummy Tx bytes to do Rx only transfer */
- 	bool must_tx;
--	/* some IC design adjust cfg register to enhance time accuracy */
- 	bool enhance_timing;
--	/* some IC support DMA addr extension */
- 	bool dma_ext;
--	/* some IC no need unprepare SPI clk */
- 	bool no_need_unprepare;
--	/* IPM design adjust and extend register to support more features */
- 	bool ipm_design;
--
- };
- 
-+/**
-+ * struct mtk_spi - SPI driver instance
-+ * @base:		Start address of the SPI controller registers
-+ * @state:		SPI controller state
-+ * @pad_num:		Number of pad_sel entries
-+ * @pad_sel:		Groups of pins to select
-+ * @parent_clk:		Parent of sel_clk
-+ * @sel_clk:		SPI master SCK clock
-+ * @spi_clk:		Peripheral clock
-+ * @cur_transfer:	Currently processed SPI transfer
-+ * @xfer_len:		Number of bytes to transfer
-+ * @num_xfered:		Number of transferred bytes
-+ * @tx_sgl:		TX transfer scatterlist
-+ * @rx_sgl:		RX transfer scatterlist
-+ * @tx_sgl_len:		Size of TX DMA transfer
-+ * @rx_sgl_len:		Size of RX DMA transfer
-+ * @dev_comp:		Device data structure
-+ * @spi_clk_hz:		Current SPI clock in Hz
-+ */
- struct mtk_spi {
- 	void __iomem *base;
- 	u32 state;
 -- 
-2.35.1
+2.25.1
 

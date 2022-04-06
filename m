@@ -2,142 +2,93 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D9814C433FE
-	for <linux-spi@archiver.kernel.org>; Wed,  6 Apr 2022 15:58:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D5687C433F5
+	for <linux-spi@archiver.kernel.org>; Wed,  6 Apr 2022 16:02:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236817AbiDFQAS (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 6 Apr 2022 12:00:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35368 "EHLO
+        id S237040AbiDFQEf (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 6 Apr 2022 12:04:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236567AbiDFP7q (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 6 Apr 2022 11:59:46 -0400
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D6B525E324;
-        Wed,  6 Apr 2022 06:28:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1649251733; x=1680787733;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=Czi26NrfwMoH/x1j5H0r+4QfXvJ3RCxa8l9zjCCm750=;
-  b=PEhPxBL1wxXwuWew6OqpROWADo9iY23YxrjJ5f3bFPyJeRGeHKsvay8i
-   z+cAyuV91pUdBoi+hkjfnyPLO8Kieq+71Tlk7P6RM+IhfJEv6EVHK9j0o
-   BqRTcFq8gJE/sdsXCHkwYRc3BIbn+Dz70PBw/o8sD0ag7tB2CFO4yJf1l
-   AiaeRDwV+kzece0hzbQs6WYZsMghDan5xRm8KZcoQ7j+fcddBK9n+nszE
-   X8UUjy6juSYHWtcJMwVIO1cClGLfvOP4ik10QT6mo9ZW7+WUnmje5sHiT
-   yE+M3XZD0RITtMv+H/w7CodCk7kuyGg/rUatPWK20ENqxT7VMNpMwBRnK
+        with ESMTP id S237075AbiDFQEO (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 6 Apr 2022 12:04:14 -0400
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CC7334B923;
+        Wed,  6 Apr 2022 06:36:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1649252176; x=1680788176;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=XoYhWii4g6voxXG1Oc4IkvgPk7IcmXLwZeVxiaR8YJQ=;
+  b=J0Ks4w77JdtUYaotZy2HwmFyg8Qtg7Ri1DtNo6A9o/Vwdso9HbhHppq9
+   XYN1XQWAxWi0iH0Fndw5YonDrIJrLPVX66vAxIswuF1Gg3St6XWhtvdvU
+   OqVpuwugLJx/OvG0XrgMetcoxT4/6CRB5eaiKg04eLJhtogLpNglWzJMC
+   YjI6lV9w4h+U1PH0gvVHISBS3bqAF/vFA3TeBl7C2QMSBconOgwYvFrkl
+   FxWXZspdfr88jBE+JY4u8CJUrfEUvzBLGrTGfOmVKDqVlpnGzR1WBza7r
+   OcXk7dQvZGWWJhRcwxP3R4TlATcsUvpgZrd8LrgwUs6OTdnHzblOKHi55
    g==;
-X-IronPort-AV: E=Sophos;i="5.90,239,1643670000"; 
-   d="scan'208";a="23132845"
-Received: from unknown (HELO tq-pgp-pr1.tq-net.de) ([192.168.6.15])
-  by mx1-pgp.tq-group.com with ESMTP; 06 Apr 2022 15:28:51 +0200
-Received: from mx1.tq-group.com ([192.168.6.7])
-  by tq-pgp-pr1.tq-net.de (PGP Universal service);
-  Wed, 06 Apr 2022 15:28:51 +0200
-X-PGP-Universal: processed;
-        by tq-pgp-pr1.tq-net.de on Wed, 06 Apr 2022 15:28:51 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1649251731; x=1680787731;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=Czi26NrfwMoH/x1j5H0r+4QfXvJ3RCxa8l9zjCCm750=;
-  b=duaJpFpIUmkCqo80X4zugsdBh+HlqbekiXO9a8eDBymJgQfvo+fcTeyE
-   pgORznI20if+Nn63Af9yNITceu5sCa1uLeLYR0B2HA+w7erjGc4x5JR7j
-   2CZUxBjn0v5ftkdlssGbx2MAaU0ZcglTMJtxhPHxoYAtTtJ844JmUet7g
-   mpXtsFMaRBIUQvYdnhPabiKGggiGVPPzy1IQpkEkDexq4vTXa4lzTK+8M
-   abxeYZ3v75iOWWQO65yjxpCR0s3aa4srXQxJbsKtU/en+427sOkcNUVOa
-   4HfaBVUYJ+Jm+8+Ps2bHeqFaFkDLuRiYvJWhwg4Fn73J+OkAj3yJ84NWV
-   A==;
-X-IronPort-AV: E=Sophos;i="5.90,239,1643670000"; 
-   d="scan'208";a="23132844"
-Received: from vtuxmail01.tq-net.de ([10.115.0.20])
-  by mx1.tq-group.com with ESMTP; 06 Apr 2022 15:28:51 +0200
-Received: from localhost.localdomain (SCHIFFERM-M2.tq-net.de [10.121.49.14])
-        by vtuxmail01.tq-net.de (Postfix) with ESMTPA id 30966280065;
-        Wed,  6 Apr 2022 15:28:51 +0200 (CEST)
-From:   Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-To:     Mark Brown <broonie@kernel.org>, Pratyush Yadav <p.yadav@ti.com>
-Cc:     Tudor Ambarus <tudor.ambarus@microchip.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Ramuthevar Vadivel Murugan 
-        <vadivel.muruganx.ramuthevar@linux.intel.com>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-Subject: [PATCH v2] spi: cadence-quadspi: fix incorrect supports_op() return value
-Date:   Wed,  6 Apr 2022 15:28:32 +0200
-Message-Id: <20220406132832.199777-1-matthias.schiffer@ew.tq-group.com>
+X-IronPort-AV: E=Sophos;i="5.90,239,1643698800"; 
+   d="scan'208";a="159134858"
+Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
+  by esa5.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 06 Apr 2022 06:36:16 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
+ chn-vm-ex02.mchp-main.com (10.10.87.72) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.17; Wed, 6 Apr 2022 06:36:14 -0700
+Received: from ROB-ULT-M18064N.mchp-main.com (10.10.115.15) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
+ 15.1.2375.17 via Frontend Transport; Wed, 6 Apr 2022 06:36:12 -0700
+From:   Tudor Ambarus <tudor.ambarus@microchip.com>
+To:     <broonie@kernel.org>
+CC:     <nicolas.ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
+        <claudiu.beznea@microchip.com>, <linux-spi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>,
+        "Tudor Ambarus" <tudor.ambarus@microchip.com>
+Subject: [PATCH v2 2/2] spi: atmel-quadspi: Remove duplicated DTR checks
+Date:   Wed, 6 Apr 2022 16:36:04 +0300
+Message-ID: <20220406133604.455356-2-tudor.ambarus@microchip.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220406133604.455356-1-tudor.ambarus@microchip.com>
+References: <20220406133604.455356-1-tudor.ambarus@microchip.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Since the conversion to spi-mem, the driver advertised support for
-various operations that cqspi_set_protocol() was never expected to handle
-correctly - in particuar all non-DTR operations with command or address
-buswidth > 1. For DTR, all operations except for 8-8-8 would fail, as
-cqspi_set_protocol() returns -EINVAL.
+Remove the DTR checks as they are already handled in
+spi_mem_default_supports_op(). This code removal was intentionally not done
+in the previous patch that introduced the use of the
+spi_mem_default_supports_op() core helper and fixed the buswidth adjustment
+between SPIMEM and the SPI controller, so that the fix can be easily
+backported to stable kernels.
 
-In non-DTR mode, this resulted in data corruption for SPI-NOR flashes that
-support such operations. As a minimal fix that can be backported to stable
-kernels, simply disallow the unsupported operations again to avoid this
-issue.
-
-Fixes: a314f6367787 ("mtd: spi-nor: Convert cadence-quadspi to use spi-mem framework")
-Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
 ---
+v2: no changes
 
-As discussed, here's the minimal fix to disallow the accidentally enabled
-1-X-X and X-X-X operations again. As a bonus, I also added proper handling
-for non-8-8-8 DTR ops to cqspi_supports_mem_op() to avoid -EINVAL in
-cqspi_set_protocol() for these ops.
+ drivers/spi/atmel-quadspi.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-The patch is based on spi for-5.18 now. It will unfortunately not
-cherry-pick cleanly to 5.10 and 5.15, but I can take care of submitting a
-backport patch once this is in Linus's tree.
-
-I also have patches for 5.19/next that add proper support for 1-X-X and
-X-X-X (without DTR for now, as I haven't tested DTR), which remove most
-of the code of cqspi_set_protocol(). I will submit the follow-up patches
-once this fix patch is accepted.
-
-
- drivers/spi/spi-cadence-quadspi.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index b0c9f62ccefb..c898321d4e94 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -1437,9 +1437,24 @@ static bool cqspi_supports_mem_op(struct spi_mem *mem,
- 	all_false = !op->cmd.dtr && !op->addr.dtr && !op->dummy.dtr &&
- 		    !op->data.dtr;
- 
--	/* Mixed DTR modes not supported. */
--	if (!(all_true || all_false))
-+	if (all_true) {
-+		/* Right now we only support 8-8-8 DTR mode. */
-+		if (op->cmd.nbytes && op->cmd.buswidth != 8)
-+			return false;
-+		if (op->addr.nbytes && op->addr.buswidth != 8)
-+			return false;
-+		if (op->data.nbytes && op->data.buswidth != 8)
-+			return false;
-+	} else if (all_false) {
-+		/* Only 1-1-X ops are supported without DTR */
-+		if (op->cmd.nbytes && op->cmd.buswidth > 1)
-+			return false;
-+		if (op->addr.nbytes && op->addr.buswidth > 1)
-+			return false;
-+	} else {
-+		/* Mixed DTR modes are not supported. */
+diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
+index 938017a60c8e..480c0c8c18e4 100644
+--- a/drivers/spi/atmel-quadspi.c
++++ b/drivers/spi/atmel-quadspi.c
+@@ -288,12 +288,6 @@ static bool atmel_qspi_supports_op(struct spi_mem *mem,
+ 		op->dummy.nbytes == 0)
  		return false;
-+	}
  
- 	return spi_mem_default_supports_op(mem, op);
+-	/* DTR ops not supported. */
+-	if (op->cmd.dtr || op->addr.dtr || op->dummy.dtr || op->data.dtr)
+-		return false;
+-	if (op->cmd.nbytes != 1)
+-		return false;
+-
+ 	return true;
  }
+ 
 -- 
 2.25.1
 

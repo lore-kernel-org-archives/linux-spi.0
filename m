@@ -2,85 +2,193 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2D87BC433EF
-	for <linux-spi@archiver.kernel.org>; Wed,  6 Apr 2022 14:09:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B6BBAC433EF
+	for <linux-spi@archiver.kernel.org>; Wed,  6 Apr 2022 14:09:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234346AbiDFOLM (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 6 Apr 2022 10:11:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59638 "EHLO
+        id S234523AbiDFOLS (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 6 Apr 2022 10:11:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234557AbiDFOLC (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 6 Apr 2022 10:11:02 -0400
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82CC410FAF7;
-        Wed,  6 Apr 2022 03:05:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1649239549; x=1680775549;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=UzpLkLsQSybYrDctDJM7hazMV+345ZJBUluwhHnkHow=;
-  b=zV7ZUNi0+RKZ+oCQB4whtuJTcbI6/vCjFes8qlF2BG7eWjbV5IOkP3MS
-   XqUg7ZzCIKqGQN91shMqA9PGfV8kBAqgjg96OPIaHpInqx8/FYm6FKRwP
-   taIopUY0tQffylehSitNVsyzIk0TjHFhMy5nEA9WsJhKeb337ngOPxYvw
-   e9qwq4ZzpiXvGTggpazLZ8QGTx8BDXP2v0ys1RrDDaNpi1pZn8YptOny3
-   qgEhRzrhfzKaCC20oyDT2bClg5vUP0MhkQKXLG/AljQHcuWn+lSjA2k0L
-   WMIghSev/ylqVlomf3HAWNO3qrL0dWyGIVhqOSzll6zYjItoiPzWeFiui
-   g==;
-X-IronPort-AV: E=Sophos;i="5.90,239,1643698800"; 
-   d="scan'208";a="91453048"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 06 Apr 2022 03:03:45 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.17; Wed, 6 Apr 2022 03:03:44 -0700
-Received: from ROB-ULT-M18064N.mchp-main.com (10.10.115.15) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
- 15.1.2375.17 via Frontend Transport; Wed, 6 Apr 2022 03:03:42 -0700
-From:   Tudor Ambarus <tudor.ambarus@microchip.com>
-To:     <broonie@kernel.org>
-CC:     <nicolas.ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
-        <claudiu.beznea@microchip.com>, <linux-spi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        "Tudor Ambarus" <tudor.ambarus@microchip.com>,
-        <stable@vger.kernel.org>
-Subject: [PATCH 1/2] spi: atmel-quadspi.c: Fix the buswidth adjustment between spi-mem and controller
-Date:   Wed, 6 Apr 2022 13:03:39 +0300
-Message-ID: <20220406100340.224975-1-tudor.ambarus@microchip.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S234525AbiDFOLA (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 6 Apr 2022 10:11:00 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF7C6464C06;
+        Wed,  6 Apr 2022 03:05:41 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: kholk11)
+        with ESMTPSA id 318F51F4390F
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1649239457;
+        bh=E8FhNhaGBVpp9KYAfMViAIYnlBsslTuXK5L56LwxxPk=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=iDroqQIjwGb1F45SMf1ymLcMRoiCrTI2tU6b17nIfl9XUwDoeczop+FCOASkmf+9v
+         6+X4j77EdD+bcta1wEuiDuyhCrIZdbeJgKcLFniP4MwWnNpzjQXrUEAVW4c313/raH
+         vfsjIlE3v2a3NeIs48Vu9k8BCgIGfrJoGMPDt65ixnTc5um3CcZKxP0tP8/4tagVbR
+         R0lrZxrBNnSpxteEga3SI9ShWtcuPtpwJ0c/dacT9QMGZMdrgN9pJvzpllHM9XmSM9
+         2hix9HziDZMV/sonCUyxfErF1PTCPxDmozbB4g9FZ+srzoD6LMGjlNIE6L1n6LdRHR
+         zFh8SamPhFS4w==
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+To:     broonie@kernel.org
+Cc:     matthias.bgg@gmail.com, linux-spi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        nfraprado@collabora.com, kernel@collabora.com,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH 5/7] spi: mt65xx: Simplify probe function with dev_err_probe()
+Date:   Wed,  6 Apr 2022 12:04:07 +0200
+Message-Id: <20220406100409.93113-6-angelogioacchino.delregno@collabora.com>
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20220406100409.93113-1-angelogioacchino.delregno@collabora.com>
+References: <20220406100409.93113-1-angelogioacchino.delregno@collabora.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Use the spi_mem_default_supports_op() core helper in order to take into
-account the buswidth specified by the user in device tree.
+Switch to dev_err_probe() to remove all dev_err() -> return repeated
+patterns, simplifying and shortening the probe function.
 
-Cc: <stable@vger.kernel.org>
-Fixes: 0e6aae08e9ae ("spi: Add QuadSPI driver for Atmel SAMA5D2")
-Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 ---
- drivers/spi/atmel-quadspi.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/spi/spi-mt65xx.c | 70 ++++++++++++++--------------------------
+ 1 file changed, 25 insertions(+), 45 deletions(-)
 
-diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-index 92d9610df1fd..938017a60c8e 100644
---- a/drivers/spi/atmel-quadspi.c
-+++ b/drivers/spi/atmel-quadspi.c
-@@ -277,6 +277,9 @@ static int atmel_qspi_find_mode(const struct spi_mem_op *op)
- static bool atmel_qspi_supports_op(struct spi_mem *mem,
- 				   const struct spi_mem_op *op)
- {
-+	if (!spi_mem_default_supports_op(mem, op))
-+		return false;
-+
- 	if (atmel_qspi_find_mode(op) < 0)
- 		return false;
+diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
+index b8ec04795141..c5b8aecfada6 100644
+--- a/drivers/spi/spi-mt65xx.c
++++ b/drivers/spi/spi-mt65xx.c
+@@ -795,10 +795,8 @@ static int mtk_spi_probe(struct platform_device *pdev)
+ 	int i, irq, ret, addr_bits;
  
+ 	master = devm_spi_alloc_master(dev, sizeof(*mdata));
+-	if (!master) {
+-		dev_err(dev, "failed to alloc spi master\n");
+-		return -ENOMEM;
+-	}
++	if (!master)
++		return dev_err_probe(dev, -ENOMEM, "failed to alloc spi master\n");
+ 
+ 	master->auto_runtime_pm = true;
+ 	master->dev.of_node = dev->of_node;
+@@ -826,11 +824,9 @@ static int mtk_spi_probe(struct platform_device *pdev)
+ 	if (mdata->dev_comp->need_pad_sel) {
+ 		mdata->pad_num = of_property_count_u32_elems(dev->of_node,
+ 			"mediatek,pad-select");
+-		if (mdata->pad_num < 0) {
+-			dev_err(dev,
++		if (mdata->pad_num < 0)
++			return dev_err_probe(dev, -EINVAL,
+ 				"No 'mediatek,pad-select' property\n");
+-			return -EINVAL;
+-		}
+ 
+ 		mdata->pad_sel = devm_kmalloc_array(dev, mdata->pad_num,
+ 						    sizeof(u32), GFP_KERNEL);
+@@ -841,11 +837,10 @@ static int mtk_spi_probe(struct platform_device *pdev)
+ 			of_property_read_u32_index(dev->of_node,
+ 						   "mediatek,pad-select",
+ 						   i, &mdata->pad_sel[i]);
+-			if (mdata->pad_sel[i] > MT8173_SPI_MAX_PAD_SEL) {
+-				dev_err(dev, "wrong pad-sel[%d]: %u\n",
+-					i, mdata->pad_sel[i]);
+-				return -EINVAL;
+-			}
++			if (mdata->pad_sel[i] > MT8173_SPI_MAX_PAD_SEL)
++				return dev_err_probe(dev, -EINVAL,
++						     "wrong pad-sel[%d]: %u\n",
++						     i, mdata->pad_sel[i]);
+ 		}
+ 	}
+ 
+@@ -863,40 +858,30 @@ static int mtk_spi_probe(struct platform_device *pdev)
+ 
+ 	ret = devm_request_irq(dev, irq, mtk_spi_interrupt,
+ 			       IRQF_TRIGGER_NONE, dev_name(dev), master);
+-	if (ret) {
+-		dev_err(dev, "failed to register irq (%d)\n", ret);
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to register irq\n");
+ 
+ 	mdata->parent_clk = devm_clk_get(dev, "parent-clk");
+-	if (IS_ERR(mdata->parent_clk)) {
+-		dev_err(dev, "failed to get parent-clk: %d\n", ret);
+-		return PTR_ERR(mdata->parent_clk);
+-	}
++	if (IS_ERR(mdata->parent_clk))
++		return dev_err_probe(dev, PTR_ERR(mdata->parent_clk),
++				     "failed to get parent-clk\n");
+ 
+ 	mdata->sel_clk = devm_clk_get(dev, "sel-clk");
+-	if (IS_ERR(mdata->sel_clk)) {
+-		dev_err(dev, "failed to get sel-clk: %d\n", ret);
+-		return PTR_ERR(mdata->sel_clk);
+-	}
++	if (IS_ERR(mdata->sel_clk))
++		return dev_err_probe(dev, PTR_ERR(mdata->sel_clk), "failed to get sel-clk\n");
+ 
+ 	mdata->spi_clk = devm_clk_get(dev, "spi-clk");
+-	if (IS_ERR(mdata->spi_clk)) {
+-		dev_err(dev, "failed to get spi-clk: %d\n", ret);
+-		return PTR_ERR(mdata->spi_clk);
+-	}
++	if (IS_ERR(mdata->spi_clk))
++		return dev_err_probe(dev, PTR_ERR(mdata->spi_clk), "failed to get spi-clk\n");
+ 
+ 	ret = clk_prepare_enable(mdata->spi_clk);
+-	if (ret < 0) {
+-		dev_err(dev, "failed to enable spi_clk (%d)\n", ret);
+-		return ret;
+-	}
++	if (ret < 0)
++		return dev_err_probe(dev, ret, "failed to enable spi_clk\n");
+ 
+ 	ret = clk_set_parent(mdata->sel_clk, mdata->parent_clk);
+ 	if (ret < 0) {
+-		dev_err(dev, "failed to clk_set_parent (%d)\n", ret);
+ 		clk_disable_unprepare(mdata->spi_clk);
+-		return ret;
++		return dev_err_probe(dev, ret, "failed to clk_set_parent\n");
+ 	}
+ 
+ 	mdata->spi_clk_hz = clk_get_rate(mdata->spi_clk);
+@@ -907,18 +892,14 @@ static int mtk_spi_probe(struct platform_device *pdev)
+ 		clk_disable_unprepare(mdata->spi_clk);
+ 
+ 	if (mdata->dev_comp->need_pad_sel) {
+-		if (mdata->pad_num != master->num_chipselect) {
+-			dev_err(dev,
++		if (mdata->pad_num != master->num_chipselect)
++			return dev_err_probe(dev, -EINVAL,
+ 				"pad_num does not match num_chipselect(%d != %d)\n",
+ 				mdata->pad_num, master->num_chipselect);
+-			return -EINVAL;
+-		}
+ 
+-		if (!master->cs_gpiods && master->num_chipselect > 1) {
+-			dev_err(dev,
++		if (!master->cs_gpiods && master->num_chipselect > 1)
++			return dev_err_probe(dev, -EINVAL,
+ 				"cs_gpios not specified and num_chipselect > 1\n");
+-			return -EINVAL;
+-		}
+ 	}
+ 
+ 	if (mdata->dev_comp->dma_ext)
+@@ -935,8 +916,7 @@ static int mtk_spi_probe(struct platform_device *pdev)
+ 	ret = devm_spi_register_master(dev, master);
+ 	if (ret) {
+ 		pm_runtime_disable(dev);
+-		dev_err(dev, "failed to register master (%d)\n", ret);
+-		return ret;
++		return dev_err_probe(dev, ret, "failed to register master\n");
+ 	}
+ 
+ 	return 0;
 -- 
-2.25.1
+2.35.1
 

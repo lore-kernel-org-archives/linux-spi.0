@@ -2,313 +2,190 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2C13EC433F5
-	for <linux-spi@archiver.kernel.org>; Wed,  6 Apr 2022 12:51:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3052EC433F5
+	for <linux-spi@archiver.kernel.org>; Wed,  6 Apr 2022 13:19:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229736AbiDFMwt (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 6 Apr 2022 08:52:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50300 "EHLO
+        id S233219AbiDFNVX (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 6 Apr 2022 09:21:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231405AbiDFMwM (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 6 Apr 2022 08:52:12 -0400
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C5FB2CE01;
-        Wed,  6 Apr 2022 01:54:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1649235283; x=1680771283;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=8Pubj1dDiUwibywXxkRjHfOE8N365AkZr19hsnqKjAw=;
-  b=XJwk/F6ihXtv3IsOcIC9BstkLRfXJODnYxmqTcOjmQG/JNTf0HY8jfIA
-   9Wu2KNCU6qTSC0e6HSAMiY3ZzZyYoUUfoFgenf81bqAqXZwyg/kFAi5yn
-   hwZ8qOw+5kalObxWHDrGIPXfhGcmxFxN9PdOsZuOGGtiZS864NA7Sh+kh
-   2f930lQJmCbGnLe5YLwfrs2mHiPY62ufx8MUaXqUbXEn6RlZ+eieWMG4q
-   PyzkA0z9cCguMn0qGj4fQpOIHsmiLyy8juBvu0Be2yT/XxC/DnfAy4SMf
-   Xqkweu5X6Qeu6Xs8HUnnEUr+ppPzooX0Kp25FEaJrYfVjusKC8iP6aTUr
-   A==;
-X-IronPort-AV: E=Sophos;i="5.90,239,1643670000"; 
-   d="scan'208";a="23123437"
-Received: from unknown (HELO tq-pgp-pr1.tq-net.de) ([192.168.6.15])
-  by mx1-pgp.tq-group.com with ESMTP; 06 Apr 2022 10:54:40 +0200
-Received: from mx1.tq-group.com ([192.168.6.7])
-  by tq-pgp-pr1.tq-net.de (PGP Universal service);
-  Wed, 06 Apr 2022 10:54:40 +0200
-X-PGP-Universal: processed;
-        by tq-pgp-pr1.tq-net.de on Wed, 06 Apr 2022 10:54:40 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1649235280; x=1680771280;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=8Pubj1dDiUwibywXxkRjHfOE8N365AkZr19hsnqKjAw=;
-  b=J+DT2M047zqAESv4v7c+N9cvsJttfG7cEyLRBPRj0TuC8b/eSSJiEIeq
-   vZ3LzmIO0pAwDDdOmHEp6KMAak7aKLB5H1eK3pYMOz8KgK0mRYPDKhatM
-   Skh9Z3WSOevY3V6hTFxJAQ48XUvl/VW5paT3avLFe1eiCknR25bBAoTXl
-   30UP/cSlZ7Eg2T/ev/6J47xu1D4hUtWX7dquHNENut8IpVB2AzGkt8aKH
-   U2tNnVE9LCMW/sTcagPJxeNUHbD1/fJhgPrc+6aKtnySUACeV3mLSoaMJ
-   Vh1JZccQGt6R9ysm9gmJQVna1zTTN4+73D3NT9kRomfLhX/jHhrlIsMc0
-   g==;
-X-IronPort-AV: E=Sophos;i="5.90,239,1643670000"; 
-   d="scan'208";a="23123436"
-Received: from vtuxmail01.tq-net.de ([10.115.0.20])
-  by mx1.tq-group.com with ESMTP; 06 Apr 2022 10:54:40 +0200
-Received: from schifferm-ubuntu (SCHIFFERM-M2.tq-net.de [10.121.49.14])
-        by vtuxmail01.tq-net.de (Postfix) with ESMTPA id 027D5280065;
-        Wed,  6 Apr 2022 10:54:39 +0200 (CEST)
-Message-ID: <170e086e24860c37897825e7f2599efc78de5a38.camel@ew.tq-group.com>
-Subject: Re: [PATCH] spi: cadence-quadspi: fix protocol setup for non-1-1-X
- operations
-From:   Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-To:     Pratyush Yadav <p.yadav@ti.com>
-Cc:     Mark Brown <broonie@kernel.org>,
-        Tudor Ambarus <tudor.ambarus@microchip.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Ramuthevar Vadivel Murugan 
-        <vadivel.muruganx.ramuthevar@linux.intel.com>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Wed, 06 Apr 2022 10:54:37 +0200
-In-Reply-To: <20220405193721.5jf3umfn3dvv6fxd@ti.com>
-References: <20220331110819.133392-1-matthias.schiffer@ew.tq-group.com>
-         <20220401100606.iz52jbrdcz6pd5sg@ti.com>
-         <6b2bfa6614fbb9339b94a191ab933a2c25b8b4d7.camel@ew.tq-group.com>
-         <20220405193721.5jf3umfn3dvv6fxd@ti.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5-0ubuntu1 
+        with ESMTP id S232527AbiDFNVQ (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 6 Apr 2022 09:21:16 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C02C62E2AF;
+        Wed,  6 Apr 2022 03:04:53 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: kholk11)
+        with ESMTPSA id 6A8431F43901
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1649239455;
+        bh=vFZRSUCtzPmI05FbkG5koMycIxN2nba9jZW7kLwOcfM=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Z4Vk7efUMCoApCY0Gl4KRXzkQIm19g5H5ymp3IUIMtqQ68duLQ4OnQ/osMDQftCgX
+         Hiw1XB27d6hmcCIUNlUQU0L6WOxMkyE9GLNiH/Sfuf88roOSG3PXosQhxUq1PqxlFr
+         h81KxqflxYfgLRGh7kdWbc1/XjDR2Elgx4NzPp2HIX5g8u2Z/1dcD0P5ATPW6HNO8Z
+         +3NfB6ZSMMqrhn+/IcZ5c1gf7OlGAcqsMZscyP5IJ8p8oNeW8CpLqJ65cA1Qv2zSn8
+         jf0b36XFRY7QYRvHErHA436VdjeRFpFtfDgKYn83a/Xeh2ec3VW0ev5BcGuQNv8om5
+         DeRrZJnzbe11Q==
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+To:     broonie@kernel.org
+Cc:     matthias.bgg@gmail.com, linux-spi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        nfraprado@collabora.com, kernel@collabora.com,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH 1/7] spi: mt65xx: Simplify probe function with devm_spi_alloc_master
+Date:   Wed,  6 Apr 2022 12:04:03 +0200
+Message-Id: <20220406100409.93113-2-angelogioacchino.delregno@collabora.com>
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20220406100409.93113-1-angelogioacchino.delregno@collabora.com>
+References: <20220406100409.93113-1-angelogioacchino.delregno@collabora.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, 2022-04-06 at 01:07 +0530, Pratyush Yadav wrote:
-> On 01/04/22 12:20PM, Matthias Schiffer wrote:
-> > On Fri, 2022-04-01 at 15:36 +0530, Pratyush Yadav wrote:
-> > > Hi Matthias,
-> > > 
-> > > On 31/03/22 01:08PM, Matthias Schiffer wrote:
-> > > > cqspi_set_protocol() only set the data width, but ignored the
-> > > > command
-> > > > and address width (except for 8-8-8 DTR ops), leading to
-> > > > corruption
-> > > > of
-> > > > all transfers using 1-X-X or X-X-X ops. Fix by setting the
-> > > > other
-> > > > two
-> > > > widths as well.
-> > > > 
-> > > > While we're at it, simplify the code a bit by replacing the
-> > > > CQSPI_INST_TYPE_* constants with ilog2().
-> > > > 
-> > > > Tested on a TI AM64x with a Macronix MX25U51245G QSPI flash
-> > > > with 1-
-> > > > 4-4
-> > > > read and write operations.
-> > > > 
-> > > > Fixes: a314f6367787 ("mtd: spi-nor: Convert cadence-quadspi to
-> > > > use
-> > > > spi-mem framework")
-> > > 
-> > > I think a fixes tag is wrong here. The old driver did not support
-> > > 1-
-> > > X-X 
-> > > modes either. So you are not fixing anything, you are adding a
-> > > new 
-> > > feature. I don't think we should backport this patch to stable.
-> > 
-> > Giving a precise fixes tag is a bit difficult. The referenced
-> > commit
-> > made the driver (accidentally) accept commands like 1-4-4 without
-> > handing them correctly, causing data corruption for flashs that
-> > support
-> > these modes. The data corruption is fixed by my patch.
-> 
-> Ah, you're right. I missed the fact that the original driver
-> explicitly 
-> checked for 1-1-1, 1-1-4, and 1-1-8, and returned an error for the
-> rest. 
-> So your patch does indeed fix a bug.
-> 
-> > As the change was unintended, one option would be to split this
-> > patch
-> > into two parts: One fix patch that makes cqspi_set_protocol()
-> > -EINVAL
-> > again for all commands that are not 1-1-X, and one feature patch
-> > that
-> > adds actual support for these commands.
-> > 
-> > My thought process was that making these commands work correctly
-> > can't
-> > break anything that is not already broken in current stable
-> > kernels.
-> > But if you prefer the minimal change, I can send a v2 that splits
-> > the
-> > patch.
-> 
-> Yes, but as I commented below, I would prefer you rework the driver
-> to 
-> drop cqspi_set_protocol() entirely. For doing that the 2 patch
-> approach 
-> would work best so we don't end up getting the new code backported
-> to 
-> stable as well.
+Switch to the devm variant of spi_alloc_master() to save some gotos.
+This patch is a cleanup that brings no functional changes.
 
-Okay, I tried to split my patch, however I found
-that cqspi_set_protocol() is not the right place to check for
-unsupported operations at all - if the driver ever reaches a path where
-cqspi_set_protocol() returns -EINVAL, something has already gone wrong
-(and the attemption operation will fail altogether rather than falling
-back to a slower command).
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+---
+ drivers/spi/spi-mt65xx.c | 46 ++++++++++++++--------------------------
+ 1 file changed, 16 insertions(+), 30 deletions(-)
 
-I think that these checks - including the check that only 8-8-8 is
-supported with DTR - should actually happen in cqspi_supports_mem_op().
-Does that sound right?
-
-Regards,
-Matthias
-
-
-
-> 
-> > Regards,
-> > Matthias
-> > 
-> > 
-> > 
-> > > > Signed-off-by: Matthias Schiffer <
-> > > > matthias.schiffer@ew.tq-group.com
-> > > > ---
-> > > >  drivers/spi/spi-cadence-quadspi.c | 46 ++++++++---------------
-> > > > ----
-> > > > ----
-> > > >  1 file changed, 12 insertions(+), 34 deletions(-)
-> > > > 
-> > > > diff --git a/drivers/spi/spi-cadence-quadspi.c
-> > > > b/drivers/spi/spi-
-> > > > cadence-quadspi.c
-> > > > index b0c9f62ccefb..616ada891974 100644
-> > > > --- a/drivers/spi/spi-cadence-quadspi.c
-> > > > +++ b/drivers/spi/spi-cadence-quadspi.c
-> > > > @@ -19,6 +19,7 @@
-> > > >  #include <linux/iopoll.h>
-> > > >  #include <linux/jiffies.h>
-> > > >  #include <linux/kernel.h>
-> > > > +#include <linux/log2.h>
-> > > >  #include <linux/module.h>
-> > > >  #include <linux/of_device.h>
-> > > >  #include <linux/of.h>
-> > > > @@ -102,12 +103,6 @@ struct cqspi_driver_platdata {
-> > > >  #define CQSPI_TIMEOUT_MS			500
-> > > >  #define CQSPI_READ_TIMEOUT_MS			10
-> > > >  
-> > > > -/* Instruction type */
-> > > > -#define CQSPI_INST_TYPE_SINGLE			0
-> > > > -#define CQSPI_INST_TYPE_DUAL			1
-> > > > -#define CQSPI_INST_TYPE_QUAD			2
-> > > > -#define CQSPI_INST_TYPE_OCTAL			3
-> > > > -
-> > > >  #define CQSPI_DUMMY_CLKS_PER_BYTE		8
-> > > >  #define CQSPI_DUMMY_BYTES_MAX			4
-> > > >  #define CQSPI_DUMMY_CLKS_MAX			31
-> > > > @@ -376,10 +371,6 @@ static unsigned int cqspi_calc_dummy(const
-> > > > struct spi_mem_op *op, bool dtr)
-> > > >  static int cqspi_set_protocol(struct cqspi_flash_pdata
-> > > > *f_pdata,
-> > > >  			      const struct spi_mem_op *op)
-> > > >  {
-> > > > -	f_pdata->inst_width = CQSPI_INST_TYPE_SINGLE;
-> > > > -	f_pdata->addr_width = CQSPI_INST_TYPE_SINGLE;
-> > > > -	f_pdata->data_width = CQSPI_INST_TYPE_SINGLE;
-> > > > -
-> > > >  	/*
-> > > >  	 * For an op to be DTR, cmd phase along with every
-> > > > other non-
-> > > > empty
-> > > >  	 * phase should have dtr field set to 1. If an op phase
-> > > > has
-> > > > zero
-> > > > @@ -389,32 +380,23 @@ static int cqspi_set_protocol(struct
-> > > > cqspi_flash_pdata *f_pdata,
-> > > >  		       (!op->addr.nbytes || op->addr.dtr) &&
-> > > >  		       (!op->data.nbytes || op->data.dtr);
-> > > >  
-> > > > -	switch (op->data.buswidth) {
-> > > > -	case 0:
-> > > > -		break;
-> > > > -	case 1:
-> > > > -		f_pdata->data_width = CQSPI_INST_TYPE_SINGLE;
-> > > > -		break;
-> > > > -	case 2:
-> > > > -		f_pdata->data_width = CQSPI_INST_TYPE_DUAL;
-> > > > -		break;
-> > > > -	case 4:
-> > > > -		f_pdata->data_width = CQSPI_INST_TYPE_QUAD;
-> > > > -		break;
-> > > > -	case 8:
-> > > > -		f_pdata->data_width = CQSPI_INST_TYPE_OCTAL;
-> > > > -		break;
-> > > > -	default:
-> > > > -		return -EINVAL;
-> > > > -	}
-> > > > +	f_pdata->inst_width = 0;
-> > > > +	if (op->cmd.buswidth)
-> > > > +		f_pdata->inst_width = ilog2(op->cmd.buswidth);
-> > > > +
-> > > > +	f_pdata->addr_width = 0;
-> > > > +	if (op->addr.buswidth)
-> > > > +		f_pdata->addr_width = ilog2(op->addr.buswidth);
-> > > > +
-> > > > +	f_pdata->data_width = 0;
-> > > > +	if (op->data.buswidth)
-> > > > +		f_pdata->data_width = ilog2(op->data.buswidth);
-> > > 
-> > > Honestly, I think we should get rid of cqspi_set_protocol()
-> > > entirely.
-> > > I 
-> > > see no need to store f_pdata->{instr,addr,data}_width since we 
-> > > recalculate those for each op execution anyway. So why not just
-> > > use
-> > > the 
-> > > spi_mem_op to get those values directly and be rid of all this
-> > > mess?
-> > > 
-> > > >  
-> > > >  	/* Right now we only support 8-8-8 DTR mode. */
-> > > >  	if (f_pdata->dtr) {
-> > > >  		switch (op->cmd.buswidth) {
-> > > >  		case 0:
-> > > > -			break;
-> > > >  		case 8:
-> > > > -			f_pdata->inst_width =
-> > > > CQSPI_INST_TYPE_OCTAL;
-> > > >  			break;
-> > > >  		default:
-> > > >  			return -EINVAL;
-> > > > @@ -422,9 +404,7 @@ static int cqspi_set_protocol(struct
-> > > > cqspi_flash_pdata *f_pdata,
-> > > >  
-> > > >  		switch (op->addr.buswidth) {
-> > > >  		case 0:
-> > > > -			break;
-> > > >  		case 8:
-> > > > -			f_pdata->addr_width =
-> > > > CQSPI_INST_TYPE_OCTAL;
-> > > >  			break;
-> > > >  		default:
-> > > >  			return -EINVAL;
-> > > > @@ -432,9 +412,7 @@ static int cqspi_set_protocol(struct
-> > > > cqspi_flash_pdata *f_pdata,
-> > > >  
-> > > >  		switch (op->data.buswidth) {
-> > > >  		case 0:
-> > > > -			break;
-> > > >  		case 8:
-> > > > -			f_pdata->data_width =
-> > > > CQSPI_INST_TYPE_OCTAL;
-> > > >  			break;
-> > > >  		default:
-> > > >  			return -EINVAL;
-> > > > -- 
-> > > > 2.25.1
-> > > > 
+diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
+index 1a0b3208dfca..4f53c3446bc0 100644
+--- a/drivers/spi/spi-mt65xx.c
++++ b/drivers/spi/spi-mt65xx.c
+@@ -794,7 +794,7 @@ static int mtk_spi_probe(struct platform_device *pdev)
+ 	const struct of_device_id *of_id;
+ 	int i, irq, ret, addr_bits;
+ 
+-	master = spi_alloc_master(&pdev->dev, sizeof(*mdata));
++	master = devm_spi_alloc_master(&pdev->dev, sizeof(*mdata));
+ 	if (!master) {
+ 		dev_err(&pdev->dev, "failed to alloc spi master\n");
+ 		return -ENOMEM;
+@@ -815,8 +815,7 @@ static int mtk_spi_probe(struct platform_device *pdev)
+ 	of_id = of_match_node(mtk_spi_of_match, pdev->dev.of_node);
+ 	if (!of_id) {
+ 		dev_err(&pdev->dev, "failed to probe of_node\n");
+-		ret = -EINVAL;
+-		goto err_put_master;
++		return -EINVAL;
+ 	}
+ 
+ 	mdata = spi_master_get_devdata(master);
+@@ -837,16 +836,13 @@ static int mtk_spi_probe(struct platform_device *pdev)
+ 		if (mdata->pad_num < 0) {
+ 			dev_err(&pdev->dev,
+ 				"No 'mediatek,pad-select' property\n");
+-			ret = -EINVAL;
+-			goto err_put_master;
++			return -EINVAL;
+ 		}
+ 
+ 		mdata->pad_sel = devm_kmalloc_array(&pdev->dev, mdata->pad_num,
+ 						    sizeof(u32), GFP_KERNEL);
+-		if (!mdata->pad_sel) {
+-			ret = -ENOMEM;
+-			goto err_put_master;
+-		}
++		if (!mdata->pad_sel)
++			return -ENOMEM;
+ 
+ 		for (i = 0; i < mdata->pad_num; i++) {
+ 			of_property_read_u32_index(pdev->dev.of_node,
+@@ -855,24 +851,19 @@ static int mtk_spi_probe(struct platform_device *pdev)
+ 			if (mdata->pad_sel[i] > MT8173_SPI_MAX_PAD_SEL) {
+ 				dev_err(&pdev->dev, "wrong pad-sel[%d]: %u\n",
+ 					i, mdata->pad_sel[i]);
+-				ret = -EINVAL;
+-				goto err_put_master;
++				return -EINVAL;
+ 			}
+ 		}
+ 	}
+ 
+ 	platform_set_drvdata(pdev, master);
+ 	mdata->base = devm_platform_ioremap_resource(pdev, 0);
+-	if (IS_ERR(mdata->base)) {
+-		ret = PTR_ERR(mdata->base);
+-		goto err_put_master;
+-	}
++	if (IS_ERR(mdata->base))
++		return PTR_ERR(mdata->base);
+ 
+ 	irq = platform_get_irq(pdev, 0);
+-	if (irq < 0) {
+-		ret = irq;
+-		goto err_put_master;
+-	}
++	if (irq < 0)
++		return irq;
+ 
+ 	if (!pdev->dev.dma_mask)
+ 		pdev->dev.dma_mask = &pdev->dev.coherent_dma_mask;
+@@ -881,41 +872,38 @@ static int mtk_spi_probe(struct platform_device *pdev)
+ 			       IRQF_TRIGGER_NONE, dev_name(&pdev->dev), master);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to register irq (%d)\n", ret);
+-		goto err_put_master;
++		return ret;
+ 	}
+ 
+ 	mdata->parent_clk = devm_clk_get(&pdev->dev, "parent-clk");
+ 	if (IS_ERR(mdata->parent_clk)) {
+-		ret = PTR_ERR(mdata->parent_clk);
+ 		dev_err(&pdev->dev, "failed to get parent-clk: %d\n", ret);
+-		goto err_put_master;
++		return PTR_ERR(mdata->parent_clk);
+ 	}
+ 
+ 	mdata->sel_clk = devm_clk_get(&pdev->dev, "sel-clk");
+ 	if (IS_ERR(mdata->sel_clk)) {
+-		ret = PTR_ERR(mdata->sel_clk);
+ 		dev_err(&pdev->dev, "failed to get sel-clk: %d\n", ret);
+-		goto err_put_master;
++		return PTR_ERR(mdata->sel_clk);
+ 	}
+ 
+ 	mdata->spi_clk = devm_clk_get(&pdev->dev, "spi-clk");
+ 	if (IS_ERR(mdata->spi_clk)) {
+-		ret = PTR_ERR(mdata->spi_clk);
+ 		dev_err(&pdev->dev, "failed to get spi-clk: %d\n", ret);
+-		goto err_put_master;
++		return PTR_ERR(mdata->spi_clk);
+ 	}
+ 
+ 	ret = clk_prepare_enable(mdata->spi_clk);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "failed to enable spi_clk (%d)\n", ret);
+-		goto err_put_master;
++		return ret;
+ 	}
+ 
+ 	ret = clk_set_parent(mdata->sel_clk, mdata->parent_clk);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "failed to clk_set_parent (%d)\n", ret);
+ 		clk_disable_unprepare(mdata->spi_clk);
+-		goto err_put_master;
++		return ret;
+ 	}
+ 
+ 	mdata->spi_clk_hz = clk_get_rate(mdata->spi_clk);
+@@ -963,8 +951,6 @@ static int mtk_spi_probe(struct platform_device *pdev)
+ 
+ err_disable_runtime_pm:
+ 	pm_runtime_disable(&pdev->dev);
+-err_put_master:
+-	spi_master_put(master);
+ 
+ 	return ret;
+ }
+-- 
+2.35.1
 

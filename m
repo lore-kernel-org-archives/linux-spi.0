@@ -2,91 +2,115 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9C9ACC433F5
-	for <linux-spi@archiver.kernel.org>; Wed,  6 Apr 2022 14:09:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 95B7AC433F5
+	for <linux-spi@archiver.kernel.org>; Wed,  6 Apr 2022 14:09:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234464AbiDFOLF (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 6 Apr 2022 10:11:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53276 "EHLO
+        id S234638AbiDFOLK (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 6 Apr 2022 10:11:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234457AbiDFOJi (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 6 Apr 2022 10:09:38 -0400
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B64C44ED0CF;
+        with ESMTP id S234193AbiDFOLC (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 6 Apr 2022 10:11:02 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7436210DA6B;
         Wed,  6 Apr 2022 03:05:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1649239550; x=1680775550;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=YPQ9VGLSnWsFaAo16s8N0avyz4Em8x1yBOhaaJvn2Ic=;
-  b=SzBq+cmJwQjCAEeumYgYIGnwYAt7Fn5ThYAgQNYeaGgZkJBLe7MDuWtO
-   K4cIKE3ilQV+kjdv5Qg4U90MevprMrXhZtc/KMtF0gv7rN0EwKwIiKA2+
-   /EhpBgxkmOZD0btk7zdJlXHie3MvRkJVTY1+Q9FduOuNotxJjvta2BZbM
-   PNZHwXzV1o9sPM/ODoAK00DDeHyCl4nir5YAqMxdNaMgVoMOhED3JPfux
-   NTm+5iOtDZtf8lvWdffDJvTDXN0uBZ0AVPuOL1eD8Y3wWBSutEt0oP5Nm
-   MJyHKrLHhgOTWmMaC+fc+E+vUoWErRJcox6pU3L6bW/QrN6p4kXPkvjou
-   g==;
-X-IronPort-AV: E=Sophos;i="5.90,239,1643698800"; 
-   d="scan'208";a="168611982"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 06 Apr 2022 03:03:47 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.17; Wed, 6 Apr 2022 03:03:47 -0700
-Received: from ROB-ULT-M18064N.mchp-main.com (10.10.115.15) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
- 15.1.2375.17 via Frontend Transport; Wed, 6 Apr 2022 03:03:45 -0700
-From:   Tudor Ambarus <tudor.ambarus@microchip.com>
-To:     <broonie@kernel.org>
-CC:     <nicolas.ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
-        <claudiu.beznea@microchip.com>, <linux-spi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        "Tudor Ambarus" <tudor.ambarus@microchip.com>
-Subject: [PATCH 2/2] spi: atmel-quadspi: Remove duplicated DTR checks
-Date:   Wed, 6 Apr 2022 13:03:40 +0300
-Message-ID: <20220406100340.224975-2-tudor.ambarus@microchip.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220406100340.224975-1-tudor.ambarus@microchip.com>
-References: <20220406100340.224975-1-tudor.ambarus@microchip.com>
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: kholk11)
+        with ESMTPSA id D4C671F43913
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1649239458;
+        bh=HsnypJDObY+gS8EShVy4Rcq2TEJ4ccVeiDXFBBCM2qg=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=itzf/Py+3LlJBLGZWuLt3X1VLEua3FbCQFwhOdQZZ7MQv5ktJekedJdd4stOr5Pg/
+         Wh6j8NGD9m/1Cikso0U4tVd1seUA/wOX8C/RsM5LaTRpDE6PgWTDA9dnRa73GkQ9Uh
+         JH6RPbGkDd886G3eGX4HwBMoe6Pp3jZ0fPChoesJS7pRZRO08+rX7La0hHH5sP1a8B
+         4F5/ilG+GmcwZSvNBf8hdUwS9wb4eY4ZkCPkASp7GPXHyzHW85VsMTPIuBp+kg3gZk
+         giMdMCOaT8fDYJ1F0xsqU+8quI7hNdRr55hVcOt5HOBAfxm5mBc51Q8yBDbzI0oM7a
+         OJDCs/0uQD0Xw==
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+To:     broonie@kernel.org
+Cc:     matthias.bgg@gmail.com, linux-spi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        nfraprado@collabora.com, kernel@collabora.com,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH 6/7] spi: mt65xx: Add kerneldoc for driver structures
+Date:   Wed,  6 Apr 2022 12:04:08 +0200
+Message-Id: <20220406100409.93113-7-angelogioacchino.delregno@collabora.com>
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20220406100409.93113-1-angelogioacchino.delregno@collabora.com>
+References: <20220406100409.93113-1-angelogioacchino.delregno@collabora.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Remove the DTR checks as they are already handled in
-spi_mem_default_supports_op(). This code removal was intentionally not done
-in the previous patch that introduced the use of the
-spi_mem_default_supports_op() core helper and fixed the buswidth adjustment
-between SPIMEM and the SPI controller, so that the fix can be easily
-backported to stable kernels.
+One of the two structures was already partially documented, but not
+in kerneldoc format: enhance readability by adding the missing
+documentation bits and use kerneldoc.
 
-Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 ---
- drivers/spi/atmel-quadspi.c | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/spi/spi-mt65xx.c | 34 ++++++++++++++++++++++++++++------
+ 1 file changed, 28 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-index 938017a60c8e..480c0c8c18e4 100644
---- a/drivers/spi/atmel-quadspi.c
-+++ b/drivers/spi/atmel-quadspi.c
-@@ -288,12 +288,6 @@ static bool atmel_qspi_supports_op(struct spi_mem *mem,
- 		op->dummy.nbytes == 0)
- 		return false;
+diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
+index c5b8aecfada6..8bd0b7335ea0 100644
+--- a/drivers/spi/spi-mt65xx.c
++++ b/drivers/spi/spi-mt65xx.c
+@@ -95,21 +95,43 @@
+ #define DMA_ADDR_EXT_BITS (36)
+ #define DMA_ADDR_DEF_BITS (32)
  
--	/* DTR ops not supported. */
--	if (op->cmd.dtr || op->addr.dtr || op->dummy.dtr || op->data.dtr)
--		return false;
--	if (op->cmd.nbytes != 1)
--		return false;
++/**
++ * struct mtk_spi_compatible - device data structure
++ * @need_pad_sel:	Enable pad (pins) selection in SPI controller
++ * @must_tx:		Must explicitly send dummy TX bytes to do RX only transfer
++ * @enhance_timing:	Enable adjusting cfg register to enhance time accuracy
++ * @dma_ext:		DMA address extension supported
++ * @no_need_unprepare:	Don't unprepare the SPI clk during runtime
++ * @ipm_design:		Adjust/extend registers to support IPM design IP features
++ */
+ struct mtk_spi_compatible {
+ 	bool need_pad_sel;
+-	/* Must explicitly send dummy Tx bytes to do Rx only transfer */
+ 	bool must_tx;
+-	/* some IC design adjust cfg register to enhance time accuracy */
+ 	bool enhance_timing;
+-	/* some IC support DMA addr extension */
+ 	bool dma_ext;
+-	/* some IC no need unprepare SPI clk */
+ 	bool no_need_unprepare;
+-	/* IPM design adjust and extend register to support more features */
+ 	bool ipm_design;
 -
- 	return true;
- }
+ };
  
++/**
++ * struct mtk_spi - SPI driver instance
++ * @base:		Start address of the SPI controller registers
++ * @state:		SPI controller state
++ * @pad_num:		Number of pad_sel entries
++ * @pad_sel:		Groups of pins to select
++ * @parent_clk:		Parent of sel_clk
++ * @sel_clk:		SPI master SCK clock
++ * @spi_clk:		Peripheral clock
++ * @cur_transfer:	Currently processed SPI transfer
++ * @xfer_len:		Number of bytes to transfer
++ * @num_xfered:		Number of transferred bytes
++ * @tx_sgl:		TX transfer scatterlist
++ * @rx_sgl:		RX transfer scatterlist
++ * @tx_sgl_len:		Size of TX DMA transfer
++ * @rx_sgl_len:		Size of RX DMA transfer
++ * @dev_comp:		Device data structure
++ * @spi_clk_hz:		Current SPI clock in Hz
++ */
+ struct mtk_spi {
+ 	void __iomem *base;
+ 	u32 state;
 -- 
-2.25.1
+2.35.1
 

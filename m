@@ -2,45 +2,44 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 01443C4332F
-	for <linux-spi@archiver.kernel.org>; Thu,  7 Apr 2022 17:13:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4F7F5C43217
+	for <linux-spi@archiver.kernel.org>; Thu,  7 Apr 2022 17:13:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232512AbiDGRPh (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 7 Apr 2022 13:15:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53900 "EHLO
+        id S1345997AbiDGRPf (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 7 Apr 2022 13:15:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345995AbiDGRPg (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 7 Apr 2022 13:15:36 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C7CD194FD0;
-        Thu,  7 Apr 2022 10:13:29 -0700 (PDT)
+        with ESMTP id S1345986AbiDGRPd (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 7 Apr 2022 13:15:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25437196101;
+        Thu,  7 Apr 2022 10:13:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 43AF5B8254E;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F96D61597;
+        Thu,  7 Apr 2022 17:13:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 019C5C385A9;
         Thu,  7 Apr 2022 17:12:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFD50C385A4;
-        Thu,  7 Apr 2022 17:12:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1649351577;
-        bh=xoNNkCB4KczoI5BLU4qiA3mDQpdHlNlRPZpZI5L4AsI=;
+        s=k20201202; t=1649351580;
+        bh=GBt4PUS2fgno+UwF/Aa8hXaiVk1GCJZbQR8MKbe6zrQ=;
         h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=YycBXWVYYJmqhOL6ZSUZNReU6W2XswiR8+yjRYGc3HC08TwOBg4uyWBRr5TNZyoLQ
-         N6Swe3Mq9vyKHJuhbaIQwcOAgSEPKqCtJgo3fI56GHC+VSpiVBiOv2g0BDCDMroseu
-         X8/oBvRxOUj8qavbJVzCQDMRicT/gVwI47YbmUVAM8pCVm6MjzPuyIARvZKDqlK0U/
-         MFtxfypz4YVhjA36o8YkJFtL5qM9bOxdoChG+HrqdPBRr9SXuNIqzVnDi7nlIYyWiZ
-         96Q8KvDjtsumPsKbLxwviSXJHmjam7BU7EkuPw2ZY3kOV7ufUJUgtQeVvgzX46OMwA
-         OuI2haGRk6eXA==
+        b=CcdFHzg3VV6DcFogTNUaEhjsfeGTa19fo0x8cHrJKn9GQSxALlzZa/8jCBmiVXaCk
+         nzZ6ur8nPashDm6q8BdhVmKPjLdmF2GXi87mnsaW0TyWILIX+fmcTajcjwh0O6mv0g
+         NGE6Suh0wZEQxBaQ9kYmu82FNVcYiYdGLEIWQ5PBKyMXEeVwgQUZoni2DAs5WkIUs2
+         Njp0mO2+U2gr7MMY/Xf/InJB5k5sH8eIFIAeNGoi3avx+x+T3+aB1nlPJlTwLKhPrb
+         vijXQ/MTCxRePjtAmX/vJlVgJF1twkGQih38+YWP+ZDpykyW1hOX1zSkIcJ3TO+lO7
+         md52LyPJ+q0aQ==
 From:   Mark Brown <broonie@kernel.org>
-To:     matthias.schiffer@ew.tq-group.com
-Cc:     tudor.ambarus@microchip.com, linux-spi@vger.kernel.org,
-        vadivel.muruganx.ramuthevar@linux.intel.com, vigneshr@ti.com,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20220331110819.133392-1-matthias.schiffer@ew.tq-group.com>
-References: <20220331110819.133392-1-matthias.schiffer@ew.tq-group.com>
-Subject: Re: [PATCH] spi: cadence-quadspi: fix protocol setup for non-1-1-X operations
-Message-Id: <164935157541.1057547.6578731972016383100.b4-ty@kernel.org>
-Date:   Thu, 07 Apr 2022 18:12:55 +0100
+To:     vkoul@kernel.org
+Cc:     linux-spi@vger.kernel.org, bjorn.andersson@linaro.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+In-Reply-To: <20220406132238.1029249-1-vkoul@kernel.org>
+References: <20220406132238.1029249-1-vkoul@kernel.org>
+Subject: Re: [PATCH] spi: core: add dma_map_dev for __spi_unmap_msg()
+Message-Id: <164935157872.1057547.10486810513176613790.b4-ty@kernel.org>
+Date:   Thu, 07 Apr 2022 18:12:58 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -48,16 +47,12 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, 31 Mar 2022 13:08:19 +0200, Matthias Schiffer wrote:
-> cqspi_set_protocol() only set the data width, but ignored the command
-> and address width (except for 8-8-8 DTR ops), leading to corruption of
-> all transfers using 1-X-X or X-X-X ops. Fix by setting the other two
-> widths as well.
+On Wed, 6 Apr 2022 18:52:38 +0530, Vinod Koul wrote:
+> Commit b470e10eb43f ("spi: core: add dma_map_dev for dma device") added
+> dma_map_dev for _spi_map_msg() but missed to add for unmap routine,
+> __spi_unmap_msg(), so add it now.
 > 
-> While we're at it, simplify the code a bit by replacing the
-> CQSPI_INST_TYPE_* constants with ilog2().
 > 
-> [...]
 
 Applied to
 
@@ -65,8 +60,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: cadence-quadspi: fix protocol setup for non-1-1-X operations
-      commit: 97e4827d775faa9a32b5e1a97959c69dd77d17a3
+[1/1] spi: core: add dma_map_dev for __spi_unmap_msg()
+      commit: 409543cec01a84610029d6440c480c3fdd7214fb
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

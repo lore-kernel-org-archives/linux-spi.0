@@ -2,31 +2,31 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 07FF7C433F5
-	for <linux-spi@archiver.kernel.org>; Thu,  7 Apr 2022 11:44:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A8A0BC433EF
+	for <linux-spi@archiver.kernel.org>; Thu,  7 Apr 2022 11:44:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244883AbiDGLqp (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 7 Apr 2022 07:46:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60066 "EHLO
+        id S244889AbiDGLqq (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 7 Apr 2022 07:46:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238372AbiDGLqo (ORCPT
+        with ESMTP id S244875AbiDGLqo (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Thu, 7 Apr 2022 07:46:44 -0400
 Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F40B018EE8B;
-        Thu,  7 Apr 2022 04:44:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6217518B26E;
+        Thu,  7 Apr 2022 04:44:45 -0700 (PDT)
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (Authenticated sender: kholk11)
-        with ESMTPSA id 408571F4613B
+        with ESMTPSA id AA0181F4160F
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1649331882;
-        bh=elCTgW/bDeAM8ZYb0VUA+4o6cBPZmbatIqqr/TpgbmY=;
+        s=mail; t=1649331884;
+        bh=0ioxGeIAs1JjL3nFVCxi/VYYJ3Ie6yltSPaOrmtPeQA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=K7XrNpG+TTDQByXjulDuy2gsiT8SkeY/hLf7kZu1skwHOTG29XRlaejUwLJYuJskC
-         U7Ijk6pz9szAkcMT9sw5dppq+A8gdHffs3nqNfwvXhaqcFSYEjSjBzA0fe556fKje4
-         Kww61B23oTMwRaDNUzu2/kTxmPvqylXmGyipKOxK9Wu6BW4V010QFDJebWK+f1mCMS
-         r30mTK/aF2OCfgQ8Ce8+mbFv95dMIgeupAbkmM5GeMGQ/Msy+pMSlBU2m6lOJE/02b
-         jZN8cYJcqlS0sXMRAZvK/o/moW4hxL/yLUE1Z2Akm/dJzvSPm07oQinewS8+zVYSdh
-         8e+o5a/BA9qjg==
+        b=QpGj8zYjD+zYxwNn8B8ypUt69daeQcIiMNXXBlvkPV1oBuVjcY68PppDu2ytuSAqy
+         OrXKcMhMcOZQlMR0I3np7jbIQQfJqXbgOdGRIvpYr7+8n560l+2aQpt4uNK4yr6Cc1
+         WpRXc3lT6d9b3pH5O2jEpLMe+8bsfaZLVDgTWqPaW4FIDw/mybkTyDDxumQdb3J8jV
+         UPnW+7FtVFhfkWi18ecVQJQnyKnNA1hpsv/b4SX8trkAaDOzSCQAvTzgsFtzuc4ICy
+         U8EiIQxei8UHRtwTjDylngbX6ntsmgVJbxN+8Z6zcUA3mSAefA1zEUiihvBLx/awsM
+         NvPYGUnhE4hoA==
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
 To:     broonie@kernel.org
@@ -36,9 +36,9 @@ Cc:     matthias.bgg@gmail.com, linux-spi@vger.kernel.org,
         nfraprado@collabora.com, kernel@collabora.com,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH v2 2/8] spi: mt65xx: Switch to device_get_match_data()
-Date:   Thu,  7 Apr 2022 13:44:22 +0200
-Message-Id: <20220407114428.167091-3-angelogioacchino.delregno@collabora.com>
+Subject: [PATCH v2 4/8] spi: mt65xx: Move clock parent setting to remove clock disable gotos
+Date:   Thu,  7 Apr 2022 13:44:24 +0200
+Message-Id: <20220407114428.167091-5-angelogioacchino.delregno@collabora.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220407114428.167091-1-angelogioacchino.delregno@collabora.com>
 References: <20220407114428.167091-1-angelogioacchino.delregno@collabora.com>
@@ -48,43 +48,61 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Instead of performing yet another match check in the probe function,
-simply switch to device_get_match_data().
-This is a cleanup and brings no functional change.
+Reparenting sel_clk to parent_clk can be done before enabling any of
+spi_clk and spi_hclk. Move the call to clk_set_parent() for sel_clk
+earlier, and call disable_unprepare() upon spi_clk prepare_enable()
+failure to remove all clock disablement related gotos.
+This commit is in preparation of a later cleanup.
 
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 ---
- drivers/spi/spi-mt65xx.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ drivers/spi/spi-mt65xx.c | 19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index 4c84b67ac85c..4e0b520f9abe 100644
+index 250a508427ee..a2daba3bba91 100644
 --- a/drivers/spi/spi-mt65xx.c
 +++ b/drivers/spi/spi-mt65xx.c
-@@ -1084,7 +1084,6 @@ static int mtk_spi_probe(struct platform_device *pdev)
- {
- 	struct spi_master *master;
- 	struct mtk_spi *mdata;
--	const struct of_device_id *of_id;
- 	int i, irq, ret, addr_bits;
+@@ -1195,6 +1195,12 @@ static int mtk_spi_probe(struct platform_device *pdev)
+ 		return ret;
+ 	}
  
- 	master = devm_spi_alloc_master(&pdev->dev, sizeof(*mdata));
-@@ -1105,14 +1104,8 @@ static int mtk_spi_probe(struct platform_device *pdev)
- 	master->set_cs_timing = mtk_spi_set_hw_cs_timing;
- 	master->use_gpio_descriptors = true;
- 
--	of_id = of_match_node(mtk_spi_of_match, pdev->dev.of_node);
--	if (!of_id) {
--		dev_err(&pdev->dev, "failed to probe of_node\n");
--		return -EINVAL;
++	ret = clk_set_parent(mdata->sel_clk, mdata->parent_clk);
++	if (ret < 0) {
++		dev_err(dev, "failed to clk_set_parent (%d)\n", ret);
++		return ret;
++	}
++
+ 	ret = clk_prepare_enable(mdata->spi_hclk);
+ 	if (ret < 0) {
+ 		dev_err(dev, "failed to enable hclk (%d)\n", ret);
+@@ -1204,13 +1210,8 @@ static int mtk_spi_probe(struct platform_device *pdev)
+ 	ret = clk_prepare_enable(mdata->spi_clk);
+ 	if (ret < 0) {
+ 		dev_err(dev, "failed to enable spi_clk (%d)\n", ret);
+-		goto err_disable_spi_hclk;
 -	}
 -
- 	mdata = spi_master_get_devdata(master);
--	mdata->dev_comp = of_id->data;
-+	mdata->dev_comp = device_get_match_data(&pdev->dev);
+-	ret = clk_set_parent(mdata->sel_clk, mdata->parent_clk);
+-	if (ret < 0) {
+-		dev_err(dev, "failed to clk_set_parent (%d)\n", ret);
+-		goto err_disable_spi_clk;
++		clk_disable_unprepare(mdata->spi_hclk);
++		return ret;
+ 	}
  
- 	if (mdata->dev_comp->enhance_timing)
- 		master->mode_bits |= SPI_CS_HIGH;
+ 	mdata->spi_clk_hz = clk_get_rate(mdata->spi_clk);
+@@ -1261,10 +1262,6 @@ static int mtk_spi_probe(struct platform_device *pdev)
+ 
+ err_disable_runtime_pm:
+ 	pm_runtime_disable(dev);
+-err_disable_spi_clk:
+-	clk_disable_unprepare(mdata->spi_clk);
+-err_disable_spi_hclk:
+-	clk_disable_unprepare(mdata->spi_hclk);
+ 
+ 	return ret;
+ }
 -- 
 2.35.1
 

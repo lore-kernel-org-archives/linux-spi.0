@@ -2,199 +2,92 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A69B2C43217
-	for <linux-spi@archiver.kernel.org>; Thu,  7 Apr 2022 15:08:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E2A7BC433FE
+	for <linux-spi@archiver.kernel.org>; Thu,  7 Apr 2022 15:16:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229573AbiDGPKb (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 7 Apr 2022 11:10:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55538 "EHLO
+        id S1344516AbiDGPSO (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 7 Apr 2022 11:18:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242849AbiDGPKa (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 7 Apr 2022 11:10:30 -0400
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6950A1F0CB2;
-        Thu,  7 Apr 2022 08:08:13 -0700 (PDT)
-Received: by mail-pg1-x52a.google.com with SMTP id r66so5191537pgr.3;
-        Thu, 07 Apr 2022 08:08:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=fHH8URcVdx/+hyKXsjtF0nQnTEIMOFJIt9J1ByleSrc=;
-        b=gwIXZn9FpRhJULaKeuLSKqDxgNq/YqI/YNBzqRZnbHqVl2XV+7gWWwEfi9nvDnNvVH
-         /b3M4JgFtWu33U1x5qsrmwlt0Qe7J4ArtXnVPVj1EWuNEFNMLyQ5z/S4kaqkc+RJdNRa
-         4eoBbN+OZDFK6qkYtSjp2cigX/4cQdEhumdH3nQ3bfWJA6XmfROShvIeWSkCYwRsGTwD
-         Q4fwEg2rNjFZ3vgATh0dzxZoaIhAQgDs/GuFwYcWbQd4hkdxGP+IK0efbBoqkj0osJ22
-         Uuge9s30zhKiIBiX2E/bSq/q0iIAuWHmK0ghg5mPW7BaHAaTjtKta/2mwikdfU8ni4Xn
-         73uQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=fHH8URcVdx/+hyKXsjtF0nQnTEIMOFJIt9J1ByleSrc=;
-        b=uOM1YnwTR2uISID/ERaYE8h2BH3mqIGfIRecWnqP5KcVJwyQ1zt+8HRJoWKjJayz8T
-         nxoo0w79oZ8M/p6o1eD+AEVHyM1c8fErelIW3hVKKdKqNVaAtUu4Iz1QHdqj1I3U7hr9
-         bnq1KJ/3jibg2byXFfXPTbMgk18L1Cu/exVA8HxNh5eY91K9XJ9v+TTshoEf9DnEqmi6
-         apUvQqgsj8koSELCa3rJzuQ4H6dPgn2qdT/2w8hN+9Q+g9gBA1AwtmfiEQA4gKUCIZDb
-         Ys2T4JrVYdNNvLXFNdDXVOTGZEHGz3kzUvNJ/Er4vtfAkF70lNnbuxNNWexGFldKSaWC
-         46yA==
-X-Gm-Message-State: AOAM531kKt3zGRZ8KTOGe+09J/mH3xx/Jmo9MeitsQTm5VV+reQlNY4n
-        FL0T0xr4GOZZDKyK2/G2evfk2CEl1AQVRvTPHjI=
-X-Google-Smtp-Source: ABdhPJzWQ+75cseGNPG9TF8t7fk9EWxHtVHkklo3hJEPgO7HpYj29ZtuLh79GWbuPh2/d1+7mgaWig==
-X-Received: by 2002:a63:68c4:0:b0:386:231b:f71c with SMTP id d187-20020a6368c4000000b00386231bf71cmr11365646pgc.208.1649344060865;
-        Thu, 07 Apr 2022 08:07:40 -0700 (PDT)
-Received: from guoguo-omen.lan ([2401:c080:1400:4da2:b701:47d5:9291:4cf9])
-        by smtp.gmail.com with ESMTPSA id x2-20020a63aa42000000b0038265eb2495sm19329908pgo.88.2022.04.07.08.07.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Apr 2022 08:07:40 -0700 (PDT)
-From:   Chuanhong Guo <gch981213@gmail.com>
-To:     linux-spi@vger.kernel.org
-Cc:     Chuanhong Guo <gch981213@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
+        with ESMTP id S237839AbiDGPSN (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 7 Apr 2022 11:18:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A6171FAA16;
+        Thu,  7 Apr 2022 08:16:12 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2719661E16;
+        Thu,  7 Apr 2022 15:15:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AB02C385A4;
+        Thu,  7 Apr 2022 15:15:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1649344556;
+        bh=fkUDGcZMuwhIXlCoSk+tbUQ1xUG4zQs/G/1OVgPCREE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Bd48Y7UHPAbBiKO0ZxHoZekW8iqfOCfz5umBb4NzHj0BSf65Aifrapao09r4GlVPZ
+         hCJr38My9FpRDgkGzKj1Ddc8MNR9wVGlRZfsw6qAmjw4Vgkmg/x24oqWEey3Vm5wzm
+         I1RLmhB5M40vf127g8Ih7qrwGrTiftLBTBwLkLb0ysl1u26kvMeplIAVSZzvBWyyPs
+         phsAKZjzJGyKFWCG8wwfrjZpPOqPH6p0qgPNJPFUQ2WdddpSy7HDXBebN2P6bV+o/x
+         axmpkWPxhsjh6Skc2+CVFPM7r8C53dwjSVZJcSpz5DgSrBijJXjcx5nx14NIAf7bgC
+         60oAg8lqcWY4A==
+Date:   Thu, 7 Apr 2022 16:15:49 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Miquel Raynal <miquel.raynal@bootlin.com>,
         Richard Weinberger <richard@nod.at>,
         Vignesh Raghavendra <vigneshr@ti.com>,
-        Roger Quadros <rogerq@kernel.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Cai Huoqing <cai.huoqing@linux.dev>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Colin Ian King <colin.king@intel.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Pratyush Yadav <p.yadav@ti.com>, Yu Kuai <yukuai3@huawei.com>,
-        devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED
-        DEVICE TREE BINDINGS),
-        linux-arm-kernel@lists.infradead.org (moderated list:ARM/Mediatek SoC
-        support),
-        linux-mediatek@lists.infradead.org (moderated list:ARM/Mediatek SoC
-        support), linux-kernel@vger.kernel.org (open list),
-        linux-mtd@lists.infradead.org (open list:NAND FLASH SUBSYSTEM)
-Subject: [PATCH v4 4/5] dt-bindings: spi: add binding doc for spi-mtk-snfi
-Date:   Thu,  7 Apr 2022 23:06:51 +0800
-Message-Id: <20220407150652.21885-5-gch981213@gmail.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220407150652.21885-1-gch981213@gmail.com>
-References: <20220407150652.21885-1-gch981213@gmail.com>
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-mtd@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] dt-bindings: align SPI NOR node name with dtschema
+Message-ID: <Yk8AJcFRmYEryqra@sirena.org.uk>
+References: <20220407143405.295907-1-krzysztof.kozlowski@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="exxHKs3vl5yFGvsK"
+Content-Disposition: inline
+In-Reply-To: <20220407143405.295907-1-krzysztof.kozlowski@linaro.org>
+X-Cookie: Look ere ye leap.
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Add device-tree binding documentation for Mediatek SPI-NAND Flash
-Interface.
 
-Signed-off-by: Chuanhong Guo <gch981213@gmail.com>
----
+--exxHKs3vl5yFGvsK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Changes since v1:
-  1. add a blank line between properties in dt binding doc
-  2. rename ecc-engine to nand-ecc-engine for the generic properties
+On Thu, Apr 07, 2022 at 04:34:05PM +0200, Krzysztof Kozlowski wrote:
+> The node names should be generic and SPI NOR dtschema expects "flash".
+>=20
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> ---
+>  Documentation/devicetree/bindings/mtd/hisilicon,fmc-spi-nor.txt | 2 +-
+>  Documentation/devicetree/bindings/spi/spi-davinci.txt           | 2 +-
+>  Documentation/devicetree/bindings/spi/spi-pl022.yaml            | 2 +-
 
-Change since v2: none
-Change since v3: fix a missing rename in v1
+Acked-by: Mark Brown <broonie@kernel.org>
 
- .../bindings/spi/mediatek,spi-mtk-snfi.yaml   | 88 +++++++++++++++++++
- 1 file changed, 88 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/mediatek,spi-mtk-snfi.yaml
+but it would be easier to split this into per subsystem stuff.
 
-diff --git a/Documentation/devicetree/bindings/spi/mediatek,spi-mtk-snfi.yaml b/Documentation/devicetree/bindings/spi/mediatek,spi-mtk-snfi.yaml
-new file mode 100644
-index 000000000000..686b69e4924c
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/mediatek,spi-mtk-snfi.yaml
-@@ -0,0 +1,88 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/spi/mediatek,spi-mtk-snfi.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: SPI-NAND flash controller for MediaTek ARM SoCs
-+
-+maintainers:
-+  - Chuanhong Guo <gch981213@gmail.com>
-+
-+description: |
-+  The Mediatek SPI-NAND flash controller is an extended version of
-+  the Mediatek NAND flash controller. It can perform standard SPI
-+  instructions with one continuous write and one read for up-to 0xa0
-+  bytes. It also supports typical SPI-NAND page cache operations
-+  in single, dual or quad IO mode with piplined ECC encoding/decoding
-+  using the accompanying ECC engine. There should be only one spi
-+  slave device following generic spi bindings.
-+
-+allOf:
-+  - $ref: /schemas/spi/spi-controller.yaml#
-+
-+properties:
-+  compatible:
-+    enum:
-+      - mediatek,mt7622-snand
-+      - mediatek,mt7629-snand
-+
-+  reg:
-+    items:
-+      - description: core registers
-+
-+  interrupts:
-+    items:
-+      - description: NFI interrupt
-+
-+  clocks:
-+    items:
-+      - description: clock used for the controller
-+      - description: clock used for the SPI bus
-+
-+  clock-names:
-+    items:
-+      - const: nfi_clk
-+      - const: pad_clk
-+
-+  nand-ecc-engine:
-+    description: device-tree node of the accompanying ECC engine.
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+  - clocks
-+  - clock-names
-+  - nand-ecc-engine
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    #include <dt-bindings/interrupt-controller/arm-gic.h>
-+    #include <dt-bindings/clock/mt7622-clk.h>
-+    soc {
-+      #address-cells = <2>;
-+      #size-cells = <2>;
-+      snfi: spi@1100d000 {
-+        compatible = "mediatek,mt7622-snand";
-+        reg = <0 0x1100d000 0 0x1000>;
-+        interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_LOW>;
-+        clocks = <&pericfg CLK_PERI_NFI_PD>, <&pericfg CLK_PERI_SNFI_PD>;
-+        clock-names = "nfi_clk", "pad_clk";
-+        nand-ecc-engine = <&bch>;
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        flash@0 {
-+          compatible = "spi-nand";
-+          reg = <0>;
-+          spi-tx-bus-width = <4>;
-+          spi-rx-bus-width = <4>;
-+          nand-ecc-engine = <&snfi>;
-+        };
-+      };
-+    };
--- 
-2.35.1
+--exxHKs3vl5yFGvsK
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmJPACUACgkQJNaLcl1U
+h9DhFgf/f0zclEq8qn8Edqu+LBr0uPAux3FUc79aJUiaw52UFqSsyCwAVD1XqJfB
+6AWYVRrGg8ag/JiZSjxzzCQT8tCaZYgUv5FgBL0krLTu+UX9AFJtySLzv9Eh75P/
+BxXn0lVp+eIfEuOKMgzoDbgfLDPANIdb2L6GlSecg1+SV5cfd1eS3xii/zo5woLo
+5W9Z9rV5qACqdxC/7W1MTDk2qpHwM5onJgpslswaJ1j3kT72otXnKBTJNmk3jNO7
+6bXycpaaSp2FfaVQD+L4JrVXJVHVtejlxAe1zRTYgPoLAY4Ga4N9u5dYw59AgY83
+zC9tmaFzlEqB5ozAx2YSOPhf+IIkhA==
+=8MWW
+-----END PGP SIGNATURE-----
+
+--exxHKs3vl5yFGvsK--

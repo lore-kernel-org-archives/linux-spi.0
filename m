@@ -2,121 +2,166 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 99135C433EF
-	for <linux-spi@archiver.kernel.org>; Thu,  7 Apr 2022 19:04:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 05E24C433EF
+	for <linux-spi@archiver.kernel.org>; Thu,  7 Apr 2022 19:06:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229736AbiDGTGj (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 7 Apr 2022 15:06:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52152 "EHLO
+        id S232263AbiDGTI0 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 7 Apr 2022 15:08:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233740AbiDGTGj (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 7 Apr 2022 15:06:39 -0400
-X-Greylist: delayed 1350 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 07 Apr 2022 12:04:38 PDT
-Received: from fudo.makrotopia.org (fudo.makrotopia.org [IPv6:2a07:2ec0:3002::71])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0DE92317AE
-        for <linux-spi@vger.kernel.org>; Thu,  7 Apr 2022 12:04:38 -0700 (PDT)
-Received: from local
-        by fudo.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
-         (Exim 4.94.2)
-        (envelope-from <daniel@makrotopia.org>)
-        id 1ncX4w-0001rM-SW; Thu, 07 Apr 2022 20:41:59 +0200
-Date:   Thu, 7 Apr 2022 19:41:54 +0100
-From:   Daniel Golle <daniel@makrotopia.org>
-To:     Chuanhong Guo <gch981213@gmail.com>
-Cc:     linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Roger Quadros <rogerq@kernel.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Cai Huoqing <cai.huoqing@linux.dev>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Colin Ian King <colin.king@intel.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Pratyush Yadav <p.yadav@ti.com>, Yu Kuai <yukuai3@huawei.com>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        "open list:NAND FLASH SUBSYSTEM" <linux-mtd@lists.infradead.org>
-Subject: Re: [PATCH v4 0/5] spi: add support for Mediatek SPI-NAND controller
-Message-ID: <Yk8wctUzF7eWYOZD@makrotopia.org>
-References: <20220407150652.21885-1-gch981213@gmail.com>
+        with ESMTP id S232779AbiDGTIY (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 7 Apr 2022 15:08:24 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2EEB1B9326
+        for <linux-spi@vger.kernel.org>; Thu,  7 Apr 2022 12:06:23 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id c42so7536954edf.3
+        for <linux-spi@vger.kernel.org>; Thu, 07 Apr 2022 12:06:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=gOv/51dHbvSvAxLzxG0YE6pJrgjLizkZFj88kA5U1Ts=;
+        b=O9N5piyZ8ghdKuId5L9aiMvkNuf62owbuCE+bZDTC6+xdnskK2aUwjkRUGOHdchCvA
+         /J+QuQpbFJM/EfFm8RsWGeBGnPnBdya6DSH3nBGlfOGxOQfphaxLgDC+zzgMMt+VmjXu
+         OSMZhW68bPY1HCTsk1/kZgPdo6KTzbrFSetJ89hvIb1T7A9C/NsRlGJk36F6rGcSxWLF
+         js+BATsURtMBOD9XP5WBgZ8B9ahlWlXnGEpQSISIIdLvqgDDKE4wkVtb80Yln+Nyneo5
+         sOOhyqrnY0o9IB8O7pFrrQJI/FsA2bBNe7fN2rsX34K5jkhc7gGS5VTCFiWFKPd1F1JU
+         lubQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=gOv/51dHbvSvAxLzxG0YE6pJrgjLizkZFj88kA5U1Ts=;
+        b=nnAt1Gp6UIWg+W9wV+TVVVeT5ORJUf8rx1xAv5KrzKC3zEiyoCJSHf8tJn6t0IkgP4
+         d/mplb2EDhpmm63Bzgendj8+ElvbUZGOxtRvZqGLa3QNTDy+SKcckBcafYfKy9APPvxJ
+         uSLva2WHioxEEamD175pexOYFU2DH08VwPHQ7pNHF4k1drJMFF6IJ5JTjFkMGTqOC3w+
+         lT6swHpRzhvwU/4PgyTsS5ToFbKSDx8lBWqlKOl4ydZMwnvTMusTdrS+Yzbhy7pLS/Ig
+         4MNOLc7pAaNYwklyb12lBLc7Bp1nlSU28oiWHKJPfJJ8oeXu9l60HLXsIzLWrDzf0QKU
+         thig==
+X-Gm-Message-State: AOAM530LgIhNqUwYDhRFLN741eAcC1anG6QycPmQ6hplmJUO1zwkpfLS
+        1+yKT/dWRVY0fQIeJzvFfxDscQ==
+X-Google-Smtp-Source: ABdhPJyhh/Yt+dDqYCjKan4H/N0nxJOJereGCAdjBh0lD6wnLfFa+OHp2IVxiD8+UeuiyRjWGDtvFA==
+X-Received: by 2002:a50:e79b:0:b0:41c:dd2c:3e19 with SMTP id b27-20020a50e79b000000b0041cdd2c3e19mr15774315edn.291.1649358382461;
+        Thu, 07 Apr 2022 12:06:22 -0700 (PDT)
+Received: from [192.168.0.187] (xdsl-188-155-201-27.adslplus.ch. [188.155.201.27])
+        by smtp.gmail.com with ESMTPSA id q15-20020a1709060e4f00b006cdf4535cf2sm7890988eji.67.2022.04.07.12.06.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 07 Apr 2022 12:06:21 -0700 (PDT)
+Message-ID: <eed2f337-3d5a-3440-d19e-c5ff032409ab@linaro.org>
+Date:   Thu, 7 Apr 2022 21:06:20 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220407150652.21885-1-gch981213@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH 11/11] arm64: dts: Add Pensando Elba SoC support
+Content-Language: en-US
+To:     Brad Larson <brad@pensando.io>,
+        linux-arm-kernel@lists.infradead.org
+Cc:     arnd@arndb.de, linus.walleij@linaro.org, bgolaszewski@baylibre.com,
+        broonie@kernel.org, fancer.lancer@gmail.com,
+        adrian.hunter@intel.com, ulf.hansson@linaro.org, olof@lixom.net,
+        dac2@pensando.io, linux-gpio@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-mmc@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20220406233648.21644-1-brad@pensando.io>
+ <20220406233648.21644-12-brad@pensando.io>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220406233648.21644-12-brad@pensando.io>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, Apr 07, 2022 at 11:06:47PM +0800, Chuanhong Guo wrote:
-> Mediatek has an extended version of their NAND Flash Interface which
-> has a SPI-NAND mode. In this mode, the controller can perform 1-bit
-> spi-mem ops for up-to 0xa0 bytes and typical SPI-NAND single, dual
-> and quad IO page cache ops with 2-byte address. Additionally, the
-> page cache ops can be performed with ECC and auto data formatting
-> using the ECC engine of the controller.
+On 07/04/2022 01:36, Brad Larson wrote:
+> Add Pensando common and Elba SoC specific device nodes
 > 
-> This patchset implements support of this mode as a separated SPI-MEM
-> driver with piplined ECC engine.
-              ^^^^^^^^
-missing 'e':  pipelined
+> Signed-off-by: Brad Larson <brad@pensando.io>
+> ---
+> Change from V3:
+> - Changed to dual copyright (GPL-2.0+ OR MIT)
+> - Minor changes from review input
 
-For the whole series:
-Tested-by: Daniel Golle <daniel@makrotopia.org>
+Thank you for your patch. There is something to discuss/improve.
 
-> 
-> Changes since v1:
->  add a blank line between properties in dt binding doc
->  rename ecc-engine to nand-ecc-engine for the generic properties
->  fix warnings/errors from the CI
-> 
-> Changes since v2:
->  use streamed DMA api to avoid an extra memory copy during read
->  make ECC engine config a per-nand context
->  take user-requested ECC strength into account
-> 
-> Change since v3:
->  fix a missed ecc-engine rename in doc from v1
-> 
-> Chuanhong Guo (5):
->   mtd: nand: make mtk_ecc.c a separated module
->   spi: add driver for MTK SPI NAND Flash Interface
->   mtd: nand: mtk-ecc: also parse nand-ecc-engine if available
->   dt-bindings: spi: add binding doc for spi-mtk-snfi
->   arm64: dts: mediatek: add mtk-snfi for mt7622
-> 
->  .../bindings/spi/mediatek,spi-mtk-snfi.yaml   |   88 +
->  arch/arm64/boot/dts/mediatek/mt7622.dtsi      |   12 +
->  drivers/mtd/nand/Kconfig                      |    7 +
->  drivers/mtd/nand/Makefile                     |    1 +
->  drivers/mtd/nand/{raw/mtk_ecc.c => ecc-mtk.c} |    8 +-
->  drivers/mtd/nand/raw/Kconfig                  |    1 +
->  drivers/mtd/nand/raw/Makefile                 |    2 +-
->  drivers/mtd/nand/raw/mtk_nand.c               |    2 +-
->  drivers/spi/Kconfig                           |   10 +
->  drivers/spi/Makefile                          |    1 +
->  drivers/spi/spi-mtk-snfi.c                    | 1442 +++++++++++++++++
->  .../linux/mtd/nand-ecc-mtk.h                  |    0
->  12 files changed, 1569 insertions(+), 5 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/spi/mediatek,spi-mtk-snfi.yaml
->  rename drivers/mtd/nand/{raw/mtk_ecc.c => ecc-mtk.c} (98%)
->  create mode 100644 drivers/spi/spi-mtk-snfi.c
->  rename drivers/mtd/nand/raw/mtk_ecc.h => include/linux/mtd/nand-ecc-mtk.h (100%)
-> 
-> -- 
-> 2.35.1
-> 
-> 
-> _______________________________________________
-> Linux-mediatek mailing list
-> Linux-mediatek@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-mediatek
+(...)
+
+> +&i2c0 {
+> +	clock-frequency = <100000>;
+> +	status = "okay";
+> +	rtc@51 {
+> +		compatible = "nxp,pcf85263";
+> +		reg = <0x51>;
+> +	};
+> +};
+> +
+> +&spi0 {
+> +	num-cs = <4>;
+> +	cs-gpios = <0>, <0>, <&porta 1 GPIO_ACTIVE_LOW>,
+> +		   <&porta 7 GPIO_ACTIVE_LOW>;
+> +	status = "okay";
+> +	spi0_cs0@0 {
+
+Generic node name needed matching the class of a devicxe.
+
+> +		compatible = "semtech,sx1301";	/* Enable spidev */
+
+This comment is a bit odd... did you just use random compatible from
+spidev instead of defining proper compatible?
+
+
+> +		#address-cells = <1>;
+> +		#size-cells = <1>;
+
+Why address/size cells?
+
+> +		spi-max-frequency = <12000000>;
+> +		reg = <0>;
+
+Please put reg just after compatible. It's the most common pattern.
+
+> +	};
+> +
+> +	spi0_cs1@1 {
+> +		compatible = "semtech,sx1301";
+> +		#address-cells = <1>;
+> +		#size-cells = <1>;
+> +		spi-max-frequency = <12000000>;
+> +		reg = <1>;
+> +	};
+> +
+
+(...)
+
+> +
+> +		emmc: mmc@30440000 {
+> +			compatible = "pensando,elba-sd4hc", "cdns,sd4hc";
+> +			clocks = <&emmc_clk>;
+> +			interrupts = <GIC_SPI 26 IRQ_TYPE_LEVEL_HIGH>;
+> +			reg = <0x0 0x30440000 0x0 0x10000>,
+> +			      <0x0 0x30480044 0x0 0x4>;	/* byte-lane ctrl */
+> +			cdns,phy-input-delay-sd-highspeed = <0x4>;
+> +			cdns,phy-input-delay-legacy = <0x4>;
+> +			cdns,phy-input-delay-sd-uhs-sdr50 = <0x6>;
+> +			cdns,phy-input-delay-sd-uhs-ddr50 = <0x16>;
+> +			mmc-ddr-1_8v;
+> +			status = "disabled";
+> +		};
+> +
+> +		mssoc: mssoc@307c0000 {
+
+Generic node name.
+
+> +			compatible = "syscon", "simple-mfd";
+
+This does not look correct. Syscon is okay, but why do you need
+simple-mfd (there are no children here)?
+
+> +			reg = <0x0 0x307c0000 0x0 0x3000>;
+> +		};
+> +	};
+> +};
+
+
+Best regards,
+Krzysztof

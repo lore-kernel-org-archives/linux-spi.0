@@ -2,51 +2,51 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 22F89C433F5
-	for <linux-spi@archiver.kernel.org>; Thu,  7 Apr 2022 15:08:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6426AC433EF
+	for <linux-spi@archiver.kernel.org>; Thu,  7 Apr 2022 15:08:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344455AbiDGPKG (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S1344464AbiDGPKG (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Thu, 7 Apr 2022 11:10:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55176 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240357AbiDGPKF (ORCPT
+        with ESMTP id S229573AbiDGPKF (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Thu, 7 Apr 2022 11:10:05 -0400
-Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 524F21F0C9D;
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E1911F081E;
         Thu,  7 Apr 2022 08:08:05 -0700 (PDT)
-Received: by mail-pl1-x62e.google.com with SMTP id o10so5177088ple.7;
+Received: by mail-pj1-x1029.google.com with SMTP id kw18so5842486pjb.5;
         Thu, 07 Apr 2022 08:08:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=9wctp4cgAJ87lym2Zv0WCtTlOTlt46quZgOg+vNxZ18=;
-        b=PBBIGryJF8tfWy0x1g6mwppJAs1AYIoQvNHFky8NFszEcHHl9itybinRftiUu2QU31
-         CKVbJVlw3vLomDBKs0daHpk7W9gmqUSzUxl3mbHTaYo0c6ZL3Vs8F94AwSONpV+vT5ga
-         GMZjPeJJmSAnYuMdLR2l0O5c7w97HNIqodjGH21kGTdt5rpWSClC3BZG3qkAuzIVFa2Z
-         tHIgWVnsBSlo+FhV6SmzXm2HB6rrnr5Oro3x9oCNRMFLT/XyLleDN2rH4t4Oo2s2fvuH
-         8iza5YpWlrFuKIPYDKHvcePmRzSG9FDywtxkXhiIhbliTPmtD9jFutzFGYPcbr4RG9dB
-         wSvQ==
+        bh=jrtvb4212It3IhUoSO26JM4Kh2WKJPNfVyn34wMno3s=;
+        b=CdKoyvFYtcgYgIoynZn9xJOG4ouYERktRTxynaEiC2GYuw4iKl+zzb8DOXVBUCqchY
+         kD3Cca7aLaBOPFeQqIRdyNoAOvb730Fy04LKCPyKRm6ExlPltGoj8CxZQib03AVtDF4n
+         W/XwpGD49YOQQKXySra6y7MBmlkN7X7riVsofaERvlAqwHe7DDrr0WxbJ/a+VJttVqcZ
+         npjBJsxu5zTBm4xvfTZzfttZu6WYp/u6nmaHIGehEmTPEilAn/LeGwXz6zPGOe9iUSzY
+         bXDgJV8SfpyJka/V0NuQQ0tFquxzhm+7dLoQtIw3NUYJMjOnltyCtZWiVprPWmb99Rss
+         NWaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=9wctp4cgAJ87lym2Zv0WCtTlOTlt46quZgOg+vNxZ18=;
-        b=nM1IOtg2KFrIl5RWoOHAYpNFPwRNb10bTpO0pS/xJzBmgudTLZsu4f9unNsrUBzGs1
-         3YbkLg48PtpKOTInG4QRyM9CvlJfaGqxpMZwMlBb/zbPC70C3dGfkvxh88N53VjuCpeP
-         KFepBPBpgG9bgGNcGcPJHZWxvwiA/M6xn3e7O8/8NSmIb71UIHqDYxyJQ5cenP2DjbHz
-         yHs+vL28r9CwzJroFMqnib6oEy+C/WVL0fwV+ZheOm7Bt4QCstTzN9BjhiaxPrd9t1gQ
-         70sL7elB4BOUU9kBCgVh0Ib3sGR6Hf/dub+4//tbIjuG6NKFoHcoFnmsQThFZllYG1Bo
-         PzBw==
-X-Gm-Message-State: AOAM531JoztZT1xm1H/f6cdSPcXQh3/vR+OahZ7/vJ1X/fshz4yVLwRC
-        H7KtpFo10fdBBwvaszdkMzMJkyozof8rHSvKw+8=
-X-Google-Smtp-Source: ABdhPJyF3QnXvJvnMFeToyMWG3RSHtDgbSTQx3khxh/9V9tdOdT/dnG35UUAYK0Q8sRtHT6q+lxVfw==
-X-Received: by 2002:a17:902:c408:b0:156:96d1:1744 with SMTP id k8-20020a170902c40800b0015696d11744mr14482486plk.134.1649344052923;
-        Thu, 07 Apr 2022 08:07:32 -0700 (PDT)
+        bh=jrtvb4212It3IhUoSO26JM4Kh2WKJPNfVyn34wMno3s=;
+        b=mGAqOQVS3Ut23az79zQiG1YTqp3ltBbiyYrAmqy0wQ2YZWkBSO5WAniGhMEAm3Jz7t
+         Qk0wETjiB1A1EY2kByw6dy/TPVzLgQ/BGxJcHczvRcWnIVjVUy4cZQRFowcgukFGNWL5
+         d9e549NbfsPppkBO0OQNUWTzTuR24lgucQGyzQVbDHQ4DIKctBmfNciH/jvLOzy62Ds8
+         UvfwK9kNLPEy+EsFeaK0I6czPXRpqQ4i1X61vQ9MBisBLA3Qg/e64cszgVOHCyID7hVn
+         4d+0sPuTwU8ZGgq/ltIvVE2kv459t3b+bs2Ft/9Z082u14EtHCla6AAo5xWj/2UHV8bF
+         0STg==
+X-Gm-Message-State: AOAM5321WEhbaGP2euaazlYSPJOmIyqUHCknuPSW3CpP+SjqFSsKJm+Q
+        kKDQUiPs5xkwTAAp6SNvfm1yTldkKRitB24wagk=
+X-Google-Smtp-Source: ABdhPJwo9sQWb5/mta+s4Cyd7+A2btFwfuVblu9GNLlR6RUcNF57pVGnmshWcIMgUsebh44jAvBnpg==
+X-Received: by 2002:a17:902:cec2:b0:154:6df6:1e6a with SMTP id d2-20020a170902cec200b001546df61e6amr14428036plg.58.1649344069155;
+        Thu, 07 Apr 2022 08:07:49 -0700 (PDT)
 Received: from guoguo-omen.lan ([2401:c080:1400:4da2:b701:47d5:9291:4cf9])
-        by smtp.gmail.com with ESMTPSA id x2-20020a63aa42000000b0038265eb2495sm19329908pgo.88.2022.04.07.08.07.24
+        by smtp.gmail.com with ESMTPSA id x2-20020a63aa42000000b0038265eb2495sm19329908pgo.88.2022.04.07.08.07.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Apr 2022 08:07:32 -0700 (PDT)
+        Thu, 07 Apr 2022 08:07:48 -0700 (PDT)
 From:   Chuanhong Guo <gch981213@gmail.com>
 To:     linux-spi@vger.kernel.org
 Cc:     Chuanhong Guo <gch981213@gmail.com>,
@@ -72,9 +72,9 @@ Cc:     Chuanhong Guo <gch981213@gmail.com>,
         linux-mediatek@lists.infradead.org (moderated list:ARM/Mediatek SoC
         support), linux-kernel@vger.kernel.org (open list),
         linux-mtd@lists.infradead.org (open list:NAND FLASH SUBSYSTEM)
-Subject: [PATCH v4 3/5] mtd: nand: mtk-ecc: also parse nand-ecc-engine if available
-Date:   Thu,  7 Apr 2022 23:06:50 +0800
-Message-Id: <20220407150652.21885-4-gch981213@gmail.com>
+Subject: [PATCH v4 5/5] arm64: dts: mediatek: add mtk-snfi for mt7622
+Date:   Thu,  7 Apr 2022 23:06:52 +0800
+Message-Id: <20220407150652.21885-6-gch981213@gmail.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220407150652.21885-1-gch981213@gmail.com>
 References: <20220407150652.21885-1-gch981213@gmail.com>
@@ -84,35 +84,43 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The recently added ECC engine support introduced a generic property
-named nand-ecc-engine for ecc engine phandle. This patch adds support
-for this new property.
+This patch adds a device-tree node for the MTK SPI-NAND Flash Interface
+for MT7622 device tree.
 
 Signed-off-by: Chuanhong Guo <gch981213@gmail.com>
 ---
-Change since v1:
-  new patch
+Changes since v1:
+  1. use the newly introduced nand-ecc-engine instead
+  2. reword commit message
 Change since v2: none
 Change since v3: none
- drivers/mtd/nand/ecc-mtk.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/nand/ecc-mtk.c b/drivers/mtd/nand/ecc-mtk.c
-index 74ddaa46ba7c..9f9b201fe706 100644
---- a/drivers/mtd/nand/ecc-mtk.c
-+++ b/drivers/mtd/nand/ecc-mtk.c
-@@ -279,7 +279,10 @@ struct mtk_ecc *of_mtk_ecc_get(struct device_node *of_node)
- 	struct mtk_ecc *ecc = NULL;
- 	struct device_node *np;
+ arch/arm64/boot/dts/mediatek/mt7622.dtsi | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/mediatek/mt7622.dtsi b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
+index 6f8cb3ad1e84..4b8f7dc1ec23 100644
+--- a/arch/arm64/boot/dts/mediatek/mt7622.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
+@@ -545,6 +545,18 @@ nandc: nfi@1100d000 {
+ 		status = "disabled";
+ 	};
  
--	np = of_parse_phandle(of_node, "ecc-engine", 0);
-+	np = of_parse_phandle(of_node, "nand-ecc-engine", 0);
-+	/* for backward compatibility */
-+	if (!np)
-+		np = of_parse_phandle(of_node, "ecc-engine", 0);
- 	if (np) {
- 		ecc = mtk_ecc_get(np);
- 		of_node_put(np);
++	snfi: spi@1100d000 {
++		compatible = "mediatek,mt7622-snand";
++		reg = <0 0x1100d000 0 0x1000>;
++		interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_LOW>;
++		clocks = <&pericfg CLK_PERI_NFI_PD>, <&pericfg CLK_PERI_SNFI_PD>;
++		clock-names = "nfi_clk", "pad_clk";
++		nand-ecc-engine = <&bch>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++		status = "disabled";
++	};
++
+ 	bch: ecc@1100e000 {
+ 		compatible = "mediatek,mt7622-ecc";
+ 		reg = <0 0x1100e000 0 0x1000>;
 -- 
 2.35.1
 

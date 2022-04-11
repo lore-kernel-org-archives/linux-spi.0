@@ -2,83 +2,132 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AC282C433FE
-	for <linux-spi@archiver.kernel.org>; Mon, 11 Apr 2022 18:46:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6F7E8C433F5
+	for <linux-spi@archiver.kernel.org>; Mon, 11 Apr 2022 21:17:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349235AbiDKSsb (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 11 Apr 2022 14:48:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58954 "EHLO
+        id S1350135AbiDKVUI (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 11 Apr 2022 17:20:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349224AbiDKSs3 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 11 Apr 2022 14:48:29 -0400
-Received: from mail.tkos.co.il (guitar.tkos.co.il [84.110.109.230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFD871BEA1
-        for <linux-spi@vger.kernel.org>; Mon, 11 Apr 2022 11:46:13 -0700 (PDT)
-Received: from tarshish.tkos.co.il (unknown [10.0.8.5])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.tkos.co.il (Postfix) with ESMTPS id 62411440850;
-        Mon, 11 Apr 2022 21:45:39 +0300 (IDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tkos.co.il;
-        s=default; t=1649702739;
-        bh=A46Vf+O4fgj2Kf0M0kC0BdmGePrGz2TiFZvx75W3cnA=;
-        h=From:To:Cc:Subject:Date:From;
-        b=N2g2iTk0YcZJ/fbTR48Cllipjd9yWh5Z2VbR7YoraOYNZokky2pSj5r5/AGYd+xbx
-         oHWY87iNCDMm8Kec2KLrigF3pKvbN6zGq1zixtwjamXAL7wFEuEeJVjUUJn9ksGnff
-         xbIoCYUmdXr118yy3HOHPjqMWb5xko7sPOG86P1rtV8kQro2HZ0P7WzmWzJYL5lN6c
-         sAh0327dKc9JrZuLFeAw6+6sz+AfvUQjwRtvSbfkQWwt0XBiF9Lv7B6mO3QpMNW47A
-         q3AVtybBpE9oh+qVf4b1nlOYybBWV4uJ7RGrjNCrJUAmQO4bibd21CuEYcqRDVEWrp
-         igLKj0tcHNpDA==
-From:   Baruch Siach <baruch@tkos.co.il>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     Baruch Siach <baruch.siach@siklu.com>, linux-spi@vger.kernel.org,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 1/3] spi: add SPI_RX_CPHA_FLIP mode bit
-Date:   Mon, 11 Apr 2022 21:45:27 +0300
-Message-Id: <a715ca92713ca02071f33dcca9960a66a03c949a.1649702729.git.baruch@tkos.co.il>
-X-Mailer: git-send-email 2.35.1
+        with ESMTP id S236174AbiDKVUH (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 11 Apr 2022 17:20:07 -0400
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 181AF1B7B8;
+        Mon, 11 Apr 2022 14:17:52 -0700 (PDT)
+Received: by mail-lj1-x230.google.com with SMTP id s13so21739332ljd.5;
+        Mon, 11 Apr 2022 14:17:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=i0zDKPAt/qufZ/2jxiglBqBb3LU9NVf66CHpPtR+y0U=;
+        b=SL7bvtN5kIiGOoqp4g1eJjN4b+D1XnkBCJjrGWEx3fqmVWNV2vI3QsrsCAwL+/TUhH
+         TaofrnTJq7QNBNJw1e8Hxs7NXBWGMmBaGE5L5QP/YOlU5zTKHE3AyTO8ScvY9hOLqPXg
+         165zanGQoZQO7gSM5qDrimAma3Iv27KTx/Pl65umQPJepvY146IlZQs7xww2soJstFqy
+         jzbT/zaC85v9AuzePoFQYXQ6AFN+O+PWwH12KBX0P6uUpD9aTCjoAKo7qN04bIF0BZrp
+         dro1Q37yiqwcHLriURQwEa9/0YW/kq4nMfn90QVZe4ndX/h3wwYh7W/8Tz0mitK5uDp4
+         Q2pA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=i0zDKPAt/qufZ/2jxiglBqBb3LU9NVf66CHpPtR+y0U=;
+        b=tzPiGZqss6WQhn1ekJH8zsjz79gexMYbLunOtbIiCXRlBKc5CLSdEqf6WBoSMH/ikX
+         lu1dzOi1m+Mr7M9KYVSAhByV6jvVCsz0shw9KK4zhbC5ZFPFfM0ewme9BmcKJPlezQvT
+         TzZ8BA5pqEXvEiwqhYI+ZS7V50vp+Wo93rL45qVLH1u6JxHrUMyvRMSOovZ8d8scVNe/
+         qgi9Luofgx+PTXPw/twEmdYWN/spD9mMhzx/PwOuas8PsBGFPiOjJMzo8OFhjN8TEKg4
+         1UM/ToPeVkXPllp+jS54tEgyZotDB9uWSegNQKJ38lF2XwtVf6O4Ukcgg2HrGIzvvhcg
+         0loQ==
+X-Gm-Message-State: AOAM533su2IXI52fivpMrkim5GvkBWpk46zp8H2ftg5croFOW2/rQiwC
+        taE4CVKjJ9YCC3b5eoOBOnA=
+X-Google-Smtp-Source: ABdhPJxeTr2tnLXOWLID+EcB1R5yGfZdzHA5Pr5lRRx+5q2f6Pvr7LZvKQK3f8TLdcv5bY3x5nnvXg==
+X-Received: by 2002:a2e:9a8b:0:b0:24b:4ffa:638f with SMTP id p11-20020a2e9a8b000000b0024b4ffa638fmr11338355lji.192.1649711870402;
+        Mon, 11 Apr 2022 14:17:50 -0700 (PDT)
+Received: from mobilestation ([95.79.134.149])
+        by smtp.gmail.com with ESMTPSA id i4-20020a056512318400b0044a31d60589sm3428966lfe.86.2022.04.11.14.17.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Apr 2022 14:17:49 -0700 (PDT)
+Date:   Tue, 12 Apr 2022 00:17:47 +0300
+From:   Serge Semin <fancer.lancer@gmail.com>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
+        Brad Larson <brad@pensando.io>,
+        linux-arm-kernel@lists.infradead.org, arnd@arndb.de,
+        linus.walleij@linaro.org, bgolaszewski@baylibre.com,
+        broonie@kernel.org, adrian.hunter@intel.com,
+        ulf.hansson@linaro.org, olof@lixom.net, dac2@pensando.io,
+        linux-gpio@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 05/11] dt-bindings: spi: dw: Add Pensando Elba SoC SPI
+ Controller bindings
+Message-ID: <20220411211747.ttpqk7s37j3gpzxp@mobilestation>
+References: <20220406233648.21644-1-brad@pensando.io>
+ <20220406233648.21644-6-brad@pensando.io>
+ <6769ea2d-9e6a-03b1-0e05-cb5b7379cb5e@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6769ea2d-9e6a-03b1-0e05-cb5b7379cb5e@linaro.org>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Baruch Siach <baruch.siach@siklu.com>
+On Thu, Apr 07, 2022 at 08:52:34PM +0200, Krzysztof Kozlowski wrote:
+> On 07/04/2022 01:36, Brad Larson wrote:
+> > The Pensando Elba SoC has integrated the DW APB SPI Controller
+> > and requires the property pensando,syscon-spics for access
+> > to the spics control register.
+> > 
+> > Signed-off-by: Brad Larson <brad@pensando.io>
+> > ---
+> > Change from V3:
+> > - Add required property pensando,syscon-spics to go with
+> >   pensando,elba-spi
+> 
+> Thank you for your patch. There is something to discuss/improve.
+> 
+> 
+> >  .../bindings/spi/snps,dw-apb-ssi.yaml           | 17 +++++++++++++++++
+> >  1 file changed, 17 insertions(+)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
+> > index d7e08b03e204..41c3bbf5a55c 100644
+> > --- a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
+> > +++ b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
+> > @@ -37,6 +37,21 @@ allOf:
+> >      else:
+> >        required:
+> >          - interrupts
+> > +  - if:
+> > +      properties:
+> > +        compatible:
+> > +          contains:
+> > +            enum:
+> > +              - pensando,elba-spi
+> > +    then:
+> > +      properties:
+> > +        pensando,syscon-spics:
+> > +          $ref: /schemas/types.yaml#/definitions/phandle
+> > +          description:
+> > +            Phandle to the system control device node which provides access to
+> > +            the spics control register
+> 
 
-Some SPI devices latch MOSI bits on one clock phase, but produce valid
-MISO bits on the other phase. Add SPI_RX_CPHA_FLIP mode to instruct the
-controller driver to flip CPHA for Rx (MISO) only transfers.
+> It looks you only need to poke one register from spics, so it could be
+> something like:
+> 
+>     items:
+>       - items:
+>           - description: Phandle to the system control device node
+>           - description: spics control register offset
 
-Signed-off-by: Baruch Siach <baruch.siach@siklu.com>
----
- include/uapi/linux/spi/spi.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Right, especially seeing that's the way the elba-specific part of the
+DW APB SSI driver expects the property being initialized.
 
-diff --git a/include/uapi/linux/spi/spi.h b/include/uapi/linux/spi/spi.h
-index 236a85f08ded..9d5f58059703 100644
---- a/include/uapi/linux/spi/spi.h
-+++ b/include/uapi/linux/spi/spi.h
-@@ -27,6 +27,7 @@
- #define	SPI_TX_OCTAL		_BITUL(13)	/* transmit with 8 wires */
- #define	SPI_RX_OCTAL		_BITUL(14)	/* receive with 8 wires */
- #define	SPI_3WIRE_HIZ		_BITUL(15)	/* high impedance turnaround */
-+#define	SPI_RX_CPHA_FLIP	_BITUL(16)	/* flip CPHA on Rx only xfer */
- 
- /*
-  * All the bits defined above should be covered by SPI_MODE_USER_MASK.
-@@ -36,6 +37,6 @@
-  * These bits must not overlap. A static assert check should make sure of that.
-  * If adding extra bits, make sure to increase the bit index below as well.
-  */
--#define SPI_MODE_USER_MASK	(_BITUL(16) - 1)
-+#define SPI_MODE_USER_MASK	(_BITUL(17) - 1)
- 
- #endif /* _UAPI_SPI_H */
--- 
-2.35.1
+-Sergey
 
+> 
+> 
+> Best regards,
+> Krzysztof

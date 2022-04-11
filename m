@@ -2,83 +2,73 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 354D2C433FE
-	for <linux-spi@archiver.kernel.org>; Mon, 11 Apr 2022 11:32:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D4F5C433EF
+	for <linux-spi@archiver.kernel.org>; Mon, 11 Apr 2022 14:46:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345296AbiDKLeS (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 11 Apr 2022 07:34:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47080 "EHLO
+        id S1347437AbiDKOsr (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 11 Apr 2022 10:48:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345747AbiDKLeQ (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 11 Apr 2022 07:34:16 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 477B745783
-        for <linux-spi@vger.kernel.org>; Mon, 11 Apr 2022 04:32:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1649676722; x=1681212722;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=+tDJ2OKrRtfXTUVjXpUksDaCFN9DSpKkw2XjLuA95J0=;
-  b=b+ixX79x6MQE31TbAyoZ8nM9KUanlncZ8DJAZu/7Hs2G8kanFqxItapA
-   7xwuTHgnM1ZxAAljMJdtNu6try+w+Lj5pl71rUMLbNaNDbyvhY1PDRUDB
-   vBIrt7ebzmKJ+1pbklVQ17mMl+8kUTuMx2YczP+PCN8e7vB91eY2GnpbJ
-   Ef5sAOhfHMD5VHL731VZOBDIJlFFubWcZl4lg+ZyOoUlNPRZ60ICAhpua
-   s3hPekzr61delsKwVsffM7aAj77NT+4oHS1Owd04kA/6CoFe80kC3paVt
-   t02wxSLgnIchML2MMoeneDFOSrHq6lTDpZk/fTM7nRylF3vA2qUtCSSVf
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10313"; a="259689227"
-X-IronPort-AV: E=Sophos;i="5.90,251,1643702400"; 
-   d="scan'208";a="259689227"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2022 04:32:01 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.90,251,1643702400"; 
-   d="scan'208";a="507073731"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga003.jf.intel.com with ESMTP; 11 Apr 2022 04:31:58 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1001)
-        id 7891618E; Mon, 11 Apr 2022 14:31:58 +0300 (EEST)
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     Tudor Ambarus <tudor.ambarus@microchip.com>,
-        Boris Brezillon <boris.brezillon@collabora.com>,
-        Michael Walle <michael@walle.cc>,
-        Pratyush Yadav <p.yadav@ti.com>,
-        Hongli Li <hongli.li@intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-spi@vger.kernel.org, linux-mtd@lists.infradead.org
-Subject: [PATCH 1/2] spi: intel: Fix typo in kernel-doc of intel_spi_probe()
-Date:   Mon, 11 Apr 2022 14:31:57 +0300
-Message-Id: <20220411113158.2037-1-mika.westerberg@linux.intel.com>
-X-Mailer: git-send-email 2.35.1
+        with ESMTP id S229782AbiDKOsq (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 11 Apr 2022 10:48:46 -0400
+Received: from ssl.serverraum.org (ssl.serverraum.org [IPv6:2a01:4f8:151:8464::1:2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 281751FCFD;
+        Mon, 11 Apr 2022 07:46:31 -0700 (PDT)
+Received: from apollo.. (unknown [IPv6:2a02:810b:4340:43bf:4685:ff:fe12:5967])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by ssl.serverraum.org (Postfix) with ESMTPSA id DEA542223E;
+        Mon, 11 Apr 2022 16:46:28 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
+        t=1649688389;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=+RSECJ+CEyfjPWT/tfdNYeMHsiQqq7qeZXL2Sxx3RMg=;
+        b=b2Gv4nuR8HsYZyaaiYxiXBbclBKcL++tLeiPy2bZrup4of7iR+blbz96N+cjJqyeLX4Nqa
+        aNaZwKademI++CiAskjbwa4xhAd7J8BerpzT/sLEPVmaPDdqg6z7AkRUNHN9x+Ih0VtXmy
+        sj7pUIaK8w6yaZmpbsPr5VZVb64E5zc=
+From:   Michael Walle <michael@walle.cc>
+To:     kavyasree.kotagiri@microchip.com
+Cc:     Claudiu.Beznea@microchip.com, Manohar.Puri@microchip.com,
+        Nicolas.Ferre@microchip.com, Tudor.Ambarus@microchip.com,
+        UNGLinuxDriver@microchip.com, alexandre.belloni@bootlin.com,
+        broonie@kernel.org, devicetree@vger.kernel.org, krzk+dt@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, robh+dt@kernel.org,
+        Michael Walle <michael@walle.cc>
+Subject: Re: [PATCH] spi: atmel,quadspi: Define lan966x QSPI
+Date:   Mon, 11 Apr 2022 16:46:19 +0200
+Message-Id: <20220411144619.101883-1-michael@walle.cc>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <CO1PR11MB48654DEFB31E8F8AB00C180292E99@CO1PR11MB4865.namprd11.prod.outlook.com>
+References: <CO1PR11MB48654DEFB31E8F8AB00C180292E99@CO1PR11MB4865.namprd11.prod.outlook.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Should be 'specific' not 'spefific'. Fix this.
+> > > LAN966x SoC supports 3 QSPI controllers. Each of them support
+> > > data and clock frequency upto 100Mhz DDR and QUAD protocol.
+> >
+> > How is this IP different than microchip,sama7g5-qspi? Does this speed
+> > limitation come from the IP itself or from the board that you're using?
+> >
+> > Neither of these instances support octal mode?
+> >
+> Thanks for your comments. All the three instances support only QUAD
+> protocol.
+> You are correct. There is no difference from sama7g5-qspi. Please ignore
+> this patch. I will send next version of dt patches where I will use
+> "microchip,sama7g5-qspi" for all my qspi nodes.
 
-Reported-by: Hongli Li <hongli.li@intel.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
----
- drivers/spi/spi-intel.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Are you sure? There is a max frequency property in Tudor's sama7g5-qspi
+driver (200/133MHz) which doesn't match neither the LAN9668 manual (which
+states 150MHz on QSPI0 and 100MHZ on QSPI1, funny enough there is no
+mention of QSPI2) nor does it match the max frequency set in the downstream
+linux driver (24 MHz).
 
-diff --git a/drivers/spi/spi-intel.c b/drivers/spi/spi-intel.c
-index e937cfe85559..1bdb227e0ca2 100644
---- a/drivers/spi/spi-intel.c
-+++ b/drivers/spi/spi-intel.c
-@@ -1205,7 +1205,7 @@ static int intel_spi_populate_chip(struct intel_spi *ispi)
-  * intel_spi_probe() - Probe the Intel SPI flash controller
-  * @dev: Pointer to the parent device
-  * @mem: MMIO resource
-- * @info: Platform spefific information
-+ * @info: Platform specific information
-  *
-  * Probes Intel SPI flash controller and creates the flash chip device.
-  * Returns %0 on success and negative errno in case of failure.
--- 
-2.35.1
-
+-michael

@@ -2,96 +2,147 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 54F02C433EF
-	for <linux-spi@archiver.kernel.org>; Mon, 11 Apr 2022 17:31:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A70F8C433F5
+	for <linux-spi@archiver.kernel.org>; Mon, 11 Apr 2022 18:46:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348873AbiDKRdk (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 11 Apr 2022 13:33:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53876 "EHLO
+        id S234834AbiDKSsb (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 11 Apr 2022 14:48:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344040AbiDKRdi (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 11 Apr 2022 13:33:38 -0400
-Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id DB9062FE54;
-        Mon, 11 Apr 2022 10:31:22 -0700 (PDT)
-X-IronPort-AV: E=Sophos;i="5.90,252,1643641200"; 
-   d="scan'208";a="117440362"
-Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
-  by relmlie6.idc.renesas.com with ESMTP; 12 Apr 2022 02:31:21 +0900
-Received: from localhost.localdomain (unknown [10.226.92.73])
-        by relmlir6.idc.renesas.com (Postfix) with ESMTP id CBD7B40BBA4C;
-        Tue, 12 Apr 2022 02:31:18 +0900 (JST)
-From:   Biju Das <biju.das.jz@bp.renesas.com>
+        with ESMTP id S1345246AbiDKSs3 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 11 Apr 2022 14:48:29 -0400
+Received: from mail.tkos.co.il (golan.tkos.co.il [84.110.109.230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4818038AB
+        for <linux-spi@vger.kernel.org>; Mon, 11 Apr 2022 11:46:14 -0700 (PDT)
+Received: from tarshish.tkos.co.il (unknown [10.0.8.5])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.tkos.co.il (Postfix) with ESMTPS id A9CE24409C6;
+        Mon, 11 Apr 2022 21:45:40 +0300 (IDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tkos.co.il;
+        s=default; t=1649702741;
+        bh=a4PADMrOZphilip+jA6MTxHROEeyp5oVgUJ7MCvUAS4=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=NaZsMfHeMXLbihLO1EmoNfCKIUUUZDB/zm/eP8P184sWg2yb26dw1V6nMk6Ss1s9l
+         A920WuOfub+DeIX7vldOhogbQ7dDMNaTdg9CnZzdzjerzgmp+/IVzBJ55aS2o3yOEH
+         /9YLhvJH/D6oEh7wi4Ddcl0P1UsR4Eoz4g9V2OjTCsGLLNCJeQTFvVhzPNiRl+ZSOF
+         q/KJrNPSpJwPpdgl+eAlbIR4wK3K3mEcpK8/nqjiylleolZoA5QxgQN/xjdnLwTupz
+         NJEIo+UMFN4HmmdU2k5PkP6oBxlIdXYpsvTGRugqeTL3SQSzOeT/Y8Q/XhOINPxIU9
+         DVWn2509nIoeg==
+From:   Baruch Siach <baruch@tkos.co.il>
 To:     Mark Brown <broonie@kernel.org>
-Cc:     Biju Das <biju.das.jz@bp.renesas.com>, linux-spi@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Vinod Koul <vkoul@kernel.org>,
-        Chris Paterson <Chris.Paterson2@renesas.com>,
-        Biju Das <biju.das@bp.renesas.com>,
-        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        linux-renesas-soc@vger.kernel.org
-Subject: [PATCH] spi: spi-rspi: Remove setting {src,dst}_{addr,addr_width} based on DMA direction
-Date:   Mon, 11 Apr 2022 18:31:15 +0100
-Message-Id: <20220411173115.6619-1-biju.das.jz@bp.renesas.com>
-X-Mailer: git-send-email 2.25.1
+Cc:     Baruch Siach <baruch.siach@siklu.com>, linux-spi@vger.kernel.org,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        linux-arm-kernel@lists.infradead.org
+Subject: [PATCH 3/3] spi: spi-imx: add support for SPI_RX_CPHA_FLIP
+Date:   Mon, 11 Apr 2022 21:45:29 +0300
+Message-Id: <e11b4446afe9a46a282dd923d22c27d03fae15f8.1649702729.git.baruch@tkos.co.il>
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <a715ca92713ca02071f33dcca9960a66a03c949a.1649702729.git.baruch@tkos.co.il>
+References: <a715ca92713ca02071f33dcca9960a66a03c949a.1649702729.git.baruch@tkos.co.il>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The direction field in the DMA config is deprecated. The rspi driver
-sets {src,dst}_{addr,addr_width} based on the DMA direction and
-it results in dmaengine_slave_config() failure as RZ DMAC driver
-validates {src,dst}_addr_width values independent of DMA direction.
+From: Baruch Siach <baruch.siach@siklu.com>
 
-This patch fixes the issue by passing both {src,dst}_{addr,addr_width}
-values independent of DMA direction.
+When SPI_RX_CPHA_FLIP is set, flip CPHA on Rx only transfers. This is
+useful to access devices that use inverted CPHA for MISO vs MOSI
+signals.
 
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Suggested-by: Vinod Koul <vkoul@kernel.org>
+Only support the mx51/mx53 variants for now.
+
+Tested on i.MX6ULL based system.
+
+Signed-off-by: Baruch Siach <baruch.siach@siklu.com>
 ---
- drivers/spi/spi-rspi.c | 15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ drivers/spi/spi-imx.c | 32 +++++++++++++++++++++++++++-----
+ 1 file changed, 27 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index bd5708d7e5a1..7a014eeec2d0 100644
---- a/drivers/spi/spi-rspi.c
-+++ b/drivers/spi/spi-rspi.c
-@@ -1108,14 +1108,11 @@ static struct dma_chan *rspi_request_dma_chan(struct device *dev,
- 	}
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index b2dd0a4d2446..4e1bfe2f043a 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -108,6 +108,7 @@ struct spi_imx_data {
+ 	const void *tx_buf;
+ 	unsigned int txfifo; /* number of words pushed in tx FIFO */
+ 	unsigned int dynamic_burst;
++	bool rx_only;
  
- 	memset(&cfg, 0, sizeof(cfg));
-+	cfg.dst_addr = port_addr + RSPI_SPDR;
-+	cfg.src_addr = port_addr + RSPI_SPDR;
-+	cfg.dst_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
-+	cfg.src_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
- 	cfg.direction = dir;
--	if (dir == DMA_MEM_TO_DEV) {
--		cfg.dst_addr = port_addr;
--		cfg.dst_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
--	} else {
--		cfg.src_addr = port_addr;
--		cfg.src_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
--	}
+ 	/* Slave mode */
+ 	bool slave_mode;
+@@ -554,11 +555,6 @@ static int mx51_ecspi_prepare_message(struct spi_imx_data *spi_imx,
+ 	else
+ 		cfg |= MX51_ECSPI_CONFIG_SBBCTRL(spi->chip_select);
  
- 	ret = dmaengine_slave_config(chan, &cfg);
- 	if (ret) {
-@@ -1146,12 +1143,12 @@ static int rspi_request_dma(struct device *dev, struct spi_controller *ctlr,
- 	}
+-	if (spi->mode & SPI_CPHA)
+-		cfg |= MX51_ECSPI_CONFIG_SCLKPHA(spi->chip_select);
+-	else
+-		cfg &= ~MX51_ECSPI_CONFIG_SCLKPHA(spi->chip_select);
+-
+ 	if (spi->mode & SPI_CPOL) {
+ 		cfg |= MX51_ECSPI_CONFIG_SCLKPOL(spi->chip_select);
+ 		cfg |= MX51_ECSPI_CONFIG_SCLKCTL(spi->chip_select);
+@@ -606,6 +602,24 @@ static int mx51_ecspi_prepare_message(struct spi_imx_data *spi_imx,
+ 	return 0;
+ }
  
- 	ctlr->dma_tx = rspi_request_dma_chan(dev, DMA_MEM_TO_DEV, dma_tx_id,
--					     res->start + RSPI_SPDR);
-+					     res->start);
- 	if (!ctlr->dma_tx)
- 		return -ENODEV;
++static void mx51_configure_cpha(struct spi_imx_data *spi_imx,
++				struct spi_device *spi)
++{
++	bool cpha = (spi->mode & SPI_CPHA);
++	bool flip_cpha = (spi->mode & SPI_RX_CPHA_FLIP) && spi_imx->rx_only;
++	u32 cfg = readl(spi_imx->base + MX51_ECSPI_CONFIG);
++
++	/* Flip cpha logical value iff flip_cpha */
++	cpha ^= flip_cpha;
++
++	if (cpha)
++		cfg |= MX51_ECSPI_CONFIG_SCLKPHA(spi->chip_select);
++	else
++		cfg &= ~MX51_ECSPI_CONFIG_SCLKPHA(spi->chip_select);
++
++	writel(cfg, spi_imx->base + MX51_ECSPI_CONFIG);
++}
++
+ static int mx51_ecspi_prepare_transfer(struct spi_imx_data *spi_imx,
+ 				       struct spi_device *spi)
+ {
+@@ -627,6 +641,8 @@ static int mx51_ecspi_prepare_transfer(struct spi_imx_data *spi_imx,
+ 	ctrl |= mx51_ecspi_clkdiv(spi_imx, spi_imx->spi_bus_clk, &clk);
+ 	spi_imx->spi_bus_clk = clk;
  
- 	ctlr->dma_rx = rspi_request_dma_chan(dev, DMA_DEV_TO_MEM, dma_rx_id,
--					     res->start + RSPI_SPDR);
-+					     res->start);
- 	if (!ctlr->dma_rx) {
- 		dma_release_channel(ctlr->dma_tx);
- 		ctlr->dma_tx = NULL;
++	mx51_configure_cpha(spi_imx, spi);
++
+ 	/*
+ 	 * ERR009165: work in XHC mode instead of SMC as PIO on the chips
+ 	 * before i.mx6ul.
+@@ -1251,6 +1267,9 @@ static int spi_imx_setupxfer(struct spi_device *spi,
+ 	else
+ 		spi_imx->usedma = false;
+ 
++	spi_imx->rx_only = ((t->tx_buf == NULL)
++			|| (t->tx_buf == spi->controller->dummy_tx));
++
+ 	if (is_imx53_ecspi(spi_imx) && spi_imx->slave_mode) {
+ 		spi_imx->rx = mx53_ecspi_rx_slave;
+ 		spi_imx->tx = mx53_ecspi_tx_slave;
+@@ -1655,6 +1674,9 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 	    is_imx53_ecspi(spi_imx))
+ 		spi_imx->bitbang.master->mode_bits |= SPI_LOOP | SPI_READY;
+ 
++	if (is_imx51_ecspi(spi_imx) || is_imx53_ecspi(spi_imx))
++		spi_imx->bitbang.master->mode_bits |= SPI_RX_CPHA_FLIP;
++
+ 	if (is_imx51_ecspi(spi_imx) &&
+ 	    device_property_read_u32(&pdev->dev, "cs-gpios", NULL))
+ 		/*
 -- 
-2.25.1
+2.35.1
 

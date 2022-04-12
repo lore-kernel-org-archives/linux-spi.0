@@ -2,101 +2,71 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 07D0DC433EF
-	for <linux-spi@archiver.kernel.org>; Tue, 12 Apr 2022 12:41:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 79D21C433FE
+	for <linux-spi@archiver.kernel.org>; Tue, 12 Apr 2022 12:52:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236267AbiDLMoH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 12 Apr 2022 08:44:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46880 "EHLO
+        id S1354604AbiDLMy4 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 12 Apr 2022 08:54:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353896AbiDLMmN (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 12 Apr 2022 08:42:13 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4987013D36;
-        Tue, 12 Apr 2022 05:07:17 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 006B7B81B3B;
-        Tue, 12 Apr 2022 12:07:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3091DC385A5;
-        Tue, 12 Apr 2022 12:07:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1649765234;
-        bh=HElbpEp36SC+U2mOLk3U92uAL/Z9YUiPP4dM37u9zlY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=M/B6TZqYrKLYCklOOVU0gKAdNLzpxZZQTouCDWTqTAO5cLBG0RNVGaHLeAaJ/N6E4
-         T2bTNcoKuxy73nb7uQUq4MmE9msmyUeEmVpJEeyhqWkoEwg71QWmWuRey08YFiNq5v
-         KGFJqY3YMnZJTPYhhdIgRSmTYdm5hPlEO3lw4Og/SVNSQBczScPjzv/4D7EWLcDnQE
-         mVtWtz58he+7Uu720ASzKT6sR/HEncfksMJNvSWfDlsknwBUXoJBciiaDdVZFWMn5P
-         c67CJIjRonUOHAk8ZtYtvvZ6yIF8+ULPvBNOUpeAp++2j/10pjICgyz2Q0AfHnbCdy
-         taRNehvT8xCkg==
-Date:   Tue, 12 Apr 2022 13:07:09 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-Cc:     Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org,
-        Pratyush Yadav <p.yadav@ti.com>, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 5.17 34/49] spi: cadence-quadspi: fix protocol
- setup for non-1-1-X operations
-Message-ID: <YlVrbR6Giy2OXe1R@sirena.org.uk>
-References: <20220412004411.349427-1-sashal@kernel.org>
- <20220412004411.349427-34-sashal@kernel.org>
- <d618fc184f162b1da8d75729b5939bed52308040.camel@ew.tq-group.com>
+        with ESMTP id S1355372AbiDLMyB (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 12 Apr 2022 08:54:01 -0400
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DE5FB96;
+        Tue, 12 Apr 2022 05:28:04 -0700 (PDT)
+X-UUID: c52d90e3ce51492aa708dae783fdfe10-20220412
+X-UUID: c52d90e3ce51492aa708dae783fdfe10-20220412
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
+        (envelope-from <rex-bc.chen@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 851005236; Tue, 12 Apr 2022 20:27:57 +0800
+Received: from mtkexhb01.mediatek.inc (172.21.101.102) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
+ Tue, 12 Apr 2022 20:27:56 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by mtkexhb01.mediatek.inc
+ (172.21.101.102) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Tue, 12 Apr
+ 2022 20:27:55 +0800
+Received: from mtksdccf07 (172.21.84.99) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Tue, 12 Apr 2022 20:27:55 +0800
+Message-ID: <29a0d0e1f9ad2f14be56410e5a9e123d6a35dfe3.camel@mediatek.com>
+Subject: Re: [PATCH] spi: spi-mtk-nor: initialize spi controller after resume
+From:   Rex-BC Chen <rex-bc.chen@mediatek.com>
+To:     Allen-KH Cheng <allen-kh.cheng@mediatek.com>,
+        Mark Brown <broonie@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        "Ikjoon Jang" <ikjn@chromium.org>
+CC:     <linux-spi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>,
+        <Project_Global_Chrome_Upstream_Group@mediatek.com>
+Date:   Tue, 12 Apr 2022 20:27:55 +0800
+In-Reply-To: <20220412115743.22641-1-allen-kh.cheng@mediatek.com>
+References: <20220412115743.22641-1-allen-kh.cheng@mediatek.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="4+g+U9H/I8tUHNb6"
-Content-Disposition: inline
-In-Reply-To: <d618fc184f162b1da8d75729b5939bed52308040.camel@ew.tq-group.com>
-X-Cookie: Approved for veterans.
+Content-Transfer-Encoding: 7bit
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+On Tue, 2022-04-12 at 19:57 +0800, Allen-KH Cheng wrote:
+> After system resumes, the registers of nor controller are
+> initialized with default values. The nor controller will
+> not function properly.
+> 
+> To handle both issues above, we add mtk_nor_init() in
+> mtk_nor_resume after pm_runtime_force_resume().
+> 
+> Fixes: 3bfd9103c7af ("spi: spi-mtk-nor: Add power management
+> support")
+> 
+> Signed-off-by: Allen-KH Cheng <allen-kh.cheng@mediatek.com>
+> ---
 
---4+g+U9H/I8tUHNb6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Reviewed-by: Rex-BC Chen <rex-bc.chen@mediatek.com>
 
-On Tue, Apr 12, 2022 at 01:49:19PM +0200, Matthias Schiffer wrote:
-
-Please don't top post, reply in line with needed context.  This allows
-readers to readily follow the flow of conversation and understand what
-you are talking about and also helps ensure that everything in the
-discussion is being addressed.
-
-> what's your plan regarding this patch and the other patch I sent [1]? I
-> think there has been some confusion regarding which solution we want to
-> backport to stable kernels (well, at least I'm confused...)
-
-Well, it's up to the stable people what they choose to backport -
-they're generally fairly aggressive about what they pick up so I guess
-they want to take this one?
-
-> I'm fine with this patch getting backported, but in that case [1]
-> doesn't make sense anymore (in fact I expected this patch to be dropped
-> for now when I submitted [1], due to Pratyush Yadav's concerns).
-
-> [1] https://patchwork.kernel.org/project/spi-devel-general/patch/20220406132832.199777-1-matthias.schiffer@ew.tq-group.com/
-
-For the benefit of those playing at home that's "spi: cadence-quadspi:
-fix incorrect supports_op() return value".  It's much more the sort of
-thing I'd expect to see backported to stable so it seems good from that
-point of view.
-
---4+g+U9H/I8tUHNb6
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmJVa20ACgkQJNaLcl1U
-h9BClAf/UqUUpSphtpgTNkktLrxmPRmeDDAcukSyTu4K97s55pKoZsTJ0y666nAk
-nozPL3LN1OPxpjiUiwn2+IFjYY2U3IV+VwTnUEFZgSq5D7G0/+kiRY9DWZB//8td
-1T6jDSzqZVQ3r19WePZGI3yFsTf3WrcykirQc7kKc7YtL/UvzQOLobSDstdfLY2v
-9GZrztzHepoyO2vvf0UTAWs8RtEhyEwmtwCmWm0z5kt4cnhsMAhhttAXBUWmRJMz
-tcvti4BADXte7/dqG1sJXiy8GhDDQeU9iT0+OCZawVjbAVS6LFv4WfTPQSvBpTVG
-tDn0Fc4aYcfnb5wjzHcTVmqH2/2cCQ==
-=4C/4
------END PGP SIGNATURE-----
-
---4+g+U9H/I8tUHNb6--

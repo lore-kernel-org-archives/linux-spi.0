@@ -2,47 +2,46 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F7C4C433F5
-	for <linux-spi@archiver.kernel.org>; Tue, 12 Apr 2022 19:56:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 866AEC433F5
+	for <linux-spi@archiver.kernel.org>; Tue, 12 Apr 2022 21:00:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229883AbiDLT6R (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 12 Apr 2022 15:58:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36132 "EHLO
+        id S231180AbiDLVDG (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 12 Apr 2022 17:03:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231470AbiDLT5h (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 12 Apr 2022 15:57:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E3DA5E172;
-        Tue, 12 Apr 2022 12:50:38 -0700 (PDT)
+        with ESMTP id S231237AbiDLVDF (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 12 Apr 2022 17:03:05 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E998C624F;
+        Tue, 12 Apr 2022 13:50:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ED08A61BEF;
-        Tue, 12 Apr 2022 19:50:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2128C385A1;
-        Tue, 12 Apr 2022 19:50:35 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 48A9DCE20E5;
+        Tue, 12 Apr 2022 20:43:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8D95C385A1;
+        Tue, 12 Apr 2022 20:43:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1649793037;
-        bh=nT93jamfbYnoTsEm4Lz28WvUjv7TcUJr8AkbHMTMDsE=;
+        s=k20201202; t=1649796218;
+        bh=R1XhCzCCwjDR5qBtwumVM1053ajSl182DoQ3ugbJpBY=;
         h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=FFTT6xhZR3P/Za71GH6f8NdS9a3R+L4wdP/9Dnnt9P9nSVQMSXWkFM2e/xJok2D+w
-         BoUuK5stxD3hBYUF2nP+768waVpkiZtg1kz1Y+50upJV2x2JWRyb0Bxdrj41Gr9+so
-         8cEA4J9JScVxL2v3NJJiV0OK+6FUGIDqnrydku9ZE8tX47x2Ef5skrIpNOlqpIIzjI
-         9ZIW0MJYtT9veiko9WPcNEBI7mc/F5MO0MXiKOyFqPBhYrLQKnaPbyhh1yv2FRlg6h
-         KP6iWtKTADlDuw9lwfVhDiOteHLpemmKzcYva+0WDI/ijYl2upquQg/EUsr/Sv++/O
-         /ktC1HEV/ziBA==
+        b=UndEVf4CzoFIAqWZeN9FSC0yVmiZZsEJu+0zZmjofklFfW2/7YaXJE8OyupXOKCUY
+         mapiKjtv82At9S2yszH49LjtzfGkMbqInKwofrfhybBQLjiptIa1K+WZQbUNwKCq6V
+         118rCoVfA0Ho6WB7rNGfRsZ1zIZAu9Q6KAzozteMD+GMlpwp0cAbpswIiOOGL3ZrhS
+         7WBrJqH3dFJeukj3qBnWm4zxcXv/wo0nMLs8T/Ic7LqFGbhmadXhZ9F0bWG4974CnU
+         dSI2jQmpTR1UefYq8x9vTUJvVBU3UGGefhPx39nkH+BysNo5ChHG1Yr8egcBSPIgSs
+         Uxy685zCOXc2A==
 From:   Mark Brown <broonie@kernel.org>
-To:     allen-kh.cheng@mediatek.com, ikjn@chromium.org,
-        matthias.bgg@gmail.com
-Cc:     linux-mediatek@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Project_Global_Chrome_Upstream_Group@mediatek.com,
-        linux-spi@vger.kernel.org
-In-Reply-To: <20220412115743.22641-1-allen-kh.cheng@mediatek.com>
-References: <20220412115743.22641-1-allen-kh.cheng@mediatek.com>
-Subject: Re: [PATCH] spi: spi-mtk-nor: initialize spi controller after resume
-Message-Id: <164979303551.449574.9303978009033918270.b4-ty@kernel.org>
-Date:   Tue, 12 Apr 2022 20:50:35 +0100
+To:     biju.das.jz@bp.renesas.com
+Cc:     Chris.Paterson2@renesas.com, vkoul@kernel.org,
+        linux-spi@vger.kernel.org, geert+renesas@glider.be,
+        biju.das@bp.renesas.com, linux-renesas-soc@vger.kernel.org,
+        prabhakar.mahadev-lad.rj@bp.renesas.com
+In-Reply-To: <20220411173115.6619-1-biju.das.jz@bp.renesas.com>
+References: <20220411173115.6619-1-biju.das.jz@bp.renesas.com>
+Subject: Re: [PATCH] spi: spi-rspi: Remove setting {src,dst}_{addr,addr_width} based on DMA direction
+Message-Id: <164979621667.474093.7041894961679858887.b4-ty@kernel.org>
+Date:   Tue, 12 Apr 2022 21:43:36 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -50,13 +49,14 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Tue, 12 Apr 2022 19:57:43 +0800, Allen-KH Cheng wrote:
-> After system resumes, the registers of nor controller are
-> initialized with default values. The nor controller will
-> not function properly.
+On Mon, 11 Apr 2022 18:31:15 +0100, Biju Das wrote:
+> The direction field in the DMA config is deprecated. The rspi driver
+> sets {src,dst}_{addr,addr_width} based on the DMA direction and
+> it results in dmaengine_slave_config() failure as RZ DMAC driver
+> validates {src,dst}_addr_width values independent of DMA direction.
 > 
-> To handle both issues above, we add mtk_nor_init() in
-> mtk_nor_resume after pm_runtime_force_resume().
+> This patch fixes the issue by passing both {src,dst}_{addr,addr_width}
+> values independent of DMA direction.
 > 
 > [...]
 
@@ -66,8 +66,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: spi-mtk-nor: initialize spi controller after resume
-      commit: 317c2045618cc1f8d38beb8c93a7bdb6ad8638c6
+[1/1] spi: spi-rspi: Remove setting {src,dst}_{addr,addr_width} based on DMA direction
+      commit: 6f381481a5b236cb53d6de2c49c6ef83a4d0f432
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

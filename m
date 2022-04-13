@@ -2,244 +2,90 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 88F9FC4332F
-	for <linux-spi@archiver.kernel.org>; Wed, 13 Apr 2022 16:53:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 901CCC433F5
+	for <linux-spi@archiver.kernel.org>; Wed, 13 Apr 2022 17:36:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237070AbiDMQ4O (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 13 Apr 2022 12:56:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49350 "EHLO
+        id S237427AbiDMRin (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 13 Apr 2022 13:38:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237069AbiDMQ4M (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 13 Apr 2022 12:56:12 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8728869CD1;
-        Wed, 13 Apr 2022 09:53:49 -0700 (PDT)
-Received: from fraeml701-chm.china.huawei.com (unknown [172.18.147.200])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4KdpX609T6z67nHV;
-        Thu, 14 Apr 2022 00:51:34 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml701-chm.china.huawei.com (10.206.15.50) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2375.24; Wed, 13 Apr 2022 18:53:46 +0200
-Received: from localhost (10.81.205.148) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Wed, 13 Apr
- 2022 17:53:44 +0100
-Date:   Wed, 13 Apr 2022 17:53:41 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Rob Herring <robh@kernel.org>
-CC:     <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        "Agathe Porte" <agathe.porte@nokia.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        "Jean Delvare" <jdelvare@suse.com>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Olivier Moysan <olivier.moysan@foss.st.com>,
-        Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Mark Brown <broonie@kernel.org>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        Yunfei Dong <yunfei.dong@mediatek.com>,
-        "Geert Uytterhoeven" <geert+renesas@glider.be>,
-        <linux-hwmon@vger.kernel.org>, <alsa-devel@alsa-project.org>,
-        <linux-iio@vger.kernel.org>, <linux-media@vger.kernel.org>,
-        <linux-remoteproc@vger.kernel.org>, <linux-spi@vger.kernel.org>
-Subject: Re: [PATCH] dt-bindings: Fix array constraints on scalar properties
-Message-ID: <20220413175341.000030d9@Huawei.com>
-In-Reply-To: <20220413140121.3132837-1-robh@kernel.org>
-References: <20220413140121.3132837-1-robh@kernel.org>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
+        with ESMTP id S235917AbiDMRim (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 13 Apr 2022 13:38:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 066E66C977;
+        Wed, 13 Apr 2022 10:36:21 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A22C861EE3;
+        Wed, 13 Apr 2022 17:36:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F147C385A3;
+        Wed, 13 Apr 2022 17:36:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1649871380;
+        bh=2vNABeBZQ+H0ZHBmPE9Li3qkyTfEc1acEFbKIGMvhic=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=cBFQDx0apSqSgapak4T6kjgMK5eLVa1o1UFFHyVGNeld3JMKnzi4Vb4DrmFtRJUR1
+         wtfl62qJAuXpp6GM4NjkCM30XbTma2nhOwnaoCtnvdI5jmFwNRfcbirSaqA+Gr6RJM
+         EKCSutm57rcPdAO16zaP6n9UDeNNz/S4aOFwYCtca5G0Zu3+3mSz468Dntyy71aA6P
+         kSKdlYbkMA4QJex0pzAolJSu0ithWdxVAylEwe+ENTtZ9CMPufp1lg4cVmjaquyIkr
+         zkOFXaqV7shwmLNvq0jm+Y9uf8iO23aACqRMLqpzP0v0VdWx1vrzj/NEHJWHy3RUO6
+         xnT1qgXp8w4Eg==
+From:   Mark Brown <broonie@kernel.org>
+To:     p.yadav@ti.com, matthias.schiffer@ew.tq-group.com
+Cc:     tudor.ambarus@microchip.com, linux-kernel@vger.kernel.org,
+        vigneshr@ti.com, vadivel.muruganx.ramuthevar@linux.intel.com,
+        linux-spi@vger.kernel.org
+In-Reply-To: <20220406132832.199777-1-matthias.schiffer@ew.tq-group.com>
+References: <20220406132832.199777-1-matthias.schiffer@ew.tq-group.com>
+Subject: Re: [PATCH v2] spi: cadence-quadspi: fix incorrect supports_op() return value
+Message-Id: <164987137835.70105.4695547877202856949.b4-ty@kernel.org>
+Date:   Wed, 13 Apr 2022 18:36:18 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.81.205.148]
-X-ClientProxiedBy: lhreml743-chm.china.huawei.com (10.201.108.193) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, 13 Apr 2022 09:01:21 -0500
-Rob Herring <robh@kernel.org> wrote:
-
-> Scalar properties shouldn't have array constraints (minItems, maxItems,
-> items). These constraints can simply be dropped with any constraints under
-> 'items' moved up a level.
+On Wed, 6 Apr 2022 15:28:32 +0200, Matthias Schiffer wrote:
+> Since the conversion to spi-mem, the driver advertised support for
+> various operations that cqspi_set_protocol() was never expected to handle
+> correctly - in particuar all non-DTR operations with command or address
+> buswidth > 1. For DTR, all operations except for 8-8-8 would fail, as
+> cqspi_set_protocol() returns -EINVAL.
 > 
-> Cc: Agathe Porte <agathe.porte@nokia.com>
-> Cc: Guenter Roeck <linux@roeck-us.net>
-> Cc: Jean Delvare <jdelvare@suse.com>
-> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-> Cc: Olivier Moysan <olivier.moysan@foss.st.com>
-> Cc: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
-> Cc: Jonathan Cameron <jic23@kernel.org>
-> Cc: Lars-Peter Clausen <lars@metafoo.de>
-> Cc: Philipp Zabel <p.zabel@pengutronix.de>
-> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-> Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
-> Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-> Cc: Yunfei Dong <yunfei.dong@mediatek.com>
-> Cc: Geert Uytterhoeven <geert+renesas@glider.be>
-> Cc: linux-hwmon@vger.kernel.org
-> Cc: alsa-devel@alsa-project.org
-> Cc: linux-iio@vger.kernel.org
-> Cc: linux-media@vger.kernel.org
-> Cc: linux-remoteproc@vger.kernel.org
-> Cc: linux-spi@vger.kernel.org
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
->  Documentation/devicetree/bindings/hwmon/ti,tmp464.yaml       | 5 ++---
->  .../devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml      | 4 +---
-
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
->  Documentation/devicetree/bindings/media/coda.yaml            | 1 -
->  .../devicetree/bindings/media/mediatek,vcodec-decoder.yaml   | 2 --
->  .../devicetree/bindings/media/mediatek,vcodec-encoder.yaml   | 2 --
->  .../bindings/media/mediatek,vcodec-subdev-decoder.yaml       | 1 -
->  .../devicetree/bindings/remoteproc/qcom,sc7280-wpss-pil.yaml | 4 +---
->  Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml  | 2 --
->  8 files changed, 4 insertions(+), 17 deletions(-)
+> In non-DTR mode, this resulted in data corruption for SPI-NOR flashes that
+> support such operations. As a minimal fix that can be backported to stable
+> kernels, simply disallow the unsupported operations again to avoid this
+> issue.
 > 
-> diff --git a/Documentation/devicetree/bindings/hwmon/ti,tmp464.yaml b/Documentation/devicetree/bindings/hwmon/ti,tmp464.yaml
-> index 801ca9ba7d34..e7493e25a7d2 100644
-> --- a/Documentation/devicetree/bindings/hwmon/ti,tmp464.yaml
-> +++ b/Documentation/devicetree/bindings/hwmon/ti,tmp464.yaml
-> @@ -58,9 +58,8 @@ patternProperties:
->            The value (two's complement) to be programmed in the channel specific N correction register.
->            For remote channels only.
->          $ref: /schemas/types.yaml#/definitions/int32
-> -        items:
-> -          minimum: -128
-> -          maximum: 127
-> +        minimum: -128
-> +        maximum: 127
->  
->      required:
->        - reg
-> diff --git a/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml b/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml
-> index 7c260f209687..952bc900d0fa 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml
-> @@ -108,9 +108,7 @@ patternProperties:
->            - [1-5]: order 1 to 5.
->            For audio purpose it is recommended to use order 3 to 5.
->          $ref: /schemas/types.yaml#/definitions/uint32
-> -        items:
-> -          minimum: 0
-> -          maximum: 5
-> +        maximum: 5
->  
->        "#io-channel-cells":
->          const: 1
-> diff --git a/Documentation/devicetree/bindings/media/coda.yaml b/Documentation/devicetree/bindings/media/coda.yaml
-> index 36781ee4617f..c9d5adbc8c4a 100644
-> --- a/Documentation/devicetree/bindings/media/coda.yaml
-> +++ b/Documentation/devicetree/bindings/media/coda.yaml
-> @@ -65,7 +65,6 @@ properties:
->    iram:
->      $ref: /schemas/types.yaml#/definitions/phandle
->      description: phandle pointing to the SRAM device node
-> -    maxItems: 1
->  
->  required:
->    - compatible
-> diff --git a/Documentation/devicetree/bindings/media/mediatek,vcodec-decoder.yaml b/Documentation/devicetree/bindings/media/mediatek,vcodec-decoder.yaml
-> index 9b179bb44dfb..aa55ca65d6ed 100644
-> --- a/Documentation/devicetree/bindings/media/mediatek,vcodec-decoder.yaml
-> +++ b/Documentation/devicetree/bindings/media/mediatek,vcodec-decoder.yaml
-> @@ -63,13 +63,11 @@ properties:
->  
->    mediatek,vpu:
->      $ref: /schemas/types.yaml#/definitions/phandle
-> -    maxItems: 1
->      description:
->        Describes point to vpu.
->  
->    mediatek,scp:
->      $ref: /schemas/types.yaml#/definitions/phandle
-> -    maxItems: 1
->      description:
->        Describes point to scp.
->  
-> diff --git a/Documentation/devicetree/bindings/media/mediatek,vcodec-encoder.yaml b/Documentation/devicetree/bindings/media/mediatek,vcodec-encoder.yaml
-> index e7b65a91c92c..2746dea3ce79 100644
-> --- a/Documentation/devicetree/bindings/media/mediatek,vcodec-encoder.yaml
-> +++ b/Documentation/devicetree/bindings/media/mediatek,vcodec-encoder.yaml
-> @@ -55,13 +55,11 @@ properties:
->  
->    mediatek,vpu:
->      $ref: /schemas/types.yaml#/definitions/phandle
-> -    maxItems: 1
->      description:
->        Describes point to vpu.
->  
->    mediatek,scp:
->      $ref: /schemas/types.yaml#/definitions/phandle
-> -    maxItems: 1
->      description:
->        Describes point to scp.
->  
-> diff --git a/Documentation/devicetree/bindings/media/mediatek,vcodec-subdev-decoder.yaml b/Documentation/devicetree/bindings/media/mediatek,vcodec-subdev-decoder.yaml
-> index 7687be0f50aa..c73bf2352aca 100644
-> --- a/Documentation/devicetree/bindings/media/mediatek,vcodec-subdev-decoder.yaml
-> +++ b/Documentation/devicetree/bindings/media/mediatek,vcodec-subdev-decoder.yaml
-> @@ -61,7 +61,6 @@ properties:
->  
->    mediatek,scp:
->      $ref: /schemas/types.yaml#/definitions/phandle
-> -    maxItems: 1
->      description: |
->        The node of system control processor (SCP), using
->        the remoteproc & rpmsg framework.
-> diff --git a/Documentation/devicetree/bindings/remoteproc/qcom,sc7280-wpss-pil.yaml b/Documentation/devicetree/bindings/remoteproc/qcom,sc7280-wpss-pil.yaml
-> index 2424de733ee4..d99a729d2710 100644
-> --- a/Documentation/devicetree/bindings/remoteproc/qcom,sc7280-wpss-pil.yaml
-> +++ b/Documentation/devicetree/bindings/remoteproc/qcom,sc7280-wpss-pil.yaml
-> @@ -104,8 +104,7 @@ properties:
->    qcom,smem-state-names:
->      $ref: /schemas/types.yaml#/definitions/string
->      description: The names of the state bits used for SMP2P output
-> -    items:
-> -      - const: stop
-> +    const: stop
->  
->    glink-edge:
->      type: object
-> @@ -130,7 +129,6 @@ properties:
->        qcom,remote-pid:
->          $ref: /schemas/types.yaml#/definitions/uint32
->          description: ID of the shared memory used by GLINK for communication with WPSS
-> -        maxItems: 1
->  
->      required:
->        - interrupts
-> diff --git a/Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml b/Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml
-> index b104899205f6..5de710adfa63 100644
-> --- a/Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml
-> +++ b/Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml
-> @@ -124,7 +124,6 @@ properties:
->      description: |
->        Override the default TX fifo size.  Unit is words.  Ignored if 0.
->      $ref: /schemas/types.yaml#/definitions/uint32
-> -    maxItems: 1
->      default: 64
->  
->    renesas,rx-fifo-size:
-> @@ -132,7 +131,6 @@ properties:
->      description: |
->        Override the default RX fifo size.  Unit is words.  Ignored if 0.
->      $ref: /schemas/types.yaml#/definitions/uint32
-> -    maxItems: 1
->      default: 64
->  
->  required:
+> [...]
 
+Applied to
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+
+Thanks!
+
+[1/1] spi: cadence-quadspi: fix incorrect supports_op() return value
+      commit: f1d388f216aeb41a5df518815ae559d14a6d438e
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

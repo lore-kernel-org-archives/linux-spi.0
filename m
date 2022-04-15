@@ -2,107 +2,194 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 91D8AC433EF
-	for <linux-spi@archiver.kernel.org>; Fri, 15 Apr 2022 08:12:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5FE85C433FE
+	for <linux-spi@archiver.kernel.org>; Fri, 15 Apr 2022 14:22:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348877AbiDOIOt (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 15 Apr 2022 04:14:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48120 "EHLO
+        id S1351670AbiDOOZP (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 15 Apr 2022 10:25:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235107AbiDOIOr (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 15 Apr 2022 04:14:47 -0400
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51E1A366AC;
-        Fri, 15 Apr 2022 01:12:18 -0700 (PDT)
-Received: by mail-pf1-x436.google.com with SMTP id 22so379506pfu.1;
-        Fri, 15 Apr 2022 01:12:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id;
-        bh=V1TQqJ8Dwm+rkTp7MnC8Cpp/Mlay65J8IEUqFYwowU0=;
-        b=IoHFyoV/QMaWz5slv3dX8BWXMPwkrW8AOmkucgTgu9oEOFR9T1jbQ7lCV5zzzgcjD1
-         5Lvi0ZPc+3KsmwhyGygW48c5TaeNeHcCvItjnVIoV54QUU+yglZJqpXAL5J8WHquclUE
-         83t7e+ew1kTsla1lP6uSg3df/NT5SvzYCn+pZ33zqAX4E6zsPZxGs1UTUYFCSNZLj0HX
-         iXS9Z0QuXkNw/yqBNP/IqgENg8Qe0WUBtm7ESVwHv8FXUtv5p6OcYCy7tU0e/lOpqLFi
-         PriaBMITZiDucgPqwbeaxQw5B49/+OPiUjk6DLqOnTZTbTrBDzeD3IgL/qiu5lxt01Tl
-         Hefw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=V1TQqJ8Dwm+rkTp7MnC8Cpp/Mlay65J8IEUqFYwowU0=;
-        b=UXXtNKMuQ2BGEPA6pKH5rjtNRR2w08L6crHBdhKftChHleW72cYQygqopJ4bFH/Xut
-         GrcWLGLVydEYJpNUfFd7XJa5ynxEzjmrSRbwlbrciiVg052K4zXc7h7O5hipNCE5EqdD
-         h+LwUH5i5HYoUdaibPGFm+xclC84gcnkmFiWocALzjYh28G11qco05z/jqqNbtmHaMex
-         0+cPjCL/vxk48sz5tw6VmAfQv18ZzZu4PFfR4u3fyNZQmPE6O0hJohSRKUaILiln8ASf
-         ABV5+8EqOrctUdGiwXJT140EINtN5Dxo/PGUgR9BqWM8gUpy02lxWghjtGXNOlvKEQho
-         WWHA==
-X-Gm-Message-State: AOAM530jXYJmIL+oJvCTi5IMvEiLtgVywJv8cN5HO6G+ixS6df4FmUPz
-        6/bKSj50zY1EoJt5k3p7HvalG3DsxjTmOQ==
-X-Google-Smtp-Source: ABdhPJw4LGqz6LhFvkjeGdZOe+Ng0d6Qv/gkkbgVfLnFZ3lW4zTCWZ7c2+/mD8uJo4XEBoLqooqkDA==
-X-Received: by 2002:a63:4523:0:b0:399:1124:1574 with SMTP id s35-20020a634523000000b0039911241574mr5351198pga.609.1650010337684;
-        Fri, 15 Apr 2022 01:12:17 -0700 (PDT)
-Received: from scdiu3.sunplus.com ([113.196.136.192])
-        by smtp.googlemail.com with ESMTPSA id 5-20020a631045000000b0039d942d18f0sm3790376pgq.48.2022.04.15.01.12.15
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 15 Apr 2022 01:12:17 -0700 (PDT)
-From:   Li-hao Kuo <lhjeff911@gmail.com>
-To:     broonie@kernel.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     wells.lu@sunplus.com, lh.kuo@sunplus.com, nathan@kernel.org,
-        trix@redhat.com, Li-hao Kuo <lhjeff911@gmail.com>
-Subject: [PATCH] spi: remove spin_lock_irq and variable in the irq procress
-Date:   Fri, 15 Apr 2022 16:12:04 +0800
-Message-Id: <f9991d6064d892d22ac7c2dfabe16309e9d03888.1650010304.git.lhjeff911@gmail.com>
+        with ESMTP id S1354571AbiDOOZF (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 15 Apr 2022 10:25:05 -0400
+Received: from out28-195.mail.aliyun.com (out28-195.mail.aliyun.com [115.124.28.195])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECDB7D1CCF;
+        Fri, 15 Apr 2022 07:22:25 -0700 (PDT)
+X-Alimail-AntiSpam: AC=CONTINUE;BC=0.07483269|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0236375-0.00029974-0.976063;FP=0|0|0|0|0|-1|-1|-1;HT=ay29a033018047199;MF=zhouyanjie@wanyeetech.com;NM=1;PH=DS;RN=15;RT=15;SR=0;TI=SMTPD_---.NRMqfXs_1650032541;
+Received: from zhouyanjie-virtual-machine.localdomain(mailfrom:zhouyanjie@wanyeetech.com fp:SMTPD_---.NRMqfXs_1650032541)
+          by smtp.aliyun-inc.com(33.32.109.194);
+          Fri, 15 Apr 2022 22:22:22 +0800
+From:   =?UTF-8?q?=E5=91=A8=E7=90=B0=E6=9D=B0=20=28Zhou=20Yanjie=29?= 
+        <zhouyanjie@wanyeetech.com>
+To:     broonie@kernel.org, robh+dt@kernel.org, krzk+dt@kernel.org
+Cc:     linux-spi@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        paul@crapouillou.net, contact@artur-rojek.eu,
+        dongsheng.qiu@ingenic.com, aric.pzqi@ingenic.com,
+        rick.tyliu@ingenic.com, sernia.zhou@foxmail.com,
+        zhenwenjin@gmail.com, reimu@sudomaker.com
+Subject: [PATCH 3/3] SPI: Ingenic: Add support for new Ingenic SoCs.
+Date:   Fri, 15 Apr 2022 22:22:08 +0800
+Message-Id: <1650032528-118220-4-git-send-email-zhouyanjie@wanyeetech.com>
 X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1650032528-118220-1-git-send-email-zhouyanjie@wanyeetech.com>
+References: <1650032528-118220-1-git-send-email-zhouyanjie@wanyeetech.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-remove spin_lock_irq spin_unlock_irq and variable in the irq funciton
+1.Since it would be dangerous to specify a newer SoC's compatible
+  string as the fallback of an older SoC's compatible string, we
+  add support for the "ingenic,jz4775-spi" compatible string in
+  the driver.
 
-Signed-off-by: Li-hao Kuo <lhjeff911@gmail.com>
+  This will permit to support the JZ4775 by having:
+  compatible = "ingenic,jz4775-spi";
+
+  Instead of doing:
+  compatible = "ingenic,jz4775-spi", "ingenic,jz4780-spi";
+
+2.Add support for probing the spi-ingenic driver on the X1000 SoC
+  from Ingenic. From the X1000 SoC onwards, the maximum frequency
+  allowed by the SSI module of Ingenic SoCs has been changed from
+  54MHz to 50MHz. So "max_speed_hz" is introduced in "jz_soc_info"
+  to set different maximum frequency values.
+
+3.Add support for probing the spi-ingenic driver on the X2000 SoC
+  from Ingenic. The X2000 SoC has only one native chip select line,
+  so "max_native_cs" is introduced in "jz_soc_info" to set different
+  maximum number of native chip select lines.
+
+4.Because of the introduction of support for the X-series SoCs, the
+  current driver is not only applicable to the JZ-series SoCs, so
+  the description texts has been modified to avoid misunderstanding.
+
+Signed-off-by: 周琰杰 (Zhou Yanjie) <zhouyanjie@wanyeetech.com>
 ---
- drivers/spi/spi-sunplus-sp7021.c | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/spi/Kconfig       |  4 ++--
+ drivers/spi/spi-ingenic.c | 42 +++++++++++++++++++++++++++++++++++++-----
+ 2 files changed, 39 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/spi/spi-sunplus-sp7021.c b/drivers/spi/spi-sunplus-sp7021.c
-index f989f7b..f1fa887 100644
---- a/drivers/spi/spi-sunplus-sp7021.c
-+++ b/drivers/spi/spi-sunplus-sp7021.c
-@@ -85,8 +85,6 @@ struct sp7021_spi_ctlr {
- 	int s_irq;
- 	struct clk *spi_clk;
- 	struct reset_control *rstc;
--	// irq spin lock
--	spinlock_t lock;
- 	// data xfer lock
- 	struct mutex buf_lock;
- 	struct completion isr_done;
-@@ -199,8 +197,6 @@ static irqreturn_t sp7021_spi_master_irq(int irq, void *dev)
- 	if (tx_len == 0 && total_len == 0)
- 		return IRQ_NONE;
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index d2815eb..cca92a8 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -419,10 +419,10 @@ config SPI_IMX
+ 	  This enables support for the Freescale i.MX SPI controllers.
  
--	spin_lock_irq(&pspim->lock);
--
- 	rx_cnt = FIELD_GET(SP7021_RX_CNT_MASK, fd_status);
- 	if (fd_status & SP7021_RX_FULL_FLAG)
- 		rx_cnt = pspim->data_unit;
-@@ -239,7 +235,6 @@ static irqreturn_t sp7021_spi_master_irq(int irq, void *dev)
+ config SPI_INGENIC
+-	tristate "Ingenic JZ47xx SoCs SPI controller"
++	tristate "Ingenic SoCs SPI controller"
+ 	depends on MACH_INGENIC || COMPILE_TEST
+ 	help
+-	  This enables support for the Ingenic JZ47xx SoCs SPI controller.
++	  This enables support for the Ingenic SoCs SPI controller.
  
- 	if (isrdone)
- 		complete(&pspim->isr_done);
--	spin_unlock_irq(&pspim->lock);
- 	return IRQ_HANDLED;
- }
+ 	  To compile this driver as a module, choose M here: the module
+ 	  will be called spi-ingenic.
+diff --git a/drivers/spi/spi-ingenic.c b/drivers/spi/spi-ingenic.c
+index 672e4ed..ff507c8 100644
+--- a/drivers/spi/spi-ingenic.c
++++ b/drivers/spi/spi-ingenic.c
+@@ -1,8 +1,9 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /*
+- * SPI bus driver for the Ingenic JZ47xx SoCs
++ * SPI bus driver for the Ingenic SoCs
+  * Copyright (c) 2017-2021 Artur Rojek <contact@artur-rojek.eu>
+  * Copyright (c) 2017-2021 Paul Cercueil <paul@crapouillou.net>
++ * Copyright (c) 2022 周琰杰 (Zhou Yanjie) <zhouyanjie@wanyeetech.com>
+  */
  
-@@ -446,7 +441,6 @@ static int sp7021_spi_controller_probe(struct platform_device *pdev)
- 	pspim->mode = mode;
- 	pspim->ctlr = ctlr;
- 	pspim->dev = dev;
--	spin_lock_init(&pspim->lock);
- 	mutex_init(&pspim->buf_lock);
- 	init_completion(&pspim->isr_done);
- 	init_completion(&pspim->slave_isr);
+ #include <linux/clk.h>
+@@ -52,6 +53,9 @@ struct jz_soc_info {
+ 	u32 bits_per_word_mask;
+ 	struct reg_field flen_field;
+ 	bool has_trendian;
++
++	unsigned int max_speed_hz;
++	unsigned int max_native_cs;
+ };
+ 
+ struct ingenic_spi {
+@@ -418,7 +422,7 @@ static int spi_ingenic_probe(struct platform_device *pdev)
+ 
+ 	if (of_property_read_u32(dev->of_node, "num-cs", &num_cs)) {
+ 		dev_warn(dev, "Number of chip select lines not specified.\n");
+-		num_cs = 2;
++		num_cs = pdata->max_native_cs;
+ 	}
+ 
+ 	platform_set_drvdata(pdev, ctlr);
+@@ -433,9 +437,9 @@ static int spi_ingenic_probe(struct platform_device *pdev)
+ 	ctlr->max_dma_len = SPI_INGENIC_FIFO_SIZE;
+ 	ctlr->bits_per_word_mask = pdata->bits_per_word_mask;
+ 	ctlr->min_speed_hz = 7200;
+-	ctlr->max_speed_hz = 54000000;
++	ctlr->max_speed_hz = pdata->max_speed_hz;
+ 	ctlr->use_gpio_descriptors = true;
+-	ctlr->max_native_cs = 2;
++	ctlr->max_native_cs = pdata->max_native_cs;
+ 	ctlr->num_chipselect = num_cs;
+ 	ctlr->dev.of_node = pdev->dev.of_node;
+ 
+@@ -459,17 +463,44 @@ static const struct jz_soc_info jz4750_soc_info = {
+ 	.bits_per_word_mask = SPI_BPW_RANGE_MASK(2, 17),
+ 	.flen_field = REG_FIELD(REG_SSICR1, 4, 7),
+ 	.has_trendian = false,
++
++	.max_speed_hz = 54000000,
++	.max_native_cs = 2,
+ };
+ 
+ static const struct jz_soc_info jz4780_soc_info = {
+ 	.bits_per_word_mask = SPI_BPW_RANGE_MASK(2, 32),
+ 	.flen_field = REG_FIELD(REG_SSICR1, 3, 7),
+ 	.has_trendian = true,
++
++	.max_speed_hz = 54000000,
++	.max_native_cs = 2,
++};
++
++static const struct jz_soc_info x1000_soc_info = {
++	.bits_per_word_mask = SPI_BPW_RANGE_MASK(2, 32),
++	.flen_field = REG_FIELD(REG_SSICR1, 3, 7),
++	.has_trendian = true,
++
++	.max_speed_hz = 50000000,
++	.max_native_cs = 2,
++};
++
++static const struct jz_soc_info x2000_soc_info = {
++	.bits_per_word_mask = SPI_BPW_RANGE_MASK(2, 32),
++	.flen_field = REG_FIELD(REG_SSICR1, 3, 7),
++	.has_trendian = true,
++
++	.max_speed_hz = 50000000,
++	.max_native_cs = 1,
+ };
+ 
+ static const struct of_device_id spi_ingenic_of_match[] = {
+ 	{ .compatible = "ingenic,jz4750-spi", .data = &jz4750_soc_info },
++	{ .compatible = "ingenic,jz4775-spi", .data = &jz4780_soc_info },
+ 	{ .compatible = "ingenic,jz4780-spi", .data = &jz4780_soc_info },
++	{ .compatible = "ingenic,x1000-spi", .data = &x1000_soc_info },
++	{ .compatible = "ingenic,x2000-spi", .data = &x2000_soc_info },
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(of, spi_ingenic_of_match);
+@@ -483,7 +514,8 @@ static struct platform_driver spi_ingenic_driver = {
+ };
+ 
+ module_platform_driver(spi_ingenic_driver);
+-MODULE_DESCRIPTION("SPI bus driver for the Ingenic JZ47xx SoCs");
++MODULE_DESCRIPTION("SPI bus driver for the Ingenic SoCs");
+ MODULE_AUTHOR("Artur Rojek <contact@artur-rojek.eu>");
+ MODULE_AUTHOR("Paul Cercueil <paul@crapouillou.net>");
++MODULE_AUTHOR("周琰杰 (Zhou Yanjie) <zhouyanjie@wanyeetech.com>");
+ MODULE_LICENSE("GPL");
 -- 
 2.7.4
 

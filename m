@@ -2,113 +2,116 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B2D16C4321E
-	for <linux-spi@archiver.kernel.org>; Fri, 15 Apr 2022 21:10:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9337BC4332F
+	for <linux-spi@archiver.kernel.org>; Sat, 16 Apr 2022 11:55:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353351AbiDOVNL (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 15 Apr 2022 17:13:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47538 "EHLO
+        id S231847AbiDPL5w (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sat, 16 Apr 2022 07:57:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352683AbiDOVNJ (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 15 Apr 2022 17:13:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B7D95F4C3;
-        Fri, 15 Apr 2022 14:10:32 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D0D5C62062;
-        Fri, 15 Apr 2022 21:10:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7711BC385A5;
-        Fri, 15 Apr 2022 21:10:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650057031;
-        bh=hTD0B/ky7f7FMFyiSVk17MG8LBketxa+tXJ+WwagC1g=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=V+FxkMidGJVAMy8I8ZjU6W8unLIAGmCTvYPYwvI+pK4/rM0YNTJW1TKzvt6ORzSWa
-         mQpvM9soZMhCKWU1pOvZ42qHdtKCNBui65twYoY8Ttu9T3j6CTq2iodxZVaCd5fCVD
-         lVD+UL20Kn5WWZznDmjOGrvyFXRUcH+/OzhwB+OrIJHzobJ8ADZuvdNt/b5kW1He2Q
-         LwhYAhGCxk8hXsRxWuCLoSG9IHlgDmdyLVsvZp3NT/GSBtqZHT1LUlGMam5hj8oT0V
-         RNWkLSMYcMn0MvixDbRz92U/EYpvfYTraWaY3UHAVubjOE0Yj8jP6Ek5DP2XbmWHrF
-         NyaLjonPuHaEQ==
-Date:   Fri, 15 Apr 2022 23:10:25 +0200
-From:   Wolfram Sang <wsa@kernel.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Mark Brown <broonie@kernel.org>, linux-arm-msm@vger.kernel.org,
-        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-spi@vger.kernel.org,
-        Kuldeep Singh <singh.kuldeep87k@gmail.com>,
-        Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v4 8/9] dt-bindings: i2c: qcom,i2c-qup: convert to
- dtschema
-Message-ID: <YlnfQZHLW8WiL6ck@shikoro>
-Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Mark Brown <broonie@kernel.org>, linux-arm-msm@vger.kernel.org,
-        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-spi@vger.kernel.org,
-        Kuldeep Singh <singh.kuldeep87k@gmail.com>,
-        Rob Herring <robh@kernel.org>
-References: <20220405063451.12011-1-krzysztof.kozlowski@linaro.org>
- <20220405063451.12011-9-krzysztof.kozlowski@linaro.org>
+        with ESMTP id S230085AbiDPL5w (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sat, 16 Apr 2022 07:57:52 -0400
+Received: from out28-169.mail.aliyun.com (out28-169.mail.aliyun.com [115.124.28.169])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D78433A26;
+        Sat, 16 Apr 2022 04:55:19 -0700 (PDT)
+X-Alimail-AntiSpam: AC=CONTINUE;BC=0.0743753|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_regular_dialog|0.0592862-0.00168624-0.939028;FP=0|0|0|0|0|-1|-1|-1;HT=ay29a033018047208;MF=zhouyanjie@wanyeetech.com;NM=1;PH=DS;RN=15;RT=15;SR=0;TI=SMTPD_---.NRpv9hL_1650110114;
+Received: from 192.168.30.128(mailfrom:zhouyanjie@wanyeetech.com fp:SMTPD_---.NRpv9hL_1650110114)
+          by smtp.aliyun-inc.com(33.40.31.76);
+          Sat, 16 Apr 2022 19:55:16 +0800
+Subject: Re: [PATCH 1/3] SPI: Ingenic: Add support for use GPIO as chip select
+ line.
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     broonie@kernel.org, robh+dt@kernel.org, krzk+dt@kernel.org,
+        linux-spi@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        contact@artur-rojek.eu, dongsheng.qiu@ingenic.com,
+        aric.pzqi@ingenic.com, rick.tyliu@ingenic.com,
+        sernia.zhou@foxmail.com, zhenwenjin@gmail.com, reimu@sudomaker.com
+References: <1650032528-118220-1-git-send-email-zhouyanjie@wanyeetech.com>
+ <1650032528-118220-2-git-send-email-zhouyanjie@wanyeetech.com>
+ <61ZDAR.SD20HFTWMIBH3@crapouillou.net>
+From:   Zhou Yanjie <zhouyanjie@wanyeetech.com>
+Message-ID: <d7926a1d-c5e3-6519-6a52-1bd3ca3cf773@wanyeetech.com>
+Date:   Sat, 16 Apr 2022 19:55:13 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="jS4lqlkeTSJ92k82"
-Content-Disposition: inline
-In-Reply-To: <20220405063451.12011-9-krzysztof.kozlowski@linaro.org>
+In-Reply-To: <61ZDAR.SD20HFTWMIBH3@crapouillou.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+Hi Paul,
 
---jS4lqlkeTSJ92k82
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 2022/4/15 下午11:00, Paul Cercueil wrote:
+> Hi Zhou,
+>
+> Le ven., avril 15 2022 at 22:22:06 +0800, 周琰杰 (Zhou Yanjie) 
+> <zhouyanjie@wanyeetech.com> a écrit :
+>> Add support for using GPIOs as chip select lines on Ingenic SoCs.
+>>
+>> Signed-off-by: 周琰杰 (Zhou Yanjie) <zhouyanjie@wanyeetech.com>
+>> ---
+>>  drivers/spi/spi-ingenic.c | 11 +++++++++--
+>>  1 file changed, 9 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/spi/spi-ingenic.c b/drivers/spi/spi-ingenic.c
+>> index 03077a7..672e4ed 100644
+>> --- a/drivers/spi/spi-ingenic.c
+>> +++ b/drivers/spi/spi-ingenic.c
+>> @@ -380,7 +380,7 @@ static int spi_ingenic_probe(struct 
+>> platform_device *pdev)
+>>      struct spi_controller *ctlr;
+>>      struct ingenic_spi *priv;
+>>      void __iomem *base;
+>> -    int ret;
+>> +    int num_cs, ret;
+>>
+>>      pdata = of_device_get_match_data(dev);
+>>      if (!pdata) {
+>> @@ -416,6 +416,11 @@ static int spi_ingenic_probe(struct 
+>> platform_device *pdev)
+>>      if (IS_ERR(priv->flen_field))
+>>          return PTR_ERR(priv->flen_field);
+>>
+>> +    if (of_property_read_u32(dev->of_node, "num-cs", &num_cs)) {
+>> +        dev_warn(dev, "Number of chip select lines not specified.\n");
+>> +        num_cs = 2;
+>> +    }
+>> +
+>>      platform_set_drvdata(pdev, ctlr);
+>>
+>>      ctlr->prepare_transfer_hardware = spi_ingenic_prepare_hardware;
+>> @@ -429,7 +434,9 @@ static int spi_ingenic_probe(struct 
+>> platform_device *pdev)
+>>      ctlr->bits_per_word_mask = pdata->bits_per_word_mask;
+>>      ctlr->min_speed_hz = 7200;
+>>      ctlr->max_speed_hz = 54000000;
+>> -    ctlr->num_chipselect = 2;
+>> +    ctlr->use_gpio_descriptors = true;
+>
+> I wonder if this should be set conditionally instead. Maybe set it to 
+> "true" if the "num-cs" property exists?
+>
 
-On Tue, Apr 05, 2022 at 08:34:50AM +0200, Krzysztof Kozlowski wrote:
-> Convert the Qualcomm Universal Peripheral (QUP) I2C controller to DT
-> Schema.
->=20
-> Add missing properties: dma and dma-names, pinctrl states (to indicate
-> support for sleep pinctrl).
->=20
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Reviewed-by: Rob Herring <robh@kernel.org>
-
-Applied to for-next, thanks!
+I'm not too sure, but it seems some other drivers like "spi-sun6i.c", 
+"spi-stm32.c", "spi-s3c64xx.c", "spi-pic32.c", etc. set it unconditionally.
 
 
---jS4lqlkeTSJ92k82
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmJZ3z0ACgkQFA3kzBSg
-KbYVrxAAonu+vXUa438r37KHxJshUk6l4hKBEmIN1TRXQcNGgQarW4PerP6LTuMy
-m5uxa+qeLb5qC3ZmyKCmnH/Taqwqf/cE/BhVRWj4rIVwD9UcKRu/d3T4RguiaRDb
-x4Kmzh/GlYHVMDois2VTMldHNlbbXyy742Yy+mEC3DxlG0Q6gN1RMmpl6idgXCRy
-QTfS2+RWeqgC1wszBVSESN/sc0lygLP6u4gXwhtgXeoJSlvHkQ+PbcX1FpAPfxQQ
-8NJBbSJ/5m2jv/+2/8oI6yk3FnwzR55z0Gvw5UtyRxKFg1XbVrvTxqWULQgQsW6A
-Qh4aQyfSE2XTAkSrdr/LW5OBkPyIH3E4Cdul0g162oKmq8uzm1c/ULqRCdboW6vS
-NP1MpqZq+Oi5AzecxZCldN0/KpoGHRSQ5tfkaoMyBTxbhYc3xaTRk0HpTVmsTO36
-tESXEBbJ7m/+37KKa3rE36rV1lvKVuEdy0+pq9xlhRORgkeLe5xnYcHGyG+uK81a
-+aoPYdbH0yAfUPfrfnK3XVEnkzz22OnSySf7hiR6Pmx5UBxPaDwLtmUGbLbXti3y
-lG45x3HrVOScvZT9fUmpa7CN8rUSIj/3VazkefX8nqD3t7bwaY+qSFgAbnWlI/iM
-RlaqsxsXhbeD1ddus3rSAQXCGuPwZ2a+5bKmr4EJmz2Mr3Oh7HE=
-=BQnm
------END PGP SIGNATURE-----
-
---jS4lqlkeTSJ92k82--
+> The rest looks good to me.
+>
+> Cheers,
+> -Paul
+>
+>> +    ctlr->max_native_cs = 2;
+>> +    ctlr->num_chipselect = num_cs;
+>>      ctlr->dev.of_node = pdev->dev.of_node;
+>>
+>>      if (spi_ingenic_request_dma(ctlr, dev))
+>> -- 
+>> 2.7.4
+>>
+>

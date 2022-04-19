@@ -2,45 +2,46 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F38E3C4332F
-	for <linux-spi@archiver.kernel.org>; Tue, 19 Apr 2022 22:45:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 72CBFC433FE
+	for <linux-spi@archiver.kernel.org>; Tue, 19 Apr 2022 22:45:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358294AbiDSWs0 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 19 Apr 2022 18:48:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42990 "EHLO
+        id S1358293AbiDSWs3 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 19 Apr 2022 18:48:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358283AbiDSWsY (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 19 Apr 2022 18:48:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AE1C237D4
-        for <linux-spi@vger.kernel.org>; Tue, 19 Apr 2022 15:45:41 -0700 (PDT)
+        with ESMTP id S1358283AbiDSWs2 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 19 Apr 2022 18:48:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02BBF245A2;
+        Tue, 19 Apr 2022 15:45:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D2DBF617F4
-        for <linux-spi@vger.kernel.org>; Tue, 19 Apr 2022 22:45:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F6B2C385A7;
-        Tue, 19 Apr 2022 22:45:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 94F13617F2;
+        Tue, 19 Apr 2022 22:45:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D0ABC385A7;
+        Tue, 19 Apr 2022 22:45:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650408340;
-        bh=rV50n0uTCGCXYgFr8OF+/p5wQ7DUshqQmQOk+OEuVgk=;
+        s=k20201202; t=1650408344;
+        bh=vinjbCr2cqAUFbMYRfTjkaWIL6tzOCUsHeU/5hr0Oq0=;
         h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=VBfWdwOlB3oCEqBno0WthwD+hoiBJSQAKRiLy5SMMhpgLRLZGolC2IGH5wWf+35Qw
-         h0XVhQF6xWUcZsM9DJYm0Gkwigo+9uqb0BonEaXiFolh2FhSdlE70nXGvbm4c4IjO9
-         0/N3VpuyqwH4wjXtQ0mNkFsq9/8cYnQnQfcdl15D1p8whO+mcHWCH685Ts3E9klfec
-         Up3242B3iAIopR4IFNrHxj/N0c2F+kt2NFEm0SP39nfUV+/tJqANp4/Y74EpK4Q91u
-         mTOX4NUg8ZLVRgZkVurtVw9GAKDw/endjApLkUAarp6Twfxb2z61s8Sy7L9zKvuPck
-         E5beWU+EPmSpw==
+        b=Tgoe9dvqctmAAxtku0c8okp065Y7+Via8jNZqziMGYOO+mvl3kWd7XkW+Bntd5tVl
+         MK0bWI0ExTfncjSoCmjvbA5MOSSQb11BhsJ53KfrxfCSlokKhLfLrWC5Sf74+pzOfI
+         LTZfLuXrgaSe8EKtTZJr8VUgRY/cvx1dJ+n3//KrSffCka9jmo+zWCckmtJFNYelq2
+         0bvlrh2Cz95cMPVzHXyyDTLuKDnimbi9cIusnYSyZc209ZEVFJcxA0duy7HyPQPHmG
+         CpmWXHKX2QJdmOqOKSe5QDtMna6huw16GVccFvieg68sRjM8e1l7OgpgtJP8nllHq0
+         W8lX1OTqGRt9Q==
 From:   Mark Brown <broonie@kernel.org>
-To:     mika.westerberg@linux.intel.com
-Cc:     tudor.ambarus@microchip.com, linux-spi@vger.kernel.org,
-        p.yadav@ti.com, linux-mtd@lists.infradead.org, michael@walle.cc,
-        boris.brezillon@collabora.com, hongli.li@intel.com
-In-Reply-To: <20220411113158.2037-1-mika.westerberg@linux.intel.com>
-References: <20220411113158.2037-1-mika.westerberg@linux.intel.com>
-Subject: Re: [PATCH 1/2] spi: intel: Fix typo in kernel-doc of intel_spi_probe()
-Message-Id: <165040833836.1910395.16344107154371585691.b4-ty@kernel.org>
-Date:   Tue, 19 Apr 2022 23:45:38 +0100
+To:     cgel.zte@gmail.com, ldewangan@nvidia.com
+Cc:     chi.minghao@zte.com.cn, linux-spi@vger.kernel.org,
+        jonathanh@nvidia.com, thierry.reding@gmail.com,
+        linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
+        zealci@zte.com.cn
+In-Reply-To: <20220412070951.2532157-1-chi.minghao@zte.com.cn>
+References: <20220412070951.2532157-1-chi.minghao@zte.com.cn>
+Subject: Re: [PATCH] spi: spi-tegra114: using pm_runtime_resume_and_get instead of pm_runtime_get_sync
+Message-Id: <165040834196.1910395.6477833304505061712.b4-ty@kernel.org>
+Date:   Tue, 19 Apr 2022 23:45:41 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -48,8 +49,11 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Mon, 11 Apr 2022 14:31:57 +0300, Mika Westerberg wrote:
-> Should be 'specific' not 'spefific'. Fix this.
+On Tue, 12 Apr 2022 07:09:51 +0000, cgel.zte@gmail.com wrote:
+> From: Minghao Chi <chi.minghao@zte.com.cn>
+> 
+> Using pm_runtime_resume_and_get is more appropriate
+> for simplifing code
 > 
 > 
 
@@ -59,10 +63,8 @@ Applied to
 
 Thanks!
 
-[1/2] spi: intel: Fix typo in kernel-doc of intel_spi_probe()
-      commit: 4bbaa857e9af76d8cc346bd57fbaa50d357ae132
-[2/2] spi: intel: Implement dirmap hooks
-      (no commit info)
+[1/1] spi: spi-tegra114: using pm_runtime_resume_and_get instead of pm_runtime_get_sync
+      commit: 58b1efe2c1722cb47e5b1f49b79a50338428acbf
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

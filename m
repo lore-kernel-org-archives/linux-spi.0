@@ -2,51 +2,51 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 64463C433FE
-	for <linux-spi@archiver.kernel.org>; Tue, 19 Apr 2022 11:35:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A1BA5C433F5
+	for <linux-spi@archiver.kernel.org>; Tue, 19 Apr 2022 11:35:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351511AbiDSLht (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 19 Apr 2022 07:37:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39764 "EHLO
+        id S1351373AbiDSLhw (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 19 Apr 2022 07:37:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351350AbiDSLhd (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 19 Apr 2022 07:37:33 -0400
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 315B25FC0
-        for <linux-spi@vger.kernel.org>; Tue, 19 Apr 2022 04:34:49 -0700 (PDT)
-Received: by mail-ej1-x633.google.com with SMTP id t11so32218098eju.13
-        for <linux-spi@vger.kernel.org>; Tue, 19 Apr 2022 04:34:49 -0700 (PDT)
+        with ESMTP id S1351378AbiDSLhe (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 19 Apr 2022 07:37:34 -0400
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FB0F14020
+        for <linux-spi@vger.kernel.org>; Tue, 19 Apr 2022 04:34:52 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id lc2so32211415ejb.12
+        for <linux-spi@vger.kernel.org>; Tue, 19 Apr 2022 04:34:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=+RS2KaOerzQuwGLCJlNRvQqdlqz9kGKXmmE/o8hIMxc=;
-        b=KQats4yWut+GAInZpgo6wlkPKVDagbM3R0tOSjC/tXzsGfNp7h99Zs58vCptEscTpK
-         mbbyQT/so7ThPQX6ZBwVgU/6/OMYPhZ3b8NWVo58v/AWgjGj/c13IinU0JZUxgsLmUbX
-         wtYV4iKZ7ZxkIIXJYr27Z/OtYMBaCbJnYhLBGRpddVl1U1LTnJSB6NA88CzMeSaiqqqr
-         2PHKBRlsALK1YRRnJegN2W7zECiyg6PKkD33wHtut9O6mBuGtDG4eNOOmh7evJgldNFD
-         daON6jPbeCRx5RgbYuUVlqa5xdPtHbcMYVioGRHSRAffliIvrFMlh5w4Z4HpNMVbB8RB
-         CtMw==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=rk4GrfXMwJbLvQiVana1UoJ1THyewcmBCMxkYGfguzc=;
+        b=bZcovbSWF6o2arWzTigSJRHioa/LpdZ+Sy6qfFHoDdZg4zOpttbt+cEt7sC0+KAMgc
+         kjFI6Xl5Qkk0tuWaxpLC9pt627FKQYXBUqbpErU4FCXACI/FX/49UmrIKZGC/VVQ/yNl
+         thkwNFCClHLlC3MLJ3KmifplRZUWh88lwO4mY+6j9uINEwu9Zkkn4y42snAbFDPzpryZ
+         0iUqZU1KszkYfoNGB78yr1y3hU2ztgm1ciO2lgnILN72uHpo+U1B5f6kPrA2dA0oYM6P
+         007wp/Ik4Iv1jaN4vnouaRv15VbqVpPeIVN4Ud0vWErJzstfVcug/keSU4SnpnBrAXKK
+         0Usg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=+RS2KaOerzQuwGLCJlNRvQqdlqz9kGKXmmE/o8hIMxc=;
-        b=U2H7r+Ft0RlUJU3VdCpYy5kLf+DIhseX9LVHwV/wvmidw4zKKqgRGIBz24OJf5Y1u9
-         USazxHH+qPVIFY9Lp4siGNMfLU2+M57Xzk+SMFwhDUlQyT96BJOv5kdWNzvwwych/bgd
-         x+rx8E4rvAyPhas96aubeFzy9ya/sZDTCyIqE1w8Vcd3rA3+JlRYt7wCXqi5WmpoksSp
-         XMKc+IYEq9FrZVWQ1tzhuzNf+XwtNiNWz/1xUhrHnMPYZv0flczRoFf6TVJmcGDFEZvU
-         SWCxHFlLnlPxl2BQRv2Qb64F7j8ooUlgs8SBQPIhaY4bOv6PqgvOFtYQWEZfcb0zEPGr
-         j9xg==
-X-Gm-Message-State: AOAM530/O+CLVAtvDU+fupwdOKFbO+wTInL6QBIG9ZEp8d8zt+EzzsAB
-        gNWC26kG71+mSNx1VuL58dklzw==
-X-Google-Smtp-Source: ABdhPJzqToh0YQRiewe8EqLT6PK01CMGRMmUim2jYYjkDbBJ++z/iu7RXEodKQaWchfKBfcBWKLKsQ==
-X-Received: by 2002:a17:907:6e90:b0:6ef:ef41:ac10 with SMTP id sh16-20020a1709076e9000b006efef41ac10mr750787ejc.187.1650368087470;
-        Tue, 19 Apr 2022 04:34:47 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=rk4GrfXMwJbLvQiVana1UoJ1THyewcmBCMxkYGfguzc=;
+        b=ceamQLSkR88g+zVZ1lYjvwHXxtoeTmaYPhQ3i1O75GNGMw58rEKEv0HrFEpQBarldk
+         gsFTdqgQ9vgvNY67wCN/523ggN7LHURd4FZMT2iMxKZhwR6Rm30hXxDJiNQIvvztBtDc
+         +azeERMBsfK+nCO+NaLRiGknXECHkV//AiU6oc9ZejIlz/cD+mosGHf//6JiQMSxNTqn
+         9lf0U4ciHs2+eLNxUjJrGlYrPbSxUVJv4uYKlb9MCAmy9bKrHUiccLMnZ0YukFWTdOh2
+         PgQL9JSFrYHiJYd7swBrNrztZ+thrZ/3kWF4nVOGoKyouHMoOewQdVoo3SX0merEUAra
+         DKvA==
+X-Gm-Message-State: AOAM5337/3OAxIXF78K/Ip0GJfEEiBb2LAGRxZA8llcZeyfrsRsqMLOt
+        rPmpDnUo8EhMfy1GjMyasSDi1w==
+X-Google-Smtp-Source: ABdhPJzbytfn6U4klzpcMgwS7vfB8ICxKj/t5N2gXKEuUopbN5DyDh0kRWezTKeQA3rJF5XGiwm0+g==
+X-Received: by 2002:a17:907:1c85:b0:6e8:da11:85cb with SMTP id nb5-20020a1709071c8500b006e8da1185cbmr12859129ejc.678.1650368090686;
+        Tue, 19 Apr 2022 04:34:50 -0700 (PDT)
 Received: from localhost.localdomain (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id ce21-20020a170906b25500b006e89869cbf9sm5608802ejb.105.2022.04.19.04.34.45
+        by smtp.gmail.com with ESMTPSA id ce21-20020a170906b25500b006e89869cbf9sm5608802ejb.105.2022.04.19.04.34.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Apr 2022 04:34:46 -0700 (PDT)
+        Tue, 19 Apr 2022 04:34:50 -0700 (PDT)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>
@@ -76,125 +76,85 @@ Cc:     Stuart Yoder <stuyoder@gmail.com>,
         Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
         Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH v7 00/12] Fix broken usage of driver_override (and kfree of static memory)
-Date:   Tue, 19 Apr 2022 13:34:23 +0200
-Message-Id: <20220419113435.246203-1-krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v7 02/12] amba: Use driver_set_override() instead of open-coding
+Date:   Tue, 19 Apr 2022 13:34:25 +0200
+Message-Id: <20220419113435.246203-3-krzysztof.kozlowski@linaro.org>
 X-Mailer: git-send-email 2.32.0
+In-Reply-To: <20220419113435.246203-1-krzysztof.kozlowski@linaro.org>
+References: <20220419113435.246203-1-krzysztof.kozlowski@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi,
+Use a helper to set driver_override to reduce the amount of duplicated
+code.  Make the driver_override field const char, because it is not
+modified by the core and it matches other subsystems.
 
-This is a continuation of my old patchset from 2019. [1]
-Back then, few drivers set driver_override wrong. I fixed Exynos
-in a different way after discussions. QCOM NGD was not fixed
-and a new user appeared - IMX SCU.
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ drivers/amba/bus.c       | 28 ++++------------------------
+ include/linux/amba/bus.h |  6 +++++-
+ 2 files changed, 9 insertions(+), 25 deletions(-)
 
-It seems "char *" in driver_override looks too consty, so we
-tend to make a mistake of storing there string literals.
-
-Changes since latest v7
-=======================
-1. Patch #1: remove out_free label, document clearing override in kerneldoc and
-   in code-comments (Andy).
-2. Patch #12 (rpmsg): do not duplicate string (Biju).
-
-Changes since latest v6
-=======================
-1. Patch #1: Don't check for !dev and handle len==0 (Andy).
-2. New patch #11 (rpmsg): split constifying of local variable to a new patch.
-
-Changes since latest v5
-=======================
-1. Patch #11 (rpmsg): split from previous patch 11 - easier to understand the
-   need of it.
-2. Fix build issue in patch 12 (rpmsg).
-
-Changes since latest v4
-=======================
-1. Correct commit msgs and comments after Andy's review.
-2. Re-order code in new helper (patch #1) (Andy).
-3. Add tags.
-
-Changes since latest v3
-=======================
-1. Wrap comments, extend comment in driver_set_override() about newline.
-2. Minor commit msg fixes.
-3. Add tags.
-
-Changes since latest v2
-=======================
-1. Make all driver_override fields as "const char *", just like SPI
-   and VDPA. (Mark)
-2. Move "count" check to the new helper and add "count" argument. (Michael)
-3. Fix typos in docs, patch subject. Extend doc. (Michael, Bjorn)
-4. Compare pointers to reduce number of string readings in the helper.
-5. Fix clk-imx return value.
-
-Changes since latest v1 (not the old 2019 solution):
-====================================================
-https://lore.kernel.org/all/708eabb1-7b35-d525-d4c3-451d4a3de84f@rasmusvillemoes.dk/
-1. Add helper for setting driver_override.
-2. Use the helper.
-
-Dependencies (and stable):
-==========================
-1. All patches, including last three fixes, depend on the first patch
-   introducing the helper.
-2. The last three commits - fixes - are probably not backportable
-   directly, because of this dependency. I don't know how to express
-   this dependency here, since stable-kernel-rules.rst mentions only commits as
-   possible dependencies.
-
-[1] https://lore.kernel.org/all/1550484960-2392-3-git-send-email-krzk@kernel.org/
-
-Best regards,
-Krzysztof
-
-Krzysztof Kozlowski (12):
-  driver: platform: Add helper for safer setting of driver_override
-  amba: Use driver_set_override() instead of open-coding
-  fsl-mc: Use driver_set_override() instead of open-coding
-  hv: Use driver_set_override() instead of open-coding
-  PCI: Use driver_set_override() instead of open-coding
-  s390/cio: Use driver_set_override() instead of open-coding
-  spi: Use helper for safer setting of driver_override
-  vdpa: Use helper for safer setting of driver_override
-  clk: imx: scu: Fix kfree() of static memory on setting driver_override
-  slimbus: qcom-ngd: Fix kfree() of static memory on setting
-    driver_override
-  rpmsg: Constify local variable in field store macro
-  rpmsg: Fix kfree() of static memory on setting driver_override
-
- drivers/amba/bus.c              | 28 ++-----------
- drivers/base/driver.c           | 69 +++++++++++++++++++++++++++++++++
- drivers/base/platform.c         | 28 ++-----------
- drivers/bus/fsl-mc/fsl-mc-bus.c | 25 ++----------
- drivers/clk/imx/clk-scu.c       |  7 +++-
- drivers/hv/vmbus_drv.c          | 28 ++-----------
- drivers/pci/pci-sysfs.c         | 28 ++-----------
- drivers/rpmsg/rpmsg_core.c      |  3 +-
- drivers/rpmsg/rpmsg_internal.h  | 13 ++++++-
- drivers/rpmsg/rpmsg_ns.c        | 14 ++++++-
- drivers/s390/cio/cio.h          |  6 ++-
- drivers/s390/cio/css.c          | 28 ++-----------
- drivers/slimbus/qcom-ngd-ctrl.c | 13 ++++++-
- drivers/spi/spi.c               | 26 ++-----------
- drivers/vdpa/vdpa.c             | 29 ++------------
- include/linux/amba/bus.h        |  6 ++-
- include/linux/device/driver.h   |  2 +
- include/linux/fsl/mc.h          |  6 ++-
- include/linux/hyperv.h          |  6 ++-
- include/linux/pci.h             |  6 ++-
- include/linux/platform_device.h |  6 ++-
- include/linux/rpmsg.h           |  6 ++-
- include/linux/spi/spi.h         |  2 +
- include/linux/vdpa.h            |  4 +-
- 24 files changed, 184 insertions(+), 205 deletions(-)
-
+diff --git a/drivers/amba/bus.c b/drivers/amba/bus.c
+index d3bd14aaabf6..f3d26d698b77 100644
+--- a/drivers/amba/bus.c
++++ b/drivers/amba/bus.c
+@@ -94,31 +94,11 @@ static ssize_t driver_override_store(struct device *_dev,
+ 				     const char *buf, size_t count)
+ {
+ 	struct amba_device *dev = to_amba_device(_dev);
+-	char *driver_override, *old, *cp;
+-
+-	/* We need to keep extra room for a newline */
+-	if (count >= (PAGE_SIZE - 1))
+-		return -EINVAL;
+-
+-	driver_override = kstrndup(buf, count, GFP_KERNEL);
+-	if (!driver_override)
+-		return -ENOMEM;
+-
+-	cp = strchr(driver_override, '\n');
+-	if (cp)
+-		*cp = '\0';
+-
+-	device_lock(_dev);
+-	old = dev->driver_override;
+-	if (strlen(driver_override)) {
+-		dev->driver_override = driver_override;
+-	} else {
+-		kfree(driver_override);
+-		dev->driver_override = NULL;
+-	}
+-	device_unlock(_dev);
++	int ret;
+ 
+-	kfree(old);
++	ret = driver_set_override(_dev, &dev->driver_override, buf, count);
++	if (ret)
++		return ret;
+ 
+ 	return count;
+ }
+diff --git a/include/linux/amba/bus.h b/include/linux/amba/bus.h
+index 6562f543c3e0..93799a72ff82 100644
+--- a/include/linux/amba/bus.h
++++ b/include/linux/amba/bus.h
+@@ -70,7 +70,11 @@ struct amba_device {
+ 	unsigned int		cid;
+ 	struct amba_cs_uci_id	uci;
+ 	unsigned int		irq[AMBA_NR_IRQS];
+-	char			*driver_override;
++	/*
++	 * Driver name to force a match.  Do not set directly, because core
++	 * frees it.  Use driver_set_override() to set or clear it.
++	 */
++	const char		*driver_override;
+ };
+ 
+ struct amba_driver {
 -- 
 2.32.0
 

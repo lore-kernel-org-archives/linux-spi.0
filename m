@@ -2,45 +2,45 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8B1EEC433FE
-	for <linux-spi@archiver.kernel.org>; Mon, 25 Apr 2022 17:25:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3C49AC433EF
+	for <linux-spi@archiver.kernel.org>; Mon, 25 Apr 2022 17:25:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243895AbiDYR23 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 25 Apr 2022 13:28:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47656 "EHLO
+        id S243881AbiDYR2a (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 25 Apr 2022 13:28:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244097AbiDYR2B (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 25 Apr 2022 13:28:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF89941307;
-        Mon, 25 Apr 2022 10:24:56 -0700 (PDT)
+        with ESMTP id S243924AbiDYR16 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 25 Apr 2022 13:27:58 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE4904130C;
+        Mon, 25 Apr 2022 10:24:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6B82361585;
-        Mon, 25 Apr 2022 17:24:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68287C385A4;
-        Mon, 25 Apr 2022 17:24:54 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 60EA7B8191A;
+        Mon, 25 Apr 2022 17:24:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E85AC385AC;
+        Mon, 25 Apr 2022 17:24:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650907495;
-        bh=+80wHVodptz//ofhkGGYWEEAicTPsSLWn5+WM/nG7v4=;
+        s=k20201202; t=1650907491;
+        bh=6XynIAUlKU+eIGdXdXHnMxNzWfnJXAp5GLggB05OTNI=;
         h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=hG4sh8Adq815IjPH7rdRf8US4h3Qr/fh9BekQURg5sIFT5j1PUnNmtAmQ1hcPTche
-         W8tzXKnhlZDoQj7LcED+fVZas8hrZORY2tafZ8QKSJ7kJVCfr9Yj1Kbm8aYsy5PVtl
-         Q68P+Oa9HpGK3mUcmaph7kAGU+ANM4rFFUFP3zpTH3cgdMDZjXdjQpyNi5VWRsNgLJ
-         zYTsJ39bHxbmx0bRoJseuv7+ci/2zOVLI74GnLxRQs4tAI9iwYvkIbeE6N3H9Cmb0T
-         kDm3SXSzhuzM/Ztgn6rMjatmKiRjfosh2bjJP291O9WehxRP4IVl03vQt7R+vUHR9F
-         qKFBDKd5cpz6w==
+        b=tJvKNcYpc2VeO1yqs/QUZ6q3AoGTTb4kXSVUMT5rqCCKZIdvEzdlt2iVTOz0kVThG
+         UBjz40RVxYTuclx2/V4ObQiVOX7W8w31gYmN7piMU0bhbJ4SKhmE3MCniKuxK04WiF
+         i3uHJ7owWC+Ko7yjMedRHFnELWeQYUPHmHThBmwGf/WigV+hyNvt/HbLOwLazH0NGN
+         R5el3RbcDhArM8DJF8B2I8iWyoLWZbW+QygJ2VpXJS3Da6Va9nDRLv7cBmMc73zqAE
+         FuKTcAdoEnr8BmTAhLHkPhpWFcQIBtUfnm9jwuCil8JqtZgIo4qeZWvGWSVUaV+eAb
+         hjCrOrjo4pjGA==
 From:   Mark Brown <broonie@kernel.org>
-To:     luca.ceresoli@bootlin.com, linux-spi@vger.kernel.org
-Cc:     chris.ruehl@gtsys.com.hk, linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
-        heiko@sntech.de
-In-Reply-To: <20220421213251.1077899-1-luca.ceresoli@bootlin.com>
-References: <20220421213251.1077899-1-luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH] spi: rockchip: fix missing error on unsupported SPI_CS_HIGH
-Message-Id: <165090749413.584172.1969660470967557422.b4-ty@kernel.org>
-Date:   Mon, 25 Apr 2022 18:24:54 +0100
+To:     cgel.zte@gmail.com, alain.volmat@foss.st.com
+Cc:     linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, chi.minghao@zte.com.cn,
+        zealci@zte.com.cn, linux-stm32@st-md-mailman.stormreply.com
+In-Reply-To: <20220420090452.2588930-1-chi.minghao@zte.com.cn>
+References: <20220420090452.2588930-1-chi.minghao@zte.com.cn>
+Subject: Re: [PATCH] spi: stm32: using pm_runtime_resume_and_get instead of pm_runtime_get_sync
+Message-Id: <165090748917.584172.18257693792767365784.b4-ty@kernel.org>
+Date:   Mon, 25 Apr 2022 18:24:49 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -48,15 +48,13 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, 21 Apr 2022 23:32:51 +0200, Luca Ceresoli wrote:
-> The hardware (except for the ROCKCHIP_SPI_VER2_TYPE2 version) does not
-> support active-high native chip selects. However if such a CS is configured
-> the core does not error as it normally should, because the
-> 'ctlr->use_gpio_descriptors = true' line in rockchip_spi_probe() makes the
-> core set SPI_CS_HIGH in ctlr->mode_bits.
+On Wed, 20 Apr 2022 09:04:52 +0000, cgel.zte@gmail.com wrote:
+> From: Minghao Chi <chi.minghao@zte.com.cn>
 > 
-> In such a case the spi-rockchip driver operates normally but produces an
-> active-low chip select signal without notice.
+> Using pm_runtime_resume_and_get() to replace pm_runtime_get_sync and
+> pm_runtime_put_noidle. This change is just to simplify the code, no
+> actual functional changes.
+> 
 > 
 > [...]
 
@@ -66,8 +64,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: rockchip: fix missing error on unsupported SPI_CS_HIGH
-      commit: d5d933f09ac326aebad85bfb787cc786ad477711
+[1/1] spi: stm32: using pm_runtime_resume_and_get instead of pm_runtime_get_sync
+      commit: 1af2fb6283fb82755a6fe819f863e4c3d9772e69
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

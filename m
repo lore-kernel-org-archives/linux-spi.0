@@ -2,48 +2,42 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 249BCC433FE
-	for <linux-spi@archiver.kernel.org>; Mon, 25 Apr 2022 17:25:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 33EC8C43217
+	for <linux-spi@archiver.kernel.org>; Mon, 25 Apr 2022 17:25:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244025AbiDYR2T (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 25 Apr 2022 13:28:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47900 "EHLO
+        id S243966AbiDYR22 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 25 Apr 2022 13:28:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243996AbiDYR2F (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 25 Apr 2022 13:28:05 -0400
+        with ESMTP id S243895AbiDYR16 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 25 Apr 2022 13:27:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50CFB40E7A;
-        Mon, 25 Apr 2022 10:25:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04B0340E74
+        for <linux-spi@vger.kernel.org>; Mon, 25 Apr 2022 10:24:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CCCEA614D1;
-        Mon, 25 Apr 2022 17:24:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DF16C385A9;
-        Mon, 25 Apr 2022 17:24:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 93F2F614C1
+        for <linux-spi@vger.kernel.org>; Mon, 25 Apr 2022 17:24:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BA96C385A4;
+        Mon, 25 Apr 2022 17:24:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650907499;
-        bh=vXLMQVewDuf4CxFBhVBTEkU0dP04DdfcWaEPsVlr1IQ=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=dPjlomPC9joKWwiksbIl6XiclQs1VrjOgEzaja2x7BIWGLucSaLbm3rcDs95VAxLo
-         hHM9Zc+XanlnzufRPZBt+DCG1ntiZ6c66VjbljVi9BN1743KLpw7qPAL4Uf24pIDMg
-         5e+sjVDN827TAZ/ma6JDNY1lV7QXameZQKf5c6lr0Xx2NZEyT0+zQBr2zKyQbj+iHC
-         xRbTS4CYyhxw4mVvp8OLnAgchxvDMWm8ToGAu0NVyqqrqcKLBhFtlK1KgZaPkaiH9y
-         byN84hIFljmbs3zMhSXRty5TupfqWORXZBL12BL1FBQqQakKee4SeaDKSKcwvStCIm
-         VY/IvlY1q/qaQ==
+        s=k20201202; t=1650907492;
+        bh=g8NIjo21CsHDLLyAqS3h+bSlHjGHhsZK+djTW10anZw=;
+        h=From:To:In-Reply-To:References:Subject:Date:From;
+        b=gDXaaO7E9uycpcysffLIQ5AsxkUoyzmFlZq8deeqY+Z2Fv16sDTC+SL2c0dfzpMQw
+         M4dPMyWeA03XzuJvuEUu4AMLUNxmuiwXCCr5MNRaswJUM1ooODNViQ0SOKkFscizA4
+         7I0EaJhrHDdIVieIaPXviJjKdA3o4JOfHjTU2GLFCMAtOaSWncCS9mICQHzBHuZOKl
+         4ToTdaliwmBTv8eRmyvGjDXr4cCGHwI/DpXt66bqOpGRn6qdoSvMNMBGelMSf5QZdw
+         FBUUMWcvM3b4FnorfrDSQwuB5j5110g5LpPfHY8sSXGoR9XbCPy6JyKkwXO4Ap8HYN
+         QpWDrsm8h8WzQ==
 From:   Mark Brown <broonie@kernel.org>
-To:     krzk+dt@kernel.org, zhouyanjie@wanyeetech.com, robh+dt@kernel.org
-Cc:     linux-spi@vger.kernel.org, sernia.zhou@foxmail.com,
-        dongsheng.qiu@ingenic.com, contact@artur-rojek.eu,
-        reimu@sudomaker.com, linux-mips@vger.kernel.org,
-        zhenwenjin@gmail.com, linux-kernel@vger.kernel.org,
-        rick.tyliu@ingenic.com, aric.pzqi@ingenic.com,
-        devicetree@vger.kernel.org, paul@crapouillou.net
-In-Reply-To: <1650724725-93758-1-git-send-email-zhouyanjie@wanyeetech.com>
-References: <1650724725-93758-1-git-send-email-zhouyanjie@wanyeetech.com>
-Subject: Re: [PATCH v3 0/3] Improve SPI support for Ingenic SoCs.
-Message-Id: <165090749609.584172.16916188059494565113.b4-ty@kernel.org>
-Date:   Mon, 25 Apr 2022 18:24:56 +0100
+To:     eagle.alexander923@gmail.com, linux-spi@vger.kernel.org
+In-Reply-To: <20220420061038.22570-1-eagle.alexander923@gmail.com>
+References: <20220420061038.22570-1-eagle.alexander923@gmail.com>
+Subject: Re: [PATCH] spi: clps711x: Use syscon_regmap_lookup_by_phandle
+Message-Id: <165090749122.584172.16806085856476442518.b4-ty@kernel.org>
+Date:   Mon, 25 Apr 2022 18:24:51 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -51,17 +45,12 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Sat, 23 Apr 2022 22:38:42 +0800, 周琰杰 (Zhou Yanjie) wrote:
-> 1.Add support for using GPIOs as chip select lines on Ingenic SoCs.
-> 2.Add support for probing the spi-ingenic driver on the JZ4775 SoC,
->   the X1000 SoC, and the X2000 SoC.
-> 3.Modify annotation texts to be more in line with the current state.
+On Wed, 20 Apr 2022 09:10:38 +0300, Alexander Shiyan wrote:
+> Since version 5.13, the standard syscon bindings have been added
+> to all clps711x DT nodes, so we can now use the more general
+> syscon_regmap_lookup_by_phandle function to get the syscon pointer.
 > 
-> v1->v2:
-> Use "device_property_read_u32()" instead "of_property_read_u32()" as
-> Paul Cercueil's suggestion.
 > 
-> [...]
 
 Applied to
 
@@ -69,12 +58,8 @@ Applied to
 
 Thanks!
 
-[1/3] SPI: Ingenic: Add support for use GPIO as chip select line.
-      commit: e64e9ad267ca22ee3db6f9d7a02dc8400a23d4c8
-[2/3] dt-bindings: SPI: Add bindings for new Ingenic SoCs.
-      commit: aecec8bbb225965c6f775b946ad7bf40736c8f09
-[3/3] SPI: Ingenic: Add support for new Ingenic SoCs.
-      commit: 6d72b11403549a34b485d2fe323c8a57b4dd1958
+[1/1] spi: clps711x: Use syscon_regmap_lookup_by_phandle
+      commit: b0ceb62125155c1f8e67d3a944af9536d93609c7
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

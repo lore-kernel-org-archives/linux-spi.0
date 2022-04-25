@@ -2,42 +2,45 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 33EC8C43217
-	for <linux-spi@archiver.kernel.org>; Mon, 25 Apr 2022 17:25:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8B1EEC433FE
+	for <linux-spi@archiver.kernel.org>; Mon, 25 Apr 2022 17:25:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243966AbiDYR22 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 25 Apr 2022 13:28:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47394 "EHLO
+        id S243895AbiDYR23 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 25 Apr 2022 13:28:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243895AbiDYR16 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 25 Apr 2022 13:27:58 -0400
+        with ESMTP id S244097AbiDYR2B (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 25 Apr 2022 13:28:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04B0340E74
-        for <linux-spi@vger.kernel.org>; Mon, 25 Apr 2022 10:24:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF89941307;
+        Mon, 25 Apr 2022 10:24:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 93F2F614C1
-        for <linux-spi@vger.kernel.org>; Mon, 25 Apr 2022 17:24:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BA96C385A4;
-        Mon, 25 Apr 2022 17:24:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6B82361585;
+        Mon, 25 Apr 2022 17:24:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68287C385A4;
+        Mon, 25 Apr 2022 17:24:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650907492;
-        bh=g8NIjo21CsHDLLyAqS3h+bSlHjGHhsZK+djTW10anZw=;
-        h=From:To:In-Reply-To:References:Subject:Date:From;
-        b=gDXaaO7E9uycpcysffLIQ5AsxkUoyzmFlZq8deeqY+Z2Fv16sDTC+SL2c0dfzpMQw
-         M4dPMyWeA03XzuJvuEUu4AMLUNxmuiwXCCr5MNRaswJUM1ooODNViQ0SOKkFscizA4
-         7I0EaJhrHDdIVieIaPXviJjKdA3o4JOfHjTU2GLFCMAtOaSWncCS9mICQHzBHuZOKl
-         4ToTdaliwmBTv8eRmyvGjDXr4cCGHwI/DpXt66bqOpGRn6qdoSvMNMBGelMSf5QZdw
-         FBUUMWcvM3b4FnorfrDSQwuB5j5110g5LpPfHY8sSXGoR9XbCPy6JyKkwXO4Ap8HYN
-         QpWDrsm8h8WzQ==
+        s=k20201202; t=1650907495;
+        bh=+80wHVodptz//ofhkGGYWEEAicTPsSLWn5+WM/nG7v4=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=hG4sh8Adq815IjPH7rdRf8US4h3Qr/fh9BekQURg5sIFT5j1PUnNmtAmQ1hcPTche
+         W8tzXKnhlZDoQj7LcED+fVZas8hrZORY2tafZ8QKSJ7kJVCfr9Yj1Kbm8aYsy5PVtl
+         Q68P+Oa9HpGK3mUcmaph7kAGU+ANM4rFFUFP3zpTH3cgdMDZjXdjQpyNi5VWRsNgLJ
+         zYTsJ39bHxbmx0bRoJseuv7+ci/2zOVLI74GnLxRQs4tAI9iwYvkIbeE6N3H9Cmb0T
+         kDm3SXSzhuzM/Ztgn6rMjatmKiRjfosh2bjJP291O9WehxRP4IVl03vQt7R+vUHR9F
+         qKFBDKd5cpz6w==
 From:   Mark Brown <broonie@kernel.org>
-To:     eagle.alexander923@gmail.com, linux-spi@vger.kernel.org
-In-Reply-To: <20220420061038.22570-1-eagle.alexander923@gmail.com>
-References: <20220420061038.22570-1-eagle.alexander923@gmail.com>
-Subject: Re: [PATCH] spi: clps711x: Use syscon_regmap_lookup_by_phandle
-Message-Id: <165090749122.584172.16806085856476442518.b4-ty@kernel.org>
-Date:   Mon, 25 Apr 2022 18:24:51 +0100
+To:     luca.ceresoli@bootlin.com, linux-spi@vger.kernel.org
+Cc:     chris.ruehl@gtsys.com.hk, linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
+        heiko@sntech.de
+In-Reply-To: <20220421213251.1077899-1-luca.ceresoli@bootlin.com>
+References: <20220421213251.1077899-1-luca.ceresoli@bootlin.com>
+Subject: Re: [PATCH] spi: rockchip: fix missing error on unsupported SPI_CS_HIGH
+Message-Id: <165090749413.584172.1969660470967557422.b4-ty@kernel.org>
+Date:   Mon, 25 Apr 2022 18:24:54 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -45,12 +48,17 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, 20 Apr 2022 09:10:38 +0300, Alexander Shiyan wrote:
-> Since version 5.13, the standard syscon bindings have been added
-> to all clps711x DT nodes, so we can now use the more general
-> syscon_regmap_lookup_by_phandle function to get the syscon pointer.
+On Thu, 21 Apr 2022 23:32:51 +0200, Luca Ceresoli wrote:
+> The hardware (except for the ROCKCHIP_SPI_VER2_TYPE2 version) does not
+> support active-high native chip selects. However if such a CS is configured
+> the core does not error as it normally should, because the
+> 'ctlr->use_gpio_descriptors = true' line in rockchip_spi_probe() makes the
+> core set SPI_CS_HIGH in ctlr->mode_bits.
 > 
+> In such a case the spi-rockchip driver operates normally but produces an
+> active-low chip select signal without notice.
 > 
+> [...]
 
 Applied to
 
@@ -58,8 +66,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: clps711x: Use syscon_regmap_lookup_by_phandle
-      commit: b0ceb62125155c1f8e67d3a944af9536d93609c7
+[1/1] spi: rockchip: fix missing error on unsupported SPI_CS_HIGH
+      commit: d5d933f09ac326aebad85bfb787cc786ad477711
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

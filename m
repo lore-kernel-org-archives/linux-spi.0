@@ -2,45 +2,45 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0C73CC4321E
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 78228C4332F
 	for <linux-spi@archiver.kernel.org>; Mon, 25 Apr 2022 17:25:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235428AbiDYR2F (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 25 Apr 2022 13:28:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46780 "EHLO
+        id S244006AbiDYR2G (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 25 Apr 2022 13:28:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244037AbiDYR1r (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 25 Apr 2022 13:27:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35DF340E71;
-        Mon, 25 Apr 2022 10:24:43 -0700 (PDT)
+        with ESMTP id S244072AbiDYR14 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 25 Apr 2022 13:27:56 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DE5C40E71;
+        Mon, 25 Apr 2022 10:24:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C718B61585;
-        Mon, 25 Apr 2022 17:24:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8E29C385A9;
-        Mon, 25 Apr 2022 17:24:40 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 45B7CB8191E;
+        Mon, 25 Apr 2022 17:24:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E795C385A9;
+        Mon, 25 Apr 2022 17:24:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650907482;
-        bh=6gmtLm26FKCqWWG3JfvENu2V0fQ81REkQJwYzVoLt0w=;
+        s=k20201202; t=1650907489;
+        bh=oXDonDCRoq5ArdBi7s2pfOR94NBVaIngqQh1O0UA8jk=;
         h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=Cf9bZmvm0JAXgYFKXN9AAJ0idCc220H9FGJhA5kZ5FjpVCzgXftyJSRhZY5TOFwW7
-         KMaTgCQuAEF/5YDg2kGyC9C6nw/NRqcKk539HXDDgB9G1aPSFqFRuIMNU3CJ0jGJJ5
-         A/ntB4WhpUAxI9Uk0xlem31LJ5CFi7YUqtJXLHc+OL5kSEdv9ZWLSyb4KNzSOaUdKv
-         huLTybryQ8FPVKZh++L26rZSp3l9GePdJF4VOcPzqOihvmdBlc0qcbEH4yB1Zv+6y1
-         s7TARXTzMNAUjR4wQhe41POLrP//S+mB7uR/E8tfkaYQbO+9DlENeXFqvh3gvjmY6Z
-         OaGEU2t+fkjZQ==
+        b=QP+JpNxHsSbszl8uYuQQrsV/VN3z3SqwsAGMCr6jnJCOckhah1CRhawR4koOo5AyN
+         TXOu7o0uHm50bRMRy5v3q36RnUpzn+86/TQz6t51T1JqjuX6nw6sSviKmdFkRJe6tm
+         rN1//r30953sOOxa8+rEki/W0Drp1uGUF5Bzl+TNjkyj6UJis61pGG15WADUx7Zm0O
+         8ZXBliMnR2IB6Ad1SRv6l6+EyJaFUoaxhP0j9KAIpTDqPz8b94OWFGvQcGbCYYCiqb
+         MzwXWrettnDtG6ck63pvEQaPY/C5XH805in/5VlrWr/S/4DnAKlMqE/SVxvIJdv0Sn
+         YWIKlj0FmsfZg==
 From:   Mark Brown <broonie@kernel.org>
-To:     cgel.zte@gmail.com, ldewangan@nvidia.com
-Cc:     linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org,
+To:     cgel.zte@gmail.com
+Cc:     linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
         linux-kernel@vger.kernel.org, chi.minghao@zte.com.cn,
-        zealci@zte.com.cn
-In-Reply-To: <20220418110141.2559019-1-chi.minghao@zte.com.cn>
-References: <20220418110141.2559019-1-chi.minghao@zte.com.cn>
-Subject: Re: [PATCH] spi: spi-tegra20-slink: using pm_runtime_resume_and_get instead of pm_runtime_get_sync
-Message-Id: <165090748053.584172.14297698011907857671.b4-ty@kernel.org>
-Date:   Mon, 25 Apr 2022 18:24:40 +0100
+        shawnguo@kernel.org, zealci@zte.com.cn
+In-Reply-To: <20220420090420.2588868-1-chi.minghao@zte.com.cn>
+References: <20220420090420.2588868-1-chi.minghao@zte.com.cn>
+Subject: Re: [PATCH] spi: mxs: using pm_runtime_resume_and_get instead of pm_runtime_get_sync
+Message-Id: <165090748728.584172.476405767078177971.b4-ty@kernel.org>
+Date:   Mon, 25 Apr 2022 18:24:47 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -48,13 +48,15 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Mon, 18 Apr 2022 11:01:41 +0000, cgel.zte@gmail.com wrote:
+On Wed, 20 Apr 2022 09:04:20 +0000, cgel.zte@gmail.com wrote:
 > From: Minghao Chi <chi.minghao@zte.com.cn>
 > 
-> Using pm_runtime_resume_and_get is more appropriate
-> for simplifing code
+> Using pm_runtime_resume_and_get() to replace pm_runtime_get_sync and
+> pm_runtime_put_noidle. This change is just to simplify the code, no
+> actual functional changes.
 > 
 > 
+> [...]
 
 Applied to
 
@@ -62,8 +64,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: spi-tegra20-slink: using pm_runtime_resume_and_get instead of pm_runtime_get_sync
-      commit: 1e6f8bd15cf8447a42375b005476e02fc13deb2a
+[1/1] spi: mxs: using pm_runtime_resume_and_get instead of pm_runtime_get_sync
+      commit: 32831bf569e377fc80dc2b1110b72874beb8f4c2
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

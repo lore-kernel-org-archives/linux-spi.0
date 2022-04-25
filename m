@@ -2,44 +2,48 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CBE09C433FE
-	for <linux-spi@archiver.kernel.org>; Mon, 25 Apr 2022 17:25:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 249BCC433FE
+	for <linux-spi@archiver.kernel.org>; Mon, 25 Apr 2022 17:25:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243861AbiDYR2H (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 25 Apr 2022 13:28:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47128 "EHLO
+        id S244025AbiDYR2T (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 25 Apr 2022 13:28:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244066AbiDYR1w (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 25 Apr 2022 13:27:52 -0400
+        with ESMTP id S243996AbiDYR2F (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 25 Apr 2022 13:28:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AFF940E71;
-        Mon, 25 Apr 2022 10:24:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50CFB40E7A;
+        Mon, 25 Apr 2022 10:25:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A9DAB61584;
-        Mon, 25 Apr 2022 17:24:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E565C385A7;
-        Mon, 25 Apr 2022 17:24:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CCCEA614D1;
+        Mon, 25 Apr 2022 17:24:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DF16C385A9;
+        Mon, 25 Apr 2022 17:24:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650907487;
-        bh=cleYBeIiFaQSB0ySqyNgSRQvQT4wn5ve85lUCtx6Ta4=;
+        s=k20201202; t=1650907499;
+        bh=vXLMQVewDuf4CxFBhVBTEkU0dP04DdfcWaEPsVlr1IQ=;
         h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=rfJNN2JWHF9W4uegXtu/lqcacg1Wx/laHxPNZEA8r6FK8CxL2NZOb9P6V79Aiq+rR
-         pDS4CDxJ7tCWwot+dhYuOj5kG5cmpf3eC855qyW4GsOkJ+KwICcQvDFSnSJEoVp138
-         YBr/6BdUtNyNANH3n3iMlEnSuRKLEHbHT2dDq1pZZG+93eGlrRNXNHHC15ZT25KGij
-         78TvSsc3qPRqObZhaq44VpCIORWuU13+CUM8uYeRDYCiIeF/OWItgZ1w/jbxGxGz9b
-         lHDfO4e5xm+1YgMkiebXmDgIdadX0lDHFEW5RQNJDXG4skSh6Avgiu3m/Wvvy/9NId
-         7xDdo1Gf9LgpA==
+        b=dPjlomPC9joKWwiksbIl6XiclQs1VrjOgEzaja2x7BIWGLucSaLbm3rcDs95VAxLo
+         hHM9Zc+XanlnzufRPZBt+DCG1ntiZ6c66VjbljVi9BN1743KLpw7qPAL4Uf24pIDMg
+         5e+sjVDN827TAZ/ma6JDNY1lV7QXameZQKf5c6lr0Xx2NZEyT0+zQBr2zKyQbj+iHC
+         xRbTS4CYyhxw4mVvp8OLnAgchxvDMWm8ToGAu0NVyqqrqcKLBhFtlK1KgZaPkaiH9y
+         byN84hIFljmbs3zMhSXRty5TupfqWORXZBL12BL1FBQqQakKee4SeaDKSKcwvStCIm
+         VY/IvlY1q/qaQ==
 From:   Mark Brown <broonie@kernel.org>
-To:     cgel.zte@gmail.com
-Cc:     zealci@zte.com.cn, linux-kernel@vger.kernel.org,
-        chi.minghao@zte.com.cn, linux-spi@vger.kernel.org
-In-Reply-To: <20220414085506.2541732-1-chi.minghao@zte.com.cn>
-References: <20220414085506.2541732-1-chi.minghao@zte.com.cn>
-Subject: Re: [PATCH] spi: spi-sprd: using pm_runtime_resume_and_get instead of pm_runtime_get_sync
-Message-Id: <165090748578.584172.5039668709284291105.b4-ty@kernel.org>
-Date:   Mon, 25 Apr 2022 18:24:45 +0100
+To:     krzk+dt@kernel.org, zhouyanjie@wanyeetech.com, robh+dt@kernel.org
+Cc:     linux-spi@vger.kernel.org, sernia.zhou@foxmail.com,
+        dongsheng.qiu@ingenic.com, contact@artur-rojek.eu,
+        reimu@sudomaker.com, linux-mips@vger.kernel.org,
+        zhenwenjin@gmail.com, linux-kernel@vger.kernel.org,
+        rick.tyliu@ingenic.com, aric.pzqi@ingenic.com,
+        devicetree@vger.kernel.org, paul@crapouillou.net
+In-Reply-To: <1650724725-93758-1-git-send-email-zhouyanjie@wanyeetech.com>
+References: <1650724725-93758-1-git-send-email-zhouyanjie@wanyeetech.com>
+Subject: Re: [PATCH v3 0/3] Improve SPI support for Ingenic SoCs.
+Message-Id: <165090749609.584172.16916188059494565113.b4-ty@kernel.org>
+Date:   Mon, 25 Apr 2022 18:24:56 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -47,13 +51,15 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, 14 Apr 2022 08:55:06 +0000, cgel.zte@gmail.com wrote:
-> From: Minghao Chi <chi.minghao@zte.com.cn>
+On Sat, 23 Apr 2022 22:38:42 +0800, 周琰杰 (Zhou Yanjie) wrote:
+> 1.Add support for using GPIOs as chip select lines on Ingenic SoCs.
+> 2.Add support for probing the spi-ingenic driver on the JZ4775 SoC,
+>   the X1000 SoC, and the X2000 SoC.
+> 3.Modify annotation texts to be more in line with the current state.
 > 
-> Using pm_runtime_resume_and_get() to replace pm_runtime_get_sync and
-> pm_runtime_put_noidle. This change is just to simplify the code, no
-> actual functional changes.
-> 
+> v1->v2:
+> Use "device_property_read_u32()" instead "of_property_read_u32()" as
+> Paul Cercueil's suggestion.
 > 
 > [...]
 
@@ -63,8 +69,12 @@ Applied to
 
 Thanks!
 
-[1/1] spi: spi-sprd: using pm_runtime_resume_and_get instead of pm_runtime_get_sync
-      commit: b9db82e5f24932d3a1005ce17b2ef564487c1bca
+[1/3] SPI: Ingenic: Add support for use GPIO as chip select line.
+      commit: e64e9ad267ca22ee3db6f9d7a02dc8400a23d4c8
+[2/3] dt-bindings: SPI: Add bindings for new Ingenic SoCs.
+      commit: aecec8bbb225965c6f775b946ad7bf40736c8f09
+[3/3] SPI: Ingenic: Add support for new Ingenic SoCs.
+      commit: 6d72b11403549a34b485d2fe323c8a57b4dd1958
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

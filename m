@@ -2,65 +2,104 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A562CC433EF
-	for <linux-spi@archiver.kernel.org>; Wed, 27 Apr 2022 09:42:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DE4CEC433EF
+	for <linux-spi@archiver.kernel.org>; Wed, 27 Apr 2022 10:51:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229564AbiD0Jpt (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 27 Apr 2022 05:45:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34278 "EHLO
+        id S230211AbiD0Kyz (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 27 Apr 2022 06:54:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229448AbiD0Jpk (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 27 Apr 2022 05:45:40 -0400
-Received: from ssl.serverraum.org (ssl.serverraum.org [IPv6:2a01:4f8:151:8464::1:2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67E27276101;
-        Wed, 27 Apr 2022 02:42:18 -0700 (PDT)
-Received: from mwalle01.kontron.local. (unknown [213.135.10.150])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by ssl.serverraum.org (Postfix) with ESMTPSA id 7A5D422249;
-        Wed, 27 Apr 2022 11:37:32 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
-        t=1651052253;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=kKsiQAb3VLl9KkgR7RnW8se85eQh8HxNJ+rM3PCF52c=;
-        b=abu1OzKE11hlOadwfQD2A00Fv+d+92VqVjFPYqpna1lP6pxC4Wl3ZLso+0HSdS/KdnLnnB
-        qNA2LLNjdxvhlRbvP1GCH9ZhzwSCvf9gcYviQSuK16wp95YZcuW68r30EeTti6fs07vvHR
-        7O6TbZRkoDyWd2qhcZFCjvMdgHTm5Wk=
-From:   Michael Walle <michael@walle.cc>
-To:     jerry.huang@nxp.com
-Cc:     broonie@kernel.org, devicetree@vger.kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, leoyang.li@nxp.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, robh+dt@kernel.org, shawnguo@kernel.org,
-        Michael Walle <michael@walle.cc>
-Subject: Re: [PATCH 1/3 v5] dt-bindings: dspi: added for MikcroBus socket
-Date:   Wed, 27 Apr 2022 11:37:27 +0200
-Message-Id: <20220427093727.1244218-1-michael@walle.cc>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220426022413.885092-1-jerry.huang@nxp.com>
-References: <20220426022413.885092-1-jerry.huang@nxp.com>
+        with ESMTP id S230383AbiD0Kyz (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 27 Apr 2022 06:54:55 -0400
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6593049FF92;
+        Wed, 27 Apr 2022 03:27:05 -0700 (PDT)
+Received: by mail-qk1-f174.google.com with SMTP id z126so947906qkb.2;
+        Wed, 27 Apr 2022 03:27:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Q8fheWnmjASQpGr52DX1eSSjcY85tX/RgUM6t+KFdYg=;
+        b=5k3DUvWH28hQhA8ypY4LIMyNr807u1rLbm6h2GrQaujvl7mgQR9at+w18rs7EQDYE+
+         qzkU/MrV+TRQVUJBxH++DlmTOgD1IZmjcJUcspVBi/USj4LF2S/aKmhLitiBil06OQt3
+         dV7I1uIkLIaC/3lMlJS66cFTFu2s/sKZXM9Xa3HJP8WWPQEbaissrG4ZhsrnYObOY+7b
+         HJYJAHRjQKtC57M+j6doHJCbt3q470+3hR0zOIhKBXTDWZJCpoFUBHG4r9/k6FbORzQF
+         9xbZ/VR4ihFC3jAOs6pfG/DDXIqtMVwlM+hCKrQH1L8U8dp4d9mP8k5GsVF63GsaFWKK
+         uU6A==
+X-Gm-Message-State: AOAM532GwStY2zGK0QyAebHKguTsAu+HcXqX86+ndwupbkZVkYJwh+C8
+        i4OLp6HWNb1+doAGcYYBt5ptSi4Y7Z0hkw==
+X-Google-Smtp-Source: ABdhPJw/Ld8AKlAAL0z9/PLZ3Y5dLWyB+9MXvxUmkIcGlCvzjsXWaqLg6DlUtEcFSS4/BqjCN+39qA==
+X-Received: by 2002:a37:b442:0:b0:69a:fc75:ca52 with SMTP id d63-20020a37b442000000b0069afc75ca52mr15594682qkf.730.1651055224355;
+        Wed, 27 Apr 2022 03:27:04 -0700 (PDT)
+Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com. [209.85.219.181])
+        by smtp.gmail.com with ESMTPSA id r12-20020ac85e8c000000b002f36944423bsm4851726qtx.87.2022.04.27.03.27.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 27 Apr 2022 03:27:04 -0700 (PDT)
+Received: by mail-yb1-f181.google.com with SMTP id w187so2541095ybe.2;
+        Wed, 27 Apr 2022 03:27:03 -0700 (PDT)
+X-Received: by 2002:a25:9e89:0:b0:63c:ad37:a5de with SMTP id
+ p9-20020a259e89000000b0063cad37a5demr24921293ybq.342.1651055223642; Wed, 27
+ Apr 2022 03:27:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210818165604.22127-1-zhengxunli.mxic@gmail.com> <CAMuHMdWUVVnZXc4iXrkpyLFpr9w5X-EzuwvvFGQYAp+0=ZJbqw@mail.gmail.com>
+In-Reply-To: <CAMuHMdWUVVnZXc4iXrkpyLFpr9w5X-EzuwvvFGQYAp+0=ZJbqw@mail.gmail.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Wed, 27 Apr 2022 12:26:52 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdWpvuC2Cm41jCQm+rT8MZB5GN+Z0bPz941QzsHX17Ux-g@mail.gmail.com>
+Message-ID: <CAMuHMdWpvuC2Cm41jCQm+rT8MZB5GN+Z0bPz941QzsHX17Ux-g@mail.gmail.com>
+Subject: Re: [PATCH] memory: renesas-rpc-if: Fix missing setting address
+To:     Zhengxun <zhengxunli.mxic@gmail.com>
+Cc:     Mark Brown <broonie@kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        zhengxunli <zhengxunli@mxic.com.tw>,
+        Sergey Shtylyov <s.shtylyov@omp.ru>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi,
+On Mon, Aug 23, 2021 at 1:59 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> CC sergey's new address
+>
+> On Wed, Aug 18, 2021 at 10:57 AM Zhengxun <zhengxunli.mxic@gmail.com> wrote:
+> > In the RPC manual mode, if the data direction is not set
+> > (such as the flash erase command), the address misses the
+> > setting.
+> >
+> > Signed-off-by: Zhengxun <zhengxunli.mxic@gmail.com>
+> > ---
+> >  drivers/memory/renesas-rpc-if.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> >
+> > diff --git a/drivers/memory/renesas-rpc-if.c b/drivers/memory/renesas-rpc-if.c
+> > index 45eed659b0c6..9dd27c6307f7 100644
+> > --- a/drivers/memory/renesas-rpc-if.c
+> > +++ b/drivers/memory/renesas-rpc-if.c
+> > @@ -482,6 +482,7 @@ int rpcif_manual_xfer(struct rpcif *rpc)
+> >                 }
+> >                 break;
+> >         default:
+> > +               regmap_write(rpc->regmap, RPCIF_SMADR, rpc->smadr);
+> >                 regmap_write(rpc->regmap, RPCIF_SMENR, rpc->enable);
+> >                 regmap_write(rpc->regmap, RPCIF_SMCR,
+> >                              rpc->smcr | RPCIF_SMCR_SPIE);
 
-> Signed-off-by: Changming Huang <jerry.huang@nxp.com>
-> ---
-> changes in v5:
->   - rename compatible name to mikcroe,mikcroe-socket
-> changes in v4:
->   - rename example node, adjust description
-> changes in v3:
->   - add the dt-bindings
+This patch never received review comments.
+As of commit fff53a551db50f5e ("memory: renesas-rpc-if: Correct QSPI
+data transfer in Manual mode") in v5.16-rc1, RPCIF_SMADR is written
+before the switch() statement, hence this patch can be ignored.
 
-Please keep people who reply to your patches on CC in the next versions.
+Gr{oetje,eeting}s,
 
-Thanks,
--michael
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

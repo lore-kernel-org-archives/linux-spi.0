@@ -2,149 +2,67 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BEAE5C433EF
-	for <linux-spi@archiver.kernel.org>; Mon,  2 May 2022 17:27:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E9131C433F5
+	for <linux-spi@archiver.kernel.org>; Mon,  2 May 2022 17:28:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243882AbiEBRar (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 2 May 2022 13:30:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37048 "EHLO
+        id S1386649AbiEBRbv (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 2 May 2022 13:31:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238621AbiEBRar (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 2 May 2022 13:30:47 -0400
-X-Greylist: delayed 4692 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 02 May 2022 10:27:17 PDT
-Received: from 7.mo548.mail-out.ovh.net (7.mo548.mail-out.ovh.net [46.105.33.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1016AA184
-        for <linux-spi@vger.kernel.org>; Mon,  2 May 2022 10:27:16 -0700 (PDT)
-Received: from mxplan5.mail.ovh.net (unknown [10.109.143.206])
-        by mo548.mail-out.ovh.net (Postfix) with ESMTPS id 40C7320A88;
-        Mon,  2 May 2022 16:09:01 +0000 (UTC)
-Received: from kaod.org (37.59.142.107) by DAG4EX1.mxp5.local (172.16.2.31)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Mon, 2 May
- 2022 18:08:59 +0200
-Authentication-Results: garm.ovh; auth=pass (GARM-107S0015a36cd29-1587-4259-883a-5c3137477e16,
-                    1C738C3314058F8CE8CF02D37F1FC3678EA14F63) smtp.auth=clg@kaod.org
-X-OVh-ClientIp: 82.64.250.170
-Message-ID: <449f47d2-f700-e71d-996b-ce30c6906d89@kaod.org>
-Date:   Mon, 2 May 2022 18:08:56 +0200
+        with ESMTP id S235761AbiEBRbp (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 2 May 2022 13:31:45 -0400
+Received: from mail.marcansoft.com (marcansoft.com [IPv6:2a01:298:fe:f::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93961A1A2
+        for <linux-spi@vger.kernel.org>; Mon,  2 May 2022 10:28:15 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        (No client certificate requested)
+        (Authenticated sender: marcan@marcan.st)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id 30BF941DF4;
+        Mon,  2 May 2022 17:28:04 +0000 (UTC)
+Message-ID: <4df7cf10-4203-d08e-0a00-78eeff630b4c@marcan.st>
+Date:   Tue, 3 May 2022 02:28:03 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH v5 02/11] dt-bindings: spi: Add Aspeed SMC controllers
- device tree binding
-Content-Language: en-US
-To:     Rob Herring <robh@kernel.org>
-CC:     Joel Stanley <joel@jms.id.au>,
-        Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pratyush Yadav <p.yadav@ti.com>,
+ Thunderbird/91.7.0
+Subject: Re: [PATCH] dt-bindings: Fix missing '/schemas' in $ref paths
+Content-Language: es-ES
+To:     Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, Sven Peter <sven@svenpeter.dev>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
         Mark Brown <broonie@kernel.org>,
-        Tudor Ambarus <tudor.ambarus@microchip.com>,
-        <linux-kernel@vger.kernel.org>, Tao Ren <rentao.bupt@gmail.com>,
-        Andrew Jeffery <andrew@aj.id.au>, <linux-spi@vger.kernel.org>,
-        <devicetree@vger.kernel.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        <linux-mtd@lists.infradead.org>,
-        Jae Hyun Yoo <quic_jaehyoo@quicinc.com>,
-        <linux-aspeed@lists.ozlabs.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>
-References: <20220502081341.203369-1-clg@kaod.org>
- <20220502081341.203369-3-clg@kaod.org>
- <1651505609.452113.1161768.nullmailer@robh.at.kernel.org>
-From:   =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <1651505609.452113.1161768.nullmailer@robh.at.kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.107]
-X-ClientProxiedBy: DAG2EX2.mxp5.local (172.16.2.12) To DAG4EX1.mxp5.local
- (172.16.2.31)
-X-Ovh-Tracer-GUID: 256f9c92-6a2e-4112-84d2-d224bad78371
-X-Ovh-Tracer-Id: 152277964116167437
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvfedrvdehgdeljecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfhisehtkeertddtfeejnecuhfhrohhmpeevrogurhhitggpnfgvpgfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepudehkedtudfhgfelgffggfeffeefgefhudejvdekveeuveegieelteejiedugeevnecuffhomhgrihhnpehoiihlrggsshdrohhrghenucfkpheptddrtddrtddrtddpfeejrdehledrudegvddruddtjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdpnhgspghrtghpthhtohepuddprhgtphhtthhopehrihgthhgrrhgusehnohgurdgrth
+        Chunfeng Yun <chunfeng.yun@mediatek.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mukesh Savaliya <msavaliy@codeaurora.org>,
+        Akash Asthana <akashast@codeaurora.org>,
+        Bayi Cheng <bayi.cheng@mediatek.com>,
+        Chuanhong Guo <gch981213@gmail.com>,
+        Min Guo <min.guo@mediatek.com>, netdev@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-usb@vger.kernel.org
+References: <20220325215652.525383-1-robh@kernel.org>
+From:   Hector Martin <marcan@marcan.st>
+In-Reply-To: <20220325215652.525383-1-robh@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On 5/2/22 17:33, Rob Herring wrote:
-> On Mon, 02 May 2022 10:13:32 +0200, Cédric Le Goater wrote:
->> The "interrupt" property is optional because it is only necessary for
->> controllers supporting DMAs (Not implemented yet in the new driver).
->>
->> Cc: Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>
->> Tested-by: Joel Stanley <joel@jms.id.au>
->> Tested-by: Tao Ren <rentao.bupt@gmail.com>
->> Tested-by: Jae Hyun Yoo <quic_jaehyoo@quicinc.com>
->> Reviewed-by: Joel Stanley <joel@jms.id.au>
->> Reviewed-by: Rob Herring <robh@kernel.org>
->> Signed-off-by: Cédric Le Goater <clg@kaod.org>
->> ---
->>   .../bindings/spi/aspeed,ast2600-fmc.yaml      | 82 +++++++++++++++++++
->>   MAINTAINERS                                   |  9 ++
->>   2 files changed, 91 insertions(+)
->>   create mode 100644 Documentation/devicetree/bindings/spi/aspeed,ast2600-fmc.yaml
->>
-> 
-> My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-> on your patch (DT_CHECKER_FLAGS is new in v5.13):
-> 
-> yamllint warnings/errors:
-> ./Documentation/devicetree/bindings/spi/aspeed,ast2600-fmc.yaml:62:1: [error] syntax error: found character '\t' that cannot start any token (syntax)
+On 26/03/2022 06.56, Rob Herring wrote:
+> Absolute paths in $ref should always begin with '/schemas'. The tools
+> mostly work with it omitted, but for correctness the path should be
+> everything except the hostname as that is taken from the schema's $id
+> value. This scheme is defined in the json-schema spec.
 
-drat. I forgot to rerun the check after prettifying the example.
+Acked-by: Hector Martin <marcan@marcan.st>
 
-Will resend a v6 without the tabs.
-
-Thanks,
-
-C.
-
-> 
-> dtschema/dtc warnings/errors:
-> make[1]: *** Deleting file 'Documentation/devicetree/bindings/spi/aspeed,ast2600-fmc.example.dts'
-> Traceback (most recent call last):
->    File "/usr/local/bin/dt-extract-example", line 52, in <module>
->      binding = yaml.load(open(args.yamlfile, encoding='utf-8').read())
->    File "/usr/local/lib/python3.10/dist-packages/ruamel/yaml/main.py", line 434, in load
->      return constructor.get_single_data()
->    File "/usr/local/lib/python3.10/dist-packages/ruamel/yaml/constructor.py", line 119, in get_single_data
->      node = self.composer.get_single_node()
->    File "_ruamel_yaml.pyx", line 706, in _ruamel_yaml.CParser.get_single_node
->    File "_ruamel_yaml.pyx", line 724, in _ruamel_yaml.CParser._compose_document
->    File "_ruamel_yaml.pyx", line 775, in _ruamel_yaml.CParser._compose_node
->    File "_ruamel_yaml.pyx", line 889, in _ruamel_yaml.CParser._compose_mapping_node
->    File "_ruamel_yaml.pyx", line 773, in _ruamel_yaml.CParser._compose_node
->    File "_ruamel_yaml.pyx", line 848, in _ruamel_yaml.CParser._compose_sequence_node
->    File "_ruamel_yaml.pyx", line 904, in _ruamel_yaml.CParser._parse_next_event
-> ruamel.yaml.scanner.ScannerError: while scanning a block scalar
->    in "<unicode string>", line 49, column 5
-> found a tab character where an indentation space is expected
->    in "<unicode string>", line 62, column 1
-> make[1]: *** [Documentation/devicetree/bindings/Makefile:26: Documentation/devicetree/bindings/spi/aspeed,ast2600-fmc.example.dts] Error 1
-> make[1]: *** Waiting for unfinished jobs....
-> ./Documentation/devicetree/bindings/spi/aspeed,ast2600-fmc.yaml:  while scanning a block scalar
->    in "<unicode string>", line 49, column 5
-> found a tab character where an indentation space is expected
->    in "<unicode string>", line 62, column 1
-> /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/spi/aspeed,ast2600-fmc.yaml: ignoring, error parsing file
-> make: *** [Makefile:1401: dt_binding_check] Error 2
-> 
-> doc reference errors (make refcheckdocs):
-> 
-> See https://patchwork.ozlabs.org/patch/
-> 
-> This check can fail if there are any dependencies. The base for a patch
-> series is generally the most recent rc1.
-> 
-> If you already ran 'make dt_binding_check' and didn't see the above
-> error(s), then make sure 'yamllint' is installed and dt-schema is up to
-> date:
-> 
-> pip3 install dtschema --upgrade
-> 
-> Please check and re-submit.
-> 
-
+-- 
+Hector Martin (marcan@marcan.st)
+Public Key: https://mrcn.st/pub

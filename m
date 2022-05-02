@@ -2,106 +2,149 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DA3EDC433F5
-	for <linux-spi@archiver.kernel.org>; Mon,  2 May 2022 17:23:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BEAE5C433EF
+	for <linux-spi@archiver.kernel.org>; Mon,  2 May 2022 17:27:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236884AbiEBR0n (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 2 May 2022 13:26:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35220 "EHLO
+        id S243882AbiEBRar (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 2 May 2022 13:30:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235761AbiEBR0n (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 2 May 2022 13:26:43 -0400
-Received: from mail.tkos.co.il (hours.tkos.co.il [84.110.109.230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2130326E0
-        for <linux-spi@vger.kernel.org>; Mon,  2 May 2022 10:23:13 -0700 (PDT)
-Received: from tarshish (unknown [10.0.8.2])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.tkos.co.il (Postfix) with ESMTPS id 06D9B440E72;
-        Mon,  2 May 2022 20:22:19 +0300 (IDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tkos.co.il;
-        s=default; t=1651512139;
-        bh=mGwPiPXKKppVi1nI6QcaKFWRLYZZxZGXxY5xHskzekE=;
-        h=References:From:To:Cc:Subject:Date:In-reply-to:From;
-        b=VdCLzRFg9eqLekgEE9aMDQWbVHMc04jUX/by3DPRrRjhB1pqZjs2l7yfOHx1ekN2R
-         JIfyxMET6AEG1QQeGfy97emM2YGhXWxQLlqImQ4XvVcBmfDX0NVXuElwwwhA9SiER6
-         hj4c5hlONJRUlmoYl0+EBuc85OCh7hTJaFRIWsTZrhBoRmfH34i/vSq/FLSoF+YCVr
-         AusMZIeoLpv2c+I/W01gR0bkyLFSx93+aGL1TQrnZ1nMNMHguR1jy4XmFmJbt88OmD
-         VM0nTg/S0bwcx+jxK+fYGrEpX2DMevyUhYlkPKrmNLYNMUhnf98i2WCSHs+pfnQsg/
-         iC/nv+FJ4LCvQ==
-References: <20220502165210.1956397-1-mkl@pengutronix.de>
- <20220502165210.1956397-8-mkl@pengutronix.de>
-User-agent: mu4e 1.6.10; emacs 27.1
-From:   Baruch Siach <baruch@tkos.co.il>
-To:     Marc Kleine-Budde <mkl@pengutronix.de>
-Cc:     linux-spi@vger.kernel.org, Fabio Estevam <festevam@gmail.com>,
-        Marek Vasut <marex@denx.de>, kernel@pengutronix.de,
-        linux-imx@nxp.com, Mark Brown <broonie@kernel.org>,
-        David Jander <david@protonic.nl>,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [RFC 7/9] spi: spi-imx: replace struct spi_imx_data::bitbang by
- pointer to struct spi_controller
-Date:   Mon, 02 May 2022 20:14:28 +0300
-In-reply-to: <20220502165210.1956397-8-mkl@pengutronix.de>
-Message-ID: <87a6bzyhky.fsf@tarshish>
+        with ESMTP id S238621AbiEBRar (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 2 May 2022 13:30:47 -0400
+X-Greylist: delayed 4692 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 02 May 2022 10:27:17 PDT
+Received: from 7.mo548.mail-out.ovh.net (7.mo548.mail-out.ovh.net [46.105.33.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1016AA184
+        for <linux-spi@vger.kernel.org>; Mon,  2 May 2022 10:27:16 -0700 (PDT)
+Received: from mxplan5.mail.ovh.net (unknown [10.109.143.206])
+        by mo548.mail-out.ovh.net (Postfix) with ESMTPS id 40C7320A88;
+        Mon,  2 May 2022 16:09:01 +0000 (UTC)
+Received: from kaod.org (37.59.142.107) by DAG4EX1.mxp5.local (172.16.2.31)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Mon, 2 May
+ 2022 18:08:59 +0200
+Authentication-Results: garm.ovh; auth=pass (GARM-107S0015a36cd29-1587-4259-883a-5c3137477e16,
+                    1C738C3314058F8CE8CF02D37F1FC3678EA14F63) smtp.auth=clg@kaod.org
+X-OVh-ClientIp: 82.64.250.170
+Message-ID: <449f47d2-f700-e71d-996b-ce30c6906d89@kaod.org>
+Date:   Mon, 2 May 2022 18:08:56 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH v5 02/11] dt-bindings: spi: Add Aspeed SMC controllers
+ device tree binding
+Content-Language: en-US
+To:     Rob Herring <robh@kernel.org>
+CC:     Joel Stanley <joel@jms.id.au>,
+        Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Pratyush Yadav <p.yadav@ti.com>,
+        Mark Brown <broonie@kernel.org>,
+        Tudor Ambarus <tudor.ambarus@microchip.com>,
+        <linux-kernel@vger.kernel.org>, Tao Ren <rentao.bupt@gmail.com>,
+        Andrew Jeffery <andrew@aj.id.au>, <linux-spi@vger.kernel.org>,
+        <devicetree@vger.kernel.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        <linux-mtd@lists.infradead.org>,
+        Jae Hyun Yoo <quic_jaehyoo@quicinc.com>,
+        <linux-aspeed@lists.ozlabs.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>
+References: <20220502081341.203369-1-clg@kaod.org>
+ <20220502081341.203369-3-clg@kaod.org>
+ <1651505609.452113.1161768.nullmailer@robh.at.kernel.org>
+From:   =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <1651505609.452113.1161768.nullmailer@robh.at.kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [37.59.142.107]
+X-ClientProxiedBy: DAG2EX2.mxp5.local (172.16.2.12) To DAG4EX1.mxp5.local
+ (172.16.2.31)
+X-Ovh-Tracer-GUID: 256f9c92-6a2e-4112-84d2-d224bad78371
+X-Ovh-Tracer-Id: 152277964116167437
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvfedrvdehgdeljecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfhisehtkeertddtfeejnecuhfhrohhmpeevrogurhhitggpnfgvpgfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepudehkedtudfhgfelgffggfeffeefgefhudejvdekveeuveegieelteejiedugeevnecuffhomhgrihhnpehoiihlrggsshdrohhrghenucfkpheptddrtddrtddrtddpfeejrdehledrudegvddruddtjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdpnhgspghrtghpthhtohepuddprhgtphhtthhopehrihgthhgrrhgusehnohgurdgrth
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi Marc,
+On 5/2/22 17:33, Rob Herring wrote:
+> On Mon, 02 May 2022 10:13:32 +0200, Cédric Le Goater wrote:
+>> The "interrupt" property is optional because it is only necessary for
+>> controllers supporting DMAs (Not implemented yet in the new driver).
+>>
+>> Cc: Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>
+>> Tested-by: Joel Stanley <joel@jms.id.au>
+>> Tested-by: Tao Ren <rentao.bupt@gmail.com>
+>> Tested-by: Jae Hyun Yoo <quic_jaehyoo@quicinc.com>
+>> Reviewed-by: Joel Stanley <joel@jms.id.au>
+>> Reviewed-by: Rob Herring <robh@kernel.org>
+>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+>> ---
+>>   .../bindings/spi/aspeed,ast2600-fmc.yaml      | 82 +++++++++++++++++++
+>>   MAINTAINERS                                   |  9 ++
+>>   2 files changed, 91 insertions(+)
+>>   create mode 100644 Documentation/devicetree/bindings/spi/aspeed,ast2600-fmc.yaml
+>>
+> 
+> My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+> on your patch (DT_CHECKER_FLAGS is new in v5.13):
+> 
+> yamllint warnings/errors:
+> ./Documentation/devicetree/bindings/spi/aspeed,ast2600-fmc.yaml:62:1: [error] syntax error: found character '\t' that cannot start any token (syntax)
 
-On Mon, May 02 2022, Marc Kleine-Budde wrote:
+drat. I forgot to rerun the check after prettifying the example.
 
-> There's no need to embed the struct spi_bitbang into our private
-> data (struct spi_imx_data), the spi core is flexible enough, so that
-> we only need a pointer to the allocated struct spi_controller.
->
-> This is also a preparation patch to add PIO based polling support to
-> the driver.
->
-> Co-developed-by: David Jander <david@protonic.nl>
-> Signed-off-by: David Jander <david@protonic.nl>
-> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Will resend a v6 without the tabs.
 
-[...]
+Thanks,
 
-> @@ -1641,17 +1642,17 @@ static int spi_imx_probe(struct platform_device *pdev)
->  	else
->  		controller->num_chipselect = 3;
->  
-> -	spi_imx->bitbang.setup_transfer = spi_imx_setupxfer;
-> -	spi_imx->bitbang.txrx_bufs = spi_imx_transfer;
-> -	spi_imx->bitbang.master->setup = spi_imx_setup;
-> -	spi_imx->bitbang.master->cleanup = spi_imx_cleanup;
-> -	spi_imx->bitbang.master->prepare_message = spi_imx_prepare_message;
-> -	spi_imx->bitbang.master->unprepare_message = spi_imx_unprepare_message;
-> -	spi_imx->bitbang.master->slave_abort = spi_imx_slave_abort;
-> -	spi_imx->bitbang.master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_NO_CS;
-> +	spi_imx->controller->transfer_one = spi_imx_transfer_one;
-> +	spi_imx->controller->setup = spi_imx_setup;
-> +	spi_imx->controller->cleanup = spi_imx_cleanup;
-> +	spi_imx->controller->prepare_message = spi_imx_prepare_message;
-> +	spi_imx->controller->unprepare_message = spi_imx_unprepare_message;
-> +	spi_imx->controller->slave_abort = spi_imx_slave_abort;
-> +	spi_imx->controller->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_NO_CS;
-> +
->  	if (is_imx35_cspi(spi_imx) || is_imx51_ecspi(spi_imx) ||
->  	    is_imx53_ecspi(spi_imx))
-> -		spi_imx->bitbang.master->mode_bits |= SPI_LOOP | SPI_READY;
-> +		spi_imx->controller->mode_bits |= SPI_LOOP | SPI_READY;
->  
->  	if (is_imx51_ecspi(spi_imx) &&
->  	    device_property_read_u32(&pdev->dev, "cs-gpios", NULL))
+C.
 
-This hunk conflicts with commit 79422ed9bd7f ("spi: spi-imx: add support
-for SPI_RX_CPHA_FLIP") in Mark's for-5.19 branch. That commit also adds
-another reference to bitbang.master.
+> 
+> dtschema/dtc warnings/errors:
+> make[1]: *** Deleting file 'Documentation/devicetree/bindings/spi/aspeed,ast2600-fmc.example.dts'
+> Traceback (most recent call last):
+>    File "/usr/local/bin/dt-extract-example", line 52, in <module>
+>      binding = yaml.load(open(args.yamlfile, encoding='utf-8').read())
+>    File "/usr/local/lib/python3.10/dist-packages/ruamel/yaml/main.py", line 434, in load
+>      return constructor.get_single_data()
+>    File "/usr/local/lib/python3.10/dist-packages/ruamel/yaml/constructor.py", line 119, in get_single_data
+>      node = self.composer.get_single_node()
+>    File "_ruamel_yaml.pyx", line 706, in _ruamel_yaml.CParser.get_single_node
+>    File "_ruamel_yaml.pyx", line 724, in _ruamel_yaml.CParser._compose_document
+>    File "_ruamel_yaml.pyx", line 775, in _ruamel_yaml.CParser._compose_node
+>    File "_ruamel_yaml.pyx", line 889, in _ruamel_yaml.CParser._compose_mapping_node
+>    File "_ruamel_yaml.pyx", line 773, in _ruamel_yaml.CParser._compose_node
+>    File "_ruamel_yaml.pyx", line 848, in _ruamel_yaml.CParser._compose_sequence_node
+>    File "_ruamel_yaml.pyx", line 904, in _ruamel_yaml.CParser._parse_next_event
+> ruamel.yaml.scanner.ScannerError: while scanning a block scalar
+>    in "<unicode string>", line 49, column 5
+> found a tab character where an indentation space is expected
+>    in "<unicode string>", line 62, column 1
+> make[1]: *** [Documentation/devicetree/bindings/Makefile:26: Documentation/devicetree/bindings/spi/aspeed,ast2600-fmc.example.dts] Error 1
+> make[1]: *** Waiting for unfinished jobs....
+> ./Documentation/devicetree/bindings/spi/aspeed,ast2600-fmc.yaml:  while scanning a block scalar
+>    in "<unicode string>", line 49, column 5
+> found a tab character where an indentation space is expected
+>    in "<unicode string>", line 62, column 1
+> /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/spi/aspeed,ast2600-fmc.yaml: ignoring, error parsing file
+> make: *** [Makefile:1401: dt_binding_check] Error 2
+> 
+> doc reference errors (make refcheckdocs):
+> 
+> See https://patchwork.ozlabs.org/patch/
+> 
+> This check can fail if there are any dependencies. The base for a patch
+> series is generally the most recent rc1.
+> 
+> If you already ran 'make dt_binding_check' and didn't see the above
+> error(s), then make sure 'yamllint' is installed and dt-schema is up to
+> date:
+> 
+> pip3 install dtschema --upgrade
+> 
+> Please check and re-submit.
+> 
 
-baruch
-
--- 
-                                                     ~. .~   Tk Open Systems
-=}------------------------------------------------ooO--U--Ooo------------{=
-   - baruch@tkos.co.il - tel: +972.52.368.4656, http://www.tkos.co.il -

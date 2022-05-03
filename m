@@ -2,85 +2,72 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 86196C433F5
-	for <linux-spi@archiver.kernel.org>; Tue,  3 May 2022 15:51:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3CDC8C433EF
+	for <linux-spi@archiver.kernel.org>; Tue,  3 May 2022 16:00:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238901AbiECPy5 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 3 May 2022 11:54:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38850 "EHLO
+        id S235749AbiECQEN (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 3 May 2022 12:04:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238965AbiECPyy (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 3 May 2022 11:54:54 -0400
+        with ESMTP id S239087AbiECQDu (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 3 May 2022 12:03:50 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B90753B01B;
-        Tue,  3 May 2022 08:51:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D85E1DCC
+        for <linux-spi@vger.kernel.org>; Tue,  3 May 2022 09:00:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 53E18B81F30;
-        Tue,  3 May 2022 15:51:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 012CEC385A4;
-        Tue,  3 May 2022 15:51:14 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 88673B81D8D
+        for <linux-spi@vger.kernel.org>; Tue,  3 May 2022 16:00:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3BB99C385A9;
+        Tue,  3 May 2022 16:00:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651593076;
-        bh=1MQKMXKM6m6N7ENrzmFtWOnFCNAixZZ29Xy7sbT9f6k=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=u/5G8RDJMMa9Zb/IkRaFZ2m1g6mVbsitHVzQuVm8qqwXip0I0ehrHHy549N7SM0s/
-         K3afGKvVzYHIlZPg/s6TLcmCkgT25AE5fKEbHeZQiCuw7oagOhziZ8/XgxWo/FJDCy
-         6k+OOehP3TFx2IHhcdPAbFY7wl3gzhpkv/YqjFYEH6fZbBhEwbT2MuEuVdbuSWkc4u
-         kQu6T0XBwA7KyCfAbQffQcu6w8ArI6p8cXpoRwuj8km1ggx0d6/q3qxjxSBdJivjsN
-         MWo2s6AQpduc80PfrSn5H0TYP/yJNd0k6EdRyxyD1fTL6CAAysMQytVWI0VuL2E+sQ
-         HEYx4IDW0EaAA==
-From:   Mark Brown <broonie@kernel.org>
-To:     abbotti@mev.co.uk, linux-spi@vger.kernel.org
-Cc:     p.yadav@ti.com, dinguyen@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20220427153446.10113-1-abbotti@mev.co.uk>
-References: <20220427153446.10113-1-abbotti@mev.co.uk>
-Subject: Re: [PATCH] spi: cadence-quadspi: fix Direct Access Mode disable for SoCFPGA
-Message-Id: <165159307472.184303.9043361573440279705.b4-ty@kernel.org>
-Date:   Tue, 03 May 2022 16:51:14 +0100
-MIME-Version: 1.0
+        s=k20201202; t=1651593614;
+        bh=S7gZfpWnxhXPxpLMSe+fVhGn9C8ZSmLkpSCtnr4mTus=;
+        h=Subject:From:Date:To:From;
+        b=dxc415rkhtABoblagq0Td7fOUV3VS4YuzB/36I+W2aD//t6PVkaA8rbRfmpb3tq7e
+         VacvtrFLMMte+7qGgOPzRySU3E58818JyFSWc/VcRmaqe/N3h+r8356Q9P1rLxdUlK
+         SXekLwSJZvtmbiedHaGjph110fssbjlwX9+Qj3BBt8vcR2KOGbAOk1Dw6Z7UGDg3Ol
+         c8aBL2BzSxvI1hAmRUF0gZNJxpi7hApKfcR/N+f1PKleXWcQH36ld0ru3IuarpC9lJ
+         cMpbdPwbyVzNk9cguSdRWpMWePSp+G7hccjG6GKA9gVBJ5KngyVSNBCr/2NFVL3cd6
+         dJ9vtYj/G3L8Q==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 100EEF03848;
+        Tue,  3 May 2022 16:00:14 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <165159361398.31024.16077965831693399790.git-patchwork-summary@kernel.org>
+Date:   Tue, 03 May 2022 16:00:13 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, 27 Apr 2022 16:34:46 +0100, Ian Abbott wrote:
-> The Cadence QSPI compatible string required for the SoCFPGA platform
-> changed from the default "cdns,qspi-nor" to "intel,socfpga-qspi" with
-> the introduction of an additional quirk in
-> commit 98d948eb8331 ("spi: cadence-quadspi: fix write completion support").
-> However, that change did not preserve the previously used
-> quirk for this platform.  Reinstate the `CQSPI_DISABLE_DAC_MODE` quirk
-> for the SoCFPGA platform.
-> 
-> [...]
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+Patch: [RFC] spi: cadence-quadspi: Disable DAC on SoCFPGA
+  Submitter: Marek Vasut <marex@denx.de>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=616137
+  Lore link: https://lore.kernel.org/r/20220221043238.295369-1-marex@denx.de
 
-Thanks!
+Patch: spi: cadence-quadspi: fix Direct Access Mode disable for SoCFPGA
+  Submitter: Ian Abbott <abbotti@mev.co.uk>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=636235
+  Lore link: https://lore.kernel.org/r/20220427153446.10113-1-abbotti@mev.co.uk
 
-[1/1] spi: cadence-quadspi: fix Direct Access Mode disable for SoCFPGA
-      commit: f724c296f2f2cc3f9342b0fc26239635cbed856e
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+Total patches: 2
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark

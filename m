@@ -2,47 +2,45 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7D554C433FE
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EC9A4C43217
 	for <linux-spi@archiver.kernel.org>; Tue,  3 May 2022 15:51:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238942AbiECPy4 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 3 May 2022 11:54:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38744 "EHLO
+        id S238949AbiECPy5 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 3 May 2022 11:54:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238980AbiECPyz (ORCPT
+        with ESMTP id S238901AbiECPyz (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Tue, 3 May 2022 11:54:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37F4F3B3FE;
-        Tue,  3 May 2022 08:51:21 -0700 (PDT)
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 919B93B3F9;
+        Tue,  3 May 2022 08:51:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C87F66168F;
-        Tue,  3 May 2022 15:51:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47EAEC385A4;
-        Tue,  3 May 2022 15:51:18 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 00237B81F2E;
+        Tue,  3 May 2022 15:51:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A422C385A9;
+        Tue,  3 May 2022 15:51:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651593080;
-        bh=KkuXBkxl3M1SrH9rLok6F19ml6E97xmqNVUAIDYkAao=;
+        s=k20201202; t=1651593077;
+        bh=iTiarTkByZ5RFQ9pQrV9iuj93cpQAxWxhkeao7MmLRY=;
         h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=tkCBD57f4XuGs75eNLeGYryfiWyg7qyPfjTS6XQ4AE+XBPnow2RzhMXWphNrq5rns
-         4jcXJ5UaKfSwOXfY87Ztyu4nBPyPoJkW/zE8NVSCBRa0GfGkNJjEWVRSw3I+JTiSsf
-         ESxKe9L8fH+bhTTw6OnH0vmt52hattDLjsGanMW2aEajKTWN7wyvhxK303N10010Tq
-         IbXP55iAaVJ12+2+IwQ16Oycy+NKYvYKyP+nV0bznCMj+ExlTFcwT2tc0vMVdPufIA
-         Bwu/8TrpumXCZBp9WgMtdJvJdB/DCQptNkZlz9Y1pvywxU32BSAw6kISkddSFgyKeC
-         5tZVOXQpUKWAg==
+        b=oQLRr72ENUz0DJtAhTaDsSR5JQg0UUhqNY1z+mBh/J9QSVRMHq3PRd4+R0Uf0ZRYR
+         wvYXr7t4DqXElh0fWn+cV3KGPdz1EhPUvX42E0g5ScW0L03HtsHVTzQrBdTUM8Dl+I
+         slMVp9SF2zkRjLaubne8yTvOS7I9BEj1BHJiJdODXmgdP7TJNiHF7shbrJ+3tvSFTV
+         PO7dl2Qxu/tOu5b6RHspmYJ/i1ueBI4JQCN3H9qUqmoHHzW8hqQ5Yhz8X0/ReKrXDb
+         TSh5EkMwWPY5R+tMx/k2d1MrAbhfred1l7jiWM+KfwRKQ1V5OfB0W+1+1VP8Jg6obu
+         uOUJMjfGzjwAw==
 From:   Mark Brown <broonie@kernel.org>
-To:     biju.das.jz@bp.renesas.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org
-Cc:     prabhakar.mahadev-lad.rj@bp.renesas.com, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, geert+renesas@glider.be,
-        Chris.Paterson2@renesas.com, biju.das@bp.renesas.com,
-        linux-renesas-soc@vger.kernel.org
-In-Reply-To: <20220501082150.24662-1-biju.das.jz@bp.renesas.com>
-References: <20220501082150.24662-1-biju.das.jz@bp.renesas.com>
-Subject: Re: [PATCH] spi: dt-bindings: renesas,rspi: Document RZ/G2UL SoC
-Message-Id: <165159307802.184303.18335939609476308379.b4-ty@kernel.org>
-Date:   Tue, 03 May 2022 16:51:18 +0100
+To:     dan.carpenter@oracle.com, gch981213@gmail.com
+Cc:     linux-mediatek@lists.infradead.org, matthias.bgg@gmail.com,
+        linux-spi@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        gch981213@gmail.com
+In-Reply-To: <YmwjUcTKyQNrrn2g@kili>
+References: <YmwjUcTKyQNrrn2g@kili>
+Subject: Re: [PATCH] spi: mtk-snfi: preserve dma_mapping_error() error codes
+Message-Id: <165159307628.184303.16325175750153523597.b4-ty@kernel.org>
+Date:   Tue, 03 May 2022 16:51:16 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -50,15 +48,10 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Sun, 1 May 2022 09:21:50 +0100, Biju Das wrote:
-> Add RSPI binding documentation for Renesas RZ/G2UL SoC.
-> 
-> RSPI block is identical to one found on RZ/A, so no driver changes are
-> required. The fallback compatible string "renesas,rspi-rz" will be used
-> on RZ/G2UL.
+On Fri, 29 Apr 2022 20:41:37 +0300, Dan Carpenter wrote:
+> Return -ENOMEM of there is a dma mapping error.  Do not return success.
 > 
 > 
-> [...]
 
 Applied to
 
@@ -66,8 +59,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: dt-bindings: renesas,rspi: Document RZ/G2UL SoC
-      commit: dfc6597eb1e1604575c6e061e1a9be0048d17b2c
+[1/1] spi: mtk-snfi: preserve dma_mapping_error() error codes
+      commit: 73c1a5153ec8c53100b13bccafbb29cd502ee086
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

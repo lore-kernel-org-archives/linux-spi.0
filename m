@@ -2,102 +2,66 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4C176C433FE
-	for <linux-spi@archiver.kernel.org>; Tue,  3 May 2022 06:08:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DD43BC433F5
+	for <linux-spi@archiver.kernel.org>; Tue,  3 May 2022 06:56:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229564AbiECGLr (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 3 May 2022 02:11:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36738 "EHLO
+        id S230375AbiECHAG (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 3 May 2022 03:00:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229779AbiECGLX (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 3 May 2022 02:11:23 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C02935DE6;
-        Mon,  2 May 2022 23:07:49 -0700 (PDT)
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-        by gandalf.ozlabs.org (Postfix) with ESMTP id 4KsqJ324jYz4yST;
-        Tue,  3 May 2022 16:07:47 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        with ESMTP id S230283AbiECHAF (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 3 May 2022 03:00:05 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F16A529CA6
+        for <linux-spi@vger.kernel.org>; Mon,  2 May 2022 23:56:33 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4KsqHx6WDkz4ySc;
-        Tue,  3 May 2022 16:07:41 +1000 (AEST)
-From:   =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-To:     linux-spi@vger.kernel.org, linux-mtd@lists.infradead.org
-Cc:     Mark Brown <broonie@kernel.org>,
-        Tudor Ambarus <tudor.ambarus@microchip.com>,
-        Pratyush Yadav <p.yadav@ti.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-aspeed@lists.ozlabs.org, Joel Stanley <joel@jms.id.au>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Tao Ren <rentao.bupt@gmail.com>,
-        =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
-        Jae Hyun Yoo <quic_jaehyoo@quicinc.com>
-Subject: [PATCH v6 10/11] ARM: dts: aspeed-g4: Set spi-max-frequency for all flashes
-Date:   Tue,  3 May 2022 08:06:33 +0200
-Message-Id: <20220503060634.122722-11-clg@kaod.org>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220503060634.122722-1-clg@kaod.org>
-References: <20220503060634.122722-1-clg@kaod.org>
+        by ams.source.kernel.org (Postfix) with ESMTPS id 6441DB81C97
+        for <linux-spi@vger.kernel.org>; Tue,  3 May 2022 06:56:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 29BADC385A4;
+        Tue,  3 May 2022 06:56:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1651560991;
+        bh=pjUqKugTv7pOEetfiECJxzbEb5GelQ61gmqhPkZLNAQ=;
+        h=Subject:From:Date:To:From;
+        b=GElHm1aNiClUduAu8a3qf69rqx4k35tuZgFo+TxSq4WUZXr6Jv1YjmC9PMZXDWDF5
+         +VuM9Que1rux9Z/t2AJ6fSkLGCWIcQPFb/fY5BeBGAH3yYuZHI2lVG3XkB9rcACfHY
+         WWZ7li+UL1u8yANmqNDaRDxDAoGuZRLssybos335wyKGXidRDbOWoAw6dzpXG54KXV
+         KAKYpoEUl8VQu2f1XcRUPdbwjNwDzOffz0wmgA4OAMSWcKGyeovtBfmxiigcK//O8L
+         MVzxGxMRdPa+bHuOdFQK/P6h3G9xvFfx1+4/kZX/mGbsYPvrnishIt/ncBeG6o8WhM
+         JGdqhSb+wzmjw==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 03490E7399D;
+        Tue,  3 May 2022 06:56:30 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <165156099095.23817.17421129591539059418.git-patchwork-housekeeping@kernel.org>
+Date:   Tue, 03 May 2022 06:56:30 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Tao Ren <rentao.bupt@gmail.com>
+Latest series: [v6] spi: spi-mem: Convert Aspeed SMC driver to spi-mem (2022-05-03T06:06:23)
+  Superseding: [v5] spi: spi-mem: Convert Aspeed SMC driver to spi-mem (2022-05-02T08:13:30):
+    [v5,01/11] ARM: dts: aspeed: Adjust "reg" property of FMC/SPI controllers
+    [v5,02/11] dt-bindings: spi: Add Aspeed SMC controllers device tree binding
+    [v5,03/11] spi: spi-mem: Convert Aspeed SMC driver to spi-mem
+    [v5,04/11] spi: aspeed: Add support for direct mapping
+    [v5,05/11] spi: aspeed: Adjust direct mapping to device size
+    [v5,06/11] spi: aspeed: Workaround AST2500 limitations
+    [v5,07/11] spi: aspeed: Add support for the AST2400 SPI controller
+    [v5,08/11] spi: aspeed: Calibrate read timings
+    [v5,09/11] ARM: dts: aspeed: Enable Dual SPI RX transfers
+    [v5,10/11] ARM: dts: aspeed-g4: Set spi-max-frequency for all flashes
+    [v5,11/11] mtd: spi-nor: aspeed: set the decoding size to at least 2MB for AST2600
 
-Set "spi-max-frequency" to 50 MHz for all the flashes under the FMC
-controller to ensure the clock frequency is calculated correctly.
 
-Suggested-by: Cédric Le Goater <clg@kaod.org>
-Tested-by: Jae Hyun Yoo <quic_jaehyoo@quicinc.com>
-Signed-off-by: Tao Ren <rentao.bupt@gmail.com>
-Signed-off-by: Cédric Le Goater <clg@kaod.org>
----
- arch/arm/boot/dts/aspeed-g4.dtsi | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/arch/arm/boot/dts/aspeed-g4.dtsi b/arch/arm/boot/dts/aspeed-g4.dtsi
-index 1c6354cec9f2..530491ae5eb2 100644
---- a/arch/arm/boot/dts/aspeed-g4.dtsi
-+++ b/arch/arm/boot/dts/aspeed-g4.dtsi
-@@ -72,24 +72,28 @@ flash@1 {
- 				reg = < 1 >;
- 				compatible = "jedec,spi-nor";
- 				spi-rx-bus-width = <2>;
-+				spi-max-frequency = <50000000>;
- 				status = "disabled";
- 			};
- 			flash@2 {
- 				reg = < 2 >;
- 				compatible = "jedec,spi-nor";
- 				spi-rx-bus-width = <2>;
-+				spi-max-frequency = <50000000>;
- 				status = "disabled";
- 			};
- 			flash@3 {
- 				reg = < 3 >;
- 				compatible = "jedec,spi-nor";
- 				spi-rx-bus-width = <2>;
-+				spi-max-frequency = <50000000>;
- 				status = "disabled";
- 			};
- 			flash@4 {
- 				reg = < 4 >;
- 				compatible = "jedec,spi-nor";
- 				spi-rx-bus-width = <2>;
-+				spi-max-frequency = <50000000>;
- 				status = "disabled";
- 			};
- 		};
 -- 
-2.35.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

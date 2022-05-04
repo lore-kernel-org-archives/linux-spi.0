@@ -2,98 +2,85 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AEB02C43217
-	for <linux-spi@archiver.kernel.org>; Wed,  4 May 2022 15:03:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EA726C433F5
+	for <linux-spi@archiver.kernel.org>; Wed,  4 May 2022 15:14:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351814AbiEDPH1 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 4 May 2022 11:07:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56318 "EHLO
+        id S1352048AbiEDPSB (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 4 May 2022 11:18:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351542AbiEDPHX (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 4 May 2022 11:07:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F39692AE23;
-        Wed,  4 May 2022 08:03:47 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8E93161B6B;
-        Wed,  4 May 2022 15:03:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2E58C385AA;
-        Wed,  4 May 2022 15:03:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651676626;
-        bh=gS9cgRft2gHupLhQNBtsqLQ0zVLeGAsSN5zeFP4h4k0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=sBTekUaifCimlhjajkdL2NZyWiN3UFz7vjqLSot0sBDx9tF8DMYExUV2qDoaPNn5b
-         KYO/QdA7xVibP7boWTEEtGaJGWb+tPRd3xB1YLqOwY7orcA7r6m4ILsbaf7rmMCy1e
-         zIvneMbbhxbXioMm7LBxTjne2J0GLD4i525V1CTJMxU8AM94aF2R9HWSPxK43y80Xt
-         rFOOsJnWrxpu7lJszvL6UPaFYbQ7mCfcQCdphzeLNRJwC3Qb9dAJoV3siInlSIlqVf
-         2EedtYa8TST1srSugZyIjH+iBTS0FYtdUhxy14vaJEjJKP2wDfRWRZuwDo5V8Hk3xh
-         SLciCY6XIkF2A==
-Date:   Wed, 4 May 2022 16:03:38 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Sergey Shtylyov <s.shtylyov@omp.ru>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Wolfram Sang <wsa@kernel.org>,
-        Chris Packham <chris.packham@alliedtelesis.co.nz>,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        linux-ide@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-can@vger.kernel.org, netdev@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-serial@vger.kernel.org,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Anatolij Gustschin <agust@denx.de>,
-        Wolfgang Grandegger <wg@grandegger.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Pantelis Antoniou <pantelis.antoniou@gmail.com>
-Subject: Re: [PATCH v1 2/4] powerpc/mpc5xxx: Switch
- mpc5xxx_get_bus_frequency() to use fwnode
-Message-ID: <YnKVytydpZeNWsBP@sirena.org.uk>
-References: <20220504134449.64473-1-andriy.shevchenko@linux.intel.com>
- <20220504134449.64473-2-andriy.shevchenko@linux.intel.com>
+        with ESMTP id S1352027AbiEDPSA (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 4 May 2022 11:18:00 -0400
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3623B41F8F
+        for <linux-spi@vger.kernel.org>; Wed,  4 May 2022 08:14:22 -0700 (PDT)
+Received: by mail-wr1-x431.google.com with SMTP id e2so2463021wrh.7
+        for <linux-spi@vger.kernel.org>; Wed, 04 May 2022 08:14:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=KM/f7jaQBkBOPOANIitdndZ91PcsmrJZUNaTAD99MtE=;
+        b=VGv/dRbrno6dRtybyhCo6tVYSECgWk/uGSPimj7FJXI3Hd7JHFDss9JMWMtotIZJUL
+         kdOF+HOlvsNH2X7v3TXeRcfJU8WPxezGQJ3KDALwkMEmo36A03BHVQdGT6WCy7SgsjQ7
+         RPrWWn87kswU4wJG6r3QXZAu7E+E9lcNqej+Bi8DButV6oDkSfaRVQmgNC0rT21O6WlY
+         55AqsuGChj8okZP1ncFV+wPM+lyD/OOWfkKKTh1pWCwpLmOhrdhrM1YN/BbGgs0CmAua
+         UkrcJx/LFC1RPDG240qKdmR0bJOIwKXteWHJ/HEBVHoZsPZ/I/QJUE7AhgydZ4MtQ3cC
+         1lJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=KM/f7jaQBkBOPOANIitdndZ91PcsmrJZUNaTAD99MtE=;
+        b=F6vhnjCqjCT8mmRFHyHYc3dkBAXiXB1w8XKH+RD6ec2rnkHXjqmQKrIlW13ZCTcnIw
+         Sor1hFw3ezXryjB0IfXqfbJX8fVxWXo3VfAl4oyE0/fCKKBGw6+/X0frbohilp0z5K2a
+         0/dkCq2siHvjHt9BdeiFgI/0XWOs67UKkNG3o8Hjo6WSkydyMXOHBFETbdn/+zjFIvt1
+         1US+IgZ1YNjkEcLbANnRg4MTS8r+CKZLZ2HLPAOaeo6cOG6e/bqZcQEo257I4v8djwQ+
+         gYvwbC+r06APqfrvg4BiEzHRk6oD1lwacZyb/y1066nb/AQ/0ZCM9PHyoA8D8v3NhhBk
+         6oAQ==
+X-Gm-Message-State: AOAM531aABaESixAt8gepuDTO9A/yPvo7NMSoHs6GJ3ziI4Rd5tU0otW
+        UhBQH2121xfAd6yJanEDD07jFg==
+X-Google-Smtp-Source: ABdhPJzCmKKVgbh2e5QU/zVYFY0v3QjNxas3G4hk2DGXqAw/s2IbQ58xh1hyQJlUzAElG2BcOVMdaA==
+X-Received: by 2002:a5d:6d05:0:b0:20c:64fd:f98a with SMTP id e5-20020a5d6d05000000b0020c64fdf98amr10370797wrq.474.1651677260856;
+        Wed, 04 May 2022 08:14:20 -0700 (PDT)
+Received: from [192.168.0.215] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
+        by smtp.gmail.com with ESMTPSA id v19-20020a1cf713000000b00394431ac1a3sm3904584wmh.17.2022.05.04.08.14.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 May 2022 08:14:20 -0700 (PDT)
+Message-ID: <cfba178d-ff36-910b-3067-ce32b701b643@linaro.org>
+Date:   Wed, 4 May 2022 17:14:19 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="YyVuIp0t4l9kBDGR"
-Content-Disposition: inline
-In-Reply-To: <20220504134449.64473-2-andriy.shevchenko@linux.intel.com>
-X-Cookie: Mother is the invention of necessity.
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: Re: [PATCH] spi: dt-bindings: qcom,spi-geni-qcom: allow three
+ interconnects
+Content-Language: en-US
+To:     Mark Brown <broonie@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc:     Andy Gross <agross@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20220504125119.190526-1-krzysztof.kozlowski@linaro.org>
+ <YnKVLxmz0hhQGNzI@sirena.org.uk>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <YnKVLxmz0hhQGNzI@sirena.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+On 04/05/2022 17:01, Mark Brown wrote:
+> On Wed, May 04, 2022 at 02:51:19PM +0200, Krzysztof Kozlowski wrote:
+>> Recent Qualcomm Geni SPI nodes, e.g. on SM8450, come with three
+>> interconnects.  This fixes dtbs_check warnings like:
+> 
+> This doesn't apply against current code, please check and resend.
 
---YyVuIp0t4l9kBDGR
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Thanks Mark, but as explained in commit below "---" - this is a fix for
+commit in Qualcomm/Bjorn tree. Could you ack it instead?
 
-On Wed, May 04, 2022 at 04:44:47PM +0300, Andy Shevchenko wrote:
-> Switch mpc5xxx_get_bus_frequency() to use fwnode in order to help
-> cleaning up other parts of the kernel from OF specific code.
-
-Acked-by: Mark Brown <broonie@kernel.org>
-
---YyVuIp0t4l9kBDGR
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmJylckACgkQJNaLcl1U
-h9BYbQf/d+R2/K8I9P6XsFeNBBDkbkBKu4u+dnvyBvda1uA0bN681S7UN/+65MPC
-sNd9OZXoE0bx/AnrXyZlW+IJC2jWyLcwL9rGR4hrIkW1w50MqD6WWl6XRe+cmYSF
-W+/goNVZ9EcqhviJXuhSTy7Cu14LU7V4uFUWR/MOcjmFD0hxnUJNub6xJsdUsf8I
-pAEjZJB7TEiPpN6SXvENzukmdyQewPL6RqLTTIki9dUXE9fn1ixsvQX0bBd5yY1e
-vWYnszaplvlFBXwDLftPDtQ+880HVZK0VrXJpCfPW2MqfFsDovNNQyZdlR4T0W9w
-rUS8W2LQXMCfj7BSLZ+tUgPA+OoNKg==
-=mP8/
------END PGP SIGNATURE-----
-
---YyVuIp0t4l9kBDGR--
+Best regards,
+Krzysztof

@@ -2,96 +2,140 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AA5F0C43217
-	for <linux-spi@archiver.kernel.org>; Wed, 11 May 2022 07:47:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D1D1DC433F5
+	for <linux-spi@archiver.kernel.org>; Wed, 11 May 2022 11:55:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243099AbiEKHrZ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 11 May 2022 03:47:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37384 "EHLO
+        id S236984AbiEKLzX (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 11 May 2022 07:55:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235115AbiEKHrW (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 11 May 2022 03:47:22 -0400
-Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5FE473568;
-        Wed, 11 May 2022 00:47:20 -0700 (PDT)
-Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24B6xwnC023980;
-        Wed, 11 May 2022 09:47:03 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding : content-type; s=selector1;
- bh=mAhG4ovg92q7nYBFEwu3rZocKdMf+X4foJs4P1F1k50=;
- b=NacexDYOiDOCsXFn0hvx4DoUS7/K/jav6rj2Hcw/Kllh1Q50Gzb2BvB7Veu70ktZY/xc
- ZmAY/5Z71rlVVGlIMxVP5JLcjCW7Lry4EG1FXAn3evU6lCs1PsDomIpPXk+XVkycmdvO
- TJT2LkVfp3VNa133FDAfBPUucAkwFANKamRWoZtWJDhrvtLDKFJ8ywDtdgh2bq9zeIxY
- oeTzL3uW62BiJxK+Y2PGBxBpbeC+t8t51/HaktE/AbIVskSYfgdsanpeTcsHlrTQGk7A
- 3o6k0tuX2mwovchm9f7Hqf+KjLRH682u5YWTIX57OvoMEsLD0ZG2kDL0KLTkSm2J/uGu rw== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3fwdw98kqp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 11 May 2022 09:47:03 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id B0703100034;
-        Wed, 11 May 2022 09:47:02 +0200 (CEST)
-Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id A92D42128DB;
-        Wed, 11 May 2022 09:47:02 +0200 (CEST)
-Received: from localhost (10.75.127.47) by SHFDAG1NODE1.st.com (10.75.129.69)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2308.20; Wed, 11 May
- 2022 09:47:02 +0200
-From:   <patrice.chotard@foss.st.com>
-To:     Mark Brown <broonie@kernel.org>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>
-CC:     <linux-spi@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <christophe.kerello@foss.st.com>,
-        <patrice.chotard@foss.st.com>, <eberhard.stoll@kontron.de>
-Subject: [PATCH 1/3] spi: stm32-qspi: Fix wait_cmd timeout in APM mode
-Date:   Wed, 11 May 2022 09:46:42 +0200
-Message-ID: <20220511074644.558874-2-patrice.chotard@foss.st.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220511074644.558874-1-patrice.chotard@foss.st.com>
-References: <20220511074644.558874-1-patrice.chotard@foss.st.com>
+        with ESMTP id S240902AbiEKLzW (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 11 May 2022 07:55:22 -0400
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A78912438E1;
+        Wed, 11 May 2022 04:55:21 -0700 (PDT)
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 24BBtIwB035581;
+        Wed, 11 May 2022 06:55:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1652270118;
+        bh=f0uhcvsc+1kbeZtPp/p/m0PHcJZMWJuiePiXoa4pIJs=;
+        h=From:To:CC:Subject:Date;
+        b=o6QAvTD2dy4L5RAa4v/2ENw5yO4p7PNiDDi/azRcfv86SOgVtHtCCWDpDlmPyIBsz
+         vH4DVWGWXe3Uk414mehjqj5z9NyOeS+vKMuxO3JkoRBFTYPezaLqCO2tfSIoG/qmKH
+         ehqc2lo/srBLFe7/13oPvKoxFdvgSS/qgZZzsa6g=
+Received: from DLEE107.ent.ti.com (dlee107.ent.ti.com [157.170.170.37])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 24BBtI3x094140
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 11 May 2022 06:55:18 -0500
+Received: from DLEE102.ent.ti.com (157.170.170.32) by DLEE107.ent.ti.com
+ (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Wed, 11
+ May 2022 06:55:18 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE102.ent.ti.com
+ (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
+ Frontend Transport; Wed, 11 May 2022 06:55:18 -0500
+Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 24BBtG9n039452;
+        Wed, 11 May 2022 06:55:17 -0500
+From:   Vaishnav Achath <vaishnav.a@ti.com>
+To:     <broonie@kernel.org>, <linux-spi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC:     <vigneshr@ti.com>, <p.yadav@ti.com>, <j-keerthy@ti.com>,
+        <vaishnav.a@ti.com>
+Subject: [PATCH] drivers: spi: cadence-quadspi: Handle spi_unregister_master() in remove()
+Date:   Wed, 11 May 2022 17:25:16 +0530
+Message-ID: <20220511115516.14894-1-vaishnav.a@ti.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Originating-IP: [10.75.127.47]
-X-ClientProxiedBy: SFHDAG2NODE2.st.com (10.75.127.5) To SHFDAG1NODE1.st.com
- (10.75.129.69)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
- definitions=2022-05-11_02,2022-05-10_01,2022-02-23_01
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Patrice Chotard <patrice.chotard@foss.st.com>
+Currently devres managed removal of the spi_controller happens after
+removing the power domain of the host platform_device.While this
+does not affect the clean removal of the controller, but affects
+graceful removal of the child devices if the child  device removal
+requires issuing commands over SPI.
 
-In APM mode, TCF and TEF flags are not set. To avoid timeout in
-stm32_qspi_wait_cmd(), don't check if TCF/TEF are set.
+Eg. flash device being soft reset to 1S-1S-1S mode before removal
+so that on next probe operations in 1S-1S-1S mode is successful.
 
-Signed-off-by: Patrice Chotard <patrice.chotard@foss.st.com>
-Reported-by: eberhard.stoll@kontron.de
+Failure is seen when `rmmod spi-cadence-quadspi` is performed:
+
+root@j7-evm:~# rmmod spi_cadence_quadspi
+[ 49.230996] cadence-qspi 47050000.spi: QSPI is still busy after 500ms timeout.
+[ 49.238209] spi-nor spi1.0: operation failed with -110
+[ 49.244457] spi-nor spi1.0: Software reset failed: -110
+
+and on subsequent modprobe the OSPI flash probe fails as it
+is in 8D-8D-8D mode since the previous soft reset did not happen.
+
+root@j7-evm:~# modprobe spi_cadence_quadspi
+[ 73.253536] spi-nor spi0.0: unrecognized JEDEC id bytes: ff ff ff ff ff ff
+[ 73.260476] spi-nor: probe of spi0.0 failed with error -2
+
+This commit adds necessary changes to perform spi_unregister_master()
+in the host device remove() so that the child devices are gracefully
+removed before the power domain is removed.
+
+changes tested on J721E with mt35xu512aba flash.
+
+Signed-off-by: Vaishnav Achath <vaishnav.a@ti.com>
 ---
- drivers/spi/spi-stm32-qspi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi-cadence-quadspi.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-stm32-qspi.c b/drivers/spi/spi-stm32-qspi.c
-index bf47a1452001..12d8bec35bf6 100644
---- a/drivers/spi/spi-stm32-qspi.c
-+++ b/drivers/spi/spi-stm32-qspi.c
-@@ -308,7 +308,8 @@ static int stm32_qspi_wait_cmd(struct stm32_qspi *qspi,
- 	if (!op->data.nbytes)
- 		goto wait_nobusy;
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index 19686fb47bb3..baf8559b553b 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -62,7 +62,7 @@ struct cqspi_flash_pdata {
  
--	if (readl_relaxed(qspi->io_base + QSPI_SR) & SR_TCF)
-+	if ((readl_relaxed(qspi->io_base + QSPI_SR) & SR_TCF) ||
-+	    qspi->fmode == CCR_FMODE_APM)
- 		goto out;
+ struct cqspi_st {
+ 	struct platform_device	*pdev;
+-
++	struct spi_master	*master;
+ 	struct clk		*clk;
+ 	unsigned int		sclk;
  
- 	reinit_completion(&qspi->data_completion);
+@@ -1639,7 +1639,7 @@ static int cqspi_probe(struct platform_device *pdev)
+ 	int ret;
+ 	int irq;
+ 
+-	master = spi_alloc_master(&pdev->dev, sizeof(*cqspi));
++	master = devm_spi_alloc_master(&pdev->dev, sizeof(*cqspi));
+ 	if (!master) {
+ 		dev_err(&pdev->dev, "spi_alloc_master failed\n");
+ 		return -ENOMEM;
+@@ -1652,6 +1652,7 @@ static int cqspi_probe(struct platform_device *pdev)
+ 	cqspi = spi_master_get_devdata(master);
+ 
+ 	cqspi->pdev = pdev;
++	cqspi->master = master;
+ 	platform_set_drvdata(pdev, cqspi);
+ 
+ 	/* Obtain configuration from OF. */
+@@ -1784,7 +1785,7 @@ static int cqspi_probe(struct platform_device *pdev)
+ 			goto probe_setup_failed;
+ 	}
+ 
+-	ret = devm_spi_register_master(dev, master);
++	ret = spi_register_master(master);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to register SPI ctlr %d\n", ret);
+ 		goto probe_setup_failed;
+@@ -1807,6 +1808,7 @@ static int cqspi_remove(struct platform_device *pdev)
+ {
+ 	struct cqspi_st *cqspi = platform_get_drvdata(pdev);
+ 
++	spi_unregister_master(cqspi->master);
+ 	cqspi_controller_enable(cqspi, 0);
+ 
+ 	if (cqspi->rx_chan)
 -- 
-2.25.1
+2.17.1
 

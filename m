@@ -2,44 +2,44 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4BDA8C433F5
-	for <linux-spi@archiver.kernel.org>; Wed, 11 May 2022 07:47:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0CEABC433FE
+	for <linux-spi@archiver.kernel.org>; Wed, 11 May 2022 07:47:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243090AbiEKHrY (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 11 May 2022 03:47:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37382 "EHLO
+        id S243094AbiEKHrZ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 11 May 2022 03:47:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236172AbiEKHrW (ORCPT
+        with ESMTP id S229579AbiEKHrW (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Wed, 11 May 2022 03:47:22 -0400
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA3A66EC6E;
+Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3F046D942;
         Wed, 11 May 2022 00:47:19 -0700 (PDT)
-Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24B6m0iI032615;
-        Wed, 11 May 2022 09:47:03 +0200
+Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24B3Mrxw017146;
+        Wed, 11 May 2022 09:47:02 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding : content-type; s=selector1;
- bh=j/DyzE+naJ1AnO/Sannl9gKpYXXGK+B/WTEOEOIvbTY=;
- b=VfYuBqDxFhD7N9Q4guNQyVeT8zYXR0FeZ/3QWiMF1FQpGQnle+2ARmkDTdEvXwrWMn69
- O/NdOgLp+6qzQiF7U2126eb3CCOs7wNZJAqAYpwXtH9tpYl/6NCkDWqAET21GzrbHDHy
- O8YT+sBw/HrLLul5pu9q7jgmmso0iqPmjLnEgTiHLqsNxqI/hJ2B9xGlfYmfWkqiZh3H
- x0vnSP/g3hZrbwfxAWvaI9v9lC3CImhoRNN+ZG1oSXHEpRj0eiaMeNn87xZ5XL7QwuMs
- KAg70hOhdB2xLTvWMxBezVliUdH2W79EdoREG2ctK7XdomcIHIiRPlB40MgO4rfDyYle vg== 
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=selector1;
+ bh=fshfuSYi2zqO1if2fSxELmD7JNptjzEqSmmJbf+TXfQ=;
+ b=qTxraEJQAv+YyToErt2WC6vyh1cWdZY+UfgyUduuh6xb/nm/rvwQtvaRFxzNXPCq1kY5
+ 2tVU/ErNubXQt/Fc0V3P4ZZaY8L/PA7xwbFjl9obhZyzc3Pz93l0HGxdSx8xpiaYClYg
+ KeiaaViv3WFgcPNnqqSBmi02NrJE1Jh1F46D55ML1wMjdDZhBCJBu0+NyIObdhlwZfEF
+ oo9hsqhmrAkoWMMIhR2evRpL48z/Rito09vTpzrcqljqUcQ02BAzuKFz0egGwlG7ykx7
+ Tx430ljdIj0m3121X8fMInItlPNy831lCtfdw2ndMCyPuqRAo3dD5qim89uHpF38Wvtl SA== 
 Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3fwg415695-1
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3fwdw98kqm-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 11 May 2022 09:47:03 +0200
+        Wed, 11 May 2022 09:47:02 +0200
 Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 3156610002A;
-        Wed, 11 May 2022 09:47:03 +0200 (CEST)
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 1897310002A;
+        Wed, 11 May 2022 09:47:02 +0200 (CEST)
 Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 2AB2A2128DB;
-        Wed, 11 May 2022 09:47:03 +0200 (CEST)
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 0E60C2128DB;
+        Wed, 11 May 2022 09:47:02 +0200 (CEST)
 Received: from localhost (10.75.127.46) by SHFDAG1NODE1.st.com (10.75.129.69)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2308.20; Wed, 11 May
- 2022 09:47:02 +0200
+ 2022 09:47:01 +0200
 From:   <patrice.chotard@foss.st.com>
 To:     Mark Brown <broonie@kernel.org>,
         Alexandre Torgue <alexandre.torgue@foss.st.com>
@@ -48,12 +48,10 @@ CC:     <linux-spi@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-kernel@vger.kernel.org>, <christophe.kerello@foss.st.com>,
         <patrice.chotard@foss.st.com>
-Subject: [PATCH 2/3] spi: stm32-qspi: Always check SR_TCF flags in stm32_qspi_wait_cmd()
-Date:   Wed, 11 May 2022 09:46:43 +0200
-Message-ID: <20220511074644.558874-3-patrice.chotard@foss.st.com>
+Subject: [PATCH 0/3] spi: stm32-qspi: flags management fixes
+Date:   Wed, 11 May 2022 09:46:41 +0200
+Message-ID: <20220511074644.558874-1-patrice.chotard@foss.st.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220511074644.558874-1-patrice.chotard@foss.st.com>
-References: <20220511074644.558874-1-patrice.chotard@foss.st.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -69,41 +67,19 @@ X-Mailing-List: linux-spi@vger.kernel.org
 
 From: Patrice Chotard <patrice.chotard@foss.st.com>
 
-Currently, SR_TCF flag is checked in case there is data, this criteria
-is not correct.
+This series update flags management in the following cases:
+  - In APM mode, don't take care of TCF and TEF flags
+  - Always check TCF flag in stm32_qspi_wait_cmd()
+  - Don't check BUSY flag when sending new command
 
-SR_TCF flags is set when programmed number of bytes has been transferred
-to the memory device ("bytes" comprised command and data send to the
-SPI device).
-So even if there is no data, we must check SR_TCF flag.
+Patrice Chotard (3):
+  spi: stm32-qspi: Fix wait_cmd timeout in APM mode
+  spi: stm32-qspi: Always check SR_TCF flags in stm32_qspi_wait_cmd()
+  spi: stm32-qspi: Remove SR_BUSY bit check before sending command
 
-Signed-off-by: Patrice Chotard <patrice.chotard@foss.st.com>
----
- drivers/spi/spi-stm32-qspi.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/spi/spi-stm32-qspi.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/spi/spi-stm32-qspi.c b/drivers/spi/spi-stm32-qspi.c
-index 12d8bec35bf6..1660ca5bd1c5 100644
---- a/drivers/spi/spi-stm32-qspi.c
-+++ b/drivers/spi/spi-stm32-qspi.c
-@@ -305,9 +305,6 @@ static int stm32_qspi_wait_cmd(struct stm32_qspi *qspi,
- 	u32 cr, sr;
- 	int err = 0;
- 
--	if (!op->data.nbytes)
--		goto wait_nobusy;
--
- 	if ((readl_relaxed(qspi->io_base + QSPI_SR) & SR_TCF) ||
- 	    qspi->fmode == CCR_FMODE_APM)
- 		goto out;
-@@ -328,7 +325,6 @@ static int stm32_qspi_wait_cmd(struct stm32_qspi *qspi,
- out:
- 	/* clear flags */
- 	writel_relaxed(FCR_CTCF | FCR_CTEF, qspi->io_base + QSPI_FCR);
--wait_nobusy:
- 	if (!err)
- 		err = stm32_qspi_wait_nobusy(qspi);
- 
 -- 
 2.25.1
 

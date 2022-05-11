@@ -2,86 +2,96 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 96821C433F5
-	for <linux-spi@archiver.kernel.org>; Tue, 10 May 2022 15:11:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 95D64C433EF
+	for <linux-spi@archiver.kernel.org>; Wed, 11 May 2022 07:47:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241000AbiEJPPq (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 10 May 2022 11:15:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45854 "EHLO
+        id S243069AbiEKHrX (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 11 May 2022 03:47:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345246AbiEJPPD (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 10 May 2022 11:15:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D98DF1A448F;
-        Tue, 10 May 2022 07:49:45 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6C39E6197B;
-        Tue, 10 May 2022 14:49:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26016C385C2;
-        Tue, 10 May 2022 14:49:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652194184;
-        bh=It5LLlICcgWLjJuklqPrLH1pvoYxAaNwnpQSgLllmnU=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=b11528v5YQ8ayowHOlkGxTtGo++/KZ3UDF8Z7W5+1uQRupdqQzm2vtjiKE0Pvqjp9
-         aAI7MXj4AvAiuUj+n/9b1yZSfDnthP2jSU1zop+EWCHo95IXjv5gkpmlyw7fqWdjFE
-         956KAiKoyf/SXtitwqPuqcfe4aulZeyvK3GtgNa9vwUWPyya9CRBcAyYhoNFRjIvZH
-         unbCETr3l28jC7D7ukm9ioNygeQ2W8oADjSIyt6Lf5IV0Ta2JOFSdiit2CQSyHUKDw
-         emrmnEjuficE1nvnau4EV2LecUHRdM1Yxk3XYUJImWcy+QV7sVEkPg0IHmf0z51PqH
-         QpzZ4vjGtQgrg==
-From:   Mark Brown <broonie@kernel.org>
-To:     abbotti@mev.co.uk, linux-spi@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org
-In-Reply-To: <20220510115141.212779-1-abbotti@mev.co.uk>
-References: <20220510115141.212779-1-abbotti@mev.co.uk>
-Subject: Re: [PATCH 0/2] spi: cadence-quadspi: a couple of minor cleanups
-Message-Id: <165219418387.389013.6193637410235087757.b4-ty@kernel.org>
-Date:   Tue, 10 May 2022 15:49:43 +0100
+        with ESMTP id S238103AbiEKHrW (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 11 May 2022 03:47:22 -0400
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2244E7356F;
+        Wed, 11 May 2022 00:47:20 -0700 (PDT)
+Received: from pps.filterd (m0288072.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24B4hxge021004;
+        Wed, 11 May 2022 09:47:04 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding : content-type; s=selector1;
+ bh=1ai4dm2l20Sc9AImn6T6dcp7p4IL4yIAR2T4CFSl3Aw=;
+ b=z9jheGbqV4h2/VUvjiY0HUqshCihxPXcmCgImnv3QLcsn8Tl00SUKi/gW62lk5vsz3zE
+ LaBHpevyphqk9qn18IwBfDZyJlfuR4UUIA8fjBjlibMXujjscifCFpRPFfxyVK4evvRi
+ Amls0cYvjASZXNuJZKiV/flgFRlgGMmOtWjznfwlApqdYn+6zbW3UM39h8hmxmglMhUw
+ Q6MR07HbL8RcW8B/K2GiRN61BKDKDkzmoPx9hH4izHnFu2GofwjVmzxHTsvOMAK7FrI+
+ YfjHoGKL9RiSSjykNUjQ9TJLfTTxeYoUJLcKiJLtTVaakvwPK11CzdDhP43OYOHFmtwG HQ== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3fwe6kwhse-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 11 May 2022 09:47:04 +0200
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id C3EFA100034;
+        Wed, 11 May 2022 09:47:03 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id BE1DF2128DB;
+        Wed, 11 May 2022 09:47:03 +0200 (CEST)
+Received: from localhost (10.75.127.46) by SHFDAG1NODE1.st.com (10.75.129.69)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2308.20; Wed, 11 May
+ 2022 09:47:03 +0200
+From:   <patrice.chotard@foss.st.com>
+To:     Mark Brown <broonie@kernel.org>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>
+CC:     <linux-spi@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <christophe.kerello@foss.st.com>,
+        <patrice.chotard@foss.st.com>
+Subject: [PATCH 3/3] spi: stm32-qspi: Remove SR_BUSY bit check before sending command
+Date:   Wed, 11 May 2022 09:46:44 +0200
+Message-ID: <20220511074644.558874-4-patrice.chotard@foss.st.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220511074644.558874-1-patrice.chotard@foss.st.com>
+References: <20220511074644.558874-1-patrice.chotard@foss.st.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.75.127.46]
+X-ClientProxiedBy: SFHDAG2NODE2.st.com (10.75.127.5) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
+ definitions=2022-05-11_02,2022-05-10_01,2022-02-23_01
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Tue, 10 May 2022 12:51:39 +0100, Ian Abbott wrote:
-> Just a couple of trivial source code cleanups.
-> 
-> Ian Abbott (2):
->   spi: cadence-quadspi: Add missing blank line in
->     cqspi_request_mmap_dma()
->   spi: cadence-quadspi: remove unnecessary (void *) casts
-> 
-> [...]
+From: Patrice Chotard <patrice.chotard@foss.st.com>
 
-Applied to
+Waiting for SR_BUSY bit when receiving a new command is not needed.
+SR_BUSY bit is already managed in the previous command treatment.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+Signed-off-by: Patrice Chotard <patrice.chotard@foss.st.com>
+---
+ drivers/spi/spi-stm32-qspi.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-Thanks!
+diff --git a/drivers/spi/spi-stm32-qspi.c b/drivers/spi/spi-stm32-qspi.c
+index 1660ca5bd1c5..c0239e405c39 100644
+--- a/drivers/spi/spi-stm32-qspi.c
++++ b/drivers/spi/spi-stm32-qspi.c
+@@ -369,10 +369,6 @@ static int stm32_qspi_send(struct spi_mem *mem, const struct spi_mem_op *op)
+ 		op->dummy.buswidth, op->data.buswidth,
+ 		op->addr.val, op->data.nbytes);
+ 
+-	err = stm32_qspi_wait_nobusy(qspi);
+-	if (err)
+-		goto abort;
+-
+ 	cr = readl_relaxed(qspi->io_base + QSPI_CR);
+ 	cr &= ~CR_PRESC_MASK & ~CR_FSEL;
+ 	cr |= FIELD_PREP(CR_PRESC_MASK, flash->presc);
+-- 
+2.25.1
 
-[1/2] spi: cadence-quadspi: Add missing blank line in cqspi_request_mmap_dma()
-      commit: 76159e2f9a0fa29fd9fccb262687d95282985b49
-[2/2] spi: cadence-quadspi: remove unnecessary (void *) casts
-      commit: 0d8688298d6a43f2e187dad1e45871248123764f
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark

@@ -2,126 +2,117 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E4F96C433FE
-	for <linux-spi@archiver.kernel.org>; Thu, 19 May 2022 17:58:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B5607C433EF
+	for <linux-spi@archiver.kernel.org>; Fri, 20 May 2022 12:02:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243409AbiESR6i (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 19 May 2022 13:58:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42622 "EHLO
+        id S1348952AbiETMCg (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 20 May 2022 08:02:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242864AbiESR6h (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 19 May 2022 13:58:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95CDDD02BD;
-        Thu, 19 May 2022 10:58:36 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 30815619CF;
-        Thu, 19 May 2022 17:58:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D2DFC385AA;
-        Thu, 19 May 2022 17:58:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652983115;
-        bh=qPSL3nOy4ors8i7I3XUDymDpFTxUdxPWn9rsFvTq4IU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Z0B6c12RB7rnU3d3fbpR59AQwMBiYIHh01cWkCVFWoFxG4S/5WQslaQxF6a2ndlaT
-         SS9SbflaP4pIgkWayhUQVBIGeGX24a5SGPnYCvyhxaqImBQq7zRl2lPettkBow1Y9u
-         BFOpWBdSpUXBEsA9RZp5inbVjsq2ATV62zYtK8E2arym0VFrfChrfTH9vzdu9wDgW9
-         FNiUNiJf/5StVBcsWkvpyOsRYIzO5YoPX47FtapAKwFRlJjnMVsfDT0XtOl7hNa/hq
-         3bF55LsX9RF+l7PNlMiCks5Kxp6YukONvO7HhczXJ1szKkvlRkCRa9Gz0fsv2ugsqN
-         XD3AjDZ/T+/4w==
-Date:   Thu, 19 May 2022 23:28:31 +0530
-From:   Vinod Koul <vkoul@kernel.org>
-To:     Robin Gong <yibin.gong@nxp.com>
-Cc:     "broonie@kernel.org" <broonie@kernel.org>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-        "festevam@gmail.com" <festevam@gmail.com>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
-        "plyatov@gmail.com" <plyatov@gmail.com>,
-        "sean.nyekjaer@prevas.dk" <sean.nyekjaer@prevas.dk>,
-        dl-linux-imx <linux-imx@nxp.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "kernel@pengutronix.de" <kernel@pengutronix.de>
-Subject: Re: [PATCH v1 03/15] Revert "dmaengine: imx-sdma: refine to load
- context only once"
-Message-ID: <YoaFR/Nd9fv0xbKA@matsya>
-References: <1556027045-5269-1-git-send-email-yibin.gong@nxp.com>
- <1556027045-5269-4-git-send-email-yibin.gong@nxp.com>
+        with ESMTP id S1348947AbiETMCf (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 20 May 2022 08:02:35 -0400
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55A11149156;
+        Fri, 20 May 2022 05:02:26 -0700 (PDT)
+Received: by mail-qv1-f52.google.com with SMTP id eq14so6519377qvb.4;
+        Fri, 20 May 2022 05:02:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=65WlQ7s8g42M5C+5yY3Awf+CpXZTfjugQxcprooIu8U=;
+        b=H4H5LtAxlH368rGbeiAUynQDnrh/BXQmBONueTt/4LyjcN0gRD5Imh2Eb1wviOUidU
+         ZaUNCljmMzVu97ucZAG88dMS1MttqTcGDsQg/Rb9zRXxOIaCK4FpqBsOOe5VSv2HoqYc
+         Vx0WW/UDHb0QINToSOROo7wHOHxDBuqASpjNZFd7K2gObbkr8/fnsjW4eRin9K9KDgOV
+         gyxvmRiOwG423nqWVrpdKsGvq11JuIGYl8MwC2xCyIhHWZ/mH+Cs9XJGGAP8zlPclR5P
+         oJWG5EpI//w3ll3p3pi3fskRX3aLUEkm4BytvupZnexgrlQaJ9qf6FJb9hqoLY4RiTQs
+         FOWw==
+X-Gm-Message-State: AOAM533pCWAUb2WxgWalUoN0CfNCLXzZ91kz5YqhhFQEsX/XgtJlT/bk
+        LZmaI5VWbgGA95xXxOnYDWb7VQbtBurznw==
+X-Google-Smtp-Source: ABdhPJzxbJUSuKDtFmliNY60ckeR9FwT0HpsWozJ6nrAa6f+qH4bHHCc+oxtXwpVW4zfaDztnxiYAg==
+X-Received: by 2002:a05:6214:500c:b0:435:6b7d:5bc3 with SMTP id jo12-20020a056214500c00b004356b7d5bc3mr7641794qvb.92.1653048144744;
+        Fri, 20 May 2022 05:02:24 -0700 (PDT)
+Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com. [209.85.219.178])
+        by smtp.gmail.com with ESMTPSA id he17-20020a05622a601100b002f39b99f6c3sm2850201qtb.93.2022.05.20.05.02.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 20 May 2022 05:02:24 -0700 (PDT)
+Received: by mail-yb1-f178.google.com with SMTP id t26so13825047ybt.3;
+        Fri, 20 May 2022 05:02:23 -0700 (PDT)
+X-Received: by 2002:a25:4289:0:b0:64d:746f:5311 with SMTP id
+ p131-20020a254289000000b0064d746f5311mr8586423yba.89.1653048143666; Fri, 20
+ May 2022 05:02:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1556027045-5269-4-git-send-email-yibin.gong@nxp.com>
+References: <20220520091602.179078-1-javierm@redhat.com>
+In-Reply-To: <20220520091602.179078-1-javierm@redhat.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Fri, 20 May 2022 14:02:11 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdVmFGjGbHz1yo7tOzqtUbMTDkUxaMo2fVSp1HMU=_1emA@mail.gmail.com>
+Message-ID: <CAMuHMdVmFGjGbHz1yo7tOzqtUbMTDkUxaMo2fVSp1HMU=_1emA@mail.gmail.com>
+Subject: Re: [PATCH] drm/st7735r: Fix module autoloading for Okaya RH128128T
+To:     Javier Martinez Canillas <javierm@redhat.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        David Lechner <david@lechnology.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        DRI Development <dri-devel@lists.freedesktop.org>,
+        Mark Brown <broonie@kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On 23-04-19, 13:50, Robin Gong wrote:
-> This reverts commit ad0d92d7ba6aecbe2705907c38ff8d8be4da1e9c, because
+Hi Javier,
 
-Please fix this as well
+CC spi
 
-> in spi-imx case, burst length may be changed dynamically.
+On Fri, May 20, 2022 at 11:16 AM Javier Martinez Canillas
+<javierm@redhat.com> wrote:
+> The SPI core always reports a "MODALIAS=spi:<foo>", even if the device was
+> registered via OF. This means that the st7735r.ko module won't autoload if
+> a DT has a node with a compatible "okaya,rh128128t" string.
+>
+> In that case, kmod expects a "MODALIAS=of:N*T*Cokaya,rh128128t" uevent but
+> instead will get a "MODALIAS=spi:rh128128t", which is not present in the
+> list of aliases:
+>
+>   $ modinfo drivers/gpu/drm/tiny/st7735r.ko | grep alias
+>   alias:          of:N*T*Cokaya,rh128128tC*
+>   alias:          of:N*T*Cokaya,rh128128t
+>   alias:          of:N*T*Cjianda,jd-t18003-t01C*
+>   alias:          of:N*T*Cjianda,jd-t18003-t01
+>   alias:          spi:jd-t18003-t01
+>
+> To workaround this issue, add in the SPI table an entry for that device.
+>
+> Fixes: d1d511d516f7 ("drm: tiny: st7735r: Add support for Okaya RH128128T")
+> Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
 
-So what is the solution to handle different burst lengths, pls
-explain...
+Thanks for your patch!
+We really need to fix this at the subsystem level.
 
-> 
-> Signed-off-by: Robin Gong <yibin.gong@nxp.com>
-> ---
->  drivers/dma/imx-sdma.c | 7 -------
->  1 file changed, 7 deletions(-)
-> 
-> diff --git a/drivers/dma/imx-sdma.c b/drivers/dma/imx-sdma.c
-> index 99d9f43..407a56e 100644
-> --- a/drivers/dma/imx-sdma.c
-> +++ b/drivers/dma/imx-sdma.c
-> @@ -377,7 +377,6 @@ struct sdma_channel {
->  	unsigned long			watermark_level;
->  	u32				shp_addr, per_addr;
->  	enum dma_status			status;
-> -	bool				context_loaded;
->  	struct imx_dma_data		data;
->  	struct work_struct		terminate_worker;
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+
+
+> --- a/drivers/gpu/drm/tiny/st7735r.c
+> +++ b/drivers/gpu/drm/tiny/st7735r.c
+> @@ -174,6 +174,7 @@ MODULE_DEVICE_TABLE(of, st7735r_of_match);
+>
+>  static const struct spi_device_id st7735r_id[] = {
+>         { "jd-t18003-t01", (uintptr_t)&jd_t18003_t01_cfg },
+> +       { "rh128128t", (uintptr_t)&rh128128t_cfg },
+>         { },
 >  };
-> @@ -988,9 +987,6 @@ static int sdma_load_context(struct sdma_channel *sdmac)
->  	int ret;
->  	unsigned long flags;
->  
-> -	if (sdmac->context_loaded)
-> -		return 0;
-> -
->  	if (sdmac->direction == DMA_DEV_TO_MEM)
->  		load_address = sdmac->pc_from_device;
->  	else if (sdmac->direction == DMA_DEV_TO_DEV)
-> @@ -1033,8 +1029,6 @@ static int sdma_load_context(struct sdma_channel *sdmac)
->  
->  	spin_unlock_irqrestore(&sdma->channel_0_lock, flags);
->  
-> -	sdmac->context_loaded = true;
-> -
->  	return ret;
->  }
->  
-> @@ -1074,7 +1068,6 @@ static void sdma_channel_terminate_work(struct work_struct *work)
->  	sdmac->desc = NULL;
->  	spin_unlock_irqrestore(&sdmac->vc.lock, flags);
->  	vchan_dma_desc_free_list(&sdmac->vc, &head);
-> -	sdmac->context_loaded = false;
->  }
->  
->  static int sdma_disable_channel_async(struct dma_chan *chan)
-> -- 
-> 2.7.4
-> 
+>  MODULE_DEVICE_TABLE(spi, st7735r_id);
 
--- 
-~Vinod
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

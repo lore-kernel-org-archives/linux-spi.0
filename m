@@ -2,68 +2,61 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A43A9C433F5
-	for <linux-spi@archiver.kernel.org>; Tue, 24 May 2022 22:27:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 30ADDC433FE
+	for <linux-spi@archiver.kernel.org>; Wed, 25 May 2022 13:06:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242583AbiEXW1m (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 24 May 2022 18:27:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47524 "EHLO
+        id S232809AbiEYNG0 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 25 May 2022 09:06:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242579AbiEXW1l (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 24 May 2022 18:27:41 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EB3D35855;
-        Tue, 24 May 2022 15:27:40 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        with ESMTP id S232027AbiEYNGZ (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 25 May 2022 09:06:25 -0400
+X-Greylist: delayed 98755 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 25 May 2022 06:06:23 PDT
+Received: from box.indicandustries.com (hwsrv-970840.hostwindsdns.com [IPv6:2607:5501:3000:21a5::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A5BB38BE
+        for <linux-spi@vger.kernel.org>; Wed, 25 May 2022 06:06:22 -0700 (PDT)
+Received: from authenticated-user (box.indicandustries.com [104.168.149.109])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 28FCDB81B89;
-        Tue, 24 May 2022 22:27:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E27B6C36AE5;
-        Tue, 24 May 2022 22:27:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1653431257;
-        bh=EVLhcI3nTTHBdnbs81/n4xNy7Kq6g7ROnAa4U0ui7YA=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=DdntslbgOylp2lcRP1QonaK73RsXnycXwiyUPH4X8HR93vqGAbWB4ATver6zqOswO
-         tYxaoA6T7wRH3u8YiVa83Lzwt5L5kHQkjuwjcumRrLqNzgPx0wW/zdcXcYaEZxak5m
-         5FQsBpz7h9KACyfI7J7RHztwN9o7Ih7aDGR2cZwrlOfCGuZOQYuZHSJAE9SfPzUOyR
-         fjGoXAixrJi6LVowAe7eHaSI9qxqGB1/KIM7BAX8DV6CuYeo+0tWulwJ3A50ywSwEz
-         ByslPY00zSHuKmWh7VhIYUJuhnmP7/XPZ2DSJQS+aMNPGY50eo+mycalc2HisP0zQx
-         6eDUcYef4DKTQ==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id C485DF03938;
-        Tue, 24 May 2022 22:27:37 +0000 (UTC)
-Subject: Re: [GIT PULL] SPI updates for v5.19
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20220523131250.90060C385A9@smtp.kernel.org>
-References: <20220523131250.90060C385A9@smtp.kernel.org>
-X-PR-Tracked-List-Id: <linux-spi.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20220523131250.90060C385A9@smtp.kernel.org>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-v5.19
-X-PR-Tracked-Commit-Id: 9c63b846e6df43e5b3d31263f7db545f32deeda3
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: d8e0f976f104a0258c0426b3805b057411cd0bd2
-Message-Id: <165343125780.3997.12946616294694080663.pr-tracker-bot@kernel.org>
-Date:   Tue, 24 May 2022 22:27:37 +0000
-To:     Mark Brown <broonie@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>
+        by box.indicandustries.com (Postfix) with ESMTPSA id 6B1BB107F42
+        for <linux-spi@vger.kernel.org>; Tue, 24 May 2022 03:24:53 -0600 (MDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=box.indicandustries.com; s=mail; t=1653384293;
+        bh=V6VCn7WEbqHjVVQ20/+SYu6rwS1WmTHcxX88g+j430s=;
+        h=Reply-To:From:To:Subject:Date:From;
+        b=K3dtBDRL0rYiyzna178xMcZYKkR4hbvKkWyZE3HhTZlQv/J2v3JBbO/QNJZ3hV+gh
+         Bg1/nexZQK7d3xMkbdfflLLReNVTxvmzLiZcZCzYuS2tiMYVqzN797cFY3GJ+oWnLE
+         6c+1Fh8omu75fi68Z4lSH5uRHk3felDfYeXKW7ss20GlcdX6Ma0RzCQeSg3C1hhhp9
+         ZRsvFSroGm0rgfFn1515LpGbh+2ksgYOkjCe92jIsYSbF07BkpvkQ948efjkU6pcdI
+         7yL5BCFMcizCfBhKt09tNPPMKNdwGJe+e+8jsp6bxedJVBpxfoeQKh90A0/b3Y00tX
+         k169ggqN+R3qw==
+Reply-To: amjalia90@gmail.com
+From:   amjad.ali@box.indicandustries.com
+To:     linux-spi@vger.kernel.org
+Subject: Hello Sir, I seek your urgent consideration.
+Date:   24 May 2022 11:24:53 +0200
+Message-ID: <20220524112452.AD04143CAC823DFA@box.indicandustries.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The pull request you sent on Mon, 23 May 2022 14:12:36 +0100:
+Hello,
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-v5.19
+Greetings? I am Amjad. I work with a leading Bio Firm.  Due to=20
+the setbacks of the pandemic, my company has opened a bid in=20
+search of new suppliers for basic raw materials needed in=20
+production.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/d8e0f976f104a0258c0426b3805b057411cd0bd2
+I am seeking a representative=C2=A0as I am a staff, I can not be=20
+involved directly. It may not be your area of work but the=20
+profits are great and I will guide you through. I have already=20
+sourced a local supplier for this. I only need a reliable=20
+representative.
 
-Thank you!
+Please get back to me so I can explain this in full.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Amjad

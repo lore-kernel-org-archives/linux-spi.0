@@ -2,37 +2,37 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B10DC433F5
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 80CE6C433FE
 	for <linux-spi@archiver.kernel.org>; Wed, 25 May 2022 14:29:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231944AbiEYO3s (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 25 May 2022 10:29:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41502 "EHLO
+        id S238812AbiEYO3t (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 25 May 2022 10:29:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241539AbiEYO3q (ORCPT
+        with ESMTP id S234347AbiEYO3q (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Wed, 25 May 2022 10:29:46 -0400
-Received: from smtp15.bhosted.nl (smtp15.bhosted.nl [IPv6:2a02:9e0:8000::26])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9262F13D4F
+Received: from smtp28.bhosted.nl (smtp28.bhosted.nl [IPv6:2a02:9e0:8000::40])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D1F512AB9
         for <linux-spi@vger.kernel.org>; Wed, 25 May 2022 07:29:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=protonic.nl; s=202111;
         h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
          subject:cc:to:from:from;
-        bh=ltywqzsbI4h4JzPx5rax3eJuOjRNJYYF3ChvK9Eh2qA=;
-        b=N4JV/ISByFNBo6LeQ8oYn3+fED8zAkf0XMd0JTUOV+Cu+iuFkTbinefnfA4kXQ1V7bKjeHCh4RKGf
-         qqyYOCT0fdCyRVywxSiimSK3e8X0A4ZNAElDeyvxyZvMc1mJWkPjtdzu/qvSUW4BJsWgy95wmi0VfY
-         ZZtaCbO9hSS7RokCSXovzqYB4aIae6k8Aqd3fiAgv/wwW/gBQ625h4qCDJHWWqiYRtyrR0VW+OPq7i
-         jsgOr+P/Z0n09kvsCAbRvW4NyxoksMIaEq3L2jjm0Ar0/Y1Jcd/YGVMINETxJm4lpAoizXYkLcy5af
-         Sp+gvaZRUoAiYIJJkckwRIiyUkzviDQ==
-X-MSG-ID: 1cdade2b-dc37-11ec-b450-0050569d3a82
+        bh=/LqsGV8CCKS0NwcvSUEMN4n0wsmhpHqXbZZumDaz+6I=;
+        b=tzxvXUgv8ukAOsWRAKq0mfkoFAqcDxy/yhKvztT1O6qCZ8t5FYZZfyr4v2MDE9b0msUc5vspDxeD7
+         S4meBzFh6HyPpciMhjPEd0o0H2gymmNqRrnhPlxGfkwbWHzX/5IprwNJO6day6TkHy20pedN3tpmzq
+         2mpmDOK1f9+sqbmjVsMrksypo9FPIsuSK/EqtfSoi8UWW7tRBQ5AV+PYaV6mJRFMDSY09fv8kRicVf
+         7ACFH1JX4Q8qXR9Y/OPoVT12MdwVimSW7HXenkoDMVTGHs9syRoonNs88FoZsLip7J8RFnyKzlvrNI
+         sPm5LaSqlZOB68/GnH063CEDYTpgBdQ==
+X-MSG-ID: 1bd3f0f9-dc37-11ec-a2aa-0050569d11ae
 From:   David Jander <david@protonic.nl>
 To:     Mark Brown <broonie@kernel.org>
 Cc:     linux-spi@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
         Marc Kleine-Budde <mkl@pengutronix.de>,
         David Jander <david@protonic.nl>
-Subject: [RFC] [PATCH 3/3] drivers: spi: spi.c: Don't use the message queue if possible in spi_sync
-Date:   Wed, 25 May 2022 16:29:28 +0200
-Message-Id: <20220525142928.2335378-4-david@protonic.nl>
+Subject: [RFC] [PATCH 1/3] drivers: spi: API: spi_finalize_current_message -> spi_finalize_message
+Date:   Wed, 25 May 2022 16:29:26 +0200
+Message-Id: <20220525142928.2335378-2-david@protonic.nl>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20220525142928.2335378-1-david@protonic.nl>
 References: <20220525142928.2335378-1-david@protonic.nl>
@@ -42,407 +42,562 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The interaction with the controller message queue and its corresponding
-auxiliary flags and variables requires the use of the queue_lock which is
-costly. Since spi_sync will transfer the complete message anyway, and not
-return until it is finished, there is no need to put the message into the
-queue if the queue is empty. This can save a lot of overhead.
-
-As an example of how significant this is, when using the MCP2518FD SPI CAN
-controller on a i.MX8MM SoC, the time during which the interrupt line
-stays active (during 3 relatively short spi_sync messages), is reduced
-from 98us to 72us by this patch.
+This change is necessary in order to prepare the SPI core to optimize
+different code paths.
+This function is the only one that requires every SPI message to go
+through the same message queue, because it relies on ctlr->cur_msg to be
+the message that has just been transferred.
+Accessing this queue requires the use of the corresponding spinlocks
+wherever applicable, which have a sizable performance penalty (see next
+patch(es)). Forcibly using the queue even for spi_sync also has the
+drawback that controller tear-down is always bounced to the worker thread,
+introducing an extra context switch.
 
 Signed-off-by: David Jander <david@protonic.nl>
 ---
- drivers/spi/spi.c       | 244 ++++++++++++++++++++++++----------------
- include/linux/spi/spi.h |  11 +-
- 2 files changed, 157 insertions(+), 98 deletions(-)
+ Documentation/spi/spi-summary.rst             |  4 +--
+ .../media/pci/netup_unidvb/netup_unidvb_spi.c |  2 +-
+ drivers/media/usb/msi2500/msi2500.c           |  2 +-
+ drivers/spi/spi-amd.c                         |  2 +-
+ drivers/spi/spi-ar934x.c                      |  2 +-
+ drivers/spi/spi-axi-spi-engine.c              |  2 +-
+ drivers/spi/spi-bcm63xx-hsspi.c               |  2 +-
+ drivers/spi/spi-bcm63xx.c                     |  2 +-
+ drivers/spi/spi-cavium.c                      |  2 +-
+ drivers/spi/spi-falcon.c                      |  2 +-
+ drivers/spi/spi-fsi.c                         |  2 +-
+ drivers/spi/spi-fsl-dspi.c                    |  2 +-
+ drivers/spi/spi-fsl-espi.c                    |  2 +-
+ drivers/spi/spi-fsl-spi.c                     |  2 +-
+ drivers/spi/spi-mpc512x-psc.c                 |  2 +-
+ drivers/spi/spi-mt7621.c                      |  2 +-
+ drivers/spi/spi-mtk-nor.c                     |  2 +-
+ drivers/spi/spi-mux.c                         |  2 +-
+ drivers/spi/spi-mxs.c                         |  2 +-
+ drivers/spi/spi-omap-100k.c                   |  2 +-
+ drivers/spi/spi-pic32-sqi.c                   |  2 +-
+ drivers/spi/spi-pl022.c                       |  4 ++-
+ drivers/spi/spi-sc18is602.c                   |  2 +-
+ drivers/spi/spi-sh-hspi.c                     |  2 +-
+ drivers/spi/spi-tegra114.c                    |  2 +-
+ drivers/spi/spi-tegra20-sflash.c              |  2 +-
+ drivers/spi/spi-tegra210-quad.c               |  2 +-
+ drivers/spi/spi-ti-qspi.c                     |  2 +-
+ drivers/spi/spi-xcomm.c                       |  2 +-
+ drivers/spi/spi.c                             | 26 ++++++++-----------
+ drivers/staging/greybus/spilib.c              |  2 +-
+ include/linux/spi/spi.h                       |  5 ++--
+ 32 files changed, 46 insertions(+), 49 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 1d50051f3d57..401ac2f4758e 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1558,6 +1558,80 @@ static void spi_idle_runtime_pm(struct spi_controller *ctlr)
+diff --git a/Documentation/spi/spi-summary.rst b/Documentation/spi/spi-summary.rst
+index aab5d07cb3d7..94e8b97a2ae1 100644
+--- a/Documentation/spi/spi-summary.rst
++++ b/Documentation/spi/spi-summary.rst
+@@ -561,8 +561,8 @@ SPI Master Methods
+ 	The subsystem calls the driver to transfer a single message while
+ 	queuing transfers that arrive in the meantime. When the driver is
+ 	finished with this message, it must call
+-	spi_finalize_current_message() so the subsystem can issue the next
+-	message. This may sleep.
++	spi_finalize_message() so the subsystem can issue the next message.
++	This may sleep.
+ 
+ ``master->transfer_one(struct spi_master *master, struct spi_device *spi, struct spi_transfer *transfer)``
+ 	The subsystem calls the driver to transfer a single transfer while
+diff --git a/drivers/media/pci/netup_unidvb/netup_unidvb_spi.c b/drivers/media/pci/netup_unidvb/netup_unidvb_spi.c
+index 526042d8afae..5eda47bc6cf3 100644
+--- a/drivers/media/pci/netup_unidvb/netup_unidvb_spi.c
++++ b/drivers/media/pci/netup_unidvb/netup_unidvb_spi.c
+@@ -161,7 +161,7 @@ static int netup_spi_transfer(struct spi_master *master,
  	}
+ done:
+ 	msg->status = result;
+-	spi_finalize_current_message(master);
++	spi_finalize_message(msg);
+ 	return result;
  }
  
-+static int __spi_pump_transfer_message(struct spi_controller *ctlr,
-+		struct spi_message *msg, bool was_busy)
-+{
-+	struct spi_transfer *xfer;
-+	int ret;
-+
-+	if (!was_busy && ctlr->auto_runtime_pm) {
-+		ret = pm_runtime_get_sync(ctlr->dev.parent);
-+		if (ret < 0) {
-+			pm_runtime_put_noidle(ctlr->dev.parent);
-+			dev_err(&ctlr->dev, "Failed to power device: %d\n",
-+				ret);
-+			return ret;
-+		}
-+	}
-+
-+	if (!was_busy)
-+		trace_spi_controller_busy(ctlr);
-+
-+	if (!was_busy && ctlr->prepare_transfer_hardware) {
-+		ret = ctlr->prepare_transfer_hardware(ctlr);
-+		if (ret) {
-+			dev_err(&ctlr->dev,
-+				"failed to prepare transfer hardware: %d\n",
-+				ret);
-+
-+			if (ctlr->auto_runtime_pm)
-+				pm_runtime_put(ctlr->dev.parent);
-+
-+			msg->status = ret;
-+			spi_finalize_message(msg);
-+
-+			return ret;
-+		}
-+	}
-+
-+	trace_spi_message_start(msg);
-+
-+	if (ctlr->prepare_message) {
-+		ret = ctlr->prepare_message(ctlr, msg);
-+		if (ret) {
-+			dev_err(&ctlr->dev, "failed to prepare message: %d\n",
-+				ret);
-+			msg->status = ret;
-+			spi_finalize_message(msg);
-+			return ret;
-+		}
-+		msg->prepared = true;
-+	}
-+
-+	ret = spi_map_msg(ctlr, msg);
-+	if (ret) {
-+		msg->status = ret;
-+		spi_finalize_message(msg);
-+		return ret;
-+	}
-+
-+	if (!ctlr->ptp_sts_supported && !ctlr->transfer_one) {
-+		list_for_each_entry(xfer, &msg->transfers, transfer_list) {
-+			xfer->ptp_sts_word_pre = 0;
-+			ptp_read_system_prets(xfer->ptp_sts);
-+		}
-+	}
-+
-+	ret = ctlr->transfer_one_message(ctlr, msg);
-+	if (ret) {
-+		dev_err(&ctlr->dev,
-+			"failed to transfer one message from queue\n");
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
- /**
-  * __spi_pump_messages - function which processes spi message queue
-  * @ctlr: controller to process queue for
-@@ -1573,7 +1647,6 @@ static void spi_idle_runtime_pm(struct spi_controller *ctlr)
-  */
- static void __spi_pump_messages(struct spi_controller *ctlr, bool in_kthread)
- {
--	struct spi_transfer *xfer;
- 	struct spi_message *msg;
- 	bool was_busy = false;
- 	unsigned long flags;
-@@ -1608,6 +1681,7 @@ static void __spi_pump_messages(struct spi_controller *ctlr, bool in_kthread)
- 			    !ctlr->unprepare_transfer_hardware) {
- 				spi_idle_runtime_pm(ctlr);
- 				ctlr->busy = false;
-+				ctlr->queue_empty = true;
- 				trace_spi_controller_idle(ctlr);
- 			} else {
- 				kthread_queue_work(ctlr->kworker,
-@@ -1634,6 +1708,7 @@ static void __spi_pump_messages(struct spi_controller *ctlr, bool in_kthread)
- 
- 		spin_lock_irqsave(&ctlr->queue_lock, flags);
- 		ctlr->idling = false;
-+		ctlr->queue_empty = true;
- 		spin_unlock_irqrestore(&ctlr->queue_lock, flags);
- 		return;
+diff --git a/drivers/media/usb/msi2500/msi2500.c b/drivers/media/usb/msi2500/msi2500.c
+index 71de6b4c4e4c..f5d8c9ccb8fa 100644
+--- a/drivers/media/usb/msi2500/msi2500.c
++++ b/drivers/media/usb/msi2500/msi2500.c
+@@ -1154,7 +1154,7 @@ static int msi2500_transfer_one_message(struct spi_master *master,
  	}
-@@ -1650,75 +1725,7 @@ static void __spi_pump_messages(struct spi_controller *ctlr, bool in_kthread)
- 	spin_unlock_irqrestore(&ctlr->queue_lock, flags);
  
- 	mutex_lock(&ctlr->io_mutex);
--
--	if (!was_busy && ctlr->auto_runtime_pm) {
--		ret = pm_runtime_get_sync(ctlr->dev.parent);
--		if (ret < 0) {
--			pm_runtime_put_noidle(ctlr->dev.parent);
--			dev_err(&ctlr->dev, "Failed to power device: %d\n",
--				ret);
--			mutex_unlock(&ctlr->io_mutex);
--			return;
--		}
--	}
--
--	if (!was_busy)
--		trace_spi_controller_busy(ctlr);
--
--	if (!was_busy && ctlr->prepare_transfer_hardware) {
--		ret = ctlr->prepare_transfer_hardware(ctlr);
--		if (ret) {
--			dev_err(&ctlr->dev,
--				"failed to prepare transfer hardware: %d\n",
--				ret);
--
--			if (ctlr->auto_runtime_pm)
--				pm_runtime_put(ctlr->dev.parent);
--
--			msg->status = ret;
--			spi_finalize_message(msg);
--
--			mutex_unlock(&ctlr->io_mutex);
--			return;
--		}
--	}
--
--	trace_spi_message_start(msg);
--
--	if (ctlr->prepare_message) {
--		ret = ctlr->prepare_message(ctlr, msg);
--		if (ret) {
--			dev_err(&ctlr->dev, "failed to prepare message: %d\n",
--				ret);
--			msg->status = ret;
--			spi_finalize_message(msg);
--			goto out;
--		}
--		msg->prepared = true;
--	}
--
--	ret = spi_map_msg(ctlr, msg);
--	if (ret) {
--		msg->status = ret;
--		spi_finalize_message(msg);
--		goto out;
--	}
--
--	if (!ctlr->ptp_sts_supported && !ctlr->transfer_one) {
--		list_for_each_entry(xfer, &msg->transfers, transfer_list) {
--			xfer->ptp_sts_word_pre = 0;
--			ptp_read_system_prets(xfer->ptp_sts);
--		}
--	}
--
--	ret = ctlr->transfer_one_message(ctlr, msg);
--	if (ret) {
--		dev_err(&ctlr->dev,
--			"failed to transfer one message from queue\n");
--		goto out;
--	}
--
--out:
-+	ret = __spi_pump_transfer_message(ctlr, msg, was_busy);
- 	mutex_unlock(&ctlr->io_mutex);
- 
- 	/* Prod the scheduler in case transfer_one() was busy waiting */
-@@ -1848,6 +1855,7 @@ static int spi_init_queue(struct spi_controller *ctlr)
- {
- 	ctlr->running = false;
- 	ctlr->busy = false;
-+	ctlr->queue_empty = true;
- 
- 	ctlr->kworker = kthread_create_worker(0, dev_name(&ctlr->dev));
- 	if (IS_ERR(ctlr->kworker)) {
-@@ -1941,11 +1949,15 @@ void spi_finalize_message(struct spi_message *mesg)
- 
- 	mesg->prepared = false;
- 
--	spin_lock_irqsave(&ctlr->queue_lock, flags);
--	ctlr->cur_msg = NULL;
--	ctlr->fallback = false;
--	kthread_queue_work(ctlr->kworker, &ctlr->pump_messages);
--	spin_unlock_irqrestore(&ctlr->queue_lock, flags);
-+	if (!mesg->sync) {
-+		spin_lock_irqsave(&ctlr->queue_lock, flags);
-+		WARN(ctlr->cur_msg != mesg,
-+			"Finalizing queued message that is not the current head of queue!");
-+		ctlr->cur_msg = NULL;
-+		ctlr->fallback = false;
-+		kthread_queue_work(ctlr->kworker, &ctlr->pump_messages);
-+		spin_unlock_irqrestore(&ctlr->queue_lock, flags);
-+	}
- 
- 	trace_spi_message_done(mesg);
- 
-@@ -2048,6 +2060,7 @@ static int __spi_queued_transfer(struct spi_device *spi,
- 	msg->status = -EINPROGRESS;
- 
- 	list_add_tail(&msg->queue, &ctlr->queue);
-+	ctlr->queue_empty = false;
- 	if (!ctlr->busy && need_pump)
- 		kthread_queue_work(ctlr->kworker, &ctlr->pump_messages);
- 
-@@ -3937,6 +3950,42 @@ static int spi_async_locked(struct spi_device *spi, struct spi_message *message)
- 
+ 	m->status = ret;
+-	spi_finalize_current_message(master);
++	spi_finalize_message(m);
+ 	return ret;
  }
  
-+static void __spi_transfer_message_noqueue(struct spi_controller *ctlr, struct spi_message *msg)
-+{
-+	bool was_busy;
-+	int ret;
-+
-+	mutex_lock(&ctlr->io_mutex);
-+
-+	/* If another context is idling the device then wait */
-+	while (ctlr->idling) {
-+		printk(KERN_INFO "spi sync message processing: controller is idling!\n");
-+		usleep_range(10000, 11000);
-+	}
-+
-+	was_busy = READ_ONCE(ctlr->busy);
-+
-+	ret = __spi_pump_transfer_message(ctlr, msg, was_busy);
-+	if (ret)
-+		goto out;
-+
-+	if (!was_busy) {
-+		kfree(ctlr->dummy_rx);
-+		ctlr->dummy_rx = NULL;
-+		kfree(ctlr->dummy_tx);
-+		ctlr->dummy_tx = NULL;
-+		if (ctlr->unprepare_transfer_hardware &&
-+		    ctlr->unprepare_transfer_hardware(ctlr))
-+			dev_err(&ctlr->dev,
-+				"failed to unprepare transfer hardware\n");
-+		spi_idle_runtime_pm(ctlr);
-+	}
-+
-+out:
-+	mutex_unlock(&ctlr->io_mutex);
-+	return;
-+}
-+
- /*-------------------------------------------------------------------------*/
- 
- /*
-@@ -3955,51 +4004,52 @@ static int __spi_sync(struct spi_device *spi, struct spi_message *message)
- 	DECLARE_COMPLETION_ONSTACK(done);
- 	int status;
- 	struct spi_controller *ctlr = spi->controller;
--	unsigned long flags;
- 
- 	status = __spi_validate(spi, message);
- 	if (status != 0)
- 		return status;
- 
--	message->complete = spi_complete;
--	message->context = &done;
- 	message->spi = spi;
- 
- 	SPI_STATISTICS_INCREMENT_FIELD(ctlr->pcpu_statistics, spi_sync);
- 	SPI_STATISTICS_INCREMENT_FIELD(spi->pcpu_statistics, spi_sync);
- 
- 	/*
--	 * If we're not using the legacy transfer method then we will
--	 * try to transfer in the calling context so special case.
--	 * This code would be less tricky if we could remove the
--	 * support for driver implemented message queues.
-+	 * Checking queue_empty here only guarantees async/sync message
-+	 * ordering when coming from the same context. It does not need to
-+	 * guard against reentrancy from a different context. The io_mutex
-+	 * will catch those cases.
- 	 */
--	if (ctlr->transfer == spi_queued_transfer) {
--		spin_lock_irqsave(&ctlr->bus_lock_spinlock, flags);
-+	if (READ_ONCE(ctlr->queue_empty)) {
-+		message->sync = true;
-+		message->actual_length = 0;
-+		message->status = -EINPROGRESS;
- 
- 		trace_spi_message_submit(message);
- 
--		status = __spi_queued_transfer(spi, message, false);
-+		SPI_STATISTICS_INCREMENT_FIELD(ctlr->pcpu_statistics, spi_sync_immediate);
-+		SPI_STATISTICS_INCREMENT_FIELD(spi->pcpu_statistics, spi_sync_immediate);
- 
--		spin_unlock_irqrestore(&ctlr->bus_lock_spinlock, flags);
--	} else {
--		status = spi_async_locked(spi, message);
-+		__spi_transfer_message_noqueue(ctlr, message);
-+
-+		return message->status;
+diff --git a/drivers/spi/spi-amd.c b/drivers/spi/spi-amd.c
+index cba6a4486c24..85bd61f5358c 100644
+--- a/drivers/spi/spi-amd.c
++++ b/drivers/spi/spi-amd.c
+@@ -248,7 +248,7 @@ static inline int amd_spi_fifo_xfer(struct amd_spi *amd_spi,
+ 		return -ENODEV;
  	}
  
-+	/*
-+	 * There are messages in the async queue that could have originated
-+	 * from the same context, so we need to preserve ordering.
-+	 * Therefor we send the message to the async queue and wait until they
-+	 * are completed.
-+	 */
-+	message->complete = spi_complete;
-+	message->context = &done;
-+	status = spi_async_locked(spi, message);
- 	if (status == 0) {
--		/* Push out the messages in the calling context if we can */
--		if (ctlr->transfer == spi_queued_transfer) {
--			SPI_STATISTICS_INCREMENT_FIELD(ctlr->pcpu_statistics,
--						       spi_sync_immediate);
--			SPI_STATISTICS_INCREMENT_FIELD(spi->pcpu_statistics,
--						       spi_sync_immediate);
--			__spi_pump_messages(ctlr, false);
--		}
--
- 		wait_for_completion(&done);
- 		status = message->status;
+-	spi_finalize_current_message(master);
++	spi_finalize_message(message);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/spi/spi-ar934x.c b/drivers/spi/spi-ar934x.c
+index ec7250c4c810..913538b07fcc 100644
+--- a/drivers/spi/spi-ar934x.c
++++ b/drivers/spi/spi-ar934x.c
+@@ -150,7 +150,7 @@ static int ar934x_spi_transfer_one_message(struct spi_controller *master,
+ 
+ msg_done:
+ 	m->status = stat;
+-	spi_finalize_current_message(master);
++	spi_finalize_message(m);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-engine.c
+index 80c3e38f5c1b..f0160372631a 100644
+--- a/drivers/spi/spi-axi-spi-engine.c
++++ b/drivers/spi/spi-axi-spi-engine.c
+@@ -396,7 +396,7 @@ static irqreturn_t spi_engine_irq(int irq, void *devid)
+ 			msg->status = 0;
+ 			msg->actual_length = msg->frame_length;
+ 			spi_engine->msg = NULL;
+-			spi_finalize_current_message(master);
++			spi_finalize_message(msg);
+ 			disable_int |= SPI_ENGINE_INT_SYNC;
+ 		}
  	}
- 	message->context = NULL;
-+
+diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
+index b871fd810d80..dc0782fa8bc9 100644
+--- a/drivers/spi/spi-bcm63xx-hsspi.c
++++ b/drivers/spi/spi-bcm63xx-hsspi.c
+@@ -307,7 +307,7 @@ static int bcm63xx_hsspi_transfer_one(struct spi_master *master,
+ 	mutex_unlock(&bs->bus_mutex);
+ 
+ 	msg->status = status;
+-	spi_finalize_current_message(master);
++	spi_finalize_message(msg);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+index 80fa0ef8909c..9beb4bd73837 100644
+--- a/drivers/spi/spi-bcm63xx.c
++++ b/drivers/spi/spi-bcm63xx.c
+@@ -395,7 +395,7 @@ static int bcm63xx_spi_transfer_one(struct spi_master *master,
+ 	}
+ exit:
+ 	m->status = status;
+-	spi_finalize_current_message(master);
++	spi_finalize_message(m);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/spi/spi-cavium.c b/drivers/spi/spi-cavium.c
+index 6854c3ce423b..686e9329bbbc 100644
+--- a/drivers/spi/spi-cavium.c
++++ b/drivers/spi/spi-cavium.c
+@@ -145,6 +145,6 @@ int octeon_spi_transfer_one_message(struct spi_master *master,
+ err:
+ 	msg->status = status;
+ 	msg->actual_length = total_len;
+-	spi_finalize_current_message(master);
++	spi_finalize_message(msg);
+ 	return status;
+ }
+diff --git a/drivers/spi/spi-falcon.c b/drivers/spi/spi-falcon.c
+index a7d4dffac66b..532101c35c5b 100644
+--- a/drivers/spi/spi-falcon.c
++++ b/drivers/spi/spi-falcon.c
+@@ -382,7 +382,7 @@ static int falcon_sflash_xfer_one(struct spi_master *master,
+ 	}
+ 
+ 	m->status = ret;
+-	spi_finalize_current_message(master);
++	spi_finalize_message(m);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/spi/spi-fsi.c b/drivers/spi/spi-fsi.c
+index d403a7a3021d..8f8a4d1ea56a 100644
+--- a/drivers/spi/spi-fsi.c
++++ b/drivers/spi/spi-fsi.c
+@@ -502,7 +502,7 @@ static int fsi_spi_transfer_one_message(struct spi_controller *ctlr,
+ 
+ error:
+ 	mesg->status = rc;
+-	spi_finalize_current_message(ctlr);
++	spi_finalize_message(mesg);
+ 
+ 	return rc;
+ }
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index fd004c9db9dc..a782553a5dd8 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -967,7 +967,7 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
+ 	}
+ 
+ 	message->status = status;
+-	spi_finalize_current_message(ctlr);
++	spi_finalize_message(message);
+ 
+ 	return status;
+ }
+diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
+index f7066bef7b06..0feee3a1e7f4 100644
+--- a/drivers/spi/spi-fsl-espi.c
++++ b/drivers/spi/spi-fsl-espi.c
+@@ -470,7 +470,7 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
+ 	if (m->status == -EINPROGRESS)
+ 		m->status = ret;
+ 
+-	spi_finalize_current_message(master);
++	spi_finalize_message(m);
+ 
+ 	return ret;
+ }
+diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
+index bdf94cc7be1a..5091711c5bb2 100644
+--- a/drivers/spi/spi-fsl-spi.c
++++ b/drivers/spi/spi-fsl-spi.c
+@@ -432,7 +432,7 @@ static int fsl_spi_do_one_msg(struct spi_master *master,
+ 	}
+ 
+ 	fsl_spi_setup_transfer(spi, NULL);
+-	spi_finalize_current_message(master);
++	spi_finalize_message(m);
+ 	return 0;
+ }
+ 
+diff --git a/drivers/spi/spi-mpc512x-psc.c b/drivers/spi/spi-mpc512x-psc.c
+index 03630359ce70..36ca374f815b 100644
+--- a/drivers/spi/spi-mpc512x-psc.c
++++ b/drivers/spi/spi-mpc512x-psc.c
+@@ -336,7 +336,7 @@ static int mpc512x_psc_spi_msg_xfer(struct spi_master *master,
+ 
+ 	mpc512x_psc_spi_transfer_setup(spi, NULL);
+ 
+-	spi_finalize_current_message(master);
++	spi_finalize_message(m);
  	return status;
  }
  
+diff --git a/drivers/spi/spi-mt7621.c b/drivers/spi/spi-mt7621.c
+index b4b9b7309b5e..6f274458ef45 100644
+--- a/drivers/spi/spi-mt7621.c
++++ b/drivers/spi/spi-mt7621.c
+@@ -293,7 +293,7 @@ static int mt7621_spi_transfer_one_message(struct spi_controller *master,
+ 
+ msg_done:
+ 	m->status = status;
+-	spi_finalize_current_message(master);
++	spi_finalize_message(m);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/spi/spi-mtk-nor.c b/drivers/spi/spi-mtk-nor.c
+index 94fb09696677..5efb55f8a5fb 100644
+--- a/drivers/spi/spi-mtk-nor.c
++++ b/drivers/spi/spi-mtk-nor.c
+@@ -682,7 +682,7 @@ static int mtk_nor_transfer_one_message(struct spi_controller *master,
+ 	m->actual_length = trx_len;
+ msg_done:
+ 	m->status = stat;
+-	spi_finalize_current_message(master);
++	spi_finalize_message(m);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/spi/spi-mux.c b/drivers/spi/spi-mux.c
+index f5d32ec4634e..98a0bcdbaefb 100644
+--- a/drivers/spi/spi-mux.c
++++ b/drivers/spi/spi-mux.c
+@@ -92,7 +92,7 @@ static void spi_mux_complete_cb(void *context)
+ 	m->complete = priv->child_msg_complete;
+ 	m->context = priv->child_msg_context;
+ 	m->spi = priv->child_msg_dev;
+-	spi_finalize_current_message(ctlr);
++	spi_finalize_message(m);
+ 	mux_control_deselect(priv->mux);
+ }
+ 
+diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
+index 435309b09227..bc8cbb7c6fbd 100644
+--- a/drivers/spi/spi-mxs.c
++++ b/drivers/spi/spi-mxs.c
+@@ -432,7 +432,7 @@ static int mxs_spi_transfer_one(struct spi_master *master,
+ 	}
+ 
+ 	m->status = status;
+-	spi_finalize_current_message(master);
++	spi_finalize_message(m);
+ 
+ 	return status;
+ }
+diff --git a/drivers/spi/spi-omap-100k.c b/drivers/spi/spi-omap-100k.c
+index 20b047172965..50585441ad52 100644
+--- a/drivers/spi/spi-omap-100k.c
++++ b/drivers/spi/spi-omap-100k.c
+@@ -335,7 +335,7 @@ static int omap1_spi100k_transfer_one_message(struct spi_master *master,
+ 
+ 	m->status = status;
+ 
+-	spi_finalize_current_message(master);
++	spi_finalize_message(m);
+ 
+ 	return status;
+ }
+diff --git a/drivers/spi/spi-pic32-sqi.c b/drivers/spi/spi-pic32-sqi.c
+index 86ad17597f5f..1bde94845c55 100644
+--- a/drivers/spi/spi-pic32-sqi.c
++++ b/drivers/spi/spi-pic32-sqi.c
+@@ -434,7 +434,7 @@ static int pic32_sqi_one_message(struct spi_master *master,
+ 		/* release ring descr */
+ 		ring_desc_put(sqi, rdesc);
+ 	}
+-	spi_finalize_current_message(spi->master);
++	spi_finalize_message(msg);
+ 
+ 	return ret;
+ }
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index e4484ace584e..93e2da9c653d 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -474,6 +474,7 @@ static void pl022_cs_control(struct pl022 *pl022, u32 command)
+ static void giveback(struct pl022 *pl022)
+ {
+ 	struct spi_transfer *last_transfer;
++	struct spi_message *msg;
+ 	pl022->next_msg_cs_active = false;
+ 
+ 	last_transfer = list_last_entry(&pl022->cur_msg->transfers,
+@@ -515,6 +516,7 @@ static void giveback(struct pl022 *pl022)
+ 
+ 	}
+ 
++	msg = pl022->cur_msg;
+ 	pl022->cur_msg = NULL;
+ 	pl022->cur_transfer = NULL;
+ 	pl022->cur_chip = NULL;
+@@ -523,7 +525,7 @@ static void giveback(struct pl022 *pl022)
+ 	writew((readw(SSP_CR1(pl022->virtbase)) &
+ 		(~SSP_CR1_MASK_SSE)), SSP_CR1(pl022->virtbase));
+ 
+-	spi_finalize_current_message(pl022->master);
++	spi_finalize_message(msg);
+ }
+ 
+ /**
+diff --git a/drivers/spi/spi-sc18is602.c b/drivers/spi/spi-sc18is602.c
+index 5d27ee482237..cf7aec06338b 100644
+--- a/drivers/spi/spi-sc18is602.c
++++ b/drivers/spi/spi-sc18is602.c
+@@ -214,7 +214,7 @@ static int sc18is602_transfer_one(struct spi_master *master,
+ 		spi_transfer_delay_exec(t);
+ 	}
+ 	m->status = status;
+-	spi_finalize_current_message(master);
++	spi_finalize_message(m);
+ 
+ 	return status;
+ }
+diff --git a/drivers/spi/spi-sh-hspi.c b/drivers/spi/spi-sh-hspi.c
+index a62034e2a7cb..6042f2b50f4f 100644
+--- a/drivers/spi/spi-sh-hspi.c
++++ b/drivers/spi/spi-sh-hspi.c
+@@ -204,7 +204,7 @@ static int hspi_transfer_one_message(struct spi_controller *ctlr,
+ 		ndelay(nsecs);
+ 		hspi_hw_cs_disable(hspi);
+ 	}
+-	spi_finalize_current_message(ctlr);
++	spi_finalize_message(msg);
+ 
+ 	return ret;
+ }
+diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+index 8f345247a8c3..e3ab93812ce7 100644
+--- a/drivers/spi/spi-tegra114.c
++++ b/drivers/spi/spi-tegra114.c
+@@ -1118,7 +1118,7 @@ static int tegra_spi_transfer_one_message(struct spi_master *master,
+ 	ret = 0;
+ exit:
+ 	msg->status = ret;
+-	spi_finalize_current_message(master);
++	spi_finalize_message(msg);
+ 	return ret;
+ }
+ 
+diff --git a/drivers/spi/spi-tegra20-sflash.c b/drivers/spi/spi-tegra20-sflash.c
+index 2888d8a8dc6d..c118aa59503d 100644
+--- a/drivers/spi/spi-tegra20-sflash.c
++++ b/drivers/spi/spi-tegra20-sflash.c
+@@ -351,7 +351,7 @@ static int tegra_sflash_transfer_one_message(struct spi_master *master,
+ exit:
+ 	tegra_sflash_writel(tsd, tsd->def_command_reg, SPI_COMMAND);
+ 	msg->status = ret;
+-	spi_finalize_current_message(master);
++	spi_finalize_message(msg);
+ 	return ret;
+ }
+ 
+diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
+index 66f647f32876..af647006d312 100644
+--- a/drivers/spi/spi-tegra210-quad.c
++++ b/drivers/spi/spi-tegra210-quad.c
+@@ -1289,7 +1289,7 @@ static int tegra_qspi_transfer_one_message(struct spi_master *master,
+ 	else
+ 		ret = tegra_qspi_non_combined_seq_xfer(tqspi, msg);
+ 
+-	spi_finalize_current_message(master);
++	spi_finalize_message(msg);
+ 
+ 	return ret;
+ }
+diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
+index e06aafe169e0..20d2e98ee15e 100644
+--- a/drivers/spi/spi-ti-qspi.c
++++ b/drivers/spi/spi-ti-qspi.c
+@@ -718,7 +718,7 @@ static int ti_qspi_start_transfer_one(struct spi_master *master,
+ 
+ 	ti_qspi_write(qspi, qspi->cmd | QSPI_INVAL, QSPI_SPI_CMD_REG);
+ 	m->status = status;
+-	spi_finalize_current_message(master);
++	spi_finalize_message(m);
+ 
+ 	return status;
+ }
+diff --git a/drivers/spi/spi-xcomm.c b/drivers/spi/spi-xcomm.c
+index 1d9b3f03d986..bda9ac0f3a16 100644
+--- a/drivers/spi/spi-xcomm.c
++++ b/drivers/spi/spi-xcomm.c
+@@ -197,7 +197,7 @@ static int spi_xcomm_transfer_one(struct spi_master *master,
+ 		spi_xcomm_chipselect(spi_xcomm, spi, false);
+ 
+ 	msg->status = status;
+-	spi_finalize_current_message(master);
++	spi_finalize_message(msg);
+ 
+ 	return status;
+ }
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 842434d544fe..89c7d507f38f 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1531,7 +1531,7 @@ static int spi_transfer_one_message(struct spi_controller *ctlr,
+ 	if (msg->status && ctlr->handle_err)
+ 		ctlr->handle_err(ctlr, msg);
+ 
+-	spi_finalize_current_message(ctlr);
++	spi_finalize_message(msg);
+ 
+ 	return ret;
+ }
+@@ -1676,7 +1676,7 @@ static void __spi_pump_messages(struct spi_controller *ctlr, bool in_kthread)
+ 				pm_runtime_put(ctlr->dev.parent);
+ 
+ 			msg->status = ret;
+-			spi_finalize_current_message(ctlr);
++			spi_finalize_message(msg);
+ 
+ 			mutex_unlock(&ctlr->io_mutex);
+ 			return;
+@@ -1691,7 +1691,7 @@ static void __spi_pump_messages(struct spi_controller *ctlr, bool in_kthread)
+ 			dev_err(&ctlr->dev, "failed to prepare message: %d\n",
+ 				ret);
+ 			msg->status = ret;
+-			spi_finalize_current_message(ctlr);
++			spi_finalize_message(msg);
+ 			goto out;
+ 		}
+ 		ctlr->cur_msg_prepared = true;
+@@ -1700,7 +1700,7 @@ static void __spi_pump_messages(struct spi_controller *ctlr, bool in_kthread)
+ 	ret = spi_map_msg(ctlr, msg);
+ 	if (ret) {
+ 		msg->status = ret;
+-		spi_finalize_current_message(ctlr);
++		spi_finalize_message(msg);
+ 		goto out;
+ 	}
+ 
+@@ -1896,23 +1896,19 @@ struct spi_message *spi_get_next_queued_message(struct spi_controller *ctlr)
+ EXPORT_SYMBOL_GPL(spi_get_next_queued_message);
+ 
+ /**
+- * spi_finalize_current_message() - the current message is complete
+- * @ctlr: the controller to return the message to
++ * spi_finalize_message() - the current message is complete
++ * @mesg: the message to return to its controller.
+  *
+- * Called by the driver to notify the core that the message in the front of the
+- * queue is complete and can be removed from the queue.
++ * Called by the driver to notify the core that this message is complete and
++ * can be removed from the queue if it was a queued message.
+  */
+-void spi_finalize_current_message(struct spi_controller *ctlr)
++void spi_finalize_message(struct spi_message *mesg)
+ {
++	struct spi_controller *ctlr = mesg->spi->controller;
+ 	struct spi_transfer *xfer;
+-	struct spi_message *mesg;
+ 	unsigned long flags;
+ 	int ret;
+ 
+-	spin_lock_irqsave(&ctlr->queue_lock, flags);
+-	mesg = ctlr->cur_msg;
+-	spin_unlock_irqrestore(&ctlr->queue_lock, flags);
+-
+ 	if (!ctlr->ptp_sts_supported && !ctlr->transfer_one) {
+ 		list_for_each_entry(xfer, &mesg->transfers, transfer_list) {
+ 			ptp_read_system_postts(xfer->ptp_sts);
+@@ -1956,7 +1952,7 @@ void spi_finalize_current_message(struct spi_controller *ctlr)
+ 	if (mesg->complete)
+ 		mesg->complete(mesg->context);
+ }
+-EXPORT_SYMBOL_GPL(spi_finalize_current_message);
++EXPORT_SYMBOL_GPL(spi_finalize_message);
+ 
+ static int spi_start_queue(struct spi_controller *ctlr)
+ {
+diff --git a/drivers/staging/greybus/spilib.c b/drivers/staging/greybus/spilib.c
+index ad0700a0bb81..ed7f639e3cfc 100644
+--- a/drivers/staging/greybus/spilib.c
++++ b/drivers/staging/greybus/spilib.c
+@@ -371,7 +371,7 @@ static int gb_spi_transfer_one_message(struct spi_master *master,
+ out:
+ 	msg->status = ret;
+ 	clean_xfer_state(spi);
+-	spi_finalize_current_message(master);
++	spi_finalize_message(msg);
+ 
+ 	return ret;
+ }
 diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 43ec1e262913..9caed8537755 100644
+index 29c889825a96..58fc2ed03758 100644
 --- a/include/linux/spi/spi.h
 +++ b/include/linux/spi/spi.h
-@@ -449,6 +449,8 @@ extern struct spi_device *spi_new_ancillary_device(struct spi_device *spi, u8 ch
-  * @irq_flags: Interrupt enable state during PTP system timestamping
-  * @fallback: fallback to pio if dma transfer return failure with
-  *	SPI_TRANS_FAIL_NO_START.
-+ * @queue_empty: signal green light for opportunistically skipping the queue
-+ * 	for spi_sync transfers.
-  *
-  * Each SPI controller can communicate with one or more @spi_device
-  * children.  These make a small bus, sharing MOSI, MISO and SCK signals
-@@ -665,6 +667,9 @@ struct spi_controller {
+@@ -394,8 +394,7 @@ extern struct spi_device *spi_new_ancillary_device(struct spi_device *spi, u8 ch
+  * @transfer_one_message: the subsystem calls the driver to transfer a single
+  *	message while queuing transfers that arrive in the meantime. When the
+  *	driver is finished with this message, it must call
+- *	spi_finalize_current_message() so the subsystem can issue the next
+- *	message
++ *	spi_finalize_message() so the subsystem can issue the next message
+  * @unprepare_transfer_hardware: there are currently no more messages on the
+  *	queue so the subsystem notifies the driver that it may relax the
+  *	hardware by issuing this call
+@@ -706,7 +705,7 @@ extern int spi_controller_resume(struct spi_controller *ctlr);
  
- 	/* Interrupt enable state during PTP system timestamping */
- 	unsigned long		irq_flags;
-+
-+	/* Flag for enabling opportunistic skipping of the queue in spi_sync */
-+	bool			queue_empty;
- };
+ /* Calls the driver make to interact with the message queue */
+ extern struct spi_message *spi_get_next_queued_message(struct spi_controller *ctlr);
+-extern void spi_finalize_current_message(struct spi_controller *ctlr);
++extern void spi_finalize_message(struct spi_message *mesg);
+ extern void spi_finalize_current_transfer(struct spi_controller *ctlr);
  
- static inline void *spi_controller_get_devdata(struct spi_controller *ctlr)
-@@ -974,6 +979,7 @@ struct spi_transfer {
-  * @state: for use by whichever driver currently owns the message
-  * @resources: for resource management when the spi message is processed
-  * @prepared: spi_prepare_message was called for the this message
-+ * @sync: this message took the direct sync path skipping the async queue
-  *
-  * A @spi_message is used to execute an atomic sequence of data transfers,
-  * each represented by a struct spi_transfer.  The sequence is "atomic"
-@@ -1025,7 +1031,10 @@ struct spi_message {
- 	struct list_head        resources;
- 
- 	/* spi_prepare_message was called for this message */
--	bool                    prepared;
-+	bool			prepared;
-+
-+	/* this message is skipping the async queue */
-+	bool			sync;
- };
- 
- static inline void spi_message_init_no_memset(struct spi_message *m)
+ /* Helper calls for driver to timestamp transfer */
 -- 
 2.32.0
 

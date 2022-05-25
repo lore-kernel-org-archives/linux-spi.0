@@ -2,103 +2,123 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E3B5BC433EF
-	for <linux-spi@archiver.kernel.org>; Wed, 25 May 2022 20:06:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2ADB3C433FE
+	for <linux-spi@archiver.kernel.org>; Wed, 25 May 2022 21:01:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344595AbiEYUGp (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 25 May 2022 16:06:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54118 "EHLO
+        id S1344443AbiEYVBJ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 25 May 2022 17:01:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242501AbiEYUGh (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 25 May 2022 16:06:37 -0400
-Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 934FD5F40
-        for <linux-spi@vger.kernel.org>; Wed, 25 May 2022 13:06:35 -0700 (PDT)
-Received: by mail-wm1-x332.google.com with SMTP id bg25so13090976wmb.4
-        for <linux-spi@vger.kernel.org>; Wed, 25 May 2022 13:06:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=pensando.io; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=5MlRh8v/O/wHhNLDVqNAGwAJO3u/nvYhL6suQln4qMM=;
-        b=aOtG+77g4SUVZr8bbvfMI4s7jJQI5gdHfJc7aakPzg+lNkGNOOQVJV9iG4Yu/jIe3/
-         QbmCPdfeXzcf5y/4GD8DI74dKjylTbj6yE5dszfna3WO92tO3psktxusV3598aleUFYq
-         6H1cCeAlBOFu3Va+kmZhuRKXO39pTz4MvBX3soqViH7SE3lZthU3f7oHiFWMBQ0Mc3k+
-         nSwL7XWWbT3FArlMgP4a3hyS7DfL6PQZDPlYYkm+NsWMmmjAr3cXFnn9+kjPnlIb1n6d
-         qwgLFiy3/gBjTWnjPyLyJOmMCNivCq0vgmMJcwttRd3X2eybN1mqziJcEI/6rKIvaeeh
-         7K2Q==
+        with ESMTP id S232245AbiEYVBB (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 25 May 2022 17:01:01 -0400
+Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B977BBA55E;
+        Wed, 25 May 2022 14:01:00 -0700 (PDT)
+Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-f2cd424b9cso1778590fac.7;
+        Wed, 25 May 2022 14:01:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=5MlRh8v/O/wHhNLDVqNAGwAJO3u/nvYhL6suQln4qMM=;
-        b=LaPcbHEKaVrk1LSGqWtLZfffLl9NxLIAEE5VDHBHhrmqplCYf62Y6N/ngnar0GKFvI
-         rp6r3XJX2br8ehQXwFBNgnRay1Y7Nba6eyhheC1yHPbYhHWZtw0hWMFkPuk4NMkz2tw+
-         Anp89EN83ZZMOo12Eyyr4+CM7+/O+dnPWG2VIwZWmCIPRA5knE8B21VNLc7vqpMMN1SQ
-         vjsv0lFWBsHf91V1QA+FZPEGtmhuX/s+M0o6lr30G6oBXdaHks6a2Y22BVbJ+rcVLmK1
-         Gdp3aGbfz10tIOryqh5DjAgaHo6oujGuyfHvRhfWkLiXfAWoQ8sFSHHJR56DSSuQcRTV
-         8p/A==
-X-Gm-Message-State: AOAM533qci9Zv0mD9W7FydaJ/6A+iFa9Ycs6Tl8pim5fTdjjg7ygEF7m
-        xFXFo+5vcTO4qqbLQehM9kjuqxMpMI5FtIBxMQlHJg==
-X-Google-Smtp-Source: ABdhPJzwmm4iFgAvq41IWkRIMaeSW61oQACieHYUK5Pp+Z5/usjraflqW/p2zQWTbtlA0quoR70s8kdRGnwXUQJemek=
-X-Received: by 2002:a05:600c:3515:b0:394:8c7e:fbde with SMTP id
- h21-20020a05600c351500b003948c7efbdemr9559357wmq.165.1653509194127; Wed, 25
- May 2022 13:06:34 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220406233648.21644-1-brad@pensando.io> <20220406233648.21644-12-brad@pensando.io>
- <20220412112239.cucvqqlfsdpjnzju@mobilestation>
-In-Reply-To: <20220412112239.cucvqqlfsdpjnzju@mobilestation>
-From:   Brad Larson <brad@pensando.io>
-Date:   Wed, 25 May 2022 13:06:23 -0700
-Message-ID: <CAK9rFnz9a_21Bc9yyUqqmQET_o6g5XK6=mfZVv9jUp4dNxCx4w@mail.gmail.com>
-Subject: Re: [PATCH 11/11] arm64: dts: Add Pensando Elba SoC support
-To:     Serge Semin <fancer.lancer@gmail.com>
-Cc:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=V2DEce3yf8Bq8D8CEXpzcdntBLjIJseRwV+OWWl1tVA=;
+        b=P589UFF6O/n6814+n9r2o91aMLQCSQbr/y27tPlrgivUUBmjHwG7JWvDYnpIKHMfCp
+         +7onFl7ywJeyeQvOteB3VTvLEUqFOZtymVQnZslNpY42iGQOFwpmTLiM1vLy4LzDs3ya
+         DuhBPZpp/sYS98hTfdnjudvwFTelb68hcTZVw6SXfjnO6UDC/RvT8tY2Co/aj2A/j4X1
+         uDzN0En599S41aOjfPX1EanoSMTtSUYVP/S6e+b1bjYjFVf1OC/o+uSp1fudWTKe1X/m
+         W68l91jDrMjQEsT/3rA5b7rNonI7NzKt8FBQHt740i9O4KClGRXuMDI4DDWo0xvoRt7C
+         Nv3A==
+X-Gm-Message-State: AOAM531lREKxhuRnXHHgZrJLW3b9Gqnxd4RuKNnEH3YoMr9m7kewTZo0
+        hznbF8DjLdA83dCuegg2sQXE/6x0Ig==
+X-Google-Smtp-Source: ABdhPJwDI6vnmIjILt2FYz6J9nEAMoufgBi+0k3uylK50VLk+6BYH3YU9OOsQ8X/Eu+Ce+MjAHVSGQ==
+X-Received: by 2002:a05:6870:e991:b0:f2:cd2b:f82 with SMTP id r17-20020a056870e99100b000f2cd2b0f82mr1463756oao.81.1653512459991;
+        Wed, 25 May 2022 14:00:59 -0700 (PDT)
+Received: from xps15.. (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.googlemail.com with ESMTPSA id k22-20020a056870959600b000f2c0ec657asm1110201oao.0.2022.05.25.14.00.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 May 2022 14:00:59 -0700 (PDT)
+From:   Rob Herring <robh@kernel.org>
+To:     Serge Semin <fancer.lancer@gmail.com>,
         Mark Brown <broonie@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Olof Johansson <olof@lixom.net>,
-        David Clear <dac2@pensando.io>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Pratyush Yadav <p.yadav@ti.com>
+Cc:     linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] spi: dt-bindings: Move 'rx-sample-delay-ns' to spi-peripheral-props.yaml
+Date:   Wed, 25 May 2022 16:00:53 -0500
+Message-Id: <20220525210053.2488756-1-robh@kernel.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi Sergey,
+SPI bus per device properties must be defined in spi-peripheral-props.yaml
+for unevaluatedProperties checks to work correctly on device nodes.
 
-On Tue, Apr 12, 2022 at 4:22 AM Serge Semin <fancer.lancer@gmail.com> wrote:
->
-> On Wed, Apr 06, 2022 at 04:36:48PM -0700, Brad Larson wrote:
+This has the side effect of promoting 'rx-sample-delay-ns' to be a
+common property, but functionally it's no different if it was defined in
+a Synopsys specific schema file.
 
-> > +             spi0: spi@2800 {
-> > +                     compatible = "pensando,elba-spi";
-> > +                     reg = <0x0 0x2800 0x0 0x100>;
->
-> > +                     pensando,syscon-spics = <&mssoc 0x2468>;
->
-> I am wondering do you really need to define the
-> "pensando,syscon-spics" property as accepting a phandle with an
-> additional argument? That would have been justified if you had at
-> least two SPI controllers with different CS override registers. AFAICS
-> you've got only one here. So you can simplify the bindings by defining
-> the property like "pensando,syscon" (with no "spics" suffix) which
-> accepts the syscon phandle alone. Respective SPICS offset can be
-> locally declared in the driver as a macro with respective name.
+Signed-off-by: Rob Herring <robh@kernel.org>
+---
+ .../bindings/spi/snps,dw-apb-ssi.yaml          | 18 +++++++++---------
+ .../bindings/spi/spi-peripheral-props.yaml     |  5 +++++
+ 2 files changed, 14 insertions(+), 9 deletions(-)
 
-Yes this can be simplified and doing that in updated patchset.  Only this
-API call is needed in dw_spi_elba_init().
+diff --git a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
+index d7e08b03e204..e25d44c218f2 100644
+--- a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
++++ b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
+@@ -124,9 +124,16 @@ properties:
+ 
+   rx-sample-delay-ns:
+     default: 0
+-    description: Default value of the rx-sample-delay-ns property.
++    description: |
++      Default value of the rx-sample-delay-ns property.
+       This value will be used if the property is not explicitly defined
+-      for a SPI slave device. See below.
++      for a SPI slave device.
++
++      SPI Rx sample delay offset, unit is nanoseconds.
++      The delay from the default sample time before the actual sample of the
++      rxd input signal occurs. The "rx_sample_delay" is an optional feature
++      of the designware controller, and the upper limit is also subject to
++      controller configuration.
+ 
+ patternProperties:
+   "^.*@[0-9a-f]+$":
+@@ -142,13 +149,6 @@ patternProperties:
+       spi-tx-bus-width:
+         const: 1
+ 
+-      rx-sample-delay-ns:
+-        description: SPI Rx sample delay offset, unit is nanoseconds.
+-          The delay from the default sample time before the actual
+-          sample of the rxd input signal occurs. The "rx_sample_delay"
+-          is an optional feature of the designware controller, and the
+-          upper limit is also subject to controller configuration.
+-
+ unevaluatedProperties: false
+ 
+ required:
+diff --git a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
+index 5e32928c4fc3..6ffb74352bef 100644
+--- a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
++++ b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
+@@ -71,6 +71,11 @@ properties:
+     description:
+       Delay, in microseconds, after a read transfer.
+ 
++  rx-sample-delay-ns:
++    description: SPI Rx sample delay offset, unit is nanoseconds.
++      The delay from the default sample time before the actual
++      sample of the rxd input signal occurs.
++
+   spi-tx-bus-width:
+     description:
+       Bus width to the SPI bus used for write transfers.
+-- 
+2.34.1
 
-syscon_regmap_lookup_by_phandle(np, "pensando,syscon");
-
-Regards,
-Brad

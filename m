@@ -2,100 +2,104 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9A904C433EF
-	for <linux-spi@archiver.kernel.org>; Wed, 25 May 2022 16:59:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 36D4DC433F5
+	for <linux-spi@archiver.kernel.org>; Wed, 25 May 2022 16:59:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245540AbiEYQ7E (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 25 May 2022 12:59:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47700 "EHLO
+        id S245542AbiEYQ7G (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 25 May 2022 12:59:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245530AbiEYQ7C (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 25 May 2022 12:59:02 -0400
-Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 388E8A502E
-        for <linux-spi@vger.kernel.org>; Wed, 25 May 2022 09:59:00 -0700 (PDT)
-Received: by mail-wr1-x42a.google.com with SMTP id p10so12324389wrg.12
-        for <linux-spi@vger.kernel.org>; Wed, 25 May 2022 09:59:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=pensando.io; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=BuZEGOxN6s+QpJ7ff5N18tZNmtTRq26kp+p3466K8F8=;
-        b=PN7c+ZsciJ/kEOjPj7CShyBj/DLMdY+SeuzKoJuV+aZs00rsfGtKPxXYuXkDBJ+S65
-         +uM95I3LPBfkBnNJtlsq3Hb54Vee//W2JCMtzVXiGtQO50V488NIYCi61azqiCWc6O3c
-         Q5lU3W83LYTjnEIjbwpSasu8MmFtG9SIpezhIsHVO5szkxK6XNck9CfoRN9NbVUaLhQ8
-         rYnP9qSQ9RsaMMG4frzZhL/yat5iLtRzzgeCf/MMbJh08/WMAAcFYYbFqaqpNUYbIOLm
-         zw8NrHxtN81kOAdgF/FzYqXwubENk2rIRCDyHk6nuO2yj17cVhEWMQAi40vrNhwTac3X
-         RwsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=BuZEGOxN6s+QpJ7ff5N18tZNmtTRq26kp+p3466K8F8=;
-        b=SdLk2GelXNhteGgt8HDl6IaEnRX/ijWXB8DwXnDGiN1/8R+UNubAKopM3va2ChZF06
-         am4qA2YVr17kNnYtHelqs1Ib16Wt6vzi2ml56HmebGCD/RSIZMuDe2j2PmLTZQatq+oS
-         DRCNRYqhUT31WPOQpj4urgJCvr+e4pB7D59CsaVj/Gsk0+bMmCVg5wG1OqPauMoRe4+j
-         H9g0EZNtGGO6o4KkEZPqGpEjyxJ9Qaejbv88KsT2hj3rsRIKa5a5Wo/wubCaxpDLq4qG
-         e2WXRi1pSgx5COg2amu5bGscK2RKHdYTqUZ/jvoDYd6rqUn0acCJ0+5vHZbYAbGicg1k
-         8NHg==
-X-Gm-Message-State: AOAM5306Bwi1DFVK8cvcqbpID8gzJ4ktjHYBTNflg1XOTWxFwzXnQ2Zz
-        HIND7fxLDitCB+Gy2HSv4Elxi1Gf1yrJ8XUAK9iJ6g==
-X-Google-Smtp-Source: ABdhPJybIyWNzIkBX1luV1MnU9OIiN8pAZht74AaILdEoJbIQZLlkTffZeSVmkFeLQons+gYVBsMhKaLpMV+YAPqwYA=
-X-Received: by 2002:a5d:5954:0:b0:20c:4d55:1388 with SMTP id
- e20-20020a5d5954000000b0020c4d551388mr28019559wri.90.1653497938850; Wed, 25
- May 2022 09:58:58 -0700 (PDT)
+        with ESMTP id S245528AbiEYQ7F (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 25 May 2022 12:59:05 -0400
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7791A9CC98;
+        Wed, 25 May 2022 09:59:04 -0700 (PDT)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24PGwhlc027029;
+        Wed, 25 May 2022 16:59:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=s29TMMaPCeov6Umv4/RKkhW1ulUvZ0bFNKT+MfZefKc=;
+ b=jEmQGXjx15Ng6AVbzjonQGKGmIUemdi4xQjoqcOj5gAd7pUAhrMHvcsUGxAQKXudHRud
+ vbd/H4hgyiebV2jNXJ75l4YBfqQyCycmzDjL3gL1wVZdQL7lZGzThI12mjnw15cf5zxx
+ ZSv/+KUoefOl0c2yRMzGOVioAZcb1eDDqW69005wnElYHa4UlSvBYPihniPMpL1Yz3DE
+ qqlK88jB0IANFtqkJpBcPlquEmg3n2Ui2dKQ8Yw9IYrFkV4p/8Qtl1XmydxXld+mZc8J
+ uwz2uIcp/auspVq8RiKbTd5M1ma8L32yi41MvJ4qOQZbdtvGkj2NVpZErEs+nOt9wYeu TQ== 
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3g9rewr063-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 25 May 2022 16:59:01 +0000
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+        by ppma04wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24PGcUfD032753;
+        Wed, 25 May 2022 16:59:01 GMT
+Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com [9.57.198.27])
+        by ppma04wdc.us.ibm.com with ESMTP id 3g93uyqbb0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 25 May 2022 16:59:01 +0000
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com [9.57.199.109])
+        by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 24PGx0nM27263316
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 25 May 2022 16:59:00 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id D5F9B112061;
+        Wed, 25 May 2022 16:59:00 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 468C1112062;
+        Wed, 25 May 2022 16:59:00 +0000 (GMT)
+Received: from v0005c16.aus.stglabs.ibm.com (unknown [9.211.60.201])
+        by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
+        Wed, 25 May 2022 16:59:00 +0000 (GMT)
+From:   Eddie James <eajames@linux.ibm.com>
+To:     broonie@kernel.org
+Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Eddie James <eajames@linux.ibm.com>
+Subject: [PATCH 2/2] spi: core: Display return code when failing to transfer message
+Date:   Wed, 25 May 2022 11:58:52 -0500
+Message-Id: <20220525165852.33167-3-eajames@linux.ibm.com>
+X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20220525165852.33167-1-eajames@linux.ibm.com>
+References: <20220525165852.33167-1-eajames@linux.ibm.com>
 MIME-Version: 1.0
-References: <20220406233648.21644-1-brad@pensando.io> <20220406233648.21644-5-brad@pensando.io>
- <7363c5bb-89ed-b6aa-b346-f314a058f2a7@linaro.org>
-In-Reply-To: <7363c5bb-89ed-b6aa-b346-f314a058f2a7@linaro.org>
-From:   Brad Larson <brad@pensando.io>
-Date:   Wed, 25 May 2022 09:58:47 -0700
-Message-ID: <CAK9rFnzHOTg9BR-KY7rQttN2Cu2SYqAXfjXLYsH+RKYO8Su01g@mail.gmail.com>
-Subject: Re: [PATCH 04/11] dt-bindings: spi: Add compatible for Pensando Elba SoC
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Mark Brown <broonie@kernel.org>,
-        Serge Semin <fancer.lancer@gmail.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Olof Johansson <olof@lixom.net>,
-        David Clear <dac2@pensando.io>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: crbBxFRBBMklhPjWNlhgQ79uF7ygIQn4
+X-Proofpoint-GUID: crbBxFRBBMklhPjWNlhgQ79uF7ygIQn4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.486,FMLib:17.11.64.514
+ definitions=2022-05-25_04,2022-05-25_02,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ priorityscore=1501 mlxlogscore=999 spamscore=0 bulkscore=0 adultscore=0
+ clxscore=1015 phishscore=0 mlxscore=0 lowpriorityscore=0 malwarescore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2204290000 definitions=main-2205250085
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi Krzysztof,
+All the other calls to the controller driver display the error
+return code. The return code is helpful to understand what went
+wrong, so include it when failing to transfer one message.
 
-On Thu, Apr 7, 2022 at 11:59 AM Krzysztof Kozlowski
-<krzysztof.kozlowski@linaro.org> wrote:
->
-> On 07/04/2022 01:36, Brad Larson wrote:
-> > Document the cadence qspi controller compatible for Pensando Elba SoC
-> > boards.  The Elba qspi fifo size is 1024.
-> >
+Signed-off-by: Eddie James <eajames@linux.ibm.com>
+---
+ drivers/spi/spi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-> > @@ -48,7 +49,7 @@ properties:
-> >      description:
-> >        Size of the data FIFO in words.
-> >      $ref: "/schemas/types.yaml#/definitions/uint32"
-> > -    enum: [ 128, 256 ]
-> > +    enum: [ 128, 256, 1024 ]
->
-> Is 1024 valid for other controllers? If not, then probably this should
-> be further constraint in allOf:if:then...
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 481edea77c62..ea09d1b42bf6 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1654,7 +1654,8 @@ static void __spi_pump_messages(struct spi_controller *ctlr, bool in_kthread)
+ 	ret = ctlr->transfer_one_message(ctlr, msg);
+ 	if (ret) {
+ 		dev_err(&ctlr->dev,
+-			"failed to transfer one message from queue\n");
++			"failed to transfer one message from queue: %d\n",
++			ret);
+ 		goto out;
+ 	}
+ 
+-- 
+2.27.0
 
-I'll change this to allOf:if:then so that the 1024 deep FIFO is
-specific to Elba SoC.
-
-Regards,
-Brad

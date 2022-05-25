@@ -2,61 +2,111 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 30ADDC433FE
-	for <linux-spi@archiver.kernel.org>; Wed, 25 May 2022 13:06:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A260EC433F5
+	for <linux-spi@archiver.kernel.org>; Wed, 25 May 2022 14:29:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232809AbiEYNG0 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 25 May 2022 09:06:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44992 "EHLO
+        id S236645AbiEYO3n (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 25 May 2022 10:29:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232027AbiEYNGZ (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 25 May 2022 09:06:25 -0400
-X-Greylist: delayed 98755 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 25 May 2022 06:06:23 PDT
-Received: from box.indicandustries.com (hwsrv-970840.hostwindsdns.com [IPv6:2607:5501:3000:21a5::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A5BB38BE
-        for <linux-spi@vger.kernel.org>; Wed, 25 May 2022 06:06:22 -0700 (PDT)
-Received: from authenticated-user (box.indicandustries.com [104.168.149.109])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by box.indicandustries.com (Postfix) with ESMTPSA id 6B1BB107F42
-        for <linux-spi@vger.kernel.org>; Tue, 24 May 2022 03:24:53 -0600 (MDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=box.indicandustries.com; s=mail; t=1653384293;
-        bh=V6VCn7WEbqHjVVQ20/+SYu6rwS1WmTHcxX88g+j430s=;
-        h=Reply-To:From:To:Subject:Date:From;
-        b=K3dtBDRL0rYiyzna178xMcZYKkR4hbvKkWyZE3HhTZlQv/J2v3JBbO/QNJZ3hV+gh
-         Bg1/nexZQK7d3xMkbdfflLLReNVTxvmzLiZcZCzYuS2tiMYVqzN797cFY3GJ+oWnLE
-         6c+1Fh8omu75fi68Z4lSH5uRHk3felDfYeXKW7ss20GlcdX6Ma0RzCQeSg3C1hhhp9
-         ZRsvFSroGm0rgfFn1515LpGbh+2ksgYOkjCe92jIsYSbF07BkpvkQ948efjkU6pcdI
-         7yL5BCFMcizCfBhKt09tNPPMKNdwGJe+e+8jsp6bxedJVBpxfoeQKh90A0/b3Y00tX
-         k169ggqN+R3qw==
-Reply-To: amjalia90@gmail.com
-From:   amjad.ali@box.indicandustries.com
-To:     linux-spi@vger.kernel.org
-Subject: Hello Sir, I seek your urgent consideration.
-Date:   24 May 2022 11:24:53 +0200
-Message-ID: <20220524112452.AD04143CAC823DFA@box.indicandustries.com>
+        with ESMTP id S234442AbiEYO3m (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 25 May 2022 10:29:42 -0400
+Received: from smtp15.bhosted.nl (smtp15.bhosted.nl [IPv6:2a02:9e0:8000::26])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A26E91146B
+        for <linux-spi@vger.kernel.org>; Wed, 25 May 2022 07:29:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=protonic.nl; s=202111;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
+         from;
+        bh=JRIU1D2gVcE7WecOJZLB+34H02WFFD/z9G1eWPodXic=;
+        b=GuX6QWZNDLFctSE6rgNjQSpma1ITjY5bO/uK4vb5py5/8kEi+O3D/1rYET4QtWsLuVGOAzUG9FEO8
+         dlKOolxOXDn5NwQiIndkXjEnwLEID1fg7NA69yJuX6Dv7pHU46b+KYLhu/w+hqtWHBebdu7QT7zw8r
+         kwFXp5jhoaGj9xnNnvI8HzSEIsnyRYM82PK0pkpHRxni+FbijDMr1UiHw5GN/i08Np0E4SJuOCvlkd
+         u6HWE0UuoCIwvvKfH0FpwsjOnVyWo1MXqtCeFllmEU+RHLm8KFrXCWqNX29Isrn44+NpQmUa6hupqc
+         ZV6X94iGmy/qyA/wsyLXflGwXWNpOyg==
+X-MSG-ID: 1a68e90c-dc37-11ec-b450-0050569d3a82
+From:   David Jander <david@protonic.nl>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     linux-spi@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
+        David Jander <david@protonic.nl>
+Subject: [RFC] [PATCH 0/3] Optimize spi_sync path
+Date:   Wed, 25 May 2022 16:29:25 +0200
+Message-Id: <20220525142928.2335378-1-david@protonic.nl>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hello,
+These patches optimize the spi_sync call for the common case that the
+worker thread is idle and the queue is empty. It also opens the
+possibility to potentially further optimize the async path also, since
+it doesn't need to take into account the direct sync path anymore.
 
-Greetings? I am Amjad. I work with a leading Bio Firm.  Due to=20
-the setbacks of the pandemic, my company has opened a bid in=20
-search of new suppliers for basic raw materials needed in=20
-production.
+As an example for the performance gain, on an i.MX8MM SoC with a SPI CAN
+controller attached (MCP2518FD), the time the interrupt line stays
+active (which corresponds roughly with the time it takes to send 3
+relatively short consecutive spi_sync messages) is reduced from 98us to
+only 72us by this patch.
 
-I am seeking a representative=C2=A0as I am a staff, I can not be=20
-involved directly. It may not be your area of work but the=20
-profits are great and I will guide you through. I have already=20
-sourced a local supplier for this. I only need a reliable=20
-representative.
+Unfortunately though, this optimization requires a small and hopefully
+innocuous API change. This change is contained in the first patch, and
+it replaces the function spi_finalize_current_message() with
+spi_finalize_message(), which takes the message instead of its
+controller as argument. Without this change, it is not possible to avoid
+touching the controller message queue, which is what this is all about.
 
-Please get back to me so I can explain this in full.
+A note about message ordering:
 
-Amjad
+This patch series should not change the behavior of message ordering when
+coming from the same context. This means that if a client driver issues
+one or more spi_async() messages immediately followed by a spi_sync()
+message in the same context, it can still rely on these messages being
+sent out in the order they were fired.
+
+David Jander (3):
+  drivers: spi: API: spi_finalize_current_message ->
+    spi_finalize_message
+  drivers: spi: spi.c: Move ctlr->cur_msg_prepared to struct spi_message
+  drivers: spi: spi.c: Don't use the message queue if possible in
+    spi_sync
+
+ Documentation/spi/spi-summary.rst             |   4 +-
+ .../media/pci/netup_unidvb/netup_unidvb_spi.c |   2 +-
+ drivers/media/usb/msi2500/msi2500.c           |   2 +-
+ drivers/spi/spi-amd.c                         |   2 +-
+ drivers/spi/spi-ar934x.c                      |   2 +-
+ drivers/spi/spi-axi-spi-engine.c              |   2 +-
+ drivers/spi/spi-bcm63xx-hsspi.c               |   2 +-
+ drivers/spi/spi-bcm63xx.c                     |   2 +-
+ drivers/spi/spi-cavium.c                      |   2 +-
+ drivers/spi/spi-falcon.c                      |   2 +-
+ drivers/spi/spi-fsi.c                         |   2 +-
+ drivers/spi/spi-fsl-dspi.c                    |   2 +-
+ drivers/spi/spi-fsl-espi.c                    |   2 +-
+ drivers/spi/spi-fsl-spi.c                     |   2 +-
+ drivers/spi/spi-mpc512x-psc.c                 |   2 +-
+ drivers/spi/spi-mt7621.c                      |   2 +-
+ drivers/spi/spi-mtk-nor.c                     |   2 +-
+ drivers/spi/spi-mux.c                         |   2 +-
+ drivers/spi/spi-mxs.c                         |   2 +-
+ drivers/spi/spi-omap-100k.c                   |   2 +-
+ drivers/spi/spi-pic32-sqi.c                   |   2 +-
+ drivers/spi/spi-pl022.c                       |   4 +-
+ drivers/spi/spi-sc18is602.c                   |   2 +-
+ drivers/spi/spi-sh-hspi.c                     |   2 +-
+ drivers/spi/spi-tegra114.c                    |   2 +-
+ drivers/spi/spi-tegra20-sflash.c              |   2 +-
+ drivers/spi/spi-tegra210-quad.c               |   2 +-
+ drivers/spi/spi-ti-qspi.c                     |   2 +-
+ drivers/spi/spi-xcomm.c                       |   2 +-
+ drivers/spi/spi.c                             | 269 ++++++++++--------
+ drivers/staging/greybus/spilib.c              |   2 +-
+ include/linux/spi/spi.h                       |  21 +-
+ 32 files changed, 206 insertions(+), 148 deletions(-)
+
+-- 
+2.32.0
+

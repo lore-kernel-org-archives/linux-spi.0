@@ -2,159 +2,112 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CDD28C433F5
-	for <linux-spi@archiver.kernel.org>; Fri, 27 May 2022 09:33:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 367D7C433F5
+	for <linux-spi@archiver.kernel.org>; Fri, 27 May 2022 11:32:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344795AbiE0JdR (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 27 May 2022 05:33:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58148 "EHLO
+        id S1351277AbiE0Lcd (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 27 May 2022 07:32:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349617AbiE0JdP (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 27 May 2022 05:33:15 -0400
-X-Greylist: delayed 1277 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 27 May 2022 02:33:14 PDT
-Received: from www381.your-server.de (www381.your-server.de [78.46.137.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42C293056F
-        for <linux-spi@vger.kernel.org>; Fri, 27 May 2022 02:33:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:
-        Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References;
-        bh=2KENB/wyLji4a4mmkeA6tfkVslizT3V4TXr8Z6HlsW4=; b=Kp8uKmu0uyV3/rXRym37FuBFeR
-        kWFgOHQX1Q7uboTZAFFJrueN+DHpQ8sihu/073FL/Mi/cWSdXnteQRkpw8oV9XUZpX5jAXQV70Pwd
-        As/SMJ5mfzCyHtC+8N3AApSw+PgRet6klmT6MxWpwFS2LAS0FQE5YV+Dj46SJ1yKivsHWVjHMeWan
-        TZhwfEI+tYUalSiHER59XvfwCByQXa5+hLoaR2iXRPcDVxFumB9AGqfPkWRN+WLwtCISKSHtfRjAX
-        1vZrWSgLe+Q+OwHj4Bvx1B7f+Bs/27limZ0Yo8w98uNKrkj/0TZOOXQkswsLBQp9vHYokiol1KeoI
-        BUrl6yWA==;
-Received: from sslproxy06.your-server.de ([78.46.172.3])
-        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92.3)
-        (envelope-from <lars@metafoo.de>)
-        id 1nuW0e-000Ejr-HW; Fri, 27 May 2022 11:11:52 +0200
-Received: from [2001:a61:2ba3:7b01:9e5c:8eff:fe01:8578] (helo=lars-desktop.fritz.box)
-        by sslproxy06.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1nuW0e-000EbJ-Ah; Fri, 27 May 2022 11:11:52 +0200
-From:   Lars-Peter Clausen <lars@metafoo.de>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     Amit Kumar Mahapatra <amit.kumar-mahapatra@xilinx.com>,
-        Janek Kotas <jank@cadence.com>, linux-spi@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH] spi: cadence: Detect transmit FIFO depth
-Date:   Fri, 27 May 2022 11:11:43 +0200
-Message-Id: <20220527091143.3780378-1-lars@metafoo.de>
-X-Mailer: git-send-email 2.30.2
+        with ESMTP id S232148AbiE0Lcd (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 27 May 2022 07:32:33 -0400
+Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0B9B11838;
+        Fri, 27 May 2022 04:32:31 -0700 (PDT)
+Received: by mail-lj1-x234.google.com with SMTP id v9so4613196lja.12;
+        Fri, 27 May 2022 04:32:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=Gi1UXUaZy4pumdEIliaXakvgNV0H8sr+r4h0aX/ZCIw=;
+        b=JOiBepAxKKOu/v5KC00CHfLz2phzG8AFNsrfTxcshRMkn/WzFMQtGM3zMnwJKylSZ1
+         Zk/TvetfANf+bt/y9NslL55kd3f37zL5/OG+MOsA2wgFmKQIFi5Hl8duYBsV5uUdZuUk
+         +yQ9td11tfzJt6TUJt4ySHWzqxVK1WUV/I5EKIlLfA2OAwxEzvcgxzKoRPrTO5rYK5cM
+         1zVBk6kp1FVKVEeUKhsYXW1sSoG2kZT00bTvPhkupe8c2DTq5TO19+gIwZOvMjI+/adU
+         Qqdrsttsd1vUL9NHWtHMQmGvK6W2VIdbEaUrAPdIn+T+36QILDTo2joi9NerKwPGj6W2
+         Gn2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=Gi1UXUaZy4pumdEIliaXakvgNV0H8sr+r4h0aX/ZCIw=;
+        b=Nh7DIOkRzvp2Q0c6wlxcueHET86Fchosk0NjZkzpJtuJ77ZoJKi+xxeytmr77h0N0y
+         ZOqJbLLJbloEE5Nyk+t3uTU68BEMGgNpT2OMrgIXNPf3i3y+N6NStGdHuzHGq4tGvWHC
+         xPJKqsDcSGy1rAolKbvRZgCLTxu4mjT+B24hvciwHl+y7tYKW9EHOmpvAah+Gsa2tcnK
+         K9j83QJ7BWuHwvx8WV39c5Bx6rcc6RdZauNrVdpIhd9tGu15ld3BLpiBxBfx+X3QkxjY
+         /EpjqKT6Y7kFX2S+FJS28EH7GBbkw4FAXcVr8mhJAUDHCqDVF6jVfl9ZKI27Rm8bGnF0
+         IgBA==
+X-Gm-Message-State: AOAM530fT98yyFm4l3Pek8NxG4RVhBsacpAuxtlZl+45ILuhNg3DmLqS
+        mzois0NOyPEnVlGxQG1tsI4=
+X-Google-Smtp-Source: ABdhPJwn3VUpymr4pB83ygQF9tcXJs2d1Rl7hxKlQK0W3fsTn1uiv0z3umubTI0YxrlbcprHw2nrTQ==
+X-Received: by 2002:a2e:8e78:0:b0:253:c31b:d059 with SMTP id t24-20020a2e8e78000000b00253c31bd059mr23920180ljk.393.1653651150144;
+        Fri, 27 May 2022 04:32:30 -0700 (PDT)
+Received: from mobilestation ([95.79.189.214])
+        by smtp.gmail.com with ESMTPSA id w19-20020a05651c119300b00253b5bb829esm977037ljo.98.2022.05.27.04.32.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 May 2022 04:32:29 -0700 (PDT)
+Date:   Fri, 27 May 2022 14:32:26 +0300
+From:   Serge Semin <fancer.lancer@gmail.com>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
+        Pratyush Yadav <p.yadav@ti.com>,
+        Mark Brown <broonie@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] spi: dt-bindings: Move 'rx-sample-delay-ns' to
+ spi-peripheral-props.yaml
+Message-ID: <20220527113226.x62neigmrnljxtph@mobilestation>
+References: <20220525210053.2488756-1-robh@kernel.org>
+ <20220526054642.zw44mgw2bd2u5v76@ti.com>
+ <20220526135404.GA3831942-robh@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.103.5/26554/Fri May 27 10:04:35 2022)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220526135404.GA3831942-robh@kernel.org>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The depth of the transmit FIFO for the Cadence SPI controller is currently
-hardcoded to 128. But the depth is a synthesis configuration parameter of
-the core and can vary between different SoCs.
+On Thu, May 26, 2022 at 08:54:04AM -0500, Rob Herring wrote:
+> On Thu, May 26, 2022 at 11:16:42AM +0530, Pratyush Yadav wrote:
+> > Hi Rob,
+> > 
+> > On 25/05/22 04:00PM, Rob Herring wrote:
+> > > SPI bus per device properties must be defined in spi-peripheral-props.yaml
+> > > for unevaluatedProperties checks to work correctly on device nodes.
+> > > 
+> > > This has the side effect of promoting 'rx-sample-delay-ns' to be a
+> > > common property, but functionally it's no different if it was defined in
+> > > a Synopsys specific schema file.
+> > 
+> > Functionally it is no different, but does this property make sense for 
+> > other controllers? If not then I don't see why we should pollute the 
+> > common list with controller-specific ones. For one, this now no longer 
+> > makes it obvious that this property should only be used with the 
+> > Synopsys controller. And if you keep making small exceptions for other 
+> > controllers too, soon the common list will be full of controller 
+> > properties and it will be a mess finding out what belongs to who.
+> 
 
-If the configured FIFO size is less than 128 the driver will busy loop in
-the cdns_spi_fill_tx_fifo() function waiting for FIFO space to become
-available.
+> There's at least one other case already:
+> 
+>   cdns,read-delay:
+>     $ref: /schemas/types.yaml#/definitions/uint32
+>     description:
+>       Delay for read capture logic, in clock cycles.
 
-Depending on the length and speed of the transfer it can spin for a
-significant amount of time. The cdns_spi_fill_tx_fifo() function is called
-from the drivers interrupt handler, so it can leave interrupts disabled for
-a prolonged amount of time.
+What about creating the schemas hierarchy for the device-specific
+properties as I already suggested in the other thread? Like this:
 
-In addition the read FIFO will also overflow and data will be discarded.
+https://lore.kernel.org/linux-ide/20220527101057.b5z7ase6y4naoxvk@mobilestation
 
-To avoid this detect the actual size of the FIFO and use that rather than
-the hardcoded value.
+-Sergey
 
-To detect the FIFO size the FIFO threshold register is used. The register
-is sized so that it can hold FIFO size - 1 as its maximum value. Bits that
-are not needed to hold the threshold value will always read 0. By writing
-0xffff to the register and then reading back the value in the register we
-get the FIFO size.
-
-Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
----
- drivers/spi/spi-cadence.c | 27 +++++++++++++++++++++++----
- 1 file changed, 23 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
-index a23d4f6329f5..2a70cdcc051e 100644
---- a/drivers/spi/spi-cadence.c
-+++ b/drivers/spi/spi-cadence.c
-@@ -92,9 +92,6 @@
- #define CDNS_SPI_ER_ENABLE	0x00000001 /* SPI Enable Bit Mask */
- #define CDNS_SPI_ER_DISABLE	0x0 /* SPI Disable Bit Mask */
- 
--/* SPI FIFO depth in bytes */
--#define CDNS_SPI_FIFO_DEPTH	128
--
- /* Default number of chip select lines */
- #define CDNS_SPI_DEFAULT_NUM_CS		4
- 
-@@ -110,6 +107,7 @@
-  * @rx_bytes:		Number of bytes requested
-  * @dev_busy:		Device busy flag
-  * @is_decoded_cs:	Flag for decoder property set or not
-+ * @tx_fifo_depth:	Depth of the TX FIFO
-  */
- struct cdns_spi {
- 	void __iomem *regs;
-@@ -123,6 +121,7 @@ struct cdns_spi {
- 	int rx_bytes;
- 	u8 dev_busy;
- 	u32 is_decoded_cs;
-+	unsigned int tx_fifo_depth;
- };
- 
- /* Macros for the SPI controller read/write */
-@@ -304,7 +303,7 @@ static void cdns_spi_fill_tx_fifo(struct cdns_spi *xspi)
- {
- 	unsigned long trans_cnt = 0;
- 
--	while ((trans_cnt < CDNS_SPI_FIFO_DEPTH) &&
-+	while ((trans_cnt < xspi->tx_fifo_depth) &&
- 	       (xspi->tx_bytes > 0)) {
- 
- 		/* When xspi in busy condition, bytes may send failed,
-@@ -463,6 +462,24 @@ static int cdns_unprepare_transfer_hardware(struct spi_master *master)
- 	return 0;
- }
- 
-+/**
-+ * cdns_spi_detect_fifo_depth - Detect the FIFO depth of the hardware
-+ * @xspi:	Pointer to the cdns_spi structure
-+ *
-+ * The depth of the TX FIFO is a synthesis configuration parameter of the SPI
-+ * IP. The FIFO threshold register is sized so that its maximum value can be the
-+ * FIFO size - 1. This is used to detect the size of the FIFO.
-+ */
-+static void cdns_spi_detect_fifo_depth(struct cdns_spi *xspi)
-+{
-+	/* The MSBs will get truncated giving us the size of the FIFO */
-+	cdns_spi_write(xspi, CDNS_SPI_THLD, 0xffff);
-+	xspi->tx_fifo_depth = cdns_spi_read(xspi, CDNS_SPI_THLD) + 1;
-+
-+	/* Reset to default */
-+	cdns_spi_write(xspi, CDNS_SPI_THLD, 0x1);
-+}
-+
- /**
-  * cdns_spi_probe - Probe method for the SPI driver
-  * @pdev:	Pointer to the platform_device structure
-@@ -535,6 +552,8 @@ static int cdns_spi_probe(struct platform_device *pdev)
- 	if (ret < 0)
- 		xspi->is_decoded_cs = 0;
- 
-+	cdns_spi_detect_fifo_depth(xspi);
-+
- 	/* SPI controller initializations */
- 	cdns_spi_init_hw(xspi);
- 
--- 
-2.30.2
-
+> 
+> 
+> Too many common properties is not a problem we have. Too many custom 
+> properties doing the same thing is the problem.
+> 
+> Rob

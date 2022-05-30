@@ -2,35 +2,35 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1DB9AC4332F
-	for <linux-spi@archiver.kernel.org>; Mon, 30 May 2022 14:21:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 05CDBC4167E
+	for <linux-spi@archiver.kernel.org>; Mon, 30 May 2022 14:21:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241323AbiE3OVf (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 30 May 2022 10:21:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42948 "EHLO
+        id S236939AbiE3OVj (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 30 May 2022 10:21:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241371AbiE3ORc (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 30 May 2022 10:17:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EABD8FF82;
-        Mon, 30 May 2022 06:45:58 -0700 (PDT)
+        with ESMTP id S238548AbiE3OSs (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 30 May 2022 10:18:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84FF11216D9;
+        Mon, 30 May 2022 06:49:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CF8C460FCD;
-        Mon, 30 May 2022 13:45:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 324D4C3411E;
-        Mon, 30 May 2022 13:45:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D93BB60F22;
+        Mon, 30 May 2022 13:48:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F71CC36AE5;
+        Mon, 30 May 2022 13:48:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1653918357;
-        bh=e3Pj9Oc9GnV/XZYemN+b6N2C1L9t//9yQ3EA+uvjl6A=;
+        s=k20201202; t=1653918517;
+        bh=NA4E3y1t021we4LSyaOq70PfxfQjsWhyAXt2a1xl6e8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=K6fTg3nk0xs1CFimSU7tI0xYQt8VUAzuyDi5S9KgieJaoZgMHa9SaALeNB6q+5GCg
-         n7gPaag5BvHQUz6dMwilESNu0S3+zQNGicvAnwo76qMR7mTxjKffkhUYh/KOW3l9cP
-         NnanxD5VriZuZ+fFW8bKgEpG1zcgbqQiCqTHSC6hx9w3Hf/uBqEoSefRGOo2BrbZVH
-         W4KHEjXP5Nm+2tXfqa6x/BsJYOW7X5b/o8voUrH4wnsI4FkBpQJr7yIHu4oFwRPt4n
-         WNfxF0GEROJfHrHm5bR4pME3clat7HFsfHV7lfpTzfZ2nI9Y2l/rov+MiKdVn40tqA
-         /nmAjZ1iNQjFQ==
+        b=MutjqjbtACnvaXtECRHTIb0SuwBPiVt8Bd6TnSnQgfdsPMc9Bwc0RvkB70GfGRSdi
+         p6fPc/a70FdWU6yn0p+sL4nPbw2xqP/Sa9x9x1yZrfQUsO1nu+Bsdd0pPzJbK+4l6b
+         hLA9FfOusC8cWwRzuN0jWd50fRR+JGPM2YMCO2fvxi3+ifsAr8RtNh57UO79toOGnQ
+         HOFqPDhZcfMbCRXAAMsgi/REbHxrLMMpQ1opOMsKHex6f9CZZV29dHABAg4Svj1/HS
+         CRiA5Bmbde8Cmlpmdfqa1bJzuiPzbh8my+LiN1yBOkdtPG6O+ZZt1rFJqeyi4ZQuh4
+         LIS/TbkTvITtg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Patrice Chotard <patrice.chotard@foss.st.com>,
@@ -39,12 +39,12 @@ Cc:     Patrice Chotard <patrice.chotard@foss.st.com>,
         alexandre.torgue@foss.st.com, linux-spi@vger.kernel.org,
         linux-stm32@st-md-mailman.stormreply.com,
         linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.10 49/76] spi: stm32-qspi: Fix wait_cmd timeout in APM mode
-Date:   Mon, 30 May 2022 09:43:39 -0400
-Message-Id: <20220530134406.1934928-49-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 36/55] spi: stm32-qspi: Fix wait_cmd timeout in APM mode
+Date:   Mon, 30 May 2022 09:46:42 -0400
+Message-Id: <20220530134701.1935933-36-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220530134406.1934928-1-sashal@kernel.org>
-References: <20220530134406.1934928-1-sashal@kernel.org>
+In-Reply-To: <20220530134701.1935933-1-sashal@kernel.org>
+References: <20220530134701.1935933-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -70,10 +70,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-stm32-qspi.c b/drivers/spi/spi-stm32-qspi.c
-index 4f24f6392212..9c58dcd7b324 100644
+index ea77d915216a..8070b7420217 100644
 --- a/drivers/spi/spi-stm32-qspi.c
 +++ b/drivers/spi/spi-stm32-qspi.c
-@@ -295,7 +295,8 @@ static int stm32_qspi_wait_cmd(struct stm32_qspi *qspi,
+@@ -293,7 +293,8 @@ static int stm32_qspi_wait_cmd(struct stm32_qspi *qspi,
  	if (!op->data.nbytes)
  		goto wait_nobusy;
  

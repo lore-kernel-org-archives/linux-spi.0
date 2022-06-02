@@ -2,68 +2,117 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4D667C43334
-	for <linux-spi@archiver.kernel.org>; Wed,  1 Jun 2022 17:55:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 06196C43334
+	for <linux-spi@archiver.kernel.org>; Thu,  2 Jun 2022 08:23:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356448AbiFARzm (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 1 Jun 2022 13:55:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45690 "EHLO
+        id S231952AbiFBIXW (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 2 Jun 2022 04:23:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1356446AbiFARzl (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 1 Jun 2022 13:55:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2E58939EF;
-        Wed,  1 Jun 2022 10:55:40 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7D7D361644;
-        Wed,  1 Jun 2022 17:55:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id DC6DFC385A5;
-        Wed,  1 Jun 2022 17:55:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654106139;
-        bh=0ItadwMm29vJ1zHfzLVPLhBgFIzFEnmSYsCzUYRqPno=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=gxovU47OO9hMBZmtdFQOs1LZHMF+EU6kmuVI111ORfSdlxYEvau+TjuDiMxMpRGLH
-         GhnXlsVkg2vtxBgXYf9IpWpd5r3UCo2P6WYu+gpwexfwQ48P3rARYPNxpG+wMaoY1u
-         juJTb5vsADLmmVWQ1U2MqGW4DOCIibYHr3YVLiw7qKVhw3zEa2WoFed/pBL/BMyzxB
-         fNlnmXGz1hReVvGMuSCmmqyYVWxoeCVWoK5/6ubp1vpT6f0G3mEsDKqLRxmco1Jdnp
-         lJwy9bh1P+1j/hGcMFXwTmQQTVuTqR0Rz1979nnO9I+ys46yZponSCyNdJzIIKlhjs
-         Ruokit6eAW6Fw==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id C40DEF03944;
-        Wed,  1 Jun 2022 17:55:39 +0000 (UTC)
-Subject: Re: [GIT PULL] SPI fixes for v5.19-rc0
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20220601080749.B1672C385A5@smtp.kernel.org>
-References: <20220601080749.B1672C385A5@smtp.kernel.org>
-X-PR-Tracked-List-Id: <linux-spi.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20220601080749.B1672C385A5@smtp.kernel.org>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v5.19-rc0
-X-PR-Tracked-Commit-Id: ebf2a3521738520e12849b221fea24928b3f61ff
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 129bdb30fb054875f2068ccce376b865076d9934
-Message-Id: <165410613979.7706.6418260632355087647.pr-tracker-bot@kernel.org>
-Date:   Wed, 01 Jun 2022 17:55:39 +0000
-To:     Mark Brown <broonie@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>
+        with ESMTP id S229846AbiFBIXV (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 2 Jun 2022 04:23:21 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EC1F65AE
+        for <linux-spi@vger.kernel.org>; Thu,  2 Jun 2022 01:23:20 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1nwg6u-0001YT-9J; Thu, 02 Jun 2022 10:23:16 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1nwg6u-005zgh-Fz; Thu, 02 Jun 2022 10:23:15 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1nwg6s-00DhT4-Cw; Thu, 02 Jun 2022 10:23:14 +0200
+Date:   Thu, 2 Jun 2022 10:22:50 +0200
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Eddie James <eajames@linux.ibm.com>
+Cc:     broonie@kernel.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] spi: core: Display return code when failing to
+ transfer message
+Message-ID: <20220602082250.s4llxsng4fecduhc@pengutronix.de>
+References: <20220525165852.33167-1-eajames@linux.ibm.com>
+ <20220525165852.33167-3-eajames@linux.ibm.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="b6nldfoupl3pmrdy"
+Content-Disposition: inline
+In-Reply-To: <20220525165852.33167-3-eajames@linux.ibm.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-spi@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The pull request you sent on Wed, 01 Jun 2022 10:07:46 +0200:
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v5.19-rc0
+--b6nldfoupl3pmrdy
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/129bdb30fb054875f2068ccce376b865076d9934
+Hello,
 
-Thank you!
+On Wed, May 25, 2022 at 11:58:52AM -0500, Eddie James wrote:
+> All the other calls to the controller driver display the error
+> return code. The return code is helpful to understand what went
+> wrong, so include it when failing to transfer one message.
+>=20
+> Signed-off-by: Eddie James <eajames@linux.ibm.com>
+> ---
+>  drivers/spi/spi.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index 481edea77c62..ea09d1b42bf6 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -1654,7 +1654,8 @@ static void __spi_pump_messages(struct spi_controll=
+er *ctlr, bool in_kthread)
+>  	ret =3D ctlr->transfer_one_message(ctlr, msg);
+>  	if (ret) {
+>  		dev_err(&ctlr->dev,
+> -			"failed to transfer one message from queue\n");
+> +			"failed to transfer one message from queue: %d\n",
+> +			ret);
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+(I know it's too late, just stumbled over this commit in mainline by
+chance. So maybe just a suggestion for the next similar change...)
+
+A tad nicer would be to use %pe instead of %d that results in
+
+	mydev mybus: failed to transfer one message from queue: -EIO
+
+instead of
+
+	mydev mybus: failed to transfer one message from queue: -5
+
+and so is more descriptive. (Note you need ERR_PTR(ret) for %pe.)
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--b6nldfoupl3pmrdy
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmKYc1EACgkQwfwUeK3K
+7AlvuQf/SW2QRJEmHhltTqXdJ0dLZ3pvlWA9CtOkNfO3QuJKbG0TablgBoHJptN4
+hmxrdQeEM3ISXL2OlJ4wMf41i20G6TXVrcNGHduZ3sPP7AiiGIhG1ZbxC1aWJqo+
+H86PLgo8C5MX1WcpayJoJBMnAI5TtkMB3ubeWU4eputBkfCO3udWYZbCGagaxt4K
+4u5MoHo7I9q9TaVkVaKfeGR8k4vh4f9nrh2ZfEuIeb6CV6uBVm1LyAg7NMaWemE4
+LkIDcotB0J60DnwEH8oDnDVdimwO3U3SPEjwbqjge22A2vch5tAi6TtRsG+q5T/V
+sncY0W+KoLI3P7k94X+gGTCG/Y5dIg==
+=xFn8
+-----END PGP SIGNATURE-----
+
+--b6nldfoupl3pmrdy--

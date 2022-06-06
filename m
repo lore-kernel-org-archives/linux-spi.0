@@ -2,46 +2,47 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D9200C43334
-	for <linux-spi@archiver.kernel.org>; Mon,  6 Jun 2022 16:13:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7E237CCA473
+	for <linux-spi@archiver.kernel.org>; Mon,  6 Jun 2022 16:13:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241628AbiFFQNj (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 6 Jun 2022 12:13:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52314 "EHLO
+        id S241606AbiFFQNk (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 6 Jun 2022 12:13:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241592AbiFFQNf (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 6 Jun 2022 12:13:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39FF410053B;
+        with ESMTP id S241595AbiFFQNg (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 6 Jun 2022 12:13:36 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2E8A1248D3;
         Mon,  6 Jun 2022 09:13:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CA50260C96;
+        by sin.source.kernel.org (Postfix) with ESMTPS id 0E8B8CE1C04;
         Mon,  6 Jun 2022 16:13:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADA68C3411D;
-        Mon,  6 Jun 2022 16:13:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 130A0C34115;
+        Mon,  6 Jun 2022 16:13:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654532014;
-        bh=WtLr248+J7VRb1dQKlsA2bJrbWka+yrYlrb3vKRa3bk=;
+        s=k20201202; t=1654532012;
+        bh=KzlsCY5EneODGrRzogwzoUlBLdPUtIfNZ9l+NxOzLQc=;
         h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=rOiSpAV8rl4fpjVsZ2A+wbNptvo9Rt0NP8DnKg4Ob9JjuyMnef2usBKN1lEpg2SbJ
-         8/z62jfj9z+BAd0yDqDOZqLFGS65aHTMlEzG4o3+wpraI0RJpJz+5TXhKAmnfWLc7p
-         PFnYKBBtbTy6+x2HKVtuzR3te00KOPG7KoD+Jst1Q3E4iwve0miQGDsaO+hEQ7Vrv4
-         qQnGdQG6gGWJ0OV8/NevHANxoJ43N8JuT/3kZLhrGfSV+u+afy59ueKFeBPq16+9pj
-         doKdSQUWhFAESksZzp4i3X70816DTWZWnAKFyU72OsJMbYuqBq3Vu2LAnFYyhtutyR
-         KBPY0hcTQMOFA==
+        b=NlF6jaNtP+Vg7t9azUkk8f/rm25iImW2yfh9pKiK4/70IPqxibkL2erZQhw2UYOcP
+         vt/NRoRxJvq47TG1PtQzNL0E4Q4B8QEnaImnKmyr4h6r7P/4PEehpe53vEuMnpR/kk
+         jkR9PzOm6yeXoLIGKjhB/9pyTzs5ofg6CgoYfEiJtbu5C6/iLakxm7s9ZOdW3qab1e
+         A+cOpvre8Zcvd6kE2ACj/DLCNNGTYMK7hkA9j80002gk/YcMY6svCH+UHC4Mocjg2O
+         ziDdANo+53zRL/IjcxRwLKFF9xcRI8yMxoCq4/BqfJO6zLglQAhJgpVv8H4d+JIJY1
+         f1GhV/Dht7z5Q==
 From:   Mark Brown <broonie@kernel.org>
-To:     alexandre.torgue@foss.st.com, patrice.chotard@foss.st.com
-Cc:     christophe.kerello@foss.st.com, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org
-In-Reply-To: <20220602091022.358127-1-patrice.chotard@foss.st.com>
-References: <20220602091022.358127-1-patrice.chotard@foss.st.com>
-Subject: Re: [PATCH 1/1] spi: spi-mem: Fix spi_mem_poll_status()
-Message-Id: <165453201241.2010189.6032534787869283638.b4-ty@kernel.org>
-Date:   Mon, 06 Jun 2022 17:13:32 +0100
+To:     conor.dooley@microchip.com, agross@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, bjorn.andersson@linaro.org,
+        robh@kernel.org
+Cc:     krzysztof.kozlowski@linaro.org, devicetree@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20220526014141.2872567-1-robh@kernel.org>
+References: <20220526014141.2872567-1-robh@kernel.org>
+Subject: Re: [PATCH] spi: dt-bindings: Fix unevaluatedProperties warnings in examples
+Message-Id: <165453200977.2010189.2397395940075983324.b4-ty@kernel.org>
+Date:   Mon, 06 Jun 2022 17:13:29 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -49,14 +50,13 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, 2 Jun 2022 11:10:22 +0200, patrice.chotard@foss.st.com wrote:
-> From: Patrice Chotard <patrice.chotard@foss.st.com>
+On Wed, 25 May 2022 20:41:41 -0500, Rob Herring wrote:
+> The 'unevaluatedProperties' schema checks is not fully working and doesn't
+> catch some cases where there's a $ref to another schema. A fix is pending,
+> but results in new warnings in examples.
 > 
-> In spi_mem_exec_op(), in case cs_gpiod descriptor is set, exec_op()
-> callback can't be used.
-> The same must be applied in spi_mem_poll_status(), poll_status()
-> callback can't be used, we must use the legacy path using
-> read_poll_timeout().
+> 'spi-max-frequency' is supposed to be a per SPI peripheral device property,
+> not a SPI controller property, so drop it.
 > 
 > [...]
 
@@ -66,8 +66,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: spi-mem: Fix spi_mem_poll_status()
-      commit: 2283679f4c468df367830b7eb8f22d48a6940e19
+[1/1] spi: dt-bindings: Fix unevaluatedProperties warnings in examples
+      commit: 6aa27071e4354c351d98e345fc888b70f335f185
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

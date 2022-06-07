@@ -2,45 +2,43 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 85ACEC433EF
-	for <linux-spi@archiver.kernel.org>; Tue,  7 Jun 2022 10:48:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C7E34C43334
+	for <linux-spi@archiver.kernel.org>; Tue,  7 Jun 2022 10:48:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241612AbiFGKs3 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 7 Jun 2022 06:48:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42556 "EHLO
+        id S241928AbiFGKsa (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 7 Jun 2022 06:48:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241714AbiFGKro (ORCPT
+        with ESMTP id S241692AbiFGKro (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Tue, 7 Jun 2022 06:47:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9B19F45E1;
-        Tue,  7 Jun 2022 03:46:47 -0700 (PDT)
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E73BF45DE
+        for <linux-spi@vger.kernel.org>; Tue,  7 Jun 2022 03:46:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 44A2A61556;
-        Tue,  7 Jun 2022 10:46:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38F1CC385A5;
-        Tue,  7 Jun 2022 10:46:45 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 0D48BB81F06
+        for <linux-spi@vger.kernel.org>; Tue,  7 Jun 2022 10:46:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64B83C34115;
+        Tue,  7 Jun 2022 10:46:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654598806;
-        bh=0XbIFrMxz3J5HCy9+gf4RCodZycEv9+xgNZt/QFGOT8=;
+        s=k20201202; t=1654598804;
+        bh=2qY3kAUABVA8K7okrNXIQpRerxJUU1AHSXybhcsPBsA=;
         h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=RvTsaVHpVrxLyCqoN3OqP6I5RvBLFqnyRRCM/ZrDvSxdHEotVyNTlHVeQU6XvRyLz
-         KT3R3++Q0CPyn+LXqZpjWcXBLDmDmms6NP5jlGoYLePioqIpeRlKY0Yo1xiuYc2i7y
-         hsk9ZeEm2+jGKJp8kpSlsnGpHgPLBUSPEPE0NhpeZZKAh4LryiNwthoY8x8tMoV4rd
-         YItPN64avShfiNMbSNN7ZtkT+HdXjyhJ/SkvIJuCc6gv4OZL3xpGS6mmOWwmNdwjrV
-         dcAs/wgO9OxVnNy2DP+MNEGPmFrHlP4mmPQMA1ZPe5EIErt640bJodo8IyYtPv02fi
-         WDC/YWP+fLJPA==
+        b=hzxdQMEmwVczmOKQKN3xDJTyHvYEwzF7tYbnQPjdjmzazJFbIyXT02kz671fHI780
+         ki5r/WccpY1LjnY1NbSMQIdxPkpbcWqg+s7qD9gMLK0CzP4T69DPclLU4elmAi9OM4
+         GvOHOq96vvZErtraXqnrcL+NCKv91+44ob2E5qdjtQGxqlN0y2wFCjr49mL1NULSZO
+         QrZkCGM1kCHnH01hA3E2Py8L8WXocE3w8akFQnw4MtCbyK6iCJFWViNBXdlj5bkyE5
+         cc161Om1fLN8RmPKcoMyAfqJ2b/JXY2+Rf2g8oYKHwWN3X3eHhhXMDCaN6Fv/MFAaH
+         iQduJzGYS0/Mw==
 From:   Mark Brown <broonie@kernel.org>
-To:     alexandre.torgue@foss.st.com, patrice.chotard@foss.st.com
-Cc:     linux-kernel@vger.kernel.org, christophe.kerello@foss.st.com,
-        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com
-In-Reply-To: <20220602092540.369604-1-patrice.chotard@foss.st.com>
-References: <20220602092540.369604-1-patrice.chotard@foss.st.com>
-Subject: Re: [PATCH v2 0/3] spi: stm32-qspi: Remove unused parameters
-Message-Id: <165459880493.302078.4977236000024044341.b4-ty@kernel.org>
-Date:   Tue, 07 Jun 2022 11:46:44 +0100
+To:     david@protonic.nl
+Cc:     mkl@pengutronix.de, andrew@lunn.ch, linux-spi@vger.kernel.org
+In-Reply-To: <20220524091808.2269898-1-david@protonic.nl>
+References: <20220524091808.2269898-1-david@protonic.nl>
+Subject: Re: [PATCH v2] drivers: spi: spi.c: Convert statistics to per-cpu u64_stats_t
+Message-Id: <165459880311.302078.9081830520879005991.b4-ty@kernel.org>
+Date:   Tue, 07 Jun 2022 11:46:43 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -48,13 +46,15 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, 2 Jun 2022 11:25:37 +0200, patrice.chotard@foss.st.com wrote:
-> From: Patrice Chotard <patrice.chotard@foss.st.com>
+On Tue, 24 May 2022 11:18:08 +0200, David Jander wrote:
+> This change gives a dramatic performance improvement in the hot path,
+> since many costly spin_lock_irqsave() calls can be avoided.
 > 
-> This series cleans up spi-stm32-qspi driver by removing unused parameters
-> 
-> Changes since v1:
->   _ add missing patch which removes unused param for stm32_qspi_wait_poll_status()
+> On an i.MX8MM system with a MCP2518FD CAN controller connected via SPI,
+> the time the driver takes to handle interrupts, or in other words the time
+> the IRQ line of the CAN controller stays low is mainly dominated by the
+> time it takes to do 3 relatively short sync SPI transfers. The effect of
+> this patch is a reduction of this time from 136us down to only 98us.
 > 
 > [...]
 
@@ -64,12 +64,8 @@ Applied to
 
 Thanks!
 
-[1/3] spi: stm32-qspi: Remove stm32_qspi_get_mode() unused parameter
-      commit: 5945ff905764ceba7eb721bac7f61c7c5ce16a50
-[2/3] spi: stm32-qspi: Remove stm32_qspi_wait_cmd() unused parameter
-      commit: 75c28a43a43f2c09f8feeb58413449d65a77968b
-[3/3] spi: stm32-qspi: Remove stm32_qspi_wait_poll_status() unused parameter
-      commit: 6ce7061a75f7edeebe8710502042810109698619
+[1/1] drivers: spi: spi.c: Convert statistics to per-cpu u64_stats_t
+      commit: 6598b91b5ac32bc756d7c3000a31f775d4ead1c4
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

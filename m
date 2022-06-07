@@ -2,82 +2,68 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 760BCC43334
-	for <linux-spi@archiver.kernel.org>; Tue,  7 Jun 2022 10:48:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9F4A8CCA47F
+	for <linux-spi@archiver.kernel.org>; Tue,  7 Jun 2022 10:50:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241855AbiFGKst (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 7 Jun 2022 06:48:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43516 "EHLO
+        id S241655AbiFGKuv (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 7 Jun 2022 06:50:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241839AbiFGKrb (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 7 Jun 2022 06:47:31 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08D08ED8F0;
-        Tue,  7 Jun 2022 03:46:40 -0700 (PDT)
+        with ESMTP id S242407AbiFGKuX (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 7 Jun 2022 06:50:23 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28CA5FE2
+        for <linux-spi@vger.kernel.org>; Tue,  7 Jun 2022 03:50:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 6CB1CB81F0A;
-        Tue,  7 Jun 2022 10:46:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE1FC385A5;
-        Tue,  7 Jun 2022 10:46:36 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 3E577B81EF1
+        for <linux-spi@vger.kernel.org>; Tue,  7 Jun 2022 10:50:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 063EDC34114;
+        Tue,  7 Jun 2022 10:50:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654598797;
-        bh=X6+5xiOE4qz4XMcdhWNAGw1qU87NWDS8qS5BzQ/8XE8=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=JCgHrS5CDjnhl/jAOf3aQuKjo45BwkzqWGT0qBdLvfCtOjZCnp8pVpryVVMvqs5Xd
-         RIHZeRHacdRAT4H9OjX6jbjz98WFwnaJTw39FWTslAxBDiE0Cfbi+zv07GeqYfoLAQ
-         LYfUg5GMJSkCXhYaMrb1pjLB54NjTTtLt5YrFCAXqtojvTL+Q/TyVPbA7sFsPmB4W6
-         3meYz+OU3W1vYu3iXAAT2MAUbZXfpODvLRuBYR1tU2poisSNdPjfqdcFkYfwY6mvmt
-         SuoJcLz/3+N+hj70knrbroLm/OsDy+GF/YHD+ivwNl3UqR/X+TYUVar+kn4FoK6Ow6
-         CVrwfkeAwvOQg==
-From:   Mark Brown <broonie@kernel.org>
-To:     christophe.jaillet@wanadoo.fr
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org
-In-Reply-To: <d114558dd0351b863ced8cc01b31754a5a4b960d.1653116362.git.christophe.jaillet@wanadoo.fr>
-References: <d114558dd0351b863ced8cc01b31754a5a4b960d.1653116362.git.christophe.jaillet@wanadoo.fr>
-Subject: Re: [PATCH] spi: intel: Use correct order for the parameters of devm_kcalloc()
-Message-Id: <165459879602.302078.11011502384282095003.b4-ty@kernel.org>
-Date:   Tue, 07 Jun 2022 11:46:36 +0100
-MIME-Version: 1.0
+        s=k20201202; t=1654599019;
+        bh=8/VtgvqfFI45YCxtneyNR9C6svxBWev0YzgUZH6P5+k=;
+        h=Subject:From:Date:To:From;
+        b=Skswb4l0KqLDfCQ4YvsZ7IvzyE/x9IyawmhbCpS8akA9Lk1SI2IKeLVy1pKhzZaAH
+         PL+iyLTohZtc9PIscKX2y3K/tFCrvMRJKaFULqgfNadvI06qvmionDb2NsYxYjQoeE
+         G0reDFZy2qHmj1DoW8R3g77zInFPKdZJFSmDGuT6Ik8d/e61XH7Y5oYY7LsM5TmmsO
+         vQ4EQ4BO0vmkGBNhpWjpsZtYarWDdnJdws/klL5v2KAPxuGrYwl3RxG9KhRxbvzCXo
+         rwiLqpN/ylrZ6H4Bn7umVWGAqQ7onA5my2+Ec9kPsMe3R/mhFXk8JoIjIKEt6IezFT
+         p8kqyhtTibj+Q==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id D4330E737E8;
+        Tue,  7 Jun 2022 10:50:18 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <165459901881.32109.8004497514950938745.git-patchwork-summary@kernel.org>
+Date:   Tue, 07 Jun 2022 10:50:18 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Sat, 21 May 2022 08:59:35 +0200, Christophe JAILLET wrote:
-> We should have 'n', then 'size', not the opposite.
-> This is harmless because the 2 values are just multiplied, but having
-> the correct order silence a (unpublished yet) smatch warning.
-> 
-> 
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+Series: spi: stm32-qspi: Remove unused parameters
+  Submitter: Patrice CHOTARD <patrice.chotard@foss.st.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=646821
+  Lore link: https://lore.kernel.org/r/20220602092540.369604-1-patrice.chotard@foss.st.com
+    Patches: [v2,1/3] spi: stm32-qspi: Remove stm32_qspi_get_mode() unused parameter
+             [v2,2/3] spi: stm32-qspi: Remove stm32_qspi_wait_cmd() unused parameter
 
-Thanks!
 
-[1/1] spi: intel: Use correct order for the parameters of devm_kcalloc()
-      commit: 1f19a2d1d6b9a5796182874eecdd5a67dd94b90c
+Total patches: 2
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark

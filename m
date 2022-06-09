@@ -2,56 +2,82 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8CBF2C43334
-	for <linux-spi@archiver.kernel.org>; Thu,  9 Jun 2022 07:56:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2B4A1CCA47D
+	for <linux-spi@archiver.kernel.org>; Thu,  9 Jun 2022 08:43:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235294AbiFIH4e (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 9 Jun 2022 03:56:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36780 "EHLO
+        id S242355AbiFIInG (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 9 Jun 2022 04:43:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234155AbiFIH4c (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 9 Jun 2022 03:56:32 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB8882F0
-        for <linux-spi@vger.kernel.org>; Thu,  9 Jun 2022 00:56:31 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id AC03DB82C43
-        for <linux-spi@vger.kernel.org>; Thu,  9 Jun 2022 07:56:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5BAA8C34114;
-        Thu,  9 Jun 2022 07:56:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654761388;
-        bh=mzq6TwRjNHGZf1ppI3/K91RXmvXLmv/EPAWRtbvykNQ=;
-        h=Subject:From:Date:To:From;
-        b=lV82aE4D6+rrLYqCWQ9pVPEe4igOtZVA7aCGLpcDHPvGAZ5ZGuPeiVBqoSSGJWTNB
-         eogYaRV/2hRhtAUr/0WArrLUFm+k1cifsEj6ckCpcqlYekErqQaX8CsB6rREd86w4F
-         cfPtF0I4GjqYUzR8GkyL23rPWFwvNil9g7fFBSYoNk6B7qFTKFs9qLjjcGMAYa65mu
-         PKympU9XJd3o4VYNkyPnmdjZ88ofVUxhPidIalFPEnmyQD5zreyG+KA73+Q59FSKOs
-         Wz8L0nWeoDOX/7tTeIttmh1mwgp+VElrEqt3oHGpidLN6OrFgnwTbwFi/tKAkOBhWO
-         uq7cHDhMfAvWg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 36558E737E8;
-        Thu,  9 Jun 2022 07:56:28 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S242380AbiFIIlE (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 9 Jun 2022 04:41:04 -0400
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E26440E69;
+        Thu,  9 Jun 2022 01:40:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1654764028; x=1686300028;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Oaa6POuTrFoq1Nmz2rF5KjdgtPVUEHRqWrgwki6jQ5E=;
+  b=Z2btZrDIRvEtqHVoo2hUsJ0+3Ft6WQkj3m1w1FRncRtzxIzW2UZdMzUr
+   s1WBWZt/wYAwVJ5Owz2XnZIZU0TYTdq9xoF2hDjsLr4pdYRUTYluvDS12
+   LRRSNaaVENSolBdiEQEe2fG12cvxHaA9QYWUjbVSKNghvCmXARKFHVHrs
+   FEwo6uJg1faO67hVbFkyd3jZ+XYl0dljbWXsvmQ6ul+82SeXy5hbh5YLc
+   Shl0ENqcRWZ/oXrEWCPD60C4+Wcrlx8xhT/HOarmtMhHdIbadgPVPsHMC
+   C3Sm+xxlt/yORXD4qhc2IYfAzfZDjGqhg6Rr2OxOxaCbtin9sNph4pS18
+   Q==;
+X-IronPort-AV: E=Sophos;i="5.91,287,1647327600"; 
+   d="scan'208";a="167405374"
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa5.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 09 Jun 2022 01:40:28 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.17; Thu, 9 Jun 2022 01:40:26 -0700
+Received: from localhost.localdomain (10.10.115.15) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
+ 15.1.2375.17 via Frontend Transport; Thu, 9 Jun 2022 01:40:23 -0700
+From:   Claudiu Beznea <claudiu.beznea@microchip.com>
+To:     <broonie@kernel.org>, <nicolas.ferre@microchip.com>,
+        <alexandre.belloni@bootlin.com>, <tudor.ambarus@microchip.com>
+CC:     <linux-spi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>
+Subject: [PATCH 3/3] spi: atmel-quadspi: align condition to parenthesis
+Date:   Thu, 9 Jun 2022 11:42:46 +0300
+Message-ID: <20220609084246.1795419-4-claudiu.beznea@microchip.com>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <20220609084246.1795419-1-claudiu.beznea@microchip.com>
+References: <20220609084246.1795419-1-claudiu.beznea@microchip.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From:   patchwork-bot+spi-devel-general@kernel.org
-Message-Id: <165476138816.13738.7332721142654316160.git-patchwork-housekeeping@kernel.org>
-Date:   Thu, 09 Jun 2022 07:56:28 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Latest series: [v2] spi: Return true/false (not 1/0) from bool function (2022-06-09T07:12:50)
-  Superseding: [v1] spi: Return true/false (not 1/0) from bool function (2022-06-09T06:03:23):
-    [-next] spi: Return true/false (not 1/0) from bool function
+Align condition to parenthesis.
 
+Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
+---
+ drivers/spi/atmel-quadspi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
+index dea8a0311aaa..976a217e356d 100644
+--- a/drivers/spi/atmel-quadspi.c
++++ b/drivers/spi/atmel-quadspi.c
+@@ -286,7 +286,7 @@ static bool atmel_qspi_supports_op(struct spi_mem *mem,
+ 
+ 	/* special case not supported by hardware */
+ 	if (op->addr.nbytes == 2 && op->cmd.buswidth != op->addr.buswidth &&
+-		op->dummy.nbytes == 0)
++	    op->dummy.nbytes == 0)
+ 		return false;
+ 
+ 	return true;
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+2.34.1
 

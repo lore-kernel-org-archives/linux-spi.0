@@ -2,267 +2,94 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 69F1BCCA47F
-	for <linux-spi@archiver.kernel.org>; Thu,  9 Jun 2022 08:43:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 21A37CCA473
+	for <linux-spi@archiver.kernel.org>; Thu,  9 Jun 2022 08:51:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242359AbiFIInN (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 9 Jun 2022 04:43:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41128 "EHLO
+        id S232405AbiFIIvA (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 9 Jun 2022 04:51:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42706 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242373AbiFIIlD (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 9 Jun 2022 04:41:03 -0400
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1BEE381BE;
-        Thu,  9 Jun 2022 01:40:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1654764023; x=1686300023;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Jg1QYiymxreKsxc+YO5AbvU8CTlNLdTtmlxGp6mj7yU=;
-  b=Mij6V1uI5igsKb1ePZgqEVq+n9aFvyAA5b2nUCMWA2DvZzlLAd0+TllZ
-   WIvR3H8EnyuRKghNvtlPtExgB7j1ncy9L7HTZBNydk884DVAibm2UYzYt
-   29dK8hz9IL0Mc0vfL8mHoQIejNl9nC7UbyIjw6Gt/uuDstLo7TJ11etoc
-   /63a299z5cDdou8dGu8splMjdJSTrK71Ug228uQAURkmLKZY7GfFXgaCQ
-   zQ9KTbNyvgcLMZDZfCOx1gP5G5zmt8NoGFIPwJW0pUahACxQqXsy+qFyf
-   zoGU5G4PQy6Q9t+IRJKy03YuAD6EkkZBX7WJHrZ9XfBsayN1nfO+uUIsy
-   Q==;
-X-IronPort-AV: E=Sophos;i="5.91,287,1647327600"; 
-   d="scan'208";a="159542994"
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 09 Jun 2022 01:40:21 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.17; Thu, 9 Jun 2022 01:40:21 -0700
-Received: from localhost.localdomain (10.10.115.15) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.2375.17 via Frontend Transport; Thu, 9 Jun 2022 01:40:18 -0700
-From:   Claudiu Beznea <claudiu.beznea@microchip.com>
-To:     <broonie@kernel.org>, <nicolas.ferre@microchip.com>,
-        <alexandre.belloni@bootlin.com>, <tudor.ambarus@microchip.com>
-CC:     <linux-spi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>
-Subject: [PATCH 1/3] spi: atmel-quadspi: add runtime pm support
-Date:   Thu, 9 Jun 2022 11:42:44 +0300
-Message-ID: <20220609084246.1795419-2-claudiu.beznea@microchip.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20220609084246.1795419-1-claudiu.beznea@microchip.com>
-References: <20220609084246.1795419-1-claudiu.beznea@microchip.com>
+        with ESMTP id S241596AbiFIIum (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 9 Jun 2022 04:50:42 -0400
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AADA4149A96
+        for <linux-spi@vger.kernel.org>; Thu,  9 Jun 2022 01:48:47 -0700 (PDT)
+Received: by mail-ej1-x636.google.com with SMTP id h23so35020495ejj.12
+        for <linux-spi@vger.kernel.org>; Thu, 09 Jun 2022 01:48:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=0FrUfxGjJdLOSXTrxUdjkVL6nrlzjO3+JUo/vnRLcSA=;
+        b=KMK4oI5Fxe0qAHQkJ9CRo4IKa3GThd6bcTMU9rPxWbxZqBQFMskPd+ihFJHP4JcnZ3
+         XmY244lJqm4jhVPAye8YmfOGsXd/Bvvxjp0Fv9phkeVEFmoa81HLkTohIxs6I62s2ehf
+         GHtq8jUZKG3ijDVptmfLjIlJWIMxE0PgMbMlQLjQJjgwSfsxXoIKXDNU2nSLpAHJx89S
+         0o7tM13z5DXSV/8hRHefRz56S5a2PyGLBn7q/ETGU40Ym5n0UH7P1vHnbfcvJtT4++6o
+         5C8rLdB+EO/p9c2aw6/9lyHwuY7Bu/V4QDKR92OXSqeOnii9+OajsSWAZbWuo0mdkoMQ
+         U/rg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=0FrUfxGjJdLOSXTrxUdjkVL6nrlzjO3+JUo/vnRLcSA=;
+        b=UzXRW3VhOHUh/EbWLUJDM+Oh6SNVH4vmInO5LTZ3zy5R4gTwkKEU7/m7UEryA0L3jz
+         urgAz7UYlZmRm60GwVqphHMwk3VrIarWpcAWlI/YvJ9MrrucJHsfiofpQHkdt8259Zy6
+         fss6KcKC+GbA9NFU8xv91yRgsI3pbuwc/r09zOnK4hbkuYkgveC0pA3hNNyf9jq2M3md
+         QaOIwV90UCizi4iuiyv5UsCu9UPxkElYRrad6rJe4JhDWfJJ/gmQflnIn9hQZ0oKxX9q
+         H2iCJ6TLX6FP57rBCvLPQTJPazAVblX/psOzD/D5gvwFxGCFTuVb/VeZbVm4Zfli9rr/
+         ismQ==
+X-Gm-Message-State: AOAM532fFnOHUJy3g/G4699QmcQrRAGRHvQlJd0zPo0fTDBLAnxlzDuN
+        sYYqiIm7Cf/pd8vz72nxjTMfSQ==
+X-Google-Smtp-Source: ABdhPJy8eOac2SjmBWPxOPqIBIeeBstXz50bOn/9Q8cluK6jx974GoDpH/JlagK8BogFTdJyDpkODw==
+X-Received: by 2002:a17:907:94c8:b0:711:d864:fd84 with SMTP id dn8-20020a17090794c800b00711d864fd84mr15226830ejc.18.1654764526284;
+        Thu, 09 Jun 2022 01:48:46 -0700 (PDT)
+Received: from [192.168.0.195] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
+        by smtp.gmail.com with ESMTPSA id y24-20020a170906071800b006feed200464sm10407049ejb.131.2022.06.09.01.48.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 09 Jun 2022 01:48:45 -0700 (PDT)
+Message-ID: <dbf1416d-03ab-dfb2-434c-3cab879afd59@linaro.org>
+Date:   Thu, 9 Jun 2022 10:48:44 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH -next v2] spi: Return true/false (not 1/0) from bool
+ function
+Content-Language: en-US
+To:     Yang Li <yang.lee@linux.alibaba.com>
+Cc:     andi@etezian.org, broonie@kernel.org, alim.akhtar@samsung.com,
+        linux-spi@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20220609071250.59509-1-yang.lee@linux.alibaba.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220609071250.59509-1-yang.lee@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Add runtime PM support for atmel-quadspi which will disable/enable
-QSPI clocks on proper runtime_suspend/runtime_resume ops.
+On 09/06/2022 09:12, Yang Li wrote:
+> Return boolean values ("true" or "false") instead of 1 or 0 from bool
+> function.
+> 
+> As reported by coccicheck:
+> ./drivers/spi/spi-s3c64xx.c:385:9-10: WARNING: return of 0/1 in function
+> 's3c64xx_spi_can_dma' with return type bool
+> 
+> Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
 
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
----
- drivers/spi/atmel-quadspi.c | 100 ++++++++++++++++++++++++++++++++----
- 1 file changed, 91 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-index 480c0c8c18e4..6a9327f3c5b4 100644
---- a/drivers/spi/atmel-quadspi.c
-+++ b/drivers/spi/atmel-quadspi.c
-@@ -21,6 +21,7 @@
- #include <linux/of.h>
- #include <linux/of_platform.h>
- #include <linux/platform_device.h>
-+#include <linux/pm_runtime.h>
- #include <linux/spi/spi-mem.h>
- 
- /* QSPI register offsets */
-@@ -417,9 +418,13 @@ static int atmel_qspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 	if (op->addr.val + op->data.nbytes > aq->mmap_size)
- 		return -ENOTSUPP;
- 
-+	err = pm_runtime_resume_and_get(&aq->pdev->dev);
-+	if (err < 0)
-+		return err;
-+
- 	err = atmel_qspi_set_cfg(aq, op, &offset);
- 	if (err)
--		return err;
-+		goto pm_runtime_put;
- 
- 	/* Skip to the final steps if there is no data */
- 	if (op->data.nbytes) {
-@@ -441,7 +446,7 @@ static int atmel_qspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 	/* Poll INSTRuction End status */
- 	sr = atmel_qspi_read(aq, QSPI_SR);
- 	if ((sr & QSPI_SR_CMD_COMPLETED) == QSPI_SR_CMD_COMPLETED)
--		return err;
-+		goto pm_runtime_put;
- 
- 	/* Wait for INSTRuction End interrupt */
- 	reinit_completion(&aq->cmd_completion);
-@@ -452,6 +457,9 @@ static int atmel_qspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 		err = -ETIMEDOUT;
- 	atmel_qspi_write(QSPI_SR_CMD_COMPLETED, aq, QSPI_IDR);
- 
-+pm_runtime_put:
-+	pm_runtime_mark_last_busy(&aq->pdev->dev);
-+	pm_runtime_put_autosuspend(&aq->pdev->dev);
- 	return err;
- }
- 
-@@ -472,6 +480,7 @@ static int atmel_qspi_setup(struct spi_device *spi)
- 	struct atmel_qspi *aq = spi_controller_get_devdata(ctrl);
- 	unsigned long src_rate;
- 	u32 scbr;
-+	int ret;
- 
- 	if (ctrl->busy)
- 		return -EBUSY;
-@@ -488,9 +497,16 @@ static int atmel_qspi_setup(struct spi_device *spi)
- 	if (scbr > 0)
- 		scbr--;
- 
-+	ret = pm_runtime_resume_and_get(ctrl->dev.parent);
-+	if (ret < 0)
-+		return ret;
-+
- 	aq->scr = QSPI_SCR_SCBR(scbr);
- 	atmel_qspi_write(aq->scr, aq, QSPI_SCR);
- 
-+	pm_runtime_mark_last_busy(ctrl->dev.parent);
-+	pm_runtime_put_autosuspend(ctrl->dev.parent);
-+
- 	return 0;
- }
- 
-@@ -621,11 +637,24 @@ static int atmel_qspi_probe(struct platform_device *pdev)
- 	if (err)
- 		goto disable_qspick;
- 
-+	pm_runtime_set_autosuspend_delay(&pdev->dev, 500);
-+	pm_runtime_use_autosuspend(&pdev->dev);
-+	pm_runtime_set_active(&pdev->dev);
-+	pm_runtime_enable(&pdev->dev);
-+	pm_runtime_get_noresume(&pdev->dev);
-+
- 	atmel_qspi_init(aq);
- 
- 	err = spi_register_controller(ctrl);
--	if (err)
-+	if (err) {
-+		pm_runtime_put_noidle(&pdev->dev);
-+		pm_runtime_disable(&pdev->dev);
-+		pm_runtime_set_suspended(&pdev->dev);
-+		pm_runtime_dont_use_autosuspend(&pdev->dev);
- 		goto disable_qspick;
-+	}
-+	pm_runtime_mark_last_busy(&pdev->dev);
-+	pm_runtime_put_autosuspend(&pdev->dev);
- 
- 	return 0;
- 
-@@ -641,9 +670,18 @@ static int atmel_qspi_remove(struct platform_device *pdev)
- {
- 	struct spi_controller *ctrl = platform_get_drvdata(pdev);
- 	struct atmel_qspi *aq = spi_controller_get_devdata(ctrl);
-+	int ret;
-+
-+	ret = pm_runtime_resume_and_get(&pdev->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spi_unregister_controller(ctrl);
- 	atmel_qspi_write(QSPI_CR_QSPIDIS, aq, QSPI_CR);
-+
-+	pm_runtime_disable(&pdev->dev);
-+	pm_runtime_put_noidle(&pdev->dev);
-+
- 	clk_disable_unprepare(aq->qspick);
- 	clk_disable_unprepare(aq->pclk);
- 	return 0;
-@@ -653,10 +691,19 @@ static int __maybe_unused atmel_qspi_suspend(struct device *dev)
- {
- 	struct spi_controller *ctrl = dev_get_drvdata(dev);
- 	struct atmel_qspi *aq = spi_controller_get_devdata(ctrl);
-+	int ret;
-+
-+	ret = pm_runtime_resume_and_get(dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	atmel_qspi_write(QSPI_CR_QSPIDIS, aq, QSPI_CR);
--	clk_disable_unprepare(aq->qspick);
--	clk_disable_unprepare(aq->pclk);
-+
-+	pm_runtime_mark_last_busy(dev);
-+	pm_runtime_force_suspend(dev);
-+
-+	clk_unprepare(aq->qspick);
-+	clk_unprepare(aq->pclk);
- 
- 	return 0;
- }
-@@ -665,19 +712,54 @@ static int __maybe_unused atmel_qspi_resume(struct device *dev)
- {
- 	struct spi_controller *ctrl = dev_get_drvdata(dev);
- 	struct atmel_qspi *aq = spi_controller_get_devdata(ctrl);
-+	int ret;
- 
--	clk_prepare_enable(aq->pclk);
--	clk_prepare_enable(aq->qspick);
-+	clk_prepare(aq->pclk);
-+	clk_prepare(aq->qspick);
-+
-+	ret = pm_runtime_force_resume(dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	atmel_qspi_init(aq);
- 
- 	atmel_qspi_write(aq->scr, aq, QSPI_SCR);
- 
-+	pm_runtime_mark_last_busy(dev);
-+	pm_runtime_put_autosuspend(dev);
-+
-+	return 0;
-+}
-+
-+static int __maybe_unused atmel_qspi_runtime_suspend(struct device *dev)
-+{
-+	struct spi_controller *ctrl = dev_get_drvdata(dev);
-+	struct atmel_qspi *aq = spi_controller_get_devdata(ctrl);
-+
-+	clk_disable(aq->qspick);
-+	clk_disable(aq->pclk);
-+
- 	return 0;
- }
- 
--static SIMPLE_DEV_PM_OPS(atmel_qspi_pm_ops, atmel_qspi_suspend,
--			 atmel_qspi_resume);
-+static int __maybe_unused atmel_qspi_runtime_resume(struct device *dev)
-+{
-+	struct spi_controller *ctrl = dev_get_drvdata(dev);
-+	struct atmel_qspi *aq = spi_controller_get_devdata(ctrl);
-+	int ret;
-+
-+	ret = clk_enable(aq->pclk);
-+	if (ret)
-+		return ret;
-+
-+	return clk_enable(aq->qspick);
-+}
-+
-+static const struct dev_pm_ops __maybe_unused atmel_qspi_pm_ops = {
-+	SET_SYSTEM_SLEEP_PM_OPS(atmel_qspi_suspend, atmel_qspi_resume)
-+	SET_RUNTIME_PM_OPS(atmel_qspi_runtime_suspend,
-+			   atmel_qspi_runtime_resume, NULL)
-+};
- 
- static const struct atmel_qspi_caps atmel_sama5d2_qspi_caps = {};
- 
--- 
-2.34.1
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
+Please add Acked-by/Reviewed-by tags when posting new versions. However,
+there's no need to repost patches *only* to add the tags. The upstream
+maintainer will do that for acks received on the version they apply.
+
+https://elixir.bootlin.com/linux/v5.17/source/Documentation/process/submitting-patches.rst#L540
+
+If a tag was not added on purpose, please state why and what changed.
+
+
+Best regards,
+Krzysztof

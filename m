@@ -2,86 +2,66 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2C135C43334
-	for <linux-spi@archiver.kernel.org>; Thu,  9 Jun 2022 14:13:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 34D22C43334
+	for <linux-spi@archiver.kernel.org>; Thu,  9 Jun 2022 14:20:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240445AbiFIONc (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 9 Jun 2022 10:13:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41368 "EHLO
+        id S243779AbiFIOUS (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 9 Jun 2022 10:20:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240458AbiFIONZ (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 9 Jun 2022 10:13:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD5AC703E6;
-        Thu,  9 Jun 2022 07:13:21 -0700 (PDT)
+        with ESMTP id S243905AbiFIOUQ (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 9 Jun 2022 10:20:16 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9885525F41F
+        for <linux-spi@vger.kernel.org>; Thu,  9 Jun 2022 07:20:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2791161D47;
-        Thu,  9 Jun 2022 14:13:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB52C341C0;
-        Thu,  9 Jun 2022 14:13:18 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 531A1B82D07
+        for <linux-spi@vger.kernel.org>; Thu,  9 Jun 2022 14:20:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 0D98FC34115;
+        Thu,  9 Jun 2022 14:20:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654784000;
-        bh=fgW9SgIxOe3MEyVRhxoDRyRIWcYYtHacDWK0P92cUMY=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=ZjjbC/J3NCnWN8ZqPKE0f7wS0KjQMgU+ZIsmeVBQojNwNZtZKb20tQTiNWjEz8SO7
-         83S+6TbnE5iViQSPX+U9HoqvzZ/y8TMv+Hcvn9Zv+8yEEd8amNHM2E5xXrVvzSkk3R
-         dur1c2JgJdculRxJR4B4yQZLC/WjwkUzTLpKPRoGhWuIi8dy/mDxeroEy+flwClsbm
-         r1YTbncXcUP/xjqOtw6XwvV0pVy5629ym485/euNGP7Kg1QCLOsFojmEU1VPwyKlqj
-         0MgAAyMkP03AioQzFmYxqMU6Uci/aOFudGY+dQLK4UA/SI35j3UNHuq9LGZ+OQUuob
-         s66qzaZNDjw4Q==
-From:   Mark Brown <broonie@kernel.org>
-To:     yang.lee@linux.alibaba.com
-Cc:     abaci@linux.alibaba.com, lewis.hanly@microchip.com,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        conor.dooley@microchip.com, linux-riscv@lists.infradead.org
-In-Reply-To: <20220609055533.95866-2-yang.lee@linux.alibaba.com>
-References: <20220609055533.95866-1-yang.lee@linux.alibaba.com> <20220609055533.95866-2-yang.lee@linux.alibaba.com>
-Subject: Re: (subset) [PATCH -next 1/2] spi: Remove unnecessary print function dev_err()
-Message-Id: <165478399889.1092145.5682711038335760840.b4-ty@kernel.org>
-Date:   Thu, 09 Jun 2022 15:13:18 +0100
-MIME-Version: 1.0
+        s=k20201202; t=1654784413;
+        bh=P8E9kc6tIqM4CrvxYJxpyx3jd1WVlcZe5Ft6qUWQ3H8=;
+        h=Subject:From:Date:To:From;
+        b=njP1wIyF+TIHWuR/acBSdhSBMtZh+fIUPIKIyOp9e+0wLdK7ERt6JvOGtXm2G/rwF
+         vhinItEXdruC959/CmT5c/fVcm165MhwsV8DM3eaaOX90hfgX7r1IJ4bPyUMoTJBo1
+         +alY22bo/1ENx/lNVREFCmdi32RxsdDMYj3zoBsvsyT8Wd6WIscsI5zvwKHKDfYH4w
+         4M8PaqcrZoaxMWhIenVBx5CYdzzzTX6ibrZXkvWqu3n07LsDxG0/qSAmZnI5KIofsG
+         zegZM+Bd3rrn1VM87hTeoVln/7AXhOqnAt+R5uum9albcTVyLyatT8Wv6TkEpPKyfO
+         /I6QH6CY+4uWA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id DFCEAE737ED;
+        Thu,  9 Jun 2022 14:20:12 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <165478441286.24947.18441196795140046436.git-patchwork-summary@kernel.org>
+Date:   Thu, 09 Jun 2022 14:20:12 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, 9 Jun 2022 13:55:33 +0800, Yang Li wrote:
-> The function platform_get_irq() never returns 0, and the print function
-> dev_err() is redundant because platform_get_irq() already prints an error.
-> 
-> Eliminate the follow coccicheck warning:
-> ./drivers/spi/spi-microchip-core.c:543:2-9: line 543 is redundant
-> because platform_get_irq() already prints an error
-> 
-> [...]
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+Patch: [-next,v2] spi: Return true/false (not 1/0) from bool function
+  Submitter: Yang Li <yang.lee@linux.alibaba.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=648722
+  Lore link: https://lore.kernel.org/r/20220609071250.59509-1-yang.lee@linux.alibaba.com
 
-Thanks!
 
-[2/2] spi: fix platform_no_drv_owner.cocci warning
-      commit: a4f26ba2608c9ff736a9ad1348aa8078f0b03f81
+Total patches: 1
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark

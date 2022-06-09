@@ -2,42 +2,42 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A538EC433EF
-	for <linux-spi@archiver.kernel.org>; Thu,  9 Jun 2022 08:43:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D1F03C433EF
+	for <linux-spi@archiver.kernel.org>; Thu,  9 Jun 2022 08:43:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242046AbiFIInJ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 9 Jun 2022 04:43:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41226 "EHLO
+        id S242299AbiFIInL (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 9 Jun 2022 04:43:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242375AbiFIIlE (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 9 Jun 2022 04:41:04 -0400
+        with ESMTP id S242369AbiFIIlD (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 9 Jun 2022 04:41:03 -0400
 Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD7AF3F312;
-        Thu,  9 Jun 2022 01:40:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61D6B255BC;
+        Thu,  9 Jun 2022 01:40:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1654764028; x=1686300028;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=cQClDcPdQDw6er2oANNg2FH3H+GiDQz9mQhN/hbk1Wc=;
-  b=C4WYZ6MC+2Cp2TduwDD1wZQw6BCYsDUbuEKM+LU7FWcZLcJCFY8TUquZ
-   Ga+9ciIL4mvqRgjqCte5Ts3l6xi+83miFOD5LgKIdb+1YKgWPvoR5SbPs
-   OeJTSmp33dORPLUIvUKVh1Oj5Y/Ue1Az7TJOD6bS8zIMrRD2c0aFU8ff/
-   AN4MQzqKWJomlgHi/dMSyDfDd5O325hbTbwlicjduq9Lc7jjmKOJG5ElG
-   5wCrTTCTtEoglsv6MaEhbz+MksTb2a8XD3ny4Jc4j3FYc9AUiOUMpQbxM
-   DpXfXPBtlUd3lMcT96YPAFtzH6LcYApU7gmsWolWx4DSxw3MxUAKh6+QO
-   Q==;
+  t=1654764017; x=1686300017;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=UnfjKrEfwOguxSlRW9Y1YKoPzQz/hSYyMcMrhzmc50Q=;
+  b=p9ZgcE2dxJCnxrxQNXTsoVD87NN16VobH07tL9hKV2n8ufWUXW+HROng
+   juJFpjWobpAGam/BloVwBHeCXlEhGh4zyNgb4uq8x1hPCfh8oa6psSXXW
+   au4qpgCF2C/9UrAUGEAAyuXszyMeFgJz+E4ZPpGChUpbfubCYZM7md+yn
+   N4vO4oafvgq/z16jlrOt6HAtaz69HIj6RR1IsxtL1NwZbwE0wXbCv9fG6
+   Je6z+4YQ8D5SKj2LlG4FBD12kXjD3XHpIY0FqGMpd1r1JgqaRv1rbMRua
+   cYEtKJLFNUsuHlUI8omTSABgRl98cpbbAYJuFSVkmEZky7ZbPgtKfXv6z
+   w==;
 X-IronPort-AV: E=Sophos;i="5.91,287,1647327600"; 
-   d="scan'208";a="167405373"
+   d="scan'208";a="177214862"
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 09 Jun 2022 01:40:27 -0700
+  by esa1.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 09 Jun 2022 01:40:17 -0700
 Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.17; Thu, 9 Jun 2022 01:40:23 -0700
+ 15.1.2375.17; Thu, 9 Jun 2022 01:40:18 -0700
 Received: from localhost.localdomain (10.10.115.15) by
  chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.2375.17 via Frontend Transport; Thu, 9 Jun 2022 01:40:21 -0700
+ 15.1.2375.17 via Frontend Transport; Thu, 9 Jun 2022 01:40:16 -0700
 From:   Claudiu Beznea <claudiu.beznea@microchip.com>
 To:     <broonie@kernel.org>, <nicolas.ferre@microchip.com>,
         <alexandre.belloni@bootlin.com>, <tudor.ambarus@microchip.com>
@@ -45,12 +45,10 @@ CC:     <linux-spi@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-kernel@vger.kernel.org>,
         Claudiu Beznea <claudiu.beznea@microchip.com>
-Subject: [PATCH 2/3] spi: atmel-quadspi: use pm_ptr()
-Date:   Thu, 9 Jun 2022 11:42:45 +0300
-Message-ID: <20220609084246.1795419-3-claudiu.beznea@microchip.com>
+Subject: [PATCH 0/3] spi: atmel-quadspi: add runtime pm support
+Date:   Thu, 9 Jun 2022 11:42:43 +0300
+Message-ID: <20220609084246.1795419-1-claudiu.beznea@microchip.com>
 X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20220609084246.1795419-1-claudiu.beznea@microchip.com>
-References: <20220609084246.1795419-1-claudiu.beznea@microchip.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -58,26 +56,24 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Use pm_ptr() for atmel_quadspi_pm_ops.
+Hi,
 
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
----
- drivers/spi/atmel-quadspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The following series adds runtime PM support for atmel-quadspi driver.
+clk_disable()/clk_enable() is called on proper
+runtime_suspend()/runtime_resume() ops. Along with it 2 minor cleanups
+were added (patches 2/3, 3/3).
 
-diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-index 6a9327f3c5b4..dea8a0311aaa 100644
---- a/drivers/spi/atmel-quadspi.c
-+++ b/drivers/spi/atmel-quadspi.c
-@@ -786,7 +786,7 @@ static struct platform_driver atmel_qspi_driver = {
- 	.driver = {
- 		.name	= "atmel_qspi",
- 		.of_match_table	= atmel_qspi_dt_ids,
--		.pm	= &atmel_qspi_pm_ops,
-+		.pm	= pm_ptr(&atmel_qspi_pm_ops),
- 	},
- 	.probe		= atmel_qspi_probe,
- 	.remove		= atmel_qspi_remove,
+Thank you,
+Claudiu Beznea
+
+Claudiu Beznea (3):
+  spi: atmel-quadspi: add runtime pm support
+  spi: atmel-quadspi: use pm_ptr()
+  spi: atmel-quadspi: align condition to parenthesis
+
+ drivers/spi/atmel-quadspi.c | 104 ++++++++++++++++++++++++++++++++----
+ 1 file changed, 93 insertions(+), 11 deletions(-)
+
 -- 
 2.34.1
 

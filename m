@@ -2,129 +2,97 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C16D2C433EF
-	for <linux-spi@archiver.kernel.org>; Mon, 13 Jun 2022 09:08:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 35D7DC433EF
+	for <linux-spi@archiver.kernel.org>; Mon, 13 Jun 2022 09:34:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239381AbiFMJIQ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 13 Jun 2022 05:08:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41010 "EHLO
+        id S233690AbiFMJeD (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 13 Jun 2022 05:34:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239931AbiFMJIQ (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 13 Jun 2022 05:08:16 -0400
-X-Greylist: delayed 606 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 13 Jun 2022 02:08:15 PDT
-Received: from smtpout4.mo529.mail-out.ovh.net (smtpout4.mo529.mail-out.ovh.net [217.182.185.173])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17DF7103F
-        for <linux-spi@vger.kernel.org>; Mon, 13 Jun 2022 02:08:14 -0700 (PDT)
-Received: from mxplan5.mail.ovh.net (unknown [10.108.16.33])
-        by mo529.mail-out.ovh.net (Postfix) with ESMTPS id C1C1D10B2A5BF;
-        Mon, 13 Jun 2022 10:58:00 +0200 (CEST)
-Received: from kaod.org (37.59.142.103) by DAG4EX1.mxp5.local (172.16.2.31)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.9; Mon, 13 Jun
- 2022 10:57:59 +0200
-Authentication-Results: garm.ovh; auth=pass (GARM-103G0056971c037-d388-4246-bc66-55455572b859,
-                    DD436A6F49FCC46F63A45CA4D245122A41FF8289) smtp.auth=clg@kaod.org
-X-OVh-ClientIp: 82.64.250.170
-Message-ID: <367135b2-e5c0-3ebb-9ad2-2a78b2c6af2f@kaod.org>
-Date:   Mon, 13 Jun 2022 10:57:58 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: [PATCH] spi: aspeed: Fix division by zero
-Content-Language: en-US
-To:     Pratyush Yadav <p.yadav@ti.com>
-CC:     <linux-spi@vger.kernel.org>, Mark Brown <broonie@kernel.org>,
-        <linux-aspeed@lists.ozlabs.org>, <openbmc@lists.ozlabs.org>,
-        Joel Stanley <joel@jms.id.au>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        Ian Woloschin <ian.woloschin@akamai.com>
-References: <20220611103929.1484062-1-clg@kaod.org>
- <20220613083952.4z45ulaxdy2okbho@ti.com>
-From:   =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20220613083952.4z45ulaxdy2okbho@ti.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.103]
-X-ClientProxiedBy: DAG6EX2.mxp5.local (172.16.2.52) To DAG4EX1.mxp5.local
- (172.16.2.31)
-X-Ovh-Tracer-GUID: e1c48708-fe1b-4eaa-9e99-a4a0e338ddee
-X-Ovh-Tracer-Id: 18165269099526065141
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvfedruddujedgtdelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgihesthekredttdefjeenucfhrhhomhepveorughrihgtpgfnvggpifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeekteejtdelkeejvdevffduhfetteelieefgeefffeugffhfeekheffueefledujeenucfkpheptddrtddrtddrtddpfeejrdehledrudegvddruddtfeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdpnhgspghrtghpthhtohepuddprhgtphhtthhopehirghnrdifohhlohhstghhihhnsegrkhgrmhgrihdrtghomhdpoffvtefjohhsthepmhhohedvle
+        with ESMTP id S231922AbiFMJeC (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 13 Jun 2022 05:34:02 -0400
+X-Greylist: delayed 370 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 13 Jun 2022 02:34:00 PDT
+Received: from mail-m121144.qiye.163.com (mail-m121144.qiye.163.com [115.236.121.144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEB866356;
+        Mon, 13 Jun 2022 02:34:00 -0700 (PDT)
+Received: from localhost.localdomain (unknown [58.22.7.114])
+        by mail-m121144.qiye.163.com (Hmail) with ESMTPA id 0A824AC04CF;
+        Mon, 13 Jun 2022 17:27:48 +0800 (CST)
+From:   Jon Lin <jon.lin@rock-chips.com>
+To:     broonie@kernel.org
+Cc:     heiko@sntech.de, linux-spi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Jon Lin <jon.lin@rock-chips.com>
+Subject: [PATCH] spi: rockchip: Disable local irq when pio write out of interrupt service
+Date:   Mon, 13 Jun 2022 17:27:44 +0800
+Message-Id: <20220613092744.9726-1-jon.lin@rock-chips.com>
+X-Mailer: git-send-email 2.17.1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgPGg8OCBgUHx5ZQUlOS1dZCBgUCR5ZQVlLVUtZV1
+        kWDxoPAgseWUFZKDYvK1lXWShZQUlKS0tKN1dZLVlBSVdZDwkaFQgSH1lBWUNLSBlWGEtJSktLHU
+        saGh1DVRMBExYaEhckFA4PWVdZFhoPEhUdFFlBWU9LSFVKSktISkNVS1kG
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6PCo6CRw4KT09IQ0QPUkXDygS
+        HUoKFANVSlVKTU5OSkpJT01DTUlLVTMWGhIXVREUFVUXEhU7CRQYEFYYExILCFUYFBZFWVdZEgtZ
+        QVlOQ1VJSVVMVUpKT1lXWQgBWUFJTENLNwY+
+X-HM-Tid: 0a815c640702b039kuuu0a824ac04cf
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On 6/13/22 10:39, Pratyush Yadav wrote:
-> On 11/06/22 12:39PM, Cédric Le Goater wrote:
->> When using the normal read operation for data transfers, the dummy bus
->> width is zero. In that case, they are no dummy bytes to transfer and
->> setting the dummy field in the controller register becomes useless.
->>
->> Issue was found on a custom "Bifrost" board with a AST2500 SoC and
->> using a MX25L51245GMI-08G SPI Flash.
->>
->> Cc: Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>
->> Reported-by: Ian Woloschin <ian.woloschin@akamai.com>
->> Fixes: 54613fc6659b ("spi: aspeed: Add support for direct mapping")
->> Signed-off-by: Cédric Le Goater <clg@kaod.org>
->> ---
->>   drivers/spi/spi-aspeed-smc.c | 12 +++++++++++-
->>   1 file changed, 11 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/spi/spi-aspeed-smc.c b/drivers/spi/spi-aspeed-smc.c
->> index 496f3e1e9079..3e891bf22470 100644
->> --- a/drivers/spi/spi-aspeed-smc.c
->> +++ b/drivers/spi/spi-aspeed-smc.c
->> @@ -558,6 +558,14 @@ static int aspeed_spi_dirmap_create(struct spi_mem_dirmap_desc *desc)
->>   	u32 ctl_val;
->>   	int ret = 0;
->>   
->> +	dev_dbg(aspi->dev,
->> +		"CE%d %s dirmap [ 0x%.8llx - 0x%.8llx ] OP %#x mode:%d.%d.%d.%d naddr:%#x ndummies:%#x\n",
->> +		chip->cs, op->data.dir == SPI_MEM_DATA_IN ? "read" : "write",
->> +		desc->info.offset, desc->info.offset + desc->info.length,
->> +		op->cmd.opcode, op->cmd.buswidth, op->addr.buswidth,
->> +		op->dummy.buswidth, op->data.buswidth,
->> +		op->addr.nbytes, op->dummy.nbytes);
->> +
-> 
-> Unrelated change. Please send as a separate patch.
+Avoid interrupt come and interrupt the pio_writer.
 
-OK.
-  
->>   	chip->clk_freq = desc->mem->spi->max_speed_hz;
->>   
->>   	/* Only for reads */
->> @@ -574,9 +582,11 @@ static int aspeed_spi_dirmap_create(struct spi_mem_dirmap_desc *desc)
->>   	ctl_val = readl(chip->ctl) & ~CTRL_IO_CMD_MASK;
->>   	ctl_val |= aspeed_spi_get_io_mode(op) |
->>   		op->cmd.opcode << CTRL_COMMAND_SHIFT |
->> -		CTRL_IO_DUMMY_SET(op->dummy.nbytes / op->dummy.buswidth) |
->>   		CTRL_IO_MODE_READ;
->>   
->> +	if (op->dummy.nbytes)
->> +		ctl_val |= CTRL_IO_DUMMY_SET(op->dummy.nbytes / op->dummy.buswidth);
->> +
-> 
-> LGTM. With the above fixed,
->
-> Reviewed-by: Pratyush Yadav <p.yadav@ti.com>
+Signed-off-by: Jon Lin <jon.lin@rock-chips.com>
+Signed-off-by: Jon <jon.lin@rock-chips.com>
+---
 
-Thanks,
+ drivers/spi/spi-rockchip.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-C.
-
-> 
->>   	/* Tune 4BYTE address mode */
->>   	if (op->addr.nbytes) {
->>   		u32 addr_mode = readl(aspi->regs + CE_CTRL_REG);
->> -- 
->> 2.35.3
->>
-> 
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index a08215eb9e14..2184de146928 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -199,6 +199,7 @@ struct rockchip_spi {
+ 	bool cs_high_supported; /* native CS supports active-high polarity */
+ 
+ 	struct spi_transfer *xfer; /* Store xfer temporarily */
++	spinlock_t lock; /* prevent I/O concurrent access */
+ };
+ 
+ static inline void spi_enable_chip(struct rockchip_spi *rs, bool enable)
+@@ -293,9 +294,13 @@ static void rockchip_spi_handle_err(struct spi_controller *ctlr,
+ 
+ static void rockchip_spi_pio_writer(struct rockchip_spi *rs)
+ {
+-	u32 tx_free = rs->fifo_len - readl_relaxed(rs->regs + ROCKCHIP_SPI_TXFLR);
+-	u32 words = min(rs->tx_left, tx_free);
++	u32 tx_free;
++	u32 words;
++	unsigned long flags;
+ 
++	spin_lock_irqsave(&rs->lock, flags);
++	tx_free = rs->fifo_len - readl_relaxed(rs->regs + ROCKCHIP_SPI_TXFLR);
++	words = min(rs->tx_left, tx_free);
+ 	rs->tx_left -= words;
+ 	for (; words; words--) {
+ 		u32 txw;
+@@ -308,6 +313,7 @@ static void rockchip_spi_pio_writer(struct rockchip_spi *rs)
+ 		writel_relaxed(txw, rs->regs + ROCKCHIP_SPI_TXDR);
+ 		rs->tx += rs->n_bytes;
+ 	}
++	spin_unlock_irqrestore(&rs->lock, flags);
+ }
+ 
+ static void rockchip_spi_pio_reader(struct rockchip_spi *rs)
+@@ -779,6 +785,8 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 		goto err_put_ctlr;
+ 	}
+ 
++	spin_lock_init(&rs->lock);
++
+ 	rs->apb_pclk = devm_clk_get(&pdev->dev, "apb_pclk");
+ 	if (IS_ERR(rs->apb_pclk)) {
+ 		dev_err(&pdev->dev, "Failed to get apb_pclk\n");
+-- 
+2.17.1
 

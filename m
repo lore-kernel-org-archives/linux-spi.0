@@ -2,47 +2,46 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 993A7CCA487
-	for <linux-spi@archiver.kernel.org>; Mon, 13 Jun 2022 19:19:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1382EC43334
+	for <linux-spi@archiver.kernel.org>; Mon, 13 Jun 2022 19:20:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346748AbiFMTT6 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 13 Jun 2022 15:19:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44884 "EHLO
+        id S1348828AbiFMTUp (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 13 Jun 2022 15:20:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351257AbiFMTTa (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 13 Jun 2022 15:19:30 -0400
+        with ESMTP id S1351403AbiFMTTj (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 13 Jun 2022 15:19:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00F8C53711;
-        Mon, 13 Jun 2022 10:24:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DF0453B69;
+        Mon, 13 Jun 2022 10:24:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 58F3260C7C;
-        Mon, 13 Jun 2022 17:24:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CE14C34114;
-        Mon, 13 Jun 2022 17:24:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E383B60C7C;
+        Mon, 13 Jun 2022 17:24:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B252C385A9;
+        Mon, 13 Jun 2022 17:24:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655141069;
-        bh=Ytg1O0ZnWN5OTWz6shxsOZCb9jEbZHGc71Fqqpj9HYQ=;
+        s=k20201202; t=1655141077;
+        bh=6G5KLJNw2S9txJZg1qcDhOoMAsqsWM/W9qB/nY+Juqw=;
         h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=VOZ9whWtDqTEXBLPpw8fAFY9Z/rPqKNVKU0ybnGewq4UL9zWOJLSxkUfE7LmrQ0uI
-         7MpviS+7JyCy7DVqy/pc5UfFJrfp+Y6QEknhDSo+NxofDb2ZyIlmxf1PJehTlUcqP3
-         7loQ9SucdK6itgT+7Q96NhEwONdaArUDSLdCSROwjTd/vMuPl8+mSvW1+DybJ2Jjxv
-         BP4G8R44bEEaBhQPCGHjWUBvo9iYNVZ1AF+C95A44K7Q69QM7CcQloeHg5rA+l+ZcU
-         Lgqw+mt08B+6wXOWpabL5sG+3qL06ms68AMJXUp6vhT55bc97wYJbL33kmCyX7Kwt+
-         2feBQiG5DG0hQ==
+        b=MhVdrVipfMKpXttaDbveFOybPe41Kse2OTIwJ9+M2e2qv8gLNIJo+/wOdGGyU1qGo
+         m+5MAjhVOYQ1QjLT+h/Sq57rl+8Wh4+lHkbFpiNpi2jBCunrjWZPNX8QCh1Lo4dYgX
+         atzgkLR5so6LJDRerU8Rs9e+4rZElA+lo1cK50/uP5rbtuICyeL0M1NGSIObq9tSfh
+         hxzuFA47nGCGRnrnEIRs5dbCLR+bETf7QnmFK6XnMssoaMVldmuR5YRSUDdnxJVobl
+         +qKVoJzt0pcdhTGtFt2W1IlxCCTg1ql8aRMK0bhWZSXHBNmKdfIlNgxCGes3xP1cW3
+         iy1kGhhBQJRvQ==
 From:   Mark Brown <broonie@kernel.org>
-To:     jonathanh@nvidia.com, linux-tegra@vger.kernel.org,
-        ashishsingha@nvidia.com, robh+dt@kernel.org,
-        linux-spi@vger.kernel.org, thierry.reding@gmail.com,
-        kyarlagadda@nvidia.com
-Cc:     skomatineni@nvidia.com, devicetree@vger.kernel.org,
-        ldewangan@nvidia.com, linux-kernel@vger.kernel.org
-In-Reply-To: <20220513080828.22079-1-kyarlagadda@nvidia.com>
-References: <20220513080828.22079-1-kyarlagadda@nvidia.com>
-Subject: Re: [Patch V2 0/3] spi: tegra quad: Add Tegra Grace features
-Message-Id: <165514106736.671611.17346483728237955492.b4-ty@kernel.org>
-Date:   Mon, 13 Jun 2022 18:24:27 +0100
+To:     linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        krzysztof.kozlowski@linaro.org, linux-samsung-soc@vger.kernel.org,
+        alim.akhtar@samsung.com, Colin Ian King <colin.king@intel.com>,
+        andi@etezian.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20220612203428.2754823-1-colin.i.king@gmail.com>
+References: <20220612203428.2754823-1-colin.i.king@gmail.com>
+Subject: Re: [PATCH][next] spi: s3c64xx: set pointers to null using NULL rather than 0
+Message-Id: <165514107536.671611.6251857721264911131.b4-ty@kernel.org>
+Date:   Mon, 13 Jun 2022 18:24:35 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -50,15 +49,10 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Fri, 13 May 2022 13:38:25 +0530, Krishna Yarlagadda wrote:
-> Add multiple chip select lines supported on Tegra 241
+On Sun, 12 Jun 2022 21:34:28 +0100, Colin Ian King wrote:
+> There are pointers being set to null using use. Use NULL instead.
 > 
-> Changes in v2:
-> Split Wait polling changes to be handled later
-> Change chip name to convention followed (Grace to 241)
-> Add tegra qspi peripherals yaml file
 > 
-> [...]
 
 Applied to
 
@@ -66,12 +60,8 @@ Applied to
 
 Thanks!
 
-[1/3] spi: tegra210-quad: Multi-cs support
-      commit: b76134178168b5104851b3c72d9b1092b7414ff9
-[2/3] spi: dt-bindings: split peripheral prods
-      commit: e23917822d3cb1f5270ab0d327da713cda72f8f2
-[3/3] spi: dt-bindings: Add compatible for Tegra241 QSPI
-      commit: 4f37809f4cdf0cdb8d4431e779f56d1f0dec3fb5
+[1/1] spi: s3c64xx: set pointers to null using NULL rather than 0
+      commit: 845d3fd8a0aadf5dd97e6d345d3df4bf80099e69
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

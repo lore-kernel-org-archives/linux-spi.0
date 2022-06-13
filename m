@@ -2,95 +2,79 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C0184C433EF
-	for <linux-spi@archiver.kernel.org>; Mon, 13 Jun 2022 17:22:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C5F59C43334
+	for <linux-spi@archiver.kernel.org>; Mon, 13 Jun 2022 19:16:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241057AbiFMRWt (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 13 Jun 2022 13:22:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34460 "EHLO
+        id S244537AbiFMTQj (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 13 Jun 2022 15:16:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241346AbiFMRWa (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 13 Jun 2022 13:22:30 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2175B31206;
-        Mon, 13 Jun 2022 05:37:21 -0700 (PDT)
+        with ESMTP id S244919AbiFMTQF (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 13 Jun 2022 15:16:05 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71D924505F
+        for <linux-spi@vger.kernel.org>; Mon, 13 Jun 2022 10:30:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 812B8B80D5F;
-        Mon, 13 Jun 2022 12:37:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE52AC34114;
-        Mon, 13 Jun 2022 12:37:17 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id BFD91CE168C
+        for <linux-spi@vger.kernel.org>; Mon, 13 Jun 2022 17:30:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 38563C34114;
+        Mon, 13 Jun 2022 17:30:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655123839;
-        bh=UMvOIPZylUDWOPgDJ/rl41H35ct9oHGP3/eHpRwcWOE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=WzXjo5MSmOk9g72+Nf19OcnSzaHjqiB72gyem2FudjwA4PJI8wgxZxF58TIuUyZXw
-         r7hHelOpg55WPF5O1myAJKx/XwqxWjW4tfEZuGUT3YQTT+8ZsQllNHwAoFpDYhxUJ5
-         +zHAd/O/gKOj2Ca2obgMr5fAoTk4i3FjFBvgqkIqGP09y2GGP0V35cUpmOKrzU7JC7
-         3HjiZZ6iUJWxpI+/FtkT6QT59Xq+AvnCS239YV7MRNJA+gfSmUAS0f3DHwwBfdB+fg
-         ROGveSAXpy8ONgbjKX6ROejQ4JJQxQ+MWqi/PPBvPEdjMiKNpEDDgU6PH8z1br52Yr
-         GsaB8IbNBZBTw==
-Date:   Mon, 13 Jun 2022 13:37:14 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Jon Lin <jon.lin@rock-chips.com>
-Cc:     heiko@sntech.de, linux-spi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] spi: rockchip: Disable local irq when pio write out of
- interrupt service
-Message-ID: <YqcveggUU7yaXuk1@sirena.org.uk>
-References: <20220613092744.9726-1-jon.lin@rock-chips.com>
+        s=k20201202; t=1655141414;
+        bh=rn47xVZEbVzXsn6OdMRGUERt7bE2k1H2tAKQYJR0Amw=;
+        h=Subject:From:Date:To:From;
+        b=EU9wBEk2yx5QxYQ5Ni9WZb6k35SAKQEt1cpJZ6yNo/rPvBbuktt2XPTaMtQDA9Eja
+         avzblTEUKExCJjcu0x/9oPYEcLK27zuVgkMYUE24pAfv9fvBEazP6isPEDaIPei45K
+         fKNrAF8HgL/NQQTx1fTZW73mVkd4e3iSK+o1jBD8/MvWnz51HEOfgRSlWHUsEA5CZM
+         IC1IyT4i8K9dlS+dAS6uEAu0rsxqoGSkSjyjPIsN1+m9Jr/X95nZQp3DqPJLOn8xEc
+         tW2hbjHxw+wAPkIRYPgYcfvVR38bBjijPpr9pHnFNtXtUXvvsOuLihm2pPP5qz2m2M
+         8ZDzFQ+B+quuw==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 11561FD99FF;
+        Mon, 13 Jun 2022 17:30:14 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="YJipID2wFlKZ6wCT"
-Content-Disposition: inline
-In-Reply-To: <20220613092744.9726-1-jon.lin@rock-chips.com>
-X-Cookie: innovate, v.:
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <165514141401.4004.13319266983602765802.git-patchwork-summary@kernel.org>
+Date:   Mon, 13 Jun 2022 17:30:14 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+Hello:
 
---YJipID2wFlKZ6wCT
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-On Mon, Jun 13, 2022 at 05:27:44PM +0800, Jon Lin wrote:
-> Avoid interrupt come and interrupt the pio_writer.
->=20
-> +	spin_lock_irqsave(&rs->lock, flags);
-> +	tx_free =3D rs->fifo_len - readl_relaxed(rs->regs + ROCKCHIP_SPI_TXFLR);
-> +	words =3D min(rs->tx_left, tx_free);
->  	rs->tx_left -=3D words;
->  	for (; words; words--) {
->  		u32 txw;
-> @@ -308,6 +313,7 @@ static void rockchip_spi_pio_writer(struct rockchip_s=
-pi *rs)
->  		writel_relaxed(txw, rs->regs + ROCKCHIP_SPI_TXDR);
->  		rs->tx +=3D rs->n_bytes;
->  	}
-> +	spin_unlock_irqrestore(&rs->lock, flags);
+Series: spi: tegra quad: Add Tegra Grace features
+  Submitter: Krishna Yarlagadda <kyarlagadda@nvidia.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=647988
+  Lore link: https://lore.kernel.org/r/20220607114659.54314-1-kyarlagadda@nvidia.com
+    Patches: [V3,1/3] spi: tegra210-quad: Multi-cs support
 
-So this is effectively just disabling interrupts during PIO, there's no
-other users of the lock which is rather heavyweight.  What's the actual
-issue here?  We should also have something saying what's going on in the
-code since right now the lock just looks redundant.
+Patch: spi: micro: fix unreasonable clk_prepare_enable() on error in mchp_corespi_probe()
+  Submitter: Peng Wu <wupeng58@huawei.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=649471
+  Lore link: https://lore.kernel.org/r/20220611021117.40494-1-wupeng58@huawei.com
 
---YJipID2wFlKZ6wCT
-Content-Type: application/pgp-signature; name="signature.asc"
+Patch: spi: microchip-core: Fix the error handling path in mchp_corespi_probe()
+  Submitter: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=649492
+  Lore link: https://lore.kernel.org/r/a90bec10dec43719b12afdb967e87526c4bc849a.1654933052.git.christophe.jaillet@wanadoo.fr
 
------BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmKnL3kACgkQJNaLcl1U
-h9DoiAf/b64OqEDIdLubTDZqH06s6sri2Q8Bq4h69DmbLEXUe2ciQ52gVQ7JQKaQ
-ZXxCS8HlRTroirPGfdcwOByaUWEW9DIMO1nrqU0wRytXkeuVj/dfA+6jQBkKaUIy
-cM7lgZdxMTZ5ezuXKvPmzFUaWQvgRGDI4wybCd++7eFgj+bx5l9g3YODTUfVmFVo
-mQbqkP3l/ovLgVz11vw7aiqYLpQQ+dDDNMx7alWOayLxypGTGA03xF/3LlzbFG84
-OAF0d2cTKHC9Ok7T6bCJzRufu6ZPrmnD85MiDEVoGGE3oAetE7xthoSgUxES0KAn
-0bFz4uLtQdcxXeJSrCqeQtCjiNJ5gg==
-=bWwU
------END PGP SIGNATURE-----
+Total patches: 3
 
---YJipID2wFlKZ6wCT--
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+

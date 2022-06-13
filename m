@@ -2,128 +2,169 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 29654C433EF
-	for <linux-spi@archiver.kernel.org>; Mon, 13 Jun 2022 08:40:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DB254C43334
+	for <linux-spi@archiver.kernel.org>; Mon, 13 Jun 2022 09:05:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233189AbiFMIk5 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 13 Jun 2022 04:40:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53028 "EHLO
+        id S233152AbiFMJF7 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 13 Jun 2022 05:05:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230458AbiFMIkz (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 13 Jun 2022 04:40:55 -0400
-Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35E18192B6;
-        Mon, 13 Jun 2022 01:40:54 -0700 (PDT)
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 25D8dsm8023311;
-        Mon, 13 Jun 2022 03:39:54 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1655109594;
-        bh=yB0N/eBApvLnHywfzpr1P7uAOtpx4mXByhrRq/pwrSI=;
-        h=Date:From:To:CC:Subject:References:In-Reply-To;
-        b=r32laorBRMVlvdy0ax40q4DP6j/2CQmAmWwKpkUT8bKhCTa07hrnV3DzxEc9tC479
-         qjtZETPbST8hNv+TKlmuR/liNNVDgztetrL0w5/gRqmS6R0gvGiOsqMgGsZALo9A7r
-         F/nfgiTA0n6/4bXreBfqsdsNev9MQ73rH6YS7mP4=
-Received: from DLEE114.ent.ti.com (dlee114.ent.ti.com [157.170.170.25])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 25D8dstI034912
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 13 Jun 2022 03:39:54 -0500
-Received: from DLEE115.ent.ti.com (157.170.170.26) by DLEE114.ent.ti.com
- (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Mon, 13
- Jun 2022 03:39:53 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE115.ent.ti.com
- (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
- Frontend Transport; Mon, 13 Jun 2022 03:39:53 -0500
-Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 25D8drpX037114;
-        Mon, 13 Jun 2022 03:39:53 -0500
-Date:   Mon, 13 Jun 2022 14:09:52 +0530
-From:   Pratyush Yadav <p.yadav@ti.com>
-To:     =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>
-CC:     <linux-spi@vger.kernel.org>, Mark Brown <broonie@kernel.org>,
-        <linux-aspeed@lists.ozlabs.org>, <openbmc@lists.ozlabs.org>,
-        Joel Stanley <joel@jms.id.au>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        Ian Woloschin <ian.woloschin@akamai.com>
-Subject: Re: [PATCH] spi: aspeed: Fix division by zero
-Message-ID: <20220613083952.4z45ulaxdy2okbho@ti.com>
-References: <20220611103929.1484062-1-clg@kaod.org>
+        with ESMTP id S232196AbiFMJF6 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 13 Jun 2022 05:05:58 -0400
+Received: from smtp15.bhosted.nl (smtp15.bhosted.nl [IPv6:2a02:9e0:8000::26])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FE26E0A6
+        for <linux-spi@vger.kernel.org>; Mon, 13 Jun 2022 02:05:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=protonic.nl; s=202111;
+        h=content-transfer-encoding:content-type:mime-version:references:in-reply-to:
+         message-id:subject:cc:to:from:date:from;
+        bh=JIDlFm5dd8GTbaw4Y2L+iprSIbRszDFQvJ4YZKLDx7E=;
+        b=MCS8lsnaTBUwqTfUJJnscM/dmIYyxpk0Yf075MwETMH778A3Az8T9MHRNuWdv/feTsbhg++Fx1Xe+
+         cy5Nsl1Pll+8a3AwmLeFqQjPhCE4LKGygqsFXdhgRv5skKWOqb6Y9QuKQXpzFNjf/DIfVPIt4A4Y9h
+         kiJ3vdCnHuPm+z09SrRSVnr7nux1CJFpBvatziuLE1jnTfKzDC5jgZ2eEywTxAE+AqfbxMV7TUHJMe
+         mfEXne7RWI2alYblrXC5YuwnGsz4CECSekCyDzkhLsna03mC15O5SlXEv5SpvXJoYn5lwH9oVCrc39
+         iUdbu655vShxlshbXlGOSrrdU1uJi5w==
+X-MSG-ID: 05b1ade8-eaf8-11ec-b450-0050569d3a82
+Date:   Mon, 13 Jun 2022 11:05:50 +0200
+From:   David Jander <david@protonic.nl>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     linux-spi@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
+        Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: Re: [RFC] [PATCH 3/3] drivers: spi: spi.c: Don't use the message
+ queue if possible in spi_sync
+Message-ID: <20220613110550.772c5023@erd992>
+In-Reply-To: <YqOKsumo2aXgCvFB@sirena.org.uk>
+References: <20220525142928.2335378-1-david@protonic.nl>
+        <20220525142928.2335378-4-david@protonic.nl>
+        <20220525164603.57c98a0a@erd992>
+        <Yp+ZX4XITW7bQtjn@sirena.org.uk>
+        <20220608095409.2d8c46fb@erd992>
+        <YqCIDNHjFP4p9xxs@sirena.org.uk>
+        <20220609173421.437fe1c4@erd992>
+        <YqIgXDZAHPAQ1Y4O@sirena.org.uk>
+        <20220610092753.6e6c9e59@erd992>
+        <YqNKCegdejr522lH@sirena.org.uk>
+        <YqOKsumo2aXgCvFB@sirena.org.uk>
+Organization: Protonic Holland
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220611103929.1484062-1-clg@kaod.org>
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On 11/06/22 12:39PM, Cédric Le Goater wrote:
-> When using the normal read operation for data transfers, the dummy bus
-> width is zero. In that case, they are no dummy bytes to transfer and
-> setting the dummy field in the controller register becomes useless.
+On Fri, 10 Jun 2022 19:17:22 +0100
+Mark Brown <broonie@kernel.org> wrote:
+
+> On Fri, Jun 10, 2022 at 02:41:34PM +0100, Mark Brown wrote:
+> > On Fri, Jun 10, 2022 at 09:27:53AM +0200, David Jander wrote:  
+> > > Mark Brown <broonie@kernel.org> wrote:  
 > 
-> Issue was found on a custom "Bifrost" board with a AST2500 SoC and
-> using a MX25L51245GMI-08G SPI Flash.
+> > > Ok, I first thought that this wouldn't be possible without taking the
+> > > necessary spinlock, but looking a little closer, I think I understand now.
+> > > One question to confirm I understand the code correctly:
+> > > An SPI driver that implements its own transfer_one_message() is required to
+> > > _always_ call spi_finalize_current_message() _before_ returning, right?  
 > 
-> Cc: Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>
-> Reported-by: Ian Woloschin <ian.woloschin@akamai.com>
-> Fixes: 54613fc6659b ("spi: aspeed: Add support for direct mapping")
-> Signed-off-by: Cédric Le Goater <clg@kaod.org>
-> ---
->  drivers/spi/spi-aspeed-smc.c | 12 +++++++++++-
->  1 file changed, 11 insertions(+), 1 deletion(-)
+> > Yes, it should.  
 > 
-> diff --git a/drivers/spi/spi-aspeed-smc.c b/drivers/spi/spi-aspeed-smc.c
-> index 496f3e1e9079..3e891bf22470 100644
-> --- a/drivers/spi/spi-aspeed-smc.c
-> +++ b/drivers/spi/spi-aspeed-smc.c
-> @@ -558,6 +558,14 @@ static int aspeed_spi_dirmap_create(struct spi_mem_dirmap_desc *desc)
->  	u32 ctl_val;
->  	int ret = 0;
->  
-> +	dev_dbg(aspi->dev,
-> +		"CE%d %s dirmap [ 0x%.8llx - 0x%.8llx ] OP %#x mode:%d.%d.%d.%d naddr:%#x ndummies:%#x\n",
-> +		chip->cs, op->data.dir == SPI_MEM_DATA_IN ? "read" : "write",
-> +		desc->info.offset, desc->info.offset + desc->info.length,
-> +		op->cmd.opcode, op->cmd.buswidth, op->addr.buswidth,
-> +		op->dummy.buswidth, op->data.buswidth,
-> +		op->addr.nbytes, op->dummy.nbytes);
-> +
+> Sorry, my mistake - I misremembered how that worked.  They might return
+> without having completed the message since the message pump is a
+> workqueue so it'll just go idle, spi_sync() will work because the caller
+> will block on the completion in the message.  It's cur_msg that's
+> stopping any new work being scheduled.  I was confusing this with the
+> handling of individual transfers, it's been a while since I got deep
+> into this.
+>
+> The bit about allowing us to finalise in any context still applies - the
+> goal with that interface is to avoid the need to context switch back to
+> the message pump to report that the message completed, and ideally
+> immediately start work on the next message if the controller can cope
+> with that.
 
-Unrelated change. Please send as a separate patch.
+Thinking out loud here, so correct me if I am wrong.
+Basically what is happening in that scenario, if we had several async
+messages queued up, is this:
 
->  	chip->clk_freq = desc->mem->spi->max_speed_hz;
->  
->  	/* Only for reads */
-> @@ -574,9 +582,11 @@ static int aspeed_spi_dirmap_create(struct spi_mem_dirmap_desc *desc)
->  	ctl_val = readl(chip->ctl) & ~CTRL_IO_CMD_MASK;
->  	ctl_val |= aspeed_spi_get_io_mode(op) |
->  		op->cmd.opcode << CTRL_COMMAND_SHIFT |
-> -		CTRL_IO_DUMMY_SET(op->dummy.nbytes / op->dummy.buswidth) |
->  		CTRL_IO_MODE_READ;
->  
-> +	if (op->dummy.nbytes)
-> +		ctl_val |= CTRL_IO_DUMMY_SET(op->dummy.nbytes / op->dummy.buswidth);
-> +
+ 1. __pump_messages() gets first message off queue, stores in cur_msg.
+ 2. __pump_messages() calls ->transfer_one_message().
+ 3. transfer_one_message() triggers an IRQ or other context *A*.
+ 4. transfer_one_message() returns before message is finished.
+ 5. work queue idles. If someone calls spi_async() now, it will not queue
+ work, since ctlr->busy is still true.
+ 6. *A*: IRQ or other context calls spi_finalize_current_message()
+ 7. spi_finalize_current_message() schedules new work.
+ 8. Goto 1.
 
-LGTM. With the above fixed,
+ Total ctx switches message->message: 2 (at steps 3->6 and 7->8).
 
-Reviewed-by: Pratyush Yadav <p.yadav@ti.com>
+Right now, the io_mutex is taken at step 1. and released after step 4. If we
+wanted to get an unqueued sync message in between that makes use of cur_msg
+safely, then we'd have to change this to take the io_mutex in step 1. and only
+release it in step 7. The first obvious problem with that is that the locking
+looks unclean. It will be hard to follow, which is probably sub-optimal.
+Another potential issue would be in case transfer_one_message() calls
+spi_finalize_current_message() before it is actually done accessing the
+hardware for some reason, leading to the io_mutex being released too early?
+Another solution is what you propose below...
 
->  	/* Tune 4BYTE address mode */
->  	if (op->addr.nbytes) {
->  		u32 addr_mode = readl(aspi->regs + CE_CTRL_REG);
-> -- 
-> 2.35.3
+> > > If this is a guarantee and we take the io_mutex at the beginning of
+> > > __spi_pump_messages(), then ctlr->cur_msg is only manipulated with the
+> > > io_mutex held, and that would make it safe to be used in the sync path, which
+> > > is also behind the io_mutex.
+> > > Would appreciate if you could confirm this, just to be sure I understand the
+> > > code correctly.  
 > 
+> > I think that should work.  If there's something missed it should be
+> > possible to make things work that way.  
+> 
+> Can we move the cleanup of cur_msg out of spi_finalize_current_message()
+> and into the context holding the io_mutex with that blocking on a
+> completion?  Don't know what the overhead of that is like, I think it
+> should be fine for the case where we don't actually block on the
+> completion and it shouldn't be any worse in the case where we're
+> completing in the interrupt.  Also the kthread_queue_work() that's in
+> there could be moved out to only the queued case since with your new
+> approach for spi_sync() we'll idle the hardware in the calling context
+> and don't need to schedule the thread at all, that should save some
+> overhead.
+
+Ack.
+To compare this to my listing above, the difference is that your idea has
+cleaner locking:
+
+ 1. __pump_messages() gets first message off queue, stores in cur_msg.
+ 2. __pump_messages() calls ->transfer_one_message().
+ 3. transfer_one_message() triggers an IRQ or other context *A*.
+ 4. transfer_one_message() returns before message is finished.
+ 5. __pump_messages() waits for completion *B*.
+ 6. If someone calls spi_async() now, it will not queue work, because
+ ctlr->busy is still true, and the io_mutex is locked anyway.
+ 7. *A*: IRQ or other context calls spi_finalize_current_message()
+ 8. spi_finalize_current_message() completes the completion *B*
+ 9. *B*: __pump_messages() wakes up on completion, queues next work.
+ 10. Goto 1.
+
+ Total ctx switches message->message: 2 (at steps 3->7 and 8->9).
+
+So, AFAICS, it looks like the same in terms of overhead. In the presence of an
+SMP system, there are only 2 context switches from message to message in both
+cases... although each call wait_for_completion() and complete() are
+internally spin-locked, so that's that. Won't affect sync path though.
+
+In this scenario, the io_mutex is taken at step 1 and released at step 9,
+inside the same function. The io_mutex is released either after
+transfer_one_message() returns, or after spi_finalize_current_message() is
+called, whatever comes _LAST_. I think I like this. Any potential problems
+I am missing?
+
+> Sorry about misremembering this bit.
+
+Never mind ;-)
+
+Best regards,
 
 -- 
-Regards,
-Pratyush Yadav
-Texas Instruments Inc.
+David Jander

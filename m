@@ -2,82 +2,85 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 70AA6CCA47B
-	for <linux-spi@archiver.kernel.org>; Mon, 13 Jun 2022 19:20:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 44906C433EF
+	for <linux-spi@archiver.kernel.org>; Tue, 14 Jun 2022 07:00:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245545AbiFMTUt (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 13 Jun 2022 15:20:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44826 "EHLO
+        id S236960AbiFNHAQ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 14 Jun 2022 03:00:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351353AbiFMTTg (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 13 Jun 2022 15:19:36 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA3E853B43;
-        Mon, 13 Jun 2022 10:24:36 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 7A781B81178;
-        Mon, 13 Jun 2022 17:24:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C642EC3411B;
-        Mon, 13 Jun 2022 17:24:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655141074;
-        bh=WhFcv1EH9geGyT4FKQyR7YpypEd1X5ddAYODqZhxQiU=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=bIt6/NjQpUm9hagE+jYFaN7jaGYRwZVtDciGgAfNK3Qb5tIyrMdV294tUdE/kyVHJ
-         8OToqFezlHWN7qFpFkQakyQNvN/3Smhd2XmdBhb0cjaVOYDb0V/M5CWI/wvMfkcZMf
-         FF65AnHsL/A028n3Jv80EalHs0tm5N7qDfZRr+YelvlkJgO2WBng7pVWENehJe81do
-         IeNyWAiuaupY+7a/4CDMs5pp+45j2s9y58tZmd76r2MuwmSpV+Rm3iBCs35pW1ug1G
-         EEFqd0tjWeeF5lKGD0zmuf03BWdsiY+LpHuYSVgTeJ43Ge3g+4MQGyn6j8mPpDClEj
-         hIPO17I5vVapw==
-From:   Mark Brown <broonie@kernel.org>
-To:     conor.dooley@microchip.com, lewis.hanly@microchip.com,
-        wupeng58@huawei.com
-Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        liwei391@huawei.com, linux-riscv@lists.infradead.org
-In-Reply-To: <20220611021117.40494-1-wupeng58@huawei.com>
-References: <20220611021117.40494-1-wupeng58@huawei.com>
-Subject: Re: [PATCH] spi: micro: fix unreasonable clk_prepare_enable() on error in mchp_corespi_probe()
-Message-Id: <165514107253.671611.10664601205751933959.b4-ty@kernel.org>
-Date:   Mon, 13 Jun 2022 18:24:32 +0100
+        with ESMTP id S230329AbiFNHAP (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 14 Jun 2022 03:00:15 -0400
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D04C63B00F;
+        Tue, 14 Jun 2022 00:00:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1655190013; x=1686726013;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=T4nzZezDWWWUTOy8OMeuQhCOxOSUCA20xYUUYSUJEJ4=;
+  b=xtGnTo4nJB5KINBX3erdkGK3vH9x+W3apBUbeoRsGzce1uvlNToY6ohF
+   MPIa5qdprHE48Izp8LoF8CBi6+KxC2AHYChxRer8eXCl6n8YPP1YqKfwj
+   KPTiTfn5Z3Y71SrljSHoa7jFtThP1RYI6vFyS+nWpPG+B7J/xblkZeQX/
+   J9f4y1+EZqxmK9xsC7QdAzyysis7dnVpp3IV6YRIsT8h8GpH0hmIYV9N3
+   BhipSxorQNpL6a3KSJu7uEhyN3z7tb+p7ex1naFxby3N3A0F9QVgP57UK
+   SfTCt76CvMlLDwnSwxMfrwGuzL9ytfKVJXfwdf1fG6rr1+y2moVOhPw5/
+   A==;
+X-IronPort-AV: E=Sophos;i="5.91,299,1647327600"; 
+   d="scan'208";a="99902883"
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 14 Jun 2022 00:00:12 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.17; Tue, 14 Jun 2022 00:00:12 -0700
+Received: from wendy.microchip.com (10.10.115.15) by chn-vm-ex03.mchp-main.com
+ (10.10.85.151) with Microsoft SMTP Server id 15.1.2375.17 via Frontend
+ Transport; Tue, 14 Jun 2022 00:00:10 -0700
+From:   Conor Dooley <conor.dooley@microchip.com>
+To:     Mark Brown <broonie@kernel.org>
+CC:     Daire McNamara <daire.mcnamara@microchip.com>,
+        Lewis Hanly <lewis.hanly@microchip.com>,
+        Conor Dooley <conor.dooley@microchip.com>,
+        <linux-riscv@lists.infradead.org>, <linux-spi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        Yang Li <yang.lee@linux.alibaba.com>
+Subject: [PATCH] spi: microchip-core: fix potentially incorrect return from probe
+Date:   Tue, 14 Jun 2022 07:58:10 +0100
+Message-ID: <20220614065809.1969177-1-conor.dooley@microchip.com>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Sat, 11 Jun 2022 02:11:17 +0000, Peng Wu wrote:
-> Fix the unreasonable clk_prepare_enable() with clk_disable_unprepare()
-> before return from mchp_corespi_probe() in the error handling case.
-> 
-> 
+If platform_get_irqi() returns 0, the error case will be triggered but
+probe() will return 0 rather than an error. Ape the other drivers using
+this pattern and return -ENXIO.
 
-Applied to
+Reported-by: Yang Li <yang.lee@linux.alibaba.com>
+Link: https://lore.kernel.org/linux-spi/20220609055533.95866-2-yang.lee@linux.alibaba.com/
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+---
+ drivers/spi/spi-microchip-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+diff --git a/drivers/spi/spi-microchip-core.c b/drivers/spi/spi-microchip-core.c
+index 5b22a1395554..856a68fd8e9f 100644
+--- a/drivers/spi/spi-microchip-core.c
++++ b/drivers/spi/spi-microchip-core.c
+@@ -541,7 +541,7 @@ static int mchp_corespi_probe(struct platform_device *pdev)
+ 	spi->irq = platform_get_irq(pdev, 0);
+ 	if (spi->irq <= 0) {
+ 		dev_err(&pdev->dev, "invalid IRQ %d for SPI controller\n", spi->irq);
+-		ret = spi->irq;
++		ret = -ENXIO;
+ 		goto error_release_master;
+ 	}
+ 
+-- 
+2.36.1
 
-Thanks!
-
-[1/1] spi: micro: fix unreasonable clk_prepare_enable() on error in mchp_corespi_probe()
-      commit: 116679aef2f92d535ea8049ef2a610bc73f94660
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark

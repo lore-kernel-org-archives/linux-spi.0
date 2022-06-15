@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BA271C433EF
-	for <linux-spi@archiver.kernel.org>; Wed, 15 Jun 2022 12:47:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2B866C43334
+	for <linux-spi@archiver.kernel.org>; Wed, 15 Jun 2022 12:47:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348577AbiFOMrt (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 15 Jun 2022 08:47:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52912 "EHLO
+        id S242442AbiFOMru (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 15 Jun 2022 08:47:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242442AbiFOMrs (ORCPT
+        with ESMTP id S1345740AbiFOMrs (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Wed, 15 Jun 2022 08:47:48 -0400
-Received: from smtp28.bhosted.nl (smtp28.bhosted.nl [IPv6:2a02:9e0:8000::40])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82202DF87
-        for <linux-spi@vger.kernel.org>; Wed, 15 Jun 2022 05:47:35 -0700 (PDT)
+Received: from smtp16.bhosted.nl (smtp16.bhosted.nl [IPv6:2a02:9e0:8000::27])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82339DF8A
+        for <linux-spi@vger.kernel.org>; Wed, 15 Jun 2022 05:47:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=protonic.nl; s=202111;
         h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
          subject:cc:to:from:from;
-        bh=h7h2OdTZM5QjhOhXH4N7Lr5PvnITA26Ut5j2+5THjOQ=;
-        b=mR4NmljUUwWqotYmSjTJmP4wo8Tn9wtY4u18bXze+5TQWgcneVWeJfD8O5YKQA8EKN31cHjf/mXWF
-         gPH1waLO4k9q2b22C8rFNG6hHqp3IVBi3uCcY3SQqX7JfehIE4vW45X8Lb6tjAwfqHo4JToZLPTzsT
-         lA/1fZoLCXFlKQx7f61ziJYJKbmM2hageHgxFWeDxj7OvJI/0UxSYW/bc8fCsAdNQtNBI9sedE3FBP
-         b9DkbJ56KG5MZEK4AoXYGr/vMRz/Xka6txN9XTWfVHnBemczx+FCZyQ8+bLX2IGHQR2DMwN7cqD4wG
-         zSeAwndEMepAMae7y+gWZ+Vw7DTWWtw==
-X-MSG-ID: 53a52f6d-eca9-11ec-8a45-0050569d11ae
+        bh=K27EsJYcV5D6XaF1RNfZBWqOwfz0qgxJ/954VGvD+DA=;
+        b=lNzHuEC4QSAign18zu1jKThBnQCz5gsjMWPanK0kKH3yOb96f/UwkJi2nQKQbwsvhX4FP81Tb9PKC
+         R2FrAKwQQ8qLHMOK0XzhGF2UiyxQGdvmKU10lGXwgIAhLRR1V4RlByhIFC3u0sPxlNxd8qZCYWmA85
+         wOHVXRU13zgf+8sB9zRC/XjZkKEo6IVjqhvw6MOMvWhQlL9/Hkj0tzosEcxN2xmfLOPwdXu9jGSjYS
+         qxfEb5mnBScSjHNSDdNVSl87xVEuouEl9xe1y7gMkfZaFrQDfdBR6JbK1Ijusei6p8Ru/AuM3U6FL9
+         UjmwvgnudkuATq3uwKd10uFBqeu1rWA==
+X-MSG-ID: 53a9944d-eca9-11ec-9051-0050569d2c73
 From:   David Jander <david@protonic.nl>
 To:     Mark Brown <broonie@kernel.org>
 Cc:     linux-spi@vger.kernel.org, Marc Kleine-Budde <mkl@pengutronix.de>,
         Andrew Lunn <andrew@lunn.ch>, David Jander <david@protonic.nl>
-Subject: [RFC] [PATCH v2 06/11] spi: Remove check for idling in __spi_pump_messages()
-Date:   Wed, 15 Jun 2022 14:46:29 +0200
-Message-Id: <20220615124634.3302867-7-david@protonic.nl>
+Subject: [RFC] [PATCH 08/11] spi: Remove unneeded READ_ONCE for ctlr->busy flag
+Date:   Wed, 15 Jun 2022 14:46:31 +0200
+Message-Id: <20220615124634.3302867-9-david@protonic.nl>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20220615124634.3302867-1-david@protonic.nl>
 References: <20220615124634.3302867-1-david@protonic.nl>
@@ -41,32 +41,26 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Since the whole idling transition is locked by the io_mutex now, there is
-no need to check this flag anymore.
+Now this flag is written entirely in the mutex, so no need for READ_ONCE
 
 Signed-off-by: David Jander <david@protonic.nl>
 ---
- drivers/spi/spi.c | 7 -------
- 1 file changed, 7 deletions(-)
+ drivers/spi/spi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index d8d2b7ac78f2..71b767a9ad77 100644
+index 52736e339645..29f42753ef0f 100644
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -1653,13 +1653,6 @@ static void __spi_pump_messages(struct spi_controller *ctlr, bool in_kthread)
- 	if (ctlr->cur_msg)
- 		goto out_unlock;
+@@ -3955,7 +3955,7 @@ static void __spi_transfer_message_noqueue(struct spi_controller *ctlr, struct s
  
--	/* If another context is idling the device then defer */
--	if (ctlr->idling) {
--		kthread_queue_work(ctlr->kworker, &ctlr->pump_messages);
--		spin_unlock_irqrestore(&ctlr->queue_lock, flags);
--		goto out_unlock;
--	}
--
- 	/* Check if the queue is idle */
- 	if (list_empty(&ctlr->queue) || !ctlr->running) {
- 		if (!ctlr->busy)
+ 	mutex_lock(&ctlr->io_mutex);
+ 
+-	was_busy = READ_ONCE(ctlr->busy);
++	was_busy = ctlr->busy;
+ 
+ 	ret = __spi_pump_transfer_message(ctlr, msg, was_busy);
+ 	if (ret)
 -- 
 2.32.0
 

@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 827DDCCA473
-	for <linux-spi@archiver.kernel.org>; Wed, 15 Jun 2022 12:47:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C4072CCA47E
+	for <linux-spi@archiver.kernel.org>; Wed, 15 Jun 2022 12:47:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234307AbiFOMrv (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 15 Jun 2022 08:47:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52910 "EHLO
+        id S1345740AbiFOMru (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 15 Jun 2022 08:47:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347058AbiFOMrs (ORCPT
+        with ESMTP id S234307AbiFOMrs (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Wed, 15 Jun 2022 08:47:48 -0400
 Received: from smtp16.bhosted.nl (smtp16.bhosted.nl [IPv6:2a02:9e0:8000::27])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81EA9DF6B
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81E39DF4E
         for <linux-spi@vger.kernel.org>; Wed, 15 Jun 2022 05:47:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=protonic.nl; s=202111;
         h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
          subject:cc:to:from:from;
-        bh=F15awN8fVr1aUHPApDU8EiblKTOOr8pm7ISa2F3TCnc=;
-        b=wXYE3EKg+uoyduTjtzVHnRwgw3jmGPUTlaNvjQ8j8rbXCGs9xy51i9rA0HVEcF1GeaHJB81Kjo8gR
-         6kMhmDIbZn8MHmj0l6Z409MvDWFrnBpQZuaMkk/Q1zaQn0IZeEOcNmXg1WUeJRD1T6/ezoObhnkliy
-         90exon8i2ieXelutQzoNCxpClptqFM6TcZbOq+N4qAev7PMaQx9L21DKK9wm3PKPWxjH8yAe5nDTgV
-         BJH6RAK4RlYN1vadJ99G2DbtFuTVvOG1OapiXqy6tlxu9vDwPy2h/MVn8yOJfVWQFuJqvicUcOwKyK
-         g9BmH9qrRtSiB/eNTpid18jdKJJC8fQ==
-X-MSG-ID: 53ad7e96-eca9-11ec-9051-0050569d2c73
+        bh=Rx8m4LW9ySJ0xiERX/MhZmzWCLriIcDzwVdLW/HEd9E=;
+        b=lS8yBClNAU7qTCaBnXDLrUS7sX0w7EST/t0UpwhO7rOmuF7p8QKqzXPWDcW+cbWuGoxidrgDneP7D
+         M3+ENjkhM+1VcpelfSOgDQrxrK6NgrTQB1RGXaiJCgRBqTXY71XwUABsvKPQpLF0e7kwA6iZ+UER/4
+         rBYxTmiukIAFGcYVbcpxABIdaR7LsOTWOcppnOP+lyKGHUnn9YJdcsXyoNM6W/s8QGpjuFT+ePl5a2
+         zgitH5cGJWbNOorA86OwbVJcR+4+/bAfRmX98BIaFJuicuZTVTgOhQUXQ+VJs263F7k8zwxEAE5tQC
+         D8ZQQamUZtiqpKc1dcSFmxD2yKOVoEw==
+X-MSG-ID: 53a3f35d-eca9-11ec-9051-0050569d2c73
 From:   David Jander <david@protonic.nl>
 To:     Mark Brown <broonie@kernel.org>
 Cc:     linux-spi@vger.kernel.org, Marc Kleine-Budde <mkl@pengutronix.de>,
         Andrew Lunn <andrew@lunn.ch>, David Jander <david@protonic.nl>
-Subject: [RFC] [PATCH v2 09/11] spi: Set ctlr->cur_msg also in the sync transfer case
-Date:   Wed, 15 Jun 2022 14:46:32 +0200
-Message-Id: <20220615124634.3302867-10-david@protonic.nl>
+Subject: [RFC] [PATCH v2 05/11] spi: Remove check for controller idling in spi sync path
+Date:   Wed, 15 Jun 2022 14:46:28 +0200
+Message-Id: <20220615124634.3302867-6-david@protonic.nl>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20220615124634.3302867-1-david@protonic.nl>
 References: <20220615124634.3302867-1-david@protonic.nl>
@@ -41,26 +41,29 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Some drivers rely on this to point to the currently processed message, so
-set this here also.
+Now that the idling flag is wholly behind the io_mutex, this broken piece
+of code can be safely removed.
 
 Signed-off-by: David Jander <david@protonic.nl>
 ---
- drivers/spi/spi.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
 diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 29f42753ef0f..3df84f43918c 100644
+index fa2d091d2854..d8d2b7ac78f2 100644
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -3957,6 +3957,7 @@ static void __spi_transfer_message_noqueue(struct spi_controller *ctlr, struct s
+@@ -3964,10 +3964,6 @@ static void __spi_transfer_message_noqueue(struct spi_controller *ctlr, struct s
  
- 	was_busy = ctlr->busy;
+ 	mutex_lock(&ctlr->io_mutex);
  
-+	ctlr->cur_msg = msg;
+-	/* If another context is idling the device then wait */
+-	while (ctlr->idling)
+-		usleep_range(10000, 11000);
+-
+ 	was_busy = READ_ONCE(ctlr->busy);
+ 
  	ret = __spi_pump_transfer_message(ctlr, msg, was_busy);
- 	if (ret)
- 		goto out;
 -- 
 2.32.0
 

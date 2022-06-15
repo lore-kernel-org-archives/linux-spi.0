@@ -2,86 +2,102 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 58DEDC43334
-	for <linux-spi@archiver.kernel.org>; Wed, 15 Jun 2022 12:47:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0DAE0CCA480
+	for <linux-spi@archiver.kernel.org>; Wed, 15 Jun 2022 12:47:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240141AbiFOMrw (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 15 Jun 2022 08:47:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52956 "EHLO
+        id S1347168AbiFOMrx (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 15 Jun 2022 08:47:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348448AbiFOMrs (ORCPT
+        with ESMTP id S1348480AbiFOMrs (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Wed, 15 Jun 2022 08:47:48 -0400
-Received: from smtp28.bhosted.nl (smtp28.bhosted.nl [IPv6:2a02:9e0:8000::40])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82470DFB2
+Received: from smtp16.bhosted.nl (smtp16.bhosted.nl [IPv6:2a02:9e0:8000::27])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82558DFF2
         for <linux-spi@vger.kernel.org>; Wed, 15 Jun 2022 05:47:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=protonic.nl; s=202111;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
-         from;
-        bh=rWP8SIc4tXwNCMNAbl35i0g2wYwLCLqNasTse1jQaXk=;
-        b=fn7ditzzPrt/mFgV3VOCN97dXsSeR2xJsLl93spy7V3AeHADAqbVCIjEw8Q/UYZ85RM6OGDAOHMaM
-         R3ScyB82znLs4AsGJekkNvZMcyOILKPBbeiAEIIkZoJDaV87H8sXa/3u1C6UXVNlEj7hCeDMAVYoyg
-         G/y+atTzNxkSi5qwDbiTdAEcBCLwp+DaZOg7MUnHYJ0OHXCE92ywJm53/5IMTYHf9vJxvRnHCz4uYQ
-         P/DiaYOzyog0fRyWBIbjeFRG+hNJJkckhCTkvzcbZeOycz6xbE0Xq9KQsCJpwy9Dz3PSD2U1kvvYpj
-         P8ixnnGYAuDzFYedr20kZ4gZpkEBFIw==
-X-MSG-ID: 530ab9cc-eca9-11ec-8a45-0050569d11ae
+        h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
+         subject:cc:to:from:from;
+        bh=x60HFrKjnppGazO22bsYW+VPDYInuEcfatYuqW3ZS/Y=;
+        b=NTW9a7sJj1dd4YCYMvQLTmgCDSo1kO4qnCeu5xsA37ROYr3My/4VAgMU3hnblKQjvI/7/hUzgBGQN
+         3LXQCooZ9cAxmkou7u9AIgClzT4Clzxcb/aE42JoNSsRC6pOSLvevhwY32zQk+DWQD9dJ3YHuYYdaF
+         C0CyRiM9qJCFUtZMfyySSCcErgI1uF5mUeOklQCsP6ENa+GCF5vpF09uX4wj+vNSh2Jf9Z+2kKaPMJ
+         GyUZ1APeHHFL/BJ5NWy7IqqDW7OvfGYJUj5fdEpbsqhs65jRNQDeqFolGvFzlHKKDOqLl9cK/WLtCS
+         JUjhUHgNVieiT+huxIZDAFUqafyqCyg==
+X-MSG-ID: 533add73-eca9-11ec-9051-0050569d2c73
 From:   David Jander <david@protonic.nl>
 To:     Mark Brown <broonie@kernel.org>
 Cc:     linux-spi@vger.kernel.org, Marc Kleine-Budde <mkl@pengutronix.de>,
         Andrew Lunn <andrew@lunn.ch>, David Jander <david@protonic.nl>
-Subject: [RFC] [PATCH v2 00/11] Optimize spi_sync path
-Date:   Wed, 15 Jun 2022 14:46:23 +0200
-Message-Id: <20220615124634.3302867-1-david@protonic.nl>
+Subject: [RFC] [PATCH v2 04/11] spi: __spi_pump_messages: Consolidate spin_unlocks to goto target
+Date:   Wed, 15 Jun 2022 14:46:27 +0200
+Message-Id: <20220615124634.3302867-5-david@protonic.nl>
 X-Mailer: git-send-email 2.32.0
+In-Reply-To: <20220615124634.3302867-1-david@protonic.nl>
+References: <20220615124634.3302867-1-david@protonic.nl>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-These patches optimize the spi_sync call for the common case that the
-worker thread is idle and the queue is empty. It also opens the
-possibility to potentially further optimize the async path also, since
-it doesn't need to take into account the direct sync path anymore.
-
-As an example for the performance gain, on an i.MX8MM SoC with a SPI CAN
-controller attached (MCP2518FD), the time the interrupt line stays
-active (which corresponds roughly with the time it takes to send 3
-relatively short consecutive spi_sync messages) is reduced from 98us to
-only 72us by this patch.
-
-A note about message ordering:
-
-This patch series should not change the behavior of message ordering when
-coming from the same context. This means that if a client driver issues
-one or more spi_async() messages immediately followed by a spi_sync()
-message in the same context, it can still rely on these messages being
-sent out in the order they were fired.
-
+Signed-off-by: David Jander <david@protonic.nl>
 ---
-v2:
- - Avoid API change to spi_finalize_current_message
- - Fixed NULL-pointer dereference for drivers that rely on ctlr->cur_msg
- - Removed intentional printk() statement
- - Split out into small patches to document how code is morphed
+ drivers/spi/spi.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index cfff2ff96fa0..fa2d091d2854 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1650,10 +1650,8 @@ static void __spi_pump_messages(struct spi_controller *ctlr, bool in_kthread)
+ 	spin_lock_irqsave(&ctlr->queue_lock, flags);
  
-David Jander (11):
-  spi: Move ctlr->cur_msg_prepared to struct spi_message
-  spi: Don't use the message queue if possible in spi_sync
-  spi: Lock controller idling transition inside the io_mutex
-  spi: __spi_pump_messages: Consolidate spin_unlocks to goto target
-  spi: Remove check for controller idling in spi sync path
-  spi: Remove check for idling in __spi_pump_messages()
-  spi: Remove the now unused ctlr->idling flag
-  spi: Remove unneeded READ_ONCE for ctlr->busy flag
-  spi: Set ctlr->cur_msg also in the sync transfer case
-  spi: Ensure the io_mutex is held until spi_finalize_current_message()
-  spi: opportunistically skip ctlr->cur_msg_completion
-
- drivers/spi/spi.c       | 305 ++++++++++++++++++++++++----------------
- include/linux/spi/spi.h |  24 +++-
- 2 files changed, 202 insertions(+), 127 deletions(-)
-
+ 	/* Make sure we are not already running a message */
+-	if (ctlr->cur_msg) {
+-		spin_unlock_irqrestore(&ctlr->queue_lock, flags);
++	if (ctlr->cur_msg)
+ 		goto out_unlock;
+-	}
+ 
+ 	/* If another context is idling the device then defer */
+ 	if (ctlr->idling) {
+@@ -1664,10 +1662,8 @@ static void __spi_pump_messages(struct spi_controller *ctlr, bool in_kthread)
+ 
+ 	/* Check if the queue is idle */
+ 	if (list_empty(&ctlr->queue) || !ctlr->running) {
+-		if (!ctlr->busy) {
+-			spin_unlock_irqrestore(&ctlr->queue_lock, flags);
++		if (!ctlr->busy)
+ 			goto out_unlock;
+-		}
+ 
+ 		/* Defer any non-atomic teardown to the thread */
+ 		if (!in_kthread) {
+@@ -1681,7 +1677,6 @@ static void __spi_pump_messages(struct spi_controller *ctlr, bool in_kthread)
+ 				kthread_queue_work(ctlr->kworker,
+ 						   &ctlr->pump_messages);
+ 			}
+-			spin_unlock_irqrestore(&ctlr->queue_lock, flags);
+ 			goto out_unlock;
+ 		}
+ 
+@@ -1703,7 +1698,6 @@ static void __spi_pump_messages(struct spi_controller *ctlr, bool in_kthread)
+ 		spin_lock_irqsave(&ctlr->queue_lock, flags);
+ 		ctlr->idling = false;
+ 		ctlr->queue_empty = true;
+-		spin_unlock_irqrestore(&ctlr->queue_lock, flags);
+ 		goto out_unlock;
+ 	}
+ 
+@@ -1727,6 +1721,7 @@ static void __spi_pump_messages(struct spi_controller *ctlr, bool in_kthread)
+ 	return;
+ 
+ out_unlock:
++	spin_unlock_irqrestore(&ctlr->queue_lock, flags);
+ 	mutex_unlock(&ctlr->io_mutex);
+ }
+ 
 -- 
 2.32.0
 

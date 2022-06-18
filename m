@@ -2,51 +2,51 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A75F4C43334
-	for <linux-spi@archiver.kernel.org>; Sat, 18 Jun 2022 12:32:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 17F59CCA485
+	for <linux-spi@archiver.kernel.org>; Sat, 18 Jun 2022 12:32:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234546AbiFRMcI (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sat, 18 Jun 2022 08:32:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52546 "EHLO
+        id S234802AbiFRMcL (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sat, 18 Jun 2022 08:32:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232215AbiFRMcG (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sat, 18 Jun 2022 08:32:06 -0400
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 315AE1D314
-        for <linux-spi@vger.kernel.org>; Sat, 18 Jun 2022 05:32:05 -0700 (PDT)
-Received: by mail-wr1-x42f.google.com with SMTP id q9so8799732wrd.8
-        for <linux-spi@vger.kernel.org>; Sat, 18 Jun 2022 05:32:05 -0700 (PDT)
+        with ESMTP id S234630AbiFRMcK (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sat, 18 Jun 2022 08:32:10 -0400
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E7331DA4D
+        for <linux-spi@vger.kernel.org>; Sat, 18 Jun 2022 05:32:09 -0700 (PDT)
+Received: by mail-wr1-x42e.google.com with SMTP id o8so8815224wro.3
+        for <linux-spi@vger.kernel.org>; Sat, 18 Jun 2022 05:32:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=conchuod.ie; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=L+tGP5Kq7UIoKfqvhhTL1feo63GGQB6sV6O4YA0h7fw=;
-        b=FT1arqVk/Zlcb2OUrG6d3Sn9DZeje/ii6sl5Uni+VBpFsvXiKa+0JDIldNCdJotMw7
-         CRpLTSb3ESJ0HokBPy0el7SGci1FfbxA+8wCxZIJ7ulCcboVF51hooukHRDzmLMbRR0S
-         XBJnx2JFmdByuvY20d6dYTvwK7qC7rx7qIAnRhOsjpxRiPq6vAAXZl0nYIzJrI7Vxq5a
-         0u9HsombL5Oqr8Yt/nNdt/EdlFxqSnraietS8QZ8XqK44mg3l5R6iYQaeNegXu3wf+A8
-         QWmt7cEOMYQvDEem63UF12OK4msfj3cqaZZbwH4ynxKqnTmdUxxCtXz6hgblI8B3t413
-         8dzw==
+        bh=MzCNuZqg5sJhSSZ4d8it+v4YJ89K4kJOhMYbzqau3T0=;
+        b=Q/DW33pApkzDugaxPE3P0mBkLxqeHFjsQF8z1VV2ne8TRKuN2bIqDfzxsSTkLEjBrA
+         wpdDJgUWP+1wDHdQ9JS4O1x4Gq88lL49JAWRWB4H62ef/kDIyGqiJWklnIhvj7t3gOgQ
+         m1btN41fR+l8tqU5xRyuBWhlJfRunVaRxbUCkNPjxFxCR7fgJ76b5iLyDoxgvaEFgta2
+         Y7jzvGqyxY8ynrhbm2wsHOUw8jsjq4R2c+1hs16sLw8LkR/A8wnX+Rcz+CEvY4HTn+12
+         wA1hi5h2lS6EglrFG2mc1iaWo2T8RWK90k4OmUe37mNSSxwVnWaTmTTERIaDVuiKnqg6
+         uvGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=L+tGP5Kq7UIoKfqvhhTL1feo63GGQB6sV6O4YA0h7fw=;
-        b=z4GRc11DgFILq04MMZ9IPkrSkCc58CIqKbByyxIFVCm9MQ85b30pERJyaEGx0GjhDQ
-         XmMc0ysCre1NUztuyAFGaRCSt/cmd7L2EdDEQK+ck8dtxasbTUUarcv/ZGV5Syxelb/B
-         q74vHwFW+u3D7G3Yy4Wz7NZ1cJhuEFBKI/pWFFFXCKLyxFuCzSNlD9z+fW4d4a2o7fAF
-         1U3Fa/4uvcKZMynrqulkInJ0DNrCnHqqA6lO8zkB53DImnIdErF8lYbwAKvW40kT/xft
-         5QUPnZxgx0RYbVbhOjlbNg6UKDfJO1RIu04DcDMYPoai4iNEnC0bBM9+Xt9EmOI6+8H5
-         d1Fw==
-X-Gm-Message-State: AJIora/yTzgWIh0BWuULG20MayHxgxDoT7sR9qPya3+om1/0fML/9Q4m
-        h4KDHGtD1W/88yb/9VqeB1C79g==
-X-Google-Smtp-Source: AGRyM1s/yZlVNkGYb597Qf+BVjq6aStv7uTGIe67UVjRHSrjyShDdJGYNTreuTc/Z5+aeiaThr9pvg==
-X-Received: by 2002:a5d:4a0b:0:b0:21b:88f3:3784 with SMTP id m11-20020a5d4a0b000000b0021b88f33784mr758684wrq.69.1655555524669;
-        Sat, 18 Jun 2022 05:32:04 -0700 (PDT)
+        bh=MzCNuZqg5sJhSSZ4d8it+v4YJ89K4kJOhMYbzqau3T0=;
+        b=QJuW5imQ9HDlGI32N9RmeOQi+/qC6PJXTMgaFaAIHYG7BhlbqLVdCv2lnC47AsfB9j
+         ITkdEqPmUjKQX4VinNEicaeS1OkSZKp0UMhAYUZZ/nw3Xbzli5Xedj8MQYmrjtuA3DIi
+         s8Bb3b9v3owy253Ak68aIXvUVQdrpAuanZ/WeyhdtI6FFRKTn8yD6hPDSuVS53bODlOU
+         9bw+uwDCvL0EGfqRGHYoytP9eUcQdW/tXZtIlAZKzkopGmotl8ulj68E7B9SZtgb5S97
+         YJHoChc6uc/5Zad19B5ThoKUdyhHTYjSr4KqwlH6wODsfbgL7PLtarAweF07fiFXDayV
+         roVg==
+X-Gm-Message-State: AJIora8qwV56lWaN1WOEruLAVwqV9wt9w7FJxuWXxnZVlmfYDDNCknTh
+        bLrCAkXP/R96jerCl/J7IKTphA==
+X-Google-Smtp-Source: AGRyM1sSSQqHjZc3Rjokw1+aDQhZh51cPdEwrDgxvVJw3mbh+xunRoRwhQyu4jAgaA6W5FK27IHXAg==
+X-Received: by 2002:a5d:598e:0:b0:219:ea16:5a2a with SMTP id n14-20020a5d598e000000b00219ea165a2amr13955140wri.343.1655555528086;
+        Sat, 18 Jun 2022 05:32:08 -0700 (PDT)
 Received: from henark71.. ([51.37.234.167])
-        by smtp.gmail.com with ESMTPSA id az10-20020adfe18a000000b00210396b2eaesm9292305wrb.45.2022.06.18.05.32.03
+        by smtp.gmail.com with ESMTPSA id az10-20020adfe18a000000b00210396b2eaesm9292305wrb.45.2022.06.18.05.32.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Jun 2022 05:32:04 -0700 (PDT)
+        Sat, 18 Jun 2022 05:32:07 -0700 (PDT)
 From:   Conor Dooley <mail@conchuod.ie>
 To:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
         Rob Herring <robh+dt@kernel.org>,
@@ -76,9 +76,9 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
         alsa-devel@alsa-project.org, linux-spi@vger.kernel.org,
         linux-riscv@lists.infradead.org
-Subject: [PATCH 03/14] ASoC: dt-bindings: convert designware-i2s to dt-schema
-Date:   Sat, 18 Jun 2022 13:30:25 +0100
-Message-Id: <20220618123035.563070-4-mail@conchuod.ie>
+Subject: [PATCH 05/14] dt-bindings: timer: add Canaan k210 to Synopsys DesignWare timer
+Date:   Sat, 18 Jun 2022 13:30:27 +0100
+Message-Id: <20220618123035.563070-6-mail@conchuod.ie>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220618123035.563070-1-mail@conchuod.ie>
 References: <20220618123035.563070-1-mail@conchuod.ie>
@@ -90,158 +90,78 @@ X-Mailing-List: linux-spi@vger.kernel.org
 
 From: Conor Dooley <conor.dooley@microchip.com>
 
-Convert the Synopsys DesignWare I2S controller binding to dt-schema.
-There was no listed maintainer but Jose Abreu was the last editor of the
-txt binding so add him as maintainer.
+The Canaan k210 apparently has a Sysnopsys Designware timer but
+according to the documentation & devicetree it has 2 interrupts rather
+than the standard one. Add a custom compatible that supports the 2
+interrupt configuration and falls back to the standard binding (which
+is currently the one in use in the devicetree entry).
 
+Link: https://canaan-creative.com/wp-content/uploads/2020/03/kendryte_standalone_programming_guide_20190311144158_en.pdf #Page 58
 Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
 ---
- .../bindings/sound/designware-i2s.txt         | 35 -------
- .../bindings/sound/snps,designware-i2s.yaml   | 93 +++++++++++++++++++
- 2 files changed, 93 insertions(+), 35 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/sound/designware-i2s.txt
- create mode 100644 Documentation/devicetree/bindings/sound/snps,designware-i2s.yaml
+ .../bindings/timer/snps,dw-apb-timer.yaml     | 28 +++++++++++++++----
+ 1 file changed, 22 insertions(+), 6 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/sound/designware-i2s.txt b/Documentation/devicetree/bindings/sound/designware-i2s.txt
-deleted file mode 100644
-index 6a536d570e29..000000000000
---- a/Documentation/devicetree/bindings/sound/designware-i2s.txt
-+++ /dev/null
-@@ -1,35 +0,0 @@
--DesignWare I2S controller
--
--Required properties:
-- - compatible : Must be "snps,designware-i2s"
-- - reg : Must contain the I2S core's registers location and length
-- - clocks : Pairs of phandle and specifier referencing the controller's
--   clocks. The controller expects one clock: the clock used as the sampling
--   rate reference clock sample.
-- - clock-names : "i2sclk" for the sample rate reference clock.
-- - dmas: Pairs of phandle and specifier for the DMA channels that are used by
--   the core. The core expects one or two dma channels: one for transmit and
--   one for receive.
-- - dma-names : "tx" for the transmit channel, "rx" for the receive channel.
--
--Optional properties:
-- - interrupts: The interrupt line number for the I2S controller. Add this
--   parameter if the I2S controller that you are using does not support DMA.
--
--For more details on the 'dma', 'dma-names', 'clock' and 'clock-names'
--properties please check:
--	* resource-names.txt
--	* clock/clock-bindings.txt
--	* dma/dma.txt
--
--Example:
--
--	soc_i2s: i2s@7ff90000 {
--		compatible = "snps,designware-i2s";
--		reg = <0x0 0x7ff90000 0x0 0x1000>;
--		clocks = <&scpi_i2sclk 0>;
--		clock-names = "i2sclk";
--		#sound-dai-cells = <0>;
--		dmas = <&dma0 5>;
--		dma-names = "tx";
--	};
-diff --git a/Documentation/devicetree/bindings/sound/snps,designware-i2s.yaml b/Documentation/devicetree/bindings/sound/snps,designware-i2s.yaml
-new file mode 100644
-index 000000000000..5ac9c00157bf
---- /dev/null
-+++ b/Documentation/devicetree/bindings/sound/snps,designware-i2s.yaml
-@@ -0,0 +1,93 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/sound/snps,designware-i2s.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: DesignWare I2S controller
-+
-+maintainers:
-+  - Jose Abreu <joabreu@synopsys.com>
-+
-+properties:
-+  compatible:
-+    oneOf:
+diff --git a/Documentation/devicetree/bindings/timer/snps,dw-apb-timer.yaml b/Documentation/devicetree/bindings/timer/snps,dw-apb-timer.yaml
+index d33c9205a909..9a76acc7a66f 100644
+--- a/Documentation/devicetree/bindings/timer/snps,dw-apb-timer.yaml
++++ b/Documentation/devicetree/bindings/timer/snps,dw-apb-timer.yaml
+@@ -12,6 +12,9 @@ maintainers:
+ properties:
+   compatible:
+     oneOf:
 +      - items:
-+          - const: canaan,k210-i2s
-+          - const: snps,designware-i2s
-+      - enum:
-+          - snps,designware-i2s
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    description: |
-+      The interrupt line number for the I2S controller. Add this
-+      parameter if the I2S controller that you are using does not
-+      support DMA.
-+    maxItems: 1
-+
-+  clocks:
-+    description: Sampling rate reference clock
-+
-+  clock-names:
-+    const: i2sclk
-+
-+  resets:
-+    maxItems: 1
-+
-+  dmas:
-+    items:
-+      - description: TX DMA Channel
-+      - description: RX DMA Channel
-+    minItems: 1
-+
-+  dma-names:
-+    items:
-+      - const: tx
-+      - const: rx
-+    minItems: 1
++          - const: canaan,k210-apb-timer
++          - const: snps,dw-apb-timer
+       - const: snps,dw-apb-timer
+       - enum:
+           - snps,dw-apb-timer-sp
+@@ -21,9 +24,6 @@ properties:
+   reg:
+     maxItems: 1
+ 
+-  interrupts:
+-    maxItems: 1
+-
+   resets:
+     maxItems: 1
+ 
+@@ -41,7 +41,23 @@ properties:
+ 
+   clock-frequency: true
+ 
+-additionalProperties: false
++unevaluatedProperties: false
 +
 +if:
 +  properties:
 +    compatible:
 +      contains:
-+        const: canaan,k210-i2s
++        const: canaan,k210-apb-timer
 +
 +then:
 +  properties:
-+    "#sound-dai-cells":
-+      const: 1
++    interrupts:
++      maxItems: 2
 +
 +else:
 +  properties:
-+    "#sound-dai-cells":
-+      const: 0
-+
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+  - clock-names
-+
-+oneOf:
-+  - required:
-+      - dmas
-+      - dma-names
-+  - required:
-+      - interrupts
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    soc_i2s: i2s@7ff90000 {
-+      compatible = "snps,designware-i2s";
-+      reg = <0x7ff90000 0x1000>;
-+      clocks = <&scpi_i2sclk 0>;
-+      clock-names = "i2sclk";
-+      #sound-dai-cells = <0>;
-+      dmas = <&dma0 5>;
-+      dma-names = "tx";
-+    };
++    interrupts:
++      maxItems: 1
+ 
+ required:
+   - compatible
+@@ -60,8 +76,8 @@ oneOf:
+ examples:
+   - |
+     timer@ffe00000 {
+-      compatible = "snps,dw-apb-timer";
+-      interrupts = <0 170 4>;
++      compatible = "canaan,k210-apb-timer", "snps,dw-apb-timer";
++      interrupts = <0 170 4>, <0 170 4>;
+       reg = <0xffe00000 0x1000>;
+       clocks = <&timer_clk>, <&timer_pclk>;
+       clock-names = "timer", "pclk";
 -- 
 2.36.1
 

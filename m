@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 075D1CCA473
-	for <linux-spi@archiver.kernel.org>; Tue, 21 Jun 2022 06:12:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 44170CCA485
+	for <linux-spi@archiver.kernel.org>; Tue, 21 Jun 2022 06:12:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229681AbiFUGMq (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 21 Jun 2022 02:12:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39766 "EHLO
+        id S1345581AbiFUGMr (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 21 Jun 2022 02:12:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345578AbiFUGMo (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 21 Jun 2022 02:12:44 -0400
-Received: from smtp15.bhosted.nl (smtp15.bhosted.nl [IPv6:2a02:9e0:8000::26])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 573DA1AD92
+        with ESMTP id S1345610AbiFUGMp (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 21 Jun 2022 02:12:45 -0400
+Received: from smtp16.bhosted.nl (smtp16.bhosted.nl [IPv6:2a02:9e0:8000::27])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AD491F62C
         for <linux-spi@vger.kernel.org>; Mon, 20 Jun 2022 23:12:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=protonic.nl; s=202111;
         h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
          subject:cc:to:from:from;
-        bh=pCfD1n1XsGzmFuTRiNWt50/YhUvtppaL5IsTk3NIMGc=;
-        b=pNh8CwXeW8YrQD0trteX1pjZo+K0sn6dn1Uutf/WqiRZtBaxYUIo/6to+dk2G418NJC23HKuXAGCc
-         NodS9P5MpBIUu5k5H+xKaX68OUexavIYMtu+HTkWh1UjmdxI95ocVApsrv8clu68+yWEyvZZZBPoXd
-         6Z4fcEl4wKChGKWaZCXgu/98Q62EKIw771La2Hkj5rWxP64qiX831+Rhh5NLV1jgxVV2Jn6xq+THTq
-         RzumYMB+lt+ihXjYwd5IQnPGjclsNaAqT298CjdNhhNAIg77zQ3g7rOCem37ArKDppw8+u1+RmQG+w
-         37CtgmyPn0W7lefMXe4kKNCtoSQ8aGg==
-X-MSG-ID: 25e4a859-f129-11ec-ba03-0050569d3a82
+        bh=F15awN8fVr1aUHPApDU8EiblKTOOr8pm7ISa2F3TCnc=;
+        b=PaccTgxzx1NsSGCfEAmMo5Uismy91fY8qJlKwCOoxMR9tcGgLP996ZqHIOVX76Hgc/35S9HWGg2lH
+         U5AOM6wu9pLrFNP5XsOcQEp56utiJgxzKR6I2Usv5DTZnkWtkxlcnRGywAN+BO6Ew8mprWGH3RxxFz
+         GO1uG56wLcwwPKnbU7Qyzfyv9eS0P/rkZ++hA872jGOmu96CIYlK33SUfjs9YiMFFneJsj9rS5aXO9
+         TdvW3dSHgR0yt7V5byyynmS3XAG7DdOQ9JxEICB/GjcnqBlEUknsfHROGRQtAGznq75sVnN04hmgWB
+         rJ1qDeBBGzpNHWa7O88LmgUXin5q7jw==
+X-MSG-ID: 268170e0-f129-11ec-9051-0050569d2c73
 From:   David Jander <david@protonic.nl>
 To:     Mark Brown <broonie@kernel.org>
 Cc:     linux-spi@vger.kernel.org, Marc Kleine-Budde <mkl@pengutronix.de>,
         Andrew Lunn <andrew@lunn.ch>, David Jander <david@protonic.nl>
-Subject: [PATCH v3 01/11] spi: Move ctlr->cur_msg_prepared to struct spi_message
-Date:   Tue, 21 Jun 2022 08:12:24 +0200
-Message-Id: <20220621061234.3626638-2-david@protonic.nl>
+Subject: [PATCH v3 09/11] spi: Set ctlr->cur_msg also in the sync transfer case
+Date:   Tue, 21 Jun 2022 08:12:32 +0200
+Message-Id: <20220621061234.3626638-10-david@protonic.nl>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20220621061234.3626638-1-david@protonic.nl>
 References: <20220621061234.3626638-1-david@protonic.nl>
@@ -41,90 +41,26 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This enables the possibility to transfer a message that is not at the
-current tip of the async message queue.
-This is in preparation of the next patch(es) which enable spi_sync messages
-to skip the queue altogether.
+Some drivers rely on this to point to the currently processed message, so
+set this here also.
 
 Signed-off-by: David Jander <david@protonic.nl>
 ---
- drivers/spi/spi.c       | 7 ++++---
- include/linux/spi/spi.h | 7 ++++---
- 2 files changed, 8 insertions(+), 6 deletions(-)
+ drivers/spi/spi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index c78d1ceeaa42..eb6360153fa1 100644
+index 29f42753ef0f..3df84f43918c 100644
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -1684,7 +1684,7 @@ static void __spi_pump_messages(struct spi_controller *ctlr, bool in_kthread)
- 			spi_finalize_current_message(ctlr);
- 			goto out;
- 		}
--		ctlr->cur_msg_prepared = true;
-+		msg->prepared = true;
- 	}
+@@ -3957,6 +3957,7 @@ static void __spi_transfer_message_noqueue(struct spi_controller *ctlr, struct s
  
- 	ret = spi_map_msg(ctlr, msg);
-@@ -1926,7 +1926,7 @@ void spi_finalize_current_message(struct spi_controller *ctlr)
- 	 */
- 	spi_res_release(ctlr, mesg);
+ 	was_busy = ctlr->busy;
  
--	if (ctlr->cur_msg_prepared && ctlr->unprepare_message) {
-+	if (mesg->prepared && ctlr->unprepare_message) {
- 		ret = ctlr->unprepare_message(ctlr, mesg);
- 		if (ret) {
- 			dev_err(&ctlr->dev, "failed to unprepare message: %d\n",
-@@ -1934,9 +1934,10 @@ void spi_finalize_current_message(struct spi_controller *ctlr)
- 		}
- 	}
- 
-+	mesg->prepared = false;
-+
- 	spin_lock_irqsave(&ctlr->queue_lock, flags);
- 	ctlr->cur_msg = NULL;
--	ctlr->cur_msg_prepared = false;
- 	ctlr->fallback = false;
- 	kthread_queue_work(ctlr->kworker, &ctlr->pump_messages);
- 	spin_unlock_irqrestore(&ctlr->queue_lock, flags);
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index c96f526d9a20..1a75c26742f2 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -385,8 +385,6 @@ extern struct spi_device *spi_new_ancillary_device(struct spi_device *spi, u8 ch
-  * @queue: message queue
-  * @idling: the device is entering idle state
-  * @cur_msg: the currently in-flight message
-- * @cur_msg_prepared: spi_prepare_message was called for the currently
-- *                    in-flight message
-  * @cur_msg_mapped: message has been mapped for DMA
-  * @last_cs: the last chip_select that is recorded by set_cs, -1 on non chip
-  *           selected
-@@ -621,7 +619,6 @@ struct spi_controller {
- 	bool				running;
- 	bool				rt;
- 	bool				auto_runtime_pm;
--	bool                            cur_msg_prepared;
- 	bool				cur_msg_mapped;
- 	char				last_cs;
- 	bool				last_cs_mode_high;
-@@ -988,6 +985,7 @@ struct spi_transfer {
-  * @queue: for use by whichever driver currently owns the message
-  * @state: for use by whichever driver currently owns the message
-  * @resources: for resource management when the spi message is processed
-+ * @prepared: spi_prepare_message was called for the this message
-  *
-  * A @spi_message is used to execute an atomic sequence of data transfers,
-  * each represented by a struct spi_transfer.  The sequence is "atomic"
-@@ -1037,6 +1035,9 @@ struct spi_message {
- 
- 	/* list of spi_res reources when the spi message is processed */
- 	struct list_head        resources;
-+
-+	/* spi_prepare_message was called for this message */
-+	bool                    prepared;
- };
- 
- static inline void spi_message_init_no_memset(struct spi_message *m)
++	ctlr->cur_msg = msg;
+ 	ret = __spi_pump_transfer_message(ctlr, msg, was_busy);
+ 	if (ret)
+ 		goto out;
 -- 
 2.32.0
 

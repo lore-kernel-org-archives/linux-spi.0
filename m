@@ -2,224 +2,153 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 76CD4CCA48A
-	for <linux-spi@archiver.kernel.org>; Mon, 27 Jun 2022 06:49:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 79EDBCCA473
+	for <linux-spi@archiver.kernel.org>; Mon, 27 Jun 2022 06:55:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232468AbiF0Gts (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 27 Jun 2022 02:49:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42000 "EHLO
+        id S232438AbiF0Gz0 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 27 Jun 2022 02:55:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232469AbiF0Gtq (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 27 Jun 2022 02:49:46 -0400
-Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F3AA10AD
-        for <linux-spi@vger.kernel.org>; Sun, 26 Jun 2022 23:49:45 -0700 (PDT)
-Received: from epcas2p4.samsung.com (unknown [182.195.41.56])
-        by mailout2.samsung.com (KnoxPortal) with ESMTP id 20220627064933epoutp022a016388226657e7466f55dfc841cc86~8Z4J6yegn1610116101epoutp02f
-        for <linux-spi@vger.kernel.org>; Mon, 27 Jun 2022 06:49:33 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20220627064933epoutp022a016388226657e7466f55dfc841cc86~8Z4J6yegn1610116101epoutp02f
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1656312573;
-        bh=5z+x19IHjXLCqg8eCmD1MyhqL/USWu8oisWwN3c0QFU=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MSoed4f22FjsqZRRb4U8uboNsJf+lBXd7+tFG47/Z5JsDb9HWwEWCExiskTlAjTco
-         uIyu0g7xclQAc2V6vKtfk4vldlxD75gxcTwLpd5HMPBHOnwiwmNBJAO2A52YN24xk+
-         n7ZuIY8p5ZbdlHdI4bI6WnKg8UUsoyP0uayvPs4o=
-Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
-        epcas2p3.samsung.com (KnoxPortal) with ESMTP id
-        20220627064932epcas2p3dfef94079bcfe8f811f1d59bbb31397b~8Z4JcLJCS2915129151epcas2p34;
-        Mon, 27 Jun 2022 06:49:32 +0000 (GMT)
-Received: from epsmges2p4.samsung.com (unknown [182.195.36.98]) by
-        epsnrtp4.localdomain (Postfix) with ESMTP id 4LWdcr1LRYz4x9Q7; Mon, 27 Jun
-        2022 06:49:32 +0000 (GMT)
-Received: from epcas2p2.samsung.com ( [182.195.41.54]) by
-        epsmges2p4.samsung.com (Symantec Messaging Gateway) with SMTP id
-        55.EC.09662.CF259B26; Mon, 27 Jun 2022 15:49:32 +0900 (KST)
-Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
-        epcas2p2.samsung.com (KnoxPortal) with ESMTPA id
-        20220627064931epcas2p2e1dc352f41895b294d7945c2239de362~8Z4IsbvYj2456724567epcas2p2Q;
-        Mon, 27 Jun 2022 06:49:31 +0000 (GMT)
-Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
-        epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20220627064931epsmtrp210b758ea1309d2dbf70f564305f8f3e8~8Z4IrhnDS2166021660epsmtrp2B;
-        Mon, 27 Jun 2022 06:49:31 +0000 (GMT)
-X-AuditID: b6c32a48-9f7ff700000025be-99-62b952fce882
-Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
-        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-        1E.89.08905.BF259B26; Mon, 27 Jun 2022 15:49:31 +0900 (KST)
-Received: from localhost.localdomain (unknown [10.229.9.51]) by
-        epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20220627064931epsmtip25afe0f913e703d45bb6699095eceaf3c~8Z4Ie5LNL3090630906epsmtip2g;
-        Mon, 27 Jun 2022 06:49:31 +0000 (GMT)
-From:   Chanho Park <chanho61.park@samsung.com>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Andi Shyti <andi@etezian.org>, Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     Alim Akhtar <alim.akhtar@samsung.com>, devicetree@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Chanho Park <chanho61.park@samsung.com>
-Subject: [PATCH 3/5] spi: s3c64xx: support custom value of internal clock
- divider
-Date:   Mon, 27 Jun 2022 15:47:05 +0900
-Message-Id: <20220627064707.138883-4-chanho61.park@samsung.com>
-X-Mailer: git-send-email 2.36.1
-In-Reply-To: <20220627064707.138883-1-chanho61.park@samsung.com>
+        with ESMTP id S232066AbiF0Gz0 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 27 Jun 2022 02:55:26 -0400
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D5692DF2
+        for <linux-spi@vger.kernel.org>; Sun, 26 Jun 2022 23:55:24 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id lw20so17071887ejb.4
+        for <linux-spi@vger.kernel.org>; Sun, 26 Jun 2022 23:55:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=l8DLyJeTvw1xggLYIHIAs8lG/FP9YwAC/H3QcrJQQbM=;
+        b=lfgBG6BcegbTxn3oISBf4RsaDUKM1nhVWAfcGq0zhvN4IJqH7WSK7JFr5tCQyT4LhR
+         d3gzqK1269FOcBTTQRj6VW3qzmmFI2wXSc64Nt2UxGUePVjixulD3AFbREgmAsN+lFeL
+         HwiLI3JD9ln4Ucm/7OFwUSa0edTyKBYwXARd8flIWAl5vo19z4kdrlu7947/py5QeJYl
+         5geBx1o7hjeEa6/y+BjqBlLbb00NtPWXQVfDgYXenyBSH+m2KPcW22e8FAmdWrrzn1Kk
+         jK5n1XfVEc+py+OgSpy6lqVFDccn0L+WAbGo6nrf6yeJtVi6tgZY/qojyRLDyAWyox7c
+         /g5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=l8DLyJeTvw1xggLYIHIAs8lG/FP9YwAC/H3QcrJQQbM=;
+        b=zKB45Cd3/8NezWGGQunG2A1pekoLW6m6sGgqvtJvx6xgnqAFaWIv5bjTAoB4nyPTFp
+         rs7E8uXjyvZWpMXAvuWsaya2RV7Bk1kA04K6mCcC+DQRy36Kl+JO33xmSsf8Scf8pb6U
+         V2fyG9HEbptESwLXZQx6gQTvim0sOfZsPnV0yTJx04Vi+BbLmSo3fylmUV6OIK0Qce4c
+         j+MBNvygvMa+nrB4EONV1wl3MbFARmSnT8V+XtfTBo+HXnmGgmCyb2hVlmv77V7ePGsF
+         OrUXa/8A2nX1YD/JVkEDS+fG8lqUunnyg7z8Houmw59yJr2l3Z3Me2aN6GHrf0gahEDU
+         ucSA==
+X-Gm-Message-State: AJIora/bR3Hkcuh7zv/zuPdb2imyj1XbU20bQdzgtgstD8LRsTxhHu5n
+        BTI2cZPztK7iBMLLdvLmbpoYAg==
+X-Google-Smtp-Source: AGRyM1uOrGGFKIKFwX1OUL+TaKzbf/DR/DTxjj1a56xgid+qPv5S8NCnwy6OhwV1/zW1L8jkeok5qg==
+X-Received: by 2002:a17:907:60d2:b0:725:5611:cea6 with SMTP id hv18-20020a17090760d200b007255611cea6mr11136755ejc.60.1656312922947;
+        Sun, 26 Jun 2022 23:55:22 -0700 (PDT)
+Received: from [192.168.0.246] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
+        by smtp.gmail.com with ESMTPSA id e17-20020a170906505100b006fece722508sm4615390ejk.135.2022.06.26.23.55.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 26 Jun 2022 23:55:22 -0700 (PDT)
+Message-ID: <70cd0066-9aa7-ca41-ad61-898d491328aa@linaro.org>
+Date:   Mon, 27 Jun 2022 08:55:20 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrCJsWRmVeSWpSXmKPExsWy7bCmme6foJ1JBp9XsVk8mLeNzWLxj+dM
-        FlMfPmGzuLxf22L+kXOsFn0vHjJb7H29ld1i0+NrrBYzzu9jsmj8eJPdonXvEXYHbo/rSz4x
-        e2xa1cnmcefaHjaPzUvqPfq2rGL0+LxJLoAtKtsmIzUxJbVIITUvOT8lMy/dVsk7ON453tTM
-        wFDX0NLCXEkhLzE31VbJxSdA1y0zB+g6JYWyxJxSoFBAYnGxkr6dTVF+aUmqQkZ+cYmtUmpB
-        Sk6BeYFecWJucWleul5eaomVoYGBkSlQYUJ2xtPX4QV75Su2TJjI2MA4T7KLkYNDQsBEYtW6
-        qC5GLg4hgR2MEg9bXjBBOJ+AnLtzmSGcb4wSd1+tY+xi5ATr2L3oHCtEYi+jRN/Di1AtHxkl
-        Nv/uZQKpYhPQldjy/BUjSEJE4CajxPSzfWBVzAI3GCX2zlgPNktYIFhi14OZ7CA2i4CqxPWJ
-        G8G6eQXsJfZvecgMsU9eYsP8XjCbU8BBYtHTK1A1ghInZz5hAbGZgWqat84GO1ZCoJdDYsdX
-        mGYXiZ+nXkLZwhKvjm9hh7ClJD6/28sGYRdLLJ31iQmiuYFR4vK2X1AJY4lZz9oZQeHELKAp
-        sX6XPiTIlCWO3ILayyfRcfgvO0SYV6KjTQiiUV3iwPbpLBC2rET3nM+sELaHxJb1r6FhOplR
-        YtfFnewTGBVmIXlnFpJ3ZiEsXsDIvIpRLLWgODc9tdiowAQexcn5uZsYwclVy2MH4+y3H/QO
-        MTJxMB5ilOBgVhLhfX19a5IQb0piZVVqUX58UWlOavEhRlNgYE9klhJNzgem97ySeEMTSwMT
-        MzNDcyNTA3MlcV6vlA2JQgLpiSWp2ampBalFMH1MHJxSDUzacZemOLmyPivaGsUbE8H4NbjI
-        fhPv/KQPSy2Wrg9v4Zl9z3RxmtaU3NtmPDoyd1/s3KhzK3Fpb+P85ImGNxskj2t7PLphtGsP
-        I8cqz6372I4V2Fgs9f0o3KF/4sbk5W+eH93HO/HGHJuM56rbjtl+aN7hzVoicf2zmESXuZoF
-        y6xnex49M1qyxWnSgsr/i5dyNv42nCbKut90drKJkXThE1mrHp7NnM522Qte2uQ8ZftSaRc9
-        K379o/St9bO9732sWDltepJ64uHOHQtrQoK8Sv/vdDz56KH9/5UROvszTdJ0u4+3LTlzpklQ
-        eOrVlden71DqvLXyygMjiVe6/Ps+T1mZkWLU71fIYfJo7vtvSizFGYmGWsxFxYkAGPbMVzcE
-        AAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrHLMWRmVeSWpSXmKPExsWy7bCSvO7voJ1JBof3qVs8mLeNzWLxj+dM
-        FlMfPmGzuLxf22L+kXOsFn0vHjJb7H29ld1i0+NrrBYzzu9jsmj8eJPdonXvEXYHbo/rSz4x
-        e2xa1cnmcefaHjaPzUvqPfq2rGL0+LxJLoAtissmJTUnsyy1SN8ugSvj6evwgr3yFVsmTGRs
-        YJwn2cXIySEhYCKxe9E51i5GLg4hgd2MEptOdrNCJGQlnr3bwQ5hC0vcbzkCVfSeUWLZo1uM
-        IAk2AV2JLc9fMYIkRARuM0r8bdzGBuIwC9xhlHi0fA8TSJWwQKBEy+ITbCA2i4CqxPWJG8Hi
-        vAL2Evu3PGSGWCEvsWF+L5jNKeAgsejpFaAaDqB19hLPD1RClAtKnJz5hAXEZgYqb946m3kC
-        o8AsJKlZSFILGJlWMUqmFhTnpucWGxYY5qWW6xUn5haX5qXrJefnbmIER4GW5g7G7as+6B1i
-        ZOJgPMQowcGsJML7+vrWJCHelMTKqtSi/Pii0pzU4kOM0hwsSuK8F7pOxgsJpCeWpGanphak
-        FsFkmTg4pRqYGLum9kudKe3IeXpi/uxf8/c/2D/zZIh2+OwlMQanr/9cfkh6ZfDVEwmneSRD
-        TnuzT915Z9rxU2xuos9nV8T/e9JgXidc/lGZofx+1ISTCyMlLn6fqGh48JqMTeQD/o7lc8yk
-        u+quteu8fbc/SLCkinlxs/Aen+9u0YlBDEX7provyd5U/9On/aT9jSdOIbwZi3a/V79VdjqR
-        aWnNwmZG81pPk+vxqs2H4owSo+YuKO4JbctcUbdJQq9sj4mUgs/WJ84sdnJufKejnh8reLDb
-        NHzqkjO/zs+bu+HyrvWv2mOUrra+vzXzu3x51vwaj/dvDnDUbzGPqMziV+78yVXfnvFuoZ3h
-        M5v5iau+h3+zUmIpzkg01GIuKk4EALVjHIHxAgAA
-X-CMS-MailID: 20220627064931epcas2p2e1dc352f41895b294d7945c2239de362
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: AUTO_CONFIDENTIAL
-CMS-TYPE: 102P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20220627064931epcas2p2e1dc352f41895b294d7945c2239de362
-References: <20220627064707.138883-1-chanho61.park@samsung.com>
-        <CGME20220627064931epcas2p2e1dc352f41895b294d7945c2239de362@epcas2p2.samsung.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH 07/14] riscv: dts: canaan: fix the k210's memory node
+Content-Language: en-US
+To:     Conor.Dooley@microchip.com, damien.lemoal@opensource.wdc.com,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org
+Cc:     fancer.lancer@gmail.com, tglx@linutronix.de, sam@ravnborg.org,
+        mail@conchuod.ie, Eugeniy.Paltsev@synopsys.com,
+        daniel.lezcano@linaro.org, paul.walmsley@sifive.com,
+        aou@eecs.berkeley.edu, masahiroy@kernel.org, geert@linux-m68k.org,
+        lgirdwood@gmail.com, niklas.cassel@wdc.com,
+        dillon.minfei@gmail.com, jee.heng.sia@intel.com,
+        thierry.reding@gmail.com, joabreu@synopsys.com,
+        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        airlied@linux.ie, linux-kernel@vger.kernel.org, vkoul@kernel.org,
+        palmer@dabbelt.com, broonie@kernel.org, dmaengine@vger.kernel.org,
+        alsa-devel@alsa-project.org, linux-spi@vger.kernel.org,
+        linux-riscv@lists.infradead.org, palmer@rivosinc.com,
+        daniel@ffwll.ch
+References: <20220618123035.563070-1-mail@conchuod.ie>
+ <20220618123035.563070-8-mail@conchuod.ie>
+ <9cd60b3b-44fe-62ac-9874-80ae2223d078@opensource.wdc.com>
+ <e1fbf363-d057-1000-a846-3df524801f15@microchip.com>
+ <891cf74c-ac0a-b380-1d5f-dd7ce5aeda9d@opensource.wdc.com>
+ <6c9de242-6ccf-49a2-8422-e6949c5169ff@microchip.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <6c9de242-6ccf-49a2-8422-e6949c5169ff@microchip.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Modern exynos SoCs such as Exynos Auto v9 has different internal clock
-divider, for example "4". To support this internal value, this adds
-clk_div of the s3c64xx_spi_port_config and use it if it is specified.
-Otherwise, use "2" which is the previous default value.
+On 21/06/2022 11:49, Conor.Dooley@microchip.com wrote:
+> On 20/06/2022 01:25, Damien Le Moal wrote:
+>> EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
+>>
+>> On 6/20/22 08:54, Conor.Dooley@microchip.com wrote:
+>>> On 20/06/2022 00:38, Damien Le Moal wrote:
+>>>> EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
+>>>>
+>>>> On 6/18/22 21:30, Conor Dooley wrote:
+>>>>> From: Conor Dooley <conor.dooley@microchip.com>
+>>>>>
+>>>>> The k210 memory node has a compatible string that does not match with
+>>>>> any driver or dt-binding & has several non standard properties.
+>>>>> Replace the reg names with a comment and delete the rest.
+>>>>>
+>>>>> Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+>>>>> ---
+>>>>> ---
+>>>>>   arch/riscv/boot/dts/canaan/k210.dtsi | 6 ------
+>>>>>   1 file changed, 6 deletions(-)
+>>>>>
+>>>>> diff --git a/arch/riscv/boot/dts/canaan/k210.dtsi b/arch/riscv/boot/dts/canaan/k210.dtsi
+>>>>> index 44d338514761..287ea6eebe47 100644
+>>>>> --- a/arch/riscv/boot/dts/canaan/k210.dtsi
+>>>>> +++ b/arch/riscv/boot/dts/canaan/k210.dtsi
+>>>>> @@ -69,15 +69,9 @@ cpu1_intc: interrupt-controller {
+>>>>>
+>>>>>        sram: memory@80000000 {
+>>>>>                device_type = "memory";
+>>>>> -             compatible = "canaan,k210-sram";
+>>>>>                reg = <0x80000000 0x400000>,
+>>>>>                      <0x80400000 0x200000>,
+>>>>>                      <0x80600000 0x200000>;
+>>>>> -             reg-names = "sram0", "sram1", "aisram";
+>>>>> -             clocks = <&sysclk K210_CLK_SRAM0>,
+>>>>> -                      <&sysclk K210_CLK_SRAM1>,
+>>>>> -                      <&sysclk K210_CLK_AI>;
+>>>>> -             clock-names = "sram0", "sram1", "aisram";
+>>>>>        };
+>>>>
+>>>> These are used by u-boot to setup the memory clocks and initialize the
+>>>> aisram. Sure the kernel actually does not use this, but to be in sync with
+>>>> u-boot DT, I would prefer keeping this as is. Right now, u-boot *and* the
+>>>> kernel work fine with both u-boot internal DT and the kernel DT.
+>>>
+>>> Right, but unfortunately that desire alone doesn't do anything about
+>>> the dtbs_check complaints.
+>>>
+>>> I guess the alternative approach of actually documenting the compatible
+>>> would be more palatable?
+>>
+>> Yes, I think so. That would allow keeping the fields without the DTB build
+>> warnings.
+> 
+> Hmm looks like that approach contradicts the dt-schema;
+> https://github.com/devicetree-org/dt-schema/blob/main/dtschema/schemas/memory.yaml
+> 
+> @Rob,Krzysztof what is one meant to do here?
 
-Signed-off-by: Chanho Park <chanho61.park@samsung.com>
----
- drivers/spi/spi-s3c64xx.c | 23 +++++++++++++++--------
- 1 file changed, 15 insertions(+), 8 deletions(-)
+Why do you think it contradict bindings? Bindings for memory allow
+additional properties, so you just need to create binding for this one.
+And make it a correct binding, IOW, be sure that these clocks are real etc.
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index e17c74c0d7de..dd5fc8570bce 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -131,6 +131,7 @@ struct s3c64xx_spi_dma_data {
-  * @fifo_lvl_mask: Bit-mask for {TX|RX}_FIFO_LVL bits in SPI_STATUS register.
-  * @rx_lvl_offset: Bit offset of RX_FIFO_LVL bits in SPI_STATUS regiter.
-  * @tx_st_done: Bit offset of TX_DONE bit in SPI_STATUS regiter.
-+ * @clk_div: Internal clock divider, if not specified, use 2 as the default.
-  * @quirks: Bitmask of known quirks
-  * @high_speed: True, if the controller supports HIGH_SPEED_EN bit.
-  * @clk_from_cmu: True, if the controller does not include a clock mux and
-@@ -148,6 +149,7 @@ struct s3c64xx_spi_port_config {
- 	int	rx_lvl_offset;
- 	int	tx_st_done;
- 	int	quirks;
-+	int	clk_div;
- 	bool	high_speed;
- 	bool	clk_from_cmu;
- 	bool	clk_ioclk;
-@@ -620,6 +622,7 @@ static int s3c64xx_spi_config(struct s3c64xx_spi_driver_data *sdd)
- 	void __iomem *regs = sdd->regs;
- 	int ret;
- 	u32 val;
-+	u32 div = sdd->port_conf->clk_div ? sdd->port_conf->clk_div : 2;
- 
- 	/* Disable Clock */
- 	if (!sdd->port_conf->clk_from_cmu) {
-@@ -668,16 +671,15 @@ static int s3c64xx_spi_config(struct s3c64xx_spi_driver_data *sdd)
- 	writel(val, regs + S3C64XX_SPI_MODE_CFG);
- 
- 	if (sdd->port_conf->clk_from_cmu) {
--		/* The src_clk clock is divided internally by 2 */
--		ret = clk_set_rate(sdd->src_clk, sdd->cur_speed * 2);
-+		ret = clk_set_rate(sdd->src_clk, sdd->cur_speed * div);
- 		if (ret)
- 			return ret;
--		sdd->cur_speed = clk_get_rate(sdd->src_clk) / 2;
-+		sdd->cur_speed = clk_get_rate(sdd->src_clk) / div;
- 	} else {
- 		/* Configure Clock */
- 		val = readl(regs + S3C64XX_SPI_CLK_CFG);
- 		val &= ~S3C64XX_SPI_PSR_MASK;
--		val |= ((clk_get_rate(sdd->src_clk) / sdd->cur_speed / 2 - 1)
-+		val |= ((clk_get_rate(sdd->src_clk) / sdd->cur_speed / div - 1)
- 				& S3C64XX_SPI_PSR_MASK);
- 		writel(val, regs + S3C64XX_SPI_CLK_CFG);
- 
-@@ -871,6 +873,7 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
- 	struct s3c64xx_spi_csinfo *cs = spi->controller_data;
- 	struct s3c64xx_spi_driver_data *sdd;
- 	int err;
-+	u32 div = 2;
- 
- 	sdd = spi_master_get_devdata(spi->master);
- 	if (spi->dev.of_node) {
-@@ -889,22 +892,26 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
- 
- 	pm_runtime_get_sync(&sdd->pdev->dev);
- 
-+	/* Use clk_div value if it is specified, otherwise use 2 as default */
-+	if (sdd->port_conf->clk_div)
-+		div = sdd->port_conf->clk_div;
-+
- 	/* Check if we can provide the requested rate */
- 	if (!sdd->port_conf->clk_from_cmu) {
- 		u32 psr, speed;
- 
- 		/* Max possible */
--		speed = clk_get_rate(sdd->src_clk) / 2 / (0 + 1);
-+		speed = clk_get_rate(sdd->src_clk) / div / (0 + 1);
- 
- 		if (spi->max_speed_hz > speed)
- 			spi->max_speed_hz = speed;
- 
--		psr = clk_get_rate(sdd->src_clk) / 2 / spi->max_speed_hz - 1;
-+		psr = clk_get_rate(sdd->src_clk) / div / spi->max_speed_hz - 1;
- 		psr &= S3C64XX_SPI_PSR_MASK;
- 		if (psr == S3C64XX_SPI_PSR_MASK)
- 			psr--;
- 
--		speed = clk_get_rate(sdd->src_clk) / 2 / (psr + 1);
-+		speed = clk_get_rate(sdd->src_clk) / div / (psr + 1);
- 		if (spi->max_speed_hz < speed) {
- 			if (psr+1 < S3C64XX_SPI_PSR_MASK) {
- 				psr++;
-@@ -914,7 +921,7 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
- 			}
- 		}
- 
--		speed = clk_get_rate(sdd->src_clk) / 2 / (psr + 1);
-+		speed = clk_get_rate(sdd->src_clk) / div / (psr + 1);
- 		if (spi->max_speed_hz >= speed) {
- 			spi->max_speed_hz = speed;
- 		} else {
--- 
-2.36.1
+Although usually we had separate bindings (and device drivers) for
+memory controllers, instead of including them in the "memory" node.
 
+Best regards,
+Krzysztof

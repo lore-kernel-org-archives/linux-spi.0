@@ -2,29 +2,29 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C1962CCA488
-	for <linux-spi@archiver.kernel.org>; Mon, 27 Jun 2022 15:31:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1AEACCCA473
+	for <linux-spi@archiver.kernel.org>; Mon, 27 Jun 2022 15:31:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236757AbiF0Pbb (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 27 Jun 2022 11:31:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51172 "EHLO
+        id S238192AbiF0Pbc (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 27 Jun 2022 11:31:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238192AbiF0Pb2 (ORCPT
+        with ESMTP id S238187AbiF0Pb2 (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Mon, 27 Jun 2022 11:31:28 -0400
-Received: from xavier.telenet-ops.be (xavier.telenet-ops.be [IPv6:2a02:1800:120:4::f00:14])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E8C219C3A
-        for <linux-spi@vger.kernel.org>; Mon, 27 Jun 2022 08:31:25 -0700 (PDT)
+Received: from andre.telenet-ops.be (andre.telenet-ops.be [IPv6:2a02:1800:120:4::f00:15])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 345CF19C32
+        for <linux-spi@vger.kernel.org>; Mon, 27 Jun 2022 08:31:24 -0700 (PDT)
 Received: from ramsan.of.borg ([84.195.186.194])
-        by xavier.telenet-ops.be with bizsmtp
-        id oFXH2700S4C55Sk01FXHaj; Mon, 27 Jun 2022 17:31:23 +0200
+        by andre.telenet-ops.be with bizsmtp
+        id oFXH2700N4C55Sk01FXHYj; Mon, 27 Jun 2022 17:31:21 +0200
 Received: from rox.of.borg ([192.168.97.57])
         by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.93)
         (envelope-from <geert@linux-m68k.org>)
-        id 1o5qhp-0014ye-0o; Mon, 27 Jun 2022 17:31:17 +0200
+        id 1o5qhp-0014yZ-1Y; Mon, 27 Jun 2022 17:31:17 +0200
 Received: from geert by rox.of.borg with local (Exim 4.93)
         (envelope-from <geert@linux-m68k.org>)
-        id 1o5qho-004jF0-J1; Mon, 27 Jun 2022 17:31:16 +0200
+        id 1o5qho-004jET-FY; Mon, 27 Jun 2022 17:31:16 +0200
 From:   Geert Uytterhoeven <geert+renesas@glider.be>
 To:     Vignesh Raghavendra <vigneshr@ti.com>,
         Sergey Shtylyov <s.shtylyov@omp.ru>,
@@ -37,9 +37,9 @@ Cc:     Mark Brown <broonie@kernel.org>, linux-mtd@lists.infradead.org,
         linux-renesas-soc@vger.kernel.org, linux-spi@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 7/7] memory: renesas-rpc-if: Reinitialize registers during system resume
-Date:   Mon, 27 Jun 2022 17:31:14 +0200
-Message-Id: <923c057c77b146710a82d486f89ce3a8ebda7ccd.1656341824.git.geert+renesas@glider.be>
+Subject: [PATCH 2/7] memory: renesas-rpc-if: Add dev helper to rpcif_probe()
+Date:   Mon, 27 Jun 2022 17:31:09 +0200
+Message-Id: <31051c05581d0200a45357a6d1ab4ad268a1bbf4.1656341824.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1656341824.git.geert+renesas@glider.be>
 References: <cover.1656341824.git.geert+renesas@glider.be>
@@ -49,53 +49,54 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-During PSCI system suspend, R-Car Gen3 SoCs may be powered down, and
-thus the RPC-IF register state may be lost.  Consequently, when using
-the RPC-IF after system resume, data corruption may happen.
-
-Fix this by reinitializing the hardware state during system resume.
-As this requires resuming the RPC-IF core device, this can only be done
-when the device is under active control of the HyperBus or SPI child
-driver.
+Add a helper variable pointing to the device structure, to avoid going
+through the platform device every time.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- drivers/memory/renesas-rpc-if.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/memory/renesas-rpc-if.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/memory/renesas-rpc-if.c b/drivers/memory/renesas-rpc-if.c
-index ec76e603ad24d214..2a49d4511c8296c5 100644
+index 829b962e8f034bdd..2421a820e3c5880c 100644
 --- a/drivers/memory/renesas-rpc-if.c
 +++ b/drivers/memory/renesas-rpc-if.c
-@@ -757,6 +757,20 @@ static int rpcif_remove(struct platform_device *pdev)
- 	return 0;
- }
+@@ -666,14 +666,15 @@ EXPORT_SYMBOL(rpcif_dirmap_read);
  
-+static int rpcif_resume(struct device *dev)
-+{
-+	struct rpcif_priv *rpc = dev_get_drvdata(dev);
-+
-+	if (!pm_runtime_enabled(dev)) {
-+		/* Not yet activated or deactivated by child device */
-+		return 0;
-+	}
-+
-+	return rpcif_hw_init(dev, rpc->bus_size == 2);
-+}
-+
-+static DEFINE_SIMPLE_DEV_PM_OPS(rpcif_pm_ops, NULL, rpcif_resume);
-+
- static const struct of_device_id rpcif_of_match[] = {
- 	{ .compatible = "renesas,rcar-gen3-rpc-if", .data = (void *)RPCIF_RCAR_GEN3 },
- 	{ .compatible = "renesas,rzg2l-rpc-if", .data = (void *)RPCIF_RZ_G2L },
-@@ -770,6 +784,7 @@ static struct platform_driver rpcif_driver = {
- 	.driver = {
- 		.name =	"rpc-if",
- 		.of_match_table = rpcif_of_match,
-+		.pm = pm_sleep_ptr(&rpcif_pm_ops),
- 	},
- };
- module_platform_driver(rpcif_driver);
+ static int rpcif_probe(struct platform_device *pdev)
+ {
++	struct device *dev = &pdev->dev;
+ 	struct platform_device *vdev;
+ 	struct device_node *flash;
+ 	const char *name;
+ 	int ret;
+ 
+-	flash = of_get_next_child(pdev->dev.of_node, NULL);
++	flash = of_get_next_child(dev->of_node, NULL);
+ 	if (!flash) {
+-		dev_warn(&pdev->dev, "no flash node found\n");
++		dev_warn(dev, "no flash node found\n");
+ 		return -ENODEV;
+ 	}
+ 
+@@ -683,7 +684,7 @@ static int rpcif_probe(struct platform_device *pdev)
+ 		name = "rpc-if-hyperflash";
+ 	} else	{
+ 		of_node_put(flash);
+-		dev_warn(&pdev->dev, "unknown flash type\n");
++		dev_warn(dev, "unknown flash type\n");
+ 		return -ENODEV;
+ 	}
+ 	of_node_put(flash);
+@@ -691,7 +692,7 @@ static int rpcif_probe(struct platform_device *pdev)
+ 	vdev = platform_device_alloc(name, pdev->id);
+ 	if (!vdev)
+ 		return -ENOMEM;
+-	vdev->dev.parent = &pdev->dev;
++	vdev->dev.parent = dev;
+ 	platform_set_drvdata(pdev, vdev);
+ 
+ 	ret = platform_device_add(vdev);
 -- 
 2.25.1
 

@@ -2,87 +2,90 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ED8AFC43334
-	for <linux-spi@archiver.kernel.org>; Mon, 27 Jun 2022 09:41:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 174A5C433EF
+	for <linux-spi@archiver.kernel.org>; Mon, 27 Jun 2022 09:45:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233872AbiF0Jls (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 27 Jun 2022 05:41:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33382 "EHLO
+        id S233809AbiF0Jpu (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 27 Jun 2022 05:45:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233868AbiF0Jlr (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 27 Jun 2022 05:41:47 -0400
+        with ESMTP id S233868AbiF0Jpr (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 27 Jun 2022 05:45:47 -0400
 Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 680BF6349
-        for <linux-spi@vger.kernel.org>; Mon, 27 Jun 2022 02:41:46 -0700 (PDT)
-Received: by mail-ej1-x62a.google.com with SMTP id pk21so17955511ejb.2
-        for <linux-spi@vger.kernel.org>; Mon, 27 Jun 2022 02:41:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA13C6390
+        for <linux-spi@vger.kernel.org>; Mon, 27 Jun 2022 02:45:45 -0700 (PDT)
+Received: by mail-ej1-x62a.google.com with SMTP id ay16so17945472ejb.6
+        for <linux-spi@vger.kernel.org>; Mon, 27 Jun 2022 02:45:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=dfOqnIn7sYWvsEoD8p7lU+FbuPf108gUfhhcodP/p+A=;
-        b=IJzsnv0qXb1ns6J4xa7IEXq96G32D+Qp4g8YF5CI0pYBo+yj3FO/6uFFY26rZLIfAe
-         ULWELqNwh4DXpGTEKC7Bac9ydmfzrUuaLHbRjYt+w98Ma5qdxBCyzc4Gq4G4QQkdZ5Sl
-         u/fJqU8sDfDfLoh5hzpF8WhtbzeYOuJrwKbGAseBm72FN3bjYu+dEVlDRx8zOH9cNPUG
-         FNoJcvFMfGM42Abryu/cTVRpvg4t2ySzAexhRE1rNUv5Sw/6puzlBpJ0IPIIxdeL62zK
-         rLouv9L0APUgUSJRwyT6NoJTButQ0N6FkyJB5so23RoXublE+61UYHWVCZWDrIgkfMOk
-         lNIA==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=WOM4uBpjoRyrBuD75f9zY98ri1MNJqUrdS279t95jyI=;
+        b=HtwfbijywEnyhZiyXyHDF8ZyRkA/74CcMliWnKNk1HA3ZYUhGS+qDoC7zLO5JE+sb7
+         XjbtB2e1Vf9sLcwW1CV4eTD/uHg0AVPCk+5R9DDAt5sLv0jnRkfV1xgE0RM8mdSx3IUF
+         aLtwEPG3wBYfFtxX8fz9xbqXcJAWkamtqf0S9kcvzq5u98nYfdHGyeMSpX1Ta/8THjEC
+         907BS8+vNC7iJcX020no7Bj+ogBziY+MLVywrvXamFvx0nUsbhtZ5cXLqXM83FmzubHl
+         o/S61Oe9x9yCMZTqImukOJQ6fw/LQbkJ5V7s1EK2yqTNE7S5EtDgI7nesmPLP5OfZzUr
+         Ckkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=dfOqnIn7sYWvsEoD8p7lU+FbuPf108gUfhhcodP/p+A=;
-        b=dLIudnpunWTKm6ni8HsoJvPKHBaNv+m0w0yM2J5TzZEdBHEKMz+XilskVF4tfAcyIN
-         7R7YGKC7ZNx1tRpDGQ/qrBrv9Hq6MbHl8YeG3Kq4T7v1ghL4iPA5FtiA8aRmoHQGIz4M
-         rHAF68LPPIwQF9qhLH1c2Hcl2BTcuWqS3deK8+/gIuNRnV9bDBrCpVxvGAtKTgih4tWn
-         j/0IcEuDhaphJf7YgmiuLMrE9WmMRkdYZMyRTsJ5whYWXHQNL7erdof7r5cxrdTfUZt9
-         OKwcp6HMR3bKTlYhLvIlfTvgjQ3KQVoQpUbR2p4THW8v06QjwmM0lBR7l/n/+GrybMEv
-         2OSA==
-X-Gm-Message-State: AJIora8FxwZoo2AF9s8LbkyT7e7EWcficJXoVLFAAxdNONzlEL/Dv13u
-        cXdIfufcJc3qhlO4JlAcdFr+9w==
-X-Google-Smtp-Source: AGRyM1s1Q8GgiGrT28tprCtyd95DrJnywVBf00+YemMFNkRC+bm+Hq3CQJZ0mKASitmCqwgjmM5ybw==
-X-Received: by 2002:a17:907:6289:b0:6e0:eb0c:8ee7 with SMTP id nd9-20020a170907628900b006e0eb0c8ee7mr11403607ejc.245.1656322905040;
-        Mon, 27 Jun 2022 02:41:45 -0700 (PDT)
-Received: from [192.168.0.247] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id i23-20020aa7c9d7000000b0042de3d661d2sm7204870edt.1.2022.06.27.02.41.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Jun 2022 02:41:44 -0700 (PDT)
-Message-ID: <858d08db-1233-78d5-6374-468b222a52d7@linaro.org>
-Date:   Mon, 27 Jun 2022 11:41:43 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH 4/5] dt-bindings: samsung,spi: define exynosautov9
- compatible
-Content-Language: en-US
-To:     Chanho Park <chanho61.park@samsung.com>,
-        Andi Shyti <andi@etezian.org>, Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     Alim Akhtar <alim.akhtar@samsung.com>, devicetree@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-References: <20220627064707.138883-1-chanho61.park@samsung.com>
- <CGME20220627064931epcas2p2ad75d53ceabb2b0f10dfb13f5fcb0ff4@epcas2p2.samsung.com>
- <20220627064707.138883-5-chanho61.park@samsung.com>
+        bh=WOM4uBpjoRyrBuD75f9zY98ri1MNJqUrdS279t95jyI=;
+        b=K6sNI+djVFqYJr1RkoXmIIb6PLRCDcPQsRBZPc9JUk+AkGY/FmAVbMIQnzHSSAjuVS
+         7zgSz2JB3n0D3loHitEOAskeHX2HicDVlYQf9wtmLQgeYhH/0IqaVDgDGYB7FbgQBvA2
+         1BuoE6PcRwfLHx/LYHCExmLyMnDN4cbnbu81onspoitdFNM2axaBmE1rGICzGAmXj811
+         KNNPlhQyNT/shvPMzY+P88JdXtqrf+5/06ZtiVWicDtRo57bkY5G3YzL5EEkAVmPN9la
+         o6V5yiU0odhIrzrYud+DNohV660Yyd7CZKTqyNailEK73dldqOMO3UCdRmEJLtixjQt+
+         Avaw==
+X-Gm-Message-State: AJIora/ujmV8u4YGke1NuWjbbP2GBaq2rUQ8tYRorinyxHyGy9KnKsI1
+        L4DfsmhoLZm02qg9DasmDVv4Vg==
+X-Google-Smtp-Source: AGRyM1tXAXrzh2lfaT89gjC9w/IEcbCwI5549GpsimLV4qylK/qfZfxq1Hk84cBf/Vhl8eQGtJtfMw==
+X-Received: by 2002:a17:907:1c01:b0:6f4:2692:e23 with SMTP id nc1-20020a1709071c0100b006f426920e23mr11631366ejc.243.1656323144363;
+        Mon, 27 Jun 2022 02:45:44 -0700 (PDT)
+Received: from localhost.localdomain (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
+        by smtp.gmail.com with ESMTPSA id f26-20020a056402005a00b004358f6e0570sm7223331edu.17.2022.06.27.02.45.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jun 2022 02:45:43 -0700 (PDT)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220627064707.138883-5-chanho61.park@samsung.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Andi Shyti <andi@etezian.org>, Mark Brown <broonie@kernel.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Aswani Reddy <aswani.reddy@samsung.com>,
+        linux-spi@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc:     Chanho Park <chanho61.park@samsung.com>
+Subject: [PATCH] spi: s3c64xx: constify fsd_spi_port_config
+Date:   Mon, 27 Jun 2022 11:45:41 +0200
+Message-Id: <20220627094541.95166-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On 27/06/2022 08:47, Chanho Park wrote:
-> Define "samsung,exynosautov9-spi" for Exynos Auto v9's spi.
-> 
-> Signed-off-by: Chanho Park <chanho61.park@samsung.com>
-> ---
+All struct s3c64xx_spi_port_config should be const.
 
+Fixes: 4ebb15a15799 ("spi: s3c64xx: Add spi port configuration for Tesla FSD SoC")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ drivers/spi/spi-s3c64xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 819b660dae82..499c56dd875e 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -1421,7 +1421,7 @@ static const struct s3c64xx_spi_port_config exynos5433_spi_port_config = {
+ 	.quirks		= S3C64XX_SPI_QUIRK_CS_AUTO,
+ };
+ 
+-static struct s3c64xx_spi_port_config fsd_spi_port_config = {
++static const struct s3c64xx_spi_port_config fsd_spi_port_config = {
+ 	.fifo_lvl_mask	= { 0x7f, 0x7f, 0x7f, 0x7f, 0x7f},
+ 	.rx_lvl_offset	= 15,
+ 	.tx_st_done	= 25,
+-- 
+2.34.1
 
-
-Best regards,
-Krzysztof

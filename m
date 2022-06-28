@@ -2,119 +2,108 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7CF2DC43334
-	for <linux-spi@archiver.kernel.org>; Tue, 28 Jun 2022 07:17:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 66F1BC43334
+	for <linux-spi@archiver.kernel.org>; Tue, 28 Jun 2022 10:31:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240960AbiF1HR5 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 28 Jun 2022 03:17:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49490 "EHLO
+        id S1344889AbiF1Kbd (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 28 Jun 2022 06:31:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241457AbiF1HRE (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 28 Jun 2022 03:17:04 -0400
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C2152CC9D;
-        Tue, 28 Jun 2022 00:17:03 -0700 (PDT)
-Received: by mail-qk1-f176.google.com with SMTP id k10so8963910qke.9;
-        Tue, 28 Jun 2022 00:17:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=lScN3gMa3B+jKKFR5EiTq6EuQY+/4GeckwwsLv10h1E=;
-        b=QE0pc2zeChfEDxVnKRkJBjz3VZ7bWY9LydtaozYealGUU2ymtweq0I8hlSjlLeL3Q2
-         WxHH5inHFEfBBc2miduLiK1ghpIuVCLTWVYb9uSqvXH0zAYxqr3Nq56MJWRV1dfmYdpV
-         dBBST/FIIVs6Xb60EVBL5Dast+42AyrsecLGdJm7YTEiGr96rFpOQMkr+eo8ZiJbcsAy
-         3aeP/kEhnDnLEC5UKOQCNNClTOV0nJGW7NmeBFbtLjfCaAYNvnZzHTYfygVwH6QzzHHB
-         Uruq4L+4i3dvPAMDCO+ET9YhNR1JzAqMBxJ/3HS744eBA7Bc/kQg77dQJ/8e2kWDSECc
-         sCug==
-X-Gm-Message-State: AJIora+Q8XXFQhxUsE+B6B8JM2eGJZGkba6JSEtBn8TcsewmDekhJwi0
-        q3/SHyoiHQeH+FbAw4YYx5e7yDFFV7C4YQ==
-X-Google-Smtp-Source: AGRyM1vF9difKlJTm7QB8p8O2XdAcXWEMOXqFF2o8I0962X2xe3E65lJZXb36CLa77C9j0zxGkEXwA==
-X-Received: by 2002:a05:620a:2901:b0:6af:ca8:3f9f with SMTP id m1-20020a05620a290100b006af0ca83f9fmr10171411qkp.578.1656400622300;
-        Tue, 28 Jun 2022 00:17:02 -0700 (PDT)
-Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com. [209.85.219.181])
-        by smtp.gmail.com with ESMTPSA id t12-20020a05620a450c00b006a746826feesm11112486qkp.120.2022.06.28.00.17.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Jun 2022 00:17:02 -0700 (PDT)
-Received: by mail-yb1-f181.google.com with SMTP id i15so20788017ybp.1;
-        Tue, 28 Jun 2022 00:17:01 -0700 (PDT)
-X-Received: by 2002:a05:6902:120e:b0:634:6f29:6b84 with SMTP id
- s14-20020a056902120e00b006346f296b84mr17966996ybu.604.1656400124939; Tue, 28
- Jun 2022 00:08:44 -0700 (PDT)
+        with ESMTP id S1344890AbiF1Kba (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 28 Jun 2022 06:31:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5141B2F664
+        for <linux-spi@vger.kernel.org>; Tue, 28 Jun 2022 03:31:29 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E281F61917
+        for <linux-spi@vger.kernel.org>; Tue, 28 Jun 2022 10:31:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A2C7C341D0;
+        Tue, 28 Jun 2022 10:31:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1656412288;
+        bh=EOdzdVvs5lidv4ZE+GozhHdEo8G5inqyDzh7kCsq+hc=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=dR8KMk399zkWSz+V4v64FkBus9EnXP/js48ZUYIgXmRUQNmSv3Xf8FdPRXzc96BjE
+         UHvPzwyPGlPV3uh4LROb3YXs+URy6kDRrke1HQ5AharTiuVmEi6BaXOUT3ezoqImf7
+         dSPwygT9DqFysDJDnPPnOT7K7y6AiplfDcR69l+OcyMng5NkANTiDHVp4X530W5JY2
+         PXLvE1mrHukbMGZ1Y9Wa1ovSWs4n4StBZnR9IG992Zfb1nozqsbGOblNIk059xZR3o
+         7dTlXNk6MGw6D7L11UaQ4LbiZZ2cvgwgIkppzPT8NxqFQD1rPuU6P4EcBlTCO18bnw
+         Rk2UKxv0V0kYQ==
+From:   Mark Brown <broonie@kernel.org>
+To:     david@protonic.nl
+Cc:     andrew@lunn.ch, mkl@pengutronix.de, linux-spi@vger.kernel.org
+In-Reply-To: <20220621061234.3626638-1-david@protonic.nl>
+References: <20220621061234.3626638-1-david@protonic.nl>
+Subject: Re: [PATCH v3 00/11] Optimize spi_sync path
+Message-Id: <165641228722.254742.17050234071076458852.b4-ty@kernel.org>
+Date:   Tue, 28 Jun 2022 11:31:27 +0100
 MIME-Version: 1.0
-References: <20220618123035.563070-1-mail@conchuod.ie> <20220618123035.563070-5-mail@conchuod.ie>
- <20220627232919.GA3158390-robh@kernel.org> <40d76866-34e3-baef-c3fe-8836cd2430f6@microchip.com>
-In-Reply-To: <40d76866-34e3-baef-c3fe-8836cd2430f6@microchip.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 28 Jun 2022 09:08:32 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdXjXGBi8S+bTG105q63zZw2ScQb9nXBSp2baiLNWKQAkg@mail.gmail.com>
-Message-ID: <CAMuHMdXjXGBi8S+bTG105q63zZw2ScQb9nXBSp2baiLNWKQAkg@mail.gmail.com>
-Subject: Re: [PATCH 04/14] dt-bindings: dma: add Canaan k210 to Synopsys
- DesignWare DMA
-To:     Conor Dooley <Conor.Dooley@microchip.com>
-Cc:     Rob Herring <robh@kernel.org>, Conor Dooley <mail@conchuod.ie>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
-        Vinod <vkoul@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Serge Semin <fancer.lancer@gmail.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Palmer Dabbelt <palmer@rivosinc.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Niklas Cassel <niklas.cassel@wdc.com>,
-        Dillon Min <dillon.minfei@gmail.com>,
-        Heng Sia <jee.heng.sia@intel.com>,
-        Jose Abreu <joabreu@synopsys.com>,
-        DRI Development <dri-devel@lists.freedesktop.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        dmaengine <dmaengine@vger.kernel.org>,
-        ALSA Development Mailing List <alsa-devel@alsa-project.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi Conor,
+On Tue, 21 Jun 2022 08:12:23 +0200, David Jander wrote:
+> These patches optimize the spi_sync call for the common case that the
+> worker thread is idle and the queue is empty. It also opens the
+> possibility to potentially further optimize the async path also, since
+> it doesn't need to take into account the direct sync path anymore.
+> 
+> As an example for the performance gain, on an i.MX8MM SoC with a SPI CAN
+> controller attached (MCP2518FD), the time the interrupt line stays
+> active (which corresponds roughly with the time it takes to send 3
+> relatively short consecutive spi_sync messages) is reduced from 98us to
+> only 72us by this patch.
+> 
+> [...]
 
-On Tue, Jun 28, 2022 at 8:30 AM <Conor.Dooley@microchip.com> wrote:
-> On 28/06/2022 00:29, Rob Herring wrote:
-> > EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
-> >
-> > On Sat, Jun 18, 2022 at 01:30:26PM +0100, Conor Dooley wrote:
-> >> From: Conor Dooley <conor.dooley@microchip.com>
-> >>
-> >> The Canaan k210 apparently has a Sysnopsys Designware AXI DMA
-> >> controller, but according to the documentation & devicetree it has 6
-> >> interrupts rather than the standard one. Add a custom compatible that
-> >> supports the 6 interrupt configuration which falls back to the standard
-> >> binding which is currently the one in use in the devicetree entry.
-> >
-> > But it works with only 1 interrupt?
->
-> Seemingly...
+Applied to
 
-The Linux driver uses the only first interrupt.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-Gr{oetje,eeting}s,
+Thanks!
 
-                        Geert
+[01/11] spi: Move ctlr->cur_msg_prepared to struct spi_message
+        commit: 1714582a3a087eda8786d5a1b32b2ec86ca8a303
+[02/11] spi: Don't use the message queue if possible in spi_sync
+        commit: ae7d2346dc89ae89a6e0aabe6037591a11e593c0
+[03/11] spi: Lock controller idling transition inside the io_mutex
+        commit: c1038165fbbf83967f29b3bb38872faa780b3a72
+[04/11] spi: __spi_pump_messages: Consolidate spin_unlocks to goto target
+        commit: 8711a2ab51dd47b2bcb3880403add25dd7fc7c13
+[05/11] spi: Remove check for controller idling in spi sync path
+        commit: d5256cce1f50ff4c8fad6b8eb7b4ec9e47d38925
+[06/11] spi: Remove check for idling in __spi_pump_messages()
+        commit: 049d6ccc4da8d34f382949ebec6d4fb318a9c7c0
+[07/11] spi: Remove the now unused ctlr->idling flag
+        commit: 66a221593cb26dd6aabba63bcd18173f4e69c7ab
+[08/11] spi: Remove unneeded READ_ONCE for ctlr->busy flag
+        commit: 1a9cafcb57b70fc1439d4a5cb28963122568967a
+[09/11] spi: Set ctlr->cur_msg also in the sync transfer case
+        commit: 72c5c59b659d54d0c824d0333a211f373316361d
+[10/11] spi: Ensure the io_mutex is held until spi_finalize_current_message()
+        commit: 69fa95905d40846756d22402690ddf5361a9d13b
+[11/11] spi: opportunistically skip ctlr->cur_msg_completion
+        commit: dc3029056b02414c29b6627e3dd7b16624725ae9
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

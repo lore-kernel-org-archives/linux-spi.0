@@ -2,44 +2,44 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BFE86C433EF
-	for <linux-spi@archiver.kernel.org>; Tue, 28 Jun 2022 02:29:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5CCDCCCA48B
+	for <linux-spi@archiver.kernel.org>; Tue, 28 Jun 2022 02:29:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244723AbiF1C3t (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 27 Jun 2022 22:29:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39056 "EHLO
+        id S244747AbiF1C3u (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 27 Jun 2022 22:29:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244782AbiF1C2A (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 27 Jun 2022 22:28:00 -0400
+        with ESMTP id S244865AbiF1C2N (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 27 Jun 2022 22:28:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDE8D17598;
-        Mon, 27 Jun 2022 19:26:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C8CC26131;
+        Mon, 27 Jun 2022 19:27:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 62C086192D;
-        Tue, 28 Jun 2022 02:26:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3208C34115;
-        Tue, 28 Jun 2022 02:26:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DD543618B9;
+        Tue, 28 Jun 2022 02:27:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7879EC34115;
+        Tue, 28 Jun 2022 02:26:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1656383177;
-        bh=TUIICHVAkc2BUiqrFw9pQvGvBCl73qsrSwPO5S8ZyW4=;
+        s=k20201202; t=1656383220;
+        bh=qGGojuTbJpCyXBhxTsjiqwhCOaO0l/9xbdXKVD+uqnQ=;
         h=From:To:Cc:Subject:Date:From;
-        b=oRw9vcsGYq0QKR7dWb7Smyi/7Qx07S1xa+fuNFpO9JHfw+Q8Yrd4BV5BCQahj8myL
-         SgAUqnVGa901OyhQs5P0aqj/lbg5z6tI/m676mlSaEOTRR8l6opgoe47YWQx5A72ym
-         jnMKTSDmp36pusHsCsE/pq0odx1p/ImeiaUTLRAqVbk7BJ0ek9EY4KWHsCErjmY+YO
-         vdzXX23Qidc3JwXxER86AsXYFnwNbE9oLgeQZ0Er0PY1MugD5udMQaifqrmf4XGVL6
-         +NKuBT9cjglbJlFy4p5nEZGY+5EGha3jnlYPyioBj5qSdXivoyRN8z8gGUS1ZqKNaa
-         w5CyvBW8PiTDA==
+        b=C0OBOnU8S6L44gR2BT2D06QQorBUZLj24jGos0xFzehN0CfD9QyZZ5KfR9yEt/uQ9
+         /pChg9tANpjBy+ReBTSlYbnHZfgV1tOOzHSTIAWLG4wvCR4+JP7RBj6whsAExK8B2H
+         j26XiWX1DvwEmDjoCy/OVlSSfFO574a1/Gh5qdkNrnB+Odo6tmTZSvsKiSrYEqHShq
+         69ECH/5Pgesm7R3ClWZYqrmIYhs4Oc1aNh9ZBFnuWjigdqBkTFL5cMCFeTqSJacMHt
+         oXm514ju9q0CaS9nDKJkjUXp02trDGfMy+L4PHwGVGyC05B9FYFgPLqJxaVqLY6QLG
+         XHgfKg01ZyASA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Sai Krishna Potthuri <lakshmi.sai.krishna.potthuri@xilinx.com>,
         Amit Kumar Mahapatra <amit.kumar-mahapatra@xilinx.com>,
         Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 01/17] spi: spi-cadence: Fix SPI CS gets toggling sporadically
-Date:   Mon, 27 Jun 2022 22:25:59 -0400
-Message-Id: <20220628022615.596977-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 01/13] spi: spi-cadence: Fix SPI CS gets toggling sporadically
+Date:   Mon, 27 Jun 2022 22:26:45 -0400
+Message-Id: <20220628022657.597208-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
 X-stable: review
@@ -74,10 +74,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
-index d9aeb9efa7aa..810f92a0ef7c 100644
+index e383c6368915..6d294a1fa5e5 100644
 --- a/drivers/spi/spi-cadence.c
 +++ b/drivers/spi/spi-cadence.c
-@@ -73,6 +73,7 @@
+@@ -72,6 +72,7 @@
  #define CDNS_SPI_BAUD_DIV_SHIFT		3 /* Baud rate divisor shift in CR */
  #define CDNS_SPI_SS_SHIFT		10 /* Slave Select field shift in CR */
  #define CDNS_SPI_SS0			0x1 /* Slave Select zero */
@@ -85,7 +85,7 @@ index d9aeb9efa7aa..810f92a0ef7c 100644
  
  /*
   * SPI Interrupt Registers bit Masks
-@@ -457,15 +458,20 @@ static int cdns_prepare_transfer_hardware(struct spi_master *master)
+@@ -444,15 +445,20 @@ static int cdns_prepare_transfer_hardware(struct spi_master *master)
   * @master:	Pointer to the spi_master structure which provides
   *		information about the controller.
   *

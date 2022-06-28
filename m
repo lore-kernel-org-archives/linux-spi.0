@@ -2,81 +2,77 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8C51ACCA480
-	for <linux-spi@archiver.kernel.org>; Tue, 28 Jun 2022 10:31:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 67141C433EF
+	for <linux-spi@archiver.kernel.org>; Tue, 28 Jun 2022 10:40:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344894AbiF1Kbh (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 28 Jun 2022 06:31:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34376 "EHLO
+        id S1343818AbiF1KkW (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 28 Jun 2022 06:40:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244644AbiF1Kbf (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 28 Jun 2022 06:31:35 -0400
+        with ESMTP id S1343572AbiF1KkV (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 28 Jun 2022 06:40:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DC172F3B4
-        for <linux-spi@vger.kernel.org>; Tue, 28 Jun 2022 03:31:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9165D2DD73
+        for <linux-spi@vger.kernel.org>; Tue, 28 Jun 2022 03:40:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3C57D618EC
-        for <linux-spi@vger.kernel.org>; Tue, 28 Jun 2022 10:31:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B8FBC3411D;
-        Tue, 28 Jun 2022 10:31:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2EAA861941
+        for <linux-spi@vger.kernel.org>; Tue, 28 Jun 2022 10:40:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 87FAAC3411D;
+        Tue, 28 Jun 2022 10:40:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1656412293;
-        bh=LgdZ688Ow16OcfaGO1xOFFHHZA21YTBwPSIPxlPDrU8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=VeGJ2Bq7F6tVRAgoP60UpINTCRV1PGvwzUdxMh/lStimcKzolUlAQOZoQqrNaaRWA
-         C9Ty/wXeyypdI0YPRItyOvjlbjI15anp6ltawjijdF8UWU9JP0+WzLSdA5dCZmzdWU
-         /le7SgzzoyOIgQQZNnEGG24jPLqOdB11t1BebVSLelpa0e27yYs4IMfZyd+VQ8oQJU
-         23K3V82jgXVGiJo3uL5TxQCDuLNh4iF/8hX5OY6tJZdsB6XX/k/aimSRggizQHaz2v
-         PVd55VACMPWBLRKi/8sDRtI0+0LSoyPYeiG+8z9mUmV8cy19eNoCRFkXsvgBM4Mxl1
-         TRGUW6PZFmdHQ==
-Date:   Tue, 28 Jun 2022 11:31:29 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     David Jander <david@protonic.nl>
-Cc:     linux-spi@vger.kernel.org, Marc Kleine-Budde <mkl@pengutronix.de>,
-        Andrew Lunn <andrew@lunn.ch>
-Subject: Re: [PATCH v3 00/11] Optimize spi_sync path
-Message-ID: <YrrYgVALI8XKvPPJ@sirena.org.uk>
-References: <20220621061234.3626638-1-david@protonic.nl>
- <YrYfFiiYuvazKBtu@sirena.org.uk>
- <20220628083214.566e76da@erd992>
+        s=k20201202; t=1656412819;
+        bh=K+Zjkfu0HwSragQ8UAdUdli5ooJDZs9GR870kX/k5DE=;
+        h=Subject:From:Date:To:From;
+        b=C4VDmRV7UKk9BUo0xEA1xQs8QG2KAaWd9EE+7/TQOLeSe3QOjV+CuXKYLV3dDtIad
+         GQrMM8p8O9cHR217Qf0yl30lhuNajNw9/8sjGmYpsA2h81h+9JdtEo+wpvXjB+ZcUI
+         Qtjri5hYx0tykhsVgpAmNxrfn7nN3cmoudeO2bCOH/WgBfhUvp7eh6/jR3SJCFuzoY
+         q7DuR/A7k68C2K5PTySPI2NllwuUWhvjuHcJAF+8sJoMJREIDJhcD2t7aW7IxqUC3N
+         TJ8uSj/1tEQabZtmXaEIvCrd6ORK4WvmFT8GoQz3v9wvT8bIJHDV1DUmaptrkU5D/u
+         1RbMgCkK7TByA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 66B3CE49BBC;
+        Tue, 28 Jun 2022 10:40:19 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="Z7rkyUCGgfk5yEuO"
-Content-Disposition: inline
-In-Reply-To: <20220628083214.566e76da@erd992>
-X-Cookie: I like your SNOOPY POSTER!!
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <165641281936.18137.9739749183929662477.git-patchwork-summary@kernel.org>
+Date:   Tue, 28 Jun 2022 10:40:19 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+Hello:
 
---Z7rkyUCGgfk5yEuO
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-On Tue, Jun 28, 2022 at 08:32:14AM +0200, David Jander wrote:
+Series: Optimize spi_sync path
+  Submitter: David Jander <david@protonic.nl>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=652193
+  Lore link: https://lore.kernel.org/r/20220621061234.3626638-1-david@protonic.nl
+    Patches: [v3,01/11] spi: Move ctlr->cur_msg_prepared to struct spi_message
+             [v3,02/11] spi: Don't use the message queue if possible in spi_sync
+             [v3,03/11] spi: Lock controller idling transition inside the io_mutex
+             [v3,04/11] spi: __spi_pump_messages: Consolidate spin_unlocks to goto target
+             [v3,05/11] spi: Remove check for controller idling in spi sync path
+             [v3,06/11] spi: Remove check for idling in __spi_pump_messages()
+             [v3,07/11] spi: Remove the now unused ctlr->idling flag
+             [v3,08/11] spi: Remove unneeded READ_ONCE for ctlr->busy flag
+             [v3,09/11] spi: Set ctlr->cur_msg also in the sync transfer case
+             [v3,10/11] spi: Ensure the io_mutex is held until spi_finalize_current_message()
+             [v3,11/11] spi: opportunistically skip ctlr->cur_msg_completion
 
-> Great. So I will wait for this series to hit -next and then send incremental
-> patches to address Andy's feedback, or do you prefer I re-submit a v4 with
-> Andy's comments addressed right away?
 
-Incremental please - it should be in -next tomorrow.
+Total patches: 11
 
---Z7rkyUCGgfk5yEuO
-Content-Type: application/pgp-signature; name="signature.asc"
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
------BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmK62IAACgkQJNaLcl1U
-h9AMTAf+KI4VgGe+8BmNXy4zY5NXHueKVNrYyIavZDaEH4RGMqMpzbbxksGDuqVD
-vXMnJJiY+kM15niglOUgwbVYNAM0L7BVnN1RuSIUj4sd2gAE006udnCBLPHtZ2Ze
-e8ndjhRGw4hoFOEqRBoPyFhpPLFDzmmogZmpoF4pmK1AiVb0oYe1DIljJAktX4kS
-CUiBiEzzG1t/JAuUdQMrr3l/SFGAu4B1ZbZQOhDxBSoLzBmFZWqBYgYfSAwqHGxD
-zhTAZi9yLAEoUvDT6NfIZZz+3F5sPZwyl88RoRnsN6Niq/Qt/yECiA+EXkOiZ+PK
-HqXbwWIocdDXOWfqleKpdzK7UEbTjg==
-=O4ap
------END PGP SIGNATURE-----
-
---Z7rkyUCGgfk5yEuO--

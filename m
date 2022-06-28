@@ -2,46 +2,46 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 22F41CCA48C
-	for <linux-spi@archiver.kernel.org>; Tue, 28 Jun 2022 02:29:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 14E86CCA481
+	for <linux-spi@archiver.kernel.org>; Tue, 28 Jun 2022 02:29:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244769AbiF1C3v (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S244269AbiF1C3v (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Mon, 27 Jun 2022 22:29:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40394 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244870AbiF1C2O (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 27 Jun 2022 22:28:14 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17F4426135;
-        Mon, 27 Jun 2022 19:27:04 -0700 (PDT)
+        with ESMTP id S244783AbiF1C2A (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 27 Jun 2022 22:28:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 076052496F;
+        Mon, 27 Jun 2022 19:26:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id B7F82B81C00;
-        Tue, 28 Jun 2022 02:27:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0849C385A9;
-        Tue, 28 Jun 2022 02:27:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 99F486191F;
+        Tue, 28 Jun 2022 02:26:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C7BBC341D0;
+        Tue, 28 Jun 2022 02:26:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1656383221;
-        bh=S7jEa6xG+B2e0s2HleouPBIsGfYT39anPZPoYI3zjHA=;
+        s=k20201202; t=1656383179;
+        bh=dxf6P89JwAiPzQgE1dRrN3c+9gq9AygE1Ghaar7OH48=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iy1TwN9eMXbbJQJjkmD5T76sJCZS0B1X7AYKo7ggEj53twJE/a7QNtOA/xXfmm/HW
-         85jbElnz3iwhZSS429Gp6gk5fdLP2xuXV6z6UqsN7bbNLVpE6SEJz9EQS2nWNVsSma
-         dZHwlB62it8xg30Ny8l8NUUgra2NKyOvlicfampTRvCr90LLiYRonIEIdiOkYvwvxz
-         M0kbw1gQopvCIrmcR2f6DasEgdTo7UTG5RVprKCPGZz3/hoL1J10M1s097ECkkyG3l
-         NFeonENFp8i6mcBoIXwp9og5LGgpSAwt4ixqn2QuhFImPB6hiyAkG2QnPnDYLbjJ1Q
-         sJa9vJwBQTB8w==
+        b=KncpKXG26SQWlDQHsWbLM7M88A/yWVfvZtpgjLRF/RuIMMtPHzsBy4aqdU5804Uth
+         I+TwEogP9E9+t5f4lDJQ9w1VlUMcOdVxob9sMfaJvfOSUNQE9az9hWIXZbbXkeRQmb
+         LwOs2Ncw5yi1LgjEgBe0fCD19163xUQCePxn/nSKrM71Hd1jlxatFAtUJ+HSV1kzrY
+         K9a0AKuRSPf7gQpLnF5aM1n8D/zOnxfcLzc+nYuxrp8p3fb74JwsnDjFq0piz3LyMC
+         UhvLbekDj3kEjTAI6IOiuvdQSfj7wx/pP3pZr3AlvBV0wMJ7fWgD1ea6Yzvhy0dAV1
+         fLp/OXAt1256g==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 02/13] spi: cadence: Detect transmit FIFO depth
-Date:   Mon, 27 Jun 2022 22:26:46 -0400
-Message-Id: <20220628022657.597208-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 02/17] spi: cadence: Detect transmit FIFO depth
+Date:   Mon, 27 Jun 2022 22:26:00 -0400
+Message-Id: <20220628022615.596977-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220628022657.597208-1-sashal@kernel.org>
-References: <20220628022657.597208-1-sashal@kernel.org>
+In-Reply-To: <20220628022615.596977-1-sashal@kernel.org>
+References: <20220628022615.596977-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -87,10 +87,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 23 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
-index 6d294a1fa5e5..733724e71a30 100644
+index 810f92a0ef7c..b41fdaa6982d 100644
 --- a/drivers/spi/spi-cadence.c
 +++ b/drivers/spi/spi-cadence.c
-@@ -96,9 +96,6 @@
+@@ -97,9 +97,6 @@
  #define CDNS_SPI_ER_ENABLE	0x00000001 /* SPI Enable Bit Mask */
  #define CDNS_SPI_ER_DISABLE	0x0 /* SPI Disable Bit Mask */
  
@@ -100,7 +100,7 @@ index 6d294a1fa5e5..733724e71a30 100644
  /* Default number of chip select lines */
  #define CDNS_SPI_DEFAULT_NUM_CS		4
  
-@@ -114,6 +111,7 @@
+@@ -115,6 +112,7 @@
   * @rx_bytes:		Number of bytes requested
   * @dev_busy:		Device busy flag
   * @is_decoded_cs:	Flag for decoder property set or not
@@ -108,25 +108,25 @@ index 6d294a1fa5e5..733724e71a30 100644
   */
  struct cdns_spi {
  	void __iomem *regs;
-@@ -127,6 +125,7 @@ struct cdns_spi {
+@@ -128,6 +126,7 @@ struct cdns_spi {
  	int rx_bytes;
  	u8 dev_busy;
  	u32 is_decoded_cs;
 +	unsigned int tx_fifo_depth;
  };
  
- /* Macros for the SPI controller read/write */
-@@ -308,7 +307,7 @@ static void cdns_spi_fill_tx_fifo(struct cdns_spi *xspi)
+ struct cdns_spi_device_data {
+@@ -313,7 +312,7 @@ static void cdns_spi_fill_tx_fifo(struct cdns_spi *xspi)
  {
  	unsigned long trans_cnt = 0;
  
 -	while ((trans_cnt < CDNS_SPI_FIFO_DEPTH) &&
 +	while ((trans_cnt < xspi->tx_fifo_depth) &&
  	       (xspi->tx_bytes > 0)) {
- 		if (xspi->txbuf)
- 			cdns_spi_write(xspi, CDNS_SPI_TXD, *xspi->txbuf++);
-@@ -463,6 +462,24 @@ static int cdns_unprepare_transfer_hardware(struct spi_master *master)
- 	return 0;
+ 
+ 		/* When xspi in busy condition, bytes may send failed,
+@@ -534,6 +533,24 @@ static void cdns_spi_cleanup(struct spi_device *spi)
+ 
  }
  
 +/**
@@ -150,7 +150,7 @@ index 6d294a1fa5e5..733724e71a30 100644
  /**
   * cdns_spi_probe - Probe method for the SPI driver
   * @pdev:	Pointer to the platform_device structure
-@@ -536,6 +553,8 @@ static int cdns_spi_probe(struct platform_device *pdev)
+@@ -608,6 +625,8 @@ static int cdns_spi_probe(struct platform_device *pdev)
  	if (ret < 0)
  		xspi->is_decoded_cs = 0;
  

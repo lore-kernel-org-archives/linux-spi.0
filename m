@@ -2,43 +2,44 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 42F73CCA481
-	for <linux-spi@archiver.kernel.org>; Tue, 28 Jun 2022 02:22:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5E809C433EF
+	for <linux-spi@archiver.kernel.org>; Tue, 28 Jun 2022 02:23:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243840AbiF1CWG (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 27 Jun 2022 22:22:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60128 "EHLO
+        id S244131AbiF1CXD (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 27 Jun 2022 22:23:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243662AbiF1CVI (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 27 Jun 2022 22:21:08 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB4C124969;
-        Mon, 27 Jun 2022 19:21:06 -0700 (PDT)
+        with ESMTP id S243878AbiF1CWZ (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 27 Jun 2022 22:22:25 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43AE724BFB;
+        Mon, 27 Jun 2022 19:21:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 889D9B81C10;
-        Tue, 28 Jun 2022 02:21:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DC7FC341CC;
-        Tue, 28 Jun 2022 02:21:03 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id A8D57CE1BD3;
+        Tue, 28 Jun 2022 02:21:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01A40C36AF2;
+        Tue, 28 Jun 2022 02:21:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1656382864;
-        bh=0hOqHPa5ISSH1m2DSWd+ABVaKaIeDkCCQQKeVJWPqNE=;
+        s=k20201202; t=1656382912;
+        bh=NiB08PHBrGbxEHA9x3A6NC5XZ6j/Z0J8wAaPOiplP7w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Io4kwKwvPC6YL403rOfRutVge3HTZ+E9lyBU1mkJRJFUYO7W4YodwUYhWVqxHAJRz
-         nSxkzj5KqfHGlRIquuQf9LH3HezrKGtM6Oo8Ht2q7r5FgxSi8LmceGuaefbNRE1ABa
-         aX6ZKl2KXdEWORm+UE8BWOmMcufTByvFLypOzfG4eOokzV3Hyx4OP9zSobF4QDrDUh
-         iEt2lF1rcBJtsqmCtOrQKIesq4mQWVPGPMmAdUWdCX7Y9eO5QoDKcn539dElQlwcLu
-         kWt8rwJcxmmQk6/EHQJsmg5PWhvCcS4eGQQRB+h7HvVhA8LIEFFClDgH7Ghd9FKXju
-         oGjuOXYKWlkRA==
+        b=L/A5hOL4GTXKlaAdwHaizBhDbsAM30pqAkshQMeO3mC+37AYm6vWx7IWqcu1p0jm0
+         2pKtfKqix53ahdJWcGHqExN7+EKvBTUWyIofCEGAt2h+Xbl0vAEN0uvZbXZBiv/nHX
+         PlJPF8O+DZfNqvYKdHfERQxJslQwaxIPuHS5TerWZYI/qcahpJ1bvZeBNGB+nVJDsB
+         cGaL+bT3tbyIr5Xfu/EeqSBORfy0+lD3TotTX8ZO9ipPRewLIYwVmSpko+6iFgTvhs
+         cMXLyN8wti8WP3g5yEj9WiSVGuczGmcgXSHyF30gXgsQG0UTL0+Jb/3dfPFKiNLJ88
+         NA9l5F/WyhU6Q==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 02/41] spi: cadence: Detect transmit FIFO depth
-Date:   Mon, 27 Jun 2022 22:20:21 -0400
-Message-Id: <20220628022100.595243-2-sashal@kernel.org>
+Cc:     Jon Lin <jon.lin@rock-chips.com>, Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, heiko@sntech.de,
+        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.15 19/41] spi: rockchip: Unmask IRQ at the final to avoid preemption
+Date:   Mon, 27 Jun 2022 22:20:38 -0400
+Message-Id: <20220628022100.595243-19-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220628022100.595243-1-sashal@kernel.org>
 References: <20220628022100.595243-1-sashal@kernel.org>
@@ -50,115 +51,48 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Lars-Peter Clausen <lars@metafoo.de>
+From: Jon Lin <jon.lin@rock-chips.com>
 
-[ Upstream commit 7b40322f7183a92c4303457528ae7cda571c60b9 ]
+[ Upstream commit 419bc8f681a0dc63588cee693b6d45e7caa6006c ]
 
-The depth of the transmit FIFO for the Cadence SPI controller is currently
-hardcoded to 128. But the depth is a synthesis configuration parameter of
-the core and can vary between different SoCs.
+Avoid pio_write process is preempted, resulting in abnormal state.
 
-If the configured FIFO size is less than 128 the driver will busy loop in
-the cdns_spi_fill_tx_fifo() function waiting for FIFO space to become
-available.
-
-Depending on the length and speed of the transfer it can spin for a
-significant amount of time. The cdns_spi_fill_tx_fifo() function is called
-from the drivers interrupt handler, so it can leave interrupts disabled for
-a prolonged amount of time.
-
-In addition the read FIFO will also overflow and data will be discarded.
-
-To avoid this detect the actual size of the FIFO and use that rather than
-the hardcoded value.
-
-To detect the FIFO size the FIFO threshold register is used. The register
-is sized so that it can hold FIFO size - 1 as its maximum value. Bits that
-are not needed to hold the threshold value will always read 0. By writing
-0xffff to the register and then reading back the value in the register we
-get the FIFO size.
-
-Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-Link: https://lore.kernel.org/r/20220527091143.3780378-1-lars@metafoo.de
+Signed-off-by: Jon Lin <jon.lin@rock-chips.com>
+Signed-off-by: Jon <jon.lin@rock-chips.com>
+Link: https://lore.kernel.org/r/20220617124251.5051-1-jon.lin@rock-chips.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-cadence.c | 27 +++++++++++++++++++++++----
- 1 file changed, 23 insertions(+), 4 deletions(-)
+ drivers/spi/spi-rockchip.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
-index 90b18c32f859..32117722ae8d 100644
---- a/drivers/spi/spi-cadence.c
-+++ b/drivers/spi/spi-cadence.c
-@@ -93,9 +93,6 @@
- #define CDNS_SPI_ER_ENABLE	0x00000001 /* SPI Enable Bit Mask */
- #define CDNS_SPI_ER_DISABLE	0x0 /* SPI Disable Bit Mask */
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index b721b62118e1..7880a4f25284 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -380,15 +380,18 @@ static int rockchip_spi_prepare_irq(struct rockchip_spi *rs,
+ 	rs->tx_left = rs->tx ? xfer->len / rs->n_bytes : 0;
+ 	rs->rx_left = xfer->len / rs->n_bytes;
  
--/* SPI FIFO depth in bytes */
--#define CDNS_SPI_FIFO_DEPTH	128
--
- /* Default number of chip select lines */
- #define CDNS_SPI_DEFAULT_NUM_CS		4
+-	if (rs->cs_inactive)
+-		writel_relaxed(INT_RF_FULL | INT_CS_INACTIVE, rs->regs + ROCKCHIP_SPI_IMR);
+-	else
+-		writel_relaxed(INT_RF_FULL, rs->regs + ROCKCHIP_SPI_IMR);
++	writel_relaxed(0xffffffff, rs->regs + ROCKCHIP_SPI_ICR);
++
+ 	spi_enable_chip(rs, true);
  
-@@ -111,6 +108,7 @@
-  * @rx_bytes:		Number of bytes requested
-  * @dev_busy:		Device busy flag
-  * @is_decoded_cs:	Flag for decoder property set or not
-+ * @tx_fifo_depth:	Depth of the TX FIFO
-  */
- struct cdns_spi {
- 	void __iomem *regs;
-@@ -124,6 +122,7 @@ struct cdns_spi {
- 	int rx_bytes;
- 	u8 dev_busy;
- 	u32 is_decoded_cs;
-+	unsigned int tx_fifo_depth;
- };
+ 	if (rs->tx_left)
+ 		rockchip_spi_pio_writer(rs);
  
- /* Macros for the SPI controller read/write */
-@@ -305,7 +304,7 @@ static void cdns_spi_fill_tx_fifo(struct cdns_spi *xspi)
- {
- 	unsigned long trans_cnt = 0;
- 
--	while ((trans_cnt < CDNS_SPI_FIFO_DEPTH) &&
-+	while ((trans_cnt < xspi->tx_fifo_depth) &&
- 	       (xspi->tx_bytes > 0)) {
- 
- 		/* When xspi in busy condition, bytes may send failed,
-@@ -468,6 +467,24 @@ static int cdns_unprepare_transfer_hardware(struct spi_master *master)
- 	return 0;
++	if (rs->cs_inactive)
++		writel_relaxed(INT_RF_FULL | INT_CS_INACTIVE, rs->regs + ROCKCHIP_SPI_IMR);
++	else
++		writel_relaxed(INT_RF_FULL, rs->regs + ROCKCHIP_SPI_IMR);
++
+ 	/* 1 means the transfer is in progress */
+ 	return 1;
  }
- 
-+/**
-+ * cdns_spi_detect_fifo_depth - Detect the FIFO depth of the hardware
-+ * @xspi:	Pointer to the cdns_spi structure
-+ *
-+ * The depth of the TX FIFO is a synthesis configuration parameter of the SPI
-+ * IP. The FIFO threshold register is sized so that its maximum value can be the
-+ * FIFO size - 1. This is used to detect the size of the FIFO.
-+ */
-+static void cdns_spi_detect_fifo_depth(struct cdns_spi *xspi)
-+{
-+	/* The MSBs will get truncated giving us the size of the FIFO */
-+	cdns_spi_write(xspi, CDNS_SPI_THLD, 0xffff);
-+	xspi->tx_fifo_depth = cdns_spi_read(xspi, CDNS_SPI_THLD) + 1;
-+
-+	/* Reset to default */
-+	cdns_spi_write(xspi, CDNS_SPI_THLD, 0x1);
-+}
-+
- /**
-  * cdns_spi_probe - Probe method for the SPI driver
-  * @pdev:	Pointer to the platform_device structure
-@@ -540,6 +557,8 @@ static int cdns_spi_probe(struct platform_device *pdev)
- 	if (ret < 0)
- 		xspi->is_decoded_cs = 0;
- 
-+	cdns_spi_detect_fifo_depth(xspi);
-+
- 	/* SPI controller initializations */
- 	cdns_spi_init_hw(xspi);
- 
 -- 
 2.35.1
 

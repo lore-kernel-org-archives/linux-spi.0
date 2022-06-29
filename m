@@ -2,54 +2,54 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 01FACCCA485
-	for <linux-spi@archiver.kernel.org>; Wed, 29 Jun 2022 10:25:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9F65CCCA486
+	for <linux-spi@archiver.kernel.org>; Wed, 29 Jun 2022 10:25:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232640AbiF2KZg (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S232646AbiF2KZg (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Wed, 29 Jun 2022 06:25:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35822 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233165AbiF2KZe (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 29 Jun 2022 06:25:34 -0400
-Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AB1E3BBE6
+        with ESMTP id S233027AbiF2KZd (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 29 Jun 2022 06:25:33 -0400
+Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B7173CFE1
         for <linux-spi@vger.kernel.org>; Wed, 29 Jun 2022 03:25:31 -0700 (PDT)
-Received: from epcas2p1.samsung.com (unknown [182.195.41.53])
-        by mailout1.samsung.com (KnoxPortal) with ESMTP id 20220629102529epoutp012e3dc097d9d27657de0ac94cad13d13e~9EHRb2tM90829408294epoutp01K
+Received: from epcas2p4.samsung.com (unknown [182.195.41.56])
+        by mailout4.samsung.com (KnoxPortal) with ESMTP id 20220629102529epoutp044cdc0dc0497e41670eaff7daa54e999f~9EHQ2aChH2618526185epoutp04U
         for <linux-spi@vger.kernel.org>; Wed, 29 Jun 2022 10:25:29 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20220629102529epoutp012e3dc097d9d27657de0ac94cad13d13e~9EHRb2tM90829408294epoutp01K
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20220629102529epoutp044cdc0dc0497e41670eaff7daa54e999f~9EHQ2aChH2618526185epoutp04U
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
         s=mail20170921; t=1656498329;
-        bh=cAEW5DLT+rYmdqbRLPAbLST8Ew6HY1jTaugv3W8tTeM=;
+        bh=onO80sWXtWcduHpTS4S3lVmeyinruHntd0PpS2ykAUE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dKPuhsNA+X8GmB2qpOIVkwyui7OrQycrZU27P3CT9QzK7Q/M+jZWDifroy3KEluhq
-         oVSksE/8cIxCFLn0j4Mz30PeYygcjiu3hsjlt7FlBYlWPtG6WKwTsZE3ymKvQDoaNj
-         IogWroBem70htXbb30s2yN55h+tqHeximqoNt87k=
-Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
-        epcas2p4.samsung.com (KnoxPortal) with ESMTP id
-        20220629102528epcas2p45d87863f402a93e4584b550300225050~9EHQl6drQ0841508415epcas2p4U;
+        b=uN1BJU4Fo1meaTQWDtrKEgoa9zy+1a6cucBP/twH41QkhVr0yBGj9B4ZiV48WF7v6
+         tXJigelRoutmE9TZOZhP7EaqYGd5Znk+ebFahpiWRVlOqEfkY+79xAtZF0wqei0DbR
+         fx9YlcdgVA+toi2LZXtEIS/ahA8cw7loPyz/+yuU=
+Received: from epsnrtp3.localdomain (unknown [182.195.42.164]) by
+        epcas2p2.samsung.com (KnoxPortal) with ESMTP id
+        20220629102528epcas2p2f8110955244faecb355e003b89ca294d~9EHQEe7-z1990319903epcas2p2p;
         Wed, 29 Jun 2022 10:25:28 +0000 (GMT)
-Received: from epsmges2p3.samsung.com (unknown [182.195.36.89]) by
-        epsnrtp1.localdomain (Postfix) with ESMTP id 4LXyK44Lnzz4x9Pr; Wed, 29 Jun
+Received: from epsmges2p1.samsung.com (unknown [182.195.36.90]) by
+        epsnrtp3.localdomain (Postfix) with ESMTP id 4LXyK40PX2z4x9Pw; Wed, 29 Jun
         2022 10:25:28 +0000 (GMT)
-Received: from epcas2p2.samsung.com ( [182.195.41.54]) by
-        epsmges2p3.samsung.com (Symantec Messaging Gateway) with SMTP id
-        8C.36.09642.8982CB26; Wed, 29 Jun 2022 19:25:28 +0900 (KST)
-Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
-        epcas2p1.samsung.com (KnoxPortal) with ESMTPA id
-        20220629102527epcas2p19e967e3647084cbfad1bff0b9390b4ad~9EHPlGR0v2705927059epcas2p1s;
+Received: from epcas2p1.samsung.com ( [182.195.41.53]) by
+        epsmges2p1.samsung.com (Symantec Messaging Gateway) with SMTP id
+        75.5F.09666.7982CB26; Wed, 29 Jun 2022 19:25:27 +0900 (KST)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
+        epcas2p2.samsung.com (KnoxPortal) with ESMTPA id
+        20220629102527epcas2p21c9ba830afdf5ec5a8afde4707206186~9EHPVm0tG2062420624epcas2p2j;
         Wed, 29 Jun 2022 10:25:27 +0000 (GMT)
 Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
-        epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20220629102527epsmtrp176ab46399948dfd958d86e6c844b87a6~9EHPhqxFc0392803928epsmtrp1X;
+        epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20220629102527epsmtrp231f9d6a2252219ed0d75911379fa898e~9EHPU0PqD0374703747epsmtrp2h;
         Wed, 29 Jun 2022 10:25:27 +0000 (GMT)
-X-AuditID: b6c32a47-5e1ff700000025aa-d0-62bc289830dc
+X-AuditID: b6c32a45-471ff700000025c2-76-62bc28973237
 Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
         epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-        6D.D6.08905.7982CB26; Wed, 29 Jun 2022 19:25:27 +0900 (KST)
+        1B.D6.08905.7982CB26; Wed, 29 Jun 2022 19:25:27 +0900 (KST)
 Received: from localhost.localdomain (unknown [10.229.9.51]) by
         epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20220629102527epsmtip1319246b7935d580b80ddc633f2a4d368~9EHPY1KrL2691826918epsmtip1S;
+        20220629102527epsmtip1843173c8e07f9f04c035f0e5dfd5e270~9EHPKHDRS2685226852epsmtip1Z;
         Wed, 29 Jun 2022 10:25:27 +0000 (GMT)
 From:   Chanho Park <chanho61.park@samsung.com>
 To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
@@ -60,116 +60,120 @@ Cc:     Alim Akhtar <alim.akhtar@samsung.com>, devicetree@vger.kernel.org,
         linux-spi@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         Chanho Park <chanho61.park@samsung.com>
-Subject: [PATCH v3 4/4] spi: s3c64xx: add spi port configuration for Exynos
- Auto v9 SoC
-Date:   Wed, 29 Jun 2022 19:23:04 +0900
-Message-Id: <20220629102304.65712-5-chanho61.park@samsung.com>
+Subject: [PATCH v3 1/4] spi: s3c64xx: support loopback mode
+Date:   Wed, 29 Jun 2022 19:23:01 +0900
+Message-Id: <20220629102304.65712-2-chanho61.park@samsung.com>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220629102304.65712-1-chanho61.park@samsung.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrMJsWRmVeSWpSXmKPExsWy7bCmme4MjT1JBuemy1k8mLeNzWLxj+dM
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrCJsWRmVeSWpSXmKPExsWy7bCmqe50jT1JBvPnW1s8mLeNzWLxj+dM
         FlMfPmGzuLxf22L+kXOsFn0vHjJb7H29ld1i0+NrrBYzzu9jsmj8eJPdonXvEXYHbo/rSz4x
         e2xa1cnmcefaHjaPzUvqPfq2rGL0+LxJLoAtKtsmIzUxJbVIITUvOT8lMy/dVsk7ON453tTM
         wFDX0NLCXEkhLzE31VbJxSdA1y0zB+g6JYWyxJxSoFBAYnGxkr6dTVF+aUmqQkZ+cYmtUmpB
-        Sk6BeYFecWJucWleul5eaomVoYGBkSlQYUJ2xrYbb5kLrvFXXF/7naWB8R9PFyMnh4SAicTM
-        k/OZQGwhgR2MErMv53cxcgHZnxglls+7xAzhfGOU+DdpGjtMR/OuqewQHXsZJT58yYIo+sgo
-        8XHqd7BRbAK6Eluev2IESYgI3GSUmH62jwnEYRa4wSixd8Z6RpAqYYFIiRk/TzGD2CwCqkBF
-        98HivAJ2Env2XGaCWCcvsWF+L1gNp4C9xNsrq1khagQlTs58wgJiMwPVNG+dDXarhMBEDomf
-        H7cDORxAjovE4RZJiDnCEq+Ob4F6QUriZX8blF0ssXTWJyaI3gZGicvbfrFBJIwlZj1rZwSZ
-        wyygKbF+lz7ESGWJI7eg1vJJdBz+yw4R5pXoaBOCaFSXOLB9OguELSvRPeczK4TtIdGz7SE0
-        RCcxSnyb/5R9AqPCLCTfzELyzSyExQsYmVcxiqUWFOempxYbFRjDYzg5P3cTIzi1arnvYJzx
-        9oPeIUYmDsZDjBIczEoivAvP7EwS4k1JrKxKLcqPLyrNSS0+xGgKDOuJzFKiyfnA5J5XEm9o
-        YmlgYmZmaG5kamCuJM7rlbIhUUggPbEkNTs1tSC1CKaPiYNTqoGpXL08+XbEyruZc04xXvyS
-        ce/TL9WIad5rrjeqZTctvnzz1sFrh2T7avIauzweRsps0Ton9dTs7P85FtePB9Q8Xe0+f9/x
-        HUpqt4+be2uZ524qOBkR11G5WSi5d8Ul4RsR07xuOkv/E7paZJmYsXX9DL5tW4zn8GUVdezq
-        C7v47PDxNUUZc0PDS56lOnKuXNZys/mD+M77H+17c58Erf9zX/3E3/gzX84X5K45vOLinLVy
-        qzblHT3VzM5ywHPLm+x4AZF3DP7bHggLvGCNOj5dfuIH2TCv4k2/HjYvmxgdytCxRObBaj3z
-        qysE956fdM59hUjp5Y1vyw9nnv38oS9szddzlQrng+Vq3YplPwWaHFNiKc5INNRiLipOBADV
-        B5q4NgQAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrALMWRmVeSWpSXmKPExsWy7bCSnO50jT1JBvseG1g8mLeNzWLxj+dM
+        Sk6BeYFecWJucWleul5eaomVoYGBkSlQYUJ2xss1mxgLzghVXJwwm7mBcQN/FyMHh4SAicTr
+        1zxdjFwcQgI7GCXeH3zABOF8YpQ4/u4lO4TzjVGi88xUti5GTrCOk7OXMYLYQgJ7GSWuLwiG
+        KPrIKHFw3nl2kASbgK7EluevGEESIgI3GSWmn+0Dm8sscINRYu+M9WDtwgLWEt/X7WICsVkE
+        VCWu9p5gAbF5BewkZrcuYIZYJy+xYX4vmM0pYC/x9spqVogaQYmTM5+A1TMD1TRvnc0MskBC
+        oJND4urEySwQzS4SJzZcZIewhSVeHd8CZUtJfH63F+qfYomlsz4xQTQ3MEpc3vYLKmEsMetZ
+        OyMomJgFNCXW79KHhJiyxJFbUHv5JDoO/2WHCPNKdLQJQTSqSxzYPh3qAlmJ7jmfWSFsD4mm
+        jb9ZIaE1iVHiUdtJ9gmMCrOQvDMLyTuzEBYvYGRexSiWWlCcm55abFRgCI/i5PzcTYzg5Krl
+        uoNx8tsPeocYmTgYDzFKcDArifAuPLMzSYg3JbGyKrUoP76oNCe1+BCjKTCwJzJLiSbnA9N7
+        Xkm8oYmlgYmZmaG5kamBuZI4r1fKhkQhgfTEktTs1NSC1CKYPiYOTqkGJv5rntGZj9+s3CHs
+        l7a/aYrgbZN/DB0xdtM2umTd/KU5aaHAVyPza7secG15a3D1kP6KB1e7cgt2dsf9/ijRM+1e
+        Qs+7HjcJr64Fq5r61j3j27mGSS3sZZ5cMH/e3nxW322rjtxKT5MrWzy198UElVNejz+FHdmr
+        2v2k/rGn+F+ZtK3yN/YbJkxR3lD++Mny9pJP7MX2ab+unjl/TH+CFcMN5Wu7m2VzLdUc517m
+        WrPi/N73K98qvb+4ZtW2x+sWsAvWbu6v0ZUMKbmc1dHNIGWYr9RYua9jWn3l1rf+hySWr07b
+        0H5N1Oe9/Nmaqyza6fc0rmUbvU96dOejXEP7xVfN7+QVYj+ZPL1bldpQUKvEUpyRaKjFXFSc
+        CACOF7jaNwQAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrALMWRmVeSWpSXmKPExsWy7bCSnO50jT1JBv9fK1o8mLeNzWLxj+dM
         FlMfPmGzuLxf22L+kXOsFn0vHjJb7H29ld1i0+NrrBYzzu9jsmj8eJPdonXvEXYHbo/rSz4x
-        e2xa1cnmcefaHjaPzUvqPfq2rGL0+LxJLoAtissmJTUnsyy1SN8ugStj2423zAXX+Cuur/3O
-        0sD4j6eLkZNDQsBEonnXVPYuRi4OIYHdjBIdnY9YIBKyEs/e7WCHsIUl7rccYYUoes8osWzj
-        CSaQBJuArsSW568YQRIiArcZJf42bmMDcZgF7jBKPFq+B6xKWCBc4tisc2BjWQRUJaafvc8I
-        YvMK2Ens2XOZCWKFvMSG+b3MIDangL3E2yurWUFsIaCaJdd3skDUC0qcnPkEzGYGqm/eOpt5
-        AqPALCSpWUhSCxiZVjFKphYU56bnFhsWGOallusVJ+YWl+al6yXn525iBEeCluYOxu2rPugd
-        YmTiYDzEKMHBrCTCu/DMziQh3pTEyqrUovz4otKc1OJDjNIcLErivBe6TsYLCaQnlqRmp6YW
-        pBbBZJk4OKUamOYtV6++HH/aLSzu4Nbnrb/qwoSOpB9U+TrZorX4hJTkgsptzWvEqv3jP3P7
-        yDIJ1vhklS49Ly888eijx3/902dE8712f//wa/nEi+VZEr3LfB8p/1Tv6dCTMXm8YfObLXrb
-        N6+5EFK0fFGO7Hkp8wyem2sETh5eOl9OdZKz+hIp1yT2Wfu/n9uewup0e3PwyrUHg7/qPfix
-        aU/9olv6WllNNz0zN/FPVJvh1lIrEnA779PH+4FzPl9KzGnbvFVfvXEG9/26oONCLf8f7E84
-        au4joKXpMv1hoOhPmXjn0s0WX7lEJmzdnLT8q5HZjZpr6w6khVw7epHfY0/StIUmUyTqrtnq
-        Jj0yiVuTX9t8oFKJpTgj0VCLuag4EQA/gJk28wIAAA==
-X-CMS-MailID: 20220629102527epcas2p19e967e3647084cbfad1bff0b9390b4ad
+        e2xa1cnmcefaHjaPzUvqPfq2rGL0+LxJLoAtissmJTUnsyy1SN8ugSvj5ZpNjAVnhCouTpjN
+        3MC4gb+LkZNDQsBE4uTsZYxdjFwcQgK7GSUerHrODpGQlXj2bgeULSxxv+UIK0TRe0aJk5u/
+        gCXYBHQltjx/BdYtInCbUeJv4zY2EIdZ4A6jxKPle5hAqoQFrCW+r9sFZrMIqEpc7T3BAmLz
+        CthJzG5dwAyxQl5iw/xeMJtTwF7i7ZXVrCC2EFDNkus7oeoFJU7OfAJmMwPVN2+dzTyBUWAW
+        ktQsJKkFjEyrGCVTC4pz03OLDQsM81LL9YoTc4tL89L1kvNzNzGCI0FLcwfj9lUf9A4xMnEw
+        HmKU4GBWEuFdeGZnkhBvSmJlVWpRfnxRaU5q8SFGaQ4WJXHeC10n44UE0hNLUrNTUwtSi2Cy
+        TBycUg1M54IEpVsW/mVx5z4uX20QV6VTWbzXaesbsdRzs+XDGr3jj3/4xmbXdtnitcj30H0G
+        mi817JOXdHpJRyRFnhdUj1gz6cmsHRoqWwy/OmtetMss2ngg4EH8rzl39Rp3z39e3TF5utpT
+        zpKAt48OPNtb9jO43LK/J2dRl+mrmzfWtM+8NOu8zPPlWr2SyXNcMv7sSNtsZZ/Pbdhstuyb
+        HuPijorosOjjG/4bCZ1OMSrhedqUu/jRavGG1b5VHheWvrXr57wsznI17lLrX+k9smlbsltW
+        h2l/6M98bztXJnChbf7pf9uPvGgM2vZ4hrNzwDTDtXVHeOZ8Els2/XfyXNMS1+vrDroINX4p
+        nbWhh7NWiaU4I9FQi7moOBEA25ieC/MCAAA=
+X-CMS-MailID: 20220629102527epcas2p21c9ba830afdf5ec5a8afde4707206186
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
 X-Sendblock-Type: AUTO_CONFIDENTIAL
 CMS-TYPE: 102P
 DLP-Filter: Pass
 X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20220629102527epcas2p19e967e3647084cbfad1bff0b9390b4ad
+X-CMS-RootMailID: 20220629102527epcas2p21c9ba830afdf5ec5a8afde4707206186
 References: <20220629102304.65712-1-chanho61.park@samsung.com>
-        <CGME20220629102527epcas2p19e967e3647084cbfad1bff0b9390b4ad@epcas2p1.samsung.com>
+        <CGME20220629102527epcas2p21c9ba830afdf5ec5a8afde4707206186@epcas2p2.samsung.com>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Add exynosautov9 spi port configuration. It supports up to 12 spis so
-MAX_SPI_PORTS should be increased from 6 to 12.
-It has DIV_4 as the default internal clock divider and an internal
-loopback mode to run a loopback test.
+Modern exynos SoCs can support self loopback mode via setting BIT(3) of
+MODE_CFG register. Previous SoCs don't have the bit so we need to add
+has_loopback field in the s3c64xx_spi_port_config. Exynos Auto v9 SoC
+has the bit and it will define the field to "true".
+When it is set, SPI_LOOP mode will be marked.
 
 Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Reviewed-by: Andi Shyti <andi@etezian.org>
 Signed-off-by: Chanho Park <chanho61.park@samsung.com>
 ---
- drivers/spi/spi-s3c64xx.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ drivers/spi/spi-s3c64xx.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
 diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index ff565e57736b..7f346866614a 100644
+index 302c1d4a28b1..0c917cf891ca 100644
 --- a/drivers/spi/spi-s3c64xx.c
 +++ b/drivers/spi/spi-s3c64xx.c
-@@ -18,7 +18,7 @@
- 
- #include <linux/platform_data/spi-s3c64xx.h>
- 
--#define MAX_SPI_PORTS		6
-+#define MAX_SPI_PORTS		12
- #define S3C64XX_SPI_QUIRK_POLL		(1 << 0)
- #define S3C64XX_SPI_QUIRK_CS_AUTO	(1 << 1)
- #define AUTOSUSPEND_TIMEOUT	2000
-@@ -1451,6 +1451,19 @@ static const struct s3c64xx_spi_port_config exynos5433_spi_port_config = {
- 	.quirks		= S3C64XX_SPI_QUIRK_CS_AUTO,
+@@ -59,6 +59,7 @@
+ #define S3C64XX_SPI_MODE_BUS_TSZ_HALFWORD	(1<<17)
+ #define S3C64XX_SPI_MODE_BUS_TSZ_WORD		(2<<17)
+ #define S3C64XX_SPI_MODE_BUS_TSZ_MASK		(3<<17)
++#define S3C64XX_SPI_MODE_SELF_LOOPBACK		(1<<3)
+ #define S3C64XX_SPI_MODE_RXDMA_ON		(1<<2)
+ #define S3C64XX_SPI_MODE_TXDMA_ON		(1<<1)
+ #define S3C64XX_SPI_MODE_4BURST			(1<<0)
+@@ -135,6 +136,7 @@ struct s3c64xx_spi_dma_data {
+  * @clk_from_cmu: True, if the controller does not include a clock mux and
+  *	prescaler unit.
+  * @clk_ioclk: True if clock is present on this device
++ * @has_loopback: True if loopback mode can be supported
+  *
+  * The Samsung s3c64xx SPI controller are used on various Samsung SoC's but
+  * differ in some aspects such as the size of the fifo and spi bus clock
+@@ -149,6 +151,7 @@ struct s3c64xx_spi_port_config {
+ 	bool	high_speed;
+ 	bool	clk_from_cmu;
+ 	bool	clk_ioclk;
++	bool	has_loopback;
  };
  
-+static const struct s3c64xx_spi_port_config exynosautov9_spi_port_config = {
-+	.fifo_lvl_mask	= { 0x1ff, 0x1ff, 0x7f, 0x7f, 0x7f, 0x7f, 0x1ff, 0x7f,
-+			    0x7f, 0x7f, 0x7f, 0x7f},
-+	.rx_lvl_offset	= 15,
-+	.tx_st_done	= 25,
-+	.clk_div	= 4,
-+	.high_speed	= true,
-+	.clk_from_cmu	= true,
-+	.clk_ioclk	= true,
-+	.has_loopback	= true,
-+	.quirks		= S3C64XX_SPI_QUIRK_CS_AUTO,
-+};
+ /**
+@@ -659,6 +662,9 @@ static int s3c64xx_spi_config(struct s3c64xx_spi_driver_data *sdd)
+ 		break;
+ 	}
+ 
++	if ((sdd->cur_mode & SPI_LOOP) && sdd->port_conf->has_loopback)
++		val |= S3C64XX_SPI_MODE_SELF_LOOPBACK;
 +
- static const struct s3c64xx_spi_port_config fsd_spi_port_config = {
- 	.fifo_lvl_mask	= { 0x7f, 0x7f, 0x7f, 0x7f, 0x7f},
- 	.rx_lvl_offset	= 15,
-@@ -1492,6 +1505,9 @@ static const struct of_device_id s3c64xx_spi_dt_match[] = {
- 	{ .compatible = "samsung,exynos5433-spi",
- 			.data = (void *)&exynos5433_spi_port_config,
- 	},
-+	{ .compatible = "samsung,exynosautov9-spi",
-+			.data = (void *)&exynosautov9_spi_port_config,
-+	},
- 	{ .compatible = "tesla,fsd-spi",
- 			.data = (void *)&fsd_spi_port_config,
- 	},
+ 	writel(val, regs + S3C64XX_SPI_MODE_CFG);
+ 
+ 	if (sdd->port_conf->clk_from_cmu) {
+@@ -1148,6 +1154,8 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
+ 					SPI_BPW_MASK(8);
+ 	/* the spi->mode bits understood by this driver: */
+ 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
++	if (sdd->port_conf->has_loopback)
++		master->mode_bits |= SPI_LOOP;
+ 	master->auto_runtime_pm = true;
+ 	if (!is_polling(sdd))
+ 		master->can_dma = s3c64xx_spi_can_dma;
 -- 
 2.36.1
 

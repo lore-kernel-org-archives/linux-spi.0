@@ -2,51 +2,51 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0C45ECCA48A
-	for <linux-spi@archiver.kernel.org>; Wed, 29 Jun 2022 18:44:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DADB5C43334
+	for <linux-spi@archiver.kernel.org>; Wed, 29 Jun 2022 18:45:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229884AbiF2Soy (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 29 Jun 2022 14:44:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55938 "EHLO
+        id S231537AbiF2SpE (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 29 Jun 2022 14:45:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230520AbiF2Sor (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 29 Jun 2022 14:44:47 -0400
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A97E275FF
-        for <linux-spi@vger.kernel.org>; Wed, 29 Jun 2022 11:44:44 -0700 (PDT)
-Received: by mail-wr1-x436.google.com with SMTP id i1so19294043wrb.11
-        for <linux-spi@vger.kernel.org>; Wed, 29 Jun 2022 11:44:44 -0700 (PDT)
+        with ESMTP id S231133AbiF2Soy (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 29 Jun 2022 14:44:54 -0400
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52BDE255B6
+        for <linux-spi@vger.kernel.org>; Wed, 29 Jun 2022 11:44:52 -0700 (PDT)
+Received: by mail-wm1-x32e.google.com with SMTP id l68so4868324wml.3
+        for <linux-spi@vger.kernel.org>; Wed, 29 Jun 2022 11:44:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=conchuod.ie; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=lSAtLBVYvrx4+26h7+GvQLFIbOLj8yUyLWcfE4t8YDc=;
-        b=Gg05/t+/FXPkRenwx1qHvhlOMODtFpKL/no0hINP8JMW14scbGTJqbUefdhtwratgU
-         grEGM8eU4lWFIiPESGiueYpts7cjDlJRLBIzM5ZsXVuH9FzkMr9tHsBgVVqjWBN1GlvK
-         8Q8loTffgUn8dEzgkBiOh2xMyV0VFHVAZAtsSavWDwGncJhky3H7ImOtJQlzgOOWAqUY
-         iJQrWXeLhD8IqbgRQGGdxV35uefbG0o1zSbrLcVIYjgZlRqMq28pTN5szQsAw/tFRiJo
-         YAy9bH1NwbpaHtrgHoUWaU2YAC7ZpC+O10b5BEj7lUVsyLa3x39mZw6dh7g0gC0fT41X
-         T7gQ==
+        bh=hRUbJk2nRy4s5CIJwi9VsR0jeyH/n7EOc4sICxWxXyQ=;
+        b=GU1PexhwxPI4aTWY3oJSr8UIVA61UsZoukLwT5nVxTvCr+0PRJe8zMkDBKITJKbtzX
+         ioQKiZLTtLcfBHcYt9JjslVGwoLAqlNLKPBCOMjF+0jfiCWj3zGkMmyV+FCbDRn+8HQd
+         Lk6RFwT8l58blRYSNy8XeEBTxLX/F8qnb8RXUxnCawWWCroXwQOkWoh5NJyTB1moXT3L
+         ky3lSGUcyI41S5opeosrrvJFPbYelZH+U+wz8LexP4CRkMjehb4REVMPoHRzl+pD4Hhy
+         5C4OrnH/kt+blRMXBzLRMJGtHE9SC4Lej5foWPPfLcelXJjdgixXkRAHFY1wcmIQWk1Y
+         0SnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=lSAtLBVYvrx4+26h7+GvQLFIbOLj8yUyLWcfE4t8YDc=;
-        b=1p3wePTeCS/8SSjMZBZoKkM15PXrPiZRIwhiagI4e4zyxi//ewNcH59pffOJfPYJpv
-         GdYv//NYnm4AZJkDsU6Th+do0/LUzkKuo7w1lq95PVYxrs8/9WUHY9PjGxpj9L7SkKBH
-         LsHPlrpOXcGwCCgpAHl6AlibFLuTAtPxm/yl2QQgzR3e26SMJzuOo9PsrHdw+7rSPxmb
-         0mAcqtKG856qrnALpom13DL4XF4nxeS29bE19S77DMZgYsZEC7K3CW+pAXKU7sbViMO4
-         5jZwZHyFvY37uvfLGNk0Zz12qGOB2nRIG3ivAQxQ745sh8eAyiDM+HX+Db6vTnqj3Tv1
-         WW5Q==
-X-Gm-Message-State: AJIora+QSk1XugNfLAclcKkSJe+JDS7gzMnHCJcdDwKdGnYzos03ztMX
-        hO5o1o9vHb9NWJe6SuuVgaZ8AA==
-X-Google-Smtp-Source: AGRyM1sKo8OaJK8TbEgNGzQ3er/g31kuw/qeXLGUV3MKWqoytAx3LrG09RNZ7rN7G4m3of4rSEmYUA==
-X-Received: by 2002:a5d:4e47:0:b0:21a:39fd:5bb5 with SMTP id r7-20020a5d4e47000000b0021a39fd5bb5mr4583796wrt.712.1656528282726;
-        Wed, 29 Jun 2022 11:44:42 -0700 (PDT)
+        bh=hRUbJk2nRy4s5CIJwi9VsR0jeyH/n7EOc4sICxWxXyQ=;
+        b=7rYnjleq71sIPvbluTwDsp7bAmQtfVTPJpEj2dIW1vhgbW2bgaHjjcUa+g81G+WK3B
+         nO/ZcVhWfAW8KmHfDpGHutcSErnzUamt29fa7GVdRfJhYiLMUQSc3tSot/8c4bZDlGF/
+         5qsSW4ANQmSH932mEt47wA+6iBi7MR+xG4IGfaQ2ckyvsAmPc4gDuuyvN8hhaU3Gun6P
+         Wd1QIGHAQBj3m5p79M0gJIi8DAj0nRhMI+hy87DHuwNNO6/ARfvrhrKonk5hk7e2pgwk
+         LDdiY2h1rCFGK31sc3M3Bb9tyOb+23/xTPJavke2CxeLrmg9825R5v+MgNciIdQUtndC
+         7Cfw==
+X-Gm-Message-State: AJIora/NRlfZUHXbp2rnqkuF1e6ipEPxvPn6cvNbFcJ91FCb8ZLHdjIE
+        PfDhER8FgXNtY0Kq7lpf30N4WQ==
+X-Google-Smtp-Source: AGRyM1s9hghtvUiD4PkehSOpWHC180NLRRUmuGaKgWdAwp+740aIRHdfgINEDXzyjHxW4+Xl43C91g==
+X-Received: by 2002:a05:600c:1987:b0:3a1:7a21:ea47 with SMTP id t7-20020a05600c198700b003a17a21ea47mr1062506wmq.47.1656528290781;
+        Wed, 29 Jun 2022 11:44:50 -0700 (PDT)
 Received: from henark71.. ([51.37.234.167])
-        by smtp.gmail.com with ESMTPSA id u23-20020a7bcb17000000b0039aef592ca0sm3834371wmj.35.2022.06.29.11.44.41
+        by smtp.gmail.com with ESMTPSA id u23-20020a7bcb17000000b0039aef592ca0sm3834371wmj.35.2022.06.29.11.44.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jun 2022 11:44:42 -0700 (PDT)
+        Wed, 29 Jun 2022 11:44:50 -0700 (PDT)
 From:   Conor Dooley <mail@conchuod.ie>
 To:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
         Rob Herring <robh+dt@kernel.org>,
@@ -75,9 +75,9 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
         alsa-devel@alsa-project.org, linux-spi@vger.kernel.org,
         linux-riscv@lists.infradead.org
-Subject: [PATCH v3 04/15] spi: dt-bindings: dw-apb-ssi: update spi-{r,t}x-bus-width
-Date:   Wed, 29 Jun 2022 19:43:33 +0100
-Message-Id: <20220629184343.3438856-5-mail@conchuod.ie>
+Subject: [PATCH v3 09/15] riscv: dts: canaan: fix mmc node names
+Date:   Wed, 29 Jun 2022 19:43:38 +0100
+Message-Id: <20220629184343.3438856-10-mail@conchuod.ie>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220629184343.3438856-1-mail@conchuod.ie>
 References: <20220629184343.3438856-1-mail@conchuod.ie>
@@ -89,40 +89,83 @@ X-Mailing-List: linux-spi@vger.kernel.org
 
 From: Conor Dooley <conor.dooley@microchip.com>
 
-Most users of dw-apb-ssi use spi-{r,t}x-bus-width of 1, however the
-Canaan k210 is wired up for a width of 4.
-Quoting Serge:
-The modern DW APB SSI controllers of v.4.* and newer also support the
-enhanced SPI Modes too (Dual, Quad and Octal). Since the IP-core
-version is auto-detected at run-time there is no way to create a
-DT-schema correctly constraining the Rx/Tx SPI bus widths.
-/endquote
+The newly-converted-to-dt-schema binding expects the mmc node name to be
+'^mmc(@.*)?$' so align the devicetree with the schema.
 
-As such, drop the restriction on only supporting a bus width of 1.
-
-Link: https://lore.kernel.org/all/20220620205654.g7fyipwytbww5757@mobilestation/
 Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
 ---
- Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml | 6 ------
- 1 file changed, 6 deletions(-)
+ arch/riscv/boot/dts/canaan/canaan_kd233.dts     | 2 +-
+ arch/riscv/boot/dts/canaan/sipeed_maix_bit.dts  | 2 +-
+ arch/riscv/boot/dts/canaan/sipeed_maix_dock.dts | 2 +-
+ arch/riscv/boot/dts/canaan/sipeed_maix_go.dts   | 2 +-
+ arch/riscv/boot/dts/canaan/sipeed_maixduino.dts | 2 +-
+ 5 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
-index e25d44c218f2..0a43d6e0ef91 100644
---- a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
-+++ b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
-@@ -143,12 +143,6 @@ patternProperties:
-         minimum: 0
-         maximum: 3
+diff --git a/arch/riscv/boot/dts/canaan/canaan_kd233.dts b/arch/riscv/boot/dts/canaan/canaan_kd233.dts
+index 039b92abf046..40992d495aa8 100644
+--- a/arch/riscv/boot/dts/canaan/canaan_kd233.dts
++++ b/arch/riscv/boot/dts/canaan/canaan_kd233.dts
+@@ -142,7 +142,7 @@ &spi1 {
+ 	cs-gpios = <&gpio0 16 GPIO_ACTIVE_LOW>;
+ 	status = "okay";
  
--      spi-rx-bus-width:
--        const: 1
--
--      spi-tx-bus-width:
--        const: 1
--
- unevaluatedProperties: false
+-	slot@0 {
++	mmc@0 {
+ 		compatible = "mmc-spi-slot";
+ 		reg = <0>;
+ 		voltage-ranges = <3300 3300>;
+diff --git a/arch/riscv/boot/dts/canaan/sipeed_maix_bit.dts b/arch/riscv/boot/dts/canaan/sipeed_maix_bit.dts
+index b9e30df127fe..5e809d0e11fb 100644
+--- a/arch/riscv/boot/dts/canaan/sipeed_maix_bit.dts
++++ b/arch/riscv/boot/dts/canaan/sipeed_maix_bit.dts
+@@ -189,7 +189,7 @@ &spi1 {
+ 	cs-gpios = <&gpio0 13 GPIO_ACTIVE_LOW>;
+ 	status = "okay";
  
- required:
+-	slot@0 {
++	mmc@0 {
+ 		compatible = "mmc-spi-slot";
+ 		reg = <0>;
+ 		voltage-ranges = <3300 3300>;
+diff --git a/arch/riscv/boot/dts/canaan/sipeed_maix_dock.dts b/arch/riscv/boot/dts/canaan/sipeed_maix_dock.dts
+index 8d23401b0bbb..4be5ffac6b4a 100644
+--- a/arch/riscv/boot/dts/canaan/sipeed_maix_dock.dts
++++ b/arch/riscv/boot/dts/canaan/sipeed_maix_dock.dts
+@@ -191,7 +191,7 @@ &spi1 {
+ 	cs-gpios = <&gpio0 13 GPIO_ACTIVE_LOW>;
+ 	status = "okay";
+ 
+-	slot@0 {
++	mmc@0 {
+ 		compatible = "mmc-spi-slot";
+ 		reg = <0>;
+ 		voltage-ranges = <3300 3300>;
+diff --git a/arch/riscv/boot/dts/canaan/sipeed_maix_go.dts b/arch/riscv/boot/dts/canaan/sipeed_maix_go.dts
+index 24fd83b43d9d..5c63f79b18ec 100644
+--- a/arch/riscv/boot/dts/canaan/sipeed_maix_go.dts
++++ b/arch/riscv/boot/dts/canaan/sipeed_maix_go.dts
+@@ -199,7 +199,7 @@ &spi1 {
+ 	cs-gpios = <&gpio0 13 GPIO_ACTIVE_LOW>;
+ 	status = "okay";
+ 
+-	slot@0 {
++	mmc@0 {
+ 		compatible = "mmc-spi-slot";
+ 		reg = <0>;
+ 		voltage-ranges = <3300 3300>;
+diff --git a/arch/riscv/boot/dts/canaan/sipeed_maixduino.dts b/arch/riscv/boot/dts/canaan/sipeed_maixduino.dts
+index 25341f38292a..59f7eaf74655 100644
+--- a/arch/riscv/boot/dts/canaan/sipeed_maixduino.dts
++++ b/arch/riscv/boot/dts/canaan/sipeed_maixduino.dts
+@@ -164,7 +164,7 @@ &spi1 {
+ 	cs-gpios = <&gpio1_0 2 GPIO_ACTIVE_LOW>;
+ 	status = "okay";
+ 
+-	slot@0 {
++	mmc@0 {
+ 		compatible = "mmc-spi-slot";
+ 		reg = <0>;
+ 		voltage-ranges = <3300 3300>;
 -- 
 2.36.1
 

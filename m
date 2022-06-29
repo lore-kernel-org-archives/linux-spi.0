@@ -2,51 +2,51 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 31F2ACCA481
-	for <linux-spi@archiver.kernel.org>; Wed, 29 Jun 2022 18:44:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2708DC433EF
+	for <linux-spi@archiver.kernel.org>; Wed, 29 Jun 2022 18:44:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231243AbiF2Sot (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S231296AbiF2Sot (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Wed, 29 Jun 2022 14:44:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55860 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230408AbiF2Son (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 29 Jun 2022 14:44:43 -0400
-Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B2B6255B6
-        for <linux-spi@vger.kernel.org>; Wed, 29 Jun 2022 11:44:42 -0700 (PDT)
-Received: by mail-wm1-x332.google.com with SMTP id r81-20020a1c4454000000b003a0297a61ddso182086wma.2
-        for <linux-spi@vger.kernel.org>; Wed, 29 Jun 2022 11:44:42 -0700 (PDT)
+        with ESMTP id S231163AbiF2Sos (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 29 Jun 2022 14:44:48 -0400
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6624125296
+        for <linux-spi@vger.kernel.org>; Wed, 29 Jun 2022 11:44:47 -0700 (PDT)
+Received: by mail-wr1-x430.google.com with SMTP id cl1so72242wrb.4
+        for <linux-spi@vger.kernel.org>; Wed, 29 Jun 2022 11:44:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=conchuod.ie; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=lrMawgZzQlWfxvBPxcN2X1PdlhBSF2KCk9YZdZ5lbYA=;
-        b=UZFE16ya+AhstVdc8+8PMjE1GOjuS02LHwYmtTTvWlnaw0JNzT8UivtB0HUSn2Fehs
-         UcO/Kh8301nI9Y236WXJxSTARpOq9aANariOPe4TPKATPB706htP3/Hm8gLciQ6UUFto
-         ZkfbHRvMtF6PrR8hyQ8v/olYBu0GD8fKKimD7yS7a/YvhUyrh/0svjksmlGJqrAcRCkj
-         zI1gYBorCLXs9cJyTjmOhRaEHYhEM9zJQWx/dxjB3LUZk9Q/1bfk28AF94NfENY9bUQ9
-         bHoitafl7IPZo20bQoU6rZfgzGh3/7bSGBIryzeQg9yuXosCnzERLniwu/VmzUrE7u47
-         aYrA==
+        bh=XaslqtLsV+OGpzKiKNY3XRrWRC9HWQsSJkmanlRgE+c=;
+        b=PZV96m+zSyDuombLQGewWnFBGvnedyQ3+dI1hcr7LVvBrxTm/bGvVqpkPGNxe9GZuS
+         fRsI5nulPZJ86uidhXVECCni41C0vA1BzT5G0jxBqiaoo7CX3Kxq3zMyJrX0vHpp6Txf
+         p44qFHV0ArI/Y05Xelf6D6yAh06YaA1xxlvz9miA+iu0m+pfBrQ47FFpznq0DZKe/hy4
+         SUAN6ilIXPV9TpJlClLX0/YNPHZSgZOrl/1hoPuZDPhRyM7csXJ0DbpLgqJpVUzMy2eM
+         +/w65a7y1Ox3yxOnJdn2omseoOfCdKxZv0N5ZS2ufAnjnfGQ7/aqoSXEVEQbgXX6e8nd
+         76kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=lrMawgZzQlWfxvBPxcN2X1PdlhBSF2KCk9YZdZ5lbYA=;
-        b=g6aTDfhrXn3oRB6GVSI6rJ2liWlEdP3o+Vw3FmifV+tdxq6TjP8HIPIbrXxbU37DrI
-         AiOBAlkWA9w3cAi28AGY07QVkmZTCb8qy1m0YSiiMm7gcvAk/9THMsx9ci2OZAE2GmT5
-         y5W7kk9mz77IKBtHyr+LyU8Iyddlzk9bA5fPfz355FJrbUSpaNBiv07FF+0rgAuipWPp
-         1dEgtHnlHi1Az2c+/Y9hAUBsNs4gf07ENxkw9VTd4J3x/JsHyeeEk2cRhdkVCOKbKtqH
-         /+ZEjyk0cV/3E9kiNEUBimCkF3DvSSyw9pollCX39dt89crmS4pxuBvd37ElNEuB/tZs
-         TdkQ==
-X-Gm-Message-State: AJIora+4BwVKWv6rlTweD/sZhKP6dHvjKCza6IQRNBWQoNlvnrFUlUSX
-        Y32UgbQ/25e4rFUXwLEXVxQcoQ==
-X-Google-Smtp-Source: AGRyM1spM09NZGEglzK2GcCvBNzf6+IwTXB36BnCjHt1M/6JzCPwKo0eKihFk+O4Q05Ie7dCQ7fFbg==
-X-Received: by 2002:a7b:c242:0:b0:3a0:3ba5:81fd with SMTP id b2-20020a7bc242000000b003a03ba581fdmr7196335wmj.47.1656528281039;
-        Wed, 29 Jun 2022 11:44:41 -0700 (PDT)
+        bh=XaslqtLsV+OGpzKiKNY3XRrWRC9HWQsSJkmanlRgE+c=;
+        b=cbgy9G6NtvWi/GPukKciBalLZAx2BYOhxZiU0gXsPWIaUnXxtMfYws39TpQ3OLYYis
+         fvY1A9mwduALwfii3Dt3ZJz77UImmYF/2NKOybVSXOOvt1paBVtSLwEpucLthGK/DFGz
+         W32cqfO62zGbU10D4+vSSBlZfZZuwhTo61sApFtg2pTIGQUfPDJtu770GjtslHkpylOA
+         X96Bt3xlIkH9vc7OrXNjP5zm4FM9/RNpPdJ+GbHh2OdKpJ4FsWrRqIbkC46Jjx7/hiwY
+         8C13GTANQqjUtWdaM9yvkWCgNdRJD06+goAvUnYFzF3sjundDpL7XMR7+MOQi0E0vVc7
+         HsDA==
+X-Gm-Message-State: AJIora/QgszJz5wJYepOWltB42HdySDn9dgf5gty9RymVs1JKmqAVXan
+        r9+bpkuRoOELMqvR1M2p3sEksg==
+X-Google-Smtp-Source: AGRyM1tKU6P+9J1S7EvrvcajpfEPLPWHYJ9QIIulL1WwyNt4gXk7nuljdIlSl36redwFztsprn60iw==
+X-Received: by 2002:a5d:64cc:0:b0:21b:ba06:4d4d with SMTP id f12-20020a5d64cc000000b0021bba064d4dmr4603873wri.157.1656528285879;
+        Wed, 29 Jun 2022 11:44:45 -0700 (PDT)
 Received: from henark71.. ([51.37.234.167])
-        by smtp.gmail.com with ESMTPSA id u23-20020a7bcb17000000b0039aef592ca0sm3834371wmj.35.2022.06.29.11.44.39
+        by smtp.gmail.com with ESMTPSA id u23-20020a7bcb17000000b0039aef592ca0sm3834371wmj.35.2022.06.29.11.44.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jun 2022 11:44:40 -0700 (PDT)
+        Wed, 29 Jun 2022 11:44:45 -0700 (PDT)
 From:   Conor Dooley <mail@conchuod.ie>
 To:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
         Rob Herring <robh+dt@kernel.org>,
@@ -75,9 +75,9 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
         alsa-devel@alsa-project.org, linux-spi@vger.kernel.org,
         linux-riscv@lists.infradead.org
-Subject: [PATCH v3 03/15] ASoC: dt-bindings: convert designware-i2s to dt-schema
-Date:   Wed, 29 Jun 2022 19:43:32 +0100
-Message-Id: <20220629184343.3438856-4-mail@conchuod.ie>
+Subject: [PATCH v3 06/15] dt-bindings: memory-controllers: add canaan k210 sram controller
+Date:   Wed, 29 Jun 2022 19:43:35 +0100
+Message-Id: <20220629184343.3438856-7-mail@conchuod.ie>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220629184343.3438856-1-mail@conchuod.ie>
 References: <20220629184343.3438856-1-mail@conchuod.ie>
@@ -89,158 +89,74 @@ X-Mailing-List: linux-spi@vger.kernel.org
 
 From: Conor Dooley <conor.dooley@microchip.com>
 
-Convert the Synopsys DesignWare I2S controller binding to dt-schema.
-There was no listed maintainer but Jose Abreu was the last editor of the
-txt binding so add him as maintainer.
+The k210 U-Boot port has been using the clocks defined in the
+devicetree to bring up the board's SRAM, but this violates the
+dt-schema. As such, move the clocks to a dedicated node with
+the same compatible string & document it.
 
 Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
 ---
- .../bindings/sound/designware-i2s.txt         | 35 -------
- .../bindings/sound/snps,designware-i2s.yaml   | 94 +++++++++++++++++++
- 2 files changed, 94 insertions(+), 35 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/sound/designware-i2s.txt
- create mode 100644 Documentation/devicetree/bindings/sound/snps,designware-i2s.yaml
+ .../memory-controllers/canaan,k210-sram.yaml  | 52 +++++++++++++++++++
+ 1 file changed, 52 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/memory-controllers/canaan,k210-sram.yaml
 
-diff --git a/Documentation/devicetree/bindings/sound/designware-i2s.txt b/Documentation/devicetree/bindings/sound/designware-i2s.txt
-deleted file mode 100644
-index 6a536d570e29..000000000000
---- a/Documentation/devicetree/bindings/sound/designware-i2s.txt
-+++ /dev/null
-@@ -1,35 +0,0 @@
--DesignWare I2S controller
--
--Required properties:
-- - compatible : Must be "snps,designware-i2s"
-- - reg : Must contain the I2S core's registers location and length
-- - clocks : Pairs of phandle and specifier referencing the controller's
--   clocks. The controller expects one clock: the clock used as the sampling
--   rate reference clock sample.
-- - clock-names : "i2sclk" for the sample rate reference clock.
-- - dmas: Pairs of phandle and specifier for the DMA channels that are used by
--   the core. The core expects one or two dma channels: one for transmit and
--   one for receive.
-- - dma-names : "tx" for the transmit channel, "rx" for the receive channel.
--
--Optional properties:
-- - interrupts: The interrupt line number for the I2S controller. Add this
--   parameter if the I2S controller that you are using does not support DMA.
--
--For more details on the 'dma', 'dma-names', 'clock' and 'clock-names'
--properties please check:
--	* resource-names.txt
--	* clock/clock-bindings.txt
--	* dma/dma.txt
--
--Example:
--
--	soc_i2s: i2s@7ff90000 {
--		compatible = "snps,designware-i2s";
--		reg = <0x0 0x7ff90000 0x0 0x1000>;
--		clocks = <&scpi_i2sclk 0>;
--		clock-names = "i2sclk";
--		#sound-dai-cells = <0>;
--		dmas = <&dma0 5>;
--		dma-names = "tx";
--	};
-diff --git a/Documentation/devicetree/bindings/sound/snps,designware-i2s.yaml b/Documentation/devicetree/bindings/sound/snps,designware-i2s.yaml
+diff --git a/Documentation/devicetree/bindings/memory-controllers/canaan,k210-sram.yaml b/Documentation/devicetree/bindings/memory-controllers/canaan,k210-sram.yaml
 new file mode 100644
-index 000000000000..4b0795819064
+index 000000000000..82be32757713
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/sound/snps,designware-i2s.yaml
-@@ -0,0 +1,94 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++++ b/Documentation/devicetree/bindings/memory-controllers/canaan,k210-sram.yaml
+@@ -0,0 +1,52 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/sound/snps,designware-i2s.yaml#
++$id: http://devicetree.org/schemas/memory-controllers/canaan,k210-sram.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: DesignWare I2S controller
++title: Canaan K210 SRAM memory controller
++
++description: |
++  The Canaan K210 SRAM memory controller is initialised and programmed by
++  firmware, but an OS might want to read its registers for error reporting
++  purposes and to learn about the DRAM topology.
 +
 +maintainers:
-+  - Jose Abreu <joabreu@synopsys.com>
++  - Conor Dooley <conor@kernel.org>
 +
 +properties:
 +  compatible:
-+    oneOf:
-+      - items:
-+          - const: canaan,k210-i2s
-+          - const: snps,designware-i2s
-+      - enum:
-+          - snps,designware-i2s
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    description: |
-+      The interrupt line number for the I2S controller. Add this
-+      parameter if the I2S controller that you are using does not
-+      support DMA.
-+    maxItems: 1
++    enum:
++      - canaan,k210-sram
 +
 +  clocks:
-+    description: Sampling rate reference clock
-+    maxItems: 1
++    minItems: 1
++    items:
++      - description: sram0 clock
++      - description: sram1 clock
++      - description: aisram clock
 +
 +  clock-names:
-+    const: i2sclk
-+
-+  resets:
-+    maxItems: 1
-+
-+  dmas:
-+    items:
-+      - description: TX DMA Channel
-+      - description: RX DMA Channel
 +    minItems: 1
-+
-+  dma-names:
 +    items:
-+      - const: tx
-+      - const: rx
-+    minItems: 1
-+
-+if:
-+  properties:
-+    compatible:
-+      contains:
-+        const: canaan,k210-i2s
-+
-+then:
-+  properties:
-+    "#sound-dai-cells":
-+      const: 1
-+
-+else:
-+  properties:
-+    "#sound-dai-cells":
-+      const: 0
++      - const: sram0
++      - const: sram1
++      - const: aisram
 +
 +required:
 +  - compatible
-+  - reg
 +  - clocks
 +  - clock-names
 +
-+oneOf:
-+  - required:
-+      - dmas
-+      - dma-names
-+  - required:
-+      - interrupts
-+
-+unevaluatedProperties: false
++additionalProperties: false
 +
 +examples:
 +  - |
-+    soc_i2s: i2s@7ff90000 {
-+      compatible = "snps,designware-i2s";
-+      reg = <0x7ff90000 0x1000>;
-+      clocks = <&scpi_i2sclk 0>;
-+      clock-names = "i2sclk";
-+      #sound-dai-cells = <0>;
-+      dmas = <&dma0 5>;
-+      dma-names = "tx";
++    #include <dt-bindings/clock/k210-clk.h>
++    memory-controller {
++        compatible = "canaan,k210-sram";
++        clocks = <&sysclk K210_CLK_SRAM0>,
++                 <&sysclk K210_CLK_SRAM1>,
++                 <&sysclk K210_CLK_AI>;
++        clock-names = "sram0", "sram1", "aisram";
 +    };
 -- 
 2.36.1

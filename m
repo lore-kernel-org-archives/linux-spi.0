@@ -2,69 +2,85 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A4A0CC43334
-	for <linux-spi@archiver.kernel.org>; Wed, 29 Jun 2022 16:54:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B792BC43334
+	for <linux-spi@archiver.kernel.org>; Wed, 29 Jun 2022 17:09:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229515AbiF2QyN (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 29 Jun 2022 12:54:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39810 "EHLO
+        id S229944AbiF2RJw (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 29 Jun 2022 13:09:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229654AbiF2QyM (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 29 Jun 2022 12:54:12 -0400
-X-Greylist: delayed 25514 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 29 Jun 2022 09:54:11 PDT
-Received: from 14.mo550.mail-out.ovh.net (14.mo550.mail-out.ovh.net [178.32.97.215])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C682B23164
-        for <linux-spi@vger.kernel.org>; Wed, 29 Jun 2022 09:54:11 -0700 (PDT)
-Received: from player789.ha.ovh.net (unknown [10.109.156.38])
-        by mo550.mail-out.ovh.net (Postfix) with ESMTP id AE96A24BF8
-        for <linux-spi@vger.kernel.org>; Wed, 29 Jun 2022 09:48:55 +0000 (UTC)
-Received: from etezian.org (bbcs-175-223.cust.wingo.ch [178.238.175.223])
-        (Authenticated sender: andi@etezian.org)
-        by player789.ha.ovh.net (Postfix) with ESMTPSA id 05D3E2C1D9875;
-        Wed, 29 Jun 2022 09:48:44 +0000 (UTC)
-Authentication-Results: garm.ovh; auth=pass (GARM-100R00388997ff5-7013-4990-ac9c-20a2d1c25445,
-                    27473AD2557E96BAE247B01472F11916F8881100) smtp.auth=andi@etezian.org
-X-OVh-ClientIp: 178.238.175.223
-Date:   Wed, 29 Jun 2022 12:48:43 +0300
-From:   Andi Shyti <andi@etezian.org>
-To:     Chanho Park <chanho61.park@samsung.com>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Andi Shyti <andi@etezian.org>, Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 4/4] spi: s3c64xx: add spi port configuration for
- Exynos Auto v9 SoC
-Message-ID: <Yrwf+25oliMGg9hz@jack.zhora.eu>
-References: <20220628044222.152794-1-chanho61.park@samsung.com>
- <CGME20220628044432epcas2p2e2b4c0d52f11c0bf543c537e819224bc@epcas2p2.samsung.com>
- <20220628044222.152794-5-chanho61.park@samsung.com>
+        with ESMTP id S230034AbiF2RJv (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 29 Jun 2022 13:09:51 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE80B1A05E;
+        Wed, 29 Jun 2022 10:09:50 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 6DE72B82603;
+        Wed, 29 Jun 2022 17:09:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D836C341C8;
+        Wed, 29 Jun 2022 17:09:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1656522588;
+        bh=4bJvFFx7ZcxPoQfjBr9hzR8NIRYqurDvP08BnkCGIfk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=SO91+wnwTa89hRSXSoTp79ezg57zJGwf8HGqcEEn7epijpLCS8vAZnSLxA1x8CO1Q
+         aqCGDCX5pkN23N6MvilsV0Q6lrH9TJpR0IDCuqxqyjp3eqXRg0x6v6B0v6AxlNDSHj
+         69szh3v2AH/ZCtAN4xlDy0tkGdKPEHhFc3AbwR5f0LEAn5y0b8tc1oghqnIexY+GtR
+         nBnPKxStD/oTzMF6q8w00jjgjYZAh1F8L5Bw1b+10G5oOiB8RDRpfL3GM9sFmGeDEC
+         DllLL4qEZueiq4lG8pEqsgbgsovUv20WBC10MWYX9hbuEuaCNhspurOOu/oQebSZ+Y
+         PqGWCfgpLCtXg==
+Date:   Wed, 29 Jun 2022 18:09:42 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>
+Cc:     linux-spi@vger.kernel.org, Pratyush Yadav <p.yadav@ti.com>,
+        linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org,
+        Joel Stanley <joel@jms.id.au>,
+        Andrew Jeffery <andrew@aj.id.au>,
+        Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Ian Woloschin <ian.woloschin@akamai.com>,
+        Ian Woloschin <iwolosch@akamai.com>
+Subject: Re: [PATCH v3 2/2] spi: aspeed: Fix division by zero
+Message-ID: <YryHVsrqNlhdwKzq@sirena.org.uk>
+References: <20220622161617.3719096-1-clg@kaod.org>
+ <20220622161617.3719096-3-clg@kaod.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="mK7klt+5JZlbXfIT"
 Content-Disposition: inline
-In-Reply-To: <20220628044222.152794-5-chanho61.park@samsung.com>
-X-Ovh-Tracer-Id: 2307813338288949784
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvfedrudegledgvddtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomheptehnughiucfuhhihthhiuceorghnughisegvthgviihirghnrdhorhhgqeenucggtffrrghtthgvrhhnpeejgfelgeekieffjeegveeuvdehgeelveetveejudffvedvleehvdefleehudelueenucfkpheptddrtddrtddrtddpudejkedrvdefkedrudejhedrvddvfeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphhouhhtpdhhvghlohepphhlrgihvghrjeekledrhhgrrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegrnhguihesvghtvgiiihgrnhdrohhrghdpnhgspghrtghpthhtohepuddprhgtphhtthhopehlihhnuhigqdhsphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdfovfetjfhoshhtpehmohehhedt
+In-Reply-To: <20220622161617.3719096-3-clg@kaod.org>
+X-Cookie: Victory or defeat!
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi Chanho,
 
-On Tue, Jun 28, 2022 at 01:42:22PM +0900, Chanho Park wrote:
-> Add exynosautov9 spi port configuration. It supports up to 12 spis so
-> MAX_SPI_PORTS should be increased from 6 to 12.
-> It has DIV_4 as the default internal clock divider and an internal
-> loopback mode to run a loopback test.
-> 
-> Signed-off-by: Chanho Park <chanho61.park@samsung.com>
+--mK7klt+5JZlbXfIT
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Andi Shyti <andi@etezian.org>
+On Wed, Jun 22, 2022 at 06:16:17PM +0200, C=E9dric Le Goater wrote:
 
-Thanks,
-Andi
+> Fixes: 54613fc6659b ("spi: aspeed: Add support for direct mapping")
+
+This commit isn't in mainline.
+
+--mK7klt+5JZlbXfIT
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmK8h1UACgkQJNaLcl1U
+h9AVewf/WQAmOe0+ScAYOGgcQEmnOEp4TS1cWQo0BAxd7OgZqLodwQqLfeM2CaMK
+SXelE3kPHJunj/B2YC11bTbsgi8nvoA03dS6BXF8i2LPRzQq7+294VdOgkdap5ei
+WA7lqQRSDAyaA4hAAJQqKSSM2zT9RYoXlVUXf/VUXX7KyLhMBjFuO2MuioX6Pzxg
+VCcwaTnaximxm/beko5YUoaDgiixxbSA6L5yLAXckzD7OZ7xDhXllZSfd5A9/xe8
+o9JRYNo8tutfLxLjCwBK0qRLgu9cPy++YF4qX8HfdayxRE1GXd23BH4GK0+8EhNe
+vxvDGPtY4UV7LSZAFXFDociwrctE8A==
+=Ag5J
+-----END PGP SIGNATURE-----
+
+--mK7klt+5JZlbXfIT--

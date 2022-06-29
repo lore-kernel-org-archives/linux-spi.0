@@ -2,80 +2,92 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 339F9C43334
-	for <linux-spi@archiver.kernel.org>; Wed, 29 Jun 2022 19:26:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CEADAC43334
+	for <linux-spi@archiver.kernel.org>; Wed, 29 Jun 2022 22:39:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229975AbiF2T0N (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 29 Jun 2022 15:26:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37744 "EHLO
+        id S230081AbiF2WjG (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 29 Jun 2022 18:39:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230236AbiF2T0M (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 29 Jun 2022 15:26:12 -0400
-X-Greylist: delayed 2391 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 29 Jun 2022 12:26:11 PDT
-Received: from 8.mo548.mail-out.ovh.net (8.mo548.mail-out.ovh.net [46.105.45.231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F7EC38BC5
-        for <linux-spi@vger.kernel.org>; Wed, 29 Jun 2022 12:26:11 -0700 (PDT)
-Received: from mxplan5.mail.ovh.net (unknown [10.108.20.177])
-        by mo548.mail-out.ovh.net (Postfix) with ESMTPS id A8D0B20747;
-        Wed, 29 Jun 2022 18:07:45 +0000 (UTC)
-Received: from kaod.org (37.59.142.96) by DAG4EX1.mxp5.local (172.16.2.31)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.9; Wed, 29 Jun
- 2022 20:07:44 +0200
-Authentication-Results: garm.ovh; auth=pass (GARM-96R00198260963-dde8-461b-8c1a-012665a8672e,
-                    DF7F9948BD89912A9BBE6A4903E17E70B6709CC1) smtp.auth=clg@kaod.org
-X-OVh-ClientIp: 82.64.250.170
-Message-ID: <d272ce4b-c338-c3ea-3770-6c85ddf60ec5@kaod.org>
-Date:   Wed, 29 Jun 2022 20:07:39 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: [PATCH v3 2/2] spi: aspeed: Fix division by zero
-Content-Language: en-US
-To:     Mark Brown <broonie@kernel.org>
-CC:     <linux-spi@vger.kernel.org>, Pratyush Yadav <p.yadav@ti.com>,
-        <linux-aspeed@lists.ozlabs.org>, <openbmc@lists.ozlabs.org>,
-        Joel Stanley <joel@jms.id.au>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        Ian Woloschin <ian.woloschin@akamai.com>,
-        Ian Woloschin <iwolosch@akamai.com>
-References: <20220622161617.3719096-1-clg@kaod.org>
- <20220622161617.3719096-3-clg@kaod.org> <YryHVsrqNlhdwKzq@sirena.org.uk>
- <59b82730-f09f-f7e5-0e2f-4ad1765f0f6e@kaod.org>
- <YryLj6iWVkqWowDg@sirena.org.uk>
-From:   =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <YryLj6iWVkqWowDg@sirena.org.uk>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.96]
-X-ClientProxiedBy: DAG8EX1.mxp5.local (172.16.2.71) To DAG4EX1.mxp5.local
- (172.16.2.31)
-X-Ovh-Tracer-GUID: 3fc20af5-91b9-41c4-b2e6-732ae46bea70
-X-Ovh-Tracer-Id: 10732359387039697912
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvfedrudegledguddvtdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfhisehtkeertddtfeejnecuhfhrohhmpeevrogurhhitggpnfgvpgfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepkeetjedtleekjedvveffudfhteetleeifeegfeffuefghfefkeehffeufeeludejnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrdelieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdpnhgspghrtghpthhtohepuddprhgtphhtthhopehifiholhhoshgthhesrghkrghmrghirdgtohhmpdfovfetjfhoshhtpehmohehgeek
+        with ESMTP id S229552AbiF2WhF (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 29 Jun 2022 18:37:05 -0400
+Received: from mail-io1-f41.google.com (mail-io1-f41.google.com [209.85.166.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 303091CB22;
+        Wed, 29 Jun 2022 15:37:03 -0700 (PDT)
+Received: by mail-io1-f41.google.com with SMTP id h85so17474437iof.4;
+        Wed, 29 Jun 2022 15:37:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+         :message-id;
+        bh=MbblukbV9eQzp63XhSRYjJT2TIAxXCGnXWe6sKmekNs=;
+        b=UqGhvEQqE1PrluqRf8Q1gF8LRRuScYBKgwcWBakKj/csNNI8TXXWPk/AG0zutPErG3
+         uEGgyHFX+7bN+LPMoZj1WPB44GhlaoMRQLea+2oTRc2UVtzfjtAWBLFbPr9gnRgjgYy+
+         HPSw/+E4f9AugpXEq2uy4q6+ceemU8Jn+VNtz50e/MQ7yowUqArBAPMdUDb566QUz2EU
+         Z7WX4Jb7FJpl9Znjm9YdTdRGZHGP4jXL7N5O4z4IHsdmHQfRQiDCx/tKAjTRx/SKGAiW
+         sbeQfj8kHZTsB0wapmaCxjsWgANHvDwKnBNbmIv3sFbA1/k+++dH1luvn5SkLSV/eqEy
+         JTrw==
+X-Gm-Message-State: AJIora9+Som/QihFe2mqvZJkESyzYlgKeuCbeOQYRqyq3rn11XUgHi60
+        vYAiF0OINTivkcElrLDdAQ==
+X-Google-Smtp-Source: AGRyM1vrXWjHdWf9HlFUjhNb24cmSnmvE4y5H7JjWeXZScDf9UZJmyrsPsQRRLt4UWsbRPUP4u698g==
+X-Received: by 2002:a6b:4019:0:b0:669:3314:ebcb with SMTP id k25-20020a6b4019000000b006693314ebcbmr2869577ioa.197.1656542222341;
+        Wed, 29 Jun 2022 15:37:02 -0700 (PDT)
+Received: from robh.at.kernel.org ([64.188.179.253])
+        by smtp.gmail.com with ESMTPSA id o126-20020a022284000000b00339f193b8ddsm7936816jao.130.2022.06.29.15.37.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jun 2022 15:37:02 -0700 (PDT)
+Received: (nullmailer pid 1042477 invoked by uid 1000);
+        Wed, 29 Jun 2022 22:36:59 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     Sergiu Moga <sergiu.moga@microchip.com>
+Cc:     claudiu.beznea@microchip.com, linux-arm-kernel@lists.infradead.org,
+        UNGLinuxDriver@microchip.com, linux-spi@vger.kernel.org,
+        robh+dt@kernel.org, broonie@kernel.org,
+        linux-kernel@vger.kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        nicolas.ferre@microchip.com, Kavyasree.Kotagiri@microchip.com,
+        alexandre.belloni@bootlin.com, devicetree@vger.kernel.org
+In-Reply-To: <20220629125804.137099-1-sergiu.moga@microchip.com>
+References: <20220629125804.137099-1-sergiu.moga@microchip.com>
+Subject: Re: [PATCH] dt-bindings: spi: convert spi_atmel to json-schema
+Date:   Wed, 29 Jun 2022 16:36:59 -0600
+Message-Id: <1656542219.625404.1042476.nullmailer@robh.at.kernel.org>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On 6/29/22 19:27, Mark Brown wrote:
-> On Wed, Jun 29, 2022 at 07:21:08PM +0200, Cédric Le Goater wrote:
->> On 6/29/22 19:09, Mark Brown wrote:
->>> On Wed, Jun 22, 2022 at 06:16:17PM +0200, Cédric Le Goater wrote:
->>>
->>>> Fixes: 54613fc6659b ("spi: aspeed: Add support for direct mapping")
->>>
->>> This commit isn't in mainline.
+On Wed, 29 Jun 2022 15:58:04 +0300, Sergiu Moga wrote:
+> Convert SPI binding for Atmel/Microchip SoCs to Device Tree Schema
+> format.
 > 
->> drat. It's the OpenBMC kernel. I will resend. Sorry about that.
+> Signed-off-by: Sergiu Moga <sergiu.moga@microchip.com>
+> ---
+>  .../devicetree/bindings/spi/atmel,spi.yaml    | 82 +++++++++++++++++++
+>  .../devicetree/bindings/spi/spi_atmel.txt     | 36 --------
+>  2 files changed, 82 insertions(+), 36 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/spi/atmel,spi.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/spi/spi_atmel.txt
 > 
-> It's OK, I fixed it up locally.
 
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-Thanks,
+yamllint warnings/errors:
 
-C.
+dtschema/dtc warnings/errors:
+Documentation/devicetree/bindings/spi/atmel,spi.example.dtb:0:0: /example-0/spi@fffcc000/mmc@0: failed to match any schema with compatible: ['mmc-spi-slot']
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/patch/
+
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit.
+

@@ -2,73 +2,110 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3970CC43334
-	for <linux-spi@archiver.kernel.org>; Thu, 14 Jul 2022 02:09:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1F199C433EF
+	for <linux-spi@archiver.kernel.org>; Thu, 14 Jul 2022 11:08:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231158AbiGNCI7 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 13 Jul 2022 22:08:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55378 "EHLO
+        id S230053AbiGNLIC (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 14 Jul 2022 07:08:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233194AbiGNCIp (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 13 Jul 2022 22:08:45 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7841B1166;
-        Wed, 13 Jul 2022 19:08:34 -0700 (PDT)
-Received: from dggpemm500024.china.huawei.com (unknown [172.30.72.56])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4LjyXC5F2xzkWqj;
-        Thu, 14 Jul 2022 10:06:19 +0800 (CST)
-Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500024.china.huawei.com (7.185.36.203) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Thu, 14 Jul 2022 10:08:32 +0800
-Received: from [10.174.178.174] (10.174.178.174) by
- dggpemm500007.china.huawei.com (7.185.36.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Thu, 14 Jul 2022 10:08:32 +0800
-Subject: Re: [PATCH] Revert "spi: simplify devm_spi_register_controller"
+        with ESMTP id S229666AbiGNLIB (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 14 Jul 2022 07:08:01 -0400
+Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C9F56163;
+        Thu, 14 Jul 2022 04:08:01 -0700 (PDT)
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 26EB7plu090790;
+        Thu, 14 Jul 2022 06:07:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1657796871;
+        bh=p7pqq2g8/Wby+2K8I1+/FwfIeNjPoy6Wx6KoZD17UX0=;
+        h=Date:From:To:CC:Subject:References:In-Reply-To;
+        b=S90nZq5HNvlqK1P43SUIumnzYKKRkK/yc6yy2NbjmaZT16ZlmoWPMDWXvKtIBlp5a
+         X8ov1ZVvQz+h00IChm4LT1d/AQ4qrhUbrQkDw7j3iM4uKjPDmwcR+Rvk6ap8U0ajrC
+         eVKOARqsfM9U8aWkAW1or4ZmXoAv37QVR9DUxtSY=
+Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 26EB7pVe019466
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 14 Jul 2022 06:07:51 -0500
+Received: from DFLE100.ent.ti.com (10.64.6.21) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Thu, 14
+ Jul 2022 06:07:50 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
+ Frontend Transport; Thu, 14 Jul 2022 06:07:50 -0500
+Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 26EB7oXs021273;
+        Thu, 14 Jul 2022 06:07:50 -0500
+Date:   Thu, 14 Jul 2022 16:37:49 +0530
+From:   Pratyush Yadav <p.yadav@ti.com>
 To:     Mark Brown <broonie@kernel.org>
-CC:     <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>
-References: <20220712135504.1055688-1-yangyingliang@huawei.com>
- <Ys69wVhUih0dXdQc@sirena.org.uk>
-From:   Yang Yingliang <yangyingliang@huawei.com>
-Message-ID: <fe2da0be-403c-07b1-ea63-13325558fb8a@huawei.com>
-Date:   Thu, 14 Jul 2022 10:08:31 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+CC:     <vaishnav.a@ti.com>, <linux-kernel@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>, <vigneshr@ti.com>
+Subject: Re: [PATCH -next] spi: cadence-quadspi: Remove spi_master_put() in
+ probe failure path
+Message-ID: <20220714110749.ee5r4hznjn3ij66s@ti.com>
+References: <20220601071611.11853-1-vaishnav.a@ti.com>
+ <165459880689.302078.15844858048042907353.b4-ty@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <Ys69wVhUih0dXdQc@sirena.org.uk>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Originating-IP: [10.174.178.174]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- dggpemm500007.china.huawei.com (7.185.36.183)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <165459880689.302078.15844858048042907353.b4-ty@kernel.org>
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+Hi Mark,
 
-On 2022/7/13 20:42, Mark Brown wrote:
-> On Tue, Jul 12, 2022 at 09:55:04PM +0800, Yang Yingliang wrote:
->> This reverts commit 59ebbe40fb51e307032ae7f63b2749fad2d4635a.
->>
->> If devm_add_action() fails in devm_add_action_or_reset(),
->> devm_spi_unregister() will be called, it decreases the
-> Please submit patches using subject lines reflecting the style for the
-> subsystem, this makes it easier for people to identify relevant patches.
-> Look at what existing commits in the area you're changing are doing and
-> make sure your subject lines visually resemble what they're doing.
-> There's no need to resubmit to fix this alone.
->
-> Please include human readable descriptions of things like commits and
-> issues being discussed in e-mail in your mails, this makes them much
-> easier for humans to read especially when they have no internet access.
-> I do frequently catch up on my mail on flights or while otherwise
-> travelling so this is even more pressing for me than just being about
-> making things a bit easier to read.
-OK. Thanks for changing the subject to apply it, I will make my patch 
-more readable next time.
+On 07/06/22 11:46AM, Mark Brown wrote:
+> On Wed, 1 Jun 2022 12:46:11 +0530, Vaishnav Achath wrote:
+> > Currently the spi_master is allocated by devm_spi_alloc_master()
+> > and devres core manages the deallocation, but in probe failure
+> > path spi_master_put() is being handled manually which causes
+> > "refcount underflow use-after-free" warning when probe failure happens
+> > after allocating spi_master.
+> > 
+> > Trimmed backtrace during failure:
+> > 
+> > [...]
+> 
+> Applied to
+> 
+>    https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-Thanks,
-Yang
+I see this error in v5.19-rc6 as well. Can we get this patch merged as a 
+fix in rc7? Sorry for spotting this so late in the cycle, but I thought 
+you had already got this merged in one of the rcs.
+
+> 
+> Thanks!
+> 
+> [1/1] spi: cadence-quadspi: Remove spi_master_put() in probe failure path
+>       commit: 8523c96894e916b20ba3612e48e404fad5acfdd9
+> 
+> All being well this means that it will be integrated into the linux-next
+> tree (usually sometime in the next 24 hours) and sent to Linus during
+> the next merge window (or sooner if it is a bug fix), however if
+> problems are discovered then the patch may be dropped or reverted.
+> 
+> You may get further e-mails resulting from automated or manual testing
+> and review of the tree, please engage with people reporting problems and
+> send followup patches addressing any issues that are reported if needed.
+> 
+> If any updates are required or you are submitting further changes they
+> should be sent as incremental updates against current git, existing
+> patches will not be replaced.
+> 
+> Please add any relevant lists and maintainers to the CCs when replying
+> to this mail.
+> 
+> Thanks,
+> Mark
+
+-- 
+Regards,
+Pratyush Yadav
+Texas Instruments Inc.

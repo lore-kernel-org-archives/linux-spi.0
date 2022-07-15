@@ -2,35 +2,35 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B2663C433EF
-	for <linux-spi@archiver.kernel.org>; Fri, 15 Jul 2022 12:01:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E73D4CCA480
+	for <linux-spi@archiver.kernel.org>; Fri, 15 Jul 2022 12:01:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232627AbiGOMB2 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 15 Jul 2022 08:01:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52424 "EHLO
+        id S234237AbiGOMBa (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 15 Jul 2022 08:01:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231371AbiGOMB1 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 15 Jul 2022 08:01:27 -0400
+        with ESMTP id S232176AbiGOMB2 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 15 Jul 2022 08:01:28 -0400
 Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 305327BE0C;
-        Fri, 15 Jul 2022 05:01:22 -0700 (PDT)
-X-UUID: 78f816e113d049109802212d18b3bf89-20220715
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DD937C1A0;
+        Fri, 15 Jul 2022 05:01:24 -0700 (PDT)
+X-UUID: 2056d22f1e4747d1a9416aea785f472a-20220715
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.8,REQID:bd5fa209-dc6b-407d-841a-abe01d4f485e,OB:0,LO
+X-CID-O-INFO: VERSION:1.1.8,REQID:1f1158dd-1278-492a-916e-da2420de8704,OB:0,LO
         B:0,IP:0,URL:5,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,RULE:Release_Ham,ACT
         ION:release,TS:0
-X-CID-META: VersionHash:0f94e32,CLOUDID:70089ad7-5d6d-4eaf-a635-828a3ee48b7c,C
+X-CID-META: VersionHash:0f94e32,CLOUDID:c8089ad7-5d6d-4eaf-a635-828a3ee48b7c,C
         OID:IGNORED,Recheck:0,SF:nil,TC:nil,Content:0,EDM:-3,IP:nil,URL:1,File:nil
         ,QS:nil,BEC:nil,COL:0
-X-UUID: 78f816e113d049109802212d18b3bf89-20220715
-Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw02.mediatek.com
+X-UUID: 2056d22f1e4747d1a9416aea785f472a-20220715
+Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw02.mediatek.com
         (envelope-from <johnson.wang@mediatek.com>)
         (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 838784740; Fri, 15 Jul 2022 20:01:17 +0800
+        with ESMTP id 73843556; Fri, 15 Jul 2022 20:01:17 +0800
 Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.792.3;
- Fri, 15 Jul 2022 20:01:15 +0800
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.792.15; Fri, 15 Jul 2022 20:01:15 +0800
 Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
  mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
  15.2.792.3 via Frontend Transport; Fri, 15 Jul 2022 20:01:15 +0800
@@ -44,10 +44,12 @@ CC:     <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <linux-mediatek@lists.infradead.org>,
         <Project_Global_Chrome_Upstream_Group@mediatek.com>,
         Johnson Wang <johnson.wang@mediatek.com>
-Subject: [PATCH 1/3] spi: dt-bindings: Add compatible for MediaTek MT8188
-Date:   Fri, 15 Jul 2022 20:01:12 +0800
-Message-ID: <20220715120114.4243-1-johnson.wang@mediatek.com>
+Subject: [PATCH 3/3] dt-bindings: nvmem: mediatek: efuse: Add support for MT8188
+Date:   Fri, 15 Jul 2022 20:01:14 +0800
+Message-ID: <20220715120114.4243-3-johnson.wang@mediatek.com>
 X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20220715120114.4243-1-johnson.wang@mediatek.com>
+References: <20220715120114.4243-1-johnson.wang@mediatek.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-MTK:  N
@@ -55,26 +57,28 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This commit adds dt-binding documentation of spi bus for MediaTek MT8188
-SoC platform.
+Add compatible for MT8188 SoC.
 
 Signed-off-by: Johnson Wang <johnson.wang@mediatek.com>
 ---
- Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml | 1 +
+This patch is based on "linux-next"[1].
+[1]https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
+---
+ Documentation/devicetree/bindings/nvmem/mediatek,efuse.yaml | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml b/Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml
-index d3d34a3a0b7f..8d2a6c084eab 100644
---- a/Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml
-+++ b/Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml
-@@ -34,6 +34,7 @@ properties:
-       - items:
-           - enum:
-               - mediatek,mt7986-spi-ipm
-+              - mediatek,mt8188-spi-ipm
-           - const: mediatek,spi-ipm
-       - items:
-           - enum:
+diff --git a/Documentation/devicetree/bindings/nvmem/mediatek,efuse.yaml b/Documentation/devicetree/bindings/nvmem/mediatek,efuse.yaml
+index b5a1109f2ee1..75e0a516e59a 100644
+--- a/Documentation/devicetree/bindings/nvmem/mediatek,efuse.yaml
++++ b/Documentation/devicetree/bindings/nvmem/mediatek,efuse.yaml
+@@ -30,6 +30,7 @@ properties:
+               - mediatek,mt8173-efuse
+               - mediatek,mt8183-efuse
+               - mediatek,mt8186-efuse
++              - mediatek,mt8188-efuse
+               - mediatek,mt8192-efuse
+               - mediatek,mt8195-efuse
+               - mediatek,mt8516-efuse
 -- 
 2.18.0
 

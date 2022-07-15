@@ -2,81 +2,84 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5C1EDCCA47F
-	for <linux-spi@archiver.kernel.org>; Fri, 15 Jul 2022 12:01:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 13858C43334
+	for <linux-spi@archiver.kernel.org>; Fri, 15 Jul 2022 13:32:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233193AbiGOMB3 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 15 Jul 2022 08:01:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52422 "EHLO
+        id S229820AbiGONcD (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 15 Jul 2022 09:32:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229704AbiGOMB1 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 15 Jul 2022 08:01:27 -0400
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E0C877A45;
-        Fri, 15 Jul 2022 05:01:21 -0700 (PDT)
-X-UUID: 7f45c3e150d441afaf536bc76e81dcf2-20220715
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.8,REQID:c15510cd-f3c2-4c06-aff2-c42b571544b9,OB:0,LO
-        B:0,IP:0,URL:5,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,RULE:Release_Ham,ACTI
-        ON:release,TS:5
-X-CID-META: VersionHash:0f94e32,CLOUDID:9f8c1733-b9e4-42b8-b28a-6364427c76bb,C
-        OID:IGNORED,Recheck:0,SF:nil,TC:nil,Content:0,EDM:-3,IP:nil,URL:1,File:nil
-        ,QS:nil,BEC:nil,COL:0
-X-UUID: 7f45c3e150d441afaf536bc76e81dcf2-20220715
-Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw01.mediatek.com
-        (envelope-from <johnson.wang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 115486699; Fri, 15 Jul 2022 20:01:16 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.792.15; Fri, 15 Jul 2022 20:01:15 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.3 via Frontend Transport; Fri, 15 Jul 2022 20:01:15 +0800
-From:   Johnson Wang <johnson.wang@mediatek.com>
-To:     <broonie@kernel.org>, <srinivas.kandagatla@linaro.org>,
-        <matthias.bgg@gmail.com>, <robh+dt@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>
-CC:     <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>,
-        <Project_Global_Chrome_Upstream_Group@mediatek.com>,
-        Johnson Wang <johnson.wang@mediatek.com>
-Subject: [PATCH 2/3] dt-bindings: timer: Add compatible for MediaTek MT8188
-Date:   Fri, 15 Jul 2022 20:01:13 +0800
-Message-ID: <20220715120114.4243-2-johnson.wang@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20220715120114.4243-1-johnson.wang@mediatek.com>
-References: <20220715120114.4243-1-johnson.wang@mediatek.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+        with ESMTP id S229550AbiGONcC (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 15 Jul 2022 09:32:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 903A87AC06;
+        Fri, 15 Jul 2022 06:32:01 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2A8E362398;
+        Fri, 15 Jul 2022 13:32:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A098C34115;
+        Fri, 15 Jul 2022 13:31:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1657891920;
+        bh=xOaEPvfFP0dRHMcGq7RhVXk1qFrQbqyvQZ+CNpHnC68=;
+        h=From:To:Cc:Subject:Date:From;
+        b=cIZtgKbyr/OlSdtjKj+dHi5Ox2gx7tz2hu2Vtgz3Jvk6sXAUM+zVKshPzqnnOjGyQ
+         2jV+mbSQ74uU1xkMrOsHUwZ8AX6y/QW0qDUbtIOC4gxrjumXM39D5Twgi5VDenIr/D
+         PQAaHIoYV0Kht6068qt5s7nhCtF1fo03wFhM9xAyq0AP+AuuumvSjkggovG3d3X9jI
+         xAzTbU9XqMmhUq1eWWQxMDYviAgw9vXMuAQddjIkoMK9Zo6Do1Y9ZCqbnE/H4WMsg1
+         NDAslfaAqK06NYRE2BKwmHKQEuZGnJdEyouv73TtOybMz2cg9iwxlMmVWXqSANFOzx
+         qqRnhsjeEiR7g==
+From:   Mark Brown <broonie@kernel.org>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>
+Subject: [GIT PULL] SPI fixes for v5.19-rc4
+Date:   Fri, 15 Jul 2022 14:31:50 +0100
+Message-Id: <20220715133200.2A098C34115@smtp.kernel.org>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This commit adds dt-binding documentation of timer for MediaTek MT8188 SoC
-platform.
+The following changes since commit 419bc8f681a0dc63588cee693b6d45e7caa6006c:
 
-Signed-off-by: Johnson Wang <johnson.wang@mediatek.com>
----
- Documentation/devicetree/bindings/timer/mediatek,mtk-timer.txt | 1 +
- 1 file changed, 1 insertion(+)
+  spi: rockchip: Unmask IRQ at the final to avoid preemption (2022-06-20 11:35:43 +0100)
 
-diff --git a/Documentation/devicetree/bindings/timer/mediatek,mtk-timer.txt b/Documentation/devicetree/bindings/timer/mediatek,mtk-timer.txt
-index 6f1f9dba6e88..5dabf8e37b2d 100644
---- a/Documentation/devicetree/bindings/timer/mediatek,mtk-timer.txt
-+++ b/Documentation/devicetree/bindings/timer/mediatek,mtk-timer.txt
-@@ -24,6 +24,7 @@ Required properties:
- 	For those SoCs that use SYST
- 	* "mediatek,mt8183-timer" for MT8183 compatible timers (SYST)
- 	* "mediatek,mt8186-timer" for MT8186 compatible timers (SYST)
-+	* "mediatek,mt8188-timer" for MT8188 compatible timers (SYST)
- 	* "mediatek,mt8192-timer" for MT8192 compatible timers (SYST)
- 	* "mediatek,mt8195-timer" for MT8195 compatible timers (SYST)
- 	* "mediatek,mt7629-timer" for MT7629 compatible timers (SYST)
--- 
-2.18.0
+are available in the Git repository at:
 
+  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v5.19-rc4
+
+for you to fetch changes up to 73d5fe046270281a46344e06bf986c607632f7ea:
+
+  spi: cadence-quadspi: Remove spi_master_put() in probe failure path (2022-07-14 13:26:35 +0100)
+
+----------------------------------------------------------------
+spi: Fixes for v5.19
+
+A few driver specific fixes, none especially remarkable, plus a
+MAINTAINERS file update due to the previous maintainer for the NXP FSPI
+driver having left the company.
+
+----------------------------------------------------------------
+Cristian Ciocaltea (1):
+      spi: amd: Limit max transfer and message size
+
+Cédric Le Goater (2):
+      spi: aspeed: Add dev_dbg() to dump the spi-mem direct mapping descriptor
+      spi: aspeed: Fix division by zero
+
+Han Xu (1):
+      MAINTAINERS: change the NXP FSPI driver maintainer.
+
+Mark Brown (1):
+      spi: Merge AMD fix
+
+Vaishnav Achath (1):
+      spi: cadence-quadspi: Remove spi_master_put() in probe failure path
+
+ MAINTAINERS                       |  3 ++-
+ drivers/spi/spi-amd.c             |  8 ++++++++
+ drivers/spi/spi-aspeed-smc.c      | 12 +++++++++++-
+ drivers/spi/spi-cadence-quadspi.c | 19 +++++++------------
+ 4 files changed, 28 insertions(+), 14 deletions(-)

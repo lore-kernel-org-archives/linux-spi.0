@@ -2,83 +2,134 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 31F3ECCA479
-	for <linux-spi@archiver.kernel.org>; Mon, 18 Jul 2022 14:16:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AE2E1CCA489
+	for <linux-spi@archiver.kernel.org>; Mon, 18 Jul 2022 22:00:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234434AbiGROQX (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 18 Jul 2022 10:16:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40136 "EHLO
+        id S236391AbiGRWAT (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 18 Jul 2022 18:00:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233352AbiGROQM (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 18 Jul 2022 10:16:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 161105FA2;
-        Mon, 18 Jul 2022 07:16:11 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A157A60A6D;
-        Mon, 18 Jul 2022 14:16:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8970EC341CF;
-        Mon, 18 Jul 2022 14:16:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1658153770;
-        bh=anQAhzj0hNoAoDauWAq911k+RDOaRL0GEvj3qKhtGY4=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=b/Pa9E/Jr2Gd3SQoqBG6Msxj+sN6828QlFO2lDwMzyRfpchng/INs/htM6GMgPNlh
-         ioa2jELQfHiLejSc6ItPg4PBxCmjwQkFZ0jZ5NpMBYuri7Ycq5+W2Wnu24j3i9ur3g
-         VTQ8uX8d10lEj4z3UgYzameKLbiJ7sL1kXAMbFiEHE0jyOBNhn3EmByg3YU7cMaUkW
-         Gc7bbAu6EkWuhx5zc8yZuVKUxt/ZiBDRyNuSzbcKb+Vpi0CPFu2w+GxJTTwbZpG8hz
-         odgbVtlB5vKG0lSvvFvcR4Eo8oYXc2M728bi3te0Ga6RbEx/BDEhIGXuh58le5ywFY
-         RMocPiTrjUK2Q==
-From:   Mark Brown <broonie@kernel.org>
-To:     claudiu.beznea@microchip.com, tudor.ambarus@microchip.com,
-        alexandre.belloni@bootlin.com, nicolas.ferre@microchip.com
-Cc:     linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-In-Reply-To: <20220718071052.1707858-1-claudiu.beznea@microchip.com>
-References: <20220718071052.1707858-1-claudiu.beznea@microchip.com>
-Subject: Re: [PATCH] spi: atmel: remove #ifdef CONFIG_{PM, SLEEP}
-Message-Id: <165815376828.235243.1985340166357749822.b4-ty@kernel.org>
-Date:   Mon, 18 Jul 2022 15:16:08 +0100
+        with ESMTP id S234452AbiGRWAR (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 18 Jul 2022 18:00:17 -0400
+Received: from mail-io1-f46.google.com (mail-io1-f46.google.com [209.85.166.46])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B5C030569;
+        Mon, 18 Jul 2022 15:00:16 -0700 (PDT)
+Received: by mail-io1-f46.google.com with SMTP id r70so9298051iod.10;
+        Mon, 18 Jul 2022 15:00:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=gIUyF/ORGQjWXNvT5wIOVjajXgGpEkbk6f/tl0gQiac=;
+        b=di179KuRgOE3ptTOBICiYzoBzUoVyGF9NcDnAWKlJ34a3iqCe93L5MVLhfVGXDplcv
+         jQiviGqfADQCBsd5sNR40P5VXco+51oEP7/l96m1RWCCRhvC6M4EJp60E3uNtao9B+wA
+         x65ZBP19n3zU5x2ku2rO0vHRWJd//IdeBb6Odeorc3dzLOP1i8JFSl5KCEbYAa8czmMZ
+         t2Pt/NHUL1093wk95oHAtugkFByX8iqJYjCfByFFdFP391ICgCqViiWt/luytfTdvwIA
+         7aA7YU6oiuAs4D0vk1UJzSuBXR8wZeBDEKnoLBX8UqyS3AkBqN+W1Am8cYRLypIS5U+N
+         /eEg==
+X-Gm-Message-State: AJIora9SqI/5In3vPbAFmo+b4Tg8RGwirBzBn56cCvKA9YK3Qhv3XvmD
+        aUO4Y10dPA3w5NioUtw+xg==
+X-Google-Smtp-Source: AGRyM1sUfx9PknCBXVyopJZHm5bZnR/LgT1hX56ktRZLDXFdm584csRgriFVCGgWxWMs/6JjxIxhVA==
+X-Received: by 2002:a05:6602:2b84:b0:67b:d178:38bb with SMTP id r4-20020a0566022b8400b0067bd17838bbmr11138408iov.120.1658181615882;
+        Mon, 18 Jul 2022 15:00:15 -0700 (PDT)
+Received: from robh.at.kernel.org ([64.188.179.248])
+        by smtp.gmail.com with ESMTPSA id 7-20020a921307000000b002dcafb975c6sm5175816ilt.82.2022.07.18.15.00.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Jul 2022 15:00:15 -0700 (PDT)
+Received: (nullmailer pid 3640548 invoked by uid 1000);
+        Mon, 18 Jul 2022 22:00:12 -0000
+Date:   Mon, 18 Jul 2022 16:00:12 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+        Marcus Folkesson <marcus.folkesson@gmail.com>,
+        Kent Gustavsson <kent@minoris.se>,
+        Tomislav Denis <tomislav.denis@avl.com>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Beniamin Bia <beniamin.bia@analog.com>,
+        Patrick Vasseur <patrick.vasseur@c-s.fr>,
+        Vladimir Barinov <vladimir.barinov@cogentembedded.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Philippe Reynes <tremyfr@yahoo.fr>,
+        Jacopo Mondi <jacopo@jmondi.org>,
+        Akinobu Mita <akinobu.mita@gmail.com>,
+        Alexandru Lazar <alazar@startmail.com>,
+        Oskar Andero <oskar.andero@gmail.com>,
+        =?UTF-8?Q?M=C3=A5rten_Lindahl?= <martenli@axis.com>,
+        Bogdan Pricop <bogdan.pricop@emutex.com>,
+        Angelo Compagnucci <angelo.compagnucci@gmail.com>,
+        Dan Murphy <dmurphy@ti.com>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, linux-spi@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>
+Subject: Re: [RFC PATCH] dt-bindings: iio: adc: use spi-peripheral-props.yaml
+Message-ID: <20220718220012.GA3625497-robh@kernel.org>
+References: <20220715095302.214276-1-krzysztof.kozlowski@linaro.org>
+ <20220716192604.21a1d835@jic23-huawei>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220716192604.21a1d835@jic23-huawei>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Mon, 18 Jul 2022 10:10:52 +0300, Claudiu Beznea wrote:
-> Remove #ifdef CONFIG_PM, #ifdef CONFIG_PM_SLEEP and use
-> SYSTEM_SLEEP_PM_OPS() and RUNTIME_PM_OPS() macros instead which allows
-> getting also rid of __maybe_unused in the code.
+On Sat, Jul 16, 2022 at 07:26:04PM +0100, Jonathan Cameron wrote:
+> On Fri, 15 Jul 2022 11:53:02 +0200
+> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
 > 
+> > Instead of listing directly properties typical for SPI peripherals,
+> > reference the spi-peripheral-props.yaml schema.  This allows using all
+> > properties typical for SPI-connected devices, even these which device
+> > bindings author did not tried yet.
+> > 
+> > Remove the spi-* properties which now come via spi-peripheral-props.yaml
+> > schema, except for the cases when device schema adds some constraints
+> > like maximum frequency.
+> > 
+> > Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> > 
+> > ---
+> > 
+> > This is an RFC with only some files changed, as I am still not sure of
+> > benefits for typical case - device node has just spi-max-frequency and
+> > nothing more.  I still find useful to reference the schema, but maybe I
+> > am missing something?
+> > 
+> > Before doing wide-tree cleanup like this, I would be happy to receive
+> > some feedback whether this makes sense.
 > 
+> Hi Krzysztof,
+> 
+> This has the side effect of allowing spi-cpol / spi-cpha for devices
+> where they weren't previously allowed by the binding.  A typical device
+> only supports a subset of combinations of those.
+> 
+> I'm not clear whether these should always be allowed (e.g. allow for inverters
+> etc in the path) or whether we should be enforcing the "correct"
+> settings for devices assuming they are directly connected.
+> 
+> Currently we have a bunch of bindings that are documenting the allowed
+> flexibility - including cases where only particular combinations of these
+> settings are allowed.
+> 
+> So we could either:
+> 1) Note that we've been doing it wrong and the binding should not enforce
+>    these constraints so remove them.
 
-Applied to
+I'd lean towards this.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+> 2) Add explicit spi-cpol: false statements etc the drivers where they
+>    are not allowed.
 
-Thanks!
+3) Drop spi-cpol / spi-cpha from spi-peripheral-props.yaml. It's purpose 
+is to collect all possible SPI controller properties that are per child 
+node. Whereas we've said spi-cpol / spi-cpha are device specific 
+properties.
 
-[1/1] spi: atmel: remove #ifdef CONFIG_{PM, SLEEP}
-      commit: a3fd35be0eda760610a63e179ad860189b890f0b
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+Rob

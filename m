@@ -2,34 +2,31 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3DA6CC43334
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 11A24C433EF
 	for <linux-spi@archiver.kernel.org>; Mon, 18 Jul 2022 08:27:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233845AbiGRI1i (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S229890AbiGRI1i (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Mon, 18 Jul 2022 04:27:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36218 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233852AbiGRI1h (ORCPT
+        with ESMTP id S233845AbiGRI1h (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Mon, 18 Jul 2022 04:27:37 -0400
+X-Greylist: delayed 899 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 18 Jul 2022 01:27:36 PDT
 Received: from maillog.nuvoton.com (maillog.nuvoton.com [202.39.227.15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0F26C18B3A
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0311718B34
         for <linux-spi@vger.kernel.org>; Mon, 18 Jul 2022 01:27:36 -0700 (PDT)
-Received: from NTHCCAS04.nuvoton.com (NTHCCAS04.nuvoton.com [10.1.8.29])
-        by maillog.nuvoton.com (Postfix) with ESMTP id BE51A1C811C8;
-        Mon, 18 Jul 2022 16:12:41 +0800 (CST)
-Received: from NTHCCAS03.nuvoton.com (10.1.20.28) by NTHCCAS04.nuvoton.com
- (10.1.8.29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Mon, 18
- Jul 2022 16:12:41 +0800
-Received: from NTHCCAS01.nuvoton.com (10.1.8.28) by NTHCCAS03.nuvoton.com
- (10.1.20.28) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1847.3; Mon, 18 Jul
- 2022 16:12:41 +0800
+Received: from NTHCCAS01.nuvoton.com (NTHCCAS01.nuvoton.com [10.1.8.28])
+        by maillog.nuvoton.com (Postfix) with ESMTP id 06F8A1C811BD;
+        Mon, 18 Jul 2022 16:12:38 +0800 (CST)
+Received: from NTHCCAS01.nuvoton.com (10.1.8.28) by NTHCCAS01.nuvoton.com
+ (10.1.8.28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Mon, 18 Jul
+ 2022 16:12:37 +0800
 Received: from taln60.nuvoton.co.il (10.191.1.180) by NTHCCAS01.nuvoton.com
  (10.1.12.25) with Microsoft SMTP Server id 15.1.2375.7 via Frontend
- Transport; Mon, 18 Jul 2022 16:12:41 +0800
+ Transport; Mon, 18 Jul 2022 16:12:37 +0800
 Received: by taln60.nuvoton.co.il (Postfix, from userid 10070)
-        id 58E7563A20; Mon, 18 Jul 2022 11:12:40 +0300 (IDT)
+        id AF8FE63A4C; Mon, 18 Jul 2022 11:12:36 +0300 (IDT)
 From:   Tomer Maimon <tmaimon77@gmail.com>
 To:     <avifishman70@gmail.com>, <tali.perry1@gmail.com>,
         <joel@jms.id.au>, <venture@google.com>, <yuenn@google.com>,
@@ -38,9 +35,9 @@ To:     <avifishman70@gmail.com>, <tali.perry1@gmail.com>,
 CC:     <openbmc@lists.ozlabs.org>, <linux-spi@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
         Tomer Maimon <tmaimon77@gmail.com>
-Subject: [PATCH v1 3/3] spi: npcm-fiu: Add NPCM8XX support
-Date:   Mon, 18 Jul 2022 11:11:46 +0300
-Message-ID: <20220718081146.256070-4-tmaimon77@gmail.com>
+Subject: [PATCH v1 1/3] spi: npcm-fiu: Modify direct read dummy configuration
+Date:   Mon, 18 Jul 2022 11:11:44 +0300
+Message-ID: <20220718081146.256070-2-tmaimon77@gmail.com>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20220718081146.256070-1-tmaimon77@gmail.com>
 References: <20220718081146.256070-1-tmaimon77@gmail.com>
@@ -51,91 +48,28 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Adding FIU NPCM8XX support to NPCM FIU driver.
-NPCM8XX FIU supports four controllers.
-
-As part of adding NPCM8XX support:
-- Add NPCM8XX specific compatible string.
-- Using an internal burst configuration register instead of a GCR
-  register.
-- Support FIU1 controller.
+Modify NPCM BMC FIU direct read dummy configuration that according
+spi-mem direct read function.
 
 Signed-off-by: Tomer Maimon <tmaimon77@gmail.com>
 ---
- drivers/spi/spi-npcm-fiu.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ drivers/spi/spi-npcm-fiu.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-npcm-fiu.c b/drivers/spi/spi-npcm-fiu.c
-index d5b4fe7b9b62..49f6424e35af 100644
+index ba67dbed9fb8..d5b4fe7b9b62 100644
 --- a/drivers/spi/spi-npcm-fiu.c
 +++ b/drivers/spi/spi-npcm-fiu.c
-@@ -36,6 +36,7 @@
- #define NPCM_FIU_UMA_DR1		0x34
- #define NPCM_FIU_UMA_DR2		0x38
- #define NPCM_FIU_UMA_DR3		0x3C
-+#define NPCM_FIU_CFG			0x78
- #define NPCM_FIU_MAX_REG_LIMIT		0x80
- 
- /* FIU Direct Read Configuration Register */
-@@ -151,6 +152,9 @@
- #define NPCM_FIU_UMA_DR3_RB13		GENMASK(15, 8)
- #define NPCM_FIU_UMA_DR3_RB12		GENMASK(7, 0)
- 
-+/* FIU Configuration Register */
-+#define NPCM_FIU_CFG_FIU_FIX		BIT(31)
-+
- /* FIU Read Mode */
- enum {
- 	DRD_SINGLE_WIRE_MODE	= 0,
-@@ -187,6 +191,7 @@ enum {
- 	FIU0 = 0,
- 	FIU3,
- 	FIUX,
-+	FIU1,
- };
- 
- struct npcm_fiu_info {
-@@ -214,6 +219,21 @@ static const struct fiu_data npcm7xx_fiu_data = {
- 	.fiu_max = 3,
- };
- 
-+static const struct npcm_fiu_info npxm8xx_fiu_info[] = {
-+	{.name = "FIU0", .fiu_id = FIU0,
-+		.max_map_size = MAP_SIZE_128MB, .max_cs = 2},
-+	{.name = "FIU3", .fiu_id = FIU3,
-+		.max_map_size = MAP_SIZE_128MB, .max_cs = 4},
-+	{.name = "FIUX", .fiu_id = FIUX,
-+		.max_map_size = MAP_SIZE_16MB, .max_cs = 2},
-+	{.name = "FIU1", .fiu_id = FIU1,
-+		.max_map_size = MAP_SIZE_16MB, .max_cs = 4} };
-+
-+static const struct fiu_data npxm8xx_fiu_data = {
-+	.npcm_fiu_data_info = npxm8xx_fiu_info,
-+	.fiu_max = 4,
-+};
-+
- struct npcm_fiu_spi;
- 
- struct npcm_fiu_chip {
-@@ -624,6 +644,10 @@ static int npcm_fiu_dirmap_create(struct spi_mem_dirmap_desc *desc)
- 		regmap_update_bits(gcr_regmap, NPCM7XX_INTCR3_OFFSET,
- 				   NPCM7XX_INTCR3_FIU_FIX,
- 				   NPCM7XX_INTCR3_FIU_FIX);
-+	} else {
-+		regmap_update_bits(fiu->regmap, NPCM_FIU_CFG,
-+				   NPCM_FIU_CFG_FIU_FIX,
-+				   NPCM_FIU_CFG_FIU_FIX);
- 	}
- 
- 	if (desc->info.op_tmpl.data.dir == SPI_MEM_DATA_IN) {
-@@ -664,6 +688,7 @@ static const struct spi_controller_mem_ops npcm_fiu_mem_ops = {
- 
- static const struct of_device_id npcm_fiu_dt_ids[] = {
- 	{ .compatible = "nuvoton,npcm750-fiu", .data = &npcm7xx_fiu_data  },
-+	{ .compatible = "nuvoton,npcm845-fiu", .data = &npxm8xx_fiu_data  },
- 	{ /* sentinel */ }
- };
- 
+@@ -252,8 +252,7 @@ static void npcm_fiu_set_drd(struct npcm_fiu_spi *fiu,
+ 	fiu->drd_op.addr.buswidth = op->addr.buswidth;
+ 	regmap_update_bits(fiu->regmap, NPCM_FIU_DRD_CFG,
+ 			   NPCM_FIU_DRD_CFG_DBW,
+-			   ((op->dummy.nbytes * ilog2(op->addr.buswidth)) / BITS_PER_BYTE)
+-			   << NPCM_FIU_DRD_DBW_SHIFT);
++			   op->dummy.nbytes << NPCM_FIU_DRD_DBW_SHIFT);
+ 	fiu->drd_op.dummy.nbytes = op->dummy.nbytes;
+ 	regmap_update_bits(fiu->regmap, NPCM_FIU_DRD_CFG,
+ 			   NPCM_FIU_DRD_CFG_RDCMD, op->cmd.opcode);
 -- 
 2.33.0
 

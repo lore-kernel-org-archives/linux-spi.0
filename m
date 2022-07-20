@@ -2,66 +2,91 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B5668C43334
-	for <linux-spi@archiver.kernel.org>; Wed, 20 Jul 2022 18:10:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8DEA7C433EF
+	for <linux-spi@archiver.kernel.org>; Wed, 20 Jul 2022 20:11:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229881AbiGTSKX (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 20 Jul 2022 14:10:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60126 "EHLO
+        id S229993AbiGTULQ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 20 Jul 2022 16:11:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232001AbiGTSKS (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 20 Jul 2022 14:10:18 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C83AE0F0
-        for <linux-spi@vger.kernel.org>; Wed, 20 Jul 2022 11:10:17 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S229717AbiGTULP (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 20 Jul 2022 16:11:15 -0400
+Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43DCE481ED;
+        Wed, 20 Jul 2022 13:11:14 -0700 (PDT)
+Received: from pps.filterd (m0134422.ppops.net [127.0.0.1])
+        by mx0b-002e3701.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26KG9vmE021710;
+        Wed, 20 Jul 2022 20:10:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=from : to : cc : subject
+ : date : message-id : in-reply-to : references; s=pps0720;
+ bh=k0In4bLxCRkDqdHMupkX4LzDZ3mxffdvacbQOcSfF6k=;
+ b=iyE8oKedtua1pv2vG2IClZqiEIsFxuW/kDW5sIe2ziCTNEFLPfwZg4uWp5RqLGAkqvtk
+ ViVNErc1Cs1NYjvpvrFhFlA/K3jICJ2QzTqRbmO5MWh+3l9dSZM/J7JoUqKksTK+Mzvu
+ Hntrxh45AbsJmXm1fBi9573qgRzjUmMxH/lFrKoguo4jCmthqiM4u5UMGqW+VVRVjMia
+ FcReaQ5yz1q2M7pw5nPsxe3XMCEptRAaOkyjHj1lxeB+h3G2Zv7flSKyHOvubnee2vyY
+ lzAL/I78pWir5D2xnowb+yqXoBneqyOnadRCI8lZ9ILtWboz5d78dtAnjEwnibd596sQ jQ== 
+Received: from p1lg14879.it.hpe.com (p1lg14879.it.hpe.com [16.230.97.200])
+        by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 3hemyw9rye-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 20 Jul 2022 20:10:50 +0000
+Received: from p1lg14886.dc01.its.hpecorp.net (unknown [10.119.18.237])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 0C73AB821A3
-        for <linux-spi@vger.kernel.org>; Wed, 20 Jul 2022 18:10:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 984EAC3411E;
-        Wed, 20 Jul 2022 18:10:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1658340614;
-        bh=RMGF6ANZA8sLAapscbx7a9xYepvPz9az/C3v3CuT3Dc=;
-        h=Subject:From:Date:To:From;
-        b=HsDu51/rODFz4aCeY4g3ojCu96JaHGLx8blkl/26cco5scE+NXAlmEc2m2aNVWOqu
-         DYqtCnlVHl0v5zZMMx5a9ry+Awpi5Gx3dSt47dJnoWcMP9eWz/EPGuhqBvePMcIyqA
-         DTY0VtE8SX+SNowyckVVTAOR7oupyQE3bN4ATFrzWBe1RkhpsBMHX3PSZi8cCRbaQ+
-         sypHd6e/Fl4ysQ0XrnKkGKB4CMJLnVTn9cpol0DhdokrYUxBwUJL9Fs/O4n5oLH7hU
-         P1TCztIvUV+Y3l/kO2ID0ZRzz5NfT5B0LiybIRbRRbgliGnPfCb0qoU6cs8t+a8HpL
-         fwkwqYfhvBguQ==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 75BB9D9DDDD;
-        Wed, 20 Jul 2022 18:10:14 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From:   patchwork-bot+spi-devel-general@kernel.org
-Message-Id: <165834061447.3445.14457735708059982224.git-patchwork-summary@kernel.org>
-Date:   Wed, 20 Jul 2022 18:10:14 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
+        by p1lg14879.it.hpe.com (Postfix) with ESMTPS id 2E3D1132E1;
+        Wed, 20 Jul 2022 20:10:50 +0000 (UTC)
+Received: from hpe.com (unknown [16.231.227.36])
+        by p1lg14886.dc01.its.hpecorp.net (Postfix) with ESMTP id 95AD0809061;
+        Wed, 20 Jul 2022 20:10:49 +0000 (UTC)
+From:   nick.hawkins@hpe.com
+To:     nick.hawkins@hpe.com
+Cc:     broonie@kernel.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, verdun@hpe.com,
+        linux@armlinux.org.uk, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, arnd@arndb.de, joel@jms.id.au
+Subject: [PATCH v1 4/5] ARM: configs: multi_v7_defconfig: Enable HPE GXP SPI driver
+Date:   Wed, 20 Jul 2022 15:11:57 -0500
+Message-Id: <20220720201158.78068-5-nick.hawkins@hpe.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20220720201158.78068-1-nick.hawkins@hpe.com>
+References: <20220720201158.78068-1-nick.hawkins@hpe.com>
+X-Proofpoint-GUID: 6vODcKIDJ0YRdhBL3nc5g14OZ6mE4FD-
+X-Proofpoint-ORIG-GUID: 6vODcKIDJ0YRdhBL3nc5g14OZ6mE4FD-
+X-HPE-SCL: -1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-07-20_12,2022-07-20_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ adultscore=0 spamscore=0 malwarescore=0 suspectscore=0 mlxlogscore=657
+ clxscore=1015 phishscore=0 mlxscore=0 bulkscore=0 impostorscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2206140000 definitions=main-2207200081
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hello:
+From: Nick Hawkins <nick.hawkins@hpe.com>
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (for-next):
+Enable the SPI driver on the HPE GXP BMC.
 
-Patch: [RESEND,v2] spi: dt-bindings: qcom,spi-geni-qcom: allow three interconnects
-  Submitter: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=661531
-  Lore link: https://lore.kernel.org/r/20220720163841.7283-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Nick Hawkins <nick.hawkins@hpe.com>
+---
+ arch/arm/configs/multi_v7_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-
-Total patches: 1
-
+diff --git a/arch/arm/configs/multi_v7_defconfig b/arch/arm/configs/multi_v7_defconfig
+index ce9826bce29b..9dd827a6c3bc 100644
+--- a/arch/arm/configs/multi_v7_defconfig
++++ b/arch/arm/configs/multi_v7_defconfig
+@@ -443,6 +443,7 @@ CONFIG_SPI_CADENCE=y
+ CONFIG_SPI_DAVINCI=y
+ CONFIG_SPI_FSL_QUADSPI=m
+ CONFIG_SPI_GPIO=m
++CONFIG_SPI_GXP=y
+ CONFIG_SPI_FSL_DSPI=m
+ CONFIG_SPI_OMAP24XX=y
+ CONFIG_SPI_ORION=y
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.17.1
 

@@ -2,42 +2,42 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 022E9C433EF
-	for <linux-spi@archiver.kernel.org>; Fri, 22 Jul 2022 21:48:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 601B2CCA473
+	for <linux-spi@archiver.kernel.org>; Fri, 22 Jul 2022 21:48:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234027AbiGVVs0 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S236046AbiGVVs0 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Fri, 22 Jul 2022 17:48:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47544 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231878AbiGVVsZ (ORCPT
+        with ESMTP id S229986AbiGVVsZ (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Fri, 22 Jul 2022 17:48:25 -0400
 Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4C1089AA1;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4BCE89A46;
         Fri, 22 Jul 2022 14:48:24 -0700 (PDT)
-Received: from pps.filterd (m0148664.ppops.net [127.0.0.1])
-        by mx0b-002e3701.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26MKrESd011979;
-        Fri, 22 Jul 2022 21:48:07 GMT
+Received: from pps.filterd (m0134423.ppops.net [127.0.0.1])
+        by mx0b-002e3701.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26MI29hB013167;
+        Fri, 22 Jul 2022 21:48:09 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=from : to : cc : subject
- : date : message-id; s=pps0720;
- bh=XyhImU/s8jTS0MAtGnuJgfSv2I3LX1GjvUcuw7eaKzM=;
- b=FoGVqkq541/fg1I5PaSuO/Rsp3Ne0DHLcb0DTLgEN1iTSdmE/yLgbGqvgc9kzhcbXXG6
- Qz3WOZI8BpwTr2qya8lfdFF1xpsd5OfR5s1te3Zas5fBapNXT9uA9QDSm/0/kKoTQzVU
- 98XTYvxjEZ4TmMAzFRF2vfPDj6DXXxA3OVKt/bvxqx8WcgHwkghStkRcek3PnzQy104V
- 4b1Jfm/RMpCdef/8e5jEe7iS6PnfIXJc/asWR1nYFOvryfjRMqxZ5IAMB5/IKHha7DC5
- 7ZlgTHVb0HEd/F9/1dY+hGMs2WmPR6w5pq3c41RhpK7SK3rRu30Q8ewOpsNqjjklr6j2 hg== 
-Received: from p1lg14880.it.hpe.com (p1lg14880.it.hpe.com [16.230.97.201])
-        by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 3hfyqc9t95-1
+ : date : message-id : in-reply-to : references; s=pps0720;
+ bh=vVcjLOV0X9n814WVE1DuxvMHGrqOUt4RpnwROXxQiUk=;
+ b=YWie7hn6UQ62Fogj6zIspJdeeqjYpTEZUVoctwxYNx+PgsL4dOyu1xuKCncgSlmgnm1L
+ Ws+0z8Rd1jDf9fB70ONxDmp/9l4ThLsAIvYP4F/9XL11yhkY/BR9+XldnACjM5g6iIYd
+ UrWdOKF/p2kPZPT/HO9XlCoLN6dspe7W1MTER0NvV/uGJGoeurOPJ9d8hNvDHu0Qatgv
+ ENZUysMAd1/oQFtf6z2PoaWs4eTcZTFhloI3gnEnVesAtPJ0sTGofhXGLo0u+r3tqMjd
+ Sdy6PrbjXX6CN4NWimWi2WNZhmLtXBPH/PjpLh2t6GKCsgKYfAtLfC2zq0qHhXRVNPNs 5A== 
+Received: from p1lg14878.it.hpe.com (p1lg14878.it.hpe.com [16.230.97.204])
+        by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 3hfsy3cs1g-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 22 Jul 2022 21:48:07 +0000
+        Fri, 22 Jul 2022 21:48:09 +0000
 Received: from p1lg14886.dc01.its.hpecorp.net (unknown [10.119.18.237])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by p1lg14880.it.hpe.com (Postfix) with ESMTPS id 5C456800187;
-        Fri, 22 Jul 2022 21:48:06 +0000 (UTC)
+        by p1lg14878.it.hpe.com (Postfix) with ESMTPS id 9651A1479E;
+        Fri, 22 Jul 2022 21:48:08 +0000 (UTC)
 Received: from hpe.com (unknown [16.231.227.36])
-        by p1lg14886.dc01.its.hpecorp.net (Postfix) with ESMTP id 463038032AD;
-        Fri, 22 Jul 2022 21:48:05 +0000 (UTC)
+        by p1lg14886.dc01.its.hpecorp.net (Postfix) with ESMTP id 0FB7580A0DF;
+        Fri, 22 Jul 2022 21:48:08 +0000 (UTC)
 From:   nick.hawkins@hpe.com
 To:     nick.hawkins@hpe.com
 Cc:     broonie@kernel.org, robh+dt@kernel.org,
@@ -45,68 +45,54 @@ Cc:     broonie@kernel.org, robh+dt@kernel.org,
         linux@armlinux.org.uk, linux-spi@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, arnd@arndb.de, joel@jms.id.au
-Subject: [PATCH v3 0/5] Add SPI Driver to HPE GXP Architecture
-Date:   Fri, 22 Jul 2022 16:49:15 -0500
-Message-Id: <20220722214920.40485-1-nick.hawkins@hpe.com>
+Subject: [PATCH v3 4/5] ARM: configs: multi_v7_defconfig: Enable HPE GXP SPI driver
+Date:   Fri, 22 Jul 2022 16:49:19 -0500
+Message-Id: <20220722214920.40485-5-nick.hawkins@hpe.com>
 X-Mailer: git-send-email 2.17.1
-X-Proofpoint-ORIG-GUID: hQ5rnSRM9hxvywIVPFSSPwuS6UK6U-Yz
-X-Proofpoint-GUID: hQ5rnSRM9hxvywIVPFSSPwuS6UK6U-Yz
+In-Reply-To: <20220722214920.40485-1-nick.hawkins@hpe.com>
+References: <20220722214920.40485-1-nick.hawkins@hpe.com>
+X-Proofpoint-GUID: qx2a06wOLAoqigyz67dstFJ7Zz22LybR
+X-Proofpoint-ORIG-GUID: qx2a06wOLAoqigyz67dstFJ7Zz22LybR
 X-HPE-SCL: -1
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
  definitions=2022-07-22_06,2022-07-21_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 clxscore=1015
- bulkscore=0 lowpriorityscore=0 malwarescore=0 adultscore=0 mlxlogscore=435
- spamscore=0 mlxscore=0 suspectscore=0 priorityscore=1501 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2206140000
- definitions=main-2207220089
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ priorityscore=1501 lowpriorityscore=0 impostorscore=0 mlxscore=0
+ bulkscore=0 adultscore=0 malwarescore=0 spamscore=0 mlxlogscore=675
+ clxscore=1015 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2206140000 definitions=main-2207220089
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
 From: Nick Hawkins <nick.hawkins@hpe.com>
 
-Changes since v3:
- *Fixed indentations in hpe,gxp-spifi.yaml
+Enable the SPI driver on the HPE GXP BMC.
 
-Changes since v2:
- *Changed the CONFIG_SPI_GXP from y to m in defconfig
- *Removed extra space around < > for reg in hpe,gxp-spifi.yaml
- *Changed interrupt-parrent to interrupt-parent in hpe,gxp-spifi.yaml
- *Removed repeated include file in spi-gxp.c
- *Removed unnecessary initialization of ret variable in spi-gxp.c
- *Removed conditional variable checks where failure is not possible in
-  spi-gxp.c
- *Removed unecessary variable cs in spi-gxp.c
- *Removed blank gxp-spifi-remove function in spi-gxp.c
- *Fixed error messages so they are not repetitive
+Signed-off-by: Nick Hawkins <nick.hawkins@hpe.com>
 
-The GXP supports 3 separate SPI interfaces to accommodate the system
-flash, core flash, and other functions. The SPI engine supports variable
-clock frequency, selectable 3-byte or 4-byte addressing and a
-configurable x1, x2, and x4 command/address/data modes. The memory
-buffer for reading and writing ranges between 256 bytes and 8KB. This
-driver supports access to the core flash and bios part.
+---
+v3:
+ *No change
+v2:
+ *Change CONFIG_SPI_GXP from y to m
+---
+ arch/arm/configs/multi_v7_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-Nick Hawkins (5):
-  spi: spi-gxp: Add support for HPE GXP SoCs
-  spi: dt-bindings: add documentation for hpe,gxp-spifi
-  ARM: dts: hpe: Add spi driver node
-  ARM: configs: multi_v7_defconfig: Enable HPE GXP SPI driver
-  MAINTAINERS: add spi support to GXP
-
- .../bindings/spi/hpe,gxp-spifi.yaml           |  56 +++
- MAINTAINERS                                   |   2 +
- arch/arm/boot/dts/hpe-bmc-dl360gen10.dts      |  58 ++++
- arch/arm/boot/dts/hpe-gxp.dtsi                |  21 +-
- arch/arm/configs/multi_v7_defconfig           |   1 +
- drivers/spi/Kconfig                           |   7 +
- drivers/spi/Makefile                          |   1 +
- drivers/spi/spi-gxp.c                         | 325 ++++++++++++++++++
- 8 files changed, 470 insertions(+), 1 deletion(-)
- create mode 100644 Documentation/devicetree/bindings/spi/hpe,gxp-spifi.yaml
- create mode 100644 drivers/spi/spi-gxp.c
-
+diff --git a/arch/arm/configs/multi_v7_defconfig b/arch/arm/configs/multi_v7_defconfig
+index ce9826bce29b..ee8a730dabc9 100644
+--- a/arch/arm/configs/multi_v7_defconfig
++++ b/arch/arm/configs/multi_v7_defconfig
+@@ -443,6 +443,7 @@ CONFIG_SPI_CADENCE=y
+ CONFIG_SPI_DAVINCI=y
+ CONFIG_SPI_FSL_QUADSPI=m
+ CONFIG_SPI_GPIO=m
++CONFIG_SPI_GXP=m
+ CONFIG_SPI_FSL_DSPI=m
+ CONFIG_SPI_OMAP24XX=y
+ CONFIG_SPI_ORION=y
 -- 
 2.17.1
 

@@ -2,127 +2,96 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 86B5DCCA489
-	for <linux-spi@archiver.kernel.org>; Fri, 22 Jul 2022 16:49:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 19C8DC433EF
+	for <linux-spi@archiver.kernel.org>; Fri, 22 Jul 2022 17:22:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235897AbiGVQtT (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 22 Jul 2022 12:49:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44196 "EHLO
+        id S236116AbiGVRWz (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 22 Jul 2022 13:22:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235893AbiGVQtH (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 22 Jul 2022 12:49:07 -0400
-Received: from out28-172.mail.aliyun.com (out28-172.mail.aliyun.com [115.124.28.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AF3A93C0E;
-        Fri, 22 Jul 2022 09:48:56 -0700 (PDT)
-X-Alimail-AntiSpam: AC=CONTINUE;BC=0.3241718|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_regular_dialog|0.0235158-0.00320354-0.973281;FP=0|0|0|0|0|-1|-1|-1;HT=ay29a033018047212;MF=zhouyanjie@wanyeetech.com;NM=1;PH=DS;RN=23;RT=23;SR=0;TI=SMTPD_---.Ob0cnML_1658508529;
-Received: from localhost.localdomain(mailfrom:zhouyanjie@wanyeetech.com fp:SMTPD_---.Ob0cnML_1658508529)
-          by smtp.aliyun-inc.com;
-          Sat, 23 Jul 2022 00:48:50 +0800
-From:   =?UTF-8?q?=E5=91=A8=E7=90=B0=E6=9D=B0=20=28Zhou=20Yanjie=29?= 
-        <zhouyanjie@wanyeetech.com>
-To:     tudor.ambarus@microchip.com, p.yadav@ti.com, michael@walle.cc,
-        miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
-        broonie@kernel.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org
-Cc:     linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, aidanmacdonald.0x0@gmail.com,
-        tmn505@gmail.com, paul@crapouillou.net, dongsheng.qiu@ingenic.com,
-        aric.pzqi@ingenic.com, rick.tyliu@ingenic.com,
-        jinghui.liu@ingenic.com, sernia.zhou@foxmail.com,
-        reimu@sudomaker.com
-Subject: [PATCH 2/3] dt-bindings: SPI: Add Ingenic SFC bindings.
-Date:   Sat, 23 Jul 2022 00:48:29 +0800
-Message-Id: <1658508510-15400-3-git-send-email-zhouyanjie@wanyeetech.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1658508510-15400-1-git-send-email-zhouyanjie@wanyeetech.com>
-References: <1658508510-15400-1-git-send-email-zhouyanjie@wanyeetech.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+        with ESMTP id S235275AbiGVRWy (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 22 Jul 2022 13:22:54 -0400
+Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFB25655B0;
+        Fri, 22 Jul 2022 10:22:52 -0700 (PDT)
+Received: from pps.filterd (m0134420.ppops.net [127.0.0.1])
+        by mx0b-002e3701.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26MDZqG0002161;
+        Fri, 22 Jul 2022 17:22:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=from : to : cc : subject
+ : date : message-id : in-reply-to : references; s=pps0720;
+ bh=e0rTquQ6aEVY7bSrvKspCq67RAEjJPP3Q+JrunlIUo0=;
+ b=dFou3aw3o3zit+GcaN8BklwG4Rn8t4mMKnatXZTE6YcRXW5FQmLWwjVepq2DUKmKoOg+
+ I/gDPOnZQbB7WlNn0zRAbfPajaZC7OqT7KUMIj8HeGM/cJwZpJjAmKaMq/OMhnH/5cWS
+ T9hJid47T+A2jc60BFzbeqvEebGNt7GwbQl6dT4Ivzx3g2HN07k0N5oSGMBAM82SlGKw
+ MOqqutiL0j061iaWsU2lTJtNzaEcsLSLQXY0G6wUxrftjjquvjk6ziMWzy76ktqtcaOz
+ D59AzlVq39kQRUXMKcPPhhhx39w5vDGdZp8EihHkWAy8/4pD4gvRz1Kn+1OEA3jYMdtJ ww== 
+Received: from p1lg14879.it.hpe.com (p1lg14879.it.hpe.com [16.230.97.200])
+        by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 3hfvwqhtej-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 22 Jul 2022 17:22:28 +0000
+Received: from p1lg14886.dc01.its.hpecorp.net (unknown [10.119.18.237])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by p1lg14879.it.hpe.com (Postfix) with ESMTPS id 96FD9132D2;
+        Fri, 22 Jul 2022 17:22:27 +0000 (UTC)
+Received: from hpe.com (unknown [16.231.227.36])
+        by p1lg14886.dc01.its.hpecorp.net (Postfix) with ESMTP id 08166801AE7;
+        Fri, 22 Jul 2022 17:22:26 +0000 (UTC)
+From:   nick.hawkins@hpe.com
+To:     nick.hawkins@hpe.com
+Cc:     broonie@kernel.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, verdun@hpe.com,
+        linux@armlinux.org.uk, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, arnd@arndb.de, joel@jms.id.au
+Subject: [PATCH v2 4/5] ARM: configs: multi_v7_defconfig: Enable HPE GXP SPI driver
+Date:   Fri, 22 Jul 2022 12:23:34 -0500
+Message-Id: <20220722172335.33404-5-nick.hawkins@hpe.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20220722172335.33404-1-nick.hawkins@hpe.com>
+References: <20220722172335.33404-1-nick.hawkins@hpe.com>
+X-Proofpoint-ORIG-GUID: RqZsW53DsedGwdoE6j-geiqFmOKZ5IZn
+X-Proofpoint-GUID: RqZsW53DsedGwdoE6j-geiqFmOKZ5IZn
+X-HPE-SCL: -1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-07-22_06,2022-07-21_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 impostorscore=0
+ clxscore=1015 mlxscore=0 mlxlogscore=675 suspectscore=0 priorityscore=1501
+ malwarescore=0 bulkscore=0 adultscore=0 lowpriorityscore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2206140000
+ definitions=main-2207220073
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Add the SFC bindings for the X1000 SoC, the X1600 SoC, the X1830 SoC,
-and the X2000 SoC from Ingenic.
+From: Nick Hawkins <nick.hawkins@hpe.com>
 
-Signed-off-by: 周琰杰 (Zhou Yanjie) <zhouyanjie@wanyeetech.com>
+Enable the SPI driver on the HPE GXP BMC.
+
+Signed-off-by: Nick Hawkins <nick.hawkins@hpe.com>
+
 ---
- .../devicetree/bindings/spi/ingenic,sfc.yaml       | 64 ++++++++++++++++++++++
- 1 file changed, 64 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/ingenic,sfc.yaml
 
-diff --git a/Documentation/devicetree/bindings/spi/ingenic,sfc.yaml b/Documentation/devicetree/bindings/spi/ingenic,sfc.yaml
-new file mode 100644
-index 00000000..b7c4cf4
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/ingenic,sfc.yaml
-@@ -0,0 +1,64 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/spi/ingenic,sfc.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Bindings for SFC in Ingenic SoCs
-+
-+maintainers:
-+  - 周琰杰 (Zhou Yanjie) <zhouyanjie@wanyeetech.com>
-+
-+description:
-+  The SPI Flash Controller in Ingenic SoCs.
-+
-+properties:
-+  compatible:
-+    oneOf:
-+      - enum:
-+          - ingenic,x1000-sfc
-+          - ingenic,x1600-sfc
-+          - ingenic,x2000-sfc
-+      - items:
-+          - enum:
-+              - ingenic,x1830-sfc
-+          - const: ingenic,x1000-sfc
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  clocks:
-+    maxItems: 1
-+
-+  clock-names:
-+    const: sfc
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+  - clocks
-+  - clock-names
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/clock/ingenic,x1000-cgu.h>
-+
-+	sfc: spi@13440000 {
-+		compatible = "ingenic,x1000-sfc";
-+		reg = <0x13440000 0x1000>;
-+
-+		interrupt-parent = <&intc>;
-+		interrupts = <7>;
-+
-+		clocks = <&cgu X1000_CLK_SFC>;
-+		clock-names = "sfc";
-+
-+		status = "disabled";
-+	};
-+...
+v2:
+ *Change CONFIG_SPI_GXP from y to m
+---
+ arch/arm/configs/multi_v7_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm/configs/multi_v7_defconfig b/arch/arm/configs/multi_v7_defconfig
+index ce9826bce29b..ee8a730dabc9 100644
+--- a/arch/arm/configs/multi_v7_defconfig
++++ b/arch/arm/configs/multi_v7_defconfig
+@@ -443,6 +443,7 @@ CONFIG_SPI_CADENCE=y
+ CONFIG_SPI_DAVINCI=y
+ CONFIG_SPI_FSL_QUADSPI=m
+ CONFIG_SPI_GPIO=m
++CONFIG_SPI_GXP=m
+ CONFIG_SPI_FSL_DSPI=m
+ CONFIG_SPI_OMAP24XX=y
+ CONFIG_SPI_ORION=y
 -- 
-2.7.4
+2.17.1
 

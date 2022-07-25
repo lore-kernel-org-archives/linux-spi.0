@@ -2,37 +2,59 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5D7ACC433EF
-	for <linux-spi@archiver.kernel.org>; Mon, 25 Jul 2022 20:17:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8DA26C43334
+	for <linux-spi@archiver.kernel.org>; Mon, 25 Jul 2022 20:29:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236954AbiGYURF (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 25 Jul 2022 16:17:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46720 "EHLO
+        id S237076AbiGYU3r (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 25 Jul 2022 16:29:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236805AbiGYUQv (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 25 Jul 2022 16:16:51 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A05AE237E4;
-        Mon, 25 Jul 2022 13:15:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-        Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-        bh=Vam91HtFgm/m4TjFIqmlBnedpAiTbay3DqOChZgZtO4=; b=cfeHSMVcbO9fMhs5zdOdj2LtWP
-        MkNrQ/NYRJNFSCDkVsDFs+QkFonh1JTK+W9zQOhmsLtKRER5uM8A2ianh9Sasff4yT1IBpVCpKGzT
-        T/f7gf2WPfVO6dn+IsMclT0f+lpGaHNwxAXzfSddPNfa9CpOdDGL52YuiYdiQwxvoemIto4LNulG0
-        mKbA7iVs+lyG0qhGifjXZAf8QEd1+u3W4LgALtjLL8jR7MhfyGLHHWI11RwZlVcWLHvo6HYEgg698
-        LNnYBLaDllK1CF8URqhgk/mjNgj03fpXVZq4IKjYJ/2LwMoLVqHzaQgE7nsNdaPD5OWR9GZ5Iw/4b
-        xNA7npbg==;
-Received: from [2601:1c0:6280:3f0::a6b3]
-        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1oG4Uc-001nJU-Qg; Mon, 25 Jul 2022 20:15:54 +0000
-Message-ID: <7edae5b4-3561-f1d2-5b7c-c8a69f0f1ef3@infradead.org>
-Date:   Mon, 25 Jul 2022 13:15:53 -0700
+        with ESMTP id S232013AbiGYU3q (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 25 Jul 2022 16:29:46 -0400
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D64B22285
+        for <linux-spi@vger.kernel.org>; Mon, 25 Jul 2022 13:29:45 -0700 (PDT)
+Received: by mail-lf1-x129.google.com with SMTP id m12so18698113lfj.4
+        for <linux-spi@vger.kernel.org>; Mon, 25 Jul 2022 13:29:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=b4+zrHydncSnGE8NzMR4jfY6BqFnB6mPYhQPBEGmp+4=;
+        b=vuV4gzEXUyKzE3RrbAcYXdJpyb6GtSn899V1rBjnjTjVzITMoIyUWVTF3eeKsx1gAm
+         teVs3DU+iJyaaIJoWl6G2cSz4mTJtxS2bpAQxAAbyH6W9EBNLc2YKp1NYMsSvfEvl1Nw
+         VA9u6s81AhaHWD7kLv3cPMbWRTuBeyB58FHUHJUf9twXDgsfIamkEXautM33e0uhtJDm
+         GX1VtaMoTfZf+D7ZE35Rj5cWAfNRCth0dazBmDK8vZn33mkc3jkUWLtHpVCoWt1eBxYo
+         BVyovkHQNxsbuSRHiNAlKdX9DWvd7+oB39aBNM9cWGdj0eWlzOgK/6iBs1UUx477jiPG
+         tvWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=b4+zrHydncSnGE8NzMR4jfY6BqFnB6mPYhQPBEGmp+4=;
+        b=Hyu/WUx3MuLu7rLl348GkRWH7SqV+1VCeClT0nifgJWF5M1RF6ZYCZ3F6J9GuJL9Vy
+         bDSxm0OLKGPQVn7wFz97v/w+afcyqnBs2lsKQt0gufSrUT+BU0a7w18SbR08DWSgxdlR
+         clNNEiiqApoCz6M9Mptm14SpriIb2EmPt0GJvRKppvOMUEGyWoxt+nQ6XhcV26dZAlDH
+         BrcAeWItbUmq0R0+TMVKWm6DD4ToTRaXpvUKNJjR8zfrL21yZe1H33R3/JkdTfta0Zpx
+         7HBF+4kUpit2xXpw60Z7TjMH6l/HuxtBeE3IEpzKLV8yh+mUlttw0LPAeEctqATuXHIu
+         /InA==
+X-Gm-Message-State: AJIora8EAP54v4RvyIElP6Nv8vXN8WtOKzl9Eb8W+hVjTfj4Gf8OlBg3
+        k03uDpwK+DLT5Ro8TQ1VM77ExA==
+X-Google-Smtp-Source: AGRyM1t7ckEhCnEiqOR0EzJEDxOVbbtd5X+MdkJqJwBraQR7j+TWjzxErv7tMQ71wjc4uX91+CX2ZA==
+X-Received: by 2002:a05:6512:218c:b0:48a:1e1e:7b59 with SMTP id b12-20020a056512218c00b0048a1e1e7b59mr5044957lft.580.1658780983896;
+        Mon, 25 Jul 2022 13:29:43 -0700 (PDT)
+Received: from [192.168.3.197] (78-26-46-173.network.trollfjord.no. [78.26.46.173])
+        by smtp.gmail.com with ESMTPSA id v7-20020a2ea447000000b0025d715bc088sm2907615ljn.0.2022.07.25.13.29.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 Jul 2022 13:29:43 -0700 (PDT)
+Message-ID: <ad56dc32-e696-3c16-17cc-28e8d24c36dc@linaro.org>
+Date:   Mon, 25 Jul 2022 22:29:42 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH v4 1/5] spi: spi-gxp: Add support for HPE GXP SoCs
+ Thunderbird/91.12.0
+Subject: Re: [PATCH v4 2/5] spi: dt-bindings: add documentation for
+ hpe,gxp-spifi
 Content-Language: en-US
 To:     nick.hawkins@hpe.com
 Cc:     broonie@kernel.org, robh+dt@kernel.org,
@@ -41,40 +63,27 @@ Cc:     broonie@kernel.org, robh+dt@kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, arnd@arndb.de, joel@jms.id.au
 References: <20220725201322.41810-1-nick.hawkins@hpe.com>
- <20220725201322.41810-2-nick.hawkins@hpe.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20220725201322.41810-2-nick.hawkins@hpe.com>
+ <20220725201322.41810-3-nick.hawkins@hpe.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220725201322.41810-3-nick.hawkins@hpe.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi--
+On 25/07/2022 22:13, nick.hawkins@hpe.com wrote:
+> From: Nick Hawkins <nick.hawkins@hpe.com>
+> 
+> Create documentation for the hpe,gxp-spifi binding to support access to
+> the SPI parts
+> 
+> Signed-off-by: Nick Hawkins <nick.hawkins@hpe.com>
+> 
 
-On 7/25/22 13:13, nick.hawkins@hpe.com wrote:
-> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-> index 3b1044ebc400..543e4a5b5ffa 100644
-> --- a/drivers/spi/Kconfig
-> +++ b/drivers/spi/Kconfig
-> @@ -371,6 +371,13 @@ config SPI_FSL_QUADSPI
->  	  This controller does not support generic SPI messages. It only
->  	  supports the high-level SPI memory interface.
->  
-> +config SPI_GXP
-> +	tristate "GXP SPI driver"
-> +	depends on ARCH_HPE || COMPILE_TEST
-> +	help
-> +	 This enables support for the driver for GXP bus attached SPI
-> +	 controllers.
 
-Documentation/process/coding-style.rst says:
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-For all of the Kconfig* configuration files throughout the source tree,
-the indentation is somewhat different.  Lines under a ``config`` definition
-are indented with one tab, while help text is indented an additional two
-spaces.
 
-thanks.
--- 
-~Randy
+Best regards,
+Krzysztof

@@ -2,105 +2,99 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A0B04C433EF
-	for <linux-spi@archiver.kernel.org>; Mon, 25 Jul 2022 19:36:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C7246C43334
+	for <linux-spi@archiver.kernel.org>; Mon, 25 Jul 2022 20:13:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235821AbiGYTgZ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 25 Jul 2022 15:36:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50642 "EHLO
+        id S236993AbiGYUNS (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 25 Jul 2022 16:13:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229878AbiGYTgY (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 25 Jul 2022 15:36:24 -0400
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C27A51F2C3;
-        Mon, 25 Jul 2022 12:36:23 -0700 (PDT)
-Received: by mail-ej1-x636.google.com with SMTP id sz17so22444974ejc.9;
-        Mon, 25 Jul 2022 12:36:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=+uGxyBOj8uy9/NOJeYkAeNRty35auyq9QTyL2vbKIqs=;
-        b=aWBpxnn9sn41kMtCQ2/UguJehnh4aNWK34ndCiRANpD781prisqPqWZCnfCezDxegX
-         s6ryz28pxVg6ESxPFX80xxA9DvybUChS08+UihxC2YS4dupc2pRcGPeaeECyoyXUig/H
-         dt1lhQeexIJaGPulZ+6ZsoEwTBKGV7nAL2YbotEcdDGiM0I8jwR5Y5Ub00r9xYxalhMP
-         h8annn3GiOUJ1PL84vn9aApsRQuCxbpu1nULWy3NEjs5Mk7L6YQuh3ahiauj6VL/KDA7
-         PYJk9QLiPkqzI3c/EOuKWceWUSuLB3sDn97ZVJpseghUsAP39zL7meAPQo9Ks98EEIWn
-         bIow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=+uGxyBOj8uy9/NOJeYkAeNRty35auyq9QTyL2vbKIqs=;
-        b=FmxAIJlr+VKYzMQv1F58Nu2bKBeaK9o44/mWwylWJ5ix7j902aeimsCtW+To7OAJlS
-         8mtWv0dQYZjenVi4PduWyRtvMhGAec3W34IhkvuBMr/DoIEYsdaPBJpDHSS1tbDRpEvs
-         0Kgw1cuXZGKWvlYoa1RuoIXp1pcvF32kxjvTHDZB1iqvLHovL6JAc9VkPzLT3n/A15BB
-         H9FhslKKzAsK/S+lxKeflRcPWD7e/oo7nwAcrPJv380jPJOTXUrIYbqm60He2axEFCpw
-         W5aVYQXHTEYU5n5cYR1K3KWmKUXIXmaBocLUjxxPmZ+sMJM9tawKWmo1m1IapMJX86T4
-         FU6Q==
-X-Gm-Message-State: AJIora9+Nl3vJFbkxw2p4+I+cVBSTk6PVe1QuJ21x+beiiNOpQ0Qb2NF
-        40BKMBbZYRi8SqvXwK20NoS+KxXusjs=
-X-Google-Smtp-Source: AGRyM1vYaSolC/1IbcKL/tdF8eKMind/3he4Dge0drIwIiFgbLYBeHdnz4tJkJdybuLB41IEfF5c1g==
-X-Received: by 2002:a17:907:6e8a:b0:72b:1496:7161 with SMTP id sh10-20020a1709076e8a00b0072b14967161mr11612393ejc.519.1658777781976;
-        Mon, 25 Jul 2022 12:36:21 -0700 (PDT)
-Received: from localhost.localdomain (dynamic-2a01-0c23-c1ab-4100-0000-0000-0000-0e63.c23.pool.telefonica.de. [2a01:c23:c1ab:4100::e63])
-        by smtp.googlemail.com with ESMTPSA id k14-20020aa7d8ce000000b0043a6e807febsm7571001eds.46.2022.07.25.12.36.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Jul 2022 12:36:21 -0700 (PDT)
-From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-To:     linux-spi@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, bert@biot.com, sander@svanheule.net,
-        mail@birger-koblitz.de,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Subject: [PATCH RFC v1] spi: realtek-rtl: Fix clearing some register bits
-Date:   Mon, 25 Jul 2022 21:35:47 +0200
-Message-Id: <20220725193547.1038414-1-martin.blumenstingl@googlemail.com>
-X-Mailer: git-send-email 2.37.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        with ESMTP id S236934AbiGYUMu (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 25 Jul 2022 16:12:50 -0400
+Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 990CC21825;
+        Mon, 25 Jul 2022 13:12:39 -0700 (PDT)
+Received: from pps.filterd (m0150241.ppops.net [127.0.0.1])
+        by mx0a-002e3701.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26PH4Wkm005214;
+        Mon, 25 Jul 2022 20:12:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=from : to : cc : subject
+ : date : message-id : in-reply-to : references; s=pps0720;
+ bh=qw2gbBqpfH4JlnRCLSLr9CXbVgCzY043TzDZOJYMzXo=;
+ b=V32CJo+jUnT2srUr+tpItdqJr0B1672rZLO+gH1qMaLkonRafVyt3pckeVNz4o5G1o1D
+ jL2sBnwmuiogN4DPN8ZdiI/hQvbUg3DQclrZlOSq4d3a3KrLkSYtKVvlRwiACAZ9z64X
+ FXJ9AtNtKkIuiXntaCWKKdU3UXxnmXGQCRCtBmfCrEKc6Azz8CIOKdeuQZjt/jx4anfE
+ hWYpB90N4tfUNeySr+eVk4lKpFoFWrkNbNd7br2k9V/a9sj8uZevxw8LA5hxW3/ic5V0
+ p1Ip3cIOyKdECuG3GrL8PAlGvONYnyEXtTxa9/NrmSMdvC0Lc6brEoj+9FBS9F1GH19m VQ== 
+Received: from p1lg14881.it.hpe.com (p1lg14881.it.hpe.com [16.230.97.202])
+        by mx0a-002e3701.pphosted.com (PPS) with ESMTPS id 3hhy8dsekq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 25 Jul 2022 20:12:22 +0000
+Received: from p1lg14885.dc01.its.hpecorp.net (unknown [10.119.18.236])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by p1lg14881.it.hpe.com (Postfix) with ESMTPS id 21DBF804C87;
+        Mon, 25 Jul 2022 20:12:22 +0000 (UTC)
+Received: from hpe.com (unknown [16.231.227.36])
+        by p1lg14885.dc01.its.hpecorp.net (Postfix) with ESMTP id 749F28038DE;
+        Mon, 25 Jul 2022 20:12:21 +0000 (UTC)
+From:   nick.hawkins@hpe.com
+To:     nick.hawkins@hpe.com
+Cc:     broonie@kernel.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, verdun@hpe.com,
+        linux@armlinux.org.uk, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, arnd@arndb.de, joel@jms.id.au
+Subject: [PATCH v4 4/5] ARM: configs: multi_v7_defconfig: Enable HPE GXP SPI driver
+Date:   Mon, 25 Jul 2022 15:13:21 -0500
+Message-Id: <20220725201322.41810-5-nick.hawkins@hpe.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20220725201322.41810-1-nick.hawkins@hpe.com>
+References: <20220725201322.41810-1-nick.hawkins@hpe.com>
+X-Proofpoint-ORIG-GUID: 08GpxQYDH8IpGqQwEHpg-Yut1h8a4yBY
+X-Proofpoint-GUID: 08GpxQYDH8IpGqQwEHpg-Yut1h8a4yBY
+X-HPE-SCL: -1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-07-25_12,2022-07-25_03,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ priorityscore=1501 bulkscore=0 phishscore=0 mlxscore=0 adultscore=0
+ spamscore=0 impostorscore=0 clxscore=1015 suspectscore=0 malwarescore=0
+ mlxlogscore=673 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2206140000 definitions=main-2207250082
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The code seemingly tries to clear RTL_SPI_SFCSR_LEN_MASK (before then
-setting either RTL_SPI_SFCSR_LEN1 or RTL_SPI_SFCSR_LEN4) and
-RTL_SPI_SFCSR_CS. What it actually does is only keeping these bits and
-clearing all other bits, even the ones which were just set before. Fix
-the operation to clear the bits in the selected mask and keep all other
-ones.
+From: Nick Hawkins <nick.hawkins@hpe.com>
 
-Fixes: a8af5cc2ff1e80 ("spi: realtek-rtl: Add support for Realtek RTL838x/RTL839x SPI controllers")
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Enable the SPI driver on the HPE GXP BMC.
+
+Signed-off-by: Nick Hawkins <nick.hawkins@hpe.com>
+
 ---
-I stumbled across this while reading the driver. This patch is untested
-because I don't have any hardware with this controller.
+v4:
+ *No change
+v3:
+ *No change
+v2:
+ *Change CONFIG_SPI_GXP from y to m
+---
+ arch/arm/configs/multi_v7_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-
- drivers/spi/spi-realtek-rtl.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi-realtek-rtl.c b/drivers/spi/spi-realtek-rtl.c
-index 866b0477dbd7..e5ad0f11996f 100644
---- a/drivers/spi/spi-realtek-rtl.c
-+++ b/drivers/spi/spi-realtek-rtl.c
-@@ -49,7 +49,7 @@ static void set_size(struct rtspi *rtspi, int size)
- 	u32 value;
- 
- 	value = readl(REG(RTL_SPI_SFCSR));
--	value &= RTL_SPI_SFCSR_LEN_MASK;
-+	value &= ~RTL_SPI_SFCSR_LEN_MASK;
- 	if (size == 4)
- 		value |= RTL_SPI_SFCSR_LEN4;
- 	else if (size == 1)
-@@ -143,7 +143,7 @@ static void init_hw(struct rtspi *rtspi)
- 	/* Permanently disable CS1, since it's never used */
- 	value |= RTL_SPI_SFCSR_CSB1;
- 	/* Select CS0 for use */
--	value &= RTL_SPI_SFCSR_CS;
-+	value &= ~RTL_SPI_SFCSR_CS;
- 	writel(value, REG(RTL_SPI_SFCSR));
- }
- 
+diff --git a/arch/arm/configs/multi_v7_defconfig b/arch/arm/configs/multi_v7_defconfig
+index ce9826bce29b..ee8a730dabc9 100644
+--- a/arch/arm/configs/multi_v7_defconfig
++++ b/arch/arm/configs/multi_v7_defconfig
+@@ -443,6 +443,7 @@ CONFIG_SPI_CADENCE=y
+ CONFIG_SPI_DAVINCI=y
+ CONFIG_SPI_FSL_QUADSPI=m
+ CONFIG_SPI_GPIO=m
++CONFIG_SPI_GXP=m
+ CONFIG_SPI_FSL_DSPI=m
+ CONFIG_SPI_OMAP24XX=y
+ CONFIG_SPI_ORION=y
 -- 
-2.37.1
+2.17.1
 

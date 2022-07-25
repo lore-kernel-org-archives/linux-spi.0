@@ -2,188 +2,79 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C49E9C43334
-	for <linux-spi@archiver.kernel.org>; Mon, 25 Jul 2022 20:14:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5D7ACC433EF
+	for <linux-spi@archiver.kernel.org>; Mon, 25 Jul 2022 20:17:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236882AbiGYUN7 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 25 Jul 2022 16:13:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45578 "EHLO
+        id S236954AbiGYURF (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 25 Jul 2022 16:17:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236904AbiGYUNI (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 25 Jul 2022 16:13:08 -0400
-Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B886220CD;
-        Mon, 25 Jul 2022 13:12:49 -0700 (PDT)
-Received: from pps.filterd (m0148664.ppops.net [127.0.0.1])
-        by mx0b-002e3701.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26PHfnNG016472;
-        Mon, 25 Jul 2022 20:12:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references; s=pps0720;
- bh=5Nqtewat4vMxrcQ6TY7HcJu0xAbODflxKUiru2oT7xg=;
- b=l//Y4Wz/KohfMHbM0b5m4GgyRg0qLYQQls3rL1xYdphv60A47HG3CK9OGwUFk6OpoE3L
- fC8RgCEL4mQurztR27YzLzKZj/06pKjoH396cnx5ACbrDJrsPSniq3+E1IzvCRdztBlc
- hzSdg77OmTvDFdljTLGtShtg0e0paNYy71BGrnPtc9CgXXQ/CLEmyPdBYTW6RVQK6oAr
- tDXDYJYdCr4zdIo+MTXx1tLYrkChNMkVJnExy2Pm4/GQb3KaoQpwG6x73vxYM44p/PFJ
- M9SCtE/PbjVNqYf6GqT9YPbO9BxzR6+zUaCD7gxIQwAsaGgHqbdgXgkWaiMTDaYCPDkd uA== 
-Received: from p1lg14879.it.hpe.com (p1lg14879.it.hpe.com [16.230.97.200])
-        by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 3hhs7uw51h-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 25 Jul 2022 20:12:22 +0000
-Received: from p1lg14885.dc01.its.hpecorp.net (unknown [10.119.18.236])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by p1lg14879.it.hpe.com (Postfix) with ESMTPS id AECC214790;
-        Mon, 25 Jul 2022 20:12:21 +0000 (UTC)
-Received: from hpe.com (unknown [16.231.227.36])
-        by p1lg14885.dc01.its.hpecorp.net (Postfix) with ESMTP id E35F58052E2;
-        Mon, 25 Jul 2022 20:12:20 +0000 (UTC)
-From:   nick.hawkins@hpe.com
+        with ESMTP id S236805AbiGYUQv (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 25 Jul 2022 16:16:51 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A05AE237E4;
+        Mon, 25 Jul 2022 13:15:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+        Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+        Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+        bh=Vam91HtFgm/m4TjFIqmlBnedpAiTbay3DqOChZgZtO4=; b=cfeHSMVcbO9fMhs5zdOdj2LtWP
+        MkNrQ/NYRJNFSCDkVsDFs+QkFonh1JTK+W9zQOhmsLtKRER5uM8A2ianh9Sasff4yT1IBpVCpKGzT
+        T/f7gf2WPfVO6dn+IsMclT0f+lpGaHNwxAXzfSddPNfa9CpOdDGL52YuiYdiQwxvoemIto4LNulG0
+        mKbA7iVs+lyG0qhGifjXZAf8QEd1+u3W4LgALtjLL8jR7MhfyGLHHWI11RwZlVcWLHvo6HYEgg698
+        LNnYBLaDllK1CF8URqhgk/mjNgj03fpXVZq4IKjYJ/2LwMoLVqHzaQgE7nsNdaPD5OWR9GZ5Iw/4b
+        xNA7npbg==;
+Received: from [2601:1c0:6280:3f0::a6b3]
+        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1oG4Uc-001nJU-Qg; Mon, 25 Jul 2022 20:15:54 +0000
+Message-ID: <7edae5b4-3561-f1d2-5b7c-c8a69f0f1ef3@infradead.org>
+Date:   Mon, 25 Jul 2022 13:15:53 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH v4 1/5] spi: spi-gxp: Add support for HPE GXP SoCs
+Content-Language: en-US
 To:     nick.hawkins@hpe.com
 Cc:     broonie@kernel.org, robh+dt@kernel.org,
         krzysztof.kozlowski+dt@linaro.org, verdun@hpe.com,
         linux@armlinux.org.uk, linux-spi@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, arnd@arndb.de, joel@jms.id.au
-Subject: [PATCH v4 3/5] ARM: dts: hpe: Add spi driver node
-Date:   Mon, 25 Jul 2022 15:13:20 -0500
-Message-Id: <20220725201322.41810-4-nick.hawkins@hpe.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20220725201322.41810-1-nick.hawkins@hpe.com>
 References: <20220725201322.41810-1-nick.hawkins@hpe.com>
-X-Proofpoint-GUID: PQyT4ZPdFI-1V6IOa1KhQ0H0OgWTtI59
-X-Proofpoint-ORIG-GUID: PQyT4ZPdFI-1V6IOa1KhQ0H0OgWTtI59
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-07-25_12,2022-07-25_03,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 impostorscore=0
- mlxscore=0 phishscore=0 spamscore=0 clxscore=1015 lowpriorityscore=0
- adultscore=0 priorityscore=1501 malwarescore=0 mlxlogscore=452
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2206140000 definitions=main-2207250082
+ <20220725201322.41810-2-nick.hawkins@hpe.com>
+From:   Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20220725201322.41810-2-nick.hawkins@hpe.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Nick Hawkins <nick.hawkins@hpe.com>
+Hi--
 
-Add support for the SPI flash interface on the GXP SoC.
+On 7/25/22 13:13, nick.hawkins@hpe.com wrote:
+> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+> index 3b1044ebc400..543e4a5b5ffa 100644
+> --- a/drivers/spi/Kconfig
+> +++ b/drivers/spi/Kconfig
+> @@ -371,6 +371,13 @@ config SPI_FSL_QUADSPI
+>  	  This controller does not support generic SPI messages. It only
+>  	  supports the high-level SPI memory interface.
+>  
+> +config SPI_GXP
+> +	tristate "GXP SPI driver"
+> +	depends on ARCH_HPE || COMPILE_TEST
+> +	help
+> +	 This enables support for the driver for GXP bus attached SPI
+> +	 controllers.
 
-Signed-off-by: Nick Hawkins <nick.hawkins@hpe.com>
+Documentation/process/coding-style.rst says:
 
----
-v4:
- *No change
-v3:
- *No change
-v2:
- *No change
----
- arch/arm/boot/dts/hpe-bmc-dl360gen10.dts | 58 ++++++++++++++++++++++++
- arch/arm/boot/dts/hpe-gxp.dtsi           | 21 ++++++++-
- 2 files changed, 78 insertions(+), 1 deletion(-)
+For all of the Kconfig* configuration files throughout the source tree,
+the indentation is somewhat different.  Lines under a ``config`` definition
+are indented with one tab, while help text is indented an additional two
+spaces.
 
-diff --git a/arch/arm/boot/dts/hpe-bmc-dl360gen10.dts b/arch/arm/boot/dts/hpe-bmc-dl360gen10.dts
-index 3a7382ce40ef..d49dcef95c5c 100644
---- a/arch/arm/boot/dts/hpe-bmc-dl360gen10.dts
-+++ b/arch/arm/boot/dts/hpe-bmc-dl360gen10.dts
-@@ -24,3 +24,61 @@
- 		reg = <0x40000000 0x20000000>;
- 	};
- };
-+
-+&spifi {
-+	status = "okay";
-+	flash@0 {
-+		partitions {
-+			compatible = "fixed-partitions";
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+
-+			u-boot@0 {
-+				label = "u-boot";
-+				reg = <0x0 0x60000>;
-+			};
-+
-+			u-boot-env@60000 {
-+				label = "u-boot-env";
-+				reg = <0x60000 0x20000>;
-+			};
-+
-+			kernel@80000 {
-+				label = "kernel";
-+				reg = <0x80000 0x4c0000>;
-+			};
-+
-+			rofs@540000 {
-+				label = "rofs";
-+				reg = <0x540000 0x1740000>;
-+			};
-+
-+			rwfs@1c80000 {
-+				label = "rwfs";
-+				reg = <0x1c80000 0x250000>;
-+			};
-+
-+			section@1ed0000{
-+				label = "section";
-+				reg = <0x1ed0000 0x130000>;
-+			};
-+		};
-+	};
-+	flash@1 {
-+		partitions {
-+			compatible = "fixed-partitions";
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+
-+			host-prime@0 {
-+				label = "host-prime";
-+				reg = <0x0 0x02000000>;
-+			};
-+
-+			host-second@2000000 {
-+				label = "host-second";
-+				reg = <0x02000000 0x02000000>;
-+			};
-+		};
-+	};
-+};
-diff --git a/arch/arm/boot/dts/hpe-gxp.dtsi b/arch/arm/boot/dts/hpe-gxp.dtsi
-index cf735b3c4f35..f28349bdeee1 100644
---- a/arch/arm/boot/dts/hpe-gxp.dtsi
-+++ b/arch/arm/boot/dts/hpe-gxp.dtsi
-@@ -56,9 +56,28 @@
- 			compatible = "simple-bus";
- 			#address-cells = <1>;
- 			#size-cells = <1>;
--			ranges = <0x0 0xc0000000 0x30000000>;
-+			ranges = <0x0 0xc0000000 0x40000000>;
- 			dma-ranges;
- 
-+			spifi: spi@200 {
-+				compatible = "hpe,gxp-spifi";
-+				reg = <0x200 0x80>, <0xc000 0x100>, <0x38000000 0x8000000>;
-+				interrupts = <20>;
-+				interrupt-parent = <&vic0>;
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				status = "disabled";
-+				flash@0 {
-+					reg = <0>;
-+					compatible = "jedec,spi-nor";
-+				};
-+
-+				flash@1 {
-+					reg = <1>;
-+					compatible = "jedec,spi-nor";
-+				};
-+			};
-+
- 			vic0: interrupt-controller@eff0000 {
- 				compatible = "arm,pl192-vic";
- 				reg = <0xeff0000 0x1000>;
+thanks.
 -- 
-2.17.1
-
+~Randy

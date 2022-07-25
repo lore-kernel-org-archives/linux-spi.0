@@ -2,67 +2,60 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7D466C43334
-	for <linux-spi@archiver.kernel.org>; Mon, 25 Jul 2022 20:49:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E532BCCA48E
+	for <linux-spi@archiver.kernel.org>; Mon, 25 Jul 2022 20:56:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233079AbiGYUtw (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 25 Jul 2022 16:49:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51024 "EHLO
+        id S237133AbiGYU4p (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 25 Jul 2022 16:56:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230111AbiGYUtu (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 25 Jul 2022 16:49:50 -0400
-X-Greylist: delayed 1799 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 25 Jul 2022 13:49:49 PDT
-Received: from wp175.webpack.hosteurope.de (wp175.webpack.hosteurope.de [IPv6:2a01:488:42:1000:50ed:84b6::])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95A8423159
-        for <linux-spi@vger.kernel.org>; Mon, 25 Jul 2022 13:49:49 -0700 (PDT)
-Received: from p54bc6cd6.dip0.t-ipconnect.de ([84.188.108.214] helo=[192.168.1.245]); authenticated
-        by wp175.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1oG4YN-0007hQ-Nw; Mon, 25 Jul 2022 22:19:47 +0200
-Message-ID: <be60acab-7dfe-6841-b176-4bd1e875d52e@birger-koblitz.de>
-Date:   Mon, 25 Jul 2022 22:19:46 +0200
+        with ESMTP id S233504AbiGYU4m (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 25 Jul 2022 16:56:42 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72F0A237CA
+        for <linux-spi@vger.kernel.org>; Mon, 25 Jul 2022 13:56:41 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 2D954B8110C
+        for <linux-spi@vger.kernel.org>; Mon, 25 Jul 2022 20:56:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id D8964C341D1;
+        Mon, 25 Jul 2022 20:56:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1658782598;
+        bh=zmBy0ux7PAD9w96VuzS/yjT7infrS4NNqhIsLw7wMl8=;
+        h=Subject:From:Date:To:From;
+        b=X+g6m4czJrkY+tS6WY5GLB31PznQVkSKbZm6NMW62iZFpXNbQ+8pieZvwOOH+j+ML
+         Xc8gXo6mMHRN1K+en1OnkJlr40cM0JIJ2WSeTboTYoOcsLtRZYbgLgrnbN8pi/bqIz
+         MDmbtVOjFWxM/FOk0xuV8GyYLQ+H1YheaDufP6o61L6KZvCKZXhqHJ74kk22kcGMjy
+         Jaid+FvIDmo7WM7aIOmkK11cpGFQ6k+rQCG8ZneFX8p2AHMnglhIj/CCPzNjl22z2V
+         07Ai7u3JftEn+7ynt1S87G99yQV7nuQ/T1mYjxXkvnEEMZ0nStEWkRFPRW/23Xe8ga
+         oBBjGnWMmqPKw==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id BFA08E450B4;
+        Mon, 25 Jul 2022 20:56:38 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH RFC v1] spi: realtek-rtl: Fix clearing some register bits
-Content-Language: en-US
-To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        linux-spi@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, bert@biot.com, sander@svanheule.net
-References: <20220725193547.1038414-1-martin.blumenstingl@googlemail.com>
-From:   Birger Koblitz <mail@birger-koblitz.de>
-In-Reply-To: <20220725193547.1038414-1-martin.blumenstingl@googlemail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;mail@birger-koblitz.de;1658782189;a3a81d43;
-X-HE-SMSGID: 1oG4YN-0007hQ-Nw
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <165878259878.8212.5586726109497677345.git-patchwork-housekeeping@kernel.org>
+Date:   Mon, 25 Jul 2022 20:56:38 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi Martin,
+Latest series: [v4] Add SPI Driver to HPE GXP Architecture (2022-07-25T20:13:21)
+  Superseding: [v3] Add SPI Driver to HPE GXP Architecture (2022-07-22T21:49:15):
+    [v3,1/5] spi: spi-gxp: Add support for HPE GXP SoCs
+    [v3,2/5] spi: dt-bindings: add documentation for hpe,gxp-spifi
+    [v3,3/5] ARM: dts: hpe: Add spi driver node
+    [v3,4/5] ARM: configs: multi_v7_defconfig: Enable HPE GXP SPI driver
+    [v3,5/5] MAINTAINERS: add spi support to GXP
 
-On 25/07/2022 21:35, Martin Blumenstingl wrote:
-> The code seemingly tries to clear RTL_SPI_SFCSR_LEN_MASK (before then
-> setting either RTL_SPI_SFCSR_LEN1 or RTL_SPI_SFCSR_LEN4) and
-> RTL_SPI_SFCSR_CS. What it actually does is only keeping these bits and
-> clearing all other bits, even the ones which were just set before. Fix
-> the operation to clear the bits in the selected mask and keep all other
-> ones.
-> 
-> Fixes: a8af5cc2ff1e80 ("spi: realtek-rtl: Add support for Realtek RTL838x/RTL839x SPI controllers")
-> Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-> ---
-> I stumbled across this while reading the driver. This patch is untested
-> because I don't have any hardware with this controller.
-I believe your fix is correct. In the meantime, more information has been
-learned about this hardware, in particular, newer SoC versions and the possibility
-to have parallel IO and hardware which uses different chip selects.
-I came up with the following patch for supporting this, and it achieves
-what you also propose:
-https://github.com/bkobl/openwrt/blob/rtl8214qf_merge/target/linux/realtek/patches-5.10/317-spi-cs-support-for-spi-realtek-rtl.patch
-It is still is a bit rough, reading it I immediately saw 2 things that
-would need to be fixed, but it also improves e.g. that RTL_SPI_SFCSR
-is now configured independently of what u-boot did to it.
 
-Cheers,
-   Birger
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+

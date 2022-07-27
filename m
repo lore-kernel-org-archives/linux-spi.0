@@ -2,463 +2,92 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 677ADC19F28
-	for <linux-spi@archiver.kernel.org>; Wed, 27 Jul 2022 17:30:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E25EEC04A68
+	for <linux-spi@archiver.kernel.org>; Wed, 27 Jul 2022 17:38:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241959AbiG0RaS (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 27 Jul 2022 13:30:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55592 "EHLO
+        id S242583AbiG0Riw (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 27 Jul 2022 13:38:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231491AbiG0R1q (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 27 Jul 2022 13:27:46 -0400
-Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B8BC7F53A;
-        Wed, 27 Jul 2022 09:47:22 -0700 (PDT)
-Received: from pps.filterd (m0134423.ppops.net [127.0.0.1])
-        by mx0b-002e3701.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26RF967j006946;
-        Wed, 27 Jul 2022 16:46:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references; s=pps0720;
- bh=Txllul/roOrauIQk2/6LlcclSw2Gqt7pnhmAWrZUPIs=;
- b=bYZL1ZvwrihVhzniZAC4rph5lptVzxazGMqujB/4nOwIK8uOT25jjZmuQ3IkIXKr2WoP
- FU9dfFp4Gyfb6CWFNz6LATeboQCr1wEcJb0N+LsmYP+QUa1kQBWJAAamuZHZp10C58i7
- Hj9PhpZBLNVyR5o0AO2PbYCd00ZCfytvIznmFO1Md2nHxs+13e2EHp0c6gAt9LocuqsS
- HbzUuqPpUcwKeuCYLakWOadAOKo2PGzgVrBdEwmNqbMwYEL8roDlKn8rqsSFGKcTrPPf
- 5BEh5pPsMnSQrT5GVYJcAShfoxcXwQuqWHhhZUwne1XeFGyDgERU7DURujuOUYUYFpYP iA== 
-Received: from p1lg14878.it.hpe.com (p1lg14878.it.hpe.com [16.230.97.204])
-        by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 3hk6aasjur-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 27 Jul 2022 16:46:38 +0000
-Received: from p1lg14885.dc01.its.hpecorp.net (unknown [10.119.18.236])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by p1lg14878.it.hpe.com (Postfix) with ESMTPS id 763E9D2C7;
-        Wed, 27 Jul 2022 16:46:37 +0000 (UTC)
-Received: from hpe.com (unknown [16.231.227.36])
-        by p1lg14885.dc01.its.hpecorp.net (Postfix) with ESMTP id 0545A808071;
-        Wed, 27 Jul 2022 16:46:35 +0000 (UTC)
-From:   nick.hawkins@hpe.com
+        with ESMTP id S242618AbiG0RiS (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 27 Jul 2022 13:38:18 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B08B87238
+        for <linux-spi@vger.kernel.org>; Wed, 27 Jul 2022 09:50:40 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id t17so15706317lfk.0
+        for <linux-spi@vger.kernel.org>; Wed, 27 Jul 2022 09:50:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=rb1FB8S7K+YoHZwnK5lpzdbH9mR1fCmHK8/JCTc6i40=;
+        b=zvVoFZ0OHaSCxvfqQ/tBxedkQ+6xY52vCay7aQqTCmOV57kXJGCmpGecBeN5Cyva3q
+         tQsjhBeaY+bDnUC0QjNu8mvDMw34FiI3J6rmXWHFZ+9YeIWjqBQAi/t0PSKRNJSQp89R
+         psFjSgL/4dGZsyiO8jYkxZrem01Y1RT1Fza5GNXHvbf0KPURmWdXFs1iv1nntSkP5AaX
+         C6cW2c2weWcjtKWdEakGmZk+fG+JT/k/94abqQ+5qGgtwowtxOhvLvvmmybv5NcKUM8+
+         +CTNiX/YFtQDEGtBYl+zGZEfpfoycLa3YsTef0gxzg03pKlalTnjrf9b9MzRCmviTZet
+         /0ZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=rb1FB8S7K+YoHZwnK5lpzdbH9mR1fCmHK8/JCTc6i40=;
+        b=YrqUmrVStM5G2zaBvciKCjKWhh9crk5C28G5TDCMr9yZrND0OP454GunEg/hS3NrLU
+         enZhwwnWuBicz7ucfSK+2f3dK5jgFFLMGMBHpxrayrDeIqNVMz0KfMchpUiWo4dnXPGP
+         /LRr84aWUUw9BWsjhlKmAneV+4tOGmtYv7Eke5meAuxB7wncBFLf/XvPUbsXZdUe0Rqz
+         2IQUcxQbFMDw4waJOPGf3JTgM08x119GG8ACtJoWkGkJpdc7EuO8ogHyjQX1UaB/yVFI
+         lXuEYLCDOEBUtIjJCByBZqn4FZV0yYZtZzpGkAX61oX2SGivioAbyiApIR4KoDhJhaeY
+         63XA==
+X-Gm-Message-State: AJIora/gtDE7tDx7lKCe7hNCIblRAC6dimGYhpM9gFOR3y+GWEhmLQ3F
+        qYX4+WMKo2ryTE4ngCJLqgEMNA==
+X-Google-Smtp-Source: AGRyM1uKN/6CsJ7dRw2kJ7G6Z+87qHHOAOs+37FNzhsjBRnj3nETk9Dnt1PcbTtv0zfAhhvq2Yc3fw==
+X-Received: by 2002:a05:6512:16a8:b0:48a:9ba0:606a with SMTP id bu40-20020a05651216a800b0048a9ba0606amr4383326lfb.476.1658940635704;
+        Wed, 27 Jul 2022 09:50:35 -0700 (PDT)
+Received: from [192.168.3.197] (78-26-46-173.network.trollfjord.no. [78.26.46.173])
+        by smtp.gmail.com with ESMTPSA id e28-20020ac25cbc000000b00489c5db8bb6sm3856186lfq.176.2022.07.27.09.50.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 27 Jul 2022 09:50:35 -0700 (PDT)
+Message-ID: <0c3a95fb-a3ee-ba48-1f69-ae9db84cc856@linaro.org>
+Date:   Wed, 27 Jul 2022 18:50:34 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [PATCH v5 2/5] spi: dt-bindings: add documentation for
+ hpe,gxp-spifi
+Content-Language: en-US
 To:     nick.hawkins@hpe.com
 Cc:     broonie@kernel.org, robh+dt@kernel.org,
         krzysztof.kozlowski+dt@linaro.org, verdun@hpe.com,
         linux@armlinux.org.uk, linux-spi@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, arnd@arndb.de, joel@jms.id.au
-Subject: [PATCH v5 1/5] spi: spi-gxp: Add support for HPE GXP SoCs
-Date:   Wed, 27 Jul 2022 11:47:32 -0500
-Message-Id: <20220727164736.48619-2-nick.hawkins@hpe.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20220727164736.48619-1-nick.hawkins@hpe.com>
 References: <20220727164736.48619-1-nick.hawkins@hpe.com>
-X-Proofpoint-ORIG-GUID: TDjIqpJGgbOmvQkOpZ2Mo0puPR-elokb
-X-Proofpoint-GUID: TDjIqpJGgbOmvQkOpZ2Mo0puPR-elokb
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-07-27_06,2022-07-27_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- phishscore=0 adultscore=0 spamscore=0 priorityscore=1501 suspectscore=0
- clxscore=1015 malwarescore=0 mlxscore=0 bulkscore=0 impostorscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2206140000 definitions=main-2207270069
+ <20220727164736.48619-3-nick.hawkins@hpe.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220727164736.48619-3-nick.hawkins@hpe.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Nick Hawkins <nick.hawkins@hpe.com>
+On 27/07/2022 18:47, nick.hawkins@hpe.com wrote:
+> From: Nick Hawkins <nick.hawkins@hpe.com>
+> 
+> Create documentation for the hpe,gxp-spifi binding to support access to
+> the SPI parts
+> 
+> Signed-off-by: Nick Hawkins <nick.hawkins@hpe.com>
+> 
 
-The GXP supports 3 separate SPI interfaces to accommodate the system
-flash, core flash, and other functions. The SPI engine supports variable
-clock frequency, selectable 3-byte or 4-byte addressing and a
-configurable x1, x2, and x4 command/address/data modes. The memory
-buffer for reading and writing ranges between 256 bytes and 8KB. This
-driver supports access to the core flash and bios part.
+No blank lines between tags.
 
-Signed-off-by: Nick Hawkins <nick.hawkins@hpe.com>
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> 
+> ---
 
----
-v5:
- *Add missing spaces in Kconfig to have proper alignment
-v4:
- *No change
-v3:
- *No change
-v2:
- *Removed repeated include file
- *Removed unnecessary initialization of ret variable
- *Removed conditional variable checks where failure is impossible
- *Removed unecessary variable cs and instead used in the initialization
- *Removed blank gxp_spifi_remove function
- *Fixed error messages so they are not repetitive
----
- drivers/spi/Kconfig   |   7 +
- drivers/spi/Makefile  |   1 +
- drivers/spi/spi-gxp.c | 325 ++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 333 insertions(+)
- create mode 100644 drivers/spi/spi-gxp.c
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 3b1044ebc400..e3787cd9b475 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -371,6 +371,13 @@ config SPI_FSL_QUADSPI
- 	  This controller does not support generic SPI messages. It only
- 	  supports the high-level SPI memory interface.
- 
-+config SPI_GXP
-+	tristate "GXP SPI driver"
-+	depends on ARCH_HPE || COMPILE_TEST
-+	help
-+	  This enables support for the driver for GXP bus attached SPI
-+	  controllers.
-+
- config SPI_HISI_KUNPENG
- 	tristate "HiSilicon SPI Controller for Kunpeng SoCs"
- 	depends on (ARM64 && ACPI) || COMPILE_TEST
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index 0f44eb6083a5..ca5f204017ee 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -57,6 +57,7 @@ obj-$(CONFIG_SPI_FSL_LPSPI)		+= spi-fsl-lpspi.o
- obj-$(CONFIG_SPI_FSL_QUADSPI)		+= spi-fsl-qspi.o
- obj-$(CONFIG_SPI_FSL_SPI)		+= spi-fsl-spi.o
- obj-$(CONFIG_SPI_GPIO)			+= spi-gpio.o
-+obj-$(CONFIG_SPI_GXP)			+= spi-gxp.o
- obj-$(CONFIG_SPI_HISI_KUNPENG)		+= spi-hisi-kunpeng.o
- obj-$(CONFIG_SPI_HISI_SFC_V3XX)		+= spi-hisi-sfc-v3xx.o
- obj-$(CONFIG_SPI_IMG_SPFI)		+= spi-img-spfi.o
-diff --git a/drivers/spi/spi-gxp.c b/drivers/spi/spi-gxp.c
-new file mode 100644
-index 000000000000..9ea355f7d64f
---- /dev/null
-+++ b/drivers/spi/spi-gxp.c
-@@ -0,0 +1,325 @@
-+// SPDX-License-Identifier: GPL-2.0=or-later
-+/* Copyright (C) 2022 Hewlett-Packard Development Company, L.P. */
-+
-+#include <linux/iopoll.h>
-+#include <linux/of.h>
-+#include <linux/of_device.h>
-+#include <linux/platform_device.h>
-+#include <linux/spi/spi.h>
-+#include <linux/spi/spi-mem.h>
-+
-+#define GXP_SPI0_MAX_CHIPSELECT	2
-+#define GXP_SPI_SLEEP_TIME	1
-+#define GXP_SPI_TIMEOUT (130 * 1000000 / GXP_SPI_SLEEP_TIME)
-+
-+#define MANUAL_MODE		0
-+#define DIRECT_MODE		1
-+#define SPILDAT_LEN		256
-+
-+#define OFFSET_SPIMCFG		0x0
-+#define OFFSET_SPIMCTRL		0x4
-+#define OFFSET_SPICMD		0x5
-+#define OFFSET_SPIDCNT		0x6
-+#define OFFSET_SPIADDR		0x8
-+#define OFFSET_SPIINTSTS	0xc
-+
-+#define SPIMCTRL_START		0x01
-+#define SPIMCTRL_BUSY		0x02
-+#define SPIMCTRL_DIR		0x08
-+
-+struct gxp_spi;
-+
-+struct gxp_spi_chip {
-+	struct gxp_spi *spifi;
-+	u32 cs;
-+};
-+
-+struct gxp_spi_data {
-+	u32 max_cs;
-+	u32 mode_bits;
-+};
-+
-+struct gxp_spi {
-+	const struct gxp_spi_data *data;
-+	void __iomem *reg_base;
-+	void __iomem *dat_base;
-+	void __iomem *dir_base;
-+	struct device *dev;
-+	struct gxp_spi_chip chips[GXP_SPI0_MAX_CHIPSELECT];
-+};
-+
-+static void gxp_spi_set_mode(struct gxp_spi *spifi, int mode)
-+{
-+	u8 value;
-+	void __iomem *reg_base = spifi->reg_base;
-+
-+	value = readb(reg_base + OFFSET_SPIMCTRL);
-+
-+	if (mode == MANUAL_MODE) {
-+		writeb(0x55, reg_base + OFFSET_SPICMD);
-+		writeb(0xaa, reg_base + OFFSET_SPICMD);
-+		value &= ~0x30;
-+	} else {
-+		value |= 0x30;
-+	}
-+	writeb(value, reg_base + OFFSET_SPIMCTRL);
-+}
-+
-+static int gxp_spi_read_reg(struct gxp_spi_chip *chip, const struct spi_mem_op *op)
-+{
-+	int ret;
-+	struct gxp_spi *spifi = chip->spifi;
-+	void __iomem *reg_base = spifi->reg_base;
-+	u32 value;
-+
-+	value = readl(reg_base + OFFSET_SPIMCFG);
-+	value &= ~(1 << 24);
-+	value |= (chip->cs << 24);
-+	value &= ~(0x07 << 16);
-+	value &= ~(0x1f << 19);
-+	writel(value, reg_base + OFFSET_SPIMCFG);
-+
-+	writel(0, reg_base + OFFSET_SPIADDR);
-+
-+	writeb(op->cmd.opcode, reg_base + OFFSET_SPICMD);
-+
-+	writew(op->data.nbytes, reg_base + OFFSET_SPIDCNT);
-+
-+	value = readb(reg_base + OFFSET_SPIMCTRL);
-+	value &= ~SPIMCTRL_DIR;
-+	value |= SPIMCTRL_START;
-+
-+	writeb(value, reg_base + OFFSET_SPIMCTRL);
-+
-+	ret = readb_poll_timeout(reg_base + OFFSET_SPIMCTRL, value,
-+				 !(value & SPIMCTRL_BUSY),
-+				 GXP_SPI_SLEEP_TIME, GXP_SPI_TIMEOUT);
-+	if (ret) {
-+		dev_warn(spifi->dev, "read reg busy time out\n");
-+		return ret;
-+	}
-+
-+	memcpy_fromio(op->data.buf.in, spifi->dat_base, op->data.nbytes);
-+	return ret;
-+}
-+
-+static int gxp_spi_write_reg(struct gxp_spi_chip *chip, const struct spi_mem_op *op)
-+{
-+	int ret;
-+	struct gxp_spi *spifi = chip->spifi;
-+	void __iomem *reg_base = spifi->reg_base;
-+	u32 value;
-+
-+	value = readl(reg_base + OFFSET_SPIMCFG);
-+	value &= ~(1 << 24);
-+	value |= (chip->cs << 24);
-+	value &= ~(0x07 << 16);
-+	value &= ~(0x1f << 19);
-+	writel(value, reg_base + OFFSET_SPIMCFG);
-+
-+	writel(0, reg_base + OFFSET_SPIADDR);
-+
-+	writeb(op->cmd.opcode, reg_base + OFFSET_SPICMD);
-+
-+	memcpy_toio(spifi->dat_base, op->data.buf.in, op->data.nbytes);
-+
-+	writew(op->data.nbytes, reg_base + OFFSET_SPIDCNT);
-+
-+	value = readb(reg_base + OFFSET_SPIMCTRL);
-+	value |= SPIMCTRL_DIR;
-+	value |= SPIMCTRL_START;
-+
-+	writeb(value, reg_base + OFFSET_SPIMCTRL);
-+
-+	ret = readb_poll_timeout(reg_base + OFFSET_SPIMCTRL, value,
-+				 !(value & SPIMCTRL_BUSY),
-+				 GXP_SPI_SLEEP_TIME, GXP_SPI_TIMEOUT);
-+	if (ret)
-+		dev_warn(spifi->dev, "write reg busy time out\n");
-+
-+	return ret;
-+}
-+
-+static ssize_t gxp_spi_read(struct gxp_spi_chip *chip, const struct spi_mem_op *op)
-+{
-+	struct gxp_spi *spifi = chip->spifi;
-+	u32 offset = op->addr.val;
-+
-+	if (chip->cs == 0)
-+		offset += 0x4000000;
-+
-+	memcpy_fromio(op->data.buf.in, spifi->dir_base + offset, op->data.nbytes);
-+
-+	return 0;
-+}
-+
-+static ssize_t gxp_spi_write(struct gxp_spi_chip *chip, const struct spi_mem_op *op)
-+{
-+	struct gxp_spi *spifi = chip->spifi;
-+	void __iomem *reg_base = spifi->reg_base;
-+	u32 write_len;
-+	u32 value;
-+	int ret;
-+
-+	write_len = op->data.nbytes;
-+	if (write_len > SPILDAT_LEN)
-+		write_len = SPILDAT_LEN;
-+
-+	value = readl(reg_base + OFFSET_SPIMCFG);
-+	value &= ~(1 << 24);
-+	value |= (chip->cs << 24);
-+	value &= ~(0x07 << 16);
-+	value |= (op->addr.nbytes << 16);
-+	value &= ~(0x1f << 19);
-+	writel(value, reg_base + OFFSET_SPIMCFG);
-+
-+	writel(op->addr.val, reg_base + OFFSET_SPIADDR);
-+
-+	writeb(op->cmd.opcode, reg_base + OFFSET_SPICMD);
-+
-+	writew(write_len, reg_base + OFFSET_SPIDCNT);
-+
-+	memcpy_toio(spifi->dat_base, op->data.buf.in, write_len);
-+
-+	value = readb(reg_base + OFFSET_SPIMCTRL);
-+	value |= SPIMCTRL_DIR;
-+	value |= SPIMCTRL_START;
-+
-+	writeb(value, reg_base + OFFSET_SPIMCTRL);
-+
-+	ret = readb_poll_timeout(reg_base + OFFSET_SPIMCTRL, value,
-+				 !(value & SPIMCTRL_BUSY),
-+				 GXP_SPI_SLEEP_TIME, GXP_SPI_TIMEOUT);
-+	if (ret) {
-+		dev_warn(spifi->dev, "write busy time out\n");
-+		return ret;
-+	}
-+
-+	return write_len;
-+}
-+
-+static int do_gxp_exec_mem_op(struct spi_mem *mem, const struct spi_mem_op *op)
-+{
-+	struct gxp_spi *spifi = spi_controller_get_devdata(mem->spi->master);
-+	struct gxp_spi_chip *chip = &spifi->chips[mem->spi->chip_select];
-+	int ret;
-+
-+	if (op->data.dir == SPI_MEM_DATA_IN) {
-+		if (!op->addr.nbytes)
-+			ret = gxp_spi_read_reg(chip, op);
-+		else
-+			ret = gxp_spi_read(chip, op);
-+	} else {
-+		if (!op->addr.nbytes)
-+			ret = gxp_spi_write_reg(chip, op);
-+		else
-+			ret = gxp_spi_write(chip, op);
-+	}
-+
-+	return ret;
-+}
-+
-+static int gxp_exec_mem_op(struct spi_mem *mem, const struct spi_mem_op *op)
-+{
-+	int ret;
-+
-+	ret = do_gxp_exec_mem_op(mem, op);
-+	if (ret)
-+		dev_err(&mem->spi->dev, "operation failed: %d", ret);
-+
-+	return ret;
-+}
-+
-+static const struct spi_controller_mem_ops gxp_spi_mem_ops = {
-+	.exec_op = gxp_exec_mem_op,
-+};
-+
-+static int gxp_spi_setup(struct spi_device *spi)
-+{
-+	struct gxp_spi *spifi = spi_controller_get_devdata(spi->master);
-+	unsigned int cs = spi->chip_select;
-+	struct gxp_spi_chip *chip = &spifi->chips[cs];
-+
-+	chip->spifi = spifi;
-+	chip->cs = cs;
-+
-+	gxp_spi_set_mode(spifi, MANUAL_MODE);
-+
-+	return 0;
-+}
-+
-+static int gxp_spifi_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	const struct gxp_spi_data *data;
-+	struct spi_controller *ctlr;
-+	struct gxp_spi *spifi;
-+	struct resource *res;
-+	int ret;
-+
-+	data = of_device_get_match_data(&pdev->dev);
-+
-+	ctlr = devm_spi_alloc_master(dev, sizeof(*spifi));
-+	if (!ctlr)
-+		return -ENOMEM;
-+
-+	spifi = spi_controller_get_devdata(ctlr);
-+
-+	platform_set_drvdata(pdev, spifi);
-+	spifi->data = data;
-+	spifi->dev = dev;
-+
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	spifi->reg_base = devm_ioremap_resource(&pdev->dev, res);
-+	if (IS_ERR(spifi->reg_base))
-+		return PTR_ERR(spifi->reg_base);
-+
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
-+	spifi->dat_base = devm_ioremap_resource(&pdev->dev, res);
-+	if (IS_ERR(spifi->dat_base))
-+		return PTR_ERR(spifi->dat_base);
-+
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 2);
-+	spifi->dir_base = devm_ioremap_resource(&pdev->dev, res);
-+	if (IS_ERR(spifi->dir_base))
-+		return PTR_ERR(spifi->dir_base);
-+
-+	ctlr->mode_bits = data->mode_bits;
-+	ctlr->bus_num = pdev->id;
-+	ctlr->mem_ops = &gxp_spi_mem_ops;
-+	ctlr->setup = gxp_spi_setup;
-+	ctlr->num_chipselect = data->max_cs;
-+	ctlr->dev.of_node = dev->of_node;
-+
-+	ret = devm_spi_register_controller(dev, ctlr);
-+	if (ret) {
-+		return dev_err_probe(&pdev->dev, ret,
-+				     "failed to register spi controller\n");
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct gxp_spi_data gxp_spifi_data = {
-+	.max_cs	= 2,
-+	.mode_bits = 0,
-+};
-+
-+static const struct of_device_id gxp_spifi_match[] = {
-+	{.compatible = "hpe,gxp-spifi", .data = &gxp_spifi_data },
-+	{ /* null */ }
-+};
-+MODULE_DEVICE_TABLE(of, gxp_spifi_match);
-+
-+static struct platform_driver gxp_spifi_driver = {
-+	.probe = gxp_spifi_probe,
-+	.driver = {
-+		.name = "gxp-spifi",
-+		.of_match_table = gxp_spifi_match,
-+	},
-+};
-+module_platform_driver(gxp_spifi_driver);
-+
-+MODULE_DESCRIPTION("HPE GXP SPI Flash Interface driver");
-+MODULE_AUTHOR("Nick Hawkins <nick.hawkins@hpe.com>");
-+MODULE_LICENSE("GPL");
--- 
-2.17.1
 
+Best regards,
+Krzysztof

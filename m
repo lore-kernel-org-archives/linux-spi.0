@@ -2,91 +2,192 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9566CC19F2B
-	for <linux-spi@archiver.kernel.org>; Thu, 28 Jul 2022 15:27:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E7DAEC19F2B
+	for <linux-spi@archiver.kernel.org>; Thu, 28 Jul 2022 16:14:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231598AbiG1P1U (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 28 Jul 2022 11:27:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42018 "EHLO
+        id S232161AbiG1QOo (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 28 Jul 2022 12:14:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231941AbiG1P1Q (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 28 Jul 2022 11:27:16 -0400
-Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47B5866ACE;
-        Thu, 28 Jul 2022 08:27:15 -0700 (PDT)
-Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-2ef5380669cso23033577b3.9;
-        Thu, 28 Jul 2022 08:27:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=m19x5GgjL6UYGLO5pGx+8cW4vPm+cyuRwfchr+o3/60=;
-        b=U/+D8kzsAw3UK/Iwl6REQhCOogRmlIHGFdJTCCvWXrAGuSS1hVTCnI0IZCaNzGtWAU
-         X422BlF1rZOBOF1ORYEoCk/qne9c0/vIp7lJHTVGsuNkGIBCO/OgC5/ONGZixI4Fq5WU
-         mQ/7CIERcEBOtXaWty87xojbkmPny2NkG4c9niiqSdrw+ZuY2gC6Rhkr0rUaKryvmH+Z
-         CREykZ2FRMgsZYixDxhNd0x+S3WobSTQxkWQLwZF1UD8uDC1Ed7I49SulcfoL3Q6U6Dp
-         LYPtoVu9GLjlKCWZCtXZZc9ABkSjzFQYTBdXf7KAT65iZZfnqtHov5VkBCzc6pZq3rcR
-         jdHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=m19x5GgjL6UYGLO5pGx+8cW4vPm+cyuRwfchr+o3/60=;
-        b=PRd9HsgJvlRbfimt9qTZr4+XjcVdTdJe3AOtg3pnHuHJKxOi/LKq5rkmUJrOF9n8kV
-         sOPZKHN62zYo6p3aAZC20YO4pf+yJ5R6wxeJwAsK+UV8ioAnGvgMo/1S3cDAn6/qVx8a
-         6qz9fen7+92648ij1i06YP6ykkQHRySXYYuqIeTtxIBYBFt6hp4aNPmPz8s88yFR67Bh
-         p5eO1Y/aRG3lCOx09KMwcmfkKsKDnyGQYlLMB/GyRDYCMvmVp9/c6K1GP1KcPFSy//pB
-         H6jGD0OEPlu0BiKwXhafwr8wyKrwtKbQTY/PZ8JTXuBRf55ZDw/mriWppeq1nd+dGFYG
-         MyEw==
-X-Gm-Message-State: AJIora8EmFcnc3gfztU/1q6cmil2ZyXsoDeT8SwyaKFSPIrsNtFHosny
-        eEg0iWS9RShXhNZH1om8MvC0+GgL5kBM2BA23K2diMaKdG4=
-X-Google-Smtp-Source: AGRyM1tLnqiPHDgHJROI4wdiF5Op1SZz/4SPA1Y7Or2IbhRW1yMX0efRCNxRKiA/eHsCKQeXMJlhUgmdu27oz8AfVOs=
-X-Received: by 2002:a81:6ed4:0:b0:31f:611d:92d1 with SMTP id
- j203-20020a816ed4000000b0031f611d92d1mr7781654ywc.36.1659022034388; Thu, 28
- Jul 2022 08:27:14 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220725193547.1038414-1-martin.blumenstingl@googlemail.com> <be60acab-7dfe-6841-b176-4bd1e875d52e@birger-koblitz.de>
-In-Reply-To: <be60acab-7dfe-6841-b176-4bd1e875d52e@birger-koblitz.de>
-From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date:   Thu, 28 Jul 2022 17:27:03 +0200
-Message-ID: <CAFBinCB6bJbK2sx+oyCjo97Sv2=ywnCi_4v+E76f78DYMNqJkg@mail.gmail.com>
-Subject: Re: [PATCH RFC v1] spi: realtek-rtl: Fix clearing some register bits
-To:     Birger Koblitz <mail@birger-koblitz.de>
-Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        bert@biot.com, sander@svanheule.net
-Content-Type: text/plain; charset="UTF-8"
+        with ESMTP id S229864AbiG1QOb (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 28 Jul 2022 12:14:31 -0400
+Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FC966D553;
+        Thu, 28 Jul 2022 09:14:16 -0700 (PDT)
+Received: from pps.filterd (m0148663.ppops.net [127.0.0.1])
+        by mx0a-002e3701.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26SG4Mtp005299;
+        Thu, 28 Jul 2022 16:13:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=from : to : cc : subject
+ : date : message-id : in-reply-to : references; s=pps0720;
+ bh=Q78dbMkWVAYus1iRquR8N+7zoLIez9FwsHPQg8btUoc=;
+ b=mFjO6A7cH4hBMCEkkFoQ/36wMs4YSmVp0he7gWoXWNji1vkU8hdhv1ULxQQwcwjShAEJ
+ woGzrNOIKyxKGbj5VOeuttM6E1YtFaVF/0uBNdjzasp2Ik6N38lDCToZg6jzbcPFNpeH
+ IwB+Ypgo2S4wWUzW2NxJi5BF0phTcIsK7fdbgqshWEiOrPQwzGUCBI0vCcZ1gNblTnsA
+ uvidx8NAUGPVN2gZEJG3023wh0c8jZ26XzzF5jv+70vmPzm+1avSWIEiN8XSltiP+Fja
+ GlspcCgFeLcFUO4h1ErAiEcF8+DuPWOIdqZpMZAhEmKh8uXR6MqkhGsohUy8zWySwvi6 lQ== 
+Received: from p1lg14879.it.hpe.com (p1lg14879.it.hpe.com [16.230.97.200])
+        by mx0a-002e3701.pphosted.com (PPS) with ESMTPS id 3hkvjdrrbv-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 28 Jul 2022 16:13:54 +0000
+Received: from p1lg14885.dc01.its.hpecorp.net (unknown [10.119.18.236])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by p1lg14879.it.hpe.com (Postfix) with ESMTPS id 6CB96132DA;
+        Thu, 28 Jul 2022 16:13:54 +0000 (UTC)
+Received: from hpe.com (unknown [16.231.227.36])
+        by p1lg14885.dc01.its.hpecorp.net (Postfix) with ESMTP id 7928B805EA1;
+        Thu, 28 Jul 2022 16:13:53 +0000 (UTC)
+From:   nick.hawkins@hpe.com
+To:     nick.hawkins@hpe.com
+Cc:     broonie@kernel.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, verdun@hpe.com,
+        linux@armlinux.org.uk, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, arnd@arndb.de
+Subject: [PATCH v6 3/5] ARM: dts: hpe: Add spi driver node
+Date:   Thu, 28 Jul 2022 11:14:57 -0500
+Message-Id: <20220728161459.7738-4-nick.hawkins@hpe.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20220728161459.7738-1-nick.hawkins@hpe.com>
+References: <20220728161459.7738-1-nick.hawkins@hpe.com>
+X-Proofpoint-ORIG-GUID: 1nlvrw3TXGzK04vzWhvXrcNveTgzNRU5
+X-Proofpoint-GUID: 1nlvrw3TXGzK04vzWhvXrcNveTgzNRU5
+X-HPE-SCL: -1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-07-28_06,2022-07-28_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ mlxlogscore=449 lowpriorityscore=0 bulkscore=0 priorityscore=1501
+ mlxscore=0 clxscore=1015 spamscore=0 impostorscore=0 suspectscore=0
+ adultscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2206140000 definitions=main-2207280073
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi Birger,
+From: Nick Hawkins <nick.hawkins@hpe.com>
 
-(sorry for replying late, I missed your mail)
+Add support for the SPI flash interface on the GXP SoC.
 
-On Mon, Jul 25, 2022 at 10:19 PM Birger Koblitz <mail@birger-koblitz.de> wrote:
-[...]
-> > I stumbled across this while reading the driver. This patch is untested
-> > because I don't have any hardware with this controller.
-> I believe your fix is correct. In the meantime, more information has been
-> learned about this hardware, in particular, newer SoC versions and the possibility
-> to have parallel IO and hardware which uses different chip selects.
-As Sander pointed out (thanks again!) there's actually an issue with my patch.
-I just sent v2 with a fix for RTL_SPI_SFCSR_LEN_MASK.
+Signed-off-by: Nick Hawkins <nick.hawkins@hpe.com>
 
-> I came up with the following patch for supporting this, and it achieves
-> what you also propose:
-> https://github.com/bkobl/openwrt/blob/rtl8214qf_merge/target/linux/realtek/patches-5.10/317-spi-cs-support-for-spi-realtek-rtl.patch
-> It is still is a bit rough, reading it I immediately saw 2 things that
-> would need to be fixed, but it also improves e.g. that RTL_SPI_SFCSR
-> is now configured independently of what u-boot did to it.
-Your patch actually addresses an issue which I have seen with RTL_SPI_SFCSR_CS.
-Since you seem to have boards with these Realtek SoCs: could you
-please clean up your patch and upstream it (splitting into smaller
-patches if/where needed)? That would be a win-win: upstream gains
-improved SPI support and I won't be confused the next time I look at
-the spi-realtek-rtl driver.
+---
+v6:
+ *No change
+v5:
+ *No change
+v4:
+ *No change
+v3:
+ *No change
+v2:
+ *No change
+---
+ arch/arm/boot/dts/hpe-bmc-dl360gen10.dts | 58 ++++++++++++++++++++++++
+ arch/arm/boot/dts/hpe-gxp.dtsi           | 21 ++++++++-
+ 2 files changed, 78 insertions(+), 1 deletion(-)
 
+diff --git a/arch/arm/boot/dts/hpe-bmc-dl360gen10.dts b/arch/arm/boot/dts/hpe-bmc-dl360gen10.dts
+index 3a7382ce40ef..d49dcef95c5c 100644
+--- a/arch/arm/boot/dts/hpe-bmc-dl360gen10.dts
++++ b/arch/arm/boot/dts/hpe-bmc-dl360gen10.dts
+@@ -24,3 +24,61 @@
+ 		reg = <0x40000000 0x20000000>;
+ 	};
+ };
++
++&spifi {
++	status = "okay";
++	flash@0 {
++		partitions {
++			compatible = "fixed-partitions";
++			#address-cells = <1>;
++			#size-cells = <1>;
++
++			u-boot@0 {
++				label = "u-boot";
++				reg = <0x0 0x60000>;
++			};
++
++			u-boot-env@60000 {
++				label = "u-boot-env";
++				reg = <0x60000 0x20000>;
++			};
++
++			kernel@80000 {
++				label = "kernel";
++				reg = <0x80000 0x4c0000>;
++			};
++
++			rofs@540000 {
++				label = "rofs";
++				reg = <0x540000 0x1740000>;
++			};
++
++			rwfs@1c80000 {
++				label = "rwfs";
++				reg = <0x1c80000 0x250000>;
++			};
++
++			section@1ed0000{
++				label = "section";
++				reg = <0x1ed0000 0x130000>;
++			};
++		};
++	};
++	flash@1 {
++		partitions {
++			compatible = "fixed-partitions";
++			#address-cells = <1>;
++			#size-cells = <1>;
++
++			host-prime@0 {
++				label = "host-prime";
++				reg = <0x0 0x02000000>;
++			};
++
++			host-second@2000000 {
++				label = "host-second";
++				reg = <0x02000000 0x02000000>;
++			};
++		};
++	};
++};
+diff --git a/arch/arm/boot/dts/hpe-gxp.dtsi b/arch/arm/boot/dts/hpe-gxp.dtsi
+index cf735b3c4f35..f28349bdeee1 100644
+--- a/arch/arm/boot/dts/hpe-gxp.dtsi
++++ b/arch/arm/boot/dts/hpe-gxp.dtsi
+@@ -56,9 +56,28 @@
+ 			compatible = "simple-bus";
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
+-			ranges = <0x0 0xc0000000 0x30000000>;
++			ranges = <0x0 0xc0000000 0x40000000>;
+ 			dma-ranges;
+ 
++			spifi: spi@200 {
++				compatible = "hpe,gxp-spifi";
++				reg = <0x200 0x80>, <0xc000 0x100>, <0x38000000 0x8000000>;
++				interrupts = <20>;
++				interrupt-parent = <&vic0>;
++				#address-cells = <1>;
++				#size-cells = <0>;
++				status = "disabled";
++				flash@0 {
++					reg = <0>;
++					compatible = "jedec,spi-nor";
++				};
++
++				flash@1 {
++					reg = <1>;
++					compatible = "jedec,spi-nor";
++				};
++			};
++
+ 			vic0: interrupt-controller@eff0000 {
+ 				compatible = "arm,pl192-vic";
+ 				reg = <0xeff0000 0x1000>;
+-- 
+2.17.1
 
-Thank you!
-Best regards,
-Martin

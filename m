@@ -2,42 +2,42 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DC272C19F2C
-	for <linux-spi@archiver.kernel.org>; Thu, 28 Jul 2022 16:14:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4AD86C04A68
+	for <linux-spi@archiver.kernel.org>; Thu, 28 Jul 2022 16:14:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232884AbiG1QOq (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S232906AbiG1QOq (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Thu, 28 Jul 2022 12:14:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54388 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232915AbiG1QOc (ORCPT
+        with ESMTP id S232688AbiG1QOc (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Thu, 28 Jul 2022 12:14:32 -0400
-Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5D786E889;
-        Thu, 28 Jul 2022 09:14:16 -0700 (PDT)
-Received: from pps.filterd (m0150241.ppops.net [127.0.0.1])
-        by mx0a-002e3701.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26SG4OmH010752;
-        Thu, 28 Jul 2022 16:13:54 GMT
+Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F3826E8AF;
+        Thu, 28 Jul 2022 09:14:17 -0700 (PDT)
+Received: from pps.filterd (m0150244.ppops.net [127.0.0.1])
+        by mx0b-002e3701.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26SG3pYU014257;
+        Thu, 28 Jul 2022 16:13:56 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version; s=pps0720;
- bh=VQFmGVeO8SEO5GJoTRngkqsAp2Qimurswup3W5FPokY=;
- b=iVErPSmHCjquawyzyejVUJP6yDubyc7uGfB5NGsUkjZqobs282eAFtm6PAO2ggT3Q7lb
- gYzOMBysnZBORhENxsEULFMR6VRYj/gcEiMoruiDVKcX5eiSz4QkYPF9wHKMlLiOgz3y
- E8QQ8vy5G90lgqsa724aN6IGGEv5jYyH2kj33ChzFPNY9fZzsAnKE6h1MIIoJ3W5Ah94
- lNi8eU4qqxaJDsneSy7sQL3v9Bz2lmaCLZKMT1DkfOfW4logColKciu/ymItem5acAXg
- kwreRN52CLjlD6udUvOrbv255afYtqGR7XhjHUHZWxhJAL0/BcHxMACyvONPNUsdeLgF Vw== 
-Received: from p1lg14880.it.hpe.com (p1lg14880.it.hpe.com [16.230.97.201])
-        by mx0a-002e3701.pphosted.com (PPS) with ESMTPS id 3hkvg00tc4-1
+ : date : message-id : in-reply-to : references; s=pps0720;
+ bh=RxxDzF31NL6V06N4hL06es3D8QVrXa1IQTyzOi1phEo=;
+ b=FPP+UZ6xHvaOwDRtH3O0b9Zs7dvL+uhbMYGnJkn5Trzoldms91CGsdEP8dMwS2vLFpLU
+ 03A6ksLVTuiWqMTlCL5wlXUL6B5/xR9OK9pJQb0o6/2QE6T2U83SzIhEN5Jke1roEKkk
+ hUruMRA+4YDmIgJ+0/qBZ6soFXLA+0a37lMhhw1gztdh3TSkEExWbwCe9eFEt6wbMrdm
+ 82tFWQaaUYSRraBzBz6UvcYopKmxmSBI+4FYaGATL0+yZWVcIauxwKnVv/ZTeTEltajN
+ ucbNKCJ0pXzOTlefM5e232b68GKkeWomzmmBCjGm0u6us6ttboyju84gZ6Fo+Xj7AEYc 1g== 
+Received: from p1lg14878.it.hpe.com (p1lg14878.it.hpe.com [16.230.97.204])
+        by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 3hkvp10qfv-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 28 Jul 2022 16:13:54 +0000
+        Thu, 28 Jul 2022 16:13:56 +0000
 Received: from p1lg14885.dc01.its.hpecorp.net (unknown [10.119.18.236])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by p1lg14880.it.hpe.com (Postfix) with ESMTPS id 7385F8001AD;
-        Thu, 28 Jul 2022 16:13:53 +0000 (UTC)
+        by p1lg14878.it.hpe.com (Postfix) with ESMTPS id 83D8214796;
+        Thu, 28 Jul 2022 16:13:55 +0000 (UTC)
 Received: from hpe.com (unknown [16.231.227.36])
-        by p1lg14885.dc01.its.hpecorp.net (Postfix) with ESMTP id E3BED8041E9;
-        Thu, 28 Jul 2022 16:13:52 +0000 (UTC)
+        by p1lg14885.dc01.its.hpecorp.net (Postfix) with ESMTP id 04B4F80805B;
+        Thu, 28 Jul 2022 16:13:54 +0000 (UTC)
 From:   nick.hawkins@hpe.com
 To:     nick.hawkins@hpe.com
 Cc:     broonie@kernel.org, robh+dt@kernel.org,
@@ -45,24 +45,22 @@ Cc:     broonie@kernel.org, robh+dt@kernel.org,
         linux@armlinux.org.uk, linux-spi@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, arnd@arndb.de
-Subject: [PATCH v6 2/5] spi: dt-bindings: add documentation for hpe,gxp-spifi
-Date:   Thu, 28 Jul 2022 11:14:56 -0500
-Message-Id: <20220728161459.7738-3-nick.hawkins@hpe.com>
+Subject: [PATCH v6 5/5] MAINTAINERS: add spi support to GXP
+Date:   Thu, 28 Jul 2022 11:14:59 -0500
+Message-Id: <20220728161459.7738-6-nick.hawkins@hpe.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20220728161459.7738-1-nick.hawkins@hpe.com>
 References: <20220728161459.7738-1-nick.hawkins@hpe.com>
-X-Proofpoint-GUID: U8oZZ-KbcUYZIIGHO2A09iC4IcmnEPtg
-X-Proofpoint-ORIG-GUID: U8oZZ-KbcUYZIIGHO2A09iC4IcmnEPtg
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
-MIME-Version: 1.0
+X-Proofpoint-GUID: tsACJDK9q_O57Ys1ZaUs2CY6XoVbyutb
+X-Proofpoint-ORIG-GUID: tsACJDK9q_O57Ys1ZaUs2CY6XoVbyutb
 X-HPE-SCL: -1
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
  definitions=2022-07-28_06,2022-07-28_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 adultscore=0
- suspectscore=0 malwarescore=0 clxscore=1015 spamscore=0 mlxlogscore=733
- mlxscore=0 impostorscore=0 phishscore=0 lowpriorityscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ suspectscore=0 malwarescore=0 adultscore=0 spamscore=0 phishscore=0
+ mlxscore=0 bulkscore=0 lowpriorityscore=0 impostorscore=0 mlxlogscore=944
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2206140000 definitions=main-2207280073
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
@@ -70,91 +68,43 @@ X-Mailing-List: linux-spi@vger.kernel.org
 
 From: Nick Hawkins <nick.hawkins@hpe.com>
 
-Create documentation for the hpe,gxp-spifi binding to support access to
-the SPI parts
+Add the spi driver and dt-binding documentation
 
 Signed-off-by: Nick Hawkins <nick.hawkins@hpe.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 ---
 v6:
- *Remove blank line between tags in commit description
+ *No change
 v5:
- *No change, add Krzysztof review from previous version
+ *No change
 v4:
- *Remove uneccessary quotes
+ *No change
 v3:
- *Fix indentation
+ *No change
 v2:
- *Removed extra space around < > for reg
- *Changed interrupt-parrent to interrupt-parent
+ *No change
 ---
- .../bindings/spi/hpe,gxp-spifi.yaml           | 56 +++++++++++++++++++
- 1 file changed, 56 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/hpe,gxp-spifi.yaml
+ MAINTAINERS | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/spi/hpe,gxp-spifi.yaml b/Documentation/devicetree/bindings/spi/hpe,gxp-spifi.yaml
-new file mode 100644
-index 000000000000..7797c3123b7e
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/hpe,gxp-spifi.yaml
-@@ -0,0 +1,56 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/spi/hpe,gxp-spifi.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: HPE GXP spi controller flash interface
-+
-+maintainers:
-+  - Nick Hawkins <nick.hawkins@hpe.com>
-+  - Jean-Marie Verdun <verdun@hpe.com>
-+
-+allOf:
-+  - $ref: spi-controller.yaml#
-+
-+properties:
-+  compatible:
-+    const: hpe,gxp-spifi
-+
-+  reg:
-+    items:
-+      - description: cfg registers
-+      - description: data registers
-+      - description: mapped memory
-+
-+  interrupts:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+
-+    spi@200 {
-+      compatible = "hpe,gxp-spifi";
-+      reg = <0x200 0x80>, <0xc000 0x100>, <0x38000000 0x800000>;
-+      interrupts = <20>;
-+      interrupt-parent = <&vic0>;
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+
-+      flash@0 {
-+        reg = <0>;
-+        compatible = "jedec,spi-nor";
-+      };
-+
-+      flash@1 {
-+        reg = <1>;
-+        compatible = "jedec,spi-nor";
-+      };
-+    };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index a6d3bd9d2a8d..f87728549ecf 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2140,11 +2140,13 @@ M:	Jean-Marie Verdun <verdun@hpe.com>
+ M:	Nick Hawkins <nick.hawkins@hpe.com>
+ S:	Maintained
+ F:	Documentation/devicetree/bindings/arm/hpe,gxp.yaml
++F:	Documentation/devicetree/bindings/spi/hpe,gxp-spi.yaml
+ F:	Documentation/devicetree/bindings/timer/hpe,gxp-timer.yaml
+ F:	arch/arm/boot/dts/hpe-bmc*
+ F:	arch/arm/boot/dts/hpe-gxp*
+ F:	arch/arm/mach-hpe/
+ F:	drivers/clocksource/timer-gxp.c
++F:	drivers/spi/spi-gxp.c
+ F:	drivers/watchdog/gxp-wdt.c
+ 
+ ARM/IGEP MACHINE SUPPORT
 -- 
 2.17.1
 

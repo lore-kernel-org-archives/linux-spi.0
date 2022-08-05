@@ -2,58 +2,84 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F820C00140
-	for <linux-spi@archiver.kernel.org>; Fri,  5 Aug 2022 05:56:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B9567C00140
+	for <linux-spi@archiver.kernel.org>; Fri,  5 Aug 2022 06:46:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234600AbiHEF4d (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 5 Aug 2022 01:56:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58112 "EHLO
+        id S235602AbiHEGqp (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 5 Aug 2022 02:46:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231181AbiHEF4c (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 5 Aug 2022 01:56:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86F2C33E0B
-        for <linux-spi@vger.kernel.org>; Thu,  4 Aug 2022 22:56:31 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 249EE60A4E
-        for <linux-spi@vger.kernel.org>; Fri,  5 Aug 2022 05:56:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 79B8FC433C1;
-        Fri,  5 Aug 2022 05:56:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659678990;
-        bh=oau/KGTJKcga6TMrU0EBX2TuRHxQslrCNlpPdKq89+s=;
-        h=Subject:From:Date:To:From;
-        b=q4VDNivACXkOY+NY5Lb12Fjkl/4QXirUgJUOI+HSzyGr0uDKWggzw2v7RzDmalRtu
-         omq1mBM3XTYkIZmDE7ttlk6oxeMRqLIYksPbnmpRtiWo1wtmnvHBWnP/HwrMl2XkEC
-         bnaONG0mKfjTGfr7G3e2KuP/Be36csomUdSEfz5EE5EmTUwe4QCNZJkctbdrHxPwqV
-         j8cor0AziYQkozdSaMJG1e8u68gWCZyukAX9mlQ9ibfcdjPyjMJ97O12ABE9sA3vt8
-         zdulodINRBbm/G9Gap8DGQvG6GV7yWIRse8z08YQXS3wwoevJZyNoy/Hzrc/MeeeTo
-         fVJS02kmqJVhA==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 51716C43142;
-        Fri,  5 Aug 2022 05:56:30 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S234843AbiHEGqn (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 5 Aug 2022 02:46:43 -0400
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AFD817AA1
+        for <linux-spi@vger.kernel.org>; Thu,  4 Aug 2022 23:46:42 -0700 (PDT)
+Received: by mail-lf1-x12d.google.com with SMTP id y11so2140001lfs.6
+        for <linux-spi@vger.kernel.org>; Thu, 04 Aug 2022 23:46:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=elKcXDfUxPr5UWB5Ig8rgcGqrF7Nd89MhfB2Oxmopfk=;
+        b=V32+S7YUV/1rfANMUeraQkvs58A9sCUKhnleazkhDf2cidrJm6vb96ts6qDSCw05Kc
+         V9CqHvp+Q9ntGdAboe41XOq12L8axSuUoSYofJ6X92D9MwzVEHjJMpsnuXcBk4s2uUb4
+         jden0La+rvdxwlcdfn1ZZDPi0NZHXxIn5Qap88of0Mj4xBYt0oP+Bqo1SZ5E6e3N1Ip3
+         mj1RfJxCGFsHUrQJwIbho//GG7e7B2cHfuxt2tF+mU64Z4rUttZT0zgHhuUqro5p934c
+         gx6JfOifTojzkd/vrmmi5k12KEYjpn3YMZ2Tny1xaNbY1unGDxJNjO+giV7kb5YnxbC8
+         8xtw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=elKcXDfUxPr5UWB5Ig8rgcGqrF7Nd89MhfB2Oxmopfk=;
+        b=FXcIghpjR5rV1SipUr8J5OE+7qUY4Qod0W9DG8LQa+QYlhxfEfqM6DMwxvyntNAA4T
+         TpBEf/pFXv2Z+Ra2Jy0O7YtVrjKJThL2liJVO0EWDzqivkPfsJlFt7GxH5T8ixbzNRg2
+         yQ+DR/E5wss1tbmNx0xGhekbwtcOJhvbLDNQZXdReGPm69cznhHY6zkmlEvQ01l6w3dl
+         vbmBYhKA1gOyiVZ1IzJPmfLxFAqpBCHtnwgx01KMdQa+thMWDILidH/aoqI3TBDcg3Dh
+         76enigzlsIRS/YpamIvnESfSBIgTMOaayiQcbGUgE1wzJlMOViDvia6mrpz69CyOsQu8
+         IAKA==
+X-Gm-Message-State: ACgBeo3aP711fizZ3MUfXLgIbOOXHrZuWgU9PzRejURupbhr5MM0Fb+f
+        8PUcfgWsBpYSpZ4aOeaDCU7gGQ==
+X-Google-Smtp-Source: AA6agR7L9ksA8IWx0gxOVnH6K4HcwGa/7uD0x3KwylcNpI/FkJHrjksOnqu6DQW3NEJoMGkK4Sk9Mw==
+X-Received: by 2002:a05:6512:31c9:b0:48b:27af:ad36 with SMTP id j9-20020a05651231c900b0048b27afad36mr2100250lfe.394.1659682000569;
+        Thu, 04 Aug 2022 23:46:40 -0700 (PDT)
+Received: from [192.168.1.6] ([77.222.167.48])
+        by smtp.gmail.com with ESMTPSA id t18-20020a056512069200b0048b08e25979sm360374lfe.199.2022.08.04.23.46.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 04 Aug 2022 23:46:39 -0700 (PDT)
+Message-ID: <e84277b2-55ab-6b6d-c2bf-34736b0622be@linaro.org>
+Date:   Fri, 5 Aug 2022 08:46:37 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From:   patchwork-bot+spi-devel-general@kernel.org
-Message-Id: <165967899025.17729.17242570322985126479.git-patchwork-housekeeping@kernel.org>
-Date:   Fri, 05 Aug 2022 05:56:30 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [PATCH v3 1/4] spi: dt-binding: document microchip coreQSPI
+Content-Language: en-US
+To:     Naga Sureshkumar Relli <nagasuresh.relli@microchip.com>,
+        broonie@kernel.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, conor.dooley@microchip.com
+Cc:     linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Valentina.FernandezAlanis@microchip.com
+References: <20220805053019.996484-1-nagasuresh.relli@microchip.com>
+ <20220805053019.996484-2-nagasuresh.relli@microchip.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220805053019.996484-2-nagasuresh.relli@microchip.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Latest series: [v3] Add support for Microchip QSPI controller (2022-08-05T05:30:15)
-  Superseding: [v2] Add support for Microchip QSPI controller (2022-08-02T07:05:15):
-    [v2,1/3] spi: dt-binding: add Microchip CoreQSPI compatible
-    [v2,2/3] spi: microchip-core-qspi: Add support for microchip fpga qspi controllers
-    [v2,3/3] MAINTAINERS: add qspi to Polarfire SoC entry
+On 05/08/2022 07:30, Naga Sureshkumar Relli wrote:
+> Add microchip coreQSPI compatible string and update the title/description
+> to reflect this addition.
+> 
+> Signed-off-by: Naga Sureshkumar Relli <nagasuresh.relli@microchip.com>
 
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
+
+Best regards,
+Krzysztof

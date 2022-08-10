@@ -2,57 +2,58 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CA23DC00140
-	for <linux-spi@archiver.kernel.org>; Wed, 10 Aug 2022 09:32:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 345FEC25B06
+	for <linux-spi@archiver.kernel.org>; Wed, 10 Aug 2022 09:32:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232122AbiHJJcr (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 10 Aug 2022 05:32:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60014 "EHLO
+        id S232129AbiHJJcu (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 10 Aug 2022 05:32:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232120AbiHJJcq (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 10 Aug 2022 05:32:46 -0400
+        with ESMTP id S232124AbiHJJcr (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 10 Aug 2022 05:32:47 -0400
 Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF2C16DF89;
-        Wed, 10 Aug 2022 02:32:44 -0700 (PDT)
-Received: from pps.filterd (m0288072.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27A68jdC004798;
-        Wed, 10 Aug 2022 11:32:21 +0200
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 066056DFA5;
+        Wed, 10 Aug 2022 02:32:45 -0700 (PDT)
+Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27A6F2IP021957;
+        Wed, 10 Aug 2022 11:32:22 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-transfer-encoding :
- content-type; s=selector1;
- bh=JGY5zWrfCCK8U/3zgAroqF0FgJuxZGbZAnLQqoBRrso=;
- b=0j8S3SNqXOkek34mkUPW7uFbheMJ/q/UayZS01EQTvKX2ZCKctNple+tOvUt6NQ3XLgy
- iflhYECKtF1WaeZkpZa7A2PzvLnKvBSfKcYcnyoPUHeMxaIH0o2ttriPdHBOZojroaeW
- +R930MK1dlNNsgsbpbrJDhrc1c9ERT7wW1bTVTYSFBvAErdiYoWKTFnv13DItzFUo7ht
- VOczuZv9+G37EtoMeFnkwukUOC1VQnpWfnrjx2iCkeFgDx/9gbflsMtE/l0ko4Q/eTN2
- Uids09E37dl1rnUjsntBDXd0iw5cv5S/k0aSaZ9l+vVfDaUgshaxn/rocxeYTc9OPDud AQ== 
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding : content-type; s=selector1;
+ bh=qovgCI/rHlWBP9Q7xRWBKX4sBON8udJGHElHZMj6Q8E=;
+ b=Wh4gYNe19Yna6st6HBElBHToRUdGcX4tPC6aCwvdRYtjz7vvXVJKAiv11P9p+rpjxl+c
+ mmfhbR4celeu4R5LCG4p+8P0JrdRKXePyI/YbJ0cDcuOPqGpnJBd5gUsVufstPkzK6Hb
+ eIq3/M4EdN4BBbUZOPL8Cu4/IgReb/kOdSjH+ZI4qshdVugf/l4zOGCHsMgDFPOsgXxh
+ AFJkOKd+R1JCW8dLhvdNmAdMHNuJUJ1+g+dUbm9q3RYGSG1rMoSgkw37p9xuDDrMF0lO
+ y63MhQAZK6PWX3kjdRw5QtGJ2CynAgg7j964nsxnjxJ+AHfhosb7G4Fu4V2CbgwZjZyn mg== 
 Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3huwpmbmm8-1
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3huwr4kk9a-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 10 Aug 2022 11:32:21 +0200
+        Wed, 10 Aug 2022 11:32:22 +0200
 Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id E49A110002A;
-        Wed, 10 Aug 2022 11:32:20 +0200 (CEST)
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 0CB9010002A;
+        Wed, 10 Aug 2022 11:32:22 +0200 (CEST)
 Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id CF39421B52F;
-        Wed, 10 Aug 2022 11:32:20 +0200 (CEST)
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 075E021B52F;
+        Wed, 10 Aug 2022 11:32:22 +0200 (CEST)
 Received: from localhost (10.75.127.46) by SHFDAG1NODE1.st.com (10.75.129.69)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2308.20; Wed, 10 Aug
- 2022 11:32:20 +0200
+ 2022 11:32:21 +0200
 From:   <patrice.chotard@foss.st.com>
 To:     Mark Brown <broonie@kernel.org>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        <robh+dt@kernel.org>, <krzysztof.kozlowski+dt@linaro.org>
+        Alexandre Torgue <alexandre.torgue@foss.st.com>
 CC:     <linux-spi@vger.kernel.org>,
         <linux-stm32@st-md-mailman.stormreply.com>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-kernel@vger.kernel.org>, <christophe.kerello@foss.st.com>,
-        <patrice.chotard@foss.st.com>, <devicetree@vger.kernel.org>
-Subject: [PATCH v2 0/2] spi: stm32_qspi: use QSPI bus as 8 lines communication channel
-Date:   Wed, 10 Aug 2022 11:32:13 +0200
-Message-ID: <20220810093215.794977-1-patrice.chotard@foss.st.com>
+        <patrice.chotard@foss.st.com>
+Subject: [PATCH v2 2/2] ARM: dts: stm32: Create separate pinmux for qspi cs pin in stm32mp15-pinctrl.dtsi
+Date:   Wed, 10 Aug 2022 11:32:15 +0200
+Message-ID: <20220810093215.794977-3-patrice.chotard@foss.st.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220810093215.794977-1-patrice.chotard@foss.st.com>
+References: <20220810093215.794977-1-patrice.chotard@foss.st.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -61,30 +62,140 @@ X-ClientProxiedBy: SFHDAG2NODE3.st.com (10.75.127.6) To SHFDAG1NODE1.st.com
  (10.75.129.69)
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-08-10_03,2022-08-09_02,2022-06-22_01
+ definitions=2022-08-10_04,2022-08-09_02,2022-06-22_01
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
 From: Patrice Chotard <patrice.chotard@foss.st.com>
 
+Create a separate pinmux for qspi chip select in stm32mp15-pinctrl.dtsi.
+In the case we want to use transfer_one() API to communicate with a SPI
+device, chip select signal must be driven individually.
 
-The goal of this series is to allow to use QSPI bus as a 8 lines communication 
-channel for specific purpose.
+Signed-off-by: Patrice Chotard <patrice.chotard@foss.st.com>
+---
+ arch/arm/boot/dts/stm32mp15-pinctrl.dtsi | 50 ++++++++++++++++--------
+ arch/arm/boot/dts/stm32mp157c-ev1.dts    | 12 +++++-
+ 2 files changed, 43 insertions(+), 19 deletions(-)
 
-The QSPI block offers the possibility to communicate with 2 flashes in 
-parrallel using the dual flash mode, 8 data lines are then used.
-Usage of DT parallel-memories property is needed to enable dual flash mode.
-
-The addition of the legacy transfer_one_message() spi callback is also needed
-as currently the stm32-qspi driver only supports spi_controller_mem_ops API.
-
-
- arch/arm/boot/dts/stm32mp15-pinctrl.dtsi |  50 +++++++----
- arch/arm/boot/dts/stm32mp157c-ev1.dts    |  12 ++-
- drivers/spi/spi-stm32-qspi.c             | 103 +++++++++++++++++++++--
- 3 files changed, 139 insertions(+), 26 deletions(-)
-
+diff --git a/arch/arm/boot/dts/stm32mp15-pinctrl.dtsi b/arch/arm/boot/dts/stm32mp15-pinctrl.dtsi
+index 6052243ad81c..ade4fab45f14 100644
+--- a/arch/arm/boot/dts/stm32mp15-pinctrl.dtsi
++++ b/arch/arm/boot/dts/stm32mp15-pinctrl.dtsi
+@@ -1189,7 +1189,7 @@ pins {
+ 	};
+ 
+ 	qspi_bk1_pins_a: qspi-bk1-0 {
+-		pins1 {
++		pins {
+ 			pinmux = <STM32_PINMUX('F', 8, AF10)>, /* QSPI_BK1_IO0 */
+ 				 <STM32_PINMUX('F', 9, AF10)>, /* QSPI_BK1_IO1 */
+ 				 <STM32_PINMUX('F', 7, AF9)>, /* QSPI_BK1_IO2 */
+@@ -1198,12 +1198,6 @@ pins1 {
+ 			drive-push-pull;
+ 			slew-rate = <1>;
+ 		};
+-		pins2 {
+-			pinmux = <STM32_PINMUX('B', 6, AF10)>; /* QSPI_BK1_NCS */
+-			bias-pull-up;
+-			drive-push-pull;
+-			slew-rate = <1>;
+-		};
+ 	};
+ 
+ 	qspi_bk1_sleep_pins_a: qspi-bk1-sleep-0 {
+@@ -1211,13 +1205,12 @@ pins {
+ 			pinmux = <STM32_PINMUX('F', 8, ANALOG)>, /* QSPI_BK1_IO0 */
+ 				 <STM32_PINMUX('F', 9, ANALOG)>, /* QSPI_BK1_IO1 */
+ 				 <STM32_PINMUX('F', 7, ANALOG)>, /* QSPI_BK1_IO2 */
+-				 <STM32_PINMUX('F', 6, ANALOG)>, /* QSPI_BK1_IO3 */
+-				 <STM32_PINMUX('B', 6, ANALOG)>; /* QSPI_BK1_NCS */
++				 <STM32_PINMUX('F', 6, ANALOG)>; /* QSPI_BK1_IO3 */
+ 		};
+ 	};
+ 
+ 	qspi_bk2_pins_a: qspi-bk2-0 {
+-		pins1 {
++		pins {
+ 			pinmux = <STM32_PINMUX('H', 2, AF9)>, /* QSPI_BK2_IO0 */
+ 				 <STM32_PINMUX('H', 3, AF9)>, /* QSPI_BK2_IO1 */
+ 				 <STM32_PINMUX('G', 10, AF11)>, /* QSPI_BK2_IO2 */
+@@ -1226,7 +1219,34 @@ pins1 {
+ 			drive-push-pull;
+ 			slew-rate = <1>;
+ 		};
+-		pins2 {
++	};
++
++	qspi_bk2_sleep_pins_a: qspi-bk2-sleep-0 {
++		pins {
++			pinmux = <STM32_PINMUX('H', 2, ANALOG)>, /* QSPI_BK2_IO0 */
++				 <STM32_PINMUX('H', 3, ANALOG)>, /* QSPI_BK2_IO1 */
++				 <STM32_PINMUX('G', 10, ANALOG)>, /* QSPI_BK2_IO2 */
++				 <STM32_PINMUX('G', 7, ANALOG)>; /* QSPI_BK2_IO3 */
++		};
++	};
++
++	qspi_cs1_pins_a: qspi-cs1-0 {
++		pins {
++			pinmux = <STM32_PINMUX('B', 6, AF10)>; /* QSPI_BK1_NCS */
++			bias-pull-up;
++			drive-push-pull;
++			slew-rate = <1>;
++		};
++	};
++
++	qspi_cs1_sleep_pins_a: qspi-cs1-sleep-0 {
++		pins {
++			pinmux = <STM32_PINMUX('B', 6, ANALOG)>; /* QSPI_BK1_NCS */
++		};
++	};
++
++	qspi_cs2_pins_a: qspi-cs2-0 {
++		pins {
+ 			pinmux = <STM32_PINMUX('C', 0, AF10)>; /* QSPI_BK2_NCS */
+ 			bias-pull-up;
+ 			drive-push-pull;
+@@ -1234,13 +1254,9 @@ pins2 {
+ 		};
+ 	};
+ 
+-	qspi_bk2_sleep_pins_a: qspi-bk2-sleep-0 {
++	qspi_cs2_sleep_pins_a: qspi-cs2-sleep-0 {
+ 		pins {
+-			pinmux = <STM32_PINMUX('H', 2, ANALOG)>, /* QSPI_BK2_IO0 */
+-				 <STM32_PINMUX('H', 3, ANALOG)>, /* QSPI_BK2_IO1 */
+-				 <STM32_PINMUX('G', 10, ANALOG)>, /* QSPI_BK2_IO2 */
+-				 <STM32_PINMUX('G', 7, ANALOG)>, /* QSPI_BK2_IO3 */
+-				 <STM32_PINMUX('C', 0, ANALOG)>; /* QSPI_BK2_NCS */
++			pinmux = <STM32_PINMUX('C', 0, ANALOG)>; /* QSPI_BK2_NCS */
+ 		};
+ 	};
+ 
+diff --git a/arch/arm/boot/dts/stm32mp157c-ev1.dts b/arch/arm/boot/dts/stm32mp157c-ev1.dts
+index d142dd30e16b..050c3c27a420 100644
+--- a/arch/arm/boot/dts/stm32mp157c-ev1.dts
++++ b/arch/arm/boot/dts/stm32mp157c-ev1.dts
+@@ -255,8 +255,16 @@ &m_can1 {
+ 
+ &qspi {
+ 	pinctrl-names = "default", "sleep";
+-	pinctrl-0 = <&qspi_clk_pins_a &qspi_bk1_pins_a &qspi_bk2_pins_a>;
+-	pinctrl-1 = <&qspi_clk_sleep_pins_a &qspi_bk1_sleep_pins_a &qspi_bk2_sleep_pins_a>;
++	pinctrl-0 = <&qspi_clk_pins_a
++		     &qspi_bk1_pins_a
++		     &qspi_cs1_pins_a
++		     &qspi_bk2_pins_a
++		     &qspi_cs2_pins_a>;
++	pinctrl-1 = <&qspi_clk_sleep_pins_a
++		     &qspi_bk1_sleep_pins_a
++		     &qspi_cs1_sleep_pins_a
++		     &qspi_bk2_sleep_pins_a
++		     &qspi_cs2_sleep_pins_a>;
+ 	reg = <0x58003000 0x1000>, <0x70000000 0x4000000>;
+ 	#address-cells = <1>;
+ 	#size-cells = <0>;
 -- 
 2.25.1
 

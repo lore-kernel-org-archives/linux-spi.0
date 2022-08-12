@@ -2,318 +2,142 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1732FC19F2A
-	for <linux-spi@archiver.kernel.org>; Thu, 11 Aug 2022 13:44:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A1E17C00140
+	for <linux-spi@archiver.kernel.org>; Fri, 12 Aug 2022 07:33:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235026AbiHKNox (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 11 Aug 2022 09:44:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54748 "EHLO
+        id S235588AbiHLHdR (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 12 Aug 2022 03:33:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234939AbiHKNow (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 11 Aug 2022 09:44:52 -0400
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BB897755D
-        for <linux-spi@vger.kernel.org>; Thu, 11 Aug 2022 06:44:50 -0700 (PDT)
-Received: by mail-wr1-x430.google.com with SMTP id p10so21379713wru.8
-        for <linux-spi@vger.kernel.org>; Thu, 11 Aug 2022 06:44:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc;
-        bh=cwQ/6CG5P9M/wD2vawRWGlkWTsdG08rZx3qwmHD2FDw=;
-        b=ZxD1tsVwvcWQYM92JLGkvhfBR2maRvpmPudc5Mu9yaKyQp3KTZEZrB4gSFhebebO0g
-         DhckHgA/opYF0/y5FUkS4BF3sAnUF/z4qygdth3f7Rym0qimNPVtP/2fPq7k50W0DVZQ
-         GZC49VL7FCjk0LYUpEZtYMw3OpgHcOKS/UDHLvBdDJPs5dYMokacCswaDEhWL1jnWnqy
-         o99FVyPYh/ICUSd7Ec9DKWXCncTz/oxwR7TuRcoXAqdPCVSsKuYpvAdTmLZsDeIdzvc5
-         7f9KMPBxyrhsfESf1aWSVfeeQ9S1gWb8+QiOx0qMFz5HhrE4JBYO7DaanOReoMFh6Urj
-         5zIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc;
-        bh=cwQ/6CG5P9M/wD2vawRWGlkWTsdG08rZx3qwmHD2FDw=;
-        b=uNliRla+97MVoa7fLlNe2Y4RpTzwpaLeF9xv2+Wxu4+QvewERnb8lkNt7cBxoJRSkT
-         j9qMwutW2O2Qcn+nwpzmGJ8SYoCe5Q4jC2weWkWmKvYd8iGBd4tkg1acELqmv4+yHlvs
-         zaL6L4IPX4suWVRMpOhbV4E8jr4vWDSWCRafdKearAp9MQHuCk6M44UXRsGif6RDCxk/
-         QZ8Th8M1zdMzk8VI8wu//f26TfRuV3tt3JA4CA8f/V8ZLwj+V5eiplfPi12frp50KEiK
-         wOUDMtSM9mvYxhFefTRlLKONxO4/3OVXI5gKrQb83p97/nJhirb7LdqrowJdeduttfUt
-         6inw==
-X-Gm-Message-State: ACgBeo2WDCbSv1pfTlNNmUXqKbE2XRB2v9E5TuGJc9C+tad5WovEtNck
-        fn286mVQdBMAxJlTXL86WtXY5A==
-X-Google-Smtp-Source: AA6agR4vPvmQKRUDVLW5aWmEva+cJ8234Nt4P7AXyhvwgvbKmdbxMvSNg3g/Ln8aoxhfx8KCKlj/mw==
-X-Received: by 2002:adf:ecc7:0:b0:220:5fef:6d40 with SMTP id s7-20020adfecc7000000b002205fef6d40mr20173136wro.5.1660225488471;
-        Thu, 11 Aug 2022 06:44:48 -0700 (PDT)
-Received: from localhost.localdomain ([2a01:e0a:982:cbb0:5a29:f77c:5f49:bb7])
-        by smtp.gmail.com with ESMTPSA id g11-20020a5d698b000000b0021eff2ecb31sm20097607wru.95.2022.08.11.06.44.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Aug 2022 06:44:47 -0700 (PDT)
-From:   Neil Armstrong <narmstrong@baylibre.com>
-To:     broonie@kernel.org
-Cc:     Neil Armstrong <narmstrong@baylibre.com>,
-        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Da Xue <da@libre.computer>
-Subject: [PATCH] spi: meson-spicc: add local pow2 clock ops to preserve rate between messages
-Date:   Thu, 11 Aug 2022 15:44:45 +0200
-Message-Id: <20220811134445.678446-1-narmstrong@baylibre.com>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8651; h=from:subject; bh=QfUZP4t9cGMoLiK2JoVp8TV+NsVbJzy0NMXGO6lyE6s=; b=owEBbQKS/ZANAwAKAXfc29rIyEnRAcsmYgBi9QfCbGBIVwrCnnz7It4TcCO05t1vUBizMR/wls9o /ihOtsyJAjMEAAEKAB0WIQQ9U8YmyFYF/h30LIt33NvayMhJ0QUCYvUHwgAKCRB33NvayMhJ0XB+EA CHzMxpaew+1goCMdCYYo5p1+RTBM7PVIpVtlPd9QytViFeuLuaAAqX+OsYFR4UqMJCsG6QFg4L0ZuB LkY9kwieqsyjUkfM3nR9q28HxdFZWA24EQ5O4uV3UoFhrSd5/9dROmAdznEmgvdo15kOIcH6d+xEDD dM4CfgwBtPPJRKCCKCe+L/bPkkvn7VGmPJIf4Ql7aqbjOpuhK3+wAfL8IFlTF7CsFMLO+E5Htdft0M kw21H4CP//2w99J73siLacoCoUJ1B9DinFR/tgE6FeWOSuDKll5PBm0evR5/7l+/qrJ0/Ii693MWFO rsuTMp3+gvWKoo9MrQERlMeXQasXU268WBGg+q6xVt/ZJfK25KBcI38S++bqDOI2DJSRuN5s0U2nrx SGutlVooN380FnzuHQM4OmuEElioxQKzTB7dTVWjCuRz7r2/aDLyWHPn8p6hdD3uFL10d0Gb6nDU3V se5M4VpgOLXf6DIcBGno3AfE+LXUTvMc8bBik+hvsKyh4CPU7eFEs7hMUtO2PKgAJtU3AO/QqQz20q fpR/WnbTiGMNRPPVZBijO0JMR87wdO5zKC06kAsxJ0IbIOuLv5F44qpDeIZOjASnd5ye/6y+0yCl0w UqCvwV67EI0FHvqspzGy06r1sn8KR2YGqnrcNixVaNWh+FoCpAPoAfmEGTZA==
-X-Developer-Key: i=narmstrong@baylibre.com; a=openpgp; fpr=89EC3D058446217450F22848169AB7B1A4CFF8AE
+        with ESMTP id S231848AbiHLHdQ (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 12 Aug 2022 03:33:16 -0400
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2045.outbound.protection.outlook.com [40.107.21.45])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47B0BA598E;
+        Fri, 12 Aug 2022 00:33:15 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=d+xF4KUgih2zXe2NP77XcA2Yz1aW+fJsGo1on1flv8p0kQtEcsQun069PocH2vLL4rLrLdDDQNh941Dffp3fIiuAh4xHDEmzJQO49X7R80eKgJcze4gpXEGRfPQ0l01v8pKmWU0QBkMEM/sCrzvZ9Mm9FIx1XMXpNgwICR30SGoe63lOq3ZHL/U1f0mhQqZhLJURjGd5sO62O9sB9nGcxM3nz/isANG9eeDbwMGWU62iKHMbjHjL+4uz8E2zwHLUug0S7k4kapNXm/DOzDfQlLiqaVdhYIwR2hlgV2UiUmHUXM64nU/MJvjbgXlW4YiCzwmAsFp3nVctTpvLzvJaTA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Wk4VjtvDCF0QsEnhM2S/wHwXAEPyy6C7bFQYJf8uwOM=;
+ b=Mdv+ULcsSrMQD0BaEPAgHdo1lmu4TUrf8HKTCT5ci/GbsBP1oqUhCCvyl6wI/vF051KZ8xp623eW1kmocPi17030pVznm1WGgwqXOJDt7YasT138BFfItPGN9S8Dje/ih+NjgL8RTGjzwpR8aOAUCU6HFcQersPwRXf4X+O+tgqfVH575pnm3Aj6qMkp4L4TLcOr/TEVpMYxkRBWE15mU5/AJFgY2ea240pG3p71x0OU4ZaeNSnn7qRIbh10aJvo/X5iDwxytQTRX7FvuiuTJfjy/uYO37emLX4asyJSjUoFpUCE+lm8Uf8aW7ht5UZn+oHE58ERmKJdJCy2Z+J/rQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector2-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Wk4VjtvDCF0QsEnhM2S/wHwXAEPyy6C7bFQYJf8uwOM=;
+ b=d7YWnRhSiRfmh+E//ckgqmQEEtL8ZLx0a3ClyY41/nyoORcG+vddjDIuwKAqwVCJGqs9jetaEY824mur8MxtUikHwn7aH9X7rzh3BD3WgAaa7LDt8BungxBa05k1dtsRS3QHIMj4uz9q1KOc1js1dtd719cWE+v4vV02+ZcEtVI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from DU0PR04MB9417.eurprd04.prod.outlook.com (2603:10a6:10:358::11)
+ by AM7PR04MB6984.eurprd04.prod.outlook.com (2603:10a6:20b:de::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5525.10; Fri, 12 Aug
+ 2022 07:33:12 +0000
+Received: from DU0PR04MB9417.eurprd04.prod.outlook.com
+ ([fe80::3c6c:b7e6:a93d:d442]) by DU0PR04MB9417.eurprd04.prod.outlook.com
+ ([fe80::3c6c:b7e6:a93d:d442%4]) with mapi id 15.20.5525.011; Fri, 12 Aug 2022
+ 07:33:12 +0000
+From:   "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+To:     broonie@kernel.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     xiaoning.wang@nxp.com, Peng Fan <peng.fan@nxp.com>
+Subject: [PATCH 1/2] dt-bindings: lpspi: add dmas property
+Date:   Fri, 12 Aug 2022 15:34:51 +0800
+Message-Id: <20220812073452.45763-1-peng.fan@oss.nxp.com>
+X-Mailer: git-send-email 2.37.1
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR02CA0029.apcprd02.prod.outlook.com
+ (2603:1096:4:195::6) To DU0PR04MB9417.eurprd04.prod.outlook.com
+ (2603:10a6:10:358::11)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 12f84868-930c-4ed4-e32b-08da7c34e903
+X-MS-TrafficTypeDiagnostic: AM7PR04MB6984:EE_
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: /djXMZ41hiqv6Sy80BCJD+/OPp3bKIDoDiWUqFeCmufbJ04YVpK5044XzzPKIAVOz7Bs3dixiNbuus+BxzSdifHGFYWeJv1plWVEndIuGYhSUFqxAg2epc+FL59XF1Mi5dPhl2W/L0A2tTayCdY797EB7Wm9024B0j8FWQWtgjBQ4KoyDJyuE1s/QZU46uYGQjU3FsMzLi/Nwcx/OeTmMLujkx8Ns+J4amIM4Jm9KBi/XWHn5Q1uf+lRRQwvR1vr0cJ2czgKzWbh8ZRCOuUOIRUaQHOAYz3Oq8ncXb0z96BXiv50BV2ZhoxbGQMnooVw3J7jRMh8Eu1RtaBLfGSMe4dWd1wL/Ux13bXdZwsvBYSPzWlGGhSHtwBF4FT+9aZTE5MFlZjFw5Qe7Pw9R85h9saqwUVvakQKZ87HDCyHyEBp5OT2WhCcrxJuUAjsa1j80qNT7BbaMepW6qCjsQBqxUJH0afmybDGG8RHb6QXs+apkY8E/QTWoABK8hVTjGZGqPDUmKcMDsoc9csrXD6LfGcHDgZp8mf9AFB/8R7t067haGeeVCYTz4TjDg6KQ7eY7uGYxFzor6DX3A1lGDb8jCsan/y2fkAJfnFXtGcVDbKE+PJhXDKsO68Kbg0j/5KzOYYkH0xdjMAw+BkQz7hYFviP3RBVodhKuSiKBRDp1pAjwx98Me86QX/NVhmLqEiwEj7MSTOypBeOfEah0NR9fmAv81qomBLxHENxuDskh5et2Gtd8l+/JJE0hTPkGQp7AcwhlkUfQJnSzq2SiaOt/66nWE51RZ+ePCRs3OqbQrQTlZ0MIln8dq7IqDI7dAwE
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9417.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(136003)(346002)(39860400002)(366004)(376002)(396003)(41300700001)(2616005)(52116002)(6512007)(26005)(1076003)(6666004)(6506007)(316002)(86362001)(6486002)(186003)(38100700002)(38350700002)(478600001)(5660300002)(8936002)(66556008)(66476007)(66946007)(8676002)(4326008)(4744005)(2906002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?qHv9IozQdg+ngyY+pVdm+34X5dSoe+Pui3okmPzOne2O9Rhz7BgutzkCQjiY?=
+ =?us-ascii?Q?oBiUwhTB3YKZ6kG8YyyJfMZCATx1yT9g9bbOSaWYkGF8G9l6YJbH84s0F5d3?=
+ =?us-ascii?Q?qX6uTPt/8rxyt2nQJQXeFIMnxOEZkS7IEpeodOOC/9B4s6fk13g/vCuiw2eY?=
+ =?us-ascii?Q?pLIhlBRjFwc+S1KJwyOjhkcqVVQwXM2z5Ky+vgK4szzxjuVQYyXPK4To3MKJ?=
+ =?us-ascii?Q?vIwKOg2B++7lkOerfDhKn19a14fYbv3l2FqJ+47STOezTS70NUcqqr6+IVc9?=
+ =?us-ascii?Q?2TwaDh8bCx4rGtV7t4aVlLblA0yn6s6TAnVdkD0iInVAVpW/eG2F1/p9lR2o?=
+ =?us-ascii?Q?VfsUH+sH8bvZ67oBEf0ms8o90v+huCfYCfUTcE1pBDWCzl5w0nY1s7JNtIHp?=
+ =?us-ascii?Q?4tWr9xxj8aCAWf1MniiKaz6RQK0kSQ4GjYLxF2+eS+oExDZqzn8xZIr8WSha?=
+ =?us-ascii?Q?krj1Gsy+DxlLe/2ICeAUn84PtaVA31iHTpOnQddj6ZrbwY1MFlnH+uev78ij?=
+ =?us-ascii?Q?k/1Z7yJLL8lIOI20BJKoXYPwoPhAYIUt4lytxssauccutIueVSUEE683wFTa?=
+ =?us-ascii?Q?leG9cV5U1birnW81uDkU5h2O6vplOiM9oNb/iEvV3mKtPqVk9nwy+DwEob65?=
+ =?us-ascii?Q?lDkzp7yYbSdFpiKFF5KpGKMOdiYdp4VZ4s7gPYtkjzlTC2i7YzzaEQCihJkE?=
+ =?us-ascii?Q?G2bDnRYfoBNy+XZ6oYNog7KmU4sHgutGx2Yn7tKCSLQI7/IPAIZGFv48PGa/?=
+ =?us-ascii?Q?cFiUEjT/TPjG7q8qYOXI8HmvZXgWu2fucRD16AMVqoHD53mAnv5AA82qKt5g?=
+ =?us-ascii?Q?H4FpxVDMnFQIElTKpvXYhlNm55KAUd1Qn3/J26vsgmrBhsZJRb2g3/DqQIye?=
+ =?us-ascii?Q?oVI3CNn/5+qkjZm7+i9zJ7ejY05HWu19x2DE8BI2HqTpPKinos59FwB/b8mt?=
+ =?us-ascii?Q?f3mE82WRV1Z7cF7EZXRCYoSZ0kLEcQW6eqhfASWT1D/Lvwjlbke1P+2uxlT4?=
+ =?us-ascii?Q?+0DNJaU4+6ldm26U6NQ8FgiX0ZbuFFXQXa+rVWuUBbSpOvw8Bqw8LxiU3LTi?=
+ =?us-ascii?Q?lV60H7hFu01KK9hfGYA1HMo9MRyEr8j/ZKD7wWZOVSbVhyv8NakCqm9aX/ZZ?=
+ =?us-ascii?Q?xRbPgmcZ4N+NNNYnpBHwoDvLpQA2c66HshJ5LTI8mnqNl1m5IF+Fartrryxe?=
+ =?us-ascii?Q?7l8/HN88h/HsHCS6UDtHK6qrzQvAZJQPaH+aJZGNuTJ9yyZiE87F2ysfDhmx?=
+ =?us-ascii?Q?j+ABaX5C18xAsDXTBRwa60VnbrhDKX6Kw6VSxo2zNA6d9dSlOtPw0mDHeEcB?=
+ =?us-ascii?Q?e/RNCEnAnHXWJ2Wy43sdY9/6KKeweCW66PHg8VTRaExC3ajFbrTLeXNhqGjU?=
+ =?us-ascii?Q?CLpRNHJpXmFo5Kih5mNtrLKozcb8WxL3tCrI9uyQkrO0169bQ+yCRBoFZ1RC?=
+ =?us-ascii?Q?Oa7AgoH69BRGeZwwRh0QdMWYmYX8v1VkXSuqKpo8RLOR+qqUcKVs5+iqvXPU?=
+ =?us-ascii?Q?CAbmgBmu4YVgulqGaf6end7nfzCSozVZIdEN+1cz0O9f+0bZoB8X5BWYCrbZ?=
+ =?us-ascii?Q?3vpcAUtAGWLVvrf0Xtqrk1nmYu4j5iTJWxhwdhim?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 12f84868-930c-4ed4-e32b-08da7c34e903
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9417.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2022 07:33:11.9897
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xC2rrAPstbqSRJpXcR2ACVATKK8GZ9jXOPXs1u+x0xXGKDAmL3nJe034XhswvI+iq7LKuKsMiS3/FrooHYLXJw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB6984
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-At the end of a message, the HW gets a reset in meson_spicc_unprepare_transfer(),
-this resets the SPICC_CONREG register and notably the value set by the
-Common Clock Framework.
+From: Peng Fan <peng.fan@nxp.com>
 
-This is problematic because:
-- the register value CCF can be different from the corresponding CCF cached rate
-- CCF is allowed to change the clock rate whenever the HW state
+The LPSPI has dma capability, so add dma property.
 
-This introduces:
-- local pow2 clock ops checking the HW state before allowing a clock operation
-- separation of legacy pow2 clock patch and new enhanced clock path
-- SPICC_CONREG datarate value is now value kepts across messages
-
-It has been checked that:
-- SPICC_CONREG datarate value is kept across messages
-- CCF is only allowed to change the SPICC_CONREG datarate value when busy
-- SPICC_CONREG datarate value is correct for each transfer
-
-This didn't appear before commit 3e0cf4d3fc29 ("spi: meson-spicc: add a linear clock divider support")
-because we recalculated and wrote the rate for each xfer.
-
-Fixes: 3e0cf4d3fc29 ("spi: meson-spicc: add a linear clock divider support")
-Reported-by: Da Xue <da@libre.computer>
-Signed-off-by: Neil Armstrong <narmstrong@baylibre.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
 ---
-This is a second try after [1] which was not good enough in regards to CCF.
+ .../devicetree/bindings/spi/spi-fsl-lpspi.yaml         | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-[1] http://lore.kernel.org/r/20220809152019.461741-1-narmstrong@baylibre.com
-
- drivers/spi/spi-meson-spicc.c | 129 ++++++++++++++++++++++++++--------
- 1 file changed, 101 insertions(+), 28 deletions(-)
-
-diff --git a/drivers/spi/spi-meson-spicc.c b/drivers/spi/spi-meson-spicc.c
-index 0bc7daa7afc8..e4cb52e1fe26 100644
---- a/drivers/spi/spi-meson-spicc.c
-+++ b/drivers/spi/spi-meson-spicc.c
-@@ -156,6 +156,7 @@ struct meson_spicc_device {
- 	void __iomem			*base;
- 	struct clk			*core;
- 	struct clk			*pclk;
-+	struct clk_divider		pow2_div;
- 	struct clk			*clk;
- 	struct spi_message		*message;
- 	struct spi_transfer		*xfer;
-@@ -168,6 +169,8 @@ struct meson_spicc_device {
- 	unsigned long			xfer_remain;
- };
+diff --git a/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.yaml b/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.yaml
+index 1d46877fe46a..f60b24a9a32d 100644
+--- a/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.yaml
++++ b/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.yaml
+@@ -37,6 +37,16 @@ properties:
+       - const: per
+       - const: ipg
  
-+#define pow2_clk_to_spicc(_div) container_of(_div, struct meson_spicc_device, pow2_div)
++  dmas:
++    items:
++      - description: TX DMA Channel
++      - description: RX DMA Channel
 +
- static void meson_spicc_oen_enable(struct meson_spicc_device *spicc)
- {
- 	u32 conf;
-@@ -421,7 +424,7 @@ static int meson_spicc_prepare_message(struct spi_master *master,
- {
- 	struct meson_spicc_device *spicc = spi_master_get_devdata(master);
- 	struct spi_device *spi = message->spi;
--	u32 conf = 0;
-+	u32 conf = readl_relaxed(spicc->base + SPICC_CONREG) & SPICC_DATARATE_MASK;
- 
- 	/* Store current message */
- 	spicc->message = message;
-@@ -458,8 +461,6 @@ static int meson_spicc_prepare_message(struct spi_master *master,
- 	/* Select CS */
- 	conf |= FIELD_PREP(SPICC_CS_MASK, spi->chip_select);
- 
--	/* Default Clock rate core/4 */
--
- 	/* Default 8bit word */
- 	conf |= FIELD_PREP(SPICC_BITLENGTH_MASK, 8 - 1);
- 
-@@ -476,12 +477,16 @@ static int meson_spicc_prepare_message(struct spi_master *master,
- static int meson_spicc_unprepare_transfer(struct spi_master *master)
- {
- 	struct meson_spicc_device *spicc = spi_master_get_devdata(master);
-+	u32 conf = readl_relaxed(spicc->base + SPICC_CONREG) & SPICC_DATARATE_MASK;
- 
- 	/* Disable all IRQs */
- 	writel(0, spicc->base + SPICC_INTREG);
- 
- 	device_reset_optional(&spicc->pdev->dev);
- 
-+	/* Set default configuration, keeping datarate field */
-+	writel_relaxed(conf, spicc->base + SPICC_CONREG);
++  dma-names:
++    items:
++      - const: tx
++      - const: rx
 +
- 	return 0;
- }
- 
-@@ -518,14 +523,60 @@ static void meson_spicc_cleanup(struct spi_device *spi)
-  * Clk path for G12A series:
-  *    pclk -> pow2 fixed div -> pow2 div -> mux -> out
-  *    pclk -> enh fixed div -> enh div -> mux -> out
-+ *
-+ * The pow2 divider is tied to the controller HW state, and the
-+ * divider is only valid when the controller is initialized.
-+ *
-+ * A set of clock ops is added to make sure we don't read/set this
-+ * clock rate while the controller is in an unknown state.
-  */
- 
--static int meson_spicc_clk_init(struct meson_spicc_device *spicc)
-+static unsigned long meson_spicc_pow2_recalc_rate(struct clk_hw *hw,
-+						  unsigned long parent_rate)
-+{
-+	struct clk_divider *divider = to_clk_divider(hw);
-+	struct meson_spicc_device *spicc = pow2_clk_to_spicc(divider);
-+
-+	if (!spicc->master->cur_msg || !spicc->master->busy)
-+		return 0;
-+
-+	return clk_divider_ops.recalc_rate(hw, parent_rate);
-+}
-+
-+static int meson_spicc_pow2_determine_rate(struct clk_hw *hw,
-+					   struct clk_rate_request *req)
-+{
-+	struct clk_divider *divider = to_clk_divider(hw);
-+	struct meson_spicc_device *spicc = pow2_clk_to_spicc(divider);
-+
-+	if (!spicc->master->cur_msg || !spicc->master->busy)
-+		return -EINVAL;
-+
-+	return clk_divider_ops.determine_rate(hw, req);
-+}
-+
-+static int meson_spicc_pow2_set_rate(struct clk_hw *hw, unsigned long rate,
-+				     unsigned long parent_rate)
-+{
-+	struct clk_divider *divider = to_clk_divider(hw);
-+	struct meson_spicc_device *spicc = pow2_clk_to_spicc(divider);
-+
-+	if (!spicc->master->cur_msg || !spicc->master->busy)
-+		return -EINVAL;
-+
-+	return clk_divider_ops.set_rate(hw, rate, parent_rate);
-+}
-+
-+const struct clk_ops meson_spicc_pow2_clk_ops = {
-+	.recalc_rate = meson_spicc_pow2_recalc_rate,
-+	.determine_rate = meson_spicc_pow2_determine_rate,
-+	.set_rate = meson_spicc_pow2_set_rate,
-+};
-+
-+static int meson_spicc_pow2_clk_init(struct meson_spicc_device *spicc)
- {
- 	struct device *dev = &spicc->pdev->dev;
--	struct clk_fixed_factor *pow2_fixed_div, *enh_fixed_div;
--	struct clk_divider *pow2_div, *enh_div;
--	struct clk_mux *mux;
-+	struct clk_fixed_factor *pow2_fixed_div;
- 	struct clk_init_data init;
- 	struct clk *clk;
- 	struct clk_parent_data parent_data[2];
-@@ -560,31 +611,45 @@ static int meson_spicc_clk_init(struct meson_spicc_device *spicc)
- 	if (WARN_ON(IS_ERR(clk)))
- 		return PTR_ERR(clk);
- 
--	pow2_div = devm_kzalloc(dev, sizeof(*pow2_div), GFP_KERNEL);
--	if (!pow2_div)
--		return -ENOMEM;
--
- 	snprintf(name, sizeof(name), "%s#pow2_div", dev_name(dev));
- 	init.name = name;
--	init.ops = &clk_divider_ops;
--	init.flags = CLK_SET_RATE_PARENT;
-+	init.ops = &meson_spicc_pow2_clk_ops;
-+	/*
-+	 * Set NOCACHE here to make sure we read the actual HW value
-+	 * since we reset the HW after each transfer.
-+	 */
-+	init.flags = CLK_SET_RATE_PARENT | CLK_GET_RATE_NOCACHE;
- 	parent_data[0].hw = &pow2_fixed_div->hw;
- 	init.num_parents = 1;
- 
--	pow2_div->shift = 16,
--	pow2_div->width = 3,
--	pow2_div->flags = CLK_DIVIDER_POWER_OF_TWO,
--	pow2_div->reg = spicc->base + SPICC_CONREG;
--	pow2_div->hw.init = &init;
-+	spicc->pow2_div.shift = 16,
-+	spicc->pow2_div.width = 3,
-+	spicc->pow2_div.flags = CLK_DIVIDER_POWER_OF_TWO,
-+	spicc->pow2_div.reg = spicc->base + SPICC_CONREG;
-+	spicc->pow2_div.hw.init = &init;
- 
--	clk = devm_clk_register(dev, &pow2_div->hw);
--	if (WARN_ON(IS_ERR(clk)))
--		return PTR_ERR(clk);
-+	spicc->clk = devm_clk_register(dev, &spicc->pow2_div.hw);
-+	if (WARN_ON(IS_ERR(spicc->clk)))
-+		return PTR_ERR(spicc->clk);
- 
--	if (!spicc->data->has_enhance_clk_div) {
--		spicc->clk = clk;
--		return 0;
--	}
-+	return 0;
-+}
-+
-+static int meson_spicc_enh_clk_init(struct meson_spicc_device *spicc)
-+{
-+	struct device *dev = &spicc->pdev->dev;
-+	struct clk_fixed_factor *enh_fixed_div;
-+	struct clk_divider *enh_div;
-+	struct clk_mux *mux;
-+	struct clk_init_data init;
-+	struct clk *clk;
-+	struct clk_parent_data parent_data[2];
-+	char name[64];
-+
-+	memset(&init, 0, sizeof(init));
-+	memset(&parent_data, 0, sizeof(parent_data));
-+
-+	init.parent_data = parent_data;
- 
- 	/* algorithm for enh div: rate = freq / 2 / (N + 1) */
- 
-@@ -637,7 +702,7 @@ static int meson_spicc_clk_init(struct meson_spicc_device *spicc)
- 	snprintf(name, sizeof(name), "%s#sel", dev_name(dev));
- 	init.name = name;
- 	init.ops = &clk_mux_ops;
--	parent_data[0].hw = &pow2_div->hw;
-+	parent_data[0].hw = &spicc->pow2_div.hw;
- 	parent_data[1].hw = &enh_div->hw;
- 	init.num_parents = 2;
- 	init.flags = CLK_SET_RATE_PARENT;
-@@ -754,12 +819,20 @@ static int meson_spicc_probe(struct platform_device *pdev)
- 
- 	meson_spicc_oen_enable(spicc);
- 
--	ret = meson_spicc_clk_init(spicc);
-+	ret = meson_spicc_pow2_clk_init(spicc);
- 	if (ret) {
--		dev_err(&pdev->dev, "clock registration failed\n");
-+		dev_err(&pdev->dev, "pow2 clock registration failed\n");
- 		goto out_clk;
- 	}
- 
-+	if (spicc->data->has_enhance_clk_div) {
-+		ret = meson_spicc_enh_clk_init(spicc);
-+		if (ret) {
-+			dev_err(&pdev->dev, "clock registration failed\n");
-+			goto out_clk;
-+		}
-+	}
-+
- 	ret = devm_spi_register_master(&pdev->dev, master);
- 	if (ret) {
- 		dev_err(&pdev->dev, "spi master registration failed\n");
+   fsl,spi-only-use-cs1-sel:
+     description:
+       spi common code does not support use of CS signals discontinuously.
 -- 
-2.25.1
+2.37.1
 

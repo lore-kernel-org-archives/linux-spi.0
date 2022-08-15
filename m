@@ -2,49 +2,52 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BD80DC282E7
-	for <linux-spi@archiver.kernel.org>; Mon, 15 Aug 2022 15:45:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 39624C3F6B0
+	for <linux-spi@archiver.kernel.org>; Mon, 15 Aug 2022 15:46:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233736AbiHOPp2 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 15 Aug 2022 11:45:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32990 "EHLO
+        id S231373AbiHOPp7 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 15 Aug 2022 11:45:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233059AbiHOPpN (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 15 Aug 2022 11:45:13 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E81818363;
-        Mon, 15 Aug 2022 08:45:10 -0700 (PDT)
+        with ESMTP id S233234AbiHOPpS (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 15 Aug 2022 11:45:18 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A165AC28;
+        Mon, 15 Aug 2022 08:45:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 633D0CE112D;
-        Mon, 15 Aug 2022 15:45:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A385C433B5;
-        Mon, 15 Aug 2022 15:45:04 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id BE3ADB80F2B;
+        Mon, 15 Aug 2022 15:45:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C419C4347C;
+        Mon, 15 Aug 2022 15:45:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660578306;
-        bh=Dt7UFo2hvk7w801In8MZ1AepU8mKiD3cZKwIGWvPBEk=;
+        s=k20201202; t=1660578313;
+        bh=JwjxJ7MOVdbsgqpb/k0rGtudkHpbtxGUbAtOmA+7kb4=;
         h=From:To:In-Reply-To:References:Subject:Date:From;
-        b=VaShcqkZ3uBeBiArMYvK8aBgmTU/EliuOj3Wj3/q/yK3G/ZEhjdcip69t5dXv4FmB
-         foUpscijB5fKc5R6b/ehGr7tPvFvJ6nYf2ID+PNovjLf5+f78B2CsN8oO1eY3xHa1w
-         S/tk0FTIaxrAhv5DXn1aUf9PpnDx6lfVMNRZdgmz+kX7Qw+60X8I9Gbp37rgnvWHpf
-         kUwveCtyxg9XRYmySC+ZJ5GtMzW5Z2dqXkdOxP9dB5MioeVKL9RTeY+UzUp99a9FwM
-         143XYRmuUmXIPEfakwWQ+1HsCRqf/CfGDRvFSXASkhOK28k9VEg41bZOE8E0BNnT1I
-         x8F+GTsH/nUYw==
+        b=tsqfhZF0byibwTSWDbd8UBOt4qmu251PmImxGxyvih5jtAVHspXV8Bu51VzsPeM1U
+         oq8g/FuG5Hj72UVtFgziDO9U27EZZRnKIvdFF6g0RAmp+IsSkcZNelH3ffc7HAg0qw
+         1YPMFyCGw0I8cN27fVVcGCuhFtRUDuZo1rI2yNfIgBmyigj0ra2Gpzh7WrTia0H4vB
+         v5/GQn5Xhb3dSct2jCO56KXXGQqzOEuG8Wg7EVqgb7HEWTRIZufGztGmUf3YWb7mGw
+         Yc2gVUl2s1eNjrWS6zlQSyORnqVoFFb2UNHG7mJcdl17dcMQXoNODBQBVSSsEBfODd
+         p3d1SN03bHSbA==
 From:   Mark Brown <broonie@kernel.org>
-To:     linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+To:     linux-kernel@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>,
+        devicetree@vger.kernel.org, Sam Ravnborg <sam@ravnborg.org>,
         Thierry Reding <thierry.reding@gmail.com>,
-        Krishna Yarlagadda <kyarlagadda@nvidia.com>,
-        Rob Herring <robh+dt@kernel.org>,
+        Jonathan Bakker <xc-racer2@live.ca>,
+        Christophe Branchereau <cbranchereau@gmail.com>,
+        David Airlie <airlied@linux.ie>,
+        dri-devel@lists.freedesktop.org, Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
+        Pratyush Yadav <p.yadav@ti.com>,
         Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org
-In-Reply-To: <20220810131236.428529-1-krzysztof.kozlowski@linaro.org>
-References: <20220810131236.428529-1-krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH] spi: dt-bindings: nvidia,tegra210-quad-peripheral-props: correct additional properties
-Message-Id: <166057830399.697678.9931194157523714173.b4-ty@kernel.org>
-Date:   Mon, 15 Aug 2022 16:45:03 +0100
+        linux-spi@vger.kernel.org, Daniel Vetter <daniel@ffwll.ch>
+In-Reply-To: <20220810131311.428645-1-krzysztof.kozlowski@linaro.org>
+References: <20220810131311.428645-1-krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH] spi/panel: dt-bindings: drop 3-wire from common properties
+Message-Id: <166057830909.697678.2981260978895066117.b4-ty@kernel.org>
+Date:   Mon, 15 Aug 2022 16:45:09 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -53,11 +56,15 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, 10 Aug 2022 16:12:36 +0300, Krzysztof Kozlowski wrote:
-> Re-usable schemas should use additionalProperties:true, so the schema
-> using it will check for evaluated properties.
+On Wed, 10 Aug 2022 16:13:11 +0300, Krzysztof Kozlowski wrote:
+> The spi-3wire property is device specific and should be accepted only if
+> device really needs them.  Drop it from common spi-peripheral-props.yaml
+> schema, mention in few panel drivers which use it and include instead in
+> the SPI controller bindings.  The controller bindings will provide
+> spi-3wire type validation and one place for description.  Each device
+> schema must list the property if it is applicable.
 > 
-> 
+> [...]
 
 Applied to
 
@@ -65,8 +72,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: dt-bindings: nvidia,tegra210-quad-peripheral-props: correct additional properties
-      commit: 63e2df2d9e46e7f9bbbe4a2b94426bfaedb32807
+[1/1] spi/panel: dt-bindings: drop 3-wire from common properties
+      commit: 41f53a65444997f55c82c67f71a9cff05c1dee31
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

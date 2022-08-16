@@ -2,108 +2,84 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B5D9BC2BB41
-	for <linux-spi@archiver.kernel.org>; Tue, 16 Aug 2022 11:21:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3D74CC25B0E
+	for <linux-spi@archiver.kernel.org>; Tue, 16 Aug 2022 11:49:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234225AbiHPLVf (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 16 Aug 2022 07:21:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53258 "EHLO
+        id S234494AbiHPLtO (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 16 Aug 2022 07:49:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234039AbiHPLVG (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 16 Aug 2022 07:21:06 -0400
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84E7BE42CC
-        for <linux-spi@vger.kernel.org>; Tue, 16 Aug 2022 02:45:32 -0700 (PDT)
-Received: by mail-lf1-x133.google.com with SMTP id c28so10128295lfh.3
-        for <linux-spi@vger.kernel.org>; Tue, 16 Aug 2022 02:45:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc;
-        bh=egVgk37jsb5bP/NihMXfkkjt0RcB5vm1gJqee+Euv4k=;
-        b=AEhcllsKHaBLOkNxBC/mnTGx3zk3qk8yoRqnZ7WCmJGbS7PCIItMYVqBHBJ8RrPJ2J
-         9poBL5mFBFE9bM4jkeKfNs0lFv6IeTx8vbs+pavY+LOMNn0tEGZxNBpExOkzgnbnXHqO
-         9tki8SV5kx3i+cmFC5iRLmMoMvYeQfd5OS9jl6yC6bEUEuhTyrhdxj82pDsEw2YaoyZE
-         LVsqkTC3lSiqf2tjX9H4eUCQwZzgkqU5Po580Z+VU6WMhaGM2990D1wugUqmEdqMd+CL
-         3f9yNBJKdX9SmfXAUCiKWnA/FSINXAw5//bZQjFuWfLOpWfc0UOnAE7VMhsu1E2/H+qY
-         MIfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc;
-        bh=egVgk37jsb5bP/NihMXfkkjt0RcB5vm1gJqee+Euv4k=;
-        b=3bqRGxXgbulhYpe+yCCQwIBkuhRjjmaG/YJ4xQ5AiN9tX8jxxOq11C9xn8pYwz12Zj
-         pC1qMQADRA0i1Sc6F4Wpawic6S0prJMv+heY/4c0AVWeeDqf5bccEIQqkSjmX9eu0sUb
-         BDbepo8ac7vvzXycA2+xhlQLJTMcD6Bhj32IIvMFBlUye9HwqbneOwFBOgmDyWVGbizS
-         oXVAihRDH3iNztGOh9a/VOrpqQDX0fMP+AvcLc5Ro+1PseKC0KjoBaW7J4T1rFtGOzcf
-         5Rf/Kwbivgo2qd9xZbk5sqj+EABULMh6knvXs/L7M9ExD1FKboPaLE9LPfFHQiKMcgzF
-         M7iQ==
-X-Gm-Message-State: ACgBeo1VyBTITfYWYjKQX9KifVTjFqgfKY87/OgrC0SDLja0GEb/OZM4
-        BGkHEovlNuQi8w9kNi7XseZHpA==
-X-Google-Smtp-Source: AA6agR4GisQVfukKTkz/1D4XZ5iXpQMDvR/AIMZ05fuXqOeyj04c7DOKOOivIHMqeVge+x1lJphtng==
-X-Received: by 2002:a05:6512:a82:b0:48b:1241:f4cc with SMTP id m2-20020a0565120a8200b0048b1241f4ccmr6589955lfu.141.1660643130890;
-        Tue, 16 Aug 2022 02:45:30 -0700 (PDT)
-Received: from ?IPV6:2001:14bb:ae:539c:1782:dd68:b0c1:c1a4? (d15l54g8c71znbtrbzt-4.rev.dnainternet.fi. [2001:14bb:ae:539c:1782:dd68:b0c1:c1a4])
-        by smtp.gmail.com with ESMTPSA id s1-20020a056512214100b0048b3581eb7dsm1332957lfr.260.2022.08.16.02.45.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 Aug 2022 02:45:30 -0700 (PDT)
-Message-ID: <cae2f59a-aeeb-e573-029f-7151ae29dd28@linaro.org>
-Date:   Tue, 16 Aug 2022 12:45:29 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH] dt-bindings: spi: renesas,sh-msiof: Fix
- 'unevaluatedProperties' warnings
-Content-Language: en-US
-To:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Cc:     linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        Prabhakar <prabhakar.csengg@gmail.com>,
-        Biju Das <biju.das.jz@bp.renesas.com>
-References: <20220816083842.25925-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220816083842.25925-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        with ESMTP id S230308AbiHPLsy (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 16 Aug 2022 07:48:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C7D1D51EB;
+        Tue, 16 Aug 2022 04:23:18 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 41F56611DB;
+        Tue, 16 Aug 2022 11:23:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47721C433C1;
+        Tue, 16 Aug 2022 11:23:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1660648997;
+        bh=tP+ANVAUbFVllTzIr8hC0M9LLYPiJXs4zx3jfrfx2UU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=GDW98Ayqyaty3Q2pI5fw85snOpnwr8+YMCMuZAYhoMPidh2gW0pnKo6egIeCMrG7X
+         uoIk1HFsSR3/6xxBWM8ZQ8H36svnHz2aNJr1v2nKZXxl1/vkVbxcTBVAVvv/Ql1Nb7
+         if/Sj88Trwg1JU5CEi294Yq95wXJZ6p+iVrWwatlliR9QQ3YDTb98nEsnaySd9invX
+         X1s7Rov4R4XfvyGtU3PUidYxny0ib7uGso77WP/F2o73vz/818R7qaSf6s7JBk3U9E
+         Ze6zZ8BeartfkQvSbXD6ER0t5Woq3Jy1tKBE31MwlaA7rZq+VgW77+alqZlyzGyh/X
+         JNlyi2rxNCE4g==
+From:   Mark Brown <broonie@kernel.org>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>
+Subject: [GIT PULL] SPI fixes for v6.0-rc1
+Date:   Tue, 16 Aug 2022 12:23:07 +0100
+Message-Id: <20220816112317.47721C433C1@smtp.kernel.org>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On 16/08/2022 11:38, Lad Prabhakar wrote:
-> With 'unevaluatedProperties' support implemented, there's a number of
-> warnings when running dtbs_check:
-> 
-> arch/arm64/boot/dts/renesas/r8a77951-ulcb-kf.dtb: spi@e6e90000: Unevaluated properties are not allowed ('power-domains', 'resets' were unexpected)
-> 	From schema: Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml
-> 
-> The main problem is that SoC DTSI's include power-domains and resets
-> property, whereas the renesas,sh-msiof.yaml has 'unevaluatedProperties:
-> false'. So just add optional power-domains and resets properties.
-> 
-> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-> ---
->  Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml b/Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml
-> index 5de710adfa63..7bd86cf876f1 100644
-> --- a/Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml
-> +++ b/Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml
-> @@ -69,6 +69,10 @@ properties:
->    clocks:
->      maxItems: 1
->  
-> +  power-domains: true
-> +
-> +  resets: true
+The following changes since commit 69243df953e70c134c6735b31ba0e658c53d3cda:
 
-No. For both you need maxItems (or describe the items).
+  Add SPI Driver to HPE GXP Architecture (2022-07-29 20:22:22 +0100)
 
-Best regards,
-Krzysztof
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v6.0-rc1
+
+for you to fetch changes up to 2fd92c7b8fe2cfc634613dc093d0f507c7389ea8:
+
+  spi: dt-bindings: Drop Pratyush Yadav (2022-08-11 18:41:45 +0100)
+
+----------------------------------------------------------------
+spi: Fixes for v6.0
+
+A few fixes that came in since my pull request, the Meson fix is a
+little large since it's fixing all possible cases of the problem that
+was observed with the driver and clock API trying to share configuration
+by integrating the device clocking fully with the clock API rather than
+spot fixing the one instance that was observed.
+
+----------------------------------------------------------------
+David Jander (1):
+      spi: spi.c: Add missing __percpu annotations in users of spi_statistics
+
+Krzysztof Kozlowski (1):
+      spi: dt-bindings: Drop Pratyush Yadav
+
+Lukas Bulwahn (1):
+      MAINTAINERS: rectify entry for ARM/HPE GXP ARCHITECTURE
+
+Neil Armstrong (1):
+      spi: meson-spicc: add local pow2 clock ops to preserve rate between messages
+
+ .../spi/cdns,qspi-nor-peripheral-props.yaml        |   2 +-
+ .../devicetree/bindings/spi/cdns,qspi-nor.yaml     |   2 +-
+ .../bindings/spi/spi-peripheral-props.yaml         |   2 +-
+ MAINTAINERS                                        |   2 +-
+ drivers/spi/spi-meson-spicc.c                      | 129 ++++++++++++++++-----
+ drivers/spi/spi.c                                  |  14 +--
+ 6 files changed, 112 insertions(+), 39 deletions(-)

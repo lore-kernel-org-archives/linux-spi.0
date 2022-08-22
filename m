@@ -2,83 +2,130 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 205C9C28D13
-	for <linux-spi@archiver.kernel.org>; Mon, 22 Aug 2022 09:17:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 48DD9C32793
+	for <linux-spi@archiver.kernel.org>; Mon, 22 Aug 2022 13:10:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233966AbiHVJR1 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 22 Aug 2022 05:17:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36416 "EHLO
+        id S234259AbiHVNJ7 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 22 Aug 2022 09:09:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234586AbiHVJPw (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 22 Aug 2022 05:15:52 -0400
-Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 014F31A04D;
-        Mon, 22 Aug 2022 02:15:36 -0700 (PDT)
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 27M9FXj6036832;
-        Mon, 22 Aug 2022 04:15:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1661159733;
-        bh=roTfperRVByHKT6yxJjjvpXH17NlwkzLgVIKQfXQcDc=;
-        h=From:To:CC:Subject:Date;
-        b=xpesxG5BVQ0y821yOZBos08Xelt3RuvB2lcys1LLChf02ZZk07LI983hVB3CdR8vo
-         IUrKrYRFNihgsg9O2pYYvBtVwW1TvELFw8SOyyrGWEXdB7x7Azv2yJWg1h5S22JAmp
-         ooPnVMFjL1TzTsXC9iJHVNNRrFzmTqQpbKlzfoys=
-Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 27M9FXJl111233
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 22 Aug 2022 04:15:33 -0500
-Received: from DLEE100.ent.ti.com (157.170.170.30) by DLEE104.ent.ti.com
- (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.6; Mon, 22
- Aug 2022 04:15:32 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.6 via
- Frontend Transport; Mon, 22 Aug 2022 04:15:32 -0500
-Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 27M9FVXQ037023;
-        Mon, 22 Aug 2022 04:15:32 -0500
-From:   Vaishnav Achath <vaishnav.a@ti.com>
-To:     <peter.ujfalusi@gmail.com>, <vkoul@kernel.org>,
-        <broonie@kernel.org>, <dmaengine@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>
-CC:     <vigneshr@ti.com>, <kishon@ti.com>, <vaishnav.a@ti.com>
-Subject: [PATCH 0/2] spi: spi-omap2-mcspi: Use EOW interrupt for transfer completion
-Date:   Mon, 22 Aug 2022 14:45:29 +0530
-Message-ID: <20220822091531.27827-1-vaishnav.a@ti.com>
-X-Mailer: git-send-email 2.17.1
+        with ESMTP id S234934AbiHVNJ6 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 22 Aug 2022 09:09:58 -0400
+Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D216C22BEB;
+        Mon, 22 Aug 2022 06:09:56 -0700 (PDT)
+Received: by mail-lj1-x22d.google.com with SMTP id l21so10563738ljj.2;
+        Mon, 22 Aug 2022 06:09:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:from:to:cc;
+        bh=vigYgSEq8XNq0GNKbbIvxMXyahHUCUs5sjRm7+jzlAc=;
+        b=NAy+QHjlAUfAF+0E95smBz9TJ7pgnNqV0/+Acohr5RjSf02nCPAGkQ+pFPggURwPeX
+         zRyiPUy6gLGtGBvdyFvEpY4i+9kLUc3a9K1mJJW6klXx+dV6iNVBwfdBFfGclLlWsSKc
+         wwy5CfuU6Umz8mvsHk5SDTkqkRBI41DgEnEIh3L8fix43WRj6cIBHh6jUwou+rV0cWis
+         r0A5lhU/NqD9H1HwQiagH22yBnoNJHG/XsEGUYedXEWD/02Ca2fauPsIGQyj6SURbbAV
+         7NXqd4ceJyahjYHtOIFLpbP07hSf6AeFJcFNKS31VgrTkTCDU0j5EEsKpRfhQiNAFdEa
+         D7Tw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc;
+        bh=vigYgSEq8XNq0GNKbbIvxMXyahHUCUs5sjRm7+jzlAc=;
+        b=O+x8LZslJSosZVmTRQrKRpY+LARJW9ouPKJ7wEyCYx4qEWZ9r4vDQnFguF8UZILuLh
+         BvRV3PVwrl5nwfBHQhjWJXcwmdu0Zb2MUHyJKnkqwe+sLo9siOJXNBsRiO/3MLEpCGbc
+         fNDf32f15gUPqVXY4BI4CzGZ7g8VNXDFFJhz0Mo/BaS5nmig8rFnXl1evCZLjSuqJWjn
+         XsoKQpUNNo3rxmLxmgASx8PiLrUkObIDJEi6cl51wwl09f7APZPYw5TchgEyI19xGdoM
+         3KUxBMisPg6hCQCnWsxgZxUaU0VioqSxttRDM2aoHIcOEgDl9WQ6a2BGQmXXsziXUcPR
+         Crpw==
+X-Gm-Message-State: ACgBeo2D+kAH8GEpGbFLyFFyULFVI25bWotQVw23Kiq1EjGPFAq1e+cm
+        lil2rkFFSrhNn3ZX4DJd5Z3Ba5rDPOZR/A==
+X-Google-Smtp-Source: AA6agR5A55b/w/+RqBS9nJXJtBTCYbFkCFhxVZ/4Z5ZKcrs5fj5l1pPwWXAHQ8XkZjrkmmXNmOa0Rg==
+X-Received: by 2002:a2e:92c4:0:b0:25d:9d30:5d61 with SMTP id k4-20020a2e92c4000000b0025d9d305d61mr6134684ljh.202.1661173795023;
+        Mon, 22 Aug 2022 06:09:55 -0700 (PDT)
+Received: from [10.0.0.127] (91-159-150-230.elisa-laajakaista.fi. [91.159.150.230])
+        by smtp.gmail.com with ESMTPSA id v11-20020a2ea44b000000b0025e42174f0csm1817832ljn.70.2022.08.22.06.09.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 22 Aug 2022 06:09:54 -0700 (PDT)
+Message-ID: <1d4eb194-aab7-42c7-f33f-4b89e607dc6c@gmail.com>
+Date:   Mon, 22 Aug 2022 16:12:20 +0300
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Content-Language: en-US
+To:     Vaishnav Achath <vaishnav.a@ti.com>, vkoul@kernel.org,
+        broonie@kernel.org, dmaengine@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+Cc:     vigneshr@ti.com, kishon@ti.com
+References: <20220822091531.27827-1-vaishnav.a@ti.com>
+ <20220822091531.27827-2-vaishnav.a@ti.com>
+From:   =?UTF-8?Q?P=c3=a9ter_Ujfalusi?= <peter.ujfalusi@gmail.com>
+Subject: Re: [PATCH 1/2] dmaengine: ti: k3-udma: Respond TX done if
+ DMA_PREP_INTERRUPT is not requested
+In-Reply-To: <20220822091531.27827-2-vaishnav.a@ti.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-When using MCSPI with DMA enabled in Master/Slave mode, real-time 
-performance issues were observed which were root caused to the 
-uncertain delays in the  TX completion calculation mechanism in
-k3-udma driver.
 
-This series updates the omap2-mcspi driver to use End of Word(EOW)
-interrupt to identify transaction completion and remove the usage
-of DMA rx_completion and tx_completion for identifying transaction
-completion.
 
-Tested on J721E SK (for both Master and Slave Mode) for Full Duplex,
-TX Only and RX Only mode transactions.Also tested with ILI9225 based
-SPI TFT Display.
+On 22/08/2022 12:15, Vaishnav Achath wrote:
+> When the DMA consumer driver does not expect the callback for TX done,
+> There is no need to perform the channel RT byte counter calculations 
+> and estimate the completion but return complete on first attempt itself.
+> This assumes that the consumer who did not request DMA_PREP_INTERRUPT 
+> has its own mechanism for understanding TX completion, example: MCSPI
+> EOW interrupt can be used as TX completion signal for a SPI transaction.
 
-Vaishnav Achath (2):
-  dmaengine: ti: k3-udma: Respond TX done if DMA_PREP_INTERRUPT is not
-    requested
-  spi: spi-omap2-mcspi: Use EOW interrupt for completion when DMA
-    enabled
+The check is in place to make sure that we don't leave stale data in the
+DMA fabric.
+If you drop the check then it is going to be possible that some TX data
+is going to be lost.
+Could be one out of 10K transfers or 100K, but if that happens it is not
+going to be easy to figure out.
+Let's say we go the packet back, but PDMA is still have data to send and
+the IP stops transmitting (externally clocked bus, some delay, etc).
+Is it going to be OK to disable the channel?
 
- drivers/dma/ti/k3-udma.c      |   5 +-
- drivers/spi/spi-omap2-mcspi.c | 141 +++++++++-------------------------
- 2 files changed, 40 insertions(+), 106 deletions(-)
+> 
+> Signed-off-by: Vaishnav Achath <vaishnav.a@ti.com>
+> ---
+>  drivers/dma/ti/k3-udma.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/dma/ti/k3-udma.c b/drivers/dma/ti/k3-udma.c
+> index 39b330ada200..03d579068453 100644
+> --- a/drivers/dma/ti/k3-udma.c
+> +++ b/drivers/dma/ti/k3-udma.c
+> @@ -263,6 +263,7 @@ struct udma_chan_config {
+>  	enum udma_tp_level channel_tpl; /* Channel Throughput Level */
+>  
+>  	u32 tr_trigger_type;
+> +	unsigned long tx_flags;
+>  
+>  	/* PKDMA mapped channel */
+>  	int mapped_channel_id;
+> @@ -1057,7 +1058,7 @@ static bool udma_is_desc_really_done(struct udma_chan *uc, struct udma_desc *d)
+>  
+>  	/* Only TX towards PDMA is affected */
+>  	if (uc->config.ep_type == PSIL_EP_NATIVE ||
+> -	    uc->config.dir != DMA_MEM_TO_DEV)
+> +	    uc->config.dir != DMA_MEM_TO_DEV || !(uc->config.tx_flags & DMA_PREP_INTERRUPT))
+>  		return true;
+>  
+>  	peer_bcnt = udma_tchanrt_read(uc, UDMA_CHAN_RT_PEER_BCNT_REG);
+> @@ -3418,6 +3419,8 @@ udma_prep_slave_sg(struct dma_chan *chan, struct scatterlist *sgl,
+>  	if (!burst)
+>  		burst = 1;
+>  
+> +	uc->config.tx_flags = tx_flags;
+> +
+>  	if (uc->config.pkt_mode)
+>  		d = udma_prep_slave_sg_pkt(uc, sgl, sglen, dir, tx_flags,
+>  					   context);
 
 -- 
-2.17.1
-
+Péter

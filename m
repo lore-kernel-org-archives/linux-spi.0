@@ -2,34 +2,34 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 82266ECAAA3
-	for <linux-spi@archiver.kernel.org>; Fri, 26 Aug 2022 14:26:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 947A1ECAAD4
+	for <linux-spi@archiver.kernel.org>; Fri, 26 Aug 2022 14:26:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344188AbiHZO0E (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 26 Aug 2022 10:26:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42974 "EHLO
+        id S1344227AbiHZO0F (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 26 Aug 2022 10:26:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42706 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344059AbiHZO0B (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 26 Aug 2022 10:26:01 -0400
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1E213335E;
-        Fri, 26 Aug 2022 07:25:52 -0700 (PDT)
-Received: from canpemm500009.china.huawei.com (unknown [172.30.72.56])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4MDhsg5hlgzGpZ2;
-        Fri, 26 Aug 2022 22:24:07 +0800 (CST)
+        with ESMTP id S1343978AbiHZOZ4 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 26 Aug 2022 10:25:56 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D28E23340A;
+        Fri, 26 Aug 2022 07:25:53 -0700 (PDT)
+Received: from canpemm500009.china.huawei.com (unknown [172.30.72.53])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4MDhqs5ykMzlWG1;
+        Fri, 26 Aug 2022 22:22:33 +0800 (CST)
 Received: from CHINA (10.175.102.38) by canpemm500009.china.huawei.com
  (7.192.105.203) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Fri, 26 Aug
- 2022 22:25:49 +0800
+ 2022 22:25:50 +0800
 From:   Wei Yongjun <weiyongjun1@huawei.com>
 To:     Mark Brown <broonie@kernel.org>,
         Steven Rostedt <rostedt@goodmis.org>,
         Ingo Molnar <mingo@redhat.com>
 CC:     Wei Yongjun <weiyongjun1@huawei.com>,
         <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>
-Subject: [PATCH -next 1/4] spi: mockup: Add SPI controller testing driver
-Date:   Fri, 26 Aug 2022 14:43:38 +0000
-Message-ID: <20220826144341.532265-2-weiyongjun1@huawei.com>
+Subject: [PATCH -next 4/4] spi: mockup: Add documentation
+Date:   Fri, 26 Aug 2022 14:43:41 +0000
+Message-ID: <20220826144341.532265-5-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220826144341.532265-1-weiyongjun1@huawei.com>
 References: <20220826144341.532265-1-weiyongjun1@huawei.com>
@@ -44,295 +44,234 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This enables SPI controller Testing driver, which provides a way
-to test SPI drivers.
-
-This is accomplished by executing the following command:
-
-$ echo adcxx1s 0 > /sys/class/spi_master/spi0/new_device
-
-The name of the target driver and its chip select were used to
-instantiate the device.
-
-$ ls /sys/bus/spi/devices/spi0.0/hwmon/hwmon0/ -l
- total 0
- lrwxrwxrwx 1 root root    0 Aug 10 08:58 device -> ../../../spi0.0
- drwxr-xr-x 2 root root    0 Aug 10 08:58 power
- lrwxrwxrwx 1 root root    0 Aug 10 08:58 subsystem -> ../../../../../../../../class/hwmon
- -rw-r--r-- 1 root root 4096 Aug 10 08:58 uevent
-
-Remove target device by executing the following command:
-$ echo 0 > /sys/class/spi_master/spi0/delete_device
+Add documentation for the SPI mockup controller driver.
+This include the tutorial for how to mockup a api device.
 
 Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/spi/Kconfig      |  12 +++
- drivers/spi/Makefile     |   1 +
- drivers/spi/spi-mockup.c | 221 +++++++++++++++++++++++++++++++++++++++
- 3 files changed, 234 insertions(+)
+ Documentation/spi/index.rst      |   1 +
+ Documentation/spi/spi-mockup.rst | 201 +++++++++++++++++++++++++++++++
+ 2 files changed, 202 insertions(+)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index d1bb62f7368b..b58a1bd7999d 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -1158,6 +1158,18 @@ config SPI_TLE62X0
- 	  sysfs interface, with each line presented as a kind of GPIO
- 	  exposing both switch control and diagnostic feedback.
+diff --git a/Documentation/spi/index.rst b/Documentation/spi/index.rst
+index 06c34ea11bcf..a8f4f5cd0f09 100644
+--- a/Documentation/spi/index.rst
++++ b/Documentation/spi/index.rst
+@@ -13,6 +13,7 @@ Serial Peripheral Interface (SPI)
+    pxa2xx
+    spi-lm70llp
+    spi-sc18is602
++   spi-mockup
  
-+config SPI_MOCKUP
-+	tristate "SPI controller Testing Driver"
-+	depends on OF
-+	help
-+	  This enables SPI controller testing driver, which provides a way to
-+	  test SPI subsystem.
-+
-+	  If you do build this module, be sure to read the notes and warnings
-+	  in <file:Documentation/spi/spi-mockup.rst>.
-+
-+	  If you don't know what to do here, definitely say N.
-+
- #
- # Add new SPI protocol masters in alphabetical order above this line
- #
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index 4b34e855c841..be87f49098b6 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -12,6 +12,7 @@ obj-$(CONFIG_SPI_MEM)			+= spi-mem.o
- obj-$(CONFIG_SPI_MUX)			+= spi-mux.o
- obj-$(CONFIG_SPI_SPIDEV)		+= spidev.o
- obj-$(CONFIG_SPI_LOOPBACK_TEST)		+= spi-loopback-test.o
-+obj-$(CONFIG_SPI_MOCKUP)		+= spi-mockup.o
+ .. only::  subproject and html
  
- # SPI master controller drivers (bus)
- obj-$(CONFIG_SPI_ALTERA)		+= spi-altera-platform.o
-diff --git a/drivers/spi/spi-mockup.c b/drivers/spi/spi-mockup.c
+diff --git a/Documentation/spi/spi-mockup.rst b/Documentation/spi/spi-mockup.rst
 new file mode 100644
-index 000000000000..06cf9d122d64
+index 000000000000..b38f44dca785
 --- /dev/null
-+++ b/drivers/spi/spi-mockup.c
-@@ -0,0 +1,221 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * SPI controller Testing Driver
-+ *
-+ * Copyright(c) 2022 Huawei Technologies Co., Ltd.
-+ */
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/init.h>
-+#include <linux/string.h>
-+#include <linux/slab.h>
-+#include <linux/of.h>
-+#include <linux/platform_device.h>
-+#include <linux/spi/spi.h>
++++ b/Documentation/spi/spi-mockup.rst
+@@ -0,0 +1,201 @@
++==========
++spi-mockup
++==========
 +
-+#define MOCKUP_CHIPSELECT_MAX		8
++Description
++===========
 +
-+struct mockup_spi {
-+	struct mutex lock;
-+	struct spi_device *devs[MOCKUP_CHIPSELECT_MAX];
-+};
++This module is a very simple fake SPI controller driver. It implements
++a BPF based interface to mockup SPI device.
 +
-+static struct spi_master *to_spi_master(struct device *dev)
-+{
-+	return container_of(dev, struct spi_master, dev);
-+}
++No hardware is needed nor associated with this module. It will respond
++spi message by BPF program attached to spi_transfer_writeable tracepoint
++by reading from or writing BPF maps.
 +
-+static ssize_t
-+new_device_store(struct device *dev, struct device_attribute *attr,
-+		 const char *buf, size_t count)
-+{
-+	struct spi_master *master = to_spi_master(dev);
-+	struct spi_board_info info;
-+	struct spi_device *slave;
-+	struct mockup_spi *mock;
-+	char *blank, end;
-+	int status;
++The typical use-case is like this:
++        1. load this module
++        2. use bpftool to load BPF program
++        3. load the target chip driver module
 +
-+	memset(&info, 0, sizeof(struct spi_board_info));
++Example
++=======
 +
-+	blank = strchr(buf, ' ');
-+	if (!blank) {
-+		dev_err(dev, "%s: Extra parameters\n", "new_device");
-+		return -EINVAL;
-+	}
++This example show how to mock a MTD device by using spi-mockup driver.
 +
-+	if (blank - buf > SPI_NAME_SIZE - 1) {
-+		dev_err(dev, "%s: Invalid device name\n", "new_device");
-+		return -EINVAL;
-+	}
++Compile your copy of the kernel source. Make sure to configure the spi-mockup
++and the target chip driver as a module. Prepare a dts described the spi-mockup
++device.
 +
-+	memcpy(info.modalias, buf, blank - buf);
++::
 +
-+	status = sscanf(++blank, "%hi%c", &info.chip_select, &end);
-+	if (status < 1) {
-+		dev_err(dev, "%s: Can't parse SPI chipselect\n", "new_device");
-+		return -EINVAL;
-+	}
++  /dts-v1/;
 +
-+	if (status > 1 && end != '\n') {
-+		dev_err(dev, "%s: Extra parameters\n", "new_device");
-+		return -EINVAL;
-+	}
++  / {
++      spi: spi {
++          compatible = "spi-mockup";
 +
-+	if (info.chip_select >= master->num_chipselect) {
-+		dev_err(dev, "%s: Invalid chip_select\n", "new_device");
-+		return -EINVAL;
-+	}
++          #address-cells = <1>;
++          #size-cells = <0>;
++      };
++  }
 +
-+	mock = spi_master_get_devdata(master);
-+	mutex_lock(&mock->lock);
++Write a BPF program as device's backup.
 +
-+	if (mock->devs[info.chip_select]) {
-+		dev_err(dev, "%s: Chipselect %d already in use\n",
-+			"new_device", info.chip_select);
-+		mutex_unlock(&mock->lock);
-+		return -EINVAL;
-+	}
++::
 +
-+	slave = spi_new_device(master, &info);
-+	if (!slave) {
-+		mutex_unlock(&mock->lock);
-+		return -ENOMEM;
-+	}
-+	mock->devs[info.chip_select] = slave;
++  #define MCHP23K256_CMD_WRITE_STATUS	0x01
++  #define MCHP23K256_CMD_WRITE		0x02
++  #define MCHP23K256_CMD_READ		0x03
 +
-+	mutex_unlock(&mock->lock);
++  #define CHIP_REGS_SIZE			0x20000
 +
-+	dev_info(dev, "%s: Instantiated device %s at 0x%02x\n", "new_device",
-+		 info.modalias, info.chip_select);
++  #define MAX_CMD_SIZE			4
 +
-+	return count;
-+}
-+static DEVICE_ATTR_WO(new_device);
++  struct {
++  	__uint(type, BPF_MAP_TYPE_ARRAY);
++  	__uint(max_entries, CHIP_REGS_SIZE);
++  	__type(key, __u32);
++  	__type(value, __u8);
++  } regs_mtd_mchp23k256 SEC(".maps");
 +
-+static ssize_t
-+delete_device_store(struct device *dev, struct device_attribute *attr,
-+		    const char *buf, size_t count)
-+{
-+	struct spi_master *master = to_spi_master(dev);
-+	struct spi_device *slave;
-+	struct mockup_spi *mock;
-+	unsigned short chip;
-+	char end;
-+	int res;
++  static unsigned int chip_reg = 0;
 +
-+	/* Parse parameters, reject extra parameters */
-+	res = sscanf(buf, "%hi%c", &chip, &end);
-+	if (res < 1) {
-+		dev_err(dev, "%s: Can't parse SPI address\n", "delete_device");
-+		return -EINVAL;
-+	}
-+	if (res > 1  && end != '\n') {
-+		dev_err(dev, "%s: Extra parameters\n", "delete_device");
-+		return -EINVAL;
-+	}
++  static int spi_transfer_read(struct spi_msg_ctx *msg, unsigned int len)
++  {
++  	int i, key;
++  	u8 *reg;
 +
-+	if (chip >= master->num_chipselect) {
-+		dev_err(dev, "%s: Invalid chip_select\n", "delete_device");
-+		return -EINVAL;
-+	}
++  	for (i = 0; i < len && i < sizeof(msg->data); i++) {
++  		key = i + chip_reg;
 +
-+	mock = spi_master_get_devdata(master);
-+	mutex_lock(&mock->lock);
++  		reg = bpf_map_lookup_elem(&regs_mtd_mchp23k256, &key);
++  		if (!reg) {
++  			bpf_printk("key %d not exists", key);
++  			return -EINVAL;
++  		}
 +
-+	slave = mock->devs[chip];
-+	if (!slave) {
-+		mutex_unlock(&mock->lock);
-+		dev_err(dev, "%s: Invalid chip_select\n", "delete_device");
-+		return -ENOENT;
-+	}
++  		msg->data[i] = *reg;
++  	}
 +
-+	dev_info(dev, "%s: Deleting device %s at 0x%02hx\n", "delete_device",
-+		 dev_name(&slave->dev), chip);
++  	return 0;
++  }
 +
-+	spi_unregister_device(slave);
-+	mock->devs[chip] = NULL;
++  static int spi_transfer_write(struct spi_msg_ctx *msg, unsigned int len)
++  {
++  	u8 opcode = msg->data[0], value;
++  	int i, key;
 +
-+	mutex_unlock(&mock->lock);
++  	switch (opcode) {
++  	case MCHP23K256_CMD_READ:
++  	case MCHP23K256_CMD_WRITE:
++  		if (len < 2)
++  			return -EINVAL;
 +
-+	return count;
-+}
-+static DEVICE_ATTR_WO(delete_device);
++  		chip_reg = 0;
++  		for (i = 0; i < MAX_CMD_SIZE && i < len - 1; i++)
++  			chip_reg = (chip_reg << 8) + msg->data[1 + i];
 +
-+static struct attribute *spi_mockup_attrs[] = {
-+	&dev_attr_new_device.attr,
-+	&dev_attr_delete_device.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(spi_mockup);
++  		return 0;
++  	case MCHP23K256_CMD_WRITE_STATUS:
++  		// ignore write status
++  		return 0;
++  	default:
++  		break;
++  	}
 +
-+static int spi_mockup_transfer(struct spi_master *master,
-+			       struct spi_message *msg)
-+{
-+	msg->status = 0;
-+	spi_finalize_current_message(master);
++  	for (i = 0; i < len && i < sizeof(msg->data); i++) {
++  		value = msg->data[i];
++  		key = chip_reg + i;
 +
-+	return 0;
-+}
++  		if (bpf_map_update_elem(&regs_mtd_mchp23k256, &key, &value,
++  					BPF_EXIST)) {
++  			bpf_printk("key %d not exists", key);
++  			return -EINVAL;
++  		}
++  	}
 +
-+static int spi_mockup_probe(struct platform_device *pdev)
-+{
-+	struct spi_master *master;
-+	struct mockup_spi *mock;
-+	int ret;
++  	return 0;
++  }
 +
-+	master = spi_alloc_master(&pdev->dev, sizeof(struct mockup_spi));
-+	if (!master) {
-+		pr_err("failed to alloc spi master\n");
-+		return -ENOMEM;
-+	}
++  SEC("raw_tp.w/spi_transfer_writeable")
++  int BPF_PROG(mtd_mchp23k256, struct spi_msg_ctx *msg, u8 chip,
++  	     unsigned int len, u8 tx_nbits, u8 rx_nbits)
++  {
++  	int ret = 0;
 +
-+	platform_set_drvdata(pdev, master);
++  	if (tx_nbits)
++  		ret = spi_transfer_write(msg, len);
++  	else if (rx_nbits)
++  		ret = spi_transfer_read(msg, len);
 +
-+	master->dev.of_node = pdev->dev.of_node;
-+	master->dev.groups = spi_mockup_groups;
-+	master->num_chipselect = MOCKUP_CHIPSELECT_MAX;
-+	master->mode_bits = SPI_MODE_USER_MASK;
-+	master->bus_num = 0;
-+	master->transfer_one_message = spi_mockup_transfer;
++  	return ret;
++  }
 +
-+	mock = spi_master_get_devdata(master);
-+	mutex_init(&mock->lock);
++  char LICENSE[] SEC("license") = "GPL";
 +
-+	ret = spi_register_master(master);
-+	if (ret) {
-+		spi_master_put(master);
-+		return ret;
-+	}
 +
-+	return 0;
-+}
++Then boot a qemu instance by the following command:
 +
-+static int spi_mockup_remove(struct platform_device *pdev)
-+{
-+	struct spi_master *master = platform_get_drvdata(pdev);
++::
 +
-+	spi_unregister_master(master);
++  sudo qemu-system-x86_64 -m 4096 -smp 4 -display none -serial stdio -no-reboot \
++  -enable-kvm -cpu host,migratable=off -dtb mocktest.dtb -snapshot -hda linux.img \
++  -kernel arch/x86/boot/bzImage \
++  -append "earlyprintk=serial root=/dev/sda console=ttyS0"
 +
-+	return 0;
-+}
 +
-+static const struct of_device_id spi_mockup_match[] = {
-+	{ .compatible = "spi-mockup", },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, spi_mockup_match);
++Use bpftool to load the BPF program.
 +
-+static struct platform_driver spi_mockup_driver = {
-+	.probe = spi_mockup_probe,
-+	.remove = spi_mockup_remove,
-+	.driver = {
-+		.name = "spi-mockup",
-+		.of_match_table = spi_mockup_match,
-+	},
-+};
-+module_platform_driver(spi_mockup_driver);
++::
 +
-+MODULE_AUTHOR("Wei Yongjun <weiyongjun1@huawei.com>");
-+MODULE_DESCRIPTION("SPI controller Testing Driver");
-+MODULE_LICENSE("GPL");
++  bpftool prog load mtd-mchp23k256.o /sys/fs/bpf/test_prog
++  bpftool perf attach name mtd_mchp23k256 spi_transfer_writeable /sys/fs/bpf/test_perf
++
++
++Load the target chip driver module. This is accomplished by executing the
++following command:
++
++::
++
++  $ echo mchp23k256 0 > /sys/class/spi_master/spi0/new_device
++
++
++The name of the target driver and its chip select were used to instantiate
++the device.
++
++Now, the mchp23k256 MTD device named /dev/mtd0 has been created successfully.
++
++::
++
++  $ ls /sys/bus/spi/devices/spi0.0/mtd/
++  mtd0  mtd0ro
++
++  $ cat /sys/class/mtd/mtd0/name
++  spi0.0
++
++  $ hexdump /dev/mtd0
++  0000000 0000 0000 0000 0000 0000 0000 0000 0000
++  *
++  0008000
++
++  $echo aaaa > /dev/mtd0
++
++  $ hexdump /dev/mtd0
++  0000000 6161 6161 000a 0000 0000 0000 0000 0000
++  0000010 0000 0000 0000 0000 0000 0000 0000 0000
++  *
++  0008000
++
++  $ bpftool map update name mtd_mchp23k256_ key 0 0 0 0 value 0
++
++  $ hexdump /dev/mtd0
++  0000000 6100 6161 000a 0000 0000 0000 0000 0000
++  0000010 0000 0000 0000 0000 0000 0000 0000 0000
++  *
++  0008000
++
++Remove the mockup device by executing the following command:
++
++::
++
++  $echo 0 > /sys/class/spi_master/spi0/delete_device
 -- 
 2.34.1
 

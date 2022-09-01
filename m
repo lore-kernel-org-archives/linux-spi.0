@@ -2,126 +2,139 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 56659ECAAD3
-	for <linux-spi@archiver.kernel.org>; Thu,  1 Sep 2022 12:11:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D9C0BECAAD1
+	for <linux-spi@archiver.kernel.org>; Thu,  1 Sep 2022 12:23:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233353AbiIAMLR (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 1 Sep 2022 08:11:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44478 "EHLO
+        id S233080AbiIAMX3 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 1 Sep 2022 08:23:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233342AbiIAMLP (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 1 Sep 2022 08:11:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7BB610B945
-        for <linux-spi@vger.kernel.org>; Thu,  1 Sep 2022 05:11:08 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A70C161E36
-        for <linux-spi@vger.kernel.org>; Thu,  1 Sep 2022 12:11:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4878C433D7;
-        Thu,  1 Sep 2022 12:11:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1662034267;
-        bh=3MDc6l/CTHBGpIhLzEAzcIRM2CRiMDVAT1jy33m15U8=;
-        h=From:To:Cc:Subject:Date:From;
-        b=huJkOGuLMkhYMLAjxfYoo1gl9m6sJGMPxoCkrDqLIgu/ajmhALX6CKymuoMvffEzL
-         QyhZ0/+yZfhHdOpJvbky3Zsf2ylb/jz2YABUZQTufRm7b6MNGUKbUogFNe0KpiE9Ye
-         I4nQ9j1v3BOfG1XCAmwLAfEfc2zg+a+vU2+kC/cg3OiPB3AMvtlbi5lwFgn534Bpxu
-         oLSTPT1UYcYHLxHn0qsS6aEx3Xx3Z5oGmUAKrBIuA+Ut/EFmATU1GHStzTXs1dty81
-         5pP2w8Ud2F6/BAbnb+druHZuaocMUDj/mtv80glhCkonEQCTD16lzQWprIJ5/7Hb8w
-         cekfdE9Wn+uyw==
-From:   Mark Brown <broonie@kernel.org>
-To:     David Jander <david@protonic.nl>,
-        Casper Andersson <casper.casan@gmail.com>,
-        Vincent Whitchurch <vincent.whitchurch@axis.com>
-Cc:     linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>
-Subject: [PATCH v1] spi: mux: Fix mux interaction with fast path optimisations
-Date:   Thu,  1 Sep 2022 13:07:32 +0100
-Message-Id: <20220901120732.49245-1-broonie@kernel.org>
-X-Mailer: git-send-email 2.30.2
+        with ESMTP id S232313AbiIAMX3 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 1 Sep 2022 08:23:29 -0400
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EA6A11E80F;
+        Thu,  1 Sep 2022 05:23:27 -0700 (PDT)
+Received: from canpemm500009.china.huawei.com (unknown [172.30.72.56])
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4MJKqN5Ty9z1N7kk;
+        Thu,  1 Sep 2022 20:19:44 +0800 (CST)
+Received: from [10.174.178.165] (10.174.178.165) by
+ canpemm500009.china.huawei.com (7.192.105.203) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Thu, 1 Sep 2022 20:23:25 +0800
+Subject: Re: [PATCH -next 0/4] spi: Introduce BPF based SPI mockup controller
+To:     Mark Brown <broonie@kernel.org>
+CC:     Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@redhat.com>, <linux-kernel@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>
+References: <20220826144341.532265-1-weiyongjun1@huawei.com>
+ <Yw5gSElhbYwoXrfw@sirena.org.uk>
+From:   "weiyongjun (A)" <weiyongjun1@huawei.com>
+Message-ID: <b9ed9b35-2992-b9f4-2e9c-f69c13d9dce3@huawei.com>
+Date:   Thu, 1 Sep 2022 20:23:24 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3371; i=broonie@kernel.org; h=from:subject; bh=3MDc6l/CTHBGpIhLzEAzcIRM2CRiMDVAT1jy33m15U8=; b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBjEKCDdA+qC2/tZCd1TCaAbRbuwhT+fCfqe4T4NPSg Zl7MzSSJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCYxCggwAKCRAk1otyXVSH0JRXB/ 9yAaaGqnHoxTcSKpArMJIW5abgzMaJR3OVnZF/pmEzDJtdU0QfnYF5VfcKEMu76xcR2xUtVU0YGaFu uyziLDo0VWr8iC7NulXiuthX8LK6jPGQ6hKYFYNRwMgWrwCbQ0VtUPOtESic5/YN9L5FSx9dvbYTmP p5f/Sp0oqZ4FwLdaLGMKXbAABmeMcatASA0v7Ry8jFl2M33aNddbOJvTgPL3/pX4nrYHxVU2pyLxkd TKc/imM0pnd6b/47Zn7FjtFOL+wG7UMhUrKdvS8htx9vthSx8ZFrvmzF7sR7RQJ3BQhKSuoR2zTPKE /cuL4JecAKQRwfjWefldWP2cVlDu7o
-X-Developer-Key: i=broonie@kernel.org; a=openpgp; fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <Yw5gSElhbYwoXrfw@sirena.org.uk>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.178.165]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ canpemm500009.china.huawei.com (7.192.105.203)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The spi-mux driver is rather too clever and attempts to resubmit any
-message that is submitted to it to the parent controller with some
-adjusted callbacks.  This does not play at all nicely with the fast
-path which now sets flags on the message indicating that it's being
-handled through the fast path, we see async messages flagged as being on
-the fast path.  Ideally the spi-mux code would duplicate the message but
-that's rather invasive and a bit fragile in that it relies on the mux
-knowing which fields in the message to copy.  Instead teach the core
-that there are controllers which can't cope with the fast path and have
-the mux flag itself as being such a controller, ensuring that messages
-going via the mux don't get partially handled via the fast path.
 
-This will reduce the performance of any spi-mux connected device since
-we'll now always use the thread for both the actual controller and the
-mux controller instead of just the actual controller but given that we
-were always hitting the slow path anyway it's hopefully not too much of
-an additional cost and it allows us to keep the fast path.
 
-Fixes: ae7d2346dc89 ("spi: Don't use the message queue if possible in spi_sync")
-Reported-by: Casper Andersson <casper.casan@gmail.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-mux.c   | 1 +
- drivers/spi/spi.c       | 2 +-
- include/linux/spi/spi.h | 2 ++
- 3 files changed, 4 insertions(+), 1 deletion(-)
+On 2022/8/31 3:08, Mark Brown wrote:
+> On Fri, Aug 26, 2022 at 02:43:37PM +0000, Wei Yongjun wrote:
+>> This series Introduce a BPF based SPI mockup controller, which can be
+>> used for testing SPI drivers without real device.
+>>
+>> The testsuite for SPI drivers will be post in other series, with also
+>> support for I2C and PCI bus device drivers.
+> 
+> I replied to some of the individual patches here with some more
+> detailed issues but I do have some big picture reservations with
+> this approach as well.  One big one is that this seems like it's
+> only going to be able to handle emulation of devices that are
+> purely synchronous - I don't see any sensible direction here for
+> extending to devices that need an interrupt line as well.  That
+> seems like a major limitation.  It's fine not to immediately
 
-diff --git a/drivers/spi/spi-mux.c b/drivers/spi/spi-mux.c
-index f5d32ec4634e..0709e987bd5a 100644
---- a/drivers/spi/spi-mux.c
-+++ b/drivers/spi/spi-mux.c
-@@ -161,6 +161,7 @@ static int spi_mux_probe(struct spi_device *spi)
- 	ctlr->num_chipselect = mux_control_states(priv->mux);
- 	ctlr->bus_num = -1;
- 	ctlr->dev.of_node = spi->dev.of_node;
-+	ctlr->must_async = true;
- 
- 	ret = devm_spi_register_controller(&spi->dev, ctlr);
- 	if (ret)
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 83da8862b8f2..c4ccd45ebc1a 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -4033,7 +4033,7 @@ static int __spi_sync(struct spi_device *spi, struct spi_message *message)
- 	 * guard against reentrancy from a different context. The io_mutex
- 	 * will catch those cases.
- 	 */
--	if (READ_ONCE(ctlr->queue_empty)) {
-+	if (READ_ONCE(ctlr->queue_empty) && !ctlr->must_async) {
- 		message->actual_length = 0;
- 		message->status = -EINPROGRESS;
- 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index e6c73d5ff1a8..f089ee1ead58 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -469,6 +469,7 @@ extern struct spi_device *spi_new_ancillary_device(struct spi_device *spi, u8 ch
-  *	SPI_TRANS_FAIL_NO_START.
-  * @queue_empty: signal green light for opportunistically skipping the queue
-  *	for spi_sync transfers.
-+ * @must_async: disable all fast paths in the core
-  *
-  * Each SPI controller can communicate with one or more @spi_device
-  * children.  These make a small bus, sharing MOSI, MISO and SCK signals
-@@ -690,6 +691,7 @@ struct spi_controller {
- 
- 	/* Flag for enabling opportunistic skipping of the queue in spi_sync */
- 	bool			queue_empty;
-+	bool			must_async;
- };
- 
- static inline void *spi_controller_get_devdata(struct spi_controller *ctlr)
 
-base-commit: b90cb1053190353cc30f0fef0ef1f378ccc063c5
--- 
-2.30.2
+We can use gpio-sim as the interrupt controller which always exists
+with some tiny fix, I had posted them and can be found from link:
 
+https://www.spinics.net/lists/linux-gpio/msg74949.html
+
+
+> implement everything but it should be fairly clear how that would
+> be done when someone needs it and some of the BPF design goals I
+> understood seem to conflict with that.
+> 
+> I'm also not clear what the BPF environment is like when it comes
+> to extensible frameworks, as soon as you start thinking about the
+> problem space there are some obvious extensions with things like
+> more detailed register map descriptions and validating that the
+> operations that the driver is doing to the device are actually in
+> spec for the device or trying to stimulate race conditions or
+> error paths in the driver.
+
+
+The bpftool in kernel still need some works, I am still working on
+fix comments from maintainers, which can be found at:
+
+https://lore.kernel.org/bpf/b942bf8f-204b-6bf1-7847-ec5f11c50ca0@isovalent.com/
+
+> 
+> There's also the issue with getting the BPF userspace tooling
+> that I mentioned in reply to one of the individual patches.
+> 
+> Basically while this does look very simple from a kernel point of
+> view I worry that BPF might not be the right tool for the job and
+> could be a bit of a blind alley, with people rapidly running into
+> issues trying to do anything non-trivial.
+> 
+
+Base on BPF's map, we can using wrap for read/write registers as
+the device's requirement. And it is possible to control each register
+and runtime.
+
+For example, simple write data to MTD device, and check whether
+the data is write to registers:
+
+def test_write_data(self):
+    with self.device() as dev:
+         self.device_write_bytes(dev, [1, 2, 3, 4]) <- write to /dev/mtd
+         data = self.read_regs(0x00, 4)
+         self.assertEqual(data, [1, 2, 3, 4])
+
+I am working on a light weight framework which just 400 loc's python
+code, and can do similar tests to roadtest.
+
+Once I finished the bpftool, I will post a proposal.
+
+> There was a series in the past year or so from someone
+> implementing a similarish idea but rather than using BPF they
+> provided a framework for writing device emulations in qemu with
+> a simplified Python framework.  That seemed like a more obvious
+> direction here.  They were initially focusing on I2C but it's a
+> similar space.  Unfortunately I'm drawing a blank on who was
+> working on it or the name of the framework so I can't give a
+> useful reference here.  Their direction was towards having
+> something that could also be used to validate what the driver was
+> doing to the device from the device's perspective.  I do know it
+> was written up on LWN.  Hopefully someone else will remember what
+> I'm talking about from this vauge description.
+> 
+
+I saw your other mail, and know you mean roatest, which is based on
+virtio as the backend.
+
+The bpf backend can be easily integrate to roadtest.
+
+
+Regards,
+Wei Yongjun

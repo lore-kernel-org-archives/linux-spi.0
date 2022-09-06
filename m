@@ -2,42 +2,42 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 34284C6FA86
-	for <linux-spi@archiver.kernel.org>; Tue,  6 Sep 2022 14:34:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 89C2DC6FA89
+	for <linux-spi@archiver.kernel.org>; Tue,  6 Sep 2022 14:34:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241945AbiIFOe0 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 6 Sep 2022 10:34:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55372 "EHLO
+        id S241950AbiIFOe2 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 6 Sep 2022 10:34:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242342AbiIFOdr (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 6 Sep 2022 10:33:47 -0400
+        with ESMTP id S242438AbiIFOd5 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 6 Sep 2022 10:33:57 -0400
 Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8977E8276D;
-        Tue,  6 Sep 2022 06:59:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEC2997D7B;
+        Tue,  6 Sep 2022 06:59:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1662472748; x=1694008748;
+  t=1662472747; x=1694008747;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=ttW5D/aDzcSJYKXL2Ks4x6nT/tiEMuarCbgMkNwvAac=;
-  b=bS4iemoHyFCEbwfTooy+f95UT5QlEwm1z+kaJiKB4Nkb014au3/ri01F
-   QwGtkuRjo9IX+lz9mYAAtmQmBolnDQ0waEXwGtQswIvpAQ9FJ6JeMBFqC
-   7KOWowNi3/K0S4uzDVX6mxz2vTClz1tjnYrjrPZia5cdei8b94FHn/hzi
-   iK+KunY45V9/8fppgN29+WWlp5cOXaWQiqnjvmLBo2BHURU2OyknpHr6h
-   UgCDq6kuCQ6K8fo73W6K0L1NpSLYhmAkMA3qKD1j9g3xMlGsT61uP1HJq
-   RvH+4Gwe1bJ2P9H8i0VzM/tbtt5gp8KtBxuRaqxcTAi58Y7SJfxV1eVJi
-   w==;
+  bh=1ukzoA6GXOrZn1fR+vQ1H2MVExXptIL532zW/9q++y4=;
+  b=0mtTwKfYoI0niDcWBzCban44d+3dp4+ABDOeYmcFnWD90DOPYP4WR/TW
+   fK6UPWo4uE0YO1ZVcSwbLwXeoI/2x+4wOiTR7/b9AtGMleHESufOwUxzS
+   xU47A28RgSJqYbfhrhwTobQZ+OVcCmT9Z2eIq8dJuqbiEQkL8HHIZ/+ky
+   aVGYWWLgi8+9GcCaEW+u/tE6vWYzuydyhhCWWdrLNDhayQRwPS/d/PD+E
+   /eZ2VzegnX/dPR/Zp2g/9xf6aUBar5LJDE5+dgRIr7tmi4fh6+CYRa/23
+   5K1kYhndVYDAUs0vEReClq1P5WsdGkgf5OHtV7F/CxJ4ELnI8Uoa2Nkzq
+   A==;
 X-IronPort-AV: E=Sophos;i="5.93,294,1654585200"; 
-   d="scan'208";a="189613904"
+   d="scan'208";a="189613857"
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 06 Sep 2022 06:57:16 -0700
+  by esa1.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 06 Sep 2022 06:56:55 -0700
 Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
  chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.12; Tue, 6 Sep 2022 06:57:15 -0700
+ 15.1.2507.12; Tue, 6 Sep 2022 06:56:54 -0700
 Received: from ROB-ULT-M68701.microchip.com (10.10.115.15) by
  chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
- 15.1.2507.12 via Frontend Transport; Tue, 6 Sep 2022 06:57:10 -0700
+ 15.1.2507.12 via Frontend Transport; Tue, 6 Sep 2022 06:56:49 -0700
 From:   Sergiu Moga <sergiu.moga@microchip.com>
 To:     <lee@kernel.org>, <robh+dt@kernel.org>,
         <krzysztof.kozlowski+dt@linaro.org>, <nicolas.ferre@microchip.com>,
@@ -52,9 +52,9 @@ CC:     <devicetree@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
         <linux-serial@vger.kernel.org>, <linux-clk@vger.kernel.org>
-Subject: [PATCH v2 08/13] tty: serial: atmel: Define GCLK as USART baudrate source clock
-Date:   Tue, 6 Sep 2022 16:55:07 +0300
-Message-ID: <20220906135511.144725-9-sergiu.moga@microchip.com>
+Subject: [PATCH v2 04/13] ARM: dts: at91: sam9x60ek: Add DBGU compatibles to uart1
+Date:   Tue, 6 Sep 2022 16:55:03 +0300
+Message-ID: <20220906135511.144725-5-sergiu.moga@microchip.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220906135511.144725-1-sergiu.moga@microchip.com>
 References: <20220906135511.144725-1-sergiu.moga@microchip.com>
@@ -65,12 +65,14 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Define the bit that represents the choice of having GCLK as a baudrate
-source clock inside the USCLKS bitmask of the Mode Register of
-USART IP's.
+Maintain consistency among the compatibles of the serial nodes of
+sam9x60ek and highlight the incremental characteristic of its serial
+IP's by making sure that all serial nodes contain both the sam9x60
+and sam9260 usart/dbgu compatibles.
 
 Signed-off-by: Sergiu Moga <sergiu.moga@microchip.com>
 ---
+
 
 
 v1 -> v2:
@@ -78,21 +80,22 @@ v1 -> v2:
 
 
 
- drivers/tty/serial/atmel_serial.h | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/boot/dts/at91-sam9x60ek.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/atmel_serial.h b/drivers/tty/serial/atmel_serial.h
-index 0d8a0f9cc5c3..70d0611e56fd 100644
---- a/drivers/tty/serial/atmel_serial.h
-+++ b/drivers/tty/serial/atmel_serial.h
-@@ -49,6 +49,7 @@
- #define	ATMEL_US_USCLKS		GENMASK(5, 4)	/* Clock Selection */
- #define		ATMEL_US_USCLKS_MCK		(0 <<  4)
- #define		ATMEL_US_USCLKS_MCK_DIV8	(1 <<  4)
-+#define		ATMEL_US_USCLKS_GCLK		(2 <<  4)
- #define		ATMEL_US_USCLKS_SCK		(3 <<  4)
- #define	ATMEL_US_CHRL		GENMASK(7, 6)	/* Character Length */
- #define		ATMEL_US_CHRL_5			(0 <<  6)
+diff --git a/arch/arm/boot/dts/at91-sam9x60ek.dts b/arch/arm/boot/dts/at91-sam9x60ek.dts
+index 81c38e101f58..49827e63508d 100644
+--- a/arch/arm/boot/dts/at91-sam9x60ek.dts
++++ b/arch/arm/boot/dts/at91-sam9x60ek.dts
+@@ -264,7 +264,7 @@ &flx5 {
+ 	status = "okay";
+ 
+ 	uart1: serial@200 {
+-		compatible = "microchip,sam9x60-usart", "atmel,at91sam9260-usart";
++		compatible = "microchip,sam9x60-dbgu", "microchip,sam9x60-usart", "atmel,at91sam9260-dbgu", "atmel,at91sam9260-usart";
+ 		reg = <0x200 0x200>;
+ 		interrupts = <14 IRQ_TYPE_LEVEL_HIGH 7>;
+ 		dmas = <&dma0
 -- 
 2.25.1
 

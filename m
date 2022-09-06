@@ -2,87 +2,101 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 131FCECAAD5
-	for <linux-spi@archiver.kernel.org>; Mon,  5 Sep 2022 17:33:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BDA06C6FA83
+	for <linux-spi@archiver.kernel.org>; Tue,  6 Sep 2022 14:34:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231630AbiIERdX (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 5 Sep 2022 13:33:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37182 "EHLO
+        id S240290AbiIFOeW (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 6 Sep 2022 10:34:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231230AbiIERdW (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 5 Sep 2022 13:33:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3412C5A3FB;
-        Mon,  5 Sep 2022 10:33:22 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B96E461369;
-        Mon,  5 Sep 2022 17:33:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE7F6C433D6;
-        Mon,  5 Sep 2022 17:33:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1662399201;
-        bh=fJl2loForj832KBRuUXO1rQdi1jQcxM/e8AQQzTuHYo=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=I73vtqRP5D3OpZADsGj16+2lyQtKBWSU66U5KTMIuET9gCbn3GP39nR7LRUMupe0/
-         3riKs0mbTQKuJS0+hFS/TWYxX5yIR5QXDW9KFNKT8p+huHZgPCodGHuR9LvyfOVEkH
-         LExEQrSmUQtKarJux/AAe/6Qfpe8wtLX5QzQbIN3KaQi0iZ/Mt7O3QK03aZFvU31ZR
-         /KGf+qkXqnTHK6i0h4X8aUKiVP9s7TE+CywPweBUaSabPKVAFShoDp3oipchrRYuCv
-         KO/ALv4vpBzWNTZp+HpUWvJFlDlnUFgCYEza2EWUYvfgtrwMyMIbTuZqF5xR++NBcq
-         NgDEm+iDbNqjg==
-From:   Mark Brown <broonie@kernel.org>
-To:     pramod.gurav@linaro.org, Xu Qiang <xuqiang36@huawei.com>,
-        konrad.dybcio@somainline.org, iivanov@mm-sol.com,
-        agross@kernel.org, bjorn.andersson@linaro.org
-Cc:     weiyongjun1@huawei.com, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        guohanjun@huawei.com
-In-Reply-To: <20220825065324.68446-1-xuqiang36@huawei.com>
-References: <20220825065324.68446-1-xuqiang36@huawei.com>
-Subject: Re: [PATCH -next 1/2] spi: qup: add missing clk_disable_unprepare on error in spi_qup_resume()
-Message-Id: <166239919867.807748.1227253290015300046.b4-ty@kernel.org>
-Date:   Mon, 05 Sep 2022 18:33:18 +0100
+        with ESMTP id S242145AbiIFOdf (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 6 Sep 2022 10:33:35 -0400
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AD3E98A41;
+        Tue,  6 Sep 2022 06:58:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1662472736; x=1694008736;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=rxAl4C/+GYl9FO0p6O+KZF0I5ZhxVC6ijXZxrd6Fv+Y=;
+  b=o+7xicXdzFEcS32OeQr4f8AQxm2pgROJj0kZUBcwZ6GmqZJNc8xEYsNR
+   J+/QcbAL3Ca76LyCyZ871EbGKg5eo59mXWpdYepkjjdEzmu2+smY8J36g
+   ZGVD6DciP25grXEgi3ShktH1WBP/PuZT3wzuCZfkCnVnDCV617DCE8Ijw
+   kU2Uvya1LABYvztvDPZEBrywhZl0r4tXZQ4B3zktGwlIgVgwYg7XJA1Jf
+   qg0vZ7CxykWPrOIPiqQarQimFRncz5NvR+ADRIVsjGUP73RMuxDIyPBBS
+   47JuhIxXmdr08wg0nbblosinfbuDJNfGETHHvmO3ag8LfW98YCLMzuQGj
+   w==;
+X-IronPort-AV: E=Sophos;i="5.93,294,1654585200"; 
+   d="scan'208";a="189613846"
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa1.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 06 Sep 2022 06:56:52 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.12; Tue, 6 Sep 2022 06:56:49 -0700
+Received: from ROB-ULT-M68701.microchip.com (10.10.115.15) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
+ 15.1.2507.12 via Frontend Transport; Tue, 6 Sep 2022 06:56:44 -0700
+From:   Sergiu Moga <sergiu.moga@microchip.com>
+To:     <lee@kernel.org>, <robh+dt@kernel.org>,
+        <krzysztof.kozlowski+dt@linaro.org>, <nicolas.ferre@microchip.com>,
+        <alexandre.belloni@bootlin.com>, <claudiu.beznea@microchip.com>,
+        <richard.genoud@gmail.com>, <radu_nicolae.pirea@upb.ro>,
+        <gregkh@linuxfoundation.org>, <broonie@kernel.org>,
+        <mturquette@baylibre.com>, <sboyd@kernel.org>,
+        <jirislaby@kernel.org>, <admin@hifiphile.com>,
+        <sergiu.moga@microchip.com>, <kavyasree.kotagiri@microchip.com>,
+        <tudor.ambarus@microchip.com>
+CC:     <devicetree@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+        <linux-serial@vger.kernel.org>, <linux-clk@vger.kernel.org>
+Subject: [PATCH v2 03/13] dt-bindings: mfd: atmel,sama5d2-flexcom: Add SPI child node ref binding
+Date:   Tue, 6 Sep 2022 16:55:02 +0300
+Message-ID: <20220906135511.144725-4-sergiu.moga@microchip.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220906135511.144725-1-sergiu.moga@microchip.com>
+References: <20220906135511.144725-1-sergiu.moga@microchip.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.10.0-dev-fc921
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, 25 Aug 2022 06:53:23 +0000, Xu Qiang wrote:
-> Add the missing clk_disable_unprepare() before return
-> from spi_qup_resume() in the error handling case.
-> 
-> 
+Another functionality of FLEXCOM is that of SPI. In order for
+the proper validation of the SPI children nodes through the binding
+to occur, the proper binding for SPI must be referenced.
 
-Applied to
+Signed-off-by: Sergiu Moga <sergiu.moga@microchip.com>
+---
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-Thanks!
+v1 -> v2:
+- use full schema paths
 
-[1/2] spi: qup: add missing clk_disable_unprepare on error in spi_qup_resume()
-      commit: 70034320fdc597b8f58b4a43bb547f17c4c5557a
-[2/2] spi: qup: add missing clk_disable_unprepare on error in spi_qup_pm_resume_runtime()
-      commit: 494a22765ce479c9f8ad181c5d24cffda9f534bb
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+ .../devicetree/bindings/mfd/atmel,sama5d2-flexcom.yaml       | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+diff --git a/Documentation/devicetree/bindings/mfd/atmel,sama5d2-flexcom.yaml b/Documentation/devicetree/bindings/mfd/atmel,sama5d2-flexcom.yaml
+index 568da7cb630c..0db0f2728b65 100644
+--- a/Documentation/devicetree/bindings/mfd/atmel,sama5d2-flexcom.yaml
++++ b/Documentation/devicetree/bindings/mfd/atmel,sama5d2-flexcom.yaml
+@@ -78,10 +78,9 @@ patternProperties:
+       of USART bindings.
+ 
+   "^spi@[0-9a-f]+$":
+-    type: object
++    $ref: /schemas/spi/atmel,at91rm9200-spi.yaml
+     description:
+-      Child node describing SPI. See ../spi/spi_atmel.txt for details
+-      of SPI bindings.
++      Child node describing SPI.
+ 
+   "^i2c@[0-9a-f]+$":
+     $ref: ../i2c/atmel,at91sam-i2c.yaml
+-- 
+2.25.1
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark

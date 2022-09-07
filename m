@@ -2,85 +2,155 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 33E88C54EE9
-	for <linux-spi@archiver.kernel.org>; Wed,  7 Sep 2022 15:12:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 838A6C54EE9
+	for <linux-spi@archiver.kernel.org>; Wed,  7 Sep 2022 16:46:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230433AbiIGPMg (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 7 Sep 2022 11:12:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46130 "EHLO
+        id S229677AbiIGQqp (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 7 Sep 2022 12:46:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230389AbiIGPMO (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 7 Sep 2022 11:12:14 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BCBF67461;
-        Wed,  7 Sep 2022 08:12:13 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 9438FB81AE4;
-        Wed,  7 Sep 2022 15:12:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DB84C433D6;
-        Wed,  7 Sep 2022 15:12:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1662563530;
-        bh=umcLMRkkYompkiF1mSXN5QNbnOas155czyaghChe86o=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=BpyjC8gSENHg/vNSAkTDmazsLWGtiRROoB1+62GLaY8sBYPMGZRUlao+snpzeETK4
-         ja3ZyGaZesjAyGej4OfV3iT26Y+g3caNw44AplGgfnflOrRHBmz50o83ZjyyC5iPts
-         cOluOrz1D6ls+KoY41R83aXElcPiaqWFb3YSWtUhFBLhN+pSErYceMumhdASbUgItA
-         CvymEuFEcIFPOAMs15iYYYkE+DQn0MAAeP6i6rjX7I8qcmXd/1t66YCTSHy/V/7sHa
-         iPSr2RGqn06gYl6Yp/ygq2EF/Zl5GAQZlgfPBwCjSPpIFIM1tka2w6RwUpcXOhaCRJ
-         PG2c+XvQ7RGxw==
-From:   Mark Brown <broonie@kernel.org>
-To:     Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <fabbc87627e5ddc2c913b368ae99386668d8dcfb.1660830866.git.christophe.leroy@csgroup.eu>
-References: <fabbc87627e5ddc2c913b368ae99386668d8dcfb.1660830866.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v3] spi: Add capability to perform some transfer with chipselect off
-Message-Id: <166256352877.169525.10010392957549857688.b4-ty@kernel.org>
-Date:   Wed, 07 Sep 2022 16:12:08 +0100
+        with ESMTP id S229514AbiIGQqm (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 7 Sep 2022 12:46:42 -0400
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 435FC23145;
+        Wed,  7 Sep 2022 09:46:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1662569196; x=1694105196;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=IhpjY4pXNZR+1OqitHXjkeJ8yaTjjGkFJMIQ6pO2qoI=;
+  b=FfgMr2M/db81UhxdlzU/5U29wo/AOH8vnMW5Dd15ij5qWEjrUs/t98Ua
+   LVoSlkN0ucUKsfjskaSYEIzBimXpCDExemSfHj+fCFaCmImkH5d6EC+WS
+   mojfPtPEhrPlukzn30wqqMC30PB4/Ph1tCEy+Ze/xzxWVvNcV1fVANLp9
+   7Pm0P6B8BdUmrT/DyiBSzPLa2cpSDiZWHcCopzbnK/cgPV/3BKyRZDN+4
+   +O0CqamjQRLM1TCYajIjEh9eT+QVBWpVxCLo/fyMvl3oryvV0jz78e3ml
+   Vwh9o9hEB4P0ix7z5xnZfuNM4MIw6Ka+u2Yb1EYKh9Tw9cC7xlUJAhMXl
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10463"; a="295667997"
+X-IronPort-AV: E=Sophos;i="5.93,297,1654585200"; 
+   d="scan'208";a="295667997"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2022 09:46:10 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,297,1654585200"; 
+   d="scan'208";a="790116153"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga005.jf.intel.com with ESMTP; 07 Sep 2022 09:46:03 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 352895E4; Wed,  7 Sep 2022 19:46:12 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-efi@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        devel@acpica.org
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+        Elie Morisse <syniurge@gmail.com>,
+        Nehal Shah <nehal-bakulchandra.shah@amd.com>,
+        Shyam Sundar S K <shyam-sundar.s-k@amd.com>,
+        Khalil Blaiech <kblaiech@nvidia.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Will Deacon <will@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Mark Brown <broonie@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Wolfram Sang <wsa@kernel.org>
+Subject: [PATCH v1 7/8] spi: pxa2xx: Refactor _UID handling to use acpi_dev_uid_to_integer()
+Date:   Wed,  7 Sep 2022 19:46:05 +0300
+Message-Id: <20220907164606.65742-8-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20220907164606.65742-1-andriy.shevchenko@linux.intel.com>
+References: <20220907164606.65742-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.10.0-dev-fc921
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, 18 Aug 2022 15:57:49 +0200, Christophe Leroy wrote:
-> Some components require a few clock cycles with chipselect off before
-> or/and after the data transfer done with CS on.
-> 
-> Typically IDT 801034 QUAD PCM CODEC datasheet states "Note *: CCLK
-> should have one cycle before CS goes low, and two cycles after
-> CS goes high".
-> 
-> [...]
+ACPI utils provide acpi_dev_uid_to_integer() helper to extract _UID as
+an integer. Use it instead of custom approach.
 
-Applied to
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/spi/spi-pxa2xx.c | 34 +++++++++-------------------------
+ 1 file changed, 9 insertions(+), 25 deletions(-)
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 4749dd598ec2..01a513d6c6b0 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1321,30 +1321,6 @@ static void cleanup(struct spi_device *spi)
+ 	kfree(chip);
+ }
+ 
+-#ifdef CONFIG_ACPI
+-
+-static int pxa2xx_spi_get_port_id(struct device *dev)
+-{
+-	struct acpi_device *adev;
+-	unsigned int devid;
+-	int port_id = -1;
+-
+-	adev = ACPI_COMPANION(dev);
+-	if (adev && adev->pnp.unique_id &&
+-	    !kstrtouint(adev->pnp.unique_id, 0, &devid))
+-		port_id = devid;
+-	return port_id;
+-}
+-
+-#else /* !CONFIG_ACPI */
+-
+-static int pxa2xx_spi_get_port_id(struct device *dev)
+-{
+-	return -1;
+-}
+-
+-#endif /* CONFIG_ACPI */
+-
+ static bool pxa2xx_spi_idma_filter(struct dma_chan *chan, void *param)
+ {
+ 	return param == chan->device->dev;
+@@ -1354,12 +1330,15 @@ static struct pxa2xx_spi_controller *
+ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+ {
+ 	struct pxa2xx_spi_controller *pdata;
++	struct device *dev = &pdev->dev;
+ 	struct ssp_device *ssp;
+ 	struct resource *res;
+ 	struct device *parent = pdev->dev.parent;
+ 	u32 value = SSP_UNDEFINED;
+ 	enum pxa_ssp_type type;
+ 	const void *match;
++	int status;
++	u64 uid;
+ 
+ 	/* Always try to read property */
+ 	device_property_read_u32(&pdev->dev, "intel,spi-pxa2xx-type", &value);
+@@ -1402,7 +1381,12 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+ 
+ 	ssp->type = type;
+ 	ssp->dev = &pdev->dev;
+-	ssp->port_id = pxa2xx_spi_get_port_id(&pdev->dev);
++
++	status = acpi_dev_uid_to_integer(ACPI_COMPANION(dev), &uid);
++	if (status)
++		ssp->port_id = -1;
++	else
++		ssp->port_id = uid;
+ 
+ 	pdata->is_slave = device_property_read_bool(&pdev->dev, "spi-slave");
+ 	pdata->num_chipselect = 1;
+-- 
+2.35.1
 
-Thanks!
-
-[1/1] spi: Add capability to perform some transfer with chipselect off
-      commit: 5e0531f6b90ac096fedaf5bd0eae0bb4e5a39da5
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark

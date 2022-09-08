@@ -2,43 +2,43 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CEE0DC38145
-	for <linux-spi@archiver.kernel.org>; Thu,  8 Sep 2022 13:29:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3CAABC6FA8A
+	for <linux-spi@archiver.kernel.org>; Thu,  8 Sep 2022 13:29:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232629AbiIHN3o (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 8 Sep 2022 09:29:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51414 "EHLO
+        id S232637AbiIHN3q (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 8 Sep 2022 09:29:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231243AbiIHN3L (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 8 Sep 2022 09:29:11 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5B71AB1AD;
-        Thu,  8 Sep 2022 06:29:10 -0700 (PDT)
+        with ESMTP id S232563AbiIHN3H (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 8 Sep 2022 09:29:07 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C20D35F7D3;
+        Thu,  8 Sep 2022 06:29:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1662643750; x=1694179750;
+  t=1662643746; x=1694179746;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=8WrWxiQuiUTX6EaggRQCN+4NAW99qANSsfg8ToIRMN0=;
-  b=YeUtuIdP2n6L3Nx23qKLD4utLjzUUcwBq/I9ralgBuoqgFh+CH/hiJLu
-   CxwQxw+9QZ17XrgkOXVIuFSIqmbVvIuvlUhx6gY6wsmHKpqr/IfX/KrsX
-   5VwSv66RrPStgEy/dnqIoQdXxQRO8lXi0KTRPhryMDNTDpj+3wjSrKwzH
-   PKrHhAmV7qkIb5bixLzPiahHAIeQ6lJR0KEa3QeF7D7Z4cFp9ChIfajwX
-   cUsu4TEzzndCSv7zRmJIbIZhMFm1QW+IerQU1hdPwvcmEFmwKTc2MJpln
-   xvY8AB+fiwwlUmUvQPVvvPjbsQwE0JhnAPz0Hdim8Eal6yoE9y7vTZ7xY
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10464"; a="297166486"
+  bh=CiO6PmLujLv+q2QkMd8sXk4rBLMmTRjebquRk+BpmSg=;
+  b=V/eM2VlMyrTw4ag84nc76h5K3Q2+bUaPvD5CZ7OwrawPqz9lrzBYr79Y
+   tt2+BzF+A8eWRNK6Wr48hk5GG+2/apNpqRjYdfVrKhHsg1IBGt/gSLifn
+   J1s2rK+sQgGZ98WZmDqq2JsIivEcGApzkh6ZP9gAlpt3a7+ZyYd+p9Qw5
+   f8x8OX2w62oJ4Rc/VI7mi6LJYs1TZo3AGx4nUUGorFKQkPYJbMRohq1PQ
+   RBkL3HBNEQGfnfxZsp5IencZeOx3KuDK/HJcPZlSwLTcwYYu7PnnDKdur
+   JZBHjcF40Dv7avksHxMXcTjojq8K0NB8I8reLbrK8/2/ccKlZpWtDJRD0
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10463"; a="277553349"
 X-IronPort-AV: E=Sophos;i="5.93,300,1654585200"; 
-   d="scan'208";a="297166486"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2022 06:29:10 -0700
+   d="scan'208";a="277553349"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2022 06:29:04 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.93,300,1654585200"; 
-   d="scan'208";a="943343367"
+   d="scan'208";a="757200157"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga005.fm.intel.com with ESMTP; 08 Sep 2022 06:29:04 -0700
+  by fmsmga001.fm.intel.com with ESMTP; 08 Sep 2022 06:28:56 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id EACED57F; Thu,  8 Sep 2022 16:29:12 +0300 (EEST)
+        id C2D34363; Thu,  8 Sep 2022 16:29:12 +0300 (EEST)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Hans de Goede <hdegoede@redhat.com>,
@@ -64,9 +64,9 @@ Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
         Robert Moore <robert.moore@intel.com>,
         Wolfram Sang <wsa@kernel.org>
-Subject: [PATCH v2 5/8] i2c: mlxbf: Refactor _UID handling to use acpi_dev_uid_to_integer()
-Date:   Thu,  8 Sep 2022 16:29:07 +0300
-Message-Id: <20220908132910.62122-6-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v2 2/8] ACPI: LPSS: Refactor _UID handling to use acpi_dev_uid_to_integer()
+Date:   Thu,  8 Sep 2022 16:29:04 +0300
+Message-Id: <20220908132910.62122-3-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220908132910.62122-1-andriy.shevchenko@linux.intel.com>
 References: <20220908132910.62122-1-andriy.shevchenko@linux.intel.com>
@@ -82,55 +82,57 @@ an integer. Use it instead of custom approach.
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/i2c/busses/i2c-mlxbf.c | 20 ++++++--------------
- 1 file changed, 6 insertions(+), 14 deletions(-)
+ drivers/acpi/acpi_lpss.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-mlxbf.c b/drivers/i2c/busses/i2c-mlxbf.c
-index 8716032f030a..32235c62f3d2 100644
---- a/drivers/i2c/busses/i2c-mlxbf.c
-+++ b/drivers/i2c/busses/i2c-mlxbf.c
-@@ -2229,35 +2229,27 @@ MODULE_DEVICE_TABLE(acpi, mlxbf_i2c_acpi_ids);
- static int mlxbf_i2c_acpi_probe(struct device *dev, struct mlxbf_i2c_priv *priv)
+diff --git a/drivers/acpi/acpi_lpss.c b/drivers/acpi/acpi_lpss.c
+index 7a73528aa9c2..f08ffa75f4a7 100644
+--- a/drivers/acpi/acpi_lpss.c
++++ b/drivers/acpi/acpi_lpss.c
+@@ -167,10 +167,10 @@ static struct pwm_lookup byt_pwm_lookup[] = {
+ 
+ static void byt_pwm_setup(struct lpss_private_data *pdata)
  {
- 	const struct acpi_device_id *aid;
--	struct acpi_device *adev;
--	unsigned long bus_id = 0;
--	const char *uid;
-+	u64 bus_id;
- 	int ret;
+-	struct acpi_device *adev = pdata->adev;
++	u64 uid;
  
- 	if (acpi_disabled)
- 		return -ENOENT;
+ 	/* Only call pwm_add_table for the first PWM controller */
+-	if (!adev->pnp.unique_id || strcmp(adev->pnp.unique_id, "1"))
++	if (acpi_dev_uid_to_integer(pdata->adev, &uid) || uid != 1)
+ 		return;
  
--	adev = ACPI_COMPANION(dev);
--	if (!adev)
--		return -ENXIO;
--
- 	aid = acpi_match_device(mlxbf_i2c_acpi_ids, dev);
- 	if (!aid)
- 		return -ENODEV;
+ 	pwm_add_table(byt_pwm_lookup, ARRAY_SIZE(byt_pwm_lookup));
+@@ -180,14 +180,13 @@ static void byt_pwm_setup(struct lpss_private_data *pdata)
  
- 	priv->chip = (struct mlxbf_i2c_chip_info *)aid->driver_data;
+ static void byt_i2c_setup(struct lpss_private_data *pdata)
+ {
+-	const char *uid_str = acpi_device_uid(pdata->adev);
+ 	acpi_handle handle = pdata->adev->handle;
+ 	unsigned long long shared_host = 0;
+ 	acpi_status status;
+-	long uid = 0;
++	u64 uid;
  
--	uid = acpi_device_uid(adev);
--	if (!uid || !(*uid)) {
-+	ret = acpi_dev_uid_to_integer(ACPI_COMPANION(dev), &bus_id);
-+	if (ret) {
- 		dev_err(dev, "Cannot retrieve UID\n");
--		return -ENODEV;
-+		return ret;
- 	}
+-	/* Expected to always be true, but better safe then sorry */
+-	if (uid_str && !kstrtol(uid_str, 10, &uid) && uid) {
++	/* Expected to always be successfull, but better safe then sorry */
++	if (!acpi_dev_uid_to_integer(pdata->adev, &uid) && uid) {
+ 		/* Detect I2C bus shared with PUNIT and ignore its d3 status */
+ 		status = acpi_evaluate_integer(handle, "_SEM", NULL, &shared_host);
+ 		if (ACPI_SUCCESS(status) && shared_host)
+@@ -211,10 +210,10 @@ static struct pwm_lookup bsw_pwm_lookup[] = {
  
--	ret = kstrtoul(uid, 0, &bus_id);
--	if (!ret)
--		priv->bus = bus_id;
-+	priv->bus = bus_id;
+ static void bsw_pwm_setup(struct lpss_private_data *pdata)
+ {
+-	struct acpi_device *adev = pdata->adev;
++	u64 uid;
  
--	return ret;
-+	return 0;
- }
- #else
- static int mlxbf_i2c_acpi_probe(struct device *dev, struct mlxbf_i2c_priv *priv)
+ 	/* Only call pwm_add_table for the first PWM controller */
+-	if (!adev->pnp.unique_id || strcmp(adev->pnp.unique_id, "1"))
++	if (acpi_dev_uid_to_integer(pdata->adev, &uid) || uid != 1)
+ 		return;
+ 
+ 	pwm_add_table(bsw_pwm_lookup, ARRAY_SIZE(bsw_pwm_lookup));
 -- 
 2.35.1
 

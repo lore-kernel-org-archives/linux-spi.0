@@ -2,43 +2,43 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7AB0FC6FA8A
-	for <linux-spi@archiver.kernel.org>; Thu,  8 Sep 2022 13:29:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F28B9C38145
+	for <linux-spi@archiver.kernel.org>; Thu,  8 Sep 2022 13:29:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232602AbiIHN3k (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 8 Sep 2022 09:29:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58596 "EHLO
+        id S232604AbiIHN3l (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 8 Sep 2022 09:29:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232544AbiIHN3H (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 8 Sep 2022 09:29:07 -0400
+        with ESMTP id S232031AbiIHN3M (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 8 Sep 2022 09:29:12 -0400
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7E6212C4A0;
-        Thu,  8 Sep 2022 06:29:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E03F5F7D4;
+        Thu,  8 Sep 2022 06:29:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1662643745; x=1694179745;
+  t=1662643750; x=1694179750;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=V80BdvPU7ap78HoolUzQor9A2iHpp5rs73DM1e1058s=;
-  b=UM4rIvKu4Op9DzSNQ0BNa2HPZ7Urdr1NuLdbp3wYNhk/cgId9lWDPRr0
-   auCKpvGm7azkU2z3P0t+9qKf9S7DrOe5/O6Q872MUnfk9G92f4Pfqrjfe
-   Px/V+URUVJ74/Hh8+MnPDBa/+oO4H/3hEFsKciaWpUd1VIWXWG6tMEcSy
-   H1JVougd9JPu987tcLlqiGmXYtVNQl7S3zXZ3787LdlqtJFCgwve2VA7W
-   PIzS7j0rd31UAo3k6OdK18zGuRTuMKsgTNbzy32JmXkShHSiEtRFWI8sQ
-   Yw8cnUE82bfvMzBh6gjs1St4GaHFh5ldyXBJRMANQo/C9xNxuf5lHnFH/
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10464"; a="280196135"
+  bh=J12ArvUpT0DBpVB2Z6wl3Lorr8ZN6snQKzGYUIXMmcc=;
+  b=mcgX0P0BTyvUbicb5yvjHjAlztF53LSERNF+CXvo939pYIhEVwQwXLqy
+   5JciiSBQltn3XNZWhatBrDizsVCGNG6yajWg1h/vCdr7B6+MkMSp/ZPDM
+   Y5CBxQFvGB4JtcjuHY+VUPBo5cHP9tuMjrBXGboccR6JIT3wJdDvQjLj0
+   BQ97IQRFyAu6ZoA+2QqpzoHzmJgCdCLJJgXHZWDX+Ju1ooh4hErEcs4ZE
+   Gu5d+i2pKHi8aOz/Lw+TImo+l8N0BkWE6OsR/1a7pSetuo8ht7Jj8sDwD
+   G1X3cjJeTGn9vRzfeylTUS/zDvONiYfvddHAuMEGELJCMFFpPWOUNzYOV
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10464"; a="280196188"
 X-IronPort-AV: E=Sophos;i="5.93,300,1654585200"; 
-   d="scan'208";a="280196135"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2022 06:29:03 -0700
+   d="scan'208";a="280196188"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2022 06:29:10 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.93,300,1654585200"; 
-   d="scan'208";a="683232432"
+   d="scan'208";a="704006402"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga004.fm.intel.com with ESMTP; 08 Sep 2022 06:28:56 -0700
+  by FMSMGA003.fm.intel.com with ESMTP; 08 Sep 2022 06:29:04 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id B2183F7; Thu,  8 Sep 2022 16:29:12 +0300 (EEST)
+        id 055595E4; Thu,  8 Sep 2022 16:29:12 +0300 (EEST)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Hans de Goede <hdegoede@redhat.com>,
@@ -64,9 +64,9 @@ Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
         Robert Moore <robert.moore@intel.com>,
         Wolfram Sang <wsa@kernel.org>
-Subject: [PATCH v2 1/8] ACPI: utils: Add acpi_dev_uid_to_integer() helper to get _UID as integer
-Date:   Thu,  8 Sep 2022 16:29:03 +0300
-Message-Id: <20220908132910.62122-2-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v2 6/8] perf: qcom_l2_pmu: Refactor _UID handling to use acpi_dev_uid_to_integer()
+Date:   Thu,  8 Sep 2022 16:29:08 +0300
+Message-Id: <20220908132910.62122-7-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220908132910.62122-1-andriy.shevchenko@linux.intel.com>
 References: <20220908132910.62122-1-andriy.shevchenko@linux.intel.com>
@@ -76,80 +76,40 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Some users interpret _UID only as integer and for them it's easier to
-have an integer representation of _UID. Add respective helper for that.
+ACPI utils provide acpi_dev_uid_to_integer() helper to extract _UID as
+an integer. Use it instead of custom approach.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/acpi/utils.c    | 24 ++++++++++++++++++++++++
- include/acpi/acpi_bus.h |  1 +
- include/linux/acpi.h    |  5 +++++
- 3 files changed, 30 insertions(+)
+ drivers/perf/qcom_l2_pmu.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/acpi/utils.c b/drivers/acpi/utils.c
-index 4acd6f7d1395..2ea14648a661 100644
---- a/drivers/acpi/utils.c
-+++ b/drivers/acpi/utils.c
-@@ -793,6 +793,30 @@ bool acpi_dev_hid_uid_match(struct acpi_device *adev,
- }
- EXPORT_SYMBOL(acpi_dev_hid_uid_match);
- 
-+/**
-+ * acpi_dev_uid_to_integer - treat ACPI device _UID as integer
-+ * @adev: ACPI device to get _UID from
-+ * @integer: output buffer for integer
-+ *
-+ * Considers _UID as integer and converts it to @integer.
-+ *
-+ * Returns 0 on success, or negative error code otherwise.
-+ */
-+int acpi_dev_uid_to_integer(struct acpi_device *adev, u64 *integer)
-+{
-+	const char *uid;
-+
-+	if (!adev)
-+		return -ENODEV;
-+
-+	uid = acpi_device_uid(adev);
-+	if (!uid)
-+		return -ENODATA;
-+
-+	return kstrtou64(uid, 0, integer);
-+}
-+EXPORT_SYMBOL(acpi_dev_uid_to_integer);
-+
- /**
-  * acpi_dev_found - Detect presence of a given ACPI device in the namespace.
-  * @hid: Hardware ID of the device.
-diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-index 42f76f2c2d49..1804d7a70918 100644
---- a/include/acpi/acpi_bus.h
-+++ b/include/acpi/acpi_bus.h
-@@ -739,6 +739,7 @@ static inline bool acpi_device_can_poweroff(struct acpi_device *adev)
- }
- 
- bool acpi_dev_hid_uid_match(struct acpi_device *adev, const char *hid2, const char *uid2);
-+int acpi_dev_uid_to_integer(struct acpi_device *adev, u64 *integer);
- 
- void acpi_dev_clear_dependencies(struct acpi_device *supplier);
- bool acpi_dev_ready_for_enumeration(const struct acpi_device *device);
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index ed4aa395cc49..619b2b1e4fb4 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -799,6 +799,11 @@ acpi_dev_hid_uid_match(struct acpi_device *adev, const char *hid2, const char *u
- 	return false;
- }
- 
-+static inline int acpi_dev_uid_to_integer(struct acpi_device *adev, u64 *integer)
-+{
-+	return -ENODEV;
-+}
-+
- static inline struct acpi_device *
- acpi_dev_get_first_match_dev(const char *hid, const char *uid, s64 hrv)
+diff --git a/drivers/perf/qcom_l2_pmu.c b/drivers/perf/qcom_l2_pmu.c
+index 30234c261b05..ad4a41e1287f 100644
+--- a/drivers/perf/qcom_l2_pmu.c
++++ b/drivers/perf/qcom_l2_pmu.c
+@@ -840,16 +840,16 @@ static int l2_cache_pmu_probe_cluster(struct device *dev, void *data)
  {
+ 	struct platform_device *pdev = to_platform_device(dev->parent);
+ 	struct platform_device *sdev = to_platform_device(dev);
+-	struct acpi_device *adev = ACPI_COMPANION(dev);
+ 	struct l2cache_pmu *l2cache_pmu = data;
+ 	struct cluster_pmu *cluster;
+-	unsigned long fw_cluster_id;
++	u64 fw_cluster_id;
+ 	int err;
+ 	int irq;
+ 
+-	if (!adev || kstrtoul(adev->pnp.unique_id, 10, &fw_cluster_id) < 0) {
++	err = acpi_dev_uid_to_integer(ACPI_COMPANION(dev), &fw_cluster_id);
++	if (err) {
+ 		dev_err(&pdev->dev, "unable to read ACPI uid\n");
+-		return -ENODEV;
++		return err;
+ 	}
+ 
+ 	cluster = devm_kzalloc(&pdev->dev, sizeof(*cluster), GFP_KERNEL);
 -- 
 2.35.1
 

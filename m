@@ -2,203 +2,366 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 960D2C54EE9
-	for <linux-spi@archiver.kernel.org>; Tue, 13 Sep 2022 09:35:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DE98DC54EE9
+	for <linux-spi@archiver.kernel.org>; Tue, 13 Sep 2022 14:03:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231378AbiIMJfh (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 13 Sep 2022 05:35:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42048 "EHLO
+        id S232369AbiIMODR (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 13 Sep 2022 10:03:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230248AbiIMJfg (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 13 Sep 2022 05:35:36 -0400
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC15717ABF;
-        Tue, 13 Sep 2022 02:35:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1663061733; x=1694597733;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=6ubq+Nbr3qtwMAhkoqmZ0wYKd6J3dRuuusxNhyhXPNs=;
-  b=Hliegv7cy3qomQoJglFbtNr8W+odDsuAkJ/3QvL4HOJW50VtmUuQuK46
-   CDdPetGUUoWJo952Ou4mjoPSwZuPBFwIRk456dKnAbVwTwVjM7Chfkzah
-   oYws+2KdwdnVxeKs7dzBFw4GDl8OTyJNlxz/OX0+KfKCsukqrolNWBB+e
-   G/yit1H5jNUKy5FunRO+R1UZK5UwsjgrPf8PlK1RS5qt40/v8HoJxfWO9
-   qmqMc5z/BJZPkT8X9lJR80s3e5I2ASsdaZ/W2bISSVC8P6yIcRS7lz4sT
-   vVVyKTGC4mI7zR5UjjFX4e0hJSmKcp8finx5duYHyKdMgmdzrmUk59YX4
-   A==;
-X-IronPort-AV: E=Sophos;i="5.93,312,1654585200"; 
-   d="scan'208";a="180264256"
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 13 Sep 2022 02:35:33 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.12; Tue, 13 Sep 2022 02:35:32 -0700
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (10.10.215.89) by
- email.microchip.com (10.10.87.72) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.12 via Frontend
- Transport; Tue, 13 Sep 2022 02:35:32 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=LeOozOhZnhvOBER+ghRl1juh+0VbuE6Y0pB3l6HxABmi3XYMx2yyp+6tIzRhm9gcedUZ3JUvLBRwimUx+0qYqsjyBYnlHpcfrDcFO6aFOl3JzydPZ69vc2pzdyOGgY2bR7ofPtZjDv95bnonU9e/eoQiPOEX/Ej3V4PkCpoV9QKa/e2u3xjeZGh2lbsRJC0E4GycuLM7l8a11/Tnfvo7O59bmV8OPlectwDbq7iHbgPv29caF6ETlsCRs07J/qJN07V75pdSeGpoO6orI8RJLlCjzIS0W5U2kwKegvR+e6Fzdt74/ocKZ4IE6aHBzMonJTFtb1u1FCTW68oC6QF/EA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6ubq+Nbr3qtwMAhkoqmZ0wYKd6J3dRuuusxNhyhXPNs=;
- b=oFkLI/ZPstwHgMcwBTADXmiPmBQi6LSt98guT8K3XUfGPL5js/tRfqOqh7G6kVOOuBc8hljXsVJoilqxGaiX9F5Z+g9BnOWBbtQ1myXu3X7rdL5NJrIRVNZlgs7gU8Z4CLoKSMD98SCSK8qMoqSlFP4e6LswJNm0hEyO5EetbCt6NSMR8wpCUtjjpOjMAK1i9G3pGSM1FpsfZ8GqTCcoazRSiaxH9+lEsK8HhQjBleULzEW26Q1BuITM7AOcAyk0r71de0+FUroR4x65i0WfULBPk5nbz15Fwj2sbb4MbJL346UfSi4NkfIskFXhJvA8dh7ZKTCKcvYAEL7pJT00LA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microchip.com; dmarc=pass action=none
- header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
+        with ESMTP id S231846AbiIMODQ (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 13 Sep 2022 10:03:16 -0400
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0830621255
+        for <linux-spi@vger.kernel.org>; Tue, 13 Sep 2022 07:03:14 -0700 (PDT)
+Received: by mail-wr1-x429.google.com with SMTP id bj14so20927873wrb.12
+        for <linux-spi@vger.kernel.org>; Tue, 13 Sep 2022 07:03:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=microchiptechnology.onmicrosoft.com;
- s=selector2-microchiptechnology-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6ubq+Nbr3qtwMAhkoqmZ0wYKd6J3dRuuusxNhyhXPNs=;
- b=co14MTtj6IthUW0QrGPnpAJ/XrDNovj4nKoOC8uUtudT47XjM1rDKrYQj90WgGXUTpdtiEhyOurSTZT/XztnoOZBnbG4zNnh6/NhhA+wSlZB0X+SxSNbS0O6bwT27kUL2C7/CqF65/AVLJn5V1GszSQDbqTvVUKsCCIHGDK3rrk=
-Received: from BYAPR11MB2758.namprd11.prod.outlook.com (2603:10b6:a02:c9::11)
- by MW4PR11MB5871.namprd11.prod.outlook.com (2603:10b6:303:188::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5612.22; Tue, 13 Sep
- 2022 09:35:28 +0000
-Received: from BYAPR11MB2758.namprd11.prod.outlook.com
- ([fe80::e8ff:82ac:b76d:c61c]) by BYAPR11MB2758.namprd11.prod.outlook.com
- ([fe80::e8ff:82ac:b76d:c61c%4]) with mapi id 15.20.5612.022; Tue, 13 Sep 2022
- 09:35:28 +0000
-From:   <Sergiu.Moga@microchip.com>
-To:     <krzysztof.kozlowski@linaro.org>, <robh@kernel.org>
-CC:     <lee@kernel.org>, <krzysztof.kozlowski+dt@linaro.org>,
-        <Nicolas.Ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
-        <Claudiu.Beznea@microchip.com>, <richard.genoud@gmail.com>,
-        <radu_nicolae.pirea@upb.ro>, <gregkh@linuxfoundation.org>,
-        <broonie@kernel.org>, <mturquette@baylibre.com>,
-        <sboyd@kernel.org>, <jirislaby@kernel.org>, <admin@hifiphile.com>,
-        <Kavyasree.Kotagiri@microchip.com>, <Tudor.Ambarus@microchip.com>,
-        <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
-        <linux-serial@vger.kernel.org>, <linux-clk@vger.kernel.org>
-Subject: Re: [PATCH v2 06/13] dt-bindings: serial: atmel,at91-usart: Add
- SAM9260 compatibles to SAM9x60
-Thread-Topic: [PATCH v2 06/13] dt-bindings: serial: atmel,at91-usart: Add
- SAM9260 compatibles to SAM9x60
-Thread-Index: AQHYwfjCQbG755VmlEGUqK2TrhMH7a3VeaSAgAAuKICAAK1+AIAFHfCAgAAyC4CAACijAIABTCEAgAAF4YCAAAMZAIAAAVuA
-Date:   Tue, 13 Sep 2022 09:35:27 +0000
-Message-ID: <bf1d7b3e-c542-fbe1-d904-e11f1d1d5ec2@microchip.com>
-References: <20220906135511.144725-1-sergiu.moga@microchip.com>
- <20220906135511.144725-7-sergiu.moga@microchip.com>
- <9aa29d74-b1fc-d00e-dee4-57f277a366ab@linaro.org>
- <c30cc112-0fb8-01e6-1bb8-eed7db0b9049@microchip.com>
- <20220909013644.GA3731620-robh@kernel.org>
- <b6b044f6-de87-e85b-0b51-e957b90622ab@microchip.com>
- <aa6d8c7d-1723-7674-2142-a5aafe30e570@linaro.org>
- <77d38e3f-6d8c-dbb1-2e66-c768d95b5e35@microchip.com>
- <5f8ca612-5a89-db3a-42f3-a0613c192a87@linaro.org>
- <888b8ab9-f8cb-2e1f-465c-3cb97187fce0@microchip.com>
- <f9e03913-b3dd-c82e-8c63-d912c0bbf443@linaro.org>
-In-Reply-To: <f9e03913-b3dd-c82e-8c63-d912c0bbf443@linaro.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microchip.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BYAPR11MB2758:EE_|MW4PR11MB5871:EE_
-x-ms-office365-filtering-correlation-id: 3d3e9886-25aa-4525-7421-08da956b4b10
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 8iNt661UGAwEpBAqTSxAAHjUdwwgDKIkz95a4wYNcKSLXK5/X8KOXDDLi5mF9Ke0iFlnMs37CrQ9WZseKqPhuYqCTjOJgBut4urrVZCinwosJLXHDEsOsnjze2SaDxQ7oHml31T83/IONNRiqLt3ZAIuC6kJpOB/esS2AXKhG5dBnFXOHhvasghVASbpyRqg3uJLutN8nPNZ1yXlTuLTTiCOZAbHezRm4XSpipjGcII7SpfH5at7kMJbVvpUgNbtYdbIrExKFjel4QDTwDch4b4/As2OxFVh17KRVkgCW/LxkF+qJBEXfmurTLw+wAaWWV8BeOi901xaPlgDup41ZdE+pyLWGMUG6awBwSO3Nw8HjBdlcIlsYbR0Yn9BVDBAXipsnwJ8DSVD4tI+tm19dW2nc3v5dOSMIEgI9K2bpVpwbiPR8V8BkFzJr8aQNXzr3aNV3Ja73zBgFppAhXJoDnl/J4Noe0+OImLgq9L99aH2U4heEwKqDlosYwfhBq9+5NCX568WbuDRWJOWcu9AjrYkplDXWGMK8zVWWWfJIZWXq735ky2pMYrIu+qyDh8nWZBb+S+BSf8Npl7HaSBPFKrqugFAMcdRH4DamDr/nDG8gXKMOX+A3uRNbm7/pLxvh8Id0CalZUDjN1sf3bEBTijJjyhtQf44BmVt7rrsZ2E/tZswRx5zkugdJRgfETtfZwU2AznKPWazt9S9eeEi+WnJcveSpUrwHxgCTapbZnUtZlyvNTuiY0RtPtiXVpsyEFUiDIaoITa48YjPFA2qwCfmvBOHO5U+DR97BjX5i14=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB2758.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(376002)(366004)(136003)(346002)(39860400002)(396003)(451199015)(4326008)(31686004)(71200400001)(122000001)(478600001)(6486002)(38100700002)(8936002)(5660300002)(6512007)(66476007)(186003)(66946007)(64756008)(26005)(66556008)(2616005)(110136005)(6506007)(7416002)(76116006)(38070700005)(53546011)(41300700001)(86362001)(31696002)(83380400001)(36756003)(8676002)(66446008)(91956017)(54906003)(2906002)(316002)(45980500001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?RnhZVnlZRk5UeUZDSm1JTmxXRFZsUEtkNnR1Z3pnSm16QnJocE9sVFF6VndU?=
- =?utf-8?B?QTlDWlE2Mlk4ZXR6bFlzMW96V2JKd1ByY2tFWld0K29iQ3pNSElSTlJpbG9r?=
- =?utf-8?B?U1JFblBhSFpKVXQ5cTc5S3l2bC8zelZldzhsaWpTSXRabDlOcGorWkVndU9H?=
- =?utf-8?B?Y3BxNk9TZ0NzMEVxZDlnejROaUNqczNiTXlEa29CRDR5NmpyN2x0aTUva3Ey?=
- =?utf-8?B?RFQxTk9QQlNEN0NuOWRUOE5QQlVVZG1pN2IycVBDRkZMcjhYNTFhVEJ2RjdJ?=
- =?utf-8?B?MWJ3WXR3L2l4ZHNPZE0zVWNEb1BTQlpVa3FCaXRFYmlST2NBM0xzVXd4Z0Ni?=
- =?utf-8?B?MHRGVEJWaG5rdU1NbVRvK0NEYnlhczgvMVltdFlIVTA5U0M1bnFEWDY3amRH?=
- =?utf-8?B?ZUFzRUl5b0NMS3Btams1Q29vazJnR0hadkVOQzZUZmxibWM5Mm5sdjhRaVdz?=
- =?utf-8?B?YzBMY3Q4eXl3cFpwNGpUd3lOcWVsWjl3Rlc3SHk5cUMwVzNGSXpDN3JXWlRy?=
- =?utf-8?B?OFozTUJWMVZSSkhXT3dLa2szR3kzcXpQTk9EY2c0TXhHaXE3VmE5aFkvSnJJ?=
- =?utf-8?B?bThUeFZ0VGh5Nm9rbDkzekx2cFQraDBvZ05lOUZYUjh2S1dhSUtVSGJoZ0xp?=
- =?utf-8?B?ZElkUVNDK3RXVnpWeXRSZEZzaGwrNStnVnBDRnd4OGU4c0RFS0NWQjV0K244?=
- =?utf-8?B?eTR1ZzNEUnN3Q2VzdlZUcGE0Zm1WZU5NRWdqaG1WSGttQldrdFpJRDFFWDd1?=
- =?utf-8?B?WXlJNHVtdjZqR29vQVF5cWJnOHlaVHR0Rmg4S2lHMG1vYjVTWmJZR2VwL1pT?=
- =?utf-8?B?cXlDd2ppTFNINEszeG1ZSWN6RzllVWwyYjFtQ0V3anhtK3dUZXFyTUFPQnR5?=
- =?utf-8?B?anZjcGZoNW1LY09pbFRBVVh2UXdOSnF1WFhwYm01MjBEVGpQcG1rK1B5OC8z?=
- =?utf-8?B?Njg3QU1iUUJMNlVyZEFSUmNITkpKQ0k0WTV6NnZEaGFac2U3d0pHeE94UHQv?=
- =?utf-8?B?MThFWmhJVkZsZ2ZXdXlPL2hNaHVzbVREWE9NTE1Fa3F0ZTVzS25ZaE5keFhW?=
- =?utf-8?B?ZmFRM0U4ZHRaQWhjUjZmejd6eWZ1Wm52eGpLb09KKy96SXdNRUgzZkFaNnJq?=
- =?utf-8?B?Q2F3RzZXWnVVODVJZjVkTmRWWE9oNGk2TkV5YkVBVTRDTVlkSXhDUHFPTldu?=
- =?utf-8?B?OXFsSjUyZjhJMm4ycWdZNkJjOENOc3VYZmsrdE9qUGJZVktvb3RoOTZYcWhT?=
- =?utf-8?B?SGRoY21POU1Va0lJNS9DTktDRDdoV3hzSzZBNW5CbG9iYzZ4UnhXaGVQWENF?=
- =?utf-8?B?blNVZnQzSHFJdkZEcHVNamRJSC82Q1FTUHVjQ21Ed2tmM0Y2dkhyMHB2dlpW?=
- =?utf-8?B?aFdBRFJucGhURTB6U2c1dUh3d3JFVE16TUYrOWlZUllUMVlhcFNoQThzTXdD?=
- =?utf-8?B?Mm91Nk1xdStzd1kxVjVWVTlNZEF0a05QWkNBU1k1Q1lnNkJCL3FaOWRXWDNm?=
- =?utf-8?B?VVdhdWw3Y1hxUTRXMTB1WFVSVTFRVFNrNVJxSURtQlpVdytmY05oVU5YbXdR?=
- =?utf-8?B?c0FBVGduU0dUcXVNbWlNZW9tbFZ3ZVhOUzFOK05TOTI1T2dxVHB3RmgvOEpo?=
- =?utf-8?B?SDY2clZKaEs3dFc1RHhtUm9kbnE5cEJnZFFtQldJSUJpcDdUYUc5TTZ0QVZD?=
- =?utf-8?B?cEhPV1htMFkvdzVjcFNoNlRDQ3lEN3JBbWRMdFdUUmhEc2NOT2VKTGhqYzJk?=
- =?utf-8?B?aFBYZmkxZ21XZnpWcHhJWERLOUlyMWVILzRiVmgxc3hTcXpDMG5QbmNPZmtH?=
- =?utf-8?B?Umt4RlVrdTlESThEbXIyVE9hMUVnQlBIY1poTDZKTlFiZVk0eXFid29ZSGpp?=
- =?utf-8?B?V1N6UHViNlpNMUI0MCtpTnZlMjlUckJxMDNhZWRkMHpmNnRlZ0ROdHdWRm5p?=
- =?utf-8?B?VDZWanVJdnY5S3l6eld3N3Azb01ocTRQNWNDbUtQbVpGeU5CcHVLN211b0tu?=
- =?utf-8?B?aHVhbUJyMjFnMi8wdi9PWEFxSjJ1MFl0OERlT3NrK0d5Y1d0SFJvV1BFWWhT?=
- =?utf-8?B?dVlZaDJISDI5VmpBR0tKVVJPU3BGK2JhNi9kbmJqWUJndUo4MHF6L1FlbHNi?=
- =?utf-8?Q?UZ2L8/hpEazmkjeXYyJkRupeA?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <1E0DE51AB51E024085C466D33B77780C@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date;
+        bh=Rmo2DUWc4Lh3Gy5bmxFzl72HuBNP/DuW7TZqaK4xQ8k=;
+        b=fA9w6zKYwY0VcRTRjWEQ+CNhMGMCS4sZV/957ouGsp4YVIvGjK19wbSWHwX1O5c4eq
+         JeP9MZqg+4LLxvK2jK84FfXCy64sQrKUnQ611eV+UqhwWqnq4d7ILZ+RFrfDaaz27a2j
+         Zrtc5MeNxGXJxDFZ6bJQZX7WFz8WQln9SitCQje3USRLMAaamE4x5914mnBO8YzdwFCR
+         4retLPv422/RcE5nXjeqzSh13+2AsOvOmcmHmOOkI8QoDDPneXquqGOIfC8sNmtdqntN
+         ZnxnPVe6o0n1rtmmUMIFUmU4ucAD654AtqACFSeGP6QxnDQKtn82OT6jSf+Oz0F9iu7n
+         wNqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date;
+        bh=Rmo2DUWc4Lh3Gy5bmxFzl72HuBNP/DuW7TZqaK4xQ8k=;
+        b=xRCxhAJjvQuXySoqmyMNEYdkoxyR9/vMsd9VcgXBC7QJf9sVWryF7ggEwoa1rCeeGI
+         MsqunGV30mfXJ2FzgqFH4KZGwkudKQ1NTHBAfo2MKravUONQ818eyc0yZbxJE6JPL5fP
+         XCqp4k9/XvJr3SQZY1temWqWKRd4tdSXL/53t12lB1y0zkOfd1DT4a8kmnNCbsg9RDpS
+         c2ftDaCPEwNisuMq0P6US7CWex3xTYK7iARL0EEvNaFhhhLnz6pss2m4uDi9B6DCnEkO
+         lDypHAWGbL2uo1eAYwJbWnypOOSsqapz3D35eDgmYRvyIPV1dzG9DGlgAQQVf6nba2Gp
+         1VQg==
+X-Gm-Message-State: ACgBeo0cpUidZCXsPN1wEHxKNtTjg1yx7gG7l7KsY0FEluo4921rsGjV
+        Pu9CcpkLxhf1nYNpG8ROzAyo1+RmcX1gYF14
+X-Google-Smtp-Source: AA6agR4dgCHXF74BDE5tzMI8vhXR7uAEUk3K3+Va/5xx/tDH2KLk4Ut7nDBUEBRHxDpxjcqaSqtaRg==
+X-Received: by 2002:adf:ed44:0:b0:22a:a72d:5d62 with SMTP id u4-20020adfed44000000b0022aa72d5d62mr5173195wro.431.1663077792369;
+        Tue, 13 Sep 2022 07:03:12 -0700 (PDT)
+Received: from localhost.localdomain ([2a01:e0a:982:cbb0:44d0:d717:91e0:6f26])
+        by smtp.gmail.com with ESMTPSA id t6-20020a5d6906000000b00225239d9265sm10549187wru.74.2022.09.13.07.03.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Sep 2022 07:03:11 -0700 (PDT)
+From:   Neil Armstrong <narmstrong@baylibre.com>
+To:     broonie@kernel.org
+Cc:     linux-spi@vger.kernel.org, linux-amlogic@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Neil Armstrong <narmstrong@baylibre.com>
+Subject: [PATCH] spi: meson-spicc: add support for DMA
+Date:   Tue, 13 Sep 2022 16:03:03 +0200
+Message-Id: <20220913140303.437994-1-narmstrong@baylibre.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB2758.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3d3e9886-25aa-4525-7421-08da956b4b10
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Sep 2022 09:35:27.9286
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: cxWwZPGVbyjZvGG2sh8UahuhUnv8xxQJah/j067zbTkcPngBs59lQEjCIa1XhzTSnTEp7sPK1qS5eqOGsQxQ8qnEQVSAOFNAiO39nMOLsDQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB5871
+X-Developer-Signature: v=1; a=openpgp-sha256; l=9644; h=from:subject; bh=TzjQXyxpjiqPN07WfDoB2CQFFRLNcZO6OJUnSR6bo8A=; b=owEBbQKS/ZANAwAKAXfc29rIyEnRAcsmYgBjII2B1RbVPRtjMS5JONJx1H4stj6b2TWuYfH1KLH3 /gyjV7mJAjMEAAEKAB0WIQQ9U8YmyFYF/h30LIt33NvayMhJ0QUCYyCNgQAKCRB33NvayMhJ0RhAD/ 9bm9taKrn9TR7revO/UTnxWKp1BY4VhgFOqFekIgylWij3SvkOLRX6uHljWiZBEy5lu/OvMpg8e/ZH GcjnUAeCkHJeiyuxTPIY3QVeA2Xd+LwRbEWQ6ipi1K8EPdxwWR5BlAHLxFnLdHPbEzR8gQcPod+n0I s/ZYK8f3tSaplJG7V1r+9oFKXWe+tgQ5PAEuoTr9HSfyNO+Ic2bBfKJMn/hvnVwKbcYgq/r1ejq2vx udHSJhqx/eLjrkojCqO+uwya57A5zGdGH5A5+lkfkibOB8k871OQC/qaZmV28GM3efWxpIzcmgfTFM HPIOqkNVnHCxPEeqtis7ZMZkNKgZAxs3bejgkwZBFQM6cR72FOgiBtLAzqo3NExqZSP7MXait0t4Co qG1zc6e3Tld48IMLwtFTm3ymQYHXCUqEy2g2pEbedVKUW8rCcl3bq41YuDivG9OZBFVkp+/rjh/Y4x KDoK9O0mDme5mOFULBd7WIgnrXC1oZLy9NpwgLi11Rq7+0csFZIlvuMsNknQsr/Fy5InW74oZsKH/t EJ+uO3xZjVe3Eq2HCxtCQbwZtns3kX/F7hUZtC7KWdOVQENbFYkoRpUj16uQ+B8AnS0Gfegvo0ujh0 /wEE467AZ5fIq2YyoWCXhlBzlTWLzVbN5jyHfBtuSdIY/FjFIUN6FwZJbxhQ==
+X-Developer-Key: i=narmstrong@baylibre.com; a=openpgp; fpr=89EC3D058446217450F22848169AB7B1A4CFF8AE
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-T24gMTMuMDkuMjAyMiAxMjozMCwgS3J6eXN6dG9mIEtvemxvd3NraSB3cm90ZToNCj4gT24gMTMv
-MDkvMjAyMiAxMToxOSwgU2VyZ2l1Lk1vZ2FAbWljcm9jaGlwLmNvbSB3cm90ZToNCj4+Pg0KPj4+
-IExldCBtZSByZXBocmFzZSBpdDoNCj4+Pg0KPj4+IFdoYXQgeW91ciBjb21taXQgaXMgZG9pbmcg
-aXMgcmVxdWlyaW5nIGFkZGl0aW9uYWwgZmFsbGJhY2sgY29tcGF0aWJsZXMuDQo+Pj4gVGhlcmVm
-b3JlIHRoZSBjb21taXQgbXNnIHNob3VsZCBhbnN3ZXIgLSB3aHkgZG8geW91IHJlcXVpcmUgYWRk
-aXRpb25hbA0KPj4+IGZhbGxiYWNrIGNvbXBhdGlibGVzPw0KPj4+DQo+Pg0KPj4NCj4+IFRoZSBh
-ZGRpdGlvbmFsIGZhbGxiYWNrIGNvbXBhdGlibGVzIGFyZSByZXF1aXJlZCBiZWNhdXNlIHRoZSBk
-cml2ZXIgaW4NCj4+IHF1ZXN0aW9uIG9ubHkga25vd3MgYWJvdXQgdGhlIGF0bWVsLGF0OTFzYW05
-MjYwLXVzYXJ0IGNvbXBhdGlibGUuDQo+PiBGdXJ0aGVybW9yZSwgaXQgaXMgYWxzbyBhIGJldHRl
-ciByZXByZXNlbnRhdGlvbiBvZiB0aGUgZmFjdCB0aGF0IHRoZQ0KPj4gc2VyaWFsIElQIG9mIDl4
-NjAgaXMgYW4gaW1wcm92ZW1lbnQgb3ZlciB0aGUgc2VyaWFsIElQIG9mIDkyNjAgKGl0DQo+PiBj
-b250YWlucyBtb3JlIGhhcmR3YXJlIGZlYXR1cmVzIG5vdCB5ZXQgaW1wbGVtZW50ZWQgaW4gdGhl
-IGRyaXZlcikuDQo+Pg0KPj4NCj4+PiBJbmNyZW1lbnRhbCBjaGFyYWN0ZXJpc3RpY3Mgc291bmQg
-dG8gbWUgb3B0aW9uYWwuIEkgY2FuIGluY3JlbWVudA0KPj4+IHNhbTl4NjAgd2l0aCBzb21ldGhp
-bmcgb3IgSSBjYW4gc2tpcCBpdC4gQnV0IHlvdSBhcmUgbm90IGRvaW5nIGl0Li4uDQo+Pj4gc2Ft
-OXg2MCB3YXMgYWxyZWFkeSB0aGVyZSBhbmQgbm93IHlvdSByZXF1aXJlIGEgZmFsbGJhY2suDQo+
-Pj4NCj4+PiBCZXN0IHJlZ2FyZHMsDQo+Pj4gS3J6eXN6dG9mDQo+Pg0KPj4gU28sIHdoYXQgaXMg
-eW91ciBvcGluaW9uIG9uIHRoZSBmb2xsb3dpbmcgY29tbWl0IG1lc3NhZ2U6DQo+Pg0KPj4gIkZp
-eCBzYW05eDYwIGNvbXBhdGlibGUgbGlzdCBieSBhZGRpbmcgdGhlIHNhbTkyNjAgY29tcGF0aWJs
-ZXMgYXMNCj4+IGZhbGxiYWNrLCBzaW5jZSB0aGUgYXRtZWxfc2VyaWFsIGRyaXZlciBvbmx5IGtu
-b3dzIG9mIHRoZSBsYXR0ZXIncw0KPj4gY29tcGF0aWJsZS4gVGhlIGF0bWVsX3NlcmlhbCBkcml2
-ZXIgb25seSBoYXMga25vd2xlZGdlIG9mIHRoZSBzYW05MjYwDQo+PiBjb21wYXRpYmxlIGJlY2F1
-c2UgaXQgZG9lcyBub3QgaGF2ZSB0aGUgc2FtOXg2MCdzIHNlcmlhbCBJUCBzcGVjaWZpYw0KPj4g
-ZmVhdHVyZXMgaW1wbGVtZW50ZWQgeWV0IGFuZCBhZGRpbmcgYW4gZW1wdHkgY29tcGF0aWJsZSB3
-aXRob3V0IGFkZGluZw0KPj4gc3VwcG9ydCBzcGVjaWZpYyB0byB0aGF0IGNvbXBhdGlibGUgd291
-bGQgYmUgbWlzbGVhZGluZy4gVGh1cyBwcmVmZXIgdGhlDQo+PiBmYWxsYmFjayBtZWNoYW5pc20g
-aW4gdGhlIGRldHJpbWVudCBvZiBhZGRpbmcgYW4gZW1wdHkgY29tcGF0aWJsZSBpbiB0aGUNCj4+
-IGRyaXZlci4iDQo+IA0KPiBJdCdzIGZpbmUuIEFsc28gY291bGQgd29yazoNCj4gDQo+ICJSZXF1
-aXJlIHNhbTkyNjAgZmFsbGJhY2sgY29tcGF0aWJsZSBmb3Igc2FtOXg2MCwgYmVjYXVzZSBzYW05
-eDYwIGlzDQo+IGZ1bGx5IGNvbXBhdGlibGUgd2l0aCBzYW05MjYwIGFuZCBMaW51eCBkcml2ZXIg
-cmVxdWlyZXMgdGhlIGxhdHRlci4iDQo+IA0KDQoNClRoaXMgdmVyc2lvbiBsb29rcyBiZXR0ZXIg
-aW5kZWVkLiBTdW1zIGl0IGFsbCB1cCBhbmQgaXMgb25seSAyIGxpbmVzIDopLiANClRoYW5rIHlv
-dSB2ZXJ5IG11Y2ggZm9yIHRoZSBzdWdnZXN0aW9uIGl0IGlzIGdyZWF0bHkgYXBwZWNpYXRlZC4N
-Cg0KDQo+IElmIGl0IGZpeGVzIGFueSBvYnNlcnZhYmxlIGlzc3VlIGxpa2UgbGFjayBvZiBkcml2
-ZXIgYmluZGluZyB0byBEVFMsIHlvdQ0KPiBjYW4gYWxzbyBtZW50aW9uIHRoYXQuDQo+IA0KPiBC
-ZXN0IHJlZ2FyZHMsDQo+IEtyenlzenRvZg0KDQoNClRoYW5rcywNCglTZXJnaXUNCg==
+The Amlogic SPICC controller has an embedded DMA but suffers from some
+drawbacks that makes it complex to use:
+- the DMA can only load FIFO at each multiple of 8 bytes, thus only 64 bits
+  per words transfers would work as expected.
+- the DMA loads the FIFO in little-endian, producing little-endian bus output,
+  and it doesn't seem this can be changed
+
+Nevertheless it's always good to have a DMA accelerated SPI transfer mode.
+
+Signed-off-by: Neil Armstrong <narmstrong@baylibre.com>
+---
+ drivers/spi/spi-meson-spicc.c | 197 +++++++++++++++++++++++++++++++---
+ 1 file changed, 181 insertions(+), 16 deletions(-)
+
+diff --git a/drivers/spi/spi-meson-spicc.c b/drivers/spi/spi-meson-spicc.c
+index 6974a1c947aa..5efd5396020d 100644
+--- a/drivers/spi/spi-meson-spicc.c
++++ b/drivers/spi/spi-meson-spicc.c
+@@ -11,6 +11,7 @@
+ #include <linux/clk.h>
+ #include <linux/clk-provider.h>
+ #include <linux/device.h>
++#include <linux/dma-mapping.h>
+ #include <linux/io.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+@@ -33,6 +34,11 @@
+  * - CS management is dumb, and goes UP between every burst, so is really a
+  *   "Data Valid" signal than a Chip Select, GPIO link should be used instead
+  *   to have a CS go down over the full transfer
++ * DMA support:
++ * - the DMA can only load FIFO at each multiple of 8 bytes, thus only 64 bits
++ *   per words transfers would work as expected.
++ * - the DMA loads the FIFO in little-endian, producing little-endian bus output,
++ *   and it doesn't seem this can be changed
+  */
+ 
+ #define SPICC_MAX_BURST	128
+@@ -128,6 +134,14 @@
+ 
+ #define SPICC_DWADDR	0x24	/* Write Address of DMA */
+ 
++#define SPICC_LD_CNTL0	0x28
++#define DMA_READ_COUNTER_EN		BIT(4)
++#define DMA_WRITE_COUNTER_EN		BIT(5)
++
++#define SPICC_LD_CNTL1	0x2c
++#define DMA_READ_COUNTER		GENMASK(15, 0)
++#define DMA_WRITE_COUNTER		GENMASK(31, 16)
++
+ #define SPICC_ENH_CTL0	0x38	/* Enhanced Feature */
+ #define SPICC_ENH_CLK_CS_DELAY_MASK	GENMASK(15, 0)
+ #define SPICC_ENH_DATARATE_MASK		GENMASK(23, 16)
+@@ -158,6 +172,8 @@ struct meson_spicc_device {
+ 	struct clk			*pclk;
+ 	struct clk_divider		pow2_div;
+ 	struct clk			*clk;
++	bool				using_dma;
++	bool				is_dma_mapped;
+ 	struct spi_message		*message;
+ 	struct spi_transfer		*xfer;
+ 	const struct meson_spicc_data	*data;
+@@ -171,6 +187,96 @@ struct meson_spicc_device {
+ 
+ #define pow2_clk_to_spicc(_div) container_of(_div, struct meson_spicc_device, pow2_div)
+ 
++static int meson_spicc_dma_map(struct meson_spicc_device *spicc,
++			       struct spi_transfer *t)
++{
++	struct device *dev = spicc->master->dev.parent;
++
++	if (t->tx_buf) {
++		t->tx_dma = dma_map_single(dev, (void *)t->tx_buf, t->len,
++					   DMA_TO_DEVICE);
++		if (dma_mapping_error(dev, t->tx_dma)) {
++			dev_err(dev, "tx_dma map failed\n");
++			return -ENOMEM;
++		}
++	}
++
++	if (t->rx_buf) {
++		t->rx_dma = dma_map_single(dev, t->rx_buf, t->len,
++					   DMA_FROM_DEVICE);
++		if (dma_mapping_error(dev, t->rx_dma)) {
++			if (t->tx_buf)
++				dma_unmap_single(dev, t->tx_dma, t->len,
++						 DMA_TO_DEVICE);
++			dev_err(dev, "rx_dma map failed\n");
++			return -ENOMEM;
++		}
++	}
++
++	return 0;
++}
++
++static void meson_spicc_dma_unmap(struct meson_spicc_device *spicc,
++				  struct spi_transfer *t)
++{
++	struct device *dev = spicc->master->dev.parent;
++
++	if (t->tx_buf)
++		dma_unmap_single(dev, t->tx_dma, t->len, DMA_TO_DEVICE);
++	if (t->rx_buf)
++		dma_unmap_single(dev, t->rx_dma, t->len, DMA_FROM_DEVICE);
++}
++
++static void meson_spicc_setup_dma_burst(struct meson_spicc_device *spicc)
++{
++	unsigned int words;
++	unsigned int count_en = 0;
++	unsigned int txfifo_thres = 0;
++	unsigned int read_req = 1;
++	unsigned int rxfifo_thres = 31;
++	unsigned int write_req = 1;
++	unsigned int ld_ctr1 = 0;
++
++	words = min_t(unsigned int,
++		      spicc->xfer_remain / spicc->bytes_per_word,
++		      spicc->data->fifo_size);
++
++	writel_bits_relaxed(SPICC_BURSTLENGTH_MASK,
++			FIELD_PREP(SPICC_BURSTLENGTH_MASK,
++				words - 1),
++			spicc->base + SPICC_CONREG);
++
++	/* Setup Xfer variables */
++	spicc->xfer_remain -= words * spicc->bytes_per_word;
++
++	if (spicc->tx_buf) {
++		count_en |= DMA_WRITE_COUNTER_EN;
++		txfifo_thres = spicc->bytes_per_word - 1;
++		write_req = words - 1;
++		ld_ctr1 |= FIELD_PREP(DMA_WRITE_COUNTER, 1);
++	}
++
++	if (spicc->rx_buf) {
++		count_en |= DMA_READ_COUNTER_EN;
++		rxfifo_thres = words - 1;
++		read_req = words - 1;
++		ld_ctr1 |= FIELD_PREP(DMA_READ_COUNTER, 1);
++	}
++
++	/* Enable DMA write/read counter */
++	writel_relaxed(count_en, spicc->base + SPICC_LD_CNTL0);
++
++	/* Setup burst length */
++	writel_relaxed(ld_ctr1, spicc->base + SPICC_LD_CNTL1);
++
++	writel_relaxed(SPICC_DMA_ENABLE | SPICC_DMA_URGENT |
++		       FIELD_PREP(SPICC_TXFIFO_THRESHOLD_MASK, txfifo_thres) |
++		       FIELD_PREP(SPICC_READ_BURST_MASK, read_req) |
++		       FIELD_PREP(SPICC_RXFIFO_THRESHOLD_MASK, rxfifo_thres) |
++		       FIELD_PREP(SPICC_WRITE_BURST_MASK, write_req),
++		       spicc->base + SPICC_DMAREG);
++}
++
+ static void meson_spicc_oen_enable(struct meson_spicc_device *spicc)
+ {
+ 	u32 conf;
+@@ -273,25 +379,52 @@ static irqreturn_t meson_spicc_irq(int irq, void *data)
+ {
+ 	struct meson_spicc_device *spicc = (void *) data;
+ 
+-	writel_bits_relaxed(SPICC_TC, SPICC_TC, spicc->base + SPICC_STATREG);
++	/* Sometimes, TC gets triggered while the RX fifo isn't fully flushed */
++	if (spicc->using_dma) {
++		unsigned int rxfifo_count = FIELD_GET(SPICC_RXCNT_MASK,
++				readl_relaxed(spicc->base + SPICC_TESTREG));
++
++		if (rxfifo_count)
++			return IRQ_HANDLED;
++	}
++
++	writel_relaxed(SPICC_TC, spicc->base + SPICC_STATREG);
+ 
+ 	/* Empty RX FIFO */
+-	meson_spicc_rx(spicc);
++	if (!spicc->using_dma)
++		meson_spicc_rx(spicc);
+ 
+ 	if (!spicc->xfer_remain) {
+ 		/* Disable all IRQs */
+ 		writel(0, spicc->base + SPICC_INTREG);
+ 
++		if (spicc->using_dma) {
++			/* Disable DMA transfer */
++			spicc->using_dma = 0;
++			writel_relaxed(0, spicc->base + SPICC_DMAREG);
++			writel_relaxed(0, spicc->base + SPICC_LD_CNTL0);
++			writel_relaxed(0, spicc->base + SPICC_LD_CNTL1);
++
++			/* Unmap DMA if was locally remapped */
++			if (!spicc->is_dma_mapped)
++				meson_spicc_dma_unmap(spicc, spicc->xfer);
++		}
++
+ 		spi_finalize_current_transfer(spicc->master);
+ 
+ 		return IRQ_HANDLED;
+ 	}
+ 
+-	/* Setup burst */
+-	meson_spicc_setup_burst(spicc);
++	if (spicc->using_dma) {
++		/* Setup burst */
++		meson_spicc_setup_dma_burst(spicc);
++	} else {
++		/* Setup burst */
++		meson_spicc_setup_burst(spicc);
+ 
+-	/* Start burst */
+-	writel_bits_relaxed(SPICC_XCH, SPICC_XCH, spicc->base + SPICC_CONREG);
++		/* Start burst */
++		writel_bits_relaxed(SPICC_XCH, SPICC_XCH, spicc->base + SPICC_CONREG);
++	}
+ 
+ 	return IRQ_HANDLED;
+ }
+@@ -387,6 +520,9 @@ static int meson_spicc_transfer_one(struct spi_master *master,
+ {
+ 	struct meson_spicc_device *spicc = spi_master_get_devdata(master);
+ 
++	if (xfer->bits_per_word % 8 || xfer->bits_per_word > 64)
++		return -EINVAL;
++
+ 	/* Store current transfer */
+ 	spicc->xfer = xfer;
+ 
+@@ -407,11 +543,40 @@ static int meson_spicc_transfer_one(struct spi_master *master,
+ 
+ 	meson_spicc_reset_fifo(spicc);
+ 
+-	/* Setup burst */
+-	meson_spicc_setup_burst(spicc);
+-
+-	/* Start burst */
+-	writel_bits_relaxed(SPICC_XCH, SPICC_XCH, spicc->base + SPICC_CONREG);
++	/* By default, disable DMA transfer */
++	spicc->using_dma = 0;
++	writel_relaxed(0, spicc->base + SPICC_DMAREG);
++	writel_relaxed(0, spicc->base + SPICC_LD_CNTL0);
++	writel_relaxed(0, spicc->base + SPICC_LD_CNTL1);
++
++	/* DMA transfer can only operate 64bits words in Little-Endian */
++	if (xfer->bits_per_word == 64 &&
++	    (spi->mode & SPI_LSB_FIRST) == SPI_LSB_FIRST &&
++	    (spicc->is_dma_mapped || !meson_spicc_dma_map(spicc, xfer))) {
++		spicc->using_dma = 1;
++
++		/* Write DMA addresses */
++		writel_relaxed(xfer->tx_dma, spicc->base + SPICC_DRADDR);
++		writel_relaxed(xfer->rx_dma, spicc->base + SPICC_DWADDR);
++
++		/* Setup DMA period */
++		writel_relaxed(xfer->speed_hz >> 25,
++			       spicc->base + SPICC_PERIODREG);
++
++		/* Setup burst */
++		meson_spicc_setup_dma_burst(spicc);
++
++		/* Enable DMA transfers */
++		writel_bits_relaxed(SPICC_SMC, SPICC_SMC,
++				    spicc->base + SPICC_CONREG);
++	} else if(xfer->bits_per_word < 64 && !(spi->mode & SPI_LSB_FIRST)) {
++		/* Setup burst */
++		meson_spicc_setup_burst(spicc);
++
++		/* Start burst */
++		writel_bits_relaxed(SPICC_XCH, SPICC_XCH, spicc->base + SPICC_CONREG);
++	} else
++		return -EINVAL;
+ 
+ 	/* Enable interrupts */
+ 	writel_relaxed(SPICC_TC_EN, spicc->base + SPICC_INTREG);
+@@ -471,6 +636,9 @@ static int meson_spicc_prepare_message(struct spi_master *master,
+ 
+ 	writel_bits_relaxed(SPICC_LBC_W1, 0, spicc->base + SPICC_TESTREG);
+ 
++	/* Store current message */
++	spicc->is_dma_mapped = message->is_dma_mapped;
++
+ 	return 0;
+ }
+ 
+@@ -802,11 +970,8 @@ static int meson_spicc_probe(struct platform_device *pdev)
+ 
+ 	master->num_chipselect = 4;
+ 	master->dev.of_node = pdev->dev.of_node;
+-	master->mode_bits = SPI_CPHA | SPI_CPOL | SPI_CS_HIGH;
+-	master->bits_per_word_mask = SPI_BPW_MASK(32) |
+-				     SPI_BPW_MASK(24) |
+-				     SPI_BPW_MASK(16) |
+-				     SPI_BPW_MASK(8);
++	/* SPI_LSB_FIRST is for DMA mode only */
++	master->mode_bits = SPI_CPHA | SPI_CPOL | SPI_CS_HIGH | SPI_LSB_FIRST;
+ 	master->flags = (SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX);
+ 	master->min_speed_hz = spicc->data->min_speed_hz;
+ 	master->max_speed_hz = spicc->data->max_speed_hz;
+-- 
+2.25.1
+

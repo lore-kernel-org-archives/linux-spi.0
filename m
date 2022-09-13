@@ -2,111 +2,147 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EC882C54EE9
-	for <linux-spi@archiver.kernel.org>; Tue, 13 Sep 2022 16:57:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 88AC8C6FA8D
+	for <linux-spi@archiver.kernel.org>; Tue, 13 Sep 2022 17:39:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230009AbiIMQ5X (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 13 Sep 2022 12:57:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55306 "EHLO
+        id S232972AbiIMRj6 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 13 Sep 2022 13:39:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231346AbiIMQ45 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 13 Sep 2022 12:56:57 -0400
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BBAD7F25C
-        for <linux-spi@vger.kernel.org>; Tue, 13 Sep 2022 08:49:15 -0700 (PDT)
-Received: by mail-wr1-x432.google.com with SMTP id bq9so21495999wrb.4
-        for <linux-spi@vger.kernel.org>; Tue, 13 Sep 2022 08:49:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date;
-        bh=GdCZkIFjdClxi+04hng0a7G/PMlIDrFRIuLM/UuEOzs=;
-        b=Y0rQYv9z8beilzQx2ugOfa92UcpqtypBzYziOGjbc06KtET4+8LgctThDgk38PA3Ap
-         1O+JSIIsyci3bP1SW2JFp5rqIe0G+8kMnHfcnVIa0uIZoPdEuMe4Pt2whD0LMvvVp3FW
-         VpZRd+n8LGLqIq+fcSPCx7y62bZRwILmW3ct1e3SbnGg4tE2TntChCCEHZYxQlYcxs5I
-         ZUuyfM8Ce9QfkzMOMssRo1IeBefHkv2qdOX26DjzEp3X26o+0014Hndv+HxcVZ3ur+FH
-         bCYQkl5/zO/DUW4C2kRzvM7skiIS2mLHOZeO82pfbHUtS6OHUJr3Me+wlmkMjoNb4ghU
-         1e1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=GdCZkIFjdClxi+04hng0a7G/PMlIDrFRIuLM/UuEOzs=;
-        b=4QwRIa9Kwwunk8B2D2YUWdLeFaj8mMfxd/0d8Gly1IYLhWclCm2AGgkf4Xe7VQRKSw
-         kn2DTYVR6IA/Lwl1upDQjdaPakg2coC0zN2s+dSnAIVWVAvacq3PRlLRVxX5pIMojNQ+
-         049ociaNZfWK6KpHlWmeCVEnJF7PfpYEAdKUPhUIX10KyBWYcxEuJhUiNBvqHMgHuMl/
-         ukv4KU8sne+x/qI8YXGvgnD31+YUbjp4oM1YbAFLw/Ih7QgGODbEDWkgGXvA2GYLM3ze
-         eZ8Pm97oXICdnPU4KxdghJkoBkElzY2pGl7r6AjFmtPIosPKtz9pdchfhuTBBPH7MBB9
-         THbQ==
-X-Gm-Message-State: ACgBeo2LpOtr5Mmd7Kx/SHXAI6xP1rtIOQHPHaqiUWlHUrkW4DLqiMdZ
-        P7cSVCYHu1JVWwsm8pdwsFJtc8/SQU9o9Jwo
-X-Google-Smtp-Source: AA6agR7PeWmSBtKuOC1mG30e5zw+xbQsmAU90w5V231Ig4DCodUPhBcpEgZgQwBke/+4NDhIQ1m22w==
-X-Received: by 2002:adf:f2c5:0:b0:226:e838:3ed8 with SMTP id d5-20020adff2c5000000b00226e8383ed8mr17490014wrp.545.1663079299598;
-        Tue, 13 Sep 2022 07:28:19 -0700 (PDT)
-Received: from [10.119.22.201] ([89.101.193.67])
-        by smtp.gmail.com with ESMTPSA id n16-20020a05600c4f9000b003a5c7a942edsm14437149wmq.28.2022.09.13.07.28.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Sep 2022 07:28:19 -0700 (PDT)
-Message-ID: <4f201ad4-ea4a-43af-9ec8-c2a3c1b80d2c@linaro.org>
-Date:   Tue, 13 Sep 2022 16:28:17 +0200
+        with ESMTP id S232967AbiIMRjd (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 13 Sep 2022 13:39:33 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BF937D1E9;
+        Tue, 13 Sep 2022 09:31:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1663086714; x=1694622714;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=0m7qErf7VtY8xsWlWb+ddH+SXJeXMzL+LVnonABMCEw=;
+  b=gy4kgmHuKHjbqQVv4qThKgpUVqnqTZoBMck8XXJFVCcqwAcn4j11taiz
+   UDGMdutjSh9NoC2GhgBcS6AhBZBpggPSMW3GFZ8gLuJ6Pm1BJB1znvQUJ
+   K1cfLzTXz8G2kpDTi99M5qet9gojxX9Rwd/2G68abNo9NUQg19JcYOkkd
+   pqWd/sDldbOqOKXq1cD+K/DQZjIH0hSnY0Swl31KRh+0J54POmRaJFP7B
+   cLNOHvB+xg+1sgrWtyjnZ8PUYf7rhjDOULCGIDKzxfIKbXCO/lUZe/8Lu
+   bO4ZUZlvQafVrslhinannS1cTkA5Kfc9V3LFkPXd/hFRQGHJhzWp9+VYm
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10469"; a="285207775"
+X-IronPort-AV: E=Sophos;i="5.93,313,1654585200"; 
+   d="scan'208";a="285207775"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2022 09:31:39 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,313,1654585200"; 
+   d="scan'208";a="742221535"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga004.jf.intel.com with ESMTP; 13 Sep 2022 09:31:32 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 5F1B145C; Tue, 13 Sep 2022 19:31:49 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Mark Brown <broonie@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        devel@acpica.org
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Elie Morisse <syniurge@gmail.com>,
+        Nehal Shah <nehal-bakulchandra.shah@amd.com>,
+        Shyam Sundar S K <shyam-sundar.s-k@amd.com>,
+        Khalil Blaiech <kblaiech@nvidia.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Will Deacon <will@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Robert Moore <robert.moore@intel.com>,
+        Wolfram Sang <wsa@kernel.org>
+Subject: [PATCH v3 4/8] i2c: amd-mp2-plat: Refactor _UID handling to use acpi_dev_uid_to_integer()
+Date:   Tue, 13 Sep 2022 19:31:43 +0300
+Message-Id: <20220913163147.24258-5-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20220913163147.24258-1-andriy.shevchenko@linux.intel.com>
+References: <20220913163147.24258-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.0
-Subject: Re: [PATCH v3 06/14] dt-bindings: serial: atmel,at91-usart: convert
- to json-schema
-Content-Language: en-US
-To:     Sergiu Moga <sergiu.moga@microchip.com>, lee@kernel.org,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        nicolas.ferre@microchip.com, alexandre.belloni@bootlin.com,
-        claudiu.beznea@microchip.com, radu_nicolae.pirea@upb.ro,
-        richard.genoud@gmail.com, gregkh@linuxfoundation.org,
-        broonie@kernel.org, mturquette@baylibre.com, sboyd@kernel.org,
-        jirislaby@kernel.org, admin@hifiphile.com,
-        kavyasree.kotagiri@microchip.com, tudor.ambarus@microchip.com
-Cc:     devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-serial@vger.kernel.org, linux-clk@vger.kernel.org
-References: <20220913142205.162399-1-sergiu.moga@microchip.com>
- <20220913142205.162399-7-sergiu.moga@microchip.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220913142205.162399-7-sergiu.moga@microchip.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On 13/09/2022 16:21, Sergiu Moga wrote:
-> Convert at91 USART DT Binding for Atmel/Microchip SoCs to
-> json-schema format. Furthermore, move this binding to the
-> serial directory, since binding directories match hardware,
-> unlike the driver subsystems which match Linux convention.
-> 
-> Signed-off-by: Sergiu Moga <sergiu.moga@microchip.com>
-> ---
-> 
-> 
-> v1 -> v2:
-> - only do what the commit says, split the addition of other compatibles and
-> properties in other patches
-> - remove unnecessary "|"'s
-> - mention header in `atmel,usart-mode`'s description
-> - place `if:` under `allOf:`
-> - respect order of spi0's DT properties: compatible, then reg then the reset of properties
-> 
-> v2 -> v3:
-> - Previously [PATCH 5]
-> - Check value of `atmel,usart-mode` instead of the node regex
-> - Define all properties top level and disallow them explicitly for other type,
-> since additionalProperties:false conflicts with referencing other schemas
-> - Remove useless else if: after else:
-> 
+ACPI utils provide acpi_dev_uid_to_integer() helper to extract _UID as
+an integer. Use it instead of custom approach.
 
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Acked-by: Wolfram Sang <wsa@kernel.org>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+---
+ drivers/i2c/busses/i2c-amd-mp2-plat.c | 27 +++++++++------------------
+ 1 file changed, 9 insertions(+), 18 deletions(-)
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+diff --git a/drivers/i2c/busses/i2c-amd-mp2-plat.c b/drivers/i2c/busses/i2c-amd-mp2-plat.c
+index 84b7e6cbc67b..423fe0c8a471 100644
+--- a/drivers/i2c/busses/i2c-amd-mp2-plat.c
++++ b/drivers/i2c/busses/i2c-amd-mp2-plat.c
+@@ -244,14 +244,18 @@ static const struct i2c_adapter_quirks amd_i2c_dev_quirks = {
+ 
+ static int i2c_amd_probe(struct platform_device *pdev)
+ {
++	struct device *dev = &pdev->dev;
+ 	int ret;
+ 	struct amd_i2c_dev *i2c_dev;
+-	struct acpi_device *adev = ACPI_COMPANION(&pdev->dev);
+ 	struct amd_mp2_dev *mp2_dev;
+-	const char *uid;
++	u64 uid;
+ 
+-	if (!adev)
+-		return -ENODEV;
++	ret = acpi_dev_uid_to_integer(ACPI_COMPANION(dev), &uid);
++	if (ret)
++		return dev_err_probe(dev, ret, "missing UID/bus id!\n");
++	if (uid >= 2)
++		return dev_err_probe(dev, -EINVAL, "incorrect UID/bus id \"%llu\"!\n", uid);
++	dev_dbg(dev, "bus id is %llu\n", uid);
+ 
+ 	/* The ACPI namespace doesn't contain information about which MP2 PCI
+ 	 * device an AMDI0011 ACPI device is related to, so assume that there's
+@@ -266,6 +270,7 @@ static int i2c_amd_probe(struct platform_device *pdev)
+ 	if (!i2c_dev)
+ 		return -ENOMEM;
+ 
++	i2c_dev->common.bus_id = uid;
+ 	i2c_dev->common.mp2_dev = mp2_dev;
+ 	i2c_dev->pdev = pdev;
+ 	platform_set_drvdata(pdev, i2c_dev);
+@@ -276,20 +281,6 @@ static int i2c_amd_probe(struct platform_device *pdev)
+ 	i2c_dev->common.resume = &i2c_amd_resume;
+ #endif
+ 
+-	uid = adev->pnp.unique_id;
+-	if (!uid) {
+-		dev_err(&pdev->dev, "missing UID/bus id!\n");
+-		return -EINVAL;
+-	} else if (strcmp(uid, "0") == 0) {
+-		i2c_dev->common.bus_id = 0;
+-	} else if (strcmp(uid, "1") == 0) {
+-		i2c_dev->common.bus_id = 1;
+-	} else {
+-		dev_err(&pdev->dev, "incorrect UID/bus id \"%s\"!\n", uid);
+-		return -EINVAL;
+-	}
+-	dev_dbg(&pdev->dev, "bus id is %u\n", i2c_dev->common.bus_id);
+-
+ 	/* Register the adapter */
+ 	amd_mp2_pm_runtime_get(mp2_dev);
+ 
+-- 
+2.35.1
 
-
-Best regards,
-Krzysztof

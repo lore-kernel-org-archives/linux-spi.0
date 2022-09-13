@@ -2,43 +2,43 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D355C6FA8E
-	for <linux-spi@archiver.kernel.org>; Tue, 13 Sep 2022 17:40:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 629DAC6FA90
+	for <linux-spi@archiver.kernel.org>; Tue, 13 Sep 2022 17:40:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229961AbiIMRkk (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 13 Sep 2022 13:40:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57776 "EHLO
+        id S230274AbiIMRkl (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 13 Sep 2022 13:40:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233225AbiIMRjr (ORCPT
+        with ESMTP id S233224AbiIMRjr (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Tue, 13 Sep 2022 13:39:47 -0400
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DBBF7CAAC;
-        Tue, 13 Sep 2022 09:32:55 -0700 (PDT)
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA3FC7D1E3;
+        Tue, 13 Sep 2022 09:32:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1663086775; x=1694622775;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Li1WN8sCVHEAq82ItBnE/csBRZWXw+X9ZOrYZ4j6bLY=;
-  b=H6Npwu+med9T8WQFfoUfFHGlR23/O51b3Cw1mFpLHPyl2VWv/TaoUcxH
-   +q9vCE8QqqDoJJIg7b6roSJzFYw4aiewo0dqj8QmW0KARlbXvQjlU1WLq
-   fJ2R5LmOWC++Mqup4UvUtohx6LyvwVTIJBmLjd7P6HgFjevkoZVMRBDMa
-   Au6ZPS0OLSQR4TJ5KgKtU0ZwnRgyFb6bA5hxFtVpeDwzNTf0FYZJiLFbV
-   Cmky9DAQVFDT+kzfiofamtbKN99Gt+rW+VnZ7aSy/GpO6ahQLmdDoancU
-   jmBlQCDBZCdeIOKdfBLiD1QjCoGGdVm+uOdGSuLzN0czmjiATOeG2d8Oi
+  t=1663086759; x=1694622759;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=T6hLpT6GDZln8QErQ0cD0GdLt6XnCw+4fkOxlmQr2N8=;
+  b=UOCWMeVhFbsSp/0z9WaW9DSRPjqx1yD5OvyOpC5g4N938Cigt+aqAHcj
+   TwtP6ntRp0pC49rky5cvvcSD58iOWQwPn/3dXYk8Hf7UoaULNGXOD90/Y
+   sBaSSOMZtGj8L3X+D1MlzaMLNQSWAQpwffIvFHoPHkQ6vW8PzRvo3zkcs
+   LQjV8R4bAYKXz4cYKk0bheSskV7Byoj7Iuh+V3LXWb73l+fyylByfiofr
+   BFsJxHVLhe9KfrZEfX1qBDSQXCsTnSNjL1tJHXJmk/pXgoK3VJ7jpPdZP
+   yIdvZKzKSKAN4jcj7/owJ4t+7R2wkeYlJ6Hr53L7Fy1ZtC5J9OVRrNjx2
    g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10469"; a="324432995"
+X-IronPort-AV: E=McAfee;i="6500,9779,10469"; a="359909478"
 X-IronPort-AV: E=Sophos;i="5.93,313,1654585200"; 
-   d="scan'208";a="324432995"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2022 09:31:39 -0700
+   d="scan'208";a="359909478"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2022 09:31:39 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.93,313,1654585200"; 
-   d="scan'208";a="758857587"
+   d="scan'208";a="684928193"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 13 Sep 2022 09:31:32 -0700
+  by fmsmga004.fm.intel.com with ESMTP; 13 Sep 2022 09:31:32 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 522A7363; Tue, 13 Sep 2022 19:31:49 +0300 (EEST)
+        id 2F0EF7C; Tue, 13 Sep 2022 19:31:48 +0300 (EEST)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
@@ -64,64 +64,65 @@ Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Haojian Zhuang <haojian.zhuang@gmail.com>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
         Robert Moore <robert.moore@intel.com>
-Subject: [PATCH v3 3/8] ACPI: x86: Refactor _UID handling to use acpi_dev_uid_to_integer()
-Date:   Tue, 13 Sep 2022 19:31:42 +0300
-Message-Id: <20220913163147.24258-4-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v3 0/8] ACPI: unify _UID handling as integer
+Date:   Tue, 13 Sep 2022 19:31:39 +0300
+Message-Id: <20220913163147.24258-1-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220913163147.24258-1-andriy.shevchenko@linux.intel.com>
-References: <20220913163147.24258-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-ACPI utils provide acpi_dev_uid_to_integer() helper to extract _UID as
-an integer. Use it instead of custom approach.
+This series is about unification on how we handle ACPI _UID when
+it's known to be an integer-in-the-string.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/acpi/x86/utils.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+The idea of merging either all via ACPI tree, or taking ACPI stuff
+for the v6.1 while the rest may be picked up later on by respective
+maintainers separately (currently only perf patch is not tagged).
 
-diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-index 664070fc8349..2764b4778ce7 100644
---- a/drivers/acpi/x86/utils.c
-+++ b/drivers/acpi/x86/utils.c
-@@ -351,11 +351,17 @@ int acpi_quirk_skip_serdev_enumeration(struct device *controller_parent, bool *s
- 	struct acpi_device *adev = ACPI_COMPANION(controller_parent);
- 	const struct dmi_system_id *dmi_id;
- 	long quirks = 0;
-+	u64 uid;
-+	int ret;
- 
- 	*skip = false;
- 
--	/* !dev_is_platform() to not match on PNP enumerated debug UARTs */
--	if (!adev || !adev->pnp.unique_id || !dev_is_platform(controller_parent))
-+	ret = acpi_dev_uid_to_integer(adev, &uid);
-+	if (ret)
-+		return 0;
-+
-+	/* to not match on PNP enumerated debug UARTs */
-+	if (!dev_is_platform(controller_parent))
- 		return 0;
- 
- 	dmi_id = dmi_first_match(acpi_quirk_skip_dmi_ids);
-@@ -363,10 +369,10 @@ int acpi_quirk_skip_serdev_enumeration(struct device *controller_parent, bool *s
- 		quirks = (unsigned long)dmi_id->driver_data;
- 
- 	if (quirks & ACPI_QUIRK_UART1_TTY_UART2_SKIP) {
--		if (!strcmp(adev->pnp.unique_id, "1"))
-+		if (uid == 1)
- 			return -ENODEV; /* Create tty cdev instead of serdev */
- 
--		if (!strcmp(adev->pnp.unique_id, "2"))
-+		if (uid == 2)
- 			*skip = true;
- 	}
- 
+Partially compile-tested (x86-64).
+
+Changelog v3:
+- fixed dev_dbg() specifier to be in align with the variable type (LKP)
+- made use of temporary dev variable beyond the ACPI scope (LKP)
+- added tags to I²C patches (Wolfram)
+
+Changelog v2:
+- rebased pxa2xx patch to be applied against current Linux kernel code
+- fixed uninitialized variable adev in use (mlxbf)
+- dropped unneeded temporary variable adev (qcom_l2_pmu)
+- changed type for ret in patch 8 (Hans)
+- swapped conditions to check ret == 0 first (Ard)
+- added tags (Mark, Ard, Hans)
+
+Andy Shevchenko (8):
+  ACPI: utils: Add acpi_dev_uid_to_integer() helper to get _UID as
+    integer
+  ACPI: LPSS: Refactor _UID handling to use acpi_dev_uid_to_integer()
+  ACPI: x86: Refactor _UID handling to use acpi_dev_uid_to_integer()
+  i2c: amd-mp2-plat: Refactor _UID handling to use
+    acpi_dev_uid_to_integer()
+  i2c: mlxbf: Refactor _UID handling to use acpi_dev_uid_to_integer()
+  perf: qcom_l2_pmu: Refactor _UID handling to use
+    acpi_dev_uid_to_integer()
+  spi: pxa2xx: Refactor _UID handling to use acpi_dev_uid_to_integer()
+  efi/dev-path-parser: Refactor _UID handling to use
+    acpi_dev_uid_to_integer()
+
+ drivers/acpi/acpi_lpss.c               | 15 +++++------
+ drivers/acpi/utils.c                   | 24 +++++++++++++++++
+ drivers/acpi/x86/utils.c               | 14 +++++++---
+ drivers/firmware/efi/dev-path-parser.c | 10 ++++---
+ drivers/i2c/busses/i2c-amd-mp2-plat.c  | 27 +++++++------------
+ drivers/i2c/busses/i2c-mlxbf.c         | 20 +++++---------
+ drivers/perf/qcom_l2_pmu.c             | 10 +++----
+ drivers/spi/spi-pxa2xx.c               | 37 +++++++-------------------
+ include/acpi/acpi_bus.h                |  1 +
+ include/linux/acpi.h                   |  5 ++++
+ 10 files changed, 83 insertions(+), 80 deletions(-)
+
 -- 
 2.35.1
 

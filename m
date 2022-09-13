@@ -2,101 +2,86 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 30C26C54EE9
-	for <linux-spi@archiver.kernel.org>; Tue, 13 Sep 2022 15:55:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A2E39C54EE9
+	for <linux-spi@archiver.kernel.org>; Tue, 13 Sep 2022 15:58:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233076AbiIMPzR (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 13 Sep 2022 11:55:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37366 "EHLO
+        id S233403AbiIMP6W (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 13 Sep 2022 11:58:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234249AbiIMPyl (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 13 Sep 2022 11:54:41 -0400
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FFDF72697;
-        Tue, 13 Sep 2022 07:55:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1663080913; x=1694616913;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=ryJdliDNfrfwxRnUejI4JqgB3nY/8hhPaCs/Rks/6qg=;
-  b=I8IyIKU+oTQRo4UXd13AV38n+ivnYAZnolBQDj4/He4+1OG/iUA3iASI
-   ZX+j7+U0uYPsuI44l1MZQUVc5qGnTdxHfLTmsLlQ+0B6RvbF5ED3EJfa0
-   PeILinJB9UK7IQMIEssVc3bW7sVK033h6lJNNO4FUXCKCElTjSqgjpngz
-   mtOwFy7ePBGTZLlrnZQ6qHrT6vj4eiqws8uGzYuwcY8OKrUuwKjPzaYSc
-   273trm+qvRRRhf65leMgENWqL2iYP1l4RSGsVKxKgJQSenimOrd51ZRZa
-   CHwEWt4UvgARS4zTyFiUrswXxp/rgtH/SWoRI4HBqxp+aNt4mNojNmPcd
-   w==;
-X-IronPort-AV: E=Sophos;i="5.93,313,1654585200"; 
-   d="scan'208";a="190644171"
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 13 Sep 2022 07:25:38 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.12; Tue, 13 Sep 2022 07:25:38 -0700
-Received: from ROB-ULT-M68701.microchip.com (10.10.115.15) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
- 15.1.2507.12 via Frontend Transport; Tue, 13 Sep 2022 07:25:33 -0700
-From:   Sergiu Moga <sergiu.moga@microchip.com>
-To:     <lee@kernel.org>, <robh+dt@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <nicolas.ferre@microchip.com>,
-        <alexandre.belloni@bootlin.com>, <claudiu.beznea@microchip.com>,
-        <radu_nicolae.pirea@upb.ro>, <richard.genoud@gmail.com>,
-        <gregkh@linuxfoundation.org>, <broonie@kernel.org>,
-        <mturquette@baylibre.com>, <sboyd@kernel.org>,
-        <jirislaby@kernel.org>, <sergiu.moga@microchip.com>,
-        <admin@hifiphile.com>, <kavyasree.kotagiri@microchip.com>,
-        <tudor.ambarus@microchip.com>
-CC:     <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
-        <linux-serial@vger.kernel.org>, <linux-clk@vger.kernel.org>
-Subject: [PATCH v3 10/14] tty: serial: atmel: Define GCLK as USART baudrate source clock
-Date:   Tue, 13 Sep 2022 17:22:02 +0300
-Message-ID: <20220913142205.162399-11-sergiu.moga@microchip.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220913142205.162399-1-sergiu.moga@microchip.com>
-References: <20220913142205.162399-1-sergiu.moga@microchip.com>
+        with ESMTP id S233992AbiIMP5u (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 13 Sep 2022 11:57:50 -0400
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FBFA915ED
+        for <linux-spi@vger.kernel.org>; Tue, 13 Sep 2022 07:56:50 -0700 (PDT)
+Received: by mail-lf1-x134.google.com with SMTP id q21so20623308lfo.0
+        for <linux-spi@vger.kernel.org>; Tue, 13 Sep 2022 07:56:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=jamieiles.com; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date;
+        bh=PSryuLt8d2S5NOnFQYaRkPd+ewmY9YOJjJlVlykIIBw=;
+        b=PL6KQK4WAvTjNL4+2racF+mN5DenWrVgvTfKHYOm+TdmcOdBXajJDYGu389LYMga76
+         oUHxjWLeSy9pbqbs2NWCLbFwPpAHiVTXhrc7QPnxKyrDCjUyqL35opweViGReRMLNghi
+         Bw+KX6HO1tj+6pGtABPL2WSs7vcJaJ5qWQbQU2xeGWHyAh7PIxvR+zlDuuZzT8W3+srE
+         hdboMRmbejnhTl8Nl6xaQsK3sWD2coMQIkTLhV6pGOgxuzJOoJ1v7luzQZSpvE6cT8DT
+         gXMklK1wStxJaSEE95t3niygm91XlGX6v5/n0WFrglI0LZZnC3voDzTUaFlGqjPIVS8e
+         twBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
+        bh=PSryuLt8d2S5NOnFQYaRkPd+ewmY9YOJjJlVlykIIBw=;
+        b=zalPE7bb6W0di01F8ygpD8ocgfOGp8rUeXJ0y/n23VtBU6kNHNHfQw2oZbtaZ5r0xs
+         PHmU/mtyOBvBBXaRBDkTAxoHKiNU/MjmAL7bqNjTvM447urIRzbgCEBRPnddVNScaSyJ
+         VU18QEKDXaE8/1HGQI1SVe8rNWfFHkNISTOh/FGRop2bPOzcwE2YdSB95rlA4QLdv4hd
+         BKgt5xpADcYLLVMviy+fTuIX+iGJRC8HBDr+T/qpaFcpI5uk0zj9GkHlLl8+4Kw2ad8C
+         JHPRGoZ+hwGTCQ80ub5Cf9ramKcHjUmNG02teFsTKN1sfAnTL0rtcX7eF6lJefJR2JyV
+         Y1pA==
+X-Gm-Message-State: ACgBeo1xRhJ1SmLupF3X2c/RZI44p0aYuT8GWFGmJPpDo+t+dKHh9cZs
+        sXLII/91TxNdD4KbZbO6/ThN7+As39pj/W+Q
+X-Google-Smtp-Source: AA6agR4xan9LcIemBd+CCIzPWBfolAoJH5FobI9T3VFcNGbSV5nwx/8YASJdkNc6pzosk4RDb4XfCw==
+X-Received: by 2002:adf:e10c:0:b0:225:3168:c261 with SMTP id t12-20020adfe10c000000b002253168c261mr18279435wrz.159.1663079845811;
+        Tue, 13 Sep 2022 07:37:25 -0700 (PDT)
+Received: from localhost ([5.181.106.148])
+        by smtp.gmail.com with ESMTPSA id e11-20020adffd0b000000b00228da845d4dsm10633337wrr.94.2022.09.13.07.37.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Sep 2022 07:37:24 -0700 (PDT)
+Date:   Tue, 13 Sep 2022 15:37:23 +0100
+From:   Jamie Iles <jamie@jamieiles.com>
+To:     Johan Jonker <jbx6244@gmail.com>
+Cc:     kever.yang@rock-chips.com, sjg@chromium.org,
+        philipp.tomsich@vrull.eu, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, heiko@sntech.de,
+        ulf.hansson@linaro.org, miquel.raynal@bootlin.com, richard@nod.at,
+        vigneshr@ti.com, kishon@ti.com, vkoul@kernel.org,
+        thierry.reding@gmail.com, u.kleine-koenig@pengutronix.de,
+        gregkh@linuxfoundation.org, broonie@kernel.org,
+        wim@linux-watchdog.org, linux@roeck-us.net,
+        zhangqing@rock-chips.com, jamie@jamieiles.com,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-phy@lists.infradead.org,
+        linux-pwm@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-watchdog@vger.kernel.org
+Subject: Re: [PATCH v1 01/11] dt-bindings: serial: rockchip: add
+ rockchip,rk3128-uart
+Message-ID: <YyCVo/kHpWTbGpvx@elm>
+References: <20220909212543.17428-1-jbx6244@gmail.com>
+ <4f283231-2ed4-202b-0c23-157bce0841ee@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4f283231-2ed4-202b-0c23-157bce0841ee@gmail.com>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Define the bit that represents the choice of having GCLK as a baudrate
-source clock inside the USCLKS bitmask of the Mode Register of
-USART IP's.
+On Sat, Sep 10, 2022 at 12:01:28AM +0200, Johan Jonker wrote:
+> Add rockchip,rk3128-uart compatible string.
+> 
+> Signed-off-by: Johan Jonker <jbx6244@gmail.com>
 
-Signed-off-by: Sergiu Moga <sergiu.moga@microchip.com>
----
-
-
-v1 -> v2:
-- Nothing, this patch was not here before
-
-
-v2 -> v3:
-- Nothing
-
-
-
- drivers/tty/serial/atmel_serial.h | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/tty/serial/atmel_serial.h b/drivers/tty/serial/atmel_serial.h
-index 0d8a0f9cc5c3..70d0611e56fd 100644
---- a/drivers/tty/serial/atmel_serial.h
-+++ b/drivers/tty/serial/atmel_serial.h
-@@ -49,6 +49,7 @@
- #define	ATMEL_US_USCLKS		GENMASK(5, 4)	/* Clock Selection */
- #define		ATMEL_US_USCLKS_MCK		(0 <<  4)
- #define		ATMEL_US_USCLKS_MCK_DIV8	(1 <<  4)
-+#define		ATMEL_US_USCLKS_GCLK		(2 <<  4)
- #define		ATMEL_US_USCLKS_SCK		(3 <<  4)
- #define	ATMEL_US_CHRL		GENMASK(7, 6)	/* Character Length */
- #define		ATMEL_US_CHRL_5			(0 <<  6)
--- 
-2.34.1
-
+Acked-by: Jamie Iles <jamie@jamieiles.com>

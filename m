@@ -2,30 +2,30 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 04364C6FA8B
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 890B4C6FA92
 	for <linux-spi@archiver.kernel.org>; Fri, 16 Sep 2022 11:40:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229866AbiIPLj6 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 16 Sep 2022 07:39:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46840 "EHLO
+        id S230403AbiIPLj7 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 16 Sep 2022 07:39:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229532AbiIPLj5 (ORCPT
+        with ESMTP id S229816AbiIPLj5 (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Fri, 16 Sep 2022 07:39:57 -0400
-Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E39A227CC0;
+Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 058E329CAA;
         Fri, 16 Sep 2022 04:39:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1663328396;
-  x=1694864396;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=5gyRJMshptIEnXvFy/S2sxnAHY4n+uAltIvtK8WJPTI=;
-  b=T0EL9QrklCuUoZu8crHKzLsYGXNRZ9dBdYQ/h+7zDD29OAbgLMLYVT3m
-   EP9//+DH5WmQYF83/+vS8DNCbv8QgKyK8AY4EbvWPY/B2+hUFf+k/EDP+
-   3ylxeSKpxKQIIYB4Yacm6jDDQL1PUoT4L4TO7i4S4lfwmAFdEU1uSeIKJ
-   pw8Q0u6lFWabYkZRHCLWynHdoKA13ze98IpHg867yna+5iDQVablERiRI
-   D5xk67b0VHK5zpL1JevgcQSPzqTG0g1HTko5FSGbK5PmeArYIl6yvXAkL
-   h7/SgfAIissQKivjP3NFp1vXWy6q+2MkoslaWFEmagb9ohEiGixBSIUv/
+  d=axis.com; q=dns/txt; s=axis-central1; t=1663328395;
+  x=1694864395;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=vf3z5znW0KooHgZEWacieLyXs7JGdr3NGOK/5vrCD1M=;
+  b=eFy+FW6CHrDWf1kO4Y3dIcd4NPx0J4mm+wXoPThFKfHkvERl1A7zD7ij
+   3b1SFjJ0lcT2R39ytQ5GY4vnH6GEzbUPo4/T+Ytn4Rc6W31WEMm1pkUey
+   mivygkCkkv0oJun6VFxS4W3YuCo1MvCNtqr+Zr+kfOUGmKLPDJiZN8Zs3
+   UaINdzhG4flDqT5HlI3Q5sE30KNAnizc5oEPEHnAI2aFKxbTkEsYUbmwM
+   /vfPauScaAR/FYcg+BAf36ZwiXaLgSdjdv13icUCY3AIR7+XtkOSiSwuq
+   Fb9PPmBsLtkhBGDNeOHHnh1ShJdVwltxvFKAZjOlOVSnrtS5HuASMbRF+
    w==;
 From:   Vincent Whitchurch <vincent.whitchurch@axis.com>
 To:     <broonie@kernel.org>, <krzysztof.kozlowski@linaro.org>,
@@ -36,12 +36,10 @@ CC:     <kernel@axis.com>,
         <linux-kernel@vger.kernel.org>,
         <linux-samsung-soc@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>
-Subject: [PATCH 2/4] spi: Save current RX and TX DMA devices
-Date:   Fri, 16 Sep 2022 13:39:49 +0200
-Message-ID: <20220916113951.228398-3-vincent.whitchurch@axis.com>
+Subject: [PATCH 0/4] spi: Fix DMA bugs in (not only) spi-s3c64xx
+Date:   Fri, 16 Sep 2022 13:39:47 +0200
+Message-ID: <20220916113951.228398-1-vincent.whitchurch@axis.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220916113951.228398-1-vincent.whitchurch@axis.com>
-References: <20220916113951.228398-1-vincent.whitchurch@axis.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -49,80 +47,32 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Save the current RX and TX DMA devices to avoid having to duplicate the
-logic to pick them, since we'll need access to them in some more
-functions to fix a bug in the cache handling.
+This series fixes some bugs I found while running spi-loopback-test with
+spi-s3c64xx.  The first problem (which I actually noticed while trying to fix
+the second problem with transfers >64KiB) seems to be a generic issue which
+affects several drivers so I fixed it in the core.
 
-Signed-off-by: Vincent Whitchurch <vincent.whitchurch@axis.com>
----
- drivers/spi/spi.c       | 19 ++++---------------
- include/linux/spi/spi.h |  4 ++++
- 2 files changed, 8 insertions(+), 15 deletions(-)
+The series has been tested on ARTPEC-8, which has a version of the IP similar
+to Exynos 7 and with 64 byte FIFOs (compatible with "tesla,fsd-spi").
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 32c01e684af3..a9134d062ff1 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1147,6 +1147,8 @@ static int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
- 		}
- 	}
- 
-+	ctlr->cur_rx_dma_dev = rx_dev;
-+	ctlr->cur_tx_dma_dev = tx_dev;
- 	ctlr->cur_msg_mapped = true;
- 
- 	return 0;
-@@ -1154,26 +1156,13 @@ static int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
- 
- static int __spi_unmap_msg(struct spi_controller *ctlr, struct spi_message *msg)
- {
-+	struct device *rx_dev = ctlr->cur_rx_dma_dev;
-+	struct device *tx_dev = ctlr->cur_tx_dma_dev;
- 	struct spi_transfer *xfer;
--	struct device *tx_dev, *rx_dev;
- 
- 	if (!ctlr->cur_msg_mapped || !ctlr->can_dma)
- 		return 0;
- 
--	if (ctlr->dma_tx)
--		tx_dev = ctlr->dma_tx->device->dev;
--	else if (ctlr->dma_map_dev)
--		tx_dev = ctlr->dma_map_dev;
--	else
--		tx_dev = ctlr->dev.parent;
--
--	if (ctlr->dma_rx)
--		rx_dev = ctlr->dma_rx->device->dev;
--	else if (ctlr->dma_map_dev)
--		rx_dev = ctlr->dma_map_dev;
--	else
--		rx_dev = ctlr->dev.parent;
--
- 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
- 		if (!ctlr->can_dma(ctlr, msg->spi, xfer))
- 			continue;
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index f089ee1ead58..7466a171d7e5 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -378,6 +378,8 @@ extern struct spi_device *spi_new_ancillary_device(struct spi_device *spi, u8 ch
-  * @cleanup: frees controller-specific state
-  * @can_dma: determine whether this controller supports DMA
-  * @dma_map_dev: device which can be used for DMA mapping
-+ * @cur_rx_dma_dev: device which is currently used for RX DMA mapping
-+ * @cur_tx_dma_dev: device which is currently used for TX DMA mapping
-  * @queued: whether this controller is providing an internal message queue
-  * @kworker: pointer to thread struct for message pump
-  * @pump_messages: work struct for scheduling work to the message pump
-@@ -610,6 +612,8 @@ struct spi_controller {
- 					   struct spi_device *spi,
- 					   struct spi_transfer *xfer);
- 	struct device *dma_map_dev;
-+	struct device *cur_rx_dma_dev;
-+	struct device *cur_tx_dma_dev;
- 
- 	/*
- 	 * These hooks are for drivers that want to use the generic
+Cc: alim.akhtar@samsung.com
+Cc: linux-spi@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-samsung-soc@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+
+Vincent Whitchurch (4):
+  spi: spi-loopback-test: Add test to trigger DMA/PIO mixing
+  spi: Save current RX and TX DMA devices
+  spi: Fix cache corruption due to DMA/PIO overlap
+  spi: s3c64xx: Fix large transfers with DMA
+
+ drivers/spi/spi-loopback-test.c |  27 +++++++
+ drivers/spi/spi-s3c64xx.c       |  10 +++
+ drivers/spi/spi.c               | 126 +++++++++++++++++++++++---------
+ include/linux/spi/spi.h         |   4 +
+ 4 files changed, 131 insertions(+), 36 deletions(-)
+
 -- 
 2.34.1
 

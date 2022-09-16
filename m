@@ -2,30 +2,30 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BC856C6FA93
-	for <linux-spi@archiver.kernel.org>; Fri, 16 Sep 2022 11:40:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E0E10C6FA8B
+	for <linux-spi@archiver.kernel.org>; Fri, 16 Sep 2022 11:40:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231239AbiIPLkB (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S230409AbiIPLkB (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Fri, 16 Sep 2022 07:40:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47010 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231139AbiIPLkA (ORCPT
+        with ESMTP id S229863AbiIPLkA (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Fri, 16 Sep 2022 07:40:00 -0400
-Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EC972CC97;
+Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E4C52B602;
         Fri, 16 Sep 2022 04:39:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=axis.com; q=dns/txt; s=axis-central1; t=1663328398;
   x=1694864398;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=522Kxf6U1q7s2dtT3SsExSNapFPwyU8RLSswskWzai8=;
-  b=TfneD9eTL6XivhGCtWAcEhjTVLROmOQBXNFGkByRRWKCXS3gojsIEUJ+
-   +JstlQrYh/ONRk/RdkJ2sTBYkK2XxQkGADU6p/JBWRyZYKzTRcy/41EVV
-   PzT1Za44VbqDsB1hZ/9dw73sXN3QQXbGA1by870v6dFWy1slk+X8iwKd5
-   TzA5KHPkZaJ+oex1F9lv5NhcEUBej9sG6S8PIb6d+/y55RUAnpoqJ0UM6
-   zlibkTW1SJhHbuzBYexO3UY5Tw5ZQgCSVl3VYjZTLlzxbHAFEIi06pdcP
-   p+od6pD8W4RMrnmkRq+Hq0tszA+IWEe+NrKGuaU3RQc8PuRSI/iPL3YDn
+  bh=0O+QKem305LoINGTWe8PLbq0UAM4vzWU5ktHn5B5a3A=;
+  b=L5guGB2OTf6KAA7BAswqBS/MOwYQk0GNo5Mkyyv5kuS+WzlohbYhJ6IP
+   NjGl9aOAe6yke3BZulIikuVE7jd7xvpZCgJlwG3SuwbSojDAC/3r0m43W
+   1x+s/YhQahY12QQL9N6ySV4IOql0MrZgF+R9KApRkxtZXjGZ5XncS00MT
+   MOKAkChA1tqIs0qGFbWxjNuAeXGOtYcGzv+zSw2O+Fe3AWLPTDG2Ar4gc
+   aBDHM4RYp5ZKHBrLHgCabe3THMwkSs46MAjIomh5q+j56ULUZZEqorFXm
+   dqOAqftNCpQw72E0v/Ky6amnl17JCkJf0NB5C3yK7E43YSf6/GGaRP5zQ
    A==;
 From:   Vincent Whitchurch <vincent.whitchurch@axis.com>
 To:     <broonie@kernel.org>, <krzysztof.kozlowski@linaro.org>,
@@ -36,9 +36,9 @@ CC:     <kernel@axis.com>,
         <linux-kernel@vger.kernel.org>,
         <linux-samsung-soc@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>
-Subject: [PATCH 4/4] spi: s3c64xx: Fix large transfers with DMA
-Date:   Fri, 16 Sep 2022 13:39:51 +0200
-Message-ID: <20220916113951.228398-5-vincent.whitchurch@axis.com>
+Subject: [PATCH 1/4] spi: spi-loopback-test: Add test to trigger DMA/PIO mixing
+Date:   Fri, 16 Sep 2022 13:39:48 +0200
+Message-ID: <20220916113951.228398-2-vincent.whitchurch@axis.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220916113951.228398-1-vincent.whitchurch@axis.com>
 References: <20220916113951.228398-1-vincent.whitchurch@axis.com>
@@ -49,46 +49,53 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The COUNT_VALUE in the PACKET_CNT register is 16-bit so the maximum
-value is 65535.  Asking the driver to transfer a larger size currently
-leads to the DMA transfer timing out.  Fix this by splitting the
-transfer as needed.
+Add a test where a small and a large transfer in a message hit the same
+cache line.  This test currently fails on spi-s3c64xx on in DMA mode
+since it ends up mixing DMA and PIO without proper cache maintenance.
 
-With this, the len>64 KiB tests in spi-loopback-test pass.
-
-(Note that len==64 KiB tests work even without this patch for some reason.
- The driver programs 0 to the COUNT_VALUE field in that case, but it's
- unclear if it's by design, since the hardware documentation doesn't say
- anything about the behaviour when COUNT_VALUE == 0, so play it safe and
- split at 65535.)
-
-Fixes: 230d42d422e7b69 ("spi: Add s3c64xx SPI Controller driver")
 Signed-off-by: Vincent Whitchurch <vincent.whitchurch@axis.com>
 ---
- drivers/spi/spi-s3c64xx.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/spi/spi-loopback-test.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 7f346866614a..85e1d1f90109 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -701,6 +701,16 @@ static int s3c64xx_spi_prepare_message(struct spi_master *master,
- 	struct spi_device *spi = msg->spi;
- 	struct s3c64xx_spi_csinfo *cs = spi->controller_data;
+diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
+index 4d4f77a186a9..dd7de8fa37d0 100644
+--- a/drivers/spi/spi-loopback-test.c
++++ b/drivers/spi/spi-loopback-test.c
+@@ -313,6 +313,33 @@ static struct spi_test spi_tests[] = {
+ 			},
+ 		},
+ 	},
++	{
++		.description	= "three tx+rx transfers with overlapping cache lines",
++		.fill_option	= FILL_COUNT_8,
++		/*
++		 * This should be large enough for the controller driver to
++		 * choose to transfer it with DMA.
++		 */
++		.iterate_len    = { 512, -1 },
++		.iterate_transfer_mask = BIT(1),
++		.transfer_count = 3,
++		.transfers		= {
++			{
++				.len = 1,
++				.tx_buf = TX(0),
++				.rx_buf = RX(0),
++			},
++			{
++				.tx_buf = TX(1),
++				.rx_buf = RX(1),
++			},
++			{
++				.len = 1,
++				.tx_buf = TX(513),
++				.rx_buf = RX(513),
++			},
++		},
++	},
  
-+	if (master->can_dma) {
-+		int ret;
-+
-+		/* Limited by size of PACKET_CNT.COUNT_VALUE. */
-+		ret = spi_split_transfers_maxsize(master, msg, 65535,
-+						  GFP_KERNEL | GFP_DMA);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	/* Configure feedback delay */
- 	if (!cs)
- 		/* No delay if not defined */
+ 	{ /* end of tests sequence */ }
+ };
 -- 
 2.34.1
 

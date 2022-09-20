@@ -2,80 +2,114 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1CA6EECAAD8
-	for <linux-spi@archiver.kernel.org>; Tue, 20 Sep 2022 13:32:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AD540C6FA8E
+	for <linux-spi@archiver.kernel.org>; Tue, 20 Sep 2022 13:41:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229760AbiITNcC (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 20 Sep 2022 09:32:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43244 "EHLO
+        id S231368AbiITNlf (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 20 Sep 2022 09:41:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229503AbiITNcB (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 20 Sep 2022 09:32:01 -0400
+        with ESMTP id S229847AbiITNld (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 20 Sep 2022 09:41:33 -0400
 Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD0693CBF2
-        for <linux-spi@vger.kernel.org>; Tue, 20 Sep 2022 06:32:00 -0700 (PDT)
-Received: from dggpemm500022.china.huawei.com (unknown [172.30.72.53])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4MX2RF30r0z14QwL;
-        Tue, 20 Sep 2022 21:27:53 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5965D48C9D
+        for <linux-spi@vger.kernel.org>; Tue, 20 Sep 2022 06:41:32 -0700 (PDT)
+Received: from dggpemm500024.china.huawei.com (unknown [172.30.72.57])
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4MX2fF0TPlz14QtL;
+        Tue, 20 Sep 2022 21:37:25 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500022.china.huawei.com (7.185.36.162) with Microsoft SMTP Server
+ dggpemm500024.china.huawei.com (7.185.36.203) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Tue, 20 Sep 2022 21:31:59 +0800
-Received: from [10.174.178.174] (10.174.178.174) by
- dggpemm500007.china.huawei.com (7.185.36.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Tue, 20 Sep 2022 21:31:58 +0800
-Subject: Re: [PATCH -next] spi: s3c24xx: Switch to use devm_spi_alloc_master()
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        <linux-spi@vger.kernel.org>
-CC:     <broonie@kernel.org>
-References: <20220920114901.2683267-1-yangyingliang@huawei.com>
- <c3aaa5f5-327f-569c-4032-fe72e5dc5fbd@linaro.org>
- <c5802076-7fca-e470-c10d-21b3d5acdce4@huawei.com>
- <89f06b43-6852-7b5b-f2c8-e53f353985db@linaro.org>
+ 15.1.2375.31; Tue, 20 Sep 2022 21:41:30 +0800
+Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
+ (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Tue, 20 Sep
+ 2022 21:41:30 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
-Message-ID: <b1615b14-d2e3-32f3-6ed1-fd0e6e2f9f96@huawei.com>
-Date:   Tue, 20 Sep 2022 21:31:58 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+To:     <linux-spi@vger.kernel.org>
+CC:     <broonie@kernel.org>, <yangyingliang@huawei.com>
+Subject: [PATCH -next 1/6] spi: oc-tiny: Switch to use devm_spi_alloc_master()
+Date:   Tue, 20 Sep 2022 21:48:14 +0800
+Message-ID: <20220920134819.2981033-2-yangyingliang@huawei.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220920134819.2981033-1-yangyingliang@huawei.com>
+References: <20220920134819.2981033-1-yangyingliang@huawei.com>
 MIME-Version: 1.0
-In-Reply-To: <89f06b43-6852-7b5b-f2c8-e53f353985db@linaro.org>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Originating-IP: [10.174.178.174]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.103.91]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
  dggpemm500007.china.huawei.com (7.185.36.183)
 X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+Switch to use devm_spi_alloc_master() to simpify error path.
 
-On 2022/9/20 21:14, Krzysztof Kozlowski wrote:
-> On 20/09/2022 15:05, Yang Yingliang wrote:
->> Hi,
->>
->> On 2022/9/20 20:57, Krzysztof Kozlowski wrote:
->>> On 20/09/2022 13:49, Yang Yingliang wrote:
->>>> Switch to use devm_spi_alloc_master() to simpify error path.
->>>>
->>>> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
->>> One more comment - the patch was not properly addressed.
->>>
->>> Use scripts/get_maintainers.pl to CC all maintainers and relevant
->>> mailing lists.
->> Do I need to resend it with CC all maintainers ?
->>
-> Resend? No. You need to send new version, with fix I asked for, Ccing
-> all necessary people and mailing lists.
-I received this mail first, I missed the comment in another mail when I
-was replying this mail.
-Yeah, I will send a v2 later.
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+---
+ drivers/spi/spi-oc-tiny.c | 18 ++++++------------
+ 1 file changed, 6 insertions(+), 12 deletions(-)
 
-Thanks,
-Yang
->
-> Best regards,
-> Krzysztof
-> .
+diff --git a/drivers/spi/spi-oc-tiny.c b/drivers/spi/spi-oc-tiny.c
+index 38c14c4e4e21..1ab807741d26 100644
+--- a/drivers/spi/spi-oc-tiny.c
++++ b/drivers/spi/spi-oc-tiny.c
+@@ -215,7 +215,7 @@ static int tiny_spi_probe(struct platform_device *pdev)
+ 	struct spi_master *master;
+ 	int err = -ENODEV;
+ 
+-	master = spi_alloc_master(&pdev->dev, sizeof(struct tiny_spi));
++	master = devm_spi_alloc_master(&pdev->dev, sizeof(struct tiny_spi));
+ 	if (!master)
+ 		return err;
+ 
+@@ -235,10 +235,8 @@ static int tiny_spi_probe(struct platform_device *pdev)
+ 
+ 	/* find and map our resources */
+ 	hw->base = devm_platform_ioremap_resource(pdev, 0);
+-	if (IS_ERR(hw->base)) {
+-		err = PTR_ERR(hw->base);
+-		goto exit;
+-	}
++	if (IS_ERR(hw->base))
++		return PTR_ERR(hw->base);
+ 	/* irq is optional */
+ 	hw->irq = platform_get_irq(pdev, 0);
+ 	if (hw->irq >= 0) {
+@@ -246,7 +244,7 @@ static int tiny_spi_probe(struct platform_device *pdev)
+ 		err = devm_request_irq(&pdev->dev, hw->irq, tiny_spi_irq, 0,
+ 				       pdev->name, hw);
+ 		if (err)
+-			goto exit;
++			return err;
+ 	}
+ 	/* find platform data */
+ 	if (platp) {
+@@ -255,20 +253,16 @@ static int tiny_spi_probe(struct platform_device *pdev)
+ 	} else {
+ 		err = tiny_spi_of_probe(pdev);
+ 		if (err)
+-			goto exit;
++			return err;
+ 	}
+ 
+ 	/* register our spi controller */
+ 	err = spi_bitbang_start(&hw->bitbang);
+ 	if (err)
+-		goto exit;
++		return err;
+ 	dev_info(&pdev->dev, "base %p, irq %d\n", hw->base, hw->irq);
+ 
+ 	return 0;
+-
+-exit:
+-	spi_master_put(master);
+-	return err;
+ }
+ 
+ static int tiny_spi_remove(struct platform_device *pdev)
+-- 
+2.25.1
+

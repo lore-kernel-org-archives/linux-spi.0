@@ -2,81 +2,56 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E7258ECAAD8
-	for <linux-spi@archiver.kernel.org>; Tue, 20 Sep 2022 14:22:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C282DECAAD8
+	for <linux-spi@archiver.kernel.org>; Tue, 20 Sep 2022 14:56:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231776AbiITOWb (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 20 Sep 2022 10:22:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42778 "EHLO
+        id S230444AbiITO4x (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 20 Sep 2022 10:56:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230174AbiITOWK (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 20 Sep 2022 10:22:10 -0400
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACDC8647CE
-        for <linux-spi@vger.kernel.org>; Tue, 20 Sep 2022 07:20:28 -0700 (PDT)
-Received: by mail-lf1-x135.google.com with SMTP id a2so4053465lfb.6
-        for <linux-spi@vger.kernel.org>; Tue, 20 Sep 2022 07:20:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date;
-        bh=Eh2LQRT0Rx3iFyYK4xw6+ip+TFjiIifMEJCdTff73EU=;
-        b=hgGlbX3Q+iNiEU6QrKzAMyM4NUdWObFNdyrjzItgO0hfONFpG3kGZLMHNAyIcQQdYM
-         hkOb216nm8kXF3tEy4f4dYu5fz12yjJlUDGyHdbw0yV5I3oC/Oa/q6UtIMPm2ifgS3/j
-         /dHDZDraX1V2o2SgLVOSOL61wEQf64y5E6mxqZEwbL3p9rMPm6uMcNyvnjdq7oYkzpRf
-         MH4b3+qGlRWg5GSpo6aWlHnL1/Tx36wvxQAix8hZPpv2Fag1kFLqeMPsV3Fkdn7Xla96
-         zF2I232b1xuhGrwprr3RBeKaaW65TgmovkcPdpAiHPLiyZoYvjghndI1DQvQOzpH8sw7
-         Zy7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=Eh2LQRT0Rx3iFyYK4xw6+ip+TFjiIifMEJCdTff73EU=;
-        b=PQn9xECOS8zi2URdRRSg6DDkRL6wu2tX9oaN29sTJQqPXQGs5ICBw/TSexo+jkoPpk
-         epL4GXU84wdUUaKKFFsDn/+6IClS8c7jPitIMtjfm/M1rTLPMQn7FFCoy18cTTkO4n9g
-         cbFuqDZOsT84+Yp2Egv5Sv3gxFe+9VzUUFobNI5Kbnn4fFqYyUb08VQ0LkLghu/+DI/A
-         vUORwmQBNafUtuAlS1j9almRgF9VSAQ3D7zRPkhGzJjS0AGHEHvDYEPXRgMWGpo53r9A
-         QVDzm/XyvDy+y64R94rgkDDcU5sIatydUtfPrjxqixlRjwUxgEYDCCLN6+lWdtX54arD
-         ifPw==
-X-Gm-Message-State: ACrzQf1aQ8oe59vK6ZxGSH3AyMEqocAlojoEYxinkduTNQG9bLja3v7v
-        Gxl8xqzTyGeN8R75auVd64dCIksbLGEDQQ==
-X-Google-Smtp-Source: AMsMyM5SNdAUxS11DFE5CHGNWUZu5b++WSSL/CI+Y2/Mq8HCuhwVuoEC3h+55HGtPLg5YKusYImE4w==
-X-Received: by 2002:a05:6512:1047:b0:49d:a875:8d90 with SMTP id c7-20020a056512104700b0049da8758d90mr8706407lfb.630.1663683623367;
-        Tue, 20 Sep 2022 07:20:23 -0700 (PDT)
-Received: from [192.168.0.21] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
-        by smtp.gmail.com with ESMTPSA id y17-20020a2e95d1000000b00261b9ccb18esm31448ljh.10.2022.09.20.07.20.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 20 Sep 2022 07:20:22 -0700 (PDT)
-Message-ID: <15f8096b-da2f-5132-c8e4-16a2ca12f0b4@linaro.org>
-Date:   Tue, 20 Sep 2022 16:20:17 +0200
+        with ESMTP id S230362AbiITO4w (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 20 Sep 2022 10:56:52 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDAF71EAC9
+        for <linux-spi@vger.kernel.org>; Tue, 20 Sep 2022 07:56:51 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 96E82B810EA
+        for <linux-spi@vger.kernel.org>; Tue, 20 Sep 2022 14:56:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 47388C433C1;
+        Tue, 20 Sep 2022 14:56:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1663685809;
+        bh=EaMXVDaaSdPSAQZ7Pk92tK00vLGKzgCzEBJSi5IZnhg=;
+        h=Subject:From:Date:To:From;
+        b=SNFI6aqxdYbAaplJKHVvSYcPz1Q/1Vr3TalCP/Pw8P+uu/Hxu4atywrIrDyjnWx2t
+         QJVCVJ06zdhXoePVLhQmiNtppmp6YKwqGKymEBViAWy+U0FkKwITNBckjHD8bLYkV9
+         Rsi0I7otTVODFqg4ja4kcXjX/bi+Vrf7egUiFDC/CwLOLFGRCpu19LI6mm7on8QgoN
+         Bh/aLVbrjtvPLB6NeyqmM4fvjut+rzttQkDxe0iHKu9YLGUyo6kQVmav5ugYtni1bx
+         RdODW809KBxRomxlfa95ktQ6wN0F6ujT6aTa7D7IGXw+hxkjLDQwsUClKPDOwZHLww
+         5opsLhV9RkFnw==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 2EEB2E21EDF;
+        Tue, 20 Sep 2022 14:56:49 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.0
-Subject: Re: [PATCH -next v2] spi: s3c24xx: Switch to use
- devm_spi_alloc_master()
-Content-Language: en-US
-To:     Yang Yingliang <yangyingliang@huawei.com>,
-        linux-spi@vger.kernel.org, linux-samsung-soc@vger.kernel.org
-Cc:     andi@etezian.org, alim.akhtar@samsung.com, broonie@kernel.org
-References: <20220920142216.3002291-1-yangyingliang@huawei.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220920142216.3002291-1-yangyingliang@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <166368580918.17359.11379221973073821325.git-patchwork-housekeeping@kernel.org>
+Date:   Tue, 20 Sep 2022 14:56:49 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On 20/09/2022 16:22, Yang Yingliang wrote:
-> Switch to use devm_spi_alloc_master() to simpify error path.
-> 
-> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Latest series: [v2] spi: s3c24xx: Switch to use devm_spi_alloc_master() (2022-09-20T14:22:16)
+  Superseding: [v1] spi: s3c24xx: Switch to use devm_spi_alloc_master() (2022-09-20T11:49:01):
+    [-next] spi: s3c24xx: Switch to use devm_spi_alloc_master()
 
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-
-Best regards,
-Krzysztof

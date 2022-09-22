@@ -2,35 +2,35 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4C6B2C6FA91
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CDA72C6FA8B
 	for <linux-spi@archiver.kernel.org>; Thu, 22 Sep 2022 08:24:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229924AbiIVIYo (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S229978AbiIVIYo (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Thu, 22 Sep 2022 04:24:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41212 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229995AbiIVIYc (ORCPT
+        with ESMTP id S230179AbiIVIYc (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Thu, 22 Sep 2022 04:24:32 -0400
 Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A4F41F9E7
-        for <linux-spi@vger.kernel.org>; Thu, 22 Sep 2022 01:24:13 -0700 (PDT)
-Received: from dggpemm500021.china.huawei.com (unknown [172.30.72.53])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4MY7VT09vLzMpSk;
-        Thu, 22 Sep 2022 16:19:29 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C746D1F9F0
+        for <linux-spi@vger.kernel.org>; Thu, 22 Sep 2022 01:24:17 -0700 (PDT)
+Received: from dggpemm500022.china.huawei.com (unknown [172.30.72.53])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4MY7VY5zl0zMpNS;
+        Thu, 22 Sep 2022 16:19:33 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500021.china.huawei.com (7.185.36.109) with Microsoft SMTP Server
+ dggpemm500022.china.huawei.com (7.185.36.162) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Thu, 22 Sep 2022 16:24:11 +0800
+ 15.1.2375.31; Thu, 22 Sep 2022 16:24:16 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Thu, 22 Sep
- 2022 16:24:11 +0800
+ 2022 16:24:12 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <yangyingliang@huawei.com>
-Subject: [PATCH -next v2 3/6] spi: omap-uwire: Switch to use __devm_spi_alloc_controller()
-Date:   Thu, 22 Sep 2022 16:31:00 +0800
-Message-ID: <20220922083103.666157-4-yangyingliang@huawei.com>
+Subject: [PATCH -next v2 6/6] spi: altera: Switch to use __devm_spi_alloc_controller()
+Date:   Thu, 22 Sep 2022 16:31:03 +0800
+Message-ID: <20220922083103.666157-7-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220922083103.666157-1-yangyingliang@huawei.com>
 References: <20220922083103.666157-1-yangyingliang@huawei.com>
@@ -47,89 +47,139 @@ X-Mailing-List: linux-spi@vger.kernel.org
 
 With using __devm_spi_alloc_controller(), spi_controller_put() is called in
 devres_release_all() whenever the device is unbound, so the spi_master_put()
-in error path can be removed. Also replace spi_master_get_devdata() with
-spi_controller_get_devdata().
+in error path can be removed.
+Also replace spi_master_get_devdata() and devm_spi_register_master() with
+spi_controller_get_devdata() and devm_spi_register_controller().
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-omap-uwire.c | 28 +++++++++++++---------------
- 1 file changed, 13 insertions(+), 15 deletions(-)
+ drivers/spi/spi-altera-platform.c | 55 ++++++++++++++-----------------
+ 1 file changed, 24 insertions(+), 31 deletions(-)
 
-diff --git a/drivers/spi/spi-omap-uwire.c b/drivers/spi/spi-omap-uwire.c
-index 29198e6815b2..9fc8f3342ea4 100644
---- a/drivers/spi/spi-omap-uwire.c
-+++ b/drivers/spi/spi-omap-uwire.c
-@@ -448,25 +448,23 @@ static void uwire_off(struct uwire_spi *uwire)
- {
- 	uwire_write_reg(UWIRE_SR3, 0);
- 	clk_disable_unprepare(uwire->ck);
--	spi_master_put(uwire->bitbang.master);
- }
+diff --git a/drivers/spi/spi-altera-platform.c b/drivers/spi/spi-altera-platform.c
+index 65147aae82a1..7404e5eaaeb2 100644
+--- a/drivers/spi/spi-altera-platform.c
++++ b/drivers/spi/spi-altera-platform.c
+@@ -39,38 +39,37 @@ static int altera_spi_probe(struct platform_device *pdev)
+ 	struct altera_spi_platform_data *pdata = dev_get_platdata(&pdev->dev);
+ 	enum altera_spi_type type = ALTERA_SPI_TYPE_UNKNOWN;
+ 	struct altera_spi *hw;
+-	struct spi_master *master;
++	struct spi_controller *ctlr;
+ 	int err = -ENODEV;
+ 	u16 i;
  
- static int uwire_probe(struct platform_device *pdev)
- {
--	struct spi_master	*master;
-+	struct spi_controller	*ctlr;
- 	struct uwire_spi	*uwire;
- 	int			status;
- 
--	master = spi_alloc_master(&pdev->dev, sizeof(*uwire));
+-	master = spi_alloc_master(&pdev->dev, sizeof(struct altera_spi));
 -	if (!master)
-+	ctlr = __devm_spi_alloc_controller(&pdev->dev, sizeof(*uwire), false);
++	ctlr = __devm_spi_alloc_controller(&pdev->dev, sizeof(*hw), false);
 +	if (!ctlr)
- 		return -ENODEV;
+ 		return err;
  
--	uwire = spi_master_get_devdata(master);
-+	uwire = spi_controller_get_devdata(ctlr);
+-	/* setup the master state. */
+-	master->bus_num = -1;
++	/* setup the controller state. */
++	ctlr->bus_num = -1;
  
- 	uwire_base = devm_ioremap(&pdev->dev, UWIRE_BASE_PHYS, UWIRE_IO_SIZE);
- 	if (!uwire_base) {
- 		dev_dbg(&pdev->dev, "can't ioremap UWIRE\n");
--		spi_master_put(master);
- 		return -ENOMEM;
+ 	if (pdata) {
+ 		if (pdata->num_chipselect > ALTERA_SPI_MAX_CS) {
+ 			dev_err(&pdev->dev,
+ 				"Invalid number of chipselect: %u\n",
+ 				pdata->num_chipselect);
+-			err = -EINVAL;
+-			goto exit;
++			return -EINVAL;
+ 		}
+ 
+-		master->num_chipselect = pdata->num_chipselect;
+-		master->mode_bits = pdata->mode_bits;
+-		master->bits_per_word_mask = pdata->bits_per_word_mask;
++		ctlr->num_chipselect = pdata->num_chipselect;
++		ctlr->mode_bits = pdata->mode_bits;
++		ctlr->bits_per_word_mask = pdata->bits_per_word_mask;
+ 	} else {
+-		master->num_chipselect = 16;
+-		master->mode_bits = SPI_CS_HIGH;
+-		master->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 16);
++		ctlr->num_chipselect = 16;
++		ctlr->mode_bits = SPI_CS_HIGH;
++		ctlr->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 16);
  	}
  
-@@ -476,7 +474,6 @@ static int uwire_probe(struct platform_device *pdev)
- 	if (IS_ERR(uwire->ck)) {
- 		status = PTR_ERR(uwire->ck);
- 		dev_dbg(&pdev->dev, "no functional clock?\n");
--		spi_master_put(master);
- 		return status;
+-	master->dev.of_node = pdev->dev.of_node;
++	ctlr->dev.of_node = pdev->dev.of_node;
+ 
+-	hw = spi_master_get_devdata(master);
++	hw = spi_controller_get_devdata(ctlr);
+ 	hw->dev = &pdev->dev;
+ 
+ 	if (platid)
+@@ -83,7 +82,7 @@ static int altera_spi_probe(struct platform_device *pdev)
+ 		hw->regmap = dev_get_regmap(pdev->dev.parent, NULL);
+ 		if (!hw->regmap) {
+ 			dev_err(&pdev->dev, "get regmap failed\n");
+-			goto exit;
++			return err;
+ 		}
+ 
+ 		regoff = platform_get_resource(pdev, IORESOURCE_REG, 0);
+@@ -93,38 +92,35 @@ static int altera_spi_probe(struct platform_device *pdev)
+ 		void __iomem *res;
+ 
+ 		res = devm_platform_ioremap_resource(pdev, 0);
+-		if (IS_ERR(res)) {
+-			err = PTR_ERR(res);
+-			goto exit;
+-		}
++		if (IS_ERR(res))
++			return PTR_ERR(res);
+ 
+ 		hw->regmap = devm_regmap_init_mmio(&pdev->dev, res,
+ 						   &spi_altera_config);
+ 		if (IS_ERR(hw->regmap)) {
+ 			dev_err(&pdev->dev, "regmap mmio init failed\n");
+-			err = PTR_ERR(hw->regmap);
+-			goto exit;
++			return PTR_ERR(hw->regmap);
+ 		}
  	}
- 	clk_prepare_enable(uwire->ck);
-@@ -489,16 +486,16 @@ static int uwire_probe(struct platform_device *pdev)
- 	uwire_write_reg(UWIRE_SR3, 1);
  
- 	/* the spi->mode bits understood by this driver: */
--	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
--	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 16);
--	master->flags = SPI_MASTER_HALF_DUPLEX;
-+	ctlr->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
-+	ctlr->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 16);
-+	ctlr->flags = SPI_MASTER_HALF_DUPLEX;
+-	altera_spi_init_master(master);
++	altera_spi_init_master(ctlr);
  
--	master->bus_num = 2;	/* "official" */
--	master->num_chipselect = 4;
--	master->setup = uwire_setup;
--	master->cleanup = uwire_cleanup;
-+	ctlr->bus_num = 2;	/* "official" */
-+	ctlr->num_chipselect = 4;
-+	ctlr->setup = uwire_setup;
-+	ctlr->cleanup = uwire_cleanup;
+ 	/* irq is optional */
+ 	hw->irq = platform_get_irq(pdev, 0);
+ 	if (hw->irq >= 0) {
+ 		err = devm_request_irq(&pdev->dev, hw->irq, altera_spi_irq, 0,
+-				       pdev->name, master);
++				       pdev->name, ctlr);
+ 		if (err)
+-			goto exit;
++			return err;
+ 	}
  
--	uwire->bitbang.master = master;
-+	uwire->bitbang.master = ctlr;
- 	uwire->bitbang.chipselect = uwire_chipselect;
- 	uwire->bitbang.setup_transfer = uwire_setup_transfer;
- 	uwire->bitbang.txrx_bufs = uwire_txrx;
-@@ -518,6 +515,7 @@ static int uwire_remove(struct platform_device *pdev)
+-	err = devm_spi_register_master(&pdev->dev, master);
++	err = devm_spi_register_controller(&pdev->dev, ctlr);
+ 	if (err)
+-		goto exit;
++		return err;
  
- 	spi_bitbang_stop(&uwire->bitbang);
- 	uwire_off(uwire);
-+	spi_master_put(uwire->bitbang.master);
+ 	if (pdata) {
+ 		for (i = 0; i < pdata->num_devices; i++) {
+-			if (!spi_new_device(master, pdata->devices + i))
++			if (!spi_new_device(ctlr, pdata->devices + i))
+ 				dev_warn(&pdev->dev,
+ 					 "unable to create SPI device: %s\n",
+ 					 pdata->devices[i].modalias);
+@@ -134,9 +130,6 @@ static int altera_spi_probe(struct platform_device *pdev)
+ 	dev_info(&pdev->dev, "regoff %u, irq %d\n", hw->regoff, hw->irq);
+ 
  	return 0;
+-exit:
+-	spi_master_put(master);
+-	return err;
  }
  
+ #ifdef CONFIG_OF
 -- 
 2.25.1
 

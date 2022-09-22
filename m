@@ -2,35 +2,35 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C3E76C6FA92
-	for <linux-spi@archiver.kernel.org>; Thu, 22 Sep 2022 08:24:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3348FC6FA82
+	for <linux-spi@archiver.kernel.org>; Thu, 22 Sep 2022 08:24:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229916AbiIVIYp (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 22 Sep 2022 04:24:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41890 "EHLO
+        id S229986AbiIVIYq (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 22 Sep 2022 04:24:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230176AbiIVIYc (ORCPT
+        with ESMTP id S230301AbiIVIYc (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Thu, 22 Sep 2022 04:24:32 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E3BD1F9EF
-        for <linux-spi@vger.kernel.org>; Thu, 22 Sep 2022 01:24:17 -0700 (PDT)
-Received: from dggpemm500022.china.huawei.com (unknown [172.30.72.57])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4MY7Xk22yGzpT08;
-        Thu, 22 Sep 2022 16:21:26 +0800 (CST)
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD3401F9F1
+        for <linux-spi@vger.kernel.org>; Thu, 22 Sep 2022 01:24:18 -0700 (PDT)
+Received: from dggpemm500024.china.huawei.com (unknown [172.30.72.57])
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4MY7WD6ScZz14R5F;
+        Thu, 22 Sep 2022 16:20:08 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500022.china.huawei.com (7.185.36.162) with Microsoft SMTP Server
+ dggpemm500024.china.huawei.com (7.185.36.203) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Thu, 22 Sep 2022 16:24:16 +0800
+ 15.1.2375.31; Thu, 22 Sep 2022 16:24:11 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Thu, 22 Sep
- 2022 16:24:11 +0800
+ 2022 16:24:10 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <yangyingliang@huawei.com>
-Subject: [PATCH -next v2 5/6] spi: sh-sci: Switch to use __devm_spi_alloc_controller()
-Date:   Thu, 22 Sep 2022 16:31:02 +0800
-Message-ID: <20220922083103.666157-6-yangyingliang@huawei.com>
+Subject: [PATCH -next v2 2/6] spi: ath79: Switch to use __devm_spi_alloc_controller()
+Date:   Thu, 22 Sep 2022 16:30:59 +0800
+Message-ID: <20220922083103.666157-3-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220922083103.666157-1-yangyingliang@huawei.com>
 References: <20220922083103.666157-1-yangyingliang@huawei.com>
@@ -52,90 +52,87 @@ spi_controller_get_devdata().
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-sh-sci.c | 44 ++++++++++++++++------------------------
- 1 file changed, 18 insertions(+), 26 deletions(-)
+ drivers/spi/spi-ath79.c | 40 +++++++++++++++++-----------------------
+ 1 file changed, 17 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/spi/spi-sh-sci.c b/drivers/spi/spi-sh-sci.c
-index 8f30531e1418..64f9d85cce0f 100644
---- a/drivers/spi/spi-sh-sci.c
-+++ b/drivers/spi/spi-sh-sci.c
-@@ -114,29 +114,27 @@ static void sh_sci_spi_chipselect(struct spi_device *dev, int value)
- static int sh_sci_spi_probe(struct platform_device *dev)
+diff --git a/drivers/spi/spi-ath79.c b/drivers/spi/spi-ath79.c
+index 607e7a49fb89..3b9dbe4b8f16 100644
+--- a/drivers/spi/spi-ath79.c
++++ b/drivers/spi/spi-ath79.c
+@@ -168,47 +168,43 @@ static const struct spi_controller_mem_ops ath79_mem_ops = {
+ 
+ static int ath79_spi_probe(struct platform_device *pdev)
  {
- 	struct resource	*r;
 -	struct spi_master *master;
 +	struct spi_controller *ctlr;
- 	struct sh_sci_spi *sp;
+ 	struct ath79_spi *sp;
+ 	unsigned long rate;
  	int ret;
  
--	master = spi_alloc_master(&dev->dev, sizeof(struct sh_sci_spi));
+-	master = spi_alloc_master(&pdev->dev, sizeof(*sp));
 -	if (master == NULL) {
--		dev_err(&dev->dev, "failed to allocate spi master\n");
--		ret = -ENOMEM;
--		goto err0;
-+	ctlr = __devm_spi_alloc_controller(&dev->dev, sizeof(*sp), false);
+-		dev_err(&pdev->dev, "failed to allocate spi master\n");
++	ctlr = __devm_spi_alloc_controller(&pdev->dev, sizeof(*sp), false);
 +	if (!ctlr) {
-+		dev_err(&dev->dev, "failed to allocate spi controller\n");
-+		return -ENOMEM;
++		dev_err(&pdev->dev, "failed to allocate spi controller\n");
+ 		return -ENOMEM;
  	}
  
 -	sp = spi_master_get_devdata(master);
+-	master->dev.of_node = pdev->dev.of_node;
 +	sp = spi_controller_get_devdata(ctlr);
++	ctlr->dev.of_node = pdev->dev.of_node;
+ 	platform_set_drvdata(pdev, sp);
  
- 	platform_set_drvdata(dev, sp);
- 	sp->info = dev_get_platdata(&dev->dev);
- 	if (!sp->info) {
- 		dev_err(&dev->dev, "platform data is missing\n");
--		ret = -ENOENT;
--		goto err1;
-+		return -ENOENT;
- 	}
+-	master->use_gpio_descriptors = true;
+-	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 32);
+-	master->flags = SPI_MASTER_GPIO_SS;
+-	master->num_chipselect = 3;
+-	master->mem_ops = &ath79_mem_ops;
++	ctlr->use_gpio_descriptors = true;
++	ctlr->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 32);
++	ctlr->flags = SPI_MASTER_GPIO_SS;
++	ctlr->num_chipselect = 3;
++	ctlr->mem_ops = &ath79_mem_ops;
  
- 	/* setup spi bitbang adaptor */
 -	sp->bitbang.master = master;
 +	sp->bitbang.master = ctlr;
- 	sp->bitbang.master->bus_num = sp->info->bus_num;
- 	sp->bitbang.master->num_chipselect = sp->info->num_chipselect;
- 	sp->bitbang.chipselect = sh_sci_spi_chipselect;
-@@ -147,28 +145,22 @@ static int sh_sci_spi_probe(struct platform_device *dev)
- 	sp->bitbang.txrx_word[SPI_MODE_3] = sh_sci_spi_txrx_mode3;
+ 	sp->bitbang.chipselect = ath79_spi_chipselect;
+ 	sp->bitbang.txrx_word[SPI_MODE_0] = ath79_spi_txrx_mode0;
+ 	sp->bitbang.flags = SPI_CS_HIGH;
  
- 	r = platform_get_resource(dev, IORESOURCE_MEM, 0);
--	if (r == NULL) {
--		ret = -ENOENT;
--		goto err1;
+ 	sp->base = devm_platform_ioremap_resource(pdev, 0);
+-	if (IS_ERR(sp->base)) {
+-		ret = PTR_ERR(sp->base);
+-		goto err_put_master;
 -	}
-+	if (r == NULL)
-+		return -ENOENT;
- 	sp->membase = ioremap(r->start, resource_size(r));
--	if (!sp->membase) {
--		ret = -ENXIO;
--		goto err1;
--	}
-+	if (!sp->membase)
-+		return -ENXIO;
- 	sp->val = ioread8(SCSPTR(sp));
- 	setbits(sp, PIN_INIT, 1);
++	if (IS_ERR(sp->base))
++		return PTR_ERR(sp->base);
  
- 	ret = spi_bitbang_start(&sp->bitbang);
--	if (!ret)
--		return 0;
-+	if (ret) {
-+		setbits(sp, PIN_INIT, 0);
-+		iounmap(sp->membase);
+ 	sp->clk = devm_clk_get(&pdev->dev, "ahb");
+-	if (IS_ERR(sp->clk)) {
+-		ret = PTR_ERR(sp->clk);
+-		goto err_put_master;
+-	}
++	if (IS_ERR(sp->clk))
++		return PTR_ERR(sp->clk);
+ 
+ 	ret = clk_prepare_enable(sp->clk);
+ 	if (ret)
+-		goto err_put_master;
 +		return ret;
-+	}
  
--	setbits(sp, PIN_INIT, 0);
--	iounmap(sp->membase);
-- err1:
+ 	rate = DIV_ROUND_UP(clk_get_rate(sp->clk), MHZ);
+ 	if (!rate) {
+@@ -231,8 +227,6 @@ static int ath79_spi_probe(struct platform_device *pdev)
+ 	ath79_spi_disable(sp);
+ err_clk_disable:
+ 	clk_disable_unprepare(sp->clk);
+-err_put_master:
 -	spi_master_put(sp->bitbang.master);
-- err0:
--	return ret;
-+	return 0;
- }
  
- static int sh_sci_spi_remove(struct platform_device *dev)
+ 	return ret;
+ }
 -- 
 2.25.1
 

@@ -2,44 +2,43 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 09395C07E9D
-	for <linux-spi@archiver.kernel.org>; Fri, 23 Sep 2022 17:21:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C2138C6FA82
+	for <linux-spi@archiver.kernel.org>; Fri, 23 Sep 2022 17:21:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229511AbiIWRVr (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 23 Sep 2022 13:21:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60204 "EHLO
+        id S230282AbiIWRVt (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 23 Sep 2022 13:21:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229724AbiIWRVq (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 23 Sep 2022 13:21:46 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7E5111DFED;
-        Fri, 23 Sep 2022 10:21:45 -0700 (PDT)
+        with ESMTP id S230325AbiIWRVs (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 23 Sep 2022 13:21:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7551311DFED
+        for <linux-spi@vger.kernel.org>; Fri, 23 Sep 2022 10:21:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id AC794B82304;
-        Fri, 23 Sep 2022 17:21:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 806E8C433D6;
-        Fri, 23 Sep 2022 17:21:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0B45561898
+        for <linux-spi@vger.kernel.org>; Fri, 23 Sep 2022 17:21:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E42D7C43141;
+        Fri, 23 Sep 2022 17:21:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663953703;
-        bh=Pz9vo+ffvibzd8kfte/fXYOJF8UbJYLQ5sZ1ccDor6g=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=gth9Y+fQf0onv0y7QYSRmp6Uqip8bA4UfUnvovB/TutA99ey2V3KMwTBGAHG/LUgY
-         i7gOCBJSPPPYktFEjXBZJfZuXPavZWNPtVw6pwJSMhe8vpY1FeCgJrl3HHmNfSvwVD
-         j1m/+nbU1Byz0mIDrV7BnNtlgvoBQ4fymAdJigP3o0MtFDoFYjQDQP8GFk4fFrtKXf
-         4ubMUq/VV+5ted6mdWKm9YzFwPhRP1w+7YUlQAKqMq4Ze/nY2FII+nTIDeiqQ3cdX1
-         Zs7UDlNFdaRQwrIUEG+5+7cvj40Kno/GK+qEIyEu0C0ToNWZQwHrWwgXF/X07Fb1iQ
-         3QtIBtwDUJfXA==
+        s=k20201202; t=1663953706;
+        bh=CN3w9Rsw+bVoi2KMziPzkjpfLTi7U7wwmVXFbAB+bQI=;
+        h=From:To:In-Reply-To:References:Subject:Date:From;
+        b=Mjb3AsQqb3GaViOVu3ofe0cWU6og2wNsKGM21RN0bXeTQGQsJuFIq9X0sAfb3wBIi
+         eqQTasneDLH8jvo0k0P1vxmqjee4Crv6YJQzBzeizKIVqBOsFst09Jcqq+ybpz8n+N
+         JCoOfZOrXS90gXRzD/ZKm/TXKV4ZDUiLDTXHV3AtNwIJLdeBkwR8DT9NdojbfUZuC/
+         +1Rp0JJxiF9giCtn4gc8JNXEfIYtBvAzwq3O/gBfEwhbHg2an6jacfKuLok+P0Ypkl
+         Yuvtc/ehEO3a2SGZ8mAmQpBR0PWYFUSLLiXSA3810ssSCumTPRxc6TstUyboqgMiS3
+         tKHjdJoCYOVOw==
 From:   Mark Brown <broonie@kernel.org>
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-In-Reply-To: <Yy07WbMAG4bPgYNd@google.com>
-References: <Yy07WbMAG4bPgYNd@google.com>
-Subject: Re: [PATCH] spi: spi-mpc52xx: switch to using gpiod API
-Message-Id: <166395370224.637404.13213672182113687221.b4-ty@kernel.org>
-Date:   Fri, 23 Sep 2022 18:21:42 +0100
+To:     Shang XiaoJing <shangxiaojing@huawei.com>,
+        linux-spi@vger.kernel.org
+In-Reply-To: <20220923101726.19420-1-shangxiaojing@huawei.com>
+References: <20220923101726.19420-1-shangxiaojing@huawei.com>
+Subject: Re: [PATCH -next] spi: cadence: Remove redundant dev_err call
+Message-Id: <166395370566.637404.13656459333088824812.b4-ty@kernel.org>
+Date:   Fri, 23 Sep 2022 18:21:45 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -48,15 +47,11 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, 22 Sep 2022 21:51:37 -0700, Dmitry Torokhov wrote:
-> This switches the driver to use gpiod API instead of legacy gpio API,
-> which will brings us close to removing of_get_gpio() and other
-> OF-specific old APIs.
-> 
-> No functional change intended beyond some differences in error messages.
+On Fri, 23 Sep 2022 18:17:26 +0800, Shang XiaoJing wrote:
+> devm_ioremap_resource() prints error message in itself. Remove the
+> dev_err call to avoid redundant error message.
 > 
 > 
-> [...]
 
 Applied to
 
@@ -64,8 +59,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: spi-mpc52xx: switch to using gpiod API
-      commit: 2f3a896b0a416bbda633c98212f6490cfcfff310
+[1/1] spi: cadence: Remove redundant dev_err call
+      commit: 9671847f93a5291ad85f88210fb56e1a946b757b
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

@@ -2,80 +2,72 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 17F96C6FA83
-	for <linux-spi@archiver.kernel.org>; Sat, 24 Sep 2022 12:09:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EEDCDC32771
+	for <linux-spi@archiver.kernel.org>; Sat, 24 Sep 2022 13:12:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232987AbiIXMJs (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sat, 24 Sep 2022 08:09:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40326 "EHLO
+        id S230044AbiIXNMb (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sat, 24 Sep 2022 09:12:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233641AbiIXMJp (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sat, 24 Sep 2022 08:09:45 -0400
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DE2F15800
-        for <linux-spi@vger.kernel.org>; Sat, 24 Sep 2022 05:09:41 -0700 (PDT)
-Received: from dggemv711-chm.china.huawei.com (unknown [172.30.72.56])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4MZSQK0Rpwz1P6mQ;
-        Sat, 24 Sep 2022 20:05:29 +0800 (CST)
-Received: from kwepemm600014.china.huawei.com (7.193.23.54) by
- dggemv711-chm.china.huawei.com (10.1.198.66) with Microsoft SMTP Server
+        with ESMTP id S229669AbiIXNMa (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sat, 24 Sep 2022 09:12:30 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95869AEDBF
+        for <linux-spi@vger.kernel.org>; Sat, 24 Sep 2022 06:12:27 -0700 (PDT)
+Received: from dggpemm500024.china.huawei.com (unknown [172.30.72.57])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4MZTpx3y8HzWgtl;
+        Sat, 24 Sep 2022 21:08:25 +0800 (CST)
+Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
+ dggpemm500024.china.huawei.com (7.185.36.203) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Sat, 24 Sep 2022 20:09:39 +0800
-Received: from huawei.com (10.90.53.225) by kwepemm600014.china.huawei.com
- (7.193.23.54) with Microsoft SMTP Server (version=TLS1_2,
+ 15.1.2375.31; Sat, 24 Sep 2022 21:12:25 +0800
+Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
+ (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Sat, 24 Sep
- 2022 20:09:39 +0800
-From:   Zhang Qilong <zhangqilong3@huawei.com>
-To:     <broonie@kernel.org>
-CC:     <linux-spi@vger.kernel.org>
-Subject: [PATCH -next 1/3] spi: cadence-quadspi: Fix PM disable depth imbalance in cqspi_probe
-Date:   Sat, 24 Sep 2022 20:13:07 +0800
-Message-ID: <20220924121310.78331-2-zhangqilong3@huawei.com>
-X-Mailer: git-send-email 2.26.0.106.g9fadedd
-In-Reply-To: <20220924121310.78331-1-zhangqilong3@huawei.com>
-References: <20220924121310.78331-1-zhangqilong3@huawei.com>
+ 2022 21:12:25 +0800
+From:   Yang Yingliang <yangyingliang@huawei.com>
+To:     <linux-spi@vger.kernel.org>
+CC:     <olteanv@gmail.com>, <han.xu@nxp.com>, <broonie@kernel.org>,
+        <yangyingliang@huawei.com>
+Subject: [PATCH -next 2/3] spi: spi-fsl-lpspi: Use devm_platform_get_and_ioremap_resource()
+Date:   Sat, 24 Sep 2022 21:18:53 +0800
+Message-ID: <20220924131854.964923-2-yangyingliang@huawei.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220924131854.964923-1-yangyingliang@huawei.com>
+References: <20220924131854.964923-1-yangyingliang@huawei.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.90.53.225]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- kwepemm600014.china.huawei.com (7.193.23.54)
+X-Originating-IP: [10.175.103.91]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ dggpemm500007.china.huawei.com (7.185.36.183)
 X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The pm_runtime_enable will increase power disable depth. Thus
-a pairing decrement is needed on the error handling path to
-keep it balanced according to context.
+Use the devm_platform_get_and_ioremap_resource() helper instead of calling
+platform_get_resource() and devm_ioremap_resource() separately.
 
-Fixes:73d5fe0462702 ("spi: cadence-quadspi: Remove spi_master_put() in probe failure path")
-Signed-off-by: Zhang Qilong <zhangqilong3@huawei.com>
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-cadence-quadspi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi-fsl-lpspi.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index e12ab5b43f34..447230547945 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -1645,7 +1645,7 @@ static int cqspi_probe(struct platform_device *pdev)
- 	pm_runtime_enable(dev);
- 	ret = pm_runtime_resume_and_get(dev);
- 	if (ret < 0)
--		return ret;
-+		goto probe_pm_failed;
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 13147377b2d6..e8c1c8a4c6c8 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -855,8 +855,7 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
  
- 	ret = clk_prepare_enable(cqspi->clk);
- 	if (ret) {
-@@ -1740,6 +1740,7 @@ static int cqspi_probe(struct platform_device *pdev)
- 	clk_disable_unprepare(cqspi->clk);
- probe_clk_failed:
- 	pm_runtime_put_sync(dev);
-+probe_pm_failed:
- 	pm_runtime_disable(dev);
- 	return ret;
- }
+ 	init_completion(&fsl_lpspi->xfer_done);
+ 
+-	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	fsl_lpspi->base = devm_ioremap_resource(&pdev->dev, res);
++	fsl_lpspi->base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
+ 	if (IS_ERR(fsl_lpspi->base)) {
+ 		ret = PTR_ERR(fsl_lpspi->base);
+ 		goto out_controller_put;
 -- 
 2.25.1
 

@@ -2,25 +2,25 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C33DBC07E9D
-	for <linux-spi@archiver.kernel.org>; Sat, 24 Sep 2022 12:09:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A22C3C6FA90
+	for <linux-spi@archiver.kernel.org>; Sat, 24 Sep 2022 12:09:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233775AbiIXMJr (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sat, 24 Sep 2022 08:09:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40330 "EHLO
+        id S233543AbiIXMJt (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sat, 24 Sep 2022 08:09:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232987AbiIXMJp (ORCPT
+        with ESMTP id S233691AbiIXMJp (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Sat, 24 Sep 2022 08:09:45 -0400
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21599B0E
-        for <linux-spi@vger.kernel.org>; Sat, 24 Sep 2022 05:09:42 -0700 (PDT)
-Received: from dggemv704-chm.china.huawei.com (unknown [172.30.72.57])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4MZSSb39DWzHnYL;
-        Sat, 24 Sep 2022 20:07:27 +0800 (CST)
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77D5914D00
+        for <linux-spi@vger.kernel.org>; Sat, 24 Sep 2022 05:09:41 -0700 (PDT)
+Received: from dggemv711-chm.china.huawei.com (unknown [172.30.72.54])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4MZSRq4g6czpV4D;
+        Sat, 24 Sep 2022 20:06:47 +0800 (CST)
 Received: from kwepemm600014.china.huawei.com (7.193.23.54) by
- dggemv704-chm.china.huawei.com (10.3.19.47) with Microsoft SMTP Server
+ dggemv711-chm.china.huawei.com (10.1.198.66) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Sat, 24 Sep 2022 20:09:40 +0800
+ 15.1.2375.31; Sat, 24 Sep 2022 20:09:39 +0800
 Received: from huawei.com (10.90.53.225) by kwepemm600014.china.huawei.com
  (7.193.23.54) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Sat, 24 Sep
@@ -28,12 +28,10 @@ Received: from huawei.com (10.90.53.225) by kwepemm600014.china.huawei.com
 From:   Zhang Qilong <zhangqilong3@huawei.com>
 To:     <broonie@kernel.org>
 CC:     <linux-spi@vger.kernel.org>
-Subject: [PATCH -next 2/3] spi: dw: Fix PM disable depth imbalance in dw_spi_bt1_probe
-Date:   Sat, 24 Sep 2022 20:13:08 +0800
-Message-ID: <20220924121310.78331-3-zhangqilong3@huawei.com>
+Subject: [PATCH -next 0/3] Fix PM disable depth imbalance in probe
+Date:   Sat, 24 Sep 2022 20:13:06 +0800
+Message-ID: <20220924121310.78331-1-zhangqilong3@huawei.com>
 X-Mailer: git-send-email 2.26.0.106.g9fadedd
-In-Reply-To: <20220924121310.78331-1-zhangqilong3@huawei.com>
-References: <20220924121310.78331-1-zhangqilong3@huawei.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -46,31 +44,19 @@ List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
 The pm_runtime_enable will increase power disable depth. Thus
-a pairing decrement is needed on the error handling path to
-keep it balanced according to context.
+a pairing decrement is needed when error returns to keep it
+balanced. This series of patches fixed it in spi probe.
 
-Fixes:abf00907538e2 ("spi: dw: Add Baikal-T1 SPI Controller glue driver")
-Signed-off-by: Zhang Qilong <zhangqilong3@huawei.com>
----
- drivers/spi/spi-dw-bt1.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Zhang Qilong (3):
+  spi: cadence-quadspi: Fix PM disable depth imbalance in cqspi_probe
+  spi: dw: Fix PM disable depth imbalance in dw_spi_bt1_probe
+  spi/omap100k:Fix PM disable depth imbalance in omap1_spi100k_probe
 
-diff --git a/drivers/spi/spi-dw-bt1.c b/drivers/spi/spi-dw-bt1.c
-index c06553416123..3fb89dee595e 100644
---- a/drivers/spi/spi-dw-bt1.c
-+++ b/drivers/spi/spi-dw-bt1.c
-@@ -293,8 +293,10 @@ static int dw_spi_bt1_probe(struct platform_device *pdev)
- 	pm_runtime_enable(&pdev->dev);
- 
- 	ret = dw_spi_add_host(&pdev->dev, dws);
--	if (ret)
-+	if (ret) {
-+		pm_runtime_disable(&pdev->dev);
- 		goto err_disable_clk;
-+	}
- 
- 	platform_set_drvdata(pdev, dwsbt1);
- 
+ drivers/spi/spi-cadence-quadspi.c | 3 ++-
+ drivers/spi/spi-dw-bt1.c          | 4 +++-
+ drivers/spi/spi-omap-100k.c       | 1 +
+ 3 files changed, 6 insertions(+), 2 deletions(-)
+
 -- 
 2.25.1
 

@@ -2,81 +2,71 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A1121C07E9D
-	for <linux-spi@archiver.kernel.org>; Fri, 23 Sep 2022 18:54:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 19A88C32771
+	for <linux-spi@archiver.kernel.org>; Sat, 24 Sep 2022 12:09:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232932AbiIWSyf (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 23 Sep 2022 14:54:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58898 "EHLO
+        id S229893AbiIXMJq (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sat, 24 Sep 2022 08:09:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231340AbiIWSyZ (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 23 Sep 2022 14:54:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DCEF12204E
-        for <linux-spi@vger.kernel.org>; Fri, 23 Sep 2022 11:54:19 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8855C62865
-        for <linux-spi@vger.kernel.org>; Fri, 23 Sep 2022 18:54:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25FDEC433B5;
-        Fri, 23 Sep 2022 18:54:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663959257;
-        bh=cUhfw9cC40lJSh/N9STV50cq2QWgTnsJJ7FL+KqnXfc=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=ryAik/xjveeqrdwhlXqPwr5YspAJFs5GY07EFEn5XFrrQntkyj8G4Bklr8m7NMsai
-         VG9o1BP3fx1nGMV4g8P3TJhLhg10Ongj6869OEdIdiO9yIuoGj5D3p73JktXoSxrQX
-         hM646OZ5jljkIuXXpq2oox2sPLwAQxaySgr3ciL8Aua7KgfbNNSZzZX5gFVXSfPANg
-         4do7vminsfsaCKtb9a6u86pDg4Z+fVFvdW4uP+pHJfOi7ANLXy0k2E+QJpk6dJRRIt
-         5dxKm6PCFdH5RhORBPqBKsnj8YTjIM5pF8+ZyI6Ymsp8GKnBTloyWOZQ3L7RpIN8pS
-         oFSNZpeeXa/hg==
-From:   Mark Brown <broonie@kernel.org>
-To:     Yang Yingliang <yangyingliang@huawei.com>,
-        linux-spi@vger.kernel.org
-Cc:     michal.simek@xilinx.com
-In-Reply-To: <20220920114615.2681751-1-yangyingliang@huawei.com>
-References: <20220920114615.2681751-1-yangyingliang@huawei.com>
-Subject: Re: [PATCH -next] spi: xilinx: Switch to use devm_spi_alloc_master()
-Message-Id: <166395925688.804455.10147554808856145235.b4-ty@kernel.org>
-Date:   Fri, 23 Sep 2022 19:54:16 +0100
+        with ESMTP id S233654AbiIXMJp (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sat, 24 Sep 2022 08:09:45 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2173D120B1
+        for <linux-spi@vger.kernel.org>; Sat, 24 Sep 2022 05:09:42 -0700 (PDT)
+Received: from dggemv704-chm.china.huawei.com (unknown [172.30.72.57])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4MZSQK1JMKzlWY5;
+        Sat, 24 Sep 2022 20:05:29 +0800 (CST)
+Received: from kwepemm600014.china.huawei.com (7.193.23.54) by
+ dggemv704-chm.china.huawei.com (10.3.19.47) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Sat, 24 Sep 2022 20:09:40 +0800
+Received: from huawei.com (10.90.53.225) by kwepemm600014.china.huawei.com
+ (7.193.23.54) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Sat, 24 Sep
+ 2022 20:09:40 +0800
+From:   Zhang Qilong <zhangqilong3@huawei.com>
+To:     <broonie@kernel.org>
+CC:     <linux-spi@vger.kernel.org>
+Subject: [PATCH -next 3/3] spi/omap100k:Fix PM disable depth imbalance in omap1_spi100k_probe
+Date:   Sat, 24 Sep 2022 20:13:09 +0800
+Message-ID: <20220924121310.78331-4-zhangqilong3@huawei.com>
+X-Mailer: git-send-email 2.26.0.106.g9fadedd
+In-Reply-To: <20220924121310.78331-1-zhangqilong3@huawei.com>
+References: <20220924121310.78331-1-zhangqilong3@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.10.0-dev-fc921
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.90.53.225]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ kwepemm600014.china.huawei.com (7.193.23.54)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Tue, 20 Sep 2022 19:46:15 +0800, Yang Yingliang wrote:
-> Switch to use devm_spi_alloc_master() to simpify error path.
-> 
-> 
+The pm_runtime_enable will increase power disable depth. Thus
+a pairing decrement is needed on the error handling path to
+keep it balanced according to context.
 
-Applied to
+Fixes:db91841b58f9a ("spi/omap100k: Convert to runtime PM")
+Signed-off-by: Zhang Qilong <zhangqilong3@huawei.com>
+---
+ drivers/spi/spi-omap-100k.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+diff --git a/drivers/spi/spi-omap-100k.c b/drivers/spi/spi-omap-100k.c
+index 20b047172965..061f7394e5b9 100644
+--- a/drivers/spi/spi-omap-100k.c
++++ b/drivers/spi/spi-omap-100k.c
+@@ -412,6 +412,7 @@ static int omap1_spi100k_probe(struct platform_device *pdev)
+ 	return status;
+ 
+ err_fck:
++	pm_runtime_disable(&pdev->dev);
+ 	clk_disable_unprepare(spi100k->fck);
+ err_ick:
+ 	clk_disable_unprepare(spi100k->ick);
+-- 
+2.25.1
 
-Thanks!
-
-[1/1] spi: xilinx: Switch to use devm_spi_alloc_master()
-      commit: 2d0645817436ed2e527d967701ee354630d43e94
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark

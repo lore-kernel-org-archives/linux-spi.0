@@ -2,30 +2,30 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AB2E3C6FA92
-	for <linux-spi@archiver.kernel.org>; Tue, 27 Sep 2022 11:23:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1D2B6C6FA98
+	for <linux-spi@archiver.kernel.org>; Tue, 27 Sep 2022 11:23:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230169AbiI0LXw (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S230428AbiI0LXw (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Tue, 27 Sep 2022 07:23:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47194 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232035AbiI0LXM (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 27 Sep 2022 07:23:12 -0400
-Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8EF412DEEC;
-        Tue, 27 Sep 2022 04:21:57 -0700 (PDT)
+        with ESMTP id S231964AbiI0LXJ (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 27 Sep 2022 07:23:09 -0400
+Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A081913E7DC;
+        Tue, 27 Sep 2022 04:21:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1664277718;
-  x=1695813718;
+  d=axis.com; q=dns/txt; s=axis-central1; t=1664277713;
+  x=1695813713;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=hzApWBA3xTSZ1v8riDwMfzZx6pC2MkanA6btQmoyo+8=;
-  b=dOMu+tMOOmvqqaVKoHdkBirhl/BpFE/xTb0qx9wJ3kItP7ZiHMMDZ7uN
-   C5d9Aqv/BGne+2rvmUTLNRLWPANDWah/YxDRUCsKg6vDzDFKyqA6tyNyp
-   pQzubNezNmCE9GD5hjEPyeb83LZP4+KoGDGHkORoeequpO/5jegPSyNZX
-   l8NwT3szcVAUYQS4wY1SRT62dycXSTMTXXwilfmxtvpFyOgLtz5suKJtk
-   r7XLEKuPxMZQf+436+UjLqxpcP/79o2leQnhOa+cOpnFbnnNScObypfrg
-   AHgUw72RwVTSDrQFvLxlrTbyrL+UpBeTnMvso+O8k37LREDsA2Tug7+FZ
+  bh=r9z94nHNbG/a3bIMb6JB09Z2qRd5LB6E0MBIYBQgOAE=;
+  b=SoT9DtW2m2H2jeVrb/N8+U+iqGJFc2f2fBMM82CxZnPClXAWHdOsz/Jk
+   knsbru/ncOM0CGg2biKkMyJS4u0mjQMYyjVGObC34ZjzjaIsi7y3bOdJK
+   588WlhWJOfTKXIuyOMnxJN4wpjFitMr1xThC4fmhZ0HTe/eUYkq6pfPhE
+   YSiDezPuaXcViOnADnOlhVbNQDR+E9tLWa4rp715u/t3tvIhK1zcI6xl4
+   FdvMXKk5mDJgi9WnDOw/4NNeeS3PsZFXL5qPkD+lZifVf/niv4lRvy7Ku
+   ZyZEQUc3z2UK1VSAqmCQkUIXgGlMKTaCTmX7PD+hHgYeUbMErR010YHR2
    A==;
 From:   Vincent Whitchurch <vincent.whitchurch@axis.com>
 To:     <broonie@kernel.org>, <krzysztof.kozlowski@linaro.org>,
@@ -36,9 +36,9 @@ CC:     <kernel@axis.com>,
         <linux-kernel@vger.kernel.org>,
         <linux-samsung-soc@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>
-Subject: [PATCH v2 3/4] spi: Split transfers larger than max size
-Date:   Tue, 27 Sep 2022 13:21:16 +0200
-Message-ID: <20220927112117.77599-4-vincent.whitchurch@axis.com>
+Subject: [PATCH v2 1/4] spi: Save current RX and TX DMA devices
+Date:   Tue, 27 Sep 2022 13:21:14 +0200
+Message-ID: <20220927112117.77599-2-vincent.whitchurch@axis.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220927112117.77599-1-vincent.whitchurch@axis.com>
 References: <20220927112117.77599-1-vincent.whitchurch@axis.com>
@@ -49,36 +49,80 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-A couple of drivers call spi_split_transfers_maxsize() from their
-->prepare_message() callbacks to split transfers which are too big for
-them to handle.  Add support in the core to do this based on
-->max_transfer_size() to avoid code duplication.
+Save the current RX and TX DMA devices to avoid having to duplicate the
+logic to pick them, since we'll need access to them in some more
+functions to fix a bug in the cache handling.
 
 Signed-off-by: Vincent Whitchurch <vincent.whitchurch@axis.com>
 ---
- drivers/spi/spi.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/spi/spi.c       | 19 ++++---------------
+ include/linux/spi/spi.h |  4 ++++
+ 2 files changed, 8 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index f41a8c2752b8..44e4352d948b 100644
+index ad254b94308e..dd885df23870 100644
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -1649,6 +1649,15 @@ static int __spi_pump_transfer_message(struct spi_controller *ctlr,
+@@ -1147,6 +1147,8 @@ static int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
+ 		}
+ 	}
  
- 	trace_spi_message_start(msg);
++	ctlr->cur_rx_dma_dev = rx_dev;
++	ctlr->cur_tx_dma_dev = tx_dev;
+ 	ctlr->cur_msg_mapped = true;
  
-+	ret = spi_split_transfers_maxsize(ctlr, msg,
-+					  spi_max_transfer_size(msg->spi),
-+					  GFP_KERNEL | GFP_DMA);
-+	if (ret) {
-+		msg->status = ret;
-+		spi_finalize_current_message(ctlr);
-+		return ret;
-+	}
-+
- 	if (ctlr->prepare_message) {
- 		ret = ctlr->prepare_message(ctlr, msg);
- 		if (ret) {
+ 	return 0;
+@@ -1154,26 +1156,13 @@ static int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
+ 
+ static int __spi_unmap_msg(struct spi_controller *ctlr, struct spi_message *msg)
+ {
++	struct device *rx_dev = ctlr->cur_rx_dma_dev;
++	struct device *tx_dev = ctlr->cur_tx_dma_dev;
+ 	struct spi_transfer *xfer;
+-	struct device *tx_dev, *rx_dev;
+ 
+ 	if (!ctlr->cur_msg_mapped || !ctlr->can_dma)
+ 		return 0;
+ 
+-	if (ctlr->dma_tx)
+-		tx_dev = ctlr->dma_tx->device->dev;
+-	else if (ctlr->dma_map_dev)
+-		tx_dev = ctlr->dma_map_dev;
+-	else
+-		tx_dev = ctlr->dev.parent;
+-
+-	if (ctlr->dma_rx)
+-		rx_dev = ctlr->dma_rx->device->dev;
+-	else if (ctlr->dma_map_dev)
+-		rx_dev = ctlr->dma_map_dev;
+-	else
+-		rx_dev = ctlr->dev.parent;
+-
+ 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
+ 		if (!ctlr->can_dma(ctlr, msg->spi, xfer))
+ 			continue;
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 6ea889df0813..fbf8c0d95968 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -378,6 +378,8 @@ extern struct spi_device *spi_new_ancillary_device(struct spi_device *spi, u8 ch
+  * @cleanup: frees controller-specific state
+  * @can_dma: determine whether this controller supports DMA
+  * @dma_map_dev: device which can be used for DMA mapping
++ * @cur_rx_dma_dev: device which is currently used for RX DMA mapping
++ * @cur_tx_dma_dev: device which is currently used for TX DMA mapping
+  * @queued: whether this controller is providing an internal message queue
+  * @kworker: pointer to thread struct for message pump
+  * @pump_messages: work struct for scheduling work to the message pump
+@@ -610,6 +612,8 @@ struct spi_controller {
+ 					   struct spi_device *spi,
+ 					   struct spi_transfer *xfer);
+ 	struct device *dma_map_dev;
++	struct device *cur_rx_dma_dev;
++	struct device *cur_tx_dma_dev;
+ 
+ 	/*
+ 	 * These hooks are for drivers that want to use the generic
 -- 
 2.34.1
 

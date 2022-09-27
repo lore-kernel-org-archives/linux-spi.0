@@ -2,266 +2,90 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6F134C6FA96
-	for <linux-spi@archiver.kernel.org>; Tue, 27 Sep 2022 11:23:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5D5F3C6FA93
+	for <linux-spi@archiver.kernel.org>; Tue, 27 Sep 2022 11:24:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230455AbiI0LXy (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 27 Sep 2022 07:23:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45844 "EHLO
+        id S231932AbiI0LYd (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 27 Sep 2022 07:24:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232016AbiI0LXL (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 27 Sep 2022 07:23:11 -0400
-Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86D4E139F7F;
-        Tue, 27 Sep 2022 04:22:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1664277725;
-  x=1695813725;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=hXMxvKDGa3S+E22Izonel1E3bJF/Yk47TCpSAP8sBLg=;
-  b=D3+c/crr/lJPB2AuPi99Kod3fhehe2nSO/jiRq25WBE9F3nsEPln8J56
-   F9goEVHOaxk0pbhiuXf67m3SLEvGgSCllyHQuXeEC1Pz2A2eqPBFN+3Bs
-   xHFNNjyXDoH5ceivdF6BbZyYoMzZMTdJwxuO32tixFM5nkfndBDuVDrw9
-   LxAylZYisdXuVwfEPgCa6N/csbqlYlnxFW9a0iuqp2ZmzqUGnPss2kV8y
-   KY4Qxe0kJOxcBiDffsG7eBoCG3NOacmhlqsQjEmFCU/IhGxvHpOP2GVD5
-   3MbUbE/msl8ODgnOJlzLAXl090LRBKG6+zEux92XX0g/3cfMj6/gHz3Nq
-   w==;
-From:   Vincent Whitchurch <vincent.whitchurch@axis.com>
-To:     <broonie@kernel.org>, <krzysztof.kozlowski@linaro.org>,
-        <andi@etezian.org>
-CC:     <kernel@axis.com>,
-        Vincent Whitchurch <vincent.whitchurch@axis.com>,
-        <alim.akhtar@samsung.com>, <linux-spi@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-samsung-soc@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-Subject: [PATCH v2 2/4] spi: Fix cache corruption due to DMA/PIO overlap
-Date:   Tue, 27 Sep 2022 13:21:15 +0200
-Message-ID: <20220927112117.77599-3-vincent.whitchurch@axis.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220927112117.77599-1-vincent.whitchurch@axis.com>
-References: <20220927112117.77599-1-vincent.whitchurch@axis.com>
+        with ESMTP id S232212AbiI0LXt (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 27 Sep 2022 07:23:49 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B288124756
+        for <linux-spi@vger.kernel.org>; Tue, 27 Sep 2022 04:22:29 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 30314CE18AC
+        for <linux-spi@vger.kernel.org>; Tue, 27 Sep 2022 11:21:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC3AC433C1;
+        Tue, 27 Sep 2022 11:21:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1664277695;
+        bh=QfBnD5R7DZQo/fjnTrBF+gDLI/+QwJR8Yp0Z8yzvlo8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Ia82EAxsKhW34I/49o4nUcu1LhfT9CiCmmb3TN/9+zfJvzDOVAH189NIPk4HjbPEm
+         UCO5rsGy21M/Lmoz05i3KnMpvaB8l51nXE1J8MVsc/eLBwxFDDUBw8S6xp7InzppzJ
+         DQKfXiSFqxBxYTwTdzVnwbNC+7LmEpG4TQyzZi+isfoe142Sd9Cp34dXn8t+JChur9
+         my4CG0vX/6SwibTW78xeFZsZEMLhFoOi78/5eAeFmKFkCr5XdK1X5lqmvGFufqVZft
+         wpl/SwwMLduqZ25PqABwjTfCgIjSuNeY6ICxpeMLGYfR9O++EUx0OGDKwMgBmRElF7
+         q7Hg+U2BIFu6w==
+Date:   Tue, 27 Sep 2022 12:21:27 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Lukas Wunner <lukas@wunner.de>
+Cc:     Yang Yingliang <yangyingliang@huawei.com>,
+        linux-spi@vger.kernel.org,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH -next 1/2] spi: introduce devm_spi_alloc_controller()
+Message-ID: <YzLct0v1ZRJVW2Gm@sirena.org.uk>
+References: <20220926142933.2299460-1-yangyingliang@huawei.com>
+ <20220927034525.GA32253@wunner.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="7dMAklQ5e8HqP+uF"
+Content-Disposition: inline
+In-Reply-To: <20220927034525.GA32253@wunner.de>
+X-Cookie: Vote anarchist.
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The SPI core DMA mapping support performs cache management once for the
-entire message and not between transfers, and this leads to cache
-corruption if a message has two or more RX transfers with both
-transfers targeting the same cache line, and the controller driver
-decides to handle one using DMA and the other using PIO (for example,
-because one is much larger than the other).
 
-Fix it by syncing before/after the actual transfers.  This also means
-that we can skip the sync during the map/unmap of the message.
+--7dMAklQ5e8HqP+uF
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Fixes: 99adef310f68 ("spi: Provide core support for DMA mapping transfers")
-Signed-off-by: Vincent Whitchurch <vincent.whitchurch@axis.com>
----
- drivers/spi/spi.c | 109 +++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 88 insertions(+), 21 deletions(-)
+On Tue, Sep 27, 2022 at 05:45:25AM +0200, Lukas Wunner wrote:
+> On Mon, Sep 26, 2022 at 10:29:32PM +0800, Yang Yingliang wrote:
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index dd885df23870..f41a8c2752b8 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1010,9 +1010,9 @@ static void spi_set_cs(struct spi_device *spi, bool enable, bool force)
- }
- 
- #ifdef CONFIG_HAS_DMA
--int spi_map_buf(struct spi_controller *ctlr, struct device *dev,
--		struct sg_table *sgt, void *buf, size_t len,
--		enum dma_data_direction dir)
-+static int spi_map_buf_attrs(struct spi_controller *ctlr, struct device *dev,
-+			     struct sg_table *sgt, void *buf, size_t len,
-+			     enum dma_data_direction dir, unsigned long attrs)
- {
- 	const bool vmalloced_buf = is_vmalloc_addr(buf);
- 	unsigned int max_seg_size = dma_get_max_seg_size(dev);
-@@ -1078,28 +1078,39 @@ int spi_map_buf(struct spi_controller *ctlr, struct device *dev,
- 		sg = sg_next(sg);
- 	}
- 
--	ret = dma_map_sg(dev, sgt->sgl, sgt->nents, dir);
--	if (!ret)
--		ret = -ENOMEM;
-+	ret = dma_map_sgtable(dev, sgt, dir, attrs);
- 	if (ret < 0) {
- 		sg_free_table(sgt);
- 		return ret;
- 	}
- 
--	sgt->nents = ret;
--
- 	return 0;
- }
- 
--void spi_unmap_buf(struct spi_controller *ctlr, struct device *dev,
--		   struct sg_table *sgt, enum dma_data_direction dir)
-+int spi_map_buf(struct spi_controller *ctlr, struct device *dev,
-+		struct sg_table *sgt, void *buf, size_t len,
-+		enum dma_data_direction dir)
-+{
-+	return spi_map_buf_attrs(ctlr, dev, sgt, buf, len, dir, 0);
-+}
-+
-+static void spi_unmap_buf_attrs(struct spi_controller *ctlr,
-+				struct device *dev, struct sg_table *sgt,
-+				enum dma_data_direction dir,
-+				unsigned long attrs)
- {
- 	if (sgt->orig_nents) {
--		dma_unmap_sg(dev, sgt->sgl, sgt->orig_nents, dir);
-+		dma_unmap_sgtable(dev, sgt, dir, attrs);
- 		sg_free_table(sgt);
- 	}
- }
- 
-+void spi_unmap_buf(struct spi_controller *ctlr, struct device *dev,
-+		   struct sg_table *sgt, enum dma_data_direction dir)
-+{
-+	spi_unmap_buf_attrs(ctlr, dev, sgt, dir, 0);
-+}
-+
- static int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
- {
- 	struct device *tx_dev, *rx_dev;
-@@ -1124,24 +1135,30 @@ static int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
- 		rx_dev = ctlr->dev.parent;
- 
- 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
-+		/* The sync is done before each transfer. */
-+		unsigned long attrs = DMA_ATTR_SKIP_CPU_SYNC;
-+
- 		if (!ctlr->can_dma(ctlr, msg->spi, xfer))
- 			continue;
- 
- 		if (xfer->tx_buf != NULL) {
--			ret = spi_map_buf(ctlr, tx_dev, &xfer->tx_sg,
--					  (void *)xfer->tx_buf, xfer->len,
--					  DMA_TO_DEVICE);
-+			ret = spi_map_buf_attrs(ctlr, tx_dev, &xfer->tx_sg,
-+						(void *)xfer->tx_buf,
-+						xfer->len, DMA_TO_DEVICE,
-+						attrs);
- 			if (ret != 0)
- 				return ret;
- 		}
- 
- 		if (xfer->rx_buf != NULL) {
--			ret = spi_map_buf(ctlr, rx_dev, &xfer->rx_sg,
--					  xfer->rx_buf, xfer->len,
--					  DMA_FROM_DEVICE);
-+			ret = spi_map_buf_attrs(ctlr, rx_dev, &xfer->rx_sg,
-+						xfer->rx_buf, xfer->len,
-+						DMA_FROM_DEVICE, attrs);
- 			if (ret != 0) {
--				spi_unmap_buf(ctlr, tx_dev, &xfer->tx_sg,
--					      DMA_TO_DEVICE);
-+				spi_unmap_buf_attrs(ctlr, tx_dev,
-+						&xfer->tx_sg, DMA_TO_DEVICE,
-+						attrs);
-+
- 				return ret;
- 			}
- 		}
-@@ -1164,17 +1181,52 @@ static int __spi_unmap_msg(struct spi_controller *ctlr, struct spi_message *msg)
- 		return 0;
- 
- 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
-+		/* The sync has already been done after each transfer. */
-+		unsigned long attrs = DMA_ATTR_SKIP_CPU_SYNC;
-+
- 		if (!ctlr->can_dma(ctlr, msg->spi, xfer))
- 			continue;
- 
--		spi_unmap_buf(ctlr, rx_dev, &xfer->rx_sg, DMA_FROM_DEVICE);
--		spi_unmap_buf(ctlr, tx_dev, &xfer->tx_sg, DMA_TO_DEVICE);
-+		spi_unmap_buf_attrs(ctlr, rx_dev, &xfer->rx_sg,
-+				    DMA_FROM_DEVICE, attrs);
-+		spi_unmap_buf_attrs(ctlr, tx_dev, &xfer->tx_sg,
-+				    DMA_TO_DEVICE, attrs);
- 	}
- 
- 	ctlr->cur_msg_mapped = false;
- 
- 	return 0;
- }
-+
-+static void spi_dma_sync_for_device(struct spi_controller *ctlr,
-+				    struct spi_transfer *xfer)
-+{
-+	struct device *rx_dev = ctlr->cur_rx_dma_dev;
-+	struct device *tx_dev = ctlr->cur_tx_dma_dev;
-+
-+	if (!ctlr->cur_msg_mapped)
-+		return;
-+
-+	if (xfer->tx_sg.orig_nents)
-+		dma_sync_sgtable_for_device(tx_dev, &xfer->tx_sg, DMA_TO_DEVICE);
-+	if (xfer->rx_sg.orig_nents)
-+		dma_sync_sgtable_for_device(rx_dev, &xfer->rx_sg, DMA_FROM_DEVICE);
-+}
-+
-+static void spi_dma_sync_for_cpu(struct spi_controller *ctlr,
-+				 struct spi_transfer *xfer)
-+{
-+	struct device *rx_dev = ctlr->cur_rx_dma_dev;
-+	struct device *tx_dev = ctlr->cur_tx_dma_dev;
-+
-+	if (!ctlr->cur_msg_mapped)
-+		return;
-+
-+	if (xfer->rx_sg.orig_nents)
-+		dma_sync_sgtable_for_cpu(rx_dev, &xfer->rx_sg, DMA_FROM_DEVICE);
-+	if (xfer->tx_sg.orig_nents)
-+		dma_sync_sgtable_for_cpu(tx_dev, &xfer->tx_sg, DMA_TO_DEVICE);
-+}
- #else /* !CONFIG_HAS_DMA */
- static inline int __spi_map_msg(struct spi_controller *ctlr,
- 				struct spi_message *msg)
-@@ -1187,6 +1239,16 @@ static inline int __spi_unmap_msg(struct spi_controller *ctlr,
- {
- 	return 0;
- }
-+
-+static void spi_dma_sync_for_device(struct spi_controller *ctrl,
-+				    struct spi_transfer *xfer)
-+{
-+}
-+
-+static void spi_dma_sync_for_cpu(struct spi_controller *ctrl,
-+				 struct spi_transfer *xfer)
-+{
-+}
- #endif /* !CONFIG_HAS_DMA */
- 
- static inline int spi_unmap_msg(struct spi_controller *ctlr,
-@@ -1445,8 +1507,11 @@ static int spi_transfer_one_message(struct spi_controller *ctlr,
- 			reinit_completion(&ctlr->xfer_completion);
- 
- fallback_pio:
-+			spi_dma_sync_for_device(ctlr, xfer);
- 			ret = ctlr->transfer_one(ctlr, msg->spi, xfer);
- 			if (ret < 0) {
-+				spi_dma_sync_for_cpu(ctlr, xfer);
-+
- 				if (ctlr->cur_msg_mapped &&
- 				   (xfer->error & SPI_TRANS_FAIL_NO_START)) {
- 					__spi_unmap_msg(ctlr, msg);
-@@ -1469,6 +1534,8 @@ static int spi_transfer_one_message(struct spi_controller *ctlr,
- 				if (ret < 0)
- 					msg->status = ret;
- 			}
-+
-+			spi_dma_sync_for_cpu(ctlr, xfer);
- 		} else {
- 			if (xfer->len)
- 				dev_err(&msg->spi->dev,
--- 
-2.34.1
+> >  extern int devm_spi_register_controller(struct device *dev,
+> >  					struct spi_controller *ctlr);
 
+> This doesn't really make sense I'm afraid.  The umbrella term
+> "spi_controller" can refer to either a master or a slave.
+> One has to specify on allocation which of the two is desired.
+
+> An API which purports to allow allocation of the umbrella term
+> but defaults to a master behind the scenes seems misleading to me.
+
+Yes, we'd need to either have two wrappers using some more appropriate
+terminology than master/slave or have a parameter which specifies the
+role.
+
+--7dMAklQ5e8HqP+uF
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmMy3LcACgkQJNaLcl1U
+h9AlPQf/cpYsvnJO2IqT1MLDmEgDH6+pTZKgOcMUIxysyJGsZhrM8ItqA520LlBf
+Uw2Vm+q/qhbuoocxno2DMTDPaBr2afDt1b4N+xCiA6rbOYIaH2gaWszcP8Gl8Qcs
+G5ykwP6i1ka/WlZJO6yviAiVoQSNFu3wWOWwAZ7wm75UxpoqqQP1StMWFh6g82ml
+5T5feLNmp5VBZHuBUcSMbQm9NFUew6yLM97VINjLHVg/Rs2H+cR7bSD1yMWlNv7b
+syzyiEysH6SvnFmjLUqdm71quc3EE4JvF6Qx2Xxz33a6xVsNrNPt/pU3tqmC0hAI
+kOWC928kWhnUydcQvm0T2TXo+/0R6w==
+=gdBI
+-----END PGP SIGNATURE-----
+
+--7dMAklQ5e8HqP+uF--

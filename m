@@ -2,30 +2,30 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E54DFC6FA82
-	for <linux-spi@archiver.kernel.org>; Tue, 27 Sep 2022 11:32:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 50E09C6FA83
+	for <linux-spi@archiver.kernel.org>; Tue, 27 Sep 2022 11:32:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230447AbiI0Lcw (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 27 Sep 2022 07:32:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60720 "EHLO
+        id S229691AbiI0Lcx (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 27 Sep 2022 07:32:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230384AbiI0Lcv (ORCPT
+        with ESMTP id S230388AbiI0Lcv (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Tue, 27 Sep 2022 07:32:51 -0400
 Received: from yawp.biot.com (yawp.biot.com [IPv6:2a01:4f8:10a:8e::fce2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACDD0DEC2
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDCB8923C8
         for <linux-spi@vger.kernel.org>; Tue, 27 Sep 2022 04:32:50 -0700 (PDT)
 Received: from debian-spamd by yawp.biot.com with sa-checked (Exim 4.93)
         (envelope-from <bert@biot.com>)
-        id 1od8pU-00CJlQ-Gs
+        id 1od8pU-00CJlR-Gn
         for linux-spi@vger.kernel.org; Tue, 27 Sep 2022 13:32:48 +0200
 Received: from [2a02:578:460c:1:ae1f:6bff:fed1:9ca8] (helo=sumner.biot.com)
         by yawp.biot.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.93)
         (envelope-from <bert@biot.com>)
-        id 1od8pF-00CJiv-3L; Tue, 27 Sep 2022 13:32:33 +0200
+        id 1od8pG-00CJjL-Em; Tue, 27 Sep 2022 13:32:34 +0200
 Received: from bert by sumner.biot.com with local (Exim 4.93)
         (envelope-from <bert@biot.com>)
-        id 1od8pE-0055tB-I4; Tue, 27 Sep 2022 13:32:32 +0200
+        id 1od8pF-0055tZ-VR; Tue, 27 Sep 2022 13:32:33 +0200
 From:   Bert Vermeulen <bert@biot.com>
 To:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
@@ -33,9 +33,9 @@ To:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
         linux-kernel@vger.kernel.org
 Cc:     Bert Vermeulen <bert@biot.com>, John Crispin <john@phrozen.org>,
         Benjamin Larsson <benjamin.larsson@iopsys.eu>
-Subject: [PATCH v2 1/3] dt-bindings: arm: airoha: Add documentation for Airoha SPI controller
-Date:   Tue, 27 Sep 2022 13:32:27 +0200
-Message-Id: <20220927113229.1214224-2-bert@biot.com>
+Subject: [PATCH v2 3/3] ARM: dts: en7523: Add SPI node
+Date:   Tue, 27 Sep 2022 13:32:29 +0200
+Message-Id: <20220927113229.1214224-4-bert@biot.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220927113229.1214224-1-bert@biot.com>
 References: <20220927113229.1214224-1-bert@biot.com>
@@ -45,65 +45,65 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Create documentation for accessing the Airoha EN7523 SPI controller.
+This adds an SPI node for the EN7523, so far only used for hooking up
+the NAND boot flash.
 
 Signed-off-by: Bert Vermeulen <bert@biot.com>
 ---
- .../bindings/spi/airoha,en7523-spi.yaml       | 45 +++++++++++++++++++
- 1 file changed, 45 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/airoha,en7523-spi.yaml
+ arch/arm/boot/dts/en7523-evb.dts | 20 ++++++++++++++++++++
+ arch/arm/boot/dts/en7523.dtsi    | 10 ++++++++++
+ 2 files changed, 30 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/spi/airoha,en7523-spi.yaml b/Documentation/devicetree/bindings/spi/airoha,en7523-spi.yaml
-new file mode 100644
-index 000000000000..8f4936512a99
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/airoha,en7523-spi.yaml
-@@ -0,0 +1,45 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/spi/airoha,en7523-spi.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/arch/arm/boot/dts/en7523-evb.dts b/arch/arm/boot/dts/en7523-evb.dts
+index f23a25cce119..50ccd58b1672 100644
+--- a/arch/arm/boot/dts/en7523-evb.dts
++++ b/arch/arm/boot/dts/en7523-evb.dts
+@@ -26,6 +26,26 @@ memory@80000000 {
+ 	};
+ };
+ 
++&spi0 {
++	nand: nand@0 {
++		compatible = "spi-nand";
++		reg = <0>;
++		nand-ecc-engine = <&nand>;
 +
-+title: Airoha EN7523 SPI controller
++		partitions {
++			compatible = "fixed-partitions";
++			#address-cells = <1>;
++			#size-cells = <1>;
 +
-+maintainers:
-+  - Bert Vermeulen <bert@biot.com>
++			partition@0 {
++				label = "u-boot";
++				reg = <0x0 0x80000>;
++				read-only;
++			};
++		};
++	};
++};
 +
-+description: |
-+  This binding describes the SPI controller on Airoha EN7523 SoCs.
+ &gpio0 {
+ 	status = "okay";
+ };
+diff --git a/arch/arm/boot/dts/en7523.dtsi b/arch/arm/boot/dts/en7523.dtsi
+index 7f839331a777..a0d0862005fb 100644
+--- a/arch/arm/boot/dts/en7523.dtsi
++++ b/arch/arm/boot/dts/en7523.dtsi
+@@ -201,4 +201,14 @@ pcie_intc1: interrupt-controller {
+ 			#interrupt-cells = <1>;
+ 		};
+ 	};
 +
-+allOf:
-+  - $ref: spi-controller.yaml#
-+
-+properties:
-+  compatible:
-+    items:
-+      - const: airoha,en7523-spi
-+
-+  reg:
-+    maxItems: 1
-+
-+  clocks:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/clock/en7523-clk.h>
-+    spi0: spi@1fa10000 {
-+      compatible = "airoha,en7523-spi";
-+      reg = <0x1fa10000 0x10000>;
-+      clocks = <&scu EN7523_CLK_SPI>;
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+    };
++	spi0: spi@1fa10000 {
++		compatible = "airoha,en7523-spi";
++		reg = <0x1fa10000 0x10000>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++		clocks = <&scu EN7523_CLK_SPI>;
++		spi-rx-bus-width = <2>;
++		spi-tx-bus-width = <2>;
++	};
+ };
 -- 
 2.25.1
 

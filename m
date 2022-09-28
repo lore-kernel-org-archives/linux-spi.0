@@ -2,115 +2,80 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6C8C3C04A95
-	for <linux-spi@archiver.kernel.org>; Wed, 28 Sep 2022 15:04:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 351B9C32771
+	for <linux-spi@archiver.kernel.org>; Wed, 28 Sep 2022 15:11:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233980AbiI1PEH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 28 Sep 2022 11:04:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48412 "EHLO
+        id S234233AbiI1PL0 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 28 Sep 2022 11:11:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233247AbiI1PEG (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 28 Sep 2022 11:04:06 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97BB088A1A;
-        Wed, 28 Sep 2022 08:04:05 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id ED1D4B81FA2;
-        Wed, 28 Sep 2022 15:04:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDF0CC433C1;
-        Wed, 28 Sep 2022 15:03:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664377438;
-        bh=NRllYnWOmIZn9K9w86cX3L3Nj4a7CsqYqfE3TbG8jFo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=EzDIqzwOpCcuTEMA4WbMpGj+/uVLnmZvjsbMne/ABCC1CMSvRTBy/48jWaf0Hg4KY
-         bgw7smjokwizE2hSdWQHQ+cTqWj0rH+KQEeu+Uyzn+lM3xCLLFdgJM89J7TYUHAeRo
-         PX8jGzmMpXwVWpUb47Qi6TDvbxzsP+Ijx8hVO+5DJvVSy6lMnyeN1XcwNChk2gy54W
-         4ZEvIoGNRKBP5M43zUg4/UajXWDeWR+nMBA/jGnAjLu6IV7GlYvUvvk1tLJPPMke4o
-         92YBTWMlPGFYjhuo+qJ3bjl2JKgm01hr4RuLriDn5HfIn5oqsEdk2XrUOdQ0TCAu12
-         RJBE6qFFNqwlA==
-Date:   Wed, 28 Sep 2022 16:03:51 +0100
-From:   Lee Jones <lee@kernel.org>
-To:     Sergiu Moga <sergiu.moga@microchip.com>
-Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        nicolas.ferre@microchip.com, alexandre.belloni@bootlin.com,
-        claudiu.beznea@microchip.com, radu_nicolae.pirea@upb.ro,
-        richard.genoud@gmail.com, gregkh@linuxfoundation.org,
-        jirislaby@kernel.org, kavyasree.kotagiri@microchip.com,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-serial@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH v5 1/9] dt-bindings: mfd: atmel,sama5d2-flexcom: Add SPI
- child node ref binding
-Message-ID: <YzRiVwzJYXtat1O5@google.com>
-References: <20220922113347.144383-1-sergiu.moga@microchip.com>
- <20220922113347.144383-2-sergiu.moga@microchip.com>
+        with ESMTP id S233963AbiI1PLU (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 28 Sep 2022 11:11:20 -0400
+Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [IPv6:2a01:37:1000::53df:5f64:0])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D0B82C13E
+        for <linux-spi@vger.kernel.org>; Wed, 28 Sep 2022 08:11:18 -0700 (PDT)
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+         client-signature RSA-PSS (4096 bits) client-digest SHA256)
+        (Client CN "*.hostsharing.net", Issuer "RapidSSL TLS DV RSA Mixed SHA256 2020 CA-1" (verified OK))
+        by bmailout1.hostsharing.net (Postfix) with ESMTPS id 73E243000D929;
+        Wed, 28 Sep 2022 17:11:16 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+        id 5A392324FD; Wed, 28 Sep 2022 17:11:16 +0200 (CEST)
+Date:   Wed, 28 Sep 2022 17:11:16 +0200
+From:   Lukas Wunner <lukas@wunner.de>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Yang Yingliang <yangyingliang@huawei.com>,
+        linux-spi@vger.kernel.org
+Subject: Re: [PATCH -next 1/2] spi: introduce devm_spi_alloc_controller()
+Message-ID: <20220928151116.GA13418@wunner.de>
+References: <20220926142933.2299460-1-yangyingliang@huawei.com>
+ <20220927034525.GA32253@wunner.de>
+ <YzLct0v1ZRJVW2Gm@sirena.org.uk>
+ <703c43ca-ab47-bfd9-da26-d435aaf236e5@huawei.com>
+ <20220927133129.GA29821@wunner.de>
+ <YzMsc1IM/73CMEeg@sirena.org.uk>
+ <20220927201901.GB24652@wunner.de>
+ <YzNbhPjn27cWHwyi@sirena.org.uk>
+ <CAMuHMdWb8qeUGbr-zku4-zAM4Zj5MgCLJKR=Xg=Txe39kno8Og@mail.gmail.com>
+ <YzQsw8hiMTxdqZuu@sirena.org.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220922113347.144383-2-sergiu.moga@microchip.com>
+In-Reply-To: <YzQsw8hiMTxdqZuu@sirena.org.uk>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, 22 Sep 2022, Sergiu Moga wrote:
+On Wed, Sep 28, 2022 at 12:15:15PM +0100, Mark Brown wrote:
+> On Tue, Sep 27, 2022 at 10:43:08PM +0200, Geert Uytterhoeven wrote:
+> > On Tue, Sep 27, 2022 at 10:24 PM Mark Brown <broonie@kernel.org> wrote:
+> 
+> > > Sure, but since the current wrappers use the legacy names this means
+> > > that we need new wrappers with more modern names hence there is
+> > > something to improve here.
+> 
+> > So what are the more modern names?
+> 
+> It's unfortunately not 100% clear, and our use of controller for the
+> generic thing gets in the way a bit.  There was some stuff from one of
+> the open source hardware groups recently that tried to propose new names
+> but I'm not immediately finding it.  "host" and "target" would probably
+> do the trick?
 
-> Another functionality of FLEXCOM is that of SPI. In order for
-> the proper validation of the SPI children nodes through the binding
-> to occur, the proper binding for SPI must be referenced.
-> 
-> Signed-off-by: Sergiu Moga <sergiu.moga@microchip.com>
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> ---
-> 
-> 
-> v1 -> v2:
-> - use full schema paths
-> 
-> 
-> v2 -> v3:
-> - Added Reviewed-by tag, previously this was [PATCH 3]
-> 
-> 
-> v3 -> v4:
-> - Nothing, previously this was [PATCH 5]
-> 
-> 
-> v4 -> v5:
-> - Nothing
-> 
-> 
-> 
->  .../devicetree/bindings/mfd/atmel,sama5d2-flexcom.yaml       | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
+Perhaps you mean that one?
 
-Not sure how these can be handled.
+https://www.oshwa.org/a-resolution-to-redefine-spi-signal-names/
 
-I guess I cannot take these until the other patches are applied.
+Looks like they're replacing master with controller and
+slave with peripheral.  Pity, we're using controller as
+an umbrella term for either one of them.
 
-NB: The patch doesn't apply cleanly anyway, so will need to be rebased.
+Renaming that will lead to an awful lot of churn. :(
 
-> diff --git a/Documentation/devicetree/bindings/mfd/atmel,sama5d2-flexcom.yaml b/Documentation/devicetree/bindings/mfd/atmel,sama5d2-flexcom.yaml
-> index 0c80f4e98c54..f283cfd84b2d 100644
-> --- a/Documentation/devicetree/bindings/mfd/atmel,sama5d2-flexcom.yaml
-> +++ b/Documentation/devicetree/bindings/mfd/atmel,sama5d2-flexcom.yaml
-> @@ -78,10 +78,9 @@ patternProperties:
->        of USART bindings.
->  
->    "^spi@[0-9a-f]+$":
-> -    type: object
-> +    $ref: /schemas/spi/atmel,at91rm9200-spi.yaml
->      description:
-> -      Child node describing SPI. See ../spi/spi_atmel.txt for details
-> -      of SPI bindings.
-> +      Child node describing SPI.
->  
->    "^i2c@[0-9a-f]+$":
->      $ref: /schemas/i2c/atmel,at91sam-i2c.yaml
+Thanks,
 
--- 
-Lee Jones [李琼斯]
+Lukas

@@ -2,83 +2,134 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 185DEC433FE
-	for <linux-spi@archiver.kernel.org>; Tue,  4 Oct 2022 11:10:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9439BC433FE
+	for <linux-spi@archiver.kernel.org>; Tue,  4 Oct 2022 11:11:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229640AbiJDLKg (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 4 Oct 2022 07:10:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60312 "EHLO
+        id S229591AbiJDLLm (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 4 Oct 2022 07:11:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229810AbiJDLKG (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 4 Oct 2022 07:10:06 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D784B13CDA;
-        Tue,  4 Oct 2022 04:10:02 -0700 (PDT)
-Received: from [192.168.10.9] (unknown [39.45.148.204])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: usama.anjum)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 89FA1660225F;
-        Tue,  4 Oct 2022 12:09:59 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1664881800;
-        bh=AvdV9cCb9MyFUjPM+yXgi5qVq0iERQTeijLa2X2YNUE=;
-        h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
-        b=bIUzx4Itf+luuKI3l69mI+QwJDdTse1Gehqbh9UIsH/HbZ93+iBxy7q+u8MxqkfYg
-         Bnrlp8tZs5nplFmwrrv6/51r6ujXdW8lAiJuXBVHI40hFK901o+vZxDwKR+JMWNFmT
-         bQFk4PUlGAR1uqV4w4b4C/BLCyl2tYU8l1ub2tK0I1Zu/L3TnGjY9H9V7CCeZeVKQI
-         cgf0GZPJm+1gqNMmRvkO097YhplUpOx7IC0z9EfwLDbm0Qu3qGl9/6mKJuImoa/hWe
-         pIKNm0a4QhoGnPKS7yCZ60KNXXUwEq86RP6j8bruZDPOhNBNQrqwiUM/e3886T0SGZ
-         wiQLqqBtC8Zjw==
-Message-ID: <01ae2244-99cd-e96d-1bb7-6082da017cc8@collabora.com>
-Date:   Tue, 4 Oct 2022 16:09:55 +0500
+        with ESMTP id S229889AbiJDLLe (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 4 Oct 2022 07:11:34 -0400
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94FF821819
+        for <linux-spi@vger.kernel.org>; Tue,  4 Oct 2022 04:11:31 -0700 (PDT)
+Received: by mail-wm1-x32e.google.com with SMTP id fn7-20020a05600c688700b003b4fb113b86so7331875wmb.0
+        for <linux-spi@vger.kernel.org>; Tue, 04 Oct 2022 04:11:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date;
+        bh=waeAw6nVidn2Z1MNuWBA98zRNurIETpUSmW37z7qEow=;
+        b=yIX+mYN38FWzX6famWPBlf9ZjebH6HRHJsjfU85oeBOf+W/rt1cZsAqZlWRjgypd6l
+         AaCt3PCxYFdJwoi5u2DQh2CcYX8WdA6w6PPv0o1QnoSJlXvLGiwdIpqjsTZK+ZIi0moz
+         AGF6ykziPJ4uatv1slw4SzvYmC6wgnjnluQhPn1s6y8YK6gYctzZCLAJcakluygUwuYl
+         AJZaIwiYGft9j5IGHKAuvCqIwOks8AMgqO67tmEtb83aNyWc6S6WEkiWbKfcjur693zm
+         LUEHfK0x75f8BvId59bargoIRG0qeNQiH9sUWsA9Oq5JyYG6i84IMM/Af7cdW5kiQKBN
+         BnMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date;
+        bh=waeAw6nVidn2Z1MNuWBA98zRNurIETpUSmW37z7qEow=;
+        b=Q6grrT0aSkN6Aw6Nn2IG49J4Abj+Uc7R+ytJ0IZOud2Yw4ZFj0u17zowKyoI5jHKMf
+         VEIItUQhw28tajc7i86X4vY16OWDdE0QVEUIy8nF2IsC1kHk5C8ri8M4C1ksNofZcIdl
+         fo/mmeUUGZKFYbolhkTUbtlNgJHHsaFuJP2dGlZFkdPD+Vc23hvN15/UbZr7ohdfCT9b
+         hCJRHaAtZXCZIs88X3Kg29cLUetWrVCVgD132Re5fZHaqFwuQT3MLS1C1b697X/laUwo
+         AArlQ6v4goSLOeDn+GADEb8v549/vEZkuEG5gNscSc80SOpLUtI2NdSal4zShWpNzwvh
+         dcDA==
+X-Gm-Message-State: ACrzQf2khtmo4Iha4638GCiRK7gTk+nWw9doBd5rkm4WadPq4Wdqufl/
+        DFWW+jjSmIwuUYsj6PoPjxkGdg==
+X-Google-Smtp-Source: AMsMyM4GDoHyu4UZ7io9nYEgf80EAUwwovWZCk9y/nryGemAgMOivGSbU4BH/Vm3d7iP3eMOKadaCA==
+X-Received: by 2002:a05:600c:2d05:b0:3b4:7788:9944 with SMTP id x5-20020a05600c2d0500b003b477889944mr10038438wmf.57.1664881889852;
+        Tue, 04 Oct 2022 04:11:29 -0700 (PDT)
+Received: from [127.0.1.1] (210.145.15.109.rev.sfr.net. [109.15.145.210])
+        by smtp.googlemail.com with ESMTPSA id j2-20020adfd202000000b002285f73f11dsm15361698wrh.81.2022.10.04.04.11.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Oct 2022 04:11:29 -0700 (PDT)
+From:   Amjad Ouled-Ameur <aouledameur@baylibre.com>
+Date:   Tue, 04 Oct 2022 13:10:36 +0200
+Subject: [PATCH v2 1/2] spi: dt-bindings: amlogic, meson-gx-spicc: Add pinctrl names
+ for SPI signal states
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.0
-Cc:     usama.anjum@collabora.com, kernel@collabora.com,
-        kernel-janitors@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] spi: Remove the dead code
-Content-Language: en-US
-To:     Mark Brown <broonie@kernel.org>
-References: <20221004055620.371732-1-usama.anjum@collabora.com>
-From:   Muhammad Usama Anjum <usama.anjum@collabora.com>
-In-Reply-To: <20221004055620.371732-1-usama.anjum@collabora.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20221004-up-aml-fix-spi-v2-1-3e8ae91a1925@baylibre.com>
+References: <20221004-up-aml-fix-spi-v2-0-3e8ae91a1925@baylibre.com>
+In-Reply-To: <20221004-up-aml-fix-spi-v2-0-3e8ae91a1925@baylibre.com>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Mark Brown <broonie@kernel.org>
+Cc:     Neil Armstrong <neil.armstrong@linaro.org>,
+        Da Xue <da@libre.computer>, linux-kernel@vger.kernel.org,
+        Amjad Ouled-Ameur <aouledameur@baylibre.com>,
+        linux-spi@vger.kernel.org, linux-amlogic@lists.infradead.org,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+X-Mailer: b4 0.10.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1664881888; l=1463;
+ i=aouledameur@baylibre.com; s=20220920; h=from:subject:message-id;
+ bh=Ke2EUTvINs95mUpMERJPIoATA/4M6T38d1rluEloC5g=;
+ b=2poaN2OdU4FG83mvQ9Vu23Qhg4fzsx1Ttji06klA6qEItdVkv4ij/xC7b5ya7IZxQTnI4p/+8wxU
+ rRm7TLkJCRCqkcQq92Xu2BH2C28nvEhr4dc8JPV03tM9CKmSaODS
+X-Developer-Key: i=aouledameur@baylibre.com; a=ed25519;
+ pk=HgYWawSL4qLGPx+RzJ+Cuu+V8Pi/KQnDDm1wjWPMOFE=
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Please disregard this patch. This is wrong and not needed.
+SPI pins of the SPICC Controller in Meson-GX needs to be controlled by
+pin biais when idle. Therefore define three pinctrl names:
+- default: SPI pins are controlled by spi function.
+- idle-high: SCLK pin is pulled-up, but MOSI/MISO are still controlled
+by spi function.
+- idle-low: SCLK pin is pulled-down, but MOSI/MISO are still controlled
+by spi function.
 
-On 10/4/22 10:56 AM, Muhammad Usama Anjum wrote:
-> The vmallocated_buf is being checked if it is true inside the body of a
-> if condition which has already checked if it is true. Remove the
-> duplication and dead code as a result.
-> 
-> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-> ---
->  drivers/spi/spi.c | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
-> 
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index 44e4352d948b..4c51cd4e4ab0 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -1057,10 +1057,7 @@ static int spi_map_buf_attrs(struct spi_controller *ctlr, struct device *dev,
->  			min = min_t(size_t, desc_len,
->  				    min_t(size_t, len,
->  					  PAGE_SIZE - offset_in_page(buf)));
-> -			if (vmalloced_buf)
-> -				vm_page = vmalloc_to_page(buf);
-> -			else
-> -				vm_page = kmap_to_page(buf);
-> +			vm_page = vmalloc_to_page(buf);
->  			if (!vm_page) {
->  				sg_free_table(sgt);
->  				return -ENOMEM;
+Reported-by: Da Xue <da@libre.computer>
+Signed-off-by: Neil Armstrong <narmstrong@baylibre.com>
+Signed-off-by: Amjad Ouled-Ameur <aouledameur@baylibre.com>
+---
+ .../devicetree/bindings/spi/amlogic,meson-gx-spicc.yaml   | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/spi/amlogic,meson-gx-spicc.yaml b/Documentation/devicetree/bindings/spi/amlogic,meson-gx-spicc.yaml
+index 0c10f7678178..53013e27f507 100644
+--- a/Documentation/devicetree/bindings/spi/amlogic,meson-gx-spicc.yaml
++++ b/Documentation/devicetree/bindings/spi/amlogic,meson-gx-spicc.yaml
+@@ -43,6 +43,14 @@ properties:
+     minItems: 1
+     maxItems: 2
+ 
++  pinctrl-0:
++    minItems: 1
++
++  pinctrl-1:
++    maxItems: 1
++
++  pinctrl-names: true
++
+ if:
+   properties:
+     compatible:
+@@ -69,6 +77,13 @@ else:
+       items:
+         - const: core
+ 
++    pinctrl-names:
++      minItems: 1
++      items:
++        - const: default
++        - const: idle-high
++        - const: idle-low
++
+ required:
+   - compatible
+   - reg
 
 -- 
-Muhammad Usama Anjum
+b4 0.10.1

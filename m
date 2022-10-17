@@ -2,105 +2,166 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D9C0CC4332F
-	for <linux-spi@archiver.kernel.org>; Sun, 16 Oct 2022 22:43:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E9C3C4332F
+	for <linux-spi@archiver.kernel.org>; Mon, 17 Oct 2022 09:18:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229643AbiJPWnr (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 16 Oct 2022 18:43:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43724 "EHLO
+        id S229990AbiJQJSY (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 17 Oct 2022 05:18:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229577AbiJPWnq (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 16 Oct 2022 18:43:46 -0400
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 022412AE16;
-        Sun, 16 Oct 2022 15:43:44 -0700 (PDT)
-Received: by mail-wr1-x434.google.com with SMTP id bk15so15805478wrb.13;
-        Sun, 16 Oct 2022 15:43:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=jms.id.au; s=google;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wDsdEqeSyYndowz7YCRb9tbG1LI9jdAVJZcV10CPOKY=;
-        b=b4WAKvQpKxm/VVN+/HaV58gMgbxFzk34sPNg6kh+QcMqPSoaUAIJMybiayxNxS3Ns6
-         OhbeYOtq5BOXilCfMdAi0HykbmZSEw9ycZKw4PMEEPvjOXiY5SEh+nCPadeY7rg7qxKY
-         Js4KZnD4YsAG4GUDQH5xXN1CcUuuldr1gGRkg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wDsdEqeSyYndowz7YCRb9tbG1LI9jdAVJZcV10CPOKY=;
-        b=vqiJ7VNZxSnbH82jo9DXL4P0fFyFHEOErkiomXGBCFErxwG04TEmoacFUNHF0QJCC0
-         svCkTAYSQJGYfYft+VzDWOm5xpyK/KlXCzvVRrDped1i9ia+2zkf4I+hDIYYHwvVS4O9
-         DjBL3xl1Z0Y7nX7YKQOmUak8xFVX98PZYoHyVeFuaabn8W9tbtCyekKnbhZDFlrh3N7A
-         W2J9dPxO5Op9TWCfgyfy4EJ/KQBqa/LuRe/ooyN+96j4Gmx6B0Do6G2UIvruul0me9Cy
-         t2u9m9gB+fn7TrjmJyGE5AGWS/iJqxTXWCSQTTPkQnwkjYpA//RWVeUd1x/6afDOyjiW
-         1Qiw==
-X-Gm-Message-State: ACrzQf1ApLqNpRhPYvqFj3reZd3rwwq5NAWA1WlmvccCnJseQJ4Zvdvl
-        yBKfW2joiT1iQlWWu1erjEHqUS0rELULb8Oi4Xs=
-X-Google-Smtp-Source: AMsMyM6+vvLG/zT8BB8DixOZKoQOE4ds/2ACweWZ+P4b8z80ltXBboupc0jh5MD97+Bmf2y5bMFK/mr1zHT+QkeFydM=
-X-Received: by 2002:a5d:6c63:0:b0:230:8257:be9e with SMTP id
- r3-20020a5d6c63000000b002308257be9emr4251960wrz.606.1665960222405; Sun, 16
- Oct 2022 15:43:42 -0700 (PDT)
-MIME-Version: 1.0
-References: <20221016155722.3520802-1-clg@kaod.org>
-In-Reply-To: <20221016155722.3520802-1-clg@kaod.org>
-From:   Joel Stanley <joel@jms.id.au>
-Date:   Sun, 16 Oct 2022 22:43:30 +0000
-Message-ID: <CACPK8XfrF2h0zYNPcFwHmGfyohCOYQziqoUAJ6j60bEonFHu0A@mail.gmail.com>
-Subject: Re: [PATCH] spi: aspeed: Fix window offset of CE1
-To:     =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Cc:     linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org,
+        with ESMTP id S230037AbiJQJST (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 17 Oct 2022 05:18:19 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D13FC40561;
+        Mon, 17 Oct 2022 02:18:02 -0700 (PDT)
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+        by gandalf.ozlabs.org (Postfix) with ESMTP id 4MrWb55sqhz4xG9;
+        Mon, 17 Oct 2022 20:16:49 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4MrWb20658z4xGG;
+        Mon, 17 Oct 2022 20:16:45 +1100 (AEDT)
+From:   =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+To:     linux-spi@vger.kernel.org
+Cc:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        devicetree@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
+        openbmc@lists.ozlabs.org, Joel Stanley <joel@jms.id.au>,
         Andrew Jeffery <andrew@aj.id.au>,
+        Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Subject: [PATCH linux v2 3/3] spi: aspeed: Introduce a "ranges" debugfs file
+Date:   Mon, 17 Oct 2022 11:16:24 +0200
+Message-Id: <20221017091624.130227-4-clg@kaod.org>
+X-Mailer: git-send-email 2.37.3
+In-Reply-To: <20221017091624.130227-1-clg@kaod.org>
+References: <20221017091624.130227-1-clg@kaod.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Sun, 16 Oct 2022 at 15:57, C=C3=A9dric Le Goater <clg@kaod.org> wrote:
->
-> The offset value of the mapping window in the kernel structure is
-> calculated using the value of the previous window offset. This doesn't
-> reflect how the HW is configured and can lead to erroneous setting of
-> the second flash device (CE1).
+This dumps the mapping windows, or decoding ranges, of all devices
+possibly attached of the controller. To be noted that a top level
+"spi" debugfs directory is created to hold the intermediate directory
+of the driver instance.
 
-So .offset is expected to be the absolute address of the window, and
-this was okay for the 2400/2500 but was broken on the 2600?
+Cc: Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>
+Signed-off-by: Cédric Le Goater <clg@kaod.org>
+---
+ drivers/spi/spi-aspeed-smc.c | 66 +++++++++++++++++++++++++++++++++++-
+ 1 file changed, 65 insertions(+), 1 deletion(-)
 
-Reviewed-by: Joel Stanley <joel@jms.id.au>
+diff --git a/drivers/spi/spi-aspeed-smc.c b/drivers/spi/spi-aspeed-smc.c
+index 75e1d08bbd00..a79e5cc8ac5b 100644
+--- a/drivers/spi/spi-aspeed-smc.c
++++ b/drivers/spi/spi-aspeed-smc.c
+@@ -7,6 +7,7 @@
+  */
+ 
+ #include <linux/clk.h>
++#include <linux/debugfs.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+ #include <linux/of_platform.h>
+@@ -102,6 +103,9 @@ struct aspeed_spi {
+ 	u32			 clk_freq;
+ 
+ 	struct aspeed_spi_chip	 chips[ASPEED_SPI_MAX_NUM_CS];
++#if IS_ENABLED(CONFIG_DEBUG_FS)
++	struct dentry           *debugfs;
++#endif
+ };
+ 
+ static u32 aspeed_spi_get_io_mode(const struct spi_mem_op *op)
+@@ -716,6 +720,65 @@ static void aspeed_spi_enable(struct aspeed_spi *aspi, bool enable)
+ 		aspeed_spi_chip_enable(aspi, cs, enable);
+ }
+ 
++#if IS_ENABLED(CONFIG_DEBUG_FS)
++static int aspeed_spi_ranges_debug_show(struct seq_file *m, void *private)
++{
++	struct aspeed_spi *aspi = m->private;
++	struct aspeed_spi_window windows[ASPEED_SPI_MAX_NUM_CS] = { 0 };
++	u32 cs;
++
++	if (aspi->data == &ast2400_spi_data)
++		return 0;
++
++	aspeed_spi_get_windows(aspi, windows);
++
++	seq_puts(m, "     offset     size       register\n");
++	for (cs = 0; cs < aspi->data->max_cs; cs++) {
++		if (!windows[cs].reg)
++			seq_printf(m, "CE%d: disabled\n", cs);
++		else
++			seq_printf(m, "CE%d: 0x%.8x 0x%.8x 0x%x\n", cs,
++				   windows[cs].offset, windows[cs].size,
++				   windows[cs].reg);
++	}
++	return 0;
++}
++DEFINE_SHOW_ATTRIBUTE(aspeed_spi_ranges_debug);
++
++static int aspeed_spi_debugfs_init(struct spi_controller *ctlr)
++{
++	struct aspeed_spi *aspi = spi_controller_get_devdata(ctlr);
++	struct dentry *rootdir = NULL;
++
++	rootdir = debugfs_lookup("spi", NULL);
++	if (!rootdir)
++		rootdir = debugfs_create_dir("spi", NULL);
++
++	aspi->debugfs = debugfs_create_dir(dev_name(&ctlr->dev), rootdir);
++	if (!aspi->debugfs)
++		return -ENOMEM;
++
++	debugfs_create_file("ranges", 0444, aspi->debugfs, (void *)aspi,
++			    &aspeed_spi_ranges_debug_fops);
++	return 0;
++}
++
++static void aspeed_spi_debugfs_remove(struct aspeed_spi *aspi)
++{
++	debugfs_remove_recursive(aspi->debugfs);
++}
++
++#else
++static inline int aspeed_spi_debugfs_init(struct spi_controller *ctlr)
++{
++	return 0;
++}
++
++static inline void aspeed_spi_debugfs_remove(struct aspeed_spi *aspi)
++{
++}
++#endif /* IS_ENABLED(CONFIG_DEBUG_FS) */
++
+ static int aspeed_spi_chip_read_ranges(struct device_node *node, struct aspeed_spi *aspi)
+ {
+ 	const char *range_prop = "ranges";
+@@ -845,7 +908,7 @@ static int aspeed_spi_probe(struct platform_device *pdev)
+ 		dev_err(&pdev->dev, "spi_register_controller failed\n");
+ 		goto disable_clk;
+ 	}
+-	return 0;
++	return aspeed_spi_debugfs_init(ctlr);
+ 
+ disable_clk:
+ 	clk_disable_unprepare(aspi->clk);
+@@ -856,6 +919,7 @@ static int aspeed_spi_remove(struct platform_device *pdev)
+ {
+ 	struct aspeed_spi *aspi = platform_get_drvdata(pdev);
+ 
++	aspeed_spi_debugfs_remove(aspi);
+ 	aspeed_spi_enable(aspi, false);
+ 	clk_disable_unprepare(aspi->clk);
+ 	return 0;
+-- 
+2.37.3
 
-
->
-> Cc: Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>
-> Fixes: e3228ed92893 ("spi: spi-mem: Convert Aspeed SMC driver to spi-mem"=
-)
-> Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
-> ---
->  drivers/spi/spi-aspeed-smc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/spi/spi-aspeed-smc.c b/drivers/spi/spi-aspeed-smc.c
-> index 33cefcf18392..b90571396a60 100644
-> --- a/drivers/spi/spi-aspeed-smc.c
-> +++ b/drivers/spi/spi-aspeed-smc.c
-> @@ -398,7 +398,7 @@ static void aspeed_spi_get_windows(struct aspeed_spi =
-*aspi,
->                 windows[cs].cs =3D cs;
->                 windows[cs].size =3D data->segment_end(aspi, reg_val) -
->                         data->segment_start(aspi, reg_val);
-> -               windows[cs].offset =3D cs ? windows[cs - 1].offset + wind=
-ows[cs - 1].size : 0;
-> +               windows[cs].offset =3D data->segment_start(aspi, reg_val)=
- - aspi->ahb_base_phy;
->                 dev_vdbg(aspi->dev, "CE%d offset=3D0x%.8x size=3D0x%x\n",=
- cs,
->                          windows[cs].offset, windows[cs].size);
->         }
-> --
-> 2.37.3
->

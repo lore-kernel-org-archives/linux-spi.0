@@ -2,174 +2,71 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E6D1FC433FE
-	for <linux-spi@archiver.kernel.org>; Mon, 17 Oct 2022 09:22:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 07A0FC433FE
+	for <linux-spi@archiver.kernel.org>; Mon, 17 Oct 2022 09:22:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230332AbiJQJWG (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 17 Oct 2022 05:22:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53342 "EHLO
+        id S231160AbiJQJWm (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 17 Oct 2022 05:22:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231252AbiJQJVw (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 17 Oct 2022 05:21:52 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1A6713D30;
-        Mon, 17 Oct 2022 02:21:48 -0700 (PDT)
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-        by gandalf.ozlabs.org (Postfix) with ESMTP id 4MrWb13WWgz4xGm;
-        Mon, 17 Oct 2022 20:16:45 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4MrWZx343vz4wgv;
-        Mon, 17 Oct 2022 20:16:41 +1100 (AEDT)
-From:   =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-To:     linux-spi@vger.kernel.org
-Cc:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
-        openbmc@lists.ozlabs.org, Joel Stanley <joel@jms.id.au>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
-        Naresh Solanki <naresh.solanki@9elements.com>
-Subject: [PATCH linux v2 2/3] spi: aspeed: Handle custom decoding ranges
-Date:   Mon, 17 Oct 2022 11:16:23 +0200
-Message-Id: <20221017091624.130227-3-clg@kaod.org>
-X-Mailer: git-send-email 2.37.3
-In-Reply-To: <20221017091624.130227-1-clg@kaod.org>
-References: <20221017091624.130227-1-clg@kaod.org>
+        with ESMTP id S231248AbiJQJWS (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 17 Oct 2022 05:22:18 -0400
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC96F20BFD;
+        Mon, 17 Oct 2022 02:22:11 -0700 (PDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046049;MF=jiapeng.chong@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0VSLPPPc_1665998521;
+Received: from localhost(mailfrom:jiapeng.chong@linux.alibaba.com fp:SMTPD_---0VSLPPPc_1665998521)
+          by smtp.aliyun-inc.com;
+          Mon, 17 Oct 2022 17:22:09 +0800
+From:   Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+To:     conor.dooley@microchip.com
+Cc:     daire.mcnamara@microchip.com, broonie@kernel.org,
+        linux-riscv@lists.infradead.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+        Abaci Robot <abaci@linux.alibaba.com>
+Subject: [PATCH] spi: microchip-core: Remove the unused function mchp_corespi_enable()
+Date:   Mon, 17 Oct 2022 17:21:41 +0800
+Message-Id: <20221017092141.9789-1-jiapeng.chong@linux.alibaba.com>
+X-Mailer: git-send-email 2.20.1.7.g153144c
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The "ranges" property predefines settings for the decoding ranges of
-each CS. If found in the DT, the driver applies the settings at probe
-time. The default behavior is to set the decoding range of each CS
-using the flash device size when the spi slave is setup.
+The function mchp_corespi_enable() is defined in the spi-microchip-core.c
+file, but not called elsewhere, so delete this unused function.
 
-Cc: Naresh Solanki <naresh.solanki@9elements.com>
-Cc: Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>
-Signed-off-by: Cédric Le Goater <clg@kaod.org>
+drivers/spi/spi-microchip-core.c:122:20: warning: unused function 'mchp_corespi_enable'.
+
+Link: https://bugzilla.openanolis.cn/show_bug.cgi?id=2418
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
 ---
- drivers/spi/spi-aspeed-smc.c | 65 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 64 insertions(+), 1 deletion(-)
+ drivers/spi/spi-microchip-core.c | 9 ---------
+ 1 file changed, 9 deletions(-)
 
-diff --git a/drivers/spi/spi-aspeed-smc.c b/drivers/spi/spi-aspeed-smc.c
-index b90571396a60..75e1d08bbd00 100644
---- a/drivers/spi/spi-aspeed-smc.c
-+++ b/drivers/spi/spi-aspeed-smc.c
-@@ -96,6 +96,7 @@ struct aspeed_spi {
- 	u32			 ahb_base_phy;
- 	u32			 ahb_window_size;
- 	struct device		*dev;
-+	bool                     fixed_windows;
- 
- 	struct clk		*clk;
- 	u32			 clk_freq;
-@@ -382,6 +383,7 @@ static const char *aspeed_spi_get_name(struct spi_mem *mem)
- 
- struct aspeed_spi_window {
- 	u32 cs;
-+	u32 reg;
- 	u32 offset;
- 	u32 size;
- };
-@@ -396,6 +398,7 @@ static void aspeed_spi_get_windows(struct aspeed_spi *aspi,
- 	for (cs = 0; cs < aspi->data->max_cs; cs++) {
- 		reg_val = readl(aspi->regs + CE0_SEGMENT_ADDR_REG + cs * 4);
- 		windows[cs].cs = cs;
-+		windows[cs].reg = reg_val;
- 		windows[cs].size = data->segment_end(aspi, reg_val) -
- 			data->segment_start(aspi, reg_val);
- 		windows[cs].offset = data->segment_start(aspi, reg_val) - aspi->ahb_base_phy;
-@@ -572,7 +575,8 @@ static int aspeed_spi_dirmap_create(struct spi_mem_dirmap_desc *desc)
- 	if (op->data.dir != SPI_MEM_DATA_IN)
- 		return -EOPNOTSUPP;
- 
--	aspeed_spi_chip_adjust_window(chip, desc->info.offset, desc->info.length);
-+	if (!aspi->fixed_windows)
-+		aspeed_spi_chip_adjust_window(chip, desc->info.offset, desc->info.length);
- 
- 	if (desc->info.length > chip->ahb_window_size)
- 		dev_warn(aspi->dev, "CE%d window (%dMB) too small for mapping",
-@@ -712,6 +716,61 @@ static void aspeed_spi_enable(struct aspeed_spi *aspi, bool enable)
- 		aspeed_spi_chip_enable(aspi, cs, enable);
+diff --git a/drivers/spi/spi-microchip-core.c b/drivers/spi/spi-microchip-core.c
+index d352844c798c..aeaa1da88f39 100644
+--- a/drivers/spi/spi-microchip-core.c
++++ b/drivers/spi/spi-microchip-core.c
+@@ -119,15 +119,6 @@ static inline void mchp_corespi_write(struct mchp_corespi *spi, unsigned int reg
+ 	writel(val, spi->regs + reg);
  }
  
-+static int aspeed_spi_chip_read_ranges(struct device_node *node, struct aspeed_spi *aspi)
-+{
-+	const char *range_prop = "ranges";
-+	struct property *prop;
-+	struct aspeed_spi_window ranges[ASPEED_SPI_MAX_NUM_CS];
-+	int prop_size;
-+	int count;
-+	int ret;
-+	int i;
-+
-+	prop = of_find_property(node, range_prop, &prop_size);
-+	if (!prop)
-+		return 0;
-+
-+	count = prop_size / sizeof(*ranges);
-+	if (count > aspi->data->max_cs) {
-+		dev_err(aspi->dev, "invalid '%s' property %d\n", range_prop, count);
-+		return -EINVAL;
-+	}
-+
-+	if (count < aspi->data->max_cs)
-+		dev_dbg(aspi->dev, "'%s' property does not cover all CE\n",
-+			range_prop);
-+
-+	ret = of_property_read_u32_array(node, range_prop, (u32 *)ranges, count * 4);
-+	if (ret)
-+		return ret;
-+
-+	dev_info(aspi->dev, "Using preset decoding ranges\n");
-+	for (i = 0; i < count; i++) {
-+		struct aspeed_spi_window *win = &ranges[i];
-+
-+		if (win->cs > aspi->data->max_cs) {
-+			dev_err(aspi->dev, "CE%d range is invalid", win->cs);
-+			return -EINVAL;
-+		}
-+
-+		/* Trim top bit of the address to keep offset */
-+		win->offset &= aspi->ahb_window_size - 1;
-+
-+		/* Minimal check */
-+		if (win->offset + win->size > aspi->ahb_window_size) {
-+			dev_warn(aspi->dev, "CE%d range is too large", win->cs);
-+				return -EINVAL;
-+		}
-+
-+		ret = aspeed_spi_set_window(aspi, win);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	aspi->fixed_windows = true;
-+	return 0;
-+}
-+
- static int aspeed_spi_probe(struct platform_device *pdev)
+-static inline void mchp_corespi_enable(struct mchp_corespi *spi)
+-{
+-	u32 control = mchp_corespi_read(spi, REG_CONTROL);
+-
+-	control |= CONTROL_ENABLE;
+-
+-	mchp_corespi_write(spi, REG_CONTROL, control);
+-}
+-
+ static inline void mchp_corespi_disable(struct mchp_corespi *spi)
  {
- 	struct device *dev = &pdev->dev;
-@@ -767,6 +826,10 @@ static int aspeed_spi_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
-+	ret = aspeed_spi_chip_read_ranges(dev->of_node, aspi);
-+	if (ret)
-+		return ret;
-+
- 	/* IRQ is for DMA, which the driver doesn't support yet */
- 
- 	ctlr->mode_bits = SPI_RX_DUAL | SPI_TX_DUAL | data->mode_bits;
+ 	u32 control = mchp_corespi_read(spi, REG_CONTROL);
 -- 
-2.37.3
+2.20.1.7.g153144c
 

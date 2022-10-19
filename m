@@ -2,111 +2,101 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6CD66C4332F
-	for <linux-spi@archiver.kernel.org>; Wed, 19 Oct 2022 15:12:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F0B0C4332F
+	for <linux-spi@archiver.kernel.org>; Wed, 19 Oct 2022 15:16:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232229AbiJSPMW (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 19 Oct 2022 11:12:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57648 "EHLO
+        id S232300AbiJSPQl (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 19 Oct 2022 11:16:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232135AbiJSPL2 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 19 Oct 2022 11:11:28 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E59BFBE502;
-        Wed, 19 Oct 2022 08:04:31 -0700 (PDT)
+        with ESMTP id S232035AbiJSPQ0 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 19 Oct 2022 11:16:26 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1927AE45;
+        Wed, 19 Oct 2022 08:09:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1666191875; x=1697727875;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=hWe3aaoOgf+xq5Pq0douiTL3qv6/yUoCMHsfExvmaKw=;
-  b=QKZW2Ob/gLgvdrrzndHUmNcbqnGhalNyWb2jbMg02XFcfNP555gSMUeW
-   dQZw/3XhrlCAmqunf52C1bvZiB2c/MvkECC3ihrAcoXNSEreNYeA7Kc/d
-   f3bunUKefznjdldmEZbgVlPMH6oiMgVIOzywaepTvrsvczS7Hz1iCWgrZ
-   mu7m72qN4I678mC4qwD1PObQxUat4Y1kQpIj3t4W8Ma5ZgfsiC5PUzRsY
-   zbFcH2dkil4ojipZQYo6SWsw1pBzetQN0twpubR5heL/8UxexPPIyDlFe
-   KjKt3itWXMaUglg0R0m1JvMn5SRl9SO2eWlnpSGB4HNKvKkYSck+V+a25
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10505"; a="305170523"
+  t=1666192162; x=1697728162;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=BEhLcDiHCJYoVaxf1jyli6vQ72GwUtyBEW6sFVkFc4w=;
+  b=VhGZEJYSkO0J1Jc1yklHaEHVRQuWMPXrbycK+OhTjT1XX7YS5O+RdD/P
+   2sHMWkHks/2Jszyfno82wRtnVhtJnmG/qLRk1tKjd2H2Cko2tGwxHnbis
+   3BMIYD7+wY0CPRhizZUdtygRRkD3ox0Hi6noBEOHFay1awZFzhqPGfXhk
+   3CNQnZIMU8VWJitIz1LgpyZ1K3s76M0MB8mUJYyBj/ddOM90Qmj5UAKSh
+   d3w0ApTBvg+aUYV94EztTW5I9g4myBEzKZMWeAOmrduPLeeWsfXGCnJxD
+   DfzlRrnd5mVo8vzixIu0NY/XDFLIL942CJrbv8BXN4UhkuMdbe9ffAqmv
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10505"; a="304052076"
 X-IronPort-AV: E=Sophos;i="5.95,196,1661842800"; 
-   d="scan'208";a="305170523"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2022 08:04:14 -0700
+   d="scan'208";a="304052076"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2022 08:06:08 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10505"; a="607135193"
+X-IronPort-AV: E=McAfee;i="6500,9779,10505"; a="662501612"
 X-IronPort-AV: E=Sophos;i="5.95,196,1661842800"; 
-   d="scan'208";a="607135193"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga006.jf.intel.com with ESMTP; 19 Oct 2022 08:04:12 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 8B3FED0; Wed, 19 Oct 2022 18:04:33 +0300 (EEST)
+   d="scan'208";a="662501612"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga001.jf.intel.com with ESMTP; 19 Oct 2022 08:06:06 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1olAdw-009uMs-17;
+        Wed, 19 Oct 2022 18:06:04 +0300
+Date:   Wed, 19 Oct 2022 18:06:04 +0300
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Daniel Mack <daniel@zonque.org>,
+To:     Mark Brown <broonie@kernel.org>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Daniel Mack <daniel@zonque.org>,
         Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH v2 1/5] spi: pxa2xx: Respect Intel SSP type given by a property
-Date:   Wed, 19 Oct 2022 18:04:26 +0300
-Message-Id: <20221019150430.27142-2-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221019150430.27142-1-andriy.shevchenko@linux.intel.com>
-References: <20221019150430.27142-1-andriy.shevchenko@linux.intel.com>
+        Robert Jarzmik <robert.jarzmik@free.fr>
+Subject: Re: [PATCH v1 3/6] spi: pxa2xx: Remove no more needed PCI ID table
+Message-ID: <Y1ASXFOuc2uGXOlV@smile.fi.intel.com>
+References: <20221017171243.57078-1-andriy.shevchenko@linux.intel.com>
+ <20221017171243.57078-3-andriy.shevchenko@linux.intel.com>
+ <Y02ObkYoUQlY9oG/@sirena.org.uk>
+ <Y02SVH04iiu7Rj+8@smile.fi.intel.com>
+ <Y02TR0UBseEKUjq8@sirena.org.uk>
+ <Y02TxHp53XQo34ql@smile.fi.intel.com>
+ <Y06RCxzwrPZwIETp@sirena.org.uk>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Y06RCxzwrPZwIETp@sirena.org.uk>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Allow to set the Intel SSP type by reading the property.
+On Tue, Oct 18, 2022 at 12:42:03PM +0100, Mark Brown wrote:
+> On Mon, Oct 17, 2022 at 08:41:24PM +0300, Andy Shevchenko wrote:
+> > On Mon, Oct 17, 2022 at 06:39:19PM +0100, Mark Brown wrote:
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/spi/spi-pxa2xx.c   | 6 ++++++
- include/linux/pxa2xx_ssp.h | 1 +
- 2 files changed, 7 insertions(+)
+Thank you for your review!
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 03ed6d4a14cd..857732a54ca7 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1460,6 +1460,7 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
- 	struct resource *res;
- 	struct pci_dev *pcidev = dev_is_pci(parent) ? to_pci_dev(parent) : NULL;
- 	const struct pci_device_id *pcidev_id = NULL;
-+	u32 value = SSP_UNDEFINED;
- 	enum pxa_ssp_type type;
- 	const void *match;
- 	int status;
-@@ -1468,9 +1469,14 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
- 	if (pcidev)
- 		pcidev_id = pci_match_id(pxa2xx_spi_pci_compound_match, pcidev);
- 
-+	/* Always try to read property */
-+	device_property_read_u32(&pdev->dev, "intel,spi-pxa2xx-type", &value);
-+
- 	match = device_get_match_data(&pdev->dev);
- 	if (match)
- 		type = (enum pxa_ssp_type)match;
-+	else if (value > SSP_UNDEFINED && value < SSP_MAX)
-+		type = (enum pxa_ssp_type)value;
- 	else if (pcidev_id)
- 		type = (enum pxa_ssp_type)pcidev_id->driver_data;
- 	else
-diff --git a/include/linux/pxa2xx_ssp.h b/include/linux/pxa2xx_ssp.h
-index a3fec2de512f..cd1973e6ac4b 100644
---- a/include/linux/pxa2xx_ssp.h
-+++ b/include/linux/pxa2xx_ssp.h
-@@ -229,6 +229,7 @@ enum pxa_ssp_type {
- 	LPSS_SPT_SSP,
- 	LPSS_BXT_SSP,
- 	LPSS_CNL_SSP,
-+	SSP_MAX
- };
- 
- struct ssp_device {
+> > > Which board code is this?  The names of the new properties you're adding
+> > > is really not at all idiomatic for ACPI and this is pretty old code so
+> > > it's surprising that there's not existing systems that don't have this
+> > > in their BIOSs.
+> 
+> > drivers/mfd/intel-lpss-pci.c.
+> 
+> OK, so this is another push for device properties for passing stuff
+> internally.  Please resubmit this series with descriptions of why this
+> is being done - I really can't tell what the benefit is here in concrete
+> terms, you say it somehow improves identification of which variant is in
+> use but don't articulate specifically why.
+
+I have sent a v2.
+
+> You should probably also restructure the code interpreting the device
+> IDs so that it's very clear that unknown values are handled well, this
+> would split things between multiple subsystems and right now the code is
+> a bit fragile.
+
+I'm not sure how better to do this. Any example?
+
 -- 
-2.35.1
+With Best Regards,
+Andy Shevchenko
+
 

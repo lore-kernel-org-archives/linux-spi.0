@@ -2,86 +2,108 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 41B8FC433FE
-	for <linux-spi@archiver.kernel.org>; Wed, 19 Oct 2022 15:04:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6A139C4332F
+	for <linux-spi@archiver.kernel.org>; Wed, 19 Oct 2022 15:11:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229687AbiJSPEL (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 19 Oct 2022 11:04:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60682 "EHLO
+        id S232243AbiJSPL2 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 19 Oct 2022 11:11:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231976AbiJSPD6 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 19 Oct 2022 11:03:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 542A91C2F0C;
-        Wed, 19 Oct 2022 07:58:15 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 95E6861908;
-        Wed, 19 Oct 2022 14:56:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F4C3C433D6;
-        Wed, 19 Oct 2022 14:56:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666191419;
-        bh=9Bw0aFAkSLNwxg2hqGz9POPzhqsT/j8ihEWCR51Rcjs=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=qcg74Qw7KGsQEqZONGxvf3iDzilD0efRtWaDnjLieM38EazJhyp0okwur0gSZovND
-         Zw2Chlw0qEVxWQ/s8nD5v689CrMoLSMfum6CYuCA7yk/CN6ZE3OlLLCixoYk4LMbKG
-         Huaz0kqakGRjRK8C3wFVWvo7LtpPtbJdfJLpMsTz0xT+Ln+hd+N/UOzr+qGwLhSJ4G
-         La+vXCKf6uJkRT0Zb5pMJt0m4DGL/YmdJUUDa2rlRH13fEtlQeDYkS9Vg07weePl5w
-         TwOKgYup16B44vdK7FDK2oClVcSfwFA4omrzB4MzTEJDg+/23wM0gIFSX3nfb7QngB
-         93J9NNAGxCrFg==
-From:   Mark Brown <broonie@kernel.org>
-To:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Giulio Benetti <giulio.benetti@benettiengineering.com>,
-        linux-raid@vger.kernel.org, linux-spi@vger.kernel.org,
-        Arnd Bergmann <arnd@arndb.de>
-Cc:     Song Liu <song@kernel.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>
-In-Reply-To: <20221018215755.33566-1-giulio.benetti@benettiengineering.com>
-References: <20221018215755.33566-1-giulio.benetti@benettiengineering.com>
-Subject: Re: (subset) [PATCH 1/3] ACPI: scan: substitute empty_zero_page with helper ZERO_PAGE(0)
-Message-Id: <166619141690.565256.8563939546728659746.b4-ty@kernel.org>
-Date:   Wed, 19 Oct 2022 15:56:56 +0100
+        with ESMTP id S232195AbiJSPK7 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 19 Oct 2022 11:10:59 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66A5892F6F;
+        Wed, 19 Oct 2022 08:04:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1666191854; x=1697727854;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=jBd+m75aH3eu6jFU/XbmoI0uYN2YkZ1EVWvqGphS/uY=;
+  b=HSrEybaJ7ZqxbuRbKCc9hcgpIHyQrHoLNBhHKxP9xcfxn8lR4PDA7iOo
+   20eySBXuhezJrMywdGVVmd1Gm0I/bQszYXBmXesBge792pyVLf57IXfwS
+   Qk/nFD4UubUY76g1tr+j5xnICaC0tCoSnP40n9lGT/JFgIUpZG5APLxqt
+   t4CVkf4I60ezpKpxqNHPncOe/toh/2quHaOFggJ7kwMAlOjNC8hyX1PFw
+   U7j4mFN4T1I6FtvZUJlpY0e1MrO5IM5or7YmIpXpcQNdI9hsKZODh6hZS
+   LifUSK4h23XI7YKUoEkVL6nf6UoHLdJrfFkRs2bW+vP+V6B7MkYlGlCRq
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10505"; a="306425600"
+X-IronPort-AV: E=Sophos;i="5.95,196,1661842800"; 
+   d="scan'208";a="306425600"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2022 08:04:14 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10505"; a="771826788"
+X-IronPort-AV: E=Sophos;i="5.95,196,1661842800"; 
+   d="scan'208";a="771826788"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 19 Oct 2022 08:04:12 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 78BA113F; Wed, 19 Oct 2022 18:04:33 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH v2 0/5] spi: pxa2xx: Pass the SSP type via device property
+Date:   Wed, 19 Oct 2022 18:04:25 +0300
+Message-Id: <20221019150430.27142-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.10.0-dev-fc921
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Tue, 18 Oct 2022 23:57:53 +0200, Giulio Benetti wrote:
-> Not all zero page implementations use empty_zero_page global pointer so
-> let's substitute empty_zero_page occurence with helper ZERO_PAGE(0).
-> 
-> 
+Currently the SPI PXA2xx devices on Intel platforms can be instantiated 
+via the following paths:
 
-Applied to
+ 1) as ACPI LPSS device on Haswell, Bay Trail and Cherry Trail
+ 2) as ACPI LPSS device on the Sky Lake and newer
+ 3) as PCI LPSS device on Haswell, Bay Trail and Cherry Trail
+ 4) as PCI LPSS device on the Sky Lake and newer
+ 5) as PCI device via ID table
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+Each of this case provides some platform related data differently,
+i.e.:
+ 1) via drivers/acpi/acpi_lpss.c and drivers/spi/spi-pxa2xx.c;
+ 2) via drivers/mfd/intel-lpss-acpi.c;
+ 3) via drivers/spi/spi-pxa2xx-pci.c;
+ 4) via drivers/mfd/intel-lpss-pci.c and drivers/spi/spi-pxa2xx.c;
+ 5) via drivers/spi/spi-pxa2xx-pci.c;
 
-Thanks!
+This approach has two downsides:
 
-[2/3] spi: fsl-cpm: substitute empty_zero_page with helper ZERO_PAGE(0)
-      commit: 3be6acda8241352c57d47b4d7d9968cadcb954ea
+a) there is no data propagated in the case #2 because we can't have
+   two or more drivers to match the same ACPI ID and hence some cases
+   are still not supported (Sky Lake and Cannon Lake ACPI enabled
+   LPSS);
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+a) the data is duplicated over two drivers in case #4 and, besides
+   to be a bloatware, it is error prone (e.g. Lakefield has a wrong
+   data right now due to missed PCI entry in the spi-pxa2xx.c);
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+This series fixes the downsides, and enables previously unsupported
+cases. On top of that it has a coupole of cleanups (patches 4 and 5).
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+Changelog v2:
+- added cover letter (Mark)
+- dropped applied patch
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+Andy Shevchenko (5):
+  spi: pxa2xx: Respect Intel SSP type given by a property
+  spi: pxa2xx: Remove no more needed PCI ID table
+  spi: pxa2xx: Remove no more needed driver data
+  spi: pxa2xx: Move OF and ACPI ID tables closer to their user
+  spi: pxa2xx: Switch from PM ifdeffery to pm_ptr()
 
-Thanks,
-Mark
+ drivers/spi/spi-pxa2xx.c   | 170 +++++++------------------------------
+ include/linux/pxa2xx_ssp.h |   1 +
+ 2 files changed, 30 insertions(+), 141 deletions(-)
+
+-- 
+2.35.1
+

@@ -2,44 +2,44 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 01E54C433FE
-	for <linux-spi@archiver.kernel.org>; Wed, 19 Oct 2022 15:12:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6CD66C4332F
+	for <linux-spi@archiver.kernel.org>; Wed, 19 Oct 2022 15:12:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231933AbiJSPMV (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 19 Oct 2022 11:12:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46366 "EHLO
+        id S232229AbiJSPMW (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 19 Oct 2022 11:12:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232261AbiJSPLc (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 19 Oct 2022 11:11:32 -0400
+        with ESMTP id S232135AbiJSPL2 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 19 Oct 2022 11:11:28 -0400
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58E677D1C2;
-        Wed, 19 Oct 2022 08:04:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E59BFBE502;
+        Wed, 19 Oct 2022 08:04:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1666191887; x=1697727887;
+  t=1666191875; x=1697727875;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=7hGgSA2GsBhzJwzVfaWPKJQVLq/322V9p+NlpEwW/lY=;
-  b=nTHH/5bZEj8QgClyUBItabkN55sTS+n3da2h2SmyDBNCTQYDeRjMrpoG
-   QDyyLxrVAm171JGP0PEmcW8pqN8mfnyfnBll6WyiD4SkqNNDM7j6rvTwR
-   WFVVKQs5huf1vKnrwtnHjsrDSWPajEekgEA+Ajy6BtmDZlXg2d9sdelVd
-   o/UsEqu7K9NxPN6l51gs6elUFPB9AwkEH8yn0iKJCRUCUrjX+rdg7etHB
-   otIUYOkRQn5NsTAFV5BV7nqiMADTtx3jyWRIOBPh4xXGPLWeIyyBYICNi
-   A4xpWW+UOGRveYJJ+UIBZnp0W2lETDY9LCLheNFrewQCsvEqiaWmdKQax
+  bh=hWe3aaoOgf+xq5Pq0douiTL3qv6/yUoCMHsfExvmaKw=;
+  b=QKZW2Ob/gLgvdrrzndHUmNcbqnGhalNyWb2jbMg02XFcfNP555gSMUeW
+   dQZw/3XhrlCAmqunf52C1bvZiB2c/MvkECC3ihrAcoXNSEreNYeA7Kc/d
+   f3bunUKefznjdldmEZbgVlPMH6oiMgVIOzywaepTvrsvczS7Hz1iCWgrZ
+   mu7m72qN4I678mC4qwD1PObQxUat4Y1kQpIj3t4W8Ma5ZgfsiC5PUzRsY
+   zbFcH2dkil4ojipZQYo6SWsw1pBzetQN0twpubR5heL/8UxexPPIyDlFe
+   KjKt3itWXMaUglg0R0m1JvMn5SRl9SO2eWlnpSGB4HNKvKkYSck+V+a25
    g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10505"; a="305170527"
+X-IronPort-AV: E=McAfee;i="6500,9779,10505"; a="305170523"
 X-IronPort-AV: E=Sophos;i="5.95,196,1661842800"; 
-   d="scan'208";a="305170527"
+   d="scan'208";a="305170523"
 Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2022 08:04:15 -0700
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2022 08:04:14 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10505"; a="607135198"
+X-IronPort-AV: E=McAfee;i="6500,9779,10505"; a="607135193"
 X-IronPort-AV: E=Sophos;i="5.95,196,1661842800"; 
-   d="scan'208";a="607135198"
+   d="scan'208";a="607135193"
 Received: from black.fi.intel.com ([10.237.72.28])
   by orsmga006.jf.intel.com with ESMTP; 19 Oct 2022 08:04:12 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id AA5D215C; Wed, 19 Oct 2022 18:04:33 +0300 (EEST)
+        id 8B3FED0; Wed, 19 Oct 2022 18:04:33 +0300 (EEST)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
@@ -48,9 +48,9 @@ Cc:     Daniel Mack <daniel@zonque.org>,
         Haojian Zhuang <haojian.zhuang@gmail.com>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
         Mark Brown <broonie@kernel.org>
-Subject: [PATCH v2 3/5] spi: pxa2xx: Remove no more needed driver data
-Date:   Wed, 19 Oct 2022 18:04:28 +0300
-Message-Id: <20221019150430.27142-4-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v2 1/5] spi: pxa2xx: Respect Intel SSP type given by a property
+Date:   Wed, 19 Oct 2022 18:04:26 +0300
+Message-Id: <20221019150430.27142-2-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20221019150430.27142-1-andriy.shevchenko@linux.intel.com>
 References: <20221019150430.27142-1-andriy.shevchenko@linux.intel.com>
@@ -60,38 +60,53 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Since the ACPI enumerated devices provide a property with SSP type,
-there is no more necessity to bear the copy of them in the ID table.
-Drop the driver data in ACPI ID table.
+Allow to set the Intel SSP type by reading the property.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/spi/spi-pxa2xx.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/spi/spi-pxa2xx.c   | 6 ++++++
+ include/linux/pxa2xx_ssp.h | 1 +
+ 2 files changed, 7 insertions(+)
 
 diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 1d36d055a9d6..31927493eeb0 100644
+index 03ed6d4a14cd..857732a54ca7 100644
 --- a/drivers/spi/spi-pxa2xx.c
 +++ b/drivers/spi/spi-pxa2xx.c
-@@ -1323,12 +1323,12 @@ static void cleanup(struct spi_device *spi)
+@@ -1460,6 +1460,7 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+ 	struct resource *res;
+ 	struct pci_dev *pcidev = dev_is_pci(parent) ? to_pci_dev(parent) : NULL;
+ 	const struct pci_device_id *pcidev_id = NULL;
++	u32 value = SSP_UNDEFINED;
+ 	enum pxa_ssp_type type;
+ 	const void *match;
+ 	int status;
+@@ -1468,9 +1469,14 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+ 	if (pcidev)
+ 		pcidev_id = pci_match_id(pxa2xx_spi_pci_compound_match, pcidev);
  
- #ifdef CONFIG_ACPI
- static const struct acpi_device_id pxa2xx_spi_acpi_match[] = {
--	{ "INT33C0", LPSS_LPT_SSP },
--	{ "INT33C1", LPSS_LPT_SSP },
--	{ "INT3430", LPSS_LPT_SSP },
--	{ "INT3431", LPSS_LPT_SSP },
--	{ "80860F0E", LPSS_BYT_SSP },
--	{ "8086228E", LPSS_BSW_SSP },
-+	{ "INT33C0" },
-+	{ "INT33C1" },
-+	{ "INT3430" },
-+	{ "INT3431" },
-+	{ "80860F0E" },
-+	{ "8086228E" },
- 	{ },
++	/* Always try to read property */
++	device_property_read_u32(&pdev->dev, "intel,spi-pxa2xx-type", &value);
++
+ 	match = device_get_match_data(&pdev->dev);
+ 	if (match)
+ 		type = (enum pxa_ssp_type)match;
++	else if (value > SSP_UNDEFINED && value < SSP_MAX)
++		type = (enum pxa_ssp_type)value;
+ 	else if (pcidev_id)
+ 		type = (enum pxa_ssp_type)pcidev_id->driver_data;
+ 	else
+diff --git a/include/linux/pxa2xx_ssp.h b/include/linux/pxa2xx_ssp.h
+index a3fec2de512f..cd1973e6ac4b 100644
+--- a/include/linux/pxa2xx_ssp.h
++++ b/include/linux/pxa2xx_ssp.h
+@@ -229,6 +229,7 @@ enum pxa_ssp_type {
+ 	LPSS_SPT_SSP,
+ 	LPSS_BXT_SSP,
+ 	LPSS_CNL_SSP,
++	SSP_MAX
  };
- MODULE_DEVICE_TABLE(acpi, pxa2xx_spi_acpi_match);
+ 
+ struct ssp_device {
 -- 
 2.35.1
 

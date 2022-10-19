@@ -2,80 +2,112 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 64E7DC433FE
-	for <linux-spi@archiver.kernel.org>; Wed, 19 Oct 2022 14:44:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D6439C43219
+	for <linux-spi@archiver.kernel.org>; Wed, 19 Oct 2022 14:44:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229447AbiJSOoj (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 19 Oct 2022 10:44:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41604 "EHLO
+        id S229738AbiJSOol (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 19 Oct 2022 10:44:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230200AbiJSOnw (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 19 Oct 2022 10:43:52 -0400
-X-Greylist: delayed 3557 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 19 Oct 2022 07:30:04 PDT
-Received: from smtpdh19-1.aruba.it (smtpdh19-1.aruba.it [62.149.155.148])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3EF62FE924
-        for <linux-spi@vger.kernel.org>; Wed, 19 Oct 2022 07:30:00 -0700 (PDT)
-Received: from [192.168.50.220] ([146.241.87.206])
-        by Aruba Outgoing Smtp  with ESMTPSA
-        id l8yLom6VCSmRKl8yLoC5TK; Wed, 19 Oct 2022 15:19:05 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
-        t=1666185545; bh=WDOGMpV390CNEKOYi9e07ywYx+WEmXUEkJzv9gxWxDQ=;
-        h=Date:MIME-Version:Subject:To:From:Content-Type;
-        b=VesLSrQjcCVgIuoR09xn8ccWOncxgNJcFM6I7wVwjsfV2pUdgYZ8hpjBNGvD2SOOt
-         QZl+pQzHBrIw3NwIm2x6BYUm2MQhMb1dmqChCu3e7NqoHzI9dvaYYet6vnVAv5rI9o
-         SdOyhMh3w2+81l3DjVSwJQap/i1CpzVudzmaK2wUd3yDKd96kZQk1P9LSiWNC2v4yX
-         u+5TrkE30+LIE3aanSyzL+2Px9i1UtgsA8F6DI6ZrjwJaKqLOwpAo5QSUSMC0v0ubX
-         TrNBJrNH3/l3GixjjJK78GYOS3iMGd4VnCk5Ur8SjrAGLk0J5B1/uodHhTEN7e4kSf
-         0sV/SxXC5mXGA==
-Message-ID: <e08af145-59eb-1a36-01d1-3ddb9eef5e7c@benettiengineering.com>
-Date:   Wed, 19 Oct 2022 15:19:01 +0200
+        with ESMTP id S231420AbiJSOoG (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 19 Oct 2022 10:44:06 -0400
+Received: from mail-qk1-x736.google.com (mail-qk1-x736.google.com [IPv6:2607:f8b0:4864:20::736])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8880E1B866D
+        for <linux-spi@vger.kernel.org>; Wed, 19 Oct 2022 07:30:37 -0700 (PDT)
+Received: by mail-qk1-x736.google.com with SMTP id o22so10775443qkl.8
+        for <linux-spi@vger.kernel.org>; Wed, 19 Oct 2022 07:30:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=rEmIhwLP6JWJlQRt/3w8mhy6Yg1o3TLKHqQiOhMxy0U=;
+        b=ilprgxZy/nxFTTz37DvZ1mP/ydqyP3gwcaRJpuxF1UGyotKOl1P0TiyF+qbRDXAVP+
+         akYeivho+XgXIdhxz/1VcgkOGZfNaJDsQECdfdTkS6TTo2LVgrhTqAm6ZgwAdYEwfXlO
+         zxfaDJfLj27/AjML/XccPnZwVbKFy9U6IkozVVN5YTtOkJUYLEgBeUy/uDP62/+Tw7lL
+         tMpbux0+ueArUxiap5maUr7qhn1u6sU12qPulUMS8yLmn70JLDoPH+st0+0ZPCAaAHZ7
+         Dcq0zZ6TK48SG9SefGqm3jvUjdISTD6ETlJmCPAzI73W3Io2vVKh/okOJTkgLCpE94Kt
+         S4jQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rEmIhwLP6JWJlQRt/3w8mhy6Yg1o3TLKHqQiOhMxy0U=;
+        b=qHDugaRlh7F8LE73bFxlsTuYnyYdWUlz+kXkhT9EH9qKuweHNAQanUO/WZ6q6mSGD3
+         giygmICWGA6PRu+wAX+hjdPgx3UiteGSpz6gr6K7yrwoh3eTjYefy+qx1u91+3W3uoHo
+         RbeeNBc6W83SxOnFtmewwn4rc6WbpVN4nvPBIhPheuR7GXP2yY1o4qo10erELgOYa/rA
+         E13EPQ6le/woMsAALIGV1T+8Ccqc8/CRmyljIm8wIsB6/47XvVsvle+icCZRnOkXQdN1
+         J0lrDWQSlJCmYCzyRawMIknEfowdtbhrAqWOkznisE32006SHAK/2oCSzSigQADtdxVQ
+         5miQ==
+X-Gm-Message-State: ACrzQf2Pm1iraqR/Z1biL48hV01bYRPBeEkIYMplZLyKRN3YGD1gkqeU
+        KBXj/BV4La2w+dK5SrY9JobPjQ==
+X-Google-Smtp-Source: AMsMyM49VXrZGh0Y6/lHBCG4YpU/HQkprtBYeSAxBKwVJI5YDUWZ81RHBa5iViI4NMMV2LjRZt4rPA==
+X-Received: by 2002:a37:9ac4:0:b0:6ee:caa8:fe2f with SMTP id c187-20020a379ac4000000b006eecaa8fe2fmr5788394qke.638.1666189768362;
+        Wed, 19 Oct 2022 07:29:28 -0700 (PDT)
+Received: from [192.168.10.124] (pool-72-83-177-149.washdc.east.verizon.net. [72.83.177.149])
+        by smtp.gmail.com with ESMTPSA id u24-20020a37ab18000000b006bb83c2be40sm4993247qke.59.2022.10.19.07.29.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 19 Oct 2022 07:29:27 -0700 (PDT)
+Message-ID: <d355ee40-5905-4d10-8300-81e9a63117ee@linaro.org>
+Date:   Wed, 19 Oct 2022 10:29:26 -0400
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.3
-Subject: Re: [PATCH 3/3] raid: substitute empty_zero_page with helper
- ZERO_PAGE(0)
-To:     Christoph Hellwig <hch@infradead.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-raid@vger.kernel.org,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Song Liu <song@kernel.org>
-References: <20221018215755.33566-1-giulio.benetti@benettiengineering.com>
- <20221018215755.33566-3-giulio.benetti@benettiengineering.com>
- <Y0/Yt4uJWg4knNoc@infradead.org>
+ Thunderbird/102.4.0
+Subject: Re: [PATCH v3 1/2] spi: dt-bindings: amlogic, meson-gx-spicc: Add
+ pinctrl names for SPI signal states
 Content-Language: en-US
-From:   Giulio Benetti <giulio.benetti@benettiengineering.com>
-In-Reply-To: <Y0/Yt4uJWg4knNoc@infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To:     Amjad Ouled-Ameur <aouledameur@baylibre.com>,
+        Mark Brown <broonie@kernel.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>
+Cc:     Da Xue <da@libre.computer>, linux-arm-kernel@lists.infradead.org,
+        devicetree@vger.kernel.org, linux-amlogic@lists.infradead.org,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20221004-up-aml-fix-spi-v3-0-89de126fd163@baylibre.com>
+ <20221004-up-aml-fix-spi-v3-1-89de126fd163@baylibre.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20221004-up-aml-fix-spi-v3-1-89de126fd163@baylibre.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-CMAE-Envelope: MS4xfB+NDAsiJxnR3l50nzexIf2Nm5qf9kozjDLXjBsMXnWsJq1kS6Prga/nWQyUoWheKfTCL6zoU+IRJI1sdAmagXZVMkd/FUYgd79e2NLN0969HIPurf4s
- 7FMqqGZHdB7dUwJp3GTb41IUsxfziJIyLnvZ2LjBS9yn5u/m8d4V+f0W95lHOCCGo8cqAJjRnoimvLFwFjpDbOaqnPBQADhxPA1Bpsw7xVtBnLVPAsqmdeAA
- hfVULjRA0+GBTwTI1NvhAMDIC2d/0nQl/Xb/svdU7BuHgAPVDgZ/rwbC4Xc+zmXCjZs9ATUNqmLhxECSEYGZmCCatC2GMc1CbjslIrBo+kmqc8HZKABoxeuz
- RaeT95Md9rzbiu3lgAtg3o/IqI0jmCKESRC5IiByX7ymiZH7J9EI94Tu767HTqsyTJCcYC18KkUPqUFcM9knS1Ut77Tiwd5WGx/a+hlWM+/Og0ZqY74KtyxQ
- LYFfX/FiHIR++SiEBaZlD2erzaOmk7J8BBA7GQ==
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi Cristoph,
+On 19/10/2022 10:01, Amjad Ouled-Ameur wrote:
+> SPI pins of the SPICC Controller in Meson-GX needs to be controlled by
+> pin biais when idle. Therefore define three pinctrl names:
+> - default: SPI pins are controlled by spi function.
+> - idle-high: SCLK pin is pulled-up, but MOSI/MISO are still controlled
+> by spi function.
+> - idle-low: SCLK pin is pulled-down, but MOSI/MISO are still controlled
+> by spi function.
+>
 
-On 19/10/22 13:00, Christoph Hellwig wrote:
-> On Tue, Oct 18, 2022 at 11:57:55PM +0200, Giulio Benetti wrote:
->>   #if RAID6_USE_EMPTY_ZERO_PAGE
->> -# define raid6_empty_zero_page empty_zero_page
->> +# define raid6_empty_zero_page ZERO_PAGE(0)
->>   #else
->>   extern const char raid6_empty_zero_page[PAGE_SIZE];
-> 
-> RAID6_USE_EMPTY_ZERO_PAGE is never set to a non-zero value.  So this
-> is dead code and we can just remove all code related to the
-> RAID6_USE_EMPTY_ZERO_PAGE case.
 
-thank you for taking a look.
-Should I send a patch for removing the code in this v2 patchset?
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - amlogic,meson-gx-spicc
+> +
+> +    then:
+> +      properties:
+> +        pinctrl-names:
+> +          minItems: 1
+> +          items:
+> +            - const: default
+> +            - const: idle-high
+> +            - const: idle-low
 
-Best regards
--- 
-Giulio Benetti
-CEO/CTO@Benetti Engineering sas
+You should also define in such case pinctrl-0 and others.
+
+Best regards,
+Krzysztof
+

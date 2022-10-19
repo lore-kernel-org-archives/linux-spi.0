@@ -2,44 +2,44 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6A139C4332F
-	for <linux-spi@archiver.kernel.org>; Wed, 19 Oct 2022 15:11:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A79ACC43219
+	for <linux-spi@archiver.kernel.org>; Wed, 19 Oct 2022 15:11:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232243AbiJSPL2 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 19 Oct 2022 11:11:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37224 "EHLO
+        id S232207AbiJSPL3 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 19 Oct 2022 11:11:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232195AbiJSPK7 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 19 Oct 2022 11:10:59 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66A5892F6F;
-        Wed, 19 Oct 2022 08:04:14 -0700 (PDT)
+        with ESMTP id S231302AbiJSPLB (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 19 Oct 2022 11:11:01 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11221103240;
+        Wed, 19 Oct 2022 08:04:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1666191854; x=1697727854;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=jBd+m75aH3eu6jFU/XbmoI0uYN2YkZ1EVWvqGphS/uY=;
-  b=HSrEybaJ7ZqxbuRbKCc9hcgpIHyQrHoLNBhHKxP9xcfxn8lR4PDA7iOo
-   20eySBXuhezJrMywdGVVmd1Gm0I/bQszYXBmXesBge792pyVLf57IXfwS
-   Qk/nFD4UubUY76g1tr+j5xnICaC0tCoSnP40n9lGT/JFgIUpZG5APLxqt
-   t4CVkf4I60ezpKpxqNHPncOe/toh/2quHaOFggJ7kwMAlOjNC8hyX1PFw
-   U7j4mFN4T1I6FtvZUJlpY0e1MrO5IM5or7YmIpXpcQNdI9hsKZODh6hZS
-   LifUSK4h23XI7YKUoEkVL6nf6UoHLdJrfFkRs2bW+vP+V6B7MkYlGlCRq
+  t=1666191858; x=1697727858;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=XlIOXCJHhj4h3agf1DUjrph2j3laCRQuoVVmOELxnfg=;
+  b=RxCotl8g4uNM3p8hDeab3Ch68UMHyszInBjvgrH/k0es+Rh3Z//v1rUs
+   ub3XhI74qaoQENGc4ix5bqyJWGMuiX+m+DxZWeD0T5Gb+B54WUA5hcAb3
+   XE9sI0SySi5jw7B12LWkSqMzLurAublHw1uq0ggreNjBNJ2yc6VUaWs7T
+   8eP9eRW3scBMPzJoOhfWTw28Obdl1REfw+azSW6gt5lXTLyrlEF58BOZa
+   ibV41i2QvvGu3lWkhtNUp7Qne8sWSlHx7hMnax0B7aeHmzgoKsYEHXPmT
+   OwQ6kxZQMeBXHMdfIrbO1jF0p9sNOWqWhAjroBM8x4nW4Lcw3JKw4T+9A
    A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10505"; a="306425600"
+X-IronPort-AV: E=McAfee;i="6500,9779,10505"; a="293830293"
 X-IronPort-AV: E=Sophos;i="5.95,196,1661842800"; 
-   d="scan'208";a="306425600"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2022 08:04:14 -0700
+   d="scan'208";a="293830293"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2022 08:04:17 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10505"; a="771826788"
+X-IronPort-AV: E=McAfee;i="6500,9779,10505"; a="804340276"
 X-IronPort-AV: E=Sophos;i="5.95,196,1661842800"; 
-   d="scan'208";a="771826788"
+   d="scan'208";a="804340276"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 19 Oct 2022 08:04:12 -0700
+  by orsmga005.jf.intel.com with ESMTP; 19 Oct 2022 08:04:15 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 78BA113F; Wed, 19 Oct 2022 18:04:33 +0300 (EEST)
+        id C895C3FD; Wed, 19 Oct 2022 18:04:33 +0300 (EEST)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
@@ -48,62 +48,73 @@ Cc:     Daniel Mack <daniel@zonque.org>,
         Haojian Zhuang <haojian.zhuang@gmail.com>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
         Mark Brown <broonie@kernel.org>
-Subject: [PATCH v2 0/5] spi: pxa2xx: Pass the SSP type via device property
-Date:   Wed, 19 Oct 2022 18:04:25 +0300
-Message-Id: <20221019150430.27142-1-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v2 5/5] spi: pxa2xx: Switch from PM ifdeffery to pm_ptr()
+Date:   Wed, 19 Oct 2022 18:04:30 +0300
+Message-Id: <20221019150430.27142-6-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20221019150430.27142-1-andriy.shevchenko@linux.intel.com>
+References: <20221019150430.27142-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Currently the SPI PXA2xx devices on Intel platforms can be instantiated 
-via the following paths:
+Cleaning up the driver to use pm_ptr() macro instead of ifdeffery
+that makes it simpler and allows the compiler to remove those functions
+if built without CONFIG_PM and CONFIG_PM_SLEEP support.
 
- 1) as ACPI LPSS device on Haswell, Bay Trail and Cherry Trail
- 2) as ACPI LPSS device on the Sky Lake and newer
- 3) as PCI LPSS device on Haswell, Bay Trail and Cherry Trail
- 4) as PCI LPSS device on the Sky Lake and newer
- 5) as PCI device via ID table
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/spi/spi-pxa2xx.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-Each of this case provides some platform related data differently,
-i.e.:
- 1) via drivers/acpi/acpi_lpss.c and drivers/spi/spi-pxa2xx.c;
- 2) via drivers/mfd/intel-lpss-acpi.c;
- 3) via drivers/spi/spi-pxa2xx-pci.c;
- 4) via drivers/mfd/intel-lpss-pci.c and drivers/spi/spi-pxa2xx.c;
- 5) via drivers/spi/spi-pxa2xx-pci.c;
-
-This approach has two downsides:
-
-a) there is no data propagated in the case #2 because we can't have
-   two or more drivers to match the same ACPI ID and hence some cases
-   are still not supported (Sky Lake and Cannon Lake ACPI enabled
-   LPSS);
-
-a) the data is duplicated over two drivers in case #4 and, besides
-   to be a bloatware, it is error prone (e.g. Lakefield has a wrong
-   data right now due to missed PCI entry in the spi-pxa2xx.c);
-
-This series fixes the downsides, and enables previously unsupported
-cases. On top of that it has a coupole of cleanups (patches 4 and 5).
-
-Changelog v2:
-- added cover letter (Mark)
-- dropped applied patch
-
-Andy Shevchenko (5):
-  spi: pxa2xx: Respect Intel SSP type given by a property
-  spi: pxa2xx: Remove no more needed PCI ID table
-  spi: pxa2xx: Remove no more needed driver data
-  spi: pxa2xx: Move OF and ACPI ID tables closer to their user
-  spi: pxa2xx: Switch from PM ifdeffery to pm_ptr()
-
- drivers/spi/spi-pxa2xx.c   | 170 +++++++------------------------------
- include/linux/pxa2xx_ssp.h |   1 +
- 2 files changed, 30 insertions(+), 141 deletions(-)
-
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 76046612466d..60cab241200b 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1680,7 +1680,6 @@ static int pxa2xx_spi_remove(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
+-#ifdef CONFIG_PM_SLEEP
+ static int pxa2xx_spi_suspend(struct device *dev)
+ {
+ 	struct driver_data *drv_data = dev_get_drvdata(dev);
+@@ -1715,9 +1714,7 @@ static int pxa2xx_spi_resume(struct device *dev)
+ 	/* Start the queue running */
+ 	return spi_controller_resume(drv_data->controller);
+ }
+-#endif
+ 
+-#ifdef CONFIG_PM
+ static int pxa2xx_spi_runtime_suspend(struct device *dev)
+ {
+ 	struct driver_data *drv_data = dev_get_drvdata(dev);
+@@ -1732,12 +1729,10 @@ static int pxa2xx_spi_runtime_resume(struct device *dev)
+ 
+ 	return clk_prepare_enable(drv_data->ssp->clk);
+ }
+-#endif
+ 
+ static const struct dev_pm_ops pxa2xx_spi_pm_ops = {
+-	SET_SYSTEM_SLEEP_PM_OPS(pxa2xx_spi_suspend, pxa2xx_spi_resume)
+-	SET_RUNTIME_PM_OPS(pxa2xx_spi_runtime_suspend,
+-			   pxa2xx_spi_runtime_resume, NULL)
++	SYSTEM_SLEEP_PM_OPS(pxa2xx_spi_suspend, pxa2xx_spi_resume)
++	RUNTIME_PM_OPS(pxa2xx_spi_runtime_suspend, pxa2xx_spi_runtime_resume, NULL)
+ };
+ 
+ #ifdef CONFIG_ACPI
+@@ -1762,7 +1757,7 @@ MODULE_DEVICE_TABLE(of, pxa2xx_spi_of_match);
+ static struct platform_driver driver = {
+ 	.driver = {
+ 		.name	= "pxa2xx-spi",
+-		.pm	= &pxa2xx_spi_pm_ops,
++		.pm	= pm_ptr(&pxa2xx_spi_pm_ops),
+ 		.acpi_match_table = ACPI_PTR(pxa2xx_spi_acpi_match),
+ 		.of_match_table = of_match_ptr(pxa2xx_spi_of_match),
+ 	},
 -- 
 2.35.1
 

@@ -2,76 +2,87 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 80C7EC4332F
-	for <linux-spi@archiver.kernel.org>; Wed, 19 Oct 2022 15:33:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4C89BC433FE
+	for <linux-spi@archiver.kernel.org>; Wed, 19 Oct 2022 15:35:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231238AbiJSPdk (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 19 Oct 2022 11:33:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49168 "EHLO
+        id S229992AbiJSPfq (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 19 Oct 2022 11:35:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231549AbiJSPdY (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 19 Oct 2022 11:33:24 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B66701DCCD2
-        for <linux-spi@vger.kernel.org>; Wed, 19 Oct 2022 08:26:45 -0700 (PDT)
-Received: from dggpemm500020.china.huawei.com (unknown [172.30.72.55])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4MsldC2Fq9zmVDC;
-        Wed, 19 Oct 2022 17:22:55 +0800 (CST)
-Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500020.china.huawei.com (7.185.36.49) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Wed, 19 Oct 2022 17:27:19 +0800
-Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
- (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Wed, 19 Oct
- 2022 17:27:18 +0800
-From:   Yang Yingliang <yangyingliang@huawei.com>
-To:     <linux-spi@vger.kernel.org>
-CC:     <chin-ting_kuo@aspeedtech.com>, <clg@kaod.org>,
-        <broonie@kernel.org>, <yangyingliang@huawei.com>
-Subject: [PATCH -next] spi: aspeed: Use devm_platform_{get_and_}ioremap_resource()
-Date:   Wed, 19 Oct 2022 17:26:35 +0800
-Message-ID: <20221019092635.1176622-1-yangyingliang@huawei.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S231132AbiJSPfV (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 19 Oct 2022 11:35:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE6582194;
+        Wed, 19 Oct 2022 08:30:54 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B932561919;
+        Wed, 19 Oct 2022 15:29:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF5E0C433D7;
+        Wed, 19 Oct 2022 15:29:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1666193353;
+        bh=ZeCBqm38mn3n+d5SZUUxCTzmPVj5r0qAbJAA+fyNmvw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=lJs/DS/UliRAFtIIesYSIidcO0JSTdP2v5kEg5XKtvlaWaxxmE5ty2UqujF/IRopU
+         22LX1kc+cmCh9hQRfcxJJgQhlbWHkBxomrno9+R1aO/wHZ4lGfW9tOThGZgrRrFd7F
+         swfK9Gb1aVMj5TKUp7tyzhm5FShgRyKPupU9mySwJI0iKi7rpYNSXdbawt45fHxJgO
+         tX56Lvdsaj3Kadg6Jl30PdUcVxb+kGVG/4LtojvPBu6Fa47pRmAV5dzd2vBWCFVpSm
+         r2fel0raTpscr19cKfV+aqtnHb8vhc3MHJx46M5wjMGp7VmIaAWwzKMUeqqh50BhnX
+         jqe/04/BQJZlw==
+Date:   Wed, 19 Oct 2022 16:29:07 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Arnd Bergmann <arnd@arndb.de>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
+        Cory Maccarrone <darkstar6262@gmail.com>,
+        Fabrice Crohas <fcrohas@gmail.com>, linux-spi@vger.kernel.org
+Subject: Re: [PATCH 16/17] spi: remove omap 100K driver
+Message-ID: <Y1AXwyQeKIVBmTcS@sirena.org.uk>
+References: <20221019144119.3848027-1-arnd@kernel.org>
+ <20221019150410.3851944-1-arnd@kernel.org>
+ <20221019150410.3851944-16-arnd@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.103.91]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggpemm500007.china.huawei.com (7.185.36.183)
-X-CFilter-Loop: Reflected
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="JtilZPBR8/u5i5oi"
+Content-Disposition: inline
+In-Reply-To: <20221019150410.3851944-16-arnd@kernel.org>
+X-Cookie: There's no future in time travel.
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Use the devm_platform_{get_and_}ioremap_resource() helper instead of
-calling platform_get_resource() and devm_ioremap_resource() separately.
 
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
----
- drivers/spi/spi-aspeed-smc.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+--JtilZPBR8/u5i5oi
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/spi/spi-aspeed-smc.c b/drivers/spi/spi-aspeed-smc.c
-index 33cefcf18392..710ff8cf121f 100644
---- a/drivers/spi/spi-aspeed-smc.c
-+++ b/drivers/spi/spi-aspeed-smc.c
-@@ -734,13 +734,11 @@ static int aspeed_spi_probe(struct platform_device *pdev)
- 	aspi->data = data;
- 	aspi->dev = dev;
- 
--	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	aspi->regs = devm_ioremap_resource(dev, res);
-+	aspi->regs = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(aspi->regs))
- 		return PTR_ERR(aspi->regs);
- 
--	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
--	aspi->ahb_base = devm_ioremap_resource(dev, res);
-+	aspi->ahb_base = devm_platform_get_and_ioremap_resource(pdev, 1, &res);
- 	if (IS_ERR(aspi->ahb_base)) {
- 		dev_err(dev, "missing AHB mapping window\n");
- 		return PTR_ERR(aspi->ahb_base);
--- 
-2.25.1
+On Wed, Oct 19, 2022 at 05:03:38PM +0200, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+>=20
+> The OMAP7xx/OMAP8xx support was removed since all of its boards
+> have no remaining users. Remove its spi driver as well.
 
+Acked-by: Mark Brown <broonie@kernel.org>
+
+--JtilZPBR8/u5i5oi
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmNQF8IACgkQJNaLcl1U
+h9CnqAf/Wk45nnZLCUyp2wYm5nfdmcISGZ/P1CRzixx24OAF/01z5hj20OSDZ/l+
+wqKlsSnzd79CsieyyMtDcPthRK0KLfVItOZ30Jc+zXe3riwQNVAApeXr2Lh3WTZ5
+GTdU6RP/i6M96fPTB75Dm+55NVL2YJHUuoKE4lFBIEXr4+bU0wsrCr3p+EBykNCn
+hHWwAJ/tW4aDwE+kQ6UcHd6YdASXQZd6X9qfQfP/jXg2YM4tyoSxo+GMA12YYLI4
+e9IcPV5WCwW34rFfp0wfgNJeSibZq9Td8IxV+TiZ6efDM7550AV4j50r2jW/39ue
+rfaXrlQSW40SSGIHLD7SvOwHjvL9cQ==
+=2vlK
+-----END PGP SIGNATURE-----
+
+--JtilZPBR8/u5i5oi--

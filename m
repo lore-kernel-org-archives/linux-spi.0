@@ -2,89 +2,69 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E3897C433FE
-	for <linux-spi@archiver.kernel.org>; Wed, 19 Oct 2022 12:30:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 02EFEC4332F
+	for <linux-spi@archiver.kernel.org>; Wed, 19 Oct 2022 13:25:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232277AbiJSMaX (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 19 Oct 2022 08:30:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55566 "EHLO
+        id S229552AbiJSNZI (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 19 Oct 2022 09:25:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232525AbiJSM37 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 19 Oct 2022 08:29:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B7DC15B10C;
-        Wed, 19 Oct 2022 05:07:31 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AD77E61834;
-        Wed, 19 Oct 2022 12:05:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC361C433D6;
-        Wed, 19 Oct 2022 12:05:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666181120;
-        bh=e1VQF99t6YGVEok93WnlcqWfEMRgx0c+zib9nxYHYA8=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=XHTmgUQqHajpxgJJp1eOUDN9QFFy/QiHzTIzq7LTW2kJDc27xsMpInoECOvZCwSUh
-         M01YOm+MvGq3HVaywI3Fqv2l9aTBLYCuouMo+IyDn9aXCjIuY0oFvZrXNfm1g9MpBW
-         HUVYVhGp5HsHM6xxAkrX34TqoMs3dr5OCLB2tXIowN6gW1MXs2tWPiTlQOspJz/MV+
-         HYgbJAxvX+ulhC2dklFDdYsMs5WQ/9FQtf8vUo/rcg6iEp66q9IJ/UNLpvG0DEDrza
-         yJANb8j3bVo3a0/IXr9UjajTcQZ/YxNPALfM7gjvGQR9XLf2YfZqvqNQRrXPn+h8Di
-         kKlQM1nrwJzAg==
-From:   Mark Brown <broonie@kernel.org>
-To:     linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-spi@vger.kernel.org
-Cc:     Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Robert Jarzmik <robert.jarzmik@free.fr>
-In-Reply-To: <20221017171243.57078-1-andriy.shevchenko@linux.intel.com>
-References: <20221017171243.57078-1-andriy.shevchenko@linux.intel.com>
-Subject: Re: (subset) [PATCH v1 1/6] spi: pxa2xx: Simplify with devm_platform_get_and_ioremap_resource()
-Message-Id: <166618111842.80414.11502323558374941899.b4-ty@kernel.org>
-Date:   Wed, 19 Oct 2022 13:05:18 +0100
+        with ESMTP id S229612AbiJSNYq (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 19 Oct 2022 09:24:46 -0400
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABAE810A7E5
+        for <linux-spi@vger.kernel.org>; Wed, 19 Oct 2022 06:10:50 -0700 (PDT)
+Received: from dggpemm500024.china.huawei.com (unknown [172.30.72.54])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4Mslpt0yyRzJn4x;
+        Wed, 19 Oct 2022 17:31:18 +0800 (CST)
+Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
+ dggpemm500024.china.huawei.com (7.185.36.203) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Wed, 19 Oct 2022 17:33:57 +0800
+Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
+ (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Wed, 19 Oct
+ 2022 17:33:56 +0800
+From:   Yang Yingliang <yangyingliang@huawei.com>
+To:     <linux-spi@vger.kernel.org>
+CC:     <broonie@kernel.org>, <yangyingliang@huawei.com>
+Subject: [PATCH -next] spi: img-spfi: Use devm_platform_get_and_ioremap_resource()
+Date:   Wed, 19 Oct 2022 17:33:18 +0800
+Message-ID: <20221019093318.1183190-1-yangyingliang@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.10.0-dev-fc921
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.103.91]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ dggpemm500007.china.huawei.com (7.185.36.183)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Mon, 17 Oct 2022 20:12:38 +0300, Andy Shevchenko wrote:
-> Convert platform_get_resource(), devm_ioremap_resource() to a single
-> call to devm_platform_get_and_ioremap_resource(), as this is exactly
-> what this function does.
-> 
-> No functional changes.
-> 
-> 
-> [...]
+Use the devm_platform_get_and_ioremap_resource() helper instead of calling
+platform_get_resource() and devm_ioremap_resource() separately.
 
-Applied to
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+---
+ drivers/spi/spi-img-spfi.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+diff --git a/drivers/spi/spi-img-spfi.c b/drivers/spi/spi-img-spfi.c
+index bfd12247f173..257046f843ff 100644
+--- a/drivers/spi/spi-img-spfi.c
++++ b/drivers/spi/spi-img-spfi.c
+@@ -540,8 +540,7 @@ static int img_spfi_probe(struct platform_device *pdev)
+ 	spfi->master = master;
+ 	spin_lock_init(&spfi->lock);
+ 
+-	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	spfi->regs = devm_ioremap_resource(spfi->dev, res);
++	spfi->regs = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
+ 	if (IS_ERR(spfi->regs)) {
+ 		ret = PTR_ERR(spfi->regs);
+ 		goto put_spi;
+-- 
+2.25.1
 
-Thanks!
-
-[1/6] spi: pxa2xx: Simplify with devm_platform_get_and_ioremap_resource()
-      commit: e3b7fca31185813297bb995d7b21a6305bb62c84
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark

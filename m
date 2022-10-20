@@ -2,44 +2,44 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2C673C433FE
-	for <linux-spi@archiver.kernel.org>; Thu, 20 Oct 2022 19:44:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2CBBAC4332F
+	for <linux-spi@archiver.kernel.org>; Thu, 20 Oct 2022 19:44:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230037AbiJTTot (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 20 Oct 2022 15:44:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43164 "EHLO
+        id S230046AbiJTTou (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 20 Oct 2022 15:44:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230020AbiJTToq (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 20 Oct 2022 15:44:46 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 340083C8FF;
-        Thu, 20 Oct 2022 12:44:45 -0700 (PDT)
+        with ESMTP id S230036AbiJTTot (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 20 Oct 2022 15:44:49 -0400
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BA1B3FECC;
+        Thu, 20 Oct 2022 12:44:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1666295085; x=1697831085;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=cDRbvPGMB4daHpf4H0/xcqTeuiVnp6lHkMnNi54s/1I=;
-  b=buXWpudEq7k8plZFKn/EZuw/i588rwx0xQi5IXWqkLQhLmuQW5ENLTbs
-   BZOAAqANxExccZo0VK2xK+w3WVb48LfB8o9YUvbVgBWSoy2Q6LzHr5nrl
-   r1JH5D+Unt9I8prI9HZuheURQ1Go1RQW9slliUQiXdFSD/l8exb4WBHqf
-   +iLpXvdR6tAZRSDF0UHNwd7yhTblTpyi17fQUxY4Qh/0FMU/VZqNptoAg
-   dLAZH2pHr5Cm2iWlYIP5ZU3rikA52T8EIZ52XdrIW4czoBeiExtNFMBB1
-   wMZEUVJjQbuz6Vh69ldQdReLfa7WwViiz/lGswM2tXSsPilvvv6rTZJ62
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10506"; a="305559079"
+  t=1666295086; x=1697831086;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=zkf3kxbtj/cO1oGXalV1myW08PGzo34Wex6zNG0q3+g=;
+  b=QABKFpUGMf+IDvrB8TtYZiPmRqAB8hO7R9K2G3umU8K4Uz4fltAjj54Z
+   TICQTU+JQIMOrAC/RS350Fc3Kz5LK0C7gDvuLfawaZQAjz/TgEcvqkMMv
+   or+/ReN02g6yySey6rykkSAWFxDDHGJOvNC3/NnnCMg0AtLFCGak6bucg
+   ETcVKoN+bhbTA1FEdWuTceI/5eLfhSfeyCHy3HqmMvSbZgQNQZtkPfijy
+   YiW9Ai+GFldBj0TvIrHIgGNipvAo4dICGgxxg/+Gv4ZzZvTqTUM3Rkt+5
+   g4J0N2vteXM7otn2JdAxO+qChD7KOxnFKtipSif+EuQ7ivb4EL4G8p8nh
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10506"; a="333392706"
 X-IronPort-AV: E=Sophos;i="5.95,199,1661842800"; 
-   d="scan'208";a="305559079"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2022 12:44:44 -0700
+   d="scan'208";a="333392706"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2022 12:44:44 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10506"; a="630031800"
+X-IronPort-AV: E=McAfee;i="6500,9779,10506"; a="875210366"
 X-IronPort-AV: E=Sophos;i="5.95,199,1661842800"; 
-   d="scan'208";a="630031800"
+   d="scan'208";a="875210366"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga002.jf.intel.com with ESMTP; 20 Oct 2022 12:44:42 -0700
+  by fmsmga006.fm.intel.com with ESMTP; 20 Oct 2022 12:44:42 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id DA0E3107; Thu, 20 Oct 2022 22:45:03 +0300 (EEST)
+        id 0C7EF3F9; Thu, 20 Oct 2022 22:45:04 +0300 (EEST)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
@@ -48,67 +48,75 @@ Cc:     Daniel Mack <daniel@zonque.org>,
         Haojian Zhuang <haojian.zhuang@gmail.com>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
         Mark Brown <broonie@kernel.org>
-Subject: [PATCH v4 0/5] spi: pxa2xx: Pass the SSP type via device property
-Date:   Thu, 20 Oct 2022 22:44:55 +0300
-Message-Id: <20221020194500.10225-1-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v4 4/5] spi: pxa2xx: Consistently use dev variable in pxa2xx_spi_init_pdata()
+Date:   Thu, 20 Oct 2022 22:44:59 +0300
+Message-Id: <20221020194500.10225-5-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20221020194500.10225-1-andriy.shevchenko@linux.intel.com>
+References: <20221020194500.10225-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Currently the SPI PXA2xx devices on Intel platforms can be instantiated
-via the following paths:
- 1) as ACPI LPSS device on Haswell, Bay Trail and Cherry Trail;
- 2) as ACPI LPSS device on the Sky Lake and newer;
- 3) as PCI LPSS device on Haswell, Bay Trail and Cherry Trail;
- 4) as PCI LPSS device on the Sky Lake and newer;
- 5) as PCI device via ID table.
+We have a temporary variable to keep a pointer to a struct device in
+the pxa2xx_spi_init_pdata(). Use it consistently there.
 
-Each of these cases provides some platform related data differently,
-i.e.:
- 1) via drivers/acpi/acpi_lpss.c and drivers/spi/spi-pxa2xx.c
- 2) via drivers/mfd/intel-lpss-acpi.c
- 3) via drivers/spi/spi-pxa2xx-pci.c
- 4) via drivers/mfd/intel-lpss-pci.c and drivers/spi/spi-pxa2xx.c
- 5) via drivers/spi/spi-pxa2xx-pci.c
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/spi/spi-pxa2xx.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-This approach has two downsides:
-
-a) there is no data propagated in the case #2 because we can't have
-   two or more drivers to match the same ACPI ID and hence some cases
-   are still not supported (Sky Lake and newer ACPI enabled LPSS);
-
-b) the data is duplicated over two drivers in the cases #1 & #4 and,
-   besides to be a bloatware, it is error prone (e.g. Lakefield has
-   a wrong data right now due to missed PCI entry in the spi-pxa2xx.c).
-
-This series fixes the downsides, and enables previously unsupported
-cases. On top of that it has a couple of cleanups (patches 4 and 5).
-
-Changelog v4:
-- apply the property only for known MFD enumerated devices (Mark)
-
-Changelog v3:
-- added tags to patches 4 & 5 (Jonathan)
-- massaged cover letter
-
-Changelog v2:
-- added cover letter (Mark)
-- dropped applied patch
-
-Andy Shevchenko (5):
-  spi: pxa2xx: Respect Intel SSP type given by a property
-  spi: pxa2xx: Remove no more needed PCI ID table
-  spi: pxa2xx: Move OF and ACPI ID tables closer to their user
-  spi: pxa2xx: Consistently use dev variable in pxa2xx_spi_init_pdata()
-  spi: pxa2xx: Switch from PM ifdeffery to pm_ptr()
-
- drivers/spi/spi-pxa2xx.c   | 186 ++++++++-----------------------------
- include/linux/pxa2xx_ssp.h |   1 +
- 2 files changed, 41 insertions(+), 146 deletions(-)
-
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 0824965e894d..00c07e93d414 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1349,7 +1349,7 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+ 			return ERR_PTR(status);
+ 	}
+ 
+-	match = device_get_match_data(&pdev->dev);
++	match = device_get_match_data(dev);
+ 	if (match)
+ 		type = (enum pxa_ssp_type)match;
+ 	else if (value > SSP_UNDEFINED && value < SSP_MAX)
+@@ -1357,7 +1357,7 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+ 	else
+ 		return ERR_PTR(-EINVAL);
+ 
+-	pdata = devm_kzalloc(&pdev->dev, sizeof(*pdata), GFP_KERNEL);
++	pdata = devm_kzalloc(dev, sizeof(*pdata), GFP_KERNEL);
+ 	if (!pdata)
+ 		return ERR_PTR(-ENOMEM);
+ 
+@@ -1376,7 +1376,7 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+ 		pdata->dma_filter = pxa2xx_spi_idma_filter;
+ 	}
+ 
+-	ssp->clk = devm_clk_get(&pdev->dev, NULL);
++	ssp->clk = devm_clk_get(dev, NULL);
+ 	if (IS_ERR(ssp->clk))
+ 		return ERR_CAST(ssp->clk);
+ 
+@@ -1385,7 +1385,7 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+ 		return ERR_PTR(ssp->irq);
+ 
+ 	ssp->type = type;
+-	ssp->dev = &pdev->dev;
++	ssp->dev = dev;
+ 
+ 	status = acpi_dev_uid_to_integer(ACPI_COMPANION(dev), &uid);
+ 	if (status)
+@@ -1393,7 +1393,7 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+ 	else
+ 		ssp->port_id = uid;
+ 
+-	pdata->is_slave = device_property_read_bool(&pdev->dev, "spi-slave");
++	pdata->is_slave = device_property_read_bool(dev, "spi-slave");
+ 	pdata->num_chipselect = 1;
+ 	pdata->enable_dma = true;
+ 	pdata->dma_burst_size = 1;
 -- 
 2.35.1
 

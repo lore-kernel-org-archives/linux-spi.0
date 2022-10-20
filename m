@@ -2,96 +2,111 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2DBFBC433FE
-	for <linux-spi@archiver.kernel.org>; Thu, 20 Oct 2022 16:25:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 70B1DC433FE
+	for <linux-spi@archiver.kernel.org>; Thu, 20 Oct 2022 16:26:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229556AbiJTQZY (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 20 Oct 2022 12:25:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33678 "EHLO
+        id S229506AbiJTQ0S (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 20 Oct 2022 12:26:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229587AbiJTQZX (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 20 Oct 2022 12:25:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98C69A0267;
-        Thu, 20 Oct 2022 09:25:21 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 410A361C14;
-        Thu, 20 Oct 2022 16:25:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E161C433C1;
-        Thu, 20 Oct 2022 16:25:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666283120;
-        bh=WA6ArbC///fPpUFKat2w0OyZjBrmeEDkfhpgrx6B+ps=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=qiePNk7+gyM4hfxx+v7U32xQIsBTDyQE3l+9jPy0Ggm0lOOn5jlBVEU89rreYttkW
-         qREx7PQTpjn7Mj1b8bts7AHTbkLMDiQC+9opmSo9eQir8zRWc4h40gem2ZXl1ol+UI
-         uiy2GnwvhhKxiQyQZ2NZr5cHcD4DbyrQuSbYqqYgZ+eUA/9wk09GVqaxXq9L4PyOzh
-         LOYhXVeGwcJ2cbGo5pF5VsshWFLRdzG3TSLzxOIBXr5c6n66qJ8tZh0FwGTduDl+R6
-         6Z6Nk29xFpLZIIiDTUeXdZ9nRP8eijqGcb+0fGKHvq40IAUEJAoY0WsKAJwI0j6Tw+
-         tx59TfQONm9dw==
-Date:   Thu, 20 Oct 2022 17:25:15 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Daniel Mack <daniel@zonque.org>,
+        with ESMTP id S229542AbiJTQ0Q (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 20 Oct 2022 12:26:16 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 970B2578BC;
+        Thu, 20 Oct 2022 09:26:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1666283175; x=1697819175;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=hWe3aaoOgf+xq5Pq0douiTL3qv6/yUoCMHsfExvmaKw=;
+  b=myQ3+dkYIZCdmvRW6RODJ2f1vnWb6DI/UYVyld9wdsyBrjxu7qpdWSZA
+   fyYtGVK77PH3p32Ip347QrTvfvSTxj7yI7dbXEXGNeNA2iyRhxcbBXdgq
+   eLU236aGry7B48RC5JuwxC2bh9XPN6R3w7B74fLwGM5xh6w+yKvdLPxDw
+   Ep+2+YcWCp1yaqNiqkl5kUZQ8LveLqyfCQCbHEWovvp6/8Poz9WkRSMPA
+   RxHcOplnDDLXvXCuTkukthBqlzrGRYkiFMcGzte7YLkaR9Ixx2wlw9vFH
+   78nrqDIbwxmKr3cSrJyw24Bt7WKNyjZg75Qyk4duUslYZeyuodg83nvcG
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10506"; a="287164935"
+X-IronPort-AV: E=Sophos;i="5.95,199,1661842800"; 
+   d="scan'208";a="287164935"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2022 09:26:13 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10506"; a="581004361"
+X-IronPort-AV: E=Sophos;i="5.95,199,1661842800"; 
+   d="scan'208";a="581004361"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga003.jf.intel.com with ESMTP; 20 Oct 2022 09:26:11 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id B1D504FD; Thu, 20 Oct 2022 19:26:32 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Daniel Mack <daniel@zonque.org>,
         Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>
-Subject: Re: [PATCH v1 3/6] spi: pxa2xx: Remove no more needed PCI ID table
-Message-ID: <Y1F2a6CR+9sY66Zz@sirena.org.uk>
-References: <20221017171243.57078-1-andriy.shevchenko@linux.intel.com>
- <20221017171243.57078-3-andriy.shevchenko@linux.intel.com>
- <Y02ObkYoUQlY9oG/@sirena.org.uk>
- <Y02SVH04iiu7Rj+8@smile.fi.intel.com>
- <Y02TR0UBseEKUjq8@sirena.org.uk>
- <Y02TxHp53XQo34ql@smile.fi.intel.com>
- <Y06RCxzwrPZwIETp@sirena.org.uk>
- <Y1ASXFOuc2uGXOlV@smile.fi.intel.com>
- <Y1AczgwCEQO2gvQ2@sirena.org.uk>
- <Y1F0z5aP3MsqnMan@smile.fi.intel.com>
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH v3 1/5] spi: pxa2xx: Respect Intel SSP type given by a property
+Date:   Thu, 20 Oct 2022 19:26:27 +0300
+Message-Id: <20221020162631.68914-2-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20221020162631.68914-1-andriy.shevchenko@linux.intel.com>
+References: <20221020162631.68914-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="8ZsyvR6DT6KBTzFY"
-Content-Disposition: inline
-In-Reply-To: <Y1F0z5aP3MsqnMan@smile.fi.intel.com>
-X-Cookie: Today is what happened to yesterday.
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+Allow to set the Intel SSP type by reading the property.
 
---8ZsyvR6DT6KBTzFY
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/spi/spi-pxa2xx.c   | 6 ++++++
+ include/linux/pxa2xx_ssp.h | 1 +
+ 2 files changed, 7 insertions(+)
 
-On Thu, Oct 20, 2022 at 07:18:23PM +0300, Andy Shevchenko wrote:
-> On Wed, Oct 19, 2022 at 04:50:38PM +0100, Mark Brown wrote:
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 03ed6d4a14cd..857732a54ca7 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1460,6 +1460,7 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+ 	struct resource *res;
+ 	struct pci_dev *pcidev = dev_is_pci(parent) ? to_pci_dev(parent) : NULL;
+ 	const struct pci_device_id *pcidev_id = NULL;
++	u32 value = SSP_UNDEFINED;
+ 	enum pxa_ssp_type type;
+ 	const void *match;
+ 	int status;
+@@ -1468,9 +1469,14 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+ 	if (pcidev)
+ 		pcidev_id = pci_match_id(pxa2xx_spi_pci_compound_match, pcidev);
+ 
++	/* Always try to read property */
++	device_property_read_u32(&pdev->dev, "intel,spi-pxa2xx-type", &value);
++
+ 	match = device_get_match_data(&pdev->dev);
+ 	if (match)
+ 		type = (enum pxa_ssp_type)match;
++	else if (value > SSP_UNDEFINED && value < SSP_MAX)
++		type = (enum pxa_ssp_type)value;
+ 	else if (pcidev_id)
+ 		type = (enum pxa_ssp_type)pcidev_id->driver_data;
+ 	else
+diff --git a/include/linux/pxa2xx_ssp.h b/include/linux/pxa2xx_ssp.h
+index a3fec2de512f..cd1973e6ac4b 100644
+--- a/include/linux/pxa2xx_ssp.h
++++ b/include/linux/pxa2xx_ssp.h
+@@ -229,6 +229,7 @@ enum pxa_ssp_type {
+ 	LPSS_SPT_SSP,
+ 	LPSS_BXT_SSP,
+ 	LPSS_CNL_SSP,
++	SSP_MAX
+ };
+ 
+ struct ssp_device {
+-- 
+2.35.1
 
-> > For example a check that the ID is one we know about.  IIRC that bit of
-> > context looked like a tree of if statements with no particular
-> > validation.
-
-> But isn't it guaranteed to be handled by device core, i.e. we won't get driver
-> even enumerated if ID is unknown to us.
-
-That's true currently since you're matching based on ACPI ID and then
-have the lookup done with the ID information in the acpi_device_id table
-but IIRC the patch was replacing that with some device property stuff.
-
---8ZsyvR6DT6KBTzFY
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmNRdmsACgkQJNaLcl1U
-h9AQWgf/cxAZpP10nopJ1x0dx9Fldq1w4K3nzW1g84Hdt6vHzb1+F+Yb/lg9hg4+
-HqkyucjudaILCwckOsRs3WH1jXDOyDraBZ1QzdXWJfWiFa0BBBBg4PGxGhDHwF2/
-Zr2LbwBp78nVEo6NF9VIB8QW5+NHPdlUN6q9m/NkOSkJRuDEntegov/FWzsCggjh
-DkxBLHI6hf7aYdUkXO1vOt641cJVz90pf3H2fI+LlZ29iemdokC0lUuidWqk86cX
-+yysqW/ENllNBWNiQM1eX8yZ4BVKKICdjD0o5n5NO5DWSglk1UpR6vfo9FJZHowH
-4OjMAzESRqXaOi3vuc4NoT3Ov52bnA==
-=cf23
------END PGP SIGNATURE-----
-
---8ZsyvR6DT6KBTzFY--

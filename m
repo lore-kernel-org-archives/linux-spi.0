@@ -2,61 +2,60 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B66BFC433FE
-	for <linux-spi@archiver.kernel.org>; Fri, 21 Oct 2022 13:31:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1D4C8C4332F
+	for <linux-spi@archiver.kernel.org>; Fri, 21 Oct 2022 13:31:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230512AbiJUNbp (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 21 Oct 2022 09:31:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44962 "EHLO
+        id S230505AbiJUNbr (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 21 Oct 2022 09:31:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230408AbiJUNbm (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 21 Oct 2022 09:31:42 -0400
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E52632639F5
-        for <linux-spi@vger.kernel.org>; Fri, 21 Oct 2022 06:31:38 -0700 (PDT)
-Received: by mail-wr1-x435.google.com with SMTP id w18so4839483wro.7
-        for <linux-spi@vger.kernel.org>; Fri, 21 Oct 2022 06:31:38 -0700 (PDT)
+        with ESMTP id S229729AbiJUNbp (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 21 Oct 2022 09:31:45 -0400
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3FED26478C
+        for <linux-spi@vger.kernel.org>; Fri, 21 Oct 2022 06:31:41 -0700 (PDT)
+Received: by mail-wm1-x32b.google.com with SMTP id l32so2186369wms.2
+        for <linux-spi@vger.kernel.org>; Fri, 21 Oct 2022 06:31:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=baylibre-com.20210112.gappssmtp.com; s=20210112;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=aoI1kmxKiCSvzrZsjQ9wHdmyYSYZCsE9cQztwvc2mq4=;
-        b=QUdSggw5HJ3x/21fCA3VdACtz+Zu9LZs/XA6elyv5wXmHRAZeOvrqBz0Uznlx9pjbk
-         Mb3zQOPwzpHpLqIFstvXZqXO+hGxwApE6qzu7m4zVOz8XuewHllKIjsV/Y31V08gpZO6
-         zj6Ek3OfXF6oHDMuhEgtjD1inlrUsO0bM8hmX9w/bFAOFKdWb6WGvB5X88lK6CshMjUy
-         0ircy1XXcquXrwhOzYIA7pg9l692xBxj6lZ4DQrPwMoOj988POwjvUyXZX+j9OTOw3lu
-         JGJRn3dxEJvT5SzY1TZ/h8Mc7d3BUqsD2vD49mtd9/jzs9YVCja3yPximUNryWjNrOK/
-         qSGw==
+        bh=H7Qoz9jeBcfdzL9iyekJH2YPQjo48jyM8jlQ41M6YtQ=;
+        b=J8v+969UzU9Y9w/SR7VUhM/aEcbhclODwWuAxD/2d3jJUKqh+EMU5hI0TGmOVQxIQA
+         lYzdLAgH9Epw38urAuGMdecmgz8rRRgI6eqr3YA804isCcnKNSaTQsqntIVuaXkAZFVk
+         4fYlMQORa8yVEOeIfgVLEewvRKR9p4kf26uJN+hCvkmpgzxgkIHv1KQW3g60H5Vy9VAF
+         nlgq+EpW9yRisAMhpzDniP0fSWgLqcl1k0K+J1OEHFXH01QrM9J64woxI00TTdZsX87P
+         m7LfLYndbJiQSP0I4a+6goeJN9afeibn43oy8f45JbpTmNh7ezVzjjuoYzSLuG4cDrT+
+         PqTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=aoI1kmxKiCSvzrZsjQ9wHdmyYSYZCsE9cQztwvc2mq4=;
-        b=gYuuPeXxL9ZK4GVtcIBMBXM/ZejdCCqk9aoOysEYjWF5ZkXPG7OnNSwwZUgw4+SLZi
-         nfy2GTUBE0zgZIGad4kjPcJGhZ1fKeblATuy3psBU+0F0miydbr6OFV9OriPP8Rk3A8V
-         QzNOg6AtTeQzc9PzY6slJ+sCut9akCEh3JRidaSA9tnG0kXS+NUEBXrCCi4fRwG7FUJP
-         ZwavYTIklyXrNxNBU4QUwGdQVoyjjzmtpZGaLejAfwxZ0TY9INm+Cja9IHnDtKSz+LcW
-         Y0Sth8kKxIEMWUUr5V67cNm3tVaWcMisd/aLd4XjfoEmEjZLBnrJKoUCo6m/rt7Bvig9
-         itRA==
-X-Gm-Message-State: ACrzQf2wVFn8bdlJI/SF9W/kWze4wX/1N6pB5SOaRvc++7Z9yOqbwDAL
-        IHwkrDgHzMkn4IYr3oG+Gywirg==
-X-Google-Smtp-Source: AMsMyM4IOU41jEZl1kaH25EzaO3Tl6/9Oba6qNk5NEBn3vVq/JVKjVSFxwxiDCNcpjB4w0X919Wejg==
-X-Received: by 2002:a5d:58ca:0:b0:236:2324:3f0f with SMTP id o10-20020a5d58ca000000b0023623243f0fmr5464669wrf.325.1666359097401;
-        Fri, 21 Oct 2022 06:31:37 -0700 (PDT)
+        bh=H7Qoz9jeBcfdzL9iyekJH2YPQjo48jyM8jlQ41M6YtQ=;
+        b=3yYzktrWtgJzF6WOs/zkr84kiLRjR6G60I8ZGbPd4MQsgIiLc3js4C9GHVB9Nf/+1k
+         Wxo2a19B1w+Nr6ifV7Y+zQDA8591WQ3MmswiiOlqsKzsFHo5x6lOFPdUjs4NA3xvVHyV
+         NmTUueZYssZiTMFYFj/J4Tz6/e8aEmhJbG3OirqL+JeT/nInyTAMgKIALx7JZMg7Ci0i
+         W2060Nn7+qTG7cn8YDIbawS5DrhOxqv7+er44WWHP57NGurY0EYo5QvcNqf0vU3kA/In
+         OL/HJDa14rCORKxssipbPl29aQa33wN44XxNF4TQ9HHYLbzt/7oTT3CaM+Ef9HXng26Z
+         36AA==
+X-Gm-Message-State: ACrzQf0fulniX9UnZgW9ChA7HLOLlWQDZTunS6XB+Z1SrUp/raCe4iuB
+        hHK0XX1lB8SN7Lsqa7nYB3yNEQ==
+X-Google-Smtp-Source: AMsMyM7vhBSUx8oFPqKPxgekjBSxnpKkMenQ/luY5NA8wvs3PPhn5weMl3uUeZtAfwwfplq+OXGouQ==
+X-Received: by 2002:a05:600c:5119:b0:3c6:cae1:1512 with SMTP id o25-20020a05600c511900b003c6cae11512mr34727154wms.80.1666359100026;
+        Fri, 21 Oct 2022 06:31:40 -0700 (PDT)
 Received: from [127.0.1.1] (210.145.15.109.rev.sfr.net. [109.15.145.210])
-        by smtp.googlemail.com with ESMTPSA id j8-20020a05600c1c0800b003c6b7f5567csm10325280wms.0.2022.10.21.06.31.36
+        by smtp.googlemail.com with ESMTPSA id j8-20020a05600c1c0800b003c6b7f5567csm10325280wms.0.2022.10.21.06.31.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Oct 2022 06:31:37 -0700 (PDT)
+        Fri, 21 Oct 2022 06:31:39 -0700 (PDT)
 From:   Amjad Ouled-Ameur <aouledameur@baylibre.com>
-Date:   Fri, 21 Oct 2022 15:31:25 +0200
-Subject: [PATCH v4 1/4] spi: dt-bindings: amlogic, meson-gx-spicc: Add pinctrl names
- for SPI signal states
+Date:   Fri, 21 Oct 2022 15:31:28 +0200
+Subject: [PATCH v4 4/4] arm64: dts: meson-gxbb: add SPI pinctrl nodes for CLK
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20221004-up-aml-fix-spi-v4-1-0342d8e10c49@baylibre.com>
+Message-Id: <20221004-up-aml-fix-spi-v4-4-0342d8e10c49@baylibre.com>
 References: <20221004-up-aml-fix-spi-v4-0-0342d8e10c49@baylibre.com>
 In-Reply-To: <20221004-up-aml-fix-spi-v4-0-0342d8e10c49@baylibre.com>
 To:     Kevin Hilman <khilman@baylibre.com>,
@@ -73,125 +72,50 @@ Cc:     linux-amlogic@lists.infradead.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org
 X-Mailer: b4 0.10.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1666359095; l=2772;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1666359095; l=868;
  i=aouledameur@baylibre.com; s=20220920; h=from:subject:message-id;
- bh=YwA+sHh1oNU0ILalfPfygNyaqm+7p3kzynT8plbgjZM=;
- b=BGhgpQ4vXKhBYPR0FF4G20VfKU5D9cT5w4SDni58JwcnXH6N8b1jaWuf4JYT7enm+p4gwNRkiAwA
- fSJpzhrjDBdl8xybmq0EbFia14LmXlQqgMte20+x0ClV0q2aHZsR
+ bh=ak0c2C3voqy+PYUNmJZvTOe1B4YCFcIjwb3vM78gKV4=;
+ b=U08rR1DqiuMN+ZjEAxpTF5BvPqmpkiWEm+VeI5J7vmNpVuKEJ4/g+EhvlrAaKQ90o0QaPnwGQnN5
+ bJ4hBA7zAGFQklbeHPuuVocBB1bNTOcICPKDHttTwFahly1iqCha
 X-Developer-Key: i=aouledameur@baylibre.com; a=ed25519;
  pk=HgYWawSL4qLGPx+RzJ+Cuu+V8Pi/KQnDDm1wjWPMOFE=
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-SPI pins of the SPICC Controller in Meson-GX needs to be controlled by
-pin biais when idle. Therefore define three pinctrl names:
-- default: SPI pins are controlled by spi function.
-- idle-high: SCLK pin is pulled-up, but MOSI/MISO are still controlled
-by spi function.
-- idle-low: SCLK pin is pulled-down, but MOSI/MISO are still controlled
-by spi function.
+Add SPICC Controller pin nodes for CLK line when idle for Amlogic GXBB
+SoCs.
 
-Reported-by: Da Xue <da@libre.computer>
-Signed-off-by: Neil Armstrong <narmstrong@baylibre.com>
 Signed-off-by: Amjad Ouled-Ameur <aouledameur@baylibre.com>
 ---
- .../bindings/spi/amlogic,meson-gx-spicc.yaml       | 75 ++++++++++++++--------
- 1 file changed, 47 insertions(+), 28 deletions(-)
+ arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/spi/amlogic,meson-gx-spicc.yaml b/Documentation/devicetree/bindings/spi/amlogic,meson-gx-spicc.yaml
-index 0c10f7678178..53eb6562b979 100644
---- a/Documentation/devicetree/bindings/spi/amlogic,meson-gx-spicc.yaml
-+++ b/Documentation/devicetree/bindings/spi/amlogic,meson-gx-spicc.yaml
-@@ -10,9 +10,6 @@ title: Amlogic Meson SPI Communication Controller
- maintainers:
-   - Neil Armstrong <neil.armstrong@linaro.org>
+diff --git a/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi b/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi
+index 7c029f552a23..923d2d8bbb9c 100644
+--- a/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi
++++ b/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi
+@@ -427,6 +427,20 @@ mux {
+ 			};
+ 		};
  
--allOf:
--  - $ref: "spi-controller.yaml#"
--
- description: |
-   The Meson SPICC is a generic SPI controller for general purpose Full-Duplex
-   communications with dedicated 16 words RX/TX PIO FIFOs.
-@@ -43,31 +40,53 @@ properties:
-     minItems: 1
-     maxItems: 2
- 
--if:
--  properties:
--    compatible:
--      contains:
--        enum:
--          - amlogic,meson-g12a-spicc
--
--then:
--  properties:
--    clocks:
--      minItems: 2
--
--    clock-names:
--      items:
--        - const: core
--        - const: pclk
--
--else:
--  properties:
--    clocks:
--      maxItems: 1
--
--    clock-names:
--      items:
--        - const: core
-+allOf:
-+  - $ref: "spi-controller.yaml#"
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - amlogic,meson-g12a-spicc
++		spi_idle_high_pins: spi-idle-high-pins {
++			mux {
++				groups = "spi_sclk";
++				bias-pull-up;
++			};
++		};
 +
-+    then:
-+      properties:
-+        clocks:
-+          minItems: 2
++		spi_idle_low_pins: spi-idle-low-pins {
++			mux {
++				groups = "spi_sclk";
++				bias-pull-down;
++			};
++		};
 +
-+        clock-names:
-+          items:
-+            - const: core
-+            - const: pclk
-+
-+    else:
-+      properties:
-+        clocks:
-+          maxItems: 1
-+
-+        clock-names:
-+          items:
-+            - const: core
-+
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - amlogic,meson-gx-spicc
-+
-+    then:
-+      properties:
-+        pinctrl-0: true
-+        pinctrl-1: true
-+        pinctrl-2: true
-+
-+        pinctrl-names:
-+          minItems: 1
-+          items:
-+            - const: default
-+            - const: idle-high
-+            - const: idle-low
- 
- required:
-   - compatible
+ 		spi_ss0_pins: spi-ss0 {
+ 			mux {
+ 				groups = "spi_ss0";
 
 -- 
 b4 0.10.1

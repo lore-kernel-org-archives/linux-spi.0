@@ -2,321 +2,466 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 75EA0C433FE
-	for <linux-spi@archiver.kernel.org>; Thu, 20 Oct 2022 22:46:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 13A55C4332F
+	for <linux-spi@archiver.kernel.org>; Fri, 21 Oct 2022 01:46:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229823AbiJTWq0 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 20 Oct 2022 18:46:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41894 "EHLO
+        id S229542AbiJUBqy (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 20 Oct 2022 21:46:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230085AbiJTWqM (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 20 Oct 2022 18:46:12 -0400
-Received: from tartarus.angband.pl (tartarus.angband.pl [51.83.246.204])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47BC422C47A;
-        Thu, 20 Oct 2022 15:46:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=angband.pl;
-        s=tartarus; h=In-Reply-To:Subject:Date:To:From:Resent-To:Resent-Message-ID:
-        Resent-Date:Resent-From:Sender:Reply-To:Message-ID:Cc:MIME-Version:
-        Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-        Resent-Sender:Resent-Cc:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=Nm1iJXuUdZU2uB9PpQSX83/wN9IfcihizUePEGEMhZE=; b=Ls48i0jeumE8G9rGzpu/zgItj/
-        EaMT057HE3YesF+z7+yW4TyCy84/7Gl6uQjF+BDPbeW6a8q0PLglUn7p39PLdMOc4L4b3zKOVgqjy
-        EcuLIQQGE/Ww46xi2sKUtvMmh6cDBNEB9ONcUBoXVakd61O6JOuiL6FsGJMcsfZALpsY=;
-Received: from kilobyte by tartarus.angband.pl with local (Exim 4.94.2)
-        (envelope-from <kilobyte@angband.pl>)
-        id 1oleII-009OaO-Sl; Fri, 21 Oct 2022 00:45:42 +0200
-From:   Adam Borowski <kilobyte@angband.pl>
-To:     Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-mtd@lists.infradead.org, Mark Brown <broonie@kernel.org>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Wed, 14 Sep 2022 23:29:09 +0200
-Subject: [PATCH 3/6] mtd: eject cfi_interleave code to its own header
-In-Reply-To: <S229853AbiJTWkg/20221020224036Z+12888@vger.kernel.org>
-X-SA-Exim-Connect-IP: <locally generated>
-X-SA-Exim-Mail-From: kilobyte@angband.pl
-X-SA-Exim-Scanned: No (on tartarus.angband.pl); SAEximRunCond expanded to false
+        with ESMTP id S229489AbiJUBqv (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 20 Oct 2022 21:46:51 -0400
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on20628.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e1a::628])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2155A226592;
+        Thu, 20 Oct 2022 18:46:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=fX6//82JSx9ke2gCriBVz06UgXMJqQ7uwUe6lOUwX+Asyyp6z65W/1f7iYG6M0kigVsIKU9wnPbJemWGa7H4D/bkKW9QpCjr/OMQr1M12WEuj0l4kcTx/sh3zcTo2sMvAG+N/1LX6WOZlWVem8m/Qcq53TxH42+crWvNTWiDYIIoztMwvZW8mu6qMUTX+rrpXq1voSIZVXwWqQ2OEytns97sqWUSrk4CzCgojQjix1VoDICSKW0YmPH0Gd/raH7x2KwW+YlI0cMR/WpghXGRkP6gM1NFgk9XBI6jqJLAvouGVMNYIxOMDMfGR0elnwTLHevfqxaQkK0y4CLU7MK93w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=x9tZ9jV93bQ9P9GBUbOfVpkA07fCJFi6T2R1LeP6Nag=;
+ b=Tpw/PSYqwNy3UsUd82QcOeptH63mTO0qunsMjBqR9fq2iPQsTaCu4WVAWwY5x3O0NkVqrqyiLVPHBJLFkfT1j7uT8l2HTd6oEH3pSOSsfxMWXWvG0pNyal38KrcGWhFH3IrQBpMfQNhwk8EP8gwEMEADPOjOnyACr+Sb+SuXC5QOQ/Wn9cqJB6qZV8DMNJXYDtA9gX40t4B13cS0Rj0fs5xe4hWq0wsSrYSNqiWPuj74uTKpzLQyIV64BrRT+1Uq/+wePr7oFiDXThMLH+P0ONmB8DEPSXjw0Owg45LamLnIBoZmlVAzcqP+KoX55l4oJ/jkP83xpUkqrMW9EbetNw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=x9tZ9jV93bQ9P9GBUbOfVpkA07fCJFi6T2R1LeP6Nag=;
+ b=sw2vze73NQvionva4V0hqez5Kqkn+NPD28kWR4vwOAMVEpOqJ/Q6VWTsiBJUTsTfvqG2bq4d/+cb+vMkTusPdTn2NAdtoj5AfycWN5uXDTGDE03TiJtaxIwfYd46vJ2ycRiz0ovm2pOCnmFQlbI/0SCYraeJP8gOPRQkQgs7RjM=
+Received: from DU0PR04MB9417.eurprd04.prod.outlook.com (2603:10a6:10:358::11)
+ by DB9PR04MB8204.eurprd04.prod.outlook.com (2603:10a6:10:240::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5723.29; Fri, 21 Oct
+ 2022 01:46:46 +0000
+Received: from DU0PR04MB9417.eurprd04.prod.outlook.com
+ ([fe80::a5ff:3d28:4bbc:e1ed]) by DU0PR04MB9417.eurprd04.prod.outlook.com
+ ([fe80::a5ff:3d28:4bbc:e1ed%6]) with mapi id 15.20.5723.032; Fri, 21 Oct 2022
+ 01:46:46 +0000
+From:   Peng Fan <peng.fan@nxp.com>
+To:     Rob Herring <robh@kernel.org>,
+        "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+CC:     "krzysztof.kozlowski+dt@linaro.org" 
+        <krzysztof.kozlowski+dt@linaro.org>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "festevam@gmail.com" <festevam@gmail.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        dl-linux-imx <linux-imx@nxp.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>
+Subject: RE: [PATCH 1/2] dt-bindings: spi: fsl-imx-cspi: update i.MX8MP
+ binding
+Thread-Topic: [PATCH 1/2] dt-bindings: spi: fsl-imx-cspi: update i.MX8MP
+ binding
+Thread-Index: AQHY5G78ayDcx+I0EU6hKLmDPIgYmq4XPdiAgADW+vA=
+Date:   Fri, 21 Oct 2022 01:46:46 +0000
+Message-ID: <DU0PR04MB9417FFB2605B8026312EE831882D9@DU0PR04MB9417.eurprd04.prod.outlook.com>
+References: <20221020103158.2273874-1-peng.fan@oss.nxp.com>
+ <20221020103158.2273874-2-peng.fan@oss.nxp.com>
+ <166626975547.1096642.8539184924637719626.robh@kernel.org>
+In-Reply-To: <166626975547.1096642.8539184924637719626.robh@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DU0PR04MB9417:EE_|DB9PR04MB8204:EE_
+x-ms-office365-filtering-correlation-id: abe2e4da-3dbc-4a12-c813-08dab3061cf9
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: sikapDkWUA3+kwCkd9gMYv7CvFWQIgtSgdzNFverH3xU9tqjpexiehRCSzN8uRevQVN3pYTL6M5VQuCt2Gzi1ra0DsDlhPVxdCCKdps8xvrOx2rMoczOWirccCxnHwR718dVD2PFSW8GqELwPKeyvKAR16PXtP6blHJ/u6vUVXLzOJ9iS5scepQdp3euZIvrmVN+sJ0eYPs1/hwiSVTeGpAQox8RjVjMRHD8TSEFx5UBraj1VqNFuMfz03cbLwBgLjGg8aRwZmX/X9+b6z+0qEtlaYBsQMI1LZxZwaSLlRfwGqxYnUCyXTciO55u4M/zenJl5gaJk1chTWwyjYDFYBI3J70y4kLF+7v/nNRIkOQrAbhjA/UGXvVYHGiOhmlm8tODziZ3l0VUtLAL+dTWMAfmV9T1jR7tz9fbQgGXApNNb17YNrhwjrezlFgpz+f9P2MBidxHE5FAQVxZMEQd8g8cITXZvjL56dU7Hocb41VOHzzgPdoT0DAlwbaWAMS2iFhPnxormNY0nulkYXPwkTFZFkSoUJmsjX1SY1M9YbS4UPMU8aTp2obZtKVewGmLohqSAWYqtmDGf2N8TUxiUbJ0aXvmfyVg0oAsSEtKjjwVGkEUN/9DHP+GiubqfxL1ZXBbKa1O3POTUDkm9bj+YbUyXOOpXKJwHsI2T9YI6ym4QEYTUA5ugqimry8QqriGIpKtLTYjP8qra4+07GvbW6kbTIa2+TKsejwZw3so7UvrMYDxzfznkn0I0BcU44BAwVf+Mpm1f+1sEgOp3heUy0zxXIUbV+CvLZhTy7eo2fs=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9417.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(346002)(396003)(39860400002)(366004)(136003)(376002)(451199015)(38070700005)(122000001)(38100700002)(86362001)(33656002)(55016003)(2906002)(71200400001)(30864003)(45080400002)(15650500001)(44832011)(478600001)(966005)(66446008)(316002)(41300700001)(64756008)(4326008)(8676002)(66556008)(76116006)(66476007)(8936002)(66946007)(7416002)(52536014)(54906003)(5660300002)(110136005)(83380400001)(9686003)(26005)(7696005)(6506007)(186003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?YR5ETb6Q9CZvXpjA/CTwsGfGMleB9yA+KOG8J6hIFY2Bam8Xw4yWuxIM8ONW?=
+ =?us-ascii?Q?Wj9M9st1dx/Yv4HW7h4JZztHdIEJRLOvfjzkNmbB4VIhQyZLCNP63zOH+kIi?=
+ =?us-ascii?Q?Ev3QeghUUQ/Xcw5bEQeZPeolyeDTTtYEe61I/6m+p7WHqUvBx2RXOtIvkpz6?=
+ =?us-ascii?Q?zVt0tDIPVwtLb2OuX1iUt9bFf7H9hGOaXx6uTewggW9JY5B1VGz+E3cpR9Zo?=
+ =?us-ascii?Q?IE0iz/9udV/AHB0xumTplRw0UkIbDRueXJLwLK+7BYanWYBs5rK2CdwoarfB?=
+ =?us-ascii?Q?q8eV+S8seJNCeDmSLtIBDLSfe/h5lOTjGOtw1FNUKvcXaXTS0kmOM/7YW353?=
+ =?us-ascii?Q?sFDslJ3F1hT/RmngMZac7WWcTaH2jd/NLd9ZKvxylixs/51Kzl9LRvreS41a?=
+ =?us-ascii?Q?GlA0S4h4j5geSKUm7F9GICuTaPbr8Rx2ahCIS0iPY+qHkLXFXvbEoOe+ZOZz?=
+ =?us-ascii?Q?tCfHCOBXIchgUK9SkFF2240ynI6D77s1YTm5lW4yZ6Nf2U45QuhR5y0bh2pr?=
+ =?us-ascii?Q?jSD6JnwXKPwAacIFY8KP1vFw9le/D1QjUYkKInrhjPlJOzEkAS002ZPTzMBZ?=
+ =?us-ascii?Q?2BuZarXv+33NTeVCgnL/1LEJv9hxOlPcQEuFE6DL3sLL65Vev1jmpZKM/rIu?=
+ =?us-ascii?Q?evKMMfDvIUcBvis/oa+sxWm9YK3U1XwND8+fQvpIittD+E4/EMGMjgnV8AYo?=
+ =?us-ascii?Q?hx+a/ygmh/uQXw3lp0HE0JFeEGci8cKeoMOhkHH4/q5y8rL/z+HZAduIv4ux?=
+ =?us-ascii?Q?t07qMlc+HsCymaIopfWxPkJlbODw1N5iXddzHHFF1KxrI+nvqOjHUs4nSr+J?=
+ =?us-ascii?Q?omrEMDVEkfVdMwuZRgkUfz9YuosgLhhKHtfWUZe3MOkfaFsAmJ5Y599UDZp/?=
+ =?us-ascii?Q?FPYlGGbn/Bzcl1ScvwM00SF8//OyiKSZMLozOQijie6kqEhLe0GNNR6lqz4Q?=
+ =?us-ascii?Q?06Yb0s/u2+hnDQTenB16CJ2sBFjJdBuknEJoBEDLExbRaPl6ZHVY7DpP3bc5?=
+ =?us-ascii?Q?mVls/fEN++4W1LoSVbATru/cQR//foCTOVYtYe3KmI9AX6V/urAZLCT/ShZi?=
+ =?us-ascii?Q?Es1EaNaoR9MSLc6JuVNpUkYo56llYQl3Fk4Z24mXC0mayRoJ/0q0brLiV8s2?=
+ =?us-ascii?Q?eqN7XgNRoDWGZMUSyVpPDiGDkjmxEegsS15fgeNf4xXT3fppFhrHtuLNeQ0m?=
+ =?us-ascii?Q?sRIryrw9LNeXoeliP7jTxSZoEBuClNvlGZO3deROAvviB7XstaXqa0UAPxJP?=
+ =?us-ascii?Q?fCdvkJsXYt5S9zXgyhzFFBOKIIKct8JSqche3FRVFcrvB5yx34f5B4kLoIsw?=
+ =?us-ascii?Q?sbwI7zocARTBVm/41+l2t5TofDVFxe2mtV203eIDbudfLDi3A0nFJHOUDyXA?=
+ =?us-ascii?Q?/5DmIFxBltty5IoliqhGW5mUv32myYlRZOOOjKMTakjs9oUkA1VdOJqsI/e8?=
+ =?us-ascii?Q?V5dRt+YHqi3jCccoArSZMmTuLW4VZsWQ7uAfePPH+y2NAJCuZwHrf4feeeWX?=
+ =?us-ascii?Q?kRrmxQIpCwUHUo3tDgnUNMe1lCznqdYV6cwo9ivTyS1DtsgpsCrDSoEfuO/8?=
+ =?us-ascii?Q?t04f/qKfVyncHxRbXCo=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9417.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: abe2e4da-3dbc-4a12-c813-08dab3061cf9
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Oct 2022 01:46:46.3497
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: KgBqd/g+2ztndfcqo0ZMKEnwj49ZUMpjUiobWqchaQqVzjWEzA4DnZn9DjtYDHZIMaAkX58RmxdBpvNW1TGgTA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8204
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
-Message-Id: <S229823AbiJTWq0/20221020224627Z+39689@vger.kernel.org>
 
-This fixes build failures for stuff that doesn't care about that, such as:
+Hi Rob,
 
-In file included from ./include/linux/mtd/spi-nor.h:10,
-                 from drivers/spi/spi-intel.c:13:
-./include/linux/mtd/cfi.h:62:2: error: #warning No CONFIG_MTD_CFI_Ix selected. No NOR chip support
-   62 | #warning No CONFIG_MTD_CFI_Ix selected. No NOR chip support can work.
-      |  ^~~~~~~
+> Subject: Re: [PATCH 1/2] dt-bindings: spi: fsl-imx-cspi: update i.MX8MP
+> binding
+>=20
+> On Thu, 20 Oct 2022 18:31:57 +0800, Peng Fan (OSS) wrote:
+> > From: Peng Fan <peng.fan@nxp.com>
+> >
+> > i.MX8MP ECSPI is derived from i.MX6UL, so update the binding.
+> >
+> > Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> > ---
+> >  Documentation/devicetree/bindings/spi/fsl-imx-cspi.yaml | 4 +++-
+> >  1 file changed, 3 insertions(+), 1 deletion(-)
+> >
+>=20
+> Running 'make dtbs_check' with the schema in this patch gives the followi=
+ng
+> warnings. Consider if they are expected or the schema is incorrect. These
+> may not be new warnings.
 
-Signed-off-by: Adam Borowski <kilobyte@angband.pl>
----
- drivers/mtd/chips/cfi_cmdset_0001.c |  1 +
- drivers/mtd/chips/cfi_cmdset_0002.c |  1 +
- drivers/mtd/chips/cfi_cmdset_0020.c |  1 +
- drivers/mtd/chips/cfi_util.c        |  1 +
- drivers/mtd/chips/gen_probe.c       |  1 +
- drivers/mtd/chips/jedec_probe.c     |  1 +
- include/linux/mtd/cfi.h             | 75 --------------------------
- include/linux/mtd/cfi_interleave.h  | 83 +++++++++++++++++++++++++++++
- 8 files changed, 89 insertions(+), 75 deletions(-)
- create mode 100644 include/linux/mtd/cfi_interleave.h
+Patch 2/2 updates the compatible string which could resolved the dtbs_check
+failure for i.MX8MP boards.
 
-diff --git a/drivers/mtd/chips/cfi_cmdset_0001.c b/drivers/mtd/chips/cfi_cmdset_0001.c
-index 54f92d09d9cf..efbf06fce95b 100644
---- a/drivers/mtd/chips/cfi_cmdset_0001.c
-+++ b/drivers/mtd/chips/cfi_cmdset_0001.c
-@@ -34,6 +34,7 @@
- #include <linux/mtd/map.h>
- #include <linux/mtd/mtd.h>
- #include <linux/mtd/cfi.h>
-+#include <linux/mtd/cfi_interleave.h>
- 
- /* #define CMDSET0001_DISABLE_ERASE_SUSPEND_ON_WRITE */
- /* #define CMDSET0001_DISABLE_WRITE_SUSPEND */
-diff --git a/drivers/mtd/chips/cfi_cmdset_0002.c b/drivers/mtd/chips/cfi_cmdset_0002.c
-index 67453f59c69c..70d00c3641d8 100644
---- a/drivers/mtd/chips/cfi_cmdset_0002.c
-+++ b/drivers/mtd/chips/cfi_cmdset_0002.c
-@@ -37,6 +37,7 @@
- #include <linux/mtd/map.h>
- #include <linux/mtd/mtd.h>
- #include <linux/mtd/cfi.h>
-+#include <linux/mtd/cfi_interleave.h>
- #include <linux/mtd/xip.h>
- 
- #define AMD_BOOTLOC_BUG
-diff --git a/drivers/mtd/chips/cfi_cmdset_0020.c b/drivers/mtd/chips/cfi_cmdset_0020.c
-index d35df526e0a6..007e37faff56 100644
---- a/drivers/mtd/chips/cfi_cmdset_0020.c
-+++ b/drivers/mtd/chips/cfi_cmdset_0020.c
-@@ -31,6 +31,7 @@
- #include <linux/interrupt.h>
- #include <linux/mtd/map.h>
- #include <linux/mtd/cfi.h>
-+#include <linux/mtd/cfi_interleave.h>
- #include <linux/mtd/mtd.h>
- 
- 
-diff --git a/drivers/mtd/chips/cfi_util.c b/drivers/mtd/chips/cfi_util.c
-index 6a6a2a21d2ed..608315032f9e 100644
---- a/drivers/mtd/chips/cfi_util.c
-+++ b/drivers/mtd/chips/cfi_util.c
-@@ -22,6 +22,7 @@
- #include <linux/mtd/mtd.h>
- #include <linux/mtd/map.h>
- #include <linux/mtd/cfi.h>
-+#include <linux/mtd/cfi_interleave.h>
- 
- void cfi_udelay(int us)
- {
-diff --git a/drivers/mtd/chips/gen_probe.c b/drivers/mtd/chips/gen_probe.c
-index 4d4f97841016..8703890ff20e 100644
---- a/drivers/mtd/chips/gen_probe.c
-+++ b/drivers/mtd/chips/gen_probe.c
-@@ -10,6 +10,7 @@
- #include <linux/mtd/mtd.h>
- #include <linux/mtd/map.h>
- #include <linux/mtd/cfi.h>
-+#include <linux/mtd/cfi_interleave.h>
- #include <linux/mtd/gen_probe.h>
- 
- static struct mtd_info *check_cmd_set(struct map_info *, int);
-diff --git a/drivers/mtd/chips/jedec_probe.c b/drivers/mtd/chips/jedec_probe.c
-index 6f7e7e1b3fe5..88a979bb59bb 100644
---- a/drivers/mtd/chips/jedec_probe.c
-+++ b/drivers/mtd/chips/jedec_probe.c
-@@ -20,6 +20,7 @@
- #include <linux/mtd/mtd.h>
- #include <linux/mtd/map.h>
- #include <linux/mtd/cfi.h>
-+#include <linux/mtd/cfi_interleave.h>
- #include <linux/mtd/gen_probe.h>
- 
- /* AMD */
-diff --git a/include/linux/mtd/cfi.h b/include/linux/mtd/cfi.h
-index d88bb56c18e2..4a8ddb51afee 100644
---- a/include/linux/mtd/cfi.h
-+++ b/include/linux/mtd/cfi.h
-@@ -8,87 +8,12 @@
- 
- #include <linux/delay.h>
- #include <linux/types.h>
--#include <linux/bug.h>
- #include <linux/interrupt.h>
- #include <linux/mtd/flashchip.h>
- #include <linux/mtd/map.h>
- #include <linux/mtd/cfi_endian.h>
- #include <linux/mtd/xip.h>
- 
--#ifdef CONFIG_MTD_CFI_I1
--#define cfi_interleave(cfi) 1
--#define cfi_interleave_is_1(cfi) (cfi_interleave(cfi) == 1)
--#else
--#define cfi_interleave_is_1(cfi) (0)
--#endif
--
--#ifdef CONFIG_MTD_CFI_I2
--# ifdef cfi_interleave
--#  undef cfi_interleave
--#  define cfi_interleave(cfi) ((cfi)->interleave)
--# else
--#  define cfi_interleave(cfi) 2
--# endif
--#define cfi_interleave_is_2(cfi) (cfi_interleave(cfi) == 2)
--#else
--#define cfi_interleave_is_2(cfi) (0)
--#endif
--
--#ifdef CONFIG_MTD_CFI_I4
--# ifdef cfi_interleave
--#  undef cfi_interleave
--#  define cfi_interleave(cfi) ((cfi)->interleave)
--# else
--#  define cfi_interleave(cfi) 4
--# endif
--#define cfi_interleave_is_4(cfi) (cfi_interleave(cfi) == 4)
--#else
--#define cfi_interleave_is_4(cfi) (0)
--#endif
--
--#ifdef CONFIG_MTD_CFI_I8
--# ifdef cfi_interleave
--#  undef cfi_interleave
--#  define cfi_interleave(cfi) ((cfi)->interleave)
--# else
--#  define cfi_interleave(cfi) 8
--# endif
--#define cfi_interleave_is_8(cfi) (cfi_interleave(cfi) == 8)
--#else
--#define cfi_interleave_is_8(cfi) (0)
--#endif
--
--#ifndef cfi_interleave
--#warning No CONFIG_MTD_CFI_Ix selected. No NOR chip support can work.
--static inline int cfi_interleave(void *cfi)
--{
--	BUG();
--	return 0;
--}
--#endif
--
--static inline int cfi_interleave_supported(int i)
--{
--	switch (i) {
--#ifdef CONFIG_MTD_CFI_I1
--	case 1:
--#endif
--#ifdef CONFIG_MTD_CFI_I2
--	case 2:
--#endif
--#ifdef CONFIG_MTD_CFI_I4
--	case 4:
--#endif
--#ifdef CONFIG_MTD_CFI_I8
--	case 8:
--#endif
--		return 1;
--
--	default:
--		return 0;
--	}
--}
--
- 
- /* NB: these values must represents the number of bytes needed to meet the
-  *     device type (x8, x16, x32).  Eg. a 32 bit device is 4 x 8 bytes.
-diff --git a/include/linux/mtd/cfi_interleave.h b/include/linux/mtd/cfi_interleave.h
-new file mode 100644
-index 000000000000..03d94a6d11fc
---- /dev/null
-+++ b/include/linux/mtd/cfi_interleave.h
-@@ -0,0 +1,83 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+
-+#ifndef __MTD_CFI_INTERLEAVE_H__
-+#define __MTD_CFI_INTERLEAVE_H__
-+
-+#include <linux/bug.h>
-+
-+#ifdef CONFIG_MTD_CFI_I1
-+#define cfi_interleave(cfi) 1
-+#define cfi_interleave_is_1(cfi) (cfi_interleave(cfi) == 1)
-+#else
-+#define cfi_interleave_is_1(cfi) (0)
-+#endif
-+
-+#ifdef CONFIG_MTD_CFI_I2
-+# ifdef cfi_interleave
-+#  undef cfi_interleave
-+#  define cfi_interleave(cfi) ((cfi)->interleave)
-+# else
-+#  define cfi_interleave(cfi) 2
-+# endif
-+#define cfi_interleave_is_2(cfi) (cfi_interleave(cfi) == 2)
-+#else
-+#define cfi_interleave_is_2(cfi) (0)
-+#endif
-+
-+#ifdef CONFIG_MTD_CFI_I4
-+# ifdef cfi_interleave
-+#  undef cfi_interleave
-+#  define cfi_interleave(cfi) ((cfi)->interleave)
-+# else
-+#  define cfi_interleave(cfi) 4
-+# endif
-+#define cfi_interleave_is_4(cfi) (cfi_interleave(cfi) == 4)
-+#else
-+#define cfi_interleave_is_4(cfi) (0)
-+#endif
-+
-+#ifdef CONFIG_MTD_CFI_I8
-+# ifdef cfi_interleave
-+#  undef cfi_interleave
-+#  define cfi_interleave(cfi) ((cfi)->interleave)
-+# else
-+#  define cfi_interleave(cfi) 8
-+# endif
-+#define cfi_interleave_is_8(cfi) (cfi_interleave(cfi) == 8)
-+#else
-+#define cfi_interleave_is_8(cfi) (0)
-+#endif
-+
-+#ifndef cfi_interleave
-+#warning No CONFIG_MTD_CFI_Ix selected. No NOR chip support can work.
-+static inline int cfi_interleave(void *cfi)
-+{
-+	BUG();
-+	return 0;
-+}
-+#endif
-+
-+static inline int cfi_interleave_supported(int i)
-+{
-+	switch (i) {
-+#ifdef CONFIG_MTD_CFI_I1
-+	case 1:
-+#endif
-+#ifdef CONFIG_MTD_CFI_I2
-+	case 2:
-+#endif
-+#ifdef CONFIG_MTD_CFI_I4
-+	case 4:
-+#endif
-+#ifdef CONFIG_MTD_CFI_I8
-+	case 8:
-+#endif
-+		return 1;
-+
-+	default:
-+		return 0;
-+	}
-+}
-+
-+
-+#endif /* __MTD_CFI_INTERLEAVE_H__ */
--- 
-2.37.2.609.g9ff673ca1a
+Thanks,
+Peng.
+
+>=20
+> Note that it is not yet a requirement to have 0 warnings for dtbs_check.
+> This will change in the future.
+>=20
+> Full log is available here:
+> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fpatc
+> hwork.ozlabs.org%2Fpatch%2F&amp;data=3D05%7C01%7Cpeng.fan%40nxp.c
+> om%7Cbd5f3e7566774254285308dab29a7eb5%7C686ea1d3bc2b4c6fa92cd
+> 99c5c301635%7C0%7C1%7C638018673864797750%7CUnknown%7CTWFpb
+> GZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI
+> 6Mn0%3D%7C3000%7C%7C%7C&amp;sdata=3DZawGt%2BSCPrZkiNU3WYRy%
+> 2F2JqCVY%2FtRWfVC%2BCTRcC0Fs%3D&amp;reserved=3D0
+>=20
+>=20
+> spi@30630000: Unevaluated properties are not allowed ('num-chipselects'
+> was unexpected)
+> 	arch/arm/boot/dts/imx7d-flex-concentrator.dtb
+> 	arch/arm/boot/dts/imx7d-flex-concentrator-mfg.dtb
+>=20
+> spi@30820000: compatible: 'oneOf' conditional failed, one must be fixed:
+> 	arch/arm64/boot/dts/freescale/imx8mp-dhcom-pdk2.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-evk.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp-
+> edimm2.2.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-msc-sm2s-ep1.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-
+> mba8mpxl.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-verdin-nonwifi-dahlia.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-verdin-nonwifi-dev.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-verdin-wifi-dahlia.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-verdin-wifi-dev.dtb
+>=20
+> spi@30820000: Unevaluated properties are not allowed ('compatible' was
+> unexpected)
+> 	arch/arm64/boot/dts/freescale/imx8mp-dhcom-pdk2.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-evk.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp-
+> edimm2.2.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-msc-sm2s-ep1.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-
+> mba8mpxl.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-verdin-nonwifi-dahlia.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-verdin-nonwifi-dev.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-verdin-wifi-dahlia.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-verdin-wifi-dev.dtb
+>=20
+> spi@30830000: compatible: 'oneOf' conditional failed, one must be fixed:
+> 	arch/arm64/boot/dts/freescale/imx8mp-dhcom-pdk2.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-evk.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp-
+> edimm2.2.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-msc-sm2s-ep1.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-
+> mba8mpxl.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-verdin-nonwifi-dahlia.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-verdin-nonwifi-dev.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-verdin-wifi-dahlia.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-verdin-wifi-dev.dtb
+>=20
+> spi@30830000: Unevaluated properties are not allowed ('compatible' was
+> unexpected)
+> 	arch/arm64/boot/dts/freescale/imx8mp-dhcom-pdk2.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-evk.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp-
+> edimm2.2.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-msc-sm2s-ep1.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-
+> mba8mpxl.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-verdin-nonwifi-dahlia.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-verdin-nonwifi-dev.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-verdin-wifi-dahlia.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-verdin-wifi-dev.dtb
+>=20
+> spi@30830000: Unevaluated properties are not allowed ('num-chipselects'
+> was unexpected)
+> 	arch/arm/boot/dts/imx7d-flex-concentrator.dtb
+> 	arch/arm/boot/dts/imx7d-flex-concentrator-mfg.dtb
+>=20
+> spi@30840000: compatible: 'oneOf' conditional failed, one must be fixed:
+> 	arch/arm64/boot/dts/freescale/imx8mp-dhcom-pdk2.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-evk.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp-
+> edimm2.2.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-msc-sm2s-ep1.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-
+> mba8mpxl.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-verdin-nonwifi-dahlia.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-verdin-nonwifi-dev.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-verdin-wifi-dahlia.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-verdin-wifi-dev.dtb
+>=20
+> spi@30840000: Unevaluated properties are not allowed ('compatible' was
+> unexpected)
+> 	arch/arm64/boot/dts/freescale/imx8mp-dhcom-pdk2.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-evk.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp-
+> edimm2.2.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-msc-sm2s-ep1.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-
+> mba8mpxl.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-verdin-nonwifi-dahlia.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-verdin-nonwifi-dev.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-verdin-wifi-dahlia.dtb
+> 	arch/arm64/boot/dts/freescale/imx8mp-verdin-wifi-dev.dtb
+>=20
+> spi@43fa4000: compatible: 'oneOf' conditional failed, one must be fixed:
+> 	arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-cmo-
+> qvga.dtb
+> 	arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard.dtb
+> 	arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-
+> svga.dtb
+> 	arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-
+> vga.dtb
+> 	arch/arm/boot/dts/imx25-karo-tx25.dtb
+> 	arch/arm/boot/dts/imx25-pdk.dtb
+>=20
+> spi@43fa4000: Unevaluated properties are not allowed ('compatible' was
+> unexpected)
+> 	arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-cmo-
+> qvga.dtb
+> 	arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard.dtb
+> 	arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-
+> svga.dtb
+> 	arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-
+> vga.dtb
+> 	arch/arm/boot/dts/imx25-karo-tx25.dtb
+> 	arch/arm/boot/dts/imx25-pdk.dtb
+>=20
+> spi@50004000: compatible: 'oneOf' conditional failed, one must be fixed:
+> 	arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-cmo-
+> qvga.dtb
+> 	arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard.dtb
+> 	arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-
+> svga.dtb
+> 	arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-
+> vga.dtb
+> 	arch/arm/boot/dts/imx25-karo-tx25.dtb
+> 	arch/arm/boot/dts/imx25-pdk.dtb
+>=20
+> spi@50004000: Unevaluated properties are not allowed ('compatible' was
+> unexpected)
+> 	arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-cmo-
+> qvga.dtb
+> 	arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard.dtb
+> 	arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-
+> svga.dtb
+> 	arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-
+> vga.dtb
+> 	arch/arm/boot/dts/imx25-karo-tx25.dtb
+> 	arch/arm/boot/dts/imx25-pdk.dtb
+>=20
+> spi@50010000: compatible: 'oneOf' conditional failed, one must be fixed:
+> 	arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-cmo-
+> qvga.dtb
+> 	arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard.dtb
+> 	arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-
+> svga.dtb
+> 	arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-
+> vga.dtb
+> 	arch/arm/boot/dts/imx25-karo-tx25.dtb
+> 	arch/arm/boot/dts/imx25-pdk.dtb
+> 	arch/arm/boot/dts/imx53-ard.dtb
+> 	arch/arm/boot/dts/imx53-cx9020.dtb
+> 	arch/arm/boot/dts/imx53-kp-ddc.dtb
+> 	arch/arm/boot/dts/imx53-kp-hsc.dtb
+> 	arch/arm/boot/dts/imx53-m53evk.dtb
+> 	arch/arm/boot/dts/imx53-m53menlo.dtb
+> 	arch/arm/boot/dts/imx53-mba53.dtb
+> 	arch/arm/boot/dts/imx53-ppd.dtb
+> 	arch/arm/boot/dts/imx53-qsb.dtb
+> 	arch/arm/boot/dts/imx53-qsrb.dtb
+> 	arch/arm/boot/dts/imx53-smd.dtb
+> 	arch/arm/boot/dts/imx53-tx53-x03x.dtb
+> 	arch/arm/boot/dts/imx53-tx53-x13x.dtb
+> 	arch/arm/boot/dts/imx53-usbarmory.dtb
+> 	arch/arm/boot/dts/imx53-voipac-bsb.dtb
+>=20
+> spi@50010000: Unevaluated properties are not allowed ('compatible' was
+> unexpected)
+> 	arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-cmo-
+> qvga.dtb
+> 	arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard.dtb
+> 	arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-
+> svga.dtb
+> 	arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-
+> vga.dtb
+> 	arch/arm/boot/dts/imx25-karo-tx25.dtb
+> 	arch/arm/boot/dts/imx25-pdk.dtb
+> 	arch/arm/boot/dts/imx53-ard.dtb
+> 	arch/arm/boot/dts/imx53-cx9020.dtb
+> 	arch/arm/boot/dts/imx53-kp-ddc.dtb
+> 	arch/arm/boot/dts/imx53-kp-hsc.dtb
+> 	arch/arm/boot/dts/imx53-m53evk.dtb
+> 	arch/arm/boot/dts/imx53-m53menlo.dtb
+> 	arch/arm/boot/dts/imx53-mba53.dtb
+> 	arch/arm/boot/dts/imx53-ppd.dtb
+> 	arch/arm/boot/dts/imx53-qsb.dtb
+> 	arch/arm/boot/dts/imx53-qsrb.dtb
+> 	arch/arm/boot/dts/imx53-smd.dtb
+> 	arch/arm/boot/dts/imx53-tx53-x03x.dtb
+> 	arch/arm/boot/dts/imx53-tx53-x13x.dtb
+> 	arch/arm/boot/dts/imx53-usbarmory.dtb
+> 	arch/arm/boot/dts/imx53-voipac-bsb.dtb
+>=20
+> spi@63fac000: compatible: 'oneOf' conditional failed, one must be fixed:
+> 	arch/arm/boot/dts/imx53-ard.dtb
+> 	arch/arm/boot/dts/imx53-cx9020.dtb
+> 	arch/arm/boot/dts/imx53-kp-ddc.dtb
+> 	arch/arm/boot/dts/imx53-kp-hsc.dtb
+> 	arch/arm/boot/dts/imx53-m53evk.dtb
+> 	arch/arm/boot/dts/imx53-m53menlo.dtb
+> 	arch/arm/boot/dts/imx53-mba53.dtb
+> 	arch/arm/boot/dts/imx53-ppd.dtb
+> 	arch/arm/boot/dts/imx53-qsb.dtb
+> 	arch/arm/boot/dts/imx53-qsrb.dtb
+> 	arch/arm/boot/dts/imx53-smd.dtb
+> 	arch/arm/boot/dts/imx53-tx53-x03x.dtb
+> 	arch/arm/boot/dts/imx53-tx53-x13x.dtb
+> 	arch/arm/boot/dts/imx53-usbarmory.dtb
+> 	arch/arm/boot/dts/imx53-voipac-bsb.dtb
+>=20
+> spi@63fac000: Unevaluated properties are not allowed ('compatible' was
+> unexpected)
+> 	arch/arm/boot/dts/imx53-ard.dtb
+> 	arch/arm/boot/dts/imx53-cx9020.dtb
+> 	arch/arm/boot/dts/imx53-kp-ddc.dtb
+> 	arch/arm/boot/dts/imx53-kp-hsc.dtb
+> 	arch/arm/boot/dts/imx53-m53evk.dtb
+> 	arch/arm/boot/dts/imx53-m53menlo.dtb
+> 	arch/arm/boot/dts/imx53-mba53.dtb
+> 	arch/arm/boot/dts/imx53-ppd.dtb
+> 	arch/arm/boot/dts/imx53-qsb.dtb
+> 	arch/arm/boot/dts/imx53-qsrb.dtb
+> 	arch/arm/boot/dts/imx53-smd.dtb
+> 	arch/arm/boot/dts/imx53-tx53-x03x.dtb
+> 	arch/arm/boot/dts/imx53-tx53-x13x.dtb
+> 	arch/arm/boot/dts/imx53-usbarmory.dtb
+> 	arch/arm/boot/dts/imx53-voipac-bsb.dtb
+>=20
+> spi@63fc0000: compatible: 'oneOf' conditional failed, one must be fixed:
+> 	arch/arm/boot/dts/imx50-evk.dtb
+> 	arch/arm/boot/dts/imx50-kobo-aura.dtb
+> 	arch/arm/boot/dts/imx53-ard.dtb
+> 	arch/arm/boot/dts/imx53-cx9020.dtb
+> 	arch/arm/boot/dts/imx53-kp-ddc.dtb
+> 	arch/arm/boot/dts/imx53-kp-hsc.dtb
+> 	arch/arm/boot/dts/imx53-m53evk.dtb
+> 	arch/arm/boot/dts/imx53-m53menlo.dtb
+> 	arch/arm/boot/dts/imx53-mba53.dtb
+> 	arch/arm/boot/dts/imx53-ppd.dtb
+> 	arch/arm/boot/dts/imx53-qsb.dtb
+> 	arch/arm/boot/dts/imx53-qsrb.dtb
+> 	arch/arm/boot/dts/imx53-smd.dtb
+> 	arch/arm/boot/dts/imx53-tx53-x03x.dtb
+> 	arch/arm/boot/dts/imx53-tx53-x13x.dtb
+> 	arch/arm/boot/dts/imx53-usbarmory.dtb
+> 	arch/arm/boot/dts/imx53-voipac-bsb.dtb
+>=20
+> spi@63fc0000: Unevaluated properties are not allowed ('compatible' was
+> unexpected)
+> 	arch/arm/boot/dts/imx50-evk.dtb
+> 	arch/arm/boot/dts/imx50-kobo-aura.dtb
+> 	arch/arm/boot/dts/imx53-ard.dtb
+> 	arch/arm/boot/dts/imx53-cx9020.dtb
+> 	arch/arm/boot/dts/imx53-kp-ddc.dtb
+> 	arch/arm/boot/dts/imx53-kp-hsc.dtb
+> 	arch/arm/boot/dts/imx53-m53evk.dtb
+> 	arch/arm/boot/dts/imx53-m53menlo.dtb
+> 	arch/arm/boot/dts/imx53-mba53.dtb
+> 	arch/arm/boot/dts/imx53-ppd.dtb
+> 	arch/arm/boot/dts/imx53-qsb.dtb
+> 	arch/arm/boot/dts/imx53-qsrb.dtb
+> 	arch/arm/boot/dts/imx53-smd.dtb
+> 	arch/arm/boot/dts/imx53-tx53-x03x.dtb
+> 	arch/arm/boot/dts/imx53-tx53-x13x.dtb
+> 	arch/arm/boot/dts/imx53-usbarmory.dtb
+> 	arch/arm/boot/dts/imx53-voipac-bsb.dtb
+>=20
+> spi@83fc0000: compatible: 'oneOf' conditional failed, one must be fixed:
+> 	arch/arm/boot/dts/imx51-apf51dev.dtb
+> 	arch/arm/boot/dts/imx51-apf51.dtb
+> 	arch/arm/boot/dts/imx51-babbage.dtb
+> 	arch/arm/boot/dts/imx51-digi-connectcore-jsk.dtb
+> 	arch/arm/boot/dts/imx51-eukrea-mbimxsd51-baseboard.dtb
+> 	arch/arm/boot/dts/imx51-ts4800.dtb
+> 	arch/arm/boot/dts/imx51-zii-rdu1.dtb
+> 	arch/arm/boot/dts/imx51-zii-scu2-mezz.dtb
+> 	arch/arm/boot/dts/imx51-zii-scu3-esb.dtb
+>=20
+> spi@83fc0000: Unevaluated properties are not allowed ('compatible' was
+> unexpected)
+> 	arch/arm/boot/dts/imx51-apf51dev.dtb
+> 	arch/arm/boot/dts/imx51-apf51.dtb
+> 	arch/arm/boot/dts/imx51-babbage.dtb
+> 	arch/arm/boot/dts/imx51-digi-connectcore-jsk.dtb
+> 	arch/arm/boot/dts/imx51-eukrea-mbimxsd51-baseboard.dtb
+> 	arch/arm/boot/dts/imx51-ts4800.dtb
+> 	arch/arm/boot/dts/imx51-zii-rdu1.dtb
+> 	arch/arm/boot/dts/imx51-zii-scu2-mezz.dtb
+> 	arch/arm/boot/dts/imx51-zii-scu3-esb.dtb
 

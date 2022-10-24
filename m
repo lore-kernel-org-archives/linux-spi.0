@@ -2,82 +2,82 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A1E77C67871
-	for <linux-spi@archiver.kernel.org>; Mon, 24 Oct 2022 19:33:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D24EBFA3742
+	for <linux-spi@archiver.kernel.org>; Mon, 24 Oct 2022 19:54:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233281AbiJXTdJ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 24 Oct 2022 15:33:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60308 "EHLO
+        id S232017AbiJXTyq (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 24 Oct 2022 15:54:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233287AbiJXTcr (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 24 Oct 2022 15:32:47 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61E92D4A1A
-        for <linux-spi@vger.kernel.org>; Mon, 24 Oct 2022 11:03:10 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id D7866B81895
-        for <linux-spi@vger.kernel.org>; Mon, 24 Oct 2022 13:07:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3E96C433C1;
-        Mon, 24 Oct 2022 13:07:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666616876;
-        bh=vkZnW0gjSxeSOiEzu/ZRPD5x7ksD6U0yEsC+P2WMStU=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=hT6ZBVzbR/R3X8agHdaNiqwoEa596+RKXDALu68o0wBkhQKCdrA+3kebCRpGEbgUn
-         BEv9MayIq9CcTZEi0zEM3dDKvLTsHbq8+/J6tUFRh2VgEoHOF20HJdvMn3RA3GZ3EH
-         NwKqDzxEiJY+XbSg1FN5r3LJgrKRq1v5OUChXuOoJZq1N4gFOcjtFi1oOG8TqHKTWC
-         ULp4bIA17lRd1Dr0zpS6PidelG5J5y031eecq0s1xhQ7vgzLksdM0FUWkH+aKqdYRe
-         hTOH03ODOhsvNqZTvo0VjbN5yd4dZ1zNg2/P6jvTshmH3YJyvLL89pcXirr5hVKgSk
-         ykeJVNIV0wWzg==
-From:   Mark Brown <broonie@kernel.org>
-To:     Yang Yingliang <yangyingliang@huawei.com>,
-        linux-spi@vger.kernel.org
-Cc:     clg@kaod.org, chin-ting_kuo@aspeedtech.com
-In-Reply-To: <20221019092635.1176622-1-yangyingliang@huawei.com>
-References: <20221019092635.1176622-1-yangyingliang@huawei.com>
-Subject: Re: [PATCH -next] spi: aspeed: Use devm_platform_{get_and_}ioremap_resource()
-Message-Id: <166661687537.215328.15512815155107512987.b4-ty@kernel.org>
-Date:   Mon, 24 Oct 2022 14:07:55 +0100
+        with ESMTP id S233816AbiJXTxv (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 24 Oct 2022 15:53:51 -0400
+Received: from mail-oa1-x32.google.com (mail-oa1-x32.google.com [IPv6:2001:4860:4864:20::32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49D231440A6
+        for <linux-spi@vger.kernel.org>; Mon, 24 Oct 2022 11:18:09 -0700 (PDT)
+Received: by mail-oa1-x32.google.com with SMTP id 586e51a60fabf-13be3ef361dso346218fac.12
+        for <linux-spi@vger.kernel.org>; Mon, 24 Oct 2022 11:18:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CPf6G/73Hd0s0zh7PYg5rvhdRmvS3jQjXsc+lqFusyc=;
+        b=HGcVBFDteMZls7ZMsIqjOq7T8/WfuF1etJ7ROqUxvS4ggGiZNESri7+18Ux08kMjOh
+         47J5+qd9Nv5snWwet2PfoPSRBSh9MTWfTA8MF4x5a3cst+gCEUk3MVqVrIVwbRdklIgx
+         DsztJnobAckKidL6xUzLrYwdGsz1nEP3lcLEAYCzGs3OWk2zVdu1lEyYEwTRNt7VO+Zv
+         DZxHXejkaVio0WcOTpKxY5QCLl2oSQZWdmi1HazGx4m1e/B+trzljjwlXuc3FFGZDJBn
+         yb5RWbbU0IhN0sHRcr5fTwU/8sE2dvxO00p7tdTQEWcWEXMNFJpn911HBLYjy0wsoOtw
+         +1bw==
+X-Gm-Message-State: ACrzQf0CmmEz2osGOZkLrDWlTyPAy371jgLqN9qLS8qK9DPQp25WxUEC
+        WoStonhj3yf05/WvsrCKiDMFe93+94FsEKSKhR5fIA==
+X-Google-Smtp-Source: AMsMyM4Gm7Aig8YT5fRJeyMGddzfvxxYUrUEmpPq2PCQ/RGA1i1Qlql9jRoJlFidSVPdqq8RCQds4g==
+X-Received: by 2002:a17:90a:fe6:b0:212:bfc3:31f5 with SMTP id 93-20020a17090a0fe600b00212bfc331f5mr25482041pjz.215.1666634594766;
+        Mon, 24 Oct 2022 11:03:14 -0700 (PDT)
+Received: from localhost ([75.172.140.17])
+        by smtp.gmail.com with ESMTPSA id mj19-20020a17090b369300b002131a9f8dcbsm1291814pjb.46.2022.10.24.11.03.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Oct 2022 11:03:14 -0700 (PDT)
+From:   Kevin Hilman <khilman@kernel.org>
+To:     Arnd Bergmann <arnd@kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        Paul Walmsley <paul@pwsan.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Tony Lindgren <tony@atomide.com>
+Cc:     linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        linux-omap@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        Felipe Balbi <balbi@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alan Stern <stern@rowland.harvard.edu>, Bin Liu <b-liu@ti.com>,
+        Helge Deller <deller@gmx.de>, linux-usb@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH 14/17] ARM: omap1: remove dead code
+In-Reply-To: <20221019150410.3851944-14-arnd@kernel.org>
+References: <20221019144119.3848027-1-arnd@kernel.org>
+ <20221019150410.3851944-1-arnd@kernel.org>
+ <20221019150410.3851944-14-arnd@kernel.org>
+Date:   Mon, 24 Oct 2022 11:03:13 -0700
+Message-ID: <7hbkq1hzfi.fsf@baylibre.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.10.0-dev-fc921
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, 19 Oct 2022 17:26:35 +0800, Yang Yingliang wrote:
-> Use the devm_platform_{get_and_}ioremap_resource() helper instead of
-> calling platform_get_resource() and devm_ioremap_resource() separately.
-> 
-> 
+Arnd Bergmann <arnd@kernel.org> writes:
 
-Applied to
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> After the removal of the unused board files, I went through the
+> omap1 code to look for code that no longer has any callers
+> and remove that.
+>
+> In particular, support for the omap7xx/omap8xx family is now
+> completely unused, so I'm only leaving omap15xx/omap16xx/omap59xx.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+Acked-by: Kevin Hilman <khilman@baylibre.com>
 
-Thanks!
+with a few tears shed since omap7xx/omap8xx was the first family I
+contributed to upstream. :(
 
-[1/1] spi: aspeed: Use devm_platform_{get_and_}ioremap_resource()
-      commit: 6d0cebbdf29922eaba4648a7a06d0d4ffd00439f
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+Kevin

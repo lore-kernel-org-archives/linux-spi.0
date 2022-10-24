@@ -2,128 +2,116 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8B533FA3740
-	for <linux-spi@archiver.kernel.org>; Mon, 24 Oct 2022 13:17:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C855CFA3742
+	for <linux-spi@archiver.kernel.org>; Mon, 24 Oct 2022 14:30:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235912AbiJXNRi (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 24 Oct 2022 09:17:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46334 "EHLO
+        id S237005AbiJXOai (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 24 Oct 2022 10:30:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233701AbiJXNRE (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 24 Oct 2022 09:17:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94FA29AF9E;
-        Mon, 24 Oct 2022 05:26:28 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A375E612D2;
-        Mon, 24 Oct 2022 12:26:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AF6CC433D7;
-        Mon, 24 Oct 2022 12:25:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666614362;
-        bh=2XWGMD1dyJoof5ESj2tNrEfH8u5LG6bFReadSHUzboE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=keyyr4OZE3GtaW9cTc0eOlIcSQLxEgKVkHoKcO1+qn3YT7qDohzIikn4xVrY3uteN
-         IxaxxTbHSva8XMZStVMADlD/Jy3e/38tNhwXegG7zeiW5IzZEiu0RA1PB4Uh7+RcEI
-         dvcSk+hRxPA79LfLwH21FfvNZnsqud3zbSSYpHjYKgQbCvl4Te3C0DvNBYjQP3s6va
-         HhY0qZo0LBSeTBRz76K6dOJ+EupvvNPRbVV9X3Chv7khS5TFoRBfS7QqAf2mcMCxRc
-         OlbvlC6F2FVjUEpnT793zg2Oq1oMC6HJkKHBnppUyC/kzsDaeV5nGhQwo8jpUAvZxi
-         htN5/K4iXEADQ==
-Date:   Mon, 24 Oct 2022 13:25:55 +0100
-From:   Lee Jones <lee@kernel.org>
-To:     Sergiu.Moga@microchip.com
-Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        Nicolas.Ferre@microchip.com, alexandre.belloni@bootlin.com,
-        Claudiu.Beznea@microchip.com, radu_nicolae.pirea@upb.ro,
-        richard.genoud@gmail.com, gregkh@linuxfoundation.org,
-        jirislaby@kernel.org, Kavyasree.Kotagiri@microchip.com,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-serial@vger.kernel.org, krzysztof.kozlowski@linaro.org
-Subject: Re: [PATCH v5 1/9] dt-bindings: mfd: atmel,sama5d2-flexcom: Add SPI
- child node ref binding
-Message-ID: <Y1aEU+k1lMOdSSR5@google.com>
-References: <20220922113347.144383-1-sergiu.moga@microchip.com>
- <20220922113347.144383-2-sergiu.moga@microchip.com>
- <YzRiVwzJYXtat1O5@google.com>
- <7a0c45e2-85fc-b5b0-d1de-a9e06a20bb42@microchip.com>
- <YzRnAy0DrfBilz8d@google.com>
- <1d61596b-876b-2eca-f72d-ed38cc36f1a8@microchip.com>
+        with ESMTP id S234904AbiJXO2v (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 24 Oct 2022 10:28:51 -0400
+Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2ED92D73C2;
+        Mon, 24 Oct 2022 06:02:17 -0700 (PDT)
+Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-13b23e29e36so10999254fac.8;
+        Mon, 24 Oct 2022 06:02:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=p+x9joGdXdBFLPPxN1p6d7/jrm+b1E7zu0ZikUl9XbM=;
+        b=kN4xIs/QEGJ+oT9qrn2OjPi/N6FcvGH6BvACP76blbVF103TXYi+7qEU5tINWQ+OJz
+         dApYzrcvxoO2ZIXOFTxb7h3JgOvX67e53Ux9I2wwMvKPIJrbpeDZZobSiNgXQhwqMaF/
+         R3ztR06WTPRqxKei/NzyOWyK9tZuNZ0Cm15uInIPmFb7tUxRSre+3lm52uo1EfezpHK9
+         o9VNCRaweqKifLKL/48NiILy3trNo3072uYGiXhEVisoQwGcZ30ghYt4hAv1vlMBiN/X
+         ltLvQXpHTYGfKkWtuOvorD19U4Zbzkwzp6qZaLG5THbYH133b9fRVRaPubb8xH2WHVbL
+         oPdg==
+X-Gm-Message-State: ACrzQf3i7XkzH7UpZj1xKGIMrADeoCGwSUDmJj0hXhqGuTa4oC2Svjr2
+        vms3XoPp+qtUCiVrBxssV68CXNLJaw==
+X-Google-Smtp-Source: AMsMyM4RB1x55W7tWXLqKMCfn9+yNGKoyP28eeDXqoWuK46CSg7FurAIxSSG6961lNUtLuCZU2W88g==
+X-Received: by 2002:a05:6870:e9a8:b0:133:223f:49a1 with SMTP id r40-20020a056870e9a800b00133223f49a1mr38235091oao.114.1666616434841;
+        Mon, 24 Oct 2022 06:00:34 -0700 (PDT)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id g20-20020a056870c15400b0012796e8033dsm2716705oad.57.2022.10.24.06.00.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Oct 2022 06:00:34 -0700 (PDT)
+Received: (nullmailer pid 1652638 invoked by uid 1000);
+        Mon, 24 Oct 2022 13:00:35 -0000
+Date:   Mon, 24 Oct 2022 08:00:35 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     linux-arm-kernel@lists.infradead.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        linux-kernel@vger.kernel.org, Ben Dooks <ben-linux@fluff.org>,
+        Simtec Linux Team <linux@simtec.co.uk>,
+        Arnd Bergmann <arnd@arndb.de>, linux-doc@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, devicetree@vger.kernel.org,
+        patches@opensource.cirrus.com,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-ide@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-pm@vger.kernel.org, dmaengine@vger.kernel.org,
+        linux-hwmon@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-gpio@vger.kernel.org, linux-rtc@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-watchdog@vger.kernel.org,
+        alsa-devel@alsa-project.org, linux-pwm@vger.kernel.org
+Subject: Re: [PATCH 00/21] ARM: s3c: clean out obsolete platforms
+Message-ID: <20221024130035.GA1645003-robh@kernel.org>
+References: <20221021202254.4142411-1-arnd@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1d61596b-876b-2eca-f72d-ed38cc36f1a8@microchip.com>
+In-Reply-To: <20221021202254.4142411-1-arnd@kernel.org>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, 28 Sep 2022, Sergiu.Moga@microchip.com wrote:
+On Fri, Oct 21, 2022 at 10:22:28PM +0200, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> The s3c24xx platform was marked as deprecated a while ago,
+> and for the s3c64xx platform, we marked all except one legacy
+> board file as unused.
+> 
+> This series removes all of those, leaving only s3c64xx support
+> for DT based boots as well as the cragg6410 board file.
+> 
+> About half of the s3c specific drivers were only used on
+> the now removed machines, so these drivers can be retired
+> as well. I can either merge the driver removal patches through
+> the soc tree along with the board file patches, or subsystem
+> maintainers can pick them up into their own trees, whichever
+> they prefer.
 
-> On 28.09.2022 18:23, Lee Jones wrote:
-> > On Wed, 28 Sep 2022, Sergiu.Moga@microchip.com wrote:
-> > 
-> >> On 28.09.2022 18:03, Lee Jones wrote:
-> >>> On Thu, 22 Sep 2022, Sergiu Moga wrote:
-> >>>
-> >>>> Another functionality of FLEXCOM is that of SPI. In order for
-> >>>> the proper validation of the SPI children nodes through the binding
-> >>>> to occur, the proper binding for SPI must be referenced.
-> >>>>
-> >>>> Signed-off-by: Sergiu Moga <sergiu.moga@microchip.com>
-> >>>> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> >>>> ---
-> >>>>
-> >>>>
-> >>>> v1 -> v2:
-> >>>> - use full schema paths
-> >>>>
-> >>>>
-> >>>> v2 -> v3:
-> >>>> - Added Reviewed-by tag, previously this was [PATCH 3]
-> >>>>
-> >>>>
-> >>>> v3 -> v4:
-> >>>> - Nothing, previously this was [PATCH 5]
-> >>>>
-> >>>>
-> >>>> v4 -> v5:
-> >>>> - Nothing
-> >>>>
-> >>>>
-> >>>>
-> >>>>    .../devicetree/bindings/mfd/atmel,sama5d2-flexcom.yaml       | 5 ++---
-> >>>>    1 file changed, 2 insertions(+), 3 deletions(-)
-> >>>
-> >>> Not sure how these can be handled.
-> >>>
-> >>> I guess I cannot take these until the other patches are applied.
-> >>>
-> >>> NB: The patch doesn't apply cleanly anyway, so will need to be rebased.
-> >>>
-> >>
-> >>
-> >> Hello,
-> >>
-> >> The sama5d2-flexcom binding related patches are dependent on:
-> >> https://lore.kernel.org/linux-arm-kernel/20220916075744.1879428-1-kavyasree.kotagiri@microchip.com/
-> > 
-> > I would be very cautious about relying on comments made in the
-> > cover-letter.  Better to make this a hard requirement and place them
-> > in the same patch-set.
-> > 
-> 
-> 
-> 
-> Understood, my apologies, I will keep this in mind the next time this 
-> happens :).
-> 
-> Otherwise, by applying the patch series linked above, my sama5d2-flexcom 
-> patches should apply cleanly afterwards.
+[...]
 
-Please re-send this once the other set has been applied.
+>  Documentation/arm/index.rst                   |    1 -
+>  Documentation/arm/samsung-s3c24xx/cpufreq.rst |   77 -
+>  .../arm/samsung-s3c24xx/eb2410itx.rst         |   59 -
+>  Documentation/arm/samsung-s3c24xx/gpio.rst    |  172 --
+>  Documentation/arm/samsung-s3c24xx/h1940.rst   |   41 -
+>  Documentation/arm/samsung-s3c24xx/index.rst   |   20 -
+>  Documentation/arm/samsung-s3c24xx/nand.rst    |   30 -
+>  .../arm/samsung-s3c24xx/overview.rst          |  311 ---
+>  Documentation/arm/samsung-s3c24xx/s3c2412.rst |  121 -
+>  Documentation/arm/samsung-s3c24xx/s3c2413.rst |   22 -
+>  .../arm/samsung-s3c24xx/smdk2440.rst          |   57 -
+>  Documentation/arm/samsung-s3c24xx/suspend.rst |  137 --
+>  .../arm/samsung-s3c24xx/usb-host.rst          |   91 -
+>  Documentation/arm/samsung/overview.rst        |   13 -
 
--- 
-Lee Jones [李琼斯]
+What about?:
+
+Documentation/devicetree/bindings/clock/samsung,s3c2410-clock.txt
+Documentation/devicetree/bindings/interrupt-controller/samsung,s3c24xx-irq.txt
+Documentation/devicetree/bindings/mmc/samsung,s3cmci.txt
+Documentation/devicetree/bindings/mtd/samsung-s3c2410.txt
+Documentation/devicetree/bindings/usb/s3c2410-usb.txt
+
+Rob

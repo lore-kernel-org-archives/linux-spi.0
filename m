@@ -2,89 +2,96 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 489A6C38A2D
-	for <linux-spi@archiver.kernel.org>; Mon, 24 Oct 2022 15:24:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 834DBFA373F
+	for <linux-spi@archiver.kernel.org>; Mon, 24 Oct 2022 16:17:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229720AbiJXPY3 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 24 Oct 2022 11:24:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36006 "EHLO
+        id S232746AbiJXQR4 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 24 Oct 2022 12:17:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232134AbiJXPXl (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 24 Oct 2022 11:23:41 -0400
-Received: from mail-vs1-xe2c.google.com (mail-vs1-xe2c.google.com [IPv6:2607:f8b0:4864:20::e2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5636BC3540
-        for <linux-spi@vger.kernel.org>; Mon, 24 Oct 2022 07:09:12 -0700 (PDT)
-Received: by mail-vs1-xe2c.google.com with SMTP id 128so7972413vsz.12
-        for <linux-spi@vger.kernel.org>; Mon, 24 Oct 2022 07:09:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=nP0GRqUpor24cOH1tEBiHC87nojq4fSpk3LI5p6Ckp4=;
-        b=XRBGZO5MVF7CI4UHFcrvg13XdwBso/2nmo2YDZ0bH8OKQiAlCnuKJ1VZoAxAlbe7vJ
-         CAYuyde23VO9NkEY1ya6fzkz+7YHvguJtz5ssVwJ9jH227mS1GdAtPuJYLQLhxcL0ULx
-         kEbBVHMdRY4i3vRhTbUs0VWPNaACPKBDC4GCmv7VR4CteBaHMRsAFmBn/xx6km4G/fm5
-         ocJBKWOxYTHGr6ACnUeDjREzJgADKB8gyXMSHNb/FNj+ImYg30hzOfRXxxiaXVVfx0/W
-         RASu/BGO4XV0u/9yHpr977xZ+FhtLAeiHgHDT7n7RZDcYXX2aTBSYMd4O89lgP7pDqrd
-         N1CQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nP0GRqUpor24cOH1tEBiHC87nojq4fSpk3LI5p6Ckp4=;
-        b=LciBTLCgyoxvZySMUtElkRaVdNgfNKHnymNSUcXlNTF5czbJc4h0XwCPw9m6FEXJ4a
-         tG8+LxDPwnZoYtxhPUkzXUIBzbLDM+p/iHdWhKUVj6KGA7xII7oD1h55li3Ow9xx/OFZ
-         dzxu1GLWB95XHmF6q1DBneXyEH1clLqP3QbsxQw9fXUlzZM0zLX0nO9AfaeEE6Yb/taC
-         Z8Dy5cJzUAgLpUedxS7IF/6hCfnEk2lH/OhrfHx1YSwklHiRdkXZuo+T0N6WXnYFBQy5
-         I4U9LHLJR1EKU9llQFMA42YYYhcNZXN+unDCMlxDBaO1q1xlnT9D+vIMur8P0Aa6Vs8p
-         HIUA==
-X-Gm-Message-State: ACrzQf0jdLYys80uYV2Z+05di705+lfW1xHWcFgfxekF6HeapFzepUPN
-        64jrKA695VXvpPmXZmQQ+7n4q1NzFXkORA==
-X-Google-Smtp-Source: AMsMyM5pEMM2Bi7JxVx/uhw3V7bjtZquIqMyyGVb4C9x3lpPLi0aOW91eLJDguaYAYZqOYirlfbN/g==
-X-Received: by 2002:a0c:ca11:0:b0:4bb:5f97:2d29 with SMTP id c17-20020a0cca11000000b004bb5f972d29mr8985693qvk.63.1666615926276;
-        Mon, 24 Oct 2022 05:52:06 -0700 (PDT)
-Received: from [192.168.1.8] ([64.57.193.93])
-        by smtp.gmail.com with ESMTPSA id x7-20020ac85387000000b0039cc944ebdasm12828196qtp.54.2022.10.24.05.52.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Oct 2022 05:52:05 -0700 (PDT)
-Message-ID: <713fb339-ba0d-0513-facd-cb79d1c68584@linaro.org>
-Date:   Mon, 24 Oct 2022 08:52:04 -0400
+        with ESMTP id S233933AbiJXQPy (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 24 Oct 2022 12:15:54 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0371852FCB;
+        Mon, 24 Oct 2022 08:03:48 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id E1A7DB81BA2;
+        Mon, 24 Oct 2022 14:13:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 271F7C433C1;
+        Mon, 24 Oct 2022 14:13:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1666620813;
+        bh=enWWnfXFctYRIjwy/dBACRIWMkD2S/LPIlskceBorm0=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=nUjRLriR6nX1Izc+MMw0nSDvNcVQVIWKxR4xtulDsb9lQfHCuKinMFv/7w+7zdMMx
+         xKUgLE9pamP0IUglNLqsRLb7pxFC6/Kx+MHzfvUfsstZRR4+ozPOBr2c8g3VRXIoxC
+         33E1X20nkm3Hjt/1N0E35XumiLLdMTqyv3+win8mxt6lmwcVMy9ihovNqJr2N/OFHl
+         LBqK3TQsQ2iqtU03SW/LZLNRK05GGO5odP17X8YBNXNvSdQLbmxHq4wm9fEWRMLzpf
+         P5pijsXP+ke7J9bMdSA5f2osgZINqLceTko5gzJl+Ay7DxO8Bett5x81RgVdqo55Gt
+         sExRFKuSR3t+A==
+From:   Mark Brown <broonie@kernel.org>
+To:     linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-spi@vger.kernel.org
+Cc:     Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Daniel Mack <daniel@zonque.org>
+In-Reply-To: <20221021190018.63646-1-andriy.shevchenko@linux.intel.com>
+References: <20221021190018.63646-1-andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v5 0/4] spi: pxa2xx: Pass the SSP type via device property
+Message-Id: <166662081186.262681.14528029830842691867.b4-ty@kernel.org>
+Date:   Mon, 24 Oct 2022 15:13:31 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.0
-Subject: Re: [PATCH 19/21] spi: remove s3c24xx driver
-Content-Language: en-US
-To:     Arnd Bergmann <arnd@kernel.org>,
-        linux-arm-kernel@lists.infradead.org,
-        Mark Brown <broonie@kernel.org>, Andi Shyti <andi@etezian.org>
-Cc:     linux-kernel@vger.kernel.org, Ben Dooks <ben-linux@fluff.org>,
-        Simtec Linux Team <linux@simtec.co.uk>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        linux-spi@vger.kernel.org, linux-samsung-soc@vger.kernel.org
-References: <20221021202254.4142411-1-arnd@kernel.org>
- <20221021203329.4143397-19-arnd@kernel.org>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221021203329.4143397-19-arnd@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.10.0-dev-fc921
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On 21/10/2022 16:27, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
+On Fri, 21 Oct 2022 22:00:14 +0300, Andy Shevchenko wrote:
+> Currently the SPI PXA2xx devices on Intel platforms can be instantiated
+> via the following paths:
+>  1) as ACPI LPSS device on Haswell, Bay Trail and Cherry Trail;
+>  2) as ACPI LPSS device on the Sky Lake and newer;
+>  3) as PCI LPSS device on Haswell, Bay Trail and Cherry Trail;
+>  4) as PCI LPSS device on the Sky Lake and newer;
+>  5) as PCI device via ID table.
 > 
-> The s3c24xx platform was removed,s o there are no remaining users
-> for its spi driver.
-> 
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> [...]
 
+Applied to
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-Best regards,
-Krzysztof
+Thanks!
 
+[1/4] spi: pxa2xx: Validate the correctness of the SSP type
+      commit: 88a947215c29aa49307c8cd0638ba54e4cf07391
+[2/4] spi: pxa2xx: Respect Intel SSP type given by a property
+      commit: 1a1864cd879a1497fd46f6ea2f31ddcde8385585
+[3/4] spi: pxa2xx: Remove no more needed PCI ID table
+      commit: 07c337927e0618faf22ea98475c7162e6b7d2b35
+[4/4] spi: pxa2xx: Move OF and ACPI ID tables closer to their user
+      commit: 0e1f0b1ca79fdcc03c3e6b4277a994ca894c9fcc
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

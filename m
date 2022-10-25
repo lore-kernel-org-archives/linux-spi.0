@@ -2,73 +2,103 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 783C6C38A2D
-	for <linux-spi@archiver.kernel.org>; Tue, 25 Oct 2022 06:46:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 98B38C04A95
+	for <linux-spi@archiver.kernel.org>; Tue, 25 Oct 2022 06:46:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230292AbiJYGqP (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 25 Oct 2022 02:46:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42886 "EHLO
+        id S230421AbiJYGqQ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 25 Oct 2022 02:46:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231351AbiJYGqL (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 25 Oct 2022 02:46:11 -0400
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B63214BB73
+        with ESMTP id S231366AbiJYGqM (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 25 Oct 2022 02:46:12 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE43114BB6D
         for <linux-spi@vger.kernel.org>; Mon, 24 Oct 2022 23:46:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1666680363; x=1698216363;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=vwSXk+ZageoOmaXcui41glKe0O9B57/gQ/VRRepddXA=;
-  b=Iqbcb5oTFpezDCT1tnnyMSlCgzrclJX8OmPCPg2exkDpZYrliiloawVz
-   pa8PFFhSh/sPxr1roFxelPUVVa1TWkck1jtZQODqXh8HBsUQIOsBWR4Pg
-   nRMXQajn+xc7DL7skUEzjoNuJr36rXY/zvbbSJVnjKqO8yuAx8AmRKpdv
-   VTKuX1sHroHy2TQdolr6AGgHg+LlOH3RPKJMvGXcTykzx89JnSWcOLHHu
-   pYDywuzvKcBW3NKL5yLZGs4sX+UvFUntZJBsHB21e7qVVP22AllxkTIXq
-   Gpz4hrgCHjoL9vyfBu9UjJ5MxuNSbmcsMLOj/7y46yHhbI32Olq4fPGkR
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=5JNOFxzo1aGrrSmB11wspQdqWXe6Y53E/D5P3pp5b6g=;
+  b=CVsf6UbceJ9wGskjTTeADAsgA3AbIVKtcDZQlFz73Pb6yoz7+t2mKnEu
+   NBtVAc/HZHw/gK8gMPjSMa+Gv6RxE78k+xgJhcLCFVUHGFLYMHR3+oSLc
+   9muHWi6USzHByedmWooL3As8+hoEEhLPKKFvsetdc5r1NEmFoAH+ZApz7
+   0NQ9VKl48yaNYsOHHk1dPRhRXyO6RdwWZ1MFcytOEVZW35rvN9glAUY/1
+   XGFyRO9ilFzz9T6ZkIyhGhjpCGHqIRux3FvLS3o98/gCnv6rqqZGPYy/A
+   mxw6RlJQcnoM/PsNZ24x4aZ65lFWo7CQTgyCJDTvCcN/MexjlHUK5Ky+m
    g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10510"; a="290904768"
+X-IronPort-AV: E=McAfee;i="6500,9779,10510"; a="295004877"
 X-IronPort-AV: E=Sophos;i="5.95,211,1661842800"; 
-   d="scan'208";a="290904768"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2022 23:46:03 -0700
+   d="scan'208";a="295004877"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2022 23:46:03 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10510"; a="582670121"
+X-IronPort-AV: E=McAfee;i="6500,9779,10510"; a="626323786"
 X-IronPort-AV: E=Sophos;i="5.95,211,1661842800"; 
-   d="scan'208";a="582670121"
+   d="scan'208";a="626323786"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga003.jf.intel.com with ESMTP; 24 Oct 2022 23:46:01 -0700
+  by orsmga007.jf.intel.com with ESMTP; 24 Oct 2022 23:46:01 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1001)
-        id 0671E107; Tue, 25 Oct 2022 09:46:23 +0300 (EEST)
+        id 1FA073F9; Tue, 25 Oct 2022 09:46:24 +0300 (EEST)
 From:   Mika Westerberg <mika.westerberg@linux.intel.com>
 To:     Mark Brown <broonie@kernel.org>
 Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
         linux-spi@vger.kernel.org
-Subject: [PATCH 0/4] spi: intel: Add support for SFDP opcode
-Date:   Tue, 25 Oct 2022 09:46:19 +0300
-Message-Id: <20221025064623.22808-1-mika.westerberg@linux.intel.com>
+Subject: [PATCH 3/4] spi: intel: Take possible chip address into account in intel_spi_read/write_reg()
+Date:   Tue, 25 Oct 2022 09:46:22 +0300
+Message-Id: <20221025064623.22808-4-mika.westerberg@linux.intel.com>
 X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20221025064623.22808-1-mika.westerberg@linux.intel.com>
+References: <20221025064623.22808-1-mika.westerberg@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi,
+The SPI-NOR operation can have non-zero chip address as well so take
+this into account in intel_spi_read/write_reg().
 
-This series adds support for SFDP (Serial Flash Discoverable Parameter)
-opcode to the Intel SPI driver. This allows the SPI-NOR core to query
-the flash chip what it supports.
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+---
+ drivers/spi/spi-intel.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-Mika Westerberg (4):
-  spi: intel: Use ->replacement_op in intel_spi_hw_cycle()
-  spi: intel: Implement adjust_op_size()
-  spi: intel: Take possible chip address into account in intel_spi_read/write_reg()
-  spi: intel: Add support for SFDP opcode
-
- drivers/spi/spi-intel.c | 78 +++++++++++++++++++++--------------------
- 1 file changed, 40 insertions(+), 38 deletions(-)
-
+diff --git a/drivers/spi/spi-intel.c b/drivers/spi/spi-intel.c
+index 13a3a61239d2..8b07e41daafe 100644
+--- a/drivers/spi/spi-intel.c
++++ b/drivers/spi/spi-intel.c
+@@ -457,11 +457,12 @@ static int intel_spi_read_reg(struct intel_spi *ispi, const struct spi_mem *mem,
+ 			      const struct intel_spi_mem_op *iop,
+ 			      const struct spi_mem_op *op)
+ {
++	u32 addr = intel_spi_chip_addr(ispi, mem) + op->addr.val;
+ 	size_t nbytes = op->data.nbytes;
+ 	u8 opcode = op->cmd.opcode;
+ 	int ret;
+ 
+-	writel(intel_spi_chip_addr(ispi, mem), ispi->base + FADDR);
++	writel(addr, ispi->base + FADDR);
+ 
+ 	if (ispi->swseq_reg)
+ 		ret = intel_spi_sw_cycle(ispi, opcode, nbytes,
+@@ -479,6 +480,7 @@ static int intel_spi_write_reg(struct intel_spi *ispi, const struct spi_mem *mem
+ 			       const struct intel_spi_mem_op *iop,
+ 			       const struct spi_mem_op *op)
+ {
++	u32 addr = intel_spi_chip_addr(ispi, mem) + op->addr.val;
+ 	size_t nbytes = op->data.nbytes;
+ 	u8 opcode = op->cmd.opcode;
+ 	int ret;
+@@ -522,7 +524,7 @@ static int intel_spi_write_reg(struct intel_spi *ispi, const struct spi_mem *mem
+ 	if (opcode == SPINOR_OP_WRDI)
+ 		return 0;
+ 
+-	writel(intel_spi_chip_addr(ispi, mem), ispi->base + FADDR);
++	writel(addr, ispi->base + FADDR);
+ 
+ 	/* Write the value beforehand */
+ 	ret = intel_spi_write_block(ispi, op->data.buf.out, nbytes);
 -- 
 2.35.1
 

@@ -2,115 +2,118 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E5254FA373E
-	for <linux-spi@archiver.kernel.org>; Tue, 25 Oct 2022 06:46:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0A1E1C38A2D
+	for <linux-spi@archiver.kernel.org>; Tue, 25 Oct 2022 14:46:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230163AbiJYGqV (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 25 Oct 2022 02:46:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42928 "EHLO
+        id S232739AbiJYOqs (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 25 Oct 2022 10:46:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231345AbiJYGqQ (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 25 Oct 2022 02:46:16 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0814214C52E
-        for <linux-spi@vger.kernel.org>; Mon, 24 Oct 2022 23:46:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1666680367; x=1698216367;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=ZQWmkGATLKYZqGYwdxoVSjtTpUnRpjoHA1x77HC3Duw=;
-  b=LiubHDzrZBP2kgb4EBAY2hSzEPQZNp9DJAT+f0gpTX07Pp1VOKdxpg/C
-   bcCXDvmT+dZarB6/HunQu9B7K3vrFvynKeBn4/V+sW2Hw4rmGctr5sLiK
-   3YPMrynKBkHZfzqoM65UVx88VM1IoNuR5ll8Lj/GfR6WSScxOU7m58g7m
-   qfzmaGgg6TLIQdxXmEhlC8QsfaAX3KeXje/U+LOvGog9ywns4OzfM4en0
-   8bh2nnUGOYnsK7Tx8Hr3T2cr0xWc36iW3dWLGIpMkyGOK8FpOlxmrzKpN
-   g3eaPOnaVyQkF6bixJ5fCsdKYu3LZuErrVUYFEmBRCYqaP1nncdVmCZBu
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10510"; a="295004878"
-X-IronPort-AV: E=Sophos;i="5.95,211,1661842800"; 
-   d="scan'208";a="295004878"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2022 23:46:03 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10510"; a="626323784"
-X-IronPort-AV: E=Sophos;i="5.95,211,1661842800"; 
-   d="scan'208";a="626323784"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga007.jf.intel.com with ESMTP; 24 Oct 2022 23:46:01 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1001)
-        id 193DD291; Tue, 25 Oct 2022 09:46:24 +0300 (EEST)
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-spi@vger.kernel.org
-Subject: [PATCH 2/4] spi: intel: Implement adjust_op_size()
-Date:   Tue, 25 Oct 2022 09:46:21 +0300
-Message-Id: <20221025064623.22808-3-mika.westerberg@linux.intel.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221025064623.22808-1-mika.westerberg@linux.intel.com>
-References: <20221025064623.22808-1-mika.westerberg@linux.intel.com>
+        with ESMTP id S232730AbiJYOqr (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 25 Oct 2022 10:46:47 -0400
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E79175B9D5
+        for <linux-spi@vger.kernel.org>; Tue, 25 Oct 2022 07:46:45 -0700 (PDT)
+Received: by mail-wr1-x42d.google.com with SMTP id bs21so5597296wrb.4
+        for <linux-spi@vger.kernel.org>; Tue, 25 Oct 2022 07:46:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+pa3LKMnS7r2iizMPoaQLt3RtRARTx6E2qBv41qZjic=;
+        b=H4kfTg7okgWeVf3kp2Q7eAN/5rfwwa/tYWNvYrsAGY9WtLGueTmpAexjoQIbcR8k5r
+         x0qIwXP56AlMxCsaQD0gE8weUnMtX3YCf/J/GI5AVi9QqiiQHIQ21qevEmlQg+vhacdy
+         KCxHxbv7UonuC1HramRi9UDMaOZEzEQHHXA3JjjFGCTPqp8y4OZadkeh4kR3sleJzTA3
+         CtNwm8zZtc9OVMIGlKwILdocLBZ61mEJq+t2hVofDbOyeQix8A6T97vYykbqLSB4iyC/
+         EpvnwwjODU+ewysJxN2dpybP+8RSub07Kiqtz4JhNdkHWZHyHkZ0v/fhxjrDmuBYrXbc
+         xBCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+pa3LKMnS7r2iizMPoaQLt3RtRARTx6E2qBv41qZjic=;
+        b=pBth3eFIVidowbAJB9jMUlIDFyNdL02eFMaDdzB5otpDZgRxggTYrGdEtc3xD/xza+
+         dHmC04dJe8ip+g/VdPRR3g0/GrzuxhSW3hEbOWSztT35s4aquZ9Csf/iXDTvtWijfnId
+         GkptZmMjAouBZmArL87w2QfraBt6QojuUlJzLrwmH7mdNx1zjxmVJLIpUoYwY8PmA6Kd
+         V6SygGQQExIey4YWDDYDyxX/kFwfYg+K8ZiLsbazkb8szuJ7rwtmtNgmtdTeyl+VeULo
+         a2Foa1nv8H/gIrlzfaYx2bK8GeZj4jMRAedRWSXr6TaAa8AFDspx0CFtFGQ2cAMRN1sz
+         5NHw==
+X-Gm-Message-State: ACrzQf3MYigN/QcMgBA6sinuU0dB0GvM0K+cunCAm9oyeLpI8uLfZFJo
+        NVbRSKKoFRdt4RcDNII3QFDowA==
+X-Google-Smtp-Source: AMsMyM74VwSpJCoWC2zVCGEqLRGsDpzeeKL1SFMSQiwRWOMtutgpfbdYbYzCfH9vE5eANnHqPUN/rA==
+X-Received: by 2002:adf:e8cb:0:b0:236:7ae2:918e with SMTP id k11-20020adfe8cb000000b002367ae2918emr4418583wrn.613.1666709204473;
+        Tue, 25 Oct 2022 07:46:44 -0700 (PDT)
+Received: from arrakeen.starnux.net ([2a01:e0a:982:cbb0:52eb:f6ff:feb3:451a])
+        by smtp.gmail.com with ESMTPSA id q6-20020a1ce906000000b003c6d0f8c377sm2498670wmc.7.2022.10.25.07.46.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Oct 2022 07:46:44 -0700 (PDT)
+From:   Neil Armstrong <neil.armstrong@linaro.org>
+To:     Jerome Brunet <jbrunet@baylibre.com>,
+        Mark Brown <broonie@kernel.org>,
+        Amjad Ouled-Ameur <aouledameur@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Cc:     linux-amlogic@lists.infradead.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Da Xue <da@libre.computer>,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+In-Reply-To: <20221004-up-aml-fix-spi-v4-0-0342d8e10c49@baylibre.com>
+References: <20221004-up-aml-fix-spi-v4-0-0342d8e10c49@baylibre.com>
+Subject: Re: (subset) [PATCH v4 0/4] spi: amlogic: meson-spicc: Use pinctrl to drive CLK line when idle
+Message-Id: <166670920358.4012520.5560439627049911254.b4-ty@linaro.org>
+Date:   Tue, 25 Oct 2022 16:46:43 +0200
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.10.1
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This allows us to get rid of the checks in the intel_spi_[sh]w_cycle()
-and makes it possible for the SPI-NOR core to split the transaction into
-smaller chunks as needed.
+Hi,
 
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
----
- drivers/spi/spi-intel.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+On Fri, 21 Oct 2022 15:31:24 +0200, Amjad Ouled-Ameur wrote:
+> Between SPI transactions, all SPI pins are in HiZ state. When using the SS
+> signal from the SPICC controller it's not an issue because when the
+> transaction resumes all pins come back to the right state at the same time
+> as SS.
+> 
+> The problem is when we use CS as a GPIO. In fact, between the GPIO CS
+> state change and SPI pins state change from idle, you can have a missing or
+> spurious clock transition.
+> 
+> [...]
 
-diff --git a/drivers/spi/spi-intel.c b/drivers/spi/spi-intel.c
-index b3685460d848..13a3a61239d2 100644
---- a/drivers/spi/spi-intel.c
-+++ b/drivers/spi/spi-intel.c
-@@ -363,10 +363,6 @@ static int intel_spi_hw_cycle(struct intel_spi *ispi,
- 
- 	val = readl(ispi->base + HSFSTS_CTL);
- 	val &= ~(HSFSTS_CTL_FCYCLE_MASK | HSFSTS_CTL_FDBC_MASK);
--
--	if (len > INTEL_SPI_FIFO_SZ)
--		return -EINVAL;
--
- 	val |= (len - 1) << HSFSTS_CTL_FDBC_SHIFT;
- 	val |= HSFSTS_CTL_FCERR | HSFSTS_CTL_FDONE;
- 	val |= HSFSTS_CTL_FGO;
-@@ -397,9 +393,6 @@ static int intel_spi_sw_cycle(struct intel_spi *ispi, u8 opcode, size_t len,
- 	if (ret < 0)
- 		return ret;
- 
--	if (len > INTEL_SPI_FIFO_SZ)
--		return -EINVAL;
--
- 	/*
- 	 * Always clear it after each SW sequencer operation regardless
- 	 * of whether it is successful or not.
-@@ -704,6 +697,12 @@ static int intel_spi_erase(struct intel_spi *ispi, const struct spi_mem *mem,
- 	return 0;
- }
- 
-+static int intel_spi_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
-+{
-+	op->data.nbytes = clamp_val(op->data.nbytes, 0, INTEL_SPI_FIFO_SZ);
-+	return 0;
-+}
-+
- static bool intel_spi_cmp_mem_op(const struct intel_spi_mem_op *iop,
- 				 const struct spi_mem_op *op)
- {
-@@ -844,6 +843,7 @@ static ssize_t intel_spi_dirmap_write(struct spi_mem_dirmap_desc *desc, u64 offs
- }
- 
- static const struct spi_controller_mem_ops intel_spi_mem_ops = {
-+	.adjust_op_size = intel_spi_adjust_op_size,
- 	.supports_op = intel_spi_supports_mem_op,
- 	.exec_op = intel_spi_exec_mem_op,
- 	.get_name = intel_spi_get_name,
+Thanks, Applied to https://git.kernel.org/pub/scm/linux/kernel/git/amlogic/linux.git (v6.2/arm64-dt)
+
+[3/4] arm64: dts: meson-gxl: add SPI pinctrl nodes for CLK
+      https://git.kernel.org/amlogic/c/2ba370bb98b53b7565493083699d82da5ef2cec8
+[4/4] arm64: dts: meson-gxbb: add SPI pinctrl nodes for CLK
+      https://git.kernel.org/amlogic/c/ce759829b8fffac891780611b54a6be26a2d5a5f
+
+These changes has been applied on the intermediate git tree [1].
+
+The v6.2/arm64-dt branch will then be sent via a formal Pull Request to the Linux SoC maintainers
+for inclusion in their intermediate git branches in order to be sent to Linus during
+the next merge window, or sooner if it's a set of fixes.
+
+In the cases of fixes, those will be merged in the current release candidate
+kernel and as soon they appear on the Linux master branch they will be
+backported to the previous Stable and Long-Stable kernels [2].
+
+The intermediate git branches are merged daily in the linux-next tree [3],
+people are encouraged testing these pre-release kernels and report issues on the
+relevant mailing-lists.
+
+If problems are discovered on those changes, please submit a signed-off-by revert
+patch followed by a corrective changeset.
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/amlogic/linux.git
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
+[3] https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
+
 -- 
-2.35.1
-
+Neil

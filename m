@@ -2,92 +2,80 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9ABD2FA3743
-	for <linux-spi@archiver.kernel.org>; Fri, 28 Oct 2022 18:41:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7DFE4C38A02
+	for <linux-spi@archiver.kernel.org>; Sat, 29 Oct 2022 07:16:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229889AbiJ1SlI (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 28 Oct 2022 14:41:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58070 "EHLO
+        id S229489AbiJ2HQo (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sat, 29 Oct 2022 03:16:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230048AbiJ1SlF (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 28 Oct 2022 14:41:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 052531F5242;
-        Fri, 28 Oct 2022 11:41:04 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6B573629CC;
-        Fri, 28 Oct 2022 18:41:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9552DC433D7;
-        Fri, 28 Oct 2022 18:41:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666982463;
-        bh=dICG5ca+Mxef33RoufsWAibxiDnlRVqeRKRgegkMpfk=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=FacGQZlenvR0da2LHDn5kJkDQKiQIyd0QRwKR4TGr6+YdJhdGRDmG3BOp1NzBDMEI
-         dgXv460d2XU9xs0R0qQxc2zRExaMAMOCHgaoMToLYW1V2WCcoHEhusItbrhgiwVdW4
-         p4EQAX4SXbSAeKCGA+q9TeIt8FmebV2mJbarj9+uxmHSppB0YtWjWdJkB+Oe3+XIW+
-         8RXtXamHVkmNgJbU8utzNdYvn4DJfLfwJ4YOrsh2K7UAjS5LJmYBsneymi0UZiV+EB
-         DehWX3VGyW2g+CP3Iu6OxqzsR6ajrpoeB40kXv7SUVG/VIurI06x9eFceIDGasOtbL
-         WqXbei6S73TGQ==
-From:   Mark Brown <broonie@kernel.org>
-To:     Thierry Reding <thierry.reding@gmail.com>,
-        Jon Hunter <jonathanh@nvidia.com>,
-        Sumit Semwal <sumit.semwal@linaro.org>
-Cc:     linux-spi@vger.kernel.org,
-        Krishna Yarlagadda <kyarlagadda@nvidia.com>,
-        linux-tegra@vger.kernel.org
-In-Reply-To: <20221026155633.141792-1-jonathanh@nvidia.com>
-References: <20221026155633.141792-1-jonathanh@nvidia.com>
-Subject: Re: [PATCH] spi: tegra210-quad: Don't initialise DMA if not supported
-Message-Id: <166698246231.1295241.12438240346694631931.b4-ty@kernel.org>
-Date:   Fri, 28 Oct 2022 19:41:02 +0100
+        with ESMTP id S229457AbiJ2HQn (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sat, 29 Oct 2022 03:16:43 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E04A8171CC3
+        for <linux-spi@vger.kernel.org>; Sat, 29 Oct 2022 00:16:41 -0700 (PDT)
+Received: from dggpemm500022.china.huawei.com (unknown [172.30.72.57])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4MzrFC0vlzzmVBG;
+        Sat, 29 Oct 2022 15:11:43 +0800 (CST)
+Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
+ dggpemm500022.china.huawei.com (7.185.36.162) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Sat, 29 Oct 2022 15:16:40 +0800
+Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
+ (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Sat, 29 Oct
+ 2022 15:16:39 +0800
+From:   Yang Yingliang <yangyingliang@huawei.com>
+To:     <linux-spi@vger.kernel.org>, <openbmc@lists.ozlabs.org>
+CC:     <avifishman70@gmail.com>, <tmaimon77@gmail.com>,
+        <tali.perry1@gmail.com>, <broonie@kernel.org>,
+        <yangyingliang@huawei.com>
+Subject: [PATCH -next] spi: npcm-fiu: Use devm_platform_ioremap_resource_byname()
+Date:   Sat, 29 Oct 2022 15:15:29 +0800
+Message-ID: <20221029071529.3019626-1-yangyingliang@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.10.0-dev-fc921
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.103.91]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ dggpemm500007.china.huawei.com (7.185.36.183)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, 26 Oct 2022 16:56:33 +0100, Jon Hunter wrote:
-> The following error messages are observed on boot for Tegra234 ...
-> 
->  ERR KERN tegra-qspi 3270000.spi: cannot use DMA: -19
->  ERR KERN tegra-qspi 3270000.spi: falling back to PIO
-> 
-> Tegra234 does not support DMA for the QSPI and so initialising the DMA
-> is expected to fail. The above error messages are misleading for devices
-> that don't support DMA and so fix this by skipping the DMA
-> initialisation for devices that don't support DMA.
-> 
-> [...]
+Use the devm_platform_ioremap_resource_byname() helper instead of
+calling platform_get_resource_byname() and devm_ioremap_resource()
+separately.
 
-Applied to
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+---
+ drivers/spi/spi-npcm-fiu.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+diff --git a/drivers/spi/spi-npcm-fiu.c b/drivers/spi/spi-npcm-fiu.c
+index 49f6424e35af..559d3a5b4062 100644
+--- a/drivers/spi/spi-npcm-fiu.c
++++ b/drivers/spi/spi-npcm-fiu.c
+@@ -699,7 +699,6 @@ static int npcm_fiu_probe(struct platform_device *pdev)
+ 	struct spi_controller *ctrl;
+ 	struct npcm_fiu_spi *fiu;
+ 	void __iomem *regbase;
+-	struct resource *res;
+ 	int id, ret;
+ 
+ 	ctrl = devm_spi_alloc_master(dev, sizeof(*fiu));
+@@ -725,8 +724,7 @@ static int npcm_fiu_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, fiu);
+ 	fiu->dev = dev;
+ 
+-	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "control");
+-	regbase = devm_ioremap_resource(dev, res);
++	regbase = devm_platform_ioremap_resource_byname(pdev, "control");
+ 	if (IS_ERR(regbase))
+ 		return PTR_ERR(regbase);
+ 
+-- 
+2.25.1
 
-Thanks!
-
-[1/1] spi: tegra210-quad: Don't initialise DMA if not supported
-      commit: ae4b3c1252f0fd0951d2f072a02ba46cac8d6c92
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark

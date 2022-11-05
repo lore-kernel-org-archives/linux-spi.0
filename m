@@ -2,31 +2,31 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D531DC4332F
-	for <linux-spi@archiver.kernel.org>; Sat,  5 Nov 2022 18:59:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F1FCC4332F
+	for <linux-spi@archiver.kernel.org>; Sat,  5 Nov 2022 18:59:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229453AbiKES7a (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sat, 5 Nov 2022 14:59:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54220 "EHLO
+        id S229902AbiKES7b (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sat, 5 Nov 2022 14:59:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229888AbiKES72 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sat, 5 Nov 2022 14:59:28 -0400
+        with ESMTP id S229672AbiKES7a (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sat, 5 Nov 2022 14:59:30 -0400
 Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C43AF2BE9;
-        Sat,  5 Nov 2022 11:59:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00D052717;
+        Sat,  5 Nov 2022 11:59:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net; s=s31663417;
-        t=1667674760; bh=p9YDZV3SVh65N5p5g+sDDmYbRp27o4nub0l5+Ua3VKI=;
+        t=1667674763; bh=0zlGVmWFUJWAxvnZusk8TMaPc0CG35sV5kM6R3yKrvQ=;
         h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=J3PoKDvhApuEyAoHR4cjNCvmbpvk2J/OZ40T+2RY1HFR429dXWIEeyNkwPA7EK9tp
-         mHU1yaiirfCRgKcCOZWd9VPPFo5Xcot1DA7vG7NJ3ISPpmksfeMUA4tBQmsie+MGkk
-         Lc/KX+d9f2EvBnqHiDKyacD4JjvHjf+om+tB8sHQCOLgjibvnDjo24iAQTgKmoJdx/
-         vm2lFk8Wx+d0+D8s7bEfZa9l9t8rFmWKzL35jOOTXLd89PMCb36IJdOUBjv+LVBISV
-         xQXAhYJJTI3xeLrCQKju0d+a+VtIxCimbzhcElA3qDTOtuKnap5NDn7bqFV1FJgK61
-         lWYQ86eYKEn7Q==
+        b=Z9sT2LWsbOVZ0gISJr2OamL1OHDHt0LHMzUhGvXkZ7CIJwhcuCk4Vqx3sNrCvOEIF
+         BjGRMCAY8ekPr4mpqE8oAaiyvMzcjX4Mjcw4IAFOwWOQDgFsC3uNiKVZ+fSzTn2ViP
+         jlxKdbGWYCOXh7js05ZRiCq1FxcpAX+4Vvp6HVCfSzBLezO4oja2kRfRBRF0cixx1j
+         eFVpR9VntQoCRXdEemXJgKUUy+Y9/3SvozOQQNRqRFUuHFNCdiqRM53d1KYQXUBmpC
+         RdJ/Yw9d9+m6Hq70OaCd8Z/ws3mvp0Pl8yeCWW604NHcQJbJ652irDKk7uvL2olSS5
+         xxewg8QnXXotw==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from probook ([87.78.44.193]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MdvmY-1pOnvi0Akw-00b1X1; Sat, 05
- Nov 2022 19:59:20 +0100
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M3DNt-1osmUp3DC9-003cZd; Sat, 05
+ Nov 2022 19:59:22 +0100
 From:   =?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>
 To:     linux-spi@vger.kernel.org, openbmc@lists.ozlabs.org
 Cc:     Lee Jones <lee@kernel.org>, Rob Herring <robh+dt@kernel.org>,
@@ -36,91 +36,135 @@ Cc:     Lee Jones <lee@kernel.org>, Rob Herring <robh+dt@kernel.org>,
         Linus Walleij <linus.walleij@linaro.org>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-gpio@vger.kernel.org
-Subject: [PATCH 1/8] pinctrl: nuvoton: wpcm450: Refactor MFSEL setting code
-Date:   Sat,  5 Nov 2022 19:59:04 +0100
-Message-Id: <20221105185911.1547847-2-j.neuschaefer@gmx.net>
+Subject: [PATCH 3/8] dt-bindings: spi: Add Nuvoton WPCM450 Flash Interface Unit (FIU)
+Date:   Sat,  5 Nov 2022 19:59:06 +0100
+Message-Id: <20221105185911.1547847-4-j.neuschaefer@gmx.net>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20221105185911.1547847-1-j.neuschaefer@gmx.net>
 References: <20221105185911.1547847-1-j.neuschaefer@gmx.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:O8qPZWuqzhHITt3VaDtMUqy6A+mhRlAcyIBz33LYKVUSnA0k061
- eiFGOgB4CIqGiB4MazQ7WXcCbS1g20BwUtujxoGnrLpKrecE+6hwRCpKQxXXuhRCCp3sOYY
- nqIdtLBweaYTKm6UE9Jf9NoSM+QGGXPgF5vmgLLQ+ZuzzQLEAORevw6Xn4ObjtbY0lErAJ3
- kPuVjeMlnaVb3lso+lFaw==
-UI-OutboundReport: notjunk:1;M01:P0:/kSkirQ6yIk=;ZbO3NPnwS5AqaGY/XtD5IpIPc0R
- tsuV8YWbMT4oFeb12DQe+y8AEpJqAGYPMHZNzCxovoY+9lPOV4geaYtEaarPft+Rpn4h73Kt1
- 4Ii3uESLo/r6W3EB9eQZNYFmFH3ASH/wW4a1g7i3/1aUrJLHnOXA9jCgzixyL1k2maPOTuApy
- d5WH3XI+wV+a18ZDvcGVqEBZdobunWXOS3hbxC3cAhHFwDgMRaOTwDvnMfDu8tfC88T1uQOPW
- u1uNFbUfMvNWWIam+MMaDk+0D9rNuGkNba/AloMkcsGrV+YP9xTkV6pf8do61VeqFiN/VQCTj
- QXNO0naRHjUJ/e7zPbww4iPsAxdjckURvF0adISGLt5x4x9p3KUhO3VKv6FiidNMve1PCaCB7
- RLRJtTRIjEDqVHPxXJ2ipN77mT/aYWfWgBO84sGVNzqr8OcA5KIfxS7rBJufgfbTY/EFJ5ARq
- Y7gH/0XoAK4kDrvQUCVV53n6U3ImswM8bZs0fm9EjNI9I4cSE4ag9heIXa9pHxVdwTecCyh6t
- 2XKDkLhtBqTLNas0jmYBC3ZHZSzPoypOsaEETecyUDLliHJS3zmUkIJhqbEkXl7Msb1GjliWy
- mPqM+Iy/RAKkAZPruz/oLXa6OHvDRaTQwlqLm6QzQHTSkTGRRTsewwhjjokjQqSz5upr1xxRL
- tpdXcUY8akmfmCNAn+7GVVeopF91ZupfWX7M7hz5fbAzKU5jK64+lbgwnm4fD3jaFeE4KHeic
- O+t7FeRscFNtsZWnqnr3PwQiwgUFm+0bc1rMUs9y7PwdMcU8sy97p1T3spZ9s7r1Tskg2L8pF
- vEabcZjtF8HBfeA8DAOw4ALOsKh+BzagWb/OBx5byi+WFMMO9WdsJXTVn+7cHocetKPsHRNDB
- BjuqsQ5P66YBH8ntab0bZpGl0kyfTcAYo+Mkuq6MLt5dxw+LuwcFTOPda42/Pacr1WdZMr/Z0
- fJI7DRAxgxV779NC7sMwEnCl+5A=
+X-Provags-ID: V03:K1:4mhJHiA7uzMLYJ28yXXBf74eXRxCJyYO5pHRgHTydKeBdEX8Xng
+ jKj6nr7av4t9KvdfbSaYqoC3m8aehbRPG7urF+6tCT5rfmaaWOdhonv92WnicRVsm/GbOLf
+ 7itL2tJ/L/HFZJjH9ah3OR0WI+V4DNBD/FbE7pEwRgZ4mfbf1X88XnS6xrwVUTnrrbgqtcS
+ Qgyh3Tesm9geoyrBpkP9Q==
+UI-OutboundReport: notjunk:1;M01:P0:MmDo+WVVpq4=;yqWimBjtK0/euTlSj8+VYUx4t1y
+ AjazQdJ3cov+i4w0b9Gg+zq589JFK2Bj0jg61kS7n4VXyzrvO0Na/Q366ZYVTclXXldEtFfmm
+ 1YBa3b14OMfyL/GDQfCTZwckWFclfhTqOLXfmjuVhM/+OJanN0JiEQITYiN7XGX1Uwdv0L637
+ jAN81dS6UPmo7h6uwZpxsmlpVjbJ9nOVGN1/MpAmDFCn7abEYEcWNRUzEp+bWauk2/P2qWGun
+ WGnYAVl6wGLLjT34DfP6eNfvyFIUAZPC+4wL2VHjV8EHg6j2HIgyHIxBbrQrpTmg4jsrbKAzV
+ oLjx8lEZ5MBRHyojqoDLF6F7iEOHG2KX75EUBYUm6PVHvvRz0P1oWhPeVaUoH8btnkPLOjEyW
+ GHXLIhKqxaghjaFdLkIzQbBQCsA3me8wjFFB36k/YOkQBegkkYxtOGwiyX1P4VTxM25F3XeeZ
+ HY65++p2HYQICeB1VlbLSKcDOHad+3CzkzJwuAII8s0VCUvAnD2Nxhm2qaj7V95zJ2S4ixz0E
+ HOtQwyOJgCcEOp0IGMcqOMcOi5oODq8tVNWEtN69HQl9Us81kK7F45DKt+EGlgdJU+vf3QJ5B
+ nuczmjLXWS8bLne8x2EJMs0ajDMokB/evw5ZiNN0kEs2af5dKokEaLP/GsVgAgHykJQlNXGh1
+ 03mWs8vUqxGuNQBOK6vn1ubFj+pEtFz9X53Y+1Ik2HmbkJCqxug/qQZwdauzlq2nIartKE5v0
+ mJgg9DUODgbAdJ6jQVPk2XQ2ktpEWZ3o8yzb3PExP3JCdNyl1stsNVDDu79rUYMgGvaTzM5TA
+ t12QYCheXgpRmi61yk6g+MovRsxKQHVrII+56O7u7WFLFvELClRmfsFiKYpXkOaGKJpaE80tq
+ s0b1hk1ZQmGMRBoT9XV2ouCbZBjZtNu+M5VK8wExT0P9td+glPjyV+zaKWug9AL6Cgh3A7ENz
+ +WdSZg==
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-In preparation for the next patch, which makes the logic around
-setting/resetting bits in MFSEL a little more complicated, move that
-code to a new function
+The Flash Interface Unit (FIU) is the SPI flash controller in the
+Nuvoton WPCM450 BMC SoC. It supports four chip selects, and direct
+(memory-mapped) access to 16 MiB per chip. Larger flash chips can be
+accessed by software-defined SPI transfers.
+
+The FIU in newer NPCM7xx SoCs is not compatible with the WPCM450 FIU.
 
 Signed-off-by: Jonathan Neusch=C3=A4fer <j.neuschaefer@gmx.net>
 =2D--
- drivers/pinctrl/nuvoton/pinctrl-wpcm450.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ .../bindings/spi/nuvoton,wpcm450-fiu.yaml     | 76 +++++++++++++++++++
+ 1 file changed, 76 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/nuvoton,wpcm450-=
+fiu.yaml
 
-diff --git a/drivers/pinctrl/nuvoton/pinctrl-wpcm450.c b/drivers/pinctrl/n=
-uvoton/pinctrl-wpcm450.c
-index 211ad32cc0d8f..49b2177af17b2 100644
-=2D-- a/drivers/pinctrl/nuvoton/pinctrl-wpcm450.c
-+++ b/drivers/pinctrl/nuvoton/pinctrl-wpcm450.c
-@@ -800,6 +800,14 @@ static const struct pinctrl_pin_desc wpcm450_pins[] =
-=3D {
- 	WPCM450_PIN(124), WPCM450_PIN(125), WPCM450_PIN(126), WPCM450_PIN(127),
- };
-
-+/* Helper function to update MFSEL field according to the selected functi=
-on */
-+static void wpcm450_update_mfsel(struct regmap *gcr_regmap, int reg, int =
-bit, int fn, int fn_selected)
-+{
-+	bool value =3D (fn =3D=3D fn_selected);
+diff --git a/Documentation/devicetree/bindings/spi/nuvoton,wpcm450-fiu.yam=
+l b/Documentation/devicetree/bindings/spi/nuvoton,wpcm450-fiu.yaml
+new file mode 100644
+index 0000000000000..dc0ea2184f8d0
+=2D-- /dev/null
++++ b/Documentation/devicetree/bindings/spi/nuvoton,wpcm450-fiu.yaml
+@@ -0,0 +1,76 @@
++# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/spi/nuvoton,wpcm450-fiu.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+	regmap_update_bits(gcr_regmap, reg, BIT(bit), value ? BIT(bit) : 0);
-+}
++title: Nuvoton WPCM450 Flash Interface Unit (FIU)
 +
- /* Enable mode in pin group */
- static void wpcm450_setfunc(struct regmap *gcr_regmap, const unsigned int=
- *pin,
- 			    int npins, int func)
-@@ -811,13 +819,11 @@ static void wpcm450_setfunc(struct regmap *gcr_regma=
-p, const unsigned int *pin,
- 		cfg =3D &pincfg[pin[i]];
- 		if (func =3D=3D fn_gpio || cfg->fn0 =3D=3D func || cfg->fn1 =3D=3D func=
-) {
- 			if (cfg->reg0)
--				regmap_update_bits(gcr_regmap, cfg->reg0,
--						   BIT(cfg->bit0),
--						   (cfg->fn0 =3D=3D func) ?  BIT(cfg->bit0) : 0);
-+				wpcm450_update_mfsel(gcr_regmap, cfg->reg0,
-+						     cfg->bit0, cfg->fn0, func);
- 			if (cfg->reg1)
--				regmap_update_bits(gcr_regmap, cfg->reg1,
--						   BIT(cfg->bit1),
--						   (cfg->fn1 =3D=3D func) ?  BIT(cfg->bit1) : 0);
-+				wpcm450_update_mfsel(gcr_regmap, cfg->reg1,
-+						     cfg->bit1, cfg->fn1, func);
- 		}
- 	}
- }
++maintainers:
++  - Jonathan Neusch=C3=A4fer <j.neuschaefer@gmx.net>
++
++allOf:
++  - $ref: "/schemas/spi/spi-controller.yaml#"
++
++properties:
++  compatible:
++    const: nuvoton,wpcm450-fiu
++
++  reg:
++    items:
++      - description: FIU registers
++      - description: Memory-mapped flash contents
++
++  reg-names:
++    items:
++      - const: control
++      - const: memory
++    minItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  clocks:
++    maxItems: 1
++
++  nuvoton,shm:
++    $ref: /schemas/types.yaml#/definitions/phandle
++    description: a phandle to the SHM block (see ../arm/nuvoton,shm.yaml)
++
++required:
++  - compatible
++  - reg
++  - clocks
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/clock/nuvoton,wpcm450-clk.h>
++    spi@c8000000 {
++      compatible =3D "nuvoton,wpcm450-fiu";
++      #address-cells =3D <1>;
++      #size-cells =3D <0>;
++      reg =3D <0xc8000000 0x1000>, <0xc0000000 0x4000000>;
++      reg-names =3D "control", "memory";
++      clocks =3D <&clk WPCM450_CLK_FIU>;
++      nuvoton,shm =3D <&shm>;
++
++      flash@0 {
++        compatible =3D "jedec,spi-nor";
++      };
++    };
++
++    shm: syscon@c8001000 {
++      compatible =3D "nuvoton,wpcm450-shm", "syscon";
++      reg =3D <0xc8001000 0x1000>;
++    };
++
++  - |
++    #include <dt-bindings/clock/nuvoton,wpcm450-clk.h>
++    spi@c8000000 {
++      compatible =3D "nuvoton,wpcm450-fiu";
++      // the "memory" resource may be omitted
++      reg =3D <0xc8000000 0x1000>;
++      reg-names =3D "control";
++    };
 =2D-
 2.35.1
 

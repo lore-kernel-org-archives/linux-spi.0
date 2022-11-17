@@ -2,61 +2,62 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 224CEC4332F
-	for <linux-spi@archiver.kernel.org>; Thu, 17 Nov 2022 08:47:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E8074C433FE
+	for <linux-spi@archiver.kernel.org>; Thu, 17 Nov 2022 08:48:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239620AbiKQIr5 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 17 Nov 2022 03:47:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48414 "EHLO
+        id S239551AbiKQIsA (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 17 Nov 2022 03:48:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239346AbiKQIry (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 17 Nov 2022 03:47:54 -0500
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B3F3A45B
-        for <linux-spi@vger.kernel.org>; Thu, 17 Nov 2022 00:47:53 -0800 (PST)
-Received: by mail-ed1-x52b.google.com with SMTP id x2so1555446edd.2
-        for <linux-spi@vger.kernel.org>; Thu, 17 Nov 2022 00:47:53 -0800 (PST)
+        with ESMTP id S239526AbiKQIr4 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 17 Nov 2022 03:47:56 -0500
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E788110556
+        for <linux-spi@vger.kernel.org>; Thu, 17 Nov 2022 00:47:54 -0800 (PST)
+Received: by mail-ed1-x533.google.com with SMTP id f7so1531210edc.6
+        for <linux-spi@vger.kernel.org>; Thu, 17 Nov 2022 00:47:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=cc:to:message-id:date:from:content-transfer-encoding:mime-version
-         :subject:from:to:cc:subject:date:message-id:reply-to;
-        bh=5sycVuNTi+/lWP5w5Y+7Py7HL44YtQg/RIL/+2UUkSY=;
-        b=LerjEkGDet8twDf7kawTGEK6yjpahMcCxhAgmIj+Uhp5Y2ToZA2vL105irqZLSsKfU
-         c+LQ37p+1ejyh2oDDCwlx+71iys9g+yYbxQOSVTdRIPpMZKMebD3L6vbY7xvoYTj2ysA
-         dA+1tq50hVlm9jtGhn6ygV7yQvatY5f62oJr0EllmSAhG1qR9mcE7PHFmrOHZLF2HrTe
-         NXS/KTJ2K6dBfbV5Zar4Nm8GSb5Ol6M2VVfam7vqizfUetbz5uvxzdbINt9a3yc7z/yl
-         RJqyEWRb93Q8tblau3bK9Yl/7ROUCkYlh+IeZDpHfHy3HSWP8vcLEJ/nu4cLNNs3gNDH
-         K6HQ==
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=90zm8/9EgVKMcm+GcVTwlECGEPSG+I41CMXM1RTutaE=;
+        b=UnkavLeF63kWpP4dt3DH3oo2hhLFs7VsnslG4t92oUQapu5uMsW0U6XFO9MEi+swRX
+         /ohsTvFbJwQ0scQ1IYNcwQ/z036JyCSL0TqusFH7ceidILUrvk9jSNNs0P9hFMLeNW+V
+         FGnwjC0/0OhODR4CMHeGQJEp+HL0G5XlSqf8wbQ4bMqMUukKA+CgfLE/W1wbO98Xf7iN
+         k06oxVsEINbbzZzifkn9cqEmMGs7wwacRRZd+8Ve+L2FKO7hiz1X87dxyTl4uoSBMU72
+         YNLwzVDpkjjxtc3OOUB8AyHI7mAPRzIMpufnKutmnF3+8449KHQfp5KX81vW6GMUPufg
+         IU7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:message-id:date:from:content-transfer-encoding:mime-version
-         :subject:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5sycVuNTi+/lWP5w5Y+7Py7HL44YtQg/RIL/+2UUkSY=;
-        b=5dlU431WasVZdbV8B05v9KupAfevcEoMBdV30G/ZKuzl4XrMEL8wFeTFsgKpJI9zlG
-         saIK3NopAhHX/lkSaidMKUH4AylfUQ0AqvhqdlNVluCReBrAthzY/zA5bZMf3h8kIgYa
-         BfRKHnfkmA95yk6jqu0YnKhJHJ94zDGdcMLUF0FKhaKtXcs73kO88ktgne5wNu2Vuipg
-         /vVVRHnG14rEauCzqiovzc3QP1OhkpcbXm0ctr74Xva5SqccIMwxYqXc4OFXk29Oikk0
-         fTIwGPvrpGGQYFkri4LM05m4QBJpLzSWlbSixyvAfRLRj9HodtBXFxcObJmvYqvPesZi
-         kcaw==
-X-Gm-Message-State: ANoB5pmshJj1bfh6SmVnselyd/Q3QfujM4j93EbtbF8IuR53tvZNXkeD
-        uoTk5zUEHGW1uBuXs1KOBmtljw==
-X-Google-Smtp-Source: AA0mqf7JP9+5lVRU9EXpUjP4FKM/FMDReRATO9BwVt89A/oOf+IKkEbT+OEv6hzjSAn10BUJHykrPQ==
-X-Received: by 2002:a05:6402:3895:b0:468:15f1:54b5 with SMTP id fd21-20020a056402389500b0046815f154b5mr1306318edb.8.1668674871621;
-        Thu, 17 Nov 2022 00:47:51 -0800 (PST)
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=90zm8/9EgVKMcm+GcVTwlECGEPSG+I41CMXM1RTutaE=;
+        b=F53tIrSbMgjlBh46qfgbBmSy0wnNy84BLMarjl2Sk85y7bV0ctbDTGZSXZWWRirMxT
+         u8OowRqOCAorGgZNkYE2Mo9Z+kR3who4kkMukJRqQqZ0wK5myMVAB/7QV/xbO2zATxz0
+         TkCz9PQXBJN8TBKAZ7frl6qsvRKYiMhC5oiTtmWBEodlSwQ6rmAvDu2pBZ9xeQfLQy8X
+         3s07RQn+ioEAsp3lM2/aWF0ZZNFEX1wOXdklIJSHGpJ4cYr4H8C6yf1E4VBWjZj5uVZb
+         JdzfLTLVEveZbWdGjnRbV1pftXsdXhCZxF4JAJYzAdtAZM8N0REHsWdD8POVpLcsQQ+C
+         VMXA==
+X-Gm-Message-State: ANoB5pl6nUhiyfuPfXWqH55PdAZMWCGZ4rSRUh0Iyyk7x5zWZG5Jj6Mj
+        qHZn9anrhcKcyyHtSL5dEVXtQQ==
+X-Google-Smtp-Source: AA0mqf62OFgXu+YnjTocaXwjywIf8zuYGwGTL2hEIk6+Tn1N0UikQX9Em/Xzv0xyvJ8QZXrsGxenHw==
+X-Received: by 2002:aa7:d1c5:0:b0:461:dd11:c1bd with SMTP id g5-20020aa7d1c5000000b00461dd11c1bdmr1207044edp.406.1668674873463;
+        Thu, 17 Nov 2022 00:47:53 -0800 (PST)
 Received: from [127.0.1.1] ([2a0e:41a:894f:0:7a60:27eb:954c:5ab1])
-        by smtp.gmail.com with ESMTPSA id s22-20020a1709067b9600b0077205dd15basm77332ejo.66.2022.11.17.00.47.50
+        by smtp.gmail.com with ESMTPSA id s22-20020a1709067b9600b0077205dd15basm77332ejo.66.2022.11.17.00.47.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Nov 2022 00:47:51 -0800 (PST)
-Subject: [PATCH 0/3] Fix SPICC and ILI9486 drivers
+        Thu, 17 Nov 2022 00:47:53 -0800 (PST)
+From:   Carlo Caione <ccaione@baylibre.com>
+Date:   Thu, 17 Nov 2022 09:47:40 +0100
+Subject: [PATCH 2/3] drm/tiny: ili9486: Do not assume 8-bit only SPI controllers
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-b4-tracking: H4sIACr1dWMC/w3LSQqAMAwAwK9IzhZMXVA/I11SDZQqDYpQ/Ls9zmEKCGUmgbUpkOlh4TNVYNuAO0
- zaSbGvBt1pjYiTkqUb300u3jjyMsyTMuTHIYTeWY1QnzVCymaT3FFnumP8vh/jeo0xaAAAAA==
-From:   Carlo Caione <ccaione@baylibre.com>
-Date:   Thu, 17 Nov 2022 09:47:38 +0100
-Message-Id: <20221116-s905x_spi_ili9486-v1-0-630401cb62d5@baylibre.com>
+Message-Id: <20221116-s905x_spi_ili9486-v1-2-630401cb62d5@baylibre.com>
+References: <20221116-s905x_spi_ili9486-v1-0-630401cb62d5@baylibre.com>
+In-Reply-To: <20221116-s905x_spi_ili9486-v1-0-630401cb62d5@baylibre.com>
 To:     Kamlesh Gurudasani <kamlesh.gurudasani@gmail.com>,
         Mark Brown <broonie@kernel.org>,
         Neil Armstrong <neil.armstrong@linaro.org>,
@@ -74,44 +75,64 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This patchset is trying to fix problems seen on S905X boards when interfacing
-with an ILI9486 equipped SPI panel.
+The ILI9486 driver is wrongly assuming that the SPI panel is interfaced
+only with 8-bit SPI controllers and consequently that the pixel data
+passed by the MIPI DBI subsystem are already swapped before being sent
+over SPI using 8 bits-per-word.
 
-The color corruption and the performance issues are actually due to two
-different problems in the SPICC driver and in the ILI9486 tiny DRM driver.
+This is not always true for all the SPI controllers.
 
-We try to fix both in the same patcheset to be able to correctly use the SPI
-panel again.
+Make the command function more general to not only support 8-bit only
+SPI controllers and support sending un-swapped data over SPI using 16
+bits-per-word when dealing with pixel data.
 
-To: Kamlesh Gurudasani <kamlesh.gurudasani@gmail.com>
-To: David Airlie <airlied@gmail.com>
-To: Daniel Vetter <daniel@ffwll.ch>
-To: Mark Brown <broonie@kernel.org>
-To: Neil Armstrong <neil.armstrong@linaro.org>
-To: Kevin Hilman <khilman@baylibre.com>
-To: Jerome Brunet <jbrunet@baylibre.com>
-To: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-spi@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-amlogic@lists.infradead.org
 Signed-off-by: Carlo Caione <ccaione@baylibre.com>
-
 ---
-Carlo Caione (3):
-      drm/tiny: rpi-lcd-35: Enable driver module autoloading
-      drm/tiny: ili9486: Do not assume 8-bit only SPI controllers
-      spi: meson-spicc: Lower CS between bursts
+ drivers/gpu/drm/tiny/ili9486.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
- drivers/gpu/drm/tiny/ili9486.c | 14 ++++++++++----
- drivers/spi/spi-meson-spicc.c  |  6 ++++++
- 2 files changed, 16 insertions(+), 4 deletions(-)
----
-base-commit: 15f3bff12cf6a888ec2ad39652828c60e6836b3d
-change-id: 20221116-s905x_spi_ili9486-aed54ff3cb21
+diff --git a/drivers/gpu/drm/tiny/ili9486.c b/drivers/gpu/drm/tiny/ili9486.c
+index bd37dfe8dd05..4d80a413338f 100644
+--- a/drivers/gpu/drm/tiny/ili9486.c
++++ b/drivers/gpu/drm/tiny/ili9486.c
+@@ -43,6 +43,7 @@ static int waveshare_command(struct mipi_dbi *mipi, u8 *cmd, u8 *par,
+ 			     size_t num)
+ {
+ 	struct spi_device *spi = mipi->spi;
++	unsigned int bpw = 8;
+ 	void *data = par;
+ 	u32 speed_hz;
+ 	int i, ret;
+@@ -56,8 +57,6 @@ static int waveshare_command(struct mipi_dbi *mipi, u8 *cmd, u8 *par,
+ 	 * The displays are Raspberry Pi HATs and connected to the 8-bit only
+ 	 * SPI controller, so 16-bit command and parameters need byte swapping
+ 	 * before being transferred as 8-bit on the big endian SPI bus.
+-	 * Pixel data bytes have already been swapped before this function is
+-	 * called.
+ 	 */
+ 	buf[0] = cpu_to_be16(*cmd);
+ 	gpiod_set_value_cansleep(mipi->dc, 0);
+@@ -71,12 +70,18 @@ static int waveshare_command(struct mipi_dbi *mipi, u8 *cmd, u8 *par,
+ 		for (i = 0; i < num; i++)
+ 			buf[i] = cpu_to_be16(par[i]);
+ 		num *= 2;
+-		speed_hz = mipi_dbi_spi_cmd_max_speed(spi, num);
+ 		data = buf;
+ 	}
+ 
++	/*
++	 * Check whether pixel data bytes needs to be swapped or not
++	 */
++	if (*cmd == MIPI_DCS_WRITE_MEMORY_START && !mipi->swap_bytes)
++		bpw = 16;
++
+ 	gpiod_set_value_cansleep(mipi->dc, 1);
+-	ret = mipi_dbi_spi_transfer(spi, speed_hz, 8, data, num);
++	speed_hz = mipi_dbi_spi_cmd_max_speed(spi, num);
++	ret = mipi_dbi_spi_transfer(spi, speed_hz, bpw, data, num);
+  free:
+ 	kfree(buf);
+ 
 
-Best regards,
 -- 
-Carlo Caione
-
+b4 0.10.1

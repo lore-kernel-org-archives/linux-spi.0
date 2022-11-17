@@ -2,89 +2,73 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 847F4C433FE
-	for <linux-spi@archiver.kernel.org>; Thu, 17 Nov 2022 11:48:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6DC48C433FE
+	for <linux-spi@archiver.kernel.org>; Thu, 17 Nov 2022 11:50:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239791AbiKQLsr (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 17 Nov 2022 06:48:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52008 "EHLO
+        id S239948AbiKQLu4 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 17 Nov 2022 06:50:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239847AbiKQLsk (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 17 Nov 2022 06:48:40 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31CC02705;
-        Thu, 17 Nov 2022 03:48:33 -0800 (PST)
+        with ESMTP id S239889AbiKQLug (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 17 Nov 2022 06:50:36 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10C396E57B
+        for <linux-spi@vger.kernel.org>; Thu, 17 Nov 2022 03:50:18 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id D75EFB82004;
-        Thu, 17 Nov 2022 11:48:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57A05C433D6;
-        Thu, 17 Nov 2022 11:48:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 520C06151F
+        for <linux-spi@vger.kernel.org>; Thu, 17 Nov 2022 11:50:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id BC141C433D6;
+        Thu, 17 Nov 2022 11:50:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668685710;
-        bh=YuYLP6L95ckxoWq1T7YqXJYO3vnDSPnNJH442uYE2qc=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=OiqaaHjpBdQGB/FDvXRk8xyvDFK7/EpHoAH9dhShasFuOFxoeKk5gclXyXvFarGVl
-         pxwut3dqdiM3WoCIYLUmewIXu5KHWHNGfHCNVJYud4XVAfw+n/3TzQhQ7zTUJAgBq1
-         pEPSTZ92Guu1F66NeQC3DnZLiavy/PDYaDopfYKTjCZr42oOqzeskWixXAZfn9pa2j
-         GSSh+BNfzNOlJK0+uV+HWlaFrEnaJep1gNhcVHWstTI94IhokzGJaalJ0zObTIf69a
-         /7TiRhKJjnZRqliEzklIXUSBcOXGOH4yhEE/g0jnEalyfzVk81TTZbSuHiJmbiheRW
-         COxLwP0+6vA2A==
-From:   Mark Brown <broonie@kernel.org>
-To:     Vladimir Oltean <vladimir.oltean@nxp.com>,
-        linux-spi@vger.kernel.org
-Cc:     Vladimir Oltean <olteanv@gmail.com>, linux-kernel@vger.kernel.org,
-        "Radu Pirea (NXP OSS)" <radu-nicolae.pirea@oss.nxp.com>
-In-Reply-To: <20221111211356.545026-1-vladimir.oltean@nxp.com>
-References: <20221111211356.545026-1-vladimir.oltean@nxp.com>
-Subject: Re: [PATCH] spi: fsl-dspi: add cs-gpios support
-Message-Id: <166868570908.694164.13311249993591941854.b4-ty@kernel.org>
-Date:   Thu, 17 Nov 2022 11:48:29 +0000
-MIME-Version: 1.0
+        s=k20201202; t=1668685817;
+        bh=yAGeMBDQDrqWwPN9Rj0Gwngua00+Xm9aDBfD8avtaFA=;
+        h=Subject:From:Date:To:From;
+        b=O+57R86F7f5DHfkJriTsRMJ1uxJ5lwFaoSF16oi+4j96KTJd6G2RQzMZnCMOZGbRM
+         evbHRom7NCE0gzDJzFYKM0LebvBIoP8IZ3MRdVBIdATrKKibPe3DqouDKCoyETrWxK
+         yL3auWMtaiHp2G28/hapig2jCYRjCYqT1FbcYFeTe/0AM7m+cU1QMGtgpoorzExSED
+         3e6zCw9YOFZQisIaaUhNATBoGnHfF2rwvb16KwTEpFQQz0LHGFVIwgPDFMX1YU2w+a
+         D+6TPKf8eRYNeJxnVTPvwJ9h0XMuq5oS97tl+lqzlHiGnpRDv7ulCe9mqLJs961bqa
+         ehkC61SdyNW7Q==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 9C251C395F5;
+        Thu, 17 Nov 2022 11:50:17 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.11.0-dev-8af31
+Subject: Patchwork summary for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <166868581757.18382.5497112011581224043.git-patchwork-summary@kernel.org>
+Date:   Thu, 17 Nov 2022 11:50:17 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Fri, 11 Nov 2022 23:13:56 +0200, Vladimir Oltean wrote:
-> From: "Radu Pirea (NXP OSS)" <radu-nicolae.pirea@oss.nxp.com>
-> 
-> Make the driver be able to bit-bang a GPIO for the Chip Select pin of
-> select peripherals.
-> 
-> The GPIO value is driven by the driver in that case, and none of the
-> hardware Chip Select bits will be populated in the PUSHR register for
-> the TX commands constructed for this peripheral.
-> 
-> [...]
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-   broonie/spi.git for-next
+Series: [1/5] spi: tegra210-quad: Fix combined sequence
+  Submitter: Krishna Yarlagadda <kyarlagadda@nvidia.com>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=682511
+  Lore link: https://lore.kernel.org/r/20221001122148.9158-1-kyarlagadda@nvidia.com
+    Patches: [1/5] spi: tegra210-quad: Fix combined sequence
+             [2/5] spi: tegra210-quad: Fix duplicate resource error
 
-Thanks!
+Patch: spi: tegra210-quad: Fix duplicate resource error
+  Submitter: Krishna Yarlagadda <kyarlagadda@nvidia.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=696293
+  Lore link: https://lore.kernel.org/r/20221117070320.18720-1-kyarlagadda@nvidia.com
 
-[1/1] spi: fsl-dspi: add cs-gpios support
-      commit: 84b60f2bce1f0416617c4dbc015b5da906b8e2ad
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+Total patches: 3
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark

@@ -2,91 +2,104 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6F51BC4332F
-	for <linux-spi@archiver.kernel.org>; Sat, 19 Nov 2022 00:36:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1DEC1C4332F
+	for <linux-spi@archiver.kernel.org>; Sat, 19 Nov 2022 02:11:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236185AbiKSAgq (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 18 Nov 2022 19:36:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58438 "EHLO
+        id S231534AbiKSCLt (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 18 Nov 2022 21:11:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235897AbiKSAfx (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 18 Nov 2022 19:35:53 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 040268B12A
-        for <linux-spi@vger.kernel.org>; Fri, 18 Nov 2022 15:43:20 -0800 (PST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1owA9f-0005C6-BQ; Fri, 18 Nov 2022 23:48:15 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1owA9c-0058qy-G3; Fri, 18 Nov 2022 23:48:13 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1owA9c-0000TS-NA; Fri, 18 Nov 2022 23:48:12 +0100
-From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>
-To:     Angel Iglesias <ang.iglesiasg@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Grant Likely <grant.likely@linaro.org>,
-        Wolfram Sang <wsa@kernel.org>, Mark Brown <broonie@kernel.org>
-Cc:     linux-i2c@vger.kernel.org, kernel@pengutronix.de,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 564/606] spi: sc18is602: Convert to i2c's .probe_new()
-Date:   Fri, 18 Nov 2022 23:44:58 +0100
-Message-Id: <20221118224540.619276-565-uwe@kleine-koenig.org>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221118224540.619276-1-uwe@kleine-koenig.org>
-References: <20221118224540.619276-1-uwe@kleine-koenig.org>
+        with ESMTP id S231491AbiKSCLk (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 18 Nov 2022 21:11:40 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8167E2FC25;
+        Fri, 18 Nov 2022 18:11:35 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 1ADC6B82677;
+        Sat, 19 Nov 2022 02:11:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C227AC43147;
+        Sat, 19 Nov 2022 02:11:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1668823892;
+        bh=TOLqu0LbFYDS5QL1E942g7sbSUH5VdBr7xnwJtZrtr8=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=UNNmdzh1RaIpb+JTkTVrV2qTmJHAvSjp5yzhHD4YB0eir8AvnDXa8NMyd+EAC/lOr
+         tYJ11cPPAK2AnFUsX4l5jgz6aYwksm4d+6fTa0XFM8sAheCYCO9L3Je67fIXraV75a
+         s4aX9a5bTApezcJnxYcqkCMBUEIhR1wX70WPTnBXflz4996eCi8QT1gTKXuWte0lpH
+         u4rPt63HsfBe/p/ebzRUEYBTTdbdWutBoPHTwD5uvU0veF+HizYvRT7c9q0MyGm/zB
+         LgQYCJP4kE6E0aG3d4sGDMH5957g2OF8kv9LN3EGf3GGN7W4K2o9ahWm2Q6I8cPtfc
+         hbUphI5iSxBuQ==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Jon Hunter <jonathanh@nvidia.com>,
+        Thierry Reding <treding@nvidia.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, thierry.reding@gmail.com,
+        skomatineni@nvidia.com, ldewangan@nvidia.com,
+        linux-tegra@vger.kernel.org, linux-spi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.0 04/44] spi: tegra210-quad: Don't initialise DMA if not supported
+Date:   Fri, 18 Nov 2022 21:10:44 -0500
+Message-Id: <20221119021124.1773699-4-sashal@kernel.org>
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20221119021124.1773699-1-sashal@kernel.org>
+References: <20221119021124.1773699-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-spi@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Jon Hunter <jonathanh@nvidia.com>
 
-.probe_new() doesn't get the i2c_device_id * parameter, so determine
-that explicitly in the probe function.
+[ Upstream commit ae4b3c1252f0fd0951d2f072a02ba46cac8d6c92 ]
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+The following error messages are observed on boot for Tegra234 ...
+
+ ERR KERN tegra-qspi 3270000.spi: cannot use DMA: -19
+ ERR KERN tegra-qspi 3270000.spi: falling back to PIO
+
+Tegra234 does not support DMA for the QSPI and so initialising the DMA
+is expected to fail. The above error messages are misleading for devices
+that don't support DMA and so fix this by skipping the DMA
+initialisation for devices that don't support DMA.
+
+Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Link: https://lore.kernel.org/r/20221026155633.141792-1-jonathanh@nvidia.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-sc18is602.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/spi/spi-tegra210-quad.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/spi/spi-sc18is602.c b/drivers/spi/spi-sc18is602.c
-index 5d27ee482237..983b3621bc2a 100644
---- a/drivers/spi/spi-sc18is602.c
-+++ b/drivers/spi/spi-sc18is602.c
-@@ -235,9 +235,9 @@ static int sc18is602_setup(struct spi_device *spi)
- 	return 0;
- }
+diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
+index c89592b21ffc..d66ef7fa592b 100644
+--- a/drivers/spi/spi-tegra210-quad.c
++++ b/drivers/spi/spi-tegra210-quad.c
+@@ -720,6 +720,9 @@ static int tegra_qspi_start_cpu_based_transfer(struct tegra_qspi *qspi, struct s
  
--static int sc18is602_probe(struct i2c_client *client,
--			   const struct i2c_device_id *id)
-+static int sc18is602_probe(struct i2c_client *client)
+ static void tegra_qspi_deinit_dma(struct tegra_qspi *tqspi)
  {
-+	const struct i2c_device_id *id = i2c_client_get_device_id(client);
- 	struct device *dev = &client->dev;
- 	struct device_node *np = dev->of_node;
- 	struct sc18is602_platform_data *pdata = dev_get_platdata(dev);
-@@ -337,7 +337,7 @@ static struct i2c_driver sc18is602_driver = {
- 		.name = "sc18is602",
- 		.of_match_table = of_match_ptr(sc18is602_of_match),
- 	},
--	.probe = sc18is602_probe,
-+	.probe_new = sc18is602_probe,
- 	.id_table = sc18is602_id,
- };
++	if (!tqspi->soc_data->has_dma)
++		return;
++
+ 	if (tqspi->tx_dma_buf) {
+ 		dma_free_coherent(tqspi->dev, tqspi->dma_buf_size,
+ 				  tqspi->tx_dma_buf, tqspi->tx_dma_phys);
+@@ -750,6 +753,9 @@ static int tegra_qspi_init_dma(struct tegra_qspi *tqspi)
+ 	u32 *dma_buf;
+ 	int err;
  
++	if (!tqspi->soc_data->has_dma)
++		return 0;
++
+ 	dma_chan = dma_request_chan(tqspi->dev, "rx");
+ 	if (IS_ERR(dma_chan)) {
+ 		err = PTR_ERR(dma_chan);
 -- 
-2.38.1
+2.35.1
 

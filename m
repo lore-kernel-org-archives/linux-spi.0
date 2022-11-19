@@ -2,35 +2,35 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ED160C43217
-	for <linux-spi@archiver.kernel.org>; Sat, 19 Nov 2022 02:24:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 59FF8C433FE
+	for <linux-spi@archiver.kernel.org>; Sat, 19 Nov 2022 02:27:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235946AbiKSCYY (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 18 Nov 2022 21:24:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59532 "EHLO
+        id S234476AbiKSC1c (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 18 Nov 2022 21:27:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236142AbiKSCWu (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 18 Nov 2022 21:22:50 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F5FAC7229;
-        Fri, 18 Nov 2022 18:15:17 -0800 (PST)
+        with ESMTP id S229935AbiKSC0n (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 18 Nov 2022 21:26:43 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 247516DFF1;
+        Fri, 18 Nov 2022 18:16:18 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 128FDB8267B;
-        Sat, 19 Nov 2022 02:15:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C168EC433C1;
-        Sat, 19 Nov 2022 02:15:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B5577624B7;
+        Sat, 19 Nov 2022 02:16:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D82CC433B5;
+        Sat, 19 Nov 2022 02:16:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668824115;
-        bh=3QZrYsemDCeiXBZP6oM5UaMWSwjYjDGUHFDPrQMen+c=;
+        s=k20201202; t=1668824177;
+        bh=w9KGRntzBkhBwrHXOH/VZK9iq0Ck1XmrFUPD30d801w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=scYAqAvRWQAKjKa/Vws1CAwrXhHaFvu1zigZw7Hs228g0RSM9Vs8xNY1sgp28F0B+
-         dd1yvQuZY1zBn21buctRvIRvdWmdye0txhpk4qBdzJ96KGUjmE23QnxNyWGgM+h5tu
-         JQwp5w1m8PZuKi8StS1Iqn8IdpvlxTKrFIM9WSL6NqkkSZTEDchIixmra1aErudC/a
-         fvUOR6wO4s7EDXs647VH47sVr1DYsRSKqkiekomhToJ4fH4gUqgfGPuA4tDhmi6fjM
-         Th7WaoyUqog717K3mUlI8OpuJvLPvXpgEeZAxjxihGFqcncUr9wW08E39aaJ3UWnqd
-         q2IdmaVSJTwxw==
+        b=UlDbsQgoPjxDtGH7IEM89y6b3eFg7jGGg9/bwajLww3CtgT/6zfKSt/WlqXAWhOCZ
+         dH7/JBWjS5sZCuxzML9ZWbnHUPEc5r6I0pyixJu45uUdJcw1huyVnFxjo8W4v1E85L
+         11+UUdfh/qiwLbQRHGy97tbfo0ebjU4qxtDfVADyeKIO2D/8wPC9oZTV8uP5vjMfYr
+         1GAmAqKHpJBskWa9URejgX5kJ/oYPaD4OIj/5XdiUmJE1BHL2+QtPDRyzlNNoB/fOT
+         xymIHvSIsz+p9DQrE5tPdkezUDjIKkfGt2kdbdWKffUZ8WxIMPkAnCJurVw5yWO6jF
+         zRsKL4c461UfA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Sean Nyekjaer <sean@geanix.com>, Mark Brown <broonie@kernel.org>,
@@ -39,12 +39,12 @@ Cc:     Sean Nyekjaer <sean@geanix.com>, Mark Brown <broonie@kernel.org>,
         linux-spi@vger.kernel.org,
         linux-stm32@st-md-mailman.stormreply.com,
         linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.10 07/18] spi: stm32: fix stm32_spi_prepare_mbr() that halves spi clk for every run
-Date:   Fri, 18 Nov 2022 21:14:48 -0500
-Message-Id: <20221119021459.1775052-7-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 4/8] spi: stm32: fix stm32_spi_prepare_mbr() that halves spi clk for every run
+Date:   Fri, 18 Nov 2022 21:16:05 -0500
+Message-Id: <20221119021610.1775469-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221119021459.1775052-1-sashal@kernel.org>
-References: <20221119021459.1775052-1-sashal@kernel.org>
+In-Reply-To: <20221119021610.1775469-1-sashal@kernel.org>
+References: <20221119021610.1775469-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -83,10 +83,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index a6dfc8fef20c..e2d796e0eda6 100644
+index 8d692f16d90a..b8565da54a72 100644
 --- a/drivers/spi/spi-stm32.c
 +++ b/drivers/spi/spi-stm32.c
-@@ -443,7 +443,7 @@ static int stm32_spi_prepare_mbr(struct stm32_spi *spi, u32 speed_hz,
+@@ -255,7 +255,7 @@ static int stm32_spi_prepare_mbr(struct stm32_spi *spi, u32 speed_hz)
  	u32 div, mbrdiv;
  
  	/* Ensure spi->clk_rate is even */

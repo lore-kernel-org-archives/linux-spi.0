@@ -2,117 +2,57 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ED1CAC43219
-	for <linux-spi@archiver.kernel.org>; Mon, 21 Nov 2022 01:48:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AF09BC433FE
+	for <linux-spi@archiver.kernel.org>; Mon, 21 Nov 2022 01:56:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229827AbiKUBsZ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 20 Nov 2022 20:48:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60440 "EHLO
+        id S229906AbiKUB4X (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 20 Nov 2022 20:56:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229773AbiKUBsX (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 20 Nov 2022 20:48:23 -0500
-Received: from mx.socionext.com (mx.socionext.com [202.248.49.38])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0E87821E09;
-        Sun, 20 Nov 2022 17:48:21 -0800 (PST)
-Received: from unknown (HELO iyokan2-ex.css.socionext.com) ([172.31.9.54])
-  by mx.socionext.com with ESMTP; 21 Nov 2022 10:48:19 +0900
-Received: from mail.mfilter.local (m-filter-2 [10.213.24.62])
-        by iyokan2-ex.css.socionext.com (Postfix) with ESMTP id 07C4820584CE;
-        Mon, 21 Nov 2022 10:48:19 +0900 (JST)
-Received: from 172.31.9.51 (172.31.9.51) by m-FILTER with ESMTP; Mon, 21 Nov 2022 10:48:19 +0900
-Received: from plum.e01.socionext.com (unknown [10.212.243.119])
-        by kinkan2.css.socionext.com (Postfix) with ESMTP id 7F76FB62A4;
-        Mon, 21 Nov 2022 10:48:18 +0900 (JST)
-From:   Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-To:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-Subject: [PATCH v2 1/2] dt-bindings: spi: Add Socionext F_OSPI controller bindings
-Date:   Mon, 21 Nov 2022 10:47:59 +0900
-Message-Id: <20221121014800.13989-2-hayashi.kunihiko@socionext.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20221121014800.13989-1-hayashi.kunihiko@socionext.com>
-References: <20221121014800.13989-1-hayashi.kunihiko@socionext.com>
+        with ESMTP id S229891AbiKUB4W (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 20 Nov 2022 20:56:22 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EC381572B
+        for <linux-spi@vger.kernel.org>; Sun, 20 Nov 2022 17:56:22 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id D3DDEB80D09
+        for <linux-spi@vger.kernel.org>; Mon, 21 Nov 2022 01:56:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8925CC433B5;
+        Mon, 21 Nov 2022 01:56:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1668995779;
+        bh=wEepm28YZpZcxU/YD9WzMlN8cryCjtS1f8JPQ+vviXQ=;
+        h=Subject:From:Date:To:From;
+        b=Z03S8Nk0GqZcVwio0MDXlCpyJOcjBUT8J9gi/QvlGjDD2GhtqqE+d/RebokrzdpmX
+         8/2aB4MMSnTX4lpKZQDqdnPZjT3uWgwWjXsd8hWStyk2nq7QFqjYFK/9OlZ73ZyKq6
+         C5ywBQpmYfxotBM8rvQVA2vXmltzo5lq6dzHQyeaXkAU8EziHT0s1A2UW4ldhD4o/W
+         jlqQywz4meTv9XKHS/BR755FFVrKencElaUURseVgeLhK7WIWQpdH+qDhQ8XrKuC1d
+         4CWeUsXRpfbKabaapwyJgDtG7UHrKQmr476vs+jPr9hFMVGSTGXEq9rqJiodbpZ66B
+         njWhtxkicnZWw==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 69F67C395F0;
+        Mon, 21 Nov 2022 01:56:19 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <166899577942.4906.13338126083032750257.git-patchwork-housekeeping@kernel.org>
+Date:   Mon, 21 Nov 2022 01:56:19 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Add devicetree binding documentation for Socionext F_OSPI SPI flash
-controller.
+Latest series: [v2] Introduce Socionext F_OSPI SPI flash controller (2022-11-21T01:47:58)
+  Superseding: [v1] Introduce Socionext F_OSPI SPI flash controller (2022-11-18T00:59:02):
+    [1/2] dt-bindings: spi: Add Socionext F_OSPI controller bindings
+    [2/2] spi: Add Socionext F_OSPI SPI flash controller driver
 
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
----
- .../bindings/spi/socionext,f-ospi.yaml        | 57 +++++++++++++++++++
- 1 file changed, 57 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/socionext,f-ospi.yaml
 
-diff --git a/Documentation/devicetree/bindings/spi/socionext,f-ospi.yaml b/Documentation/devicetree/bindings/spi/socionext,f-ospi.yaml
-new file mode 100644
-index 000000000000..e04492c4fc84
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/socionext,f-ospi.yaml
-@@ -0,0 +1,57 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: "http://devicetree.org/schemas/spi/socionext,f-ospi.yaml#"
-+$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-+
-+title: Socionext F_OSPI controller
-+
-+description: |
-+  The Socionext F_OSPI is a controller used to interface with flash
-+  memories using the SPI communication interface.
-+
-+maintainers:
-+  - Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-+
-+allOf:
-+  - $ref: "spi-controller.yaml#"
-+
-+properties:
-+  compatible:
-+    const: socionext,f-ospi
-+
-+  reg:
-+    maxItems: 1
-+
-+  clocks:
-+    maxItems: 1
-+
-+  num-cs:
-+    minimum: 1
-+    maximum: 4
-+
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+  - "#address-cells"
-+  - "#size-cells"
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    ospi0: spi@80000000 {
-+        compatible = "socionext,f-ospi";
-+        reg = <0x80000000 0x1000>;
-+        clocks = <&clks 0>;
-+        num-cs = <1>;
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        flash@0 {
-+            compatible = "spansion,s25fl128s", "jedec,spi-nor";
-+            reg = <0>;
-+            spi-max-frequency = <50000000>;
-+        };
-+    };
 -- 
-2.25.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

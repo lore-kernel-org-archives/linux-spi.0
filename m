@@ -2,29 +2,29 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1F09BC4167D
-	for <linux-spi@archiver.kernel.org>; Wed, 23 Nov 2022 14:41:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 520AAC47088
+	for <linux-spi@archiver.kernel.org>; Wed, 23 Nov 2022 14:41:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238640AbiKWOll (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 23 Nov 2022 09:41:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40444 "EHLO
+        id S237889AbiKWOlm (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 23 Nov 2022 09:41:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237889AbiKWOlh (ORCPT
+        with ESMTP id S237710AbiKWOlh (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Wed, 23 Nov 2022 09:41:37 -0500
 Received: from michel.telenet-ops.be (michel.telenet-ops.be [IPv6:2a02:1800:110:4::f00:18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5496A61BA9
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54114554E0
         for <linux-spi@vger.kernel.org>; Wed, 23 Nov 2022 06:41:33 -0800 (PST)
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed10:881b:815b:474d:c3fd])
         by michel.telenet-ops.be with bizsmtp
-        id nqhS2800R49U0Rd06qhSXG; Wed, 23 Nov 2022 15:41:30 +0100
+        id nqhS2800P49U0Rd06qhSXE; Wed, 23 Nov 2022 15:41:30 +0100
 Received: from rox.of.borg ([192.168.97.57])
         by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.93)
         (envelope-from <geert@linux-m68k.org>)
-        id 1oxqwH-001Rqj-SD; Wed, 23 Nov 2022 15:41:25 +0100
+        id 1oxqwH-001Rql-Rb; Wed, 23 Nov 2022 15:41:25 +0100
 Received: from geert by rox.of.borg with local (Exim 4.93)
         (envelope-from <geert@linux-m68k.org>)
-        id 1oxqwH-0012Hb-4O; Wed, 23 Nov 2022 15:41:25 +0100
+        id 1oxqwH-0012Ho-7B; Wed, 23 Nov 2022 15:41:25 +0100
 From:   Geert Uytterhoeven <geert+renesas@glider.be>
 To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         Vignesh Raghavendra <vigneshr@ti.com>,
@@ -37,9 +37,9 @@ Cc:     Philipp Zabel <p.zabel@pengutronix.de>,
         linux-kernel@vger.kernel.org, linux-mtd@lists.infradead.org,
         linux-spi@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
         Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH v2 4/6] memory: renesas-rpc-if: Improve Runtime PM handling
-Date:   Wed, 23 Nov 2022 15:41:20 +0100
-Message-Id: <6f2bd3b2b3d98c5bed541d969900b2ad04f93943.1669213027.git.geert+renesas@glider.be>
+Subject: [PATCH v2 6/6] memory: renesas-rpc-if: Remove Runtime PM wrappers
+Date:   Wed, 23 Nov 2022 15:41:22 +0100
+Message-Id: <d87aa5d7e4a39b18f7e2e0649fee0a45b45d371f.1669213027.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1669213027.git.geert+renesas@glider.be>
 References: <cover.1669213027.git.geert+renesas@glider.be>
@@ -49,65 +49,106 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Convert from the deprecated pm_runtime_get_sync() to the new
-pm_runtime_resume_and_get(), and add error checking.
+Now the rpcif_{en,dis}able_rpm() wrappers just take a pointer to a
+device structure, there is no point in keeping them.  Remove them, and
+update the callers to call Runtime PM directly.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
-v2:
-  - No changes.
----
- drivers/memory/renesas-rpc-if.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+This could be split in three patches for three different subsystems,
+with the changes to <memory/renesas-rpc-if.h> postponed, to relax
+dependencies, but the previous patch already touches all three
+subsystems anyway.
 
-diff --git a/drivers/memory/renesas-rpc-if.c b/drivers/memory/renesas-rpc-if.c
-index 83171242f9514c22..9346dcc29a36662e 100644
---- a/drivers/memory/renesas-rpc-if.c
-+++ b/drivers/memory/renesas-rpc-if.c
-@@ -304,12 +304,13 @@ int rpcif_hw_init(struct rpcif *rpcif, bool hyperflash)
- {
- 	struct rpcif_priv *rpc = dev_get_drvdata(rpcif->dev);
- 	u32 dummy;
-+	int ret;
+v2:
+  - New.
+---
+ drivers/mtd/hyperbus/rpc-if.c   |  6 +++---
+ drivers/spi/spi-rpc-if.c        |  6 +++---
+ include/memory/renesas-rpc-if.h | 10 ----------
+ 3 files changed, 6 insertions(+), 16 deletions(-)
+
+diff --git a/drivers/mtd/hyperbus/rpc-if.c b/drivers/mtd/hyperbus/rpc-if.c
+index 41734e337ac00e40..ef32fca5f785e376 100644
+--- a/drivers/mtd/hyperbus/rpc-if.c
++++ b/drivers/mtd/hyperbus/rpc-if.c
+@@ -130,7 +130,7 @@ static int rpcif_hb_probe(struct platform_device *pdev)
  
--	pm_runtime_get_sync(rpc->dev);
-+	ret = pm_runtime_resume_and_get(rpc->dev);
-+	if (ret)
-+		return ret;
+ 	platform_set_drvdata(pdev, hyperbus);
  
- 	if (rpc->type == RPCIF_RZ_G2L) {
--		int ret;
+-	rpcif_enable_rpm(hyperbus->rpc.dev);
++	pm_runtime_enable(hyperbus->rpc.dev);
+ 
+ 	error = rpcif_hw_init(hyperbus->rpc.dev, true);
+ 	if (error)
+@@ -150,7 +150,7 @@ static int rpcif_hb_probe(struct platform_device *pdev)
+ 	return 0;
+ 
+ out_disable_rpm:
+-	rpcif_disable_rpm(hyperbus->rpc.dev);
++	pm_runtime_disable(hyperbus->rpc.dev);
+ 	return error;
+ }
+ 
+@@ -160,7 +160,7 @@ static int rpcif_hb_remove(struct platform_device *pdev)
+ 
+ 	hyperbus_unregister_device(&hyperbus->hbdev);
+ 
+-	rpcif_disable_rpm(hyperbus->rpc.dev);
++	pm_runtime_disable(hyperbus->rpc.dev);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/spi/spi-rpc-if.c b/drivers/spi/spi-rpc-if.c
+index 5063587d2c724c7c..ec0904faf3a10bd0 100644
+--- a/drivers/spi/spi-rpc-if.c
++++ b/drivers/spi/spi-rpc-if.c
+@@ -147,7 +147,7 @@ static int rpcif_spi_probe(struct platform_device *pdev)
+ 
+ 	ctlr->dev.of_node = parent->of_node;
+ 
+-	rpcif_enable_rpm(rpc->dev);
++	pm_runtime_enable(rpc->dev);
+ 
+ 	ctlr->num_chipselect = 1;
+ 	ctlr->mem_ops = &rpcif_spi_mem_ops;
+@@ -169,7 +169,7 @@ static int rpcif_spi_probe(struct platform_device *pdev)
+ 	return 0;
+ 
+ out_disable_rpm:
+-	rpcif_disable_rpm(rpc->dev);
++	pm_runtime_disable(rpc->dev);
+ 	return error;
+ }
+ 
+@@ -179,7 +179,7 @@ static int rpcif_spi_remove(struct platform_device *pdev)
+ 	struct rpcif *rpc = spi_controller_get_devdata(ctlr);
+ 
+ 	spi_unregister_controller(ctlr);
+-	rpcif_disable_rpm(rpc->dev);
++	pm_runtime_disable(rpc->dev);
+ 
+ 	return 0;
+ }
+diff --git a/include/memory/renesas-rpc-if.h b/include/memory/renesas-rpc-if.h
+index 86a26ea78221a204..b8fa30fd6b500c73 100644
+--- a/include/memory/renesas-rpc-if.h
++++ b/include/memory/renesas-rpc-if.h
+@@ -76,14 +76,4 @@ void rpcif_prepare(struct device *dev, const struct rpcif_op *op, u64 *offs,
+ int rpcif_manual_xfer(struct device *dev);
+ ssize_t rpcif_dirmap_read(struct device *dev, u64 offs, size_t len, void *buf);
+ 
+-static inline void rpcif_enable_rpm(struct device *dev)
+-{
+-	pm_runtime_enable(dev);
+-}
 -
- 		ret = reset_control_reset(rpc->rstc);
- 		if (ret)
- 			return ret;
-@@ -482,7 +483,9 @@ int rpcif_manual_xfer(struct rpcif *rpcif)
- 	u32 smenr, smcr, pos = 0, max = rpc->bus_size == 2 ? 8 : 4;
- 	int ret = 0;
- 
--	pm_runtime_get_sync(rpc->dev);
-+	ret = pm_runtime_resume_and_get(rpc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	regmap_update_bits(rpc->regmap, RPCIF_PHYCNT,
- 			   RPCIF_PHYCNT_CAL, RPCIF_PHYCNT_CAL);
-@@ -650,11 +653,14 @@ ssize_t rpcif_dirmap_read(struct rpcif *rpcif, u64 offs, size_t len, void *buf)
- 	struct rpcif_priv *rpc = dev_get_drvdata(rpcif->dev);
- 	loff_t from = offs & (rpc->size - 1);
- 	size_t size = rpc->size - from;
-+	int ret;
- 
- 	if (len > size)
- 		len = size;
- 
--	pm_runtime_get_sync(rpc->dev);
-+	ret = pm_runtime_resume_and_get(rpc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	regmap_update_bits(rpc->regmap, RPCIF_CMNCR, RPCIF_CMNCR_MD, 0);
- 	regmap_write(rpc->regmap, RPCIF_DRCR, 0);
+-static inline void rpcif_disable_rpm(struct device *dev)
+-{
+-	pm_runtime_disable(dev);
+-}
+-
+ #endif // __RENESAS_RPC_IF_H
 -- 
 2.25.1
 

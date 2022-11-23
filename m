@@ -2,29 +2,29 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6CC97C433FE
-	for <linux-spi@archiver.kernel.org>; Wed, 23 Nov 2022 14:41:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 639DDC4332F
+	for <linux-spi@archiver.kernel.org>; Wed, 23 Nov 2022 14:41:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238587AbiKWOli (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S238596AbiKWOli (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Wed, 23 Nov 2022 09:41:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40484 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238468AbiKWOlg (ORCPT
+        with ESMTP id S238465AbiKWOlg (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Wed, 23 Nov 2022 09:41:36 -0500
 Received: from albert.telenet-ops.be (albert.telenet-ops.be [IPv6:2a02:1800:110:4::f00:1a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53CCF42F57
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 091EF4A072
         for <linux-spi@vger.kernel.org>; Wed, 23 Nov 2022 06:41:33 -0800 (PST)
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed10:881b:815b:474d:c3fd])
         by albert.telenet-ops.be with bizsmtp
-        id nqhS2800949U0Rd06qhSTc; Wed, 23 Nov 2022 15:41:30 +0100
+        id nqhS2800C49U0Rd06qhSTe; Wed, 23 Nov 2022 15:41:30 +0100
 Received: from rox.of.borg ([192.168.97.57])
         by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.93)
         (envelope-from <geert@linux-m68k.org>)
-        id 1oxqwH-001Rqf-F7; Wed, 23 Nov 2022 15:41:25 +0100
+        id 1oxqwH-001Rqh-NY; Wed, 23 Nov 2022 15:41:25 +0100
 Received: from geert by rox.of.borg with local (Exim 4.93)
         (envelope-from <geert@linux-m68k.org>)
-        id 1oxqwH-0012HA-00; Wed, 23 Nov 2022 15:41:25 +0100
+        id 1oxqwH-0012HN-2m; Wed, 23 Nov 2022 15:41:25 +0100
 From:   Geert Uytterhoeven <geert+renesas@glider.be>
 To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         Vignesh Raghavendra <vigneshr@ti.com>,
@@ -37,76 +37,122 @@ Cc:     Philipp Zabel <p.zabel@pengutronix.de>,
         linux-kernel@vger.kernel.org, linux-mtd@lists.infradead.org,
         linux-spi@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
         Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH v2 0/6] memory: renesas-rpc-if: Rebind fixes and misc cleanups
-Date:   Wed, 23 Nov 2022 15:41:16 +0100
-Message-Id: <cover.1669213027.git.geert+renesas@glider.be>
+Subject: [PATCH v2 2/6] memory: renesas-rpc-if: Move resource acquisition to .probe()
+Date:   Wed, 23 Nov 2022 15:41:18 +0100
+Message-Id: <c1012ef1de799e08a70817ab7313794e2d8d7bfb.1669213027.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <cover.1669213027.git.geert+renesas@glider.be>
+References: <cover.1669213027.git.geert+renesas@glider.be>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-	Hi all,
+While the acquired resources are tied to the lifetime of the RPC-IF core
+device (through the use of managed resource functions), the actual
+resource acquisition is triggered from the HyperBus and SPI child
+drivers.  Due to this mismatch, unbinding and rebinding the child
+drivers manually fails with -EBUSY:
 
-The Renesas RPC-IF provides either HyperFlash or SPI host access.
-To handle this, three drivers are used:
-  1. The RPC-IF core diver,
-  2. An HyperFlash child driver,
-  3. An SPI child driver.
+    # echo rpc-if-hyperflash > /sys/bus/platform/drivers/rpc-if-hyperflash/unbind
+    # echo rpc-if-hyperflash > /sys/bus/platform/drivers/rpc-if-hyperflash/bind
+    rpc-if ee200000.spi: can't request region for resource [mem 0xee200000-0xee2001ff]
+    rpc-if-hyperflash: probe of rpc-if-hyperflash failed with error -16
 
-Currently this driver collection suffers from a sub-optimal division of
-roles and reponsibilities, leading to (un)bind issues: after manually
-unbinding the child driver, rebinding the child driver fails with
--EBUSY.
+The same is true for rpc-if-spi.
 
-This patch series aims to fix this, by splitting off private data and
-making the RPC-IF core driver responsible for resource acquisition.
-After that, a few customary cleanups are provided.
+Fix this by moving all resource acquisition to the core driver's probe
+routine.
 
-This has been tested on the Salvator-X(S) and Ebisu-4D (HyperFlash) and
-White-Hawk (QSPI FLASH) development boards.
+Fixes: ca7d8b980b67f133 ("memory: add Renesas RPC-IF driver")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+---
+v2:
+  - Move forward in series,
+  - Add Fixes tag.
+---
+ drivers/memory/renesas-rpc-if.c | 49 ++++++++++++++++-----------------
+ 1 file changed, 24 insertions(+), 25 deletions(-)
 
-Changes compared to v1[1]:
-  - Move the two fixes forward and add Fixes-tags to ease backporting,
-    as requested by Krzysztof,
-  - Add Acked-by,
-  - Rebased cleanups,
-  - Remove Runtime PM wrappers,
-  - Drop patch to add system suspend/resume support to the RPC-IF core
-    driver, as this is apparently not needed on R-Car M3-N and R-Car E3,
-    nor fixes the issue on R-Car H3 ES2.0.  I will reply to the original
-    patch with my latest investigation results.
-
-Thanks for your comments!
-
-[1] [PATCH 0/7] memory: renesas-rpc-if: Rebind and s2ram fixes
-    https://lore.kernel.org/r/cover.1656341824.git.geert+renesas@glider.be
-
-Geert Uytterhoeven (6):
-  memory: renesas-rpc-if: Split-off private data from struct rpcif
-  memory: renesas-rpc-if: Move resource acquisition to .probe()
-  memory: renesas-rpc-if: Always use dev in rpcif_probe()
-  memory: renesas-rpc-if: Improve Runtime PM handling
-  memory: renesas-rpc-if: Pass device instead of rpcif to rpcif_*()
-  memory: renesas-rpc-if: Remove Runtime PM wrappers
-
- drivers/memory/renesas-rpc-if.c | 152 ++++++++++++++++++++------------
- drivers/mtd/hyperbus/rpc-if.c   |  18 ++--
- drivers/spi/spi-rpc-if.c        |  14 +--
- include/memory/renesas-rpc-if.h |  34 +------
- 4 files changed, 118 insertions(+), 100 deletions(-)
-
+diff --git a/drivers/memory/renesas-rpc-if.c b/drivers/memory/renesas-rpc-if.c
+index 224973ac859f88fa..42c5f9f10135b86a 100644
+--- a/drivers/memory/renesas-rpc-if.c
++++ b/drivers/memory/renesas-rpc-if.c
+@@ -277,32 +277,7 @@ static const struct regmap_config rpcif_regmap_config = {
+ 
+ int rpcif_sw_init(struct rpcif *rpcif, struct device *dev)
+ {
+-	struct platform_device *pdev = to_platform_device(dev);
+ 	struct rpcif_priv *rpc = dev_get_drvdata(dev);
+-	struct resource *res;
+-
+-	rpc->base = devm_platform_ioremap_resource_byname(pdev, "regs");
+-	if (IS_ERR(rpc->base))
+-		return PTR_ERR(rpc->base);
+-
+-	rpc->regmap = devm_regmap_init(&pdev->dev, NULL, rpc, &rpcif_regmap_config);
+-	if (IS_ERR(rpc->regmap)) {
+-		dev_err(&pdev->dev,
+-			"failed to init regmap for rpcif, error %ld\n",
+-			PTR_ERR(rpc->regmap));
+-		return	PTR_ERR(rpc->regmap);
+-	}
+-
+-	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "dirmap");
+-	rpc->dirmap = devm_ioremap_resource(&pdev->dev, res);
+-	if (IS_ERR(rpc->dirmap))
+-		return PTR_ERR(rpc->dirmap);
+-	rpc->size = resource_size(res);
+-
+-	rpc->type = (uintptr_t)of_device_get_match_data(dev);
+-	rpc->rstc = devm_reset_control_get_exclusive(&pdev->dev, NULL);
+-	if (IS_ERR(rpc->rstc))
+-		return PTR_ERR(rpc->rstc);
+ 
+ 	rpcif->dev = dev;
+ 	rpcif->dirmap = rpc->dirmap;
+@@ -705,9 +680,11 @@ EXPORT_SYMBOL(rpcif_dirmap_read);
+ 
+ static int rpcif_probe(struct platform_device *pdev)
+ {
++	struct device *dev = &pdev->dev;
+ 	struct platform_device *vdev;
+ 	struct device_node *flash;
+ 	struct rpcif_priv *rpc;
++	struct resource *res;
+ 	const char *name;
+ 	int ret;
+ 
+@@ -732,6 +709,28 @@ static int rpcif_probe(struct platform_device *pdev)
+ 	if (!rpc)
+ 		return -ENOMEM;
+ 
++	rpc->base = devm_platform_ioremap_resource_byname(pdev, "regs");
++	if (IS_ERR(rpc->base))
++		return PTR_ERR(rpc->base);
++
++	rpc->regmap = devm_regmap_init(dev, NULL, rpc, &rpcif_regmap_config);
++	if (IS_ERR(rpc->regmap)) {
++		dev_err(dev, "failed to init regmap for rpcif, error %ld\n",
++			PTR_ERR(rpc->regmap));
++		return	PTR_ERR(rpc->regmap);
++	}
++
++	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "dirmap");
++	rpc->dirmap = devm_ioremap_resource(dev, res);
++	if (IS_ERR(rpc->dirmap))
++		return PTR_ERR(rpc->dirmap);
++	rpc->size = resource_size(res);
++
++	rpc->type = (uintptr_t)of_device_get_match_data(dev);
++	rpc->rstc = devm_reset_control_get_exclusive(dev, NULL);
++	if (IS_ERR(rpc->rstc))
++		return PTR_ERR(rpc->rstc);
++
+ 	vdev = platform_device_alloc(name, pdev->id);
+ 	if (!vdev)
+ 		return -ENOMEM;
 -- 
 2.25.1
 
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds

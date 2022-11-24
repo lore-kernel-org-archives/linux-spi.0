@@ -2,92 +2,119 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0BD09C433FE
-	for <linux-spi@archiver.kernel.org>; Wed, 23 Nov 2022 21:17:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0B0DFC4332F
+	for <linux-spi@archiver.kernel.org>; Thu, 24 Nov 2022 00:34:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229563AbiKWVRU (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 23 Nov 2022 16:17:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35990 "EHLO
+        id S229536AbiKXAeB (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 23 Nov 2022 19:34:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235918AbiKWVRM (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 23 Nov 2022 16:17:12 -0500
-Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 958A9A314F
-        for <linux-spi@vger.kernel.org>; Wed, 23 Nov 2022 13:17:09 -0800 (PST)
-Received: by mail-qt1-x82d.google.com with SMTP id l2so8530qtq.11
-        for <linux-spi@vger.kernel.org>; Wed, 23 Nov 2022 13:17:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=timesys-com.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=4aqA0Mj3WFRM9SvHIljdHQ8+p96l5z6GhwHZgBiTLAE=;
-        b=HOfGOF/KzrNbTIEs25w7CIh7DweUpRjCaPuDjlosBtlXKTk5QqFEzt3NJlVaE74iA+
-         jA7UAv8BMJsiduZ2LNB6LjS1SQ3WuyoMibpm7eolcRqsiqLLvyhUKhSNeEF4sUsGESwh
-         n+QZCA9GvgGW7ATurAKm+W2fnWmcLbPdkaWDw+LVsC2p4hEzmgOAnczFW9efTzBhqi9w
-         pGreWtPd65aM7ysQ+zIW0zT8Giv73OPlqvwvs64u+gAwgRbZ59rlJq3oQfikHxObzYjT
-         LRppuKzblg5+Qk6uqK2hM6hItqAFhcw94hgYsYMjILCR13DJUb7ZnTQsRERX5hOSc2Gn
-         xsQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4aqA0Mj3WFRM9SvHIljdHQ8+p96l5z6GhwHZgBiTLAE=;
-        b=TMyW8NJ7MrZDcrpxcT/0FxQej324PUB3WS5aOvoGcmFAWZCltIsnOg4NhFLWyr0RQq
-         Gp8PFk4/QSfPAKTiAs0LCc6yVUb9JYKvLsWzk8IOm/4w1qoaWRWM2xT8cV/DaHZPPEjL
-         22C5kJjHVGfNfroBvaShhFucOil/LmzGbNDHy8XH21dCvcw1canSHunYa7pSr61EcyKc
-         Wz3J9zZWWfk19la7c77FsJ8ufWd1NB+mFtq1BmphT9A5C1s2BCSsY+PbdovCYrARzpXW
-         aCmvdAHu2grwQ+YYhEFDjUxmhSmH1FXfUkx2itZINl6CfhxkijQPddcSu9WvQw/t2tpb
-         8NbA==
-X-Gm-Message-State: ANoB5pnrsZqpiGkfot0Hw5HpZN3grVtEZSPv0r0M1ldqaG9LNN/BuLYE
-        h1GYAjcE2K0/awBcoK3mHvGztGBiTuBm4BWc
-X-Google-Smtp-Source: AA0mqf4OXplR5mPC7T71BzFi9Tan1aVm5pq33+5u3HIsJmIGGOTjUuPwUlTFhECijGg6dxTzh4uCpA==
-X-Received: by 2002:ac8:4d4f:0:b0:3a6:1dea:8c1c with SMTP id x15-20020ac84d4f000000b003a61dea8c1cmr18403042qtv.157.1669238228695;
-        Wed, 23 Nov 2022 13:17:08 -0800 (PST)
-Received: from nathan-ideapad.. (d-75-76-18-234.oh.cpe.breezeline.net. [75.76.18.234])
-        by smtp.gmail.com with ESMTPSA id o22-20020ac872d6000000b00399edda03dfsm10203066qtp.67.2022.11.23.13.17.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Nov 2022 13:17:08 -0800 (PST)
-From:   Nathan Barrett-Morrison <nathan.morrison@timesys.com>
-Cc:     nathan.morrison@timesys.com, greg.malysa@timesys.com,
-        Mark Brown <broonie@kernel.org>,
-        linux-spi@vger.kernel.org (open list:SPI SUBSYSTEM),
-        linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] spi: cadence-quadspi: Add upper limit safety check to baudrate divisor
-Date:   Wed, 23 Nov 2022 16:17:05 -0500
-Message-Id: <20221123211705.126900-1-nathan.morrison@timesys.com>
-X-Mailer: git-send-email 2.30.2
+        with ESMTP id S229448AbiKXAeA (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 23 Nov 2022 19:34:00 -0500
+Received: from mx.socionext.com (mx.socionext.com [202.248.49.38])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 44700E2214;
+        Wed, 23 Nov 2022 16:33:56 -0800 (PST)
+Received: from unknown (HELO kinkan2-ex.css.socionext.com) ([172.31.9.52])
+  by mx.socionext.com with ESMTP; 24 Nov 2022 09:33:55 +0900
+Received: from mail.mfilter.local (m-filter-1 [10.213.24.61])
+        by kinkan2-ex.css.socionext.com (Postfix) with ESMTP id 9B3662059054;
+        Thu, 24 Nov 2022 09:33:55 +0900 (JST)
+Received: from 172.31.9.51 (172.31.9.51) by m-FILTER with ESMTP; Thu, 24 Nov 2022 09:33:55 +0900
+Received: from plum.e01.socionext.com (unknown [10.212.243.119])
+        by kinkan2.css.socionext.com (Postfix) with ESMTP id 2E399A8557;
+        Thu, 24 Nov 2022 09:33:55 +0900 (JST)
+From:   Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+To:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v3 1/2] dt-bindings: spi: Add Socionext F_OSPI controller
+Date:   Thu, 24 Nov 2022 09:33:50 +0900
+Message-Id: <20221124003351.7792-2-hayashi.kunihiko@socionext.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20221124003351.7792-1-hayashi.kunihiko@socionext.com>
+References: <20221124003351.7792-1-hayashi.kunihiko@socionext.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-While bringing up the cadence-quadspi driver on a customer board,
-I discovered that the baud divisor calculation can exceed the
-peripheral's maximum in some circumstances.  This will prevent it.
+Add devicetree binding documentation for Socionext F_OSPI SPI flash
+controller.
 
-Signed-off-by: Nathan Barrett-Morrison <nathan.morrison@timesys.com>
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- drivers/spi/spi-cadence-quadspi.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ .../bindings/spi/socionext,f-ospi.yaml        | 57 +++++++++++++++++++
+ 1 file changed, 57 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/socionext,f-ospi.yaml
 
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index 447230547945..250575fb7b0e 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -1119,6 +1119,10 @@ static void cqspi_config_baudrate_div(struct cqspi_st *cqspi)
- 	/* Recalculate the baudrate divisor based on QSPI specification. */
- 	div = DIV_ROUND_UP(ref_clk_hz, 2 * cqspi->sclk) - 1;
- 
-+	/* Maximum baud divisor */
-+	if (div > CQSPI_REG_CONFIG_BAUD_MASK)
-+		div = CQSPI_REG_CONFIG_BAUD_MASK;
+diff --git a/Documentation/devicetree/bindings/spi/socionext,f-ospi.yaml b/Documentation/devicetree/bindings/spi/socionext,f-ospi.yaml
+new file mode 100644
+index 000000000000..9878d1446552
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/socionext,f-ospi.yaml
+@@ -0,0 +1,57 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/spi/socionext,f-ospi.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
- 	reg = readl(reg_base + CQSPI_REG_CONFIG);
- 	reg &= ~(CQSPI_REG_CONFIG_BAUD_MASK << CQSPI_REG_CONFIG_BAUD_LSB);
- 	reg |= (div & CQSPI_REG_CONFIG_BAUD_MASK) << CQSPI_REG_CONFIG_BAUD_LSB;
++title: Socionext F_OSPI controller
++
++description: |
++  The Socionext F_OSPI is a controller used to interface with flash
++  memories using the SPI communication interface.
++
++maintainers:
++  - Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
++
++allOf:
++  - $ref: spi-controller.yaml#
++
++properties:
++  compatible:
++    const: socionext,f-ospi
++
++  reg:
++    maxItems: 1
++
++  clocks:
++    maxItems: 1
++
++  num-cs:
++    minimum: 1
++    maximum: 4
++
++required:
++  - compatible
++  - reg
++  - clocks
++  - "#address-cells"
++  - "#size-cells"
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    ospi0: spi@80000000 {
++        compatible = "socionext,f-ospi";
++        reg = <0x80000000 0x1000>;
++        clocks = <&clks 0>;
++        num-cs = <1>;
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        flash@0 {
++            compatible = "spansion,s25fl128s", "jedec,spi-nor";
++            reg = <0>;
++            spi-max-frequency = <50000000>;
++        };
++    };
 -- 
-2.30.2
+2.25.1
 

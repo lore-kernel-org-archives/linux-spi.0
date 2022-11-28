@@ -2,88 +2,93 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CEEC1C4321E
-	for <linux-spi@archiver.kernel.org>; Mon, 28 Nov 2022 18:15:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 53254C4321E
+	for <linux-spi@archiver.kernel.org>; Mon, 28 Nov 2022 21:49:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232694AbiK1SP0 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 28 Nov 2022 13:15:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50142 "EHLO
+        id S234149AbiK1Vtn (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 28 Nov 2022 16:49:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232244AbiK1SPC (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 28 Nov 2022 13:15:02 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61AE8766A;
-        Mon, 28 Nov 2022 09:57:44 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D1AB061337;
-        Mon, 28 Nov 2022 17:57:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB5CC433C1;
-        Mon, 28 Nov 2022 17:57:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669658263;
-        bh=HOm5tlWIniy5T1amAXM6Y8prJ7Kjyr4oEW5FOmYDoic=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=lkZTBD09uxBmtzSZiuor8HjGnbbP1RV/lyx2WAeOihIR7vO4VrljoBY1MtGSNUK3E
-         98JP5V9jtxBTF8PDeS1XarMMo5dPw+/rlowPp8unwkO1PMiK6Ru1I65LBMcTSN9y1F
-         9GH0y3P0Dz2GPAMi0QFsGEEODDYzzO5cvYMhjnOMpDT/P6DG306vNIg/sGCjE87b9Y
-         pGcerHb/jNWALLUDd5Ibi7KJl7j/OtUgs77xojC1MVkaBYnhiZinT7MRSVPqm7rBZv
-         UE3nRqjJFcSb7VCYe7VKxKUBmw8jRLpE5LW2EE96f73kUoLNevfSJHiATVXCL4/B96
-         OCl7V7suyc6hg==
-Date:   Mon, 28 Nov 2022 17:57:38 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Conor Dooley <conor.dooley@microchip.com>
-Cc:     Jonathan =?iso-8859-1?Q?Neusch=E4fer?= <j.neuschaefer@gmx.net>,
-        Rob Herring <robh@kernel.org>, linux-kernel@vger.kernel.org,
-        openbmc@lists.ozlabs.org, linux-spi@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] dt-bindings: spi: Add Nuvoton WPCM450 Flash
- Interface Unit (FIU)
-Message-ID: <Y4T2kowzjQMqxckF@sirena.org.uk>
-References: <20221124191400.287918-1-j.neuschaefer@gmx.net>
- <20221124191400.287918-2-j.neuschaefer@gmx.net>
- <166950112932.8087.6546134123286782729.robh@kernel.org>
- <Y4SV+5/3Y0dw5QeU@wendy>
- <Y4S+oWz8fNsQj5Gj@probook>
- <Y4TBIah6vJAG3kj2@wendy>
+        with ESMTP id S229929AbiK1Vtm (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 28 Nov 2022 16:49:42 -0500
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7F092F384;
+        Mon, 28 Nov 2022 13:49:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net; s=s31663417;
+        t=1669672172; bh=RavA9BgbtnCpfeKmmttPqt2PspmEONxNtyxh+bEyHGY=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=FiCHopUi8isfJcjoqIRcYiTVhvDZbqsBprPbgZDifRwu8O+81IUsS5gDgP7VzRyST
+         0vxffhH5pccWgY4yVqxIY/bYm/i9KZg6txf+ZOuz2FmHqHP3UUJlM29ltwfiEfvK+X
+         k7YFm+BJ7NN12fIWmLpE0Xjn/RM6PdUf3y1qjFgrtAxxbSDrzPcOCm0KBn2rxWOUIV
+         edc7hjh6b+x2XbMFOq2jFwDosu61M0Bd2ogxlEtLLtaLtmDiELFGmCV2fui4VLaVEy
+         NaR2iaQ3Z0w45VL0imjqH6srmdIcg9ubvxC5Fq2U6SVLyDwcEv/OHosmUE6bozRmpi
+         c0bUWgQYaMIwQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from probook ([95.223.44.31]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MrhUK-1ocn3A282e-00nid0; Mon, 28
+ Nov 2022 22:49:32 +0100
+From:   =?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>
+To:     linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>
+Cc:     Conor Dooley <conor.dooley@microchip.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>, openbmc@lists.ozlabs.org,
+        =?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Subject: [PATCH 2/2] spi: dt-bindings: nuvoton,wpcm450-fiu: Fix warning in example (missing reg property)
+Date:   Mon, 28 Nov 2022 22:49:28 +0100
+Message-Id: <20221128214928.3531463-3-j.neuschaefer@gmx.net>
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20221128214928.3531463-1-j.neuschaefer@gmx.net>
+References: <20221128214928.3531463-1-j.neuschaefer@gmx.net>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="8hu38K+e8vZwubEp"
-Content-Disposition: inline
-In-Reply-To: <Y4TBIah6vJAG3kj2@wendy>
-X-Cookie: In the next world, you're on your own.
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:xqpXGQO6+Yu9CpVnDs/FsvdtqBSW0zviiqNAGW1LyN1QXQsy2sV
+ rkeT3S34+2FPR4ENe3qT6bwgjlZLVbjzuB/luKAryE9oTSUrHreIpBrX4CpCQO1ZtCBK+x4
+ TLEKu2zSqb3tpUa3pmxxoYW6ypWooTQr8jaJYmhOLslezcId22OTlZWVGP/+1IylxpVLv8V
+ OgwGk7IPofuu8MaFENCuw==
+UI-OutboundReport: notjunk:1;M01:P0:NBafmIHXHOw=;wowX/cO77OjqVFSZ/t9Wu8lndi7
+ D33OxbkdnLBrxFAr1HLZ0N+U3+jOK87yCI+pta9ehud0IfK0CrPq2vHHZHDtVHKROZ4sXBPrC
+ MvWjpc9Z/uL4mG90PVt9L1Y1XieFzHrigTEvUjmexpcFxl0lIcaJO4PX9lGVw57wKfRdl6ri8
+ TgxgXgVS3viJkJywlyvzsf8gJlhpvh5FOESxIgeQpL7ONMi7pVuXw73XqHRnCXlU2Af4CNO9h
+ GBA2a7rV8iQEZ5vB8zsepUMyXxz1uK2CabSBG5oWHI13aC58pFiYaCVNh5cCNZ4ZGr/rNG5c3
+ V0hcmBeYkHr7e2L+fxUFzDjngI45Izuntzy6fjV5Pf28yHre399buh/Q16zDb7lBnix/gd/q3
+ j1iZPm6UvnTyjFnTiFTVzkdAeuGchJtrqldxypct0gGfJnUnesVjqJax5BsXzgldGcENYSam+
+ 8P9NDqzpjXKBXS2SX7BZppKt8Rq5Z/wRc5TkCFTGRauHf19ZuJktWTEFnrKxHCuBdV0+gi7jK
+ hakOdCIlJkI/w2uwnKEaXQZ0nAA8ER3Zp/6/7TOYqiS0kBkORQ0ZYD1FIOdzi0EodXh6wTHQG
+ 7xJh2ckxK2vrlzDgRDSQ+mPnvx0+EPW2wybwEpCQk4hsYgmUmL8x7CUpjd3CNaN9HvRByXf+1
+ zoaxyCutlmV34hoAxbZcd9W47cFGXKGKHsskeg/FESFturRWLx9BCN2A0leuUUaJ/w8ghio65
+ 1LwkzxMZZU2i7kZthhOkP/uaAUTScBgUo9CPBrbwUFq/XbSEFR+ZN10c7D8LNj3WKhhqfW4uc
+ kfxDDwJn/zxGFyiFIS3uqSn97+2r+Swun1KS4HS9w3xT9AcT1+VBwrJCLK2vwDHfjMqreSYSF
+ XinSX/LRDqmKuARQYbFwBIib9+ILPsZ27M7fbjSfut7q/+NGPu5XVrQjclgOnZg4+h6dZrotV
+ LNcuvQ==
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+I forgot to add a "reg =3D <0>;" property to the flash@0 node while
+writing the example. Fix this.
 
---8hu38K+e8vZwubEp
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Fixes: dd71cd4dd6c9b ("spi: Add Nuvoton WPCM450 Flash Interface Unit (FIU)=
+ bindings")
+Signed-off-by: Jonathan Neusch=C3=A4fer <j.neuschaefer@gmx.net>
+=2D--
+ Documentation/devicetree/bindings/spi/nuvoton,wpcm450-fiu.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-On Mon, Nov 28, 2022 at 02:09:37PM +0000, Conor Dooley wrote:
+diff --git a/Documentation/devicetree/bindings/spi/nuvoton,wpcm450-fiu.yam=
+l b/Documentation/devicetree/bindings/spi/nuvoton,wpcm450-fiu.yaml
+index e4162845fcc1d..4e0d391e1d697 100644
+=2D-- a/Documentation/devicetree/bindings/spi/nuvoton,wpcm450-fiu.yaml
++++ b/Documentation/devicetree/bindings/spi/nuvoton,wpcm450-fiu.yaml
+@@ -56,6 +56,7 @@ examples:
 
-> Without being a Responsible Adult^TM for either SPI or DT, my preference
-> would be for simplifying the binding so that if your clk stuff doesn't
-> land for 6.2 the binding checks still work.
+       flash@0 {
+         compatible =3D "jedec,spi-nor";
++        reg =3D <0>;
+       };
+     };
 
-Yes, please simplify the example.
+=2D-
+2.35.1
 
---8hu38K+e8vZwubEp
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmOE9pEACgkQJNaLcl1U
-h9Bs1wf+OUxEzRc8Sldcia8LNWHm678IKCqgxrejUeJvY8R7o/7LTsHa5JVhnTt3
-Ovq4CmMPJ+0bEF5DIDBxGFWNfEA5C1E9eNJOm9HWTpSYfxZTpBRcP+YC0p1bS9pS
-IQhoCxI4K+iYfERMqy6QDCiBCXr9y0+7QHQvwJGvjHNwOXrfEeGdP8GACFTYzCno
-3fMMk+tuTUHeRiLKCjdDSbEZwYzMwapBi5mXKS7Ocj+S8SIZFe4zQWY2ViO21GtA
-SYedntOzggayxP4PyoIdxyoju5UqteP59QHtE28ygxkzZZt9G1dKhbjhzQ8QAviL
-5rv8aCuy9lWvUL45v2NzDVf5/IzSwQ==
-=bB+P
------END PGP SIGNATURE-----
-
---8hu38K+e8vZwubEp--

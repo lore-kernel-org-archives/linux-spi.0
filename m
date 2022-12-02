@@ -2,32 +2,32 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F3B6C4332F
-	for <linux-spi@archiver.kernel.org>; Fri,  2 Dec 2022 09:57:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F1A4C4332F
+	for <linux-spi@archiver.kernel.org>; Fri,  2 Dec 2022 09:57:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232312AbiLBJ5G (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 2 Dec 2022 04:57:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60768 "EHLO
+        id S232734AbiLBJ5M (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 2 Dec 2022 04:57:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232734AbiLBJ5F (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 2 Dec 2022 04:57:05 -0500
+        with ESMTP id S232214AbiLBJ5L (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 2 Dec 2022 04:57:11 -0500
 Received: from mx1.emlix.com (mx1.emlix.com [136.243.223.33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BA4FCB223
-        for <linux-spi@vger.kernel.org>; Fri,  2 Dec 2022 01:57:04 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53C64CB20C
+        for <linux-spi@vger.kernel.org>; Fri,  2 Dec 2022 01:57:11 -0800 (PST)
 Received: from mailer.emlix.com (p5098be52.dip0.t-ipconnect.de [80.152.190.82])
         (using TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mx1.emlix.com (Postfix) with ESMTPS id C60E05FF10;
-        Fri,  2 Dec 2022 10:49:35 +0100 (CET)
+        by mx1.emlix.com (Postfix) with ESMTPS id C25FD5FCDC;
+        Fri,  2 Dec 2022 10:49:20 +0100 (CET)
 From:   Edmund Berenson <edmund.berenson@emlix.com>
 Cc:     Edmund Berenson <edmund.berenson@emlix.com>,
         Lukasz Zemla <Lukasz.Zemla@woodward.com>,
         Serge Semin <fancer.lancer@gmail.com>,
         Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] spi: dw: Write chip configuration before cs is set
-Date:   Fri,  2 Dec 2022 10:49:34 +0100
-Message-Id: <20221202094934.9420-1-edmund.berenson@emlix.com>
+Subject: [PATCH 1/3] spi: dw: select SS0 when gpio cs is used
+Date:   Fri,  2 Dec 2022 10:48:59 +0100
+Message-Id: <20221202094859.7869-1-edmund.berenson@emlix.com>
 X-Mailer: git-send-email 2.37.4
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -36,40 +36,39 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Using chips with different cpol, causes first communication
-to fail on cpol change.
-To avoid this issue write cr0 register before cs is set.
+SER register contains only 4-bit bit-field for enabling 4 SPI chip selects.
+If gpio cs are used the cs number may be >= 4. To ensure we do not write
+outside of the valid area, we choose SS0 in case of gpio cs to start
+spi transfer.
 
-Suggested-by: Lukasz Zemla <Lukasz.Zemla@woodward.com>
+Co-developed-by: Lukasz Zemla <Lukasz.Zemla@woodward.com>
+Signed-off-by: Lukasz Zemla <Lukasz.Zemla@woodward.com>
 Signed-off-by: Edmund Berenson <edmund.berenson@emlix.com>
 ---
- drivers/spi/spi-dw-core.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/spi/spi-dw-core.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
-index 57c9e384d6d4..c3da4fe3e510 100644
+index 99edddf9958b..57c9e384d6d4 100644
 --- a/drivers/spi/spi-dw-core.c
 +++ b/drivers/spi/spi-dw-core.c
-@@ -93,6 +93,7 @@ static inline void dw_spi_debugfs_remove(struct dw_spi *dws)
- void dw_spi_set_cs(struct spi_device *spi, bool enable)
+@@ -94,6 +94,10 @@ void dw_spi_set_cs(struct spi_device *spi, bool enable)
  {
  	struct dw_spi *dws = spi_controller_get_devdata(spi->controller);
-+	struct dw_spi_chip_data *chip = spi_get_ctldata(spi);
  	bool cs_high = !!(spi->mode & SPI_CS_HIGH);
- 	u8 enable_cs = 0;
++	u8 enable_cs = 0;
++
++	if (!spi->cs_gpiod)
++		enable_cs = spi->chip_select;
  
-@@ -106,8 +107,13 @@ void dw_spi_set_cs(struct spi_device *spi, bool enable)
- 	 * Enable register no matter whether the SPI core is configured to
+ 	/*
+ 	 * DW SPI controller demands any native CS being set in order to
+@@ -103,7 +107,7 @@ void dw_spi_set_cs(struct spi_device *spi, bool enable)
  	 * support active-high or active-low CS level.
  	 */
--	if (cs_high == enable)
-+	if (cs_high == enable) {
-+		dw_spi_enable_chip(dws, 0);
-+		dw_writel(dws, DW_SPI_CTRLR0, chip->cr0);
-+		dw_spi_enable_chip(dws, 1);
-+
- 		dw_writel(dws, DW_SPI_SER, BIT(enable_cs));
-+	}
+ 	if (cs_high == enable)
+-		dw_writel(dws, DW_SPI_SER, BIT(spi->chip_select));
++		dw_writel(dws, DW_SPI_SER, BIT(enable_cs));
  	else
  		dw_writel(dws, DW_SPI_SER, 0);
  }

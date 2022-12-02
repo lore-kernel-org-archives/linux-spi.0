@@ -2,93 +2,80 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AB365C4332F
-	for <linux-spi@archiver.kernel.org>; Thu,  1 Dec 2022 22:57:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 62D7FC4332F
+	for <linux-spi@archiver.kernel.org>; Fri,  2 Dec 2022 09:56:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231634AbiLAW5i (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 1 Dec 2022 17:57:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51060 "EHLO
+        id S233161AbiLBJ46 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 2 Dec 2022 04:56:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231636AbiLAW5h (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 1 Dec 2022 17:57:37 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42ACFC7240;
-        Thu,  1 Dec 2022 14:57:30 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S233188AbiLBJ46 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 2 Dec 2022 04:56:58 -0500
+X-Greylist: delayed 454 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 02 Dec 2022 01:56:56 PST
+Received: from mx1.emlix.com (mx1.emlix.com [136.243.223.33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3B70CA7A9
+        for <linux-spi@vger.kernel.org>; Fri,  2 Dec 2022 01:56:56 -0800 (PST)
+Received: from mailer.emlix.com (p5098be52.dip0.t-ipconnect.de [80.152.190.82])
+        (using TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8719262169;
-        Thu,  1 Dec 2022 22:57:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E94AC433C1;
-        Thu,  1 Dec 2022 22:57:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669935450;
-        bh=TBfuELpSzb+mNB+KGhsJR1KS+PLQ2psvSjnArr0l67U=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=qTxVOKu12kBYKDZa/QZJxEWsTveLDaAK2keHquTWLXJyk+85s9/sm/SSbYFjDDWpi
-         xUxavKGimMWhzyRtUxJlv3GMRrcRUVFpEoO7uVMqhneExCCGM9e5kM9WsMT891ryjN
-         MMpD2Be8s3pqjQPUX0vq40pbDrTBfSt/Z9/x8OFkr7Yz+2B+DfJli4T1PPRaMnAt3d
-         Dfs2jAswQabKi3v3bRgqB5/aj0Br1Dm+Yb6iWNpr2JEwJtgbZCl4VcFlozz8tSRXov
-         I3uiQP1MHBPlSHJ3tTxuq0IwAckjcbj/dIBLu3Ewzr/fwN1crH6wlSb5HT41/KRbOK
-         nKxtIEx1yqpYg==
-Date:   Thu, 1 Dec 2022 22:57:24 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Doug Anderson <dianders@chromium.org>
-Cc:     Vijaya Krishna Nivarthi <quic_vnivarth@quicinc.com>,
-        agross@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
-        linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, quic_msavaliy@quicinc.com,
-        mka@chromium.org, swboyd@chromium.org, quic_vtanuku@quicinc.com,
-        vkoul@kernel.org
-Subject: Re: [V3] spi: spi-geni-qcom: Add support for SE DMA mode
-Message-ID: <Y4kxVP97C66oi0Bi@sirena.org.uk>
-References: <1669713814-28876-1-git-send-email-quic_vnivarth@quicinc.com>
- <CAD=FV=WW-YttMn2+_6MdKwVDQO2stHjiisSdX8vFoOFBMnsjRA@mail.gmail.com>
+        by mx1.emlix.com (Postfix) with ESMTPS id 0E82C5FEEB;
+        Fri,  2 Dec 2022 10:49:28 +0100 (CET)
+From:   Edmund Berenson <edmund.berenson@emlix.com>
+Cc:     Edmund Berenson <edmund.berenson@emlix.com>,
+        Lukasz Zemla <Lukasz.Zemla@woodward.com>,
+        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 2/3] spi: execute set_cs function before gpio cs is activated
+Date:   Fri,  2 Dec 2022 10:49:26 +0100
+Message-Id: <20221202094926.9113-1-edmund.berenson@emlix.com>
+X-Mailer: git-send-email 2.37.4
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="MCfNU2/ldKjB0tuT"
-Content-Disposition: inline
-In-Reply-To: <CAD=FV=WW-YttMn2+_6MdKwVDQO2stHjiisSdX8vFoOFBMnsjRA@mail.gmail.com>
-X-Cookie: Leveraging always beats prototyping.
+Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+In some cases it is necessary to adjust the spi controller configuration
+before gpio cs is set.
+For example if spi devices requiring different cpol are used from the same
+controller the adjustment to cpol has to be made before gpio is activated.
+To achieve this set_cs should be executed before gpio cs and necessary
+adjustments can be made inside of controller driver.
 
---MCfNU2/ldKjB0tuT
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Suggested-by: Lukasz Zemla <Lukasz.Zemla@woodward.com>
+Signed-off-by: Edmund Berenson <edmund.berenson@emlix.com>
+---
+ drivers/spi/spi.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-On Thu, Dec 01, 2022 at 02:40:32PM -0800, Doug Anderson wrote:
-> On Tue, Nov 29, 2022 at 1:23 AM Vijaya Krishna Nivarthi
-> >
-> > +       if (mas->cur_xfer_mode == GENI_SE_DMA) {
-> > +               if (m_cmd & SPI_RX_ONLY) {
-> > +                       ret =  geni_se_rx_dma_prep(se, xfer->rx_buf,
-> > +                               xfer->len, &xfer->rx_dma);
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 5f9aedd1f0b6..bf2a67184969 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -976,6 +976,11 @@ static void spi_set_cs(struct spi_device *spi, bool enable, bool force)
+ 		enable = !enable;
+ 
+ 	if (spi->cs_gpiod) {
++		/* Some SPI masters need both GPIO CS & slave_select */
++		if ((spi->controller->flags & SPI_MASTER_GPIO_SS) &&
++		    spi->controller->set_cs)
++			spi->controller->set_cs(spi, !enable);
++
+ 		if (!(spi->mode & SPI_NO_CS)) {
+ 			/*
+ 			 * Historically ACPI has no means of the GPIO polarity and
+@@ -993,10 +998,6 @@ static void spi_set_cs(struct spi_device *spi, bool enable, bool force)
+ 				/* Polarity handled by GPIO library */
+ 				gpiod_set_value_cansleep(spi->cs_gpiod, activate);
+ 		}
+-		/* Some SPI masters need both GPIO CS & slave_select */
+-		if ((spi->controller->flags & SPI_MASTER_GPIO_SS) &&
+-		    spi->controller->set_cs)
+-			spi->controller->set_cs(spi, !enable);
+ 	} else if (spi->controller->set_cs) {
+ 		spi->controller->set_cs(spi, !enable);
+ 	}
+-- 
+2.37.4
 
-> In response to v1 I asked if it's really OK to use "xfer->rx_dma" for
-> your purposes since it's supposed to be managed by the SPI framework.
-
-> It still makes me nervous to use it, even though it seems to work.
-> Since we're using it in an undocumented way, I'd be nervous that the
-> SPI framework might change what it's doing and break us in the future.
-
-I'm a bit nervous too - why exactly are we doing the open coding here?
-
---MCfNU2/ldKjB0tuT
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmOJMVMACgkQJNaLcl1U
-h9Dtkwf/dQzK7cnApqI9SmkAIOQ5X0plaNHltBhmjGmnnGvfP9HGSZ7IJ8JfPn+/
-KNsxtOLIdjGqCwYdxT9bt5E+UbJ2yjdiObxXRyTHbAWm0K80x3J1FmizLtUUjkpV
-7pHystlQj4LEOdAcLGygnHPYGLsyipEvsLnykheTgAm048f5aDneB4DDF14jlYPA
-3Y1RXKpDJwCZUpOBHHj0oex4PBl1h1z9iqGQA/e9YRStRJWCNWgZHMdvRZ+bAORA
-/vuYYUM4BGpJJQc0nnl5zRHTXGnTo8hxM1tytIMWE2Iu5WtjV9rze3AknVFOiudS
-3O5lWJN1Rv8dLrqlpXuWwl7dEGQyJw==
-=XeYp
------END PGP SIGNATURE-----
-
---MCfNU2/ldKjB0tuT--

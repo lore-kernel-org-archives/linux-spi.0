@@ -2,53 +2,52 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 01612C10F31
-	for <linux-spi@archiver.kernel.org>; Mon, 12 Dec 2022 18:08:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B8D6CC2D0CB
+	for <linux-spi@archiver.kernel.org>; Mon, 12 Dec 2022 18:08:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233058AbiLLSIl (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S233258AbiLLSIl (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Mon, 12 Dec 2022 13:08:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34156 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233060AbiLLSIL (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 12 Dec 2022 13:08:11 -0500
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D97F5F7A
-        for <linux-spi@vger.kernel.org>; Mon, 12 Dec 2022 10:07:44 -0800 (PST)
-Received: by mail-wm1-x331.google.com with SMTP id ay40so6225507wmb.2
-        for <linux-spi@vger.kernel.org>; Mon, 12 Dec 2022 10:07:44 -0800 (PST)
+        with ESMTP id S233274AbiLLSIN (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 12 Dec 2022 13:08:13 -0500
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA95221B9
+        for <linux-spi@vger.kernel.org>; Mon, 12 Dec 2022 10:07:42 -0800 (PST)
+Received: by mail-wm1-x334.google.com with SMTP id ay8-20020a05600c1e0800b003d0808d2826so9932766wmb.1
+        for <linux-spi@vger.kernel.org>; Mon, 12 Dec 2022 10:07:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=sifive.com; s=google;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QJpkfVk+rL7x2b/nU0sS6OBZ4oN2z+03SLnndpdgjrU=;
-        b=coay2wl1/s4NDUzaAH2FelFujb/pQqhfoq0CyZRpTKnSSwiKcrzDD+0bA4jNeymiZq
-         G6f/dJWF/DY2krfbefg0qOwxesLZjGG9xa095p/CHtnx54LwSN/fhQvceSupQdQjrTDu
-         n9E3MRzbuQI1d3G16erMlXsPmD/wqVgbaDynUY2jXO9sWteacVm0Jm0htSHkQqurCeEL
-         lbZiNQLFjqXhS98gCH2lw+ifkT5cVUP6awQdApA5uARg4sBrrqBSR03Fq6a2eRVB2vkg
-         X3tUGPhyuNH5knqXkzt3HFg3bzQJ8dgYnSZu5Hp8LcAu7q9DqCXjL5fSNOF1q99kpYSi
-         CuXw==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MsnaVNQZa+bH87IGKD3eNLndnfCgVPoadhiR+NchvNE=;
+        b=MT58fo+ATFwyk3UB1TFDLScBKvBdngb9oD90Zf8vqqvtOuqyd99P5DB/6HSLC/k1FK
+         s8e5ZSr2YOf2rZpDKdRtmujoDYCTHOQmKo3x4IUb+RGcv1OKXogUN0uosW1tbZ77FIvM
+         A3rL97Yu2DvehEAOBsg6ajZcxFsAIl/vJf7ax9MBPYkl6Wb9FVLSBHZeFTXJJfjjRIge
+         dJgSkpAAiD0F+k4D5eNxeMKWlsYbeHcHyOZDjCGuyG+98ahJ6AApDER7xde9xo1jVGbG
+         HHlDmO9vnVgR882LgOKyeYzuqrVBJNXudtHhYAqyp39K10HQRCrg9l3X1qMdFYXG7gA/
+         kHUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QJpkfVk+rL7x2b/nU0sS6OBZ4oN2z+03SLnndpdgjrU=;
-        b=JjbfadHeO1fk4D9n1iDRHnASQ5NhXDF2EnMNhNGlQNQDdR1eW9QlMvItBR7VMgCVp2
-         WfXDlYXY1Wkp1rUCXk2mmr3E5VKj1KPEJsSoGwqnX1CgaC2bV1EfT2ZljxZ/PK6P8it4
-         BMsCRpUdyQaJ3HZry4iin0TryWXsMAte88uvrzejO6hNBzvjX+uSmWZ1EeAtnKx852B9
-         vd5P/X27WLAa46+a9o/911kwE3INbdTpOtgTYiM8YH5rEZHU7W5kBoT7N8vI7d51/i1a
-         CU7vXQWDv4REf0lp7Bp/qPNkQO7rLyl9GUTqDidWLbt3is1p+rB4F2zLM9tCic1Xlgoo
-         pACA==
-X-Gm-Message-State: ANoB5pkqSziccGS38JyKaUXxI8gbxsoARXbVrODXVW2yi59UoIVyMvlm
-        6NlMFmQok5I+xwhkJhw9R5RtKw==
-X-Google-Smtp-Source: AA0mqf5cAskf49A0ST3HZiQkCFRj43GVuLuMuTT6xeW8YU6CvinMbu6M9kKaMkfbKpgF9qujMnRkLw==
-X-Received: by 2002:a7b:c5c4:0:b0:3d1:f234:12cc with SMTP id n4-20020a7bc5c4000000b003d1f23412ccmr12919514wmk.33.1670868463449;
-        Mon, 12 Dec 2022 10:07:43 -0800 (PST)
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MsnaVNQZa+bH87IGKD3eNLndnfCgVPoadhiR+NchvNE=;
+        b=CpF9Dkq6OWLNECPzRiREUaWC7TQfg+VItlq7c/lN8zvR8+g2aFqOv58qlbVBUgE73o
+         Z1GeVscwXNunlWRkipqcFSHf+zSgzfRCsvG/nJ6/D366a6S0PramfRZdTRhBODN8vx/i
+         wYNzF+1N1IPUofpDqHoe7nOl7zCPUUSkaJ3i+hS5PF9Ne8WgjSEgawIgRK/j/ayqwLg4
+         NwKC1+BGDFZmOO6eqolCV/PUKqfqkzZe8771n0lma/Q61B/54cq6Pvxewt7xWPNiQBAS
+         qJimvstdAIhh3oI48PHhcdDU2Wo8iQCZl3o5fsUxTLVwCKi0zgRFp69X7EJVIWABhn8l
+         d7SA==
+X-Gm-Message-State: ANoB5pnMEFR06cqoZPLwroXBsXEJCYV5NtsLoHBgc80UorfM6PXiaWvJ
+        PEjUfFfA07PThg4iwiqXwz13fA==
+X-Google-Smtp-Source: AA0mqf5PnTDqvX0IOnkaB4yW9YsKVl/w+0U3ILEYH/VWAetLNkr+dG+H1b5iE3e9mPj0f87dcdIZhg==
+X-Received: by 2002:a05:600c:1c21:b0:3d0:6ef9:9f2c with SMTP id j33-20020a05600c1c2100b003d06ef99f2cmr13333276wms.16.1670868461400;
+        Mon, 12 Dec 2022 10:07:41 -0800 (PST)
 Received: from localhost.localdomain (host-78-150-37-98.as13285.net. [78.150.37.98])
-        by smtp.gmail.com with ESMTPSA id t123-20020a1c4681000000b003a3170a7af9sm10156808wma.4.2022.12.12.10.07.42
+        by smtp.gmail.com with ESMTPSA id t123-20020a1c4681000000b003a3170a7af9sm10156808wma.4.2022.12.12.10.07.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Dec 2022 10:07:43 -0800 (PST)
+        Mon, 12 Dec 2022 10:07:40 -0800 (PST)
 From:   Sudip Mukherjee <sudip.mukherjee@sifive.com>
 To:     Serge Semin <fancer.lancer@gmail.com>,
         Mark Brown <broonie@kernel.org>,
@@ -58,44 +57,52 @@ Cc:     jude.onyenegecha@sifive.com, ben.dooks@sifive.com,
         jeegar.lakhani@sifive.com, linux-spi@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         Sudip Mukherjee <sudip.mukherjee@sifive.com>
-Subject: [PATCH v2 02/15] spi: dw: update NDF while using enhanced spi mode
-Date:   Mon, 12 Dec 2022 18:07:19 +0000
-Message-Id: <20221212180732.79167-3-sudip.mukherjee@sifive.com>
+Subject: [PATCH v2 00/15] Add support for enhanced SPI for Designware SPI controllers
+Date:   Mon, 12 Dec 2022 18:07:17 +0000
+Message-Id: <20221212180732.79167-1-sudip.mukherjee@sifive.com>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20221212180732.79167-1-sudip.mukherjee@sifive.com>
-References: <20221212180732.79167-1-sudip.mukherjee@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-If the transfer of Transmit only mode is using dual/quad/octal SPI then
-NDF needs to be updated with the number of data frames.
-If the Transmit FIFO goes empty in-between, DWC_ssi masks the serial
-clock and wait for rest of the data until the programmed amount of
-frames are transferred successfully.
+The is v2 of the patch series adding enhanced SPI support. Some Synopsys SSI
+controllers support enhanced SPI which includes Dual mode, Quad mode and
+Octal mode. DWC_ssi includes clock stretching feature in enhanced SPI modes
+which can be used to prevent FIFO underflow and overflow conditions while
+transmitting or receiving the data respectively.
 
-Signed-off-by: Sudip Mukherjee <sudip.mukherjee@sifive.com>
----
- drivers/spi/spi-dw-core.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+This is almost a complete rework based on the review from Serge.
 
-diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
-index 77c23772bb3d9..8c47a4d14b666 100644
---- a/drivers/spi/spi-dw-core.c
-+++ b/drivers/spi/spi-dw-core.c
-@@ -346,7 +346,9 @@ void dw_spi_update_config(struct dw_spi *dws, struct spi_device *spi,
- 	dw_writel(dws, DW_SPI_CTRLR0, cr0);
- 
- 	if (cfg->tmode == DW_SPI_CTRLR0_TMOD_EPROMREAD ||
--	    cfg->tmode == DW_SPI_CTRLR0_TMOD_RO)
-+	    cfg->tmode == DW_SPI_CTRLR0_TMOD_RO ||
-+	    (cfg->tmode == DW_SPI_CTRLR0_TMOD_TO &&
-+	     cfg->spi_frf != DW_SPI_CTRLR0_SPI_FRF_STD_SPI))
- 		dw_writel(dws, DW_SPI_CTRLR1, cfg->ndf ? cfg->ndf - 1 : 0);
- 
- 	/* Note DW APB SSI clock divider doesn't support odd numbers */
+
+-- 
+Regards
+Sudip
+
+Sudip Mukherjee (15):
+  spi: dw: Introduce spi_frf and STD_SPI
+  spi: dw: update NDF while using enhanced spi mode
+  spi: dw: update SPI_CTRLR0 register
+  spi: dw: add check for support of enhanced spi
+  spi: dw: Introduce enhanced mem_op
+  spi: dw: Introduce dual/quad/octal spi
+  spi: dw: send cmd and addr to start the spi transfer
+  spi: dw: update irq setup to use multiple handler
+  spi: dw: use irq handler for enhanced spi
+  spi: dw: Calculate Receive FIFO Threshold Level
+  spi: dw: adjust size of mem_op
+  spi: dw: Add retry for enhanced spi mode
+  spi: dw: detect enhanced spi mode
+  spi: dt-bindings: snps,dw-ahb-ssi: Add generic dw-ahb-ssi version
+  spi: dw: initialize dwc-ssi controller
+
+ .../bindings/spi/snps,dw-apb-ssi.yaml         |   1 +
+ drivers/spi/spi-dw-core.c                     | 347 +++++++++++++++++-
+ drivers/spi/spi-dw-mmio.c                     |   1 +
+ drivers/spi/spi-dw.h                          |  27 ++
+ 4 files changed, 364 insertions(+), 12 deletions(-)
+
 -- 
 2.30.2
 

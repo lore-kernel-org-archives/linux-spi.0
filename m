@@ -2,53 +2,53 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B134CC10F1D
-	for <linux-spi@archiver.kernel.org>; Mon, 12 Dec 2022 18:09:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C8DB4C4332F
+	for <linux-spi@archiver.kernel.org>; Mon, 12 Dec 2022 18:09:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233411AbiLLSJE (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 12 Dec 2022 13:09:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34296 "EHLO
+        id S233133AbiLLSJG (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 12 Dec 2022 13:09:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233290AbiLLSIT (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 12 Dec 2022 13:08:19 -0500
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 346FB273B
-        for <linux-spi@vger.kernel.org>; Mon, 12 Dec 2022 10:07:51 -0800 (PST)
-Received: by mail-wm1-x335.google.com with SMTP id r7-20020a1c4407000000b003d1e906ca23so4745944wma.3
-        for <linux-spi@vger.kernel.org>; Mon, 12 Dec 2022 10:07:51 -0800 (PST)
+        with ESMTP id S233286AbiLLSIS (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 12 Dec 2022 13:08:18 -0500
+Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7369F2728
+        for <linux-spi@vger.kernel.org>; Mon, 12 Dec 2022 10:07:48 -0800 (PST)
+Received: by mail-wm1-x330.google.com with SMTP id h8-20020a1c2108000000b003d1efd60b65so5945836wmh.0
+        for <linux-spi@vger.kernel.org>; Mon, 12 Dec 2022 10:07:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=sifive.com; s=google;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=pQuE2K78uUlvCMGWFDZZHN9GOwoDWtlsbedBiWwRDfg=;
-        b=jaHLnsIYEZXfnaU6a2ldMiE275sZuX9Wbq117I2Jw43JPyMxu5yo68Uj7Yy4ycmJYq
-         PUU+LkMNy+SF81zAOHaS+BQhLkjgH+f+SfO+9q8ueaaMTUl1GJqJBJ3NhM8qojWlSrp7
-         MVoQtDGxSPWSWS30rW5bo4HsLRBgFJySBBdN/m9tNI/rX8f81dhAYmXSAh0rVY9wIwzY
-         eil7uJupKi3DZb/is/7NEAJhn3eHqL9jQEutvZ9PBfwjzd2XQlpQTLCJmCgZlvsCwhZ1
-         v71KA5thTpBdW0xq+yO5YvO+xAuZR9nkEFA+djLJjQXonSxzmxygnS//vyON6nsl62Vp
-         298g==
+        bh=7rbzmysLo8UW53GKP6EF+15VfNqhz3A+mC6FctnQIOA=;
+        b=gI2UE7AismxqoIKynMFVv4fJQTIarPf1JhZ2jt3s+S8eY2SboNYAkPEtv5xZM/hLMp
+         RT2hjAWlFKl8SmBbkImJgUalzAdDnu6Ygzwaw2KLTqgi7O5NzRbiVWsnrl2NkAKeo94D
+         Z2fG4eKLJsBeJ5U3DZWrEgs+rmvVmKQ8yMnvtVIpCeR/vMZA7afzxpBis/mm0DyLJH/5
+         hivFHl/yLjHdKuOxOh8TpFBCj++NcXwWo9IqFc9Ovcvi4uSt1JuHq5L1/5/hrY/9j5wK
+         4Po4rJKbT6vvANrzNQ5SvcapGFVLVK72tooGeoEL/+Uk+szlAfvd/5YYesICfsc1j0fu
+         Wt9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=pQuE2K78uUlvCMGWFDZZHN9GOwoDWtlsbedBiWwRDfg=;
-        b=XBSW7093zZFeJsUWCmrCuFPDqDMsGqWahImEuMo06ON52qwUDj8CgaVziz5HJjG8yz
-         VTMgztvq9Nv1y8EyJALtVt+vZAYwALnK0ptCZW+dPnskpb6Ik+eygsk57DBmYOTPBgrr
-         S8ds3oJTyceGLBOSJwe1zQVZAj/xJCWz1ULNxt9pJHP3kofpB3cak08OafyVPKEp/La2
-         UDgjodt8AYwHe8EnSyVf8Nq6we5oFaoBRRvJB6BjOLF6PLj2GLQIZKSLznjZrpl/1moR
-         Ic7PSWxtYnBj/QFd1ikDXItI7o9PrvMuDm1UxY71Y3y4UjlUeWt71iEuQ38WPf+VGcao
-         +NZA==
-X-Gm-Message-State: ANoB5pn37UuK1Yt0mQlrg4x43yjIa7JzYGCPPHeYvb3zM2qLPRg93wdg
-        6cGpm09ZwvrQz36EpnZELqbwGg==
-X-Google-Smtp-Source: AA0mqf4YkjQSyvUPzCW5WFKTMeX06dUxr3FM0c1i93DR0EFe1wd0BuRBczuZcAm/hzFgM0p3opDFWg==
-X-Received: by 2002:a05:600c:1c90:b0:3d2:274d:be7c with SMTP id k16-20020a05600c1c9000b003d2274dbe7cmr3040697wms.19.1670868470682;
-        Mon, 12 Dec 2022 10:07:50 -0800 (PST)
+        bh=7rbzmysLo8UW53GKP6EF+15VfNqhz3A+mC6FctnQIOA=;
+        b=YA28uXSVWjuI2Y+8DwShwq6r1DY/Q0XZTCytAhvKWYwGlZsgbGqw3JU+tGqnD5sFRA
+         KcPCIKgRI6m15ong6u7OEj8+v+JLmQf2z4ufnp76ipK6oxdRakGvTBest4pNHBGy3DMy
+         JOyXpi0fu7Y1vLsOp6aQsJMNI8U1il736Nx5YeeoS16E8Lhh+3mOhaTgY1G5LObeiYAX
+         dhRXAbHArRGRJ2vwNNRukmVCApK094xRsfUuLmcjYG54Q3QrR23idqbPF0zCXqS/nmo+
+         3cF1Xi+yJdcrRXuWRRW7SoavB5ziTFZqsPWOBKq2Wd+4UkqMuPcl5kDZYf69XPB4xGfr
+         8Chg==
+X-Gm-Message-State: ANoB5pnux3+jZ6i5CNkKMXDP97l7f1Rdc8/6zQC97cVrqITwcCyRcquo
+        VfMXnECW5TDntHFSsJzChPgtbA==
+X-Google-Smtp-Source: AA0mqf69G02dnbEggUXKEcvznXMXC3hHUQQD/NllSrd1eNaagBS4QYElw7nwJkrsHdJNx/3L8eo+fw==
+X-Received: by 2002:a05:600c:5386:b0:3c6:e63d:b893 with SMTP id hg6-20020a05600c538600b003c6e63db893mr13164832wmb.2.1670868467143;
+        Mon, 12 Dec 2022 10:07:47 -0800 (PST)
 Received: from localhost.localdomain (host-78-150-37-98.as13285.net. [78.150.37.98])
-        by smtp.gmail.com with ESMTPSA id t123-20020a1c4681000000b003a3170a7af9sm10156808wma.4.2022.12.12.10.07.49
+        by smtp.gmail.com with ESMTPSA id t123-20020a1c4681000000b003a3170a7af9sm10156808wma.4.2022.12.12.10.07.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Dec 2022 10:07:50 -0800 (PST)
+        Mon, 12 Dec 2022 10:07:46 -0800 (PST)
 From:   Sudip Mukherjee <sudip.mukherjee@sifive.com>
 To:     Serge Semin <fancer.lancer@gmail.com>,
         Mark Brown <broonie@kernel.org>,
@@ -58,9 +58,9 @@ Cc:     jude.onyenegecha@sifive.com, ben.dooks@sifive.com,
         jeegar.lakhani@sifive.com, linux-spi@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         Sudip Mukherjee <sudip.mukherjee@sifive.com>
-Subject: [PATCH v2 10/15] spi: dw: Calculate Receive FIFO Threshold Level
-Date:   Mon, 12 Dec 2022 18:07:27 +0000
-Message-Id: <20221212180732.79167-11-sudip.mukherjee@sifive.com>
+Subject: [PATCH v2 06/15] spi: dw: Introduce dual/quad/octal spi
+Date:   Mon, 12 Dec 2022 18:07:23 +0000
+Message-Id: <20221212180732.79167-7-sudip.mukherjee@sifive.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20221212180732.79167-1-sudip.mukherjee@sifive.com>
 References: <20221212180732.79167-1-sudip.mukherjee@sifive.com>
@@ -70,33 +70,109 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-In enhanced mode we need to calculate RXFTLR based on the length of data
-we are expecting to receive or the fifo length.
+If the spi transfer is using dual/quad/octal spi mode, then we need to
+update the SPI_CTRLR0 register. The SPI_CTRLR0 register will be updated
+in dw_spi_update_config() via the values in dw_spi_cfg.
 
 Signed-off-by: Sudip Mukherjee <sudip.mukherjee@sifive.com>
 ---
- drivers/spi/spi-dw-core.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+
+Note: DW_SPI_SPI_CTRLR0_INST_L_INST_L16 will not work yet as
+spi_mem_default_supports_op() checks for op->cmd.nbytes != 1.
+
+ drivers/spi/spi-dw-core.c | 46 +++++++++++++++++++++++++++++++++++++++
+ drivers/spi/spi-dw.h      |  9 ++++++++
+ 2 files changed, 55 insertions(+)
 
 diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
-index 10d453228368f..75f5ce5f377ca 100644
+index 89438ae2df17d..06169aa3f37bf 100644
 --- a/drivers/spi/spi-dw-core.c
 +++ b/drivers/spi/spi-dw-core.c
-@@ -428,6 +428,14 @@ static void dw_spi_irq_setup(struct dw_spi *dws,
- 	 */
- 	level = min_t(u16, dws->fifo_len / 2, dws->tx_len);
- 	dw_writel(dws, DW_SPI_TXFTLR, level);
+@@ -836,10 +836,56 @@ static int dw_spi_exec_enh_mem_op(struct spi_mem *mem, const struct spi_mem_op *
+ {
+ 	struct spi_controller *ctlr = mem->spi->controller;
+ 	struct dw_spi *dws = spi_controller_get_devdata(ctlr);
++	struct dw_spi_cfg cfg;
 +
-+	/*
-+	 * In enhanced mode if we are reading then tx_len is 0 as we
-+	 * have nothing to transmit. Calculate DW_SPI_RXFTLR with
-+	 * rx_len.
-+	 */
-+	if (t_handler == dw_spi_enh_handler)
-+		level = min_t(u16, dws->fifo_len / 2, dws->rx_len);
- 	dw_writel(dws, DW_SPI_RXFTLR, level - 1);
++	switch (op->data.buswidth) {
++	case 2:
++		cfg.spi_frf = DW_SPI_CTRLR0_SPI_FRF_DUAL_SPI;
++		break;
++	case 4:
++		cfg.spi_frf = DW_SPI_CTRLR0_SPI_FRF_QUAD_SPI;
++		break;
++	case 8:
++		cfg.spi_frf = DW_SPI_CTRLR0_SPI_FRF_OCT_SPI;
++		break;
++	default:
++		return dw_spi_exec_mem_op(mem, op);
++	}
  
- 	dws->transfer_handler = t_handler;
+ 	/* Collect cmd and addr into a single buffer */
+ 	dw_spi_init_enh_mem_buf(dws, op);
+ 
++	cfg.dfs = 8;
++	cfg.freq = clamp(mem->spi->max_speed_hz, 0U, dws->max_mem_freq);
++	cfg.ndf = op->data.nbytes;
++	if (op->data.dir == SPI_MEM_DATA_IN)
++		cfg.tmode = DW_SPI_CTRLR0_TMOD_RO;
++	else
++		cfg.tmode = DW_SPI_CTRLR0_TMOD_TO;
++	if (op->data.buswidth == op->addr.buswidth &&
++	    op->data.buswidth == op->cmd.buswidth)
++		cfg.trans_t = DW_SPI_SPI_CTRLR0_TRANS_TYPE_TT2;
++	else if (op->data.buswidth == op->addr.buswidth)
++		cfg.trans_t = DW_SPI_SPI_CTRLR0_TRANS_TYPE_TT1;
++	else
++		cfg.trans_t = DW_SPI_SPI_CTRLR0_TRANS_TYPE_TT0;
++
++	cfg.addr_l = clamp(op->addr.nbytes * 2, 0, 0xf);
++	if (op->cmd.nbytes > 1)
++		cfg.inst_l = DW_SPI_SPI_CTRLR0_INST_L_INST_L16;
++	else if (op->cmd.nbytes == 1)
++		cfg.inst_l = DW_SPI_SPI_CTRLR0_INST_L_INST_L8;
++	else
++		cfg.inst_l = DW_SPI_SPI_CTRLR0_INST_L_INST_L0;
++
++	cfg.wait_c = (op->dummy.nbytes * (BITS_PER_BYTE / op->dummy.buswidth));
++
++	dw_spi_enable_chip(dws, 0);
++
++	dw_spi_update_config(dws, mem->spi, &cfg);
++
++	dw_spi_enable_chip(dws, 1);
++
+ 	return 0;
+ }
+ 
+diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
+index 327d037bdb10e..494b830ad1026 100644
+--- a/drivers/spi/spi-dw.h
++++ b/drivers/spi/spi-dw.h
+@@ -101,6 +101,9 @@
+ #define DW_HSSI_CTRLR0_SPI_FRF_MASK		GENMASK(23, 22)
+ #define DW_PSSI_CTRLR0_SPI_FRF_MASK		GENMASK(22, 21)
+ #define DW_SPI_CTRLR0_SPI_FRF_STD_SPI		0x0
++#define DW_SPI_CTRLR0_SPI_FRF_DUAL_SPI		0x1
++#define DW_SPI_CTRLR0_SPI_FRF_QUAD_SPI		0x2
++#define DW_SPI_CTRLR0_SPI_FRF_OCT_SPI		0x3
+ 
+ /* Bit fields in CTRLR1 */
+ #define DW_SPI_NDF_MASK				GENMASK(15, 0)
+@@ -132,7 +135,13 @@
+ #define DW_SPI_SPI_CTRLR0_CLK_STRETCH_EN	BIT(30)
+ #define DW_SPI_SPI_CTRLR0_WAIT_CYCLE_MASK	GENMASK(15, 11)
+ #define DW_SPI_SPI_CTRLR0_INST_L_MASK		GENMASK(9, 8)
++#define DW_SPI_SPI_CTRLR0_INST_L_INST_L0	0x0
++#define DW_SPI_SPI_CTRLR0_INST_L_INST_L8	0x2
++#define DW_SPI_SPI_CTRLR0_INST_L_INST_L16	0x3
+ #define DW_SPI_SPI_CTRLR0_ADDR_L_MASK		GENMASK(5, 2)
++#define DW_SPI_SPI_CTRLR0_TRANS_TYPE_TT0	0x0
++#define DW_SPI_SPI_CTRLR0_TRANS_TYPE_TT1	0x1
++#define DW_SPI_SPI_CTRLR0_TRANS_TYPE_TT2	0x2
+ 
+ /* Mem/DMA operations helpers */
+ #define DW_SPI_WAIT_RETRIES			5
 -- 
 2.30.2
 

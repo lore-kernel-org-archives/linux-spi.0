@@ -2,53 +2,53 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7D7A8C00145
-	for <linux-spi@archiver.kernel.org>; Mon, 12 Dec 2022 18:09:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 806A7C4332F
+	for <linux-spi@archiver.kernel.org>; Mon, 12 Dec 2022 18:09:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233064AbiLLSJ3 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 12 Dec 2022 13:09:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34380 "EHLO
+        id S233149AbiLLSJf (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 12 Dec 2022 13:09:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233304AbiLLSIX (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 12 Dec 2022 13:08:23 -0500
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2566063B1
-        for <linux-spi@vger.kernel.org>; Mon, 12 Dec 2022 10:07:52 -0800 (PST)
-Received: by mail-wm1-x331.google.com with SMTP id k22-20020a05600c1c9600b003d1ee3a6289so5940943wms.2
-        for <linux-spi@vger.kernel.org>; Mon, 12 Dec 2022 10:07:52 -0800 (PST)
+        with ESMTP id S233308AbiLLSIY (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 12 Dec 2022 13:08:24 -0500
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4F0663E7
+        for <linux-spi@vger.kernel.org>; Mon, 12 Dec 2022 10:07:53 -0800 (PST)
+Received: by mail-wm1-x32c.google.com with SMTP id p13-20020a05600c468d00b003cf8859ed1bso5949515wmo.1
+        for <linux-spi@vger.kernel.org>; Mon, 12 Dec 2022 10:07:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=sifive.com; s=google;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mtPRqcnGnMJu3Lhjzyyt2cKQspWuIhSj33OJnrwCIF0=;
-        b=dic+olsWhbv9Bdud+svAQHzZHug2lLj+vz7hVn19EyP7/8WryNdN+/Ac8gMCuGBZkU
-         uYZwRo2TdqRr2c8T+9GTVOsdjr0TIK2krifSwPPBfojcXy38wrxCPtFgvLg/NfY76g7t
-         8e/XIrRELDolos2n0GIeUN65WLoTfz2BkcpPlxs4fH3aWc+6fg+1UfhgDt9k/sQzXX/3
-         qDcadSlnFCH7ygbGyjKNYFi0sxiqgIedHIgUjC5yA/Lw30AVOO8CAwWFHHIdo+IZigWT
-         xbofJbDupAmmm8nls29Ol+1RZQDApqRklwcZZfKdp63b9my0f4ojm9npEEgof4KOHjHi
-         lwzg==
+        bh=yV6+oiSdPjciFRPPCXlaaf05DYc0wxneaaODGSgK2uE=;
+        b=Y22bKRAfcHnmzs2KZUi6jIstXPxhHBZWZQH5o5L6ddrFcZLMEHUAdwjRJytIKvwvf0
+         3juKw7qaULaSH9BmLJJzWklC1rQP1dNXnzyCResSGkYz1io1zyQiBiUZDJCCoC4b4V1e
+         BReayyJGtxjvP7ykcbjzzl1x33zjDHl1nfqybysn2Bi8Qfrr4kLnZoTp+8yb++Y28ONd
+         MsJ9YW3nKTUTKr8llNSNoR4EhT8sUUhuOAmH+9U8CxFxH8oY/99G6qsORDUUfXtAAVQt
+         WT6ZZS8CnZv4V5NHWb3atkwBsW7sbnLR8H3LqZLOOF1NDmSvcDR3tBRUVtDp2xLcGyKh
+         FBcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=mtPRqcnGnMJu3Lhjzyyt2cKQspWuIhSj33OJnrwCIF0=;
-        b=3fG1O/A3Rig7/NIrqXWghDYW+B0k/duJxIEdFf7JlLmnnC7/U5Bv8aihX3zdcfWni7
-         aAGRnBtLoq8OzSHx6HEjomLdoIcV/JOYDzrZ+2dvlOZyVT2Sc2usAtDNrOaVBYuNiEf3
-         UHKHFkioHPSbOgTnFEHwKiITfotpcYyQCKo8NOqucdfwD9HkXK0HMxg/BilEY9KTE9EX
-         PlWEksVUlVQ0gLi0C/azeJUC2az47/WSJI54zQrxLHE4qJRV9O9ewsXaK0Dq7OBORyQs
-         fgoe75YXrc5jgC6WS3oAI74ysmhr6VuM+jYMPI+eFbmy1G9lyNnSgu6TV7r4W98i+g0A
-         WF9w==
-X-Gm-Message-State: ANoB5plG8rgdarpc6RBSEDxvPub06gfTHV5rsv83SKguyztmDnPwLSwa
-        wd9++bAIA1h+mKYHFDLUWEXEMA==
-X-Google-Smtp-Source: AA0mqf6hJ3IGjFjKWW73Q+nkmeBNJDk+Q5JFDed1oLgVWBz52c2xQhXA5zTJWbzF7FiPmgqIn8pC9w==
-X-Received: by 2002:a05:600c:4147:b0:3d2:2904:dfe9 with SMTP id h7-20020a05600c414700b003d22904dfe9mr2396260wmm.21.1670868471634;
-        Mon, 12 Dec 2022 10:07:51 -0800 (PST)
+        bh=yV6+oiSdPjciFRPPCXlaaf05DYc0wxneaaODGSgK2uE=;
+        b=Hp1BMZuiB8hbEtYBvICJ0vbcaQ4G6bC/egac2/A4hlI1m6kFtfy6fO/cD/QlWX+szr
+         RvCXkv51qJ9ZxXiC2rzMCdKLil1MZXnns7KN4wgSQcbDEKxbIX7BN6cUWq5wQBFEAJ+C
+         izvneiO1HHEGfKrIXQAy1L96bq1sNBidkX/kffqty2eh+V85aYEvDLtspuu8YE9lIWJC
+         68K+oyMeoHC5g5p3WgOT861LUF65ssFzc/wpb35RZiBmot9s/j8INTfZ3rxTI3pCX8gx
+         3oiKT3hqIOqI7tbbVCJJgb6stq/fUuPF5Oq0hy3oZWdSCyHVxASYFbHKhehmYdVGbVyw
+         YrLw==
+X-Gm-Message-State: ANoB5pmExh8IuzwkC9E07ZP7O5oyEUIzOKOGnwAHH3xog6jjnSWURvNN
+        Z2qickBCdzHpU7ATWB6CKR7CQA==
+X-Google-Smtp-Source: AA0mqf63xZP9eTl0bysLtgyG3g0nG0GhxM23IddzbnhHOhlvfVKIYf4FEI66D1D0svRZXgN1mXFdcg==
+X-Received: by 2002:a05:600c:3508:b0:3cf:b73f:bf8f with SMTP id h8-20020a05600c350800b003cfb73fbf8fmr13614720wmq.7.1670868473356;
+        Mon, 12 Dec 2022 10:07:53 -0800 (PST)
 Received: from localhost.localdomain (host-78-150-37-98.as13285.net. [78.150.37.98])
-        by smtp.gmail.com with ESMTPSA id t123-20020a1c4681000000b003a3170a7af9sm10156808wma.4.2022.12.12.10.07.50
+        by smtp.gmail.com with ESMTPSA id t123-20020a1c4681000000b003a3170a7af9sm10156808wma.4.2022.12.12.10.07.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Dec 2022 10:07:51 -0800 (PST)
+        Mon, 12 Dec 2022 10:07:53 -0800 (PST)
 From:   Sudip Mukherjee <sudip.mukherjee@sifive.com>
 To:     Serge Semin <fancer.lancer@gmail.com>,
         Mark Brown <broonie@kernel.org>,
@@ -58,9 +58,9 @@ Cc:     jude.onyenegecha@sifive.com, ben.dooks@sifive.com,
         jeegar.lakhani@sifive.com, linux-spi@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         Sudip Mukherjee <sudip.mukherjee@sifive.com>
-Subject: [PATCH v2 11/15] spi: dw: adjust size of mem_op
-Date:   Mon, 12 Dec 2022 18:07:28 +0000
-Message-Id: <20221212180732.79167-12-sudip.mukherjee@sifive.com>
+Subject: [PATCH v2 13/15] spi: dw: detect enhanced spi mode
+Date:   Mon, 12 Dec 2022 18:07:30 +0000
+Message-Id: <20221212180732.79167-14-sudip.mukherjee@sifive.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20221212180732.79167-1-sudip.mukherjee@sifive.com>
 References: <20221212180732.79167-1-sudip.mukherjee@sifive.com>
@@ -70,48 +70,104 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-In enhanced mode adjust the size of the data that can be sent or received
-as this will then be used to set the NDF.
+All the SSI controllers supporting enhanced spi modes might not support
+all the three dual or quad or octal modes. Detect the modes that are
+supported and finally enable the DW_SPI_CAP_EMODE capability which will
+start using all the enhanced spi functions that has been added.
 
 Signed-off-by: Sudip Mukherjee <sudip.mukherjee@sifive.com>
 ---
- drivers/spi/spi-dw-core.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/spi/spi-dw-core.c | 68 +++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 66 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
-index 75f5ce5f377ca..dff7b419af304 100644
+index cef56acd8d8fd..9e806d5878beb 100644
 --- a/drivers/spi/spi-dw-core.c
 +++ b/drivers/spi/spi-dw-core.c
-@@ -546,6 +546,13 @@ static void dw_spi_handle_err(struct spi_controller *master,
- 	dw_spi_reset_chip(dws);
+@@ -1143,6 +1143,69 @@ static void dw_spi_hw_init(struct device *dev, struct dw_spi *dws)
+ 		dw_writel(dws, DW_SPI_CS_OVERRIDE, 0xF);
  }
  
-+static int dw_spi_adjust_enh_mem_op_size(struct spi_mem *mem, struct spi_mem_op *op)
++static u16 detect_enh_mode(struct dw_spi *dws)
 +{
-+	op->data.nbytes = clamp_val(op->data.nbytes, 0, DW_SPI_NDF_MASK + 1);
++	u16 mode = 0;
++	u32 tmp_spi_ctrlr0, tmp_ctrlr0, tmpdual, tmpquad, tmpoct;
 +
-+	return 0;
++	if (dw_spi_ver_is_ge(dws, HSSI, 103A)) {
++		tmpdual = FIELD_PREP(DW_HSSI_CTRLR0_SPI_FRF_MASK,
++				     DW_SPI_CTRLR0_SPI_FRF_DUAL_SPI);
++		tmpquad = FIELD_PREP(DW_HSSI_CTRLR0_SPI_FRF_MASK,
++				     DW_SPI_CTRLR0_SPI_FRF_QUAD_SPI);
++		tmpoct = FIELD_PREP(DW_HSSI_CTRLR0_SPI_FRF_MASK,
++				    DW_SPI_CTRLR0_SPI_FRF_OCT_SPI);
++	} else if (dw_spi_ver_is_ge(dws, PSSI, 400A)) {
++		tmpdual = FIELD_PREP(DW_PSSI_CTRLR0_SPI_FRF_MASK,
++				     DW_SPI_CTRLR0_SPI_FRF_DUAL_SPI);
++		tmpquad = FIELD_PREP(DW_PSSI_CTRLR0_SPI_FRF_MASK,
++				     DW_SPI_CTRLR0_SPI_FRF_QUAD_SPI);
++		tmpoct = FIELD_PREP(DW_PSSI_CTRLR0_SPI_FRF_MASK,
++				    DW_SPI_CTRLR0_SPI_FRF_OCT_SPI);
++	} else {
++		return DW_SPI_CTRLR0_SPI_FRF_STD_SPI;
++	}
++
++	tmp_ctrlr0 = dw_readl(dws, DW_SPI_CTRLR0);
++	tmp_spi_ctrlr0 = dw_readl(dws, DW_SPI_SPI_CTRLR0);
++	dw_spi_enable_chip(dws, 0);
++
++	/* test clock stretching */
++	dw_writel(dws, DW_SPI_SPI_CTRLR0, DW_SPI_SPI_CTRLR0_CLK_STRETCH_EN);
++	if ((DW_SPI_SPI_CTRLR0_CLK_STRETCH_EN & dw_readl(dws, DW_SPI_SPI_CTRLR0)) !=
++	    DW_SPI_SPI_CTRLR0_CLK_STRETCH_EN)
++		/*
++		 * If clock stretching is not enabled then do not use
++		 * enhanced mode.
++		 */
++		goto disable_enh;
++
++	/* test dual mode */
++	dw_writel(dws, DW_SPI_CTRLR0, tmpdual);
++	if ((tmpdual & dw_readl(dws, DW_SPI_CTRLR0)) == tmpdual)
++		mode |= SPI_TX_DUAL | SPI_RX_DUAL;
++
++	/* test quad mode */
++	dw_writel(dws, DW_SPI_CTRLR0, tmpquad);
++	if ((tmpquad & dw_readl(dws, DW_SPI_CTRLR0)) == tmpquad)
++		mode |= SPI_TX_QUAD | SPI_RX_QUAD;
++
++	/* test octal mode */
++	dw_writel(dws, DW_SPI_CTRLR0, tmpoct);
++	if ((tmpoct & dw_readl(dws, DW_SPI_CTRLR0)) == tmpoct)
++		mode |= SPI_TX_OCTAL | SPI_RX_OCTAL;
++
++	if (mode)
++		dws->caps |= DW_SPI_CAP_EMODE;
++
++disable_enh:
++	dw_writel(dws, DW_SPI_CTRLR0, tmp_ctrlr0);
++	dw_writel(dws, DW_SPI_SPI_CTRLR0, tmp_spi_ctrlr0);
++	dw_spi_enable_chip(dws, 1);
++
++	return mode;
 +}
 +
- static int dw_spi_adjust_mem_op_size(struct spi_mem *mem, struct spi_mem_op *op)
+ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
  {
- 	if (op->data.dir == SPI_MEM_DATA_IN)
-@@ -997,13 +1004,14 @@ static void dw_spi_init_mem_ops(struct dw_spi *dws)
- {
- 	if (!dws->mem_ops.exec_op && !(dws->caps & DW_SPI_CAP_CS_OVERRIDE) &&
- 	    !dws->set_cs) {
--		dws->mem_ops.adjust_op_size = dw_spi_adjust_mem_op_size;
- 		if (dws->caps & DW_SPI_CAP_EMODE) {
- 			dws->mem_ops.exec_op = dw_spi_exec_enh_mem_op;
- 			dws->mem_ops.supports_op = dw_spi_supports_enh_mem_op;
-+			dws->mem_ops.adjust_op_size = dw_spi_adjust_enh_mem_op_size;
- 		} else {
- 			dws->mem_ops.exec_op = dw_spi_exec_mem_op;
- 			dws->mem_ops.supports_op = dw_spi_supports_mem_op;
-+			dws->mem_ops.adjust_op_size = dw_spi_adjust_mem_op_size;
- 		}
- 		if (!dws->max_mem_freq)
- 			dws->max_mem_freq = dws->max_freq;
+ 	struct spi_controller *master;
+@@ -1172,10 +1235,11 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
+ 		goto err_free_master;
+ 	}
+ 
+-	dw_spi_init_mem_ops(dws);
+-
+ 	master->use_gpio_descriptors = true;
+ 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LOOP;
++	master->mode_bits |= detect_enh_mode(dws);
++	dw_spi_init_mem_ops(dws);
++
+ 	if (dws->caps & DW_SPI_CAP_DFS32)
+ 		master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
+ 	else
 -- 
 2.30.2
 

@@ -2,122 +2,96 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2309DC4332F
-	for <linux-spi@archiver.kernel.org>; Tue, 13 Dec 2022 14:46:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1BEB9C10F1B
+	for <linux-spi@archiver.kernel.org>; Tue, 13 Dec 2022 16:32:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234568AbiLMOqU (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 13 Dec 2022 09:46:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33110 "EHLO
+        id S235691AbiLMQcN (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 13 Dec 2022 11:32:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235501AbiLMOqQ (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 13 Dec 2022 09:46:16 -0500
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50188F39;
-        Tue, 13 Dec 2022 06:46:14 -0800 (PST)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2BDDZLYf006070;
-        Tue, 13 Dec 2022 14:46:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=EGe9MlTvJ2aLFex6rOiIFHMOwOeimXkvfudSdAnLD/w=;
- b=QpJDUxGkHJTTBdPWkFn0njkCmMd/5C9Rdw4FcvdCXbSmUhbLrM2d1CrRouckzUvrURA6
- VYVAxKRmyXtO934EAMC7LHVzvmS7WhnolT7adC3JqP6s4KzJe51dLiYyyqOmeW3B2MN2
- 4l0F+r1ud/yOpSHQ9iLFKfmTEyUckDnJGTOqPxIX4qb9lZ/AdZLuH+TqbYNz4sFmbIo4
- izbxtiMJf+KQFnlypTmQGDgkymofimh5f+iQyYCa/CUreFWItyj7p4PGnDEMKS95wHfC
- GiKbudaaob4F1yKEXFjcvKZo527AlC6wA4hrkVQgR4uDO4P58bvZ7TP9uZK/joCCM6uB Tw== 
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3meq7qguua-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 13 Dec 2022 14:46:06 +0000
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2BDEk6NO022048
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 13 Dec 2022 14:46:06 GMT
-Received: from [10.216.48.1] (10.80.80.8) by nalasex01b.na.qualcomm.com
- (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Tue, 13 Dec
- 2022 06:46:01 -0800
-Message-ID: <91663103-b675-5b68-1cc7-21bce4579b9e@quicinc.com>
-Date:   Tue, 13 Dec 2022 20:15:58 +0530
+        with ESMTP id S234825AbiLMQcL (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 13 Dec 2022 11:32:11 -0500
+Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B1B1E0CC;
+        Tue, 13 Dec 2022 08:32:11 -0800 (PST)
+Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-1443a16b71cso13160187fac.13;
+        Tue, 13 Dec 2022 08:32:11 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KDwF6SAQDM6fjUwYm0h9OujqGNr6BVsL3CNkq7crNpQ=;
+        b=PYn+JHcYO67U6bbHyPCR90MJSlBXCe+WdKESZq2JWnyv09kocBBhXizNh5SwHAxWW1
+         V/+l3cTztQ1F/hEhgLnEDFL40qRmcT4il44jc9QD1Qz4zHPHUuYaeAt0/PrAbm5cZmoB
+         seum2OXsWQmA6dR/pFMje2X3jfJCxw2w5OCkwkWHuy3AI62VNwWf4SdSXdLEnFof7fbw
+         qbVxVEUj2gLgG/HL8y1vSZz9KGiq/ybWPV3b/vvqPoDtzpBgxwLDOdfRtxisgMeNJ4W/
+         HZ6odr4D4aj5WlEYj7iA55UmTd79YGsX5vYIalVdseWVCt2aM5HyK5XbZaWrjx36MpzV
+         LX6w==
+X-Gm-Message-State: ANoB5pnRYxnyiNMN73OFeZ1OhIQldeicnZlCfBIJn4L1WsQp8H/5vGiI
+        ObcSS66T5HvQXNNFswgPWvHMyvdn3A==
+X-Google-Smtp-Source: AA0mqf5XQGRkKkepgjknMVf6SyMWLo7pqvvDq3ZLDIZ41+F9JgfxY50LFm+xmkKYlSiHWgs3OcDezw==
+X-Received: by 2002:a05:6870:4c8b:b0:14b:7e4f:f0ca with SMTP id pi11-20020a0568704c8b00b0014b7e4ff0camr545587oab.31.1670949130248;
+        Tue, 13 Dec 2022 08:32:10 -0800 (PST)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id f43-20020a056871072b00b00144bb1013e6sm1596271oap.4.2022.12.13.08.32.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Dec 2022 08:32:09 -0800 (PST)
+Received: (nullmailer pid 2010757 invoked by uid 1000);
+        Tue, 13 Dec 2022 16:32:09 -0000
+Date:   Tue, 13 Dec 2022 10:32:09 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Sudip Mukherjee <sudip.mukherjee@sifive.com>
+Cc:     Serge Semin <fancer.lancer@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        jude.onyenegecha@sifive.com, ben.dooks@sifive.com,
+        jeegar.lakhani@sifive.com, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 14/15] spi: dt-bindings: snps,dw-ahb-ssi: Add generic
+ dw-ahb-ssi version
+Message-ID: <20221213163209.GA1684072-robh@kernel.org>
+References: <20221212180732.79167-1-sudip.mukherjee@sifive.com>
+ <20221212180732.79167-15-sudip.mukherjee@sifive.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.0
-Subject: Re: [PATCH 4/4] arm64: dts: qcom: sc8280xp: add missing spi nodes
-Content-Language: en-US
-To:     Brian Masney <bmasney@redhat.com>,
-        Javier Martinez Canillas <javierm@redhat.com>
-CC:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Mark Brown <broonie@kernel.org>, <andersson@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <konrad.dybcio@linaro.org>,
-        <robh+dt@kernel.org>, <johan+linaro@kernel.org>,
-        <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <ahalaney@redhat.com>,
-        <echanude@redhat.com>, <linux-spi@vger.kernel.org>
-References: <20221212182314.1902632-1-bmasney@redhat.com>
- <20221212182314.1902632-5-bmasney@redhat.com>
- <c1c7b1eb-08e7-2ba5-d89a-e0be8f76fd69@quicinc.com> <Y5hvlX35nr8xQKEd@x1>
- <77c29d8c-34b3-f508-26bf-22520ccc1f2a@linaro.org>
- <13238048-f07c-3e8d-f170-5330ce94767c@redhat.com> <Y5iN48rA899u1++7@x1>
-From:   Shazad Hussain <quic_shazhuss@quicinc.com>
-In-Reply-To: <Y5iN48rA899u1++7@x1>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: -pg7YRXxxA3ON0XKPz1esOtYT0GSG9Vy
-X-Proofpoint-ORIG-GUID: -pg7YRXxxA3ON0XKPz1esOtYT0GSG9Vy
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-12-13_03,2022-12-13_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
- phishscore=0 lowpriorityscore=0 spamscore=0 mlxlogscore=747 suspectscore=0
- adultscore=0 priorityscore=1501 clxscore=1011 bulkscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2210170000
- definitions=main-2212130131
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221212180732.79167-15-sudip.mukherjee@sifive.com>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+On Mon, Dec 12, 2022 at 06:07:31PM +0000, Sudip Mukherjee wrote:
+> Add new snps,dw-ahb-ssi version to the bindings.
 
+Yes, I can see that in the diff. Tell me something useful here. Why 
+do we need a new compatible? What does this compatible imply in the 
+h/w that the existing ones don't. How do I know which compatible to 
+use?
 
-On 12/13/2022 8:06 PM, Brian Masney wrote:
-> On Tue, Dec 13, 2022 at 02:08:47PM +0100, Javier Martinez Canillas wrote:
->> On 12/13/22 14:02, Krzysztof Kozlowski wrote:
->>> On 13/12/2022 13:27, Brian Masney wrote:
->>> qcom,spi-video-codec is still not specific enough. You need to describe
->>> real device behind spidev. To be clear - you do not describe userspace,
->>> but the device.
->>>
->>
->> Agree.
->>
->> I believe Brian just used "qcom,spi-video-codec" as an example but is only
->> a make up name to illustrate the concept. QC needs to determine what would
->> be the correct <vendor,device> tuple for the IP block that the user-space
->> driver will drive.
-> 
-> Yes, that was just an example.
-> 
-> Shazad: Is this thread clear about what QC needs for spidev? I'll let QC
-> take care of sending patch(es) to add the various compatibles since I'm
-> not sure what hardware will be backed by spidev.
-> 
-
-I think for qup2_spi22 we can use qcom,spi-msm-codec-slave as 
-compatible. As this is what used in downstream.
-
-> I'll take care of making sure that sc8280xp.dtsi gets the spi controller
-> nodes added.
-
-Yes, for qup1_spi9 we can add it later when needed. This is for 
-display/touch 2nd.
-
-Shazad
+Really, this should probably only be a fallback with an SoC specific 
+compatible. Future quirk properties which are not board specific only 
+will be rejected. You've been warned.
 
 > 
-> Brian
+> Signed-off-by: Sudip Mukherjee <sudip.mukherjee@sifive.com>
+> ---
+>  Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
+> index d33b72fabc5d8..af36df67a4c0e 100644
+> --- a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
+> +++ b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
+> @@ -45,6 +45,7 @@ properties:
+>          enum:
+>            - snps,dw-apb-ssi
+>            - snps,dwc-ssi-1.01a
+> +          - snps,dw-ahb-ssi
+>        - description: Microsemi Ocelot/Jaguar2 SoC SPI Controller
+>          items:
+>            - enum:
+> -- 
+> 2.30.2
+> 
 > 

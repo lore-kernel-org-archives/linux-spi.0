@@ -2,64 +2,89 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 54959C4332F
-	for <linux-spi@archiver.kernel.org>; Mon, 19 Dec 2022 02:56:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BD0AEC4332F
+	for <linux-spi@archiver.kernel.org>; Mon, 19 Dec 2022 14:43:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229611AbiLSC4X (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 18 Dec 2022 21:56:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35402 "EHLO
+        id S231891AbiLSOnX (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 19 Dec 2022 09:43:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229507AbiLSC4W (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 18 Dec 2022 21:56:22 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89BEAB7E2
-        for <linux-spi@vger.kernel.org>; Sun, 18 Dec 2022 18:56:20 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 2065FB80BE9
-        for <linux-spi@vger.kernel.org>; Mon, 19 Dec 2022 02:56:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B584FC433D2;
-        Mon, 19 Dec 2022 02:56:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1671418577;
-        bh=AYVJqi7C8P+4DtjiTgd6+mm9izvroLy4GJ3LIoHeDEw=;
-        h=Subject:From:Date:To:From;
-        b=Q2HYqT1vD4zbFpOM61CD9yYEy8iXs2ijdteYfgJzcMsB8DeHOPaNf5JP182SO6Dt7
-         uXrlCqRAdQXHf9mKsyViTBYl4i2WVqsvvQkmaQ0TXJaXNFlpEXk8C0Zp9QPxfRsnSe
-         v/7iWUOxhYR9Y8rDPBnul4LBgW1C18WXgkCZfAZxfloi9WtaG1ItPQf0GZWhFoS39a
-         KyloljXtRvTFf3vMqexjhHjL40ht/X2SGWO5rqvwVsqY/kAaRDkQ6hyF9HLtWTqXZx
-         N8p5skkZUusCGWEqLBjJe7L8JfB1FibRy7uohdZKXVx03XNaZZKaxEtchuqsjv4Un/
-         Qsn3F6dZ73jyg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 994CEE21EED;
-        Mon, 19 Dec 2022 02:56:17 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S232271AbiLSOnR (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 19 Dec 2022 09:43:17 -0500
+Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 058C3638F;
+        Mon, 19 Dec 2022 06:43:17 -0800 (PST)
+Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
+        by mx0a-0016f401.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2BJ9PqqC009699;
+        Mon, 19 Dec 2022 06:43:12 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding : content-type; s=pfpt0220;
+ bh=dzyp+x7PZV/+Abe3mq//lTiwi0GxWUoTy9TqJJWfSRU=;
+ b=RSFWeEp145CUxVUN1ghPkHLRqXvJcs5nJwG2zThV6MalXmdlBYdH3mWMU/l8L6dlJTT9
+ x6s/UCCFlodajmZ00vNeVPG/lvn+MAuW5rW4Rf+AmhLavqyCNz5cMdQoHGxrlIyZo9q7
+ MQHsb3HoWGpmhaXUvuF0Yr5G9uBwabiuw7ggE3jTZTAS2X1aZwNaZR3KQ8r/z6uShG9X
+ 4P9gJkrJTGokdr0/vX1RNByw68D68lSnDvSWd3Sg3lYOSyRpDHnuLdKjsFGEfxsSO/bq
+ YqCrWeK5i2G52yoWmSPnFD6F3yTZiZVmiiyQ9MkOf/wt/U5kdyTEPD7qMeKFlQK/RIbx EA== 
+Received: from dc5-exch02.marvell.com ([199.233.59.182])
+        by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 3mjnans4hp-2
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
+        Mon, 19 Dec 2022 06:43:12 -0800
+Received: from DC5-EXCH01.marvell.com (10.69.176.38) by DC5-EXCH02.marvell.com
+ (10.69.176.39) with Microsoft SMTP Server (TLS) id 15.0.1497.42; Mon, 19 Dec
+ 2022 06:43:10 -0800
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH01.marvell.com
+ (10.69.176.38) with Microsoft SMTP Server id 15.0.1497.42 via Frontend
+ Transport; Mon, 19 Dec 2022 06:43:10 -0800
+Received: from localhost.localdomain (unknown [10.110.150.170])
+        by maili.marvell.com (Postfix) with ESMTP id 3A6E03F7087;
+        Mon, 19 Dec 2022 06:43:10 -0800 (PST)
+From:   Witold Sadowski <wsadowski@marvell.com>
+To:     <broonie@kernel.org>
+CC:     <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <jpawar@cadence.com>,
+        <pthombar@cadence.com>, <konrad@cadence.com>,
+        <wbartczak@marvell.com>, <wzmuda@marvell.com>,
+        <wsadowski@marvell.com>
+Subject: [PATCH 2/7] spi: cadence: Change dt-bindings documentation for Cadence XSPI controller
+Date:   Mon, 19 Dec 2022 06:42:49 -0800
+Message-ID: <20221219144254.20883-3-wsadowski@marvell.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20221219144254.20883-1-wsadowski@marvell.com>
+References: <20221219144254.20883-1-wsadowski@marvell.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From:   patchwork-bot+spi-devel-general@kernel.org
-Message-Id: <167141857762.1503.7237580296975503324.git-patchwork-housekeeping@kernel.org>
-Date:   Mon, 19 Dec 2022 02:56:17 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain
+X-Proofpoint-GUID: WoNRhHcgF83oENSrfUbZU5vj7JyDB6LQ
+X-Proofpoint-ORIG-GUID: WoNRhHcgF83oENSrfUbZU5vj7JyDB6LQ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-12-19_01,2022-12-15_02,2022-06-22_01
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Latest series: [v5] Add MediaTek MT7986 SPI NAND and ECC support (2022-12-19T02:40:10)
-  Superseding: [v4] Add MediaTek MT7986 SPI NAND and ECC support (2022-12-09T06:43:08):
-    [v4,1/9] spi: mtk-snfi: Change default page format to setup default setting
-    [v4,2/9] spi: mtk-snfi: Add optional nfi_hclk which is needed for MT7986
-    [v4,3/9] mtd: nand: ecc-mtk: Add ECC support fot MT7986 IC
-    [v4,4/9] dt-bindings: spi: mtk-snfi: Add compatible for MT7986
-    [v4,5/9] spi: mtk-snfi: Add snfi sample delay and read latency adjustment
-    [v4,6/9] dt-bindings: spi: mtk-snfi: Add read latch latency property
-    [v4,7/9] dt-bindings: mtd: Split ECC engine with rawnand controller
-    [v4,8/9] arm/arm64: dts: mediatek: Fix existing NAND controller node name
-    [v4,9/9] dt-bindings: mtd: mediatek,nand-ecc-engine: Add compatible for MT7986
+Interrupt property is not mandatory.
+Driver will switch into pooling mode if property
+will not be avalible.
 
+Signed-off-by: Witold Sadowski <wsadowski@marvell.com>
+---
+ Documentation/devicetree/bindings/spi/cdns,xspi.yaml | 1 -
+ 1 file changed, 1 deletion(-)
 
+diff --git a/Documentation/devicetree/bindings/spi/cdns,xspi.yaml b/Documentation/devicetree/bindings/spi/cdns,xspi.yaml
+index b8bb8a3dbf54..f71a9c74e2ca 100644
+--- a/Documentation/devicetree/bindings/spi/cdns,xspi.yaml
++++ b/Documentation/devicetree/bindings/spi/cdns,xspi.yaml
+@@ -40,7 +40,6 @@ properties:
+ required:
+   - compatible
+   - reg
+-  - interrupts
+ 
+ unevaluatedProperties: false
+ 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+2.17.1
 

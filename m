@@ -2,41 +2,41 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5A04CC4167B
-	for <linux-spi@archiver.kernel.org>; Mon, 19 Dec 2022 02:41:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5B966C4167B
+	for <linux-spi@archiver.kernel.org>; Mon, 19 Dec 2022 02:41:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231237AbiLSCk5 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 18 Dec 2022 21:40:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57726 "EHLO
+        id S231130AbiLSClG (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 18 Dec 2022 21:41:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231225AbiLSCk4 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 18 Dec 2022 21:40:56 -0500
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39B501013;
-        Sun, 18 Dec 2022 18:40:53 -0800 (PST)
-X-UUID: ec1eafad0e55462fb9819246f6312095-20221219
+        with ESMTP id S231256AbiLSClE (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 18 Dec 2022 21:41:04 -0500
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 267ED63A4;
+        Sun, 18 Dec 2022 18:40:58 -0800 (PST)
+X-UUID: d48c9bf857684ccaa246d29f7c3a3269-20221219
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=AljLcemnKAdfrmjxC/s2CRMhH5DsQc4QT4V+1YYAYTU=;
-        b=NRnI3JJ/m5Uc3jzTWnY5CvGPt01PG7yGJm5eQb4F7wtn9xWPHob6t8HYKb2DqwzzDNEPDZD1g2P1BzWaSo8dfPmQ4aHYgX7a17uJqyfzJGslK6ouTGN/cy0lRbWtrMeOv0hpO6IuYCdX+wfbAqMkTSDO9uep9w5dmZISmRv43C4=;
+        h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=v0RLYJNNjOaZwIF3K4Tu0NmZq0XJJx6TB5aHEi73l4Y=;
+        b=WJoUUjcRY1IJTZnKlOjK6BZX1rK+mDsqhHZIC2OedgUntGsxC41bfPbFIYExk3Br5XDr+rx8y/ojho+aSvGD4ihqxo5eP31HmEckAvPe7M6rySArjF+Y991Mi9r0k5ccSER2m4n3wvP3iQVJ2wgoOuyuX8L4sRccS5f981/Pm7s=;
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.14,REQID:d010a8ed-0825-49a1-9f9f-fd1b492ef93b,IP:0,U
+X-CID-O-INFO: VERSION:1.1.14,REQID:3014786d-699b-45ad-b1ba-cde9b6d9c9e4,IP:0,U
         RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
         N:release,TS:-25
-X-CID-META: VersionHash:dcaaed0,CLOUDID:acd71952-dd49-462e-a4be-2143a3ddc739,B
+X-CID-META: VersionHash:dcaaed0,CLOUDID:aed81952-dd49-462e-a4be-2143a3ddc739,B
         ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
         RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
-X-UUID: ec1eafad0e55462fb9819246f6312095-20221219
-Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw02.mediatek.com
+X-UUID: d48c9bf857684ccaa246d29f7c3a3269-20221219
+Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw01.mediatek.com
         (envelope-from <xiangsheng.hou@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1450024249; Mon, 19 Dec 2022 10:40:44 +0800
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1763200135; Mon, 19 Dec 2022 10:40:52 +0800
 Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.792.3;
- Mon, 19 Dec 2022 10:40:43 +0800
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.792.15; Mon, 19 Dec 2022 10:40:51 +0800
 Received: from localhost.localdomain (10.17.3.154) by mtkmbs11n2.mediatek.inc
  (172.21.101.73) with Microsoft SMTP Server id 15.2.792.15 via Frontend
- Transport; Mon, 19 Dec 2022 10:40:42 +0800
+ Transport; Mon, 19 Dec 2022 10:40:50 +0800
 From:   Xiangsheng Hou <xiangsheng.hou@mediatek.com>
 To:     Miquel Raynal <miquel.raynal@bootlin.com>,
         Richard Weinberger <richard@nod.at>,
@@ -54,9 +54,9 @@ CC:     Xiangsheng Hou <xiangsheng.hou@mediatek.com>,
         <benliang.zhao@mediatek.com>, <bin.zhang@mediatek.com>,
         "AngeloGioacchino Del Regno" 
         <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH v5 03/10] mtd: nand: ecc-mtk: Add ECC support fot MT7986 IC
-Date:   Mon, 19 Dec 2022 10:40:12 +0800
-Message-ID: <20221219024019.31974-4-xiangsheng.hou@mediatek.com>
+Subject: [PATCH v5 05/10] spi: mtk-snfi: Add snfi sample delay and read latency adjustment
+Date:   Mon, 19 Dec 2022 10:40:14 +0800
+Message-ID: <20221219024019.31974-6-xiangsheng.hou@mediatek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20221219024019.31974-1-xiangsheng.hou@mediatek.com>
 References: <20221219024019.31974-1-xiangsheng.hou@mediatek.com>
@@ -68,96 +68,67 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Add ECC support fot MT7986 IC, and change err_mask value with
-GENMASK macro.
+Add snfi sample delay and read latency adjustment which can get
+from dts property.
 
 Signed-off-by: Xiangsheng Hou <xiangsheng.hou@mediatek.com>
 Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 ---
- drivers/mtd/nand/ecc-mtk.c | 28 +++++++++++++++++++++++++---
- 1 file changed, 25 insertions(+), 3 deletions(-)
+ drivers/spi/spi-mtk-snfi.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/drivers/mtd/nand/ecc-mtk.c b/drivers/mtd/nand/ecc-mtk.c
-index 9f9b201fe706..c75bb8b80cc1 100644
---- a/drivers/mtd/nand/ecc-mtk.c
-+++ b/drivers/mtd/nand/ecc-mtk.c
-@@ -40,6 +40,10 @@
- #define ECC_IDLE_REG(op)	((op) == ECC_ENCODE ? ECC_ENCIDLE : ECC_DECIDLE)
- #define ECC_CTL_REG(op)		((op) == ECC_ENCODE ? ECC_ENCCON : ECC_DECCON)
+diff --git a/drivers/spi/spi-mtk-snfi.c b/drivers/spi/spi-mtk-snfi.c
+index 85644308df23..f3f95eb37365 100644
+--- a/drivers/spi/spi-mtk-snfi.c
++++ b/drivers/spi/spi-mtk-snfi.c
+@@ -195,6 +195,8 @@
+ #define DATA_READ_MODE_X4 2
+ #define DATA_READ_MODE_DUAL 5
+ #define DATA_READ_MODE_QUAD 6
++#define DATA_READ_LATCH_LAT GENMASK(9, 8)
++#define DATA_READ_LATCH_LAT_S 8
+ #define PG_LOAD_CUSTOM_EN BIT(7)
+ #define DATARD_CUSTOM_EN BIT(6)
+ #define CS_DESELECT_CYC_S 0
+@@ -205,6 +207,9 @@
  
-+#define ECC_ERRMASK_MT7622	GENMASK(4, 0)
-+#define ECC_ERRMASK_MT2701	GENMASK(5, 0)
-+#define ECC_ERRMASK_MT2712	GENMASK(6, 0)
+ #define SNF_DLY_CTL3 0x548
+ #define SFCK_SAM_DLY_S 0
++#define SFCK_SAM_DLY GENMASK(5, 0)
++#define SFCK_SAM_DLY_TOTAL 9
++#define SFCK_SAM_DLY_RANGE 47
+ 
+ #define SNF_STA_CTL1 0x550
+ #define CUS_PG_DONE BIT(28)
+@@ -1368,6 +1373,8 @@ static int mtk_snand_probe(struct platform_device *pdev)
+ 	const struct of_device_id *dev_id;
+ 	struct spi_controller *ctlr;
+ 	struct mtk_snand *ms;
++	unsigned long spi_freq;
++	u32 val = 0;
+ 	int ret;
+ 
+ 	dev_id = of_match_node(mtk_snand_ids, np);
+@@ -1446,6 +1453,19 @@ static int mtk_snand_probe(struct platform_device *pdev)
+ 	// switch to SNFI mode
+ 	nfi_write32(ms, SNF_CFG, SPI_MODE);
+ 
++	ret = of_property_read_u32(np, "rx-sample-delay-ns", &val);
++	if (!ret)
++		nfi_rmw32(ms, SNF_DLY_CTL3, SFCK_SAM_DLY,
++			  val * SFCK_SAM_DLY_RANGE / SFCK_SAM_DLY_TOTAL);
 +
- struct mtk_ecc_caps {
- 	u32 err_mask;
- 	u32 err_shift;
-@@ -79,6 +83,10 @@ static const u8 ecc_strength_mt7622[] = {
- 	4, 6, 8, 10, 12
- };
- 
-+static const u8 ecc_strength_mt7986[] = {
-+	4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24
-+};
++	ret = of_property_read_u32(np, "mediatek,rx-latch-latency-ns", &val);
++	if (!ret) {
++		spi_freq = clk_get_rate(ms->pad_clk);
++		val = DIV_ROUND_CLOSEST(val, NSEC_PER_SEC / spi_freq);
++		nfi_rmw32(ms, SNF_MISC_CTL, DATA_READ_LATCH_LAT,
++			  val << DATA_READ_LATCH_LAT_S);
++	}
 +
- enum mtk_ecc_regs {
- 	ECC_ENCPAR00,
- 	ECC_ENCIRQ_EN,
-@@ -451,7 +459,7 @@ unsigned int mtk_ecc_get_parity_bits(struct mtk_ecc *ecc)
- EXPORT_SYMBOL(mtk_ecc_get_parity_bits);
- 
- static const struct mtk_ecc_caps mtk_ecc_caps_mt2701 = {
--	.err_mask = 0x3f,
-+	.err_mask = ECC_ERRMASK_MT2701,
- 	.err_shift = 8,
- 	.ecc_strength = ecc_strength_mt2701,
- 	.ecc_regs = mt2701_ecc_regs,
-@@ -462,7 +470,7 @@ static const struct mtk_ecc_caps mtk_ecc_caps_mt2701 = {
- };
- 
- static const struct mtk_ecc_caps mtk_ecc_caps_mt2712 = {
--	.err_mask = 0x7f,
-+	.err_mask = ECC_ERRMASK_MT2712,
- 	.err_shift = 8,
- 	.ecc_strength = ecc_strength_mt2712,
- 	.ecc_regs = mt2712_ecc_regs,
-@@ -473,7 +481,7 @@ static const struct mtk_ecc_caps mtk_ecc_caps_mt2712 = {
- };
- 
- static const struct mtk_ecc_caps mtk_ecc_caps_mt7622 = {
--	.err_mask = 0x1f,
-+	.err_mask = ECC_ERRMASK_MT7622,
- 	.err_shift = 5,
- 	.ecc_strength = ecc_strength_mt7622,
- 	.ecc_regs = mt7622_ecc_regs,
-@@ -483,6 +491,17 @@ static const struct mtk_ecc_caps mtk_ecc_caps_mt7622 = {
- 	.pg_irq_sel = 0,
- };
- 
-+static const struct mtk_ecc_caps mtk_ecc_caps_mt7986 = {
-+	.err_mask = ECC_ERRMASK_MT7622,
-+	.err_shift = 8,
-+	.ecc_strength = ecc_strength_mt7986,
-+	.ecc_regs = mt2712_ecc_regs,
-+	.num_ecc_strength = 11,
-+	.ecc_mode_shift = 5,
-+	.parity_bits = 14,
-+	.pg_irq_sel = 1,
-+};
-+
- static const struct of_device_id mtk_ecc_dt_match[] = {
- 	{
- 		.compatible = "mediatek,mt2701-ecc",
-@@ -493,6 +512,9 @@ static const struct of_device_id mtk_ecc_dt_match[] = {
- 	}, {
- 		.compatible = "mediatek,mt7622-ecc",
- 		.data = &mtk_ecc_caps_mt7622,
-+	}, {
-+		.compatible = "mediatek,mt7986-ecc",
-+		.data = &mtk_ecc_caps_mt7986,
- 	},
- 	{},
- };
+ 	// setup an initial page format for ops matching page_cache_op template
+ 	// before ECC is called.
+ 	ret = mtk_snand_setup_pagefmt(ms, SZ_2K, SZ_64);
 -- 
 2.25.1
 

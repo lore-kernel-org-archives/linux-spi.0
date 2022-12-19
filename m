@@ -2,44 +2,41 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CD2E7C3DA79
-	for <linux-spi@archiver.kernel.org>; Mon, 19 Dec 2022 02:41:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2B493C4167B
+	for <linux-spi@archiver.kernel.org>; Mon, 19 Dec 2022 02:41:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231234AbiLSClJ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 18 Dec 2022 21:41:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57778 "EHLO
+        id S231322AbiLSCle (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 18 Dec 2022 21:41:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231245AbiLSCk6 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 18 Dec 2022 21:40:58 -0500
+        with ESMTP id S231277AbiLSClH (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 18 Dec 2022 21:41:07 -0500
 Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 261D02DCB;
-        Sun, 18 Dec 2022 18:40:55 -0800 (PST)
-X-UUID: 67fb8c3e694c4a648fe44c0caf3d5856-20221219
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F25E2BC3E;
+        Sun, 18 Dec 2022 18:41:01 -0800 (PST)
+X-UUID: f582fdea2e5a415aa8b98ee1d75a46fe-20221219
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=wodpxQJxS9WBV/Id1cRLy+b4gQiIXHj/BKyDu9o+YQM=;
-        b=lC+GuByKcPTz3yJPA8lvQcCMC9jThbvaTaFUubJklAUzPig24UPPLAOkBuT5OQslWnGDlsrvJ/fsHSBBmkmyMQhJX8m0zzpXBr31yP9GfszHfZxxVJHVxDmobFmegBLEyy0/J6igwYw32pWRa+sz/nrnFL6cMOIxIUXFMI7VhMA=;
+        h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=xfxOyIUqvJdjIUdIV7o0cMFXghWPkVqR/RyOXrnqn2M=;
+        b=f9bPxJ5tigAuldDyH7UUEIgstPIIzN+5yLbLHwPC4Ek2Ci7TYulSx/5IueO5Lg2Iz9JgL/x+ggC4+Ws3r6tvhOZKm3hBD5/8i7J+7iQiUJUXw/NJpMQ3p09h6sqL3WV/7XVFUQ12JFbDwVZla2LEEqt0E+z5NpsfkoD1znbSEOM=;
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.14,REQID:42054ff8-ae1f-40c7-89ff-a6cc8bd29181,IP:0,U
-        RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-        ON:release,TS:70
-X-CID-INFO: VERSION:1.1.14,REQID:42054ff8-ae1f-40c7-89ff-a6cc8bd29181,IP:0,URL
-        :0,TC:0,Content:-25,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTI
-        ON:quarantine,TS:70
-X-CID-META: VersionHash:dcaaed0,CLOUDID:21d81952-dd49-462e-a4be-2143a3ddc739,B
-        ulkID:221219104050W9W9XOOR,BulkQuantity:0,Recheck:0,SF:38|28|17|19|48,TC:n
-        il,Content:0,EDM:-3,IP:nil,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
-X-UUID: 67fb8c3e694c4a648fe44c0caf3d5856-20221219
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
+X-CID-O-INFO: VERSION:1.1.14,REQID:0175511f-113e-48bd-b8cf-178d12146aba,IP:0,U
+        RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+        :release,TS:-5
+X-CID-META: VersionHash:dcaaed0,CLOUDID:0bd91952-dd49-462e-a4be-2143a3ddc739,B
+        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+        RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
+X-UUID: f582fdea2e5a415aa8b98ee1d75a46fe-20221219
+Received: from mtkmbs11n1.mediatek.inc [(172.21.101.185)] by mailgw02.mediatek.com
         (envelope-from <xiangsheng.hou@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1857035379; Mon, 19 Dec 2022 10:40:49 +0800
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 930934598; Mon, 19 Dec 2022 10:40:55 +0800
 Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.792.3;
- Mon, 19 Dec 2022 10:40:48 +0800
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.792.15; Mon, 19 Dec 2022 10:40:54 +0800
 Received: from localhost.localdomain (10.17.3.154) by mtkmbs11n2.mediatek.inc
  (172.21.101.73) with Microsoft SMTP Server id 15.2.792.15 via Frontend
- Transport; Mon, 19 Dec 2022 10:40:46 +0800
+ Transport; Mon, 19 Dec 2022 10:40:53 +0800
 From:   Xiangsheng Hou <xiangsheng.hou@mediatek.com>
 To:     Miquel Raynal <miquel.raynal@bootlin.com>,
         Richard Weinberger <richard@nod.at>,
@@ -58,9 +55,9 @@ CC:     Xiangsheng Hou <xiangsheng.hou@mediatek.com>,
         Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH v5 04/10] dt-bindings: spi: mtk-snfi: Add compatible for MT7986
-Date:   Mon, 19 Dec 2022 10:40:13 +0800
-Message-ID: <20221219024019.31974-5-xiangsheng.hou@mediatek.com>
+Subject: [PATCH v5 06/10] dt-bindings: spi: mtk-snfi: Add read latch latency property
+Date:   Mon, 19 Dec 2022 10:40:15 +0800
+Message-ID: <20221219024019.31974-7-xiangsheng.hou@mediatek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20221219024019.31974-1-xiangsheng.hou@mediatek.com>
 References: <20221219024019.31974-1-xiangsheng.hou@mediatek.com>
@@ -72,100 +69,30 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Add dt-bindings documentation of SPI NAND controller
-for MediaTek MT7986 SoC platform. And add optional
-nfi_hclk property which is needed for MT7986.
+Add mediatek,rx-latch-latency-ns property which adjust data read
+latch latency in the unit of nanoseconds.
 
 Signed-off-by: Xiangsheng Hou <xiangsheng.hou@mediatek.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 ---
- .../bindings/spi/mediatek,spi-mtk-snfi.yaml   | 51 +++++++++++++++----
- 1 file changed, 42 insertions(+), 9 deletions(-)
+ .../devicetree/bindings/spi/mediatek,spi-mtk-snfi.yaml         | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/Documentation/devicetree/bindings/spi/mediatek,spi-mtk-snfi.yaml b/Documentation/devicetree/bindings/spi/mediatek,spi-mtk-snfi.yaml
-index 6e6e02c91780..bab23f1b11fd 100644
+index bab23f1b11fd..1e5e89a693c3 100644
 --- a/Documentation/devicetree/bindings/spi/mediatek,spi-mtk-snfi.yaml
 +++ b/Documentation/devicetree/bindings/spi/mediatek,spi-mtk-snfi.yaml
-@@ -18,14 +18,12 @@ description: |
-   using the accompanying ECC engine. There should be only one spi
-   slave device following generic spi bindings.
- 
--allOf:
--  - $ref: /schemas/spi/spi-controller.yaml#
--
- properties:
-   compatible:
-     enum:
-       - mediatek,mt7622-snand
-       - mediatek,mt7629-snand
-+      - mediatek,mt7986-snand
- 
-   reg:
-     items:
-@@ -36,14 +34,12 @@ properties:
-       - description: NFI interrupt
- 
-   clocks:
--    items:
--      - description: clock used for the controller
--      - description: clock used for the SPI bus
-+    minItems: 2
-+    maxItems: 3
- 
-   clock-names:
--    items:
--      - const: nfi_clk
--      - const: pad_clk
-+    minItems: 2
-+    maxItems: 3
- 
-   nand-ecc-engine:
+@@ -45,6 +45,9 @@ properties:
      description: device-tree node of the accompanying ECC engine.
-@@ -57,6 +53,43 @@ required:
-   - clock-names
-   - nand-ecc-engine
+     $ref: /schemas/types.yaml#/definitions/phandle
  
-+allOf:
-+  - $ref: /schemas/spi/spi-controller.yaml#
-+  - if:
-+      properties:
-+        compatible:
-+          enum:
-+            - mediatek,mt7622-snand
-+            - mediatek,mt7629-snand
-+    then:
-+      properties:
-+        clocks:
-+          items:
-+            - description: clock used for the controller
-+            - description: clock used for the SPI bus
-+        clock-names:
-+          items:
-+            - const: nfi_clk
-+            - const: pad_clk
++  mediatek,rx-latch-latency-ns:
++    description: Data read latch latency, unit is nanoseconds.
 +
-+  - if:
-+      properties:
-+        compatible:
-+          enum:
-+            - mediatek,mt7986-snand
-+    then:
-+      properties:
-+        clocks:
-+          items:
-+            - description: clock used for the controller
-+            - description: clock used for the SPI bus
-+            - description: clock used for the AHB bus
-+        clock-names:
-+          items:
-+            - const: nfi_clk
-+            - const: pad_clk
-+            - const: nfi_hclk
-+
- unevaluatedProperties: false
- 
- examples:
+ required:
+   - compatible
+   - reg
 -- 
 2.25.1
 

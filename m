@@ -2,338 +2,109 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A44D4C3DA7D
-	for <linux-spi@archiver.kernel.org>; Fri, 30 Dec 2022 09:31:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C7973C46467
+	for <linux-spi@archiver.kernel.org>; Mon,  2 Jan 2023 09:37:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234814AbiL3JbU (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 30 Dec 2022 04:31:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34438 "EHLO
+        id S230196AbjABJhq (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 2 Jan 2023 04:37:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234816AbiL3JbS (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 30 Dec 2022 04:31:18 -0500
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E797B1123
-        for <linux-spi@vger.kernel.org>; Fri, 30 Dec 2022 01:31:16 -0800 (PST)
-Received: from dggpemm500007.china.huawei.com (unknown [172.30.72.56])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4Nk0K41sLGzJpWZ;
-        Fri, 30 Dec 2022 17:27:20 +0800 (CST)
-Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
- (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Fri, 30 Dec
- 2022 17:31:13 +0800
-From:   Yang Yingliang <yangyingliang@huawei.com>
-To:     <linux-spi@vger.kernel.org>
-CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
-        <yangyingliang@huawei.com>
-Subject: [PATCH -next 2/3] spi: a3700: switch to use modern name
-Date:   Fri, 30 Dec 2022 17:28:05 +0800
-Message-ID: <20221230092806.1687340-3-yangyingliang@huawei.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20221230092806.1687340-1-yangyingliang@huawei.com>
-References: <20221230092806.1687340-1-yangyingliang@huawei.com>
+        with ESMTP id S229470AbjABJhp (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 2 Jan 2023 04:37:45 -0500
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97A9838B4;
+        Mon,  2 Jan 2023 01:37:44 -0800 (PST)
+Received: by mail-ed1-x534.google.com with SMTP id u18so37851665eda.9;
+        Mon, 02 Jan 2023 01:37:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=XzIKgubKsbYp6CHbNgEC7oTL3o/23K1nX1884mvfwHU=;
+        b=G19KnHZkfpxRRK8GEtPuLli3UOIw8JaGumkCm3OfvuuGgyvVoIItwF9UL+YKeEoziV
+         tVaLLp6LncTO3aVNx9fajlVFGGY7KPLBg9VJc5aEjDTIbcKpgiC20I7uipBOUNWxxKrm
+         7sp0QkboCr+8Ff/nn9QaP4Aj+bjlHzvfmjUG+/BPqrAI85dL9RC7fFT8iT78Y37gCR8G
+         4Trio+r7k/Xog96G03l5kDStW939gVOFO6X8zHcaM+ChvSCsr1iwZDqg6bBklfD5R3KL
+         TNn7fidXDuMzE2IAC671VcdQmkt2pAoq1Qw5K9XVeS9rMR/iCoCi45F1zjojjcYdLJ0I
+         jweg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XzIKgubKsbYp6CHbNgEC7oTL3o/23K1nX1884mvfwHU=;
+        b=cf3O3hKxmNtt1XVIiwnhY7EDyaK3ZUgi0ihwgHOOEXsrwcuaZc14ZK8AIimftCacVx
+         RiPW4jCKJN/mzay1ndUJkC+/udS0xyy+nO32BK0QTy22cEpYXj7JwT/PrvRx/VmSxKXo
+         gLml51v/fvd9XkxtsfD3FwaG+d41YQvI6/I5X+X0GzwozqlSCIBoAqGeTTJNrCOy4HCF
+         Qko8QjxliqOx5S80iRSWCEtMqn1NiWzgu9BM07UreBjfk8xREV1z5/mlqq0CNDbWPb2N
+         X+csXZGmk/bcGfmkOQU1e+cjogOKaECgQAHvZLFayHu7/0ACUiHw6zRMCx7DltqQU5fQ
+         7/LQ==
+X-Gm-Message-State: AFqh2koanBu6ko70polwwFJTfZjZGdt/bVA95np0bp/KEsO4uRm6Q4KJ
+        kX8sX4puA46XcxP9IJ+F600=
+X-Google-Smtp-Source: AMrXdXuS1dQR4WrrMJ2ZYnuZUsvK51zUK97T9LdHUD8iN13xlT2i9x/voG32HeRtdP8fLD4ew6NlcQ==
+X-Received: by 2002:a05:6402:b3c:b0:47f:ab65:b3ff with SMTP id bo28-20020a0564020b3c00b0047fab65b3ffmr30127650edb.35.1672652262900;
+        Mon, 02 Jan 2023 01:37:42 -0800 (PST)
+Received: from [192.168.0.104] ([82.77.81.242])
+        by smtp.gmail.com with ESMTPSA id bo6-20020a0564020b2600b0048ca2b6c370sm2385835edb.29.2023.01.02.01.37.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 02 Jan 2023 01:37:42 -0800 (PST)
+Message-ID: <28da9e33-57e8-7ac1-7e6c-13c297a945d6@gmail.com>
+Date:   Mon, 2 Jan 2023 11:37:40 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.103.91]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpemm500007.china.huawei.com (7.185.36.183)
-X-CFilter-Loop: Reflected
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Subject: Re: [PATCH 1/8] spi: dt-bindings: Introduce spi-cs-setup-ns property
+Content-Language: en-US
+To:     Mark Brown <broonie@kernel.org>, Michael Walle <michael@walle.cc>
+Cc:     tudor.ambarus@microchip.com, alexandre.belloni@bootlin.com,
+        claudiu.beznea@microchip.com, devicetree@vger.kernel.org,
+        krzysztof.kozlowski+dt@linaro.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
+        nicolas.ferre@microchip.com, robh+dt@kernel.org
+References: <20221117105249.115649-2-tudor.ambarus@microchip.com>
+ <20221118141458.954646-1-michael@walle.cc> <Y3elIdM3Xz1H4kKk@sirena.org.uk>
+From:   Tudor Ambarus <tudor.ambarus@gmail.com>
+In-Reply-To: <Y3elIdM3Xz1H4kKk@sirena.org.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Change legacy name master to modern name host or controller.
+Hi,
 
-No functional changed.
+On 18.11.2022 17:30, Mark Brown wrote:
+> On Fri, Nov 18, 2022 at 03:14:58PM +0100, Michael Walle wrote:
+>> From: Tudor Ambarus <tudor.ambarus@microchip.com>
+> 
+>>> +  spi-cs-setup-ns:
+>>> +    description:
+>>> +      Delay in nanosecods to be introduced by the controller after CS is
+>>> +      asserted.
+> 
+>> Does this need a type as the spi-cs-setup-ns is apparently just 16bit? At
+>> least the driver uses it that way.
+> 
+>> But IMHO this should just be a normal uint32 value to be consistent with
+>> all the other properties. Also the max value with 16bit will be 'just'
+>> 65us.
+> 
+> Making it 32 bit does seem safer.  I've applied the series
 
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
----
- drivers/spi/spi-armada-3700.c | 98 +++++++++++++++++------------------
- 1 file changed, 49 insertions(+), 49 deletions(-)
+Thanks. There are few implications to consider before making this prop a
+u32, and I'd like to check them with you.
 
-diff --git a/drivers/spi/spi-armada-3700.c b/drivers/spi/spi-armada-3700.c
-index 9df9fc40b783..4d554b948d71 100644
---- a/drivers/spi/spi-armada-3700.c
-+++ b/drivers/spi/spi-armada-3700.c
-@@ -100,7 +100,7 @@
- #define A3700_SPI_CLK_CAPT_EDGE		BIT(7)
- 
- struct a3700_spi {
--	struct spi_master *master;
-+	struct spi_controller *host;
- 	void __iomem *base;
- 	struct clk *clk;
- 	unsigned int irq;
-@@ -174,7 +174,7 @@ static int a3700_spi_pin_mode_set(struct a3700_spi *a3700_spi,
- 			val |= A3700_SPI_ADDR_PIN;
- 		break;
- 	default:
--		dev_err(&a3700_spi->master->dev, "wrong pin mode %u", pin_mode);
-+		dev_err(&a3700_spi->host->dev, "wrong pin mode %u", pin_mode);
- 		return -EINVAL;
- 	}
- 
-@@ -278,7 +278,7 @@ static int a3700_spi_fifo_flush(struct a3700_spi *a3700_spi)
- 
- static void a3700_spi_init(struct a3700_spi *a3700_spi)
- {
--	struct spi_master *master = a3700_spi->master;
-+	struct spi_controller *host = a3700_spi->host;
- 	u32 val;
- 	int i;
- 
-@@ -295,14 +295,14 @@ static void a3700_spi_init(struct a3700_spi *a3700_spi)
- 
- 	/* Disable AUTO_CS and deactivate all chip-selects */
- 	a3700_spi_auto_cs_unset(a3700_spi);
--	for (i = 0; i < master->num_chipselect; i++)
-+	for (i = 0; i < host->num_chipselect; i++)
- 		a3700_spi_deactivate_cs(a3700_spi, i);
- 
- 	/* Enable FIFO mode */
- 	a3700_spi_fifo_mode_set(a3700_spi, true);
- 
- 	/* Set SPI mode */
--	a3700_spi_mode_set(a3700_spi, master->mode_bits);
-+	a3700_spi_mode_set(a3700_spi, host->mode_bits);
- 
- 	/* Reset counters */
- 	spireg_write(a3700_spi, A3700_SPI_IF_HDR_CNT_REG, 0);
-@@ -315,11 +315,11 @@ static void a3700_spi_init(struct a3700_spi *a3700_spi)
- 
- static irqreturn_t a3700_spi_interrupt(int irq, void *dev_id)
- {
--	struct spi_master *master = dev_id;
-+	struct spi_controller *host = dev_id;
- 	struct a3700_spi *a3700_spi;
- 	u32 cause;
- 
--	a3700_spi = spi_master_get_devdata(master);
-+	a3700_spi = spi_controller_get_devdata(host);
- 
- 	/* Get interrupt causes */
- 	cause = spireg_read(a3700_spi, A3700_SPI_INT_STAT_REG);
-@@ -344,7 +344,7 @@ static bool a3700_spi_wait_completion(struct spi_device *spi)
- 	unsigned int ctrl_reg;
- 	unsigned long timeout_jiffies;
- 
--	a3700_spi = spi_master_get_devdata(spi->master);
-+	a3700_spi = spi_controller_get_devdata(spi->controller);
- 
- 	/* SPI interrupt is edge-triggered, which means an interrupt will
- 	 * be generated only when detecting a specific status bit changed
-@@ -393,7 +393,7 @@ static bool a3700_spi_transfer_wait(struct spi_device *spi,
- {
- 	struct a3700_spi *a3700_spi;
- 
--	a3700_spi = spi_master_get_devdata(spi->master);
-+	a3700_spi = spi_controller_get_devdata(spi->controller);
- 	a3700_spi->wait_mask = bit_mask;
- 
- 	return a3700_spi_wait_completion(spi);
-@@ -417,7 +417,7 @@ static void a3700_spi_transfer_setup(struct spi_device *spi,
- {
- 	struct a3700_spi *a3700_spi;
- 
--	a3700_spi = spi_master_get_devdata(spi->master);
-+	a3700_spi = spi_controller_get_devdata(spi->controller);
- 
- 	a3700_spi_clock_set(a3700_spi, xfer->speed_hz);
- 
-@@ -434,7 +434,7 @@ static void a3700_spi_transfer_setup(struct spi_device *spi,
- 
- static void a3700_spi_set_cs(struct spi_device *spi, bool enable)
- {
--	struct a3700_spi *a3700_spi = spi_master_get_devdata(spi->master);
-+	struct a3700_spi *a3700_spi = spi_controller_get_devdata(spi->controller);
- 
- 	if (!enable)
- 		a3700_spi_activate_cs(a3700_spi, spi->chip_select);
-@@ -565,10 +565,10 @@ static void a3700_spi_transfer_abort_fifo(struct a3700_spi *a3700_spi)
- 	spireg_write(a3700_spi, A3700_SPI_IF_CFG_REG, val);
- }
- 
--static int a3700_spi_prepare_message(struct spi_master *master,
-+static int a3700_spi_prepare_message(struct spi_controller *host,
- 				     struct spi_message *message)
- {
--	struct a3700_spi *a3700_spi = spi_master_get_devdata(master);
-+	struct a3700_spi *a3700_spi = spi_controller_get_devdata(host);
- 	struct spi_device *spi = message->spi;
- 	int ret;
- 
-@@ -588,11 +588,11 @@ static int a3700_spi_prepare_message(struct spi_master *master,
- 	return 0;
- }
- 
--static int a3700_spi_transfer_one_fifo(struct spi_master *master,
-+static int a3700_spi_transfer_one_fifo(struct spi_controller *host,
- 				  struct spi_device *spi,
- 				  struct spi_transfer *xfer)
- {
--	struct a3700_spi *a3700_spi = spi_master_get_devdata(master);
-+	struct a3700_spi *a3700_spi = spi_controller_get_devdata(host);
- 	int ret = 0, timeout = A3700_SPI_TIMEOUT;
- 	unsigned int nbits = 0, byte_len;
- 	u32 val;
-@@ -732,16 +732,16 @@ static int a3700_spi_transfer_one_fifo(struct spi_master *master,
- error:
- 	a3700_spi_transfer_abort_fifo(a3700_spi);
- out:
--	spi_finalize_current_transfer(master);
-+	spi_finalize_current_transfer(host);
- 
- 	return ret;
- }
- 
--static int a3700_spi_transfer_one_full_duplex(struct spi_master *master,
-+static int a3700_spi_transfer_one_full_duplex(struct spi_controller *host,
- 				  struct spi_device *spi,
- 				  struct spi_transfer *xfer)
- {
--	struct a3700_spi *a3700_spi = spi_master_get_devdata(master);
-+	struct a3700_spi *a3700_spi = spi_controller_get_devdata(host);
- 	u32 val;
- 
- 	/* Disable FIFO mode */
-@@ -777,27 +777,27 @@ static int a3700_spi_transfer_one_full_duplex(struct spi_master *master,
- 
- 	}
- 
--	spi_finalize_current_transfer(master);
-+	spi_finalize_current_transfer(host);
- 
- 	return 0;
- }
- 
--static int a3700_spi_transfer_one(struct spi_master *master,
-+static int a3700_spi_transfer_one(struct spi_controller *host,
- 				  struct spi_device *spi,
- 				  struct spi_transfer *xfer)
- {
- 	a3700_spi_transfer_setup(spi, xfer);
- 
- 	if (xfer->tx_buf && xfer->rx_buf)
--		return a3700_spi_transfer_one_full_duplex(master, spi, xfer);
-+		return a3700_spi_transfer_one_full_duplex(host, spi, xfer);
- 
--	return a3700_spi_transfer_one_fifo(master, spi, xfer);
-+	return a3700_spi_transfer_one_fifo(host, spi, xfer);
- }
- 
--static int a3700_spi_unprepare_message(struct spi_master *master,
-+static int a3700_spi_unprepare_message(struct spi_controller *host,
- 				       struct spi_message *message)
- {
--	struct a3700_spi *a3700_spi = spi_master_get_devdata(master);
-+	struct a3700_spi *a3700_spi = spi_controller_get_devdata(host);
- 
- 	clk_disable(a3700_spi->clk);
- 
-@@ -815,14 +815,14 @@ static int a3700_spi_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
- 	struct device_node *of_node = dev->of_node;
--	struct spi_master *master;
-+	struct spi_controller *host;
- 	struct a3700_spi *spi;
- 	u32 num_cs = 0;
- 	int irq, ret = 0;
- 
--	master = spi_alloc_master(dev, sizeof(*spi));
--	if (!master) {
--		dev_err(dev, "master allocation failed\n");
-+	host = spi_alloc_host(dev, sizeof(*spi));
-+	if (!host) {
-+		dev_err(dev, "host allocation failed\n");
- 		ret = -ENOMEM;
- 		goto out;
- 	}
-@@ -833,23 +833,23 @@ static int a3700_spi_probe(struct platform_device *pdev)
- 		goto error;
- 	}
- 
--	master->bus_num = pdev->id;
--	master->dev.of_node = of_node;
--	master->mode_bits = SPI_MODE_3;
--	master->num_chipselect = num_cs;
--	master->bits_per_word_mask = SPI_BPW_MASK(8) | SPI_BPW_MASK(32);
--	master->prepare_message =  a3700_spi_prepare_message;
--	master->transfer_one = a3700_spi_transfer_one;
--	master->unprepare_message = a3700_spi_unprepare_message;
--	master->set_cs = a3700_spi_set_cs;
--	master->mode_bits |= (SPI_RX_DUAL | SPI_TX_DUAL |
-+	host->bus_num = pdev->id;
-+	host->dev.of_node = of_node;
-+	host->mode_bits = SPI_MODE_3;
-+	host->num_chipselect = num_cs;
-+	host->bits_per_word_mask = SPI_BPW_MASK(8) | SPI_BPW_MASK(32);
-+	host->prepare_message =  a3700_spi_prepare_message;
-+	host->transfer_one = a3700_spi_transfer_one;
-+	host->unprepare_message = a3700_spi_unprepare_message;
-+	host->set_cs = a3700_spi_set_cs;
-+	host->mode_bits |= (SPI_RX_DUAL | SPI_TX_DUAL |
- 			      SPI_RX_QUAD | SPI_TX_QUAD);
- 
--	platform_set_drvdata(pdev, master);
-+	platform_set_drvdata(pdev, host);
- 
--	spi = spi_master_get_devdata(master);
-+	spi = spi_controller_get_devdata(host);
- 
--	spi->master = master;
-+	spi->host = host;
- 
- 	spi->base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(spi->base)) {
-@@ -878,23 +878,23 @@ static int a3700_spi_probe(struct platform_device *pdev)
- 		goto error;
- 	}
- 
--	master->max_speed_hz = min_t(unsigned long, A3700_SPI_MAX_SPEED_HZ,
-+	host->max_speed_hz = min_t(unsigned long, A3700_SPI_MAX_SPEED_HZ,
- 					clk_get_rate(spi->clk));
--	master->min_speed_hz = DIV_ROUND_UP(clk_get_rate(spi->clk),
-+	host->min_speed_hz = DIV_ROUND_UP(clk_get_rate(spi->clk),
- 						A3700_SPI_MAX_PRESCALE);
- 
- 	a3700_spi_init(spi);
- 
- 	ret = devm_request_irq(dev, spi->irq, a3700_spi_interrupt, 0,
--			       dev_name(dev), master);
-+			       dev_name(dev), host);
- 	if (ret) {
- 		dev_err(dev, "could not request IRQ: %d\n", ret);
- 		goto error_clk;
- 	}
- 
--	ret = devm_spi_register_master(dev, master);
-+	ret = devm_spi_register_controller(dev, host);
- 	if (ret) {
--		dev_err(dev, "Failed to register master\n");
-+		dev_err(dev, "Failed to register host\n");
- 		goto error_clk;
- 	}
- 
-@@ -903,15 +903,15 @@ static int a3700_spi_probe(struct platform_device *pdev)
- error_clk:
- 	clk_unprepare(spi->clk);
- error:
--	spi_master_put(master);
-+	spi_controller_put(host);
- out:
- 	return ret;
- }
- 
- static int a3700_spi_remove(struct platform_device *pdev)
- {
--	struct spi_master *master = platform_get_drvdata(pdev);
--	struct a3700_spi *spi = spi_master_get_devdata(master);
-+	struct spi_controller *host = platform_get_drvdata(pdev);
-+	struct a3700_spi *spi = spi_controller_get_devdata(host);
- 
- 	clk_unprepare(spi->clk);
- 
--- 
-2.25.1
+struct spi_delay will have to be updated to have a u32 value, now it's a
+u16. This means that we'll have to update spi_delay_to_ns() to either
+return a s64 or to add a u64 *delay parameter to the function so that we
+can still handle the conversions from usecs and the error codes in the
+SPI_DELAY_UNIT_SCK case. Then all its callers have to be updated to
+consider the u64 delay.
 
+I don't know what to say, I'm in between. 65us delays are improbable,
+but I'm fine to update this as well. Let me know your preference.
+
+Thanks,
+ta

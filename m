@@ -2,88 +2,163 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DD7DEC54EBD
-	for <linux-spi@archiver.kernel.org>; Fri,  6 Jan 2023 18:35:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 97B35C54EBD
+	for <linux-spi@archiver.kernel.org>; Fri,  6 Jan 2023 20:10:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235707AbjAFSfB (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 6 Jan 2023 13:35:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60462 "EHLO
+        id S230294AbjAFUKU (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 6 Jan 2023 15:10:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234746AbjAFSfB (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 6 Jan 2023 13:35:01 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24A677CDDA;
-        Fri,  6 Jan 2023 10:35:00 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        with ESMTP id S236276AbjAFUKK (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 6 Jan 2023 15:10:10 -0500
+Received: from relay.smtp-ext.broadcom.com (lpdvsmtp09.broadcom.com [192.19.166.228])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0E6784091;
+        Fri,  6 Jan 2023 12:10:09 -0800 (PST)
+Received: from mail-lvn-it-01.lvn.broadcom.net (mail-lvn-it-01.lvn.broadcom.net [10.75.146.107])
+        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 7AFA1C0000E5;
+        Fri,  6 Jan 2023 12:10:09 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 7AFA1C0000E5
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
+        s=dkimrelay; t=1673035809;
+        bh=Je0b6vbxzSyApfV57XdMzbBAJ1OOxv2L5PniIWRhOb4=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=UIkHd96clSQEmxDCYtME2IZM4/bQh4OVa9WI5jipic9lQxUqn89pKNRCFUhsCFaa7
+         9ge+SieN2xiWGdy9s3thRUlVRvJO56llhxvTZany8GVlJjwSZKjxk+2K/me88D0CJu
+         bqambiYVxLut4VLalRL3o3NLaF3N7yopSmN67o8k=
+Received: from bcacpedev-irv-3.lvn.broadcom.net (bcacpedev-irv-3.lvn.broadcom.net [10.75.138.105])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id BF0D0B81C52;
-        Fri,  6 Jan 2023 18:34:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C2AAC433F0;
-        Fri,  6 Jan 2023 18:34:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673030097;
-        bh=rCzhA/52ddcfkNqEh7FMJ76ZEJnU+Wh9cDr+xpAZDnk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=DjYrav64GXU/jG7gy7Tq7oZ+TOk6zDS56kpeFsK1eRzHMpq7uZwzmyxGVWFYtVRPl
-         YKtE25439nA8eBUfj5hM2iVpQTPTqoVoYpCUr/Bj5rq2am9Wh0c7Ymn35ncXqg+CQ+
-         wPkeq4r7axl5u8heHY8miJ8gb7UI3gA985aO0532XIK1y7g0mSmmEor71HxzrhkH5+
-         U27wb/zJxQUzR2cvyY9oXoKVPb+g7pLxQmATinq/JirzYK2y1b7u+41pSp2A2icN4t
-         DZQ3sTPSd9GuA5Fts69z71ccZByPBDwHz/6s4SFE8UrSUieXvmratJPcqi+rLPsshB
-         EINBUD3Nrq+VQ==
-Date:   Fri, 6 Jan 2023 18:34:51 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Hector Martin <marcan@marcan.st>
-Cc:     Janne Grunau <j@jannau.net>, Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Tudor Ambarus <tudor.ambarus@microchip.com>,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        asahi@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/5] spi: Use a 32-bit DT property for
- spi-cs-setup-delay-ns
-Message-ID: <Y7hpy91VcDZjm794@sirena.org.uk>
-References: <20230104093631.15611-4-marcan@marcan.st>
- <Y7hLrxQO9GbgpW1h@sirena.org.uk>
- <6a9371e6-6516-5966-f92c-10bb228c8db3@marcan.st>
+        by mail-lvn-it-01.lvn.broadcom.net (Postfix) with ESMTPS id 7916F18041CAC6;
+        Fri,  6 Jan 2023 12:10:09 -0800 (PST)
+Received: by bcacpedev-irv-3.lvn.broadcom.net (Postfix, from userid 28376)
+        id 74787101B33; Fri,  6 Jan 2023 12:10:09 -0800 (PST)
+From:   William Zhang <william.zhang@broadcom.com>
+To:     Linux SPI List <linux-spi@vger.kernel.org>,
+        Broadcom Kernel List <bcm-kernel-feedback-list@broadcom.com>
+Cc:     anand.gore@broadcom.com, tomer.yacoby@broadcom.com,
+        dan.beygelman@broadcom.com, joel.peshkin@broadcom.com,
+        f.fainelli@gmail.com, jonas.gorski@gmail.com,
+        kursad.oney@broadcom.com, dregan@mail.com,
+        William Zhang <william.zhang@broadcom.com>,
+        Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org
+Subject: [PATCH 12/16] spi: bcm63xx-hsspi: Add clock gate disable option support
+Date:   Fri,  6 Jan 2023 12:08:04 -0800
+Message-Id: <20230106200809.330769-13-william.zhang@broadcom.com>
+X-Mailer: git-send-email 2.37.3
+In-Reply-To: <20230106200809.330769-1-william.zhang@broadcom.com>
+References: <20230106200809.330769-1-william.zhang@broadcom.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="Gz8dsIQ/IGaP9yH8"
-Content-Disposition: inline
-In-Reply-To: <6a9371e6-6516-5966-f92c-10bb228c8db3@marcan.st>
-X-Cookie: Do not fold, spindle or mutilate.
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+Some SPI device such as Broadcom ISI based voice daughtercard
+requires SPI clock running even when chip select is deasserted. By
+default the controller turn off or gate the clock when cs is not active
+to save power.
 
---Gz8dsIQ/IGaP9yH8
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+This change adds an option to support such device and keep the clock
+running when flag brcm,no-clk-gate is present in the SPI device node or
+when the SPI device driver clear the GATE_CLK_SSOFF flag in the device
+controller data field.
 
-On Sat, Jan 07, 2023 at 01:40:49AM +0900, Hector Martin wrote:
+Signed-off-by: William Zhang <william.zhang@broadcom.com>
+---
 
-> Yeah, the kernel test robot caught this one too. Sorry for missing it
-> (it got buried in warning noise in a rather large rebuild on my side).
-> That line should've been removed in #3 :(
+ drivers/spi/spi-bcm63xx-hsspi.c | 46 +++++++++++++++++++++++++++++++++
+ 1 file changed, 46 insertions(+)
 
-> I see two patches got applied already. Do you want me to just respin #3-#5?
+diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
+index 58f2b495c13c..be4ca01f332a 100644
+--- a/drivers/spi/spi-bcm63xx-hsspi.c
++++ b/drivers/spi/spi-bcm63xx-hsspi.c
+@@ -23,6 +23,13 @@
+ #include <linux/reset.h>
+ #include <linux/pm_runtime.h>
+ 
++/* Broadcom Legacy SPI device driver flags */
++#define SPIDEV_CONTROLLER_STATE_SET		BIT(31)
++#define SPIDEV_CONTROLLER_STATE_GATE_CLK_SSOFF	BIT(29)
++
++#define spidev_ctrl_data(spi)			\
++	((u32)((uintptr_t)(spi)->controller_data))
++
+ #define HSSPI_GLOBAL_CTRL_REG			0x0
+ #define GLOBAL_CTRL_CS_POLARITY_SHIFT		0
+ #define GLOBAL_CTRL_CS_POLARITY_MASK		0x000000ff
+@@ -120,11 +127,40 @@ struct bcm63xx_hsspi {
+ static void bcm63xx_hsspi_set_clk(struct bcm63xx_hsspi *bs,
+ 				  struct spi_device *spi, int hz);
+ 
++static inline int bcm63xx_hsspi_dev_no_clk_gate(struct spi_device *spi)
++{
++	u32 ctrl_data = 0;
++
++	/* check spi device dn first */
++	if (of_property_read_bool(spi->dev.of_node, "brcm,no-clk-gate"))
++		return 1;
++
++	/* check spi dev controller data for legacy device support */
++	ctrl_data = spidev_ctrl_data(spi);
++	return ((ctrl_data & SPIDEV_CONTROLLER_STATE_SET) &&
++		!(ctrl_data & SPIDEV_CONTROLLER_STATE_GATE_CLK_SSOFF));
++}
++
+ static size_t bcm63xx_hsspi_max_message_size(struct spi_device *spi)
+ {
+ 	return HSSPI_BUFFER_LEN - HSSPI_OPCODE_LEN;
+ }
+ 
++static void bcm63xx_hsspi_restore_clk_gate(struct bcm63xx_hsspi *bs,
++				       struct spi_device *spi)
++{
++	u32 reg = 0;
++
++	/* check if clk gate setting was previously turned off */
++	if (bcm63xx_hsspi_dev_no_clk_gate(spi)) {
++		mutex_lock(&bs->bus_mutex);
++		reg = __raw_readl(bs->regs + HSSPI_GLOBAL_CTRL_REG);
++		reg |= GLOBAL_CTRL_CLK_GATE_SSOFF;
++		__raw_writel(reg, bs->regs + HSSPI_GLOBAL_CTRL_REG);
++		mutex_unlock(&bs->bus_mutex);
++	}
++}
++
+ static int bcm63xx_hsspi_wait_cmd(struct bcm63xx_hsspi *bs)
+ {
+ 	unsigned long limit;
+@@ -354,6 +390,12 @@ static void bcm63xx_hsspi_set_clk(struct bcm63xx_hsspi *bs,
+ 	reg &= ~GLOBAL_CTRL_CLK_POLARITY;
+ 	if (spi->mode & SPI_CPOL)
+ 		reg |= GLOBAL_CTRL_CLK_POLARITY;
++
++	if (bcm63xx_hsspi_dev_no_clk_gate(spi))
++		reg &= ~GLOBAL_CTRL_CLK_GATE_SSOFF;
++	else
++		reg |= GLOBAL_CTRL_CLK_GATE_SSOFF;
++
+ 	__raw_writel(reg, bs->regs + HSSPI_GLOBAL_CTRL_REG);
+ 	mutex_unlock(&bs->bus_mutex);
+ }
+@@ -485,6 +527,7 @@ static int bcm63xx_hsspi_transfer_one(struct spi_master *master,
+ 	if (bcm63xx_check_msg_prependable(master, msg, &t_prepend)) {
+ 		status = bcm63xx_hsspi_do_prepend_txrx(spi, &t_prepend);
+ 		msg->actual_length += (t_prepend.len + bs->prepend_cnt);
++		bcm63xx_hsspi_restore_clk_gate(bs, spi);
+ 		goto msg_done;
+ 	}
+ 
+@@ -543,6 +586,9 @@ static int bcm63xx_hsspi_transfer_one(struct spi_master *master,
+ 			bcm63xx_hsspi_set_cs(bs, spi->chip_select, false);
+ 	}
+ 
++	/* restore the default clk gate setting in case spidev turn it off */
++	bcm63xx_hsspi_restore_clk_gate(bs, spi);
++
+ msg_done:
+ 	msg->status = status;
+ 	spi_finalize_current_message(master);
+-- 
+2.37.3
 
-Yes, please.
-
---Gz8dsIQ/IGaP9yH8
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmO4acoACgkQJNaLcl1U
-h9AGNgf/YLKaPX6bZYmFzuc9rgcJz4e+wLfOVLdyvXNxyuXADMOouc9UZUINAS5D
-5NOpXgqT+zyx/I7HNYvtZ7qHbXkq2K1FR49HUcYLbGuZAbijeHl6e80k41T3+qEN
-mExnNZOAb2URFnt64pbwYDA8jMbX6/94Jz5JTdXlvQJ8N0Bn1jMhYwUwCsh97bOI
-o1/E58Mlq+mStedbmNEGC0j5lr8KJLWbK0/YQiJpITUKN81fb8YSlVflqwRRbkkK
-H3xQp8vqNGcOlbZARTMzlOnobN+Vx1e+pWm3dA1q5cTBNDtFhbOgViy8B50ajKF3
-AlV3Gyo9mgWxOdmdnI2Hs8tMV8oV5w==
-=W9wq
------END PGP SIGNATURE-----
-
---Gz8dsIQ/IGaP9yH8--

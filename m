@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0E940C54EBD
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3DF1AC3DA7A
 	for <linux-spi@archiver.kernel.org>; Fri,  6 Jan 2023 20:10:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231620AbjAFUKV (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 6 Jan 2023 15:10:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48810 "EHLO
+        id S236228AbjAFUKX (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 6 Jan 2023 15:10:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236287AbjAFUKN (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 6 Jan 2023 15:10:13 -0500
-Received: from relay.smtp-ext.broadcom.com (lpdvsmtp09.broadcom.com [192.19.166.228])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25BBC8408B;
-        Fri,  6 Jan 2023 12:10:12 -0800 (PST)
+        with ESMTP id S236305AbjAFUKR (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 6 Jan 2023 15:10:17 -0500
+Received: from relay.smtp-ext.broadcom.com (lpdvacalvio01.broadcom.com [192.19.166.228])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EFB28408F;
+        Fri,  6 Jan 2023 12:10:17 -0800 (PST)
 Received: from mail-lvn-it-01.lvn.broadcom.net (mail-lvn-it-01.lvn.broadcom.net [10.75.146.107])
-        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id CEBA9C0000E5;
-        Fri,  6 Jan 2023 12:10:11 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com CEBA9C0000E5
+        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id BC54AC0000E5;
+        Fri,  6 Jan 2023 12:10:16 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com BC54AC0000E5
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-        s=dkimrelay; t=1673035811;
-        bh=5BERIlcA8JzJwkeyjt1ucRTPCFChZtPk/WPUu85nbtk=;
+        s=dkimrelay; t=1673035816;
+        bh=+uD5a54icoUzLx5d+NsDh5T2zoEiPm+PP/DVulvOk6M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oopxl0l0RyXwtIlpWOxkb8UsK5cP960dZ2Hs4NnG8K3M17cJlr1hSbCMej5KX0HTI
-         /9+kR1DxAd5UhBqFQoKo8uS+NyoSU04fd1IPvYZnqA4Rcvu3cMr6suGv4G+10jtbEi
-         sLYCGhf6kmPMnLfwHuyQnBGjlA8oX1+/ZG7EVmtg=
+        b=n+9M+jMpQjjfxocTaKLvIc6d8q5QAICaG6Wcmk8aAoFA4r14syS0Vi8oQkhutuCnl
+         DxKE3a7B1vdJ5+uH2epxyHsxhtV5T475h26o6uOC/r80wWBi20EjxX9+QoO8Ymwt8g
+         Iw17eLWw3Bw9C5GXhQ/3kmZLIM0Ashg23dgf1jTA=
 Received: from bcacpedev-irv-3.lvn.broadcom.net (bcacpedev-irv-3.lvn.broadcom.net [10.75.138.105])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail-lvn-it-01.lvn.broadcom.net (Postfix) with ESMTPS id CCC5818041CAC6;
-        Fri,  6 Jan 2023 12:10:11 -0800 (PST)
+        by mail-lvn-it-01.lvn.broadcom.net (Postfix) with ESMTPS id BA66A18041CAC6;
+        Fri,  6 Jan 2023 12:10:16 -0800 (PST)
 Received: by bcacpedev-irv-3.lvn.broadcom.net (Postfix, from userid 28376)
-        id 184DB101B3C; Fri,  6 Jan 2023 12:10:05 -0800 (PST)
+        id B86B1101B3C; Fri,  6 Jan 2023 12:10:16 -0800 (PST)
 From:   William Zhang <william.zhang@broadcom.com>
 To:     Linux SPI List <linux-spi@vger.kernel.org>,
         Broadcom Kernel List <bcm-kernel-feedback-list@broadcom.com>
@@ -41,9 +41,9 @@ Cc:     anand.gore@broadcom.com, tomer.yacoby@broadcom.com,
         kursad.oney@broadcom.com, dregan@mail.com,
         William Zhang <william.zhang@broadcom.com>,
         Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org
-Subject: [PATCH 09/16] spi: bcm63xx-hsspi: Fix multi-bit mode setting
-Date:   Fri,  6 Jan 2023 12:08:01 -0800
-Message-Id: <20230106200809.330769-10-william.zhang@broadcom.com>
+Subject: [PATCH 14/16] spi: bcm63xx-hsspi: prepend: Disable spi mem dual io read op support
+Date:   Fri,  6 Jan 2023 12:08:06 -0800
+Message-Id: <20230106200809.330769-15-william.zhang@broadcom.com>
 X-Mailer: git-send-email 2.37.3
 In-Reply-To: <20230106200809.330769-1-william.zhang@broadcom.com>
 References: <20230106200809.330769-1-william.zhang@broadcom.com>
@@ -53,54 +53,69 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Currently the driver always sets the controller to dual data bit mode
-for both tx and rx data in the profile mode control register even for
-single data bit transfer. Luckily the opcode is set correctly according
-to SPI transfer data bit width so it does not actually cause issues.
+In general the controller supports SPI dual mode operation but the
+particular SPI flash dual io read op switches from single mode in cmd
+phase to dual mode in address and data phase. This is not compatible
+with prepend operation where cmd and address are sent out through the
+prepend buffer and they must use same the number of io pins.
 
-This change fixes the problem by setting tx and rx data bit mode field
-correctly according to the actual SPI transfer tx and rx data bit width.
+This patch disables these SPI flash dual io read ops through the mem_ops
+supports_op interface when prepend mode is used. This makes sure the SPI
+flash driver selects the compatible read ops at run time.
 
-Fixes: 142168eba9dc ("spi: bcm63xx-hsspi: add bcm63xx HSSPI driver")
 Signed-off-by: William Zhang <william.zhang@broadcom.com>
 ---
 
- drivers/spi/spi-bcm63xx-hsspi.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/spi/spi-bcm63xx-hsspi.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
 diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
-index f2b1b83bd6d4..398c412dcc3e 100644
+index be4ca01f332a..7ede7f02ba2c 100644
 --- a/drivers/spi/spi-bcm63xx-hsspi.c
 +++ b/drivers/spi/spi-bcm63xx-hsspi.c
-@@ -166,7 +166,7 @@ static int bcm63xx_hsspi_do_txrx(struct spi_device *spi, struct spi_transfer *t)
- 	int step_size = HSSPI_BUFFER_LEN;
- 	const u8 *tx = t->tx_buf;
- 	u8 *rx = t->rx_buf;
--	u32 val;
-+	u32 val = 0;
- 	unsigned long limit;
+@@ -20,6 +20,7 @@
+ #include <linux/spi/spi.h>
+ #include <linux/mutex.h>
+ #include <linux/of.h>
++#include <linux/spi/spi-mem.h>
+ #include <linux/reset.h>
+ #include <linux/pm_runtime.h>
  
- 	bcm63xx_hsspi_set_clk(bs, spi, t->speed_hz);
-@@ -183,11 +183,16 @@ static int bcm63xx_hsspi_do_txrx(struct spi_device *spi, struct spi_transfer *t)
- 		step_size -= HSSPI_OPCODE_LEN;
+@@ -596,6 +597,26 @@ static int bcm63xx_hsspi_transfer_one(struct spi_master *master,
+ 	return 0;
+ }
  
- 	if ((opcode == HSSPI_OP_READ && t->rx_nbits == SPI_NBITS_DUAL) ||
--	    (opcode == HSSPI_OP_WRITE && t->tx_nbits == SPI_NBITS_DUAL))
-+	    (opcode == HSSPI_OP_WRITE && t->tx_nbits == SPI_NBITS_DUAL)) {
- 		opcode |= HSSPI_OP_MULTIBIT;
- 
--	__raw_writel(1 << MODE_CTRL_MULTIDATA_WR_SIZE_SHIFT |
--		     1 << MODE_CTRL_MULTIDATA_RD_SIZE_SHIFT | 0xff,
-+		if (t->rx_nbits == SPI_NBITS_DUAL)
-+			val |= 1 << MODE_CTRL_MULTIDATA_RD_SIZE_SHIFT;
-+		if (t->tx_nbits == SPI_NBITS_DUAL)
-+			val |= 1 << MODE_CTRL_MULTIDATA_WR_SIZE_SHIFT;
-+	}
++static bool bcm63xx_hsspi_mem_supports_op(struct spi_mem *mem,
++			    const struct spi_mem_op *op)
++{
++	struct bcm63xx_hsspi *bs = spi_master_get_devdata(mem->spi->master);
 +
-+	__raw_writel(val | 0xff,
- 		     bs->regs + HSSPI_PROFILE_MODE_CTRL_REG(chip_select));
++	if (!spi_mem_default_supports_op(mem, op))
++		return false;
++
++	/* Controller doesn't support spi mem dual/quad read cmd in prepend mode */
++	if (!bs->use_cs_workaround &&
++		  ((op->cmd.opcode == 0xbb) || (op->cmd.opcode == 0xeb)))
++		return false;
++
++	return true;
++}
++
++static const struct spi_controller_mem_ops bcm63xx_hsspi_mem_ops = {
++	.supports_op = bcm63xx_hsspi_mem_supports_op,
++};
++
+ static irqreturn_t bcm63xx_hsspi_interrupt(int irq, void *dev_id)
+ {
+ 	struct bcm63xx_hsspi *bs = (struct bcm63xx_hsspi *)dev_id;
+@@ -692,6 +713,7 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
+ 	mutex_init(&bs->bus_mutex);
+ 	init_completion(&bs->done);
  
- 	while (pending > 0) {
++	master->mem_ops = &bcm63xx_hsspi_mem_ops;
+ 	master->dev.of_node = dev->of_node;
+ 	if (!dev->of_node) {
+ 		master->bus_num = HSSPI_BUS_NUM;
 -- 
 2.37.3
 

@@ -2,36 +2,37 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1325DC63707
-	for <linux-spi@archiver.kernel.org>; Fri,  6 Jan 2023 20:19:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B7F0C677F0
+	for <linux-spi@archiver.kernel.org>; Fri,  6 Jan 2023 20:19:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235771AbjAFUT1 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 6 Jan 2023 15:19:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57384 "EHLO
+        id S236224AbjAFUT2 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 6 Jan 2023 15:19:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235927AbjAFUS6 (ORCPT
+        with ESMTP id S235891AbjAFUS6 (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Fri, 6 Jan 2023 15:18:58 -0500
+X-Greylist: delayed 547 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 06 Jan 2023 12:18:26 PST
 Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.144.205])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB2463C0EE;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAF9F3AB03;
         Fri,  6 Jan 2023 12:18:26 -0800 (PST)
 Received: from mail-lvn-it-01.lvn.broadcom.net (mail-lvn-it-01.lvn.broadcom.net [10.75.146.107])
-        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id D1001C0000FC;
-        Fri,  6 Jan 2023 12:09:18 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com D1001C0000FC
+        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 0FFF8C0003CA;
+        Fri,  6 Jan 2023 12:09:33 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 0FFF8C0003CA
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-        s=dkimrelay; t=1673035758;
-        bh=MYUsSHLgP7dHC8xMB/DwQimm9HCWfdRSSh+vEZ+hw8s=;
+        s=dkimrelay; t=1673035773;
+        bh=IvHElhieoeG6ehpcVfKKnJWwfWVb9CrCRmCz4f0TsyY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Uq6Jb+tn9ukWSXoSh2hF7LoPWK1VUcXvm8aP/V0NXjb2RNC8j/gkXL7W617D4aSZ8
-         hASKvlQgVkQ1gNVWhb7uy4Cw08f4KIyxL+cxufGOmXpX2lR5GNk8To6Oygf8GVZSlz
-         9kXvRxSuVwUsieGlx95AiVujcuQ4onFIPNWK+Moc=
+        b=pT0P6pG4RQwlbn0muM+ogmkEyLytkpHaI2e3eBnoXKEwVkeiOmmV9RFtWI7P4GD2N
+         ckhhxHFF/WzsITMTZA+fTcGA1Ly0iYivGOMy4NPg9o6XjoAGn1Rd/+JJMrk2B3Gx38
+         dywWSGdElENaS0vmBNa7uoR0QIMLcMivMgpv55Rc=
 Received: from bcacpedev-irv-3.lvn.broadcom.net (bcacpedev-irv-3.lvn.broadcom.net [10.75.138.105])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail-lvn-it-01.lvn.broadcom.net (Postfix) with ESMTPS id 90FF518041CAC6;
-        Fri,  6 Jan 2023 12:09:18 -0800 (PST)
+        by mail-lvn-it-01.lvn.broadcom.net (Postfix) with ESMTPS id CA6D318041CAC6;
+        Fri,  6 Jan 2023 12:09:32 -0800 (PST)
 Received: by bcacpedev-irv-3.lvn.broadcom.net (Postfix, from userid 28376)
-        id DE031101B33; Fri,  6 Jan 2023 12:09:08 -0800 (PST)
+        id C26F2101B33; Fri,  6 Jan 2023 12:09:32 -0800 (PST)
 From:   William Zhang <william.zhang@broadcom.com>
 To:     Linux SPI List <linux-spi@vger.kernel.org>,
         Broadcom Kernel List <bcm-kernel-feedback-list@broadcom.com>
@@ -41,12 +42,12 @@ Cc:     anand.gore@broadcom.com, tomer.yacoby@broadcom.com,
         kursad.oney@broadcom.com, dregan@mail.com,
         William Zhang <william.zhang@broadcom.com>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Mark Brown <broonie@kernel.org>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
         Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 02/16] dt-bindings: spi: Add bcmbca-hsspi controller support
-Date:   Fri,  6 Jan 2023 12:07:54 -0800
-Message-Id: <20230106200809.330769-3-william.zhang@broadcom.com>
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 04/16] ARM: dts: broadcom: bcmbca: Add spi controller node
+Date:   Fri,  6 Jan 2023 12:07:56 -0800
+Message-Id: <20230106200809.330769-5-william.zhang@broadcom.com>
 X-Mailer: git-send-email 2.37.3
 In-Reply-To: <20230106200809.330769-1-william.zhang@broadcom.com>
 References: <20230106200809.330769-1-william.zhang@broadcom.com>
@@ -56,138 +57,434 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The new Broadcom Broadband BCMBCA SoCs includes a updated HSSPI
-controller. Add a new compatible string and required fields for the new
-driver.  Also add myself and Kursad as the maintainers.
+Add support for HSSPI controller in ARMv7 chip dts files.
 
 Signed-off-by: William Zhang <william.zhang@broadcom.com>
 ---
 
- .../bindings/spi/brcm,bcm63xx-hsspi.yaml      | 84 +++++++++++++++++--
- 1 file changed, 78 insertions(+), 6 deletions(-)
+ arch/arm/boot/dts/bcm47622.dtsi    | 17 +++++++++++++++++
+ arch/arm/boot/dts/bcm63138.dtsi    | 17 +++++++++++++++++
+ arch/arm/boot/dts/bcm63148.dtsi    | 17 +++++++++++++++++
+ arch/arm/boot/dts/bcm63178.dtsi    | 18 ++++++++++++++++++
+ arch/arm/boot/dts/bcm6756.dtsi     | 18 ++++++++++++++++++
+ arch/arm/boot/dts/bcm6846.dtsi     | 17 +++++++++++++++++
+ arch/arm/boot/dts/bcm6855.dtsi     | 18 ++++++++++++++++++
+ arch/arm/boot/dts/bcm6878.dtsi     | 18 ++++++++++++++++++
+ arch/arm/boot/dts/bcm947622.dts    |  4 ++++
+ arch/arm/boot/dts/bcm963138.dts    |  4 ++++
+ arch/arm/boot/dts/bcm963138dvt.dts |  4 ++++
+ arch/arm/boot/dts/bcm963148.dts    |  4 ++++
+ arch/arm/boot/dts/bcm963178.dts    |  4 ++++
+ arch/arm/boot/dts/bcm96756.dts     |  4 ++++
+ arch/arm/boot/dts/bcm96846.dts     |  4 ++++
+ arch/arm/boot/dts/bcm96855.dts     |  4 ++++
+ arch/arm/boot/dts/bcm96878.dts     |  4 ++++
+ 17 files changed, 176 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/spi/brcm,bcm63xx-hsspi.yaml b/Documentation/devicetree/bindings/spi/brcm,bcm63xx-hsspi.yaml
-index 45f1417b1213..56e69d4a1faf 100644
---- a/Documentation/devicetree/bindings/spi/brcm,bcm63xx-hsspi.yaml
-+++ b/Documentation/devicetree/bindings/spi/brcm,bcm63xx-hsspi.yaml
-@@ -4,22 +4,51 @@
- $id: http://devicetree.org/schemas/spi/brcm,bcm63xx-hsspi.yaml#
- $schema: http://devicetree.org/meta-schemas/core.yaml#
- 
--title: Broadcom BCM6328 High Speed SPI controller
-+title: Broadcom Broadband SoC High Speed SPI controller
- 
- maintainers:
+diff --git a/arch/arm/boot/dts/bcm47622.dtsi b/arch/arm/boot/dts/bcm47622.dtsi
+index f4b2db9bc4ab..da4b71ef2471 100644
+--- a/arch/arm/boot/dts/bcm47622.dtsi
++++ b/arch/arm/boot/dts/bcm47622.dtsi
+@@ -88,6 +88,12 @@ uart_clk: uart-clk {
+ 			clock-div = <4>;
+ 			clock-mult = <1>;
+ 		};
 +
-+  - William Zhang <william.zhang@broadcom.com>
-+  - Kursad Oney <kursad.oney@broadcom.com>
-   - Jonas Gorski <jonas.gorski@gmail.com>
++		hsspi_pll: hsspi-pll {
++			compatible = "fixed-clock";
++			#clock-cells = <0>;
++			clock-frequency = <200000000>;
++		};
+ 	};
  
-+description: |
-+  Broadcom Broadband SoC supports High Speed SPI master controller since the
-+  early MIPS based chips such as BCM6328 and BCM63268.  This controller was
-+  carried over to recent ARM based chips, such as BCM63138, BCM4908 and BCM6858.
+ 	psci {
+@@ -119,6 +125,17 @@ bus@ff800000 {
+ 		#size-cells = <1>;
+ 		ranges = <0 0xff800000 0x800000>;
+ 
++		hsspi: spi@1000 {
++			#address-cells = <1>;
++			#size-cells = <0>;
++			compatible = "brcm,bcm6328-hsspi";
++			reg = <0x1000 0x600>;
++			clocks = <&hsspi_pll &hsspi_pll>;
++			clock-names = "hsspi", "pll";
++			num-cs = <8>;
++			status = "disabled";
++		};
 +
-+  It has a limitation that can not keep the chip select line active between
-+  the SPI transfers within the same SPI message. This can terminate the
-+  transaction to some SPI devices prematurely. The issue can be worked around by
-+  either the controller's prepend mode or using the dummy chip select
-+  workaround. This controller uses the compatible string brcm,bcm6328-hsspi.
+ 		uart0: serial@12000 {
+ 			compatible = "arm,pl011", "arm,primecell";
+ 			reg = <0x12000 0x1000>;
+diff --git a/arch/arm/boot/dts/bcm63138.dtsi b/arch/arm/boot/dts/bcm63138.dtsi
+index b774a8d63813..1631694c0496 100644
+--- a/arch/arm/boot/dts/bcm63138.dtsi
++++ b/arch/arm/boot/dts/bcm63138.dtsi
+@@ -66,6 +66,12 @@ apb_clk: apb_clk {
+ 			clock-div = <4>;
+ 			clock-mult = <1>;
+ 		};
 +
-+  The newer SoCs such as BCM6756, BCM4912 and BCM6855 include an updated SPI
-+  controller that add the capability to allow the driver to control chip select
-+  explicitly. This solves the issue in the old controller. This new controller
-+  uses the compatible string brcm,bcmbca-hsspi.
++		hsspi_pll: hsspi-pll {
++			compatible = "fixed-clock";
++			#clock-cells = <0>;
++			clock-frequency = <400000000>;
++		};
+ 	};
+ 
+ 	/* ARM bus */
+@@ -203,6 +209,17 @@ serial1: serial@620 {
+ 			status = "disabled";
+ 		};
+ 
++		hsspi: spi@1000 {
++			#address-cells = <1>;
++			#size-cells = <0>;
++			compatible = "brcm,bcm6328-hsspi";
++			reg = <0x1000 0x600>;
++			clocks = <&hsspi_pll &hsspi_pll>;
++			clock-names = "hsspi", "pll";
++			num-cs = <8>;
++			status = "disabled";
++		};
 +
- properties:
-   compatible:
--    const: brcm,bcm6328-hsspi
-+    enum:
-+      - brcm,bcm6328-hsspi
-+      - brcm,bcmbca-hsspi
- 
-   reg:
--    maxItems: 1
-+    items:
-+      - description: main registers
-+      - description: miscellaneous control registers
-+    minItems: 1
+ 		nand_controller: nand-controller@2000 {
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
+diff --git a/arch/arm/boot/dts/bcm63148.dtsi b/arch/arm/boot/dts/bcm63148.dtsi
+index 7cd55d64de71..6dccba705f5d 100644
+--- a/arch/arm/boot/dts/bcm63148.dtsi
++++ b/arch/arm/boot/dts/bcm63148.dtsi
+@@ -60,6 +60,12 @@ periph_clk: periph-clk {
+ 			#clock-cells = <0>;
+ 			clock-frequency = <50000000>;
+ 		};
 +
-+  reg-names:
-+    items:
-+      - const: hsspi
-+      - const: spim-ctrl
++		hsspi_pll: hsspi-pll {
++			compatible = "fixed-clock";
++			#clock-cells = <0>;
++			clock-frequency = <400000000>;
++		};
+ 	};
  
-   clocks:
-     items:
--      - description: spi master reference clock
--      - description: spi master pll clock
-+      - description: SPI master reference clock
-+      - description: SPI master pll clock
- 
-   clock-names:
-     items:
-@@ -29,12 +58,43 @@ properties:
-   interrupts:
-     maxItems: 1
- 
-+  brcm,use-cs-workaround:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description: |
-+      Enable dummy chip select workaround for SPI transfers that can not be
-+      supported by the default controller's prepend mode, i.e. delay or cs
-+      change needed between SPI transfers.
+ 	psci {
+@@ -100,5 +106,16 @@ uart0: serial@600 {
+ 			clock-names = "refclk";
+ 			status = "disabled";
+ 		};
 +
- required:
-   - compatible
-   - reg
-   - clocks
-   - clock-names
--  - interrupts
++		hsspi: spi@1000 {
++			#address-cells = <1>;
++			#size-cells = <0>;
++			compatible = "brcm,bcm6328-hsspi";
++			reg = <0x1000 0x600>;
++			clocks = <&hsspi_pll &hsspi_pll>;
++			clock-names = "hsspi", "pll";
++			num-cs = <8>;
++			status = "disabled";
++		};
+ 	};
+ };
+diff --git a/arch/arm/boot/dts/bcm63178.dtsi b/arch/arm/boot/dts/bcm63178.dtsi
+index 043e699cbc27..8db27e7ac9fd 100644
+--- a/arch/arm/boot/dts/bcm63178.dtsi
++++ b/arch/arm/boot/dts/bcm63178.dtsi
+@@ -71,6 +71,7 @@ periph_clk: periph-clk {
+ 			#clock-cells = <0>;
+ 			clock-frequency = <200000000>;
+ 		};
 +
-+allOf:
-+  - $ref: "spi-controller.yaml#"
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - brcm,bcm6328-hsspi
-+    then:
-+      properties:
-+        reg:
-+          minItems: 1
-+          maxItems: 1
-+    else:
-+      properties:
-+        reg:
-+          minItems: 2
-+          maxItems: 2
-+        reg-names:
-+          minItems: 2
-+          maxItems: 2
-+        brcm,use-cs-workaround: false
-+      required:
-+        - reg-names
+ 		uart_clk: uart-clk {
+ 			compatible = "fixed-factor-clock";
+ 			#clock-cells = <0>;
+@@ -78,6 +79,12 @@ uart_clk: uart-clk {
+ 			clock-div = <4>;
+ 			clock-mult = <1>;
+ 		};
++
++		hsspi_pll: hsspi-pll {
++			compatible = "fixed-clock";
++			#clock-cells = <0>;
++			clock-frequency = <200000000>;
++		};
+ 	};
  
- unevaluatedProperties: false
+ 	psci {
+@@ -109,6 +116,17 @@ bus@ff800000 {
+ 		#size-cells = <1>;
+ 		ranges = <0 0xff800000 0x800000>;
  
-@@ -50,3 +110,15 @@ examples:
-         #address-cells = <1>;
-         #size-cells = <0>;
-     };
-+  - |
-+    spi@ff801000 {
-+        compatible = "brcm,bcmbca-hsspi";
-+        reg = <0xff801000 0x1000>,
-+              <0xff802610 0x4>;
-+        reg-names = "hsspi", "spim-ctrl";
-+        clocks = <&hsspi>, <&hsspi_pll>;
-+        clock-names = "hsspi", "pll";
-+        num-cs = <8>;
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+    };
++		hsspi: spi@1000 {
++			#address-cells = <1>;
++			#size-cells = <0>;
++			compatible = "brcm,bcm6328-hsspi";
++			reg = <0x1000 0x600>;
++			clocks = <&hsspi_pll &hsspi_pll>;
++			clock-names = "hsspi", "pll";
++			num-cs = <8>;
++			status = "disabled";
++		};
++
+ 		uart0: serial@12000 {
+ 			compatible = "arm,pl011", "arm,primecell";
+ 			reg = <0x12000 0x1000>;
+diff --git a/arch/arm/boot/dts/bcm6756.dtsi b/arch/arm/boot/dts/bcm6756.dtsi
+index 5c72219bc194..2af35a48b6c3 100644
+--- a/arch/arm/boot/dts/bcm6756.dtsi
++++ b/arch/arm/boot/dts/bcm6756.dtsi
+@@ -88,6 +88,12 @@ uart_clk: uart-clk {
+ 			clock-div = <4>;
+ 			clock-mult = <1>;
+ 		};
++
++		hsspi_pll: hsspi-pll {
++			compatible = "fixed-clock";
++			#clock-cells = <0>;
++			clock-frequency = <200000000>;
++		};
+ 	};
+ 
+ 	psci {
+@@ -119,6 +125,18 @@ bus@ff800000 {
+ 		#size-cells = <1>;
+ 		ranges = <0 0xff800000 0x800000>;
+ 
++		hsspi: spi@1000 {
++			#address-cells = <1>;
++			#size-cells = <0>;
++			compatible = "brcm,bcmbca-hsspi";
++			reg = <0x1000 0x600>, <0x2610 0x4>;
++			reg-names = "hsspi", "spim-ctrl";
++			clocks = <&hsspi_pll &hsspi_pll>;
++			clock-names = "hsspi", "pll";
++			num-cs = <8>;
++			status = "disabled";
++		};
++
+ 		uart0: serial@12000 {
+ 			compatible = "arm,pl011", "arm,primecell";
+ 			reg = <0x12000 0x1000>;
+diff --git a/arch/arm/boot/dts/bcm6846.dtsi b/arch/arm/boot/dts/bcm6846.dtsi
+index 81513a793815..fa26b2107f93 100644
+--- a/arch/arm/boot/dts/bcm6846.dtsi
++++ b/arch/arm/boot/dts/bcm6846.dtsi
+@@ -61,6 +61,12 @@ periph_clk: periph-clk {
+ 			#clock-cells = <0>;
+ 			clock-frequency = <200000000>;
+ 		};
++
++		hsspi_pll: hsspi-pll {
++			compatible = "fixed-clock";
++			#clock-cells = <0>;
++			clock-frequency = <400000000>;
++		};
+ 	};
+ 
+ 	psci {
+@@ -100,5 +106,16 @@ uart0: serial@640 {
+ 			clock-names = "refclk";
+ 			status = "disabled";
+ 		};
++
++		hsspi: spi@1000 {
++			#address-cells = <1>;
++			#size-cells = <0>;
++			compatible = "brcm,bcm6328-hsspi";
++			reg = <0x1000 0x600>;
++			clocks = <&hsspi_pll &hsspi_pll>;
++			clock-names = "hsspi", "pll";
++			num-cs = <8>;
++			status = "disabled";
++		};
+ 	};
+ };
+diff --git a/arch/arm/boot/dts/bcm6855.dtsi b/arch/arm/boot/dts/bcm6855.dtsi
+index 5fa5feac0e29..bf028f0ad84c 100644
+--- a/arch/arm/boot/dts/bcm6855.dtsi
++++ b/arch/arm/boot/dts/bcm6855.dtsi
+@@ -78,6 +78,12 @@ uart_clk: uart-clk {
+ 			clock-div = <4>;
+ 			clock-mult = <1>;
+ 		};
++
++		hsspi_pll: hsspi-pll {
++			compatible = "fixed-clock";
++			#clock-cells = <0>;
++			clock-frequency = <200000000>;
++		};
+ 	};
+ 
+ 	psci {
+@@ -109,6 +115,18 @@ bus@ff800000 {
+ 		#size-cells = <1>;
+ 		ranges = <0 0xff800000 0x800000>;
+ 
++		hsspi: spi@1000 {
++			#address-cells = <1>;
++			#size-cells = <0>;
++			compatible = "brcm,bcmbca-hsspi";
++			reg = <0x1000 0x600>, <0x2610 0x4>;
++			reg-names = "hsspi", "spim-ctrl";
++			clocks = <&hsspi_pll &hsspi_pll>;
++			clock-names = "hsspi", "pll";
++			num-cs = <8>;
++			status = "disabled";
++		};
++
+ 		uart0: serial@12000 {
+ 			compatible = "arm,pl011", "arm,primecell";
+ 			reg = <0x12000 0x1000>;
+diff --git a/arch/arm/boot/dts/bcm6878.dtsi b/arch/arm/boot/dts/bcm6878.dtsi
+index 4ec836ac4baf..be7ab5f52da4 100644
+--- a/arch/arm/boot/dts/bcm6878.dtsi
++++ b/arch/arm/boot/dts/bcm6878.dtsi
+@@ -61,6 +61,7 @@ periph_clk: periph-clk {
+ 			#clock-cells = <0>;
+ 			clock-frequency = <200000000>;
+ 		};
++
+ 		uart_clk: uart-clk {
+ 			compatible = "fixed-factor-clock";
+ 			#clock-cells = <0>;
+@@ -68,6 +69,12 @@ uart_clk: uart-clk {
+ 			clock-div = <4>;
+ 			clock-mult = <1>;
+ 		};
++
++		hsspi_pll: hsspi-pll {
++			compatible = "fixed-clock";
++			#clock-cells = <0>;
++			clock-frequency = <200000000>;
++		};
+ 	};
+ 
+ 	psci {
+@@ -100,6 +107,17 @@ bus@ff800000 {
+ 		#size-cells = <1>;
+ 		ranges = <0 0xff800000 0x800000>;
+ 
++		hsspi: spi@1000 {
++			#address-cells = <1>;
++			#size-cells = <0>;
++			compatible = "brcm,bcm6328-hsspi";
++			reg = <0x1000 0x600>;
++			clocks = <&hsspi_pll &hsspi_pll>;
++			clock-names = "hsspi", "pll";
++			num-cs = <8>;
++			status = "disabled";
++		};
++
+ 		uart0: serial@12000 {
+ 			compatible = "arm,pl011", "arm,primecell";
+ 			reg = <0x12000 0x1000>;
+diff --git a/arch/arm/boot/dts/bcm947622.dts b/arch/arm/boot/dts/bcm947622.dts
+index 6f083724ab8e..93b8ce22678d 100644
+--- a/arch/arm/boot/dts/bcm947622.dts
++++ b/arch/arm/boot/dts/bcm947622.dts
+@@ -28,3 +28,7 @@ memory@0 {
+ &uart0 {
+ 	status = "okay";
+ };
++
++&hsspi {
++	status = "okay";
++};
+diff --git a/arch/arm/boot/dts/bcm963138.dts b/arch/arm/boot/dts/bcm963138.dts
+index d28c4f130ca2..1b405c249213 100644
+--- a/arch/arm/boot/dts/bcm963138.dts
++++ b/arch/arm/boot/dts/bcm963138.dts
+@@ -25,3 +25,7 @@ memory@0 {
+ &serial0 {
+ 	status = "okay";
+ };
++
++&hsspi {
++	status = "okay";
++};
+diff --git a/arch/arm/boot/dts/bcm963138dvt.dts b/arch/arm/boot/dts/bcm963138dvt.dts
+index 15bec75be74c..b5af61853a07 100644
+--- a/arch/arm/boot/dts/bcm963138dvt.dts
++++ b/arch/arm/boot/dts/bcm963138dvt.dts
+@@ -50,3 +50,7 @@ &ahci {
+ &sata_phy {
+ 	status = "okay";
+ };
++
++&hsspi {
++	status = "okay";
++};
+diff --git a/arch/arm/boot/dts/bcm963148.dts b/arch/arm/boot/dts/bcm963148.dts
+index 98f6a6d09f50..1f5d6d783f09 100644
+--- a/arch/arm/boot/dts/bcm963148.dts
++++ b/arch/arm/boot/dts/bcm963148.dts
+@@ -28,3 +28,7 @@ memory@0 {
+ &uart0 {
+ 	status = "okay";
+ };
++
++&hsspi {
++	status = "okay";
++};
+diff --git a/arch/arm/boot/dts/bcm963178.dts b/arch/arm/boot/dts/bcm963178.dts
+index fa096e9cde23..d036e99dd8d1 100644
+--- a/arch/arm/boot/dts/bcm963178.dts
++++ b/arch/arm/boot/dts/bcm963178.dts
+@@ -28,3 +28,7 @@ memory@0 {
+ &uart0 {
+ 	status = "okay";
+ };
++
++&hsspi {
++	status = "okay";
++};
+diff --git a/arch/arm/boot/dts/bcm96756.dts b/arch/arm/boot/dts/bcm96756.dts
+index 9a4a87ba9c8a..8b104f3fb14a 100644
+--- a/arch/arm/boot/dts/bcm96756.dts
++++ b/arch/arm/boot/dts/bcm96756.dts
+@@ -28,3 +28,7 @@ memory@0 {
+ &uart0 {
+ 	status = "okay";
+ };
++
++&hsspi {
++	status = "okay";
++};
+diff --git a/arch/arm/boot/dts/bcm96846.dts b/arch/arm/boot/dts/bcm96846.dts
+index c70ebccabc19..55852c229608 100644
+--- a/arch/arm/boot/dts/bcm96846.dts
++++ b/arch/arm/boot/dts/bcm96846.dts
+@@ -28,3 +28,7 @@ memory@0 {
+ &uart0 {
+ 	status = "okay";
+ };
++
++&hsspi {
++	status = "okay";
++};
+diff --git a/arch/arm/boot/dts/bcm96855.dts b/arch/arm/boot/dts/bcm96855.dts
+index 4438152561ac..2ad880af2104 100644
+--- a/arch/arm/boot/dts/bcm96855.dts
++++ b/arch/arm/boot/dts/bcm96855.dts
+@@ -28,3 +28,7 @@ memory@0 {
+ &uart0 {
+ 	status = "okay";
+ };
++
++&hsspi {
++	status = "okay";
++};
+diff --git a/arch/arm/boot/dts/bcm96878.dts b/arch/arm/boot/dts/bcm96878.dts
+index 8fbc175cb452..b7af8ade7a9d 100644
+--- a/arch/arm/boot/dts/bcm96878.dts
++++ b/arch/arm/boot/dts/bcm96878.dts
+@@ -28,3 +28,7 @@ memory@0 {
+ &uart0 {
+ 	status = "okay";
+ };
++
++&hsspi {
++	status = "okay";
++};
 -- 
 2.37.3
 

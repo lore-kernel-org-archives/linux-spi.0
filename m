@@ -2,85 +2,104 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4B4B0C3DA7A
-	for <linux-spi@archiver.kernel.org>; Thu,  5 Jan 2023 14:44:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 789CDC5479D
+	for <linux-spi@archiver.kernel.org>; Fri,  6 Jan 2023 10:08:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233312AbjAEOoF (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 5 Jan 2023 09:44:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45574 "EHLO
+        id S232222AbjAFKH2 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 6 Jan 2023 05:07:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231917AbjAEOoE (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 5 Jan 2023 09:44:04 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D58821EC71;
-        Thu,  5 Jan 2023 06:44:03 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 983C2B81ABD;
-        Thu,  5 Jan 2023 14:44:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D5F6C433EF;
-        Thu,  5 Jan 2023 14:44:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1672929841;
-        bh=8ZYhdVRy8WTVHS/NoM8xkMFQn94wh2mTKmVziKYic6o=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=SniGlC6u9PAO1XLhI2b1NgyEF0owZ7BkskObnUPs+iBROk829MqRWaDX7JBYy/If/
-         vsSOn0dGEiqx5GWj5xp31Av0bcuh9hbRTt4CxpeB4N84OO8O42Vc5ilGrnPkTGogZn
-         gz7GZr7lggMnZ+/pL/ptE7ta1xUO1XeYOzVxI3+/oni62cNd4HdVs/3ziNxQIGNVS1
-         IIro0CDLeT/vJLYz6wEODl49i9rINQ4Axg0dRqi+h+RhJl/QEgwyTGiRVsTeQx2KNf
-         Nbw/xa3bB1jFsH2h5502kGpmRmGsL3rsfJ3UW5few9LedkYynLMAH9Vp/x++rA8FVG
-         z6PowD1qA7+Zw==
-Date:   Thu, 5 Jan 2023 14:43:57 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
+        with ESMTP id S232359AbjAFKH0 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 6 Jan 2023 05:07:26 -0500
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E78131BEBC
+        for <linux-spi@vger.kernel.org>; Fri,  6 Jan 2023 02:07:23 -0800 (PST)
+Received: by mail-wr1-x429.google.com with SMTP id d4so826949wrw.6
+        for <linux-spi@vger.kernel.org>; Fri, 06 Jan 2023 02:07:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PZWY1/S6RdMZhtZh79E6ztwnlZlP7yNb5btDBzqm71k=;
+        b=MkRwuDvaRgv64sZzuV19hROgiMZ0beknf9LKQN28c33XcAq8LLf1AOHHlQ/+b91out
+         MQweAOg/onmevNjJt+6u6iC+5vcQRrRlNshahgxThNZkTp7zOKML6/582B2ngE3Rvq8i
+         krbH8NzNZRUjuyUqeS8hKtnKU4K777nc9d8tbgaXCYs2Iqr6PgYUC1VkD0Pe9YCR4z/D
+         l56RgqjaeOQncpFkOW8/4k/5DXZsHswQgTW0IhUoaI/fAEzSBwwm4hzB+FqjKqxaNp4Z
+         u7C23PFTO823LQX3VQkFWg2pDnzntiX3v3k8z3G/2C3v+g4u88cHXkET+k7FlCQ0ap4q
+         9Caw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PZWY1/S6RdMZhtZh79E6ztwnlZlP7yNb5btDBzqm71k=;
+        b=Ofknbjk/OY5qtMDExVhclGcLeEqs/QEtCtPLmOzqvVqYn0Zzx1Uj+i6mOqCReoz2lr
+         JheOu8mOccUMSemk9QeYEaFNktiIYdhx7fnuQiJDQdf3MPpx8JAG1h9rF6WO1Dys1NBv
+         //GdGEffGS/gMLeP/baV5s7yyIEc59zTy4K+PJ/pAGbkZo81DZco5AwqFxl2fVba5ZPd
+         G8hBvvyGDOc9SUZPCYG6pfIY/VHecOtbcm/Gp3HvSAcsLqJxK2f15k/hiAOXbVUyM+fC
+         gyIB8+N/FdrOTV9qjViW9Xm20Lh6ko+qU7EzaPEAnQvqV6JIVTwgaatvHi+Qr1N0yI9m
+         ulOA==
+X-Gm-Message-State: AFqh2kog2fKi/1Qdvsq0CZIF4Ulk14j8KNrulcdBY9t+YfWK86cHGvzz
+        TrHDNDvMyHfGA7uWEymFl/6lKA==
+X-Google-Smtp-Source: AMrXdXsRc9lzn15C6YvcOfZWKzNzEW4zdhbLXxx1y3G0GwYgCMNoBjQcGWaslhzQXSVMMIfr35mP6Q==
+X-Received: by 2002:adf:f7d1:0:b0:273:a0d8:c9f5 with SMTP id a17-20020adff7d1000000b00273a0d8c9f5mr27666658wrq.61.1672999642540;
+        Fri, 06 Jan 2023 02:07:22 -0800 (PST)
+Received: from brgl-uxlite.home ([2a01:cb1d:334:ac00:86fd:399:3851:d474])
+        by smtp.gmail.com with ESMTPSA id f2-20020adfdb42000000b0024274a5db0asm780594wrj.2.2023.01.06.02.07.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Jan 2023 02:07:22 -0800 (PST)
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+To:     Mark Brown <broonie@kernel.org>
 Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
         Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [PATCH 1/2] spi: spidev: fix a race condition when accessing
- spidev->spi
-Message-ID: <Y7biLYFDEhQ0Kq/L@sirena.org.uk>
-References: <20230105124100.185542-1-brgl@bgdev.pl>
- <Y7bWCm/hpK4pbI6W@sirena.org.uk>
- <CAMRc=MdwdKKEx0DZ6xJvYRu3qbvUPD-J1RbQ6b0uMkP_JU=5bQ@mail.gmail.com>
+Subject: [PATCH v2 2/2] spi: spidev: remove debug messages that access spidev->spi without locking
+Date:   Fri,  6 Jan 2023 11:07:19 +0100
+Message-Id: <20230106100719.196243-2-brgl@bgdev.pl>
+X-Mailer: git-send-email 2.37.2
+In-Reply-To: <20230106100719.196243-1-brgl@bgdev.pl>
+References: <20230106100719.196243-1-brgl@bgdev.pl>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="n4BhMqwu6f98V8Zh"
-Content-Disposition: inline
-In-Reply-To: <CAMRc=MdwdKKEx0DZ6xJvYRu3qbvUPD-J1RbQ6b0uMkP_JU=5bQ@mail.gmail.com>
-X-Cookie: Surprise due today.  Also the rent.
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
---n4BhMqwu6f98V8Zh
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The two debug messages in spidev_open() dereference spidev->spi without
+taking the lock and without checking if it's not null. This can lead to
+a crash. Drop the messages as they're not needed - the user-space will
+get informed about ENOMEM with the syscall return value.
 
-On Thu, Jan 05, 2023 at 03:30:47PM +0100, Bartosz Golaszewski wrote:
-> On Thu, Jan 5, 2023 at 2:52 PM Mark Brown <broonie@kernel.org> wrote:
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+---
+v1 -> v2:
+- no changes
 
-> > I'm not sure this is important or useful, there's not a lot that can
-> > practically happen concurrently when we get to actually interacting with
-> > the device and it's making the code a bit less clear.
+ drivers/spi/spidev.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-> You suggest to just use a mutex instead?
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index 42aaaca67265..1935ca613447 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -603,7 +603,6 @@ static int spidev_open(struct inode *inode, struct file *filp)
+ 	if (!spidev->tx_buffer) {
+ 		spidev->tx_buffer = kmalloc(bufsiz, GFP_KERNEL);
+ 		if (!spidev->tx_buffer) {
+-			dev_dbg(&spidev->spi->dev, "open/ENOMEM\n");
+ 			status = -ENOMEM;
+ 			goto err_find_dev;
+ 		}
+@@ -612,7 +611,6 @@ static int spidev_open(struct inode *inode, struct file *filp)
+ 	if (!spidev->rx_buffer) {
+ 		spidev->rx_buffer = kmalloc(bufsiz, GFP_KERNEL);
+ 		if (!spidev->rx_buffer) {
+-			dev_dbg(&spidev->spi->dev, "open/ENOMEM\n");
+ 			status = -ENOMEM;
+ 			goto err_alloc_rx_buf;
+ 		}
+-- 
+2.37.2
 
-Yeah.
-
---n4BhMqwu6f98V8Zh
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmO24iwACgkQJNaLcl1U
-h9CgeAf9FwNE0tTNxDPFxb1YbeTCYDD8ZrtsudyYXk92AFR47bK2RqD1h/02WzEI
-Cht4HMpDti4S9tpPruamEcG3BH039CjvUJLwSt2eFNoq6nXiQ/fslfoAKfY8ou51
-Qoun3L4TsjSboj3PHqqVXvgE9fchVOGVcmcN6qmQ7HMMU7wrI/7bYrBGqHgLmdMP
-Cda7p/sCBIfCTufOAjupRTSY0jXTHi1Py26YN1EyfvvS0kvBe928tLTllj3ANC7H
-w1ci5DDsL/jR+MdFgaOOp83wYbzDS7vpz8hC3BNoLT1hqldUGixsJp4al9qAwQ0i
-spZOUzvx/6MCwXASGH3oyDZTa+/EHw==
-=Fm+C
------END PGP SIGNATURE-----
-
---n4BhMqwu6f98V8Zh--

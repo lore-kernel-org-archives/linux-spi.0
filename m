@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 53ED1C61DB3
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 80457C63707
 	for <linux-spi@archiver.kernel.org>; Fri,  6 Jan 2023 20:10:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236218AbjAFUKW (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 6 Jan 2023 15:10:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48854 "EHLO
+        id S236245AbjAFUKX (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 6 Jan 2023 15:10:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236293AbjAFUKO (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 6 Jan 2023 15:10:14 -0500
-Received: from relay.smtp-ext.broadcom.com (lpdvsmtp11.broadcom.com [192.19.166.231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 731B38408B;
-        Fri,  6 Jan 2023 12:10:13 -0800 (PST)
+        with ESMTP id S236200AbjAFUKV (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 6 Jan 2023 15:10:21 -0500
+Received: from relay.smtp-ext.broadcom.com (lpdvacalvio01.broadcom.com [192.19.166.228])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4253B84084;
+        Fri,  6 Jan 2023 12:10:20 -0800 (PST)
 Received: from mail-lvn-it-01.lvn.broadcom.net (mail-lvn-it-01.lvn.broadcom.net [10.75.146.107])
-        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 2712CC0000F3;
-        Fri,  6 Jan 2023 12:10:13 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 2712CC0000F3
+        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id F12ABC0000E5;
+        Fri,  6 Jan 2023 12:10:19 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com F12ABC0000E5
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-        s=dkimrelay; t=1673035813;
-        bh=ozSkN0f8jvndbN+kSJY2e89x7m1Mt90y0tVuB9JkQIs=;
+        s=dkimrelay; t=1673035820;
+        bh=KiC8m8hbRUbZZ8J7JMyhYa4Wy5NUsmvaw9AEXPtTsRE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QGQP7XdyE4qHmMs9NebEfOoBP8nFhPVua9PyEK+QrScvoyG4mEy2xGmOJ/Qx/eEHX
-         r/vEgEBeW4W25cAxOA2pyKhS4JESbf6OwusZHk2W3BqTqKdiuFlpGVp7qnzKgd9y8P
-         muwAYLhJujEU3h4XlpUppIaVEorZByV5RDoztTJc=
+        b=bTSOz+zoi32DSZV8vKmJe7+27+ywJpVtFdRfmWW5XIdTSdmlYrYOjGC5PpkGKxY6Y
+         wjRrMNJWv5IhBIfGtJcS6hKvKDCjCxYHhs0TIKjDEKLz7TA2ljI4xojmenAAdQw553
+         zt0n6YZ2eG4y/bKZd6abewsX4dzR98QWY2bRKh9E=
 Received: from bcacpedev-irv-3.lvn.broadcom.net (bcacpedev-irv-3.lvn.broadcom.net [10.75.138.105])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail-lvn-it-01.lvn.broadcom.net (Postfix) with ESMTPS id 253A018041CAC6;
-        Fri,  6 Jan 2023 12:10:13 -0800 (PST)
+        by mail-lvn-it-01.lvn.broadcom.net (Postfix) with ESMTPS id EF4BE18041CAC6;
+        Fri,  6 Jan 2023 12:10:19 -0800 (PST)
 Received: by bcacpedev-irv-3.lvn.broadcom.net (Postfix, from userid 28376)
-        id 663BB101B5D; Fri,  6 Jan 2023 12:10:06 -0800 (PST)
+        id 48D13101B33; Fri,  6 Jan 2023 12:10:13 -0800 (PST)
 From:   William Zhang <william.zhang@broadcom.com>
 To:     Linux SPI List <linux-spi@vger.kernel.org>,
         Broadcom Kernel List <bcm-kernel-feedback-list@broadcom.com>
@@ -41,9 +41,9 @@ Cc:     anand.gore@broadcom.com, tomer.yacoby@broadcom.com,
         kursad.oney@broadcom.com, dregan@mail.com,
         William Zhang <william.zhang@broadcom.com>,
         Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org
-Subject: [PATCH 10/16] spi: bcm63xx-hsspi: Make dummy cs workaround as an option
-Date:   Fri,  6 Jan 2023 12:08:02 -0800
-Message-Id: <20230106200809.330769-11-william.zhang@broadcom.com>
+Subject: [PATCH 13/16] spi: spi-mem: Allow controller supporting mem_ops without exec_op
+Date:   Fri,  6 Jan 2023 12:08:05 -0800
+Message-Id: <20230106200809.330769-14-william.zhang@broadcom.com>
 X-Mailer: git-send-email 2.37.3
 In-Reply-To: <20230106200809.330769-1-william.zhang@broadcom.com>
 References: <20230106200809.330769-1-william.zhang@broadcom.com>
@@ -53,183 +53,57 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Due to the controller limitation to keep the chip select low during the
-bus idle time between the transfer, a dummy cs workaround was used when
-this driver was first upstreamed to the kernel.
-
-The workaround picks dummy_cs as !actual_cs and usually cs is 0 and
-dummy cs is 1. But this does not work out in all the situations as
-customer reported issues for their board design. Due to SPI block design
-constrain, the controller works in different mode internally depending
-on the clock. When clock is 30MHz or above, controller works in faster
-mode and cs 1 signal is used internally as feedback from the pad. So cs
-1 pin must be brought out and configured as chip select function in
-pinmux. When clock is below 30MHz, only cs 0 pin is used. In summary
-when clock is below 30MHz, the workaround always works as only cs 0 is
-involved. For clock faster than 30MHz, it require cs1 pin used in the
-board design and configured as chip selection function.
-
-In a typical usage of SPI flash on cs 0 that normally runs at 100MHz,
-cs 1 pin must be used in the board design but this is not always the
-case for many customer boards.
-
-For voice daughtercard usage,  the SoC alway uses internal cs 7 for
-voice card SPI control. Then it requires cs 0 pin as the dummy cs but
-board with voice design may not use cs 0 pin at all.
-
-The controller actually has a prepend feature that can combine multiple
-SPI transfers in a SPI message into one single transfer when the
-transfers meet certain requirements. So there is no need for keeping cs
-low when the message only has one transfer. Most of the SPI devices
-including SPI NOR, SPI NAND flash, Broadcom voice card and etc can use
-this feature without the dummy cs workaround.
-
-This patch makes the dummy cs workaround as an option based on the
-dts flag brcm,use-cs-workaround. By default dummy cs workaround is
-hard coded to enable. We will use the prepend feature and disable this
-workaround as default in the next patch of this series unless this flag
-is set in dts.
+Currently exec_op is always required if controller driver provides
+mem_ops. But some controller such as bcm63xx-hsspi may only need to
+implement other operation like supports_op and use the default
+execution operation. This patch removes this restriction.
 
 Signed-off-by: William Zhang <william.zhang@broadcom.com>
 ---
 
- drivers/spi/spi-bcm63xx-hsspi.c | 55 +++++++++++++++++++++------------
- 1 file changed, 36 insertions(+), 19 deletions(-)
+ drivers/spi/spi-mem.c |  2 +-
+ drivers/spi/spi.c     | 13 ++++++-------
+ 2 files changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
-index 398c412dcc3e..b5043251edec 100644
---- a/drivers/spi/spi-bcm63xx-hsspi.c
-+++ b/drivers/spi/spi-bcm63xx-hsspi.c
-@@ -111,6 +111,7 @@ struct bcm63xx_hsspi {
+diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+index 0c79193d9697..701838b6f0c4 100644
+--- a/drivers/spi/spi-mem.c
++++ b/drivers/spi/spi-mem.c
+@@ -325,7 +325,7 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 	if (!spi_mem_internal_supports_op(mem, op))
+ 		return -ENOTSUPP;
  
- 	u32 speed_hz;
- 	u8 cs_polarity;
-+	bool use_cs_workaround;
- 	int irq;
- };
- 
-@@ -161,16 +162,18 @@ static int bcm63xx_hsspi_do_txrx(struct spi_device *spi, struct spi_transfer *t)
- {
- 	struct bcm63xx_hsspi *bs = spi_master_get_devdata(spi->master);
- 	unsigned int chip_select = spi->chip_select;
-+	unsigned int hw_cs;
- 	u16 opcode = 0;
- 	int pending = t->len;
- 	int step_size = HSSPI_BUFFER_LEN;
- 	const u8 *tx = t->tx_buf;
- 	u8 *rx = t->rx_buf;
--	u32 val = 0;
- 	unsigned long limit;
-+	u32 reg = 0;
- 
- 	bcm63xx_hsspi_set_clk(bs, spi, t->speed_hz);
--	bcm63xx_hsspi_set_cs(bs, spi->chip_select, true);
-+	if (bs->use_cs_workaround)
-+		bcm63xx_hsspi_set_cs(bs, spi->chip_select, true);
- 
- 	if (tx && rx)
- 		opcode = HSSPI_OP_READ_WRITE;
-@@ -187,14 +190,15 @@ static int bcm63xx_hsspi_do_txrx(struct spi_device *spi, struct spi_transfer *t)
- 		opcode |= HSSPI_OP_MULTIBIT;
- 
- 		if (t->rx_nbits == SPI_NBITS_DUAL)
--			val |= 1 << MODE_CTRL_MULTIDATA_RD_SIZE_SHIFT;
-+			reg |= 1 << MODE_CTRL_MULTIDATA_RD_SIZE_SHIFT;
- 		if (t->tx_nbits == SPI_NBITS_DUAL)
--			val |= 1 << MODE_CTRL_MULTIDATA_WR_SIZE_SHIFT;
-+			reg |= 1 << MODE_CTRL_MULTIDATA_WR_SIZE_SHIFT;
- 	}
- 
--	__raw_writel(val | 0xff,
-+	__raw_writel(reg | 0xff,
- 		     bs->regs + HSSPI_PROFILE_MODE_CTRL_REG(chip_select));
- 
-+	hw_cs = bs->use_cs_workaround ? !chip_select : chip_select;
- 	while (pending > 0) {
- 		int curr_step = min_t(int, step_size, pending);
- 
-@@ -211,11 +215,10 @@ static int bcm63xx_hsspi_do_txrx(struct spi_device *spi, struct spi_transfer *t)
- 			__raw_writel(HSSPI_PINGx_CMD_DONE(0),
- 				     bs->regs + HSSPI_INT_MASK_REG);
- 
--		/* start the transfer */
--		__raw_writel(!chip_select << PINGPONG_CMD_SS_SHIFT |
--			     chip_select << PINGPONG_CMD_PROFILE_SHIFT |
--			     PINGPONG_COMMAND_START_NOW,
--			     bs->regs + HSSPI_PINGPONG_COMMAND_REG(0));
-+		reg =  hw_cs << PINGPONG_CMD_SS_SHIFT |
-+			    chip_select << PINGPONG_CMD_PROFILE_SHIFT |
-+			    PINGPONG_COMMAND_START_NOW;
-+		__raw_writel(reg, bs->regs + HSSPI_PINGPONG_COMMAND_REG(0));
- 
- 		if (bs->irq > 0) {
- 			if (wait_for_completion_timeout(&bs->done, HZ) == 0)
-@@ -223,14 +226,15 @@ static int bcm63xx_hsspi_do_txrx(struct spi_device *spi, struct spi_transfer *t)
- 		} else {
- 			/* polling mode checks for status busy bit */
- 			limit = jiffies + msecs_to_jiffies(HSSPI_POLL_STATUS_TIMEOUT_MS);
-+
- 			while (!time_after(jiffies, limit)) {
--				val = __raw_readl(bs->regs + HSSPI_PINGPONG_STATUS_REG(0));
--				if (val & HSSPI_PINGPONG_STATUS_SRC_BUSY)
-+				reg = __raw_readl(bs->regs + HSSPI_PINGPONG_STATUS_REG(0));
-+				if (reg & HSSPI_PINGPONG_STATUS_SRC_BUSY)
- 					cpu_relax();
- 				else
- 					break;
- 			}
--			if (val & HSSPI_PINGPONG_STATUS_SRC_BUSY)
-+			if (reg & HSSPI_PINGPONG_STATUS_SRC_BUSY)
- 				goto err_timeout;
- 		}
- 
-@@ -311,8 +315,10 @@ static int bcm63xx_hsspi_transfer_one(struct spi_master *master,
- 	 * e. At the end restore the polarities again to their default values.
+-	if (ctlr->mem_ops && !mem->spi->cs_gpiod) {
++	if (ctlr->mem_ops && ctlr->mem_ops->exec_op && !mem->spi->cs_gpiod) {
+ 		ret = spi_mem_access_start(mem);
+ 		if (ret)
+ 			return ret;
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 3cc7bb4d03de..6faa77592e93 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -3051,15 +3051,14 @@ static int spi_controller_check_ops(struct spi_controller *ctlr)
+ 	 * The controller may implement only the high-level SPI-memory like
+ 	 * operations if it does not support regular SPI transfers, and this is
+ 	 * valid use case.
+-	 * If ->mem_ops is NULL, we request that at least one of the
+-	 * ->transfer_xxx() method be implemented.
++	 * If ->mem_ops or ->mem_ops->exec_op is NULL, we request that at least
++	 * one of the ->transfer_xxx() method be implemented.
  	 */
- 
--	dummy_cs = !spi->chip_select;
--	bcm63xx_hsspi_set_cs(bs, dummy_cs, true);
-+	if (bs->use_cs_workaround) {
-+		dummy_cs = !spi->chip_select;
-+		bcm63xx_hsspi_set_cs(bs, dummy_cs, true);
-+	}
- 
- 	list_for_each_entry(t, &msg->transfers, transfer_list) {
- 		status = bcm63xx_hsspi_do_txrx(spi, t);
-@@ -343,9 +349,11 @@ static int bcm63xx_hsspi_transfer_one(struct spi_master *master,
- 		restore_polarity = !t->cs_change;
+-	if (ctlr->mem_ops) {
+-		if (!ctlr->mem_ops->exec_op)
+-			return -EINVAL;
+-	} else if (!ctlr->transfer && !ctlr->transfer_one &&
++	if (!ctlr->mem_ops || (ctlr->mem_ops && !ctlr->mem_ops->exec_op)) {
++		if (!ctlr->transfer && !ctlr->transfer_one &&
+ 		   !ctlr->transfer_one_message) {
+-		return -EINVAL;
++			return -EINVAL;
++		}
  	}
  
--	bcm63xx_hsspi_set_cs(bs, dummy_cs, false);
--	if (restore_polarity)
--		bcm63xx_hsspi_set_cs(bs, spi->chip_select, false);
-+	if (bs->use_cs_workaround) {
-+		bcm63xx_hsspi_set_cs(bs, dummy_cs, false);
-+		if (restore_polarity)
-+			bcm63xx_hsspi_set_cs(bs, spi->chip_select, false);
-+	}
- 
- 	msg->status = status;
- 	spi_finalize_current_message(master);
-@@ -445,8 +453,17 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
- 	init_completion(&bs->done);
- 
- 	master->dev.of_node = dev->of_node;
--	if (!dev->of_node)
-+	if (!dev->of_node) {
- 		master->bus_num = HSSPI_BUS_NUM;
-+		/* use dummy cs workaround on old mips dev with no dts support */
-+		bs->use_cs_workaround = true;
-+	} else {
-+		/* check if dummy cs workaround is needed from device tree */
-+		bs->use_cs_workaround = of_property_read_bool(
-+				    dev->of_node, "brcm,use-cs-workaround");
-+	}
-+	/* tmp hack. hard code to use cs workaround before prepend mode is added */
-+	bs->use_cs_workaround = true;
- 
- 	of_property_read_u32(dev->of_node, "num-cs", &num_cs);
- 	if (num_cs > 8) {
+ 	return 0;
 -- 
 2.37.3
 

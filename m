@@ -2,36 +2,37 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 97B35C54EBD
-	for <linux-spi@archiver.kernel.org>; Fri,  6 Jan 2023 20:10:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0C3BCC3DA7A
+	for <linux-spi@archiver.kernel.org>; Fri,  6 Jan 2023 20:10:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230294AbjAFUKU (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S236189AbjAFUKU (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Fri, 6 Jan 2023 15:10:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48800 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236276AbjAFUKK (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 6 Jan 2023 15:10:10 -0500
-Received: from relay.smtp-ext.broadcom.com (lpdvsmtp09.broadcom.com [192.19.166.228])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0E6784091;
-        Fri,  6 Jan 2023 12:10:09 -0800 (PST)
+        with ESMTP id S236270AbjAFUKJ (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 6 Jan 2023 15:10:09 -0500
+X-Greylist: delayed 65 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 06 Jan 2023 12:10:08 PST
+Received: from relay.smtp-ext.broadcom.com (lpdvsmtp11.broadcom.com [192.19.166.231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3BF4840A1;
+        Fri,  6 Jan 2023 12:10:08 -0800 (PST)
 Received: from mail-lvn-it-01.lvn.broadcom.net (mail-lvn-it-01.lvn.broadcom.net [10.75.146.107])
-        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 7AFA1C0000E5;
-        Fri,  6 Jan 2023 12:10:09 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 7AFA1C0000E5
+        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 8933EC0000F3;
+        Fri,  6 Jan 2023 12:10:08 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 8933EC0000F3
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-        s=dkimrelay; t=1673035809;
-        bh=Je0b6vbxzSyApfV57XdMzbBAJ1OOxv2L5PniIWRhOb4=;
+        s=dkimrelay; t=1673035808;
+        bh=PByAEycu10rflViW/6kaHG6GMcMou2/z7vIJQgSOhbY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UIkHd96clSQEmxDCYtME2IZM4/bQh4OVa9WI5jipic9lQxUqn89pKNRCFUhsCFaa7
-         9ge+SieN2xiWGdy9s3thRUlVRvJO56llhxvTZany8GVlJjwSZKjxk+2K/me88D0CJu
-         bqambiYVxLut4VLalRL3o3NLaF3N7yopSmN67o8k=
+        b=ADlmj8ngphLysDXnVZdunyvPaZSKmSkxIBLrvhHwIXzFbuKV7k2lOAstPb72ONwLs
+         KbTauncGWnyBaFePUYKueprnbm/BHLziYpRFlCFS/TeHyvfzdKX6FSQNdFmHvqoBAb
+         2CRvRFRNESP4ytkm6us3TodZMppMdcLww6lUog3w=
 Received: from bcacpedev-irv-3.lvn.broadcom.net (bcacpedev-irv-3.lvn.broadcom.net [10.75.138.105])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail-lvn-it-01.lvn.broadcom.net (Postfix) with ESMTPS id 7916F18041CAC6;
-        Fri,  6 Jan 2023 12:10:09 -0800 (PST)
+        by mail-lvn-it-01.lvn.broadcom.net (Postfix) with ESMTPS id 8734618041CAC6;
+        Fri,  6 Jan 2023 12:10:08 -0800 (PST)
 Received: by bcacpedev-irv-3.lvn.broadcom.net (Postfix, from userid 28376)
-        id 74787101B33; Fri,  6 Jan 2023 12:10:09 -0800 (PST)
+        id DDBE5101B33; Fri,  6 Jan 2023 12:10:01 -0800 (PST)
 From:   William Zhang <william.zhang@broadcom.com>
 To:     Linux SPI List <linux-spi@vger.kernel.org>,
         Broadcom Kernel List <bcm-kernel-feedback-list@broadcom.com>
@@ -41,9 +42,9 @@ Cc:     anand.gore@broadcom.com, tomer.yacoby@broadcom.com,
         kursad.oney@broadcom.com, dregan@mail.com,
         William Zhang <william.zhang@broadcom.com>,
         Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org
-Subject: [PATCH 12/16] spi: bcm63xx-hsspi: Add clock gate disable option support
-Date:   Fri,  6 Jan 2023 12:08:04 -0800
-Message-Id: <20230106200809.330769-13-william.zhang@broadcom.com>
+Subject: [PATCH 08/16] spi: bcm63xx-hsspi: Handle cs_change correctly
+Date:   Fri,  6 Jan 2023 12:08:00 -0800
+Message-Id: <20230106200809.330769-9-william.zhang@broadcom.com>
 X-Mailer: git-send-email 2.37.3
 In-Reply-To: <20230106200809.330769-1-william.zhang@broadcom.com>
 References: <20230106200809.330769-1-william.zhang@broadcom.com>
@@ -53,110 +54,79 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Some SPI device such as Broadcom ISI based voice daughtercard
-requires SPI clock running even when chip select is deasserted. By
-default the controller turn off or gate the clock when cs is not active
-to save power.
+The kernel SPI interface includes the cs_change flag that alters how
+the CS behaves.
 
-This change adds an option to support such device and keep the clock
-running when flag brcm,no-clk-gate is present in the SPI device node or
-when the SPI device driver clear the GATE_CLK_SSOFF flag in the device
-controller data field.
+If we're in the middle of transfers, it tells us to unselect the
+CS momentarily since the target device requires that.
 
+If we're at the end of a transfer, it tells us to keep the CS
+selected, perhaps because the next transfer is likely targeted
+to the same device.
+
+We implement this scheme in the HSSPI driver in this change.
+
+Prior to this change, the CS would toggle momentarily if cs_change
+was set for the last transfer. This can be ignored by some or
+most devices, but the Microchip TPM2 device does not ignore it.
+
+With the change, the behavior is corrected and the 'glitch' is
+eliminated.
+
+Signed-off-by: Kursad Oney <kursad.oney@broadcom.com>
 Signed-off-by: William Zhang <william.zhang@broadcom.com>
 ---
 
- drivers/spi/spi-bcm63xx-hsspi.c | 46 +++++++++++++++++++++++++++++++++
- 1 file changed, 46 insertions(+)
+ drivers/spi/spi-bcm63xx-hsspi.c | 28 +++++++++++++++++++++-------
+ 1 file changed, 21 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
-index 58f2b495c13c..be4ca01f332a 100644
+index 2b4cdf7e7002..f2b1b83bd6d4 100644
 --- a/drivers/spi/spi-bcm63xx-hsspi.c
 +++ b/drivers/spi/spi-bcm63xx-hsspi.c
-@@ -23,6 +23,13 @@
- #include <linux/reset.h>
- #include <linux/pm_runtime.h>
+@@ -290,6 +290,7 @@ static int bcm63xx_hsspi_transfer_one(struct spi_master *master,
+ 	int status = -EINVAL;
+ 	int dummy_cs;
+ 	u32 reg;
++	bool restore_polarity = true;
  
-+/* Broadcom Legacy SPI device driver flags */
-+#define SPIDEV_CONTROLLER_STATE_SET		BIT(31)
-+#define SPIDEV_CONTROLLER_STATE_GATE_CLK_SSOFF	BIT(29)
-+
-+#define spidev_ctrl_data(spi)			\
-+	((u32)((uintptr_t)(spi)->controller_data))
-+
- #define HSSPI_GLOBAL_CTRL_REG			0x0
- #define GLOBAL_CTRL_CS_POLARITY_SHIFT		0
- #define GLOBAL_CTRL_CS_POLARITY_MASK		0x000000ff
-@@ -120,11 +127,40 @@ struct bcm63xx_hsspi {
- static void bcm63xx_hsspi_set_clk(struct bcm63xx_hsspi *bs,
- 				  struct spi_device *spi, int hz);
+ 	/* This controller does not support keeping CS active during idle.
+ 	 * To work around this, we use the following ugly hack:
+@@ -317,16 +318,29 @@ static int bcm63xx_hsspi_transfer_one(struct spi_master *master,
  
-+static inline int bcm63xx_hsspi_dev_no_clk_gate(struct spi_device *spi)
-+{
-+	u32 ctrl_data = 0;
-+
-+	/* check spi device dn first */
-+	if (of_property_read_bool(spi->dev.of_node, "brcm,no-clk-gate"))
-+		return 1;
-+
-+	/* check spi dev controller data for legacy device support */
-+	ctrl_data = spidev_ctrl_data(spi);
-+	return ((ctrl_data & SPIDEV_CONTROLLER_STATE_SET) &&
-+		!(ctrl_data & SPIDEV_CONTROLLER_STATE_GATE_CLK_SSOFF));
-+}
-+
- static size_t bcm63xx_hsspi_max_message_size(struct spi_device *spi)
- {
- 	return HSSPI_BUFFER_LEN - HSSPI_OPCODE_LEN;
- }
+ 		spi_transfer_delay_exec(t);
  
-+static void bcm63xx_hsspi_restore_clk_gate(struct bcm63xx_hsspi *bs,
-+				       struct spi_device *spi)
-+{
-+	u32 reg = 0;
-+
-+	/* check if clk gate setting was previously turned off */
-+	if (bcm63xx_hsspi_dev_no_clk_gate(spi)) {
-+		mutex_lock(&bs->bus_mutex);
-+		reg = __raw_readl(bs->regs + HSSPI_GLOBAL_CTRL_REG);
-+		reg |= GLOBAL_CTRL_CLK_GATE_SSOFF;
-+		__raw_writel(reg, bs->regs + HSSPI_GLOBAL_CTRL_REG);
-+		mutex_unlock(&bs->bus_mutex);
-+	}
-+}
-+
- static int bcm63xx_hsspi_wait_cmd(struct bcm63xx_hsspi *bs)
- {
- 	unsigned long limit;
-@@ -354,6 +390,12 @@ static void bcm63xx_hsspi_set_clk(struct bcm63xx_hsspi *bs,
- 	reg &= ~GLOBAL_CTRL_CLK_POLARITY;
- 	if (spi->mode & SPI_CPOL)
- 		reg |= GLOBAL_CTRL_CLK_POLARITY;
-+
-+	if (bcm63xx_hsspi_dev_no_clk_gate(spi))
-+		reg &= ~GLOBAL_CTRL_CLK_GATE_SSOFF;
-+	else
-+		reg |= GLOBAL_CTRL_CLK_GATE_SSOFF;
-+
- 	__raw_writel(reg, bs->regs + HSSPI_GLOBAL_CTRL_REG);
- 	mutex_unlock(&bs->bus_mutex);
- }
-@@ -485,6 +527,7 @@ static int bcm63xx_hsspi_transfer_one(struct spi_master *master,
- 	if (bcm63xx_check_msg_prependable(master, msg, &t_prepend)) {
- 		status = bcm63xx_hsspi_do_prepend_txrx(spi, &t_prepend);
- 		msg->actual_length += (t_prepend.len + bs->prepend_cnt);
-+		bcm63xx_hsspi_restore_clk_gate(bs, spi);
- 		goto msg_done;
- 	}
- 
-@@ -543,6 +586,9 @@ static int bcm63xx_hsspi_transfer_one(struct spi_master *master,
+-		if (t->cs_change)
++		/*
++		 * cs_change rules:
++		 * (1) cs_change = 0 && last_xfer = 0:
++		 *     Do not touch the CS. On to the next xfer.
++		 * (2) cs_change = 1 && last_xfer = 0:
++		 *     Set cs = false before the next xfer.
++		 * (3) cs_change = 0 && last_xfer = 1:
++		 *     We want CS to be deactivated. So do NOT set cs = false,
++		 *     instead just restore the original polarity. This has the
++		 *     same effect of deactivating the CS.
++		 * (4) cs_change = 1 && last_xfer = 1:
++		 *     We want to keep CS active. So do NOT set cs = false, and
++		 *     make sure we do NOT reverse polarity.
++		 */
++		if (t->cs_change && !list_is_last(&t->transfer_list, &msg->transfers))
  			bcm63xx_hsspi_set_cs(bs, spi->chip_select, false);
++
++		restore_polarity = !t->cs_change;
  	}
  
-+	/* restore the default clk gate setting in case spidev turn it off */
-+	bcm63xx_hsspi_restore_clk_gate(bs, spi);
-+
- msg_done:
+-	mutex_lock(&bs->bus_mutex);
+-	reg = __raw_readl(bs->regs + HSSPI_GLOBAL_CTRL_REG);
+-	reg &= ~GLOBAL_CTRL_CS_POLARITY_MASK;
+-	reg |= bs->cs_polarity;
+-	__raw_writel(reg, bs->regs + HSSPI_GLOBAL_CTRL_REG);
+-	mutex_unlock(&bs->bus_mutex);
++	bcm63xx_hsspi_set_cs(bs, dummy_cs, false);
++	if (restore_polarity)
++		bcm63xx_hsspi_set_cs(bs, spi->chip_select, false);
+ 
  	msg->status = status;
  	spi_finalize_current_message(master);
 -- 

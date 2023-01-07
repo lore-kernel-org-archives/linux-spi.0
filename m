@@ -2,147 +2,77 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5AB8FC63797
-	for <linux-spi@archiver.kernel.org>; Sat,  7 Jan 2023 15:32:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A229C54EBC
+	for <linux-spi@archiver.kernel.org>; Sat,  7 Jan 2023 15:38:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231218AbjAGPcJ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sat, 7 Jan 2023 10:32:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41614 "EHLO
+        id S232215AbjAGPij (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sat, 7 Jan 2023 10:38:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229867AbjAGPcI (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sat, 7 Jan 2023 10:32:08 -0500
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A63142612
-        for <linux-spi@vger.kernel.org>; Sat,  7 Jan 2023 07:32:07 -0800 (PST)
-Received: by mail-wm1-x32c.google.com with SMTP id ay2-20020a05600c1e0200b003d22e3e796dso3083124wmb.0
-        for <linux-spi@vger.kernel.org>; Sat, 07 Jan 2023 07:32:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YHckjjOEvZSFADImnJ7KXWMu9c8067aGfxjgXUsE4X0=;
-        b=XARL9Xw432069q9ug7AmT2ii/721KOOex76uOSQ5Ej91v8uVly0JvVpRHv+l42opvX
-         oxLRgOTF6IfaMlvAE5ugFkDsciEL0LMmSkrPTiUueafFX43KPTtMnTAp/s2HnFvT9SRr
-         YtF3U/D4hHQ1n7ZdGqeqtC+HD5MSlAiHIfTpTnro953jmyya2xBKkWxQFy/tuERmB7zR
-         FpV8aHqVfYlMs5BIrWBX106lF+CSTZ29ieBT76WFbz/Z+bCuuNjToc2ihC8tkxpWcu09
-         Zphue/rbHyxsRWyyqafC6IOIEVUE9G4HUjfjnl6FhiFjalXpgeM0BRjb5VoG9MtcY9HP
-         vYWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YHckjjOEvZSFADImnJ7KXWMu9c8067aGfxjgXUsE4X0=;
-        b=41CfIqzQaBP2LT3TH9NvS0un6E+A0EUMrcaBvoBHUay2td6A7+1tKWMnSDUgBvLa10
-         y9j4aUJIyUpFbboX56takJdaJiX+1zA847OLBieuoG/suRRD9f8/UIjL+uS+/+Cb1fv4
-         j6wTSMTA2YEWIXur7W9OnjkAWkKLmUBB0bOSNy9VUsVqRvHoK4THmAvgo7l5rOYJW8FR
-         iMx3q1KtOCpzjl3wDLLrEinXsfKnEbukHm6Zy4Y73ixBakuGWXxLsUdnl39lrQhU24hY
-         Oa1JTXVtIjlc/1Puw5MKUCCBkW6a2CZC/sWxhxwLrch1wP4J95dWLbSHZ8FhPplg2hIJ
-         USuA==
-X-Gm-Message-State: AFqh2krZrQ/zknlsH+b+B5H7xgwTO7ERXx2a5clcuRUYydQlkpTkT0Ne
-        XvjH6UP91+Ph/p2V7ZacJmyBJlQLvQUO0E51
-X-Google-Smtp-Source: AMrXdXvDiGSfEvCPjtCCxt7V6mSTslc3oth6qqA2ZR6xvpY8QqB8opH2ImO7Gq7PgtVhcK4ymxr99g==
-X-Received: by 2002:a05:600c:1c27:b0:3cf:a83c:184a with SMTP id j39-20020a05600c1c2700b003cfa83c184amr43073046wms.24.1673105525806;
-        Sat, 07 Jan 2023 07:32:05 -0800 (PST)
-Received: from [192.168.1.109] ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id p1-20020a05600c204100b003d99a39b846sm6230720wmg.5.2023.01.07.07.32.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 07 Jan 2023 07:32:05 -0800 (PST)
-Message-ID: <0581eeed-f7d1-caf2-0dba-be14a01d7c05@linaro.org>
-Date:   Sat, 7 Jan 2023 16:32:03 +0100
+        with ESMTP id S229621AbjAGPii (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sat, 7 Jan 2023 10:38:38 -0500
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7183743D84;
+        Sat,  7 Jan 2023 07:38:36 -0800 (PST)
+Received: (Authenticated sender: miquel.raynal@bootlin.com)
+        by mail.gandi.net (Postfix) with ESMTPSA id 29A1AFF808;
+        Sat,  7 Jan 2023 15:38:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1673105914;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=1R0tFrnRkxpaya7FaSMEH1Vxs62o5AiwN5XKT3zuHOw=;
+        b=jYj6k5t0jgbDvGd8bBN/g2gAALOqzhmVIfHgCR4EGMSQQH+igzEXI72CvXV9rj2isD+3lB
+        7plO+djicHvAMNALglZLvO7OdDiFcMYoltr+V4Y3269dV8SsStrd1wokepVu2GXaq3iAJz
+        umt3+MRVjk4D5EmVCSNOYOp+jctimyb/o3O7W2xKRa2x6Thygx78mr7O4JW8R4czS7rt3G
+        kAAVLU2wD7P2aEWQhWLeqZVxYjbhEkhvTqEdV+rOQq2+Zb5Hp7NP3STRWbwPV7ZQNhv/47
+        xIs6Q+hqKVv5tG5T1B7j83eMuKuC2U11mLBh7sv2T5hgMVfoKc8A/4dWDFlX/A==
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Tudor Ambarus <tudor.ambarus@linaro.org>, arnd@arndb.de,
+        richard@nod.at, miquel.raynal@bootlin.com
+Cc:     krzysztof.kozlowski+dt@linaro.org, herbert@gondor.apana.org.au,
+        robh+dt@kernel.org, akpm@linux-foundation.org,
+        nicolas.ferre@microchip.com, claudiu.beznea@microchip.com,
+        broonie@kernel.org, linux-kernel@vger.kernel.org,
+        linux-crypto@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        linux-mtd@lists.infradead.org, pratyush@kernel.org,
+        michael@walle.cc, Tudor Ambarus <tudor.ambarus@microchip.com>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH v2] MAINTAINERS: Update email of Tudor Ambarus
+Date:   Sat,  7 Jan 2023 16:38:29 +0100
+Message-Id: <20230107153829.895550-1-miquel.raynal@bootlin.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20221226144043.367706-1-tudor.ambarus@linaro.org>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: [PATCH 01/16] dt-bindings: spi: Convert bcm63xx-hsspi bindings to
- json-schema
-Content-Language: en-US
-To:     William Zhang <william.zhang@broadcom.com>,
-        Linux SPI List <linux-spi@vger.kernel.org>,
-        Broadcom Kernel List <bcm-kernel-feedback-list@broadcom.com>
-Cc:     anand.gore@broadcom.com, tomer.yacoby@broadcom.com,
-        dan.beygelman@broadcom.com, joel.peshkin@broadcom.com,
-        f.fainelli@gmail.com, jonas.gorski@gmail.com,
-        kursad.oney@broadcom.com, dregan@mail.com,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230106200809.330769-1-william.zhang@broadcom.com>
- <20230106200809.330769-2-william.zhang@broadcom.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230106200809.330769-2-william.zhang@broadcom.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-linux-mtd-patch-notification: thanks
+X-linux-mtd-patch-commit: b'c0f7ae27539fbac267384a7bfc58296ea7550d52'
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On 06/01/2023 21:07, William Zhang wrote:
-> This is the preparation for updates on the bcm63xx hsspi driver. Convert
-> the text based bindings to json-schema per new dts requirement.
+On Mon, 2022-12-26 at 14:40:43 UTC, Tudor Ambarus wrote:
+> From: Tudor Ambarus <tudor.ambarus@microchip.com>
 > 
-> Signed-off-by: William Zhang <william.zhang@broadcom.com>
-> ---
+> My professional email will change and the microchip one will bounce after
+> mid-november of 2022.
 > 
->  .../bindings/spi/brcm,bcm63xx-hsspi.yaml      | 52 +++++++++++++++++++
->  .../bindings/spi/spi-bcm63xx-hsspi.txt        | 33 ------------
->  2 files changed, 52 insertions(+), 33 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/spi/brcm,bcm63xx-hsspi.yaml
->  delete mode 100644 Documentation/devicetree/bindings/spi/spi-bcm63xx-hsspi.txt
+> Update the MAINTAINERS file, the YAML bindings, MODULE_AUTHOR entries and
+> author mentions, and add an entry in the .mailmap file.
 > 
-> diff --git a/Documentation/devicetree/bindings/spi/brcm,bcm63xx-hsspi.yaml b/Documentation/devicetree/bindings/spi/brcm,bcm63xx-hsspi.yaml
-> new file mode 100644
-> index 000000000000..45f1417b1213
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/brcm,bcm63xx-hsspi.yaml
-> @@ -0,0 +1,52 @@
-> +# SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/spi/brcm,bcm63xx-hsspi.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Broadcom BCM6328 High Speed SPI controller
-> +
-> +maintainers:
-> +  - Jonas Gorski <jonas.gorski@gmail.com>
-> +
+> Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
+> Acked-by: Rob Herring <robh@kernel.org>
+> Acked-by: Pratyush Yadav <pratyush@kernel.org>
+> Acked-by: Mark Brown <broonie@kernel.org>
+> Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+> Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
+> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Missing reference to spi-controller.
+Applied to https://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux.git mtd/fixes, thanks.
 
-> +properties:
-> +  compatible:
-> +    const: brcm,bcm6328-hsspi
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    items:
-> +      - description: spi master reference clock
-> +      - description: spi master pll clock
-> +
-> +  clock-names:
-> +    items:
-> +      - const: hsspi
-> +      - const: pll
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - clocks
-> +  - clock-names
-> +  - interrupts
-> +
-> +unevaluatedProperties: false
-
-This is for cases when you have reference to other schema.
-
-
-Best regards,
-Krzysztof
-
+Miquel

@@ -2,31 +2,31 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 71199C71145
-	for <linux-spi@archiver.kernel.org>; Fri, 13 Jan 2023 06:29:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A2D15C678DF
+	for <linux-spi@archiver.kernel.org>; Fri, 13 Jan 2023 06:29:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241185AbjAMG3O (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 13 Jan 2023 01:29:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60484 "EHLO
+        id S240363AbjAMG2f (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 13 Jan 2023 01:28:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240122AbjAMGZG (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 13 Jan 2023 01:25:06 -0500
+        with ESMTP id S240703AbjAMG0K (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 13 Jan 2023 01:26:10 -0500
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 888386AD81;
-        Thu, 12 Jan 2023 22:24:23 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7D4E59FBA;
+        Thu, 12 Jan 2023 22:24:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
         MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
         :Reply-To:Content-Type:Content-ID:Content-Description;
-        bh=uYJHAXXmLLwNQhTzaxgylPcAhRmrIofyohyZoeMvH6A=; b=O9iHd8tTAdld8bSk+ZYkR0XYZy
-        2FuVzfaL8+QL6xMnlPS9ImDdfrVmrsT0bBu6ltAfdqg3tZ8KHWyQj3fcy7LsIMSUyZEf4JyF1NO/u
-        2Ts4+jOpsmzngPoutWMosurrp3mGqo1ovVKSnCoZsYAwo0uVYE6mREk0pxLXWhs9KHUyyY4RrDi1s
-        ckbuJtm4E90O4qjKhGszRSFnFx2n1e7KSOOiE2NOT+ddsS+UK8qKQjoMHxsg7UASbpmlsrI2MUcNr
-        U3LKQcwW662AanMhRCQ9l+fUskCCYGWjf3f0p00y4z00yMr4itbMdi+aRN3kbJr3aDbphSgt4Qqgh
-        s26wPgJg==;
+        bh=UYtxIVSpmMH1XYDAY7FJWv5Cfi/HsfZZkleq/nNm9Uw=; b=FGmCCMVyg/J/LDd53VCAmWvvHd
+        SjKDBgOffbXrp1NTrsMhhHv+fKa003jcLOks15DqfShUdbnxAhNIFRM2NSfl7XNQlFYmA2nIB5pd3
+        18kopN5bw8wlOYCdnpKB6fCAs/R2kJGbMJgqU6leRj/q7GTrVwrCQlwNcduG7xmi3tJMkH4PGwg8t
+        5NSqH0Z4uJHNdUoGz9t3t0x8nOR8iL/jB6Iq4fOUMDfkW0fbOoSZotzgCKRxKr7TDB8DCS8psj8ep
+        mpDSvDh9CmgJ7bpf8XvejVWWNoIH413VHBYRgX7Ti7jsugFz8NQa+n4/JrcVIP/PeAFvJm9WU/Rhy
+        7xT7m2yg==;
 Received: from [2001:4bb8:181:656b:9509:7d20:8d39:f895] (helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1pGDU4-000lZR-IG; Fri, 13 Jan 2023 06:24:13 +0000
+        id 1pGDUQ-000lrU-4y; Fri, 13 Jan 2023 06:24:35 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>, Arnd Bergmann <arnd@arndb.de>,
@@ -45,9 +45,9 @@ Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
         linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
         linux-fbdev@vger.kernel.org, alsa-devel@alsa-project.org,
         linux-sh@vger.kernel.org
-Subject: [PATCH 08/22] dmaengine: remove the shdmac driver
-Date:   Fri, 13 Jan 2023 07:23:25 +0100
-Message-Id: <20230113062339.1909087-9-hch@lst.de>
+Subject: [PATCH 14/22] remove drivers/sh
+Date:   Fri, 13 Jan 2023 07:23:31 +0100
+Message-Id: <20230113062339.1909087-15-hch@lst.de>
 X-Mailer: git-send-email 2.39.0
 In-Reply-To: <20230113062339.1909087-1-hch@lst.de>
 References: <20230113062339.1909087-1-hch@lst.de>
@@ -58,2165 +58,4980 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Now that arch/sh is removed this driver is dead code.
+Now that arch/sh is removed these drivers are dead code.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- drivers/dma/sh/Kconfig      |   20 -
- drivers/dma/sh/Makefile     |   13 -
- drivers/dma/sh/shdma-base.c | 1052 -----------------------------------
- drivers/dma/sh/shdma.h      |   61 --
- drivers/dma/sh/shdmac.c     |  938 -------------------------------
- include/linux/shdma-base.h  |    4 -
- 6 files changed, 2088 deletions(-)
- delete mode 100644 drivers/dma/sh/shdma-base.c
- delete mode 100644 drivers/dma/sh/shdma.h
- delete mode 100644 drivers/dma/sh/shdmac.c
+ drivers/Makefile                         |   1 -
+ drivers/sh/Kconfig                       |   6 -
+ drivers/sh/Makefile                      |  12 -
+ drivers/sh/clk/Makefile                  |   4 -
+ drivers/sh/clk/core.c                    | 624 ----------------
+ drivers/sh/clk/cpg.c                     | 477 ------------
+ drivers/sh/intc/Kconfig                  |  44 --
+ drivers/sh/intc/Makefile                 |   6 -
+ drivers/sh/intc/access.c                 | 246 -------
+ drivers/sh/intc/balancing.c              |  97 ---
+ drivers/sh/intc/chip.c                   | 211 ------
+ drivers/sh/intc/core.c                   | 501 -------------
+ drivers/sh/intc/handle.c                 | 306 --------
+ drivers/sh/intc/internals.h              | 191 -----
+ drivers/sh/intc/irqdomain.c              |  68 --
+ drivers/sh/intc/userimask.c              |  84 ---
+ drivers/sh/intc/virq-debugfs.c           |  54 --
+ drivers/sh/intc/virq.c                   | 269 -------
+ drivers/sh/maple/Makefile                |   4 -
+ drivers/sh/maple/maple.c                 | 895 -----------------------
+ drivers/sh/pm_runtime.c                  |  40 -
+ drivers/sh/superhyway/Makefile           |   8 -
+ drivers/sh/superhyway/superhyway-sysfs.c |  54 --
+ drivers/sh/superhyway/superhyway.c       | 234 ------
+ include/linux/sh_clk.h                   | 213 ------
+ include/linux/superhyway.h               | 107 ---
+ 26 files changed, 4756 deletions(-)
+ delete mode 100644 drivers/sh/Kconfig
+ delete mode 100644 drivers/sh/Makefile
+ delete mode 100644 drivers/sh/clk/Makefile
+ delete mode 100644 drivers/sh/clk/core.c
+ delete mode 100644 drivers/sh/clk/cpg.c
+ delete mode 100644 drivers/sh/intc/Kconfig
+ delete mode 100644 drivers/sh/intc/Makefile
+ delete mode 100644 drivers/sh/intc/access.c
+ delete mode 100644 drivers/sh/intc/balancing.c
+ delete mode 100644 drivers/sh/intc/chip.c
+ delete mode 100644 drivers/sh/intc/core.c
+ delete mode 100644 drivers/sh/intc/handle.c
+ delete mode 100644 drivers/sh/intc/internals.h
+ delete mode 100644 drivers/sh/intc/irqdomain.c
+ delete mode 100644 drivers/sh/intc/userimask.c
+ delete mode 100644 drivers/sh/intc/virq-debugfs.c
+ delete mode 100644 drivers/sh/intc/virq.c
+ delete mode 100644 drivers/sh/maple/Makefile
+ delete mode 100644 drivers/sh/maple/maple.c
+ delete mode 100644 drivers/sh/pm_runtime.c
+ delete mode 100644 drivers/sh/superhyway/Makefile
+ delete mode 100644 drivers/sh/superhyway/superhyway-sysfs.c
+ delete mode 100644 drivers/sh/superhyway/superhyway.c
+ delete mode 100644 include/linux/sh_clk.h
+ delete mode 100644 include/linux/superhyway.h
 
-diff --git a/drivers/dma/sh/Kconfig b/drivers/dma/sh/Kconfig
-index c0b2997ab7fd93..744d4d8ff5353b 100644
---- a/drivers/dma/sh/Kconfig
-+++ b/drivers/dma/sh/Kconfig
-@@ -7,30 +7,10 @@ config RENESAS_DMA
- 	bool
- 	select DMA_ENGINE
- 
--#
--# DMA Engine Helpers
--#
--
--config SH_DMAE_BASE
--	bool "Renesas SuperH DMA Engine support"
--	depends on SUPERH || COMPILE_TEST
--	depends on !SUPERH || SH_DMA
--	depends on !SH_DMA_API
--	default y
--	select RENESAS_DMA
--	help
--	  Enable support for the Renesas SuperH DMA controllers.
--
- #
- # DMA Controllers
- #
- 
--config SH_DMAE
--	tristate "Renesas SuperH DMAC support"
--	depends on SH_DMAE_BASE
--	help
--	  Enable support for the Renesas SuperH DMA controllers.
--
- config RCAR_DMAC
- 	tristate "Renesas R-Car Gen{2,3} and RZ/G{1,2} DMA Controller"
- 	depends on ARCH_RENESAS || COMPILE_TEST
-diff --git a/drivers/dma/sh/Makefile b/drivers/dma/sh/Makefile
-index 360ab6d25e769d..07178651aa7279 100644
---- a/drivers/dma/sh/Makefile
-+++ b/drivers/dma/sh/Makefile
-@@ -1,17 +1,4 @@
- # SPDX-License-Identifier: GPL-2.0
--#
--# DMA Engine Helpers
--#
--
--obj-$(CONFIG_SH_DMAE_BASE) += shdma-base.o
--
--#
--# DMA Controllers
--#
--
--shdma-y := shdmac.o
--shdma-objs := $(shdma-y)
--obj-$(CONFIG_SH_DMAE) += shdma.o
- 
- obj-$(CONFIG_RCAR_DMAC) += rcar-dmac.o
- obj-$(CONFIG_RENESAS_USB_DMAC) += usb-dmac.o
-diff --git a/drivers/dma/sh/shdma-base.c b/drivers/dma/sh/shdma-base.c
+diff --git a/drivers/Makefile b/drivers/Makefile
+index bdf1c66141c9bd..b97a69a4c40b91 100644
+--- a/drivers/Makefile
++++ b/drivers/Makefile
+@@ -134,7 +134,6 @@ obj-$(CONFIG_NEW_LEDS)		+= leds/
+ obj-$(CONFIG_INFINIBAND)	+= infiniband/
+ obj-y				+= firmware/
+ obj-$(CONFIG_CRYPTO)		+= crypto/
+-obj-$(CONFIG_SUPERH)		+= sh/
+ obj-y				+= clocksource/
+ obj-$(CONFIG_DCA)		+= dca/
+ obj-$(CONFIG_HID)		+= hid/
+diff --git a/drivers/sh/Kconfig b/drivers/sh/Kconfig
 deleted file mode 100644
-index 158e5e7defaeb0..00000000000000
---- a/drivers/dma/sh/shdma-base.c
+index 3588fcc9c0d23b..00000000000000
+--- a/drivers/sh/Kconfig
 +++ /dev/null
-@@ -1,1052 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
+@@ -1,6 +0,0 @@
+-# SPDX-License-Identifier: GPL-2.0-only
+-menu "SuperH / SH-Mobile Driver Options"
+-
+-source "drivers/sh/intc/Kconfig"
+-
+-endmenu
+diff --git a/drivers/sh/Makefile b/drivers/sh/Makefile
+deleted file mode 100644
+index c53262835e85e2..00000000000000
+--- a/drivers/sh/Makefile
++++ /dev/null
+@@ -1,12 +0,0 @@
+-# SPDX-License-Identifier: GPL-2.0
+-#
+-# Makefile for the SuperH specific drivers.
+-#
+-obj-$(CONFIG_SH_INTC)			+= intc/
+-ifneq ($(CONFIG_COMMON_CLK),y)
+-obj-$(CONFIG_HAVE_CLK)			+= clk/
+-endif
+-obj-$(CONFIG_MAPLE)			+= maple/
+-obj-$(CONFIG_SUPERHYWAY)		+= superhyway/
+-
+-obj-y					+= pm_runtime.o
+diff --git a/drivers/sh/clk/Makefile b/drivers/sh/clk/Makefile
+deleted file mode 100644
+index 0158ff3ba9d544..00000000000000
+--- a/drivers/sh/clk/Makefile
++++ /dev/null
+@@ -1,4 +0,0 @@
+-# SPDX-License-Identifier: GPL-2.0-only
+-obj-y	:= core.o
+-
+-obj-$(CONFIG_SH_CLK_CPG)	+= cpg.o
+diff --git a/drivers/sh/clk/core.c b/drivers/sh/clk/core.c
+deleted file mode 100644
+index d996782a710642..00000000000000
+--- a/drivers/sh/clk/core.c
++++ /dev/null
+@@ -1,624 +0,0 @@
 -/*
-- * Dmaengine driver base library for DMA controllers, found on SH-based SoCs
+- * SuperH clock framework
 - *
-- * extracted from shdma.c
+- *  Copyright (C) 2005 - 2010  Paul Mundt
 - *
-- * Copyright (C) 2011-2012 Guennadi Liakhovetski <g.liakhovetski@gmx.de>
-- * Copyright (C) 2009 Nobuhiro Iwamatsu <iwamatsu.nobuhiro@renesas.com>
-- * Copyright (C) 2009 Renesas Solutions, Inc. All rights reserved.
-- * Copyright (C) 2007 Freescale Semiconductor, Inc. All rights reserved.
+- * This clock framework is derived from the OMAP version by:
+- *
+- *	Copyright (C) 2004 - 2008 Nokia Corporation
+- *	Written by Tuukka Tikkanen <tuukka.tikkanen@elektrobit.com>
+- *
+- *  Modified for omap shared clock framework by Tony Lindgren <tony@atomide.com>
+- *
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
 - */
+-#define pr_fmt(fmt) "clock: " fmt
 -
--#include <linux/delay.h>
--#include <linux/shdma-base.h>
--#include <linux/dmaengine.h>
+-#include <linux/kernel.h>
 -#include <linux/init.h>
--#include <linux/interrupt.h>
 -#include <linux/module.h>
--#include <linux/pm_runtime.h>
--#include <linux/slab.h>
--#include <linux/spinlock.h>
+-#include <linux/mutex.h>
+-#include <linux/list.h>
+-#include <linux/syscore_ops.h>
+-#include <linux/seq_file.h>
+-#include <linux/err.h>
+-#include <linux/io.h>
+-#include <linux/cpufreq.h>
+-#include <linux/clk.h>
+-#include <linux/sh_clk.h>
 -
--#include "../dmaengine.h"
+-static LIST_HEAD(clock_list);
+-static DEFINE_SPINLOCK(clock_lock);
+-static DEFINE_MUTEX(clock_list_sem);
 -
--/* DMA descriptor control */
--enum shdma_desc_status {
--	DESC_IDLE,
--	DESC_PREPARED,
--	DESC_SUBMITTED,
--	DESC_COMPLETED,	/* completed, have to call callback */
--	DESC_WAITING,	/* callback called, waiting for ack / re-submit */
+-/* clock disable operations are not passed on to hardware during boot */
+-static int allow_disable;
+-
+-void clk_rate_table_build(struct clk *clk,
+-			  struct cpufreq_frequency_table *freq_table,
+-			  int nr_freqs,
+-			  struct clk_div_mult_table *src_table,
+-			  unsigned long *bitmap)
+-{
+-	unsigned long mult, div;
+-	unsigned long freq;
+-	int i;
+-
+-	clk->nr_freqs = nr_freqs;
+-
+-	for (i = 0; i < nr_freqs; i++) {
+-		div = 1;
+-		mult = 1;
+-
+-		if (src_table->divisors && i < src_table->nr_divisors)
+-			div = src_table->divisors[i];
+-
+-		if (src_table->multipliers && i < src_table->nr_multipliers)
+-			mult = src_table->multipliers[i];
+-
+-		if (!div || !mult || (bitmap && !test_bit(i, bitmap)))
+-			freq = CPUFREQ_ENTRY_INVALID;
+-		else
+-			freq = clk->parent->rate * mult / div;
+-
+-		freq_table[i].driver_data = i;
+-		freq_table[i].frequency = freq;
+-	}
+-
+-	/* Termination entry */
+-	freq_table[i].driver_data = i;
+-	freq_table[i].frequency = CPUFREQ_TABLE_END;
+-}
+-
+-struct clk_rate_round_data;
+-
+-struct clk_rate_round_data {
+-	unsigned long rate;
+-	unsigned int min, max;
+-	long (*func)(unsigned int, struct clk_rate_round_data *);
+-	void *arg;
 -};
 -
--#define NR_DESCS_PER_CHANNEL 32
+-#define for_each_frequency(pos, r, freq)			\
+-	for (pos = r->min, freq = r->func(pos, r);		\
+-	     pos <= r->max; pos++, freq = r->func(pos, r))	\
+-		if (unlikely(freq == 0))			\
+-			;					\
+-		else
 -
--#define to_shdma_chan(c) container_of(c, struct shdma_chan, dma_chan)
--#define to_shdma_dev(d) container_of(d, struct shdma_dev, dma_dev)
--
--/*
-- * For slave DMA we assume, that there is a finite number of DMA slaves in the
-- * system, and that each such slave can only use a finite number of channels.
-- * We use slave channel IDs to make sure, that no such slave channel ID is
-- * allocated more than once.
-- */
--static unsigned int slave_num = 256;
--module_param(slave_num, uint, 0444);
--
--/* A bitmask with slave_num bits */
--static unsigned long *shdma_slave_used;
--
--/* Called under spin_lock_irq(&schan->chan_lock") */
--static void shdma_chan_xfer_ld_queue(struct shdma_chan *schan)
+-static long clk_rate_round_helper(struct clk_rate_round_data *rounder)
 -{
--	struct shdma_dev *sdev = to_shdma_dev(schan->dma_chan.device);
--	const struct shdma_ops *ops = sdev->ops;
--	struct shdma_desc *sdesc;
+-	unsigned long rate_error, rate_error_prev = ~0UL;
+-	unsigned long highest, lowest, freq;
+-	long rate_best_fit = -ENOENT;
+-	int i;
 -
--	/* DMA work check */
--	if (ops->channel_busy(schan))
--		return;
+-	highest = 0;
+-	lowest = ~0UL;
 -
--	/* Find the first not transferred descriptor */
--	list_for_each_entry(sdesc, &schan->ld_queue, node)
--		if (sdesc->mark == DESC_SUBMITTED) {
--			ops->start_xfer(schan, sdesc);
+-	for_each_frequency(i, rounder, freq) {
+-		if (freq > highest)
+-			highest = freq;
+-		if (freq < lowest)
+-			lowest = freq;
+-
+-		rate_error = abs(freq - rounder->rate);
+-		if (rate_error < rate_error_prev) {
+-			rate_best_fit = freq;
+-			rate_error_prev = rate_error;
+-		}
+-
+-		if (rate_error == 0)
 -			break;
--		}
+-	}
+-
+-	if (rounder->rate >= highest)
+-		rate_best_fit = highest;
+-	if (rounder->rate <= lowest)
+-		rate_best_fit = lowest;
+-
+-	return rate_best_fit;
 -}
 -
--static dma_cookie_t shdma_tx_submit(struct dma_async_tx_descriptor *tx)
+-static long clk_rate_table_iter(unsigned int pos,
+-				struct clk_rate_round_data *rounder)
 -{
--	struct shdma_desc *chunk, *c, *desc =
--		container_of(tx, struct shdma_desc, async_tx);
--	struct shdma_chan *schan = to_shdma_chan(tx->chan);
--	dma_async_tx_callback callback = tx->callback;
--	dma_cookie_t cookie;
--	bool power_up;
+-	struct cpufreq_frequency_table *freq_table = rounder->arg;
+-	unsigned long freq = freq_table[pos].frequency;
 -
--	spin_lock_irq(&schan->chan_lock);
+-	if (freq == CPUFREQ_ENTRY_INVALID)
+-		freq = 0;
 -
--	power_up = list_empty(&schan->ld_queue);
--
--	cookie = dma_cookie_assign(tx);
--
--	/* Mark all chunks of this descriptor as submitted, move to the queue */
--	list_for_each_entry_safe(chunk, c, desc->node.prev, node) {
--		/*
--		 * All chunks are on the global ld_free, so, we have to find
--		 * the end of the chain ourselves
--		 */
--		if (chunk != desc && (chunk->mark == DESC_IDLE ||
--				      chunk->async_tx.cookie > 0 ||
--				      chunk->async_tx.cookie == -EBUSY ||
--				      &chunk->node == &schan->ld_free))
--			break;
--		chunk->mark = DESC_SUBMITTED;
--		if (chunk->chunks == 1) {
--			chunk->async_tx.callback = callback;
--			chunk->async_tx.callback_param = tx->callback_param;
--		} else {
--			/* Callback goes to the last chunk */
--			chunk->async_tx.callback = NULL;
--		}
--		chunk->cookie = cookie;
--		list_move_tail(&chunk->node, &schan->ld_queue);
--
--		dev_dbg(schan->dev, "submit #%d@%p on %d\n",
--			tx->cookie, &chunk->async_tx, schan->id);
--	}
--
--	if (power_up) {
--		int ret;
--		schan->pm_state = SHDMA_PM_BUSY;
--
--		ret = pm_runtime_get(schan->dev);
--
--		spin_unlock_irq(&schan->chan_lock);
--		if (ret < 0)
--			dev_err(schan->dev, "%s(): GET = %d\n", __func__, ret);
--
--		pm_runtime_barrier(schan->dev);
--
--		spin_lock_irq(&schan->chan_lock);
--
--		/* Have we been reset, while waiting? */
--		if (schan->pm_state != SHDMA_PM_ESTABLISHED) {
--			struct shdma_dev *sdev =
--				to_shdma_dev(schan->dma_chan.device);
--			const struct shdma_ops *ops = sdev->ops;
--			dev_dbg(schan->dev, "Bring up channel %d\n",
--				schan->id);
--			/*
--			 * TODO: .xfer_setup() might fail on some platforms.
--			 * Make it int then, on error remove chunks from the
--			 * queue again
--			 */
--			ops->setup_xfer(schan, schan->slave_id);
--
--			if (schan->pm_state == SHDMA_PM_PENDING)
--				shdma_chan_xfer_ld_queue(schan);
--			schan->pm_state = SHDMA_PM_ESTABLISHED;
--		}
--	} else {
--		/*
--		 * Tell .device_issue_pending() not to run the queue, interrupts
--		 * will do it anyway
--		 */
--		schan->pm_state = SHDMA_PM_PENDING;
--	}
--
--	spin_unlock_irq(&schan->chan_lock);
--
--	return cookie;
+-	return freq;
 -}
 -
--/* Called with desc_lock held */
--static struct shdma_desc *shdma_get_desc(struct shdma_chan *schan)
+-long clk_rate_table_round(struct clk *clk,
+-			  struct cpufreq_frequency_table *freq_table,
+-			  unsigned long rate)
 -{
--	struct shdma_desc *sdesc;
+-	struct clk_rate_round_data table_round = {
+-		.min	= 0,
+-		.max	= clk->nr_freqs - 1,
+-		.func	= clk_rate_table_iter,
+-		.arg	= freq_table,
+-		.rate	= rate,
+-	};
 -
--	list_for_each_entry(sdesc, &schan->ld_free, node)
--		if (sdesc->mark != DESC_PREPARED) {
--			BUG_ON(sdesc->mark != DESC_IDLE);
--			list_del(&sdesc->node);
--			return sdesc;
--		}
+-	if (clk->nr_freqs < 1)
+-		return -ENOSYS;
 -
--	return NULL;
+-	return clk_rate_round_helper(&table_round);
 -}
 -
--static int shdma_setup_slave(struct shdma_chan *schan, dma_addr_t slave_addr)
+-static long clk_rate_div_range_iter(unsigned int pos,
+-				    struct clk_rate_round_data *rounder)
 -{
--	struct shdma_dev *sdev = to_shdma_dev(schan->dma_chan.device);
--	const struct shdma_ops *ops = sdev->ops;
--	int ret, match;
+-	return clk_get_rate(rounder->arg) / pos;
+-}
 -
--	if (schan->dev->of_node) {
--		match = schan->hw_req;
--		ret = ops->set_slave(schan, match, slave_addr, true);
--		if (ret < 0)
--			return ret;
--	} else {
--		match = schan->real_slave_id;
--	}
+-long clk_rate_div_range_round(struct clk *clk, unsigned int div_min,
+-			      unsigned int div_max, unsigned long rate)
+-{
+-	struct clk_rate_round_data div_range_round = {
+-		.min	= div_min,
+-		.max	= div_max,
+-		.func	= clk_rate_div_range_iter,
+-		.arg	= clk_get_parent(clk),
+-		.rate	= rate,
+-	};
 -
--	if (schan->real_slave_id < 0 || schan->real_slave_id >= slave_num)
--		return -EINVAL;
+-	return clk_rate_round_helper(&div_range_round);
+-}
 -
--	if (test_and_set_bit(schan->real_slave_id, shdma_slave_used))
--		return -EBUSY;
+-static long clk_rate_mult_range_iter(unsigned int pos,
+-				      struct clk_rate_round_data *rounder)
+-{
+-	return clk_get_rate(rounder->arg) * pos;
+-}
 -
--	ret = ops->set_slave(schan, match, slave_addr, false);
--	if (ret < 0) {
--		clear_bit(schan->real_slave_id, shdma_slave_used);
--		return ret;
--	}
+-long clk_rate_mult_range_round(struct clk *clk, unsigned int mult_min,
+-			       unsigned int mult_max, unsigned long rate)
+-{
+-	struct clk_rate_round_data mult_range_round = {
+-		.min	= mult_min,
+-		.max	= mult_max,
+-		.func	= clk_rate_mult_range_iter,
+-		.arg	= clk_get_parent(clk),
+-		.rate	= rate,
+-	};
 -
--	schan->slave_id = schan->real_slave_id;
+-	return clk_rate_round_helper(&mult_range_round);
+-}
+-
+-int clk_rate_table_find(struct clk *clk,
+-			struct cpufreq_frequency_table *freq_table,
+-			unsigned long rate)
+-{
+-	struct cpufreq_frequency_table *pos;
+-	int idx;
+-
+-	cpufreq_for_each_valid_entry_idx(pos, freq_table, idx)
+-		if (pos->frequency == rate)
+-			return idx;
+-
+-	return -ENOENT;
+-}
+-
+-/* Used for clocks that always have same value as the parent clock */
+-unsigned long followparent_recalc(struct clk *clk)
+-{
+-	return clk->parent ? clk->parent->rate : 0;
+-}
+-
+-int clk_reparent(struct clk *child, struct clk *parent)
+-{
+-	list_del_init(&child->sibling);
+-	if (parent)
+-		list_add(&child->sibling, &parent->children);
+-	child->parent = parent;
 -
 -	return 0;
 -}
 -
--static int shdma_alloc_chan_resources(struct dma_chan *chan)
+-/* Propagate rate to children */
+-void propagate_rate(struct clk *tclk)
 -{
--	struct shdma_chan *schan = to_shdma_chan(chan);
--	struct shdma_dev *sdev = to_shdma_dev(schan->dma_chan.device);
--	const struct shdma_ops *ops = sdev->ops;
--	struct shdma_desc *desc;
--	struct shdma_slave *slave = chan->private;
--	int ret, i;
+-	struct clk *clkp;
+-
+-	list_for_each_entry(clkp, &tclk->children, sibling) {
+-		if (clkp->ops && clkp->ops->recalc)
+-			clkp->rate = clkp->ops->recalc(clkp);
+-
+-		propagate_rate(clkp);
+-	}
+-}
+-
+-static void __clk_disable(struct clk *clk)
+-{
+-	if (WARN(!clk->usecount, "Trying to disable clock %p with 0 usecount\n",
+-		 clk))
+-		return;
+-
+-	if (!(--clk->usecount)) {
+-		if (likely(allow_disable && clk->ops && clk->ops->disable))
+-			clk->ops->disable(clk);
+-		if (likely(clk->parent))
+-			__clk_disable(clk->parent);
+-	}
+-}
+-
+-void clk_disable(struct clk *clk)
+-{
+-	unsigned long flags;
+-
+-	if (!clk)
+-		return;
+-
+-	spin_lock_irqsave(&clock_lock, flags);
+-	__clk_disable(clk);
+-	spin_unlock_irqrestore(&clock_lock, flags);
+-}
+-EXPORT_SYMBOL_GPL(clk_disable);
+-
+-static int __clk_enable(struct clk *clk)
+-{
+-	int ret = 0;
+-
+-	if (clk->usecount++ == 0) {
+-		if (clk->parent) {
+-			ret = __clk_enable(clk->parent);
+-			if (unlikely(ret))
+-				goto err;
+-		}
+-
+-		if (clk->ops && clk->ops->enable) {
+-			ret = clk->ops->enable(clk);
+-			if (ret) {
+-				if (clk->parent)
+-					__clk_disable(clk->parent);
+-				goto err;
+-			}
+-		}
+-	}
+-
+-	return ret;
+-err:
+-	clk->usecount--;
+-	return ret;
+-}
+-
+-int clk_enable(struct clk *clk)
+-{
+-	unsigned long flags;
+-	int ret;
+-
+-	if (!clk)
+-		return -EINVAL;
+-
+-	spin_lock_irqsave(&clock_lock, flags);
+-	ret = __clk_enable(clk);
+-	spin_unlock_irqrestore(&clock_lock, flags);
+-
+-	return ret;
+-}
+-EXPORT_SYMBOL_GPL(clk_enable);
+-
+-static LIST_HEAD(root_clks);
+-
+-/**
+- * recalculate_root_clocks - recalculate and propagate all root clocks
+- *
+- * Recalculates all root clocks (clocks with no parent), which if the
+- * clock's .recalc is set correctly, should also propagate their rates.
+- * Called at init.
+- */
+-void recalculate_root_clocks(void)
+-{
+-	struct clk *clkp;
+-
+-	list_for_each_entry(clkp, &root_clks, sibling) {
+-		if (clkp->ops && clkp->ops->recalc)
+-			clkp->rate = clkp->ops->recalc(clkp);
+-		propagate_rate(clkp);
+-	}
+-}
+-
+-static struct clk_mapping dummy_mapping;
+-
+-static struct clk *lookup_root_clock(struct clk *clk)
+-{
+-	while (clk->parent)
+-		clk = clk->parent;
+-
+-	return clk;
+-}
+-
+-static int clk_establish_mapping(struct clk *clk)
+-{
+-	struct clk_mapping *mapping = clk->mapping;
 -
 -	/*
--	 * This relies on the guarantee from dmaengine that alloc_chan_resources
--	 * never runs concurrently with itself or free_chan_resources.
+-	 * Propagate mappings.
 -	 */
--	if (slave) {
--		/* Legacy mode: .private is set in filter */
--		schan->real_slave_id = slave->slave_id;
--		ret = shdma_setup_slave(schan, 0);
--		if (ret < 0)
--			goto esetslave;
+-	if (!mapping) {
+-		struct clk *clkp;
+-
+-		/*
+-		 * dummy mapping for root clocks with no specified ranges
+-		 */
+-		if (!clk->parent) {
+-			clk->mapping = &dummy_mapping;
+-			goto out;
+-		}
+-
+-		/*
+-		 * If we're on a child clock and it provides no mapping of its
+-		 * own, inherit the mapping from its root clock.
+-		 */
+-		clkp = lookup_root_clock(clk);
+-		mapping = clkp->mapping;
+-		BUG_ON(!mapping);
+-	}
+-
+-	/*
+-	 * Establish initial mapping.
+-	 */
+-	if (!mapping->base && mapping->phys) {
+-		kref_init(&mapping->ref);
+-
+-		mapping->base = ioremap(mapping->phys, mapping->len);
+-		if (unlikely(!mapping->base))
+-			return -ENXIO;
+-	} else if (mapping->base) {
+-		/*
+-		 * Bump the refcount for an existing mapping
+-		 */
+-		kref_get(&mapping->ref);
+-	}
+-
+-	clk->mapping = mapping;
+-out:
+-	clk->mapped_reg = clk->mapping->base;
+-	clk->mapped_reg += (phys_addr_t)clk->enable_reg - clk->mapping->phys;
+-	return 0;
+-}
+-
+-static void clk_destroy_mapping(struct kref *kref)
+-{
+-	struct clk_mapping *mapping;
+-
+-	mapping = container_of(kref, struct clk_mapping, ref);
+-
+-	iounmap(mapping->base);
+-}
+-
+-static void clk_teardown_mapping(struct clk *clk)
+-{
+-	struct clk_mapping *mapping = clk->mapping;
+-
+-	/* Nothing to do */
+-	if (mapping == &dummy_mapping)
+-		goto out;
+-
+-	kref_put(&mapping->ref, clk_destroy_mapping);
+-	clk->mapping = NULL;
+-out:
+-	clk->mapped_reg = NULL;
+-}
+-
+-int clk_register(struct clk *clk)
+-{
+-	int ret;
+-
+-	if (IS_ERR_OR_NULL(clk))
+-		return -EINVAL;
+-
+-	/*
+-	 * trap out already registered clocks
+-	 */
+-	if (clk->node.next || clk->node.prev)
+-		return 0;
+-
+-	mutex_lock(&clock_list_sem);
+-
+-	INIT_LIST_HEAD(&clk->children);
+-	clk->usecount = 0;
+-
+-	ret = clk_establish_mapping(clk);
+-	if (unlikely(ret))
+-		goto out_unlock;
+-
+-	if (clk->parent)
+-		list_add(&clk->sibling, &clk->parent->children);
+-	else
+-		list_add(&clk->sibling, &root_clks);
+-
+-	list_add(&clk->node, &clock_list);
+-
+-#ifdef CONFIG_SH_CLK_CPG_LEGACY
+-	if (clk->ops && clk->ops->init)
+-		clk->ops->init(clk);
+-#endif
+-
+-out_unlock:
+-	mutex_unlock(&clock_list_sem);
+-
+-	return ret;
+-}
+-EXPORT_SYMBOL_GPL(clk_register);
+-
+-void clk_unregister(struct clk *clk)
+-{
+-	mutex_lock(&clock_list_sem);
+-	list_del(&clk->sibling);
+-	list_del(&clk->node);
+-	clk_teardown_mapping(clk);
+-	mutex_unlock(&clock_list_sem);
+-}
+-EXPORT_SYMBOL_GPL(clk_unregister);
+-
+-void clk_enable_init_clocks(void)
+-{
+-	struct clk *clkp;
+-
+-	list_for_each_entry(clkp, &clock_list, node)
+-		if (clkp->flags & CLK_ENABLE_ON_INIT)
+-			clk_enable(clkp);
+-}
+-
+-unsigned long clk_get_rate(struct clk *clk)
+-{
+-	if (!clk)
+-		return 0;
+-
+-	return clk->rate;
+-}
+-EXPORT_SYMBOL_GPL(clk_get_rate);
+-
+-int clk_set_rate(struct clk *clk, unsigned long rate)
+-{
+-	int ret = -EOPNOTSUPP;
+-	unsigned long flags;
+-
+-	if (!clk)
+-		return 0;
+-
+-	spin_lock_irqsave(&clock_lock, flags);
+-
+-	if (likely(clk->ops && clk->ops->set_rate)) {
+-		ret = clk->ops->set_rate(clk, rate);
+-		if (ret != 0)
+-			goto out_unlock;
 -	} else {
--		/* Normal mode: real_slave_id was set by filter */
--		schan->slave_id = -EINVAL;
+-		clk->rate = rate;
+-		ret = 0;
 -	}
 -
--	schan->desc = kcalloc(NR_DESCS_PER_CHANNEL,
--			      sdev->desc_size, GFP_KERNEL);
--	if (!schan->desc) {
--		ret = -ENOMEM;
--		goto edescalloc;
+-	if (clk->ops && clk->ops->recalc)
+-		clk->rate = clk->ops->recalc(clk);
+-
+-	propagate_rate(clk);
+-
+-out_unlock:
+-	spin_unlock_irqrestore(&clock_lock, flags);
+-
+-	return ret;
+-}
+-EXPORT_SYMBOL_GPL(clk_set_rate);
+-
+-int clk_set_parent(struct clk *clk, struct clk *parent)
+-{
+-	unsigned long flags;
+-	int ret = -EINVAL;
+-
+-	if (!parent || !clk)
+-		return ret;
+-	if (clk->parent == parent)
+-		return 0;
+-
+-	spin_lock_irqsave(&clock_lock, flags);
+-	if (clk->usecount == 0) {
+-		if (clk->ops->set_parent)
+-			ret = clk->ops->set_parent(clk, parent);
+-		else
+-			ret = clk_reparent(clk, parent);
+-
+-		if (ret == 0) {
+-			if (clk->ops->recalc)
+-				clk->rate = clk->ops->recalc(clk);
+-			pr_debug("set parent of %p to %p (new rate %ld)\n",
+-				 clk, clk->parent, clk->rate);
+-			propagate_rate(clk);
+-		}
+-	} else
+-		ret = -EBUSY;
+-	spin_unlock_irqrestore(&clock_lock, flags);
+-
+-	return ret;
+-}
+-EXPORT_SYMBOL_GPL(clk_set_parent);
+-
+-struct clk *clk_get_parent(struct clk *clk)
+-{
+-	if (!clk)
+-		return NULL;
+-
+-	return clk->parent;
+-}
+-EXPORT_SYMBOL_GPL(clk_get_parent);
+-
+-long clk_round_rate(struct clk *clk, unsigned long rate)
+-{
+-	if (!clk)
+-		return 0;
+-
+-	if (likely(clk->ops && clk->ops->round_rate)) {
+-		unsigned long flags, rounded;
+-
+-		spin_lock_irqsave(&clock_lock, flags);
+-		rounded = clk->ops->round_rate(clk, rate);
+-		spin_unlock_irqrestore(&clock_lock, flags);
+-
+-		return rounded;
 -	}
--	schan->desc_num = NR_DESCS_PER_CHANNEL;
 -
--	for (i = 0; i < NR_DESCS_PER_CHANNEL; i++) {
--		desc = ops->embedded_desc(schan->desc, i);
--		dma_async_tx_descriptor_init(&desc->async_tx,
--					     &schan->dma_chan);
--		desc->async_tx.tx_submit = shdma_tx_submit;
--		desc->mark = DESC_IDLE;
+-	return clk_get_rate(clk);
+-}
+-EXPORT_SYMBOL_GPL(clk_round_rate);
 -
--		list_add(&desc->node, &schan->ld_free);
+-#ifdef CONFIG_PM
+-static void clks_core_resume(void)
+-{
+-	struct clk *clkp;
+-
+-	list_for_each_entry(clkp, &clock_list, node) {
+-		if (likely(clkp->usecount && clkp->ops)) {
+-			unsigned long rate = clkp->rate;
+-
+-			if (likely(clkp->ops->set_parent))
+-				clkp->ops->set_parent(clkp,
+-					clkp->parent);
+-			if (likely(clkp->ops->set_rate))
+-				clkp->ops->set_rate(clkp, rate);
+-			else if (likely(clkp->ops->recalc))
+-				clkp->rate = clkp->ops->recalc(clkp);
+-		}
+-	}
+-}
+-
+-static struct syscore_ops clks_syscore_ops = {
+-	.resume = clks_core_resume,
+-};
+-
+-static int __init clk_syscore_init(void)
+-{
+-	register_syscore_ops(&clks_syscore_ops);
+-
+-	return 0;
+-}
+-subsys_initcall(clk_syscore_init);
+-#endif
+-
+-static int __init clk_late_init(void)
+-{
+-	unsigned long flags;
+-	struct clk *clk;
+-
+-	/* disable all clocks with zero use count */
+-	mutex_lock(&clock_list_sem);
+-	spin_lock_irqsave(&clock_lock, flags);
+-
+-	list_for_each_entry(clk, &clock_list, node)
+-		if (!clk->usecount && clk->ops && clk->ops->disable)
+-			clk->ops->disable(clk);
+-
+-	/* from now on allow clock disable operations */
+-	allow_disable = 1;
+-
+-	spin_unlock_irqrestore(&clock_lock, flags);
+-	mutex_unlock(&clock_list_sem);
+-	return 0;
+-}
+-late_initcall(clk_late_init);
+diff --git a/drivers/sh/clk/cpg.c b/drivers/sh/clk/cpg.c
+deleted file mode 100644
+index fd72d9088bdcbc..00000000000000
+--- a/drivers/sh/clk/cpg.c
++++ /dev/null
+@@ -1,477 +0,0 @@
+-/*
+- * Helper routines for SuperH Clock Pulse Generator blocks (CPG).
+- *
+- *  Copyright (C) 2010  Magnus Damm
+- *  Copyright (C) 2010 - 2012  Paul Mundt
+- *
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- */
+-#include <linux/clk.h>
+-#include <linux/compiler.h>
+-#include <linux/slab.h>
+-#include <linux/io.h>
+-#include <linux/sh_clk.h>
+-
+-#define CPG_CKSTP_BIT	BIT(8)
+-
+-static unsigned int sh_clk_read(struct clk *clk)
+-{
+-	if (clk->flags & CLK_ENABLE_REG_8BIT)
+-		return ioread8(clk->mapped_reg);
+-	else if (clk->flags & CLK_ENABLE_REG_16BIT)
+-		return ioread16(clk->mapped_reg);
+-
+-	return ioread32(clk->mapped_reg);
+-}
+-
+-static void sh_clk_write(int value, struct clk *clk)
+-{
+-	if (clk->flags & CLK_ENABLE_REG_8BIT)
+-		iowrite8(value, clk->mapped_reg);
+-	else if (clk->flags & CLK_ENABLE_REG_16BIT)
+-		iowrite16(value, clk->mapped_reg);
+-	else
+-		iowrite32(value, clk->mapped_reg);
+-}
+-
+-static int sh_clk_mstp_enable(struct clk *clk)
+-{
+-	sh_clk_write(sh_clk_read(clk) & ~(1 << clk->enable_bit), clk);
+-	if (clk->status_reg) {
+-		unsigned int (*read)(const void __iomem *addr);
+-		int i;
+-		void __iomem *mapped_status = (phys_addr_t)clk->status_reg -
+-			(phys_addr_t)clk->enable_reg + clk->mapped_reg;
+-
+-		if (clk->flags & CLK_ENABLE_REG_8BIT)
+-			read = ioread8;
+-		else if (clk->flags & CLK_ENABLE_REG_16BIT)
+-			read = ioread16;
+-		else
+-			read = ioread32;
+-
+-		for (i = 1000;
+-		     (read(mapped_status) & (1 << clk->enable_bit)) && i;
+-		     i--)
+-			cpu_relax();
+-		if (!i) {
+-			pr_err("cpg: failed to enable %p[%d]\n",
+-			       clk->enable_reg, clk->enable_bit);
+-			return -ETIMEDOUT;
+-		}
+-	}
+-	return 0;
+-}
+-
+-static void sh_clk_mstp_disable(struct clk *clk)
+-{
+-	sh_clk_write(sh_clk_read(clk) | (1 << clk->enable_bit), clk);
+-}
+-
+-static struct sh_clk_ops sh_clk_mstp_clk_ops = {
+-	.enable		= sh_clk_mstp_enable,
+-	.disable	= sh_clk_mstp_disable,
+-	.recalc		= followparent_recalc,
+-};
+-
+-int __init sh_clk_mstp_register(struct clk *clks, int nr)
+-{
+-	struct clk *clkp;
+-	int ret = 0;
+-	int k;
+-
+-	for (k = 0; !ret && (k < nr); k++) {
+-		clkp = clks + k;
+-		clkp->ops = &sh_clk_mstp_clk_ops;
+-		ret |= clk_register(clkp);
 -	}
 -
--	return NR_DESCS_PER_CHANNEL;
--
--edescalloc:
--	if (slave)
--esetslave:
--		clear_bit(slave->slave_id, shdma_slave_used);
--	chan->private = NULL;
 -	return ret;
 -}
 -
 -/*
-- * This is the standard shdma filter function to be used as a replacement to the
-- * "old" method, using the .private pointer.
-- * You always have to pass a valid slave id as the argument, old drivers that
-- * pass ERR_PTR(-EINVAL) as a filter parameter and set it up in dma_slave_config
-- * need to be updated so we can remove the slave_id field from dma_slave_config.
-- * parameter. If this filter is used, the slave driver, after calling
-- * dma_request_channel(), will also have to call dmaengine_slave_config() with
-- * .direction, and either .src_addr or .dst_addr set.
-- *
-- * NOTE: this filter doesn't support multiple DMAC drivers with the DMA_SLAVE
-- * capability! If this becomes a requirement, hardware glue drivers, using this
-- * services would have to provide their own filters, which first would check
-- * the device driver, similar to how other DMAC drivers, e.g., sa11x0-dma.c, do
-- * this, and only then, in case of a match, call this common filter.
-- * NOTE 2: This filter function is also used in the DT case by shdma_of_xlate().
-- * In that case the MID-RID value is used for slave channel filtering and is
-- * passed to this function in the "arg" parameter.
+- * Div/mult table lookup helpers
 - */
--bool shdma_chan_filter(struct dma_chan *chan, void *arg)
+-static inline struct clk_div_table *clk_to_div_table(struct clk *clk)
 -{
--	struct shdma_chan *schan;
--	struct shdma_dev *sdev;
--	int slave_id = (long)arg;
--	int ret;
+-	return clk->priv;
+-}
 -
--	/* Only support channels handled by this driver. */
--	if (chan->device->device_alloc_chan_resources !=
--	    shdma_alloc_chan_resources)
--		return false;
+-static inline struct clk_div_mult_table *clk_to_div_mult_table(struct clk *clk)
+-{
+-	return clk_to_div_table(clk)->div_mult_table;
+-}
 -
--	schan = to_shdma_chan(chan);
--	sdev = to_shdma_dev(chan->device);
+-/*
+- * Common div ops
+- */
+-static long sh_clk_div_round_rate(struct clk *clk, unsigned long rate)
+-{
+-	return clk_rate_table_round(clk, clk->freq_table, rate);
+-}
+-
+-static unsigned long sh_clk_div_recalc(struct clk *clk)
+-{
+-	struct clk_div_mult_table *table = clk_to_div_mult_table(clk);
+-	unsigned int idx;
+-
+-	clk_rate_table_build(clk, clk->freq_table, table->nr_divisors,
+-			     table, clk->arch_flags ? &clk->arch_flags : NULL);
+-
+-	idx = (sh_clk_read(clk) >> clk->enable_bit) & clk->div_mask;
+-
+-	return clk->freq_table[idx].frequency;
+-}
+-
+-static int sh_clk_div_set_rate(struct clk *clk, unsigned long rate)
+-{
+-	struct clk_div_table *dt = clk_to_div_table(clk);
+-	unsigned long value;
+-	int idx;
+-
+-	idx = clk_rate_table_find(clk, clk->freq_table, rate);
+-	if (idx < 0)
+-		return idx;
+-
+-	value = sh_clk_read(clk);
+-	value &= ~(clk->div_mask << clk->enable_bit);
+-	value |= (idx << clk->enable_bit);
+-	sh_clk_write(value, clk);
+-
+-	/* XXX: Should use a post-change notifier */
+-	if (dt->kick)
+-		dt->kick(clk);
+-
+-	return 0;
+-}
+-
+-static int sh_clk_div_enable(struct clk *clk)
+-{
+-	if (clk->div_mask == SH_CLK_DIV6_MSK) {
+-		int ret = sh_clk_div_set_rate(clk, clk->rate);
+-		if (ret < 0)
+-			return ret;
+-	}
+-
+-	sh_clk_write(sh_clk_read(clk) & ~CPG_CKSTP_BIT, clk);
+-	return 0;
+-}
+-
+-static void sh_clk_div_disable(struct clk *clk)
+-{
+-	unsigned int val;
+-
+-	val = sh_clk_read(clk);
+-	val |= CPG_CKSTP_BIT;
 -
 -	/*
--	 * For DT, the schan->slave_id field is generated by the
--	 * set_slave function from the slave ID that is passed in
--	 * from xlate. For the non-DT case, the slave ID is
--	 * directly passed into the filter function by the driver
+-	 * div6 clocks require the divisor field to be non-zero or the
+-	 * above CKSTP toggle silently fails. Ensure that the divisor
+-	 * array is reset to its initial state on disable.
 -	 */
--	if (schan->dev->of_node) {
--		ret = sdev->ops->set_slave(schan, slave_id, 0, true);
--		if (ret < 0)
--			return false;
+-	if (clk->flags & CLK_MASK_DIV_ON_DISABLE)
+-		val |= clk->div_mask;
 -
--		schan->real_slave_id = schan->slave_id;
--		return true;
+-	sh_clk_write(val, clk);
+-}
+-
+-static struct sh_clk_ops sh_clk_div_clk_ops = {
+-	.recalc		= sh_clk_div_recalc,
+-	.set_rate	= sh_clk_div_set_rate,
+-	.round_rate	= sh_clk_div_round_rate,
+-};
+-
+-static struct sh_clk_ops sh_clk_div_enable_clk_ops = {
+-	.recalc		= sh_clk_div_recalc,
+-	.set_rate	= sh_clk_div_set_rate,
+-	.round_rate	= sh_clk_div_round_rate,
+-	.enable		= sh_clk_div_enable,
+-	.disable	= sh_clk_div_disable,
+-};
+-
+-static int __init sh_clk_init_parent(struct clk *clk)
+-{
+-	u32 val;
+-
+-	if (clk->parent)
+-		return 0;
+-
+-	if (!clk->parent_table || !clk->parent_num)
+-		return 0;
+-
+-	if (!clk->src_width) {
+-		pr_err("sh_clk_init_parent: cannot select parent clock\n");
+-		return -EINVAL;
 -	}
 -
--	if (slave_id < 0) {
--		/* No slave requested - arbitrary channel */
--		dev_warn(sdev->dma_dev.dev, "invalid slave ID passed to dma_request_slave\n");
--		return true;
+-	val  = (sh_clk_read(clk) >> clk->src_shift);
+-	val &= (1 << clk->src_width) - 1;
+-
+-	if (val >= clk->parent_num) {
+-		pr_err("sh_clk_init_parent: parent table size failed\n");
+-		return -EINVAL;
 -	}
 -
--	if (slave_id >= slave_num)
--		return false;
+-	clk_reparent(clk, clk->parent_table[val]);
+-	if (!clk->parent) {
+-		pr_err("sh_clk_init_parent: unable to set parent");
+-		return -EINVAL;
+-	}
 -
--	ret = sdev->ops->set_slave(schan, slave_id, 0, true);
+-	return 0;
+-}
+-
+-static int __init sh_clk_div_register_ops(struct clk *clks, int nr,
+-			struct clk_div_table *table, struct sh_clk_ops *ops)
+-{
+-	struct clk *clkp;
+-	void *freq_table;
+-	int nr_divs = table->div_mult_table->nr_divisors;
+-	int freq_table_size = sizeof(struct cpufreq_frequency_table);
+-	int ret = 0;
+-	int k;
+-
+-	freq_table_size *= (nr_divs + 1);
+-	freq_table = kcalloc(nr, freq_table_size, GFP_KERNEL);
+-	if (!freq_table) {
+-		pr_err("%s: unable to alloc memory\n", __func__);
+-		return -ENOMEM;
+-	}
+-
+-	for (k = 0; !ret && (k < nr); k++) {
+-		clkp = clks + k;
+-
+-		clkp->ops = ops;
+-		clkp->priv = table;
+-
+-		clkp->freq_table = freq_table + (k * freq_table_size);
+-		clkp->freq_table[nr_divs].frequency = CPUFREQ_TABLE_END;
+-
+-		ret = clk_register(clkp);
+-		if (ret == 0)
+-			ret = sh_clk_init_parent(clkp);
+-	}
+-
+-	return ret;
+-}
+-
+-/*
+- * div6 support
+- */
+-static int sh_clk_div6_divisors[64] = {
+-	1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+-	17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
+-	33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,
+-	49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64
+-};
+-
+-static struct clk_div_mult_table div6_div_mult_table = {
+-	.divisors = sh_clk_div6_divisors,
+-	.nr_divisors = ARRAY_SIZE(sh_clk_div6_divisors),
+-};
+-
+-static struct clk_div_table sh_clk_div6_table = {
+-	.div_mult_table	= &div6_div_mult_table,
+-};
+-
+-static int sh_clk_div6_set_parent(struct clk *clk, struct clk *parent)
+-{
+-	struct clk_div_mult_table *table = clk_to_div_mult_table(clk);
+-	u32 value;
+-	int ret, i;
+-
+-	if (!clk->parent_table || !clk->parent_num)
+-		return -EINVAL;
+-
+-	/* Search the parent */
+-	for (i = 0; i < clk->parent_num; i++)
+-		if (clk->parent_table[i] == parent)
+-			break;
+-
+-	if (i == clk->parent_num)
+-		return -ENODEV;
+-
+-	ret = clk_reparent(clk, parent);
 -	if (ret < 0)
--		return false;
+-		return ret;
 -
--	schan->real_slave_id = slave_id;
+-	value = sh_clk_read(clk) &
+-		~(((1 << clk->src_width) - 1) << clk->src_shift);
+-
+-	sh_clk_write(value | (i << clk->src_shift), clk);
+-
+-	/* Rebuild the frequency table */
+-	clk_rate_table_build(clk, clk->freq_table, table->nr_divisors,
+-			     table, NULL);
+-
+-	return 0;
+-}
+-
+-static struct sh_clk_ops sh_clk_div6_reparent_clk_ops = {
+-	.recalc		= sh_clk_div_recalc,
+-	.round_rate	= sh_clk_div_round_rate,
+-	.set_rate	= sh_clk_div_set_rate,
+-	.enable		= sh_clk_div_enable,
+-	.disable	= sh_clk_div_disable,
+-	.set_parent	= sh_clk_div6_set_parent,
+-};
+-
+-int __init sh_clk_div6_register(struct clk *clks, int nr)
+-{
+-	return sh_clk_div_register_ops(clks, nr, &sh_clk_div6_table,
+-				       &sh_clk_div_enable_clk_ops);
+-}
+-
+-int __init sh_clk_div6_reparent_register(struct clk *clks, int nr)
+-{
+-	return sh_clk_div_register_ops(clks, nr, &sh_clk_div6_table,
+-				       &sh_clk_div6_reparent_clk_ops);
+-}
+-
+-/*
+- * div4 support
+- */
+-static int sh_clk_div4_set_parent(struct clk *clk, struct clk *parent)
+-{
+-	struct clk_div_mult_table *table = clk_to_div_mult_table(clk);
+-	u32 value;
+-	int ret;
+-
+-	/* we really need a better way to determine parent index, but for
+-	 * now assume internal parent comes with CLK_ENABLE_ON_INIT set,
+-	 * no CLK_ENABLE_ON_INIT means external clock...
+-	 */
+-
+-	if (parent->flags & CLK_ENABLE_ON_INIT)
+-		value = sh_clk_read(clk) & ~(1 << 7);
+-	else
+-		value = sh_clk_read(clk) | (1 << 7);
+-
+-	ret = clk_reparent(clk, parent);
+-	if (ret < 0)
+-		return ret;
+-
+-	sh_clk_write(value, clk);
+-
+-	/* Rebiuld the frequency table */
+-	clk_rate_table_build(clk, clk->freq_table, table->nr_divisors,
+-			     table, &clk->arch_flags);
+-
+-	return 0;
+-}
+-
+-static struct sh_clk_ops sh_clk_div4_reparent_clk_ops = {
+-	.recalc		= sh_clk_div_recalc,
+-	.set_rate	= sh_clk_div_set_rate,
+-	.round_rate	= sh_clk_div_round_rate,
+-	.enable		= sh_clk_div_enable,
+-	.disable	= sh_clk_div_disable,
+-	.set_parent	= sh_clk_div4_set_parent,
+-};
+-
+-int __init sh_clk_div4_register(struct clk *clks, int nr,
+-				struct clk_div4_table *table)
+-{
+-	return sh_clk_div_register_ops(clks, nr, table, &sh_clk_div_clk_ops);
+-}
+-
+-int __init sh_clk_div4_enable_register(struct clk *clks, int nr,
+-				struct clk_div4_table *table)
+-{
+-	return sh_clk_div_register_ops(clks, nr, table,
+-				       &sh_clk_div_enable_clk_ops);
+-}
+-
+-int __init sh_clk_div4_reparent_register(struct clk *clks, int nr,
+-				struct clk_div4_table *table)
+-{
+-	return sh_clk_div_register_ops(clks, nr, table,
+-				       &sh_clk_div4_reparent_clk_ops);
+-}
+-
+-/* FSI-DIV */
+-static unsigned long fsidiv_recalc(struct clk *clk)
+-{
+-	u32 value;
+-
+-	value = __raw_readl(clk->mapping->base);
+-
+-	value >>= 16;
+-	if (value < 2)
+-		return clk->parent->rate;
+-
+-	return clk->parent->rate / value;
+-}
+-
+-static long fsidiv_round_rate(struct clk *clk, unsigned long rate)
+-{
+-	return clk_rate_div_range_round(clk, 1, 0xffff, rate);
+-}
+-
+-static void fsidiv_disable(struct clk *clk)
+-{
+-	__raw_writel(0, clk->mapping->base);
+-}
+-
+-static int fsidiv_enable(struct clk *clk)
+-{
+-	u32 value;
+-
+-	value  = __raw_readl(clk->mapping->base) >> 16;
+-	if (value < 2)
+-		return 0;
+-
+-	__raw_writel((value << 16) | 0x3, clk->mapping->base);
+-
+-	return 0;
+-}
+-
+-static int fsidiv_set_rate(struct clk *clk, unsigned long rate)
+-{
+-	int idx;
+-
+-	idx = (clk->parent->rate / rate) & 0xffff;
+-	if (idx < 2)
+-		__raw_writel(0, clk->mapping->base);
+-	else
+-		__raw_writel(idx << 16, clk->mapping->base);
+-
+-	return 0;
+-}
+-
+-static struct sh_clk_ops fsidiv_clk_ops = {
+-	.recalc		= fsidiv_recalc,
+-	.round_rate	= fsidiv_round_rate,
+-	.set_rate	= fsidiv_set_rate,
+-	.enable		= fsidiv_enable,
+-	.disable	= fsidiv_disable,
+-};
+-
+-int __init sh_clk_fsidiv_register(struct clk *clks, int nr)
+-{
+-	struct clk_mapping *map;
+-	int i;
+-
+-	for (i = 0; i < nr; i++) {
+-
+-		map = kzalloc(sizeof(struct clk_mapping), GFP_KERNEL);
+-		if (!map) {
+-			pr_err("%s: unable to alloc memory\n", __func__);
+-			return -ENOMEM;
+-		}
+-
+-		/* clks[i].enable_reg came from SH_CLK_FSIDIV() */
+-		map->phys		= (phys_addr_t)clks[i].enable_reg;
+-		map->len		= 8;
+-
+-		clks[i].enable_reg	= 0; /* remove .enable_reg */
+-		clks[i].ops		= &fsidiv_clk_ops;
+-		clks[i].mapping		= map;
+-
+-		clk_register(&clks[i]);
+-	}
+-
+-	return 0;
+-}
+diff --git a/drivers/sh/intc/Kconfig b/drivers/sh/intc/Kconfig
+deleted file mode 100644
+index 5c701709fef528..00000000000000
+--- a/drivers/sh/intc/Kconfig
++++ /dev/null
+@@ -1,44 +0,0 @@
+-# SPDX-License-Identifier: GPL-2.0-only
+-config SH_INTC
+-	bool
+-	select IRQ_DOMAIN
+-
+-if SH_INTC
+-
+-comment "Interrupt controller options"
+-
+-config INTC_USERIMASK
+-	bool "Userspace interrupt masking support"
+-	depends on (SUPERH && CPU_SH4A) || COMPILE_TEST
+-	help
+-	  This enables support for hardware-assisted userspace hardirq
+-	  masking.
+-
+-	  SH-4A and newer interrupt blocks all support a special shadowed
+-	  page with all non-masking registers obscured when mapped in to
+-	  userspace. This is primarily for use by userspace device
+-	  drivers that are using special priority levels.
+-
+-	  If in doubt, say N.
+-
+-config INTC_BALANCING
+-	bool "Hardware IRQ balancing support"
+-	depends on SMP && SUPERH && CPU_SHX3
+-	help
+-	  This enables support for IRQ auto-distribution mode on SH-X3
+-	  SMP parts. All of the balancing and CPU wakeup decisions are
+-	  taken care of automatically by hardware for distributed
+-	  vectors.
+-
+-	  If in doubt, say N.
+-
+-config INTC_MAPPING_DEBUG
+-	bool "Expose IRQ to per-controller id mapping via debugfs"
+-	depends on DEBUG_FS
+-	help
+-	  This will create a debugfs entry for showing the relationship
+-	  between system IRQs and the per-controller id tables.
+-
+-	  If in doubt, say N.
+-
+-endif
+diff --git a/drivers/sh/intc/Makefile b/drivers/sh/intc/Makefile
+deleted file mode 100644
+index bdd855327e41d5..00000000000000
+--- a/drivers/sh/intc/Makefile
++++ /dev/null
+@@ -1,6 +0,0 @@
+-# SPDX-License-Identifier: GPL-2.0-only
+-obj-y 	:= access.o chip.o core.o handle.o irqdomain.o virq.o
+-
+-obj-$(CONFIG_INTC_BALANCING)		+= balancing.o
+-obj-$(CONFIG_INTC_USERIMASK)		+= userimask.o
+-obj-$(CONFIG_INTC_MAPPING_DEBUG)	+= virq-debugfs.o
+diff --git a/drivers/sh/intc/access.c b/drivers/sh/intc/access.c
+deleted file mode 100644
+index 114390f967d26e..00000000000000
+--- a/drivers/sh/intc/access.c
++++ /dev/null
+@@ -1,246 +0,0 @@
+-/*
+- * Common INTC2 register accessors
+- *
+- * Copyright (C) 2007, 2008 Magnus Damm
+- * Copyright (C) 2009, 2010 Paul Mundt
+- *
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- */
+-#include <linux/io.h>
+-#include "internals.h"
+-
+-unsigned long intc_phys_to_virt(struct intc_desc_int *d, unsigned long address)
+-{
+-	struct intc_window *window;
+-	int k;
+-
+-	/* scan through physical windows and convert address */
+-	for (k = 0; k < d->nr_windows; k++) {
+-		window = d->window + k;
+-
+-		if (address < window->phys)
+-			continue;
+-
+-		if (address >= (window->phys + window->size))
+-			continue;
+-
+-		address -= window->phys;
+-		address += (unsigned long)window->virt;
+-
+-		return address;
+-	}
+-
+-	/* no windows defined, register must be 1:1 mapped virt:phys */
+-	return address;
+-}
+-
+-unsigned int intc_get_reg(struct intc_desc_int *d, unsigned long address)
+-{
+-	unsigned int k;
+-
+-	address = intc_phys_to_virt(d, address);
+-
+-	for (k = 0; k < d->nr_reg; k++) {
+-		if (d->reg[k] == address)
+-			return k;
+-	}
+-
+-	BUG();
+-	return 0;
+-}
+-
+-unsigned int intc_set_field_from_handle(unsigned int value,
+-					unsigned int field_value,
+-					unsigned int handle)
+-{
+-	unsigned int width = _INTC_WIDTH(handle);
+-	unsigned int shift = _INTC_SHIFT(handle);
+-
+-	value &= ~(((1 << width) - 1) << shift);
+-	value |= field_value << shift;
+-	return value;
+-}
+-
+-unsigned long intc_get_field_from_handle(unsigned int value, unsigned int handle)
+-{
+-	unsigned int width = _INTC_WIDTH(handle);
+-	unsigned int shift = _INTC_SHIFT(handle);
+-	unsigned int mask = ((1 << width) - 1) << shift;
+-
+-	return (value & mask) >> shift;
+-}
+-
+-static unsigned long test_8(unsigned long addr, unsigned long h,
+-			    unsigned long ignore)
+-{
+-	void __iomem *ptr = (void __iomem *)addr;
+-	return intc_get_field_from_handle(__raw_readb(ptr), h);
+-}
+-
+-static unsigned long test_16(unsigned long addr, unsigned long h,
+-			     unsigned long ignore)
+-{
+-	void __iomem *ptr = (void __iomem *)addr;
+-	return intc_get_field_from_handle(__raw_readw(ptr), h);
+-}
+-
+-static unsigned long test_32(unsigned long addr, unsigned long h,
+-			     unsigned long ignore)
+-{
+-	void __iomem *ptr = (void __iomem *)addr;
+-	return intc_get_field_from_handle(__raw_readl(ptr), h);
+-}
+-
+-static unsigned long write_8(unsigned long addr, unsigned long h,
+-			     unsigned long data)
+-{
+-	void __iomem *ptr = (void __iomem *)addr;
+-	__raw_writeb(intc_set_field_from_handle(0, data, h), ptr);
+-	(void)__raw_readb(ptr);	/* Defeat write posting */
+-	return 0;
+-}
+-
+-static unsigned long write_16(unsigned long addr, unsigned long h,
+-			      unsigned long data)
+-{
+-	void __iomem *ptr = (void __iomem *)addr;
+-	__raw_writew(intc_set_field_from_handle(0, data, h), ptr);
+-	(void)__raw_readw(ptr);	/* Defeat write posting */
+-	return 0;
+-}
+-
+-static unsigned long write_32(unsigned long addr, unsigned long h,
+-			      unsigned long data)
+-{
+-	void __iomem *ptr = (void __iomem *)addr;
+-	__raw_writel(intc_set_field_from_handle(0, data, h), ptr);
+-	(void)__raw_readl(ptr);	/* Defeat write posting */
+-	return 0;
+-}
+-
+-static unsigned long modify_8(unsigned long addr, unsigned long h,
+-			      unsigned long data)
+-{
+-	void __iomem *ptr = (void __iomem *)addr;
+-	unsigned long flags;
+-	unsigned int value;
+-	local_irq_save(flags);
+-	value = intc_set_field_from_handle(__raw_readb(ptr), data, h);
+-	__raw_writeb(value, ptr);
+-	(void)__raw_readb(ptr);	/* Defeat write posting */
+-	local_irq_restore(flags);
+-	return 0;
+-}
+-
+-static unsigned long modify_16(unsigned long addr, unsigned long h,
+-			       unsigned long data)
+-{
+-	void __iomem *ptr = (void __iomem *)addr;
+-	unsigned long flags;
+-	unsigned int value;
+-	local_irq_save(flags);
+-	value = intc_set_field_from_handle(__raw_readw(ptr), data, h);
+-	__raw_writew(value, ptr);
+-	(void)__raw_readw(ptr);	/* Defeat write posting */
+-	local_irq_restore(flags);
+-	return 0;
+-}
+-
+-static unsigned long modify_32(unsigned long addr, unsigned long h,
+-			       unsigned long data)
+-{
+-	void __iomem *ptr = (void __iomem *)addr;
+-	unsigned long flags;
+-	unsigned int value;
+-	local_irq_save(flags);
+-	value = intc_set_field_from_handle(__raw_readl(ptr), data, h);
+-	__raw_writel(value, ptr);
+-	(void)__raw_readl(ptr);	/* Defeat write posting */
+-	local_irq_restore(flags);
+-	return 0;
+-}
+-
+-static unsigned long intc_mode_field(unsigned long addr,
+-				     unsigned long handle,
+-				     unsigned long (*fn)(unsigned long,
+-						unsigned long,
+-						unsigned long),
+-				     unsigned int irq)
+-{
+-	return fn(addr, handle, ((1 << _INTC_WIDTH(handle)) - 1));
+-}
+-
+-static unsigned long intc_mode_zero(unsigned long addr,
+-				    unsigned long handle,
+-				    unsigned long (*fn)(unsigned long,
+-					       unsigned long,
+-					       unsigned long),
+-				    unsigned int irq)
+-{
+-	return fn(addr, handle, 0);
+-}
+-
+-static unsigned long intc_mode_prio(unsigned long addr,
+-				    unsigned long handle,
+-				    unsigned long (*fn)(unsigned long,
+-					       unsigned long,
+-					       unsigned long),
+-				    unsigned int irq)
+-{
+-	return fn(addr, handle, intc_get_prio_level(irq));
+-}
+-
+-unsigned long (*intc_reg_fns[])(unsigned long addr,
+-				unsigned long h,
+-				unsigned long data) = {
+-	[REG_FN_TEST_BASE + 0] = test_8,
+-	[REG_FN_TEST_BASE + 1] = test_16,
+-	[REG_FN_TEST_BASE + 3] = test_32,
+-	[REG_FN_WRITE_BASE + 0] = write_8,
+-	[REG_FN_WRITE_BASE + 1] = write_16,
+-	[REG_FN_WRITE_BASE + 3] = write_32,
+-	[REG_FN_MODIFY_BASE + 0] = modify_8,
+-	[REG_FN_MODIFY_BASE + 1] = modify_16,
+-	[REG_FN_MODIFY_BASE + 3] = modify_32,
+-};
+-
+-unsigned long (*intc_enable_fns[])(unsigned long addr,
+-				   unsigned long handle,
+-				   unsigned long (*fn)(unsigned long,
+-					    unsigned long,
+-					    unsigned long),
+-				   unsigned int irq) = {
+-	[MODE_ENABLE_REG] = intc_mode_field,
+-	[MODE_MASK_REG] = intc_mode_zero,
+-	[MODE_DUAL_REG] = intc_mode_field,
+-	[MODE_PRIO_REG] = intc_mode_prio,
+-	[MODE_PCLR_REG] = intc_mode_prio,
+-};
+-
+-unsigned long (*intc_disable_fns[])(unsigned long addr,
+-				    unsigned long handle,
+-				    unsigned long (*fn)(unsigned long,
+-					     unsigned long,
+-					     unsigned long),
+-				    unsigned int irq) = {
+-	[MODE_ENABLE_REG] = intc_mode_zero,
+-	[MODE_MASK_REG] = intc_mode_field,
+-	[MODE_DUAL_REG] = intc_mode_field,
+-	[MODE_PRIO_REG] = intc_mode_zero,
+-	[MODE_PCLR_REG] = intc_mode_field,
+-};
+-
+-unsigned long (*intc_enable_noprio_fns[])(unsigned long addr,
+-					  unsigned long handle,
+-					  unsigned long (*fn)(unsigned long,
+-						unsigned long,
+-						unsigned long),
+-					  unsigned int irq) = {
+-	[MODE_ENABLE_REG] = intc_mode_field,
+-	[MODE_MASK_REG] = intc_mode_zero,
+-	[MODE_DUAL_REG] = intc_mode_field,
+-	[MODE_PRIO_REG] = intc_mode_field,
+-	[MODE_PCLR_REG] = intc_mode_field,
+-};
+diff --git a/drivers/sh/intc/balancing.c b/drivers/sh/intc/balancing.c
+deleted file mode 100644
+index bc780807ccb0fe..00000000000000
+--- a/drivers/sh/intc/balancing.c
++++ /dev/null
+@@ -1,97 +0,0 @@
+-/*
+- * Support for hardware-managed IRQ auto-distribution.
+- *
+- * Copyright (C) 2010  Paul Mundt
+- *
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- */
+-#include "internals.h"
+-
+-static unsigned long dist_handle[INTC_NR_IRQS];
+-
+-void intc_balancing_enable(unsigned int irq)
+-{
+-	struct intc_desc_int *d = get_intc_desc(irq);
+-	unsigned long handle = dist_handle[irq];
+-	unsigned long addr;
+-
+-	if (irq_balancing_disabled(irq) || !handle)
+-		return;
+-
+-	addr = INTC_REG(d, _INTC_ADDR_D(handle), 0);
+-	intc_reg_fns[_INTC_FN(handle)](addr, handle, 1);
+-}
+-
+-void intc_balancing_disable(unsigned int irq)
+-{
+-	struct intc_desc_int *d = get_intc_desc(irq);
+-	unsigned long handle = dist_handle[irq];
+-	unsigned long addr;
+-
+-	if (irq_balancing_disabled(irq) || !handle)
+-		return;
+-
+-	addr = INTC_REG(d, _INTC_ADDR_D(handle), 0);
+-	intc_reg_fns[_INTC_FN(handle)](addr, handle, 0);
+-}
+-
+-static unsigned int intc_dist_data(struct intc_desc *desc,
+-				   struct intc_desc_int *d,
+-				   intc_enum enum_id)
+-{
+-	struct intc_mask_reg *mr = desc->hw.mask_regs;
+-	unsigned int i, j, fn, mode;
+-	unsigned long reg_e, reg_d;
+-
+-	for (i = 0; mr && enum_id && i < desc->hw.nr_mask_regs; i++) {
+-		mr = desc->hw.mask_regs + i;
+-
+-		/*
+-		 * Skip this entry if there's no auto-distribution
+-		 * register associated with it.
+-		 */
+-		if (!mr->dist_reg)
+-			continue;
+-
+-		for (j = 0; j < ARRAY_SIZE(mr->enum_ids); j++) {
+-			if (mr->enum_ids[j] != enum_id)
+-				continue;
+-
+-			fn = REG_FN_MODIFY_BASE;
+-			mode = MODE_ENABLE_REG;
+-			reg_e = mr->dist_reg;
+-			reg_d = mr->dist_reg;
+-
+-			fn += (mr->reg_width >> 3) - 1;
+-			return _INTC_MK(fn, mode,
+-					intc_get_reg(d, reg_e),
+-					intc_get_reg(d, reg_d),
+-					1,
+-					(mr->reg_width - 1) - j);
+-		}
+-	}
+-
+-	/*
+-	 * It's possible we've gotten here with no distribution options
+-	 * available for the IRQ in question, so we just skip over those.
+-	 */
+-	return 0;
+-}
+-
+-void intc_set_dist_handle(unsigned int irq, struct intc_desc *desc,
+-			  struct intc_desc_int *d, intc_enum id)
+-{
+-	unsigned long flags;
+-
+-	/*
+-	 * Nothing to do for this IRQ.
+-	 */
+-	if (!desc->hw.mask_regs)
+-		return;
+-
+-	raw_spin_lock_irqsave(&intc_big_lock, flags);
+-	dist_handle[irq] = intc_dist_data(desc, d, id);
+-	raw_spin_unlock_irqrestore(&intc_big_lock, flags);
+-}
+diff --git a/drivers/sh/intc/chip.c b/drivers/sh/intc/chip.c
+deleted file mode 100644
+index 828d81e02b37ab..00000000000000
+--- a/drivers/sh/intc/chip.c
++++ /dev/null
+@@ -1,211 +0,0 @@
+-/*
+- * IRQ chip definitions for INTC IRQs.
+- *
+- * Copyright (C) 2007, 2008 Magnus Damm
+- * Copyright (C) 2009 - 2012 Paul Mundt
+- *
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- */
+-#include <linux/cpumask.h>
+-#include <linux/bsearch.h>
+-#include <linux/io.h>
+-#include "internals.h"
+-
+-void _intc_enable(struct irq_data *data, unsigned long handle)
+-{
+-	unsigned int irq = data->irq;
+-	struct intc_desc_int *d = get_intc_desc(irq);
+-	unsigned long addr;
+-	unsigned int cpu;
+-
+-	for (cpu = 0; cpu < SMP_NR(d, _INTC_ADDR_E(handle)); cpu++) {
+-#ifdef CONFIG_SMP
+-		if (!cpumask_test_cpu(cpu, irq_data_get_affinity_mask(data)))
+-			continue;
+-#endif
+-		addr = INTC_REG(d, _INTC_ADDR_E(handle), cpu);
+-		intc_enable_fns[_INTC_MODE(handle)](addr, handle, intc_reg_fns\
+-						    [_INTC_FN(handle)], irq);
+-	}
+-
+-	intc_balancing_enable(irq);
+-}
+-
+-static void intc_enable(struct irq_data *data)
+-{
+-	_intc_enable(data, (unsigned long)irq_data_get_irq_chip_data(data));
+-}
+-
+-static void intc_disable(struct irq_data *data)
+-{
+-	unsigned int irq = data->irq;
+-	struct intc_desc_int *d = get_intc_desc(irq);
+-	unsigned long handle = (unsigned long)irq_data_get_irq_chip_data(data);
+-	unsigned long addr;
+-	unsigned int cpu;
+-
+-	intc_balancing_disable(irq);
+-
+-	for (cpu = 0; cpu < SMP_NR(d, _INTC_ADDR_D(handle)); cpu++) {
+-#ifdef CONFIG_SMP
+-		if (!cpumask_test_cpu(cpu, irq_data_get_affinity_mask(data)))
+-			continue;
+-#endif
+-		addr = INTC_REG(d, _INTC_ADDR_D(handle), cpu);
+-		intc_disable_fns[_INTC_MODE(handle)](addr, handle,intc_reg_fns\
+-						     [_INTC_FN(handle)], irq);
+-	}
+-}
+-
+-#ifdef CONFIG_SMP
+-/*
+- * This is held with the irq desc lock held, so we don't require any
+- * additional locking here at the intc desc level. The affinity mask is
+- * later tested in the enable/disable paths.
+- */
+-static int intc_set_affinity(struct irq_data *data,
+-			     const struct cpumask *cpumask,
+-			     bool force)
+-{
+-	if (!cpumask_intersects(cpumask, cpu_online_mask))
+-		return -1;
+-
+-	irq_data_update_affinity(data, cpumask);
+-
+-	return IRQ_SET_MASK_OK_NOCOPY;
+-}
+-#endif
+-
+-static void intc_mask_ack(struct irq_data *data)
+-{
+-	unsigned int irq = data->irq;
+-	struct intc_desc_int *d = get_intc_desc(irq);
+-	unsigned long handle = intc_get_ack_handle(irq);
+-	void __iomem *addr;
+-
+-	intc_disable(data);
+-
+-	/* read register and write zero only to the associated bit */
+-	if (handle) {
+-		unsigned int value;
+-
+-		addr = (void __iomem *)INTC_REG(d, _INTC_ADDR_D(handle), 0);
+-		value = intc_set_field_from_handle(0, 1, handle);
+-
+-		switch (_INTC_FN(handle)) {
+-		case REG_FN_MODIFY_BASE + 0:	/* 8bit */
+-			__raw_readb(addr);
+-			__raw_writeb(0xff ^ value, addr);
+-			break;
+-		case REG_FN_MODIFY_BASE + 1:	/* 16bit */
+-			__raw_readw(addr);
+-			__raw_writew(0xffff ^ value, addr);
+-			break;
+-		case REG_FN_MODIFY_BASE + 3:	/* 32bit */
+-			__raw_readl(addr);
+-			__raw_writel(0xffffffff ^ value, addr);
+-			break;
+-		default:
+-			BUG();
+-			break;
+-		}
+-	}
+-}
+-
+-static struct intc_handle_int *intc_find_irq(struct intc_handle_int *hp,
+-					     unsigned int nr_hp,
+-					     unsigned int irq)
+-{
+-	struct intc_handle_int key;
+-
+-	key.irq = irq;
+-	key.handle = 0;
+-
+-	return bsearch(&key, hp, nr_hp, sizeof(*hp), intc_handle_int_cmp);
+-}
+-
+-int intc_set_priority(unsigned int irq, unsigned int prio)
+-{
+-	struct intc_desc_int *d = get_intc_desc(irq);
+-	struct irq_data *data = irq_get_irq_data(irq);
+-	struct intc_handle_int *ihp;
+-
+-	if (!intc_get_prio_level(irq) || prio <= 1)
+-		return -EINVAL;
+-
+-	ihp = intc_find_irq(d->prio, d->nr_prio, irq);
+-	if (ihp) {
+-		if (prio >= (1 << _INTC_WIDTH(ihp->handle)))
+-			return -EINVAL;
+-
+-		intc_set_prio_level(irq, prio);
+-
+-		/*
+-		 * only set secondary masking method directly
+-		 * primary masking method is using intc_prio_level[irq]
+-		 * priority level will be set during next enable()
+-		 */
+-		if (_INTC_FN(ihp->handle) != REG_FN_ERR)
+-			_intc_enable(data, ihp->handle);
+-	}
+-	return 0;
+-}
+-
+-#define SENSE_VALID_FLAG 0x80
+-#define VALID(x) (x | SENSE_VALID_FLAG)
+-
+-static unsigned char intc_irq_sense_table[IRQ_TYPE_SENSE_MASK + 1] = {
+-	[IRQ_TYPE_EDGE_FALLING] = VALID(0),
+-	[IRQ_TYPE_EDGE_RISING] = VALID(1),
+-	[IRQ_TYPE_LEVEL_LOW] = VALID(2),
+-	/* SH7706, SH7707 and SH7709 do not support high level triggered */
+-#if !defined(CONFIG_CPU_SUBTYPE_SH7706) && \
+-    !defined(CONFIG_CPU_SUBTYPE_SH7707) && \
+-    !defined(CONFIG_CPU_SUBTYPE_SH7709)
+-	[IRQ_TYPE_LEVEL_HIGH] = VALID(3),
+-#endif
+-#if defined(CONFIG_ARM) /* all recent SH-Mobile / R-Mobile ARM support this */
+-	[IRQ_TYPE_EDGE_BOTH] = VALID(4),
+-#endif
+-};
+-
+-static int intc_set_type(struct irq_data *data, unsigned int type)
+-{
+-	unsigned int irq = data->irq;
+-	struct intc_desc_int *d = get_intc_desc(irq);
+-	unsigned char value = intc_irq_sense_table[type & IRQ_TYPE_SENSE_MASK];
+-	struct intc_handle_int *ihp;
+-	unsigned long addr;
+-
+-	if (!value)
+-		return -EINVAL;
+-
+-	value &= ~SENSE_VALID_FLAG;
+-
+-	ihp = intc_find_irq(d->sense, d->nr_sense, irq);
+-	if (ihp) {
+-		/* PINT has 2-bit sense registers, should fail on EDGE_BOTH */
+-		if (value >= (1 << _INTC_WIDTH(ihp->handle)))
+-			return -EINVAL;
+-
+-		addr = INTC_REG(d, _INTC_ADDR_E(ihp->handle), 0);
+-		intc_reg_fns[_INTC_FN(ihp->handle)](addr, ihp->handle, value);
+-	}
+-
+-	return 0;
+-}
+-
+-struct irq_chip intc_irq_chip	= {
+-	.irq_mask		= intc_disable,
+-	.irq_unmask		= intc_enable,
+-	.irq_mask_ack		= intc_mask_ack,
+-	.irq_enable		= intc_enable,
+-	.irq_disable		= intc_disable,
+-	.irq_set_type		= intc_set_type,
+-#ifdef CONFIG_SMP
+-	.irq_set_affinity	= intc_set_affinity,
+-#endif
+-	.flags			= IRQCHIP_SKIP_SET_WAKE,
+-};
+diff --git a/drivers/sh/intc/core.c b/drivers/sh/intc/core.c
+deleted file mode 100644
+index ca4f4ca413f11d..00000000000000
+--- a/drivers/sh/intc/core.c
++++ /dev/null
+@@ -1,501 +0,0 @@
+-/*
+- * Shared interrupt handling code for IPR and INTC2 types of IRQs.
+- *
+- * Copyright (C) 2007, 2008 Magnus Damm
+- * Copyright (C) 2009 - 2012 Paul Mundt
+- *
+- * Based on intc2.c and ipr.c
+- *
+- * Copyright (C) 1999  Niibe Yutaka & Takeshi Yaegashi
+- * Copyright (C) 2000  Kazumoto Kojima
+- * Copyright (C) 2001  David J. Mckay (david.mckay@st.com)
+- * Copyright (C) 2003  Takashi Kusuda <kusuda-takashi@hitachi-ul.co.jp>
+- * Copyright (C) 2005, 2006  Paul Mundt
+- *
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- */
+-#define pr_fmt(fmt) "intc: " fmt
+-
+-#include <linux/init.h>
+-#include <linux/irq.h>
+-#include <linux/io.h>
+-#include <linux/slab.h>
+-#include <linux/stat.h>
+-#include <linux/interrupt.h>
+-#include <linux/sh_intc.h>
+-#include <linux/irqdomain.h>
+-#include <linux/device.h>
+-#include <linux/syscore_ops.h>
+-#include <linux/list.h>
+-#include <linux/spinlock.h>
+-#include <linux/radix-tree.h>
+-#include <linux/export.h>
+-#include <linux/sort.h>
+-#include "internals.h"
+-
+-LIST_HEAD(intc_list);
+-DEFINE_RAW_SPINLOCK(intc_big_lock);
+-static unsigned int nr_intc_controllers;
+-
+-/*
+- * Default priority level
+- * - this needs to be at least 2 for 5-bit priorities on 7780
+- */
+-static unsigned int default_prio_level = 2;	/* 2 - 16 */
+-static unsigned int intc_prio_level[INTC_NR_IRQS];	/* for now */
+-
+-unsigned int intc_get_dfl_prio_level(void)
+-{
+-	return default_prio_level;
+-}
+-
+-unsigned int intc_get_prio_level(unsigned int irq)
+-{
+-	return intc_prio_level[irq];
+-}
+-
+-void intc_set_prio_level(unsigned int irq, unsigned int level)
+-{
+-	unsigned long flags;
+-
+-	raw_spin_lock_irqsave(&intc_big_lock, flags);
+-	intc_prio_level[irq] = level;
+-	raw_spin_unlock_irqrestore(&intc_big_lock, flags);
+-}
+-
+-static void intc_redirect_irq(struct irq_desc *desc)
+-{
+-	generic_handle_irq((unsigned int)irq_desc_get_handler_data(desc));
+-}
+-
+-static void __init intc_register_irq(struct intc_desc *desc,
+-				     struct intc_desc_int *d,
+-				     intc_enum enum_id,
+-				     unsigned int irq)
+-{
+-	struct intc_handle_int *hp;
+-	struct irq_data *irq_data;
+-	unsigned int data[2], primary;
+-	unsigned long flags;
+-
+-	raw_spin_lock_irqsave(&intc_big_lock, flags);
+-	radix_tree_insert(&d->tree, enum_id, intc_irq_xlate_get(irq));
+-	raw_spin_unlock_irqrestore(&intc_big_lock, flags);
+-
+-	/*
+-	 * Prefer single interrupt source bitmap over other combinations:
+-	 *
+-	 * 1. bitmap, single interrupt source
+-	 * 2. priority, single interrupt source
+-	 * 3. bitmap, multiple interrupt sources (groups)
+-	 * 4. priority, multiple interrupt sources (groups)
+-	 */
+-	data[0] = intc_get_mask_handle(desc, d, enum_id, 0);
+-	data[1] = intc_get_prio_handle(desc, d, enum_id, 0);
+-
+-	primary = 0;
+-	if (!data[0] && data[1])
+-		primary = 1;
+-
+-	if (!data[0] && !data[1])
+-		pr_warn("missing unique irq mask for irq %d (vect 0x%04x)\n",
+-			irq, irq2evt(irq));
+-
+-	data[0] = data[0] ? data[0] : intc_get_mask_handle(desc, d, enum_id, 1);
+-	data[1] = data[1] ? data[1] : intc_get_prio_handle(desc, d, enum_id, 1);
+-
+-	if (!data[primary])
+-		primary ^= 1;
+-
+-	BUG_ON(!data[primary]); /* must have primary masking method */
+-
+-	irq_data = irq_get_irq_data(irq);
+-
+-	disable_irq_nosync(irq);
+-	irq_set_chip_and_handler_name(irq, &d->chip, handle_level_irq,
+-				      "level");
+-	irq_set_chip_data(irq, (void *)data[primary]);
+-
+-	/*
+-	 * set priority level
+-	 */
+-	intc_set_prio_level(irq, intc_get_dfl_prio_level());
+-
+-	/* enable secondary masking method if present */
+-	if (data[!primary])
+-		_intc_enable(irq_data, data[!primary]);
+-
+-	/* add irq to d->prio list if priority is available */
+-	if (data[1]) {
+-		hp = d->prio + d->nr_prio;
+-		hp->irq = irq;
+-		hp->handle = data[1];
+-
+-		if (primary) {
+-			/*
+-			 * only secondary priority should access registers, so
+-			 * set _INTC_FN(h) = REG_FN_ERR for intc_set_priority()
+-			 */
+-			hp->handle &= ~_INTC_MK(0x0f, 0, 0, 0, 0, 0);
+-			hp->handle |= _INTC_MK(REG_FN_ERR, 0, 0, 0, 0, 0);
+-		}
+-		d->nr_prio++;
+-	}
+-
+-	/* add irq to d->sense list if sense is available */
+-	data[0] = intc_get_sense_handle(desc, d, enum_id);
+-	if (data[0]) {
+-		(d->sense + d->nr_sense)->irq = irq;
+-		(d->sense + d->nr_sense)->handle = data[0];
+-		d->nr_sense++;
+-	}
+-
+-	/* irq should be disabled by default */
+-	d->chip.irq_mask(irq_data);
+-
+-	intc_set_ack_handle(irq, desc, d, enum_id);
+-	intc_set_dist_handle(irq, desc, d, enum_id);
+-
+-	activate_irq(irq);
+-}
+-
+-static unsigned int __init save_reg(struct intc_desc_int *d,
+-				    unsigned int cnt,
+-				    unsigned long value,
+-				    unsigned int smp)
+-{
+-	if (value) {
+-		value = intc_phys_to_virt(d, value);
+-
+-		d->reg[cnt] = value;
+-#ifdef CONFIG_SMP
+-		d->smp[cnt] = smp;
+-#endif
+-		return 1;
+-	}
+-
+-	return 0;
+-}
+-
+-static bool __init intc_map(struct irq_domain *domain, int irq)
+-{
+-	if (!irq_to_desc(irq) && irq_alloc_desc_at(irq, NUMA_NO_NODE) != irq) {
+-		pr_err("uname to allocate IRQ %d\n", irq);
+-		return false;
+-	}
+-
+-	if (irq_domain_associate(domain, irq, irq)) {
+-		pr_err("domain association failure\n");
+-		return false;
+-	}
 -
 -	return true;
 -}
--EXPORT_SYMBOL(shdma_chan_filter);
 -
--static dma_async_tx_callback __ld_cleanup(struct shdma_chan *schan, bool all)
+-int __init register_intc_controller(struct intc_desc *desc)
 -{
--	struct shdma_desc *desc, *_desc;
--	/* Is the "exposed" head of a chain acked? */
--	bool head_acked = false;
--	dma_cookie_t cookie = 0;
--	dma_async_tx_callback callback = NULL;
--	struct dmaengine_desc_callback cb;
--	unsigned long flags;
--	LIST_HEAD(cyclic_list);
+-	unsigned int i, k, smp;
+-	struct intc_hw_desc *hw = &desc->hw;
+-	struct intc_desc_int *d;
+-	struct resource *res;
 -
--	memset(&cb, 0, sizeof(cb));
--	spin_lock_irqsave(&schan->chan_lock, flags);
--	list_for_each_entry_safe(desc, _desc, &schan->ld_queue, node) {
--		struct dma_async_tx_descriptor *tx = &desc->async_tx;
+-	pr_info("Registered controller '%s' with %u IRQs\n",
+-		desc->name, hw->nr_vectors);
 -
--		BUG_ON(tx->cookie > 0 && tx->cookie != desc->cookie);
--		BUG_ON(desc->mark != DESC_SUBMITTED &&
--		       desc->mark != DESC_COMPLETED &&
--		       desc->mark != DESC_WAITING);
+-	d = kzalloc(sizeof(*d), GFP_NOWAIT);
+-	if (!d)
+-		goto err0;
 -
--		/*
--		 * queue is ordered, and we use this loop to (1) clean up all
--		 * completed descriptors, and to (2) update descriptor flags of
--		 * any chunks in a (partially) completed chain
--		 */
--		if (!all && desc->mark == DESC_SUBMITTED &&
--		    desc->cookie != cookie)
--			break;
+-	INIT_LIST_HEAD(&d->list);
+-	list_add_tail(&d->list, &intc_list);
 -
--		if (tx->cookie > 0)
--			cookie = tx->cookie;
+-	raw_spin_lock_init(&d->lock);
+-	INIT_RADIX_TREE(&d->tree, GFP_ATOMIC);
 -
--		if (desc->mark == DESC_COMPLETED && desc->chunks == 1) {
--			if (schan->dma_chan.completed_cookie != desc->cookie - 1)
--				dev_dbg(schan->dev,
--					"Completing cookie %d, expected %d\n",
--					desc->cookie,
--					schan->dma_chan.completed_cookie + 1);
--			schan->dma_chan.completed_cookie = desc->cookie;
--		}
+-	d->index = nr_intc_controllers;
 -
--		/* Call callback on the last chunk */
--		if (desc->mark == DESC_COMPLETED && tx->callback) {
--			desc->mark = DESC_WAITING;
--			dmaengine_desc_get_callback(tx, &cb);
--			callback = tx->callback;
--			dev_dbg(schan->dev, "descriptor #%d@%p on %d callback\n",
--				tx->cookie, tx, schan->id);
--			BUG_ON(desc->chunks != 1);
--			break;
--		}
+-	if (desc->num_resources) {
+-		d->nr_windows = desc->num_resources;
+-		d->window = kcalloc(d->nr_windows, sizeof(*d->window),
+-				    GFP_NOWAIT);
+-		if (!d->window)
+-			goto err1;
 -
--		if (tx->cookie > 0 || tx->cookie == -EBUSY) {
--			if (desc->mark == DESC_COMPLETED) {
--				BUG_ON(tx->cookie < 0);
--				desc->mark = DESC_WAITING;
--			}
--			head_acked = async_tx_test_ack(tx);
--		} else {
--			switch (desc->mark) {
--			case DESC_COMPLETED:
--				desc->mark = DESC_WAITING;
--				fallthrough;
--			case DESC_WAITING:
--				if (head_acked)
--					async_tx_ack(&desc->async_tx);
--			}
--		}
--
--		dev_dbg(schan->dev, "descriptor %p #%d completed.\n",
--			tx, tx->cookie);
--
--		if (((desc->mark == DESC_COMPLETED ||
--		      desc->mark == DESC_WAITING) &&
--		     async_tx_test_ack(&desc->async_tx)) || all) {
--
--			if (all || !desc->cyclic) {
--				/* Remove from ld_queue list */
--				desc->mark = DESC_IDLE;
--				list_move(&desc->node, &schan->ld_free);
--			} else {
--				/* reuse as cyclic */
--				desc->mark = DESC_SUBMITTED;
--				list_move_tail(&desc->node, &cyclic_list);
--			}
--
--			if (list_empty(&schan->ld_queue)) {
--				dev_dbg(schan->dev, "Bring down channel %d\n", schan->id);
--				pm_runtime_put(schan->dev);
--				schan->pm_state = SHDMA_PM_ESTABLISHED;
--			} else if (schan->pm_state == SHDMA_PM_PENDING) {
--				shdma_chan_xfer_ld_queue(schan);
--			}
+-		for (k = 0; k < d->nr_windows; k++) {
+-			res = desc->resource + k;
+-			WARN_ON(resource_type(res) != IORESOURCE_MEM);
+-			d->window[k].phys = res->start;
+-			d->window[k].size = resource_size(res);
+-			d->window[k].virt = ioremap(res->start,
+-						    resource_size(res));
+-			if (!d->window[k].virt)
+-				goto err2;
 -		}
 -	}
 -
--	if (all && !callback)
--		/*
--		 * Terminating and the loop completed normally: forgive
--		 * uncompleted cookies
--		 */
--		schan->dma_chan.completed_cookie = schan->dma_chan.cookie;
+-	d->nr_reg = hw->mask_regs ? hw->nr_mask_regs * 2 : 0;
+-#ifdef CONFIG_INTC_BALANCING
+-	if (d->nr_reg)
+-		d->nr_reg += hw->nr_mask_regs;
+-#endif
+-	d->nr_reg += hw->prio_regs ? hw->nr_prio_regs * 2 : 0;
+-	d->nr_reg += hw->sense_regs ? hw->nr_sense_regs : 0;
+-	d->nr_reg += hw->ack_regs ? hw->nr_ack_regs : 0;
+-	d->nr_reg += hw->subgroups ? hw->nr_subgroups : 0;
 -
--	list_splice_tail(&cyclic_list, &schan->ld_queue);
+-	d->reg = kcalloc(d->nr_reg, sizeof(*d->reg), GFP_NOWAIT);
+-	if (!d->reg)
+-		goto err2;
 -
--	spin_unlock_irqrestore(&schan->chan_lock, flags);
+-#ifdef CONFIG_SMP
+-	d->smp = kcalloc(d->nr_reg, sizeof(*d->smp), GFP_NOWAIT);
+-	if (!d->smp)
+-		goto err3;
+-#endif
+-	k = 0;
 -
--	dmaengine_desc_callback_invoke(&cb, NULL);
+-	if (hw->mask_regs) {
+-		for (i = 0; i < hw->nr_mask_regs; i++) {
+-			smp = IS_SMP(hw->mask_regs[i]);
+-			k += save_reg(d, k, hw->mask_regs[i].set_reg, smp);
+-			k += save_reg(d, k, hw->mask_regs[i].clr_reg, smp);
+-#ifdef CONFIG_INTC_BALANCING
+-			k += save_reg(d, k, hw->mask_regs[i].dist_reg, 0);
+-#endif
+-		}
+-	}
 -
--	return callback;
+-	if (hw->prio_regs) {
+-		d->prio = kcalloc(hw->nr_vectors, sizeof(*d->prio),
+-				  GFP_NOWAIT);
+-		if (!d->prio)
+-			goto err4;
+-
+-		for (i = 0; i < hw->nr_prio_regs; i++) {
+-			smp = IS_SMP(hw->prio_regs[i]);
+-			k += save_reg(d, k, hw->prio_regs[i].set_reg, smp);
+-			k += save_reg(d, k, hw->prio_regs[i].clr_reg, smp);
+-		}
+-
+-		sort(d->prio, hw->nr_prio_regs, sizeof(*d->prio),
+-		     intc_handle_int_cmp, NULL);
+-	}
+-
+-	if (hw->sense_regs) {
+-		d->sense = kcalloc(hw->nr_vectors, sizeof(*d->sense),
+-				   GFP_NOWAIT);
+-		if (!d->sense)
+-			goto err5;
+-
+-		for (i = 0; i < hw->nr_sense_regs; i++)
+-			k += save_reg(d, k, hw->sense_regs[i].reg, 0);
+-
+-		sort(d->sense, hw->nr_sense_regs, sizeof(*d->sense),
+-		     intc_handle_int_cmp, NULL);
+-	}
+-
+-	if (hw->subgroups)
+-		for (i = 0; i < hw->nr_subgroups; i++)
+-			if (hw->subgroups[i].reg)
+-				k+= save_reg(d, k, hw->subgroups[i].reg, 0);
+-
+-	memcpy(&d->chip, &intc_irq_chip, sizeof(struct irq_chip));
+-	d->chip.name = desc->name;
+-
+-	if (hw->ack_regs)
+-		for (i = 0; i < hw->nr_ack_regs; i++)
+-			k += save_reg(d, k, hw->ack_regs[i].set_reg, 0);
+-	else
+-		d->chip.irq_mask_ack = d->chip.irq_disable;
+-
+-	/* disable bits matching force_disable before registering irqs */
+-	if (desc->force_disable)
+-		intc_enable_disable_enum(desc, d, desc->force_disable, 0);
+-
+-	/* disable bits matching force_enable before registering irqs */
+-	if (desc->force_enable)
+-		intc_enable_disable_enum(desc, d, desc->force_enable, 0);
+-
+-	BUG_ON(k > 256); /* _INTC_ADDR_E() and _INTC_ADDR_D() are 8 bits */
+-
+-	intc_irq_domain_init(d, hw);
+-
+-	/* register the vectors one by one */
+-	for (i = 0; i < hw->nr_vectors; i++) {
+-		struct intc_vect *vect = hw->vectors + i;
+-		unsigned int irq = evt2irq(vect->vect);
+-
+-		if (!vect->enum_id)
+-			continue;
+-
+-		if (!intc_map(d->domain, irq))
+-			continue;
+-
+-		intc_irq_xlate_set(irq, vect->enum_id, d);
+-		intc_register_irq(desc, d, vect->enum_id, irq);
+-
+-		for (k = i + 1; k < hw->nr_vectors; k++) {
+-			struct intc_vect *vect2 = hw->vectors + k;
+-			unsigned int irq2 = evt2irq(vect2->vect);
+-
+-			if (vect->enum_id != vect2->enum_id)
+-				continue;
+-
+-			/*
+-			 * In the case of multi-evt handling and sparse
+-			 * IRQ support, each vector still needs to have
+-			 * its own backing irq_desc.
+-			 */
+-			if (!intc_map(d->domain, irq2))
+-				continue;
+-
+-			vect2->enum_id = 0;
+-
+-			/* redirect this interrupts to the first one */
+-			irq_set_chip(irq2, &dummy_irq_chip);
+-			irq_set_chained_handler_and_data(irq2,
+-							 intc_redirect_irq,
+-							 (void *)irq);
+-		}
+-	}
+-
+-	intc_subgroup_init(desc, d);
+-
+-	/* enable bits matching force_enable after registering irqs */
+-	if (desc->force_enable)
+-		intc_enable_disable_enum(desc, d, desc->force_enable, 1);
+-
+-	d->skip_suspend = desc->skip_syscore_suspend;
+-
+-	nr_intc_controllers++;
+-
+-	return 0;
+-err5:
+-	kfree(d->prio);
+-err4:
+-#ifdef CONFIG_SMP
+-	kfree(d->smp);
+-err3:
+-#endif
+-	kfree(d->reg);
+-err2:
+-	for (k = 0; k < d->nr_windows; k++)
+-		if (d->window[k].virt)
+-			iounmap(d->window[k].virt);
+-
+-	kfree(d->window);
+-err1:
+-	kfree(d);
+-err0:
+-	pr_err("unable to allocate INTC memory\n");
+-
+-	return -ENOMEM;
 -}
 -
+-static int intc_suspend(void)
+-{
+-	struct intc_desc_int *d;
+-
+-	list_for_each_entry(d, &intc_list, list) {
+-		int irq;
+-
+-		if (d->skip_suspend)
+-			continue;
+-
+-		/* enable wakeup irqs belonging to this intc controller */
+-		for_each_active_irq(irq) {
+-			struct irq_data *data;
+-			struct irq_chip *chip;
+-
+-			data = irq_get_irq_data(irq);
+-			chip = irq_data_get_irq_chip(data);
+-			if (chip != &d->chip)
+-				continue;
+-			if (irqd_is_wakeup_set(data))
+-				chip->irq_enable(data);
+-		}
+-	}
+-	return 0;
+-}
+-
+-static void intc_resume(void)
+-{
+-	struct intc_desc_int *d;
+-
+-	list_for_each_entry(d, &intc_list, list) {
+-		int irq;
+-
+-		if (d->skip_suspend)
+-			continue;
+-
+-		for_each_active_irq(irq) {
+-			struct irq_data *data;
+-			struct irq_chip *chip;
+-
+-			data = irq_get_irq_data(irq);
+-			chip = irq_data_get_irq_chip(data);
+-			/*
+-			 * This will catch the redirect and VIRQ cases
+-			 * due to the dummy_irq_chip being inserted.
+-			 */
+-			if (chip != &d->chip)
+-				continue;
+-			if (irqd_irq_disabled(data))
+-				chip->irq_disable(data);
+-			else
+-				chip->irq_enable(data);
+-		}
+-	}
+-}
+-
+-struct syscore_ops intc_syscore_ops = {
+-	.suspend	= intc_suspend,
+-	.resume		= intc_resume,
+-};
+-
+-struct bus_type intc_subsys = {
+-	.name		= "intc",
+-	.dev_name	= "intc",
+-};
+-
+-static ssize_t
+-show_intc_name(struct device *dev, struct device_attribute *attr, char *buf)
+-{
+-	struct intc_desc_int *d;
+-
+-	d = container_of(dev, struct intc_desc_int, dev);
+-
+-	return sprintf(buf, "%s\n", d->chip.name);
+-}
+-
+-static DEVICE_ATTR(name, S_IRUGO, show_intc_name, NULL);
+-
+-static int __init register_intc_devs(void)
+-{
+-	struct intc_desc_int *d;
+-	int error;
+-
+-	register_syscore_ops(&intc_syscore_ops);
+-
+-	error = subsys_system_register(&intc_subsys, NULL);
+-	if (!error) {
+-		list_for_each_entry(d, &intc_list, list) {
+-			d->dev.id = d->index;
+-			d->dev.bus = &intc_subsys;
+-			error = device_register(&d->dev);
+-			if (error == 0)
+-				error = device_create_file(&d->dev,
+-							   &dev_attr_name);
+-			if (error)
+-				break;
+-		}
+-	}
+-
+-	if (error)
+-		pr_err("device registration error\n");
+-
+-	return error;
+-}
+-device_initcall(register_intc_devs);
+diff --git a/drivers/sh/intc/handle.c b/drivers/sh/intc/handle.c
+deleted file mode 100644
+index 7863a44918a293..00000000000000
+--- a/drivers/sh/intc/handle.c
++++ /dev/null
+@@ -1,306 +0,0 @@
 -/*
-- * shdma_chan_ld_cleanup - Clean up link descriptors
+- * Shared interrupt handling code for IPR and INTC2 types of IRQs.
 - *
-- * Clean up the ld_queue of DMA channel.
+- * Copyright (C) 2007, 2008 Magnus Damm
+- * Copyright (C) 2009, 2010 Paul Mundt
+- *
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
 - */
--static void shdma_chan_ld_cleanup(struct shdma_chan *schan, bool all)
+-#include <linux/init.h>
+-#include <linux/irq.h>
+-#include <linux/spinlock.h>
+-#include "internals.h"
+-
+-static unsigned long ack_handle[INTC_NR_IRQS];
+-
+-static intc_enum __init intc_grp_id(struct intc_desc *desc,
+-				    intc_enum enum_id)
 -{
--	while (__ld_cleanup(schan, all))
--		;
+-	struct intc_group *g = desc->hw.groups;
+-	unsigned int i, j;
+-
+-	for (i = 0; g && enum_id && i < desc->hw.nr_groups; i++) {
+-		g = desc->hw.groups + i;
+-
+-		for (j = 0; g->enum_ids[j]; j++) {
+-			if (g->enum_ids[j] != enum_id)
+-				continue;
+-
+-			return g->enum_id;
+-		}
+-	}
+-
+-	return 0;
+-}
+-
+-static unsigned int __init _intc_mask_data(struct intc_desc *desc,
+-					   struct intc_desc_int *d,
+-					   intc_enum enum_id,
+-					   unsigned int *reg_idx,
+-					   unsigned int *fld_idx)
+-{
+-	struct intc_mask_reg *mr = desc->hw.mask_regs;
+-	unsigned int fn, mode;
+-	unsigned long reg_e, reg_d;
+-
+-	while (mr && enum_id && *reg_idx < desc->hw.nr_mask_regs) {
+-		mr = desc->hw.mask_regs + *reg_idx;
+-
+-		for (; *fld_idx < ARRAY_SIZE(mr->enum_ids); (*fld_idx)++) {
+-			if (mr->enum_ids[*fld_idx] != enum_id)
+-				continue;
+-
+-			if (mr->set_reg && mr->clr_reg) {
+-				fn = REG_FN_WRITE_BASE;
+-				mode = MODE_DUAL_REG;
+-				reg_e = mr->clr_reg;
+-				reg_d = mr->set_reg;
+-			} else {
+-				fn = REG_FN_MODIFY_BASE;
+-				if (mr->set_reg) {
+-					mode = MODE_ENABLE_REG;
+-					reg_e = mr->set_reg;
+-					reg_d = mr->set_reg;
+-				} else {
+-					mode = MODE_MASK_REG;
+-					reg_e = mr->clr_reg;
+-					reg_d = mr->clr_reg;
+-				}
+-			}
+-
+-			fn += (mr->reg_width >> 3) - 1;
+-			return _INTC_MK(fn, mode,
+-					intc_get_reg(d, reg_e),
+-					intc_get_reg(d, reg_d),
+-					1,
+-					(mr->reg_width - 1) - *fld_idx);
+-		}
+-
+-		*fld_idx = 0;
+-		(*reg_idx)++;
+-	}
+-
+-	return 0;
+-}
+-
+-unsigned int __init
+-intc_get_mask_handle(struct intc_desc *desc, struct intc_desc_int *d,
+-		     intc_enum enum_id, int do_grps)
+-{
+-	unsigned int i = 0;
+-	unsigned int j = 0;
+-	unsigned int ret;
+-
+-	ret = _intc_mask_data(desc, d, enum_id, &i, &j);
+-	if (ret)
+-		return ret;
+-
+-	if (do_grps)
+-		return intc_get_mask_handle(desc, d, intc_grp_id(desc, enum_id), 0);
+-
+-	return 0;
+-}
+-
+-static unsigned int __init _intc_prio_data(struct intc_desc *desc,
+-					   struct intc_desc_int *d,
+-					   intc_enum enum_id,
+-					   unsigned int *reg_idx,
+-					   unsigned int *fld_idx)
+-{
+-	struct intc_prio_reg *pr = desc->hw.prio_regs;
+-	unsigned int fn, n, mode, bit;
+-	unsigned long reg_e, reg_d;
+-
+-	while (pr && enum_id && *reg_idx < desc->hw.nr_prio_regs) {
+-		pr = desc->hw.prio_regs + *reg_idx;
+-
+-		for (; *fld_idx < ARRAY_SIZE(pr->enum_ids); (*fld_idx)++) {
+-			if (pr->enum_ids[*fld_idx] != enum_id)
+-				continue;
+-
+-			if (pr->set_reg && pr->clr_reg) {
+-				fn = REG_FN_WRITE_BASE;
+-				mode = MODE_PCLR_REG;
+-				reg_e = pr->set_reg;
+-				reg_d = pr->clr_reg;
+-			} else {
+-				fn = REG_FN_MODIFY_BASE;
+-				mode = MODE_PRIO_REG;
+-				if (!pr->set_reg)
+-					BUG();
+-				reg_e = pr->set_reg;
+-				reg_d = pr->set_reg;
+-			}
+-
+-			fn += (pr->reg_width >> 3) - 1;
+-			n = *fld_idx + 1;
+-
+-			BUG_ON(n * pr->field_width > pr->reg_width);
+-
+-			bit = pr->reg_width - (n * pr->field_width);
+-
+-			return _INTC_MK(fn, mode,
+-					intc_get_reg(d, reg_e),
+-					intc_get_reg(d, reg_d),
+-					pr->field_width, bit);
+-		}
+-
+-		*fld_idx = 0;
+-		(*reg_idx)++;
+-	}
+-
+-	return 0;
+-}
+-
+-unsigned int __init
+-intc_get_prio_handle(struct intc_desc *desc, struct intc_desc_int *d,
+-		     intc_enum enum_id, int do_grps)
+-{
+-	unsigned int i = 0;
+-	unsigned int j = 0;
+-	unsigned int ret;
+-
+-	ret = _intc_prio_data(desc, d, enum_id, &i, &j);
+-	if (ret)
+-		return ret;
+-
+-	if (do_grps)
+-		return intc_get_prio_handle(desc, d, intc_grp_id(desc, enum_id), 0);
+-
+-	return 0;
+-}
+-
+-static unsigned int intc_ack_data(struct intc_desc *desc,
+-				  struct intc_desc_int *d, intc_enum enum_id)
+-{
+-	struct intc_mask_reg *mr = desc->hw.ack_regs;
+-	unsigned int i, j, fn, mode;
+-	unsigned long reg_e, reg_d;
+-
+-	for (i = 0; mr && enum_id && i < desc->hw.nr_ack_regs; i++) {
+-		mr = desc->hw.ack_regs + i;
+-
+-		for (j = 0; j < ARRAY_SIZE(mr->enum_ids); j++) {
+-			if (mr->enum_ids[j] != enum_id)
+-				continue;
+-
+-			fn = REG_FN_MODIFY_BASE;
+-			mode = MODE_ENABLE_REG;
+-			reg_e = mr->set_reg;
+-			reg_d = mr->set_reg;
+-
+-			fn += (mr->reg_width >> 3) - 1;
+-			return _INTC_MK(fn, mode,
+-					intc_get_reg(d, reg_e),
+-					intc_get_reg(d, reg_d),
+-					1,
+-					(mr->reg_width - 1) - j);
+-		}
+-	}
+-
+-	return 0;
+-}
+-
+-static void intc_enable_disable(struct intc_desc_int *d,
+-				unsigned long handle, int do_enable)
+-{
+-	unsigned long addr;
+-	unsigned int cpu;
+-	unsigned long (*fn)(unsigned long, unsigned long,
+-		   unsigned long (*)(unsigned long, unsigned long,
+-				     unsigned long),
+-		   unsigned int);
+-
+-	if (do_enable) {
+-		for (cpu = 0; cpu < SMP_NR(d, _INTC_ADDR_E(handle)); cpu++) {
+-			addr = INTC_REG(d, _INTC_ADDR_E(handle), cpu);
+-			fn = intc_enable_noprio_fns[_INTC_MODE(handle)];
+-			fn(addr, handle, intc_reg_fns[_INTC_FN(handle)], 0);
+-		}
+-	} else {
+-		for (cpu = 0; cpu < SMP_NR(d, _INTC_ADDR_D(handle)); cpu++) {
+-			addr = INTC_REG(d, _INTC_ADDR_D(handle), cpu);
+-			fn = intc_disable_fns[_INTC_MODE(handle)];
+-			fn(addr, handle, intc_reg_fns[_INTC_FN(handle)], 0);
+-		}
+-	}
+-}
+-
+-void __init intc_enable_disable_enum(struct intc_desc *desc,
+-				     struct intc_desc_int *d,
+-				     intc_enum enum_id, int enable)
+-{
+-	unsigned int i, j, data;
+-
+-	/* go through and enable/disable all mask bits */
+-	i = j = 0;
+-	do {
+-		data = _intc_mask_data(desc, d, enum_id, &i, &j);
+-		if (data)
+-			intc_enable_disable(d, data, enable);
+-		j++;
+-	} while (data);
+-
+-	/* go through and enable/disable all priority fields */
+-	i = j = 0;
+-	do {
+-		data = _intc_prio_data(desc, d, enum_id, &i, &j);
+-		if (data)
+-			intc_enable_disable(d, data, enable);
+-
+-		j++;
+-	} while (data);
+-}
+-
+-unsigned int __init
+-intc_get_sense_handle(struct intc_desc *desc, struct intc_desc_int *d,
+-		      intc_enum enum_id)
+-{
+-	struct intc_sense_reg *sr = desc->hw.sense_regs;
+-	unsigned int i, j, fn, bit;
+-
+-	for (i = 0; sr && enum_id && i < desc->hw.nr_sense_regs; i++) {
+-		sr = desc->hw.sense_regs + i;
+-
+-		for (j = 0; j < ARRAY_SIZE(sr->enum_ids); j++) {
+-			if (sr->enum_ids[j] != enum_id)
+-				continue;
+-
+-			fn = REG_FN_MODIFY_BASE;
+-			fn += (sr->reg_width >> 3) - 1;
+-
+-			BUG_ON((j + 1) * sr->field_width > sr->reg_width);
+-
+-			bit = sr->reg_width - ((j + 1) * sr->field_width);
+-
+-			return _INTC_MK(fn, 0, intc_get_reg(d, sr->reg),
+-					0, sr->field_width, bit);
+-		}
+-	}
+-
+-	return 0;
+-}
+-
+-
+-void intc_set_ack_handle(unsigned int irq, struct intc_desc *desc,
+-			 struct intc_desc_int *d, intc_enum id)
+-{
+-	unsigned long flags;
+-
+-	/*
+-	 * Nothing to do for this IRQ.
+-	 */
+-	if (!desc->hw.ack_regs)
+-		return;
+-
+-	raw_spin_lock_irqsave(&intc_big_lock, flags);
+-	ack_handle[irq] = intc_ack_data(desc, d, id);
+-	raw_spin_unlock_irqrestore(&intc_big_lock, flags);
+-}
+-
+-unsigned long intc_get_ack_handle(unsigned int irq)
+-{
+-	return ack_handle[irq];
+-}
+diff --git a/drivers/sh/intc/internals.h b/drivers/sh/intc/internals.h
+deleted file mode 100644
+index fa73c173b56a60..00000000000000
+--- a/drivers/sh/intc/internals.h
++++ /dev/null
+@@ -1,191 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#include <linux/sh_intc.h>
+-#include <linux/irq.h>
+-#include <linux/irqdomain.h>
+-#include <linux/list.h>
+-#include <linux/kernel.h>
+-#include <linux/types.h>
+-#include <linux/radix-tree.h>
+-#include <linux/device.h>
+-
+-#define _INTC_MK(fn, mode, addr_e, addr_d, width, shift) \
+-	((shift) | ((width) << 5) | ((fn) << 9) | ((mode) << 13) | \
+-	 ((addr_e) << 16) | ((addr_d << 24)))
+-
+-#define _INTC_SHIFT(h)		(h & 0x1f)
+-#define _INTC_WIDTH(h)		((h >> 5) & 0xf)
+-#define _INTC_FN(h)		((h >> 9) & 0xf)
+-#define _INTC_MODE(h)		((h >> 13) & 0x7)
+-#define _INTC_ADDR_E(h)		((h >> 16) & 0xff)
+-#define _INTC_ADDR_D(h)		((h >> 24) & 0xff)
+-
+-#ifdef CONFIG_SMP
+-#define IS_SMP(x)		(x.smp)
+-#define INTC_REG(d, x, c)	(d->reg[(x)] + ((d->smp[(x)] & 0xff) * c))
+-#define SMP_NR(d, x)		((d->smp[(x)] >> 8) ? (d->smp[(x)] >> 8) : 1)
+-#else
+-#define IS_SMP(x)		0
+-#define INTC_REG(d, x, c)	(d->reg[(x)])
+-#define SMP_NR(d, x)		1
+-#endif
+-
+-struct intc_handle_int {
+-	unsigned int irq;
+-	unsigned long handle;
+-};
+-
+-struct intc_window {
+-	phys_addr_t phys;
+-	void __iomem *virt;
+-	unsigned long size;
+-};
+-
+-struct intc_map_entry {
+-	intc_enum enum_id;
+-	struct intc_desc_int *desc;
+-};
+-
+-struct intc_subgroup_entry {
+-	unsigned int pirq;
+-	intc_enum enum_id;
+-	unsigned long handle;
+-};
+-
+-struct intc_desc_int {
+-	struct list_head list;
+-	struct device dev;
+-	struct radix_tree_root tree;
+-	raw_spinlock_t lock;
+-	unsigned int index;
+-	unsigned long *reg;
+-#ifdef CONFIG_SMP
+-	unsigned long *smp;
+-#endif
+-	unsigned int nr_reg;
+-	struct intc_handle_int *prio;
+-	unsigned int nr_prio;
+-	struct intc_handle_int *sense;
+-	unsigned int nr_sense;
+-	struct intc_window *window;
+-	unsigned int nr_windows;
+-	struct irq_domain *domain;
+-	struct irq_chip chip;
+-	bool skip_suspend;
+-};
+-
+-
+-enum {
+-	REG_FN_ERR = 0,
+-	REG_FN_TEST_BASE = 1,
+-	REG_FN_WRITE_BASE = 5,
+-	REG_FN_MODIFY_BASE = 9
+-};
+-
+-enum {	MODE_ENABLE_REG = 0, /* Bit(s) set -> interrupt enabled */
+-	MODE_MASK_REG,       /* Bit(s) set -> interrupt disabled */
+-	MODE_DUAL_REG,       /* Two registers, set bit to enable / disable */
+-	MODE_PRIO_REG,       /* Priority value written to enable interrupt */
+-	MODE_PCLR_REG,       /* Above plus all bits set to disable interrupt */
+-};
+-
+-static inline struct intc_desc_int *get_intc_desc(unsigned int irq)
+-{
+-	struct irq_chip *chip = irq_get_chip(irq);
+-
+-	return container_of(chip, struct intc_desc_int, chip);
 -}
 -
 -/*
-- * shdma_free_chan_resources - Free all resources of the channel.
+- * Grumble.
 - */
--static void shdma_free_chan_resources(struct dma_chan *chan)
+-static inline void activate_irq(int irq)
 -{
--	struct shdma_chan *schan = to_shdma_chan(chan);
--	struct shdma_dev *sdev = to_shdma_dev(chan->device);
--	const struct shdma_ops *ops = sdev->ops;
--	LIST_HEAD(list);
+-	irq_modify_status(irq, IRQ_NOREQUEST, IRQ_NOPROBE);
+-}
 -
--	/* Protect against ISR */
--	spin_lock_irq(&schan->chan_lock);
--	ops->halt_channel(schan);
--	spin_unlock_irq(&schan->chan_lock);
+-static inline int intc_handle_int_cmp(const void *a, const void *b)
+-{
+-	const struct intc_handle_int *_a = a;
+-	const struct intc_handle_int *_b = b;
 -
--	/* Now no new interrupts will occur */
+-	return _a->irq - _b->irq;
+-}
 -
--	/* Prepared and not submitted descriptors can still be on the queue */
--	if (!list_empty(&schan->ld_queue))
--		shdma_chan_ld_cleanup(schan, true);
+-/* access.c */
+-extern unsigned long
+-(*intc_reg_fns[])(unsigned long addr, unsigned long h, unsigned long data);
 -
--	if (schan->slave_id >= 0) {
--		/* The caller is holding dma_list_mutex */
--		clear_bit(schan->slave_id, shdma_slave_used);
--		chan->private = NULL;
+-extern unsigned long
+-(*intc_enable_fns[])(unsigned long addr, unsigned long handle,
+-		     unsigned long (*fn)(unsigned long,
+-				unsigned long, unsigned long),
+-		     unsigned int irq);
+-extern unsigned long
+-(*intc_disable_fns[])(unsigned long addr, unsigned long handle,
+-		      unsigned long (*fn)(unsigned long,
+-				unsigned long, unsigned long),
+-		      unsigned int irq);
+-extern unsigned long
+-(*intc_enable_noprio_fns[])(unsigned long addr, unsigned long handle,
+-		            unsigned long (*fn)(unsigned long,
+-				unsigned long, unsigned long),
+-			    unsigned int irq);
+-
+-unsigned long intc_phys_to_virt(struct intc_desc_int *d, unsigned long address);
+-unsigned int intc_get_reg(struct intc_desc_int *d, unsigned long address);
+-unsigned int intc_set_field_from_handle(unsigned int value,
+-			    unsigned int field_value,
+-			    unsigned int handle);
+-unsigned long intc_get_field_from_handle(unsigned int value,
+-					 unsigned int handle);
+-
+-/* balancing.c */
+-#ifdef CONFIG_INTC_BALANCING
+-void intc_balancing_enable(unsigned int irq);
+-void intc_balancing_disable(unsigned int irq);
+-void intc_set_dist_handle(unsigned int irq, struct intc_desc *desc,
+-			  struct intc_desc_int *d, intc_enum id);
+-#else
+-static inline void intc_balancing_enable(unsigned int irq) { }
+-static inline void intc_balancing_disable(unsigned int irq) { }
+-static inline void
+-intc_set_dist_handle(unsigned int irq, struct intc_desc *desc,
+-		     struct intc_desc_int *d, intc_enum id) { }
+-#endif
+-
+-/* chip.c */
+-extern struct irq_chip intc_irq_chip;
+-void _intc_enable(struct irq_data *data, unsigned long handle);
+-
+-/* core.c */
+-extern struct list_head intc_list;
+-extern raw_spinlock_t intc_big_lock;
+-extern struct bus_type intc_subsys;
+-
+-unsigned int intc_get_dfl_prio_level(void);
+-unsigned int intc_get_prio_level(unsigned int irq);
+-void intc_set_prio_level(unsigned int irq, unsigned int level);
+-
+-/* handle.c */
+-unsigned int intc_get_mask_handle(struct intc_desc *desc,
+-				  struct intc_desc_int *d,
+-				  intc_enum enum_id, int do_grps);
+-unsigned int intc_get_prio_handle(struct intc_desc *desc,
+-				  struct intc_desc_int *d,
+-				  intc_enum enum_id, int do_grps);
+-unsigned int intc_get_sense_handle(struct intc_desc *desc,
+-				   struct intc_desc_int *d,
+-				   intc_enum enum_id);
+-void intc_set_ack_handle(unsigned int irq, struct intc_desc *desc,
+-			 struct intc_desc_int *d, intc_enum id);
+-unsigned long intc_get_ack_handle(unsigned int irq);
+-void intc_enable_disable_enum(struct intc_desc *desc, struct intc_desc_int *d,
+-			      intc_enum enum_id, int enable);
+-
+-/* irqdomain.c */
+-void intc_irq_domain_init(struct intc_desc_int *d, struct intc_hw_desc *hw);
+-
+-/* virq.c */
+-void intc_subgroup_init(struct intc_desc *desc, struct intc_desc_int *d);
+-void intc_irq_xlate_set(unsigned int irq, intc_enum id, struct intc_desc_int *d);
+-struct intc_map_entry *intc_irq_xlate_get(unsigned int irq);
+diff --git a/drivers/sh/intc/irqdomain.c b/drivers/sh/intc/irqdomain.c
+deleted file mode 100644
+index 3968f1c3c5c308..00000000000000
+--- a/drivers/sh/intc/irqdomain.c
++++ /dev/null
+@@ -1,68 +0,0 @@
+-/*
+- * IRQ domain support for SH INTC subsystem
+- *
+- * Copyright (C) 2012  Paul Mundt
+- *
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- */
+-#define pr_fmt(fmt) "intc: " fmt
+-
+-#include <linux/irqdomain.h>
+-#include <linux/sh_intc.h>
+-#include <linux/export.h>
+-#include "internals.h"
+-
+-/**
+- * intc_irq_domain_evt_xlate() - Generic xlate for vectored IRQs.
+- *
+- * This takes care of exception vector to hwirq translation through
+- * by way of evt2irq() translation.
+- *
+- * Note: For platforms that use a flat vector space without INTEVT this
+- * basically just mimics irq_domain_xlate_onecell() by way of a nopped
+- * out evt2irq() implementation.
+- */
+-static int intc_evt_xlate(struct irq_domain *d, struct device_node *ctrlr,
+-			  const u32 *intspec, unsigned int intsize,
+-			  unsigned long *out_hwirq, unsigned int *out_type)
+-{
+-	if (WARN_ON(intsize < 1))
+-		return -EINVAL;
+-
+-	*out_hwirq = evt2irq(intspec[0]);
+-	*out_type = IRQ_TYPE_NONE;
+-
+-	return 0;
+-}
+-
+-static const struct irq_domain_ops intc_evt_ops = {
+-	.xlate		= intc_evt_xlate,
+-};
+-
+-void __init intc_irq_domain_init(struct intc_desc_int *d,
+-				 struct intc_hw_desc *hw)
+-{
+-	unsigned int irq_base, irq_end;
+-
+-	/*
+-	 * Quick linear revmap check
+-	 */
+-	irq_base = evt2irq(hw->vectors[0].vect);
+-	irq_end = evt2irq(hw->vectors[hw->nr_vectors - 1].vect);
+-
+-	/*
+-	 * Linear domains have a hard-wired assertion that IRQs start at
+-	 * 0 in order to make some performance optimizations. Lamely
+-	 * restrict the linear case to these conditions here, taking the
+-	 * tree penalty for linear cases with non-zero hwirq bases.
+-	 */
+-	if (irq_base == 0 && irq_end == (irq_base + hw->nr_vectors - 1))
+-		d->domain = irq_domain_add_linear(NULL, hw->nr_vectors,
+-						  &intc_evt_ops, NULL);
+-	else
+-		d->domain = irq_domain_add_tree(NULL, &intc_evt_ops, NULL);
+-
+-	BUG_ON(!d->domain);
+-}
+diff --git a/drivers/sh/intc/userimask.c b/drivers/sh/intc/userimask.c
+deleted file mode 100644
+index f9f043a3d90a23..00000000000000
+--- a/drivers/sh/intc/userimask.c
++++ /dev/null
+@@ -1,84 +0,0 @@
+-/*
+- * Support for hardware-assisted userspace interrupt masking.
+- *
+- * Copyright (C) 2010  Paul Mundt
+- *
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- */
+-#define pr_fmt(fmt) "intc: " fmt
+-
+-#include <linux/errno.h>
+-#include <linux/device.h>
+-#include <linux/init.h>
+-#include <linux/io.h>
+-#include <linux/stat.h>
+-#include <linux/sizes.h>
+-#include "internals.h"
+-
+-static void __iomem *uimask;
+-
+-static ssize_t
+-show_intc_userimask(struct device *dev,
+-		    struct device_attribute *attr, char *buf)
+-{
+-	return sprintf(buf, "%d\n", (__raw_readl(uimask) >> 4) & 0xf);
+-}
+-
+-static ssize_t
+-store_intc_userimask(struct device *dev,
+-		     struct device_attribute *attr,
+-		     const char *buf, size_t count)
+-{
+-	unsigned long level;
+-
+-	level = simple_strtoul(buf, NULL, 10);
+-
+-	/*
+-	 * Minimal acceptable IRQ levels are in the 2 - 16 range, but
+-	 * these are chomped so as to not interfere with normal IRQs.
+-	 *
+-	 * Level 1 is a special case on some CPUs in that it's not
+-	 * directly settable, but given that USERIMASK cuts off below a
+-	 * certain level, we don't care about this limitation here.
+-	 * Level 0 on the other hand equates to user masking disabled.
+-	 *
+-	 * We use the default priority level as a cut off so that only
+-	 * special case opt-in IRQs can be mangled.
+-	 */
+-	if (level >= intc_get_dfl_prio_level())
+-		return -EINVAL;
+-
+-	__raw_writel(0xa5 << 24 | level << 4, uimask);
+-
+-	return count;
+-}
+-
+-static DEVICE_ATTR(userimask, S_IRUSR | S_IWUSR,
+-		   show_intc_userimask, store_intc_userimask);
+-
+-
+-static int __init userimask_sysdev_init(void)
+-{
+-	if (unlikely(!uimask))
+-		return -ENXIO;
+-
+-	return device_create_file(intc_subsys.dev_root, &dev_attr_userimask);
+-}
+-late_initcall(userimask_sysdev_init);
+-
+-int register_intc_userimask(unsigned long addr)
+-{
+-	if (unlikely(uimask))
+-		return -EBUSY;
+-
+-	uimask = ioremap(addr, SZ_4K);
+-	if (unlikely(!uimask))
+-		return -ENOMEM;
+-
+-	pr_info("userimask support registered for levels 0 -> %d\n",
+-		intc_get_dfl_prio_level() - 1);
+-
+-	return 0;
+-}
+diff --git a/drivers/sh/intc/virq-debugfs.c b/drivers/sh/intc/virq-debugfs.c
+deleted file mode 100644
+index 939915a07d9997..00000000000000
+--- a/drivers/sh/intc/virq-debugfs.c
++++ /dev/null
+@@ -1,54 +0,0 @@
+-/*
+- * Support for virtual IRQ subgroups debugfs mapping.
+- *
+- * Copyright (C) 2010  Paul Mundt
+- *
+- * Modelled after arch/powerpc/kernel/irq.c.
+- *
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- */
+-#include <linux/seq_file.h>
+-#include <linux/fs.h>
+-#include <linux/init.h>
+-#include <linux/irq.h>
+-#include <linux/debugfs.h>
+-#include "internals.h"
+-
+-static int intc_irq_xlate_show(struct seq_file *m, void *priv)
+-{
+-	int i;
+-
+-	seq_printf(m, "%-5s  %-7s  %-15s\n", "irq", "enum", "chip name");
+-
+-	for (i = 1; i < nr_irqs; i++) {
+-		struct intc_map_entry *entry = intc_irq_xlate_get(i);
+-		struct intc_desc_int *desc = entry->desc;
+-
+-		if (!desc)
+-			continue;
+-
+-		seq_printf(m, "%5d  ", i);
+-		seq_printf(m, "0x%05x  ", entry->enum_id);
+-		seq_printf(m, "%-15s\n", desc->chip.name);
 -	}
 -
--	schan->real_slave_id = 0;
+-	return 0;
+-}
 -
--	spin_lock_irq(&schan->chan_lock);
+-DEFINE_SHOW_ATTRIBUTE(intc_irq_xlate);
 -
--	list_splice_init(&schan->ld_free, &list);
--	schan->desc_num = 0;
+-static int __init intc_irq_xlate_init(void)
+-{
+-	/*
+-	 * XXX.. use arch_debugfs_dir here when all of the intc users are
+-	 * converted.
+-	 */
+-	if (debugfs_create_file("intc_irq_xlate", S_IRUGO, NULL, NULL,
+-				&intc_irq_xlate_fops) == NULL)
+-		return -ENOMEM;
 -
--	spin_unlock_irq(&schan->chan_lock);
+-	return 0;
+-}
+-fs_initcall(intc_irq_xlate_init);
+diff --git a/drivers/sh/intc/virq.c b/drivers/sh/intc/virq.c
+deleted file mode 100644
+index a638c3048207c0..00000000000000
+--- a/drivers/sh/intc/virq.c
++++ /dev/null
+@@ -1,269 +0,0 @@
+-/*
+- * Support for virtual IRQ subgroups.
+- *
+- * Copyright (C) 2010  Paul Mundt
+- *
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- */
+-#define pr_fmt(fmt) "intc: " fmt
 -
--	kfree(schan->desc);
+-#include <linux/slab.h>
+-#include <linux/irq.h>
+-#include <linux/list.h>
+-#include <linux/radix-tree.h>
+-#include <linux/spinlock.h>
+-#include <linux/export.h>
+-#include "internals.h"
+-
+-static struct intc_map_entry intc_irq_xlate[INTC_NR_IRQS];
+-
+-struct intc_virq_list {
+-	unsigned int irq;
+-	struct intc_virq_list *next;
+-};
+-
+-#define for_each_virq(entry, head) \
+-	for (entry = head; entry; entry = entry->next)
+-
+-/*
+- * Tags for the radix tree
+- */
+-#define INTC_TAG_VIRQ_NEEDS_ALLOC	0
+-
+-void intc_irq_xlate_set(unsigned int irq, intc_enum id, struct intc_desc_int *d)
+-{
+-	unsigned long flags;
+-
+-	raw_spin_lock_irqsave(&intc_big_lock, flags);
+-	intc_irq_xlate[irq].enum_id = id;
+-	intc_irq_xlate[irq].desc = d;
+-	raw_spin_unlock_irqrestore(&intc_big_lock, flags);
+-}
+-
+-struct intc_map_entry *intc_irq_xlate_get(unsigned int irq)
+-{
+-	return intc_irq_xlate + irq;
+-}
+-
+-int intc_irq_lookup(const char *chipname, intc_enum enum_id)
+-{
+-	struct intc_map_entry *ptr;
+-	struct intc_desc_int *d;
+-	int irq = -1;
+-
+-	list_for_each_entry(d, &intc_list, list) {
+-		int tagged;
+-
+-		if (strcmp(d->chip.name, chipname) != 0)
+-			continue;
+-
+-		/*
+-		 * Catch early lookups for subgroup VIRQs that have not
+-		 * yet been allocated an IRQ. This already includes a
+-		 * fast-path out if the tree is untagged, so there is no
+-		 * need to explicitly test the root tree.
+-		 */
+-		tagged = radix_tree_tag_get(&d->tree, enum_id,
+-					    INTC_TAG_VIRQ_NEEDS_ALLOC);
+-		if (unlikely(tagged))
+-			break;
+-
+-		ptr = radix_tree_lookup(&d->tree, enum_id);
+-		if (ptr) {
+-			irq = ptr - intc_irq_xlate;
+-			break;
+-		}
+-	}
+-
+-	return irq;
+-}
+-EXPORT_SYMBOL_GPL(intc_irq_lookup);
+-
+-static int add_virq_to_pirq(unsigned int irq, unsigned int virq)
+-{
+-	struct intc_virq_list *entry;
+-	struct intc_virq_list **last = NULL;
+-
+-	/* scan for duplicates */
+-	for_each_virq(entry, irq_get_handler_data(irq)) {
+-		if (entry->irq == virq)
+-			return 0;
+-		last = &entry->next;
+-	}
+-
+-	entry = kzalloc(sizeof(struct intc_virq_list), GFP_ATOMIC);
+-	if (!entry)
+-		return -ENOMEM;
+-
+-	entry->irq = virq;
+-
+-	if (last)
+-		*last = entry;
+-	else
+-		irq_set_handler_data(irq, entry);
+-
+-	return 0;
+-}
+-
+-static void intc_virq_handler(struct irq_desc *desc)
+-{
+-	unsigned int irq = irq_desc_get_irq(desc);
+-	struct irq_data *data = irq_desc_get_irq_data(desc);
+-	struct irq_chip *chip = irq_data_get_irq_chip(data);
+-	struct intc_virq_list *entry, *vlist = irq_data_get_irq_handler_data(data);
+-	struct intc_desc_int *d = get_intc_desc(irq);
+-
+-	chip->irq_mask_ack(data);
+-
+-	for_each_virq(entry, vlist) {
+-		unsigned long addr, handle;
+-		struct irq_desc *vdesc = irq_to_desc(entry->irq);
+-
+-		if (vdesc) {
+-			handle = (unsigned long)irq_desc_get_handler_data(vdesc);
+-			addr = INTC_REG(d, _INTC_ADDR_E(handle), 0);
+-			if (intc_reg_fns[_INTC_FN(handle)](addr, handle, 0))
+-				generic_handle_irq_desc(vdesc);
+-		}
+-	}
+-
+-	chip->irq_unmask(data);
+-}
+-
+-static unsigned long __init intc_subgroup_data(struct intc_subgroup *subgroup,
+-					       struct intc_desc_int *d,
+-					       unsigned int index)
+-{
+-	unsigned int fn = REG_FN_TEST_BASE + (subgroup->reg_width >> 3) - 1;
+-
+-	return _INTC_MK(fn, MODE_ENABLE_REG, intc_get_reg(d, subgroup->reg),
+-			0, 1, (subgroup->reg_width - 1) - index);
+-}
+-
+-static void __init intc_subgroup_init_one(struct intc_desc *desc,
+-					  struct intc_desc_int *d,
+-					  struct intc_subgroup *subgroup)
+-{
+-	struct intc_map_entry *mapped;
+-	unsigned int pirq;
+-	unsigned long flags;
+-	int i;
+-
+-	mapped = radix_tree_lookup(&d->tree, subgroup->parent_id);
+-	if (!mapped) {
+-		WARN_ON(1);
+-		return;
+-	}
+-
+-	pirq = mapped - intc_irq_xlate;
+-
+-	raw_spin_lock_irqsave(&d->lock, flags);
+-
+-	for (i = 0; i < ARRAY_SIZE(subgroup->enum_ids); i++) {
+-		struct intc_subgroup_entry *entry;
+-		int err;
+-
+-		if (!subgroup->enum_ids[i])
+-			continue;
+-
+-		entry = kmalloc(sizeof(*entry), GFP_NOWAIT);
+-		if (!entry)
+-			break;
+-
+-		entry->pirq = pirq;
+-		entry->enum_id = subgroup->enum_ids[i];
+-		entry->handle = intc_subgroup_data(subgroup, d, i);
+-
+-		err = radix_tree_insert(&d->tree, entry->enum_id, entry);
+-		if (unlikely(err < 0))
+-			break;
+-
+-		radix_tree_tag_set(&d->tree, entry->enum_id,
+-				   INTC_TAG_VIRQ_NEEDS_ALLOC);
+-	}
+-
+-	raw_spin_unlock_irqrestore(&d->lock, flags);
+-}
+-
+-void __init intc_subgroup_init(struct intc_desc *desc, struct intc_desc_int *d)
+-{
+-	int i;
+-
+-	if (!desc->hw.subgroups)
+-		return;
+-
+-	for (i = 0; i < desc->hw.nr_subgroups; i++)
+-		intc_subgroup_init_one(desc, d, desc->hw.subgroups + i);
+-}
+-
+-static void __init intc_subgroup_map(struct intc_desc_int *d)
+-{
+-	struct intc_subgroup_entry *entries[32];
+-	unsigned long flags;
+-	unsigned int nr_found;
+-	int i;
+-
+-	raw_spin_lock_irqsave(&d->lock, flags);
+-
+-restart:
+-	nr_found = radix_tree_gang_lookup_tag_slot(&d->tree,
+-			(void ***)entries, 0, ARRAY_SIZE(entries),
+-			INTC_TAG_VIRQ_NEEDS_ALLOC);
+-
+-	for (i = 0; i < nr_found; i++) {
+-		struct intc_subgroup_entry *entry;
+-		int irq;
+-
+-		entry = radix_tree_deref_slot((void **)entries[i]);
+-		if (unlikely(!entry))
+-			continue;
+-		if (radix_tree_deref_retry(entry))
+-			goto restart;
+-
+-		irq = irq_alloc_desc(numa_node_id());
+-		if (unlikely(irq < 0)) {
+-			pr_err("no more free IRQs, bailing..\n");
+-			break;
+-		}
+-
+-		activate_irq(irq);
+-
+-		pr_info("Setting up a chained VIRQ from %d -> %d\n",
+-			irq, entry->pirq);
+-
+-		intc_irq_xlate_set(irq, entry->enum_id, d);
+-
+-		irq_set_chip_and_handler_name(irq, irq_get_chip(entry->pirq),
+-					      handle_simple_irq, "virq");
+-		irq_set_chip_data(irq, irq_get_chip_data(entry->pirq));
+-
+-		irq_set_handler_data(irq, (void *)entry->handle);
+-
+-		/*
+-		 * Set the virtual IRQ as non-threadable.
+-		 */
+-		irq_set_nothread(irq);
+-
+-		/* Set handler data before installing the handler */
+-		add_virq_to_pirq(entry->pirq, irq);
+-		irq_set_chained_handler(entry->pirq, intc_virq_handler);
+-
+-		radix_tree_tag_clear(&d->tree, entry->enum_id,
+-				     INTC_TAG_VIRQ_NEEDS_ALLOC);
+-		radix_tree_replace_slot(&d->tree, (void **)entries[i],
+-					&intc_irq_xlate[irq]);
+-	}
+-
+-	raw_spin_unlock_irqrestore(&d->lock, flags);
+-}
+-
+-void __init intc_finalize(void)
+-{
+-	struct intc_desc_int *d;
+-
+-	list_for_each_entry(d, &intc_list, list)
+-		if (radix_tree_tagged(&d->tree, INTC_TAG_VIRQ_NEEDS_ALLOC))
+-			intc_subgroup_map(d);
+-}
+diff --git a/drivers/sh/maple/Makefile b/drivers/sh/maple/Makefile
+deleted file mode 100644
+index c3a80910c212ce..00000000000000
+--- a/drivers/sh/maple/Makefile
++++ /dev/null
+@@ -1,4 +0,0 @@
+-# SPDX-License-Identifier: GPL-2.0-only
+-# Makefile for Maple Bus
+-
+-obj-$(CONFIG_MAPLE) := maple.o
+diff --git a/drivers/sh/maple/maple.c b/drivers/sh/maple/maple.c
+deleted file mode 100644
+index e24e220e56eea1..00000000000000
+--- a/drivers/sh/maple/maple.c
++++ /dev/null
+@@ -1,895 +0,0 @@
+-/*
+- * Core maple bus functionality
+- *
+- *  Copyright (C) 2007 - 2009 Adrian McMenamin
+- *  Copyright (C) 2001 - 2008 Paul Mundt
+- *  Copyright (C) 2000 - 2001 YAEGASHI Takeshi
+- *  Copyright (C) 2001 M. R. Brown
+- *
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- */
+-#include <linux/init.h>
+-#include <linux/kernel.h>
+-#include <linux/device.h>
+-#include <linux/interrupt.h>
+-#include <linux/list.h>
+-#include <linux/io.h>
+-#include <linux/slab.h>
+-#include <linux/maple.h>
+-#include <linux/dma-mapping.h>
+-#include <linux/delay.h>
+-#include <linux/module.h>
+-#include <asm/cacheflush.h>
+-#include <asm/dma.h>
+-#include <asm/io.h>
+-#include <mach/dma.h>
+-#include <mach/sysasic.h>
+-
+-MODULE_AUTHOR("Adrian McMenamin <adrian@mcmen.demon.co.uk>");
+-MODULE_DESCRIPTION("Maple bus driver for Dreamcast");
+-MODULE_LICENSE("GPL v2");
+-
+-static void maple_dma_handler(struct work_struct *work);
+-static void maple_vblank_handler(struct work_struct *work);
+-
+-static DECLARE_WORK(maple_dma_process, maple_dma_handler);
+-static DECLARE_WORK(maple_vblank_process, maple_vblank_handler);
+-
+-static LIST_HEAD(maple_waitq);
+-static LIST_HEAD(maple_sentq);
+-
+-/* mutex to protect queue of waiting packets */
+-static DEFINE_MUTEX(maple_wlist_lock);
+-
+-static struct maple_driver maple_unsupported_device;
+-static struct device maple_bus;
+-static int subdevice_map[MAPLE_PORTS];
+-static unsigned long *maple_sendbuf, *maple_sendptr, *maple_lastptr;
+-static unsigned long maple_pnp_time;
+-static int started, scanning, fullscan;
+-static struct kmem_cache *maple_queue_cache;
+-
+-struct maple_device_specify {
+-	int port;
+-	int unit;
+-};
+-
+-static bool checked[MAPLE_PORTS];
+-static bool empty[MAPLE_PORTS];
+-static struct maple_device *baseunits[MAPLE_PORTS];
+-
+-/**
+- * maple_driver_register - register a maple driver
+- * @drv: maple driver to be registered.
+- *
+- * Registers the passed in @drv, while updating the bus type.
+- * Devices with matching function IDs will be automatically probed.
+- */
+-int maple_driver_register(struct maple_driver *drv)
+-{
+-	if (!drv)
+-		return -EINVAL;
+-
+-	drv->drv.bus = &maple_bus_type;
+-
+-	return driver_register(&drv->drv);
+-}
+-EXPORT_SYMBOL_GPL(maple_driver_register);
+-
+-/**
+- * maple_driver_unregister - unregister a maple driver.
+- * @drv: maple driver to unregister.
+- *
+- * Cleans up after maple_driver_register(). To be invoked in the exit
+- * path of any module drivers.
+- */
+-void maple_driver_unregister(struct maple_driver *drv)
+-{
+-	driver_unregister(&drv->drv);
+-}
+-EXPORT_SYMBOL_GPL(maple_driver_unregister);
+-
+-/* set hardware registers to enable next round of dma */
+-static void maple_dma_reset(void)
+-{
+-	__raw_writel(MAPLE_MAGIC, MAPLE_RESET);
+-	/* set trig type to 0 for software trigger, 1 for hardware (VBLANK) */
+-	__raw_writel(1, MAPLE_TRIGTYPE);
+-	/*
+-	* Maple system register
+-	* bits 31 - 16	timeout in units of 20nsec
+-	* bit 12	hard trigger - set 0 to keep responding to VBLANK
+-	* bits 9 - 8	set 00 for 2 Mbps, 01 for 1 Mbps
+-	* bits 3 - 0	delay (in 1.3ms) between VBLANK and start of DMA
+-	* max delay is 11
+-	*/
+-	__raw_writel(MAPLE_2MBPS | MAPLE_TIMEOUT(0xFFFF), MAPLE_SPEED);
+-	__raw_writel(virt_to_phys(maple_sendbuf), MAPLE_DMAADDR);
+-	__raw_writel(1, MAPLE_ENABLE);
 -}
 -
 -/**
-- * shdma_add_desc - get, set up and return one transfer descriptor
-- * @schan:	DMA channel
-- * @flags:	DMA transfer flags
-- * @dst:	destination DMA address, incremented when direction equals
-- *		DMA_DEV_TO_MEM or DMA_MEM_TO_MEM
-- * @src:	source DMA address, incremented when direction equals
-- *		DMA_MEM_TO_DEV or DMA_MEM_TO_MEM
-- * @len:	DMA transfer length
-- * @first:	if NULL, set to the current descriptor and cookie set to -EBUSY
-- * @direction:	needed for slave DMA to decide which address to keep constant,
-- *		equals DMA_MEM_TO_MEM for MEMCPY
-- * Returns 0 or an error
-- * Locks: called with desc_lock held
+- * maple_getcond_callback - setup handling MAPLE_COMMAND_GETCOND
+- * @dev: device responding
+- * @callback: handler callback
+- * @interval: interval in jiffies between callbacks
+- * @function: the function code for the device
 - */
--static struct shdma_desc *shdma_add_desc(struct shdma_chan *schan,
--	unsigned long flags, dma_addr_t *dst, dma_addr_t *src, size_t *len,
--	struct shdma_desc **first, enum dma_transfer_direction direction)
+-void maple_getcond_callback(struct maple_device *dev,
+-			void (*callback) (struct mapleq *mq),
+-			unsigned long interval, unsigned long function)
 -{
--	struct shdma_dev *sdev = to_shdma_dev(schan->dma_chan.device);
--	const struct shdma_ops *ops = sdev->ops;
--	struct shdma_desc *new;
--	size_t copy_size = *len;
+-	dev->callback = callback;
+-	dev->interval = interval;
+-	dev->function = cpu_to_be32(function);
+-	dev->when = jiffies;
+-}
+-EXPORT_SYMBOL_GPL(maple_getcond_callback);
 -
--	if (!copy_size)
--		return NULL;
--
--	/* Allocate the link descriptor from the free list */
--	new = shdma_get_desc(schan);
--	if (!new) {
--		dev_err(schan->dev, "No free link descriptor available\n");
--		return NULL;
--	}
--
--	ops->desc_setup(schan, new, *src, *dst, &copy_size);
--
--	if (!*first) {
--		/* First desc */
--		new->async_tx.cookie = -EBUSY;
--		*first = new;
--	} else {
--		/* Other desc - invisible to the user */
--		new->async_tx.cookie = -EINVAL;
--	}
--
--	dev_dbg(schan->dev,
--		"chaining (%zu/%zu)@%pad -> %pad with %p, cookie %d\n",
--		copy_size, *len, src, dst, &new->async_tx,
--		new->async_tx.cookie);
--
--	new->mark = DESC_PREPARED;
--	new->async_tx.flags = flags;
--	new->direction = direction;
--	new->partial = 0;
--
--	*len -= copy_size;
--	if (direction == DMA_MEM_TO_MEM || direction == DMA_MEM_TO_DEV)
--		*src += copy_size;
--	if (direction == DMA_MEM_TO_MEM || direction == DMA_DEV_TO_MEM)
--		*dst += copy_size;
--
--	return new;
+-static int maple_dma_done(void)
+-{
+-	return (__raw_readl(MAPLE_STATE) & 1) == 0;
 -}
 -
--/*
-- * shdma_prep_sg - prepare transfer descriptors from an SG list
-- *
-- * Common routine for public (MEMCPY) and slave DMA. The MEMCPY case is also
-- * converted to scatter-gather to guarantee consistent locking and a correct
-- * list manipulation. For slave DMA direction carries the usual meaning, and,
-- * logically, the SG list is RAM and the addr variable contains slave address,
-- * e.g., the FIFO I/O register. For MEMCPY direction equals DMA_MEM_TO_MEM
-- * and the SG list contains only one element and points at the source buffer.
-- */
--static struct dma_async_tx_descriptor *shdma_prep_sg(struct shdma_chan *schan,
--	struct scatterlist *sgl, unsigned int sg_len, dma_addr_t *addr,
--	enum dma_transfer_direction direction, unsigned long flags, bool cyclic)
+-static void maple_release_device(struct device *dev)
 -{
--	struct scatterlist *sg;
--	struct shdma_desc *first = NULL, *new = NULL /* compiler... */;
--	LIST_HEAD(tx_list);
--	int chunks = 0;
--	unsigned long irq_flags;
--	int i;
+-	struct maple_device *mdev;
+-	struct mapleq *mq;
 -
--	for_each_sg(sgl, sg, sg_len, i)
--		chunks += DIV_ROUND_UP(sg_dma_len(sg), schan->max_xfer_len);
+-	mdev = to_maple_dev(dev);
+-	mq = mdev->mq;
+-	kmem_cache_free(maple_queue_cache, mq->recvbuf);
+-	kfree(mq);
+-	kfree(mdev);
+-}
 -
--	/* Have to lock the whole loop to protect against concurrent release */
--	spin_lock_irqsave(&schan->chan_lock, irq_flags);
+-/**
+- * maple_add_packet - add a single instruction to the maple bus queue
+- * @mdev: maple device
+- * @function: function on device being queried
+- * @command: maple command to add
+- * @length: length of command string (in 32 bit words)
+- * @data: remainder of command string
+- */
+-int maple_add_packet(struct maple_device *mdev, u32 function, u32 command,
+-	size_t length, void *data)
+-{
+-	int ret = 0;
+-	void *sendbuf = NULL;
 -
--	/*
--	 * Chaining:
--	 * first descriptor is what user is dealing with in all API calls, its
--	 *	cookie is at first set to -EBUSY, at tx-submit to a positive
--	 *	number
--	 * if more than one chunk is needed further chunks have cookie = -EINVAL
--	 * the last chunk, if not equal to the first, has cookie = -ENOSPC
--	 * all chunks are linked onto the tx_list head with their .node heads
--	 *	only during this function, then they are immediately spliced
--	 *	back onto the free list in form of a chain
--	 */
--	for_each_sg(sgl, sg, sg_len, i) {
--		dma_addr_t sg_addr = sg_dma_address(sg);
--		size_t len = sg_dma_len(sg);
--
--		if (!len)
--			goto err_get_desc;
--
--		do {
--			dev_dbg(schan->dev, "Add SG #%d@%p[%zu], dma %pad\n",
--				i, sg, len, &sg_addr);
--
--			if (direction == DMA_DEV_TO_MEM)
--				new = shdma_add_desc(schan, flags,
--						&sg_addr, addr, &len, &first,
--						direction);
--			else
--				new = shdma_add_desc(schan, flags,
--						addr, &sg_addr, &len, &first,
--						direction);
--			if (!new)
--				goto err_get_desc;
--
--			new->cyclic = cyclic;
--			if (cyclic)
--				new->chunks = 1;
--			else
--				new->chunks = chunks--;
--			list_add_tail(&new->node, &tx_list);
--		} while (len);
+-	if (length) {
+-		sendbuf = kcalloc(length, 4, GFP_KERNEL);
+-		if (!sendbuf) {
+-			ret = -ENOMEM;
+-			goto out;
+-		}
+-		((__be32 *)sendbuf)[0] = cpu_to_be32(function);
 -	}
 -
--	if (new != first)
--		new->async_tx.cookie = -ENOSPC;
+-	mdev->mq->command = command;
+-	mdev->mq->length = length;
+-	if (length > 1)
+-		memcpy(sendbuf + 4, data, (length - 1) * 4);
+-	mdev->mq->sendbuf = sendbuf;
 -
--	/* Put them back on the free list, so, they don't get lost */
--	list_splice_tail(&tx_list, &schan->ld_free);
+-	mutex_lock(&maple_wlist_lock);
+-	list_add_tail(&mdev->mq->list, &maple_waitq);
+-	mutex_unlock(&maple_wlist_lock);
+-out:
+-	return ret;
+-}
+-EXPORT_SYMBOL_GPL(maple_add_packet);
 -
--	spin_unlock_irqrestore(&schan->chan_lock, irq_flags);
+-static struct mapleq *maple_allocq(struct maple_device *mdev)
+-{
+-	struct mapleq *mq;
 -
--	return &first->async_tx;
+-	mq = kzalloc(sizeof(*mq), GFP_KERNEL);
+-	if (!mq)
+-		goto failed_nomem;
 -
--err_get_desc:
--	list_for_each_entry(new, &tx_list, node)
--		new->mark = DESC_IDLE;
--	list_splice(&tx_list, &schan->ld_free);
+-	INIT_LIST_HEAD(&mq->list);
+-	mq->dev = mdev;
+-	mq->recvbuf = kmem_cache_zalloc(maple_queue_cache, GFP_KERNEL);
+-	if (!mq->recvbuf)
+-		goto failed_p2;
+-	mq->recvbuf->buf = &((mq->recvbuf->bufx)[0]);
 -
--	spin_unlock_irqrestore(&schan->chan_lock, irq_flags);
+-	return mq;
 -
+-failed_p2:
+-	kfree(mq);
+-failed_nomem:
+-	dev_err(&mdev->dev, "could not allocate memory for device (%d, %d)\n",
+-		mdev->port, mdev->unit);
 -	return NULL;
 -}
 -
--static struct dma_async_tx_descriptor *shdma_prep_memcpy(
--	struct dma_chan *chan, dma_addr_t dma_dest, dma_addr_t dma_src,
--	size_t len, unsigned long flags)
+-static struct maple_device *maple_alloc_dev(int port, int unit)
 -{
--	struct shdma_chan *schan = to_shdma_chan(chan);
--	struct scatterlist sg;
+-	struct maple_device *mdev;
 -
--	if (!chan || !len)
+-	/* zero this out to avoid kobj subsystem
+-	* thinking it has already been registered */
+-
+-	mdev = kzalloc(sizeof(*mdev), GFP_KERNEL);
+-	if (!mdev)
 -		return NULL;
 -
--	BUG_ON(!schan->desc_num);
+-	mdev->port = port;
+-	mdev->unit = unit;
 -
--	sg_init_table(&sg, 1);
--	sg_set_page(&sg, pfn_to_page(PFN_DOWN(dma_src)), len,
--		    offset_in_page(dma_src));
--	sg_dma_address(&sg) = dma_src;
--	sg_dma_len(&sg) = len;
+-	mdev->mq = maple_allocq(mdev);
 -
--	return shdma_prep_sg(schan, &sg, 1, &dma_dest, DMA_MEM_TO_MEM,
--			     flags, false);
--}
--
--static struct dma_async_tx_descriptor *shdma_prep_slave_sg(
--	struct dma_chan *chan, struct scatterlist *sgl, unsigned int sg_len,
--	enum dma_transfer_direction direction, unsigned long flags, void *context)
--{
--	struct shdma_chan *schan = to_shdma_chan(chan);
--	struct shdma_dev *sdev = to_shdma_dev(schan->dma_chan.device);
--	const struct shdma_ops *ops = sdev->ops;
--	int slave_id = schan->slave_id;
--	dma_addr_t slave_addr;
--
--	if (!chan)
--		return NULL;
--
--	BUG_ON(!schan->desc_num);
--
--	/* Someone calling slave DMA on a generic channel? */
--	if (slave_id < 0 || !sg_len) {
--		dev_warn(schan->dev, "%s: bad parameter: len=%d, id=%d\n",
--			 __func__, sg_len, slave_id);
+-	if (!mdev->mq) {
+-		kfree(mdev);
 -		return NULL;
 -	}
--
--	slave_addr = ops->slave_addr(schan);
--
--	return shdma_prep_sg(schan, sgl, sg_len, &slave_addr,
--			     direction, flags, false);
+-	mdev->dev.bus = &maple_bus_type;
+-	mdev->dev.parent = &maple_bus;
+-	init_waitqueue_head(&mdev->maple_wait);
+-	return mdev;
 -}
 -
--#define SHDMA_MAX_SG_LEN 32
--
--static struct dma_async_tx_descriptor *shdma_prep_dma_cyclic(
--	struct dma_chan *chan, dma_addr_t buf_addr, size_t buf_len,
--	size_t period_len, enum dma_transfer_direction direction,
--	unsigned long flags)
+-static void maple_free_dev(struct maple_device *mdev)
 -{
--	struct shdma_chan *schan = to_shdma_chan(chan);
--	struct shdma_dev *sdev = to_shdma_dev(schan->dma_chan.device);
--	struct dma_async_tx_descriptor *desc;
--	const struct shdma_ops *ops = sdev->ops;
--	unsigned int sg_len = buf_len / period_len;
--	int slave_id = schan->slave_id;
--	dma_addr_t slave_addr;
--	struct scatterlist *sgl;
--	int i;
+-	kmem_cache_free(maple_queue_cache, mdev->mq->recvbuf);
+-	kfree(mdev->mq);
+-	kfree(mdev);
+-}
 -
--	if (!chan)
--		return NULL;
+-/* process the command queue into a maple command block
+- * terminating command has bit 32 of first long set to 0
+- */
+-static void maple_build_block(struct mapleq *mq)
+-{
+-	int port, unit, from, to, len;
+-	unsigned long *lsendbuf = mq->sendbuf;
 -
--	BUG_ON(!schan->desc_num);
+-	port = mq->dev->port & 3;
+-	unit = mq->dev->unit;
+-	len = mq->length;
+-	from = port << 6;
+-	to = (port << 6) | (unit > 0 ? (1 << (unit - 1)) & 0x1f : 0x20);
 -
--	if (sg_len > SHDMA_MAX_SG_LEN) {
--		dev_err(schan->dev, "sg length %d exceeds limit %d",
--				sg_len, SHDMA_MAX_SG_LEN);
--		return NULL;
+-	*maple_lastptr &= 0x7fffffff;
+-	maple_lastptr = maple_sendptr;
+-
+-	*maple_sendptr++ = (port << 16) | len | 0x80000000;
+-	*maple_sendptr++ = virt_to_phys(mq->recvbuf->buf);
+-	*maple_sendptr++ =
+-	    mq->command | (to << 8) | (from << 16) | (len << 24);
+-	while (len-- > 0)
+-		*maple_sendptr++ = *lsendbuf++;
+-}
+-
+-/* build up command queue */
+-static void maple_send(void)
+-{
+-	int i, maple_packets = 0;
+-	struct mapleq *mq, *nmq;
+-
+-	if (!maple_dma_done())
+-		return;
+-
+-	/* disable DMA */
+-	__raw_writel(0, MAPLE_ENABLE);
+-
+-	if (!list_empty(&maple_sentq))
+-		goto finish;
+-
+-	mutex_lock(&maple_wlist_lock);
+-	if (list_empty(&maple_waitq)) {
+-		mutex_unlock(&maple_wlist_lock);
+-		goto finish;
 -	}
 -
--	/* Someone calling slave DMA on a generic channel? */
--	if (slave_id < 0 || (buf_len < period_len)) {
--		dev_warn(schan->dev,
--			"%s: bad parameter: buf_len=%zu, period_len=%zu, id=%d\n",
--			__func__, buf_len, period_len, slave_id);
--		return NULL;
--	}
+-	maple_lastptr = maple_sendbuf;
+-	maple_sendptr = maple_sendbuf;
 -
--	slave_addr = ops->slave_addr(schan);
--
--	/*
--	 * Allocate the sg list dynamically as it would consumer too much stack
--	 * space.
--	 */
--	sgl = kmalloc_array(sg_len, sizeof(*sgl), GFP_KERNEL);
--	if (!sgl)
--		return NULL;
--
--	sg_init_table(sgl, sg_len);
--
--	for (i = 0; i < sg_len; i++) {
--		dma_addr_t src = buf_addr + (period_len * i);
--
--		sg_set_page(&sgl[i], pfn_to_page(PFN_DOWN(src)), period_len,
--			    offset_in_page(src));
--		sg_dma_address(&sgl[i]) = src;
--		sg_dma_len(&sgl[i]) = period_len;
--	}
--
--	desc = shdma_prep_sg(schan, sgl, sg_len, &slave_addr,
--			     direction, flags, true);
--
--	kfree(sgl);
--	return desc;
--}
--
--static int shdma_terminate_all(struct dma_chan *chan)
--{
--	struct shdma_chan *schan = to_shdma_chan(chan);
--	struct shdma_dev *sdev = to_shdma_dev(chan->device);
--	const struct shdma_ops *ops = sdev->ops;
--	unsigned long flags;
--
--	spin_lock_irqsave(&schan->chan_lock, flags);
--	ops->halt_channel(schan);
--
--	if (ops->get_partial && !list_empty(&schan->ld_queue)) {
--		/* Record partial transfer */
--		struct shdma_desc *desc = list_first_entry(&schan->ld_queue,
--							   struct shdma_desc, node);
--		desc->partial = ops->get_partial(schan, desc);
--	}
--
--	spin_unlock_irqrestore(&schan->chan_lock, flags);
--
--	shdma_chan_ld_cleanup(schan, true);
--
--	return 0;
--}
--
--static int shdma_config(struct dma_chan *chan,
--			struct dma_slave_config *config)
--{
--	struct shdma_chan *schan = to_shdma_chan(chan);
--
--	/*
--	 * So far only .slave_id is used, but the slave drivers are
--	 * encouraged to also set a transfer direction and an address.
--	 */
--	if (!config)
--		return -EINVAL;
--
--	/*
--	 * We could lock this, but you shouldn't be configuring the
--	 * channel, while using it...
--	 */
--	return shdma_setup_slave(schan,
--				 config->direction == DMA_DEV_TO_MEM ?
--				 config->src_addr : config->dst_addr);
--}
--
--static void shdma_issue_pending(struct dma_chan *chan)
--{
--	struct shdma_chan *schan = to_shdma_chan(chan);
--
--	spin_lock_irq(&schan->chan_lock);
--	if (schan->pm_state == SHDMA_PM_ESTABLISHED)
--		shdma_chan_xfer_ld_queue(schan);
--	else
--		schan->pm_state = SHDMA_PM_PENDING;
--	spin_unlock_irq(&schan->chan_lock);
--}
--
--static enum dma_status shdma_tx_status(struct dma_chan *chan,
--					dma_cookie_t cookie,
--					struct dma_tx_state *txstate)
--{
--	struct shdma_chan *schan = to_shdma_chan(chan);
--	enum dma_status status;
--	unsigned long flags;
--
--	shdma_chan_ld_cleanup(schan, false);
--
--	spin_lock_irqsave(&schan->chan_lock, flags);
--
--	status = dma_cookie_status(chan, cookie, txstate);
--
--	/*
--	 * If we don't find cookie on the queue, it has been aborted and we have
--	 * to report error
--	 */
--	if (status != DMA_COMPLETE) {
--		struct shdma_desc *sdesc;
--		status = DMA_ERROR;
--		list_for_each_entry(sdesc, &schan->ld_queue, node)
--			if (sdesc->cookie == cookie) {
--				status = DMA_IN_PROGRESS;
--				break;
--			}
--	}
--
--	spin_unlock_irqrestore(&schan->chan_lock, flags);
--
--	return status;
--}
--
--/* Called from error IRQ or NMI */
--bool shdma_reset(struct shdma_dev *sdev)
--{
--	const struct shdma_ops *ops = sdev->ops;
--	struct shdma_chan *schan;
--	unsigned int handled = 0;
--	int i;
--
--	/* Reset all channels */
--	shdma_for_each_chan(schan, sdev, i) {
--		struct shdma_desc *sdesc;
--		LIST_HEAD(dl);
--
--		if (!schan)
--			continue;
--
--		spin_lock(&schan->chan_lock);
--
--		/* Stop the channel */
--		ops->halt_channel(schan);
--
--		list_splice_init(&schan->ld_queue, &dl);
--
--		if (!list_empty(&dl)) {
--			dev_dbg(schan->dev, "Bring down channel %d\n", schan->id);
--			pm_runtime_put(schan->dev);
--		}
--		schan->pm_state = SHDMA_PM_ESTABLISHED;
--
--		spin_unlock(&schan->chan_lock);
--
--		/* Complete all  */
--		list_for_each_entry(sdesc, &dl, node) {
--			struct dma_async_tx_descriptor *tx = &sdesc->async_tx;
--
--			sdesc->mark = DESC_IDLE;
--			dmaengine_desc_get_callback_invoke(tx, NULL);
--		}
--
--		spin_lock(&schan->chan_lock);
--		list_splice(&dl, &schan->ld_free);
--		spin_unlock(&schan->chan_lock);
--
--		handled++;
--	}
--
--	return !!handled;
--}
--EXPORT_SYMBOL(shdma_reset);
--
--static irqreturn_t chan_irq(int irq, void *dev)
--{
--	struct shdma_chan *schan = dev;
--	const struct shdma_ops *ops =
--		to_shdma_dev(schan->dma_chan.device)->ops;
--	irqreturn_t ret;
--
--	spin_lock(&schan->chan_lock);
--
--	ret = ops->chan_irq(schan, irq) ? IRQ_WAKE_THREAD : IRQ_NONE;
--
--	spin_unlock(&schan->chan_lock);
--
--	return ret;
--}
--
--static irqreturn_t chan_irqt(int irq, void *dev)
--{
--	struct shdma_chan *schan = dev;
--	const struct shdma_ops *ops =
--		to_shdma_dev(schan->dma_chan.device)->ops;
--	struct shdma_desc *sdesc;
--
--	spin_lock_irq(&schan->chan_lock);
--	list_for_each_entry(sdesc, &schan->ld_queue, node) {
--		if (sdesc->mark == DESC_SUBMITTED &&
--		    ops->desc_completed(schan, sdesc)) {
--			dev_dbg(schan->dev, "done #%d@%p\n",
--				sdesc->async_tx.cookie, &sdesc->async_tx);
--			sdesc->mark = DESC_COMPLETED;
+-	list_for_each_entry_safe(mq, nmq, &maple_waitq, list) {
+-		maple_build_block(mq);
+-		list_del_init(&mq->list);
+-		list_add_tail(&mq->list, &maple_sentq);
+-		if (maple_packets++ > MAPLE_MAXPACKETS)
 -			break;
--		}
 -	}
--	/* Next desc */
--	shdma_chan_xfer_ld_queue(schan);
--	spin_unlock_irq(&schan->chan_lock);
--
--	shdma_chan_ld_cleanup(schan, false);
--
--	return IRQ_HANDLED;
--}
--
--int shdma_request_irq(struct shdma_chan *schan, int irq,
--			   unsigned long flags, const char *name)
--{
--	int ret = devm_request_threaded_irq(schan->dev, irq, chan_irq,
--					    chan_irqt, flags, name, schan);
--
--	schan->irq = ret < 0 ? ret : irq;
--
--	return ret;
--}
--EXPORT_SYMBOL(shdma_request_irq);
--
--void shdma_chan_probe(struct shdma_dev *sdev,
--			   struct shdma_chan *schan, int id)
--{
--	schan->pm_state = SHDMA_PM_ESTABLISHED;
--
--	/* reference struct dma_device */
--	schan->dma_chan.device = &sdev->dma_dev;
--	dma_cookie_init(&schan->dma_chan);
--
--	schan->dev = sdev->dma_dev.dev;
--	schan->id = id;
--
--	if (!schan->max_xfer_len)
--		schan->max_xfer_len = PAGE_SIZE;
--
--	spin_lock_init(&schan->chan_lock);
--
--	/* Init descripter manage list */
--	INIT_LIST_HEAD(&schan->ld_queue);
--	INIT_LIST_HEAD(&schan->ld_free);
--
--	/* Add the channel to DMA device channel list */
--	list_add_tail(&schan->dma_chan.device_node,
--			&sdev->dma_dev.channels);
--	sdev->schan[id] = schan;
--}
--EXPORT_SYMBOL(shdma_chan_probe);
--
--void shdma_chan_remove(struct shdma_chan *schan)
--{
--	list_del(&schan->dma_chan.device_node);
--}
--EXPORT_SYMBOL(shdma_chan_remove);
--
--int shdma_init(struct device *dev, struct shdma_dev *sdev,
--		    int chan_num)
--{
--	struct dma_device *dma_dev = &sdev->dma_dev;
--
--	/*
--	 * Require all call-backs for now, they can trivially be made optional
--	 * later as required
--	 */
--	if (!sdev->ops ||
--	    !sdev->desc_size ||
--	    !sdev->ops->embedded_desc ||
--	    !sdev->ops->start_xfer ||
--	    !sdev->ops->setup_xfer ||
--	    !sdev->ops->set_slave ||
--	    !sdev->ops->desc_setup ||
--	    !sdev->ops->slave_addr ||
--	    !sdev->ops->channel_busy ||
--	    !sdev->ops->halt_channel ||
--	    !sdev->ops->desc_completed)
--		return -EINVAL;
--
--	sdev->schan = kcalloc(chan_num, sizeof(*sdev->schan), GFP_KERNEL);
--	if (!sdev->schan)
--		return -ENOMEM;
--
--	INIT_LIST_HEAD(&dma_dev->channels);
--
--	/* Common and MEMCPY operations */
--	dma_dev->device_alloc_chan_resources
--		= shdma_alloc_chan_resources;
--	dma_dev->device_free_chan_resources = shdma_free_chan_resources;
--	dma_dev->device_prep_dma_memcpy = shdma_prep_memcpy;
--	dma_dev->device_tx_status = shdma_tx_status;
--	dma_dev->device_issue_pending = shdma_issue_pending;
--
--	/* Compulsory for DMA_SLAVE fields */
--	dma_dev->device_prep_slave_sg = shdma_prep_slave_sg;
--	dma_dev->device_prep_dma_cyclic = shdma_prep_dma_cyclic;
--	dma_dev->device_config = shdma_config;
--	dma_dev->device_terminate_all = shdma_terminate_all;
--
--	dma_dev->dev = dev;
--
--	return 0;
--}
--EXPORT_SYMBOL(shdma_init);
--
--void shdma_cleanup(struct shdma_dev *sdev)
--{
--	kfree(sdev->schan);
--}
--EXPORT_SYMBOL(shdma_cleanup);
--
--static int __init shdma_enter(void)
--{
--	shdma_slave_used = bitmap_zalloc(slave_num, GFP_KERNEL);
--	if (!shdma_slave_used)
--		return -ENOMEM;
--	return 0;
--}
--module_init(shdma_enter);
--
--static void __exit shdma_exit(void)
--{
--	bitmap_free(shdma_slave_used);
--}
--module_exit(shdma_exit);
--
--MODULE_LICENSE("GPL v2");
--MODULE_DESCRIPTION("SH-DMA driver base library");
--MODULE_AUTHOR("Guennadi Liakhovetski <g.liakhovetski@gmx.de>");
-diff --git a/drivers/dma/sh/shdma.h b/drivers/dma/sh/shdma.h
-deleted file mode 100644
-index 9c121a4b33ad82..00000000000000
---- a/drivers/dma/sh/shdma.h
-+++ /dev/null
-@@ -1,61 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0+ */
--/*
-- * Renesas SuperH DMA Engine support
-- *
-- * Copyright (C) 2009 Nobuhiro Iwamatsu <iwamatsu.nobuhiro@renesas.com>
-- * Copyright (C) 2009 Renesas Solutions, Inc. All rights reserved.
-- *
-- */
--#ifndef __DMA_SHDMA_H
--#define __DMA_SHDMA_H
--
--#include <linux/sh_dma.h>
--#include <linux/shdma-base.h>
--#include <linux/dmaengine.h>
--#include <linux/interrupt.h>
--#include <linux/list.h>
--
--#define SH_DMAE_MAX_CHANNELS 20
--#define SH_DMAE_TCR_MAX 0x00FFFFFF	/* 16MB */
--
--struct device;
--
--struct sh_dmae_chan {
--	struct shdma_chan shdma_chan;
--	const struct sh_dmae_slave_config *config; /* Slave DMA configuration */
--	int xmit_shift;			/* log_2(bytes_per_xfer) */
--	void __iomem *base;
--	char dev_id[16];		/* unique name per DMAC of channel */
--	int pm_error;
--	dma_addr_t slave_addr;
--};
--
--struct sh_dmae_device {
--	struct shdma_dev shdma_dev;
--	struct sh_dmae_chan *chan[SH_DMAE_MAX_CHANNELS];
--	const struct sh_dmae_pdata *pdata;
--	struct list_head node;
--	void __iomem *chan_reg;
--	void __iomem *dmars;
--	unsigned int chcr_offset;
--	u32 chcr_ie_bit;
--};
--
--struct sh_dmae_regs {
--	u32 sar; /* SAR / source address */
--	u32 dar; /* DAR / destination address */
--	u32 tcr; /* TCR / transfer count */
--};
--
--struct sh_dmae_desc {
--	struct sh_dmae_regs hw;
--	struct shdma_desc shdma_desc;
--};
--
--#define to_sh_chan(chan) container_of(chan, struct sh_dmae_chan, shdma_chan)
--#define to_sh_desc(lh) container_of(lh, struct sh_desc, node)
--#define tx_to_sh_desc(tx) container_of(tx, struct sh_desc, async_tx)
--#define to_sh_dev(chan) container_of(chan->shdma_chan.dma_chan.device,\
--				     struct sh_dmae_device, shdma_dev.dma_dev)
--
--#endif	/* __DMA_SHDMA_H */
-diff --git a/drivers/dma/sh/shdmac.c b/drivers/dma/sh/shdmac.c
-deleted file mode 100644
-index 5aafe548ca5f30..00000000000000
---- a/drivers/dma/sh/shdmac.c
-+++ /dev/null
-@@ -1,938 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0+
--/*
-- * Renesas SuperH DMA Engine support
-- *
-- * base is drivers/dma/flsdma.c
-- *
-- * Copyright (C) 2011-2012 Guennadi Liakhovetski <g.liakhovetski@gmx.de>
-- * Copyright (C) 2009 Nobuhiro Iwamatsu <iwamatsu.nobuhiro@renesas.com>
-- * Copyright (C) 2009 Renesas Solutions, Inc. All rights reserved.
-- * Copyright (C) 2007 Freescale Semiconductor, Inc. All rights reserved.
-- *
-- * - DMA of SuperH does not have Hardware DMA chain mode.
-- * - MAX DMA size is 16MB.
-- *
-- */
--
--#include <linux/delay.h>
--#include <linux/dmaengine.h>
--#include <linux/err.h>
--#include <linux/init.h>
--#include <linux/interrupt.h>
--#include <linux/kdebug.h>
--#include <linux/module.h>
--#include <linux/notifier.h>
--#include <linux/of.h>
--#include <linux/of_device.h>
--#include <linux/platform_device.h>
--#include <linux/pm_runtime.h>
--#include <linux/rculist.h>
--#include <linux/sh_dma.h>
--#include <linux/slab.h>
--#include <linux/spinlock.h>
--
--#include "../dmaengine.h"
--#include "shdma.h"
--
--/* DMA registers */
--#define SAR	0x00	/* Source Address Register */
--#define DAR	0x04	/* Destination Address Register */
--#define TCR	0x08	/* Transfer Count Register */
--#define CHCR	0x0C	/* Channel Control Register */
--#define DMAOR	0x40	/* DMA Operation Register */
--
--#define TEND	0x18 /* USB-DMAC */
--
--#define SH_DMAE_DRV_NAME "sh-dma-engine"
--
--/* Default MEMCPY transfer size = 2^2 = 4 bytes */
--#define LOG2_DEFAULT_XFER_SIZE	2
--#define SH_DMA_SLAVE_NUMBER 256
--#define SH_DMA_TCR_MAX (16 * 1024 * 1024 - 1)
--
--/*
-- * Used for write-side mutual exclusion for the global device list,
-- * read-side synchronization by way of RCU, and per-controller data.
-- */
--static DEFINE_SPINLOCK(sh_dmae_lock);
--static LIST_HEAD(sh_dmae_devices);
--
--/*
-- * Different DMAC implementations provide different ways to clear DMA channels:
-- * (1) none - no CHCLR registers are available
-- * (2) one CHCLR register per channel - 0 has to be written to it to clear
-- *     channel buffers
-- * (3) one CHCLR per several channels - 1 has to be written to the bit,
-- *     corresponding to the specific channel to reset it
-- */
--static void channel_clear(struct sh_dmae_chan *sh_dc)
--{
--	struct sh_dmae_device *shdev = to_sh_dev(sh_dc);
--	const struct sh_dmae_channel *chan_pdata = shdev->pdata->channel +
--		sh_dc->shdma_chan.id;
--	u32 val = shdev->pdata->chclr_bitwise ? 1 << chan_pdata->chclr_bit : 0;
--
--	__raw_writel(val, shdev->chan_reg + chan_pdata->chclr_offset);
--}
--
--static void sh_dmae_writel(struct sh_dmae_chan *sh_dc, u32 data, u32 reg)
--{
--	__raw_writel(data, sh_dc->base + reg);
--}
--
--static u32 sh_dmae_readl(struct sh_dmae_chan *sh_dc, u32 reg)
--{
--	return __raw_readl(sh_dc->base + reg);
--}
--
--static u16 dmaor_read(struct sh_dmae_device *shdev)
--{
--	void __iomem *addr = shdev->chan_reg + DMAOR;
--
--	if (shdev->pdata->dmaor_is_32bit)
--		return __raw_readl(addr);
--	else
--		return __raw_readw(addr);
--}
--
--static void dmaor_write(struct sh_dmae_device *shdev, u16 data)
--{
--	void __iomem *addr = shdev->chan_reg + DMAOR;
--
--	if (shdev->pdata->dmaor_is_32bit)
--		__raw_writel(data, addr);
--	else
--		__raw_writew(data, addr);
--}
--
--static void chcr_write(struct sh_dmae_chan *sh_dc, u32 data)
--{
--	struct sh_dmae_device *shdev = to_sh_dev(sh_dc);
--
--	__raw_writel(data, sh_dc->base + shdev->chcr_offset);
--}
--
--static u32 chcr_read(struct sh_dmae_chan *sh_dc)
--{
--	struct sh_dmae_device *shdev = to_sh_dev(sh_dc);
--
--	return __raw_readl(sh_dc->base + shdev->chcr_offset);
--}
--
--/*
-- * Reset DMA controller
-- *
-- * SH7780 has two DMAOR register
-- */
--static void sh_dmae_ctl_stop(struct sh_dmae_device *shdev)
--{
--	unsigned short dmaor;
--	unsigned long flags;
--
--	spin_lock_irqsave(&sh_dmae_lock, flags);
--
--	dmaor = dmaor_read(shdev);
--	dmaor_write(shdev, dmaor & ~(DMAOR_NMIF | DMAOR_AE | DMAOR_DME));
--
--	spin_unlock_irqrestore(&sh_dmae_lock, flags);
--}
--
--static int sh_dmae_rst(struct sh_dmae_device *shdev)
--{
--	unsigned short dmaor;
--	unsigned long flags;
--
--	spin_lock_irqsave(&sh_dmae_lock, flags);
--
--	dmaor = dmaor_read(shdev) & ~(DMAOR_NMIF | DMAOR_AE | DMAOR_DME);
--
--	if (shdev->pdata->chclr_present) {
--		int i;
--		for (i = 0; i < shdev->pdata->channel_num; i++) {
--			struct sh_dmae_chan *sh_chan = shdev->chan[i];
--			if (sh_chan)
--				channel_clear(sh_chan);
--		}
+-	mutex_unlock(&maple_wlist_lock);
+-	if (maple_packets > 0) {
+-		for (i = 0; i < (1 << MAPLE_DMA_PAGES); i++)
+-			__flush_purge_region(maple_sendbuf + i * PAGE_SIZE,
+-					PAGE_SIZE);
 -	}
 -
--	dmaor_write(shdev, dmaor | shdev->pdata->dmaor_init);
+-finish:
+-	maple_dma_reset();
+-}
 -
--	dmaor = dmaor_read(shdev);
+-/* check if there is a driver registered likely to match this device */
+-static int maple_check_matching_driver(struct device_driver *driver,
+-					void *devptr)
+-{
+-	struct maple_driver *maple_drv;
+-	struct maple_device *mdev;
 -
--	spin_unlock_irqrestore(&sh_dmae_lock, flags);
--
--	if (dmaor & (DMAOR_AE | DMAOR_NMIF)) {
--		dev_warn(shdev->shdma_dev.dma_dev.dev, "Can't initialize DMAOR.\n");
--		return -EIO;
--	}
--	if (shdev->pdata->dmaor_init & ~dmaor)
--		dev_warn(shdev->shdma_dev.dma_dev.dev,
--			 "DMAOR=0x%x hasn't latched the initial value 0x%x.\n",
--			 dmaor, shdev->pdata->dmaor_init);
+-	mdev = devptr;
+-	maple_drv = to_maple_driver(driver);
+-	if (mdev->devinfo.function & cpu_to_be32(maple_drv->function))
+-		return 1;
 -	return 0;
 -}
 -
--static bool dmae_is_busy(struct sh_dmae_chan *sh_chan)
+-static void maple_detach_driver(struct maple_device *mdev)
 -{
--	u32 chcr = chcr_read(sh_chan);
--
--	if ((chcr & (CHCR_DE | CHCR_TE)) == CHCR_DE)
--		return true; /* working */
--
--	return false; /* waiting */
+-	device_unregister(&mdev->dev);
 -}
 -
--static unsigned int calc_xmit_shift(struct sh_dmae_chan *sh_chan, u32 chcr)
+-/* process initial MAPLE_COMMAND_DEVINFO for each device or port */
+-static void maple_attach_driver(struct maple_device *mdev)
 -{
--	struct sh_dmae_device *shdev = to_sh_dev(sh_chan);
--	const struct sh_dmae_pdata *pdata = shdev->pdata;
--	int cnt = ((chcr & pdata->ts_low_mask) >> pdata->ts_low_shift) |
--		((chcr & pdata->ts_high_mask) >> pdata->ts_high_shift);
--
--	if (cnt >= pdata->ts_shift_num)
--		cnt = 0;
--
--	return pdata->ts_shift[cnt];
--}
--
--static u32 log2size_to_chcr(struct sh_dmae_chan *sh_chan, int l2size)
--{
--	struct sh_dmae_device *shdev = to_sh_dev(sh_chan);
--	const struct sh_dmae_pdata *pdata = shdev->pdata;
--	int i;
--
--	for (i = 0; i < pdata->ts_shift_num; i++)
--		if (pdata->ts_shift[i] == l2size)
--			break;
--
--	if (i == pdata->ts_shift_num)
--		i = 0;
--
--	return ((i << pdata->ts_low_shift) & pdata->ts_low_mask) |
--		((i << pdata->ts_high_shift) & pdata->ts_high_mask);
--}
--
--static void dmae_set_reg(struct sh_dmae_chan *sh_chan, struct sh_dmae_regs *hw)
--{
--	sh_dmae_writel(sh_chan, hw->sar, SAR);
--	sh_dmae_writel(sh_chan, hw->dar, DAR);
--	sh_dmae_writel(sh_chan, hw->tcr >> sh_chan->xmit_shift, TCR);
--}
--
--static void dmae_start(struct sh_dmae_chan *sh_chan)
--{
--	struct sh_dmae_device *shdev = to_sh_dev(sh_chan);
--	u32 chcr = chcr_read(sh_chan);
--
--	if (shdev->pdata->needs_tend_set)
--		sh_dmae_writel(sh_chan, 0xFFFFFFFF, TEND);
--
--	chcr |= CHCR_DE | shdev->chcr_ie_bit;
--	chcr_write(sh_chan, chcr & ~CHCR_TE);
--}
--
--static void dmae_init(struct sh_dmae_chan *sh_chan)
--{
--	/*
--	 * Default configuration for dual address memory-memory transfer.
--	 */
--	u32 chcr = DM_INC | SM_INC | RS_AUTO | log2size_to_chcr(sh_chan,
--						   LOG2_DEFAULT_XFER_SIZE);
--	sh_chan->xmit_shift = calc_xmit_shift(sh_chan, chcr);
--	chcr_write(sh_chan, chcr);
--}
--
--static int dmae_set_chcr(struct sh_dmae_chan *sh_chan, u32 val)
--{
--	/* If DMA is active, cannot set CHCR. TODO: remove this superfluous check */
--	if (dmae_is_busy(sh_chan))
--		return -EBUSY;
--
--	sh_chan->xmit_shift = calc_xmit_shift(sh_chan, val);
--	chcr_write(sh_chan, val);
--
--	return 0;
--}
--
--static int dmae_set_dmars(struct sh_dmae_chan *sh_chan, u16 val)
--{
--	struct sh_dmae_device *shdev = to_sh_dev(sh_chan);
--	const struct sh_dmae_pdata *pdata = shdev->pdata;
--	const struct sh_dmae_channel *chan_pdata = &pdata->channel[sh_chan->shdma_chan.id];
--	void __iomem *addr = shdev->dmars;
--	unsigned int shift = chan_pdata->dmars_bit;
--
--	if (dmae_is_busy(sh_chan))
--		return -EBUSY;
--
--	if (pdata->no_dmars)
--		return 0;
--
--	/* in the case of a missing DMARS resource use first memory window */
--	if (!addr)
--		addr = shdev->chan_reg;
--	addr += chan_pdata->dmars;
--
--	__raw_writew((__raw_readw(addr) & (0xff00 >> shift)) | (val << shift),
--		     addr);
--
--	return 0;
--}
--
--static void sh_dmae_start_xfer(struct shdma_chan *schan,
--			       struct shdma_desc *sdesc)
--{
--	struct sh_dmae_chan *sh_chan = container_of(schan, struct sh_dmae_chan,
--						    shdma_chan);
--	struct sh_dmae_desc *sh_desc = container_of(sdesc,
--					struct sh_dmae_desc, shdma_desc);
--	dev_dbg(sh_chan->shdma_chan.dev, "Queue #%d to %d: %u@%x -> %x\n",
--		sdesc->async_tx.cookie, sh_chan->shdma_chan.id,
--		sh_desc->hw.tcr, sh_desc->hw.sar, sh_desc->hw.dar);
--	/* Get the ld start address from ld_queue */
--	dmae_set_reg(sh_chan, &sh_desc->hw);
--	dmae_start(sh_chan);
--}
--
--static bool sh_dmae_channel_busy(struct shdma_chan *schan)
--{
--	struct sh_dmae_chan *sh_chan = container_of(schan, struct sh_dmae_chan,
--						    shdma_chan);
--	return dmae_is_busy(sh_chan);
--}
--
--static void sh_dmae_setup_xfer(struct shdma_chan *schan,
--			       int slave_id)
--{
--	struct sh_dmae_chan *sh_chan = container_of(schan, struct sh_dmae_chan,
--						    shdma_chan);
--
--	if (slave_id >= 0) {
--		const struct sh_dmae_slave_config *cfg =
--			sh_chan->config;
--
--		dmae_set_dmars(sh_chan, cfg->mid_rid);
--		dmae_set_chcr(sh_chan, cfg->chcr);
--	} else {
--		dmae_init(sh_chan);
--	}
--}
--
--/*
-- * Find a slave channel configuration from the contoller list by either a slave
-- * ID in the non-DT case, or by a MID/RID value in the DT case
-- */
--static const struct sh_dmae_slave_config *dmae_find_slave(
--	struct sh_dmae_chan *sh_chan, int match)
--{
--	struct sh_dmae_device *shdev = to_sh_dev(sh_chan);
--	const struct sh_dmae_pdata *pdata = shdev->pdata;
--	const struct sh_dmae_slave_config *cfg;
--	int i;
--
--	if (!sh_chan->shdma_chan.dev->of_node) {
--		if (match >= SH_DMA_SLAVE_NUMBER)
--			return NULL;
--
--		for (i = 0, cfg = pdata->slave; i < pdata->slave_num; i++, cfg++)
--			if (cfg->slave_id == match)
--				return cfg;
--	} else {
--		for (i = 0, cfg = pdata->slave; i < pdata->slave_num; i++, cfg++)
--			if (cfg->mid_rid == match) {
--				sh_chan->shdma_chan.slave_id = i;
--				return cfg;
--			}
--	}
--
--	return NULL;
--}
--
--static int sh_dmae_set_slave(struct shdma_chan *schan,
--			     int slave_id, dma_addr_t slave_addr, bool try)
--{
--	struct sh_dmae_chan *sh_chan = container_of(schan, struct sh_dmae_chan,
--						    shdma_chan);
--	const struct sh_dmae_slave_config *cfg = dmae_find_slave(sh_chan, slave_id);
--	if (!cfg)
--		return -ENXIO;
--
--	if (!try) {
--		sh_chan->config = cfg;
--		sh_chan->slave_addr = slave_addr ? : cfg->addr;
--	}
--
--	return 0;
--}
--
--static void dmae_halt(struct sh_dmae_chan *sh_chan)
--{
--	struct sh_dmae_device *shdev = to_sh_dev(sh_chan);
--	u32 chcr = chcr_read(sh_chan);
--
--	chcr &= ~(CHCR_DE | CHCR_TE | shdev->chcr_ie_bit);
--	chcr_write(sh_chan, chcr);
--}
--
--static int sh_dmae_desc_setup(struct shdma_chan *schan,
--			      struct shdma_desc *sdesc,
--			      dma_addr_t src, dma_addr_t dst, size_t *len)
--{
--	struct sh_dmae_desc *sh_desc = container_of(sdesc,
--					struct sh_dmae_desc, shdma_desc);
--
--	if (*len > schan->max_xfer_len)
--		*len = schan->max_xfer_len;
--
--	sh_desc->hw.sar = src;
--	sh_desc->hw.dar = dst;
--	sh_desc->hw.tcr = *len;
--
--	return 0;
--}
--
--static void sh_dmae_halt(struct shdma_chan *schan)
--{
--	struct sh_dmae_chan *sh_chan = container_of(schan, struct sh_dmae_chan,
--						    shdma_chan);
--	dmae_halt(sh_chan);
--}
--
--static bool sh_dmae_chan_irq(struct shdma_chan *schan, int irq)
--{
--	struct sh_dmae_chan *sh_chan = container_of(schan, struct sh_dmae_chan,
--						    shdma_chan);
--
--	if (!(chcr_read(sh_chan) & CHCR_TE))
--		return false;
--
--	/* DMA stop */
--	dmae_halt(sh_chan);
--
--	return true;
--}
--
--static size_t sh_dmae_get_partial(struct shdma_chan *schan,
--				  struct shdma_desc *sdesc)
--{
--	struct sh_dmae_chan *sh_chan = container_of(schan, struct sh_dmae_chan,
--						    shdma_chan);
--	struct sh_dmae_desc *sh_desc = container_of(sdesc,
--					struct sh_dmae_desc, shdma_desc);
--	return sh_desc->hw.tcr -
--		(sh_dmae_readl(sh_chan, TCR) << sh_chan->xmit_shift);
--}
--
--/* Called from error IRQ or NMI */
--static bool sh_dmae_reset(struct sh_dmae_device *shdev)
--{
--	bool ret;
--
--	/* halt the dma controller */
--	sh_dmae_ctl_stop(shdev);
--
--	/* We cannot detect, which channel caused the error, have to reset all */
--	ret = shdma_reset(&shdev->shdma_dev);
--
--	sh_dmae_rst(shdev);
--
--	return ret;
--}
--
--static irqreturn_t sh_dmae_err(int irq, void *data)
--{
--	struct sh_dmae_device *shdev = data;
--
--	if (!(dmaor_read(shdev) & DMAOR_AE))
--		return IRQ_NONE;
--
--	sh_dmae_reset(shdev);
--	return IRQ_HANDLED;
--}
--
--static bool sh_dmae_desc_completed(struct shdma_chan *schan,
--				   struct shdma_desc *sdesc)
--{
--	struct sh_dmae_chan *sh_chan = container_of(schan,
--					struct sh_dmae_chan, shdma_chan);
--	struct sh_dmae_desc *sh_desc = container_of(sdesc,
--					struct sh_dmae_desc, shdma_desc);
--	u32 sar_buf = sh_dmae_readl(sh_chan, SAR);
--	u32 dar_buf = sh_dmae_readl(sh_chan, DAR);
--
--	return	(sdesc->direction == DMA_DEV_TO_MEM &&
--		 (sh_desc->hw.dar + sh_desc->hw.tcr) == dar_buf) ||
--		(sdesc->direction != DMA_DEV_TO_MEM &&
--		 (sh_desc->hw.sar + sh_desc->hw.tcr) == sar_buf);
--}
--
--static bool sh_dmae_nmi_notify(struct sh_dmae_device *shdev)
--{
--	/* Fast path out if NMIF is not asserted for this controller */
--	if ((dmaor_read(shdev) & DMAOR_NMIF) == 0)
--		return false;
--
--	return sh_dmae_reset(shdev);
--}
--
--static int sh_dmae_nmi_handler(struct notifier_block *self,
--			       unsigned long cmd, void *data)
--{
--	struct sh_dmae_device *shdev;
--	int ret = NOTIFY_DONE;
--	bool triggered;
--
--	/*
--	 * Only concern ourselves with NMI events.
--	 *
--	 * Normally we would check the die chain value, but as this needs
--	 * to be architecture independent, check for NMI context instead.
--	 */
--	if (!in_nmi())
--		return NOTIFY_DONE;
--
--	rcu_read_lock();
--	list_for_each_entry_rcu(shdev, &sh_dmae_devices, node) {
--		/*
--		 * Only stop if one of the controllers has NMIF asserted,
--		 * we do not want to interfere with regular address error
--		 * handling or NMI events that don't concern the DMACs.
--		 */
--		triggered = sh_dmae_nmi_notify(shdev);
--		if (triggered == true)
--			ret = NOTIFY_OK;
--	}
--	rcu_read_unlock();
--
--	return ret;
--}
--
--static struct notifier_block sh_dmae_nmi_notifier __read_mostly = {
--	.notifier_call	= sh_dmae_nmi_handler,
--
--	/* Run before NMI debug handler and KGDB */
--	.priority	= 1,
--};
--
--static int sh_dmae_chan_probe(struct sh_dmae_device *shdev, int id,
--					int irq, unsigned long flags)
--{
--	const struct sh_dmae_channel *chan_pdata = &shdev->pdata->channel[id];
--	struct shdma_dev *sdev = &shdev->shdma_dev;
--	struct platform_device *pdev = to_platform_device(sdev->dma_dev.dev);
--	struct sh_dmae_chan *sh_chan;
--	struct shdma_chan *schan;
--	int err;
--
--	sh_chan = devm_kzalloc(sdev->dma_dev.dev, sizeof(struct sh_dmae_chan),
--			       GFP_KERNEL);
--	if (!sh_chan)
--		return -ENOMEM;
--
--	schan = &sh_chan->shdma_chan;
--	schan->max_xfer_len = SH_DMA_TCR_MAX + 1;
--
--	shdma_chan_probe(sdev, schan, id);
--
--	sh_chan->base = shdev->chan_reg + chan_pdata->offset;
--
--	/* set up channel irq */
--	if (pdev->id >= 0)
--		snprintf(sh_chan->dev_id, sizeof(sh_chan->dev_id),
--			 "sh-dmae%d.%d", pdev->id, id);
--	else
--		snprintf(sh_chan->dev_id, sizeof(sh_chan->dev_id),
--			 "sh-dma%d", id);
--
--	err = shdma_request_irq(schan, irq, flags, sh_chan->dev_id);
--	if (err) {
--		dev_err(sdev->dma_dev.dev,
--			"DMA channel %d request_irq error %d\n",
--			id, err);
--		goto err_no_irq;
--	}
--
--	shdev->chan[id] = sh_chan;
--	return 0;
--
--err_no_irq:
--	/* remove from dmaengine device node */
--	shdma_chan_remove(schan);
--	return err;
--}
--
--static void sh_dmae_chan_remove(struct sh_dmae_device *shdev)
--{
--	struct shdma_chan *schan;
--	int i;
--
--	shdma_for_each_chan(schan, &shdev->shdma_dev, i) {
--		BUG_ON(!schan);
--
--		shdma_chan_remove(schan);
--	}
--}
--
--#ifdef CONFIG_PM
--static int sh_dmae_runtime_suspend(struct device *dev)
--{
--	struct sh_dmae_device *shdev = dev_get_drvdata(dev);
--
--	sh_dmae_ctl_stop(shdev);
--	return 0;
--}
--
--static int sh_dmae_runtime_resume(struct device *dev)
--{
--	struct sh_dmae_device *shdev = dev_get_drvdata(dev);
--
--	return sh_dmae_rst(shdev);
--}
--#endif
--
--#ifdef CONFIG_PM_SLEEP
--static int sh_dmae_suspend(struct device *dev)
--{
--	struct sh_dmae_device *shdev = dev_get_drvdata(dev);
--
--	sh_dmae_ctl_stop(shdev);
--	return 0;
--}
--
--static int sh_dmae_resume(struct device *dev)
--{
--	struct sh_dmae_device *shdev = dev_get_drvdata(dev);
--	int i, ret;
--
--	ret = sh_dmae_rst(shdev);
--	if (ret < 0)
--		dev_err(dev, "Failed to reset!\n");
--
--	for (i = 0; i < shdev->pdata->channel_num; i++) {
--		struct sh_dmae_chan *sh_chan = shdev->chan[i];
--
--		if (!sh_chan->shdma_chan.desc_num)
--			continue;
--
--		if (sh_chan->shdma_chan.slave_id >= 0) {
--			const struct sh_dmae_slave_config *cfg = sh_chan->config;
--			dmae_set_dmars(sh_chan, cfg->mid_rid);
--			dmae_set_chcr(sh_chan, cfg->chcr);
--		} else {
--			dmae_init(sh_chan);
--		}
--	}
--
--	return 0;
--}
--#endif
--
--static const struct dev_pm_ops sh_dmae_pm = {
--	SET_SYSTEM_SLEEP_PM_OPS(sh_dmae_suspend, sh_dmae_resume)
--	SET_RUNTIME_PM_OPS(sh_dmae_runtime_suspend, sh_dmae_runtime_resume,
--			   NULL)
--};
--
--static dma_addr_t sh_dmae_slave_addr(struct shdma_chan *schan)
--{
--	struct sh_dmae_chan *sh_chan = container_of(schan,
--					struct sh_dmae_chan, shdma_chan);
--
--	/*
--	 * Implicit BUG_ON(!sh_chan->config)
--	 * This is an exclusive slave DMA operation, may only be called after a
--	 * successful slave configuration.
--	 */
--	return sh_chan->slave_addr;
--}
--
--static struct shdma_desc *sh_dmae_embedded_desc(void *buf, int i)
--{
--	return &((struct sh_dmae_desc *)buf)[i].shdma_desc;
--}
--
--static const struct shdma_ops sh_dmae_shdma_ops = {
--	.desc_completed = sh_dmae_desc_completed,
--	.halt_channel = sh_dmae_halt,
--	.channel_busy = sh_dmae_channel_busy,
--	.slave_addr = sh_dmae_slave_addr,
--	.desc_setup = sh_dmae_desc_setup,
--	.set_slave = sh_dmae_set_slave,
--	.setup_xfer = sh_dmae_setup_xfer,
--	.start_xfer = sh_dmae_start_xfer,
--	.embedded_desc = sh_dmae_embedded_desc,
--	.chan_irq = sh_dmae_chan_irq,
--	.get_partial = sh_dmae_get_partial,
--};
--
--static int sh_dmae_probe(struct platform_device *pdev)
--{
--	const enum dma_slave_buswidth widths =
--		DMA_SLAVE_BUSWIDTH_1_BYTE   | DMA_SLAVE_BUSWIDTH_2_BYTES |
--		DMA_SLAVE_BUSWIDTH_4_BYTES  | DMA_SLAVE_BUSWIDTH_8_BYTES |
--		DMA_SLAVE_BUSWIDTH_16_BYTES | DMA_SLAVE_BUSWIDTH_32_BYTES;
--	const struct sh_dmae_pdata *pdata;
--	unsigned long chan_flag[SH_DMAE_MAX_CHANNELS] = {};
--	int chan_irq[SH_DMAE_MAX_CHANNELS];
--	unsigned long irqflags = 0;
--	int err, errirq, i, irq_cnt = 0, irqres = 0, irq_cap = 0;
--	struct sh_dmae_device *shdev;
--	struct dma_device *dma_dev;
--	struct resource *chan, *dmars, *errirq_res, *chanirq_res;
--
--	if (pdev->dev.of_node)
--		pdata = of_device_get_match_data(&pdev->dev);
--	else
--		pdata = dev_get_platdata(&pdev->dev);
--
--	/* get platform data */
--	if (!pdata || !pdata->channel_num)
--		return -ENODEV;
--
--	chan = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	/* DMARS area is optional */
--	dmars = platform_get_resource(pdev, IORESOURCE_MEM, 1);
--	/*
--	 * IRQ resources:
--	 * 1. there always must be at least one IRQ IO-resource. On SH4 it is
--	 *    the error IRQ, in which case it is the only IRQ in this resource:
--	 *    start == end. If it is the only IRQ resource, all channels also
--	 *    use the same IRQ.
--	 * 2. DMA channel IRQ resources can be specified one per resource or in
--	 *    ranges (start != end)
--	 * 3. iff all events (channels and, optionally, error) on this
--	 *    controller use the same IRQ, only one IRQ resource can be
--	 *    specified, otherwise there must be one IRQ per channel, even if
--	 *    some of them are equal
--	 * 4. if all IRQs on this controller are equal or if some specific IRQs
--	 *    specify IORESOURCE_IRQ_SHAREABLE in their resources, they will be
--	 *    requested with the IRQF_SHARED flag
--	 */
--	errirq_res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
--	if (!chan || !errirq_res)
--		return -ENODEV;
--
--	shdev = devm_kzalloc(&pdev->dev, sizeof(struct sh_dmae_device),
--			     GFP_KERNEL);
--	if (!shdev)
--		return -ENOMEM;
--
--	dma_dev = &shdev->shdma_dev.dma_dev;
--
--	shdev->chan_reg = devm_ioremap_resource(&pdev->dev, chan);
--	if (IS_ERR(shdev->chan_reg))
--		return PTR_ERR(shdev->chan_reg);
--	if (dmars) {
--		shdev->dmars = devm_ioremap_resource(&pdev->dev, dmars);
--		if (IS_ERR(shdev->dmars))
--			return PTR_ERR(shdev->dmars);
--	}
--
--	dma_dev->src_addr_widths = widths;
--	dma_dev->dst_addr_widths = widths;
--	dma_dev->directions = BIT(DMA_MEM_TO_DEV) | BIT(DMA_DEV_TO_MEM);
--	dma_dev->residue_granularity = DMA_RESIDUE_GRANULARITY_DESCRIPTOR;
--
--	if (!pdata->slave_only)
--		dma_cap_set(DMA_MEMCPY, dma_dev->cap_mask);
--	if (pdata->slave && pdata->slave_num)
--		dma_cap_set(DMA_SLAVE, dma_dev->cap_mask);
--
--	/* Default transfer size of 32 bytes requires 32-byte alignment */
--	dma_dev->copy_align = LOG2_DEFAULT_XFER_SIZE;
--
--	shdev->shdma_dev.ops = &sh_dmae_shdma_ops;
--	shdev->shdma_dev.desc_size = sizeof(struct sh_dmae_desc);
--	err = shdma_init(&pdev->dev, &shdev->shdma_dev,
--			      pdata->channel_num);
--	if (err < 0)
--		goto eshdma;
--
--	/* platform data */
--	shdev->pdata = pdata;
--
--	if (pdata->chcr_offset)
--		shdev->chcr_offset = pdata->chcr_offset;
--	else
--		shdev->chcr_offset = CHCR;
--
--	if (pdata->chcr_ie_bit)
--		shdev->chcr_ie_bit = pdata->chcr_ie_bit;
--	else
--		shdev->chcr_ie_bit = CHCR_IE;
--
--	platform_set_drvdata(pdev, shdev);
--
--	pm_runtime_enable(&pdev->dev);
--	err = pm_runtime_get_sync(&pdev->dev);
--	if (err < 0)
--		dev_err(&pdev->dev, "%s(): GET = %d\n", __func__, err);
--
--	spin_lock_irq(&sh_dmae_lock);
--	list_add_tail_rcu(&shdev->node, &sh_dmae_devices);
--	spin_unlock_irq(&sh_dmae_lock);
--
--	/* reset dma controller - only needed as a test */
--	err = sh_dmae_rst(shdev);
--	if (err)
--		goto rst_err;
--
--	if (IS_ENABLED(CONFIG_CPU_SH4) || IS_ENABLED(CONFIG_ARCH_RENESAS)) {
--		chanirq_res = platform_get_resource(pdev, IORESOURCE_IRQ, 1);
--
--		if (!chanirq_res)
--			chanirq_res = errirq_res;
+-	char *p, *recvbuf;
+-	unsigned long function;
+-	int matched, error;
+-
+-	recvbuf = mdev->mq->recvbuf->buf;
+-	/* copy the data as individual elements in
+-	* case of memory optimisation */
+-	memcpy(&mdev->devinfo.function, recvbuf + 4, 4);
+-	memcpy(&mdev->devinfo.function_data[0], recvbuf + 8, 12);
+-	memcpy(&mdev->devinfo.area_code, recvbuf + 20, 1);
+-	memcpy(&mdev->devinfo.connector_direction, recvbuf + 21, 1);
+-	memcpy(&mdev->devinfo.product_name[0], recvbuf + 22, 30);
+-	memcpy(&mdev->devinfo.standby_power, recvbuf + 112, 2);
+-	memcpy(&mdev->devinfo.max_power, recvbuf + 114, 2);
+-	memcpy(mdev->product_name, mdev->devinfo.product_name, 30);
+-	mdev->product_name[30] = '\0';
+-	memcpy(mdev->product_licence, mdev->devinfo.product_licence, 60);
+-	mdev->product_licence[60] = '\0';
+-
+-	for (p = mdev->product_name + 29; mdev->product_name <= p; p--)
+-		if (*p == ' ')
+-			*p = '\0';
 -		else
--			irqres++;
+-			break;
+-	for (p = mdev->product_licence + 59; mdev->product_licence <= p; p--)
+-		if (*p == ' ')
+-			*p = '\0';
+-		else
+-			break;
 -
--		if (chanirq_res == errirq_res ||
--		    (errirq_res->flags & IORESOURCE_BITS) == IORESOURCE_IRQ_SHAREABLE)
--			irqflags = IRQF_SHARED;
+-	function = be32_to_cpu(mdev->devinfo.function);
 -
--		errirq = errirq_res->start;
+-	dev_info(&mdev->dev, "detected %s: function 0x%lX: at (%d, %d)\n",
+-		mdev->product_name, function, mdev->port, mdev->unit);
 -
--		err = devm_request_irq(&pdev->dev, errirq, sh_dmae_err,
--				       irqflags, "DMAC Address Error", shdev);
--		if (err) {
--			dev_err(&pdev->dev,
--				"DMA failed requesting irq #%d, error %d\n",
--				errirq, err);
--			goto eirq_err;
--		}
+-	if (function > 0x200) {
+-		/* Do this silently - as not a real device */
+-		function = 0;
+-		mdev->driver = &maple_unsupported_device;
+-		dev_set_name(&mdev->dev, "%d:0.port", mdev->port);
 -	} else {
--		chanirq_res = errirq_res;
+-		matched =
+-			bus_for_each_drv(&maple_bus_type, NULL, mdev,
+-				maple_check_matching_driver);
+-
+-		if (matched == 0) {
+-			/* Driver does not exist yet */
+-			dev_info(&mdev->dev, "no driver found\n");
+-			mdev->driver = &maple_unsupported_device;
+-		}
+-		dev_set_name(&mdev->dev, "%d:0%d.%lX", mdev->port,
+-			     mdev->unit, function);
 -	}
 -
--	if (chanirq_res->start == chanirq_res->end &&
--	    !platform_get_resource(pdev, IORESOURCE_IRQ, 1)) {
--		/* Special case - all multiplexed */
--		for (; irq_cnt < pdata->channel_num; irq_cnt++) {
--			if (irq_cnt < SH_DMAE_MAX_CHANNELS) {
--				chan_irq[irq_cnt] = chanirq_res->start;
--				chan_flag[irq_cnt] = IRQF_SHARED;
--			} else {
--				irq_cap = 1;
--				break;
--			}
--		}
+-	mdev->function = function;
+-	mdev->dev.release = &maple_release_device;
+-
+-	atomic_set(&mdev->busy, 0);
+-	error = device_register(&mdev->dev);
+-	if (error) {
+-		dev_warn(&mdev->dev, "could not register device at"
+-			" (%d, %d), with error 0x%X\n", mdev->unit,
+-			mdev->port, error);
+-		maple_free_dev(mdev);
+-		mdev = NULL;
+-		return;
+-	}
+-}
+-
+-/*
+- * if device has been registered for the given
+- * port and unit then return 1 - allows identification
+- * of which devices need to be attached or detached
+- */
+-static int check_maple_device(struct device *device, void *portptr)
+-{
+-	struct maple_device_specify *ds;
+-	struct maple_device *mdev;
+-
+-	ds = portptr;
+-	mdev = to_maple_dev(device);
+-	if (mdev->port == ds->port && mdev->unit == ds->unit)
+-		return 1;
+-	return 0;
+-}
+-
+-static int setup_maple_commands(struct device *device, void *ignored)
+-{
+-	int add;
+-	struct maple_device *mdev = to_maple_dev(device);
+-	if (mdev->interval > 0 && atomic_read(&mdev->busy) == 0 &&
+-		time_after(jiffies, mdev->when)) {
+-		/* bounce if we cannot add */
+-		add = maple_add_packet(mdev,
+-			be32_to_cpu(mdev->devinfo.function),
+-			MAPLE_COMMAND_GETCOND, 1, NULL);
+-		if (!add)
+-			mdev->when = jiffies + mdev->interval;
 -	} else {
--		do {
--			for (i = chanirq_res->start; i <= chanirq_res->end; i++) {
--				if (irq_cnt >= SH_DMAE_MAX_CHANNELS) {
--					irq_cap = 1;
+-		if (time_after(jiffies, maple_pnp_time))
+-			/* Ensure we don't have block reads and devinfo
+-			* calls interfering with one another - so flag the
+-			* device as busy */
+-			if (atomic_read(&mdev->busy) == 0) {
+-				atomic_set(&mdev->busy, 1);
+-				maple_add_packet(mdev, 0,
+-					MAPLE_COMMAND_DEVINFO, 0, NULL);
+-			}
+-	}
+-	return 0;
+-}
+-
+-/* VBLANK bottom half - implemented via workqueue */
+-static void maple_vblank_handler(struct work_struct *work)
+-{
+-	int x, locking;
+-	struct maple_device *mdev;
+-
+-	if (!maple_dma_done())
+-		return;
+-
+-	__raw_writel(0, MAPLE_ENABLE);
+-
+-	if (!list_empty(&maple_sentq))
+-		goto finish;
+-
+-	/*
+-	* Set up essential commands - to fetch data and
+-	* check devices are still present
+-	*/
+-	bus_for_each_dev(&maple_bus_type, NULL, NULL,
+-		setup_maple_commands);
+-
+-	if (time_after(jiffies, maple_pnp_time)) {
+-		/*
+-		* Scan the empty ports - bus is flakey and may have
+-		* mis-reported emptyness
+-		*/
+-		for (x = 0; x < MAPLE_PORTS; x++) {
+-			if (checked[x] && empty[x]) {
+-				mdev = baseunits[x];
+-				if (!mdev)
+-					break;
+-				atomic_set(&mdev->busy, 1);
+-				locking = maple_add_packet(mdev, 0,
+-					MAPLE_COMMAND_DEVINFO, 0, NULL);
+-				if (!locking)
 -					break;
 -				}
--
--				if ((errirq_res->flags & IORESOURCE_BITS) ==
--				    IORESOURCE_IRQ_SHAREABLE)
--					chan_flag[irq_cnt] = IRQF_SHARED;
--				else
--					chan_flag[irq_cnt] = 0;
--				dev_dbg(&pdev->dev,
--					"Found IRQ %d for channel %d\n",
--					i, irq_cnt);
--				chan_irq[irq_cnt++] = i;
 -			}
 -
--			if (irq_cnt >= SH_DMAE_MAX_CHANNELS)
--				break;
--
--			chanirq_res = platform_get_resource(pdev,
--						IORESOURCE_IRQ, ++irqres);
--		} while (irq_cnt < pdata->channel_num && chanirq_res);
+-		maple_pnp_time = jiffies + MAPLE_PNP_INTERVAL;
 -	}
 -
--	/* Create DMA Channel */
--	for (i = 0; i < irq_cnt; i++) {
--		err = sh_dmae_chan_probe(shdev, i, chan_irq[i], chan_flag[i]);
--		if (err)
--			goto chan_probe_err;
--	}
--
--	if (irq_cap)
--		dev_notice(&pdev->dev, "Attempting to register %d DMA "
--			   "channels when a maximum of %d are supported.\n",
--			   pdata->channel_num, SH_DMAE_MAX_CHANNELS);
--
--	pm_runtime_put(&pdev->dev);
--
--	err = dma_async_device_register(&shdev->shdma_dev.dma_dev);
--	if (err < 0)
--		goto edmadevreg;
--
--	return err;
--
--edmadevreg:
--	pm_runtime_get(&pdev->dev);
--
--chan_probe_err:
--	sh_dmae_chan_remove(shdev);
--
--eirq_err:
--rst_err:
--	spin_lock_irq(&sh_dmae_lock);
--	list_del_rcu(&shdev->node);
--	spin_unlock_irq(&sh_dmae_lock);
--
--	pm_runtime_put(&pdev->dev);
--	pm_runtime_disable(&pdev->dev);
--
--	shdma_cleanup(&shdev->shdma_dev);
--eshdma:
--	synchronize_rcu();
--
--	return err;
+-finish:
+-	maple_send();
 -}
 -
--static int sh_dmae_remove(struct platform_device *pdev)
+-/* handle devices added via hotplugs - placing them on queue for DEVINFO */
+-static void maple_map_subunits(struct maple_device *mdev, int submask)
 -{
--	struct sh_dmae_device *shdev = platform_get_drvdata(pdev);
--	struct dma_device *dma_dev = &shdev->shdma_dev.dma_dev;
+-	int retval, k, devcheck;
+-	struct maple_device *mdev_add;
+-	struct maple_device_specify ds;
 -
--	dma_async_device_unregister(dma_dev);
+-	ds.port = mdev->port;
+-	for (k = 0; k < 5; k++) {
+-		ds.unit = k + 1;
+-		retval =
+-		    bus_for_each_dev(&maple_bus_type, NULL, &ds,
+-				     check_maple_device);
+-		if (retval) {
+-			submask = submask >> 1;
+-			continue;
+-		}
+-		devcheck = submask & 0x01;
+-		if (devcheck) {
+-			mdev_add = maple_alloc_dev(mdev->port, k + 1);
+-			if (!mdev_add)
+-				return;
+-			atomic_set(&mdev_add->busy, 1);
+-			maple_add_packet(mdev_add, 0, MAPLE_COMMAND_DEVINFO,
+-				0, NULL);
+-			/* mark that we are checking sub devices */
+-			scanning = 1;
+-		}
+-		submask = submask >> 1;
+-	}
+-}
 -
--	spin_lock_irq(&sh_dmae_lock);
--	list_del_rcu(&shdev->node);
--	spin_unlock_irq(&sh_dmae_lock);
+-/* mark a device as removed */
+-static void maple_clean_submap(struct maple_device *mdev)
+-{
+-	int killbit;
 -
--	pm_runtime_disable(&pdev->dev);
+-	killbit = (mdev->unit > 0 ? (1 << (mdev->unit - 1)) & 0x1f : 0x20);
+-	killbit = ~killbit;
+-	killbit &= 0xFF;
+-	subdevice_map[mdev->port] = subdevice_map[mdev->port] & killbit;
+-}
 -
--	sh_dmae_chan_remove(shdev);
--	shdma_cleanup(&shdev->shdma_dev);
+-/* handle empty port or hotplug removal */
+-static void maple_response_none(struct maple_device *mdev)
+-{
+-	maple_clean_submap(mdev);
 -
--	synchronize_rcu();
+-	if (likely(mdev->unit != 0)) {
+-		/*
+-		* Block devices play up
+-		* and give the impression they have
+-		* been removed even when still in place or
+-		* trip the mtd layer when they have
+-		* really gone - this code traps that eventuality
+-		* and ensures we aren't overloaded with useless
+-		* error messages
+-		*/
+-		if (mdev->can_unload) {
+-			if (!mdev->can_unload(mdev)) {
+-				atomic_set(&mdev->busy, 2);
+-				wake_up(&mdev->maple_wait);
+-				return;
+-			}
+-		}
 -
+-		dev_info(&mdev->dev, "detaching device at (%d, %d)\n",
+-			mdev->port, mdev->unit);
+-		maple_detach_driver(mdev);
+-		return;
+-	} else {
+-		if (!started || !fullscan) {
+-			if (checked[mdev->port] == false) {
+-				checked[mdev->port] = true;
+-				empty[mdev->port] = true;
+-				dev_info(&mdev->dev, "no devices"
+-					" to port %d\n", mdev->port);
+-			}
+-			return;
+-		}
+-	}
+-	/* Some hardware devices generate false detach messages on unit 0 */
+-	atomic_set(&mdev->busy, 0);
+-}
+-
+-/* preprocess hotplugs or scans */
+-static void maple_response_devinfo(struct maple_device *mdev,
+-				   char *recvbuf)
+-{
+-	char submask;
+-	if (!started || (scanning == 2) || !fullscan) {
+-		if ((mdev->unit == 0) && (checked[mdev->port] == false)) {
+-			checked[mdev->port] = true;
+-			maple_attach_driver(mdev);
+-		} else {
+-			if (mdev->unit != 0)
+-				maple_attach_driver(mdev);
+-			if (mdev->unit == 0) {
+-				empty[mdev->port] = false;
+-				maple_attach_driver(mdev);
+-			}
+-		}
+-	}
+-	if (mdev->unit == 0) {
+-		submask = recvbuf[2] & 0x1F;
+-		if (submask ^ subdevice_map[mdev->port]) {
+-			maple_map_subunits(mdev, submask);
+-			subdevice_map[mdev->port] = submask;
+-		}
+-	}
+-}
+-
+-static void maple_response_fileerr(struct maple_device *mdev, void *recvbuf)
+-{
+-	if (mdev->fileerr_handler) {
+-		mdev->fileerr_handler(mdev, recvbuf);
+-		return;
+-	} else
+-		dev_warn(&mdev->dev, "device at (%d, %d) reports"
+-			"file error 0x%X\n", mdev->port, mdev->unit,
+-			((int *)recvbuf)[1]);
+-}
+-
+-static void maple_port_rescan(void)
+-{
+-	int i;
+-	struct maple_device *mdev;
+-
+-	fullscan = 1;
+-	for (i = 0; i < MAPLE_PORTS; i++) {
+-		if (checked[i] == false) {
+-			fullscan = 0;
+-			mdev = baseunits[i];
+-			maple_add_packet(mdev, 0, MAPLE_COMMAND_DEVINFO,
+-				0, NULL);
+-		}
+-	}
+-}
+-
+-/* maple dma end bottom half - implemented via workqueue */
+-static void maple_dma_handler(struct work_struct *work)
+-{
+-	struct mapleq *mq, *nmq;
+-	struct maple_device *mdev;
+-	char *recvbuf;
+-	enum maple_code code;
+-
+-	if (!maple_dma_done())
+-		return;
+-	__raw_writel(0, MAPLE_ENABLE);
+-	if (!list_empty(&maple_sentq)) {
+-		list_for_each_entry_safe(mq, nmq, &maple_sentq, list) {
+-			mdev = mq->dev;
+-			recvbuf = mq->recvbuf->buf;
+-			__flush_invalidate_region(sh_cacheop_vaddr(recvbuf),
+-					0x400);
+-			code = recvbuf[0];
+-			kfree(mq->sendbuf);
+-			list_del_init(&mq->list);
+-			switch (code) {
+-			case MAPLE_RESPONSE_NONE:
+-				maple_response_none(mdev);
+-				break;
+-
+-			case MAPLE_RESPONSE_DEVINFO:
+-				maple_response_devinfo(mdev, recvbuf);
+-				atomic_set(&mdev->busy, 0);
+-				break;
+-
+-			case MAPLE_RESPONSE_DATATRF:
+-				if (mdev->callback)
+-					mdev->callback(mq);
+-				atomic_set(&mdev->busy, 0);
+-				wake_up(&mdev->maple_wait);
+-				break;
+-
+-			case MAPLE_RESPONSE_FILEERR:
+-				maple_response_fileerr(mdev, recvbuf);
+-				atomic_set(&mdev->busy, 0);
+-				wake_up(&mdev->maple_wait);
+-				break;
+-
+-			case MAPLE_RESPONSE_AGAIN:
+-			case MAPLE_RESPONSE_BADCMD:
+-			case MAPLE_RESPONSE_BADFUNC:
+-				dev_warn(&mdev->dev, "non-fatal error"
+-					" 0x%X at (%d, %d)\n", code,
+-					mdev->port, mdev->unit);
+-				atomic_set(&mdev->busy, 0);
+-				break;
+-
+-			case MAPLE_RESPONSE_ALLINFO:
+-				dev_notice(&mdev->dev, "extended"
+-				" device information request for (%d, %d)"
+-				" but call is not supported\n", mdev->port,
+-				mdev->unit);
+-				atomic_set(&mdev->busy, 0);
+-				break;
+-
+-			case MAPLE_RESPONSE_OK:
+-				atomic_set(&mdev->busy, 0);
+-				wake_up(&mdev->maple_wait);
+-				break;
+-
+-			default:
+-				break;
+-			}
+-		}
+-		/* if scanning is 1 then we have subdevices to check */
+-		if (scanning == 1) {
+-			maple_send();
+-			scanning = 2;
+-		} else
+-			scanning = 0;
+-		/*check if we have actually tested all ports yet */
+-		if (!fullscan)
+-			maple_port_rescan();
+-		/* mark that we have been through the first scan */
+-		started = 1;
+-	}
+-	maple_send();
+-}
+-
+-static irqreturn_t maple_dma_interrupt(int irq, void *dev_id)
+-{
+-	/* Load everything into the bottom half */
+-	schedule_work(&maple_dma_process);
+-	return IRQ_HANDLED;
+-}
+-
+-static irqreturn_t maple_vblank_interrupt(int irq, void *dev_id)
+-{
+-	schedule_work(&maple_vblank_process);
+-	return IRQ_HANDLED;
+-}
+-
+-static int maple_set_dma_interrupt_handler(void)
+-{
+-	return request_irq(HW_EVENT_MAPLE_DMA, maple_dma_interrupt,
+-		IRQF_SHARED, "maple bus DMA", &maple_unsupported_device);
+-}
+-
+-static int maple_set_vblank_interrupt_handler(void)
+-{
+-	return request_irq(HW_EVENT_VSYNC, maple_vblank_interrupt,
+-		IRQF_SHARED, "maple bus VBLANK", &maple_unsupported_device);
+-}
+-
+-static int maple_get_dma_buffer(void)
+-{
+-	maple_sendbuf =
+-	    (void *) __get_free_pages(GFP_KERNEL | __GFP_ZERO,
+-				      MAPLE_DMA_PAGES);
+-	if (!maple_sendbuf)
+-		return -ENOMEM;
 -	return 0;
 -}
 -
--static struct platform_driver sh_dmae_driver = {
--	.driver		= {
--		.pm	= &sh_dmae_pm,
--		.name	= SH_DMAE_DRV_NAME,
+-static int maple_match_bus_driver(struct device *devptr,
+-				  struct device_driver *drvptr)
+-{
+-	struct maple_driver *maple_drv = to_maple_driver(drvptr);
+-	struct maple_device *maple_dev = to_maple_dev(devptr);
+-
+-	/* Trap empty port case */
+-	if (maple_dev->devinfo.function == 0xFFFFFFFF)
+-		return 0;
+-	else if (maple_dev->devinfo.function &
+-		 cpu_to_be32(maple_drv->function))
+-		return 1;
+-	return 0;
+-}
+-
+-static int maple_bus_uevent(struct device *dev,
+-			    struct kobj_uevent_env *env)
+-{
+-	return 0;
+-}
+-
+-static void maple_bus_release(struct device *dev)
+-{
+-}
+-
+-static struct maple_driver maple_unsupported_device = {
+-	.drv = {
+-		.name = "maple_unsupported_device",
+-		.bus = &maple_bus_type,
 -	},
--	.remove		= sh_dmae_remove,
+-};
+-/*
+- * maple_bus_type - core maple bus structure
+- */
+-struct bus_type maple_bus_type = {
+-	.name = "maple",
+-	.match = maple_match_bus_driver,
+-	.uevent = maple_bus_uevent,
+-};
+-EXPORT_SYMBOL_GPL(maple_bus_type);
+-
+-static struct device maple_bus = {
+-	.init_name = "maple",
+-	.release = maple_bus_release,
 -};
 -
--static int __init sh_dmae_init(void)
+-static int __init maple_bus_init(void)
 -{
--	/* Wire up NMI handling */
--	int err = register_die_notifier(&sh_dmae_nmi_notifier);
--	if (err)
--		return err;
+-	int retval, i;
+-	struct maple_device *mdev[MAPLE_PORTS];
 -
--	return platform_driver_probe(&sh_dmae_driver, sh_dmae_probe);
+-	__raw_writel(0, MAPLE_ENABLE);
+-
+-	retval = device_register(&maple_bus);
+-	if (retval)
+-		goto cleanup;
+-
+-	retval = bus_register(&maple_bus_type);
+-	if (retval)
+-		goto cleanup_device;
+-
+-	retval = driver_register(&maple_unsupported_device.drv);
+-	if (retval)
+-		goto cleanup_bus;
+-
+-	/* allocate memory for maple bus dma */
+-	retval = maple_get_dma_buffer();
+-	if (retval) {
+-		dev_err(&maple_bus, "failed to allocate DMA buffers\n");
+-		goto cleanup_basic;
+-	}
+-
+-	/* set up DMA interrupt handler */
+-	retval = maple_set_dma_interrupt_handler();
+-	if (retval) {
+-		dev_err(&maple_bus, "bus failed to grab maple "
+-			"DMA IRQ\n");
+-		goto cleanup_dma;
+-	}
+-
+-	/* set up VBLANK interrupt handler */
+-	retval = maple_set_vblank_interrupt_handler();
+-	if (retval) {
+-		dev_err(&maple_bus, "bus failed to grab VBLANK IRQ\n");
+-		goto cleanup_irq;
+-	}
+-
+-	maple_queue_cache = KMEM_CACHE(maple_buffer, SLAB_HWCACHE_ALIGN);
+-
+-	if (!maple_queue_cache) {
+-		retval = -ENOMEM;
+-		goto cleanup_bothirqs;
+-	}
+-
+-	INIT_LIST_HEAD(&maple_waitq);
+-	INIT_LIST_HEAD(&maple_sentq);
+-
+-	/* setup maple ports */
+-	for (i = 0; i < MAPLE_PORTS; i++) {
+-		checked[i] = false;
+-		empty[i] = false;
+-		mdev[i] = maple_alloc_dev(i, 0);
+-		if (!mdev[i]) {
+-			while (i-- > 0)
+-				maple_free_dev(mdev[i]);
+-			retval = -ENOMEM;
+-			goto cleanup_cache;
+-		}
+-		baseunits[i] = mdev[i];
+-		atomic_set(&mdev[i]->busy, 1);
+-		maple_add_packet(mdev[i], 0, MAPLE_COMMAND_DEVINFO, 0, NULL);
+-		subdevice_map[i] = 0;
+-	}
+-
+-	maple_pnp_time = jiffies + HZ;
+-	/* prepare initial queue */
+-	maple_send();
+-	dev_info(&maple_bus, "bus core now registered\n");
+-
+-	return 0;
+-
+-cleanup_cache:
+-	kmem_cache_destroy(maple_queue_cache);
+-
+-cleanup_bothirqs:
+-	free_irq(HW_EVENT_VSYNC, 0);
+-
+-cleanup_irq:
+-	free_irq(HW_EVENT_MAPLE_DMA, 0);
+-
+-cleanup_dma:
+-	free_pages((unsigned long) maple_sendbuf, MAPLE_DMA_PAGES);
+-
+-cleanup_basic:
+-	driver_unregister(&maple_unsupported_device.drv);
+-
+-cleanup_bus:
+-	bus_unregister(&maple_bus_type);
+-
+-cleanup_device:
+-	device_unregister(&maple_bus);
+-
+-cleanup:
+-	printk(KERN_ERR "Maple bus registration failed\n");
+-	return retval;
 -}
--module_init(sh_dmae_init);
+-/* Push init to later to ensure hardware gets detected */
+-fs_initcall(maple_bus_init);
+diff --git a/drivers/sh/pm_runtime.c b/drivers/sh/pm_runtime.c
+deleted file mode 100644
+index c887ecdaf19b7c..00000000000000
+--- a/drivers/sh/pm_runtime.c
++++ /dev/null
+@@ -1,40 +0,0 @@
+-/*
+- * Runtime PM support code
+- *
+- *  Copyright (C) 2009-2010 Magnus Damm
+- *
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- */
 -
--static void __exit sh_dmae_exit(void)
+-#include <linux/init.h>
+-#include <linux/kernel.h>
+-#include <linux/io.h>
+-#include <linux/pm_runtime.h>
+-#include <linux/pm_domain.h>
+-#include <linux/pm_clock.h>
+-#include <linux/platform_device.h>
+-#include <linux/clk.h>
+-#include <linux/sh_clk.h>
+-#include <linux/bitmap.h>
+-#include <linux/slab.h>
+-
+-static struct dev_pm_domain default_pm_domain = {
+-	.ops = {
+-		USE_PM_CLK_RUNTIME_OPS
+-		USE_PLATFORM_PM_SLEEP_OPS
+-	},
+-};
+-
+-static struct pm_clk_notifier_block platform_bus_notifier = {
+-	.pm_domain = &default_pm_domain,
+-	.con_ids = { NULL, },
+-};
+-
+-static int __init sh_pm_runtime_init(void)
 -{
--	platform_driver_unregister(&sh_dmae_driver);
--
--	unregister_die_notifier(&sh_dmae_nmi_notifier);
+-	pm_clk_add_notifier(&platform_bus_type, &platform_bus_notifier);
+-	return 0;
 -}
--module_exit(sh_dmae_exit);
+-core_initcall(sh_pm_runtime_init);
+diff --git a/drivers/sh/superhyway/Makefile b/drivers/sh/superhyway/Makefile
+deleted file mode 100644
+index 6dfa41f160af6b..00000000000000
+--- a/drivers/sh/superhyway/Makefile
++++ /dev/null
+@@ -1,8 +0,0 @@
+-# SPDX-License-Identifier: GPL-2.0-only
+-#
+-# Makefile for the SuperHyway bus drivers.
+-#
 -
--MODULE_AUTHOR("Nobuhiro Iwamatsu <iwamatsu.nobuhiro@renesas.com>");
--MODULE_DESCRIPTION("Renesas SH DMA Engine driver");
--MODULE_LICENSE("GPL");
--MODULE_ALIAS("platform:" SH_DMAE_DRV_NAME);
-diff --git a/include/linux/shdma-base.h b/include/linux/shdma-base.h
-index 6dfd05ef5c2d9f..dd32aba344757f 100644
---- a/include/linux/shdma-base.h
-+++ b/include/linux/shdma-base.h
-@@ -122,13 +122,9 @@ void shdma_chan_remove(struct shdma_chan *schan);
- int shdma_init(struct device *dev, struct shdma_dev *sdev,
- 		    int chan_num);
- void shdma_cleanup(struct shdma_dev *sdev);
--#if IS_ENABLED(CONFIG_SH_DMAE_BASE)
--bool shdma_chan_filter(struct dma_chan *chan, void *arg);
--#else
- static inline bool shdma_chan_filter(struct dma_chan *chan, void *arg)
- {
- 	return false;
- }
+-obj-$(CONFIG_SUPERHYWAY)	+= superhyway.o
+-obj-$(CONFIG_SYSFS)		+= superhyway-sysfs.o
+-
+diff --git a/drivers/sh/superhyway/superhyway-sysfs.c b/drivers/sh/superhyway/superhyway-sysfs.c
+deleted file mode 100644
+index 774f31b564f8f8..00000000000000
+--- a/drivers/sh/superhyway/superhyway-sysfs.c
++++ /dev/null
+@@ -1,54 +0,0 @@
+-/*
+- * drivers/sh/superhyway/superhyway-sysfs.c
+- *
+- * SuperHyway Bus sysfs interface
+- *
+- * Copyright (C) 2004, 2005  Paul Mundt <lethal@linux-sh.org>
+- *
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- */
+-#include <linux/kernel.h>
+-#include <linux/device.h>
+-#include <linux/types.h>
+-#include <linux/superhyway.h>
+-
+-#define superhyway_ro_attr(name, fmt, field)				\
+-static ssize_t name##_show(struct device *dev, struct device_attribute *attr, char *buf)		\
+-{									\
+-	struct superhyway_device *s = to_superhyway_device(dev);	\
+-	return sprintf(buf, fmt, s->field);				\
+-}									\
+-static DEVICE_ATTR_RO(name);
+-
+-/* VCR flags */
+-superhyway_ro_attr(perr_flags, "0x%02x\n", vcr.perr_flags);
+-superhyway_ro_attr(merr_flags, "0x%02x\n", vcr.merr_flags);
+-superhyway_ro_attr(mod_vers, "0x%04x\n", vcr.mod_vers);
+-superhyway_ro_attr(mod_id, "0x%04x\n", vcr.mod_id);
+-superhyway_ro_attr(bot_mb, "0x%02x\n", vcr.bot_mb);
+-superhyway_ro_attr(top_mb, "0x%02x\n", vcr.top_mb);
+-
+-/* Misc */
+-superhyway_ro_attr(resource, "0x%08lx\n", resource[0].start);
+-
+-static struct attribute *superhyway_dev_attrs[] = {
+-	&dev_attr_perr_flags.attr,
+-	&dev_attr_merr_flags.attr,
+-	&dev_attr_mod_vers.attr,
+-	&dev_attr_mod_id.attr,
+-	&dev_attr_bot_mb.attr,
+-	&dev_attr_top_mb.attr,
+-	&dev_attr_resource.attr,
+-	NULL,
+-};
+-
+-static const struct attribute_group superhyway_dev_group = {
+-	.attrs = superhyway_dev_attrs,
+-};
+-
+-const struct attribute_group *superhyway_dev_groups[] = {
+-	&superhyway_dev_group,
+-	NULL,
+-};
+diff --git a/drivers/sh/superhyway/superhyway.c b/drivers/sh/superhyway/superhyway.c
+deleted file mode 100644
+index 44324abe21dada..00000000000000
+--- a/drivers/sh/superhyway/superhyway.c
++++ /dev/null
+@@ -1,234 +0,0 @@
+-/*
+- * drivers/sh/superhyway/superhyway.c
+- *
+- * SuperHyway Bus Driver
+- *
+- * Copyright (C) 2004, 2005  Paul Mundt <lethal@linux-sh.org>
+- *
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- */
+-#include <linux/kernel.h>
+-#include <linux/device.h>
+-#include <linux/init.h>
+-#include <linux/module.h>
+-#include <linux/types.h>
+-#include <linux/list.h>
+-#include <linux/superhyway.h>
+-#include <linux/string.h>
+-#include <linux/slab.h>
+-
+-static int superhyway_devices;
+-
+-static struct device superhyway_bus_device = {
+-	.init_name = "superhyway",
+-};
+-
+-static void superhyway_device_release(struct device *dev)
+-{
+-	struct superhyway_device *sdev = to_superhyway_device(dev);
+-
+-	kfree(sdev->resource);
+-	kfree(sdev);
+-}
+-
+-/**
+- * superhyway_add_device - Add a SuperHyway module
+- * @base: Physical address where module is mapped.
+- * @sdev: SuperHyway device to add, or NULL to allocate a new one.
+- * @bus: Bus where SuperHyway module resides.
+- *
+- * This is responsible for adding a new SuperHyway module. This sets up a new
+- * struct superhyway_device for the module being added if @sdev == NULL.
+- *
+- * Devices are initially added in the order that they are scanned (from the
+- * top-down of the memory map), and are assigned an ID based on the order that
+- * they are added. Any manual addition of a module will thus get the ID after
+- * the devices already discovered regardless of where it resides in memory.
+- *
+- * Further work can and should be done in superhyway_scan_bus(), to be sure
+- * that any new modules are properly discovered and subsequently registered.
+- */
+-int superhyway_add_device(unsigned long base, struct superhyway_device *sdev,
+-			  struct superhyway_bus *bus)
+-{
+-	struct superhyway_device *dev = sdev;
+-
+-	if (!dev) {
+-		dev = kzalloc(sizeof(struct superhyway_device), GFP_KERNEL);
+-		if (!dev)
+-			return -ENOMEM;
+-
+-	}
+-
+-	dev->bus = bus;
+-	superhyway_read_vcr(dev, base, &dev->vcr);
+-
+-	if (!dev->resource) {
+-		dev->resource = kzalloc(sizeof(struct resource), GFP_KERNEL);
+-		if (!dev->resource) {
+-			kfree(dev);
+-			return -ENOMEM;
+-		}
+-
+-		dev->resource->name	= dev->name;
+-		dev->resource->start	= base;
+-		dev->resource->end	= dev->resource->start + 0x01000000;
+-	}
+-
+-	dev->dev.parent		= &superhyway_bus_device;
+-	dev->dev.bus		= &superhyway_bus_type;
+-	dev->dev.release	= superhyway_device_release;
+-	dev->id.id		= dev->vcr.mod_id;
+-
+-	sprintf(dev->name, "SuperHyway device %04x", dev->id.id);
+-	dev_set_name(&dev->dev, "%02x", superhyway_devices);
+-
+-	superhyway_devices++;
+-
+-	return device_register(&dev->dev);
+-}
+-
+-int superhyway_add_devices(struct superhyway_bus *bus,
+-			   struct superhyway_device **devices,
+-			   int nr_devices)
+-{
+-	int i, ret = 0;
+-
+-	for (i = 0; i < nr_devices; i++) {
+-		struct superhyway_device *dev = devices[i];
+-		ret |= superhyway_add_device(dev->resource[0].start, dev, bus);
+-	}
+-
+-	return ret;
+-}
+-
+-static int __init superhyway_init(void)
+-{
+-	struct superhyway_bus *bus;
+-	int ret;
+-
+-	ret = device_register(&superhyway_bus_device);
+-	if (unlikely(ret))
+-		return ret;
+-
+-	for (bus = superhyway_channels; bus->ops; bus++)
+-		ret |= superhyway_scan_bus(bus);
+-
+-	return ret;
+-}
+-postcore_initcall(superhyway_init);
+-
+-static const struct superhyway_device_id *
+-superhyway_match_id(const struct superhyway_device_id *ids,
+-		    struct superhyway_device *dev)
+-{
+-	while (ids->id) {
+-		if (ids->id == dev->id.id)
+-			return ids;
+-
+-		ids++;
+-	}
+-
+-	return NULL;
+-}
+-
+-static int superhyway_device_probe(struct device *dev)
+-{
+-	struct superhyway_device *shyway_dev = to_superhyway_device(dev);
+-	struct superhyway_driver *shyway_drv = to_superhyway_driver(dev->driver);
+-
+-	if (shyway_drv && shyway_drv->probe) {
+-		const struct superhyway_device_id *id;
+-
+-		id = superhyway_match_id(shyway_drv->id_table, shyway_dev);
+-		if (id)
+-			return shyway_drv->probe(shyway_dev, id);
+-	}
+-
+-	return -ENODEV;
+-}
+-
+-static void superhyway_device_remove(struct device *dev)
+-{
+-	struct superhyway_device *shyway_dev = to_superhyway_device(dev);
+-	struct superhyway_driver *shyway_drv = to_superhyway_driver(dev->driver);
+-
+-	if (shyway_drv->remove)
+-		shyway_drv->remove(shyway_dev);
+-}
+-
+-/**
+- * superhyway_register_driver - Register a new SuperHyway driver
+- * @drv: SuperHyway driver to register.
+- *
+- * This registers the passed in @drv. Any devices matching the id table will
+- * automatically be populated and handed off to the driver's specified probe
+- * routine.
+- */
+-int superhyway_register_driver(struct superhyway_driver *drv)
+-{
+-	drv->drv.name	= drv->name;
+-	drv->drv.bus	= &superhyway_bus_type;
+-
+-	return driver_register(&drv->drv);
+-}
+-
+-/**
+- * superhyway_unregister_driver - Unregister a SuperHyway driver
+- * @drv: SuperHyway driver to unregister.
+- *
+- * This cleans up after superhyway_register_driver(), and should be invoked in
+- * the exit path of any module drivers.
+- */
+-void superhyway_unregister_driver(struct superhyway_driver *drv)
+-{
+-	driver_unregister(&drv->drv);
+-}
+-
+-static int superhyway_bus_match(struct device *dev, struct device_driver *drv)
+-{
+-	struct superhyway_device *shyway_dev = to_superhyway_device(dev);
+-	struct superhyway_driver *shyway_drv = to_superhyway_driver(drv);
+-	const struct superhyway_device_id *ids = shyway_drv->id_table;
+-
+-	if (!ids)
+-		return -EINVAL;
+-	if (superhyway_match_id(ids, shyway_dev))
+-		return 1;
+-
+-	return -ENODEV;
+-}
+-
+-struct bus_type superhyway_bus_type = {
+-	.name		= "superhyway",
+-	.match		= superhyway_bus_match,
+-#ifdef CONFIG_SYSFS
+-	.dev_groups	= superhyway_dev_groups,
 -#endif
- 
- #endif
+-	.probe		= superhyway_device_probe,
+-	.remove		= superhyway_device_remove,
+-};
+-
+-static int __init superhyway_bus_init(void)
+-{
+-	return bus_register(&superhyway_bus_type);
+-}
+-
+-static void __exit superhyway_bus_exit(void)
+-{
+-	device_unregister(&superhyway_bus_device);
+-	bus_unregister(&superhyway_bus_type);
+-}
+-
+-core_initcall(superhyway_bus_init);
+-module_exit(superhyway_bus_exit);
+-
+-EXPORT_SYMBOL(superhyway_bus_type);
+-EXPORT_SYMBOL(superhyway_add_device);
+-EXPORT_SYMBOL(superhyway_add_devices);
+-EXPORT_SYMBOL(superhyway_register_driver);
+-EXPORT_SYMBOL(superhyway_unregister_driver);
+-
+-MODULE_LICENSE("GPL");
+diff --git a/include/linux/sh_clk.h b/include/linux/sh_clk.h
+deleted file mode 100644
+index 7bed5be886c657..00000000000000
+--- a/include/linux/sh_clk.h
++++ /dev/null
+@@ -1,213 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef __SH_CLOCK_H
+-#define __SH_CLOCK_H
+-
+-#include <linux/list.h>
+-#include <linux/seq_file.h>
+-#include <linux/cpufreq.h>
+-#include <linux/types.h>
+-#include <linux/kref.h>
+-#include <linux/clk.h>
+-#include <linux/err.h>
+-
+-struct clk;
+-
+-struct clk_mapping {
+-	phys_addr_t		phys;
+-	void __iomem		*base;
+-	unsigned long		len;
+-	struct kref		ref;
+-};
+-
+-struct sh_clk_ops {
+-#ifdef CONFIG_SH_CLK_CPG_LEGACY
+-	void (*init)(struct clk *clk);
+-#endif
+-	int (*enable)(struct clk *clk);
+-	void (*disable)(struct clk *clk);
+-	unsigned long (*recalc)(struct clk *clk);
+-	int (*set_rate)(struct clk *clk, unsigned long rate);
+-	int (*set_parent)(struct clk *clk, struct clk *parent);
+-	long (*round_rate)(struct clk *clk, unsigned long rate);
+-};
+-
+-#define SH_CLK_DIV_MSK(div)	((1 << (div)) - 1)
+-#define SH_CLK_DIV4_MSK		SH_CLK_DIV_MSK(4)
+-#define SH_CLK_DIV6_MSK		SH_CLK_DIV_MSK(6)
+-
+-struct clk {
+-	struct list_head	node;
+-	struct clk		*parent;
+-	struct clk		**parent_table;	/* list of parents to */
+-	unsigned short		parent_num;	/* choose between */
+-	unsigned char		src_shift;	/* source clock field in the */
+-	unsigned char		src_width;	/* configuration register */
+-	struct sh_clk_ops	*ops;
+-
+-	struct list_head	children;
+-	struct list_head	sibling;	/* node for children */
+-
+-	int			usecount;
+-
+-	unsigned long		rate;
+-	unsigned long		flags;
+-
+-	void __iomem		*enable_reg;
+-	void __iomem		*status_reg;
+-	unsigned int		enable_bit;
+-	void __iomem		*mapped_reg;
+-
+-	unsigned int		div_mask;
+-	unsigned long		arch_flags;
+-	void			*priv;
+-	struct clk_mapping	*mapping;
+-	struct cpufreq_frequency_table *freq_table;
+-	unsigned int		nr_freqs;
+-};
+-
+-#define CLK_ENABLE_ON_INIT	BIT(0)
+-
+-#define CLK_ENABLE_REG_32BIT	BIT(1)	/* default access size */
+-#define CLK_ENABLE_REG_16BIT	BIT(2)
+-#define CLK_ENABLE_REG_8BIT	BIT(3)
+-
+-#define CLK_MASK_DIV_ON_DISABLE	BIT(4)
+-
+-#define CLK_ENABLE_REG_MASK	(CLK_ENABLE_REG_32BIT | \
+-				 CLK_ENABLE_REG_16BIT | \
+-				 CLK_ENABLE_REG_8BIT)
+-
+-/* drivers/sh/clk.c */
+-unsigned long followparent_recalc(struct clk *);
+-void recalculate_root_clocks(void);
+-void propagate_rate(struct clk *);
+-int clk_reparent(struct clk *child, struct clk *parent);
+-int clk_register(struct clk *);
+-void clk_unregister(struct clk *);
+-void clk_enable_init_clocks(void);
+-
+-struct clk_div_mult_table {
+-	unsigned int *divisors;
+-	unsigned int nr_divisors;
+-	unsigned int *multipliers;
+-	unsigned int nr_multipliers;
+-};
+-
+-struct cpufreq_frequency_table;
+-void clk_rate_table_build(struct clk *clk,
+-			  struct cpufreq_frequency_table *freq_table,
+-			  int nr_freqs,
+-			  struct clk_div_mult_table *src_table,
+-			  unsigned long *bitmap);
+-
+-long clk_rate_table_round(struct clk *clk,
+-			  struct cpufreq_frequency_table *freq_table,
+-			  unsigned long rate);
+-
+-int clk_rate_table_find(struct clk *clk,
+-			struct cpufreq_frequency_table *freq_table,
+-			unsigned long rate);
+-
+-long clk_rate_div_range_round(struct clk *clk, unsigned int div_min,
+-			      unsigned int div_max, unsigned long rate);
+-
+-long clk_rate_mult_range_round(struct clk *clk, unsigned int mult_min,
+-			       unsigned int mult_max, unsigned long rate);
+-
+-#define SH_CLK_MSTP(_parent, _enable_reg, _enable_bit, _status_reg, _flags) \
+-{									\
+-	.parent		= _parent,					\
+-	.enable_reg	= (void __iomem *)_enable_reg,			\
+-	.enable_bit	= _enable_bit,					\
+-	.status_reg	= _status_reg,					\
+-	.flags		= _flags,					\
+-}
+-
+-#define SH_CLK_MSTP32(_p, _r, _b, _f)				\
+-	SH_CLK_MSTP(_p, _r, _b, 0, _f | CLK_ENABLE_REG_32BIT)
+-
+-#define SH_CLK_MSTP32_STS(_p, _r, _b, _s, _f)			\
+-	SH_CLK_MSTP(_p, _r, _b, _s, _f | CLK_ENABLE_REG_32BIT)
+-
+-#define SH_CLK_MSTP16(_p, _r, _b, _f)				\
+-	SH_CLK_MSTP(_p, _r, _b, 0, _f | CLK_ENABLE_REG_16BIT)
+-
+-#define SH_CLK_MSTP8(_p, _r, _b, _f)				\
+-	SH_CLK_MSTP(_p, _r, _b, 0, _f | CLK_ENABLE_REG_8BIT)
+-
+-int sh_clk_mstp_register(struct clk *clks, int nr);
+-
+-/*
+- * MSTP registration never really cared about access size, despite the
+- * original enable/disable pairs assuming a 32-bit access. Clocks are
+- * responsible for defining their access sizes either directly or via the
+- * clock definition wrappers.
+- */
+-static inline int __deprecated sh_clk_mstp32_register(struct clk *clks, int nr)
+-{
+-	return sh_clk_mstp_register(clks, nr);
+-}
+-
+-#define SH_CLK_DIV4(_parent, _reg, _shift, _div_bitmap, _flags)	\
+-{								\
+-	.parent = _parent,					\
+-	.enable_reg = (void __iomem *)_reg,			\
+-	.enable_bit = _shift,					\
+-	.arch_flags = _div_bitmap,				\
+-	.div_mask = SH_CLK_DIV4_MSK,				\
+-	.flags = _flags,					\
+-}
+-
+-struct clk_div_table {
+-	struct clk_div_mult_table *div_mult_table;
+-	void (*kick)(struct clk *clk);
+-};
+-
+-#define clk_div4_table clk_div_table
+-
+-int sh_clk_div4_register(struct clk *clks, int nr,
+-			 struct clk_div4_table *table);
+-int sh_clk_div4_enable_register(struct clk *clks, int nr,
+-			 struct clk_div4_table *table);
+-int sh_clk_div4_reparent_register(struct clk *clks, int nr,
+-			 struct clk_div4_table *table);
+-
+-#define SH_CLK_DIV6_EXT(_reg, _flags, _parents,			\
+-			_num_parents, _src_shift, _src_width)	\
+-{								\
+-	.enable_reg = (void __iomem *)_reg,			\
+-	.enable_bit = 0, /* unused */				\
+-	.flags = _flags | CLK_MASK_DIV_ON_DISABLE,		\
+-	.div_mask = SH_CLK_DIV6_MSK,				\
+-	.parent_table = _parents,				\
+-	.parent_num = _num_parents,				\
+-	.src_shift = _src_shift,				\
+-	.src_width = _src_width,				\
+-}
+-
+-#define SH_CLK_DIV6(_parent, _reg, _flags)			\
+-{								\
+-	.parent		= _parent,				\
+-	.enable_reg	= (void __iomem *)_reg,			\
+-	.enable_bit	= 0,	/* unused */			\
+-	.div_mask	= SH_CLK_DIV6_MSK,			\
+-	.flags		= _flags | CLK_MASK_DIV_ON_DISABLE,	\
+-}
+-
+-int sh_clk_div6_register(struct clk *clks, int nr);
+-int sh_clk_div6_reparent_register(struct clk *clks, int nr);
+-
+-#define CLKDEV_CON_ID(_id, _clk) { .con_id = _id, .clk = _clk }
+-#define CLKDEV_DEV_ID(_id, _clk) { .dev_id = _id, .clk = _clk }
+-#define CLKDEV_ICK_ID(_cid, _did, _clk) { .con_id = _cid, .dev_id = _did, .clk = _clk }
+-
+-/* .enable_reg will be updated to .mapping on sh_clk_fsidiv_register() */
+-#define SH_CLK_FSIDIV(_reg, _parent)		\
+-{						\
+-	.enable_reg = (void __iomem *)_reg,	\
+-	.parent		= _parent,		\
+-}
+-
+-int sh_clk_fsidiv_register(struct clk *clks, int nr);
+-
+-#endif /* __SH_CLOCK_H */
+diff --git a/include/linux/superhyway.h b/include/linux/superhyway.h
+deleted file mode 100644
+index 8d3376775813d3..00000000000000
+--- a/include/linux/superhyway.h
++++ /dev/null
+@@ -1,107 +0,0 @@
+-/*
+- * include/linux/superhyway.h
+- *
+- * SuperHyway Bus definitions
+- *
+- * Copyright (C) 2004, 2005  Paul Mundt <lethal@linux-sh.org>
+- *
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- */
+-#ifndef __LINUX_SUPERHYWAY_H
+-#define __LINUX_SUPERHYWAY_H
+-
+-#include <linux/device.h>
+-
+-/*
+- * SuperHyway IDs
+- */
+-#define SUPERHYWAY_DEVICE_ID_SH5_DMAC	0x0183
+-
+-struct superhyway_vcr_info {
+-	u8	perr_flags;	/* P-port Error flags */
+-	u8	merr_flags;	/* Module Error flags */
+-	u16	mod_vers;	/* Module Version */
+-	u16	mod_id;		/* Module ID */
+-	u8	bot_mb;		/* Bottom Memory block */
+-	u8	top_mb;		/* Top Memory block */
+-};
+-
+-struct superhyway_ops {
+-	int (*read_vcr)(unsigned long base, struct superhyway_vcr_info *vcr);
+-	int (*write_vcr)(unsigned long base, struct superhyway_vcr_info vcr);
+-};
+-
+-struct superhyway_bus {
+-	struct superhyway_ops *ops;
+-};
+-
+-extern struct superhyway_bus superhyway_channels[];
+-
+-struct superhyway_device_id {
+-	unsigned int id;
+-	unsigned long driver_data;
+-};
+-
+-struct superhyway_device;
+-extern struct bus_type superhyway_bus_type;
+-
+-struct superhyway_driver {
+-	char *name;
+-
+-	const struct superhyway_device_id *id_table;
+-	struct device_driver drv;
+-
+-	int (*probe)(struct superhyway_device *dev, const struct superhyway_device_id *id);
+-	void (*remove)(struct superhyway_device *dev);
+-};
+-
+-#define to_superhyway_driver(d)	container_of((d), struct superhyway_driver, drv)
+-
+-struct superhyway_device {
+-	char name[32];
+-
+-	struct device dev;
+-
+-	struct superhyway_device_id id;
+-	struct superhyway_driver *drv;
+-	struct superhyway_bus *bus;
+-
+-	int num_resources;
+-	struct resource *resource;
+-	struct superhyway_vcr_info vcr;
+-};
+-
+-#define to_superhyway_device(d)	container_of((d), struct superhyway_device, dev)
+-
+-#define superhyway_get_drvdata(d)	dev_get_drvdata(&(d)->dev)
+-#define superhyway_set_drvdata(d,p)	dev_set_drvdata(&(d)->dev, (p))
+-
+-static inline int
+-superhyway_read_vcr(struct superhyway_device *dev, unsigned long base,
+-		    struct superhyway_vcr_info *vcr)
+-{
+-	return dev->bus->ops->read_vcr(base, vcr);
+-}
+-
+-static inline int
+-superhyway_write_vcr(struct superhyway_device *dev, unsigned long base,
+-		     struct superhyway_vcr_info vcr)
+-{
+-	return dev->bus->ops->write_vcr(base, vcr);
+-}
+-
+-extern int superhyway_scan_bus(struct superhyway_bus *);
+-
+-/* drivers/sh/superhyway/superhyway.c */
+-int superhyway_register_driver(struct superhyway_driver *);
+-void superhyway_unregister_driver(struct superhyway_driver *);
+-int superhyway_add_device(unsigned long base, struct superhyway_device *, struct superhyway_bus *);
+-int superhyway_add_devices(struct superhyway_bus *bus, struct superhyway_device **devices, int nr_devices);
+-
+-/* drivers/sh/superhyway/superhyway-sysfs.c */
+-extern const struct attribute_group *superhyway_dev_groups[];
+-
+-#endif /* __LINUX_SUPERHYWAY_H */
+-
 -- 
 2.39.0
 

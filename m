@@ -2,116 +2,118 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 46414C54EBD
-	for <linux-spi@archiver.kernel.org>; Fri, 13 Jan 2023 10:07:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 03A53C54EBD
+	for <linux-spi@archiver.kernel.org>; Fri, 13 Jan 2023 10:23:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240938AbjAMKHH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 13 Jan 2023 05:07:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51146 "EHLO
+        id S236680AbjAMKXy (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 13 Jan 2023 05:23:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239755AbjAMKG5 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 13 Jan 2023 05:06:57 -0500
-Received: from wnew4-smtp.messagingengine.com (wnew4-smtp.messagingengine.com [64.147.123.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 186DC34D65;
-        Fri, 13 Jan 2023 02:06:56 -0800 (PST)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailnew.west.internal (Postfix) with ESMTP id 59F1E2B066ED;
-        Fri, 13 Jan 2023 05:06:53 -0500 (EST)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Fri, 13 Jan 2023 05:06:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to; s=fm2; t=1673604412; x=1673611612; bh=wiGd1poFqy
-        c19NDgfhWxoziS+5a2ezYepeVzBSacqw8=; b=jQa0HDmPBmL/FfJL+hgRmPsB40
-        Y3mC3xChdI36TABN4RG5b4ucaLsZc6+hC+19/zCIm4A4ie1QOoF7GdEwpLDXWLgg
-        YS7KkbMyef4z8Yilol0xjO/jcY2PDSzSOyaObnKUz9YejiKar9NRQ/48gMheN8SP
-        L9ydOdhClMFMN+laVtMxeJLlISQdpKBcfrhR3HNQLngArqhNZXfmj7B7QaV3Yjlc
-        q1pbz3p93X/orY60g/G7bg2Tiz9gOW8CeW5RhiSUeYXFN/oIPHXLd05ewSyQoczy
-        YcvZ76uBqZ6njLqUwdbbXb3on9pD3cxdKgfVZ0av7GSfMv1N46xG/nNSra4w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
-        :mime-version:references:reply-to:sender:subject:subject:to:to
-        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm3; t=1673604412; x=1673611612; bh=wiGd1poFqyc19NDgfhWxoziS+5a2
-        ezYepeVzBSacqw8=; b=T9tKOcHloTqEvCQgyITgoeWHiCG023yZCoHB8GCNjjun
-        JWtWHvJqinTMKxNzOHfWFkde1UNzFYeNjWL4OYuUevGP5ZiDtpX0SAgeRoVmsRqT
-        4s4imE9aYV/f9Pvbl/xyCzDnDswOyuD8ceeVeSEppPmXeTdO2UYN2NW+SPkjkx6z
-        7AGNecW4IwYIR8h6khoClacES7xN1wBX6oY0XpQ9E/MHHJqDRpFMe5RHSjqUpFHQ
-        972R/sDnO/VHBlJ/MZtdHhD4RBw3rwTM6MhJr5iT0G2mUNkzC1EVZ0kt797d6W2S
-        fBdJ8aBi3uu6VLi/i8mbcHwOUByNIvAxQvGBru7fCg==
-X-ME-Sender: <xms:Oy3BY2x8u8jGs5oav_hETNuy2fGaBGNB7nGV00CwtVI39ajIhtTDrA>
-    <xme:Oy3BYyQeI43uOCS5CK49RFBPrQXLvgoH7jyxA1EWEhaXS1U_GFSXnUcOsyByJ4HxX
-    7ebslCPuxwL7F72QUk>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrleekgddtkecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
-    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
-    gvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeet
-    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrh
-    hnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:Oy3BY4WFmJ1Wzov0EgMi6qcJljjNqlgJoW7YxZYtni3we9ZcuZJC0Q>
-    <xmx:Oy3BY8jDZdOmomBzdPQYugeTKvRs2JAmwJR9qFQ78gYn6oU0QQd3og>
-    <xmx:Oy3BY4DQ3Zg11gEbb70JkOCpYbMnoYHqWtdB8svYNbX-CHCrZb2sRA>
-    <xmx:PC3BYzV0__Pe1Lv9Yq1qvCTC7InwXhC6SGzQNcMq4ULKQsDh2lBDrgxrUdU>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id B041DB60086; Fri, 13 Jan 2023 05:06:51 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.7.0-alpha0-1185-g841157300a-fm-20221208.002-g84115730
-Mime-Version: 1.0
-Message-Id: <d9c2f760-283b-483c-8512-fdd2c372f26c@app.fastmail.com>
-In-Reply-To: <CAMuHMdXYt4dNHUDsTnPa-RP+sdK=35nNa9xQzMChwK54qO44mA@mail.gmail.com>
-References: <20230113062339.1909087-1-hch@lst.de>
- <20230113062339.1909087-12-hch@lst.de>
- <CAMuHMdXYt4dNHUDsTnPa-RP+sdK=35nNa9xQzMChwK54qO44mA@mail.gmail.com>
-Date:   Fri, 13 Jan 2023 11:06:22 +0100
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Geert Uytterhoeven" <geert@linux-m68k.org>,
-        "Christoph Hellwig" <hch@lst.de>
-Cc:     "Yoshinori Sato" <ysato@users.sourceforge.jp>,
-        "Rich Felker" <dalias@libc.org>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        "laurent.pinchart" <laurent.pinchart@ideasonboard.com>,
-        "Kieran Bingham" <kieran.bingham+renesas@ideasonboard.com>,
-        "Geert Uytterhoeven" <geert+renesas@glider.be>,
-        linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        devicetree@vger.kernel.org,
-        Linux-Arch <linux-arch@vger.kernel.org>,
-        dmaengine@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        linux-i2c@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-media@vger.kernel.org,
-        "linux-mmc @ vger . kernel . org" <linux-mmc@vger.kernel.org>,
-        linux-mtd@lists.infradead.org, Netdev <netdev@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        linux-rtc@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, alsa-devel@alsa-project.org,
-        linux-sh@vger.kernel.org
-Subject: Re: [PATCH 11/22] mtd/nand: remove sh_flctl
-Content-Type: text/plain
+        with ESMTP id S241125AbjAMKXe (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 13 Jan 2023 05:23:34 -0500
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07C095F5E;
+        Fri, 13 Jan 2023 02:23:34 -0800 (PST)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: sendonly@marcansoft.com)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id 8E63B4206F;
+        Fri, 13 Jan 2023 10:23:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=marcan.st; s=default;
+        t=1673605412; bh=c4zDn0WsX9vKD9/T+0pbZ4hUgI1frFckuoNzd/1iP5Q=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=n7zJ2YyRvs+dpSlx1IN05ugU0M7nsDpfdKXXY6aPy8xi9FPg0iViM+Z/TxZxhqJBW
+         liFzKSpAht3GuYcmh2FcrvaP5c7uOUvxw46GTnWjxSWDShILeTEQEy9s6mvLx0mfgX
+         vQINtu0OhMja720uWNW3wfnXIbl0H4JIgGs9TNF6Yo31Cb6HipQQlLNMpC5XEBfml3
+         JTDypjBgDOgLWhUqzSI/ETk920CpYmOdthRQajOz4HN6Ux5eynaOmIOc8Fp7EG1+Gz
+         NBYQ2BKLsIWwsFVQkZfHmDK9H9Rd6BmduEWi1ot1zE08fcGXMlaLXD5wHGiMEWZzdZ
+         +mTEBCUyOcnlg==
+From:   Hector Martin <marcan@marcan.st>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Tudor Ambarus <tudor.ambarus@microchip.com>,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        Janne Grunau <j@jannau.net>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        asahi@lists.linux.dev, linux-kernel@vger.kernel.org,
+        Hector Martin <marcan@marcan.st>
+Subject: [PATCH v2 1/3] spi: Use a 32-bit DT property for spi-cs-setup-delay-ns
+Date:   Fri, 13 Jan 2023 19:23:08 +0900
+Message-Id: <20230113102309.18308-2-marcan@marcan.st>
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20230113102309.18308-1-marcan@marcan.st>
+References: <20230113102309.18308-1-marcan@marcan.st>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Fri, Jan 13, 2023, at 09:30, Geert Uytterhoeven wrote:
-> On Fri, Jan 13, 2023 at 7:24 AM Christoph Hellwig <hch@lst.de> wrote:
->> Now that arch/sh is removed this driver is dead code.
->
-> FTR, this hardware block is also present on the ARM-based
-> SH-Mobile AG5 and R-Mobile A1 SoCs.
-> Again, no DT support.
+From: Janne Grunau <j@jannau.net>
 
-I would generally consider drivers dead when they have no DT support
-and no platform in the upstream kernel registering the corresponding
-device.
+65us is not a reasonable maximum for this property, as some devices
+might need a much longer setup time (e.g. those driven by firmware on
+the other end). Plus, device tree property values are in 32-bit cells
+and smaller widths should not be used without good reason.
 
-If anyone still uses this driver on SH-Mobile or R-Mobile, they
-have clearly given up on upstreaming their patches by now, and
-they can carry the burden of maintaining the driver out of tree,
-or re-submit a working version.
+Also move the logic to a helper function, since this will later be used
+to parse other CS delay properties too.
 
-    Arnd
+Fixes: 33a2fde5f77b ("spi: Introduce spi-cs-setup-ns property")
+Signed-off-by: Janne Grunau <j@jannau.net>
+Signed-off-by: Hector Martin <marcan@marcan.st>
+---
+ drivers/spi/spi.c | 23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 15f174f4e056..3f33934f5429 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2220,11 +2220,26 @@ void spi_flush_queue(struct spi_controller *ctlr)
+ /*-------------------------------------------------------------------------*/
+ 
+ #if defined(CONFIG_OF)
++static void of_spi_parse_dt_cs_delay(struct device_node *nc,
++				     struct spi_delay *delay, const char *prop)
++{
++	u32 value;
++
++	if (!of_property_read_u32(nc, prop, &value)) {
++		if (value > U16_MAX) {
++			delay->value = DIV_ROUND_UP(value, 1000);
++			delay->unit = SPI_DELAY_UNIT_USECS;
++		} else {
++			delay->value = value;
++			delay->unit = SPI_DELAY_UNIT_NSECS;
++		}
++	}
++}
++
+ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
+ 			   struct device_node *nc)
+ {
+ 	u32 value;
+-	u16 cs_setup;
+ 	int rc;
+ 
+ 	/* Mode (clock phase/polarity/etc.) */
+@@ -2310,10 +2325,8 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
+ 	if (!of_property_read_u32(nc, "spi-max-frequency", &value))
+ 		spi->max_speed_hz = value;
+ 
+-	if (!of_property_read_u16(nc, "spi-cs-setup-delay-ns", &cs_setup)) {
+-		spi->cs_setup.value = cs_setup;
+-		spi->cs_setup.unit = SPI_DELAY_UNIT_NSECS;
+-	}
++	/* Device CS delays */
++	of_spi_parse_dt_cs_delay(nc, &spi->cs_setup, "spi-cs-setup-delay-ns");
+ 
+ 	return 0;
+ }
+-- 
+2.35.1
+

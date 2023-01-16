@@ -2,87 +2,108 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 220C8C678DD
-	for <linux-spi@archiver.kernel.org>; Mon, 16 Jan 2023 08:52:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 36B92C46467
+	for <linux-spi@archiver.kernel.org>; Mon, 16 Jan 2023 12:16:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232396AbjAPIwd (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 16 Jan 2023 03:52:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57744 "EHLO
+        id S229626AbjAPMQH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 16 Jan 2023 07:16:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232371AbjAPIw0 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 16 Jan 2023 03:52:26 -0500
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2646044A1;
-        Mon, 16 Jan 2023 00:52:24 -0800 (PST)
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.95)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1pHLDw-0003Fv-T9; Mon, 16 Jan 2023 09:52:12 +0100
-Received: from p57bd9464.dip0.t-ipconnect.de ([87.189.148.100] helo=[192.168.178.81])
-          by inpost2.zedat.fu-berlin.de (Exim 4.95)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_128_GCM_SHA256
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1pHLDw-000TdQ-Lf; Mon, 16 Jan 2023 09:52:12 +0100
-Message-ID: <40dc1bc1-d9cd-d9be-188e-5167ebae235c@physik.fu-berlin.de>
-Date:   Mon, 16 Jan 2023 09:52:10 +0100
+        with ESMTP id S229517AbjAPMQG (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 16 Jan 2023 07:16:06 -0500
+X-Greylist: delayed 576 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 16 Jan 2023 04:16:01 PST
+Received: from smtp-out-07.comm2000.it (smtp-out-07.comm2000.it [212.97.32.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FF3E270C;
+        Mon, 16 Jan 2023 04:16:01 -0800 (PST)
+Received: from francesco-nb.int.toradex.com (31-10-206-125.static.upc.ch [31.10.206.125])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: francesco@dolcini.it)
+        by smtp-out-07.comm2000.it (Postfix) with ESMTPSA id CF6653C2901;
+        Mon, 16 Jan 2023 13:06:23 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mailserver.it;
+        s=mailsrv; t=1673870784;
+        bh=ww3wNkm2WTEAwlFgREQLZhocFDwbXyOXH1fBRgEgaL4=;
+        h=Date:From:To:Cc:Subject;
+        b=uXGcYwb3+5pn9KIDDhsxnjBf1hJEeDy+YDO0map1xvvdCpieM+o5ZrUseMm2V+eWo
+         ZOY1l2NA2mQJuaSP27Z14/JNzRXKOsJjBLTAQ0QqYa1WaKQ+Tr4NOtg3adl2ty1bP3
+         TX9iyKW+t63ZsCqENFs/YXqcCKAnbvIViqH6xDYj2MBXQiAHCxKAJ/J0O14sycRQFD
+         k18kGoEZGFr4Kah6SZ2AYOJ6JZfFCCs5BIluvej07r1z5yHKvu/90gTZwt74hp0fPe
+         AMUEUGHA7k0brU8u9ov16M1+ETCbq9HC3uUVplwZJhpM6x2vMO20MZvJfp8mwTUDsQ
+         ZhuCWvfo+I+ug==
+Date:   Mon, 16 Jan 2023 13:06:22 +0100
+From:   Francesco Dolcini <francesco@dolcini.it>
+To:     Bartosz Golaszewski <brgl@bgdev.pl>,
+        Mark Brown <broonie@kernel.org>, bartosz.golaszewski@linaro.org
+Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        max.krummenacher@toradex.com
+Subject: spidev regression in 6.2-rc kernel
+Message-ID: <Y8U9vrwzHVAyBZHK@francesco-nb.int.toradex.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: remove arch/sh
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arch@vger.kernel.org,
-        dmaengine@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-renesas-soc@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
-        netdev@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-rtc@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, alsa-devel@alsa-project.org,
-        linux-sh@vger.kernel.org
-References: <20230113062339.1909087-1-hch@lst.de>
- <11e2e0a8-eabe-2d8c-d612-9cdd4bcc3648@physik.fu-berlin.de>
- <20230116071306.GA15848@lst.de>
-Content-Language: en-US
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-In-Reply-To: <20230116071306.GA15848@lst.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 87.189.148.100
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hello Christoph!
+Hello,
+we spotted a regression on spidev on latest 6.2-rc kernel.
 
-On 1/16/23 08:13, Christoph Hellwig wrote:
-> On Fri, Jan 13, 2023 at 09:09:52AM +0100, John Paul Adrian Glaubitz wrote:
->> I'm still maintaining and using this port in Debian.
->>
->> It's a bit disappointing that people keep hammering on it. It works fine for me.
-> 
-> What platforms do you (or your users) use it on?
+[  214.047619]
+[  214.049198] ============================================
+[  214.054533] WARNING: possible recursive locking detected
+[  214.059858] 6.2.0-rc3-0.0.0-devel+git.97ec4d559d93 #1 Not tainted
+[  214.065969] --------------------------------------------
+[  214.071290] spidev_test/1454 is trying to acquire lock:
+[  214.076530] c4925dbc (&spidev->spi_lock){+.+.}-{3:3}, at: spidev_ioctl+0x8e0/0xab8
+[  214.084164]
+[  214.084164] but task is already holding lock:
+[  214.090007] c4925dbc (&spidev->spi_lock){+.+.}-{3:3}, at: spidev_ioctl+0x44/0xab8
+[  214.097537]
+[  214.097537] other info that might help us debug this:
+[  214.104075]  Possible unsafe locking scenario:
+[  214.104075]
+[  214.110004]        CPU0
+[  214.112461]        ----
+[  214.114916]   lock(&spidev->spi_lock);
+[  214.118687]   lock(&spidev->spi_lock);
+[  214.122457]
+[  214.122457]  *** DEADLOCK ***
+[  214.122457]
+[  214.128386]  May be due to missing lock nesting notation
+[  214.128386]
+[  214.135183] 2 locks held by spidev_test/1454:
+[  214.139553]  #0: c4925dbc (&spidev->spi_lock){+.+.}-{3:3}, at: spidev_ioctl+0x44/0xab8
+[  214.147524]  #1: c4925e14 (&spidev->buf_lock){+.+.}-{3:3}, at: spidev_ioctl+0x70/0xab8
+[  214.155493]
+[  214.155493] stack backtrace:
+[  214.159861] CPU: 0 PID: 1454 Comm: spidev_test Not tainted 6.2.0-rc3-0.0.0-devel+git.97ec4d559d93 #1
+[  214.169012] Hardware name: Freescale i.MX6 Quad/DualLite (Device Tree)
+[  214.175555]  unwind_backtrace from show_stack+0x10/0x14
+[  214.180819]  show_stack from dump_stack_lvl+0x60/0x90
+[  214.185900]  dump_stack_lvl from __lock_acquire+0x874/0x2858
+[  214.191584]  __lock_acquire from lock_acquire+0xfc/0x378
+[  214.196918]  lock_acquire from __mutex_lock+0x9c/0x8a8
+[  214.202083]  __mutex_lock from mutex_lock_nested+0x1c/0x24
+[  214.207597]  mutex_lock_nested from spidev_ioctl+0x8e0/0xab8
+[  214.213284]  spidev_ioctl from sys_ioctl+0x4d0/0xe2c
+[  214.218277]  sys_ioctl from ret_fast_syscall+0x0/0x1c
+[  214.223351] Exception stack(0xe75cdfa8 to 0xe75cdff0)
+[  214.228422] dfa0:                   00000000 00001000 00000003 40206b00 bee266e8 bee266e0
+[  214.236617] dfc0: 00000000 00001000 006a71a0 00000036 004c0040 004bfd18 00000000 00000003
+[  214.244809] dfe0: 00000036 bee266c8 b6f16dc5 b6e8e5f6
 
-We have had a discussion between multiple people invested in the SuperH port and
-I have decided to volunteer as a co-maintainer of the port to support Rich Felker
-when he isn't available.
 
-Adrian
+This is not running the latest rc4, but on sha 97ec4d559d93 (this is
+just what our CI had available when this test was run). I was not able
+to bisect it, but it seems something that you could have introduced.
 
--- 
-  .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-   `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+The log is from an apalis-imx6, but I have the same on other ARM SOC.
+
+Can you have a look?
+Thanks
+
+Francesco
+
+
 

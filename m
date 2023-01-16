@@ -2,46 +2,46 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C974CC63797
-	for <linux-spi@archiver.kernel.org>; Mon, 16 Jan 2023 14:07:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BA201C63797
+	for <linux-spi@archiver.kernel.org>; Mon, 16 Jan 2023 14:12:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232057AbjAPOHd (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 16 Jan 2023 09:07:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45750 "EHLO
+        id S232313AbjAPOMI (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 16 Jan 2023 09:12:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231739AbjAPOGf (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 16 Jan 2023 09:06:35 -0500
+        with ESMTP id S232211AbjAPOLW (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 16 Jan 2023 09:11:22 -0500
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68AE223C7B;
-        Mon, 16 Jan 2023 06:03:29 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8751E2A9A2;
+        Mon, 16 Jan 2023 06:04:33 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 05DAE60FB1;
-        Mon, 16 Jan 2023 14:03:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC70DC433D2;
-        Mon, 16 Jan 2023 14:03:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7069060FD3;
+        Mon, 16 Jan 2023 14:04:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E9EBC433F0;
+        Mon, 16 Jan 2023 14:04:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673877808;
-        bh=Ko+6sOwYpIYL2EpmeWW5zp5GW1wurCq0r8H+3vIcNsw=;
+        s=k20201202; t=1673877869;
+        bh=UPV1IneB0Ifz9vqAAKn8eXpAFravS9D32gXwK6aco9I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AGmtOO54L3jWcsUbqnoAoMr7sZbg9kbOvfvxG05z2cAq52nfzJcK5oWLuyKC7A2oV
-         Ze4j2G7GVRYMS5gHin2N2MskcAsBuqjc1gf4neMLY28yMikRm+whF26v4aG6GniLSn
-         h7Wl+wqAW658/xAJAGQlffrUyA5Cv/UeXKHTb84KL48ryjcXHeRYNsossXgxAOfsN2
-         2/UIMSRxz2CC7ofCbiTjTh778k+rgr0goLK8CV9N71Kxw8iKduZkFwG0VzpCpk9V8x
-         q+RJrOKXaEUkdi2PQstExSJpg+7s/p5MAYk0FbJyKg3hwRRCoq1Un7yIFIYTdQWBWJ
-         w3TA35AOtHjfw==
+        b=EZlxPC5zXpgf1nFcMDzkXySUWOER/Q2yBeYjH/2LJNY1HqT4qXMCSuIK/Kk3BKCuX
+         t28lClckBg3/7jkssfTSqI4UdeTxoB1/v1W92EPVI8GogbyRBd+ppxZG76UdZ3kkmj
+         UPDcA8Xcv111tYWOez7qzxYz0h2imUob7dKjnDqNmpcf7dANkaMniubVURqJlBGFSM
+         ghlIhK904ZrzlDO6lWvDobQDDt0AleKVBoXiudRWuB/cMm6xshZLBC+/MIgYWHrGTn
+         Wj/gdMtUug65eTlDZg3q9oAfbSHwvAhMaShBB051i1GOcrD5zzuYP4kwtHKb1+HpNn
+         8kH17Gbz+sWbQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
         Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 39/53] spi: spidev: remove debug messages that access spidev->spi without locking
-Date:   Mon, 16 Jan 2023 09:01:39 -0500
-Message-Id: <20230116140154.114951-39-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 17/24] spi: spidev: remove debug messages that access spidev->spi without locking
+Date:   Mon, 16 Jan 2023 09:03:52 -0500
+Message-Id: <20230116140359.115716-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20230116140154.114951-1-sashal@kernel.org>
-References: <20230116140154.114951-1-sashal@kernel.org>
+In-Reply-To: <20230116140359.115716-1-sashal@kernel.org>
+References: <20230116140359.115716-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -68,10 +68,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 deletions(-)
 
 diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index 42aaaca67265..1935ca613447 100644
+index 2cfbf840410a..6e978dad72dc 100644
 --- a/drivers/spi/spidev.c
 +++ b/drivers/spi/spidev.c
-@@ -603,7 +603,6 @@ static int spidev_open(struct inode *inode, struct file *filp)
+@@ -594,7 +594,6 @@ static int spidev_open(struct inode *inode, struct file *filp)
  	if (!spidev->tx_buffer) {
  		spidev->tx_buffer = kmalloc(bufsiz, GFP_KERNEL);
  		if (!spidev->tx_buffer) {
@@ -79,7 +79,7 @@ index 42aaaca67265..1935ca613447 100644
  			status = -ENOMEM;
  			goto err_find_dev;
  		}
-@@ -612,7 +611,6 @@ static int spidev_open(struct inode *inode, struct file *filp)
+@@ -603,7 +602,6 @@ static int spidev_open(struct inode *inode, struct file *filp)
  	if (!spidev->rx_buffer) {
  		spidev->rx_buffer = kmalloc(bufsiz, GFP_KERNEL);
  		if (!spidev->rx_buffer) {

@@ -2,108 +2,70 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 36B92C46467
-	for <linux-spi@archiver.kernel.org>; Mon, 16 Jan 2023 12:16:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 28A29C54EBE
+	for <linux-spi@archiver.kernel.org>; Mon, 16 Jan 2023 12:19:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229626AbjAPMQH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 16 Jan 2023 07:16:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48396 "EHLO
+        id S230053AbjAPMTD (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 16 Jan 2023 07:19:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229517AbjAPMQG (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 16 Jan 2023 07:16:06 -0500
-X-Greylist: delayed 576 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 16 Jan 2023 04:16:01 PST
-Received: from smtp-out-07.comm2000.it (smtp-out-07.comm2000.it [212.97.32.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FF3E270C;
-        Mon, 16 Jan 2023 04:16:01 -0800 (PST)
-Received: from francesco-nb.int.toradex.com (31-10-206-125.static.upc.ch [31.10.206.125])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: francesco@dolcini.it)
-        by smtp-out-07.comm2000.it (Postfix) with ESMTPSA id CF6653C2901;
-        Mon, 16 Jan 2023 13:06:23 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mailserver.it;
-        s=mailsrv; t=1673870784;
-        bh=ww3wNkm2WTEAwlFgREQLZhocFDwbXyOXH1fBRgEgaL4=;
-        h=Date:From:To:Cc:Subject;
-        b=uXGcYwb3+5pn9KIDDhsxnjBf1hJEeDy+YDO0map1xvvdCpieM+o5ZrUseMm2V+eWo
-         ZOY1l2NA2mQJuaSP27Z14/JNzRXKOsJjBLTAQ0QqYa1WaKQ+Tr4NOtg3adl2ty1bP3
-         TX9iyKW+t63ZsCqENFs/YXqcCKAnbvIViqH6xDYj2MBXQiAHCxKAJ/J0O14sycRQFD
-         k18kGoEZGFr4Kah6SZ2AYOJ6JZfFCCs5BIluvej07r1z5yHKvu/90gTZwt74hp0fPe
-         AMUEUGHA7k0brU8u9ov16M1+ETCbq9HC3uUVplwZJhpM6x2vMO20MZvJfp8mwTUDsQ
-         ZhuCWvfo+I+ug==
-Date:   Mon, 16 Jan 2023 13:06:22 +0100
-From:   Francesco Dolcini <francesco@dolcini.it>
-To:     Bartosz Golaszewski <brgl@bgdev.pl>,
-        Mark Brown <broonie@kernel.org>, bartosz.golaszewski@linaro.org
-Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        max.krummenacher@toradex.com
-Subject: spidev regression in 6.2-rc kernel
-Message-ID: <Y8U9vrwzHVAyBZHK@francesco-nb.int.toradex.com>
+        with ESMTP id S230287AbjAPMS1 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 16 Jan 2023 07:18:27 -0500
+Received: from mail.zeus06.de (www.zeus06.de [194.117.254.36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B1E91F5F3
+        for <linux-spi@vger.kernel.org>; Mon, 16 Jan 2023 04:18:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=kicherer.org; h=from:to
+        :cc:subject:date:message-id:in-reply-to:references:mime-version
+        :content-transfer-encoding; s=k1; bh=i1CIHKrWalhSQJZfn0n6FaQ71uG
+        qhcTFcPj+Qh2DMWk=; b=BuIy6qzw48TJ+Dw2uaTfD2/zBNMTkjn3EZW4zZkPOId
+        nfZGOI72TcSIswHex5rD/pIY2kV50sN7GXca4/qIhdbVKqyl6X2W4gyvhTtpjG5k
+        GsbfJlX1MnAK4x/SHAh8IYGMGCo2uY51MFjHsk/XsJs0L7JadyKKxVa4Yf9kEN1I
+        =
+Received: (qmail 669724 invoked from network); 16 Jan 2023 12:51:34 +0100
+Received: by mail.zeus06.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 16 Jan 2023 12:51:34 +0100
+X-UD-Smtp-Session: l3s6476p2@KVj+M2Dy0crCtAHJ
+From:   Mario Kicherer <dev@kicherer.org>
+To:     linux-spi@vger.kernel.org
+Cc:     han.xu@nxp.com, broonie@kernel.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, devicetree@vger.kernel.org,
+        Mario Kicherer <dev@kicherer.org>
+Subject: [PATCH 1/2] spi: dt-bindings: spi-fsl-qspi: add optional sampling-delay
+Date:   Mon, 16 Jan 2023 12:50:49 +0100
+Message-Id: <20230116115050.2983406-2-dev@kicherer.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230116115050.2983406-1-dev@kicherer.org>
+References: <20230116115050.2983406-1-dev@kicherer.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hello,
-we spotted a regression on spidev on latest 6.2-rc kernel.
+Add optional sampling-delay property to delay the internal sampling point for
+incoming data.
 
-[  214.047619]
-[  214.049198] ============================================
-[  214.054533] WARNING: possible recursive locking detected
-[  214.059858] 6.2.0-rc3-0.0.0-devel+git.97ec4d559d93 #1 Not tainted
-[  214.065969] --------------------------------------------
-[  214.071290] spidev_test/1454 is trying to acquire lock:
-[  214.076530] c4925dbc (&spidev->spi_lock){+.+.}-{3:3}, at: spidev_ioctl+0x8e0/0xab8
-[  214.084164]
-[  214.084164] but task is already holding lock:
-[  214.090007] c4925dbc (&spidev->spi_lock){+.+.}-{3:3}, at: spidev_ioctl+0x44/0xab8
-[  214.097537]
-[  214.097537] other info that might help us debug this:
-[  214.104075]  Possible unsafe locking scenario:
-[  214.104075]
-[  214.110004]        CPU0
-[  214.112461]        ----
-[  214.114916]   lock(&spidev->spi_lock);
-[  214.118687]   lock(&spidev->spi_lock);
-[  214.122457]
-[  214.122457]  *** DEADLOCK ***
-[  214.122457]
-[  214.128386]  May be due to missing lock nesting notation
-[  214.128386]
-[  214.135183] 2 locks held by spidev_test/1454:
-[  214.139553]  #0: c4925dbc (&spidev->spi_lock){+.+.}-{3:3}, at: spidev_ioctl+0x44/0xab8
-[  214.147524]  #1: c4925e14 (&spidev->buf_lock){+.+.}-{3:3}, at: spidev_ioctl+0x70/0xab8
-[  214.155493]
-[  214.155493] stack backtrace:
-[  214.159861] CPU: 0 PID: 1454 Comm: spidev_test Not tainted 6.2.0-rc3-0.0.0-devel+git.97ec4d559d93 #1
-[  214.169012] Hardware name: Freescale i.MX6 Quad/DualLite (Device Tree)
-[  214.175555]  unwind_backtrace from show_stack+0x10/0x14
-[  214.180819]  show_stack from dump_stack_lvl+0x60/0x90
-[  214.185900]  dump_stack_lvl from __lock_acquire+0x874/0x2858
-[  214.191584]  __lock_acquire from lock_acquire+0xfc/0x378
-[  214.196918]  lock_acquire from __mutex_lock+0x9c/0x8a8
-[  214.202083]  __mutex_lock from mutex_lock_nested+0x1c/0x24
-[  214.207597]  mutex_lock_nested from spidev_ioctl+0x8e0/0xab8
-[  214.213284]  spidev_ioctl from sys_ioctl+0x4d0/0xe2c
-[  214.218277]  sys_ioctl from ret_fast_syscall+0x0/0x1c
-[  214.223351] Exception stack(0xe75cdfa8 to 0xe75cdff0)
-[  214.228422] dfa0:                   00000000 00001000 00000003 40206b00 bee266e8 bee266e0
-[  214.236617] dfc0: 00000000 00001000 006a71a0 00000036 004c0040 004bfd18 00000000 00000003
-[  214.244809] dfe0: 00000036 bee266c8 b6f16dc5 b6e8e5f6
+Signed-off-by: Mario Kicherer <dev@kicherer.org>
+---
+ Documentation/devicetree/bindings/spi/fsl,spi-fsl-qspi.yaml | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-
-This is not running the latest rc4, but on sha 97ec4d559d93 (this is
-just what our CI had available when this test was run). I was not able
-to bisect it, but it seems something that you could have introduced.
-
-The log is from an apalis-imx6, but I have the same on other ARM SOC.
-
-Can you have a look?
-Thanks
-
-Francesco
-
-
+diff --git a/Documentation/devicetree/bindings/spi/fsl,spi-fsl-qspi.yaml b/Documentation/devicetree/bindings/spi/fsl,spi-fsl-qspi.yaml
+index e58644558412..7952a4be938b 100644
+--- a/Documentation/devicetree/bindings/spi/fsl,spi-fsl-qspi.yaml
++++ b/Documentation/devicetree/bindings/spi/fsl,spi-fsl-qspi.yaml
+@@ -54,6 +54,12 @@ properties:
+       - const: qspi_en
+       - const: qspi
+ 
++  fsl,qspi-sampling-delay:
++    description: delay sampling of incoming data by this number of half cycles
++    minimum: 0
++    maximum: 3
++    default: 0
++
+ required:
+   - compatible
+   - reg
+-- 
+2.34.1
 

@@ -2,46 +2,46 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 67078C7112B
-	for <linux-spi@archiver.kernel.org>; Mon, 16 Jan 2023 14:14:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ADDABC63797
+	for <linux-spi@archiver.kernel.org>; Mon, 16 Jan 2023 14:15:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232331AbjAPOOy (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 16 Jan 2023 09:14:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38862 "EHLO
+        id S232456AbjAPOPx (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 16 Jan 2023 09:15:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232429AbjAPONc (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 16 Jan 2023 09:13:32 -0500
+        with ESMTP id S232764AbjAPOOf (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 16 Jan 2023 09:14:35 -0500
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E229B2385B;
-        Mon, 16 Jan 2023 06:05:10 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4459E2FCC4;
+        Mon, 16 Jan 2023 06:05:38 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A737060FD7;
-        Mon, 16 Jan 2023 14:05:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61736C433AE;
-        Mon, 16 Jan 2023 14:05:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 298BD60FE6;
+        Mon, 16 Jan 2023 14:05:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5DB8C433F2;
+        Mon, 16 Jan 2023 14:05:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673877910;
-        bh=c2m5x0jaEMRpel0F1pPEctB1T2lKgMQs6HSAEprYGbk=;
+        s=k20201202; t=1673877937;
+        bh=wE8uk0FU4UXeaQkN4P+yBE4HMzTbuMhO9JXJf/AJ0IE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nh5QuIy+pD8Wh4LSYH+zstFDZDd6okNkWFrKBnRjaBmcK6sf31fCqUqE2Qg4FE0YR
-         uBfp/xAtLpv0XX6RjD1EMvUwgUxFmBSZseXz1OdNOWRA63DDiRRulFyXHYtb7lb8kv
-         5jGLQrmh/24zVjPi8F1Eua6/IM7WcAZ673Yv3uWjMl7561zDXD3AQryu92gY0Hc4gZ
-         mwzDSqeUptKSJ1jjh6sAZlf36qkcssB2q3MnlmM0yA8Tu5UeHkpsIzmEAHNug7IAh/
-         gexpnd7MsUMO3WY98qwNcUBDvfbOZ50aFPxFfIUbX5S6SPFhLKmqH3Ne7evSLKN57L
-         AwCGEQQnMZrFw==
+        b=bRDrRO7kmGjf4IOMKj2OyynOlJlIyqwRjdJe86PpvzYhFz4c8hVOaMSuCwZDDS4NY
+         XIsjEk1heckL6VAIZuXSyTm2gNZVKgw64zf3lft9JL9E6ocB+2j9PRoimmfKjB3U2j
+         9YLgYhKr8yuFftj4aNDWgJn15DYu+xhAxGJg1rdfnoe31akScCfc4twgyY4hCJzire
+         wQnzBYhOaqI3ZS1kRS7syb++hxBkqRGnGfe3TzQaZ9WSrtrxIZ5z4UwHoVGnFMAh97
+         aSojZrQusYVod67o69Y9pqRovCtu4B7+axj4xqcrLLr0mRse2FM424H/1h3qyBCdgk
+         zufmdeNLgP/FA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
         Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 11/17] spi: spidev: fix a race condition when accessing spidev->spi
-Date:   Mon, 16 Jan 2023 09:04:42 -0500
-Message-Id: <20230116140448.116034-11-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 09/16] spi: spidev: fix a race condition when accessing spidev->spi
+Date:   Mon, 16 Jan 2023 09:05:12 -0500
+Message-Id: <20230116140520.116257-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20230116140448.116034-1-sashal@kernel.org>
-References: <20230116140448.116034-1-sashal@kernel.org>
+In-Reply-To: <20230116140520.116257-1-sashal@kernel.org>
+References: <20230116140520.116257-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -73,10 +73,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 18 insertions(+), 16 deletions(-)
 
 diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index 9c5ec99431d2..87c4d641cbd5 100644
+index be503a0e6ef7..a360dabdcb8b 100644
 --- a/drivers/spi/spidev.c
 +++ b/drivers/spi/spidev.c
-@@ -67,7 +67,7 @@ static DECLARE_BITMAP(minors, N_SPI_MINORS);
+@@ -66,7 +66,7 @@ static DECLARE_BITMAP(minors, N_SPI_MINORS);
  
  struct spidev_data {
  	dev_t			devt;
@@ -85,7 +85,7 @@ index 9c5ec99431d2..87c4d641cbd5 100644
  	struct spi_device	*spi;
  	struct list_head	device_entry;
  
-@@ -94,9 +94,8 @@ spidev_sync(struct spidev_data *spidev, struct spi_message *message)
+@@ -93,9 +93,8 @@ spidev_sync(struct spidev_data *spidev, struct spi_message *message)
  	int status;
  	struct spi_device *spi;
  
@@ -96,7 +96,7 @@ index 9c5ec99431d2..87c4d641cbd5 100644
  
  	if (spi == NULL)
  		status = -ESHUTDOWN;
-@@ -106,6 +105,7 @@ spidev_sync(struct spidev_data *spidev, struct spi_message *message)
+@@ -105,6 +104,7 @@ spidev_sync(struct spidev_data *spidev, struct spi_message *message)
  	if (status == 0)
  		status = message->actual_length;
  
@@ -104,7 +104,7 @@ index 9c5ec99431d2..87c4d641cbd5 100644
  	return status;
  }
  
-@@ -358,12 +358,12 @@ spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+@@ -355,12 +355,12 @@ spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
  	 * we issue this ioctl.
  	 */
  	spidev = filp->private_data;
@@ -121,7 +121,7 @@ index 9c5ec99431d2..87c4d641cbd5 100644
  
  	/* use the buffer lock here for triple duty:
  	 *  - prevent I/O (from us) so calling spi_setup() is safe;
-@@ -500,6 +500,7 @@ spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+@@ -485,6 +485,7 @@ spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
  
  	mutex_unlock(&spidev->buf_lock);
  	spi_dev_put(spi);
@@ -129,7 +129,7 @@ index 9c5ec99431d2..87c4d641cbd5 100644
  	return retval;
  }
  
-@@ -521,12 +522,12 @@ spidev_compat_ioc_message(struct file *filp, unsigned int cmd,
+@@ -506,12 +507,12 @@ spidev_compat_ioc_message(struct file *filp, unsigned int cmd,
  	 * we issue this ioctl.
  	 */
  	spidev = filp->private_data;
@@ -146,7 +146,7 @@ index 9c5ec99431d2..87c4d641cbd5 100644
  
  	/* SPI_IOC_MESSAGE needs the buffer locked "normally" */
  	mutex_lock(&spidev->buf_lock);
-@@ -553,6 +554,7 @@ spidev_compat_ioc_message(struct file *filp, unsigned int cmd,
+@@ -538,6 +539,7 @@ spidev_compat_ioc_message(struct file *filp, unsigned int cmd,
  done:
  	mutex_unlock(&spidev->buf_lock);
  	spi_dev_put(spi);
@@ -154,7 +154,7 @@ index 9c5ec99431d2..87c4d641cbd5 100644
  	return retval;
  }
  
-@@ -631,10 +633,10 @@ static int spidev_release(struct inode *inode, struct file *filp)
+@@ -616,10 +618,10 @@ static int spidev_release(struct inode *inode, struct file *filp)
  	spidev = filp->private_data;
  	filp->private_data = NULL;
  
@@ -167,7 +167,7 @@ index 9c5ec99431d2..87c4d641cbd5 100644
  
  	/* last close? */
  	spidev->users--;
-@@ -761,7 +763,7 @@ static int spidev_probe(struct spi_device *spi)
+@@ -746,7 +748,7 @@ static int spidev_probe(struct spi_device *spi)
  
  	/* Initialize the driver data */
  	spidev->spi = spi;
@@ -176,7 +176,7 @@ index 9c5ec99431d2..87c4d641cbd5 100644
  	mutex_init(&spidev->buf_lock);
  
  	INIT_LIST_HEAD(&spidev->device_entry);
-@@ -806,9 +808,9 @@ static int spidev_remove(struct spi_device *spi)
+@@ -791,9 +793,9 @@ static int spidev_remove(struct spi_device *spi)
  	/* prevent new opens */
  	mutex_lock(&device_list_lock);
  	/* make sure ops on existing fds can abort cleanly */

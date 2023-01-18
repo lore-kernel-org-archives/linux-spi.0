@@ -2,74 +2,73 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 31CE0C32793
-	for <linux-spi@archiver.kernel.org>; Wed, 18 Jan 2023 08:52:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 44B29C38159
+	for <linux-spi@archiver.kernel.org>; Wed, 18 Jan 2023 09:23:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229470AbjARIwM (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 18 Jan 2023 03:52:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53462 "EHLO
+        id S229584AbjARJXc (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 18 Jan 2023 04:23:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229897AbjARIsf (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 18 Jan 2023 03:48:35 -0500
-Received: from mail.3ffe.de (0001.3ffe.de [IPv6:2a01:4f8:c0c:9d57::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 011E4392BF;
-        Wed, 18 Jan 2023 00:02:10 -0800 (PST)
-Received: from mwalle01.kontron.local. (unknown [213.135.10.150])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.3ffe.de (Postfix) with ESMTPSA id AC0D0D5D;
-        Wed, 18 Jan 2023 09:02:07 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2022082101;
-        t=1674028927;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=q4LtkWQwj+s5wRr9ftmaGPFVQWqkH/zbHMQ6iAuaZCk=;
-        b=KzMwo29z2YN5Fh3BND3jQ1EzGgDVcfwgB43ZKWFNqdLmMRudSFoliRpzicnJQPrnkCW8Ha
-        Kjyq3ICId+Gzeg1VMP+/AZ/NAsEZOa7RBIzUFt74X2scq2ycM/HJJO6ezCVZ4c5lswoYXo
-        bRyAa7FiBncPohpKUxD0j5sd3TlXJBZ1vBjbpaqfVcxSLIUVSmI+NnsontrtuUBdqHg76I
-        kYcgVoegHfDMhshDekkkZ5a0LHCZRRR21imc3tSZXkFMx/0+BdVjRiMvHRFq3KVPk4umgX
-        fm8x+yq2/bG11dNCIDi7Iol7aoa1dap05dCnFr3ucEGPZI2kZ4IyJfcY8cWrBA==
-From:   Michael Walle <michael@walle.cc>
-To:     han.xu@nxp.com
-Cc:     broonie@kernel.org, dev@kicherer.org, devicetree@vger.kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, krzysztof.kozlowski@linaro.org,
-        linux-spi@vger.kernel.org, robh@kernel.org, michael@walle.cc
-Subject: Re: [PATCH 1/2] spi: dt-bindings: spi-fsl-qspi: add optional sampling-delay
-Date:   Wed, 18 Jan 2023 09:01:59 +0100
-Message-Id: <20230118080159.112295-1-michael@walle.cc>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230117210500.oimf4yjkkqh3o4hi@umbrella>
-References: <20230117210500.oimf4yjkkqh3o4hi@umbrella>
+        with ESMTP id S230196AbjARJVR (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 18 Jan 2023 04:21:17 -0500
+Received: from mail.bostmarktrun.com (mail.bostmarktrun.com [135.125.238.46])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF17465EE1
+        for <linux-spi@vger.kernel.org>; Wed, 18 Jan 2023 00:46:12 -0800 (PST)
+Received: by mail.bostmarktrun.com (Postfix, from userid 1002)
+        id 6B2A3A285D; Wed, 18 Jan 2023 08:45:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=bostmarktrun.com;
+        s=mail; t=1674031571;
+        bh=gfWmJwOZk+B/IN1TMPg7emKhIvoExrJdUiyEL8yd2Jk=;
+        h=Date:From:To:Subject:From;
+        b=IRDogxr57d+O0W+XGpq0QSn3m0mcQJX/smI6dXrLPyX1iakRaCopoZR8Zd6w5AMbC
+         n2z73xlHIYAp0UZYyvQk8L/BsdWQrDpcbSF0BuumSbrNqJEUyeN2ScsEWwxDS7GQwL
+         wwN/pSg12BXZF/pvYeQBXmYEo8eWCgq/B7rGEURQVnEfeESy6MrbyUrCZGgoqGG69C
+         O0SQKSui45rKSGFQmhPJKKyPq793HTQnI5V7E8FSolxkph4OIKs2xIl8E2Vp4oZWir
+         XU8Oxj5wH+/p2+Waf7g+N5TiUIASQDgKAJTp5XB8MTdrfePi6dA36P35ka55L+lkqA
+         fQrNLxbRGqNfw==
+Received: by mail.bostmarktrun.com for <linux-spi@vger.kernel.org>; Wed, 18 Jan 2023 08:45:33 GMT
+Message-ID: <20230118074500-0.1.4p.wrkr.0.aiq6p6fo51@bostmarktrun.com>
+Date:   Wed, 18 Jan 2023 08:45:33 GMT
+From:   "Corey Webb" <corey.webb@bostmarktrun.com>
+To:     <linux-spi@vger.kernel.org>
+Subject: Custom Software Development
+X-Mailer: mail.bostmarktrun.com
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam: Yes
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: "han.xu" <han.xu@nxp.com>
+Hi,=20
 
-Hi,
+I would like to reach the person responsible for the implementation of yo=
+ur company's goals, vision and mission or the decision-maker in the devel=
+opment of your technology strategy.
 
->>> unfortunately, the rx-sample-delay-ns property does not fit here, as we 
->>> can only delay
->>> the sampling point between zero and three "half cycles" (or edges), not 
->>> by an arbitrary
->>> number of nanoseconds.
->> 
->> Why this is a problem for FSL but not for other platforms having exactly
->> the same constraints/property?
->
-> Please use the common delay in DT and calculate to half cycle in driver, we have
-> the similar discussion before for fspi controller delay settings.
+I represent provider of lucrative IT solutions that remove the barriers t=
+o process development resulting from limited access to appropriate IT res=
+ources.
 
-Do you mean [1]? There my suggestion was to use a -degrees property (because
-it doesn't depend on the frequency). There wasn't any follow-up, or did I miss
-something?
+We guarantee you access to the knowledge and experience of outstanding 3,=
+000 software developers from Poland and 500 professional consultants and =
+senior developers in the United States and other Western countries. =20
 
--michael
+We respond to a variety of needs, ranging from expanding your project tea=
+m with specialists with specific skills to supporting project managers, e=
+xperienced innovation teams to creating a Minimum Viable Project (MVP).
 
-[1] https://lore.kernel.org/linux-spi/62f113a0cdb0d58bf04ab0b274912eb7@walle.cc/
+The comprehensiveness of our services guarantees you dynamic software dev=
+elopment including creation, testing and implementation systems that are =
+the backbone of effective management of the entire organization.
+
+A partnership that lasts for years is the best proof that our clients mee=
+t their unique requirements within a specific timeframe, introduce new op=
+portunities and grow their business while we solve their problems.
+
+Are you available for a brief call? I will be looking forward to hearing =
+from you.
+
+
+Best regards
+Corey Webb

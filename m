@@ -2,104 +2,93 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CE631C004D4
-	for <linux-spi@archiver.kernel.org>; Thu, 19 Jan 2023 19:30:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 07598C38159
+	for <linux-spi@archiver.kernel.org>; Fri, 20 Jan 2023 05:04:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229811AbjASTag (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 19 Jan 2023 14:30:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44534 "EHLO
+        id S230213AbjATFEg (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 20 Jan 2023 00:04:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230222AbjASTaa (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 19 Jan 2023 14:30:30 -0500
-Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6E759574C
-        for <linux-spi@vger.kernel.org>; Thu, 19 Jan 2023 11:30:28 -0800 (PST)
-Received: by mail-yb1-xb2c.google.com with SMTP id c124so3847515ybb.13
-        for <linux-spi@vger.kernel.org>; Thu, 19 Jan 2023 11:30:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XeirCJAnAvYHJRWOqOsfW1hYyWSjdT+Ia3hbkutfMMQ=;
-        b=W/jc15KxUCWrRIvEx3elqDdDeiflQ65ZJhZp5RrASRAKLlj4zO58m84Vj+u2t+A+Ub
-         LTjFrtDTgJJVd7gYUe/yqMbevOT6+SY5vxKbC7sV8tbxbtrGnJFNe0rIiMVMnvagfgub
-         diSVQG+En5UIkmCkzbRWk08gMCztKdMlKAI9UvkF/hmAgrg0797beeT50QqEuEn0RS40
-         tm/IcFVo5NUeEC9wdsBVfRhoMpB3tWv36YkrUuG5Gi2AIFAXdIW3wjzmrrB/pXM0V4k5
-         Zs9zKCNClN4iHq0g6JAKrnC4ukKpMa1cm6cZSasj4Dk1GA4WDzFW5GPg+SYXEq7L2S4J
-         P4Hw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XeirCJAnAvYHJRWOqOsfW1hYyWSjdT+Ia3hbkutfMMQ=;
-        b=0pPPl/Vy8M7/g2QM4aEHA7L4JsYzXJ8UjF4nujSDSaKeHh1u7yu/wPZmVZ8Gn9e85q
-         Z0t0yz6UB1WLC0Rv7y89Z7xUIp7HAbbvuh4XbFqJltCXfcrsQznDFxSfCPJPMXPP3hin
-         Y9cJBjwN0iazUY/80FPbK7dUg3z5BoDIx4iDOIGqEhzbu6v5KGFBD7W/5Vx6VdBPdPoA
-         JFuWsdRUaqpR2bkM1dHhijhsRX/Vfd6i8KhlNW/l1AybVg5SLnOQz0EWeWD+xfD9SuTq
-         rrdjrXwwZORNyjcem6m93Lkp3lCqzNngk5Hn/hoDqxbSf4rCWk8JTNq2cIL1ufCHh6a0
-         Zhaw==
-X-Gm-Message-State: AFqh2kpmEwFnQCiRql7mSuQfFNMVEMvchOaZA7vX01taOcxcIZ5iUoTM
-        LerifrNDAbftFNHLytLZ/iM8Bpl3KaIEU8q5R7Nm7w==
-X-Google-Smtp-Source: AMrXdXu2hI6GTxFM6roiARVxtIshJOJfKVdp6j55OgzYw67RgQhhNqIbaKmtFdYvzitjyQsXkdo2ssTrJkJ37MisEbw=
-X-Received: by 2002:a25:9291:0:b0:7c0:563:c516 with SMTP id
- y17-20020a259291000000b007c00563c516mr1162358ybl.529.1674156627804; Thu, 19
- Jan 2023 11:30:27 -0800 (PST)
-MIME-Version: 1.0
-References: <20230118-mt8365-spi-support-v2-0-be3ac97a28c6@baylibre.com>
- <20230118-mt8365-spi-support-v2-2-be3ac97a28c6@baylibre.com> <Y8l/mQjjgKJiE1/F@sirena.org.uk>
-In-Reply-To: <Y8l/mQjjgKJiE1/F@sirena.org.uk>
-From:   Alexandre Mergnat <amergnat@baylibre.com>
-Date:   Thu, 19 Jan 2023 20:30:15 +0100
-Message-ID: <CAFGrd9pZ0Lso6LMKkN=ErujGgRi6t5_C3FvbMYHaV5V_DD0BnA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] spi: spidev: add new mediatek support
-To:     Mark Brown <broonie@kernel.org>
-Cc:     Matthias Brugger <matthias.bgg@gmail.com>,
+        with ESMTP id S230486AbjATFEQ (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 20 Jan 2023 00:04:16 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5166DA10A;
+        Thu, 19 Jan 2023 20:51:12 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 413ECB82622;
+        Thu, 19 Jan 2023 16:39:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72650C433EF;
+        Thu, 19 Jan 2023 16:39:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1674146366;
+        bh=3bJjdB+nWWOEDo4Kr2GKl2c8L2HL7kShd//vBhxQxIA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=OAmesnlcLr4gXydaCxspVBHJl//Pg48EEE9Ac1TuOp9VDD22lqzx2tTzjv8ElSimU
+         pWOk7Tpp0yXR8fj7azquosDK8AHJhlQDRpdzhmLD0lfvBPvDM1bklUh/uEA76afBPg
+         gC/3E9MSVR5mRb3tWpVgRll+UrxNn6HRXTmG/DSYEtdLdxj9MgElxOuaJhm8BojqV5
+         6lc+OAZIpb4B/ZJpqUfKQFuMWQH55IZjFqgfbDtvV96U9AGQn9gGT06dMbsEZqp2wh
+         A5lS99N0Zg4L8gWvXMMr9qlhpA5dZN8pmF3UDJDBX/MFCXdZP8j6mnVo+Jz9JRA5sM
+         BN2z4OU8HN0KA==
+Date:   Thu, 19 Jan 2023 16:39:21 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Alexandre Mergnat <amergnat@baylibre.com>
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org,
-        Amjad Ouled-Ameur <aouledameur@baylibre.com>,
-        linux-mediatek@lists.infradead.org, linux-spi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 2/2] spi: spidev: add new mediatek support
+Message-ID: <Y8lyORTrfmwIzEEO@sirena.org.uk>
+References: <20230118-mt8365-spi-support-v1-0-842a21e50494@baylibre.com>
+ <20230118-mt8365-spi-support-v1-2-842a21e50494@baylibre.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="fQ/9xqKBaGbAnkd8"
+Content-Disposition: inline
+In-Reply-To: <20230118-mt8365-spi-support-v1-2-842a21e50494@baylibre.com>
+X-Cookie: Serving suggestion.
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Le jeu. 19 janv. 2023 =C3=A0 18:36, Mark Brown <broonie@kernel.org> a =C3=
-=A9crit :
->
-> On Thu, Jan 19, 2023 at 06:28:20PM +0100, Alexandre Mergnat wrote:
-> > Add the "mediatek,genio" compatible string to support Mediatek
-> > SPI controller on the genio boards.
->
-> All my previous review comments stand, please don't ignore review
-> feedback.
 
-Hi Mark,
+--fQ/9xqKBaGbAnkd8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Yes sorry about that, I wasn't aware that I've some feedback when I
-sent V2 for a quickfix.
+On Thu, Jan 19, 2023 at 05:28:50PM +0100, Alexandre Mergnat wrote:
+> Add the "mediatek,genio" compatible string to support Mediatek
+> SPI controller on the genio boards.
 
-I will take care about your comment:
+>  	{ .compatible = "cisco,spi-petra", .data = &spidev_of_check },
+>  	{ .compatible = "micron,spi-authenta", .data = &spidev_of_check },
+> +	{ .compatible = "mediatek,genio", .data = &spidev_of_check },
 
-> We need a matching update to the binding document.
->
-> This does also seem like a terribly generic name - Google
-> suggests that this is actually a series of numbered products (eg,
-> Genio 700), perhaps we should be using the specific numbers here?
-> I guess users would care which they're talking to.  It really
-> parses as being "generic I/O" which would be an end run around
-> describing the actual product though it's not actually that.
+We need a matching update to the binding document.
 
-Is there a binding documentation for spidev ? I didn't find it.
+This does also seem like a terribly generic name - Google
+suggests that this is actually a series of numbered products (eg,
+Genio 700), perhaps we should be using the specific numbers here?
+I guess users would care which they're talking to.  It really
+parses as being "generic I/O" which would be an end run around
+describing the actual product though it's not actually that.
 
-My understanding is to have something more specific like:
-compatible =3D "mediatek,genio350"
-Or maybe use the SoC name, to be aligned with the DTS ?
-compatible =3D "mediatek,spi-mt8365"
+--fQ/9xqKBaGbAnkd8
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Regards,
-Alex
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmPJcjgACgkQJNaLcl1U
+h9CRKgf/aE9L/bycOwLdBtT6N4nGdMCTKRv3Lik1C75xILzdQEoMeSY6hbiIprsK
+akyYOAkVATInpreBpDdxVLBv2WRoF1gjCOyS658l/ZDWgPSYZ2oIe8cR2Ve4TYYX
+OiK6PPIcF/PiQ4/MMrHDd4V3GOQ9JUBukMUM88cbBsqMbHXiITvP83Omb04MPXV2
+xyAtq50UCaRGJnlwS1/ahDJ4wSL42RUKgu+6WJNeMckv3L3tM4hhs4qKcZVOfWPV
+yDflRvfSWw0mgd6x9C4CoRslSC9FRLEpniU8fRtwbkvP2CnBzJnx7o+mQ3KtFnor
+opcBdJ4aSzsX9xPuTU+M97GKibnXeg==
+=IObu
+-----END PGP SIGNATURE-----
+
+--fQ/9xqKBaGbAnkd8--

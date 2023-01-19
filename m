@@ -2,136 +2,200 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 31F07C00A5A
-	for <linux-spi@archiver.kernel.org>; Thu, 19 Jan 2023 04:27:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 42ED3C38142
+	for <linux-spi@archiver.kernel.org>; Thu, 19 Jan 2023 04:28:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229983AbjASE1h (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 18 Jan 2023 23:27:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43464 "EHLO
+        id S230020AbjASE2p (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 18 Jan 2023 23:28:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229986AbjASEUP (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 18 Jan 2023 23:20:15 -0500
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2061b.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe5a::61b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC74F6F8A3;
-        Wed, 18 Jan 2023 20:07:53 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=AwuI53ndLNibQmgGKs+5S70k3BOezATqj1qtTRe1Lf9f8o8nbaXKahAGxhrp0+CKtCVb7COsRh33RzzG2g8jteVnseqlseL7HHHvProIA0PuBwZRe+l6+QlpgpKHJOcW5nrSTALWkdi/qwssHPd0HkhdJm4Y/DTCE9CfTwKQtRd2ojDiKKHB9xRSEVEsi0y31obB1n/2XmXeAItD5Gyp9/tW6I4nDDMMZnjAqm2aPKtWYprVL+QfVH0Ix7N6DfwNHwv+9SKMqGZ561p4iNHR4MyxLzvJ6chthyvJQaiOw5eTwlMYeNdMaeZ8/wyu21ddTBwDpybq3+EOoDDqTP3YBw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tADwm89Gw7MGE41VA3P+RoXDG7EzxPQzvrjTbcPBP9M=;
- b=kDP7MmlH2Fbz7bbgNn/4pAa0O+bG5WlwCqUIfvGH/s3AmQJ+LQL3GyeN20SU0j0o8DrikVosDq+BB688w6bltw0Oz1Bgs8iWt5yXxIH8xwBV9WLMt0Z8HwMHRC/v/IgY7Io9WxRSFpjzPvKgSmJANbyNO+5PRQxvR8HldtZJlbU6P7ukgNlJbVCTGotZ0NTNmQo6BGKG+rpU8r/UtSEe+76TJ2gxYV14Eg+3dt+RIwUtBQDQvOM0zCtAfYzuIUaBlvTXAtnnhqYL/pwlhgeXGVolIQGpDenp2wWbjxD4NYf8gml4gTySDLS/DfRjwCN22/6C4BHNK38YA2U43+lj4w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.infradead.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tADwm89Gw7MGE41VA3P+RoXDG7EzxPQzvrjTbcPBP9M=;
- b=OiXjiS0KEogEecmWmiGoNF6iWqmon8v7RUOz2tCq+f6qHZULHER5ndW+fI86h+CP0px0Cua5fGqNwl8OR9EMv/AFI17UEIN1JlnQe0CqL7vFgVJJGiceYkA0ShE9n/yht98ilzWwxIX62nXKZ4xrouI30MMHIZ5wEwx9VOIG+U4=
-Received: from MW4PR04CA0203.namprd04.prod.outlook.com (2603:10b6:303:86::28)
- by CH3PR12MB8307.namprd12.prod.outlook.com (2603:10b6:610:12f::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6002.13; Thu, 19 Jan
- 2023 03:52:40 +0000
-Received: from CO1NAM11FT099.eop-nam11.prod.protection.outlook.com
- (2603:10b6:303:86:cafe::e9) by MW4PR04CA0203.outlook.office365.com
- (2603:10b6:303:86::28) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6002.19 via Frontend
- Transport; Thu, 19 Jan 2023 03:52:40 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1NAM11FT099.mail.protection.outlook.com (10.13.175.171) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6002.13 via Frontend Transport; Thu, 19 Jan 2023 03:52:39 +0000
-Received: from platform-dev1.pensando.io (10.180.168.240) by
- SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.34; Wed, 18 Jan 2023 21:52:34 -0600
-From:   Brad Larson <blarson@amd.com>
-To:     <linux-arm-kernel@lists.infradead.org>
-CC:     <linux-kernel@vger.kernel.org>, <linux-mmc@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>, <adrian.hunter@intel.com>,
-        <alcooperx@gmail.com>, <andy.shevchenko@gmail.com>,
-        <arnd@arndb.de>, <brad@pensando.io>, <blarson@amd.com>,
-        <brendan.higgins@linux.dev>, <briannorris@chromium.org>,
-        <brijeshkumar.singh@amd.com>, <catalin.marinas@arm.com>,
-        <davidgow@google.com>, <gsomlo@gmail.com>, <gerg@linux-m68k.org>,
-        <krzk@kernel.org>, <krzysztof.kozlowski+dt@linaro.org>,
-        <lee@kernel.org>, <lee.jones@linaro.org>, <broonie@kernel.org>,
-        <yamada.masahiro@socionext.com>, <p.zabel@pengutronix.de>,
-        <piotrs@cadence.com>, <p.yadav@ti.com>, <rdunlap@infradead.org>,
-        <robh+dt@kernel.org>, <samuel@sholland.org>,
-        <fancer.lancer@gmail.com>, <skhan@linuxfoundation.org>,
-        <suravee.suthikulpanit@amd.com>, <thomas.lendacky@amd.com>,
-        <tonyhuang.sunplus@gmail.com>, <ulf.hansson@linaro.org>,
-        <vaishnav.a@ti.com>, <will@kernel.org>,
-        <devicetree@vger.kernel.org>
-Subject: [PATCH v9 07/15] MAINTAINERS: Add entry for AMD PENSANDO
-Date:   Wed, 18 Jan 2023 19:51:28 -0800
-Message-ID: <20230119035136.21603-8-blarson@amd.com>
+        with ESMTP id S229933AbjASDop (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 18 Jan 2023 22:44:45 -0500
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 092B24CE6E
+        for <linux-spi@vger.kernel.org>; Wed, 18 Jan 2023 19:41:04 -0800 (PST)
+Received: by mail-pl1-x62e.google.com with SMTP id p24so1087426plw.11
+        for <linux-spi@vger.kernel.org>; Wed, 18 Jan 2023 19:41:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=pensando.io; s=google;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=HoxgLjiKMEnBReX8y4HZGzgpLE7NIwrXXlAdWPhN3h8=;
+        b=vlwDso4zfaafKBLTGZSWLErQYEQ5QY7rcEF1zh4iSwN6iI98SPm4toCnLM60XjMy4U
+         FRNIPBJPK7qWyW4yTOoWw97SviB5VdLcf6aUSGuTjQsJMYb8Zbavhp7M/PAS1qeiAP6X
+         cXaa/J4BPtXSbGPCBJ8WbxDEphDYH/nAgZbF1jPL3wdCuGQDAlUjiJzEIUHvQmft3ebF
+         CgqzDWF742LCFKEkCV8Jzpq3zWCapvPnXt/QUPKBnSeCrBsbUizewQrbR2j1lpp5fHTq
+         T89ytguL3doR5oUDohfGweF5HhryX0Na/PWFC6zEwp/TF/WP0RfBI3Nt1RvlZWz8h9kW
+         rq+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HoxgLjiKMEnBReX8y4HZGzgpLE7NIwrXXlAdWPhN3h8=;
+        b=MwcDDNnpHv3znqzXFuvzZ5MZt4Vm52kqMIkIJMkgsz0lH3wZGKaz5dXPmc40Z6ORXE
+         KcJITFZD0hSBw8Fo3htGaoagu5q7kCBVA9gBN0kI9jPPpxYMa6KrcsviMYWv6HYPq7O4
+         Wkgf+gJ2aXBxRFoM3HDUaX0M2Y93Hu9yg4MDI3QO0zHB+TwGgorVu4ZEMCj16qeXzLWh
+         cZVgfq50rCRU6QWZN/5YAGFhqInKwgOMyS6KvC/fiN+ut7+fHght67ax8/oAK6PcEVTJ
+         82pPI8gzrcTFPBVXAlpyf0XTqk0Oh9D1gwUHeM2JYHo6j8b96w495pLFSiaL+ssfITTM
+         kLGQ==
+X-Gm-Message-State: AFqh2kpDvgF/kiDzq1eVpaNtB0+jRd40GqzPHToffwP8WOaKyMc4DuC9
+        SsT8Yi5B2PhWuLPm6dryAXxLkQ==
+X-Google-Smtp-Source: AMrXdXv9gtvswiH5b6jgB6AVsqRnU4Ge6BwluWHdlQkKPdo0JB/42cVs6C8gs/HBxJmeeDTgLO9msg==
+X-Received: by 2002:a05:6a20:4c9f:b0:b8:694c:201 with SMTP id fq31-20020a056a204c9f00b000b8694c0201mr8961901pzb.11.1674099662453;
+        Wed, 18 Jan 2023 19:41:02 -0800 (PST)
+Received: from platform-dev1.pensando.io ([12.226.153.42])
+        by smtp.gmail.com with ESMTPSA id f13-20020aa7968d000000b0056b4c5dde61sm11097879pfk.98.2023.01.18.19.41.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Jan 2023 19:41:02 -0800 (PST)
+From:   Brad Larson <brad@pensando.io>
+X-Google-Original-From: Brad Larson <blarson@amd.com>
+To:     linux-arm-kernel@lists.infradead.org
+Cc:     linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-spi@vger.kernel.org, adrian.hunter@intel.com,
+        alcooperx@gmail.com, andy.shevchenko@gmail.com, arnd@arndb.de,
+        brad@pensando.io, blarson@amd.com, brendan.higgins@linux.dev,
+        briannorris@chromium.org, brijeshkumar.singh@amd.com,
+        catalin.marinas@arm.com, davidgow@google.com, gsomlo@gmail.com,
+        gerg@linux-m68k.org, krzk@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, lee@kernel.org,
+        lee.jones@linaro.org, broonie@kernel.org,
+        yamada.masahiro@socionext.com, p.zabel@pengutronix.de,
+        piotrs@cadence.com, p.yadav@ti.com, rdunlap@infradead.org,
+        robh+dt@kernel.org, samuel@sholland.org, fancer.lancer@gmail.com,
+        skhan@linuxfoundation.org, suravee.suthikulpanit@amd.com,
+        thomas.lendacky@amd.com, tonyhuang.sunplus@gmail.com,
+        ulf.hansson@linaro.org, vaishnav.a@ti.com, will@kernel.org,
+        devicetree@vger.kernel.org
+Subject: [PATCH v9 11/15] spi: dw: Add support for AMD Pensando Elba SoC
+Date:   Wed, 18 Jan 2023 19:39:14 -0800
+Message-Id: <20230119033918.44117-12-blarson@amd.com>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20230119035136.21603-1-blarson@amd.com>
-References: <20230119035136.21603-1-blarson@amd.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1NAM11FT099:EE_|CH3PR12MB8307:EE_
-X-MS-Office365-Filtering-Correlation-Id: f871b305-0398-468f-cfc9-08daf9d09c6a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: c4VYyP0fxtsfu+ZKZ+FcfKu96NVTmgzmCmCktpO1/m2I2DmxAAfRKvDw2lVlhFifqadjd60OJPQbqfVXToXDisu0xRa1ys0Kzi5hByxRIMUdf7f2T1BYjz4Jbgv5dGw+WF2zLaX8LGpjf6zzBc9bGRXed3teAgdLFkQUHCwgI2TQHqF1sQA1K3sdt32YC4kQdYsRdWyacZFDyYFS6wfunT4ak25cdZfJKQCJ6XusVXX4MdKeMix7BFFn5yYM9uj0SZFF6TONgyBdJoQsdtP6c+xBNp9fg2AIkCzraQOsKr58Aq0vvXzJTbk3URxo/uaq9ITh85ym+RxemC7hjA8/L0QLu7sUBDKOXuUmKUesjtK5pn25Ysw56sIEzjrB78TI8pmexbKbLxMPkpyDskCrwevBWtiniSdHnP0TXIb/TGLUo/x+CD6qgl6oR+siVspAu/eoV5E34AMQMQ0s+FYXoHM2StAFnENpQbl+Nl9Bku75S4ezdYS5hF6LouUOufRrmsVSzVbiopyxwgcWz/qrVwO401wNG7LAhCiGV/LbaFK62CXbH0i3KIsvpHVtMGTSZhxo6qUH4RxTpMa2qi7ZHVeRUwFOzK8qJ70K+S4JRkiwZmrR+/wwn91uh9+WZMDPlEfJ73m/SmFch7SVrahqSwfaTr5kvZ6nh5IhQaoPzxyBlSeSKvY/XdRuYoILPWqUwQuNFTm/ggWgWTkRajZhGeeWshr5vSo0CSHO+BFBZE8=
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230022)(4636009)(396003)(136003)(346002)(39860400002)(376002)(451199015)(40470700004)(46966006)(36840700001)(2616005)(6666004)(316002)(336012)(54906003)(26005)(186003)(478600001)(1076003)(16526019)(7406005)(426003)(47076005)(5660300002)(8936002)(83380400001)(4326008)(6916009)(8676002)(41300700001)(4744005)(7416002)(40460700003)(2906002)(40480700001)(356005)(81166007)(82740400003)(70586007)(36860700001)(36756003)(70206006)(82310400005)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jan 2023 03:52:39.7543
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f871b305-0398-468f-cfc9-08daf9d09c6a
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT099.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8307
+In-Reply-To: <20230119033918.44117-1-blarson@amd.com>
+References: <20230119033918.44117-1-blarson@amd.com>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Add entry for AMD PENSANDO maintainer and files
+The AMD Pensando Elba SoC includes a DW apb_ssi v4 controller
+with device specific chip-select control.  The Elba SoC
+provides four chip-selects where the native DW IP supports
+two chip-selects.  The Elba DW_SPI instance has two native
+CS signals that are always overridden.
 
 Signed-off-by: Brad Larson <blarson@amd.com>
 ---
- MAINTAINERS | 8 ++++++++
- 1 file changed, 8 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index f61eb221415b..74eb977badb4 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1890,6 +1890,14 @@ N:	allwinner
- N:	sun[x456789]i
- N:	sun50i
+Changes since v6:
+- Add use of macros GENMASK() and BIT()
+- Change ELBA_SPICS_SHIFT() to ELBA_SPICS_OFFSET()
+
+---
+ drivers/spi/spi-dw-mmio.c | 78 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 78 insertions(+)
+
+diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
+index 26c40ea6dd12..9b6f876227e8 100644
+--- a/drivers/spi/spi-dw-mmio.c
++++ b/drivers/spi/spi-dw-mmio.c
+@@ -53,6 +53,24 @@ struct dw_spi_mscc {
+ 	void __iomem        *spi_mst; /* Not sparx5 */
+ };
  
-+ARM/AMD PENSANDO ARM64 ARCHITECTURE
-+M:	Brad Larson <blarson@amd.com>
-+L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
-+S:	Supported
-+F:	Documentation/devicetree/bindings/*/amd,pensando*
-+F:	arch/arm64/boot/dts/amd/elba*
-+F:	drivers/spi/spi-pensando-sr.c
++struct dw_spi_elba {
++	struct regmap *syscon;
++};
 +
- ARM/Amlogic Meson SoC CLOCK FRAMEWORK
- M:	Neil Armstrong <neil.armstrong@linaro.org>
- M:	Jerome Brunet <jbrunet@baylibre.com>
++/*
++ * Elba SoC does not use ssi, pin override is used for cs 0,1 and
++ * gpios for cs 2,3 as defined in the device tree.
++ *
++ * cs:  |       1               0
++ * bit: |---3-------2-------1-------0
++ *      |  cs1   cs1_ovr   cs0   cs0_ovr
++ */
++#define ELBA_SPICS_REG			0x2468
++#define ELBA_SPICS_OFFSET(cs)		((cs) << 1)
++#define ELBA_SPICS_MASK(cs)		(GENMASK(1, 0) << ELBA_SPICS_OFFSET(cs))
++#define ELBA_SPICS_SET(cs, val)		\
++		((((val) << 1) | BIT(0)) << ELBA_SPICS_OFFSET(cs))
++
+ /*
+  * The Designware SPI controller (referred to as master in the documentation)
+  * automatically deasserts chip select when the tx fifo is empty. The chip
+@@ -237,6 +255,65 @@ static int dw_spi_canaan_k210_init(struct platform_device *pdev,
+ 	return 0;
+ }
+ 
++static void dw_spi_elba_override_cs(struct dw_spi_elba *dwselba, int cs, int enable)
++{
++	regmap_update_bits(dwselba->syscon, ELBA_SPICS_REG, ELBA_SPICS_MASK(cs),
++			   ELBA_SPICS_SET(cs, enable));
++
++}
++
++static void dw_spi_elba_set_cs(struct spi_device *spi, bool enable)
++{
++	struct dw_spi *dws = spi_master_get_devdata(spi->master);
++	struct dw_spi_mmio *dwsmmio = container_of(dws, struct dw_spi_mmio, dws);
++	struct dw_spi_elba *dwselba = dwsmmio->priv;
++	u8 cs;
++
++	cs = spi->chip_select;
++	if (cs < 2)
++		dw_spi_elba_override_cs(dwselba, spi->chip_select, enable);
++
++	/*
++	 * The DW SPI controller needs a native CS bit selected to start
++	 * the serial engine.
++	 */
++	spi->chip_select = 0;
++	dw_spi_set_cs(spi, enable);
++	spi->chip_select = cs;
++}
++
++static int dw_spi_elba_init(struct platform_device *pdev,
++			    struct dw_spi_mmio *dwsmmio)
++{
++	const char *syscon_name = "amd,pensando-elba-syscon";
++	struct device_node *np = pdev->dev.of_node;
++	struct dw_spi_elba *dwselba;
++	struct device_node *node;
++	struct regmap *regmap;
++
++	node = of_parse_phandle(np, syscon_name, 0);
++	if (!node) {
++		dev_err(&pdev->dev, "failed to find %s\n", syscon_name);
++		return -ENODEV;
++	}
++
++	regmap = syscon_node_to_regmap(node);
++	if (IS_ERR(regmap)) {
++		dev_err(&pdev->dev, "syscon regmap lookup failed\n");
++		return PTR_ERR(regmap);
++	}
++
++	dwselba = devm_kzalloc(&pdev->dev, sizeof(*dwselba), GFP_KERNEL);
++	if (!dwselba)
++		return -ENOMEM;
++
++	dwselba->syscon = regmap;
++	dwsmmio->priv = dwselba;
++	dwsmmio->dws.set_cs = dw_spi_elba_set_cs;
++
++	return 0;
++}
++
+ static int dw_spi_mmio_probe(struct platform_device *pdev)
+ {
+ 	int (*init_func)(struct platform_device *pdev,
+@@ -352,6 +429,7 @@ static const struct of_device_id dw_spi_mmio_of_match[] = {
+ 	{ .compatible = "intel,thunderbay-ssi", .data = dw_spi_intel_init},
+ 	{ .compatible = "microchip,sparx5-spi", dw_spi_mscc_sparx5_init},
+ 	{ .compatible = "canaan,k210-spi", dw_spi_canaan_k210_init},
++	{ .compatible = "amd,pensando-elba-spi", .data = dw_spi_elba_init},
+ 	{ /* end of table */}
+ };
+ MODULE_DEVICE_TABLE(of, dw_spi_mmio_of_match);
 -- 
 2.17.1
 

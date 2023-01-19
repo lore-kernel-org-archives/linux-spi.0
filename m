@@ -2,51 +2,51 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 01D5BC678D4
-	for <linux-spi@archiver.kernel.org>; Thu, 19 Jan 2023 03:41:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D991DC38142
+	for <linux-spi@archiver.kernel.org>; Thu, 19 Jan 2023 03:42:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229737AbjASDlK (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 18 Jan 2023 22:41:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36340 "EHLO
+        id S229932AbjASDmT (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 18 Jan 2023 22:42:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229797AbjASDlG (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 18 Jan 2023 22:41:06 -0500
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D19A560480
-        for <linux-spi@vger.kernel.org>; Wed, 18 Jan 2023 19:40:02 -0800 (PST)
-Received: by mail-pf1-x429.google.com with SMTP id c26so503003pfp.10
-        for <linux-spi@vger.kernel.org>; Wed, 18 Jan 2023 19:40:02 -0800 (PST)
+        with ESMTP id S229809AbjASDlK (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 18 Jan 2023 22:41:10 -0500
+Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 508A96CCFD
+        for <linux-spi@vger.kernel.org>; Wed, 18 Jan 2023 19:40:15 -0800 (PST)
+Received: by mail-pj1-x1032.google.com with SMTP id y3-20020a17090a390300b00229add7bb36so570664pjb.4
+        for <linux-spi@vger.kernel.org>; Wed, 18 Jan 2023 19:40:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=pensando.io; s=google;
         h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=o9zD9oWQnbZ75azYdkubAjDxtGIPkmpxtF5o8raYmT8=;
-        b=AvBIk3D/NbOYmdCx2aXuzS6kUyfC3pJMNs45qBwLp+DKUjfDJon/3928NgGXA5ac37
-         MSmSH6IR6YYmwA61psHNhRqKjnHsR/5VLNIJtmV9tTnQnHre0CQKOq4xph/66zqb/bo1
-         ueTytX2YGnHKJWagl9y3AyFZWTXR9hQvnpFac2pX7C1prSLZ61Rw8bKCH9hEB4vzNZtV
-         T3bGu9QzZ5Tk/ppiVOySFaAl4D+qTWltDzPoRm8FlZvxOaH0wZ4mqJYz7DgEpQNcbQhQ
-         LupXhoTKA10YB3Avqy7VqQ0BdXoNEOgLLaMPX8p7IH0LeQYcbugBs4X46BXp6zoxaYVx
-         iUOA==
+        bh=VVkJKiJ32kgmrV9HwlRJqykEjqFOh7CBZW3HRZVDDmc=;
+        b=AYoOQ/8J91aj/79GYchUN5wJYIBudinYvCvZHpawYHMzb+k2DSRr1R1uVRBxEeofqo
+         LzyW1cJAQjiKJMpSTrXcqWYdzoFP2mabaNPAfxBeciFXkh7cXm4eqy3GOwWMksVTTLUI
+         WadLMrWa67XUAHDgEnXHXoGTfo1qLudHckfnDNMfrClKiZ/HJZev7fNG5VSng3BxkQtx
+         QjurQkREyFtFMLXzrt7PVeLW6lcdSbUSsmLjdxns1fImjXPAhp/chEEz+ZpqISxfVuXy
+         PQ7pj2gDNoLopkiz4HUs9lc9hjnZP8pdrQtpezvIr2b7qcNtYt90n33wvKAS0cXxDC2p
+         A1pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=references:in-reply-to:message-id:date:subject:cc:to:from
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=o9zD9oWQnbZ75azYdkubAjDxtGIPkmpxtF5o8raYmT8=;
-        b=tAOIH11c2pxmO9YoApIyfCh2/p0qNDS4FuG6Ztvyr/gnXOhfedjWS2vwBbCcz/7iCD
-         lMYzxBojusaM3hEQoiUMd24r7usPrkR0UwCx4ofxy/lzz99GAjq6OfNlEqhKDMlvS6r/
-         RPKFNZsOxww4BSgtn5aEtoqXz0c3I9utQ+i4ZVAQnkzkrUDvxeGMEGBG0IG+CEWS83Kz
-         cvVgg7ARNeXilhzeKAm1G7z0pM7MhYCyRCdwpICigYc/Bt8GsSztLqzOJUTuR3HrKPdJ
-         CQsf/VFF21dzzlWOHCOpGag0gQiogmQ5mvlmOHlYeFHS59fndziiiLr5tsjLtPU5ljzr
-         uOHA==
-X-Gm-Message-State: AFqh2kphosdX/ssilFvfjl/ONtoiU7v6llwQQ/E90Tt3rKHL9jsJMO2H
-        ZVjKKySzdNsHhysiCj92mWhxwg==
-X-Google-Smtp-Source: AMrXdXtBHrbGDP4nBgKCy8YDpYjY1w3ldJH/cA/P9YX2sDEU3ICzJAm3gg68VjxWq9PBdt4hJdQPYA==
-X-Received: by 2002:a05:6a00:4519:b0:58d:f047:53b7 with SMTP id cw25-20020a056a00451900b0058df04753b7mr3260299pfb.3.1674099602358;
-        Wed, 18 Jan 2023 19:40:02 -0800 (PST)
+        bh=VVkJKiJ32kgmrV9HwlRJqykEjqFOh7CBZW3HRZVDDmc=;
+        b=YCrYdaDDvTUBo4MTEja3ZNGq+NG4VUJEd5yeRbDQuUQYf37hrBYMW9uTEQ18KZqOqM
+         KejUC5ffAb96JqKDtWBFOqGq0Bz5U12rzs11+YsmoIwEqz+vnGedsqOgMG0vFLbTfPRE
+         2Fc1TemPGXCqzX5u4lYlXekfUfPN4TljUieO8kMtC4GAqGd47TPg/FPs8YlkJth7TcO0
+         75S2PXFL1XJ52uS6qY+4w7yz/p3cw+S/T8fbpV54jwhgXEezmU0wfnHopvxuGDxzBJKT
+         O0dkipWrBvcXwHhExqDBIGc6aGVy+Fa971Inm/wbnDXRn9VQyPWcysFPEOmcVCn5MAmG
+         turA==
+X-Gm-Message-State: AFqh2kq+04fMlr0kVzGP+0YQXCR99e4jBENnwUNFy7/hdDVkhqEFuY4a
+        ZniPg8Q5N8oLxr+rlC0bPWAl6g==
+X-Google-Smtp-Source: AMrXdXspfuChE5/UxncH6rROQNGpPzZT2cnNcxd08fIyPsy5yYzclyc4tmpYZH1QhU+EWILFVKcqtw==
+X-Received: by 2002:a05:6a21:3990:b0:b6:157c:d72b with SMTP id ad16-20020a056a21399000b000b6157cd72bmr9990976pzc.33.1674099615188;
+        Wed, 18 Jan 2023 19:40:15 -0800 (PST)
 Received: from platform-dev1.pensando.io ([12.226.153.42])
-        by smtp.gmail.com with ESMTPSA id f13-20020aa7968d000000b0056b4c5dde61sm11097879pfk.98.2023.01.18.19.40.00
+        by smtp.gmail.com with ESMTPSA id f13-20020aa7968d000000b0056b4c5dde61sm11097879pfk.98.2023.01.18.19.40.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Jan 2023 19:40:02 -0800 (PST)
+        Wed, 18 Jan 2023 19:40:14 -0800 (PST)
 From:   Brad Larson <brad@pensando.io>
 X-Google-Original-From: Brad Larson <blarson@amd.com>
 To:     linux-arm-kernel@lists.infradead.org
@@ -66,9 +66,9 @@ Cc:     linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
         thomas.lendacky@amd.com, tonyhuang.sunplus@gmail.com,
         ulf.hansson@linaro.org, vaishnav.a@ti.com, will@kernel.org,
         devicetree@vger.kernel.org
-Subject: [PATCH v9 03/15] dt-bindings: spi: cdns: Add compatible for AMD Pensando Elba SoC
-Date:   Wed, 18 Jan 2023 19:39:06 -0800
-Message-Id: <20230119033918.44117-4-blarson@amd.com>
+Subject: [PATCH v9 05/15] dt-bindings: mfd: syscon: Add amd,pensando-elba-syscon compatible
+Date:   Wed, 18 Jan 2023 19:39:08 -0800
+Message-Id: <20230119033918.44117-6-blarson@amd.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20230119033918.44117-1-blarson@amd.com>
 References: <20230119033918.44117-1-blarson@amd.com>
@@ -76,57 +76,26 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Document the cadence qspi controller compatible for AMD Pensando
-Elba SoC boards.  The Elba qspi fifo size is 1024.
+Add the AMD Pensando Elba SoC system registers compatible
 
+Acked-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Brad Larson <blarson@amd.com>
-
 ---
+ Documentation/devicetree/bindings/mfd/syscon.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-Changes since v6:
-- Add 1024 to cdns,fifo-depth property to resolve dtbs_check error
-
----
- .../devicetree/bindings/spi/cdns,qspi-nor.yaml     | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
-
-diff --git a/Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml b/Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml
-index 4707294d8f59..a6556854234f 100644
---- a/Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml
-+++ b/Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml
-@@ -20,11 +20,23 @@ allOf:
-       required:
-         - power-domains
- 
-+  - if:
-+      properties:
-+        compatible:
-+          enum:
-+            - amd,pensando-elba-qspi
-+    then:
-+      properties:
-+        cdns,fifo-depth:
-+          enum: [ 128, 256, 1024 ]
-+          default: 1024
-+
- properties:
-   compatible:
-     oneOf:
-       - items:
-           - enum:
-+              - amd,pensando-elba-qspi
-               - ti,k2g-qspi
-               - ti,am654-ospi
-               - intel,lgm-qspi
-@@ -48,7 +60,7 @@ properties:
-     description:
-       Size of the data FIFO in words.
-     $ref: "/schemas/types.yaml#/definitions/uint32"
--    enum: [ 128, 256 ]
-+    enum: [ 128, 256, 1024 ]
-     default: 128
- 
-   cdns,fifo-width:
+diff --git a/Documentation/devicetree/bindings/mfd/syscon.yaml b/Documentation/devicetree/bindings/mfd/syscon.yaml
+index 1b01bd010431..f4b0ed4ff03c 100644
+--- a/Documentation/devicetree/bindings/mfd/syscon.yaml
++++ b/Documentation/devicetree/bindings/mfd/syscon.yaml
+@@ -38,6 +38,7 @@ properties:
+               - allwinner,sun8i-h3-system-controller
+               - allwinner,sun8i-v3s-system-controller
+               - allwinner,sun50i-a64-system-controller
++              - amd,pensando-elba-syscon
+               - brcm,cru-clkset
+               - freecom,fsg-cs2-system-controller
+               - fsl,imx93-aonmix-ns-syscfg
 -- 
 2.17.1
 

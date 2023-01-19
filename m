@@ -2,51 +2,51 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C93DEC00A5A
-	for <linux-spi@archiver.kernel.org>; Thu, 19 Jan 2023 03:40:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 01D5BC678D4
+	for <linux-spi@archiver.kernel.org>; Thu, 19 Jan 2023 03:41:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229622AbjASDkh (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 18 Jan 2023 22:40:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36068 "EHLO
+        id S229737AbjASDlK (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 18 Jan 2023 22:41:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229598AbjASDje (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 18 Jan 2023 22:39:34 -0500
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1022530CA
-        for <linux-spi@vger.kernel.org>; Wed, 18 Jan 2023 19:39:29 -0800 (PST)
-Received: by mail-pf1-x434.google.com with SMTP id 20so492843pfu.13
-        for <linux-spi@vger.kernel.org>; Wed, 18 Jan 2023 19:39:29 -0800 (PST)
+        with ESMTP id S229797AbjASDlG (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 18 Jan 2023 22:41:06 -0500
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D19A560480
+        for <linux-spi@vger.kernel.org>; Wed, 18 Jan 2023 19:40:02 -0800 (PST)
+Received: by mail-pf1-x429.google.com with SMTP id c26so503003pfp.10
+        for <linux-spi@vger.kernel.org>; Wed, 18 Jan 2023 19:40:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=pensando.io; s=google;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3xnmV3pjfo47eAWg4NT1HzixPPrWIZETdNEOcuAL2l4=;
-        b=0ojxM8H5R0Uv/VOEgZH0DNH5cJge+M1BSsowQ05HJrXN5sWOP5d1YZijogzQlIiJH9
-         6rGCkD3YsL5GC9UL41P0E3TWfl3if8u9Uzc1zCC7JVDnNn8oItOGMWM29nvCbVmUpdqX
-         uyWiqGY+12QqVhtJRsVMeMk3xQl3qTBZ4XmrKyKvxT8YRcGHhqFfEqM102TUQ9Y4UeLi
-         Gs0bd88m8FtObf/W1xwlq5b1kudRcTZ5C4Z5+plV5igrwIxpr0a5XuGYgr4HPdQ7n/au
-         PEh+j+iS/emgxeiPgDmyvw+dlZSssGUHSqPnnWCVzYsQWvBmIGniWgXkAEYaUbtyOxee
-         n1PA==
+        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=o9zD9oWQnbZ75azYdkubAjDxtGIPkmpxtF5o8raYmT8=;
+        b=AvBIk3D/NbOYmdCx2aXuzS6kUyfC3pJMNs45qBwLp+DKUjfDJon/3928NgGXA5ac37
+         MSmSH6IR6YYmwA61psHNhRqKjnHsR/5VLNIJtmV9tTnQnHre0CQKOq4xph/66zqb/bo1
+         ueTytX2YGnHKJWagl9y3AyFZWTXR9hQvnpFac2pX7C1prSLZ61Rw8bKCH9hEB4vzNZtV
+         T3bGu9QzZ5Tk/ppiVOySFaAl4D+qTWltDzPoRm8FlZvxOaH0wZ4mqJYz7DgEpQNcbQhQ
+         LupXhoTKA10YB3Avqy7VqQ0BdXoNEOgLLaMPX8p7IH0LeQYcbugBs4X46BXp6zoxaYVx
+         iUOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3xnmV3pjfo47eAWg4NT1HzixPPrWIZETdNEOcuAL2l4=;
-        b=dkLMlTtH7mX1tmEnc8v7z8D5Q81VE5O4k+31XSM/wdjLzSe1UBK69LW7YrgHgeczf1
-         VIf/8z55y1sgJo1PaBlcLLx8fU8b2nR9QDEhjjZM6HNYungdiP/HL/PmwaC4IuOldj8j
-         0yd4NaSzLXI/gnDJQGkyEc0+WRhTA5QzbmviugioBRyKmTD4YExgAHcB44oWcZ9IedDo
-         Uh9snRxhGXMxjnY+4WvTuFB+1Aw7tFQ4P2jmcyRxnnFFQQmAf1tc5ux5V1jZYeRkwUtQ
-         yyKZPWTZ75bbN6DStOAw/Ag0CyALJOI91uGQsXP5N1WnJ1sw67yZbYOybnR23pGPQLzx
-         gtiw==
-X-Gm-Message-State: AFqh2kpa8yk+3CCski1BLUvOOwpRXuYkT1v17rIky7i6jiT/xZHjFSmJ
-        j1qUiggIQyPeUrm7/ikE64iqAg==
-X-Google-Smtp-Source: AMrXdXugpHk9oO8+GrDTs4F384Qf7RM0TBZuhV3gfDzF36ydKx/exaJwwEATHxa5y/84uzNHnRmxSg==
-X-Received: by 2002:a62:1884:0:b0:58b:c7f8:623c with SMTP id 126-20020a621884000000b0058bc7f8623cmr8234980pfy.27.1674099568699;
-        Wed, 18 Jan 2023 19:39:28 -0800 (PST)
+        h=references:in-reply-to:message-id:date:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=o9zD9oWQnbZ75azYdkubAjDxtGIPkmpxtF5o8raYmT8=;
+        b=tAOIH11c2pxmO9YoApIyfCh2/p0qNDS4FuG6Ztvyr/gnXOhfedjWS2vwBbCcz/7iCD
+         lMYzxBojusaM3hEQoiUMd24r7usPrkR0UwCx4ofxy/lzz99GAjq6OfNlEqhKDMlvS6r/
+         RPKFNZsOxww4BSgtn5aEtoqXz0c3I9utQ+i4ZVAQnkzkrUDvxeGMEGBG0IG+CEWS83Kz
+         cvVgg7ARNeXilhzeKAm1G7z0pM7MhYCyRCdwpICigYc/Bt8GsSztLqzOJUTuR3HrKPdJ
+         CQsf/VFF21dzzlWOHCOpGag0gQiogmQ5mvlmOHlYeFHS59fndziiiLr5tsjLtPU5ljzr
+         uOHA==
+X-Gm-Message-State: AFqh2kphosdX/ssilFvfjl/ONtoiU7v6llwQQ/E90Tt3rKHL9jsJMO2H
+        ZVjKKySzdNsHhysiCj92mWhxwg==
+X-Google-Smtp-Source: AMrXdXtBHrbGDP4nBgKCy8YDpYjY1w3ldJH/cA/P9YX2sDEU3ICzJAm3gg68VjxWq9PBdt4hJdQPYA==
+X-Received: by 2002:a05:6a00:4519:b0:58d:f047:53b7 with SMTP id cw25-20020a056a00451900b0058df04753b7mr3260299pfb.3.1674099602358;
+        Wed, 18 Jan 2023 19:40:02 -0800 (PST)
 Received: from platform-dev1.pensando.io ([12.226.153.42])
-        by smtp.gmail.com with ESMTPSA id f13-20020aa7968d000000b0056b4c5dde61sm11097879pfk.98.2023.01.18.19.39.26
+        by smtp.gmail.com with ESMTPSA id f13-20020aa7968d000000b0056b4c5dde61sm11097879pfk.98.2023.01.18.19.40.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Jan 2023 19:39:28 -0800 (PST)
+        Wed, 18 Jan 2023 19:40:02 -0800 (PST)
 From:   Brad Larson <brad@pensando.io>
 X-Google-Original-From: Brad Larson <blarson@amd.com>
 To:     linux-arm-kernel@lists.infradead.org
@@ -66,323 +66,67 @@ Cc:     linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
         thomas.lendacky@amd.com, tonyhuang.sunplus@gmail.com,
         ulf.hansson@linaro.org, vaishnav.a@ti.com, will@kernel.org,
         devicetree@vger.kernel.org
-Subject: [PATCH v9 00/15] Support AMD Pensando Elba SoC
-Date:   Wed, 18 Jan 2023 19:39:03 -0800
-Message-Id: <20230119033918.44117-1-blarson@amd.com>
+Subject: [PATCH v9 03/15] dt-bindings: spi: cdns: Add compatible for AMD Pensando Elba SoC
+Date:   Wed, 18 Jan 2023 19:39:06 -0800
+Message-Id: <20230119033918.44117-4-blarson@amd.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20230119033918.44117-1-blarson@amd.com>
+References: <20230119033918.44117-1-blarson@amd.com>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This series enables support for AMD Pensando Elba SoC based platforms.
+Document the cadence qspi controller compatible for AMD Pensando
+Elba SoC boards.  The Elba qspi fifo size is 1024.
 
-The Elba SoC has the following features:
-- Sixteen ARM64 A72 cores
-- Dual DDR 4/5 memory controllers
-- 32 lanes of PCIe Gen3/4 to the Host
-- Network interfaces: Dual 200GE, Quad 100GE, 50GE, 25GE, 10GE and
-  also a single 1GE management port.
-- Storage/crypto offloads and 144 programmable P4 cores.
-- QSPI and EMMC for SoC storage
-- Two SPI interfaces for peripheral management
-- I2C bus for platform management
+Signed-off-by: Brad Larson <blarson@amd.com>
 
-== V9 changes ==
-v9-0002-dt-bindings-mmc-cdns-Add-AMD-Pensando-Elba-SoC
-- Add reset-names and resets properties
-- Add if/then on property amd,pensando-elba-sd4hc to set reg property
-  values for minItems and maxItems
+---
 
-v9-0003-dt-bindings-spi-cdns-Add-compatible-for-AMD-Pensa
+Changes since v6:
 - Add 1024 to cdns,fifo-depth property to resolve dtbs_check error
 
-v9-0004-dt-bindings-spi-dw-Add-AMD-Pensando-Elba-SoC-SPI-
-- Define property amd,pensando-elba-syscon
-- Move compatible amd,pensando-elba-spi ahead of baikal,bt1-ssi
+---
+ .../devicetree/bindings/spi/cdns,qspi-nor.yaml     | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-v9-0006-dt-bindings-mfd-amd-pensando-elbasr-Add-AMD-Pensa
-- Instead of four nodes, one per chip-select, a single
-  node is used with reset-cells in the parent.
-- No MFD API is used anymore in the driver so it made
-  sense to move this to drivers/spi.
-- This driver is common for all Pensando SoC based designs
-  so changed the name to pensando-sr.c to not make it Elba
-  SoC specific.
-- Added property cs for the chip-select number which is used
-  by the driver to create /dev/pensr0.<cs>
-
-v9-0009-arm64-dts-Add-AMD-Pensando-Elba-SoC-support
-- Single node for spi0 system-controller and squash
-  the reset-controller child into parent
-
-v9-0010-spi-cadence-quadspi-Add-compatible-for-AMD-Pensan
-- Rebase to linux-next 6.2.0-rc1
-
-v9-0011-spi-dw-Add-support-for-AMD-Pensando-Elba-SoC
-- Add use of macros GENMASK() and BIT()
-- Change ELBA_SPICS_SHIFT() to ELBA_SPICS_OFFSET()
-
-v9-0012-mmc-sdhci-cadence-Enable-device-specific-override
-- No change to this patch but as some patches are deleted and this is
-  a respin the three successive patches to sdhci-cadence.c are
-  patches 12, 13, and 14 which do the following:
-  1. Add ability for Cadence specific design to have priv writel().
-  2. Add Elba SoC support that requires its own priv writel() for
-     byte-lane control .
-  3. Add support for mmc hardware reset.
-
-v9-0014-mmc-sdhci-cadence-Support-mmc-hardware-reset
-- Previously patch 17/17
-- Changed delay after reset_control_assert() from 9 to 3 usec
-- Renamed sdhci_mmc_hw_reset() to sdhci_cdns_mmc_hw_reset()
-
-v9-0015-spi-pensando-sr-Add-AMD-Pensando-SoC-System-Resou
-- Previously patch 14/17
-- After the change to the device tree node and squashing
-  reset-cells into the parent simplified this to not use
-  any MFD API and move it to drivers/spi/pensando-sr.c.
-- Change the naming to remove elba since this driver is common
-  for all Pensando SoC designs .
-- Default yes SPI_PENSANDO_SR for ARCH_PENSANDO
-
-
-== V6 changes ==
-- Updated copyright and SPDX
-
-v6-0001-dt-bindings-arm-add-AMD-Pensando-boards
-- Delete 'Device Tree Bindings' in title
-
-v6-0002-dt-bindings-mmc-cdns-Add-AMD-Pensando-Elba-SoC
-- Change if/then for Elba which has a second reg for byte-lane control
-
-v6-0003-dt-bindings-spi-cdns-Add-compatible-for-AMD-Pensa
-- no change
-
-v6-0004-dt-bindings-spi-dw-Add-AMD-Pensando-Elba-SoC-SPI-
-- Add amd,pensando-elba-syscon
-
-v6-0005-dt-bindings-mfd-syscon-Add-amd-pensando-elba-sysc
-- no change
-
-v6-0006-dt-bindings-mfd-amd-pensando-elbasr-Add-AMD-Pensa
-- Expand description, rename nodes and change compatible usage
-
-v6-0007-dt-bindings-reset-amd-pensando-elbasr-reset-Add-A
-- Delete nodename pattern and changed spi0 to spi
-- File amd,pensando-elba-reset.h is deleted as there is only
-  one reset used.
-- Update example
-
-v6-0008-MAINTAINERS-Add-entry-for-AMD-PENSANDO
-- no change
-
-v6-0009-arm64-Add-config-for-AMD-Pensando-SoC-platforms
-- no change
-
-v6-0010-arm64-dts-Add-AMD-Pensando-Elba-SoC-support
-- Update node names and add amd,pensando-elba-syscon
-- Delete use of amd,pensando-elba-reset.h which had a single definition
-
-v6-0011-spi-cadence-quadspi-Add-compatible-for-AMD-Pensan
-- Remove (void) cast
-
-v6-0012-spi-dw-Add-support-for-AMD-Pensando-Elba-SoC
-- Update use of amd,pensando-elba-syscon
-
-v6-0013-mmc-sdhci-cadence-Enable-device-specific-override
-- Change this patch to add a priv_writel() callback where all
-  existing designs use writel().  This separates the Elba
-  support into three patches.  The second patch is added
-  to the end of the sequence for Elba support.  The third
-  patch enables mmc hardware reset.
-
-v6-0014-mfd-pensando-elbasr-Add-AMD-Pensando-Elba-System-
-- Updates from review comments
-- Use spi_message_init_with_transfers instead of init/add_tail API
-
-v6-0015-reset-elbasr-Add-AMD-Pensando-Elba-SR-Reset-Contr
-- Remove use of amd,pensando-elba-reset.h and use BIT()
-
-v6-0016-mmc-sdhci-cadence-Add-AMD-Pensando-Elba-SoC-suppo
-- Elba sdhci-cadence.c support added in this patch to build on
-  0013 which just adds a callback to override priv_writel()
-
-v6-0017-mmc-sdhci-cadence-Support-mmc-hardware-reset
-- New patch where Elba has a reset-controller for mmc hardware
-  reset.  The reset is implemented by a register in the cpld.
-
-== V5 changes ==
-- Change to AMD Pensando instead of Pensando.
-- No reference to spidev in the device tree.  Add multi-function driver
-  pensando-elbasr and sub-device reset-elbasr which provides mfd and
-  /dev interface to the cpld.
-- Rebase to linux-next tag next-20220609 5.19.0-rc1
-- Redo the email list after rebase and using scripts/get_maintainer.pl
-
-== V4 changes ==
-The version of dtschema used is 2022.3.2.
-
-v4-0001-dt-bindings-arm-add-Pensando-boards.patch
-- Add description and board compatible
-
-v4-0003-dt-bindings-mmc-Add-Pensando-Elba-SoC-binding.patch
-- Change from elba-emmc to elba-sd4hc to match file convention
-- Use minItems: 1 and maxItems: 2 to pass schema check
-
-v4-0005-dt-bindings-spi-dw-Add-Pensando-Elba-SoC-SPI-Control.patch
-- Add required property pensando,syscon-spics to go with
-  pensando,elba-spi
-
-v4-0006-MAINTAINERS-Add-entry-for-PENSANDO.patch
-- Change Maintained to Supported
-
-v4-0007-arm64-Add-config-for-Pensando-SoC-platforms.patch
-- Fix a typo on interface max speed
-
-v4-0008-spi-cadence-quadspi-Add-compatible-for-Pensando-Elba.patch
-- Update due to spi-cadence-quadspi.c changes
-
-v4-0009-mmc-sdhci-cadence-Add-Pensando-Elba-SoC-support.patch
-- Change from elba-emmc to elba-sd4hc to match file convention
-
-v4-0010-spi-dw-Add-support-for-Pensando-Elba-SoC.patch
-- Use more descriptive dt property pensando,syscon-spics
-- Minor changes from review input
-
-v4-0011-arm64-dts-Add-Pensando-Elba-SoC-support.patch
-- Changed to dual copyright (GPL-2.0+ OR MIT)
-- Minor changes from review input
-
-== V3 changes ==
-v3-0001-gpio-Add-Elba-SoC-gpio-driver-for-spi-cs-control.patch
-- This patch is deleted.  Elba SOC specific gpio spics control is
-  integrated into spi-dw-mmio.c.
-
-v3-0002-spi-cadence-quadspi-Add-QSPI-support-for-Pensando-El.patch
-- Changed compatible to "pensando,elba-qspi" to be more descriptive
-  in spi-cadence-quadspi.c.
-
-- Arnd wondered if moving to DT properties for quirks may be the
-  way to go.  Feedback I've received on other patches was don't
-  mix two efforts in one patch so I'm currently just adding the
-  Elba support to the current design.
-
-v3-0003-spi-dw-Add-support-for-Pensando-Elba-SoC-SPI.patch
-- Changed the implementation to use existing dw_spi_set_cs() and
-  integrated Elba specific CS control into spi-dw-mmio.c.  The
-  native designware support is for two chip-selects while Elba
-  provides 4 chip-selects.  Instead of adding a new file for
-  this support in gpio-elba-spics.c the support is in one
-  file (spi-dw-mmio.c).
-
-v3-0004-spidev-Add-Pensando-CPLD-compatible.patch
-- This patch is deleted.  The addition of compatible "pensando,cpld"
-  to spidev.c is not added and an existing compatible is used 
-  in the device tree to enable.
-
-v3-0005-mmc-sdhci-cadence-Add-Pensando-Elba-SoC-support.patch
-- Ulf and Yamada-san agreed the amount of code for this support
-  is not enough to need a new file.  The support is added into
-  sdhci-cadence.c and new files sdhci-cadence-elba.c and
-  sdhci-cadence.h are deleted.
-- Redundant defines are removed (e.g. use SDHCI_CDNS_HRS04 and
-  remove SDIO_REG_HRS4).
-- Removed phy init function sd4_set_dlyvr() and used existing
-  sdhci_cdns_phy_init(). Init values are from DT properties.
-- Replace  devm_ioremap_resource(&pdev->dev, iomem)
-     with  devm_platform_ioremap_resource(pdev, 1)
-- Refactored the elba priv_writ_l() and elba_write_l() to
-  remove a little redundant code.
-- The config option CONFIG_MMC_SDHCI_CADENCE_ELBA goes away.
-- Only C syntax and Elba functions are prefixed with elba_
-
-v3-0006-arm64-Add-config-for-Pensando-SoC-platforms.patch
-- Added a little more info to the platform help text to assist
-  users to decide on including platform support or not.
-
-v3-0007-arm64-dts-Add-Pensando-Elba-SoC-support.patch
-- Node names changed to DT generic names
-- Changed from using 'spi@' which is reserved
-- The elba-flash-parts.dtsi is kept separate as
-  it is included in multiple dts files.
-- SPDX license tags at the top of each file
-- The compatible = "pensando,elba" and 'model' are
-  now together in the board file.
-- UIO nodes removed
-- Ordered nodes by increasing unit address
-- Removed an unreferenced container node.
-- Dropped deprecated 'device_type' for uart0 node.
-
-v3-0010-dt-bindings-spi-cadence-qspi-Add-support-for-Pensand.patch
-- Updated since the latest documentation has been converted to yaml
-
-v3-0011-dt-bindings-gpio-Add-Pensando-Elba-SoC-support.patch
-- This patch is deleted since the Elba gpio spics is added to
-  the spi dw driver and documented there.
-
-Because of the deletion of patches and merging of code
-the new patchset is not similar.  A changelog is added into
-the patches for merged code to be helpful on the history.
-
-== V2 changes ==
-- 01    Fix typo, return code value and log message.
-- 03    Remove else clause, intrinsic DW chip-select is never used.
-- 08-11 Split out dts and bindings to sub-patches
-- 10    Converted existing cadence-quadspi.txt to YAML schema
-- 13    New driver should use <linux/gpio/driver.h>
-
-Brad Larson (15):
-  dt-bindings: arm: add AMD Pensando boards
-  dt-bindings: mmc: cdns: Add AMD Pensando Elba SoC
-  dt-bindings: spi: cdns: Add compatible for AMD Pensando Elba SoC
-  dt-bindings: spi: dw: Add AMD Pensando Elba SoC SPI Controller
-    bindings
-  dt-bindings: mfd: syscon: Add amd,pensando-elba-syscon compatible
-  dt-bindings: mfd: amd,pensando-elbasr: Add AMD Pensando System
-    Resource chip
-  MAINTAINERS: Add entry for AMD PENSANDO
-  arm64: Add config for AMD Pensando SoC platforms
-  arm64: dts: Add AMD Pensando Elba SoC support
-  spi: cadence-quadspi: Add compatible for AMD Pensando Elba SoC
-  spi: dw: Add support for AMD Pensando Elba SoC
-  mmc: sdhci-cadence: Enable device specific override of writel()
-  mmc: sdhci-cadence: Add AMD Pensando Elba SoC support
-  mmc: sdhci-cadence: Support mmc hardware reset
-  spi: pensando-sr: Add AMD Pensando SoC System Resource
-
- .../devicetree/bindings/arm/amd,pensando.yaml |  26 +
- .../devicetree/bindings/mfd/syscon.yaml       |   1 +
- .../devicetree/bindings/mmc/cdns,sdhci.yaml   |  28 +-
- .../bindings/spi/amd,pensando-sr.yaml         |  68 +++
- .../bindings/spi/cdns,qspi-nor.yaml           |  14 +-
- .../bindings/spi/snps,dw-apb-ssi.yaml         |  14 +
- MAINTAINERS                                   |   8 +
- arch/arm64/Kconfig.platforms                  |  12 +
- arch/arm64/boot/dts/amd/Makefile              |   1 +
- arch/arm64/boot/dts/amd/elba-16core.dtsi      | 189 ++++++++
- arch/arm64/boot/dts/amd/elba-asic-common.dtsi |  82 ++++
- arch/arm64/boot/dts/amd/elba-asic.dts         |  28 ++
- arch/arm64/boot/dts/amd/elba-flash-parts.dtsi | 106 ++++
- arch/arm64/boot/dts/amd/elba.dtsi             | 192 ++++++++
- drivers/mmc/host/Kconfig                      |   1 +
- drivers/mmc/host/sdhci-cadence.c              | 180 ++++++-
- drivers/spi/Kconfig                           |  14 +
- drivers/spi/Makefile                          |   1 +
- drivers/spi/spi-cadence-quadspi.c             |  19 +
- drivers/spi/spi-dw-mmio.c                     |  78 +++
- drivers/spi/spi-pensando-sr.c                 | 454 ++++++++++++++++++
- 21 files changed, 1500 insertions(+), 16 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/arm/amd,pensando.yaml
- create mode 100644 Documentation/devicetree/bindings/spi/amd,pensando-sr.yaml
- create mode 100644 arch/arm64/boot/dts/amd/elba-16core.dtsi
- create mode 100644 arch/arm64/boot/dts/amd/elba-asic-common.dtsi
- create mode 100644 arch/arm64/boot/dts/amd/elba-asic.dts
- create mode 100644 arch/arm64/boot/dts/amd/elba-flash-parts.dtsi
- create mode 100644 arch/arm64/boot/dts/amd/elba.dtsi
- create mode 100644 drivers/spi/spi-pensando-sr.c
-
-
-base-commit: 1b929c02afd37871d5afb9d498426f83432e71c2
+diff --git a/Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml b/Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml
+index 4707294d8f59..a6556854234f 100644
+--- a/Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml
++++ b/Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml
+@@ -20,11 +20,23 @@ allOf:
+       required:
+         - power-domains
+ 
++  - if:
++      properties:
++        compatible:
++          enum:
++            - amd,pensando-elba-qspi
++    then:
++      properties:
++        cdns,fifo-depth:
++          enum: [ 128, 256, 1024 ]
++          default: 1024
++
+ properties:
+   compatible:
+     oneOf:
+       - items:
+           - enum:
++              - amd,pensando-elba-qspi
+               - ti,k2g-qspi
+               - ti,am654-ospi
+               - intel,lgm-qspi
+@@ -48,7 +60,7 @@ properties:
+     description:
+       Size of the data FIFO in words.
+     $ref: "/schemas/types.yaml#/definitions/uint32"
+-    enum: [ 128, 256 ]
++    enum: [ 128, 256, 1024 ]
+     default: 128
+ 
+   cdns,fifo-width:
 -- 
 2.17.1
 

@@ -2,43 +2,43 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 68938C678D4
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C0EC1C678DF
 	for <linux-spi@archiver.kernel.org>; Thu, 19 Jan 2023 04:16:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230089AbjASEIr (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 18 Jan 2023 23:08:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39112 "EHLO
+        id S230196AbjASEJx (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 18 Jan 2023 23:09:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229926AbjASD4k (ORCPT
+        with ESMTP id S229934AbjASD4k (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Wed, 18 Jan 2023 22:56:40 -0500
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2061.outbound.protection.outlook.com [40.107.93.61])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FDE14CE5B;
-        Wed, 18 Jan 2023 19:52:55 -0800 (PST)
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on20628.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe59::628])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C03DF367E1;
+        Wed, 18 Jan 2023 19:53:11 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=GDHsjy0eD/+AlAgpSHW/RRIfYxVYzzNHrS/5TvozTei2ujgZt/UXuL7VgqPw83Dij1UyuFt7hkIJc80GkggczofEDgrl9SrnefXhLvdptGFOQBeKgqzYuiEU3vg7M89GynymR9UeYbWvKreG7MXohPGDGuulgAqQkL/awjnucFgSmct4LTlIypDKbuP2bILsyl+earXVh4C0rYzBnRTt+e0Yvj9Z1SCfRQ82yJog9SJODEelsHNFLMBEUWDMROZhz9wDfTzgze1yae27CS4VbV6XlsKEfo/gLUjven/x8VL4aUwn9nTMqDrLa/HMrhGoLpXpuc7M4mGE92QPAe9l2A==
+ b=gRHeoGWkRuoeJVuKt+cOCF8LBXvVcGvSkVCMquqRU51w3KOzHDuke0SOaGcRFDvTYiydIcwAzE+zmsNxR3IzqOil5ptb7lzk7NTPQqgYevk23h+mYlUSpopbayj0vQU7uFJOWNGKLd5rJCH3CqiDWN8ZzywVQ+9oYQ7NqZpXjwWbUgSTp0I6s8aPs37Zg+VrM3eRvaX4+M+yQdzXiDmoOIXVzB5Ao0Fr2fgzmONUIuFAV2+6uOiNEXQcHHxI5wO/hW01zVfs56zSLipr+tLQjYLECNAk8SNv0Wn10PX+sDiKExPJrTtKFvK+1I8bLPD71b+rY3UZdf/rYG+TWhS/QQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cLMxBcBGeAB+TIEcP+o7LmKcomO832vU69LcAagdqEs=;
- b=fd1PezMCStK64/XnFQO9VmB0JaFq0wP+Vmg2KM2VRD6Z5lf76eHfumfrAtKQMU1gKYe9TXKPWx4duNTjXh5wN0BNkC3eO4ESmPIitwe292JeBx+dJvDbBCZcNDtwFauQyOiVrVywF33Eh2Lh9g2h5qOHZHIUZxxq++2Kw1UVXIs5MZfQwsoxMZ1b6hjh9SCei3uYngx1l5bT7/TIQY+fJOcN98ZS9ODQjxc3zFrq2JwI/lOk5jJUxS08Nw6RD8KS9DnSHrVFMDwdlfO4auvo5219NjqmVz8+2TC1v0Zvxk8mfc+gLtvZqbdb1gWOrPwDWbfByvOTpN41x8EqvJX1iQ==
+ bh=uVSyIxd0zyi5DPAP831D9ZtXzLP6ZjtYK7g/s1ptTOw=;
+ b=BavH2f7ZPS289YSJZ4vWb9kAtK8VqTY8A7uYaeNR0wA1NjQevvx/MC2kmuAu/A/z9GzADgIS9e3hU7mmNj5Gc7mwxsa4Stg4HLbxeZTDhpCJ4NhEjpcZtU8H3rHyUDDYYGdUNtO6sPLjZHdACAgRA5gQHexRCy373OnEJkmOMznDhxcqjjxMWiZ2/sHD4ki5fCIeBe+VpdSeVcnErDDC7UOGCKMKNoV/AIev9QJWt+eb0saKF9driCoa1PYqi1hNwKqQzMho5chu9A2ld6KVe4ifKxG0jQsjh7/Bpn/8HzgMSN5jQ6fYA1cEBsjG+q38Fn/uzFSu81WqanApPsxS3A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.infradead.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cLMxBcBGeAB+TIEcP+o7LmKcomO832vU69LcAagdqEs=;
- b=fqfGrBT09C3wpWG0qruo/qmmpOKhXsmFBouxL3UMOZuH5iMfz7QxDIKEZ0lyFslrlpCg7eZIkRxquWgIv+p4iAZMj4UdzC6TMQijwCjDnYGDO5sIp1MLyss2uLQq6WkJCgG9Tek2gI+QloSAJJVlRur8wX5qTh7r6Z7Z1BxnnxU=
-Received: from MW4PR04CA0307.namprd04.prod.outlook.com (2603:10b6:303:82::12)
- by CH2PR12MB4118.namprd12.prod.outlook.com (2603:10b6:610:a4::23) with
+ bh=uVSyIxd0zyi5DPAP831D9ZtXzLP6ZjtYK7g/s1ptTOw=;
+ b=lc7PIabXDIsjAcoPzxVEQceZx7KHaBl9b8g49Qb5XHu4n7PaFUQcf/ZVzeUrDDCZ9T2ROeZWV4B/zYQW5eP5hVG0O9y9CqlSxB4TYoo3jMegY0PzBn1KOq9LjUIq2bidExpRctVm2zeKSbznAzjOPNRKxhE1gKPONCrsdpvqnd4=
+Received: from MW4PR04CA0264.namprd04.prod.outlook.com (2603:10b6:303:88::29)
+ by DS7PR12MB8082.namprd12.prod.outlook.com (2603:10b6:8:e6::16) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6002.24; Thu, 19 Jan
- 2023 03:52:53 +0000
-Received: from CO1NAM11FT027.eop-nam11.prod.protection.outlook.com
- (2603:10b6:303:82:cafe::d3) by MW4PR04CA0307.outlook.office365.com
- (2603:10b6:303:82::12) with Microsoft SMTP Server (version=TLS1_2,
+ 2023 03:53:06 +0000
+Received: from CO1NAM11FT034.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:303:88:cafe::63) by MW4PR04CA0264.outlook.office365.com
+ (2603:10b6:303:88::29) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6002.19 via Frontend
- Transport; Thu, 19 Jan 2023 03:52:52 +0000
+ Transport; Thu, 19 Jan 2023 03:53:06 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -46,13 +46,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1NAM11FT027.mail.protection.outlook.com (10.13.174.224) with Microsoft SMTP
+ CO1NAM11FT034.mail.protection.outlook.com (10.13.174.248) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6002.13 via Frontend Transport; Thu, 19 Jan 2023 03:52:52 +0000
+ 15.20.6002.24 via Frontend Transport; Thu, 19 Jan 2023 03:53:06 +0000
 Received: from platform-dev1.pensando.io (10.180.168.240) by
  SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.34; Wed, 18 Jan 2023 21:52:40 -0600
+ 15.1.2375.34; Wed, 18 Jan 2023 21:53:02 -0600
 From:   Brad Larson <blarson@amd.com>
 To:     <linux-arm-kernel@lists.infradead.org>
 CC:     <linux-kernel@vger.kernel.org>, <linux-mmc@vger.kernel.org>,
@@ -72,9 +72,9 @@ CC:     <linux-kernel@vger.kernel.org>, <linux-mmc@vger.kernel.org>,
         <tonyhuang.sunplus@gmail.com>, <ulf.hansson@linaro.org>,
         <vaishnav.a@ti.com>, <will@kernel.org>,
         <devicetree@vger.kernel.org>
-Subject: [PATCH v9 09/15] arm64: dts: Add AMD Pensando Elba SoC support
-Date:   Wed, 18 Jan 2023 19:51:30 -0800
-Message-ID: <20230119035136.21603-10-blarson@amd.com>
+Subject: [PATCH v9 15/15] spi: pensando-sr: Add AMD Pensando SoC System Resource
+Date:   Wed, 18 Jan 2023 19:51:36 -0800
+Message-ID: <20230119035136.21603-16-blarson@amd.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20230119035136.21603-1-blarson@amd.com>
 References: <20230119035136.21603-1-blarson@amd.com>
@@ -85,685 +85,548 @@ X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1NAM11FT027:EE_|CH2PR12MB4118:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7b3e0d97-7131-4c50-2b9e-08daf9d0a3c6
+X-MS-TrafficTypeDiagnostic: CO1NAM11FT034:EE_|DS7PR12MB8082:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1d6c73c3-faea-4ef6-a6e6-08daf9d0ac19
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: CUfl6dvGblkl5p59EVqBtiRjlDN0V5MsHYIVWT7pHupW0DVfY0eQwD5DDqyw9BgG8LwwVT7YMayVwKIcgh2Oq2siR55bM1cfZ83Sd8xQolKfpRCgJOM1w13/fDaPRDiG0biyiqI98DV+u+XZj6zf3jGgbZh4Np2zECBVGUZxpAve9ZawCFALGhPam3od086AfylSYbCts8AQS2KMg8YGu7sHSLw14VqyaXWZMfRMydDjQlQv1zV+ZkTCR1kDUTICmEyv/Z1LPyZncajII48QZzxNXqDg6LhM5G9XqNNg7dSuAk2HLiz2OnwXGF9u+jLIb+ZpfLg5vU1A0KzodDlt7neMEWYA2ZjdBUkwmG+8nvoPzJTkDCcu4pRO45/2BOZ6+5uSbYWFeJK5FnKvjcOEyz0uqo/rQYlcBE34hFO8bpHU5Cvef2JhLLRPMUboYJ1Qf9WnhAi6SQ7IPXLyul12fHQXtqBOjTuEJ/eSrx5s3TZMfOJXHnVCAWIPg2OsA9fgiw4c+wJg9cYFoehT7EMVYk2FIElPNMfvQXs1WdhYLfOEFnvcquExWH+PDoO0NJZkEwLQ1SQSaWur8AVRz1DwD66hrO3NdxCg49nOtUYUnO0vTHJCTdh8+jRRK/TFLWQS2pHNgZIupMmFdFBAfZV1yx8R8HgSR3lVc4YhgD1pz6f6OezMfL7/P4drulfXYYtDHuOhS+4oCClVTIgSZ0adgMVNlau7hWl1N6pUmACuff8=
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230022)(4636009)(396003)(136003)(376002)(346002)(39860400002)(451199015)(40470700004)(36840700001)(46966006)(81166007)(82740400003)(70206006)(36860700001)(356005)(8936002)(5660300002)(30864003)(7416002)(2906002)(70586007)(7406005)(4326008)(40480700001)(8676002)(16526019)(40460700003)(41300700001)(6916009)(82310400005)(2616005)(26005)(186003)(1076003)(336012)(83380400001)(426003)(47076005)(6666004)(316002)(54906003)(478600001)(36756003)(36900700001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: r13aYIPKJF5YHCvi16uyqhEPVgtV/cMHccQ3rJo9Boe+6M5eBHQwJ7uTrpGXb4Pq0Af8/KEf5G4ZtRPoMXVnek+WL7fpSLgrmQKidcc7Ec4HyLOhaIYPutH28hrf12ej8ZRmgr1KkRIVdYYiPEB5c04VyLo+x6JvQaiPwUclm/mEl5JmvN8Igonq9iyhwyQftVRTCNwlx3xveHu/3gNTBYd9eO0+OU+Dirz6EG3PPxeIDGJWwgWpaP+NxRty3oYrwOpBZmTVrMsWSevVA2nwrMGqQgSxzAaIwJRJveYodYVeBKoNHjg6Dk8Zvk/YksR35JCTCxuN92rDZ6v6d6XlZM4lNpqOEWlsMqjhF1w/Eq2NakgH+6nEO0V2sIaF1//704NtFeb3q01ONuiyd748aWsN/qGsw6CMT4t6HEqUIdNuPMvgksJjzNmGAKD2sTKc3glsdfSAhqNG5aoVGMvRMkjvNY2Z6yfGGVJV1Sa/oi6Fk1x6zzR0pvIuDnc7EZVsrwcYjlKPPT7PdfzKr++6GUT319Ml1Tnd4cznOLa4gixkgvQ4P/rCFrFGgD610bWH+xvJWfPsi1YbruTb9TYLb89yYl5ziKst1C0wPyXHBQmxMqzf9qyLit9KzqUHkaW4R6C0Blq3yrn4WdkGoacQctPmIutXopwanC4RR/lR9E9AH4q/XTkQ4W/9QSdwn9ruCd+kgyTa9LXRARcIjWjdgSRZe6y4Q5RR1ExLsLxqtCASJ1mcp74LKwQk8OnKxEZ63jWx91nNSHk6kUh2dQ1SMA==
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230022)(4636009)(376002)(396003)(346002)(39860400002)(136003)(451199015)(46966006)(36840700001)(40470700004)(36860700001)(426003)(82310400005)(47076005)(356005)(83380400001)(81166007)(82740400003)(2906002)(8936002)(5660300002)(30864003)(41300700001)(7416002)(7406005)(40460700003)(40480700001)(4326008)(6666004)(1076003)(186003)(2616005)(16526019)(478600001)(26005)(336012)(316002)(8676002)(70586007)(70206006)(54906003)(6916009)(36756003)(36900700001)(473944003);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jan 2023 03:52:52.0971
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jan 2023 03:53:06.0816
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7b3e0d97-7131-4c50-2b9e-08daf9d0a3c6
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1d6c73c3-faea-4ef6-a6e6-08daf9d0ac19
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT027.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT034.eop-nam11.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4118
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8082
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Add AMD Pensando common and Elba SoC specific device nodes
+Add support for the AMD Pensando SoC System Resource chip using
+the SPI interface.  The device functions are accessed using
+four chip-selects and the device can be a CPLD or FPGA depending
+on functionality.
 
 Signed-off-by: Brad Larson <blarson@amd.com>
 ---
 
 Changes since v6:
-- Single node for spi0 system-controller and squash
-  the reset-controller child into parent
+- Previously patch 14/17
+- After the change to the device tree node and squashing
+  reset-cells into the parent simplified this to not use
+  any MFD API and move it to drivers/spi/pensando-sr.c.
+- Change the naming to remove elba since this driver is common
+  for all Pensando SoC designs .
+- Default yes SPI_PENSANDO_SR for ARCH_PENSANDO
 
 ---
- arch/arm64/boot/dts/amd/Makefile              |   1 +
- arch/arm64/boot/dts/amd/elba-16core.dtsi      | 189 +++++++++++++++++
- arch/arm64/boot/dts/amd/elba-asic-common.dtsi |  82 ++++++++
- arch/arm64/boot/dts/amd/elba-asic.dts         |  28 +++
- arch/arm64/boot/dts/amd/elba-flash-parts.dtsi | 106 ++++++++++
- arch/arm64/boot/dts/amd/elba.dtsi             | 192 ++++++++++++++++++
- 6 files changed, 598 insertions(+)
- create mode 100644 arch/arm64/boot/dts/amd/elba-16core.dtsi
- create mode 100644 arch/arm64/boot/dts/amd/elba-asic-common.dtsi
- create mode 100644 arch/arm64/boot/dts/amd/elba-asic.dts
- create mode 100644 arch/arm64/boot/dts/amd/elba-flash-parts.dtsi
- create mode 100644 arch/arm64/boot/dts/amd/elba.dtsi
+ drivers/spi/Kconfig           |  14 ++
+ drivers/spi/Makefile          |   1 +
+ drivers/spi/spi-pensando-sr.c | 454 ++++++++++++++++++++++++++++++++++
+ 3 files changed, 469 insertions(+)
+ create mode 100644 drivers/spi/spi-pensando-sr.c
 
-diff --git a/arch/arm64/boot/dts/amd/Makefile b/arch/arm64/boot/dts/amd/Makefile
-index 68103a8b0ef5..8502cc2afbc5 100644
---- a/arch/arm64/boot/dts/amd/Makefile
-+++ b/arch/arm64/boot/dts/amd/Makefile
-@@ -1,2 +1,3 @@
- # SPDX-License-Identifier: GPL-2.0
-+dtb-$(CONFIG_ARCH_PENSANDO) += elba-asic.dtb
- dtb-$(CONFIG_ARCH_SEATTLE) += amd-overdrive-rev-b0.dtb amd-overdrive-rev-b1.dtb
-diff --git a/arch/arm64/boot/dts/amd/elba-16core.dtsi b/arch/arm64/boot/dts/amd/elba-16core.dtsi
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 3b1c0878bb85..1e8605c59a0e 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -730,6 +730,20 @@ config SPI_PCI1XXXX
+ 	  This driver can be built as module. If so, the module will be
+ 	  called as spi-pci1xxxx.
+ 
++config SPI_PENSANDO_SR
++	bool "AMD Pensando SoC System Resource chip"
++	depends on SPI_MASTER=y
++	depends on (ARCH_PENSANDO && OF) || COMPILE_TEST
++	default y if ARCH_PENSANDO
++	select REGMAP_SPI
++	select MFD_SYSCON
++	help
++	  Support for the AMD Pensando SoC System Resource chip using the
++	  SPI interface.  This driver provides userspace access to the SPI
++	  device functions via multiple chip selects.  The device can be
++	  a CPLD or FPGA depending on the functionality required and is
++	  present in all Pensando SoC based designs.
++
+ config SPI_PIC32
+ 	tristate "Microchip PIC32 series SPI"
+ 	depends on MACH_PIC32 || COMPILE_TEST
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index be9ba40ef8d0..71e0a95c6d88 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -95,6 +95,7 @@ obj-$(CONFIG_SPI_OMAP_100K)		+= spi-omap-100k.o
+ obj-$(CONFIG_SPI_OMAP24XX)		+= spi-omap2-mcspi.o
+ obj-$(CONFIG_SPI_TI_QSPI)		+= spi-ti-qspi.o
+ obj-$(CONFIG_SPI_ORION)			+= spi-orion.o
++obj-$(CONFIG_SPI_PENSANDO_SR)		+= spi-pensando-sr.o
+ obj-$(CONFIG_SPI_PCI1XXXX)		+= spi-pci1xxxx.o
+ obj-$(CONFIG_SPI_PIC32)			+= spi-pic32.o
+ obj-$(CONFIG_SPI_PIC32_SQI)		+= spi-pic32-sqi.o
+diff --git a/drivers/spi/spi-pensando-sr.c b/drivers/spi/spi-pensando-sr.c
 new file mode 100644
-index 000000000000..37aadd442db8
+index 000000000000..91c64bcfba04
 --- /dev/null
-+++ b/arch/arm64/boot/dts/amd/elba-16core.dtsi
-@@ -0,0 +1,189 @@
-+// SPDX-License-Identifier: (GPL-2.0-only or BSD-2-Clause)
++++ b/drivers/spi/spi-pensando-sr.c
+@@ -0,0 +1,454 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
 +/*
-+ * Copyright 2020-2022 Advanced Micro Devices, Inc.
-+ */
-+
-+/ {
-+	cpus {
-+		#address-cells = <2>;
-+		#size-cells = <0>;
-+
-+		cpu-map {
-+			cluster0 {
-+				core0 { cpu = <&cpu0>; };
-+				core1 { cpu = <&cpu1>; };
-+				core2 { cpu = <&cpu2>; };
-+				core3 { cpu = <&cpu3>; };
-+			};
-+
-+			cluster1 {
-+				core0 { cpu = <&cpu4>; };
-+				core1 { cpu = <&cpu5>; };
-+				core2 { cpu = <&cpu6>; };
-+				core3 { cpu = <&cpu7>; };
-+			};
-+
-+			cluster2 {
-+				core0 { cpu = <&cpu8>; };
-+				core1 { cpu = <&cpu9>; };
-+				core2 { cpu = <&cpu10>; };
-+				core3 { cpu = <&cpu11>; };
-+			};
-+
-+			cluster3 {
-+				core0 { cpu = <&cpu12>; };
-+				core1 { cpu = <&cpu13>; };
-+				core2 { cpu = <&cpu14>; };
-+				core3 { cpu = <&cpu15>; };
-+			};
-+		};
-+
-+		/* CLUSTER 0 */
-+		cpu0: cpu@0 {
-+			device_type = "cpu";
-+			compatible = "arm,cortex-a72";
-+			reg = <0 0x0>;
-+			next-level-cache = <&l2_0>;
-+			enable-method = "psci";
-+		};
-+
-+		cpu1: cpu@1 {
-+			device_type = "cpu";
-+			compatible = "arm,cortex-a72";
-+			reg = <0 0x1>;
-+			next-level-cache = <&l2_0>;
-+			enable-method = "psci";
-+		};
-+
-+		cpu2: cpu@2 {
-+			device_type = "cpu";
-+			compatible = "arm,cortex-a72";
-+			reg = <0 0x2>;
-+			next-level-cache = <&l2_0>;
-+			enable-method = "psci";
-+		};
-+
-+		cpu3: cpu@3 {
-+			device_type = "cpu";
-+			compatible = "arm,cortex-a72";
-+			reg = <0 0x3>;
-+			next-level-cache = <&l2_0>;
-+			enable-method = "psci";
-+		};
-+
-+		l2_0: l2-cache0 {
-+			compatible = "cache";
-+		};
-+
-+		/* CLUSTER 1 */
-+		cpu4: cpu@100 {
-+			device_type = "cpu";
-+			compatible = "arm,cortex-a72";
-+			reg = <0 0x100>;
-+			next-level-cache = <&l2_1>;
-+			enable-method = "psci";
-+		};
-+
-+		cpu5: cpu@101 {
-+			device_type = "cpu";
-+			compatible = "arm,cortex-a72";
-+			reg = <0 0x101>;
-+			next-level-cache = <&l2_1>;
-+			enable-method = "psci";
-+		};
-+
-+		cpu6: cpu@102 {
-+			device_type = "cpu";
-+			compatible = "arm,cortex-a72";
-+			reg = <0 0x102>;
-+			next-level-cache = <&l2_1>;
-+			enable-method = "psci";
-+		};
-+
-+		cpu7: cpu@103 {
-+			device_type = "cpu";
-+			compatible = "arm,cortex-a72";
-+			reg = <0 0x103>;
-+			next-level-cache = <&l2_1>;
-+			enable-method = "psci";
-+		};
-+
-+		l2_1: l2-cache1 {
-+			compatible = "cache";
-+		};
-+
-+		/* CLUSTER 2 */
-+		cpu8: cpu@200 {
-+			device_type = "cpu";
-+			compatible = "arm,cortex-a72";
-+			reg = <0 0x200>;
-+			next-level-cache = <&l2_2>;
-+			enable-method = "psci";
-+		};
-+
-+		cpu9: cpu@201 {
-+			device_type = "cpu";
-+			compatible = "arm,cortex-a72";
-+			reg = <0 0x201>;
-+			next-level-cache = <&l2_2>;
-+			enable-method = "psci";
-+		};
-+
-+		cpu10: cpu@202 {
-+			device_type = "cpu";
-+			compatible = "arm,cortex-a72";
-+			reg = <0 0x202>;
-+			next-level-cache = <&l2_2>;
-+			enable-method = "psci";
-+		};
-+
-+		cpu11: cpu@203 {
-+			device_type = "cpu";
-+			compatible = "arm,cortex-a72";
-+			reg = <0 0x203>;
-+			next-level-cache = <&l2_2>;
-+			enable-method = "psci";
-+		};
-+
-+		l2_2: l2-cache2 {
-+			compatible = "cache";
-+		};
-+
-+		/* CLUSTER 3 */
-+		cpu12: cpu@300 {
-+			device_type = "cpu";
-+			compatible = "arm,cortex-a72";
-+			reg = <0 0x300>;
-+			next-level-cache = <&l2_3>;
-+			enable-method = "psci";
-+		};
-+
-+		cpu13: cpu@301 {
-+			device_type = "cpu";
-+			compatible = "arm,cortex-a72";
-+			reg = <0 0x301>;
-+			next-level-cache = <&l2_3>;
-+			enable-method = "psci";
-+		};
-+
-+		cpu14: cpu@302 {
-+			device_type = "cpu";
-+			compatible = "arm,cortex-a72";
-+			reg = <0 0x302>;
-+			next-level-cache = <&l2_3>;
-+			enable-method = "psci";
-+		};
-+
-+		cpu15: cpu@303 {
-+			device_type = "cpu";
-+			compatible = "arm,cortex-a72";
-+			reg = <0 0x303>;
-+			next-level-cache = <&l2_3>;
-+			enable-method = "psci";
-+		};
-+
-+		l2_3: l2-cache3 {
-+			compatible = "cache";
-+		};
-+	};
-+};
-diff --git a/arch/arm64/boot/dts/amd/elba-asic-common.dtsi b/arch/arm64/boot/dts/amd/elba-asic-common.dtsi
-new file mode 100644
-index 000000000000..1abcb1264108
---- /dev/null
-+++ b/arch/arm64/boot/dts/amd/elba-asic-common.dtsi
-@@ -0,0 +1,82 @@
-+// SPDX-License-Identifier: (GPL-2.0-only or BSD-2-Clause)
-+/*
-+ * Copyright 2020-2022 Advanced Micro Devices, Inc.
-+ */
-+
-+&ahb_clk {
-+	clock-frequency = <400000000>;
-+};
-+
-+&emmc_clk {
-+	clock-frequency = <200000000>;
-+};
-+
-+&flash_clk {
-+	clock-frequency = <400000000>;
-+};
-+
-+&ref_clk {
-+	clock-frequency = <156250000>;
-+};
-+
-+&qspi {
-+	status = "okay";
-+
-+	flash0: flash@0 {
-+		compatible = "jedec,spi-nor";
-+		reg = <0>;
-+		spi-max-frequency = <40000000>;
-+		spi-rx-bus-width = <2>;
-+		m25p,fast-read;
-+		cdns,read-delay = <0>;
-+		cdns,tshsl-ns = <0>;
-+		cdns,tsd2d-ns = <0>;
-+		cdns,tchsh-ns = <0>;
-+		cdns,tslch-ns = <0>;
-+	};
-+};
-+
-+&gpio0 {
-+	status = "okay";
-+};
-+
-+&emmc {
-+	bus-width = <8>;
-+	cap-mmc-hw-reset;
-+	reset-names = "hw";
-+	resets = <&rstc 0>;
-+	status = "okay";
-+};
-+
-+&wdt0 {
-+	status = "okay";
-+};
-+
-+&i2c0 {
-+	clock-frequency = <100000>;
-+	status = "okay";
-+
-+	rtc@51 {
-+		compatible = "nxp,pcf85263";
-+		reg = <0x51>;
-+	};
-+};
-+
-+&spi0 {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	num-cs = <4>;
-+	cs-gpios = <0>, <0>, <&porta 1 GPIO_ACTIVE_LOW>,
-+		   <&porta 7 GPIO_ACTIVE_LOW>;
-+	status = "okay";
-+
-+	rstc: system-controller@0 {
-+		compatible = "amd,pensando-sr";
-+		reg = <0>;
-+		cs = <0 1 2 3>;
-+		spi-max-frequency = <12000000>;
-+		interrupt-parent = <&porta>;
-+		interrupts = <0 IRQ_TYPE_LEVEL_LOW>;
-+		#reset-cells = <1>;
-+	};
-+};
-diff --git a/arch/arm64/boot/dts/amd/elba-asic.dts b/arch/arm64/boot/dts/amd/elba-asic.dts
-new file mode 100644
-index 000000000000..c3f4da2f7449
---- /dev/null
-+++ b/arch/arm64/boot/dts/amd/elba-asic.dts
-@@ -0,0 +1,28 @@
-+// SPDX-License-Identifier: (GPL-2.0-only or BSD-2-Clause)
-+/*
-+ * Device Tree file for AMD Pensando Elba Board.
++ * AMD Pensando SoC System Resource Driver
 + *
-+ * Copyright 2020-2022 Advanced Micro Devices, Inc.
++ * Userspace interface and reset driver support for SPI
++ * connected Pensando SoC System Resource Chip.  This
++ * device is present in all Pensando SoC based designs.
++ * This file is derived in part from spi/spidev.c.
++ *
++ * Copyright (C) 2006 SWAPP
++ *      Andrea Paterniani <a.paterniani@swapp-eng.it>
++ * Copyright (C) 2007 David Brownell (simplification, cleanup)
++ * Copyright 2023 Advanced Micro Devices, Inc.
 + */
 +
-+/dts-v1/;
++#include <linux/cdev.h>
++#include <linux/delay.h>
++#include <linux/device.h>
++#include <linux/err.h>
++#include <linux/fs.h>
++#include <linux/init.h>
++#include <linux/ioctl.h>
++#include <linux/module.h>
++#include <linux/mutex.h>
++#include <linux/of.h>
++#include <linux/of_device.h>
++#include <linux/reset-controller.h>
++#include <linux/spi/spi.h>
++#include <linux/types.h>
 +
-+#include "elba.dtsi"
-+#include "elba-16core.dtsi"
-+#include "elba-asic-common.dtsi"
-+#include "elba-flash-parts.dtsi"
++#define PENSR_MAX_REG		0xff
++#define PENSR_CTRL0_REG		0x10
++#define PENSR_SPI_CMD_REGRD	0x0b
++#define PENSR_SPI_CMD_REGWR	0x02
++#define SPI_IOC_MAGIC		'k'
 +
-+/ {
-+	model = "AMD Pensando Elba Board";
-+	compatible = "amd,pensando-elba-ortano", "amd,pensando-elba";
++#define SPI_MSGSIZE(N) \
++	((((N)*(sizeof(struct spi_ioc_transfer))) < (1 << _IOC_SIZEBITS)) \
++		? ((N)*(sizeof(struct spi_ioc_transfer))) : 0)
++#define SPI_IOC_MESSAGE(N)	_IOW(SPI_IOC_MAGIC, 0, char[SPI_MSGSIZE(N)])
 +
-+	aliases {
-+		serial0 = &uart0;
-+		spi0 = &spi0;
-+		spi1 = &qspi;
-+	};
-+
-+	chosen {
-+		stdout-path = "serial0:115200n8";
-+	};
++struct spi_ioc_transfer {
++	__u64 tx_buf;
++	__u64 rx_buf;
++	__u32 len;
++	__u32 speed_hz;
++	__u16 delay_usecs;
++	__u8 bits_per_word;
++	__u8 cs_change;
++	__u8 tx_nbits;
++	__u8 rx_nbits;
++	__u8 word_delay_usecs;
++	__u8 pad;
 +};
-diff --git a/arch/arm64/boot/dts/amd/elba-flash-parts.dtsi b/arch/arm64/boot/dts/amd/elba-flash-parts.dtsi
-new file mode 100644
-index 000000000000..734893fef2c3
---- /dev/null
-+++ b/arch/arm64/boot/dts/amd/elba-flash-parts.dtsi
-@@ -0,0 +1,106 @@
-+// SPDX-License-Identifier: (GPL-2.0-only or BSD-2-Clause)
-+/*
-+ * Copyright 2020-2022 Advanced Micro Devices, Inc.
-+ */
 +
-+&flash0 {
-+	partitions {
-+		compatible = "fixed-partitions";
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		partition@0 {
-+			label = "flash";
-+			reg = <0x10000 0xfff0000>;
-+		};
-+
-+		partition@f0000 {
-+			label = "golduenv";
-+			reg = <0xf0000 0x10000>;
-+		};
-+
-+		partition@100000 {
-+			label = "boot0";
-+			reg = <0x100000 0x80000>;
-+		};
-+
-+		partition@180000 {
-+			label = "golduboot";
-+			reg = <0x180000 0x200000>;
-+		};
-+
-+		partition@380000 {
-+			label = "brdcfg0";
-+			reg = <0x380000 0x10000>;
-+		};
-+
-+		partition@390000 {
-+			label = "brdcfg1";
-+			reg = <0x390000 0x10000>;
-+		};
-+
-+		partition@400000 {
-+			label = "goldfw";
-+			reg = <0x400000 0x3c00000>;
-+		};
-+
-+		partition@4010000 {
-+			label = "fwmap";
-+			reg = <0x4010000 0x20000>;
-+		};
-+
-+		partition@4030000 {
-+			label = "fwsel";
-+			reg = <0x4030000 0x20000>;
-+		};
-+
-+		partition@4090000 {
-+			label = "bootlog";
-+			reg = <0x4090000 0x20000>;
-+		};
-+
-+		partition@40b0000 {
-+			label = "panicbuf";
-+			reg = <0x40b0000 0x20000>;
-+		};
-+
-+		partition@40d0000 {
-+			label = "uservars";
-+			reg = <0x40d0000 0x20000>;
-+		};
-+
-+		partition@4200000 {
-+			label = "uboota";
-+			reg = <0x4200000 0x400000>;
-+		};
-+
-+		partition@4600000 {
-+			label = "ubootb";
-+			reg = <0x4600000 0x400000>;
-+		};
-+
-+		partition@4a00000 {
-+			label = "mainfwa";
-+			reg = <0x4a00000 0x1000000>;
-+		};
-+
-+		partition@5a00000 {
-+			label = "mainfwb";
-+			reg = <0x5a00000 0x1000000>;
-+		};
-+
-+		partition@6a00000 {
-+			label = "diaguboot";
-+			reg = <0x6a00000 0x400000>;
-+		};
-+
-+		partition@8000000 {
-+			label = "diagfw";
-+			reg = <0x8000000 0x7fe0000>;
-+		};
-+
-+		partition@ffe0000 {
-+			label = "ubootenv";
-+			reg = <0xffe0000 0x10000>;
-+		};
-+	};
++struct pensr_device {
++	struct spi_device *spi_dev;
++	struct reset_controller_dev rcdev;
++	struct mutex buf_lock;
++	spinlock_t spi_lock;
++	u8 *tx_buffer;
++	u8 *rx_buffer;
 +};
-diff --git a/arch/arm64/boot/dts/amd/elba.dtsi b/arch/arm64/boot/dts/amd/elba.dtsi
-new file mode 100644
-index 000000000000..285d776aa67b
---- /dev/null
-+++ b/arch/arm64/boot/dts/amd/elba.dtsi
-@@ -0,0 +1,192 @@
-+// SPDX-License-Identifier: (GPL-2.0-only or BSD-2-Clause)
-+/*
-+ * Copyright 2020-2022 Advanced Micro Devices, Inc.
-+ */
 +
-+#include <dt-bindings/gpio/gpio.h>
-+#include "dt-bindings/interrupt-controller/arm-gic.h"
++static dev_t pensr_devt;
++static struct pensr_device *pensr;
++static struct class *pensr_class;
++static unsigned int bufsiz = 4096;
 +
-+/ {
-+	model = "Elba ASIC Board";
-+	compatible = "amd,pensando-elba";
-+	interrupt-parent = <&gic>;
-+	#address-cells = <2>;
-+	#size-cells = <2>;
++static struct spi_ioc_transfer *
++pensr_spi_get_ioc_message(unsigned int cmd,
++			  struct spi_ioc_transfer __user *u_ioc,
++			  unsigned int *n_ioc)
++{
++	u32 tmp;
 +
-+	dma-coherent;
++	/* Check type, command number and direction */
++	if (_IOC_TYPE(cmd) != SPI_IOC_MAGIC
++			|| _IOC_NR(cmd) != _IOC_NR(SPI_IOC_MESSAGE(0))
++			|| _IOC_DIR(cmd) != _IOC_WRITE)
++		return ERR_PTR(-ENOTTY);
 +
-+	ahb_clk: oscillator0 {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+	};
++	tmp = _IOC_SIZE(cmd);
++	if ((tmp % sizeof(struct spi_ioc_transfer)) != 0)
++		return ERR_PTR(-EINVAL);
++	*n_ioc = tmp / sizeof(struct spi_ioc_transfer);
++	if (*n_ioc == 0)
++		return NULL;
 +
-+	emmc_clk: oscillator2 {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+	};
++	/* copy into scratch area */
++	return memdup_user(u_ioc, tmp);
++}
 +
-+	flash_clk: oscillator3 {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+	};
++static long
++pensr_spi_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
++{
++	struct spi_transfer t[2] = { 0 };
++	struct spi_ioc_transfer	*u_xfers;
++	struct spi_ioc_transfer *u_xfer;
++	struct pensr_device *pensr;
++	struct spi_device *spi_dev;
++	unsigned int n_xfers;
++	struct spi_message m;
++	u8 *tx_buf;
++	u8 *rx_buf;
++	int ret;
 +
-+	ref_clk: oscillator4 {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+	};
++	/* Check type and command number */
++	if (_IOC_TYPE(cmd) != SPI_IOC_MAGIC)
++		return -ENOTTY;
 +
-+	psci {
-+		compatible = "arm,psci-0.2";
-+		method = "smc";
-+	};
++	pensr = filp->private_data;
++	if (!pensr)
++		return -ESHUTDOWN;
 +
-+	timer {
-+		compatible = "arm,armv8-timer";
-+		interrupts = <GIC_PPI 13 IRQ_TYPE_LEVEL_LOW>,
-+			     <GIC_PPI 14 IRQ_TYPE_LEVEL_LOW>,
-+			     <GIC_PPI 11 IRQ_TYPE_LEVEL_LOW>,
-+			     <GIC_PPI 10 IRQ_TYPE_LEVEL_LOW>;
-+	};
++	tx_buf = pensr->tx_buffer;
++	rx_buf = pensr->rx_buffer;
 +
-+	pmu {
-+		compatible = "arm,cortex-a72-pmu";
-+		interrupts = <GIC_PPI 7 IRQ_TYPE_LEVEL_LOW>;
-+	};
++	spin_lock_irq(&pensr->spi_lock);
++	spi_dev = spi_dev_get(pensr->spi_dev);
++	spin_unlock_irq(&pensr->spi_lock);
++	if (spi_dev == NULL)
++		return -ESHUTDOWN;
 +
-+	soc: soc {
-+		compatible = "simple-bus";
-+		#address-cells = <2>;
-+		#size-cells = <2>;
-+		ranges;
++	/* Use the buffer lock here for triple duty:
++	 *  - prevent I/O (from us) so calling spi_setup() is safe;
++	 *  - prevent concurrent SPI_IOC_WR_* from morphing
++	 *    data fields while SPI_IOC_RD_* reads them;
++	 *  - SPI_IOC_MESSAGE needs the buffer locked "normally".
++	 */
++	mutex_lock(&pensr->buf_lock);
 +
-+		i2c0: i2c@400 {
-+			compatible = "snps,designware-i2c";
-+			reg = <0x0 0x400 0x0 0x100>;
-+			clocks = <&ahb_clk>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			i2c-sda-hold-time-ns = <480>;
-+			snps,sda-timeout-ms = <750>;
-+			interrupts = <GIC_SPI 4 IRQ_TYPE_LEVEL_HIGH>;
-+			status = "disabled";
-+		};
++	u_xfers = pensr_spi_get_ioc_message(cmd,
++			(struct spi_ioc_transfer __user *)arg, &n_xfers);
++	if (IS_ERR(u_xfers)) {
++		ret = PTR_ERR(u_xfers);
++		goto done;
++	}
++	if (!u_xfers)
++		goto done;
++	u_xfer = u_xfers;
 +
-+		wdt0: watchdog@1400 {
-+			compatible = "snps,dw-wdt";
-+			reg = <0x0 0x1400 0x0 0x100>;
-+			clocks = <&ahb_clk>;
-+			interrupts = <GIC_SPI 10 IRQ_TYPE_LEVEL_HIGH>;
-+			status = "disabled";
-+		};
++	t[0].tx_buf = tx_buf;
++	t[0].len = u_xfer->len;
++	if (copy_from_user(tx_buf, (const u8 __user *) (uintptr_t) u_xfer->tx_buf, u_xfer->len)) {
++		ret = -EFAULT;
++		goto done;
++	}
 +
-+		qspi: spi@2400 {
-+			compatible = "amd,pensando-elba-qspi", "cdns,qspi-nor";
-+			reg = <0x0 0x2400 0x0 0x400>,
-+			      <0x0 0x7fff0000 0x0 0x1000>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			interrupts = <GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH>;
-+			clocks = <&flash_clk>;
-+			cdns,fifo-depth = <1024>;
-+			cdns,fifo-width = <4>;
-+			cdns,trigger-address = <0x7fff0000>;
-+			status = "disabled";
-+		};
++	if (n_xfers > 1) {
++		u_xfer++;
++		t[1].rx_buf = rx_buf;
++		t[1].len = u_xfer->len;
++	}
 +
-+		spi0: spi@2800 {
-+			compatible = "amd,pensando-elba-spi";
-+			reg = <0x0 0x2800 0x0 0x100>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			amd,pensando-elba-syscon = <&syscon>;
-+			clocks = <&ahb_clk>;
-+			interrupts = <GIC_SPI 9 IRQ_TYPE_LEVEL_HIGH>;
-+			num-cs = <2>;
-+			status = "disabled";
-+		};
++	spi_message_init_with_transfers(&m, t, n_xfers);
++	ret = spi_sync(spi_dev, &m);
++	if (ret < 0)
++		goto done;
 +
-+		gpio0: gpio@4000 {
-+			compatible = "snps,dw-apb-gpio";
-+			reg = <0x0 0x4000 0x0 0x78>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			status = "disabled";
++	if (n_xfers > 1) {
++		if (copy_to_user((u8 __user *)(uintptr_t)u_xfer->rx_buf, rx_buf, u_xfer->len)) {
++			ret = -EFAULT;
++			goto done;
++		}
++	}
 +
-+			porta: gpio-port@0 {
-+				compatible = "snps,dw-apb-gpio-port";
-+				reg = <0>;
-+				gpio-controller;
-+				#gpio-cells = <2>;
-+				ngpios = <8>;
-+				interrupts = <GIC_SPI 1 IRQ_TYPE_LEVEL_HIGH>;
-+				interrupt-controller;
-+				interrupt-parent = <&gic>;
-+				#interrupt-cells = <2>;
-+			};
++done:
++	mutex_unlock(&pensr->buf_lock);
++	spi_dev_put(spi_dev);
++	return ret;
++}
 +
-+			portb: gpio-port@1 {
-+				compatible = "snps,dw-apb-gpio-port";
-+				reg = <1>;
-+				gpio-controller;
-+				#gpio-cells = <2>;
-+				ngpios = <8>;
-+			};
-+		};
++static int pensr_spi_open(struct inode *inode, struct file *filp)
++{
++	struct spi_device *spi_dev;
++	int status = -ENXIO;
++	u8 current_cs;
 +
-+		uart0: serial@4800 {
-+			compatible = "ns16550a";
-+			reg = <0x0 0x4800 0x0 0x100>;
-+			clocks = <&ref_clk>;
-+			interrupts = <GIC_SPI 2 IRQ_TYPE_LEVEL_HIGH>;
-+			reg-shift = <2>;
-+			reg-io-width = <4>;
-+		};
++	if (!pensr)
++		return -ENODEV;
 +
-+		gic: interrupt-controller@800000 {
-+			compatible = "arm,gic-v3";
-+			reg = <0x0 0x800000 0x0 0x200000>,	/* GICD */
-+			      <0x0 0xa00000 0x0 0x200000>,	/* GICR */
-+			      <0x0 0x60000000 0x0 0x2000>,	/* GICC */
-+			      <0x0 0x60010000 0x0 0x1000>,	/* GICH */
-+			      <0x0 0x60020000 0x0 0x2000>;	/* GICV */
-+			#address-cells = <2>;
-+			#size-cells = <2>;
-+			#interrupt-cells = <3>;
-+			ranges;
-+			interrupt-controller;
-+			interrupts = <GIC_PPI 9 IRQ_TYPE_LEVEL_HIGH>;
++	filp->private_data = pensr;
++	current_cs = iminor(inode);
++	spi_dev = pensr->spi_dev;
++	spi_dev->chip_select = current_cs;
++	spi_dev->cs_gpiod = spi_dev->controller->cs_gpiods[current_cs];
++	spi_setup(spi_dev);
 +
-+			/*
-+			 * Elba specific pre-ITS is enabled using the
-+			 * existing property socionext,synquacer-pre-its
-+			 */
-+			gic_its: msi-controller@820000 {
-+				compatible = "arm,gic-v3-its";
-+				reg = <0x0 0x820000 0x0 0x10000>;
-+				msi-controller;
-+				#msi-cells = <1>;
-+				socionext,synquacer-pre-its =
-+							<0xc00000 0x1000000>;
-+			};
-+		};
++	if (!pensr->tx_buffer) {
++		pensr->tx_buffer = kmalloc(bufsiz, GFP_KERNEL);
++		memset(pensr->tx_buffer, 0, bufsiz);
++		if (!pensr->tx_buffer) {
++			status = -ENOMEM;
++			goto err_alloc_tx_buf;
++		}
++	}
++	if (!pensr->rx_buffer) {
++		pensr->rx_buffer = kmalloc(bufsiz, GFP_KERNEL);
++		memset(pensr->rx_buffer, 0, bufsiz);
++		if (!pensr->rx_buffer) {
++			status = -ENOMEM;
++			goto err_alloc_rx_buf;
++		}
++	}
++	stream_open(inode, filp);
++	return 0;
 +
-+		emmc: mmc@30440000 {
-+			compatible = "amd,pensando-elba-sd4hc", "cdns,sd4hc";
-+			reg = <0x0 0x30440000 0x0 0x10000>,
-+			      <0x0 0x30480044 0x0 0x4>;	/* byte-lane ctrl */
-+			clocks = <&emmc_clk>;
-+			interrupts = <GIC_SPI 26 IRQ_TYPE_LEVEL_HIGH>;
-+			cdns,phy-input-delay-sd-highspeed = <0x4>;
-+			cdns,phy-input-delay-legacy = <0x4>;
-+			cdns,phy-input-delay-sd-uhs-sdr50 = <0x6>;
-+			cdns,phy-input-delay-sd-uhs-ddr50 = <0x16>;
-+			mmc-ddr-1_8v;
-+			status = "disabled";
-+		};
++err_alloc_rx_buf:
++	kfree(pensr->tx_buffer);
++	pensr->tx_buffer = NULL;
++err_alloc_tx_buf:
++	return status;
++}
 +
-+		syscon: syscon@307c0000 {
-+			compatible = "amd,pensando-elba-syscon", "syscon";
-+			reg = <0x0 0x307c0000 0x0 0x3000>;
-+		};
-+	};
++static int pensr_spi_release(struct inode *inode, struct file *filp)
++{
++	filp->private_data = NULL;
++	return 0;
++}
++
++static const struct file_operations pensr_spi_fops = {
++	.owner =	THIS_MODULE,
++	.unlocked_ioctl = pensr_spi_ioctl,
++	.open =		pensr_spi_open,
++	.release =	pensr_spi_release,
++	.llseek =	no_llseek,
 +};
++
++static int pensr_regs_read(struct pensr_device *pensr, u32 reg, u32 *val)
++{
++	struct spi_device *spi_dev = pensr->spi_dev;
++	struct spi_transfer t[2] = { 0 };
++	struct spi_message m;
++	u8 txbuf[3];
++	u8 rxbuf[1];
++	int ret;
++
++	txbuf[0] = PENSR_SPI_CMD_REGRD;
++	txbuf[1] = reg;
++	txbuf[2] = 0x0;
++	t[0].tx_buf = (u8 *)txbuf;
++	t[0].len = 3;
++
++	rxbuf[0] = 0x0;
++	t[1].rx_buf = rxbuf;
++	t[1].len = 1;
++
++	spi_message_init_with_transfers(&m, t, ARRAY_SIZE(t));
++	ret = spi_sync(spi_dev, &m);
++	if (ret == 0) {
++		/* 3 Tx + 1 Rx = 4 */
++		*val = rxbuf[0];
++	}
++	return ret;
++}
++
++static int pensr_regs_write(struct pensr_device *pensr, u32 reg, u32 val)
++{
++	struct spi_device *spi_dev = pensr->spi_dev;
++	struct spi_transfer t[1] = { 0 };
++	struct spi_message m;
++	u8 txbuf[4];
++	int ret;
++
++	spi_dev->chip_select = 0;
++	spi_dev->cs_gpiod = spi_dev->controller->cs_gpiods[0];
++	spi_setup(spi_dev);
++
++	txbuf[0] = PENSR_SPI_CMD_REGWR;
++	txbuf[1] = reg;
++	txbuf[2] = val;
++	txbuf[3] = 0;
++
++	t[0].tx_buf = txbuf;
++	t[0].len = 4;
++	spi_message_init_with_transfers(&m, t, ARRAY_SIZE(t));
++	ret = spi_sync(spi_dev, &m);
++	return ret;
++}
++
++static int pensr_reset_assert(struct reset_controller_dev *rcdev,
++			      unsigned long id)
++{
++	struct pensr_device *pensr =
++		container_of(rcdev, struct pensr_device, rcdev);
++	struct spi_device *spi_dev = pensr->spi_dev;
++	unsigned int val;
++	int ret;
++
++	spin_lock_irq(&pensr->spi_lock);
++	spi_dev->chip_select = 0;
++	spi_dev->cs_gpiod = spi_dev->controller->cs_gpiods[spi_dev->chip_select];
++	spi_setup(spi_dev);
++
++	ret = pensr_regs_read(pensr, PENSR_CTRL0_REG, &val);
++	if (ret) {
++		dev_err(&spi_dev->dev, "error reading ctrl0 reg\n");
++		goto done;
++	}
++
++	val |= BIT(6);
++	ret = pensr_regs_write(pensr, PENSR_CTRL0_REG, val);
++	if (ret)
++		dev_err(&spi_dev->dev, "error writing ctrl0 reg\n");
++
++done:
++	spin_unlock_irq(&pensr->spi_lock);
++	return ret;
++}
++
++static int pensr_reset_deassert(struct reset_controller_dev *rcdev,
++				unsigned long id)
++{
++	struct pensr_device *pensr =
++		container_of(rcdev, struct pensr_device, rcdev);
++	struct spi_device *spi_dev = pensr->spi_dev;
++	unsigned int val;
++	int ret;
++
++	spin_lock_irq(&pensr->spi_lock);
++	spi_dev->chip_select = 0;
++	spi_dev->cs_gpiod = spi_dev->controller->cs_gpiods[spi_dev->chip_select];
++	spi_setup(spi_dev);
++
++	ret = pensr_regs_read(pensr, PENSR_CTRL0_REG, &val);
++	if (ret) {
++		dev_err(&spi_dev->dev, "error reading ctrl0 reg\n");
++		goto done;
++	}
++
++	val &= ~BIT(6);
++	ret = pensr_regs_write(pensr, PENSR_CTRL0_REG, val);
++	if (ret)
++		dev_err(&spi_dev->dev, "error writing ctrl0 reg\n");
++
++done:
++	spin_unlock_irq(&pensr->spi_lock);
++	return ret;
++}
++
++static const struct reset_control_ops pensr_reset_ops = {
++	.assert = pensr_reset_assert,
++	.deassert = pensr_reset_deassert,
++};
++
++static int pensr_spi_probe(struct spi_device *spi_dev)
++{
++	struct device_node *np;
++	struct property *prop;
++	struct device *dev;
++	struct cdev *cdev;
++	const __be32 *p;
++	int status;
++	u32 num_cs;
++	u32 cs;
++
++	np = spi_dev->dev.parent->of_node;
++	status = of_property_read_u32(np, "num-cs", &num_cs);
++	if (status)
++		return dev_err_probe(&spi_dev->dev, status,
++				     "number of chip-selects not defined");
++
++	status = alloc_chrdev_region(&pensr_devt, 0, num_cs, "pensr");
++	if (status)
++		return dev_err_probe(&spi_dev->dev, status,
++				     "failed to alloc chrdev region\n");
++
++	pensr_class = class_create(THIS_MODULE, "pensr");
++	if (IS_ERR(pensr_class)) {
++		unregister_chrdev(MAJOR(pensr_devt), "pensr");
++		return dev_err_probe(&spi_dev->dev, PTR_ERR(pensr_class),
++				     "failed to create class\n");
++	}
++
++	cdev = cdev_alloc();
++	if (!cdev) {
++		dev_err(&spi_dev->dev, "allocation of cdev failed");
++		status = -ENOMEM;
++		goto cdev_failed;
++	}
++	cdev->owner = THIS_MODULE;
++	cdev_init(cdev, &pensr_spi_fops);
++
++	status = cdev_add(cdev, pensr_devt, num_cs);
++	if (status) {
++		dev_err(&spi_dev->dev, "register of cdev failed");
++		goto cdev_delete;
++	}
++
++	/* Allocate driver data */
++	pensr = kzalloc(sizeof(*pensr), GFP_KERNEL);
++	if (!pensr) {
++		status = -ENOMEM;
++		dev_err(&spi_dev->dev, "allocate driver data failed");
++		goto cdev_delete;
++	}
++
++	pensr->spi_dev = spi_dev;
++	spin_lock_init(&pensr->spi_lock);
++	mutex_init(&pensr->buf_lock);
++
++	/* Create a device for each chip select */
++	np = spi_dev->dev.of_node;
++	of_property_for_each_u32(np, "cs", prop, p, cs) {
++		dev = device_create(pensr_class,
++				    &spi_dev->dev,
++				    MKDEV(MAJOR(pensr_devt), cs),
++				    pensr,
++				    "pensr0.%d",
++				    cs);
++		if (IS_ERR(dev)) {
++			status = IS_ERR(dev);
++			dev_err(&spi_dev->dev, "error creating device\n");
++			goto cdev_delete;
++		}
++		dev_dbg(&spi_dev->dev, "created device major %u, minor %d\n",
++			MAJOR(pensr_devt), cs);
++	}
++
++	spi_set_drvdata(spi_dev, pensr);
++
++	/* Register emmc hardware reset */
++	pensr->rcdev.nr_resets = 1;
++	pensr->rcdev.owner = THIS_MODULE;
++	pensr->rcdev.dev = &spi_dev->dev;
++	pensr->rcdev.ops = &pensr_reset_ops;
++	pensr->rcdev.of_node = spi_dev->dev.of_node;
++	status = reset_controller_register(&pensr->rcdev);
++	if (status)
++		return dev_err_probe(&spi_dev->dev, status,
++				     "failed to register reset controller\n");
++	return status;
++
++cdev_delete:
++	cdev_del(cdev);
++cdev_failed:
++	device_destroy(pensr_class, pensr_devt);
++	return status;
++}
++
++static const struct of_device_id pensr_dt_match[] = {
++	{ .compatible = "amd,pensando-sr" },
++	{ /* sentinel */ }
++};
++
++static struct spi_driver pensr_spi_driver = {
++	.probe = pensr_spi_probe,
++	.driver = {
++		.name = "pensando-sr",
++		.of_match_table = pensr_dt_match,
++	},
++};
++builtin_driver(pensr_spi_driver, spi_register_driver)
 -- 
 2.17.1
 

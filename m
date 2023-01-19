@@ -2,51 +2,51 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 539D9C00A5A
-	for <linux-spi@archiver.kernel.org>; Thu, 19 Jan 2023 04:28:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 335D6C38142
+	for <linux-spi@archiver.kernel.org>; Thu, 19 Jan 2023 04:29:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230022AbjASE2r (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 18 Jan 2023 23:28:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37256 "EHLO
+        id S230032AbjASE24 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 18 Jan 2023 23:28:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230008AbjASDoj (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 18 Jan 2023 22:44:39 -0500
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 078214CE67
-        for <linux-spi@vger.kernel.org>; Wed, 18 Jan 2023 19:41:11 -0800 (PST)
-Received: by mail-pf1-x42e.google.com with SMTP id c26so504331pfp.10
-        for <linux-spi@vger.kernel.org>; Wed, 18 Jan 2023 19:41:11 -0800 (PST)
+        with ESMTP id S229939AbjASDm3 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 18 Jan 2023 22:42:29 -0500
+Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74FC86D348
+        for <linux-spi@vger.kernel.org>; Wed, 18 Jan 2023 19:40:26 -0800 (PST)
+Received: by mail-pg1-x52d.google.com with SMTP id v3so518832pgh.4
+        for <linux-spi@vger.kernel.org>; Wed, 18 Jan 2023 19:40:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=pensando.io; s=google;
         h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=ulh9dhCQ0Y1jVBFO0FQi7/v9JSmPpQrHfos2awuevGM=;
-        b=GaVHmjsZ+DpWxrEn+ErGek/cfIYIaI/KzyIYazQPM/SB27ypEJbkCgP1UcEg9/VVIs
-         eFc5QaFggoPXzVWRuO9sqEFEl1g/f1n4JZJyhvOFCHj+/YuZcMDvjq1k9xocFOTANSIW
-         rC9ivBoyyn8GHgBsajv/1IavM5z1F/wrms5h6uz3BvJbbsK0oXfCS2rRG6v/hDHCPtiw
-         BEjzWhCVHPGEMG5FUQAvN00kgEpVMROqrb+WmdeHK8b62Kg0yhnuOwLWkdb9jLIqq24F
-         5gWXgMOqnLtl7LWPqtj2VU1/HvwFOFH8eJG4lUpN+0uu8FZEGj4H2vXfI7PAAofPRU/0
-         qeTA==
+        bh=zmaGlRv0dSbHKLAvH6Xbn1IwDGJLCQgM3m75kMGlPTg=;
+        b=o/P1eqJpVBM/pBnCkOovaH3//MBsk8m9xiVa1ycjEfV0L/HDGPPLKmYoQlzh5gINX5
+         vK4louBUFwxvS98lIcFDQ0Pxn0FA5/x8V25E9hbw1W46n33/gLdqP6BcU1K9dDKE/pd0
+         jQ/gPjir05Ojl8cdOoC5NlWHomZtroZjLIgV1anIAc9YQVE+qaZ55IXofRXoPVyJXjGu
+         B/wBq9uXe6/lHMR6Pv294SHmHHJOSeBiMNKQUi8J0uS9ldxp55WIoAmwTU+zVocU1wMY
+         9ih1/JZENnal9UG3oe2Dln6td9MrvEnRPgP+oNRmDT+QvoiXeuTLEosm1RtVSgejjM28
+         tgew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=references:in-reply-to:message-id:date:subject:cc:to:from
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ulh9dhCQ0Y1jVBFO0FQi7/v9JSmPpQrHfos2awuevGM=;
-        b=hG5GCwUcMg79e7AV8kTP+DRekDxp0qBtHqgHSuJSKdxP2IQ00qhJOdkNhvhYe3fuaq
-         +HRw9aR6B5uGQsIG5PKBgvsYmSBaATNCz56t0Jf0J8jtb3tjOOJh70hN3nTxbVvkClkn
-         xXdnWTmhDaBsy9WhIGvSTLjX1uiMqMjViMC3hHYTw3VhUwgHku6i5zB9dqsaN3+uDQyN
-         v2mQG/LDhZRJUTJ3K2/+ZhtT+96rrIIqnUHmPHrEEJslpioeHDwZ6E+E7j9oq3bpMd7Y
-         UNe6SNoYjQHJYvHIgbCcktib6RYL7XPgkjcaV7uFZ1BV/dtT+IQ8dRpQ7sPpIlA5qC3i
-         XDWw==
-X-Gm-Message-State: AFqh2kossGFyJcvLBrirv7uBbwe2ZiZX4KRa6PiYqXKkOtjGPsxFg2YR
-        1qnL/pzz8mkirElbx5EWsLXkqw==
-X-Google-Smtp-Source: AMrXdXuOBw6fphSPEv9y9CFVXwOwgGsLGFBUJgvOuWSBGXL5pCvmfq2rfonHGrQ7bGCYELnHsyBmZQ==
-X-Received: by 2002:aa7:8bd6:0:b0:588:e132:a2f8 with SMTP id s22-20020aa78bd6000000b00588e132a2f8mr9180671pfd.23.1674099668598;
-        Wed, 18 Jan 2023 19:41:08 -0800 (PST)
+        bh=zmaGlRv0dSbHKLAvH6Xbn1IwDGJLCQgM3m75kMGlPTg=;
+        b=EBNMj/qgF8arioFvKE3rlpPNAcgDeivk6V23rdWdhNYCapRUeNrnDLOLqjFkhrnAFE
+         iwcT5UE5i9uN1x1Wzsy6imt/jg2P419mXlj0aa24Ibh3VtTaFZffm9u1dEgX5SEVDA1j
+         4gQLa1mbmIm3XKujRmcb/updihZPjyHN6DXnACOBNBEYu0LD36+YoR05t8pCjhIcUrUs
+         4K/QsOx/dTXikX7pslhVHQiRu8aJy2uj67IB1dyn8KIMJN4DpY3HJz9FU84izR+Yysst
+         501831Oqm5nTvrNA8eVRL/0BVXiZFDSe7791Rf/K2WE3+7q9tfHUyZDpMMhyixOMwXye
+         SsCQ==
+X-Gm-Message-State: AFqh2krZEUmm6yW3OErD7Q8AKXkfiZ16LYWgYcLgJzkLtmOww6JxVcTK
+        NwvhCrsWlp3GBDVmwddNQEqvyA==
+X-Google-Smtp-Source: AMrXdXst8z0mNuKtmJ7RHKFy/x3tCvCjbWe18XjiFGY+ezd9zRK9F86OhBpcSj14tGqfKHOeW4bV/A==
+X-Received: by 2002:aa7:8006:0:b0:58b:cacd:2d12 with SMTP id j6-20020aa78006000000b0058bcacd2d12mr9254828pfi.28.1674099625750;
+        Wed, 18 Jan 2023 19:40:25 -0800 (PST)
 Received: from platform-dev1.pensando.io ([12.226.153.42])
-        by smtp.gmail.com with ESMTPSA id f13-20020aa7968d000000b0056b4c5dde61sm11097879pfk.98.2023.01.18.19.41.06
+        by smtp.gmail.com with ESMTPSA id f13-20020aa7968d000000b0056b4c5dde61sm11097879pfk.98.2023.01.18.19.40.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Jan 2023 19:41:08 -0800 (PST)
+        Wed, 18 Jan 2023 19:40:25 -0800 (PST)
 From:   Brad Larson <brad@pensando.io>
 X-Google-Original-From: Brad Larson <blarson@amd.com>
 To:     linux-arm-kernel@lists.infradead.org
@@ -66,9 +66,9 @@ Cc:     linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
         thomas.lendacky@amd.com, tonyhuang.sunplus@gmail.com,
         ulf.hansson@linaro.org, vaishnav.a@ti.com, will@kernel.org,
         devicetree@vger.kernel.org
-Subject: [PATCH v9 12/15] mmc: sdhci-cadence: Enable device specific override of writel()
-Date:   Wed, 18 Jan 2023 19:39:15 -0800
-Message-Id: <20230119033918.44117-13-blarson@amd.com>
+Subject: [PATCH v9 06/15] dt-bindings: mfd: amd,pensando-elbasr: Add AMD Pensando System Resource chip
+Date:   Wed, 18 Jan 2023 19:39:09 -0800
+Message-Id: <20230119033918.44117-7-blarson@amd.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20230119033918.44117-1-blarson@amd.com>
 References: <20230119033918.44117-1-blarson@amd.com>
@@ -76,99 +76,103 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-SoCs with device specific Cadence implementation, such as setting
-byte-enables before the write, need to override writel().  Add a
-callback where the default is writel() for all existing chips.
+Add support for the AMD Pensando SoC System Resource chip using the
+SPI interface.  The device functions are accessed using four
+chip-selects.  This device is present for all Pensando SoC designs.
 
 Signed-off-by: Brad Larson <blarson@amd.com>
 ---
 
 Changes since v6:
-- No change to this patch but as some patches are deleted and this is
-  a respin the three successive patches to sdhci-cadence.c are
-  patches 12, 13, and 14 which do the following:
-
-  1. Add ability for Cadence specific design to have priv writel().
-  2. Add Elba SoC support that requires its own priv writel() for
-     byte-lane control .
-  3. Add support for mmc hardware reset.
+- Instead of four nodes, one per chip-select, a single
+  node is used with reset-cells in the parent.
+- No MFD API is used anymore in the driver so it made
+  sense to move this to drivers/spi.
+- This driver is common for all Pensando SoC based designs
+  so changed the name to pensando-sr.c to not make it Elba
+  SoC specific.
+- Added property cs for the chip-select number which is used
+  by the driver to create /dev/pensr0.<cs> 
 
 ---
- drivers/mmc/host/sdhci-cadence.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ .../bindings/spi/amd,pensando-sr.yaml         | 68 +++++++++++++++++++
+ 1 file changed, 68 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/amd,pensando-sr.yaml
 
-diff --git a/drivers/mmc/host/sdhci-cadence.c b/drivers/mmc/host/sdhci-cadence.c
-index 6f2de54a5987..708d4297f241 100644
---- a/drivers/mmc/host/sdhci-cadence.c
-+++ b/drivers/mmc/host/sdhci-cadence.c
-@@ -67,6 +67,7 @@ struct sdhci_cdns_phy_param {
- struct sdhci_cdns_priv {
- 	void __iomem *hrs_addr;
- 	bool enhanced_strobe;
-+	void (*priv_writel)(struct sdhci_cdns_priv *priv, u32 val, void __iomem *reg);
- 	unsigned int nr_phy_params;
- 	struct sdhci_cdns_phy_param phy_params[];
- };
-@@ -90,6 +91,12 @@ static const struct sdhci_cdns_phy_cfg sdhci_cdns_phy_cfgs[] = {
- 	{ "cdns,phy-dll-delay-strobe", SDHCI_CDNS_PHY_DLY_STROBE, },
- };
- 
-+static inline void cdns_writel(struct sdhci_cdns_priv *priv, u32 val,
-+			       void __iomem *reg)
-+{
-+	writel(val, reg);
-+}
+diff --git a/Documentation/devicetree/bindings/spi/amd,pensando-sr.yaml b/Documentation/devicetree/bindings/spi/amd,pensando-sr.yaml
+new file mode 100644
+index 000000000000..8504652f6e19
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/amd,pensando-sr.yaml
+@@ -0,0 +1,68 @@
++# SPDX-License-Identifier: (GPL-2.0-only or BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/spi/amd,pensando-sr.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
- static int sdhci_cdns_write_phy_reg(struct sdhci_cdns_priv *priv,
- 				    u8 addr, u8 data)
- {
-@@ -104,17 +111,17 @@ static int sdhci_cdns_write_phy_reg(struct sdhci_cdns_priv *priv,
- 
- 	tmp = FIELD_PREP(SDHCI_CDNS_HRS04_WDATA, data) |
- 	      FIELD_PREP(SDHCI_CDNS_HRS04_ADDR, addr);
--	writel(tmp, reg);
-+	priv->priv_writel(priv, tmp, reg);
- 
- 	tmp |= SDHCI_CDNS_HRS04_WR;
--	writel(tmp, reg);
-+	priv->priv_writel(priv, tmp, reg);
- 
- 	ret = readl_poll_timeout(reg, tmp, tmp & SDHCI_CDNS_HRS04_ACK, 0, 10);
- 	if (ret)
- 		return ret;
- 
- 	tmp &= ~SDHCI_CDNS_HRS04_WR;
--	writel(tmp, reg);
-+	priv->priv_writel(priv, tmp, reg);
- 
- 	ret = readl_poll_timeout(reg, tmp, !(tmp & SDHCI_CDNS_HRS04_ACK),
- 				 0, 10);
-@@ -191,7 +198,7 @@ static void sdhci_cdns_set_emmc_mode(struct sdhci_cdns_priv *priv, u32 mode)
- 	tmp = readl(priv->hrs_addr + SDHCI_CDNS_HRS06);
- 	tmp &= ~SDHCI_CDNS_HRS06_MODE;
- 	tmp |= FIELD_PREP(SDHCI_CDNS_HRS06_MODE, mode);
--	writel(tmp, priv->hrs_addr + SDHCI_CDNS_HRS06);
-+	priv->priv_writel(priv, tmp, priv->hrs_addr + SDHCI_CDNS_HRS06);
- }
- 
- static u32 sdhci_cdns_get_emmc_mode(struct sdhci_cdns_priv *priv)
-@@ -223,7 +230,7 @@ static int sdhci_cdns_set_tune_val(struct sdhci_host *host, unsigned int val)
- 	 */
- 	for (i = 0; i < 2; i++) {
- 		tmp |= SDHCI_CDNS_HRS06_TUNE_UP;
--		writel(tmp, reg);
-+		priv->priv_writel(priv, tmp, reg);
- 
- 		ret = readl_poll_timeout(reg, tmp,
- 					 !(tmp & SDHCI_CDNS_HRS06_TUNE_UP),
-@@ -386,6 +393,7 @@ static int sdhci_cdns_probe(struct platform_device *pdev)
- 	priv->nr_phy_params = nr_phy_params;
- 	priv->hrs_addr = host->ioaddr;
- 	priv->enhanced_strobe = false;
-+	priv->priv_writel = cdns_writel;
- 	host->ioaddr += SDHCI_CDNS_SRS_BASE;
- 	host->mmc_host_ops.hs400_enhanced_strobe =
- 				sdhci_cdns_hs400_enhanced_strobe;
++title: AMD Pensando SoC Resource Controller
++
++description: |
++  AMD Pensando SoC Resource Controller is a set of
++  control/status registers accessed on four chip-selects.
++  This device is present in all Pensando SoC based designs.
++
++maintainers:
++  - Brad Larson <blarson@amd.com>
++
++properties:
++  compatible:
++    contains:
++      enum:
++        - amd,pensando-sr
++
++  reg:
++    minItems: 1
++
++  cs:
++    minItems: 1
++    maxItems: 4
++    description:
++      Device chip select
++
++  '#reset-cells':
++    const: 1
++
++  interrupts:
++    maxItems: 1
++
++  spi-max-frequency: true
++
++required:
++  - compatible
++  - cs
++  - spi-max-frequency
++  - '#reset-cells'
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/arm-gic.h>
++
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++        num-cs = <4>;
++
++        system-controller@0 {
++            compatible = "amd,pensando-sr";
++            reg = <0>;
++            cs = <0 1 2 3>;
++            spi-max-frequency = <12000000>;
++            interrupt-parent = <&porta>;
++            interrupts = <0 IRQ_TYPE_LEVEL_LOW>;
++            #reset-cells = <1>;
++        };
++    };
++
++...
 -- 
 2.17.1
 

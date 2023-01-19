@@ -2,51 +2,51 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2543FC00A5A
-	for <linux-spi@archiver.kernel.org>; Thu, 19 Jan 2023 03:44:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 49541C678D4
+	for <linux-spi@archiver.kernel.org>; Thu, 19 Jan 2023 03:44:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229854AbjASDny (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 18 Jan 2023 22:43:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36496 "EHLO
+        id S229758AbjASDoW (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 18 Jan 2023 22:44:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229871AbjASDmH (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 18 Jan 2023 22:42:07 -0500
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 740A34B1A8
-        for <linux-spi@vger.kernel.org>; Wed, 18 Jan 2023 19:40:08 -0800 (PST)
-Received: by mail-pf1-x42e.google.com with SMTP id 20so493652pfu.13
-        for <linux-spi@vger.kernel.org>; Wed, 18 Jan 2023 19:40:08 -0800 (PST)
+        with ESMTP id S229834AbjASDlP (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 18 Jan 2023 22:41:15 -0500
+Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5815F6D37B
+        for <linux-spi@vger.kernel.org>; Wed, 18 Jan 2023 19:40:37 -0800 (PST)
+Received: by mail-pj1-x102e.google.com with SMTP id x2-20020a17090a46c200b002295ca9855aso4594177pjg.2
+        for <linux-spi@vger.kernel.org>; Wed, 18 Jan 2023 19:40:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=pensando.io; s=google;
         h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=xYpFuG7rsB150mQqKa3m6yy9plhtCt+6ntf6ZKE6kws=;
-        b=fXT7KGLDxcy2HX2T5nggcNCeQd1iYbyc8TVLnQKtTHOPV2VmStrOFWCPJj38WnpY3W
-         ryKHVHIOFfH02a7eEfoUqjfjSBcUDyOIAkKP8PjbsdIupndv/Iov1dBL6fGT+pgkCYy3
-         GiTPUytiZQwXxfabJNiHklmp7MXi50+pYIT9oNhUh9M9v0FfIrkFVe645HFnLl2GUVp1
-         7ZYQFkB9pCcIdp07Q6ZZHtO7sb2Ap36rqOEHLDQlA0zNfq4D423PBQ/CHQssJhurai3+
-         NAByR0TuEVKDf53jsiayBQONSZ9mVldzZcp1EIvRabg4neR/7E9KIonKcrcC7kjLe7tM
-         atFw==
+        bh=tADwm89Gw7MGE41VA3P+RoXDG7EzxPQzvrjTbcPBP9M=;
+        b=dapYXhKT5FyndeTczNL859WbBcWizNlJbh9DpcWLtxUgtOLj73xKfUsKBnNoI1vRAU
+         WWAzaRhkUGgy+i5XKvcgo33JbIjnUk7AeikKq3dKOsa6OUWhcDedVJnPamj/miGDxZSs
+         1v+0FAJ673xGFpN5eZG85PUsJ6VF0wk3n8TpnPYByVX2kZGupIXKDX7H70zhAunWZ/OH
+         ll3rBFxVdifJrDAzb9dt9lVb5hDG3FJTRiQk5njsYahNHvvuDdRp7WbKH79OxT+v1SAK
+         u3nV5W8XCpzegIV0r0UjD9AmQaAq851xBZgoey+fwtIDsoE7UsOkXLCMuwLIFnQ3usnB
+         8Gdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=references:in-reply-to:message-id:date:subject:cc:to:from
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xYpFuG7rsB150mQqKa3m6yy9plhtCt+6ntf6ZKE6kws=;
-        b=etzx572/NMa5HMZgfE40KYyx1C0qwZzcETYV+56dks+ByeU5nr8/qaiMcLhU42ORzU
-         O5/DLMGeJcoYNsk82r2eS7tQrzwuvOaPbST1OdrT7n0N1rmKnQ/vYYKV6u7GfCCi0AOz
-         hAzWlYEq1IBviCuxKiyZCDvo8YrmK2jyWaIuFKZz1thY2u0j4WjOURBOoXvLAT/4Z/oM
-         3ttq4p5DXL94vQethP91LVvj9pfH5WLVxlewfUuUs2OIGY1TDWLpKar1UXkXjsr4A01W
-         7bFb1XH28u0w51TMEMH6QHTk1071c5R0Xb62V970n22HsCkxf8QSxDyHW04y0K0JR8Nu
-         jQRQ==
-X-Gm-Message-State: AFqh2krRMBtbzWx05C0huTgtVt8/Erj+VjSa7k0AUi8EF1f7FB0/2EnE
-        VCOGYEJu0/had5elSZFYrSO3Ug==
-X-Google-Smtp-Source: AMrXdXtJq4GAplJ+2gspI2mSfbNVQ2Icv7j240rdu74ICuoFTk1+eFoiULcymtV1EnrbrIvrRi0jZA==
-X-Received: by 2002:aa7:85c4:0:b0:58d:bb58:e928 with SMTP id z4-20020aa785c4000000b0058dbb58e928mr9139648pfn.32.1674099607772;
-        Wed, 18 Jan 2023 19:40:07 -0800 (PST)
+        bh=tADwm89Gw7MGE41VA3P+RoXDG7EzxPQzvrjTbcPBP9M=;
+        b=48vqkzzDro+JmTrBNXX1Wx3EUhCBlD90Ap0ytR7UDfrVy+AGLgP8wqRPiAwWVHZQ/J
+         tLWUm3Vz/q7GPNr0x9CYuvOM8fbzpUqjNILQiwP71E9MNPqn2Lk+viagypxYf0bSrXvq
+         TZ0hPaTT/1yybScG5GUkcCyUwVMKHsm6g3Ty2h3xAryJiXvtV1MKavrfriGb54r501bK
+         vqKUJgAGhgUj1SBTguODCoeU0jeUc8zq/yUgLSYqhGJ+5FxkgbB9rhfxS2UDwz0HNyQb
+         XfqkLhVMtxjsPDfpQz5OR70bQmKf9gEhgx7dFtA0pbaJ5i7o4V7SCUSdqlsgWKinBd/T
+         5kFQ==
+X-Gm-Message-State: AFqh2krZLX1mk9xGoWvHgGnvdbx56zDRp7dOJzd3/wRaZTo4OXY4VWHA
+        3PORUVn1jrvqG9JI7yH4gcAkuA==
+X-Google-Smtp-Source: AMrXdXstRBZDywDfCAbI8z6KxCoyx1WFSjxph3DZedoj6AtU1vZKsc5JIUQghL8+EyRgu03FCOd29A==
+X-Received: by 2002:a05:6a21:1690:b0:b8:e25f:e2a6 with SMTP id np16-20020a056a21169000b000b8e25fe2a6mr7509719pzb.57.1674099636710;
+        Wed, 18 Jan 2023 19:40:36 -0800 (PST)
 Received: from platform-dev1.pensando.io ([12.226.153.42])
-        by smtp.gmail.com with ESMTPSA id f13-20020aa7968d000000b0056b4c5dde61sm11097879pfk.98.2023.01.18.19.40.05
+        by smtp.gmail.com with ESMTPSA id f13-20020aa7968d000000b0056b4c5dde61sm11097879pfk.98.2023.01.18.19.40.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Jan 2023 19:40:07 -0800 (PST)
+        Wed, 18 Jan 2023 19:40:36 -0800 (PST)
 From:   Brad Larson <brad@pensando.io>
 X-Google-Original-From: Brad Larson <blarson@amd.com>
 To:     linux-arm-kernel@lists.infradead.org
@@ -66,9 +66,9 @@ Cc:     linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
         thomas.lendacky@amd.com, tonyhuang.sunplus@gmail.com,
         ulf.hansson@linaro.org, vaishnav.a@ti.com, will@kernel.org,
         devicetree@vger.kernel.org
-Subject: [PATCH v9 04/15] dt-bindings: spi: dw: Add AMD Pensando Elba SoC SPI Controller bindings
-Date:   Wed, 18 Jan 2023 19:39:07 -0800
-Message-Id: <20230119033918.44117-5-blarson@amd.com>
+Subject: [PATCH v9 07/15] MAINTAINERS: Add entry for AMD PENSANDO
+Date:   Wed, 18 Jan 2023 19:39:10 -0800
+Message-Id: <20230119033918.44117-8-blarson@amd.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20230119033918.44117-1-blarson@amd.com>
 References: <20230119033918.44117-1-blarson@amd.com>
@@ -76,51 +76,32 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The AMD Pensando Elba SoC has integrated the DW APB SPI Controller
+Add entry for AMD PENSANDO maintainer and files
 
 Signed-off-by: Brad Larson <blarson@amd.com>
 ---
+ MAINTAINERS | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Changes since v6:
-- Define property amd,pensando-elba-syscon
-- Move compatible amd,pensando-elba-spi ahead of baikal,bt1-ssi
-
----
- .../devicetree/bindings/spi/snps,dw-apb-ssi.yaml   | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
-
-diff --git a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
-index d33b72fabc5d..96b072835de0 100644
---- a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
-+++ b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
-@@ -37,6 +37,18 @@ allOf:
-     else:
-       required:
-         - interrupts
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: amd,pensando-elba-spi
-+    then:
-+      properties:
-+        amd,pensando-elba-syscon:
-+          $ref: /schemas/types.yaml#/definitions/phandle-array
-+          description: AMD Pensando Elba SoC system controller
-+      required:
-+        - amd,pensando-elba-syscon
+diff --git a/MAINTAINERS b/MAINTAINERS
+index f61eb221415b..74eb977badb4 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1890,6 +1890,14 @@ N:	allwinner
+ N:	sun[x456789]i
+ N:	sun50i
  
- properties:
-   compatible:
-@@ -63,6 +75,8 @@ properties:
-         const: intel,keembay-ssi
-       - description: Intel Thunder Bay SPI Controller
-         const: intel,thunderbay-ssi
-+      - description: AMD Pensando Elba SoC SPI Controller
-+        const: amd,pensando-elba-spi
-       - description: Baikal-T1 SPI Controller
-         const: baikal,bt1-ssi
-       - description: Baikal-T1 System Boot SPI Controller
++ARM/AMD PENSANDO ARM64 ARCHITECTURE
++M:	Brad Larson <blarson@amd.com>
++L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
++S:	Supported
++F:	Documentation/devicetree/bindings/*/amd,pensando*
++F:	arch/arm64/boot/dts/amd/elba*
++F:	drivers/spi/spi-pensando-sr.c
++
+ ARM/Amlogic Meson SoC CLOCK FRAMEWORK
+ M:	Neil Armstrong <neil.armstrong@linaro.org>
+ M:	Jerome Brunet <jbrunet@baylibre.com>
 -- 
 2.17.1
 

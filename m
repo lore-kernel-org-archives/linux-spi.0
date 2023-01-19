@@ -2,102 +2,84 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 170BBC38159
-	for <linux-spi@archiver.kernel.org>; Fri, 20 Jan 2023 05:24:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F1B5C46467
+	for <linux-spi@archiver.kernel.org>; Fri, 20 Jan 2023 05:28:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231321AbjATFYF (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 20 Jan 2023 00:24:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55724 "EHLO
+        id S231178AbjATF2u (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 20 Jan 2023 00:28:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231315AbjATFXk (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 20 Jan 2023 00:23:40 -0500
+        with ESMTP id S231173AbjATF21 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 20 Jan 2023 00:28:27 -0500
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8265360C86;
-        Thu, 19 Jan 2023 21:14:03 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A646B76AC;
+        Thu, 19 Jan 2023 21:23:27 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id C6884B823D6;
-        Thu, 19 Jan 2023 13:57:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB92BC433F2;
-        Thu, 19 Jan 2023 13:57:12 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 59DD4B826AA;
+        Thu, 19 Jan 2023 17:36:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C02DC433D2;
+        Thu, 19 Jan 2023 17:36:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674136633;
-        bh=3P1Nc86yRs6xRt0uuD8SSAASBWVJ0TJDhG0FA7Feguc=;
+        s=k20201202; t=1674149789;
+        bh=EQ1fSGGlGH77kXooVwbjybwU1LhFwJogktLoTx8jPAQ=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=THgm7mSVdJKL0kAA+WIgCqGJbjB6wJt8FgOWbrAT1l2e1UGgX6T+NOch1V0VlI2Mw
-         F2eVMjUaFrMvKzf9tdgoqhhLh5c/jY/tg2mKGe5KQ51wE+6Q7vE1Se6iNwhYorEZIL
-         FeFTwU/U3Y52k1AJleh4dvTY0/SxmWOd6fIhcggZY9Xr7rdlY02YAA67zwUY5QK+6r
-         zQails68ACDxiAru/1wMhLmlgK4PXcjAwjys1D+4iDzPvKweRA1Ka/NpH+7OkumlfW
-         Y8ViudQncoii4+/NrdvBO1YH2lf9h6qnJpbEPbdAUDxdRZxO9Anlppo69uo0o8QBPB
-         8EWyimyRPg/qQ==
-Date:   Thu, 19 Jan 2023 13:57:09 +0000
+        b=Mz7rCjR/A33xwAO7ZrvKUN7jh8KtBbd7CBPKGiVSdyLBLmM+cwcl38xhjCKqv8ey6
+         i9TkTBrT538e04b5/quBdE7b4XeTRQUEVPJ7EG09A5Y0FBRp7UYIlqin9YP7zj6CxP
+         RM+FC0eKo8W6L8jB0pFZr2ZjOeWRxNy7M5srSVRBIyMIwSLpppt4+ZfM784Vk21gUs
+         RsPxKj0NgF3FjMhNdhoW2YbOe4HsqpH3IorX9l22WD5lUDEqYvMPgGPx3Kn/987zuH
+         1Zm4hvm/A9fKsJC5eo5yY64TPTfJ8oI7B68xbMpWixcnm5ObJENOhSBJDFI5DHjJvn
+         RcMZ43COLKsjA==
+Date:   Thu, 19 Jan 2023 17:36:25 +0000
 From:   Mark Brown <broonie@kernel.org>
-To:     Brad Larson <blarson@amd.com>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-spi@vger.kernel.org,
-        adrian.hunter@intel.com, alcooperx@gmail.com,
-        andy.shevchenko@gmail.com, arnd@arndb.de, brad@pensando.io,
-        brendan.higgins@linux.dev, briannorris@chromium.org,
-        brijeshkumar.singh@amd.com, catalin.marinas@arm.com,
-        davidgow@google.com, gsomlo@gmail.com, gerg@linux-m68k.org,
-        krzk@kernel.org, krzysztof.kozlowski+dt@linaro.org, lee@kernel.org,
-        lee.jones@linaro.org, yamada.masahiro@socionext.com,
-        p.zabel@pengutronix.de, piotrs@cadence.com, p.yadav@ti.com,
-        rdunlap@infradead.org, robh+dt@kernel.org, samuel@sholland.org,
-        fancer.lancer@gmail.com, skhan@linuxfoundation.org,
-        suravee.suthikulpanit@amd.com, thomas.lendacky@amd.com,
-        tonyhuang.sunplus@gmail.com, ulf.hansson@linaro.org,
-        vaishnav.a@ti.com, will@kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v9 15/15] spi: pensando-sr: Add AMD Pensando SoC System
- Resource
-Message-ID: <Y8lMNUH/lJuJPbLp@sirena.org.uk>
-References: <20230119035136.21603-1-blarson@amd.com>
- <20230119035136.21603-16-blarson@amd.com>
+To:     Alexandre Mergnat <amergnat@baylibre.com>
+Cc:     Matthias Brugger <matthias.bgg@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org,
+        Amjad Ouled-Ameur <aouledameur@baylibre.com>,
+        linux-mediatek@lists.infradead.org, linux-spi@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] spi: spidev: add new mediatek support
+Message-ID: <Y8l/mQjjgKJiE1/F@sirena.org.uk>
+References: <20230118-mt8365-spi-support-v2-0-be3ac97a28c6@baylibre.com>
+ <20230118-mt8365-spi-support-v2-2-be3ac97a28c6@baylibre.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="8D6WBjU4dhTr3Lss"
+        protocol="application/pgp-signature"; boundary="Jz0aOHbv75kB/Hqi"
 Content-Disposition: inline
-In-Reply-To: <20230119035136.21603-16-blarson@amd.com>
+In-Reply-To: <20230118-mt8365-spi-support-v2-2-be3ac97a28c6@baylibre.com>
 X-Cookie: Serving suggestion.
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
 
---8D6WBjU4dhTr3Lss
+--Jz0aOHbv75kB/Hqi
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Wed, Jan 18, 2023 at 07:51:36PM -0800, Brad Larson wrote:
+On Thu, Jan 19, 2023 at 06:28:20PM +0100, Alexandre Mergnat wrote:
+> Add the "mediatek,genio" compatible string to support Mediatek
+> SPI controller on the genio boards.
 
-> Add support for the AMD Pensando SoC System Resource chip using
-> the SPI interface.  The device functions are accessed using
-> four chip-selects and the device can be a CPLD or FPGA depending
-> on functionality.
+All my previous review comments stand, please don't ignore review
+feedback.
 
-> ---
->  drivers/spi/Kconfig           |  14 ++
->  drivers/spi/Makefile          |   1 +
->  drivers/spi/spi-pensando-sr.c | 454 ++++++++++++++++++++++++++++++++++
->  3 files changed, 469 insertions(+)
-
-This isn't a SPI controller driver so doesn't belong here,
-drivers/soc might be a better fit based on the summary above?
-
---8D6WBjU4dhTr3Lss
+--Jz0aOHbv75kB/Hqi
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmPJTDAACgkQJNaLcl1U
-h9AX9gf9GML5TThEYc7iRhGulDaUGtLkpUtyjl6vvp1rs5FAt6yU8pZ5smmtQK9G
-FzGZsvNDSPbQ952jyy7EBQQ7gswjo+kF4Eg+6UpE8WJTY95WPjkji0E/DPOxhruK
-2ByAWFyW8bx7r/Sqng7jJRN6/rc4F9+rppguTNKJGF5xdwArMulKAPwNW9qzUit4
-BmaUhuKxdVwLXCW6d9sAcOV7GDFW8iMTHXXE2uZcOijYpOz5jaOnSQu/esQZz/8D
-Sc7Xa9XLvJTWif+OxUB7qzWlyUTy5ul//1dJja5VYG/IUTWvfIH2LsgGAzEhv6zF
-8/ciby0aIavZsRidSNFBl4kexezCHQ==
-=/8v4
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmPJf5gACgkQJNaLcl1U
+h9C0BAf+Jl+1E0pCscUWyq547PeayYiVt04DMkk+4q1qCXREpiJP/zLOicoEZCWz
+2xIkBo1hIB1RAJXIZWkrMO/kN5SbqsLQ+ySgMVaWK/Lp3aL0M8YyPF34pmEhLojN
+ly/WNvpWVwmdO6n6NGGsK1tgp7IE4pyEj9M08YmBcRbWzMddKO71u1YMgY+mmOcN
+NDEc2E1vmp4aWd22lsMmgtFlJgpRPAw0+/T6nA+XLdP4u3EvGo+Au3LOa3ij1xOA
+tWw3+wlro3nIC9+h0Iwy5rWLBzuaxMccUhM2ZEYAbj1a8Nq8yq8Of+7vlxOhiee/
+NdWsOYPhtLy6IuWthaMnaMi7vzliew==
+=uuJE
 -----END PGP SIGNATURE-----
 
---8D6WBjU4dhTr3Lss--
+--Jz0aOHbv75kB/Hqi--

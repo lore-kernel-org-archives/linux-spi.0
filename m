@@ -2,51 +2,51 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 335D6C38142
-	for <linux-spi@archiver.kernel.org>; Thu, 19 Jan 2023 04:29:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 986DCC00A5A
+	for <linux-spi@archiver.kernel.org>; Thu, 19 Jan 2023 04:29:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230032AbjASE24 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 18 Jan 2023 23:28:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36500 "EHLO
+        id S229841AbjASE26 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 18 Jan 2023 23:28:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229939AbjASDm3 (ORCPT
+        with ESMTP id S229954AbjASDm3 (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Wed, 18 Jan 2023 22:42:29 -0500
-Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74FC86D348
-        for <linux-spi@vger.kernel.org>; Wed, 18 Jan 2023 19:40:26 -0800 (PST)
-Received: by mail-pg1-x52d.google.com with SMTP id v3so518832pgh.4
-        for <linux-spi@vger.kernel.org>; Wed, 18 Jan 2023 19:40:26 -0800 (PST)
+Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 624355CE7C
+        for <linux-spi@vger.kernel.org>; Wed, 18 Jan 2023 19:40:43 -0800 (PST)
+Received: by mail-pg1-x52f.google.com with SMTP id 78so506186pgb.8
+        for <linux-spi@vger.kernel.org>; Wed, 18 Jan 2023 19:40:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=pensando.io; s=google;
         h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=zmaGlRv0dSbHKLAvH6Xbn1IwDGJLCQgM3m75kMGlPTg=;
-        b=o/P1eqJpVBM/pBnCkOovaH3//MBsk8m9xiVa1ycjEfV0L/HDGPPLKmYoQlzh5gINX5
-         vK4louBUFwxvS98lIcFDQ0Pxn0FA5/x8V25E9hbw1W46n33/gLdqP6BcU1K9dDKE/pd0
-         jQ/gPjir05Ojl8cdOoC5NlWHomZtroZjLIgV1anIAc9YQVE+qaZ55IXofRXoPVyJXjGu
-         B/wBq9uXe6/lHMR6Pv294SHmHHJOSeBiMNKQUi8J0uS9ldxp55WIoAmwTU+zVocU1wMY
-         9ih1/JZENnal9UG3oe2Dln6td9MrvEnRPgP+oNRmDT+QvoiXeuTLEosm1RtVSgejjM28
-         tgew==
+        bh=p+7zok1V1K4O5OkPHqePWWhsaVAgAl7DE+PB8/1U13I=;
+        b=gZviyRPOuk3wF04sCxc6jzGuB2n4WYyg4aHSXUEnRoy964AMHz+aAd1e7HdLp1dHJc
+         7lQBzne73j4VKFyjSyjj/ZxQY7Rd+sahBT3nKsmexrLqlPZKOXwY7Hi0qKsB7jYAEy+5
+         htpLfTYfoMs4c5UKHcHduuOZDlz6VkCfQLdCG+8TKSWbBjxEIPsPpmwKRmD4Cuh/I8nQ
+         OCwA/o0QtxTfTnRT4ZQ7Xdw51Go63Ff9/NaCWtvoN9ZPhX++SwL7h37kpnQlh6skcZXD
+         4ulgpl3rnopFdq8x/4r3Al12/Cx3VLhdSkZnlmMnyTrIr52rwX+qVprPqpKFFFR9dDwG
+         55ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=references:in-reply-to:message-id:date:subject:cc:to:from
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zmaGlRv0dSbHKLAvH6Xbn1IwDGJLCQgM3m75kMGlPTg=;
-        b=EBNMj/qgF8arioFvKE3rlpPNAcgDeivk6V23rdWdhNYCapRUeNrnDLOLqjFkhrnAFE
-         iwcT5UE5i9uN1x1Wzsy6imt/jg2P419mXlj0aa24Ibh3VtTaFZffm9u1dEgX5SEVDA1j
-         4gQLa1mbmIm3XKujRmcb/updihZPjyHN6DXnACOBNBEYu0LD36+YoR05t8pCjhIcUrUs
-         4K/QsOx/dTXikX7pslhVHQiRu8aJy2uj67IB1dyn8KIMJN4DpY3HJz9FU84izR+Yysst
-         501831Oqm5nTvrNA8eVRL/0BVXiZFDSe7791Rf/K2WE3+7q9tfHUyZDpMMhyixOMwXye
-         SsCQ==
-X-Gm-Message-State: AFqh2krZEUmm6yW3OErD7Q8AKXkfiZ16LYWgYcLgJzkLtmOww6JxVcTK
-        NwvhCrsWlp3GBDVmwddNQEqvyA==
-X-Google-Smtp-Source: AMrXdXst8z0mNuKtmJ7RHKFy/x3tCvCjbWe18XjiFGY+ezd9zRK9F86OhBpcSj14tGqfKHOeW4bV/A==
-X-Received: by 2002:aa7:8006:0:b0:58b:cacd:2d12 with SMTP id j6-20020aa78006000000b0058bcacd2d12mr9254828pfi.28.1674099625750;
-        Wed, 18 Jan 2023 19:40:25 -0800 (PST)
+        bh=p+7zok1V1K4O5OkPHqePWWhsaVAgAl7DE+PB8/1U13I=;
+        b=yqsW/bplOjc99Lps3AeZDxtIfmbfZ2HEAZopsKZoldyFFQDjDxS076LlIRV/AJHFSq
+         lNt2CImUnqeM7a2pdNXnIisPq3c3XvrKpol+fWWJg1qtl6by0VQxtomqsxfi55tvtuRr
+         vENKlyIGh0rH9LFI7xNbiCx049XlhD0gB9Jrpq7R77/E1OpNh5bSXoIkOHV4x5zh4pPb
+         gNKMtUYxIKjlu8YE0MQ0NxiMH+Chkysrh+59lVCM5X9bw8mh+kZFpK5U8HwcV8GYZ3aL
+         4VjwVi8mwyHLTJ85qtdV1OCW870c4J7cvjCIskjm1zvir57Ci4eVCIGsYKV7xGCBb+ip
+         beBQ==
+X-Gm-Message-State: AFqh2kqWSnXhy2ofSqXfBjMnaL9LyHzcEY9C9lSycS8Wtdyjveij0e44
+        syidwnf3q7640iPZsCRDVbCNUQ==
+X-Google-Smtp-Source: AMrXdXsh5WY61OQaWz2xECsud+hiAhmWBaewp7rm9g1f9L5M1Lus4LiSgyAs84L283yWUXTTrTrgbQ==
+X-Received: by 2002:aa7:8a04:0:b0:581:1c:82a3 with SMTP id m4-20020aa78a04000000b00581001c82a3mr10249142pfa.1.1674099642791;
+        Wed, 18 Jan 2023 19:40:42 -0800 (PST)
 Received: from platform-dev1.pensando.io ([12.226.153.42])
-        by smtp.gmail.com with ESMTPSA id f13-20020aa7968d000000b0056b4c5dde61sm11097879pfk.98.2023.01.18.19.40.22
+        by smtp.gmail.com with ESMTPSA id f13-20020aa7968d000000b0056b4c5dde61sm11097879pfk.98.2023.01.18.19.40.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Jan 2023 19:40:25 -0800 (PST)
+        Wed, 18 Jan 2023 19:40:42 -0800 (PST)
 From:   Brad Larson <brad@pensando.io>
 X-Google-Original-From: Brad Larson <blarson@amd.com>
 To:     linux-arm-kernel@lists.infradead.org
@@ -66,9 +66,9 @@ Cc:     linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
         thomas.lendacky@amd.com, tonyhuang.sunplus@gmail.com,
         ulf.hansson@linaro.org, vaishnav.a@ti.com, will@kernel.org,
         devicetree@vger.kernel.org
-Subject: [PATCH v9 06/15] dt-bindings: mfd: amd,pensando-elbasr: Add AMD Pensando System Resource chip
-Date:   Wed, 18 Jan 2023 19:39:09 -0800
-Message-Id: <20230119033918.44117-7-blarson@amd.com>
+Subject: [PATCH v9 08/15] arm64: Add config for AMD Pensando SoC platforms
+Date:   Wed, 18 Jan 2023 19:39:11 -0800
+Message-Id: <20230119033918.44117-9-blarson@amd.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20230119033918.44117-1-blarson@amd.com>
 References: <20230119033918.44117-1-blarson@amd.com>
@@ -76,103 +76,37 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Add support for the AMD Pensando SoC System Resource chip using the
-SPI interface.  The device functions are accessed using four
-chip-selects.  This device is present for all Pensando SoC designs.
+Add ARCH_PENSANDO configuration option for AMD Pensando
+SoC based platforms.
 
 Signed-off-by: Brad Larson <blarson@amd.com>
 ---
+ arch/arm64/Kconfig.platforms | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-Changes since v6:
-- Instead of four nodes, one per chip-select, a single
-  node is used with reset-cells in the parent.
-- No MFD API is used anymore in the driver so it made
-  sense to move this to drivers/spi.
-- This driver is common for all Pensando SoC based designs
-  so changed the name to pensando-sr.c to not make it Elba
-  SoC specific.
-- Added property cs for the chip-select number which is used
-  by the driver to create /dev/pensr0.<cs> 
-
----
- .../bindings/spi/amd,pensando-sr.yaml         | 68 +++++++++++++++++++
- 1 file changed, 68 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/amd,pensando-sr.yaml
-
-diff --git a/Documentation/devicetree/bindings/spi/amd,pensando-sr.yaml b/Documentation/devicetree/bindings/spi/amd,pensando-sr.yaml
-new file mode 100644
-index 000000000000..8504652f6e19
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/amd,pensando-sr.yaml
-@@ -0,0 +1,68 @@
-+# SPDX-License-Identifier: (GPL-2.0-only or BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/spi/amd,pensando-sr.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/arch/arm64/Kconfig.platforms b/arch/arm64/Kconfig.platforms
+index d1970adf80ab..11d4f73cd341 100644
+--- a/arch/arm64/Kconfig.platforms
++++ b/arch/arm64/Kconfig.platforms
+@@ -236,6 +236,18 @@ config ARCH_NPCM
+ 	  General support for NPCM8xx BMC (Arbel).
+ 	  Nuvoton NPCM8xx BMC based on the Cortex A35.
+ 
++config ARCH_PENSANDO
++	bool "AMD Pensando Platforms"
++	help
++	  This enables support for the ARMv8 based AMD Pensando SoC
++	  family to include the Elba SoC.
 +
-+title: AMD Pensando SoC Resource Controller
++	  AMD Pensando SoCs support a range of Distributed Services
++	  Cards in PCIe format installed into servers.  The Elba
++	  SoC includes 16 A-72 CPU cores, 144 programmable P4
++	  cores for a minimal latency/jitter datapath, and network
++	  interfaces up to 200 Gb/s.
 +
-+description: |
-+  AMD Pensando SoC Resource Controller is a set of
-+  control/status registers accessed on four chip-selects.
-+  This device is present in all Pensando SoC based designs.
-+
-+maintainers:
-+  - Brad Larson <blarson@amd.com>
-+
-+properties:
-+  compatible:
-+    contains:
-+      enum:
-+        - amd,pensando-sr
-+
-+  reg:
-+    minItems: 1
-+
-+  cs:
-+    minItems: 1
-+    maxItems: 4
-+    description:
-+      Device chip select
-+
-+  '#reset-cells':
-+    const: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  spi-max-frequency: true
-+
-+required:
-+  - compatible
-+  - cs
-+  - spi-max-frequency
-+  - '#reset-cells'
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/arm-gic.h>
-+
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+        num-cs = <4>;
-+
-+        system-controller@0 {
-+            compatible = "amd,pensando-sr";
-+            reg = <0>;
-+            cs = <0 1 2 3>;
-+            spi-max-frequency = <12000000>;
-+            interrupt-parent = <&porta>;
-+            interrupts = <0 IRQ_TYPE_LEVEL_LOW>;
-+            #reset-cells = <1>;
-+        };
-+    };
-+
-+...
+ config ARCH_QCOM
+ 	bool "Qualcomm Platforms"
+ 	select GPIOLIB
 -- 
 2.17.1
 

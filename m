@@ -2,51 +2,51 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 42ED3C38142
-	for <linux-spi@archiver.kernel.org>; Thu, 19 Jan 2023 04:28:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D3BF9C38142
+	for <linux-spi@archiver.kernel.org>; Thu, 19 Jan 2023 04:28:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230020AbjASE2p (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 18 Jan 2023 23:28:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37262 "EHLO
+        id S229831AbjASE2q (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 18 Jan 2023 23:28:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229933AbjASDop (ORCPT
+        with ESMTP id S230022AbjASDop (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Wed, 18 Jan 2023 22:44:45 -0500
 Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 092B24CE6E
-        for <linux-spi@vger.kernel.org>; Wed, 18 Jan 2023 19:41:04 -0800 (PST)
-Received: by mail-pl1-x62e.google.com with SMTP id p24so1087426plw.11
-        for <linux-spi@vger.kernel.org>; Wed, 18 Jan 2023 19:41:04 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13A9C6DB0C
+        for <linux-spi@vger.kernel.org>; Wed, 18 Jan 2023 19:41:14 -0800 (PST)
+Received: by mail-pl1-x62e.google.com with SMTP id d9so1098513pll.9
+        for <linux-spi@vger.kernel.org>; Wed, 18 Jan 2023 19:41:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=pensando.io; s=google;
         h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=HoxgLjiKMEnBReX8y4HZGzgpLE7NIwrXXlAdWPhN3h8=;
-        b=vlwDso4zfaafKBLTGZSWLErQYEQ5QY7rcEF1zh4iSwN6iI98SPm4toCnLM60XjMy4U
-         FRNIPBJPK7qWyW4yTOoWw97SviB5VdLcf6aUSGuTjQsJMYb8Zbavhp7M/PAS1qeiAP6X
-         cXaa/J4BPtXSbGPCBJ8WbxDEphDYH/nAgZbF1jPL3wdCuGQDAlUjiJzEIUHvQmft3ebF
-         CgqzDWF742LCFKEkCV8Jzpq3zWCapvPnXt/QUPKBnSeCrBsbUizewQrbR2j1lpp5fHTq
-         T89ytguL3doR5oUDohfGweF5HhryX0Na/PWFC6zEwp/TF/WP0RfBI3Nt1RvlZWz8h9kW
-         rq+A==
+        bh=CbqxDJadqrHHWLEsqeIAFGgTZLiSV774ziT3BrEvhqw=;
+        b=OqFVgJ2CyegdNj4yCjQySTj/hxY5dmRFO2lZotk80k1FHPVx+fHgYVhtAA71OORn4O
+         6B8/NVU1ONqJO9Mz4qipuHNDxcGGdXeoLKnKhfYCFgsEUcAfX12H89Yet1CD7dznb9c7
+         w6KGjQQio9pf4mnHX/X6xgZ5vJVw0i9Ns32tXzFZH/8F0WwjqmJFkycp1IBL6HEcMsf3
+         WU0h8MBL2WnETZKPFdEGQUrVw8ThhHF5wyRRRT9Oeec8T59/kGBHk5BfLSmVwB71VckY
+         1a5EY7mfTP+xNocCdGuVHdSY85q1SERXEtFH5/hH1mAOQkkb82/Zo1V6VSLp55gqPCPP
+         6kog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=references:in-reply-to:message-id:date:subject:cc:to:from
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HoxgLjiKMEnBReX8y4HZGzgpLE7NIwrXXlAdWPhN3h8=;
-        b=MwcDDNnpHv3znqzXFuvzZ5MZt4Vm52kqMIkIJMkgsz0lH3wZGKaz5dXPmc40Z6ORXE
-         KcJITFZD0hSBw8Fo3htGaoagu5q7kCBVA9gBN0kI9jPPpxYMa6KrcsviMYWv6HYPq7O4
-         Wkgf+gJ2aXBxRFoM3HDUaX0M2Y93Hu9yg4MDI3QO0zHB+TwGgorVu4ZEMCj16qeXzLWh
-         cZVgfq50rCRU6QWZN/5YAGFhqInKwgOMyS6KvC/fiN+ut7+fHght67ax8/oAK6PcEVTJ
-         82pPI8gzrcTFPBVXAlpyf0XTqk0Oh9D1gwUHeM2JYHo6j8b96w495pLFSiaL+ssfITTM
-         kLGQ==
-X-Gm-Message-State: AFqh2kpDvgF/kiDzq1eVpaNtB0+jRd40GqzPHToffwP8WOaKyMc4DuC9
-        SsT8Yi5B2PhWuLPm6dryAXxLkQ==
-X-Google-Smtp-Source: AMrXdXv9gtvswiH5b6jgB6AVsqRnU4Ge6BwluWHdlQkKPdo0JB/42cVs6C8gs/HBxJmeeDTgLO9msg==
-X-Received: by 2002:a05:6a20:4c9f:b0:b8:694c:201 with SMTP id fq31-20020a056a204c9f00b000b8694c0201mr8961901pzb.11.1674099662453;
-        Wed, 18 Jan 2023 19:41:02 -0800 (PST)
+        bh=CbqxDJadqrHHWLEsqeIAFGgTZLiSV774ziT3BrEvhqw=;
+        b=gjb7KqHLFs3OgPVWjJHdt2OXw8GvDdN0ThVQ4to7VTGzyBROK8d1nxD0MNwOE/aPk+
+         ovJaMSRwDGowiNNGtsjHl0xprp0C0sfrtRiFznMUVUf+37hr54UCtTnzqeZ1WRPbAARn
+         xML8ms4bid5kXzj53YKNoBIuVPO0fW1GbzSQtJfaU5nod0gMnv/0QB/HeQtyVAGZbfNy
+         fzUqC4B7bmOS/N4zwnDdpEAmp3u33iVXZHuE/rkwhscH0hY0ViLXZmyGZpN+uvizUcrS
+         F0iucRcNYG3GAVB8VTs9SygFiUhgQdVzh12FyaXixXP9b38TtbrYcEfIB8w57a3MCJ3y
+         ExFw==
+X-Gm-Message-State: AFqh2kpR80e+Y4iW5H8e5ZmIkdHErll3/GLOtUx63d7N4BaLHOHFgQSv
+        Q1RudFpkn23rotVZrUTcPXI43A==
+X-Google-Smtp-Source: AMrXdXvq1Zn+btSljOEN963muFuSxu9AHd46dZobV/seDM1fVcM/gK4DWUWqMjnkOmpVN5LOLuRBOA==
+X-Received: by 2002:a05:6a20:4c8a:b0:b8:8e17:901c with SMTP id fq10-20020a056a204c8a00b000b88e17901cmr8034180pzb.52.1674099673971;
+        Wed, 18 Jan 2023 19:41:13 -0800 (PST)
 Received: from platform-dev1.pensando.io ([12.226.153.42])
-        by smtp.gmail.com with ESMTPSA id f13-20020aa7968d000000b0056b4c5dde61sm11097879pfk.98.2023.01.18.19.41.00
+        by smtp.gmail.com with ESMTPSA id f13-20020aa7968d000000b0056b4c5dde61sm11097879pfk.98.2023.01.18.19.41.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Jan 2023 19:41:02 -0800 (PST)
+        Wed, 18 Jan 2023 19:41:13 -0800 (PST)
 From:   Brad Larson <brad@pensando.io>
 X-Google-Original-From: Brad Larson <blarson@amd.com>
 To:     linux-arm-kernel@lists.infradead.org
@@ -66,9 +66,9 @@ Cc:     linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
         thomas.lendacky@amd.com, tonyhuang.sunplus@gmail.com,
         ulf.hansson@linaro.org, vaishnav.a@ti.com, will@kernel.org,
         devicetree@vger.kernel.org
-Subject: [PATCH v9 11/15] spi: dw: Add support for AMD Pensando Elba SoC
-Date:   Wed, 18 Jan 2023 19:39:14 -0800
-Message-Id: <20230119033918.44117-12-blarson@amd.com>
+Subject: [PATCH v9 13/15] mmc: sdhci-cadence: Add AMD Pensando Elba SoC support
+Date:   Wed, 18 Jan 2023 19:39:16 -0800
+Message-Id: <20230119033918.44117-14-blarson@amd.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20230119033918.44117-1-blarson@amd.com>
 References: <20230119033918.44117-1-blarson@amd.com>
@@ -76,126 +76,231 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The AMD Pensando Elba SoC includes a DW apb_ssi v4 controller
-with device specific chip-select control.  The Elba SoC
-provides four chip-selects where the native DW IP supports
-two chip-selects.  The Elba DW_SPI instance has two native
-CS signals that are always overridden.
+Add support for AMD Pensando Elba SoC which explicitly
+controls byte-lane enables on writes.
+
+Select MMC_SDHCI_IO_ACCESSORS for MMC_SDHCI_CADENCE which
+allows Elba SoC sdhci_elba_ops to overwrite the SDHCI
+IO memory accessors.
 
 Signed-off-by: Brad Larson <blarson@amd.com>
 ---
 
 Changes since v6:
-- Add use of macros GENMASK() and BIT()
-- Change ELBA_SPICS_SHIFT() to ELBA_SPICS_OFFSET()
+- Previously patch 16/17
 
 ---
- drivers/spi/spi-dw-mmio.c | 78 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 78 insertions(+)
+ drivers/mmc/host/Kconfig         |   1 +
+ drivers/mmc/host/sdhci-cadence.c | 131 ++++++++++++++++++++++++++++---
+ 2 files changed, 123 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
-index 26c40ea6dd12..9b6f876227e8 100644
---- a/drivers/spi/spi-dw-mmio.c
-+++ b/drivers/spi/spi-dw-mmio.c
-@@ -53,6 +53,24 @@ struct dw_spi_mscc {
- 	void __iomem        *spi_mst; /* Not sparx5 */
+diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
+index 5e19a961c34d..9e41115cc753 100644
+--- a/drivers/mmc/host/Kconfig
++++ b/drivers/mmc/host/Kconfig
+@@ -255,6 +255,7 @@ config MMC_SDHCI_CADENCE
+ 	tristate "SDHCI support for the Cadence SD/SDIO/eMMC controller"
+ 	depends on MMC_SDHCI_PLTFM
+ 	depends on OF
++	select MMC_SDHCI_IO_ACCESSORS
+ 	help
+ 	  This selects the Cadence SD/SDIO/eMMC driver.
+ 
+diff --git a/drivers/mmc/host/sdhci-cadence.c b/drivers/mmc/host/sdhci-cadence.c
+index 708d4297f241..e92aa79a8be2 100644
+--- a/drivers/mmc/host/sdhci-cadence.c
++++ b/drivers/mmc/host/sdhci-cadence.c
+@@ -66,6 +66,8 @@ struct sdhci_cdns_phy_param {
+ 
+ struct sdhci_cdns_priv {
+ 	void __iomem *hrs_addr;
++	void __iomem *ctl_addr;	/* write control */
++	spinlock_t wrlock;	/* write lock */
+ 	bool enhanced_strobe;
+ 	void (*priv_writel)(struct sdhci_cdns_priv *priv, u32 val, void __iomem *reg);
+ 	unsigned int nr_phy_params;
+@@ -77,6 +79,11 @@ struct sdhci_cdns_phy_cfg {
+ 	u8 addr;
  };
  
-+struct dw_spi_elba {
-+	struct regmap *syscon;
++struct sdhci_cdns_drv_data {
++	int (*init)(struct platform_device *pdev);
++	const struct sdhci_pltfm_data pltfm_data;
 +};
 +
-+/*
-+ * Elba SoC does not use ssi, pin override is used for cs 0,1 and
-+ * gpios for cs 2,3 as defined in the device tree.
-+ *
-+ * cs:  |       1               0
-+ * bit: |---3-------2-------1-------0
-+ *      |  cs1   cs1_ovr   cs0   cs0_ovr
-+ */
-+#define ELBA_SPICS_REG			0x2468
-+#define ELBA_SPICS_OFFSET(cs)		((cs) << 1)
-+#define ELBA_SPICS_MASK(cs)		(GENMASK(1, 0) << ELBA_SPICS_OFFSET(cs))
-+#define ELBA_SPICS_SET(cs, val)		\
-+		((((val) << 1) | BIT(0)) << ELBA_SPICS_OFFSET(cs))
-+
- /*
-  * The Designware SPI controller (referred to as master in the documentation)
-  * automatically deasserts chip select when the tx fifo is empty. The chip
-@@ -237,6 +255,65 @@ static int dw_spi_canaan_k210_init(struct platform_device *pdev,
- 	return 0;
+ static const struct sdhci_cdns_phy_cfg sdhci_cdns_phy_cfgs[] = {
+ 	{ "cdns,phy-input-delay-sd-highspeed", SDHCI_CDNS_PHY_DLY_SD_HS, },
+ 	{ "cdns,phy-input-delay-legacy", SDHCI_CDNS_PHY_DLY_SD_DEFAULT, },
+@@ -316,6 +323,92 @@ static void sdhci_cdns_set_uhs_signaling(struct sdhci_host *host,
+ 		sdhci_set_uhs_signaling(host, timing);
  }
  
-+static void dw_spi_elba_override_cs(struct dw_spi_elba *dwselba, int cs, int enable)
-+{
-+	regmap_update_bits(dwselba->syscon, ELBA_SPICS_REG, ELBA_SPICS_MASK(cs),
-+			   ELBA_SPICS_SET(cs, enable));
++/* Elba control register bits [6:3] are byte-lane enables */
++#define ELBA_BYTE_ENABLE_MASK(x)	((x) << 3)
 +
++/*
++ * The Pensando Elba SoC explicitly controls byte-lane enabling on writes
++ * which includes writes to the HRS registers.
++ */
++static void elba_priv_writel(struct sdhci_cdns_priv *priv, u32 val,
++			     void __iomem *reg)
++{
++	unsigned long flags;
++
++	spin_lock_irqsave(&priv->wrlock, flags);
++	writel(ELBA_BYTE_ENABLE_MASK(0xf), priv->ctl_addr);
++	writel(val, reg);
++	spin_unlock_irqrestore(&priv->wrlock, flags);
 +}
 +
-+static void dw_spi_elba_set_cs(struct spi_device *spi, bool enable)
++static void elba_write_l(struct sdhci_host *host, u32 val, int reg)
 +{
-+	struct dw_spi *dws = spi_master_get_devdata(spi->master);
-+	struct dw_spi_mmio *dwsmmio = container_of(dws, struct dw_spi_mmio, dws);
-+	struct dw_spi_elba *dwselba = dwsmmio->priv;
-+	u8 cs;
-+
-+	cs = spi->chip_select;
-+	if (cs < 2)
-+		dw_spi_elba_override_cs(dwselba, spi->chip_select, enable);
-+
-+	/*
-+	 * The DW SPI controller needs a native CS bit selected to start
-+	 * the serial engine.
-+	 */
-+	spi->chip_select = 0;
-+	dw_spi_set_cs(spi, enable);
-+	spi->chip_select = cs;
++	elba_priv_writel(sdhci_cdns_priv(host), val, host->ioaddr + reg);
 +}
 +
-+static int dw_spi_elba_init(struct platform_device *pdev,
-+			    struct dw_spi_mmio *dwsmmio)
++static void elba_write_w(struct sdhci_host *host, u16 val, int reg)
 +{
-+	const char *syscon_name = "amd,pensando-elba-syscon";
-+	struct device_node *np = pdev->dev.of_node;
-+	struct dw_spi_elba *dwselba;
-+	struct device_node *node;
-+	struct regmap *regmap;
++	struct sdhci_cdns_priv *priv = sdhci_cdns_priv(host);
++	u32 byte_enables;
++	unsigned long flags;
 +
-+	node = of_parse_phandle(np, syscon_name, 0);
-+	if (!node) {
-+		dev_err(&pdev->dev, "failed to find %s\n", syscon_name);
-+		return -ENODEV;
-+	}
++	byte_enables = GENMASK(1, 0) << (reg & 0x3);
++	spin_lock_irqsave(&priv->wrlock, flags);
++	writel(ELBA_BYTE_ENABLE_MASK(byte_enables), priv->ctl_addr);
++	writew(val, host->ioaddr + reg);
++	spin_unlock_irqrestore(&priv->wrlock, flags);
++}
 +
-+	regmap = syscon_node_to_regmap(node);
-+	if (IS_ERR(regmap)) {
-+		dev_err(&pdev->dev, "syscon regmap lookup failed\n");
-+		return PTR_ERR(regmap);
-+	}
++static void elba_write_b(struct sdhci_host *host, u8 val, int reg)
++{
++	struct sdhci_cdns_priv *priv = sdhci_cdns_priv(host);
++	u32 byte_enables;
++	unsigned long flags;
 +
-+	dwselba = devm_kzalloc(&pdev->dev, sizeof(*dwselba), GFP_KERNEL);
-+	if (!dwselba)
++	byte_enables = BIT(0) << (reg & 0x3);
++	spin_lock_irqsave(&priv->wrlock, flags);
++	writel(ELBA_BYTE_ENABLE_MASK(byte_enables), priv->ctl_addr);
++	writeb(val, host->ioaddr + reg);
++	spin_unlock_irqrestore(&priv->wrlock, flags);
++}
++
++static const struct sdhci_ops sdhci_elba_ops = {
++	.write_l = elba_write_l,
++	.write_w = elba_write_w,
++	.write_b = elba_write_b,
++	.set_clock = sdhci_set_clock,
++	.get_timeout_clock = sdhci_cdns_get_timeout_clock,
++	.set_bus_width = sdhci_set_bus_width,
++	.reset = sdhci_reset,
++	.set_uhs_signaling = sdhci_cdns_set_uhs_signaling,
++};
++
++static int elba_drv_init(struct platform_device *pdev)
++{
++	struct sdhci_host *host = platform_get_drvdata(pdev);
++	struct sdhci_cdns_priv *priv = sdhci_cdns_priv(host);
++	struct resource *iomem;
++	void __iomem *ioaddr;
++
++	host->mmc->caps |= (MMC_CAP_1_8V_DDR | MMC_CAP_8_BIT_DATA);
++
++	iomem = platform_get_resource(pdev, IORESOURCE_MEM, 1);
++	if (!iomem)
 +		return -ENOMEM;
 +
-+	dwselba->syscon = regmap;
-+	dwsmmio->priv = dwselba;
-+	dwsmmio->dws.set_cs = dw_spi_elba_set_cs;
++	/* Byte-lane control register */
++	ioaddr = devm_platform_ioremap_resource(pdev, 1);
++	if (IS_ERR(ioaddr))
++		return PTR_ERR(ioaddr);
++
++	priv->ctl_addr = ioaddr;
++	priv->priv_writel = elba_priv_writel;
++	spin_lock_init(&priv->wrlock);
++	writel(ELBA_BYTE_ENABLE_MASK(0xf), priv->ctl_addr);
 +
 +	return 0;
 +}
 +
- static int dw_spi_mmio_probe(struct platform_device *pdev)
- {
- 	int (*init_func)(struct platform_device *pdev,
-@@ -352,6 +429,7 @@ static const struct of_device_id dw_spi_mmio_of_match[] = {
- 	{ .compatible = "intel,thunderbay-ssi", .data = dw_spi_intel_init},
- 	{ .compatible = "microchip,sparx5-spi", dw_spi_mscc_sparx5_init},
- 	{ .compatible = "canaan,k210-spi", dw_spi_canaan_k210_init},
-+	{ .compatible = "amd,pensando-elba-spi", .data = dw_spi_elba_init},
- 	{ /* end of table */}
+ static const struct sdhci_ops sdhci_cdns_ops = {
+ 	.set_clock = sdhci_set_clock,
+ 	.get_timeout_clock = sdhci_cdns_get_timeout_clock,
+@@ -325,13 +418,24 @@ static const struct sdhci_ops sdhci_cdns_ops = {
+ 	.set_uhs_signaling = sdhci_cdns_set_uhs_signaling,
  };
- MODULE_DEVICE_TABLE(of, dw_spi_mmio_of_match);
+ 
+-static const struct sdhci_pltfm_data sdhci_cdns_uniphier_pltfm_data = {
+-	.ops = &sdhci_cdns_ops,
+-	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
++static const struct sdhci_cdns_drv_data sdhci_cdns_uniphier_drv_data = {
++	.pltfm_data = {
++		.ops = &sdhci_cdns_ops,
++		.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
++	},
+ };
+ 
+-static const struct sdhci_pltfm_data sdhci_cdns_pltfm_data = {
+-	.ops = &sdhci_cdns_ops,
++static const struct sdhci_cdns_drv_data sdhci_elba_drv_data = {
++	.init = elba_drv_init,
++	.pltfm_data = {
++		.ops = &sdhci_elba_ops,
++	},
++};
++
++static const struct sdhci_cdns_drv_data sdhci_cdns_drv_data = {
++	.pltfm_data = {
++		.ops = &sdhci_cdns_ops,
++	},
+ };
+ 
+ static void sdhci_cdns_hs400_enhanced_strobe(struct mmc_host *mmc,
+@@ -357,7 +461,7 @@ static void sdhci_cdns_hs400_enhanced_strobe(struct mmc_host *mmc,
+ static int sdhci_cdns_probe(struct platform_device *pdev)
+ {
+ 	struct sdhci_host *host;
+-	const struct sdhci_pltfm_data *data;
++	const struct sdhci_cdns_drv_data *data;
+ 	struct sdhci_pltfm_host *pltfm_host;
+ 	struct sdhci_cdns_priv *priv;
+ 	struct clk *clk;
+@@ -376,10 +480,10 @@ static int sdhci_cdns_probe(struct platform_device *pdev)
+ 
+ 	data = of_device_get_match_data(dev);
+ 	if (!data)
+-		data = &sdhci_cdns_pltfm_data;
++		data = &sdhci_cdns_drv_data;
+ 
+ 	nr_phy_params = sdhci_cdns_phy_param_count(dev->of_node);
+-	host = sdhci_pltfm_init(pdev, data,
++	host = sdhci_pltfm_init(pdev, &data->pltfm_data,
+ 				struct_size(priv, phy_params, nr_phy_params));
+ 	if (IS_ERR(host)) {
+ 		ret = PTR_ERR(host);
+@@ -397,6 +501,11 @@ static int sdhci_cdns_probe(struct platform_device *pdev)
+ 	host->ioaddr += SDHCI_CDNS_SRS_BASE;
+ 	host->mmc_host_ops.hs400_enhanced_strobe =
+ 				sdhci_cdns_hs400_enhanced_strobe;
++	if (data->init) {
++		ret = data->init(pdev);
++		if (ret)
++			goto free;
++	}
+ 	sdhci_enable_v4_mode(host);
+ 	__sdhci_read_caps(host, &version, NULL, NULL);
+ 
+@@ -461,7 +570,11 @@ static const struct dev_pm_ops sdhci_cdns_pm_ops = {
+ static const struct of_device_id sdhci_cdns_match[] = {
+ 	{
+ 		.compatible = "socionext,uniphier-sd4hc",
+-		.data = &sdhci_cdns_uniphier_pltfm_data,
++		.data = &sdhci_cdns_uniphier_drv_data,
++	},
++	{
++		.compatible = "amd,pensando-elba-sd4hc",
++		.data = &sdhci_elba_drv_data,
+ 	},
+ 	{ .compatible = "cdns,sd4hc" },
+ 	{ /* sentinel */ }
 -- 
 2.17.1
 

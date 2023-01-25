@@ -2,43 +2,43 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DC532C27C76
-	for <linux-spi@archiver.kernel.org>; Wed, 25 Jan 2023 08:11:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E3041C54E94
+	for <linux-spi@archiver.kernel.org>; Wed, 25 Jan 2023 08:11:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234805AbjAYILO (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 25 Jan 2023 03:11:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50322 "EHLO
+        id S234961AbjAYILX (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 25 Jan 2023 03:11:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234264AbjAYILN (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 25 Jan 2023 03:11:13 -0500
-Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E12F647099;
-        Wed, 25 Jan 2023 00:11:10 -0800 (PST)
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 30P8AmuV100093;
-        Wed, 25 Jan 2023 02:10:48 -0600
+        with ESMTP id S233330AbjAYILQ (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 25 Jan 2023 03:11:16 -0500
+Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0A6F4709D;
+        Wed, 25 Jan 2023 00:11:13 -0800 (PST)
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 30P8B4vn059195;
+        Wed, 25 Jan 2023 02:11:04 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1674634248;
-        bh=Tb+iqFBTvqZqoyhy2A3PM/WejlRKwtgdqUn0IBG8Ctw=;
-        h=From:To:CC:Subject:Date;
-        b=i+kjACr1XHu5b7k36IEYsRa4NfLjG3qpeBItIliQDjSteu7TXi7tEWzODaAcodK8B
-         flGrlvkJE4BaP4fFkcJMaYY/7KH2ljSpPDeKzvJDIclxJJwUxoIPJTpCblXhL0GXNi
-         CMAxrS580Hb7HIKXJSjMnWfEc1i97yRRfVBHxY60=
-Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 30P8AmiE024679
+        s=ti-com-17Q1; t=1674634264;
+        bh=H6KisuMO1+dkW1oxul0NcexVOnMzVPplM1t3KZiQg1k=;
+        h=From:To:CC:Subject:Date:In-Reply-To:References;
+        b=kOFvGhQcoiLPwPe7UJSzl0nr8TqRqydgJB/MPGsi9jteq/L4Wc0GpUnGoBI+XQ/l9
+         vhI3wub9h+aksqOoUbO+uT+BCGQFXvlHAcXGs5hq8mrRZrIoxynmt5u6c9mu9bcX7I
+         7vkG7DIUOyp7eSrVFA4fz1E8TjExPh6vR0tNI6T0=
+Received: from DLEE111.ent.ti.com (dlee111.ent.ti.com [157.170.170.22])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 30P8B4Op027318
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 25 Jan 2023 02:10:48 -0600
-Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+        Wed, 25 Jan 2023 02:11:04 -0600
+Received: from DLEE101.ent.ti.com (157.170.170.31) by DLEE111.ent.ti.com
+ (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16; Wed, 25
- Jan 2023 02:10:48 -0600
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE106.ent.ti.com
- (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ Jan 2023 02:11:04 -0600
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE101.ent.ti.com
+ (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16 via
- Frontend Transport; Wed, 25 Jan 2023 02:10:48 -0600
-Received: from localhost (ileaxei01-snat.itg.ti.com [10.180.69.5])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 30P8Alto075430;
-        Wed, 25 Jan 2023 02:10:47 -0600
+ Frontend Transport; Wed, 25 Jan 2023 02:11:04 -0600
+Received: from localhost (ileaxei01-snat2.itg.ti.com [10.180.69.6])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 30P8B2mg075654;
+        Wed, 25 Jan 2023 02:11:03 -0600
 From:   Dhruva Gole <d-gole@ti.com>
 To:     Mark Brown <broonie@kernel.org>
 CC:     <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
@@ -46,12 +46,13 @@ CC:     <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         Vaishnav Achath <vaishnav.a@ti.com>,
         Dhruva Gole <d-gole@ti.com>, <linux-mtd@lists.infradead.org>,
         <linux-arm-kernel@lists.infradead.org>,
-        <Takahiro.Kuwano@infineon.com>, Pratyush Yadav <ptyadav@amazon.de>,
-        Pratyush Yadav <pratyush@kernel.org>
-Subject: [PATCH v2 0/4] STIG Mode Fixes for spi-cadence-qspi driver
-Date:   Wed, 25 Jan 2023 13:40:19 +0530
-Message-ID: <20230125081023.1573712-1-d-gole@ti.com>
+        <Takahiro.Kuwano@infineon.com>, Pratyush Yadav <ptyadav@amazon.de>
+Subject: [PATCH v2 3/4] spi: cadence-quadspi: setup ADDR Bits in cmd reads
+Date:   Wed, 25 Jan 2023 13:40:22 +0530
+Message-ID: <20230125081023.1573712-4-d-gole@ti.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20230125081023.1573712-1-d-gole@ti.com>
+References: <20230125081023.1573712-1-d-gole@ti.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -60,74 +61,41 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-* Reset the CMD_CTRL Register, without which read/writes in STIG mode
-were failing in some cases. The issue came to light while using STIG
-Mode for small reads.
-* Also add a flag that can allow us to do direct reads but distinguish
-direct writes, thus enabling us to disable writes in DAC mode in some
-cases that require it. (Like to write to some connected Flash registers)
-* Fix register reads in STIG mode and also use STIG mode while reading flash
-registers.
-Currently if you try to read a register while in STIG mode there is no
-support for ADDR and thus naturally a register never gets read from the
-flash.
+Setup the Addr bit field while issuing register reads in STIG mode. This
+is needed for example flashes like cypress define in their transaction
+table that to read any register there is 1 cmd byte and a few more address
+bytes trailing the cmd byte. Absence of addr bytes will obviously fail
+to read correct data from flash register that maybe requested by flash
+driver because the controller doesn't even specify which address of the
+flash register the read is being requested from.
 
-This patch series has been tested on a TI AM625-SK-EVM with both a quad
-spi nor flash (s25hs) and OSPI NOR Flash (s28hs).
+Signed-off-by: Dhruva Gole <d-gole@ti.com>
+---
+ drivers/spi/spi-cadence-quadspi.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-Output of ltp-ddt test, "DD_RW_ERASESIZE_UBIFS" run with s25hs512t flash:
-...
-[    2.334068] spi-nor spi0.0: s25hs512t (65536 Kbytes)
-[    2.339185] 7 fixed-partitions partitions found on MTD device
-fc40000.spi.0
-[    2.346158] Creating 7 MTD partitions on "fc40000.spi.0":
-[    2.351555] 0x000000000000-0x000000080000 : "ospi.tiboot3"
-[    2.358344] 0x000000080000-0x000000280000 : "ospi.tispl"
-[    2.364788] 0x000000280000-0x000000680000 : "ospi.u-boot"
-[    2.371311] 0x000000680000-0x0000006c0000 : "ospi.env"
-[    2.377519] 0x0000006c0000-0x000000700000 : "ospi.env.backup"
-[    2.384419] 0x000000800000-0x000003fc0000 : "ospi.rootfs"
-[    2.390890] 0x000003fc0000-0x000004000000 : "ospi.phypattern"
-..snip..
-Test Start Time: Wed Jan 11 21:14:31 2023
------------------------------------------
-Testcase                                           Result     Exit Value
---------                                           ------     ----------
-OSPI_S_FUNC_DD_RW_ERASESIZE_UBIFS                  PASS       0
-
------------------------------------------------
-Total Tests: 1
-Total Skipped Tests: 0
-Total Failures: 0
-Kernel Version: 6.2.0-rc1-00040-g700d796a94e0-dirty
-Machine Architecture: aarch64
-Hostname: am62xx-evm
-...
-
-Previous version link:
-https://lore.kernel.org/linux-spi/20230104062604.1556763-1-d-gole@ti.com/
-
-Changelog:
-
-* This version addresses concerns from Vaishnav where he was seeing issues
-while testing on different platforms.
-* Also has additional patches that fix the issues that came to light
-while using STIG Mode.
-
-To: Mark Brown <broonie@kernel.org>
-Cc: Vaishnav Achath <vaishnav.a@ti.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>
-Cc: Vignesh Raghavendra <vigneshr@ti.com>
-
-Dhruva Gole (4):
-  spi: cadence-quadspi: Reset CMD_CTRL Reg on cmd r/w completion
-  spi: cadence-quadspi: Add flag for direct mode writes
-  spi: cadence-quadspi: setup ADDR Bits in cmd reads
-  spi: cadence-quadspi: use STIG mode for small reads
-
- drivers/spi/spi-cadence-quadspi.c | 42 ++++++++++++++++++++++++++++---
- 1 file changed, 38 insertions(+), 4 deletions(-)
-
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index 4bbf6e3ad34a..a6d0f1b0bb49 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -532,6 +532,17 @@ static int cqspi_command_read(struct cqspi_flash_pdata *f_pdata,
+ 	/* 0 means 1 byte. */
+ 	reg |= (((n_rx - 1) & CQSPI_REG_CMDCTRL_RD_BYTES_MASK)
+ 		<< CQSPI_REG_CMDCTRL_RD_BYTES_LSB);
++
++	/* setup ADDR BIT field */
++	if (op->addr.nbytes) {
++		reg |= (0x1 << CQSPI_REG_CMDCTRL_ADDR_EN_LSB);
++		reg |= ((op->addr.nbytes - 1) &
++			CQSPI_REG_CMDCTRL_ADD_BYTES_MASK)
++			<< CQSPI_REG_CMDCTRL_ADD_BYTES_LSB;
++
++		writel(op->addr.val, reg_base + CQSPI_REG_CMDADDRESS);
++	}
++
+ 	status = cqspi_exec_flash_cmd(cqspi, reg);
+ 	if (status)
+ 		return status;
 --
 2.25.1
 

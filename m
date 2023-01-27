@@ -2,220 +2,124 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CA2C5C05027
-	for <linux-spi@archiver.kernel.org>; Fri, 27 Jan 2023 03:10:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B31C3C64EC3
+	for <linux-spi@archiver.kernel.org>; Fri, 27 Jan 2023 06:40:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229930AbjA0DK0 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 26 Jan 2023 22:10:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42898 "EHLO
+        id S232216AbjA0Gkk (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 27 Jan 2023 01:40:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229663AbjA0DK0 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 26 Jan 2023 22:10:26 -0500
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AB5C1C31C
-        for <linux-spi@vger.kernel.org>; Thu, 26 Jan 2023 19:10:25 -0800 (PST)
-Received: by mail-pf1-x42b.google.com with SMTP id n2so2443631pfo.3
-        for <linux-spi@vger.kernel.org>; Thu, 26 Jan 2023 19:10:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=in-reply-to:mime-version:user-agent:date:message-id:from:references
-         :cc:to:subject:from:to:cc:subject:date:message-id:reply-to;
-        bh=tlMb+spqh8yi+237LfkIolldX8/VSA+NRwv1BYSAgwc=;
-        b=O3TFdOALRUCHYvLv3t0gUjwv2rpaUud8IXVjIc+URChGs7H2bbmC5S6W2D2TP5tGoq
-         Ij2D05i5aYidbX3Gej6CrJM+23KrjqGrQvCcAUHaVDHbdtQiatGFX7nrL+73p7lDdGi1
-         KAZqdvbu3GKaioOnqKreCsbEBt7grkxfFVQUw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:mime-version:user-agent:date:message-id:from:references
-         :cc:to:subject:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=tlMb+spqh8yi+237LfkIolldX8/VSA+NRwv1BYSAgwc=;
-        b=E3ZTxh95YQYswn27B8qLf97plk+UkOnPh0KEMLlS2ywu+oom49ACz8NoaGJvD3VJ9D
-         l/QiLT5Ds6NixomB0sIlTkWVZ5XOVwZtUsXgmWXy1aLToE6FMKqrMgEVTti6viQFL6mn
-         Pw/eIrT0SSmCT15Vb/y4LrgUlisgiCu2cuNRCd4LijEcO7HLGFt4Ly0AYqpRuLIzoLmG
-         AF0rkBBM68BhtxUh+NxFDeiqIKNlmzqvpB+mB6WvWCoO3aREZkaA/wSxXJPFrKglTfHj
-         hB8Ec7DUFdCaLYEIPHuPwR8v1N/UOAo3J5ZZzXYK9xs87ac8vcBNtYJ4CXB8N7eCQVIv
-         DQyg==
-X-Gm-Message-State: AFqh2kprmNQFdmQ9wqj//b2sB4jw6eqF1xxScqJ1i/3pOwb2k39Yioab
-        +AinWN3d1d8FUjSY3WQWP+f0QQ==
-X-Google-Smtp-Source: AMrXdXsbpsv7AhejQYbX21h0+j8gpQphDW1/eDkQeylyCX9HmU8wTIKlLW+wJdzi7bnBjKpQ4oUBhA==
-X-Received: by 2002:aa7:8611:0:b0:582:df2e:595d with SMTP id p17-20020aa78611000000b00582df2e595dmr36462203pfn.4.1674789024445;
-        Thu, 26 Jan 2023 19:10:24 -0800 (PST)
-Received: from bcacpedev-irv-3.lvn.broadcom.net ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id b17-20020aa78ed1000000b00580e3917af7sm1521348pfr.117.2023.01.26.19.10.22
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 26 Jan 2023 19:10:23 -0800 (PST)
-Subject: Re: [PATCH v2 08/14] spi: bcm63xx-hsspi: Handle cs_change correctly
-To:     Jonas Gorski <jonas.gorski@gmail.com>,
-        Kursad Oney <kursad.oney@broadcom.com>
-Cc:     Linux SPI List <linux-spi@vger.kernel.org>,
-        Broadcom Kernel List <bcm-kernel-feedback-list@broadcom.com>,
-        tomer.yacoby@broadcom.com, dregan@mail.com, f.fainelli@gmail.com,
-        anand.gore@broadcom.com, dan.beygelman@broadcom.com,
-        joel.peshkin@broadcom.com, Mark Brown <broonie@kernel.org>,
-        linux-kernel@vger.kernel.org
-References: <20230124221218.341511-1-william.zhang@broadcom.com>
- <20230124221218.341511-9-william.zhang@broadcom.com>
- <CAOiHx=mQJXAkSsXkgGzpJUCzwxD1nC-Hbw3WX3OfRmp7cfFiww@mail.gmail.com>
- <CAMm8Nh0Lh+oUXZGCTBC-zQPQeg9-1dPUyoq34BP2ZP_vJqWX-A@mail.gmail.com>
- <CAOiHx=nZBot4xuZ4aG6-4Ch18wNOK0Ud2+z7B2W7+YEc+U3DHg@mail.gmail.com>
-From:   William Zhang <william.zhang@broadcom.com>
-Message-ID: <f208f86e-06dd-5d46-071d-501968c773bc@broadcom.com>
-Date:   Thu, 26 Jan 2023 19:10:22 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.4.0
+        with ESMTP id S231960AbjA0GkY (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 27 Jan 2023 01:40:24 -0500
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50DED6FD0E;
+        Thu, 26 Jan 2023 22:40:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
+        :Reply-To:Content-Type:Content-ID:Content-Description;
+        bh=DiojTRVADjloLtCWTL6Dc10HXLEb/5V358TXJC1Ce0Y=; b=yVc6FwwzyRbpGnojVUB6ikNT2t
+        PaWonwmLT0s6IeOa8+wajg2PZbEhgf8fbm6MbRbDKW4JeDQwCZXswMR5Ic0OImqx6Z9Q0h2kA8rxG
+        qiEadZYv1/Hm1o+OdxfohmSf40/nhMmtqUh5BTxKn8CHjOaB+MMIEFdBLAirkOazcychLN6kVC3J+
+        LbiR1ygSsyDfbaJWgARFea5sggipYgOxWkpDGedJ8Y/jPKsfeUvbgClrkSFTFGuqmtzGvpW7vdxzj
+        PwYQT9fRt1Iz1CBPxJ8jnU2KJA7DCKSQ/t3tAP3y6Uw0hCpbJXOKjn1T8G2ZklpfXP67vWHT/axXj
+        i3401Tbw==;
+Received: from [2601:1c2:d80:3110::9307] (helo=bombadil.infradead.org)
+        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1pLIPO-00DM0u-N2; Fri, 27 Jan 2023 06:40:22 +0000
+From:   Randy Dunlap <rdunlap@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org
+Subject: [PATCH 27/35] Documentation: spi: correct spelling
+Date:   Thu, 26 Jan 2023 22:39:57 -0800
+Message-Id: <20230127064005.1558-28-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.39.1
+In-Reply-To: <20230127064005.1558-1-rdunlap@infradead.org>
+References: <20230127064005.1558-1-rdunlap@infradead.org>
 MIME-Version: 1.0
-In-Reply-To: <CAOiHx=nZBot4xuZ4aG6-4Ch18wNOK0Ud2+z7B2W7+YEc+U3DHg@mail.gmail.com>
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000e67f7505f33634ac"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
---000000000000e67f7505f33634ac
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Correct spelling problems for Documentation/spi/ as reported
+by codespell.
 
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: linux-spi@vger.kernel.org
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: linux-doc@vger.kernel.org
+---
+ Documentation/spi/pxa2xx.rst      |   12 ++++++------
+ Documentation/spi/spi-lm70llp.rst |    2 +-
+ Documentation/spi/spi-summary.rst |    2 +-
+ 3 files changed, 8 insertions(+), 8 deletions(-)
 
-
-On 01/26/2023 09:33 AM, Jonas Gorski wrote:
-> Hi Kursad,
-> 
-> On Thu, 26 Jan 2023 at 17:22, Kursad Oney <kursad.oney@broadcom.com> wrote:
->>>
->>> While there, you might also want to check the cs_off value(s) as well.
->>
->> Can you explain this please?
-> 
-> I'm talking about the transfer property cs_off:
-> 
-> " @cs_off: performs the transfer with chipselect off."
-> 
-> See how it is handled in the generic spi_transfer_one_message():
-> 
->          spi_set_cs(msg->spi, !xfer->cs_off, false);
->          ...
->          list_for_each_entry(xfer, &msg->transfers, transfer_list) {
->                  ...
->                  if (xfer->cs_change) {
->                          if (list_is_last(&xfer->transfer_list,
->                                           &msg->transfers)) {
->                                  keep_cs = true;
->                          } else {
->                                  if (!xfer->cs_off)
->                                          spi_set_cs(msg->spi, false, false);
->                                  _spi_transfer_cs_change_delay(msg, xfer);
->                                  if (!list_next_entry(xfer,
-> transfer_list)->cs_off)
->                                          spi_set_cs(msg->spi, true, false);
->                          }
->                  } else if (!list_is_last(&xfer->transfer_list,
-> &msg->transfers) &&
->                             xfer->cs_off != list_next_entry(xfer,
-> transfer_list)->cs_off) {
->                          spi_set_cs(msg->spi, xfer->cs_off, false);
->                  }
->                  ...
->        }
-> 
-> if we fix the cs_change handling, we might as well bring it up to state.
-> 
-We can blindly port this logic over but this cs_off stuff (from the 
-spi.h comment @cs_off: performs the transfer with chipselect off) sounds 
-weird.  What kind of device do transfer when cs is off? I don't have any 
-device like this to test.
-
-> In theory I would suggest to switch to implementing the set_cs() /
-> transfer_one() so you could let the core take care of all of that, but
-> that wouldn't work with dynamically switching to prepend mode. Might
-> be something for v1.1 though.
-> 
-That is good idea and I can certainly try that.
-
-> 
-> Regards
-> Jonas
-> 
-
---000000000000e67f7505f33634ac
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-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
-YDZuuBJwnyCzevMoPtVYPharioL5H3BRnQi8YoTXH7/uRo33dewYFm474yFjwwnt82TFtveVZkVq
-6h4WIQ4wTcwFfET8zMkELnGzS5SHCl8sPD+lNxxJ1JDZYwIDAQABo4IB2zCCAdcwDgYDVR0PAQH/
-BAQDAgWgMIGjBggrBgEFBQcBAQSBljCBkzBOBggrBgEFBQcwAoZCaHR0cDovL3NlY3VyZS5nbG9i
-YWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3J0MEEGCCsGAQUF
-BzABhjVodHRwOi8vb2NzcC5nbG9iYWxzaWduLmNvbS9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAy
-MDBNBgNVHSAERjBEMEIGCisGAQQBoDIBKAowNDAyBggrBgEFBQcCARYmaHR0cHM6Ly93d3cuZ2xv
-YmFsc2lnbi5jb20vcmVwb3NpdG9yeS8wCQYDVR0TBAIwADBJBgNVHR8EQjBAMD6gPKA6hjhodHRw
-Oi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24yY2EyMDIwLmNybDAlBgNV
-HREEHjAcgRp3aWxsaWFtLnpoYW5nQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAf
-BgNVHSMEGDAWgBSWM9HmWBdbNHWKgVZk1b5I3qGPzzAdBgNVHQ4EFgQUq65GzwZxydFHjjYEU/9h
-xHhPWlwwDQYJKoZIhvcNAQELBQADggEBAA2hGG3JPAdGPH0ZdohGUCIVjKz+U+EFuIDbS6A/5jqX
-VhYAxZlzj7tSjUIM7G7IhyfqPC46GKJ/4x+Amz1Z6YxNGy71L68kYD6hIbBcA5AM42QBUufly6Oa
-/ppSz3WoflVyFFQ5YXniZ+eU+2/cdnYZg4aVUnFjimOF5o3NfMLzOkhQNxbaDjFUfUYD8hKmU6v4
-0vUBj8KZ9Gi1LIagLKUREn8jku0lcLsRbnJ5Ey5ScajC/FESPyYWasOW8j8/1EoJksmhbYGKNS6C
-urb/KlmDGfVrIRYDbL0ckhGQIP5c6L+kSQZ2sHnQK0e0WgIaZYxaPYeY5u0GLCOze+3vyRMxggJt
-MIICaQIBATBrMFsxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMTEwLwYD
-VQQDEyhHbG9iYWxTaWduIEdDQyBSMyBQZXJzb25hbFNpZ24gMiBDQSAyMDIwAgwxuh2XG3FXRL1W
-JOEwDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEII0Syt/4wKGIwpf6W99XvQer8GxJ
-KTzW+QTTV8Ce0qt9MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTIz
-MDEyNzAzMTAyNFowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZIAWUDBAEWMAsG
-CWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQowCwYJKoZIhvcNAQEHMAsGCWCGSAFl
-AwQCATANBgkqhkiG9w0BAQEFAASCAQC2Uy3cBxOlz73NOzJ1svJfVfcxj0ZqtHD1GRfALuNH2omG
-4nd7DyVq3iEjxczlnEzULY0Ekq9cAa32CtvqpwQ5bF7zzu4q/afsSEU+4Gz+S7TBcTf8J5rcs4+B
-+mC8h8UvfJbHfKi8L/WViOwlOPx+o7ufqWJ52V33i4PjTB6xkln/Pw5yG4QAtLMqi9aYDbQNBad+
-r5G6pwLSvR7PNmJAbqPr4YqiFy0lrPH99+CwSP1VNlB7FcGeEJIMMfdvkrQSV/YZSTlrZhXl27vy
-+UsEgegxV4i7IUNn35UxWOrDWzkqMDXMVpjVvRmIfFFRkXiV/FThxu/I0nYBBG13OAc8
---000000000000e67f7505f33634ac--
+diff -- a/Documentation/spi/pxa2xx.rst b/Documentation/spi/pxa2xx.rst
+--- a/Documentation/spi/pxa2xx.rst
++++ b/Documentation/spi/pxa2xx.rst
+@@ -141,15 +141,15 @@ field. Below is a sample configuration u
+ ::
+ 
+   static struct pxa2xx_spi_chip cs8415a_chip_info = {
+-	.tx_threshold = 8, /* SSP hardward FIFO threshold */
+-	.rx_threshold = 8, /* SSP hardward FIFO threshold */
++	.tx_threshold = 8, /* SSP hardware FIFO threshold */
++	.rx_threshold = 8, /* SSP hardware FIFO threshold */
+ 	.dma_burst_size = 8, /* Byte wide transfers used so 8 byte bursts */
+ 	.timeout = 235, /* See Intel documentation */
+   };
+ 
+   static struct pxa2xx_spi_chip cs8405a_chip_info = {
+-	.tx_threshold = 8, /* SSP hardward FIFO threshold */
+-	.rx_threshold = 8, /* SSP hardward FIFO threshold */
++	.tx_threshold = 8, /* SSP hardware FIFO threshold */
++	.rx_threshold = 8, /* SSP hardware FIFO threshold */
+ 	.dma_burst_size = 8, /* Byte wide transfers used so 8 byte bursts */
+ 	.timeout = 235, /* See Intel documentation */
+   };
+@@ -157,7 +157,7 @@ field. Below is a sample configuration u
+   static struct spi_board_info streetracer_spi_board_info[] __initdata = {
+ 	{
+ 		.modalias = "cs8415a", /* Name of spi_driver for this device */
+-		.max_speed_hz = 3686400, /* Run SSP as fast a possbile */
++		.max_speed_hz = 3686400, /* Run SSP as fast a possible */
+ 		.bus_num = 2, /* Framework bus number */
+ 		.chip_select = 0, /* Framework chip select */
+ 		.platform_data = NULL; /* No spi_driver specific config */
+@@ -166,7 +166,7 @@ field. Below is a sample configuration u
+ 	},
+ 	{
+ 		.modalias = "cs8405a", /* Name of spi_driver for this device */
+-		.max_speed_hz = 3686400, /* Run SSP as fast a possbile */
++		.max_speed_hz = 3686400, /* Run SSP as fast a possible */
+ 		.bus_num = 2, /* Framework bus number */
+ 		.chip_select = 1, /* Framework chip select */
+ 		.controller_data = &cs8405a_chip_info, /* Master chip config */
+diff -- a/Documentation/spi/spi-lm70llp.rst b/Documentation/spi/spi-lm70llp.rst
+--- a/Documentation/spi/spi-lm70llp.rst
++++ b/Documentation/spi/spi-lm70llp.rst
+@@ -57,7 +57,7 @@ devices might share the same SI/SO pin.
+ The bitbanger routine in this driver (lm70_txrx) is called back from
+ the bound "hwmon/lm70" protocol driver through its sysfs hook, using a
+ spi_write_then_read() call.  It performs Mode 0 (SPI/Microwire) bitbanging.
+-The lm70 driver then inteprets the resulting digital temperature value
++The lm70 driver then interprets the resulting digital temperature value
+ and exports it through sysfs.
+ 
+ A "gotcha": National Semiconductor's LM70 LLP eval board circuit schematic
+diff -- a/Documentation/spi/spi-summary.rst b/Documentation/spi/spi-summary.rst
+--- a/Documentation/spi/spi-summary.rst
++++ b/Documentation/spi/spi-summary.rst
+@@ -105,7 +105,7 @@ find isn't necessarily helpful.  The fou
+  - CPHA indicates the clock phase used to sample data; CPHA=0 says
+    sample on the leading edge, CPHA=1 means the trailing edge.
+ 
+-   Since the signal needs to stablize before it's sampled, CPHA=0
++   Since the signal needs to stabilize before it's sampled, CPHA=0
+    implies that its data is written half a clock before the first
+    clock edge.  The chipselect may have made it become available.
+ 

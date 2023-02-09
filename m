@@ -2,82 +2,186 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1F525C64EC5
-	for <linux-spi@archiver.kernel.org>; Thu,  9 Feb 2023 19:20:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D384CC636D3
+	for <linux-spi@archiver.kernel.org>; Thu,  9 Feb 2023 20:03:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230082AbjBITUV (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 9 Feb 2023 14:20:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49556 "EHLO
+        id S229761AbjBIUDo (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 9 Feb 2023 15:03:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229710AbjBITUU (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 9 Feb 2023 14:20:20 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C2142CFD4
-        for <linux-spi@vger.kernel.org>; Thu,  9 Feb 2023 11:20:20 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        with ESMTP id S229742AbjBIUDn (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 9 Feb 2023 15:03:43 -0500
+Received: from relay.smtp-ext.broadcom.com (lpdvsmtp11.broadcom.com [192.19.166.231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF84F5ACCE;
+        Thu,  9 Feb 2023 12:03:39 -0800 (PST)
+Received: from mail-lvn-it-01.lvn.broadcom.net (mail-lvn-it-01.lvn.broadcom.net [10.75.146.107])
+        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 2CCB8C0000E6;
+        Thu,  9 Feb 2023 12:03:39 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 2CCB8C0000E6
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
+        s=dkimrelay; t=1675973019;
+        bh=5z5RwbzfG5x2J9s1A7EfFS/7WLxApg3U2IsiIodr/s8=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=WvbeK5ySLF5RB4/q1ah+hT3hDBwKIvL3CbHzzNIL0WMCZM36PgpIYZOuI7gRACYAv
+         Kolr5KMD+yx5qDUoB1KJ3nJCRb9b/EB6WEveHwP/f4FcKgK9DsacZHhNwLPOQmQJ1Q
+         DEa1zg823OCHNBjDDPIM1GHhFs+RAlxF6GSfvfe0=
+Received: from bcacpedev-irv-3.lvn.broadcom.net (bcacpedev-irv-3.lvn.broadcom.net [10.75.138.105])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 98B9561B9A
-        for <linux-spi@vger.kernel.org>; Thu,  9 Feb 2023 19:20:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 0A0F2C433D2;
-        Thu,  9 Feb 2023 19:20:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1675970419;
-        bh=y2JTbsQ+wyeQq+O3YkTxmy0jDf6Csx9ga9xJhn8Mm0Q=;
-        h=Subject:From:Date:To:From;
-        b=pDVbMSOfTQE4mKmTGWyI28e8X7nijYCfhP0dfcIiTMezQioue1d+p8ayScOxeXlUO
-         1KqKJdryBoPZUqRExyjhSr6p7vhSfF5qX4p0eAI0QyoqUh7PyppV43yhv5hyKaPGJd
-         ws18Hyb8p8J1toFHAxzmmW8giXycfHo14RylWrRt0Fy1RiEgCNOC8dRB6Ho+6Rfd4i
-         tEMQDBDvZIECwJzN4aVJuLhykKj6ornP4nVWO7NywKOwDgc6Kq90piB7J9aXHJaqEM
-         kY2w0T8/NdXQF6Tz4udoVswMcXZPRMllgFKo63T4knDxj1jT02a3rqXjv1AhcTvWZG
-         Fogxgx7I8IBsg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id DF38BE21ECB;
-        Thu,  9 Feb 2023 19:20:18 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        by mail-lvn-it-01.lvn.broadcom.net (Postfix) with ESMTPS id 2872218041CAC6;
+        Thu,  9 Feb 2023 12:03:39 -0800 (PST)
+Received: by bcacpedev-irv-3.lvn.broadcom.net (Postfix, from userid 28376)
+        id 144B8101B76; Thu,  9 Feb 2023 12:03:39 -0800 (PST)
+From:   William Zhang <william.zhang@broadcom.com>
+To:     Linux SPI List <linux-spi@vger.kernel.org>,
+        Broadcom Kernel List <bcm-kernel-feedback-list@broadcom.com>
+Cc:     f.fainelli@gmail.com, dregan@mail.com, joel.peshkin@broadcom.com,
+        dan.beygelman@broadcom.com, anand.gore@broadcom.com,
+        kursad.oney@broadcom.com, tomer.yacoby@broadcom.com,
+        jonas.gorski@gmail.com, William Zhang <william.zhang@broadcom.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v4 01/15] dt-bindings: spi: Convert bcm63xx-hsspi bindings to json-schema
+Date:   Thu,  9 Feb 2023 12:02:32 -0800
+Message-Id: <20230209200246.141520-2-william.zhang@broadcom.com>
+X-Mailer: git-send-email 2.37.3
+In-Reply-To: <20230209200246.141520-1-william.zhang@broadcom.com>
+References: <20230209200246.141520-1-william.zhang@broadcom.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From:   patchwork-bot+spi-devel-general@kernel.org
-Message-Id: <167597041886.16862.5132925769131715003.git-patchwork-summary@kernel.org>
-Date:   Thu, 09 Feb 2023 19:20:18 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hello:
+This is the preparation for updates on the bcm63xx hsspi driver. Convert
+the text based bindings to json-schema per new dts requirement.
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (for-next):
+Signed-off-by: William Zhang <william.zhang@broadcom.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Series: Add MediaTek MT7986 SPI NAND and ECC support
-  Submitter: Xiangsheng Hou <xiangsheng.hou@mediatek.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=716758
-  Lore link: https://lore.kernel.org/r/20230130030656.12127-1-xiangsheng.hou@mediatek.com
-    Patches: [RESEND,v5,01/10] spi: mtk-snfi: Change default page format to setup default setting
-             [RESEND,v5,02/10] spi: mtk-snfi: Add optional nfi_hclk which is needed for MT7986
-             [RESEND,v5,04/10] dt-bindings: spi: mtk-snfi: Add compatible for MT7986
-             [RESEND,v5,05/10] spi: mtk-snfi: Add snfi sample delay and read latency adjustment
-             [RESEND,v5,06/10] dt-bindings: spi: mtk-snfi: Add read latch latency property
+---
 
-Series: Add MediaTek MT7986 SPI NAND support
-  Submitter: Xiangsheng Hou <xiangsheng.hou@mediatek.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=717546
-  Lore link: https://lore.kernel.org/r/20230201020921.26712-1-xiangsheng.hou@mediatek.com
-    Patches: [v6,1/5] spi: mtk-snfi: Change default page format to setup default setting
-             [v6,2/5] spi: mtk-snfi: Add optional nfi_hclk which is needed for MT7986
-             [v6,3/5] dt-bindings: spi: mtk-snfi: Add compatible for MT7986
-             [v6,4/5] spi: mtk-snfi: Add snfi sample delay and read latency adjustment
-             [v6,5/5] dt-bindings: spi: mtk-snfi: Add read latch latency property
+(no changes since v3)
 
+Changes in v3:
+- Add reviewed-by tag
+- Move spi-controller.yaml reference line down after required field
+so next patch does not need to move this line
 
-Total patches: 10
+Changes in v2:
+- Add the missing reference to spi-controller which fix the
+  dt_binding_check error.
+- Use SPI intead of spi in the description.
 
+ .../bindings/spi/brcm,bcm63xx-hsspi.yaml      | 55 +++++++++++++++++++
+ .../bindings/spi/spi-bcm63xx-hsspi.txt        | 33 -----------
+ 2 files changed, 55 insertions(+), 33 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/spi/brcm,bcm63xx-hsspi.yaml
+ delete mode 100644 Documentation/devicetree/bindings/spi/spi-bcm63xx-hsspi.txt
+
+diff --git a/Documentation/devicetree/bindings/spi/brcm,bcm63xx-hsspi.yaml b/Documentation/devicetree/bindings/spi/brcm,bcm63xx-hsspi.yaml
+new file mode 100644
+index 000000000000..3c646997e399
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/brcm,bcm63xx-hsspi.yaml
+@@ -0,0 +1,55 @@
++# SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/spi/brcm,bcm63xx-hsspi.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Broadcom BCM6328 High Speed SPI controller
++
++maintainers:
++  - Jonas Gorski <jonas.gorski@gmail.com>
++
++properties:
++  compatible:
++    const: brcm,bcm6328-hsspi
++
++  reg:
++    maxItems: 1
++
++  clocks:
++    items:
++      - description: SPI master reference clock
++      - description: SPI master pll clock
++
++  clock-names:
++    items:
++      - const: hsspi
++      - const: pll
++
++  interrupts:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++  - clocks
++  - clock-names
++  - interrupts
++
++allOf:
++  - $ref: spi-controller.yaml#
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    spi@10001000 {
++        compatible = "brcm,bcm6328-hsspi";
++        reg = <0x10001000 0x600>;
++        interrupts = <29>;
++        clocks = <&clkctl 9>, <&hsspi_pll>;
++        clock-names = "hsspi", "pll";
++        num-cs = <2>;
++        #address-cells = <1>;
++        #size-cells = <0>;
++    };
+diff --git a/Documentation/devicetree/bindings/spi/spi-bcm63xx-hsspi.txt b/Documentation/devicetree/bindings/spi/spi-bcm63xx-hsspi.txt
+deleted file mode 100644
+index 37b29ee13860..000000000000
+--- a/Documentation/devicetree/bindings/spi/spi-bcm63xx-hsspi.txt
++++ /dev/null
+@@ -1,33 +0,0 @@
+-Binding for Broadcom BCM6328 High Speed SPI controller
+-
+-Required properties:
+-- compatible: must contain of "brcm,bcm6328-hsspi".
+-- reg: Base address and size of the controllers memory area.
+-- interrupts: Interrupt for the SPI block.
+-- clocks: phandles of the SPI clock and the PLL clock.
+-- clock-names: must be "hsspi", "pll".
+-- #address-cells: <1>, as required by generic SPI binding.
+-- #size-cells: <0>, also as required by generic SPI binding.
+-
+-Optional properties:
+-- num-cs: some controllers have less than 8 cs signals. Defaults to 8
+-  if absent.
+-
+-Child nodes as per the generic SPI binding.
+-
+-Example:
+-
+-	spi@10001000 {
+-		compatible = "brcm,bcm6328-hsspi";
+-		reg = <0x10001000 0x600>;
+-
+-		interrupts = <29>;
+-
+-		clocks = <&clkctl 9>, <&hsspi_pll>;
+-		clock-names = "hsspi", "pll";
+-
+-		num-cs = <2>;
+-
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-	};
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.37.3
 

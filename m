@@ -2,55 +2,56 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9EF60C61DA4
-	for <linux-spi@archiver.kernel.org>; Tue, 14 Feb 2023 14:12:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 22186C61DA4
+	for <linux-spi@archiver.kernel.org>; Tue, 14 Feb 2023 14:56:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233369AbjBNOMn (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 14 Feb 2023 09:12:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55948 "EHLO
+        id S233066AbjBNO43 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 14 Feb 2023 09:56:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233318AbjBNOMV (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 14 Feb 2023 09:12:21 -0500
-X-Greylist: delayed 643 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 14 Feb 2023 06:11:48 PST
-Received: from out-26.mta1.migadu.com (out-26.mta1.migadu.com [IPv6:2001:41d0:203:375::1a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 380B727D4E
-        for <linux-spi@vger.kernel.org>; Tue, 14 Feb 2023 06:11:47 -0800 (PST)
-Message-ID: <e9fc3b01-4132-a224-4bbf-9b86ce314e8b@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-        t=1676382960;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=xhGNsWwBjbALl1XGGkzHbCvyqw6Vr8ZjETBZ4GXc+YA=;
-        b=MBAxYY7axSCYPCOhS5O26s3JdKh3+r5bNTiL5Pjf/bLmwTpzmdE6CidLcfbwaXMUUImwCS
-        ATNY2JAzp6LWN2e/S3NHCTMuhZjC1Hx5u8pILOhLlP2D8shSa82lCs9kZukexefuWYnKKX
-        1HIx2wA2POEwrK4givuXin5PGTgUJ3w=
-Date:   Tue, 14 Feb 2023 13:55:56 +0000
+        with ESMTP id S233156AbjBNO41 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 14 Feb 2023 09:56:27 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 288302917B
+        for <linux-spi@vger.kernel.org>; Tue, 14 Feb 2023 06:56:26 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id D438CB81DE7
+        for <linux-spi@vger.kernel.org>; Tue, 14 Feb 2023 14:56:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 9C39EC433D2;
+        Tue, 14 Feb 2023 14:56:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1676386583;
+        bh=1yTI+mHqXmC8LYH7R/WLYmZec48PuWVPA2se5CVPof0=;
+        h=Subject:From:Date:To:From;
+        b=QVPv6OILpXjIDu5TJ+5SpKPIogaSURELKepsMohVMTq3QTvUJKjUSXxsbGSalCdLx
+         WbJEY3U6qWacZb3l1RYI04PjzG0Eh5juJFJAhphERrBaz5fZBfRly4QFkO0iwIuGk4
+         +z8h3KGu/valhXVGdDEuhPIc10CeERLMDv1Elb8vsiizb5nBaApIGh7LAG9e2cB33d
+         pZPnLuqJSTUCG0PDrAvYMcst8j+LT1amwWFLjb4KXq4FGrQhepagYboAB3NKkthEU9
+         EI8u4lX3B4hSxdRdMtPY2o0VxPjK1EHfVBe8l6zDPbHUN9Ww/U+plpZoOVvcmAgvgD
+         MnzxMBW/v3yIA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 81587E68D35;
+        Tue, 14 Feb 2023 14:56:23 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Subject: Re: [PATCH] spi: xilinx: add force_irq for QSPI mode
-Content-Language: en-US
-To:     Mark Brown <broonie@kernel.org>
-References: <20230209211321.1427968-1-vadfed@meta.com>
- <Y+uMNxQmi5lg10CN@sirena.org.uk>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From:   Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Cc:     linux-spi@vger.kernel.org
-In-Reply-To: <Y+uMNxQmi5lg10CN@sirena.org.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <167638658352.18795.3460991174194726889.git-patchwork-housekeeping@kernel.org>
+Date:   Tue, 14 Feb 2023 14:56:23 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On 14/02/2023 13:27, Mark Brown wrote:
-> On Thu, Feb 09, 2023 at 01:13:21PM -0800, Vadim Fedorenko wrote:
->> Xilinx PG158 page 80 [1] states that master transaction inhibit bit must
->> be set to properly setup the transaction in QSPI mode. Add the force_irq
->> flag to follow this sequence.
-> 
-> This doesn't apply against current code, please check and resend.
+Latest series: [v2] spi: xilinx: add force_irq for QSPI mode (2023-02-14T13:59:28)
+  Superseding: [v1] spi: xilinx: add force_irq for QSPI mode (2023-02-09T21:13:21):
+    spi: xilinx: add force_irq for QSPI mode
 
-Oh, yep, it has some overlap with devm_spi_alloc_master() commit. V2 is 
-on the way.
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+

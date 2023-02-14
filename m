@@ -2,223 +2,84 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2B208C05027
-	for <linux-spi@archiver.kernel.org>; Tue, 14 Feb 2023 10:44:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7D679C6379F
+	for <linux-spi@archiver.kernel.org>; Tue, 14 Feb 2023 13:03:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229956AbjBNKok (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 14 Feb 2023 05:44:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46616 "EHLO
+        id S232531AbjBNNDm (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 14 Feb 2023 08:03:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231737AbjBNKo1 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 14 Feb 2023 05:44:27 -0500
-X-Greylist: delayed 513 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 14 Feb 2023 02:43:31 PST
-Received: from smtp.smtpout.orange.fr (smtp-21.smtpout.orange.fr [80.12.242.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 34AB61732
-        for <linux-spi@vger.kernel.org>; Tue, 14 Feb 2023 02:43:29 -0800 (PST)
-Received: from pop-os.home ([86.243.2.178])
-        by smtp.orange.fr with ESMTPA
-        id RseEpCV6Kar8pRseEpAfEj; Tue, 14 Feb 2023 11:34:54 +0100
-X-ME-Helo: pop-os.home
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Tue, 14 Feb 2023 11:34:54 +0100
-X-ME-IP: 86.243.2.178
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     Mark Brown <broonie@kernel.org>,
-        Richard Cochran <richardcochran@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        linux-spi@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH] spi: Reorder fields in 'struct spi_transfer'
-Date:   Tue, 14 Feb 2023 11:34:50 +0100
-Message-Id: <93a051da85a895bc6003aedfb00a13e1c2fc6338.1676370870.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S231593AbjBNNDm (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 14 Feb 2023 08:03:42 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4790623860;
+        Tue, 14 Feb 2023 05:03:38 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id E8CF1B81D52;
+        Tue, 14 Feb 2023 13:03:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2CD3C433D2;
+        Tue, 14 Feb 2023 13:03:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1676379815;
+        bh=MHDYka/ZDMHL6lJhmsMxhG+q+n7bvOhWhH3cKlaHVak=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=kO3pNMThmktgf+HrbQ7D682OVJSli1hTvgHRncyS9DYCSwxKEtKd1VkG/XxlETx9w
+         ABiSpl/xHnmNegkzcOd4VRIz1c4y8LUpFCUlXw6rGjAaje6Kb6ttO+RvTH8VI2OLUk
+         tzPHhcbc3meWqZlvcpulZA8CloaKva5OYIA91tqKkHSgl6ARPwPYHZYPZgLKVroCk6
+         WA95wCJH+XvREBq0fNQAICb9Us0hqcqZW7KLc42un6C5vjTAwjWu14VroSM3g6pt3W
+         xDb+eX2+skill2ZT6Gun489jmVxdDnaq9sl2lcc1cZ4yrWI62cLLoqnOvqecj2wAz+
+         5MVDoVe7WWg7w==
+Date:   Tue, 14 Feb 2023 13:03:32 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Alain Volmat <avolmat@me.com>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Patrice Chotard <patrice.chotard@foss.st.com>,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2] dt-bindings: spi: spi-st-ssc: convert to DT schema
+Message-ID: <Y+uGpJviop/66Kpk@sirena.org.uk>
+References: <20230213192349.17101-1-avolmat@me.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="rCEjhhAvduqhiov+"
+Content-Disposition: inline
+In-Reply-To: <20230213192349.17101-1-avolmat@me.com>
+X-Cookie: Serving suggestion.
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Group some variables based on their sizes to reduce hole and avoid padding.
-On x86_64, this shrinks the size from 144 to 128 bytes.
 
-Turn 'timestamped' into a bitfield so that it can be easily merged with
-some other bifields and move 'error'.
+--rCEjhhAvduqhiov+
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-This should have no real impact on memory allocation because 'struct
-spi_transfer' is mostly used on stack, but it can save a few cycles
-when the structure is initialized or copied.
+On Mon, Feb 13, 2023 at 08:23:48PM +0100, Alain Volmat wrote:
+> Convert spi-st-ssc.txt into st,ssc-spi.yaml for the
+> ST Microelectronics SSC SPI driver.
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-Using pahole
+Please submit patches using subject lines reflecting the style for the
+subsystem, this makes it easier for people to identify relevant patches.
+Look at what existing commits in the area you're changing are doing and
+make sure your subject lines visually resemble what they're doing.
+There's no need to resubmit to fix this alone.
 
-Before:
-======
-struct spi_transfer {
-	const void  *              tx_buf;               /*     0     8 */
-	void *                     rx_buf;               /*     8     8 */
-	unsigned int               len;                  /*    16     4 */
+--rCEjhhAvduqhiov+
+Content-Type: application/pgp-signature; name="signature.asc"
 
-	/* XXX 4 bytes hole, try to pack */
+-----BEGIN PGP SIGNATURE-----
 
-	dma_addr_t                 tx_dma;               /*    24     8 */
-	dma_addr_t                 rx_dma;               /*    32     8 */
-	struct sg_table            tx_sg;                /*    40    16 */
-	struct sg_table            rx_sg;                /*    56    16 */
-	/* --- cacheline 1 boundary (64 bytes) was 8 bytes ago --- */
-	unsigned int               dummy_data:1;         /*    72: 0  4 */
-	unsigned int               cs_off:1;             /*    72: 1  4 */
-	unsigned int               cs_change:1;          /*    72: 2  4 */
-	unsigned int               tx_nbits:3;           /*    72: 3  4 */
-	unsigned int               rx_nbits:3;           /*    72: 6  4 */
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmPrhqMACgkQJNaLcl1U
+h9Bn2AgAgxldXNFUP19NOpKn/+rFAEfCPVsP2ERPGq/hnp7Vd+efTzRR9188Phfl
+QOHzv3R3Y8VEJO39hgBGVl+vwiI43HdANeDfBWHXuKHMWBWLm4L4U9ak+hssS0bR
+2PvXPiwLv5HitW1fYTwwYoEA2fMYjJbKCRd2V92LXGCuUmnPkhVCrDM/29wZhOAb
+RXtLtMDz6CI0z6OoFwZTOyXe4pSP3DqjzSD4g9XxJRKRuoqcjp9sCtQuYXNMMItD
+L92ro3ywbDmlG1VaaAyCfiDv89PIuepJWWMlSJ8KLAphoOynfmuyCv/n0gOr2UTT
+XhZwHwQuA5PMWR4PWTOQOLa0z/N2Vw==
+=hvJ2
+-----END PGP SIGNATURE-----
 
-	/* XXX 7 bits hole, try to pack */
-	/* Bitfield combined with next fields */
-
-	u8                         bits_per_word;        /*    74     1 */
-
-	/* XXX 1 byte hole, try to pack */
-
-	struct spi_delay           delay;                /*    76     4 */
-
-	/* XXX last struct has 1 byte of padding */
-
-	struct spi_delay           cs_change_delay;      /*    80     4 */
-
-	/* XXX last struct has 1 byte of padding */
-
-	struct spi_delay           word_delay;           /*    84     4 */
-
-	/* XXX last struct has 1 byte of padding */
-
-	u32                        speed_hz;             /*    88     4 */
-	u32                        effective_speed_hz;   /*    92     4 */
-	unsigned int               ptp_sts_word_pre;     /*    96     4 */
-	unsigned int               ptp_sts_word_post;    /*   100     4 */
-	struct ptp_system_timestamp * ptp_sts;           /*   104     8 */
-	bool                       timestamped;          /*   112     1 */
-
-	/* XXX 7 bytes hole, try to pack */
-
-	struct list_head           transfer_list;        /*   120    16 */
-	/* --- cacheline 2 boundary (128 bytes) was 8 bytes ago --- */
-	u16                        error;                /*   136     2 */
-
-	/* size: 144, cachelines: 3, members: 24 */
-	/* sum members: 124, holes: 3, sum holes: 12 */
-	/* sum bitfield members: 9 bits, bit holes: 1, sum bit holes: 7 bits */
-	/* padding: 6 */
-	/* paddings: 3, sum paddings: 3 */
-	/* last cacheline: 16 bytes */
-};
-
-
-After:
-=====
-struct spi_transfer {
-	const void  *              tx_buf;               /*     0     8 */
-	void *                     rx_buf;               /*     8     8 */
-	unsigned int               len;                  /*    16     4 */
-	u16                        error;                /*    20     2 */
-
-	/* XXX 2 bytes hole, try to pack */
-
-	dma_addr_t                 tx_dma;               /*    24     8 */
-	dma_addr_t                 rx_dma;               /*    32     8 */
-	struct sg_table            tx_sg;                /*    40    16 */
-	struct sg_table            rx_sg;                /*    56    16 */
-	/* --- cacheline 1 boundary (64 bytes) was 8 bytes ago --- */
-	unsigned int               dummy_data:1;         /*    72: 0  4 */
-	unsigned int               cs_off:1;             /*    72: 1  4 */
-	unsigned int               cs_change:1;          /*    72: 2  4 */
-	unsigned int               tx_nbits:3;           /*    72: 3  4 */
-	unsigned int               rx_nbits:3;           /*    72: 6  4 */
-	unsigned int               timestamped:1;        /*    72: 9  4 */
-
-	/* XXX 6 bits hole, try to pack */
-	/* Bitfield combined with next fields */
-
-	u8                         bits_per_word;        /*    74     1 */
-
-	/* XXX 1 byte hole, try to pack */
-
-	struct spi_delay           delay;                /*    76     4 */
-
-	/* XXX last struct has 1 byte of padding */
-
-	struct spi_delay           cs_change_delay;      /*    80     4 */
-
-	/* XXX last struct has 1 byte of padding */
-
-	struct spi_delay           word_delay;           /*    84     4 */
-
-	/* XXX last struct has 1 byte of padding */
-
-	u32                        speed_hz;             /*    88     4 */
-	u32                        effective_speed_hz;   /*    92     4 */
-	unsigned int               ptp_sts_word_pre;     /*    96     4 */
-	unsigned int               ptp_sts_word_post;    /*   100     4 */
-	struct ptp_system_timestamp * ptp_sts;           /*   104     8 */
-	struct list_head           transfer_list;        /*   112    16 */
-
-	/* size: 128, cachelines: 2, members: 24 */
-	/* sum members: 123, holes: 2, sum holes: 3 */
-	/* sum bitfield members: 10 bits, bit holes: 1, sum bit holes: 6 bits */
-	/* paddings: 3, sum paddings: 3 */
-};
----
- drivers/spi/spi.c       | 2 +-
- include/linux/spi/spi.h | 9 ++++-----
- 2 files changed, 5 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 9f5c6b9f5135..44b85a8d47f1 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1927,7 +1927,7 @@ void spi_take_timestamp_post(struct spi_controller *ctlr,
- 	/* Capture the resolution of the timestamp */
- 	xfer->ptp_sts_word_post = progress;
- 
--	xfer->timestamped = true;
-+	xfer->timestamped = 1;
- }
- EXPORT_SYMBOL_GPL(spi_take_timestamp_post);
- 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 988aabc31871..4fa26b9a3572 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -1022,6 +1022,9 @@ struct spi_transfer {
- 	void		*rx_buf;
- 	unsigned	len;
- 
-+#define SPI_TRANS_FAIL_NO_START	BIT(0)
-+	u16		error;
-+
- 	dma_addr_t	tx_dma;
- 	dma_addr_t	rx_dma;
- 	struct sg_table tx_sg;
-@@ -1032,6 +1035,7 @@ struct spi_transfer {
- 	unsigned	cs_change:1;
- 	unsigned	tx_nbits:3;
- 	unsigned	rx_nbits:3;
-+	unsigned	timestamped:1;
- #define	SPI_NBITS_SINGLE	0x01 /* 1bit transfer */
- #define	SPI_NBITS_DUAL		0x02 /* 2bits transfer */
- #define	SPI_NBITS_QUAD		0x04 /* 4bits transfer */
-@@ -1048,12 +1052,7 @@ struct spi_transfer {
- 
- 	struct ptp_system_timestamp *ptp_sts;
- 
--	bool		timestamped;
--
- 	struct list_head transfer_list;
--
--#define SPI_TRANS_FAIL_NO_START	BIT(0)
--	u16		error;
- };
- 
- /**
--- 
-2.34.1
-
+--rCEjhhAvduqhiov+--

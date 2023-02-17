@@ -2,223 +2,93 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1DB43C64ED9
-	for <linux-spi@archiver.kernel.org>; Fri, 17 Feb 2023 20:46:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1144CC636D6
+	for <linux-spi@archiver.kernel.org>; Fri, 17 Feb 2023 22:06:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229881AbjBQUqU (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 17 Feb 2023 15:46:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39452 "EHLO
+        id S229613AbjBQWGM (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 17 Feb 2023 17:06:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229875AbjBQUqS (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 17 Feb 2023 15:46:18 -0500
-Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6AE95970C;
-        Fri, 17 Feb 2023 12:46:17 -0800 (PST)
-Received: by mail-ot1-f41.google.com with SMTP id e18-20020a056830201200b0068bd8c1e836so416314otp.3;
-        Fri, 17 Feb 2023 12:46:17 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Y/Gw+GAu+WGGIPgicZpYCmsAgNJBx9NIhrdXTbIwsPE=;
-        b=NHnABYxzLo/L4jvr2154HuhMEiSz2HV1gPdrm91i2awn7G9iXUVICZHlFe/Mn39uVG
-         TpKZy8UlV50FaPsMTTAIijtpp53LmITGKFvO3LHZK/nSPHJWijjYVGlsP9MCWFpX+UKY
-         dkurvjXftqNsynrmLZnMydWmAgYorJDDhcvO2GGu40TxcEkTDTgtZnv8Trv2BR3m5Da9
-         rH5wvjRo1JY80JOHeSHhPCjcmgahaLim8aNe08r8kkJqVp3diQwvEqpUYRGzEo/sgn5G
-         +o63QxN/JejsGA+c2vLvG5Y626NwVkJJAPZbiVmPYENsm+Ylf1GlMw/KjD+SQH+Yxroj
-         UnvQ==
-X-Gm-Message-State: AO0yUKVXYqsNrF+fHGzyD2qpFwEWoJsGfkoSTSU8rYOF7yzh/Nc1iYWz
-        +iRFtGfz3S8TBdCVbwNNsgW73HgeUA==
-X-Google-Smtp-Source: AK7set9PLW1/vYpAyHCiQ9Gf7NeoFEZ7GycKecZqsRvG6yxAhH8dy+E2002I6SdExmkdRCHckL22IQ==
-X-Received: by 2002:a9d:7d86:0:b0:690:d50a:9b48 with SMTP id j6-20020a9d7d86000000b00690d50a9b48mr4355269otn.11.1676666776689;
-        Fri, 17 Feb 2023 12:46:16 -0800 (PST)
-Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id p14-20020a056830130e00b0068bb7bd2668sm2277988otq.73.2023.02.17.12.46.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Feb 2023 12:46:16 -0800 (PST)
-Received: (nullmailer pid 1527516 invoked by uid 1000);
-        Fri, 17 Feb 2023 20:46:11 -0000
-From:   Rob Herring <robh@kernel.org>
-Date:   Fri, 17 Feb 2023 14:45:41 -0600
-Subject: [PATCH 2/3] spi: mpc5xxx-psc: Convert probe to use devres
- functions
+        with ESMTP id S229563AbjBQWGM (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 17 Feb 2023 17:06:12 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B04D5DE31;
+        Fri, 17 Feb 2023 14:06:11 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B2400B82DD1;
+        Fri, 17 Feb 2023 22:06:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EB33C433EF;
+        Fri, 17 Feb 2023 22:06:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1676671568;
+        bh=IjMYXqZfSaF0uyHmjW79JznzTpnlZIbAQMOTrHR9bm0=;
+        h=From:To:In-Reply-To:References:Subject:Date:From;
+        b=rRxsE3x6aNrX4qK9JzhvD8tFwxpsmNWeJjd8nIHRFmaAgk3D/ofYu3BbPcNqrvsJk
+         V4sHHGMUtPZ8r4DiDcyiK2kmlvpP0kj/37AmyMFyTTwIGQBNLxhiQgQ/rEsJCr2YCO
+         YpxzgLQXaYrp8I75HteqDNBTvn1UG0qQZUgp/lluXab4vmbRC7Hx8DTKi6kriIYZz0
+         d26HBBjhoXgpSX0M/Rvz/iC3effFvZ9nblZRhjukxf+s4AOz+mI8j7YXp63oCiSRM4
+         fWh8OtbdcFqnbl6HH04BCzEEI81KmhxYGddemrz6LAU8q4lDgNWnphU2uW6wgJIXOC
+         S4CpvirCzWtKQ==
+From:   Mark Brown <broonie@kernel.org>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230217155802.848178-1-krzysztof.kozlowski@linaro.org>
+References: <20230217155802.848178-1-krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH] spi: dt-bindings: qcom,spi-qcom-qspi: document OPP and
+ power-domains
+Message-Id: <167667156624.105826.15926331460082215742.b4-ty@kernel.org>
+Date:   Fri, 17 Feb 2023 22:06:06 +0000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230217-dt-mpc5xxx-spi-v1-2-3be8602fce1e@kernel.org>
-References: <20230217-dt-mpc5xxx-spi-v1-0-3be8602fce1e@kernel.org>
-In-Reply-To: <20230217-dt-mpc5xxx-spi-v1-0-3be8602fce1e@kernel.org>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-X-Mailer: b4 0.13-dev
+X-Mailer: b4 0.12.0
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Convert the mpc52xx-psc and mpc512x-psc drivers to use the managed
-devres variants of functions in probe. Also use dev_err_probe() as
-appropriate. With this, the error handling can be simplified.
+On Fri, 17 Feb 2023 16:58:02 +0100, Krzysztof Kozlowski wrote:
+> QSPI on Qualcomm SDM845, SC7180 and SC7280 SoCs uses OPP table (both in
+> DTS and Linux driver) and is suuplied by CX power domain.  Document
+> missing properties to fix:
+> 
+>   sc7280-idp2.dtb: spi@88dc000: Unevaluated properties are not allowed ('operating-points-v2', 'power-domains' were unexpected)
+> 
+> 
+> [...]
 
-Signed-off-by: Rob Herring <robh@kernel.org>
----
- drivers/spi/spi-mpc512x-psc.c | 22 +++++++-----------
- drivers/spi/spi-mpc52xx-psc.c | 53 ++++++++-----------------------------------
- 2 files changed, 18 insertions(+), 57 deletions(-)
+Applied to
 
-diff --git a/drivers/spi/spi-mpc512x-psc.c b/drivers/spi/spi-mpc512x-psc.c
-index 0b4d49ef84de..c6a610b82d4a 100644
---- a/drivers/spi/spi-mpc512x-psc.c
-+++ b/drivers/spi/spi-mpc512x-psc.c
-@@ -467,7 +467,7 @@ static int mpc512x_psc_spi_do_probe(struct device *dev, u32 regaddr,
- 	void *tempp;
- 	struct clk *clk;
- 
--	master = spi_alloc_master(dev, sizeof(*mps));
-+	master = devm_spi_alloc_master(dev, sizeof(*mps));
- 	if (master == NULL)
- 		return -ENOMEM;
- 
-@@ -486,28 +486,24 @@ static int mpc512x_psc_spi_do_probe(struct device *dev, u32 regaddr,
- 	master->dev.of_node = dev->of_node;
- 
- 	tempp = devm_ioremap(dev, regaddr, size);
--	if (!tempp) {
--		dev_err(dev, "could not ioremap I/O port range\n");
--		ret = -EFAULT;
--		goto free_master;
--	}
-+	if (!tempp)
-+		return dev_err_probe(dev, -EFAULT, "could not ioremap I/O port range\n");
- 	mps->psc = tempp;
- 	mps->fifo =
- 		(struct mpc512x_psc_fifo *)(tempp + sizeof(struct mpc52xx_psc));
- 	ret = devm_request_irq(dev, mps->irq, mpc512x_psc_spi_isr, IRQF_SHARED,
- 				"mpc512x-psc-spi", mps);
- 	if (ret)
--		goto free_master;
-+		return ret;
- 	init_completion(&mps->txisrdone);
- 
- 	clk = devm_clk_get(dev, "mclk");
--	if (IS_ERR(clk)) {
--		ret = PTR_ERR(clk);
--		goto free_master;
--	}
-+	if (IS_ERR(clk))
-+		return PTR_ERR(clk);
-+
- 	ret = clk_prepare_enable(clk);
- 	if (ret)
--		goto free_master;
-+		return ret;
- 	mps->clk_mclk = clk;
- 	mps->mclk_rate = clk_get_rate(clk);
- 
-@@ -535,8 +531,6 @@ static int mpc512x_psc_spi_do_probe(struct device *dev, u32 regaddr,
- 	clk_disable_unprepare(mps->clk_ipg);
- free_mclk_clock:
- 	clk_disable_unprepare(mps->clk_mclk);
--free_master:
--	spi_master_put(master);
- 
- 	return ret;
- }
-diff --git a/drivers/spi/spi-mpc52xx-psc.c b/drivers/spi/spi-mpc52xx-psc.c
-index 604868df913c..7477fa152da0 100644
---- a/drivers/spi/spi-mpc52xx-psc.c
-+++ b/drivers/spi/spi-mpc52xx-psc.c
-@@ -300,7 +300,7 @@ static int mpc52xx_psc_spi_do_probe(struct device *dev, u32 regaddr,
- 	struct spi_master *master;
- 	int ret;
- 
--	master = spi_alloc_master(dev, sizeof(*mps));
-+	master = devm_spi_alloc_master(dev, sizeof(*mps));
- 	if (master == NULL)
- 		return -ENOMEM;
- 
-@@ -318,42 +318,24 @@ static int mpc52xx_psc_spi_do_probe(struct device *dev, u32 regaddr,
- 	master->cleanup = mpc52xx_psc_spi_cleanup;
- 	master->dev.of_node = dev->of_node;
- 
--	mps->psc = ioremap(regaddr, size);
--	if (!mps->psc) {
--		dev_err(dev, "could not ioremap I/O port range\n");
--		ret = -EFAULT;
--		goto free_master;
--	}
-+	mps->psc = devm_ioremap(dev, regaddr, size);
-+	if (!mps->psc)
-+		return dev_err_probe(dev, -EFAULT, "could not ioremap I/O port range\n");
- 	/* On the 5200, fifo regs are immediately ajacent to the psc regs */
- 	mps->fifo = ((void __iomem *)mps->psc) + sizeof(struct mpc52xx_psc);
- 
--	ret = request_irq(mps->irq, mpc52xx_psc_spi_isr, 0, "mpc52xx-psc-spi",
--				mps);
-+	ret = devm_request_irq(dev, mps->irq, mpc52xx_psc_spi_isr, 0,
-+			       "mpc52xx-psc-spi", mps);
- 	if (ret)
--		goto free_master;
-+		return ret;
- 
- 	ret = mpc52xx_psc_spi_port_config(master->bus_num, mps);
--	if (ret < 0) {
--		dev_err(dev, "can't configure PSC! Is it capable of SPI?\n");
--		goto free_irq;
--	}
--
--	init_completion(&mps->done);
--
--	ret = spi_register_master(master);
- 	if (ret < 0)
--		goto free_irq;
--
--	return ret;
-+		return dev_err_probe(dev, ret, "can't configure PSC! Is it capable of SPI?\n");
- 
--free_irq:
--	free_irq(mps->irq, mps);
--free_master:
--	if (mps->psc)
--		iounmap(mps->psc);
--	spi_master_put(master);
-+	init_completion(&mps->done);
- 
--	return ret;
-+	return devm_spi_register_master(dev, master);
- }
- 
- static int mpc52xx_psc_spi_of_probe(struct platform_device *op)
-@@ -385,20 +367,6 @@ static int mpc52xx_psc_spi_of_probe(struct platform_device *op)
- 				irq_of_parse_and_map(op->dev.of_node, 0), id);
- }
- 
--static int mpc52xx_psc_spi_of_remove(struct platform_device *op)
--{
--	struct spi_master *master = spi_master_get(platform_get_drvdata(op));
--	struct mpc52xx_psc_spi *mps = spi_master_get_devdata(master);
--
--	spi_unregister_master(master);
--	free_irq(mps->irq, mps);
--	if (mps->psc)
--		iounmap(mps->psc);
--	spi_master_put(master);
--
--	return 0;
--}
--
- static const struct of_device_id mpc52xx_psc_spi_of_match[] = {
- 	{ .compatible = "fsl,mpc5200-psc-spi", },
- 	{ .compatible = "mpc5200-psc-spi", }, /* old */
-@@ -409,7 +377,6 @@ MODULE_DEVICE_TABLE(of, mpc52xx_psc_spi_of_match);
- 
- static struct platform_driver mpc52xx_psc_spi_of_driver = {
- 	.probe = mpc52xx_psc_spi_of_probe,
--	.remove = mpc52xx_psc_spi_of_remove,
- 	.driver = {
- 		.name = "mpc52xx-psc-spi",
- 		.of_match_table = mpc52xx_psc_spi_of_match,
+   broonie/spi.git for-next
 
--- 
-2.39.1
+Thanks!
+
+[1/1] spi: dt-bindings: qcom,spi-qcom-qspi: document OPP and power-domains
+      commit: 7234d746a8339066313518bfa024fa03f363a55e
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 

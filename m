@@ -2,58 +2,130 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B842EC6FA8E
-	for <linux-spi@archiver.kernel.org>; Thu,  2 Mar 2023 04:56:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0AEDCC6FA8E
+	for <linux-spi@archiver.kernel.org>; Thu,  2 Mar 2023 10:52:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229656AbjCBE4V (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 1 Mar 2023 23:56:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45740 "EHLO
+        id S230096AbjCBKw3 convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 2 Mar 2023 05:52:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229534AbjCBE4U (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 1 Mar 2023 23:56:20 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D3832C659
-        for <linux-spi@vger.kernel.org>; Wed,  1 Mar 2023 20:56:20 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id AB7F0B811A1
-        for <linux-spi@vger.kernel.org>; Thu,  2 Mar 2023 04:56:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 75DF8C433D2;
-        Thu,  2 Mar 2023 04:56:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1677732977;
-        bh=Xjz+jahiW769fqhpNSxuXuHuBl0k3OmIlIsGF2XluPc=;
-        h=Subject:From:Date:To:From;
-        b=SSQoSlBhmkzLd/IeG6Su17o21r54MNWsTGDnOh4uuHMjjYUcfdieP/kTmWjDxLXI8
-         4AQjQvtEaaOZGgbgqekL5eX+ozo6qSLcCPuLPuugQ4ofjI8vQQ8wDLeSpqCRFo2Tja
-         RgfOEvlDI7zz12aMri3yMiW8q40+kgb0Rfx2F9PAK+HXkPklbyUUP6AogaCupE3APW
-         +F1QTkWRn2xIgWFKqJBLXZt0U6op+7wVRhkmBkmNXfmro3YjHqiW3SEdUe8ysCtdM8
-         lnYLXV6CSnzrfT72Gy2mPfCfRr6AKZFLbgjwQiie7Dtotai3FHhhQ6PejfnFCvVTL6
-         Xxmw4dViBwe7w==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 5A4F0C43161;
-        Thu,  2 Mar 2023 04:56:17 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S229592AbjCBKw2 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 2 Mar 2023 05:52:28 -0500
+Received: from ex01.ufhost.com (ex01.ufhost.com [61.152.239.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E427F2A9BA;
+        Thu,  2 Mar 2023 02:52:24 -0800 (PST)
+Received: from EXMBX165.cuchost.com (unknown [175.102.18.54])
+        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        (Client CN "EXMBX165", Issuer "EXMBX165" (not verified))
+        by ex01.ufhost.com (Postfix) with ESMTP id 66E2A24E294;
+        Thu,  2 Mar 2023 18:52:23 +0800 (CST)
+Received: from EXMBX068.cuchost.com (172.16.6.68) by EXMBX165.cuchost.com
+ (172.16.6.75) with Microsoft SMTP Server (TLS) id 15.0.1497.42; Thu, 2 Mar
+ 2023 18:52:23 +0800
+Received: from williamqiu-virtual-machine.starfivetech.com (171.223.208.138)
+ by EXMBX068.cuchost.com (172.16.6.68) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.42; Thu, 2 Mar 2023 18:52:22 +0800
+From:   William Qiu <william.qiu@starfivetech.com>
+To:     <devicetree@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC:     Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Mark Brown <broonie@kernel.org>,
+        William Qiu <william.qiu@starfivetech.com>,
+        Ziv Xu <ziv.xu@starfivetech.com>
+Subject: [PATCH v1 1/2] dt-bindings: qspi: cdns,qspi-nor: constrain minItems/maxItems of resets
+Date:   Thu, 2 Mar 2023 18:52:20 +0800
+Message-ID: <20230302105221.197421-2-william.qiu@starfivetech.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230302105221.197421-1-william.qiu@starfivetech.com>
+References: <20230302105221.197421-1-william.qiu@starfivetech.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From:   patchwork-bot+spi-devel-general@kernel.org
-Message-Id: <167773297736.27143.2492556708965241036.git-patchwork-housekeeping@kernel.org>
-Date:   Thu, 02 Mar 2023 04:56:17 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain
+X-Originating-IP: [171.223.208.138]
+X-ClientProxiedBy: EXCAS066.cuchost.com (172.16.6.26) To EXMBX068.cuchost.com
+ (172.16.6.68)
+X-YovoleRuleAgent: yovoleflag
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Latest series: [v8] Tegra TPM driver with HW flow control (2023-03-02T04:18:02)
-  Superseding: [v7] Tegra TPM driver with HW flow control (2023-03-01T17:33:50):
-    [V7,1/3] spi: Add TPM HW flow flag
-    [V7,2/3] tpm_tis-spi: Add hardware wait polling
-    [V7,3/3] spi: tegra210-quad: Enable TPM wait polling
+The QSPI controller needs three reset items to work properly on JH7110 SoC,
+so there is need to change the maxItems's value to 3 and add minItems
+whose value is equal to 2. Other platforms do not have this constraint.
 
+Signed-off-by: William Qiu <william.qiu@starfivetech.com>
+---
+ .../bindings/spi/cdns,qspi-nor.yaml           | 37 +++++++++++++++++--
+ 1 file changed, 33 insertions(+), 4 deletions(-)
 
+diff --git a/Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml b/Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml
+index 4707294d8f59..14821cb6db48 100644
+--- a/Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml
++++ b/Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml
+@@ -19,6 +19,33 @@ allOf:
+     then:
+       required:
+         - power-domains
++  - if:
++      properties:
++        compatible:
++          contains:
++            const: starfive,jh7110-qspi
++    then:
++      properties:
++        resets:
++          minItems: 2
++          maxItems: 3
++
++        reset-names:
++          minItems: 2
++          maxItems: 3
++          items:
++            enum: [ qspi, qspi-ocp, rstc_ref ]
++
++    else:
++      properties:
++        resets:
++          maxItems: 2
++
++        reset-names:
++          minItems: 1
++          maxItems: 2
++          items:
++            enum: [ qspi, qspi-ocp ]
+ 
+ properties:
+   compatible:
+@@ -30,6 +57,7 @@ properties:
+               - intel,lgm-qspi
+               - xlnx,versal-ospi-1.0
+               - intel,socfpga-qspi
++              - starfive,jh7110-qspi
+           - const: cdns,qspi-nor
+       - const: cdns,qspi-nor
+ 
+@@ -79,13 +107,14 @@ properties:
+     maxItems: 1
+ 
+   resets:
+-    maxItems: 2
++    minItems: 2
++    maxItems: 3
+ 
+   reset-names:
+-    minItems: 1
+-    maxItems: 2
++    minItems: 2
++    maxItems: 3
+     items:
+-      enum: [ qspi, qspi-ocp ]
++      enum: [ qspi, qspi-ocp, rstc_ref ]
+ 
+ required:
+   - compatible
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+2.34.1
 

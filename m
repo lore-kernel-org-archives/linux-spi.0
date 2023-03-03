@@ -2,46 +2,43 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 20D40C7EE2D
-	for <linux-spi@archiver.kernel.org>; Fri,  3 Mar 2023 17:21:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 11DFCC7EE39
+	for <linux-spi@archiver.kernel.org>; Fri,  3 Mar 2023 17:21:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231310AbjCCRVD (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 3 Mar 2023 12:21:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39158 "EHLO
+        id S231552AbjCCRVE (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 3 Mar 2023 12:21:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231437AbjCCRU7 (ORCPT
+        with ESMTP id S231508AbjCCRU7 (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Fri, 3 Mar 2023 12:20:59 -0500
 Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CCDF4614F
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB1AA4391F
         for <linux-spi@vger.kernel.org>; Fri,  3 Mar 2023 09:20:58 -0800 (PST)
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
         by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <ukl@pengutronix.de>)
-        id 1pY95T-0006Sy-CC; Fri, 03 Mar 2023 18:20:55 +0100
+        id 1pY95U-0006XL-Jz; Fri, 03 Mar 2023 18:20:56 +0100
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
         by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
         (envelope-from <ukl@pengutronix.de>)
-        id 1pY95S-001bjc-Je; Fri, 03 Mar 2023 18:20:54 +0100
+        id 1pY95U-001bkA-08; Fri, 03 Mar 2023 18:20:56 +0100
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
         (envelope-from <ukl@pengutronix.de>)
-        id 1pY95R-001tij-N9; Fri, 03 Mar 2023 18:20:53 +0100
+        id 1pY95S-001tj3-NM; Fri, 03 Mar 2023 18:20:54 +0100
 From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>
-To:     Kamal Dasu <kdasu.kdev@gmail.com>, Mark Brown <broonie@kernel.org>,
-        Florian Fainelli <f.fainelli@gmail.com>
-Cc:     Broadcom internal kernel review list 
-        <bcm-kernel-feedback-list@broadcom.com>, linux-spi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, kernel@pengutronix.de
-Subject: [PATCH 14/87] spi: brcmstb-qspi: Convert to platform remove callback returning void
-Date:   Fri,  3 Mar 2023 18:19:28 +0100
-Message-Id: <20230303172041.2103336-15-u.kleine-koenig@pengutronix.de>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     linux-spi@vger.kernel.org, kernel@pengutronix.de
+Subject: [PATCH 19/87] spi: davinci: Convert to platform remove callback returning void
+Date:   Fri,  3 Mar 2023 18:19:33 +0100
+Message-Id: <20230303172041.2103336-20-u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230303172041.2103336-1-u.kleine-koenig@pengutronix.de>
 References: <20230303172041.2103336-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1484; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=iqNUrERgLHMTT8ivhCINBCII1+ximgOKlxKLMHyYQk0=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBkAis/jrpEglBe3ArBD4/4cb6K5gKk5nT6sQist 9khe/hKCgCJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCZAIrPwAKCRDB/BR4rcrs CQaqB/9Ogx1gFXp1VnBdCu2xQu3RIKIg1xPCVC6Nw7EdvGN8KGpvSRs3YBm4R+Lt1SWvaFW8+1r aVvowovEvNzNZXeXXOjUFivAtJSvcCH3ZXbPvNPc2MxzOaiGfQ+u7o347N7tvPQji3Ym7lQ7+a9 pOkiETgLktw6pIxm65brPmpvZufA5gPjA+aymeCf4ou/Gzf1ski86ghUvN7eiCDgux5isBs7HT5 GRZke0tYZHYKVXy0/9WXc1LsCDXNumu23PFD3nPbGeBp6OkgtRJ0uV4lFT0kSJSOL78sR0ASB2s xM4a+tVRxgitT84pNjTSGhsDEjWwf7vvlcU/x1HSxYFUPBnr
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1789; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=Qgv82uBfeGvii1PwmBy8aWWKTtE61twqezpOLMTbWEI=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBkAitRPMgTOsB1zd5aPEI5JUPjbpun2bJWTcQ0m eMf9gy/C46JATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCZAIrUQAKCRDB/BR4rcrs CaXWB/9MK6WcDFAY78/Q2NVx27Ipz0MpEMk1cLY2oXn65ERtGWQHyXYaEkkzDppGv1ztehumj6g xSktF9e5LJrF36qEBEfs8nz6Axd997zOFw4DzHPd1B10ldzzji17LODYGfd5rkZXD/GM8DAHOGY ox0NmPb12mKSQgUTYXpkJjVVhtIj0ZHinU2dHGfGL42X8cmaUj9TYa05kXvDgivkY/6qVFLseGe BaRgXT+k86fKxwpELlEPnfQhBTvj6mMVLq+hHJklsHS2IbmxSt450kcEopgeBPtTRsu9U7yySmL w3HYo0QvwBZ5EoazNXQOQbfuXv4tVhjWq0aFac//tnay9cp8
 X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -65,32 +62,39 @@ callback to the void returning variant.
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
- drivers/spi/spi-brcmstb-qspi.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/spi/spi-davinci.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-brcmstb-qspi.c b/drivers/spi/spi-brcmstb-qspi.c
-index de362b35718f..e1b137419f5c 100644
---- a/drivers/spi/spi-brcmstb-qspi.c
-+++ b/drivers/spi/spi-brcmstb-qspi.c
-@@ -21,16 +21,14 @@ static int brcmstb_qspi_probe(struct platform_device *pdev)
- 	return bcm_qspi_probe(pdev, NULL);
- }
- 
--static int brcmstb_qspi_remove(struct platform_device *pdev)
-+static void brcmstb_qspi_remove(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
+index d112c2cac042..add1e198a439 100644
+--- a/drivers/spi/spi-davinci.c
++++ b/drivers/spi/spi-davinci.c
+@@ -1018,7 +1018,7 @@ static int davinci_spi_probe(struct platform_device *pdev)
+  * It will also call spi_bitbang_stop to destroy the work queue which was
+  * created by spi_bitbang_start.
+  */
+-static int davinci_spi_remove(struct platform_device *pdev)
++static void davinci_spi_remove(struct platform_device *pdev)
  {
- 	bcm_qspi_remove(pdev);
--
+ 	struct davinci_spi *dspi;
+ 	struct spi_master *master;
+@@ -1036,7 +1036,6 @@ static int davinci_spi_remove(struct platform_device *pdev)
+ 	}
+ 
+ 	spi_master_put(master);
 -	return 0;
  }
  
- static struct platform_driver brcmstb_qspi_driver = {
- 	.probe			= brcmstb_qspi_probe,
--	.remove			= brcmstb_qspi_remove,
-+	.remove_new		= brcmstb_qspi_remove,
- 	.driver = {
- 		.name		= "brcmstb_qspi",
- 		.pm		= &bcm_qspi_pm_ops,
+ static struct platform_driver davinci_spi_driver = {
+@@ -1045,7 +1044,7 @@ static struct platform_driver davinci_spi_driver = {
+ 		.of_match_table = of_match_ptr(davinci_spi_of_match),
+ 	},
+ 	.probe = davinci_spi_probe,
+-	.remove = davinci_spi_remove,
++	.remove_new = davinci_spi_remove,
+ };
+ module_platform_driver(davinci_spi_driver);
+ 
 -- 
 2.39.1
 

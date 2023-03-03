@@ -2,51 +2,44 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 97BA1C64EC4
-	for <linux-spi@archiver.kernel.org>; Fri,  3 Mar 2023 17:21:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 13892C7EE32
+	for <linux-spi@archiver.kernel.org>; Fri,  3 Mar 2023 17:21:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231467AbjCCRVW (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 3 Mar 2023 12:21:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39530 "EHLO
+        id S231450AbjCCRVX (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 3 Mar 2023 12:21:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231610AbjCCRVL (ORCPT
+        with ESMTP id S231611AbjCCRVL (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Fri, 3 Mar 2023 12:21:11 -0500
 Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9351D4DBC1
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81A0E4D62C
         for <linux-spi@vger.kernel.org>; Fri,  3 Mar 2023 09:21:07 -0800 (PST)
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
         by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <ukl@pengutronix.de>)
-        id 1pY95T-0006S3-SE; Fri, 03 Mar 2023 18:20:55 +0100
+        id 1pY95c-0006yw-Mb; Fri, 03 Mar 2023 18:21:04 +0100
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
         by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
         (envelope-from <ukl@pengutronix.de>)
-        id 1pY95S-001bjW-Bd; Fri, 03 Mar 2023 18:20:54 +0100
+        id 1pY95b-001bnE-QV; Fri, 03 Mar 2023 18:21:03 +0100
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
         (envelope-from <ukl@pengutronix.de>)
-        id 1pY95R-001tie-Ga; Fri, 03 Mar 2023 18:20:53 +0100
+        id 1pY95a-001tlc-QN; Fri, 03 Mar 2023 18:21:02 +0100
 From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>
-To:     William Zhang <william.zhang@broadcom.com>,
-        Kursad Oney <kursad.oney@broadcom.com>,
-        Jonas Gorski <jonas.gorski@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Anand Gore <anand.gore@broadcom.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        =?utf-8?b?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>
-Cc:     Broadcom internal kernel review list 
-        <bcm-kernel-feedback-list@broadcom.com>, linux-spi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, kernel@pengutronix.de
-Subject: [PATCH 13/87] spi: bcmbca-hsspi: Convert to platform remove callback returning void
-Date:   Fri,  3 Mar 2023 18:19:27 +0100
-Message-Id: <20230303172041.2103336-14-u.kleine-koenig@pengutronix.de>
+To:     Mark Brown <broonie@kernel.org>, Heiko Stuebner <heiko@sntech.de>
+Cc:     linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org, kernel@pengutronix.de
+Subject: [PATCH 59/87] spi: rockchip: Convert to platform remove callback returning void
+Date:   Fri,  3 Mar 2023 18:20:13 +0100
+Message-Id: <20230303172041.2103336-60-u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230303172041.2103336-1-u.kleine-koenig@pengutronix.de>
 References: <20230303172041.2103336-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1851; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=dkFLbpKu3gdfD/IQ0PyTwhiBt9srbLQF17HVBoJMQoA=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBkAis8wnpaw7eSOBRHP85D5wFXY/XM5gtpMXElV DZ582MvTraJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCZAIrPAAKCRDB/BR4rcrs CeUtB/4ijuu7UDvtgyLrpDkL11JXbUMp0gkDj0DF38kb7Qq6KwJeRPbu9J1RdYt5OlNBbBS6C/P PqBiJpByMvvB6IQq7G64d7/QGDqeVn3O9cEShBTT1zJQtU7JkLzo+rZRIsgaK1rBLbyt4JCkkaA 0aj1aW+kOVYI7agdo7G3CxY5CkWP/Bz1cfy9XHwjQ6zwlepLT3KHWP2t0AKBcsu3guil+3oiM9w o3Y1EM2CHUu/oIdDmSxQG3sX1uA9evP6ccPmN7m7la6at8AAcFvZMf8cqWw9YpS4z6TGMhvRyR/ RWHpInfJt7NN7HNEDUNvoEVQ2vUVYUBfnj7nOJPclNjhnT/t
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1800; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=OmQ12uht8IWlDyauzXhSL2XViaI0ICmiBz/+eTBWyf4=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBkAivwwXz9uomS2WWf/vdPN4WnOrhcDT0sutXWv xQEsEcj8FWJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCZAIr8AAKCRDB/BR4rcrs CchTB/9Cy3Sbh53UV3ob62jodXiRh/CIKWsQH9D12P9G+M+z5/BfO5xRodY6wK1kS2klGV6tbVG l9d1DMjddgR8KSpou08TP3nI/LOrdO5xNr/jO7jEscJ1smQT4PBTw3386tOg2F+t8Xl3Q3yiHlL ueO/4tjj7D0FYYpTn5qXoBT1L2NBmPvU7k0KHetB1715NmZCPoK7amCPDmBHoEpH3mIx5B7E8Fg IeMQDqHNZKZ8+JVegL/YYkXbUYr+qbh4VpYkchuck8ikPngQwnVCtH61xnwqj8ll/5G3lQXMmMu qpDC+qYlMtVAkmrf6AWfKnn5G9zawZtJOvHV3JnbrD+BEEOn
 X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -70,40 +63,40 @@ callback to the void returning variant.
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
- drivers/spi/spi-bcmbca-hsspi.c | 6 ++----
+ drivers/spi/spi-rockchip.c | 6 ++----
  1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-bcmbca-hsspi.c b/drivers/spi/spi-bcmbca-hsspi.c
-index 3f9e6131ad86..c7a44832bc9c 100644
---- a/drivers/spi/spi-bcmbca-hsspi.c
-+++ b/drivers/spi/spi-bcmbca-hsspi.c
-@@ -576,7 +576,7 @@ static int bcmbca_hsspi_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index 79242dc5272d..8888a5ff7b2f 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -947,7 +947,7 @@ static int rockchip_spi_probe(struct platform_device *pdev)
  	return ret;
  }
  
--static int bcmbca_hsspi_remove(struct platform_device *pdev)
-+static void bcmbca_hsspi_remove(struct platform_device *pdev)
+-static int rockchip_spi_remove(struct platform_device *pdev)
++static void rockchip_spi_remove(struct platform_device *pdev)
  {
- 	struct spi_master *master = platform_get_drvdata(pdev);
- 	struct bcmbca_hsspi *bs = spi_master_get_devdata(master);
-@@ -586,8 +586,6 @@ static int bcmbca_hsspi_remove(struct platform_device *pdev)
- 	clk_disable_unprepare(bs->pll_clk);
- 	clk_disable_unprepare(bs->clk);
- 	sysfs_remove_group(&pdev->dev.kobj, &bcmbca_hsspi_group);
+ 	struct spi_controller *ctlr = spi_controller_get(platform_get_drvdata(pdev));
+ 	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
+@@ -967,8 +967,6 @@ static int rockchip_spi_remove(struct platform_device *pdev)
+ 		dma_release_channel(ctlr->dma_rx);
+ 
+ 	spi_controller_put(ctlr);
 -
 -	return 0;
  }
  
  #ifdef CONFIG_PM_SLEEP
-@@ -644,7 +642,7 @@ static struct platform_driver bcmbca_hsspi_driver = {
- 		   .of_match_table = bcmbca_hsspi_of_match,
- 		   },
- 	.probe = bcmbca_hsspi_probe,
--	.remove = bcmbca_hsspi_remove,
-+	.remove_new = bcmbca_hsspi_remove,
+@@ -1076,7 +1074,7 @@ static struct platform_driver rockchip_spi_driver = {
+ 		.of_match_table = of_match_ptr(rockchip_spi_dt_match),
+ 	},
+ 	.probe = rockchip_spi_probe,
+-	.remove = rockchip_spi_remove,
++	.remove_new = rockchip_spi_remove,
  };
  
- module_platform_driver(bcmbca_hsspi_driver);
+ module_platform_driver(rockchip_spi_driver);
 -- 
 2.39.1
 

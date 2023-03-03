@@ -2,47 +2,47 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6DA76C83005
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7FE7CC87FDD
 	for <linux-spi@archiver.kernel.org>; Fri,  3 Mar 2023 17:22:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231617AbjCCRVw (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S231618AbjCCRVw (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Fri, 3 Mar 2023 12:21:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40246 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231491AbjCCRVb (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 3 Mar 2023 12:21:31 -0500
+        with ESMTP id S231617AbjCCRV2 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 3 Mar 2023 12:21:28 -0500
 Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98F4E559CD
-        for <linux-spi@vger.kernel.org>; Fri,  3 Mar 2023 09:21:19 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4E2C47412
+        for <linux-spi@vger.kernel.org>; Fri,  3 Mar 2023 09:21:17 -0800 (PST)
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
         by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <ukl@pengutronix.de>)
-        id 1pY95V-0006P2-0S; Fri, 03 Mar 2023 18:20:57 +0100
+        id 1pY95c-0006vJ-76; Fri, 03 Mar 2023 18:21:04 +0100
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
         by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
         (envelope-from <ukl@pengutronix.de>)
-        id 1pY95Q-001bio-Fa; Fri, 03 Mar 2023 18:20:52 +0100
+        id 1pY95a-001bms-UT; Fri, 03 Mar 2023 18:21:02 +0100
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
         (envelope-from <ukl@pengutronix.de>)
-        id 1pY95P-001ti2-KO; Fri, 03 Mar 2023 18:20:51 +0100
+        id 1pY95a-001tlQ-5J; Fri, 03 Mar 2023 18:21:02 +0100
 From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>
-To:     Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>,
-        =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
-        Mark Brown <broonie@kernel.org>, Joel Stanley <joel@jms.id.au>
-Cc:     Andrew Jeffery <andrew@aj.id.au>, linux-aspeed@lists.ozlabs.org,
-        openbmc@lists.ozlabs.org, linux-spi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, kernel@pengutronix.de
-Subject: [PATCH 03/87] spi: aspeed-smc: Convert to platform remove callback returning void
-Date:   Fri,  3 Mar 2023 18:19:17 +0100
-Message-Id: <20230303172041.2103336-4-u.kleine-koenig@pengutronix.de>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Mark Brown <broonie@kernel.org>
+Cc:     Konrad Dybcio <konrad.dybcio@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
+        kernel@pengutronix.de
+Subject: [PATCH 56/87] spi: qcom-qspi: Convert to platform remove callback returning void
+Date:   Fri,  3 Mar 2023 18:20:10 +0100
+Message-Id: <20230303172041.2103336-57-u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230303172041.2103336-1-u.kleine-koenig@pengutronix.de>
 References: <20230303172041.2103336-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1627; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=o5sJFUxoNT7gwytQoziVYIAoannDkz/5r4cZ/QJwJjk=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBkAisW7UH+01oobN1QWAUpph1uqBXyOJkpZ0nOy DUyy4zqZLmJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCZAIrFgAKCRDB/BR4rcrs CVMZB/9QkIFFT+vICGEx1YNlTkfjJVHM2QBt+NJNDA+HWzdkKDRW887iFtRGjsWRE9BbDDMkdP7 pUvFIYAZp+H13c8zm+6MujgtilCOebLnxM+rB1tZWKrsONWuAEJMo3QAofdSv/QnHWqaM6saL2L 5B54oAhsa13wvLhOso6pteb1zacagtz6GwAN+L2lgWDf/rCWobpodrdf8oq7WPjyB2GHOBED8xR 17oUoJcLxpNIPvs6raYkbYKRTFY2z7dgYJKGg1gapaqJvnZsC/VY056kJnhA10Fd07y+dj4cxFH DHibwpa3DL752UFe8mGEYBxFceANuh4Jzs2Jv6cjw3c6hWch
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1727; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=Tx6CXfHNJmGBVRj2EM5iiah+Com8NfpAZ+iA7lFJ+OA=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBkAivkcb28Ws1RIDp9MjLLK0kcZcBcweCkUoh1p K24RaH0vUmJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCZAIr5AAKCRDB/BR4rcrs CZSJB/9s7RuVt3jOP/bUujMaMlj88iAiFGahR5OHQq72pTyq0BrMOVRESLZtoT1vMlp3Z/v8ENI jgl2dJUWJdwgBs64VSPYQedV42SFNOKKVpDeMP6c2P3H5l04a4aj0JkSvZH1Qa/wrj6217YfO// RXtehrDRqbB1oKM+xrZ9oOYIbf5JUFjWR0Y2akcql6DPdfvCGjVMW3UDAcCPzZPKbkL3kNy5KAJ XIcgLRVMW4/If6dWWW8AtUBt4YerBbaOk3DFA/zlqQkAinl5BGcBh1vtAmW2JVFkUV4Mj10un+m eLyzIN6q/xFDN17O4TBz8uu5RoTGxyhNTdw0Az2X4O7IuHEU
 X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -66,37 +66,40 @@ callback to the void returning variant.
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
- drivers/spi/spi-aspeed-smc.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/spi/spi-qcom-qspi.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-aspeed-smc.c b/drivers/spi/spi-aspeed-smc.c
-index 873ff2cf72c9..3f2548860317 100644
---- a/drivers/spi/spi-aspeed-smc.c
-+++ b/drivers/spi/spi-aspeed-smc.c
-@@ -787,13 +787,12 @@ static int aspeed_spi_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-qcom-qspi.c b/drivers/spi/spi-qcom-qspi.c
+index c334dfec4117..15c4e21cd562 100644
+--- a/drivers/spi/spi-qcom-qspi.c
++++ b/drivers/spi/spi-qcom-qspi.c
+@@ -552,7 +552,7 @@ static int qcom_qspi_probe(struct platform_device *pdev)
  	return ret;
  }
  
--static int aspeed_spi_remove(struct platform_device *pdev)
-+static void aspeed_spi_remove(struct platform_device *pdev)
+-static int qcom_qspi_remove(struct platform_device *pdev)
++static void qcom_qspi_remove(struct platform_device *pdev)
  {
- 	struct aspeed_spi *aspi = platform_get_drvdata(pdev);
+ 	struct spi_master *master = platform_get_drvdata(pdev);
  
- 	aspeed_spi_enable(aspi, false);
- 	clk_disable_unprepare(aspi->clk);
+@@ -560,8 +560,6 @@ static int qcom_qspi_remove(struct platform_device *pdev)
+ 	spi_unregister_master(master);
+ 
+ 	pm_runtime_disable(&pdev->dev);
+-
 -	return 0;
  }
  
- /*
-@@ -1201,7 +1200,7 @@ MODULE_DEVICE_TABLE(of, aspeed_spi_matches);
+ static int __maybe_unused qcom_qspi_runtime_suspend(struct device *dev)
+@@ -655,7 +653,7 @@ static struct platform_driver qcom_qspi_driver = {
+ 		.of_match_table = qcom_qspi_dt_match,
+ 	},
+ 	.probe = qcom_qspi_probe,
+-	.remove = qcom_qspi_remove,
++	.remove_new = qcom_qspi_remove,
+ };
+ module_platform_driver(qcom_qspi_driver);
  
- static struct platform_driver aspeed_spi_driver = {
- 	.probe			= aspeed_spi_probe,
--	.remove			= aspeed_spi_remove,
-+	.remove_new		= aspeed_spi_remove,
- 	.driver	= {
- 		.name		= DEVICE_NAME,
- 		.of_match_table = aspeed_spi_matches,
 -- 
 2.39.1
 

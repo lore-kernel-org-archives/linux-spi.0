@@ -2,110 +2,85 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 621A7C678D4
-	for <linux-spi@archiver.kernel.org>; Mon,  6 Mar 2023 13:33:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CBBC9C61DA4
+	for <linux-spi@archiver.kernel.org>; Mon,  6 Mar 2023 14:00:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231259AbjCFNde (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 6 Mar 2023 08:33:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44246 "EHLO
+        id S230013AbjCFOAt (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 6 Mar 2023 09:00:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231365AbjCFNdI (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 6 Mar 2023 08:33:08 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 271552F7A9
-        for <linux-spi@vger.kernel.org>; Mon,  6 Mar 2023 05:32:46 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id BE6AEB80E40
-        for <linux-spi@vger.kernel.org>; Mon,  6 Mar 2023 13:32:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA765C433EF;
-        Mon,  6 Mar 2023 13:32:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678109544;
-        bh=4wwI0hQDakHiL7l0I0rRMWYhIVloyJWyXyiQc5eRiRM=;
-        h=From:To:In-Reply-To:References:Subject:Date:From;
-        b=vApjjlMZqCNAqvSdqdLPXuP7wEz73skQXQka3Zv1EiDOeUn9DVDdwLK+XMVNGdx50
-         7N3LDB1FJ8lA9BkW8okboZBmpQ4S+j4focxWAW7MDDvCUjpx0B17DHCxoAo9z0RBpE
-         c+n/ZpPoTOiSasUkdoR8mCu5bVV/9xcMw/Onv2ZWiFJBjdK2B1ecrwKlpIMI9mrBrm
-         NGMosIzh8L9aef9qHsNP4UdEysyTEP2DjM04oHzW3lFbsFuwhfDd5bMnxlktR5pzG6
-         aDQ3m6ZijsnFOIrQA53Fmw0ohynElCMk+2uZWohLDBazLr2elDW2NW+OiJxweHI07m
-         ZdbCwlGdX5FqA==
-From:   Mark Brown <broonie@kernel.org>
-To:     linux-spi@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Andi Shyti <andi@etezian.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Eddie James <eajames@linux.ibm.com>, Han Xu <han.xu@nxp.com>,
-        Haibo Chen <haibo.chen@nxp.com>,
-        Yogesh Gaur <yogeshgaur.83@gmail.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Mark Brown <broonie@kernel.org>
-In-Reply-To: <20230221-spi-arch-deps-v1-0-83d1566474cf@kernel.org>
-References: <20230221-spi-arch-deps-v1-0-83d1566474cf@kernel.org>
-Subject: Re: [PATCH 0/8] spi: Build coverage cleanups and improvements
-Message-Id: <167810954160.76172.6882624542653908410.b4-ty@kernel.org>
-Date:   Mon, 06 Mar 2023 13:32:21 +0000
+        with ESMTP id S230165AbjCFOAp (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 6 Mar 2023 09:00:45 -0500
+Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 876EA302BB
+        for <linux-spi@vger.kernel.org>; Mon,  6 Mar 2023 06:00:40 -0800 (PST)
+Received: by mail-yb1-xb29.google.com with SMTP id t4so8138530ybg.11
+        for <linux-spi@vger.kernel.org>; Mon, 06 Mar 2023 06:00:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1678111240;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=j/Y94Pc8yhv157LBUch/tn3T/6KugP9L4mHMFv2Mi1c=;
+        b=vA6tYOcfyoBCdfKlR/1Lr7HvkVd06OiCVrXU4TOnwFiit65IdM0kFbVBLqZW5cMmK+
+         A5yUU9Mw/tLMUDAf7NRanaVp4fZU9TqqacCQeyq6sJnEI+FMxoGagywCeMfqEPqOeBlu
+         nXZe3GT1ey9hKarOppW/jvJi0wQDqDiDWkgi+zWo3VL53r/o2qQ6XywZjqGNfVs+aziJ
+         vFDiFhoPpunDokD6pdrYjro1heNldIyNfmCy5fkj2rW2gZBBy0mMduKlEM3Hcg2IYroD
+         KAvVMKy94smfbRsD0o8BkZJR9a+/t+J9dmoQ7IUmtTEfx2oHWkOThNqkknbmyZqubsnk
+         Ti0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678111240;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=j/Y94Pc8yhv157LBUch/tn3T/6KugP9L4mHMFv2Mi1c=;
+        b=nIN5ePhHSPmg99ZcJcRPqw7DczAt6O1jF+qiAmNUBHaK1OFfpa1tN5gULtG8DiiEoI
+         ItZG2x5S2Vh4JoNGoEaIE0JVsQYISu7cYnlJvg4TS25Xb4hMTcGEI6xVYcicrZv8hQqJ
+         Uszf4er7gDMtqPWbkqxlV2nmOSwgkWEbQ9rIq/rZvViNjI+fqddWrz16uIyn4nfRJEju
+         aO8bgWum/nBFUbhIrpIWVgwtCdheX9GGVbbg/r4BBg0rlGxYjcmEmoekhFYZIDupXImb
+         kEjwcpHyRMnngrrQQJbsbgFsIAXWCwX4CKkb7uYO1K4aLPQUkMkOcWCezcYI+1rNFq9L
+         ArNA==
+X-Gm-Message-State: AO0yUKVNv4slu+9pLN/GJ7FlsMcf7x02H4NNw9Gb9la2W+7HF/RZEuN3
+        4JQWR2Ju7eUuX/i+POdBTNkrKh94T8Jv/H7LFHKxQQ==
+X-Google-Smtp-Source: AK7set/+qd3FzcDCbbQjlLKSyczCieknA6kNFFX6l4uSmFR+66HJ7iMYS6i/ooDX/uospypKCFmfiNndLJj2B5M0Ve0=
+X-Received: by 2002:a25:8b8f:0:b0:906:307b:1449 with SMTP id
+ j15-20020a258b8f000000b00906307b1449mr6437900ybl.5.1678111239717; Mon, 06 Mar
+ 2023 06:00:39 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13-dev-bd1bf
+References: <20230219183059.1029525-1-xiang.ye@intel.com> <20230219183059.1029525-6-xiang.ye@intel.com>
+ <CACRpkdbAve++nA0zwHvOm3fy0t9J9g0fR_FO71TTv=TwM6CJYA@mail.gmail.com> <Y/j7cAQaaCXXYe6s@ye-NUC7i7DNHE>
+In-Reply-To: <Y/j7cAQaaCXXYe6s@ye-NUC7i7DNHE>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Mon, 6 Mar 2023 15:00:28 +0100
+Message-ID: <CACRpkdbg4zu9-yKy3AEKqxTiNKa-LUO2Lokg3pufT0nBz3ubKg@mail.gmail.com>
+Subject: Re: [PATCH 5/5] Documentation: Add ABI doc for attributes of LJCA device
+To:     "Ye, Xiang" <xiang.ye@intel.com>
+Cc:     Lee Jones <lee@kernel.org>, Wolfram Sang <wsa@kernel.org>,
+        Tyrone Ting <kfting@nuvoton.com>,
+        Mark Brown <broonie@kernel.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>, linux-i2c@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-gpio@vger.kernel.org, srinivas.pandruvada@intel.com,
+        heikki.krogerus@linux.intel.com, andriy.shevchenko@linux.intel.com,
+        sakari.ailus@linux.intel.com, zhifeng.wang@intel.com,
+        wentong.wu@intel.com, lixu.zhang@intel.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, 23 Feb 2023 17:20:20 +0000, Mark Brown wrote:
-> This series opens up build coverage of a bunch of SPI drivers by
-> allowing build under COMPILE_TEST where possible, while also adding
-> appropriate architecture specific dependencies to a couple of drivers
-> that didn't have them so they don't show up in builds when they're not
-> useful.  We also have one fix for the dependencies of the s3c24xx driver
-> which was turned up in the process of doing this.
-> 
-> [...]
+On Fri, Feb 24, 2023 at 7:02 PM Ye, Xiang <xiang.ye@intel.com> wrote:
+> On Fri, Feb 24, 2023 at 11:53:08AM +0100, Linus Walleij wrote:
 
-Applied to
+> > Is the idea that e.g. fwupdmgr should provide a front-end for this?
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+> We haven't implemented a front-end in fwupdmgr. dfu-util is used to
+> update LJCA firmware manually currently. Maybe we will consider
+> implementing this in fwupdmgr later.
 
-Thanks!
+It's a matter of process rather than implementation really, but if you can
+please communicate upward to the project that if this is to go into
+consumer hands (i.e. be used by random people on random laptops)
+the firmware update should come via fwupdmgr.
 
-[1/8] spi: s3c24xx: Fix dependencies when FIQ support is enabled
-      (no commit info)
-[2/8] spi: rockchip: Add architecture dependency
-      commit: 330a200d360f8b140b31d7da8b657da0472484e6
-[3/8] spi: nxp-flexspi: Fix ARCH_LAYERSCAPE dependency
-      commit: c6b15b2437a10b7b381d32f4a5341f655bfa296f
-[4/8] spi: davinci: Make available for build test
-      commit: e48d57d7203441b7a32b4275462ebb9296ea3fa0
-[5/8] spi: fsi: Make available for build test
-      commit: f916c7080d28831493518364492e33fc6a437907
-[6/8] spi: qcom-qspi: Make available for build test
-      commit: ada850541ad33f621425a382d0810b839cb3169e
-[7/8] spi: s3c24xx: Only have compile time references to FIQ when building it
-      (no commit info)
-[8/8] spi: s3c24xx: Allow build test coverage
-      (no commit info)
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+Yours,
+Linus Walleij

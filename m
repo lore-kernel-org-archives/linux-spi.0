@@ -2,80 +2,97 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 538F6C64EC4
-	for <linux-spi@archiver.kernel.org>; Mon,  6 Mar 2023 18:29:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E764C61DA4
+	for <linux-spi@archiver.kernel.org>; Mon,  6 Mar 2023 18:30:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230164AbjCFS3L (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 6 Mar 2023 13:29:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52528 "EHLO
+        id S229579AbjCFSak (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 6 Mar 2023 13:30:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230180AbjCFS3F (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 6 Mar 2023 13:29:05 -0500
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69B8FCA29;
-        Mon,  6 Mar 2023 10:28:53 -0800 (PST)
+        with ESMTP id S229718AbjCFSaj (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 6 Mar 2023 13:30:39 -0500
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06E88170F;
+        Mon,  6 Mar 2023 10:30:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1678127333; x=1709663333;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=1ax5g14lSVc66zIwDmHHBnU+JvCUysUQMQFqDH3oZeo=;
-  b=HQ3uunTVrAB3m2l3UB+opL+OLTylFu0VZKj3DFOSVgDepxZP507A9xIt
-   xyraI7XLAM5TYjyevzxo86XyxvIxs1bfbbBUbP3NZToT6iAzykR+Z5QHa
-   12FxoSbRlypwg2CQqHN/Qb1wkJQrXHU8wRv+1wFTz1w06+rvGHZQdp+V2
-   DLhXzAvNjoGuM410S3v9NzkDWdiPrsoDQkTv+ZiDWt9UcBhmJQL1fsaKX
-   ufNH8S9oCXOHVTBkR1PrX27r86AYhwTJ1Ggc3fVgndP/fznK79DDCBq5j
-   9c2R66cBiYypyss8XNamWIIqcKOZpIzhMVcBY1TfFVF/5vBiJbCm12P5/
+  t=1678127439; x=1709663439;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=VvQq/hiW3ciMZLoERkUkYzqWpN07fmrNja7l175IvIY=;
+  b=L8h8F49OtVGAMTSjKU6Xd0Rb5fbsnW8wV1Qeaps6DbG6LXTzJ2Cf990F
+   D+OzjSYIebSUghZ7OKxnazoOsPfo96boW0u39HCxF9Eka6HuobGxy1gGT
+   QXMTUWQxcLGlO+hxS1l4WYFKPhPUCedds6x/KewDLLfT6zSM+skelAkyg
+   5LukkjHppCH6ViWnlYSQT48bMENrLu6qOKvEQf8xYqH6q4vP0sVI/XFLQ
+   drTtfCrWj7efefNUXBWivJSNVOWd6ZJuXuuysbvn5vgsc3qXCnkebRmt1
+   U9ZwXbWs14Vo+8oarCQF4Eir7KW2SE836FGEvxMYH07A4TyW9UT6pATMz
    Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10641"; a="335658517"
+X-IronPort-AV: E=McAfee;i="6500,9779,10641"; a="333109220"
 X-IronPort-AV: E=Sophos;i="5.98,238,1673942400"; 
-   d="scan'208";a="335658517"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2023 10:28:32 -0800
+   d="scan'208";a="333109220"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2023 10:30:37 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10641"; a="678585698"
+X-IronPort-AV: E=McAfee;i="6500,9779,10641"; a="669559042"
 X-IronPort-AV: E=Sophos;i="5.98,238,1673942400"; 
-   d="scan'208";a="678585698"
+   d="scan'208";a="669559042"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga007.fm.intel.com with ESMTP; 06 Mar 2023 10:28:31 -0800
+  by orsmga007.jf.intel.com with ESMTP; 06 Mar 2023 10:30:36 -0800
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id E5AC7143; Mon,  6 Mar 2023 20:29:14 +0200 (EET)
+        id 5E83C14F; Mon,  6 Mar 2023 20:31:19 +0200 (EET)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 1/1] spi: Propagate firmware node
-Date:   Mon,  6 Mar 2023 20:29:13 +0200
-Message-Id: <20230306182913.87231-1-andriy.shevchenko@linux.intel.com>
+To:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 2/5] spi: mpc5xxx-psc: Return immediately if IRQ resource is unavailable
+Date:   Mon,  6 Mar 2023 20:31:12 +0200
+Message-Id: <20230306183115.87314-3-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.39.1
+In-Reply-To: <20230306183115.87314-1-andriy.shevchenko@linux.intel.com>
+References: <20230306183115.87314-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Propagate firmware node by using a specific API call, i.e. device_set_node().
+Return immediately if IRQ resource is unavailable. This will also
+propagate the correct error code in such cases.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/spi/spi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-mpc512x-psc.c | 3 +++
+ drivers/spi/spi-mpc52xx-psc.c | 3 +++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 798030c0c5ce..295d02e7f0a8 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2368,8 +2368,8 @@ of_register_spi_device(struct spi_controller *ctlr, struct device_node *nc)
+diff --git a/drivers/spi/spi-mpc512x-psc.c b/drivers/spi/spi-mpc512x-psc.c
+index a2ea24a63cb4..8a436d1906eb 100644
+--- a/drivers/spi/spi-mpc512x-psc.c
++++ b/drivers/spi/spi-mpc512x-psc.c
+@@ -490,6 +490,9 @@ static int mpc512x_psc_spi_of_probe(struct platform_device *pdev)
+ 		(struct mpc512x_psc_fifo *)(tempp + sizeof(struct mpc52xx_psc));
  
- 	/* Store a pointer to the node in the device structure */
- 	of_node_get(nc);
--	spi->dev.of_node = nc;
--	spi->dev.fwnode = of_fwnode_handle(nc);
+ 	mps->irq = platform_get_irq(pdev, 0);
++	if (mps->irq < 0)
++		return mps->irq;
 +
-+	device_set_node(&spi->dev, of_fwnode_handle(nc));
+ 	ret = devm_request_irq(dev, mps->irq, mpc512x_psc_spi_isr, IRQF_SHARED,
+ 				"mpc512x-psc-spi", mps);
+ 	if (ret)
+diff --git a/drivers/spi/spi-mpc52xx-psc.c b/drivers/spi/spi-mpc52xx-psc.c
+index 1bf728f4d766..b75bc2457883 100644
+--- a/drivers/spi/spi-mpc52xx-psc.c
++++ b/drivers/spi/spi-mpc52xx-psc.c
+@@ -328,6 +328,9 @@ static int mpc52xx_psc_spi_of_probe(struct platform_device *pdev)
+ 	mps->fifo = ((void __iomem *)mps->psc) + sizeof(struct mpc52xx_psc);
  
- 	/* Register the new device */
- 	rc = spi_add_device(spi);
+ 	mps->irq = platform_get_irq(pdev, 0);
++	if (mps->irq < 0)
++		return mps->irq;
++
+ 	ret = devm_request_irq(dev, mps->irq, mpc52xx_psc_spi_isr, 0,
+ 			       "mpc52xx-psc-spi", mps);
+ 	if (ret)
 -- 
 2.39.1
 

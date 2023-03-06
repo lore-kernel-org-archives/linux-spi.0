@@ -2,48 +2,48 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 429E4C61DA4
-	for <linux-spi@archiver.kernel.org>; Mon,  6 Mar 2023 06:57:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 08E03C6FD19
+	for <linux-spi@archiver.kernel.org>; Mon,  6 Mar 2023 06:57:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229483AbjCFG55 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 6 Mar 2023 01:57:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37262 "EHLO
+        id S229700AbjCFG56 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 6 Mar 2023 01:57:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229510AbjCFG54 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 6 Mar 2023 01:57:56 -0500
+        with ESMTP id S229689AbjCFG55 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 6 Mar 2023 01:57:57 -0500
 Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 726F71DB9D
-        for <linux-spi@vger.kernel.org>; Sun,  5 Mar 2023 22:57:51 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 040CDCD
+        for <linux-spi@vger.kernel.org>; Sun,  5 Mar 2023 22:57:53 -0800 (PST)
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
         by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <ukl@pengutronix.de>)
-        id 1pZ4n1-0003ST-N9; Mon, 06 Mar 2023 07:57:43 +0100
+        id 1pZ4n1-0003SS-ND; Mon, 06 Mar 2023 07:57:44 +0100
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
         by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
         (envelope-from <ukl@pengutronix.de>)
-        id 1pZ4n0-002BSI-Bd; Mon, 06 Mar 2023 07:57:42 +0100
+        id 1pZ4mz-002BSE-UH; Mon, 06 Mar 2023 07:57:41 +0100
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
         (envelope-from <ukl@pengutronix.de>)
-        id 1pZ4mz-002a99-ME; Mon, 06 Mar 2023 07:57:41 +0100
+        id 1pZ4mz-002a93-9A; Mon, 06 Mar 2023 07:57:41 +0100
 From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>
 To:     Mark Brown <broonie@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>
-Cc:     Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Stefan Agner <stefan@agner.ch>
+Cc:     =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
         Fabio Estevam <festevam@gmail.com>,
         NXP Linux Team <linux-imx@nxp.com>,
         linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] spi: imx: Convert to platform remove callback returning void
-Date:   Mon,  6 Mar 2023 07:57:33 +0100
-Message-Id: <20230306065733.2170662-3-u.kleine-koenig@pengutronix.de>
+Subject: [PATCH 0/2] spi: imx: Fix cleanup in remove and convert to .remove_new()
+Date:   Mon,  6 Mar 2023 07:57:31 +0100
+Message-Id: <20230306065733.2170662-1-u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20230306065733.2170662-1-u.kleine-koenig@pengutronix.de>
-References: <20230306065733.2170662-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1744; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=UlDEcAQeTLnDJOo9EVbQwCee+YS5RvPcdkVROdgL1H4=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBkBY7YVhL31nvYTd99aigldXesE1RDqhSTJAVB0 AVv8bJV6T+JATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCZAWO2AAKCRDB/BR4rcrs CS4DB/9i6Uj1BsU71AURls85hBXt40HJAxsOaqkZ4eIaaYndCUw8SQPPv+tktmQ/JJrYks9Ngze wTnhDYFLrM5MhZqlGWskGAGEUo1qC05FYCpPeFpEaNM79ZaQcDUs3m3KSvCeSifotnU91f1vZ9q Yaaw8W5RWcmLGstHacw99zBgrlVlU791r8m/jM9yBrSeo2+w9/wVkKOuXxP/YdqX8x2BY1SGC73 uPRgHHrv62WP9ZVkSrF8CbFeOu1rTS5Gx2dAw/mAqRmD0JKwr6DhXe5wY1bV+qax0wyRKhULqKY DGI53oNYLOswCuBwRW4VNO3XfrJEbJrSxvb2ok0UtK6xupke
+X-Developer-Signature: v=1; a=openpgp-sha256; l=716; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=iiPlfkNGTQtHIdeLCyT911x4K26qGgM1r4nTBJQWiAs=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBkBY7RTAkRL5NRvNzODTQz/oDx232L+yMCPvB+G /3cNhC3I1SJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCZAWO0QAKCRDB/BR4rcrs CTqTB/9WGavBEyJ/eKFU/UHp4ITgLOMqrkH3F7uS/dOK47YGSJlJZCziLGICdP4xF+roi5Ef9XN HPiLSdYK7kox26FREe0eHj+Jnr2/DRd/PUb5AnQ0pTOVFr1AQKQhQ6oyQwK7E6HLgjlc1tFrWmF SMnjnPIvenR8m2h9Ag/ka3nOep7ZYwU2u2AurLaGu1k8t635PK+sn+zMqaXetXDRCqjFAsCcMwH zaCkXZb/6I8OkDljDajb1yuvaAp3HaWgXNnhPMjxaiX901Chq3+TRMlSxDQ854h7AIEzWP1tJss aHX1L4DNRCRoJ5rMXjGr+gT8AtJDBjjkf/+pBizH69PDt3DG
 X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -54,53 +54,29 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is (mostly) ignored
-and this typically results in resource leaks. To improve here there is a
-quest to make the remove callback return void. In the first step of this
-quest all drivers are converted to .remove_new() which already returns
-void.
+From: Uwe Kleine-König <uwe@kleine-koenig.org>
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
+Hello,
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
- drivers/spi/spi-imx.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+this small series converts the spi-imx driver to .remove_new(). The
+motivation for this tree-wide effort are drivers that don't properly
+cleanup and return an error code. This is broken as this results in
+resource leaks. The spi-imx driver is such a driver. The idea is that if
+the remove callback returns void it's obvious that an early error return
+is wrong.
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 6c9c87cd14ca..f128fb296d49 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -1848,7 +1848,7 @@ static int spi_imx_probe(struct platform_device *pdev)
- 	return ret;
- }
- 
--static int spi_imx_remove(struct platform_device *pdev)
-+static void spi_imx_remove(struct platform_device *pdev)
- {
- 	struct spi_controller *controller = platform_get_drvdata(pdev);
- 	struct spi_imx_data *spi_imx = spi_controller_get_devdata(controller);
-@@ -1867,8 +1867,6 @@ static int spi_imx_remove(struct platform_device *pdev)
- 	pm_runtime_disable(spi_imx->dev);
- 
- 	spi_imx_sdma_exit(spi_imx);
--
--	return 0;
- }
- 
- static int __maybe_unused spi_imx_runtime_resume(struct device *dev)
-@@ -1930,7 +1928,7 @@ static struct platform_driver spi_imx_driver = {
- 		   .pm = &imx_spi_pm,
- 	},
- 	.probe = spi_imx_probe,
--	.remove = spi_imx_remove,
-+	.remove_new = spi_imx_remove,
- };
- module_platform_driver(spi_imx_driver);
- 
+Best regards
+Uwe
+
+Uwe Kleine-König (2):
+  spi: imx: Don't skip cleanup in remove's error path
+  spi: imx: Convert to platform remove callback returning void
+
+ drivers/spi/spi-imx.c | 18 +++++++-----------
+ 1 file changed, 7 insertions(+), 11 deletions(-)
+
+
+base-commit: b01fe98d34f3bed944a93bd8119fed80c856fad8
 -- 
 2.39.1
 

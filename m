@@ -2,131 +2,79 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6E860C61DA4
-	for <linux-spi@archiver.kernel.org>; Mon,  6 Mar 2023 08:36:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9CB3FC61DA4
+	for <linux-spi@archiver.kernel.org>; Mon,  6 Mar 2023 09:09:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229749AbjCFIgv (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 6 Mar 2023 03:36:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38280 "EHLO
+        id S229698AbjCFJJL (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 6 Mar 2023 04:09:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229715AbjCFIgu (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 6 Mar 2023 03:36:50 -0500
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03C2DC7
-        for <linux-spi@vger.kernel.org>; Mon,  6 Mar 2023 00:36:49 -0800 (PST)
-Received: by mail-ed1-x531.google.com with SMTP id j11so15616918edq.4
-        for <linux-spi@vger.kernel.org>; Mon, 06 Mar 2023 00:36:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678091807;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=63HRbRwWzcpKqYalyNzeBO90DICoMp8EPtmeHo1nNuY=;
-        b=WaZQilGe/8pjkfbsolKohbGGZCHAzFW0NDLxH38iZC5KLYtopd/AVagWOHWt7xvWkH
-         An6mMmVAiZGPhMXiPLnYk1YH0QZ/yTgrvIG6Ypdq8fWv72JpQAuOeFv/4sbiS1No6a3I
-         TeD/WKXRbuXW9ISZ6SUuZImwGTZ5yh28uyt6CJMOH4UfrXr6umejdporFQLBvM1N8IgC
-         P7hoFqCIlbD4eFDnVZNMhR1edBH4jBoxKph97XQiS62D1LaKmrrpZ/xEYlQPzYDXt2rf
-         mWumSK5kpXF/ZzlN/TAtQiVhwEOCmOyU/blz9N6i+EAxCwB5CjPqbfg2MGda5pVlfJN+
-         Jmyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678091807;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=63HRbRwWzcpKqYalyNzeBO90DICoMp8EPtmeHo1nNuY=;
-        b=fTJ3bnw7/b6dO4htIFbaUVm9YkeURRaBuYgzMoIMUUyXz87Q68jq7jXerw1JdYLB+e
-         4jI9eH3qjQyqTKhhfoAZAtbVzMfj+kOE3EWUmR5CroWm5QmHQ4quGYnPUs8XMhacU0LK
-         I9OQvSv9uw1ZLkd76yVywg0sFMKlPoxC+tNYN7cv+ruNknkyylLomo7ZurSOu2Nar05l
-         V8EjMl34Nx8xncO20/PKHpNB9xHYcydRCeoE+TCWiBgqW4ZyuclhThKqoh80/SL+nT6g
-         3KQ0Nyy17oRAh4AgMEkyBa4a6GUECkyy65Y1PVJzogIumnWGT/2qD296gg12Tq3kRy9Y
-         KIrA==
-X-Gm-Message-State: AO0yUKVd1/TH4OHd/jLWlT8kK2HGBFHsWrQfGw9KHcX/BPWhvR4HeI3f
-        pam7W04YV3Qssiu3YG60avqarA==
-X-Google-Smtp-Source: AK7set+Q7Wa9E1bhKgOjdiBS3UQloHFzRMv4/c3qDMvX199R0Hd+uHkJr0idtxLPWDEFJq8rz0mywg==
-X-Received: by 2002:a05:6402:31fb:b0:4ac:c3c0:24d7 with SMTP id dy27-20020a05640231fb00b004acc3c024d7mr10352500edb.42.1678091807520;
-        Mon, 06 Mar 2023 00:36:47 -0800 (PST)
-Received: from ?IPV6:2a02:810d:15c0:828:d85d:5a4b:9830:fcfe? ([2a02:810d:15c0:828:d85d:5a4b:9830:fcfe])
-        by smtp.gmail.com with ESMTPSA id p24-20020a50cd98000000b004af6163f845sm4707551edi.28.2023.03.06.00.36.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Mar 2023 00:36:47 -0800 (PST)
-Message-ID: <e82ca6f6-0870-f9b0-172f-bc6d54a9749b@linaro.org>
-Date:   Mon, 6 Mar 2023 09:36:45 +0100
+        with ESMTP id S229556AbjCFJJK (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 6 Mar 2023 04:09:10 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AE7E1985;
+        Mon,  6 Mar 2023 01:09:09 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 389DA606A0;
+        Mon,  6 Mar 2023 09:09:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B99EC433D2;
+        Mon,  6 Mar 2023 09:09:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1678093748;
+        bh=4CQ+7V5IKk6e8eq1xtI0aIOQ48igDukd8H1orLjLpLo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=TrY/K48EzxywXdcyXJ3sQoP5+IC0Jon20pOHTcyoX7Ug7vKsFhfdJskbHVORuyhFx
+         95K408pF2i8Y6ftRDyX06uK2noRGVADF5bq5DA3Ry8C10kSZg+6tYlAqiVX40YREjx
+         NhloeI/v45hZRjvubeLzdFMphaLqDkFK0KDEEt4oS1/bpCDF4RuJMB5JBEO340y4in
+         /0hhFHjN1XW2wR4F+RooHJMUujn8aWqmCV8D7KZRY23Z0fuhMs42bM9vz6NghwG2oi
+         mxpSLAqb3s8Bmdg7j3Pba5+nABF7FjM3yhZ1mO6rnuTg1JHQC8B8ixGod3GZvZZqrY
+         ku49lsMZh7WjQ==
+Date:   Mon, 6 Mar 2023 09:09:01 +0000
+From:   Lee Jones <lee@kernel.org>
+To:     "Ye, Xiang" <xiang.ye@intel.com>
+Cc:     Wolfram Sang <wsa@kernel.org>, Tyrone Ting <kfting@nuvoton.com>,
+        Mark Brown <broonie@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>, linux-usb@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-gpio@vger.kernel.org,
+        srinivas.pandruvada@intel.com, heikki.krogerus@linux.intel.com,
+        andriy.shevchenko@linux.intel.com, sakari.ailus@linux.intel.com,
+        zhifeng.wang@intel.com, wentong.wu@intel.com, lixu.zhang@intel.com
+Subject: Re: [PATCH 1/5] mfd: Add support for Intel LJCA device
+Message-ID: <20230306090901.GC9667@google.com>
+References: <20230219183059.1029525-1-xiang.ye@intel.com>
+ <20230219183059.1029525-2-xiang.ye@intel.com>
+ <20230305103456.GF2574592@google.com>
+ <ZAVWMp2LyxY7w6N0@ye-NUC7i7DNHE>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH v10 05/15] dt-bindings: soc: amd: amd,pensando-elbasr: Add
- AMD Pensando SoC System Controller
-Content-Language: en-US
-To:     Brad Larson <blarson@amd.com>, linux-arm-kernel@lists.infradead.org
-Cc:     linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-spi@vger.kernel.org, adrian.hunter@intel.com,
-        alcooperx@gmail.com, andy.shevchenko@gmail.com, arnd@arndb.de,
-        brendan.higgins@linux.dev, briannorris@chromium.org,
-        brijeshkumar.singh@amd.com, catalin.marinas@arm.com,
-        davidgow@google.com, gsomlo@gmail.com, gerg@linux-m68k.org,
-        krzk@kernel.org, krzysztof.kozlowski+dt@linaro.org, lee@kernel.org,
-        lee.jones@linaro.org, broonie@kernel.org,
-        yamada.masahiro@socionext.com, p.zabel@pengutronix.de,
-        piotrs@cadence.com, p.yadav@ti.com, rdunlap@infradead.org,
-        robh+dt@kernel.org, samuel@sholland.org, fancer.lancer@gmail.com,
-        skhan@linuxfoundation.org, suravee.suthikulpanit@amd.com,
-        thomas.lendacky@amd.com, tonyhuang.sunplus@gmail.com,
-        ulf.hansson@linaro.org, vaishnav.a@ti.com, will@kernel.org,
-        devicetree@vger.kernel.org
-References: <20230306040739.51488-1-blarson@amd.com>
- <20230306040739.51488-6-blarson@amd.com>
- <52fb81e2-0d9b-600d-42af-1405fdd6509b@linaro.org>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <52fb81e2-0d9b-600d-42af-1405fdd6509b@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZAVWMp2LyxY7w6N0@ye-NUC7i7DNHE>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On 06/03/2023 09:35, Krzysztof Kozlowski wrote:
-> On 06/03/2023 05:07, Brad Larson wrote:
->> Support the AMD Pensando SoC Controller which is a SPI connected device
->> providing a miscellaneous set of essential board control/status registers.
->> This device is present in all Pensando SoC based designs.
->>
->> Signed-off-by: Brad Larson <blarson@amd.com>
->> ---
->>
->> v10 changes:
->> - Property renamed to amd,pensando-ctrl
->> - Driver is renamed and moved to soc/drivers/amd affecting binding
->> - Delete cs property, driver handles device node creation from parent num-cs
->>   fixing schema reg error in a different way
->>
->> v9 changes:
->> - Instead of four nodes, one per chip-select, a single
->>   node is used with reset-cells in the parent.
->> - No MFD API is used anymore in the driver so it made
->>   sense to move this to drivers/spi.
->> - This driver is common for all Pensando SoC based designs
->>   so changed the name to pensando-sr.c to not make it Elba
->>   SoC specific.
->> - Added property cs for the chip-select number which is used
->>   by the driver to create /dev/pensr0.<cs>
->>
->> ---
->>  .../bindings/soc/amd/amd,pensando-ctrl.yaml   | 60 +++++++++++++++++++
->>  1 file changed, 60 insertions(+)
->>  create mode 100644 Documentation/devicetree/bindings/soc/amd/amd,pensando-ctrl.yaml
->>
->> diff --git a/Documentation/devicetree/bindings/soc/amd/amd,pensando-ctrl.yaml b/Documentation/devicetree/bindings/soc/amd/amd,pensando-ctrl.yaml
->> new file mode 100644
->> index 000000000000..36694077b2e6
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/soc/amd/amd,pensando-ctrl.yaml
+On Mon, 06 Mar 2023, Ye, Xiang wrote:
+
+> Hi Lee,
 > 
-> Your subject suggests this is pensando-elbasr but you write everywhere
-> pensando-ctrl. Confusing. Pick one.
+> Thanks for the review.
+> On Sun, Mar 05, 2023 at 10:34:56AM +0000, Lee Jones wrote:
+> > On Mon, 20 Feb 2023, Ye Xiang wrote:
+> > 
+> > > This patch implements the USB part of Intel USB-I2C/GPIO/SPI adapter
+> > > device named "La Jolla Cove Adapter" (LJCA).
+> > 
+> > The "USB part" should live in drivers/usb.
+> What about putting ljca.c to drivers/usb/misc?
 
-Actually pensando-ctrl is for sure not correct, because it misses the
-name of the SoC (you call it everywhere "elba").
+Sounds reasonable to to me at first glance.
+ 
+However, that will ultimately be up to the USB maintainers.
 
-Best regards,
-Krzysztof
-
+-- 
+Lee Jones [李琼斯]

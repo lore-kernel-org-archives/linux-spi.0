@@ -2,100 +2,94 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5B8B9C61DA4
-	for <linux-spi@archiver.kernel.org>; Mon,  6 Mar 2023 13:17:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 20FBEC678D4
+	for <linux-spi@archiver.kernel.org>; Mon,  6 Mar 2023 13:33:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230139AbjCFNR0 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 6 Mar 2023 08:17:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54542 "EHLO
+        id S231320AbjCFNdO (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 6 Mar 2023 08:33:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229822AbjCFNR0 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 6 Mar 2023 08:17:26 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 068AF298DB
-        for <linux-spi@vger.kernel.org>; Mon,  6 Mar 2023 05:17:25 -0800 (PST)
+        with ESMTP id S231334AbjCFNc4 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 6 Mar 2023 08:32:56 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 617382F78C;
+        Mon,  6 Mar 2023 05:32:32 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id AC582B80E19
-        for <linux-spi@vger.kernel.org>; Mon,  6 Mar 2023 13:17:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 56743C433EF;
-        Mon,  6 Mar 2023 13:17:22 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 169EDCE127A;
+        Mon,  6 Mar 2023 13:32:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFD95C433A1;
+        Mon,  6 Mar 2023 13:32:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678108642;
-        bh=iTxHtU2pGNdD+uI7pjj9FDHqBsIb2zcqys7AkL7EDis=;
-        h=Subject:From:Date:To:From;
-        b=KNMmD9YMlsv7r3r8Yb4CMcM4GCLHhrOhcXBEflCCzaQFZtAaI/Ak5+QeRTKJGbgu2
-         w4ByXMvJei03ZWI7w3UoMfgDnjrho1BuItJNRK8CQRL7lkPxK6RaEoW5bjynIslr9M
-         hV0Esy5auDLl6rqz79JdkLjLeHwupuARWGvD4M1X3NMYVL34GI/svu6c9pZjBcd4cX
-         oSy+LkO+QfxpdCKNtzI4c6VAH14bbfAXmyUrfs/Nkird4uzXc4yM+eviW7Lcf5kQg8
-         gDWo7AM634ykTrHomBDrs+/FvtWUP+dM7eXd002vtMw2oWud+Lf/RlGyTwfb2V5IPY
-         KY3hrUCJQKlEw==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 33EA0E55B15;
-        Mon,  6 Mar 2023 13:17:22 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        s=k20201202; t=1678109546;
+        bh=r2YevUTaEioy0IiiN4oIORAATS724rvNMW2/rHghHCQ=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=T25nklooE0ahT7WUzKCeUE4BraSm+vDbPKMRF2OXSEFIP+4lRgO7Wshph58T3JAt3
+         jniU6sOuca3s247kwAySQQkJH//HS4IeA7hnjgcyObifJnRGe2VxXSk4uuHzklwXFP
+         /YUGrbi3SYG2cNwJtRH4DESQD48Yemx5ZkxuYPsjJD+A9qvQtvKQlc/CeX+6XGgKSf
+         ieeoU/3jHTvqm9V3K5lHQYKINzJ2vMrroqmO+XPvZfLkb52ZHTIwFnZwL/Wsw3zTWp
+         YEaJqY6KYe1uutES9F7wKJ4CSW4D0w9bF75y1vd13a95U1JEtBM5yKmPEKYTaI14oP
+         79dlnmO/CpwlQ==
+From:   Mark Brown <broonie@kernel.org>
+To:     devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        William Qiu <william.qiu@starfivetech.com>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Ziv Xu <ziv.xu@starfivetech.com>
+In-Reply-To: <20230302105221.197421-1-william.qiu@starfivetech.com>
+References: <20230302105221.197421-1-william.qiu@starfivetech.com>
+Subject: Re: [PATCH v1 0/2] Add Quad SPI driver for StarFive JH7110 SoC
+Message-Id: <167810954467.76172.7217821282766106312.b4-ty@kernel.org>
+Date:   Mon, 06 Mar 2023 13:32:24 +0000
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From:   patchwork-bot+spi-devel-general@kernel.org
-Message-Id: <167810864215.919.18083932093829444049.git-patchwork-summary@kernel.org>
-Date:   Mon, 06 Mar 2023 13:17:22 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13-dev-bd1bf
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hello:
+On Thu, 02 Mar 2023 18:52:19 +0800, William Qiu wrote:
+> This patchset adds initial rudimentary support for the StarFive
+> Quad SPI controller driver. And this driver will be used in
+> StarFive's VisionFive 2 board.The first patch constrain
+> minItems/maxItems of resets for JH7110 QSPI and Patch 2 adds
+> support for StarFive JH7110 QSPI.
+> 
+> The patch series is based on v6.2.
+> 
+> [...]
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (for-next):
+Applied to
 
-Series: Add MediaTek MT7986 SPI NAND and ECC support
-  Submitter: Xiangsheng Hou <xiangsheng.hou@mediatek.com>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=716758
-  Lore link: https://lore.kernel.org/r/20230130030656.12127-1-xiangsheng.hou@mediatek.com
-    Patches: [RESEND,v5,01/10] spi: mtk-snfi: Change default page format to setup default setting
-             [RESEND,v5,03/10] mtd: nand: ecc-mtk: Add ECC support fot MT7986 IC
-             [RESEND,v5,10/10] dt-bindings: mtd: mediatek,nand-ecc-engine: Add compatible for MT7986
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-Patch: [v1] drivers/spi-rockchip.c : Remove redundant variable slave
-  Submitter: Lizhe <sensor1010@163.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=724903
-  Lore link: https://lore.kernel.org/r/20230226063334.7489-1-sensor1010@163.com
+Thanks!
 
-Series: Support AMD Pensando Elba SoC
-  Submitter: Brad Larson <brad@pensando.io>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=713500
-  Lore link: https://lore.kernel.org/r/20230119033918.44117-1-blarson@amd.com
-    Patches: [v9,01/15] dt-bindings: arm: add AMD Pensando boards
-             [v9,05/15] dt-bindings: mfd: syscon: Add amd,pensando-elba-syscon compatible
+[1/2] dt-bindings: qspi: cdns,qspi-nor: constrain minItems/maxItems of resets
+      commit: 13f1033e07588b7d1151d22d7ee3ca8f16181de7
+[2/2] spi: cadence-quadspi: Add support for StarFive JH7110 QSPI
+      commit: 47fef94afeae2a125607b6b45145594713471320
 
-Patch: [v2] MAINTAINERS: Update email of Tudor Ambarus
-  Submitter: Tudor Ambarus <tudor.ambarus@linaro.org>
-  Committer: Miquel Raynal <miquel.raynal@bootlin.com>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=707029
-  Lore link: https://lore.kernel.org/r/20221226144043.367706-1-tudor.ambarus@linaro.org
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-Patch: soc: qcom: geni-se: Move qcom-geni-se.h to linux/soc/qcom/geni-se.h
-  Submitter: Elliot Berman <quic_eberman@quicinc.com>
-  Committer: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=718716
-  Lore link: https://lore.kernel.org/r/20230203210133.3552796-1-quic_eberman@quicinc.com
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Series: [01/22] gpu/drm: remove the shmobile drm driver
-  Submitter: Christoph Hellwig <hch@lst.de>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=711612
-  Lore link: https://lore.kernel.org/r/20230113062339.1909087-2-hch@lst.de
-    Patches: [01/22] gpu/drm: remove the shmobile drm driver
-             [02/22] usb: remove the dead USB_OHCI_SH option
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-Total patches: 10
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Thanks,
+Mark
 

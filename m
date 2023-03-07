@@ -2,108 +2,81 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EF5C9C678D4
-	for <linux-spi@archiver.kernel.org>; Tue,  7 Mar 2023 14:01:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2227DC6FD1A
+	for <linux-spi@archiver.kernel.org>; Tue,  7 Mar 2023 16:52:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229556AbjCGOBt (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 7 Mar 2023 09:01:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42010 "EHLO
+        id S230495AbjCGQwx (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 7 Mar 2023 11:52:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229715AbjCGOBp (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 7 Mar 2023 09:01:45 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87A6477C91;
-        Tue,  7 Mar 2023 06:01:43 -0800 (PST)
+        with ESMTP id S229628AbjCGQwe (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 7 Mar 2023 11:52:34 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0A6D301BF;
+        Tue,  7 Mar 2023 08:48:30 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E77D66143A;
-        Tue,  7 Mar 2023 14:01:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D1D3C433A7;
-        Tue,  7 Mar 2023 14:01:40 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 1D5E8B81920;
+        Tue,  7 Mar 2023 16:48:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 322FEC433A4;
+        Tue,  7 Mar 2023 16:48:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678197702;
-        bh=2mGQZRLNoz0yS+ALWl4LpTGIySLxfDySlk84qGzNyi0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=jzmLHiAmPX31HQtQOy+HM9KJ9obz6dJTBjrHwwhMPwwIUqF+2zqHRyh2ritZ8WvAU
-         nsshCDj8eIGaPsds5IH7p67yqQngPnUBvAQdULwp056/turtof42t/jvR7OltjfwbQ
-         d+vxW1UMjwVW2afGzvu2rD9cxjtX801ItzSrsTMC4DrN+PIlC7KAUrSJrNDa+WBVy5
-         2LZfKGwj+++PZyKJ9Wq03bInMa44dQiajhRdIQWe8uQjBVANVqBmO02WYMRYqK3eUF
-         l90IY3hn36/cl74ms1pVX6x/ilGY7Rur5j86/ZZBMnau4TI+OrLtNug1cU0bBUxb0K
-         86AlgkUU1JgrA==
-Date:   Tue, 7 Mar 2023 14:01:37 +0000
+        s=k20201202; t=1678207699;
+        bh=zHO+u1qrk2DZ4LziGJ9LYpByCrkQlrxSC/s7+kUpHcc=;
+        h=From:To:In-Reply-To:References:Subject:Date:From;
+        b=Ju9WUoiMo2Q/Z6Z3v8/oMBS3Q9M4Apl3Rpr+qNw8fwPrDnfcg5Yl7qNRw0taQxnOl
+         0uwk3DyAyTGvLsOFNsxgHa5Fu1U7cs/bfhCQMuzKfbY9fMPfMUcFg1zHO0mFRniUwd
+         jzcuHuBS+3rvMt3h0rQIA/rZp59zfS+xDhuEqkbQ9pJg4QgkNRdJ6TdkmKT2lTrcYU
+         gph0mUdrAIn0/Hm24pa8iNKwFZ1Fh4rsQtDJsTV8ed+vM9F38x89hdG+er2KfhM0Rg
+         /ERjQonlhffWXMpi1YUiwG3aOhNVmtwQzDyAHgPDHZAPPQsyvUrp4sevUCp/SyQeSg
+         s08zL+JXibM5g==
 From:   Mark Brown <broonie@kernel.org>
-To:     Tudor Ambarus <tudor.ambarus@linaro.org>
-Cc:     "Mahapatra, Amit Kumar" <amit.kumar-mahapatra@amd.com>,
-        "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
-        "richard@nod.at" <richard@nod.at>,
-        "vigneshr@ti.com" <vigneshr@ti.com>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "pratyush@kernel.org" <pratyush@kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH V5 09/15] spi: Add stacked and parallel memories support
- in SPI core
-Message-ID: <560c01eb-7166-4b56-b9e0-77cacf83cf69@sirena.org.uk>
-References: <20230306172109.595464-1-amit.kumar-mahapatra@amd.com>
- <20230306172109.595464-10-amit.kumar-mahapatra@amd.com>
- <1bbda9e6-37fb-195b-fd62-0e437847c636@linaro.org>
- <BN7PR12MB2802992D71DDA252B008AFDADCB79@BN7PR12MB2802.namprd12.prod.outlook.com>
- <f88b7164-881b-5ada-0d52-05fe418f7b85@linaro.org>
+To:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20230306182913.87231-1-andriy.shevchenko@linux.intel.com>
+References: <20230306182913.87231-1-andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v1 1/1] spi: Propagate firmware node
+Message-Id: <167820769891.97370.14605696476587563702.b4-ty@kernel.org>
+Date:   Tue, 07 Mar 2023 16:48:18 +0000
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="+lqAPw/yMTRaWbuS"
-Content-Disposition: inline
-In-Reply-To: <f88b7164-881b-5ada-0d52-05fe418f7b85@linaro.org>
-X-Cookie: A rolling stone gathers momentum.
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13-dev-bd1bf
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+On Mon, 06 Mar 2023 20:29:13 +0200, Andy Shevchenko wrote:
+> Propagate firmware node by using a specific API call, i.e. device_set_node().
+> 
+> 
 
---+lqAPw/yMTRaWbuS
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Applied to
 
-On Tue, Mar 07, 2023 at 11:47:27AM +0000, Tudor Ambarus wrote:
-> On 3/7/23 11:37, Mahapatra, Amit Kumar wrote:
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-> > > On 3/6/23 17:21, Amit Kumar Mahapatra wrote:=09
-> > > > Multi CS support using GPIO is not tested due to unavailability of
-> > > > necessary hardware setup.
+Thanks!
 
-> > > Please don't add code that is not used or tested.
+[1/1] spi: Propagate firmware node
+      commit: c7cc588bf0054ce33a11b98d05859105c046c706
 
-> > During our discussion on the RFC, Mark had suggested to add multi-cs su=
-pport
-> > via GPIO as well. We had agreed to add multi-cs support via GPIO, but h=
-ad also
-> > mentioned that we don't have a hardware setup to test the CS GPIO use c=
-ase.
-> > https://lore.kernel.org/linux-arm-kernel/BN7PR12MB2802E2A9079E505932832=
-270DC979@BN7PR12MB2802.namprd12.prod.outlook.com/
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-> Ok, his call then.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-As well as hopefully working if anyone does need it GPIO implementations
-also serve as documentation of what we're expecting hardware to do when
-it implements things.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---+lqAPw/yMTRaWbuS
-Content-Type: application/pgp-signature; name="signature.asc"
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
------BEGIN PGP SIGNATURE-----
+Thanks,
+Mark
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmQHQ8AACgkQJNaLcl1U
-h9DWMAf/dqUtzrGMgRBoWLFJUBQD5J+eu4PmFpPDZJETNqwSazPcVa97COLuA/xh
-Wxc4iP5Kot8o2WJlHei50Pbxv1iMrEoWbUCCd3y7Rh27gxzdDUNxzESmduZZx3lt
-EIw5UhModB6CBqa8J7/0983QxIxDirGnzA63WM5jaNLOZLmQCgvPXXJJSeokTsn4
-F8IvC0ECKlKQOYYgsXImnbxoDV1mrNkeVhaJ0+IEwp3var83U5cDWGhoX/b/Ns3l
-uQNlkmMIKNty6+tvtzrrBPsxFUnvBbC4VsjxLxk85Jq8JsWTUA3SGvsMoN1jH2JW
-5cfkBKfg3YEuyCspeCUoDCL1l9DwIA==
-=YbJC
------END PGP SIGNATURE-----
-
---+lqAPw/yMTRaWbuS--

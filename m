@@ -2,116 +2,105 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 44DC5C64EC4
-	for <linux-spi@archiver.kernel.org>; Thu,  9 Mar 2023 09:41:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3CD57C64EC4
+	for <linux-spi@archiver.kernel.org>; Thu,  9 Mar 2023 09:48:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230209AbjCIJlM (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 9 Mar 2023 04:41:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58334 "EHLO
+        id S229572AbjCIJsA (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 9 Mar 2023 04:48:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230366AbjCIJlL (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 9 Mar 2023 04:41:11 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE142E8241;
-        Thu,  9 Mar 2023 01:41:08 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 818EC61ABC;
-        Thu,  9 Mar 2023 09:41:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E497C4339B;
-        Thu,  9 Mar 2023 09:41:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1678354867;
-        bh=t3ItERIP0nU13h7mlTpdsGDCXVW2K1fXoeGrItwt5Uw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=0WaAP7WJPwAoKpuI6kZosRsPFU3hHt1iZFZuPoIKXTHv8giLzNj6K5eA1j/Qi3cJp
-         PmXs4945+30HU+fQ7CXAo329vlHNaalKgiam7bJ3w367ejzwfE3JpGjpaM6NylUyFO
-         MupccDx9VJAqIGajmyyGJQ6BratGsZNbSR6ek1s4=
-Date:   Thu, 9 Mar 2023 10:41:05 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     "Ye, Xiang" <xiang.ye@intel.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Lee Jones <lee@kernel.org>, Wolfram Sang <wsa@kernel.org>,
-        Tyrone Ting <kfting@nuvoton.com>,
-        Mark Brown <broonie@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>, linux-usb@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-gpio@vger.kernel.org,
-        srinivas.pandruvada@intel.com, heikki.krogerus@linux.intel.com,
-        andriy.shevchenko@linux.intel.com, sakari.ailus@linux.intel.com,
-        zhifeng.wang@intel.com, wentong.wu@intel.com, lixu.zhang@intel.com
-Subject: Re: [PATCH v4 1/5] mfd: Add support for Intel LJCA device
-Message-ID: <ZAmpse14Evvrfa/f@kroah.com>
-References: <20230309071100.2856899-1-xiang.ye@intel.com>
- <20230309071100.2856899-2-xiang.ye@intel.com>
- <ZAmQOIh/71rY4Pa4@kroah.com>
- <ZAmngB84ty1flD9K@ye-NUC7i7DNHE>
+        with ESMTP id S230252AbjCIJro (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 9 Mar 2023 04:47:44 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03E9CD3336
+        for <linux-spi@vger.kernel.org>; Thu,  9 Mar 2023 01:47:11 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1paCrc-0007fz-K6; Thu, 09 Mar 2023 10:47:08 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1paCrb-002uvD-FU; Thu, 09 Mar 2023 10:47:07 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1paCra-003VnK-Ib; Thu, 09 Mar 2023 10:47:06 +0100
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Mark Brown <broonie@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>
+Cc:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        linux-spi@vger.kernel.org, kernel@pengutronix.de,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Subject: [PATCH 2/3] spi: mt65xx: Convert to platform remove callback returning void
+Date:   Thu,  9 Mar 2023 10:47:03 +0100
+Message-Id: <20230309094704.2568531-3-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.39.1
+In-Reply-To: <20230309094704.2568531-1-u.kleine-koenig@pengutronix.de>
+References: <20230309094704.2568531-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZAmngB84ty1flD9K@ye-NUC7i7DNHE>
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1707; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=7aQRHUM0nn1KAYfowSFFpPqyE6Rm7GehZyTUDdqE1Xc=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBkCasRGa1M9enMj+FEqlm29VBuy0k2ifJO+7LBD JQCUASuF3yJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCZAmrEQAKCRDB/BR4rcrs CWCRB/4neYZ2scIoMfbnFUOUFFF6gQT3ptgdHe/Ft6Nw7PO3EHjj4UPwDPl8qtgwNbZoyDkzDOF jMl3pt7T2BnmN/Ujs+zLh+sfPf21JXCHDPsJJvUJwJx30N/+wm/E0dp99KdxxHqwECInATXoDlx zdc6jDftU0dpLms93A39YGlcfWCnNWPnV6XnDN49naqHTXNn35YOFaYEAgINU2q400b3tlqWewM bvGt1DIo5XFRl3SLsIxhSuVjfcWPLDMdJJ0Yb4h+5zQtebTpr3bpAFYG+e6J3OAeglkm4tjIzhe IAdPGMYtjJJbdRm37bgwghN+/a9YzcYXy6YxMCQ0/y+z/NP9
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-spi@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, Mar 09, 2023 at 05:31:44PM +0800, Ye, Xiang wrote:
-> On Thu, Mar 09, 2023 at 08:52:24AM +0100, Greg Kroah-Hartman wrote:
-> > On Thu, Mar 09, 2023 at 03:10:56PM +0800, Ye Xiang wrote:
-> > > +static int ljca_mng_get_version(struct ljca_stub *stub, char *buf)
-> > > +{
-> > > +	struct fw_version version = {};
-> > > +	unsigned int len = sizeof(version);
-> > > +	int ret;
-> > > +
-> > > +	ret = ljca_stub_write(stub, LJCA_MNG_GET_VERSION, NULL, 0, &version, &len, true,
-> > > +			      LJCA_USB_WRITE_ACK_TIMEOUT_MS);
-> > > +	if (ret)
-> > > +		return ret;
-> > > +
-> > > +	if (len != sizeof(version)) {
-> > > +		dev_err(&stub->intf->dev, "get version failed, len:%d\n", len);
-> > > +		return -EINVAL;
-> > > +	}
-> > > +
-> > > +	return sysfs_emit(buf, "%d.%d.%d.%d\n", version.major, version.minor,
-> > > +			  le16_to_cpu(version.patch), le16_to_cpu(version.build));
-> > > +}
-> > 
-> > You have sysfs files, yet no Documentation/ABI/ entries?  That's not
-> > allowed, you know this :(
-> The Documentation/ABI/ entries is added for the sysfs on patch 5 of this series.
-> https://patchwork.kernel.org/project/linux-usb/patch/20230309071100.2856899-6-xiang.ye@intel.com/
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is (mostly) ignored
+and this typically results in resource leaks. To improve here there is a
+quest to make the remove callback return void. In the first step of this
+quest all drivers are converted to .remove_new() which already returns
+void.
 
-Ah, missed that, sorry.
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
 
-> > 
-> > > +static ssize_t cmd_store(struct device *dev, struct device_attribute *attr, const char *buf,
-> > > +			 size_t count)
-> > > +{
-> > > +	struct usb_interface *intf = to_usb_interface(dev);
-> > > +	struct ljca_dev *ljca_dev = usb_get_intfdata(intf);
-> > > +	struct ljca_stub *mng_stub = ljca_stub_find(ljca_dev, LJCA_MNG_STUB);
-> > > +	struct ljca_stub *diag_stub = ljca_stub_find(ljca_dev, LJCA_DIAG_STUB);
-> > > +
-> > > +	if (sysfs_streq(buf, "dfu"))
-> > > +		ljca_mng_set_dfu_mode(mng_stub);
-> > > +	else if (sysfs_streq(buf, "debug"))
-> > > +		ljca_diag_set_trace_level(diag_stub, 3);
-> > 
-> > Sorry, but no, you can't do this in a sysfs file.
-> Do you mean that we can't use sysfs to send "debug" command to device?
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+ drivers/spi/spi-mt65xx.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-That is correct, use the kernel-wide debugging facilities that we have
-for this NEVER create your own custom interface just for one tiny
-driver, that is not allowed.
+diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
+index b1cf7bbb2c08..f744cb97aa87 100644
+--- a/drivers/spi/spi-mt65xx.c
++++ b/drivers/spi/spi-mt65xx.c
+@@ -1269,7 +1269,7 @@ static int mtk_spi_probe(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
+-static int mtk_spi_remove(struct platform_device *pdev)
++static void mtk_spi_remove(struct platform_device *pdev)
+ {
+ 	struct spi_master *master = platform_get_drvdata(pdev);
+ 	struct mtk_spi *mdata = spi_master_get_devdata(master);
+@@ -1293,8 +1293,6 @@ static int mtk_spi_remove(struct platform_device *pdev)
+ 
+ 	pm_runtime_put_noidle(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
+-
+-	return 0;
+ }
+ 
+ #ifdef CONFIG_PM_SLEEP
+@@ -1414,7 +1412,7 @@ static struct platform_driver mtk_spi_driver = {
+ 		.of_match_table = mtk_spi_of_match,
+ 	},
+ 	.probe = mtk_spi_probe,
+-	.remove = mtk_spi_remove,
++	.remove_new = mtk_spi_remove,
+ };
+ 
+ module_platform_driver(mtk_spi_driver);
+-- 
+2.39.1
 
-> Could you provide some detail or hints?
-
-dev_dbg().
-
-thanks,
-
-greg k-h

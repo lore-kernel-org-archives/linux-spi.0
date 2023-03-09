@@ -2,132 +2,112 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3DD98C61DA4
-	for <linux-spi@archiver.kernel.org>; Thu,  9 Mar 2023 07:59:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DD016C61DA4
+	for <linux-spi@archiver.kernel.org>; Thu,  9 Mar 2023 08:40:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230195AbjCIH72 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 9 Mar 2023 02:59:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37914 "EHLO
+        id S231218AbjCIIkM (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 9 Mar 2023 03:40:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229983AbjCIH67 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 9 Mar 2023 02:58:59 -0500
-Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 744065FC6;
-        Wed,  8 Mar 2023 23:57:51 -0800 (PST)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailout.west.internal (Postfix) with ESMTP id 5654932008FB;
-        Thu,  9 Mar 2023 02:56:26 -0500 (EST)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Thu, 09 Mar 2023 02:56:27 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm1; t=1678348585; x=1678434985; bh=Vq
-        HIsQcXhmqCYt+w/wEu8RmoQ3k2P8+3OVZu3PbvqhE=; b=ZyKR18tm0jVHMTk0/g
-        fEr4c5is3Y+8DOnmfQ8koV4ykwXfF2K7sni1t0+ukEoym+NrGqUgiWLEu5rPTyJw
-        0YJM5pudrsxt8LzgOGh+hgE0OQ5jS2lY5cyw83Xhmlim0XjkCHM0H9qWimqmYycC
-        jMZr7PhbnKrR6YPo3NULp+hFYo0LXakcP6Us1x7ZZq3P1cuIkQ5MK9g9m5pMMWAY
-        94x0bpxOEonwuiBw+e9KS2EXFhKKOCu0kboq90Rb6LZ3pfmk6HoYl6K+vaxUSeNf
-        nSWyjC3LN8IoYkrpMPY6uqpJCeSqM2nXl/4KiGEn0IfSm3wYg6kix6tCmq0pn6/T
-        qj/w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm1; t=1678348585; x=1678434985; bh=VqHIsQcXhmqCY
-        t+w/wEu8RmoQ3k2P8+3OVZu3PbvqhE=; b=kE2DfbWp52mBUvnYmds56m2l8GWvR
-        6GisiRWu8lAU75Rv5FAF4jJ2hFJ/LC5tGjDStSyTS1iItd7/vS5hVccX0w1KHn7j
-        AMAd1QJ/QpiUtF6G3AnzOa0Ot8irhJtBnd9UwowSATJtI/hGvpeXALZU/QOJ4gz+
-        7/9zyNxa2IRRZzB1RrJ5abxNyi75ZkOHbk4H9I49QuQWX+0iw+hwBUMdW0zq+Xky
-        8D/SGXUNP2rrlgZ2O8EETa7PFO/sGdFWZMdzbS37gl3JBjUb2v+8pFjj4lPa9zaC
-        SgjcXwKL7pnFnXfSvIRlNwygO01bJ6N0erbQFzsxkXIu5so12+ruTqsIA==
-X-ME-Sender: <xms:KZEJZEFzmjgvQ6uO2ftJj_-kxWGpZhRRGB_GkAVGwrxq9A03tly-5Q>
-    <xme:KZEJZNWUMcNTL0GWBNYkqDhVDri41fz3kdz7Wg3srSjJkkSjBHFiguZIcVwzUa8dt
-    nIKVTFu-g7oeAn0zIQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdduhedgudegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:KZEJZOIUkInEUKpGIXLCFnAVXmNNPG5T0akKB765VFpDrnh6IdT_BQ>
-    <xmx:KZEJZGFcV4YYZcEx5-_EJsWCtCjMAvUKr6pMJOHUc0Z-CYkZfsApXQ>
-    <xmx:KZEJZKU_4TOUeTPHHuDUuOUSlhaFpcLokYxbsKbSXFh2Rc3DGU39xg>
-    <xmx:KZEJZBNKmsfCZViwzTGZkeNK4ExQdsAcupMuQIxrtJLk2h7cBf53Qg>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 777CBB60086; Thu,  9 Mar 2023 02:56:25 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-206-g57c8fdedf8-fm-20230227.001-g57c8fded
-Mime-Version: 1.0
-Message-Id: <dcb805e1-2b48-481d-8e72-1b515c9d43e6@app.fastmail.com>
-In-Reply-To: <20230309071100.2856899-2-xiang.ye@intel.com>
-References: <20230309071100.2856899-1-xiang.ye@intel.com>
- <20230309071100.2856899-2-xiang.ye@intel.com>
-Date:   Thu, 09 Mar 2023 08:56:05 +0100
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Ye Xiang" <xiang.ye@intel.com>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        "Matthias Kaehlcke" <mka@chromium.org>,
-        "Lee Jones" <lee@kernel.org>, "Wolfram Sang" <wsa@kernel.org>,
-        "Tyrone Ting" <kfting@nuvoton.com>,
-        "Mark Brown" <broonie@kernel.org>,
-        "Linus Walleij" <linus.walleij@linaro.org>,
-        "Bartosz Golaszewski" <brgl@bgdev.pl>, linux-usb@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>
-Cc:     srinivas.pandruvada@intel.com, heikki.krogerus@linux.intel.com,
-        "Andy Shevchenko" <andriy.shevchenko@linux.intel.com>,
-        "Sakari Ailus" <sakari.ailus@linux.intel.com>,
-        zhifeng.wang@intel.com, wentong.wu@intel.com, lixu.zhang@intel.com
-Subject: Re: [PATCH v4 1/5] mfd: Add support for Intel LJCA device
-Content-Type: text/plain
+        with ESMTP id S230058AbjCIIj0 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 9 Mar 2023 03:39:26 -0500
+Received: from mail.3ffe.de (0001.3ffe.de [IPv6:2a01:4f8:c0c:9d57::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AF961165C;
+        Thu,  9 Mar 2023 00:38:08 -0800 (PST)
+Received: from 3ffe.de (0001.3ffe.de [IPv6:2a01:4f8:c0c:9d57::1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.3ffe.de (Postfix) with ESMTPSA id 06553D5A;
+        Thu,  9 Mar 2023 09:38:06 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2022082101;
+        t=1678351086;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=y41tMb7AS1Jh/KPkjkW3IKsx9az487kv51tekdAE29Q=;
+        b=ubF2lj5lvtCp3H7KLxdAsbRS49b+6sBRLrUXT9KQPAgSrFQzeRzDS2fkDLPSfxRKxt25Py
+        hhzH14kjrTJ0eUyJPpIVEPLzilgqwrH77iFF2rczY3X2G6Whjsyv75W5o2zLkv4xQr0gS3
+        6/DwPS9d5+CcLnmWTtd0b2D4aR8vAOPXcJSIhsTen4XwVezu/C9iULPkPkJ8scOVW8Rqwi
+        XgfaTBwuaDA9OgZLRgWwM3HjL8p90rrGeieoSN7ZzRIM0/TCOY48OR3QUrjt4XEXy+a5Nk
+        4LKbiDSTBEEp1YIlprtkvdq1LtX0K44TNRpBr6xjevQvrOhW6/dMHqZlCotLiw==
+MIME-Version: 1.0
+Date:   Thu, 09 Mar 2023 09:38:05 +0100
+From:   Michael Walle <michael@walle.cc>
+To:     Tudor Ambarus <tudor.ambarus@linaro.org>
+Cc:     Serge Semin <fancer.lancer@gmail.com>, Sergiu.Moga@microchip.com,
+        Mark Brown <broonie@kernel.org>,
+        Tudor Ambarus <tudor.ambarus@microchip.com>,
+        Pratyush Yadav <pratyush@kernel.org>,
+        miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
+        Nicolas.Ferre@microchip.com, alexandre.belloni@bootlin.com,
+        Claudiu.Beznea@microchip.com, chin-ting_kuo@aspeedtech.com,
+        clg@kaod.org, joel@jms.id.au, andrew@aj.id.au,
+        kdasu.kdev@gmail.com, han.xu@nxp.com, john.garry@huawei.com,
+        matthias.bgg@gmail.com, avifishman70@gmail.com,
+        tmaimon77@gmail.com, tali.perry1@gmail.com, venture@google.com,
+        yuenn@google.com, benjaminfair@google.com, haibo.chen@nxp.com,
+        yogeshgaur.83@gmail.com, heiko@sntech.de,
+        mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+        michal.simek@xilinx.com, bcm-kernel-feedback-list@broadcom.com,
+        linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org,
+        linux-mediatek@lists.infradead.org,
+        linux-rockchip@lists.infradead.org,
+        linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH] spi: Replace `dummy.nbytes` with `dummy.ncycles`
+In-Reply-To: <1766f6ef-d9d8-04f7-a6bf-0ea6bc0b3d23@linaro.org>
+References: <20220911174551.653599-1-sergiu.moga@microchip.com>
+ <20220925220304.buk3yuqoh6vszfci@mobilestation>
+ <18e6e8a8-6412-7e31-21e0-6becd4400ac1@microchip.com>
+ <20220926172454.kbpzck7med5bopre@mobilestation>
+ <1766f6ef-d9d8-04f7-a6bf-0ea6bc0b3d23@linaro.org>
+User-Agent: Roundcube Webmail/1.4.13
+Message-ID: <f647e713a65f5d3f0f2e3af95c4d0a89@walle.cc>
+X-Sender: michael@walle.cc
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, Mar 9, 2023, at 08:10, Ye Xiang wrote:
+> In an ideal world, where both the controller and the device talk about
+> dummy number of cycles, I would agree with you, buswidth and dtr should
+> not be relevant for the number of dummy cycles. But it seems that there
+> are old controllers (e.g. spi-hisi-sfc-v3xx.c, spi-mt65xx.c, 
+> spi-mxic.c)
+> that support buswidths > 1 and work only with dummy nbytes, they are 
+> not
+> capable of specifying a smaller granularity (ncycles). Thus the older
+> controllers would have to convert the dummy ncycles to dummy nbytes.
+> Since mixed transfer modes are a thing (see jesd251, it talks about
+> 4S-4D-4D), where single transfer mode (S) can be mixed with double
+> transfer mode (D) for a command, the controller would have to guess the
+> buswidth and dtr of the dummy. Shall they replicate the buswidth and 
+> dtr
+> of the address or of the data? There's no rule for that.
 
-> The minimum code in ASL that covers this board is
-> Scope (\_SB.PCI0.DWC3.RHUB.HS01)
->     {
->         Device (GPIO)
->         {
->             Name (_ADR, Zero)
->             Name (_STA, 0x0F)
->         }
->
->         Device (I2C)
->         {
->             Name (_ADR, One)
->             Name (_STA, 0x0F)
->         }
->
->         Device (SPI)
->         {
->             Name (_ADR, 0x02)
->             Name (_STA, 0x0F)
->         }
->     }
+But in the end that doesn't matter because they are just dummy clock
+cycles and the mode will only affect the data/address/command. 
+Therefore,
+the controller is free to choose the mode that suits it best.
 
-I'm a bit confused by this bit, does that mean this only works
-if the device is integrated on the mainboard and the BIOS is
-aware of it? This won't work if  you plug it into a random
-USB port, or have no ACPI firmware, right?
+But that begs the question, is ncycles in regard to DTR or SDR? That is,
+are you counting just one type of edges or both the falling and rising
+edges. The smallest granularity would be ncycles in regard of DTR. To 
+me,
+it's not obvious what the SEMPER Nano Flash [1] uses. I'd say we choose
+the smallest granularty in spi-mem to be future proof and maybe provide
+some spi-mem helper to help setting the cycles for SDR/DTR. As an 
+example,
+if you want to wait 4 cycles in SDR you'd have ncycles=8 in spi-mem.
 
-> Signed-off-by: Ye Xiang <xiang.ye@intel.com>
-> Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> ---
->  drivers/usb/misc/Kconfig  |  13 +
->  drivers/usb/misc/Makefile |   1 +
->  drivers/usb/misc/ljca.c   | 969 ++++++++++++++++++++++++++++++++++++++
->  include/linux/mfd/ljca.h  |  95 ++++
+So you won't need the mode nor the dtr property.
 
-Why is this in driver/usb/misc? It looks like a normal
-mfd driver to me, and it evenhas the header in include/linux/mfd/
+-michael
 
-     Arnd
+[1] 
+https://www.infineon.com/dgdl/Infineon-S25FS256T_256Mb_SEMPER_Nano_Flash_Quad_SPI_1.8V-DataSheet-v01_00-EN.pdf?fileId=8ac78c8c80027ecd0180740c5a46707a

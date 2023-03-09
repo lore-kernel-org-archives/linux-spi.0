@@ -2,108 +2,60 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 582ACC6FD19
-	for <linux-spi@archiver.kernel.org>; Thu,  9 Mar 2023 07:53:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C16D7C64EC4
+	for <linux-spi@archiver.kernel.org>; Thu,  9 Mar 2023 07:58:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230196AbjCIHxp (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 9 Mar 2023 02:53:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55608 "EHLO
+        id S230129AbjCIH6s (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 9 Mar 2023 02:58:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230248AbjCIHxV (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 9 Mar 2023 02:53:21 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 058761B57E;
-        Wed,  8 Mar 2023 23:52:27 -0800 (PST)
+        with ESMTP id S229963AbjCIH6Q (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 9 Mar 2023 02:58:16 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73BCCDE1ED
+        for <linux-spi@vger.kernel.org>; Wed,  8 Mar 2023 23:57:14 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 897B561A5C;
-        Thu,  9 Mar 2023 07:52:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 607E7C4339B;
-        Thu,  9 Mar 2023 07:52:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1678348347;
-        bh=rt/evWsxMPEyg16HAMZfcM0/9RSG53O+3iv4l9BJwEA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Aor2EstCjVBa8Ryyd/MhYkKGxGYCKPn+oobVHgtJolMvYNqcD3TCbffPVNbEQSYq1
-         /0AONv/1wKgrqYaFd6kr/S/rZKiB4FgIDt/hGNrC3rgJHOyBpCDm4WvhITvy/mVcVL
-         LEwmD763aw7H2rquGKF+2kIELrKPdW4AwnolmRr0=
-Date:   Thu, 9 Mar 2023 08:52:24 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Ye Xiang <xiang.ye@intel.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Lee Jones <lee@kernel.org>, Wolfram Sang <wsa@kernel.org>,
-        Tyrone Ting <kfting@nuvoton.com>,
-        Mark Brown <broonie@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>, linux-usb@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-gpio@vger.kernel.org,
-        srinivas.pandruvada@intel.com, heikki.krogerus@linux.intel.com,
-        andriy.shevchenko@linux.intel.com, sakari.ailus@linux.intel.com,
-        zhifeng.wang@intel.com, wentong.wu@intel.com, lixu.zhang@intel.com
-Subject: Re: [PATCH v4 1/5] mfd: Add support for Intel LJCA device
-Message-ID: <ZAmQOIh/71rY4Pa4@kroah.com>
-References: <20230309071100.2856899-1-xiang.ye@intel.com>
- <20230309071100.2856899-2-xiang.ye@intel.com>
+        by ams.source.kernel.org (Postfix) with ESMTPS id 73D3CB81E60
+        for <linux-spi@vger.kernel.org>; Thu,  9 Mar 2023 07:56:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 21C11C433EF;
+        Thu,  9 Mar 2023 07:56:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1678348596;
+        bh=Acy4rGOZlalUfu0rjmmzphZaLTIZJA0mVkJK7wtvHc8=;
+        h=Subject:From:Date:To:From;
+        b=GVQUH8mSnrl3fPRU6anjUmNXywFLptWwrgMWRM8QIzpmRMiykOYWpLXN+w9cZG7n1
+         UIczUTOqd3vuOvM5kdbclPAGAkJTW3DMT4r9N3PcNgVFe0jKJj9T/4a/Iug2Nmuoho
+         bhixyl4LxhVqva1K2iAUTnK46M2MBfZwSU+uzX9pqJKOxVYmhcv6anNb5d+pVhZVsd
+         g8DNva3e+JiIsVdtkWSiZFoAgnb6a6uNyYpJc/qrP5LONh0CrDolGMjftiziGR0Ix8
+         9I7y9Z2h/TrlGocdPZGOE+eodi0y/nt2l6ci1TUxlsGZ53MxhGiUHSXPDH96Fd/wQc
+         y81PrRDwfQ6oA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id EC90DE61B60;
+        Thu,  9 Mar 2023 07:56:35 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230309071100.2856899-2-xiang.ye@intel.com>
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <167834859589.3881.1530015017710622443.git-patchwork-housekeeping@kernel.org>
+Date:   Thu, 09 Mar 2023 07:56:35 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, Mar 09, 2023 at 03:10:56PM +0800, Ye Xiang wrote:
-> +static int ljca_mng_get_version(struct ljca_stub *stub, char *buf)
-> +{
-> +	struct fw_version version = {};
-> +	unsigned int len = sizeof(version);
-> +	int ret;
-> +
-> +	ret = ljca_stub_write(stub, LJCA_MNG_GET_VERSION, NULL, 0, &version, &len, true,
-> +			      LJCA_USB_WRITE_ACK_TIMEOUT_MS);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (len != sizeof(version)) {
-> +		dev_err(&stub->intf->dev, "get version failed, len:%d\n", len);
-> +		return -EINVAL;
-> +	}
-> +
-> +	return sysfs_emit(buf, "%d.%d.%d.%d\n", version.major, version.minor,
-> +			  le16_to_cpu(version.patch), le16_to_cpu(version.build));
-> +}
+Latest series: [v4] Add Intel LJCA device driver (2023-03-09T07:10:55)
+  Superseding: [v3] Add Intel LJCA device driver (2023-02-28T06:56:13):
+    [v3,1/5] mfd: Add support for Intel LJCA device
+    [v3,2/5] gpio: Add support for Intel LJCA USB GPIO driver
+    [v3,3/5] i2c: Add support for Intel LJCA USB I2C driver
+    [v3,4/5] spi: Add support for Intel LJCA USB SPI driver
+    [v3,5/5] Documentation: Add ABI doc for attributes of LJCA device
 
-You have sysfs files, yet no Documentation/ABI/ entries?  That's not
-allowed, you know this :(
 
-> +static ssize_t cmd_store(struct device *dev, struct device_attribute *attr, const char *buf,
-> +			 size_t count)
-> +{
-> +	struct usb_interface *intf = to_usb_interface(dev);
-> +	struct ljca_dev *ljca_dev = usb_get_intfdata(intf);
-> +	struct ljca_stub *mng_stub = ljca_stub_find(ljca_dev, LJCA_MNG_STUB);
-> +	struct ljca_stub *diag_stub = ljca_stub_find(ljca_dev, LJCA_DIAG_STUB);
-> +
-> +	if (sysfs_streq(buf, "dfu"))
-> +		ljca_mng_set_dfu_mode(mng_stub);
-> +	else if (sysfs_streq(buf, "debug"))
-> +		ljca_diag_set_trace_level(diag_stub, 3);
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Sorry, but no, you can't do this in a sysfs file.
-
-> +
-> +	return count;
-> +}
-> +
-> +static ssize_t cmd_show(struct device *dev, struct device_attribute *attr, char *buf)
-> +{
-> +	return sysfs_emit(buf, "%s\n", "supported cmd: [dfu, debug]");
-
-sysfs files do not show "help text".
-
-thanks,
-
-greg k-h

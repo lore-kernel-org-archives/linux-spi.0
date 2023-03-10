@@ -2,53 +2,53 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C4961C6FA99
-	for <linux-spi@archiver.kernel.org>; Fri, 10 Mar 2023 22:29:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B040EC6FA99
+	for <linux-spi@archiver.kernel.org>; Fri, 10 Mar 2023 22:29:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231855AbjCJW3S (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 10 Mar 2023 17:29:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43372 "EHLO
+        id S232017AbjCJW3j (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 10 Mar 2023 17:29:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231847AbjCJW3O (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 10 Mar 2023 17:29:14 -0500
+        with ESMTP id S231917AbjCJW3Q (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 10 Mar 2023 17:29:16 -0500
 Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D1CC123CC7
-        for <linux-spi@vger.kernel.org>; Fri, 10 Mar 2023 14:29:08 -0800 (PST)
-Received: by mail-ed1-x52a.google.com with SMTP id k10so26370575edk.13
-        for <linux-spi@vger.kernel.org>; Fri, 10 Mar 2023 14:29:08 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC667124E95
+        for <linux-spi@vger.kernel.org>; Fri, 10 Mar 2023 14:29:11 -0800 (PST)
+Received: by mail-ed1-x52a.google.com with SMTP id k10so26371014edk.13
+        for <linux-spi@vger.kernel.org>; Fri, 10 Mar 2023 14:29:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678487347;
+        d=linaro.org; s=google; t=1678487351;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=b4aKAo6MFb3QMb21J3aoV2riVolfD7kZUTP9+kgcCSU=;
-        b=RZ3qkTbRBfZNiA0cqYlVVp21HmjVtY20XaGBwrmGNBazyP6QOIQ0QQeeiMkL7MUPJz
-         X7C/0rDhWN32MdR45MbZNH2J+UJZgUl6YA2jF1RnkLqBWV5zT8h0JcGqbLJkYQHJcBap
-         S0dnyle/sIgSi32MaROVKLa5wvqJ5gvHk8RJz3hldiuC+82cjq7IpInFb/frDBMPszfJ
-         7DJ/vCeaRAhX6wQYox60fKxT9TUKzvESrlhC4kWCfK+0Tj+1dNSd259NjGnwOrpfuWzT
-         GvPzpcatvo59dJWBtopFntOFKv4E48mBMqf/6T9rg8W2ymkjI1gSdguO9gia/RG4pRBz
-         4Fvg==
+        bh=/eg1nDT/DWvLF5qBMG6NeaUBghGjrzLVFlQFnIJNFjE=;
+        b=qaM3ve+wW6Gt6rptzeOJgI7fsp/Nf85KO2ZcgbVSiZvSdKp5Lr9KO8TDlnRG/o5Hy2
+         TrgRr1jPBZGmhTO+TmX8f1piK0XT3kowYscmhQmvRScvGE8MZQdZBAsFLcZ2WF54WtRc
+         0xO2YIPBIwQIHXDxIED7dRCrxLgRUUnTgunX0XIZEkmmqqnTUWtEOPRzGjHnp04BTRdI
+         TssZlvrynUkkWzqMaRdxZZ/oBOMtbfo6eg1I3yZ/9Bpp3iBqBTjMxv6/p0XVZmsFxs5i
+         m8j/rIeHeT9kW0DgB9tKW9eyd5uxzp0gl3HoqYAGC0GtE6t4DwGguWLoOW5e7l302rbF
+         XDSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678487347;
+        d=1e100.net; s=20210112; t=1678487351;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=b4aKAo6MFb3QMb21J3aoV2riVolfD7kZUTP9+kgcCSU=;
-        b=QYh+iZUekgrpQJ/mCp5bccfTxN2SccZENb1pjxQ+m6yoE2oTsyoVfq0X29axaQPePT
-         MCphkDlZH9usYaDihelQAbZXcQ3FzxvMJgxW39CetGL4x/N3jmTcazdxMhXK2YBMRYQO
-         BLftgEQvX9ag+6tf3sauOYiGqNmVLREQ6LxkQOTF0iLk5E8X4BYvEI03waFkh/EFaZuL
-         W0hbwaDdx1VAUhonqdyKyOQJ2/XM6iQEgrpqlLIPB480uq29r134jLOHcFmXzw1Q4LQn
-         66JCwD6ideX9fKXP9E6nx4DskQzQsGwRGB8+TIrSrAK/38S3XKArwan6aUyfpu70GA0a
-         oijA==
-X-Gm-Message-State: AO0yUKVBArn+8PrrY4bO7SQ+jgjV/7Kd6fZUxvRcxvwV2PMmvPLMmnq9
-        s6e5LEIfWU/wPPD+mmXfkUsehA==
-X-Google-Smtp-Source: AK7set/W0kTwiGlItblh7tf5JTPG4Jzj41fZ0/kDRrZaCweil86ynzpBOA1iUGvgXuT1rUSP46ReMw==
-X-Received: by 2002:aa7:d60b:0:b0:4be:d5b8:c007 with SMTP id c11-20020aa7d60b000000b004bed5b8c007mr23483407edr.25.1678487347617;
-        Fri, 10 Mar 2023 14:29:07 -0800 (PST)
+        bh=/eg1nDT/DWvLF5qBMG6NeaUBghGjrzLVFlQFnIJNFjE=;
+        b=aigIJNlh5pYpLsy5kTFXOrPNXfTOUfISFkBQ9E5SEvh2v66NPDFCFnDqnvBOoXpGuI
+         DmndugecUmrcfB7A5Qw0t8gBOUlQ65JhJhGRGEI886jh0j48nj4UqJ2OuQ4O/3sCpWaw
+         rMsVQyI2c00+mH/Cn3EAqGakoSQHh6EPNjGOXxt4CvCEANo4dDVZQdv0S3YdD0m+njwS
+         yrAsldJQx7FUf8QnVnYnGKYwkARx0EDMcKqusUVWfkKXPyrUxCheU1K+2RxSkM2RHFWG
+         hBlIbIbAH0s9UM4jat99exP+/dt06/WfAo8EIeHr6xdDKWCXII9+gJ0Y+a1crA8CcPN0
+         2NNg==
+X-Gm-Message-State: AO0yUKVttMJ4mNGXb2mpiK8X6jeJTG10H6kUurBDY05V0zwZW5T5Xnsq
+        B+/5jR61SImY2inP7V50QzUxLg==
+X-Google-Smtp-Source: AK7set9jp7Yps5gdDa4xVZKk1y8Nuy79LZJ+JZ57vzOOBv4Dpd2cWsCrZ/AoIk5/8nmVVUyC9Qydyg==
+X-Received: by 2002:aa7:c489:0:b0:4af:6409:30ea with SMTP id m9-20020aa7c489000000b004af640930eamr27406591edq.19.1678487351312;
+        Fri, 10 Mar 2023 14:29:11 -0800 (PST)
 Received: from krzk-bin.. ([2a02:810d:15c0:828:34:52e3:a77e:cac5])
-        by smtp.gmail.com with ESMTPSA id x101-20020a50baee000000b004aeeb476c5bsm525467ede.24.2023.03.10.14.29.06
+        by smtp.gmail.com with ESMTPSA id x101-20020a50baee000000b004aeeb476c5bsm525467ede.24.2023.03.10.14.29.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Mar 2023 14:29:07 -0800 (PST)
+        Fri, 10 Mar 2023 14:29:11 -0800 (PST)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 To:     Mark Brown <broonie@kernel.org>, Kamal Dasu <kdasu.kdev@gmail.com>,
         Broadcom internal kernel review list 
@@ -74,9 +74,9 @@ To:     Mark Brown <broonie@kernel.org>, Kamal Dasu <kdasu.kdev@gmail.com>,
         linux-rockchip@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org,
         linux-mediatek@lists.infradead.org
-Subject: [PATCH 06/16] spi: rockchip: Drop of_match_ptr for ID table
-Date:   Fri, 10 Mar 2023 23:28:47 +0100
-Message-Id: <20230310222857.315629-6-krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 09/16] spi: pic32-sqi: Drop of_match_ptr for ID table
+Date:   Fri, 10 Mar 2023 23:28:50 +0100
+Message-Id: <20230310222857.315629-9-krzysztof.kozlowski@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230310222857.315629-1-krzysztof.kozlowski@linaro.org>
 References: <20230310222857.315629-1-krzysztof.kozlowski@linaro.org>
@@ -91,26 +91,26 @@ The driver can match only via the DT table so the table should be always
 used and the of_match_ptr does not have any sense (this also allows ACPI
 matching via PRP0001, even though it is not relevant here).
 
-  drivers/spi/spi-rockchip.c:1051:34: error: ‘rockchip_spi_dt_match’ defined but not used [-Werror=unused-const-variable=]
+  drivers/spi/spi-pic32-sqi.c:694:34: error: ‘pic32_sqi_of_ids’ defined but not used [-Werror=unused-const-variable=]
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- drivers/spi/spi-rockchip.c | 2 +-
+ drivers/spi/spi-pic32-sqi.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index a66fff0ee20e..57ae58bf7a62 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -1069,7 +1069,7 @@ static struct platform_driver rockchip_spi_driver = {
+diff --git a/drivers/spi/spi-pic32-sqi.c b/drivers/spi/spi-pic32-sqi.c
+index 4c8493f34fca..ca89e6d22fc7 100644
+--- a/drivers/spi/spi-pic32-sqi.c
++++ b/drivers/spi/spi-pic32-sqi.c
+@@ -700,7 +700,7 @@ MODULE_DEVICE_TABLE(of, pic32_sqi_of_ids);
+ static struct platform_driver pic32_sqi_driver = {
  	.driver = {
- 		.name	= DRIVER_NAME,
- 		.pm = &rockchip_spi_pm,
--		.of_match_table = of_match_ptr(rockchip_spi_dt_match),
-+		.of_match_table = rockchip_spi_dt_match,
+ 		.name = "sqi-pic32",
+-		.of_match_table = of_match_ptr(pic32_sqi_of_ids),
++		.of_match_table = pic32_sqi_of_ids,
  	},
- 	.probe = rockchip_spi_probe,
- 	.remove_new = rockchip_spi_remove,
+ 	.probe = pic32_sqi_probe,
+ 	.remove_new = pic32_sqi_remove,
 -- 
 2.34.1
 

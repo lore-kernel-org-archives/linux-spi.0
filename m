@@ -2,53 +2,53 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A46ABC74A5B
-	for <linux-spi@archiver.kernel.org>; Fri, 10 Mar 2023 22:29:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8085EC6FD19
+	for <linux-spi@archiver.kernel.org>; Fri, 10 Mar 2023 22:30:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232049AbjCJW3o (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 10 Mar 2023 17:29:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43438 "EHLO
+        id S231373AbjCJWaJ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 10 Mar 2023 17:30:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231869AbjCJW31 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 10 Mar 2023 17:29:27 -0500
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02BC5123DCA
-        for <linux-spi@vger.kernel.org>; Fri, 10 Mar 2023 14:29:12 -0800 (PST)
-Received: by mail-ed1-x52c.google.com with SMTP id i34so26421088eda.7
-        for <linux-spi@vger.kernel.org>; Fri, 10 Mar 2023 14:29:12 -0800 (PST)
+        with ESMTP id S232046AbjCJW3n (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 10 Mar 2023 17:29:43 -0500
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CE9A125DAC
+        for <linux-spi@vger.kernel.org>; Fri, 10 Mar 2023 14:29:16 -0800 (PST)
+Received: by mail-ed1-x530.google.com with SMTP id cw28so26493842edb.5
+        for <linux-spi@vger.kernel.org>; Fri, 10 Mar 2023 14:29:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678487352;
+        d=linaro.org; s=google; t=1678487355;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=G/4k4EDtHTwsGrCFmt9A01h3SrewNsUPMEHGiEs4FeY=;
-        b=TVdIMwMMrCKmZDAj8bAXcosuz/F+qKLurmGg2tk/JuU0WAeW1zZ3e/5WJFm5zshZxi
-         SqKw726uNsBDbGIY2pbSJBufxH78N4ZLW50mMwf71ESTokrIR6XsO7x+je/tAR/wbxyt
-         WYxUzBPA1whbkcBPF2K2TOZDDwRH3y2IRF3GPsWajArp2ggTf55DAr1Qk6EvT7FlhPYH
-         4+455PnI4SeL9cFUeXrD1nv1O4nsCQkfBMd95Ge0+t3wZzK1f5SMXGVkLeHw7CQi3s+5
-         GMsfdtZzfaM1HAp/g0JL3uTpA1omwZTAUUW/0ofTxY2+KChGu+++CqNGcjjsOYO2bQ12
-         1obw==
+        bh=DIL/eAhzd2Q+CmLa0/Vp8uh0M9mRf6IHTk8hQZUVPkA=;
+        b=k9IOHxBgd0bMymkB/VVDYynw3dg0wz5WLTLxzV6gvhi0zHI1m8CQMly3VXoSXuKFCp
+         8h9Sng22gMlalzZGQ190Jfc2ocLKGquLyts/VCYV4KgnzhNpLAw1lmCH08tqlBTGh9uX
+         opjEMpR+/6cN4xnJkfQRHijm2E+EP866a7+7DUN7ENr4l/jbDJAouQL9++JBziQhUcen
+         89Kb5I7fiA11hsVqegrlnQFLmvaJvdNzACOqIF+Q8V10Tmi8VpXBpBjWc0BjNbw236gS
+         IGoWXG5ofcZOzKkhc2pkde95caIVRGE7UK7159UQqJklSACcPwP+y8SGCq20FhEImF6F
+         06VQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678487352;
+        d=1e100.net; s=20210112; t=1678487355;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=G/4k4EDtHTwsGrCFmt9A01h3SrewNsUPMEHGiEs4FeY=;
-        b=MMWo60WqG5PhJC2cOh1RFKrxHQbEkIiubjWSO36nFZUgT9MCH2Htu3UBmfpGISG68y
-         dOlSL+CFGL/yOUmxSHFD8uNVfe/Zro6lgcNQUHlnQ++xswpyX0GahDB0T/0DRnbYGg4J
-         P1kocNgLnRJ+NG+lvdt+PTfX0pBxU+c0uCM7qWD5xOkwST7q6GIdVbbvXeTwv2TqoyOp
-         uM4JzTWd4nyl1PS1kD5/4wl0FQRatBQF+JC8lnsiEuDJOlTA/M8mKj7lhNfZpGFFPu1O
-         o7uYb1uoHA6aDIp+mFHnZ77+u4EN4uXReG2XwAPpjc+ialSiebwbmmJNfeoJWazckMPf
-         FFfA==
-X-Gm-Message-State: AO0yUKV9Q3ve+paTWSvuiEgi9EfTIwPJ6Q/ckS9mVXtjeUipS3KFV08y
-        uONNYzeghbtOK3PTPhXvI2tMjA==
-X-Google-Smtp-Source: AK7set+a17yOf6VzbwUc0CZ6vTQ58vWyCjXfAH5/wUdFVgNoDsRk2++Q9bB1eIS7zKuhlPF+RpY35g==
-X-Received: by 2002:a17:906:9252:b0:8b2:23fb:dfd9 with SMTP id c18-20020a170906925200b008b223fbdfd9mr27625552ejx.39.1678487352519;
-        Fri, 10 Mar 2023 14:29:12 -0800 (PST)
+        bh=DIL/eAhzd2Q+CmLa0/Vp8uh0M9mRf6IHTk8hQZUVPkA=;
+        b=Fi6bAgezgfT41oMhBq09wpjL0kKRFWxoe2fQP7yMr1ZOyMrxxulfHBqbVRkpJ0Q80x
+         Tu1m/a9A5OSqOUc+YEmgKS1Afl9JqtWeE91FQQ1kgkjFhOmQ8zFgXmNn+jlEuwBBKQwl
+         6WEH+G8H2wORx3zEW1btm3z2T8E5m06JzPzzY5TsZyhMfuuxTHOWSO4B1YMCAaM/mTns
+         3BqPVoHEl4iNa3klVxkrZkd1H8Tv0Zj7RuiA7PeIw0wpLLUenSpBxy/UhU9lMAE7RgW5
+         CK8gmoNx4Y6UaJpv6RHgRzdfiwSDTpK8E8hiZ8WS49/DCccI4mfKP9kMsHBd27igUW2v
+         x9sw==
+X-Gm-Message-State: AO0yUKXs2793aXMB8wVCSoYeXt/C6AHjLUbc4omgaFDGNWD0rsZliaHQ
+        GzqiRDyNMvplQ7UmEcneyvDe/g==
+X-Google-Smtp-Source: AK7set84qDZr9RcwJ70A6u3nLP8atYZ9eptCD6oONVkchKcqZ66qh2jURUNfTUs7WD78mR7YiVblZg==
+X-Received: by 2002:a17:906:dd7:b0:87e:a34b:9e2b with SMTP id p23-20020a1709060dd700b0087ea34b9e2bmr27657561eji.28.1678487355376;
+        Fri, 10 Mar 2023 14:29:15 -0800 (PST)
 Received: from krzk-bin.. ([2a02:810d:15c0:828:34:52e3:a77e:cac5])
-        by smtp.gmail.com with ESMTPSA id x101-20020a50baee000000b004aeeb476c5bsm525467ede.24.2023.03.10.14.29.11
+        by smtp.gmail.com with ESMTPSA id x101-20020a50baee000000b004aeeb476c5bsm525467ede.24.2023.03.10.14.29.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Mar 2023 14:29:12 -0800 (PST)
+        Fri, 10 Mar 2023 14:29:15 -0800 (PST)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 To:     Mark Brown <broonie@kernel.org>, Kamal Dasu <kdasu.kdev@gmail.com>,
         Broadcom internal kernel review list 
@@ -74,9 +74,9 @@ To:     Mark Brown <broonie@kernel.org>, Kamal Dasu <kdasu.kdev@gmail.com>,
         linux-rockchip@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org,
         linux-mediatek@lists.infradead.org
-Subject: [PATCH 10/16] spi: pic32: Drop of_match_ptr for ID table
-Date:   Fri, 10 Mar 2023 23:28:51 +0100
-Message-Id: <20230310222857.315629-10-krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 12/16] spi: pxa2xx: Mark OF related data as maybe unused
+Date:   Fri, 10 Mar 2023 23:28:53 +0100
+Message-Id: <20230310222857.315629-12-krzysztof.kozlowski@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230310222857.315629-1-krzysztof.kozlowski@linaro.org>
 References: <20230310222857.315629-1-krzysztof.kozlowski@linaro.org>
@@ -87,30 +87,29 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The driver can match only via the DT table so the table should be always
-used and the of_match_ptr does not have any sense (this also allows ACPI
-matching via PRP0001, even though it is not relevant here).
+The driver can be compile tested with !CONFIG_OF making certain data
+unused:
 
-  drivers/spi/spi-pic32.c:857:34: error: ‘pic32_spi_of_match’ defined but not used [-Werror=unused-const-variable=]
+  drivers/spi/spi-pxa2xx.c:1757:34: error: ‘pxa2xx_spi_of_match’ defined but not used [-Werror=unused-const-variable=]
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- drivers/spi/spi-pic32.c | 2 +-
+ drivers/spi/spi-pxa2xx.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-pic32.c b/drivers/spi/spi-pic32.c
-index 5a64ad0c94fe..04896e7ff2c1 100644
---- a/drivers/spi/spi-pic32.c
-+++ b/drivers/spi/spi-pic32.c
-@@ -863,7 +863,7 @@ MODULE_DEVICE_TABLE(of, pic32_spi_of_match);
- static struct platform_driver pic32_spi_driver = {
- 	.driver = {
- 		.name = "spi-pic32",
--		.of_match_table = of_match_ptr(pic32_spi_of_match),
-+		.of_match_table = pic32_spi_of_match,
- 	},
- 	.probe = pic32_spi_probe,
- 	.remove_new = pic32_spi_remove,
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index a75ba2993f3c..19e996a5a02e 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1754,7 +1754,7 @@ static const struct acpi_device_id pxa2xx_spi_acpi_match[] = {
+ MODULE_DEVICE_TABLE(acpi, pxa2xx_spi_acpi_match);
+ #endif
+ 
+-static const struct of_device_id pxa2xx_spi_of_match[] = {
++static const struct of_device_id pxa2xx_spi_of_match[] __maybe_unused = {
+ 	{ .compatible = "marvell,mmp2-ssp", .data = (void *)MMP2_SSP },
+ 	{}
+ };
 -- 
 2.34.1
 

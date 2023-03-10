@@ -2,55 +2,63 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DF4D6C74A5B
-	for <linux-spi@archiver.kernel.org>; Fri, 10 Mar 2023 22:30:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B45F8C6FD19
+	for <linux-spi@archiver.kernel.org>; Fri, 10 Mar 2023 22:37:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231866AbjCJWaO (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 10 Mar 2023 17:30:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45128 "EHLO
+        id S231995AbjCJWhJ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 10 Mar 2023 17:37:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232087AbjCJW3x (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 10 Mar 2023 17:29:53 -0500
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 116441241FA
-        for <linux-spi@vger.kernel.org>; Fri, 10 Mar 2023 14:29:19 -0800 (PST)
-Received: by mail-ed1-x52d.google.com with SMTP id da10so26542962edb.3
-        for <linux-spi@vger.kernel.org>; Fri, 10 Mar 2023 14:29:19 -0800 (PST)
+        with ESMTP id S232086AbjCJWgq (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 10 Mar 2023 17:36:46 -0500
+Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E35F123DDD;
+        Fri, 10 Mar 2023 14:36:17 -0800 (PST)
+Received: by mail-pj1-x1032.google.com with SMTP id nn12so6673887pjb.5;
+        Fri, 10 Mar 2023 14:36:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678487359;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/3O5N03pwwa5CISBXEL2uh41ANV84DtyZX9Qqc/gvOE=;
-        b=k/86A8NzfMfImxqB7+KDGVg/tynJ0FVCkA4dmZsWIIwO7Ykre8VGNhhLmaoZxK5KT6
-         H3l6ZZCxmyioRniLqshH544hiliBpuPql4rrcaGN9SPUaoBgt/mYjvy3lFkcooWp+CQj
-         /cZd6t1wB+DD9btEFmW4rhD/UxwGgSLeoP8+6PQdjvt2yfEZsUiYi1auwiNr2YRkL0Ae
-         eGYX/hpVFD0YR9ZjOD9aXNAFS55flsLUNlQ/EodMAcU9+jDwOEUYGcDlVb/I+8XQi7AC
-         +dBZ6c8c6uYJIAAEPOJ4odu80gqrKfSiQSXkSlCWkyr1U2hFPRdYKsgGWKGkJMfxst9s
-         c+eQ==
+        d=gmail.com; s=20210112; t=1678487776;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fdktugCeDYX7Xr0TGxaeM93AvHbyY1/wFRGjyxUuajs=;
+        b=M1ZMRujq71QwNYOMXmSJfUAnJ1DSMCIGcvzxhEOotk682w9u9GEHysFIMuExQ7ZRAA
+         +/D7VhQJAQM9USbfZQmmO9kgulOmmwjifP2lqS1qe/UgjP+H5pUWcJ4p+zq/k3eX26M5
+         nE6IuGepTTXbHdzhNu/8PpHzHnRMxu7hsx4bql1bRc1kXMp/5jOGKGL2AzkIjr2YlnEn
+         7XBIhyBxAuu/IVU0elGOSz0lLVKyr/Y3ohuxBqc9k9zJQTJFJM1crBoz3e52T5Hembkg
+         2yS4GGCW3Isgcqyyp1vp3e1re3Bor6nDZam2Jv2enrKjHXS+wZfFMcjCnSfzOoMS+XNs
+         YLaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678487359;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/3O5N03pwwa5CISBXEL2uh41ANV84DtyZX9Qqc/gvOE=;
-        b=COyyzDyNFkr8DVRGNNQM+BIAkVVza1hr8IbvcIRI6WG7ZwMaiY3WTq5scCzHBpRvsq
-         hSBYrAKEvNu+un8dkyX00rHSjp35aSsqNo/4IBCoUAIeN/NQ/Ye4nx7a06Gup/ifwZUc
-         e4eoy8QuEK+73uov0B7ZjpOZnaVA7tG21TcnTxsXRsi5i8+uKq4lGNk6cDHuiDBOByLs
-         8ZOuEvshWCWbCt3pW5/XoC/GF4cLWs8Z/2f13wp6znqQnHe71ByhQMTxX+jVPJW4dtw/
-         QEfqPV+BrAC5drd7P+Rzk0LlU5+gP+eFgTqSAmeJeBDdcuwINR7896eZHz1nf85UCVzx
-         aZ9A==
-X-Gm-Message-State: AO0yUKXMH8N7bPrr0yZzFoK9DgYKWVyKDzxVLkRSI237vHS8OMCmWxfI
-        TNxU2S22A83l4+HQBV2UuFzxFA==
-X-Google-Smtp-Source: AK7set9Rvn4y0BGnLTV87CbBg91zcO1xpeU2J1xLOi9EFaaPOkq+Z2ChtSGd5/YJsuzGlHU4/phxIA==
-X-Received: by 2002:a05:6402:3d9:b0:4af:69e2:529f with SMTP id t25-20020a05640203d900b004af69e2529fmr26991968edw.27.1678487359382;
-        Fri, 10 Mar 2023 14:29:19 -0800 (PST)
-Received: from krzk-bin.. ([2a02:810d:15c0:828:34:52e3:a77e:cac5])
-        by smtp.gmail.com with ESMTPSA id x101-20020a50baee000000b004aeeb476c5bsm525467ede.24.2023.03.10.14.29.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Mar 2023 14:29:18 -0800 (PST)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     Mark Brown <broonie@kernel.org>, Kamal Dasu <kdasu.kdev@gmail.com>,
+        d=1e100.net; s=20210112; t=1678487776;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fdktugCeDYX7Xr0TGxaeM93AvHbyY1/wFRGjyxUuajs=;
+        b=cSB788KpbBEr8H9JUcv9bKlqs0kpnm0YrfBGf4ZrRq8k8/wFpbULBrkKOF2SxqssN0
+         7wO1QtDeVXrxhUiqefWGIhc1NewFiCBV9P9pSKGzSmg/ri6b0CuCXPYVcts5qEUI50Nn
+         49y6GRSMIbDc150IcC+1yz6Obi+K7NzZ5X716n0YQZm67lya5sjvN4W4vqEIanu7GHn8
+         o71ojF8ibq+QmqKsoxBt2TWMylwHkxlhgRm22CDgi4fCgb28fKqPlEqWxeI1UcbB2wYf
+         74Xsw846pzcSPfuvkTAE9BlY60CycX74LzqK42P+QRpbYh6g8Il+or30CuPTPm8TykKN
+         JP0A==
+X-Gm-Message-State: AO0yUKU0zLklR40lSjPu/Q3qlK9NzJWtYxjn+n8lsFX56vZYlXOpS2E9
+        tstGPkxkwfw5VUd7//Z5+so=
+X-Google-Smtp-Source: AK7set9K8J5zoNaziqXtI5ePAA7X83vRqfUPykoAs++3T/PClevhmaBdF8gk1RK17qwYtdSNKjM8Pg==
+X-Received: by 2002:a17:90b:4f49:b0:234:190d:e655 with SMTP id pj9-20020a17090b4f4900b00234190de655mr28911929pjb.44.1678487776377;
+        Fri, 10 Mar 2023 14:36:16 -0800 (PST)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id y15-20020a17090a390f00b002339195a47bsm365387pjb.53.2023.03.10.14.36.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 10 Mar 2023 14:36:15 -0800 (PST)
+Message-ID: <35216994-c834-73aa-a702-d4d75bb87897@gmail.com>
+Date:   Fri, 10 Mar 2023 14:36:13 -0800
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Subject: Re: [PATCH 13/16] spi: bcm-qspi: Mark OF related data as maybe unused
+Content-Language: en-US
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
+        Kamal Dasu <kdasu.kdev@gmail.com>,
         Broadcom internal kernel review list 
         <bcm-kernel-feedback-list@broadcom.com>,
         Neil Armstrong <neil.armstrong@linaro.org>,
@@ -61,7 +69,6 @@ To:     Mark Brown <broonie@kernel.org>, Kamal Dasu <kdasu.kdev@gmail.com>,
         Haojian Zhuang <haojian.zhuang@gmail.com>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
         Heiko Stuebner <heiko@sntech.de>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         Andi Shyti <andi@etezian.org>,
         Alim Akhtar <alim.akhtar@samsung.com>,
         Stephen Boyd <sboyd@kernel.org>,
@@ -74,42 +81,25 @@ To:     Mark Brown <broonie@kernel.org>, Kamal Dasu <kdasu.kdev@gmail.com>,
         linux-rockchip@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org,
         linux-mediatek@lists.infradead.org
-Subject: [PATCH 15/16] spi: sc18is602: Mark OF related data as maybe unused
-Date:   Fri, 10 Mar 2023 23:28:56 +0100
-Message-Id: <20230310222857.315629-15-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230310222857.315629-1-krzysztof.kozlowski@linaro.org>
 References: <20230310222857.315629-1-krzysztof.kozlowski@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+ <20230310222857.315629-13-krzysztof.kozlowski@linaro.org>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20230310222857.315629-13-krzysztof.kozlowski@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The driver can be compile tested with !CONFIG_OF making certain data
-unused:
+On 3/10/23 14:28, Krzysztof Kozlowski wrote:
+> The driver can be compile tested with !CONFIG_OF making certain data
+> unused:
+> 
+>    drivers/spi/spi-bcm-qspi.c:1460:34: error: ‘bcm_qspi_of_match’ defined but not used [-Werror=unused-const-variable=]
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-  drivers/spi/spi-sc18is602.c:318:34: error: ‘sc18is602_of_match’ defined but not used [-Werror=unused-const-variable=]
-
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
----
- drivers/spi/spi-sc18is602.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-sc18is602.c b/drivers/spi/spi-sc18is602.c
-index 983b3621bc2a..5c2c255f70e8 100644
---- a/drivers/spi/spi-sc18is602.c
-+++ b/drivers/spi/spi-sc18is602.c
-@@ -315,7 +315,7 @@ static const struct i2c_device_id sc18is602_id[] = {
- };
- MODULE_DEVICE_TABLE(i2c, sc18is602_id);
- 
--static const struct of_device_id sc18is602_of_match[] = {
-+static const struct of_device_id sc18is602_of_match[] __maybe_unused = {
- 	{
- 		.compatible = "nxp,sc18is602",
- 		.data = (void *)sc18is602
+Acked-by: Florian Fainelli <f.fainelli@gmail.com>
 -- 
-2.34.1
+Florian
 

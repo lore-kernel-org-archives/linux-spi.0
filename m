@@ -2,83 +2,84 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5314FC6FA99
-	for <linux-spi@archiver.kernel.org>; Fri, 10 Mar 2023 14:06:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 28AB7C742A7
+	for <linux-spi@archiver.kernel.org>; Fri, 10 Mar 2023 15:11:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231730AbjCJOGx (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 10 Mar 2023 09:06:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33588 "EHLO
+        id S233088AbjCJPLL (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 10 Mar 2023 10:11:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231613AbjCJOG3 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 10 Mar 2023 09:06:29 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C799116C12;
-        Fri, 10 Mar 2023 06:06:15 -0800 (PST)
+        with ESMTP id S233988AbjCJPKj (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 10 Mar 2023 10:10:39 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA58A6EBD;
+        Fri, 10 Mar 2023 07:03:01 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 10EC5B82291;
-        Fri, 10 Mar 2023 14:06:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D4E3C4339E;
-        Fri, 10 Mar 2023 14:06:09 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 3752BB822E7;
+        Fri, 10 Mar 2023 15:02:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0828FC4339E;
+        Fri, 10 Mar 2023 15:02:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678457170;
-        bh=qaQcJQhx6nov9VzSU4N70ibWYjj88HenZA1ZKN3hd7I=;
-        h=From:To:Cc:Subject:Date:From;
-        b=dFVYpgzfrXIX6lJvbRPsJKK9ltfpFRMQSrfkSkha+QIXn1FLw6Y2ErRtrNuXbw5P5
-         DN+dOu1IUgcbR8Cu4U0ZcLnyLJ0kxTHEN7lU5Ib5QyppPRuG8Pj+6N6wYSaz7dmegi
-         Q+Hkb7eYb9X882mw6CUwSCcZihfHp6YPjybCGrm2nFnvVW1ksrCnv4tl+UJe1CUfC3
-         Qj3FBvSQ20MeALIDpoJF2DZSE7lTxeqoVb+LmwqAtU1VHrRt4FOnvMQoLY8QywHek2
-         dCGUUt/xnIBZi4rgJvh+sZstsfCk1La94zXatdp54ThtHK+X68kj0EIyZ8pFEGIMp0
-         WEXP8MvCR9jhw==
-From:   Arnd Bergmann <arnd@kernel.org>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] spi: fsi: restore CONFIG_FSI dependency
-Date:   Fri, 10 Mar 2023 15:05:37 +0100
-Message-Id: <20230310140605.569363-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.2
+        s=k20201202; t=1678460570;
+        bh=bR6o38pte2bX2RJ2Qi0Md1WJSFY/WN5nA5yKZB+fd+k=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=FSYzEDovf3oeByWBK8kGqK2XKsY3ygIZ4TnNd1DCIrQ5bY5Xg4hx27scoKGQJ/gqC
+         0pOyus4PjwbYHs8HvBDh/6hsJv12XKaeD3VMPzVg0c25u51feifRSv7QXrCRXr1jCQ
+         FkKZlSNsFrDQnRUja/RUxlc3Ndy9fLQe8b0FDEQfxrm3Q7uoN/fNL2xDraIjTh7isb
+         JH5YG1jAFgnj8fgK/sHdqPvnFpEbmDX4jCoK6+l9gTC3ayyZT7teQziZXfLtb7rCEE
+         BqmfDaK/J8Y+5fZtfowIypORnLl8aDlQPp4HeoIZQa10Ma8X8PPdNWNOh3BIXIACAc
+         iwWdXhkcVWixA==
+From:   Mark Brown <broonie@kernel.org>
+To:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     kernel test robot <lkp@intel.com>
+In-Reply-To: <20230310111544.57342-1-andriy.shevchenko@linux.intel.com>
+References: <20230310111544.57342-1-andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v1 1/1] spi: mpc5xxx-psc: Remove goto to the unexisted
+ label
+Message-Id: <167846056875.924688.11655271939766506433.b4-ty@kernel.org>
+Date:   Fri, 10 Mar 2023 15:02:48 +0000
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13-dev-bd1bf
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+On Fri, 10 Mar 2023 13:15:44 +0200, Andy Shevchenko wrote:
+> The previous cleanup patch had lost one of its parts in a crack,
+> Finish the cleanup by removing the leftovers.
+> 
+> 
 
-The assumption that the build dependency was not necessary turned
-out to be wrong, as building SPI_FSI without FSI results in a link
-failure:
+Applied to
 
-aarch64-linux-ld: drivers/spi/spi-fsi.o: in function `fsi_spi_check_status':
-spi-fsi.c:(.text+0x54): undefined reference to `fsi_device_read'
-aarch64-linux-ld: drivers/spi/spi-fsi.o: in function `fsi_spi_read_reg':
-spi-fsi.c:(.text+0x120): undefined reference to `fsi_device_write'
-aarch64-linux-ld: spi-fsi.c:(.text+0x170): undefined reference to `fsi_device_read'
+   broonie/spi.git for-next
 
-Fixes: f916c7080d28 ("spi: fsi: Make available for build test")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
-If possible, maybe just drop the original patch, rather than adding
-this revert
----
- drivers/spi/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks!
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index fd681a668c3c..1a9a7390d595 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -357,7 +357,7 @@ config SPI_FALCON
- 
- config SPI_FSI
- 	tristate "FSI SPI driver"
--	depends on FSI || COMPILE_TEST
-+	depends on FSI
- 	help
- 	  This enables support for the driver for FSI bus attached SPI
- 	  controllers.
--- 
-2.39.2
+[1/1] spi: mpc5xxx-psc: Remove goto to the unexisted label
+      commit: 21d19e601fd221cd61105286b0b6ec2f9c5a2576
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 

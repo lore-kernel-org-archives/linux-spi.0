@@ -2,29 +2,29 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 621CDC61DA4
-	for <linux-spi@archiver.kernel.org>; Mon, 13 Mar 2023 10:58:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CDF04C6FD19
+	for <linux-spi@archiver.kernel.org>; Mon, 13 Mar 2023 10:58:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229828AbjCMK6y (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 13 Mar 2023 06:58:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56732 "EHLO
+        id S229666AbjCMK64 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 13 Mar 2023 06:58:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230125AbjCMK6u (ORCPT
+        with ESMTP id S230178AbjCMK6u (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Mon, 13 Mar 2023 06:58:50 -0400
-Received: from xavier.telenet-ops.be (xavier.telenet-ops.be [IPv6:2a02:1800:120:4::f00:14])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8D8B25E04
+Received: from laurent.telenet-ops.be (laurent.telenet-ops.be [IPv6:2a02:1800:110:4::f00:19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9A61274AA
         for <linux-spi@vger.kernel.org>; Mon, 13 Mar 2023 03:58:42 -0700 (PDT)
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed50:7ed1:e2c6:b94:264a])
-        by xavier.telenet-ops.be with bizsmtp
-        id Xmyg2900201Vtj801mygFM; Mon, 13 Mar 2023 11:58:40 +0100
+        by laurent.telenet-ops.be with bizsmtp
+        id Xmyg2900301Vtj801mygXU; Mon, 13 Mar 2023 11:58:40 +0100
 Received: from rox.of.borg ([192.168.97.57])
         by ramsan.of.borg with esmtp (Exim 4.95)
         (envelope-from <geert@linux-m68k.org>)
-        id 1pbfsQ-00C3I7-GY;
-        Mon, 13 Mar 2023 11:58:40 +0100
+        id 1pbfsQ-00C3I0-Ew;
+        Mon, 13 Mar 2023 11:58:39 +0100
 Received: from geert by rox.of.borg with local (Exim 4.95)
         (envelope-from <geert@linux-m68k.org>)
-        id 1pbft1-008cWp-UL;
+        id 1pbft1-008cWd-SS;
         Mon, 13 Mar 2023 11:58:39 +0100
 From:   Geert Uytterhoeven <geert+renesas@glider.be>
 To:     Mark Brown <broonie@kernel.org>, Min Li <min.li.xe@renesas.com>,
@@ -35,9 +35,9 @@ To:     Mark Brown <broonie@kernel.org>, Min Li <min.li.xe@renesas.com>,
 Cc:     linux-spi@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 4/6] spi: Constify spi_get_drvdata()'s spi parameter
-Date:   Mon, 13 Mar 2023 11:58:36 +0100
-Message-Id: <0f1700ade27a8f3935d04480ff7bef8a887331eb.1678704562.git.geert+renesas@glider.be>
+Subject: [PATCH 1/6] mfd: rsmu_spi: Remove unneeded casts of void *
+Date:   Mon, 13 Mar 2023 11:58:33 +0100
+Message-Id: <ae84c1751e79cb49ab584557f4ecd835a8493d7c.1678704562.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1678704562.git.geert+renesas@glider.be>
 References: <cover.1678704562.git.geert+renesas@glider.be>
@@ -47,28 +47,35 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The "spi" parameter of spi_get_drvdata() can be const.
-dev_get_drvdata() has been taking a const pointer since commit
-7d1d8999b4bec0ba ("i2c: Constify i2c_get_clientdata's parameter").
+There is no need to cast a "void *" to a different type of pointer.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- include/linux/spi/spi.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mfd/rsmu_spi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 6097d2f5126624eb..e09a61dd34594330 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -261,7 +261,7 @@ static inline void spi_set_drvdata(struct spi_device *spi, void *data)
- 	dev_set_drvdata(&spi->dev, data);
- }
+diff --git a/drivers/mfd/rsmu_spi.c b/drivers/mfd/rsmu_spi.c
+index d2f3d8f1e05af054..2428aaa9aaed9e43 100644
+--- a/drivers/mfd/rsmu_spi.c
++++ b/drivers/mfd/rsmu_spi.c
+@@ -129,7 +129,7 @@ static int rsmu_write_page_register(struct rsmu_ddata *rsmu, u16 reg)
  
--static inline void *spi_get_drvdata(struct spi_device *spi)
-+static inline void *spi_get_drvdata(const struct spi_device *spi)
+ static int rsmu_reg_read(void *context, unsigned int reg, unsigned int *val)
  {
- 	return dev_get_drvdata(&spi->dev);
- }
+-	struct rsmu_ddata *rsmu = spi_get_drvdata((struct spi_device *)context);
++	struct rsmu_ddata *rsmu = spi_get_drvdata(context);
+ 	u8 addr = (u8)(reg & RSMU_LOWER_ADDR_MASK);
+ 	int err;
+ 
+@@ -146,7 +146,7 @@ static int rsmu_reg_read(void *context, unsigned int reg, unsigned int *val)
+ 
+ static int rsmu_reg_write(void *context, unsigned int reg, unsigned int val)
+ {
+-	struct rsmu_ddata *rsmu = spi_get_drvdata((struct spi_device *)context);
++	struct rsmu_ddata *rsmu = spi_get_drvdata(context);
+ 	u8 addr = (u8)(reg & RSMU_LOWER_ADDR_MASK);
+ 	u8 data = (u8)val;
+ 	int err;
 -- 
 2.34.1
 

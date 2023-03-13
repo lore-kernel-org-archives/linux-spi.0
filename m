@@ -2,29 +2,29 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B1DB0C6FD19
-	for <linux-spi@archiver.kernel.org>; Mon, 13 Mar 2023 10:58:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4BEE2C76196
+	for <linux-spi@archiver.kernel.org>; Mon, 13 Mar 2023 10:58:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229962AbjCMK6w (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 13 Mar 2023 06:58:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56698 "EHLO
+        id S230026AbjCMK6x (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 13 Mar 2023 06:58:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230080AbjCMK6u (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 13 Mar 2023 06:58:50 -0400
-Received: from andre.telenet-ops.be (andre.telenet-ops.be [IPv6:2a02:1800:120:4::f00:15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E795E25B91
+        with ESMTP id S230013AbjCMK6t (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 13 Mar 2023 06:58:49 -0400
+Received: from michel.telenet-ops.be (michel.telenet-ops.be [IPv6:2a02:1800:110:4::f00:18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E667F25954
         for <linux-spi@vger.kernel.org>; Mon, 13 Mar 2023 03:58:42 -0700 (PDT)
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed50:7ed1:e2c6:b94:264a])
-        by andre.telenet-ops.be with bizsmtp
-        id Xmyg2900501Vtj801mygDA; Mon, 13 Mar 2023 11:58:40 +0100
+        by michel.telenet-ops.be with bizsmtp
+        id Xmyg2900401Vtj806mygte; Mon, 13 Mar 2023 11:58:40 +0100
 Received: from rox.of.borg ([192.168.97.57])
         by ramsan.of.borg with esmtp (Exim 4.95)
         (envelope-from <geert@linux-m68k.org>)
-        id 1pbfsQ-00C3I9-HE;
+        id 1pbfsQ-00C3I3-Ft;
         Mon, 13 Mar 2023 11:58:40 +0100
 Received: from geert by rox.of.borg with local (Exim 4.95)
         (envelope-from <geert@linux-m68k.org>)
-        id 1pbft1-008cWt-Uy;
+        id 1pbft1-008cWl-Tj;
         Mon, 13 Mar 2023 11:58:39 +0100
 From:   Geert Uytterhoeven <geert+renesas@glider.be>
 To:     Mark Brown <broonie@kernel.org>, Min Li <min.li.xe@renesas.com>,
@@ -35,9 +35,9 @@ To:     Mark Brown <broonie@kernel.org>, Min Li <min.li.xe@renesas.com>,
 Cc:     linux-spi@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 5/6] spi: Constify spi parameters of chip select APIs
-Date:   Mon, 13 Mar 2023 11:58:37 +0100
-Message-Id: <b112de79e7a1e9095a3b6ff22b639f39e39d7748.1678704562.git.geert+renesas@glider.be>
+Subject: [PATCH 3/6] spi: Constify spi_get_ctldata()'s spi parameter
+Date:   Mon, 13 Mar 2023 11:58:35 +0100
+Message-Id: <8960e07adaad8d92d2c3aa045af9ee3c5d2130a8.1678704562.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1678704562.git.geert+renesas@glider.be>
 References: <cover.1678704562.git.geert+renesas@glider.be>
@@ -47,36 +47,25 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The "spi" parameters of spi_get_chipselect() and spi_get_csgpiod() can
-be const.
+The "spi" parameter of spi_get_ctldata() can be const.
 
-Fixes: 303feb3cc06ac066 ("spi: Add APIs in spi core to set/get spi->chip_select and spi->cs_gpiod")
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- include/linux/spi/spi.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/spi/spi.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index e09a61dd34594330..74bff5a2f53d36cc 100644
+index bdb35a91b4bf0141..6097d2f5126624eb 100644
 --- a/include/linux/spi/spi.h
 +++ b/include/linux/spi/spi.h
-@@ -266,7 +266,7 @@ static inline void *spi_get_drvdata(const struct spi_device *spi)
- 	return dev_get_drvdata(&spi->dev);
+@@ -244,7 +244,7 @@ static inline void spi_dev_put(struct spi_device *spi)
  }
  
--static inline u8 spi_get_chipselect(struct spi_device *spi, u8 idx)
-+static inline u8 spi_get_chipselect(const struct spi_device *spi, u8 idx)
+ /* ctldata is for the bus_controller driver's runtime state */
+-static inline void *spi_get_ctldata(struct spi_device *spi)
++static inline void *spi_get_ctldata(const struct spi_device *spi)
  {
- 	return spi->chip_select;
- }
-@@ -276,7 +276,7 @@ static inline void spi_set_chipselect(struct spi_device *spi, u8 idx, u8 chipsel
- 	spi->chip_select = chipselect;
- }
- 
--static inline struct gpio_desc *spi_get_csgpiod(struct spi_device *spi, u8 idx)
-+static inline struct gpio_desc *spi_get_csgpiod(const struct spi_device *spi, u8 idx)
- {
- 	return spi->cs_gpiod;
+ 	return spi->controller_state;
  }
 -- 
 2.34.1

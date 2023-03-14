@@ -2,57 +2,105 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 15716C6FD1F
-	for <linux-spi@archiver.kernel.org>; Tue, 14 Mar 2023 08:44:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6AC82C7618A
+	for <linux-spi@archiver.kernel.org>; Tue, 14 Mar 2023 13:05:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230033AbjCNIoH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 14 Mar 2023 04:44:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56216 "EHLO
+        id S229436AbjCNNFF (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 14 Mar 2023 09:05:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229992AbjCNIoG (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 14 Mar 2023 04:44:06 -0400
-X-Greylist: delayed 472 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 14 Mar 2023 01:44:05 PDT
-Received: from mail.docworker.pl (mail.docworker.pl [94.177.230.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73E9815558
-        for <linux-spi@vger.kernel.org>; Tue, 14 Mar 2023 01:44:05 -0700 (PDT)
-Received: by mail.docworker.pl (Postfix, from userid 1002)
-        id 610AC82B5F; Tue, 14 Mar 2023 09:35:41 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=docworker.pl; s=mail;
-        t=1678782971; bh=F9Uuk9o83BVy7SpscM/nJos6FHfnp2pKrNUqPErj3yg=;
-        h=Date:From:To:Subject:From;
-        b=UIxpAGDKdcpVkUcy1kFnoIygETXN6/Gda6GyD3Ls0tnH+XRLsSZETF8WDGjMXA1tK
-         69sRJ3Nx++yAPb9OmM6zLUZUm2/Op1XqnbIOUJU9ABjhBQ06vCvxSiFpWXk+7cEBq1
-         873/J65j/9jRVsHAfCyCe7f9NzNpAX7onlorlV6u8t6l1jHNKiNbrdqDFd6gDujIeR
-         MR36AAEL2G7EoSWpEaJ6erP3V9MNGMZrScre31mK8lL8gTRsUf2BabjfgoznZQG+C2
-         XOPIxbZp7NSuJjlZsFxSTDq9B5usGG/php36BK3UE+M0UZX0+R/m2qb96nmAOpqEvF
-         ZZjGQRC+ta2MQ==
-Received: by mail.docworker.pl for <linux-spi@vger.kernel.org>; Tue, 14 Mar 2023 08:35:29 GMT
-Message-ID: <20230314084505-0.1.f.xmv.0.kaddkxwnig@docworker.pl>
-Date:   Tue, 14 Mar 2023 08:35:29 GMT
-From:   =?UTF-8?Q? "Mi=C5=82osz_G=C3=B3recki" ?= 
-        <milosz.gorecki@docworker.pl>
-To:     <linux-spi@vger.kernel.org>
-Subject: Zapytanie ofertowe 
-X-Mailer: mail.docworker.pl
+        with ESMTP id S232060AbjCNNEj (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 14 Mar 2023 09:04:39 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3E82A2C2F
+        for <linux-spi@vger.kernel.org>; Tue, 14 Mar 2023 06:00:48 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id CAF74B811F5
+        for <linux-spi@vger.kernel.org>; Tue, 14 Mar 2023 13:00:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE18CC4339B;
+        Tue, 14 Mar 2023 13:00:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1678798804;
+        bh=JKZcG52nxc6PnQXj2135tN/CylKY5M6+sI7Y8ubhkOM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Qmjd7SzCKTLs0Q/WnD9KauPr51nvkLrlonbSGdbRj5sVGuh+ljgEsjQNh2emX3PeD
+         2Fzjhcq64skDiKqTsBWVJ1il4EhVvn1RbuIiWlHAyvJp5Wyc6nFyh1pCcW7hYo0sAK
+         FE8EhO1flhRes9MHjXfLJouBpylm4/Dwe5lJvShCbF7PS7n2Ls3matPpFbA33IyfIo
+         7ADT97jdeztt9lNOm14g6SE8Io36fGJZkpsn/D4qgagz9EYjYvny9H0L7FwEtto2c6
+         ntksTTbJPRkjEo/Myd7w98d+rw1qx+N+9ZTHAvw/FMC/nmP/5ZnLEa81B0d40/6hw/
+         ynNkYyA2SBVBA==
+Date:   Tue, 14 Mar 2023 13:00:00 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc:     "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+Subject: Re: Looking for a solution for CPM FSL SPI driver that swaps 16 bits
+ words
+Message-ID: <c4d651cf-ed23-4d5c-9536-40f70fd52a6f@sirena.org.uk>
+References: <764971c9-fe57-160c-d073-a519934da767@csgroup.eu>
+ <8fd7715b-1dba-4cdd-916d-8c9dce004031@sirena.org.uk>
+ <e21b9465-664e-bdf8-71ec-b7818c04c171@csgroup.eu>
+ <84d3426c-47fe-44e9-ad04-be120fbbcd03@sirena.org.uk>
+ <f9593ae5-a3e4-9bce-faa1-4761d76238ca@csgroup.eu>
+ <e6c44ee3-fd31-4341-96d6-bf542ecd6111@sirena.org.uk>
+ <247b27c9-7753-cf8a-6983-157e6def7301@csgroup.eu>
+ <4c46ffe5-6793-4149-998d-d76c37fca7aa@sirena.org.uk>
+ <69b1b437-1e8c-1854-a036-5cbc8a81cbab@csgroup.eu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="ICJxC532CPfoxgBT"
+Content-Disposition: inline
+In-Reply-To: <69b1b437-1e8c-1854-a036-5cbc8a81cbab@csgroup.eu>
+X-Cookie: For office use only.
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Szanowni Pa=C5=84stwo,
 
-Od blisko 8 lat skutecznie wspieramy naszych partner=C3=B3w w pozyskiwani=
-u klient=C3=B3w. =C5=9Awiadczymy us=C5=82ug=C4=99 generowania lead=C3=B3w=
- z kilkoma unikalnymi cechami jak gwarancja realnego uruchomienia rozm=C3=
-=B3w lub wymiana kontaktu. Nadmieni=C4=99 tak=C5=BCe, i=C5=BC kontakty pr=
-zekazywane s=C4=85 na wy=C5=82=C4=85czno=C5=9B=C4=87.
+--ICJxC532CPfoxgBT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Je=C5=9Bli w chwili obecnej poszukujecie Pa=C5=84stwo nowych zapyta=C5=84=
- i lead=C3=B3w sprzeda=C5=BCowych prosz=C4=99 o kontakt lub wskazanie ter=
-minu rozmowy.
+On Mon, Mar 13, 2023 at 10:33:10PM +0000, Christophe Leroy wrote:
 
+> Looking at another driver I'm even more puzzled. That's driver=20
+> drivers/leds/leds-dac124s085.c
 
-Pozdrawiam serdecznie
-Mi=C5=82osz G=C3=B3recki
+> It also sets spi->bits_per_word =3D 16 , but is uses cpu_to_le16() to=20
+> prepare that data. So this one should then work with any host=20
+> endianness, but why the hell is it doing cpu_to_le16() if the data=20
+> should be big endian ?
+
+I wouldn't take some random client driver as being particulary
+meaningful - people often abuse APIs.  I wouldn't be sure that that
+endianness conversion was doing anything on the system that the driver
+was developed on.
+
+> To be honnest, I'm really not sure anymore what is the way to go.
+
+The expected behaviour is very clearly documented, I've quoted that
+documentation at you and recommended that anything being done for
+performance reasons be done in the controller driver.  I'm really not
+sure what else to tell you, especially given that if the client driver
+uses a byte stream (which is what it wants) this all becomes purely
+internal to the controller
+driver.
+
+--ICJxC532CPfoxgBT
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmQQb88ACgkQJNaLcl1U
+h9Cyzgf9GWyfJ6s6RGY7MlHZUYowsJrJgBXNg2NGOFUzlTQtAXOFWM/hy+ca00xK
+Jln8cw+L3W9R5d5F5VV8i5RCtLSKJfQeV4oH+LGFPFtIgRLDtZpP8eTIdI1/Qxns
+sjj+sMje+htJb3LVKS+xO/ieLKxdMD3rxXToa5pLYh3A9xAl9f7CARBGuGZD1xdT
+JEfWbR3VXsk+Q5MOU2C9Fz8d9M46N8e3a48bxgpy5CoA2O4PiSAHA4UgjyptPWYp
+fBPkWPwdoxu7GNWbf0FH4p/m+tc9P6scKRHM0HpRQvJ+fWCaqV5RlU92sOBC2/Zn
+Dtcvd4uVeLTmDtKJbu/arwNoTZtnag==
+=j1hI
+-----END PGP SIGNATURE-----
+
+--ICJxC532CPfoxgBT--

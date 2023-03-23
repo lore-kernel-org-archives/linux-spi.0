@@ -2,411 +2,103 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 07BDFC6FD1C
-	for <linux-spi@archiver.kernel.org>; Thu, 23 Mar 2023 17:22:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0C12AC6FD1C
+	for <linux-spi@archiver.kernel.org>; Thu, 23 Mar 2023 17:31:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231874AbjCWRWW (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 23 Mar 2023 13:22:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54978 "EHLO
+        id S231486AbjCWRbR (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 23 Mar 2023 13:31:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231895AbjCWRWT (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 23 Mar 2023 13:22:19 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8DCD20D35;
-        Thu, 23 Mar 2023 10:21:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1679592111; x=1711128111;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=IdEuMeR9G80KyGN1804hJIxXE/JBmnjW40d69d5NGAo=;
-  b=T15GQPH8iTtD2JVTUh8ojShjkBt1X8h0F6EtMbmyldtbZhP0RhWzxsGm
-   AnN9pBkRkr2ARpvnqKyBePY97+7+UE7YO8UJ7luLlKlKEkX8UX5a0PS2w
-   GTz/FfMvzRRAj/LrEHT+kKt5+xFSUSFp5Z3Hx8O8HSgF0nKs3ypsu8rxj
-   A5lXRLUYGXMCn5JTx7A894WRKKZumkt+Ay3tkBtFnGWMTV+5Jea89klKK
-   CoYRJkepbAo+MwAqDbtt6uyWxiy0c+0nZnl2JBBbbcSphDWRMwB21S00a
-   43d/ANUCfgLmOFXxQ+zsJE90PeNrYN5G7UeWHFWQisS+/c/xQL/W5ag6X
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="425840357"
-X-IronPort-AV: E=Sophos;i="5.98,285,1673942400"; 
-   d="scan'208";a="425840357"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2023 10:21:48 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="712748349"
-X-IronPort-AV: E=Sophos;i="5.98,285,1673942400"; 
-   d="scan'208";a="712748349"
-Received: from ye-nuc7i7dnhe.sh.intel.com ([10.239.154.52])
-  by orsmga008.jf.intel.com with ESMTP; 23 Mar 2023 10:21:42 -0700
-From:   Ye Xiang <xiang.ye@intel.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Lee Jones <lee@kernel.org>, Wolfram Sang <wsa@kernel.org>,
-        Tyrone Ting <kfting@nuvoton.com>,
+        with ESMTP id S231516AbjCWRbR (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 23 Mar 2023 13:31:17 -0400
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E405A241DA
+        for <linux-spi@vger.kernel.org>; Thu, 23 Mar 2023 10:31:10 -0700 (PDT)
+Received: by mail-pj1-x1035.google.com with SMTP id p13-20020a17090a284d00b0023d2e945aebso4020343pjf.0
+        for <linux-spi@vger.kernel.org>; Thu, 23 Mar 2023 10:31:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1679592670;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=km2gqXc7azHXISk3TRRkbz6777YLDRrwj5fuSfpq1q8=;
+        b=KCgwX9Jxa6ZuTKmTith9SO5UOsRsmngKseZno4cqXEm7+jy1lVMNhTL1iOBxxM5TxK
+         oYE8Dll9PNG+8RA0LbuHxpwQIZxHdl8kOBdP4qkOWRFfmZlXmgW7smhrcv73a8Vu18z4
+         0zVIqv9teDevEYUSrhbLRlUA2va7Vj4PC4tN8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679592670;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=km2gqXc7azHXISk3TRRkbz6777YLDRrwj5fuSfpq1q8=;
+        b=n3jx7f++y9iEJ1yVB7bh/wVMwbhXyDWFadoW2CUqMmb/ygkVEUPfITlXsPvOLABRha
+         CMUKm7a/WlSo8XNOns+izChWDc5xujcK1D8lA7vhqRwuOO3UMbBgU+IqmDoYZOIDx0lR
+         moAvkUp9gTXL7yGIVSx3mWpAVr8CSESvx495GFpAcghqOWIrz26vRm1wb0MnyRQ5iA4F
+         zQOAYzHJz+Fzyg/LoJtSxT5fKKXe+IRlG5CdTLEn4CmY0JEkyRgTAKc8jxeeSDVI9pN9
+         vzqi3edzcdYqkbpyMxvVq3tdPIlQ8TsEEPP4kfzOwx9SId6OO8gqPGCNGnAdmY1+V4bX
+         3mWw==
+X-Gm-Message-State: AO0yUKUht2r2tPg6wPOgQyT57mRDGxdWlPZO63ifrqNE1YkOqi8JmJvH
+        LmQr9AF4XtCJ10MGbvScp1GnBw==
+X-Google-Smtp-Source: AK7set/eq0TFdASOKnSDm1Sm/iWmOncE+NdY4v8Uy8PcDjyvmJd7KNfv2/GAbFmZOvVhygT3gxRmiQ==
+X-Received: by 2002:a05:6a20:8b9c:b0:da:d9e7:9a5d with SMTP id m28-20020a056a208b9c00b000dad9e79a5dmr400673pzh.4.1679592669751;
+        Thu, 23 Mar 2023 10:31:09 -0700 (PDT)
+Received: from tictac2.mtv.corp.google.com ([2620:15c:9d:2:16d3:ef20:206a:6521])
+        by smtp.gmail.com with ESMTPSA id x13-20020a62fb0d000000b0061a6f4c1b2bsm12613546pfm.171.2023.03.23.10.31.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Mar 2023 10:31:09 -0700 (PDT)
+From:   Douglas Anderson <dianders@chromium.org>
+To:     Bjorn Andersson <andersson@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Mark Brown <broonie@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>, linux-usb@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-gpio@vger.kernel.org
-Cc:     srinivas.pandruvada@intel.com, heikki.krogerus@linux.intel.com,
-        andriy.shevchenko@linux.intel.com, sakari.ailus@linux.intel.com,
-        zhifeng.wang@intel.com, wentong.wu@intel.com, lixu.zhang@intel.com,
-        Ye Xiang <xiang.ye@intel.com>
-Subject: [PATCH v6 6/6] spi: Add support for Intel LJCA USB SPI driver
-Date:   Fri, 24 Mar 2023 01:21:13 +0800
-Message-Id: <20230323172113.1231050-7-xiang.ye@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230323172113.1231050-1-xiang.ye@intel.com>
-References: <20230323172113.1231050-1-xiang.ye@intel.com>
+        Linus Walleij <linus.walleij@linaro.org>
+Cc:     Matthias Kaehlcke <mka@chromium.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        linux-gpio@vger.kernel.org, Stephen Boyd <swboyd@chromium.org>,
+        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-spi@vger.kernel.org,
+        Douglas Anderson <dianders@chromium.org>,
+        Andy Gross <agross@kernel.org>,
+        Rajendra Nayak <rnayak@codeaurora.org>,
+        Roja Rani Yarubandi <rojay@codeaurora.org>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 01/14] arm64: dts: sc7180: Rename qspi data12 as data23
+Date:   Thu, 23 Mar 2023 10:30:05 -0700
+Message-Id: <20230323102605.1.Ifc1b5be04653f4ab119698a5944bfecded2080d6@changeid>
+X-Mailer: git-send-email 2.40.0.348.gf938b09366-goog
+In-Reply-To: <20230323173019.3706069-1-dianders@chromium.org>
+References: <20230323173019.3706069-1-dianders@chromium.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This patch implements the SPI function of Intel USB-I2C/GPIO/SPI adapter
-device named "La Jolla Cove Adapter" (LJCA). It communicate with LJCA
-SPI module with specific protocol through interfaces exported by LJCA USB
-driver.
+There are 4 qspi data pins: data0, data1, data2, and data3. Currently
+we have a shared pin state for data0 and data1 (2 lane config) and a
+pin state for data2 and data3 (you'd enable both this and the 2 lane
+state for 4 lanes). The second state is obviously misnamed. Fix it.
 
-Signed-off-by: Ye Xiang <xiang.ye@intel.com>
+Fixes: ba3fc6496366 ("arm64: dts: sc7180: Add qupv3_0 and qupv3_1")
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
 ---
- drivers/spi/Kconfig    |  11 ++
- drivers/spi/Makefile   |   1 +
- drivers/spi/spi-ljca.c | 289 +++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 301 insertions(+)
- create mode 100644 drivers/spi/spi-ljca.c
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 47bbba04fe3a..c3de4e20531f 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -404,6 +404,17 @@ config SPI_HISI_SFC_V3XX
- 	  This enables support for HiSilicon v3xx SPI NOR flash controller
- 	  found in hi16xx chipsets.
+ arch/arm64/boot/dts/qcom/sc7180.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm64/boot/dts/qcom/sc7180.dtsi b/arch/arm64/boot/dts/qcom/sc7180.dtsi
+index ebfa21e9ed8a..fe62ce516c4e 100644
+--- a/arch/arm64/boot/dts/qcom/sc7180.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7180.dtsi
+@@ -1540,7 +1540,7 @@ qspi_data01: qspi-data01-state {
+ 				function = "qspi_data";
+ 			};
  
-+config SPI_LJCA
-+	tristate "Intel La Jolla Cove Adapter SPI support"
-+	depends on USB_LJCA
-+	default USB_LJCA
-+	help
-+	  Select this option to enable SPI driver for the Intel
-+	  La Jolla Cove Adapter (LJCA) board.
-+
-+	  This driver can also be built as a module. If so, the module
-+	  will be called spi-ljca.
-+
- config SPI_NXP_FLEXSPI
- 	tristate "NXP Flex SPI controller"
- 	depends on ARCH_LAYERSCAPE || HAS_IOMEM
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index d87cf75bee6a..0d0cc1b0fb9b 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -69,6 +69,7 @@ obj-$(CONFIG_SPI_INTEL_PCI)		+= spi-intel-pci.o
- obj-$(CONFIG_SPI_INTEL_PLATFORM)	+= spi-intel-platform.o
- obj-$(CONFIG_SPI_LANTIQ_SSC)		+= spi-lantiq-ssc.o
- obj-$(CONFIG_SPI_JCORE)			+= spi-jcore.o
-+obj-$(CONFIG_SPI_LJCA) 			+= spi-ljca.o
- obj-$(CONFIG_SPI_LM70_LLP)		+= spi-lm70llp.o
- obj-$(CONFIG_SPI_LP8841_RTC)		+= spi-lp8841-rtc.o
- obj-$(CONFIG_SPI_MESON_SPICC)		+= spi-meson-spicc.o
-diff --git a/drivers/spi/spi-ljca.c b/drivers/spi/spi-ljca.c
-new file mode 100644
-index 000000000000..1d925e8c7156
---- /dev/null
-+++ b/drivers/spi/spi-ljca.c
-@@ -0,0 +1,289 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Intel La Jolla Cove Adapter USB-SPI driver
-+ *
-+ * Copyright (c) 2023, Intel Corporation.
-+ */
-+
-+#include <linux/auxiliary_bus.h>
-+#include <linux/bitfield.h>
-+#include <linux/bits.h>
-+#include <linux/dev_printk.h>
-+#include <linux/module.h>
-+#include <linux/spi/spi.h>
-+#include <linux/usb/ljca.h>
-+
-+/* SPI commands */
-+enum ljca_spi_cmd {
-+	LJCA_SPI_INIT = 1,
-+	LJCA_SPI_READ,
-+	LJCA_SPI_WRITE,
-+	LJCA_SPI_WRITEREAD,
-+	LJCA_SPI_DEINIT,
-+};
-+
-+#define LJCA_SPI_BUS_MAX_HZ 48000000
-+enum {
-+	LJCA_SPI_BUS_SPEED_24M,
-+	LJCA_SPI_BUS_SPEED_12M,
-+	LJCA_SPI_BUS_SPEED_8M,
-+	LJCA_SPI_BUS_SPEED_6M,
-+	LJCA_SPI_BUS_SPEED_4_8M, /*4.8MHz*/
-+	LJCA_SPI_BUS_SPEED_MIN = LJCA_SPI_BUS_SPEED_4_8M,
-+};
-+
-+enum {
-+	LJCA_SPI_CLOCK_LOW_POLARITY,
-+	LJCA_SPI_CLOCK_HIGH_POLARITY,
-+};
-+
-+enum {
-+	LJCA_SPI_CLOCK_FIRST_PHASE,
-+	LJCA_SPI_CLOCK_SECOND_PHASE,
-+};
-+
-+#define LJCA_SPI_BUF_SIZE	60
-+#define LJCA_SPI_MAX_XFER_SIZE	(LJCA_SPI_BUF_SIZE - sizeof(struct spi_xfer_packet))
-+
-+#define LJCA_SPI_CLK_MODE_POLARITY	BIT(0)
-+#define LJCA_SPI_CLK_MODE_PHASE		BIT(1)
-+
-+struct spi_init_packet {
-+	u8 index;
-+	u8 speed;
-+	u8 mode;
-+} __packed;
-+
-+#define LJCA_SPI_XFER_INDICATOR_ID	GENMASK(5, 0)
-+#define LJCA_SPI_XFER_INDICATOR_CMPL	BIT(6)
-+#define LJCA_SPI_XFER_INDICATOR_INDEX	BIT(7)
-+
-+struct spi_xfer_packet {
-+	u8 indicator;
-+	s8 len;
-+	u8 data[];
-+} __packed;
-+
-+struct ljca_spi_dev {
-+	struct auxiliary_device *auxdev;
-+	struct spi_controller *controller;
-+	struct ljca_spi_info *spi_info;
-+	u8 speed;
-+	u8 mode;
-+
-+	u8 obuf[LJCA_SPI_BUF_SIZE];
-+	u8 ibuf[LJCA_SPI_BUF_SIZE];
-+};
-+
-+static int ljca_spi_read_write(struct ljca_spi_dev *ljca_spi, const u8 *w_data, u8 *r_data, int len,
-+			       int id, int complete, int cmd)
-+{
-+	struct spi_xfer_packet *w_packet = (struct spi_xfer_packet *)ljca_spi->obuf;
-+	struct spi_xfer_packet *r_packet = (struct spi_xfer_packet *)ljca_spi->ibuf;
-+	unsigned int ibuf_len = LJCA_SPI_BUF_SIZE;
-+	int ret;
-+
-+	w_packet->indicator = FIELD_PREP(LJCA_SPI_XFER_INDICATOR_ID, id) |
-+			      FIELD_PREP(LJCA_SPI_XFER_INDICATOR_CMPL, complete) |
-+			      FIELD_PREP(LJCA_SPI_XFER_INDICATOR_INDEX,
-+					 ljca_spi->spi_info->id);
-+
-+	if (cmd == LJCA_SPI_READ) {
-+		w_packet->len = sizeof(u16);
-+		*(__le16 *)&w_packet->data[0] = cpu_to_le16(len);
-+	} else {
-+		w_packet->len = len;
-+		memcpy(w_packet->data, w_data, len);
-+	}
-+
-+	ret = ljca_transfer(ljca_spi->spi_info->ljca, cmd, w_packet,
-+			    struct_size(w_packet, data, w_packet->len), r_packet, &ibuf_len);
-+	if (ret)
-+		return ret;
-+
-+	if (ibuf_len < sizeof(*r_packet) || r_packet->len <= 0)
-+		return -EIO;
-+
-+	if (r_data)
-+		memcpy(r_data, r_packet->data, r_packet->len);
-+
-+	return 0;
-+}
-+
-+static int ljca_spi_init(struct ljca_spi_dev *ljca_spi, u8 div, u8 mode)
-+{
-+	struct spi_init_packet w_packet = {};
-+	int ret;
-+
-+	if (ljca_spi->mode == mode && ljca_spi->speed == div)
-+		return 0;
-+
-+	w_packet.mode = FIELD_PREP(LJCA_SPI_CLK_MODE_POLARITY,
-+				   (mode & SPI_CPOL) ? LJCA_SPI_CLOCK_HIGH_POLARITY :
-+						       LJCA_SPI_CLOCK_LOW_POLARITY) |
-+			FIELD_PREP(LJCA_SPI_CLK_MODE_PHASE,
-+				   (mode & SPI_CPHA) ? LJCA_SPI_CLOCK_SECOND_PHASE :
-+						       LJCA_SPI_CLOCK_FIRST_PHASE);
-+
-+	w_packet.index = ljca_spi->spi_info->id;
-+	w_packet.speed = div;
-+	ret = ljca_transfer(ljca_spi->spi_info->ljca, LJCA_SPI_INIT, &w_packet,
-+			    sizeof(w_packet), NULL, NULL);
-+	if (ret)
-+		return ret;
-+
-+	ljca_spi->mode = mode;
-+	ljca_spi->speed = div;
-+
-+	return 0;
-+}
-+
-+static int ljca_spi_deinit(struct ljca_spi_dev *ljca_spi)
-+{
-+	struct spi_init_packet w_packet = {};
-+
-+	w_packet.index = ljca_spi->spi_info->id;
-+	return ljca_transfer(ljca_spi->spi_info->ljca, LJCA_SPI_DEINIT, &w_packet, sizeof(w_packet),
-+			     NULL, NULL);
-+}
-+
-+static inline int ljca_spi_transfer(struct ljca_spi_dev *ljca_spi, const u8 *tx_data, u8 *rx_data,
-+				    u16 len)
-+{
-+	int remaining = len;
-+	int offset = 0;
-+	int cur_len;
-+	int complete;
-+	int i;
-+	int cmd;
-+	int ret;
-+
-+	if (tx_data && rx_data)
-+		cmd = LJCA_SPI_WRITEREAD;
-+	else if (tx_data)
-+		cmd = LJCA_SPI_WRITE;
-+	else if (rx_data)
-+		cmd = LJCA_SPI_READ;
-+	else
-+		return -EINVAL;
-+
-+	for (i = 0; remaining > 0; i++) {
-+		cur_len = min_t(unsigned int, remaining, LJCA_SPI_MAX_XFER_SIZE);
-+		complete = (cur_len == remaining);
-+
-+		ret = ljca_spi_read_write(ljca_spi,
-+					  tx_data ? tx_data + offset : NULL,
-+					  rx_data ? rx_data + offset : NULL,
-+					  cur_len, i, complete, cmd);
-+		if (ret)
-+			return ret;
-+
-+		offset += cur_len;
-+		remaining -= cur_len;
-+	}
-+
-+	return 0;
-+}
-+
-+static int ljca_spi_transfer_one(struct spi_controller *controller, struct spi_device *spi,
-+				 struct spi_transfer *xfer)
-+{
-+	struct ljca_spi_dev *ljca_spi = spi_controller_get_devdata(controller);
-+	int ret;
-+	u8 div;
-+
-+	div = min_t(u8, LJCA_SPI_BUS_SPEED_MIN,
-+		    DIV_ROUND_UP(controller->max_speed_hz, xfer->speed_hz) / 2 - 1);
-+	ret = ljca_spi_init(ljca_spi, div, spi->mode);
-+	if (ret) {
-+		dev_err(&ljca_spi->auxdev->dev, "cannot initialize transfer ret %d\n", ret);
-+		return ret;
-+	}
-+
-+	ret = ljca_spi_transfer(ljca_spi, xfer->tx_buf, xfer->rx_buf, xfer->len);
-+	if (ret)
-+		dev_err(&ljca_spi->auxdev->dev, "ljca spi transfer failed!\n");
-+
-+	return ret;
-+}
-+
-+static int ljca_spi_probe(struct auxiliary_device *auxdev,
-+			  const struct auxiliary_device_id *aux_dev_id)
-+{
-+	struct spi_controller *controller;
-+	struct ljca_spi_dev *ljca_spi;
-+	int ret;
-+
-+	controller = devm_spi_alloc_master(&auxdev->dev, sizeof(*ljca_spi));
-+	if (!controller)
-+		return -ENOMEM;
-+
-+	auxiliary_set_drvdata(auxdev, controller);
-+	ljca_spi = spi_controller_get_devdata(controller);
-+
-+	ljca_spi->spi_info = dev_get_platdata(&auxdev->dev);
-+	ljca_spi->controller = controller;
-+	ljca_spi->auxdev = auxdev;
-+	device_set_node(&ljca_spi->controller->dev, dev_fwnode(&auxdev->dev));
-+
-+	controller->bus_num = -1;
-+	controller->mode_bits = SPI_CPHA | SPI_CPOL;
-+	controller->transfer_one = ljca_spi_transfer_one;
-+	controller->auto_runtime_pm = false;
-+	controller->max_speed_hz = LJCA_SPI_BUS_MAX_HZ;
-+
-+	ret = spi_register_controller(controller);
-+	if (ret)
-+		dev_err(&auxdev->dev, "Failed to register controller\n");
-+
-+	return ret;
-+}
-+
-+static void ljca_spi_dev_remove(struct auxiliary_device *auxdev)
-+{
-+	struct spi_controller *controller = auxiliary_get_drvdata(auxdev);
-+	struct ljca_spi_dev *ljca_spi = spi_controller_get_devdata(controller);
-+
-+	spi_unregister_controller(controller);
-+	ljca_spi_deinit(ljca_spi);
-+}
-+
-+static int ljca_spi_dev_suspend(struct device *dev)
-+{
-+	struct spi_controller *controller = dev_get_drvdata(dev);
-+
-+	return spi_controller_suspend(controller);
-+}
-+
-+static int ljca_spi_dev_resume(struct device *dev)
-+{
-+	struct spi_controller *controller = dev_get_drvdata(dev);
-+
-+	return spi_controller_resume(controller);
-+}
-+
-+static const struct dev_pm_ops ljca_spi_pm = {
-+	SYSTEM_SLEEP_PM_OPS(ljca_spi_dev_suspend, ljca_spi_dev_resume)
-+};
-+
-+#define LJCA_SPI_DRV_NAME "ljca.ljca-spi"
-+static const struct auxiliary_device_id ljca_spi_id_table[] = {
-+	{ LJCA_SPI_DRV_NAME, 0 },
-+	{ /* sentinel */ }
-+};
-+MODULE_DEVICE_TABLE(auxiliary, ljca_spi_id_table);
-+
-+static struct auxiliary_driver ljca_spi_driver = {
-+	.driver.pm	= &ljca_spi_pm,
-+	.probe		= ljca_spi_probe,
-+	.remove		= ljca_spi_dev_remove,
-+	.id_table	= ljca_spi_id_table,
-+};
-+module_auxiliary_driver(ljca_spi_driver);
-+
-+MODULE_AUTHOR("Ye Xiang <xiang.ye@intel.com>");
-+MODULE_AUTHOR("Wang Zhifeng <zhifeng.wang@intel.com>");
-+MODULE_AUTHOR("Zhang Lixu <lixu.zhang@intel.com>");
-+MODULE_DESCRIPTION("Intel La Jolla Cove Adapter USB-SPI driver");
-+MODULE_LICENSE("GPL");
-+MODULE_IMPORT_NS(LJCA);
+-			qspi_data12: qspi-data12-state {
++			qspi_data23: qspi-data23-state {
+ 				pins = "gpio66", "gpio67";
+ 				function = "qspi_data";
+ 			};
 -- 
-2.34.1
+2.40.0.348.gf938b09366-goog
 

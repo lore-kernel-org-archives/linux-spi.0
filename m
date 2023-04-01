@@ -2,45 +2,45 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3A704C77B60
-	for <linux-spi@archiver.kernel.org>; Sat,  1 Apr 2023 18:00:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5DF67C76196
+	for <linux-spi@archiver.kernel.org>; Sat,  1 Apr 2023 18:00:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230134AbjDASA3 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sat, 1 Apr 2023 14:00:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43904 "EHLO
+        id S229569AbjDASAm (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sat, 1 Apr 2023 14:00:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229379AbjDASA1 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sat, 1 Apr 2023 14:00:27 -0400
+        with ESMTP id S230233AbjDASAh (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sat, 1 Apr 2023 14:00:37 -0400
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D6E820339;
-        Sat,  1 Apr 2023 11:00:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69A85265AB;
+        Sat,  1 Apr 2023 11:00:29 -0700 (PDT)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-        by localhost (Postfix) with ESMTP id 4PplLR2rsgz9sV9;
-        Sat,  1 Apr 2023 20:00:15 +0200 (CEST)
+        by localhost (Postfix) with ESMTP id 4PplLX4mtSz9sVF;
+        Sat,  1 Apr 2023 20:00:20 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
         by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id bVkq02J0qwek; Sat,  1 Apr 2023 20:00:15 +0200 (CEST)
+        with ESMTP id 1We6b6nlkxln; Sat,  1 Apr 2023 20:00:20 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-        by pegase2.c-s.fr (Postfix) with ESMTP id 4PplLN1JZnz9sVB;
-        Sat,  1 Apr 2023 20:00:12 +0200 (CEST)
+        by pegase2.c-s.fr (Postfix) with ESMTP id 4PplLX3xB6z9sVB;
+        Sat,  1 Apr 2023 20:00:20 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 15FE68B837;
-        Sat,  1 Apr 2023 20:00:12 +0200 (CEST)
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 75DFF8B841;
+        Sat,  1 Apr 2023 20:00:20 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
         by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-        with ESMTP id bw95CauszfV1; Sat,  1 Apr 2023 20:00:11 +0200 (CEST)
+        with ESMTP id bKU_w5W2O2fv; Sat,  1 Apr 2023 20:00:20 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.202.134])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id AE6378B845;
-        Sat,  1 Apr 2023 20:00:11 +0200 (CEST)
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 3635B8B837;
+        Sat,  1 Apr 2023 20:00:20 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-        by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 331I05jM573352
+        by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 331I0BUU573368
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-        Sat, 1 Apr 2023 20:00:05 +0200
+        Sat, 1 Apr 2023 20:00:11 +0200
 Received: (from chleroy@localhost)
-        by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 331I05XT573351;
-        Sat, 1 Apr 2023 20:00:05 +0200
+        by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 331I0B1j573363;
+        Sat, 1 Apr 2023 20:00:11 +0200
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
 From:   Christophe Leroy <christophe.leroy@csgroup.eu>
 To:     Mark Brown <broonie@kernel.org>
@@ -49,115 +49,53 @@ Cc:     Christophe Leroy <christophe.leroy@csgroup.eu>,
         Anton Vorontsov <cbouatmailru@gmail.com>,
         Joakim Tjernlund <Joakim.Tjernlund@transmode.se>,
         linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v1 2/5] spi: fsl-spi: Re-organise transfer bits_per_word adaptation
-Date:   Sat,  1 Apr 2023 19:59:47 +0200
-Message-Id: <0ce96fe96e8b07cba0613e4097cfd94d09b8919a.1680371809.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v1 5/5] spi: fsl-spi: No need to check transfer length versus word size
+Date:   Sat,  1 Apr 2023 19:59:50 +0200
+Message-Id: <9ace69a8085e22fafd9159e99edd7bbfae2f9940.1680371809.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <1b7d3e84b1128f42c1887dd2fb9cdf390f541bc1.1680371809.git.christophe.leroy@csgroup.eu>
 References: <1b7d3e84b1128f42c1887dd2fb9cdf390f541bc1.1680371809.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1680371987; l=3390; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=pDEa0OxIjq77cAdrgl8alondjrAHhsginv2w4ZZCkr8=; b=SV6F7ObgNEsWRev3Ab7MZp0Kuw5ef+kamTMEqp0D8KQiLB5VG/EODpodE1YkoOsPF8/XkAhrG RTBHAAjMSTaC8LctDtWfcpkfcX7g6yT/Ouc7Dt4VJpvurqMCu73U4jB
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1680371987; l=984; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=hDCmrEe6o7BVI++8Bmh+Jjuo/S+dkFP/T6OxyOCQ3ig=; b=3xbEppuBrUE5lXt+oR5zif9k15I3E7RJyyz48IY/jL7gV6/I6v0zdT1x/v2//U734hYpVKGAB XvQLcQmeygQBkeQG8BvzK0/kBL4qg3tIf+S4PWAmOqnIaK9/N9iCaK9
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-For different reasons, fsl-spi driver performs bits_per_word
-modifications for different reasons:
-- On CPU mode, to minimise amount of interrupts
-- On CPM/QE mode to work around controller byte order
-
-For CPU mode that's done in fsl_spi_prepare_message() while
-for CPM mode that's done in fsl_spi_setup_transfer().
-
-Reunify all of it in fsl_spi_prepare_message(), and catch
-impossible cases early through master's bits_per_word_mask
-instead of returning EINVAL later.
+The verification is already do in the SPI core by function
+__spi_validate(), not it to check it again in fsl_spi_bufs().
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- drivers/spi/spi-fsl-spi.c | 46 ++++++++++++++++++---------------------
- 1 file changed, 21 insertions(+), 25 deletions(-)
+ drivers/spi/spi-fsl-spi.c | 12 ++----------
+ 1 file changed, 2 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
-index 5602f052b2b5..7e0aca620b72 100644
+index d011beddee29..9938b058c9e2 100644
 --- a/drivers/spi/spi-fsl-spi.c
 +++ b/drivers/spi/spi-fsl-spi.c
-@@ -177,26 +177,6 @@ static int mspi_apply_cpu_mode_quirks(struct spi_mpc8xxx_cs *cs,
- 	return bits_per_word;
- }
+@@ -263,18 +263,10 @@ static int fsl_spi_bufs(struct spi_device *spi, struct spi_transfer *t,
+ 	if (t->bits_per_word)
+ 		bits_per_word = t->bits_per_word;
  
--static int mspi_apply_qe_mode_quirks(struct spi_mpc8xxx_cs *cs,
--				struct spi_device *spi,
--				int bits_per_word)
--{
--	/* CPM/QE uses Little Endian for words > 8
--	 * so transform 16 and 32 bits words into 8 bits
--	 * Unfortnatly that doesn't work for LSB so
--	 * reject these for now */
--	/* Note: 32 bits word, LSB works iff
--	 * tfcr/rfcr is set to CPMFCR_GBL */
--	if (spi->mode & SPI_LSB_FIRST &&
--	    bits_per_word > 8)
--		return -EINVAL;
--	if (bits_per_word <= 8)
--		return bits_per_word;
--	if (bits_per_word == 16 || bits_per_word == 32)
--		return 8; /* pretend its 8 bits */
--	return -EINVAL;
--}
--
- static int fsl_spi_setup_transfer(struct spi_device *spi,
- 					struct spi_transfer *t)
- {
-@@ -224,9 +204,6 @@ static int fsl_spi_setup_transfer(struct spi_device *spi,
- 		bits_per_word = mspi_apply_cpu_mode_quirks(cs, spi,
- 							   mpc8xxx_spi,
- 							   bits_per_word);
--	else
--		bits_per_word = mspi_apply_qe_mode_quirks(cs, spi,
--							  bits_per_word);
+-	if (bits_per_word > 8) {
+-		/* invalid length? */
+-		if (len & 1)
+-			return -EINVAL;
++	if (bits_per_word > 8)
+ 		len /= 2;
+-	}
+-	if (bits_per_word > 16) {
+-		/* invalid length? */
+-		if (len & 1)
+-			return -EINVAL;
++	if (bits_per_word > 16)
+ 		len /= 2;
+-	}
  
- 	if (bits_per_word < 0)
- 		return bits_per_word;
-@@ -361,6 +338,19 @@ static int fsl_spi_prepare_message(struct spi_controller *ctlr,
- 				t->bits_per_word = 32;
- 			else if ((t->len & 1) == 0)
- 				t->bits_per_word = 16;
-+		} else {
-+			/*
-+			 * CPM/QE uses Little Endian for words > 8
-+			 * so transform 16 and 32 bits words into 8 bits
-+			 * Unfortnatly that doesn't work for LSB so
-+			 * reject these for now
-+			 * Note: 32 bits word, LSB works iff
-+			 * tfcr/rfcr is set to CPMFCR_GBL
-+			 */
-+			if (m->spi->mode & SPI_LSB_FIRST && t->bits_per_word > 8)
-+				return -EINVAL;
-+			if (t->bits_per_word == 16 || t->bits_per_word == 32)
-+				t->bits_per_word = 8; /* pretend its 8 bits */
- 		}
- 	}
- 	return fsl_spi_setup_transfer(m->spi, first);
-@@ -594,8 +584,14 @@ static struct spi_master *fsl_spi_probe(struct device *dev,
- 	if (mpc8xxx_spi->type == TYPE_GRLIB)
- 		fsl_spi_grlib_probe(dev);
- 
--	master->bits_per_word_mask =
--		(SPI_BPW_RANGE_MASK(4, 16) | SPI_BPW_MASK(32)) &
-+	if (mpc8xxx_spi->flags & SPI_CPM_MODE)
-+		master->bits_per_word_mask =
-+			(SPI_BPW_RANGE_MASK(4, 8) | SPI_BPW_MASK(16) | SPI_BPW_MASK(32));
-+	else
-+		master->bits_per_word_mask =
-+			(SPI_BPW_RANGE_MASK(4, 16) | SPI_BPW_MASK(32));
-+
-+	master->bits_per_word_mask &=
- 		SPI_BPW_RANGE_MASK(1, mpc8xxx_spi->max_bits_per_word);
- 
- 	if (mpc8xxx_spi->flags & SPI_QE_CPU_MODE)
+ 	mpc8xxx_spi->tx = t->tx_buf;
+ 	mpc8xxx_spi->rx = t->rx_buf;
 -- 
 2.39.2
 

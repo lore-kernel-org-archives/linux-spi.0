@@ -2,83 +2,62 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D34C7C6FD1D
-	for <linux-spi@archiver.kernel.org>; Tue,  4 Apr 2023 17:17:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 47386C761A6
+	for <linux-spi@archiver.kernel.org>; Tue,  4 Apr 2023 17:18:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235710AbjDDRRD (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 4 Apr 2023 13:17:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40598 "EHLO
+        id S235669AbjDDRS3 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 4 Apr 2023 13:18:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235849AbjDDRRB (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 4 Apr 2023 13:17:01 -0400
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6465B2683;
-        Tue,  4 Apr 2023 10:17:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1680628620; x=1712164620;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=i+Jlcq7+ozFYtO3gopneWBMGEdmaY2LDJGZxZu3AEuw=;
-  b=sNto0DczWSZo2MZF1875OA4cp8SG4t+w8IYGeyiC/oNTB14UTtotNvab
-   aYpI87/A9uIYafSmaBVYvJqPiRrvFAbccEJy/yozzOf9pxoAhb4JPJyPw
-   ZxPPsYCoAkfshjS3/qMijpG9AaZU1wZeaSUrRub/+ak1n2Va0yoQDIfdi
-   SWXgNDFIrHmNVP2OLrpq4Q1nIDA0dftpDnnnolsNbHP7xmBQBVqwOZr8z
-   chPfS/vcddPkBj+UYv4MdxMdKudjvfN8RO7uupnnSn0isi1m+nh9Rveif
-   6kvH5ftWnoLfz9wK0EgebJKxwKjxre0N4O7eFlY/SqPYXwgMd7RhQ5yuo
-   Q==;
-X-IronPort-AV: E=Sophos;i="5.98,318,1673938800"; 
-   d="scan'208";a="219405872"
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 04 Apr 2023 10:16:49 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Tue, 4 Apr 2023 10:16:49 -0700
-Received: from CHE-LT-UNGSOFTWARE.microchip.com (10.10.115.15) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
- 15.1.2507.21 via Frontend Transport; Tue, 4 Apr 2023 10:16:47 -0700
-From:   Tharun Kumar P <tharunkumar.pasumarthi@microchip.com>
+        with ESMTP id S235917AbjDDRS2 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 4 Apr 2023 13:18:28 -0400
+X-Greylist: delayed 4196 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 04 Apr 2023 10:18:10 PDT
+Received: from mail.feshiecree.pl (mail.feshiecree.pl [89.40.114.103])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1011ED3
+        for <linux-spi@vger.kernel.org>; Tue,  4 Apr 2023 10:18:09 -0700 (PDT)
+Received: by mail.feshiecree.pl (Postfix, from userid 1001)
+        id B168388D4F; Tue,  4 Apr 2023 08:50:58 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=feshiecree.pl;
+        s=mail; t=1680594693;
+        bh=hFxZwVw4rIL+JwfEOGI47p+fdoVOAeqVswP6NWoHSHQ=;
+        h=Date:From:To:Subject:From;
+        b=GtDhfHypVb6VENWf8K07wNv8kl3LwDnPAl2AVNx4gwnqblrXKcucUYuwDliRQJ16L
+         WEgHM0JwoSA4mxsfOu84PcxT7pfw7nRQo6pslDbu+JWUkEm2eFi5vgvHQqi+zIpOzT
+         xyQSJJsd+KDsugY+b2l1EHIOORrmty5lHI2MNIav7xjYO9skzaA4UIv63wQ4lUhLTP
+         acam5l9lFufmk6Jjw2rwe4gN/+yVNRo/GtcFFIfXVltjsKBfe+M8LSAz8mYH88XYPG
+         enGw4doOHeiAkPSJmN/Ttw0I3iTmDcVoyO/fnxxoYbgc8Ya9m77HAmwbMi7zA5XMwp
+         d+yXFsJwJEd4w==
+Received: by feshiecree.pl for <linux-spi@vger.kernel.org>; Tue,  4 Apr 2023 07:50:27 GMT
+Message-ID: <20230404074504-0.1.1t.5nvu.0.b1q0dnkfc8@feshiecree.pl>
+Date:   Tue,  4 Apr 2023 07:50:27 GMT
+From:   "Krystian Wieczorek" <krystian.wieczorek@feshiecree.pl>
 To:     <linux-spi@vger.kernel.org>
-CC:     <linux-kernel@vger.kernel.org>, <broonie@kernel.org>
-Subject: [PATCH SPI for-next 1/3] spi: mchp-pci1xxxx: Fix length of SPI transactions not set properly in driver
-Date:   Tue, 4 Apr 2023 22:46:11 +0530
-Message-ID: <20230404171613.1336093-2-tharunkumar.pasumarthi@microchip.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230404171613.1336093-1-tharunkumar.pasumarthi@microchip.com>
-References: <20230404171613.1336093-1-tharunkumar.pasumarthi@microchip.com>
+Subject: W sprawie samochodu
+X-Mailer: mail.feshiecree.pl
 MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-In pci1xxxx_spi_transfer_one API, length of SPI transaction gets cleared
-by setting of length mask. Set length of transaction only after masking
-length field.
+Dzie=C5=84 dobry,
 
-Fixes: 1cc0cbea7167 ("spi: microchip: pci1xxxx: Add driver for SPI controller of PCI1XXXX PCIe switch")
-Signed-off-by: Tharun Kumar P <tharunkumar.pasumarthi@microchip.com>
----
- drivers/spi/spi-pci1xxxx.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+chcieliby=C5=9Bmy zapewni=C4=87 Pa=C5=84stwu kompleksowe rozwi=C4=85zania=
+, je=C5=9Bli chodzi o system monitoringu GPS.
 
-diff --git a/drivers/spi/spi-pci1xxxx.c b/drivers/spi/spi-pci1xxxx.c
-index 1c5731641a04..419a1d3a5c2e 100644
---- a/drivers/spi/spi-pci1xxxx.c
-+++ b/drivers/spi/spi-pci1xxxx.c
-@@ -199,8 +199,9 @@ static int pci1xxxx_spi_transfer_one(struct spi_controller *spi_ctlr,
- 			else
- 				regval &= ~SPI_MST_CTL_MODE_SEL;
- 
--			regval |= ((clkdiv << 5) | SPI_FORCE_CE | (len << 8));
-+			regval |= ((clkdiv << 5) | SPI_FORCE_CE);
- 			regval &= ~SPI_MST_CTL_CMD_LEN_MASK;
-+			regval |= (len << 8);
- 			writel(regval, par->reg_base +
- 			       SPI_MST_CTL_REG_OFFSET(p->hw_inst));
- 			regval = readl(par->reg_base +
--- 
-2.25.1
+Precyzyjne monitorowanie pojazd=C3=B3w na mapach cyfrowych, =C5=9Bledzeni=
+e ich parametr=C3=B3w eksploatacyjnych w czasie rzeczywistym oraz kontrol=
+a paliwa to kluczowe funkcjonalno=C5=9Bci naszego systemu.=20
 
+Organizowanie pracy pracownik=C3=B3w jest dzi=C4=99ki temu prostsze i bar=
+dziej efektywne, a oszcz=C4=99dno=C5=9Bci i optymalizacja w zakresie pono=
+szonych koszt=C3=B3w, maj=C4=85 dla ka=C5=BCdego przedsi=C4=99biorcy ogro=
+mne znaczenie.
+
+Dopasujemy nasz=C4=85 ofert=C4=99 do Pa=C5=84stwa oczekiwa=C5=84 i potrze=
+b organizacji. Czy mogliby=C5=9Bmy porozmawia=C4=87 o naszej propozycji?
+
+
+Pozdrawiam
+Krystian Wieczorek

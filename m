@@ -2,241 +2,155 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 075C7C77B60
-	for <linux-spi@archiver.kernel.org>; Tue,  4 Apr 2023 06:14:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 191ECC761A6
+	for <linux-spi@archiver.kernel.org>; Tue,  4 Apr 2023 08:54:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233723AbjDDGOd (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 4 Apr 2023 02:14:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32806 "EHLO
+        id S233478AbjDDIx7 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 4 Apr 2023 04:53:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233702AbjDDGOV (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 4 Apr 2023 02:14:21 -0400
-Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAA462108
-        for <linux-spi@vger.kernel.org>; Mon,  3 Apr 2023 23:14:14 -0700 (PDT)
-Received: from epcas2p1.samsung.com (unknown [182.195.41.53])
-        by mailout1.samsung.com (KnoxPortal) with ESMTP id 20230404061411epoutp012665dfa7e49e5e48ac126eac27580021~SpqfpscZh2903529035epoutp01i
-        for <linux-spi@vger.kernel.org>; Tue,  4 Apr 2023 06:14:11 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20230404061411epoutp012665dfa7e49e5e48ac126eac27580021~SpqfpscZh2903529035epoutp01i
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1680588851;
-        bh=yxk3LInfyfp4SqA7cJhgXDlEraKJNgFGdKmVnOtMA/g=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FzeKSiSyaSV0fqX5IBCm+/O+Ch/FsjM2kRf2NTFZRTROpMjRIraUTBKzvfwvLvF5g
-         Z5yMSor5P8SLgj6YVsCnoj/hFnFmFKtm0X2spg6hP5gJwXQrHjkxYElaTjXFoRqWQU
-         waRfQZZ+kQkyZ3mFb1RBYVUOHBAnEUZV7/aJPb8Y=
-Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
-        epcas2p1.samsung.com (KnoxPortal) with ESMTP id
-        20230404061410epcas2p1ffd783739455327a78232e7a39fcc776~SpqfFMjrp1839918399epcas2p14;
-        Tue,  4 Apr 2023 06:14:10 +0000 (GMT)
-Received: from epsmges2p1.samsung.com (unknown [182.195.36.70]) by
-        epsnrtp1.localdomain (Postfix) with ESMTP id 4PrHXL134Xz4x9QF; Tue,  4 Apr
-        2023 06:14:10 +0000 (GMT)
-Received: from epcas2p3.samsung.com ( [182.195.41.55]) by
-        epsmges2p1.samsung.com (Symantec Messaging Gateway) with SMTP id
-        C5.0D.61927.130CB246; Tue,  4 Apr 2023 15:14:10 +0900 (KST)
-Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
-        epcas2p2.samsung.com (KnoxPortal) with ESMTPA id
-        20230404061409epcas2p2b12a9cac014907e3930795cb67cb6040~SpqeEw5ss0906409064epcas2p2W;
-        Tue,  4 Apr 2023 06:14:09 +0000 (GMT)
-Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
-        epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20230404061409epsmtrp1d9839c642188df34f77c6026fd90d8b7~SpqeEBRS_0601006010epsmtrp1K;
-        Tue,  4 Apr 2023 06:14:09 +0000 (GMT)
-X-AuditID: b6c32a45-671ff7000001f1e7-d2-642bc03137ec
-Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
-        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-        A0.CD.18071.130CB246; Tue,  4 Apr 2023 15:14:09 +0900 (KST)
-Received: from localhost.localdomain (unknown [10.229.9.51]) by
-        epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20230404061409epsmtip13822c512614a3630e8784a3b1881b187~Spqd5kGE73056630566epsmtip1T;
-        Tue,  4 Apr 2023 06:14:09 +0000 (GMT)
-From:   Jaewon Kim <jaewon02.kim@samsung.com>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Andi Shyti <andi@etezian.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
+        with ESMTP id S232063AbjDDIx6 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 4 Apr 2023 04:53:58 -0400
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2043.outbound.protection.outlook.com [40.107.21.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A8CA1AD;
+        Tue,  4 Apr 2023 01:53:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=UNrY8hnFySwFxYCESGStjPl+Mda1c9O4VYmx4uIZ3eW6BDOz6ZcYCgUoqREPHUMxGpm4gHT76LbCdi0r52gHSAqPPXD/L4UIIKZ65rSg0w5Le25wWAvaPPNuM4HFBzEQRhhAO7scnJIUawZNWhF9DfB2DsmCeTjqtYYMdfNbg4BVFiAxLk4IRqQgFW3OdM3BpTzXPURB8L3A8HhIGdEtpODg+f8CwAu3bP8JtVdXvb5wEjWTV+BVAaGsebHoHhGf1hODpdCEMq7u14Pvuh4tLATckxkml31Wwt0bEw0kRVdX2sTrkzbG3reJbkfCMG3gcti6vndX9QN6HLjt+eihGA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=y6McrMdcL1HwLm1KM+/7u5p8mnGJF5pXiqFFNV+H8HE=;
+ b=YipUMEYqv8zhX6ZSWeOnyzwkwgreABMgRKttRuBPODDhkEaEwGIbdf+Pr5eVVki2JDia6lK0lIrz9jb8uOlY775D0RD0LAOBdd5EuDoQTpjIcJHWgDKtn+SmFtabjTwMIsbzHb/SbtfPHYhAST4pQvdihBKJEw13j3j+8GIKU/UkJEQjA+PGoK5IG2QxGaAF+DIyYzDs4LFOA8nfbb4XMxF97VGAFdNmAO8gzX3FV0rxvwUibPvaVsRD22VrAUrlBoTG6MKFKQa14F4x4Y+0IHZu1JuIgyFwbjofVGgDjzpisGpYgJscpxz2OgyQhFTFVe/0UEn9VcpdIdEUCS8lIA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=suse.com; dmarc=pass action=none header.from=suse.com;
+ dkim=pass header.d=suse.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=y6McrMdcL1HwLm1KM+/7u5p8mnGJF5pXiqFFNV+H8HE=;
+ b=ZJnLkm+oBHcCbGHF+x3h3HxCk1Rqe90b5DVYwmOVHRaQKa52FeJCGKcFBNv8W7LMG6Y5hNRwKR0fS8swVHc3teLZ1PhhUKAO8V2x50PIOCeov9Jk6eJuj6JzK5Vn4oHc+oY3JGP2qsyKTqctl/JK2FBtIBEOnlrrbwcoPVj+yU7WSkYZwk8XtC2d7VSoHDpH1nyWPhZDk8ays897OFqaCpR1t+GZW4FMb58wSuk1y5Bk+GgxypZu8eX3AoVMOGkVeEVqgCEmblERgigoagZvIWsAYoIUWoDus/I8eZzPCF8fiYqExW5z4K661A447WphUAk/9/UdScdzNlhinhAF6A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=suse.com;
+Received: from VI1PR04MB7104.eurprd04.prod.outlook.com (2603:10a6:800:126::9)
+ by DU0PR04MB9371.eurprd04.prod.outlook.com (2603:10a6:10:35a::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6254.33; Tue, 4 Apr
+ 2023 08:53:54 +0000
+Received: from VI1PR04MB7104.eurprd04.prod.outlook.com
+ ([fe80::74bd:991c:527d:aa61]) by VI1PR04MB7104.eurprd04.prod.outlook.com
+ ([fe80::74bd:991c:527d:aa61%9]) with mapi id 15.20.6254.035; Tue, 4 Apr 2023
+ 08:53:53 +0000
+Message-ID: <b1eb8356-4519-4c95-b3ee-afc142b8d17f@suse.com>
+Date:   Tue, 4 Apr 2023 10:53:48 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v7 3/6] Documentation: Add ABI doc for attributes of LJCA
+ device
+To:     Ye Xiang <xiang.ye@intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Lee Jones <lee@kernel.org>, Wolfram Sang <wsa@kernel.org>,
+        Tyrone Ting <kfting@nuvoton.com>,
         Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>
-Cc:     linux-spi@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Chanho Park <chanho61.park@samsung.com>,
-        Jaewon Kim <jaewon02.kim@samsung.com>
-Subject: [PATCH 3/3] spi: s3c64xx: support interrupt based pio mode
-Date:   Tue,  4 Apr 2023 15:00:11 +0900
-Message-Id: <20230404060011.108561-4-jaewon02.kim@samsung.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20230404060011.108561-1-jaewon02.kim@samsung.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrJKsWRmVeSWpSXmKPExsWy7bCmua7RAe0Ug40PGS0ezNvGZrH4x3Mm
-        i6kPn7BZXN6vbTH/yDlWix0NR1gt9r7eym6x6fE1VovLu+awWcw4v4/JovHjTXaL1r1H2B14
-        PK4v+cTssWlVJ5vHnWt72Dw2L6n36NuyitHj8ya5ALaobJuM1MSU1CKF1Lzk/JTMvHRbJe/g
-        eOd4UzMDQ11DSwtzJYW8xNxUWyUXnwBdt8wcoBOVFMoSc0qBQgGJxcVK+nY2RfmlJakKGfnF
-        JbZKqQUpOQXmBXrFibnFpXnpenmpJVaGBgZGpkCFCdkZLec6mQr2yVccuvGYsYHxi0QXIyeH
-        hICJxOuDGxm7GLk4hAR2MEq83jcLyvnEKPH9y212COcbo8TJ55PYYVrmdnVAVe1llNj7Yi0z
-        hPORUeLz8y9sIFVsAtoS39cvZgVJiAgcZZTYvvMtmMMMMmvh0TlgVcICzhITpm0Bs1kEVCVO
-        d/cwgdi8AnYSO57fY4LYJy+xesMBZhCbU8Be4mv7DRaQQRICH9kllk09A3WUi8TVvllQtrDE
-        q+NboGwpiZf9bVB2tkT79D+sEHaFxMUNs9kgbGOJWc/agR7iALpOU2L9Ln0QU0JAWeLILRaQ
-        CmYBPomOw3/ZIcK8Eh1tQhCNahL3p56DGiIjMenISqiLPST+THwNdrGQwCRGiY/rTSYwys1C
-        mL+AkXEVo1hqQXFuemqxUYEhPMqS83M3MYLToJbrDsbJbz/oHWJk4mA8xCjBwawkwqvapZUi
-        xJuSWFmVWpQfX1Sak1p8iNEUGHQTmaVEk/OBiTivJN7QxNLAxMzM0NzI1MBcSZxX2vZkspBA
-        emJJanZqakFqEUwfEwenVAOThfDdzHOud52OROlpVp5Ztby1VOZrc3v93wm+4YffaYuv3DPx
-        /jSunw7e1t5LItdKnE3MX8kjd4xNxVH0jep7dblDC2/MWVM+5aUX8wnLywtTqpNqm1oszhwW
-        n8IQd5KpxSS0vMT33NG53/QW+y3Z8JaT8/Fa7lkzvOakzj7EFP7sh+DNn83nj+oKbleLMUn4
-        fj64zuaAUjibTajjWf2XKaGRe5nu3ZET/vSjlbspqEknLHGh6YEM7yc3De1apxo41ApbMh2T
-        2nTNKtku2Scuoe9kQfuDD403NQo2KvUxC9nMZiyMbnW8oL5l9e2ubafsv++fs/PaPMcYSb+e
-        9aLNkW/7faOa1wv9KX7lelWJpTgj0VCLuag4EQDpn9hHDAQAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrKLMWRmVeSWpSXmKPExsWy7bCSnK7hAe0Ug59PhCwezNvGZrH4x3Mm
-        i6kPn7BZXN6vbTH/yDlWix0NR1gt9r7eym6x6fE1VovLu+awWcw4v4/JovHjTXaL1r1H2B14
-        PK4v+cTssWlVJ5vHnWt72Dw2L6n36NuyitHj8ya5ALYoLpuU1JzMstQifbsEroyWc51MBfvk
-        Kw7deMzYwPhFoouRk0NCwERiblcHYxcjF4eQwG5GiTv3tjBBJGQklj/rY4OwhSXutxxhhSh6
-        zyhxcdorZpAEm4C2xPf1i8ESIgInGSV+n2liAnGYBf4wSkw98h9slLCAs8SEaVvARrEIqEqc
-        7u4Bi/MK2EnseH4Pap28xOoNB8CmcgrYS3xtv8ECYgsB1fz+t4N5AiPfAkaGVYySqQXFuem5
-        xYYFhnmp5XrFibnFpXnpesn5uZsYwSGrpbmDcfuqD3qHGJk4GA8xSnAwK4nwqnZppQjxpiRW
-        VqUW5ccXleakFh9ilOZgURLnvdB1Ml5IID2xJDU7NbUgtQgmy8TBKdXAtMp5WbA8W+OESgPN
-        nrmFa/88KWE/nXXhxoyOiCYGPs8X5R16jUdeSk3iCfgfI1o1be6pewI32Fon8a5WdzHSYHn+
-        ff67J4e6HTx8thedUl5h4Myv7JD++upavxlu2UJvj0+59viCWPC73NjfKwQW/Fwnwlbh8z6Q
-        2z6z8oaDbZiOxAfV9tTdW02WHLnFcMrmyqtTYQX6r5IVU+Xvu2b35K5doifTxrdJ67c2X5SB
-        /SdV4ZQ/0SJH7ui3dvX8lihknPBQLSZmz8J3EycZxzvbeK/R6zi6IEXUSGDPsh9//64+axj/
-        /8X/lWK+jWrlkvl3l63NL5/Pl/grTjcs0lzikmL3xhuPZJ/3hjFYXD6lxFKckWioxVxUnAgA
-        i1UC1MgCAAA=
-X-CMS-MailID: 20230404061409epcas2p2b12a9cac014907e3930795cb67cb6040
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: AUTO_CONFIDENTIAL
-CMS-TYPE: 102P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20230404061409epcas2p2b12a9cac014907e3930795cb67cb6040
-References: <20230404060011.108561-1-jaewon02.kim@samsung.com>
-        <CGME20230404061409epcas2p2b12a9cac014907e3930795cb67cb6040@epcas2p2.samsung.com>
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>, linux-usb@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-gpio@vger.kernel.org
+Cc:     srinivas.pandruvada@intel.com, heikki.krogerus@linux.intel.com,
+        andriy.shevchenko@linux.intel.com, sakari.ailus@linux.intel.com,
+        zhifeng.wang@intel.com, wentong.wu@intel.com, lixu.zhang@intel.com
+References: <20230325154711.2419569-1-xiang.ye@intel.com>
+ <20230325154711.2419569-4-xiang.ye@intel.com>
+Content-Language: en-US
+From:   Oliver Neukum <oneukum@suse.com>
+In-Reply-To: <20230325154711.2419569-4-xiang.ye@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR3P281CA0108.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:a3::11) To VI1PR04MB7104.eurprd04.prod.outlook.com
+ (2603:10a6:800:126::9)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI1PR04MB7104:EE_|DU0PR04MB9371:EE_
+X-MS-Office365-Filtering-Correlation-Id: b339ff23-d36e-41dd-0db1-08db34ea1cec
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: rmiCk6o74yISVyKUJBLW1Kw5YMy1Xu/a1D4kqGHmes8gHgrGjnfLwhcmuxi86XUYBag6mLcHvi0VzjJMbU/fsqATnwqq3W9bes4Rlgq3eq0dyOWeA9pAhyB4YYe1TyMECcJslBvh0NmWgbDStRIxvsB7rifzZZWt5z3zrUKceAe8rHKE8q7C4p09NF53+HmTtJ6pmWiZLqiPrnQD3NbCktrFE/uEN07AR0Cyz1CS1x0Em6xyGGJ6jm+/oru/Ar6Mpfwc7Io4q3J3QEfacjEus2SvwnaP0u6pTkO36aUOXW4+McHqTH1k7CIHEnfR399YxssEx42NFBRUhBYdW3WjFRCJeKqeEDWnVJn5X959UEhBlx5msQfgwU8EdFuwGXtnYGwB4kVXCYUlkIgF5T9T4jkS3seBXdIehDdep/LPpt79fxsicSsUQ/83A6H2UDBTfXWQxS8ne6Pn1T1daqZ7x1vyU0cyugKcifmaC9dduxTAzfi+bhbMzC8mX23ZY/PjUbfzXY1EZVn83NOP7Puk42mfL3tqYC/yE8FvlF67zHTwM7dYUpYOJ3zSXbcmmepTZJbTUbooOaJBx76u30617uJg4y2BJCUBScJ7r3n/+RsCNTor2ePWMwkGPKqMvkSjXPsFeGMA1vl6VB1TKjiHxj/VxgDXiZeqCObAE3OBzg4=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB7104.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(136003)(376002)(366004)(39860400002)(346002)(396003)(451199021)(2906002)(186003)(83380400001)(36756003)(2616005)(6666004)(6512007)(6506007)(53546011)(6486002)(7416002)(5660300002)(38100700002)(8936002)(110136005)(921005)(31686004)(4744005)(4326008)(66946007)(8676002)(66556008)(66476007)(41300700001)(316002)(86362001)(31696002)(478600001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Ni9UenNNNWR5QUhIdGxjMnpERTYwbEROdldYdnoraStvc0toZnJGRzRPdWVN?=
+ =?utf-8?B?WkNzUDBNOWxVUXYwR3VjTjI5QTZoelhJc1hPb2RUazl2QmF0MWNnRTZxL0I3?=
+ =?utf-8?B?Rm8yQXVrL2NJQ3NBZ3VBRWtaKyttT1JUTkY0d3Q4ampCWFJDNS9lYXFVSkpo?=
+ =?utf-8?B?VU1IVU9VWWl1WjNnc2pmUnBMWnh3L0lsdU9RSzdvU2NkNWszdXNrUzZzbmJi?=
+ =?utf-8?B?MlhmNHQyZUUreTJuUlJXSlp1L3ZEcTFtSktjWDh4Y0xDb1NJbzFuZUFzTUN1?=
+ =?utf-8?B?ditLMEM5dTlPZ2FuYzhUN2VNc0ladmxtcExSTjlSK1YwRSsybkZIUGJOa0Iv?=
+ =?utf-8?B?VWpZNG9wR2RTSUNTWTY5cDlSVlZ6TnpycS9lY3k5a0pWMi91MTRZMjZEODNW?=
+ =?utf-8?B?QkVwc203aTAwOHhORENpM1diU0wyQThOTWZmYUpVdjNUWDRiN3RnSmRKeEwy?=
+ =?utf-8?B?aTgvQWQ0T0JwZzhZWkZNNk5zbjFNbXpiVHI1ODd6Mk1VdmxOVTRIMitiMHpy?=
+ =?utf-8?B?ZTlobkhibmt5TS9ZYlRlbFk4bkVkd3BpdUp6QjVIdXd1K2JmckxZR09GOWpv?=
+ =?utf-8?B?WW1KeTl2VU92M3ljL01hSjIyTk9lK1J5N3NYNTI1UFJ6T0w4cHdlWFhvSzUv?=
+ =?utf-8?B?QXFvb2JtUmwrblVjSkRCRWNzQmVab3prSTJ0b0ZRUUoyUkdmRldjeTBPWTFJ?=
+ =?utf-8?B?TFhIOTFFVmVmdnM3eHhiN0o0QWFIZ2RZbEtZTnVuQXNKUkhIcUZmdmExZkxH?=
+ =?utf-8?B?eUk0WDZyam04eEpzbVFCTDNQVWZqeDJrRzhvMmNBY1paZVgvSHdKeFhWdGgv?=
+ =?utf-8?B?Y1NCVzFic1FTRTdneUdONDlwOEtpa1NOK2tjSTJ2MjhrdkhSNVdEOXd6WFJJ?=
+ =?utf-8?B?TFdFWktHMmptNFhGRDlZMEtaWU1kYThFNFRVSVBJanNWTXdlalgrU09GcUVD?=
+ =?utf-8?B?N1B0K2JHNHMwdHZMOGZDVktheGlCK0svQzRTeU9tTWYyekh1VFFVMGREYWFX?=
+ =?utf-8?B?VGxmM3doTlRKaW1QTTF5TDB6bWg3L1RYY2N2STltQnVwV2hyNHR5OGxka2F4?=
+ =?utf-8?B?UGIxdVFYckNYSDNUM0lWcGJEWENVVUJ1b0NRcnVwbnJYbjBidGdxN3FCaG9x?=
+ =?utf-8?B?NnQzV3BjVzM3VlAvUDdhUTEzVXVIa21zTHJ3WlZyaGhWL1B0aUVBRS9kdWhK?=
+ =?utf-8?B?aDFXTnBTOWx0L3orUEhPK1plbS9XK01US3ViQ3VHeEhGTDBMalZlOHhYcTZo?=
+ =?utf-8?B?RC8rRG9BbVNMTTVGNTJ2U3hGdU1rVTdLOTlSWUlJTmEvYWNOY0Z2TFRkaVhZ?=
+ =?utf-8?B?SlNGZFk1dFpnQTJkSHdQZHNVUWV4Um1kajc0c2ZVZUpvVEtzbGxFL05nUjV6?=
+ =?utf-8?B?akxlSHcyUVRQZDlpOFNpK0dBbk10ZGJKTTBxeVk1UVFRZHBCY3pMN2ZnTFJp?=
+ =?utf-8?B?NlBaZ2ZueWgzbitGSzRPb205MXZ1emFITE1lMjNiN0M3WjNMMUxWczdyd2Ns?=
+ =?utf-8?B?WUZJYVJlSWJnYkhMdE5lU2hkZWdXUytaanBCaHRQdUY1UGNjYnVHZldNV250?=
+ =?utf-8?B?SEFOemt6UEF4dHRnemRDWk96SjdJWmNGeHBhSzJINWZsaWw4bnludVcvYlp1?=
+ =?utf-8?B?Y0ZQamdCbVBCRGtVc3lTbG4zSWVUZWtZTENkdFJhN0JTR1BGdzl0d1h4M0Z2?=
+ =?utf-8?B?L2Y2RHpYM2J2akEwOStjUlMvVEhlNFgyV2RqRjE5YWJ4Z09XN0FMSXZIU3Yy?=
+ =?utf-8?B?a01RSzA3Z0Z5YklqK2hNeFFJL2tZVmhKUGJBc04wUHRwS2Vja01GdmoxTFFP?=
+ =?utf-8?B?S1l2ZVQ2alBFdmRsWEp4TkxlZ1N5d0NRODlrS1BnY0tlbUVEVEhKS3B6MU5U?=
+ =?utf-8?B?UUZrOUR5aGt3QVUxZ1RnNER4cFI2QTBBbmQreEM0U2ZuNXZsYTBROWNoVDZS?=
+ =?utf-8?B?K1B5RHhzTmU2RlZjdmdrbXNyOGl2bDNVYkxqN01mU25uL3NsbkQ4eDlhTk1l?=
+ =?utf-8?B?VllXWGVIYjNDUzFxaHJvUWxNZWoySmZCQUo2TnM5MHgzK29RSDdkTEtKMmRB?=
+ =?utf-8?B?a25CYnlKbnBEdFhKZm5tVTdKQTBCSC9VYVdhVVMzMkE5QXpqU3hQVnBZM2ZG?=
+ =?utf-8?B?c0Qxakc4SlNQTUVoaGducHRPSTk5dkZ4UXk1VnZGZzl3dUl2Kzd3bGhUK0FM?=
+ =?utf-8?Q?u2FbeExOwz32GOd+YmnYxwpoRoyBEvIFhbe7GeuuW6I5?=
+X-OriginatorOrg: suse.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b339ff23-d36e-41dd-0db1-08db34ea1cec
+X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB7104.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Apr 2023 08:53:53.8769
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: f7a17af6-1c5c-4a36-aa8b-f5be247aa4ba
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3CyDD2uXpavlekMmYzuHaV1F6PODAEdbKBVIDmn32HwvR4zfJ5iWi+enOuILlYESJ4qOUHW2oFDhxiuM/LhfNg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR04MB9371
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This patch adds IRQ based PIO mode instead of cpu polling.
-By using the FIFO trigger level, interrupts are received.
-CPU consumption is reduced in PIO mode because registers are not
-constantly checked.
 
-Signed-off-by: Jaewon Kim <jaewon02.kim@samsung.com>
----
- drivers/spi/spi-s3c64xx.c | 54 ++++++++++++++++++++++++++++++++++-----
- 1 file changed, 48 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index bf1f3dcca202..f8986b05309e 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -59,6 +59,8 @@
- #define S3C64XX_SPI_MODE_BUS_TSZ_HALFWORD	(1<<17)
- #define S3C64XX_SPI_MODE_BUS_TSZ_WORD		(2<<17)
- #define S3C64XX_SPI_MODE_BUS_TSZ_MASK		(3<<17)
-+#define S3C64XX_SPI_MODE_RX_RDY_LVL		GENMASK(16, 11)
-+#define S3C64XX_SPI_MODE_RX_RDY_LVL_SHIFT	11
- #define S3C64XX_SPI_MODE_SELF_LOOPBACK		(1<<3)
- #define S3C64XX_SPI_MODE_RXDMA_ON		(1<<2)
- #define S3C64XX_SPI_MODE_TXDMA_ON		(1<<1)
-@@ -567,6 +569,7 @@ static int s3c64xx_wait_for_pio(struct s3c64xx_spi_driver_data *sdd,
- {
- 	void __iomem *regs = sdd->regs;
- 	unsigned long val;
-+	unsigned long time;
- 	u32 status;
- 	int loops;
- 	u32 cpy_len;
-@@ -577,6 +580,11 @@ static int s3c64xx_wait_for_pio(struct s3c64xx_spi_driver_data *sdd,
- 	ms = xfer->len * 8 * 1000 / sdd->cur_speed;
- 	ms += 10; /* some tolerance */
- 
-+	val = msecs_to_jiffies(ms);
-+	time = wait_for_completion_timeout(&sdd->xfer_completion, val);
-+	if (!time)
-+		return -EIO;
-+
- 	val = msecs_to_loops(ms);
- 	do {
- 		status = readl(regs + S3C64XX_SPI_STATUS);
-@@ -743,6 +751,8 @@ static int s3c64xx_spi_transfer_one(struct spi_master *master,
- 	u32 speed;
- 	u8 bpw;
- 	unsigned long flags;
-+	u32 rdy_lv;
-+	u32 val;
- 
- 	reinit_completion(&sdd->xfer_completion);
- 
-@@ -763,17 +773,41 @@ static int s3c64xx_spi_transfer_one(struct spi_master *master,
- 	    sdd->rx_dma.ch && sdd->tx_dma.ch) {
- 		use_dma = 1;
- 
--	} else if (xfer->len > fifo_len) {
-+	} else if (xfer->len >= fifo_len) {
- 		tx_buf = xfer->tx_buf;
- 		rx_buf = xfer->rx_buf;
- 		origin_len = xfer->len;
--
- 		target_len = xfer->len;
--		if (xfer->len > fifo_len)
--			xfer->len = fifo_len;
-+		xfer->len = fifo_len - 1;
- 	}
- 
- 	do {
-+		if (!use_dma) {
-+			reinit_completion(&sdd->xfer_completion);
-+
-+			rdy_lv = xfer->len;
-+			/* Setup RDY_FIFO trigger Level
-+			 * RDY_LVL =
-+			 * fifo_lvl upto 64 byte -> N bytes
-+			 *              128 byte -> RDY_LVL * 2 bytes
-+			 *              256 byte -> RDY_LVL * 4 bytes
-+			 */
-+			if (fifo_len == 128)
-+				rdy_lv /= 2;
-+			else if (fifo_len == 256)
-+				rdy_lv /= 4;
-+
-+			val = readl(sdd->regs + S3C64XX_SPI_MODE_CFG);
-+			val &= ~S3C64XX_SPI_MODE_RX_RDY_LVL;
-+			val |= (rdy_lv << S3C64XX_SPI_MODE_RX_RDY_LVL_SHIFT);
-+			writel(val, sdd->regs + S3C64XX_SPI_MODE_CFG);
-+
-+			/* Enable FIFO_RDY_EN IRQ */
-+			val = readl(sdd->regs + S3C64XX_SPI_INT_EN);
-+			writel((val | S3C64XX_SPI_INT_RX_FIFORDY_EN),
-+					sdd->regs + S3C64XX_SPI_INT_EN);
-+
-+		}
- 		spin_lock_irqsave(&sdd->lock, flags);
- 
- 		/* Pending only which is to be done */
-@@ -834,8 +868,8 @@ static int s3c64xx_spi_transfer_one(struct spi_master *master,
- 			if (xfer->rx_buf)
- 				xfer->rx_buf += xfer->len;
- 
--			if (target_len > fifo_len)
--				xfer->len = fifo_len;
-+			if (target_len >= fifo_len)
-+				xfer->len = fifo_len - 1;
- 			else
- 				xfer->len = target_len;
- 		}
-@@ -1005,6 +1039,14 @@ static irqreturn_t s3c64xx_spi_irq(int irq, void *data)
- 		dev_err(&spi->dev, "TX underrun\n");
- 	}
- 
-+	if (val & S3C64XX_SPI_ST_RX_FIFORDY) {
-+		complete(&sdd->xfer_completion);
-+		/* No pending clear irq, turn-off INT_EN_RX_FIFO_RDY */
-+		val = readl(sdd->regs + S3C64XX_SPI_INT_EN);
-+		writel((val & ~S3C64XX_SPI_INT_RX_FIFORDY_EN),
-+				sdd->regs + S3C64XX_SPI_INT_EN);
-+	}
-+
- 	/* Clear the pending irq by setting and then clearing it */
- 	writel(clr, sdd->regs + S3C64XX_SPI_PENDING_CLR);
- 	writel(0, sdd->regs + S3C64XX_SPI_PENDING_CLR);
--- 
-2.17.1
+On 25.03.23 16:47, Ye Xiang wrote:
+> Add sysfs attributes Documentation entries for LJCA device
 
+Hi,
+
+do we really want each driver to have its own attribute for that?
+It seems to me that that should be unified.
+
+	Regards
+		Oliver
+
+> +
+> +What:		/sys/bus/usb/.../ljca_enable_dfu
+> +Date:		July 2023
+> +KernelVersion:	6.4
+> +Contact:	Ye Xiang<xiang.ye@intel.com>
+> +Description:
+> +		Writing 1 to this file to force the LJCA device into DFU
+> +		mode so the firmware can be updated. After firmware
+> +		updating has been done, the device will back to normal
+> +		working mode.

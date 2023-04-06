@@ -2,43 +2,42 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 59B21C76196
-	for <linux-spi@archiver.kernel.org>; Thu,  6 Apr 2023 06:54:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1DEFAC77B71
+	for <linux-spi@archiver.kernel.org>; Thu,  6 Apr 2023 06:54:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235742AbjDFGyg (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 6 Apr 2023 02:54:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57654 "EHLO
+        id S235031AbjDFGyi (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 6 Apr 2023 02:54:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235681AbjDFGyU (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 6 Apr 2023 02:54:20 -0400
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2075.outbound.protection.outlook.com [40.107.95.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 267498688;
-        Wed,  5 Apr 2023 23:54:15 -0700 (PDT)
+        with ESMTP id S235732AbjDFGyf (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 6 Apr 2023 02:54:35 -0400
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2046.outbound.protection.outlook.com [40.107.95.46])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D96E9749;
+        Wed,  5 Apr 2023 23:54:22 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=M6GDU7TVUXCisOIX7gM6osy9lo/+G5ByZrraK1h/N6uL0lyRsYdEGqtknNzF2ORzNx99YTAMFku+RVYARoIrLTPcvv890BODDz+KjpFur1qM6N0pu+PxsL0T/3Z4Qd9DMsT97ahkIbUE0JBBJ6OmRZYErnjBKraUnlTccthD0iHajW4WNJsoBGC3VaO+KlwHhKs7+1Gnfuj5MJYXo9xQixWmWo2ZZpxUEIwW2xRdorA484OFmXQYYRrAAM3wBh2JlypZxy+gTg0iZm3CaxaRdfYZFxtO4NbSMgXhzCRbS2gSY+hfRK+aQm9cnKVxgwFgkwMuLMwrcxLk3vioNdXJHw==
+ b=PBOzzbiOuSiz7QoB4qEXIja4Me2OxQ5WZAIarQiPqj2gsAPb8LQYjMfovdLOuHbhjcYFREUfe8gDrXyB7DrdeQVlU/+SNez1x+SfeT7EKjdfKU8XWmHHSjlKAizc2EyorbwS86B4sQ/5qQZtt92AqDZg2St8qpMJvBSIfHqun++RnFFHAMpX9NKpxZWmBX/PT62jm4PMxsw9y4hDS44o2dw9kAq1eZgyCygXgD/lBYg8iRLUSO5/XTamMRIOyYiyqG68jI82ymYDtKXFWZs9FziWbpex11gKi13BbWsaEYj5jDOJbeRp4R9Va4YeH9swy8CDDzq/qDqzkG8hDRUkQg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=964102L2ptz7lsSQnhvi6j9Bkg19X6662QbPJG1sNIQ=;
- b=R376kTl3ue/2a0BKglyK0qq/zYTc6RspuqVNpYWBC8poOvCgp0XVMW8gq1/SpNgsmnQuOPVzSRslQo3nDyBUPyO2cBCUsE0f/9tLhVZwTBoV2815DLA82fcty62r6cO5qYwExJmli8dwwCcUEkkpqszsYTt+LsODYtf26Nb2C2m1Rf4vBc8snADab3xtRa2rw0eY1Wys7I1PC6C3XENNGvPltWsBtG+/qdrOqBzrXJAsQsztxmMq+0jpXZ9OET/WNrzTRTRHZzmgE1T1yh8StJDSIVHy9wWE3qi/COEALhDzei6t/cnx75DlPeuOuefvtEdYzpKEMGtb+LwFiCllEw==
+ bh=10fu7ZZd0l92XvAWoJHjN6HGfEBScM7nngeHU9oviG4=;
+ b=CirgwLeovH2UzlVYrCanREwRjZrXlJkJpfsq8DQpQCrFSxMdypGzjc43Uo52STuYj97BSqHcyLdlY3969emYRWbYsj+uXJihioXy9iQxLkhfBUWYoVZhnkAE5sGprU2cW1W66TVN4QVVz8cSTPy67Gi2uXvXQEIKDHzQcEl1hd0PUDa7OtHKbc3LareiJmGq1iPhPb0j8hOQ6hNn0Fq6aqSvEpmsqbNVV1htJpefLrLUK1y4uEc5N2eSRtIgk6dwpQqwSXHU6zZkh8lfo3usClhybCsDNmvZskbpN6DIfagXmpNH2LxyMws3aPsKvXL2dT9f8QbCIK20YfB5B6g/hA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=964102L2ptz7lsSQnhvi6j9Bkg19X6662QbPJG1sNIQ=;
- b=gjUKqDODlCz/V44X9OxV5o/o5TfljkvzcsM5DoIBlN050waw4+hM++HUcu1RmjS5TgmFnvWLljJ5AV/FVHh8ZDBZ3rDe6xO3tOLGgtXXl+Wr4mo3f68Crx8JxQeNMJw7tkAwmPpwFQCnRqAMG9IHN9tXcX+YdZh6HO6PyEgWXXE=
-Received: from DM6PR10CA0004.namprd10.prod.outlook.com (2603:10b6:5:60::17) by
- PH7PR12MB7020.namprd12.prod.outlook.com (2603:10b6:510:1ba::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6254.33; Thu, 6 Apr
- 2023 06:54:12 +0000
+ bh=10fu7ZZd0l92XvAWoJHjN6HGfEBScM7nngeHU9oviG4=;
+ b=Vhq3XFw+ii4yAWZsDdojUgDLV5KQN7gqWCa3wN5oFsuCGQ+mkRyQ1x38WOr/GoU+3xtjELYYhB3S2Wwp3r9P+0kuZp+klEt/d2YXQPkTwLP0dBFh8bI+1Lz3ts1EeL4Z/UuyjSlutGqYw8Hx3T2CRd+nq+Ed1NVXRtYHKpK4dFE=
+Received: from DM6PR10CA0020.namprd10.prod.outlook.com (2603:10b6:5:60::33) by
+ CY5PR12MB6033.namprd12.prod.outlook.com (2603:10b6:930:2f::19) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6254.35; Thu, 6 Apr 2023 06:54:19 +0000
 Received: from DM6NAM11FT104.eop-nam11.prod.protection.outlook.com
- (2603:10b6:5:60:cafe::ec) by DM6PR10CA0004.outlook.office365.com
- (2603:10b6:5:60::17) with Microsoft SMTP Server (version=TLS1_2,
+ (2603:10b6:5:60:cafe::89) by DM6PR10CA0020.outlook.office365.com
+ (2603:10b6:5:60::33) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6254.37 via Frontend
- Transport; Thu, 6 Apr 2023 06:54:11 +0000
+ Transport; Thu, 6 Apr 2023 06:54:19 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,18 +47,14 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
  DM6NAM11FT104.mail.protection.outlook.com (10.13.173.232) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6277.31 via Frontend Transport; Thu, 6 Apr 2023 06:54:11 +0000
-Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB04.amd.com
+ 15.20.6277.31 via Frontend Transport; Thu, 6 Apr 2023 06:54:19 +0000
+Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Thu, 6 Apr
- 2023 01:53:48 -0500
-Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB06.amd.com
- (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Thu, 6 Apr
- 2023 01:53:48 -0500
+ 2023 01:54:14 -0500
 Received: from xhdakumarma40u.xilinx.com (10.180.168.240) by
  SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server id 15.1.2375.34
- via Frontend Transport; Thu, 6 Apr 2023 01:53:43 -0500
+ via Frontend Transport; Thu, 6 Apr 2023 01:54:09 -0500
 From:   Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
 To:     <broonie@kernel.org>, <tudor.ambarus@linaro.org>,
         <pratyush@kernel.org>, <michael@walle.cc>,
@@ -71,9 +66,9 @@ CC:     <git@amd.com>, <sbinding@opensource.cirrus.com>,
         <michal.simek@amd.com>, <linux-arm-kernel@lists.infradead.org>,
         <amitrkcian2002@gmail.com>,
         Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
-Subject: [PATCH V7 1/7] spi: Add stacked and parallel memories support in SPI core
-Date:   Thu, 6 Apr 2023 12:23:30 +0530
-Message-ID: <20230406065336.10980-2-amit.kumar-mahapatra@amd.com>
+Subject: [PATCH V7 6/7] mtd: spi-nor: Add parallel memories support in spi-nor
+Date:   Thu, 6 Apr 2023 12:23:35 +0530
+Message-ID: <20230406065336.10980-7-amit.kumar-mahapatra@amd.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20230406065336.10980-1-amit.kumar-mahapatra@amd.com>
 References: <20230406065336.10980-1-amit.kumar-mahapatra@amd.com>
@@ -81,480 +76,763 @@ MIME-Version: 1.0
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6NAM11FT104:EE_|PH7PR12MB7020:EE_
-X-MS-Office365-Filtering-Correlation-Id: dbfcd0a7-01e8-4a42-6e79-08db366bba35
+X-MS-TrafficTypeDiagnostic: DM6NAM11FT104:EE_|CY5PR12MB6033:EE_
+X-MS-Office365-Filtering-Correlation-Id: b8833b20-1eca-4583-4624-08db366bbef5
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 00Q2kOb8hVKadJig2NjuLFuEEVVbpohSkpWApqxupdqXwB6fVIfvzTLAI1Pd7CVM3o8vjNPWoE3BVi0c0dq6QbnMkPebqq++y6bmRgBB3Mx1TjZuaJC6DH1wWFg+8xwr1n5Oggca9hzxfCh7ZPZzqAytipeaUIWCPYzJlxrKOgHsas7HysvdJK5AxlYcpXrDRU95yXyULBFcmjZm4QBV/oxxtTlxzokhXFio96nbIS5Cli+98vKgyMRMgqiH1CsCeH7KYzszOwiaNU1TbRPPR82+V+gHLNCXn3acyBqbAjsoKPoekG75uORHMsgNwttEcKRbODEKGf53cW/E6ZFKw4WkO9fqcGZZMjLlVtYaQ7In4zNFMM6nsKQQ3AAubxrWxIMXZ87VyybLN1xkH7nG8UmJ7Ua1rxg1vlhKbO9tGDeTdk0kRJ0YSZpW3Ous+iAt8SAqHSvaAzvEsdBsDlxG68YA+z7398yzG2cmsg/3goToj0j2gJCEeUtPZpCnVAqm8CrJ5SX/RR7XLFLYC2CPErBQ1DOjfN3lob/Fyh3WGr+KuLU0MOdrDQGWmXPc6JFmQ7/Q1khcY9bCINPKxPyjQ1gMXBzD83ycdsz4j/UmByFt28R59x592eLGUT0dxbrfzrL9URDJfyWeox5SUCcfskmsXAWYENqedU2KmCgDhMTtecEOR4KZKgNBIL+MCxxdgSgFoYEDqvMCwpTbbKept2dk9Le913ofOKDTAfHGAa7gPSsUYo6gUNW41/8u3wZB
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(396003)(136003)(376002)(346002)(39860400002)(451199021)(40470700004)(36840700001)(46966006)(26005)(82310400005)(186003)(6666004)(41300700001)(8676002)(478600001)(47076005)(40460700003)(83380400001)(426003)(70586007)(316002)(4326008)(1076003)(336012)(70206006)(2616005)(110136005)(81166007)(356005)(36756003)(82740400003)(36860700001)(7416002)(8936002)(54906003)(86362001)(30864003)(2906002)(5660300002)(40480700001)(36900700001)(2101003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: Uw0aPTovPWUMTnKSB/6v+5y7OTgPWGLOEFa1x0wRSabWWDCZL0CLMjVxtrLSI3tJU9JOwT47EVpat8xmyUuSZXH7eQPA4L84WeJn4EbmJFzzOGyxFmPtA0bernaF6UN48c+rFS3ei6b3rLQzjQgr3y6IjuRYFKvpCbHwo+H5DJ6QBMRtZ5w6mS5PALj45wqmFzKnxBXEgrC2H7fl7++GaxNlTMJ1puP4fDKTyaIsQrb8DKldffgFbC1AQvrKlL8majSWLEqb6fCn7pDZpezRx5hvb39ftTG+2iw1Xqi2sUgfE51jvp1MxMZy4xPLlTowjxjbfTKyoUT/6Z/4hvouRK/VhtJtDf2obw85aAmTEGLbgxQmex0MQi7uat8VgTFKbpQWkE3M63LKFxdHGnXDmbQLJKpZo/7vxfugPXfrNuqHQWYBlRvaQTk3Cb7GQzcIj9LaNcElbktWxfy2A2/qcwNcGIpnqd7EjusnYYY4knfLSOH7RqEg5qjLOJzBu+ZO+fCtEHmVmbWUe1CsW+bRkzcfAmGWObMvxh564w0C5Nd/W6WaaBAltfcUF3vc5qNmeGibPYVOTwtCIkozsXnQaKv0acNwBX8uCUktOI5NJg6Nn8vbCLV4MNx39PKxlyfpQWh1d9rdUv9b91Amkhf2P+wu927COK8b+i+0XFfpx2a2EqRwwWaF995YxdFsQFajbZMH+sDLJ2XHiDXHlIoXyLcdLf8mlrXGEF4nhxr92kzUR0FpWlhwk3c5KWokNOHr
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(396003)(376002)(136003)(346002)(39860400002)(451199021)(36840700001)(46966006)(40470700004)(356005)(1076003)(26005)(70586007)(8676002)(40460700003)(70206006)(82310400005)(36756003)(36860700001)(478600001)(110136005)(316002)(7416002)(5660300002)(8936002)(30864003)(54906003)(2906002)(81166007)(82740400003)(4326008)(86362001)(41300700001)(186003)(40480700001)(6666004)(2616005)(336012)(426003)(83380400001)(47076005)(36900700001)(2101003);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Apr 2023 06:54:11.5740
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Apr 2023 06:54:19.5421
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: dbfcd0a7-01e8-4a42-6e79-08db366bba35
+X-MS-Exchange-CrossTenant-Network-Message-Id: b8833b20-1eca-4583-4624-08db366bbef5
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT104.eop-nam11.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7020
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6033
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-For supporting multiple CS the SPI device need to be aware of all the CS
-values. So, the "chip_select" member in the spi_device structure is now an
-array that holds all the CS values.
-
-spi_device structure now has a "cs_index_mask" member. This acts as an
-index to the chip_select array. If nth bit of spi->cs_index_mask is set
-then the driver would assert spi->chip_select[n].
-
-In parallel mode all the chip selects are asserted/de-asserted
-simultaneously and each byte of data is stored in both devices, the even
-bits in one, the odd bits in the other. The split is automatically handled
-by the GQSPI controller. The GQSPI controller supports a maximum of two
-flashes connected in parallel mode. A SPI_CONTROLLER_MULTI_CS flag bit is
-added in the spi controntroller flags, through ctlr->flags the spi core
-will make sure that the controller is capable of handling multiple chip
-selects at once.
-
-For supporting multiple CS via GPIO the cs_gpiod member of the spi_device
-structure is now an array that holds the gpio descriptor for each
-chipselect.
-
-Multi CS support using GPIO is not tested due to unavailability of
-necessary hardware setup.
-
-Multi CS configuration with one native CS and one GPIO CS is not supported
-as this configuration could not be tested due to unavailability of
-necessary hardware setup.
+The current implementation assumes that a maximum of two flashes are
+connected in parallel mode. The QSPI controller splits the data evenly
+between both the flashes so, both the flashes that are connected in
+parallel mode should be identical.
+During each operation SPI-NOR sets 0th bit for CS0 & 1st bit for CS1 in
+nor->spimem->spi->cs_index_mask. The QSPI driver will then assert/de-assert
+CS0 & CS1.
+Write operation in parallel mode are performed in page size * 2 chunks as
+each write operation results in writing both the flashes. For doubling the
+address space each operation is performed at addr/2 flash offset, where
+addr is the address specified by the user.
 
 Signed-off-by: Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
 ---
- drivers/spi/spi.c       | 226 ++++++++++++++++++++++++++++------------
- include/linux/spi/spi.h |  32 ++++--
- 2 files changed, 183 insertions(+), 75 deletions(-)
+ drivers/mtd/spi-nor/core.c      | 514 +++++++++++++++++++++++---------
+ drivers/mtd/spi-nor/core.h      |   4 +
+ drivers/mtd/spi-nor/micron-st.c |   5 +
+ 3 files changed, 384 insertions(+), 139 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 9036d7a50674..04d7322170c4 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -612,10 +612,24 @@ static int spi_dev_check(struct device *dev, void *data)
- {
- 	struct spi_device *spi = to_spi_device(dev);
- 	struct spi_device *new_spi = data;
-+	int idx, nw_idx;
+diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
+index 0bc6b42f276c..18fc4a1c28d4 100644
+--- a/drivers/mtd/spi-nor/core.c
++++ b/drivers/mtd/spi-nor/core.c
+@@ -464,17 +464,29 @@ int spi_nor_read_sr(struct spi_nor *nor, u8 *sr)
+ 			op.data.nbytes = 2;
+ 		}
  
--	if (spi->controller == new_spi->controller &&
--	    spi_get_chipselect(spi, 0) == spi_get_chipselect(new_spi, 0))
--		return -EBUSY;
-+	if (spi->controller == new_spi->controller) {
-+		for (idx = 0; idx < SPI_CS_CNT_MAX; idx++) {
-+			for (nw_idx = 0; nw_idx < SPI_CS_CNT_MAX; nw_idx++) {
-+				if ((idx != 0 && !spi_get_chipselect(spi, idx)) ||
-+				    (nw_idx != 0 && !spi_get_chipselect(spi, nw_idx))) {
-+					continue;
-+				} else if (spi_get_chipselect(spi, idx) ==
-+				    spi_get_chipselect(new_spi, nw_idx)) {
-+					dev_err(dev,
-+						"chipselect %d already in use\n",
-+						spi_get_chipselect(new_spi, nw_idx));
-+					return -EBUSY;
++		if (nor->flags & SNOR_F_HAS_PARALLEL)
++			op.data.nbytes = 2;
++
+ 		spi_nor_spimem_setup_op(nor, &op, nor->reg_proto);
+ 
+ 		ret = spi_mem_exec_op(nor->spimem, &op);
+ 	} else {
+-		ret = spi_nor_controller_ops_read_reg(nor, SPINOR_OP_RDSR, sr,
+-						      1);
++		if (nor->flags & SNOR_F_HAS_PARALLEL)
++			ret = spi_nor_controller_ops_read_reg(nor,
++							      SPINOR_OP_RDSR,
++							      sr, 2);
++		else
++			ret = spi_nor_controller_ops_read_reg(nor,
++							      SPINOR_OP_RDSR,
++							      sr, 1);
+ 	}
+ 
+ 	if (ret)
+ 		dev_dbg(nor->dev, "error %d reading SR\n", ret);
+ 
++	if (nor->flags & SNOR_F_HAS_PARALLEL)
++		sr[0] |= sr[1];
++
+ 	return ret;
+ }
+ 
+@@ -1466,12 +1478,122 @@ static int spi_nor_erase(struct mtd_info *mtd, struct erase_info *instr)
+ 	if (ret)
+ 		return ret;
+ 
+-	/* whole-chip erase? */
+-	if (len == mtd->size && !(nor->flags & SNOR_F_NO_OP_CHIP_ERASE)) {
+-		unsigned long timeout;
++	if (!(nor->flags & SNOR_F_HAS_PARALLEL)) {
++		/* whole-chip erase? */
++		if (len == mtd->size && !(nor->flags & SNOR_F_NO_OP_CHIP_ERASE)) {
++			unsigned long timeout;
++
++			while ((cur_cs_num < SNOR_FLASH_CNT_MAX) && params) {
++				nor->spimem->spi->cs_index_mask = 1 << cur_cs_num;
++				ret = spi_nor_write_enable(nor);
++				if (ret)
++					goto erase_err;
++
++				ret = spi_nor_erase_chip(nor);
++				if (ret)
++					goto erase_err;
++
++				/*
++				 * Scale the timeout linearly with the size of the flash, with
++				 * a minimum calibrated to an old 2MB flash. We could try to
++				 * pull these from CFI/SFDP, but these values should be good
++				 * enough for now.
++				 */
++				timeout = max(CHIP_ERASE_2MB_READY_WAIT_JIFFIES,
++					      CHIP_ERASE_2MB_READY_WAIT_JIFFIES *
++					      (unsigned long)(params->size /
++							      SZ_2M));
++				ret = spi_nor_wait_till_ready_with_timeout(nor, timeout);
++				if (ret)
++					goto erase_err;
++
++				cur_cs_num++;
++				params = spi_nor_get_params(nor, cur_cs_num);
++			}
++
++		/* REVISIT in some cases we could speed up erasing large regions
++		 * by using SPINOR_OP_SE instead of SPINOR_OP_BE_4K.  We may have set up
++		 * to use "small sector erase", but that's not always optimal.
++		 */
++
++		/* "sector"-at-a-time erase */
++		} else if (spi_nor_has_uniform_erase(nor)) {
++			/* Determine the flash from which the operation need to start */
++			while ((cur_cs_num < SNOR_FLASH_CNT_MAX) &&
++			       (addr > sz - 1) && params) {
++				cur_cs_num++;
++				params = spi_nor_get_params(nor, cur_cs_num);
++				sz += params->size;
++			}
++			while (len) {
++				nor->spimem->spi->cs_index_mask = 1 << cur_cs_num;
++				ret = spi_nor_write_enable(nor);
++				if (ret)
++					goto erase_err;
++
++				offset = addr;
++				if (nor->flags & SNOR_F_HAS_STACKED) {
++					params = spi_nor_get_params(nor, cur_cs_num);
++					offset -= (sz - params->size);
++				}
++				ret = spi_nor_erase_sector(nor, offset);
++				if (ret)
++					goto erase_err;
++
++				ret = spi_nor_wait_till_ready(nor);
++				if (ret)
++					goto erase_err;
++
++				addr += mtd->erasesize;
++				len -= mtd->erasesize;
++
++				/*
++				 * Flash cross over condition in stacked mode.
++				 */
++				if ((nor->flags & SNOR_F_HAS_STACKED) && (addr > sz - 1)) {
++					cur_cs_num++;
++					params = spi_nor_get_params(nor, cur_cs_num);
++					sz += params->size;
 +				}
 +			}
++
++		/* erase multiple sectors */
++		} else {
++			u64 erase_len = 0;
++
++			/* Determine the flash from which the operation need to start */
++			while ((cur_cs_num < SNOR_FLASH_CNT_MAX) &&
++			       (addr > sz - 1) && params) {
++				cur_cs_num++;
++				params = spi_nor_get_params(nor, cur_cs_num);
++				sz += params->size;
++			}
++			/* perform multi sector erase onec per Flash*/
++			while (len) {
++				erase_len = (len > (sz - addr)) ? (sz - addr) : len;
++				offset = addr;
++				nor->spimem->spi->cs_index_mask = 1 << cur_cs_num;
++				if (nor->flags & SNOR_F_HAS_STACKED) {
++					params = spi_nor_get_params(nor, cur_cs_num);
++					offset -= (sz - params->size);
++				}
++				ret = spi_nor_erase_multi_sectors(nor, offset, erase_len);
++				if (ret)
++					goto erase_err;
++				len -= erase_len;
++				addr += erase_len;
++				params = spi_nor_get_params(nor, cur_cs_num);
++				sz += params->size;
++			}
++		}
++	} else {
++		nor->spimem->spi->cs_index_mask = SPI_NOR_ENABLE_MULTI_CS;
++
++		/* whole-chip erase? */
++		if (len == mtd->size && !(nor->flags &
++					  SNOR_F_NO_OP_CHIP_ERASE)) {
++			unsigned long timeout;
+ 
+-		while (cur_cs_num < SNOR_FLASH_CNT_MAX && params) {
+-			nor->spimem->spi->cs_index_mask = 0x01 << cur_cs_num;
+ 			ret = spi_nor_write_enable(nor);
+ 			if (ret)
+ 				goto erase_err;
+@@ -1488,90 +1610,45 @@ static int spi_nor_erase(struct mtd_info *mtd, struct erase_info *instr)
+ 			 */
+ 			timeout = max(CHIP_ERASE_2MB_READY_WAIT_JIFFIES,
+ 				      CHIP_ERASE_2MB_READY_WAIT_JIFFIES *
+-				      (unsigned long)(params->size / SZ_2M));
++				      (unsigned long)(mtd->size / SZ_2M));
+ 			ret = spi_nor_wait_till_ready_with_timeout(nor, timeout);
+ 			if (ret)
+ 				goto erase_err;
+-			cur_cs_num++;
+-		}
+-
+-	/* REVISIT in some cases we could speed up erasing large regions
+-	 * by using SPINOR_OP_SE instead of SPINOR_OP_BE_4K.  We may have set up
+-	 * to use "small sector erase", but that's not always optimal.
+-	 */
+ 
+-	/* "sector"-at-a-time erase */
+-	} else if (spi_nor_has_uniform_erase(nor)) {
+-		/* Determine the flash from which the operation need to start */
+-		while ((cur_cs_num < SNOR_FLASH_CNT_MAX) && (addr > sz - 1) && params) {
+-			cur_cs_num++;
+-			params = spi_nor_get_params(nor, cur_cs_num);
+-			sz += params->size;
+-		}
++		/* REVISIT in some cases we could speed up erasing large regions
++		 * by using SPINOR_OP_SE instead of SPINOR_OP_BE_4K.  We may have set up
++		 * to use "small sector erase", but that's not always optimal.
++		 */
+ 
+-		while (len) {
+-			nor->spimem->spi->cs_index_mask = 0x01 << cur_cs_num;
+-			ret = spi_nor_write_enable(nor);
+-			if (ret)
+-				goto erase_err;
++		/* "sector"-at-a-time erase */
++		} else if (spi_nor_has_uniform_erase(nor)) {
++			while (len) {
++				ret = spi_nor_write_enable(nor);
++				if (ret)
++					goto erase_err;
+ 
+-			offset = addr;
+-			if (nor->flags & SNOR_F_HAS_STACKED) {
+-				params = spi_nor_get_params(nor, cur_cs_num);
+-				offset -= (sz - params->size);
+-			}
++				offset = addr / 2;
+ 
+-			ret = spi_nor_erase_sector(nor, offset);
+-			if (ret)
+-				goto erase_err;
+-
+-			ret = spi_nor_wait_till_ready(nor);
+-			if (ret)
+-				goto erase_err;
++				ret = spi_nor_erase_sector(nor, offset);
++				if (ret)
++					goto erase_err;
+ 
+-			addr += mtd->erasesize;
+-			len -= mtd->erasesize;
++				ret = spi_nor_wait_till_ready(nor);
++				if (ret)
++					goto erase_err;
+ 
+-			/*
+-			 * Flash cross over condition in stacked mode.
+-			 */
+-			if ((nor->flags & SNOR_F_HAS_STACKED) && (addr > sz - 1)) {
+-				cur_cs_num++;
+-				params = spi_nor_get_params(nor, cur_cs_num);
+-				sz += params->size;
++				addr += mtd->erasesize;
++				len -= mtd->erasesize;
+ 			}
+-		}
+-
+-	/* erase multiple sectors */
+-	} else {
+-		u64 erase_len = 0;
+ 
+-		/* Determine the flash from which the operation need to start */
+-		while ((cur_cs_num < SNOR_FLASH_CNT_MAX) && (addr > sz - 1) && params) {
+-			cur_cs_num++;
+-			params = spi_nor_get_params(nor, cur_cs_num);
+-			sz += params->size;
+-		}
+-		/* perform multi sector erase onec per Flash*/
+-		while (len) {
+-			erase_len = (len > (sz - addr)) ? (sz - addr) : len;
+-			offset = addr;
+-			nor->spimem->spi->cs_index_mask = 0x01 << cur_cs_num;
+-			if (nor->flags & SNOR_F_HAS_STACKED) {
+-				params = spi_nor_get_params(nor, cur_cs_num);
+-				offset -= (sz - params->size);
+-			}
+-			ret = spi_nor_erase_multi_sectors(nor, offset, erase_len);
++		/* erase multiple sectors */
++		} else {
++			offset = addr / 2;
++			ret = spi_nor_erase_multi_sectors(nor, offset, len);
+ 			if (ret)
+ 				goto erase_err;
+-			len -= erase_len;
+-			addr += erase_len;
+-			cur_cs_num++;
+-			params = spi_nor_get_params(nor, cur_cs_num);
+-			sz += params->size;
+ 		}
+ 	}
+-
+ 	ret = spi_nor_write_disable(nor);
+ 
+ erase_err:
+@@ -1771,34 +1848,59 @@ static int spi_nor_read(struct mtd_info *mtd, loff_t from, size_t len,
+ 	struct spi_nor_flash_parameter *params;
+ 	ssize_t ret, read_len;
+ 	u32 cur_cs_num = 0;
+-	u64 sz;
++	u_char *readbuf;
++	bool is_ofst_odd = false;
++	u64 sz = 0;
+ 
+ 	dev_dbg(nor->dev, "from 0x%08x, len %zd\n", (u32)from, len);
+ 
+-	ret = spi_nor_lock_and_prep(nor);
+-	if (ret)
+-		return ret;
+-
+ 	params = spi_nor_get_params(nor, 0);
+ 	sz = params->size;
+ 
+-	/* Determine the flash from which the operation need to start */
+-	while ((cur_cs_num < SNOR_FLASH_CNT_MAX) && (from > sz - 1) && params) {
+-		cur_cs_num++;
+-		params = spi_nor_get_params(nor, cur_cs_num);
+-		sz += params->size;
++	/*
++	 * Cannot read from odd offset in parallel mode, so read
++	 * len + 1 from offset + 1 and ignore offset[0] data.
++	 */
++	if ((nor->flags & SNOR_F_HAS_PARALLEL) && (from & 0x01)) {
++		from = (loff_t)(from - 1);
++		len = (size_t)(len + 1);
++		is_ofst_odd = true;
++		readbuf = kmalloc(len, GFP_KERNEL);
++		if (!readbuf)
++			return -ENOMEM;
++	} else {
++		readbuf = buf;
++	}
++
++	if (!(nor->flags & SNOR_F_HAS_PARALLEL)) {
++		/* Determine the flash from which the operation need to start */
++		while ((cur_cs_num < SNOR_FLASH_CNT_MAX) && (from > sz - 1) && params) {
++			cur_cs_num++;
++			params = spi_nor_get_params(nor, cur_cs_num);
++			sz += params->size;
++		}
+ 	}
++	ret = spi_nor_lock_and_prep(nor);
++	if (ret)
++		return ret;
++
+ 	while (len) {
+ 		loff_t addr = from;
+ 
+-		nor->spimem->spi->cs_index_mask = 0x01 << cur_cs_num;
+-		read_len = (len > (sz - addr)) ? (sz - addr) : len;
+-		params = spi_nor_get_params(nor, cur_cs_num);
+-		addr -= (sz - params->size);
++		if (nor->flags & SNOR_F_HAS_PARALLEL) {
++			nor->spimem->spi->cs_index_mask = SPI_NOR_ENABLE_MULTI_CS;
++			read_len = len;
++			addr /= 2;
++		} else {
++			nor->spimem->spi->cs_index_mask = 1 << cur_cs_num;
++			read_len = (len > (sz - addr)) ? (sz - addr) : len;
++			params = spi_nor_get_params(nor, cur_cs_num);
++			addr -= (sz - params->size);
++		}
+ 
+ 		addr = spi_nor_convert_addr(nor, addr);
+ 
+-		ret = spi_nor_read_data(nor, addr, len, buf);
++		ret = spi_nor_read_data(nor, addr, read_len, readbuf);
+ 		if (ret == 0) {
+ 			/* We shouldn't see 0-length reads */
+ 			ret = -EIO;
+@@ -1808,8 +1910,20 @@ static int spi_nor_read(struct mtd_info *mtd, loff_t from, size_t len,
+ 			goto read_err;
+ 
+ 		WARN_ON(ret > read_len);
+-		*retlen += ret;
++		if (is_ofst_odd) {
++			/*
++			 * Cannot read from odd offset in parallel mode.
++			 * So read len + 1 from offset + 1 from the flash
++			 * and copy len data from readbuf[1].
++			 */
++			memcpy(buf, (readbuf + 1), (len - 1));
++			*retlen += (ret - 1);
++		} else {
++			*retlen += ret;
++		}
+ 		buf += ret;
++		if (!is_ofst_odd)
++			readbuf += ret;
+ 		from += ret;
+ 		len -= ret;
+ 
+@@ -1827,6 +1941,9 @@ static int spi_nor_read(struct mtd_info *mtd, loff_t from, size_t len,
+ 	ret = 0;
+ 
+ read_err:
++	if (is_ofst_odd)
++		kfree(readbuf);
++
+ 	spi_nor_unlock_and_unprep(nor);
+ 	return ret;
+ }
+@@ -1852,13 +1969,38 @@ static int spi_nor_write(struct mtd_info *mtd, loff_t to, size_t len,
+ 	page_size = params->page_size;
+ 	sz = params->size;
+ 
+-	/* Determine the flash from which the operation need to start */
+-	while ((cur_cs_num < SNOR_FLASH_CNT_MAX) && (to > sz - 1) && params) {
+-		cur_cs_num++;
+-		params = spi_nor_get_params(nor, cur_cs_num);
+-		sz += params->size;
+-	}
++	if (nor->flags & SNOR_F_HAS_PARALLEL) {
++		/*
++		 * Cannot write to odd offset in parallel mode,
++		 * so write 2 byte first.
++		 */
++		if (to & 0x01) {
++			u8 two[2] = {0xff, buf[0]};
++			size_t written_len;
++
++			ret = spi_nor_write(mtd, to & ~1, 2, &written_len, two);
++			if (ret < 0)
++				return ret;
++			*retlen += 1; /* We've written only one actual byte */
++			++buf;
++			--len;
++			++to;
++		}
++		/*
++		 * Write operation are performed in page size chunks and in
++		 * parallel memories both the flashes are written simultaneously,
++		 * hence doubled the page_size.
++		 */
++		page_size <<= 1;
+ 
++	} else {
++		/* Determine the flash from which the operation need to start */
++		while ((cur_cs_num < SNOR_FLASH_CNT_MAX) && (to > sz - 1) && params) {
++			cur_cs_num++;
++			params = spi_nor_get_params(nor, cur_cs_num);
++			sz += params->size;
 +		}
 +	}
+ 	ret = spi_nor_lock_and_prep(nor);
+ 	if (ret)
+ 		return ret;
+@@ -1882,9 +2024,14 @@ static int spi_nor_write(struct mtd_info *mtd, loff_t to, size_t len,
+ 		/* the size of data remaining on the first page */
+ 		page_remain = min_t(size_t, page_size - page_offset, len - i);
+ 
+-		nor->spimem->spi->cs_index_mask = 0x01 << cur_cs_num;
+-		params = spi_nor_get_params(nor, cur_cs_num);
+-		addr -= (sz - params->size);
++		if (nor->flags & SNOR_F_HAS_PARALLEL) {
++			nor->spimem->spi->cs_index_mask = SPI_NOR_ENABLE_MULTI_CS;
++			addr /= 2;
++		} else {
++			nor->spimem->spi->cs_index_mask = 1 << cur_cs_num;
++			params = spi_nor_get_params(nor, cur_cs_num);
++			addr -= (sz - params->size);
++		}
+ 
+ 		addr = spi_nor_convert_addr(nor, addr);
+ 
+@@ -2332,7 +2479,15 @@ static int spi_nor_select_erase(struct spi_nor *nor)
+ 		if (!erase)
+ 			return -EINVAL;
+ 		nor->erase_opcode = erase->opcode;
+-		mtd->erasesize = erase->size;
++		/*
++		 * In parallel-memories the erase operation is
++		 * performed on both the flashes simultaneously
++		 * so, double the erasesize.
++		 */
++		if (nor->flags & SNOR_F_HAS_PARALLEL)
++			mtd->erasesize = erase->size * 2;
++		else
++			mtd->erasesize = erase->size;
+ 		return 0;
+ 	}
+ 
+@@ -2350,7 +2505,15 @@ static int spi_nor_select_erase(struct spi_nor *nor)
+ 	if (!erase)
+ 		return -EINVAL;
+ 
+-	mtd->erasesize = erase->size;
++	/*
++	 * In parallel-memories the erase operation is
++	 * performed on both the flashes simultaneously
++	 * so, double the erasesize.
++	 */
++	if (nor->flags & SNOR_F_HAS_PARALLEL)
++		mtd->erasesize = erase->size * 2;
++	else
++		mtd->erasesize = erase->size;
  	return 0;
  }
  
-@@ -629,7 +643,7 @@ static int __spi_add_device(struct spi_device *spi)
- {
- 	struct spi_controller *ctlr = spi->controller;
- 	struct device *dev = ctlr->dev.parent;
--	int status;
-+	int status, idx;
- 
- 	/*
- 	 * We need to make sure there's no other device with this
-@@ -638,8 +652,6 @@ static int __spi_add_device(struct spi_device *spi)
- 	 */
- 	status = bus_for_each_dev(&spi_bus_type, NULL, spi, spi_dev_check);
- 	if (status) {
--		dev_err(dev, "chipselect %d already in use\n",
--				spi_get_chipselect(spi, 0));
- 		return status;
- 	}
- 
-@@ -649,8 +661,10 @@ static int __spi_add_device(struct spi_device *spi)
- 		return -ENODEV;
- 	}
- 
--	if (ctlr->cs_gpiods)
--		spi_set_csgpiod(spi, 0, ctlr->cs_gpiods[spi_get_chipselect(spi, 0)]);
-+	if (ctlr->cs_gpiods) {
-+		for (idx = 0; idx < SPI_CS_CNT_MAX; idx++)
-+			spi_set_csgpiod(spi, idx, ctlr->cs_gpiods[spi_get_chipselect(spi, idx)]);
-+	}
- 
- 	/*
- 	 * Drivers may modify this initial i/o setup, but will
-@@ -690,13 +704,15 @@ int spi_add_device(struct spi_device *spi)
- {
- 	struct spi_controller *ctlr = spi->controller;
- 	struct device *dev = ctlr->dev.parent;
--	int status;
-+	int status, idx;
- 
--	/* Chipselects are numbered 0..max; validate. */
--	if (spi_get_chipselect(spi, 0) >= ctlr->num_chipselect) {
--		dev_err(dev, "cs%d >= max %d\n", spi_get_chipselect(spi, 0),
--			ctlr->num_chipselect);
--		return -EINVAL;
-+	for (idx = 0; idx < SPI_CS_CNT_MAX; idx++) {
-+		/* Chipselects are numbered 0..max; validate. */
-+		if (spi_get_chipselect(spi, idx) >= ctlr->num_chipselect) {
-+			dev_err(dev, "cs%d >= max %d\n", spi_get_chipselect(spi, idx),
-+				ctlr->num_chipselect);
-+			return -EINVAL;
-+		}
- 	}
- 
- 	/* Set the bus ID string */
-@@ -713,12 +729,15 @@ static int spi_add_device_locked(struct spi_device *spi)
- {
- 	struct spi_controller *ctlr = spi->controller;
- 	struct device *dev = ctlr->dev.parent;
-+	int idx;
- 
--	/* Chipselects are numbered 0..max; validate. */
--	if (spi_get_chipselect(spi, 0) >= ctlr->num_chipselect) {
--		dev_err(dev, "cs%d >= max %d\n", spi_get_chipselect(spi, 0),
--			ctlr->num_chipselect);
--		return -EINVAL;
-+	for (idx = 0; idx < SPI_CS_CNT_MAX; idx++) {
-+		/* Chipselects are numbered 0..max; validate. */
-+		if (spi_get_chipselect(spi, idx) >= ctlr->num_chipselect) {
-+			dev_err(dev, "cs%d >= max %d\n", spi_get_chipselect(spi, idx),
-+				ctlr->num_chipselect);
-+			return -EINVAL;
-+		}
- 	}
- 
- 	/* Set the bus ID string */
-@@ -966,58 +985,118 @@ static void spi_res_release(struct spi_controller *ctlr, struct spi_message *mes
- static void spi_set_cs(struct spi_device *spi, bool enable, bool force)
- {
- 	bool activate = enable;
-+	u32 cs_num = __ffs(spi->cs_index_mask);
-+	int idx;
- 
- 	/*
--	 * Avoid calling into the driver (or doing delays) if the chip select
--	 * isn't actually changing from the last time this was called.
-+	 * In parallel mode all the chip selects are asserted/de-asserted
-+	 * at once
- 	 */
--	if (!force && ((enable && spi->controller->last_cs == spi_get_chipselect(spi, 0)) ||
--		       (!enable && spi->controller->last_cs != spi_get_chipselect(spi, 0))) &&
--	    (spi->controller->last_cs_mode_high == (spi->mode & SPI_CS_HIGH)))
--		return;
--
--	trace_spi_set_cs(spi, activate);
--
--	spi->controller->last_cs = enable ? spi_get_chipselect(spi, 0) : -1;
--	spi->controller->last_cs_mode_high = spi->mode & SPI_CS_HIGH;
--
--	if ((spi_get_csgpiod(spi, 0) || !spi->controller->set_cs_timing) && !activate)
--		spi_delay_exec(&spi->cs_hold, NULL);
--
--	if (spi->mode & SPI_CS_HIGH)
--		enable = !enable;
-+	if ((spi->cs_index_mask & SPI_PARALLEL_CS_MASK) == SPI_PARALLEL_CS_MASK) {
-+		spi->controller->last_cs_mode_high = spi->mode & SPI_CS_HIGH;
-+
-+		if ((spi_get_csgpiod(spi, 0) || !spi->controller->set_cs_timing) && !activate)
-+			spi_delay_exec(&spi->cs_hold, NULL);
-+
-+		if (spi->mode & SPI_CS_HIGH)
-+			enable = !enable;
-+
-+		if (spi_get_csgpiod(spi, 0) && spi_get_csgpiod(spi, 1)) {
-+			if (!(spi->mode & SPI_NO_CS)) {
-+				/*
-+				 * Historically ACPI has no means of the GPIO polarity and
-+				 * thus the SPISerialBus() resource defines it on the per-chip
-+				 * basis. In order to avoid a chain of negations, the GPIO
-+				 * polarity is considered being Active High. Even for the cases
-+				 * when _DSD() is involved (in the updated versions of ACPI)
-+				 * the GPIO CS polarity must be defined Active High to avoid
-+				 * ambiguity. That's why we use enable, that takes SPI_CS_HIGH
-+				 * into account.
-+				 */
-+				if (has_acpi_companion(&spi->dev)) {
-+					for (idx = 0; idx < SPI_CS_CNT_MAX; idx++)
-+						gpiod_set_value_cansleep(spi_get_csgpiod(spi, idx),
-+									 !enable);
-+				} else {
-+					for (idx = 0; idx < SPI_CS_CNT_MAX; idx++)
-+						/* Polarity handled by GPIO library */
-+						gpiod_set_value_cansleep(spi_get_csgpiod(spi, idx),
-+									 activate);
-+				}
-+			}
-+			/* Some SPI masters need both GPIO CS & slave_select */
-+			if ((spi->controller->flags & SPI_MASTER_GPIO_SS) &&
-+			    spi->controller->set_cs)
-+				spi->controller->set_cs(spi, !enable);
-+		} else if (spi->controller->set_cs) {
-+			spi->controller->set_cs(spi, !enable);
-+		}
- 
--	if (spi_get_csgpiod(spi, 0)) {
--		if (!(spi->mode & SPI_NO_CS)) {
--			/*
--			 * Historically ACPI has no means of the GPIO polarity and
--			 * thus the SPISerialBus() resource defines it on the per-chip
--			 * basis. In order to avoid a chain of negations, the GPIO
--			 * polarity is considered being Active High. Even for the cases
--			 * when _DSD() is involved (in the updated versions of ACPI)
--			 * the GPIO CS polarity must be defined Active High to avoid
--			 * ambiguity. That's why we use enable, that takes SPI_CS_HIGH
--			 * into account.
--			 */
--			if (has_acpi_companion(&spi->dev))
--				gpiod_set_value_cansleep(spi_get_csgpiod(spi, 0), !enable);
-+		if (spi_get_csgpiod(spi, 0) || spi_get_csgpiod(spi, 1) ||
-+		    !spi->controller->set_cs_timing) {
-+			if (activate)
-+				spi_delay_exec(&spi->cs_setup, NULL);
- 			else
--				/* Polarity handled by GPIO library */
--				gpiod_set_value_cansleep(spi_get_csgpiod(spi, 0), activate);
-+				spi_delay_exec(&spi->cs_inactive, NULL);
+@@ -2668,7 +2831,22 @@ static void spi_nor_late_init_params(struct spi_nor *nor)
+ 				nor->flags |= SNOR_F_HAS_STACKED;
  		}
--		/* Some SPI masters need both GPIO CS & slave_select */
--		if ((spi->controller->flags & SPI_MASTER_GPIO_SS) &&
--		    spi->controller->set_cs)
-+	} else {
+ 	}
+-	if (nor->flags & SNOR_F_HAS_STACKED) {
++	i = 0;
++	idx = 0;
++	while (i < SNOR_FLASH_CNT_MAX) {
++		rc = of_property_read_u64_index(np, "parallel-memories", idx, &flash_size[i]);
++		if (rc == -EINVAL) {
++			break;
++		} else if (rc == -EOVERFLOW) {
++			idx++;
++		} else {
++			idx++;
++			i++;
++			if (!(nor->flags & SNOR_F_HAS_PARALLEL))
++				nor->flags |= SNOR_F_HAS_PARALLEL;
++		}
++	}
++	if (nor->flags & (SNOR_F_HAS_STACKED | SNOR_F_HAS_PARALLEL)) {
+ 		for (idx = 1; idx < SNOR_FLASH_CNT_MAX; idx++) {
+ 			params = spi_nor_get_params(nor, idx);
+ 			params = devm_kzalloc(nor->dev, sizeof(*params), GFP_KERNEL);
+@@ -2890,24 +3068,42 @@ static int spi_nor_quad_enable(struct spi_nor *nor)
+ 	struct spi_nor_flash_parameter *params;
+ 	int err, idx;
+ 
+-	for (idx = 0; idx < SNOR_FLASH_CNT_MAX; idx++) {
+-		params = spi_nor_get_params(nor, idx);
+-		if (params) {
+-			if (!params->quad_enable)
+-				return 0;
++	if (nor->flags & SNOR_F_HAS_PARALLEL) {
++		params = spi_nor_get_params(nor, 0);
++		if (!params->quad_enable)
++			return 0;
+ 
+-			if (!(spi_nor_get_protocol_width(nor->read_proto) == 4 ||
+-			      spi_nor_get_protocol_width(nor->write_proto) == 4))
+-				return 0;
+-			/*
+-			 * Set the appropriate CS index before
+-			 * issuing the command.
+-			 */
+-			nor->spimem->spi->cs_index_mask = 0x01 << idx;
++		if (!(spi_nor_get_protocol_width(nor->read_proto) == 4 ||
++		      spi_nor_get_protocol_width(nor->write_proto) == 4))
++			return 0;
 +		/*
-+		 * Avoid calling into the driver (or doing delays) if the chip select
-+		 * isn't actually changing from the last time this was called.
++		 * In parallel mode both chip selects i.e., CS0 &
++		 * CS1 need to be asserted simulatneously.
 +		 */
-+		if (!force && ((enable && spi->controller->last_cs ==
-+				spi_get_chipselect(spi, cs_num)) ||
-+				(!enable && spi->controller->last_cs !=
-+				 spi_get_chipselect(spi, cs_num))) &&
-+		    (spi->controller->last_cs_mode_high ==
-+		     (spi->mode & SPI_CS_HIGH)))
-+			return;
-+
-+		trace_spi_set_cs(spi, activate);
-+
-+		spi->controller->last_cs = enable ? spi_get_chipselect(spi, cs_num) : -1;
-+		spi->controller->last_cs_mode_high = spi->mode & SPI_CS_HIGH;
-+
-+		if ((spi_get_csgpiod(spi, cs_num) || !spi->controller->set_cs_timing) && !activate)
-+			spi_delay_exec(&spi->cs_hold, NULL);
-+
-+		if (spi->mode & SPI_CS_HIGH)
-+			enable = !enable;
-+
-+		if (spi_get_csgpiod(spi, cs_num)) {
-+			if (!(spi->mode & SPI_NO_CS)) {
++		nor->spimem->spi->cs_index_mask = SPI_NOR_ENABLE_MULTI_CS;
++		err = params->quad_enable(nor);
++		if (err)
++			return err;
++	} else {
++		for (idx = 0; idx < SNOR_FLASH_CNT_MAX; idx++) {
++			params = spi_nor_get_params(nor, idx);
++			if (params) {
++				if (!params->quad_enable)
++					return 0;
+ 
+-			err = params->quad_enable(nor);
+-			if (err)
+-				return err;
++				if (!(spi_nor_get_protocol_width(nor->read_proto) == 4 ||
++				      spi_nor_get_protocol_width(nor->write_proto) == 4))
++					return 0;
 +				/*
-+				 * Historically ACPI has no means of the GPIO polarity and
-+				 * thus the SPISerialBus() resource defines it on the per-chip
-+				 * basis. In order to avoid a chain of negations, the GPIO
-+				 * polarity is considered being Active High. Even for the cases
-+				 * when _DSD() is involved (in the updated versions of ACPI)
-+				 * the GPIO CS polarity must be defined Active High to avoid
-+				 * ambiguity. That's why we use enable, that takes SPI_CS_HIGH
-+				 * into account.
++				 * Set the appropriate CS index before
++				 * issuing the command.
 +				 */
-+				if (has_acpi_companion(&spi->dev))
-+					gpiod_set_value_cansleep(spi_get_csgpiod(spi, cs_num),
-+								 !enable);
-+				else
-+					/* Polarity handled by GPIO library */
-+					gpiod_set_value_cansleep(spi_get_csgpiod(spi, cs_num),
-+								 activate);
++				nor->spimem->spi->cs_index_mask = 1 << idx;
++
++				err = params->quad_enable(nor);
++				if (err)
++					return err;
 +			}
-+			/* Some SPI masters need both GPIO CS & slave_select */
-+			if ((spi->controller->flags & SPI_MASTER_GPIO_SS) &&
-+			    spi->controller->set_cs)
-+				spi->controller->set_cs(spi, !enable);
-+		} else if (spi->controller->set_cs) {
- 			spi->controller->set_cs(spi, !enable);
--	} else if (spi->controller->set_cs) {
--		spi->controller->set_cs(spi, !enable);
--	}
-+		}
- 
--	if (spi_get_csgpiod(spi, 0) || !spi->controller->set_cs_timing) {
--		if (activate)
--			spi_delay_exec(&spi->cs_setup, NULL);
--		else
--			spi_delay_exec(&spi->cs_inactive, NULL);
-+		if (spi_get_csgpiod(spi, cs_num) || !spi->controller->set_cs_timing) {
-+			if (activate)
-+				spi_delay_exec(&spi->cs_setup, NULL);
-+			else
-+				spi_delay_exec(&spi->cs_inactive, NULL);
-+		}
+ 		}
  	}
- }
- 
-@@ -2246,8 +2325,8 @@ static void of_spi_parse_dt_cs_delay(struct device_node *nc,
- static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
- 			   struct device_node *nc)
- {
--	u32 value;
--	int rc;
-+	u32 value, cs[SPI_CS_CNT_MAX] = {0};
-+	int rc, idx;
- 
- 	/* Mode (clock phase/polarity/etc.) */
- 	if (of_property_read_bool(nc, "spi-cpha"))
-@@ -2320,13 +2399,21 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
+ 	return err;
+@@ -2957,17 +3153,29 @@ static int spi_nor_init(struct spi_nor *nor)
+ 		 */
+ 		WARN_ONCE(nor->flags & SNOR_F_BROKEN_RESET,
+ 			  "enabling reset hack; may not recover from unexpected reboots\n");
+-		for (idx = 0; idx < SNOR_FLASH_CNT_MAX; idx++) {
+-			params = spi_nor_get_params(nor, idx);
+-			if (params) {
+-				/*
+-				 * Select the appropriate CS index before
+-				 * issuing the command.
+-				 */
+-				nor->spimem->spi->cs_index_mask = 0x01 << idx;
+-				err = params->set_4byte_addr_mode(nor, true);
+-				if (err && err != -ENOTSUPP)
+-					return err;
++		if (nor->flags & SNOR_F_HAS_PARALLEL) {
++			/*
++			 * In parallel mode both chip selects i.e., CS0 &
++			 * CS1 need to be asserted simulatneously.
++			 */
++			nor->spimem->spi->cs_index_mask = SPI_NOR_ENABLE_MULTI_CS;
++			params = spi_nor_get_params(nor, 0);
++			err = params->set_4byte_addr_mode(nor, true);
++			if (err && err != -ENOTSUPP)
++				return err;
++		} else {
++			for (idx = 0; idx < SNOR_FLASH_CNT_MAX; idx++) {
++				params = spi_nor_get_params(nor, idx);
++				if (params) {
++					/*
++					 * Select the appropriate CS index before
++					 * issuing the command.
++					 */
++					nor->spimem->spi->cs_index_mask = 1 << idx;
++					err = params->set_4byte_addr_mode(nor, true);
++					if (err && err != -ENOTSUPP)
++						return err;
++				}
+ 			}
+ 		}
  	}
- 
- 	/* Device address */
--	rc = of_property_read_u32(nc, "reg", &value);
--	if (rc) {
-+	rc = of_property_read_variable_u32_array(nc, "reg", &cs[0], 1,
-+						 SPI_CS_CNT_MAX);
-+	if (rc < 0 || rc > ctlr->num_chipselect) {
- 		dev_err(&ctlr->dev, "%pOF has no valid 'reg' property (%d)\n",
- 			nc, rc);
- 		return rc;
-+	} else if ((of_property_read_bool(nc, "parallel-memories")) &&
-+		   (!(ctlr->flags & SPI_CONTROLLER_MULTI_CS))) {
-+		dev_err(&ctlr->dev, "SPI controller doesn't support multi CS\n");
-+		return -EINVAL;
- 	}
--	spi_set_chipselect(spi, 0, value);
-+	for (idx = 0; idx < rc; idx++)
-+		spi_set_chipselect(spi, idx, cs[idx]);
-+	/* By default set the spi->cs_index_mask as 1 */
-+	spi->cs_index_mask = 0x01;
- 
- 	/* Device speed */
- 	if (!of_property_read_u32(nc, "spi-max-frequency", &value))
-@@ -3907,7 +3994,8 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
- 	 * cs_change is set for each transfer.
- 	 */
- 	if ((spi->mode & SPI_CS_WORD) && (!(ctlr->mode_bits & SPI_CS_WORD) ||
--					  spi_get_csgpiod(spi, 0))) {
-+					  spi_get_csgpiod(spi, 0) ||
-+					  spi_get_csgpiod(spi, 1))) {
- 		size_t maxsize;
- 		int ret;
- 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 873ced6ae4ca..6453b246e0af 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -19,6 +19,11 @@
- #include <linux/acpi.h>
- #include <linux/u64_stats_sync.h>
- 
-+/* Max no. of CS supported per spi device */
-+#define SPI_CS_CNT_MAX 2
-+
-+/* chip select mask */
-+#define SPI_PARALLEL_CS_MASK	(BIT(0) | BIT(1))
- struct dma_chan;
- struct software_node;
- struct ptp_system_timestamp;
-@@ -166,6 +171,7 @@ extern void spi_transfer_cs_change_delay_exec(struct spi_message *msg,
-  *	deasserted. If @cs_change_delay is used from @spi_transfer, then the
-  *	two delays will be added up.
-  * @pcpu_statistics: statistics for the spi_device
-+ * @cs_index_mask: Bit mask of the active chipselect(s) in the chipselect array
-  *
-  * A @spi_device is used to interchange data between an SPI slave
-  * (usually a discrete chip) and CPU memory.
-@@ -181,7 +187,7 @@ struct spi_device {
- 	struct spi_controller	*controller;
- 	struct spi_controller	*master;	/* Compatibility layer */
- 	u32			max_speed_hz;
--	u8			chip_select;
-+	u8			chip_select[SPI_CS_CNT_MAX];
- 	u8			bits_per_word;
- 	bool			rt;
- #define SPI_NO_TX	BIT(31)		/* No transmit wire */
-@@ -202,7 +208,7 @@ struct spi_device {
- 	void			*controller_data;
- 	char			modalias[SPI_NAME_SIZE];
- 	const char		*driver_override;
--	struct gpio_desc	*cs_gpiod;	/* Chip select gpio desc */
-+	struct gpio_desc	*cs_gpiod[SPI_CS_CNT_MAX];	/* Chip select gpio desc */
- 	struct spi_delay	word_delay; /* Inter-word delay */
- 	/* CS delays */
- 	struct spi_delay	cs_setup;
-@@ -212,6 +218,13 @@ struct spi_device {
- 	/* The statistics */
- 	struct spi_statistics __percpu	*pcpu_statistics;
- 
-+	/* Bit mask of the chipselect(s) that the driver need to use from
-+	 * the chipselect array.When the controller is capable to handle
-+	 * multiple chip selects & memories are connected in parallel
-+	 * then more than one bit need to be set in cs_index_mask.
-+	 */
-+	u32			cs_index_mask : SPI_CS_CNT_MAX;
-+
- 	/*
- 	 * likely need more hooks for more protocol options affecting how
- 	 * the controller talks to each chip, like:
-@@ -268,22 +281,22 @@ static inline void *spi_get_drvdata(const struct spi_device *spi)
- 
- static inline u8 spi_get_chipselect(const struct spi_device *spi, u8 idx)
- {
--	return spi->chip_select;
-+	return spi->chip_select[idx];
- }
- 
- static inline void spi_set_chipselect(struct spi_device *spi, u8 idx, u8 chipselect)
- {
--	spi->chip_select = chipselect;
-+	spi->chip_select[idx] = chipselect;
- }
- 
- static inline struct gpio_desc *spi_get_csgpiod(const struct spi_device *spi, u8 idx)
- {
--	return spi->cs_gpiod;
-+	return spi->cs_gpiod[idx];
- }
- 
- static inline void spi_set_csgpiod(struct spi_device *spi, u8 idx, struct gpio_desc *csgpiod)
- {
--	spi->cs_gpiod = csgpiod;
-+	spi->cs_gpiod[idx] = csgpiod;
- }
- 
- /**
-@@ -388,6 +401,8 @@ extern struct spi_device *spi_new_ancillary_device(struct spi_device *spi, u8 ch
-  * @bus_lock_spinlock: spinlock for SPI bus locking
-  * @bus_lock_mutex: mutex for exclusion of multiple callers
-  * @bus_lock_flag: indicates that the SPI bus is locked for exclusive use
-+ * @multi_cs_cap: indicates that the SPI Controller can assert/de-assert
-+ *	more than one chip select at once.
-  * @setup: updates the device mode and clocking records used by a
-  *	device's SPI controller; protocol code may call this.  This
-  *	must fail if an unrecognized or unsupported mode is requested.
-@@ -554,6 +569,11 @@ struct spi_controller {
- #define SPI_CONTROLLER_MUST_TX		BIT(4)	/* Requires tx */
- 
- #define SPI_MASTER_GPIO_SS		BIT(5)	/* GPIO CS must select slave */
+@@ -3090,20 +3298,39 @@ void spi_nor_restore(struct spi_nor *nor)
+ 	/* restore the addressing mode */
+ 	if (nor->addr_nbytes == 4 && !(nor->flags & SNOR_F_4B_OPCODES) &&
+ 	    nor->flags & SNOR_F_BROKEN_RESET) {
+-		for (idx = 0; idx < SNOR_FLASH_CNT_MAX; idx++) {
+-			params = spi_nor_get_params(nor, idx);
+-			if (params) {
++		if (nor->flags & SNOR_F_HAS_PARALLEL) {
++			/*
++			 * In parallel mode both chip selects i.e., CS0 &
++			 * CS1 need to be asserted simulatneously.
++			 */
++			nor->spimem->spi->cs_index_mask = SPI_NOR_ENABLE_MULTI_CS;
++			params = spi_nor_get_params(nor, 0);
++			ret = params->set_4byte_addr_mode(nor, false);
++			if (ret)
++				/*
++				 * Do not stop the execution in the hope that the flash
++				 * will default to the 3-byte address mode after the
++				 * software reset.
++				 */
++				dev_err(nor->dev,
++					"Failed to exit 4-byte address mode, err = %d\n",
++					ret);
++		} else {
++			for (idx = 0; idx < SNOR_FLASH_CNT_MAX; idx++) {
++				params = spi_nor_get_params(nor, idx);
++				if (!params)
++					break;
+ 				/*
+ 				 * Select the appropriate CS index before
+ 				 * issuing the command.
+ 				 */
+-				nor->spimem->spi->cs_index_mask = 0x01 << idx;
++				nor->spimem->spi->cs_index_mask = 1 << idx;
+ 				ret = params->set_4byte_addr_mode(nor, false);
+ 				if (ret)
+ 					/*
+-					 * Do not stop the execution in the hope that the flash
+-					 * will default to the 3-byte address mode after the
+-					 * software reset.
++					 * Do not stop the execution in the hope that the
++					 * flash will default to the 3-byte address mode
++					 * after the software reset.
+ 					 */
+ 					dev_err(nor->dev,
+ 						"Failed to exit 4-byte address mode, err = %d\n",
+@@ -3193,7 +3420,16 @@ static void spi_nor_set_mtd_info(struct spi_nor *nor)
+ 	else
+ 		mtd->_erase = spi_nor_erase;
+ 	mtd->writesize = params->writesize;
+-	mtd->writebufsize = params->page_size;
 +	/*
-+	 * The spi-controller has multi chip select capability and can
-+	 * assert/de-assert more than one chip select at once.
++	 * In parallel-memories the write operation is
++	 * performed on both the flashes simultaneously
++	 * one page per flash, so double the writebufsize.
 +	 */
-+#define SPI_CONTROLLER_MULTI_CS		BIT(6)
++	if (nor->flags & SNOR_F_HAS_PARALLEL)
++		mtd->writebufsize = params->page_size << 1;
++	else
++		mtd->writebufsize = params->page_size;
++
+ 	for (idx = 0; idx < SNOR_FLASH_CNT_MAX; idx++) {
+ 		params = spi_nor_get_params(nor, idx);
+ 		if (params)
+diff --git a/drivers/mtd/spi-nor/core.h b/drivers/mtd/spi-nor/core.h
+index cff2f9c389b8..6c6df417a9c6 100644
+--- a/drivers/mtd/spi-nor/core.h
++++ b/drivers/mtd/spi-nor/core.h
+@@ -14,6 +14,9 @@
+ /* In single configuration enable CS0 */
+ #define SPI_NOR_ENABLE_CS0     BIT(0)
  
- 	/* Flag indicating if the allocation of this struct is devres-managed */
- 	bool			devm_allocated;
++/* In parallel configuration enable multiple CS */
++#define SPI_NOR_ENABLE_MULTI_CS	(BIT(0) | BIT(1))
++
+ /* Standard SPI NOR flash operations. */
+ #define SPI_NOR_READID_OP(naddr, ndummy, buf, len)			\
+ 	SPI_MEM_OP(SPI_MEM_OP_CMD(SPINOR_OP_RDID, 0),			\
+@@ -134,6 +137,7 @@ enum spi_nor_option_flags {
+ 	SNOR_F_SOFT_RESET	= BIT(12),
+ 	SNOR_F_SWP_IS_VOLATILE	= BIT(13),
+ 	SNOR_F_HAS_STACKED      = BIT(14),
++	SNOR_F_HAS_PARALLEL	= BIT(15),
+ };
+ 
+ struct spi_nor_read_command {
+diff --git a/drivers/mtd/spi-nor/micron-st.c b/drivers/mtd/spi-nor/micron-st.c
+index b93e16094b6c..9be39f237dfc 100644
+--- a/drivers/mtd/spi-nor/micron-st.c
++++ b/drivers/mtd/spi-nor/micron-st.c
+@@ -357,6 +357,9 @@ static int micron_st_nor_read_fsr(struct spi_nor *nor, u8 *fsr)
+ 			op.data.nbytes = 2;
+ 		}
+ 
++		if (nor->flags & SNOR_F_HAS_PARALLEL)
++			op.data.nbytes = 2;
++
+ 		spi_nor_spimem_setup_op(nor, &op, nor->reg_proto);
+ 
+ 		ret = spi_mem_exec_op(nor->spimem, &op);
+@@ -368,6 +371,8 @@ static int micron_st_nor_read_fsr(struct spi_nor *nor, u8 *fsr)
+ 	if (ret)
+ 		dev_dbg(nor->dev, "error %d reading FSR\n", ret);
+ 
++	if (nor->flags & SNOR_F_HAS_PARALLEL)
++		fsr[0] &= fsr[1];
+ 	return ret;
+ }
+ 
 -- 
 2.17.1
 

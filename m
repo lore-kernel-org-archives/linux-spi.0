@@ -2,143 +2,104 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C1867C77B6E
-	for <linux-spi@archiver.kernel.org>; Wed, 12 Apr 2023 15:29:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A97EC7619A
+	for <linux-spi@archiver.kernel.org>; Wed, 12 Apr 2023 15:30:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231493AbjDLP3m (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 12 Apr 2023 11:29:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60344 "EHLO
+        id S230056AbjDLPaX (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 12 Apr 2023 11:30:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231530AbjDLP3l (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 12 Apr 2023 11:29:41 -0400
+        with ESMTP id S229709AbjDLPaW (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 12 Apr 2023 11:30:22 -0400
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D3927EFF;
-        Wed, 12 Apr 2023 08:29:19 -0700 (PDT)
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33CFKPcT014612;
-        Wed, 12 Apr 2023 15:29:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=CNQmE7gblG6nw+VNHV/YD0dBKmW/jOvX4hy6Np6iGFU=;
- b=JgZjsTCpURKtDjs5C8ClNOE6i4HlVwi57hk/Zg+G82Dmi2MRaeZbsZgDqSHx7RVQgLWS
- 8AfLc+CmvreSXmHr84IWVJ2svfAxDuLxVNqlTQ30QOtYMGLtP9A7ehY24IhqOQA+1Pf5
- Uk/3XTLMb65jPoE7VnSupKs1VcS5H2GgYErQUNeEENafAGANflzg2IUw41ZPQIzRpVXa
- NL+4WefRSDD5eqJr9EZkqLx1lVdKN8Ae4OYPBCqzq1MYRmdaI2IdMb+rE9pA1fCH55Yv
- IxrlKIDz6RGPEJ180vpnIuUOWYz7j73VWeSMNAf5uIFKmjAltUuD5DCWFnHSfd+BVHUb Og== 
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3pwy6fr0n6-1
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 493879027;
+        Wed, 12 Apr 2023 08:29:59 -0700 (PDT)
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33CA9nZE025126;
+        Wed, 12 Apr 2023 15:29:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references; s=qcppdkim1;
+ bh=zw5+9bbtjkSo1QNSicP07l2Xq8GiWQkuPXFbD19o19Y=;
+ b=O+2ws96tvotgN6onpB/JdgrbguNVg/AReyiZ1sS09CMQE5eVkMVqWazJXBiI3iJ3Pb0J
+ lIO62S51lcW/iqQM0LWmcJyPcYQ+gdplJqgvlNT3q6tAtSuZ/8uZmo6D4l1+NxnJU3w0
+ AeVN8u3BF6qU3I07U01zTy6a5UKvy5HPsA5i2az+fFRXtHDM/26cWyZXsWbPqnGTe0pk
+ pvdNtbe+XBZBzJ7Q5n9Va8EJRMdX7xMChJHGCSuCWrAb8/Fviay2T26PTU7cDrnj8tb5
+ AQe5RbPu+0rXSvFjd+S2qvsmPkoQcfHjwwDpNrp2i3V8dyysDwTlQZLu26fuyf/umw8J wg== 
+Received: from apblrppmta01.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3pwqn1h4p8-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 12 Apr 2023 15:29:15 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 33CFTEWi025845
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 12 Apr 2023 15:29:14 GMT
-Received: from [10.216.35.198] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Wed, 12 Apr
- 2023 08:29:09 -0700
-Message-ID: <92f61ba4-a847-1ce3-f0c8-e9c0f0fafa0b@quicinc.com>
-Date:   Wed, 12 Apr 2023 20:59:06 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH 2/2] spi: spi-qcom-qspi: Add DMA mode support
-Content-Language: en-CA
-To:     Mark Brown <broonie@kernel.org>
-CC:     <agross@kernel.org>, <andersson@kernel.org>,
-        <konrad.dybcio@linaro.org>, <robh+dt@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <vkoul@kernel.org>,
-        <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
-        <quic_msavaliy@quicinc.com>, <dianders@chromium.org>,
-        <mka@chromium.org>, <swboyd@chromium.org>,
-        <quic_vtanuku@quicinc.com>
-References: <1680631400-28865-1-git-send-email-quic_vnivarth@quicinc.com>
- <1680631400-28865-3-git-send-email-quic_vnivarth@quicinc.com>
- <d784dab7-a1a6-4db7-aa13-e39e9904f342@sirena.org.uk>
- <0b182a36-0254-6720-4a35-f9e617c12797@quicinc.com>
- <92690348-21c3-45de-bdb1-d0977b859702@sirena.org.uk>
+        Wed, 12 Apr 2023 15:29:55 +0000
+Received: from pps.filterd (APBLRPPMTA01.qualcomm.com [127.0.0.1])
+        by APBLRPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 33CFTqwg027896;
+        Wed, 12 Apr 2023 15:29:52 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 3pu1bksugr-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+        Wed, 12 Apr 2023 15:29:52 +0000
+Received: from APBLRPPMTA01.qualcomm.com (APBLRPPMTA01.qualcomm.com [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 33CFTpnd027888;
+        Wed, 12 Apr 2023 15:29:51 GMT
+Received: from hu-sgudaval-hyd.qualcomm.com (hu-vnivarth-hyd.qualcomm.com [10.213.111.166])
+        by APBLRPPMTA01.qualcomm.com (PPS) with ESMTP id 33CFTpa8027884;
+        Wed, 12 Apr 2023 15:29:51 +0000
+Received: by hu-sgudaval-hyd.qualcomm.com (Postfix, from userid 3994820)
+        id 18758453F; Wed, 12 Apr 2023 20:59:51 +0530 (+0530)
 From:   Vijaya Krishna Nivarthi <quic_vnivarth@quicinc.com>
-In-Reply-To: <92690348-21c3-45de-bdb1-d0977b859702@sirena.org.uk>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
+To:     agross@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        broonie@kernel.org, vkoul@kernel.org,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+Cc:     quic_msavaliy@quicinc.com, dianders@chromium.org, mka@chromium.org,
+        swboyd@chromium.org, quic_vtanuku@quicinc.com,
+        Vijaya Krishna Nivarthi <quic_vnivarth@quicinc.com>
+Subject: [V2 1/3] spi: dt-bindings: qcom,spi-qcom-qspi: Add iommus binding for qspi
+Date:   Wed, 12 Apr 2023 20:59:45 +0530
+Message-Id: <1681313387-8376-2-git-send-email-quic_vnivarth@quicinc.com>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1681313387-8376-1-git-send-email-quic_vnivarth@quicinc.com>
+References: <1681313387-8376-1-git-send-email-quic_vnivarth@quicinc.com>
+X-QCInternal: smtphost
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 1zMC2ldMxcj95SZBy7ZKoXTYfmz_teT5
-X-Proofpoint-GUID: 1zMC2ldMxcj95SZBy7ZKoXTYfmz_teT5
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: gmjwTsJLhryc1l1A8ciurYVmC8qCXQP5
+X-Proofpoint-ORIG-GUID: gmjwTsJLhryc1l1A8ciurYVmC8qCXQP5
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
  definitions=2023-04-12_06,2023-04-12_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- mlxlogscore=966 spamscore=0 clxscore=1015 impostorscore=0 suspectscore=0
- malwarescore=0 phishscore=0 mlxscore=0 lowpriorityscore=0 bulkscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 spamscore=0
+ lowpriorityscore=0 phishscore=0 adultscore=0 bulkscore=0 suspectscore=0
+ impostorscore=0 clxscore=1015 mlxlogscore=539 priorityscore=1501
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2303200000 definitions=main-2304120134
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Thank you for the responses...
+Add iommus binding to documentation to be in sync with below
+change to dtsi...
+Add stream-id of qspi to iommus
 
+Signed-off-by: Vijaya Krishna Nivarthi <quic_vnivarth@quicinc.com>
+---
+ Documentation/devicetree/bindings/spi/qcom,spi-qcom-qspi.yaml | 3 +++
+ 1 file changed, 3 insertions(+)
 
-On 4/6/2023 8:58 PM, Mark Brown wrote:
-> On Thu, Apr 06, 2023 at 08:23:21PM +0530, Vijaya Krishna Nivarthi wrote:
->> On 4/4/2023 11:47 PM, Mark Brown wrote:
->>> On Tue, Apr 04, 2023 at 11:33:20PM +0530, Vijaya Krishna Nivarthi wrote:
->>>> +	uint32_t reserved2:7;
->>>> +	uint32_t length:16;
->>>> +	//------------------------//
->>> What does this mean?
->> That separates the part of cmd_desc that is visible to the HW and the part
->> that is required by the SW after xfer is complete.
->> I can add a comment in v2?
-> Yes, please.
-
-
-Added comments
-
->
->>>> +	for (ii = 0; ii < sgt->nents; ii++)
->>>> +		sg_total_len += sg_dma_len(sgt->sgl + ii);
->>> Why are we calling the iterator ii here?
->> Calling it ii helps in finding iterator more easily in code.
->> should I stick to i in v2?
-> Given that multiple people queried this...
-
-
-Renamed.
-
->
->>>> +	if (ctrl->xfer.dir == QSPI_READ)
->>>> +		byte_ptr = (uint8_t *)xfer->rx_buf;
->>>> +	else
->>>> +		byte_ptr = (uint8_t *)xfer->tx_buf;
->>> If we need to cast to or from void * there's some sort of problem.
->> the tx_buf is a const void*
->> in v2 I will cast for tx_buf only?
-> Or just keep byte_ptr as const - we're not modifying it are we?
-
-
-We are modifying it, hence did cast for tx_buf only
-
->
->>>> +#if NO_TX_DATA_DELAY_FOR_DMA
->>>> +		mstr_cfg &= ~(TX_DATA_OE_DELAY_MSK | TX_DATA_DELAY_MSK);
->>>> +#endif
->>> Why would we add extra delays if we don't need them, might someone set
->>> this and if so when?
->> I believe its used when some slave devices need a delay between clock and
->> data.
->> Its configured as 1 for PIO_MODE(FIFO) right now.
->> For DMA_MODE we are not using same, both seem to work for DMA.
-> If some devices need this to be configured it needs to be configured
-> either from the driver for that device or via DT depending on the exact
-> requirements.
-
-
-Retained same MSTR_CONFIG as PIO mode, hence not touching any of the DELAYs
+diff --git a/Documentation/devicetree/bindings/spi/qcom,spi-qcom-qspi.yaml b/Documentation/devicetree/bindings/spi/qcom,spi-qcom-qspi.yaml
+index ee8f7ea..1696ac4 100644
+--- a/Documentation/devicetree/bindings/spi/qcom,spi-qcom-qspi.yaml
++++ b/Documentation/devicetree/bindings/spi/qcom,spi-qcom-qspi.yaml
+@@ -29,6 +29,9 @@ properties:
+   reg:
+     maxItems: 1
+ 
++  iommus:
++    maxItems: 1
++
+   interrupts:
+     maxItems: 1
+ 
+-- 
+Qualcomm INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum, hosted by the Linux Foundation.
 

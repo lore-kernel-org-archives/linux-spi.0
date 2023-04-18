@@ -2,89 +2,74 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9A795C77B75
-	for <linux-spi@archiver.kernel.org>; Tue, 18 Apr 2023 16:21:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A4B5BC6FD18
+	for <linux-spi@archiver.kernel.org>; Tue, 18 Apr 2023 16:30:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232386AbjDRQVv (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 18 Apr 2023 12:21:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34512 "EHLO
+        id S231168AbjDRQaY (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 18 Apr 2023 12:30:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232397AbjDRQVr (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 18 Apr 2023 12:21:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD831C678
-        for <linux-spi@vger.kernel.org>; Tue, 18 Apr 2023 09:21:43 -0700 (PDT)
+        with ESMTP id S232170AbjDRQaX (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 18 Apr 2023 12:30:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92CBF72A8
+        for <linux-spi@vger.kernel.org>; Tue, 18 Apr 2023 09:30:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5195B6366C
-        for <linux-spi@vger.kernel.org>; Tue, 18 Apr 2023 16:21:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67B4BC4339B;
-        Tue, 18 Apr 2023 16:21:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2F97763676
+        for <linux-spi@vger.kernel.org>; Tue, 18 Apr 2023 16:30:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8A2B3C433EF;
+        Tue, 18 Apr 2023 16:30:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1681834902;
-        bh=+ZuI46+CuIgF6FJHUtrC5/wGkWgwIgdaAh5yxRrN97Y=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=iQ3dJvqErwLng/DiLYi+/6k52aBCIZXMLzdbPEMPo1gM+6evePQseOq8Ms8y5d+Lk
-         VbDJGfVqhGJAR92rzldVxJ1uH7VxtvealOftxv4X+ZuXjAkb6eUqMfVy0MtDQRrgM/
-         dQ+kt2HcrG8iig6kukvTLH61TTrgttM0vdwg34ZvcNL4t2Im4/6V1oxcgtjGqoS2CK
-         DJya4WdGFfQbRNs2KqaFXvtmOJOQbIxRbPmnrUYO2PNDHFY7Vedwv5aRsO6m0LUz/M
-         65Qp8v7lyqgq1ADkSSXTRpx2DqyLXPVwNzSTG2fqJvZYDSHW7FBqFgp8SLAXE/lx56
-         2Io8zbdmn70Xw==
-From:   Mark Brown <broonie@kernel.org>
-To:     Dhruva Gole <d-gole@ti.com>
-Cc:     Vaishnav Achath <vaishnav.a@ti.com>, Vignesh <vigneshr@ti.com>,
-        Apurva Nandan <a-nandan@ti.com>,
-        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
-In-Reply-To: <20230417091027.966146-1-d-gole@ti.com>
-References: <20230417091027.966146-1-d-gole@ti.com>
-Subject: Re: (subset) [PATCH 0/2] Fix PM Hooks in the Cadence Quad SPI
- Driver
-Message-Id: <168183490111.88110.17630787888959100348.b4-ty@kernel.org>
-Date:   Tue, 18 Apr 2023 17:21:41 +0100
-MIME-Version: 1.0
+        s=k20201202; t=1681835421;
+        bh=1QJOIGztRvYW9BvUlglAE8p9pfBx1j5g4FqXQeezhNw=;
+        h=Subject:From:Date:To:From;
+        b=hrVbfWVHwIGQkOGWxDVEGTd8Pgb44vB3Tw5+DCGOxFrx/LFhioBKEc1FT9v64nbk9
+         lwB2TXmJ9lEsRs7dP0ealWbBDWTTV2Hdn8LA8CZ7Vpr14o/NZgROhgypJ6WPMiqVNk
+         nkBEJOztiEuulwkGKWJbhy2hJHzoRC55evZaZ4484RVQ4F25CE5SfvL1BNgV/2bmfP
+         2FEKxpiJmbwyjm4XZrAY3NtDJFMAM2sLJo3x3Tp6dUQDqKUJg5uupmt4HRNDUDlaxe
+         NBToR0V0Pr6QnLjMvFARdcrwHXFda1QkGhVWhbu8smuPpeP21KFDu33XOty+QT23Mc
+         /FL0UDwEdxTng==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 63421E330A0;
+        Tue, 18 Apr 2023 16:30:21 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13-dev-00303
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <168183542132.14505.17128239763581004158.git-patchwork-summary@kernel.org>
+Date:   Tue, 18 Apr 2023 16:30:21 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Mon, 17 Apr 2023 14:40:25 +0530, Dhruva Gole wrote:
-> This series adds fixes to the Suspend and Resume Hooks of the CQSPI Driver.
-> Earlier, the ltp-ddt test "OSPI_S_FUNC_DD_RW_ERASESIZE_UBIFS" failed
-> post system suspend resume. It is now passing as shown in [0].
-> 
-> Tested on top of linux-next (next-20230414) on an AM625-SK-EVM. For logs,
-> please refer [0].
-> 
-> [...]
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+Series: spi: spi-cadence: Add Slave mode support
+  Submitter: Srinivas Goud <srinivas.goud@amd.com>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=740979
+  Lore link: https://lore.kernel.org/r/1681825625-10265-1-git-send-email-srinivas.goud@amd.com
+    Patches: [v2,1/2] spi: spi-cadence: Switch to spi_controller structure
+             [v2,2/2] spi: spi-cadence: Add support for Slave mode
 
-Thanks!
+Series: Fix PM Hooks in the Cadence Quad SPI Driver
+  Submitter: Gole, Dhruva <d-gole@ti.com>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=740396
+  Lore link: https://lore.kernel.org/r/20230417091027.966146-1-d-gole@ti.com
+    Patches: [1/2] spi: cadence-quadspi: use macro SIMPLE_DEV_PM_OPS
+             [2/2] spi: cadence-quadspi: fix suspend-resume implementations
 
-[2/2] spi: cadence-quadspi: fix suspend-resume implementations
-      commit: 2087e85bb66ee3652dafe732bb9b9b896229eafc
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+Total patches: 4
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
 

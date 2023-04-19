@@ -2,124 +2,140 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 21BDAC6FD18
-	for <linux-spi@archiver.kernel.org>; Wed, 19 Apr 2023 05:48:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E05B2C6FD18
+	for <linux-spi@archiver.kernel.org>; Wed, 19 Apr 2023 06:24:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231537AbjDSFsj (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 19 Apr 2023 01:48:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45472 "EHLO
+        id S231623AbjDSGYH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 19 Apr 2023 02:24:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231230AbjDSFsi (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 19 Apr 2023 01:48:38 -0400
-Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com [IPv6:2607:f8b0:4864:20::1130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E06485BA1
-        for <linux-spi@vger.kernel.org>; Tue, 18 Apr 2023 22:48:36 -0700 (PDT)
-Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-555bc7f6746so42233747b3.6
-        for <linux-spi@vger.kernel.org>; Tue, 18 Apr 2023 22:48:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1681883316; x=1684475316;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=K4bx1lrPt7EkQTFUhn+tnnmLkUflOfyoDdf2Nh8k7go=;
-        b=NDSSkGY3R//+h2GDgeukfHv1wKB990ASuIBacYtJi7akdl78oBCgfqzUJSPDugRLP0
-         0SwZh70QC4aV55zP/QS7QkjuUt+R/ftbL/uF2Uvid7vhacEKXQFCH6wEhHW4boT5OtuW
-         xD0WPLgd7ZlmSDufqrlyOgVVME77octjjqZX44WnJ24tKUDAT4uSYHEYsYF6PNvjv6BR
-         4auPLOMSJpbnUiMUvuFrdPMwEvIgY/oTN0QZGZlEg6K1s/BwCpDpANXd1ujfq7E9ajb5
-         9KwkFc7neUNclkx4vZ19h+J+5kQrwLtE5HtAYjkm34KK9f1bk5DV4YiDkvODL8yig6/h
-         LN2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681883316; x=1684475316;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=K4bx1lrPt7EkQTFUhn+tnnmLkUflOfyoDdf2Nh8k7go=;
-        b=eYF3AeDkLE9WAB3Svy3Nzd2297MQu6Hmc3DyoIj7vcMp/yZs6LksC5pjxANolEKE6M
-         xIRQUYMWGdBl4i+YjXe1vQ0lgcIRnCawqNdbB98ceYXiahTgOe/6erQKSGwdqRuRNFui
-         OBeYWjye1uoZoqsHq1mO0wXwR3Qu16zqM6Ps0kLMlByZXXj4X2VAcPrAxOu6LDSDnF0/
-         bOCGUQOekcMrAoUrnt5dOlUieRAMuLJpEobOfZgdTF02Ql3D/yWwTBBHRR0SchBhKd2i
-         kFveUKihLDLP76g9E1v67YQM4jwrWh3Ot8EZGVNdH+eaUv8t696j0vpIlGCmjtLa71tF
-         O4WA==
-X-Gm-Message-State: AAQBX9cR5axbK7GiK/cadn4eze7ak+zQIlRkw/g1Ux3HPTerSHdLzEPu
-        piB8BSWGywQG71fC4p0WUhf6I783m0NVRAKwoxOtXw==
-X-Google-Smtp-Source: AKy350bhgIZfl+76ufNilmmY2MnTYA9MZXAIWAcOr78M6MH58CYU9cGj3mCALecz83+OYF4IuRIUELBQPUaCYMkEDnc=
-X-Received: by 2002:a0d:eb08:0:b0:555:d266:acc5 with SMTP id
- u8-20020a0deb08000000b00555d266acc5mr678715ywe.29.1681883315944; Tue, 18 Apr
- 2023 22:48:35 -0700 (PDT)
+        with ESMTP id S230153AbjDSGYH (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 19 Apr 2023 02:24:07 -0400
+Received: from loongson.cn (mail.loongson.cn [114.242.206.163])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E98D926A5;
+        Tue, 18 Apr 2023 23:23:24 -0700 (PDT)
+Received: from loongson.cn (unknown [10.20.42.35])
+        by gateway (Coremail) with SMTP id _____8AxEk6aiD9kucseAA--.36491S3;
+        Wed, 19 Apr 2023 14:22:18 +0800 (CST)
+Received: from user-pc.202.106.0.20 (unknown [10.20.42.35])
+        by localhost.localdomain (Coremail) with SMTP id AQAAf8Dxjb6NiD9k0okuAA--.15004S3;
+        Wed, 19 Apr 2023 14:22:13 +0800 (CST)
+From:   Yinbo Zhu <zhuyinbo@loongson.cn>
+To:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Jianmin Lv <lvjianmin@loongson.cn>, wanghongliang@loongson.cn,
+        Liu Peibao <liupeibao@loongson.cn>,
+        loongson-kernel@lists.loongnix.cn,
+        Yinbo Zhu <zhuyinbo@loongson.cn>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v8 1/2] dt-bindings: spi: add loongson spi
+Date:   Wed, 19 Apr 2023 14:22:01 +0800
+Message-Id: <20230419062202.28749-2-zhuyinbo@loongson.cn>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20230419062202.28749-1-zhuyinbo@loongson.cn>
+References: <20230419062202.28749-1-zhuyinbo@loongson.cn>
 MIME-Version: 1.0
-References: <20230418052902.1336866-1-joychakr@google.com> <20230418052902.1336866-5-joychakr@google.com>
- <ZD5JC7BdN1usn6Kd@smile.fi.intel.com>
-In-Reply-To: <ZD5JC7BdN1usn6Kd@smile.fi.intel.com>
-From:   Joy Chakraborty <joychakr@google.com>
-Date:   Wed, 19 Apr 2023 11:18:25 +0530
-Message-ID: <CAOSNQF2sXHFCx9ZfrtfmxHfKrAE0XGP8SRvW6wyYco+FKSPmDw@mail.gmail.com>
-Subject: Re: [PATCH v7 4/5] spi: dw: Add DMA address widths capability check
-To:     Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc:     Serge Semin <fancer.lancer@gmail.com>,
-        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, manugautam@google.com,
-        rohitner@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8Dxjb6NiD9k0okuAA--.15004S3
+X-CM-SenderInfo: 52kx5xhqerqz5rrqw2lrqou0/
+X-Coremail-Antispam: 1Uk129KBjvJXoW7Cr43Aw47Zw17Gw45ZF1xGrg_yoW8uFy7p3
+        ZrCrn7GF4IvF17Aws3Ka48Cw1rZr93C3W7XFW2yr1jkF9Yg3WYv3W3Kr1DZanrGF1xXFW7
+        ZF97Kr4UKa18Jr7anT9S1TB71UUUUUJqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+        qI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUIcSsGvfJTRUUU
+        bfkFc2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AKwVWUXVWUAwA2ocxC64
+        kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28E
+        F7xvwVC0I7IYx2IY6xkF7I0E14v26r4j6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJw
+        A2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJwAaw2AFwI0_Jrv_JF1le2I262IYc4CY
+        6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4xG64xvF2IEw4CE5I8CrV
+        C2j2WlYx0E2Ix0cI8IcVAFwI0_JF0_Jw1lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE
+        7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x
+        0EwIxGrwCF04k20xvE74AGY7Cv6cx26rWl4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xF
+        xVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWw
+        C2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_
+        Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJV
+        WUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIY
+        CTnIWIevJa73UjIFyTuYvjxUciSdDUUUU
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Tue, Apr 18, 2023 at 1:08=E2=80=AFPM Andy Shevchenko
-<andriy.shevchenko@intel.com> wrote:
->
-> On Tue, Apr 18, 2023 at 05:29:01AM +0000, Joy Chakraborty wrote:
-> > Store address width capabilities of DMA controller during init and chec=
-k
-> > the same per transfer to make sure the bits/word requirement can be met=
-.
-> >
-> > Current DW DMA driver requires both tx and rx channel to be configured
-> > and functional hence a subset of both tx and rx channel address width
-> > capability is checked with the width requirement(n_bytes) for a
-> > transfer.
->
-> ...
->
-> > +     /*
-> > +      * Assuming both channels belong to the same DMA controller hence=
- the
-> > +      * address width capabilities most likely would be the same.
-> > +      */
->
-> I had a small comment on this In v6 thread.
+Add the Loongson platform spi binding with DT schema format using
+json-schema.
 
-Sure,
+Signed-off-by: Yinbo Zhu <zhuyinbo@loongson.cn>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ .../bindings/spi/loongson,ls2k-spi.yaml       | 41 +++++++++++++++++++
+ MAINTAINERS                                   |  6 +++
+ 2 files changed, 47 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/loongson,ls2k-spi.yaml
 
-Your comment in V6 thread:
-"
-I would add something to explain the side of these address width, like
+diff --git a/Documentation/devicetree/bindings/spi/loongson,ls2k-spi.yaml b/Documentation/devicetree/bindings/spi/loongson,ls2k-spi.yaml
+new file mode 100644
+index 000000000000..d0be6e5378d7
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/loongson,ls2k-spi.yaml
+@@ -0,0 +1,41 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/spi/loongson,ls2k-spi.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Loongson SPI controller
++
++maintainers:
++  - Yinbo Zhu <zhuyinbo@loongson.cn>
++
++allOf:
++  - $ref: /schemas/spi/spi-controller.yaml#
++
++properties:
++  compatible:
++    enum:
++      - loongson,ls2k-spi
++
++  reg:
++    maxItems: 1
++
++  clocks:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++  - clocks
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    spi0: spi@1fff0220{
++        compatible = "loongson,ls2k-spi";
++        reg = <0x1fff0220 0x10>;
++        clocks = <&clk 17>;
++        #address-cells = <1>;
++        #size-cells = <0>;
++    };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 25a0981c74b6..0dcf4cfbe178 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -12157,6 +12157,12 @@ S:	Maintained
+ F:	Documentation/devicetree/bindings/clock/loongson,ls2k-clk.yaml
+ F:	include/dt-bindings/clock/loongson,ls2k-clk.h
+ 
++LOONGSON SPI DRIVER
++M:	Yinbo Zhu <zhuyinbo@loongson.cn>
++L:	linux-spi@vger.kernel.org
++S:	Maintained
++F:	Documentation/devicetree/bindings/spi/loongson,ls2k-spi.yaml
++
+ LSILOGIC MPT FUSION DRIVERS (FC/SAS/SPI)
+ M:	Sathya Prakash <sathya.prakash@broadcom.com>
+ M:	Sreekanth Reddy <sreekanth.reddy@broadcom.com>
+-- 
+2.20.1
 
-         * Assuming both channels belong to the same DMA controller hence
-         * the peripheral side address width capabilities most likely would
-         * be the same.
-"
-
-I do not think the address width capabilities are dependent on the
-side of generation like memory or peripheral. From what I understand,
-address width capabilities are solely dependent on the transaction
-generation capability of the DMA controller towards the system bus.
-What we intend to highlight here is the assumption that both tx and rx
-channel would belong to the same DMA controller hence the transaction
-generation capabilities would be the same both for read and write
-(e.g. if the DMA controller is able to generate 32 bit sized reads
-then it should also be able to generate 32 bit sized writes).
-With this assumption we are doing a bitwise and of both tx and rx capabilit=
-ies.
-
-Please let me know if you think otherwise.
-
-Thanks
-Joy
-
->
-> --
-> With Best Regards,
-> Andy Shevchenko
->
->

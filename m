@@ -2,101 +2,91 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7595BC77B73
-	for <linux-spi@archiver.kernel.org>; Thu, 20 Apr 2023 15:40:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 91183C77B7C
+	for <linux-spi@archiver.kernel.org>; Thu, 20 Apr 2023 17:21:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232090AbjDTPkk (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 20 Apr 2023 11:40:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39632 "EHLO
+        id S231416AbjDTRVA (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 20 Apr 2023 13:21:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230342AbjDTPkf (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 20 Apr 2023 11:40:35 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A03971727
-        for <linux-spi@vger.kernel.org>; Thu, 20 Apr 2023 08:40:33 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-5052caa1e32so1077792a12.2
-        for <linux-spi@vger.kernel.org>; Thu, 20 Apr 2023 08:40:33 -0700 (PDT)
+        with ESMTP id S230440AbjDTRU7 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 20 Apr 2023 13:20:59 -0400
+Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A73F3580
+        for <linux-spi@vger.kernel.org>; Thu, 20 Apr 2023 10:20:54 -0700 (PDT)
+Received: by mail-yb1-xb36.google.com with SMTP id j15so2675049ybl.10
+        for <linux-spi@vger.kernel.org>; Thu, 20 Apr 2023 10:20:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1682005232; x=1684597232;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Ng/7l5VlfjgvLBZOn+6emtZItxRcIQQXLL+YWHzwDfU=;
-        b=QW3lu605jBMYSJRbLYIrS9IzJPjwoSJYKeCmncGY76yReh8FCCYyyql0pg9Ivr+ZkL
-         937r9nGPBp8Fu/WKnoeGWLfok6zvZIZEir4Qs7el9vKsNfFPi2v9OG5JVM2k0KROyz/r
-         bESc9mUVByXgcnV3eawwGu56f9WmN5pPd8JdFliTkT/7vXTN7FdN6wCu0iFzo+Ij98nF
-         3LL/ZDek2x2U7WKhRHMbeMWe2GF7sS84jYezdtFY3kICzZQNSNtaRHGH9LGBSg14lv2u
-         zyYcK27ckWHD3FZHIGg4EqYgxYCVumo5G6cFggF5QWERTL2DldXp1a7aYCvSuGOA7mn1
-         Hy2A==
+        d=chromium.org; s=google; t=1682011253; x=1684603253;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ASlcFMe+UBtl/yEkw/ihBI+w8rG6+336g8ZGmASVmQA=;
+        b=LhESfJk7yZ83e23Lvbrp0jhDyz2vtI5OJhKxXpg3QawcdfBTm2Dsru0A6uZSNuAulC
+         4Zcn5nWdO6TxN7KnxrMAIeQRlN4EThenYxHdvBK/mCsfF3gxyJw67nUl/dygpBSXpKt3
+         Gr+kJkt8me1yBQGUWkXe045msiihJba+ez4sE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682005232; x=1684597232;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ng/7l5VlfjgvLBZOn+6emtZItxRcIQQXLL+YWHzwDfU=;
-        b=hvuLBLvkyHMJjkTMvSxyT8hkc/la4JzQjiVOFbVKC2XvbD2+hzuu/CPT+ecsZ+D97i
-         ErsTZJ1kZtYJjE8ageWXlqH2t0tbeZosv3lOlSR+SDlXyxSdKS2DpFllbtASgdihd6vE
-         LWfASWaRyiAzg7D/8KKh//wO0eHApPr54Lsy2SAMHxbHzz8J3qhi5Sy/+bWqY21EjPGv
-         W9yWRId+EYV8X+MXdyiZP3myRfiz37WDOG57QKmrXdQnKNHdIc4QPE76+0GwM66G2kf3
-         CyoDFffXz7Fgu9p+V8gmqBj8yUJRkVMBskbfH/1yDtK3lUB6Wa295F8RY6nXdHqU6hRx
-         D95w==
-X-Gm-Message-State: AAQBX9eeD2OVR58FTGuT/4zCdKNnwqIbBFMx8ISCddAX4ckpJNst+FkP
-        /aXmC+uQ4SH+Q8gAcfC4sox3UQ==
-X-Google-Smtp-Source: AKy350atlvDRHpkArIMuqphydgSZ7Ju+vCaZdY3O2gF6jFZEWQy94BQRkh+vgJkjYC/ybSM9WBzcvg==
-X-Received: by 2002:aa7:cb01:0:b0:506:a2bb:fc43 with SMTP id s1-20020aa7cb01000000b00506a2bbfc43mr2043394edt.15.1682005232101;
-        Thu, 20 Apr 2023 08:40:32 -0700 (PDT)
-Received: from ?IPV6:2a02:810d:15c0:828:bcb8:77e6:8f45:4771? ([2a02:810d:15c0:828:bcb8:77e6:8f45:4771])
-        by smtp.gmail.com with ESMTPSA id g18-20020a056402181200b004c2158e87e6sm853513edy.97.2023.04.20.08.40.31
+        d=1e100.net; s=20221208; t=1682011253; x=1684603253;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ASlcFMe+UBtl/yEkw/ihBI+w8rG6+336g8ZGmASVmQA=;
+        b=Gsz9b8AQtjkDD8XKhlEiz1KvJGBCm+ZSnAF4lQP8zxWWerAgDQ+rJTw0YYsjvV7Nq1
+         brcnIaZ4fZ0xlt9R2XMuDEBZjDowCvtP/Nm9C5qZokb6q21VA4DGm9j58tSvYjV/Y0pk
+         TvDul09xcchIctMLFKsPd1Y8/oTaykW6luJMwHVLjePM8NA4Itlfc7tGs6Zu1WrU7ADZ
+         +vZdb070L6dqSDo+IE8Acx9jqi5lF89jDTnyTdfumR4/gT6UUqCi23D41xPqEX3TBzr0
+         suX00acogn409SHpWuEkz17znK8XgHc6/xNz/kA0nb9ScgX2HZn/7qpVZV+3jm7MxSpZ
+         p5ow==
+X-Gm-Message-State: AAQBX9dqKnOyqXDk6FndujWuV1VCMiNXShKVSzk4h/j7dcNrf3BpnU31
+        KX4puhXQoWsywHdpq5NsepWx9JqB9JlVDqyWvKk=
+X-Google-Smtp-Source: AKy350aagrWH62woOynYVEt72rclMNcsJYbISsBUAJSCJaYcFnN3LFHsPKyk36ME434WVE3GF6Z1fQ==
+X-Received: by 2002:a25:abcb:0:b0:b8f:4a52:15db with SMTP id v69-20020a25abcb000000b00b8f4a5215dbmr2164153ybi.60.1682011253450;
+        Thu, 20 Apr 2023 10:20:53 -0700 (PDT)
+Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com. [209.85.219.182])
+        by smtp.gmail.com with ESMTPSA id o132-20020a25d78a000000b00b8f2d726471sm417597ybg.3.2023.04.20.10.20.51
+        for <linux-spi@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Apr 2023 08:40:31 -0700 (PDT)
-Message-ID: <087ba4df-7575-acce-309a-efb5115a987d@linaro.org>
-Date:   Thu, 20 Apr 2023 17:40:30 +0200
+        Thu, 20 Apr 2023 10:20:51 -0700 (PDT)
+Received: by mail-yb1-f182.google.com with SMTP id m14so2767894ybk.4
+        for <linux-spi@vger.kernel.org>; Thu, 20 Apr 2023 10:20:51 -0700 (PDT)
+X-Received: by 2002:a25:c807:0:b0:b95:2315:a2c4 with SMTP id
+ y7-20020a25c807000000b00b952315a2c4mr1169128ybf.0.1682011250803; Thu, 20 Apr
+ 2023 10:20:50 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2 1/4] spi: s3c64xx: changed to PIO mode if there is no
- DMA
-Content-Language: en-US
-To:     Jaewon Kim <jaewon02.kim@samsung.com>,
-        Mark Brown <broonie@kernel.org>, Andi Shyti <andi@etezian.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>
-Cc:     linux-spi@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Chanho Park <chanho61.park@samsung.com>
-References: <20230419060639.38853-1-jaewon02.kim@samsung.com>
- <CGME20230419062755epcas2p1370c1ca60d88d6b114a7c7c1de3f15c0@epcas2p1.samsung.com>
- <20230419060639.38853-2-jaewon02.kim@samsung.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230419060639.38853-2-jaewon02.kim@samsung.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <1681996394-13099-1-git-send-email-quic_vnivarth@quicinc.com> <1681996394-13099-4-git-send-email-quic_vnivarth@quicinc.com>
+In-Reply-To: <1681996394-13099-4-git-send-email-quic_vnivarth@quicinc.com>
+From:   Doug Anderson <dianders@chromium.org>
+Date:   Thu, 20 Apr 2023 10:20:38 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=XxbLsaxJc7YKH+beaPFTxq7x_jS_oQQ+KHXXQ=LgX3ag@mail.gmail.com>
+Message-ID: <CAD=FV=XxbLsaxJc7YKH+beaPFTxq7x_jS_oQQ+KHXXQ=LgX3ag@mail.gmail.com>
+Subject: Re: [PATCH v4 3/5] arm64: dts: qcom: sc7280: Add stream-id of qspi to iommus
+To:     Vijaya Krishna Nivarthi <quic_vnivarth@quicinc.com>
+Cc:     agross@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
+        broonie@kernel.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org,
+        cros-qcom-dts-watchers@chromium.org, linux-arm-msm@vger.kernel.org,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, quic_msavaliy@quicinc.com,
+        mka@chromium.org, swboyd@chromium.org, quic_vtanuku@quicinc.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On 19/04/2023 08:06, Jaewon Kim wrote:
-> Polling mode supported with qurik if there was no DMA in the SOC.
-> However, there are cased where we cannot or do not want to use DMA.
-> To support this case, if DMA is not set, it is switched to polling mode.
-> 
+Hi,
 
-(...)
+On Thu, Apr 20, 2023 at 6:13=E2=80=AFAM Vijaya Krishna Nivarthi
+<quic_vnivarth@quicinc.com> wrote:
+>
+> As part of DMA mode support to qspi driver.
+>
+> Signed-off-by: Vijaya Krishna Nivarthi <quic_vnivarth@quicinc.com>
+> ---
+> v2 -> v3:
+> - modified commit message
+> ---
+>  arch/arm64/boot/dts/qcom/sc7280.dtsi | 1 +
+>  1 file changed, 1 insertion(+)
 
->  #define msecs_to_loops(t) (loops_per_jiffy / 1000 * HZ * t)
-> -#define is_polling(x)	(x->port_conf->quirks & S3C64XX_SPI_QUIRK_POLL)
-> +#define is_polling(x)	(x->cntrlr_info->polling)
->  
->  #define RXBUSY    (1<<2)
->  #define TXBUSY    (1<<3)
-> @@ -1067,6 +1066,11 @@ static struct s3c64xx_spi_info *s3c64xx_spi_parse_dt(struct device *dev)
->  		sci->num_cs = temp;
->  	}
->  
-> +	if (!of_find_property(dev->of_node, "dmas", NULL)) {
-
-of_property_present()
-
-
-Best regards,
-Krzysztof
-
+Reviewed-by: Douglas Anderson <dianders@chromium.org>

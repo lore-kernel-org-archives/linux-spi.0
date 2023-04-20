@@ -2,470 +2,361 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 042F9C77B73
-	for <linux-spi@archiver.kernel.org>; Thu, 20 Apr 2023 17:26:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8EE0FC77B72
+	for <linux-spi@archiver.kernel.org>; Thu, 20 Apr 2023 17:39:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231347AbjDTR0X (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 20 Apr 2023 13:26:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32830 "EHLO
+        id S231199AbjDTRjX (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 20 Apr 2023 13:39:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229522AbjDTR0W (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 20 Apr 2023 13:26:22 -0400
-Received: from mail-yw1-x112f.google.com (mail-yw1-x112f.google.com [IPv6:2607:f8b0:4864:20::112f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B43A173A
-        for <linux-spi@vger.kernel.org>; Thu, 20 Apr 2023 10:26:21 -0700 (PDT)
-Received: by mail-yw1-x112f.google.com with SMTP id 00721157ae682-54fe82d8bf5so52261887b3.3
-        for <linux-spi@vger.kernel.org>; Thu, 20 Apr 2023 10:26:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1682011580; x=1684603580;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Q9sg0JiAMa7Mt8FAozcEUBataC+98aRjbjSpG582JJA=;
-        b=gktwNYcP/TJjJdmfU+VHmsSSvHanKLEk1CnsGvg7CqeyQyJ2xX8bajm3q6apQqrW04
-         ASgdEO7brShPhe0xWAal39zL8Gt2+hQwI0ZVccYVafWeq8PWlc9Ua4zXDB5Gw0kdB9Oh
-         2I2Fw/YhGO7ZgCLfqNcQr+4O1aIjOxeYR/r7Q=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682011580; x=1684603580;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Q9sg0JiAMa7Mt8FAozcEUBataC+98aRjbjSpG582JJA=;
-        b=KWrZkvp4PJn6CifDomk0hVI9B6K/W8qxD1Zen6dY1tv0GJNaXagaW5aglXxWj24aLu
-         PHUxGAp0dat5vHSkXhFFICRRqYalgHsAz/bh5MsvHMdn6HamoI2Bh23JcPBgbYZqUB3q
-         DacLTB/5p7rcRWDl/b5XFCM33owz1j2YoHwPeRbr/6GQmzYPs60PdtB9wtQItEFTNs/q
-         HIm8ejtJesSpCUuDKno9NYUJ8g4S1s3ayv35Jq85xTdgwpcdM/wIV/29vmS2TOIbH8Ss
-         XRe9LFjVSiPp/7kjyd11oWjPPKfyvr3I6qvwjAfUhIeUc/NhvIGSL2UWjSP1XAAwJeu1
-         HxKQ==
-X-Gm-Message-State: AAQBX9clT3MPeHYXzfrCSMCofGXqOM6IA4dZ2RCHCIIwn3SoF7PSQELu
-        +AzNJavPXSA+nc8vNvjS82ZveKNEHLOWe1kvkFw=
-X-Google-Smtp-Source: AKy350YiQs3EHGa1KPtgQLg0t9StBWXmIW+4nFye8xyKGsd5iLhN9W6LVzQBvpwmoLV283W04imQ7A==
-X-Received: by 2002:a81:548a:0:b0:552:9636:9f1f with SMTP id i132-20020a81548a000000b0055296369f1fmr1342398ywb.27.1682011579640;
-        Thu, 20 Apr 2023 10:26:19 -0700 (PDT)
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com. [209.85.128.177])
-        by smtp.gmail.com with ESMTPSA id y68-20020a0def47000000b00545dc7c4a9esm440972ywe.111.2023.04.20.10.26.19
-        for <linux-spi@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Apr 2023 10:26:19 -0700 (PDT)
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-54fc94476e2so8000357b3.1
-        for <linux-spi@vger.kernel.org>; Thu, 20 Apr 2023 10:26:19 -0700 (PDT)
-X-Received: by 2002:a25:d797:0:b0:b8f:557f:f8f1 with SMTP id
- o145-20020a25d797000000b00b8f557ff8f1mr1132306ybg.0.1682011153798; Thu, 20
- Apr 2023 10:19:13 -0700 (PDT)
-MIME-Version: 1.0
-References: <1681996394-13099-1-git-send-email-quic_vnivarth@quicinc.com> <1681996394-13099-6-git-send-email-quic_vnivarth@quicinc.com>
-In-Reply-To: <1681996394-13099-6-git-send-email-quic_vnivarth@quicinc.com>
-From:   Doug Anderson <dianders@chromium.org>
-Date:   Thu, 20 Apr 2023 10:19:01 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=VU9Zdk2wz=90cjmuBWxaVz9w+UxzrTtW_ny-jrwVLV3w@mail.gmail.com>
-Message-ID: <CAD=FV=VU9Zdk2wz=90cjmuBWxaVz9w+UxzrTtW_ny-jrwVLV3w@mail.gmail.com>
-Subject: Re: [PATCH v4 5/5] spi: spi-qcom-qspi: Add DMA mode support
-To:     Vijaya Krishna Nivarthi <quic_vnivarth@quicinc.com>
-Cc:     agross@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
-        broonie@kernel.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org,
-        cros-qcom-dts-watchers@chromium.org, linux-arm-msm@vger.kernel.org,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, quic_msavaliy@quicinc.com,
-        mka@chromium.org, swboyd@chromium.org, quic_vtanuku@quicinc.com
-Content-Type: text/plain; charset="UTF-8"
+        with ESMTP id S230334AbjDTRjV (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 20 Apr 2023 13:39:21 -0400
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2076.outbound.protection.outlook.com [40.107.102.76])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D76D5114;
+        Thu, 20 Apr 2023 10:39:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=kFWDlgYYul4Qa6ZBTh9hdEbwsJ8wHCqvfiv6bhSRHmMrF4EcUiMJVjIH9D63qKGq0qwNacuCn1bhUy2Ka667IlNYGvzEewgZG/zypOG26xpQNcpLBsjWg4foCWk1zfRnUkrqSY7nVRzTnd09T3lRX+Ewg+UiNdAgZvuxs/soCxG9MqEK00zJlZ1XNH2/DMldEpjjizMCaYe1AiqpclV7Le+8IAwbITURX9JcLqgWZiHEqauQQPrrHn1wKHiuAhWWN+4nsShA1GUbEgcfyFQzCp3Bsxt6gGmaOzboghJS+L3YvSxeyByPkmxrhew4Du75fXXgfG5iwZ00ZzGur+RxUQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qhUjXrgAXJMp8bcKX211gL0OP6157yXawXify/h5qk8=;
+ b=i9sYaklcvKDQwAKhWEGwb0/qJJiMMid5A7mFXQuWOyI0VDQgUz4ISwQnpz1qZ6R5a67T+XbdAf7tpvoM5ks2BkSXS1/WObSIlgw8bt5O7N6tRXQg4lJ91wtsAIErggm8wG6ZmJCCnBHJDDU4lmTTuqVz6MDaURVP1csZqMdUkUzAYFDYKI8sTOXJ7Vhq/CwTA29yrrS3Ha5E8hPaalGj8WfkTtjGTOQq5FVe+nFIKNCWOOLwZZ56SYgUsDjc0+RGfuTJm2vW2QTZ7GGsvzbd5TGZPJaJfakNE5EBfULzITNp7PzmLZdFsJtgE/Ec34RyMwaYlEKhFQhLUPNlj9AxEA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qhUjXrgAXJMp8bcKX211gL0OP6157yXawXify/h5qk8=;
+ b=aUdWffgEjsw0fUkqEWzvHJqEkMmhRqiT9ckBnLIYPPViXWtNnzJ+NZe58bIASDEs7dVlk8COfbAefQ5OwPzppoA7q+e46fUAEFfJa9Lk/UThBersrWohJ8rtnM6qrZ1A6DZd+99beSRECuRVYNgKc5P3UwaeBXqhIrPNd8IUBkM6wLLEOhP79HfsxS6PR/iCc9GuwzsUJLRMjJ8EwFyIf5ImUbBEodiu7Ra4Z0oWyMyY8bO6esuHR9xOg3iy9RIpg3lWwJb2WK31AYIkPGiKL6X47j7zYxOhoit69uvu086rfnGmm15CaDc2kJ+dcJmqh49kGqwiN5TYEL5Rn5OkiA==
+Received: from DM4PR12MB5769.namprd12.prod.outlook.com (2603:10b6:8:60::6) by
+ SN7PR12MB8147.namprd12.prod.outlook.com (2603:10b6:806:32e::5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6319.22; Thu, 20 Apr 2023 17:38:14 +0000
+Received: from DM4PR12MB5769.namprd12.prod.outlook.com
+ ([fe80::2c4d:1cf:626a:370d]) by DM4PR12MB5769.namprd12.prod.outlook.com
+ ([fe80::2c4d:1cf:626a:370d%7]) with mapi id 15.20.6319.020; Thu, 20 Apr 2023
+ 17:38:14 +0000
+From:   Krishna Yarlagadda <kyarlagadda@nvidia.com>
+To:     Jerry Snitselaar <jsnitsel@redhat.com>
+CC:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "peterhuewe@gmx.de" <peterhuewe@gmx.de>,
+        "jgg@ziepe.ca" <jgg@ziepe.ca>,
+        "jarkko@kernel.org" <jarkko@kernel.org>,
+        "krzysztof.kozlowski+dt@linaro.org" 
+        <krzysztof.kozlowski+dt@linaro.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Sowjanya Komatineni <skomatineni@nvidia.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>
+Subject: RE: [Patch V9 2/3] tpm_tis-spi: Add hardware wait polling
+Thread-Topic: [Patch V9 2/3] tpm_tis-spi: Add hardware wait polling
+Thread-Index: AQHZX0h81KY9bh9+SUqG7w2Lpn+Pn68zojAAgAAK9gCAAO+4kA==
+Date:   Thu, 20 Apr 2023 17:38:14 +0000
+Message-ID: <DM4PR12MB57695772834DF2FEE76A0C58C3639@DM4PR12MB5769.namprd12.prod.outlook.com>
+References: <20230325183409.7695-1-kyarlagadda@nvidia.com>
+ <20230325183409.7695-3-kyarlagadda@nvidia.com>
+ <a6jhf7wghnos6yjvgt3rbudhwsx4r4r7kurm35euofz3mjwmdu@74z44ohjgmre>
+ <enfduqgdgrdpfw73suydlbmu3mopk545vwrpoat2chkop375np@o3fxh5k7wc76>
+In-Reply-To: <enfduqgdgrdpfw73suydlbmu3mopk545vwrpoat2chkop375np@o3fxh5k7wc76>
+Accept-Language: en-IN, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM4PR12MB5769:EE_|SN7PR12MB8147:EE_
+x-ms-office365-filtering-correlation-id: 43f0752d-25b6-4b8f-ce8c-08db41c60514
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: w+QVC/dsqTAh2l8PQ36N65fU2tp100id3xSvXO9rtNZTwIQ8IjYjurxL26+SInFa1UNuK2WDNWrPAP0koFL8xU5VQhpPjAgODjyqDdZ6BLRtmQ0VQ0XsLZcjF9w7wPTiUpS9VYDjUIaKqrAjPNsCxoI6yqx+6s7JwgWkVX+ANHZNXCrVne4kFQPMiPlwfHWltMO2Afpl3DT0cMyhwTRuTiqjF3xeb9XmCxsIY/sDlELr0BQpKdjaskUSLTprju/AiqOWPT+LOuB+5jOdzghTpg5jXmMUlSBuat6OPeTtS48U1Vp9NVJr9KESmvyAkjMwuXl9354msgTGRgUdXwV1WWZBazr+7+fk4qQlPpMZ3IgfNjOPcYZEfEhpk2xKGFKKhqOrXnh3DbELQU84Nna/8VIA3fxRTWeNpolXvEzXhuISMR529qFC42Wc3AGXRxEUlTOYnbWQ5LEOYcCDcPewBwaF7mRg3UP3vN9NBb2O30WGQ0+mZPMzebJq0RgD0RlJpF7mAzBbHj5vltKauUm9csr8aUH3fqEE9PwzAmhnjhGFpYtmQxU2dawkpROUaaLAwbd4HhyblGF50Idwu3EwraY62ioyw7CXA/odpJ//vLUzrdI4dG6cOjSikQoUYhQb
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5769.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(346002)(136003)(366004)(376002)(396003)(39860400002)(451199021)(186003)(6506007)(71200400001)(9686003)(53546011)(26005)(7696005)(107886003)(52536014)(5660300002)(316002)(4326008)(41300700001)(66556008)(6916009)(66476007)(76116006)(66446008)(7416002)(66946007)(8936002)(8676002)(54906003)(478600001)(38070700005)(38100700002)(2906002)(64756008)(86362001)(33656002)(83380400001)(122000001)(55016003)(66899021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?oONG+qVKcIUl8efEyWpXmKsC4L+vd0u3CHxEa+9kIhkonbMWsiBcn1gHsWGH?=
+ =?us-ascii?Q?wt2etB5YSq5s1syUX9E7taVGs/2yWrLZrulk+uIC2Cgyh6Sk8Vq6h2P9VzuG?=
+ =?us-ascii?Q?NBsKTBxaXw0M5PLeKGc76kR+ZwolCXHb598oS7nRz0PGIaz6v7tFwmQbrnFS?=
+ =?us-ascii?Q?VIm7h84EacxHcnSGc2olZx8R+xY+iU2atytxhiLmL0HWosT0xmkufg4nKrf4?=
+ =?us-ascii?Q?iyZAp/+wddlaTScJyYx40nyp1gMDRJvU+o4zta83RhXNGAMy+uTKgoVT7s6p?=
+ =?us-ascii?Q?Wmrj0BWY2uHy1f203oUTZ1xj8nGTDMXHEfeOEApO+TEAEh7bsUJlrgw5uxeF?=
+ =?us-ascii?Q?QCYsSVRokOdfxIiap3kt7fFOP5C6nLiK5QTYHA+XHC4uLsg7scLjA0OmHt/K?=
+ =?us-ascii?Q?TFxq+P0kLseDVWICYJUkosfeDUjel2itEz0Gg4uCIqJ4JOpxdb8dBg4w5ZOG?=
+ =?us-ascii?Q?44x8Y0B0c7PCr3DVWW7lCtMvNhI6vwdaoMVsOrcgrmWOL+k2JYW5kO/pQkKx?=
+ =?us-ascii?Q?+MmlTDvarotRCh2+zj0iTazP85lFpEmh2Ux+895vNyUWIThajgWqqRlgXhnt?=
+ =?us-ascii?Q?Ci/3XGo8FT9W4SoztqQLvE0wmSR0oXvGb3rE50ckxZYX1adHzJLPLnzxWZFy?=
+ =?us-ascii?Q?1e7zuunY3e+qmy8Iu+wXMoubq+HAf6NYLioohNr1OPPMjfHrLPGJd2BMXJ43?=
+ =?us-ascii?Q?qZmG7Rrrn6FfcK7CO+C/O/TX3+aDiJtZP6tJEcn7lj9S2DejtKfQRbxD25Ab?=
+ =?us-ascii?Q?FtR8AeTHucTwpnic7VcPYP2a5Q8FqrFqMQkfdKpYMVler0i8BdHKZtouJYS6?=
+ =?us-ascii?Q?Z8aYkNHZpF+7E0ggMgJ7ablayun0jfs2BOdTsdNIN/Em85udc0yGmHt2zsup?=
+ =?us-ascii?Q?z8/woDyVxNy4RwhDAA3iHPeqsZWrzpI3k0vw2hCV1L2liroeh3TG7OOCIJEN?=
+ =?us-ascii?Q?+UzwMNvw4WL6XSaDeingdhftTK7pjOZKoKbgV5Zx+T9M7NWcZPzKOzlS5Z+8?=
+ =?us-ascii?Q?BB4u1Y8uL5lq7g46drhNNvf+9mnr/ukkhUo1PdVRF/7+MoFh9AE9dYwCk6j6?=
+ =?us-ascii?Q?0FrrfVsoHFzBn9h9zYkKsocG99KGjK9KGUvR9RlH0IpfB5lRqHpP2LtVEiGs?=
+ =?us-ascii?Q?WviB7T75FdM90n2xM41yqmD7QHnUm5IL54Rd9FdZ1WW2yZcqk+OMAcyyvD/x?=
+ =?us-ascii?Q?BeV5TrinK2kyjELahKbrSHz9XdmlwpaKhy15WR5h5S05YnISn5TGOSUhLrbI?=
+ =?us-ascii?Q?n6LHgk1S6mDddtUBqhm5X8FwVsYz+Qgj1U4+b9WAgkvYV5Ci1VReLiJWw9XC?=
+ =?us-ascii?Q?gwAQ6jfOiqICeNAbXEuuNK9rdl+twyOZ/jZAVhtUJdu3fSSvvTRSCyyaw1na?=
+ =?us-ascii?Q?e73JmKKwF4jb/TQAxQepdWYT1n1j5K0fpGQghGzT6JzvVei8M1eaJ7/F21hl?=
+ =?us-ascii?Q?4GVHIFX8pYn1IgJDYa9czK9iGWISvcMdHhglYusdZVTCdkVqh7agcQ76SY6d?=
+ =?us-ascii?Q?mMYKTKFRhbTNeJhc8sqd+r2mCayKDjdQSqPQnYC8Ir1UeWSl5NhUwO6whjKS?=
+ =?us-ascii?Q?wdQHlNVYrrRo5RPZJYujTQIkVKnNoBeRUP3dSXwi?=
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5769.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 43f0752d-25b6-4b8f-ce8c-08db41c60514
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Apr 2023 17:38:14.7511
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: +6ZasJZRXrhXxi1uNJyyB2Jcp/sm7576AW3Xf5RREpWFowCs+OwG2JEUuNhKDrCrWWa0zna535baMe5pvxmfRA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8147
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi,
+> -----Original Message-----
+> From: Jerry Snitselaar <jsnitsel@redhat.com>
+> Sent: 20 April 2023 08:42
+> To: Krishna Yarlagadda <kyarlagadda@nvidia.com>
+> Cc: robh+dt@kernel.org; broonie@kernel.org; peterhuewe@gmx.de;
+> jgg@ziepe.ca; jarkko@kernel.org; krzysztof.kozlowski+dt@linaro.org; linux=
+-
+> spi@vger.kernel.org; linux-tegra@vger.kernel.org; linux-
+> integrity@vger.kernel.org; linux-kernel@vger.kernel.org;
+> thierry.reding@gmail.com; Jonathan Hunter <jonathanh@nvidia.com>;
+> Sowjanya Komatineni <skomatineni@nvidia.com>; Laxman Dewangan
+> <ldewangan@nvidia.com>
+> Subject: Re: [Patch V9 2/3] tpm_tis-spi: Add hardware wait polling
+>=20
+> External email: Use caution opening links or attachments
+>=20
+>=20
+> On Wed, Apr 19, 2023 at 07:32:40PM -0700, Jerry Snitselaar wrote:
+> > On Sun, Mar 26, 2023 at 12:04:08AM +0530, Krishna Yarlagadda wrote:
+> > > TPM devices may insert wait state on last clock cycle of ADDR phase.
+> > > For SPI controllers that support full-duplex transfers, this can be
+> > > detected using software by reading the MISO line. For SPI controllers
+> > > that only support half-duplex transfers, such as the Tegra QSPI, it i=
+s
+> > > not possible to detect the wait signal from software. The QSPI
+> > > controller in Tegra234 and Tegra241 implement hardware detection of
+> the
+> > > wait signal which can be enabled in the controller for TPM devices.
+> > >
+> > > The current TPM TIS driver only supports software detection of the wa=
+it
+> > > signal. To support SPI controllers that use hardware to detect the wa=
+it
+> > > signal, add the function tpm_tis_spi_hw_flow_transfer() and move the
+> > > existing code for software based detection into a function called
+> > > tpm_tis_spi_sw_flow_transfer(). SPI controllers that only support
+> > > half-duplex transfers will always call tpm_tis_spi_hw_flow_transfer()
+> > > because they cannot support software based detection. The bit
+> > > SPI_TPM_HW_FLOW is set to indicate to the SPI controller that hardwar=
+e
+> > > detection is required and it is the responsibility of the SPI control=
+ler
+> > > driver to determine if this is supported or not.
+> > >
+> > > For hardware flow control, CMD-ADDR-DATA messages are combined
+> into a
+> > > single message where as for software flow control exiting method of
+> > > CMD-ADDR in a message and DATA in another is followed.
+> > >
+> > > Signed-off-by: Krishna Yarlagadda <kyarlagadda@nvidia.com>
+> > > ---
+> > >  drivers/char/tpm/tpm_tis_spi_main.c | 91
+> ++++++++++++++++++++++++++++-
+> > >  1 file changed, 89 insertions(+), 2 deletions(-)
+> > >
+> > > diff --git a/drivers/char/tpm/tpm_tis_spi_main.c
+> b/drivers/char/tpm/tpm_tis_spi_main.c
+> > > index a0963a3e92bd..db9afd0b83da 100644
+> > > --- a/drivers/char/tpm/tpm_tis_spi_main.c
+> > > +++ b/drivers/char/tpm/tpm_tis_spi_main.c
+> > > @@ -71,8 +71,74 @@ static int tpm_tis_spi_flow_control(struct
+> tpm_tis_spi_phy *phy,
+> > >     return 0;
+> > >  }
+> > >
+> > > -int tpm_tis_spi_transfer(struct tpm_tis_data *data, u32 addr, u16 le=
+n,
+> > > -                    u8 *in, const u8 *out)
+> > > +/*
+> > > + * Half duplex controller with support for TPM wait state detection =
+like
+> > > + * Tegra QSPI need CMD, ADDR & DATA sent in single message to
+> manage HW flow
+> > > + * control. Each phase sent in different transfer for controller to =
+idenity
+> > > + * phase.
+> > > + */
+> > > +static int tpm_tis_spi_transfer_half(struct tpm_tis_data *data,    u=
+32
+> addr,
+> > > +                                u16 len, u8 *in, const u8 *out)
+> > > +{
+> > > +   struct tpm_tis_spi_phy *phy =3D to_tpm_tis_spi_phy(data);
+> > > +   struct spi_transfer spi_xfer[3];
+> > > +   struct spi_message m;
+> > > +   u8 transfer_len;
+> > > +   int ret;
+> > > +
+> > > +   while (len) {
+> > > +           transfer_len =3D min_t(u16, len, MAX_SPI_FRAMESIZE);
+> > > +
+> > > +           spi_message_init(&m);
+> > > +           phy->iobuf[0] =3D (in ? 0x80 : 0) | (transfer_len - 1);
+> > > +           phy->iobuf[1] =3D 0xd4;
+> > > +           phy->iobuf[2] =3D addr >> 8;
+> > > +           phy->iobuf[3] =3D addr;
+> >
+> > I haven't looked at much TPM code in the past couple of years, but
+> > perhaps some defines instead of magic numbers here? 0x80 is the rw bit,
+> > and 0xd4 the transaction offset?
+> >
+> > > +
+> > > +           memset(&spi_xfer, 0, sizeof(spi_xfer));
+> > > +
+> > > +           spi_xfer[0].tx_buf =3D phy->iobuf;
+> > > +           spi_xfer[0].len =3D 1;
+> > > +           spi_message_add_tail(&spi_xfer[0], &m);
+> > > +
+> > > +           spi_xfer[1].tx_buf =3D phy->iobuf + 1;
+> > > +           spi_xfer[1].len =3D 3;
+> > > +           spi_message_add_tail(&spi_xfer[1], &m);
+> > > +
+> > > +           if (out) {
+> > > +                   spi_xfer[2].tx_buf =3D &phy->iobuf[4];
+> > > +                   spi_xfer[2].rx_buf =3D NULL;
+> > > +                   memcpy(&phy->iobuf[4], out, transfer_len);
+> > > +                   out +=3D transfer_len;
+> > > +           }
+> > > +
+> > > +           if (in) {
+> > > +                   spi_xfer[2].tx_buf =3D NULL;
+> > > +                   spi_xfer[2].rx_buf =3D &phy->iobuf[4];
+> > > +           }
+> > > +
+> > > +           spi_xfer[2].len =3D transfer_len;
+> > > +           spi_message_add_tail(&spi_xfer[2], &m);
+> > > +
+> > > +           reinit_completion(&phy->ready);
+> > > +
+> > > +           ret =3D spi_sync_locked(phy->spi_device, &m);
+> > > +           if (ret < 0)
+> > > +                   return ret;
+> > > +
+> > > +           if (in) {
+> > > +                   memcpy(in, &phy->iobuf[4], transfer_len);
+> > > +                   in +=3D transfer_len;
+> > > +           }
+> > > +
+> > > +           len -=3D transfer_len;
+> > > +   }
+> > > +
+> > > +   return ret;
+> > > +}
+> >
+> > Does tpm_tis_spi_transfer_half not need to lock the bus?  The doc
+> comments for spi_sync_locked
+> > state:
+> >
+> >  This call should be used by drivers that require exclusive access to t=
+he
+> >  SPI bus. It has to be preceded by a spi_bus_lock call. The SPI bus mus=
+t
+> >  be released by a spi_bus_unlock call when the exclusive access is over=
+.
+> >
+> > If that isn't the case should it be using spi_sync instead of spi_sync_=
+locked?
+> >
+> > Regards,
+> > Jerry
+>=20
+> b4 mbox -c to the rescue. I found the earlier discussion with Mark about
+> the lock, so I guess the question is just should this call spi_sync
+> instead of spi_sync_locked then?
+>=20
+> The magic numbers is a minor nit, and can probably be cleaned up
+> separately since the full duplex code was already doing the same
+> thing. The only other nit is just the older tcg spec being referenced
+> in patch 1.
+>=20
+> Regards,
+> Jerry
+Magic number can be dealt in a different patch for both half and full
+Transfer calls.
+As we send single message for complete transaction, bus need not be
+locked. I will replace the calls with spi_sync.
+Will update referenced tcg spec as well to the latest.
 
-On Thu, Apr 20, 2023 at 6:13=E2=80=AFAM Vijaya Krishna Nivarthi
-<quic_vnivarth@quicinc.com> wrote:
->
-> @@ -137,11 +155,29 @@ enum qspi_clocks {
->         QSPI_NUM_CLKS
->  };
->
-> +enum qspi_xfer_mode {
-> +       QSPI_FIFO,
-> +       QSPI_DMA
-> +};
-> +
-> +/*
-> + * Number of entries in sgt returned from spi framework that-
-> + * will be supported. Can be modified as required.
-> + * In practice, given max_dma_len is 64KB, the number of
-> + * entries is not expected to exceed 1.
-> + */
-> +#define QSPI_MAX_SG 5
-
-I actually wonder if this would be more nicely done just using a
-linked list, which naturally mirrors how SGs work anyway. You'd add
-"struct list_head" to the end of "struct qspi_cmd_desc" and just store
-a pointer to the head in "struct qcom_qspi".
-
-For freeing, you can always get back the "virtual" address because
-it's just the address of each node. You can always get back the
-physical address because it's stored in "data_address".
-
-
-> @@ -223,6 +261,16 @@ static void qcom_qspi_handle_err(struct spi_master *=
-master,
->         spin_lock_irqsave(&ctrl->lock, flags);
->         writel(0, ctrl->base + MSTR_INT_EN);
-
-Can you also clear all interrupts here? That will make sure that if
-the interrupt somehow fires after you run that it will detect that
-there's nothing to do.
-
-
->         ctrl->xfer.rem_bytes =3D 0;
-> +
-> +       if (ctrl->xfer_mode =3D=3D QSPI_DMA) {
-> +               int i;
-> +
-> +               /* free cmd descriptors */
-> +               for (i =3D 0; i < ctrl->n_cmd_desc; i++)
-> +                       dma_pool_free(ctrl->dma_cmd_pool, ctrl->virt_cmd_=
-desc[i],
-> +                                         ctrl->dma_cmd_desc[i]);
-> +               ctrl->n_cmd_desc =3D 0;
-> +       }
-
-Instead of checking for ctrl->xfer_mode, why not just check for
-ctrl->n_cmd_desc? Then you can get rid of "ctrl->xfer_mode".
-
-
-> @@ -258,6 +306,120 @@ static int qcom_qspi_set_speed(struct qcom_qspi *ct=
-rl, unsigned long speed_hz)
->         return 0;
->  }
->
-> +#define QSPI_ALIGN_REQ 32
-
-nit: put this at the top of the file with other #defines.
-
-
-> +static int qcom_qspi_alloc_desc(struct qcom_qspi *ctrl, dma_addr_t dma_p=
-tr,
-> +                       uint32_t n_bytes)
-> +{
-> +       struct qspi_cmd_desc *virt_cmd_desc, *prev;
-> +       dma_addr_t dma_cmd_desc;
-> +
-> +       /* allocate for dma cmd descriptor */
-> +       virt_cmd_desc =3D (struct qspi_cmd_desc *)dma_pool_alloc(ctrl->dm=
-a_cmd_pool,
-> +               GFP_KERNEL, &dma_cmd_desc);
-
-Remove unnecessary cast; "void *" assigns fine w/out a cast.
-
-Add "| GFP_ZERO" and then get rid of the need to clear the "reserved"
-and "next_descriptor" stuff below.
-
-
-> +       if (!virt_cmd_desc) {
-> +               dev_err(ctrl->dev,
-> +                       "Could not allocate for cmd_desc\n");
-> +               return -ENOMEM;
-> +       }
-
-You never need to add an extra message for allocation failures (they
-already splat). Remove it.
-
-
-> +       ctrl->virt_cmd_desc[ctrl->n_cmd_desc] =3D virt_cmd_desc;
-> +       ctrl->dma_cmd_desc[ctrl->n_cmd_desc] =3D dma_cmd_desc;
-> +       ctrl->n_cmd_desc++;
-> +
-> +       /* setup cmd descriptor */
-> +       virt_cmd_desc->data_address =3D dma_ptr;
-> +       virt_cmd_desc->next_descriptor =3D 0;
-> +       virt_cmd_desc->direction =3D ctrl->xfer.dir;
-> +       virt_cmd_desc->multi_io_mode =3D qspi_buswidth_to_iomode(ctrl, ct=
-rl->xfer.buswidth);
-> +       virt_cmd_desc->reserved1 =3D 0;
-> +       virt_cmd_desc->fragment =3D ctrl->xfer.is_last ? 0 : 1;
-
-virt_cmd_desc->fragment =3D !ctrl->xfer.is_last;
-
-
-> +       virt_cmd_desc->reserved2 =3D 0;
-> +       virt_cmd_desc->length =3D n_bytes;
-> +
-> +       /* update previous descriptor */
-> +       if (ctrl->n_cmd_desc >=3D 2) {
-> +               prev =3D (ctrl->virt_cmd_desc)[ctrl->n_cmd_desc - 2];
-> +               prev->next_descriptor =3D dma_cmd_desc;
-> +               prev->fragment =3D 1;
-> +       }
-> +
-> +       return 0;
-> +}
-> +
-> +static int qcom_qspi_setup_dma_desc(struct qcom_qspi *ctrl,
-> +                               struct spi_transfer *xfer)
-> +{
-> +       int ret;
-> +       struct sg_table *sgt;
-> +       unsigned int sg_total_len =3D 0;
-> +       dma_addr_t dma_ptr_sg;
-> +       unsigned int dma_len_sg;
-> +       int i;
-> +
-> +       if (ctrl->n_cmd_desc) {
-> +               dev_err(ctrl->dev, "Remnant dma buffers n_cmd_desc-%d\n",=
- ctrl->n_cmd_desc);
-> +               return -EIO;
-> +       }
-> +
-> +       sgt =3D (ctrl->xfer.dir =3D=3D QSPI_READ) ? &xfer->rx_sg : &xfer-=
->tx_sg;
-> +       if (!sgt->nents || sgt->nents > QSPI_MAX_SG) {
-> +               dev_err(ctrl->dev, "Cannot handle %d entries in scatter l=
-ist\n", sgt->nents);
-> +               return -EAGAIN;
-
-If you're retrying, don't use "dev_err" but instead "dev_warn".
-Similar in other places.
-
-
-> +       }
-> +
-> +       for (i =3D 0; i < sgt->nents; i++) {
-> +               dma_ptr_sg =3D sg_dma_address(sgt->sgl + i);
-> +               if (!IS_ALIGNED(dma_ptr_sg, QSPI_ALIGN_REQ)) {
-> +                       dev_err(ctrl->dev, "dma address-%pad not aligned =
-to %d\n",
-> +                               &dma_ptr_sg, QSPI_ALIGN_REQ);
-
-In general it's not good practice to put pointer values into the error
-log as it can be an attack vector. Probably the %p will be replaced
-with something bogus anyway, but it'll look weird.
-
-
-> +                       return -EAGAIN;
-> +               }
-> +               sg_total_len +=3D sg_dma_len(sgt->sgl + i);
-> +       }
-> +
-> +       if (sg_total_len !=3D xfer->len) {
-> +               dev_err(ctrl->dev, "Data lengths mismatch\n");
-> +               return -EAGAIN;
-> +       }
-
-This feels like overly defensive programming. The SPI framework is
-what's in charge of setting up the scatter gather lists and it can be
-trusted to give you something where the total transfer length matches.
-IMO, drop that validation. I'm OK w/ keeping the double-check of the
-alignment since that's handled by the client drivers and they are less
-trustworthy.
-
-
-> +
-> +       for (i =3D 0; i < sgt->nents; i++) {
-> +               dma_ptr_sg =3D sg_dma_address(sgt->sgl + i);
-> +               dma_len_sg =3D sg_dma_len(sgt->sgl + i);
-> +
-> +               ret =3D qcom_qspi_alloc_desc(ctrl, dma_ptr_sg, dma_len_sg=
+Regards
+KY
+>=20
+> >
+> > > +
+> > > +static int tpm_tis_spi_transfer_full(struct tpm_tis_data *data, u32 =
+addr,
+> > > +                                u16 len, u8 *in, const u8 *out)
+> > >  {
+> > >     struct tpm_tis_spi_phy *phy =3D to_tpm_tis_spi_phy(data);
+> > >     int ret =3D 0;
+> > > @@ -140,6 +206,24 @@ int tpm_tis_spi_transfer(struct tpm_tis_data
+> *data, u32 addr, u16 len,
+> > >     return ret;
+> > >  }
+> > >
+> > > +int tpm_tis_spi_transfer(struct tpm_tis_data *data, u32 addr, u16 le=
+n,
+> > > +                    u8 *in, const u8 *out)
+> > > +{
+> > > +   struct tpm_tis_spi_phy *phy =3D to_tpm_tis_spi_phy(data);
+> > > +   struct spi_controller *ctlr =3D phy->spi_device->controller;
+> > > +
+> > > +   /*
+> > > +    * TPM flow control over SPI requires full duplex support.
+> > > +    * Send entire message to a half duplex controller to handle
+> > > +    * wait polling in controller.
+> > > +    * Set TPM HW flow control flag..
+> > > +    */
+> > > +   if (ctlr->flags & SPI_CONTROLLER_HALF_DUPLEX)
+> > > +           return tpm_tis_spi_transfer_half(data, addr, len, in, out=
 );
-> +               if (ret)
-> +                       goto cleanup;
-> +       }
-> +       return 0;
-> +
-> +cleanup:
-> +       dev_err(ctrl->dev, "ERROR cleanup in setup_dma_desc\n");
-
-Drop above print--we should have already printed any relevant errors.
-
-
-> @@ -290,8 +454,37 @@ static int qcom_qspi_transfer_one(struct spi_master =
-*master,
->         ctrl->xfer.is_last =3D list_is_last(&xfer->transfer_list,
->                                           &master->cur_msg->transfers);
->         ctrl->xfer.rem_bytes =3D xfer->len;
-> +
-> +       if (xfer->rx_sg.nents || xfer->tx_sg.nents) {
-> +               /* do DMA transfer */
-> +               ctrl->xfer_mode =3D QSPI_DMA;
-> +               if (!(mstr_cfg & DMA_ENABLE)) {
-> +                       mstr_cfg |=3D DMA_ENABLE;
-> +                       writel(mstr_cfg, ctrl->base + MSTR_CONFIG);
-> +               }
-> +
-> +               ret =3D qcom_qspi_setup_dma_desc(ctrl, xfer);
-> +               if (ret) {
-> +                       if (ret =3D=3D -EAGAIN) {
-> +                               dev_err_once(ctrl->dev, "DMA failure, fal=
-ling back to PIO");
-> +                               goto do_pio;
-> +                       }
-> +                       spin_unlock_irqrestore(&ctrl->lock, flags);
-> +                       return ret;
-> +               }
-> +               qcom_qspi_dma_xfer(ctrl);
-> +               goto end;
-> +       }
-> +
-> +do_pio:
-
-A bit nitty, but the "do_pio" label feels like a slight stretch from
-what I consider the acceptable uses of "goto". Maybe it's better to
-avoid it? The "end" label is OK w/ me, though usually I see it called
-"exit". AKA:
-
-  ...
-  ret =3D qcom_qspi_setup_dma_desc(ctrl, xfer);
-  if (ret !=3D -EAGAIN) {
-    if (!ret)
-      qcom_qspi_dma_xfer(ctrl);
-    goto exit;
-  }
-  dev_warn_once(...);
-  ret =3D 0; /* We'll retry w/ PIO */
-}
-
-...
-...
-
-exit:
-  spin_unlock_irqrestore(&ctrl->lock, flags);
-
-  if (ret)
-    return ret;
-
-  /* We'll call spi_finalize_current_transfer() when done */
-  return 1;
-
-
-> @@ -328,6 +521,17 @@ static int qcom_qspi_prepare_message(struct spi_mast=
-er *master,
->         return 0;
->  }
->
-> +static int qcom_qspi_alloc_dma(struct qcom_qspi *ctrl)
-> +{
-> +       /* allocate for cmd descriptors pool */
-
-The above comment doesn't add much. Drop?
-
-
-> @@ -426,27 +630,48 @@ static irqreturn_t qcom_qspi_irq(int irq, void *dev=
-_id)
->         int_status =3D readl(ctrl->base + MSTR_INT_STATUS);
->         writel(int_status, ctrl->base + MSTR_INT_STATUS);
->
-> -       if (ctrl->xfer.dir =3D=3D QSPI_WRITE) {
-> -               if (int_status & WR_FIFO_EMPTY)
-> -                       ret =3D pio_write(ctrl);
-> -       } else {
-> -               if (int_status & RESP_FIFO_RDY)
-> -                       ret =3D pio_read(ctrl);
-> -       }
-> -
-> -       if (int_status & QSPI_ERR_IRQS) {
-> -               if (int_status & RESP_FIFO_UNDERRUN)
-> -                       dev_err(ctrl->dev, "IRQ error: FIFO underrun\n");
-> -               if (int_status & WR_FIFO_OVERRUN)
-> -                       dev_err(ctrl->dev, "IRQ error: FIFO overrun\n");
-> -               if (int_status & HRESP_FROM_NOC_ERR)
-> -                       dev_err(ctrl->dev, "IRQ error: NOC response error=
-\n");
-> -               ret =3D IRQ_HANDLED;
-> -       }
-> -
-> -       if (!ctrl->xfer.rem_bytes) {
-> -               writel(0, ctrl->base + MSTR_INT_EN);
-> -               spi_finalize_current_transfer(dev_get_drvdata(ctrl->dev))=
-;
-> +       switch (ctrl->xfer_mode) {
-> +       case QSPI_FIFO:
-> +               if (ctrl->xfer.dir =3D=3D QSPI_WRITE) {
-> +                       if (int_status & WR_FIFO_EMPTY)
-> +                               ret =3D pio_write(ctrl);
-> +               } else {
-> +                       if (int_status & RESP_FIFO_RDY)
-> +                               ret =3D pio_read(ctrl);
-> +               }
-> +
-> +               if (int_status & QSPI_ERR_IRQS) {
-> +                       if (int_status & RESP_FIFO_UNDERRUN)
-> +                               dev_err(ctrl->dev, "IRQ error: FIFO under=
-run\n");
-> +                       if (int_status & WR_FIFO_OVERRUN)
-> +                               dev_err(ctrl->dev, "IRQ error: FIFO overr=
-un\n");
-> +                       if (int_status & HRESP_FROM_NOC_ERR)
-> +                               dev_err(ctrl->dev, "IRQ error: NOC respon=
-se error\n");
-> +                       ret =3D IRQ_HANDLED;
-> +               }
-> +
-> +               if (!ctrl->xfer.rem_bytes) {
-> +                       writel(0, ctrl->base + MSTR_INT_EN);
-> +                       spi_finalize_current_transfer(dev_get_drvdata(ctr=
-l->dev));
-> +               }
-> +               break;
-> +       case QSPI_DMA:
-> +               if (int_status & DMA_CHAIN_DONE) {
-> +                       int i;
-> +
-> +                       writel(0, ctrl->base + MSTR_INT_EN);
-> +
-> +                       for (i =3D 0; i < ctrl->n_cmd_desc; i++)
-> +                               dma_pool_free(ctrl->dma_cmd_pool, ctrl->v=
-irt_cmd_desc[i],
-> +                                                 ctrl->dma_cmd_desc[i]);
-> +                       ctrl->n_cmd_desc =3D 0;
-> +
-> +                       ret =3D IRQ_HANDLED;
-> +                       spi_finalize_current_transfer(dev_get_drvdata(ctr=
-l->dev));
-> +               }
-> +               break;
-> +       default:
-> +               dev_err(ctrl->dev, "Unknown xfer mode:%d", ctrl->xfer_mod=
-e);
-
-I'm still of the opinion that you should drop xfer_mode, which means
-deleting it from above.
-
-
-> @@ -517,7 +742,14 @@ static int qcom_qspi_probe(struct platform_device *p=
-dev)
->                 return ret;
->         }
->
-> +       ret =3D dma_set_mask_and_coherent(dev, DMA_BIT_MASK(32));
-> +       if (ret)
-> +               return dev_err_probe(dev, ret, "could not set DMA mask\n"=
+> > > +   else
+> > > +           return tpm_tis_spi_transfer_full(data, addr, len, in, out=
 );
-> +
->         master->max_speed_hz =3D 300000000;
-> +       master->max_dma_len =3D 65536; /* as per HPG */
-> +       /* intimate protocal drivers about alignment requirement */
+> > > +}
+> > > +
+> > >  static int tpm_tis_spi_read_bytes(struct tpm_tis_data *data, u32 add=
+r,
+> > >                               u16 len, u8 *result, enum tpm_tis_io_mo=
+de io_mode)
+> > >  {
+> > > @@ -181,6 +265,9 @@ static int tpm_tis_spi_probe(struct spi_device
+> *dev)
+> > >
+> > >     phy->flow_control =3D tpm_tis_spi_flow_control;
+> > >
+> > > +   if (dev->controller->flags & SPI_CONTROLLER_HALF_DUPLEX)
+> > > +           dev->mode |=3D SPI_TPM_HW_FLOW;
+> > > +
+> > >     /* If the SPI device has an IRQ then use that */
+> > >     if (dev->irq > 0)
+> > >             irq =3D dev->irq;
+> > > --
+> > > 2.17.1
+> > >
+> >
 
-Comment above doesn't add much and is already in the comment in the
-definition of the structure. Drop it.
-
-
-> +       master->dma_alignment =3D QSPI_ALIGN_REQ;
->         master->num_chipselect =3D QSPI_NUM_CS;
->         master->bus_num =3D -1;
->         master->dev.of_node =3D pdev->dev.of_node;
-> @@ -528,6 +760,7 @@ static int qcom_qspi_probe(struct platform_device *pd=
-ev)
->         master->prepare_message =3D qcom_qspi_prepare_message;
->         master->transfer_one =3D qcom_qspi_transfer_one;
->         master->handle_err =3D qcom_qspi_handle_err;
-> +       master->can_dma =3D qcom_qspi_can_dma;
->         master->auto_runtime_pm =3D true;
->
->         ret =3D devm_pm_opp_set_clkname(&pdev->dev, "core");
-> @@ -540,6 +773,11 @@ static int qcom_qspi_probe(struct platform_device *p=
-dev)
->                 return ret;
->         }
->
-> +       /* allocate for DMA descriptor pools */
-
-Above comment is obvious from the name of the function you're calling.

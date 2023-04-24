@@ -2,135 +2,134 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 582BFC77B61
-	for <linux-spi@archiver.kernel.org>; Mon, 24 Apr 2023 10:28:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8E6F8C77B76
+	for <linux-spi@archiver.kernel.org>; Mon, 24 Apr 2023 10:35:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231725AbjDXK2m (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 24 Apr 2023 06:28:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52238 "EHLO
+        id S230152AbjDXKfD (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 24 Apr 2023 06:35:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231753AbjDXK2S (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 24 Apr 2023 06:28:18 -0400
-Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BCE94EDB;
-        Mon, 24 Apr 2023 03:26:21 -0700 (PDT)
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 33OAQAYP102616;
-        Mon, 24 Apr 2023 05:26:10 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1682331970;
-        bh=d+YTj+kYAOw9gOaSfCjVLld1MKVE0O7Qk46YIombHhc=;
-        h=Date:Subject:To:CC:References:From:In-Reply-To;
-        b=ZIl9xhTefuioFN3E4SSDNOluX8IzBtBCA6wasrmzsWul0gGQ/rxwK4ZLPpT3dpzmq
-         8mNJKl19fOLLdqEZ8ZRTaS1+uGO64/xelAgckQI5EHDlrm2YXYOYfmpSkB2HGVUeLB
-         NMQ9l3fCLmI9FIjzUrTvN/d4dTOtahYEnqTra4wI=
-Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 33OAQA0T008858
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 24 Apr 2023 05:26:10 -0500
-Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16; Mon, 24
- Apr 2023 05:26:09 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE111.ent.ti.com
- (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16 via
- Frontend Transport; Mon, 24 Apr 2023 05:26:09 -0500
-Received: from [10.24.69.26] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 33OAQ6ve040882;
-        Mon, 24 Apr 2023 05:26:07 -0500
-Message-ID: <3a28e15a-ba67-3dfa-6445-bd21e523980b@ti.com>
-Date:   Mon, 24 Apr 2023 15:56:06 +0530
+        with ESMTP id S231237AbjDXKeq (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 24 Apr 2023 06:34:46 -0400
+Received: from forward502c.mail.yandex.net (forward502c.mail.yandex.net [IPv6:2a02:6b8:c03:500:1:45:d181:d502])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B8D419B;
+        Mon, 24 Apr 2023 03:34:24 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-39.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-39.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:261e:0:640:2e3d:0])
+        by forward502c.mail.yandex.net (Yandex) with ESMTP id 1B4F75EB3B;
+        Mon, 24 Apr 2023 12:35:50 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-39.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id JZBb1pbWwKo0-33w8EqCy;
+        Mon, 24 Apr 2023 12:35:49 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=maquefel.me; s=mail; t=1682328949;
+        bh=vU9bRggzAhYOEIOo6hHktg3BN7ZN9WtqIzyEyFF0Ons=;
+        h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
+        b=ZqzxMTukQJ9ZInTO2NfwuEnV628LAWgWX5APJIe8emmO12TIBiSRn5d+fLGZ+nRek
+         m9W59ISxM6G4zSkaAcHhI5fmqZnk5iO/EGrQm2iYJOIybQUCdPkaG0xRQqsDpFtXCl
+         3BRfon+kQs4Vm8brpmEk7h97HFPBx6I7sWhyU+is=
+Authentication-Results: mail-nwsmtp-smtp-production-main-39.myt.yp-c.yandex.net; dkim=pass header.i=@maquefel.me
+From:   Nikita Shubin <nikita.shubin@maquefel.me>
+Cc:     Arnd Bergmann <arnd@kernel.org>, Linus Walleij <linusw@kernel.org>,
+        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 16/43] dt-bindings: spi: Add DT bindings ep93xx spi
+Date:   Mon, 24 Apr 2023 15:34:32 +0300
+Message-Id: <20230424123522.18302-17-nikita.shubin@maquefel.me>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230424123522.18302-1-nikita.shubin@maquefel.me>
+References: <20230424123522.18302-1-nikita.shubin@maquefel.me>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] spi: bcm63xx: remove PM_SLEEP based conditional
- compilation
-Content-Language: en-US
-To:     Jonas Gorski <jonas.gorski@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>
-CC:     Mark Brown <broonie@kernel.org>,
-        Vaishnav Achath <vaishnav.a@ti.com>, Vignesh <vigneshr@ti.com>,
-        Apurva Nandan <a-nandan@ti.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Grant Likely <grant.likely@secretlab.ca>,
-        Tanguy Bouzeloc <tanguy.bouzeloc@efixo.com>
-References: <20230420121615.967487-1-d-gole@ti.com>
- <24ec3728-9720-ae6a-9ff5-3e2e13a96f76@gmail.com>
- <CAOiHx==7TV3879ADbiWGbHT0NysNck4FUQXkXEocjkD2BzEoRA@mail.gmail.com>
-From:   Dhruva Gole <d-gole@ti.com>
-In-Reply-To: <CAOiHx==7TV3879ADbiWGbHT0NysNck4FUQXkXEocjkD2BzEoRA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi Jonas,
+Add YAML bindings for ep93xx SoC.
 
-On 24/04/23 13:50, Jonas Gorski wrote:
-> On Fri, 21 Apr 2023 at 19:17, Florian Fainelli <f.fainelli@gmail.com> wrote:
->>
->> On 4/20/23 05:16, Dhruva Gole wrote:
->>> Get rid of conditional compilation based on CONFIG_PM_SLEEP because
->>> it may introduce build issues with certain configs where it maybe disabled
->>> This is because if above config is not enabled the suspend-resume
->>> functions are never part of the code but the bcm63xx_spi_pm_ops struct
->>> still inits them to non-existent suspend-resume functions.
->>>
->>> Fixes: b42dfed83d95 ("spi: add Broadcom BCM63xx SPI controller driver")
->>>
->>> Signed-off-by: Dhruva Gole <d-gole@ti.com>
->>> ---
->>>    drivers/spi/spi-bcm63xx.c | 2 --
->>>    1 file changed, 2 deletions(-)
->>>
->>> diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
->>> index 96633a0051b1..99395932074c 100644
->>> --- a/drivers/spi/spi-bcm63xx.c
->>> +++ b/drivers/spi/spi-bcm63xx.c
->>> @@ -617,7 +617,6 @@ static void bcm63xx_spi_remove(struct platform_device *pdev)
->>>        clk_disable_unprepare(bs->clk);
->>>    }
->>>
->>> -#ifdef CONFIG_PM_SLEEP
->>>    static int bcm63xx_spi_suspend(struct device *dev)
->>
->> Don't we need a __maybe_unused here?
-> 
-> Actually the premise of this patch is wrong, and should rather be reverted.
-> 
-> The bcm63xx_spi_pm_ops struct is initialized with
-> SET_SYSTEM_SLEEP_PM_OPS(), which is defined as
-> 
-> #ifdef CONFIG_PM_SLEEP
-> #define SET_SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
-> SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn)
-> #else
-> #define SET_SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn)
-> #endif
-> 
+Signed-off-by: Nikita Shubin <nikita.shubin@maquefel.me>
+---
+ .../devicetree/bindings/spi/spi-ep93xx.yaml   | 68 +++++++++++++++++++
+ 1 file changed, 68 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-ep93xx.yaml
 
-Thanks for pointing this out, I must have missed this.
-Anyway, I have sent another patch to migrate to using
-DEFINE_SIMPLE_DEV_PM_OPS as per Mark's suggestion [0]. There I think it
-would be necessary to remove the CONFIG_PM_SLEEP checks in the driver.
-So no need to revert this patch.
-
-
-> so for !CONFIG_PM_SLEEP it won't initialize the struct at all (or
-> reference non-existing functions), and therefore there will be no
-> build issues.
-> 
-> Regards,
-> Jonas
-
-
-[0] 
-https://lore.kernel.org/all/e65683c1-9f1b-4cfb-8e14-087ef7d69595@sirena.org.uk/
-
+diff --git a/Documentation/devicetree/bindings/spi/spi-ep93xx.yaml b/Documentation/devicetree/bindings/spi/spi-ep93xx.yaml
+new file mode 100644
+index 000000000000..e09ab50629fb
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/spi-ep93xx.yaml
+@@ -0,0 +1,68 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/spi/spi-ep93xx.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: EP93xx SoC SPI controller
++
++maintainers:
++  - Mark Brown <broonie@kernel.org>
++
++allOf:
++  - $ref: "spi-controller.yaml#"
++
++properties:
++  "#address-cells": true
++  "#size-cells": true
++
++  compatible:
++    items:
++      - const: cirrus,ep9301-spi
++
++  reg:
++    items:
++      - description: SPI registers region
++
++  interrupts:
++    maxItems: 1
++
++  clocks:
++    items:
++      - description: SPI Controller reference clock source
++
++  clock-names:
++    items:
++      - const: ep93xx-spi.0
++
++  cs-gpios: true
++
++  use_dma:
++    type: boolean
++    items:
++      - description: Flag indicating that the SPI should use dma
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - clocks
++  - clock-names
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/clock/cirrus,ep93xx-clock.h>
++    spi0: spi@808a0000 {
++        compatible = "cirrus,ep9301-spi";
++        reg = <0x808a0000 0x18>;
++        interrupt-parent = <&vic1>;
++        interrupts = <21>;
++        clocks = <&syscon EP93XX_CLK_SPI>;
++        clock-names = "ep93xx-spi.0";
++        cs-gpios = <&gpio5 2 0>;
++        use_dma;
++    };
++
++...
 -- 
-Thanks and Regards,
-Dhruva Gole
+2.39.2
+

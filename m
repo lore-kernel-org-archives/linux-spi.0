@@ -2,87 +2,92 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EB3B6C7618E
-	for <linux-spi@archiver.kernel.org>; Mon, 24 Apr 2023 12:04:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CB52DC7618E
+	for <linux-spi@archiver.kernel.org>; Mon, 24 Apr 2023 12:32:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230319AbjDXMEA (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 24 Apr 2023 08:04:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54320 "EHLO
+        id S231425AbjDXMc1 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 24 Apr 2023 08:32:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231360AbjDXMD7 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 24 Apr 2023 08:03:59 -0400
-Received: from hust.edu.cn (mail.hust.edu.cn [202.114.0.240])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0463010EA;
-        Mon, 24 Apr 2023 05:03:54 -0700 (PDT)
-Received: from [IPV6:2001:250:4000:5113:4140:2ad:3e:4b54] ([172.16.0.254])
-        (user=dzm91@hust.edu.cn mech=PLAIN bits=0)
-        by mx1.hust.edu.cn  with ESMTP id 33OC3g4w013596-33OC3g4x013596
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
-        Mon, 24 Apr 2023 20:03:43 +0800
-Message-ID: <46299274-d827-279f-cadf-020e93296c13@hust.edu.cn>
-Date:   Mon, 24 Apr 2023 20:03:42 +0800
+        with ESMTP id S231656AbjDXMc1 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 24 Apr 2023 08:32:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E1D3449D;
+        Mon, 24 Apr 2023 05:32:20 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2D2BF60AE9;
+        Mon, 24 Apr 2023 12:32:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09F1AC433D2;
+        Mon, 24 Apr 2023 12:32:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1682339539;
+        bh=3gbP4eBWBVtrqJ7+u+sGO1ZzsNqx3kgrpsbN2Whx/DQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=meYGuNmTBHXZPY+tp0KWWGjcwL8P1Dd9hi7AxW/NtCYiYZGyAq2sMqM0zWB7HrrAn
+         ehCFWPn3zyZgxo5Uci+8ZnxQlKvpUp3JtSbYP5A6wgzJd6fAYmke3N/Qw0C83XcCXw
+         iBDpJjZNmIS3tIIo+1SY4RX6990oCAlaVVOw+1fTAqXblkPuFrR7QjbGEZbP8PkpqZ
+         SiL+3bF08de9IWgpg3WDeOkh0cGH2G8M5NmdGVhQHJJL97spA4nEwoqSl7LFL26reD
+         Qr9NVnSsVS7YSOxPibrES3zWcKR9+5JZ1sydX5XNsfnWY1dC3tTReMsyu67fQ3jHqv
+         fRKvoPqhxz3TA==
+Date:   Mon, 24 Apr 2023 13:32:14 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Peter Enderborg <peter.enderborg@sony.com>
+Cc:     Yingsha Xu <ysxu@hust.edu.cn>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Serge Semin <fancer.lancer@gmail.com>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] spi: remove return value check of debugfs_create_dir()
+Message-ID: <a4706089-399b-4663-9ac8-216f12ebe7ca@sirena.org.uk>
+References: <20230423061155.2540-1-ysxu@hust.edu.cn>
+ <eb3c6aa6-6820-4e94-8eb0-5abd3b627fcc@sirena.org.uk>
+ <368e31ae-31b5-839f-72e3-20a27239cb0b@sony.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.10.0
-Subject: Re: [PATCH] spi: davinci: Remove dead code in `davinci_spi_probe()`
-To:     Mark Brown <broonie@kernel.org>, Li Ningke <lnk_01@hust.edu.cn>
-Cc:     hust-os-kernel-patches@googlegroups.com, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230423032446.34347-1-lnk_01@hust.edu.cn>
- <d29c4b3e-9e82-4ea9-9f0c-a8e2c7637eb9@sirena.org.uk>
-From:   Dongliang Mu <dzm91@hust.edu.cn>
-In-Reply-To: <d29c4b3e-9e82-4ea9-9f0c-a8e2c7637eb9@sirena.org.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-FEAS-AUTH-USER: dzm91@hust.edu.cn
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="UOBnuC81RE2vEHCp"
+Content-Disposition: inline
+In-Reply-To: <368e31ae-31b5-839f-72e3-20a27239cb0b@sony.com>
+X-Cookie: A rolling disk gathers no MOS.
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
 
-On 2023/4/24 19:48, Mark Brown wrote:
-> On Sun, Apr 23, 2023 at 03:24:46AM +0000, Li Ningke wrote:
->> Smatch complains that
->> drivers/spi/spi-davinci.c:915 davinci_spi_probe() warn:
->> platform_get_irq() does not return zero
->>
->> There is no need to check whether the return value is zero as
->> `platform_get_irq()` only returns non-zero IRQ number on success
->> or negative error number on failure, removing them to solve this
->> problem.
-> Is that check valid?  0 was a valid interrupt for some architectures...
+--UOBnuC81RE2vEHCp
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-We just follow the comments of platform_get_irq().
+On Mon, Apr 24, 2023 at 02:20:45PM +0200, Peter Enderborg wrote:
+> On 4/24/23 13:54, Mark Brown wrote:
 
-/**
-  * platform_get_irq - get an IRQ for a device
-  * @dev: platform device
-  * @num: IRQ number index
-  *
-  * Gets an IRQ for a platform device and prints an error message if 
-finding the
-  * IRQ fails. Device drivers should check the return value for errors 
-so as to
-  * not pass a negative integer value to the request_irq() APIs.
-  *
-  * For example::
-  *
-  *              int irq = platform_get_irq(pdev, 0);
-  *              if (irq < 0)
-  *                      return irq;
-  *
-  * Return: non-zero IRQ number on success, negative error number on 
-failure.
-  */
-int platform_get_irq(struct platform_device *dev, unsigned int num)
-{
-         int ret;
+> > This is very much a question of taste with a range of use cases
+> > available.
 
-         ret = platform_get_irq_optional(dev, num);
-         if (ret < 0)
-                 return dev_err_probe(&dev->dev, ret,
-                                      "IRQ index %u not found\n", num);
+> No.=20
+> https://lkml.iu.edu/hypermail/linux/kernel/1901.2/05993.html
+> We can do things with the debug information without filesystem enabled.
 
-         return ret;
-}
+There's issues with partially created debugfs structures getting in the
+way of people trying to debug things, just completely ignoring all
+errors can create confusion as the diagnostic information people believe
+is being shown to them ends up being partial or mistructured without any
+indication that this has happened.
 
+--UOBnuC81RE2vEHCp
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmRGds0ACgkQJNaLcl1U
+h9A0Kwf8D3WxDd1y1d2Htc0oO336q9R8aFm20uS/m3PtMgWJ8ObnGc80ooAte+0A
+/Xk2h2N04jNqM4+iwzk3ByOyonC17cJH3ZwIzLXnu5DC86Ua9tFlwib0ABw7sJbE
+tTCNQsIEd+UX+CNms6ffY7KMZHGeeEm4V2zTEVkRMwbU72AQ1aWSknAnLYP9lxpT
+LS4/3dwJxJ8XCDdf6AiNT0IXS/6Vmb9gCL0RJaPSoL+B9v0iFeWJbJbQEWfzHNE0
+NGxPV9bRV5Mi9Cw97y59SPpVRKg24cedVR6+t5bIM0EY9T9XTGxhMsp02DUYm2IS
+uszEQu7LIM1h2BKsVZ6AyQVXCTpxxA==
+=kFY8
+-----END PGP SIGNATURE-----
+
+--UOBnuC81RE2vEHCp--

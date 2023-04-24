@@ -2,134 +2,168 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8E6F8C77B76
-	for <linux-spi@archiver.kernel.org>; Mon, 24 Apr 2023 10:35:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 901E6C7EE23
+	for <linux-spi@archiver.kernel.org>; Mon, 24 Apr 2023 11:31:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230152AbjDXKfD (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 24 Apr 2023 06:35:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57586 "EHLO
+        id S231625AbjDXLb5 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 24 Apr 2023 07:31:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34706 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231237AbjDXKeq (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 24 Apr 2023 06:34:46 -0400
-Received: from forward502c.mail.yandex.net (forward502c.mail.yandex.net [IPv6:2a02:6b8:c03:500:1:45:d181:d502])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B8D419B;
-        Mon, 24 Apr 2023 03:34:24 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-39.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-39.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:261e:0:640:2e3d:0])
-        by forward502c.mail.yandex.net (Yandex) with ESMTP id 1B4F75EB3B;
-        Mon, 24 Apr 2023 12:35:50 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-39.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id JZBb1pbWwKo0-33w8EqCy;
-        Mon, 24 Apr 2023 12:35:49 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=maquefel.me; s=mail; t=1682328949;
-        bh=vU9bRggzAhYOEIOo6hHktg3BN7ZN9WtqIzyEyFF0Ons=;
-        h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
-        b=ZqzxMTukQJ9ZInTO2NfwuEnV628LAWgWX5APJIe8emmO12TIBiSRn5d+fLGZ+nRek
-         m9W59ISxM6G4zSkaAcHhI5fmqZnk5iO/EGrQm2iYJOIybQUCdPkaG0xRQqsDpFtXCl
-         3BRfon+kQs4Vm8brpmEk7h97HFPBx6I7sWhyU+is=
-Authentication-Results: mail-nwsmtp-smtp-production-main-39.myt.yp-c.yandex.net; dkim=pass header.i=@maquefel.me
-From:   Nikita Shubin <nikita.shubin@maquefel.me>
-Cc:     Arnd Bergmann <arnd@kernel.org>, Linus Walleij <linusw@kernel.org>,
-        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 16/43] dt-bindings: spi: Add DT bindings ep93xx spi
-Date:   Mon, 24 Apr 2023 15:34:32 +0300
-Message-Id: <20230424123522.18302-17-nikita.shubin@maquefel.me>
-X-Mailer: git-send-email 2.39.2
+        with ESMTP id S229547AbjDXLbx (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 24 Apr 2023 07:31:53 -0400
+Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CD502D70;
+        Mon, 24 Apr 2023 04:31:50 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailout.nyi.internal (Postfix) with ESMTP id C099C5C018B;
+        Mon, 24 Apr 2023 07:31:49 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Mon, 24 Apr 2023 07:31:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm2; t=1682335909; x=1682422309; bh=Y9
+        FYoJaNOjxIXKXj5iVt3HG1MU0gziVJXHg42DuXBOg=; b=O1tJf0aYUL1Asq2G9I
+        v/WenhP5rGZyZB1SAL0Lr08oQeAEEUQrAp0socR3vEd9UgGnvByhJ755hJxV1qKU
+        E9ZSACMVc6ctw5IOj3YSxNtJjppCrcMnuo3EHDjmd3kHM8VJtKdkgvKL4DFoHOqz
+        +W+8IuX2hg35wSKwedvXKJ3PURDaQkrWjJM/7PMwj2nQ3bK1GDbl6lv178HZ/NA8
+        KDsO9MYDBoMlPNBh8aEl4RrLKv4OLsavscqSSR/heANCq8T/WVE0cVUSnj8QfSJQ
+        4u/teN+GVPZosLly+e7aCJHZfWx6MH3m9aFx+6kQZQbTUHFFn+RPDQoPPYxBW1gQ
+        IJSA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm3; t=1682335909; x=1682422309; bh=Y9FYoJaNOjxIX
+        KXj5iVt3HG1MU0gziVJXHg42DuXBOg=; b=iBdH6uvO/L8/zyujyEmeuLQ7lvT2x
+        GYZygrbZo05oxTN/Md/oDE0e8WW8qA02cbgVhsfFcZOI0ds8e+FbCtiiaOJvFiRx
+        +0cW8fxBsOTCzFHhmKeMdRGumvrSujG5VcT8IFLwY3h8/nMbzymQnlGomWQOWzQx
+        /oBTRzPHT38WBG1dSwXH+qEHrQrBjZbDngRgGtk3lDrZjamKW1iCCAmPUjNH4bVF
+        47At9lDjEDsPYhnN2768xyf3oBtpO2z2m/rKqeUCbiN4YmtGLmGGX3q1bMmxrG9I
+        36sN74EogbvFLVEbiiG9I3iKHbm4hY5BQztKKlqVi2e7UnWmYlN05agjA==
+X-ME-Sender: <xms:o2hGZE7zjv519ykLdrbAQGTLb_LGqm8C9gu0iv5LW_l5ijia9biY7A>
+    <xme:o2hGZF7IUwkhhPb4KXqxJ6jrGKB4g1CI7PypRKEHNaKZ-yKjsy2DgJ29sYcy-8ANi
+    L7P0836qypU8DsWz5I>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfedutddggeduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
+    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:o2hGZDccuXBCL3RAIdybA7rao9itrSh_uY8pqy72IR4RYUm3PNP66w>
+    <xmx:o2hGZJLZwUfDzeDL8noN8lkkCw-LNtlf4Vp39AIRXYTSMF4PksJThw>
+    <xmx:o2hGZIKT3iHKm9UvV7uZTvPOYuO2PbPXKewmqiqnd7-usVCISuMq0A>
+    <xmx:pWhGZAVObyMQbbUUBpdedORBxIIpPoWc5gLC07zOHsQjH_IqgL-nMw>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id 2684DB60086; Mon, 24 Apr 2023 07:31:47 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-372-g43825cb665-fm-20230411.003-g43825cb6
+Mime-Version: 1.0
+Message-Id: <8101c53e-e682-4dc3-95cc-a332b1822b8b@app.fastmail.com>
 In-Reply-To: <20230424123522.18302-1-nikita.shubin@maquefel.me>
 References: <20230424123522.18302-1-nikita.shubin@maquefel.me>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+Date:   Mon, 24 Apr 2023 13:31:25 +0200
+From:   "Arnd Bergmann" <arnd@arndb.de>
+To:     "Nikita Shubin" <nikita.shubin@maquefel.me>
+Cc:     "Arnd Bergmann" <arnd@kernel.org>,
+        "Linus Walleij" <linusw@kernel.org>,
+        "Alexander Sverdlin" <alexander.sverdlin@gmail.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        =?UTF-8?Q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+        "Russell King" <rmk+kernel@armlinux.org.uk>,
+        =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+        "Alessandro Zummo" <a.zummo@towertech.it>,
+        "Alexander Gordeev" <agordeev@linux.ibm.com>,
+        "Alexandre Belloni" <alexandre.belloni@bootlin.com>,
+        "Andy Shevchenko" <andriy.shevchenko@linux.intel.com>,
+        "Bartosz Golaszewski" <brgl@bgdev.pl>,
+        "Brian Norris" <briannorris@chromium.org>,
+        "Chuanhong Guo" <gch981213@gmail.com>,
+        "Conor.Dooley" <conor.dooley@microchip.com>,
+        "Damien Le Moal" <dlemoal@kernel.org>,
+        "Daniel Lezcano" <daniel.lezcano@linaro.org>,
+        "Dmitry Torokhov" <dmitry.torokhov@gmail.com>,
+        "Emil Renner Berthing" <kernel@esmil.dk>,
+        "Eric Dumazet" <edumazet@google.com>,
+        "Florian Fainelli" <f.fainelli@gmail.com>,
+        "Guenter Roeck" <linux@roeck-us.net>,
+        "Hartley Sweeten" <hsweeten@visionengravers.com>,
+        =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
+        "Hitomi Hasegawa" <hasegawa-hitomi@fujitsu.com>,
+        "Jakub Kicinski" <kuba@kernel.org>,
+        "Jaroslav Kysela" <perex@perex.cz>,
+        "Jean Delvare" <jdelvare@suse.de>, "Joel Stanley" <joel@jms.id.au>,
+        "Jonathan Cameron" <Jonathan.Cameron@huawei.com>,
+        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
+        "Damien Le Moal" <damien.lemoal@opensource.wdc.com>,
+        "Liam Girdwood" <lgirdwood@gmail.com>,
+        "Liang Yang" <liang.yang@amlogic.com>,
+        "Linus Walleij" <linus.walleij@linaro.org>,
+        "Lukasz Majewski" <lukma@denx.de>, "Lv Ruyi" <lv.ruyi@zte.com.cn>,
+        "Mark Brown" <broonie@kernel.org>,
+        "Masahiro Yamada" <masahiroy@kernel.org>,
+        "Michael Turquette" <mturquette@baylibre.com>,
+        "Miquel Raynal" <miquel.raynal@bootlin.com>,
+        "Nathan Chancellor" <nathan@kernel.org>,
+        "Nick Desaulniers" <ndesaulniers@google.com>,
+        "Nicolas Saenz Julienne" <nsaenz@kernel.org>,
+        "Olof Johansson" <olof@lixom.net>,
+        "Paolo Abeni" <pabeni@redhat.com>,
+        "Qin Jian" <qinjian@cqplus1.com>,
+        "Richard Weinberger" <richard@nod.at>,
+        "Rob Herring" <robh+dt@kernel.org>,
+        "Robert Jarzmik" <robert.jarzmik@free.fr>,
+        "Russell King" <linux@armlinux.org.uk>,
+        "Sebastian Reichel" <sre@kernel.org>,
+        "Sergey Shtylyov" <s.shtylyov@omp.ru>,
+        "Stephen Boyd" <sboyd@kernel.org>,
+        "Sumanth Korikkar" <sumanthk@linux.ibm.com>,
+        "Sven Peter" <sven@svenpeter.dev>, "Takashi Iwai" <tiwai@suse.com>,
+        "Thierry Reding" <thierry.reding@gmail.com>,
+        "Thomas Gleixner" <tglx@linutronix.de>,
+        "Ulf Hansson" <ulf.hansson@linaro.org>,
+        "Vasily Gorbik" <gor@linux.ibm.com>,
+        "Vignesh Raghavendra" <vigneshr@ti.com>,
+        "Vinod Koul" <vkoul@kernel.org>,
+        "Walker Chen" <walker.chen@starfivetech.com>,
+        "Wim Van Sebroeck" <wim@linux-watchdog.org>,
+        "Yinbo Zhu" <zhuyinbo@loongson.cn>, alsa-devel@alsa-project.org,
+        devicetree@vger.kernel.org, dmaengine@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        linux-ide@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-pm@vger.kernel.org, linux-pwm@vger.kernel.org,
+        linux-rtc@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-watchdog@vger.kernel.org, Netdev <netdev@vger.kernel.org>,
+        soc@kernel.org
+Subject: Re: [PATCH 00/43] ep93xx device tree conversion
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Add YAML bindings for ep93xx SoC.
+On Mon, Apr 24, 2023, at 14:34, Nikita Shubin wrote:
+> This series aims to convert ep93xx from platform to full device tree support.
+>
+> Tested on ts7250 64 RAM/128 MiB Nand flash, edb9302.
+>
+> Thank you Linus and Arnd for your support, review and comments, sorry 
+> if i missed something -
+> these series are quite big for me.
+>
+> Big thanks to Alexander Sverdlin for his testing, support, review, 
+> fixes and patches.
 
-Signed-off-by: Nikita Shubin <nikita.shubin@maquefel.me>
----
- .../devicetree/bindings/spi/spi-ep93xx.yaml   | 68 +++++++++++++++++++
- 1 file changed, 68 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-ep93xx.yaml
+Thanks a lot for your continued work. I can't merge any of this at
+the moment since the upstream merge window just opened, but I'm
+happy to take this all through the soc tree for 6.5, provided we
+get the sufficient Acks from the subsystem maintainers. Merging
+it through each individual tree would take a lot longer, so I
+hope we can avoid that.
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-ep93xx.yaml b/Documentation/devicetree/bindings/spi/spi-ep93xx.yaml
-new file mode 100644
-index 000000000000..e09ab50629fb
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-ep93xx.yaml
-@@ -0,0 +1,68 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/spi/spi-ep93xx.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: EP93xx SoC SPI controller
-+
-+maintainers:
-+  - Mark Brown <broonie@kernel.org>
-+
-+allOf:
-+  - $ref: "spi-controller.yaml#"
-+
-+properties:
-+  "#address-cells": true
-+  "#size-cells": true
-+
-+  compatible:
-+    items:
-+      - const: cirrus,ep9301-spi
-+
-+  reg:
-+    items:
-+      - description: SPI registers region
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  clocks:
-+    items:
-+      - description: SPI Controller reference clock source
-+
-+  clock-names:
-+    items:
-+      - const: ep93xx-spi.0
-+
-+  cs-gpios: true
-+
-+  use_dma:
-+    type: boolean
-+    items:
-+      - description: Flag indicating that the SPI should use dma
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+  - clocks
-+  - clock-names
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/clock/cirrus,ep93xx-clock.h>
-+    spi0: spi@808a0000 {
-+        compatible = "cirrus,ep9301-spi";
-+        reg = <0x808a0000 0x18>;
-+        interrupt-parent = <&vic1>;
-+        interrupts = <21>;
-+        clocks = <&syscon EP93XX_CLK_SPI>;
-+        clock-names = "ep93xx-spi.0";
-+        cs-gpios = <&gpio5 2 0>;
-+        use_dma;
-+    };
-+
-+...
--- 
-2.39.2
-
+      Arnd

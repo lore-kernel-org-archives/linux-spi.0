@@ -2,138 +2,90 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C591DC7618E
-	for <linux-spi@archiver.kernel.org>; Mon, 24 Apr 2023 10:21:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7116EC77B61
+	for <linux-spi@archiver.kernel.org>; Mon, 24 Apr 2023 10:28:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231715AbjDXKVA (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 24 Apr 2023 06:21:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44428 "EHLO
+        id S231750AbjDXK23 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 24 Apr 2023 06:28:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231674AbjDXKUr (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 24 Apr 2023 06:20:47 -0400
-X-Greylist: delayed 1524 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 24 Apr 2023 03:20:45 PDT
-Received: from forward501c.mail.yandex.net (forward501c.mail.yandex.net [IPv6:2a02:6b8:c03:500:1:45:d181:d501])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB5531BE6;
-        Mon, 24 Apr 2023 03:20:45 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-39.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-39.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:261e:0:640:2e3d:0])
-        by forward501c.mail.yandex.net (Yandex) with ESMTP id 8F7625EEC6;
-        Mon, 24 Apr 2023 12:35:50 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-39.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id JZBb1pbWwKo0-mhvRtd8a;
-        Mon, 24 Apr 2023 12:35:50 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=maquefel.me; s=mail; t=1682328950;
-        bh=NUogbMI2IRdm13o7ZrbdcTniNyKLaz7Q19OJcE6Bd8w=;
-        h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
-        b=F1Ko+Nx5I9MOqBhET+JwDMTvP1ciKPZwMS/i3lJ3nuDBX45g0geeabrtXz6JsD+c7
-         5hDcd3p1MIQKuO2ivddwBW4cJGYlhgOCmfQDyCKQ6IkzUPNBwu3cuT2Fog3+2guinx
-         sO3yqhL0LAP/7ScFESnxDVHBdGTtL9wTgsl4QsBQ=
-Authentication-Results: mail-nwsmtp-smtp-production-main-39.myt.yp-c.yandex.net; dkim=pass header.i=@maquefel.me
-From:   Nikita Shubin <nikita.shubin@maquefel.me>
-Cc:     Arnd Bergmann <arnd@kernel.org>, Linus Walleij <linusw@kernel.org>,
-        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 17/43] spi: ep93xx: add DT support for Cirrus EP93xx
-Date:   Mon, 24 Apr 2023 15:34:33 +0300
-Message-Id: <20230424123522.18302-18-nikita.shubin@maquefel.me>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230424123522.18302-1-nikita.shubin@maquefel.me>
-References: <20230424123522.18302-1-nikita.shubin@maquefel.me>
+        with ESMTP id S231770AbjDXK2E (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 24 Apr 2023 06:28:04 -0400
+Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B7AC59FF
+        for <linux-spi@vger.kernel.org>; Mon, 24 Apr 2023 03:26:13 -0700 (PDT)
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 33OAPpUM029107;
+        Mon, 24 Apr 2023 05:25:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1682331951;
+        bh=Cb+/JcSw+bD6FbluacUYXpN/XT18TEBmAiwqOoMD4fc=;
+        h=From:To:CC:Subject:Date;
+        b=yMHBekZrpGO9yf+meAvJw8M+QL1GjBqVihJjHJEMN0glkj9MsLgwQziHgCX4etByP
+         zLH4FHPLRn6ixOLYY+xSVI4Mkkgi8Mp3kDcd/aUjDMc18nAYMevbeSd7fR2LjWK+6m
+         v+cTaW7cqpW0d29MwObufR7eyU2tioOlF+tAHxZg=
+Received: from DFLE101.ent.ti.com (dfle101.ent.ti.com [10.64.6.22])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 33OAPpBG008649
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 24 Apr 2023 05:25:51 -0500
+Received: from DFLE100.ent.ti.com (10.64.6.21) by DFLE101.ent.ti.com
+ (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16; Mon, 24
+ Apr 2023 05:25:51 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16 via
+ Frontend Transport; Mon, 24 Apr 2023 05:25:51 -0500
+Received: from localhost (ileaxei01-snat2.itg.ti.com [10.180.69.6])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 33OAPov9071282;
+        Mon, 24 Apr 2023 05:25:50 -0500
+From:   Dhruva Gole <d-gole@ti.com>
+To:     Mark Brown <broonie@kernel.org>
+CC:     Dhruva Gole <d-gole@ti.com>, Jonas Gorski <jonas.gorski@gmail.com>,
+        <linux-spi@vger.kernel.org>
+Subject: [PATCH] spi: bcm63xx: use macro DEFINE_SIMPLE_DEV_PM_OPS
+Date:   Mon, 24 Apr 2023 15:55:46 +0530
+Message-ID: <20230424102546.1604484-1-d-gole@ti.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-- find register range from the device tree
-- provide clock access via of
-- use_dma as a DT node
+Using this macro makes the code more readable.
+It also inits the members of dev_pm_ops in the following manner
+without us explicitly needing to:
 
-Signed-off-by: Nikita Shubin <nikita.shubin@maquefel.me>
+.suspend = bcm63xx_spi_suspend, \
+.resume = bcm63xx_spi_resume, \
+.freeze = bcm63xx_spi_suspend, \
+.thaw = bcm63xx_spi_resume, \
+.poweroff = bcm63xx_spi_suspend, \
+.restore = bcm63xx_spi_resume
+
+Signed-off-by: Dhruva Gole <d-gole@ti.com>
 ---
+ drivers/spi/spi-bcm63xx.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-Notes:
-    Arnd Bergmann:
-    - wildcards ep93xx to something meaningful, i.e. ep9301
-    - drop wrappers
-
- drivers/spi/spi-ep93xx.c | 31 ++++++++++++++++++++++++++++++-
- 1 file changed, 30 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
-index 5896a7b2fade..b37be7109161 100644
---- a/drivers/spi/spi-ep93xx.c
-+++ b/drivers/spi/spi-ep93xx.c
-@@ -22,6 +22,7 @@
- #include <linux/bitops.h>
- #include <linux/interrupt.h>
- #include <linux/module.h>
-+#include <linux/of.h>
- #include <linux/platform_device.h>
- #include <linux/sched.h>
- #include <linux/scatterlist.h>
-@@ -644,6 +645,25 @@ static void ep93xx_spi_release_dma(struct ep93xx_spi *espi)
- 		free_page((unsigned long)espi->zeropage);
- }
- 
-+#ifdef CONFIG_OF
-+static struct ep93xx_spi_info dt_spi_info;
-+
-+static struct ep93xx_spi_info *ep93xx_spi_get_platdata(struct platform_device *pdev)
-+{
-+	struct device_node *np = pdev->dev.of_node;
-+
-+	if (np && of_property_read_bool(np, "use_dma"))
-+		dt_spi_info.use_dma = 1;
-+
-+	return &dt_spi_info;
-+}
-+#else
-+static struct ep93xx_spi_info *ep93xx_spi_get_platdata(struct platform_device *pdev)
-+{
-+	return dev_get_platdata(&pdev->dev);
-+}
-+#endif
-+
- static int ep93xx_spi_probe(struct platform_device *pdev)
- {
- 	struct spi_master *master;
-@@ -653,7 +673,7 @@ static int ep93xx_spi_probe(struct platform_device *pdev)
- 	int irq;
- 	int error;
- 
--	info = dev_get_platdata(&pdev->dev);
-+	info = ep93xx_spi_get_platdata(pdev);
- 	if (!info) {
- 		dev_err(&pdev->dev, "missing platform data\n");
- 		return -EINVAL;
-@@ -726,6 +746,8 @@ static int ep93xx_spi_probe(struct platform_device *pdev)
- 	/* make sure that the hardware is disabled */
- 	writel(0, espi->mmio + SSPCR1);
- 
-+	master->dev.of_node = pdev->dev.of_node;
-+
- 	error = devm_spi_register_master(&pdev->dev, master);
- 	if (error) {
- 		dev_err(&pdev->dev, "failed to register SPI master\n");
-@@ -755,9 +777,16 @@ static int ep93xx_spi_remove(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+index 99395932074c..9aecb77c3d89 100644
+--- a/drivers/spi/spi-bcm63xx.c
++++ b/drivers/spi/spi-bcm63xx.c
+@@ -644,9 +644,7 @@ static int bcm63xx_spi_resume(struct device *dev)
  	return 0;
  }
  
-+static const struct of_device_id ep93xx_spi_of_ids[] = {
-+	{ .compatible = "cirrus,ep9301-spi" },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, ep93xx_spi_of_ids);
-+
- static struct platform_driver ep93xx_spi_driver = {
- 	.driver		= {
- 		.name	= "ep93xx-spi",
-+		.of_match_table = ep93xx_spi_of_ids,
- 	},
- 	.probe		= ep93xx_spi_probe,
- 	.remove		= ep93xx_spi_remove,
+-static const struct dev_pm_ops bcm63xx_spi_pm_ops = {
+-	SET_SYSTEM_SLEEP_PM_OPS(bcm63xx_spi_suspend, bcm63xx_spi_resume)
+-};
++static DEFINE_SIMPLE_DEV_PM_OPS(bcm63xx_spi_pm_ops, bcm63xx_spi_suspend, bcm63xx_spi_resume);
+ 
+ static struct platform_driver bcm63xx_spi_driver = {
+ 	.driver = {
 -- 
-2.39.2
+2.25.1
 

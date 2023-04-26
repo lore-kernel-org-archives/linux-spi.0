@@ -2,57 +2,61 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0DAABC77B78
-	for <linux-spi@archiver.kernel.org>; Wed, 26 Apr 2023 07:56:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A5B32C7618E
+	for <linux-spi@archiver.kernel.org>; Wed, 26 Apr 2023 07:57:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239809AbjDZH46 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 26 Apr 2023 03:56:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54822 "EHLO
+        id S239771AbjDZH5I (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 26 Apr 2023 03:57:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239924AbjDZH45 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 26 Apr 2023 03:56:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D4503598
-        for <linux-spi@vger.kernel.org>; Wed, 26 Apr 2023 00:56:51 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EC75A62B0F
-        for <linux-spi@vger.kernel.org>; Wed, 26 Apr 2023 07:56:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5DAFBC433D2;
-        Wed, 26 Apr 2023 07:56:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682495810;
-        bh=9h7g8+n2n/SyJxBmDkNKCDrSn+ouy+3eDINhG9yS+eU=;
-        h=Subject:From:Date:To:From;
-        b=NuRJr22pIM1pYYOqEDhf5MQiErTPWNGMVUlgcAeUFfi5l6mqNLk9OAHbOSCTqjSB3
-         /gs1vwN5VDL9P1KvBugpwS9P7lcJ7pOEvMgkkrmDhsaQMxElvhzkKzx9ihNvStn7UX
-         9BDf3DCQTrIuTXajJzLRCL3AukL7PyGwCkuOM+KiL3shv4+7EfpGQq/MNfvtGiD1Li
-         +QoBion3T2iFa1HM9MVmzPHygGYXhf67OJf+StlodfV2s/RefSWCpKihyNDxfYryJk
-         qz9OnBHnthI3XbjotGd6veMyKpZM+s7aIJMGVdwAarkphnsEz6V74ySHRwgE3eldYS
-         9iBDIiQQkNpOA==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 465B5E5FFC6;
-        Wed, 26 Apr 2023 07:56:50 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S239896AbjDZH5H (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 26 Apr 2023 03:57:07 -0400
+Received: from mail.feshiecree.pl (mail.feshiecree.pl [89.40.114.103])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 540EC3598
+        for <linux-spi@vger.kernel.org>; Wed, 26 Apr 2023 00:57:06 -0700 (PDT)
+Received: by mail.feshiecree.pl (Postfix, from userid 1001)
+        id 09A5288217; Wed, 26 Apr 2023 08:56:00 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=feshiecree.pl;
+        s=mail; t=1682495787;
+        bh=hFxZwVw4rIL+JwfEOGI47p+fdoVOAeqVswP6NWoHSHQ=;
+        h=Date:From:To:Subject:From;
+        b=o59G9LBssZz8XiadGNUZKLZy4BE0RTnQIh+vFzGsipUoDfq8LlayTqMcRYCRuVL5w
+         U1rC8OSiGjNYqMW5O5wMcfGS04/AMCYaf0J3GGaCt5gkbZkfVKS7QGHBtzR0P6P29Q
+         N/qXDOzRIE02EV/ZSYaHzxitG0JAl8watzZ82EmtD345MsxocpVRJ6I1pCKSUUkm8o
+         0PPoxM499dtFQd5Dxv8tLUVq5xLtoNR1Zo4NEdHEe8EcfIbDHrXPrb/z7+MfrlN3Go
+         cxce77IrQZmHHXjlk4FhDM3tj9v4LxC78Jasg+jDmSjUMfsQrCppDaqU8665lI11hz
+         ltgtyVJMmMuag==
+Received: by mail.feshiecree.pl for <linux-spi@vger.kernel.org>; Wed, 26 Apr 2023 07:55:10 GMT
+Message-ID: <20230426074501-0.1.29.faxt.0.sbbeqrkq5y@feshiecree.pl>
+Date:   Wed, 26 Apr 2023 07:55:10 GMT
+From:   "Krystian Wieczorek" <krystian.wieczorek@feshiecree.pl>
+To:     <linux-spi@vger.kernel.org>
+Subject: W sprawie samochodu
+X-Mailer: mail.feshiecree.pl
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From:   patchwork-bot+spi-devel-general@kernel.org
-Message-Id: <168249581028.26081.6607962971851553952.git-patchwork-housekeeping@kernel.org>
-Date:   Wed, 26 Apr 2023 07:56:50 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Latest series: [v9] spi: loongson: add bus driver for the loongson spi (2023-04-26T07:10:45)
-  Superseding: [v8] spi: loongson: add bus driver for the loongson spi (2023-04-19T06:22:01):
-    [v8,1/2] dt-bindings: spi: add loongson spi
-    [v8,2/2] spi: loongson: add bus driver for the loongson spi controller
+Dzie=C5=84 dobry,
+
+chcieliby=C5=9Bmy zapewni=C4=87 Pa=C5=84stwu kompleksowe rozwi=C4=85zania=
+, je=C5=9Bli chodzi o system monitoringu GPS.
+
+Precyzyjne monitorowanie pojazd=C3=B3w na mapach cyfrowych, =C5=9Bledzeni=
+e ich parametr=C3=B3w eksploatacyjnych w czasie rzeczywistym oraz kontrol=
+a paliwa to kluczowe funkcjonalno=C5=9Bci naszego systemu.=20
+
+Organizowanie pracy pracownik=C3=B3w jest dzi=C4=99ki temu prostsze i bar=
+dziej efektywne, a oszcz=C4=99dno=C5=9Bci i optymalizacja w zakresie pono=
+szonych koszt=C3=B3w, maj=C4=85 dla ka=C5=BCdego przedsi=C4=99biorcy ogro=
+mne znaczenie.
+
+Dopasujemy nasz=C4=85 ofert=C4=99 do Pa=C5=84stwa oczekiwa=C5=84 i potrze=
+b organizacji. Czy mogliby=C5=9Bmy porozmawia=C4=87 o naszej propozycji?
 
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Pozdrawiam
+Krystian Wieczorek

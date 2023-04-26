@@ -2,140 +2,103 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 435E4C77B78
-	for <linux-spi@archiver.kernel.org>; Wed, 26 Apr 2023 07:19:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3E0B0C7618E
+	for <linux-spi@archiver.kernel.org>; Wed, 26 Apr 2023 07:20:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240048AbjDZHTN (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 26 Apr 2023 03:19:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57958 "EHLO
+        id S239965AbjDZHUP (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 26 Apr 2023 03:20:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240050AbjDZHSx (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 26 Apr 2023 03:18:53 -0400
-Received: from loongson.cn (mail.loongson.cn [114.242.206.163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id DBD4F30E1;
-        Wed, 26 Apr 2023 00:18:15 -0700 (PDT)
-Received: from loongson.cn (unknown [10.20.42.35])
-        by gateway (Coremail) with SMTP id _____8DxZPCEzkhkROwAAA--.1641S3;
-        Wed, 26 Apr 2023 15:11:00 +0800 (CST)
-Received: from user-pc.202.106.0.20 (unknown [10.20.42.35])
-        by localhost.localdomain (Coremail) with SMTP id AQAAf8BxWbJ3zkhkd2M8AA--.16320S3;
-        Wed, 26 Apr 2023 15:10:59 +0800 (CST)
-From:   Yinbo Zhu <zhuyinbo@loongson.cn>
-To:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Jianmin Lv <lvjianmin@loongson.cn>, wanghongliang@loongson.cn,
-        Liu Peibao <liupeibao@loongson.cn>,
-        loongson-kernel@lists.loongnix.cn,
-        Yinbo Zhu <zhuyinbo@loongson.cn>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH v9 1/2] dt-bindings: spi: add loongson spi
-Date:   Wed, 26 Apr 2023 15:10:44 +0800
-Message-Id: <20230426071045.20753-2-zhuyinbo@loongson.cn>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20230426071045.20753-1-zhuyinbo@loongson.cn>
-References: <20230426071045.20753-1-zhuyinbo@loongson.cn>
+        with ESMTP id S239763AbjDZHUM (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 26 Apr 2023 03:20:12 -0400
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A9584495
+        for <linux-spi@vger.kernel.org>; Wed, 26 Apr 2023 00:19:37 -0700 (PDT)
+Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-94a342f7c4cso1240542066b.0
+        for <linux-spi@vger.kernel.org>; Wed, 26 Apr 2023 00:19:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rasmusvillemoes.dk; s=google; t=1682493571; x=1685085571;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=AliyzMG7uX1K8DdktVWAS4ms6p/n8xzZ41dyvI1w1Gg=;
+        b=WQj18P7N7/NjxvIrFAlFz2NSMyxiSKL2w+5Au2OAGGYs5hp85t92aNk8J9FgQzrCHA
+         mKE/QnIyEp5qlwGivavj9volTnAUmS+BtnGY6TD5FbJMgTKCCdQPHvl29OsG4iemlxYx
+         LvdVVSWi5SiS0+n3qkp9l3TXWnWo4LSDQ2fW4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682493571; x=1685085571;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=AliyzMG7uX1K8DdktVWAS4ms6p/n8xzZ41dyvI1w1Gg=;
+        b=LHjLT4cjpuEtj8ibYxvBy4xPp2DgyhXzqdQg0P1wi1c1B8oiCWR7ge/AcrbFaMFKim
+         A7RQPJiFcgqpk+9w8zpOUuZ5AofHbYApgDtkHVBdhv2GGozQjYZwWdpBpWWL6vz+tGoe
+         8QddMDuBzjFno0LRUEGH51hsPmTDSE3uj9i8tA53mB/jLMAcg4iYwELZBe/ZkEW08jCH
+         4+h0db1DqHJPklVgUVlVENmdge5/RHTjWLUwGE/Oh8AhAQKLZRrXmIlGFnq6mZfwR04z
+         jBgMbKpnjLRtsZMNdt9CiFj7fsGC1/PpU92/VRk7fPXNHk8DINe9Wp8Gm+5X+vG7I7eV
+         nqxw==
+X-Gm-Message-State: AAQBX9cDx/6z3ORRQBBTLtXid9EC8/qOReGu4R3URF43rN8izjsty7bg
+        jcdU586OqUHBvETsPrU9BqG5Bw==
+X-Google-Smtp-Source: AKy350axTsWxmLXczY1iG9nRIOTfr9oK5am+DCYWJT070/QHMp9uc514OPQus0ywr5pdvaDeSkD5lw==
+X-Received: by 2002:a17:906:dce:b0:94f:4a87:7a77 with SMTP id p14-20020a1709060dce00b0094f4a877a77mr16535586eji.36.1682493571610;
+        Wed, 26 Apr 2023 00:19:31 -0700 (PDT)
+Received: from [172.16.11.116] ([81.216.59.226])
+        by smtp.gmail.com with ESMTPSA id gn2-20020a1709070d0200b009545230e682sm7562305ejc.91.2023.04.26.00.19.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 26 Apr 2023 00:19:31 -0700 (PDT)
+Message-ID: <706c591f-4800-1b96-52c0-37b5f6de7623@rasmusvillemoes.dk>
+Date:   Wed, 26 Apr 2023 09:19:29 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8BxWbJ3zkhkd2M8AA--.16320S3
-X-CM-SenderInfo: 52kx5xhqerqz5rrqw2lrqou0/
-X-Coremail-Antispam: 1Uk129KBjvJXoW7Cr43Aw47Zw17Gw45ZF1xGrg_yoW8uFy7p3
-        ZrCrn7GF4IvF17Aws3Ka48Cw1rZr93C3W7XFW2yr1jkF9Yg3WYv3W3Kr1DZanrGF1xXFW7
-        ZF97Kr4UKa18Jr7anT9S1TB71UUUUUJqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
-        qI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUIcSsGvfJTRUUU
-        bfkFc2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AKwVWUXVWUAwA2ocxC64
-        kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28E
-        F7xvwVC0I7IYx2IY6xkF7I0E14v26r4j6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJw
-        A2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJwAaw2AFwI0_Jrv_JF1le2I262IYc4CY
-        6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4xG64xvF2IEw4CE5I8CrV
-        C2j2WlYx0E2Ix0cI8IcVAFwI0_JF0_Jw1lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE
-        7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x
-        0EwIxGrwCF04k20xvE74AGY7Cv6cx26rWl4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xF
-        xVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWw
-        C2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_
-        Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJV
-        WUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIY
-        CTnIWIevJa73UjIFyTuYvjxUciSdDUUUU
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH 0/3] spi: spi-imx: fix use of more than four chip selects
+Content-Language: en-US, da
+To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Mark Brown <broonie@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Cc:     Marc Kleine-Budde <mkl@pengutronix.de>,
+        Kevin Groeneveld <kgroeneveld@lenbrook.com>
+References: <20230425134527.483607-1-linux@rasmusvillemoes.dk>
+From:   Rasmus Villemoes <linux@rasmusvillemoes.dk>
+In-Reply-To: <20230425134527.483607-1-linux@rasmusvillemoes.dk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Add the Loongson platform spi binding with DT schema format using
-json-schema.
+On 25/04/2023 15.45, Rasmus Villemoes wrote:
+> The current spi-imx driver completely fails when used with more than
+> four (gpio) chip-selects, since the chip select number is used
+> unconditionally as shift amount when updating the control and
+> configuration registers, so the code ends up modifying random bits
+> outside the intended fields.
+> 
+> This fixes it by making use of the unused_native_cs variable filled in
+> by the spi core, and use that as the "channel number" for all gpiod
+> chip selects.
 
-Signed-off-by: Yinbo Zhu <zhuyinbo@loongson.cn>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
----
- .../bindings/spi/loongson,ls2k-spi.yaml       | 41 +++++++++++++++++++
- MAINTAINERS                                   |  6 +++
- 2 files changed, 47 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/loongson,ls2k-spi.yaml
+So I obviously hadn't seen
+https://lore.kernel.org/lkml/20230318222132.3373-1-kgroeneveld@lenbrook.com/T/#u
+when I sent this.
 
-diff --git a/Documentation/devicetree/bindings/spi/loongson,ls2k-spi.yaml b/Documentation/devicetree/bindings/spi/loongson,ls2k-spi.yaml
-new file mode 100644
-index 000000000000..d0be6e5378d7
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/loongson,ls2k-spi.yaml
-@@ -0,0 +1,41 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/spi/loongson,ls2k-spi.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Loongson SPI controller
-+
-+maintainers:
-+  - Yinbo Zhu <zhuyinbo@loongson.cn>
-+
-+allOf:
-+  - $ref: /schemas/spi/spi-controller.yaml#
-+
-+properties:
-+  compatible:
-+    enum:
-+      - loongson,ls2k-spi
-+
-+  reg:
-+    maxItems: 1
-+
-+  clocks:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    spi0: spi@1fff0220{
-+        compatible = "loongson,ls2k-spi";
-+        reg = <0x1fff0220 0x10>;
-+        clocks = <&clk 17>;
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+    };
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 25a0981c74b6..0dcf4cfbe178 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -12157,6 +12157,12 @@ S:	Maintained
- F:	Documentation/devicetree/bindings/clock/loongson,ls2k-clk.yaml
- F:	include/dt-bindings/clock/loongson,ls2k-clk.h
- 
-+LOONGSON SPI DRIVER
-+M:	Yinbo Zhu <zhuyinbo@loongson.cn>
-+L:	linux-spi@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/spi/loongson,ls2k-spi.yaml
-+
- LSILOGIC MPT FUSION DRIVERS (FC/SAS/SPI)
- M:	Sathya Prakash <sathya.prakash@broadcom.com>
- M:	Sreekanth Reddy <sreekanth.reddy@broadcom.com>
--- 
-2.20.1
+I did consider that approach, but rejected it because it wouldn't work
+with mixing native and gpio chip selects. Say, somebody uses SS0
+natively, but then also have four additional gpios. Then chipselect 4
+would end up activating both the SS0 pin as well as the gpio, selecting
+both devices.
+
+I don't know if that's really a realistic scenario. But at least I think
+the driver should then somehow have a way to indicate to the core that
+one should either use native or gpio chip selects, but not a mix.
+
+Thoughts?
+
+Rasmus
 

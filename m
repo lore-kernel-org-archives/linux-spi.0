@@ -2,44 +2,44 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E3C9AC77B60
-	for <linux-spi@archiver.kernel.org>; Fri, 28 Apr 2023 12:17:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 42339C77B60
+	for <linux-spi@archiver.kernel.org>; Fri, 28 Apr 2023 12:17:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345869AbjD1MRs (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 28 Apr 2023 08:17:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56708 "EHLO
+        id S1345978AbjD1MR5 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 28 Apr 2023 08:17:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345902AbjD1MRr (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 28 Apr 2023 08:17:47 -0400
-Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC28D559D;
-        Fri, 28 Apr 2023 05:17:27 -0700 (PDT)
-Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33S8gCrY027372;
-        Fri, 28 Apr 2023 14:17:16 +0200
+        with ESMTP id S1345984AbjD1MRz (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 28 Apr 2023 08:17:55 -0400
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53D5E26BE;
+        Fri, 28 Apr 2023 05:17:34 -0700 (PDT)
+Received: from pps.filterd (m0288072.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33SBAUGu025079;
+        Fri, 28 Apr 2023 14:17:17 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding : content-type; s=selector1;
- bh=NOFrlQ5Me3hzStdXEAgB1aazavyz618BJAIRDuOKyNE=;
- b=UqWr6RwnXmY12/VqYBYNK8xT1l0cVD86gQsRGfC9CijthHhlvqtsAh/EIzrMfxjYDawe
- 4WcEJnhKEFNM7HEeUxgZGQeazMbzyuauhEOxaOA4UV3Q6+pfAwO88974Zv2YdcuHfQth
- aCGF7rfGWm6tpxCC+zSL8dIooMTzyRCKVYpwRClxPuyEZwA/HP/kSFEf8aX7XZLL/Dl4
- cIkyNxzbQYQW8N1IgeAWx1uc4Di3H95T2I3NoBqWwJKGK1+Y1UISx00wIRhrWK2lr3tm
- /scNqgvYCP9q6xTjltxXnXkA7wDh8UIDT8AbapNFmWczTEGifrlqgz18sIi7ormD4n1/ /g== 
+ bh=BUhV9MaeZLuBC+HDtvlz4ndLWeEyEoqV+IK2po+lKQE=;
+ b=eb47z588iLjb22zKpMGE6cKY8QjtqfnEvflIYzDjogWq0RLuMQg7sLMh6U8Q2kAoP8or
+ UP+WTfalnc//fhRcd3tUdP4SLhlVWccTi2iQUKJiAzV5BXAZZTktrLMMKcKngOlRoUHG
+ tiyfJc6BDAZCk66HuilnDF2fUJG/XZE2k8vKRexQxi6J2qKxZ1wcp1WlOdNXGeN6t9h0
+ DdtGu6F98fjWuMHOCbxFTlayphfq+jwa/zz6OQGp6S2puNmkWd3TGlunIumoOUCLRr6b
+ gCOMQIyfrNBZQ8uLL4912nMU+vWciqOdBXl55T/Q+3wRdLeg1xPOYx/fawT0dmoq9xZs Kw== 
 Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3q87qfu0y1-1
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3q8a80suva-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 28 Apr 2023 14:17:16 +0200
+        Fri, 28 Apr 2023 14:17:17 +0200
 Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 5C7B310002A;
-        Fri, 28 Apr 2023 14:17:15 +0200 (CEST)
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 9052910002A;
+        Fri, 28 Apr 2023 14:17:16 +0200 (CEST)
 Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 4D5D2227EF5;
-        Fri, 28 Apr 2023 14:17:15 +0200 (CEST)
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 878C6227EF6;
+        Fri, 28 Apr 2023 14:17:16 +0200 (CEST)
 Received: from localhost (10.201.20.168) by SHFDAG1NODE1.st.com (10.75.129.69)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21; Fri, 28 Apr
- 2023 14:17:15 +0200
+ 2023 14:17:16 +0200
 From:   Valentin Caron <valentin.caron@foss.st.com>
 To:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
@@ -50,9 +50,9 @@ CC:     <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-kernel@vger.kernel.org>,
         Valentin Caron <valentin.caron@foss.st.com>
-Subject: [PATCH 5/7] spi: stm32: introduction of stm32h7 SPI slave support
-Date:   Fri, 28 Apr 2023 14:15:22 +0200
-Message-ID: <20230428121524.2125832-6-valentin.caron@foss.st.com>
+Subject: [PATCH 7/7] spi: stm32: add support for stm32h7 SPI slave underrun detection
+Date:   Fri, 28 Apr 2023 14:15:24 +0200
+Message-ID: <20230428121524.2125832-8-valentin.caron@foss.st.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230428121524.2125832-1-valentin.caron@foss.st.com>
 References: <20230428121524.2125832-1-valentin.caron@foss.st.com>
@@ -69,301 +69,250 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Add support for stm32h7 to use SPI controller in slave role.
-In such case, the spi instance should have the spi-slave property
-defined.
+If stm32h7 SPI controller is in slave role and TX FIFO is abnormally empty
+during transaction, controller is able to automatically send either a
+pattern, the last transmitted data, or the last received data.
 
-Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
 Signed-off-by: Valentin Caron <valentin.caron@foss.st.com>
 ---
- drivers/spi/Kconfig     |   1 +
- drivers/spi/spi-stm32.c | 112 ++++++++++++++++++++++++++++------------
- 2 files changed, 79 insertions(+), 34 deletions(-)
+ drivers/spi/spi-stm32.c | 112 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 112 insertions(+)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 3de2ebe8294a..14810d24733b 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -936,6 +936,7 @@ config SPI_SPRD_ADI
- config SPI_STM32
- 	tristate "STMicroelectronics STM32 SPI controller"
- 	depends on ARCH_STM32 || COMPILE_TEST
-+	select SPI_SLAVE
- 	help
- 	  SPI driver for STMicroelectronics STM32 SoCs.
- 
 diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index 82fbd20e8a96..2db6f93654d7 100644
+index 2db6f93654d7..0063c2f69265 100644
 --- a/drivers/spi/spi-stm32.c
 +++ b/drivers/spi/spi-stm32.c
-@@ -117,6 +117,7 @@
- #define STM32H7_SPI_CFG2_CPHA		BIT(24)
- #define STM32H7_SPI_CFG2_CPOL		BIT(25)
- #define STM32H7_SPI_CFG2_SSM		BIT(26)
-+#define STM32H7_SPI_CFG2_SSIOP		BIT(28)
- #define STM32H7_SPI_CFG2_AFCNTR		BIT(31)
+@@ -18,6 +18,7 @@
+ #include <linux/pm_runtime.h>
+ #include <linux/reset.h>
+ #include <linux/spi/spi.h>
++#include <dt-bindings/spi/spi-stm32.h>
  
- /* STM32H7_SPI_IER bit fields */
-@@ -170,6 +171,10 @@
+ #define DRIVER_NAME "spi_stm32"
+ 
+@@ -84,6 +85,7 @@
+ #define STM32H7_SPI_IFCR		0x18
+ #define STM32H7_SPI_TXDR		0x20
+ #define STM32H7_SPI_RXDR		0x30
++#define STM32H7_SPI_UDRDR		0x4C
+ #define STM32H7_SPI_I2SCFGR		0x50
+ 
+ /* STM32H7_SPI_CR1 bit fields */
+@@ -101,6 +103,14 @@
+ /* STM32H7_SPI_CFG1 bit fields */
+ #define STM32H7_SPI_CFG1_DSIZE		GENMASK(4, 0)
+ #define STM32H7_SPI_CFG1_FTHLV		GENMASK(8, 5)
++#define STM32H7_SPI_CFG1_UDRDET		GENMASK(12, 11)
++#define STM32H7_SPI_CFG1_UDRDET_BEGIN	0
++#define STM32H7_SPI_CFG1_UDRDET_LAST	1
++#define STM32H7_SPI_CFG1_UDRDET_SS	2
++#define STM32H7_SPI_CFG1_UDRCFG		GENMASK(10, 9)
++#define STM32H7_SPI_CFG1_UDRCFG_PTRN	0
++#define STM32H7_SPI_CFG1_UDRCFG_LAST_R	1
++#define STM32H7_SPI_CFG1_UDRCFG_LAST_T	2
+ #define STM32H7_SPI_CFG1_RXDMAEN	BIT(14)
+ #define STM32H7_SPI_CFG1_TXDMAEN	BIT(15)
+ #define STM32H7_SPI_CFG1_MBR		GENMASK(30, 28)
+@@ -126,6 +136,7 @@
+ #define STM32H7_SPI_IER_DXPIE		BIT(2)
+ #define STM32H7_SPI_IER_EOTIE		BIT(3)
+ #define STM32H7_SPI_IER_TXTFIE		BIT(4)
++#define STM32H7_SPI_IER_UDRIE		BIT(5)
+ #define STM32H7_SPI_IER_OVRIE		BIT(6)
+ #define STM32H7_SPI_IER_MODFIE		BIT(9)
+ #define STM32H7_SPI_IER_ALL		GENMASK(10, 0)
+@@ -134,6 +145,7 @@
+ #define STM32H7_SPI_SR_RXP		BIT(0)
+ #define STM32H7_SPI_SR_TXP		BIT(1)
+ #define STM32H7_SPI_SR_EOT		BIT(3)
++#define STM32H7_SPI_SR_UDR		BIT(5)
+ #define STM32H7_SPI_SR_OVR		BIT(6)
+ #define STM32H7_SPI_SR_MODF		BIT(9)
+ #define STM32H7_SPI_SR_SUSP		BIT(11)
+@@ -239,6 +251,8 @@ struct stm32_spi;
+  * @baud_rate_div_max: maximum baud rate divisor
+  * @has_fifo: boolean to know if fifo is used for driver
+  * @flags: compatible specific SPI controller flags used at registration time
++ * @set_slave_udr: routine to configure registers to desired slave underrun
++ * behavior (if driver has this functionality)
   */
- #define SPI_DMA_MIN_BYTES	16
+ struct stm32_spi_cfg {
+ 	const struct stm32_spi_regspec *regs;
+@@ -260,6 +274,7 @@ struct stm32_spi_cfg {
+ 	unsigned int baud_rate_div_max;
+ 	bool has_fifo;
+ 	u16 flags;
++	void (*set_slave_udr)(struct stm32_spi *spi);
+ };
  
-+/* STM32 SPI driver helpers */
-+#define STM32_SPI_MASTER_MODE(stm32_spi) (!(stm32_spi)->slave_mode)
-+#define STM32_SPI_SLAVE_MODE(stm32_spi) ((stm32_spi)->slave_mode)
-+
  /**
-  * struct stm32_spi_reg - stm32 SPI register & bitfield desc
-  * @reg:		register offset
-@@ -190,6 +195,7 @@ struct stm32_spi_reg {
-  * @cpol: clock polarity register and polarity bit
-  * @cpha: clock phase register and phase bit
-  * @lsb_first: LSB transmitted first register and bit
-+ * @cs_high: chips select active value
-  * @br: baud rate register and bitfields
-  * @rx: SPI RX data register
-  * @tx: SPI TX data register
-@@ -201,6 +207,7 @@ struct stm32_spi_regspec {
- 	const struct stm32_spi_reg cpol;
- 	const struct stm32_spi_reg cpha;
- 	const struct stm32_spi_reg lsb_first;
-+	const struct stm32_spi_reg cs_high;
- 	const struct stm32_spi_reg br;
- 	const struct stm32_spi_reg rx;
- 	const struct stm32_spi_reg tx;
-@@ -280,6 +287,7 @@ struct stm32_spi_cfg {
-  * @dma_tx: dma channel for TX transfer
+@@ -288,6 +303,8 @@ struct stm32_spi_cfg {
   * @dma_rx: dma channel for RX transfer
   * @phys_addr: SPI registers physical base address
-+ * @slave_mode: the controller is configured as SPI slave
+  * @slave_mode: the controller is configured as SPI slave
++ * @slave_udr_mode: slave underrun behavior
++ * @slave_udr_pattern: slave underrun pattern parameter
   */
  struct stm32_spi {
  	struct device *dev;
-@@ -307,6 +315,8 @@ struct stm32_spi {
- 	struct dma_chan *dma_tx;
- 	struct dma_chan *dma_rx;
+@@ -317,6 +334,8 @@ struct stm32_spi {
  	dma_addr_t phys_addr;
-+
-+	bool slave_mode;
+ 
+ 	bool slave_mode;
++	u32 slave_udr_mode;
++	u32 slave_udr_pattern;
  };
  
  static const struct stm32_spi_regspec stm32f4_spi_regspec = {
-@@ -318,6 +328,7 @@ static const struct stm32_spi_regspec stm32f4_spi_regspec = {
- 	.cpol = { STM32F4_SPI_CR1, STM32F4_SPI_CR1_CPOL },
- 	.cpha = { STM32F4_SPI_CR1, STM32F4_SPI_CR1_CPHA },
- 	.lsb_first = { STM32F4_SPI_CR1, STM32F4_SPI_CR1_LSBFRST },
-+	.cs_high = {},
- 	.br = { STM32F4_SPI_CR1, STM32F4_SPI_CR1_BR, STM32F4_SPI_CR1_BR_SHIFT },
+@@ -921,6 +940,14 @@ static irqreturn_t stm32h7_spi_irq_thread(int irq, void *dev_id)
+ 		end = true;
+ 	}
  
- 	.rx = { STM32F4_SPI_DR },
-@@ -336,6 +347,7 @@ static const struct stm32_spi_regspec stm32h7_spi_regspec = {
- 	.cpol = { STM32H7_SPI_CFG2, STM32H7_SPI_CFG2_CPOL },
- 	.cpha = { STM32H7_SPI_CFG2, STM32H7_SPI_CFG2_CPHA },
- 	.lsb_first = { STM32H7_SPI_CFG2, STM32H7_SPI_CFG2_LSBFRST },
-+	.cs_high = { STM32H7_SPI_CFG2, STM32H7_SPI_CFG2_SSIOP },
- 	.br = { STM32H7_SPI_CFG1, STM32H7_SPI_CFG1_MBR,
- 		STM32H7_SPI_CFG1_MBR_SHIFT },
- 
-@@ -971,6 +983,11 @@ static int stm32_spi_prepare_msg(struct spi_controller *ctrl,
- 	else
- 		clrb |= spi->cfg->regs->lsb_first.mask;
- 
-+	if (STM32_SPI_SLAVE_MODE(spi) && spi_dev->mode & SPI_CS_HIGH)
-+		setb |= spi->cfg->regs->cs_high.mask;
-+	else
-+		clrb |= spi->cfg->regs->cs_high.mask;
++	if (sr & STM32H7_SPI_SR_UDR) {
++		static DEFINE_RATELIMIT_STATE(rs,
++					      DEFAULT_RATELIMIT_INTERVAL * 10,
++					      1);
++		if (__ratelimit(&rs))
++			dev_dbg_ratelimited(spi->dev, "Underrun detected\n");
++	}
 +
- 	dev_dbg(spi->dev, "cpol=%d cpha=%d lsb_first=%d cs_high=%d\n",
- 		!!(spi_dev->mode & SPI_CPOL),
- 		!!(spi_dev->mode & SPI_CPHA),
-@@ -1161,7 +1178,8 @@ static int stm32h7_spi_transfer_one_irq(struct stm32_spi *spi)
+ 	if (sr & STM32H7_SPI_SR_EOT) {
+ 		if (!spi->cur_usedma && (spi->rx_buf && (spi->rx_len > 0)))
+ 			stm32h7_spi_read_rxfifo(spi);
+@@ -1178,6 +1205,9 @@ static int stm32h7_spi_transfer_one_irq(struct stm32_spi *spi)
  	if (spi->tx_buf)
  		stm32h7_spi_write_txfifo(spi);
  
--	stm32_spi_set_bits(spi, STM32H7_SPI_CR1, STM32H7_SPI_CR1_CSTART);
-+	if (STM32_SPI_MASTER_MODE(spi))
-+		stm32_spi_set_bits(spi, STM32H7_SPI_CR1, STM32H7_SPI_CR1_CSTART);
++	if (STM32_SPI_SLAVE_MODE(spi) && spi->slave_udr_mode != SPI_NO_ACTION)
++		ier |= STM32H7_SPI_IER_UDRIE;
++
+ 	if (STM32_SPI_MASTER_MODE(spi))
+ 		stm32_spi_set_bits(spi, STM32H7_SPI_CR1, STM32H7_SPI_CR1_CSTART);
  
- 	writel_relaxed(ier, spi->base + STM32H7_SPI_IER);
+@@ -1222,6 +1252,9 @@ static void stm32h7_spi_transfer_one_dma_start(struct stm32_spi *spi)
+ 	if (spi->cur_comm == SPI_SIMPLEX_TX || spi->cur_comm == SPI_3WIRE_TX)
+ 		ier |= STM32H7_SPI_IER_EOTIE | STM32H7_SPI_IER_TXTFIE;
  
-@@ -1208,7 +1226,8 @@ static void stm32h7_spi_transfer_one_dma_start(struct stm32_spi *spi)
++	if (STM32_SPI_SLAVE_MODE(spi) && spi->slave_udr_mode != SPI_NO_ACTION)
++		ier |= STM32H7_SPI_IER_UDRIE;
++
+ 	stm32_spi_set_bits(spi, STM32H7_SPI_IER, ier);
  
  	stm32_spi_enable(spi);
- 
--	stm32_spi_set_bits(spi, STM32H7_SPI_CR1, STM32H7_SPI_CR1_CSTART);
-+	if (STM32_SPI_MASTER_MODE(spi))
-+		stm32_spi_set_bits(spi, STM32H7_SPI_CR1, STM32H7_SPI_CR1_CSTART);
+@@ -1530,6 +1563,53 @@ static int stm32h7_spi_number_of_data(struct stm32_spi *spi, u32 nb_words)
+ 	return 0;
  }
  
- /**
-@@ -1536,16 +1555,18 @@ static int stm32_spi_transfer_one_setup(struct stm32_spi *spi,
- 	spi->cfg->set_bpw(spi);
- 
- 	/* Update spi->cur_speed with real clock speed */
--	mbr = stm32_spi_prepare_mbr(spi, transfer->speed_hz,
--				    spi->cfg->baud_rate_div_min,
--				    spi->cfg->baud_rate_div_max);
--	if (mbr < 0) {
--		ret = mbr;
--		goto out;
--	}
-+	if (STM32_SPI_MASTER_MODE(spi)) {
-+		mbr = stm32_spi_prepare_mbr(spi, transfer->speed_hz,
-+					    spi->cfg->baud_rate_div_min,
-+					    spi->cfg->baud_rate_div_max);
-+		if (mbr < 0) {
-+			ret = mbr;
-+			goto out;
++/**
++ * stm32h7_spi_set_slave_udr - configure slave underrun detection and reaction
++ * @spi: pointer to the spi controller data structure
++ */
++static void stm32h7_spi_set_slave_udr(struct stm32_spi *spi)
++{
++	u32 max_udr_ptrn, udr_ptrn, cfg1_setb = 0;
++
++	if (spi->slave_udr_mode == SPI_NO_ACTION)
++		return;
++
++	switch (spi->slave_udr_mode) {
++	case SPI_SEND_PATTERN:
++		max_udr_ptrn = (1 << spi->cur_bpw) - 1;
++		if (spi->slave_udr_pattern > max_udr_ptrn) {
++			udr_ptrn = spi->slave_udr_pattern & max_udr_ptrn;
++			dev_warn(spi->dev,
++				 "force slave underrun pattern to data width (> 0x%x, set 0x%x)\n",
++				 max_udr_ptrn, udr_ptrn);
++		} else {
++			udr_ptrn = spi->slave_udr_pattern;
++			dev_dbg(spi->dev, "spi slave underrun: send pattern (0x%x)\n",
++				spi->slave_udr_pattern);
 +		}
- 
--	transfer->speed_hz = spi->cur_speed;
--	stm32_spi_set_mbr(spi, mbr);
-+		transfer->speed_hz = spi->cur_speed;
-+		stm32_spi_set_mbr(spi, mbr);
-+	}
- 
- 	comm_type = stm32_spi_communication_type(spi_dev, transfer);
- 	ret = spi->cfg->set_mode(spi, comm_type);
-@@ -1554,7 +1575,7 @@ static int stm32_spi_transfer_one_setup(struct stm32_spi *spi,
- 
- 	spi->cur_comm = comm_type;
- 
--	if (spi->cfg->set_data_idleness)
-+	if (STM32_SPI_MASTER_MODE(spi) && spi->cfg->set_data_idleness)
- 		spi->cfg->set_data_idleness(spi, transfer->len);
- 
- 	if (spi->cur_bpw <= 8)
-@@ -1575,7 +1596,8 @@ static int stm32_spi_transfer_one_setup(struct stm32_spi *spi,
- 	dev_dbg(spi->dev,
- 		"data frame of %d-bit, data packet of %d data frames\n",
- 		spi->cur_bpw, spi->cur_fthlv);
--	dev_dbg(spi->dev, "speed set to %dHz\n", spi->cur_speed);
-+	if (STM32_SPI_MASTER_MODE(spi))
-+		dev_dbg(spi->dev, "speed set to %dHz\n", spi->cur_speed);
- 	dev_dbg(spi->dev, "transfer of %d bytes (%d data frames)\n",
- 		spi->cur_xferlen, nb_words);
- 	dev_dbg(spi->dev, "dma %s\n",
-@@ -1670,12 +1692,13 @@ static int stm32f4_spi_config(struct stm32_spi *spi)
- }
- 
- /**
-- * stm32h7_spi_config - Configure SPI controller as SPI master
-+ * stm32h7_spi_config - Configure SPI controller
-  * @spi: pointer to the spi controller data structure
-  */
- static int stm32h7_spi_config(struct stm32_spi *spi)
- {
- 	unsigned long flags;
-+	u32 cr1 = 0, cfg2 = 0;
- 
- 	spin_lock_irqsave(&spi->lock, flags);
- 
-@@ -1683,24 +1706,28 @@ static int stm32h7_spi_config(struct stm32_spi *spi)
- 	stm32_spi_clr_bits(spi, STM32H7_SPI_I2SCFGR,
- 			   STM32H7_SPI_I2SCFGR_I2SMOD);
- 
--	/*
--	 * - SS input value high
--	 * - transmitter half duplex direction
--	 * - automatic communication suspend when RX-Fifo is full
--	 */
--	stm32_spi_set_bits(spi, STM32H7_SPI_CR1, STM32H7_SPI_CR1_SSI |
--						 STM32H7_SPI_CR1_HDDIR |
--						 STM32H7_SPI_CR1_MASRX);
-+	if (STM32_SPI_SLAVE_MODE(spi)) {
-+		/* Use native slave select */
-+		cfg2 &= ~STM32H7_SPI_CFG2_SSM;
-+	} else {
-+		/*
-+		 * - Transmitter half duplex direction
-+		 * - Automatic communication suspend when RX-Fifo is full
-+		 * - SS input value high
-+		 */
-+		cr1 |= STM32H7_SPI_CR1_HDDIR | STM32H7_SPI_CR1_MASRX | STM32H7_SPI_CR1_SSI;
- 
--	/*
--	 * - Set the master mode (default Motorola mode)
--	 * - Consider 1 master/n slaves configuration and
--	 *   SS input value is determined by the SSI bit
--	 * - keep control of all associated GPIOs
--	 */
--	stm32_spi_set_bits(spi, STM32H7_SPI_CFG2, STM32H7_SPI_CFG2_MASTER |
--						  STM32H7_SPI_CFG2_SSM |
--						  STM32H7_SPI_CFG2_AFCNTR);
-+		/*
-+		 * - Set the master mode (default Motorola mode)
-+		 * - Consider 1 master/n slaves configuration and
-+		 *   SS input value is determined by the SSI bit
-+		 * - keep control of all associated GPIOs
-+		 */
-+		cfg2 |= STM32H7_SPI_CFG2_MASTER | STM32H7_SPI_CFG2_SSM | STM32H7_SPI_CFG2_AFCNTR;
++		writel_relaxed(udr_ptrn, spi->base + STM32H7_SPI_UDRDR);
++		cfg1_setb |= FIELD_PREP(STM32H7_SPI_CFG1_UDRCFG, STM32H7_SPI_CFG1_UDRCFG_PTRN);
++		break;
++	case SPI_REPEAT_LAST_RECEIVED_DATA:
++		cfg1_setb |= FIELD_PREP(STM32H7_SPI_CFG1_UDRCFG, STM32H7_SPI_CFG1_UDRCFG_LAST_R);
++		dev_dbg(spi->dev, "spi slave underrun: repeat received data\n");
++		break;
++	case SPI_REPEAT_LAST_TRANSMITTED_DATA:
++		cfg1_setb |= FIELD_PREP(STM32H7_SPI_CFG1_UDRCFG, STM32H7_SPI_CFG1_UDRCFG_LAST_T);
++		dev_dbg(spi->dev, "spi slave underrun: repeat transmitted data\n");
++		break;
++	default:
++		dev_warn(spi->dev, "slave underrun detection disabled\n");
++		spi->slave_udr_mode = SPI_NO_ACTION;
 +	}
 +
-+	stm32_spi_set_bits(spi, STM32H7_SPI_CR1, cr1);
-+	stm32_spi_set_bits(spi, STM32H7_SPI_CFG2, cfg2);
++	if (spi->slave_udr_mode != SPI_NO_ACTION) {
++		cfg1_setb |= FIELD_PREP(STM32H7_SPI_CFG1_UDRDET, STM32H7_SPI_CFG1_UDRDET_LAST);
++
++		stm32_spi_set_bits(spi,  STM32H7_SPI_CFG1, cfg1_setb);
++	}
++}
++
+ /**
+  * stm32_spi_transfer_one_setup - common setup to transfer a single
+  *				  spi_transfer either using DMA or
+@@ -1591,6 +1671,9 @@ static int stm32_spi_transfer_one_setup(struct stm32_spi *spi,
+ 			goto out;
+ 	}
  
- 	spin_unlock_irqrestore(&spi->lock, flags);
- 
-@@ -1756,17 +1783,30 @@ static const struct of_device_id stm32_spi_of_match[] = {
++	if (STM32_SPI_SLAVE_MODE(spi) && spi->cfg->set_slave_udr)
++		spi->cfg->set_slave_udr(spi);
++
+ 	dev_dbg(spi->dev, "transfer communication mode set to %d\n",
+ 		spi->cur_comm);
+ 	dev_dbg(spi->dev,
+@@ -1774,6 +1857,7 @@ static const struct stm32_spi_cfg stm32h7_spi_cfg = {
+ 	.baud_rate_div_min = STM32H7_SPI_MBR_DIV_MIN,
+ 	.baud_rate_div_max = STM32H7_SPI_MBR_DIV_MAX,
+ 	.has_fifo = true,
++	.set_slave_udr = stm32h7_spi_set_slave_udr,
  };
- MODULE_DEVICE_TABLE(of, stm32_spi_of_match);
  
-+static int stm32h7_spi_slave_abort(struct spi_controller *ctrl)
+ static const struct of_device_id stm32_spi_of_match[] = {
+@@ -1789,6 +1873,31 @@ static int stm32h7_spi_slave_abort(struct spi_controller *ctrl)
+ 	return 0;
+ }
+ 
++static void stm32h7_spi_parse_slave_config(struct stm32_spi *spi, struct device_node *np)
 +{
-+	spi_finalize_current_transfer(ctrl);
-+	return 0;
++	u32 udr_configs[2] = { 0, 0 };
++	int count, ret;
++
++	count = of_property_count_elems_of_size(np, "st,spi-slave-underrun", sizeof(u32));
++	if (count <= 0) {
++		if (count != -EINVAL)
++			dev_err(spi->dev, "Invalid st,spi-slave-underrun property\n");
++		return;
++	}
++
++	ret = of_property_read_u32_array(np, "st,spi-slave-underrun", udr_configs, count);
++	if (ret)
++		return;
++
++	spi->slave_udr_mode = udr_configs[0];
++	if (spi->slave_udr_mode == SPI_SEND_PATTERN) {
++		if (count > 1)
++			spi->slave_udr_pattern = udr_configs[1];
++		else
++			dev_warn(spi->dev, "Missing pattern in st,spi-slave-underrun property\n");
++	}
 +}
 +
  static int stm32_spi_probe(struct platform_device *pdev)
  {
  	struct spi_controller *ctrl;
- 	struct stm32_spi *spi;
- 	struct resource *res;
- 	struct reset_control *rst;
-+	struct device_node *np = pdev->dev.of_node;
-+	bool slave_mode;
- 	int ret;
- 
--	ctrl = devm_spi_alloc_master(&pdev->dev, sizeof(struct stm32_spi));
-+	slave_mode = of_property_read_bool(np, "spi-slave");
-+
-+	if (slave_mode)
-+		ctrl = devm_spi_alloc_slave(&pdev->dev, sizeof(struct stm32_spi));
-+	else
-+		ctrl = devm_spi_alloc_master(&pdev->dev, sizeof(struct stm32_spi));
- 	if (!ctrl) {
--		dev_err(&pdev->dev, "spi master allocation failed\n");
-+		dev_err(&pdev->dev, "spi controller allocation failed\n");
- 		return -ENOMEM;
+@@ -1842,6 +1951,9 @@ static int stm32_spi_probe(struct platform_device *pdev)
+ 		return ret;
  	}
- 	platform_set_drvdata(pdev, ctrl);
-@@ -1774,6 +1814,7 @@ static int stm32_spi_probe(struct platform_device *pdev)
- 	spi = spi_controller_get_devdata(ctrl);
- 	spi->dev = &pdev->dev;
- 	spi->ctrl = ctrl;
-+	spi->slave_mode = slave_mode;
- 	spin_lock_init(&spi->lock);
  
- 	spi->cfg = (const struct stm32_spi_cfg *)
-@@ -1856,6 +1897,8 @@ static int stm32_spi_probe(struct platform_device *pdev)
- 	ctrl->transfer_one = stm32_spi_transfer_one;
- 	ctrl->unprepare_message = stm32_spi_unprepare_msg;
- 	ctrl->flags = spi->cfg->flags;
 +	if (STM32_SPI_SLAVE_MODE(spi))
-+		ctrl->slave_abort = stm32h7_spi_slave_abort;
- 
- 	spi->dma_tx = dma_request_chan(spi->dev, "tx");
- 	if (IS_ERR(spi->dma_tx)) {
-@@ -1901,7 +1944,8 @@ static int stm32_spi_probe(struct platform_device *pdev)
- 	pm_runtime_mark_last_busy(&pdev->dev);
- 	pm_runtime_put_autosuspend(&pdev->dev);
- 
--	dev_info(&pdev->dev, "driver initialized\n");
-+	dev_info(&pdev->dev, "driver initialized (%s mode)\n",
-+		 STM32_SPI_MASTER_MODE(spi) ? "master" : "slave");
- 
- 	return 0;
- 
++		stm32h7_spi_parse_slave_config(spi, np);
++
+ 	spi->clk = devm_clk_get(&pdev->dev, NULL);
+ 	if (IS_ERR(spi->clk)) {
+ 		ret = PTR_ERR(spi->clk);
 -- 
 2.25.1
 

@@ -2,165 +2,334 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CC825C77B7E
-	for <linux-spi@archiver.kernel.org>; Tue,  2 May 2023 06:50:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 27A4BC77B73
+	for <linux-spi@archiver.kernel.org>; Tue,  2 May 2023 07:21:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229569AbjEBGup (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 2 May 2023 02:50:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54540 "EHLO
+        id S233498AbjEBHVh (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 2 May 2023 03:21:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233635AbjEBGul (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 2 May 2023 02:50:41 -0400
-Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F18AB3A9F
-        for <linux-spi@vger.kernel.org>; Mon,  1 May 2023 23:50:30 -0700 (PDT)
-Received: from epcas2p1.samsung.com (unknown [182.195.41.53])
-        by mailout1.samsung.com (KnoxPortal) with ESMTP id 20230502065027epoutp012e0a1287b5b5ac947ae5b9a470cf6631~bQOKDS1SH2708627086epoutp01D
-        for <linux-spi@vger.kernel.org>; Tue,  2 May 2023 06:50:27 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20230502065027epoutp012e0a1287b5b5ac947ae5b9a470cf6631~bQOKDS1SH2708627086epoutp01D
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1683010227;
-        bh=/zhDcDts5LBX2HV/3UzZnXw4YVjg9uzB6LOd9LsN6rk=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YSLTli2ccnyF0XCiccrYSVijYzIU3y3bJXBAj2Hegl68T1IaAJACxw8eIMKGPYbYZ
-         CmwcSf8jTFPIzc3/YVHoa2h1tlJ+69u1Fw0S+Di62TvfXtpbuZTW5SZUNBMAIX2PVD
-         Zgtsp5eUDKWeBmKfaYXvBT1LTeKtdlXQPhpO3Qes=
-Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
-        epcas2p3.samsung.com (KnoxPortal) with ESMTP id
-        20230502065026epcas2p3c3bbced9152859a716e6d108432f7e32~bQOJiEnwJ1371613716epcas2p3O;
-        Tue,  2 May 2023 06:50:26 +0000 (GMT)
-Received: from epsmges2p3.samsung.com (unknown [182.195.36.100]) by
-        epsnrtp4.localdomain (Postfix) with ESMTP id 4Q9W1F6vkzz4x9Q6; Tue,  2 May
-        2023 06:50:25 +0000 (GMT)
-Received: from epcas2p1.samsung.com ( [182.195.41.53]) by
-        epsmges2p3.samsung.com (Symantec Messaging Gateway) with SMTP id
-        39.9B.08199.1B2B0546; Tue,  2 May 2023 15:50:25 +0900 (KST)
-Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
-        epcas2p4.samsung.com (KnoxPortal) with ESMTPA id
-        20230502065025epcas2p4143c8ff3d44b7676ea8667c14618f2cd~bQOIKsCsr1117211172epcas2p4A;
-        Tue,  2 May 2023 06:50:25 +0000 (GMT)
-Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
-        epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20230502065025epsmtrp200b9f15f59b5d2422a3f2ee79378198c~bQOIJ-j0d2944229442epsmtrp2M;
-        Tue,  2 May 2023 06:50:25 +0000 (GMT)
-X-AuditID: b6c32a47-e99fd70000002007-fd-6450b2b1a730
-Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
-        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-        E2.C8.27706.1B2B0546; Tue,  2 May 2023 15:50:25 +0900 (KST)
-Received: from localhost.localdomain (unknown [10.229.9.55]) by
-        epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20230502065025epsmtip13f5f5d62791d4d87df09e34b99a140c0~bQOIAexil1675316753epsmtip1U;
-        Tue,  2 May 2023 06:50:25 +0000 (GMT)
-From:   Jaewon Kim <jaewon02.kim@samsung.com>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Andi Shyti <andi@etezian.org>, Mark Brown <broonie@kernel.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>
-Cc:     linux-spi@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Chanho Park <chanho61.park@samsung.com>,
-        Jaewon Kim <jaewon02.kim@samsung.com>
-Subject: [PATCH v3 1/3] spi: s3c64xx: change polling mode to optional
-Date:   Tue,  2 May 2023 15:28:11 +0900
-Message-Id: <20230502062813.112434-2-jaewon02.kim@samsung.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20230502062813.112434-1-jaewon02.kim@samsung.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrHKsWRmVeSWpSXmKPExsWy7bCmqe7GTQEpBu/maVo8mLeNzWLxj+dM
-        FlMfPmGzuLxf22JHwxFWi72vt7JbbHp8jdXi8q45bBYzzu9jsmj8eJPdgcvj+pJPzB6bVnWy
-        edy5tofNY/OSeo++LasYPT5vkgtgi8q2yUhNTEktUkjNS85PycxLt1XyDo53jjc1MzDUNbS0
-        MFdSyEvMTbVVcvEJ0HXLzAE6TEmhLDGnFCgUkFhcrKRvZ1OUX1qSqpCRX1xiq5RakJJTYF6g
-        V5yYW1yal66Xl1piZWhgYGQKVJiQndGwZwNzwQq+itlnr7E1MP7i7mLk5JAQMJFYsXotaxcj
-        F4eQwA5GiTnH70E5nxglzv9oZYZwvjFK7H7zggWmZdWtdnaIxF5GiUfL1rGCJIQEPjJKvP/m
-        AmKzCWhLfF+/GGyUiMBiRokFV3eCdTAL3GCU6H6zGWyUsICrxMLrVxhBbBYBVYmG26/A4rwC
-        dhL7L8xkglgnL7F6wwFmEJtTwF7iXlML2FQJgUfsEucu90MVuUi0TvrGCGELS7w6voUdwpaS
-        +PxuLxuEnS3RPv0PK4RdIXFxw2youLHErGftQL0cQNdpSqzfpQ9iSggoSxy5BXYOswCfRMfh
-        v+wQYV6JjjYhiEY1iftTz0ENkZGYdGQl1DEeEgtvdzBCwmQSo8TOm5ITGOVmIcxfwMi4ilEs
-        taA4Nz212KjAGB5jyfm5mxjBCU/LfQfjjLcf9A4xMnEwHmKU4GBWEuH9UOiXIsSbklhZlVqU
-        H19UmpNafIjRFBh0E5mlRJPzgSk3ryTe0MTSwMTMzNDcyNTAXEmcV9r2ZLKQQHpiSWp2ampB
-        ahFMHxMHp1QDk4HDoSJfTtPTl9m/77CvvnhI8O1lFflVuzam/9c3/PzX+tzXBXePyq/t0GLn
-        SVzsUNI3p2Zqsv221LVS0+t2Z0z/+vdl/OubJ4TNr899nB6qcnG54v53MuFGMa91dpqtlJGb
-        sWqm60vhP7b7v3UszswSa4/ktll8evNOdpbsV1Imv1bf0mU3+OR3xE3wv962shPPDBlv393U
-        0p69veuzfy3/SS+mVFt5h3+cM0t25Nz78knuVdXOGMnmDaXhP6VZzC89zCvUXdPjGP/OzblT
-        8zxX+Pp2y6n55fVMla8LtK7tNLzGPCMjlPFBp9uSe8mnJr/xV1klt+qah+qqzV+nf+E7ac2p
-        P6XkUrr7e66uNCWW4oxEQy3mouJEAHDLC9wBBAAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrNLMWRmVeSWpSXmKPExsWy7bCSnO7GTQEpBhs3Clo8mLeNzWLxj+dM
-        FlMfPmGzuLxf22JHwxFWi72vt7JbbHp8jdXi8q45bBYzzu9jsmj8eJPdgcvj+pJPzB6bVnWy
-        edy5tofNY/OSeo++LasYPT5vkgtgi+KySUnNySxLLdK3S+DKaNizgblgBV/F7LPX2BoYf3F3
-        MXJySAiYSKy61c7excjFISSwm1FiZe9lZoiEjMTyZ31sELawxP2WI6wQRe8ZJdo7DrKAJNgE
-        tCW+r18MlhARWMoo8XjPYxYQh1ngHqPEy0nfmECqhAVcJRZev8IIYrMIqEo03H4F1s0rYCex
-        /8JMJogV8hKrNxwAW80pYC9xr6mFFcQWAqq50vuVdQIj3wJGhlWMkqkFxbnpucWGBYZ5qeV6
-        xYm5xaV56XrJ+bmbGMHhqaW5g3H7qg96hxiZOBgPMUpwMCuJ8H4o9EsR4k1JrKxKLcqPLyrN
-        SS0+xCjNwaIkznuh62S8kEB6YklqdmpqQWoRTJaJg1Oqgalft9y15KivRW9m2J/H6mmXf+re
-        erTjisVv0bDLU9sy/k1zMGu/GpHj///WWqs1d17ez29Lv9ToHxluWmQTVbrm6WTTMvPTIb8T
-        POPzK93vqit4n3v4TZiLl/WvitCiM/F+G/rZbyaJxNUnOth2RO9m3aG01CiEmf+/n1nlFIvp
-        q9MOqpabrcyS+P3TZuoi+2V1kvEpW6/XLJq1R0at51S8Q2rY8r89FrmbRA0THsZM+nMjTM09
-        OnV3y4ePbzvvv7jmlZe06/RDb5aaiP9yGsc7dsa+ynhwViHwP9OhNsVH9RHqOzaH511ZwR0f
-        sb9tL5cZa9OHPQ8urd78x/BO6m3Tuo/cx3c3Xrq9ZuLtciWW4oxEQy3mouJEAAg5wce+AgAA
-X-CMS-MailID: 20230502065025epcas2p4143c8ff3d44b7676ea8667c14618f2cd
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: AUTO_CONFIDENTIAL
-CMS-TYPE: 102P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20230502065025epcas2p4143c8ff3d44b7676ea8667c14618f2cd
-References: <20230502062813.112434-1-jaewon02.kim@samsung.com>
-        <CGME20230502065025epcas2p4143c8ff3d44b7676ea8667c14618f2cd@epcas2p4.samsung.com>
+        with ESMTP id S229653AbjEBHVg (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 2 May 2023 03:21:36 -0400
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AB25199C;
+        Tue,  2 May 2023 00:21:33 -0700 (PDT)
+Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34271LSn022463;
+        Tue, 2 May 2023 09:21:14 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=date : from : to :
+ cc : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=selector1; bh=FiYDlr+9QsFpn+Fq0qo39xI9ntpX84DQgkMW6PranEc=;
+ b=PTbSQwiUBZZ6vrJCZG3ikRUMl8IPfhYwXgsgmYqHUwPW5wpXlKg9jvfzguhWCK0bP1oJ
+ pcfkNGZJGkrEVVpj4mPoyplHGAqwCplEuBVpGgaBL3agdcfRmT15/Uqvi7sB5SLfwe8Z
+ k0rx+hKorb9ZrqzcCUXgqPh+JgXzbp5ey1TJJaLCQYMSR8c9qZb+eJEvgsWKVu5hvrc1
+ VmiFMYjtzpGyl3apVKV+VlPTRjBqNDNnA4/gTutn3OJDJtEkdRD3jpgusBIcbx62vpBA
+ 3K4ZYLyVdCaYz/jRGW9ylL0A6p4PP22kIbUh5E5VGh2JNznhKLvs+g/J70jgD7rRZrqL gA== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3q8tk3p7em-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 02 May 2023 09:21:14 +0200
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id AB3A910002A;
+        Tue,  2 May 2023 09:21:12 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 6355B2115FC;
+        Tue,  2 May 2023 09:21:12 +0200 (CEST)
+Received: from gnbcxd0016.gnb.st.com (10.129.178.213) by SHFDAG1NODE1.st.com
+ (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21; Tue, 2 May
+ 2023 09:21:12 +0200
+Date:   Tue, 2 May 2023 09:20:58 +0200
+From:   Alain Volmat <alain.volmat@foss.st.com>
+To:     Valentin Caron <valentin.caron@foss.st.com>
+CC:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 7/7] spi: stm32: add support for stm32h7 SPI slave
+ underrun detection
+Message-ID: <20230502072058.GA1167229@gnbcxd0016.gnb.st.com>
+Mail-Followup-To: Valentin Caron <valentin.caron@foss.st.com>,
+        Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20230428121524.2125832-1-valentin.caron@foss.st.com>
+ <20230428121524.2125832-8-valentin.caron@foss.st.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20230428121524.2125832-8-valentin.caron@foss.st.com>
+X-Disclaimer: ce message est personnel / this message is private
+X-Originating-IP: [10.129.178.213]
+X-ClientProxiedBy: SHFCAS1NODE2.st.com (10.75.129.73) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-05-02_04,2023-04-27_01,2023-02-09_01
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Previously, Polling mode was supported as quirk for SOC without DMA.
-To provide more flexible support for polling mode, it changed to polling
-mode when the 'dmas' property is not present in the devicetree, rather than
-using a quirk.
+Hi Valentin,
 
-Signed-off-by: Jaewon Kim <jaewon02.kim@samsung.com>
----
- drivers/spi/spi-s3c64xx.c                 | 4 ++--
- include/linux/platform_data/spi-s3c64xx.h | 1 +
- 2 files changed, 3 insertions(+), 2 deletions(-)
+thanks.
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 71d324ec9a70..66ac94022a1b 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -19,7 +19,6 @@
- #include <linux/platform_data/spi-s3c64xx.h>
- 
- #define MAX_SPI_PORTS		12
--#define S3C64XX_SPI_QUIRK_POLL		(1 << 0)
- #define S3C64XX_SPI_QUIRK_CS_AUTO	(1 << 1)
- #define AUTOSUSPEND_TIMEOUT	2000
- 
-@@ -116,7 +115,7 @@
- #define S3C64XX_SPI_TRAILCNT		S3C64XX_SPI_MAX_TRAILCNT
- 
- #define msecs_to_loops(t) (loops_per_jiffy / 1000 * HZ * t)
--#define is_polling(x)	(x->port_conf->quirks & S3C64XX_SPI_QUIRK_POLL)
-+#define is_polling(x)	(x->cntrlr_info->polling)
- 
- #define RXBUSY    (1<<2)
- #define TXBUSY    (1<<3)
-@@ -1068,6 +1067,7 @@ static struct s3c64xx_spi_info *s3c64xx_spi_parse_dt(struct device *dev)
- 	}
- 
- 	sci->no_cs = of_property_read_bool(dev->of_node, "no-cs-readback");
-+	sci->polling = !of_property_present(dev->of_node, "dmas");
- 
- 	return sci;
- }
-diff --git a/include/linux/platform_data/spi-s3c64xx.h b/include/linux/platform_data/spi-s3c64xx.h
-index 5df1ace6d2c9..cb7b8ddc899f 100644
---- a/include/linux/platform_data/spi-s3c64xx.h
-+++ b/include/linux/platform_data/spi-s3c64xx.h
-@@ -35,6 +35,7 @@ struct s3c64xx_spi_info {
- 	int src_clk_nr;
- 	int num_cs;
- 	bool no_cs;
-+	bool polling;
- 	int (*cfg_gpio)(void);
- };
- 
--- 
-2.17.1
+On Fri, Apr 28, 2023 at 02:15:24PM +0200, Valentin Caron wrote:
+> If stm32h7 SPI controller is in slave role and TX FIFO is abnormally empty
+> during transaction, controller is able to automatically send either a
+> pattern, the last transmitted data, or the last received data.
+> 
+> Signed-off-by: Valentin Caron <valentin.caron@foss.st.com>
+> ---
+>  drivers/spi/spi-stm32.c | 112 ++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 112 insertions(+)
+> 
+> diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
+> index 2db6f93654d7..0063c2f69265 100644
+> --- a/drivers/spi/spi-stm32.c
+> +++ b/drivers/spi/spi-stm32.c
+> @@ -18,6 +18,7 @@
+>  #include <linux/pm_runtime.h>
+>  #include <linux/reset.h>
+>  #include <linux/spi/spi.h>
+> +#include <dt-bindings/spi/spi-stm32.h>
+>  
+>  #define DRIVER_NAME "spi_stm32"
+>  
+> @@ -84,6 +85,7 @@
+>  #define STM32H7_SPI_IFCR		0x18
+>  #define STM32H7_SPI_TXDR		0x20
+>  #define STM32H7_SPI_RXDR		0x30
+> +#define STM32H7_SPI_UDRDR		0x4C
+>  #define STM32H7_SPI_I2SCFGR		0x50
+>  
+>  /* STM32H7_SPI_CR1 bit fields */
+> @@ -101,6 +103,14 @@
+>  /* STM32H7_SPI_CFG1 bit fields */
+>  #define STM32H7_SPI_CFG1_DSIZE		GENMASK(4, 0)
+>  #define STM32H7_SPI_CFG1_FTHLV		GENMASK(8, 5)
+> +#define STM32H7_SPI_CFG1_UDRDET		GENMASK(12, 11)
+> +#define STM32H7_SPI_CFG1_UDRDET_BEGIN	0
+> +#define STM32H7_SPI_CFG1_UDRDET_LAST	1
+> +#define STM32H7_SPI_CFG1_UDRDET_SS	2
+> +#define STM32H7_SPI_CFG1_UDRCFG		GENMASK(10, 9)
+> +#define STM32H7_SPI_CFG1_UDRCFG_PTRN	0
+> +#define STM32H7_SPI_CFG1_UDRCFG_LAST_R	1
+> +#define STM32H7_SPI_CFG1_UDRCFG_LAST_T	2
+>  #define STM32H7_SPI_CFG1_RXDMAEN	BIT(14)
+>  #define STM32H7_SPI_CFG1_TXDMAEN	BIT(15)
+>  #define STM32H7_SPI_CFG1_MBR		GENMASK(30, 28)
+> @@ -126,6 +136,7 @@
+>  #define STM32H7_SPI_IER_DXPIE		BIT(2)
+>  #define STM32H7_SPI_IER_EOTIE		BIT(3)
+>  #define STM32H7_SPI_IER_TXTFIE		BIT(4)
+> +#define STM32H7_SPI_IER_UDRIE		BIT(5)
+>  #define STM32H7_SPI_IER_OVRIE		BIT(6)
+>  #define STM32H7_SPI_IER_MODFIE		BIT(9)
+>  #define STM32H7_SPI_IER_ALL		GENMASK(10, 0)
+> @@ -134,6 +145,7 @@
+>  #define STM32H7_SPI_SR_RXP		BIT(0)
+>  #define STM32H7_SPI_SR_TXP		BIT(1)
+>  #define STM32H7_SPI_SR_EOT		BIT(3)
+> +#define STM32H7_SPI_SR_UDR		BIT(5)
+>  #define STM32H7_SPI_SR_OVR		BIT(6)
+>  #define STM32H7_SPI_SR_MODF		BIT(9)
+>  #define STM32H7_SPI_SR_SUSP		BIT(11)
+> @@ -239,6 +251,8 @@ struct stm32_spi;
+>   * @baud_rate_div_max: maximum baud rate divisor
+>   * @has_fifo: boolean to know if fifo is used for driver
+>   * @flags: compatible specific SPI controller flags used at registration time
+> + * @set_slave_udr: routine to configure registers to desired slave underrun
+> + * behavior (if driver has this functionality)
+>   */
+>  struct stm32_spi_cfg {
+>  	const struct stm32_spi_regspec *regs;
+> @@ -260,6 +274,7 @@ struct stm32_spi_cfg {
+>  	unsigned int baud_rate_div_max;
+>  	bool has_fifo;
+>  	u16 flags;
+> +	void (*set_slave_udr)(struct stm32_spi *spi);
+>  };
+>  
+>  /**
+> @@ -288,6 +303,8 @@ struct stm32_spi_cfg {
+>   * @dma_rx: dma channel for RX transfer
+>   * @phys_addr: SPI registers physical base address
+>   * @slave_mode: the controller is configured as SPI slave
+> + * @slave_udr_mode: slave underrun behavior
+> + * @slave_udr_pattern: slave underrun pattern parameter
+>   */
+>  struct stm32_spi {
+>  	struct device *dev;
+> @@ -317,6 +334,8 @@ struct stm32_spi {
+>  	dma_addr_t phys_addr;
+>  
+>  	bool slave_mode;
+> +	u32 slave_udr_mode;
+> +	u32 slave_udr_pattern;
+>  };
+>  
+>  static const struct stm32_spi_regspec stm32f4_spi_regspec = {
+> @@ -921,6 +940,14 @@ static irqreturn_t stm32h7_spi_irq_thread(int irq, void *dev_id)
+>  		end = true;
+>  	}
+>  
+> +	if (sr & STM32H7_SPI_SR_UDR) {
+> +		static DEFINE_RATELIMIT_STATE(rs,
+> +					      DEFAULT_RATELIMIT_INTERVAL * 10,
+> +					      1);
+> +		if (__ratelimit(&rs))
+> +			dev_dbg_ratelimited(spi->dev, "Underrun detected\n");
+> +	}
+> +
+>  	if (sr & STM32H7_SPI_SR_EOT) {
+>  		if (!spi->cur_usedma && (spi->rx_buf && (spi->rx_len > 0)))
+>  			stm32h7_spi_read_rxfifo(spi);
+> @@ -1178,6 +1205,9 @@ static int stm32h7_spi_transfer_one_irq(struct stm32_spi *spi)
+>  	if (spi->tx_buf)
+>  		stm32h7_spi_write_txfifo(spi);
+>  
+> +	if (STM32_SPI_SLAVE_MODE(spi) && spi->slave_udr_mode != SPI_NO_ACTION)
+> +		ier |= STM32H7_SPI_IER_UDRIE;
+> +
+>  	if (STM32_SPI_MASTER_MODE(spi))
+>  		stm32_spi_set_bits(spi, STM32H7_SPI_CR1, STM32H7_SPI_CR1_CSTART);
+>  
+> @@ -1222,6 +1252,9 @@ static void stm32h7_spi_transfer_one_dma_start(struct stm32_spi *spi)
+>  	if (spi->cur_comm == SPI_SIMPLEX_TX || spi->cur_comm == SPI_3WIRE_TX)
+>  		ier |= STM32H7_SPI_IER_EOTIE | STM32H7_SPI_IER_TXTFIE;
+>  
+> +	if (STM32_SPI_SLAVE_MODE(spi) && spi->slave_udr_mode != SPI_NO_ACTION)
+> +		ier |= STM32H7_SPI_IER_UDRIE;
+> +
+>  	stm32_spi_set_bits(spi, STM32H7_SPI_IER, ier);
+>  
+>  	stm32_spi_enable(spi);
+> @@ -1530,6 +1563,53 @@ static int stm32h7_spi_number_of_data(struct stm32_spi *spi, u32 nb_words)
+>  	return 0;
+>  }
+>  
+> +/**
+> + * stm32h7_spi_set_slave_udr - configure slave underrun detection and reaction
+> + * @spi: pointer to the spi controller data structure
+> + */
+> +static void stm32h7_spi_set_slave_udr(struct stm32_spi *spi)
+> +{
+> +	u32 max_udr_ptrn, udr_ptrn, cfg1_setb = 0;
+> +
+> +	if (spi->slave_udr_mode == SPI_NO_ACTION)
+> +		return;
+> +
+> +	switch (spi->slave_udr_mode) {
+> +	case SPI_SEND_PATTERN:
+> +		max_udr_ptrn = (1 << spi->cur_bpw) - 1;
+> +		if (spi->slave_udr_pattern > max_udr_ptrn) {
+> +			udr_ptrn = spi->slave_udr_pattern & max_udr_ptrn;
+> +			dev_warn(spi->dev,
+> +				 "force slave underrun pattern to data width (> 0x%x, set 0x%x)\n",
+> +				 max_udr_ptrn, udr_ptrn);
+> +		} else {
+> +			udr_ptrn = spi->slave_udr_pattern;
+> +			dev_dbg(spi->dev, "spi slave underrun: send pattern (0x%x)\n",
+> +				spi->slave_udr_pattern);
+> +		}
+> +		writel_relaxed(udr_ptrn, spi->base + STM32H7_SPI_UDRDR);
+> +		cfg1_setb |= FIELD_PREP(STM32H7_SPI_CFG1_UDRCFG, STM32H7_SPI_CFG1_UDRCFG_PTRN);
+> +		break;
+> +	case SPI_REPEAT_LAST_RECEIVED_DATA:
+> +		cfg1_setb |= FIELD_PREP(STM32H7_SPI_CFG1_UDRCFG, STM32H7_SPI_CFG1_UDRCFG_LAST_R);
+> +		dev_dbg(spi->dev, "spi slave underrun: repeat received data\n");
+> +		break;
+> +	case SPI_REPEAT_LAST_TRANSMITTED_DATA:
+> +		cfg1_setb |= FIELD_PREP(STM32H7_SPI_CFG1_UDRCFG, STM32H7_SPI_CFG1_UDRCFG_LAST_T);
+> +		dev_dbg(spi->dev, "spi slave underrun: repeat transmitted data\n");
+> +		break;
+> +	default:
+> +		dev_warn(spi->dev, "slave underrun detection disabled\n");
+> +		spi->slave_udr_mode = SPI_NO_ACTION;
+> +	}
+> +
+> +	if (spi->slave_udr_mode != SPI_NO_ACTION) {
+> +		cfg1_setb |= FIELD_PREP(STM32H7_SPI_CFG1_UDRDET, STM32H7_SPI_CFG1_UDRDET_LAST);
+> +
+> +		stm32_spi_set_bits(spi,  STM32H7_SPI_CFG1, cfg1_setb);
+> +	}
+> +}
+> +
+>  /**
+>   * stm32_spi_transfer_one_setup - common setup to transfer a single
+>   *				  spi_transfer either using DMA or
+> @@ -1591,6 +1671,9 @@ static int stm32_spi_transfer_one_setup(struct stm32_spi *spi,
+>  			goto out;
+>  	}
+>  
+> +	if (STM32_SPI_SLAVE_MODE(spi) && spi->cfg->set_slave_udr)
+> +		spi->cfg->set_slave_udr(spi);
+> +
+>  	dev_dbg(spi->dev, "transfer communication mode set to %d\n",
+>  		spi->cur_comm);
+>  	dev_dbg(spi->dev,
+> @@ -1774,6 +1857,7 @@ static const struct stm32_spi_cfg stm32h7_spi_cfg = {
+>  	.baud_rate_div_min = STM32H7_SPI_MBR_DIV_MIN,
+>  	.baud_rate_div_max = STM32H7_SPI_MBR_DIV_MAX,
+>  	.has_fifo = true,
+> +	.set_slave_udr = stm32h7_spi_set_slave_udr,
+>  };
+>  
+>  static const struct of_device_id stm32_spi_of_match[] = {
+> @@ -1789,6 +1873,31 @@ static int stm32h7_spi_slave_abort(struct spi_controller *ctrl)
+>  	return 0;
+>  }
+>  
+> +static void stm32h7_spi_parse_slave_config(struct stm32_spi *spi, struct device_node *np)
+> +{
+> +	u32 udr_configs[2] = { 0, 0 };
+> +	int count, ret;
+> +
+> +	count = of_property_count_elems_of_size(np, "st,spi-slave-underrun", sizeof(u32));
+> +	if (count <= 0) {
+> +		if (count != -EINVAL)
+> +			dev_err(spi->dev, "Invalid st,spi-slave-underrun property\n");
+> +		return;
+> +	}
+> +
+> +	ret = of_property_read_u32_array(np, "st,spi-slave-underrun", udr_configs, count);
+> +	if (ret)
+> +		return;
+> +
+> +	spi->slave_udr_mode = udr_configs[0];
+> +	if (spi->slave_udr_mode == SPI_SEND_PATTERN) {
+> +		if (count > 1)
+> +			spi->slave_udr_pattern = udr_configs[1];
+> +		else
+> +			dev_warn(spi->dev, "Missing pattern in st,spi-slave-underrun property\n");
+> +	}
+> +}
+> +
+>  static int stm32_spi_probe(struct platform_device *pdev)
+>  {
+>  	struct spi_controller *ctrl;
+> @@ -1842,6 +1951,9 @@ static int stm32_spi_probe(struct platform_device *pdev)
+>  		return ret;
+>  	}
+>  
+> +	if (STM32_SPI_SLAVE_MODE(spi))
+> +		stm32h7_spi_parse_slave_config(spi, np);
+> +
+>  	spi->clk = devm_clk_get(&pdev->dev, NULL);
+>  	if (IS_ERR(spi->clk)) {
+>  		ret = PTR_ERR(spi->clk);
+> -- 
+> 2.25.1
+> 
 
+Acked-by: Alain Volmat <alain.volmat@foss.st.com>
+
+Regards,
+Alain

@@ -2,127 +2,195 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 566D6C7EE2C
-	for <linux-spi@archiver.kernel.org>; Fri,  5 May 2023 09:41:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D5FB4C77B75
+	for <linux-spi@archiver.kernel.org>; Fri,  5 May 2023 09:47:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231812AbjEEJlT (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 5 May 2023 05:41:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47422 "EHLO
+        id S231836AbjEEJrZ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 5 May 2023 05:47:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231267AbjEEJlR (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 5 May 2023 05:41:17 -0400
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEA46150E6;
-        Fri,  5 May 2023 02:41:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1683279676; x=1714815676;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=D7UA2lx+EkPLMAJoV5cMenjK7P7GwwqdLMhdFNpcpUw=;
-  b=AtQnPgrEWRcRAzpEoTkDxVmh2sAaZffQ3RfB4yCuzYwID/q5MEM/vL20
-   aneKNgg2WVYBLl2nvWclG6u3pO/N3JEkdjxb/c0qV2F+CkSNoBGfwboZh
-   DOsHmb3RoViiuO5ty9dnpRicRYsOYYKBObnWngpF/KZoKDkhrI1dHUM9I
-   bLaDj+93ClLC3Ne3NWIyL+JfCGHBfAJwY6asPw+nv8a0RCkjenhN3jq17
-   fChNTxB9CKNF9G9FJTs10QP7ldNo/BCdoE6DDECLn2JhyVmXTDWv9DKXX
-   0Fl5Q1HQCF7v1e62Mx0LGKZzRlTG7K4dMb9PJMoOUmjTREosREWk2grN9
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10700"; a="328794858"
-X-IronPort-AV: E=Sophos;i="5.99,251,1677571200"; 
-   d="scan'208";a="328794858"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2023 02:41:16 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10700"; a="943777751"
-X-IronPort-AV: E=Sophos;i="5.99,251,1677571200"; 
-   d="scan'208";a="943777751"
-Received: from lkp-server01.sh.intel.com (HELO fe5d646e317d) ([10.239.97.150])
-  by fmsmga006.fm.intel.com with ESMTP; 05 May 2023 02:41:11 -0700
-Received: from kbuild by fe5d646e317d with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1purw6-0000TB-1W;
-        Fri, 05 May 2023 09:41:10 +0000
-Date:   Fri, 5 May 2023 17:40:14 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-        Andreas Kemnade <andreas@kemnade.info>,
-        Helge Deller <deller@gmx.de>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     oe-kbuild-all@lists.linux.dev, linux-fbdev@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-spi@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 1/3] Input: ads7846 - Convert to use software nodes
-Message-ID: <202305051726.wOn3I3W1-lkp@intel.com>
-References: <20230430-nokia770-regression-v2-1-984ed3ca5444@linaro.org>
+        with ESMTP id S231774AbjEEJrX (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 5 May 2023 05:47:23 -0400
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46A24191D1
+        for <linux-spi@vger.kernel.org>; Fri,  5 May 2023 02:47:21 -0700 (PDT)
+Received: by mail-ed1-x52c.google.com with SMTP id 4fb4d7f45d1cf-50bc37e1525so2923821a12.1
+        for <linux-spi@vger.kernel.org>; Fri, 05 May 2023 02:47:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1683280040; x=1685872040;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3YIVNcQdeZiL3e0O4p6IYO2o8zE6ITS/Zjz/otoIFpA=;
+        b=Iqijz+WAZAHtO8uFIvMpu/yycYGpQx+/LpXE9Axcv65dAK4e1uQyPg/LQURKrVpV5Q
+         /jufmtJZYot++2wbF9B/cJSSUKvnm2LylqPOS9p4bNP2aoUp7PIgNP0WH+pb+Yp3gPXF
+         CqPa07bDfGrdfuG+OlH5axVBI9Eb/7Mo6NHKcw429IFhoPnzVJ0jfgOqdm856Web5UOe
+         zDOrus4Wjj45fkQy+Xv38TLJBBsuwkhp3EVJIQD8PGLcThIbQa2334tlweMfMXBM/ayB
+         VwuwMyjM1zIAzG+lgu0seXRbkqRY/ZHEt8apMngYB3JMSlS94pofzX7TjWmcbVPuKjEn
+         0hGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683280040; x=1685872040;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3YIVNcQdeZiL3e0O4p6IYO2o8zE6ITS/Zjz/otoIFpA=;
+        b=O+SsXfeqv2NUprfKSw64RZqcsyNzct4xJk6LaCOLkbiLhhszwfRCpeNY/INQr8XQox
+         n0xBu6lcxPzQC3uGM71nrzuJria42y6QOuEaUaQ9QVTHbvGIjqwh+9o0PKLB1ZRezAKn
+         M/RWkvr9UMSbmtPLAHkhfZSzWvdIYaqokBkEzivLSysDsYMEtSbXifEiiT50YueK1f1U
+         /kW8O0HW2DrvVtEB3rkZSPsVSc+X9omMIS2/eSGubifTbJqFBqucWKYbZLIFN1u4n2eZ
+         FnLChejm/D9yUwHQQj5sYbKMYtL6Osvc4efmA27r8jcMOAVxVSJNuUvBbVnrgvpB1Zo8
+         4AKQ==
+X-Gm-Message-State: AC+VfDwCVZUb4g+aGba1EMmlu75iv9dvYiVZf+3E2uugeYPpSvOYHfsu
+        ngonwOJTQ7OtUApd9oVs9tZYig==
+X-Google-Smtp-Source: ACHHUZ4nixPNDI7H6BBgyh+5/PxYHS2TDRnhCNQLtbEUh6LobLma18kxhzjldRDZdV8OqSSIZPAcwg==
+X-Received: by 2002:a17:907:360c:b0:961:800b:3f1e with SMTP id bk12-20020a170907360c00b00961800b3f1emr616756ejc.73.1683280040379;
+        Fri, 05 May 2023 02:47:20 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:52e:24ce:bbc1:127d? ([2a02:810d:15c0:828:52e:24ce:bbc1:127d])
+        by smtp.gmail.com with ESMTPSA id v1-20020a170906292100b00953381ea1b7sm721680ejd.90.2023.05.05.02.47.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 05 May 2023 02:47:20 -0700 (PDT)
+Message-ID: <53b60eca-e8ab-3ff3-61a4-019ccac6cd65@linaro.org>
+Date:   Fri, 5 May 2023 11:47:19 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230430-nokia770-regression-v2-1-984ed3ca5444@linaro.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.1
+Subject: Re: [PATCH v3 3/3] spi: s3c64xx: support interrupt based pio mode
+Content-Language: en-US
+To:     Jaewon Kim <jaewon02.kim@samsung.com>,
+        Andi Shyti <andi@etezian.org>, Mark Brown <broonie@kernel.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>
+Cc:     linux-spi@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Chanho Park <chanho61.park@samsung.com>
+References: <20230502062813.112434-1-jaewon02.kim@samsung.com>
+ <CGME20230502065025epcas2p34507ffad60b32e091ff0efeced9bc12f@epcas2p3.samsung.com>
+ <20230502062813.112434-4-jaewon02.kim@samsung.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230502062813.112434-4-jaewon02.kim@samsung.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi Linus,
+On 02/05/2023 08:28, Jaewon Kim wrote:
+> Support interrupt based pio mode to optimize cpu usage.
+> When transmitting data size is larget than 32 bytes, operates with
+> interrupt based pio mode.
+> 
+> By using the FIFORDY INT, an interrupt can be triggered when
+> the desired size of data has been received. Using this, we can support
+> interrupt based pio mode.
+> 
+> Signed-off-by: Jaewon Kim <jaewon02.kim@samsung.com>
+> ---
+>  drivers/spi/spi-s3c64xx.c | 66 ++++++++++++++++++++++++++++++++++-----
+>  1 file changed, 58 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+> index 2a8304678df9..323c6da9730b 100644
+> --- a/drivers/spi/spi-s3c64xx.c
+> +++ b/drivers/spi/spi-s3c64xx.c
+> @@ -58,6 +58,8 @@
+>  #define S3C64XX_SPI_MODE_BUS_TSZ_HALFWORD	(1<<17)
+>  #define S3C64XX_SPI_MODE_BUS_TSZ_WORD		(2<<17)
+>  #define S3C64XX_SPI_MODE_BUS_TSZ_MASK		(3<<17)
+> +#define S3C64XX_SPI_MODE_RX_RDY_LVL		GENMASK(16, 11)
+> +#define S3C64XX_SPI_MODE_RX_RDY_LVL_SHIFT	11
+>  #define S3C64XX_SPI_MODE_SELF_LOOPBACK		(1<<3)
+>  #define S3C64XX_SPI_MODE_RXDMA_ON		(1<<2)
+>  #define S3C64XX_SPI_MODE_TXDMA_ON		(1<<1)
+> @@ -114,6 +116,8 @@
+>  
+>  #define S3C64XX_SPI_TRAILCNT		S3C64XX_SPI_MAX_TRAILCNT
+>  
+> +#define S3C64XX_SPI_POLLING_SIZE	32
+> +
+>  #define msecs_to_loops(t) (loops_per_jiffy / 1000 * HZ * t)
+>  #define is_polling(x)	(x->cntrlr_info->polling)
+>  
+> @@ -552,7 +556,7 @@ static int s3c64xx_wait_for_dma(struct s3c64xx_spi_driver_data *sdd,
+>  }
+>  
+>  static int s3c64xx_wait_for_pio(struct s3c64xx_spi_driver_data *sdd,
+> -				struct spi_transfer *xfer)
+> +				struct spi_transfer *xfer, bool use_irq)
+>  {
+>  	void __iomem *regs = sdd->regs;
+>  	unsigned long val;
+> @@ -573,6 +577,12 @@ static int s3c64xx_wait_for_pio(struct s3c64xx_spi_driver_data *sdd,
+>  	if (RX_FIFO_LVL(status, sdd) < xfer->len)
+>  		usleep_range(time_us / 2, time_us);
+>  
+> +	if (use_irq) {
+> +		val = msecs_to_jiffies(ms);
+> +		if (!wait_for_completion_timeout(&sdd->xfer_completion, val))
+> +			return -EIO;
+> +	}
+> +
+>  	val = msecs_to_loops(ms);
+>  	do {
+>  		status = readl(regs + S3C64XX_SPI_STATUS);
+> @@ -735,10 +745,13 @@ static int s3c64xx_spi_transfer_one(struct spi_master *master,
+>  	void *rx_buf = NULL;
+>  	int target_len = 0, origin_len = 0;
+>  	int use_dma = 0;
+> +	bool use_irq = false;
+>  	int status;
+>  	u32 speed;
+>  	u8 bpw;
+>  	unsigned long flags;
+> +	u32 rdy_lv;
+> +	u32 val;
+>  
+>  	reinit_completion(&sdd->xfer_completion);
+>  
+> @@ -759,17 +772,46 @@ static int s3c64xx_spi_transfer_one(struct spi_master *master,
+>  	    sdd->rx_dma.ch && sdd->tx_dma.ch) {
+>  		use_dma = 1;
+>  
+> -	} else if (xfer->len > fifo_len) {
+> +	} else if (xfer->len >= fifo_len) {
 
-kernel test robot noticed the following build errors:
+I don't fully understand this. If len equals to fifo_len, everything
+would fit into FIFO so no need for all this?
 
-[auto build test ERROR on 348551ddaf311c76b01cdcbaf61b6fef06a49144]
+>  		tx_buf = xfer->tx_buf;
+>  		rx_buf = xfer->rx_buf;
+>  		origin_len = xfer->len;
+> -
+>  		target_len = xfer->len;
+> -		if (xfer->len > fifo_len)
+> -			xfer->len = fifo_len;
+> +		xfer->len = fifo_len - 1;
+>  	}
+>  
+>  	do {
+> +		/* transfer size is greater than 32, change to IRQ mode */
+> +		if (xfer->len > S3C64XX_SPI_POLLING_SIZE)
+> +			use_irq = true;
+> +
+> +		if (use_irq) {
+> +			reinit_completion(&sdd->xfer_completion);
+> +
+> +			rdy_lv = xfer->len;
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Linus-Walleij/Input-ads7846-Convert-to-use-software-nodes/20230505-162601
-base:   348551ddaf311c76b01cdcbaf61b6fef06a49144
-patch link:    https://lore.kernel.org/r/20230430-nokia770-regression-v2-1-984ed3ca5444%40linaro.org
-patch subject: [PATCH v2 1/3] Input: ads7846 - Convert to use software nodes
-config: i386-randconfig-a003 (https://download.01.org/0day-ci/archive/20230505/202305051726.wOn3I3W1-lkp@intel.com/config)
-compiler: gcc-11 (Debian 11.3.0-12) 11.3.0
-reproduce (this is a W=1 build):
-        # https://github.com/intel-lab-lkp/linux/commit/9708c9277cc820e52916ddf795926d3254bb5eed
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Linus-Walleij/Input-ads7846-Convert-to-use-software-nodes/20230505-162601
-        git checkout 9708c9277cc820e52916ddf795926d3254bb5eed
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        make W=1 O=build_dir ARCH=i386 olddefconfig
-        make W=1 O=build_dir ARCH=i386 SHELL=/bin/bash drivers/input/touchscreen/
+Style is:
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202305051726.wOn3I3W1-lkp@intel.com/
+/*
+ *
 
-All errors (new ones prefixed by >>):
+> +			/* Setup RDY_FIFO trigger Level
+> +			 * RDY_LVL =
+> +			 * fifo_lvl up to 64 byte -> N bytes
+> +			 *               128 byte -> RDY_LVL * 2 bytes
+> +			 *               256 byte -> RDY_LVL * 4 bytes
 
->> drivers/input/touchscreen/ads7846.c:1406:35: error: 'ads7846_dt_ids' undeclared here (not in a function); did you mean 'ads7846_cmds'?
-    1406 |                 .of_match_table = ads7846_dt_ids,
-         |                                   ^~~~~~~~~~~~~~
-         |                                   ads7846_cmds
+I don't understand it. Based on this equation for 256 bytes,
+RDY_LVL = RDY_LVL * 4?
+Didn't you mean xfer->len?
 
 
-vim +1406 drivers/input/touchscreen/ads7846.c
+Best regards,
+Krzysztof
 
-  1401	
-  1402	static struct spi_driver ads7846_driver = {
-  1403		.driver = {
-  1404			.name	= "ads7846",
-  1405			.pm	= pm_sleep_ptr(&ads7846_pm),
-> 1406			.of_match_table = ads7846_dt_ids,
-  1407		},
-  1408		.probe		= ads7846_probe,
-  1409		.remove		= ads7846_remove,
-  1410	};
-  1411	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests

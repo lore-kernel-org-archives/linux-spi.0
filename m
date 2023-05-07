@@ -2,125 +2,115 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BA418C77B7F
-	for <linux-spi@archiver.kernel.org>; Sun,  7 May 2023 00:52:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7FC5BC77B75
+	for <linux-spi@archiver.kernel.org>; Sun,  7 May 2023 07:42:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232317AbjEGAwm (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sat, 6 May 2023 20:52:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52482 "EHLO
+        id S230235AbjEGHmJ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 7 May 2023 03:42:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232364AbjEGAw0 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sat, 6 May 2023 20:52:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 668D4100C6;
-        Sat,  6 May 2023 17:49:33 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D0DB9611B6;
-        Sun,  7 May 2023 00:34:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72E57C433EF;
-        Sun,  7 May 2023 00:34:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683419687;
-        bh=1uJfYARsTgDEvYGtOge7SdoG2s/SP89FUPrUphzb1Ew=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QZjmFLMOuB9a9Ble0UStVnEy9+nYoIUBk0D1SgLgtCnaObzjKa1HMqn5n/WdbjIf2
-         FtAimQG1KTU/jriKCqCzJhTyfvUJ0WqddtliZ+L0Vgw3tfw2t1MfM2rHY5L5wGppy+
-         W9C8kyC0NRHoYh/pe3uddNl8R+nG7lAFmNr3j7132NOZX+QuYSxed64HSZgOOX3gqj
-         GX1zqR9norXmwtn1hrqZ5qlD99CXjbu85xID9CyyJ33OGvzIevHENuTeGa3kIN7Av2
-         iV7bSd3XeBEyHloOCWX4ix6q6qNwIihFHDbGaEOi5VRRofe9+FhylEtbVHpQFxqhZ7
-         8BPKDIbz1dw4g==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Kevin Groeneveld <kgroeneveld@lenbrook.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, shawnguo@kernel.org,
-        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.1 09/19] spi: spi-imx: fix MX51_ECSPI_* macros when cs > 3
-Date:   Sat,  6 May 2023 20:34:07 -0400
-Message-Id: <20230507003417.4077259-9-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230507003417.4077259-1-sashal@kernel.org>
-References: <20230507003417.4077259-1-sashal@kernel.org>
+        with ESMTP id S229462AbjEGHmH (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 7 May 2023 03:42:07 -0400
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2A436E93
+        for <linux-spi@vger.kernel.org>; Sun,  7 May 2023 00:42:06 -0700 (PDT)
+Received: by mail-ed1-x52f.google.com with SMTP id 4fb4d7f45d1cf-50bc4ba28cbso6216983a12.0
+        for <linux-spi@vger.kernel.org>; Sun, 07 May 2023 00:42:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1683445325; x=1686037325;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=c7LsKf4hNT2P5PU2ttlrUN6/LYaDAzA948pWoMKox5c=;
+        b=TX9CyL9LubB7HCIURG1+Ps8Dc78L8mIBTUrXGedjhosEQ9iGX02LHYszg9TadB6CIo
+         46yO19v0VUHLl0c2X3gChl153ImEt4S78UNNmTdjCtmq0Mg5eSwBpbOLhAupYxwkJKNJ
+         oS/a/+Ed1XYEN2PJhetpM0ZjoYqIugG/vENX+nFzkLsJqi7FBL8rbcy6dSMMmtJpmjbN
+         AJ5k5+eK/CYl7DJ6BZjPwSgPXGvHR58IALV+mBNX2Zw0OyvUEq6ps8Y1zwhXJCrbdS3F
+         7jbe5cLaSf2y9pzcu9lP/I2g6xCkmiZmmrQByTDD8u2loJ937K/2v512Zy+mKhzhRvjI
+         XNsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683445325; x=1686037325;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=c7LsKf4hNT2P5PU2ttlrUN6/LYaDAzA948pWoMKox5c=;
+        b=aVN5J9/iq+Q/V4GbvcLiVXaXFmOekP5B28eqnQ+TAkIC0NkTsdHzpy5RmrIv3dFbjn
+         eaFMzGSHMHXyi1H9VxcqRgQJTx4+qN5d+s+CN8FjvhtvmRfUVAhe2eBorsZJvp6SoDyX
+         ZwdOttRQByaJGqE5z1T1HOKQ3Stx8g18dznurkhROXdh6l0wcTdW4wsvGAqPaf4Y7P34
+         ECy4oBadcVGMxKGpLVgRxCPBsh6gDjxNezVpVTJD0clV40q/df8k3Lr1IqzNLHkYUykr
+         61/eEWBWEgeAv5JM95GQsNr2qM9FdFb0a5n4e7eR3ylNKkT5UhoCPaeeU1keGokOgN7/
+         TQ9w==
+X-Gm-Message-State: AC+VfDytkuxgo/m/hJYpv1anKAOvhyFdGMWVwaevxH+dyhzHgGIbIbsp
+        Nl4mfHZOdphgETidL4AshaaEzw==
+X-Google-Smtp-Source: ACHHUZ7nHVchL2fZ7oJnUcsF/P+oA4g2/9hI1INf/q09JsCXCI3jglN2cYEWYgHUD9C7ig0v6LaKlQ==
+X-Received: by 2002:a17:907:36c1:b0:94e:e082:15b2 with SMTP id bj1-20020a17090736c100b0094ee08215b2mr5508501ejc.55.1683445324962;
+        Sun, 07 May 2023 00:42:04 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:183b:950f:b4d5:135a? ([2a02:810d:15c0:828:183b:950f:b4d5:135a])
+        by smtp.gmail.com with ESMTPSA id j23-20020a170906051700b00960005e09a3sm3350111eja.61.2023.05.07.00.42.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 07 May 2023 00:42:04 -0700 (PDT)
+Message-ID: <e757679d-0037-b2ec-f5f7-6ad4e6500508@linaro.org>
+Date:   Sun, 7 May 2023 09:42:02 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.1
+Subject: Re: [PATCH v2 1/6] dt-bindings: spi: sun6i: add DT bindings for
+ Allwinner R329 SPI
+To:     Maxim Kiselev <bigunclemax@gmail.com>
+Cc:     Andre Przywara <andre.przywara@arm.com>,
+        Icenowy Zheng <icenowy@aosc.io>,
+        Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland <samuel@sholland.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+        Heiko Stuebner <heiko.stuebner@vrull.eu>,
+        Maxime Ripard <mripard@kernel.org>, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org,
+        linux-riscv@lists.infradead.org
+References: <20230506073018.1411583-1-bigunclemax@gmail.com>
+ <20230506073018.1411583-2-bigunclemax@gmail.com>
+ <e38cbcdf-5963-fb00-d7b2-66d4129f9fce@linaro.org>
+ <CALHCpMhp07DwL+cUZN8rwa1N_PHQ1KstOB+Gw_mCWFzm5rSVrQ@mail.gmail.com>
+Content-Language: en-US
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <CALHCpMhp07DwL+cUZN8rwa1N_PHQ1KstOB+Gw_mCWFzm5rSVrQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Kevin Groeneveld <kgroeneveld@lenbrook.com>
+On 06/05/2023 14:59, Maxim Kiselev wrote:
+>> Should this not be set up as a fallback compatible, per Samuel's
+>> suggestion here:
+> 
+> Ok, I'll do it in the next version.
+> 
+>> I wonder what is the difference of DBI compatible. You refer to "helper
+>> functions", which sounds like driver... do you mean some parts of SPI
+>> controller?
+> 
+> According to the D1 datasheet the SPI_DBI controller uses the same
+> registers layout as the regular SPI0 controller.
+> But also it has an additional DBI mode functionality. Support for this
+> mode is not yet implemented.
+> So there is no difference between 'sun50i-r329-spi' and
+> 'sun50i-r329-spi-dbi' controllers types in the SPI driver.
+> 
+> Maybe we should drop 'sun50i-r329-spi-dbi' compatible struct from here
+> https://lore.kernel.org/lkml/20230506073018.1411583-5-bigunclemax@gmail.com/
+> for a while the DBI mode functionality will not be implemented?
 
-[ Upstream commit 87c614175bbf28d3fd076dc2d166bac759e41427 ]
+You need both compatibles, but keep DBI compatible with regular one.
 
-When using gpio based chip select the cs value can go outside the range
-0 – 3. The various MX51_ECSPI_* macros did not take this into consideration
-resulting in possible corruption of the configuration.
-
-For example for any cs value over 3 the SCLKPHA bits would not be set and
-other values in the register possibly corrupted.
-
-One way to fix this is to just mask the cs bits to 2 bits. This still
-allows all 4 native chip selects to work as well as gpio chip selects
-(which can use any of the 4 chip select configurations).
-
-Signed-off-by: Kevin Groeneveld <kgroeneveld@lenbrook.com>
-Link: https://lore.kernel.org/r/20230318222132.3373-1-kgroeneveld@lenbrook.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/spi/spi-imx.c | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index d209930069cf3..9d1a8c68042d3 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -253,6 +253,18 @@ static bool spi_imx_can_dma(struct spi_controller *controller, struct spi_device
- 	return true;
- }
- 
-+/*
-+ * Note the number of natively supported chip selects for MX51 is 4. Some
-+ * devices may have less actual SS pins but the register map supports 4. When
-+ * using gpio chip selects the cs values passed into the macros below can go
-+ * outside the range 0 - 3. We therefore need to limit the cs value to avoid
-+ * corrupting bits outside the allocated locations.
-+ *
-+ * The simplest way to do this is to just mask the cs bits to 2 bits. This
-+ * still allows all 4 native chip selects to work as well as gpio chip selects
-+ * (which can use any of the 4 chip select configurations).
-+ */
-+
- #define MX51_ECSPI_CTRL		0x08
- #define MX51_ECSPI_CTRL_ENABLE		(1 <<  0)
- #define MX51_ECSPI_CTRL_XCH		(1 <<  2)
-@@ -261,16 +273,16 @@ static bool spi_imx_can_dma(struct spi_controller *controller, struct spi_device
- #define MX51_ECSPI_CTRL_DRCTL(drctl)	((drctl) << 16)
- #define MX51_ECSPI_CTRL_POSTDIV_OFFSET	8
- #define MX51_ECSPI_CTRL_PREDIV_OFFSET	12
--#define MX51_ECSPI_CTRL_CS(cs)		((cs) << 18)
-+#define MX51_ECSPI_CTRL_CS(cs)		((cs & 3) << 18)
- #define MX51_ECSPI_CTRL_BL_OFFSET	20
- #define MX51_ECSPI_CTRL_BL_MASK		(0xfff << 20)
- 
- #define MX51_ECSPI_CONFIG	0x0c
--#define MX51_ECSPI_CONFIG_SCLKPHA(cs)	(1 << ((cs) +  0))
--#define MX51_ECSPI_CONFIG_SCLKPOL(cs)	(1 << ((cs) +  4))
--#define MX51_ECSPI_CONFIG_SBBCTRL(cs)	(1 << ((cs) +  8))
--#define MX51_ECSPI_CONFIG_SSBPOL(cs)	(1 << ((cs) + 12))
--#define MX51_ECSPI_CONFIG_SCLKCTL(cs)	(1 << ((cs) + 20))
-+#define MX51_ECSPI_CONFIG_SCLKPHA(cs)	(1 << ((cs & 3) +  0))
-+#define MX51_ECSPI_CONFIG_SCLKPOL(cs)	(1 << ((cs & 3) +  4))
-+#define MX51_ECSPI_CONFIG_SBBCTRL(cs)	(1 << ((cs & 3) +  8))
-+#define MX51_ECSPI_CONFIG_SSBPOL(cs)	(1 << ((cs & 3) + 12))
-+#define MX51_ECSPI_CONFIG_SCLKCTL(cs)	(1 << ((cs & 3) + 20))
- 
- #define MX51_ECSPI_INT		0x10
- #define MX51_ECSPI_INT_TEEN		(1 <<  0)
--- 
-2.39.2
+Best regards,
+Krzysztof
 

@@ -2,47 +2,47 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7395FC77B7F
-	for <linux-spi@archiver.kernel.org>; Sun,  7 May 2023 00:43:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BA418C77B7F
+	for <linux-spi@archiver.kernel.org>; Sun,  7 May 2023 00:52:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232618AbjEGAn1 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sat, 6 May 2023 20:43:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38944 "EHLO
+        id S232317AbjEGAwm (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sat, 6 May 2023 20:52:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232867AbjEGAmd (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sat, 6 May 2023 20:42:33 -0400
+        with ESMTP id S232364AbjEGAw0 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sat, 6 May 2023 20:52:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95E9935115;
-        Sat,  6 May 2023 17:38:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 668D4100C6;
+        Sat,  6 May 2023 17:49:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F21861508;
-        Sun,  7 May 2023 00:37:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4CF0C433A0;
-        Sun,  7 May 2023 00:37:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D0DB9611B6;
+        Sun,  7 May 2023 00:34:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72E57C433EF;
+        Sun,  7 May 2023 00:34:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683419837;
-        bh=EqIMHBb7lsreNcuYs0ZyX0cN2/SZ4HVZvunmtr4aWAc=;
+        s=k20201202; t=1683419687;
+        bh=1uJfYARsTgDEvYGtOge7SdoG2s/SP89FUPrUphzb1Ew=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Q4BmyhPrVkuHgKEDVKvAyZ04jE3jVz5Yp22O8QPZ05cjPYHeNaeNdIu2/Nk6NrRaA
-         61AfT17rsOUJePkFZDk4O2vknWehfYN2ePJgUmCiknIMGPUR3RWEXG59MNjF+yu6g2
-         Rkm6wT5ssGMhy017BSq1ZMizNOp0Uos7fUG+hAYWcHa2FDK9/2oQdhJAT/SpsGtK9A
-         i/pJ6icKKioufE920/dvztG31vKkkG0vtAPHrDRjK40o84wqga54x3Sm42ZYdxn6k3
-         S5aeq77BUGwxBU+OlD7aMooYY6O1gDSRYVCo6o1SnfXM2R+l0okcGCQJ5l9q8lc+Lv
-         xIYOro7P+iddQ==
+        b=QZjmFLMOuB9a9Ble0UStVnEy9+nYoIUBk0D1SgLgtCnaObzjKa1HMqn5n/WdbjIf2
+         FtAimQG1KTU/jriKCqCzJhTyfvUJ0WqddtliZ+L0Vgw3tfw2t1MfM2rHY5L5wGppy+
+         W9C8kyC0NRHoYh/pe3uddNl8R+nG7lAFmNr3j7132NOZX+QuYSxed64HSZgOOX3gqj
+         GX1zqR9norXmwtn1hrqZ5qlD99CXjbu85xID9CyyJ33OGvzIevHENuTeGa3kIN7Av2
+         iV7bSd3XeBEyHloOCWX4ix6q6qNwIihFHDbGaEOi5VRRofe9+FhylEtbVHpQFxqhZ7
+         8BPKDIbz1dw4g==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Kevin Groeneveld <kgroeneveld@lenbrook.com>,
         Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, shawnguo@kernel.org,
         linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 4.14 5/8] spi: spi-imx: fix MX51_ECSPI_* macros when cs > 3
-Date:   Sat,  6 May 2023 20:37:00 -0400
-Message-Id: <20230507003704.4081392-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 09/19] spi: spi-imx: fix MX51_ECSPI_* macros when cs > 3
+Date:   Sat,  6 May 2023 20:34:07 -0400
+Message-Id: <20230507003417.4077259-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230507003704.4081392-1-sashal@kernel.org>
-References: <20230507003704.4081392-1-sashal@kernel.org>
+In-Reply-To: <20230507003417.4077259-1-sashal@kernel.org>
+References: <20230507003417.4077259-1-sashal@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 X-stable: review
@@ -76,10 +76,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 18 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index df18d07d544d5..e306de7009295 100644
+index d209930069cf3..9d1a8c68042d3 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -241,6 +241,18 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+@@ -253,6 +253,18 @@ static bool spi_imx_can_dma(struct spi_controller *controller, struct spi_device
  	return true;
  }
  
@@ -98,7 +98,7 @@ index df18d07d544d5..e306de7009295 100644
  #define MX51_ECSPI_CTRL		0x08
  #define MX51_ECSPI_CTRL_ENABLE		(1 <<  0)
  #define MX51_ECSPI_CTRL_XCH		(1 <<  2)
-@@ -249,16 +261,16 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+@@ -261,16 +273,16 @@ static bool spi_imx_can_dma(struct spi_controller *controller, struct spi_device
  #define MX51_ECSPI_CTRL_DRCTL(drctl)	((drctl) << 16)
  #define MX51_ECSPI_CTRL_POSTDIV_OFFSET	8
  #define MX51_ECSPI_CTRL_PREDIV_OFFSET	12

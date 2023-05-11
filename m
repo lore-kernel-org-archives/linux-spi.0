@@ -2,42 +2,42 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 84B87C77B7C
-	for <linux-spi@archiver.kernel.org>; Thu, 11 May 2023 18:01:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EFABBC7EE24
+	for <linux-spi@archiver.kernel.org>; Thu, 11 May 2023 18:01:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238673AbjEKSBz (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 11 May 2023 14:01:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56142 "EHLO
+        id S239059AbjEKSB4 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 11 May 2023 14:01:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238952AbjEKSBv (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 11 May 2023 14:01:51 -0400
+        with ESMTP id S238960AbjEKSBw (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 11 May 2023 14:01:52 -0400
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB18D10C;
-        Thu, 11 May 2023 11:01:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B799F4218;
+        Thu, 11 May 2023 11:01:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1683828104; x=1715364104;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=YmntpvtFHJS3jrZkGSqUkMwqsVJxjst16k/I4ZCZIMs=;
-  b=FBgw+ylDzA60Cxe55E0rk9FBimMH47VzG+JapG3+i6WN4AqPV58MmAlI
-   38UCTx8MWenT9MWYNjVRXiQF1H7Gm8BKkTNBbTE4iPFDd6Jl+6jnbApu8
-   EjAEQmDnDb4cR7s6m0YmXMY7glG8QLSaZtCtHIpux49EhswV09sqGk1kF
-   ycs9qcBrIfO8EoJ0b0ElbxZqdMzhBsrjT5AQ+8Ke7AxO9uqRQFYKCp+ir
-   gkLIqw6B4R7wJUkBwHK45Ayo5sJMj8pTS2LWV6lAA4biZN9i7cK3Cy30i
-   Rb+YigcgT4pGcbgpV+yZBgEgc3V75TwoUIQqrXHSZ4MppCAA7RdYlREQl
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10707"; a="413942558"
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=dJJmS8cUJvOi/sZ1VchRmzwhvoPImOPRXfO0Qz+Mo6U=;
+  b=eIVGyQjZT/QikFAuz9dJbtBk8p8TCjClhOpMQdK5CY0yyUdbnb8WZDaL
+   gTebyQuwXrA09jMDSTwqj9TuGhORDmDcE7Fds5gSitexCO0IcZosyxHaI
+   R+Ap/aMLzHTvkzkxtd5kzswpsh+QVTteoEgWksnGjfeFtvaK+x39SJDmb
+   wg2eaU2OgAgNfdqSUUHjbYHH0SRURmeGeoPplqwks43qvjOSPRLW7mLVy
+   F4mCe//do1lMSpLtw5cAFUmW4nqWx7E7O9/MWimZ1RRJBjG/sFa3ZaVto
+   UseX1artRZSCeGQUjHPZTm4jiS1ArPb0xf+PAAVdeRjc/cmBGWKFxNyYk
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10707"; a="413942695"
 X-IronPort-AV: E=Sophos;i="5.99,268,1677571200"; 
-   d="scan'208";a="413942558"
+   d="scan'208";a="413942695"
 Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2023 11:00:46 -0700
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2023 11:01:00 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10707"; a="874061365"
+X-IronPort-AV: E=McAfee;i="6600,9927,10707"; a="874061484"
 X-IronPort-AV: E=Sophos;i="5.99,268,1677571200"; 
-   d="scan'208";a="874061365"
+   d="scan'208";a="874061484"
 Received: from ye-nuc7i7dnhe.sh.intel.com ([10.239.153.70])
-  by orsmga005.jf.intel.com with ESMTP; 11 May 2023 11:00:39 -0700
+  by orsmga005.jf.intel.com with ESMTP; 11 May 2023 11:00:54 -0700
 From:   Ye Xiang <xiang.ye@intel.com>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Arnd Bergmann <arnd@arndb.de>,
@@ -54,88 +54,193 @@ Cc:     srinivas.pandruvada@intel.com, heikki.krogerus@linux.intel.com,
         andriy.shevchenko@linux.intel.com, sakari.ailus@linux.intel.com,
         zhifeng.wang@intel.com, wentong.wu@intel.com, lixu.zhang@intel.com,
         Ye Xiang <xiang.ye@intel.com>
-Subject: [PATCH v8 0/6] Add Intel LJCA device driver
-Date:   Fri, 12 May 2023 01:58:38 +0800
-Message-Id: <20230511175844.185070-1-xiang.ye@intel.com>
+Subject: [PATCH v8 2/6] usb: ljca: Add transport interfaces for sub-module drivers
+Date:   Fri, 12 May 2023 01:58:40 +0800
+Message-Id: <20230511175844.185070-3-xiang.ye@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230511175844.185070-1-xiang.ye@intel.com>
+References: <20230511175844.185070-1-xiang.ye@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Add driver for Intel La Jolla Cove Adapter (LJCA) device.
-This is a USB-GPIO, USB-I2C and USB-SPI device. We add 4
-drivers to support this device: a USB driver, a GPIO chip
-driver, a I2C controller driver and a SPI controller driver.
+Adds the transport interfaces for various LJCA sub-module drivers
+to communicate with LJCA hardware. The sub-modules of LJCA can use
+ljca_transfer() to issue a transfer between host and hardware. And
+ljca_register_event_cb is exported to LJCA sub-module drivers for
+hardware event subscription.
 
+Signed-off-by: Ye Xiang <xiang.ye@intel.com>
 ---
-v8:
- - ljca: use READ_ONCE to make the value of ibuf consistent.
- - gpio: inplement get_direction callback.
- - gpio: move kconfig item into `USB GPIO expanders` menu.
+ drivers/usb/misc/usb-ljca.c | 91 +++++++++++++++++++++++++++++++++++++
+ include/linux/usb/ljca.h    | 52 +++++++++++++++++++++
+ 2 files changed, 143 insertions(+)
 
-v7:
- - ljca: remove unused field `udev` in struct ljca_dev.
- - ljca: rename ljca module name to usb-ljca.
- - ljca: use CONFIG_ACPI to enclose acpi related code.
- - ljca/gpio/i2c/spi: align MACRO defination.
-
-v6:
- - ljca: split LJCA USB driver into two commits: USB part and API part.
- - gpio/i2c/spi: use auxiliary bus for sub-module device enumeration instead of MFD.
- - move document patch for LJCA sysfs entry to the 3th patch of this patch series.
- - ljca: fix potential race condition when wait response timeout.
- - ljca: use devm_kzalloc to malloc ljca device struct. 
-
-v5:
- - move ljca.h from drivers/include/mfd to drivers/include/usb.
- - ljca: fix a potential memory leak issue.
- - add a blank line before return to adust to kernel code style.
- - ljca: sysfs: split "cmd" to "ljca_dfu" and "ljca_trace_level".
-
-v4:
- - move ljca.c from drivers/mfd to drivers/usb/misc folder.
- - fix index warning in sysfs-bus-devices-ljca.
-
-v3:
- - spi: make ljca_spi_transfer inline and fix an endian issue.
-
-v2:
- - ljca: remove reset command.
- - gpio/spi/i2c: add `default MFD_LJCA` in Kconfig.
- - gpio: add "select GPIOLIB_IRQCHIP" in Kconfig.
-
-Ye Xiang (6):
-  usb: Add support for Intel LJCA device
-  usb: ljca: Add transport interfaces for sub-module drivers
-  Documentation: Add ABI doc for attributes of LJCA device
-  gpio: Add support for Intel LJCA USB GPIO driver
-  i2c: Add support for Intel LJCA USB I2C driver
-  spi: Add support for Intel LJCA USB SPI driver
-
- .../ABI/testing/sysfs-bus-usb-devices-ljca    |   36 +
- drivers/gpio/Kconfig                          |   12 +
- drivers/gpio/Makefile                         |    1 +
- drivers/gpio/gpio-ljca.c                      |  479 ++++++++
- drivers/i2c/busses/Kconfig                    |   11 +
- drivers/i2c/busses/Makefile                   |    1 +
- drivers/i2c/busses/i2c-ljca.c                 |  350 ++++++
- drivers/spi/Kconfig                           |   11 +
- drivers/spi/Makefile                          |    1 +
- drivers/spi/spi-ljca.c                        |  290 +++++
- drivers/usb/misc/Kconfig                      |   14 +
- drivers/usb/misc/Makefile                     |    1 +
- drivers/usb/misc/usb-ljca.c                   | 1068 +++++++++++++++++
- include/linux/usb/ljca.h                      |  102 ++
- 14 files changed, 2377 insertions(+)
- create mode 100644 Documentation/ABI/testing/sysfs-bus-usb-devices-ljca
- create mode 100644 drivers/gpio/gpio-ljca.c
- create mode 100644 drivers/i2c/busses/i2c-ljca.c
- create mode 100644 drivers/spi/spi-ljca.c
- create mode 100644 drivers/usb/misc/usb-ljca.c
- create mode 100644 include/linux/usb/ljca.h
-
+diff --git a/drivers/usb/misc/usb-ljca.c b/drivers/usb/misc/usb-ljca.c
+index 4f76f73fdcac..3b68c9e472fc 100644
+--- a/drivers/usb/misc/usb-ljca.c
++++ b/drivers/usb/misc/usb-ljca.c
+@@ -368,6 +368,97 @@ static int ljca_stub_write(struct ljca_stub *stub, u8 cmd, const void *obuf, uns
+ 	return ret;
+ }
+ 
++static int ljca_transfer_internal(struct ljca *ljca, u8 cmd, const void *obuf,
++				  unsigned int obuf_len, void *ibuf, unsigned int *ibuf_len,
++				  bool wait_ack)
++{
++	struct ljca_stub *stub;
++
++	stub = ljca_stub_find(ljca->dev, ljca->type);
++	if (IS_ERR(stub))
++		return PTR_ERR(stub);
++
++	return ljca_stub_write(stub, cmd, obuf, obuf_len, ibuf, ibuf_len, wait_ack,
++			       LJCA_USB_WRITE_ACK_TIMEOUT_MS);
++}
++
++int ljca_transfer(struct ljca *ljca, u8 cmd, const void *obuf, unsigned int obuf_len, void *ibuf,
++		  unsigned int *ibuf_len)
++{
++	return ljca_transfer_internal(ljca, cmd, obuf, obuf_len, ibuf, ibuf_len, true);
++}
++EXPORT_SYMBOL_NS_GPL(ljca_transfer, LJCA);
++
++int ljca_transfer_noack(struct ljca *ljca, u8 cmd, const void *obuf, unsigned int obuf_len)
++{
++	return ljca_transfer_internal(ljca, cmd, obuf, obuf_len, NULL, NULL, false);
++}
++EXPORT_SYMBOL_NS_GPL(ljca_transfer_noack, LJCA);
++
++int ljca_register_event_cb(struct ljca *ljca, ljca_event_cb_t event_cb, void *context)
++{
++	struct ljca_event_cb_entry *entry, *iter;
++	struct ljca_stub *stub;
++	unsigned long flags;
++	int ret;
++
++	stub = ljca_stub_find(ljca->dev, ljca->type);
++	if (IS_ERR(stub))
++		return PTR_ERR(stub);
++
++	entry = kzalloc(sizeof(*entry), GFP_KERNEL);
++	if (!entry)
++		return -ENOMEM;
++
++	entry->notify = event_cb;
++	entry->context = context;
++	entry->id = ljca->id;
++
++	spin_lock_irqsave(&stub->event_cb_lock, flags);
++
++	list_for_each_entry(iter, &stub->event_entrys, list) {
++		if (iter->id == ljca->id) {
++			ret = -EBUSY;
++			break;
++		}
++	}
++
++	if (!ret)
++		list_add_tail(&entry->list, &stub->event_entrys);
++
++	spin_unlock_irqrestore(&stub->event_cb_lock, flags);
++
++	if (ret)
++		kfree(entry);
++
++	return ret;
++}
++EXPORT_SYMBOL_NS_GPL(ljca_register_event_cb, LJCA);
++
++void ljca_unregister_event_cb(struct ljca *ljca)
++{
++	struct ljca_stub *stub;
++	struct ljca_event_cb_entry *iter;
++	unsigned long flags;
++
++	stub = ljca_stub_find(ljca->dev, ljca->type);
++	if (IS_ERR(stub))
++		return;
++
++	spin_lock_irqsave(&stub->event_cb_lock, flags);
++
++	list_for_each_entry(iter, &stub->event_entrys, list) {
++		if (iter->id == ljca->id) {
++			list_del_init(&iter->list);
++			kfree(iter);
++			break;
++		}
++	}
++
++	spin_unlock_irqrestore(&stub->event_cb_lock, flags);
++}
++EXPORT_SYMBOL_NS_GPL(ljca_unregister_event_cb, LJCA);
++
+ static void ljca_read_complete(struct urb *urb)
+ {
+ 	struct ljca_msg *header = urb->transfer_buffer;
+diff --git a/include/linux/usb/ljca.h b/include/linux/usb/ljca.h
+index f209fa3ba54a..74e9729d05ec 100644
+--- a/include/linux/usb/ljca.h
++++ b/include/linux/usb/ljca.h
+@@ -47,4 +47,56 @@ struct ljca_spi_info {
+  */
+ typedef void (*ljca_event_cb_t)(void *context, u8 cmd, const void *evt_data, int len);
+ 
++/**
++ * ljca_register_event_cb - register a callback function to receive events
++ *
++ * @ljca: ljca device handle
++ * @event_cb: callback function
++ * @context: execution context of event callback
++ *
++ * Return: 0 in case of success, negative value in case of error
++ */
++int ljca_register_event_cb(struct ljca *ljca, ljca_event_cb_t event_cb, void *context);
++
++/**
++ * ljca_unregister_event_cb - unregister the callback function for an event
++ *
++ * @ljca: ljca device handle
++ */
++void ljca_unregister_event_cb(struct ljca *ljca);
++
++/**
++ * ljca_transfer - issue a LJCA command and wait for a response and the
++ * associated data
++ *
++ * @ljca: ljca device handle
++ * @cmd: the command to be sent to the device
++ * @obuf: the buffer to be sent to the device; it can be NULL if the user
++ *	doesn't need to transmit data with this command
++ * @obuf_len: the size of the buffer to be sent to the device; it should
++ *	be 0 when obuf is NULL
++ * @ibuf: any data associated with the response will be copied here; it can be
++ *	NULL if the user doesn't need the response data
++ * @ibuf_len: must be initialized to the input buffer size; it will be modified
++ *	to indicate the actual data transferred; it shouldn't be NULL as well
++ *	when ibuf isn't NULL
++ *
++ * Return: 0 for success, negative value for errors
++ */
++int ljca_transfer(struct ljca *ljca, u8 cmd, const void *obuf, unsigned int obuf_len,
++		  void *ibuf, unsigned int *ibuf_len);
++
++/**
++ * ljca_transfer_noack - issue a LJCA command without a response
++ *
++ * @ljca: ljca device handle
++ * @cmd: the command to be sent to the device
++ * @obuf: the buffer to be sent to the device; it can be NULL if the user
++ *	doesn't need to transmit data with this command
++ * @obuf_len: the size of the buffer to be sent to the device
++ *
++ * Return: 0 for success, negative value for errors
++ */
++int ljca_transfer_noack(struct ljca *ljca, u8 cmd, const void *obuf, unsigned int obuf_len);
++
+ #endif
 -- 
 2.34.1
 

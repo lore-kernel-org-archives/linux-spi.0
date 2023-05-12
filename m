@@ -2,43 +2,43 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 32110C7EE2D
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A0EEC7EE2E
 	for <linux-spi@archiver.kernel.org>; Fri, 12 May 2023 12:30:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240881AbjELMaE (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S240717AbjELMaE (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Fri, 12 May 2023 08:30:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59920 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240546AbjELM36 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 12 May 2023 08:29:58 -0400
-Received: from mx0b-001ae601.pphosted.com (mx0b-001ae601.pphosted.com [67.231.152.168])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 173AE1437A;
-        Fri, 12 May 2023 05:29:23 -0700 (PDT)
-Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
-        by mx0b-001ae601.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34C5eUj8031128;
+        with ESMTP id S240855AbjELM3x (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 12 May 2023 08:29:53 -0400
+Received: from mx0b-001ae601.pphosted.com (mx0a-001ae601.pphosted.com [67.231.149.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F247423A;
+        Fri, 12 May 2023 05:29:18 -0700 (PDT)
+Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
+        by mx0a-001ae601.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34CCOUoo001858;
         Fri, 12 May 2023 07:28:40 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding : content-type; s=PODMain02222019;
- bh=FF0MGgoGVYiyUdoLzrNTfui4hZc7QAdyPV9+R56x+60=;
- b=Er69sx5mItoC7ting41wXRkLDp8b5HO8s/fGyGkzhxBF+20TAD3DNqAeairtfRj2D38l
- 7g17wC1+wGuZJyemUmRYv4eD2J9+I4gNNMP4uGmnz4y8jAB5dNT84mlw9GdjzHHc1EuR
- neKDzdPlX3s2bX5ChnlLn5yCXeV+2+XElpxubkHW0OvRRBrGitDGBgCsHtcAPg9TXzGV
- mYKOOs1ngblrB97SiHiQ0gFUmQzYayn+k+f9L2vXAZgskzj1hNM1y2fj5A+qJpQs2TW2
- 92/k+82n1QHInNcC6QKtawwmdfRQjDa2m6OL/Y7oq9/cJDE0LfIOj6CHRc+pl7bNXW+t zA== 
-Received: from ediex01.ad.cirrus.com ([84.19.233.68])
-        by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 3qf7s46b2x-2
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=PODMain02222019;
+ bh=hhGbqr5I8d1WarBJ8Z9M0P99KfkmGBTeVHbqv5amikE=;
+ b=Ap4aiG0ah8RcwsjPABIbFRIg+kASR6fLmS8xzdDwefldHDuurFAMk4B5MfWBens19A7F
+ XqsvNcGVbfOhOxcWYXKecIBFrSAgJO74wrYn38mIIYAqkA+X+UMxc03E8T/lEUpD8yhz
+ HVs7zEEjJChOknZT4gTqALpDXKTALyzYgJpOoIrcvncv/aHU0brRHDfxiy+qK4D6xEtN
+ /8J3fSPbHlZJTfGzFpEaAlAmujCaALpN9h42TVooNfelT5aaGs1vYsptfCKgDbU3KUrc
+ TBhEdHiK2ZUazkqXvaa+9uON8sgTPRKUvfF8YuVAvSywjrOI919HQNSjPYsYwbkiTgeQ xQ== 
+Received: from ediex02.ad.cirrus.com ([84.19.233.68])
+        by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 3qf7nb5dqx-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
         Fri, 12 May 2023 07:28:40 -0500
-Received: from ediex02.ad.cirrus.com (198.61.84.81) by ediex01.ad.cirrus.com
- (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
+Received: from ediex02.ad.cirrus.com (198.61.84.81) by ediex02.ad.cirrus.com
+ (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.26; Fri, 12 May
  2023 07:28:38 -0500
 Received: from ediswmail.ad.cirrus.com (198.61.86.93) by
  anon-ediex02.ad.cirrus.com (198.61.84.81) with Microsoft SMTP Server id
  15.2.1118.26 via Frontend Transport; Fri, 12 May 2023 07:28:38 -0500
 Received: from algalon.ad.cirrus.com (algalon.ad.cirrus.com [198.90.251.122])
-        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 5829715A4;
+        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 24FD345;
         Fri, 12 May 2023 12:28:38 +0000 (UTC)
 From:   Charles Keepax <ckeepax@opensource.cirrus.com>
 To:     <broonie@kernel.org>, <lee@kernel.org>, <robh+dt@kernel.org>,
@@ -50,60 +50,100 @@ CC:     <lgirdwood@gmail.com>, <yung-chuan.liao@linux.intel.com>,
         <alsa-devel@alsa-project.org>, <patches@opensource.cirrus.com>,
         <devicetree@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
         <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH 03/10] ASoC: ak4118: Update to use new component control notify helper
-Date:   Fri, 12 May 2023 13:28:31 +0100
-Message-ID: <20230512122838.243002-4-ckeepax@opensource.cirrus.com>
+Subject: [PATCH 00/10] Add cs42l43 PC focused SoundWire CODEC
+Date:   Fri, 12 May 2023 13:28:28 +0100
+Message-ID: <20230512122838.243002-1-ckeepax@opensource.cirrus.com>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230512122838.243002-1-ckeepax@opensource.cirrus.com>
-References: <20230512122838.243002-1-ckeepax@opensource.cirrus.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: tR8CwHcEE0q8AMCU_M3wg1mquGdZccCi
-X-Proofpoint-GUID: tR8CwHcEE0q8AMCU_M3wg1mquGdZccCi
+X-Proofpoint-ORIG-GUID: 8-OvAxXkBH6wUG2stbtfU7YbBv3HFIV3
+X-Proofpoint-GUID: 8-OvAxXkBH6wUG2stbtfU7YbBv3HFIV3
 X-Proofpoint-Spam-Reason: safe
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Update the driver to use the new ASoC core control notify helper.
-This also fixes a bug where the control would not be found if the
-CODEC was given a name prefix.
+This patch chain adds support for the Cirrus Logic cs42l43 PC focused
+SoundWire CODEC. Some supporting work is included in the chain,
+including adding an ASoC control notification helper function and
+adding support for IRQs generated by the in-band SoundWire alert
+mechanism.
 
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
----
- sound/soc/codecs/ak4118.c | 11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+The chain is currently based of v6.4-rc1 because I am not 100% sure
+which tree we want to send everything through. The CODEC support
+has a build dependency on both the SoundWire change and the ASoC
+soc-component change.
 
-diff --git a/sound/soc/codecs/ak4118.c b/sound/soc/codecs/ak4118.c
-index b6d9a10bdccdc..74ccfb0d921d6 100644
---- a/sound/soc/codecs/ak4118.c
-+++ b/sound/soc/codecs/ak4118.c
-@@ -264,8 +264,6 @@ static irqreturn_t ak4118_irq_handler(int irq, void *data)
- 	struct ak4118_priv *ak4118 = data;
- 	struct snd_soc_component *component = ak4118->component;
- 	struct snd_kcontrol_new *kctl_new;
--	struct snd_kcontrol *kctl;
--	struct snd_ctl_elem_id *id;
- 	unsigned int i;
- 
- 	if (!component)
-@@ -273,13 +271,8 @@ static irqreturn_t ak4118_irq_handler(int irq, void *data)
- 
- 	for (i = 0; i < ARRAY_SIZE(ak4118_iec958_controls); i++) {
- 		kctl_new = &ak4118_iec958_controls[i];
--		kctl = snd_soc_card_get_kcontrol(component->card,
--						 kctl_new->name);
--		if (!kctl)
--			continue;
--		id = &kctl->id;
--		snd_ctl_notify(component->card->snd_card,
--			       SNDRV_CTL_EVENT_MASK_VALUE, id);
-+
-+		snd_soc_component_notify_control(component, kctl_new->name);
- 	}
- 
- 	return IRQ_HANDLED;
+Thanks,
+Charles
+
+Charles Keepax (8):
+  ASoC: soc-component: Add notify control helper function
+  ASoC: ak4118: Update to use new component control notify helper
+  ASoC: wm_adsp: Update to use new component control notify helepr
+  dt-bindings: mfd: cirrus,cs42l43: Add initial DT binding
+  mfd: cs42l43: Add support for cs42l43 core driver
+  irqchip/cs42l43: Add support for the cs42l43 IRQs
+  pinctrl: cs42l43: Add support for the cs42l43
+  ASoC: cs42l43: Add support for the cs42l43
+
+Lucas Tanure (2):
+  soundwire: bus: Allow SoundWire peripherals to register IRQ handlers
+  spi: cs42l43: Add SPI controller support
+
+ .../bindings/mfd/cirrus,cs42l43.yaml          |  212 ++
+ MAINTAINERS                                   |    7 +
+ drivers/irqchip/Kconfig                       |    9 +
+ drivers/irqchip/Makefile                      |    1 +
+ drivers/irqchip/irq-cs42l43.c                 |  170 ++
+ drivers/mfd/Kconfig                           |   23 +
+ drivers/mfd/Makefile                          |    3 +
+ drivers/mfd/cs42l43-i2c.c                     |   86 +
+ drivers/mfd/cs42l43-sdw.c                     |  210 ++
+ drivers/mfd/cs42l43.c                         | 1044 ++++++++
+ drivers/mfd/cs42l43.h                         |   23 +
+ drivers/pinctrl/cirrus/Kconfig                |   11 +
+ drivers/pinctrl/cirrus/Makefile               |    2 +
+ drivers/pinctrl/cirrus/pinctrl-cs42l43.c      |  614 +++++
+ drivers/soundwire/bus.c                       |   31 +
+ drivers/soundwire/bus_type.c                  |   12 +
+ drivers/spi/Kconfig                           |    7 +
+ drivers/spi/Makefile                          |    1 +
+ drivers/spi/spi-cs42l43.c                     |  287 +++
+ include/linux/irqchip/cs42l43.h               |   61 +
+ include/linux/mfd/cs42l43-regs.h              | 1172 +++++++++
+ include/linux/mfd/cs42l43.h                   |   50 +
+ include/linux/soundwire/sdw.h                 |    9 +
+ include/sound/cs42l43.h                       |   84 +
+ include/sound/soc-component.h                 |    4 +
+ sound/soc/codecs/Kconfig                      |   16 +
+ sound/soc/codecs/Makefile                     |    4 +
+ sound/soc/codecs/ak4118.c                     |   11 +-
+ sound/soc/codecs/cs42l43-jack.c               |  946 +++++++
+ sound/soc/codecs/cs42l43-sdw.c                |   75 +
+ sound/soc/codecs/cs42l43.c                    | 2270 +++++++++++++++++
+ sound/soc/codecs/cs42l43.h                    |  117 +
+ sound/soc/codecs/wm_adsp.c                    |   20 +-
+ sound/soc/soc-component.c                     |   22 +
+ 34 files changed, 7586 insertions(+), 28 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/mfd/cirrus,cs42l43.yaml
+ create mode 100644 drivers/irqchip/irq-cs42l43.c
+ create mode 100644 drivers/mfd/cs42l43-i2c.c
+ create mode 100644 drivers/mfd/cs42l43-sdw.c
+ create mode 100644 drivers/mfd/cs42l43.c
+ create mode 100644 drivers/mfd/cs42l43.h
+ create mode 100644 drivers/pinctrl/cirrus/pinctrl-cs42l43.c
+ create mode 100644 drivers/spi/spi-cs42l43.c
+ create mode 100644 include/linux/irqchip/cs42l43.h
+ create mode 100644 include/linux/mfd/cs42l43-regs.h
+ create mode 100644 include/linux/mfd/cs42l43.h
+ create mode 100644 include/sound/cs42l43.h
+ create mode 100644 sound/soc/codecs/cs42l43-jack.c
+ create mode 100644 sound/soc/codecs/cs42l43-sdw.c
+ create mode 100644 sound/soc/codecs/cs42l43.c
+ create mode 100644 sound/soc/codecs/cs42l43.h
+
 -- 
 2.30.2
 

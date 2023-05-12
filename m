@@ -2,44 +2,44 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 05453C7EE33
-	for <linux-spi@archiver.kernel.org>; Fri, 12 May 2023 12:30:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 21A06C7EE2E
+	for <linux-spi@archiver.kernel.org>; Fri, 12 May 2023 12:30:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240989AbjELMaL (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 12 May 2023 08:30:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60034 "EHLO
+        id S241096AbjELMaQ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 12 May 2023 08:30:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240792AbjELMaD (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 12 May 2023 08:30:03 -0400
+        with ESMTP id S240892AbjELMaF (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 12 May 2023 08:30:05 -0400
 Received: from mx0b-001ae601.pphosted.com (mx0b-001ae601.pphosted.com [67.231.152.168])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 211B6193;
-        Fri, 12 May 2023 05:29:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90A9512EAD;
+        Fri, 12 May 2023 05:29:32 -0700 (PDT)
 Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
-        by mx0b-001ae601.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34C5eUjC031128;
-        Fri, 12 May 2023 07:28:45 -0500
+        by mx0b-001ae601.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34C5eUjA031128;
+        Fri, 12 May 2023 07:28:42 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding : content-type; s=PODMain02222019;
- bh=fDt4kYX2J1EuJ0T3pp6aThi3rkxceY6Jx8rc8ohgRwc=;
- b=QzNBikc0/VToVvQ6EelseuHshQ2P4Amu0YjWhVky9SwMYAlJfkI7gtPGAmge8t1T8P/a
- n05MrQlztcktIuCoXp1pwRwzUyagw3Z70XtSU/Uxj+tkwr5GhKJ+pGnNjVm3G8jwoIA1
- hwi2IHe4V4xlnTYg2YIPX5Ff8CHe0jepUmyugCHDtqdQiNYc/0HTYP/+kAqP+15S3/cJ
- 7elU9yRzcl30JOfzfuLF342UCxB0xJgUHmfbbZ20tnMzw+g4yeOz2wFX1VRo24OWJRST
- 2BnVJa5LJX6wCySzNDcpfEu2heOO7qk6wbUc28jEkNcCXPgL3Zyxc+u8U6VEBqote3IN UQ== 
+ bh=o6IT1+1L8qJSwquzq6FDmsaHws235k79G6RsN32n5qQ=;
+ b=Y6iu0Td+kKqKsDyYrp1kiR9KllCzua3HmWYgsBgrVrxV5ZVvKsHKzjSeLm6QDaJBR/NA
+ qoeDorxtb9ANozByqjoV6GP2+Svt5S4Bk4sHD/tOmcEgW43Xx8TBdh4id2VqQmgrYzcM
+ ViXom8j9xWMSWEbu/gy8ziFp2ywVJ9Fu9B05sE4RHQUARuXQ9QceOupibyobAy06uRAU
+ dGpCLu8LLCoGwnHzsOwKrLs06ON+de34t9MyavMtZYtfe5HC8G7c91KXjm2qiegVtz/Y
+ JPWzTTuq/CvG7z5lUX0kdVCrFT2EGuxlC2dKvaliV5GO4wH7q05hpQgmqcvydpehY+sV IQ== 
 Received: from ediex01.ad.cirrus.com ([84.19.233.68])
-        by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 3qf7s46b2x-6
+        by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 3qf7s46b2x-4
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 12 May 2023 07:28:43 -0500
+        Fri, 12 May 2023 07:28:41 -0500
 Received: from ediex01.ad.cirrus.com (198.61.84.80) by ediex01.ad.cirrus.com
  (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.26; Fri, 12 May
- 2023 07:28:39 -0500
+ 2023 07:28:38 -0500
 Received: from ediswmail.ad.cirrus.com (198.61.86.93) by ediex01.ad.cirrus.com
  (198.61.84.80) with Microsoft SMTP Server id 15.2.1118.26 via Frontend
- Transport; Fri, 12 May 2023 07:28:39 -0500
+ Transport; Fri, 12 May 2023 07:28:38 -0500
 Received: from algalon.ad.cirrus.com (algalon.ad.cirrus.com [198.90.251.122])
-        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 2B76215A4;
-        Fri, 12 May 2023 12:28:39 +0000 (UTC)
+        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id B8BFE15A4;
+        Fri, 12 May 2023 12:28:38 +0000 (UTC)
 From:   Charles Keepax <ckeepax@opensource.cirrus.com>
 To:     <broonie@kernel.org>, <lee@kernel.org>, <robh+dt@kernel.org>,
         <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
@@ -50,17 +50,17 @@ CC:     <lgirdwood@gmail.com>, <yung-chuan.liao@linux.intel.com>,
         <alsa-devel@alsa-project.org>, <patches@opensource.cirrus.com>,
         <devicetree@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
         <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH 10/10] ASoC: cs42l43: Add support for the cs42l43
-Date:   Fri, 12 May 2023 13:28:38 +0100
-Message-ID: <20230512122838.243002-11-ckeepax@opensource.cirrus.com>
+Subject: [PATCH 06/10] mfd: cs42l43: Add support for cs42l43 core driver
+Date:   Fri, 12 May 2023 13:28:34 +0100
+Message-ID: <20230512122838.243002-7-ckeepax@opensource.cirrus.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230512122838.243002-1-ckeepax@opensource.cirrus.com>
 References: <20230512122838.243002-1-ckeepax@opensource.cirrus.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: VUM-J-KHtpJGBK__IIa0eDHClwjcigtd
-X-Proofpoint-GUID: VUM-J-KHtpJGBK__IIa0eDHClwjcigtd
+X-Proofpoint-ORIG-GUID: tadirud7Ax73ctEhtvTjeoPA7HtaHb_4
+X-Proofpoint-GUID: tadirud7Ax73ctEhtvTjeoPA7HtaHb_4
 X-Proofpoint-Spam-Reason: safe
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
@@ -73,3603 +73,2711 @@ DAC for headphone output, two integrated Class D amplifiers for
 loudspeakers, and two ADCs for wired headset microphone input or
 stereo line input. PDM inputs are provided for digital microphones.
 
-The ASoC component provides the majority of the functionality of the
-device, all the audio functions.
+The MFD component registers and initialises the device and provides
+PM/system power management.
 
 Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
 ---
- include/sound/cs42l43.h         |   84 ++
- sound/soc/codecs/Kconfig        |   16 +
- sound/soc/codecs/Makefile       |    4 +
- sound/soc/codecs/cs42l43-jack.c |  946 +++++++++++++
- sound/soc/codecs/cs42l43-sdw.c  |   75 +
- sound/soc/codecs/cs42l43.c      | 2270 +++++++++++++++++++++++++++++++
- sound/soc/codecs/cs42l43.h      |  117 ++
- 7 files changed, 3512 insertions(+)
- create mode 100644 include/sound/cs42l43.h
- create mode 100644 sound/soc/codecs/cs42l43-jack.c
- create mode 100644 sound/soc/codecs/cs42l43-sdw.c
- create mode 100644 sound/soc/codecs/cs42l43.c
- create mode 100644 sound/soc/codecs/cs42l43.h
+ MAINTAINERS                      |    2 +
+ drivers/mfd/Kconfig              |   23 +
+ drivers/mfd/Makefile             |    3 +
+ drivers/mfd/cs42l43-i2c.c        |   86 +++
+ drivers/mfd/cs42l43-sdw.c        |  210 ++++++
+ drivers/mfd/cs42l43.c            | 1044 ++++++++++++++++++++++++++
+ drivers/mfd/cs42l43.h            |   23 +
+ include/linux/mfd/cs42l43-regs.h | 1172 ++++++++++++++++++++++++++++++
+ include/linux/mfd/cs42l43.h      |   50 ++
+ 9 files changed, 2613 insertions(+)
+ create mode 100644 drivers/mfd/cs42l43-i2c.c
+ create mode 100644 drivers/mfd/cs42l43-sdw.c
+ create mode 100644 drivers/mfd/cs42l43.c
+ create mode 100644 drivers/mfd/cs42l43.h
+ create mode 100644 include/linux/mfd/cs42l43-regs.h
+ create mode 100644 include/linux/mfd/cs42l43.h
 
-diff --git a/include/sound/cs42l43.h b/include/sound/cs42l43.h
-new file mode 100644
-index 0000000000000..04e17bbf89f45
---- /dev/null
-+++ b/include/sound/cs42l43.h
-@@ -0,0 +1,84 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * CS42L43 CODEC driver external data
-+ *
-+ * Copyright (C) 2022-2023 Cirrus Logic, Inc. and
-+ *                         Cirrus Logic International Semiconductor Ltd.
-+ */
-+
-+#ifndef CS42L43_ASOC_EXT_H
-+#define CS42L43_ASOC_EXT_H
-+
-+#define CS42L43_SYSCLK		0
-+
-+#define CS42L43_SYSCLK_MCLK	0
-+#define CS42L43_SYSCLK_SDW	1
-+
-+#define CS42L43_N_BUTTONS	6
-+
-+/**
-+ * struct cs42l43_plug_pdata - Configuration data for tip/ring sense.
-+ *
-+ * @invert: Boolean indicating pin polarity, inverted implies open-circuit
-+ *          whilst the jack is inserted.
-+ * @pullup: Boolean indicating if the cs42l43 should apply its internal
-+ *          pull up to the pin.
-+ * @fall_db_ms: Time in milliseconds a falling edge on the pin should be
-+ *              debounced for. Note the falling edge is considered after
-+ *              the invert.
-+ * @rise_db_ms: Time in milliseconds a rising edge on the pin should be
-+ *              debounced for. Note the rising edge is considered after
-+ *              the invert.
-+ */
-+struct cs42l43_plug_pdata {
-+	bool invert;
-+	bool pullup;
-+	unsigned int fall_db_ms;
-+	unsigned int rise_db_ms;
-+};
-+
-+/**
-+ * struct cs42l43_button_pdata - Configuration data for button detect.
-+ *
-+ * @threshold: Impedance in Ohms under which this button will be
-+ *             considered active.
-+ * @button: Value to be reported for this button taken from
-+ *          snd_jack_types.
-+ */
-+struct cs42l43_button_pdata {
-+	unsigned int threshold;
-+	unsigned int button;
-+};
-+
-+/**
-+ * struct cs42l43_jack_pdata - Configuration data for the accessory detect.
-+ *
-+ * @tip_debounce_ms: Software debounce on tip sense triggering in milliseconds.
-+ * @tip: Configuration data for the tip sense pin.
-+ * @ring: Configuration data for the ring sense pin.
-+ * @use_ring_sense: Boolean indicating if the ring sense pin will be used.
-+ * @bias_low: Select a 1.8V micbias rather than the default 2.8V.
-+ * @bias_sense_ua: Current at which the bias_sense clamp will engage, 0 to disable.
-+ * @bias_ramp_ms: Time in milliseconds the hardware allows for the headset
-+ *                bias to ramp up.
-+ * @detect_us: Time in microseconds the type detection will be run for.
-+ * @enable_button_automute: Enable the hardware automuting of decimator 1
-+ *                          when a headset button is pressed.
-+ * @buttons: Array of button entries.
-+ */
-+struct cs42l43_jack_pdata {
-+	int tip_debounce_ms;
-+	struct cs42l43_plug_pdata tip;
-+	struct cs42l43_plug_pdata ring;
-+	bool use_ring_sense;
-+
-+	unsigned int bias_low;
-+	unsigned int bias_sense_ua;
-+	unsigned int bias_ramp_ms;
-+	unsigned int detect_us;
-+
-+	bool enable_button_automute;
-+	struct cs42l43_button_pdata buttons[CS42L43_N_BUTTONS];
-+};
-+
-+#endif /* CS42L43_ASOC_EXT_H */
-diff --git a/sound/soc/codecs/Kconfig b/sound/soc/codecs/Kconfig
-index 8020097d4e4c8..449ff6d267e3e 100644
---- a/sound/soc/codecs/Kconfig
-+++ b/sound/soc/codecs/Kconfig
-@@ -73,6 +73,8 @@ config SND_SOC_ALL_CODECS
- 	imply SND_SOC_CS35L56_SDW
- 	imply SND_SOC_CS42L42
- 	imply SND_SOC_CS42L42_SDW
-+	imply SND_SOC_CS42L43
-+	imply SND_SOC_CS42L43_SDW
- 	imply SND_SOC_CS42L51_I2C
- 	imply SND_SOC_CS42L52
- 	imply SND_SOC_CS42L56
-@@ -774,6 +776,20 @@ config SND_SOC_CS42L42_SDW
- 	help
- 	  Enable support for Cirrus Logic CS42L42 codec with Soundwire control
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 0db9f37eec258..8d2076941ff36 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -4928,7 +4928,9 @@ L:	patches@opensource.cirrus.com
+ S:	Maintained
+ F:	Documentation/devicetree/bindings/mfd/cirrus,cs*
+ F:	Documentation/devicetree/bindings/sound/cirrus,cs*
++F:	drivers/mfd/cs42l43*
+ F:	include/dt-bindings/sound/cs*
++F:	include/linux/mfd/cs42l43*
+ F:	include/sound/cs*
+ F:	sound/pci/hda/cs*
+ F:	sound/pci/hda/hda_cs_dsp_ctl.*
+diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+index e90463c4441ce..65ceb1be41296 100644
+--- a/drivers/mfd/Kconfig
++++ b/drivers/mfd/Kconfig
+@@ -237,6 +237,29 @@ config MFD_CROS_EC_DEV
+ 	  To compile this driver as a module, choose M here: the module will be
+ 	  called cros-ec-dev.
  
-+config SND_SOC_CS42L43
-+	tristate "Cirrus Logic CS42L43 CODEC"
-+	depends on MFD_CS42L43 && IRQ_CS42L43
-+	help
-+	  Select this to support the audio functions of the Cirrus Logic
-+	  CS42L43 PC CODEC.
++config MFD_CS42L43
++	tristate
++	select MFD_CORE
++	select REGMAP
 +
-+config SND_SOC_CS42L43_SDW
-+	tristate "Cirrus Logic CS42L43 CODEC (SoundWire)"
-+	depends on SND_SOC_CS42L43 && MFD_CS42L43_SDW
++config MFD_CS42L43_I2C
++	tristate "Cirrus Logic CS42L43 (I2C)"
++	depends on I2C
++	select REGMAP_I2C
++	select MFD_CS42L43
 +	help
-+	  Select this to support the audio functions of the Cirrus Logic
-+	  CS42L43 PC CODEC over SoundWire.
++	  Select this to support the Cirrus Logic CS42L43 PC CODEC with
++	  headphone and class D speaker drivers over I2C.
 +
- config SND_SOC_CS42L51
- 	tristate
- 
-diff --git a/sound/soc/codecs/Makefile b/sound/soc/codecs/Makefile
-index 5cdbae88e6e35..dd5905ebaf530 100644
---- a/sound/soc/codecs/Makefile
-+++ b/sound/soc/codecs/Makefile
-@@ -74,6 +74,8 @@ snd-soc-cs35l56-sdw-objs := cs35l56-sdw.o
- snd-soc-cs42l42-objs := cs42l42.o
- snd-soc-cs42l42-i2c-objs := cs42l42-i2c.o
- snd-soc-cs42l42-sdw-objs := cs42l42-sdw.o
-+snd-soc-cs42l43-objs := cs42l43.o cs42l43-jack.o
-+snd-soc-cs42l43-sdw-objs := cs42l43-sdw.o
- snd-soc-cs42l51-objs := cs42l51.o
- snd-soc-cs42l51-i2c-objs := cs42l51-i2c.o
- snd-soc-cs42l52-objs := cs42l52.o
-@@ -448,6 +450,8 @@ obj-$(CONFIG_SND_SOC_CS35L56_SDW)	+= snd-soc-cs35l56-sdw.o
- obj-$(CONFIG_SND_SOC_CS42L42_CORE)	+= snd-soc-cs42l42.o
- obj-$(CONFIG_SND_SOC_CS42L42)	+= snd-soc-cs42l42-i2c.o
- obj-$(CONFIG_SND_SOC_CS42L42_SDW)	+= snd-soc-cs42l42-sdw.o
-+obj-$(CONFIG_SND_SOC_CS42L43)	+= snd-soc-cs42l43.o
-+obj-$(CONFIG_SND_SOC_CS42L43_SDW)	+= snd-soc-cs42l43-sdw.o
- obj-$(CONFIG_SND_SOC_CS42L51)	+= snd-soc-cs42l51.o
- obj-$(CONFIG_SND_SOC_CS42L51_I2C)	+= snd-soc-cs42l51-i2c.o
- obj-$(CONFIG_SND_SOC_CS42L52)	+= snd-soc-cs42l52.o
-diff --git a/sound/soc/codecs/cs42l43-jack.c b/sound/soc/codecs/cs42l43-jack.c
++config MFD_CS42L43_SDW
++	tristate "Cirrus Logic CS42L43 (SoundWire)"
++	depends on SOUNDWIRE
++	select REGMAP_SOUNDWIRE
++	select MFD_CS42L43
++	help
++	  Select this to support the Cirrus Logic CS42L43 PC CODEC with
++	  headphone and class D speaker drivers over SoundWire.
++
+ config MFD_MADERA
+ 	tristate "Cirrus Logic Madera codecs"
+ 	select MFD_CORE
+diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
+index 1d2392f06f78a..407bc2f98dc19 100644
+--- a/drivers/mfd/Makefile
++++ b/drivers/mfd/Makefile
+@@ -13,6 +13,9 @@ obj-$(CONFIG_ARCH_BCM2835)	+= bcm2835-pm.o
+ obj-$(CONFIG_MFD_BCM590XX)	+= bcm590xx.o
+ obj-$(CONFIG_MFD_BD9571MWV)	+= bd9571mwv.o
+ obj-$(CONFIG_MFD_CROS_EC_DEV)	+= cros_ec_dev.o
++obj-$(CONFIG_MFD_CS42L43)	+= cs42l43.o
++obj-$(CONFIG_MFD_CS42L43_I2C)	+= cs42l43-i2c.o
++obj-$(CONFIG_MFD_CS42L43_SDW)	+= cs42l43-sdw.o
+ obj-$(CONFIG_MFD_ENE_KB3930)	+= ene-kb3930.o
+ obj-$(CONFIG_MFD_EXYNOS_LPASS)	+= exynos-lpass.o
+ obj-$(CONFIG_MFD_GATEWORKS_GSC)	+= gateworks-gsc.o
+diff --git a/drivers/mfd/cs42l43-i2c.c b/drivers/mfd/cs42l43-i2c.c
 new file mode 100644
-index 0000000000000..5b3e9f5987739
+index 0000000000000..bed570ab80bb3
 --- /dev/null
-+++ b/sound/soc/codecs/cs42l43-jack.c
-@@ -0,0 +1,946 @@
++++ b/drivers/mfd/cs42l43-i2c.c
+@@ -0,0 +1,86 @@
 +// SPDX-License-Identifier: GPL-2.0
 +//
-+// CS42L43 CODEC driver jack handling
++// CS42L43 I2C driver
 +//
 +// Copyright (C) 2022-2023 Cirrus Logic, Inc. and
 +//                         Cirrus Logic International Semiconductor Ltd.
 +
-+#include <linux/build_bug.h>
-+#include <linux/delay.h>
++#include <linux/err.h>
 +#include <linux/errno.h>
-+#include <linux/irq.h>
-+#include <linux/jiffies.h>
-+#include <linux/mfd/cs42l43.h>
-+#include <linux/mfd/cs42l43-regs.h>
-+#include <linux/pm_runtime.h>
-+#include <sound/control.h>
-+#include <sound/jack.h>
-+#include <sound/pcm.h>
-+#include <sound/pcm_params.h>
-+#include <sound/soc-component.h>
-+#include <sound/soc.h>
++#include <linux/i2c.h>
++#include <linux/module.h>
 +
 +#include "cs42l43.h"
 +
-+static const unsigned int cs42l43_accdet_us[] = {
-+	20, 100, 1000, 10000, 50000, 75000, 100000, 200000
-+};
-+
-+static const unsigned int cs42l43_accdet_db_ms[] = {
-+	0, 125, 250, 500, 750, 1000, 1250, 1500
-+};
-+
-+static const unsigned int cs42l43_accdet_ramp_ms[] = { 10, 40, 90, 170 };
-+
-+static const unsigned int cs42l43_accdet_bias_sense[] = {
-+	14, 23, 41, 50, 60, 68, 86, 95,
-+};
-+
-+static int cs42l43_find_index(unsigned int input,
-+			      const unsigned int *values, const int nvalues)
++static int cs42l43_i2c_probe(struct i2c_client *i2c)
 +{
-+	int i;
-+
-+	for (i = 0; i < nvalues; i++)
-+		if (input == values[i])
-+			return i;
-+
-+	return -EINVAL;
-+}
-+
-+static const struct cs42l43_jack_pdata cs42l43_default_jack_pdata = {
-+	.detect_us = 10000,
-+	.bias_ramp_ms = 170,
-+	.tip = {
-+		.pullup = true,
-+		.fall_db_ms = 500,
-+		.rise_db_ms = 500,
-+	},
-+	.buttons = {
-+		{ .threshold = 70,  .button = SND_JACK_BTN_0, },
-+		{ .threshold = 185, .button = SND_JACK_BTN_3, },
-+		{ .threshold = 355, .button = SND_JACK_BTN_1, },
-+		{ .threshold = 735, .button = SND_JACK_BTN_2, },
-+	},
-+};
-+
-+int cs42l43_set_jack(struct snd_soc_component *component,
-+		     struct snd_soc_jack *jack, void *d)
-+{
-+	struct cs42l43_codec *priv = snd_soc_component_get_drvdata(component);
-+	struct cs42l43 *cs42l43 = priv->core;
-+	const struct cs42l43_jack_pdata *pdata = d;
-+	/* This tip sense invert is always set, HW wants an inverted signal */
-+	unsigned int tip_deb = CS42L43_TIPSENSE_INV_MASK;
-+	unsigned int hs2 = 0x2 << CS42L43_HSDET_MODE_SHIFT;
-+	unsigned int autocontrol = 0, pdncntl = 0;
++	struct cs42l43 *cs42l43;
 +	int ret;
 +
-+	dev_dbg(priv->dev, "Configure accessory detect\n");
++	cs42l43 = devm_kzalloc(&i2c->dev, sizeof(*cs42l43), GFP_KERNEL);
++	if (!cs42l43)
++		return -ENOMEM;
 +
-+	ret = pm_runtime_resume_and_get(priv->dev);
-+	if (ret) {
-+		dev_err(priv->dev, "Failed to resume for jack config: %d\n", ret);
++	cs42l43->dev = &i2c->dev;
++	cs42l43->irq = i2c->irq;
++	// I2C is always attached by definition
++	cs42l43->attached = true;
++
++	cs42l43->regmap = devm_regmap_init_i2c(i2c, &cs42l43_i2c_regmap);
++	if (IS_ERR(cs42l43->regmap)) {
++		ret = PTR_ERR(cs42l43->regmap);
++		dev_err(cs42l43->dev, "Failed to allocate regmap: %d\n", ret);
 +		return ret;
 +	}
 +
-+	mutex_lock(&priv->jack_lock);
++	return cs42l43_dev_probe(cs42l43);
++}
 +
-+	priv->jack_hp = jack;
-+	if (pdata)
-+		priv->jack_pdata = *pdata;
-+	else
-+		priv->jack_pdata = cs42l43_default_jack_pdata;
-+	pdata = &priv->jack_pdata;
++static void cs42l43_i2c_remove(struct i2c_client *i2c)
++{
++	struct cs42l43 *cs42l43 = dev_get_drvdata(&i2c->dev);
 +
-+	if (!jack)
-+		goto done;
++	cs42l43_dev_remove(cs42l43);
++}
 +
-+	ret = cs42l43_find_index(pdata->detect_us, cs42l43_accdet_us,
-+				 ARRAY_SIZE(cs42l43_accdet_us));
-+	if (ret < 0) {
-+		dev_err(priv->dev, "Invalid accessory detect time: %u mS\n",
-+			pdata->detect_us);
-+		goto error;
++static struct i2c_device_id cs42l43_i2c_id[] = {
++	{ "cs42l43", 0 },
++	{}
++};
++MODULE_DEVICE_TABLE(i2c, cs42l43_i2c_id);
++
++#if IS_ENABLED(CONFIG_OF)
++static const struct of_device_id cs42l43_of_match[] = {
++	{ .compatible = "cirrus,cs42l43", },
++	{}
++};
++MODULE_DEVICE_TABLE(of, cs42l43_of_match);
++#endif
++
++#if IS_ENABLED(CONFIG_ACPI)
++static const struct acpi_device_id cs42l43_acpi_match[] = {
++	{ "CSC4243", 0 },
++	{}
++};
++MODULE_DEVICE_TABLE(acpi, cs42l43_acpi_match);
++#endif
++
++static struct i2c_driver cs42l43_i2c_driver = {
++	.driver = {
++		.name			= "cs42l43",
++		.pm			= &cs42l43_pm_ops,
++		.of_match_table		= of_match_ptr(cs42l43_of_match),
++		.acpi_match_table	= ACPI_PTR(cs42l43_acpi_match),
++	},
++
++	.probe_new	= cs42l43_i2c_probe,
++	.remove		= cs42l43_i2c_remove,
++	.id_table	= cs42l43_i2c_id,
++};
++module_i2c_driver(cs42l43_i2c_driver);
++
++MODULE_IMPORT_NS(MFD_CS42L43);
++
++MODULE_DESCRIPTION("CS42L43 I2C Driver");
++MODULE_AUTHOR("Charles Keepax <ckeepax@opensource.cirrus.com>");
++MODULE_LICENSE("GPL");
+diff --git a/drivers/mfd/cs42l43-sdw.c b/drivers/mfd/cs42l43-sdw.c
+new file mode 100644
+index 0000000000000..e2c2918408b1b
+--- /dev/null
++++ b/drivers/mfd/cs42l43-sdw.c
+@@ -0,0 +1,210 @@
++// SPDX-License-Identifier: GPL-2.0
++//
++// CS42L43 SoundWire driver
++//
++// Copyright (C) 2022-2023 Cirrus Logic, Inc. and
++//                         Cirrus Logic International Semiconductor Ltd.
++
++#include <linux/err.h>
++#include <linux/errno.h>
++#include <linux/mfd/cs42l43-regs.h>
++#include <linux/module.h>
++#include <linux/device.h>
++#include <linux/soundwire/sdw.h>
++#include <linux/soundwire/sdw_registers.h>
++#include <linux/soundwire/sdw_type.h>
++
++#include "cs42l43.h"
++
++enum cs42l43_sdw_ports {
++	CS42L43_DMIC_DEC_ASP_PORT = 1,
++	CS42L43_SPK_TX_PORT,
++	CS42L43_SPDIF_HP_PORT,
++	CS42L43_SPK_RX_PORT,
++	CS42L43_ASP_PORT,
++};
++
++static int cs42l43_read_prop(struct sdw_slave *sdw)
++{
++	struct sdw_slave_prop *prop = &sdw->prop;
++	struct device *dev = &sdw->dev;
++	struct sdw_dpn_prop *dpn;
++	unsigned long addr;
++	int nval;
++	int i;
++	u32 bit;
++
++	prop->use_domain_irq = true;
++	prop->paging_support = true;
++	prop->wake_capable = true;
++	prop->source_ports = BIT(CS42L43_DMIC_DEC_ASP_PORT) | BIT(CS42L43_SPK_TX_PORT);
++	prop->sink_ports = BIT(CS42L43_SPDIF_HP_PORT) |
++			   BIT(CS42L43_SPK_RX_PORT) | BIT(CS42L43_ASP_PORT);
++	prop->quirks = SDW_SLAVE_QUIRKS_INVALID_INITIAL_PARITY;
++	prop->scp_int1_mask = SDW_SCP_INT1_BUS_CLASH | SDW_SCP_INT1_PARITY | SDW_SCP_INT1_IMPL_DEF;
++
++	nval = hweight32(prop->source_ports);
++	prop->src_dpn_prop = devm_kcalloc(dev, nval, sizeof(*prop->src_dpn_prop), GFP_KERNEL);
++	if (!prop->src_dpn_prop)
++		return -ENOMEM;
++
++	i = 0;
++	dpn = prop->src_dpn_prop;
++	addr = prop->source_ports;
++	for_each_set_bit(bit, &addr, 32) {
++		dpn[i].num = bit;
++		dpn[i].max_ch = 2;
++		dpn[i].type = SDW_DPN_FULL;
++		dpn[i].max_word = 24;
++		i++;
++	}
++	/* All ports are 2 channels max, except the first one, CS42L43_DMIC_DEC_ASP_PORT */
++	dpn[CS42L43_DMIC_DEC_ASP_PORT].max_ch = 4;
++
++	nval = hweight32(prop->sink_ports);
++	prop->sink_dpn_prop = devm_kcalloc(dev, nval, sizeof(*prop->sink_dpn_prop), GFP_KERNEL);
++	if (!prop->sink_dpn_prop)
++		return -ENOMEM;
++
++	i = 0;
++	dpn = prop->sink_dpn_prop;
++	addr = prop->sink_ports;
++	for_each_set_bit(bit, &addr, 32) {
++		dpn[i].num = bit;
++		dpn[i].max_ch = 2;
++		dpn[i].type = SDW_DPN_FULL;
++		dpn[i].max_word = 24;
++		i++;
 +	}
 +
-+	hs2 |= ret << CS42L43_AUTO_HSDET_TIME_SHIFT;
++	return 0;
++}
 +
-+	ret = cs42l43_find_index(pdata->bias_ramp_ms, cs42l43_accdet_ramp_ms,
-+				 ARRAY_SIZE(cs42l43_accdet_ramp_ms));
-+	if (ret < 0) {
-+		dev_err(priv->dev, "Invalid headset bias ramp time: %u mS\n",
-+			pdata->bias_ramp_ms);
-+		goto error;
++static int cs42l43_sdw_update_status(struct sdw_slave *sdw, enum sdw_slave_status status)
++{
++	struct cs42l43 *cs42l43 = dev_get_drvdata(&sdw->dev);
++
++	switch (status) {
++	case SDW_SLAVE_ATTACHED:
++		dev_dbg(cs42l43->dev, "Device attach\n");
++
++		sdw_write_no_pm(sdw, CS42L43_GEN_INT_MASK_1,
++				CS42L43_INT_STAT_GEN1_MASK);
++
++		cs42l43->attached = true;
++
++		complete(&cs42l43->device_attach);
++		break;
++	case SDW_SLAVE_UNATTACHED:
++		dev_dbg(cs42l43->dev, "Device detach\n");
++
++		cs42l43->attached = false;
++
++		reinit_completion(&cs42l43->device_attach);
++		complete(&cs42l43->device_detach);
++		break;
++	default:
++		break;
 +	}
 +
-+	hs2 |= ret << CS42L43_HSBIAS_RAMP_SHIFT;
++	return 0;
++}
 +
-+	if (pdata->tip.pullup)
-+		autocontrol |= 0x3 << CS42L43_JACKDET_MODE_SHIFT;
-+	else
-+		autocontrol |= 0x1 << CS42L43_JACKDET_MODE_SHIFT;
++static int cs42l43_sdw_interrupt(struct sdw_slave *sdw,
++				 struct sdw_slave_intr_status *status)
++{
++	/*
++	 * There is only a single bit in GEN_INT_STAT_1 and it doesn't clear if
++	 * IRQs are still pending so doing a read/write here after handling the
++	 * IRQ is fine.
++	 */
++	sdw_read_no_pm(sdw, CS42L43_GEN_INT_STAT_1);
++	sdw_write_no_pm(sdw, CS42L43_GEN_INT_STAT_1, 1);
 +
-+	/* This tip sense invert is set normally, as TIPSENSE_INV already inverted */
-+	if (pdata->tip.invert)
-+		autocontrol |= 0x1 << CS42L43_JACKDET_INV_SHIFT;
++	return 0;
++}
 +
-+	if (!pdata->enable_button_automute)
-+		autocontrol |= CS42L43_S0_AUTO_ADCMUTE_DISABLE_MASK;
++static int cs42l43_sdw_bus_config(struct sdw_slave *sdw, struct sdw_bus_params *params)
++{
++	struct cs42l43 *cs42l43 = dev_get_drvdata(&sdw->dev);
++	int ret = 0;
 +
-+	if (pdata->bias_sense_ua) {
-+		ret = cs42l43_find_index(pdata->bias_sense_ua,
-+					 cs42l43_accdet_bias_sense,
-+					 ARRAY_SIZE(cs42l43_accdet_bias_sense));
-+		if (ret < 0) {
-+			dev_err(priv->dev,
-+				"Invalid headset bias sense trip current: %u uA\n",
-+				pdata->bias_sense_ua);
-+			goto error;
++	mutex_lock(&cs42l43->pll_lock);
++
++	if (cs42l43->sdw_freq != params->curr_dr_freq / 2) {
++		if (cs42l43->sdw_pll_active) {
++			dev_err(cs42l43->dev, "PLL active can't change SoundWire bus clock\n");
++			ret = -EBUSY;
++		} else {
++			cs42l43->sdw_freq = params->curr_dr_freq / 2;
 +		}
-+
-+		autocontrol |= ret << CS42L43_HSBIAS_SENSE_TRIP_SHIFT;
 +	}
 +
-+	ret = cs42l43_find_index(pdata->tip.fall_db_ms, cs42l43_accdet_db_ms,
-+				 ARRAY_SIZE(cs42l43_accdet_db_ms));
-+	if (ret < 0) {
-+		dev_err(priv->dev, "Invalid tip fall debounce time: %u mS\n",
-+			pdata->tip.fall_db_ms);
-+		goto error;
-+	}
-+
-+	tip_deb |= ret << CS42L43_TIPSENSE_FALLING_DB_TIME_SHIFT;
-+
-+	ret = cs42l43_find_index(pdata->tip.rise_db_ms, cs42l43_accdet_db_ms,
-+				 ARRAY_SIZE(cs42l43_accdet_db_ms));
-+	if (ret < 0) {
-+		dev_err(priv->dev, "Invalid tip rise debounce time: %u mS\n",
-+			pdata->tip.rise_db_ms);
-+		goto error;
-+	}
-+
-+	tip_deb |= ret << CS42L43_TIPSENSE_RISING_DB_TIME_SHIFT;
-+
-+	if (pdata->use_ring_sense) {
-+		unsigned int ring_deb = 0;
-+
-+		/* HW wants an inverted signal, so invert the invert */
-+		if (!pdata->ring.invert)
-+			ring_deb |= CS42L43_RINGSENSE_INV_MASK;
-+
-+		if (pdata->ring.pullup)
-+			ring_deb |= CS42L43_RINGSENSE_PULLUP_PDNB_MASK;
-+
-+		ret = cs42l43_find_index(pdata->ring.fall_db_ms, cs42l43_accdet_db_ms,
-+					 ARRAY_SIZE(cs42l43_accdet_db_ms));
-+		if (ret < 0) {
-+			dev_err(priv->dev, "Invalid ring fall debounce time: %u mS\n",
-+				pdata->ring.fall_db_ms);
-+			goto error;
-+		}
-+
-+		ring_deb |= ret << CS42L43_RINGSENSE_FALLING_DB_TIME_SHIFT;
-+
-+		ret = cs42l43_find_index(pdata->ring.rise_db_ms, cs42l43_accdet_db_ms,
-+					 ARRAY_SIZE(cs42l43_accdet_db_ms));
-+		if (ret < 0) {
-+			dev_err(priv->dev, "Invalid ring rise debounce time: %u mS\n",
-+				pdata->ring.rise_db_ms);
-+			goto error;
-+		}
-+
-+		ring_deb |= ret << CS42L43_RINGSENSE_RISING_DB_TIME_SHIFT;
-+		pdncntl |= CS42L43_RING_SENSE_EN_MASK;
-+
-+		regmap_update_bits(cs42l43->regmap, CS42L43_RINGSENSE_DEB_CTRL,
-+				   CS42L43_RINGSENSE_INV_MASK |
-+				   CS42L43_RINGSENSE_PULLUP_PDNB_MASK |
-+				   CS42L43_RINGSENSE_FALLING_DB_TIME_MASK |
-+				   CS42L43_RINGSENSE_RISING_DB_TIME_MASK,
-+				   ring_deb);
-+	}
-+
-+	regmap_update_bits(cs42l43->regmap, CS42L43_TIPSENSE_DEB_CTRL,
-+			   CS42L43_TIPSENSE_INV_MASK |
-+			   CS42L43_TIPSENSE_FALLING_DB_TIME_MASK |
-+			   CS42L43_TIPSENSE_RISING_DB_TIME_MASK, tip_deb);
-+	regmap_update_bits(cs42l43->regmap, CS42L43_HS2,
-+			   CS42L43_HSBIAS_RAMP_MASK | CS42L43_HSDET_MODE_MASK |
-+			   CS42L43_AUTO_HSDET_TIME_MASK, hs2);
-+
-+done:
-+	ret = 0;
-+
-+	regmap_update_bits(cs42l43->regmap, CS42L43_HS_BIAS_SENSE_AND_CLAMP_AUTOCONTROL,
-+			   CS42L43_JACKDET_MODE_MASK | CS42L43_S0_AUTO_ADCMUTE_DISABLE_MASK |
-+			   CS42L43_HSBIAS_SENSE_TRIP_MASK, autocontrol);
-+	regmap_update_bits(cs42l43->regmap, CS42L43_PDNCNTL,
-+			   CS42L43_RING_SENSE_EN_MASK, pdncntl);
-+
-+	dev_dbg(priv->dev, "Successfully configured accessory detect\n");
-+
-+error:
-+	mutex_unlock(&priv->jack_lock);
-+
-+	pm_runtime_mark_last_busy(priv->dev);
-+	pm_runtime_put_autosuspend(priv->dev);
++	mutex_unlock(&cs42l43->pll_lock);
 +
 +	return ret;
 +}
 +
-+static void cs42l43_start_hs_bias(struct cs42l43_codec *priv, bool force_high)
++static const struct sdw_slave_ops cs42l43_sdw_ops = {
++	.read_prop		= cs42l43_read_prop,
++	.update_status		= cs42l43_sdw_update_status,
++	.interrupt_callback	= cs42l43_sdw_interrupt,
++	.bus_config		= cs42l43_sdw_bus_config,
++};
++
++static int cs42l43_sdw_probe(struct sdw_slave *sdw, const struct sdw_device_id *id)
 +{
-+	struct cs42l43 *cs42l43 = priv->core;
-+	unsigned int val = 0x3 << CS42L43_HSBIAS_MODE_SHIFT;
++	struct cs42l43 *cs42l43;
++	struct device *dev = &sdw->dev;
++	int ret;
 +
-+	dev_dbg(priv->dev, "Start headset bias\n");
++	cs42l43 = devm_kzalloc(dev, sizeof(*cs42l43), GFP_KERNEL);
++	if (!cs42l43)
++		return -ENOMEM;
 +
-+	regmap_update_bits(cs42l43->regmap, CS42L43_HS2,
-+			   CS42L43_HS_CLAMP_DISABLE_MASK, CS42L43_HS_CLAMP_DISABLE_MASK);
++	cs42l43->dev = dev;
++	cs42l43->sdw = sdw;
 +
-+	if (!force_high && priv->jack_pdata.bias_low)
-+		val = 0x2 << CS42L43_HSBIAS_MODE_SHIFT;
-+
-+	regmap_update_bits(cs42l43->regmap, CS42L43_MIC_DETECT_CONTROL_1,
-+			   CS42L43_HSBIAS_MODE_MASK, val);
-+
-+	msleep(priv->jack_pdata.bias_ramp_ms);
-+}
-+
-+static void cs42l43_stop_hs_bias(struct cs42l43_codec *priv)
-+{
-+	struct cs42l43 *cs42l43 = priv->core;
-+
-+	dev_dbg(priv->dev, "Stop headset bias\n");
-+
-+	regmap_update_bits(cs42l43->regmap, CS42L43_MIC_DETECT_CONTROL_1,
-+			   CS42L43_HSBIAS_MODE_MASK, 0x1 << CS42L43_HSBIAS_MODE_SHIFT);
-+
-+	regmap_update_bits(cs42l43->regmap, CS42L43_HS2,
-+			   CS42L43_HS_CLAMP_DISABLE_MASK, 0);
-+}
-+
-+#define CS42L43_JACK_PRESENT 0x3
-+#define CS42L43_JACK_ABSENT 0x0
-+
-+#define CS42L43_JACK_OPTICAL (SND_JACK_MECHANICAL | SND_JACK_AVOUT)
-+#define CS42L43_JACK_HEADPHONE (SND_JACK_MECHANICAL | SND_JACK_HEADPHONE)
-+#define CS42L43_JACK_HEADSET (SND_JACK_MECHANICAL | SND_JACK_HEADSET)
-+#define CS42L43_JACK_LINEOUT (SND_JACK_MECHANICAL | SND_JACK_LINEOUT)
-+#define CS42L43_JACK_LINEIN (SND_JACK_MECHANICAL | SND_JACK_LINEIN)
-+#define CS42L43_JACK_EXTENSION (SND_JACK_MECHANICAL)
-+#define CS42L43_JACK_BUTTONS (SND_JACK_BTN_0 | SND_JACK_BTN_1 | SND_JACK_BTN_2 | \
-+			      SND_JACK_BTN_3 | SND_JACK_BTN_4 | SND_JACK_BTN_5)
-+
-+static inline bool cs42l43_jack_present(struct cs42l43_codec *priv)
-+{
-+	struct cs42l43 *cs42l43 = priv->core;
-+	unsigned int sts = 0;
-+
-+	regmap_read(cs42l43->regmap, CS42L43_TIP_RING_SENSE_INTERRUPT_STATUS, &sts);
-+
-+	sts = (sts >> CS42L43_TIPSENSE_PLUG_DB_STS_SHIFT) & CS42L43_JACK_PRESENT;
-+
-+	return sts == CS42L43_JACK_PRESENT;
-+}
-+
-+static void cs42l43_start_button_detect(struct cs42l43_codec *priv)
-+{
-+	struct cs42l43 *cs42l43 = priv->core;
-+	unsigned int val = 0x3 << CS42L43_BUTTON_DETECT_MODE_SHIFT;
-+
-+	dev_dbg(priv->dev, "Start button detect\n");
-+
-+	priv->button_detect_running = true;
-+
-+	if (priv->jack_pdata.bias_low)
-+		val = 0x1 << CS42L43_BUTTON_DETECT_MODE_SHIFT;
-+
-+	regmap_update_bits(cs42l43->regmap, CS42L43_MIC_DETECT_CONTROL_1,
-+			   CS42L43_BUTTON_DETECT_MODE_MASK |
-+			   CS42L43_MIC_LVL_DET_DISABLE_MASK, val);
-+
-+	if (priv->jack_pdata.bias_sense_ua) {
-+		regmap_update_bits(cs42l43->regmap,
-+				   CS42L43_HS_BIAS_SENSE_AND_CLAMP_AUTOCONTROL,
-+				   CS42L43_HSBIAS_SENSE_EN_MASK |
-+				   CS42L43_AUTO_HSBIAS_CLAMP_EN_MASK,
-+				   CS42L43_HSBIAS_SENSE_EN_MASK |
-+				   CS42L43_AUTO_HSBIAS_CLAMP_EN_MASK);
-+	}
-+}
-+
-+static void cs42l43_stop_button_detect(struct cs42l43_codec *priv)
-+{
-+	struct cs42l43 *cs42l43 = priv->core;
-+
-+	dev_dbg(priv->dev, "Stop button detect\n");
-+
-+	if (priv->jack_pdata.bias_sense_ua) {
-+		regmap_update_bits(cs42l43->regmap,
-+				   CS42L43_HS_BIAS_SENSE_AND_CLAMP_AUTOCONTROL,
-+				   CS42L43_HSBIAS_SENSE_EN_MASK |
-+				   CS42L43_AUTO_HSBIAS_CLAMP_EN_MASK, 0);
-+	}
-+
-+	regmap_update_bits(cs42l43->regmap, CS42L43_MIC_DETECT_CONTROL_1,
-+			   CS42L43_BUTTON_DETECT_MODE_MASK |
-+			   CS42L43_MIC_LVL_DET_DISABLE_MASK,
-+			   CS42L43_MIC_LVL_DET_DISABLE_MASK);
-+
-+	priv->button_detect_running = false;
-+}
-+
-+#define CS42L43_BUTTON_COMB_US 11000
-+#define CS42L43_BUTTON_COMB_MAX 512
-+#define CS42L43_BUTTON_ROUT 2210
-+
-+irqreturn_t cs42l43_button_press(int irq, void *data)
-+{
-+	struct cs42l43_codec *priv = data;
-+	struct cs42l43 *cs42l43 = priv->core;
-+	struct cs42l43_jack_pdata *pdata = &priv->jack_pdata;
-+	irqreturn_t iret = IRQ_NONE;
-+	unsigned int buttons = 0;
-+	unsigned int val = 0;
-+	int i, ret;
-+
-+	ret = pm_runtime_resume_and_get(priv->dev);
-+	if (ret) {
-+		dev_err(priv->dev, "Failed to resume for button press: %d\n", ret);
++	cs42l43->regmap = devm_regmap_init_sdw(sdw, &cs42l43_sdw_regmap);
++	if (IS_ERR(cs42l43->regmap)) {
++		ret = PTR_ERR(cs42l43->regmap);
++		dev_err(cs42l43->dev, "Failed to allocate regmap: %d\n", ret);
 +		return ret;
 +	}
 +
-+	mutex_lock(&priv->jack_lock);
-+
-+	if (!priv->button_detect_running) {
-+		dev_dbg(priv->dev, "Spurious button press IRQ\n");
-+		goto error;
-+	}
-+
-+	/*
-+	 * Wait for 2 full cycles of comb filter to ensure good reading.
-+	 * A fairly tight range is needed as we don't want to miss the button.
-+	 */
-+	usleep_range(2 * CS42L43_BUTTON_COMB_US, 2 * CS42L43_BUTTON_COMB_US + 50);
-+
-+	regmap_read(cs42l43->regmap, CS42L43_DETECT_STATUS_1, &val);
-+
-+	/* Bail if jack removed, the button is irrelevant and likely invalid */
-+	if (!cs42l43_jack_present(priv)) {
-+		dev_dbg(priv->dev, "Button ignored due to removal\n");
-+		goto error;
-+	}
-+
-+	if (val & CS42L43_HSBIAS_CLAMP_STS_MASK) {
-+		dev_dbg(priv->dev, "Button ignored due to bias sense\n");
-+		queue_delayed_work(system_long_wq, &priv->bias_sense_timeout,
-+				   msecs_to_jiffies(250));
-+		goto error;
-+	}
-+
-+	val = (val & CS42L43_HSDET_DC_STS_MASK) >> CS42L43_HSDET_DC_STS_SHIFT;
-+	val = ((CS42L43_BUTTON_COMB_MAX << 20) / (val + 1)) - (1 << 20);
-+	if (val)
-+		val = (CS42L43_BUTTON_ROUT << 20) / val;
-+	else
-+		val = UINT_MAX;
-+
-+	for (i = 0; i < CS42L43_N_BUTTONS; i++) {
-+		if (val < pdata->buttons[i].threshold) {
-+			buttons = pdata->buttons[i].button;
-+			dev_dbg(priv->dev, "Detected button %d at %d Ohms\n", i, val);
-+			break;
-+		}
-+	}
-+
-+	if (!buttons)
-+		dev_dbg(priv->dev, "Unrecognised button: %d ohms\n", val);
-+
-+	snd_soc_jack_report(priv->jack_hp, buttons, CS42L43_JACK_BUTTONS);
-+
-+	iret = IRQ_HANDLED;
-+
-+error:
-+	mutex_unlock(&priv->jack_lock);
-+
-+	pm_runtime_mark_last_busy(priv->dev);
-+	pm_runtime_put_autosuspend(priv->dev);
-+
-+	return iret;
++	return cs42l43_dev_probe(cs42l43);
 +}
 +
-+irqreturn_t cs42l43_button_release(int irq, void *data)
++static int cs42l43_sdw_remove(struct sdw_slave *sdw)
 +{
-+	struct cs42l43_codec *priv = data;
-+	irqreturn_t iret = IRQ_NONE;
-+	int ret;
++	struct cs42l43 *cs42l43 = dev_get_drvdata(&sdw->dev);
 +
-+	ret = pm_runtime_resume_and_get(priv->dev);
-+	if (ret) {
-+		dev_err(priv->dev, "Failed to resume for button release: %d\n", ret);
-+		return ret;
-+	}
-+
-+	mutex_lock(&priv->jack_lock);
-+
-+	if (priv->button_detect_running) {
-+		dev_dbg(priv->dev, "Button release IRQ\n");
-+
-+		snd_soc_jack_report(priv->jack_hp, 0, CS42L43_JACK_BUTTONS);
-+
-+		iret = IRQ_HANDLED;
-+	} else {
-+		dev_dbg(priv->dev, "Spurious button release IRQ\n");
-+	}
-+
-+	mutex_unlock(&priv->jack_lock);
-+
-+	pm_runtime_mark_last_busy(priv->dev);
-+	pm_runtime_put_autosuspend(priv->dev);
-+
-+	return iret;
-+}
-+
-+void cs42l43_bias_sense_timeout(struct work_struct *work)
-+{
-+	struct cs42l43_codec *priv = container_of(work, struct cs42l43_codec,
-+						  bias_sense_timeout.work);
-+	struct cs42l43 *cs42l43 = priv->core;
-+	int ret;
-+
-+	ret = pm_runtime_resume_and_get(priv->dev);
-+	if (ret) {
-+		dev_err(priv->dev, "Failed to resume for bias sense: %d\n", ret);
-+		return;
-+	}
-+
-+	mutex_lock(&priv->jack_lock);
-+
-+	if (cs42l43_jack_present(priv) && priv->button_detect_running) {
-+		dev_dbg(priv->dev, "Bias sense timeout out, restore bias\n");
-+
-+		regmap_update_bits(cs42l43->regmap,
-+				   CS42L43_HS_BIAS_SENSE_AND_CLAMP_AUTOCONTROL,
-+				   CS42L43_AUTO_HSBIAS_CLAMP_EN_MASK, 0);
-+		regmap_update_bits(cs42l43->regmap,
-+				   CS42L43_HS_BIAS_SENSE_AND_CLAMP_AUTOCONTROL,
-+				   CS42L43_AUTO_HSBIAS_CLAMP_EN_MASK,
-+				   CS42L43_AUTO_HSBIAS_CLAMP_EN_MASK);
-+	}
-+
-+	mutex_unlock(&priv->jack_lock);
-+
-+	pm_runtime_mark_last_busy(priv->dev);
-+	pm_runtime_put_autosuspend(priv->dev);
-+}
-+
-+static void cs42l43_start_load_detect(struct cs42l43_codec *priv)
-+{
-+	struct cs42l43 *cs42l43 = priv->core;
-+
-+	dev_dbg(priv->dev, "Start load detect\n");
-+
-+	snd_soc_dapm_mutex_lock(snd_soc_component_get_dapm(priv->component));
-+
-+	priv->load_detect_running = true;
-+
-+	if (priv->hp_ena) {
-+		unsigned long time_left;
-+
-+		reinit_completion(&priv->hp_shutdown);
-+
-+		regmap_update_bits(cs42l43->regmap, CS42L43_BLOCK_EN8,
-+				   CS42L43_HP_EN_MASK, 0);
-+
-+		time_left = wait_for_completion_timeout(&priv->hp_shutdown,
-+							msecs_to_jiffies(CS42L43_HP_TIMEOUT_MS));
-+		if (!time_left)
-+			dev_err(priv->dev, "Load detect HP power down timed out\n");
-+	}
-+
-+	regmap_update_bits(cs42l43->regmap, CS42L43_BLOCK_EN3,
-+			   CS42L43_ADC1_EN_MASK | CS42L43_ADC2_EN_MASK, 0);
-+	regmap_update_bits(cs42l43->regmap, CS42L43_DACCNFG2, CS42L43_HP_HPF_EN_MASK, 0);
-+	regmap_update_bits(cs42l43->regmap, CS42L43_MIC_DETECT_CONTROL_1,
-+			   CS42L43_HSBIAS_MODE_MASK, 0);
-+	regmap_update_bits(cs42l43->regmap, CS42L43_CTRL,
-+			   CS42L43_ADPTPWR_MODE_MASK, 0x4 << CS42L43_ADPTPWR_MODE_SHIFT);
-+	regmap_update_bits(cs42l43->regmap, CS42L43_PGAVOL,
-+			   CS42L43_HP_DIG_VOL_RAMP_MASK | CS42L43_HP_ANA_VOL_RAMP_MASK, 0x6);
-+	regmap_update_bits(cs42l43->regmap, CS42L43_DACCNFG1,
-+			   CS42L43_HP_MSTR_VOL_CTRL_EN_MASK, 0);
-+
-+	regmap_update_bits(cs42l43->regmap, CS42L43_HS2,
-+			   CS42L43_HS_CLAMP_DISABLE_MASK, CS42L43_HS_CLAMP_DISABLE_MASK);
-+
-+	regmap_update_bits(cs42l43->regmap, CS42L43_LOADDETENA,
-+			   CS42L43_HPLOAD_DET_EN_MASK,
-+			   CS42L43_HPLOAD_DET_EN_MASK);
-+
-+	snd_soc_dapm_mutex_unlock(snd_soc_component_get_dapm(priv->component));
-+}
-+
-+static void cs42l43_stop_load_detect(struct cs42l43_codec *priv)
-+{
-+	struct cs42l43 *cs42l43 = priv->core;
-+
-+	dev_dbg(priv->dev, "Stop load detect\n");
-+
-+	snd_soc_dapm_mutex_lock(snd_soc_component_get_dapm(priv->component));
-+
-+	regmap_update_bits(cs42l43->regmap, CS42L43_LOADDETENA,
-+			   CS42L43_HPLOAD_DET_EN_MASK, 0);
-+	regmap_update_bits(cs42l43->regmap, CS42L43_HS2,
-+			   CS42L43_HS_CLAMP_DISABLE_MASK, 0);
-+	regmap_update_bits(cs42l43->regmap, CS42L43_DACCNFG1,
-+			   CS42L43_HP_MSTR_VOL_CTRL_EN_MASK,
-+			   CS42L43_HP_MSTR_VOL_CTRL_EN_MASK);
-+	regmap_update_bits(cs42l43->regmap, CS42L43_PGAVOL,
-+			   CS42L43_HP_DIG_VOL_RAMP_MASK | CS42L43_HP_ANA_VOL_RAMP_MASK,
-+			   0x4 << CS42L43_HP_DIG_VOL_RAMP_SHIFT);
-+	regmap_update_bits(cs42l43->regmap, CS42L43_CTRL,
-+			   CS42L43_ADPTPWR_MODE_MASK, 0x7 << CS42L43_ADPTPWR_MODE_SHIFT);
-+	regmap_update_bits(cs42l43->regmap, CS42L43_MIC_DETECT_CONTROL_1,
-+			   CS42L43_HSBIAS_MODE_MASK, 0x1 << CS42L43_HSBIAS_MODE_SHIFT);
-+	regmap_update_bits(cs42l43->regmap, CS42L43_DACCNFG2,
-+			   CS42L43_HP_HPF_EN_MASK, CS42L43_HP_HPF_EN_MASK);
-+
-+	regmap_update_bits(cs42l43->regmap, CS42L43_BLOCK_EN3,
-+			   CS42L43_ADC1_EN_MASK | CS42L43_ADC2_EN_MASK,
-+			   priv->adc_ena);
-+
-+	if (priv->hp_ena) {
-+		unsigned long time_left;
-+
-+		reinit_completion(&priv->hp_startup);
-+
-+		regmap_update_bits(cs42l43->regmap, CS42L43_BLOCK_EN8,
-+				   CS42L43_HP_EN_MASK, priv->hp_ena);
-+
-+		time_left = wait_for_completion_timeout(&priv->hp_startup,
-+							msecs_to_jiffies(CS42L43_HP_TIMEOUT_MS));
-+		if (!time_left)
-+			dev_err(priv->dev, "Load detect HP restore timed out\n");
-+	}
-+
-+	priv->load_detect_running = false;
-+
-+	snd_soc_dapm_mutex_unlock(snd_soc_component_get_dapm(priv->component));
-+}
-+
-+static int cs42l43_run_load_detect(struct cs42l43_codec *priv, bool mic)
-+{
-+	struct cs42l43 *cs42l43 = priv->core;
-+	unsigned int val = 0;
-+	unsigned long time_left;
-+
-+	reinit_completion(&priv->load_detect);
-+
-+	cs42l43_start_load_detect(priv);
-+	time_left = wait_for_completion_timeout(&priv->load_detect,
-+						msecs_to_jiffies(CS42L43_LOAD_TIMEOUT_MS));
-+	cs42l43_stop_load_detect(priv);
-+
-+	if (!time_left)
-+		return -ETIMEDOUT;
-+
-+	regmap_read(cs42l43->regmap, CS42L43_LOADDETRESULTS, &val);
-+
-+	dev_dbg(priv->dev, "Headphone load detect: 0x%x\n", val);
-+
-+	/* Bail if jack removed, the load is irrelevant and likely invalid */
-+	if (!cs42l43_jack_present(priv))
-+		return -ENODEV;
-+
-+	if (mic) {
-+		cs42l43_start_hs_bias(priv, false);
-+		cs42l43_start_button_detect(priv);
-+
-+		return CS42L43_JACK_HEADSET;
-+	}
-+
-+	switch (val & CS42L43_AMP3_RES_DET_MASK) {
-+	case 0x0: // low impedance
-+	case 0x1: // high impedance
-+		return CS42L43_JACK_HEADPHONE;
-+	case 0x2: // lineout
-+	case 0x3: // Open circuit
-+		return CS42L43_JACK_LINEOUT;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int cs42l43_run_type_detect(struct cs42l43_codec *priv)
-+{
-+	struct cs42l43 *cs42l43 = priv->core;
-+	int timeout_ms = ((2 * priv->jack_pdata.detect_us) / 1000) + 200;
-+	unsigned int type = 0xff;
-+	unsigned long time_left;
-+
-+	reinit_completion(&priv->type_detect);
-+
-+	cs42l43_start_hs_bias(priv, true);
-+	regmap_update_bits(cs42l43->regmap, CS42L43_HS2,
-+			   CS42L43_HSDET_MODE_MASK, 0x3 << CS42L43_HSDET_MODE_SHIFT);
-+
-+	time_left = wait_for_completion_timeout(&priv->type_detect,
-+						msecs_to_jiffies(timeout_ms));
-+
-+	regmap_update_bits(cs42l43->regmap, CS42L43_HS2,
-+			   CS42L43_HSDET_MODE_MASK, 0x2 << CS42L43_HSDET_MODE_SHIFT);
-+	cs42l43_stop_hs_bias(priv);
-+
-+	if (!time_left)
-+		return -ETIMEDOUT;
-+
-+	regmap_read(cs42l43->regmap, CS42L43_HS_STAT, &type);
-+
-+	dev_dbg(priv->dev, "Type detect: 0x%x\n", type);
-+
-+	/* Bail if jack removed, the type is irrelevant and likely invalid */
-+	if (!cs42l43_jack_present(priv))
-+		return -ENODEV;
-+
-+	switch (type & CS42L43_HSDET_TYPE_STS_MASK) {
-+	case 0x0: // CTIA
-+	case 0x1: // OMTP
-+		return cs42l43_run_load_detect(priv, true);
-+	case 0x2: // 3-pole
-+		return cs42l43_run_load_detect(priv, false);
-+	case 0x3: // Open-circuit
-+		return CS42L43_JACK_EXTENSION;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+void cs42l43_tip_sense_work(struct work_struct *work)
-+{
-+	struct cs42l43_codec *priv = container_of(work, struct cs42l43_codec,
-+						  tip_sense_work.work);
-+	struct cs42l43 *cs42l43 = priv->core;
-+	struct cs42l43_jack_pdata *pdata = &priv->jack_pdata;
-+	unsigned int sts = 0;
-+	unsigned int tip, ring;
-+	int ret, report;
-+
-+	ret = pm_runtime_resume_and_get(priv->dev);
-+	if (ret) {
-+		dev_err(priv->dev, "Failed to resume for tip work: %d\n", ret);
-+		return;
-+	}
-+
-+	mutex_lock(&priv->jack_lock);
-+
-+	regmap_read(cs42l43->regmap, CS42L43_TIP_RING_SENSE_INTERRUPT_STATUS, &sts);
-+
-+	dev_dbg(priv->dev, "Tip sense: 0x%x\n", sts);
-+
-+	tip = (sts >> CS42L43_TIPSENSE_PLUG_DB_STS_SHIFT) & CS42L43_JACK_PRESENT;
-+	ring = (sts >> CS42L43_RINGSENSE_PLUG_DB_STS_SHIFT) & CS42L43_JACK_PRESENT;
-+
-+	if (tip == CS42L43_JACK_PRESENT) {
-+		if (pdata->use_ring_sense && ring == CS42L43_JACK_ABSENT) {
-+			report = CS42L43_JACK_OPTICAL;
-+		} else {
-+			report = cs42l43_run_type_detect(priv);
-+			if (report < 0) {
-+				dev_err(priv->dev, "Jack detect failed: %d\n", report);
-+				goto error;
-+			}
-+		}
-+
-+		snd_soc_jack_report(priv->jack_hp, report, report);
-+	}
-+
-+error:
-+	mutex_unlock(&priv->jack_lock);
-+
-+	pm_runtime_mark_last_busy(priv->dev);
-+	pm_runtime_put_autosuspend(priv->dev);
-+}
-+
-+static void cs42l43_clear_jack(struct cs42l43_codec *priv)
-+{
-+	struct cs42l43 *cs42l43 = priv->core;
-+
-+	cs42l43_stop_button_detect(priv);
-+	cs42l43_stop_hs_bias(priv);
-+
-+	regmap_update_bits(cs42l43->regmap, CS42L43_ADC_B_CTRL1,
-+			   CS42L43_PGA_WIDESWING_MODE_EN_MASK, 0);
-+	regmap_update_bits(cs42l43->regmap, CS42L43_ADC_B_CTRL2,
-+			   CS42L43_PGA_WIDESWING_MODE_EN_MASK, 0);
-+	regmap_update_bits(cs42l43->regmap, CS42L43_STEREO_MIC_CTRL,
-+			   CS42L43_JACK_STEREO_CONFIG_MASK, 0);
-+	regmap_update_bits(cs42l43->regmap, CS42L43_HS2,
-+			   CS42L43_HSDET_MODE_MASK | CS42L43_HSDET_MANUAL_MODE_MASK,
-+			   0x2 << CS42L43_HSDET_MODE_SHIFT);
-+
-+	snd_soc_jack_report(priv->jack_hp, 0, 0xFFFF);
-+}
-+
-+irqreturn_t cs42l43_tip_sense(int irq, void *data)
-+{
-+	struct cs42l43_codec *priv = data;
-+	struct cs42l43 *cs42l43 = priv->core;
-+	int ret;
-+
-+	cancel_delayed_work_sync(&priv->bias_sense_timeout);
-+	cancel_delayed_work_sync(&priv->tip_sense_work);
-+
-+	ret = pm_runtime_resume_and_get(priv->dev);
-+	if (ret) {
-+		dev_err(priv->dev, "Failed to resume for tip sense: %d\n", ret);
-+		return ret;
-+	}
-+
-+	mutex_lock(&priv->jack_lock);
-+
-+	if (cs42l43_jack_present(priv)) {
-+		dev_dbg(priv->dev, "Jack insert\n");
-+
-+		if (cs42l43->sdw && !priv->jack_present) {
-+			priv->jack_present = true;
-+			pm_runtime_get(priv->dev);
-+		}
-+
-+		queue_delayed_work(system_long_wq, &priv->tip_sense_work,
-+				   msecs_to_jiffies(priv->jack_pdata.tip_debounce_ms));
-+	} else {
-+		dev_dbg(priv->dev, "Jack removal\n");
-+
-+		priv->jack_override = 0;
-+
-+		cs42l43_clear_jack(priv);
-+
-+		if (cs42l43->sdw && priv->jack_present) {
-+			pm_runtime_put(priv->dev);
-+			priv->jack_present = false;
-+		}
-+	}
-+
-+	mutex_unlock(&priv->jack_lock);
-+
-+	pm_runtime_mark_last_busy(priv->dev);
-+	pm_runtime_put_autosuspend(priv->dev);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+enum cs42l43_raw_jack {
-+	CS42L43_JACK_RAW_CTIA = 0,
-+	CS42L43_JACK_RAW_OMTP,
-+	CS42L43_JACK_RAW_HEADPHONE,
-+	CS42L43_JACK_RAW_LINE_OUT,
-+	CS42L43_JACK_RAW_LINE_IN,
-+	CS42L43_JACK_RAW_MICROPHONE,
-+	CS42L43_JACK_RAW_OPTICAL,
-+};
-+
-+#define CS42L43_JACK_3_POLE_SWITCHES ((0x2 << CS42L43_HSDET_MANUAL_MODE_SHIFT) | \
-+				      CS42L43_AMP3_4_GNDREF_HS3_SEL_MASK | \
-+				      CS42L43_AMP3_4_GNDREF_HS4_SEL_MASK | \
-+				      CS42L43_HSBIAS_GNDREF_HS3_SEL_MASK | \
-+				      CS42L43_HSBIAS_GNDREF_HS4_SEL_MASK | \
-+				      CS42L43_HSGND_HS3_SEL_MASK | \
-+				      CS42L43_HSGND_HS4_SEL_MASK)
-+
-+static const struct cs42l43_jack_override_mode {
-+	unsigned int hsdet_mode;
-+	unsigned int mic_ctrl;
-+	unsigned int clamp_ctrl;
-+	int report;
-+} cs42l43_jack_override_modes[] = {
-+	[CS42L43_JACK_RAW_CTIA] = {
-+		.hsdet_mode = CS42L43_AMP3_4_GNDREF_HS3_SEL_MASK |
-+			      CS42L43_HSBIAS_GNDREF_HS3_SEL_MASK |
-+			      CS42L43_HSBIAS_OUT_HS4_SEL_MASK |
-+			      CS42L43_HSGND_HS3_SEL_MASK,
-+		.clamp_ctrl = CS42L43_SMIC_HPAMP_CLAMP_DIS_FRC_MASK,
-+		.report = CS42L43_JACK_HEADSET,
-+	},
-+	[CS42L43_JACK_RAW_OMTP] = {
-+		.hsdet_mode = (0x1 << CS42L43_HSDET_MANUAL_MODE_SHIFT) |
-+			       CS42L43_AMP3_4_GNDREF_HS4_SEL_MASK |
-+			       CS42L43_HSBIAS_GNDREF_HS4_SEL_MASK |
-+			       CS42L43_HSBIAS_OUT_HS3_SEL_MASK |
-+			       CS42L43_HSGND_HS4_SEL_MASK,
-+		.clamp_ctrl = CS42L43_SMIC_HPAMP_CLAMP_DIS_FRC_MASK,
-+		.report = CS42L43_JACK_HEADSET,
-+	},
-+	[CS42L43_JACK_RAW_HEADPHONE] = {
-+		.hsdet_mode = CS42L43_JACK_3_POLE_SWITCHES,
-+		.clamp_ctrl = CS42L43_SMIC_HPAMP_CLAMP_DIS_FRC_MASK,
-+		.report = CS42L43_JACK_HEADPHONE,
-+	},
-+	[CS42L43_JACK_RAW_LINE_OUT] = {
-+		.hsdet_mode = CS42L43_JACK_3_POLE_SWITCHES,
-+		.clamp_ctrl = CS42L43_SMIC_HPAMP_CLAMP_DIS_FRC_MASK,
-+		.report = CS42L43_JACK_LINEOUT,
-+	},
-+	[CS42L43_JACK_RAW_LINE_IN] = {
-+		.hsdet_mode = CS42L43_JACK_3_POLE_SWITCHES,
-+		.mic_ctrl = 0x2 << CS42L43_JACK_STEREO_CONFIG_SHIFT,
-+		.report = CS42L43_JACK_LINEIN,
-+	},
-+	[CS42L43_JACK_RAW_MICROPHONE] = {
-+		.hsdet_mode = CS42L43_JACK_3_POLE_SWITCHES,
-+		.mic_ctrl = (0x3 << CS42L43_JACK_STEREO_CONFIG_SHIFT) |
-+			    CS42L43_HS1_BIAS_EN_MASK | CS42L43_HS2_BIAS_EN_MASK,
-+		.report = CS42L43_JACK_LINEIN,
-+	},
-+	[CS42L43_JACK_RAW_OPTICAL] = {
-+		.hsdet_mode = CS42L43_JACK_3_POLE_SWITCHES,
-+		.clamp_ctrl = CS42L43_SMIC_HPAMP_CLAMP_DIS_FRC_MASK,
-+		.report = CS42L43_JACK_OPTICAL,
-+	},
-+};
-+
-+static const char * const cs42l43_jack_text[] = {
-+	"None", "CTIA", "OMTP", "Headphone", "Line-Out",
-+	"Line-In", "Microphone", "Optical",
-+};
-+
-+SOC_ENUM_SINGLE_VIRT_DECL(cs42l43_jack_enum, cs42l43_jack_text);
-+
-+int cs42l43_jack_get(struct snd_kcontrol *kcontrol, struct snd_ctl_elem_value *ucontrol)
-+{
-+	struct snd_soc_component *component = snd_soc_kcontrol_component(kcontrol);
-+	struct cs42l43_codec *priv = snd_soc_component_get_drvdata(component);
-+
-+	mutex_lock(&priv->jack_lock);
-+	ucontrol->value.integer.value[0] = priv->jack_override;
-+	mutex_unlock(&priv->jack_lock);
++	cs42l43_dev_remove(cs42l43);
 +
 +	return 0;
 +}
 +
-+int cs42l43_jack_put(struct snd_kcontrol *kcontrol, struct snd_ctl_elem_value *ucontrol)
-+{
-+	struct snd_soc_component *component = snd_soc_kcontrol_component(kcontrol);
-+	struct cs42l43_codec *priv = snd_soc_component_get_drvdata(component);
-+	struct cs42l43 *cs42l43 = priv->core;
-+	struct soc_enum *e = (struct soc_enum *)kcontrol->private_value;
-+	unsigned int override = ucontrol->value.integer.value[0];
++static const struct sdw_device_id cs42l43_sdw_id[] = {
++	SDW_SLAVE_ENTRY(0x01FA, 0x4243, 0),
++	{}
++};
++MODULE_DEVICE_TABLE(sdw, cs42l43_sdw_id);
 +
-+	BUILD_BUG_ON(ARRAY_SIZE(cs42l43_jack_override_modes) !=
-+		     ARRAY_SIZE(cs42l43_jack_text) - 1);
++static struct sdw_driver cs42l43_sdw_driver = {
++	.driver = {
++		.name		= "cs42l43",
++		.pm		= &cs42l43_pm_ops,
++	},
 +
-+	if (override >= e->items)
-+		return -EINVAL;
++	.probe		= cs42l43_sdw_probe,
++	.remove		= cs42l43_sdw_remove,
++	.id_table	= cs42l43_sdw_id,
++	.ops		= &cs42l43_sdw_ops,
++};
++module_sdw_driver(cs42l43_sdw_driver);
 +
-+	mutex_lock(&priv->jack_lock);
++MODULE_IMPORT_NS(MFD_CS42L43);
 +
-+	if (!cs42l43_jack_present(priv)) {
-+		mutex_unlock(&priv->jack_lock);
-+		return -EBUSY;
-+	}
-+
-+	if (override == priv->jack_override) {
-+		mutex_unlock(&priv->jack_lock);
-+		return 0;
-+	}
-+
-+	priv->jack_override = override;
-+
-+	cs42l43_clear_jack(priv);
-+
-+	if (!override) {
-+		queue_delayed_work(system_long_wq, &priv->tip_sense_work, 0);
-+	} else {
-+		override--;
-+
-+		regmap_update_bits(cs42l43->regmap, CS42L43_HS2,
-+				   CS42L43_HSDET_MODE_MASK |
-+				   CS42L43_HSDET_MANUAL_MODE_MASK |
-+				   CS42L43_AMP3_4_GNDREF_HS3_SEL_MASK |
-+				   CS42L43_AMP3_4_GNDREF_HS4_SEL_MASK |
-+				   CS42L43_HSBIAS_GNDREF_HS3_SEL_MASK |
-+				   CS42L43_HSBIAS_GNDREF_HS4_SEL_MASK |
-+				   CS42L43_HSBIAS_OUT_HS3_SEL_MASK |
-+				   CS42L43_HSBIAS_OUT_HS4_SEL_MASK |
-+				   CS42L43_HSGND_HS3_SEL_MASK |
-+				   CS42L43_HSGND_HS4_SEL_MASK,
-+				   cs42l43_jack_override_modes[override].hsdet_mode);
-+		regmap_update_bits(cs42l43->regmap, CS42L43_STEREO_MIC_CTRL,
-+				   CS42L43_HS2_BIAS_EN_MASK | CS42L43_HS1_BIAS_EN_MASK |
-+				   CS42L43_JACK_STEREO_CONFIG_MASK,
-+				   cs42l43_jack_override_modes[override].mic_ctrl);
-+		regmap_update_bits(cs42l43->regmap, CS42L43_STEREO_MIC_CLAMP_CTRL,
-+				   CS42L43_SMIC_HPAMP_CLAMP_DIS_FRC_MASK,
-+				   cs42l43_jack_override_modes[override].clamp_ctrl);
-+
-+		switch (override) {
-+		case CS42L43_JACK_RAW_CTIA:
-+		case CS42L43_JACK_RAW_OMTP:
-+			cs42l43_start_hs_bias(priv, false);
-+			cs42l43_start_button_detect(priv);
-+			break;
-+		case CS42L43_JACK_RAW_LINE_IN:
-+			regmap_update_bits(cs42l43->regmap, CS42L43_ADC_B_CTRL1,
-+					   CS42L43_PGA_WIDESWING_MODE_EN_MASK,
-+					   CS42L43_PGA_WIDESWING_MODE_EN_MASK);
-+			regmap_update_bits(cs42l43->regmap, CS42L43_ADC_B_CTRL2,
-+					   CS42L43_PGA_WIDESWING_MODE_EN_MASK,
-+					   CS42L43_PGA_WIDESWING_MODE_EN_MASK);
-+			break;
-+		case CS42L43_JACK_RAW_MICROPHONE:
-+			cs42l43_start_hs_bias(priv, false);
-+			break;
-+		default:
-+			break;
-+		}
-+
-+		snd_soc_jack_report(priv->jack_hp,
-+				    cs42l43_jack_override_modes[override].report,
-+				    cs42l43_jack_override_modes[override].report);
-+	}
-+
-+	mutex_unlock(&priv->jack_lock);
-+
-+	return 1;
-+}
-diff --git a/sound/soc/codecs/cs42l43-sdw.c b/sound/soc/codecs/cs42l43-sdw.c
-new file mode 100644
-index 0000000000000..3d81a0536c534
---- /dev/null
-+++ b/sound/soc/codecs/cs42l43-sdw.c
-@@ -0,0 +1,75 @@
-+// SPDX-License-Identifier: GPL-2.0
-+//
-+// CS42L43 CODEC driver SoundWire handling
-+//
-+// Copyright (C) 2022-2023 Cirrus Logic, Inc. and
-+//                         Cirrus Logic International Semiconductor Ltd.
-+
-+#include <linux/errno.h>
-+#include <linux/mfd/cs42l43.h>
-+#include <linux/mfd/cs42l43-regs.h>
-+#include <linux/module.h>
-+#include <sound/pcm.h>
-+#include <sound/sdw.h>
-+#include <sound/soc-component.h>
-+#include <sound/soc-dai.h>
-+#include <sound/soc.h>
-+
-+#include "cs42l43.h"
-+
-+int cs42l43_sdw_add_peripheral(struct snd_pcm_substream *substream,
-+			       struct snd_pcm_hw_params *params, struct snd_soc_dai *dai)
-+{
-+	struct cs42l43_codec *priv = snd_soc_component_get_drvdata(dai->component);
-+	struct sdw_stream_runtime *sdw_stream = snd_soc_dai_get_dma_data(dai, substream);
-+	struct sdw_slave *sdw = dev_to_sdw_dev(priv->dev->parent);
-+	struct sdw_stream_config sconfig = {0};
-+	struct sdw_port_config pconfig = {0};
-+	int ret;
-+
-+	if (!sdw_stream)
-+		return -EINVAL;
-+
-+	snd_sdw_params_to_config(substream, params, &sconfig, &pconfig);
-+
-+	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
-+		pconfig.num = 5;
-+	else
-+		pconfig.num = 1;
-+
-+	ret = sdw_stream_add_slave(sdw, &sconfig, &pconfig, 1, sdw_stream);
-+	if (ret) {
-+		dev_err(priv->dev, "Failed to add sdw stream: %d\n", ret);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_NS_GPL(cs42l43_sdw_add_peripheral, SND_SOC_CS42L43);
-+
-+int cs42l43_sdw_remove_peripheral(struct snd_pcm_substream *substream,
-+				  struct snd_soc_dai *dai)
-+{
-+	struct cs42l43_codec *priv = snd_soc_component_get_drvdata(dai->component);
-+	struct sdw_stream_runtime *sdw_stream = snd_soc_dai_get_dma_data(dai, substream);
-+	struct sdw_slave *sdw = dev_to_sdw_dev(priv->dev->parent);
-+
-+	if (!sdw_stream)
-+		return -EINVAL;
-+
-+	return sdw_stream_remove_slave(sdw, sdw_stream);
-+}
-+EXPORT_SYMBOL_NS_GPL(cs42l43_sdw_remove_peripheral, SND_SOC_CS42L43);
-+
-+int cs42l43_sdw_set_stream(struct snd_soc_dai *dai, void *sdw_stream, int direction)
-+{
-+	if (sdw_stream)
-+		snd_soc_dai_dma_data_set(dai, direction, sdw_stream);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_NS_GPL(cs42l43_sdw_set_stream, SND_SOC_CS42L43);
-+
-+MODULE_DESCRIPTION("CS42L43 CODEC SoundWire Driver");
-+MODULE_AUTHOR("Charles Keepax <ckeepax@opensource.cirrus.com>");
++MODULE_DESCRIPTION("CS42L43 SoundWire Driver");
++MODULE_AUTHOR("Lucas Tanure <tanureal@opensource.cirrus.com>");
 +MODULE_LICENSE("GPL");
-diff --git a/sound/soc/codecs/cs42l43.c b/sound/soc/codecs/cs42l43.c
+diff --git a/drivers/mfd/cs42l43.c b/drivers/mfd/cs42l43.c
 new file mode 100644
-index 0000000000000..cb7cd6bb6e954
+index 0000000000000..b815802222e18
 --- /dev/null
-+++ b/sound/soc/codecs/cs42l43.c
-@@ -0,0 +1,2270 @@
++++ b/drivers/mfd/cs42l43.c
+@@ -0,0 +1,1044 @@
 +// SPDX-License-Identifier: GPL-2.0
 +//
-+// CS42L43 CODEC driver
++// CS42L43 core driver
 +//
 +// Copyright (C) 2022-2023 Cirrus Logic, Inc. and
 +//                         Cirrus Logic International Semiconductor Ltd.
 +
 +#include <linux/bitops.h>
++#include <linux/build_bug.h>
++#include <linux/delay.h>
 +#include <linux/err.h>
 +#include <linux/errno.h>
-+#include <linux/gcd.h>
-+#include <linux/irq.h>
-+#include <linux/irqchip/cs42l43.h>
++#include <linux/firmware.h>
 +#include <linux/jiffies.h>
-+#include <linux/mfd/cs42l43.h>
++#include <linux/mfd/core.h>
 +#include <linux/mfd/cs42l43-regs.h>
 +#include <linux/module.h>
 +#include <linux/pm_runtime.h>
-+#include <linux/string.h>
-+#include <sound/control.h>
-+#include <sound/pcm.h>
-+#include <sound/pcm_params.h>
-+#include <sound/soc-component.h>
-+#include <sound/soc-dapm.h>
-+#include <sound/soc-dai.h>
-+#include <sound/soc.h>
-+#include <sound/tlv.h>
++#include <linux/soundwire/sdw.h>
 +
 +#include "cs42l43.h"
 +
-+#define CS42L43_DECL_MUX(name, reg) \
-+static SOC_VALUE_ENUM_SINGLE_DECL(cs42l43_##name##_enum, reg, \
-+				  0, CS42L43_MIXER_SRC_MASK, \
-+				  cs42l43_mixer_texts, cs42l43_mixer_values); \
-+static const struct snd_kcontrol_new cs42l43_##name##_mux = \
-+		SOC_DAPM_ENUM("Route", cs42l43_##name##_enum)
++static const struct reg_sequence cs42l43_reva_patch[] = {
++	{ 0x4000,					0x00000055 },
++	{ 0x4000,					0x000000AA },
++	{ 0x10084,					0x00000000 },
++	{ 0x1741C,					0x00CD2000 },
++	{ 0x1718C,					0x00000003 },
++	{ 0x4000,					0x00000000 },
++	{ CS42L43_CCM_BLK_CLK_CONTROL,			0x00000002 },
++	{ CS42L43_HPPATHVOL,				0x011B011B },
++	{ CS42L43_OSC_DIV_SEL,				0x00000001 },
++	{ CS42L43_DACCNFG2,				0x00000005 },
++	{ CS42L43_MIC_DETECT_CONTROL_ANDROID,		0x80790079 },
++	{ CS42L43_RELID,				0x0000000F },
++};
 +
-+#define CS42L43_DECL_MIXER(name, reg) \
-+	CS42L43_DECL_MUX(name##_in1, reg); \
-+	CS42L43_DECL_MUX(name##_in2, reg + 0x4); \
-+	CS42L43_DECL_MUX(name##_in3, reg + 0x8); \
-+	CS42L43_DECL_MUX(name##_in4, reg + 0xC)
++static const struct reg_default cs42l43_reg_default[] = {
++	{ CS42L43_DRV_CTRL1,				0x000186C0 },
++	{ CS42L43_DRV_CTRL3,				0x286DB018 },
++	{ CS42L43_DRV_CTRL4,				0x000006D8 },
++	{ CS42L43_DRV_CTRL_5,				0x136C00C0 },
++	{ CS42L43_GPIO_CTRL1,				0x00000707 },
++	{ CS42L43_GPIO_CTRL2,				0x00000000 },
++	{ CS42L43_GPIO_FN_SEL,				0x00000000 },
++	{ CS42L43_MCLK_SRC_SEL,				0x00000000 },
++	{ CS42L43_SAMPLE_RATE1,				0x00000003 },
++	{ CS42L43_SAMPLE_RATE2,				0x00000003 },
++	{ CS42L43_SAMPLE_RATE3,				0x00000003 },
++	{ CS42L43_SAMPLE_RATE4,				0x00000003 },
++	{ CS42L43_PLL_CONTROL,				0x00000000 },
++	{ CS42L43_FS_SELECT1,				0x00000000 },
++	{ CS42L43_FS_SELECT2,				0x00000000 },
++	{ CS42L43_FS_SELECT3,				0x00000000 },
++	{ CS42L43_FS_SELECT4,				0x00000000 },
++	{ CS42L43_PDM_CONTROL,				0x00000000 },
++	{ CS42L43_ASP_CLK_CONFIG1,			0x00010001 },
++	{ CS42L43_ASP_CLK_CONFIG2,			0x00000000 },
++	{ CS42L43_OSC_DIV_SEL,				0x00000001 },
++	{ CS42L43_ADC_B_CTRL1,				0x00000000 },
++	{ CS42L43_ADC_B_CTRL2,				0x00000000 },
++	{ CS42L43_DECIM_HPF_WNF_CTRL1,			0x00000001 },
++	{ CS42L43_DECIM_HPF_WNF_CTRL2,			0x00000001 },
++	{ CS42L43_DECIM_HPF_WNF_CTRL3,			0x00000001 },
++	{ CS42L43_DECIM_HPF_WNF_CTRL4,			0x00000001 },
++	{ CS42L43_DMIC_PDM_CTRL,			0x00000000 },
++	{ CS42L43_DECIM_VOL_CTRL_CH1_CH2,		0x20122012 },
++	{ CS42L43_DECIM_VOL_CTRL_CH3_CH4,		0x20122012 },
++	{ CS42L43_INTP_VOLUME_CTRL1,			0x00000180 },
++	{ CS42L43_INTP_VOLUME_CTRL2,			0x00000180 },
++	{ CS42L43_AMP1_2_VOL_RAMP,			0x00000022 },
++	{ CS42L43_ASP_CTRL,				0x00000004 },
++	{ CS42L43_ASP_FSYNC_CTRL1,			0x000000FA },
++	{ CS42L43_ASP_FSYNC_CTRL2,			0x00000001 },
++	{ CS42L43_ASP_FSYNC_CTRL3,			0x00000000 },
++	{ CS42L43_ASP_FSYNC_CTRL4,			0x000001F4 },
++	{ CS42L43_ASP_DATA_CTRL,			0x0000003A },
++	{ CS42L43_ASP_RX_EN,				0x00000000 },
++	{ CS42L43_ASP_TX_EN,				0x00000000 },
++	{ CS42L43_ASP_RX_CH1_CTRL,			0x00170001 },
++	{ CS42L43_ASP_RX_CH2_CTRL,			0x00170031 },
++	{ CS42L43_ASP_RX_CH3_CTRL,			0x00170061 },
++	{ CS42L43_ASP_RX_CH4_CTRL,			0x00170091 },
++	{ CS42L43_ASP_RX_CH5_CTRL,			0x001700C1 },
++	{ CS42L43_ASP_RX_CH6_CTRL,			0x001700F1 },
++	{ CS42L43_ASP_TX_CH1_CTRL,			0x00170001 },
++	{ CS42L43_ASP_TX_CH2_CTRL,			0x00170031 },
++	{ CS42L43_ASP_TX_CH3_CTRL,			0x00170061 },
++	{ CS42L43_ASP_TX_CH4_CTRL,			0x00170091 },
++	{ CS42L43_ASP_TX_CH5_CTRL,			0x001700C1 },
++	{ CS42L43_ASP_TX_CH6_CTRL,			0x001700F1 },
++	{ CS42L43_ASPTX1_INPUT,				0x00800000 },
++	{ CS42L43_ASPTX2_INPUT,				0x00800000 },
++	{ CS42L43_ASPTX3_INPUT,				0x00800000 },
++	{ CS42L43_ASPTX4_INPUT,				0x00800000 },
++	{ CS42L43_ASPTX5_INPUT,				0x00800000 },
++	{ CS42L43_ASPTX6_INPUT,				0x00800000 },
++	{ CS42L43_SWIRE_DP1_CH1_INPUT,			0x00800000 },
++	{ CS42L43_SWIRE_DP1_CH2_INPUT,			0x00800000 },
++	{ CS42L43_SWIRE_DP1_CH3_INPUT,			0x00800000 },
++	{ CS42L43_SWIRE_DP1_CH4_INPUT,			0x00800000 },
++	{ CS42L43_SWIRE_DP2_CH1_INPUT,			0x00800000 },
++	{ CS42L43_SWIRE_DP2_CH2_INPUT,			0x00800000 },
++	{ CS42L43_SWIRE_DP3_CH1_INPUT,			0x00800000 },
++	{ CS42L43_SWIRE_DP3_CH2_INPUT,			0x00800000 },
++	{ CS42L43_SWIRE_DP4_CH1_INPUT,			0x00800000 },
++	{ CS42L43_SWIRE_DP4_CH2_INPUT,			0x00800000 },
++	{ CS42L43_ASRC_INT1_INPUT1,			0x00800000 },
++	{ CS42L43_ASRC_INT2_INPUT1,			0x00800000 },
++	{ CS42L43_ASRC_INT3_INPUT1,			0x00800000 },
++	{ CS42L43_ASRC_INT4_INPUT1,			0x00800000 },
++	{ CS42L43_ASRC_DEC1_INPUT1,			0x00800000 },
++	{ CS42L43_ASRC_DEC2_INPUT1,			0x00800000 },
++	{ CS42L43_ASRC_DEC3_INPUT1,			0x00800000 },
++	{ CS42L43_ASRC_DEC4_INPUT1,			0x00800000 },
++	{ CS42L43_ISRC1INT1_INPUT1,			0x00800000 },
++	{ CS42L43_ISRC1INT2_INPUT1,			0x00800000 },
++	{ CS42L43_ISRC1DEC1_INPUT1,			0x00800000 },
++	{ CS42L43_ISRC1DEC2_INPUT1,			0x00800000 },
++	{ CS42L43_ISRC2INT1_INPUT1,			0x00800000 },
++	{ CS42L43_ISRC2INT2_INPUT1,			0x00800000 },
++	{ CS42L43_ISRC2DEC1_INPUT1,			0x00800000 },
++	{ CS42L43_ISRC2DEC2_INPUT1,			0x00800000 },
++	{ CS42L43_EQ1MIX_INPUT1,			0x00800000 },
++	{ CS42L43_EQ1MIX_INPUT2,			0x00800000 },
++	{ CS42L43_EQ1MIX_INPUT3,			0x00800000 },
++	{ CS42L43_EQ1MIX_INPUT4,			0x00800000 },
++	{ CS42L43_EQ2MIX_INPUT1,			0x00800000 },
++	{ CS42L43_EQ2MIX_INPUT2,			0x00800000 },
++	{ CS42L43_EQ2MIX_INPUT3,			0x00800000 },
++	{ CS42L43_EQ2MIX_INPUT4,			0x00800000 },
++	{ CS42L43_SPDIF1_INPUT1,			0x00800000 },
++	{ CS42L43_SPDIF2_INPUT1,			0x00800000 },
++	{ CS42L43_AMP1MIX_INPUT1,			0x00800000 },
++	{ CS42L43_AMP1MIX_INPUT2,			0x00800000 },
++	{ CS42L43_AMP1MIX_INPUT3,			0x00800000 },
++	{ CS42L43_AMP1MIX_INPUT4,			0x00800000 },
++	{ CS42L43_AMP2MIX_INPUT1,			0x00800000 },
++	{ CS42L43_AMP2MIX_INPUT2,			0x00800000 },
++	{ CS42L43_AMP2MIX_INPUT3,			0x00800000 },
++	{ CS42L43_AMP2MIX_INPUT4,			0x00800000 },
++	{ CS42L43_AMP3MIX_INPUT1,			0x00800000 },
++	{ CS42L43_AMP3MIX_INPUT2,			0x00800000 },
++	{ CS42L43_AMP3MIX_INPUT3,			0x00800000 },
++	{ CS42L43_AMP3MIX_INPUT4,			0x00800000 },
++	{ CS42L43_AMP4MIX_INPUT1,			0x00800000 },
++	{ CS42L43_AMP4MIX_INPUT2,			0x00800000 },
++	{ CS42L43_AMP4MIX_INPUT3,			0x00800000 },
++	{ CS42L43_AMP4MIX_INPUT4,			0x00800000 },
++	{ CS42L43_ASRC_INT_ENABLES,			0x00000100 },
++	{ CS42L43_ASRC_DEC_ENABLES,			0x00000100 },
++	{ CS42L43_PDNCNTL,				0x00000000 },
++	{ CS42L43_RINGSENSE_DEB_CTRL,			0x0000001B },
++	{ CS42L43_TIPSENSE_DEB_CTRL,			0x0000001B },
++	{ CS42L43_HS2,					0x050106F3 },
++	{ CS42L43_STEREO_MIC_CTRL,			0x00000000 },
++	{ CS42L43_STEREO_MIC_CLAMP_CTRL,		0x00000001 },
++	{ CS42L43_BLOCK_EN2,				0x00000000 },
++	{ CS42L43_BLOCK_EN3,				0x00000000 },
++	{ CS42L43_BLOCK_EN4,				0x00000000 },
++	{ CS42L43_BLOCK_EN5,				0x00000000 },
++	{ CS42L43_BLOCK_EN6,				0x00000000 },
++	{ CS42L43_BLOCK_EN7,				0x00000000 },
++	{ CS42L43_BLOCK_EN8,				0x00000000 },
++	{ CS42L43_BLOCK_EN9,				0x00000000 },
++	{ CS42L43_BLOCK_EN10,				0x00000000 },
++	{ CS42L43_BLOCK_EN11,				0x00000000 },
++	{ CS42L43_TONE_CH1_CTRL,			0x00000000 },
++	{ CS42L43_TONE_CH2_CTRL,			0x00000000 },
++	{ CS42L43_MIC_DETECT_CONTROL_1,			0x00000003 },
++	{ CS42L43_HS_BIAS_SENSE_AND_CLAMP_AUTOCONTROL,	0x02000003 },
++	{ CS42L43_MIC_DETECT_CONTROL_ANDROID,		0x80790079 },
++	{ CS42L43_ISRC1_CTRL,				0x00000000 },
++	{ CS42L43_ISRC2_CTRL,				0x00000000 },
++	{ CS42L43_CTRL_REG,				0x00000006 },
++	{ CS42L43_FDIV_FRAC,				0x40000000 },
++	{ CS42L43_CAL_RATIO,				0x00000080 },
++	{ CS42L43_SPI_CLK_CONFIG1,			0x00000000 },
++	{ CS42L43_SPI_CONFIG1,				0x00000000 },
++	{ CS42L43_SPI_CONFIG2,				0x00000000 },
++	{ CS42L43_SPI_CONFIG3,				0x00000001 },
++	{ CS42L43_SPI_CONFIG4,				0x00000000 },
++	{ CS42L43_TRAN_CONFIG3,				0x00000000 },
++	{ CS42L43_TRAN_CONFIG4,				0x00000000 },
++	{ CS42L43_TRAN_CONFIG5,				0x00000000 },
++	{ CS42L43_TRAN_CONFIG6,				0x00000000 },
++	{ CS42L43_TRAN_CONFIG7,				0x00000000 },
++	{ CS42L43_TRAN_CONFIG8,				0x00000000 },
++	{ CS42L43_DACCNFG1,				0x00000008 },
++	{ CS42L43_DACCNFG2,				0x00000005 },
++	{ CS42L43_HPPATHVOL,				0x011B011B },
++	{ CS42L43_PGAVOL,				0x00003470 },
++	{ CS42L43_LOADDETENA,				0x00000000 },
++	{ CS42L43_CTRL,					0x00000037 },
++	{ CS42L43_COEFF_DATA_IN0,			0x00000000 },
++	{ CS42L43_COEFF_RD_WR0,				0x00000000 },
++	{ CS42L43_START_EQZ0,				0x00000000 },
++	{ CS42L43_MUTE_EQ_IN0,				0x00000000 },
++	{ CS42L43_DECIM_MASK,				0x0000000F },
++	{ CS42L43_EQ_MIX_MASK,				0x0000000F },
++	{ CS42L43_ASP_MASK,				0x000000FF },
++	{ CS42L43_PLL_MASK,				0x00000003 },
++	{ CS42L43_SOFT_MASK,				0x0000FFFF },
++	{ CS42L43_SWIRE_MASK,				0x00007FFF },
++	{ CS42L43_MSM_MASK,				0x00000FFF },
++	{ CS42L43_ACC_DET_MASK,				0x00000FFF },
++	{ CS42L43_I2C_TGT_MASK,				0x00000003 },
++	{ CS42L43_SPI_MSTR_MASK,			0x00000007 },
++	{ CS42L43_SW_TO_SPI_BRIDGE_MASK,		0x00000001 },
++	{ CS42L43_OTP_MASK,				0x00000007 },
++	{ CS42L43_CLASS_D_AMP_MASK,			0x00003FFF },
++	{ CS42L43_GPIO_INT_MASK,			0x0000003F },
++	{ CS42L43_ASRC_MASK,				0x0000000F },
++	{ CS42L43_HPOUT_MASK,				0x00000003 },
++};
 +
-+#define CS42L43_DAPM_MUX(name_str, name) \
-+	SND_SOC_DAPM_MUX(name_str " Input", SND_SOC_NOPM, 0, 0, &cs42l43_##name##_mux)
-+
-+#define CS42L43_DAPM_MIXER(name_str, name) \
-+	SND_SOC_DAPM_MUX(name_str " Input 1", SND_SOC_NOPM, 0, 0, &cs42l43_##name##_in1_mux), \
-+	SND_SOC_DAPM_MUX(name_str " Input 2", SND_SOC_NOPM, 0, 0, &cs42l43_##name##_in2_mux), \
-+	SND_SOC_DAPM_MUX(name_str " Input 3", SND_SOC_NOPM, 0, 0, &cs42l43_##name##_in3_mux), \
-+	SND_SOC_DAPM_MUX(name_str " Input 4", SND_SOC_NOPM, 0, 0, &cs42l43_##name##_in4_mux), \
-+	SND_SOC_DAPM_MIXER(name_str " Mixer", SND_SOC_NOPM, 0, 0, NULL, 0)
-+
-+#define CS42L43_BASE_ROUTES(name_str) \
-+	{ name_str,		"Tone Generator 1",	"Tone 1" }, \
-+	{ name_str,		"Tone Generator 2",	"Tone 2" }, \
-+	{ name_str,		"Decimator 1",		"Decimator 1" }, \
-+	{ name_str,		"Decimator 2",		"Decimator 2" }, \
-+	{ name_str,		"Decimator 3",		"Decimator 3" }, \
-+	{ name_str,		"Decimator 4",		"Decimator 4" }, \
-+	{ name_str,		"ASPRX1",		"ASPRX1" }, \
-+	{ name_str,		"ASPRX2",		"ASPRX2" }, \
-+	{ name_str,		"ASPRX3",		"ASPRX3" }, \
-+	{ name_str,		"ASPRX4",		"ASPRX4" }, \
-+	{ name_str,		"ASPRX5",		"ASPRX5" }, \
-+	{ name_str,		"ASPRX6",		"ASPRX6" }, \
-+	{ name_str,		"DP5RX1",		"DP5RX1" }, \
-+	{ name_str,		"DP5RX2",		"DP5RX2" }, \
-+	{ name_str,		"DP6RX1",		"DP6RX1" }, \
-+	{ name_str,		"DP6RX2",		"DP6RX2" }, \
-+	{ name_str,		"DP7RX1",		"DP7RX1" }, \
-+	{ name_str,		"DP7RX2",		"DP7RX2" }, \
-+	{ name_str,		"ASRC INT1",		"ASRC_INT1" }, \
-+	{ name_str,		"ASRC INT2",		"ASRC_INT2" }, \
-+	{ name_str,		"ASRC INT3",		"ASRC_INT3" }, \
-+	{ name_str,		"ASRC INT4",		"ASRC_INT4" }, \
-+	{ name_str,		"ASRC DEC1",		"ASRC_DEC1" }, \
-+	{ name_str,		"ASRC DEC2",		"ASRC_DEC2" }, \
-+	{ name_str,		"ASRC DEC3",		"ASRC_DEC3" }, \
-+	{ name_str,		"ASRC DEC4",		"ASRC_DEC4" }, \
-+	{ name_str,		"ISRC1 INT1",		"ISRC1INT1" }, \
-+	{ name_str,		"ISRC1 INT2",		"ISRC1INT2" }, \
-+	{ name_str,		"ISRC1 DEC1",		"ISRC1DEC1" }, \
-+	{ name_str,		"ISRC1 DEC2",		"ISRC1DEC2" }, \
-+	{ name_str,		"ISRC2 INT1",		"ISRC2INT1" }, \
-+	{ name_str,		"ISRC2 INT2",		"ISRC2INT2" }, \
-+	{ name_str,		"ISRC2 DEC1",		"ISRC2DEC1" }, \
-+	{ name_str,		"ISRC2 DEC2",		"ISRC2DEC2" }, \
-+	{ name_str,		"EQ1",			"EQ" }, \
-+	{ name_str,		"EQ2",			"EQ" }
-+
-+#define CS42L43_MUX_ROUTES(name_str, widget) \
-+	{ widget,		NULL,			name_str " Input" }, \
-+	{ name_str " Input",	NULL,			"Mixer Core" }, \
-+	CS42L43_BASE_ROUTES(name_str " Input")
-+
-+#define CS42L43_MIXER_ROUTES(name_str, widget) \
-+	{ name_str " Mixer",	NULL,			name_str " Input 1" }, \
-+	{ name_str " Mixer",	NULL,			name_str " Input 2" }, \
-+	{ name_str " Mixer",	NULL,			name_str " Input 3" }, \
-+	{ name_str " Mixer",	NULL,			name_str " Input 4" }, \
-+	{ widget,		NULL,			name_str " Mixer" }, \
-+	{ name_str " Mixer",	NULL,			"Mixer Core" }, \
-+	CS42L43_BASE_ROUTES(name_str " Input 1"), \
-+	CS42L43_BASE_ROUTES(name_str " Input 2"), \
-+	CS42L43_BASE_ROUTES(name_str " Input 3"), \
-+	CS42L43_BASE_ROUTES(name_str " Input 4")
-+
-+#define CS42L43_MIXER_VOLUMES(name_str, base) \
-+	SOC_SINGLE_RANGE_TLV(name_str " Input 1 Volume", base, \
-+			     CS42L43_MIXER_VOL_SHIFT, 0x20, 0x50, 0, \
-+			     cs42l43_mixer_tlv), \
-+	SOC_SINGLE_RANGE_TLV(name_str " Input 2 Volume", base + 4, \
-+			     CS42L43_MIXER_VOL_SHIFT, 0x20, 0x50, 0, \
-+			     cs42l43_mixer_tlv), \
-+	SOC_SINGLE_RANGE_TLV(name_str " Input 3 Volume", base + 8, \
-+			     CS42L43_MIXER_VOL_SHIFT, 0x20, 0x50, 0, \
-+			     cs42l43_mixer_tlv), \
-+	SOC_SINGLE_RANGE_TLV(name_str " Input 4 Volume", base + 12, \
-+			     CS42L43_MIXER_VOL_SHIFT, 0x20, 0x50, 0, \
-+			     cs42l43_mixer_tlv)
-+
-+#define CS42L43_IRQ_ERROR(name) \
-+static irqreturn_t cs42l43_##name(int irq, void *data) \
-+{ \
-+	struct cs42l43_codec *priv = data; \
-+	dev_err(priv->dev, "Error " #name " IRQ\n"); \
-+	return IRQ_HANDLED; \
-+}
-+
-+CS42L43_IRQ_ERROR(pll_lost_lock)
-+CS42L43_IRQ_ERROR(spkr_clock_stop)
-+CS42L43_IRQ_ERROR(spkl_clock_stop)
-+CS42L43_IRQ_ERROR(spkr_brown_out)
-+CS42L43_IRQ_ERROR(spkl_brown_out)
-+CS42L43_IRQ_ERROR(spkr_therm_shutdown)
-+CS42L43_IRQ_ERROR(spkl_therm_shutdown)
-+CS42L43_IRQ_ERROR(spkr_therm_warm)
-+CS42L43_IRQ_ERROR(spkl_therm_warm)
-+CS42L43_IRQ_ERROR(spkr_sc_detect)
-+CS42L43_IRQ_ERROR(spkl_sc_detect)
-+CS42L43_IRQ_ERROR(hp_ilimit)
-+
-+#define CS42L43_IRQ_COMPLETE(name) \
-+static irqreturn_t cs42l43_##name(int irq, void *data) \
-+{ \
-+	struct cs42l43_codec *priv = data; \
-+	dev_dbg(priv->dev, #name " completed\n"); \
-+	complete(&priv->name); \
-+	return IRQ_HANDLED; \
-+}
-+
-+CS42L43_IRQ_COMPLETE(pll_ready)
-+CS42L43_IRQ_COMPLETE(hp_startup)
-+CS42L43_IRQ_COMPLETE(hp_shutdown)
-+CS42L43_IRQ_COMPLETE(type_detect)
-+CS42L43_IRQ_COMPLETE(spkr_shutdown)
-+CS42L43_IRQ_COMPLETE(spkl_shutdown)
-+CS42L43_IRQ_COMPLETE(spkr_startup)
-+CS42L43_IRQ_COMPLETE(spkl_startup)
-+CS42L43_IRQ_COMPLETE(load_detect)
-+
-+static irqreturn_t cs42l43_mic_shutter(int irq, void *data)
++static bool cs42l43_readable_register(struct device *dev, unsigned int reg)
 +{
-+	struct cs42l43_codec *priv = data;
-+	const char * const controls[] = {
-+		"Decimator 1 Switch",
-+		"Decimator 2 Switch",
-+		"Decimator 3 Switch",
-+		"Decimator 4 Switch",
++	switch (reg) {
++	case CS42L43_DEVID:
++	case CS42L43_REVID:
++	case CS42L43_RELID:
++	case CS42L43_SFT_RESET:
++	case CS42L43_DRV_CTRL1:
++	case CS42L43_DRV_CTRL3:
++	case CS42L43_DRV_CTRL4:
++	case CS42L43_DRV_CTRL_5:
++	case CS42L43_GPIO_CTRL1:
++	case CS42L43_GPIO_CTRL2:
++	case CS42L43_GPIO_STS:
++	case CS42L43_GPIO_FN_SEL:
++	case CS42L43_MCLK_SRC_SEL:
++	case CS42L43_SAMPLE_RATE1 ... CS42L43_SAMPLE_RATE4:
++	case CS42L43_PLL_CONTROL:
++	case CS42L43_FS_SELECT1 ... CS42L43_FS_SELECT4:
++	case CS42L43_PDM_CONTROL:
++	case CS42L43_ASP_CLK_CONFIG1 ... CS42L43_ASP_CLK_CONFIG2:
++	case CS42L43_OSC_DIV_SEL:
++	case CS42L43_ADC_B_CTRL1 ...  CS42L43_ADC_B_CTRL2:
++	case CS42L43_DECIM_HPF_WNF_CTRL1 ... CS42L43_DECIM_HPF_WNF_CTRL4:
++	case CS42L43_DMIC_PDM_CTRL:
++	case CS42L43_DECIM_VOL_CTRL_CH1_CH2 ... CS42L43_DECIM_VOL_CTRL_CH3_CH4:
++	case CS42L43_INTP_VOLUME_CTRL1 ... CS42L43_INTP_VOLUME_CTRL2:
++	case CS42L43_AMP1_2_VOL_RAMP:
++	case CS42L43_ASP_CTRL:
++	case CS42L43_ASP_FSYNC_CTRL1 ... CS42L43_ASP_FSYNC_CTRL4:
++	case CS42L43_ASP_DATA_CTRL:
++	case CS42L43_ASP_RX_EN ... CS42L43_ASP_TX_EN:
++	case CS42L43_ASP_RX_CH1_CTRL ... CS42L43_ASP_RX_CH6_CTRL:
++	case CS42L43_ASP_TX_CH1_CTRL ... CS42L43_ASP_TX_CH6_CTRL:
++	case CS42L43_OTP_REVISION_ID:
++	case CS42L43_ASPTX1_INPUT:
++	case CS42L43_ASPTX2_INPUT:
++	case CS42L43_ASPTX3_INPUT:
++	case CS42L43_ASPTX4_INPUT:
++	case CS42L43_ASPTX5_INPUT:
++	case CS42L43_ASPTX6_INPUT:
++	case CS42L43_SWIRE_DP1_CH1_INPUT:
++	case CS42L43_SWIRE_DP1_CH2_INPUT:
++	case CS42L43_SWIRE_DP1_CH3_INPUT:
++	case CS42L43_SWIRE_DP1_CH4_INPUT:
++	case CS42L43_SWIRE_DP2_CH1_INPUT:
++	case CS42L43_SWIRE_DP2_CH2_INPUT:
++	case CS42L43_SWIRE_DP3_CH1_INPUT:
++	case CS42L43_SWIRE_DP3_CH2_INPUT:
++	case CS42L43_SWIRE_DP4_CH1_INPUT:
++	case CS42L43_SWIRE_DP4_CH2_INPUT:
++	case CS42L43_ASRC_INT1_INPUT1:
++	case CS42L43_ASRC_INT2_INPUT1:
++	case CS42L43_ASRC_INT3_INPUT1:
++	case CS42L43_ASRC_INT4_INPUT1:
++	case CS42L43_ASRC_DEC1_INPUT1:
++	case CS42L43_ASRC_DEC2_INPUT1:
++	case CS42L43_ASRC_DEC3_INPUT1:
++	case CS42L43_ASRC_DEC4_INPUT1:
++	case CS42L43_ISRC1INT1_INPUT1:
++	case CS42L43_ISRC1INT2_INPUT1:
++	case CS42L43_ISRC1DEC1_INPUT1:
++	case CS42L43_ISRC1DEC2_INPUT1:
++	case CS42L43_ISRC2INT1_INPUT1:
++	case CS42L43_ISRC2INT2_INPUT1:
++	case CS42L43_ISRC2DEC1_INPUT1:
++	case CS42L43_ISRC2DEC2_INPUT1:
++	case CS42L43_EQ1MIX_INPUT1 ... CS42L43_EQ1MIX_INPUT4:
++	case CS42L43_EQ2MIX_INPUT1 ... CS42L43_EQ2MIX_INPUT4:
++	case CS42L43_SPDIF1_INPUT1:
++	case CS42L43_SPDIF2_INPUT1:
++	case CS42L43_AMP1MIX_INPUT1 ... CS42L43_AMP1MIX_INPUT4:
++	case CS42L43_AMP2MIX_INPUT1 ... CS42L43_AMP2MIX_INPUT4:
++	case CS42L43_AMP3MIX_INPUT1 ... CS42L43_AMP3MIX_INPUT4:
++	case CS42L43_AMP4MIX_INPUT1 ... CS42L43_AMP4MIX_INPUT4:
++	case CS42L43_ASRC_INT_ENABLES ... CS42L43_ASRC_DEC_ENABLES:
++	case CS42L43_PDNCNTL:
++	case CS42L43_RINGSENSE_DEB_CTRL:
++	case CS42L43_TIPSENSE_DEB_CTRL:
++	case CS42L43_TIP_RING_SENSE_INTERRUPT_STATUS:
++	case CS42L43_HS2:
++	case CS42L43_HS_STAT:
++	case CS42L43_MCU_SW_INTERRUPT:
++	case CS42L43_STEREO_MIC_CTRL:
++	case CS42L43_STEREO_MIC_CLAMP_CTRL:
++	case CS42L43_BLOCK_EN2 ... CS42L43_BLOCK_EN11:
++	case CS42L43_TONE_CH1_CTRL ... CS42L43_TONE_CH2_CTRL:
++	case CS42L43_MIC_DETECT_CONTROL_1:
++	case CS42L43_DETECT_STATUS_1:
++	case CS42L43_HS_BIAS_SENSE_AND_CLAMP_AUTOCONTROL:
++	case CS42L43_MIC_DETECT_CONTROL_ANDROID:
++	case CS42L43_ISRC1_CTRL:
++	case CS42L43_ISRC2_CTRL:
++	case CS42L43_CTRL_REG:
++	case CS42L43_FDIV_FRAC:
++	case CS42L43_CAL_RATIO:
++	case CS42L43_SPI_CLK_CONFIG1:
++	case CS42L43_SPI_CONFIG1 ... CS42L43_SPI_CONFIG4:
++	case CS42L43_SPI_STATUS1 ... CS42L43_SPI_STATUS2:
++	case CS42L43_TRAN_CONFIG1 ... CS42L43_TRAN_CONFIG8:
++	case CS42L43_TRAN_STATUS1 ... CS42L43_TRAN_STATUS3:
++	case CS42L43_TX_DATA:
++	case CS42L43_RX_DATA:
++	case CS42L43_DACCNFG1 ... CS42L43_DACCNFG2:
++	case CS42L43_HPPATHVOL:
++	case CS42L43_PGAVOL:
++	case CS42L43_LOADDETRESULTS:
++	case CS42L43_LOADDETENA:
++	case CS42L43_CTRL:
++	case CS42L43_COEFF_DATA_IN0:
++	case CS42L43_COEFF_RD_WR0:
++	case CS42L43_INIT_DONE0:
++	case CS42L43_START_EQZ0:
++	case CS42L43_MUTE_EQ_IN0:
++	case CS42L43_DECIM_INT ... CS42L43_HPOUT_INT:
++	case CS42L43_DECIM_MASK ... CS42L43_HPOUT_MASK:
++	case CS42L43_DECIM_INT_SHADOW ... CS42L43_HP_OUT_SHADOW:
++	case CS42L43_BOOT_CONTROL:
++	case CS42L43_BLOCK_EN:
++	case CS42L43_SHUTTER_CONTROL:
++	case CS42L43_MCU_SW_REV ... CS42L43_MCU_RAM_MAX:
++		return true;
++	default:
++		return false;
++	}
++}
++
++static bool cs42l43_precious_register(struct device *dev, unsigned int reg)
++{
++	switch (reg) {
++	case CS42L43_SFT_RESET:
++	case CS42L43_TX_DATA:
++	case CS42L43_RX_DATA:
++	case CS42L43_DECIM_INT ... CS42L43_HPOUT_INT:
++	case CS42L43_MCU_SW_REV ... CS42L43_MCU_RAM_MAX:
++		return true;
++	default:
++		return false;
++	}
++}
++
++static bool cs42l43_volatile_register(struct device *dev, unsigned int reg)
++{
++	switch (reg) {
++	case CS42L43_DEVID:
++	case CS42L43_REVID:
++	case CS42L43_RELID:
++	case CS42L43_GPIO_STS:
++	case CS42L43_OTP_REVISION_ID:
++	case CS42L43_TIP_RING_SENSE_INTERRUPT_STATUS:
++	case CS42L43_HS_STAT:
++	case CS42L43_MCU_SW_INTERRUPT:
++	case CS42L43_DETECT_STATUS_1:
++	case CS42L43_SPI_STATUS1 ... CS42L43_SPI_STATUS2:
++	case CS42L43_TRAN_CONFIG1 ... CS42L43_TRAN_CONFIG2:
++	case CS42L43_TRAN_CONFIG8:
++	case CS42L43_TRAN_STATUS1 ... CS42L43_TRAN_STATUS3:
++	case CS42L43_LOADDETRESULTS:
++	case CS42L43_INIT_DONE0:
++	case CS42L43_DECIM_INT_SHADOW ... CS42L43_HP_OUT_SHADOW:
++	case CS42L43_BOOT_CONTROL:
++	case CS42L43_BLOCK_EN:
++		return true;
++	default:
++		return cs42l43_precious_register(dev, reg);
++	}
++}
++
++#if IS_ENABLED(CONFIG_MFD_CS42L43_I2C)
++const struct regmap_config cs42l43_i2c_regmap = {
++	.reg_bits		= 32,
++	.reg_stride		= 4,
++	.val_bits		= 32,
++	.reg_format_endian	= REGMAP_ENDIAN_BIG,
++	.val_format_endian	= REGMAP_ENDIAN_BIG,
++
++	.max_register		= CS42L43_MCU_RAM_MAX,
++	.readable_reg		= cs42l43_readable_register,
++	.volatile_reg		= cs42l43_volatile_register,
++	.precious_reg		= cs42l43_precious_register,
++
++	.cache_type		= REGCACHE_RBTREE,
++	.reg_defaults		= cs42l43_reg_default,
++	.num_reg_defaults	= ARRAY_SIZE(cs42l43_reg_default),
++};
++EXPORT_SYMBOL_NS_GPL(cs42l43_i2c_regmap, MFD_CS42L43);
++#endif
++
++#if IS_ENABLED(CONFIG_MFD_CS42L43_SDW)
++const struct regmap_config cs42l43_sdw_regmap = {
++	.reg_bits		= 32,
++	.reg_stride		= 4,
++	.val_bits		= 32,
++	.reg_format_endian	= REGMAP_ENDIAN_LITTLE,
++	.val_format_endian	= REGMAP_ENDIAN_LITTLE,
++
++	.max_register		= CS42L43_MCU_RAM_MAX,
++	.readable_reg		= cs42l43_readable_register,
++	.volatile_reg		= cs42l43_volatile_register,
++	.precious_reg		= cs42l43_precious_register,
++
++	.cache_type		= REGCACHE_RBTREE,
++	.reg_defaults		= cs42l43_reg_default,
++	.num_reg_defaults	= ARRAY_SIZE(cs42l43_reg_default),
++};
++EXPORT_SYMBOL_NS_GPL(cs42l43_sdw_regmap, MFD_CS42L43);
++#endif
++
++static const char * const cs42l43_core_supplies[] = {
++	"VDD_A", "VDD_IO", "VDD_CP",
++};
++
++static const char * const cs42l43_parent_supplies[] = { "VDD_AMP" };
++
++static const struct mfd_cell cs42l43_devs[] = {
++	{ .name = "cs42l43-pinctrl", },
++	{ .name = "cs42l43-irq", },
++	{ .name = "cs42l43-spi", },
++	{
++		.name = "cs42l43-codec",
++		.parent_supplies = cs42l43_parent_supplies,
++		.num_parent_supplies = ARRAY_SIZE(cs42l43_parent_supplies),
++	},
++};
++
++static int cs42l43_soft_reset(struct cs42l43 *cs42l43)
++{
++	static const struct reg_sequence reset[] = {
++		{ CS42L43_SFT_RESET, 0x5A000000 },
 +	};
-+	int i, ret;
++	unsigned long time;
 +
-+	dev_dbg(priv->dev, "Microphone shutter changed\n");
++	dev_dbg(cs42l43->dev, "Soft resetting\n");
 +
-+	if (!priv->component)
-+		return IRQ_NONE;
++	reinit_completion(&cs42l43->device_detach);
 +
-+	for (i = 0; i < ARRAY_SIZE(controls); i++) {
-+		ret = snd_soc_component_notify_control(priv->component,
-+						       controls[i]);
-+		if (ret)
-+			return IRQ_NONE;
-+	}
++	/* apply cache only as the device will also fall off the soundwire bus */
++	regcache_cache_only(cs42l43->regmap, true);
++	regmap_multi_reg_write_bypassed(cs42l43->regmap, reset, ARRAY_SIZE(reset));
 +
-+	return IRQ_HANDLED;
-+}
++	msleep(20);
 +
-+static irqreturn_t cs42l43_spk_shutter(int irq, void *data)
-+{
-+	struct cs42l43_codec *priv = data;
-+	int ret;
-+
-+	dev_dbg(priv->dev, "Speaker shutter changed\n");
-+
-+	if (!priv->component)
-+		return IRQ_NONE;
-+
-+	ret = snd_soc_component_notify_control(priv->component,
-+					       "Speaker Digital Switch");
-+	if (ret)
-+		return IRQ_NONE;
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static const unsigned int cs42l43_sample_rates[] = {
-+	8000, 16000, 24000, 32000, 44100, 48000, 96000, 192000,
-+};
-+
-+#define CS42L43_CONSUMER_RATE_MASK 0xFF
-+#define CS42L43_PROVIDER_RATE_MASK 0xEF // 44.1k only supported as consumer
-+
-+static const struct snd_pcm_hw_constraint_list cs42l43_constraint = {
-+	.count		= ARRAY_SIZE(cs42l43_sample_rates),
-+	.list		= cs42l43_sample_rates,
-+};
-+
-+static int cs42l43_startup(struct snd_pcm_substream *substream, struct snd_soc_dai *dai)
-+{
-+	struct snd_soc_component *component = dai->component;
-+	struct cs42l43_codec *priv = snd_soc_component_get_drvdata(component);
-+	struct cs42l43 *cs42l43 = priv->core;
-+	int provider = !!regmap_test_bits(cs42l43->regmap, CS42L43_ASP_CLK_CONFIG2,
-+					  CS42L43_ASP_MASTER_MODE_MASK);
-+
-+	if (provider)
-+		priv->constraint.mask = CS42L43_PROVIDER_RATE_MASK;
-+	else
-+		priv->constraint.mask = CS42L43_CONSUMER_RATE_MASK;
-+
-+	return snd_pcm_hw_constraint_list(substream->runtime, 0,
-+					  SNDRV_PCM_HW_PARAM_RATE,
-+					  &priv->constraint);
-+}
-+
-+static int cs42l43_convert_sample_rate(unsigned int rate)
-+{
-+	switch (rate) {
-+	case 8000:
-+		return 0x11;
-+	case 16000:
-+		return 0x12;
-+	case 24000:
-+		return 0x02;
-+	case 32000:
-+		return 0x13;
-+	case 44100:
-+		return 0x0B;
-+	case 48000:
-+		return 0x03;
-+	case 96000:
-+		return 0x04;
-+	case 192000:
-+		return 0x05;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int cs42l43_set_sample_rate(struct snd_pcm_substream *substream,
-+				   struct snd_pcm_hw_params *params,
-+				   struct snd_soc_dai *dai)
-+{
-+	struct cs42l43_codec *priv = snd_soc_component_get_drvdata(dai->component);
-+	struct cs42l43 *cs42l43 = priv->core;
-+	int ret;
-+
-+	ret = cs42l43_convert_sample_rate(params_rate(params));
-+	if (ret < 0) {
-+		dev_err(priv->dev, "Failed to convert sample rate: %d\n", ret);
-+		return ret;
-+	}
-+
-+	//FIXME: For now lets just set sample rate 1, this needs expanded in the future
-+	regmap_update_bits(cs42l43->regmap, CS42L43_SAMPLE_RATE1,
-+			   CS42L43_SAMPLE_RATE_MASK, ret);
-+
-+	return 0;
-+}
-+
-+static int cs42l43_asp_hw_params(struct snd_pcm_substream *substream,
-+				 struct snd_pcm_hw_params *params,
-+				 struct snd_soc_dai *dai)
-+{
-+	struct cs42l43_codec *priv = snd_soc_component_get_drvdata(dai->component);
-+	struct cs42l43 *cs42l43 = priv->core;
-+	int dsp_mode = !!regmap_test_bits(cs42l43->regmap, CS42L43_ASP_CTRL,
-+					  CS42L43_ASP_FSYNC_MODE_MASK);
-+	int provider = !!regmap_test_bits(cs42l43->regmap, CS42L43_ASP_CLK_CONFIG2,
-+					  CS42L43_ASP_MASTER_MODE_MASK);
-+	int n_chans = params_channels(params);
-+	int data_width = params_width(params);
-+	int n_slots = n_chans;
-+	int slot_width = data_width;
-+	int frame, bclk_target, i;
-+	unsigned int reg;
-+	int *slots;
-+
-+	if (priv->n_slots) {
-+		n_slots = priv->n_slots;
-+		slot_width = priv->slot_width;
-+	}
-+
-+	if (!dsp_mode && (n_slots & 0x1)) {
-+		dev_dbg(priv->dev, "Forcing balanced channels on ASP\n");
-+		n_slots++;
-+	}
-+
-+	frame = n_slots * slot_width;
-+	bclk_target = params_rate(params) * frame;
-+
-+	if (provider) {
-+		unsigned int gcd_nm = gcd(bclk_target, CS42L43_INTERNAL_SYSCLK);
-+		int n = bclk_target / gcd_nm;
-+		int m = CS42L43_INTERNAL_SYSCLK / gcd_nm;
-+
-+		if (n > (CS42L43_ASP_BCLK_N_MASK >> CS42L43_ASP_BCLK_N_SHIFT) ||
-+		    m > CS42L43_ASP_BCLK_M_MASK) {
-+			dev_err(priv->dev, "Can't produce %dHz bclk\n", bclk_target);
-+			return -EINVAL;
-+		}
-+
-+		dev_dbg(priv->dev, "bclk %d/%d = %dHz, with %dx%d frame\n",
-+			n, m, bclk_target, n_slots, slot_width);
-+
-+		regmap_update_bits(cs42l43->regmap, CS42L43_ASP_CLK_CONFIG1,
-+				   CS42L43_ASP_BCLK_N_MASK | CS42L43_ASP_BCLK_M_MASK,
-+				   n << CS42L43_ASP_BCLK_N_SHIFT |
-+				   m << CS42L43_ASP_BCLK_M_SHIFT);
-+		regmap_update_bits(cs42l43->regmap, CS42L43_ASP_FSYNC_CTRL1,
-+				   CS42L43_ASP_FSYNC_M_MASK, frame);
-+	}
-+
-+	regmap_update_bits(cs42l43->regmap, CS42L43_ASP_FSYNC_CTRL4,
-+			   CS42L43_ASP_NUM_BCLKS_PER_FSYNC_MASK,
-+			   frame << CS42L43_ASP_NUM_BCLKS_PER_FSYNC_SHIFT);
-+
-+	if (substream->stream == SNDRV_PCM_STREAM_CAPTURE) {
-+		reg = CS42L43_ASP_TX_CH1_CTRL;
-+		slots = priv->tx_slots;
-+	} else {
-+		reg = CS42L43_ASP_RX_CH1_CTRL;
-+		slots = priv->rx_slots;
-+	}
-+
-+	for (i = 0; i < n_chans; i++, reg += 4) {
-+		int slot_phase = dsp_mode | (i & CS42L43_ASP_CH_SLOT_PHASE_MASK);
-+		int slot_pos;
-+
-+		if (dsp_mode)
-+			slot_pos = slots[i] * slot_width;
-+		else
-+			slot_pos = (slots[i] / 2) * slot_width;
-+
-+		dev_dbg(priv->dev, "Configure channel %d at slot %d (%d,%d)\n",
-+			i, slots[i], slot_pos, slot_phase);
-+
-+		regmap_update_bits(cs42l43->regmap, reg,
-+				   CS42L43_ASP_CH_WIDTH_MASK |
-+				   CS42L43_ASP_CH_SLOT_MASK |
-+				   CS42L43_ASP_CH_SLOT_PHASE_MASK,
-+				   ((data_width - 1) << CS42L43_ASP_CH_WIDTH_SHIFT) |
-+				   (slot_pos << CS42L43_ASP_CH_SLOT_SHIFT) |
-+				   slot_phase);
-+	}
-+
-+	return cs42l43_set_sample_rate(substream, params, dai);
-+}
-+
-+static int cs42l43_asp_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
-+{
-+	struct snd_soc_component *component = dai->component;
-+	struct snd_soc_dapm_context *dapm = snd_soc_component_get_dapm(component);
-+	struct cs42l43_codec *priv = snd_soc_component_get_drvdata(component);
-+	struct cs42l43 *cs42l43 = priv->core;
-+	int provider = regmap_test_bits(cs42l43->regmap, CS42L43_ASP_CLK_CONFIG2,
-+					CS42L43_ASP_MASTER_MODE_MASK);
-+	struct snd_soc_dapm_route routes[] = {
-+		{ "BCLK", NULL, "FSYNC" },
-+	};
-+	unsigned int asp_ctrl = 0;
-+	unsigned int data_ctrl = 0;
-+	unsigned int fsync_ctrl = 0;
-+	unsigned int clk_config = 0;
-+
-+	switch (fmt & SND_SOC_DAIFMT_FORMAT_MASK) {
-+	case SND_SOC_DAIFMT_DSP_A:
-+		data_ctrl |= 2 << CS42L43_ASP_FSYNC_FRAME_START_DLY_SHIFT;
-+		fallthrough;
-+	case SND_SOC_DAIFMT_DSP_B:
-+		asp_ctrl |= CS42L43_ASP_FSYNC_MODE_MASK;
-+		data_ctrl |= CS42L43_ASP_FSYNC_FRAME_START_PHASE_MASK;
-+		break;
-+	case SND_SOC_DAIFMT_I2S:
-+		data_ctrl |= 2 << CS42L43_ASP_FSYNC_FRAME_START_DLY_SHIFT;
-+		break;
-+	case SND_SOC_DAIFMT_LEFT_J:
-+		data_ctrl |= CS42L43_ASP_FSYNC_FRAME_START_PHASE_MASK;
-+		break;
-+	default:
-+		dev_err(priv->dev, "Unsupported DAI format 0x%x\n",
-+			fmt & SND_SOC_DAIFMT_FORMAT_MASK);
-+		return -EINVAL;
-+	}
-+
-+	switch (fmt & SND_SOC_DAIFMT_CLOCK_PROVIDER_MASK) {
-+	case SND_SOC_DAIFMT_CBC_CFC:
-+		if (provider)
-+			snd_soc_dapm_del_routes(dapm, routes, ARRAY_SIZE(routes));
-+		break;
-+	case SND_SOC_DAIFMT_CBP_CFP:
-+		if (!provider)
-+			snd_soc_dapm_add_routes(dapm, routes, ARRAY_SIZE(routes));
-+		clk_config |= CS42L43_ASP_MASTER_MODE_MASK;
-+		break;
-+	default:
-+		dev_err(priv->dev, "Unsupported ASP mode 0x%x\n",
-+			fmt & SND_SOC_DAIFMT_MASTER_MASK);
-+		return -EINVAL;
-+	}
-+
-+	switch (fmt & SND_SOC_DAIFMT_INV_MASK) {
-+	case SND_SOC_DAIFMT_NB_NF:
-+		clk_config |= CS42L43_ASP_BCLK_INV_MASK; /* Yes BCLK_INV = NB */
-+		break;
-+	case SND_SOC_DAIFMT_IB_NF:
-+		break;
-+	case SND_SOC_DAIFMT_NB_IF:
-+		clk_config |= CS42L43_ASP_BCLK_INV_MASK;
-+		fsync_ctrl |= CS42L43_ASP_FSYNC_IN_INV_MASK |
-+			      CS42L43_ASP_FSYNC_OUT_INV_MASK;
-+		break;
-+	case SND_SOC_DAIFMT_IB_IF:
-+		fsync_ctrl |= CS42L43_ASP_FSYNC_IN_INV_MASK |
-+			      CS42L43_ASP_FSYNC_OUT_INV_MASK;
-+		break;
-+	default:
-+		dev_err(priv->dev, "Unsupported invert mode 0x%x\n",
-+			fmt & SND_SOC_DAIFMT_INV_MASK);
-+		return -EINVAL;
-+	}
-+
-+	regmap_update_bits(cs42l43->regmap, CS42L43_ASP_CTRL,
-+			   CS42L43_ASP_FSYNC_MODE_MASK,
-+			   asp_ctrl);
-+	regmap_update_bits(cs42l43->regmap, CS42L43_ASP_DATA_CTRL,
-+			   CS42L43_ASP_FSYNC_FRAME_START_DLY_MASK |
-+			   CS42L43_ASP_FSYNC_FRAME_START_PHASE_MASK,
-+			   data_ctrl);
-+	regmap_update_bits(cs42l43->regmap, CS42L43_ASP_CLK_CONFIG2,
-+			   CS42L43_ASP_MASTER_MODE_MASK |
-+			   CS42L43_ASP_BCLK_INV_MASK,
-+			   clk_config);
-+	regmap_update_bits(cs42l43->regmap, CS42L43_ASP_FSYNC_CTRL3,
-+			   CS42L43_ASP_FSYNC_IN_INV_MASK |
-+			   CS42L43_ASP_FSYNC_OUT_INV_MASK,
-+			   fsync_ctrl);
-+
-+	return 0;
-+}
-+
-+static void cs42l43_mask_to_slots(struct cs42l43_codec *priv, unsigned int mask, int *slots)
-+{
-+	int i;
-+
-+	for (i = 0; i < CS42L43_ASP_MAX_CHANNELS; ++i) {
-+		int slot = ffs(mask) - 1;
-+
-+		if (slot < 0)
-+			return;
-+
-+		slots[i] = slot;
-+
-+		mask &= ~(1 << slot);
-+	}
-+
-+	if (mask)
-+		dev_warn(priv->dev, "Too many channels in TDM mask\n");
-+}
-+
-+static int cs42l43_asp_set_tdm_slot(struct snd_soc_dai *dai, unsigned int tx_mask,
-+				    unsigned int rx_mask, int slots, int slot_width)
-+{
-+	struct snd_soc_component *component = dai->component;
-+	struct cs42l43_codec *priv = snd_soc_component_get_drvdata(component);
-+
-+	priv->n_slots = slots;
-+	priv->slot_width = slot_width;
-+
-+	if (!slots) {
-+		tx_mask = CS42L43_DEFAULT_SLOTS;
-+		rx_mask = CS42L43_DEFAULT_SLOTS;
-+	}
-+
-+	cs42l43_mask_to_slots(priv, tx_mask, priv->tx_slots);
-+	cs42l43_mask_to_slots(priv, rx_mask, priv->rx_slots);
-+
-+	return 0;
-+}
-+
-+static const struct snd_soc_dai_ops cs42l43_asp_ops = {
-+	.startup	= cs42l43_startup,
-+	.hw_params	= cs42l43_asp_hw_params,
-+	.set_fmt	= cs42l43_asp_set_fmt,
-+	.set_tdm_slot	= cs42l43_asp_set_tdm_slot,
-+};
-+
-+static int cs42l43_sdw_hw_params(struct snd_pcm_substream *substream,
-+				 struct snd_pcm_hw_params *params,
-+				 struct snd_soc_dai *dai)
-+{
-+	int ret;
-+
-+	ret = cs42l43_sdw_add_peripheral(substream, params, dai);
-+	if (ret)
-+		return ret;
-+
-+	return cs42l43_set_sample_rate(substream, params, dai);
-+};
-+
-+static const struct snd_soc_dai_ops cs42l43_sdw_ops = {
-+	.startup	= cs42l43_startup,
-+	.set_stream	= cs42l43_sdw_set_stream,
-+	.hw_params	= cs42l43_sdw_hw_params,
-+	.hw_free	= cs42l43_sdw_remove_peripheral,
-+};
-+
-+#define CS42L43_ASP_FORMATS (SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE | \
-+			     SNDRV_PCM_FMTBIT_S32_LE)
-+#define CS42L43_SDW_FORMATS (SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE)
-+
-+static struct snd_soc_dai_driver cs42l43_dais[] = {
-+	{
-+		.name			= "cs42l43-asp",
-+		.ops			= &cs42l43_asp_ops,
-+		.symmetric_rate		= 1,
-+		.capture = {
-+			.stream_name	= "ASP Capture",
-+			.channels_min	= 1,
-+			.channels_max	= CS42L43_ASP_MAX_CHANNELS,
-+			.rates		= SNDRV_PCM_RATE_KNOT,
-+			.formats	= CS42L43_ASP_FORMATS,
-+		},
-+		.playback = {
-+			.stream_name	= "ASP Playback",
-+			.channels_min	= 1,
-+			.channels_max	= CS42L43_ASP_MAX_CHANNELS,
-+			.rates		= SNDRV_PCM_RATE_KNOT,
-+			.formats	= CS42L43_ASP_FORMATS,
-+		},
-+	},
-+	{
-+		.name			= "cs42l43-dp1",
-+		.ops			= &cs42l43_sdw_ops,
-+		.capture = {
-+			.stream_name	= "DP1 Capture",
-+			.channels_min	= 1,
-+			.channels_max	= 4,
-+			.rates		= SNDRV_PCM_RATE_KNOT,
-+			.formats	= CS42L43_SDW_FORMATS,
-+		},
-+	},
-+	{
-+		.name			= "cs42l43-dp2",
-+		.ops			= &cs42l43_sdw_ops,
-+		.capture = {
-+			.stream_name	= "DP2 Capture",
-+			.channels_min	= 1,
-+			.channels_max	= 2,
-+			.rates		= SNDRV_PCM_RATE_KNOT,
-+			.formats	= CS42L43_SDW_FORMATS,
-+		},
-+	},
-+	{
-+		.name			= "cs42l43-dp3",
-+		.ops			= &cs42l43_sdw_ops,
-+		.capture = {
-+			.stream_name	= "DP3 Capture",
-+			.channels_min	= 1,
-+			.channels_max	= 2,
-+			.rates		= SNDRV_PCM_RATE_KNOT,
-+			.formats	= CS42L43_SDW_FORMATS,
-+		},
-+	},
-+	{
-+		.name			= "cs42l43-dp4",
-+		.ops			= &cs42l43_sdw_ops,
-+		.capture = {
-+			.stream_name	= "DP4 Capture",
-+			.channels_min	= 1,
-+			.channels_max	= 2,
-+			.rates		= SNDRV_PCM_RATE_KNOT,
-+			.formats	= CS42L43_SDW_FORMATS,
-+		},
-+	},
-+	{
-+		.name			= "cs42l43-dp5",
-+		.ops			= &cs42l43_sdw_ops,
-+		.playback = {
-+			.stream_name	= "DP5 Playback",
-+			.channels_min	= 1,
-+			.channels_max	= 2,
-+			.rates		= SNDRV_PCM_RATE_KNOT,
-+			.formats	= CS42L43_SDW_FORMATS,
-+		},
-+	},
-+	{
-+		.name			= "cs42l43-dp6",
-+		.ops			= &cs42l43_sdw_ops,
-+		.playback = {
-+			.stream_name	= "DP6 Playback",
-+			.channels_min	= 1,
-+			.channels_max	= 2,
-+			.rates		= SNDRV_PCM_RATE_KNOT,
-+			.formats	= CS42L43_SDW_FORMATS,
-+		},
-+	},
-+	{
-+		.name			= "cs42l43-dp7",
-+		.ops			= &cs42l43_sdw_ops,
-+		.playback = {
-+			.stream_name	= "DP7 Playback",
-+			.channels_min	= 1,
-+			.channels_max	= 2,
-+			.rates		= SNDRV_PCM_RATE_KNOT,
-+			.formats	= CS42L43_SDW_FORMATS,
-+		},
-+	},
-+};
-+
-+static const DECLARE_TLV_DB_SCALE(cs42l43_mixer_tlv, -3200, 100, 0);
-+
-+static const char * const cs42l43_ramp_text[] = {
-+	"0ms/6dB", "0.5ms/6dB", "1ms/6dB", "2ms/6dB", "4ms/6dB", "8ms/6dB",
-+	"15ms/6dB", "30ms/6dB",
-+};
-+
-+static const char * const cs42l43_adc1_input_text[] = { "IN1", "IN2" };
-+
-+static SOC_ENUM_SINGLE_DECL(cs42l43_adc1_input, CS42L43_ADC_B_CTRL1,
-+			    CS42L43_ADC_AIN_SEL_SHIFT,
-+			    cs42l43_adc1_input_text);
-+
-+static const struct snd_kcontrol_new cs42l43_adc1_input_ctl =
-+	SOC_DAPM_ENUM("ADC1 Input", cs42l43_adc1_input);
-+
-+static const char * const cs42l43_dec_mode_text[] = { "ADC", "PDM" };
-+
-+static SOC_ENUM_SINGLE_VIRT_DECL(cs42l43_dec1_mode, cs42l43_dec_mode_text);
-+static SOC_ENUM_SINGLE_VIRT_DECL(cs42l43_dec2_mode, cs42l43_dec_mode_text);
-+
-+static const struct snd_kcontrol_new cs42l43_dec_mode_ctl[] = {
-+	SOC_DAPM_ENUM("Decimator 1 Mode", cs42l43_dec1_mode),
-+	SOC_DAPM_ENUM("Decimator 2 Mode", cs42l43_dec2_mode),
-+};
-+
-+static const char * const cs42l43_pdm_clk_text[] = {
-+	"3.072MHz", "1.536MHz", "768kHz",
-+};
-+
-+static SOC_ENUM_SINGLE_DECL(cs42l43_pdm1_clk, CS42L43_PDM_CONTROL,
-+			    CS42L43_PDM1_CLK_DIV_SHIFT, cs42l43_pdm_clk_text);
-+static SOC_ENUM_SINGLE_DECL(cs42l43_pdm2_clk, CS42L43_PDM_CONTROL,
-+			    CS42L43_PDM2_CLK_DIV_SHIFT, cs42l43_pdm_clk_text);
-+
-+static DECLARE_TLV_DB_SCALE(cs42l43_adc_tlv, -600, 600, 0);
-+static DECLARE_TLV_DB_SCALE(cs42l43_dec_tlv, -6400, 50, 0);
-+
-+static const char * const cs42l43_wnf_corner_text[] = {
-+	"160Hz", "180Hz", "200Hz", "220Hz", "240Hz", "260Hz", "280Hz", "300Hz",
-+};
-+
-+static SOC_ENUM_SINGLE_DECL(cs42l43_dec1_wnf_corner, CS42L43_DECIM_HPF_WNF_CTRL1,
-+			    CS42L43_DECIM_WNF_CF_SHIFT, cs42l43_wnf_corner_text);
-+static SOC_ENUM_SINGLE_DECL(cs42l43_dec2_wnf_corner, CS42L43_DECIM_HPF_WNF_CTRL2,
-+			    CS42L43_DECIM_WNF_CF_SHIFT, cs42l43_wnf_corner_text);
-+static SOC_ENUM_SINGLE_DECL(cs42l43_dec3_wnf_corner, CS42L43_DECIM_HPF_WNF_CTRL3,
-+			    CS42L43_DECIM_WNF_CF_SHIFT, cs42l43_wnf_corner_text);
-+static SOC_ENUM_SINGLE_DECL(cs42l43_dec4_wnf_corner, CS42L43_DECIM_HPF_WNF_CTRL4,
-+			    CS42L43_DECIM_WNF_CF_SHIFT, cs42l43_wnf_corner_text);
-+
-+static const char * const cs42l43_hpf_corner_text[] = {
-+	"3Hz", "12Hz", "48Hz", "96Hz",
-+};
-+
-+static SOC_ENUM_SINGLE_DECL(cs42l43_dec1_hpf_corner, CS42L43_DECIM_HPF_WNF_CTRL1,
-+			    CS42L43_DECIM_HPF_CF_SHIFT, cs42l43_hpf_corner_text);
-+static SOC_ENUM_SINGLE_DECL(cs42l43_dec2_hpf_corner, CS42L43_DECIM_HPF_WNF_CTRL2,
-+			    CS42L43_DECIM_HPF_CF_SHIFT, cs42l43_hpf_corner_text);
-+static SOC_ENUM_SINGLE_DECL(cs42l43_dec3_hpf_corner, CS42L43_DECIM_HPF_WNF_CTRL3,
-+			    CS42L43_DECIM_HPF_CF_SHIFT, cs42l43_hpf_corner_text);
-+static SOC_ENUM_SINGLE_DECL(cs42l43_dec4_hpf_corner, CS42L43_DECIM_HPF_WNF_CTRL4,
-+			    CS42L43_DECIM_HPF_CF_SHIFT, cs42l43_hpf_corner_text);
-+
-+static SOC_ENUM_SINGLE_DECL(cs42l43_dec1_ramp_up, CS42L43_DECIM_VOL_CTRL_CH1_CH2,
-+			    CS42L43_DECIM1_VI_RAMP_SHIFT, cs42l43_ramp_text);
-+static SOC_ENUM_SINGLE_DECL(cs42l43_dec1_ramp_down, CS42L43_DECIM_VOL_CTRL_CH1_CH2,
-+			    CS42L43_DECIM1_VD_RAMP_SHIFT, cs42l43_ramp_text);
-+static SOC_ENUM_SINGLE_DECL(cs42l43_dec2_ramp_up, CS42L43_DECIM_VOL_CTRL_CH1_CH2,
-+			    CS42L43_DECIM2_VI_RAMP_SHIFT, cs42l43_ramp_text);
-+static SOC_ENUM_SINGLE_DECL(cs42l43_dec2_ramp_down, CS42L43_DECIM_VOL_CTRL_CH1_CH2,
-+			    CS42L43_DECIM2_VD_RAMP_SHIFT, cs42l43_ramp_text);
-+static SOC_ENUM_SINGLE_DECL(cs42l43_dec3_ramp_up, CS42L43_DECIM_VOL_CTRL_CH3_CH4,
-+			    CS42L43_DECIM3_VI_RAMP_SHIFT, cs42l43_ramp_text);
-+static SOC_ENUM_SINGLE_DECL(cs42l43_dec3_ramp_down, CS42L43_DECIM_VOL_CTRL_CH3_CH4,
-+			    CS42L43_DECIM3_VD_RAMP_SHIFT, cs42l43_ramp_text);
-+static SOC_ENUM_SINGLE_DECL(cs42l43_dec4_ramp_up, CS42L43_DECIM_VOL_CTRL_CH3_CH4,
-+			    CS42L43_DECIM4_VI_RAMP_SHIFT, cs42l43_ramp_text);
-+static SOC_ENUM_SINGLE_DECL(cs42l43_dec4_ramp_down, CS42L43_DECIM_VOL_CTRL_CH3_CH4,
-+			    CS42L43_DECIM4_VD_RAMP_SHIFT, cs42l43_ramp_text);
-+
-+static DECLARE_TLV_DB_SCALE(cs42l43_speaker_tlv, -6400, 50, 0);
-+
-+static SOC_ENUM_SINGLE_DECL(cs42l43_speaker_ramp_up, CS42L43_AMP1_2_VOL_RAMP,
-+			    CS42L43_AMP1_2_VI_RAMP_SHIFT, cs42l43_ramp_text);
-+
-+static SOC_ENUM_SINGLE_DECL(cs42l43_speaker_ramp_down, CS42L43_AMP1_2_VOL_RAMP,
-+			    CS42L43_AMP1_2_VD_RAMP_SHIFT, cs42l43_ramp_text);
-+
-+static DECLARE_TLV_DB_SCALE(cs42l43_headphone_tlv, -11450, 50, 1);
-+
-+static const char * const cs42l43_headphone_ramp_text[] = {
-+	"1", "2", "4", "6", "8", "11", "12", "16", "22", "24", "33", "36", "44",
-+	"48", "66", "72",
-+};
-+
-+static SOC_ENUM_SINGLE_DECL(cs42l43_headphone_ramp, CS42L43_PGAVOL,
-+			    CS42L43_HP_PATH_VOL_RAMP_SHIFT,
-+			    cs42l43_headphone_ramp_text);
-+
-+static const char * const cs42l43_tone_freq_text[] = {
-+	"1kHz", "2kHz", "4kHz", "6kHz", "8kHz",
-+};
-+
-+static SOC_ENUM_SINGLE_DECL(cs42l43_tone1_freq, CS42L43_TONE_CH1_CTRL,
-+			    CS42L43_TONE_FREQ_SHIFT, cs42l43_tone_freq_text);
-+
-+static SOC_ENUM_SINGLE_DECL(cs42l43_tone2_freq, CS42L43_TONE_CH2_CTRL,
-+			    CS42L43_TONE_FREQ_SHIFT, cs42l43_tone_freq_text);
-+
-+static const char * const cs42l43_mixer_texts[] = {
-+	"None",
-+	"Tone Generator 1", "Tone Generator 2",
-+	"Decimator 1", "Decimator 2", "Decimator 3", "Decimator 4",
-+	"ASPRX1", "ASPRX2", "ASPRX3", "ASPRX4", "ASPRX5", "ASPRX6",
-+	"DP5RX1", "DP5RX2", "DP6RX1", "DP6RX2", "DP7RX1", "DP7RX2",
-+	"ASRC INT1", "ASRC INT2", "ASRC INT3", "ASRC INT4",
-+	"ASRC DEC1", "ASRC DEC2", "ASRC DEC3", "ASRC DEC4",
-+	"ISRC1 INT1", "ISRC1 INT2",
-+	"ISRC1 DEC1", "ISRC1 DEC2",
-+	"ISRC2 INT1", "ISRC2 INT2",
-+	"ISRC2 DEC1", "ISRC2 DEC2",
-+	"EQ1", "EQ2",
-+};
-+
-+static const unsigned int cs42l43_mixer_values[] = {
-+	0x00, // None
-+	0x04, 0x05, // Tone Generator 1, 2
-+	0x10, 0x11, 0x12, 0x13, // Decimator 1, 2, 3, 4
-+	0x20, 0x21, 0x22, 0x23, 0x24, 0x25, // ASPRX1,2,3,4,5,6
-+	0x28, 0x29, 0x2A, 0x2B, 0x2C, 0x2D, // DP5, 6, 7RX1, 2
-+	0x40, 0x41, 0x42, 0x43, // ASRC INT1, 2, 3, 4
-+	0x44, 0x45, 0x46, 0x47, // ASRC DEC1, 2, 3, 4
-+	0x50, 0x51, // ISRC1 INT1, 2
-+	0x52, 0x53, // ISRC1 DEC1, 2
-+	0x54, 0x55, // ISRC2 INT1, 2
-+	0x56, 0x57, // ISRC2 DEC1, 2
-+	0x58, 0x59, // EQ1, 2
-+};
-+
-+CS42L43_DECL_MUX(asptx1, CS42L43_ASPTX1_INPUT);
-+CS42L43_DECL_MUX(asptx2, CS42L43_ASPTX2_INPUT);
-+CS42L43_DECL_MUX(asptx3, CS42L43_ASPTX3_INPUT);
-+CS42L43_DECL_MUX(asptx4, CS42L43_ASPTX4_INPUT);
-+CS42L43_DECL_MUX(asptx5, CS42L43_ASPTX5_INPUT);
-+CS42L43_DECL_MUX(asptx6, CS42L43_ASPTX6_INPUT);
-+
-+CS42L43_DECL_MUX(dp1tx1, CS42L43_SWIRE_DP1_CH1_INPUT);
-+CS42L43_DECL_MUX(dp1tx2, CS42L43_SWIRE_DP1_CH2_INPUT);
-+CS42L43_DECL_MUX(dp1tx3, CS42L43_SWIRE_DP1_CH3_INPUT);
-+CS42L43_DECL_MUX(dp1tx4, CS42L43_SWIRE_DP1_CH4_INPUT);
-+CS42L43_DECL_MUX(dp2tx1, CS42L43_SWIRE_DP2_CH1_INPUT);
-+CS42L43_DECL_MUX(dp2tx2, CS42L43_SWIRE_DP2_CH2_INPUT);
-+CS42L43_DECL_MUX(dp3tx1, CS42L43_SWIRE_DP3_CH1_INPUT);
-+CS42L43_DECL_MUX(dp3tx2, CS42L43_SWIRE_DP3_CH2_INPUT);
-+CS42L43_DECL_MUX(dp4tx1, CS42L43_SWIRE_DP4_CH1_INPUT);
-+CS42L43_DECL_MUX(dp4tx2, CS42L43_SWIRE_DP4_CH2_INPUT);
-+
-+CS42L43_DECL_MUX(asrcint1, CS42L43_ASRC_INT1_INPUT1);
-+CS42L43_DECL_MUX(asrcint2, CS42L43_ASRC_INT2_INPUT1);
-+CS42L43_DECL_MUX(asrcint3, CS42L43_ASRC_INT3_INPUT1);
-+CS42L43_DECL_MUX(asrcint4, CS42L43_ASRC_INT4_INPUT1);
-+CS42L43_DECL_MUX(asrcdec1, CS42L43_ASRC_DEC1_INPUT1);
-+CS42L43_DECL_MUX(asrcdec2, CS42L43_ASRC_DEC2_INPUT1);
-+CS42L43_DECL_MUX(asrcdec3, CS42L43_ASRC_DEC3_INPUT1);
-+CS42L43_DECL_MUX(asrcdec4, CS42L43_ASRC_DEC4_INPUT1);
-+
-+CS42L43_DECL_MUX(isrc1int1, CS42L43_ISRC1INT1_INPUT1);
-+CS42L43_DECL_MUX(isrc1int2, CS42L43_ISRC1INT2_INPUT1);
-+CS42L43_DECL_MUX(isrc1dec1, CS42L43_ISRC1DEC1_INPUT1);
-+CS42L43_DECL_MUX(isrc1dec2, CS42L43_ISRC1DEC2_INPUT1);
-+CS42L43_DECL_MUX(isrc2int1, CS42L43_ISRC2INT1_INPUT1);
-+CS42L43_DECL_MUX(isrc2int2, CS42L43_ISRC2INT2_INPUT1);
-+CS42L43_DECL_MUX(isrc2dec1, CS42L43_ISRC2DEC1_INPUT1);
-+CS42L43_DECL_MUX(isrc2dec2, CS42L43_ISRC2DEC2_INPUT1);
-+
-+CS42L43_DECL_MUX(spdif1, CS42L43_SPDIF1_INPUT1);
-+CS42L43_DECL_MUX(spdif2, CS42L43_SPDIF2_INPUT1);
-+
-+CS42L43_DECL_MIXER(eq1, CS42L43_EQ1MIX_INPUT1);
-+CS42L43_DECL_MIXER(eq2, CS42L43_EQ2MIX_INPUT1);
-+
-+CS42L43_DECL_MIXER(amp1, CS42L43_AMP1MIX_INPUT1);
-+CS42L43_DECL_MIXER(amp2, CS42L43_AMP2MIX_INPUT1);
-+
-+CS42L43_DECL_MIXER(amp3, CS42L43_AMP3MIX_INPUT1);
-+CS42L43_DECL_MIXER(amp4, CS42L43_AMP4MIX_INPUT1);
-+
-+static int cs42l43_dapm_get_volsw(struct snd_kcontrol *kcontrol,
-+				  struct snd_ctl_elem_value *ucontrol)
-+{
-+	struct snd_soc_component *component = snd_soc_kcontrol_component(kcontrol);
-+	struct snd_soc_dapm_context *dapm = snd_soc_component_get_dapm(component);
-+	int ret;
-+
-+	snd_soc_dapm_mutex_lock(dapm);
-+	ret = snd_soc_get_volsw(kcontrol, ucontrol);
-+	snd_soc_dapm_mutex_unlock(dapm);
-+
-+	return ret;
-+}
-+
-+static int cs42l43_dapm_put_volsw(struct snd_kcontrol *kcontrol,
-+				  struct snd_ctl_elem_value *ucontrol)
-+{
-+	struct snd_soc_component *component = snd_soc_kcontrol_component(kcontrol);
-+	struct snd_soc_dapm_context *dapm = snd_soc_component_get_dapm(component);
-+	int ret;
-+
-+	snd_soc_dapm_mutex_lock(dapm);
-+	ret = snd_soc_put_volsw(kcontrol, ucontrol);
-+	snd_soc_dapm_mutex_unlock(dapm);
-+
-+	return ret;
-+}
-+
-+static int cs42l43_dapm_get_enum(struct snd_kcontrol *kcontrol,
-+				 struct snd_ctl_elem_value *ucontrol)
-+{
-+	struct snd_soc_component *component = snd_soc_kcontrol_component(kcontrol);
-+	struct snd_soc_dapm_context *dapm = snd_soc_component_get_dapm(component);
-+	int ret;
-+
-+	snd_soc_dapm_mutex_lock(dapm);
-+	ret = snd_soc_get_enum_double(kcontrol, ucontrol);
-+	snd_soc_dapm_mutex_unlock(dapm);
-+
-+	return ret;
-+}
-+
-+static int cs42l43_dapm_put_enum(struct snd_kcontrol *kcontrol,
-+				 struct snd_ctl_elem_value *ucontrol)
-+{
-+	struct snd_soc_component *component = snd_soc_kcontrol_component(kcontrol);
-+	struct snd_soc_dapm_context *dapm = snd_soc_component_get_dapm(component);
-+	int ret;
-+
-+	snd_soc_dapm_mutex_lock(dapm);
-+	ret = snd_soc_put_enum_double(kcontrol, ucontrol);
-+	snd_soc_dapm_mutex_unlock(dapm);
-+
-+	return ret;
-+}
-+
-+static int cs42l43_eq_get(struct snd_kcontrol *kcontrol,
-+			  struct snd_ctl_elem_value *ucontrol)
-+{
-+	struct snd_soc_component *component = snd_soc_kcontrol_component(kcontrol);
-+	struct cs42l43_codec *priv = snd_soc_component_get_drvdata(component);
-+
-+	memcpy(ucontrol->value.integer.value, priv->eq_coeffs, sizeof(priv->eq_coeffs));
-+
-+	return 0;
-+}
-+
-+static int cs42l43_eq_put(struct snd_kcontrol *kcontrol,
-+			  struct snd_ctl_elem_value *ucontrol)
-+{
-+	struct snd_soc_component *component = snd_soc_kcontrol_component(kcontrol);
-+	struct snd_soc_dapm_context *dapm = snd_soc_component_get_dapm(component);
-+	struct cs42l43_codec *priv = snd_soc_component_get_drvdata(component);
-+
-+	snd_soc_dapm_mutex_lock(dapm);
-+
-+	memcpy(priv->eq_coeffs, ucontrol->value.integer.value, sizeof(priv->eq_coeffs));
-+
-+	snd_soc_dapm_mutex_unlock(dapm);
-+
-+	return 0;
-+}
-+
-+static void cs42l43_spk_vu_sync(struct cs42l43_codec *priv)
-+{
-+	struct cs42l43 *cs42l43 = priv->core;
-+
-+	mutex_lock(&priv->spk_vu_lock);
-+
-+	regmap_update_bits(cs42l43->regmap, CS42L43_INTP_VOLUME_CTRL1,
-+			   CS42L43_AMP1_2_VU_MASK, CS42L43_AMP1_2_VU_MASK);
-+	regmap_update_bits(cs42l43->regmap, CS42L43_INTP_VOLUME_CTRL1,
-+			   CS42L43_AMP1_2_VU_MASK, 0);
-+
-+	mutex_unlock(&priv->spk_vu_lock);
-+}
-+
-+static int cs42l43_shutter_get(struct cs42l43_codec *priv, unsigned int shift)
-+{
-+	struct cs42l43 *cs42l43 = priv->core;
-+	unsigned int val;
-+	int ret;
-+
-+	ret = pm_runtime_resume_and_get(priv->dev);
-+	if (ret) {
-+		dev_err(priv->dev, "Failed to resume for shutters: %d\n", ret);
-+		return ret;
-+	}
-+
-+	/*
-+	 * SHUTTER_CONTROL is a mix of volatile and non-volatile bits, so must
-+	 * be cached for the non-volatiles, so drop it from the cache here so
-+	 * we force a read.
-+	 */
-+	ret = regcache_drop_region(cs42l43->regmap, CS42L43_SHUTTER_CONTROL,
-+				   CS42L43_SHUTTER_CONTROL);
-+	if (ret) {
-+		dev_err(priv->dev, "Failed to drop shutter from cache: %d\n", ret);
-+		goto error;
-+	}
-+
-+	ret = regmap_read(cs42l43->regmap, CS42L43_SHUTTER_CONTROL, &val);
-+	if (ret) {
-+		dev_err(priv->dev, "Failed to check shutter status: %d\n", ret);
-+		goto error;
-+	}
-+
-+	ret = !(val & BIT(shift));
-+
-+	dev_dbg(priv->dev, "%s shutter is %s\n",
-+		BIT(shift) == CS42L43_STATUS_MIC_SHUTTER_MUTE_MASK ? "Mic" : "Speaker",
-+		ret ? "open" : "closed");
-+
-+error:
-+	pm_runtime_mark_last_busy(priv->dev);
-+	pm_runtime_put_autosuspend(priv->dev);
-+
-+	return ret;
-+}
-+
-+static int cs42l43_decim_get(struct snd_kcontrol *kcontrol,
-+			     struct snd_ctl_elem_value *ucontrol)
-+{
-+	struct snd_soc_component *component = snd_soc_kcontrol_component(kcontrol);
-+	struct cs42l43_codec *priv = snd_soc_component_get_drvdata(component);
-+	int ret;
-+
-+	ret = cs42l43_shutter_get(priv, CS42L43_STATUS_MIC_SHUTTER_MUTE_SHIFT);
-+	if (ret < 0)
-+		return ret;
-+	else if (!ret)
-+		ucontrol->value.integer.value[0] = ret;
-+	else
-+		ret = cs42l43_dapm_get_volsw(kcontrol, ucontrol);
-+
-+	return ret;
-+}
-+
-+static int cs42l43_spk_get(struct snd_kcontrol *kcontrol,
-+			   struct snd_ctl_elem_value *ucontrol)
-+{
-+	struct snd_soc_component *component = snd_soc_kcontrol_component(kcontrol);
-+	struct cs42l43_codec *priv = snd_soc_component_get_drvdata(component);
-+	int ret;
-+
-+	ret = cs42l43_shutter_get(priv, CS42L43_STATUS_SPK_SHUTTER_MUTE_SHIFT);
-+	if (ret < 0)
-+		return ret;
-+	else if (!ret)
-+		ucontrol->value.integer.value[0] = ret;
-+	else
-+		ret = snd_soc_get_volsw(kcontrol, ucontrol);
-+
-+	return ret;
-+}
-+
-+static int cs42l43_spk_put(struct snd_kcontrol *kcontrol,
-+			   struct snd_ctl_elem_value *ucontrol)
-+{
-+	struct snd_soc_component *component = snd_soc_kcontrol_component(kcontrol);
-+	struct cs42l43_codec *priv = snd_soc_component_get_drvdata(component);
-+	int ret;
-+
-+	ret = snd_soc_put_volsw(kcontrol, ucontrol);
-+	if (ret > 0)
-+		cs42l43_spk_vu_sync(priv);
-+
-+	return ret;
-+}
-+
-+static const struct snd_kcontrol_new cs42l43_controls[] = {
-+	SOC_ENUM_EXT("Jack Override", cs42l43_jack_enum,
-+		     cs42l43_jack_get, cs42l43_jack_put),
-+
-+	SOC_DOUBLE_R_SX_TLV("ADC Volume", CS42L43_ADC_B_CTRL1, CS42L43_ADC_B_CTRL2,
-+			    CS42L43_ADC_PGA_GAIN_SHIFT,
-+			    0xF, 5, cs42l43_adc_tlv),
-+
-+	SOC_DOUBLE("PDM1 Invert Switch", CS42L43_DMIC_PDM_CTRL,
-+		   CS42L43_PDM1L_INV_SHIFT, CS42L43_PDM1R_INV_SHIFT, 1, 0),
-+	SOC_DOUBLE("PDM2 Invert Switch", CS42L43_DMIC_PDM_CTRL,
-+		   CS42L43_PDM2L_INV_SHIFT, CS42L43_PDM2R_INV_SHIFT, 1, 0),
-+	SOC_ENUM("PDM1 Clock", cs42l43_pdm1_clk),
-+	SOC_ENUM("PDM2 Clock", cs42l43_pdm2_clk),
-+
-+	SOC_SINGLE("Decimator 1 WNF Switch", CS42L43_DECIM_HPF_WNF_CTRL1,
-+		   CS42L43_DECIM_WNF_EN_SHIFT, 1, 0),
-+	SOC_SINGLE("Decimator 2 WNF Switch", CS42L43_DECIM_HPF_WNF_CTRL2,
-+		   CS42L43_DECIM_WNF_EN_SHIFT, 1, 0),
-+	SOC_SINGLE("Decimator 3 WNF Switch", CS42L43_DECIM_HPF_WNF_CTRL3,
-+		   CS42L43_DECIM_WNF_EN_SHIFT, 1, 0),
-+	SOC_SINGLE("Decimator 4 WNF Switch", CS42L43_DECIM_HPF_WNF_CTRL4,
-+		   CS42L43_DECIM_WNF_EN_SHIFT, 1, 0),
-+
-+	SOC_ENUM("Decimator 1 WNF Corner Frequency", cs42l43_dec1_wnf_corner),
-+	SOC_ENUM("Decimator 2 WNF Corner Frequency", cs42l43_dec2_wnf_corner),
-+	SOC_ENUM("Decimator 3 WNF Corner Frequency", cs42l43_dec3_wnf_corner),
-+	SOC_ENUM("Decimator 4 WNF Corner Frequency", cs42l43_dec4_wnf_corner),
-+
-+	SOC_SINGLE("Decimator 1 HPF Switch", CS42L43_DECIM_HPF_WNF_CTRL1,
-+		   CS42L43_DECIM_HPF_EN_SHIFT, 1, 0),
-+	SOC_SINGLE("Decimator 2 HPF Switch", CS42L43_DECIM_HPF_WNF_CTRL2,
-+		   CS42L43_DECIM_HPF_EN_SHIFT, 1, 0),
-+	SOC_SINGLE("Decimator 3 HPF Switch", CS42L43_DECIM_HPF_WNF_CTRL3,
-+		   CS42L43_DECIM_HPF_EN_SHIFT, 1, 0),
-+	SOC_SINGLE("Decimator 4 HPF Switch", CS42L43_DECIM_HPF_WNF_CTRL4,
-+		   CS42L43_DECIM_HPF_EN_SHIFT, 1, 0),
-+
-+	SOC_ENUM("Decimator 1 HPF Corner Frequency", cs42l43_dec1_hpf_corner),
-+	SOC_ENUM("Decimator 2 HPF Corner Frequency", cs42l43_dec2_hpf_corner),
-+	SOC_ENUM("Decimator 3 HPF Corner Frequency", cs42l43_dec3_hpf_corner),
-+	SOC_ENUM("Decimator 4 HPF Corner Frequency", cs42l43_dec4_hpf_corner),
-+
-+	SOC_SINGLE_TLV("Decimator 1 Volume", CS42L43_DECIM_VOL_CTRL_CH1_CH2,
-+		       CS42L43_DECIM1_VOL_SHIFT, 0xBF, 0, cs42l43_dec_tlv),
-+	SOC_SINGLE_EXT("Decimator 1 Switch", CS42L43_DECIM_VOL_CTRL_CH1_CH2,
-+		       CS42L43_DECIM1_MUTE_SHIFT, 1, 1,
-+		       cs42l43_decim_get, cs42l43_dapm_put_volsw),
-+	SOC_SINGLE_TLV("Decimator 2 Volume", CS42L43_DECIM_VOL_CTRL_CH1_CH2,
-+		       CS42L43_DECIM2_VOL_SHIFT, 0xBF, 0, cs42l43_dec_tlv),
-+	SOC_SINGLE_EXT("Decimator 2 Switch", CS42L43_DECIM_VOL_CTRL_CH1_CH2,
-+		       CS42L43_DECIM2_MUTE_SHIFT, 1, 1,
-+		       cs42l43_decim_get, cs42l43_dapm_put_volsw),
-+	SOC_SINGLE_TLV("Decimator 3 Volume", CS42L43_DECIM_VOL_CTRL_CH3_CH4,
-+		       CS42L43_DECIM3_VOL_SHIFT, 0xBF, 0, cs42l43_dec_tlv),
-+	SOC_SINGLE_EXT("Decimator 3 Switch", CS42L43_DECIM_VOL_CTRL_CH3_CH4,
-+		       CS42L43_DECIM3_MUTE_SHIFT, 1, 1,
-+		       cs42l43_decim_get, cs42l43_dapm_put_volsw),
-+	SOC_SINGLE_TLV("Decimator 4 Volume", CS42L43_DECIM_VOL_CTRL_CH3_CH4,
-+		       CS42L43_DECIM4_VOL_SHIFT, 0xBF, 0, cs42l43_dec_tlv),
-+	SOC_SINGLE_EXT("Decimator 4 Switch", CS42L43_DECIM_VOL_CTRL_CH3_CH4,
-+		       CS42L43_DECIM4_MUTE_SHIFT, 1, 1,
-+		       cs42l43_decim_get, cs42l43_dapm_put_volsw),
-+
-+	SOC_ENUM_EXT("Decimator 1 Ramp Up", cs42l43_dec1_ramp_up,
-+		     cs42l43_dapm_get_enum, cs42l43_dapm_put_enum),
-+	SOC_ENUM_EXT("Decimator 1 Ramp Down", cs42l43_dec1_ramp_down,
-+		     cs42l43_dapm_get_enum, cs42l43_dapm_put_enum),
-+	SOC_ENUM_EXT("Decimator 2 Ramp Up", cs42l43_dec2_ramp_up,
-+		     cs42l43_dapm_get_enum, cs42l43_dapm_put_enum),
-+	SOC_ENUM_EXT("Decimator 2 Ramp Down", cs42l43_dec2_ramp_down,
-+		     cs42l43_dapm_get_enum, cs42l43_dapm_put_enum),
-+	SOC_ENUM_EXT("Decimator 3 Ramp Up", cs42l43_dec3_ramp_up,
-+		     cs42l43_dapm_get_enum, cs42l43_dapm_put_enum),
-+	SOC_ENUM_EXT("Decimator 3 Ramp Down", cs42l43_dec3_ramp_down,
-+		     cs42l43_dapm_get_enum, cs42l43_dapm_put_enum),
-+	SOC_ENUM_EXT("Decimator 4 Ramp Up", cs42l43_dec4_ramp_up,
-+		     cs42l43_dapm_get_enum, cs42l43_dapm_put_enum),
-+	SOC_ENUM_EXT("Decimator 4 Ramp Down", cs42l43_dec4_ramp_down,
-+		     cs42l43_dapm_get_enum, cs42l43_dapm_put_enum),
-+
-+	SOC_DOUBLE_R_EXT("Speaker Digital Switch",
-+			 CS42L43_INTP_VOLUME_CTRL1, CS42L43_INTP_VOLUME_CTRL2,
-+			 CS42L43_AMP_MUTE_SHIFT, 1, 1,
-+			 cs42l43_spk_get, cs42l43_spk_put),
-+
-+	SOC_DOUBLE_R_EXT_TLV("Speaker Digital Volume",
-+			     CS42L43_INTP_VOLUME_CTRL1, CS42L43_INTP_VOLUME_CTRL2,
-+			     CS42L43_AMP_VOL_SHIFT,
-+			     0xBF, 0, snd_soc_get_volsw, cs42l43_spk_put,
-+			     cs42l43_speaker_tlv),
-+
-+	SOC_ENUM("Speaker Ramp Up", cs42l43_speaker_ramp_up),
-+	SOC_ENUM("Speaker Ramp Down", cs42l43_speaker_ramp_down),
-+
-+	CS42L43_MIXER_VOLUMES("Speaker L", CS42L43_AMP1MIX_INPUT1),
-+	CS42L43_MIXER_VOLUMES("Speaker R", CS42L43_AMP2MIX_INPUT1),
-+
-+	SOC_DOUBLE_SX_TLV("Headphone Digital Volume", CS42L43_HPPATHVOL,
-+			  CS42L43_AMP3_PATH_VOL_SHIFT, CS42L43_AMP4_PATH_VOL_SHIFT,
-+			  0x11B, 229, cs42l43_headphone_tlv),
-+
-+	SOC_DOUBLE("Headphone Invert Switch", CS42L43_DACCNFG1,
-+		   CS42L43_AMP3_INV_SHIFT, CS42L43_AMP4_INV_SHIFT, 1, 0),
-+
-+	SOC_SINGLE("Headphone Zero Cross Switch", CS42L43_PGAVOL,
-+		   CS42L43_HP_PATH_VOL_ZC_SHIFT, 1, 0),
-+	SOC_SINGLE("Headphone Ramp Switch", CS42L43_PGAVOL,
-+		   CS42L43_HP_PATH_VOL_SFT_SHIFT, 1, 0),
-+	SOC_ENUM("Headphone Ramp Rate", cs42l43_headphone_ramp),
-+
-+	CS42L43_MIXER_VOLUMES("Headphone L", CS42L43_AMP3MIX_INPUT1),
-+	CS42L43_MIXER_VOLUMES("Headphone R", CS42L43_AMP4MIX_INPUT1),
-+
-+	SOC_ENUM("Tone 1 Frequency", cs42l43_tone1_freq),
-+	SOC_ENUM("Tone 2 Frequency", cs42l43_tone2_freq),
-+
-+	SOC_DOUBLE_EXT("EQ Switch",
-+		       CS42L43_MUTE_EQ_IN0, CS42L43_MUTE_EQ_CH1_SHIFT,
-+		       CS42L43_MUTE_EQ_CH2_SHIFT, 1, 1,
-+		       cs42l43_dapm_get_volsw, cs42l43_dapm_put_volsw),
-+
-+	SND_SOC_BYTES_E("EQ Coefficients", 0, CS42L43_N_EQ_COEFFS,
-+			cs42l43_eq_get, cs42l43_eq_put),
-+
-+	CS42L43_MIXER_VOLUMES("EQ1", CS42L43_EQ1MIX_INPUT1),
-+	CS42L43_MIXER_VOLUMES("EQ2", CS42L43_EQ2MIX_INPUT1),
-+};
-+
-+static int cs42l43_eq_ev(struct snd_soc_dapm_widget *w,
-+			 struct snd_kcontrol *kcontrol, int event)
-+{
-+	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
-+	struct cs42l43_codec *priv = snd_soc_component_get_drvdata(component);
-+	struct cs42l43 *cs42l43 = priv->core;
-+	unsigned int val;
-+	int i, ret;
-+
-+	switch (event) {
-+	case SND_SOC_DAPM_PRE_PMU:
-+		regmap_update_bits(cs42l43->regmap, CS42L43_MUTE_EQ_IN0,
-+				   CS42L43_MUTE_EQ_CH1_MASK | CS42L43_MUTE_EQ_CH2_MASK,
-+				   CS42L43_MUTE_EQ_CH1_MASK | CS42L43_MUTE_EQ_CH2_MASK);
-+
-+		regmap_update_bits(cs42l43->regmap, CS42L43_COEFF_RD_WR0,
-+				   CS42L43_WRITE_MODE_MASK, CS42L43_WRITE_MODE_MASK);
-+
-+		for (i = 0; i < CS42L43_N_EQ_COEFFS; i++)
-+			regmap_write(cs42l43->regmap, CS42L43_COEFF_DATA_IN0,
-+				     priv->eq_coeffs[i]);
-+
-+		regmap_update_bits(cs42l43->regmap, CS42L43_COEFF_RD_WR0,
-+				   CS42L43_WRITE_MODE_MASK, 0);
-+
-+		return 0;
-+	case SND_SOC_DAPM_POST_PMU:
-+		ret = regmap_read_poll_timeout(cs42l43->regmap, CS42L43_INIT_DONE0,
-+					       val, (val & CS42L43_INITIALIZE_DONE_MASK),
-+					       2000, 10000);
-+		if (ret)
-+			dev_err(priv->dev, "Failed to start EQs: %d\n", ret);
-+
-+		regmap_update_bits(cs42l43->regmap, CS42L43_MUTE_EQ_IN0,
-+				   CS42L43_MUTE_EQ_CH1_MASK | CS42L43_MUTE_EQ_CH2_MASK, 0);
-+		return ret;
-+	default:
-+		return 0;
-+	}
-+}
-+
-+struct cs42l43_pll_config {
-+	unsigned int freq;
-+
-+	unsigned int div;
-+	unsigned int mode;
-+	unsigned int cal;
-+};
-+
-+static const struct cs42l43_pll_config cs42l43_pll_configs[] = {
-+	{ 2400000, 0x50000000, 0x1, 0xA4 },
-+	{ 3000000, 0x40000000, 0x1, 0x83 },
-+	{ 3072000, 0x40000000, 0x3, 0x80 },
-+};
-+
-+static int cs42l43_set_pll(struct cs42l43_codec *priv, unsigned int src,
-+			   unsigned int freq)
-+{
-+	struct cs42l43 *cs42l43 = priv->core;
-+
-+	lockdep_assert_held(&cs42l43->pll_lock);
-+
-+	if (priv->refclk_src == src && priv->refclk_freq == freq)
-+		return 0;
-+
-+	if (regmap_test_bits(cs42l43->regmap, CS42L43_CTRL_REG, CS42L43_PLL_EN_MASK)) {
-+		dev_err(priv->dev, "PLL active, can't change configuration\n");
-+		return -EBUSY;
-+	}
-+
-+	switch (src) {
-+	case CS42L43_SYSCLK_MCLK:
-+	case CS42L43_SYSCLK_SDW:
-+		dev_dbg(priv->dev, "Source PLL from %s at %uHz\n",
-+			src ? "SoundWire" : "MCLK", freq);
-+
-+		priv->refclk_src = src;
-+		priv->refclk_freq = freq;
-+
-+		return 0;
-+	default:
-+		dev_err(priv->dev, "Invalid PLL source: 0x%x\n", src);
-+		return -EINVAL;
-+	}
-+}
-+
-+static int cs42l43_enable_pll(struct cs42l43_codec *priv)
-+{
-+	static const struct reg_sequence enable_seq[] = {
-+		{ CS42L43_OSC_DIV_SEL, 0x0, },
-+		{ CS42L43_MCLK_SRC_SEL, CS42L43_OSC_PLL_MCLK_SEL_MASK, 5, },
-+	};
-+	struct cs42l43 *cs42l43 = priv->core;
-+	const struct cs42l43_pll_config *config = NULL;
-+	unsigned int div = 0;
-+	unsigned int freq = priv->refclk_freq;
-+	unsigned long time_left;
-+
-+	lockdep_assert_held(&cs42l43->pll_lock);
-+
-+	if (priv->refclk_src == CS42L43_SYSCLK_SDW) {
-+		if (!freq)
-+			freq = cs42l43->sdw_freq;
-+		else if (!cs42l43->sdw_freq)
-+			cs42l43->sdw_freq = freq;
-+	}
-+
-+	dev_dbg(priv->dev, "Enabling PLL at %uHz\n", freq);
-+
-+	while (freq > cs42l43_pll_configs[ARRAY_SIZE(cs42l43_pll_configs) - 1].freq) {
-+		div++;
-+		freq /= 2;
-+	}
-+
-+	if (div <= CS42L43_PLL_REFCLK_DIV_MASK) {
-+		int i;
-+
-+		for (i = 0; i < ARRAY_SIZE(cs42l43_pll_configs); i++) {
-+			if (freq == cs42l43_pll_configs[i].freq) {
-+				config = &cs42l43_pll_configs[i];
-+				break;
-+			}
++	if (cs42l43->sdw) {
++		time = wait_for_completion_timeout(&cs42l43->device_detach,
++						   msecs_to_jiffies(100));
++		if (!time) {
++			dev_err(cs42l43->dev, "Timed out waiting for device detach\n");
++			return -ETIMEDOUT;
 +		}
 +	}
 +
-+	if (!config) {
-+		dev_err(priv->dev, "No suitable PLL config: 0x%x, %uHz\n", div, freq);
-+		return -EINVAL;
++	return -EAGAIN;
++}
++
++static int cs42l43_wait_for_attach(struct cs42l43 *cs42l43)
++{
++	unsigned long time;
++
++	if (!cs42l43->attached) {
++		time = wait_for_completion_timeout(&cs42l43->device_attach,
++						   msecs_to_jiffies(500));
++		if (!time) {
++			dev_err(cs42l43->dev, "Timed out waiting for device re-attach\n");
++			return -ETIMEDOUT;
++		}
 +	}
 +
-+	regmap_update_bits(cs42l43->regmap, CS42L43_PLL_CONTROL,
-+			   CS42L43_PLL_REFCLK_DIV_MASK | CS42L43_PLL_REFCLK_SRC_MASK,
-+			   div << CS42L43_PLL_REFCLK_DIV_SHIFT |
-+			   priv->refclk_src << CS42L43_PLL_REFCLK_SRC_SHIFT);
-+	regmap_write(cs42l43->regmap, CS42L43_FDIV_FRAC, config->div);
-+	regmap_update_bits(cs42l43->regmap, CS42L43_CTRL_REG,
-+			   CS42L43_PLL_MODE_BYPASS_500_MASK |
-+			   CS42L43_PLL_MODE_BYPASS_1029_MASK,
-+			   config->mode << CS42L43_PLL_MODE_BYPASS_1029_SHIFT);
-+	regmap_update_bits(cs42l43->regmap, CS42L43_CAL_RATIO,
-+			   CS42L43_PLL_CAL_RATIO_MASK, config->cal);
-+	regmap_update_bits(cs42l43->regmap, CS42L43_PLL_CONTROL,
-+			   CS42L43_PLL_REFCLK_EN_MASK, CS42L43_PLL_REFCLK_EN_MASK);
++	regcache_cache_only(cs42l43->regmap, false);
 +
-+	reinit_completion(&priv->pll_ready);
-+
-+	regmap_update_bits(cs42l43->regmap, CS42L43_CTRL_REG,
-+			   CS42L43_PLL_EN_MASK, CS42L43_PLL_EN_MASK);
-+
-+	time_left = wait_for_completion_timeout(&priv->pll_ready,
-+						msecs_to_jiffies(CS42L43_PLL_TIMEOUT_MS));
-+	if (!time_left) {
-+		regmap_update_bits(cs42l43->regmap, CS42L43_CTRL_REG,
-+				   CS42L43_PLL_EN_MASK, 0);
-+		regmap_update_bits(cs42l43->regmap, CS42L43_PLL_CONTROL,
-+				   CS42L43_PLL_REFCLK_EN_MASK, 0);
-+
-+		dev_err(priv->dev, "Timeout out waiting for PLL\n");
-+		return -ETIMEDOUT;
-+	}
-+
-+	if (priv->refclk_src == CS42L43_SYSCLK_SDW)
-+		cs42l43->sdw_pll_active = true;
-+
-+	dev_dbg(priv->dev, "PLL locked in %ums\n", 200 - jiffies_to_msecs(time_left));
-+
-+	/*
-+	 * Reads are not allowed over Soundwire without OSC_DIV2_EN or the PLL,
-+	 * but you can not change to PLL with OSC_DIV2_EN set. So ensure the whole
-+	 * change over happens under the regmap lock to prevent any reads.
-+	 */
-+	regmap_multi_reg_write(cs42l43->regmap, enable_seq, ARRAY_SIZE(enable_seq));
++	// Must enable OSC_DIV before doing any SoundWire reads
++	if (cs42l43->sdw)
++		regmap_write(cs42l43->regmap, CS42L43_OSC_DIV_SEL, 0x1);
 +
 +	return 0;
 +}
 +
-+static int cs42l43_disable_pll(struct cs42l43_codec *priv)
++static int cs42l43_mcu_stage_2_3(struct cs42l43 *cs42l43, bool shadow)
 +{
-+	static const struct reg_sequence disable_seq[] = {
-+		{ CS42L43_MCLK_SRC_SEL, 0x0, 5, },
-+		{ CS42L43_OSC_DIV_SEL, CS42L43_OSC_DIV2_EN_MASK, },
-+	};
-+	struct cs42l43 *cs42l43 = priv->core;
-+
-+	dev_dbg(priv->dev, "Disabling PLL\n");
-+
-+	lockdep_assert_held(&cs42l43->pll_lock);
-+
-+	regmap_multi_reg_write(cs42l43->regmap, disable_seq, ARRAY_SIZE(disable_seq));
-+	regmap_update_bits(cs42l43->regmap, CS42L43_CTRL_REG, CS42L43_PLL_EN_MASK, 0);
-+	regmap_update_bits(cs42l43->regmap, CS42L43_PLL_CONTROL,
-+			   CS42L43_PLL_REFCLK_EN_MASK, 0);
-+
-+	cs42l43->sdw_pll_active = false;
-+
-+	return 0;
-+}
-+
-+static int cs42l43_pll_ev(struct snd_soc_dapm_widget *w,
-+			  struct snd_kcontrol *kcontrol, int event)
-+{
-+	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
-+	struct cs42l43_codec *priv = snd_soc_component_get_drvdata(component);
-+	struct cs42l43 *cs42l43 = priv->core;
++	unsigned int need_reg = CS42L43_NEED_CONFIGS;
++	unsigned int val;
 +	int ret;
 +
-+	mutex_lock(&cs42l43->pll_lock);
++	dev_dbg(cs42l43->dev, "Moving firmware to stage 3\n");
 +
-+	switch (event) {
-+	case SND_SOC_DAPM_PRE_PMU:
-+		if (priv->refclk_src == CS42L43_SYSCLK_MCLK) {
-+			ret = clk_prepare_enable(priv->mclk);
++	if (shadow)
++		need_reg = CS42L43_FW_SH_BOOT_CFG_NEED_CONFIGS;
++
++	regmap_write(cs42l43->regmap, need_reg, 0x0);
++
++	ret = regmap_read_poll_timeout(cs42l43->regmap, CS42L43_BOOT_STATUS,
++				       val, (val == 3), 5000, 20000);
++	if (ret) {
++		dev_err(cs42l43->dev, "Failed to move to stage 3: %d, 0x%x\n", ret, val);
++		return ret;
++	}
++
++	return -EAGAIN;
++}
++
++static int cs42l43_mcu_stage_3_2(struct cs42l43 *cs42l43)
++{
++	dev_dbg(cs42l43->dev, "Returning firmware to stage 2\n");
++
++	regmap_write(cs42l43->regmap, CS42L43_FW_CTRL_NEED_CONFIGS,
++		     CS42L43_FW_PATCH_NEED_CFG_MASK);
++	regmap_write(cs42l43->regmap, CS42L43_FW_CTRL_HAVE_CONFIGS, 0x0);
++
++	return cs42l43_soft_reset(cs42l43);
++}
++
++static int cs42l43_mcu_disable(struct cs42l43 *cs42l43)
++{
++	unsigned int val;
++	int ret;
++
++	dev_dbg(cs42l43->dev, "Disabling firmware\n");
++
++	regmap_write(cs42l43->regmap, CS42L43_FW_CTRL_MM_MCU_CFG_REG, 0xF05AA50F);
++	regmap_write(cs42l43->regmap, CS42L43_FW_CTRL_MM_CTRL_SELECTION, 0x1);
++	regmap_write(cs42l43->regmap, CS42L43_MCU_SW_INTERRUPT, CS42L43_CONTROL_IND_MASK);
++	regmap_write(cs42l43->regmap, CS42L43_MCU_SW_INTERRUPT, 0);
++
++	ret = regmap_read_poll_timeout(cs42l43->regmap, CS42L43_SOFT_INT_SHADOW, val,
++				       (val & CS42L43_CONTROL_APPLIED_INT_MASK),
++				       5000, 20000);
++	if (ret) {
++		dev_err(cs42l43->dev, "Failed to disable firmware: %d, 0x%x\n", ret, val);
++		return ret;
++	}
++
++	/* Soft reset to clear any register state the firmware left behind */
++	return cs42l43_soft_reset(cs42l43);
++}
++
++struct cs42l43_patch_header {
++	__le16 version;
++	__le16 size;
++	u8 reserved;
++	u8 secure;
++	__le16 bss_size;
++	__le32 apply_addr;
++	__le32 checksum;
++	__le32 sha;
++	__le16 swrev;
++	__le16 patchid;
++	__le16 ipxid;
++	__le16 romver;
++	__le32 load_addr;
++} __packed;
++
++static void cs42l43_mcu_load_firmware(const struct firmware *firmware, void *context)
++{
++	struct cs42l43 *cs42l43 = context;
++	struct cs42l43_patch_header *hdr;
++	unsigned int loadaddr, val;
++	int ret;
++
++	if (!firmware) {
++		dev_err(cs42l43->dev, "Failed to load firmware\n");
++		cs42l43->firmware_error = -ENODEV;
++		goto err;
++	}
++
++	dev_dbg(cs42l43->dev, "Updating firmware\n");
++
++	hdr = (void *)&firmware->data[0];
++	loadaddr = le32_to_cpu(hdr->load_addr);
++
++	if (le16_to_cpu(hdr->version) != 0x3) {
++		dev_err(cs42l43->dev, "Bad firmware file format: %d\n", hdr->version);
++		cs42l43->firmware_error = -EINVAL;
++		goto err_release;
++	}
++
++	regmap_write(cs42l43->regmap, CS42L43_PATCH_START_ADDR, loadaddr);
++	regmap_bulk_write(cs42l43->regmap, loadaddr + 0x100000,
++			  &firmware->data[0], firmware->size / sizeof(u32));
++
++	regmap_write(cs42l43->regmap, CS42L43_MCU_SW_INTERRUPT, CS42L43_PATCH_IND_MASK);
++	regmap_write(cs42l43->regmap, CS42L43_MCU_SW_INTERRUPT, 0);
++
++	ret = regmap_read_poll_timeout(cs42l43->regmap, CS42L43_SOFT_INT_SHADOW, val,
++				       (val & CS42L43_PATCH_APPLIED_INT_MASK),
++				       5000, 500000);
++	if (ret) {
++		dev_err(cs42l43->dev, "Failed to update firmware: %d, 0x%x\n", ret, val);
++		cs42l43->firmware_error = ret;
++		goto err_release;
++	}
++
++err_release:
++	release_firmware(firmware);
++err:
++	complete(&cs42l43->firmware_download);
++}
++
++static int cs42l43_mcu_update_step(struct cs42l43 *cs42l43)
++{
++	unsigned int mcu_rev, bios_rev, boot_status, secure_cfg;
++	bool patched, shadow;
++	int ret;
++
++	// Clear any stale software interrupt bits
++	regmap_read(cs42l43->regmap, CS42L43_SOFT_INT, &mcu_rev);
++
++	ret = regmap_read(cs42l43->regmap, CS42L43_BOOT_STATUS, &boot_status);
++	if (ret) {
++		dev_err(cs42l43->dev, "Failed to read boot status: %d\n", ret);
++		return ret;
++	}
++
++	ret = regmap_read(cs42l43->regmap, CS42L43_MCU_SW_REV, &mcu_rev);
++	if (ret) {
++		dev_err(cs42l43->dev, "Failed to read firmware revision: %d\n", ret);
++		return ret;
++	}
++
++	bios_rev = ((mcu_rev & CS42L43_BIOS_MAJOR_REV_MASK) << 12) |
++		   ((mcu_rev & CS42L43_BIOS_MINOR_REV_MASK) << 4) |
++		   ((mcu_rev & CS42L43_BIOS_SUBMINOR_REV_MASK) >> 8);
++	mcu_rev = ((mcu_rev & CS42L43_FW_MAJOR_REV_MASK) << 12) |
++		  ((mcu_rev & CS42L43_FW_MINOR_REV_MASK) << 4) |
++		  ((mcu_rev & CS42L43_FW_SUBMINOR_REV_MASK) >> 8);
++
++	patched = mcu_rev >= 0x2105 || bios_rev > 0x0000;
++	shadow = mcu_rev >= 0x2200;
++
++	ret = regmap_read(cs42l43->regmap, CS42L43_BOOT_CONTROL, &secure_cfg);
++	if (ret) {
++		dev_err(cs42l43->dev, "Failed to read security settings: %d\n", ret);
++		return ret;
++	}
++
++	cs42l43->hw_lock = secure_cfg & CS42L43_LOCK_HW_STS_MASK;
++
++	if (!patched && cs42l43->hw_lock) {
++		dev_err(cs42l43->dev, "Unpatched secure device\n");
++		return -EPERM;
++	}
++
++	dev_dbg(cs42l43->dev, "Firmware(0x%x) in boot stage %d\n", mcu_rev, boot_status);
++
++	switch (boot_status) {
++	case 2:
++		if (!patched) {
++			ret = request_firmware_nowait(THIS_MODULE, FW_ACTION_UEVENT,
++						      "cs42l43.bin", cs42l43->dev,
++						      GFP_KERNEL, cs42l43,
++						      cs42l43_mcu_load_firmware);
 +			if (ret) {
-+				dev_err(priv->dev, "Failed to enable MCLK: %d\n", ret);
-+				break;
++				dev_err(cs42l43->dev, "Failed to request firmware: %d\n", ret);
++				return ret;
 +			}
++
++			wait_for_completion(&cs42l43->firmware_download);
++
++			if (cs42l43->firmware_error)
++				return cs42l43->firmware_error;
++
++			return -EAGAIN;
++		} else {
++			return cs42l43_mcu_stage_2_3(cs42l43, shadow);
 +		}
-+
-+		ret = cs42l43_enable_pll(priv);
-+		break;
-+	case SND_SOC_DAPM_POST_PMD:
-+		ret = cs42l43_disable_pll(priv);
-+
-+		if (priv->refclk_src == CS42L43_SYSCLK_MCLK)
-+			clk_disable_unprepare(priv->mclk);
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	mutex_unlock(&cs42l43->pll_lock);
-+
-+	return ret;
-+}
-+
-+static int cs42l43_dapm_wait_completion(struct completion *pmu, struct completion *pmd,
-+					int event, int timeout_ms)
-+{
-+	unsigned long time_left;
-+
-+	switch (event) {
-+	case SND_SOC_DAPM_PRE_PMU:
-+		reinit_completion(pmu);
++	case 3:
++		if (patched)
++			return cs42l43_mcu_disable(cs42l43);
++		else
++			return cs42l43_mcu_stage_3_2(cs42l43);
++	case 4:
 +		return 0;
-+	case SND_SOC_DAPM_PRE_PMD:
-+		reinit_completion(pmd);
-+		return 0;
-+	case SND_SOC_DAPM_POST_PMU:
-+		time_left = wait_for_completion_timeout(pmu, msecs_to_jiffies(timeout_ms));
-+		break;
-+	case SND_SOC_DAPM_POST_PMD:
-+		time_left = wait_for_completion_timeout(pmd, msecs_to_jiffies(timeout_ms));
-+		break;
 +	default:
-+		return 0;
-+	}
-+
-+	if (!time_left)
-+		return -ETIMEDOUT;
-+	else
-+		return 0;
-+}
-+
-+static int cs42l43_spkr_ev(struct snd_soc_dapm_widget *w,
-+			   struct snd_kcontrol *kcontrol, int event)
-+{
-+	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
-+	struct cs42l43_codec *priv = snd_soc_component_get_drvdata(component);
-+
-+	return cs42l43_dapm_wait_completion(&priv->spkr_startup,
-+					    &priv->spkr_shutdown, event,
-+					    CS42L43_SPK_TIMEOUT_MS);
-+}
-+
-+static int cs42l43_spkl_ev(struct snd_soc_dapm_widget *w,
-+			   struct snd_kcontrol *kcontrol, int event)
-+{
-+	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
-+	struct cs42l43_codec *priv = snd_soc_component_get_drvdata(component);
-+
-+	return cs42l43_dapm_wait_completion(&priv->spkl_startup,
-+					    &priv->spkl_shutdown, event,
-+					    CS42L43_SPK_TIMEOUT_MS);
-+}
-+
-+static int cs42l43_hp_ev(struct snd_soc_dapm_widget *w,
-+			 struct snd_kcontrol *kcontrol, int event)
-+{
-+	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
-+	struct cs42l43_codec *priv = snd_soc_component_get_drvdata(component);
-+	struct cs42l43 *cs42l43 = priv->core;
-+	unsigned int mask = 1 << w->shift;
-+	unsigned int val = 0;
-+	int ret;
-+
-+	switch (event) {
-+	case SND_SOC_DAPM_PRE_PMU:
-+		val = mask;
-+		fallthrough;
-+	case SND_SOC_DAPM_PRE_PMD:
-+		priv->hp_ena &= ~mask;
-+		priv->hp_ena |= val;
-+
-+		ret = cs42l43_dapm_wait_completion(&priv->hp_startup,
-+						   &priv->hp_shutdown, event,
-+						   CS42L43_HP_TIMEOUT_MS);
-+		if (ret)
-+			return ret;
-+
-+		if (!priv->load_detect_running)
-+			regmap_update_bits(cs42l43->regmap, CS42L43_BLOCK_EN8,
-+					   mask, val);
-+		break;
-+	case SND_SOC_DAPM_POST_PMU:
-+	case SND_SOC_DAPM_POST_PMD:
-+		if (priv->load_detect_running)
-+			break;
-+
-+		ret = cs42l43_dapm_wait_completion(&priv->hp_startup,
-+						   &priv->hp_shutdown, event,
-+						   CS42L43_HP_TIMEOUT_MS);
-+		if (ret)
-+			return ret;
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	return 0;
-+}
-+
-+static int cs42l43_mic_ev(struct snd_soc_dapm_widget *w,
-+			  struct snd_kcontrol *kcontrol, int event)
-+{
-+	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
-+	struct cs42l43_codec *priv = snd_soc_component_get_drvdata(component);
-+	struct cs42l43 *cs42l43 = priv->core;
-+	unsigned int reg, ramp, mute;
-+	unsigned int *val;
-+	int ret;
-+
-+	switch (w->shift) {
-+	case CS42L43_ADC1_EN_SHIFT:
-+	case CS42L43_PDM1_DIN_L_EN_SHIFT:
-+		reg = CS42L43_DECIM_VOL_CTRL_CH1_CH2;
-+		ramp = CS42L43_DECIM1_VD_RAMP_MASK;
-+		mute = CS42L43_DECIM1_MUTE_MASK;
-+		val = &priv->decim_cache[0];
-+		break;
-+	case CS42L43_ADC2_EN_SHIFT:
-+	case CS42L43_PDM1_DIN_R_EN_SHIFT:
-+		reg = CS42L43_DECIM_VOL_CTRL_CH1_CH2;
-+		ramp = CS42L43_DECIM2_VD_RAMP_MASK;
-+		mute = CS42L43_DECIM2_MUTE_MASK;
-+		val = &priv->decim_cache[1];
-+		break;
-+	case CS42L43_PDM2_DIN_L_EN_SHIFT:
-+		reg = CS42L43_DECIM_VOL_CTRL_CH3_CH4;
-+		ramp  = CS42L43_DECIM3_VD_RAMP_MASK;
-+		mute = CS42L43_DECIM3_MUTE_MASK;
-+		val = &priv->decim_cache[2];
-+		break;
-+	case CS42L43_PDM2_DIN_R_EN_SHIFT:
-+		reg = CS42L43_DECIM_VOL_CTRL_CH3_CH4;
-+		ramp = CS42L43_DECIM4_VD_RAMP_MASK;
-+		mute = CS42L43_DECIM4_MUTE_MASK;
-+		val = &priv->decim_cache[3];
-+		break;
-+	default:
-+		dev_err(priv->dev, "Invalid microphone shift: %d\n", w->shift);
++		dev_err(cs42l43->dev, "Invalid boot status: %d\n", boot_status);
 +		return -EINVAL;
 +	}
-+
-+	switch (event) {
-+	case SND_SOC_DAPM_PRE_PMU:
-+		ret = regmap_read(cs42l43->regmap, reg, val);
-+		if (ret) {
-+			dev_err(priv->dev,
-+				"Failed to cache decimator settings: %d\n",
-+				ret);
-+			return ret;
-+		}
-+
-+		regmap_update_bits(cs42l43->regmap, reg, mute | ramp, mute);
-+		break;
-+	case SND_SOC_DAPM_POST_PMU:
-+		regmap_update_bits(cs42l43->regmap, reg, mute | ramp, *val);
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	return 0;
 +}
 +
-+static int cs42l43_adc_ev(struct snd_soc_dapm_widget *w,
-+			  struct snd_kcontrol *kcontrol, int event)
++static int cs42l43_mcu_update(struct cs42l43 *cs42l43)
 +{
-+	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
-+	struct cs42l43_codec *priv = snd_soc_component_get_drvdata(component);
-+	struct cs42l43 *cs42l43 = priv->core;
-+	unsigned int mask = 1 << w->shift;
-+	unsigned int val = 0;
-+	int ret;
-+
-+	ret = cs42l43_mic_ev(w, kcontrol, event);
-+	if (ret)
-+		return ret;
-+
-+	switch (event) {
-+	case SND_SOC_DAPM_PRE_PMU:
-+		val = mask;
-+		fallthrough;
-+	case SND_SOC_DAPM_PRE_PMD:
-+		priv->adc_ena &= ~mask;
-+		priv->adc_ena |= val;
-+
-+		if (!priv->load_detect_running)
-+			regmap_update_bits(cs42l43->regmap, CS42L43_BLOCK_EN3,
-+					   mask, val);
-+		fallthrough;
-+	default:
-+		return 0;
-+	}
-+}
-+
-+static const struct snd_soc_dapm_widget cs42l43_widgets[] = {
-+	SND_SOC_DAPM_SUPPLY("PLL", SND_SOC_NOPM, 0, 0, cs42l43_pll_ev,
-+			    SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMD),
-+
-+	SND_SOC_DAPM_INPUT("ADC1_IN1_P"),
-+	SND_SOC_DAPM_INPUT("ADC1_IN1_N"),
-+	SND_SOC_DAPM_INPUT("ADC1_IN2_P"),
-+	SND_SOC_DAPM_INPUT("ADC1_IN2_N"),
-+	SND_SOC_DAPM_INPUT("ADC2_IN_P"),
-+	SND_SOC_DAPM_INPUT("ADC2_IN_N"),
-+
-+	SND_SOC_DAPM_INPUT("PDM1_DIN"),
-+	SND_SOC_DAPM_INPUT("PDM2_DIN"),
-+
-+	SND_SOC_DAPM_MUX("ADC1 Input", SND_SOC_NOPM, 0, 0, &cs42l43_adc1_input_ctl),
-+
-+	SND_SOC_DAPM_PGA_E("ADC1", SND_SOC_NOPM, CS42L43_ADC1_EN_SHIFT, 0, NULL, 0,
-+			   cs42l43_adc_ev, SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU |
-+			   SND_SOC_DAPM_PRE_PMD),
-+	SND_SOC_DAPM_PGA_E("ADC2", SND_SOC_NOPM, CS42L43_ADC2_EN_SHIFT, 0, NULL, 0,
-+			   cs42l43_adc_ev, SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU |
-+			   SND_SOC_DAPM_PRE_PMD),
-+
-+	SND_SOC_DAPM_PGA_E("PDM1L", CS42L43_BLOCK_EN3, CS42L43_PDM1_DIN_L_EN_SHIFT,
-+			   0, NULL, 0, cs42l43_mic_ev,
-+			   SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU),
-+	SND_SOC_DAPM_PGA_E("PDM1R", CS42L43_BLOCK_EN3, CS42L43_PDM1_DIN_R_EN_SHIFT,
-+			   0, NULL, 0, cs42l43_mic_ev,
-+			   SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU),
-+	SND_SOC_DAPM_PGA_E("PDM2L", CS42L43_BLOCK_EN3, CS42L43_PDM2_DIN_L_EN_SHIFT,
-+			   0, NULL, 0, cs42l43_mic_ev,
-+			   SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU),
-+	SND_SOC_DAPM_PGA_E("PDM2R", CS42L43_BLOCK_EN3, CS42L43_PDM2_DIN_R_EN_SHIFT,
-+			   0, NULL, 0, cs42l43_mic_ev,
-+			   SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU),
-+
-+	SND_SOC_DAPM_MUX("Decimator 1 Mode", SND_SOC_NOPM, 0, 0,
-+			 &cs42l43_dec_mode_ctl[0]),
-+	SND_SOC_DAPM_MUX("Decimator 2 Mode", SND_SOC_NOPM, 0, 0,
-+			 &cs42l43_dec_mode_ctl[1]),
-+
-+	SND_SOC_DAPM_PGA("Decimator 1", SND_SOC_NOPM, 0, 0, NULL, 0),
-+	SND_SOC_DAPM_PGA("Decimator 2", SND_SOC_NOPM, 0, 0, NULL, 0),
-+	SND_SOC_DAPM_PGA("Decimator 3", SND_SOC_NOPM, 0, 0, NULL, 0),
-+	SND_SOC_DAPM_PGA("Decimator 4", SND_SOC_NOPM, 0, 0, NULL, 0),
-+
-+	SND_SOC_DAPM_SUPPLY_S("FSYNC", 0, CS42L43_ASP_CTRL, CS42L43_ASP_FSYNC_EN_SHIFT,
-+			      0, NULL, 0),
-+	SND_SOC_DAPM_SUPPLY_S("BCLK", 1, CS42L43_ASP_CTRL, CS42L43_ASP_BCLK_EN_SHIFT,
-+			      0, NULL, 0),
-+
-+	SND_SOC_DAPM_AIF_OUT("ASPTX1", NULL, 0,
-+			     CS42L43_ASP_TX_EN, CS42L43_ASP_TX_CH1_EN_SHIFT, 0),
-+	SND_SOC_DAPM_AIF_OUT("ASPTX2", NULL, 1,
-+			     CS42L43_ASP_TX_EN, CS42L43_ASP_TX_CH2_EN_SHIFT, 0),
-+	SND_SOC_DAPM_AIF_OUT("ASPTX3", NULL, 2,
-+			     CS42L43_ASP_TX_EN, CS42L43_ASP_TX_CH3_EN_SHIFT, 0),
-+	SND_SOC_DAPM_AIF_OUT("ASPTX4", NULL, 3,
-+			     CS42L43_ASP_TX_EN, CS42L43_ASP_TX_CH4_EN_SHIFT, 0),
-+	SND_SOC_DAPM_AIF_OUT("ASPTX5", NULL, 4,
-+			     CS42L43_ASP_TX_EN, CS42L43_ASP_TX_CH5_EN_SHIFT, 0),
-+	SND_SOC_DAPM_AIF_OUT("ASPTX6", NULL, 5,
-+			     CS42L43_ASP_TX_EN, CS42L43_ASP_TX_CH6_EN_SHIFT, 0),
-+
-+	SND_SOC_DAPM_AIF_IN("ASPRX1", NULL, 0,
-+			    CS42L43_ASP_RX_EN, CS42L43_ASP_RX_CH1_EN_SHIFT, 0),
-+	SND_SOC_DAPM_AIF_IN("ASPRX2", NULL, 1,
-+			    CS42L43_ASP_RX_EN, CS42L43_ASP_RX_CH2_EN_SHIFT, 0),
-+	SND_SOC_DAPM_AIF_IN("ASPRX3", NULL, 2,
-+			    CS42L43_ASP_RX_EN, CS42L43_ASP_RX_CH3_EN_SHIFT, 0),
-+	SND_SOC_DAPM_AIF_IN("ASPRX4", NULL, 3,
-+			    CS42L43_ASP_RX_EN, CS42L43_ASP_RX_CH4_EN_SHIFT, 0),
-+	SND_SOC_DAPM_AIF_IN("ASPRX5", NULL, 4,
-+			    CS42L43_ASP_RX_EN, CS42L43_ASP_RX_CH5_EN_SHIFT, 0),
-+	SND_SOC_DAPM_AIF_IN("ASPRX6", NULL, 5,
-+			    CS42L43_ASP_RX_EN, CS42L43_ASP_RX_CH6_EN_SHIFT, 0),
-+
-+	SND_SOC_DAPM_AIF_OUT("DP1TX1", NULL, 0, SND_SOC_NOPM, 0, 0),
-+	SND_SOC_DAPM_AIF_OUT("DP1TX2", NULL, 1, SND_SOC_NOPM, 0, 0),
-+	SND_SOC_DAPM_AIF_OUT("DP1TX3", NULL, 2, SND_SOC_NOPM, 0, 0),
-+	SND_SOC_DAPM_AIF_OUT("DP1TX4", NULL, 3, SND_SOC_NOPM, 0, 0),
-+
-+	SND_SOC_DAPM_AIF_OUT("DP2TX1", NULL, 0, SND_SOC_NOPM, 0, 0),
-+	SND_SOC_DAPM_AIF_OUT("DP2TX2", NULL, 1, SND_SOC_NOPM, 0, 0),
-+
-+	SND_SOC_DAPM_AIF_OUT("DP3TX1", NULL, 0, SND_SOC_NOPM, 0, 0),
-+	SND_SOC_DAPM_AIF_OUT("DP3TX2", NULL, 1, SND_SOC_NOPM, 0, 0),
-+
-+	SND_SOC_DAPM_AIF_OUT("DP4TX1", NULL, 0, SND_SOC_NOPM, 0, 0),
-+	SND_SOC_DAPM_AIF_OUT("DP4TX2", NULL, 1, SND_SOC_NOPM, 0, 0),
-+
-+	SND_SOC_DAPM_AIF_IN("DP5RX1", NULL, 0, SND_SOC_NOPM, 0, 0),
-+	SND_SOC_DAPM_AIF_IN("DP5RX2", NULL, 1, SND_SOC_NOPM, 0, 0),
-+
-+	SND_SOC_DAPM_AIF_IN("DP6RX1", NULL, 0, SND_SOC_NOPM, 0, 0),
-+	SND_SOC_DAPM_AIF_IN("DP6RX2", NULL, 1, SND_SOC_NOPM, 0, 0),
-+
-+	SND_SOC_DAPM_AIF_IN("DP7RX1", NULL, 0, SND_SOC_NOPM, 0, 0),
-+	SND_SOC_DAPM_AIF_IN("DP7RX2", NULL, 1, SND_SOC_NOPM, 0, 0),
-+
-+	SND_SOC_DAPM_REGULATOR_SUPPLY("VDD_AMP", 0, 0),
-+
-+	SND_SOC_DAPM_PGA_E("AMP1", CS42L43_BLOCK_EN10, CS42L43_AMP1_EN_SHIFT, 0, NULL, 0,
-+			   cs42l43_spkl_ev, SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU |
-+			   SND_SOC_DAPM_PRE_PMD | SND_SOC_DAPM_POST_PMD),
-+	SND_SOC_DAPM_PGA_E("AMP2", CS42L43_BLOCK_EN10, CS42L43_AMP2_EN_SHIFT, 0, NULL, 0,
-+			   cs42l43_spkr_ev, SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU |
-+			   SND_SOC_DAPM_PRE_PMD | SND_SOC_DAPM_POST_PMD),
-+
-+	SND_SOC_DAPM_OUTPUT("AMP1_OUT_P"),
-+	SND_SOC_DAPM_OUTPUT("AMP1_OUT_N"),
-+	SND_SOC_DAPM_OUTPUT("AMP2_OUT_P"),
-+	SND_SOC_DAPM_OUTPUT("AMP2_OUT_N"),
-+
-+	SND_SOC_DAPM_PGA("SPDIF", CS42L43_BLOCK_EN11, CS42L43_SPDIF_EN_SHIFT,
-+			 0, NULL, 0),
-+	SND_SOC_DAPM_OUTPUT("SPDIF_TX"),
-+
-+	SND_SOC_DAPM_PGA_E("HP", SND_SOC_NOPM, CS42L43_HP_EN_SHIFT, 0, NULL, 0,
-+			   cs42l43_hp_ev, SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU |
-+			   SND_SOC_DAPM_PRE_PMD | SND_SOC_DAPM_POST_PMD),
-+	SND_SOC_DAPM_OUTPUT("AMP3_OUT"),
-+	SND_SOC_DAPM_OUTPUT("AMP4_OUT"),
-+
-+	SND_SOC_DAPM_SIGGEN("Tone"),
-+	SND_SOC_DAPM_SUPPLY("Tone Generator", CS42L43_BLOCK_EN9, CS42L43_TONE_EN_SHIFT,
-+			    0, NULL, 0),
-+	SND_SOC_DAPM_REG(snd_soc_dapm_pga, "Tone 1", CS42L43_TONE_CH1_CTRL,
-+			 CS42L43_TONE_SEL_SHIFT, CS42L43_TONE_SEL_MASK, 0xA, 0),
-+	SND_SOC_DAPM_REG(snd_soc_dapm_pga, "Tone 2", CS42L43_TONE_CH2_CTRL,
-+			 CS42L43_TONE_SEL_SHIFT, CS42L43_TONE_SEL_MASK, 0xA, 0),
-+
-+	SND_SOC_DAPM_SUPPLY("ISRC1", CS42L43_BLOCK_EN5, CS42L43_ISRC1_BANK_EN_SHIFT,
-+			    0, NULL, 0),
-+	SND_SOC_DAPM_SUPPLY("ISRC2", CS42L43_BLOCK_EN5, CS42L43_ISRC2_BANK_EN_SHIFT,
-+			    0, NULL, 0),
-+
-+	SND_SOC_DAPM_PGA("ISRC1INT2", CS42L43_ISRC1_CTRL,
-+			 CS42L43_ISRC_INT2_EN_SHIFT, 0, NULL, 0),
-+	SND_SOC_DAPM_PGA("ISRC1INT1", CS42L43_ISRC1_CTRL,
-+			 CS42L43_ISRC_INT1_EN_SHIFT, 0, NULL, 0),
-+	SND_SOC_DAPM_PGA("ISRC1DEC2", CS42L43_ISRC1_CTRL,
-+			 CS42L43_ISRC_DEC2_EN_SHIFT, 0, NULL, 0),
-+	SND_SOC_DAPM_PGA("ISRC1DEC1", CS42L43_ISRC1_CTRL,
-+			 CS42L43_ISRC_DEC1_EN_SHIFT, 0, NULL, 0),
-+
-+	SND_SOC_DAPM_PGA("ISRC2INT2", CS42L43_ISRC2_CTRL,
-+			 CS42L43_ISRC_INT2_EN_SHIFT, 0, NULL, 0),
-+	SND_SOC_DAPM_PGA("ISRC2INT1", CS42L43_ISRC2_CTRL,
-+			 CS42L43_ISRC_INT1_EN_SHIFT, 0, NULL, 0),
-+	SND_SOC_DAPM_PGA("ISRC2DEC2", CS42L43_ISRC2_CTRL,
-+			 CS42L43_ISRC_DEC2_EN_SHIFT, 0, NULL, 0),
-+	SND_SOC_DAPM_PGA("ISRC2DEC1", CS42L43_ISRC2_CTRL,
-+			 CS42L43_ISRC_DEC1_EN_SHIFT, 0, NULL, 0),
-+
-+	SND_SOC_DAPM_SUPPLY("ASRC_INT", CS42L43_BLOCK_EN4,
-+			    CS42L43_ASRC_INT_BANK_EN_SHIFT, 0, NULL, 0),
-+	SND_SOC_DAPM_SUPPLY("ASRC_DEC", CS42L43_BLOCK_EN4,
-+			    CS42L43_ASRC_DEC_BANK_EN_SHIFT, 0, NULL, 0),
-+
-+	SND_SOC_DAPM_PGA("ASRC_INT1", CS42L43_ASRC_INT_ENABLES,
-+			 CS42L43_ASRC_INT1_EN_SHIFT, 0, NULL, 0),
-+	SND_SOC_DAPM_PGA("ASRC_INT2", CS42L43_ASRC_INT_ENABLES,
-+			 CS42L43_ASRC_INT2_EN_SHIFT, 0, NULL, 0),
-+	SND_SOC_DAPM_PGA("ASRC_INT3", CS42L43_ASRC_INT_ENABLES,
-+			 CS42L43_ASRC_INT3_EN_SHIFT, 0, NULL, 0),
-+	SND_SOC_DAPM_PGA("ASRC_INT4", CS42L43_ASRC_INT_ENABLES,
-+			 CS42L43_ASRC_INT4_EN_SHIFT, 0, NULL, 0),
-+	SND_SOC_DAPM_PGA("ASRC_DEC1", CS42L43_ASRC_DEC_ENABLES,
-+			 CS42L43_ASRC_DEC1_EN_SHIFT, 0, NULL, 0),
-+	SND_SOC_DAPM_PGA("ASRC_DEC2", CS42L43_ASRC_DEC_ENABLES,
-+			 CS42L43_ASRC_DEC2_EN_SHIFT, 0, NULL, 0),
-+	SND_SOC_DAPM_PGA("ASRC_DEC3", CS42L43_ASRC_DEC_ENABLES,
-+			 CS42L43_ASRC_DEC3_EN_SHIFT, 0, NULL, 0),
-+	SND_SOC_DAPM_PGA("ASRC_DEC4", CS42L43_ASRC_DEC_ENABLES,
-+			 CS42L43_ASRC_DEC4_EN_SHIFT, 0, NULL, 0),
-+
-+	SND_SOC_DAPM_SUPPLY("EQ Clock", CS42L43_BLOCK_EN7, CS42L43_EQ_EN_SHIFT,
-+			    0, NULL, 0),
-+	SND_SOC_DAPM_PGA_E("EQ", CS42L43_START_EQZ0, CS42L43_START_FILTER_SHIFT,
-+			   0, NULL, 0, cs42l43_eq_ev,
-+			   SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU),
-+
-+	SND_SOC_DAPM_SUPPLY("Mixer Core", CS42L43_BLOCK_EN6, CS42L43_MIXER_EN_SHIFT,
-+			    0, NULL, 0),
-+	CS42L43_DAPM_MUX("ASPTX1", asptx1),
-+	CS42L43_DAPM_MUX("ASPTX2", asptx2),
-+	CS42L43_DAPM_MUX("ASPTX3", asptx3),
-+	CS42L43_DAPM_MUX("ASPTX4", asptx4),
-+	CS42L43_DAPM_MUX("ASPTX5", asptx5),
-+	CS42L43_DAPM_MUX("ASPTX6", asptx6),
-+
-+	CS42L43_DAPM_MUX("DP1TX1", dp1tx1),
-+	CS42L43_DAPM_MUX("DP1TX2", dp1tx2),
-+	CS42L43_DAPM_MUX("DP1TX3", dp1tx3),
-+	CS42L43_DAPM_MUX("DP1TX4", dp1tx4),
-+	CS42L43_DAPM_MUX("DP2TX1", dp2tx1),
-+	CS42L43_DAPM_MUX("DP2TX2", dp2tx2),
-+	CS42L43_DAPM_MUX("DP3TX1", dp3tx1),
-+	CS42L43_DAPM_MUX("DP3TX2", dp3tx2),
-+	CS42L43_DAPM_MUX("DP4TX1", dp4tx1),
-+	CS42L43_DAPM_MUX("DP4TX2", dp4tx2),
-+
-+	CS42L43_DAPM_MUX("ASRC INT1", asrcint1),
-+	CS42L43_DAPM_MUX("ASRC INT2", asrcint2),
-+	CS42L43_DAPM_MUX("ASRC INT3", asrcint3),
-+	CS42L43_DAPM_MUX("ASRC INT4", asrcint4),
-+	CS42L43_DAPM_MUX("ASRC DEC1", asrcdec1),
-+	CS42L43_DAPM_MUX("ASRC DEC2", asrcdec2),
-+	CS42L43_DAPM_MUX("ASRC DEC3", asrcdec3),
-+	CS42L43_DAPM_MUX("ASRC DEC4", asrcdec4),
-+
-+	CS42L43_DAPM_MUX("ISRC1INT1", isrc1int1),
-+	CS42L43_DAPM_MUX("ISRC1INT2", isrc1int2),
-+	CS42L43_DAPM_MUX("ISRC1DEC1", isrc1dec1),
-+	CS42L43_DAPM_MUX("ISRC1DEC2", isrc1dec2),
-+	CS42L43_DAPM_MUX("ISRC2INT1", isrc2int1),
-+	CS42L43_DAPM_MUX("ISRC2INT2", isrc2int2),
-+	CS42L43_DAPM_MUX("ISRC2DEC1", isrc2dec1),
-+	CS42L43_DAPM_MUX("ISRC2DEC2", isrc2dec2),
-+
-+	CS42L43_DAPM_MUX("SPDIF1", spdif1),
-+	CS42L43_DAPM_MUX("SPDIF2", spdif2),
-+
-+	CS42L43_DAPM_MIXER("EQ1", eq1),
-+	CS42L43_DAPM_MIXER("EQ2", eq2),
-+
-+	CS42L43_DAPM_MIXER("Speaker L", amp1),
-+	CS42L43_DAPM_MIXER("Speaker R", amp2),
-+
-+	CS42L43_DAPM_MIXER("Headphone L", amp3),
-+	CS42L43_DAPM_MIXER("Headphone R", amp4),
-+};
-+
-+static const struct snd_soc_dapm_route cs42l43_routes[] = {
-+	{ "ADC1_IN1_P",		NULL,	"PLL" },
-+	{ "ADC1_IN1_N",		NULL,	"PLL" },
-+	{ "ADC1_IN2_P",		NULL,	"PLL" },
-+	{ "ADC1_IN2_N",		NULL,	"PLL" },
-+	{ "ADC2_IN_P",		NULL,	"PLL" },
-+	{ "ADC2_IN_N",		NULL,	"PLL" },
-+	{ "PDM1_DIN",		NULL,	"PLL" },
-+	{ "PDM2_DIN",		NULL,	"PLL" },
-+	{ "AMP1_OUT_P",		NULL,	"PLL" },
-+	{ "AMP1_OUT_N",		NULL,	"PLL" },
-+	{ "AMP2_OUT_P",		NULL,	"PLL" },
-+	{ "AMP2_OUT_N",		NULL,	"PLL" },
-+	{ "SPDIF_TX",		NULL,	"PLL" },
-+	{ "HP",			NULL,	"PLL" },
-+	{ "AMP3_OUT",		NULL,	"PLL" },
-+	{ "AMP4_OUT",		NULL,	"PLL" },
-+	{ "Tone 1",		NULL,	"PLL" },
-+	{ "Tone 2",		NULL,	"PLL" },
-+	{ "ASP Playback",	NULL,	"PLL" },
-+	{ "ASP Capture",	NULL,	"PLL" },
-+	{ "DP1 Capture",	NULL,	"PLL" },
-+	{ "DP2 Capture",	NULL,	"PLL" },
-+	{ "DP3 Capture",	NULL,	"PLL" },
-+	{ "DP4 Capture",	NULL,	"PLL" },
-+	{ "DP5 Playback",	NULL,	"PLL" },
-+	{ "DP6 Playback",	NULL,	"PLL" },
-+	{ "DP7 Playback",	NULL,	"PLL" },
-+
-+	{ "ADC1 Input",		"IN1",	"ADC1_IN1_P" },
-+	{ "ADC1 Input",		"IN1",	"ADC1_IN1_N" },
-+	{ "ADC1 Input",		"IN2",	"ADC1_IN2_P" },
-+	{ "ADC1 Input",		"IN2",	"ADC1_IN2_N" },
-+
-+	{ "ADC1",		NULL,	"ADC1 Input" },
-+	{ "ADC2",		NULL,	"ADC2_IN_P" },
-+	{ "ADC2",		NULL,	"ADC2_IN_N" },
-+
-+	{ "PDM1L",		NULL,	"PDM1_DIN" },
-+	{ "PDM1R",		NULL,	"PDM1_DIN" },
-+	{ "PDM2L",		NULL,	"PDM2_DIN" },
-+	{ "PDM2R",		NULL,	"PDM2_DIN" },
-+
-+	{ "Decimator 1 Mode",	"PDM",	"PDM1L" },
-+	{ "Decimator 1 Mode",	"ADC",	"ADC1" },
-+	{ "Decimator 2 Mode",	"PDM",	"PDM1R" },
-+	{ "Decimator 2 Mode",	"ADC",	"ADC2" },
-+
-+	{ "Decimator 1",	NULL,	"Decimator 1 Mode" },
-+	{ "Decimator 2",	NULL,	"Decimator 2 Mode" },
-+	{ "Decimator 3",	NULL,	"PDM2L" },
-+	{ "Decimator 4",	NULL,	"PDM2R" },
-+
-+	{ "ASP Capture",	NULL,	"ASPTX1" },
-+	{ "ASP Capture",	NULL,	"ASPTX2" },
-+	{ "ASP Capture",	NULL,	"ASPTX3" },
-+	{ "ASP Capture",	NULL,	"ASPTX4" },
-+	{ "ASP Capture",	NULL,	"ASPTX5" },
-+	{ "ASP Capture",	NULL,	"ASPTX6" },
-+	{ "ASPTX1",		NULL,	"BCLK" },
-+	{ "ASPTX2",		NULL,	"BCLK" },
-+	{ "ASPTX3",		NULL,	"BCLK" },
-+	{ "ASPTX4",		NULL,	"BCLK" },
-+	{ "ASPTX5",		NULL,	"BCLK" },
-+	{ "ASPTX6",		NULL,	"BCLK" },
-+
-+	{ "ASPRX1",		NULL,	"ASP Playback" },
-+	{ "ASPRX2",		NULL,	"ASP Playback" },
-+	{ "ASPRX3",		NULL,	"ASP Playback" },
-+	{ "ASPRX4",		NULL,	"ASP Playback" },
-+	{ "ASPRX5",		NULL,	"ASP Playback" },
-+	{ "ASPRX6",		NULL,	"ASP Playback" },
-+	{ "ASPRX1",		NULL,	"BCLK" },
-+	{ "ASPRX2",		NULL,	"BCLK" },
-+	{ "ASPRX3",		NULL,	"BCLK" },
-+	{ "ASPRX4",		NULL,	"BCLK" },
-+	{ "ASPRX5",		NULL,	"BCLK" },
-+	{ "ASPRX6",		NULL,	"BCLK" },
-+
-+	{ "DP1 Capture",	NULL, "DP1TX1" },
-+	{ "DP1 Capture",	NULL, "DP1TX2" },
-+	{ "DP1 Capture",	NULL, "DP1TX3" },
-+	{ "DP1 Capture",	NULL, "DP1TX4" },
-+
-+	{ "DP2 Capture",	NULL, "DP2TX1" },
-+	{ "DP2 Capture",	NULL, "DP2TX2" },
-+
-+	{ "DP3 Capture",	NULL, "DP3TX1" },
-+	{ "DP3 Capture",	NULL, "DP3TX2" },
-+
-+	{ "DP4 Capture",	NULL, "DP4TX1" },
-+	{ "DP4 Capture",	NULL, "DP4TX2" },
-+
-+	{ "DP5RX1",		NULL, "DP5 Playback" },
-+	{ "DP5RX2",		NULL, "DP5 Playback" },
-+
-+	{ "DP6RX1",		NULL, "DP6 Playback" },
-+	{ "DP6RX2",		NULL, "DP6 Playback" },
-+
-+	{ "DP7RX1",		NULL, "DP7 Playback" },
-+	{ "DP7RX2",		NULL, "DP7 Playback" },
-+
-+	{ "AMP1",		NULL,	"VDD_AMP" },
-+	{ "AMP2",		NULL,	"VDD_AMP" },
-+
-+	{ "AMP1_OUT_P",		NULL,	"AMP1" },
-+	{ "AMP1_OUT_N",		NULL,	"AMP1" },
-+	{ "AMP2_OUT_P",		NULL,	"AMP2" },
-+	{ "AMP2_OUT_N",		NULL,	"AMP2" },
-+
-+	{ "SPDIF_TX",		NULL,	"SPDIF" },
-+
-+	{ "AMP3_OUT",		NULL,	"HP" },
-+	{ "AMP4_OUT",		NULL,	"HP" },
-+
-+	{ "Tone 1",		NULL,	"Tone" },
-+	{ "Tone 1",		NULL,	"Tone Generator" },
-+	{ "Tone 2",		NULL,	"Tone" },
-+	{ "Tone 2",		NULL,	"Tone Generator" },
-+
-+	{ "ISRC1INT2",		NULL,	"ISRC1" },
-+	{ "ISRC1INT1",		NULL,	"ISRC1" },
-+	{ "ISRC1DEC2",		NULL,	"ISRC1" },
-+	{ "ISRC1DEC1",		NULL,	"ISRC1" },
-+
-+	{ "ISRC2INT2",		NULL,	"ISRC2" },
-+	{ "ISRC2INT1",		NULL,	"ISRC2" },
-+	{ "ISRC2DEC2",		NULL,	"ISRC2" },
-+	{ "ISRC2DEC1",		NULL,	"ISRC2" },
-+
-+	{ "ASRC_INT1",		NULL,	"ASRC_INT" },
-+	{ "ASRC_INT2",		NULL,	"ASRC_INT" },
-+	{ "ASRC_INT3",		NULL,	"ASRC_INT" },
-+	{ "ASRC_INT4",		NULL,	"ASRC_INT" },
-+	{ "ASRC_DEC1",		NULL,	"ASRC_DEC" },
-+	{ "ASRC_DEC2",		NULL,	"ASRC_DEC" },
-+	{ "ASRC_DEC3",		NULL,	"ASRC_DEC" },
-+	{ "ASRC_DEC4",		NULL,	"ASRC_DEC" },
-+
-+	{ "EQ",			NULL,	"EQ Clock" },
-+
-+	CS42L43_MUX_ROUTES("ASPTX1", "ASPTX1"),
-+	CS42L43_MUX_ROUTES("ASPTX2", "ASPTX2"),
-+	CS42L43_MUX_ROUTES("ASPTX3", "ASPTX3"),
-+	CS42L43_MUX_ROUTES("ASPTX4", "ASPTX4"),
-+	CS42L43_MUX_ROUTES("ASPTX5", "ASPTX5"),
-+	CS42L43_MUX_ROUTES("ASPTX6", "ASPTX6"),
-+
-+	CS42L43_MUX_ROUTES("DP1TX1", "DP1TX1"),
-+	CS42L43_MUX_ROUTES("DP1TX2", "DP1TX2"),
-+	CS42L43_MUX_ROUTES("DP1TX3", "DP1TX3"),
-+	CS42L43_MUX_ROUTES("DP1TX4", "DP1TX4"),
-+	CS42L43_MUX_ROUTES("DP2TX1", "DP2TX1"),
-+	CS42L43_MUX_ROUTES("DP2TX2", "DP2TX2"),
-+	CS42L43_MUX_ROUTES("DP3TX1", "DP3TX1"),
-+	CS42L43_MUX_ROUTES("DP3TX2", "DP3TX2"),
-+	CS42L43_MUX_ROUTES("DP4TX1", "DP4TX1"),
-+	CS42L43_MUX_ROUTES("DP4TX2", "DP4TX2"),
-+
-+	CS42L43_MUX_ROUTES("ASRC INT1", "ASRC_INT1"),
-+	CS42L43_MUX_ROUTES("ASRC INT2", "ASRC_INT2"),
-+	CS42L43_MUX_ROUTES("ASRC INT3", "ASRC_INT3"),
-+	CS42L43_MUX_ROUTES("ASRC INT4", "ASRC_INT4"),
-+	CS42L43_MUX_ROUTES("ASRC DEC1", "ASRC_DEC1"),
-+	CS42L43_MUX_ROUTES("ASRC DEC2", "ASRC_DEC2"),
-+	CS42L43_MUX_ROUTES("ASRC DEC3", "ASRC_DEC3"),
-+	CS42L43_MUX_ROUTES("ASRC DEC4", "ASRC_DEC4"),
-+
-+	CS42L43_MUX_ROUTES("ISRC1INT1", "ISRC1INT1"),
-+	CS42L43_MUX_ROUTES("ISRC1INT2", "ISRC1INT2"),
-+	CS42L43_MUX_ROUTES("ISRC1DEC1", "ISRC1DEC1"),
-+	CS42L43_MUX_ROUTES("ISRC1DEC2", "ISRC1DEC2"),
-+	CS42L43_MUX_ROUTES("ISRC2INT1", "ISRC2INT1"),
-+	CS42L43_MUX_ROUTES("ISRC2INT2", "ISRC2INT2"),
-+	CS42L43_MUX_ROUTES("ISRC2DEC1", "ISRC2DEC1"),
-+	CS42L43_MUX_ROUTES("ISRC2DEC2", "ISRC2DEC2"),
-+
-+	CS42L43_MUX_ROUTES("SPDIF1", "SPDIF"),
-+	CS42L43_MUX_ROUTES("SPDIF2", "SPDIF"),
-+
-+	CS42L43_MIXER_ROUTES("EQ1", "EQ"),
-+	CS42L43_MIXER_ROUTES("EQ2", "EQ"),
-+
-+	CS42L43_MIXER_ROUTES("Speaker L", "AMP1"),
-+	CS42L43_MIXER_ROUTES("Speaker R", "AMP2"),
-+
-+	CS42L43_MIXER_ROUTES("Headphone L", "HP"),
-+	CS42L43_MIXER_ROUTES("Headphone R", "HP"),
-+};
-+
-+static int cs42l43_set_sysclk(struct snd_soc_component *component, int clk_id,
-+			      int src, unsigned int freq, int dir)
-+{
-+	struct cs42l43_codec *priv = snd_soc_component_get_drvdata(component);
-+	struct cs42l43 *cs42l43 = priv->core;
-+	int ret;
-+
-+	mutex_lock(&cs42l43->pll_lock);
-+	ret = cs42l43_set_pll(priv, src, freq);
-+	mutex_unlock(&cs42l43->pll_lock);
-+
-+	return ret;
-+}
-+
-+static int cs42l43_component_probe(struct snd_soc_component *component)
-+{
-+	struct cs42l43_codec *priv = snd_soc_component_get_drvdata(component);
-+	struct cs42l43 *cs42l43 = priv->core;
-+
-+	snd_soc_component_init_regmap(component, cs42l43->regmap);
-+
-+	cs42l43_mask_to_slots(priv, CS42L43_DEFAULT_SLOTS, priv->tx_slots);
-+	cs42l43_mask_to_slots(priv, CS42L43_DEFAULT_SLOTS, priv->rx_slots);
-+
-+	priv->component = component;
-+	priv->constraint = cs42l43_constraint;
-+
-+	return 0;
-+}
-+
-+static const struct snd_soc_component_driver cs42l43_component_drv = {
-+	.name			= "cs42l43-codec",
-+
-+	.probe			= cs42l43_component_probe,
-+	.set_sysclk		= cs42l43_set_sysclk,
-+	.set_jack		= cs42l43_set_jack,
-+
-+	.endianness		= 1,
-+
-+	.controls		= cs42l43_controls,
-+	.num_controls		= ARRAY_SIZE(cs42l43_controls),
-+	.dapm_widgets		= cs42l43_widgets,
-+	.num_dapm_widgets	= ARRAY_SIZE(cs42l43_widgets),
-+	.dapm_routes		= cs42l43_routes,
-+	.num_dapm_routes	= ARRAY_SIZE(cs42l43_routes),
-+};
-+
-+struct cs42l43_irq {
-+	unsigned int irq;
-+	const char *name;
-+	irq_handler_t handler;
-+};
-+
-+static const struct cs42l43_irq cs42l43_irqs[] = {
-+	{ CS42L43_PLL_LOST_LOCK, "pll lost lock", cs42l43_pll_lost_lock },
-+	{ CS42L43_PLL_READY, "pll ready", cs42l43_pll_ready },
-+	{ CS42L43_HP_STARTUP_DONE, "hp startup", cs42l43_hp_startup },
-+	{ CS42L43_HP_SHUTDOWN_DONE, "hp shutdown", cs42l43_hp_shutdown },
-+	{ CS42L43_HSDET_DONE, "type detect", cs42l43_type_detect },
-+	{ CS42L43_TIPSENSE_UNPLUG_PDET, "tip sense unplug", cs42l43_tip_sense },
-+	{ CS42L43_TIPSENSE_PLUG_PDET, "tip sense plug", cs42l43_tip_sense },
-+	{ CS42L43_DC_DETECT1_TRUE, "button press", cs42l43_button_press },
-+	{ CS42L43_DC_DETECT1_FALSE, "button release", cs42l43_button_release },
-+	{ CS42L43_AMP2_CLK_STOP_FAULT, "spkr clock stop", cs42l43_spkr_clock_stop },
-+	{ CS42L43_AMP1_CLK_STOP_FAULT, "spkl clock stop", cs42l43_spkl_clock_stop },
-+	{ CS42L43_AMP2_VDDSPK_FAULT, "spkr brown out", cs42l43_spkr_brown_out },
-+	{ CS42L43_AMP1_VDDSPK_FAULT, "spkl brown out", cs42l43_spkl_brown_out },
-+	{ CS42L43_AMP2_SHUTDOWN_DONE, "spkr shutdown", cs42l43_spkr_shutdown },
-+	{ CS42L43_AMP1_SHUTDOWN_DONE, "spkl shutdown", cs42l43_spkl_shutdown },
-+	{ CS42L43_AMP2_STARTUP_DONE, "spkr startup", cs42l43_spkr_startup },
-+	{ CS42L43_AMP1_STARTUP_DONE, "spkl startup", cs42l43_spkl_startup },
-+	{ CS42L43_AMP2_THERM_SHDN, "spkr thermal shutdown", cs42l43_spkr_therm_shutdown },
-+	{ CS42L43_AMP1_THERM_SHDN, "spkl thermal shutdown", cs42l43_spkl_therm_shutdown },
-+	{ CS42L43_AMP2_THERM_WARN, "spkr thermal warning", cs42l43_spkr_therm_warm },
-+	{ CS42L43_AMP1_THERM_WARN, "spkl thermal warning", cs42l43_spkl_therm_warm },
-+	{ CS42L43_AMP2_SCDET, "spkr short circuit", cs42l43_spkr_sc_detect },
-+	{ CS42L43_AMP1_SCDET, "spkl short circuit", cs42l43_spkl_sc_detect },
-+	{ CS42L43_HP_ILIMIT, "hp ilimit", cs42l43_hp_ilimit },
-+	{ CS42L43_HP_LOADDET_DONE, "load detect done", cs42l43_load_detect },
-+};
-+
-+static irqreturn_t cs42l43_request_irq(struct cs42l43_codec *priv,
-+				       struct irq_domain *dom, const char * const name,
-+				       unsigned int irq, irq_handler_t handler)
-+{
-+	int ret;
-+
-+	ret = irq_create_mapping(dom, irq);
-+	if (ret < 0) {
-+		dev_err(priv->dev, "Failed to map IRQ %s: %d\n", name, ret);
-+		return ret;
-+	}
-+
-+	dev_dbg(priv->dev, "Request IRQ %d for %s\n", ret, name);
-+
-+	ret = devm_request_threaded_irq(priv->dev, ret, NULL, handler, IRQF_ONESHOT,
-+					name, priv);
-+	if (ret) {
-+		dev_err(priv->dev, "Failed to request IRQ %s: %d\n", name, ret);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static int cs42l43_shutter_irq(struct cs42l43_codec *priv,
-+			       struct irq_domain *dom, unsigned int shutter,
-+			       const char * const open_name,
-+			       const char * const close_name,
-+			       irq_handler_t handler)
-+{
-+	unsigned int open_irq, close_irq;
-+	int ret;
-+
-+	switch (shutter) {
-+	case 0x1:
-+		dev_warn(priv->dev, "Manual shutters, notifications not available\n");
-+		return 0;
-+	case 0x2:
-+		open_irq = CS42L43_GPIO1_RISE;
-+		close_irq = CS42L43_GPIO1_FALL;
-+		break;
-+	case 0x4:
-+		open_irq = CS42L43_GPIO2_RISE;
-+		close_irq = CS42L43_GPIO2_FALL;
-+		break;
-+	case 0x8:
-+		open_irq = CS42L43_GPIO3_RISE;
-+		close_irq = CS42L43_GPIO3_FALL;
-+		break;
-+	default:
-+		return 0;
-+	}
-+
-+	ret = cs42l43_request_irq(priv, dom, close_name, close_irq, handler);
-+	if (ret)
-+		return ret;
-+
-+	return cs42l43_request_irq(priv, dom, open_name, open_irq, handler);
-+}
-+
-+static int cs42l43_codec_probe(struct platform_device *pdev)
-+{
-+	struct cs42l43 *cs42l43 = dev_get_drvdata(pdev->dev.parent);
-+	struct cs42l43_codec *priv;
-+	struct irq_domain *dom;
-+	unsigned int val;
++	const int update_retries = 5;
 +	int i, ret;
 +
-+	dom = irq_find_matching_fwnode(dev_fwnode(cs42l43->dev), DOMAIN_BUS_ANY);
-+	if (!dom)
-+		return -EPROBE_DEFER;
++	for (i = 0; i < update_retries; i++) {
++		ret = cs42l43_mcu_update_step(cs42l43);
++		if (ret != -EAGAIN)
++			return ret;
 +
-+	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+
-+	priv->dev = &pdev->dev;
-+	priv->core = cs42l43;
-+
-+	platform_set_drvdata(pdev, priv);
-+
-+	mutex_init(&priv->jack_lock);
-+	mutex_init(&priv->spk_vu_lock);
-+
-+	init_completion(&priv->hp_startup);
-+	init_completion(&priv->hp_shutdown);
-+	init_completion(&priv->spkr_shutdown);
-+	init_completion(&priv->spkl_shutdown);
-+	init_completion(&priv->spkr_startup);
-+	init_completion(&priv->spkl_startup);
-+	init_completion(&priv->pll_ready);
-+	init_completion(&priv->type_detect);
-+	init_completion(&priv->load_detect);
-+
-+	INIT_DELAYED_WORK(&priv->tip_sense_work, cs42l43_tip_sense_work);
-+	INIT_DELAYED_WORK(&priv->bias_sense_timeout, cs42l43_bias_sense_timeout);
-+
-+	pm_runtime_set_autosuspend_delay(priv->dev, 100);
-+	pm_runtime_use_autosuspend(priv->dev);
-+	pm_runtime_set_active(priv->dev);
-+	pm_runtime_get_noresume(priv->dev);
-+	pm_runtime_enable(priv->dev);
-+
-+	for (i = 0; i < ARRAY_SIZE(cs42l43_irqs); i++) {
-+		ret = cs42l43_request_irq(priv, dom, cs42l43_irqs[i].name,
-+					  cs42l43_irqs[i].irq, cs42l43_irqs[i].handler);
++		ret = cs42l43_wait_for_attach(cs42l43);
 +		if (ret)
-+			goto err_pm;
++			return ret;
 +	}
 +
-+	ret = regmap_read(cs42l43->regmap, CS42L43_SHUTTER_CONTROL, &val);
-+	if (ret) {
-+		dev_err(priv->dev, "Failed to check shutter source: %d\n", ret);
-+		goto err_pm;
-+	}
++	dev_err(cs42l43->dev, "Failed retrying update\n");
++	return -ETIMEDOUT;
++}
 +
-+	ret = cs42l43_shutter_irq(priv, dom, val & CS42L43_MIC_SHUTTER_CFG_MASK,
-+				  "mic shutter open", "mic shutter close",
-+				  cs42l43_mic_shutter);
++static void cs42l43_boot_work(struct work_struct *work)
++{
++	struct cs42l43 *cs42l43 = container_of(work, struct cs42l43, boot_work);
++	unsigned int devid, revid, otp;
++	int ret;
++
++	dev_dbg(cs42l43->dev, "Boot work running\n");
++
++	ret = cs42l43_wait_for_attach(cs42l43);
 +	if (ret)
-+		goto err_pm;
++		goto err;
 +
-+	ret = cs42l43_shutter_irq(priv, dom, (val & CS42L43_SPK_SHUTTER_CFG_MASK) >>
-+				  CS42L43_SPK_SHUTTER_CFG_SHIFT,
-+				  "spk shutter open", "spk shutter close",
-+				  cs42l43_spk_shutter);
-+	if (ret)
-+		goto err_pm;
++	if (cs42l43->sdw)
++		cs42l43->irq = cs42l43->sdw->irq;
 +
-+	// Don't use devm as we need to get against the MFD device
-+	priv->mclk = clk_get_optional(cs42l43->dev, "mclk");
-+	if (IS_ERR(priv->mclk)) {
-+		ret = PTR_ERR(priv->mclk);
-+		dev_err(priv->dev, "Failed to get mclk: %d\n", ret);
-+		goto err_pm;
-+	}
-+
-+	ret = devm_snd_soc_register_component(priv->dev, &cs42l43_component_drv,
-+					      cs42l43_dais, ARRAY_SIZE(cs42l43_dais));
++	ret = regmap_read(cs42l43->regmap, CS42L43_DEVID, &devid);
 +	if (ret) {
-+		dev_err(priv->dev, "Failed to register component: %d\n", ret);
-+		goto err_clk;
++		dev_err(cs42l43->dev, "Failed to read devid: %d\n", ret);
++		goto err;
 +	}
 +
-+	pm_runtime_mark_last_busy(priv->dev);
-+	pm_runtime_put_autosuspend(priv->dev);
++	switch (devid) {
++	case 0x42a43:
++		break;
++	default:
++		dev_err(cs42l43->dev, "Unrecognised devid: 0x%06x\n", devid);
++		goto err;
++	}
++
++	ret = regmap_read(cs42l43->regmap, CS42L43_REVID, &revid);
++	if (ret) {
++		dev_err(cs42l43->dev, "Failed to read rev: %d\n", ret);
++		goto err;
++	}
++
++	ret = regmap_read(cs42l43->regmap, CS42L43_OTP_REVISION_ID, &otp);
++	if (ret) {
++		dev_err(cs42l43->dev, "Failed to read otp rev: %d\n", ret);
++		goto err;
++	}
++
++	dev_info(cs42l43->dev,
++		 "devid: 0x%06x, rev: 0x%02x, otp: 0x%02x\n", devid, revid, otp);
++
++	ret = cs42l43_mcu_update(cs42l43);
++	if (ret)
++		goto err;
++
++	ret = regmap_register_patch(cs42l43->regmap, cs42l43_reva_patch,
++				    ARRAY_SIZE(cs42l43_reva_patch));
++	if (ret) {
++		dev_err(cs42l43->dev, "Failed to apply register patch: %d\n", ret);
++		goto err;
++	}
++
++	pm_runtime_mark_last_busy(cs42l43->dev);
++	pm_runtime_put_autosuspend(cs42l43->dev);
++
++	ret = devm_mfd_add_devices(cs42l43->dev, PLATFORM_DEVID_NONE,
++				   cs42l43_devs, ARRAY_SIZE(cs42l43_devs),
++				   NULL, 0, NULL);
++	if (ret) {
++		dev_err(cs42l43->dev, "Failed to add subdevices: %d\n", ret);
++		goto err;
++	}
++
++	dev_dbg(cs42l43->dev, "Successfully initialised\n");
++
++	return;
++
++err:
++	pm_runtime_put_sync(cs42l43->dev);
++	cs42l43_dev_remove(cs42l43);
++}
++
++static int cs42l43_power_up(struct cs42l43 *cs42l43)
++{
++	int ret;
++
++	ret = regulator_enable(cs42l43->vdd_p);
++	if (ret) {
++		dev_err(cs42l43->dev, "Failed to enable VDD_P: %d\n", ret);
++		return ret;
++	}
++
++	usleep_range(50, 100); /* VDD_P must be on for 50uS before any other supply */
++
++	gpiod_set_value_cansleep(cs42l43->reset, 1);
++
++	ret = regulator_bulk_enable(CS42L43_N_SUPPLIES, cs42l43->core_supplies);
++	if (ret) {
++		dev_err(cs42l43->dev, "Failed to enable core supplies: %d\n", ret);
++		goto err_reset;
++	}
++
++	ret = regulator_enable(cs42l43->vdd_d);
++	if (ret) {
++		dev_err(cs42l43->dev, "Failed to enable VDD_D: %d\n", ret);
++		goto err_core_supplies;
++	}
++
++	usleep_range(1000, 2000);
++
++	dev_dbg(cs42l43->dev, "Powered up\n");
 +
 +	return 0;
 +
-+err_clk:
-+	clk_put(priv->mclk);
-+err_pm:
-+	pm_runtime_put_sync(priv->dev);
-+	pm_runtime_disable(priv->dev);
++err_core_supplies:
++	regulator_bulk_disable(CS42L43_N_SUPPLIES, cs42l43->core_supplies);
++err_reset:
++	gpiod_set_value_cansleep(cs42l43->reset, 0);
++	regulator_disable(cs42l43->vdd_p);
 +
 +	return ret;
 +}
 +
-+static int cs42l43_codec_remove(struct platform_device *pdev)
++static int cs42l43_power_down(struct cs42l43 *cs42l43)
 +{
-+	struct cs42l43_codec *priv = platform_get_drvdata(pdev);
++	int ret;
 +
-+	clk_put(priv->mclk);
-+	pm_runtime_disable(priv->dev);
++	ret = regulator_disable(cs42l43->vdd_d);
++	if (ret) {
++		dev_err(cs42l43->dev, "Failed to disable VDD_D: %d\n", ret);
++		return ret;
++	}
++
++	ret = regulator_bulk_disable(CS42L43_N_SUPPLIES, cs42l43->core_supplies);
++	if (ret) {
++		dev_err(cs42l43->dev, "Failed to disable core supplies: %d\n", ret);
++		return ret;
++	}
++
++	gpiod_set_value_cansleep(cs42l43->reset, 0);
++
++	ret = regulator_disable(cs42l43->vdd_p);
++	if (ret) {
++		dev_err(cs42l43->dev, "Failed to disable VDD_P: %d\n", ret);
++		return ret;
++	}
++
++	dev_dbg(cs42l43->dev, "Powered down\n");
 +
 +	return 0;
 +}
 +
-+static int __maybe_unused cs42l43_codec_runtime_resume(struct device *dev)
++int cs42l43_dev_probe(struct cs42l43 *cs42l43)
 +{
-+	struct cs42l43_codec *priv = dev_get_drvdata(dev);
++	int i, ret;
 +
-+	dev_dbg(priv->dev, "Runtime resume\n");
++	dev_set_drvdata(cs42l43->dev, cs42l43);
 +
-+	// Toggle the speaker volume update incase the speaker volume was synced
-+	cs42l43_spk_vu_sync(priv);
++	mutex_init(&cs42l43->pll_lock);
++	init_completion(&cs42l43->device_attach);
++	init_completion(&cs42l43->device_detach);
++	init_completion(&cs42l43->firmware_download);
++	INIT_WORK(&cs42l43->boot_work, cs42l43_boot_work);
++
++	regcache_cache_only(cs42l43->regmap, true);
++
++	cs42l43->reset = devm_gpiod_get_optional(cs42l43->dev, "reset", GPIOD_OUT_LOW);
++	if (IS_ERR(cs42l43->reset)) {
++		ret = PTR_ERR(cs42l43->reset);
++		dev_err(cs42l43->dev, "Failed to get reset: %d\n", ret);
++		return ret;
++	}
++
++	cs42l43->vdd_p = devm_regulator_get(cs42l43->dev, "VDD_P");
++	if (IS_ERR(cs42l43->vdd_p)) {
++		ret = PTR_ERR(cs42l43->vdd_p);
++		dev_err(cs42l43->dev, "Failed to get VDD_P: %d\n", ret);
++		return ret;
++	}
++
++	cs42l43->vdd_d = devm_regulator_get(cs42l43->dev, "VDD_D");
++	if (IS_ERR(cs42l43->vdd_d)) {
++		ret = PTR_ERR(cs42l43->vdd_d);
++		dev_err(cs42l43->dev, "Failed to get VDD_D: %d\n", ret);
++		return ret;
++	}
++
++	BUILD_BUG_ON(ARRAY_SIZE(cs42l43_core_supplies) != CS42L43_N_SUPPLIES);
++
++	for (i = 0; i < CS42L43_N_SUPPLIES; i++)
++		cs42l43->core_supplies[i].supply = cs42l43_core_supplies[i];
++
++	ret = devm_regulator_bulk_get(cs42l43->dev, CS42L43_N_SUPPLIES,
++				      cs42l43->core_supplies);
++	if (ret) {
++		dev_err(cs42l43->dev, "Failed to get core supplies: %d\n", ret);
++		return ret;
++	}
++
++	ret = cs42l43_power_up(cs42l43);
++	if (ret)
++		return ret;
++
++	pm_runtime_set_autosuspend_delay(cs42l43->dev, 250);
++	pm_runtime_use_autosuspend(cs42l43->dev);
++	pm_runtime_set_active(cs42l43->dev);
++	pm_runtime_get_noresume(cs42l43->dev);
++	pm_runtime_enable(cs42l43->dev);
++
++	queue_work(system_long_wq, &cs42l43->boot_work);
++
++	return 0;
++}
++EXPORT_SYMBOL_NS_GPL(cs42l43_dev_probe, MFD_CS42L43);
++
++void cs42l43_dev_remove(struct cs42l43 *cs42l43)
++{
++	pm_runtime_disable(cs42l43->dev);
++	cs42l43_power_down(cs42l43);
++}
++EXPORT_SYMBOL_NS_GPL(cs42l43_dev_remove, MFD_CS42L43);
++
++static int __maybe_unused cs42l43_suspend(struct device *dev)
++{
++	struct cs42l43 *cs42l43 = dev_get_drvdata(dev);
++	int ret;
++
++	dev_dbg(cs42l43->dev, "System suspend\n");
++
++	/*
++	 * Don't care about being resumed here, but we do want force_resume to
++	 * always trigger an actual resume, so that register state for the
++	 * MCU/GPIOs is returned as soon as possible after system resume
++	 */
++	pm_runtime_get_noresume(dev);
++
++	ret = pm_runtime_force_suspend(dev);
++	if (ret) {
++		dev_err(cs42l43->dev, "Failed to force suspend: %d\n", ret);
++		return ret;
++	}
++
++	pm_runtime_put_noidle(dev);
++
++	ret = cs42l43_power_down(cs42l43);
++	if (ret)
++		return ret;
 +
 +	return 0;
 +}
 +
-+static const struct dev_pm_ops cs42l43_codec_pm_ops = {
-+	SET_RUNTIME_PM_OPS(NULL, cs42l43_codec_runtime_resume, NULL)
++static int __maybe_unused cs42l43_resume(struct device *dev)
++{
++	struct cs42l43 *cs42l43 = dev_get_drvdata(dev);
++	int ret;
++
++	dev_dbg(cs42l43->dev, "System resume\n");
++
++	ret = cs42l43_power_up(cs42l43);
++	if (ret)
++		return ret;
++
++	ret = pm_runtime_force_resume(dev);
++	if (ret) {
++		dev_err(cs42l43->dev, "Failed to force resume: %d\n", ret);
++		return ret;
++	}
++
++	return 0;
++}
++
++static int __maybe_unused cs42l43_runtime_suspend(struct device *dev)
++{
++	struct cs42l43 *cs42l43 = dev_get_drvdata(dev);
++
++	dev_dbg(cs42l43->dev, "Runtime suspend\n");
++
++	/*
++	 * Whilst we don't power the chip down here, going into runtime
++	 * suspend lets the SoundWire bus power down, which means we can't
++	 * communicate with the device any more.
++	 */
++	regcache_cache_only(cs42l43->regmap, true);
++
++	return 0;
++}
++
++static int __maybe_unused cs42l43_runtime_resume(struct device *dev)
++{
++	struct cs42l43 *cs42l43 = dev_get_drvdata(dev);
++	unsigned int reset_canary;
++	int ret;
++
++	dev_dbg(cs42l43->dev, "Runtime resume\n");
++
++	ret = cs42l43_wait_for_attach(cs42l43);
++	if (ret)
++		return ret;
++
++	ret = regmap_read(cs42l43->regmap, CS42L43_RELID, &reset_canary);
++	if (ret) {
++		dev_err(cs42l43->dev, "Failed to check reset canary: %d\n", ret);
++		goto err;
++	}
++
++	if (!reset_canary) {
++		/*
++		 * If the canary has cleared the chip has reset, re-handle the
++		 * MCU and mark the cache as dirty to indicate the chip reset.
++		 */
++		ret = cs42l43_mcu_update(cs42l43);
++		if (ret)
++			goto err;
++
++		regcache_mark_dirty(cs42l43->regmap);
++	}
++
++	ret = regcache_sync(cs42l43->regmap);
++	if (ret) {
++		dev_err(cs42l43->dev, "Failed to restore register cache: %d\n", ret);
++		goto err;
++	}
++
++	return 0;
++
++err:
++	regcache_cache_only(cs42l43->regmap, true);
++
++	return ret;
++}
++
++const struct dev_pm_ops cs42l43_pm_ops = {
++	SET_SYSTEM_SLEEP_PM_OPS(cs42l43_suspend, cs42l43_resume)
++	SET_RUNTIME_PM_OPS(cs42l43_runtime_suspend, cs42l43_runtime_resume, NULL)
 +};
++EXPORT_SYMBOL_NS_GPL(cs42l43_pm_ops, MFD_CS42L43);
 +
-+static struct platform_driver cs42l43_codec_driver = {
-+	.driver = {
-+		.name	= "cs42l43-codec",
-+		.pm	= &cs42l43_codec_pm_ops,
-+	},
-+
-+	.probe		= cs42l43_codec_probe,
-+	.remove		= cs42l43_codec_remove,
-+};
-+module_platform_driver(cs42l43_codec_driver);
-+
-+MODULE_IMPORT_NS(SND_SOC_CS42L43);
-+
-+MODULE_DESCRIPTION("CS42L43 CODEC Driver");
++MODULE_DESCRIPTION("CS42L43 Core Driver");
 +MODULE_AUTHOR("Charles Keepax <ckeepax@opensource.cirrus.com>");
 +MODULE_LICENSE("GPL");
-+MODULE_ALIAS("platform:cs42l43-codec");
-diff --git a/sound/soc/codecs/cs42l43.h b/sound/soc/codecs/cs42l43.h
+diff --git a/drivers/mfd/cs42l43.h b/drivers/mfd/cs42l43.h
 new file mode 100644
-index 0000000000000..6129660f8acf3
+index 0000000000000..9983d6f13f1f5
 --- /dev/null
-+++ b/sound/soc/codecs/cs42l43.h
-@@ -0,0 +1,117 @@
++++ b/drivers/mfd/cs42l43.h
+@@ -0,0 +1,23 @@
 +/* SPDX-License-Identifier: GPL-2.0 */
 +/*
-+ * CS42L43 CODEC driver internal data
++ * CS42L43 core driver internal data
 + *
 + * Copyright (C) 2022-2023 Cirrus Logic, Inc. and
 + *                         Cirrus Logic International Semiconductor Ltd.
 + */
 +
-+#include <linux/clk.h>
++#include <linux/mfd/cs42l43.h>
++#include <linux/pm.h>
++#include <linux/regmap.h>
++
++#ifndef CS42L43_CORE_INT_H
++#define CS42L43_CORE_INT_H
++
++extern const struct regmap_config cs42l43_i2c_regmap;
++extern const struct regmap_config cs42l43_sdw_regmap;
++extern const struct dev_pm_ops cs42l43_pm_ops;
++
++int cs42l43_dev_probe(struct cs42l43 *cs42l43);
++void cs42l43_dev_remove(struct cs42l43 *cs42l43);
++
++#endif /* CS42L43_CORE_INT_H */
+diff --git a/include/linux/mfd/cs42l43-regs.h b/include/linux/mfd/cs42l43-regs.h
+new file mode 100644
+index 0000000000000..91c83d36f5b71
+--- /dev/null
++++ b/include/linux/mfd/cs42l43-regs.h
+@@ -0,0 +1,1172 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * cs42l43 register definitions
++ *
++ * Copyright (c) 2022-2023 Cirrus Logic, Inc. and
++ *                         Cirrus Logic International Semiconductor Ltd.
++ */
++
++#ifndef CS42L43_CORE_REGS_H
++#define CS42L43_CORE_REGS_H
++
++/* Registers */
++#define CS42L43_GEN_INT_STAT_1					0x000000C0
++#define CS42L43_GEN_INT_MASK_1					0x000000C1
++#define CS42L43_DEVID						0x00003000
++#define CS42L43_REVID						0x00003004
++#define CS42L43_RELID						0x0000300C
++#define CS42L43_SFT_RESET					0x00003020
++#define CS42L43_DRV_CTRL1					0x00006004
++#define CS42L43_DRV_CTRL3					0x0000600C
++#define CS42L43_DRV_CTRL4					0x00006010
++#define CS42L43_DRV_CTRL_5					0x00006014
++#define CS42L43_GPIO_CTRL1					0x00006034
++#define CS42L43_GPIO_CTRL2					0x00006038
++#define CS42L43_GPIO_STS					0x0000603C
++#define CS42L43_GPIO_FN_SEL					0x00006040
++#define CS42L43_MCLK_SRC_SEL					0x00007004
++#define CS42L43_CCM_BLK_CLK_CONTROL				0x00007010
++#define CS42L43_SAMPLE_RATE1					0x00007014
++#define CS42L43_SAMPLE_RATE2					0x00007018
++#define CS42L43_SAMPLE_RATE3					0x0000701C
++#define CS42L43_SAMPLE_RATE4					0x00007020
++#define CS42L43_PLL_CONTROL					0x00007034
++#define CS42L43_FS_SELECT1					0x00007038
++#define CS42L43_FS_SELECT2					0x0000703C
++#define CS42L43_FS_SELECT3					0x00007040
++#define CS42L43_FS_SELECT4					0x00007044
++#define CS42L43_PDM_CONTROL					0x0000704C
++#define CS42L43_ASP_CLK_CONFIG1					0x00007058
++#define CS42L43_ASP_CLK_CONFIG2					0x0000705C
++#define CS42L43_OSC_DIV_SEL					0x00007068
++#define CS42L43_ADC_B_CTRL1					0x00008000
++#define CS42L43_ADC_B_CTRL2					0x00008004
++#define CS42L43_DECIM_HPF_WNF_CTRL1				0x0000803C
++#define CS42L43_DECIM_HPF_WNF_CTRL2				0x00008040
++#define CS42L43_DECIM_HPF_WNF_CTRL3				0x00008044
++#define CS42L43_DECIM_HPF_WNF_CTRL4				0x00008048
++#define CS42L43_DMIC_PDM_CTRL					0x0000804C
++#define CS42L43_DECIM_VOL_CTRL_CH1_CH2				0x00008050
++#define CS42L43_DECIM_VOL_CTRL_CH3_CH4				0x00008054
++#define CS42L43_DECIM_VOL_CTRL_UPDATE				0x00008058
++#define CS42L43_INTP_VOLUME_CTRL1				0x00009008
++#define CS42L43_INTP_VOLUME_CTRL2				0x0000900C
++#define CS42L43_AMP1_2_VOL_RAMP					0x00009010
++#define CS42L43_ASP_CTRL					0x0000A000
++#define CS42L43_ASP_FSYNC_CTRL1					0x0000A004
++#define CS42L43_ASP_FSYNC_CTRL2					0x0000A008
++#define CS42L43_ASP_FSYNC_CTRL3					0x0000A00C
++#define CS42L43_ASP_FSYNC_CTRL4					0x0000A010
++#define CS42L43_ASP_DATA_CTRL					0x0000A018
++#define CS42L43_ASP_RX_EN					0x0000A020
++#define CS42L43_ASP_TX_EN					0x0000A024
++#define CS42L43_ASP_RX_CH1_CTRL					0x0000A028
++#define CS42L43_ASP_RX_CH2_CTRL					0x0000A02C
++#define CS42L43_ASP_RX_CH3_CTRL					0x0000A030
++#define CS42L43_ASP_RX_CH4_CTRL					0x0000A034
++#define CS42L43_ASP_RX_CH5_CTRL					0x0000A038
++#define CS42L43_ASP_RX_CH6_CTRL					0x0000A03C
++#define CS42L43_ASP_TX_CH1_CTRL					0x0000A068
++#define CS42L43_ASP_TX_CH2_CTRL					0x0000A06C
++#define CS42L43_ASP_TX_CH3_CTRL					0x0000A070
++#define CS42L43_ASP_TX_CH4_CTRL					0x0000A074
++#define CS42L43_ASP_TX_CH5_CTRL					0x0000A078
++#define CS42L43_ASP_TX_CH6_CTRL					0x0000A07C
++#define CS42L43_OTP_REVISION_ID					0x0000B02C
++#define CS42L43_ASPTX1_INPUT					0x0000C200
++#define CS42L43_ASPTX2_INPUT					0x0000C210
++#define CS42L43_ASPTX3_INPUT					0x0000C220
++#define CS42L43_ASPTX4_INPUT					0x0000C230
++#define CS42L43_ASPTX5_INPUT					0x0000C240
++#define CS42L43_ASPTX6_INPUT					0x0000C250
++#define CS42L43_SWIRE_DP1_CH1_INPUT				0x0000C280
++#define CS42L43_SWIRE_DP1_CH2_INPUT				0x0000C290
++#define CS42L43_SWIRE_DP1_CH3_INPUT				0x0000C2A0
++#define CS42L43_SWIRE_DP1_CH4_INPUT				0x0000C2B0
++#define CS42L43_SWIRE_DP2_CH1_INPUT				0x0000C2C0
++#define CS42L43_SWIRE_DP2_CH2_INPUT				0x0000C2D0
++#define CS42L43_SWIRE_DP3_CH1_INPUT				0x0000C2E0
++#define CS42L43_SWIRE_DP3_CH2_INPUT				0x0000C2F0
++#define CS42L43_SWIRE_DP4_CH1_INPUT				0x0000C300
++#define CS42L43_SWIRE_DP4_CH2_INPUT				0x0000C310
++#define CS42L43_ASRC_INT1_INPUT1				0x0000C400
++#define CS42L43_ASRC_INT2_INPUT1				0x0000C410
++#define CS42L43_ASRC_INT3_INPUT1				0x0000C420
++#define CS42L43_ASRC_INT4_INPUT1				0x0000C430
++#define CS42L43_ASRC_DEC1_INPUT1				0x0000C440
++#define CS42L43_ASRC_DEC2_INPUT1				0x0000C450
++#define CS42L43_ASRC_DEC3_INPUT1				0x0000C460
++#define CS42L43_ASRC_DEC4_INPUT1				0x0000C470
++#define CS42L43_ISRC1INT1_INPUT1				0x0000C500
++#define CS42L43_ISRC1INT2_INPUT1				0x0000C510
++#define CS42L43_ISRC1DEC1_INPUT1				0x0000C520
++#define CS42L43_ISRC1DEC2_INPUT1				0x0000C530
++#define CS42L43_ISRC2INT1_INPUT1				0x0000C540
++#define CS42L43_ISRC2INT2_INPUT1				0x0000C550
++#define CS42L43_ISRC2DEC1_INPUT1				0x0000C560
++#define CS42L43_ISRC2DEC2_INPUT1				0x0000C570
++#define CS42L43_EQ1MIX_INPUT1					0x0000C580
++#define CS42L43_EQ1MIX_INPUT2					0x0000C584
++#define CS42L43_EQ1MIX_INPUT3					0x0000C588
++#define CS42L43_EQ1MIX_INPUT4					0x0000C58C
++#define CS42L43_EQ2MIX_INPUT1					0x0000C590
++#define CS42L43_EQ2MIX_INPUT2					0x0000C594
++#define CS42L43_EQ2MIX_INPUT3					0x0000C598
++#define CS42L43_EQ2MIX_INPUT4					0x0000C59C
++#define CS42L43_SPDIF1_INPUT1					0x0000C600
++#define CS42L43_SPDIF2_INPUT1					0x0000C610
++#define CS42L43_AMP1MIX_INPUT1					0x0000C620
++#define CS42L43_AMP1MIX_INPUT2					0x0000C624
++#define CS42L43_AMP1MIX_INPUT3					0x0000C628
++#define CS42L43_AMP1MIX_INPUT4					0x0000C62C
++#define CS42L43_AMP2MIX_INPUT1					0x0000C630
++#define CS42L43_AMP2MIX_INPUT2					0x0000C634
++#define CS42L43_AMP2MIX_INPUT3					0x0000C638
++#define CS42L43_AMP2MIX_INPUT4					0x0000C63C
++#define CS42L43_AMP3MIX_INPUT1					0x0000C640
++#define CS42L43_AMP3MIX_INPUT2					0x0000C644
++#define CS42L43_AMP3MIX_INPUT3					0x0000C648
++#define CS42L43_AMP3MIX_INPUT4					0x0000C64C
++#define CS42L43_AMP4MIX_INPUT1					0x0000C650
++#define CS42L43_AMP4MIX_INPUT2					0x0000C654
++#define CS42L43_AMP4MIX_INPUT3					0x0000C658
++#define CS42L43_AMP4MIX_INPUT4					0x0000C65C
++#define CS42L43_ASRC_INT_ENABLES				0x0000E000
++#define CS42L43_ASRC_DEC_ENABLES				0x0000E004
++#define CS42L43_PDNCNTL						0x00010000
++#define CS42L43_RINGSENSE_DEB_CTRL				0x0001001C
++#define CS42L43_TIPSENSE_DEB_CTRL				0x00010020
++#define CS42L43_TIP_RING_SENSE_INTERRUPT_STATUS			0x00010028
++#define CS42L43_HS2						0x00010040
++#define CS42L43_HS_STAT						0x00010048
++#define CS42L43_MCU_SW_INTERRUPT				0x00010094
++#define CS42L43_STEREO_MIC_CTRL					0x000100A4
++#define CS42L43_STEREO_MIC_CLAMP_CTRL				0x000100C4
++#define CS42L43_BLOCK_EN2					0x00010104
++#define CS42L43_BLOCK_EN3					0x00010108
++#define CS42L43_BLOCK_EN4					0x0001010C
++#define CS42L43_BLOCK_EN5					0x00010110
++#define CS42L43_BLOCK_EN6					0x00010114
++#define CS42L43_BLOCK_EN7					0x00010118
++#define CS42L43_BLOCK_EN8					0x0001011C
++#define CS42L43_BLOCK_EN9					0x00010120
++#define CS42L43_BLOCK_EN10					0x00010124
++#define CS42L43_BLOCK_EN11					0x00010128
++#define CS42L43_TONE_CH1_CTRL					0x00010134
++#define CS42L43_TONE_CH2_CTRL					0x00010138
++#define CS42L43_MIC_DETECT_CONTROL_1				0x00011074
++#define CS42L43_DETECT_STATUS_1					0x0001107C
++#define CS42L43_HS_BIAS_SENSE_AND_CLAMP_AUTOCONTROL		0x00011090
++#define CS42L43_MIC_DETECT_CONTROL_ANDROID			0x000110B0
++#define CS42L43_ISRC1_CTRL					0x00012004
++#define CS42L43_ISRC2_CTRL					0x00013004
++#define CS42L43_CTRL_REG					0x00014000
++#define CS42L43_FDIV_FRAC					0x00014004
++#define CS42L43_CAL_RATIO					0x00014008
++#define CS42L43_SPI_CLK_CONFIG1					0x00016004
++#define CS42L43_SPI_CONFIG1					0x00016010
++#define CS42L43_SPI_CONFIG2					0x00016014
++#define CS42L43_SPI_CONFIG3					0x00016018
++#define CS42L43_SPI_CONFIG4					0x00016024
++#define CS42L43_SPI_STATUS1					0x00016100
++#define CS42L43_SPI_STATUS2					0x00016104
++#define CS42L43_TRAN_CONFIG1					0x00016200
++#define CS42L43_TRAN_CONFIG2					0x00016204
++#define CS42L43_TRAN_CONFIG3					0x00016208
++#define CS42L43_TRAN_CONFIG4					0x0001620C
++#define CS42L43_TRAN_CONFIG5					0x00016220
++#define CS42L43_TRAN_CONFIG6					0x00016224
++#define CS42L43_TRAN_CONFIG7					0x00016228
++#define CS42L43_TRAN_CONFIG8					0x0001622C
++#define CS42L43_TRAN_STATUS1					0x00016300
++#define CS42L43_TRAN_STATUS2					0x00016304
++#define CS42L43_TRAN_STATUS3					0x00016308
++#define CS42L43_TX_DATA						0x00016400
++#define CS42L43_RX_DATA						0x00016600
++#define CS42L43_DACCNFG1					0x00017000
++#define CS42L43_DACCNFG2					0x00017004
++#define CS42L43_HPPATHVOL					0x0001700C
++#define CS42L43_PGAVOL						0x00017014
++#define CS42L43_LOADDETRESULTS					0x00017018
++#define CS42L43_LOADDETENA					0x00017024
++#define CS42L43_CTRL						0x00017028
++#define CS42L43_COEFF_DATA_IN0					0x00018000
++#define CS42L43_COEFF_RD_WR0					0x00018008
++#define CS42L43_INIT_DONE0					0x00018010
++#define CS42L43_START_EQZ0					0x00018014
++#define CS42L43_MUTE_EQ_IN0					0x0001801C
++#define CS42L43_DECIM_INT					0x0001B000
++#define CS42L43_EQ_INT						0x0001B004
++#define CS42L43_ASP_INT						0x0001B008
++#define CS42L43_PLL_INT						0x0001B00C
++#define CS42L43_SOFT_INT					0x0001B010
++#define CS42L43_SWIRE_INT					0x0001B014
++#define CS42L43_MSM_INT						0x0001B018
++#define CS42L43_ACC_DET_INT					0x0001B01C
++#define CS42L43_I2C_TGT_INT					0x0001B020
++#define CS42L43_SPI_MSTR_INT					0x0001B024
++#define CS42L43_SW_TO_SPI_BRIDGE_INT				0x0001B028
++#define CS42L43_OTP_INT						0x0001B02C
++#define CS42L43_CLASS_D_AMP_INT					0x0001B030
++#define CS42L43_GPIO_INT					0x0001B034
++#define CS42L43_ASRC_INT					0x0001B038
++#define CS42L43_HPOUT_INT					0x0001B03C
++#define CS42L43_DECIM_MASK					0x0001B0A0
++#define CS42L43_EQ_MIX_MASK					0x0001B0A4
++#define CS42L43_ASP_MASK					0x0001B0A8
++#define CS42L43_PLL_MASK					0x0001B0AC
++#define CS42L43_SOFT_MASK					0x0001B0B0
++#define CS42L43_SWIRE_MASK					0x0001B0B4
++#define CS42L43_MSM_MASK					0x0001B0B8
++#define CS42L43_ACC_DET_MASK					0x0001B0BC
++#define CS42L43_I2C_TGT_MASK					0x0001B0C0
++#define CS42L43_SPI_MSTR_MASK					0x0001B0C4
++#define CS42L43_SW_TO_SPI_BRIDGE_MASK				0x0001B0C8
++#define CS42L43_OTP_MASK					0x0001B0CC
++#define CS42L43_CLASS_D_AMP_MASK				0x0001B0D0
++#define CS42L43_GPIO_INT_MASK					0x0001B0D4
++#define CS42L43_ASRC_MASK					0x0001B0D8
++#define CS42L43_HPOUT_MASK					0x0001B0DC
++#define CS42L43_DECIM_INT_SHADOW				0x0001B300
++#define CS42L43_EQ_MIX_INT_SHADOW				0x0001B304
++#define CS42L43_ASP_INT_SHADOW					0x0001B308
++#define CS42L43_PLL_INT_SHADOW					0x0001B30C
++#define CS42L43_SOFT_INT_SHADOW					0x0001B310
++#define CS42L43_SWIRE_INT_SHADOW				0x0001B314
++#define CS42L43_MSM_INT_SHADOW					0x0001B318
++#define CS42L43_ACC_DET_INT_SHADOW				0x0001B31C
++#define CS42L43_I2C_TGT_INT_SHADOW				0x0001B320
++#define CS42L43_SPI_MSTR_INT_SHADOW				0x0001B324
++#define CS42L43_SW_TO_SPI_BRIDGE_SHADOW				0x0001B328
++#define CS42L43_OTP_INT_SHADOW					0x0001B32C
++#define CS42L43_CLASS_D_AMP_INT_SHADOW				0x0001B330
++#define CS42L43_GPIO_SHADOW					0x0001B334
++#define CS42L43_ASRC_SHADOW					0x0001B338
++#define CS42L43_HP_OUT_SHADOW					0x0001B33C
++#define CS42L43_BOOT_CONTROL					0x00101000
++#define CS42L43_BLOCK_EN					0x00101008
++#define CS42L43_SHUTTER_CONTROL					0x0010100C
++#define CS42L43_MCU_SW_REV					0x00114000
++#define CS42L43_PATCH_START_ADDR				0x00114004
++#define CS42L43_NEED_CONFIGS					0x0011400C
++#define CS42L43_BOOT_STATUS					0x0011401C
++#define CS42L43_FW_SH_BOOT_CFG_NEED_CONFIGS			0x0011F8F8
++#define CS42L43_FW_CTRL_NEED_CONFIGS				0x0011FE00
++#define CS42L43_FW_CTRL_HAVE_CONFIGS				0x0011FE04
++#define CS42L43_FW_CTRL_MM_CTRL_SELECTION			0x0011FE0C
++#define CS42L43_FW_CTRL_MM_MCU_CFG_REG				0x0011FE10
++#define CS42L43_MCU_RAM_MAX					0x0011FFFF
++
++/* CS42L43_GEN_INT_STAT_1 */
++#define CS42L43_INT_STAT_GEN1_MASK				0x00000001
++#define CS42L43_INT_STAT_GEN1_SHIFT				0
++
++/* CS42L43_SFT_RESET */
++#define CS42L43_SFT_RESET_MASK					0xFF000000
++#define CS42L43_SFT_RESET_SHIFT					24
++
++/* CS42L43_DRV_CTRL1 */
++#define CS42L43_ASP_DOUT_DRV_MASK				0x00038000
++#define CS42L43_ASP_DOUT_DRV_SHIFT				15
++#define CS42L43_ASP_FSYNC_DRV_MASK				0x00000E00
++#define CS42L43_ASP_FSYNC_DRV_SHIFT				9
++#define CS42L43_ASP_BCLK_DRV_MASK				0x000001C0
++#define CS42L43_ASP_BCLK_DRV_SHIFT				6
++
++/* CS42L43_DRV_CTRL3 */
++#define CS42L43_I2C_ADDR_DRV_MASK				0x30000000
++#define CS42L43_I2C_ADDR_DRV_SHIFT				28
++#define CS42L43_I2C_SDA_DRV_MASK				0x0C000000
++#define CS42L43_I2C_SDA_DRV_SHIFT				26
++#define CS42L43_PDMOUT2_CLK_DRV_MASK				0x00E00000
++#define CS42L43_PDMOUT2_CLK_DRV_SHIFT				21
++#define CS42L43_PDMOUT2_DATA_DRV_MASK				0x001C0000
++#define CS42L43_PDMOUT2_DATA_DRV_SHIFT				18
++#define CS42L43_PDMOUT1_CLK_DRV_MASK				0x00038000
++#define CS42L43_PDMOUT1_CLK_DRV_SHIFT				15
++#define CS42L43_PDMOUT1_DATA_DRV_MASK				0x00007000
++#define CS42L43_PDMOUT1_DATA_DRV_SHIFT				12
++#define CS42L43_SPI_MISO_DRV_MASK				0x00000038
++#define CS42L43_SPI_MISO_DRV_SHIFT				3
++
++/* CS42L43_DRV_CTRL4 */
++#define CS42L43_GPIO3_DRV_MASK					0x00000E00
++#define CS42L43_GPIO3_DRV_SHIFT					9
++#define CS42L43_GPIO2_DRV_MASK					0x000001C0
++#define CS42L43_GPIO2_DRV_SHIFT					6
++#define CS42L43_GPIO1_DRV_MASK					0x00000038
++#define CS42L43_GPIO1_DRV_SHIFT					3
++
++/* CS42L43_DRV_CTRL_5 */
++#define CS42L43_I2C_SCL_DRV_MASK				0x18000000
++#define CS42L43_I2C_SCL_DRV_SHIFT				27
++#define CS42L43_SPI_SCK_DRV_MASK				0x07000000
++#define CS42L43_SPI_SCK_DRV_SHIFT				24
++#define CS42L43_SPI_MOSI_DRV_MASK				0x00E00000
++#define CS42L43_SPI_MOSI_DRV_SHIFT				21
++#define CS42L43_SPI_SSB_DRV_MASK				0x001C0000
++#define CS42L43_SPI_SSB_DRV_SHIFT				18
++#define CS42L43_ASP_DIN_DRV_MASK				0x000001C0
++#define CS42L43_ASP_DIN_DRV_SHIFT				6
++
++/* CS42L43_GPIO_CTRL1 */
++#define CS42L43_GPIO3_POL_MASK					0x00040000
++#define CS42L43_GPIO3_POL_SHIFT					18
++#define CS42L43_GPIO2_POL_MASK					0x00020000
++#define CS42L43_GPIO2_POL_SHIFT					17
++#define CS42L43_GPIO1_POL_MASK					0x00010000
++#define CS42L43_GPIO1_POL_SHIFT					16
++#define CS42L43_GPIO3_LVL_MASK					0x00000400
++#define CS42L43_GPIO3_LVL_SHIFT					10
++#define CS42L43_GPIO2_LVL_MASK					0x00000200
++#define CS42L43_GPIO2_LVL_SHIFT					9
++#define CS42L43_GPIO1_LVL_MASK					0x00000100
++#define CS42L43_GPIO1_LVL_SHIFT					8
++#define CS42L43_GPIO3_DIR_MASK					0x00000004
++#define CS42L43_GPIO3_DIR_SHIFT					2
++#define CS42L43_GPIO2_DIR_MASK					0x00000002
++#define CS42L43_GPIO2_DIR_SHIFT					1
++#define CS42L43_GPIO1_DIR_MASK					0x00000001
++#define CS42L43_GPIO1_DIR_SHIFT					0
++
++/* CS42L43_GPIO_CTRL2 */
++#define CS42L43_GPIO3_DEGLITCH_BYP_MASK				0x00000004
++#define CS42L43_GPIO3_DEGLITCH_BYP_SHIFT			2
++#define CS42L43_GPIO2_DEGLITCH_BYP_MASK				0x00000002
++#define CS42L43_GPIO2_DEGLITCH_BYP_SHIFT			1
++#define CS42L43_GPIO1_DEGLITCH_BYP_MASK				0x00000001
++#define CS42L43_GPIO1_DEGLITCH_BYP_SHIFT			0
++
++/* CS42L43_GPIO_STS */
++#define CS42L43_GPIO3_STS_MASK					0x00000004
++#define CS42L43_GPIO3_STS_SHIFT					2
++#define CS42L43_GPIO2_STS_MASK					0x00000002
++#define CS42L43_GPIO2_STS_SHIFT					1
++#define CS42L43_GPIO1_STS_MASK					0x00000001
++#define CS42L43_GPIO1_STS_SHIFT					0
++
++/* CS42L43_GPIO_FN_SEL */
++#define CS42L43_GPIO3_FN_SEL_MASK				0x00000004
++#define CS42L43_GPIO3_FN_SEL_SHIFT				2
++#define CS42L43_GPIO1_FN_SEL_MASK				0x00000001
++#define CS42L43_GPIO1_FN_SEL_SHIFT				0
++
++/* CS42L43_MCLK_SRC_SEL */
++#define CS42L43_OSC_PLL_MCLK_SEL_MASK				0x00000001
++#define CS42L43_OSC_PLL_MCLK_SEL_SHIFT				0
++
++/* CS42L43_SAMPLE_RATE1..CS42L43_SAMPLE_RATE4 */
++#define CS42L43_SAMPLE_RATE_MASK				0x0000001F
++#define CS42L43_SAMPLE_RATE_SHIFT				0
++
++/* CS42L43_PLL_CONTROL */
++#define CS42L43_PLL_REFCLK_EN_MASK				0x00000008
++#define CS42L43_PLL_REFCLK_EN_SHIFT				3
++#define CS42L43_PLL_REFCLK_DIV_MASK				0x00000006
++#define CS42L43_PLL_REFCLK_DIV_SHIFT				1
++#define CS42L43_PLL_REFCLK_SRC_MASK				0x00000001
++#define CS42L43_PLL_REFCLK_SRC_SHIFT				0
++
++/* CS42L43_FS_SELECT1 */
++#define CS42L43_ASP_RATE_MASK					0x00000003
++#define CS42L43_ASP_RATE_SHIFT					0
++
++/* CS42L43_FS_SELECT2 */
++#define CS42L43_ASRC_DEC_OUT_RATE_MASK				0x000000C0
++#define CS42L43_ASRC_DEC_OUT_RATE_SHIFT				6
++#define CS42L43_ASRC_INT_OUT_RATE_MASK				0x00000030
++#define CS42L43_ASRC_INT_OUT_RATE_SHIFT				4
++#define CS42L43_ASRC_DEC_IN_RATE_MASK				0x0000000C
++#define CS42L43_ASRC_DEC_IN_RATE_SHIFT				2
++#define CS42L43_ASRC_INT_IN_RATE_MASK				0x00000003
++#define CS42L43_ASRC_INT_IN_RATE_SHIFT				0
++
++/* CS42L43_FS_SELECT3 */
++#define CS42L43_HPOUT_RATE_MASK					0x0000C000
++#define CS42L43_HPOUT_RATE_SHIFT				14
++#define CS42L43_EQZ_RATE_MASK					0x00003000
++#define CS42L43_EQZ_RATE_SHIFT					12
++#define CS42L43_DIAGGEN_RATE_MASK				0x00000C00
++#define CS42L43_DIAGGEN_RATE_SHIFT				10
++#define CS42L43_DECIM_CH4_RATE_MASK				0x00000300
++#define CS42L43_DECIM_CH4_RATE_SHIFT				8
++#define CS42L43_DECIM_CH3_RATE_MASK				0x000000C0
++#define CS42L43_DECIM_CH3_RATE_SHIFT				6
++#define CS42L43_DECIM_CH2_RATE_MASK				0x00000030
++#define CS42L43_DECIM_CH2_RATE_SHIFT				4
++#define CS42L43_DECIM_CH1_RATE_MASK				0x0000000C
++#define CS42L43_DECIM_CH1_RATE_SHIFT				2
++#define CS42L43_AMP1_2_RATE_MASK				0x00000003
++#define CS42L43_AMP1_2_RATE_SHIFT				0
++
++/* CS42L43_FS_SELECT4 */
++#define CS42L43_SW_DP7_RATE_MASK				0x00C00000
++#define CS42L43_SW_DP7_RATE_SHIFT				22
++#define CS42L43_SW_DP6_RATE_MASK				0x00300000
++#define CS42L43_SW_DP6_RATE_SHIFT				20
++#define CS42L43_SPDIF_RATE_MASK					0x000C0000
++#define CS42L43_SPDIF_RATE_SHIFT				18
++#define CS42L43_SW_DP5_RATE_MASK				0x00030000
++#define CS42L43_SW_DP5_RATE_SHIFT				16
++#define CS42L43_SW_DP4_RATE_MASK				0x0000C000
++#define CS42L43_SW_DP4_RATE_SHIFT				14
++#define CS42L43_SW_DP3_RATE_MASK				0x00003000
++#define CS42L43_SW_DP3_RATE_SHIFT				12
++#define CS42L43_SW_DP2_RATE_MASK				0x00000C00
++#define CS42L43_SW_DP2_RATE_SHIFT				10
++#define CS42L43_SW_DP1_RATE_MASK				0x00000300
++#define CS42L43_SW_DP1_RATE_SHIFT				8
++#define CS42L43_ISRC2_LOW_RATE_MASK				0x000000C0
++#define CS42L43_ISRC2_LOW_RATE_SHIFT				6
++#define CS42L43_ISRC2_HIGH_RATE_MASK				0x00000030
++#define CS42L43_ISRC2_HIGH_RATE_SHIFT				4
++#define CS42L43_ISRC1_LOW_RATE_MASK				0x0000000C
++#define CS42L43_ISRC1_LOW_RATE_SHIFT				2
++#define CS42L43_ISRC1_HIGH_RATE_MASK				0x00000003
++#define CS42L43_ISRC1_HIGH_RATE_SHIFT				0
++
++/* CS42L43_PDM_CONTROL */
++#define CS42L43_PDM2_CLK_DIV_MASK				0x0000000C
++#define CS42L43_PDM2_CLK_DIV_SHIFT				2
++#define CS42L43_PDM1_CLK_DIV_MASK				0x00000003
++#define CS42L43_PDM1_CLK_DIV_SHIFT				0
++
++/* CS42L43_ASP_CLK_CONFIG1 */
++#define CS42L43_ASP_BCLK_N_MASK					0x03FF0000
++#define CS42L43_ASP_BCLK_N_SHIFT				16
++#define CS42L43_ASP_BCLK_M_MASK					0x000003FF
++#define CS42L43_ASP_BCLK_M_SHIFT				0
++
++/* CS42L43_ASP_CLK_CONFIG2 */
++#define CS42L43_ASP_MASTER_MODE_MASK				0x00000002
++#define CS42L43_ASP_MASTER_MODE_SHIFT				1
++#define CS42L43_ASP_BCLK_INV_MASK				0x00000001
++#define CS42L43_ASP_BCLK_INV_SHIFT				0
++
++/* CS42L43_OSC_DIV_SEL */
++#define CS42L43_OSC_DIV2_EN_MASK				0x00000001
++#define CS42L43_OSC_DIV2_EN_SHIFT				0
++
++/* CS42L43_ADC_B_CTRL1..CS42L43_ADC_B_CTRL1 */
++#define CS42L43_PGA_WIDESWING_MODE_EN_MASK			0x00000080
++#define CS42L43_PGA_WIDESWING_MODE_EN_SHIFT			7
++#define CS42L43_ADC_AIN_SEL_MASK				0x00000010
++#define CS42L43_ADC_AIN_SEL_SHIFT				4
++#define CS42L43_ADC_PGA_GAIN_MASK				0x0000000F
++#define CS42L43_ADC_PGA_GAIN_SHIFT				0
++
++/* CS42L43_DECIM_HPF_WNF_CTRL1..CS42L43_DECIM_HPF_WNF_CTRL4 */
++#define CS42L43_DECIM_WNF_CF_MASK				0x00000070
++#define CS42L43_DECIM_WNF_CF_SHIFT				4
++#define CS42L43_DECIM_WNF_EN_MASK				0x00000008
++#define CS42L43_DECIM_WNF_EN_SHIFT				3
++#define CS42L43_DECIM_HPF_CF_MASK				0x00000006
++#define CS42L43_DECIM_HPF_CF_SHIFT				1
++#define CS42L43_DECIM_HPF_EN_MASK				0x00000001
++#define CS42L43_DECIM_HPF_EN_SHIFT				0
++
++/* CS42L43_DMIC_PDM_CTRL */
++#define CS42L43_PDM2R_INV_MASK					0x00000020
++#define CS42L43_PDM2R_INV_SHIFT					5
++#define CS42L43_PDM2L_INV_MASK					0x00000010
++#define CS42L43_PDM2L_INV_SHIFT					4
++#define CS42L43_PDM1R_INV_MASK					0x00000008
++#define CS42L43_PDM1R_INV_SHIFT					3
++#define CS42L43_PDM1L_INV_MASK					0x00000004
++#define CS42L43_PDM1L_INV_SHIFT					2
++
++/* CS42L43_DECIM_VOL_CTRL_CH1_CH2 */
++#define CS42L43_DECIM2_MUTE_MASK				0x80000000
++#define CS42L43_DECIM2_MUTE_SHIFT				31
++#define CS42L43_DECIM2_VOL_MASK					0x3FC00000
++#define CS42L43_DECIM2_VOL_SHIFT				22
++#define CS42L43_DECIM2_VD_RAMP_MASK				0x00380000
++#define CS42L43_DECIM2_VD_RAMP_SHIFT				19
++#define CS42L43_DECIM2_VI_RAMP_MASK				0x00070000
++#define CS42L43_DECIM2_VI_RAMP_SHIFT				16
++#define CS42L43_DECIM1_MUTE_MASK				0x00008000
++#define CS42L43_DECIM1_MUTE_SHIFT				15
++#define CS42L43_DECIM1_VOL_MASK					0x00003FC0
++#define CS42L43_DECIM1_VOL_SHIFT				6
++#define CS42L43_DECIM1_VD_RAMP_MASK				0x00000038
++#define CS42L43_DECIM1_VD_RAMP_SHIFT				3
++#define CS42L43_DECIM1_VI_RAMP_MASK				0x00000007
++#define CS42L43_DECIM1_VI_RAMP_SHIFT				0
++
++/* CS42L43_DECIM_VOL_CTRL_CH3_CH4 */
++#define CS42L43_DECIM4_MUTE_MASK				0x80000000
++#define CS42L43_DECIM4_MUTE_SHIFT				31
++#define CS42L43_DECIM4_VOL_MASK					0x3FC00000
++#define CS42L43_DECIM4_VOL_SHIFT				22
++#define CS42L43_DECIM4_VD_RAMP_MASK				0x00380000
++#define CS42L43_DECIM4_VD_RAMP_SHIFT				19
++#define CS42L43_DECIM4_VI_RAMP_MASK				0x00070000
++#define CS42L43_DECIM4_VI_RAMP_SHIFT				16
++#define CS42L43_DECIM3_MUTE_MASK				0x00008000
++#define CS42L43_DECIM3_MUTE_SHIFT				15
++#define CS42L43_DECIM3_VOL_MASK					0x00003FC0
++#define CS42L43_DECIM3_VOL_SHIFT				6
++#define CS42L43_DECIM3_VD_RAMP_MASK				0x00000038
++#define CS42L43_DECIM3_VD_RAMP_SHIFT				3
++#define CS42L43_DECIM3_VI_RAMP_MASK				0x00000007
++#define CS42L43_DECIM3_VI_RAMP_SHIFT				0
++
++/* CS42L43_DECIM_VOL_CTRL_UPDATE */
++#define CS42L43_DECIM4_VOL_UPDATE_MASK				0x00000008
++#define CS42L43_DECIM4_VOL_UPDATE_SHIFT				3
++#define CS42L43_DECIM3_VOL_UPDATE_MASK				0x00000004
++#define CS42L43_DECIM3_VOL_UPDATE_SHIFT				2
++#define CS42L43_DECIM2_VOL_UPDATE_MASK				0x00000002
++#define CS42L43_DECIM2_VOL_UPDATE_SHIFT				1
++#define CS42L43_DECIM1_VOL_UPDATE_MASK				0x00000001
++#define CS42L43_DECIM1_VOL_UPDATE_SHIFT				0
++
++/* CS42L43_INTP_VOLUME_CTRL1..CS42L43_INTP_VOLUME_CTRL2 */
++#define CS42L43_AMP1_2_VU_MASK					0x00000200
++#define CS42L43_AMP1_2_VU_SHIFT					9
++#define CS42L43_AMP_MUTE_MASK					0x00000100
++#define CS42L43_AMP_MUTE_SHIFT					8
++#define CS42L43_AMP_VOL_MASK					0x000000FF
++#define CS42L43_AMP_VOL_SHIFT					0
++
++/* CS42L43_AMP1_2_VOL_RAMP */
++#define CS42L43_AMP1_2_VD_RAMP_MASK				0x00000070
++#define CS42L43_AMP1_2_VD_RAMP_SHIFT				4
++#define CS42L43_AMP1_2_VI_RAMP_MASK				0x00000007
++#define CS42L43_AMP1_2_VI_RAMP_SHIFT				0
++
++/* CS42L43_ASP_CTRL */
++#define CS42L43_ASP_FSYNC_MODE_MASK				0x00000004
++#define CS42L43_ASP_FSYNC_MODE_SHIFT				2
++#define CS42L43_ASP_BCLK_EN_MASK				0x00000002
++#define CS42L43_ASP_BCLK_EN_SHIFT				1
++#define CS42L43_ASP_FSYNC_EN_MASK				0x00000001
++#define CS42L43_ASP_FSYNC_EN_SHIFT				0
++
++/* CS42L43_ASP_FSYNC_CTRL1 */
++#define CS42L43_ASP_FSYNC_M_MASK				0x0007FFFF
++#define CS42L43_ASP_FSYNC_M_SHIFT				0
++
++/* CS42L43_ASP_FSYNC_CTRL3 */
++#define CS42L43_ASP_FSYNC_IN_INV_MASK				0x00000002
++#define CS42L43_ASP_FSYNC_IN_INV_SHIFT				1
++#define CS42L43_ASP_FSYNC_OUT_INV_MASK				0x00000001
++#define CS42L43_ASP_FSYNC_OUT_INV_SHIFT				0
++
++/* CS42L43_ASP_FSYNC_CTRL4 */
++#define CS42L43_ASP_NUM_BCLKS_PER_FSYNC_MASK			0x00001FFE
++#define CS42L43_ASP_NUM_BCLKS_PER_FSYNC_SHIFT			1
++
++/* CS42L43_ASP_DATA_CTRL */
++#define CS42L43_ASP_FSYNC_FRAME_START_PHASE_MASK		0x00000008
++#define CS42L43_ASP_FSYNC_FRAME_START_PHASE_SHIFT		3
++#define CS42L43_ASP_FSYNC_FRAME_START_DLY_MASK			0x00000007
++#define CS42L43_ASP_FSYNC_FRAME_START_DLY_SHIFT			0
++
++/* CS42L43_ASP_RX_EN */
++#define CS42L43_ASP_RX_CH6_EN_MASK				0x00000020
++#define CS42L43_ASP_RX_CH6_EN_SHIFT				5
++#define CS42L43_ASP_RX_CH5_EN_MASK				0x00000010
++#define CS42L43_ASP_RX_CH5_EN_SHIFT				4
++#define CS42L43_ASP_RX_CH4_EN_MASK				0x00000008
++#define CS42L43_ASP_RX_CH4_EN_SHIFT				3
++#define CS42L43_ASP_RX_CH3_EN_MASK				0x00000004
++#define CS42L43_ASP_RX_CH3_EN_SHIFT				2
++#define CS42L43_ASP_RX_CH2_EN_MASK				0x00000002
++#define CS42L43_ASP_RX_CH2_EN_SHIFT				1
++#define CS42L43_ASP_RX_CH1_EN_MASK				0x00000001
++#define CS42L43_ASP_RX_CH1_EN_SHIFT				0
++
++/* CS42L43_ASP_TX_EN */
++#define CS42L43_ASP_TX_CH6_EN_MASK				0x00000020
++#define CS42L43_ASP_TX_CH6_EN_SHIFT				5
++#define CS42L43_ASP_TX_CH5_EN_MASK				0x00000010
++#define CS42L43_ASP_TX_CH5_EN_SHIFT				4
++#define CS42L43_ASP_TX_CH4_EN_MASK				0x00000008
++#define CS42L43_ASP_TX_CH4_EN_SHIFT				3
++#define CS42L43_ASP_TX_CH3_EN_MASK				0x00000004
++#define CS42L43_ASP_TX_CH3_EN_SHIFT				2
++#define CS42L43_ASP_TX_CH2_EN_MASK				0x00000002
++#define CS42L43_ASP_TX_CH2_EN_SHIFT				1
++#define CS42L43_ASP_TX_CH1_EN_MASK				0x00000001
++#define CS42L43_ASP_TX_CH1_EN_SHIFT				0
++
++/* CS42L43_ASP_RX_CH1_CTRL..CS42L43_ASP_TX_CH6_CTRL */
++#define CS42L43_ASP_CH_WIDTH_MASK				0x001F0000
++#define CS42L43_ASP_CH_WIDTH_SHIFT				16
++#define CS42L43_ASP_CH_SLOT_MASK				0x00001FFE
++#define CS42L43_ASP_CH_SLOT_SHIFT				1
++#define CS42L43_ASP_CH_SLOT_PHASE_MASK				0x00000001
++#define CS42L43_ASP_CH_SLOT_PHASE_SHIFT				0
++
++/* CS42L43_ASPTX1_INPUT..CS42L43_AMP4MIX_INPUT4 */
++#define CS42L43_MIXER_VOL_MASK					0x00FE0000
++#define CS42L43_MIXER_VOL_SHIFT					17
++#define CS42L43_MIXER_SRC_MASK					0x000001FF
++#define CS42L43_MIXER_SRC_SHIFT					0
++
++/* CS42L43_ASRC_INT_ENABLES */
++#define CS42L43_ASRC_INT4_EN_MASK				0x00000008
++#define CS42L43_ASRC_INT4_EN_SHIFT				3
++#define CS42L43_ASRC_INT3_EN_MASK				0x00000004
++#define CS42L43_ASRC_INT3_EN_SHIFT				2
++#define CS42L43_ASRC_INT2_EN_MASK				0x00000002
++#define CS42L43_ASRC_INT2_EN_SHIFT				1
++#define CS42L43_ASRC_INT1_EN_MASK				0x00000001
++#define CS42L43_ASRC_INT1_EN_SHIFT				0
++
++/* CS42L43_ASRC_DEC_ENABLES */
++#define CS42L43_ASRC_DEC4_EN_MASK				0x00000008
++#define CS42L43_ASRC_DEC4_EN_SHIFT				3
++#define CS42L43_ASRC_DEC3_EN_MASK				0x00000004
++#define CS42L43_ASRC_DEC3_EN_SHIFT				2
++#define CS42L43_ASRC_DEC2_EN_MASK				0x00000002
++#define CS42L43_ASRC_DEC2_EN_SHIFT				1
++#define CS42L43_ASRC_DEC1_EN_MASK				0x00000001
++#define CS42L43_ASRC_DEC1_EN_SHIFT				0
++
++/* CS42L43_PDNCNTL */
++#define CS42L43_RING_SENSE_EN_MASK				0x00000002
++#define CS42L43_RING_SENSE_EN_SHIFT				1
++
++/* CS42L43_RINGSENSE_DEB_CTRL */
++#define CS42L43_RINGSENSE_INV_MASK				0x00000080
++#define CS42L43_RINGSENSE_INV_SHIFT				7
++#define CS42L43_RINGSENSE_PULLUP_PDNB_MASK			0x00000040
++#define CS42L43_RINGSENSE_PULLUP_PDNB_SHIFT			6
++#define CS42L43_RINGSENSE_FALLING_DB_TIME_MASK			0x00000038
++#define CS42L43_RINGSENSE_FALLING_DB_TIME_SHIFT			3
++#define CS42L43_RINGSENSE_RISING_DB_TIME_MASK			0x00000007
++#define CS42L43_RINGSENSE_RISING_DB_TIME_SHIFT			0
++
++/* CS42L43_TIPSENSE_DEB_CTRL */
++#define CS42L43_TIPSENSE_INV_MASK				0x00000080
++#define CS42L43_TIPSENSE_INV_SHIFT				7
++#define CS42L43_TIPSENSE_FALLING_DB_TIME_MASK			0x00000038
++#define CS42L43_TIPSENSE_FALLING_DB_TIME_SHIFT			3
++#define CS42L43_TIPSENSE_RISING_DB_TIME_MASK			0x00000007
++#define CS42L43_TIPSENSE_RISING_DB_TIME_SHIFT			0
++
++/* CS42L43_TIP_RING_SENSE_INTERRUPT_STATUS */
++#define CS42L43_TIPSENSE_UNPLUG_DB_STS_MASK			0x00000008
++#define CS42L43_TIPSENSE_UNPLUG_DB_STS_SHIFT			3
++#define CS42L43_TIPSENSE_PLUG_DB_STS_MASK			0x00000004
++#define CS42L43_TIPSENSE_PLUG_DB_STS_SHIFT			2
++#define CS42L43_RINGSENSE_UNPLUG_DB_STS_MASK			0x00000002
++#define CS42L43_RINGSENSE_UNPLUG_DB_STS_SHIFT			1
++#define CS42L43_RINGSENSE_PLUG_DB_STS_MASK			0x00000001
++#define CS42L43_RINGSENSE_PLUG_DB_STS_SHIFT			0
++
++/* CS42L43_HS2 */
++#define CS42L43_HS_CLAMP_DISABLE_MASK				0x10000000
++#define CS42L43_HS_CLAMP_DISABLE_SHIFT				28
++#define CS42L43_HSBIAS_RAMP_MASK				0x0C000000
++#define CS42L43_HSBIAS_RAMP_SHIFT				26
++#define CS42L43_HSDET_MODE_MASK					0x00018000
++#define CS42L43_HSDET_MODE_SHIFT				15
++#define CS42L43_HSDET_MANUAL_MODE_MASK				0x00006000
++#define CS42L43_HSDET_MANUAL_MODE_SHIFT				13
++#define CS42L43_AUTO_HSDET_TIME_MASK				0x00000700
++#define CS42L43_AUTO_HSDET_TIME_SHIFT				8
++#define CS42L43_AMP3_4_GNDREF_HS3_SEL_MASK			0x00000080
++#define CS42L43_AMP3_4_GNDREF_HS3_SEL_SHIFT			7
++#define CS42L43_AMP3_4_GNDREF_HS4_SEL_MASK			0x00000040
++#define CS42L43_AMP3_4_GNDREF_HS4_SEL_SHIFT			6
++#define CS42L43_HSBIAS_GNDREF_HS3_SEL_MASK			0x00000020
++#define CS42L43_HSBIAS_GNDREF_HS3_SEL_SHIFT			5
++#define CS42L43_HSBIAS_GNDREF_HS4_SEL_MASK			0x00000010
++#define CS42L43_HSBIAS_GNDREF_HS4_SEL_SHIFT			4
++#define CS42L43_HSBIAS_OUT_HS3_SEL_MASK				0x00000008
++#define CS42L43_HSBIAS_OUT_HS3_SEL_SHIFT			3
++#define CS42L43_HSBIAS_OUT_HS4_SEL_MASK				0x00000004
++#define CS42L43_HSBIAS_OUT_HS4_SEL_SHIFT			2
++#define CS42L43_HSGND_HS3_SEL_MASK				0x00000002
++#define CS42L43_HSGND_HS3_SEL_SHIFT				1
++#define CS42L43_HSGND_HS4_SEL_MASK				0x00000001
++#define CS42L43_HSGND_HS4_SEL_SHIFT				0
++
++/* CS42L43_HS_STAT */
++#define CS42L43_HSDET_TYPE_STS_MASK				0x00000007
++#define CS42L43_HSDET_TYPE_STS_SHIFT				0
++
++/* CS42L43_MCU_SW_INTERRUPT */
++#define CS42L43_CONTROL_IND_MASK				0x00000004
++#define CS42L43_CONTROL_IND_SHIFT				2
++#define CS42L43_CONFIGS_IND_MASK				0x00000002
++#define CS42L43_CONFIGS_IND_SHIFT				1
++#define CS42L43_PATCH_IND_MASK					0x00000001
++#define CS42L43_PATCH_IND_SHIFT					0
++
++/* CS42L43_STEREO_MIC_CTRL */
++#define CS42L43_HS2_BIAS_SENSE_EN_MASK				0x00000020
++#define CS42L43_HS2_BIAS_SENSE_EN_SHIFT				5
++#define CS42L43_HS1_BIAS_SENSE_EN_MASK				0x00000010
++#define CS42L43_HS1_BIAS_SENSE_EN_SHIFT				4
++#define CS42L43_HS2_BIAS_EN_MASK				0x00000008
++#define CS42L43_HS2_BIAS_EN_SHIFT				3
++#define CS42L43_HS1_BIAS_EN_MASK				0x00000004
++#define CS42L43_HS1_BIAS_EN_SHIFT				2
++#define CS42L43_JACK_STEREO_CONFIG_MASK				0x00000003
++#define CS42L43_JACK_STEREO_CONFIG_SHIFT			0
++
++/* CS42L43_STEREO_MIC_CLAMP_CTRL */
++#define CS42L43_SMIC_HPAMP_CLAMP_DIS_FRC_VAL_MASK		0x00000002
++#define CS42L43_SMIC_HPAMP_CLAMP_DIS_FRC_VAL_SHIFT		1
++#define CS42L43_SMIC_HPAMP_CLAMP_DIS_FRC_MASK			0x00000001
++#define CS42L43_SMIC_HPAMP_CLAMP_DIS_FRC_SHIFT			0
++
++/* CS42L43_BLOCK_EN2 */
++#define CS42L43_SPI_MSTR_EN_MASK				0x00000001
++#define CS42L43_SPI_MSTR_EN_SHIFT				0
++
++/* CS42L43_BLOCK_EN3 */
++#define CS42L43_PDM2_DIN_R_EN_MASK				0x00000020
++#define CS42L43_PDM2_DIN_R_EN_SHIFT				5
++#define CS42L43_PDM2_DIN_L_EN_MASK				0x00000010
++#define CS42L43_PDM2_DIN_L_EN_SHIFT				4
++#define CS42L43_PDM1_DIN_R_EN_MASK				0x00000008
++#define CS42L43_PDM1_DIN_R_EN_SHIFT				3
++#define CS42L43_PDM1_DIN_L_EN_MASK				0x00000004
++#define CS42L43_PDM1_DIN_L_EN_SHIFT				2
++#define CS42L43_ADC2_EN_MASK					0x00000002
++#define CS42L43_ADC2_EN_SHIFT					1
++#define CS42L43_ADC1_EN_MASK					0x00000001
++#define CS42L43_ADC1_EN_SHIFT					0
++
++/* CS42L43_BLOCK_EN4 */
++#define CS42L43_ASRC_DEC_BANK_EN_MASK				0x00000002
++#define CS42L43_ASRC_DEC_BANK_EN_SHIFT				1
++#define CS42L43_ASRC_INT_BANK_EN_MASK				0x00000001
++#define CS42L43_ASRC_INT_BANK_EN_SHIFT				0
++
++/* CS42L43_BLOCK_EN5 */
++#define CS42L43_ISRC2_BANK_EN_MASK				0x00000002
++#define CS42L43_ISRC2_BANK_EN_SHIFT				1
++#define CS42L43_ISRC1_BANK_EN_MASK				0x00000001
++#define CS42L43_ISRC1_BANK_EN_SHIFT				0
++
++/* CS42L43_BLOCK_EN6 */
++#define CS42L43_MIXER_EN_MASK					0x00000001
++#define CS42L43_MIXER_EN_SHIFT					0
++
++/* CS42L43_BLOCK_EN7 */
++#define CS42L43_EQ_EN_MASK					0x00000001
++#define CS42L43_EQ_EN_SHIFT					0
++
++/* CS42L43_BLOCK_EN8 */
++#define CS42L43_HP_EN_MASK					0x00000001
++#define CS42L43_HP_EN_SHIFT					0
++
++/* CS42L43_BLOCK_EN9 */
++#define CS42L43_TONE_EN_MASK					0x00000001
++#define CS42L43_TONE_EN_SHIFT					0
++
++/* CS42L43_BLOCK_EN10 */
++#define CS42L43_AMP2_EN_MASK					0x00000002
++#define CS42L43_AMP2_EN_SHIFT					1
++#define CS42L43_AMP1_EN_MASK					0x00000001
++#define CS42L43_AMP1_EN_SHIFT					0
++
++/* CS42L43_BLOCK_EN11 */
++#define CS42L43_SPDIF_EN_MASK					0x00000001
++#define CS42L43_SPDIF_EN_SHIFT					0
++
++/* CS42L43_TONE_CH1_CTRL..CS42L43_TONE_CH2_CTRL  */
++#define CS42L43_TONE_FREQ_MASK					0x00000070
++#define CS42L43_TONE_FREQ_SHIFT					4
++#define CS42L43_TONE_SEL_MASK					0x0000000F
++#define CS42L43_TONE_SEL_SHIFT					0
++
++/* CS42L43_MIC_DETECT_CONTROL_1 */
++#define CS42L43_BUTTON_DETECT_MODE_MASK				0x00000018
++#define CS42L43_BUTTON_DETECT_MODE_SHIFT			3
++#define CS42L43_HSBIAS_MODE_MASK				0x00000006
++#define CS42L43_HSBIAS_MODE_SHIFT				1
++#define CS42L43_MIC_LVL_DET_DISABLE_MASK			0x00000001
++#define CS42L43_MIC_LVL_DET_DISABLE_SHIFT			0
++
++/* CS42L43_DETECT_STATUS_1 */
++#define CS42L43_HSDET_DC_STS_MASK				0x01FF0000
++#define CS42L43_HSDET_DC_STS_SHIFT				16
++#define CS42L43_JACKDET_STS_MASK				0x00000080
++#define CS42L43_JACKDET_STS_SHIFT				7
++#define CS42L43_HSBIAS_CLAMP_STS_MASK				0x00000040
++#define CS42L43_HSBIAS_CLAMP_STS_SHIFT				6
++
++/* CS42L43_HS_BIAS_SENSE_AND_CLAMP_AUTOCONTROL */
++#define CS42L43_JACKDET_MODE_MASK				0xC0000000
++#define CS42L43_JACKDET_MODE_SHIFT				30
++#define CS42L43_JACKDET_INV_MASK				0x20000000
++#define CS42L43_JACKDET_INV_SHIFT				29
++#define CS42L43_JACKDET_DB_TIME_MASK				0x03000000
++#define CS42L43_JACKDET_DB_TIME_SHIFT				24
++#define CS42L43_S0_AUTO_ADCMUTE_DISABLE_MASK			0x00800000
++#define CS42L43_S0_AUTO_ADCMUTE_DISABLE_SHIFT			23
++#define CS42L43_HSBIAS_SENSE_EN_MASK				0x00000080
++#define CS42L43_HSBIAS_SENSE_EN_SHIFT				7
++#define CS42L43_AUTO_HSBIAS_CLAMP_EN_MASK			0x00000040
++#define CS42L43_AUTO_HSBIAS_CLAMP_EN_SHIFT			6
++#define CS42L43_JACKDET_SENSE_EN_MASK				0x00000020
++#define CS42L43_JACKDET_SENSE_EN_SHIFT				5
++#define CS42L43_HSBIAS_SENSE_TRIP_MASK				0x00000007
++#define CS42L43_HSBIAS_SENSE_TRIP_SHIFT				0
++
++/* CS42L43_MIC_DETECT_CONTROL_ANDROID */
++#define CS42L43_HSDET_LVL_COMBWIDTH_MASK			0xC0000000
++#define CS42L43_HSDET_LVL_COMBWIDTH_SHIFT			30
++#define CS42L43_HSDET_LVL2_THRESH_MASK				0x01FF0000
++#define CS42L43_HSDET_LVL2_THRESH_SHIFT				16
++#define CS42L43_HSDET_LVL1_THRESH_MASK				0x000001FF
++#define CS42L43_HSDET_LVL1_THRESH_SHIFT				0
++
++/* CS42L43_ISRC1_CTRL..CS42L43_ISRC2_CTRL */
++#define CS42L43_ISRC_INT2_EN_MASK				0x00000200
++#define CS42L43_ISRC_INT2_EN_SHIFT				9
++#define CS42L43_ISRC_INT1_EN_MASK				0x00000100
++#define CS42L43_ISRC_INT1_EN_SHIFT				8
++#define CS42L43_ISRC_DEC2_EN_MASK				0x00000002
++#define CS42L43_ISRC_DEC2_EN_SHIFT				1
++#define CS42L43_ISRC_DEC1_EN_MASK				0x00000001
++#define CS42L43_ISRC_DEC1_EN_SHIFT				0
++
++/* CS42L43_CTRL_REG */
++#define CS42L43_PLL_MODE_BYPASS_500_MASK			0x00000004
++#define CS42L43_PLL_MODE_BYPASS_500_SHIFT			2
++#define CS42L43_PLL_MODE_BYPASS_1029_MASK			0x00000002
++#define CS42L43_PLL_MODE_BYPASS_1029_SHIFT			1
++#define CS42L43_PLL_EN_MASK					0x00000001
++#define CS42L43_PLL_EN_SHIFT					0
++
++/* CS42L43_FDIV_FRAC */
++#define CS42L43_PLL_DIV_INT_MASK				0xFF000000
++#define CS42L43_PLL_DIV_INT_SHIFT				24
++#define CS42L43_PLL_DIV_FRAC_BYTE2_MASK				0x00FF0000
++#define CS42L43_PLL_DIV_FRAC_BYTE2_SHIFT			16
++#define CS42L43_PLL_DIV_FRAC_BYTE1_MASK				0x0000FF00
++#define CS42L43_PLL_DIV_FRAC_BYTE1_SHIFT			8
++#define CS42L43_PLL_DIV_FRAC_BYTE0_MASK				0x000000FF
++#define CS42L43_PLL_DIV_FRAC_BYTE0_SHIFT			0
++
++/* CS42L43_CAL_RATIO */
++#define CS42L43_PLL_CAL_RATIO_MASK				0x000000FF
++#define CS42L43_PLL_CAL_RATIO_SHIFT				0
++
++/* CS42L43_SPI_CLK_CONFIG1 */
++#define CS42L43_SCLK_DIV_MASK					0x0000000F
++#define CS42L43_SCLK_DIV_SHIFT					0
++
++/* CS42L43_SPI_CONFIG1 */
++#define CS42L43_SPI_SS_IDLE_DUR_MASK				0x0F000000
++#define CS42L43_SPI_SS_IDLE_DUR_SHIFT				24
++#define CS42L43_SPI_SS_DELAY_DUR_MASK				0x000F0000
++#define CS42L43_SPI_SS_DELAY_DUR_SHIFT				16
++#define CS42L43_SPI_THREE_WIRE_MASK				0x00000100
++#define CS42L43_SPI_THREE_WIRE_SHIFT				8
++#define CS42L43_SPI_DPHA_MASK					0x00000040
++#define CS42L43_SPI_DPHA_SHIFT					6
++#define CS42L43_SPI_CPHA_MASK					0x00000020
++#define CS42L43_SPI_CPHA_SHIFT					5
++#define CS42L43_SPI_CPOL_MASK					0x00000010
++#define CS42L43_SPI_CPOL_SHIFT					4
++#define CS42L43_SPI_SS_SEL_MASK					0x00000007
++#define CS42L43_SPI_SS_SEL_SHIFT				0
++
++/* CS42L43_SPI_CONFIG2 */
++#define CS42L43_SPI_SS_FRC_MASK					0x00000001
++#define CS42L43_SPI_SS_FRC_SHIFT				0
++
++/* CS42L43_SPI_CONFIG3 */
++#define CS42L43_SPI_WDT_ENA_MASK				0x00000001
++#define CS42L43_SPI_WDT_ENA_SHIFT				0
++
++/* CS42L43_SPI_CONFIG4 */
++#define CS42L43_SPI_STALL_ENA_MASK				0x00010000
++#define CS42L43_SPI_STALL_ENA_SHIFT				16
++
++/* CS42L43_SPI_STATUS1 */
++#define CS42L43_SPI_ABORT_STS_MASK				0x00000002
++#define CS42L43_SPI_ABORT_STS_SHIFT				1
++#define CS42L43_SPI_DONE_STS_MASK				0x00000001
++#define CS42L43_SPI_DONE_STS_SHIFT				0
++
++/* CS42L43_SPI_STATUS2 */
++#define CS42L43_SPI_RX_DONE_STS_MASK				0x00000010
++#define CS42L43_SPI_RX_DONE_STS_SHIFT				4
++#define CS42L43_SPI_TX_DONE_STS_MASK				0x00000001
++#define CS42L43_SPI_TX_DONE_STS_SHIFT				0
++
++/* CS42L43_TRAN_CONFIG1 */
++#define CS42L43_SPI_START_MASK					0x00000001
++#define CS42L43_SPI_START_SHIFT					0
++
++/* CS42L43_TRAN_CONFIG2 */
++#define CS42L43_SPI_ABORT_MASK					0x00000001
++#define CS42L43_SPI_ABORT_SHIFT					0
++
++/* CS42L43_TRAN_CONFIG3 */
++#define CS42L43_SPI_WORD_SIZE_MASK				0x00070000
++#define CS42L43_SPI_WORD_SIZE_SHIFT				16
++#define CS42L43_SPI_CMD_MASK					0x00000003
++#define CS42L43_SPI_CMD_SHIFT					0
++
++/* CS42L43_TRAN_CONFIG4 */
++#define CS42L43_SPI_TX_LENGTH_MASK				0x0000FFFF
++#define CS42L43_SPI_TX_LENGTH_SHIFT				0
++
++/* CS42L43_TRAN_CONFIG5 */
++#define CS42L43_SPI_RX_LENGTH_MASK				0x0000FFFF
++#define CS42L43_SPI_RX_LENGTH_SHIFT				0
++
++/* CS42L43_TRAN_CONFIG6 */
++#define CS42L43_SPI_TX_BLOCK_LENGTH_MASK			0x0000000F
++#define CS42L43_SPI_TX_BLOCK_LENGTH_SHIFT			0
++
++/* CS42L43_TRAN_CONFIG7 */
++#define CS42L43_SPI_RX_BLOCK_LENGTH_MASK			0x0000000F
++#define CS42L43_SPI_RX_BLOCK_LENGTH_SHIFT			0
++
++/* CS42L43_TRAN_CONFIG8 */
++#define CS42L43_SPI_RX_DONE_MASK				0x00000010
++#define CS42L43_SPI_RX_DONE_SHIFT				4
++#define CS42L43_SPI_TX_DONE_MASK				0x00000001
++#define CS42L43_SPI_TX_DONE_SHIFT				0
++
++/* CS42L43_TRAN_STATUS1 */
++#define CS42L43_SPI_BUSY_STS_MASK				0x00000100
++#define CS42L43_SPI_BUSY_STS_SHIFT				8
++#define CS42L43_SPI_RX_REQUEST_MASK				0x00000010
++#define CS42L43_SPI_RX_REQUEST_SHIFT				4
++#define CS42L43_SPI_TX_REQUEST_MASK				0x00000001
++#define CS42L43_SPI_TX_REQUEST_SHIFT				0
++
++/* CS42L43_TRAN_STATUS2 */
++#define CS42L43_SPI_TX_BYTE_COUNT_MASK				0x0000FFFF
++#define CS42L43_SPI_TX_BYTE_COUNT_SHIFT				0
++
++/* CS42L43_TRAN_STATUS3 */
++#define CS42L43_SPI_RX_BYTE_COUNT_MASK				0x0000FFFF
++#define CS42L43_SPI_RX_BYTE_COUNT_SHIFT				0
++
++/* CS42L43_TX_DATA */
++#define CS42L43_SPI_TX_DATA_MASK				0xFFFFFFFF
++#define CS42L43_SPI_TX_DATA_SHIFT				0
++
++/* CS42L43_RX_DATA */
++#define CS42L43_SPI_RX_DATA_MASK				0xFFFFFFFF
++#define CS42L43_SPI_RX_DATA_SHIFT				0
++
++/* CS42L43_DACCNFG1 */
++#define CS42L43_HP_MSTR_VOL_CTRL_EN_MASK			0x00000008
++#define CS42L43_HP_MSTR_VOL_CTRL_EN_SHIFT			3
++#define CS42L43_AMP4_INV_MASK					0x00000002
++#define CS42L43_AMP4_INV_SHIFT					1
++#define CS42L43_AMP3_INV_MASK					0x00000001
++#define CS42L43_AMP3_INV_SHIFT					0
++
++/* CS42L43_DACCNFG2 */
++#define CS42L43_HP_AUTO_CLAMP_DISABLE_MASK			0x00000002
++#define CS42L43_HP_AUTO_CLAMP_DISABLE_SHIFT			1
++#define CS42L43_HP_HPF_EN_MASK					0x00000001
++#define CS42L43_HP_HPF_EN_SHIFT					0
++
++/* CS42L43_HPPATHVOL */
++#define CS42L43_AMP4_PATH_VOL_MASK				0x01FF0000
++#define CS42L43_AMP4_PATH_VOL_SHIFT				16
++#define CS42L43_AMP3_PATH_VOL_MASK				0x000001FF
++#define CS42L43_AMP3_PATH_VOL_SHIFT				0
++
++/* CS42L43_PGAVOL */
++#define CS42L43_HP_PATH_VOL_RAMP_MASK				0x0003C000
++#define CS42L43_HP_PATH_VOL_RAMP_SHIFT				14
++#define CS42L43_HP_PATH_VOL_ZC_MASK				0x00002000
++#define CS42L43_HP_PATH_VOL_ZC_SHIFT				13
++#define CS42L43_HP_PATH_VOL_SFT_MASK				0x00001000
++#define CS42L43_HP_PATH_VOL_SFT_SHIFT				12
++#define CS42L43_HP_DIG_VOL_RAMP_MASK				0x00000F00
++#define CS42L43_HP_DIG_VOL_RAMP_SHIFT				8
++#define CS42L43_HP_ANA_VOL_RAMP_MASK				0x0000000F
++#define CS42L43_HP_ANA_VOL_RAMP_SHIFT				0
++
++/* CS42L43_LOADDETRESULTS */
++#define CS42L43_AMP3_RES_DET_MASK				0x00000003
++#define CS42L43_AMP3_RES_DET_SHIFT				0
++
++/* CS42L43_LOADDETENA */
++#define CS42L43_HPLOAD_DET_EN_MASK				0x00000001
++#define CS42L43_HPLOAD_DET_EN_SHIFT				0
++
++/* CS42L43_CTRL */
++#define CS42L43_ADPTPWR_MODE_MASK				0x00000007
++#define CS42L43_ADPTPWR_MODE_SHIFT				0
++
++/* CS42L43_COEFF_RD_WR0 */
++#define CS42L43_WRITE_MODE_MASK					0x00000002
++#define CS42L43_WRITE_MODE_SHIFT				1
++
++/* CS42L43_INIT_DONE0 */
++#define CS42L43_INITIALIZE_DONE_MASK				0x00000001
++#define CS42L43_INITIALIZE_DONE_SHIFT				0
++
++/* CS42L43_START_EQZ0 */
++#define CS42L43_START_FILTER_MASK				0x00000001
++#define CS42L43_START_FILTER_SHIFT				0
++
++/* CS42L43_MUTE_EQ_IN0 */
++#define CS42L43_MUTE_EQ_CH2_MASK				0x00000002
++#define CS42L43_MUTE_EQ_CH2_SHIFT				1
++#define CS42L43_MUTE_EQ_CH1_MASK				0x00000001
++#define CS42L43_MUTE_EQ_CH1_SHIFT				0
++
++/* CS42L43_PLL_INT */
++#define CS42L43_PLL_LOST_LOCK_INT_MASK				0x00000002
++#define CS42L43_PLL_LOST_LOCK_INT_SHIFT				1
++#define CS42L43_PLL_READY_INT_MASK				0x00000001
++#define CS42L43_PLL_READY_INT_SHIFT				0
++
++/* CS42L43_SOFT_INT */
++#define CS42L43_CONTROL_APPLIED_INT_MASK			0x00000010
++#define CS42L43_CONTROL_APPLIED_INT_SHIFT			4
++#define CS42L43_CONTROL_WARN_INT_MASK				0x00000008
++#define CS42L43_CONTROL_WARN_INT_SHIFT				3
++#define CS42L43_PATCH_WARN_INT_MASK				0x00000002
++#define CS42L43_PATCH_WARN_INT_SHIFT				1
++#define CS42L43_PATCH_APPLIED_INT_MASK				0x00000001
++#define CS42L43_PATCH_APPLIED_INT_SHIFT				0
++
++/* CS42L43_MSM_INT */
++#define CS42L43_HP_STARTUP_DONE_INT_MASK			0x00000800
++#define CS42L43_HP_STARTUP_DONE_INT_SHIFT			11
++#define CS42L43_HP_SHUTDOWN_DONE_INT_MASK			0x00000400
++#define CS42L43_HP_SHUTDOWN_DONE_INT_SHIFT			10
++#define CS42L43_HSDET_DONE_INT_MASK				0x00000200
++#define CS42L43_HSDET_DONE_INT_SHIFT				9
++#define CS42L43_TIPSENSE_UNPLUG_DB_INT_MASK			0x00000080
++#define CS42L43_TIPSENSE_UNPLUG_DB_INT_SHIFT			7
++#define CS42L43_TIPSENSE_PLUG_DB_INT_MASK			0x00000040
++#define CS42L43_TIPSENSE_PLUG_DB_INT_SHIFT			6
++#define CS42L43_RINGSENSE_UNPLUG_DB_INT_MASK			0x00000020
++#define CS42L43_RINGSENSE_UNPLUG_DB_INT_SHIFT			5
++#define CS42L43_RINGSENSE_PLUG_DB_INT_MASK			0x00000010
++#define CS42L43_RINGSENSE_PLUG_DB_INT_SHIFT			4
++#define CS42L43_TIPSENSE_UNPLUG_PDET_INT_MASK			0x00000008
++#define CS42L43_TIPSENSE_UNPLUG_PDET_INT_SHIFT			3
++#define CS42L43_TIPSENSE_PLUG_PDET_INT_MASK			0x00000004
++#define CS42L43_TIPSENSE_PLUG_PDET_INT_SHIFT			2
++#define CS42L43_RINGSENSE_UNPLUG_PDET_INT_MASK			0x00000002
++#define CS42L43_RINGSENSE_UNPLUG_PDET_INT_SHIFT			1
++#define CS42L43_RINGSENSE_PLUG_PDET_INT_MASK			0x00000001
++#define CS42L43_RINGSENSE_PLUG_PDET_INT_SHIFT			0
++
++/* CS42L43_ACC_DET_INT */
++#define CS42L43_HS2_BIAS_SENSE_INT_MASK				0x00000800
++#define CS42L43_HS2_BIAS_SENSE_INT_SHIFT			11
++#define CS42L43_HS1_BIAS_SENSE_INT_MASK				0x00000400
++#define CS42L43_HS1_BIAS_SENSE_INT_SHIFT			10
++#define CS42L43_DC_DETECT1_FALSE_INT_MASK			0x00000080
++#define CS42L43_DC_DETECT1_FALSE_INT_SHIFT			7
++#define CS42L43_DC_DETECT1_TRUE_INT_MASK			0x00000040
++#define CS42L43_DC_DETECT1_TRUE_INT_SHIFT			6
++#define CS42L43_HSBIAS_CLAMPED_INT_MASK				0x00000008
++#define CS42L43_HSBIAS_CLAMPED_INT_SHIFT			3
++#define CS42L43_HS3_4_BIAS_SENSE_INT_MASK			0x00000001
++#define CS42L43_HS3_4_BIAS_SENSE_INT_SHIFT			0
++
++/* CS42L43_SPI_MSTR_INT */
++#define CS42L43_IRQ_SPI_STALLING_INT_MASK			0x00000004
++#define CS42L43_IRQ_SPI_STALLING_INT_SHIFT			2
++#define CS42L43_IRQ_SPI_STS_INT_MASK				0x00000002
++#define CS42L43_IRQ_SPI_STS_INT_SHIFT				1
++#define CS42L43_IRQ_SPI_BLOCK_INT_MASK				0x00000001
++#define CS42L43_IRQ_SPI_BLOCK_INT_SHIFT				0
++
++/* CS42L43_SW_TO_SPI_BRIDGE_INT */
++#define CS42L43_SW2SPI_BUF_OVF_UDF_INT_MASK			0x00000001
++#define CS42L43_SW2SPI_BUF_OVF_UDF_INT_SHIFT			0
++
++/* CS42L43_CLASS_D_AMP_INT */
++#define CS42L43_AMP2_CLK_STOP_FAULT_INT_MASK			0x00002000
++#define CS42L43_AMP2_CLK_STOP_FAULT_INT_SHIFT			13
++#define CS42L43_AMP1_CLK_STOP_FAULT_INT_MASK			0x00001000
++#define CS42L43_AMP1_CLK_STOP_FAULT_INT_SHIFT			12
++#define CS42L43_AMP2_VDDSPK_FAULT_INT_MASK			0x00000800
++#define CS42L43_AMP2_VDDSPK_FAULT_INT_SHIFT			11
++#define CS42L43_AMP1_VDDSPK_FAULT_INT_MASK			0x00000400
++#define CS42L43_AMP1_VDDSPK_FAULT_INT_SHIFT			10
++#define CS42L43_AMP2_SHUTDOWN_DONE_INT_MASK			0x00000200
++#define CS42L43_AMP2_SHUTDOWN_DONE_INT_SHIFT			9
++#define CS42L43_AMP1_SHUTDOWN_DONE_INT_MASK			0x00000100
++#define CS42L43_AMP1_SHUTDOWN_DONE_INT_SHIFT			8
++#define CS42L43_AMP2_STARTUP_DONE_INT_MASK			0x00000080
++#define CS42L43_AMP2_STARTUP_DONE_INT_SHIFT			7
++#define CS42L43_AMP1_STARTUP_DONE_INT_MASK			0x00000040
++#define CS42L43_AMP1_STARTUP_DONE_INT_SHIFT			6
++#define CS42L43_AMP2_THERM_SHDN_INT_MASK			0x00000020
++#define CS42L43_AMP2_THERM_SHDN_INT_SHIFT			5
++#define CS42L43_AMP1_THERM_SHDN_INT_MASK			0x00000010
++#define CS42L43_AMP1_THERM_SHDN_INT_SHIFT			4
++#define CS42L43_AMP2_THERM_WARN_INT_MASK			0x00000008
++#define CS42L43_AMP2_THERM_WARN_INT_SHIFT			3
++#define CS42L43_AMP1_THERM_WARN_INT_MASK			0x00000004
++#define CS42L43_AMP1_THERM_WARN_INT_SHIFT			2
++#define CS42L43_AMP2_SCDET_INT_MASK				0x00000002
++#define CS42L43_AMP2_SCDET_INT_SHIFT				1
++#define CS42L43_AMP1_SCDET_INT_MASK				0x00000001
++#define CS42L43_AMP1_SCDET_INT_SHIFT				0
++
++/* CS42L43_GPIO_INT */
++#define CS42L43_GPIO3_FALL_INT_MASK				0x00000020
++#define CS42L43_GPIO3_FALL_INT_SHIFT				5
++#define CS42L43_GPIO3_RISE_INT_MASK				0x00000010
++#define CS42L43_GPIO3_RISE_INT_SHIFT				4
++#define CS42L43_GPIO2_FALL_INT_MASK				0x00000008
++#define CS42L43_GPIO2_FALL_INT_SHIFT				3
++#define CS42L43_GPIO2_RISE_INT_MASK				0x00000004
++#define CS42L43_GPIO2_RISE_INT_SHIFT				2
++#define CS42L43_GPIO1_FALL_INT_MASK				0x00000002
++#define CS42L43_GPIO1_FALL_INT_SHIFT				1
++#define CS42L43_GPIO1_RISE_INT_MASK				0x00000001
++#define CS42L43_GPIO1_RISE_INT_SHIFT				0
++
++/* CS42L43_HPOUT_INT */
++#define CS42L43_HP_ILIMIT_INT_MASK				0x00000002
++#define CS42L43_HP_ILIMIT_INT_SHIFT				1
++#define CS42L43_HP_LOADDET_DONE_INT_MASK			0x00000001
++#define CS42L43_HP_LOADDET_DONE_INT_SHIFT			0
++
++/* CS42L43_BOOT_CONTROL */
++#define CS42L43_LOCK_HW_STS_MASK				0x00000002
++#define CS42L43_LOCK_HW_STS_SHIFT				1
++
++/* CS42L43_BLOCK_EN */
++#define CS42L43_MCU_EN_MASK					0x00000001
++#define CS42L43_MCU_EN_SHIFT					0
++
++/* CS42L43_SHUTTER_CONTROL */
++#define CS42L43_STATUS_SPK_SHUTTER_MUTE_MASK			0x00008000
++#define CS42L43_STATUS_SPK_SHUTTER_MUTE_SHIFT			15
++#define CS42L43_SPK_SHUTTER_CFG_MASK				0x00000F00
++#define CS42L43_SPK_SHUTTER_CFG_SHIFT				8
++#define CS42L43_STATUS_MIC_SHUTTER_MUTE_MASK			0x00000080
++#define CS42L43_STATUS_MIC_SHUTTER_MUTE_SHIFT			7
++#define CS42L43_MIC_SHUTTER_CFG_MASK				0x0000000F
++#define CS42L43_MIC_SHUTTER_CFG_SHIFT				0
++
++/* CS42L43_MCU_SW_REV */
++#define CS42L43_BIOS_SUBMINOR_REV_MASK				0xFF000000
++#define CS42L43_BIOS_SUBMINOR_REV_SHIFT				24
++#define CS42L43_BIOS_MINOR_REV_MASK				0x00F00000
++#define CS42L43_BIOS_MINOR_REV_SHIFT				20
++#define CS42L43_BIOS_MAJOR_REV_MASK				0x000F0000
++#define CS42L43_BIOS_MAJOR_REV_SHIFT				16
++#define CS42L43_FW_SUBMINOR_REV_MASK				0x0000FF00
++#define CS42L43_FW_SUBMINOR_REV_SHIFT				8
++#define CS42L43_FW_MINOR_REV_MASK				0x000000F0
++#define CS42L43_FW_MINOR_REV_SHIFT				4
++#define CS42L43_FW_MAJOR_REV_MASK				0x0000000F
++#define CS42L43_FW_MAJOR_REV_SHIFT				0
++
++/* CS42L43_NEED_CONFIGS */
++#define CS42L43_FW_PATCH_NEED_CFG_MASK				0x80000000
++#define CS42L43_FW_PATCH_NEED_CFG_SHIFT				31
++
++#endif /* CS42L43_CORE_REGS_H */
+diff --git a/include/linux/mfd/cs42l43.h b/include/linux/mfd/cs42l43.h
+new file mode 100644
+index 0000000000000..1d3c132beda9f
+--- /dev/null
++++ b/include/linux/mfd/cs42l43.h
+@@ -0,0 +1,50 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * CS42L43 core driver external data
++ *
++ * Copyright (C) 2022-2023 Cirrus Logic, Inc. and
++ *                         Cirrus Logic International Semiconductor Ltd.
++ */
++
 +#include <linux/completion.h>
 +#include <linux/device.h>
++#include <linux/gpio/consumer.h>
 +#include <linux/mutex.h>
 +#include <linux/regmap.h>
++#include <linux/regulator/consumer.h>
 +#include <linux/soundwire/sdw.h>
-+#include <linux/types.h>
-+#include <sound/cs42l43.h>
-+#include <sound/pcm.h>
-+#include <sound/soc-jack.h>
++#include <linux/workqueue.h>
 +
-+#ifndef CS42L43_ASOC_INT_H
-+#define CS42L43_ASOC_INT_H
++#ifndef CS42L43_CORE_EXT_H
++#define CS42L43_CORE_EXT_H
 +
-+#define CS42L43_INTERNAL_SYSCLK		24576000
-+#define CS42L43_DEFAULT_SLOTS		0x3F
++#define CS42L43_N_SUPPLIES		3
 +
-+#define CS42L43_PLL_TIMEOUT_MS		200
-+#define CS42L43_SPK_TIMEOUT_MS		100
-+#define CS42L43_HP_TIMEOUT_MS		2000
-+#define CS42L43_LOAD_TIMEOUT_MS		1000
-+
-+#define CS42L43_ASP_MAX_CHANNELS	6
-+#define CS42L43_N_EQ_COEFFS		15
-+
-+struct cs42l43_codec {
++struct cs42l43 {
 +	struct device *dev;
-+	struct cs42l43 *core;
-+	struct snd_soc_component *component;
++	struct regmap *regmap;
++	struct sdw_slave *sdw;
 +
-+	struct clk *mclk;
++	struct regulator *vdd_p;
++	struct regulator *vdd_d;
++	struct regulator_bulk_data core_supplies[CS42L43_N_SUPPLIES];
 +
-+	int n_slots;
-+	int slot_width;
-+	int tx_slots[CS42L43_ASP_MAX_CHANNELS];
-+	int rx_slots[CS42L43_ASP_MAX_CHANNELS];
-+	struct snd_pcm_hw_constraint_list constraint;
++	struct gpio_desc *reset;
++	int irq;
 +
-+	u32 eq_coeffs[CS42L43_N_EQ_COEFFS];
++	struct work_struct boot_work;
++	struct completion device_attach;
++	struct completion device_detach;
++	struct completion firmware_download;
++	int firmware_error;
 +
-+	unsigned int refclk_src;
-+	unsigned int refclk_freq;
-+	struct completion pll_ready;
++	unsigned int sdw_freq;
++	// Lock to gate control of the PLL and its sources
++	struct mutex pll_lock;
 +
-+	unsigned int decim_cache[4];
-+	unsigned int adc_ena;
-+	unsigned int hp_ena;
-+
-+	struct completion hp_startup;
-+	struct completion hp_shutdown;
-+	struct completion spkr_shutdown;
-+	struct completion spkl_shutdown;
-+	struct completion spkr_startup;
-+	struct completion spkl_startup;
-+	// Lock to ensure speaker VU updates don't clash
-+	struct mutex spk_vu_lock;
-+
-+	// Lock for all jack detect operations
-+	struct mutex jack_lock;
-+	struct snd_soc_jack *jack_hp;
-+	struct cs42l43_jack_pdata jack_pdata;
-+
-+	struct delayed_work tip_sense_work;
-+	struct delayed_work bias_sense_timeout;
-+	struct completion type_detect;
-+	struct completion load_detect;
-+
-+	bool load_detect_running;
-+	bool button_detect_running;
-+	bool jack_present;
-+	int jack_override;
++	bool sdw_pll_active;
++	bool attached;
++	bool hw_lock;
 +};
 +
-+#if IS_REACHABLE(CONFIG_SND_SOC_CS42L43_SDW)
-+
-+int cs42l43_sdw_add_peripheral(struct snd_pcm_substream *substream,
-+			       struct snd_pcm_hw_params *params,
-+			       struct snd_soc_dai *dai);
-+int cs42l43_sdw_remove_peripheral(struct snd_pcm_substream *substream,
-+				  struct snd_soc_dai *dai);
-+int cs42l43_sdw_set_stream(struct snd_soc_dai *dai, void *sdw_stream, int direction);
-+
-+#else
-+
-+static inline int cs42l43_sdw_add_peripheral(struct snd_pcm_substream *substream,
-+					     struct snd_pcm_hw_params *params,
-+					     struct snd_soc_dai *dai)
-+{
-+	return -EINVAL;
-+}
-+
-+#define cs42l43_sdw_remove_peripheral NULL
-+#define cs42l43_sdw_set_stream NULL
-+
-+#endif
-+
-+int cs42l43_set_jack(struct snd_soc_component *component,
-+		     struct snd_soc_jack *jack, void *d);
-+void cs42l43_bias_sense_timeout(struct work_struct *work);
-+void cs42l43_tip_sense_work(struct work_struct *work);
-+irqreturn_t cs42l43_button_press(int irq, void *data);
-+irqreturn_t cs42l43_button_release(int irq, void *data);
-+irqreturn_t cs42l43_tip_sense(int irq, void *data);
-+int cs42l43_jack_get(struct snd_kcontrol *kcontrol, struct snd_ctl_elem_value *ucontrol);
-+int cs42l43_jack_put(struct snd_kcontrol *kcontrol, struct snd_ctl_elem_value *ucontrol);
-+
-+extern const struct soc_enum cs42l43_jack_enum;
-+
-+#endif /* CS42L43_ASOC_INT_H */
++#endif /* CS42L43_CORE_EXT_H */
 -- 
 2.30.2
 

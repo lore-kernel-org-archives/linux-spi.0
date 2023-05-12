@@ -2,44 +2,44 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A84B5C7EE3A
-	for <linux-spi@archiver.kernel.org>; Fri, 12 May 2023 12:30:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 32110C7EE2D
+	for <linux-spi@archiver.kernel.org>; Fri, 12 May 2023 12:30:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240832AbjELMaD (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 12 May 2023 08:30:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59858 "EHLO
+        id S240881AbjELMaE (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 12 May 2023 08:30:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240942AbjELM34 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 12 May 2023 08:29:56 -0400
-Received: from mx0b-001ae601.pphosted.com (mx0a-001ae601.pphosted.com [67.231.149.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D62413C33;
-        Fri, 12 May 2023 05:29:19 -0700 (PDT)
-Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
-        by mx0a-001ae601.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34CCOUos001858;
-        Fri, 12 May 2023 07:28:44 -0500
+        with ESMTP id S240546AbjELM36 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 12 May 2023 08:29:58 -0400
+Received: from mx0b-001ae601.pphosted.com (mx0b-001ae601.pphosted.com [67.231.152.168])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 173AE1437A;
+        Fri, 12 May 2023 05:29:23 -0700 (PDT)
+Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
+        by mx0b-001ae601.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34C5eUj8031128;
+        Fri, 12 May 2023 07:28:40 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding : content-type; s=PODMain02222019;
- bh=MGx4eUaVxTNxvKWUX/vY4Vu1QrON54xoiFztV1TPX+8=;
- b=KlIhZMpRzHisxpPyRqExtk3fU+EQhANAIrl4fAjbWhNPx9MQoBbkDfI4RsQJx13FGhVU
- GpWNzSxcJr6Jjw682LmLWtjIeDDxIlyle3Eu0DD1gkFyNtwmwStzRD19dqnvx3jSITz0
- z0yxRQK0BYHGqgdVchvZ3AdHNGpjDiX3Akbly3k3Ly3GYOzZnx/CZ91YwrrrWTmN3Xfg
- +k4GEaptRZh8NxE7w19AA4u1YKN9iv8w9q4VA06RP7kWSuaaGmD2DIjlhuvu6ByFQ6Vy
- ewkpQl5RsFq+xGKaH3LP08S6YvWiCZ3zq/wWuw+PPFouh/A4cSyk+1B/abKnCsh60frn pw== 
-Received: from ediex02.ad.cirrus.com ([84.19.233.68])
-        by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 3qf7nb5dqx-5
+ bh=FF0MGgoGVYiyUdoLzrNTfui4hZc7QAdyPV9+R56x+60=;
+ b=Er69sx5mItoC7ting41wXRkLDp8b5HO8s/fGyGkzhxBF+20TAD3DNqAeairtfRj2D38l
+ 7g17wC1+wGuZJyemUmRYv4eD2J9+I4gNNMP4uGmnz4y8jAB5dNT84mlw9GdjzHHc1EuR
+ neKDzdPlX3s2bX5ChnlLn5yCXeV+2+XElpxubkHW0OvRRBrGitDGBgCsHtcAPg9TXzGV
+ mYKOOs1ngblrB97SiHiQ0gFUmQzYayn+k+f9L2vXAZgskzj1hNM1y2fj5A+qJpQs2TW2
+ 92/k+82n1QHInNcC6QKtawwmdfRQjDa2m6OL/Y7oq9/cJDE0LfIOj6CHRc+pl7bNXW+t zA== 
+Received: from ediex01.ad.cirrus.com ([84.19.233.68])
+        by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 3qf7s46b2x-2
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 12 May 2023 07:28:44 -0500
-Received: from ediex02.ad.cirrus.com (198.61.84.81) by ediex02.ad.cirrus.com
- (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
+        Fri, 12 May 2023 07:28:40 -0500
+Received: from ediex02.ad.cirrus.com (198.61.84.81) by ediex01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.26; Fri, 12 May
- 2023 07:28:39 -0500
+ 2023 07:28:38 -0500
 Received: from ediswmail.ad.cirrus.com (198.61.86.93) by
  anon-ediex02.ad.cirrus.com (198.61.84.81) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Fri, 12 May 2023 07:28:39 -0500
+ 15.2.1118.26 via Frontend Transport; Fri, 12 May 2023 07:28:38 -0500
 Received: from algalon.ad.cirrus.com (algalon.ad.cirrus.com [198.90.251.122])
-        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 12CC915B4;
-        Fri, 12 May 2023 12:28:39 +0000 (UTC)
+        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 5829715A4;
+        Fri, 12 May 2023 12:28:38 +0000 (UTC)
 From:   Charles Keepax <ckeepax@opensource.cirrus.com>
 To:     <broonie@kernel.org>, <lee@kernel.org>, <robh+dt@kernel.org>,
         <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
@@ -50,380 +50,60 @@ CC:     <lgirdwood@gmail.com>, <yung-chuan.liao@linux.intel.com>,
         <alsa-devel@alsa-project.org>, <patches@opensource.cirrus.com>,
         <devicetree@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
         <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH 09/10] spi: cs42l43: Add SPI controller support
-Date:   Fri, 12 May 2023 13:28:37 +0100
-Message-ID: <20230512122838.243002-10-ckeepax@opensource.cirrus.com>
+Subject: [PATCH 03/10] ASoC: ak4118: Update to use new component control notify helper
+Date:   Fri, 12 May 2023 13:28:31 +0100
+Message-ID: <20230512122838.243002-4-ckeepax@opensource.cirrus.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230512122838.243002-1-ckeepax@opensource.cirrus.com>
 References: <20230512122838.243002-1-ckeepax@opensource.cirrus.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: 90BCHgrTxoARai1VWpXIikn8oFJ3Srsv
-X-Proofpoint-GUID: 90BCHgrTxoARai1VWpXIikn8oFJ3Srsv
+X-Proofpoint-ORIG-GUID: tR8CwHcEE0q8AMCU_M3wg1mquGdZccCi
+X-Proofpoint-GUID: tR8CwHcEE0q8AMCU_M3wg1mquGdZccCi
 X-Proofpoint-Spam-Reason: safe
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Lucas Tanure <tanureal@opensource.cirrus.com>
+Update the driver to use the new ASoC core control notify helper.
+This also fixes a bug where the control would not be found if the
+CODEC was given a name prefix.
 
-The CS42L43 is an audio CODEC with integrated MIPI SoundWire interface
-(Version 1.2.1 compliant), I2C, SPI, and I2S/TDM interfaces designed
-for portable applications. It provides a high dynamic range, stereo
-DAC for headphone output, two integrated Class D amplifiers for
-loudspeakers, and two ADCs for wired headset microphone input or
-stereo line input. PDM inputs are provided for digital microphones.
-
-The SPI component incorporates a SPI controller interface for
-communication with other peripheral components.
-
-Signed-off-by: Lucas Tanure <tanureal@opensource.cirrus.com>
-Signed-off-by: Maciej Strozek <mstrozek@opensource.cirrus.com>
 Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
 ---
- MAINTAINERS               |   1 +
- drivers/spi/Kconfig       |   7 +
- drivers/spi/Makefile      |   1 +
- drivers/spi/spi-cs42l43.c | 287 ++++++++++++++++++++++++++++++++++++++
- 4 files changed, 296 insertions(+)
- create mode 100644 drivers/spi/spi-cs42l43.c
+ sound/soc/codecs/ak4118.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 2890f54f70afc..ca4aa5cc43b7d 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4931,6 +4931,7 @@ F:	Documentation/devicetree/bindings/sound/cirrus,cs*
- F:	drivers/irqchip/irq-cs42l43*
- F:	drivers/mfd/cs42l43*
- F:	drivers/pinctrl/cirrus/pinctrl-cs42l43*
-+F:	drivers/spi/spi-cs42l43*
- F:	include/dt-bindings/sound/cs*
- F:	include/linux/irqchip/cs42l43*
- F:	include/linux/mfd/cs42l43*
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 3de2ebe8294aa..f6ce06de41051 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -281,6 +281,13 @@ config SPI_COLDFIRE_QSPI
- 	  This enables support for the Coldfire QSPI controller in master
- 	  mode.
+diff --git a/sound/soc/codecs/ak4118.c b/sound/soc/codecs/ak4118.c
+index b6d9a10bdccdc..74ccfb0d921d6 100644
+--- a/sound/soc/codecs/ak4118.c
++++ b/sound/soc/codecs/ak4118.c
+@@ -264,8 +264,6 @@ static irqreturn_t ak4118_irq_handler(int irq, void *data)
+ 	struct ak4118_priv *ak4118 = data;
+ 	struct snd_soc_component *component = ak4118->component;
+ 	struct snd_kcontrol_new *kctl_new;
+-	struct snd_kcontrol *kctl;
+-	struct snd_ctl_elem_id *id;
+ 	unsigned int i;
  
-+config SPI_CS42L43
-+	tristate "Cirrus Logic CS42L43 SPI controller"
-+	depends on MFD_CS42L43 && PINCTRL_CS42L43
-+	help
-+	  This enables support for the SPI controller inside the Cirrus Logic
-+	  CS42L43 audio codec.
+ 	if (!component)
+@@ -273,13 +271,8 @@ static irqreturn_t ak4118_irq_handler(int irq, void *data)
+ 
+ 	for (i = 0; i < ARRAY_SIZE(ak4118_iec958_controls); i++) {
+ 		kctl_new = &ak4118_iec958_controls[i];
+-		kctl = snd_soc_card_get_kcontrol(component->card,
+-						 kctl_new->name);
+-		if (!kctl)
+-			continue;
+-		id = &kctl->id;
+-		snd_ctl_notify(component->card->snd_card,
+-			       SNDRV_CTL_EVENT_MASK_VALUE, id);
 +
- config SPI_DAVINCI
- 	tristate "Texas Instruments DaVinci/DA8x/OMAP-L/AM1x SoC SPI controller"
- 	depends on ARCH_DAVINCI || ARCH_KEYSTONE || COMPILE_TEST
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index 28c4817a8a74a..49937ea0d73d0 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -40,6 +40,7 @@ obj-$(CONFIG_SPI_CADENCE_QUADSPI)	+= spi-cadence-quadspi.o
- obj-$(CONFIG_SPI_CADENCE_XSPI)		+= spi-cadence-xspi.o
- obj-$(CONFIG_SPI_CLPS711X)		+= spi-clps711x.o
- obj-$(CONFIG_SPI_COLDFIRE_QSPI)		+= spi-coldfire-qspi.o
-+obj-$(CONFIG_SPI_CS42L43)		+= spi-cs42l43.o
- obj-$(CONFIG_SPI_DAVINCI)		+= spi-davinci.o
- obj-$(CONFIG_SPI_DLN2)			+= spi-dln2.o
- obj-$(CONFIG_SPI_DESIGNWARE)		+= spi-dw.o
-diff --git a/drivers/spi/spi-cs42l43.c b/drivers/spi/spi-cs42l43.c
-new file mode 100644
-index 0000000000000..f48999e1a74d9
---- /dev/null
-+++ b/drivers/spi/spi-cs42l43.c
-@@ -0,0 +1,287 @@
-+// SPDX-License-Identifier: GPL-2.0
-+//
-+// CS42L43 SPI Controller Driver
-+//
-+// Copyright (C) 2022-2023 Cirrus Logic, Inc. and
-+//                         Cirrus Logic International Semiconductor Ltd.
-+
-+#include <linux/device.h>
-+#include <linux/errno.h>
-+#include <linux/mfd/cs42l43.h>
-+#include <linux/mfd/cs42l43-regs.h>
-+#include <linux/module.h>
-+#include <linux/platform_device.h>
-+#include <linux/pm_runtime.h>
-+#include <linux/regmap.h>
-+#include <linux/spi/spi.h>
-+
-+#define CS42L43_FIFO_SIZE		16
-+#define CS42L43_SPI_ROOT_HZ		40000000
-+#define CS42L43_SPI_MAX_LENGTH		65532
-+
-+enum cs42l43_spi_cmd {
-+	CS42L43_WRITE,
-+	CS42L43_READ
-+};
-+
-+struct cs42l43_spi {
-+	struct device *dev;
-+	struct regmap *regmap;
-+	struct spi_controller *ctlr;
-+};
-+
-+static unsigned int cs42l43_clock_divs[16] = {
-+	2, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30
-+};
-+
-+static int cs42l43_spi_tx(struct regmap *regmap, const u8 *buf, unsigned int len)
-+{
-+	const u8 *end = buf + len;
-+	u32 val;
-+	int ret;
-+
-+	while (buf < end) {
-+		const u8 *block = min_t(const u8 *, buf + CS42L43_FIFO_SIZE, end);
-+
-+		for (; buf < block - (sizeof(u32) - 1); buf += sizeof(u32))
-+			regmap_write(regmap, CS42L43_TX_DATA, *(const u32 *)buf);
-+
-+		if (buf < block) {
-+			unsigned int residue = end - buf;
-+
-+			memcpy(&val, buf, residue);
-+			regmap_write(regmap, CS42L43_TX_DATA, val);
-+			buf += residue;
-+		}
-+
-+		regmap_write(regmap, CS42L43_TRAN_CONFIG8, CS42L43_SPI_TX_DONE_MASK);
-+
-+		ret = regmap_read_poll_timeout(regmap, CS42L43_TRAN_STATUS1,
-+					       val, (val & CS42L43_SPI_TX_REQUEST_MASK),
-+					       1000, 5000);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static int cs42l43_spi_rx(struct regmap *regmap, u8 *buf, unsigned int len)
-+{
-+	const u8 *end = buf + len;
-+	u32 val;
-+	int ret;
-+
-+	while (buf < end) {
-+		const u8 *block = min_t(const u8 *, buf + CS42L43_FIFO_SIZE, end);
-+
-+		ret = regmap_read_poll_timeout(regmap, CS42L43_TRAN_STATUS1,
-+					       val, (val & CS42L43_SPI_RX_REQUEST_MASK),
-+					       1000, 5000);
-+		if (ret)
-+			return ret;
-+
-+		for (; buf < block - (sizeof(u32) - 1); buf += sizeof(u32)) {
-+			ret = regmap_read(regmap, CS42L43_RX_DATA, (u32 *)buf);
-+			if (ret)
-+				return ret;
-+		}
-+
-+		if (buf < block) {
-+			unsigned int residue = end - buf;
-+
-+			ret = regmap_read(regmap, CS42L43_RX_DATA, &val);
-+			if (ret)
-+				return ret;
-+
-+			memcpy(buf, &val, residue);
-+			buf += residue;
-+		}
-+
-+		regmap_write(regmap, CS42L43_TRAN_CONFIG8, CS42L43_SPI_RX_DONE_MASK);
-+	}
-+
-+	return 0;
-+}
-+
-+static int cs42l43_transfer_one(struct spi_controller *ctlr, struct spi_device *spi,
-+				struct spi_transfer *tfr)
-+{
-+	struct cs42l43_spi *priv = spi_controller_get_devdata(spi->controller);
-+	int i, ret = -EINVAL;
-+
-+	for (i = 0; i < ARRAY_SIZE(cs42l43_clock_divs); i++) {
-+		if (CS42L43_SPI_ROOT_HZ / cs42l43_clock_divs[i] <= tfr->speed_hz)
-+			break;
-+	}
-+
-+	if (i == ARRAY_SIZE(cs42l43_clock_divs))
-+		return -EINVAL;
-+
-+	regmap_write(priv->regmap, CS42L43_SPI_CLK_CONFIG1, i);
-+
-+	if (tfr->tx_buf) {
-+		regmap_write(priv->regmap, CS42L43_TRAN_CONFIG3, CS42L43_WRITE);
-+		regmap_write(priv->regmap, CS42L43_TRAN_CONFIG4, tfr->len - 1);
-+	} else if (tfr->rx_buf) {
-+		regmap_write(priv->regmap, CS42L43_TRAN_CONFIG3, CS42L43_READ);
-+		regmap_write(priv->regmap, CS42L43_TRAN_CONFIG5, tfr->len - 1);
-+	}
-+
-+	regmap_write(priv->regmap, CS42L43_TRAN_CONFIG1, CS42L43_SPI_START_MASK);
-+
-+	if (tfr->tx_buf)
-+		ret = cs42l43_spi_tx(priv->regmap, (const u8 *)tfr->tx_buf, tfr->len);
-+	else if (tfr->rx_buf)
-+		ret = cs42l43_spi_rx(priv->regmap, (u8 *)tfr->rx_buf, tfr->len);
-+
-+	return ret;
-+}
-+
-+static void cs42l43_set_cs(struct spi_device *spi, bool is_high)
-+{
-+	struct cs42l43_spi *priv = spi_controller_get_devdata(spi->controller);
-+
-+	if (spi->chip_select == 0)
-+		regmap_write(priv->regmap, CS42L43_SPI_CONFIG2, !is_high);
-+}
-+
-+static int cs42l43_prepare_message(struct spi_controller *ctlr, struct spi_message *msg)
-+{
-+	struct cs42l43_spi *priv = spi_controller_get_devdata(ctlr);
-+	struct spi_device *spi = msg->spi;
-+	unsigned int spi_config1 = 0;
-+
-+	/* select another internal CS, which doesn't exist, so CS 0 is not used */
-+	if (spi->cs_gpiod)
-+		spi_config1 |= 1 << CS42L43_SPI_SS_SEL_SHIFT;
-+	if (spi->mode & SPI_CPOL)
-+		spi_config1 |= CS42L43_SPI_CPOL_MASK;
-+	if (spi->mode & SPI_CPHA)
-+		spi_config1 |= CS42L43_SPI_CPHA_MASK;
-+	if (spi->mode & SPI_3WIRE)
-+		spi_config1 |= CS42L43_SPI_THREE_WIRE_MASK;
-+
-+	regmap_write(priv->regmap, CS42L43_SPI_CONFIG1, spi_config1);
-+
-+	return 0;
-+}
-+
-+static int cs42l43_prepare_transfer_hardware(struct spi_controller *ctlr)
-+{
-+	struct cs42l43_spi *priv = spi_controller_get_devdata(ctlr);
-+	int ret;
-+
-+	ret = regmap_write(priv->regmap, CS42L43_BLOCK_EN2, CS42L43_SPI_MSTR_EN_MASK);
-+	if (ret) {
-+		dev_err(priv->dev, "Failed to enable SPI controller: %d\n", ret);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static int cs42l43_unprepare_transfer_hardware(struct spi_controller *ctlr)
-+{
-+	struct cs42l43_spi *priv = spi_controller_get_devdata(ctlr);
-+	int ret;
-+
-+	ret = regmap_write(priv->regmap, CS42L43_BLOCK_EN2, 0);
-+	if (ret) {
-+		dev_err(priv->dev, "Failed to disable SPI controller: %d\n", ret);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static size_t cs42l43_spi_max_length(struct spi_device *spi)
-+{
-+	return CS42L43_SPI_MAX_LENGTH;
-+}
-+
-+static int cs42l43_spi_probe(struct platform_device *pdev)
-+{
-+	struct cs42l43 *cs42l43 = dev_get_drvdata(pdev->dev.parent);
-+	struct cs42l43_spi *priv;
-+	int ret;
-+
-+	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+
-+	priv->ctlr = devm_spi_alloc_master(&pdev->dev, sizeof(*priv->ctlr));
-+	if (!priv->ctlr)
-+		return -ENOMEM;
-+
-+	spi_controller_set_devdata(priv->ctlr, priv);
-+
-+	priv->dev = &pdev->dev;
-+	priv->regmap = cs42l43->regmap;
-+
-+	priv->ctlr->prepare_message = cs42l43_prepare_message;
-+	priv->ctlr->prepare_transfer_hardware = cs42l43_prepare_transfer_hardware;
-+	priv->ctlr->unprepare_transfer_hardware = cs42l43_unprepare_transfer_hardware;
-+	priv->ctlr->transfer_one = cs42l43_transfer_one;
-+	priv->ctlr->set_cs = cs42l43_set_cs;
-+	priv->ctlr->max_transfer_size = cs42l43_spi_max_length;
-+
-+	if (is_of_node(dev_fwnode(cs42l43->dev))) {
-+		priv->ctlr->dev.fwnode =
-+			fwnode_get_named_child_node(dev_fwnode(cs42l43->dev), "spi");
-+		priv->ctlr->dev.of_node = to_of_node(dev_fwnode(&priv->ctlr->dev));
-+	} else {
-+		priv->ctlr->dev.fwnode = dev_fwnode(priv->dev);
-+	}
-+
-+	priv->ctlr->mode_bits = SPI_3WIRE | SPI_CPHA | SPI_CPOL;
-+	priv->ctlr->flags = SPI_CONTROLLER_HALF_DUPLEX;
-+	priv->ctlr->bits_per_word_mask = SPI_BPW_MASK(8) | SPI_BPW_MASK(16) |
-+					 SPI_BPW_MASK(32);
-+	priv->ctlr->min_speed_hz = CS42L43_SPI_ROOT_HZ /
-+				   cs42l43_clock_divs[ARRAY_SIZE(cs42l43_clock_divs) - 1];
-+	priv->ctlr->max_speed_hz = CS42L43_SPI_ROOT_HZ / cs42l43_clock_divs[0];
-+	priv->ctlr->use_gpio_descriptors = true;
-+	priv->ctlr->auto_runtime_pm = true;
-+
-+	pm_runtime_enable(priv->dev);
-+	pm_runtime_idle(priv->dev);
-+
-+	regmap_write(priv->regmap, CS42L43_TRAN_CONFIG6, CS42L43_FIFO_SIZE - 1);
-+	regmap_write(priv->regmap, CS42L43_TRAN_CONFIG7, CS42L43_FIFO_SIZE - 1);
-+
-+	// Disable Watchdog timer and enable stall
-+	regmap_write(priv->regmap, CS42L43_SPI_CONFIG3, 0);
-+	regmap_write(priv->regmap, CS42L43_SPI_CONFIG4, CS42L43_SPI_STALL_ENA_MASK);
-+
-+	ret = devm_spi_register_controller(priv->dev, priv->ctlr);
-+	if (ret) {
-+		pm_runtime_disable(priv->dev);
-+		dev_err(priv->dev, "Failed to register SPI controller: %d\n", ret);
-+	}
-+
-+	return ret;
-+}
-+
-+static int cs42l43_spi_remove(struct platform_device *pdev)
-+{
-+	pm_runtime_disable(&pdev->dev);
-+
-+	return 0;
-+}
-+
-+static struct platform_driver cs42l43_spi_driver = {
-+	.driver = {
-+		.name	= "cs42l43-spi",
-+	},
-+
-+	.probe		= cs42l43_spi_probe,
-+	.remove		= cs42l43_spi_remove,
-+};
-+module_platform_driver(cs42l43_spi_driver);
-+
-+MODULE_DESCRIPTION("CS42L43 SPI Driver");
-+MODULE_AUTHOR("Lucas Tanure <tanureal@opensource.cirrus.com>");
-+MODULE_AUTHOR("Maciej Strozek <mstrozek@opensource.cirrus.com>");
-+MODULE_LICENSE("GPL");
-+MODULE_ALIAS("platform:cs42l43-spi");
++		snd_soc_component_notify_control(component, kctl_new->name);
+ 	}
+ 
+ 	return IRQ_HANDLED;
 -- 
 2.30.2
 

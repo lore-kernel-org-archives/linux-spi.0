@@ -2,86 +2,174 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BCFBCC77B7F
-	for <linux-spi@archiver.kernel.org>; Sat, 13 May 2023 17:36:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B13FC77B7A
+	for <linux-spi@archiver.kernel.org>; Sat, 13 May 2023 18:06:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231799AbjEMRgz (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sat, 13 May 2023 13:36:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56346 "EHLO
+        id S236786AbjEMSGb (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sat, 13 May 2023 14:06:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229704AbjEMRgy (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sat, 13 May 2023 13:36:54 -0400
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B8E93580
-        for <linux-spi@vger.kernel.org>; Sat, 13 May 2023 10:36:50 -0700 (PDT)
-Received: by mail-ed1-x530.google.com with SMTP id 4fb4d7f45d1cf-50bcb00a4c2so17130246a12.1
-        for <linux-spi@vger.kernel.org>; Sat, 13 May 2023 10:36:50 -0700 (PDT)
+        with ESMTP id S237167AbjEMSGL (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sat, 13 May 2023 14:06:11 -0400
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6A775B82
+        for <linux-spi@vger.kernel.org>; Sat, 13 May 2023 11:05:39 -0700 (PDT)
+Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-965c3f9af2aso1701879266b.0
+        for <linux-spi@vger.kernel.org>; Sat, 13 May 2023 11:05:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1683999409; x=1686591409;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=j/VZpwFdnGxurx8eGzu/FQ1auFqOPYenlMhH8Ov0CLk=;
-        b=ff6vyStrNLqN9ZcVCJ5Mbm8qte0bmFpmogFErKEJG59SGxYoZejhww/tL0tcawu/pI
-         6wBqMNYzDcgwl27+2oqvScINogeiVCsVpdOMFN45umrinI/FIgXRurpYM7VC6flf4ruO
-         ip03EZZttTg6fL2q7Po419a80AsGfjl/z0SASc3ZHd+4NBZyIwvZS8+hRc+Tlx3hCXfp
-         IoNncpIl4uspxmh5kZO47ZrBfQLz8koDw1Oyyp/X0/DL3Av7Ja04Lff7iaLW3VyxY1tg
-         AqOJvk4uyk06qqIeYpfN1Akm8yQeqh6iRSMVZpssgM7/vzvhSZvEbBs04mb7EmiNFMcw
-         3Gwg==
+        d=linaro.org; s=google; t=1684001137; x=1686593137;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=VORmC64siVlBa/0lsts3YfZ0fyyp1pGdpaqv6LESwso=;
+        b=wEKkAyeWa52ws3iAGnzglLlKlS3zlbpBZ4QgIsfT3pJDn0B03VxbK080SEDVumngKN
+         Xdr9wix17dCRN5YoJMGYMo9kqgtQ2fzH6cI3wGX8OqNuDjaNMfijfLhE/b6Dn4BlVtAd
+         KBHNxbh78/fNEK4gw7Wme7nVqhR7+9muiraIOzH9ojNzoL6HSTuIpRbK9C+H6ivxaeou
+         J2tAWi2B644hS5Pr8BPft2de8uC2ffIWcP7T9KmksbbXtaQ8Q07Ud6vjttKqWNL8V2x1
+         8fhBBGRKKjTaegm/1Ns61Ea/dl93XMKRuTunMW/0vUBHFb5DFhnYIWQVu3Nk2Kt0fns+
+         4m/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683999409; x=1686591409;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=j/VZpwFdnGxurx8eGzu/FQ1auFqOPYenlMhH8Ov0CLk=;
-        b=GA4fSLsdkR/LegKTohRJyWnDpYiQz/ij7aQjX+YoomaKZD0FxvdhwvRtLL3jc/e/YP
-         gnAKn2B12cYw979eBN+nTEZn3q5WSJeO5KWu6C7CsxiVqGDf9QcKLZ+SZLcGQLG7N6Hh
-         DkClHCz9mZLaA1Xelt6FDBN1DahiiOnTo1CZclvQWfIKRgvHeVH6Qb+NafsxY8ZLtREt
-         mnahP+rFIccrYC/o3mSgt5K0VwIH2J7BOKFUhDPly60vIEw1O7+IpcB+RqotcyxhHKjn
-         9QzBOATF0rJCaaQRjfv6nyv96ORDoZBEDLLYuPdBaRK8wF3l/XNAzhDgHeKhd1gcOoWt
-         xtPg==
-X-Gm-Message-State: AC+VfDyTcCuZtj85rU07/NiuXZVtQ6FlwyKySSxutSooj2vAkjTbl7lc
-        ncaq29Pe3OT8r07n++f7fnn7oQ==
-X-Google-Smtp-Source: ACHHUZ6TrxhRFKdRtKYcJoNagcuU6B5le7moBbShUHLvNG2Kk6j+CTO80hdt2HxMzK5vzuFxxT36ag==
-X-Received: by 2002:aa7:cfcb:0:b0:506:83e7:8c6c with SMTP id r11-20020aa7cfcb000000b0050683e78c6cmr23563445edy.10.1683999408823;
-        Sat, 13 May 2023 10:36:48 -0700 (PDT)
-Received: from krzk-bin.. ([2a02:810d:15c0:828:bc2d:23f8:43c2:2aed])
-        by smtp.gmail.com with ESMTPSA id w5-20020a056402128500b0050c03520f68sm5163881edv.71.2023.05.13.10.36.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 13 May 2023 10:36:48 -0700 (PDT)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     Andi Shyti <andi.shyti@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        linux-spi@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] spi: MAINTAINERS: drop Krzysztof Kozlowski from Samsung SPI
-Date:   Sat, 13 May 2023 19:36:46 +0200
-Message-Id: <20230513173646.4306-1-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20221208; t=1684001137; x=1686593137;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=VORmC64siVlBa/0lsts3YfZ0fyyp1pGdpaqv6LESwso=;
+        b=jsFiN92r7ueM6TFJxKPRE602d53PXZKarRMl2ozJrJz2SF1mvclx8AA4u494re3ioK
+         wDUDaBMeCJ04YvgcjTw24KY5mhEmFKBCBh6GSot/lZ8YkN+1RiYfbpo1WADJQgdKuFBp
+         EqW3SZWWO5uca2/bXRRT+/gc0mh5Iw5w7J9kBD0jetnxii12dclPgi1i84uMJioNgxl1
+         KoQBv4SwoC/f4tn3PNPZiNuf5KxarLp77x20yIXQ1TKmZDcpA89CQgavH+gKLsSMq9r7
+         vrrmoc4EJfYjQGwKYPzfH73vobmMREeX8xpIDrMykQ+L0xWpwmN5iJcpImD/Cnz15c4Z
+         z7PQ==
+X-Gm-Message-State: AC+VfDworYLHo0ENzNN8Nqk5vJiKYQJ2/F0wXruY7lxelU5ZWlqL62eo
+        kNnVNgidN5JrvUuYSOWx7/y7uA==
+X-Google-Smtp-Source: ACHHUZ456NqFDsI+SzfZLKpEWQ+eDqx16S3lEUJwP8MVzdzMH2X2yE1vj8bXjIo/Mqxrqh0ozu1OcA==
+X-Received: by 2002:a17:907:6295:b0:94e:cbfb:5fab with SMTP id nd21-20020a170907629500b0094ecbfb5fabmr27362822ejc.75.1684001137121;
+        Sat, 13 May 2023 11:05:37 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:ba68:e5c9:694e:c6e4? ([2a02:810d:15c0:828:ba68:e5c9:694e:c6e4])
+        by smtp.gmail.com with ESMTPSA id hx7-20020a170906846700b00965a4350411sm6962208ejc.9.2023.05.13.11.05.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 13 May 2023 11:05:36 -0700 (PDT)
+Message-ID: <015c5208-ac85-8a14-3455-c70781fd92f8@linaro.org>
+Date:   Sat, 13 May 2023 20:05:34 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 05/10] dt-bindings: mfd: cirrus,cs42l43: Add initial DT
+ binding
+Content-Language: en-US
+To:     Charles Keepax <ckeepax@opensource.cirrus.com>
+Cc:     broonie@kernel.org, lee@kernel.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        tglx@linutronix.de, maz@kernel.org, linus.walleij@linaro.org,
+        vkoul@kernel.org, lgirdwood@gmail.com,
+        yung-chuan.liao@linux.intel.com, sanyog.r.kale@intel.com,
+        pierre-louis.bossart@linux.intel.com, alsa-devel@alsa-project.org,
+        patches@opensource.cirrus.com, devicetree@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20230512122838.243002-1-ckeepax@opensource.cirrus.com>
+ <20230512122838.243002-6-ckeepax@opensource.cirrus.com>
+ <25c92476-7bca-90c4-9130-cb765495a783@linaro.org>
+ <20230512161545.GL68926@ediswmail.ad.cirrus.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230512161545.GL68926@ediswmail.ad.cirrus.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Remove Krzysztof Kozlowski from maintainers of Samsung SoC SPI drivers.
+On 12/05/2023 18:15, Charles Keepax wrote:
+> On Fri, May 12, 2023 at 05:23:22PM +0200, Krzysztof Kozlowski wrote:
+>> On 12/05/2023 14:28, Charles Keepax wrote:
+>>> +$id: http://devicetree.org/schemas/mfd/cirrus,cs42l43.yaml#
+>>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>>> +
+>>> +title: Cirrus Logic CS42L43 Audio CODEC
+>>
+>> That's audio codec, so it should be in sound, not MFD.
+>>
+> 
+> Is this true even despite the device being implemented as an MFD?
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
----
- MAINTAINERS | 1 -
- 1 file changed, 1 deletion(-)
+Implementation in Linux almost does not matter here. Bindings location
+match the device main purpose. We indeed stuff into MFD bindings things
+like PMIC, because PMIC is a bit more than just regulators, and we do
+not have here subsystem for PMICs. If you call it Audio Codec, then I
+vote for sound directory for bindings.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 746ec43ff244..c6edea4e683a 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -18711,7 +18711,6 @@ F:	include/dt-bindings/clock/samsung,*.h
- F:	include/linux/clk/samsung.h
- 
- SAMSUNG SPI DRIVERS
--M:	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
- M:	Andi Shyti <andi.shyti@kernel.org>
- L:	linux-spi@vger.kernel.org
- L:	linux-samsung-soc@vger.kernel.org
--- 
-2.34.1
+> I am happy to move it, and will do so unless I hear otherwise.
+> 
+>>> +  - VDD_P-supply
+>>> +  - VDD_A-supply
+>>> +  - VDD_D-supply
+>>> +  - VDD_IO-supply
+>>> +  - VDD_CP-supply
+>>
+>> lowercase, no underscores in all property names.
+> 
+> I guess we can rename all the regulators to lower case.
+> 
+>>> +additionalProperties: false
+>>
+>> This order is quite unexpected... please do not invent your own layout.
+>> Use example-schema as your starting point. I suspect there will be many
+>> things to fix, so limited review follows (not complete).
+>>
+>>
+>> Missing ref to dai-common
+> 
+> Apologies for that I was a little hesitant about this but this
+> order did make the binding document much more readable, the
+> intentation got really hard to follow in the traditional order. I
+> guess since I have things working now I can put it back, again I
+> will do so unless I hear otherwise.
+
+The additional/unevaluatedProperties from child nodes are indeed moved
+then up - following the property:
+   pinctrl:
+     type: object
+     additionalProperties: false
+
+but that's exception and for the rest I don't see any troubles with
+indentation. That would be the only binding... so what's here so special?
+
+> 
+>>> +  pinctrl:
+>>> +    type: object
+>>
+>> additionalProperties: false
+>>
+> 
+> Can do.
+> 
+>>> +
+>>> +    allOf:
+>>> +      - $ref: "../pinctrl/pinctrl.yaml#"
+>>
+>> No quotes, absolute path, so /schemas/pinctrl/....
+>>
+> 
+> Can do.
+> 
+>>> +
+>>> +    properties:
+>>> +      pin-settings:
+>>
+>> What's this node about? pinctrl/pinctrl/pins? One level too much.
+>>
+> 
+> codec/pinctrl/pins
+> 
+> The device is a codec, so the main node should be called codec,
+> then it has a subnode called pinctrl to satisfy the pinctrl DT
+> binding.
+
+Sure, but then you do not need pin-settings. Look at Qualcomm bindings
+for example:
+
+Documentation/devicetree/bindings/pinctrl/qcom,sm8550-tlmm.yaml
+
+Best regards,
+Krzysztof
 

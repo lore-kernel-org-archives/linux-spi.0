@@ -2,84 +2,74 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F987C7EE23
-	for <linux-spi@archiver.kernel.org>; Mon, 15 May 2023 11:10:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E3B8C77B7D
+	for <linux-spi@archiver.kernel.org>; Mon, 15 May 2023 11:10:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241185AbjEOLKA (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 15 May 2023 07:10:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52848 "EHLO
+        id S241260AbjEOLKo (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 15 May 2023 07:10:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241244AbjEOLJx (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 15 May 2023 07:09:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ED03E5B;
-        Mon, 15 May 2023 04:09:53 -0700 (PDT)
+        with ESMTP id S241295AbjEOLKj (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 15 May 2023 07:10:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE9B719B2
+        for <linux-spi@vger.kernel.org>; Mon, 15 May 2023 04:10:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C271462295;
-        Mon, 15 May 2023 11:09:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0814C433D2;
-        Mon, 15 May 2023 11:09:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 10680622A6
+        for <linux-spi@vger.kernel.org>; Mon, 15 May 2023 11:10:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 777E1C433EF;
+        Mon, 15 May 2023 11:10:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684148992;
-        bh=dY7dcUuhtCnaIotYfTGR91pIk6dZNsFbIzgqKiaUhL4=;
-        h=From:To:In-Reply-To:References:Subject:Date:From;
-        b=pBwcLOM5+iavGmzVbrLZ8x7hXzFMI71seHb8fYtFhF0/9J4/E3d0jS4HyOidOJlfR
-         wL9bvm2/zjRWe+7ctIY9isccslzoYDCpJuZqIKBRn+6ElG9TmHFKOyZTsnbi3njWui
-         hhFVIkXHUOgEtcu+uJiawyfJ1navPvBA1VTgVgBLvveyw42Z+31fHbARztfq3Svs3H
-         wlSLyMQXuw9c2YSK63H1HWB8IX2q9xo6gMw4j9s/1TdRjyPZFt7WNM/V8u2aSvc8wo
-         N53+umW7IlO6amkNspsD63MTbEY2rOroAtZaY2WckkZue7n1y2P+vG6arjB1sWoyIS
-         /riLzPgNKC0UQ==
-From:   Mark Brown <broonie@kernel.org>
-To:     Andi Shyti <andi.shyti@kernel.org>, linux-spi@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230513173646.4306-1-krzysztof.kozlowski@linaro.org>
-References: <20230513173646.4306-1-krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH] spi: MAINTAINERS: drop Krzysztof Kozlowski from
- Samsung SPI
-Message-Id: <168414899059.394221.12943543309007276806.b4-ty@kernel.org>
-Date:   Mon, 15 May 2023 20:09:50 +0900
-MIME-Version: 1.0
+        s=k20201202; t=1684149022;
+        bh=0JfoUgHUQzKUPO/ZiMpIdMyV3y/fSUeJpsTUFdPlt4Q=;
+        h=Subject:From:Date:To:From;
+        b=oxlBmqa7RWEG4mVyFoWQGQHFBB6OUurEvS2j6JS+S4vQCJVO4BNx1lL4kQgELRFFd
+         km1YtyUoBz2Tq7+11NqFqvgoRpqB9bwc4gERr9VXSakPwK7XMwB6pE1ErFQV4eRA48
+         //dtby7C4t14sPCHe9d2CQaXjKqiFL16OFe5Ud7Fr7yXyzoJAK91dMGN31ktvXJ+/M
+         hlmZLV2V67wAMJZN4q4ggl8vNbVDndEvpgz9SdRzOwvVxvSKXjMZJ33l5HndQD3hqv
+         NbxKWxc9zKbf14Q335RmzYwL3E1Comd2rxY26eHLX4SYH0/jQmzQX5eWfSwVTWs8TQ
+         x0Gc2ltEfpBNQ==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 57909E5421B;
+        Mon, 15 May 2023 11:10:22 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13-dev-bfdf5
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <168414902230.21885.18441664160497604812.git-patchwork-summary@kernel.org>
+Date:   Mon, 15 May 2023 11:10:22 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Sat, 13 May 2023 19:36:46 +0200, Krzysztof Kozlowski wrote:
-> Remove Krzysztof Kozlowski from maintainers of Samsung SoC SPI drivers.
-> 
-> 
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+Series: [1/2] spi: spi-cadence: Avoid read of RX FIFO before its ready
+  Submitter: Charles Keepax <ckeepax@opensource.cirrus.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=746194
+  Lore link: https://lore.kernel.org/r/20230509164153.3907694-1-ckeepax@opensource.cirrus.com
+    Patches: [1/2] spi: spi-cadence: Avoid read of RX FIFO before its ready
+             [2/2] spi: spi-cadence: Only overlap FIFO transactions in slave mode
 
-Thanks!
+Patch: spi: MAINTAINERS: drop Krzysztof Kozlowski from Samsung SPI
+  Submitter: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=747282
+  Lore link: https://lore.kernel.org/r/20230513173646.4306-1-krzysztof.kozlowski@linaro.org
 
-[1/1] spi: MAINTAINERS: drop Krzysztof Kozlowski from Samsung SPI
-      commit: ec9452594e04804cabbc561e88e96b48ab4655e4
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+Total patches: 3
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
 

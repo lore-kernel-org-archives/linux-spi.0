@@ -2,288 +2,605 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C6012C7EE23
-	for <linux-spi@archiver.kernel.org>; Tue, 16 May 2023 12:07:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 245F2C77B7A
+	for <linux-spi@archiver.kernel.org>; Tue, 16 May 2023 13:12:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233051AbjEPMHb (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 16 May 2023 08:07:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33850 "EHLO
+        id S233425AbjEPNMh (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 16 May 2023 09:12:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233049AbjEPMHa (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 16 May 2023 08:07:30 -0400
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2083.outbound.protection.outlook.com [40.107.223.83])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4D802101;
-        Tue, 16 May 2023 05:07:26 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BOQCClsCURwVa878O5c2JBYaIY2kM0tqbYCC2Jl1AdAX4xBT/rpYNkfbXDZMhQNlyewbnLnAus1cl2hQ++ZBqYSeVoaOGa11rid4a9McU/BcyGRztY28CkRKmVpnBjVJGSPllTizUGB10d1buSnRxEAmHL0PjSzPCCAgPxc3uCBkjLtzOK0hqSUfOflfdV3ig9Iswr1oW6Kk9gPZY/PsHjFIpv3aPeks6lr0Du9J7gb4WJDzaaKZEt6qvnuAXTAHY58FGohCIHUvqLPpOrYkq1XkEv/FzUh0zkOu074xXQGWVzrPngY5KXx9aoB3DUyChGlfafcybSWlf7B6WmDyng==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oC2OYVg8bKCUWkXOtyEmi2QXSKFtUPxOr+55lWBjn3o=;
- b=I9DwgoEQNcfduVvwCo6HLSTBM+3+QkZjSvT9HySWrySgTFWvSqSV/MCgzv+lnnaMmb8Ls+fnUw7SdCrDFzvUYTwf4T7ZELGF+fTdRA9RZ6Y6Qwx5hSLM+gV0atXKMerg1vWds4TGDJaT+oL9FoP8+h8KmgAPHEQweQJt1ORkWB6EzJgvIjuj4oinnPcKFLakMxETNIMuvd5nu91BcxI71rF3mSijOPRmkCXDHFhzpgMcNG3zqwd0jbgR7SV89Qso+nO+FRlGIkLrSQyB/IXaVOZWJM5/M87pIK+qXsDglGjLdV2jHCCVGcelNC4K4Xx2P/VC5MDhMTj6GsPmxnQMag==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oC2OYVg8bKCUWkXOtyEmi2QXSKFtUPxOr+55lWBjn3o=;
- b=Fb7swHNgMaR86RqQF/uRwZPHBN4YoGy65CsRaZxQPYrjkLiEL+rWe0BYeSTfthPy37X2qLsEEoxGK8i1fH9a+zj0VQZbTxIUYHkXgVPU9wM2eJoLFRi+dCWNXxrIdaJfCT5rvz7dEggc05upPLG74SeZOAJ7iTB8aUA5z3PAQ8o=
-Received: from BN7PR12MB2802.namprd12.prod.outlook.com (2603:10b6:408:25::33)
- by SJ2PR12MB8157.namprd12.prod.outlook.com (2603:10b6:a03:4fa::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6387.33; Tue, 16 May
- 2023 12:07:23 +0000
-Received: from BN7PR12MB2802.namprd12.prod.outlook.com
- ([fe80::4db:e158:60d:21e4]) by BN7PR12MB2802.namprd12.prod.outlook.com
- ([fe80::4db:e158:60d:21e4%6]) with mapi id 15.20.6387.033; Tue, 16 May 2023
- 12:07:23 +0000
-From:   "Mahapatra, Amit Kumar" <amit.kumar-mahapatra@amd.com>
-To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Mark Brown <broonie@kernel.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>
-CC:     Marc Kleine-Budde <mkl@pengutronix.de>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "git (AMD-Xilinx)" <git@amd.com>
-Subject: RE: [PATCH 3/3] spi: spi-imx: fix use of more than four chipselects
-Thread-Topic: [PATCH 3/3] spi: spi-imx: fix use of more than four chipselects
-Thread-Index: AQHZd3xKn1eSnAuz0ESi22CczVsXFK9c7cLQ
-Date:   Tue, 16 May 2023 12:07:22 +0000
-Message-ID: <BN7PR12MB280270590FF8B7DF27E07760DC799@BN7PR12MB2802.namprd12.prod.outlook.com>
-References: <20230425134527.483607-1-linux@rasmusvillemoes.dk>
- <20230425134527.483607-4-linux@rasmusvillemoes.dk>
-In-Reply-To: <20230425134527.483607-4-linux@rasmusvillemoes.dk>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BN7PR12MB2802:EE_|SJ2PR12MB8157:EE_
-x-ms-office365-filtering-correlation-id: 0b014b1e-2fa8-449a-a4ba-08db56061b41
-x-ld-processed: 3dd8961f-e488-4e60-8e11-a82d994e183d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 0O5b0waMC1WwPsx32iiOnpvLHlEpxWD9juMKqgJGEjPO9I9FRnKR6E4Cko0tRKa69K0gACH+MZ5Wqf0efPFlUgfIQMzrex+TDM3IyMtjZmCLu+b0lXl9i0EP7/O1fWlOROYGk7jY4e1vYGR/e+AslMGIgRkBdwMFavL6/5NOdYEdOQifoBPg27E/W0M8YQSNTgqU03W/LHYLXP0Hc/Y2LWQuPQaM+cITZCttkEdfqsP4fmaf1Otwx12J50qfYe7o3FgdikLGO8Erz4fCRFBVtW1x2T+K0AJIjk4BIYICpvgao/YEZxOA3agEzmlbY08jnDbemO6n9Pr9GpP4wHl4sCFmyCTaHZ7zLvqyzmTWwgi70RxJV9n+xsUcs+jp9cEOQCuZg1T6AYYxhtBsjik++s+5muPDZd3gkFCV5/kl9bS7AkEOjywRNtn0C+iI5/3/6mg08GqZnzy7uP+LAW9ABpyLpHJBcxn4gQwkiLWqad6PKWDfAehkYHHWcNXj3Psall6Z9oh6/3Zcjm0rg1AJEYIR29ZcAZsZG5fR7EzF2meaw+BA16igZ805DF7l7mZLW6cl7NQQZiAvgDMvLSmbaKtPXFNBsn+w3ABGp+NGiUs=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN7PR12MB2802.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(376002)(346002)(396003)(136003)(39860400002)(451199021)(6506007)(966005)(7696005)(478600001)(110136005)(54906003)(9686003)(53546011)(26005)(186003)(71200400001)(2906002)(4326008)(316002)(76116006)(66946007)(52536014)(8936002)(7416002)(66446008)(66476007)(66556008)(8676002)(41300700001)(5660300002)(55016003)(64756008)(122000001)(38100700002)(86362001)(38070700005)(33656002)(83380400001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?Nk97Z9wPfXyV0xWfrEjjNHaFFxNXArvETsMD7KSkYrzGBMW6fugM0cANgiMB?=
- =?us-ascii?Q?zPbmc8ypzj0eHvhV29E5N60KXRX4K+PnakOzVb8jxbmWJdnuK2lM5Ne1Qbly?=
- =?us-ascii?Q?xhA7jPo/YXfHsWdRsaNBjN+7oITFqhunfppvASxQQsHgPPyztD82tiSyL7x1?=
- =?us-ascii?Q?kER+vNAq86P7hz71jz/mTYvSNp2S4OPkBQ7jlZxyc/+k4KH5QYEk3KOeo610?=
- =?us-ascii?Q?xRHciFy6wf7KNk8fbshi1uExUn0lenUrIqlNCsB7NMYaUEYyShTSYwEo0mKw?=
- =?us-ascii?Q?LuzI+YrrGjgezecoplzmOCuHrxG4Jpf/WUujq88aCnCMDxDmF0CLYC6GvM+g?=
- =?us-ascii?Q?+YSSMVEKl1VD7H26lPEtS6iIfj91B5ujYnj3BausTZ3YH8wrKnzCMq+d7bKW?=
- =?us-ascii?Q?VLZ6CDGO9rZY/yla5xKNO0Vl7Y1F9mLG8Ouon1i66vEJJ1eVeDvRKw82cX/J?=
- =?us-ascii?Q?R1RzD1KPupnUKPEcGzLIuIhazbCym41eGqy5POYaTUzXs+Elt70nE6e70Cni?=
- =?us-ascii?Q?pAT7Pmegx26eEYaUFwcyEjqEWtIVk48zPbLlB5D/ByxD1GqtSgjGQKA0HQN0?=
- =?us-ascii?Q?my5vgspKI2ww36xB5N94O9ayTGk8AvDRoRiS74AbFwkO9lZABm8RqpoR85Zj?=
- =?us-ascii?Q?6v71X4pVarf8oYtVNjCq20f+jVI0SxRKLwFuNiNeQ7ULBL3Hk+IORNMM48KL?=
- =?us-ascii?Q?WpU2B4WK1+aJ8bE5gsiBks8Ow9ytZLltkNH7JJaDUY0CPnOnhywQQ4n86R9U?=
- =?us-ascii?Q?sSUtjP1QfhOl9u76PMa8ihrspwv4eZNRdCLoIPURt3GMxk9+cD2b96rIeQHH?=
- =?us-ascii?Q?YbI5dBCbmRXUAT4HOFnKdaYUwFmgXUELy4w2GAqDonMNTIpvvV3S2IdWWRgN?=
- =?us-ascii?Q?7cktW0QMlU1WrLXXQFxMtBvXOkY/FR37r8q/3Ll9J6zWfhWD5kIs+F77VJak?=
- =?us-ascii?Q?i4gv/K/PdO7t+npHslOtdjGHew9/3rS5f2jNLBJXHA781ci7L6NSJAOCJEGo?=
- =?us-ascii?Q?8uHZuawJ1uz/PkE/MHFcAQuJXk8tb+3H/gH4x/LuaNz2K7DoerP0zRz7x216?=
- =?us-ascii?Q?uokBlY4uo+0kVOE/0r+dqEUkg9JCFuH5852hEu6xthFTJ1Ys0bcWrjrJJRQr?=
- =?us-ascii?Q?/B9jqm8eLMT8/2TE8yi2L5NIeAZodPBdKCnNv41VE6CccQjeKTbThGlczQXW?=
- =?us-ascii?Q?a23z6koiGr3t6G8VB0uv/LYn2YxIhGJ5bzfYys0f4spsH+VYqH1YWvEFg2bO?=
- =?us-ascii?Q?ymJi/xi0eRyHFasKwNU2DUFJvOvUQQZlIwlyE3kZi+h4eNnREVfxf43jJKAG?=
- =?us-ascii?Q?qf1q+S+s8GPt2wem/VL1MOSPDn/VOKshck2/91dwJTfcvIyTv4SvqDBN5AMB?=
- =?us-ascii?Q?ynApEkhZO1Ps1IS1VZR11H7Zr9/MNKr324YSgGIgaHssG+Pl/iqnNLgSw+n5?=
- =?us-ascii?Q?cwN1cINGz+2Oi6ZM9CtmYzd+YCHzllOy4OLQvyAmKgfpVRQLVq1bLDsqNfPl?=
- =?us-ascii?Q?WzqHsd4cKEZQI6Ta7zYz3sneEMN5h8uMbiGBnug8Mu/018intLbiM0yBlbyc?=
- =?us-ascii?Q?1UcSCbPXlv0xyt3zZfE=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S233203AbjEPNMg (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 16 May 2023 09:12:36 -0400
+Received: from loongson.cn (mail.loongson.cn [114.242.206.163])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EA5ECA7;
+        Tue, 16 May 2023 06:12:32 -0700 (PDT)
+Received: from loongson.cn (unknown [10.20.42.35])
+        by gateway (Coremail) with SMTP id _____8DxyOk_gWNkXCkJAA--.16010S3;
+        Tue, 16 May 2023 21:12:31 +0800 (CST)
+Received: from user-pc.202.106.0.20 (unknown [10.20.42.35])
+        by localhost.localdomain (Coremail) with SMTP id AQAAf8BxkrA5gWNkXF5jAA--.40062S4;
+        Tue, 16 May 2023 21:12:31 +0800 (CST)
+From:   Yinbo Zhu <zhuyinbo@loongson.cn>
+To:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Jianmin Lv <lvjianmin@loongson.cn>, wanghongliang@loongson.cn,
+        Liu Peibao <liupeibao@loongson.cn>,
+        loongson-kernel@lists.loongnix.cn, Yinbo Zhu <zhuyinbo@loongson.cn>
+Subject: [PATCH v10 2/2] spi: loongson: add bus driver for the loongson spi controller
+Date:   Tue, 16 May 2023 21:12:24 +0800
+Message-Id: <20230516131224.25481-3-zhuyinbo@loongson.cn>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20230516131224.25481-1-zhuyinbo@loongson.cn>
+References: <20230516131224.25481-1-zhuyinbo@loongson.cn>
 MIME-Version: 1.0
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BN7PR12MB2802.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0b014b1e-2fa8-449a-a4ba-08db56061b41
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 May 2023 12:07:22.9700
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: xtb84jI0rTDXFkzmnEEnx9maIgBIx1AELI4aSNoZHvBgIBTPFBvTvdcpDHNNJce5ryfgotKPelhsPd7uquErsQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8157
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8BxkrA5gWNkXF5jAA--.40062S4
+X-CM-SenderInfo: 52kx5xhqerqz5rrqw2lrqou0/
+X-Coremail-Antispam: 1Uk129KBjvAXoW3Zr1rKF43WFykKr4xJFWfGrg_yoW8Aw47Co
+        WxX3Z3Xr48ur18GF1jqr1FqF47Xa45WrZ0yrn3Aa4kJ3y5tryDJr9xJr47CF18Z3W3tFy3
+        AFySgFW8KF4IgrWkn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXasCq-sGcSsGvf
+        J3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnRJU
+        UU9j1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jrv_JF1l8cAvFV
+        AK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW8JVW5JwA2
+        z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr
+        1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4UJVWxJr1ln4kS14v26r1Y6r17M2AIxVAIcxkE
+        cVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F4
+        0Ex7xfMcIj6xIIjxv20xvE14v26r1q6rW5McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC
+        6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2Ij64vIr41l42xK82IY6x8Erc
+        xFaVAv8VWrMxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v26r1Y6r17MI8I3I0E
+        5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtV
+        W8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r4j6ryUMIIF0xvE2Ix0cI8IcVCY
+        1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI
+        0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7I
+        U8QzVUUUUUU==
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hello,
+This bus driver supports the Loongson SPI hardware controller in the
+Loongson platforms and supports to use DTS and PCI framework to
+register SPI device resources.
 
-> -----Original Message-----
-> From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> Sent: Tuesday, April 25, 2023 7:15 PM
-> To: Mark Brown <broonie@kernel.org>; Shawn Guo <shawnguo@kernel.org>;
-> Sascha Hauer <s.hauer@pengutronix.de>; Pengutronix Kernel Team
-> <kernel@pengutronix.de>; Fabio Estevam <festevam@gmail.com>; NXP Linux
-> Team <linux-imx@nxp.com>
-> Cc: Marc Kleine-Budde <mkl@pengutronix.de>; Rasmus Villemoes
-> <linux@rasmusvillemoes.dk>; linux-spi@vger.kernel.org; linux-arm-
-> kernel@lists.infradead.org; linux-kernel@vger.kernel.org
-> Subject: [PATCH 3/3] spi: spi-imx: fix use of more than four chipselects
->=20
-> CAUTION: This message has originated from an External Source. Please use
-> proper judgment and caution when opening attachments, clicking links, or
-> responding to this email.
->=20
->=20
-> Currently, the spi->chip_select is used unconditionally in code such as
->=20
->         /* set chip select to use */
->         ctrl |=3D MX51_ECSPI_CTRL_CS(spi->chip_select);
->=20
-> and
->=20
->         if (spi->mode & SPI_CPHA)
->                 cfg |=3D MX51_ECSPI_CONFIG_SCLKPHA(spi->chip_select);
->         else
->                 cfg &=3D ~MX51_ECSPI_CONFIG_SCLKPHA(spi->chip_select);
->=20
-> with these macros being
->=20
->         #define MX51_ECSPI_CTRL_CS(cs)          ((cs) << 18)
->         #define MX51_ECSPI_CONFIG_SCLKPHA(cs)   (1 << ((cs) +  0))
->=20
-> However, the CHANNEL_SELECT field in the control register is only two bit=
-s
-> wide, so when spi->chip_select >=3D 4, we end up writing garbage into the
-> BURST_LENGTH field. Similarly, there are only four bits in the SCLK_PHA f=
-ield,
-> so the code above ends up actually modifying bits in the SCLK_POL (or hig=
-her)
-> field.
->=20
-> The scrambling of the BURST_LENGTH field itself is probably benign, since
-> that is explicitly completely initialized later, in
-> ->prepare_transfer.
->=20
-> But, since we effectively write (spi->chip_select & 3) into the
-> CHANNEL_SELECT field, that value is what the IP block then uses to determ=
-ine
-> which bits of the configuration register control phase, polarity etc., an=
-d those
-> bits are not properly initialized, so communication with the spi device
-> completely fails.
->=20
-> Fix this by using the ->unused_native_cs value as channel number for any =
-spi
-> device which uses a gpio as chip select.
->=20
-> Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> ---
->  drivers/spi/spi-imx.c | 31 ++++++++++++++++++++-----------
->  1 file changed, 20 insertions(+), 11 deletions(-)
->=20
-> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c index
-> e8f7afbd9847..569a5132f324 100644
-> --- a/drivers/spi/spi-imx.c
-> +++ b/drivers/spi/spi-imx.c
-> @@ -504,6 +504,13 @@ static void mx51_ecspi_disable(struct spi_imx_data
-> *spi_imx)
->         writel(ctrl, spi_imx->base + MX51_ECSPI_CTRL);  }
->=20
-> +static int mx51_ecspi_channel(const struct spi_device *spi) {
-> +       if (!spi->cs_gpiod)
-> +               return spi->chip_select;
+Signed-off-by: Yinbo Zhu <zhuyinbo@loongson.cn>
+---
+ MAINTAINERS                     |   4 +
+ drivers/spi/Kconfig             |  26 +++
+ drivers/spi/Makefile            |   3 +
+ drivers/spi/spi-loongson-core.c | 279 ++++++++++++++++++++++++++++++++
+ drivers/spi/spi-loongson-pci.c  |  61 +++++++
+ drivers/spi/spi-loongson-plat.c |  46 ++++++
+ drivers/spi/spi-loongson.h      |  47 ++++++
+ 7 files changed, 466 insertions(+)
+ create mode 100644 drivers/spi/spi-loongson-core.c
+ create mode 100644 drivers/spi/spi-loongson-pci.c
+ create mode 100644 drivers/spi/spi-loongson-plat.c
+ create mode 100644 drivers/spi/spi-loongson.h
 
-New set/get APIs for accessing spi->chip_select and spi->cs_gpiod were intr=
-oduced by
-https://github.com/torvalds/linux/commit/303feb3cc06ac0665d0ee9c1414941200e=
-60e8a3
-please use these APIs instead of accessing spi->chip_select & spi->cs_gpiod=
- directly.
-
-Regards,
-Amit
-
-> +       return spi->controller->unused_native_cs;
-> +}
-> +
->  static int mx51_ecspi_prepare_message(struct spi_imx_data *spi_imx,
->                                       struct spi_message *msg)  { @@ -514=
-,6 +521,7 @@
-> static int mx51_ecspi_prepare_message(struct spi_imx_data *spi_imx,
->         u32 testreg, delay;
->         u32 cfg =3D readl(spi_imx->base + MX51_ECSPI_CONFIG);
->         u32 current_cfg =3D cfg;
-> +       int channel =3D mx51_ecspi_channel(spi);
->=20
->         /* set Master or Slave mode */
->         if (spi_imx->slave_mode)
-> @@ -528,7 +536,7 @@ static int mx51_ecspi_prepare_message(struct
-> spi_imx_data *spi_imx,
->                 ctrl |=3D MX51_ECSPI_CTRL_DRCTL(spi_imx->spi_drctl);
->=20
->         /* set chip select to use */
-> -       ctrl |=3D MX51_ECSPI_CTRL_CS(spi->chip_select);
-> +       ctrl |=3D MX51_ECSPI_CTRL_CS(channel);
->=20
->         /*
->          * The ctrl register must be written first, with the EN bit set o=
-ther @@ -
-> 549,22 +557,22 @@ static int mx51_ecspi_prepare_message(struct
-> spi_imx_data *spi_imx,
->          * BURST_LENGTH + 1 bits are received
->          */
->         if (spi_imx->slave_mode && is_imx53_ecspi(spi_imx))
-> -               cfg &=3D ~MX51_ECSPI_CONFIG_SBBCTRL(spi->chip_select);
-> +               cfg &=3D ~MX51_ECSPI_CONFIG_SBBCTRL(channel);
->         else
-> -               cfg |=3D MX51_ECSPI_CONFIG_SBBCTRL(spi->chip_select);
-> +               cfg |=3D MX51_ECSPI_CONFIG_SBBCTRL(channel);
->=20
->         if (spi->mode & SPI_CPOL) {
-> -               cfg |=3D MX51_ECSPI_CONFIG_SCLKPOL(spi->chip_select);
-> -               cfg |=3D MX51_ECSPI_CONFIG_SCLKCTL(spi->chip_select);
-> +               cfg |=3D MX51_ECSPI_CONFIG_SCLKPOL(channel);
-> +               cfg |=3D MX51_ECSPI_CONFIG_SCLKCTL(channel);
->         } else {
-> -               cfg &=3D ~MX51_ECSPI_CONFIG_SCLKPOL(spi->chip_select);
-> -               cfg &=3D ~MX51_ECSPI_CONFIG_SCLKCTL(spi->chip_select);
-> +               cfg &=3D ~MX51_ECSPI_CONFIG_SCLKPOL(channel);
-> +               cfg &=3D ~MX51_ECSPI_CONFIG_SCLKCTL(channel);
->         }
->=20
->         if (spi->mode & SPI_CS_HIGH)
-> -               cfg |=3D MX51_ECSPI_CONFIG_SSBPOL(spi->chip_select);
-> +               cfg |=3D MX51_ECSPI_CONFIG_SSBPOL(channel);
->         else
-> -               cfg &=3D ~MX51_ECSPI_CONFIG_SSBPOL(spi->chip_select);
-> +               cfg &=3D ~MX51_ECSPI_CONFIG_SSBPOL(channel);
->=20
->         if (cfg =3D=3D current_cfg)
->                 return 0;
-> @@ -609,14 +617,15 @@ static void mx51_configure_cpha(struct
-> spi_imx_data *spi_imx,
->         bool cpha =3D (spi->mode & SPI_CPHA);
->         bool flip_cpha =3D (spi->mode & SPI_RX_CPHA_FLIP) && spi_imx->rx_=
-only;
->         u32 cfg =3D readl(spi_imx->base + MX51_ECSPI_CONFIG);
-> +       int channel =3D mx51_ecspi_channel(spi);
->=20
->         /* Flip cpha logical value iff flip_cpha */
->         cpha ^=3D flip_cpha;
->=20
->         if (cpha)
-> -               cfg |=3D MX51_ECSPI_CONFIG_SCLKPHA(spi->chip_select);
-> +               cfg |=3D MX51_ECSPI_CONFIG_SCLKPHA(channel);
->         else
-> -               cfg &=3D ~MX51_ECSPI_CONFIG_SCLKPHA(spi->chip_select);
-> +               cfg &=3D ~MX51_ECSPI_CONFIG_SCLKPHA(channel);
->=20
->         writel(cfg, spi_imx->base + MX51_ECSPI_CONFIG);  }
-> --
-> 2.37.2
+diff --git a/MAINTAINERS b/MAINTAINERS
+index dfcc5db4bbc0..ab08aba965f3 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -12218,6 +12218,10 @@ M:	Yinbo Zhu <zhuyinbo@loongson.cn>
+ L:	linux-spi@vger.kernel.org
+ S:	Maintained
+ F:	Documentation/devicetree/bindings/spi/loongson,ls2k-spi.yaml
++F:	drivers/spi/spi-loongson-core.c
++F:	drivers/spi/spi-loongson-pci.c
++F:	drivers/spi/spi-loongson-plat.c
++F:	drivers/spi/spi-loongson.h
+ 
+ LSILOGIC MPT FUSION DRIVERS (FC/SAS/SPI)
+ M:	Sathya Prakash <sathya.prakash@broadcom.com>
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 3de2ebe8294a..6b953904792e 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -516,6 +516,32 @@ config SPI_LM70_LLP
+ 	  which interfaces to an LM70 temperature sensor using
+ 	  a parallel port.
+ 
++config SPI_LOONGSON_CORE
++	tristate
++	depends on LOONGARCH || COMPILE_TEST
++
++config SPI_LOONGSON_PCI
++	tristate "Loongson SPI Controller PCI Driver Support"
++	select SPI_LOONGSON_CORE
++	depends on PCI && (LOONGARCH || COMPILE_TEST)
++	help
++	  This bus driver supports the Loongson SPI hardware controller in
++	  the Loongson platforms and supports to use PCI framework to
++	  register SPI device resources.
++	  Say Y or M here if you want to use the SPI controller on
++	  Loongson platform.
++
++config SPI_LOONGSON_PLATFORM
++	tristate "Loongson SPI Controller Platform Driver Support"
++	select SPI_LOONGSON_CORE
++	depends on OF && (LOONGARCH || COMPILE_TEST)
++	help
++	  This bus driver supports the Loongson SPI hardware controller in
++	  the Loongson platforms and supports to use DTS framework to
++	  register SPI device resources.
++	  Say Y or M here if you want to use the SPI controller on
++	  Loongson platform.
++
+ config SPI_LP8841_RTC
+ 	tristate "ICP DAS LP-8841 SPI Controller for RTC"
+ 	depends on MACH_PXA27X_DT || COMPILE_TEST
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index 28c4817a8a74..3e933064d237 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -71,6 +71,9 @@ obj-$(CONFIG_SPI_INTEL_PLATFORM)	+= spi-intel-platform.o
+ obj-$(CONFIG_SPI_LANTIQ_SSC)		+= spi-lantiq-ssc.o
+ obj-$(CONFIG_SPI_JCORE)			+= spi-jcore.o
+ obj-$(CONFIG_SPI_LM70_LLP)		+= spi-lm70llp.o
++obj-$(CONFIG_SPI_LOONGSON_CORE)		+= spi-loongson-core.o
++obj-$(CONFIG_SPI_LOONGSON_PCI)		+= spi-loongson-pci.o
++obj-$(CONFIG_SPI_LOONGSON_PLATFORM)	+= spi-loongson-plat.o
+ obj-$(CONFIG_SPI_LP8841_RTC)		+= spi-lp8841-rtc.o
+ obj-$(CONFIG_SPI_MESON_SPICC)		+= spi-meson-spicc.o
+ obj-$(CONFIG_SPI_MESON_SPIFC)		+= spi-meson-spifc.o
+diff --git a/drivers/spi/spi-loongson-core.c b/drivers/spi/spi-loongson-core.c
+new file mode 100644
+index 000000000000..435a58b0d9da
+--- /dev/null
++++ b/drivers/spi/spi-loongson-core.c
+@@ -0,0 +1,279 @@
++// SPDX-License-Identifier: GPL-2.0+
++// Loongson SPI Support
++// Copyright (C) 2023 Loongson Technology Corporation Limited
++
++#include <linux/clk.h>
++#include <linux/delay.h>
++#include <linux/err.h>
++#include <linux/init.h>
++#include <linux/interrupt.h>
++#include <linux/io.h>
++#include <linux/iopoll.h>
++#include <linux/kernel.h>
++#include <linux/module.h>
++
++#include "spi-loongson.h"
++
++static inline void loongson_spi_write_reg(struct loongson_spi *spi, unsigned char reg,
++					  unsigned char data)
++{
++	writeb(data, spi->base + reg);
++}
++
++static inline char loongson_spi_read_reg(struct loongson_spi *spi, unsigned char reg)
++{
++	return readb(spi->base + reg);
++}
++
++static void loongson_spi_set_cs(struct spi_device *spi, bool val)
++{
++	int cs;
++	struct loongson_spi *loongson_spi = spi_master_get_devdata(spi->master);
++
++	cs = loongson_spi_read_reg(loongson_spi, LOONGSON_SPI_SFCS_REG)
++					   & ~(0x11 << spi->chip_select);
++	loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_SFCS_REG,
++				       (val ? (0x11 << spi->chip_select) :
++				       (0x1 << spi->chip_select)) | cs);
++}
++
++static void loongson_spi_set_clk(struct loongson_spi *loongson_spi, unsigned int hz)
++{
++	unsigned char val;
++	unsigned int div, div_tmp;
++	const char rdiv[12] = {0, 1, 4, 2, 3, 5, 6, 7, 8, 9, 10, 11};
++
++	div = clamp_val(DIV_ROUND_UP_ULL(loongson_spi->clk_rate, hz), 2, 4096);
++	div_tmp = rdiv[fls(div - 1)];
++	loongson_spi->spcr = (div_tmp & GENMASK(1, 0)) >> 0;
++	loongson_spi->sper = (div_tmp & GENMASK(3, 2)) >> 2;
++	val = loongson_spi_read_reg(loongson_spi, LOONGSON_SPI_SPCR_REG);
++	loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_SPCR_REG, (val & ~3) |
++			       loongson_spi->spcr);
++	val = loongson_spi_read_reg(loongson_spi, LOONGSON_SPI_SPER_REG);
++	loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_SPER_REG, (val & ~3) |
++			       loongson_spi->sper);
++	loongson_spi->hz = hz;
++}
++
++static void loongson_spi_set_mode(struct loongson_spi *loongson_spi,
++				  struct spi_device *spi)
++{
++	unsigned char val;
++
++	val = loongson_spi_read_reg(loongson_spi, LOONGSON_SPI_SPCR_REG);
++	val &= ~(LOONGSON_SPI_SPCR_CPOL | LOONGSON_SPI_SPCR_CPHA);
++	if (spi->mode & SPI_CPOL)
++		val |= LOONGSON_SPI_SPCR_CPOL;
++	if (spi->mode & SPI_CPHA)
++		val |= LOONGSON_SPI_SPCR_CPHA;
++
++	loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_SPCR_REG, val);
++	loongson_spi->mode |= spi->mode;
++}
++
++static int loongson_spi_update_state(struct loongson_spi *loongson_spi,
++				struct spi_device *spi, struct spi_transfer *t)
++{
++	unsigned int hz;
++
++	if (t)
++		hz = t->speed_hz;
++
++	if (hz && loongson_spi->hz != hz)
++		loongson_spi_set_clk(loongson_spi, hz);
++
++	if ((spi->mode ^ loongson_spi->mode) & SPI_MODE_X_MASK)
++		loongson_spi_set_mode(loongson_spi, spi);
++
++	return 0;
++}
++
++static int loongson_spi_setup(struct spi_device *spi)
++{
++	struct loongson_spi *loongson_spi;
++
++	loongson_spi = spi_master_get_devdata(spi->master);
++	if (spi->bits_per_word % 8)
++		return -EINVAL;
++
++	if (spi->chip_select >= spi->master->num_chipselect)
++		return -EINVAL;
++
++	loongson_spi->hz = 0;
++	loongson_spi_set_cs(spi, 1);
++
++	return 0;
++}
++
++static int loongson_spi_write_read_8bit(struct spi_device *spi, const u8 **tx_buf,
++					u8 **rx_buf, unsigned int num)
++{
++	struct loongson_spi *loongson_spi = spi_master_get_devdata(spi->master);
++
++	if (tx_buf && *tx_buf)
++		loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_FIFO_REG, *((*tx_buf)++));
++	else
++		loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_FIFO_REG, 0);
++	readb_poll_timeout(loongson_spi->base + LOONGSON_SPI_SPSR_REG, loongson_spi->spsr,
++			   (loongson_spi->spsr & 0x1) != 1, 1, MSEC_PER_SEC);
++
++	if (rx_buf && *rx_buf)
++		*(*rx_buf)++ = loongson_spi_read_reg(loongson_spi, LOONGSON_SPI_FIFO_REG);
++	else
++		loongson_spi_read_reg(loongson_spi, LOONGSON_SPI_FIFO_REG);
++
++	return 0;
++}
++
++static unsigned int loongson_spi_write_read(struct spi_device *spi, struct spi_transfer *xfer)
++{
++	unsigned int count;
++	const u8 *tx = xfer->tx_buf;
++	u8 *rx = xfer->rx_buf;
++
++	count = xfer->len;
++
++	do {
++		if (loongson_spi_write_read_8bit(spi, &tx, &rx, count) < 0)
++			goto out;
++		count--;
++	} while (count);
++
++out:
++	return xfer->len - count;
++}
++
++static int loongson_spi_prepare_message(struct spi_controller *ctlr, struct spi_message *m)
++{
++	struct loongson_spi *loongson_spi = spi_controller_get_devdata(ctlr);
++
++	loongson_spi->para = loongson_spi_read_reg(loongson_spi, LOONGSON_SPI_PARA_REG);
++	loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_PARA_REG, loongson_spi->para & ~1);
++
++	return 0;
++}
++
++static int loongson_spi_transfer_one(struct spi_controller *ctrl, struct spi_device *spi,
++				     struct spi_transfer *xfer)
++{
++	struct loongson_spi *loongson_spi = spi_master_get_devdata(spi->master);
++
++	loongson_spi_update_state(loongson_spi, spi, xfer);
++	if (xfer->len)
++		xfer->len = loongson_spi_write_read(spi, xfer);
++
++	return 0;
++}
++
++static int loongson_spi_unprepare_message(struct spi_controller *ctrl, struct spi_message *m)
++{
++	struct loongson_spi *loongson_spi = spi_controller_get_devdata(ctrl);
++
++	loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_PARA_REG, loongson_spi->para);
++
++	return 0;
++}
++
++static void loongson_spi_reginit(struct loongson_spi *loongson_spi_dev)
++{
++	unsigned char val;
++
++	val = loongson_spi_read_reg(loongson_spi_dev, LOONGSON_SPI_SPCR_REG);
++	val &= ~LOONGSON_SPI_SPCR_SPE;
++	loongson_spi_write_reg(loongson_spi_dev, LOONGSON_SPI_SPCR_REG, val);
++
++	loongson_spi_write_reg(loongson_spi_dev, LOONGSON_SPI_SPSR_REG,
++			       (LOONGSON_SPI_SPSR_SPIF | LOONGSON_SPI_SPSR_WCOL));
++
++	val = loongson_spi_read_reg(loongson_spi_dev, LOONGSON_SPI_SPCR_REG);
++	val |= LOONGSON_SPI_SPCR_SPE;
++	loongson_spi_write_reg(loongson_spi_dev, LOONGSON_SPI_SPCR_REG, val);
++}
++
++int loongson_spi_init_master(struct device *dev, void __iomem *regs)
++{
++	struct spi_master *master;
++	struct loongson_spi *spi;
++	struct clk *clk;
++
++	master = devm_spi_alloc_master(dev, sizeof(struct loongson_spi));
++	if (master == NULL)
++		return -ENOMEM;
++
++	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
++	master->setup = loongson_spi_setup;
++	master->prepare_message = loongson_spi_prepare_message;
++	master->transfer_one = loongson_spi_transfer_one;
++	master->unprepare_message = loongson_spi_unprepare_message;
++	master->set_cs = loongson_spi_set_cs;
++	master->num_chipselect = 4;
++	device_set_node(&master->dev, dev_fwnode(dev));
++	dev_set_drvdata(dev, master);
++
++	spi = spi_master_get_devdata(master);
++	spi->base = regs;
++	spi->master = master;
++
++	clk = devm_clk_get_optional(dev, NULL);
++	if (!IS_ERR(clk))
++		spi->clk_rate = clk_get_rate(clk);
++	else
++		return dev_err_probe(dev, PTR_ERR(clk), "unable to get clock\n");
++
++	loongson_spi_reginit(spi);
++
++	spi->mode = 0;
++
++	return devm_spi_register_master(dev, master);
++}
++EXPORT_SYMBOL_NS_GPL(loongson_spi_init_master, SPI_LOONGSON_CORE);
++
++static int __maybe_unused loongson_spi_suspend(struct device *dev)
++{
++	struct loongson_spi *loongson_spi;
++	struct spi_master *master;
++
++	master = dev_get_drvdata(dev);
++	spi_master_suspend(master);
++
++	loongson_spi = spi_master_get_devdata(master);
++
++	loongson_spi->spcr = loongson_spi_read_reg(loongson_spi, LOONGSON_SPI_SPCR_REG);
++	loongson_spi->sper = loongson_spi_read_reg(loongson_spi, LOONGSON_SPI_SPER_REG);
++	loongson_spi->spsr = loongson_spi_read_reg(loongson_spi, LOONGSON_SPI_SPSR_REG);
++	loongson_spi->para = loongson_spi_read_reg(loongson_spi, LOONGSON_SPI_PARA_REG);
++	loongson_spi->sfcs = loongson_spi_read_reg(loongson_spi, LOONGSON_SPI_SFCS_REG);
++	loongson_spi->timi = loongson_spi_read_reg(loongson_spi, LOONGSON_SPI_TIMI_REG);
++
++	return 0;
++}
++
++static int __maybe_unused loongson_spi_resume(struct device *dev)
++{
++	struct loongson_spi *loongson_spi;
++	struct spi_master *master;
++
++	master = dev_get_drvdata(dev);
++	loongson_spi = spi_master_get_devdata(master);
++
++	loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_SPCR_REG, loongson_spi->spcr);
++	loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_SPER_REG, loongson_spi->sper);
++	loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_SPSR_REG, loongson_spi->spsr);
++	loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_PARA_REG, loongson_spi->para);
++	loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_SFCS_REG, loongson_spi->sfcs);
++	loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_TIMI_REG, loongson_spi->timi);
++
++	spi_master_resume(master);
++
++	return 0;
++}
++
++const struct dev_pm_ops loongson_spi_dev_pm_ops = {
++	.suspend = loongson_spi_suspend,
++	.resume = loongson_spi_resume,
++};
++EXPORT_SYMBOL_NS_GPL(loongson_spi_dev_pm_ops, SPI_LOONGSON_CORE);
++
++MODULE_DESCRIPTION("Loongson SPI core driver");
++MODULE_LICENSE("GPL");
+diff --git a/drivers/spi/spi-loongson-pci.c b/drivers/spi/spi-loongson-pci.c
+new file mode 100644
+index 000000000000..c351a689150a
+--- /dev/null
++++ b/drivers/spi/spi-loongson-pci.c
+@@ -0,0 +1,61 @@
++// SPDX-License-Identifier: GPL-2.0+
++// PCI interface driver for Loongson SPI Support
++// Copyright (C) 2023 Loongson Technology Corporation Limited
++
++#include <linux/pci.h>
++
++#include "spi-loongson.h"
++
++static int loongson_spi_pci_register(struct pci_dev *pdev,
++			const struct pci_device_id *ent)
++{
++	int ret;
++	void __iomem *reg_base;
++	struct device *dev = &pdev->dev;
++	int pci_bar = 0;
++
++	ret = pcim_enable_device(pdev);
++	if (ret < 0)
++		return dev_err_probe(dev, ret, "cannot enable pci device\n");
++
++	ret = pcim_iomap_regions(pdev, BIT(pci_bar), pci_name(pdev));
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to request and remap memory\n");
++
++	reg_base = pcim_iomap_table(pdev)[pci_bar];
++
++	ret = loongson_spi_init_master(dev, reg_base);
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to initialize master\n");
++
++	return 0;
++}
++
++static void loongson_spi_pci_unregister(struct pci_dev *pdev)
++{
++	pcim_iounmap_regions(pdev, BIT(0));
++	pci_disable_device(pdev);
++}
++
++static struct pci_device_id loongson_spi_devices[] = {
++	{ PCI_DEVICE(PCI_VENDOR_ID_LOONGSON, 0x7a0b) },
++	{ PCI_DEVICE(PCI_VENDOR_ID_LOONGSON, 0x7a1b) },
++	{ },
++};
++MODULE_DEVICE_TABLE(pci, loongson_spi_devices);
++
++static struct pci_driver loongson_spi_pci_driver = {
++	.name       = "loongson-spi-pci",
++	.id_table   = loongson_spi_devices,
++	.probe      = loongson_spi_pci_register,
++	.remove     = loongson_spi_pci_unregister,
++	.driver	= {
++		.bus = &pci_bus_type,
++		.pm = &loongson_spi_dev_pm_ops,
++	},
++};
++module_pci_driver(loongson_spi_pci_driver);
++
++MODULE_DESCRIPTION("Loongson spi pci driver");
++MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(SPI_LOONGSON_CORE);
+diff --git a/drivers/spi/spi-loongson-plat.c b/drivers/spi/spi-loongson-plat.c
+new file mode 100644
+index 000000000000..2e0388d84044
+--- /dev/null
++++ b/drivers/spi/spi-loongson-plat.c
+@@ -0,0 +1,46 @@
++// SPDX-License-Identifier: GPL-2.0+
++// Platform driver for Loongson SPI Support
++// Copyright (C) 2023 Loongson Technology Corporation Limited
++
++#include <linux/of.h>
++#include <linux/platform_device.h>
++
++#include "spi-loongson.h"
++
++static int loongson_spi_platform_probe(struct platform_device *pdev)
++{
++	int ret;
++	void __iomem *reg_base;
++	struct device *dev = &pdev->dev;
++
++	reg_base = devm_platform_ioremap_resource(pdev, 0);
++	if (IS_ERR(reg_base))
++		return PTR_ERR(reg_base);
++
++	ret = loongson_spi_init_master(dev, reg_base);
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to initialize master\n");
++
++	return ret;
++}
++
++static const struct of_device_id loongson_spi_id_table[] = {
++	{ .compatible = "loongson,ls2k-spi" },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, loongson_spi_id_table);
++
++static struct platform_driver loongson_spi_plat_driver = {
++	.probe = loongson_spi_platform_probe,
++	.driver	= {
++		.name	= "loongson-spi",
++		.bus = &platform_bus_type,
++		.pm = &loongson_spi_dev_pm_ops,
++		.of_match_table = loongson_spi_id_table,
++	},
++};
++module_platform_driver(loongson_spi_plat_driver);
++
++MODULE_DESCRIPTION("Loongson spi platform driver");
++MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(SPI_LOONGSON_CORE);
+diff --git a/drivers/spi/spi-loongson.h b/drivers/spi/spi-loongson.h
+new file mode 100644
+index 000000000000..5dca9750efa3
+--- /dev/null
++++ b/drivers/spi/spi-loongson.h
+@@ -0,0 +1,47 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/* Header File for Loongson SPI Driver. */
++/* Copyright (C) 2023 Loongson Technology Corporation Limited */
++
++#ifndef __LINUX_SPI_LOONGSON_H
++#define __LINUX_SPI_LOONGSON_H
++
++#include <linux/bits.h>
++#include <linux/device.h>
++#include <linux/pm.h>
++#include <linux/spi/spi.h>
++#include <linux/types.h>
++
++#define	LOONGSON_SPI_SPCR_REG	0x00
++#define	LOONGSON_SPI_SPSR_REG	0x01
++#define	LOONGSON_SPI_FIFO_REG	0x02
++#define	LOONGSON_SPI_SPER_REG	0x03
++#define	LOONGSON_SPI_PARA_REG	0x04
++#define	LOONGSON_SPI_SFCS_REG	0x05
++#define	LOONGSON_SPI_TIMI_REG	0x06
++
++/* Bits definition for Loongson SPI register */
++#define	LOONGSON_SPI_PARA_MEM_EN	BIT(0)
++#define	LOONGSON_SPI_SPCR_CPHA	BIT(2)
++#define	LOONGSON_SPI_SPCR_CPOL	BIT(3)
++#define	LOONGSON_SPI_SPCR_SPE	BIT(6)
++#define	LOONGSON_SPI_SPSR_WCOL	BIT(6)
++#define	LOONGSON_SPI_SPSR_SPIF	BIT(7)
++
++struct loongson_spi {
++	struct	spi_master	*master;
++	void __iomem		*base;
++	int			cs_active;
++	unsigned int		hz;
++	unsigned char		spcr;
++	unsigned char		sper;
++	unsigned char		spsr;
++	unsigned char		para;
++	unsigned char		sfcs;
++	unsigned char		timi;
++	unsigned int		mode;
++	u64			clk_rate;
++};
++
++int loongson_spi_init_master(struct device *dev, void __iomem *reg);
++extern const struct dev_pm_ops loongson_spi_dev_pm_ops;
++#endif /* __LINUX_SPI_LOONGSON_H */
+-- 
+2.20.1
 

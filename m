@@ -2,132 +2,128 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 74571C7EE26
-	for <linux-spi@archiver.kernel.org>; Fri, 19 May 2023 09:24:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 62459C7EE23
+	for <linux-spi@archiver.kernel.org>; Sat, 20 May 2023 18:22:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230083AbjESJY4 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 19 May 2023 05:24:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34388 "EHLO
+        id S232011AbjETSWM (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sat, 20 May 2023 14:22:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230047AbjESJYu (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 19 May 2023 05:24:50 -0400
-Received: from mx0b-001ae601.pphosted.com (mx0a-001ae601.pphosted.com [67.231.149.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA9A5192;
-        Fri, 19 May 2023 02:24:49 -0700 (PDT)
-Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
-        by mx0a-001ae601.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34J8avZD027124;
-        Fri, 19 May 2023 04:24:27 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- content-transfer-encoding : in-reply-to; s=PODMain02222019;
- bh=Lj8uAFjxCnrls2KQSGxc7f2MX/UDnvhG2wQcOtyDCOw=;
- b=S2KVVdJmdHng3w9Hp7cbJMoY88VJakVPsqSLXrUO9w4tEsKUhznLwBtuWXfHGh5qaUm5
- mUts8DQUijd4zefb3qsJL5Ogg+JOfr9qDnb94txG0+mK4qXh2fa6oqzht76wFeH2LGG6
- MyJIkFCR7RaQJ3gTNVYObUoi/K8CzieVmwoL4F6y5H97SBWbLk357e5U6ulolPm0Mc8K
- IqK0GHJ4N6sE8G3KURSY7DLCWkZzE/cjvTi41Fn8jk8XLh8UTE6naIGM2EiTvxEsNfNC
- aw7ZHXOkgk/dO9VD6JvOAyokq7RlqaVboEhBJjvPEecf/bRJ93/tS68h3QRAwdmyMcQk 4w== 
-Received: from ediex01.ad.cirrus.com ([84.19.233.68])
-        by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 3qj7y180rk-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 19 May 2023 04:24:27 -0500
-Received: from ediex02.ad.cirrus.com (198.61.84.81) by ediex01.ad.cirrus.com
- (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.26; Fri, 19 May
- 2023 04:24:25 -0500
-Received: from ediswmail.ad.cirrus.com (198.61.86.93) by
- anon-ediex02.ad.cirrus.com (198.61.84.81) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Fri, 19 May 2023 04:24:25 -0500
-Received: from ediswmail.ad.cirrus.com (ediswmail.ad.cirrus.com [198.61.86.93])
-        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 0B66CB38;
-        Fri, 19 May 2023 09:24:25 +0000 (UTC)
-Date:   Fri, 19 May 2023 09:24:25 +0000
-From:   Charles Keepax <ckeepax@opensource.cirrus.com>
-To:     Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-CC:     Richard Fitzgerald <rf@opensource.cirrus.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        <broonie@kernel.org>, <lee@kernel.org>, <robh+dt@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
-        <tglx@linutronix.de>, <maz@kernel.org>, <linus.walleij@linaro.org>,
-        <vkoul@kernel.org>, <lgirdwood@gmail.com>,
-        <yung-chuan.liao@linux.intel.com>, <sanyog.r.kale@intel.com>,
-        <alsa-devel@alsa-project.org>, <patches@opensource.cirrus.com>,
-        <devicetree@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 06/10] mfd: cs42l43: Add support for cs42l43 core driver
-Message-ID: <20230519092425.GA68926@ediswmail.ad.cirrus.com>
-References: <20230512122838.243002-1-ckeepax@opensource.cirrus.com>
- <20230512122838.243002-7-ckeepax@opensource.cirrus.com>
- <73438e58-bd96-818d-1f43-5681b0d1a1de@linaro.org>
- <20230518102442.GZ68926@ediswmail.ad.cirrus.com>
- <650012a3-b455-8be5-fd6d-d0775e718e6a@linux.intel.com>
- <049c2470-536a-1b1c-9828-7acb4d483309@opensource.cirrus.com>
- <3fd73def-4765-d43c-4c2c-e0fb0e2e0516@linux.intel.com>
+        with ESMTP id S231557AbjETSVv (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sat, 20 May 2023 14:21:51 -0400
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F2BE10CC;
+        Sat, 20 May 2023 11:21:29 -0700 (PDT)
+Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1ae87bdc452so10580345ad.2;
+        Sat, 20 May 2023 11:21:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1684606887; x=1687198887;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qFFbB0eljV8B1MeTCIcq4HztEtmKMqwP+0gvj6VcmR4=;
+        b=Nnk6Ai/nkBf2hhxnRhVom43y5wyOdJP9gUzN7dZmbhN9Xlh/jd+IJMDrqrQ/mIW6zi
+         LNJWi3s0pmf0bHnCIHEE7G6/Y4SgsCdkyiuv14aavxpMVL8QaJ77n6FF6w7/MLicxl+G
+         keikEFDOL66YAj9F4r4jow8pidhVd1RUrM7mvAJpriKKcBXYpFllm5urCVAyixUbldL7
+         0atWVqYzHBRCkc3un7tnKM2CprEARuTOB7TINNTfNq0ZCl1lMEYQLpJFqKu3qGuDnWdx
+         EiwBdeEgWY10w7YgOnbYTtxL+qOcImMpAa4Cb0QlgJ2zvF/KozyhDoT3EDZOGPKYe/vy
+         XlTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684606887; x=1687198887;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qFFbB0eljV8B1MeTCIcq4HztEtmKMqwP+0gvj6VcmR4=;
+        b=hqVwJcfw8/k1rdmzK6gKtYM56Iv9NUZC+/DsFY+ACLsZ3hhGv4HKFtDnMYESLDVLTQ
+         q7bi1jG3WpxZtC6Ffc+4YqFQX7k+AUjJ4OaxG8q7DD0L9sJI7gzPDxEvRvTnhJAD+zIc
+         fvt07y6uJjHd9judjNAIj/CKGmAJRemA/TXoCBLkLnucKTTCAGNYhWq9LoRJL7bFjWgD
+         k/gVYQjLkbcJ1nXkyxZmX/yK3++RONMHBBXB/oRs2Pdy//oU7jvwFeiVCcMasHLFv2rK
+         JM4H5iZRtvrC8Fs11pLcmAimu+b2R3BRUF+O8pDJhycWbmXyinjpccFAPvzm5SF6VD+0
+         Fvzw==
+X-Gm-Message-State: AC+VfDxWgUNYjf5yOYTdQ4NoV/o6bWcQncgjqA+vIRgyOPjlG5aNz5Ty
+        m/MHHl+9b3CyUWU/okw5dQjBs1z/1whpDGqipTY=
+X-Google-Smtp-Source: ACHHUZ6Dd97OJfNjLHrXt5eSzL/oUGa+2LLRlD67s5KC5vc1UxPwiMnl+25XJI/CR7wqyE8JSfjOQnTdHTmh69CEGes=
+X-Received: by 2002:a17:902:e848:b0:1ad:d500:19d3 with SMTP id
+ t8-20020a170902e84800b001add50019d3mr8459565plg.23.1684606886701; Sat, 20 May
+ 2023 11:21:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <3fd73def-4765-d43c-4c2c-e0fb0e2e0516@linux.intel.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Proofpoint-GUID: UZNsi0zSqoCKwhpogjcObBxZtv6JtPfq
-X-Proofpoint-ORIG-GUID: UZNsi0zSqoCKwhpogjcObBxZtv6JtPfq
-X-Proofpoint-Spam-Reason: safe
+References: <20230517223007.178432-1-boerge.struempfel@gmail.com>
+ <CAOMZO5CqMMCCOsAB3YgJUUampE=iZru57d=qoX13-GkSaaC5gg@mail.gmail.com>
+ <CAEktqcuMrqiwDfGM=SAoHiKPY-hupS+jipt=6Tasr1q8VUvRQQ@mail.gmail.com>
+ <CAOMZO5CJwwKmDYRxnny2JOrwucGn=q7+9xKqk_NSvZ_wyNSHEQ@mail.gmail.com>
+ <CAEktqcue7gFk9fXMsNPxwUsUVRxpa6GE5wCHZqU2p2dDz8WYqg@mail.gmail.com> <CAHp75VcP78MhmjzOCiGwfEwWwVxCHhy3qmZet0HqjPeLTc9h-A@mail.gmail.com>
+In-Reply-To: <CAHp75VcP78MhmjzOCiGwfEwWwVxCHhy3qmZet0HqjPeLTc9h-A@mail.gmail.com>
+From:   =?UTF-8?B?QsO2cmdlIFN0csO8bXBmZWw=?= <boerge.struempfel@gmail.com>
+Date:   Sat, 20 May 2023 20:21:15 +0200
+Message-ID: <CAEktqctboF3=ykVNtPsifcmHzF6dWwoEcVh+O4H1u-R=TT6gHg@mail.gmail.com>
+Subject: Re: [PATCH v4 1/3] spi: add SPI_MOSI_IDLE_LOW mode bit
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Fabio Estevam <festevam@gmail.com>, bstruempfel@ultratronik.de,
+        amit.kumar-mahapatra@amd.com, broonie@kernel.org,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, May 18, 2023 at 11:47:12AM -0500, Pierre-Louis Bossart wrote:
-> On 5/18/23 11:15, Richard Fitzgerald wrote:
-> > On 18/05/2023 16:16, Pierre-Louis Bossart wrote:
-> >>>>> +    ret = devm_mfd_add_devices(cs42l43->dev, PLATFORM_DEVID_NONE,
-> >>>>> +                   cs42l43_devs, ARRAY_SIZE(cs42l43_devs),
-> >>>>
-> >>>> I don't why adding devices is not in probe. They use the same regmap
-> >>>> right? So there will be no problem in probing them from MFD probe.
-> >>>
-> >>> Well except SoundWire is a bit of a special boy, the hardware is
-> >>> not necessarily available in probe, the hardware is only available
-> >>> at some point later when the device attaches. Doing it this way all
-> >>> of the attaching (and various detach/attach cycles the device needs
-> >>> during configuration) are over by the time the child drivers bind, so
-> >>> they don't all need special code to handle that.
-> >>
-> >> if the devices are added in the probe, then the regmap needs to be moved
-> >> to cache-only and another special API would be needed to tell the MFD
-> >> framework to turn the regmap cache-only off.
-> >>
-> >> But if it's the same regmap, the regmap cache is handled in the
-> >> SoundWire update_status callback so maybe  Krzysztof's proposal does
-> >> work?
-> > 
-> > But you still can't access the hardware in probe(). So you'd have all
-> > the child drivers probing but not able to talk to the hardware. The
-> > child drivers would have to hook into the update_status() somehow so
-> > they know when the peripheral has enumerated.
-> > It's simpler to add them after the hardware has enumerated - they will
-> > be able to access the hardware in their probe().
-> 
-> It depends on what you mean by 'access the hardware'. If the only
-> interface is regmap and regmap is in cache-only, then the child drivers
-> could "access the hardware" without anything happening until after
-> regmap is no longer cache-only.
-> 
-> But yeah, I realize it's a long shot.
+Thank you for you response
 
-Yeah, its never just the regmap. Take the sound driver for example,
-when the sound driver binds all the components will be inplace
-and a soundcard will be created. This means the user could then
-start an audio stream before any hardware is actually available,
-various bits of the audio bring up rely on timing or reading state
-so won't work in cache-only. Yeah you could add work arounds for
-these problems as they arise, but you will end up with a lot of them.
+Am Do., 18. Mai 2023 um 12:58 Uhr schrieb Andy Shevchenko
+<andy.shevchenko@gmail.com>:
+>
+> On Thu, May 18, 2023 at 3:27=E2=80=AFAM B=C3=B6rge Str=C3=BCmpfel
+> <boerge.struempfel@gmail.com> wrote:
+> > Am Do., 18. Mai 2023 um 01:53 Uhr schrieb Fabio Estevam <festevam@gmail=
+.com>:
+>
+> ...
+>
+>
+> > Okay. I have begun to implement this. During this, I noticed, that if
+> > I called the new option
+> > "--mosi-idle-low", the alignment of the help-lines (and in the c code
+> > itself) would break.
+> > Should I therefore shorten the option name by using an abbreviation
+> > like "--mil", which is
+> > probably not very helpful as a "full option name", or should I touch
+> > all the other lines and
+> > insert necessary spaces, such that they are aligned once more? (And if
+> > so, should I do
+> > this in a seperate patch, preparing the addition of the new options?)
+>
+> It's a user space tool where not so strict rules of commit splitting
+> apply (as far as I know), I would go with indention fixes in the same
+> patch that adds the option.
+>
 
-I would flip this around and ask, what is the problem with adding
-the child devices once the device has completed initialisation?
-As far as I can see it looks like a choice between moving one
-function call with no obvious downside, against loads lines of
-various work arounds in each of the child drivers for whatever
-subsystem specific problems are caused by the device not actually
-being available.
+That's good to know. I will do that.
 
-Thanks,
-Charles
+> ...
+>
+> > > > While looking through the code, I noticed, that the latest two
+> > > > additions to the spi->mode
+> > > > (SPI_3WIRE_HIZ and SPI_RX_CPHA_FLIP) are also missing from this too=
+l. Is this
+> > > > by design, or should they then be included as well?
+> > >
+> > > Looks like these two are missing and would be good to get them includ=
+ed as well.
+> >
+> > Okay. Should this be a separate patch, or should I add the support for
+> > all 3 mode bits in
+> > one commit?
+>
+> Split them logically. Are they from the same group of bits? No? then spli=
+t.
+>
+Yes they are actually from the same group of bits. Therefore I'll add
+them all in the same patch.
+> --
+> With Best Regards,
+> Andy Shevchenko

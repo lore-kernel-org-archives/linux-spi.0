@@ -2,99 +2,82 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 00AABC77B75
-	for <linux-spi@archiver.kernel.org>; Mon, 22 May 2023 13:10:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8FA06C77B75
+	for <linux-spi@archiver.kernel.org>; Mon, 22 May 2023 14:21:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233509AbjEVNKp (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 22 May 2023 09:10:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37442 "EHLO
+        id S233762AbjEVOV2 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 22 May 2023 10:21:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230489AbjEVNKo (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 22 May 2023 09:10:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2254292;
-        Mon, 22 May 2023 06:10:44 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AC3F96144C;
-        Mon, 22 May 2023 13:10:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E70FDC4339C;
-        Mon, 22 May 2023 13:10:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684761043;
-        bh=Q6nXsGuYfXF82B6FIh74i5ECEIvwWrfYD9ajsFfKZBM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=JhiC5dFtgZii/kGOkEqpVZsjEENlc24xthUKpATgER4t2rOo7aYz+8mAI8bojgu4T
-         uKrzvjYn+Y9CMKALXlJvqrLOZTApT8u9Iaoh1BsZXLcGIi3LdboT7oODyHP9BjCPhD
-         2YLjB2YwKbYaqeLp4d4OkBJAWdSr/USnRzYw2ZLPSnJgzBAb7Q9gHkvwroSdcEDqFV
-         ESec46JeLlhMbW1QI0W6T3WzEfvdCwlV4ovs79NKNlVqg6iPhZWo3NC0fnC7QT+95d
-         GNP6K8mOFH3pvyXaN7CKzBv61njnfUAqL/G0x0UIZyX7JY2e1bXHtAOrFlJrh7lrVm
-         vIlbeH950pCMA==
-Date:   Mon, 22 May 2023 14:10:37 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     zhuyinbo <zhuyinbo@loongson.cn>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Jianmin Lv <lvjianmin@loongson.cn>,
-        wanghongliang@loongson.cn, Liu Peibao <liupeibao@loongson.cn>,
-        loongson-kernel@lists.loongnix.cn
-Subject: Re: [PATCH v11 0/2] spi: loongson: add bus driver for the loongson
- spi
-Message-ID: <9f6672a2-4a39-4a34-9c2a-0257b05c9699@sirena.org.uk>
-References: <20230522071030.5193-1-zhuyinbo@loongson.cn>
- <3c15d22f-4f94-4cc5-96a8-f565e58c66b9@sirena.org.uk>
- <4dfa5245-d330-f432-e81e-163053687d42@loongson.cn>
- <a4afd330-6ffd-432e-a868-f8a19fddb47d@sirena.org.uk>
- <1e8c3e92-4043-11f2-e7a7-0bf4273c65d8@loongson.cn>
+        with ESMTP id S233849AbjEVOVU (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 22 May 2023 10:21:20 -0400
+Received: from mx0b-001ae601.pphosted.com (mx0a-001ae601.pphosted.com [67.231.149.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB8B8DB;
+        Mon, 22 May 2023 07:21:18 -0700 (PDT)
+Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
+        by mx0a-001ae601.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34MC9ARL012027;
+        Mon, 22 May 2023 09:21:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=PODMain02222019;
+ bh=P6oOOqTU0O0tw6GjQb/Q/FfJZj237pQk2F7qrB9oBY4=;
+ b=i8A+YmRktbM0CdYURtI0iVhPL2qokecRjHqtNf6I7rNxLVRah5XEBsPi4hLiYgMSEQSV
+ H0fN/6nxOs7MBKjS7I5fwLsGqGMqUt6+/RaeNJDyeSfsjPKQ4ar9Zp38MDrWXUM1Q+42
+ iwrj0fbA+bTpnCabi7H7gj+mAtkAusMBTsJm7dxSTFfAmYjNH7WIxS1C724fhZxakQWX
+ mK4lOWDFmuar4jsTuDWfvvrVN8/roCAc2EPCaoMk22wxqnUPREXWOBt/178a0+3T+uoc
+ gaLc4sri9jTR70LiR9/g1PT+ydEpImRDHEJ1CDzJxGTqgfgXLnOQ1k5K+2CN4kibJ/Ts TQ== 
+Received: from ediex02.ad.cirrus.com ([84.19.233.68])
+        by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 3qpum1243v-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 22 May 2023 09:21:08 -0500
+Received: from ediex01.ad.cirrus.com (198.61.84.80) by ediex02.ad.cirrus.com
+ (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.26; Mon, 22 May
+ 2023 09:21:06 -0500
+Received: from ediswmail.ad.cirrus.com (198.61.86.93) by ediex01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server id 15.2.1118.26 via Frontend
+ Transport; Mon, 22 May 2023 09:21:06 -0500
+Received: from ediswmail.ad.cirrus.com (ediswmail.ad.cirrus.com [198.61.86.93])
+        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id B170511D4;
+        Mon, 22 May 2023 14:21:06 +0000 (UTC)
+Date:   Mon, 22 May 2023 14:21:06 +0000
+From:   Charles Keepax <ckeepax@opensource.cirrus.com>
+To:     Mark Brown <broonie@kernel.org>
+CC:     <srinivas.goud@amd.com>, <linux-spi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <patches@opensource.cirrus.com>
+Subject: Re: [PATCH 2/2] spi: spi-cadence: Add missing kernel doc for
+ clk_rate in cdns_spi
+Message-ID: <20230522142106.GB68926@ediswmail.ad.cirrus.com>
+References: <20230518093927.711358-1-ckeepax@opensource.cirrus.com>
+ <20230518093927.711358-2-ckeepax@opensource.cirrus.com>
+ <649d68c4-cd2b-4ec1-ad06-ff42ac5653b4@sirena.org.uk>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="LylT5SjI1jBuapnp"
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <1e8c3e92-4043-11f2-e7a7-0bf4273c65d8@loongson.cn>
-X-Cookie: HOST SYSTEM RESPONDING, PROBABLY UP...
+In-Reply-To: <649d68c4-cd2b-4ec1-ad06-ff42ac5653b4@sirena.org.uk>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Proofpoint-GUID: fKrV150Li01pYZ1hhWY_mW6R5kTP9D9h
+X-Proofpoint-ORIG-GUID: fKrV150Li01pYZ1hhWY_mW6R5kTP9D9h
+X-Proofpoint-Spam-Reason: safe
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+On Mon, May 22, 2023 at 10:52:17AM +0100, Mark Brown wrote:
+> On Thu, May 18, 2023 at 10:39:27AM +0100, Charles Keepax wrote:
+> > Add the missing kernel documentation to silence the build warning.
+> > 
+> > Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+> > ---
+> > 
+> > New since v1 of the series, but might as well fix this build warning
+> > too.
+> 
+> Sending this without the "v2" breaks threading and makes it hard to
+> handle with tooling, versioning applies to the patch series, not to
+> individual patches.
 
---LylT5SjI1jBuapnp
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Apologies do you want me to resend?
 
-On Mon, May 22, 2023 at 09:07:47PM +0800, zhuyinbo wrote:
-> =E5=9C=A8 2023/5/22 =E4=B8=8B=E5=8D=887:56, Mark Brown =E5=86=99=E9=81=93:
-
-> > What's causing problem is that you patched MAINTAINERS in both patches
-> > but also used the wrong subject line for the first patch so I was having
-> > to fix it up by hand every time.
-
-> spi series patch apply failed,  then I have a look about your spi ci
-> tree and that what I need to do is just change the title of [1/2] patch
-> like this in next version ?  Correcting the title can solve the problem
-> of patch series apply failure in your tree ? actually, I don't reproduce
-> that apply faile issue in your current spi tree and for-next branch.
-
-> spi: add loongson spi bindings
-
-That's a good title.  The patches get reordered in the mailbox when I
-rewrite the title prior to applying them.
-
---LylT5SjI1jBuapnp
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmRracwACgkQJNaLcl1U
-h9CKpgf+LMM6O00gE10SHDrZBRPdS+b0o9Y4hXcQsAKCjFi7yXfgasUsLgFi7nJn
-Qwve17EyC0vLxerRCqMVi1t+N9PTowFumbQKwSJRoRTiHsdu7rq75KoZZkoCg1X1
-UpGVJPiHyCTeV3OcncIBmguhM5a2XIX7JlJttk0KvCHSklOeIDB0aQmhtO2MEVb3
-jM8CGUNXGreo1aQml03BtNS/pVxx1sn+DG05GK2j/uGzQtpQObbScZHNAXDgFrIZ
-VOaIQsLcShlnHMRRvWMvP630q9+FJK8GQkbCPWTNa7iEyHg+4WvH57EVIvXkF/qV
-YD+g4W/Pa4Y6YTlWs1tZ8VieT/21kg==
-=hsT5
------END PGP SIGNATURE-----
-
---LylT5SjI1jBuapnp--
+Thanks,
+Charles

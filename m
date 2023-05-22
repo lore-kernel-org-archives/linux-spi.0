@@ -2,141 +2,140 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 27FA9C77B73
-	for <linux-spi@archiver.kernel.org>; Sun, 21 May 2023 19:26:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CEB5BC77B73
+	for <linux-spi@archiver.kernel.org>; Mon, 22 May 2023 07:11:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229999AbjEUT0O (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 21 May 2023 15:26:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37098 "EHLO
+        id S232377AbjEVHLf (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 22 May 2023 03:11:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229715AbjEUT0N (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 21 May 2023 15:26:13 -0400
-Received: from mail-qv1-xf34.google.com (mail-qv1-xf34.google.com [IPv6:2607:f8b0:4864:20::f34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B11D7CF;
-        Sun, 21 May 2023 12:26:10 -0700 (PDT)
-Received: by mail-qv1-xf34.google.com with SMTP id 6a1803df08f44-623a5f60355so19747256d6.1;
-        Sun, 21 May 2023 12:26:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684697170; x=1687289170;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QSIX8vDwByGiuf9XImtsgY4eRRMEysR78L9JAlMu3Ig=;
-        b=JhJPm73vwxrNwqGw0lFx34J+HuCdkAC0hAlaQN+NE+UazII5iVDxH0EKTyCA7YVJAJ
-         Z22N+zxfIi5TAbcO6U2Wlo6ET46oWfKY5wT9fqksxHEMZH6b4/t1a+/bGcP+IItVPqP8
-         bc5cs5dhUv310p+AwqeH5XlIZjddeVflFYVaEpu0HF/dCVcLPQmotRWCkzAUW55gzhMI
-         nkSGdM7DTl6rujnPaRbBI40NfLUsb05stdoL9PlMOIaq/UaUd2IvyusiueCu9m0kSX73
-         2We10Xl8xGemp0mGjHtWQNJGIpT0tewztpU7dbGw3MROP2Q1DaR0d2vS0UJnOCmGT2z1
-         PWIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684697170; x=1687289170;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QSIX8vDwByGiuf9XImtsgY4eRRMEysR78L9JAlMu3Ig=;
-        b=S43H2tHUURH9Lkn30whnvNb7YE+MyKi0+VBAihnoaRjk7wLJuumth6E9w0mOt2nhMq
-         ryEY0RHd79fKA3qROUAanA91r2TtyZ8RSnsuzAGV/KOl5FZxSzyyQaLCc2ggjoZqa1t8
-         CadthehDBkr5luVCa5wimdzHbzUazwbE9qTAWnCvUOwVR0jnTCglked84nW5HX6HlzLY
-         VnYNeaLKr4aqhINLyRR8B53CCBb+mRX3Qi+cV/qWwL1LWBkk9IhP5R0i5HsTjTedvTJP
-         I+mxc9fyaPz7PrZCg7xtu4eqGVRSzAbPIt0p/P/Km129G39OPQqSqN81773ey1vJOGKH
-         CZgQ==
-X-Gm-Message-State: AC+VfDw3cLrtocdDZW5qtt0Hzbhm25sEi+AywPcsamviqi8hIpOVSn/p
-        jtWIHY9xg2AGe2sXtOLAMbBPMdc4HZFyrW8M5Xs=
-X-Google-Smtp-Source: ACHHUZ4YUR2yJgEr53znAfdqjDPeNjt8PiCTyNjYiBm5U+dqZXoLOxTtPvHBLVYa2NXsclfIUE/eT/Y0hWhAePqVxz0=
-X-Received: by 2002:a05:6214:d4b:b0:616:5c8b:582 with SMTP id
- 11-20020a0562140d4b00b006165c8b0582mr17824485qvr.37.1684697169751; Sun, 21
- May 2023 12:26:09 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230520190856.34720-1-boerge.struempfel@gmail.com>
- <20230520190856.34720-5-boerge.struempfel@gmail.com> <CAHp75VeR724n7C8hXs_7+TfvXANPZ7man3Znns8O+mBc113fYw@mail.gmail.com>
- <CAEktqcv3NEZKmxBdCjf29JbSbFfTzZB9p0yXF+btVrNYO5XU4w@mail.gmail.com>
-In-Reply-To: <CAEktqcv3NEZKmxBdCjf29JbSbFfTzZB9p0yXF+btVrNYO5XU4w@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sun, 21 May 2023 22:25:33 +0300
-Message-ID: <CAHp75Vf37xb=yMeUM6exPaZDvrzQzwD53MGU2uR4aC0rPeTzAw@mail.gmail.com>
-Subject: Re: [PATCH v5 4/4] spi: spidev_test Add three missing spi mode bits
-To:     =?UTF-8?B?QsO2cmdlIFN0csO8bXBmZWw=?= <boerge.struempfel@gmail.com>
-Cc:     bstruempfel@ultratronik.de, festevam@gmail.com,
-        amit.kumar-mahapatra@amd.com, broonie@kernel.org,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        with ESMTP id S232391AbjEVHKt (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 22 May 2023 03:10:49 -0400
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2BE66E45;
+        Mon, 22 May 2023 00:10:39 -0700 (PDT)
+Received: from loongson.cn (unknown [10.20.42.35])
+        by gateway (Coremail) with SMTP id _____8Cxe+ptFWtkedgKAA--.18496S3;
+        Mon, 22 May 2023 15:10:37 +0800 (CST)
+Received: from user-pc.202.106.0.20 (unknown [10.20.42.35])
+        by localhost.localdomain (Coremail) with SMTP id AQAAf8DxfTtnFWtkr8RuAA--.54865S3;
+        Mon, 22 May 2023 15:10:37 +0800 (CST)
+From:   Yinbo Zhu <zhuyinbo@loongson.cn>
+To:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Cc:     Jianmin Lv <lvjianmin@loongson.cn>, wanghongliang@loongson.cn,
+        Liu Peibao <liupeibao@loongson.cn>,
+        loongson-kernel@lists.loongnix.cn,
+        Yinbo Zhu <zhuyinbo@loongson.cn>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v11 1/2] dt-bindings: spi: add loongson spi
+Date:   Mon, 22 May 2023 15:10:29 +0800
+Message-Id: <20230522071030.5193-2-zhuyinbo@loongson.cn>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20230522071030.5193-1-zhuyinbo@loongson.cn>
+References: <20230522071030.5193-1-zhuyinbo@loongson.cn>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8DxfTtnFWtkr8RuAA--.54865S3
+X-CM-SenderInfo: 52kx5xhqerqz5rrqw2lrqou0/
+X-Coremail-Antispam: 1Uk129KBjvJXoW7Cr43Aw47Zw17Gw45ZF1xGrg_yoW8uw18pF
+        17Crn7GF4IvF17Aws3Ka4xCw4rZ3s3C3W7XFW2yr1jkF90g3WYv3W3Kr1DZanxCF48XFW7
+        ZF97Kr4UKa18Jr7anT9S1TB71UUUUUJqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+        qI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUIcSsGvfJTRUUU
+        bf8Fc2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AKwVWUAVWUZwA2ocxC64
+        kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28E
+        F7xvwVC0I7IYx2IY6xkF7I0E14v26r4j6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM2
+        8EF7xvwVC2z280aVCY1x0267AKxVWxJr0_GcWln4kS14v26r1Y6r17M2AIxVAIcxkEcVAq
+        07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7
+        xfMcIj6xIIjxv20xvE14v26r126r1DMcIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Y
+        z7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64
+        vIr41l42xK82IY6x8ErcxFaVAv8VWrMxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E
+        14v26r1Y6r17MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4
+        CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1I6r4U
+        MIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF
+        4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsG
+        vfC2KfnxnUUI43ZEXa7IU8wSdDUUUUU==
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Sun, May 21, 2023 at 2:35=E2=80=AFPM B=C3=B6rge Str=C3=BCmpfel
-<boerge.struempfel@gmail.com> wrote:
->
-> Am So., 21. Mai 2023 um 11:00 Uhr schrieb Andy Shevchenko
-> <andy.shevchenko@gmail.com>:
-> >
-> > On Sat, May 20, 2023 at 10:09=E2=80=AFPM Boerge Struempfel
-> > <boerge.struempfel@gmail.com> wrote:
-> > >
-> > > Added the three missing spi mode bits SPI_3WIRE_HIZ, SPI_RX_CPHA_FLIP=
-,
-> > > and SPI_MOSI_IDLE_LOW. Due to the length of the new options, the
-> > > indentation of the options in the help message was also adjusted for =
-all
-> > > other options.
-> >
-> > Actually since you are touching all of them in the user-visible
-> > output, you may also reshuffle them to be grouped logically. I'm not
-> > sure if the switch-case ordering would be nice to have shuffled as
-> > well. If so, in this case it might be better to have it as a
-> > preparatory patch before you adding new options (and hence take care
-> > of indentation in the first patch). That said, just think about it,
-> > I'm not insisting.
-> >
->
-> Thanks for the suggestion. I tried coming up with a logical way of
-> ordering, but I am having some difficulties deciding. What do you
-> think of the following order?
->
-> general device settings
-> " -D --device device to use (default /dev/spidev1.1)\n"
-> " -s --speed max speed (Hz)\n"
-> " -d --delay delay (usec)\n"
-> " -l --loop loopback\n"
->
-> spi mode
-> " -H --cpha clock phase\n"
-> " -O --cpol clock polarity\n"
-> " -F --rx-cpha-flip flip CPHA on Rx only xfer\n"
->
-> number of wires for transmission
-> " -2 --dual dual transfer\n"
-> " -4 --quad quad transfer\n"
-> " -8 --octal octal transfer\n"
-> " -3 --3wire SI/SO signals shared\n"
-> " -Z --3wire-hiz high impedance turnaround\n"
->
-> additional parameters
-> " -b --bpw bits per word\n"
-> " -L --lsb least significant bit first\n"
-> " -C --cs-high chip select active high\n"
-> " -N --no-cs no chip select\n"
-> " -R --ready slave pulls low to pause\n"
-> " -M --mosi-idle-low leave mosi line low when idle\n"
->
-> data
-> " -i --input input data from a file (e.g. \"test.bin\")\n"
-> " -o --output output data to a file (e.g. \"results.bin\")\n"
-> " -p Send data (e.g. \"1234\\xde\\xad\")\n"
-> " -S --size transfer size\n"
-> " -I --iter iterations\n");
->
-> misc
-> " -v --verbose Verbose (show tx buffer)\n"
+Add the Loongson platform spi binding with DT schema format using
+json-schema.
 
-Looks great to me, thank you for doing that!
+Signed-off-by: Yinbo Zhu <zhuyinbo@loongson.cn>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ .../bindings/spi/loongson,ls2k-spi.yaml       | 41 +++++++++++++++++++
+ MAINTAINERS                                   |  6 +++
+ 2 files changed, 47 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/loongson,ls2k-spi.yaml
 
---=20
-With Best Regards,
-Andy Shevchenko
+diff --git a/Documentation/devicetree/bindings/spi/loongson,ls2k-spi.yaml b/Documentation/devicetree/bindings/spi/loongson,ls2k-spi.yaml
+new file mode 100644
+index 000000000000..d0be6e5378d7
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/loongson,ls2k-spi.yaml
+@@ -0,0 +1,41 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/spi/loongson,ls2k-spi.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Loongson SPI controller
++
++maintainers:
++  - Yinbo Zhu <zhuyinbo@loongson.cn>
++
++allOf:
++  - $ref: /schemas/spi/spi-controller.yaml#
++
++properties:
++  compatible:
++    enum:
++      - loongson,ls2k-spi
++
++  reg:
++    maxItems: 1
++
++  clocks:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++  - clocks
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    spi0: spi@1fff0220{
++        compatible = "loongson,ls2k-spi";
++        reg = <0x1fff0220 0x10>;
++        clocks = <&clk 17>;
++        #address-cells = <1>;
++        #size-cells = <0>;
++    };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index fea4317faf75..e49c04c53c99 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -12201,6 +12201,12 @@ F:	Documentation/devicetree/bindings/clock/loongson,ls2k-clk.yaml
+ F:	drivers/clk/clk-loongson2.c
+ F:	include/dt-bindings/clock/loongson,ls2k-clk.h
+ 
++LOONGSON SPI DRIVER
++M:	Yinbo Zhu <zhuyinbo@loongson.cn>
++L:	linux-spi@vger.kernel.org
++S:	Maintained
++F:	Documentation/devicetree/bindings/spi/loongson,ls2k-spi.yaml
++
+ LSILOGIC MPT FUSION DRIVERS (FC/SAS/SPI)
+ M:	Sathya Prakash <sathya.prakash@broadcom.com>
+ M:	Sreekanth Reddy <sreekanth.reddy@broadcom.com>
+-- 
+2.20.1
+

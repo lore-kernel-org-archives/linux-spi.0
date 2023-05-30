@@ -2,53 +2,53 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B6273C7EE23
-	for <linux-spi@archiver.kernel.org>; Tue, 30 May 2023 14:17:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BEA7CC7EE2F
+	for <linux-spi@archiver.kernel.org>; Tue, 30 May 2023 14:17:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232083AbjE3OR5 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 30 May 2023 10:17:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59976 "EHLO
+        id S232355AbjE3OR7 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 30 May 2023 10:17:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232114AbjE3OR4 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 30 May 2023 10:17:56 -0400
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E8C3126;
-        Tue, 30 May 2023 07:17:18 -0700 (PDT)
-Received: by mail-ej1-x62d.google.com with SMTP id a640c23a62f3a-96ff9c0a103so654731366b.0;
-        Tue, 30 May 2023 07:17:18 -0700 (PDT)
+        with ESMTP id S232190AbjE3OR6 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 30 May 2023 10:17:58 -0400
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C88C8137;
+        Tue, 30 May 2023 07:17:20 -0700 (PDT)
+Received: by mail-ej1-x634.google.com with SMTP id a640c23a62f3a-96f850b32caso872852466b.3;
+        Tue, 30 May 2023 07:17:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685456236; x=1688048236;
+        d=gmail.com; s=20221208; t=1685456239; x=1688048239;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=J9alx3JE4yyy/h8WRBpR+J1YPMr4Oma9xkFMx5Mn/Wk=;
-        b=fBcfpVqE3wkBfIkERxFqgLX+9dQ6fyb02UnZEZSuejKpHIWdNihFYnH4lACZxkkB0Q
-         vHZm0PkzV45uVJQ60JUcUUOKKSp3V7Xbhw6Ki7/kiOD3KAqpJmInUJOXWcBUMEzfe31M
-         LeGph8Dt5TvQoxWzaWzzX2lU4lfHGNm0WS2hm1S9leyZZRkSAgu/hYe+BsPM0Yi0598K
-         IYBPjvsqGP+S0SvkCgG03fNQYPCm4bh9ISa94uTeNoeiIjE7fwonitZ9i7ed3vVh/IQJ
-         Rv20WXIoOCNCqFT+ULL0bviBFs6oyig6zgiR19CAG7ljjh36IkYyg/wHI1MFRRrbBg38
-         RyXw==
+        bh=9sM32gSBhwgEqaXvzS8WOOQz2iG5ex22tKZyotsu4MA=;
+        b=Qb2yMh3puMsqDv73oGMNHtqacdk2KMXoqnNGw8sOvBciiYaybvT7BMCPJHsstGOlw9
+         Cd7eKKW9/8DrfapPmxA+g6NDPUMmkwzhJW6Edn1y0fQoQHsfM1oCdzxV46OAz6L2cPzr
+         wg7L58d2WvP/pOifHDqrbOkLbLRlhqmWH3GOb9mXt0eDvxz6gEG1INlBPSdb9o+jXD7s
+         pkCYrnd/od6XH+xCdjjJoVdhRvMXO8vwf02zaR142dXs5VIUKVm//DUVPlJH0IoK8pfe
+         UDNF5vzjBAOBur5M2B/+lUiZYN0227ivyvCQt1eTQrHmIv+y+tL1hXpWPJhlRCSJGaYw
+         N0QQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685456236; x=1688048236;
+        d=1e100.net; s=20221208; t=1685456239; x=1688048239;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=J9alx3JE4yyy/h8WRBpR+J1YPMr4Oma9xkFMx5Mn/Wk=;
-        b=eNY0VYkQnG/jbqMyy495KABzJM+0Lc3WUNE/Ypn9uTS0EDDQyMmd6xu2x2/CZZOghc
-         hKI+Le7vtLdipvCOAUX8HvQR+3IsWkEKPfA68gLVH9DzgH9jnbbyAg9NvR8PsR8pEIRq
-         4W2voDjnoQdvlmZW5tp8ODLOEFEClwDPZrRRVoldFeah72KJ8brxTiH1vEN5vKI2rFPw
-         V7TE5UshbUpGFMLOwygYsP2IRdmVYcsgC9X2XJXGDG6NzFJ1byU4B7JU3Ht0tKolWXf8
-         zjh94dqYc2hRfyR7eGwwdApNWm3b7RUdWk0VwI99zWKOVSVTricLwwKskmQQAwql0iMv
-         nyEA==
-X-Gm-Message-State: AC+VfDzQd1oOP96mbXx/ncO8OkFpNrlS8lO5oi6qAZu1uxXelBvQ5lI8
-        DxbeBoIxyzgfmeK/7JC2qMr9tvkUnux93A==
-X-Google-Smtp-Source: ACHHUZ6V33VsolAjDkkTO9syiRNOUvyj/MrEEW6rXZ/kWk/booc71t70Wv2ry3FtyxSL//30fN+VeQ==
-X-Received: by 2002:a17:906:dacd:b0:973:d863:f651 with SMTP id xi13-20020a170906dacd00b00973d863f651mr2369549ejb.44.1685456236017;
-        Tue, 30 May 2023 07:17:16 -0700 (PDT)
+        bh=9sM32gSBhwgEqaXvzS8WOOQz2iG5ex22tKZyotsu4MA=;
+        b=SdHg3DEz4s3537KVEeoUW5ngdJhPH0DeEZAgXXQzEZNPBj48e/rzW09BGBRNDa5P0x
+         2pWA8aal/JssAYqKVsxo/6DVtJSaCHeVD1/JJpQAjqXwocFtllfY2/+3QPAMTONOZefp
+         Fd25TtVOxFelpUSD/EyHI9tD1YcYU/VO35anTYyUmoijptmdvHJ82HrCZUav5Wdy3QmC
+         ASOC5odMm1/YC49txmw5UrbjdFELpYXFrMzl+zYy6NAkzFqvar57qCcclEMfmcxbdTPB
+         mNqvvbVUtjqPRADRq+0OJkXB7ZRU+tiaC/CGZ2WhtgXFWBE3BlNjOsDbqkf1ItbF4xu6
+         3bZg==
+X-Gm-Message-State: AC+VfDzJg6obztIbQiZwDXUKlmO30Rirv27KXTzw8APMkOthHPzf9eA0
+        RU7cS3JnHs+qTVopSiNjQv8=
+X-Google-Smtp-Source: ACHHUZ6zEyEGWlL8jVkcQqCF8ixHKKTTN+4lsY0Lqfg40v077Z+OBlqg8uBSq69/uCSW/52PpBQhRA==
+X-Received: by 2002:a17:907:7da3:b0:973:717c:26c3 with SMTP id oz35-20020a1709077da300b00973717c26c3mr2525620ejc.20.1685456238982;
+        Tue, 30 May 2023 07:17:18 -0700 (PDT)
 Received: from wslxew193.ultratronik.de (p200300c78700c900796a998533c043af.dip0.t-ipconnect.de. [2003:c7:8700:c900:796a:9985:33c0:43af])
-        by smtp.gmail.com with ESMTPSA id n20-20020a170906089400b0094e96e46cc0sm7354359eje.69.2023.05.30.07.17.14
+        by smtp.gmail.com with ESMTPSA id n20-20020a170906089400b0094e96e46cc0sm7354359eje.69.2023.05.30.07.17.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 May 2023 07:17:15 -0700 (PDT)
+        Tue, 30 May 2023 07:17:18 -0700 (PDT)
 From:   Boerge Struempfel <boerge.struempfel@gmail.com>
 Cc:     boerge.struempfel@gmail.com, bstruempfel@ultratronik.de,
         andy.shevchenko@gmail.com, festevam@gmail.com,
@@ -59,9 +59,9 @@ Cc:     boerge.struempfel@gmail.com, bstruempfel@ultratronik.de,
         NXP Linux Team <linux-imx@nxp.com>,
         linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v7 2/5] spi: spi-imx: add support for SPI_MOSI_IDLE_LOW mode bit
-Date:   Tue, 30 May 2023 16:16:38 +0200
-Message-Id: <20230530141641.1155691-3-boerge.struempfel@gmail.com>
+Subject: [PATCH v7 4/5] spi: spidev_test: Sorted the options into logical groups
+Date:   Tue, 30 May 2023 16:16:40 +0200
+Message-Id: <20230530141641.1155691-5-boerge.struempfel@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230530141641.1155691-1-boerge.struempfel@gmail.com>
 References: <20230530141641.1155691-1-boerge.struempfel@gmail.com>
@@ -72,52 +72,125 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-By default, the spi-imx controller pulls the mosi line high, whenever it
-is idle. This behaviour can be inverted per CS by setting the
-corresponding DATA_CTL bit in the config register of the controller.
-
-Also, since the controller mode-bits have to be touched anyways, the
-SPI_CPOL and SPI_CPHA are replaced by the combined SPI_MODE_X_MASK flag.
+In order to increase usability, the command line options are sorted into
+logical groups. In addition, the usage string was sorted alphabetically,
+and the missing parameters '8','i' and 'o' were added. Furthermore, the
+option descriptions were moved further to the right, in order to allow
+for longer option names.
 
 Signed-off-by: Boerge Struempfel <boerge.struempfel@gmail.com>
 ---
- drivers/spi/spi-imx.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ tools/spi/spidev_test.c | 90 ++++++++++++++++++++++-------------------
+ 1 file changed, 48 insertions(+), 42 deletions(-)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index bd6ddb142b13..6f4d3cb81fdf 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -281,6 +281,7 @@ static bool spi_imx_can_dma(struct spi_controller *controller, struct spi_device
- #define MX51_ECSPI_CONFIG_SCLKPOL(cs)	(1 << ((cs & 3) +  4))
- #define MX51_ECSPI_CONFIG_SBBCTRL(cs)	(1 << ((cs & 3) +  8))
- #define MX51_ECSPI_CONFIG_SSBPOL(cs)	(1 << ((cs & 3) + 12))
-+#define MX51_ECSPI_CONFIG_DATACTL(cs)	(1 << ((cs & 3) + 16))
- #define MX51_ECSPI_CONFIG_SCLKCTL(cs)	(1 << ((cs & 3) + 20))
+diff --git a/tools/spi/spidev_test.c b/tools/spi/spidev_test.c
+index b0ca44c70e83..2d2cee339b39 100644
+--- a/tools/spi/spidev_test.c
++++ b/tools/spi/spidev_test.c
+@@ -172,28 +172,34 @@
  
- #define MX51_ECSPI_INT		0x10
-@@ -573,6 +574,11 @@ static int mx51_ecspi_prepare_message(struct spi_imx_data *spi_imx,
- 		cfg &= ~MX51_ECSPI_CONFIG_SCLKCTL(spi_get_chipselect(spi, 0));
- 	}
+ static void print_usage(const char *prog)
+ {
+-	printf("Usage: %s [-DsbdlHOLC3vpNR24SI]\n", prog);
+-	puts("  -D --device   device to use (default /dev/spidev1.1)\n"
+-	     "  -s --speed    max speed (Hz)\n"
+-	     "  -d --delay    delay (usec)\n"
+-	     "  -b --bpw      bits per word\n"
+-	     "  -i --input    input data from a file (e.g. \"test.bin\")\n"
+-	     "  -o --output   output data to a file (e.g. \"results.bin\")\n"
+-	     "  -l --loop     loopback\n"
+-	     "  -H --cpha     clock phase\n"
+-	     "  -O --cpol     clock polarity\n"
+-	     "  -L --lsb      least significant bit first\n"
+-	     "  -C --cs-high  chip select active high\n"
+-	     "  -3 --3wire    SI/SO signals shared\n"
+-	     "  -v --verbose  Verbose (show tx buffer)\n"
+-	     "  -p            Send data (e.g. \"1234\\xde\\xad\")\n"
+-	     "  -N --no-cs    no chip select\n"
+-	     "  -R --ready    slave pulls low to pause\n"
+-	     "  -2 --dual     dual transfer\n"
+-	     "  -4 --quad     quad transfer\n"
+-	     "  -8 --octal    octal transfer\n"
+-	     "  -S --size     transfer size\n"
+-	     "  -I --iter     iterations\n");
++	printf("Usage: %s [-2348CDHILNORSbdilopsv]\n", prog);
++	puts("general device settings:\n"
++		 "  -D --device         device to use (default /dev/spidev1.1)\n"
++		 "  -s --speed          max speed (Hz)\n"
++		 "  -d --delay          delay (usec)\n"
++		 "  -l --loop           loopback\n"
++		 "spi mode:\n"
++		 "  -H --cpha           clock phase\n"
++		 "  -O --cpol           clock polarity\n"
++		 "number of wires for transmission:\n"
++		 "  -2 --dual           dual transfer\n"
++		 "  -4 --quad           quad transfer\n"
++		 "  -8 --octal          octal transfer\n"
++		 "  -3 --3wire          SI/SO signals shared\n"
++		 "data:\n"
++		 "  -i --input          input data from a file (e.g. \"test.bin\")\n"
++		 "  -o --output         output data to a file (e.g. \"results.bin\")\n"
++		 "  -p                  Send data (e.g. \"1234\\xde\\xad\")\n"
++		 "  -S --size           transfer size\n"
++		 "  -I --iter           iterations\n"
++		 "additional parameters:\n"
++		 "  -b --bpw            bits per word\n"
++		 "  -L --lsb            least significant bit first\n"
++		 "  -C --cs-high        chip select active high\n"
++		 "  -N --no-cs          no chip select\n"
++		 "  -R --ready          slave pulls low to pause\n"
++		 "misc:\n"
++		 "  -v --verbose        Verbose (show tx buffer)\n");
+ 	exit(1);
+ }
  
-+	if (spi->mode & SPI_MOSI_IDLE_LOW)
-+		cfg |= MX51_ECSPI_CONFIG_DATACTL(spi_get_chipselect(spi, 0));
-+	else
-+		cfg &= ~MX51_ECSPI_CONFIG_DATACTL(spi_get_chipselect(spi, 0));
-+
- 	if (spi->mode & SPI_CS_HIGH)
- 		cfg |= MX51_ECSPI_CONFIG_SSBPOL(spi_get_chipselect(spi, 0));
- 	else
-@@ -1743,7 +1749,8 @@ static int spi_imx_probe(struct platform_device *pdev)
- 	controller->prepare_message = spi_imx_prepare_message;
- 	controller->unprepare_message = spi_imx_unprepare_message;
- 	controller->slave_abort = spi_imx_slave_abort;
--	controller->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_NO_CS;
-+	controller->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_NO_CS |
-+				SPI_MOSI_IDLE_LOW;
- 
- 	if (is_imx35_cspi(spi_imx) || is_imx51_ecspi(spi_imx) ||
- 	    is_imx53_ecspi(spi_imx))
+@@ -201,26 +207,26 @@ static void parse_opts(int argc, char *argv[])
+ {
+ 	while (1) {
+ 		static const struct option lopts[] = {
+-			{ "device",  1, 0, 'D' },
+-			{ "speed",   1, 0, 's' },
+-			{ "delay",   1, 0, 'd' },
+-			{ "bpw",     1, 0, 'b' },
+-			{ "input",   1, 0, 'i' },
+-			{ "output",  1, 0, 'o' },
+-			{ "loop",    0, 0, 'l' },
+-			{ "cpha",    0, 0, 'H' },
+-			{ "cpol",    0, 0, 'O' },
+-			{ "lsb",     0, 0, 'L' },
+-			{ "cs-high", 0, 0, 'C' },
+-			{ "3wire",   0, 0, '3' },
+-			{ "no-cs",   0, 0, 'N' },
+-			{ "ready",   0, 0, 'R' },
+-			{ "dual",    0, 0, '2' },
+-			{ "verbose", 0, 0, 'v' },
+-			{ "quad",    0, 0, '4' },
+-			{ "octal",   0, 0, '8' },
+-			{ "size",    1, 0, 'S' },
+-			{ "iter",    1, 0, 'I' },
++			{ "device",        1, 0, 'D' },
++			{ "speed",         1, 0, 's' },
++			{ "delay",         1, 0, 'd' },
++			{ "loop",          0, 0, 'l' },
++			{ "cpha",          0, 0, 'H' },
++			{ "cpol",          0, 0, 'O' },
++			{ "dual",          0, 0, '2' },
++			{ "quad",          0, 0, '4' },
++			{ "octal",         0, 0, '8' },
++			{ "3wire",         0, 0, '3' },
++			{ "input",         1, 0, 'i' },
++			{ "output",        1, 0, 'o' },
++			{ "size",          1, 0, 'S' },
++			{ "iter",          1, 0, 'I' },
++			{ "bpw",           1, 0, 'b' },
++			{ "lsb",           0, 0, 'L' },
++			{ "cs-high",       0, 0, 'C' },
++			{ "no-cs",         0, 0, 'N' },
++			{ "ready",         0, 0, 'R' },
++			{ "verbose",       0, 0, 'v' },
+ 			{ NULL, 0, 0, 0 },
+ 		};
+ 		int c;
 -- 
 2.40.1
 

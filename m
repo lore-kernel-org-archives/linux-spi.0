@@ -2,53 +2,53 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7CCFAC7EE2C
-	for <linux-spi@archiver.kernel.org>; Tue, 30 May 2023 14:17:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A0C7C77B73
+	for <linux-spi@archiver.kernel.org>; Tue, 30 May 2023 14:18:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231913AbjE3OR6 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 30 May 2023 10:17:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59964 "EHLO
+        id S232477AbjE3OSC (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 30 May 2023 10:18:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231381AbjE3OR5 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 30 May 2023 10:17:57 -0400
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2BDE12D;
-        Tue, 30 May 2023 07:17:19 -0700 (PDT)
-Received: by mail-ed1-x535.google.com with SMTP id 4fb4d7f45d1cf-51494659d49so5109836a12.3;
-        Tue, 30 May 2023 07:17:19 -0700 (PDT)
+        with ESMTP id S232323AbjE3OR6 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 30 May 2023 10:17:58 -0400
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38BF6E41;
+        Tue, 30 May 2023 07:17:23 -0700 (PDT)
+Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-974265a1a40so121981866b.0;
+        Tue, 30 May 2023 07:17:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685456237; x=1688048237;
+        d=gmail.com; s=20221208; t=1685456241; x=1688048241;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=RZI6N7rpTTulbByVXfKdZOIC7A9MiWqLIoC8OTG2ppM=;
-        b=SLtlmn0TqZSDxqhH7aQIjRwsci638QIzvnyE3KxBrB6UPtgm1C1NSYtKRxFJxsbyX6
-         Wm7YlxKYJmaZdvv/49fkrCxzD3vJ7X7O6iuc3a26lnpuwIi3KOuabJs3kZ7xn8cDRb6m
-         Ko9/xmZngxsNWT8nyP4agXiMRATCiQLjmE8CYuCa5EDCDmqn+AKzbwt4Mq9GR1Dw1Q/Q
-         tqutGr1kxpYdAUdJZmcjheuwu8YEol1n3CvS7MHk+zMHwfcwkgE4ANKRVz1mVUOYFcj5
-         ogkYkmG9kVW/JhUVsnMM0WxzCzii4Lzdy/J/MH9I2MSWBrcHr+QI6VcbYszbIWNEMpYf
-         q3ew==
+        bh=w3S98eKsmu2BFFqj9FoRZCJ7VYZdqAy52J8ICuBM5wA=;
+        b=ov8LXl4WkF1VfWNMmB1uQCeonT+IG1VR9wOt2IzJ8W57Woqmb7mPzeqwOfZFrcLAlq
+         F6xqbA5iLqjZ5bueA2fd8kRnemFODCUKlZtljgpTtUBI4KRorV14PPLACw6QNMLl7uLQ
+         asQKEeIAbcie0sEfwo5J6Dl5NLRhC/ghdvTUnJvDty3k3rXal3L6AhrPFwo4SaJ2HMhO
+         VioOdC9Iw5uU0MzXeMc/68vOTzcZHHTrNrjGaNSNJ4p+/Yeguq+mkqFVUrEjbhd6MTsO
+         rCWLdMQV05gAM9ldEKaNBBFPLYeXaDMhdsXqmkFQOSohIxWh26P3iIGlezxD152mQXYg
+         PKoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685456237; x=1688048237;
+        d=1e100.net; s=20221208; t=1685456241; x=1688048241;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=RZI6N7rpTTulbByVXfKdZOIC7A9MiWqLIoC8OTG2ppM=;
-        b=JorBJBmTBZ5/HxAGPzf3f1MDZmnrM8H9ikLq2vszeWuN4wiRxdYbhngcYdH+vd1r9Z
-         04ay09QmxdX6fugo+33uI/dajrCM00ZrHRoKTA8eU3tYqqmtj5DqJQSomO21u3+x3LSc
-         rDMNelbIGdT+fIb9HiiBrkaPnEi7bYOtgc8h961SB2qsJTAB0TiV5s+S9ALmaRCgtz09
-         a8qTJnRV3t/eK7O0l1u0sTCgAk2epWqnKMJyV5naGudsRr7qvVnfKwrZ5J/eNK1LHQh+
-         RyqeVxYGo8DL3LmkGdLE+eOdoPGhrJtg/4pjMLDOPVY+i6B5EV3q7a2+xRr/bapMDKD7
-         48ew==
-X-Gm-Message-State: AC+VfDypBdLegfmsVSSb62MTdJ836QmbV7NVTMfZJoJI56D8Cqm7dl4X
-        wgrbTW10zCYZ+X1eAJQ1ZlQ=
-X-Google-Smtp-Source: ACHHUZ4Kzsw/Pdj9Xsu6+IR+SEPckrPQrAxo3/SarlmPVFQkrJFFv4Nbe7sLhcXCzrcSLNJjanqpYA==
-X-Received: by 2002:a17:907:7e8c:b0:96f:d8a9:d045 with SMTP id qb12-20020a1709077e8c00b0096fd8a9d045mr2621016ejc.59.1685456237517;
-        Tue, 30 May 2023 07:17:17 -0700 (PDT)
+        bh=w3S98eKsmu2BFFqj9FoRZCJ7VYZdqAy52J8ICuBM5wA=;
+        b=VduUJQNB638FsKCfQng+7I0YeyoybfNeeOb17FudsLttezICCuWqhIKzp72qvVexRC
+         Vz7t9yfPSBPVH6riCnj/0pjwIxGLJKHBObRyvzibODt4HUIgvfJhTnK8xoVYDfHkzlmU
+         cKuqxXw2vkY9PpWWzFAJLgKirrats37WV22yubtUa8NR82oYKTchyIDEtjFLp1K/1eZ9
+         9dJNVoFD398xcuMyzmf+oopwtAntoUDEhSYuSsnoAZ4RNsVjYcpHLBKZH7rqJzZ9niF/
+         IQNvd8irJyNzlZVBATanGqnOm0W5iTrmzxb3Xdovk0zXzkSeaM0nuxYZ3BM2+cmhVcIg
+         ODKQ==
+X-Gm-Message-State: AC+VfDyfkOXjylX5il9lal2pp5xVyGrxD1IwL0pYTqKaJOlHxutATAcj
+        DJqpqu03P3DSrcUuBcHt4IM=
+X-Google-Smtp-Source: ACHHUZ5phJXRV21yCGp4Qg2DUt+RODu3VAOOjo2HgW2jQAGodKRI/nAcIr19GQgALEw/0XOG5xXkEg==
+X-Received: by 2002:a17:907:940b:b0:96f:c545:6fd with SMTP id dk11-20020a170907940b00b0096fc54506fdmr10330494ejc.10.1685456240903;
+        Tue, 30 May 2023 07:17:20 -0700 (PDT)
 Received: from wslxew193.ultratronik.de (p200300c78700c900796a998533c043af.dip0.t-ipconnect.de. [2003:c7:8700:c900:796a:9985:33c0:43af])
-        by smtp.gmail.com with ESMTPSA id n20-20020a170906089400b0094e96e46cc0sm7354359eje.69.2023.05.30.07.17.16
+        by smtp.gmail.com with ESMTPSA id n20-20020a170906089400b0094e96e46cc0sm7354359eje.69.2023.05.30.07.17.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 May 2023 07:17:17 -0700 (PDT)
+        Tue, 30 May 2023 07:17:20 -0700 (PDT)
 From:   Boerge Struempfel <boerge.struempfel@gmail.com>
 Cc:     boerge.struempfel@gmail.com, bstruempfel@ultratronik.de,
         andy.shevchenko@gmail.com, festevam@gmail.com,
@@ -59,9 +59,9 @@ Cc:     boerge.struempfel@gmail.com, bstruempfel@ultratronik.de,
         NXP Linux Team <linux-imx@nxp.com>,
         linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v7 3/5] spi: spidev: add two new spi mode bits
-Date:   Tue, 30 May 2023 16:16:39 +0200
-Message-Id: <20230530141641.1155691-4-boerge.struempfel@gmail.com>
+Subject: [PATCH v7 5/5] spi: spidev_test Add three missing spi mode bits
+Date:   Tue, 30 May 2023 16:16:41 +0200
+Message-Id: <20230530141641.1155691-6-boerge.struempfel@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230530141641.1155691-1-boerge.struempfel@gmail.com>
 References: <20230530141641.1155691-1-boerge.struempfel@gmail.com>
@@ -72,28 +72,93 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Allow userspace to set SPI_MOSI_IDLE_LOW and the SPI_3WIRE_HIZ mode bit
-using the SPI_IOC_WR_MODE32 ioctl.
+Added the three missing spi mode bits SPI_3WIRE_HIZ, SPI_RX_CPHA_FLIP,
+and SPI_MOSI_IDLE_LOW.
 
 Signed-off-by: Boerge Struempfel <boerge.struempfel@gmail.com>
 ---
- drivers/spi/spidev.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/spi/spidev_test.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index 39d94c850839..c8b938e0f342 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -64,7 +64,8 @@ static_assert(N_SPI_MINORS > 0 && N_SPI_MINORS <= 256);
- 				| SPI_NO_CS | SPI_READY | SPI_TX_DUAL \
- 				| SPI_TX_QUAD | SPI_TX_OCTAL | SPI_RX_DUAL \
- 				| SPI_RX_QUAD | SPI_RX_OCTAL \
--				| SPI_RX_CPHA_FLIP)
-+				| SPI_RX_CPHA_FLIP | SPI_3WIRE_HIZ \
-+				| SPI_MOSI_IDLE_LOW)
+diff --git a/tools/spi/spidev_test.c b/tools/spi/spidev_test.c
+index 2d2cee339b39..9179942d7f15 100644
+--- a/tools/spi/spidev_test.c
++++ b/tools/spi/spidev_test.c
+@@ -172,7 +172,7 @@ static void transfer(int fd, uint8_t const *tx, uint8_t const *rx, size_t len)
  
- struct spidev_data {
- 	dev_t			devt;
+ static void print_usage(const char *prog)
+ {
+-	printf("Usage: %s [-2348CDHILNORSbdilopsv]\n", prog);
++	printf("Usage: %s [-2348CDFHILMNORSZbdilopsv]\n", prog);
+ 	puts("general device settings:\n"
+ 		 "  -D --device         device to use (default /dev/spidev1.1)\n"
+ 		 "  -s --speed          max speed (Hz)\n"
+@@ -181,11 +181,13 @@ static void print_usage(const char *prog)
+ 		 "spi mode:\n"
+ 		 "  -H --cpha           clock phase\n"
+ 		 "  -O --cpol           clock polarity\n"
++		 "  -F --rx-cpha-flip   flip CPHA on Rx only xfer\n"
+ 		 "number of wires for transmission:\n"
+ 		 "  -2 --dual           dual transfer\n"
+ 		 "  -4 --quad           quad transfer\n"
+ 		 "  -8 --octal          octal transfer\n"
+ 		 "  -3 --3wire          SI/SO signals shared\n"
++		 "  -Z --3wire-hiz      high impedance turnaround\n"
+ 		 "data:\n"
+ 		 "  -i --input          input data from a file (e.g. \"test.bin\")\n"
+ 		 "  -o --output         output data to a file (e.g. \"results.bin\")\n"
+@@ -198,6 +200,7 @@ static void print_usage(const char *prog)
+ 		 "  -C --cs-high        chip select active high\n"
+ 		 "  -N --no-cs          no chip select\n"
+ 		 "  -R --ready          slave pulls low to pause\n"
++		 "  -M --mosi-idle-low  leave mosi line low when idle\n"
+ 		 "misc:\n"
+ 		 "  -v --verbose        Verbose (show tx buffer)\n");
+ 	exit(1);
+@@ -213,10 +216,12 @@ static void parse_opts(int argc, char *argv[])
+ 			{ "loop",          0, 0, 'l' },
+ 			{ "cpha",          0, 0, 'H' },
+ 			{ "cpol",          0, 0, 'O' },
++			{ "rx-cpha-flip",  0, 0, 'F' },
+ 			{ "dual",          0, 0, '2' },
+ 			{ "quad",          0, 0, '4' },
+ 			{ "octal",         0, 0, '8' },
+ 			{ "3wire",         0, 0, '3' },
++			{ "3wire-hiz",     0, 0, 'Z' },
+ 			{ "input",         1, 0, 'i' },
+ 			{ "output",        1, 0, 'o' },
+ 			{ "size",          1, 0, 'S' },
+@@ -226,12 +231,13 @@ static void parse_opts(int argc, char *argv[])
+ 			{ "cs-high",       0, 0, 'C' },
+ 			{ "no-cs",         0, 0, 'N' },
+ 			{ "ready",         0, 0, 'R' },
++			{ "mosi-idle-low", 0, 0, 'M' },
+ 			{ "verbose",       0, 0, 'v' },
+ 			{ NULL, 0, 0, 0 },
+ 		};
+ 		int c;
+ 
+-		c = getopt_long(argc, argv, "D:s:d:b:i:o:lHOLC3NR248p:vS:I:",
++		c = getopt_long(argc, argv, "D:s:d:b:i:o:lHOLC3ZFMNR248p:vS:I:",
+ 				lopts, NULL);
+ 
+ 		if (c == -1)
+@@ -274,6 +280,15 @@ static void parse_opts(int argc, char *argv[])
+ 		case '3':
+ 			mode |= SPI_3WIRE;
+ 			break;
++		case 'Z':
++			mode |= SPI_3WIRE_HIZ;
++			break;
++		case 'F':
++			mode |= SPI_RX_CPHA_FLIP;
++			break;
++		case 'M':
++			mode |= SPI_MOSI_IDLE_LOW;
++			break;
+ 		case 'N':
+ 			mode |= SPI_NO_CS;
+ 			break;
 -- 
 2.40.1
 

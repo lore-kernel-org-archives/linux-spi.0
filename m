@@ -2,149 +2,141 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5C794C77B7A
-	for <linux-spi@archiver.kernel.org>; Thu,  1 Jun 2023 05:39:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A3E4C7EE23
+	for <linux-spi@archiver.kernel.org>; Thu,  1 Jun 2023 06:22:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231414AbjFAFjx (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 1 Jun 2023 01:39:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47626 "EHLO
+        id S231466AbjFAGWT (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 1 Jun 2023 02:22:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231493AbjFAFj0 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 1 Jun 2023 01:39:26 -0400
-Received: from forward103b.mail.yandex.net (forward103b.mail.yandex.net [178.154.239.150])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D13D71717;
-        Wed, 31 May 2023 22:38:36 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-45.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-45.sas.yp-c.yandex.net [IPv6:2a02:6b8:c14:c83:0:640:84f9:0])
-        by forward103b.mail.yandex.net (Yandex) with ESMTP id 86BCF6003B;
-        Thu,  1 Jun 2023 08:37:17 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-45.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id OaGNfZvWv8c0-HGdKrmol;
-        Thu, 01 Jun 2023 08:37:17 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=maquefel.me; s=mail; t=1685597837;
-        bh=MVrfFhDDrzP+QZ7AKJkzp8cNrCZ+hvwz6QWWmxQNar0=;
-        h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
-        b=DJFo/I2fNChDDfRzST21CjxcKfb4LS5XQ1cSS5uw6T32cKkAvmFsPl2ixOz8y5qvu
-         /FAKYFKIbPTarwSqkk9Jy6PD219xLzGgNeS3iRCwRPOYbdv2FgnAOEiT9/iDRtSdR2
-         xQuZBBxsv6TpYBuH5lXtRWtaWrXSDJsWq0Ayep4E=
-Authentication-Results: mail-nwsmtp-smtp-production-main-45.sas.yp-c.yandex.net; dkim=pass header.i=@maquefel.me
-From:   Nikita Shubin <nikita.shubin@maquefel.me>
-To:     Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Nikita Shubin <nikita.shubin@maquefel.me>
-Cc:     Michael Peters <mpeters@embeddedTS.com>,
-        Kris Bahnsen <kris@embeddedTS.com>, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v1 17/43] dt-bindings: spi: Add Cirrus EP93xx
-Date:   Thu,  1 Jun 2023 08:34:08 +0300
-Message-Id: <20230601053546.9574-18-nikita.shubin@maquefel.me>
-X-Mailer: git-send-email 2.37.4
-In-Reply-To: <20230424123522.18302-1-nikita.shubin@maquefel.me>
-References: <20230424123522.18302-1-nikita.shubin@maquefel.me>
+        with ESMTP id S230472AbjFAGWT (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 1 Jun 2023 02:22:19 -0400
+X-Greylist: delayed 16797 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 31 May 2023 23:22:16 PDT
+Received: from 19.mo583.mail-out.ovh.net (19.mo583.mail-out.ovh.net [46.105.35.78])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1A2799
+        for <linux-spi@vger.kernel.org>; Wed, 31 May 2023 23:22:16 -0700 (PDT)
+Received: from director8.ghost.mail-out.ovh.net (unknown [10.108.1.191])
+        by mo583.mail-out.ovh.net (Postfix) with ESMTP id CD84A245B3
+        for <linux-spi@vger.kernel.org>; Wed, 31 May 2023 20:55:58 +0000 (UTC)
+Received: from ghost-submission-6684bf9d7b-lxwgq (unknown [10.111.208.70])
+        by director8.ghost.mail-out.ovh.net (Postfix) with ESMTPS id E6AB11FD34;
+        Wed, 31 May 2023 20:55:57 +0000 (UTC)
+Received: from etezian.org ([37.59.142.107])
+        by ghost-submission-6684bf9d7b-lxwgq with ESMTPSA
+        id p+pxMF20d2QlDwAA4fq3wQ
+        (envelope-from <andi@etezian.org>); Wed, 31 May 2023 20:55:57 +0000
+Authentication-Results: garm.ovh; auth=pass (GARM-107S001522e08c7-87a2-407b-853c-156994c55239,
+                    CE32843581E8B828DAC27BD526439CBEDE034C14) smtp.auth=andi@etezian.org
+X-OVh-ClientIp: 178.238.172.216
+From:   Andi Shyti <andi.shyti@kernel.org>
+To:     Mark Brown <broonie@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Alim Akhtar <alim.akhtar@samsung.com>, linux-spi@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org,
+        Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH] spi: s3c64xx: Use devm_clk_get_enabled()
+Date:   Wed, 31 May 2023 22:55:50 +0200
+Message-Id: <20230531205550.568340-1-andi.shyti@kernel.org>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Ovh-Tracer-Id: 12996825577183513159
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrfeekledgudehfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffoggfgsedtkeertdertddtnecuhfhrohhmpeetnhguihcuufhhhihtihcuoegrnhguihdrshhhhihtiheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpedtveeuieehfeetudejhfehleeijedvveetleefhfehuedtleektdevjedujefgvdenucfkphepuddvjedrtddrtddruddpudejkedrvdefkedrudejvddrvdduiedpfeejrdehledrudegvddruddtjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduvdejrddtrddtrddupdhmrghilhhfrhhomhepoegrnhguihesvghtvgiiihgrnhdrohhrgheqpdhnsggprhgtphhtthhopedupdhrtghpthhtoheplhhinhhugidqshhpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdpoffvtefjohhsthepmhhoheekfedpmhhouggvpehsmhhtphhouhht
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Add YAML bindings for ep93xx SoC SPI.
+Replace the tuple devm_clk_get()/clk_prepare_enable() with the
+single function devm_clk_get_enabled().
 
-Signed-off-by: Nikita Shubin <nikita.shubin@maquefel.me>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 ---
+ drivers/spi/spi-s3c64xx.c | 39 +++++----------------------------------
+ 1 file changed, 5 insertions(+), 34 deletions(-)
 
-Notes:
-    v0 -> v1:
-    Krzysztof Kozlowski:
-    - replaced maintainers
-    - removed wildcards
-    - use fallback compatible and list all possible compatibles
-    - drop quotes in ref
-    - dropped "clock-names"
-    - dropped label
-    - fix ident
-
- .../devicetree/bindings/spi/spi-ep9301.yaml   | 69 +++++++++++++++++++
- 1 file changed, 69 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-ep9301.yaml
-
-diff --git a/Documentation/devicetree/bindings/spi/spi-ep9301.yaml b/Documentation/devicetree/bindings/spi/spi-ep9301.yaml
-new file mode 100644
-index 000000000000..c363b25a3074
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-ep9301.yaml
-@@ -0,0 +1,69 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/spi/spi-ep9301.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: EP93xx SoC SPI controller
-+
-+maintainers:
-+  - Alexander Sverdlin <alexander.sverdlin@gmail.com>
-+  - Nikita Shubin <nikita.shubin@maquefel.me>
-+
-+allOf:
-+  - $ref: spi-controller.yaml#
-+
-+properties:
-+  "#address-cells": true
-+  "#size-cells": true
-+
-+  compatible:
-+    oneOf:
-+      - const: cirrus,ep9301-spi
-+      - items:
-+          - enum:
-+              - cirrus,ep9302-spi
-+              - cirrus,ep9307-spi
-+              - cirrus,ep9312-spi
-+              - cirrus,ep9315-spi
-+          - const: cirrus,ep9301-spi
-+
-+  reg:
-+    items:
-+      - description: SPI registers region
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  clocks:
-+    items:
-+      - description: SPI Controller reference clock source
-+
-+  cs-gpios: true
-+
-+  cirrus,ep9301-use-dma:
-+    description: Flag indicating that the SPI should use dma
-+    type: boolean
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+  - clocks
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/clock/cirrus,ep93xx-clock.h>
-+    spi@808a0000 {
-+      compatible = "cirrus,ep9301-spi";
-+      reg = <0x808a0000 0x18>;
-+      interrupt-parent = <&vic1>;
-+      interrupts = <21>;
-+      clocks = <&syscon EP93XX_CLK_SPI>;
-+      cs-gpios = <&gpio5 2 0>;
-+      cirrus,ep9301-use-dma;
-+    };
-+
-+...
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index e30562f96a4c8..d5ec32bda1587 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -1244,46 +1244,28 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	/* Setup clocks */
+-	sdd->clk = devm_clk_get(&pdev->dev, "spi");
++	sdd->clk = devm_clk_get_enabled(&pdev->dev, "spi");
+ 	if (IS_ERR(sdd->clk)) {
+ 		dev_err(&pdev->dev, "Unable to acquire clock 'spi'\n");
+ 		ret = PTR_ERR(sdd->clk);
+ 		goto err_deref_master;
+ 	}
+ 
+-	ret = clk_prepare_enable(sdd->clk);
+-	if (ret) {
+-		dev_err(&pdev->dev, "Couldn't enable clock 'spi'\n");
+-		goto err_deref_master;
+-	}
+-
+ 	sprintf(clk_name, "spi_busclk%d", sci->src_clk_nr);
+-	sdd->src_clk = devm_clk_get(&pdev->dev, clk_name);
++	sdd->src_clk = devm_clk_get_enabled(&pdev->dev, clk_name);
+ 	if (IS_ERR(sdd->src_clk)) {
+ 		dev_err(&pdev->dev,
+ 			"Unable to acquire clock '%s'\n", clk_name);
+ 		ret = PTR_ERR(sdd->src_clk);
+-		goto err_disable_clk;
+-	}
+-
+-	ret = clk_prepare_enable(sdd->src_clk);
+-	if (ret) {
+-		dev_err(&pdev->dev, "Couldn't enable clock '%s'\n", clk_name);
+-		goto err_disable_clk;
++		goto err_deref_master;
+ 	}
+ 
+ 	if (sdd->port_conf->clk_ioclk) {
+-		sdd->ioclk = devm_clk_get(&pdev->dev, "spi_ioclk");
++		sdd->ioclk = devm_clk_get_enabled(&pdev->dev, "spi_ioclk");
+ 		if (IS_ERR(sdd->ioclk)) {
+ 			dev_err(&pdev->dev, "Unable to acquire 'ioclk'\n");
+ 			ret = PTR_ERR(sdd->ioclk);
+-			goto err_disable_src_clk;
+-		}
+-
+-		ret = clk_prepare_enable(sdd->ioclk);
+-		if (ret) {
+-			dev_err(&pdev->dev, "Couldn't enable clock 'ioclk'\n");
+-			goto err_disable_src_clk;
++			goto err_deref_master;
+ 		}
+ 	}
+ 
+@@ -1332,11 +1314,6 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
+ 	pm_runtime_disable(&pdev->dev);
+ 	pm_runtime_set_suspended(&pdev->dev);
+ 
+-	clk_disable_unprepare(sdd->ioclk);
+-err_disable_src_clk:
+-	clk_disable_unprepare(sdd->src_clk);
+-err_disable_clk:
+-	clk_disable_unprepare(sdd->clk);
+ err_deref_master:
+ 	spi_master_put(master);
+ 
+@@ -1357,12 +1334,6 @@ static void s3c64xx_spi_remove(struct platform_device *pdev)
+ 		dma_release_channel(sdd->tx_dma.ch);
+ 	}
+ 
+-	clk_disable_unprepare(sdd->ioclk);
+-
+-	clk_disable_unprepare(sdd->src_clk);
+-
+-	clk_disable_unprepare(sdd->clk);
+-
+ 	pm_runtime_put_noidle(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
+ 	pm_runtime_set_suspended(&pdev->dev);
 -- 
-2.37.4
+2.40.1
 

@@ -2,87 +2,70 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 597C7C77B7C
-	for <linux-spi@archiver.kernel.org>; Wed, 31 May 2023 11:24:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 37407C77B7C
+	for <linux-spi@archiver.kernel.org>; Wed, 31 May 2023 11:33:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230341AbjEaLYi (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 31 May 2023 07:24:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36708 "EHLO
+        id S232598AbjEaLdZ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 31 May 2023 07:33:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229936AbjEaLYi (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 31 May 2023 07:24:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CF93D9
-        for <linux-spi@vger.kernel.org>; Wed, 31 May 2023 04:24:37 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AF24162F8F
-        for <linux-spi@vger.kernel.org>; Wed, 31 May 2023 11:24:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 481BDC433EF;
-        Wed, 31 May 2023 11:24:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685532276;
-        bh=XBCpoBDVBfkS10vvP300z3rXcXrvJjeLSpM/nAC3P9o=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=pDUEWxB5IFDX1T2wzmMEgcGRuVF0yRdUtWeOHCXnFjcdcbSCH0gLrp3lOifQpWkLI
-         IKGHAXfAmjg1u+m0UZ+dEYhpj5t9G7cGpsQhKI8xdlNqF6PbFj7d8TwNeivuhKIDIZ
-         yUjFIylnhPbsxQYwIr3CHnH41wYHOMvoYd36ytRxyoFgBBL9FWpdjJQx9mgVmIwwhk
-         /xv+nAR+L5ychtqFgcIMRr9cds11wSt20JyTaPyRLwjUnYygkUc2S6eXYfIs1h7kVS
-         JJCG+whujzk/hhV0G+QKP/use8V9CHZCtQ5eV9sDIlnutF8JyCclaKd8SFZteLQh99
-         1sobn2x2MrB8w==
-Date:   Wed, 31 May 2023 12:24:30 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Ben Dooks <ben.dooks@codethink.co.uk>
-Cc:     linux-spi@vger.kernel.org, fancer.lancer@gmail.com,
+        with ESMTP id S232588AbjEaLdZ (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 31 May 2023 07:33:25 -0400
+X-Greylist: delayed 1779 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 31 May 2023 04:33:24 PDT
+Received: from imap4.hz.codethink.co.uk (imap4.hz.codethink.co.uk [188.40.203.114])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AB15E8
+        for <linux-spi@vger.kernel.org>; Wed, 31 May 2023 04:33:24 -0700 (PDT)
+Received: from [167.98.27.226] (helo=rainbowdash)
+        by imap4.hz.codethink.co.uk with esmtpsa  (Exim 4.94.2 #2 (Debian))
+        id 1q4JcD-0072Jh-NF; Wed, 31 May 2023 12:03:41 +0100
+Received: from ben by rainbowdash with local (Exim 4.96)
+        (envelope-from <ben@rainbowdash>)
+        id 1q4JcD-001Lbs-0q;
+        Wed, 31 May 2023 12:03:41 +0100
+From:   Ben Dooks <ben.dooks@codethink.co.uk>
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
+Cc:     fancer.lancer@gmail.com,
         Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>,
         Jude Onyenegecha <jude.onyenegecha@codethink.co.uk>,
         Greentime Hu <greentime.hu@sifive.com>,
         Jeegar Lakhani <jeegar.lakhani@sifive.com>,
-        Ben Dooks <ben.dooks@sifive.com>
-Subject: Re: [PATCH] spi: dw: announce driver probe
-Message-ID: <da679474-5fd1-4fbc-8e22-7fe0a153ee0b@sirena.org.uk>
-References: <20230531110339.321387-1-ben.dooks@codethink.co.uk>
+        Ben Dooks <ben.dooks@sifive.com>,
+        Ben Dooks <ben.dooks@codethink.co.uk>
+Subject: [PATCH] spi: dw: announce driver probe
+Date:   Wed, 31 May 2023 12:03:39 +0100
+Message-Id: <20230531110339.321387-1-ben.dooks@codethink.co.uk>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="Sia31dGu99zrCUkC"
-Content-Disposition: inline
-In-Reply-To: <20230531110339.321387-1-ben.dooks@codethink.co.uk>
-X-Cookie: Will Rogers never met you.
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+From: Ben Dooks <ben.dooks@sifive.com>
 
---Sia31dGu99zrCUkC
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+It is useful to know the driver probed, so print some basic
+info when it does, such as the spi bus name, irq, etc.
 
-On Wed, May 31, 2023 at 12:03:39PM +0100, Ben Dooks wrote:
+Signed-off-by: Ben Dooks <ben.dooks@sifive.com>
+Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
+---
+ drivers/spi/spi-dw-core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-> It is useful to know the driver probed, so print some basic
-> info when it does, such as the spi bus name, irq, etc.
+diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
+index 071a7604a8ab..8e8a0d063519 100644
+--- a/drivers/spi/spi-dw-core.c
++++ b/drivers/spi/spi-dw-core.c
+@@ -958,6 +958,9 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
+ 		goto err_dma_exit;
+ 	}
+ 
++	dev_info(dev, "%s: irq %d, %d fifo, max freq %u",
++		 dev_name(&master->dev), dws->irq, dws->fifo_len,
++		 dws->max_freq);
+ 	dw_spi_debugfs_init(dws);
+ 	return 0;
+ 
+-- 
+2.39.2
 
-No, we don't want every driver spamming the logs at probe - apart from
-anything else this slows down boot.  There's already some standard
-logging from the driver core that can be turned on if needed for debug
-purposes.  If there's things being enumerated from the hardware it can
-be useful to record those but that's chip revisions and so on rather
-than things like interrupt numbers.
-
---Sia31dGu99zrCUkC
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmR3Lm4ACgkQJNaLcl1U
-h9Ax6Qf+P2H7Jk+lDc8c7KDm4KE30bQ9IOZsY/9kQYrBK/F35KsKW4tiPqUGx6Cu
-Wc0XwiGMfjLIb5+z79OpxJAU9Vi9X1BYNa100cuLb5IkGglc8ISpFzZa4brtoI3y
-cHZ+xLFnaOau/3ZbRNe3c7Y+6qhTjeNwD4v3dyxDcpmE5qJ6gu+pKTYaPOB9P8L1
-zO6F+cmMiPX1STNGhyaR1OsDDtd1mztG9UYzEXfhAdywrzXFL31bBCvG/BaFrR9z
-fLufSCsEQYd+RsGfIz//H3rLkYo+94TNmj2z7xh3ycKqdi1EdQulN15bJ166DtWe
-rsZCssnt8BAQ3y8DqCiZiOu0wAkvJg==
-=x0yL
------END PGP SIGNATURE-----
-
---Sia31dGu99zrCUkC--

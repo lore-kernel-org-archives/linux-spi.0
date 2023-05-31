@@ -2,86 +2,96 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1BE16C77B7A
-	for <linux-spi@archiver.kernel.org>; Wed, 31 May 2023 10:53:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A81D5C77B73
+	for <linux-spi@archiver.kernel.org>; Wed, 31 May 2023 11:21:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234938AbjEaKxE (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 31 May 2023 06:53:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49226 "EHLO
+        id S231927AbjEaLVo (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 31 May 2023 07:21:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232198AbjEaKw6 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 31 May 2023 06:52:58 -0400
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19D08188;
-        Wed, 31 May 2023 03:52:54 -0700 (PDT)
-Received: by mail-lf1-x12c.google.com with SMTP id 2adb3069b0e04-4f4b384c09fso6653783e87.3;
-        Wed, 31 May 2023 03:52:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685530373; x=1688122373;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0mF96JxhPOfJm8OwVPyiERGBu/9SGI9YEMVv93ttrAE=;
-        b=K7S/m1yN1z3wihwPQ0aqTmA8KTPkPzoE4oY+Og9RwgyPhTsaOBXcjY7r2d300+ffca
-         kOLeizWVKQ6nVthj2EPf0aJSFkNGa5KAe4B/un7+eBje/DITcVV0Xd5UdvKMOLqqrGFX
-         1nOc6HcrUAFNIgZ4xd7xMUq4iLmwXgB3yDgc3N54GWlOER/f3wHDaTO3QojJ+oI7hTBl
-         msvwt1w7DAy76NtRu6/dGzXXgPoXKFpCGf1/PJXnx7Hzen6p/OuP/cavKe1B8J8U5Fzc
-         ZK3qKnDWhNH2Jde/ntE9HFFV5CpPfgJ8ohZT/gvfjPORjo6CLoEgR+hffPq2q9Y/lnC9
-         hiRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685530373; x=1688122373;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0mF96JxhPOfJm8OwVPyiERGBu/9SGI9YEMVv93ttrAE=;
-        b=OQLoEXiDAiGBnKweHT+Ngl/q4Apt7qML3ms8YfeWnhwR4QIPZgfHmao/mSCOXlWA6y
-         7LXhA596P5TBgc/OXFU2zZs+yU2xQ5QXBk+Yjh5VwxgYeQDYHrScsJxRogyq/lNYBAHU
-         I2KZ8g+SFgDS9uy9LsJ2USVgdO9rjGZSXT7ifeUyUm4oTU4yJ8vBk8kZJ4XDLupvJXD8
-         3qDv0TpjOVoeSxoBJewIZSpzJdHi7XCKOMs1X/kxWlRm55f0MByX8KJ8oB/sk2QZQtXx
-         RjOTW8orMBTtrdixrgavMLPzzkJvQpk+h36UW3pJzG1vSW3/xCd2p+ZKE/T+JQduNP06
-         G1xQ==
-X-Gm-Message-State: AC+VfDwaLfc6old6+wXBhGm956uIVJDKMhO3FfiRK5cYgRvmqs9kLmmL
-        B8xLLyoGVG3A8Hu8yFYCqljuxgklbLg=
-X-Google-Smtp-Source: ACHHUZ5j1XndLfbwk06LhgPRrqGIp7j60e08yFoVMYU25rWfrpw/W8XBPCZ+IWMBtNMWRfXQg7PnYg==
-X-Received: by 2002:ac2:5605:0:b0:4f4:ce78:2f17 with SMTP id v5-20020ac25605000000b004f4ce782f17mr2316420lfd.13.1685530372868;
-        Wed, 31 May 2023 03:52:52 -0700 (PDT)
-Received: from mobilestation ([95.79.140.35])
-        by smtp.gmail.com with ESMTPSA id z27-20020ac25dfb000000b004f13cd61ebbsm672102lfq.175.2023.05.31.03.52.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 May 2023 03:52:52 -0700 (PDT)
-Date:   Wed, 31 May 2023 13:52:50 +0300
-From:   Serge Semin <fancer.lancer@gmail.com>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     Osama Muhammad <osmtendev@gmail.com>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] spi-dw-core.c: Fix error checking for
- debugfs_create_dir
-Message-ID: <20230531105250.6pd5jpngwbnbnbbc@mobilestation>
-References: <20230520224025.14928-1-osmtendev@gmail.com>
- <168546845148.691057.9965315836245052581.b4-ty@kernel.org>
- <20230530211446.foqpcfha6hjruhow@mobilestation>
- <30bcf77a-3e7c-4f13-94ab-f4efc52193dc@sirena.org.uk>
+        with ESMTP id S229936AbjEaLVo (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 31 May 2023 07:21:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 611D29F
+        for <linux-spi@vger.kernel.org>; Wed, 31 May 2023 04:21:43 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E9805639BB
+        for <linux-spi@vger.kernel.org>; Wed, 31 May 2023 11:21:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B5E1C433D2;
+        Wed, 31 May 2023 11:21:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1685532102;
+        bh=jIig24LqBUXOw9BhBCAwXCBLMwCM4ifvBRMmw72UaOs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Nt0oSV0QDocpdyfvBKaPSHDr0zI+OhWu4OH33Ty5Dp9sz1EF4NkHqnEA6gvhHPe/o
+         c7438JvOuKlLSZwgss1ki3wDl6YUwDNwa+WMmERT5sOwhAMS49XNEDALAQDgOfh29z
+         DcINBzaWAKO0FLTV8eIgoc4rd8ApfGhPIpmpjZ67YeTrO4LK7vZc3Idvw8zWZnW9IB
+         DCIKJ/aB/3kETuxW9XI28bxX6oXeD4c5tKT+ZuSgbHZWbnE8b9vzJ+6A67A7Ha46ov
+         zHkvaRkVaxuDeR1+0U/GQTvJD2q75tg6LoRNqZjdFn3UJLlr9wIATLqqyKarVKBT8i
+         dOvnQ0nVfQZOw==
+Date:   Wed, 31 May 2023 12:21:36 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc:     Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 1/1] spi: spi-imx: Use dev_err_probe for failed DMA
+ channel requests
+Message-ID: <d28247c1-2885-4510-a769-27d354f1cc53@sirena.org.uk>
+References: <20230418083505.466198-1-alexander.stein@ew.tq-group.com>
+ <3243730.44csPzL39Z@steina-w>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="8ZBUfBBgc7OsdhGG"
 Content-Disposition: inline
-In-Reply-To: <30bcf77a-3e7c-4f13-94ab-f4efc52193dc@sirena.org.uk>
+In-Reply-To: <3243730.44csPzL39Z@steina-w>
+X-Cookie: Will Rogers never met you.
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Tue, May 30, 2023 at 10:16:00PM +0100, Mark Brown wrote:
-> On Wed, May 31, 2023 at 12:14:46AM +0300, Serge Semin wrote:
-> 
-> > Oh, thanks. I've absolutely missed the respinned version of the patch
-> > (it should have been marked as v2 though). Anyway the change looks
-> > good except it introduces a redundant empty line at the tail of the
-> > dw_spi_debugfs_init() function. Is it possible to rebase the branch
-> > and drop the line it? If it's not I'll send an incremental cleanup
-> > patch then.
-> 
-> I'd rather just take the incremental patch here.
 
-Done. Please find the cleanup patch here:
-https://lore.kernel.org/linux-spi/20230530221725.26319-1-Sergey.Semin@baikalelectronics.ru
+--8ZBUfBBgc7OsdhGG
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
--Serge(y)
+On Wed, May 31, 2023 at 09:26:42AM +0200, Alexander Stein wrote:
+> Hi,
+>=20
+> gentle ping.
 
+Please don't send content free pings and please allow a reasonable time
+for review.  People get busy, go on holiday, attend conferences and so=20
+on so unless there is some reason for urgency (like critical bug fixes)
+please allow at least a couple of weeks for review.  If there have been
+review comments then people may be waiting for those to be addressed.
+
+Sending content free pings adds to the mail volume (if they are seen at
+all) which is often the problem and since they can't be reviewed
+directly if something has gone wrong you'll have to resend the patches
+anyway, so sending again is generally a better approach though there are
+some other maintainers who like them - if in doubt look at how patches
+for the subsystem are normally handled.
+
+--8ZBUfBBgc7OsdhGG
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmR3LcAACgkQJNaLcl1U
+h9B6/gf/YB8/K7Vwm3MAzfAieq2m7YlStGiCz+BIw/a/KU8wqFnjdX4O3Vh1TdGH
+0ZDsfHOtfNW2GBdT0eBujriwiSqHcYFiG88ciDu0r8Q/okiPh0Uwu8TRz0Bg39zp
+lEGuldlVlEeL8zRonCtG29FIjxkVS4nrQ8PGBG5KSKJATebTcSgEoZYXmzDTZhQc
+b8aSpxd6WYjUd+JxK5DnrDIXieyVxTVsm2LKjVClK7n/36IO+TiaMipQtrdchJew
+A3W/YaMN2fwHK0pCynqwyosrs+LoeiK805F3is3a+RFhYdlLjmaO2Avz+IIyj3CR
+pJ0BzGzV+Oq3Twz/qD0KpGwqZbRziw==
+=UVES
+-----END PGP SIGNATURE-----
+
+--8ZBUfBBgc7OsdhGG--

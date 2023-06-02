@@ -2,30 +2,30 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 776ABC7EE2A
-	for <linux-spi@archiver.kernel.org>; Fri,  2 Jun 2023 08:50:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AA11EC7EE24
+	for <linux-spi@archiver.kernel.org>; Fri,  2 Jun 2023 08:50:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234699AbjFBIt7 convert rfc822-to-8bit (ORCPT
+        id S234758AbjFBIuA convert rfc822-to-8bit (ORCPT
         <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 2 Jun 2023 04:49:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50990 "EHLO
+        Fri, 2 Jun 2023 04:50:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234121AbjFBIte (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 2 Jun 2023 04:49:34 -0400
-Received: from ex01.ufhost.com (ex01.ufhost.com [61.152.239.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4131E51;
-        Fri,  2 Jun 2023 01:49:31 -0700 (PDT)
+        with ESMTP id S234860AbjFBItk (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 2 Jun 2023 04:49:40 -0400
+Received: from fd01.gateway.ufhost.com (fd01.gateway.ufhost.com [61.152.239.71])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFE0EE59;
+        Fri,  2 Jun 2023 01:49:34 -0700 (PDT)
 Received: from EXMBX166.cuchost.com (unknown [175.102.18.54])
         (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
         (Client CN "EXMBX166", Issuer "EXMBX166" (not verified))
-        by ex01.ufhost.com (Postfix) with ESMTP id 1F96424E276;
-        Fri,  2 Jun 2023 16:49:29 +0800 (CST)
+        by fd01.gateway.ufhost.com (Postfix) with ESMTP id C586D24DD54;
+        Fri,  2 Jun 2023 16:49:27 +0800 (CST)
 Received: from EXMBX168.cuchost.com (172.16.6.78) by EXMBX166.cuchost.com
  (172.16.6.76) with Microsoft SMTP Server (TLS) id 15.0.1497.42; Fri, 2 Jun
- 2023 16:49:29 +0800
+ 2023 16:49:27 +0800
 Received: from williamqiu-virtual-machine.starfivetech.com (171.223.208.138)
  by EXMBX168.cuchost.com (172.16.6.78) with Microsoft SMTP Server (TLS) id
- 15.0.1497.42; Fri, 2 Jun 2023 16:49:28 +0800
+ 15.0.1497.42; Fri, 2 Jun 2023 16:49:26 +0800
 From:   William Qiu <william.qiu@starfivetech.com>
 To:     <devicetree@vger.kernel.org>, <linux-spi@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>, <linux-riscv@lists.infradead.org>
@@ -35,12 +35,10 @@ CC:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
         Emil Renner Berthing <kernel@esmil.dk>,
         Ziv Xu <ziv.xu@starfivetech.com>,
         William Qiu <william.qiu@starfivetech.com>
-Subject: [PATCH v2 2/3] spi: cadence-quadspi: Add clock configuration for StarFive JH7110 QSPI
-Date:   Fri, 2 Jun 2023 16:49:24 +0800
-Message-ID: <20230602084925.215411-3-william.qiu@starfivetech.com>
+Subject: [PATCH v2 0/3]  Add initialization of clock for StarFive JH7110 SoC
+Date:   Fri, 2 Jun 2023 16:49:22 +0800
+Message-ID: <20230602084925.215411-1-william.qiu@starfivetech.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230602084925.215411-1-william.qiu@starfivetech.com>
-References: <20230602084925.215411-1-william.qiu@starfivetech.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [171.223.208.138]
@@ -52,73 +50,33 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Add QSPI clock operation in device probe.
+Hi,
 
-Signed-off-by: William Qiu <william.qiu@starfivetech.com>
-Reviewed-by: Hal Feng <hal.feng@starfivetech.com>
----
- drivers/spi/spi-cadence-quadspi.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+This patchset adds initial rudimentary support for the StarFive
+Quad SPI controller driver. And this driver will be used in
+StarFive's VisionFive 2 board. In 6.4, the QSPI_AHB and QSPI_APB
+clocks changed from the default ON state to the default OFF state,
+so these clocks need to be enabled in the driver.At the same time,
+dts patch is added to this series.
 
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index 6ddb2dfc0f00..21788472c7fb 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -63,6 +63,8 @@ struct cqspi_st {
- 	struct platform_device	*pdev;
- 	struct spi_master	*master;
- 	struct clk		*clk;
-+	struct clk_bulk_data	*clks;
-+	unsigned int		num_clks;
- 	unsigned int		sclk;
- 
- 	void __iomem		*iobase;
-@@ -1715,6 +1717,16 @@ static int cqspi_probe(struct platform_device *pdev)
- 	}
- 
- 	if (of_device_is_compatible(pdev->dev.of_node, "starfive,jh7110-qspi")) {
-+		cqspi->num_clks = devm_clk_bulk_get_all(dev, &cqspi->clks);
-+		if (cqspi->num_clks < 0) {
-+			dev_err(dev, "Cannot claim clock: %u\n", cqspi->num_clks);
-+			return -EINVAL;
-+		}
-+
-+		ret = clk_bulk_prepare_enable(cqspi->num_clks, cqspi->clks);
-+		if (ret)
-+			dev_err(dev, "Cannot enable clock clks\n");
-+
- 		rstc_ref = devm_reset_control_get_optional_exclusive(dev, "rstc_ref");
- 		if (IS_ERR(rstc_ref)) {
- 			ret = PTR_ERR(rstc_ref);
-@@ -1816,6 +1828,9 @@ static void cqspi_remove(struct platform_device *pdev)
- 
- 	clk_disable_unprepare(cqspi->clk);
- 
-+	if (of_device_is_compatible(pdev->dev.of_node, "starfive,jh7110-qspi"))
-+		clk_bulk_disable_unprepare(cqspi->num_clks, cqspi->clks);
-+
- 	pm_runtime_put_sync(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- }
-@@ -1831,6 +1846,9 @@ static int cqspi_suspend(struct device *dev)
- 
- 	clk_disable_unprepare(cqspi->clk);
- 
-+	if (of_device_is_compatible(dev->of_node, "starfive,jh7110-qspi"))
-+		clk_bulk_disable_unprepare(cqspi->num_clks, cqspi->clks);
-+
- 	return ret;
- }
- 
-@@ -1840,6 +1858,8 @@ static int cqspi_resume(struct device *dev)
- 	struct spi_master *master = dev_get_drvdata(dev);
- 
- 	clk_prepare_enable(cqspi->clk);
-+	if (of_device_is_compatible(dev->of_node, "starfive,jh7110-qspi"))
-+		clk_bulk_prepare_enable(cqspi->num_clks, cqspi->clks);
- 	cqspi_wait_idle(cqspi);
- 	cqspi_controller_init(cqspi);
- 
--- 
+Changes v1->v2:
+- Renamed the clock names.
+- Specified a different array of clocks
+- Used clk_bulk_ APIs
+
+The patch series is based on v6.4rc3.
+
+William Qiu (3):
+  dt-bindings: qspi: cdns,qspi-nor: Add clocks for StarFive JH7110 SoC
+  spi: cadence-quadspi: Add clock configuration for StarFive JH7110 QSPI
+  riscv: dts: starfive: Add QSPI controller node for StarFive JH7110 SoC
+
+ .../bindings/spi/cdns,qspi-nor.yaml           | 15 +++++++--
+ .../jh7110-starfive-visionfive-2.dtsi         | 32 +++++++++++++++++++
+ arch/riscv/boot/dts/starfive/jh7110.dtsi      | 18 +++++++++++
+ drivers/spi/spi-cadence-quadspi.c             | 20 ++++++++++++
+ 4 files changed, 82 insertions(+), 3 deletions(-)
+
+--
 2.34.1
 

@@ -2,63 +2,72 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 90C4FC7EE2D
-	for <linux-spi@archiver.kernel.org>; Sat,  3 Jun 2023 10:29:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 441A7C77B7A
+	for <linux-spi@archiver.kernel.org>; Sat,  3 Jun 2023 20:27:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230170AbjFCK34 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sat, 3 Jun 2023 06:29:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47752 "EHLO
+        id S231250AbjFCU1Z (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sat, 3 Jun 2023 16:27:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230048AbjFCK3z (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sat, 3 Jun 2023 06:29:55 -0400
-X-Greylist: delayed 4200 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 03 Jun 2023 03:29:53 PDT
-Received: from mail.webtopbits.pl (mail.webtopbits.pl [195.231.64.176])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C1B31A2
-        for <linux-spi@vger.kernel.org>; Sat,  3 Jun 2023 03:29:52 -0700 (PDT)
-Received: by mail.webtopbits.pl (Postfix, from userid 1001)
-        id 52D47A3943; Fri,  2 Jun 2023 09:40:54 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=webtopbits.pl;
-        s=mail; t=1685695257;
-        bh=Eh8ECMiYd4baGAwPAzhz8mhJACXX7NSRkYjh+plaY18=;
-        h=Date:From:To:Subject:From;
-        b=PIBFKKTI4CCOL4nS8/0iuQKfwqRO4d9xj+ezYb7bNP/oCftj2Uel4T5yLMD17iOx9
-         nmsjvZ0d6tknoxPPpw+TEsn/pW2nQSEABLiT08Pcz88ejMt8XizeDszDmU8lClEWfc
-         ovAlHtua8I+7ztFtf/d4suxrg0eyU58OfhHHL4fbdkHg5zZX7a4qx3qk0jWgqEYGl0
-         yZfUwD8TUCZLVkBWteGYyNDIOf1dI6heXSJkdt8PBV1ZrqEsczhl3TRxaJUV1Y07eX
-         7pP17KOMmjuGQY9nWQRMRQYe9usvxShEsW7+kbEezUgHe0qWTVa7NZu55M7xtCLkN3
-         XNSMn8f5EDfnA==
-Received: by mail.webtopbits.pl for <linux-spi@vger.kernel.org>; Fri,  2 Jun 2023 08:40:50 GMT
-Message-ID: <20230602085530-0.1.8w.5kay.0.l14caltnn6@webtopbits.pl>
-Date:   Fri,  2 Jun 2023 08:40:50 GMT
-From:   "Kamil Durjasz" <kamil.durjasz@webtopbits.pl>
-To:     <linux-spi@vger.kernel.org>
-Subject: =?UTF-8?Q?Wy=C5=BCsza_konwersja_w_e-sklepie_?=
-X-Mailer: mail.webtopbits.pl
+        with ESMTP id S230051AbjFCU1Y (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sat, 3 Jun 2023 16:27:24 -0400
+Received: from fgw20-7.mail.saunalahti.fi (fgw20-7.mail.saunalahti.fi [62.142.5.81])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECED2123
+        for <linux-spi@vger.kernel.org>; Sat,  3 Jun 2023 13:27:23 -0700 (PDT)
+Received: from localhost (88-113-26-95.elisa-laajakaista.fi [88.113.26.95])
+        by fgw20.mail.saunalahti.fi (Halon) with ESMTP
+        id 0b25cecc-024d-11ee-b3cf-005056bd6ce9;
+        Sat, 03 Jun 2023 23:27:22 +0300 (EEST)
+From:   andy.shevchenko@gmail.com
+Date:   Sat, 3 Jun 2023 23:27:21 +0300
+To:     Nikita Shubin <nikita.shubin@maquefel.me>
+Cc:     Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
+        Michael Peters <mpeters@embeddedts.com>,
+        Kris Bahnsen <kris@embeddedts.com>, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 18/43] spi: ep93xx: add DT support for Cirrus EP93xx
+Message-ID: <ZHuiKT-CezPbPDkh@surfacebook>
+References: <20230424123522.18302-1-nikita.shubin@maquefel.me>
+ <20230601053546.9574-19-nikita.shubin@maquefel.me>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230601053546.9574-19-nikita.shubin@maquefel.me>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Dzie=C5=84 dobry,
+Thu, Jun 01, 2023 at 08:34:09AM +0300, Nikita Shubin kirjoitti:
+> - find register range from the device tree
+> - provide clock access via of
+> - use_dma as a DT node
 
-w jaki spos=C3=B3b docieraj=C4=85 Pa=C5=84stwo do odbiorc=C3=B3w?
+...
 
-Tworzymy pot=C4=99=C5=BCne narz=C4=99dzia sprzeda=C5=BCy, kt=C3=B3re pozw=
-alaj=C4=85 kompleksowo rozwi=C4=85za=C4=87 problemy potencjalnych klient=C3=
-=B3w i skutecznie wp=C5=82yn=C4=85=C4=87 na ich decyzje zakupowe.=20
+> +static struct ep93xx_spi_info *ep93xx_spi_get_platdata(struct platform_device *pdev)
+> +{
+> +	struct device_node *np = pdev->dev.of_node;
 
-Skupiamy si=C4=99 na Pa=C5=84stwa potrzebach zwi=C4=85zanych z obs=C5=82u=
-g=C4=85 sklepu, oczekiwaniach i planach sprzeda=C5=BCowych. Szczeg=C3=B3=C5=
-=82owo dopasowujemy grafik=C4=99, funkcjonalno=C5=9Bci, struktur=C4=99 i =
-mikrointerakcje do Pa=C5=84stwa grupy docelowej, co przek=C5=82ada si=C4=99=
- na oczekiwane rezultaty.
+> +	if (np && of_property_read_bool(np, "ep9301,use-dma"))
 
-Ch=C4=99tnie przedstawi=C4=99 dotychczasowe realizacje, aby mogli Pa=C5=84=
-stwo przekona=C4=87 si=C4=99 o naszych mo=C5=BCliwo=C5=9Bciach. Mog=C4=99=
- si=C4=99 skontaktowa=C4=87?
+Excessive check for np to be NULL, this is implied by the _read_bool() anyway.
+
+> +		dt_spi_info.use_dma = 1;
+
+> +	return &dt_spi_info;
+> +}
+
+...
+
+> +	master->dev.of_node = pdev->dev.of_node;
+
+device_set_node();
+
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
-Pozdrawiam
-Kamil Durjasz

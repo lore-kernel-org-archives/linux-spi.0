@@ -2,92 +2,96 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 21230C7EE25
-	for <linux-spi@archiver.kernel.org>; Fri,  9 Jun 2023 09:41:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1DAAFC7EE29
+	for <linux-spi@archiver.kernel.org>; Fri,  9 Jun 2023 14:19:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241631AbjFIJlB (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 9 Jun 2023 05:41:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33456 "EHLO
+        id S238931AbjFIOTk (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 9 Jun 2023 10:19:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241978AbjFIJkM (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 9 Jun 2023 05:40:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 155B24692;
-        Fri,  9 Jun 2023 02:35:08 -0700 (PDT)
+        with ESMTP id S232446AbjFIOTY (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 9 Jun 2023 10:19:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD19730E7;
+        Fri,  9 Jun 2023 07:19:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 91B8661EAF;
-        Fri,  9 Jun 2023 09:33:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E175C4339E;
-        Fri,  9 Jun 2023 09:33:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5F1F46116E;
+        Fri,  9 Jun 2023 14:19:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 566D9C433EF;
+        Fri,  9 Jun 2023 14:19:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686303189;
-        bh=trIw02rNBpNuNh03ZuX3RvyfOjFoCoUAyx/8izz7MTo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=YEHAQ9BB2obls72irPa4Asg3hWcO+TDzK/6Bat/DyPG683k4tzD67mzmq2MyJUAeq
-         4zHWK38xDNn7MvWMslLWv0AjtvMZQ7y5YWMa7j3DttTzw6zKmCAoSnXSGkEh10aCH6
-         yt6cLXSMy8SAxhe16YiF8XrpZ6Cu6sd6WR0BKk/hkaRX85HEMJcQaFvSG7bZ2Ct8MX
-         TnMytGdNC6Rc1tBFdAP64wkQCR0DW9xQh+wFXQWqQExZ+1+9HK6WjOxasy3PrGDZE2
-         yjpzBaodywUz2yXFR5rsEcb79aTm6h1rJAB3CjsdXU7fcR3aP2bolnGNndgGMTIbta
-         3HMlrlUVFsmWA==
-Date:   Fri, 9 Jun 2023 10:33:02 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Alexander Stein <alexander.stein@ew.tq-group.com>,
-        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux@ew.tq-group.com
-Subject: Re: [PATCH 1/2] spi: dt-bindings: introduce linux,use-rt-queue flag
-Message-ID: <d0e644f8-462a-4d5e-8086-926b4db7327e@sirena.org.uk>
-References: <20230602115201.415718-1-matthias.schiffer@ew.tq-group.com>
- <6a0abd6bba2f8f940e695dfa9fd0c5f8ee19064f.camel@ew.tq-group.com>
- <CACRpkdb=2fogk3bEa4fkPVYQivnvLh1F1TnBj7og43ak+F8gPw@mail.gmail.com>
- <3241150.44csPzL39Z@steina-w>
- <CACRpkda2yQefuUMn6Ot8Ns6nNgfC25i9nwmzwxOy5fUg=A44hQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="8p4tEmx13yYEDZ7S"
-Content-Disposition: inline
-In-Reply-To: <CACRpkda2yQefuUMn6Ot8Ns6nNgfC25i9nwmzwxOy5fUg=A44hQ@mail.gmail.com>
-X-Cookie: Tom's hungry, time to eat lunch.
+        s=k20201202; t=1686320361;
+        bh=K7lXT3opzeY5uB4rE9Ffi1Qh2lNzJNMMWwcGGwb9Ekw=;
+        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+        b=NVOCgdjf9E0dLNTt2I5kZ2nivw7RdQSz72xA/fSLWl7yCM9Pz35MzMUDIQpaKn3Om
+         AkqNd+/kgytymA/UDpkoBJ57Q5+rYqYTJaTMTgdYzFfGJemP0fHo+I8mIrRHJOLYjN
+         ZBVvBj0T7P0qzSU/eNTfuvUF5pLvqUxL50eJUNV/jPreFgFnDAoHE1aeadQRd2hm3X
+         4oH5+YU19+A2/zjnaLrqn5K26QRmtTW90We6No/C19ExfoxvwJFrSDUJ80KdSlG3Pk
+         aJWwxYlOO2ybDJFzjPOt3bg5cR4prthVX1vDRWwvViUWc5KQbdQAfEPJf+FalAOqHQ
+         xpRl/nAqWdi3A==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Fri, 09 Jun 2023 17:19:15 +0300
+Message-Id: <CT86OCSDQS17.21FWH48JRKKI9@suppilovahvero>
+Cc:     "Krishna Yarlagadda" <kyarlagadda@nvidia.com>,
+        "jsnitsel@redhat.com" <jsnitsel@redhat.com>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "peterhuewe@gmx.de" <peterhuewe@gmx.de>,
+        "jgg@ziepe.ca" <jgg@ziepe.ca>,
+        "krzysztof.kozlowski+dt@linaro.org" 
+        <krzysztof.kozlowski+dt@linaro.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "Jonathan Hunter" <jonathanh@nvidia.com>,
+        "Sowjanya Komatineni" <skomatineni@nvidia.com>,
+        "Laxman Dewangan" <ldewangan@nvidia.com>
+Subject: Re: [Patch V10 2/3] tpm_tis-spi: Add hardware wait polling
+From:   "Jarkko Sakkinen" <jarkko@kernel.org>
+To:     "Mark Brown" <broonie@kernel.org>,
+        "Thierry Reding" <thierry.reding@gmail.com>
+X-Mailer: aerc 0.14.0
+References: <CS48A9Y752N4.QEM73WVMZYLQ@suppilovahvero>
+ <3df39f0b-70dc-4b42-bae1-72c07607cbc7@sirena.org.uk>
+ <ZEaWQD_QTs2usVl8@orome>
+ <5fae29cd-d5f4-4616-be1c-1cd4d5b9a538@sirena.org.uk>
+ <ZEag1lAonYcmNFXk@orome>
+ <DM4PR12MB5769BB69B97F77DBA9ED2935C3779@DM4PR12MB5769.namprd12.prod.outlook.com> <DM4PR12MB5769499349B6B936FE46BF0CC3419@DM4PR12MB5769.namprd12.prod.outlook.com> <ZHhW_wFvRWInR_iM@orome> <dec901be-4bef-43e0-a125-23c5c4e92789@sirena.org.uk> <ZHiQ44gAL3YEZPUh@orome> <c0cf893d-8bc5-4f4b-a326-bb10dd0c84de@sirena.org.uk>
+In-Reply-To: <c0cf893d-8bc5-4f4b-a326-bb10dd0c84de@sirena.org.uk>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+On Thu Jun 1, 2023 at 3:40 PM EEST, Mark Brown wrote:
+> On Thu, Jun 01, 2023 at 02:36:51PM +0200, Thierry Reding wrote:
+> > On Thu, Jun 01, 2023 at 12:04:59PM +0100, Mark Brown wrote:
+>
+> > > On Thu, Jun 01, 2023 at 10:29:51AM +0200, Thierry Reding wrote:
+>
+> > > > any ideas on how we can best get this merged? I guess at this point=
+ it
+> > > > could go through either tree since the SPI dependency has been in L=
+inus'
+> > > > tree since v6.4-rc1.
+>
+> > > I would expect it to go via whatever path TPM patches usually take gi=
+ven
+> > > that it's a TPM patch.
+>
+> > There might have been a misunderstanding. My recollection was that you
+> > had said a few weeks ago that you would pick this up. Going through the
+> > thread again I realize that may not have been what you meant. Perhaps
+> > Jarkko misinterpreted this in the same way.
+>
+> > Jarkko, can you pick this up for v6.5?
+>
+> No, I said that I had applied the SPI parts for v6.4 so there would be
+> no blocker whenever people got round to reviewing the TPM side.
 
---8p4tEmx13yYEDZ7S
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I'm totally cool with this: won't pick the patch then.
 
-On Fri, Jun 09, 2023 at 10:42:04AM +0200, Linus Walleij wrote:
-> On Fri, Jun 9, 2023 at 10:15=E2=80=AFAM Alexander Stein
-
-> > e.g. a sysfs attribute.
-
-> But it needs to be set before userspace is up :/
-
-I'm really not clear that this is actually the case - I've not heard an
-articulated use case here.
-
---8p4tEmx13yYEDZ7S
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmSC8c0ACgkQJNaLcl1U
-h9BGQgf/YB1hKO5OaW5FGz6/FKPL7YIwLHFL4+hZ3HPtQwiEtKuDApfudQ/9yrC6
-4X60YUoR93UUKBOuKFBn23/REhDYGzq6lUp+SW5yJObJs3FbMtu9ZCPAHTjpkh0H
-bx9+CX5IzlIBddOKDFCHg1N+6pP5nC2mfdSzff8H3CUvgwuVy09wL3373gf+QXAS
-KlPiZPtH8wfHgzALF4xAQpqbzZSgJ+4PRqAF0dA6Wz4C5m3hMrDSmQOpQuX2LK/X
-/QHnQ1qC+AY4d/BXXgTALaHRsCFdLKNBPT01Qe3LyVxg2ABWA9E5LpSgyggSpljF
-52858nhYb714hTCuBtyiMjcex8NVYw==
-=k8Q1
------END PGP SIGNATURE-----
-
---8p4tEmx13yYEDZ7S--
+BR, Jarkko

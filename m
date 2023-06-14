@@ -2,109 +2,122 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 76C30EB64D9
-	for <linux-spi@archiver.kernel.org>; Wed, 14 Jun 2023 09:24:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 407EFEB64DA
+	for <linux-spi@archiver.kernel.org>; Wed, 14 Jun 2023 10:30:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243951AbjFNJYg (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 14 Jun 2023 05:24:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60816 "EHLO
+        id S235934AbjFNKau (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 14 Jun 2023 06:30:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243943AbjFNJYf (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 14 Jun 2023 05:24:35 -0400
-Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39B551FDB
-        for <linux-spi@vger.kernel.org>; Wed, 14 Jun 2023 02:24:34 -0700 (PDT)
-Received: by mail-yb1-xb2b.google.com with SMTP id 3f1490d57ef6-bb3a77abd7bso461382276.0
-        for <linux-spi@vger.kernel.org>; Wed, 14 Jun 2023 02:24:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1686734673; x=1689326673;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sDzVk9mbx2ENLo9ymz2uOt/ZtkFOrIJEhlU5orTbleQ=;
-        b=sde83aXm1cl1eZQWPUv7ef+5jywB0AT6IWQ30gacpvABRNtKMw94Dd7ZMWzR0lgost
-         qw01q9JSxV4mezvX0Yp7sZ3hCGOdmxZIegCf26C+2vIK/8TapigQviaNwjGraNAhDioP
-         cs0CyUcn34b3U5AkmyftkpDQP2fcRyavmf/WwK8aISCf1tYuzB9cJY/+mwuh0b8qedYw
-         31tM/L+CLjRjwmKsq4smKSDTNFlWItQqQVbIfFd0XY5fFdCnjxV4QIv8QlRuDk7wDeXu
-         Fwx9Ls7qlw2G2P1Rjh7dFNYIPazvD3lYTSeZtOhsylmAM4nkmhhbkOS5AH8NVk7+JIpm
-         suMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686734673; x=1689326673;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sDzVk9mbx2ENLo9ymz2uOt/ZtkFOrIJEhlU5orTbleQ=;
-        b=IgCvYY//WVcWUkuJxOLzdubSHBvjP9MdbHJWXkzi7z3gMbt4ePpuWPeTEgcLsdXF8O
-         l2j6iXEPA0BkHrUbryl/xcsBbzG5BytmY9o0FOokBqkUEFJvsyidpEj9w5CAYDIWq2pM
-         zdxF8wrO7RgQJD3XVl1F0EOZWS0mzIK6q7k3YQlHXDZFUsx50Kb/jq+sBG7tkUIVOO6r
-         COaUHKioY12lWltYU5lC/coRAS0sf0SPUV4BX7qPYnNNe/O/JkQeB/RyKsb9FJ767doR
-         3PBoBN591+4DkPh7XtCoq/6LEu9tDWhc9uISwd5ECKjAk6/hFPzV4WkZJUEk4PgEkSH2
-         bp6Q==
-X-Gm-Message-State: AC+VfDx6fqBx5/fRN+UlIHAmuWj25iaX4nup0nrpVzCwKHpwMBr9kuoP
-        j6kiZAW+/4ave9vixVhNmgxE35BDWi0Rv/j0k8HBbg==
-X-Google-Smtp-Source: ACHHUZ7ApgUjIZxAaCm6dCl2/94Zm+UeRt4nf60jMnzsYw3Wof9X0HlPJvyEK0yKlgwJP9KALU4KI90KVetUMvCV1OY=
-X-Received: by 2002:a25:bcd1:0:b0:b8f:5639:cb8a with SMTP id
- l17-20020a25bcd1000000b00b8f5639cb8amr1603329ybm.9.1686734672948; Wed, 14 Jun
- 2023 02:24:32 -0700 (PDT)
+        with ESMTP id S244398AbjFNKaU (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 14 Jun 2023 06:30:20 -0400
+Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB32030CF;
+        Wed, 14 Jun 2023 03:29:01 -0700 (PDT)
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35EABPXI005510;
+        Wed, 14 Jun 2023 12:27:48 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding : content-type; s=selector1;
+ bh=IICZM+0CNuKTxudZVSBaEPenazQ5zFia5Dy9MALM2tM=;
+ b=YG5M0FIfYQSj+7c9FyuFMpwh5VeVtRO440fvGJMjKyGIvD79ICVs8rb59oXm6gYCZpry
+ 9abinjKgL2FntT/2o7MxW35hy1C73SSJEF41ugA8+k7VK/eVfsCCQNwTyxaQ/ipEz+Wu
+ GKJtRMvRSQU1emDyVcmJxcj05Zg9TAauWBf83i659gEQSTc0yRYbHYQzCveJnOJQQzaE
+ nBkyFFdXs9Z+1V+oJWHzN6W0ctJcAc/qdzMEY8e82RZSmqvtw3k/pD+yIzbL6GPCBjrl
+ zpWsCxtYvCTVzRfrBQhUmBvXWLgIXstN8pbCUPGvaaPVtnqiD0lqMier8KBHExH9ezty Pw== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3r79681dws-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 14 Jun 2023 12:27:48 +0200
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 09009100046;
+        Wed, 14 Jun 2023 12:27:48 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 016D02278AE;
+        Wed, 14 Jun 2023 12:27:48 +0200 (CEST)
+Received: from localhost (10.252.29.239) by SHFDAG1NODE1.st.com (10.75.129.69)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21; Wed, 14 Jun
+ 2023 12:27:47 +0200
+From:   Valentin Caron <valentin.caron@foss.st.com>
+To:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Alain Volmat <alain.volmat@foss.st.com>
+CC:     <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>,
+        Valentin Caron <valentin.caron@foss.st.com>
+Subject: [PATCH v2 2/4] spi: stm32: use dmaengine_terminate_{a}sync instead of _all
+Date:   Wed, 14 Jun 2023 12:26:25 +0200
+Message-ID: <20230614102628.202936-3-valentin.caron@foss.st.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20230614102628.202936-1-valentin.caron@foss.st.com>
+References: <20230614102628.202936-1-valentin.caron@foss.st.com>
 MIME-Version: 1.0
-References: <20230430-nokia770-regression-v4-0-9b6dc5536b17@linaro.org>
- <20230430-nokia770-regression-v4-2-9b6dc5536b17@linaro.org> <CAFwpezXJkXRr0Es=owr6fJ8BB_DETYPWdj_EzLbw9+5d7YOxxQ@mail.gmail.com>
-In-Reply-To: <CAFwpezXJkXRr0Es=owr6fJ8BB_DETYPWdj_EzLbw9+5d7YOxxQ@mail.gmail.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 14 Jun 2023 11:24:21 +0200
-Message-ID: <CACRpkdbwpWn4h+yBkwosrZjoCw_uoh58yFJFE=JLKXocT0uEjA@mail.gmail.com>
-Subject: Re: [PATCH v4 2/4] ARM/mmc: Convert old mmci-omap to GPIO descriptors
-To:     Peter Vasil <petervasil@gmail.com>
-Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-        Andreas Kemnade <andreas@kemnade.info>,
-        Helge Deller <deller@gmx.de>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-mmc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.252.29.239]
+X-ClientProxiedBy: SHFCAS1NODE2.st.com (10.75.129.73) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-06-14_06,2023-06-14_01,2023-05-22_02
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, Jun 14, 2023 at 10:44=E2=80=AFAM Peter Vasil <petervasil@gmail.com>=
- wrote:
-> On Mon, May 8, 2023 at 11:21=E2=80=AFPM Linus Walleij <linus.walleij@lina=
-ro.org> wrote:
+From: Alain Volmat <alain.volmat@foss.st.com>
 
-> > +static struct gpiod_lookup_table nokia810_mmc_gpio_table =3D {
-> > +       .dev_id =3D "mmci-omap",
-> > +       .table =3D {
-> > +               /* Slot index 1, VSD power, GPIO 23 */
-> > +               GPIO_LOOKUP_IDX("gpio-16-31", 7,
-> > +                               "vsd", 1, GPIO_ACTIVE_HIGH),
->
-> Hello everyone,
-> not sure if anyone noticed this already, or if I understand it
-> wrong... shouldn't the "vsd" name in following lookup descriptor
-> actually be "vio"?
->
-> > +               /* Slot index 1, VIO power, GPIO 9 */
-> > +               GPIO_LOOKUP_IDX("gpio-0-15", 9,
-> > +                               "vsd", 1, GPIO_ACTIVE_HIGH),
+Avoid usage of deprecated dmaengine_terminate_all and use
+dmaengine_terminate_sync and dmaengine_terminate_async instead.
 
+Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
+Signed-off-by: Valentin Caron <valentin.caron@foss.st.com>
+---
+ drivers/spi/spi-stm32.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-Ooops. Copy/paste bug.
+diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
+index 5d9439ae1c09..82fbd20e8a96 100644
+--- a/drivers/spi/spi-stm32.c
++++ b/drivers/spi/spi-stm32.c
+@@ -657,9 +657,9 @@ static void stm32f4_spi_disable(struct stm32_spi *spi)
+ 	}
+ 
+ 	if (spi->cur_usedma && spi->dma_tx)
+-		dmaengine_terminate_all(spi->dma_tx);
++		dmaengine_terminate_async(spi->dma_tx);
+ 	if (spi->cur_usedma && spi->dma_rx)
+-		dmaengine_terminate_all(spi->dma_rx);
++		dmaengine_terminate_async(spi->dma_rx);
+ 
+ 	stm32_spi_clr_bits(spi, STM32F4_SPI_CR1, STM32F4_SPI_CR1_SPE);
+ 
+@@ -696,9 +696,9 @@ static void stm32h7_spi_disable(struct stm32_spi *spi)
+ 	}
+ 
+ 	if (spi->cur_usedma && spi->dma_tx)
+-		dmaengine_terminate_all(spi->dma_tx);
++		dmaengine_terminate_async(spi->dma_tx);
+ 	if (spi->cur_usedma && spi->dma_rx)
+-		dmaengine_terminate_all(spi->dma_rx);
++		dmaengine_terminate_async(spi->dma_rx);
+ 
+ 	stm32_spi_clr_bits(spi, STM32H7_SPI_CR1, STM32H7_SPI_CR1_SPE);
+ 
+@@ -1302,7 +1302,7 @@ static int stm32_spi_transfer_one_dma(struct stm32_spi *spi,
+ 
+ dma_submit_error:
+ 	if (spi->dma_rx)
+-		dmaengine_terminate_all(spi->dma_rx);
++		dmaengine_terminate_sync(spi->dma_rx);
+ 
+ dma_desc_error:
+ 	stm32_spi_clr_bits(spi, spi->cfg->regs->dma_rx_en.reg,
+-- 
+2.25.1
 
-I'll send a fix.
-
-Yours,
-Linus Walleij

@@ -2,44 +2,44 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A878BEB64DB
-	for <linux-spi@archiver.kernel.org>; Thu, 15 Jun 2023 07:59:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3E790EB64DC
+	for <linux-spi@archiver.kernel.org>; Thu, 15 Jun 2023 07:59:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239206AbjFOH7F (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S239272AbjFOH7F (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Thu, 15 Jun 2023 03:59:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40350 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239132AbjFOH7C (ORCPT
+        with ESMTP id S239090AbjFOH7C (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Thu, 15 Jun 2023 03:59:02 -0400
-Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0426EE62;
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 043E8E69;
         Thu, 15 Jun 2023 00:59:00 -0700 (PDT)
-Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35F6ZufH016146;
-        Thu, 15 Jun 2023 09:58:47 +0200
+Received: from pps.filterd (m0288072.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35F6XFYY007602;
+        Thu, 15 Jun 2023 09:58:50 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-transfer-encoding :
- content-type; s=selector1;
- bh=qpy+o5laPne4j+FJxWvlTMZEusSxs73H8zYgkOpl2yA=;
- b=zf9EO38kI9GPhZ8KqZLMPbriVkd09aBQZxxpDkcl3zAsKnwGpzxkv7veriQqcNou/axp
- R5GnqUEHn+NQJwnnG9fL6Hy7udM98WSS7/ynIy/cePR23GVPdAGGQp+tFoFS6IDP4gwK
- qT17KwGwHEV+Q5ERx+pY3ahq3e016TSmzHLbBDYgMFIKWKQTVyx0S4CIMfxvDxSiNZ33
- r8DcgBSvt7810ZppQwYJiYONE5gKaNIgWKy+NxFXyeSepWWKwjIy9v2YBQds+sT5C5e8
- 2lojUNtdNlqA7sbTgCUoAONVUQY0WLH4h3pyJQsh5aAjhKWS4gmgsUeRYKmyPcjb0/oC Gg== 
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding : content-type; s=selector1;
+ bh=3kC5NNzTm4MX8t28AThvJH2JWVf+TGcrXDy6X/og+bc=;
+ b=rlyG1UOw7qz9eu0FecHlvBMNsdHrVMhtIqfJo5TbBSMVxT7lnU+Mjydh/f6/RgcTrWiL
+ yTNbcsU7gsx4kMiJwLuQrb5ofYjSYJi6febd7JqYUZ5lwjgfhYLAhWfluqjgoVvCdV9I
+ /ifgLK9fHZlNs4YL5rkeUBDIJNTRLOj2KtcfpQsD8s/z+kQYOCOI9EbDyULAH6U/ExBe
+ t1lzWX19WKFQe509wMfzSBQ1M3XBDI9HdDDxQpS1T/yBwekHrPbBuUCkdmKuo9GoFzX/
+ i747H+ZElERJjx5vizU6CE/BGsyOtfhB1StOUOW8Bbp2b7tOg0uw+4htcHAKgvsOVE2R ng== 
 Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3r7wgx0trp-1
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3r7s1ma8mt-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 15 Jun 2023 09:58:47 +0200
+        Thu, 15 Jun 2023 09:58:50 +0200
 Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id A2529100046;
-        Thu, 15 Jun 2023 09:58:46 +0200 (CEST)
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 021B9100049;
+        Thu, 15 Jun 2023 09:58:50 +0200 (CEST)
 Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 8CF9D21682B;
-        Thu, 15 Jun 2023 09:58:46 +0200 (CEST)
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id F054E216843;
+        Thu, 15 Jun 2023 09:58:49 +0200 (CEST)
 Received: from localhost (10.252.8.64) by SHFDAG1NODE1.st.com (10.75.129.69)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21; Thu, 15 Jun
- 2023 09:58:46 +0200
+ 2023 09:58:49 +0200
 From:   Valentin Caron <valentin.caron@foss.st.com>
 To:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
@@ -51,10 +51,12 @@ CC:     <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-kernel@vger.kernel.org>,
         Valentin Caron <valentin.caron@foss.st.com>
-Subject: [PATCH v3 0/4] spi: stm32: add spi device mode
-Date:   Thu, 15 Jun 2023 09:58:11 +0200
-Message-ID: <20230615075815.310261-1-valentin.caron@foss.st.com>
+Subject: [PATCH v3 3/4] dt-bindings: spi: stm32: disable spi-slave property for stm32f4-f7
+Date:   Thu, 15 Jun 2023 09:58:14 +0200
+Message-ID: <20230615075815.310261-4-valentin.caron@foss.st.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20230615075815.310261-1-valentin.caron@foss.st.com>
+References: <20230615075815.310261-1-valentin.caron@foss.st.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -68,30 +70,29 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-STM32 SPI can operate in device mode.
-This series adds this functionnality in spi-stm32 driver.
+From: Alain Volmat <alain.volmat@foss.st.com>
 
-Since v2:
- - Rename this series: spi device mode
+STM32F4 and STM32F7 can't switch to spi device mode.
+Forbid this property with compatible "st,stm32f4-spi".
 
-Since v1:
- - Do not add #address-cells and #size-cells in st,stm32-spi.yaml
- - Do not add cs-gpio description in st,stm32-spi.yaml
- - Do not add st,spi-slave-underrun property to handle spi slave underrun
+Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
+Signed-off-by: Valentin Caron <valentin.caron@foss.st.com>
+---
+ Documentation/devicetree/bindings/spi/st,stm32-spi.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-Alain Volmat (3):
-  spi: stm32: renaming of spi_master into spi_controller
-  spi: stm32: use dmaengine_terminate_{a}sync instead of _all
-  dt-bindings: spi: stm32: disable spi-slave property for stm32f4-f7
-
-Valentin Caron (1):
-  spi: stm32: introduction of stm32h7 SPI device mode support
-
- .../devicetree/bindings/spi/st,stm32-spi.yaml |   1 +
- drivers/spi/Kconfig                           |   1 +
- drivers/spi/spi-stm32.c                       | 274 ++++++++++--------
- 3 files changed, 161 insertions(+), 115 deletions(-)
-
+diff --git a/Documentation/devicetree/bindings/spi/st,stm32-spi.yaml b/Documentation/devicetree/bindings/spi/st,stm32-spi.yaml
+index 9ca1a843c820..f1c86e694af1 100644
+--- a/Documentation/devicetree/bindings/spi/st,stm32-spi.yaml
++++ b/Documentation/devicetree/bindings/spi/st,stm32-spi.yaml
+@@ -27,6 +27,7 @@ allOf:
+     then:
+       properties:
+         st,spi-midi-ns: false
++        spi-slave: false
+ 
+ properties:
+   compatible:
 -- 
 2.25.1
 

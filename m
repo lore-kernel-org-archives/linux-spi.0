@@ -2,77 +2,127 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 53B5CEB64DC
-	for <linux-spi@archiver.kernel.org>; Thu, 15 Jun 2023 12:00:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A6B27EB64DC
+	for <linux-spi@archiver.kernel.org>; Thu, 15 Jun 2023 12:51:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344676AbjFOMAN (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 15 Jun 2023 08:00:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47694 "EHLO
+        id S238684AbjFOMvx (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 15 Jun 2023 08:51:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344785AbjFOL74 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 15 Jun 2023 07:59:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA7DC46B5;
-        Thu, 15 Jun 2023 04:54:56 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AE39563BAA;
-        Thu, 15 Jun 2023 11:43:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B63DFC433C0;
-        Thu, 15 Jun 2023 11:43:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686829425;
-        bh=5JvhsHdlFO6uqDaCCOGfTLYM66GpGTSOOML6ozcw+1k=;
-        h=From:To:Cc:Subject:Date:From;
-        b=r74O5qpXU2bmsetDnlwT+PfaTswOh98qvPI3QwQwbiNdQ6TgitGUd62/ATKoDezs2
-         1jLlFQEiKnaCFI/igtRHXNHY8q53LSV4iMgQxU5XDFtjx3nh09mi1CxUAVyNMLAh1Y
-         61UbdgomisBqlY8ToCfQty9Yl2Fkuz+NbEvmtb/qgzi0inSHXLpb3HWmji8FbJwwGP
-         19XLZ2ZuHUx+G8LMHYtghKd69CjQA9zchPXkKlb4KhSBBMJpxrEzCXJUe2Divl5cPr
-         0TQHXRHuxGr/8QFkvHcGIdCqxz9pPUFgc4mbe8ym9omUXjFYcxInfbsZLaE8jpRmKn
-         vvosY+yf2zMxw==
-From:   Mark Brown <broonie@kernel.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>
-Subject: [GIT PULL] SPI fixes for v6.4-rc6
-Date:   Thu, 15 Jun 2023 12:43:36 +0100
-Message-Id: <20230615114344.B63DFC433C0@smtp.kernel.org>
+        with ESMTP id S234125AbjFOMvv (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 15 Jun 2023 08:51:51 -0400
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30ACF269E
+        for <linux-spi@vger.kernel.org>; Thu, 15 Jun 2023 05:51:49 -0700 (PDT)
+Received: by mail-wm1-x333.google.com with SMTP id 5b1f17b1804b1-3f8d65ecdbbso16027705e9.0
+        for <linux-spi@vger.kernel.org>; Thu, 15 Jun 2023 05:51:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1686833507; x=1689425507;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=pYJRLhJE4BnkxztSK7kLLVvhbfeHX+zQ18aXvSE//Mk=;
+        b=FlAnmp40K3oTJ1IUAyOBngrA3PiAh+TkWNWfUpd2rbFeWMtY3/A3bq/DwjhZ3/X0u8
+         GWEwuQPjChk+3WnpI7YhKHYmDYp5peNUykjt1yYLPW7IOdaqWJmPm4hXhNp1So2/PuSt
+         VXKakPFuRInShzS5xj2CuIQRYe7DUAEn3OkZTMg5oAMuSJju/kAK/AUr6j04eaOVxvY2
+         z6WZ4+PYPVoVUS/pQbTQiCUQMM9kp/PRRBmLFvyNUey/fWBDPbDnzKCaeku0Ibvkq+dA
+         CDSRwtQtMB2KTGBUs7qbqvVLHA+oj1gy0u4Ultu3lqbnPsIP7i6yw4afwFaX5f+TJiQ5
+         /raw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686833507; x=1689425507;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pYJRLhJE4BnkxztSK7kLLVvhbfeHX+zQ18aXvSE//Mk=;
+        b=j+54rTTbJdnp5opS8XDA1iIg+kh5Nq5MoOldbAe5j0SxqRCV6jrQS/Yzv47Lj0nzyd
+         kVnnGAK/ZPoP8TGIJdiwx/hcyBOughYYkL1wkvoG39TbqVy30zDcDryWV8qr6yLKaoV/
+         l+Iv+mmsIaXbtKWksxXPikq7evCVasrVEI2Vge145Jp0kLbUFzl+U0e0yLsTw3V0aRi7
+         a/srnbyWpxgG7y55Woij1VAOxQbQ0NyYUZodvxyc6ZYbd/3OmjyqRG5DGeg4O5YwdneS
+         xOzgdmkEETZ9bEclfIa+pjIkw4GS5S97uia6M8SBBpuIsC++E219XZJwh1rwl0H1FDv6
+         tCyg==
+X-Gm-Message-State: AC+VfDxxMVk50ms8DYy+VGcqqdfzvRQ86SYJasIiH4+H2oZ5YxWSz5lj
+        eCbw5TKdOHT0/xcmlIiHvgcGYFn1K9i+Bbwr7S3yVQ==
+X-Google-Smtp-Source: ACHHUZ7fDZNQOH0mI2GK6cVBnr76IWQmxXOL4V/h1hnDdDkqhPrwBPALCL7rb+85tXil+uM3OHOWng==
+X-Received: by 2002:a1c:750a:0:b0:3f7:5d:4a06 with SMTP id o10-20020a1c750a000000b003f7005d4a06mr12053858wmc.1.1686833507644;
+        Thu, 15 Jun 2023 05:51:47 -0700 (PDT)
+Received: from arrakeen.starnux.net ([2a01:e0a:982:cbb0:52eb:f6ff:feb3:451a])
+        by smtp.gmail.com with ESMTPSA id l15-20020adff48f000000b003078cd719ffsm20968662wro.95.2023.06.15.05.51.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Jun 2023 05:51:47 -0700 (PDT)
+From:   Neil Armstrong <neil.armstrong@linaro.org>
+Date:   Thu, 15 Jun 2023 14:51:45 +0200
+Subject: [PATCH v2] spi: spi-geni-qcom: correctly handle -EPROBE_DEFER from
+ dma_request_chan()
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20230615-topic-sm8550-upstream-fix-spi-geni-qcom-probe-v2-1-670c3d9e8c9c@linaro.org>
+X-B4-Tracking: v=1; b=H4sIAGAJi2QC/52OQQ6CMBBFr0K6dgwgoLjyHobFtAwwCbR1CkRDu
+ LuVI7h8P/nv/00FEqag7smmhFYO7GyE/JQoM6DtCbiNrPI0v6RVVsLsPBsI060sU1h8mIVwgo7
+ fEDxDT5bhZdwEXpwmqLG+Gl3pkrBS0akxEGhBa4Zotcs4xtALxf5x4tlEHjjMTj7HpzX7pf/Or
+ xlkULVY6y5vdYHFY2SL4s5OetXs+/4FmeeJAwABAAA=
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Mark Brown <broonie@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+        Dan Carpenter <error27@gmail.com>
+Cc:     linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Neil Armstrong <neil.armstrong@linaro.org>
+X-Mailer: b4 0.12.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1401;
+ i=neil.armstrong@linaro.org; h=from:subject:message-id;
+ bh=33BJA58rmJ1iVUNBM3K7fDzrmpBXHsLW49qR9cG18TA=;
+ b=owEBbAKT/ZANAwAKAXfc29rIyEnRAcsmYgBkiwlinikvfoSVmG6jc9PFWVS4J6MwJUKiOnCx2S08
+ 78qHlICJAjIEAAEKAB0WIQQ9U8YmyFYF/h30LIt33NvayMhJ0QUCZIsJYgAKCRB33NvayMhJ0TFiD/
+ iISPz42k3ObVR4hBJ1YtfvRMOxHEs7dAzOH+8df8z6ZODNdR5WGT6RZ5cUU8nJt1i7QoYu57vSmC1f
+ gQxZsZCsyTBKQzjS+NhzFXKHJtKISt+jp+ZB65ppMSFraQnYkQawfGfP7gbXRV9wpaH3UK4fRLsI4j
+ 5ofO8jwrZDWD6bFw7mqVMjhfebzbXqcdPQX2xZI1+f7D7Mxi8TtZvB7vvfyVzpqKLhd8coftcJrYoy
+ h4fYo9RZtxdjqDSqKSoP2pf/DIU75lqZ6RsxgT1m01Tn0f8+/v7mBBgEiK/3W2W346d+mxU1F0en1z
+ x9bCydQ9uOwcycNzeO1LK2fLEAJZc+QJ7ta9QBGOAY4ODph5DIDBlldTD+pidtZCSXEnD5PrYdiYx8
+ n0tt1pdvz/Rxjq7dLEq9kIr2dpdgctbY/1xaRwRkNG6arJQL0dzu6VOSxvmlXDLNojcErxmSafCbqj
+ sAqO6PKoxgk8g8cRbeYDEwqLxPRBAwzKohbP1w+oE2gMdThw3K7YHiWZlbllmd4d/oycUsmr8nVf4x
+ pMTUDQI/1AIzcOiUNuPXrqo4+8sxka/Tp5XeYwLXmJ6kWX8qCsKLTTIIh+uYrb1KIvQdB6OgKSE/OJ
+ x5zdERBJ9vjpaenm250J1bjbj8wwbuBS6q91elzJ2qVlOhBeZNPMvWw95A
+X-Developer-Key: i=neil.armstrong@linaro.org; a=openpgp;
+ fpr=89EC3D058446217450F22848169AB7B1A4CFF8AE
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The following changes since commit 0c331fd1dccfba657129380ee084b95c1cedfbef:
+Now spi_geni_grab_gpi_chan() errors are correctly reported, the
+-EPROBE_DEFER error should be returned from probe in case the
+GPI dma driver is built as module and/or not probed yet.
 
-  spi: qup: Request DMA before enabling clocks (2023-05-30 13:43:31 +0100)
+Fixes: b59c122484ec ("spi: spi-geni-qcom: Add support for GPI dma")
+Fixes: 6532582c353f ("spi: spi-geni-qcom: fix error handling in spi_geni_grab_gpi_chan()")
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+---
+Changes in v2:
+- added braces to second side of the if statement
+- Link to v1: https://lore.kernel.org/r/20230615-topic-sm8550-upstream-fix-spi-geni-qcom-probe-v1-1-6da9bf2db4a4@linaro.org
+---
+ drivers/spi/spi-geni-qcom.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-are available in the Git repository at:
+diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
+index 206cc04bb1ed..26ce959d98df 100644
+--- a/drivers/spi/spi-geni-qcom.c
++++ b/drivers/spi/spi-geni-qcom.c
+@@ -661,6 +661,8 @@ static int spi_geni_init(struct spi_geni_master *mas)
+ 			geni_se_select_mode(se, GENI_GPI_DMA);
+ 			dev_dbg(mas->dev, "Using GPI DMA mode for SPI\n");
+ 			break;
++		} else if (ret == -EPROBE_DEFER) {
++			goto out_pm;
+ 		}
+ 		/*
+ 		 * in case of failure to get gpi dma channel, we can still do the
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v6.4-rc6
+---
+base-commit: 925294c9aa184801cc0a451b69a18dd0fe7d847d
+change-id: 20230615-topic-sm8550-upstream-fix-spi-geni-qcom-probe-9a97cb6b5ea6
 
-for you to fetch changes up to eee43699217504ba69cadefc85c6992df555e33f:
+Best regards,
+-- 
+Neil Armstrong <neil.armstrong@linaro.org>
 
-  spi: dw: Replace incorrect spi_get_chipselect with set (2023-06-13 20:19:26 +0100)
-
-----------------------------------------------------------------
-spi: Fixes for v6.4
-
-A few more driver specific fixes, the DesignWare fix is for an issue
-introduced by conversion to the chip select accessor functions and is
-pretty important but the other two are less severe.
-
-----------------------------------------------------------------
-Abe Kohandel (1):
-      spi: dw: Replace incorrect spi_get_chipselect with set
-
-Jiasheng Jiang (1):
-      spi: cadence-quadspi: Add missing check for dma_set_mask
-
-Vladimir Oltean (1):
-      spi: fsl-dspi: avoid SCK glitches with continuous transfers
-
- drivers/spi/spi-cadence-quadspi.c |  7 +++++--
- drivers/spi/spi-dw-mmio.c         |  2 +-
- drivers/spi/spi-fsl-dspi.c        | 15 +++++++++++++++
- 3 files changed, 21 insertions(+), 3 deletions(-)

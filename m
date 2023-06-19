@@ -2,31 +2,31 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 72317EB64DB
-	for <linux-spi@archiver.kernel.org>; Mon, 19 Jun 2023 15:54:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 458F7EB64DA
+	for <linux-spi@archiver.kernel.org>; Mon, 19 Jun 2023 15:54:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229765AbjFSPyE (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 19 Jun 2023 11:54:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53584 "EHLO
+        id S229700AbjFSPyF (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 19 Jun 2023 11:54:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230187AbjFSPyD (ORCPT
+        with ESMTP id S230522AbjFSPyD (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Mon, 19 Jun 2023 11:54:03 -0400
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::228])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7755BE72
-        for <linux-spi@vger.kernel.org>; Mon, 19 Jun 2023 08:53:56 -0700 (PDT)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82A31E4A
+        for <linux-spi@vger.kernel.org>; Mon, 19 Jun 2023 08:53:58 -0700 (PDT)
 X-GND-Sasl: miquel.raynal@bootlin.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1687190035;
+        t=1687190037;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=PhIQmvwCqc8f2ldfvdDwrf5zFPY90uFTbI6lO/wBafo=;
-        b=ZXzrLBsgbSEa2r0CaAMT7Tkop+dVa6ENEoT112qvP15DZzXWqfx08nu9gIxTrjKVJcGlQy
-        Xn/ATd8crYS0Jm2GobR+8EFj2W03ObKiLCcbI4Q92hNGINiNSeKXZmJ4UMj9Lv0JbpHPFm
-        02q9DHk86SKMg+0SYQ4Q1rw1O2nj1FQklaTWkoYdth+mqgZK/e7O3yPU9hakNGHmFS/AwF
-        vRWe6BkgqqR0m03DwqRaD+h5iFF3rbu6n9VnWVMbA2KgzNs/jlB4mrfH1YTvZhaoVlz7YX
-        treaYYh//jQ2MfZjHMPXqRUadUz5ITezyZZ/OnCjswhJAgTmyQUrXLR9Cc+g7g==
+        bh=uIrH6l6h4FVOlNSp29zZGkHu1wVR3pubO6q4OyhE0xo=;
+        b=WwruJTFPXXkT5hNeyj+ooIdhFe+Y3hhZ3Of48GDqkjJ2yK8h0yAAp55/pZJLQ2LZ+1AeED
+        noqMYJEJ5W6eqWn35JuM/CFzlecNsAZm50Q7bBEEzVWsZKHCNz9K7JCtkzlT2TS0JkbtaR
+        HXit51l66818IrnRrsF2NTYhMTBoiChg8KU5A7JxG4lccoyceZRQ06xVSiqTP2z0Wnu5MQ
+        BNec9ai84G+gbV3JvlXjR7BMSp/UurwzAs/E4z+loYbUBXMRReM1+Gb9eft3EbCTwfOWlu
+        sH+ayULL9CgawEzXrPElEO+UPe41Wl7NkSt2We278liiZvYBYCSXncZ5ImVy8g==
 X-GND-Sasl: miquel.raynal@bootlin.com
 X-GND-Sasl: miquel.raynal@bootlin.com
 X-GND-Sasl: miquel.raynal@bootlin.com
@@ -39,8 +39,8 @@ X-GND-Sasl: miquel.raynal@bootlin.com
 X-GND-Sasl: miquel.raynal@bootlin.com
 X-GND-Sasl: miquel.raynal@bootlin.com
 X-GND-Sasl: miquel.raynal@bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 1ED2F1BF206;
-        Mon, 19 Jun 2023 15:53:54 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 4B1CC1BF20E;
+        Mon, 19 Jun 2023 15:53:56 +0000 (UTC)
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Mark Brown <broonie@kernel.org>, <linux-spi@vger.kernel.org>
 Cc:     Tudor Ambarus <tudor.ambarus@linaro.org>,
@@ -54,9 +54,9 @@ Cc:     Tudor Ambarus <tudor.ambarus@linaro.org>,
         <linux-arm-kernel@lists.infradead.org>,
         linux-sunxi@lists.linux.dev,
         Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH v2 1/3] spi: Create a helper to derive adaptive timeouts
-Date:   Mon, 19 Jun 2023 17:53:47 +0200
-Message-Id: <20230619155349.3118420-2-miquel.raynal@bootlin.com>
+Subject: [PATCH v2 3/3] spi: sun6i: Use the new helper to derive the xfer timeout value
+Date:   Mon, 19 Jun 2023 17:53:49 +0200
+Message-Id: <20230619155349.3118420-4-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230619155349.3118420-1-miquel.raynal@bootlin.com>
 References: <20230619155349.3118420-1-miquel.raynal@bootlin.com>
@@ -66,51 +66,39 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Big transfers might take a bit of time, too constraining timeouts might
-lead to false positives. In order to simplify the drivers work and with
-the goal of factorizing code in mind, let's add a helper that can be
-used by any spi controller driver to derive a relevant per-transfer
-timeout value.
+A helper was recently added to the core to factorize common code between
+drivers, like the amount of time a driver should wait for a transfer to
+happen.
 
-The logic is simple: we know how much time it would take to transfer a
-byte, we can easily derive the total theoretical amount of time involved
-for each transfer. We multiply it by two to have a bit of margin and
-enforce a minimum of 500ms.
+It is of course possible to use a default value (like eg. 1s) but it is
+way stronger to adapt this amount of time to the transfer. Indeed, long
+transfers (eg. 4MiB) on a slow single-spi bus might take more than the
+usual second of timeout and prevent lengthy transfers.
 
-Suggested-by: Mark Brown <broonie@kernel.org>
+The core helper was heavily inspired by the logic applied in this
+driver, the only difference being the minimum amount of time which was
+enlarged from 0.1s to 0.5s.
+
+Use this helper instead of open-coding it.
+
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- include/linux/spi/spi.h | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/spi/spi-sun6i.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index fbf8c0d95968..4d6636c50465 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -1186,6 +1186,23 @@ static inline bool spi_is_bpw_supported(struct spi_device *spi, u32 bpw)
- 	return false;
- }
+diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
+index 23ad052528db..180094dfae19 100644
+--- a/drivers/spi/spi-sun6i.c
++++ b/drivers/spi/spi-sun6i.c
+@@ -422,7 +422,7 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
+ 	reg = sun6i_spi_read(sspi, SUN6I_TFR_CTL_REG);
+ 	sun6i_spi_write(sspi, SUN6I_TFR_CTL_REG, reg | SUN6I_TFR_CTL_XCH);
  
-+/**
-+ * spi_controller_xfer_timeout - Compute a suitable timeout value
-+ * @ctlr: SPI device
-+ * @xfer: Transfer descriptor
-+ *
-+ * Compute a relevant timeout value for the given transfer. We derive the time
-+ * that it would take on a single data line and take twice this amount of time
-+ * with a minimum of 500ms to avoid false positives on loaded systems.
-+ *
-+ * Returns: Transfer timeout value in milliseconds.
-+ */
-+static inline unsigned int spi_controller_xfer_timeout(struct spi_controller *ctlr,
-+						       struct spi_transfer *xfer)
-+{
-+	return max(xfer->len * 8 * 2 / (xfer->speed_hz / 1000), 500U);
-+}
-+
- /*---------------------------------------------------------------------------*/
- 
- /* SPI transfer replacement methods which make use of spi_res */
+-	tx_time = max(tfr->len * 8 * 2 / (tfr->speed_hz / 1000), 100U);
++	tx_time = spi_controller_xfer_timeout(master, tfr);
+ 	start = jiffies;
+ 	timeout = wait_for_completion_timeout(&sspi->done,
+ 					      msecs_to_jiffies(tx_time));
 -- 
 2.34.1
 

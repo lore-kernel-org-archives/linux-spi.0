@@ -2,98 +2,127 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CCB0EEB64D9
-	for <linux-spi@archiver.kernel.org>; Mon, 19 Jun 2023 09:11:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B7600EB64D9
+	for <linux-spi@archiver.kernel.org>; Mon, 19 Jun 2023 09:12:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231135AbjFSJLS (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 19 Jun 2023 05:11:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42126 "EHLO
+        id S231226AbjFSJMu (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 19 Jun 2023 05:12:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231209AbjFSJLP (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 19 Jun 2023 05:11:15 -0400
+        with ESMTP id S231225AbjFSJMp (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 19 Jun 2023 05:12:45 -0400
 Received: from mx0b-001ae601.pphosted.com (mx0b-001ae601.pphosted.com [67.231.152.168])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8AA1DA;
-        Mon, 19 Jun 2023 02:11:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2F21102;
+        Mon, 19 Jun 2023 02:12:43 -0700 (PDT)
 Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
-        by mx0b-001ae601.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35J5mUm5002763;
-        Mon, 19 Jun 2023 04:11:02 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=PODMain02222019;
- bh=5JH2u79XU9FJBiZZx7sz7hvI5PJVGOsuiD1Cda2B7+Q=;
- b=ogSP1REFwha/p5MoyXtk6djzYSizjnb5XoG/UTXcqMzLIJ1RO4fM6vz2X8rvr35wplCv
- 19lg6w7mXd8juNLp/dvaplzDvq351QoqOkCQmO8rGZnSyGvJaQbDLoEXNO5LZ/8keR1Q
- wu+j7FV086RP5bxowLDtX4wlTuuajMGo7BZf4+IwtDL29IpPW+lacXfntP102f8By5vE
- IU0IIWkXoTZXrIocDqgBMq/jQPTKb1OffOp8hYoSjmDaUPOl1TcRVDkzPSZBNcSG5hrc
- gcudmalxuL4DzlP83GeQF5B5BsyY2JQT6VApdaQM4cMFRKorfyBOZwXfhz7m3PtsuFCz eg== 
+        by mx0b-001ae601.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35J80iW9017479;
+        Mon, 19 Jun 2023 03:43:27 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=PODMain02222019;
+ bh=YMRw7TpzL0COzz9yr9CYVV7IRxhEoZZRsZPOw+0tAws=;
+ b=iwcqhKGt90qIQyGpvNr0edrqXoodtC6ViVYX/O9BlHR1snsCnId6uRx9pWKSQ55eVdsG
+ T1G8Q5dTOwCZVb+juXI/+bJU48yiGRznwr/sKj91pF9c4CxWZ84gBEgdNsieAgPdXpHb
+ oUVTspX//JY3Li5axM5CAl94q0IG2Yn/cKXofl2xQdKkWUeV/5xbG6FFUm10MmzGhGGV
+ Y4CrFtFC/4Zhn9LsA5O/eGOGT8Bbv/Nojx7bXXtWOAybtpU/S/tKfMWAEfEVKJWRytRX
+ n1a+jDyXknHww0Y8K5LuI1F8TZA7GV0fpSwGbf+wylKH2ZLGT1qyAospHjeYrvz2md7k uA== 
 Received: from ediex02.ad.cirrus.com ([84.19.233.68])
-        by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 3r998mhsfb-1
+        by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 3r998mhrr2-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 19 Jun 2023 04:11:02 -0500
+        Mon, 19 Jun 2023 03:43:26 -0500
 Received: from ediex02.ad.cirrus.com (198.61.84.81) by ediex02.ad.cirrus.com
  (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.26; Mon, 19 Jun
- 2023 10:11:00 +0100
+ 2023 09:43:25 +0100
 Received: from ediswmail.ad.cirrus.com (198.61.86.93) by
  anon-ediex02.ad.cirrus.com (198.61.84.81) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Mon, 19 Jun 2023 10:11:00 +0100
-Received: from ediswmail.ad.cirrus.com (ediswmail.ad.cirrus.com [198.61.86.93])
-        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 84E4011AA;
-        Mon, 19 Jun 2023 09:11:00 +0000 (UTC)
-Date:   Mon, 19 Jun 2023 09:11:00 +0000
+ 15.2.1118.26 via Frontend Transport; Mon, 19 Jun 2023 09:43:25 +0100
+Received: from algalon.ad.cirrus.com (algalon.ad.cirrus.com [198.90.251.122])
+        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 3331946B;
+        Mon, 19 Jun 2023 08:43:25 +0000 (UTC)
 From:   Charles Keepax <ckeepax@opensource.cirrus.com>
-To:     Lee Jones <lee@kernel.org>
-CC:     <broonie@kernel.org>, <krzysztof.kozlowski+dt@linaro.org>,
-        <linus.walleij@linaro.org>, <vkoul@kernel.org>,
-        <robh+dt@kernel.org>, <conor+dt@kernel.org>, <lgirdwood@gmail.com>,
+To:     <broonie@kernel.org>, <lee@kernel.org>,
+        <krzysztof.kozlowski+dt@linaro.org>, <linus.walleij@linaro.org>,
+        <vkoul@kernel.org>
+CC:     <robh+dt@kernel.org>, <conor+dt@kernel.org>, <lgirdwood@gmail.com>,
         <yung-chuan.liao@linux.intel.com>, <sanyog.r.kale@intel.com>,
         <pierre-louis.bossart@linux.intel.com>,
         <alsa-devel@alsa-project.org>, <patches@opensource.cirrus.com>,
         <devicetree@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
         <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 3/6] mfd: cs42l43: Add support for cs42l43 core driver
-Message-ID: <20230619091100.GV68926@ediswmail.ad.cirrus.com>
-References: <20230605125504.2570158-1-ckeepax@opensource.cirrus.com>
- <20230605125504.2570158-4-ckeepax@opensource.cirrus.com>
- <20230615171124.GL3635807@google.com>
- <20230616083404.GR68926@ediswmail.ad.cirrus.com>
- <20230619083005.GN3635807@google.com>
- <20230619085244.GU68926@ediswmail.ad.cirrus.com>
+Subject: [PATCH v4 0/6] Add cs42l43 PC focused SoundWire CODEC
+Date:   Mon, 19 Jun 2023 09:43:19 +0100
+Message-ID: <20230619084325.1721501-1-ckeepax@opensource.cirrus.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20230619085244.GU68926@ediswmail.ad.cirrus.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Proofpoint-GUID: JbY1FYWJr3mYykaI4Vkm_JGdmIMtrazk
-X-Proofpoint-ORIG-GUID: JbY1FYWJr3mYykaI4Vkm_JGdmIMtrazk
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-GUID: ToI6sQVpL4LKWrtTaQ_4XY0MkL6PMpwV
+X-Proofpoint-ORIG-GUID: ToI6sQVpL4LKWrtTaQ_4XY0MkL6PMpwV
 X-Proofpoint-Spam-Reason: safe
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Mon, Jun 19, 2023 at 08:52:44AM +0000, Charles Keepax wrote:
-> On Mon, Jun 19, 2023 at 09:30:05AM +0100, Lee Jones wrote:
-> > On Fri, 16 Jun 2023, Charles Keepax wrote:
-> > > On Thu, Jun 15, 2023 at 06:11:24PM +0100, Lee Jones wrote:
-> > > > On Mon, 05 Jun 2023, Charles Keepax wrote:
-> > Can you have a little think for another way to solve this please?
-> > 
-> 
-> I will have another go at it, if memory serves the vague options
-> were:
-> 
-> 1) this approach
-> 2) some sort of horrible #include to put the defaults array in
-> both modules, although I would really prefer to avoid this one.
-> 3) dynamically allocate the regmap_configs so those two fields
-> can be filled in with non-static data.
-> 
-> If I fail to come up with an option 4 would you prefer 1 or 3?
-> Well or 2 but I really would prefer not to do 2.
-> 
-
-Well or just leave both in actually I guess perhaps that is
-simplest.
+This patch chain adds support for the Cirrus Logic cs42l43 PC focused
+SoundWire CODEC. The chain is currently based of Lee's for-mfd-next
+branch.
 
 Thanks,
 Charles
+
+Charles Keepax (4):
+  dt-bindings: mfd: cirrus,cs42l43: Add initial DT binding
+  mfd: cs42l43: Add support for cs42l43 core driver
+  pinctrl: cs42l43: Add support for the cs42l43
+  ASoC: cs42l43: Add support for the cs42l43
+
+Lucas Tanure (2):
+  soundwire: bus: Allow SoundWire peripherals to register IRQ handlers
+  spi: cs42l43: Add SPI controller support
+
+ .../bindings/sound/cirrus,cs42l43.yaml        |  313 +++
+ MAINTAINERS                                   |    4 +
+ drivers/mfd/Kconfig                           |   23 +
+ drivers/mfd/Makefile                          |    3 +
+ drivers/mfd/cs42l43-i2c.c                     |   87 +
+ drivers/mfd/cs42l43-sdw.c                     |  222 ++
+ drivers/mfd/cs42l43.c                         | 1262 +++++++++
+ drivers/mfd/cs42l43.h                         |   23 +
+ drivers/pinctrl/cirrus/Kconfig                |   11 +
+ drivers/pinctrl/cirrus/Makefile               |    2 +
+ drivers/pinctrl/cirrus/pinctrl-cs42l43.c      |  609 +++++
+ drivers/soundwire/bus.c                       |   32 +
+ drivers/soundwire/bus_type.c                  |   12 +
+ drivers/spi/Kconfig                           |    7 +
+ drivers/spi/Makefile                          |    1 +
+ drivers/spi/spi-cs42l43.c                     |  281 ++
+ include/linux/mfd/cs42l43-regs.h              | 1184 +++++++++
+ include/linux/mfd/cs42l43.h                   |  102 +
+ include/linux/soundwire/sdw.h                 |    9 +
+ include/sound/cs42l43.h                       |   17 +
+ sound/soc/codecs/Kconfig                      |   16 +
+ sound/soc/codecs/Makefile                     |    4 +
+ sound/soc/codecs/cs42l43-jack.c               |  969 +++++++
+ sound/soc/codecs/cs42l43-sdw.c                |   74 +
+ sound/soc/codecs/cs42l43.c                    | 2278 +++++++++++++++++
+ sound/soc/codecs/cs42l43.h                    |  131 +
+ 26 files changed, 7676 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/sound/cirrus,cs42l43.yaml
+ create mode 100644 drivers/mfd/cs42l43-i2c.c
+ create mode 100644 drivers/mfd/cs42l43-sdw.c
+ create mode 100644 drivers/mfd/cs42l43.c
+ create mode 100644 drivers/mfd/cs42l43.h
+ create mode 100644 drivers/pinctrl/cirrus/pinctrl-cs42l43.c
+ create mode 100644 drivers/spi/spi-cs42l43.c
+ create mode 100644 include/linux/mfd/cs42l43-regs.h
+ create mode 100644 include/linux/mfd/cs42l43.h
+ create mode 100644 include/sound/cs42l43.h
+ create mode 100644 sound/soc/codecs/cs42l43-jack.c
+ create mode 100644 sound/soc/codecs/cs42l43-sdw.c
+ create mode 100644 sound/soc/codecs/cs42l43.c
+ create mode 100644 sound/soc/codecs/cs42l43.h
+
+-- 
+2.30.2
+

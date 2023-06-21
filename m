@@ -2,81 +2,69 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 28C3BEB64DD
-	for <linux-spi@archiver.kernel.org>; Wed, 21 Jun 2023 17:32:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B730EB64DC
+	for <linux-spi@archiver.kernel.org>; Wed, 21 Jun 2023 17:39:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231174AbjFURcd (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 21 Jun 2023 13:32:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37422 "EHLO
+        id S230273AbjFURjJ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 21 Jun 2023 13:39:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229448AbjFURcc (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 21 Jun 2023 13:32:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB99219B;
-        Wed, 21 Jun 2023 10:32:31 -0700 (PDT)
+        with ESMTP id S231292AbjFURjI (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 21 Jun 2023 13:39:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 065861BC;
+        Wed, 21 Jun 2023 10:39:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 66D9861647;
-        Wed, 21 Jun 2023 17:32:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F215EC433C8;
-        Wed, 21 Jun 2023 17:32:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7EBEF61654;
+        Wed, 21 Jun 2023 17:39:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E745EC433CB;
+        Wed, 21 Jun 2023 17:39:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687368750;
-        bh=VfqGpYEIglQTk51i33OR5r1TFrQwDJbPB0c/7MTgQXU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=lL5Wji/oNVr5PUKpng4sRLy9k9e/N1ftHA1H/u/QEfYMDF0txKa82VpDKcAWyENjq
-         9nFIxmUQ7OBdkawD4EgQTkdU0NN4WpeZkzIjDP76oY4AVYMD2Ve/9hScaIytGN5BD2
-         63jFjGe9ZIQBlCs2KzuYLE97Hv90ScP6yvHeyjp3lBHawrxbcIXXqzcaolcAHyUu20
-         RvVg5VUVR7oWBlnMjagDmW4se5Ij8db88LJB5ugxm2M7iT2tlHntQB51Dw55hhjoIb
-         69Yw7/LdTsDiPfDCzfXM2Ro0OAaZhHUdyOuQGIWEDkCugjRNycgeL8MQKN9AV3PIG2
-         8yytwf9fE/QwA==
-Date:   Wed, 21 Jun 2023 23:02:26 +0530
-From:   Vinod Koul <vkoul@kernel.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Kishon Vijay Abraham I <kishon@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Mark Brown <broonie@kernel.org>,
-        Dipen Patel <dipenp@nvidia.com>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Dilip Kota <eswara.kota@linux.intel.com>,
-        linux-phy@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
-        linux-rtc@vger.kernel.org, alsa-devel@alsa-project.org,
-        linux-spi@vger.kernel.org, timestamp@lists.linux.dev,
-        linux-watchdog@vger.kernel.org, Rob Herring <robh@kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Oleksij Rempel <o.rempel@pengutronix.de>
-Subject: Re: [PATCH 1/7] dt-bindings: phy: intel,combo-phy: restrict node
- name suffixes
-Message-ID: <ZJM0Kh8+ZzfiFQlg@matsya>
-References: <20230530144851.92059-1-krzysztof.kozlowski@linaro.org>
- <20230530144851.92059-2-krzysztof.kozlowski@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230530144851.92059-2-krzysztof.kozlowski@linaro.org>
+        s=k20201202; t=1687369146;
+        bh=DVNeAJO6Dgu8FDtvT21kR6U2wQb981RxOa6r9gYEPjA=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=P84uHmlE8LtkMjgQH842tZb60Y7vCKvLbU13rb8n+/aFIovxwF6Fxza0aIl02I89b
+         m6G8uIuk7F/nFHKH5DchLTnB1IMpEGrBpfPs4Q/O49e3VrEt3wRp6J4yoAOqHS7zSp
+         gSQsfDnK91wTXdPMhWgRQHkz6tKsMaaVomNcHMNwDB+Yk1QYlM7eF7pTh8f1SPsiut
+         AZrG7Yvl8EQ1XKeaujylEi1YpX5WBt/CAcccVabCagqX12a8SUqfPgfWpZ5JRtm60M
+         riphZEVD0rAEB530sdKsl8Udh+EDjsuqK8VR1ML4vSWwzzIUhRpeINTknyNbq9ku6v
+         AXuX1DQ35uYYg==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id C6BFAE45226;
+        Wed, 21 Jun 2023 17:39:06 +0000 (UTC)
+Subject: Re: [GIT PULL] SPI fixes for v6.4-rc7
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <20230621132404.E6CB1C433C9@smtp.kernel.org>
+References: <20230621132404.E6CB1C433C9@smtp.kernel.org>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20230621132404.E6CB1C433C9@smtp.kernel.org>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v6.4-rc7
+X-PR-Tracked-Commit-Id: 9d7054fb3ac2e8d252aae1268f20623f244e644f
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 2214170caabbff673935eb046a7edf4621213931
+Message-Id: <168736914680.5231.5830283319897263285.pr-tracker-bot@kernel.org>
+Date:   Wed, 21 Jun 2023 17:39:06 +0000
+To:     Mark Brown <broonie@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On 30-05-23, 16:48, Krzysztof Kozlowski wrote:
-> Make the pattern matching node names a bit stricter to improve DTS
-> consistency.  The pattern is restricted to:
-> 1. Only one unit address or one -N suffix,
-> 2. -N suffixes to decimal numbers.
+The pull request you sent on Wed, 21 Jun 2023 14:23:50 +0100:
 
-Applied, thanks
+> https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v6.4-rc7
+
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/2214170caabbff673935eb046a7edf4621213931
+
+Thank you!
 
 -- 
-~Vinod
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html

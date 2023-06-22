@@ -2,103 +2,96 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C4764EB64DB
-	for <linux-spi@archiver.kernel.org>; Thu, 22 Jun 2023 08:25:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A7F6AEB64D8
+	for <linux-spi@archiver.kernel.org>; Thu, 22 Jun 2023 09:15:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229504AbjFVIZ0 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 22 Jun 2023 04:25:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42674 "EHLO
+        id S229944AbjFVJPd (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 22 Jun 2023 05:15:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229682AbjFVIZZ (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 22 Jun 2023 04:25:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40CCA1BD0;
-        Thu, 22 Jun 2023 01:25:24 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BA9A661783;
-        Thu, 22 Jun 2023 08:25:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FA8BC433C9;
-        Thu, 22 Jun 2023 08:25:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687422323;
-        bh=kT1iIRFCb/FngiibBFp/oj+CcwR6QPaSbU5bJ8Db0PI=;
-        h=From:To:Cc:Subject:Date:From;
-        b=MAbC5CrnuU+abGtqx92u/WmSNcxhtdTj+Ss7+80MMiTRQOQaRj3H5ELz7Thn0kxGZ
-         07bi/WjYBczBDXSk0pVrH8olmqVSWc8SJVNzc71C8axWUek65iVkMNpZNndKVFaj/M
-         4xyydAcNokrUc+j0wMLXZ0qVTQe+lO0Ktm7y/gTr52xwCWuT+9NP37LYA35kekHa33
-         n/ko1TdlNEUCCuWpWb5qJbFaRD1WJPiNbsgqhGmEfIBdf+qw6BF37tqXpShR90KwzM
-         DMeIZF48Yfm5BCfAHegfLSjUrap/Uw/UpYru+8YsXLfpcEX3cHTckYb6AEjqZzgOAm
-         oKyqc03Q7QSpg==
-Received: from johan by xi.lan with local (Exim 4.94.2)
-        (envelope-from <johan+linaro@kernel.org>)
-        id 1qCFdA-00023c-Gw; Thu, 22 Jun 2023 10:25:28 +0200
-From:   Johan Hovold <johan+linaro@kernel.org>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     Michal Simek <michal.simek@amd.com>, linux-spi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Johan Hovold <johan+linaro@kernel.org>, stable@vger.kernel.org,
-        Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>,
-        Shubhrajyoti Datta <shubhrajyoti.datta@xilinx.com>
-Subject: [PATCH] spi: zynqmp-gqspi: fix clock imbalance on probe failure
-Date:   Thu, 22 Jun 2023 10:24:35 +0200
-Message-Id: <20230622082435.7873-1-johan+linaro@kernel.org>
-X-Mailer: git-send-email 2.39.3
+        with ESMTP id S232350AbjFVJOv (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 22 Jun 2023 05:14:51 -0400
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::222])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB70B5249
+        for <linux-spi@vger.kernel.org>; Thu, 22 Jun 2023 02:06:37 -0700 (PDT)
+X-GND-Sasl: miquel.raynal@bootlin.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1687424796;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=smUguiUnq/2ETy4GDzWzASOaK7+FY98RKmwyQrczEKo=;
+        b=Kt8zDoybTN2+sdhcOsTJ/AVmCuksnWdHAZJ0wEg/DE+N+X3NqqF4xHoaT3JEonsxvIDbLt
+        2Haj8RarDMprtsD6IamCksSqm2/GLskf3JSNmCzYoFMyOm/B3zeqX41F2M2XizvzwEX/tf
+        JHHiqTVE+2MzvBqIxDRbnPJSTgKrR4tii10ruPu8wRmKFpXMkc/EXmXXXsMQQ0zqpUOFZk
+        wURIVhjBb/Sk5D0/LfQFsuNSQD1HLT3Jjc2qpN8gw6NgFy3fGMJ710M1TtXi5agzVNneYx
+        ecBTVTMk0d0AXMY4HW1Fwhu9/Gd/yzTrKpxK1o/A/1GC+pK466qa+GRqoIbxuA==
+X-GND-Sasl: miquel.raynal@bootlin.com
+X-GND-Sasl: miquel.raynal@bootlin.com
+X-GND-Sasl: miquel.raynal@bootlin.com
+X-GND-Sasl: miquel.raynal@bootlin.com
+X-GND-Sasl: miquel.raynal@bootlin.com
+X-GND-Sasl: miquel.raynal@bootlin.com
+X-GND-Sasl: miquel.raynal@bootlin.com
+X-GND-Sasl: miquel.raynal@bootlin.com
+X-GND-Sasl: miquel.raynal@bootlin.com
+X-GND-Sasl: miquel.raynal@bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id E8C7E4000C;
+        Thu, 22 Jun 2023 09:06:34 +0000 (UTC)
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Mark Brown <broonie@kernel.org>, <linux-spi@vger.kernel.org>
+Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Tudor Ambarus <tudor.ambarus@linaro.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland <samuel@sholland.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH v3 0/3] spi: Helper for deriving timeout values
+Date:   Thu, 22 Jun 2023 11:06:31 +0200
+Message-Id: <20230622090634.3411468-1-miquel.raynal@bootlin.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Make sure that the device is not runtime suspended before explicitly
-disabling the clocks on probe failure and on driver unbind to avoid a
-clock enable-count imbalance.
+Hello,
 
-Fixes: 9e3a000362ae ("spi: zynqmp: Add pm runtime support")
-Cc: stable@vger.kernel.org	# 4.19
-Cc: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
-Cc: Shubhrajyoti Datta <shubhrajyoti.datta@xilinx.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
----
- drivers/spi/spi-zynqmp-gqspi.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+I recently came across an issue with the Atmel spi controller driver
+which would stop my transfers after a too small timeout when performing
+big transfers (reading a 4MiB flash in one transfer). My initial idea
+was to derive a the maximum amount of time a transfer would take
+depending on its size and use that as value to avoid erroring-out when
+not relevant. Mark wanted to go further by creating a core helper doing
+that, based on the heuristics from the sun6i driver.
 
-diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
-index fb2ca9b90eab..c309dedfd602 100644
---- a/drivers/spi/spi-zynqmp-gqspi.c
-+++ b/drivers/spi/spi-zynqmp-gqspi.c
-@@ -1342,9 +1342,9 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
- 	return 0;
- 
- clk_dis_all:
--	pm_runtime_put_sync(&pdev->dev);
--	pm_runtime_set_suspended(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
-+	pm_runtime_put_noidle(&pdev->dev);
-+	pm_runtime_set_suspended(&pdev->dev);
- 	clk_disable_unprepare(xqspi->refclk);
- clk_dis_pclk:
- 	clk_disable_unprepare(xqspi->pclk);
-@@ -1368,11 +1368,15 @@ static void zynqmp_qspi_remove(struct platform_device *pdev)
- {
- 	struct zynqmp_qspi *xqspi = platform_get_drvdata(pdev);
- 
-+	pm_runtime_get_sync(&pdev->dev);
-+
- 	zynqmp_gqspi_write(xqspi, GQSPI_EN_OFST, 0x0);
-+
-+	pm_runtime_disable(&pdev->dev);
-+	pm_runtime_put_noidle(&pdev->dev);
-+	pm_runtime_set_suspended(&pdev->dev);
- 	clk_disable_unprepare(xqspi->refclk);
- 	clk_disable_unprepare(xqspi->pclk);
--	pm_runtime_set_suspended(&pdev->dev);
--	pm_runtime_disable(&pdev->dev);
- }
- 
- MODULE_DEVICE_TABLE(of, zynqmp_qspi_of_match);
+Here is a small series of 3 patches doing exactly that.
+
+Cheers,
+Miquèl
+
+Changes in v3:
+* Collected a tag.
+* As my platform runs on 6.1 currently, I cherry-picked a mainline patch
+  changing s/master/host/ in the atmel controller driver and modified the
+  series to fit the new naming. I then cherry-picked my three patches and
+  verified it compiled correctly against a v6.4-rc1.
+
+Miquel Raynal (3):
+  spi: Create a helper to derive adaptive timeouts
+  spi: atmel: Prevent false timeouts on long transfers
+  spi: sun6i: Use the new helper to derive the xfer timeout value
+
+ drivers/spi/spi-atmel.c | 18 +++++++++++-------
+ drivers/spi/spi-sun6i.c |  2 +-
+ include/linux/spi/spi.h | 17 +++++++++++++++++
+ 3 files changed, 29 insertions(+), 8 deletions(-)
+
 -- 
-2.39.3
+2.34.1
 

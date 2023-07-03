@@ -2,131 +2,113 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9937EEB64DD
-	for <linux-spi@archiver.kernel.org>; Mon,  3 Jul 2023 11:41:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 88F6DEB64DC
+	for <linux-spi@archiver.kernel.org>; Mon,  3 Jul 2023 13:31:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229895AbjGCLlz (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 3 Jul 2023 07:41:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53450 "EHLO
+        id S231459AbjGCNbR (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 3 Jul 2023 09:31:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229534AbjGCLly (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 3 Jul 2023 07:41:54 -0400
-Received: from mx1.sberdevices.ru (mx2.sberdevices.ru [45.89.224.132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0E5EEC;
-        Mon,  3 Jul 2023 04:41:51 -0700 (PDT)
-Received: from p-infra-ksmg-sc-msk02 (localhost [127.0.0.1])
-        by mx1.sberdevices.ru (Postfix) with ESMTP id BEC651204F9;
-        Mon,  3 Jul 2023 12:45:45 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru BEC651204F9
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
-        s=mail; t=1688377545;
-        bh=wRrn6iFZ9wvY6EzviQOv3A+7Kxncor6/Mip9AQNivGs=;
-        h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
-        b=qlJ8LqLVZI7V75BuBRdc2Ts/lhLBHonx/zyV9YbrVjgIRpk6XNJR6KF7wrHocIqyA
-         8Pl6yyBTZRalMxo6FvHdAFMQl2a+r7uksM+RPs4WSvxUJFJrl7QxfOzTbc3zNNviHQ
-         TLcV6T/DqNrgtuiBqjTDxYudWtc+peqNfXWw8QQDzyey6LvRaEMou5JIk6YbjRtWVc
-         /GFkv9pjb3CXhCiSkh9L64BhYhLfYE9cxyklR2gkUuaomQgvEZtH3kBffB+wuLLArE
-         lvB14BhyOagI3489Sg/6Sbsec/BzgSY2QPDHxCWDrvM8mMZHHKBnkk4UsaY74RQ9MI
-         m5lSJQdS2jYDg==
-Received: from p-i-exch-sc-m01.sberdevices.ru (p-i-exch-sc-m01.sberdevices.ru [172.16.192.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mx1.sberdevices.ru (Postfix) with ESMTPS;
-        Mon,  3 Jul 2023 12:45:44 +0300 (MSK)
-Received: from CAB-WSD-0004828.sigma.sbrf.ru (100.64.160.123) by
- p-i-exch-sc-m01.sberdevices.ru (172.16.192.107) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.30; Mon, 3 Jul 2023 12:45:43 +0300
-From:   Martin Kurbanov <mmkurbanov@sberdevices.ru>
-To:     Mark Brown <broonie@kernel.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>
-CC:     <linux-spi@vger.kernel.org>, <linux-amlogic@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <kernel@sberdevices.ru>,
-        Martin Kurbanov <mmkurbanov@sberdevices.ru>
-Subject: [PATCH v1 2/2] spi: amlogic-spifc-a1: add support for max_speed_hz
-Date:   Mon, 3 Jul 2023 12:45:18 +0300
-Message-ID: <20230703094518.53755-3-mmkurbanov@sberdevices.ru>
-X-Mailer: git-send-email 2.40.0
-In-Reply-To: <20230703094518.53755-1-mmkurbanov@sberdevices.ru>
-References: <20230703094518.53755-1-mmkurbanov@sberdevices.ru>
+        with ESMTP id S230503AbjGCNbQ (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 3 Jul 2023 09:31:16 -0400
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67BF3E54
+        for <linux-spi@vger.kernel.org>; Mon,  3 Jul 2023 06:31:15 -0700 (PDT)
+Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-4fb41682472so6702026e87.2
+        for <linux-spi@vger.kernel.org>; Mon, 03 Jul 2023 06:31:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1688391073; x=1690983073;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mmnKR6NrcH13RIboC24wgvo0cXm9uFpdKMc5Nw0n2zA=;
+        b=ScMdpPo+quZsGKt6VxpWHDSxyvsyHQTKTkDln/Nk5LM97r3ByHE8tRaLbaMvIxbS85
+         lQMOOI6mNxiq/LTabMNpFsGcPccJoVDJvShOaSrpsRAAw2GVxGZ0/hQb3kL+DOn9bPO3
+         LzzMb+6WZ9gj9hrm80XN+GiplqVeWvzt2DHlJzYUm4O3fYez/hIEfojd6aCDtOQLMyDw
+         /JST52UuE9cGQN/N23OmzKAbDBCwMaT+9FXOCFXxFcoYHA40lGBrO7AfStANI6Fie7bc
+         AybJ0M1nIfz4EcE8lNqRCIoqPrMLcwxi6MjmTcgE/1FmWXxq/MKuYPxjFySG61Pss78+
+         QEIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688391073; x=1690983073;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mmnKR6NrcH13RIboC24wgvo0cXm9uFpdKMc5Nw0n2zA=;
+        b=QCS9lE/Hjm/eOBKsBzgOhL2zwKnfKCZERWPjNUJHAJ0azEQZTWFxOmLv9ws1XR0A6A
+         m5jRostW3wiN12ClUGcilkQ+SQGcV1UDVssuK7ee+MAU1mKnr9Fa40pdJPfu7/nEZjIR
+         6U/mpF/OWHaDBus7kLDa+R1HI2ZPLCO8FaGuPHNEMrmbNd2RfyaJSsDyNri8cDQwpe9E
+         rhFoSI/sZKLONk0z/IITAB3fkuS3M2msVn9ZWhBGCUpoHmqm5pUtKleE+FJpWNvlk9bU
+         zYzHy7nr6QrszZIQ+LQRo/I/ZR945gv1mXx43u6rtjkTb7nSFT0PZIcE1HHymz/hMBoE
+         g6uA==
+X-Gm-Message-State: ABy/qLZOQsnp8qryv9CUy6Ft4g84Me2Lwf1FuCsHvleMfMZLEgGwCUcI
+        f75ylpQvDgmRH2TTOvNxvrswLQ==
+X-Google-Smtp-Source: APBJJlGFdqjy8wwAOkx2KKsD9YVjv9xJFBDRdOY+uU/tTgJX7vCdJgPQj5vpQBGok4bNXDBHh5GbeQ==
+X-Received: by 2002:a05:6512:3984:b0:4fb:85b2:cf78 with SMTP id j4-20020a056512398400b004fb85b2cf78mr8856638lfu.37.1688391073559;
+        Mon, 03 Jul 2023 06:31:13 -0700 (PDT)
+Received: from [192.168.1.101] (abyj26.neoplus.adsl.tpnet.pl. [83.9.29.26])
+        by smtp.gmail.com with ESMTPSA id ep7-20020a056512484700b004fbb1f70ceesm833417lfb.227.2023.07.03.06.31.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Jul 2023 06:31:13 -0700 (PDT)
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+Subject: [PATCH 0/5] Add interconnects to QUPs on SM8250
+Date:   Mon, 03 Jul 2023 15:31:09 +0200
+Message-Id: <20230703-topic-8250_qup_icc-v1-0-fea39aa07525@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [100.64.160.123]
-X-ClientProxiedBy: p-i-exch-sc-m01.sberdevices.ru (172.16.192.107) To
- p-i-exch-sc-m01.sberdevices.ru (172.16.192.107)
-X-KSMG-Rule-ID: 10
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Lua-Profiles: 178391 [Jul 03 2023]
-X-KSMG-AntiSpam-Version: 5.9.59.0
-X-KSMG-AntiSpam-Envelope-From: MMKurbanov@sberdevices.ru
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Info: LuaCore: 517 517 b0056c19d8e10afbb16cb7aad7258dedb0179a79, {Tracking_from_domain_doesnt_match_to}, sberdevices.ru:5.0.1,7.1.1;100.64.160.123:7.1.2;127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;p-i-exch-sc-m01.sberdevices.ru:5.0.1,7.1.1, FromAlignment: s, {Tracking_white_helo}, ApMailHostAddress: 100.64.160.123
-X-MS-Exchange-Organization-SCL: -1
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiPhishing: Clean
-X-KSMG-LinksScanning: Clean
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.0.1.6960, bases: 2023/07/03 07:50:00 #21557756
-X-KSMG-AntiVirus-Status: Clean, skipped
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJ3NomQC/x2N0QqDMAwAf0XyvEBtp5X9yhCpMZsBqV2rMhD/f
+ WGPd3DcCYWzcIFHdULmQ4qsUaG+VUBziG9GmZTBGuuMNw63NQlhZxszfPY0CBG2tW+74O7kmUD
+ DMRTGMYdIs6ZxXxaVKfNLvv/Ts7+uH6A3bfx5AAAA
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andi Shyti <andi.shyti@kernel.org>
+Cc:     Marijn Suijten <marijn.suijten@somainline.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-serial@vger.kernel.org, linux-i2c@vger.kernel.org,
+        Konrad Dybcio <konrad.dybcio@linaro.org>
+X-Mailer: b4 0.12.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1688391072; l=1274;
+ i=konrad.dybcio@linaro.org; s=20230215; h=from:subject:message-id;
+ bh=P/b9sUtVGW1aCLv/5W9/Do7IS4MZ5AYwLEHs4cWI4Yo=;
+ b=FeyN/5yDiFSyKCkhToHlIcdNwZzpYCsAzae8/E3MTmMzSSgehX8sZSykvbqgM4E5OR2o/LBXV
+ pAWX9VvkUzICzoebYDjNNIbkASbiD70Z2u/I6lHttwRFt3eIaxT4Pcp
+X-Developer-Key: i=konrad.dybcio@linaro.org; a=ed25519;
+ pk=iclgkYvtl2w05SSXO5EjjSYlhFKsJ+5OSZBjOkQuEms=
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This patch sets the clock rate (spi_transfer->max_speed_hz) from the
-amlogic_spifc_a1_exec_op().
+SM8250 (like SM8150 but unlike all other QUP-equipped SoCs) doesn't
+provide a qup-core path. Adjust the bindings and drivers as necessary,
+and then describe the icc paths in the device tree. This makes it possible
+for interconnect sync_state succeed so long as you don't use UFS.
 
-Signed-off-by: Martin Kurbanov <mmkurbanov@sberdevices.ru>
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 ---
- drivers/spi/spi-amlogic-spifc-a1.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+Konrad Dybcio (5):
+      dt-bindings: spi: spi-geni-qcom: Allow no qup-core icc path
+      dt-bindings: serial: geni-qcom: Allow no qup-core icc path
+      dt-bindings: i2c: qcom,i2c-geni: Allow no qup-core icc path
+      soc: qcom: geni-se: Allow any combination of icc paths
+      arm64: dts: qcom: sm8250: Add interconnects and power-domains to QUPs
 
-diff --git a/drivers/spi/spi-amlogic-spifc-a1.c b/drivers/spi/spi-amlogic-spifc-a1.c
-index 0c21917e4caf..7ef2a0448990 100644
---- a/drivers/spi/spi-amlogic-spifc-a1.c
-+++ b/drivers/spi/spi-amlogic-spifc-a1.c
-@@ -107,6 +107,7 @@ struct amlogic_spifc_a1 {
- 	struct clk *clk;
- 	struct device *dev;
- 	void __iomem *base;
-+	u32 curr_speed_hz;
- };
- 
- static int amlogic_spifc_a1_request(struct amlogic_spifc_a1 *spifc, bool read)
-@@ -235,6 +236,20 @@ static int amlogic_spifc_a1_write(struct amlogic_spifc_a1 *spifc,
- 	return amlogic_spifc_a1_request(spifc, false);
- }
- 
-+static int amlogic_spifc_a1_set_freq(struct amlogic_spifc_a1 *spifc, u32 freq)
-+{
-+	int ret;
-+
-+	if (freq == spifc->curr_speed_hz)
-+		return 0;
-+
-+	ret = clk_set_rate(spifc->clk, freq);
-+	if (!ret)
-+		spifc->curr_speed_hz = freq;
-+
-+	return ret;
-+}
-+
- static int amlogic_spifc_a1_exec_op(struct spi_mem *mem,
- 				    const struct spi_mem_op *op)
- {
-@@ -243,6 +258,10 @@ static int amlogic_spifc_a1_exec_op(struct spi_mem *mem,
- 	size_t data_size = op->data.nbytes;
- 	int ret;
- 
-+	ret = amlogic_spifc_a1_set_freq(spifc, mem->spi->max_speed_hz);
-+	if (ret)
-+		return ret;
-+
- 	amlogic_spifc_a1_user_init(spifc);
- 	amlogic_spifc_a1_set_cmd(spifc, SPIFC_A1_USER_CMD(op));
- 
+ .../bindings/i2c/qcom,i2c-geni-qcom.yaml           |  27 ++--
+ .../bindings/serial/qcom,serial-geni-qcom.yaml     |  26 ++--
+ .../bindings/spi/qcom,spi-geni-qcom.yaml           |  15 ++-
+ arch/arm64/boot/dts/qcom/sm8250.dtsi               | 150 +++++++++++++++++++++
+ drivers/soc/qcom/qcom-geni-se.c                    |   9 +-
+ 5 files changed, 204 insertions(+), 23 deletions(-)
+---
+base-commit: 296d53d8f84ce50ffaee7d575487058c8d437335
+change-id: 20230703-topic-8250_qup_icc-61768a34c7ec
+
+Best regards,
 -- 
-2.40.0
+Konrad Dybcio <konrad.dybcio@linaro.org>
 

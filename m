@@ -2,317 +2,88 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 47DC6EB64DC
-	for <linux-spi@archiver.kernel.org>; Mon,  3 Jul 2023 10:19:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8DE74EB64DC
+	for <linux-spi@archiver.kernel.org>; Mon,  3 Jul 2023 10:24:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230095AbjGCKT4 convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 3 Jul 2023 06:19:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44492 "EHLO
+        id S229727AbjGCKYE (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 3 Jul 2023 06:24:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231362AbjGCKTm (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 3 Jul 2023 06:19:42 -0400
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BFA7D2;
-        Mon,  3 Jul 2023 03:19:39 -0700 (PDT)
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-56fff21c2ebso50362497b3.3;
-        Mon, 03 Jul 2023 03:19:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688379578; x=1690971578;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=otTmQa23ksdmtXKU5Wvw4W3m/LeTHlMGWSV7Ivn/a54=;
-        b=Gfbled8ZhBknK2NwkOKdhLNFWSYDyhaRzrQMV2vFTvFNFjnuOn6//11FbZlXMhEPaH
-         kTswYCsQtFjMt1xcDw1gRy8w8MewzpZgXFsm6t6DKcyn3YalpB4YKd97ILwotAch659F
-         e7jSBUDosWr1FiiJLsqvnw3nkyHwQuBxWCeUBgl5hDe3f9zSkBmgxmgatrnWR5JSJOOU
-         VvjkhUPS619SWeWAGduxVZgJNwZWqQH7dX5mgJb6GbffwFO3sjaZZ6euHpkzcucPJAQw
-         QVhVakGvwenDNaw7fUcbJ5k7GCacl2zSOom94+kNKY1+EBMS0v+DRYyopsUao1xElsrt
-         omNg==
-X-Gm-Message-State: ABy/qLYc7k8hmOR/0/E9OsfAS8P54lqhR7SalQ/Gkl3jy0Cg2sAAce13
-        9Y5Bqco0EuydiiQj1TFvy2xgxrzdkbOpOw==
-X-Google-Smtp-Source: APBJJlG2fCbFeD8/jEjYvn3pn7Ir+vTfEUTZv5f/ob5ouENJVP969GY0It3BBdqRcdkzD8e7h7Jm1A==
-X-Received: by 2002:a0d:d6c2:0:b0:577:16f7:91d9 with SMTP id y185-20020a0dd6c2000000b0057716f791d9mr8831516ywd.12.1688379578445;
-        Mon, 03 Jul 2023 03:19:38 -0700 (PDT)
-Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com. [209.85.219.172])
-        by smtp.gmail.com with ESMTPSA id v19-20020a814813000000b0054fba955474sm5016041ywa.17.2023.07.03.03.19.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Jul 2023 03:19:38 -0700 (PDT)
-Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-c4cb4919bb9so2021461276.3;
-        Mon, 03 Jul 2023 03:19:37 -0700 (PDT)
-X-Received: by 2002:a25:9d0f:0:b0:c1c:df23:44ec with SMTP id
- i15-20020a259d0f000000b00c1cdf2344ecmr9214702ybp.0.1688379577443; Mon, 03 Jul
- 2023 03:19:37 -0700 (PDT)
+        with ESMTP id S229585AbjGCKYD (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 3 Jul 2023 06:24:03 -0400
+X-Greylist: delayed 1201 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 03 Jul 2023 03:24:01 PDT
+Received: from mx1.sberdevices.ru (mx1.sberdevices.ru [37.18.73.165])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A924BE;
+        Mon,  3 Jul 2023 03:24:01 -0700 (PDT)
+Received: from p-infra-ksmg-sc-msk01 (localhost [127.0.0.1])
+        by mx1.sberdevices.ru (Postfix) with ESMTP id 6912F100009;
+        Mon,  3 Jul 2023 12:45:43 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru 6912F100009
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
+        s=mail; t=1688377543;
+        bh=lcOhlx00oXE7ulbYTnPi1yKlG4AkGFl5PtjjLmrQcFU=;
+        h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+        b=o5r2wsPZPKz//+smAOsuYHKAY7/4imLKzyE8Rtm0vRj9QZY4F2/Eyq+ZZTq62p/SW
+         ESVNNyurvDOWBzve5acNzT4bPyFPZshffQpC+ZND9XCx3+87a4euA6DlKELcZv5A8a
+         PRQKSq/JhscyqrrXlKnJ41yZrkkeNtcJOwjWPELitlNGnuTxvFkdDBivz45hqs339E
+         Kor9o0X+eWYlMmVQoh6qO9TsHyeNnpjyFTasIf5ftdeNIoujocYyomn/4YlcfP/wLg
+         TfZRel/OA5YL7vB2Ya9kT+aGXLCGG+IG2R/8UeY8W50VmZu/mC7uufMgTjhGPcqf2I
+         ZYf8PPGlcGLVA==
+Received: from p-i-exch-sc-m01.sberdevices.ru (p-i-exch-sc-m01.sberdevices.ru [172.16.192.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mx1.sberdevices.ru (Postfix) with ESMTPS;
+        Mon,  3 Jul 2023 12:45:43 +0300 (MSK)
+Received: from CAB-WSD-0004828.sigma.sbrf.ru (100.64.160.123) by
+ p-i-exch-sc-m01.sberdevices.ru (172.16.192.107) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.30; Mon, 3 Jul 2023 12:45:42 +0300
+From:   Martin Kurbanov <mmkurbanov@sberdevices.ru>
+To:     Mark Brown <broonie@kernel.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>
+CC:     <linux-spi@vger.kernel.org>, <linux-amlogic@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <kernel@sberdevices.ru>,
+        Martin Kurbanov <mmkurbanov@sberdevices.ru>
+Subject: [PATCH v1 0/2] spi: amlogic-spifc-a1: fixes and improvements for amlogic-spifc-a1
+Date:   Mon, 3 Jul 2023 12:45:16 +0300
+Message-ID: <20230703094518.53755-1-mmkurbanov@sberdevices.ru>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
-References: <20230622113341.657842-1-fabrizio.castro.jz@renesas.com> <20230622113341.657842-4-fabrizio.castro.jz@renesas.com>
-In-Reply-To: <20230622113341.657842-4-fabrizio.castro.jz@renesas.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 3 Jul 2023 12:19:26 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdVsYohH5FVv6r4ha0AaHRoHjNF1ErjW1FNF7ZAQR9ntxg@mail.gmail.com>
-Message-ID: <CAMuHMdVsYohH5FVv6r4ha0AaHRoHjNF1ErjW1FNF7ZAQR9ntxg@mail.gmail.com>
-Subject: Re: [PATCH v2 3/5] spi: Add support for Renesas CSI
-To:     Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-Cc:     Mark Brown <broonie@kernel.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org,
-        Chris Paterson <Chris.Paterson2@renesas.com>,
-        Biju Das <biju.das@bp.renesas.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [100.64.160.123]
+X-ClientProxiedBy: p-i-exch-sc-m01.sberdevices.ru (172.16.192.107) To
+ p-i-exch-sc-m01.sberdevices.ru (172.16.192.107)
+X-KSMG-Rule-ID: 10
+X-KSMG-Message-Action: clean
+X-KSMG-AntiSpam-Lua-Profiles: 178391 [Jul 03 2023]
+X-KSMG-AntiSpam-Version: 5.9.59.0
+X-KSMG-AntiSpam-Envelope-From: MMKurbanov@sberdevices.ru
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Auth: dkim=none
+X-KSMG-AntiSpam-Info: LuaCore: 517 517 b0056c19d8e10afbb16cb7aad7258dedb0179a79, {Tracking_from_domain_doesnt_match_to}, 127.0.0.199:7.1.2;100.64.160.123:7.1.2;sberdevices.ru:7.1.1,5.0.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;p-i-exch-sc-m01.sberdevices.ru:7.1.1,5.0.1, FromAlignment: s, {Tracking_white_helo}, ApMailHostAddress: 100.64.160.123
+X-MS-Exchange-Organization-SCL: -1
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiPhishing: Clean
+X-KSMG-LinksScanning: Clean
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.0.1.6960, bases: 2023/07/03 07:50:00 #21557756
+X-KSMG-AntiVirus-Status: Clean, skipped
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi Fabrizio,
+This series adds support for max_speed_hz and implement adjust_op_size()
+callback.
 
-On Thu, Jun 22, 2023 at 1:34 PM Fabrizio Castro
-<fabrizio.castro.jz@renesas.com> wrote:
-> The RZ/V2M SoC comes with the Clocked Serial Interface (CSI)
-> IP, which is a master/slave SPI controller.
->
-> This commit adds a driver to support CSI master mode.
->
-> Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-> ---
->
-> v2: edited includes in drivers/spi/spi-rzv2m-csi.c
+Martin Kurbanov (2):
+  spi: amlogic-spifc-a1: implement adjust_op_size()
+  spi: amlogic-spifc-a1: add support for max_speed_hz
 
-Thanks for your patch!
+ drivers/spi/spi-amlogic-spifc-a1.c | 83 ++++++++++++++++--------------
+ 1 file changed, 43 insertions(+), 40 deletions(-)
 
-> --- a/drivers/spi/Kconfig
-> +++ b/drivers/spi/Kconfig
-> @@ -825,6 +825,12 @@ config SPI_RSPI
->         help
->           SPI driver for Renesas RSPI and QSPI blocks.
->
-> +config SPI_RZV2M_CSI
-> +       tristate "Renesas RZV2M CSI controller"
+--
+2.40.0
 
-RZ/V2M (patch sent)
-
-> +       depends on ARCH_RENESAS || COMPILE_TEST
-> +       help
-> +         SPI driver for Renesas RZ/V2M Clocked Serial Interface (CSI)
-> +
->  config SPI_QCOM_QSPI
->         tristate "QTI QSPI controller"
->         depends on ARCH_QCOM || COMPILE_TEST
-
-> --- /dev/null
-> +++ b/drivers/spi/spi-rzv2m-csi.c
-> @@ -0,0 +1,667 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * Renesas RZ/V2M Clocked Serial Interface (CSI) driver
-> + *
-> + * Copyright (C) 2023 Renesas Electronics Corporation
-> + */
-> +
-> +#include <linux/clk.h>
-> +#include <linux/count_zeros.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/iopoll.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/reset.h>
-> +#include <linux/spi/spi.h>
-> +
-> +/* Registers */
-> +#define CSI_MODE               0x00    /* CSI mode control */
-> +#define CSI_CLKSEL             0x04    /* CSI clock select */
-> +#define CSI_CNT                        0x08    /* CSI control */
-> +#define CSI_INT                        0x0C    /* CSI interrupt status */
-> +#define CSI_IFIFOL             0x10    /* CSI receive FIFO level display */
-> +#define CSI_OFIFOL             0x14    /* CSI transmit FIFO level display */
-> +#define CSI_IFIFO              0x18    /* CSI receive window */
-> +#define CSI_OFIFO              0x1C    /* CSI transmit window */
-> +#define CSI_FIFOTRG            0x20    /* CSI FIFO trigger level */
-> +
-> +/* CSI_MODE */
-> +#define CSI_MODE_CSIE          BIT(7)
-> +#define CSI_MODE_TRMD          BIT(6)
-> +#define CSI_MODE_CCL           BIT(5)
-> +#define CSI_MODE_DIR           BIT(4)
-> +#define CSI_MODE_CSOT          BIT(0)
-> +
-> +#define CSI_MODE_SETUP         0x00000040
-> +
-> +/* CSI_CLKSEL */
-> +#define CSI_CLKSEL_CKP         BIT(17)
-> +#define CSI_CLKSEL_DAP         BIT(16)
-> +#define CSI_CLKSEL_SLAVE       BIT(15)
-> +#define CSI_CLKSEL_CKS         GENMASK(14, 1)
-> +
-> +/* CSI_CNT */
-> +#define CSI_CNT_CSIRST         BIT(28)
-> +#define CSI_CNT_R_TRGEN                BIT(19)
-> +#define CSI_CNT_UNDER_E                BIT(13)
-> +#define CSI_CNT_OVERF_E                BIT(12)
-> +#define CSI_CNT_TREND_E                BIT(9)
-> +#define CSI_CNT_CSIEND_E       BIT(8)
-> +#define CSI_CNT_T_TRGR_E       BIT(4)
-> +#define CSI_CNT_R_TRGR_E       BIT(0)
-> +
-> +/* CSI_INT */
-> +#define CSI_INT_UNDER          BIT(13)
-> +#define CSI_INT_OVERF          BIT(12)
-> +#define CSI_INT_TREND          BIT(9)
-> +#define CSI_INT_CSIEND         BIT(8)
-> +#define CSI_INT_T_TRGR         BIT(4)
-> +#define CSI_INT_R_TRGR         BIT(0)
-> +
-> +/* CSI_FIFOTRG */
-> +#define CSI_FIFOTRG_R_TRG       GENMASK(2, 0)
-> +
-> +#define CSI_FIFO_SIZE_BYTES    32
-> +#define CSI_FIFO_HALF_SIZE     16
-> +#define CSI_EN_DIS_TIMEOUT_US  100
-> +#define CSI_CKS_MAX            0x3FFF
-> +
-> +#define UNDERRUN_ERROR         BIT(0)
-> +#define OVERFLOW_ERROR         BIT(1)
-> +#define TX_TIMEOUT_ERROR       BIT(2)
-> +#define RX_TIMEOUT_ERROR       BIT(3)
-> +
-> +#define CSI_MAX_SPI_SCKO       8000000
-> +
-> +struct rzv2m_csi_priv {
-> +       void __iomem *base;
-> +       struct clk *csiclk;
-> +       struct clk *pclk;
-> +       struct device *dev;
-> +       struct spi_controller *controller;
-> +       const u8 *txbuf;
-> +       u8 *rxbuf;
-> +       int buffer_len;
-> +       int bytes_sent;
-> +       int bytes_received;
-> +       int bytes_to_transfer;
-> +       int words_to_transfer;
-
-All these ints should be unsigned.
-
-> +       unsigned char bytes_per_word;
-
-3-byte gap
-
-> +       wait_queue_head_t wait;
-> +       u8 errors;
-
-3 byte gap
-
-> +       u32 status;
-> +};
-
-> +
-> +static int rzv2m_csi_fill_txfifo(struct rzv2m_csi_priv *csi)
-> +{
-> +       int i;
-
-unsigned int
-
-> +
-> +       if (readl(csi->base + CSI_OFIFOL))
-> +               return -EIO;
-> +
-> +       if (csi->bytes_per_word == 2) {
-> +               u16 *buf = (u16 *)csi->txbuf;
-
-I think you can get rid of the casts by making rxbuf a const void *.
-
-> +
-> +               for (i = 0; i < csi->words_to_transfer; i++)
-> +                       writel(buf[i], csi->base + CSI_OFIFO);
-> +       } else {
-> +               u8 *buf = (u8 *)csi->txbuf;
-> +
-> +               for (i = 0; i < csi->words_to_transfer; i++)
-> +                       writel(buf[i], csi->base + CSI_OFIFO);
-> +       }
-> +
-> +       csi->txbuf += csi->bytes_to_transfer;
-> +       csi->bytes_sent += csi->bytes_to_transfer;
-> +
-> +       return 0;
-> +}
-> +
-> +static int rzv2m_csi_read_rxfifo(struct rzv2m_csi_priv *csi)
-> +{
-> +       int i;
-> +
-> +       if (readl(csi->base + CSI_IFIFOL) != csi->bytes_to_transfer)
-> +               return -EIO;
-> +
-> +       if (csi->bytes_per_word == 2) {
-> +               u16 *buf = (u16 *)csi->rxbuf;
-
-Similar for rxbuf.
-
-> +
-> +               for (i = 0; i < csi->words_to_transfer; i++)
-> +                       buf[i] = (u16)readl(csi->base + CSI_IFIFO);
-> +       } else {
-> +               u8 *buf = (u8 *)csi->rxbuf;
-> +
-> +               for (i = 0; i < csi->words_to_transfer; i++)
-> +                       buf[i] = (u8)readl(csi->base + CSI_IFIFO);
-> +       }
-> +
-> +       csi->rxbuf += csi->bytes_to_transfer;
-> +       csi->bytes_received += csi->bytes_to_transfer;
-> +
-> +       return 0;
-> +}
-> +
-> +static inline void rzv2m_csi_calc_current_transfer(struct rzv2m_csi_priv *csi)
-> +{
-> +       int bytes_transferred = max_t(int, csi->bytes_received, csi->bytes_sent);
-> +       int bytes_remaining = csi->buffer_len - bytes_transferred;
-> +       int to_transfer;
-
-unsigned...
-
-> +
-> +       if (csi->txbuf)
-> +               /*
-> +                * Leaving a little bit of headroom in the FIFOs makes it very
-> +                * hard to raise an overflow error (which is only possible
-> +                * when IP transmits and receives at the same time).
-> +                */
-> +               to_transfer = min_t(int, CSI_FIFO_HALF_SIZE, bytes_remaining);
-> +       else
-> +               to_transfer = min_t(int, CSI_FIFO_SIZE_BYTES, bytes_remaining);
-
-Why min_t(int, ...)? Both values are int.
-
-It would be better to make both unsigned, though.
-
-> +
-> +       if (csi->bytes_per_word == 2)
-> +               to_transfer >>= 1;
-> +
-> +       /*
-> +        * We can only choose a trigger level from a predefined set of values.
-> +        * This will pick a value that is the greatest possible integer that's
-> +        * less than or equal to the number of bytes we need to transfer.
-> +        * This may result in multiple smaller transfers.
-> +        */
-> +       csi->words_to_transfer = x_trg_words[to_transfer - 1];
-> +
-> +       if (csi->bytes_per_word == 2)
-> +               csi->bytes_to_transfer = csi->words_to_transfer << 1;
-> +       else
-> +               csi->bytes_to_transfer = csi->words_to_transfer;
-> +}
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds

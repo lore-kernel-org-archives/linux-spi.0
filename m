@@ -2,116 +2,77 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 95F52C04A6A
-	for <linux-spi@archiver.kernel.org>; Wed,  5 Jul 2023 19:40:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D45ACEB64DD
+	for <linux-spi@archiver.kernel.org>; Wed,  5 Jul 2023 20:38:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234332AbjGETkA (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 5 Jul 2023 15:40:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46668 "EHLO
+        id S233761AbjGEUik (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 5 Jul 2023 16:38:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234279AbjGETjx (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 5 Jul 2023 15:39:53 -0400
-Received: from mail-io1-f51.google.com (mail-io1-f51.google.com [209.85.166.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29740199E;
-        Wed,  5 Jul 2023 12:39:49 -0700 (PDT)
-Received: by mail-io1-f51.google.com with SMTP id ca18e2360f4ac-78666f06691so164440839f.0;
-        Wed, 05 Jul 2023 12:39:48 -0700 (PDT)
+        with ESMTP id S233213AbjGEUij (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 5 Jul 2023 16:38:39 -0400
+Received: from mail-il1-f172.google.com (mail-il1-f172.google.com [209.85.166.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 075F619A9;
+        Wed,  5 Jul 2023 13:38:38 -0700 (PDT)
+Received: by mail-il1-f172.google.com with SMTP id e9e14a558f8ab-34574eb05f4so29162685ab.0;
+        Wed, 05 Jul 2023 13:38:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688585988; x=1691177988;
-        h=date:subject:message-id:references:in-reply-to:cc:to:from
-         :mime-version:content-transfer-encoding:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=EmigWppDMAwntmLPkpHMViFD3zfbB0BalUBHyRmY93I=;
-        b=O0Hx0DJjaXwYP+yvm0yoGbkrJfx9adX747Wx8eccbhjCijufql33tPIigemLgwYP07
-         WmdleyqbK2jthxf4WIbHBCB/D45wsSToLzMHer0D4wQ3OM1rYd8vrW8Ejea/XkxYgVlD
-         RdIFih6oJUvcTOUP3n/POr5sMXlTGRF7TtW1Tkl8Ut7J7TVlZ4vP/mLY/hcZ/Xn4MScL
-         ZZK7qu35f7CDOzEvY96oyGpv64sHtOlR9wGOmjmad/61EXZCEU7QZDfsG60G5zj9dc8N
-         KUgZujUdI+o3GqdLwoddvC7B+1M0qnJ2Ew7YJ8Uo2Ql45DJM4Yzke7qJ4wLnY+VHA4FV
-         G9jg==
-X-Gm-Message-State: ABy/qLZFlIKvxvKGqXQZTz0o/LFFOCdFQkrKPqlxpFh6gP4Gif3nQnv6
-        4sC4xEaxllPtYm8C2qF7FA==
-X-Google-Smtp-Source: APBJJlE1T+SG//kQOjsdrxPqC6WYFy+jVqYd/9wV9AIbQOA/LFJUSpnFw6o7MHDprdjfMYp8ihzVDA==
-X-Received: by 2002:a6b:3c02:0:b0:786:45f7:fb7e with SMTP id k2-20020a6b3c02000000b0078645f7fb7emr58527iob.13.1688585988126;
-        Wed, 05 Jul 2023 12:39:48 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1688589517; x=1691181517;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZbBPc21ldDzQA1syqBYF75bRGCLVt0pgAq3ZxpJ3lYk=;
+        b=en4VS5ZhLRvLPoWYr4DiEH39DhScsArFFMemcHKSZ9ClvKAAqeZ0kDZhWhVR0oIf68
+         JxAwGk+l2zIOMu1xwYryLDUK0UclHh6OHZ+oz7rktbmKuNg9Op1miA0HwhwlYEkEIm19
+         9Qw8PRQqWp/5gFJD6hFu9UBO3dorfpeloYKZA5ii0zwJOvy51L2RJN74rdsBx+z5IM3x
+         F7PRY3G6Hp5FOMUS8Bd0jMbsnsjW1amFy5n3AxGg0d6JtWLAiXAiXxuT3qnfYsZZwf4F
+         77r04NsYH9ZITWyBR9Dil96cNKlehsr7Pjf9hZpNMqNmEaQe7EyP4zriqnQIObkX/evE
+         zeQg==
+X-Gm-Message-State: ABy/qLZZau6nBajIy+TUYMJW7SD+Bjhi0plE4LwISwee6KczhgGTGTqL
+        NovG9rkjsTwzMeFPhKBIzg==
+X-Google-Smtp-Source: APBJJlGvLnhCOIIZo2cdW0r28rwFIQGh0XG5JWZ7puIAWYgNxa1WEco6TFJC4zjGznsjCNN1W4mhnQ==
+X-Received: by 2002:a92:d68a:0:b0:345:c72d:33a5 with SMTP id p10-20020a92d68a000000b00345c72d33a5mr227931iln.19.1688589517147;
+        Wed, 05 Jul 2023 13:38:37 -0700 (PDT)
 Received: from robh_at_kernel.org ([64.188.179.250])
-        by smtp.gmail.com with ESMTPSA id d21-20020a02a495000000b0042ad887f705sm6314042jam.143.2023.07.05.12.39.43
+        by smtp.gmail.com with ESMTPSA id z25-20020a029f19000000b0041a9022c3dasm3257155jal.118.2023.07.05.13.38.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Jul 2023 12:39:47 -0700 (PDT)
-Received: (nullmailer pid 1714652 invoked by uid 1000);
-        Wed, 05 Jul 2023 19:39:32 -0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-MIME-Version: 1.0
+        Wed, 05 Jul 2023 13:38:36 -0700 (PDT)
+Received: (nullmailer pid 1858165 invoked by uid 1000);
+        Wed, 05 Jul 2023 20:38:34 -0000
+Date:   Wed, 5 Jul 2023 14:38:34 -0600
 From:   Rob Herring <robh@kernel.org>
-To:     Gatien Chevallier <gatien.chevallier@foss.st.com>
-Cc:     fabrice.gasnier@foss.st.com, jic23@kernel.org, conor+dt@kernel.org,
-        hugues.fruchet@foss.st.com, richardcochran@gmail.com,
-        will@kernel.org, davem@davemloft.net, vkoul@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, linux-phy@lists.infradead.org,
-        arnd@kernel.org, gregkh@linuxfoundation.org,
-        linux-i2c@vger.kernel.org, linux-usb@vger.kernel.org,
-        arnaud.pouliquen@foss.st.com, mchehab@kernel.org,
-        olivier.moysan@foss.st.com, andi.shyti@kernel.org,
-        alexandre.torgue@foss.st.com, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-serial@vger.kernel.org,
-        alsa-devel@alsa-project.org, pabeni@redhat.com,
-        linux-media@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Oleksii_Moisieiev@epam.com, lee@kernel.org,
-        devicetree@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
-        robh+dt@kernel.org, ulf.hansson@linaro.org,
-        catalin.marinas@arm.com, edumazet@google.com,
-        linux-spi@vger.kernel.org, herbert@gondor.apana.org.au,
-        linux-iio@vger.kernel.org, linux-crypto@vger.kernel.org
-In-Reply-To: <20230705172759.1610753-4-gatien.chevallier@foss.st.com>
-References: <20230705172759.1610753-1-gatien.chevallier@foss.st.com>
- <20230705172759.1610753-4-gatien.chevallier@foss.st.com>
-Message-Id: <168858597253.1714602.9996873148476929300.robh@kernel.org>
-Subject: Re: [PATCH 03/10] dt-bindings: bus: add device tree bindings for
- ETZPC
-Date:   Wed, 05 Jul 2023 13:39:32 -0600
+To:     Thierry Reding <thierry.reding@gmail.com>
+Cc:     devicetree@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        linux-spi@vger.kernel.org, Jon Hunter <jonathanh@nvidia.com>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>, linux-tegra@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Subject: Re: [PATCH 1/3] dt-bindings: spi: tegra-slink: Convert to json-schema
+Message-ID: <168858951392.1858105.14793065413434279529.robh@kernel.org>
+References: <20230705152603.2514235-1-thierry.reding@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230705152603.2514235-1-thierry.reding@gmail.com>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
 
-On Wed, 05 Jul 2023 19:27:52 +0200, Gatien Chevallier wrote:
-> Document ETZPC (Extended TrustZone protection controller). ETZPC is a
-> firewall controller.
+On Wed, 05 Jul 2023 17:26:01 +0200, Thierry Reding wrote:
+> From: Thierry Reding <treding@nvidia.com>
 > 
-> Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
+> Convert the Tegra SLINK bindings from the free-form text format to
+> json-schema.
+> 
+> Signed-off-by: Thierry Reding <treding@nvidia.com>
 > ---
->  .../bindings/bus/st,stm32-etzpc.yaml          | 90 +++++++++++++++++++
->  1 file changed, 90 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/bus/st,stm32-etzpc.yaml
+>  .../bindings/spi/nvidia,tegra20-slink.txt     | 37 --------
+>  .../bindings/spi/nvidia,tegra20-slink.yaml    | 90 +++++++++++++++++++
+>  2 files changed, 90 insertions(+), 37 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/spi/nvidia,tegra20-slink.txt
+>  create mode 100644 Documentation/devicetree/bindings/spi/nvidia,tegra20-slink.yaml
 > 
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
-
-yamllint warnings/errors:
-
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/bus/st,stm32-etzpc.yaml: title: 'STM32 Extended TrustZone protection controller bindings' should not be valid under {'pattern': '([Bb]inding| [Ss]chema)'}
-	hint: Everything is a binding/schema, no need to say it. Describe what hardware the binding is for.
-	from schema $id: http://devicetree.org/meta-schemas/core.yaml#
-Documentation/devicetree/bindings/bus/st,stm32-etzpc.example.dtb: /example-0/etzpc@5c007000: failed to match any schema with compatible: ['st,stm32mp13-sys-bus']
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20230705172759.1610753-4-gatien.chevallier@foss.st.com
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+Reviewed-by: Rob Herring <robh@kernel.org>
 

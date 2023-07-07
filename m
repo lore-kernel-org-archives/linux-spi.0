@@ -2,159 +2,112 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EA8AAC04A94
-	for <linux-spi@archiver.kernel.org>; Fri,  7 Jul 2023 12:29:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D6BAC001B0
+	for <linux-spi@archiver.kernel.org>; Fri,  7 Jul 2023 13:01:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232257AbjGGM3y (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 7 Jul 2023 08:29:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58650 "EHLO
+        id S232055AbjGGNBp (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 7 Jul 2023 09:01:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230289AbjGGM3x (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 7 Jul 2023 08:29:53 -0400
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9BFA172B;
-        Fri,  7 Jul 2023 05:29:51 -0700 (PDT)
-Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3678vO65029918;
-        Fri, 7 Jul 2023 14:29:06 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=selector1;
- bh=qa/ZpaXlILgzVxoBJk7a+24v02/Sfx+AkZW9A3Vu/hY=;
- b=rbbDWdcKpSJfL7g40hrtk6xrxyf9fm7MqRL0m1shu10ursGy1PNvchOYCcGi7eBcmhjm
- 9b2stLFV5Oz1RNlDPUdNijZEaCmV+xVhuWf51KUv7dzMcV1Q8FTz8Tt89DWlbI3zdE7N
- bbWPYU5XTOCjJaEhTsAncS+5swNkppzt/GfyIbVcL/USpQhANMRrTsATDqVMuvOqqVvI
- 1w7CzK9vNNva+g9ef0U5FOq1R7ClSlh2nARm66N2eTV+1xTx4UpqAb+mmZebicRhNO97
- I0FI6yrb78IW0IAapw+FegssrAqoorMfu4VOqSrLEdwpB2jazpwAYSYeIY08P1q5AsRe rA== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3rpfnchkmr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 07 Jul 2023 14:29:06 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id C2685100050;
-        Fri,  7 Jul 2023 14:29:03 +0200 (CEST)
-Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 643ED21F14B;
-        Fri,  7 Jul 2023 14:29:03 +0200 (CEST)
-Received: from [10.201.21.121] (10.201.21.121) by SHFDAG1NODE1.st.com
- (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21; Fri, 7 Jul
- 2023 14:29:00 +0200
-Message-ID: <0aaace47-1bb4-82c5-57a5-6f5d27eb4d45@foss.st.com>
-Date:   Fri, 7 Jul 2023 14:28:28 +0200
+        with ESMTP id S231587AbjGGNBo (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 7 Jul 2023 09:01:44 -0400
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 159E6170C;
+        Fri,  7 Jul 2023 06:01:43 -0700 (PDT)
+Received: by mail-wr1-x435.google.com with SMTP id ffacd0b85a97d-3143798f542so1870425f8f.2;
+        Fri, 07 Jul 2023 06:01:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1688734901; x=1691326901;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oEPdhA9OqeXhZvOSKX/1N2XG0OPdz7SbUSadjEjucFM=;
+        b=Y4p7/j4T4Jf2fWQetVUXTC5PW0H6mRK4mv8utqnJ6/awuuEdbPgYTiu9uffI//xi1m
+         lUcGcmx6BdmYI3P/A3ydfzVYdmn7E3iquPCRxamyBNpHG6SAL6FofSacJ5hKpoo7EOhV
+         +YLiay1MdyA4SLDbpClewkb44ptMmL0ThIIE6ofg/jqN0Y2NpKJ4+l6mI5ykru9zDruw
+         N9JwG2nLzMXtn/NzGgA6dIT0uWRb9FH2e2kSY0/8hjLYOljCN3iHr2DpyNxQt0OmdSZ9
+         z3H6l/5CyyhGV3COMIhXQJlQBVmZdNqTY1Gde5II4/4+ssmZ4VfCltdoq9vdv3q+qP/8
+         IhHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688734901; x=1691326901;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oEPdhA9OqeXhZvOSKX/1N2XG0OPdz7SbUSadjEjucFM=;
+        b=WPudWT7X7XJuld7s4iDgKwwTjxIN3vlix45zQoPeVMCZm4igrtLCsVlwCEFHRml+Ha
+         6s+piyzH+lAW7VE1D1Yfpr7wppbyDYOlSfUcQWOcxzxpg1UUW26meQuPb26UsCsbTk7l
+         YtxEkpQzdTAJUsBJOlT6syvLS6+qYCzTLm6mZS8vcOGa5q9QlIbbHIqsiMkDD2fKtH/W
+         WvSnK1dH721DDQYvSN2slynx/cvbU5rROnTko0P3mM4bH8iZx2S23d0mMqG+HBL3ZVjS
+         Ic6ln7wFALPrBJXKwZQmaQ+nMPibJOHeOywEZm2ZYgxQaeAf1xuPMpaiDVB9egXOa4KL
+         ERbA==
+X-Gm-Message-State: ABy/qLZeq/GjrVoJjOSA+KncsNPiGVbd/Qew00rkf63GZtvXby+d6s0g
+        X2IicCtje7MmTZH1KRfjIzI=
+X-Google-Smtp-Source: APBJJlG5HpoMLxOYPEEeQS0rU1s/3xuEzsqJA6ntbQ2Di0r+V/zWqOTk99GUcKK1Yasp6kU0pJS7nQ==
+X-Received: by 2002:adf:cf0b:0:b0:314:39d0:26f6 with SMTP id o11-20020adfcf0b000000b0031439d026f6mr3828713wrj.18.1688734901265;
+        Fri, 07 Jul 2023 06:01:41 -0700 (PDT)
+Received: from orome (p200300e41f4b7100f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f4b:7100:f22f:74ff:fe1f:3a53])
+        by smtp.gmail.com with ESMTPSA id m22-20020a7bce16000000b003fc01189b0dsm858476wmc.42.2023.07.07.06.01.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Jul 2023 06:01:40 -0700 (PDT)
+Date:   Fri, 7 Jul 2023 15:01:39 +0200
+From:   Thierry Reding <thierry.reding@gmail.com>
+To:     Yangtao Li <frank.li@vivo.com>
+Cc:     Laxman Dewangan <ldewangan@nvidia.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6/7] spi: tegra20-slink: Use
+ devm_platform_get_and_ioremap_resource()
+Message-ID: <ZKgMs3aDA9J_8h5K@orome>
+References: <20230706032727.9180-1-frank.li@vivo.com>
+ <20230706032727.9180-6-frank.li@vivo.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 04/10] dt-bindings: treewide: add feature-domains
- description in binding files
-Content-Language: en-US
-To:     Rob Herring <robh@kernel.org>
-CC:     <Oleksii_Moisieiev@epam.com>, <gregkh@linuxfoundation.org>,
-        <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
-        <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
-        <alexandre.torgue@foss.st.com>, <vkoul@kernel.org>,
-        <jic23@kernel.org>, <olivier.moysan@foss.st.com>,
-        <arnaud.pouliquen@foss.st.com>, <mchehab@kernel.org>,
-        <fabrice.gasnier@foss.st.com>, <andi.shyti@kernel.org>,
-        <ulf.hansson@linaro.org>, <edumazet@google.com>, <kuba@kernel.org>,
-        <pabeni@redhat.com>, <hugues.fruchet@foss.st.com>,
-        <lee@kernel.org>, <will@kernel.org>, <catalin.marinas@arm.com>,
-        <arnd@kernel.org>, <richardcochran@gmail.com>,
-        <linux-crypto@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <dmaengine@vger.kernel.org>,
-        <linux-i2c@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <alsa-devel@alsa-project.org>, <linux-media@vger.kernel.org>,
-        <linux-mmc@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-phy@lists.infradead.org>, <linux-serial@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>, <linux-usb@vger.kernel.org>
-References: <20230705172759.1610753-1-gatien.chevallier@foss.st.com>
- <20230705172759.1610753-5-gatien.chevallier@foss.st.com>
- <20230706145108.GA3858320-robh@kernel.org>
-From:   Gatien CHEVALLIER <gatien.chevallier@foss.st.com>
-In-Reply-To: <20230706145108.GA3858320-robh@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.201.21.121]
-X-ClientProxiedBy: SHFCAS1NODE1.st.com (10.75.129.72) To SHFDAG1NODE1.st.com
- (10.75.129.69)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-07_08,2023-07-06_02,2023-05-22_02
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="LA5n/9LcFjbpAUwR"
+Content-Disposition: inline
+In-Reply-To: <20230706032727.9180-6-frank.li@vivo.com>
+User-Agent: Mutt/2.2.10 (2023-03-25)
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hello Rob,
 
-On 7/6/23 16:51, Rob Herring wrote:
-> On Wed, Jul 05, 2023 at 07:27:53PM +0200, Gatien Chevallier wrote:
->> feature-domains is an optional property that allows a peripheral to
->> refer to one or more feature domain controller(s).
->>
->> Description of this property is added to all peripheral binding files of
->> the peripheral under the STM32 firewall controllers. It allows an accurate
->> representation of the hardware, where various peripherals are connected
->> to this firewall bus. The firewall can then check the peripheral accesses
->> before allowing it to probe.
->>
->> Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
->> ---
->>
->> Disclaimer: Some error with dtbs_check will be observed as I've
->> considered the property to be generic, as Rob asked
->>
->>   Documentation/devicetree/bindings/crypto/st,stm32-hash.yaml  | 4 ++++
->>   Documentation/devicetree/bindings/dma/st,stm32-dma.yaml      | 4 ++++
->>   Documentation/devicetree/bindings/dma/st,stm32-dmamux.yaml   | 4 ++++
->>   Documentation/devicetree/bindings/i2c/st,stm32-i2c.yaml      | 4 ++++
->>   Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml  | 4 ++++
->>   .../devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml      | 4 ++++
->>   Documentation/devicetree/bindings/iio/dac/st,stm32-dac.yaml  | 4 ++++
->>   .../devicetree/bindings/media/cec/st,stm32-cec.yaml          | 4 ++++
->>   Documentation/devicetree/bindings/media/st,stm32-dcmi.yaml   | 4 ++++
->>   .../bindings/memory-controllers/st,stm32-fmc2-ebi.yaml       | 4 ++++
->>   Documentation/devicetree/bindings/mfd/st,stm32-lptimer.yaml  | 4 ++++
->>   Documentation/devicetree/bindings/mfd/st,stm32-timers.yaml   | 5 +++++
->>   Documentation/devicetree/bindings/mmc/arm,pl18x.yaml         | 4 ++++
->>   Documentation/devicetree/bindings/net/stm32-dwmac.yaml       | 4 ++++
->>   Documentation/devicetree/bindings/phy/phy-stm32-usbphyc.yaml | 4 ++++
->>   .../devicetree/bindings/regulator/st,stm32-vrefbuf.yaml      | 4 ++++
->>   Documentation/devicetree/bindings/rng/st,stm32-rng.yaml      | 4 ++++
->>   Documentation/devicetree/bindings/serial/st,stm32-uart.yaml  | 4 ++++
->>   Documentation/devicetree/bindings/sound/st,stm32-i2s.yaml    | 4 ++++
->>   Documentation/devicetree/bindings/sound/st,stm32-sai.yaml    | 4 ++++
->>   .../devicetree/bindings/sound/st,stm32-spdifrx.yaml          | 4 ++++
->>   Documentation/devicetree/bindings/spi/st,stm32-qspi.yaml     | 4 ++++
->>   Documentation/devicetree/bindings/spi/st,stm32-spi.yaml      | 4 ++++
->>   Documentation/devicetree/bindings/usb/dwc2.yaml              | 4 ++++
->>   24 files changed, 97 insertions(+)
->>
->> diff --git a/Documentation/devicetree/bindings/crypto/st,stm32-hash.yaml b/Documentation/devicetree/bindings/crypto/st,stm32-hash.yaml
->> index b767ec72a999..daf8dcaef627 100644
->> --- a/Documentation/devicetree/bindings/crypto/st,stm32-hash.yaml
->> +++ b/Documentation/devicetree/bindings/crypto/st,stm32-hash.yaml
->> @@ -50,6 +50,10 @@ properties:
->>     power-domains:
->>       maxItems: 1
->>   
->> +  feature-domains:
->> +    minItems: 1
->> +    maxItems: 3
-> 
-> What are the 3 entries?
-> 
-> Rob
+--LA5n/9LcFjbpAUwR
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I thought I was benefiting from the description of the pattern-property 
-in the RIFSC YAML file. But yes anyway, it seems like it needs some 
-description here as the dependency does not appear in this file.
+On Thu, Jul 06, 2023 at 11:27:25AM +0800, Yangtao Li wrote:
+> Convert platform_get_resource(), devm_ioremap_resource() to a single
+> call to devm_platform_get_and_ioremap_resource(), as this is exactly
+> what this function does.
+>=20
+> Signed-off-by: Yangtao Li <frank.li@vivo.com>
+> ---
+>  drivers/spi/spi-tegra20-slink.c | 10 ++--------
+>  1 file changed, 2 insertions(+), 8 deletions(-)
 
-I picked 3 as a maxItems for our ST needs, I'll give it some more 
-thought when coming back with something clearer.
+Acked-by: Thierry Reding <treding@nvidia.com>
 
-I will change that in V2, thank you for pointing that out.
+--LA5n/9LcFjbpAUwR
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Best regards,
-Gatien
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmSoDLMACgkQ3SOs138+
+s6Elyg//Zb/mAM94ehClI9NR6HYzc9Y0SSCu5Wc69VKe3CyRLndF5uMHEtXlXa0r
+m5Es9WdAaKkLlI5eV7cX4HvL3iZFP587MDT5JOQoc08jct+q47nJqJ7sRFE1Bi6p
+rP36Js5as2Pzn710LGAt45W6Wre/tZCt5dwwPtcI6ETHT6jSYqJaDnw0Mmpx3ttM
+fN7ruXPwLZect9Q8Cq0OuutlHcd6+tYHgVCzDAvpEtVfMWDpki6dHydGKsZfQo+Y
+MiLaixhY7/Xvz2KBkYcaCHYPaYjM0saptwDsyub4PWoYtn+baMC4jcGcvBIk04HS
+voFNRXRIITfMEWX0q4rbueBOpbxYE9S2WkTyMyzgR1Z0/QOK3Vb+klpdgNGff1hV
+EdutLDn/PnCDJCBIbz5cUNpi4oba9YQ0nOac6OoxzcIX+sOjPfRNnqZAcmn0nK3n
+cSczzUjMxOjoJVuTL+9itSkuMEHbx8TMpQWwaRQlqdrTMp6ZwaGePk8Zc40j+Iv6
+ISZsm/RwrWdBZNy8My6qk5Rts4fLk9Fp90g3fMr74YSq9VxDAe00RtE711zoWHOV
+DEb6OEI6TFiqiNcceQBKWi8bwrBKXk5KXoHI7U0pShVY1lwCRJ2X7dtcMpAfuewI
+EXM3Pi7PrVXddepUdKQNXMqRtJplet8zntoObf70MtQOuvAloTk=
+=HYBv
+-----END PGP SIGNATURE-----
+
+--LA5n/9LcFjbpAUwR--

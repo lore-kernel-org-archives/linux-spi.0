@@ -2,103 +2,118 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5E1D1EB64DA
-	for <linux-spi@archiver.kernel.org>; Sat,  8 Jul 2023 19:53:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 45FE2C0015E
+	for <linux-spi@archiver.kernel.org>; Sun,  9 Jul 2023 15:13:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229699AbjGHTxQ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sat, 8 Jul 2023 15:53:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33146 "EHLO
+        id S230244AbjGIPNJ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 9 Jul 2023 11:13:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229454AbjGHTxQ (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sat, 8 Jul 2023 15:53:16 -0400
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F393D1A8;
-        Sat,  8 Jul 2023 12:53:14 -0700 (PDT)
-Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-991c786369cso376613666b.1;
-        Sat, 08 Jul 2023 12:53:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688845993; x=1691437993;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=iVW/bBC+uKDhPQ3FjSGENdiWFw46dm/KEy0pvQHTDT4=;
-        b=bujg8cJ5hi3Moj0Y55nBBhHxVligDoOqGyu7ELw1EgLs08nGc+VK8AY23C2Tb58uY8
-         gMKcgxmv68em5r6JDmU32MSvoSv8llNmHQlLDjmZSeaRSxuy5x9yOeeZghPpjrThlzp4
-         cks8kC6AfWaw/gI5DEQNXi7MfKCqIzNOtUAWPHl+7mtTq+Q2f+JariKXCbpfABn2EN6J
-         b/xlrTGXhMlnJDNskZGMCrAv3JbuFSdSy/tqGoB/KUexfWXibfABfq5a+WQot7gAzwTo
-         yOHv6gQbDo5AnYztFUQ7GjzS4W6ZDUmcD9Z8hRWDQEbwUdUCYtCEwM0kuji5MEJ0m7/O
-         +1Wg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688845993; x=1691437993;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=iVW/bBC+uKDhPQ3FjSGENdiWFw46dm/KEy0pvQHTDT4=;
-        b=QJHpjPqKSzHIZCEAljh9LyPdwsyLWZn4dvmM2nowJLbsBtn69JkaMRg7FL6hwc/+ml
-         IlF6A/Ddv8z7snW9n+e2XZfHN7JH2OG/4/n5ldqT7nPmYrkVbmuFiU0fKhJXxTpchDJ/
-         K/aA/Df1zuSAMM4yLG9gIrgDgTIz471674A72glB1y0L5U2uKLe5m1gTcymn9YlNBnAq
-         fzYYQiVjMhXFZ/WsJt9O54m3OGF/2zPw2GNBPDhFS9Cog7PbAs7wDSpKNLVHh1RzXxdM
-         LmxZ1nNSMJFOvbjxrban3r9+tmJCrAKgymEx5IvY4RZm3UQxmEgc2Axv3CR/g4UAXam6
-         dVPQ==
-X-Gm-Message-State: ABy/qLYoVabv/tGGOC3mpwv8cPaFQEVRcIU9tTHffdrWMyz3xfYdWvSx
-        ybizfgRfEvxxS/+6atYdu/k=
-X-Google-Smtp-Source: APBJJlElmJCz4iIpNX1e0yEbK+gCOYsdjagPLAiYMrYuyKy+teIi8vKCamVr85oKctgVnIoUme6Wsw==
-X-Received: by 2002:a17:906:ecae:b0:978:b94e:83dd with SMTP id qh14-20020a170906ecae00b00978b94e83ddmr5995155ejb.75.1688845992958;
-        Sat, 08 Jul 2023 12:53:12 -0700 (PDT)
-Received: from localhost (dslb-094-220-187-252.094.220.pools.vodafone-ip.de. [94.220.187.252])
-        by smtp.gmail.com with ESMTPSA id hk8-20020a170906c9c800b009821ce1ea33sm3880966ejb.7.2023.07.08.12.53.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 08 Jul 2023 12:53:12 -0700 (PDT)
-From:   Jonas Gorski <jonas.gorski@gmail.com>
-To:     William Zhang <william.zhang@broadcom.com>,
-        Kursad Oney <kursad.oney@broadcom.com>,
-        Broadcom internal kernel review list 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        Mark Brown <broonie@kernel.org>,
-        Florian Fainelli <florian.fainelli@broadcom.com>
-Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/2] MAINTAINERS: add myself for spi-bcm63xx
-Date:   Sat,  8 Jul 2023 21:53:08 +0200
-Message-Id: <20230708195309.72767-1-jonas.gorski@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S230115AbjGIPNH (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 9 Jul 2023 11:13:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69ACD129;
+        Sun,  9 Jul 2023 08:13:06 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 02B6F60C0F;
+        Sun,  9 Jul 2023 15:13:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7125DC433CD;
+        Sun,  9 Jul 2023 15:13:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1688915585;
+        bh=tvc5t0jTo/2AsKb4nX3c9HZPyNl0VeVsb3Bm30zrepA=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=OUcnfjT7O+0FbBYdBcUzgqzVrbbpEEW65IN2XQjXywJix29n8MQoEZ9+m9tAJOBRJ
+         6UBUhXMmpWyRBiMgQiI3q94ooRsAy5L2C158WKExic04zSjuv/kcCC9tL5bV7lxtnK
+         DsyOFFVNNJ33dO7cKcg/bPkopcsl54bITfv4DypdXlIw3yziGDgjpy4Vh8YcKJPZmv
+         TjEnChntwC/cdJ8jFJlVys2GdhfGEagHySk6ZR/DFcB1mtpR4nfamgBuAw/fuDv48P
+         LdNnxpQPurS5ZXANvBdpWsUsTgmtHV/1YIFiX3zBTFepV4wJ5C6IYAcVxNb7blFwjE
+         rBz2esTnHsTww==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Jaewon Kim <jaewon02.kim@samsung.com>,
+        Sasha Levin <sashal@kernel.org>, andi.shyti@kernel.org,
+        broonie@kernel.org, krzysztof.kozlowski@linaro.org,
+        linux-spi@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.4 04/26] spi: s3c64xx: change polling mode to optional
+Date:   Sun,  9 Jul 2023 11:12:33 -0400
+Message-Id: <20230709151255.512931-4-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230709151255.512931-1-sashal@kernel.org>
+References: <20230709151255.512931-1-sashal@kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.4.2
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-I noticed the driver is unclaimed. Since I was the last one doing
-substantial work on it, add me as the maintainer.
+From: Jaewon Kim <jaewon02.kim@samsung.com>
 
-As it is only found in legacy products, mark it as "Odd Fixes"
-instead of "Maintained".
+[ Upstream commit d1a7718ee8dbcc488d3243d52e19c755123e0024 ]
 
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Previously, Polling mode was supported as quirk for SOC without DMA.
+To provide more flexible support for polling mode, it changed to polling
+mode when the 'dmas' property is not present in the devicetree, rather than
+using a quirk.
+
+Signed-off-by: Jaewon Kim <jaewon02.kim@samsung.com
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org
+Link: https://lore.kernel.org/r/20230502062813.112434-2-jaewon02.kim@samsung.com
+Signed-off-by: Mark Brown <broonie@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-v1 -> v2:
- * fix the driver's file name
- * include the right people
+ drivers/spi/spi-s3c64xx.c                 | 4 ++--
+ include/linux/platform_data/spi-s3c64xx.h | 1 +
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
- MAINTAINERS | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index bc201627c2e0..2594a0643e0a 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4169,6 +4169,13 @@ F:	Documentation/devicetree/bindings/spi/brcm,bcm63xx-hsspi.yaml
- F:	drivers/spi/spi-bcm63xx-hsspi.c
- F:	drivers/spi/spi-bcmbca-hsspi.c
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 7ac17f0d18a95..5f59d6f8c8d8f 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -19,7 +19,6 @@
+ #include <linux/platform_data/spi-s3c64xx.h>
  
-+BROADCOM BCM6348/BCM6358 SPI controller DRIVER
-+M:	Jonas Gorski <jonas.gorski@gmail.com>
-+L:	linux-spi@vger.kernel.org
-+S:	Odd Fixes
-+F:	Documentation/devicetree/bindings/spi/spi-bcm63xx.txt
-+F:	drivers/spi/spi-bcm63xx.c
-+
- BROADCOM ETHERNET PHY DRIVERS
- M:	Florian Fainelli <f.fainelli@gmail.com>
- R:	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+ #define MAX_SPI_PORTS		12
+-#define S3C64XX_SPI_QUIRK_POLL		(1 << 0)
+ #define S3C64XX_SPI_QUIRK_CS_AUTO	(1 << 1)
+ #define AUTOSUSPEND_TIMEOUT	2000
+ 
+@@ -116,7 +115,7 @@
+ #define S3C64XX_SPI_TRAILCNT		S3C64XX_SPI_MAX_TRAILCNT
+ 
+ #define msecs_to_loops(t) (loops_per_jiffy / 1000 * HZ * t)
+-#define is_polling(x)	(x->port_conf->quirks & S3C64XX_SPI_QUIRK_POLL)
++#define is_polling(x)	(x->cntrlr_info->polling)
+ 
+ #define RXBUSY    (1<<2)
+ #define TXBUSY    (1<<3)
+@@ -1068,6 +1067,7 @@ static struct s3c64xx_spi_info *s3c64xx_spi_parse_dt(struct device *dev)
+ 	}
+ 
+ 	sci->no_cs = of_property_read_bool(dev->of_node, "no-cs-readback");
++	sci->polling = !of_property_present(dev->of_node, "dmas");
+ 
+ 	return sci;
+ }
+diff --git a/include/linux/platform_data/spi-s3c64xx.h b/include/linux/platform_data/spi-s3c64xx.h
+index 3101152ce449f..1d6e6c424fc69 100644
+--- a/include/linux/platform_data/spi-s3c64xx.h
++++ b/include/linux/platform_data/spi-s3c64xx.h
+@@ -36,6 +36,7 @@ struct s3c64xx_spi_info {
+ 	int src_clk_nr;
+ 	int num_cs;
+ 	bool no_cs;
++	bool polling;
+ 	int (*cfg_gpio)(void);
+ };
+ 
 -- 
-2.34.1
+2.39.2
 

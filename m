@@ -2,59 +2,51 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 199E8C001DF
-	for <linux-spi@archiver.kernel.org>; Mon, 10 Jul 2023 10:28:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1AD90EB64DC
+	for <linux-spi@archiver.kernel.org>; Mon, 10 Jul 2023 11:06:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233418AbjGJK2W (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 10 Jul 2023 06:28:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39060 "EHLO
+        id S231355AbjGJLF7 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 10 Jul 2023 07:05:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233429AbjGJK2Q (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 10 Jul 2023 06:28:16 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 528F8BD;
-        Mon, 10 Jul 2023 03:28:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1688984887; x=1720520887;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=UcwkOydYrSjyDo6SStNIT6kPqq10Rd6pUpZ9iNE8Ekk=;
-  b=K7OwgEiFNXTuAcAGjzQRfvnhAfEC/M1F7hxD8bXLJTnijOQCCQwtkvqz
-   aCaDz9o+yKSgRRSHT9q/vsmUgbJ2Kqf7aTjF/MZgRl+IRO3jVEhma8Ma+
-   Y+3HUft36I1LWk+asBkVK7ZOTtCjf6JBy2iwLlGps1vy/vnrTqUIF22Wu
-   Jeuiz1oEkByL5ILkQ+fkSEU+CF8+F/q9Rdil8W3MV4oxqEMoT4IB739ta
-   4/ZieGXPj6+8a2NcPAV/TPp5CY07oYG5WnZfuWSaLo3oBJ+CI/M22NKWx
-   5pH+vQH9v4atu3Oh6WvF3nfdXugNBe1ooSSZpal6FesgUkYTefAxTLGCn
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10766"; a="364345465"
-X-IronPort-AV: E=Sophos;i="6.01,194,1684825200"; 
-   d="scan'208";a="364345465"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2023 03:28:02 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10766"; a="865297556"
-X-IronPort-AV: E=Sophos;i="6.01,194,1684825200"; 
-   d="scan'208";a="865297556"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 10 Jul 2023 03:27:55 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 4C598604; Mon, 10 Jul 2023 13:27:53 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Mark Brown <broonie@kernel.org>,
-        Yang Yingliang <yangyingliang@huawei.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        with ESMTP id S231297AbjGJLF0 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 10 Jul 2023 07:05:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0ACE199B;
+        Mon, 10 Jul 2023 04:04:48 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B4BF860FC0;
+        Mon, 10 Jul 2023 11:04:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D578C433C7;
+        Mon, 10 Jul 2023 11:04:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1688987084;
+        bh=TwtuDKEbyYTJYwb5YfWy40545UzZJ3eX6HtXjCq2/DY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=F1hoO4AmByvX1+/WmpbkKZwew5eudKc1FQfa/lRAOOwiXQ8zRshL+Oq9bFoJQeu7s
+         LcEcu9oephfIQANzA4/3cifEEgUeal19PEixt2fvddV8g2XCmGK0fFh3Uc4W+J5uOn
+         XEO983Rlb7MGqbsEKGjwJjCaRtJ44jxPCT5CF+Iau9ZSof+GY2neKJt0KjAvaY/9jd
+         RBqd+kDX18tFNSlYceBbrvR3r37PvxSvj3S5DjVmlQqBMkOMXeP2JrMR5z6F5rg6jE
+         qp2ogGv8JQb+t32ZmOV4oiKG0GwgxT5l0kEjeNVOqRmXVjkyf2EUtnmSnqitny5s3z
+         HoqJaUtvZLO7w==
+Date:   Mon, 10 Jul 2023 12:04:35 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Yang Yingliang <yangyingliang@huawei.com>,
         Amit Kumar Mahapatra via Alsa-devel 
-        <alsa-devel@alsa-project.org>, Kris Bahnsen <kris@embeddedTS.com>,
+        <alsa-devel@alsa-project.org>, Kris Bahnsen <kris@embeddedts.com>,
         Neil Armstrong <neil.armstrong@linaro.org>,
         Tharun Kumar P <tharunkumar.pasumarthi@microchip.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
         <u.kleine-koenig@pengutronix.de>, linux-spi@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-amlogic@lists.infradead.org,
         linux-mediatek@lists.infradead.org,
-        linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org
-Cc:     Radu Pirea <radu_nicolae.pirea@upb.ro>,
+        linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
+        Radu Pirea <radu_nicolae.pirea@upb.ro>,
         Nicolas Ferre <nicolas.ferre@microchip.com>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Claudiu Beznea <claudiu.beznea@microchip.com>,
@@ -70,80 +62,49 @@ Cc:     Radu Pirea <radu_nicolae.pirea@upb.ro>,
         Alexandre Torgue <alexandre.torgue@foss.st.com>,
         Max Filippov <jcmvbkbc@gmail.com>,
         Richard Cochran <richardcochran@gmail.com>
-Subject: [PATCH v1 6/8] spi: Clean up headers
-Date:   Mon, 10 Jul 2023 13:27:49 +0300
-Message-Id: <20230710102751.83314-7-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.40.0.1.gaa8946217a0b
-In-Reply-To: <20230710102751.83314-1-andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v1 4/8] spi: Get rid of old SPI_MASTER_NO_.X and
+ SPI_MASTER_MUST_.X
+Message-ID: <1ffd5603-4140-4bf6-bfed-af70a6759bda@sirena.org.uk>
 References: <20230710102751.83314-1-andriy.shevchenko@linux.intel.com>
+ <20230710102751.83314-5-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="kWZTJCyyxQE+byGQ"
+Content-Disposition: inline
+In-Reply-To: <20230710102751.83314-5-andriy.shevchenko@linux.intel.com>
+X-Cookie: Do you have lysdexia?
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-There is a few things done:
-- include only the headers we are direct user of
-- when pointer is in use, provide a forward declaration
-- add missing headers
-- group generic headers and subsystem headers
-- sort each group alphabetically
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- include/linux/spi/spi.h | 22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+--kWZTJCyyxQE+byGQ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index becad31aeea2..8e7fc0f21714 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -6,27 +6,41 @@
- #ifndef __LINUX_SPI_H
- #define __LINUX_SPI_H
- 
--#include <linux/acpi.h>
- #include <linux/bits.h>
- #include <linux/completion.h>
-+#include <linux/container_of.h>
- #include <linux/device.h>
--#include <linux/gpio/consumer.h>
-+#include <linux/export.h>
- #include <linux/kthread.h>
-+#include <linux/limits.h>
-+#include <linux/list.h>
-+#include <linux/minmax.h>
- #include <linux/mod_devicetable.h>
-+#include <linux/mutex.h>
- #include <linux/scatterlist.h>
- #include <linux/slab.h>
-+#include <linux/smp.h>
-+#include <linux/spinlock_types.h>
-+#include <linux/string.h>
-+#include <linux/types.h>
- #include <linux/u64_stats_sync.h>
- 
-+#include <asm/byteorder.h>
-+
- #include <uapi/linux/spi/spi.h>
- 
-+struct acpi_device;
- struct dma_chan;
--struct software_node;
-+struct gpio_desc;
- struct ptp_system_timestamp;
-+struct software_node;
-+
- struct spi_controller;
--struct spi_transfer;
- struct spi_controller_mem_ops;
- struct spi_controller_mem_caps;
-+struct spi_device_id;
- struct spi_message;
-+struct spi_transfer;
- 
- /*
-  * INTERFACES between SPI master-side drivers and SPI slave protocol handlers,
--- 
-2.40.0.1.gaa8946217a0b
+On Mon, Jul 10, 2023 at 01:27:47PM +0300, Andy Shevchenko wrote:
 
+> Convert the users to SPI_CONTROLLER_NO_?X and SPI_CONTROLLER_MUST_.X
+> and kill the not used anymore definitions.
+
+The above is not what this change does:
+
+> -	controller->flags = SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX;
+> +	controller->flags = SPI_CONTROLLER_MUST_RX | SPI_CONTROLLER_MUST_TX;
+
+--kWZTJCyyxQE+byGQ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmSr5cIACgkQJNaLcl1U
+h9Ah2wf+KmkGI9qlUKgHUSNXh1DbqoLxbTpYFnFP5xpasapdwBa05UYP3eghOigF
+R9RLm+Z+cOhxpxkEijdYqYKOu94px87YE9vU9+e00ZWaz+X+R8C17kt4hk+9x5pI
+n6ln7unk1TDzZww8TWx81WkEqR6E4uMcYhMfsfjKKDcC6ZOxJu6+h3wWjhkj8q35
+k8NbtIo8bz2TzLqTuNjWsA64H1AxpRqwoT1fLLiZRPrng7Zc4wIP68cX17WSWwqj
++Tn8sO3EBbpYl4vuJircRmezY6Roo1TuLU4M7iIGhGoUrt+jdmoqIDsjQVU4IKIv
+kRGC3WQT0+LuWsoU8vUp0PFt+ntu4w==
+=03Nv
+-----END PGP SIGNATURE-----
+
+--kWZTJCyyxQE+byGQ--

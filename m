@@ -2,44 +2,44 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 98C2BEB64DC
-	for <linux-spi@archiver.kernel.org>; Mon, 10 Jul 2023 15:49:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CD24BEB64D9
+	for <linux-spi@archiver.kernel.org>; Mon, 10 Jul 2023 15:49:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231919AbjGJPth (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 10 Jul 2023 11:49:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47482 "EHLO
+        id S233498AbjGJPtk (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 10 Jul 2023 11:49:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233189AbjGJPth (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 10 Jul 2023 11:49:37 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CB2E10D;
-        Mon, 10 Jul 2023 08:49:36 -0700 (PDT)
+        with ESMTP id S233496AbjGJPtj (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 10 Jul 2023 11:49:39 -0400
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8427A11B;
+        Mon, 10 Jul 2023 08:49:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689004176; x=1720540176;
+  t=1689004178; x=1720540178;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=KmPI7TYMCxCRb9tm8UqoN5rT6jb9j7EvGYVTFPfVpOU=;
-  b=ONMH+Cdc20lPFD9hvqe7EUHxJw40DzJZWhkcDCnj3AzfG/80vO7z9iqO
-   kfblVlW3xFXcLnpdH2WhJWfprSyQXUYzboVAeCUPNj1TPcOFoitMgSD+P
-   vvZ76sKbf9jaWeSMGeBEKSI6k2S6ije6iHorxgLJpeqZu2JGG0/mnHTXW
-   F7bOqU2upsAEnXdrfeXjGLLBj8exRoiuJxtRGcc1yvaxPmVRAPqjdogJL
-   3ZknSicOAX2+KSvZWb6ansKseUERr/DYVja24DdGt1k3g4vWzf3LNkFXr
-   lBf5QgnXEXNBnfJDAsEOgZBjJJo9KI2qUlxvOJtKUByd70kUyWLNdXMWK
+  bh=eCA4jmpHdK4tCQy+WYVaMHkZ61alyGNaPi2evxW0e9A=;
+  b=TW8bhZ2/YU0tXHvrewa13TF9ysBkfsnpXX5Z+Ih09L1Zw3AiZvNGZz+g
+   BB01KLpIVFBCnOeFx2fv8J4tqj5GbV+TnxaO9y2I2cW6g+rVnGCep1ynR
+   5Ix1H2S8LKt61MtAF9p7qm3K4VApqe68gifLDMhCoXo0anQ7RURwzuo5g
+   KDgHIq32Gh6hVVmkOs6k3CwzkDRJ05VypapFLuXAfF0Qf3ZgYTFSRVxD8
+   C5V1EgTkMGIwYL1DHvgg/kgviCWrm6TYEyoKJDuVFundCHtgt/Ia8j9FW
+   BCXUyTqmD59RfytwM5wRflgYnnEWiWZQVM/UR9fA4k4jpXYZRPxi0cAo6
    w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10767"; a="361842397"
+X-IronPort-AV: E=McAfee;i="6600,9927,10767"; a="349185306"
 X-IronPort-AV: E=Sophos;i="6.01,194,1684825200"; 
-   d="scan'208";a="361842397"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2023 08:49:36 -0700
+   d="scan'208";a="349185306"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2023 08:49:38 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10767"; a="720743958"
+X-IronPort-AV: E=McAfee;i="6600,9927,10767"; a="844921891"
 X-IronPort-AV: E=Sophos;i="6.01,194,1684825200"; 
-   d="scan'208";a="720743958"
+   d="scan'208";a="844921891"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga002.jf.intel.com with ESMTP; 10 Jul 2023 08:49:34 -0700
+  by orsmga004.jf.intel.com with ESMTP; 10 Jul 2023 08:49:37 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 77C76604; Mon, 10 Jul 2023 18:49:34 +0300 (EEST)
+        id 9C17069F; Mon, 10 Jul 2023 18:49:34 +0300 (EEST)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Mark Brown <broonie@kernel.org>,
         Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
@@ -93,9 +93,9 @@ Cc:     Sanjay R Mehta <sanju.mehta@amd.com>,
         Steven Rostedt <rostedt@goodmis.org>,
         Masami Hiramatsu <mhiramat@kernel.org>,
         Richard Cochran <richardcochran@gmail.com>
-Subject: [PATCH v2 06/15] spi: Use sysfs_emit() to instead of s*printf()
-Date:   Mon, 10 Jul 2023 18:49:23 +0300
-Message-Id: <20230710154932.68377-7-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v2 08/15] spi: Clean up headers
+Date:   Mon, 10 Jul 2023 18:49:25 +0300
+Message-Id: <20230710154932.68377-9-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.40.0.1.gaa8946217a0b
 In-Reply-To: <20230710154932.68377-1-andriy.shevchenko@linux.intel.com>
 References: <20230710154932.68377-1-andriy.shevchenko@linux.intel.com>
@@ -105,47 +105,68 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Follow the advice of the Documentation/filesystems/sysfs.rst and show()
-should only use sysfs_emit() or sysfs_emit_at() when formatting the
-value to be returned to user space.
+There is a few things done:
+- include only the headers we are direct user of
+- when pointer is in use, provide a forward declaration
+- add missing headers
+- group generic headers and subsystem headers
+- sort each group alphabetically
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/spi/spi.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ include/linux/spi/spi.h | 22 ++++++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 46cbda383228..cfb1c985d940 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -64,7 +64,7 @@ modalias_show(struct device *dev, struct device_attribute *a, char *buf)
- 	if (len != -ENODEV)
- 		return len;
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 2026eae97329..c9479badf38c 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -6,27 +6,41 @@
+ #ifndef __LINUX_SPI_H
+ #define __LINUX_SPI_H
  
--	return sprintf(buf, "%s%s\n", SPI_MODULE_PREFIX, spi->modalias);
-+	return sysfs_emit(buf, "%s%s\n", SPI_MODULE_PREFIX, spi->modalias);
- }
- static DEVICE_ATTR_RO(modalias);
+-#include <linux/acpi.h>
+ #include <linux/bits.h>
+ #include <linux/completion.h>
++#include <linux/container_of.h>
+ #include <linux/device.h>
+-#include <linux/gpio/consumer.h>
++#include <linux/export.h>
+ #include <linux/kthread.h>
++#include <linux/limits.h>
++#include <linux/list.h>
++#include <linux/minmax.h>
+ #include <linux/mod_devicetable.h>
++#include <linux/mutex.h>
+ #include <linux/scatterlist.h>
+ #include <linux/slab.h>
++#include <linux/smp.h>
++#include <linux/spinlock_types.h>
++#include <linux/string.h>
++#include <linux/types.h>
+ #include <linux/u64_stats_sync.h>
  
-@@ -89,7 +89,7 @@ static ssize_t driver_override_show(struct device *dev,
- 	ssize_t len;
++#include <asm/byteorder.h>
++
+ #include <uapi/linux/spi/spi.h>
  
- 	device_lock(dev);
--	len = snprintf(buf, PAGE_SIZE, "%s\n", spi->driver_override ? : "");
-+	len = sysfs_emit(buf, "%s\n", spi->driver_override ? : "");
- 	device_unlock(dev);
- 	return len;
- }
-@@ -2782,8 +2782,7 @@ static ssize_t slave_show(struct device *dev, struct device_attribute *attr,
- 	struct device *child;
++struct acpi_device;
+ struct dma_chan;
+-struct software_node;
++struct gpio_desc;
+ struct ptp_system_timestamp;
++struct software_node;
++
+ struct spi_controller;
+-struct spi_transfer;
+ struct spi_controller_mem_ops;
+ struct spi_controller_mem_caps;
++struct spi_device_id;
+ struct spi_message;
++struct spi_transfer;
  
- 	child = device_find_any_child(&ctlr->dev);
--	return sprintf(buf, "%s\n",
--		       child ? to_spi_device(child)->modalias : NULL);
-+	return sysfs_emit(buf, "%s\n", child ? to_spi_device(child)->modalias : NULL);
- }
- 
- static ssize_t slave_store(struct device *dev, struct device_attribute *attr,
+ /*
+  * INTERFACES between SPI master-side drivers and SPI slave protocol handlers,
 -- 
 2.40.0.1.gaa8946217a0b
 

@@ -2,44 +2,44 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3DD11EB64DC
-	for <linux-spi@archiver.kernel.org>; Mon, 10 Jul 2023 10:27:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 83B3CC0015E
+	for <linux-spi@archiver.kernel.org>; Mon, 10 Jul 2023 10:28:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233084AbjGJK16 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 10 Jul 2023 06:27:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38648 "EHLO
+        id S229493AbjGJK17 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 10 Jul 2023 06:27:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231501AbjGJK15 (ORCPT
+        with ESMTP id S231294AbjGJK15 (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Mon, 10 Jul 2023 06:27:57 -0400
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB2C6B7;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE0A9B2;
         Mon, 10 Jul 2023 03:27:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1688984876; x=1720520876;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=i+Jmb8Ni5ZNMBB74vGh9B4SucNYBPaQ0rpIJBqbWbw0=;
-  b=JWjEs0zgGq+3S7+hiCA6UPf9KVaqngVvA2MaaGFJfJ0f6MmcmN/HK5V5
-   GvR0VMKzDD6xPgv2U0waC9EhWdag1asBBgs594yCfTokVjHNppF/CIQX8
-   5/Fe4fc6gROST7/WlReyvNhr75IWuUAEAz0ZMpWhka3wKwhLrIwVgAjum
-   Pabi/hjguh1u1FAvXv8p0K0/HWW9Uizs5yM0Y5bo9kwWQ9yxq56MsYOn9
-   M748MlA1yjDBFNaWb4I96iJQu6fMgIgxWJXTARP18EWiOJhjXP/JbXhzj
-   VI1AqLzATDRVYSo7wgdHsmAUxbVVQEt6IkPdwlYq0d+IP2arsdkK9O5Fi
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10766"; a="364345437"
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=v/jR6yG2S/os1yevMEAtUPc5WvkJ6D/EUS+UHJf/Log=;
+  b=gnwNJowsg/XnznKkEm7q0RRcrN9IYkac3N3CenpFws2wHK96TYnwxmWa
+   nM1SlCG+U8CVnVacpfzENiTa+yr3snkVGIndR1S1cwgIzCiTP9MPamUpX
+   2TtiRW/4g9e6f2bMQGkQhfzsO8VuVW5QyfHIFbI81HD8GEngXqQIqZs7G
+   RW6SbHbnMR7+ccXKzIITDvNO6c1SddvRAr6toAW/33orhIvykHwhSabHe
+   3e7TNowPyqyWsDvzfE71M1xwG5ncEHFI/qcSPyySR/0zMZHBAr3ECR/Lf
+   +J+BpBKRTm/R1hYuJ0jvBu+Ykv5NmN0/oCtsnZt4TCGDOK5F60UbbsBnL
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10766"; a="364345418"
 X-IronPort-AV: E=Sophos;i="6.01,194,1684825200"; 
-   d="scan'208";a="364345437"
+   d="scan'208";a="364345418"
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
   by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2023 03:27:55 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10766"; a="865297524"
+X-IronPort-AV: E=McAfee;i="6600,9927,10766"; a="865297521"
 X-IronPort-AV: E=Sophos;i="6.01,194,1684825200"; 
-   d="scan'208";a="865297524"
+   d="scan'208";a="865297521"
 Received: from black.fi.intel.com ([10.237.72.28])
   by fmsmga001.fm.intel.com with ESMTP; 10 Jul 2023 03:27:48 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 18E8C3E3; Mon, 10 Jul 2023 13:27:53 +0300 (EEST)
+        id DD3A91FC; Mon, 10 Jul 2023 13:27:52 +0300 (EEST)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Mark Brown <broonie@kernel.org>,
         Yang Yingliang <yangyingliang@huawei.com>,
@@ -70,59 +70,53 @@ Cc:     Radu Pirea <radu_nicolae.pirea@upb.ro>,
         Alexandre Torgue <alexandre.torgue@foss.st.com>,
         Max Filippov <jcmvbkbc@gmail.com>,
         Richard Cochran <richardcochran@gmail.com>
-Subject: [PATCH v1 3/8] spi: Use sysfs_emit() to instead of s*printf()
-Date:   Mon, 10 Jul 2023 13:27:46 +0300
-Message-Id: <20230710102751.83314-4-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 0/8] spi: Header and core clean up and refactoring
+Date:   Mon, 10 Jul 2023 13:27:43 +0300
+Message-Id: <20230710102751.83314-1-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.40.0.1.gaa8946217a0b
-In-Reply-To: <20230710102751.83314-1-andriy.shevchenko@linux.intel.com>
-References: <20230710102751.83314-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Follow the advice of the Documentation/filesystems/sysfs.rst and show()
-should only use sysfs_emit() or sysfs_emit_at() when formatting the
-value to be returned to user space.
+Various cleanups and refactorings of the SPI header and core parts
+united in a single series.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/spi/spi.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+Patches 1 & 2, 5 & 6 & 8 are dependent inside each group.
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 6d74218cf38e..0f05773c277c 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -64,7 +64,7 @@ modalias_show(struct device *dev, struct device_attribute *a, char *buf)
- 	if (len != -ENODEV)
- 		return len;
- 
--	return sprintf(buf, "%s%s\n", SPI_MODULE_PREFIX, spi->modalias);
-+	return sysfs_emit(buf, "%s%s\n", SPI_MODULE_PREFIX, spi->modalias);
- }
- static DEVICE_ATTR_RO(modalias);
- 
-@@ -89,7 +89,7 @@ static ssize_t driver_override_show(struct device *dev,
- 	ssize_t len;
- 
- 	device_lock(dev);
--	len = snprintf(buf, PAGE_SIZE, "%s\n", spi->driver_override ? : "");
-+	len = sysfs_emit(buf, "%s\n", spi->driver_override ? : "");
- 	device_unlock(dev);
- 	return len;
- }
-@@ -2814,8 +2814,7 @@ static ssize_t slave_show(struct device *dev, struct device_attribute *attr,
- 	struct device *child;
- 
- 	child = device_find_any_child(&ctlr->dev);
--	return sprintf(buf, "%s\n",
--		       child ? to_spi_device(child)->modalias : NULL);
-+	return sysfs_emit(buf, "%s\n", child ? to_spi_device(child)->modalias : NULL);
- }
- 
- static ssize_t slave_store(struct device *dev, struct device_attribute *attr,
+No functional change intended.
+
+Andy Shevchenko (8):
+  spi: Remove unneeded OF node NULL checks
+  spi: Drop duplicate IDR allocation code in spi_register_controller()
+  spi: Use sysfs_emit() to instead of s*printf()
+  spi: Get rid of old SPI_MASTER_NO_.X and SPI_MASTER_MUST_.X
+  spi: Sort headers alphabetically
+  spi: Clean up headers
+  spi: Fix spelling typos and acronyms capitalization
+  spi: Use struct_size() helper
+
+ drivers/spi/spi-at91-usart.c    |   2 +-
+ drivers/spi/spi-atmel.c         |   2 +-
+ drivers/spi/spi-bitbang-txrx.h  |  16 +--
+ drivers/spi/spi-bitbang.c       |   2 +-
+ drivers/spi/spi-davinci.c       |   2 +-
+ drivers/spi/spi-fsl-lpspi.c     |   2 +-
+ drivers/spi/spi-gpio.c          |   8 +-
+ drivers/spi/spi-lp8841-rtc.c    |   8 +-
+ drivers/spi/spi-meson-spicc.c   |   2 +-
+ drivers/spi/spi-mt65xx.c        |   2 +-
+ drivers/spi/spi-pci1xxxx.c      |   2 +-
+ drivers/spi/spi-pic32.c         |   2 +-
+ drivers/spi/spi-rb4xx.c         |   2 +-
+ drivers/spi/spi-slave-mt27xx.c  |   2 +-
+ drivers/spi/spi-stm32.c         |   2 +-
+ drivers/spi/spi-xtensa-xtfpga.c |   2 +-
+ drivers/spi/spi.c               | 102 ++++++++---------
+ include/linux/spi/spi.h         | 188 ++++++++++++++++++--------------
+ 18 files changed, 183 insertions(+), 165 deletions(-)
+
 -- 
 2.40.0.1.gaa8946217a0b
 

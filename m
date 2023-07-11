@@ -2,49 +2,47 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4F93FEB64DD
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2768CC001B0
 	for <linux-spi@archiver.kernel.org>; Tue, 11 Jul 2023 22:04:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231737AbjGKWEN (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S231706AbjGKWEN (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Tue, 11 Jul 2023 18:04:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50114 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231724AbjGKWEJ (ORCPT
+        with ESMTP id S231653AbjGKWEJ (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Tue, 11 Jul 2023 18:04:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA34B1986;
-        Tue, 11 Jul 2023 15:04:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C926B170E;
+        Tue, 11 Jul 2023 15:04:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6E920615FF;
-        Tue, 11 Jul 2023 22:04:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 489BDC433C7;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 597A261632;
         Tue, 11 Jul 2023 22:04:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85D65C433C9;
+        Tue, 11 Jul 2023 22:04:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689113046;
-        bh=WZFBYnlBH0nabsea0EgGhIkFx++Poh0q/PfFbXQbviw=;
+        s=k20201202; t=1689113044;
+        bh=sgG4GZ2s6ORnJwOxVKfOxW49a30kTh+UGbUpknPHOBQ=;
         h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=Ph2Q1Skexi74PjjyajBlIKdntO7u+CL65M1XUgzexfi6H3zQiGnmOzrafU9ad+3IG
-         L61ESRw/Tmzu4fhwPlhSPbQRccH1z/zw65Lk55RNUKpBUHSXaPENU4qFPJlx4xCoHO
-         Gltjwy8+YJ8I6rT+KgWV4CsnUlaImnHjnGv2xH0S644Efb2QzCeshIza4zkUrIVa0N
-         sLK4RAwtOoD5pSvH0A2si3d5WPxqEJYD3kZiFjxqG9CWdmDag4GfrCLsmyYXbt+CJU
-         OZj2/qG5cDFGHaZowRNDsoyKsCATQEtEH92XbpqEYby7/a8KpjPG+ggkSHn/98u1Sv
-         HbQpyhGrm8EPA==
+        b=oa6PeJxwcztQH9DanqQVH5fAhuRixAg62OTeT4DKUnXdNUerUHGGSWIGiGd0wlq9M
+         6LwdMofWimHXsbFwxMHxtf/VQDy40eaUx41eFrWPJ3xT5Z6wbK6X686whBO3jietaO
+         yyzLIuG7E0mVHyGOi6V4FdTrMj12xcwPaMJtYtr0pIuzZxp9t6dx12sHcICn2TBglR
+         oyLfA2mhHzHFBL/WKZlN58By9ES2HfXSfMAzV9enohJIfrk8mRQp2PxBfWSi+qqIEX
+         89A9X0U00PGwNBFe7bvwSVu51f5a10FweTauVReEYr2bpOUJ9m3BLKLgGK5IwxPe3B
+         HLLblQ30yl5mg==
 From:   Mark Brown <broonie@kernel.org>
-To:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>
-Cc:     Jon Hunter <jonathanh@nvidia.com>, devicetree@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org
-In-Reply-To: <20230705152603.2514235-1-thierry.reding@gmail.com>
-References: <20230705152603.2514235-1-thierry.reding@gmail.com>
-Subject: Re: [PATCH 1/3] dt-bindings: spi: tegra-slink: Convert to
- json-schema
-Message-Id: <168911304501.642798.11023438191378643161.b4-ty@kernel.org>
-Date:   Tue, 11 Jul 2023 23:04:05 +0100
+To:     Neil Armstrong <neil.armstrong@linaro.org>,
+        Martin Kurbanov <mmkurbanov@sberdevices.ru>
+Cc:     linux-spi@vger.kernel.org, linux-amlogic@lists.infradead.org,
+        linux-kernel@vger.kernel.org, kernel@sberdevices.ru
+In-Reply-To: <20230703094518.53755-1-mmkurbanov@sberdevices.ru>
+References: <20230703094518.53755-1-mmkurbanov@sberdevices.ru>
+Subject: Re: [PATCH v1 0/2] spi: amlogic-spifc-a1: fixes and improvements
+ for amlogic-spifc-a1
+Message-Id: <168911304326.642798.13272097605762748928.b4-ty@kernel.org>
+Date:   Tue, 11 Jul 2023 23:04:03 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
@@ -53,11 +51,15 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, 05 Jul 2023 17:26:01 +0200, Thierry Reding wrote:
-> Convert the Tegra SLINK bindings from the free-form text format to
-> json-schema.
+On Mon, 03 Jul 2023 12:45:16 +0300, Martin Kurbanov wrote:
+> This series adds support for max_speed_hz and implement adjust_op_size()
+> callback.
 > 
+> Martin Kurbanov (2):
+>   spi: amlogic-spifc-a1: implement adjust_op_size()
+>   spi: amlogic-spifc-a1: add support for max_speed_hz
 > 
+> [...]
 
 Applied to
 
@@ -65,12 +67,10 @@ Applied to
 
 Thanks!
 
-[1/3] dt-bindings: spi: tegra-slink: Convert to json-schema
-      commit: 8c87a46e2ce3d5aaf315ffb61dcda62417e41bbf
-[2/3] dt-bindings: spi: tegra-sflash: Convert to json-schema
-      commit: 17a9ab02f72c832293155a432895c889842b7da4
-[3/3] dt-bindings: spi: Convert Tegra114 SPI to json-schema
-      commit: b8968c388b69d9cf31d7f5b1721ac7fe9f932cb9
+[1/2] spi: amlogic-spifc-a1: implement adjust_op_size()
+      commit: 9bee51722cdc1b32193d4ddf6ea6952d666d8f13
+[2/2] spi: amlogic-spifc-a1: add support for max_speed_hz
+      commit: 54b8422cc64d6236024ec7d72bc63ca3ca90b87f
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

@@ -2,234 +2,88 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9C084C001DC
-	for <linux-spi@archiver.kernel.org>; Thu, 13 Jul 2023 11:54:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 29338C001DC
+	for <linux-spi@archiver.kernel.org>; Thu, 13 Jul 2023 12:28:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234409AbjGMLy6 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 13 Jul 2023 07:54:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52956 "EHLO
+        id S234349AbjGMM22 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 13 Jul 2023 08:28:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234531AbjGMLw7 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 13 Jul 2023 07:52:59 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2366A2702;
-        Thu, 13 Jul 2023 04:52:57 -0700 (PDT)
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36DBpBsX008911;
-        Thu, 13 Jul 2023 11:52:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type; s=qcppdkim1;
- bh=LWEhP6Fkq9ppVBlRXnZRuNwBAHkpPWzv3J+VsW1khAw=;
- b=TXLOWhWuGkgEAhvNi7J6O5kwPcSxnEHUzXEmz6MJLHoE/FFu4L2cc0eypT+QUXFVN7jx
- O2SJEMOgneE6QpZ5ZFQAfxuykabxTcHyXzsDsV9m+uq868sPHegn7vI79fqSA4iBjP/n
- jyg8e3spmNt5kPYYKdGI0SWbk6kADUCy/ecC9Dbpqmb+foVBGUoXaOIm3xaqIMhyGd0U
- ayneglOK8UK8hz4mX3B9Nd/RaQ3o4ONnhxdl92sE2g27vPkAFmyepIcQugiI+AYYxon1
- TwyCepQobkN22nZXiLQ3y7vxRSe5FD80vih2pM9mMhk5Ult80JBv5lZoH4vHpDGEZPa2 Ag== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3rt73th1ce-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 13 Jul 2023 11:52:53 +0000
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36DBqrWB023772
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 13 Jul 2023 11:52:53 GMT
-Received: from hu-ptalari-hyd.qualcomm.com (10.80.80.8) by
- nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.30; Thu, 13 Jul 2023 04:52:49 -0700
-From:   Praveen Talari <quic_ptalari@quicinc.com>
-To:     <agross@kernel.org>, <andersson@kernel.org>,
-        <konrad.dybcio@linaro.org>, <broonie@kernel.org>,
-        <linux-arm-msm@vger.kernel.org>, <linux-spi@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     <quic_msavaliy@quicinc.com>, <quic_vtanuku@quicinc.com>,
-        <quic_vnivarth@quicinc.com>, <quic_arandive@quicinc.com>,
-        Praveen Talari <ptalari@qti.qualcomm.com>
-Subject: [PATCH v6 2/2] spi: spi-geni-qcom: Add SPI Device mode support for GENI based QuPv3
-Date:   Thu, 13 Jul 2023 17:21:45 +0530
-Message-ID: <20230713115145.16770-3-quic_ptalari@quicinc.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20230713115145.16770-1-quic_ptalari@quicinc.com>
-References: <20230713115145.16770-1-quic_ptalari@quicinc.com>
+        with ESMTP id S234287AbjGMM21 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 13 Jul 2023 08:28:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1C5119B;
+        Thu, 13 Jul 2023 05:28:26 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 85B66610E7;
+        Thu, 13 Jul 2023 12:28:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4401C433C7;
+        Thu, 13 Jul 2023 12:28:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689251305;
+        bh=8f8B420S2iez6Nmhlz8hkDDgDQ2+6nOB0mFrfGPMq6c=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=GX1xK+lkiknPcbIVSTtjKp7sNrQf8Bk5hqaCJYa3bnt+geSrHWjFnoHsrBUKh6ZbC
+         /TK94u7I3SMgGYHawfX9CIMUscmzybc4kBak3nkM102nS9BIQ/o2ey/gBZtnXF1LoY
+         JjlbHjAJZpPuaFOwzopcXiZ7Pf9KLbm8KveUMJlwxbc8p3NdgKu+sIfo6to+qhRBnX
+         UBALvHEtr7eAjNnFUhufEZZsinz2y0SQGaxD+GAts1UQwW5YlI+zdF49VQ5qeR1NMe
+         wNpAzDb/2wkq2gu37qQbiEnzyF3B9u1OSRVN+SUhqFRLfbp1sMaNOiPbVxD5GzuIP3
+         PNcRlVksAXw1A==
+Date:   Thu, 13 Jul 2023 13:28:20 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     William Qiu <william.qiu@starfivetech.com>
+Cc:     devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Emil Renner Berthing <kernel@esmil.dk>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH v2 2/3] dt-bindings: spi: constrain minItems of clocks
+ and clock-names
+Message-ID: <c5ad1e1c-58f4-4833-b9c7-8876c1a0dc27@sirena.org.uk>
+References: <20230713090015.127541-1-william.qiu@starfivetech.com>
+ <20230713090015.127541-3-william.qiu@starfivetech.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: C1nmX2baJ1sKP2vN8qEDLxuT5Bdb3-OU
-X-Proofpoint-GUID: C1nmX2baJ1sKP2vN8qEDLxuT5Bdb3-OU
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-13_05,2023-07-11_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 clxscore=1015
- phishscore=0 malwarescore=0 priorityscore=1501 mlxlogscore=999
- suspectscore=0 adultscore=0 lowpriorityscore=0 spamscore=0 bulkscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2307130104
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="NdTpCj8USvWVeToK"
+Content-Disposition: inline
+In-Reply-To: <20230713090015.127541-3-william.qiu@starfivetech.com>
+X-Cookie: MOUNT TAPE U1439 ON B3, NO RING
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Praveen Talari <ptalari@qti.qualcomm.com>
 
-Currently spi geni driver supports only master mode operation.
+--NdTpCj8USvWVeToK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Add spi device mode support to GENI based QuPv3.
+On Thu, Jul 13, 2023 at 05:00:14PM +0800, William Qiu wrote:
 
-Signed-off-by: Praveen Talari <ptalari@qti.qualcomm.com>
----
-v4 -> v5:
-- added code comments
-- dropped get_spi_master api.
+> The SPI controller only need apb_pclk clock to work properly on JH7110 SoC,
+> so there add minItems whose value is equal to 1. Other platforms do not
+> have this constraint.
 
-v3 -> v4:
-- Used existing property spi-slave.
+Presumably this means that this is some variant of the usual pl022 IP,
+or that the clock is in fact present but is not modelled in your DT?
 
-v2 -> v3:
-- modified commit message to use device mode instead of slave mode
+--NdTpCj8USvWVeToK
+Content-Type: application/pgp-signature; name="signature.asc"
 
-v1 -> v2
-- modified the commit message
-- added the code changes for code comments
----
- drivers/spi/spi-geni-qcom.c | 53 ++++++++++++++++++++++++++++++++-----
- 1 file changed, 47 insertions(+), 6 deletions(-)
+-----BEGIN PGP SIGNATURE-----
 
-diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index 206cc04bb1ed..06b114f3f21a 100644
---- a/drivers/spi/spi-geni-qcom.c
-+++ b/drivers/spi/spi-geni-qcom.c
-@@ -12,6 +12,7 @@
- #include <linux/platform_device.h>
- #include <linux/pm_opp.h>
- #include <linux/pm_runtime.h>
-+#include <linux/property.h>
- #include <linux/soc/qcom/geni-se.h>
- #include <linux/spi/spi.h>
- #include <linux/spinlock.h>
-@@ -52,6 +53,9 @@
- #define SPI_CS_CLK_DELAY_MSK		GENMASK(19, 10)
- #define SPI_CS_CLK_DELAY_SHFT		10
- 
-+#define SE_SPI_SLAVE_EN				(0x2BC)
-+#define SPI_SLAVE_EN				BIT(0)
-+
- /* M_CMD OP codes for SPI */
- #define SPI_TX_ONLY		1
- #define SPI_RX_ONLY		2
-@@ -99,6 +103,16 @@ struct spi_geni_master {
- 	int cur_xfer_mode;
- };
- 
-+static void spi_slv_setup(struct spi_geni_master *mas)
-+{
-+	struct geni_se *se = &mas->se;
-+
-+	writel(SPI_SLAVE_EN, se->base + SE_SPI_SLAVE_EN);
-+	writel(GENI_IO_MUX_0_EN, se->base + GENI_OUTPUT_CTRL);
-+	writel(START_TRIGGER, se->base + SE_GENI_CFG_SEQ_START);
-+	dev_dbg(mas->dev, "spi slave setup done\n");
-+}
-+
- static int get_spi_clk_cfg(unsigned int speed_hz,
- 			struct spi_geni_master *mas,
- 			unsigned int *clk_idx,
-@@ -140,12 +154,22 @@ static void handle_se_timeout(struct spi_master *spi,
- 	const struct spi_transfer *xfer;
- 
- 	spin_lock_irq(&mas->lock);
--	reinit_completion(&mas->cancel_done);
- 	if (mas->cur_xfer_mode == GENI_SE_FIFO)
- 		writel(0, se->base + SE_GENI_TX_WATERMARK_REG);
- 
- 	xfer = mas->cur_xfer;
- 	mas->cur_xfer = NULL;
-+
-+	if (spi->slave) {
-+		/*
-+		 * skip CMD Cancel sequnece since spi slave
-+		 * doesn`t support CMD Cancel sequnece
-+		 */
-+		spin_unlock_irq(&mas->lock);
-+		goto unmap_if_dma;
-+	}
-+
-+	reinit_completion(&mas->cancel_done);
- 	geni_se_cancel_m_cmd(se);
- 	spin_unlock_irq(&mas->lock);
- 
-@@ -542,6 +566,10 @@ static bool geni_can_dma(struct spi_controller *ctlr,
- 	if (mas->cur_xfer_mode == GENI_GPI_DMA)
- 		return true;
- 
-+	/* Set SE DMA mode for SPI slave. */
-+	if (ctlr->slave)
-+		return true;
-+
- 	len = get_xfer_len_in_words(xfer, mas);
- 	fifo_size = mas->tx_fifo_depth * mas->fifo_width_bits / mas->cur_bits_per_word;
- 
-@@ -619,6 +647,7 @@ static void spi_geni_release_dma_chan(struct spi_geni_master *mas)
- 
- static int spi_geni_init(struct spi_geni_master *mas)
- {
-+	struct spi_master *spi = dev_get_drvdata(mas->dev);
- 	struct geni_se *se = &mas->se;
- 	unsigned int proto, major, minor, ver;
- 	u32 spi_tx_cfg, fifo_disable;
-@@ -627,7 +656,14 @@ static int spi_geni_init(struct spi_geni_master *mas)
- 	pm_runtime_get_sync(mas->dev);
- 
- 	proto = geni_se_read_proto(se);
--	if (proto != GENI_SE_SPI) {
-+
-+	if (spi->slave) {
-+		if (proto != GENI_SE_SPI_SLAVE) {
-+			dev_err(mas->dev, "Invalid proto %d\n", proto);
-+			goto out_pm;
-+		}
-+		spi_slv_setup(mas);
-+	} else if (proto != GENI_SE_SPI) {
- 		dev_err(mas->dev, "Invalid proto %d\n", proto);
- 		goto out_pm;
- 	}
-@@ -677,9 +713,11 @@ static int spi_geni_init(struct spi_geni_master *mas)
- 	}
- 
- 	/* We always control CS manually */
--	spi_tx_cfg = readl(se->base + SE_SPI_TRANS_CFG);
--	spi_tx_cfg &= ~CS_TOGGLE;
--	writel(spi_tx_cfg, se->base + SE_SPI_TRANS_CFG);
-+	if (!spi->slave) {
-+		spi_tx_cfg = readl(se->base + SE_SPI_TRANS_CFG);
-+		spi_tx_cfg &= ~CS_TOGGLE;
-+		writel(spi_tx_cfg, se->base + SE_SPI_TRANS_CFG);
-+	}
- 
- out_pm:
- 	pm_runtime_put(mas->dev);
-@@ -1072,6 +1110,9 @@ static int spi_geni_probe(struct platform_device *pdev)
- 	pm_runtime_set_autosuspend_delay(&pdev->dev, 250);
- 	pm_runtime_enable(dev);
- 
-+	if (device_property_read_bool(&pdev->dev, "spi-slave"))
-+		spi->slave = true;
-+
- 	ret = geni_icc_get(&mas->se, NULL);
- 	if (ret)
- 		goto spi_geni_probe_runtime_disable;
-@@ -1092,7 +1133,7 @@ static int spi_geni_probe(struct platform_device *pdev)
- 	 * for dma (gsi) mode, the gsi will set cs based on params passed in
- 	 * TRE
- 	 */
--	if (mas->cur_xfer_mode == GENI_SE_FIFO)
-+	if (!spi->slave && mas->cur_xfer_mode == GENI_SE_FIFO)
- 		spi->set_cs = spi_geni_set_cs;
- 
- 	ret = request_irq(mas->irq, geni_spi_isr, 0, dev_name(dev), spi);
--- 
-2.17.1
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmSv7eMACgkQJNaLcl1U
+h9A7eAf/USoycBJ8F/DS9P8f6DPSfiP5R4ajKsnjatuVuVfv7CtwU6QvKsBs+HXu
+sAfE7Ig2/LZNZJcmQohmMe5Iu3lcHZLQpbjhLVD25aDsWojcsz2KCg8/wXKoi8xG
+jdpYPYlfeS8nwDOKyyOCUti0aTx8wWRB42AFcnv4FQ0E/wTYjI23wyreGcjZDbwb
++2i4KkIBIAfJmes1pBxZ9VTUgbj/1NFeeotZCK1kfMog5dffc5bNCwna2ZmwlVUd
+Zn3M2C7p2SlSytkklg4UBSaKF/hLj9FxVSwMEj3zNW3ueQ0go69khO3NdsFRPGV+
+81J//IT4oLSxCrgbu0t5913MDarLIQ==
+=fvSe
+-----END PGP SIGNATURE-----
 
+--NdTpCj8USvWVeToK--

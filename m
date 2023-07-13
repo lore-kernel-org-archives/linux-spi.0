@@ -2,30 +2,30 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D7CA4EB64DD
-	for <linux-spi@archiver.kernel.org>; Thu, 13 Jul 2023 09:00:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5948AC001B0
+	for <linux-spi@archiver.kernel.org>; Thu, 13 Jul 2023 09:00:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234704AbjGMJAl convert rfc822-to-8bit (ORCPT
+        id S234707AbjGMJAl convert rfc822-to-8bit (ORCPT
         <rfc822;linux-spi@archiver.kernel.org>);
         Thu, 13 Jul 2023 05:00:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58894 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234660AbjGMJAZ (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 13 Jul 2023 05:00:25 -0400
+        with ESMTP id S234719AbjGMJA0 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 13 Jul 2023 05:00:26 -0400
 Received: from fd01.gateway.ufhost.com (fd01.gateway.ufhost.com [61.152.239.71])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 797D71FF7;
-        Thu, 13 Jul 2023 02:00:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 934CA213B;
+        Thu, 13 Jul 2023 02:00:23 -0700 (PDT)
 Received: from EXMBX165.cuchost.com (unknown [175.102.18.54])
         (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
         (Client CN "EXMBX165", Issuer "EXMBX165" (not verified))
-        by fd01.gateway.ufhost.com (Postfix) with ESMTP id 3A41B82E4;
-        Thu, 13 Jul 2023 17:00:18 +0800 (CST)
+        by fd01.gateway.ufhost.com (Postfix) with ESMTP id CB51B82CB;
+        Thu, 13 Jul 2023 17:00:16 +0800 (CST)
 Received: from EXMBX068.cuchost.com (172.16.6.68) by EXMBX165.cuchost.com
  (172.16.6.75) with Microsoft SMTP Server (TLS) id 15.0.1497.42; Thu, 13 Jul
- 2023 17:00:18 +0800
+ 2023 17:00:16 +0800
 Received: from williamqiu-virtual-machine.starfivetech.com (171.223.208.138)
  by EXMBX068.cuchost.com (172.16.6.68) with Microsoft SMTP Server (TLS) id
- 15.0.1497.42; Thu, 13 Jul 2023 17:00:17 +0800
+ 15.0.1497.42; Thu, 13 Jul 2023 17:00:15 +0800
 From:   William Qiu <william.qiu@starfivetech.com>
 To:     <devicetree@vger.kernel.org>, <linux-spi@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>, <linux-riscv@lists.infradead.org>
@@ -35,12 +35,10 @@ CC:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
         Emil Renner Berthing <kernel@esmil.dk>,
         Linus Walleij <linus.walleij@linaro.org>,
         William Qiu <william.qiu@starfivetech.com>
-Subject: [PATCH v2 2/3] dt-bindings: spi: constrain minItems of clocks and clock-names
-Date:   Thu, 13 Jul 2023 17:00:14 +0800
-Message-ID: <20230713090015.127541-3-william.qiu@starfivetech.com>
+Subject: [PATCH v2 0/3] Add SPI module for StarFive JH7110 SoC
+Date:   Thu, 13 Jul 2023 17:00:12 +0800
+Message-ID: <20230713090015.127541-1-william.qiu@starfivetech.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230713090015.127541-1-william.qiu@starfivetech.com>
-References: <20230713090015.127541-1-william.qiu@starfivetech.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [171.223.208.138]
@@ -52,39 +50,31 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The SPI controller only need apb_pclk clock to work properly on JH7110 SoC,
-so there add minItems whose value is equal to 1. Other platforms do not
-have this constraint.
+Hi,
 
-Signed-off-by: William Qiu <william.qiu@starfivetech.com>
----
- Documentation/devicetree/bindings/spi/spi-pl022.yaml | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+This patchset adds initial rudimentary support for the StarFive
+SPI controller. And this driver will be used in StarFive's
+VisionFive 2 board. The first patch constrain minItems of clocks
+for JH7110 SPI and Patch 2 adds support for StarFive JH7110 SPI.
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-pl022.yaml b/Documentation/devicetree/bindings/spi/spi-pl022.yaml
-index 5e5a704a766e..42bb34c39971 100644
---- a/Documentation/devicetree/bindings/spi/spi-pl022.yaml
-+++ b/Documentation/devicetree/bindings/spi/spi-pl022.yaml
-@@ -35,12 +35,16 @@ properties:
-     maxItems: 1
- 
-   clocks:
-+    minItems: 1
-     maxItems: 2
- 
-   clock-names:
--    items:
--      - const: sspclk
--      - const: apb_pclk
-+    oneOf:
-+      - items:
-+          - const: apb_pclk
-+      - items:
-+          - const: sspclk
-+          - const: apb_pclk
- 
-   pl022,autosuspend-delay:
-     description: delay in ms following transfer completion before the
--- 
+Changes v1->v2:
+- Rebaed to v6.5rc1.
+- Submitted reference file separately.
+- Dropped 'status' node as it was 'okay' by default.
+- Dropped Co-developed-by message.
+
+The patch series is based on v6.5rc1.
+
+William Qiu (3):
+  dt-bindings: spi: add reference file to YAML
+  dt-bindings: spi: constrain minItems of clocks and clock-names
+  riscv: dts: starfive: Add spi node for JH7110 SoC
+
+ .../devicetree/bindings/spi/spi-pl022.yaml    | 11 ++-
+ .../jh7110-starfive-visionfive-2.dtsi         | 50 ++++++++++
+ arch/riscv/boot/dts/starfive/jh7110.dtsi      | 98 +++++++++++++++++++
+ 3 files changed, 156 insertions(+), 3 deletions(-)
+
+--
 2.34.1
 

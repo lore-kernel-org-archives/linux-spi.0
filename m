@@ -2,30 +2,30 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5948AC001B0
-	for <linux-spi@archiver.kernel.org>; Thu, 13 Jul 2023 09:00:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 40BABEB64DD
+	for <linux-spi@archiver.kernel.org>; Thu, 13 Jul 2023 09:00:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234707AbjGMJAl convert rfc822-to-8bit (ORCPT
+        id S234721AbjGMJAp convert rfc822-to-8bit (ORCPT
         <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 13 Jul 2023 05:00:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59030 "EHLO
+        Thu, 13 Jul 2023 05:00:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234719AbjGMJA0 (ORCPT
+        with ESMTP id S234720AbjGMJA0 (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Thu, 13 Jul 2023 05:00:26 -0400
 Received: from fd01.gateway.ufhost.com (fd01.gateway.ufhost.com [61.152.239.71])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 934CA213B;
-        Thu, 13 Jul 2023 02:00:23 -0700 (PDT)
-Received: from EXMBX165.cuchost.com (unknown [175.102.18.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C04D81BEB;
+        Thu, 13 Jul 2023 02:00:21 -0700 (PDT)
+Received: from EXMBX166.cuchost.com (unknown [175.102.18.54])
         (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (Client CN "EXMBX165", Issuer "EXMBX165" (not verified))
-        by fd01.gateway.ufhost.com (Postfix) with ESMTP id CB51B82CB;
-        Thu, 13 Jul 2023 17:00:16 +0800 (CST)
-Received: from EXMBX068.cuchost.com (172.16.6.68) by EXMBX165.cuchost.com
- (172.16.6.75) with Microsoft SMTP Server (TLS) id 15.0.1497.42; Thu, 13 Jul
- 2023 17:00:16 +0800
+        (Client CN "EXMBX166", Issuer "EXMBX166" (not verified))
+        by fd01.gateway.ufhost.com (Postfix) with ESMTP id 01AE882EB;
+        Thu, 13 Jul 2023 17:00:19 +0800 (CST)
+Received: from EXMBX068.cuchost.com (172.16.6.68) by EXMBX166.cuchost.com
+ (172.16.6.76) with Microsoft SMTP Server (TLS) id 15.0.1497.42; Thu, 13 Jul
+ 2023 17:00:19 +0800
 Received: from williamqiu-virtual-machine.starfivetech.com (171.223.208.138)
  by EXMBX068.cuchost.com (172.16.6.68) with Microsoft SMTP Server (TLS) id
- 15.0.1497.42; Thu, 13 Jul 2023 17:00:15 +0800
+ 15.0.1497.42; Thu, 13 Jul 2023 17:00:18 +0800
 From:   William Qiu <william.qiu@starfivetech.com>
 To:     <devicetree@vger.kernel.org>, <linux-spi@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>, <linux-riscv@lists.infradead.org>
@@ -35,10 +35,12 @@ CC:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
         Emil Renner Berthing <kernel@esmil.dk>,
         Linus Walleij <linus.walleij@linaro.org>,
         William Qiu <william.qiu@starfivetech.com>
-Subject: [PATCH v2 0/3] Add SPI module for StarFive JH7110 SoC
-Date:   Thu, 13 Jul 2023 17:00:12 +0800
-Message-ID: <20230713090015.127541-1-william.qiu@starfivetech.com>
+Subject: [PATCH v2 3/3] riscv: dts: starfive: Add spi node for JH7110 SoC
+Date:   Thu, 13 Jul 2023 17:00:15 +0800
+Message-ID: <20230713090015.127541-4-william.qiu@starfivetech.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230713090015.127541-1-william.qiu@starfivetech.com>
+References: <20230713090015.127541-1-william.qiu@starfivetech.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [171.223.208.138]
@@ -50,31 +52,198 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi,
+Add spi node for JH7110 SoC.
 
-This patchset adds initial rudimentary support for the StarFive
-SPI controller. And this driver will be used in StarFive's
-VisionFive 2 board. The first patch constrain minItems of clocks
-for JH7110 SPI and Patch 2 adds support for StarFive JH7110 SPI.
-
-Changes v1->v2:
-- Rebaed to v6.5rc1.
-- Submitted reference file separately.
-- Dropped 'status' node as it was 'okay' by default.
-- Dropped Co-developed-by message.
-
-The patch series is based on v6.5rc1.
-
-William Qiu (3):
-  dt-bindings: spi: add reference file to YAML
-  dt-bindings: spi: constrain minItems of clocks and clock-names
-  riscv: dts: starfive: Add spi node for JH7110 SoC
-
- .../devicetree/bindings/spi/spi-pl022.yaml    | 11 ++-
+Signed-off-by: William Qiu <william.qiu@starfivetech.com>
+---
  .../jh7110-starfive-visionfive-2.dtsi         | 50 ++++++++++
  arch/riscv/boot/dts/starfive/jh7110.dtsi      | 98 +++++++++++++++++++
- 3 files changed, 156 insertions(+), 3 deletions(-)
+ 2 files changed, 148 insertions(+)
 
---
+diff --git a/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi b/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi
+index fa0061eb33a7..ae3f39c33d3c 100644
+--- a/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi
++++ b/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi
+@@ -143,6 +143,18 @@ &i2c6 {
+ 	status = "okay";
+ };
+ 
++&spi0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&spi0_pins>;
++	status = "okay";
++
++	spi_dev0: flash@0 {
++		compatible = "rohm,dh2228fv";
++		reg = <0>;
++		spi-max-frequency = <10000000>;
++	};
++};
++
+ &sysgpio {
+ 	i2c0_pins: i2c0-0 {
+ 		i2c-pins {
+@@ -200,6 +212,44 @@ GPOEN_SYS_I2C6_DATA,
+ 		};
+ 	};
+ 
++	spi0_pins: spi0-0 {
++		mosi-pins {
++			pinmux = <GPIOMUX(52, GPOUT_SYS_SPI0_TXD,
++					      GPOEN_ENABLE,
++					      GPI_NONE)>;
++			bias-disable;
++			input-disable;
++			input-schmitt-disable;
++		};
++
++		miso-pins {
++			pinmux = <GPIOMUX(53, GPOUT_LOW,
++					      GPOEN_DISABLE,
++					      GPI_SYS_SPI0_RXD)>;
++			bias-pull-up;
++			input-enable;
++			input-schmitt-enable;
++		};
++
++		sck-pins {
++			pinmux = <GPIOMUX(48, GPOUT_SYS_SPI0_CLK,
++					      GPOEN_ENABLE,
++					      GPI_SYS_SPI0_CLK)>;
++			bias-disable;
++			input-disable;
++			input-schmitt-disable;
++		};
++
++		ss-pins {
++			pinmux = <GPIOMUX(48, GPOUT_SYS_SPI0_FSS,
++					      GPOEN_ENABLE,
++					      GPI_SYS_SPI0_FSS)>;
++			bias-disable;
++			input-disable;
++			input-schmitt-disable;
++		};
++	};
++
+ 	uart0_pins: uart0-0 {
+ 		tx-pins {
+ 			pinmux = <GPIOMUX(5, GPOUT_SYS_UART0_TX,
+diff --git a/arch/riscv/boot/dts/starfive/jh7110.dtsi b/arch/riscv/boot/dts/starfive/jh7110.dtsi
+index ec2e70011a73..13da297c18fe 100644
+--- a/arch/riscv/boot/dts/starfive/jh7110.dtsi
++++ b/arch/riscv/boot/dts/starfive/jh7110.dtsi
+@@ -386,6 +386,48 @@ i2c2: i2c@10050000 {
+ 			status = "disabled";
+ 		};
+ 
++		spi0: spi@10060000 {
++			compatible = "arm,pl022", "arm,primecell";
++			reg = <0x0 0x10060000 0x0 0x10000>;
++			clocks = <&syscrg JH7110_SYSCLK_SPI0_APB>;
++			clock-names = "apb_pclk";
++			resets = <&syscrg JH7110_SYSRST_SPI0_APB>;
++			interrupts = <38>;
++			arm,primecell-periphid = <0x00041022>;
++			num-cs = <1>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++			status = "disabled";
++		};
++
++		spi1: spi@10070000 {
++			compatible = "arm,pl022", "arm,primecell";
++			reg = <0x0 0x10070000 0x0 0x10000>;
++			clocks = <&syscrg JH7110_SYSCLK_SPI1_APB>;
++			clock-names = "apb_pclk";
++			resets = <&syscrg JH7110_SYSRST_SPI1_APB>;
++			interrupts = <39>;
++			arm,primecell-periphid = <0x00041022>;
++			num-cs = <1>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++			status = "disabled";
++		};
++
++		spi2: spi@10080000 {
++			compatible = "arm,pl022", "arm,primecell";
++			reg = <0x0 0x10080000 0x0 0x10000>;
++			clocks = <&syscrg JH7110_SYSCLK_SPI2_APB>;
++			clock-names = "apb_pclk";
++			resets = <&syscrg JH7110_SYSRST_SPI2_APB>;
++			interrupts = <40>;
++			arm,primecell-periphid = <0x00041022>;
++			num-cs = <1>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++			status = "disabled";
++		};
++
+ 		uart3: serial@12000000 {
+ 			compatible = "snps,dw-apb-uart";
+ 			reg = <0x0 0x12000000 0x0 0x10000>;
+@@ -473,6 +515,62 @@ i2c6: i2c@12060000 {
+ 			status = "disabled";
+ 		};
+ 
++		spi3: spi@12070000 {
++			compatible = "arm,pl022", "arm,primecell";
++			reg = <0x0 0x12070000 0x0 0x10000>;
++			clocks = <&syscrg JH7110_SYSCLK_SPI3_APB>;
++			clock-names = "apb_pclk";
++			resets = <&syscrg JH7110_SYSRST_SPI3_APB>;
++			interrupts = <52>;
++			arm,primecell-periphid = <0x00041022>;
++			num-cs = <1>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++			status = "disabled";
++		};
++
++		spi4: spi@12080000 {
++			compatible = "arm,pl022", "arm,primecell";
++			reg = <0x0 0x12080000 0x0 0x10000>;
++			clocks = <&syscrg JH7110_SYSCLK_SPI4_APB>;
++			clock-names = "apb_pclk";
++			resets = <&syscrg JH7110_SYSRST_SPI4_APB>;
++			interrupts = <53>;
++			arm,primecell-periphid = <0x00041022>;
++			num-cs = <1>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++			status = "disabled";
++		};
++
++		spi5: spi@12090000 {
++			compatible = "arm,pl022", "arm,primecell";
++			reg = <0x0 0x12090000 0x0 0x10000>;
++			clocks = <&syscrg JH7110_SYSCLK_SPI5_APB>;
++			clock-names = "apb_pclk";
++			resets = <&syscrg JH7110_SYSRST_SPI5_APB>;
++			interrupts = <54>;
++			arm,primecell-periphid = <0x00041022>;
++			num-cs = <1>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++			status = "disabled";
++		};
++
++		spi6: spi@120a0000 {
++			compatible = "arm,pl022", "arm,primecell";
++			reg = <0x0 0x120A0000 0x0 0x10000>;
++			clocks = <&syscrg JH7110_SYSCLK_SPI6_APB>;
++			clock-names = "apb_pclk";
++			resets = <&syscrg JH7110_SYSRST_SPI6_APB>;
++			interrupts = <55>;
++			arm,primecell-periphid = <0x00041022>;
++			num-cs = <1>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++			status = "disabled";
++		};
++
+ 		syscrg: clock-controller@13020000 {
+ 			compatible = "starfive,jh7110-syscrg";
+ 			reg = <0x0 0x13020000 0x0 0x10000>;
+-- 
 2.34.1
 

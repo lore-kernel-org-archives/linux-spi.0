@@ -2,104 +2,58 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 61EB7EB64DD
-	for <linux-spi@archiver.kernel.org>; Thu, 13 Jul 2023 09:53:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B9364EB64DD
+	for <linux-spi@archiver.kernel.org>; Thu, 13 Jul 2023 09:56:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232371AbjGMJxA (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 13 Jul 2023 05:53:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38346 "EHLO
+        id S229497AbjGMJ4n (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 13 Jul 2023 05:56:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234463AbjGMJw2 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 13 Jul 2023 05:52:28 -0400
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F15722721;
-        Thu, 13 Jul 2023 02:52:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1689241941; x=1720777941;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=ykA9/KX4H/M4bzsKlgcZioPeprFLMEtmUy7vE26Dds8=;
-  b=2PHPTXpvz0kbUr9qZAR/oKhgfF11lU2X02UcUGXyqJrJbG4ogg6aegvK
-   +gKjRuWv8VstH4KYaJanZIP3XI2/lQBO00+MANkAcaei1cAzNL3LDgtUK
-   Z+NZ3G7Ud1g+hMUyMvSjvFwgmx8tdx3hcxvXykfCpba+fKhcqVQwRMTRd
-   U5XY4gOmZ6X6URkIaS8nRAoHkqpZ3v8tfDtF5b8B/fXmMjeNKSVMGR9BV
-   4MbrmRLCmzQwmgUgF/gI+zgkHE5DXO0nQcZr4H2i6mg2eNUieoIpiGrsL
-   Rs8DAcmNSXrowA38Z+nxbCxe0dOSnC0TgtcUEvpeJPO3u9E8eTZQWimlm
-   Q==;
-X-IronPort-AV: E=Sophos;i="6.01,202,1684825200"; 
-   d="scan'208";a="224479203"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 13 Jul 2023 02:52:20 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Thu, 13 Jul 2023 02:51:40 -0700
-Received: from che-lt-i66125lx.microchip.com (10.10.115.15) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.2507.21 via Frontend Transport; Thu, 13 Jul 2023 02:51:28 -0700
-From:   Durai Manickam KR <durai.manickamkr@microchip.com>
-To:     <Hari.PrasathGE@microchip.com>,
-        <balamanikandan.gunasundar@microchip.com>,
-        <manikandan.m@microchip.com>, <varshini.rajendran@microchip.com>,
-        <dharma.b@microchip.com>, <nayabbasha.sayed@microchip.com>,
-        <balakrishnan.s@microchip.com>, <cristian.birsan@microchip.com>,
-        <nicolas.ferre@microchip.com>, <krzysztof.kozlowski@linaro.org>,
-        <alexandre.belloni@bootlin.com>, <davem@davemloft.net>,
-        <arnd@arndb.de>, <olof@lixom.net>, <soc@kernel.org>,
-        <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <Kavyasree.Kotagiri@microchip.com>,
-        <Horatiu.Vultur@microchip.com>, <robh+dt@kernel.org>,
-        <andrew@lunn.ch>, <michael@walle.cc>, <jerry.ray@microchip.com>,
-        <conor+dt@kernel.org>, <jesper.nilsson@axis.com>,
-        <andre.przywara@arm.com>, <ada@thorsis.com>,
-        <radu_nicolae.pirea@upb.ro>, <richard.genoud@gmail.com>,
-        <gregkh@linuxfoundation.org>, <linux-spi@vger.kernel.org>,
-        <linux-serial@vger.kernel.org>
-CC:     Durai Manickam KR <durai.manickamkr@microchip.com>
-Subject: [PATCHv2 1/2] dt-bindings: serial: atmel,at91-usart: add compatible for sam9x60
-Date:   Thu, 13 Jul 2023 15:21:10 +0530
-Message-ID: <20230713095111.335346-2-durai.manickamkr@microchip.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230713095111.335346-1-durai.manickamkr@microchip.com>
-References: <20230713095111.335346-1-durai.manickamkr@microchip.com>
+        with ESMTP id S233266AbjGMJ4Z (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 13 Jul 2023 05:56:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EA8E2127
+        for <linux-spi@vger.kernel.org>; Thu, 13 Jul 2023 02:56:25 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A007361A87
+        for <linux-spi@vger.kernel.org>; Thu, 13 Jul 2023 09:56:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 08585C433C7;
+        Thu, 13 Jul 2023 09:56:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689242184;
+        bh=g+zY+7BILCb0RFWFDnPD4Rj51Xu2BDuVb4lRgmd1EME=;
+        h=Subject:From:Date:To:From;
+        b=ed0mlOx/Yv+acsK5NaWxafkxkbMowuMjjmqdGHFHW+X0IngtGWWv2NfskLSKkRzYg
+         2hnD0Mi/DS2d4e6YLs68f/6QeiN1CUsdzYlF1B+z6aUq/ep4d5cN7dJGkzc9PoZ9tA
+         3FfewQHslTuraU7/K2KtRsIL7fxXHBegHQujE5aiLqxbCOCjCw+DcwE8Tgb+Vt9OF6
+         faN7qCtgcKtQDJfxZhyFrr9M3NEJ6zMqKH6YDakHOOPg4OezjQUeu8q4oPZJHeNdvT
+         tTo0EyhztLzs9Zz86lUpkPpdHj968S5fFLOLA9wXwY60FNahBJt13hFk0OsvCy+0vo
+         200ZiRh9eNwQA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id E26F9E29F46;
+        Thu, 13 Jul 2023 09:56:23 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Subject: Patchwork housekeeping for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <168924218392.14168.6360754499314055216.git-patchwork-housekeeping@kernel.org>
+Date:   Thu, 13 Jul 2023 09:56:23 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Add sam9x60 compatible to DT bindings documentation.
+Latest series: [v2] Add SPI module for StarFive JH7110 SoC (2023-07-13T09:00:14)
+  Superseding: [v1] Add SPI module for StarFive JH7110 SoC (2023-07-04T09:21:58):
+    [RESEND,v1,1/2] dt-binding: spi: constrain minItems of clocks and clock-names
+    [RESEND,v1,2/2] riscv: dts: starfive: Add spi node for JH7110 SoC
 
-Signed-off-by: Durai Manickam KR <durai.manickamkr@microchip.com>
----
- .../devicetree/bindings/serial/atmel,at91-usart.yaml          | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/serial/atmel,at91-usart.yaml b/Documentation/devicetree/bindings/serial/atmel,at91-usart.yaml
-index 30b2131b5860..65cb2e5c5eee 100644
---- a/Documentation/devicetree/bindings/serial/atmel,at91-usart.yaml
-+++ b/Documentation/devicetree/bindings/serial/atmel,at91-usart.yaml
-@@ -16,13 +16,15 @@ properties:
-       - enum:
-           - atmel,at91rm9200-usart
-           - atmel,at91sam9260-usart
--          - microchip,sam9x60-usart
-       - items:
-           - const: atmel,at91rm9200-dbgu
-           - const: atmel,at91rm9200-usart
-       - items:
-           - const: atmel,at91sam9260-dbgu
-           - const: atmel,at91sam9260-usart
-+      - items:
-+          - const: microchip,sam9x60-usart
-+          - const: atmel,at91sam9260-usart
-       - items:
-           - const: microchip,sam9x60-dbgu
-           - const: microchip,sam9x60-usart
 -- 
-2.25.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

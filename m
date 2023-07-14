@@ -2,125 +2,101 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BB287EB64DA
-	for <linux-spi@archiver.kernel.org>; Fri, 14 Jul 2023 09:17:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ACC37C001B0
+	for <linux-spi@archiver.kernel.org>; Fri, 14 Jul 2023 09:17:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235108AbjGNJRu (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S235371AbjGNJRu (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Fri, 14 Jul 2023 05:17:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46862 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234953AbjGNJRt (ORCPT
+        with ESMTP id S235043AbjGNJRt (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Fri, 14 Jul 2023 05:17:49 -0400
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AA4B211C;
-        Fri, 14 Jul 2023 02:17:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B7C01FC9;
+        Fri, 14 Jul 2023 02:17:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689326268; x=1720862268;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=3dTgIUvDYhlnavXOxaZLL1p9dKAgNDGlalBZILcSqRs=;
-  b=BhhCLTE1MFAnNbrfcS+QIW5/jHf9m0AXXqASs9f9rEIqw9QLVLJYhDaI
-   NwsLQTbAv5CnqZSE8OXJTvCxmI/UlZ67orZOXJLWPmO/wqywZG8iA3mvV
-   GL5yS4WGnIPrbI5/R0Kr9FqSor1TVHxJTUS8R9Co9VuWkvEy7poq04Mnu
-   tw8Awp9aVpxqRGe1NBBB8aRq8UUlJomhtz/S3UL+UidGDsO5o2+qKzy1x
-   ceCbb1lWtx2XAbf5AYXBhhMBzwTiO70hg7b8KQXQ04kie1l2VyGzZw8nw
-   NLqjRzYhRJ+shTCOM/Z1TpxjZ/k/AkO17v/CJM9XB5JigajgiUvXpVEv4
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10770"; a="362897874"
+  t=1689326269; x=1720862269;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=q4kBfKspO7sFkiacFnREqVjDod6DUMgGpY8AF3efGsw=;
+  b=ko0lO94N4D06e07HpiXC+7ya2TFCPK7o5T1hN977B7wanHD0oZzsRRws
+   tVvVX76pTeznZXISLXecTP0aqCvlsoOCYWsFXRG95rkLxUkPLmc4AwIjM
+   PABd5Zb3i+nOFxFoU2epF4+yycBrjFns9LkEwVSTesfiJl7GXa2j7ACA8
+   E49YW44gRr3duRS5rIqB4xuNDHcsHdqnrb+TBSV5+KJrxEnrF+2F43CjB
+   O4MOTjvO4qjrXANH5Hu8cjESEl3yu1j8x7iVOgD6SqPEkfDBbHTVMPpHU
+   HFZKz+Y6zzdrUi7oYYjrPGB5AyJ8icsHk8o396gLxUP7y57QMANpKZeXr
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10770"; a="362897871"
 X-IronPort-AV: E=Sophos;i="6.01,204,1684825200"; 
-   d="scan'208";a="362897874"
+   d="scan'208";a="362897871"
 Received: from fmsmga003.fm.intel.com ([10.253.24.29])
   by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2023 02:17:46 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10770"; a="812357261"
+X-IronPort-AV: E=McAfee;i="6600,9927,10770"; a="812357259"
 X-IronPort-AV: E=Sophos;i="6.01,204,1684825200"; 
-   d="scan'208";a="812357261"
+   d="scan'208";a="812357259"
 Received: from black.fi.intel.com ([10.237.72.28])
   by FMSMGA003.fm.intel.com with ESMTP; 14 Jul 2023 02:17:44 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id AB94A3E3; Fri, 14 Jul 2023 12:17:50 +0300 (EEST)
+        id 74CA5379; Fri, 14 Jul 2023 12:17:50 +0300 (EEST)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Mark Brown <broonie@kernel.org>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc:     Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH v4 4/4] spi: Use struct_size() helper
-Date:   Fri, 14 Jul 2023 12:17:48 +0300
-Message-Id: <20230714091748.89681-5-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v4 0/4] spi: Header and core clean up and refactoring
+Date:   Fri, 14 Jul 2023 12:17:44 +0300
+Message-Id: <20230714091748.89681-1-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.40.0.1.gaa8946217a0b
-In-Reply-To: <20230714091748.89681-1-andriy.shevchenko@linux.intel.com>
-References: <20230714091748.89681-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The Documentation/process/deprecated.rst suggests to use flexible array
-members to provide a way to declare having a dynamically sized set of
-trailing elements in a structure.This makes code robust agains bunch of
-the issues described in the documentation, main of which is about the
-correctness of the sizeof() calculation for this data structure.
+Various cleanups and refactorings of the SPI header and core parts
+united in a single series. It also touches drivers under SPI subsystem
+folder on the pure renaming purposes of some constants.
 
-Due to above, prefer struct_size() over open-coded versions.
+No functional change intended (with some subtle shortcuts which are
+explained in the respective commit messages).
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- include/linux/spi/spi.h | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+Changelog v4:
+- dropped applied patches
+- added tag to patch 1 (Sebastian)
 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 04daf61dfd3f..7f8b478fdeb3 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -13,6 +13,7 @@
- #include <linux/gpio/consumer.h>
- #include <linux/kthread.h>
- #include <linux/mod_devicetable.h>
-+#include <linux/overflow.h>
- #include <linux/scatterlist.h>
- #include <linux/slab.h>
- #include <linux/u64_stats_sync.h>
-@@ -1085,6 +1086,8 @@ struct spi_transfer {
-  * @state: for use by whichever driver currently owns the message
-  * @resources: for resource management when the SPI message is processed
-  * @prepared: spi_prepare_message was called for the this message
-+ * @t: for use with spi_message_alloc() when message and transfers have
-+ *	been allocated together
-  *
-  * A @spi_message is used to execute an atomic sequence of data transfers,
-  * each represented by a struct spi_transfer.  The sequence is "atomic"
-@@ -1139,6 +1142,9 @@ struct spi_message {
- 
- 	/* List of spi_res resources when the SPI message is processed */
- 	struct list_head        resources;
-+
-+	/* For embedding transfers into the memory of the message */
-+	struct spi_transfer	t[];
- };
- 
- static inline void spi_message_init_no_memset(struct spi_message *m)
-@@ -1199,16 +1205,13 @@ static inline struct spi_message *spi_message_alloc(unsigned ntrans, gfp_t flags
- {
- 	struct spi_message *m;
- 
--	m = kzalloc(sizeof(struct spi_message)
--			+ ntrans * sizeof(struct spi_transfer),
--			flags);
-+	m = kzalloc(struct_size(m, t, ntrans), flags);
- 	if (m) {
- 		unsigned i;
--		struct spi_transfer *t = (struct spi_transfer *)(m + 1);
- 
- 		spi_message_init_no_memset(m);
--		for (i = 0; i < ntrans; i++, t++)
--			spi_message_add_tail(t, m);
-+		for (i = 0; i < ntrans; i++)
-+			spi_message_add_tail(&m->t[i], m);
- 	}
- 	return m;
- }
+v3: 20230711171756.86736-1-andriy.shevchenko@linux.intel.com
+
+Changelog v3:
+- dropped controversial used to be patches 3,4,8,10 (Mark)
+- amended many commit messages (Mark)
+- added tag to patch 1 (AngeloGioacchino)
+- split used to be patch 2 to patches 2 & 3 for better review (Mark)
+- rewritten used to be patch 5 to patches 4 & 5 (Mark, Sebastian)
+- added new patch 7
+- fixed typos and added tag to patch 12 (Serge)
+
+v2: 20230710154932.68377-1-andriy.shevchenko@linux.intel.com
+
+Changelog v2:
+- added new patches 3,4,5,10,13,14
+- massaged comment and kernel doc in patch 9
+- split used to be patch 4 to patches 11,12
+- covered a few things in SPI core in patch 15
+- amended commit message for above (Mark)
+- reshuffled patches in the series for better logical grouping
+
+Andy Shevchenko (4):
+  spi: Remove code duplication in spi_add_device*()
+  spi: Kill spi_add_device_locked()
+  spi: Use BITS_TO_BYTES()
+  spi: Use struct_size() helper
+
+ drivers/spi/spi.c       | 51 +++++++++++++----------------------------
+ include/linux/spi/spi.h | 15 +++++++-----
+ 2 files changed, 25 insertions(+), 41 deletions(-)
+
 -- 
 2.40.0.1.gaa8946217a0b
 

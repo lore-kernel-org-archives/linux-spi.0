@@ -2,119 +2,86 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 526F2C001E0
-	for <linux-spi@archiver.kernel.org>; Mon, 17 Jul 2023 08:59:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8A70CC001DE
+	for <linux-spi@archiver.kernel.org>; Mon, 17 Jul 2023 09:24:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229658AbjGQI7z (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 17 Jul 2023 04:59:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55844 "EHLO
+        id S229664AbjGQJYj convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 17 Jul 2023 05:24:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230190AbjGQI7v (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 17 Jul 2023 04:59:51 -0400
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7450EE7F
-        for <linux-spi@vger.kernel.org>; Mon, 17 Jul 2023 01:59:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1689584390; x=1721120390;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Atl7ulgRmZbBVqo6NH76K5Mj40dfQz/WNoIzmN0IuHk=;
-  b=Vgq50qpv9Q6yx05KERGRXBIb4afBmLXdjTnihFZNoQPMfNy11R+GAvDQ
-   8pgKHpN4SuwU7VwoXuVwdA9dfzfZB53p+pFxDtm7I/N75z5bZSBzgO9IU
-   EilZgIPWN26BRZy6mq2Jdd85HzXhN9KLEUTSEXZBT0ml5E8Xu/laQQNPE
-   x3bblKQlLN5bhGCQXLeVHUXZENE2OFm4PppeRLoRUtdKKgI8jdzHveiie
-   u9qpL5Hj6g30ROBiKzc3t1X1rPYkbICERBzW5M3t4stRb+aBpqOCPwA87
-   on4NWGueSO5VC3mrAt+PM904+a1nRUGi/7o5ymP1yoaw6o0tlXnS0fIEu
-   Q==;
-X-IronPort-AV: E=Sophos;i="6.01,211,1684792800"; 
-   d="scan'208";a="31958424"
-Received: from vtuxmail01.tq-net.de ([10.115.0.20])
-  by mx1.tq-group.com with ESMTP; 17 Jul 2023 10:59:47 +0200
-Received: from steina-w.tq-net.de (unknown [10.123.53.21])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by vtuxmail01.tq-net.de (Postfix) with ESMTPSA id 1CF6E280084;
-        Mon, 17 Jul 2023 10:59:47 +0200 (CEST)
-From:   Alexander Stein <alexander.stein@ew.tq-group.com>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     Alexander Stein <alexander.stein@ew.tq-group.com>,
-        linux-spi@vger.kernel.org
-Subject: [PATCH v2 2/3] spi: spi-fsl-lpspi: Move controller initialization further down
-Date:   Mon, 17 Jul 2023 10:59:33 +0200
-Message-Id: <20230717085934.409476-2-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230717085934.409476-1-alexander.stein@ew.tq-group.com>
-References: <20230717085934.409476-1-alexander.stein@ew.tq-group.com>
+        with ESMTP id S230218AbjGQJYi (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 17 Jul 2023 05:24:38 -0400
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8DC9C7;
+        Mon, 17 Jul 2023 02:24:36 -0700 (PDT)
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-57688a146ecso43525967b3.2;
+        Mon, 17 Jul 2023 02:24:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689585876; x=1692177876;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eKRqH2OkDw6Jod0qdSXGarONO0gHOT2T7xxDEeb7y9Q=;
+        b=TjFLFo/14lFiNfWGkk4YYkgv3l7jVvCufLAf8PFJo4EaMbJve58cKJ5YaxkVBGPkIn
+         sP13VRz9JDO7CqiBNB7TGQW+gr/5e80lsx3L//wB83WR+owElZXQffPXUgE7txCs/Lk4
+         FXTgiILhFxD8qLoau7aQqNwuq4YnTqzt0uqluMtNsmN/H8uaLZKh/I5F/YF38TdDU3mX
+         jkn9l9rjKat48Wj3f+Xc4GuGEy7BVIDOnXpQt+0Q/aCrQlIDoExA+CU2lYVSGjiCSm/3
+         bagq4q7bcHrcR4XHmPvNgJWegk9v69S4RMmTKPozAy/VtF41YS2u+3ewjGN6MYTuLHcw
+         A/vQ==
+X-Gm-Message-State: ABy/qLbcsWzxwCt9hp0nVxe04r/g28eizbkr9aHOCDVrZYumMmS/vWVv
+        RTR/Q+Bm0vFZT1sOCk5I58hBif/kMaG8gQ==
+X-Google-Smtp-Source: APBJJlGKhRREb8yhNmt26xj3HZS6x+FXMrYijob60gEGnGdOq3H7yO+1vsJ/XnEATtYQtN5DF8qozA==
+X-Received: by 2002:a0d:d6cd:0:b0:583:4304:75a4 with SMTP id y196-20020a0dd6cd000000b00583430475a4mr1269564ywd.29.1689585875801;
+        Mon, 17 Jul 2023 02:24:35 -0700 (PDT)
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com. [209.85.128.181])
+        by smtp.gmail.com with ESMTPSA id q6-20020a0dce06000000b0055a881abfc3sm3755897ywd.135.2023.07.17.02.24.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 17 Jul 2023 02:24:35 -0700 (PDT)
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-57688a146ecso43525837b3.2;
+        Mon, 17 Jul 2023 02:24:35 -0700 (PDT)
+X-Received: by 2002:a25:8507:0:b0:c65:9103:4a54 with SMTP id
+ w7-20020a258507000000b00c6591034a54mr10165096ybk.65.1689585875165; Mon, 17
+ Jul 2023 02:24:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20230715010407.1751715-1-fabrizio.castro.jz@renesas.com> <20230715010407.1751715-3-fabrizio.castro.jz@renesas.com>
+In-Reply-To: <20230715010407.1751715-3-fabrizio.castro.jz@renesas.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 17 Jul 2023 11:24:24 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdX+ecqgmAYAYT5TaYfTjp2mTogp5_BEHQPNNLNMzYPd6w@mail.gmail.com>
+Message-ID: <CAMuHMdX+ecqgmAYAYT5TaYfTjp2mTogp5_BEHQPNNLNMzYPd6w@mail.gmail.com>
+Subject: Re: [PATCH 02/10] spi: rzv2m-csi: Adopt HZ_PER_MHZ for max spi clock
+To:     Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Cc:     Mark Brown <broonie@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Chris Paterson <Chris.Paterson2@renesas.com>,
+        Biju Das <biju.das@bp.renesas.com>,
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        linux-renesas-soc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This is a preparation for reading number of chip-selects from hardware.
-This needs IO resources mapped and peripheral clocking enabled.
-No functional changes intended.
+On Sat, Jul 15, 2023 at 3:04 AM Fabrizio Castro
+<fabrizio.castro.jz@renesas.com> wrote:
+> Make use of HZ_PER_MHZ for CSI_MAX_SPI_SCKO to make it clear
+> what its value means.
+>
+> Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
----
-Changes in v2:
-* Rebase to next-20230717
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
- drivers/spi/spi-fsl-lpspi.c | 32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+Gr{oetje,eeting}s,
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 0a0677f11a3d..f3b7bb1e52eb 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -846,22 +846,6 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
- 	fsl_lpspi->is_slave = is_slave;
- 	fsl_lpspi->is_only_cs1 = of_property_read_bool((&pdev->dev)->of_node,
- 						"fsl,spi-only-use-cs1-sel");
--	if (of_property_read_u32((&pdev->dev)->of_node, "num-cs",
--				 &num_cs))
--		num_cs = 1;
--
--	controller->bits_per_word_mask = SPI_BPW_RANGE_MASK(8, 32);
--	controller->transfer_one = fsl_lpspi_transfer_one;
--	controller->prepare_transfer_hardware = lpspi_prepare_xfer_hardware;
--	controller->unprepare_transfer_hardware = lpspi_unprepare_xfer_hardware;
--	controller->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
--	controller->flags = SPI_CONTROLLER_MUST_RX | SPI_CONTROLLER_MUST_TX;
--	controller->dev.of_node = pdev->dev.of_node;
--	controller->bus_num = pdev->id;
--	controller->num_chipselect = num_cs;
--	controller->slave_abort = fsl_lpspi_slave_abort;
--	if (!fsl_lpspi->is_slave)
--		controller->use_gpio_descriptors = true;
- 
- 	init_completion(&fsl_lpspi->xfer_done);
- 
-@@ -911,6 +895,22 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
- 	temp = readl(fsl_lpspi->base + IMX7ULP_PARAM);
- 	fsl_lpspi->txfifosize = 1 << (temp & 0x0f);
- 	fsl_lpspi->rxfifosize = 1 << ((temp >> 8) & 0x0f);
-+	if (of_property_read_u32((&pdev->dev)->of_node, "num-cs",
-+				 &num_cs))
-+		num_cs = 1;
-+
-+	controller->bits_per_word_mask = SPI_BPW_RANGE_MASK(8, 32);
-+	controller->transfer_one = fsl_lpspi_transfer_one;
-+	controller->prepare_transfer_hardware = lpspi_prepare_xfer_hardware;
-+	controller->unprepare_transfer_hardware = lpspi_unprepare_xfer_hardware;
-+	controller->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
-+	controller->flags = SPI_CONTROLLER_MUST_RX | SPI_CONTROLLER_MUST_TX;
-+	controller->dev.of_node = pdev->dev.of_node;
-+	controller->bus_num = pdev->id;
-+	controller->num_chipselect = num_cs;
-+	controller->slave_abort = fsl_lpspi_slave_abort;
-+	if (!fsl_lpspi->is_slave)
-+		controller->use_gpio_descriptors = true;
- 
- 	ret = fsl_lpspi_dma_init(&pdev->dev, fsl_lpspi, controller);
- 	if (ret == -EPROBE_DEFER)
+                        Geert
+
 -- 
-2.34.1
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

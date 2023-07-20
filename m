@@ -2,112 +2,139 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 46560EB64DC
-	for <linux-spi@archiver.kernel.org>; Thu, 20 Jul 2023 08:58:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EDDF5C04FE2
+	for <linux-spi@archiver.kernel.org>; Thu, 20 Jul 2023 09:44:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229451AbjGTI6Y (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 20 Jul 2023 04:58:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38024 "EHLO
+        id S230456AbjGTJoS (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 20 Jul 2023 05:44:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231165AbjGTIsn (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 20 Jul 2023 04:48:43 -0400
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96163268E;
-        Thu, 20 Jul 2023 01:48:40 -0700 (PDT)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 82B48E0008;
-        Thu, 20 Jul 2023 08:48:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1689842919;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=vd+lEU5Fl2TIPJ8xcsPnSNyWBBTcuOGxPgWz+JpFHhw=;
-        b=TZpvZBP8z4VFpjhk1aMn9VASAw7o2tzmqRsxhui1u5vEMZ+6NllUmhF29PK0aQqjn/ZeAM
-        YaoqVo/39UESzDb9wSTsghpo+eRIK0i6PmKXfQvQvVLVRn8E06yQVCapKkV1IFdqxWv91R
-        ZhmjrIlW6PldJw/yx32DvspNkDLKJD8yG+9wMa6TDURVYNUIdH65VYe/bAMd9GoFnxP4NN
-        /KabCx1bF6RT0MVYrin7okunOVnUhF/1FLBUqLzCNLgw47w3aAoMJv1SCqe2P0cJtR6AIE
-        F8c3FJcLHdIFAga4NUHLZVTAw7mTGpOQSD9lQDOir0CWAdYb+PnmFolWBFT0EA==
-Date:   Thu, 20 Jul 2023 10:48:32 +0200
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Tudor Ambarus <tudor.ambarus@linaro.org>
-Cc:     Arnd Bergmann <arnd@kernel.org>,
-        Pratyush Yadav <pratyush@kernel.org>,
+        with ESMTP id S230062AbjGTJnz (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 20 Jul 2023 05:43:55 -0400
+Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E66A12D68;
+        Thu, 20 Jul 2023 02:40:21 -0700 (PDT)
+Received: from [192.168.1.103] (178.176.74.113) by msexch01.omp.ru
+ (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.986.14; Thu, 20 Jul
+ 2023 12:40:10 +0300
+Subject: Re: [PATCH v3 38/42] ata: pata_ep93xx: remove legacy pinctrl use
+To:     <nikita.shubin@maquefel.me>,
+        Hartley Sweeten <hsweeten@visionengravers.com>,
+        Lennert Buytenhek <kernel@wantstofly.org>,
+        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Lukasz Majewski <lukma@denx.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Sebastian Reichel <sre@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        Mark Brown <broonie@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
         Richard Weinberger <richard@nod.at>,
         Vignesh Raghavendra <vigneshr@ti.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Peter Foley <pefoley2@pefoley.com>,
-        Pedro Falcato <pedro.falcato@gmail.com>,
-        Michael Walle <michael@walle.cc>,
-        Mark Brown <broonie@kernel.org>,
-        Takahiro Kuwano <Takahiro.Kuwano@infineon.com>,
-        Dhruva Gole <d-gole@ti.com>, linux-mtd@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-Subject: Re: [PATCH] mtd: spi-nor: avoid holes in struct spi_mem_op
-Message-ID: <20230720104832.15a4d4ab@xps-13>
-In-Reply-To: <598bd9d8-249e-125c-bde3-7a63ba6dc5f7@linaro.org>
-References: <20230719190045.4007391-1-arnd@kernel.org>
-        <598bd9d8-249e-125c-bde3-7a63ba6dc5f7@linaro.org>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+        Damien Le Moal <dlemoal@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
+        <soc@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        Andy Shevchenko <andy@kernel.org>,
+        Michael Peters <mpeters@embeddedTS.com>,
+        Kris Bahnsen <kris@embeddedTS.com>
+CC:     <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-clk@vger.kernel.org>,
+        <linux-rtc@vger.kernel.org>, <linux-watchdog@vger.kernel.org>,
+        <linux-pm@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <dmaengine@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
+        <linux-ide@vger.kernel.org>, <linux-input@vger.kernel.org>,
+        <alsa-devel@alsa-project.org>
+References: <20230605-ep93xx-v3-0-3d63a5f1103e@maquefel.me>
+ <20230605-ep93xx-v3-38-3d63a5f1103e@maquefel.me>
+From:   Sergey Shtylyov <s.shtylyov@omp.ru>
+Organization: Open Mobile Platform
+Message-ID: <6316072a-f055-166d-df27-5e3ceb0e68a1@omp.ru>
+Date:   Thu, 20 Jul 2023 12:40:06 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: miquel.raynal@bootlin.com
+In-Reply-To: <20230605-ep93xx-v3-38-3d63a5f1103e@maquefel.me>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [178.176.74.113]
+X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
+ (10.188.4.12)
+X-KSE-ServerInfo: msexch01.omp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.59, Database issued on: 07/20/2023 09:02:28
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 59
+X-KSE-AntiSpam-Info: Lua profiles 178740 [Jul 20 2023]
+X-KSE-AntiSpam-Info: Version: 5.9.59.0
+X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
+X-KSE-AntiSpam-Info: LuaCore: 524 524 9753033d6953787301affc41bead8ed49c47b39d
+X-KSE-AntiSpam-Info: {rep_avail}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: {relay has no DNS name}
+X-KSE-AntiSpam-Info: {SMTP from is not routable}
+X-KSE-AntiSpam-Info: {Found in DNSBL: 178.176.74.113 in (user)
+ b.barracudacentral.org}
+X-KSE-AntiSpam-Info: 127.0.0.199:7.1.2;omp.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;178.176.74.113:7.4.1,7.7.3
+X-KSE-AntiSpam-Info: {iprep_blacklist}
+X-KSE-AntiSpam-Info: ApMailHostAddress: 178.176.74.113
+X-KSE-AntiSpam-Info: {DNS response errors}
+X-KSE-AntiSpam-Info: Rate: 59
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
+ smtp.mailfrom=omp.ru;dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 07/20/2023 09:10:00
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 7/20/2023 4:32:00 AM
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi Tudor,
+Hello!
 
-tudor.ambarus@linaro.org wrote on Thu, 20 Jul 2023 07:50:33 +0100:
+On 7/20/23 2:29 PM, Nikita Shubin via B4 Relay wrote:
 
-> On 7/19/23 20:00, Arnd Bergmann wrote:
-> > From: Arnd Bergmann <arnd@arndb.de>
-> >=20
-> > gcc gets confused when -ftrivial-auto-var-init=3Dpattern is used on spa=
-rse
-> > bit fields such as 'struct spi_mem_op', which caused the previous false
-> > positive warning about an uninitialized variable:
-> >=20
-> > drivers/mtd/spi-nor/spansion.c: error: 'op' is used uninitialized [-Wer=
-ror=3Duninitialized]
-> >=20
-> > In fact, the variable is fully initialized and gcc does not see it being
-> > used, so the warning is entirely bogus. The problem appears to be
-> > a misoptimization in the initialization of single bit fields when the
-> > rest of the bytes are not initialized.
-> >=20
-> > A previous workaround added another initialization, which ended up
-> > shutting up the warning in spansion.c, though it apparently still happe=
-ns
-> > in other files as reported by Peter Foley in the gcc bugzilla. The
-> > workaround of adding a fake initialization seems particularly bad
-> > because it would set values that can never be correct but prevent the
-> > compiler from warning about actually missing initializations.
-> >=20
-> > Revert the broken workaround and instead pad the structure to only
-> > have bitfields that add up to full bytes, which should avoid this
-> > behavior in all drivers.
-> >=20
-> > I also filed a new bug against gcc with what I found, so this can
-> > hopefully be addressed in future gcc releases. At the moment, only
-> > gcc-12 and gcc-13 are affected.
-> >=20
-> > Cc: Peter Foley <pefoley2@pefoley.com>
-> > Cc: Pedro Falcato <pedro.falcato@gmail.com>
-> > Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=3D110743
-> > Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=3D108402
-> > Link: https://godbolt.org/z/efMMsG1Kx
-> > Fixes: 420c4495b5e56 ("mtd: spi-nor: spansion: make sure local struct d=
-oes not contain garbage")
-> > Signed-off-by: Arnd Bergmann <arnd@arndb.de> =20
->=20
-> Acked-by: Tudor Ambarus <tudor.ambarus@linaro.org>
->=20
-> Miquel, would you please take this through mtd/fixes?
+> From: Nikita Shubin <nikita.shubin@maquefel.me>
+> 
+> Drop legacy acquire/release since we are using pinctrl for this now.
+> 
+> Signed-off-by: Nikita Shubin <nikita.shubin@maquefel.me>
 
-I will!
+   I think I've already given you my:
 
-Thanks,
-Miqu=C3=A8l
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+
+[...]
+
+MBR, Sergey

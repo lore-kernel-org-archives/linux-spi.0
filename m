@@ -2,71 +2,149 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DB7B7EB64DA
-	for <linux-spi@archiver.kernel.org>; Thu, 20 Jul 2023 14:09:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 19824EB64DC
+	for <linux-spi@archiver.kernel.org>; Thu, 20 Jul 2023 14:50:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231739AbjGTOJr (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 20 Jul 2023 10:09:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44852 "EHLO
+        id S229453AbjGTOuQ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 20 Jul 2023 10:50:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231751AbjGTOJr (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 20 Jul 2023 10:09:47 -0400
-Received: from m12.mail.163.com (m12.mail.163.com [220.181.12.215])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B97CF211D
-        for <linux-spi@vger.kernel.org>; Thu, 20 Jul 2023 07:09:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id; bh=wlX+/bG9wtQy7OljwS
-        zIlNKS+RtdC0pslb7nMrGc1Fc=; b=QSbFuQxXVKwGw6GoepQG9woER6W4pcxwgi
-        98htsFce59H7srf/H1rYUfzvp0l4DaRDBz+MiZ1jD8/BNrxByS/Ng3r3SVp9NT1J
-        RuVWRtQkPa4ywWFPniT/jPqPOHnhFKxfrmWUHK9zJpyUg6qNa2ouHtU+xmutJDMD
-        KzqTg74Dg=
-Received: from localhost.localdomain (unknown [202.112.113.212])
-        by zwqz-smtp-mta-g2-0 (Coremail) with SMTP id _____wC35ir9P7lkhylJAw--.62162S4;
-        Thu, 20 Jul 2023 22:09:05 +0800 (CST)
-From:   Yuanjun Gong <ruc_gongyuanjun@163.com>
-To:     Mark Brown <broonie@kernel.org>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        Ray Jui <rjui@broadcom.com>, linux-spi@vger.kernel.org
-Cc:     Yuanjun Gong <ruc_gongyuanjun@163.com>
-Subject: [PATCH 1/1] spi: fix return value check in bcm2835_spi_probe()
-Date:   Thu, 20 Jul 2023 22:08:59 +0800
-Message-Id: <20230720140859.33883-1-ruc_gongyuanjun@163.com>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID: _____wC35ir9P7lkhylJAw--.62162S4
-X-Coremail-Antispam: 1Uf129KBjvdXoWrtF4rZFy7Ar1UAr1DCryfWFg_yoWfWFbE9a
-        9rWrW3Gr4Ig39Fy3W5K3yrZrZ2gF4kCa10gF1ktayYqrZrGw13WayDXanxG3yDZw40yrWq
-        kF13AwsxAr13GjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRNGYLPUUUUU==
-X-Originating-IP: [202.112.113.212]
-X-CM-SenderInfo: 5uxfsw5rqj53pdqm30i6rwjhhfrp/1tbiUQKy5WDESWmp9QAAsc
+        with ESMTP id S232320AbjGTOuN (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 20 Jul 2023 10:50:13 -0400
+Received: from mail-vk1-xa29.google.com (mail-vk1-xa29.google.com [IPv6:2607:f8b0:4864:20::a29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49ED72704
+        for <linux-spi@vger.kernel.org>; Thu, 20 Jul 2023 07:50:08 -0700 (PDT)
+Received: by mail-vk1-xa29.google.com with SMTP id 71dfb90a1353d-48137f8b118so1384786e0c.0
+        for <linux-spi@vger.kernel.org>; Thu, 20 Jul 2023 07:50:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20221208.gappssmtp.com; s=20221208; t=1689864607; x=1690469407;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=44I4QTXSdpRlGQNX01aNu7Q8jYmgKrsVdvaz0FbrT9w=;
+        b=VHsv4k0q2otI210G2fx8UlqZVBouT1yhHPQeX4/iYKRduLbBfujemaFd84GC3ZVtWX
+         jIbCktQqByAp5iqMc/vfuiwpcDzR/b7VidjqvAa00eAxbSRDadKzFL7ftVkL0wpM8mY4
+         3nANvQf6LnRvO72e3X3PIZq6dwVKEuHJlUuToqWh59bGJFqRqqo0SosmrUxvzzRd1bBC
+         FBz8bvcUB7PznBNwhuRezNy3z5i/4TW+ggCxtW15DP+i0Lj50o4B9jSN9WUDe5Vyw8rc
+         EUeWyncBdaKXPsUBWXs360RXDU8t4kC/iicYJ16kjPZL2O0Kgs5iYg9GIm/a1AZfdPvo
+         1iNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689864607; x=1690469407;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=44I4QTXSdpRlGQNX01aNu7Q8jYmgKrsVdvaz0FbrT9w=;
+        b=JSOAiC8uSNB9f3cQpoDd7gZ47IaVCOql/BeECeAEYWDilTdnL3k6Ky9CKdbJi30pit
+         qW8CJyiW0oRE1hiuukd+TUUGCACAI5ARo+baH6/GhZJbALfofeaxYe7UQWow4rMJ6xUX
+         0cX4UKS2qk3QF5z/DVTrEYaV6gKwYMRhQwSgGCE4hg4w5svz1VvfsbB95frQSy9rQcGL
+         R5p39v4TZRy3El4ogRj3HkWBjyYI/gje6nqC3NhV5t1NR4PstFecSzeYVGzAl7qgOu+s
+         8ENQRyql6cL8DE07h6MrymKR+xIYLlBEKtdcCfxjYywASRN+WGhy9UP1Tb1a1O2ymD2G
+         rixw==
+X-Gm-Message-State: ABy/qLZY/0f7v0tGtaUwMHEoGxhyPFCzoj7wCRqmFt4OJJzIq+UwPTXq
+        icWaiJH5iEWfGB5g+uzkMZb4tKJXLaZaZIkBJ11t6A==
+X-Google-Smtp-Source: APBJJlHcVbVjnQaUrT7V7jD6HpKLdUNhc+KcBHJVAgkGL82QQnDc268rPznkIAv5GUoMxsi+qdzT6lIi9u/QnbbIPgk=
+X-Received: by 2002:a05:6122:929:b0:481:5132:48c7 with SMTP id
+ j41-20020a056122092900b00481513248c7mr2136264vka.1.1689864607273; Thu, 20 Jul
+ 2023 07:50:07 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230605-ep93xx-v3-0-3d63a5f1103e@maquefel.me> <20230605-ep93xx-v3-33-3d63a5f1103e@maquefel.me>
+In-Reply-To: <20230605-ep93xx-v3-33-3d63a5f1103e@maquefel.me>
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+Date:   Thu, 20 Jul 2023 16:49:56 +0200
+Message-ID: <CAMRc=McbD1w47GsfvY6p==jDiTQrwg96jFvVKO-9bPhNOBmapw@mail.gmail.com>
+Subject: Re: [PATCH v3 33/42] gpio: ep93xx: add DT support for gpio-ep93xx
+To:     nikita.shubin@maquefel.me
+Cc:     Hartley Sweeten <hsweeten@visionengravers.com>,
+        Lennert Buytenhek <kernel@wantstofly.org>,
+        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Lukasz Majewski <lukma@denx.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Sebastian Reichel <sre@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Mark Brown <broonie@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Damien Le Moal <dlemoal@kernel.org>,
+        Sergey Shtylyov <s.shtylyov@omp.ru>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
+        soc@kernel.org, Liam Girdwood <lgirdwood@gmail.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        Andy Shevchenko <andy@kernel.org>,
+        Michael Peters <mpeters@embeddedts.com>,
+        Kris Bahnsen <kris@embeddedts.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-rtc@vger.kernel.org,
+        linux-watchdog@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-pwm@vger.kernel.org, linux-spi@vger.kernel.org,
+        netdev@vger.kernel.org, dmaengine@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-ide@vger.kernel.org,
+        linux-input@vger.kernel.org, alsa-devel@alsa-project.org,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-in bcm2835_spi_probe(), clk_prepare_enable() may fail, therefore,
-the return value of clk_prepare_enable() should be checked, and
-the function should return error if clk_prepare_enable() fails.
+On Thu, Jul 20, 2023 at 10:30=E2=80=AFAM Nikita Shubin via B4 Relay
+<devnull+nikita.shubin.maquefel.me@kernel.org> wrote:
+>
+> From: Nikita Shubin <nikita.shubin@maquefel.me>
+>
+> Add OF ID match table.
+>
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> Signed-off-by: Nikita Shubin <nikita.shubin@maquefel.me>
+> ---
+>  drivers/gpio/gpio-ep93xx.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+>
+> diff --git a/drivers/gpio/gpio-ep93xx.c b/drivers/gpio/gpio-ep93xx.c
+> index 9a25bb0caf17..c4e272a8773d 100644
+> --- a/drivers/gpio/gpio-ep93xx.c
+> +++ b/drivers/gpio/gpio-ep93xx.c
+> @@ -360,9 +360,15 @@ static int ep93xx_gpio_probe(struct platform_device =
+*pdev)
+>         return devm_gpiochip_add_data(&pdev->dev, gc, egc);
+>  }
+>
+> +static const struct of_device_id ep93xx_gpio_match[] =3D {
+> +       { .compatible =3D "cirrus,ep9301-gpio" },
+> +       { /* sentinel */ }
+> +};
+> +
+>  static struct platform_driver ep93xx_gpio_driver =3D {
+>         .driver         =3D {
+>                 .name   =3D "gpio-ep93xx",
+> +               .of_match_table =3D ep93xx_gpio_match,
+>         },
+>         .probe          =3D ep93xx_gpio_probe,
+>  };
+>
+> --
+> 2.39.2
+>
 
-Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
----
- drivers/spi/spi-bcm2835.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index 3b253da98c05..7dfa1b3bd069 100644
---- a/drivers/spi/spi-bcm2835.c
-+++ b/drivers/spi/spi-bcm2835.c
-@@ -1363,7 +1363,9 @@ static int bcm2835_spi_probe(struct platform_device *pdev)
- 	if (bs->irq <= 0)
- 		return bs->irq ? bs->irq : -ENODEV;
- 
--	clk_prepare_enable(bs->clk);
-+	err = clk_prepare_enable(bs->clk);
-+	if (err)
-+		return err;
- 	bs->clk_hz = clk_get_rate(bs->clk);
- 
- 	err = bcm2835_dma_init(ctlr, &pdev->dev, bs);
--- 
-2.17.1
-
+Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>

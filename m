@@ -2,84 +2,59 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E2615C04FDF
-	for <linux-spi@archiver.kernel.org>; Mon, 24 Jul 2023 10:20:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B1C2EC001DE
+	for <linux-spi@archiver.kernel.org>; Mon, 24 Jul 2023 10:56:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230382AbjGXKTr convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 24 Jul 2023 06:19:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51260 "EHLO
+        id S233252AbjGXK4t (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 24 Jul 2023 06:56:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233581AbjGXKSg (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 24 Jul 2023 06:18:36 -0400
-Received: from ex01.ufhost.com (ex01.ufhost.com [61.152.239.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4624B5267;
-        Mon, 24 Jul 2023 03:10:57 -0700 (PDT)
-Received: from EXMBX166.cuchost.com (unknown [175.102.18.54])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (Client CN "EXMBX166", Issuer "EXMBX166" (not verified))
-        by ex01.ufhost.com (Postfix) with ESMTP id 3B65024E337;
-        Mon, 24 Jul 2023 18:10:56 +0800 (CST)
-Received: from EXMBX068.cuchost.com (172.16.6.68) by EXMBX166.cuchost.com
- (172.16.6.76) with Microsoft SMTP Server (TLS) id 15.0.1497.42; Mon, 24 Jul
- 2023 18:10:56 +0800
-Received: from williamqiu-virtual-machine.starfivetech.com (171.223.208.138)
- by EXMBX068.cuchost.com (172.16.6.68) with Microsoft SMTP Server (TLS) id
- 15.0.1497.42; Mon, 24 Jul 2023 18:10:55 +0800
-From:   William Qiu <william.qiu@starfivetech.com>
-To:     <devicetree@vger.kernel.org>, <linux-spi@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-riscv@lists.infradead.org>
-CC:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Emil Renner Berthing <kernel@esmil.dk>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        William Qiu <william.qiu@starfivetech.com>
-Subject: [PATCH v3 0/2] Add SPI module for StarFive JH7110 SoC
-Date:   Mon, 24 Jul 2023 18:10:52 +0800
-Message-ID: <20230724101054.25268-1-william.qiu@starfivetech.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S233155AbjGXK4p (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 24 Jul 2023 06:56:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E978199
+        for <linux-spi@vger.kernel.org>; Mon, 24 Jul 2023 03:56:30 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2AE106109E
+        for <linux-spi@vger.kernel.org>; Mon, 24 Jul 2023 10:56:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8BE55C433C9;
+        Mon, 24 Jul 2023 10:56:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690196189;
+        bh=InYdxvpge/EwsUuxQ0TgB1xjDrU93ABZCGLCumwCrnw=;
+        h=Subject:From:Date:To:From;
+        b=V6T4jxZEZBiKf9qY7Uc7OkgLmS7n0YAqIN5KDMvYClUlmHjXPVHRb3rsGUtqwf9gO
+         Gp6kDZrq0qAjDKTK6qLl57rUBA3AZfhPHuGIg5+KDZgVol/K2PsgNCJN1iJvtrtgXr
+         UyYj17KbhLOR1YfwVuuWVYJtEMsO3jgZOjE+sr6GwctWhkp2zAwrGEgFdbbmLp0QTa
+         ZEE2ZOOnwd7vEkPjAgROQOOgoCrBcrYsEfN97w7tvBhwUmX69ge9r+/Q5Vl8nAf6ul
+         mZ6BXRh9ETgv2+p99dUhxlfCB4Kz0K/TmMVhnMqFeNX0UfyayAJyCMetxmKxOlqxxv
+         GLCeBIytSQ6jw==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 6E98DE1F658;
+        Mon, 24 Jul 2023 10:56:29 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [171.223.208.138]
-X-ClientProxiedBy: EXCAS066.cuchost.com (172.16.6.26) To EXMBX068.cuchost.com
- (172.16.6.68)
-X-YovoleRuleAgent: yovoleflag
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <169019618944.8717.9548974087397085387.git-patchwork-housekeeping@kernel.org>
+Date:   Mon, 24 Jul 2023 10:56:29 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi,
+Latest series: [v3] Add SPI module for StarFive JH7110 SoC (2023-07-24T10:10:54)
+  Superseding: [v2] Add SPI module for StarFive JH7110 SoC (2023-07-13T09:00:14):
+    [v2,1/3] dt-bindings: spi: add reference file to YAML
+    [v2,2/3] dt-bindings: spi: constrain minItems of clocks and clock-names
+    [v2,3/3] riscv: dts: starfive: Add spi node for JH7110 SoC
 
-This patchset adds initial rudimentary support for the StarFive
-SPI controller. And this driver will be used in StarFive's
-VisionFive 2 board. The first patch constrain minItems of clocks
-for JH7110 SPI and Patch 2 adds support for StarFive JH7110 SPI.
 
-Changes v2->v3:
-- Rebaed to v6.5rc3.
-- Registered one more clock.
-- Dropped commit that changed the number of clocks in YAML.
-- Rewrited the commit comment.
-
-Changes v1->v2:
-- Rebaed to v6.5rc1.
-- Submitted reference file separately.
-- Dropped 'status' node as it was 'okay' by default.
-- Dropped Co-developed-by message.
-
-The patch series is based on v6.5rc3.
-
-William Qiu (2):
-  dt-bindings: spi: add reference file to YAML
-  riscv: dts: starfive: Add spi node and pins configuration
-
- .../devicetree/bindings/spi/spi-pl022.yaml    |   1 +
- .../jh7110-starfive-visionfive-2.dtsi         |  50 +++++++++
- arch/riscv/boot/dts/starfive/jh7110.dtsi      | 105 ++++++++++++++++++
- 3 files changed, 156 insertions(+)
-
---
-2.34.1
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

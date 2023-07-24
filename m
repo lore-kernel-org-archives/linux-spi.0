@@ -2,26 +2,26 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DB31DC001E0
-	for <linux-spi@archiver.kernel.org>; Mon, 24 Jul 2023 10:20:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E2615C04FDF
+	for <linux-spi@archiver.kernel.org>; Mon, 24 Jul 2023 10:20:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229948AbjGXKTq convert rfc822-to-8bit (ORCPT
+        id S230382AbjGXKTr convert rfc822-to-8bit (ORCPT
         <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 24 Jul 2023 06:19:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50842 "EHLO
+        Mon, 24 Jul 2023 06:19:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233582AbjGXKSg (ORCPT
+        with ESMTP id S233581AbjGXKSg (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Mon, 24 Jul 2023 06:18:36 -0400
 Received: from ex01.ufhost.com (ex01.ufhost.com [61.152.239.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4860593D8;
-        Mon, 24 Jul 2023 03:10:58 -0700 (PDT)
-Received: from EXMBX165.cuchost.com (unknown [175.102.18.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4624B5267;
+        Mon, 24 Jul 2023 03:10:57 -0700 (PDT)
+Received: from EXMBX166.cuchost.com (unknown [175.102.18.54])
         (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (Client CN "EXMBX165", Issuer "EXMBX165" (not verified))
-        by ex01.ufhost.com (Postfix) with ESMTP id E691424E350;
+        (Client CN "EXMBX166", Issuer "EXMBX166" (not verified))
+        by ex01.ufhost.com (Postfix) with ESMTP id 3B65024E337;
         Mon, 24 Jul 2023 18:10:56 +0800 (CST)
-Received: from EXMBX068.cuchost.com (172.16.6.68) by EXMBX165.cuchost.com
- (172.16.6.75) with Microsoft SMTP Server (TLS) id 15.0.1497.42; Mon, 24 Jul
+Received: from EXMBX068.cuchost.com (172.16.6.68) by EXMBX166.cuchost.com
+ (172.16.6.76) with Microsoft SMTP Server (TLS) id 15.0.1497.42; Mon, 24 Jul
  2023 18:10:56 +0800
 Received: from williamqiu-virtual-machine.starfivetech.com (171.223.208.138)
  by EXMBX068.cuchost.com (172.16.6.68) with Microsoft SMTP Server (TLS) id
@@ -35,12 +35,10 @@ CC:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
         Emil Renner Berthing <kernel@esmil.dk>,
         Linus Walleij <linus.walleij@linaro.org>,
         William Qiu <william.qiu@starfivetech.com>
-Subject: [PATCH v3 1/2] dt-bindings: spi: add reference file to YAML
-Date:   Mon, 24 Jul 2023 18:10:53 +0800
-Message-ID: <20230724101054.25268-2-william.qiu@starfivetech.com>
+Subject: [PATCH v3 0/2] Add SPI module for StarFive JH7110 SoC
+Date:   Mon, 24 Jul 2023 18:10:52 +0800
+Message-ID: <20230724101054.25268-1-william.qiu@starfivetech.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230724101054.25268-1-william.qiu@starfivetech.com>
-References: <20230724101054.25268-1-william.qiu@starfivetech.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [171.223.208.138]
@@ -52,27 +50,36 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-In JH7110 SoC, the spi module needs to use "arm,primecell-periphid" to
-override the h/w ID value to  correctly init "spi_dev", so add
-"primecell.yaml" as the reference file for YAML.
+Hi,
 
-Signed-off-by: William Qiu <william.qiu@starfivetech.com>
----
- Documentation/devicetree/bindings/spi/spi-pl022.yaml | 1 +
- 1 file changed, 1 insertion(+)
+This patchset adds initial rudimentary support for the StarFive
+SPI controller. And this driver will be used in StarFive's
+VisionFive 2 board. The first patch constrain minItems of clocks
+for JH7110 SPI and Patch 2 adds support for StarFive JH7110 SPI.
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-pl022.yaml b/Documentation/devicetree/bindings/spi/spi-pl022.yaml
-index 91e540a92faf..5e5a704a766e 100644
---- a/Documentation/devicetree/bindings/spi/spi-pl022.yaml
-+++ b/Documentation/devicetree/bindings/spi/spi-pl022.yaml
-@@ -11,6 +11,7 @@ maintainers:
- 
- allOf:
-   - $ref: spi-controller.yaml#
-+  - $ref: /schemas/arm/primecell.yaml#
- 
- # We need a select here so we don't match all nodes with 'arm,primecell'
- select:
--- 
+Changes v2->v3:
+- Rebaed to v6.5rc3.
+- Registered one more clock.
+- Dropped commit that changed the number of clocks in YAML.
+- Rewrited the commit comment.
+
+Changes v1->v2:
+- Rebaed to v6.5rc1.
+- Submitted reference file separately.
+- Dropped 'status' node as it was 'okay' by default.
+- Dropped Co-developed-by message.
+
+The patch series is based on v6.5rc3.
+
+William Qiu (2):
+  dt-bindings: spi: add reference file to YAML
+  riscv: dts: starfive: Add spi node and pins configuration
+
+ .../devicetree/bindings/spi/spi-pl022.yaml    |   1 +
+ .../jh7110-starfive-visionfive-2.dtsi         |  50 +++++++++
+ arch/riscv/boot/dts/starfive/jh7110.dtsi      | 105 ++++++++++++++++++
+ 3 files changed, 156 insertions(+)
+
+--
 2.34.1
 

@@ -2,95 +2,120 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6C3F1C001DE
-	for <linux-spi@archiver.kernel.org>; Tue, 25 Jul 2023 17:58:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0278DC0015E
+	for <linux-spi@archiver.kernel.org>; Tue, 25 Jul 2023 18:03:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232168AbjGYR6q (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 25 Jul 2023 13:58:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51098 "EHLO
+        id S230410AbjGYSDi (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 25 Jul 2023 14:03:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231896AbjGYR6m (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 25 Jul 2023 13:58:42 -0400
-Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CFEE2122
-        for <linux-spi@vger.kernel.org>; Tue, 25 Jul 2023 10:58:36 -0700 (PDT)
-Received: by mail-ed1-x52f.google.com with SMTP id 4fb4d7f45d1cf-5221b90f763so5274391a12.0
-        for <linux-spi@vger.kernel.org>; Tue, 25 Jul 2023 10:58:36 -0700 (PDT)
+        with ESMTP id S229683AbjGYSDh (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 25 Jul 2023 14:03:37 -0400
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FEE21FDD
+        for <linux-spi@vger.kernel.org>; Tue, 25 Jul 2023 11:03:36 -0700 (PDT)
+Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1b9ecf0cb4cso33374695ad.2
+        for <linux-spi@vger.kernel.org>; Tue, 25 Jul 2023 11:03:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1690307914; x=1690912714;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GMKz+TTfcKiqAZL/r0ZMj0g0KndoteFH21pGmnEW37o=;
-        b=C4hfvdcz2Kd0kg0THkwyqsUnm7jg6s7XMrWcyfK+ASRMvcXgDr3GMWvjfreAq47KJX
-         VNjtIVJN/FESh6Sc9yzffvhWPnqbESaZRDWJCAxNDEOBnkVm0xUVZ8sMCYppgNU3ExKo
-         TX4XmxaGRShLsqlpUN6fc99Vc0jnxBLUEBGGY=
+        d=chromium.org; s=google; t=1690308216; x=1690913016;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=A3wk98CPhmXaucfW3yFy0X9veK7c7V/LOvkjR4lZXDk=;
+        b=mdgqGoEyde5ufR0v0DwdbxwxdHa372uxZ0WCuZCPFnP2tWnW3cD+aRMsF3UhDkW2W8
+         JRNRLtjBkoPm/8J+2v8HL3qRmFef49+Bom+JO5Ec/knUI7wtUTiCn7WGM+yUu0pprK9T
+         lf5uswnmIi0XpGMFOBgRcHhnhqrYFfANyRFJY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690307914; x=1690912714;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GMKz+TTfcKiqAZL/r0ZMj0g0KndoteFH21pGmnEW37o=;
-        b=hevnS4Veg1aPSG6QrXmcgfezJYpQvnI7sURhPk0lQMq39AZ8NLPwj9ICd/fc4x2Mhb
-         3xu8u3Fw0/WSrthbA6zMUU7O9KyEKVCzQZtnD78rAErfBDqFDNCC/AxmgM9eELtLXJwx
-         GLFvTUx/VP61Zyeh/ppW4F71SVnTRqzw2kvf5RY+Vq4QB86E4807BZ8N6ompXqa+geG0
-         Krv8SVwUQFqVuPAvW3ieTSxMCqbVUHryvktN0+3TVHPzSKx7mjUZEKLNOx+zznk7xpgC
-         TV4mReUsia8B89BaIyFYDoyginZ+28VUiH5IUSI7PA3LrCr82LRP99pqkMpb+gtcgw9Z
-         4Usw==
-X-Gm-Message-State: ABy/qLYGqHXplQAhaSQ90LulKGK20WplfP4hCpCHSFeb3NB/LqFI53Vm
-        B85FXJZQ2tHmWaQSGHbJBDwuuY/vaQGsJFaCbJmt3AIp
-X-Google-Smtp-Source: APBJJlGbTXtsEPAmfexWynzaLkTRtjYkhFLIK2ajQMNmIfrs6JUfs92P0+2TXHY1xITKBOej21aJCA==
-X-Received: by 2002:a17:906:7a53:b0:98e:933:2909 with SMTP id i19-20020a1709067a5300b0098e09332909mr13529856ejo.22.1690307914490;
-        Tue, 25 Jul 2023 10:58:34 -0700 (PDT)
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com. [209.85.208.45])
-        by smtp.gmail.com with ESMTPSA id z6-20020a170906814600b00993cc1242d4sm8465179ejw.151.2023.07.25.10.58.33
-        for <linux-spi@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Jul 2023 10:58:33 -0700 (PDT)
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-51e24210395so1497a12.0
-        for <linux-spi@vger.kernel.org>; Tue, 25 Jul 2023 10:58:33 -0700 (PDT)
-X-Received: by 2002:a50:d6de:0:b0:51e:5773:891d with SMTP id
- l30-20020a50d6de000000b0051e5773891dmr136155edj.4.1690307913684; Tue, 25 Jul
- 2023 10:58:33 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1690308216; x=1690913016;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=A3wk98CPhmXaucfW3yFy0X9veK7c7V/LOvkjR4lZXDk=;
+        b=UEb6Lr2jmEUDOL0jQrVj2TfTbE5n3jOvPWc8+UIsHS+XJIhJarVFcEJghM6YMz3phI
+         eeiW/aUvsK0SzgB5yRu+y4K/7GZP6igsRok7Z5uRTqEePdK5oPy5tgkjegjZ+ECKH/n/
+         nPoAyhOJDXmBraGwhD/Vr8mQLkfvwjI960Zq1jtEZtpVQg/UjqllZ8MFMyWOfguq4FVn
+         AA/LcUKLQKlgw/PzunehCV6mal3iefoZD1mZsTsWONRNFWqCnmTlAuWOvve/e/Ta+9O6
+         oIEs7UVRydw7uK5x+AG2oINRez4s1BNmRFfbQ4bua0SzTfd1QRP30pOB/DOna16JBwts
+         KjYQ==
+X-Gm-Message-State: ABy/qLZBl+SgpdmMgtxafonZEykHXCinBuNl+yf2NqlYqOIPECkNfbj0
+        EdON/I8AHtKJqp4lbm04p12R2A==
+X-Google-Smtp-Source: APBJJlHM3LA5e8y9FJWQ5S6qBfzNrEBCpsSXTklOVDUtXJMwIuGCv66gAUEtztxROBRKSmqdn+oUoQ==
+X-Received: by 2002:a17:902:d487:b0:1b8:8069:d432 with SMTP id c7-20020a170902d48700b001b88069d432mr23474plg.16.1690308215805;
+        Tue, 25 Jul 2023 11:03:35 -0700 (PDT)
+Received: from tictac2.mtv.corp.google.com ([2620:15c:9d:2:c363:4681:f5b8:301])
+        by smtp.gmail.com with ESMTPSA id jl14-20020a170903134e00b001b54a88e4a6sm11305254plb.51.2023.07.25.11.03.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Jul 2023 11:03:35 -0700 (PDT)
+From:   Douglas Anderson <dianders@chromium.org>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     Vijaya Krishna Nivarthi <quic_vnivarth@quicinc.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org
+Subject: [PATCH 1/2] spi: spi-qcom-qspi: Fallback to PIO for xfers that aren't multiples of 4 bytes
+Date:   Tue, 25 Jul 2023 11:02:26 -0700
+Message-ID: <20230725110226.1.Ia2f980fc7cd0b831e633391f0bb1272914d8f381@changeid>
+X-Mailer: git-send-email 2.41.0.487.g6d72f3e995-goog
 MIME-Version: 1.0
-References: <1690285689-30233-1-git-send-email-quic_vnivarth@quicinc.com> <1690285689-30233-5-git-send-email-quic_vnivarth@quicinc.com>
-In-Reply-To: <1690285689-30233-5-git-send-email-quic_vnivarth@quicinc.com>
-From:   Doug Anderson <dianders@chromium.org>
-Date:   Tue, 25 Jul 2023 10:58:21 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=X+LULPZW7fccz2aMqfrR=fuOvBAb7LN-mGYeppuxAQZw@mail.gmail.com>
-Message-ID: <CAD=FV=X+LULPZW7fccz2aMqfrR=fuOvBAb7LN-mGYeppuxAQZw@mail.gmail.com>
-Subject: Re: [PATCH 4/4] spi: spi-qcom-qspi: Add DMA_CHAIN_DONE to ALL_IRQS
-To:     Vijaya Krishna Nivarthi <quic_vnivarth@quicinc.com>
-Cc:     agross@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
-        broonie@kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        quic_msavaliy@quicinc.com, mka@chromium.org, swboyd@chromium.org,
-        quic_vtanuku@quicinc.com, dan.carpenter@linaro.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi,
+The Qualcomm QSPI driver appears to require that any reads using DMA
+are a mutliple of 4 bytes. If this isn't true then the controller will
+clobber any extra bytes in memory following the last word. Let's
+detect this and falback to PIO.
 
-On Tue, Jul 25, 2023 at 4:48=E2=80=AFAM Vijaya Krishna Nivarthi
-<quic_vnivarth@quicinc.com> wrote:
->
-> Add latest added DMA_CHAIN_DONE irq to QSPI_ALL_IRQS that encompasses all
-> of the qspi IRQs.
->
-> Signed-off-by: Vijaya Krishna Nivarthi <quic_vnivarth@quicinc.com>
-> ---
->  drivers/spi/spi-qcom-qspi.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+This fixes problems reported by slub_debug=FZPUA, which would complain
+about "kmalloc Redzone overwritten". One such instance said:
 
-I don't think this really does anything since the interrupts shouldn't
-really be "hanging around" when a PIO transfer starts and that's the
-only place it's used. I suspect we could actually fully remove that
-bit of "Ack any previous interrupts that might be hanging around" code
-and everything would be fine.
+  0xffffff80c29d541a-0xffffff80c29d541b @offset=21530. First byte 0x0 instead of 0xcc
+  Allocated in mtd_kmalloc_up_to+0x98/0xac age=36 cpu=3 pid=6658
 
-In any case, I don't have any huge objections, thus:
+Tracing through what was happening I saw that, while we often did DMA
+tranfers of 0x1000 bytes, sometimes we'd end up doing ones of 0x41a
+bytes. Those 0x41a byte transfers were the problem.
 
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
+NOTE: a future change will enable the SPI "mem ops" to help avoid this
+case, but it still seems good to add the extra check in the transfer.
+
+Fixes: b5762d95607e ("spi: spi-qcom-qspi: Add DMA mode support")
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+---
+
+ drivers/spi/spi-qcom-qspi.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/drivers/spi/spi-qcom-qspi.c b/drivers/spi/spi-qcom-qspi.c
+index a0ad9802b606..39b4d8a8107a 100644
+--- a/drivers/spi/spi-qcom-qspi.c
++++ b/drivers/spi/spi-qcom-qspi.c
+@@ -355,10 +355,22 @@ static int qcom_qspi_setup_dma_desc(struct qcom_qspi *ctrl,
+ 
+ 	for (i = 0; i < sgt->nents; i++) {
+ 		dma_ptr_sg = sg_dma_address(sgt->sgl + i);
++		dma_len_sg = sg_dma_len(sgt->sgl + i);
+ 		if (!IS_ALIGNED(dma_ptr_sg, QSPI_ALIGN_REQ)) {
+ 			dev_warn_once(ctrl->dev, "dma_address not aligned to %d\n", QSPI_ALIGN_REQ);
+ 			return -EAGAIN;
+ 		}
++		/*
++		 * When reading with DMA the controller writes to memory 1 word
++		 * at a time. If the length isn't a multiple of 4 bytes then
++		 * the controller can clobber the things later in memory.
++		 * Fallback to PIO to be safe.
++		 */
++		if (ctrl->xfer.dir == QSPI_READ && (dma_len_sg & 0x03)) {
++			dev_warn_once(ctrl->dev, "fallback to PIO for read of size %#010x\n",
++				      dma_len_sg);
++			return -EAGAIN;
++		}
+ 	}
+ 
+ 	for (i = 0; i < sgt->nents; i++) {
+-- 
+2.41.0.487.g6d72f3e995-goog
+

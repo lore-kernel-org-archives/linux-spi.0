@@ -2,48 +2,48 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 74A8DC001DF
-	for <linux-spi@archiver.kernel.org>; Tue, 25 Jul 2023 11:48:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2BD77C05051
+	for <linux-spi@archiver.kernel.org>; Tue, 25 Jul 2023 11:48:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232396AbjGYLsk (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 25 Jul 2023 07:48:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56004 "EHLO
+        id S232523AbjGYLsl (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 25 Jul 2023 07:48:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235125AbjGYLsY (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 25 Jul 2023 07:48:24 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1420410E2;
-        Tue, 25 Jul 2023 04:48:24 -0700 (PDT)
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36PAYktD019048;
-        Tue, 25 Jul 2023 11:48:19 GMT
+        with ESMTP id S235151AbjGYLsa (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 25 Jul 2023 07:48:30 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96AD1E74;
+        Tue, 25 Jul 2023 04:48:29 -0700 (PDT)
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36PAVuMd013198;
+        Tue, 25 Jul 2023 11:48:24 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id; s=qcppdkim1;
- bh=clDcQqjrv+FXeXzp9dqtQs5Snq+9ZGR37NVMAlAyCgw=;
- b=kIFh256eTdoyZzhDtphEWLmJf3mO7QNU5kTvftjTRha3dkK3WmqNGkyUJaXf+TVpu1I3
- S591jkbvraA4SCJb6CKEu0ohGZ5yhX7/2kZmB4FkDYWMm+0YE1kz4zFKAQibEdiEQEWX
- l2EgkjerBXyPRINQiHcOYinl7DLcvusIP6YcbohTVeMDdVNO11EvMgAxxZSAupH0Z//m
- 9AFfaMjZYBfYGAgMF6ArL2DgmwrPakkGrSGmNg6g6mZWFjyMoTDPVJv9ogVEhKLvnf7+
- Ua8DCJmh5a4zu+7lGOKOtpJ04yMZimD6I8oAnwNKAp7la5s16BQHhFh4wosVrPoFHp1R 9g== 
+ subject : date : message-id : in-reply-to : references; s=qcppdkim1;
+ bh=3e0b7EvvEVtXP6Zq2CP3Qw3EoqOYKi7wp2ZLSG6MY5c=;
+ b=Svy1parQ5axKRJZK3rvr8Wg0JNL0bpCmqAaDxcRt/7u14LaDZVT7dZSQ3RNVIcowdM9F
+ X2UqeOJ9XD27JdtHN3VgideIRtRXNAmkzzPj4BdT8/tfRnod+rnjhPNA7Rdzvjay/Uyy
+ 7V0HlcNIbKmaxUsQeuZbuZ+hkL+GfqR8la/WXTzcYyJCzKYv+nI4iFGVMUMrYszVFky2
+ zcLX1YgeGQ+HZbukrOUZ+Ne2VwEbCuVpn9lWiyrgxNcug/PYBcVZwah7uwZKrc/Krcn7
+ 8MpGKH/u2rLB9GZUHmsac4WUpUBJRjfZtOe8tJPQEEsuY1kkSDN5hrof9dwG3Tu/8/5V uw== 
 Received: from apblrppmta01.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3s1u3taayd-1
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3s29j5gjse-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 25 Jul 2023 11:48:19 +0000
+        Tue, 25 Jul 2023 11:48:24 +0000
 Received: from pps.filterd (APBLRPPMTA01.qualcomm.com [127.0.0.1])
-        by APBLRPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 36PBmFHn008429;
-        Tue, 25 Jul 2023 11:48:16 GMT
+        by APBLRPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 36PBmLsH008490;
+        Tue, 25 Jul 2023 11:48:21 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-        by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 3s086kv0xy-1
+        by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 3s086kv0yu-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-        Tue, 25 Jul 2023 11:48:15 +0000
+        Tue, 25 Jul 2023 11:48:21 +0000
 Received: from APBLRPPMTA01.qualcomm.com (APBLRPPMTA01.qualcomm.com [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36PBmFbo008424;
-        Tue, 25 Jul 2023 11:48:15 GMT
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36PBmKi8008485;
+        Tue, 25 Jul 2023 11:48:20 GMT
 Received: from hu-sgudaval-hyd.qualcomm.com (hu-vnivarth-hyd.qualcomm.com [10.213.111.166])
-        by APBLRPPMTA01.qualcomm.com (PPS) with ESMTP id 36PBmFE1008423;
-        Tue, 25 Jul 2023 11:48:15 +0000
+        by APBLRPPMTA01.qualcomm.com (PPS) with ESMTP id 36PBmKii008484;
+        Tue, 25 Jul 2023 11:48:20 +0000
 Received: by hu-sgudaval-hyd.qualcomm.com (Postfix, from userid 3994820)
-        id A6E743434; Tue, 25 Jul 2023 17:18:14 +0530 (+0530)
+        id D6CA13434; Tue, 25 Jul 2023 17:18:19 +0530 (+0530)
 From:   Vijaya Krishna Nivarthi <quic_vnivarth@quicinc.com>
 To:     agross@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
         broonie@kernel.org, linux-arm-msm@vger.kernel.org,
@@ -52,43 +52,51 @@ Cc:     quic_msavaliy@quicinc.com, dianders@chromium.org, mka@chromium.org,
         swboyd@chromium.org, quic_vtanuku@quicinc.com,
         dan.carpenter@linaro.org,
         Vijaya Krishna Nivarthi <quic_vnivarth@quicinc.com>
-Subject: [PATCH 0/4] spi: spi-qcom-qspi: Follow-up patches to DMA mode support
-Date:   Tue, 25 Jul 2023 17:18:05 +0530
-Message-Id: <1690285689-30233-1-git-send-email-quic_vnivarth@quicinc.com>
+Subject: [PATCH 4/4] spi: spi-qcom-qspi: Add DMA_CHAIN_DONE to ALL_IRQS
+Date:   Tue, 25 Jul 2023 17:18:09 +0530
+Message-Id: <1690285689-30233-5-git-send-email-quic_vnivarth@quicinc.com>
 X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1690285689-30233-1-git-send-email-quic_vnivarth@quicinc.com>
+References: <1690285689-30233-1-git-send-email-quic_vnivarth@quicinc.com>
 X-QCInternal: smtphost
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: fWeRQ_8UFhZKKIxNLeebMjjvl2G24nOb
-X-Proofpoint-ORIG-GUID: fWeRQ_8UFhZKKIxNLeebMjjvl2G24nOb
+X-Proofpoint-ORIG-GUID: znj9Rg9zXRfC7u0xWKRV3DrYy7bjHiQO
+X-Proofpoint-GUID: znj9Rg9zXRfC7u0xWKRV3DrYy7bjHiQO
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-07-25_06,2023-07-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
- mlxlogscore=636 clxscore=1011 impostorscore=0 suspectscore=0 spamscore=0
- phishscore=0 adultscore=0 bulkscore=0 malwarescore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
- definitions=main-2307250103
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 suspectscore=0
+ adultscore=0 malwarescore=0 mlxlogscore=688 phishscore=0 clxscore=1015
+ mlxscore=0 bulkscore=0 lowpriorityscore=0 priorityscore=1501
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2307250103
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This patch series adds 4 follow-up changes to DMA mode support.
-1. Handles write failure in some cases by averting a race condition
-2. Handles static checker warning
-3. Adds a memory barrier to avoid a possible data out of sync case
-4. Book keeping change
+Add latest added DMA_CHAIN_DONE irq to QSPI_ALL_IRQS that encompasses all
+of the qspi IRQs.
 
-Vijaya Krishna Nivarthi (4):
-  spi: spi-qcom-qspi: Ignore disabled interrupts' status in isr
-  spi: spi-qcom-qspi: Use GFP_ATOMIC flag while allocating for
-    descriptor
-  spi: spi-qcom-qspi: Call dma_wmb() after setting up descriptors
-  spi: spi-qcom-qspi: Add DMA_CHAIN_DONE to ALL_IRQS
+Signed-off-by: Vijaya Krishna Nivarthi <quic_vnivarth@quicinc.com>
+---
+ drivers/spi/spi-qcom-qspi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- drivers/spi/spi-qcom-qspi.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
-
+diff --git a/drivers/spi/spi-qcom-qspi.c b/drivers/spi/spi-qcom-qspi.c
+index d75234d..b56cb16 100644
+--- a/drivers/spi/spi-qcom-qspi.c
++++ b/drivers/spi/spi-qcom-qspi.c
+@@ -69,7 +69,7 @@
+ 				 WR_FIFO_OVERRUN)
+ #define QSPI_ALL_IRQS		(QSPI_ERR_IRQS | RESP_FIFO_RDY | \
+ 				 WR_FIFO_EMPTY | WR_FIFO_FULL | \
+-				 TRANSACTION_DONE)
++				 TRANSACTION_DONE | DMA_CHAIN_DONE)
+ 
+ #define PIO_XFER_CTRL		0x0014
+ #define REQUEST_COUNT_MSK	0xffff
 -- 
+Qualcomm INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum, hosted by the Linux Foundation.
 

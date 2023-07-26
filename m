@@ -2,34 +2,36 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B562DC001DC
-	for <linux-spi@archiver.kernel.org>; Wed, 26 Jul 2023 07:14:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 21399C001E0
+	for <linux-spi@archiver.kernel.org>; Wed, 26 Jul 2023 07:14:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232388AbjGZHOk (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 26 Jul 2023 03:14:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48580 "EHLO
+        id S232167AbjGZHOm (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 26 Jul 2023 03:14:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232101AbjGZHOM (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 26 Jul 2023 03:14:12 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A99B52722;
+        with ESMTP id S232141AbjGZHON (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 26 Jul 2023 03:14:13 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 521542705;
         Wed, 26 Jul 2023 00:10:32 -0700 (PDT)
 Received: from dggpeml100024.china.huawei.com (unknown [172.30.72.56])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4R9lQ72P5WzrSBn;
-        Wed, 26 Jul 2023 15:09:35 +0800 (CST)
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4R9lPN2n6pzVk3X;
+        Wed, 26 Jul 2023 15:08:56 +0800 (CST)
 Received: from china (10.175.101.107) by dggpeml100024.china.huawei.com
  (7.185.36.115) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Wed, 26 Jul
- 2023 15:10:28 +0800
+ 2023 15:10:29 +0800
 From:   Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
 To:     <broonie@kernel.org>, <rostedt@goodmis.org>, <mingo@redhat.com>,
         <frowand.list@gmail.com>
 CC:     <zhangxiaoxu5@huawei.com>, <weiyongjun1@huawei.com>,
         <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>
-Subject: [PATCH v2 -next 0/3] spi: Introduce BPF based SPI mockup controller
-Date:   Wed, 26 Jul 2023 15:08:46 +0000
-Message-ID: <20230726150849.28407-1-zhangxiaoxu5@huawei.com>
+Subject: [PATCH v2 -next 3/3] spi: mockup: Add documentation
+Date:   Wed, 26 Jul 2023 15:08:49 +0000
+Message-ID: <20230726150849.28407-4-zhangxiaoxu5@huawei.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230726150849.28407-1-zhangxiaoxu5@huawei.com>
+References: <20230726150849.28407-1-zhangxiaoxu5@huawei.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -41,41 +43,211 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This series Introduce a BPF based SPI mockup controller, which can be
-used for testing SPI drivers without real device.
+From: Wei Yongjun <weiyongjun1@huawei.com>
 
-The testsuite for SPI drivers will be post in other series, with also
-support for I2C and PCI bus device drivers.
+Add documentation for the SPI mockup controller driver.
+This include the tutorial for how to mockup a api device.
 
-patch 1-2 introduce BPF based SPI mockup controller
-patch 3 add the document
-
-v1->v2:
-  Use the new _controller() API
-  P1. Move the license identifier to the entrie comment
-  P2. Inherit tx_nbits/rx_nbits/cs_off/cs_change from the
-      spi_transfer to the tracepoint
-  P3. Removed.
-  P4. Update the Document.
-
-Wei Yongjun (3):
-  spi: mockup: Add SPI controller testing driver
-  spi: mockup: Add writeable tracepoint for spi transfer
-  spi: mockup: Add documentation
-
- Documentation/spi/index.rst       |   1 +
- Documentation/spi/spi-mockup.rst  | 174 ++++++++++++++++++++
- drivers/spi/Kconfig               |  13 ++
- drivers/spi/Makefile              |   1 +
- drivers/spi/spi-mockup.c          | 260 ++++++++++++++++++++++++++++++
- include/linux/spi/spi-mockup.h    |  17 ++
- include/trace/events/spi_mockup.h |  31 ++++
- 7 files changed, 497 insertions(+)
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+Signed-off-by: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
+---
+ Documentation/spi/index.rst      |   1 +
+ Documentation/spi/spi-mockup.rst | 174 +++++++++++++++++++++++++++++++
+ 2 files changed, 175 insertions(+)
  create mode 100644 Documentation/spi/spi-mockup.rst
- create mode 100644 drivers/spi/spi-mockup.c
- create mode 100644 include/linux/spi/spi-mockup.h
- create mode 100644 include/trace/events/spi_mockup.h
 
+diff --git a/Documentation/spi/index.rst b/Documentation/spi/index.rst
+index 06c34ea11bcf..a8f4f5cd0f09 100644
+--- a/Documentation/spi/index.rst
++++ b/Documentation/spi/index.rst
+@@ -13,6 +13,7 @@ Serial Peripheral Interface (SPI)
+    pxa2xx
+    spi-lm70llp
+    spi-sc18is602
++   spi-mockup
+ 
+ .. only::  subproject and html
+ 
+diff --git a/Documentation/spi/spi-mockup.rst b/Documentation/spi/spi-mockup.rst
+new file mode 100644
+index 000000000000..5e720de19991
+--- /dev/null
++++ b/Documentation/spi/spi-mockup.rst
+@@ -0,0 +1,174 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++==========
++spi-mockup
++==========
++
++Description
++===========
++
++This module is a very simple fake SPI controller driver. It implements
++a BPF based interface to mockup SPI device.
++
++No hardware is needed nor associated with this module. It will respond
++spi message by BPF program attached to spi_transfer_writeable tracepoint
++by reading from or writing BPF maps.
++
++The typical use-case is like this:
++        1. load EBPF program as device's backend
++        2. create target chip device
++
++Example
++=======
++
++This example show how to mock a MTD device by using spi-mockup driver.
++
++Compile your copy of the kernel source. Make sure to configure the spi-mockup
++and the target chip driver as a module.
++
++Write a BPF program as device's backup.
++
++::
++
++  #define MCHP23K256_CMD_WRITE_STATUS   0x01
++  #define MCHP23K256_CMD_WRITE          0x02
++  #define MCHP23K256_CMD_READ           0x03
++
++  #define CHIP_REGS_SIZE		0x20000
++
++  #define MAX_CMD_SIZE		        4
++
++  struct {
++	__uint(type, BPF_MAP_TYPE_ARRAY);
++	__uint(max_entries, CHIP_REGS_SIZE);
++	__type(key, __u32);
++	__type(value, __u8);
++  } regs_mchp23k256 SEC(".maps");
++
++  static unsigned int chip_reg = 0;
++
++  static int spi_transfer_read(struct spi_msg_ctx *msg, unsigned int len)
++  {
++	int i, key;
++	u8 *reg;
++
++	for (i = 0; i < len && i < sizeof(msg->data); i++) {
++		key = i + chip_reg;
++
++		reg = bpf_map_lookup_elem(&regs_mchp23k256, &key);
++		if (!reg) {
++			bpf_printk("key %d not exists", key);
++			return -EINVAL;
++		}
++
++		msg->data[i] = *reg;
++	}
++
++	return 0;
++  }
++
++  static int spi_transfer_write(struct spi_msg_ctx *msg, unsigned int len)
++  {
++	u8 opcode = msg->data[0], value;
++	int i, key;
++
++	switch (opcode) {
++	case MCHP23K256_CMD_READ:
++	case MCHP23K256_CMD_WRITE:
++		if (len < 2)
++			return -EINVAL;
++
++		chip_reg = 0;
++		for (i = 0; i < MAX_CMD_SIZE && i < len - 1; i++)
++			chip_reg = (chip_reg << 8) + msg->data[1 + i];
++
++		return 0;
++	case MCHP23K256_CMD_WRITE_STATUS:
++		// ignore write status
++		return 0;
++	default:
++		break;
++	}
++
++	for (i = 0; i < len && i < sizeof(msg->data); i++) {
++		value = msg->data[i];
++		key = chip_reg + i;
++
++		if (bpf_map_update_elem(&regs_mchp23k256, &key, &value,
++					BPF_EXIST)) {
++			bpf_printk("key %d not exists", key);
++			return -EINVAL;
++		}
++	}
++
++	return 0;
++  }
++
++  SEC("raw_tp.w/spi_transfer_writeable")
++  int BPF_PROG(mtd_mchp23k256, struct spi_msg_ctx *msg, u8 chip, unsigned int len)
++  {
++	int ret = 0;
++
++	if (msg->tx_nbits)
++		ret = spi_transfer_write(msg, len);
++	else if (msg->rx_nbits)
++		ret = spi_transfer_read(msg, len);
++
++	return ret;
++  }
++
++  char LICENSE[] SEC("license") = "GPL";
++
++Use bpftool to load the BPF program.
++
++::
++
++  bpftool prog load mtd-mchp23k256.o /sys/fs/bpf/mtd_mchp23k256 autoattach
++
++
++This is accomplished by executing the following command:
++
++::
++
++  $ echo mchp23k256 0 > /sys/class/spi_master/spi0/new_device
++
++
++The name of the target driver and its chip select were used to instantiate
++the device.
++
++Now, the mchp23k256 MTD device named /dev/mtd0 has been created successfully.
++
++::
++
++  $ ls /sys/bus/spi/devices/spi0.0/mtd/
++  mtd0  mtd0ro
++
++  $ cat /sys/class/mtd/mtd0/name
++  spi0.0
++
++  $ hexdump /dev/mtd0
++  0000000 0000 0000 0000 0000 0000 0000 0000 0000
++  *
++  0008000
++
++  $echo aaaa > /dev/mtd0
++
++  $ hexdump /dev/mtd0
++  0000000 6161 6161 000a 0000 0000 0000 0000 0000
++  0000010 0000 0000 0000 0000 0000 0000 0000 0000
++  *
++  0008000
++
++  $ bpftool map update name regs_mchp23k256 key 0 0 0 0 value 0
++
++  $ hexdump /dev/mtd0
++  0000000 6100 6161 000a 0000 0000 0000 0000 0000
++  0000010 0000 0000 0000 0000 0000 0000 0000 0000
++  *
++  0008000
++
++Remove the mockup device by executing the following command:
++
++::
++
++  $echo 0 > /sys/class/spi_master/spi0/delete_device
 -- 
 2.34.1
 

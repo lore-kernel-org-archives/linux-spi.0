@@ -2,141 +2,331 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D7430C001DC
-	for <linux-spi@archiver.kernel.org>; Wed, 26 Jul 2023 06:06:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5D94EC001DE
+	for <linux-spi@archiver.kernel.org>; Wed, 26 Jul 2023 07:14:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231574AbjGZGGg (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 26 Jul 2023 02:06:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43846 "EHLO
+        id S231841AbjGZHOj (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 26 Jul 2023 03:14:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229949AbjGZGGf (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 26 Jul 2023 02:06:35 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2B361982;
-        Tue, 25 Jul 2023 23:06:33 -0700 (PDT)
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36Q55Pus010113;
-        Wed, 26 Jul 2023 06:06:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=s7FCjzxoUJY++zgFbBCgzuoWWwtgFeG0MWA5SCk/YG8=;
- b=EzPITTPWd/912OfIJXR9KuQLnGZkrEJQAeTsU0oQIYG6WYQfhA4c4H4qP4DEs9uzEafQ
- U2QU6sUmBavNq1BloQKUrkGnvGJOp/HAGReLNggvrYnNeL4sDBybRm6Qs6n3UFzjTwS1
- oObJTn9RJW8xJmnZP8wOo9ncO3958RmF6vDEpbLXReDlXbtA67u/k0r9J3ltU7lUynWn
- nZRK/xVBmh5JqHzAwxIiznDQWbNyFKpMkcpO9ogvRvsFRboDkfz1nW/DtgFH5S6W8zyQ
- z/ZVO/Und04lmV3JnEwrIiGcyAnaTjMkrwdGBY81i9ou4NCSwte6vrJ1IlcuiejgrkdB ww== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3s2cf8tc1y-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 26 Jul 2023 06:06:29 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36Q66SSs025657
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 26 Jul 2023 06:06:28 GMT
-Received: from [10.216.26.63] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Tue, 25 Jul
- 2023 23:06:26 -0700
-Message-ID: <d2cc7c22-6afb-f59e-ae37-0604e362222e@quicinc.com>
-Date:   Wed, 26 Jul 2023 11:36:23 +0530
+        with ESMTP id S230123AbjGZHOM (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 26 Jul 2023 03:14:12 -0400
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C0A959DD;
+        Wed, 26 Jul 2023 00:10:31 -0700 (PDT)
+Received: from dggpeml100024.china.huawei.com (unknown [172.30.72.54])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4R9lNB2LkbzLp4H;
+        Wed, 26 Jul 2023 15:07:54 +0800 (CST)
+Received: from china (10.175.101.107) by dggpeml100024.china.huawei.com
+ (7.185.36.115) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Wed, 26 Jul
+ 2023 15:10:28 +0800
+From:   Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
+To:     <broonie@kernel.org>, <rostedt@goodmis.org>, <mingo@redhat.com>,
+        <frowand.list@gmail.com>
+CC:     <zhangxiaoxu5@huawei.com>, <weiyongjun1@huawei.com>,
+        <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>
+Subject: [PATCH v2 -next 1/3] spi: mockup: Add SPI controller testing driver
+Date:   Wed, 26 Jul 2023 15:08:47 +0000
+Message-ID: <20230726150849.28407-2-zhangxiaoxu5@huawei.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230726150849.28407-1-zhangxiaoxu5@huawei.com>
+References: <20230726150849.28407-1-zhangxiaoxu5@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH 1/2] spi: spi-qcom-qspi: Fallback to PIO for xfers that
- aren't multiples of 4 bytes
-Content-Language: en-CA
-To:     Douglas Anderson <dianders@chromium.org>,
-        Mark Brown <broonie@kernel.org>
-CC:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>
-References: <20230725110226.1.Ia2f980fc7cd0b831e633391f0bb1272914d8f381@changeid>
-From:   Vijaya Krishna Nivarthi <quic_vnivarth@quicinc.com>
-In-Reply-To: <20230725110226.1.Ia2f980fc7cd0b831e633391f0bb1272914d8f381@changeid>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: EP3rMtVCIQAIeUo-N8Z8Oj7MD2ckisJL
-X-Proofpoint-GUID: EP3rMtVCIQAIeUo-N8Z8Oj7MD2ckisJL
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-25_14,2023-07-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 impostorscore=0
- suspectscore=0 spamscore=0 adultscore=0 bulkscore=0 mlxlogscore=868
- lowpriorityscore=0 malwarescore=0 phishscore=0 clxscore=1015
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2307260053
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.101.107]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ dggpeml100024.china.huawei.com (7.185.36.115)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+From: Wei Yongjun <weiyongjun1@huawei.com>
 
-On 7/25/2023 11:32 PM, Douglas Anderson wrote:
-> The Qualcomm QSPI driver appears to require that any reads using DMA
-> are a mutliple of 4 bytes. If this isn't true then the controller will
-> clobber any extra bytes in memory following the last word. Let's
-> detect this and falback to PIO.
->
-> This fixes problems reported by slub_debug=FZPUA, which would complain
-> about "kmalloc Redzone overwritten". One such instance said:
->
->    0xffffff80c29d541a-0xffffff80c29d541b @offset=21530. First byte 0x0 instead of 0xcc
->    Allocated in mtd_kmalloc_up_to+0x98/0xac age=36 cpu=3 pid=6658
->
-> Tracing through what was happening I saw that, while we often did DMA
-> tranfers of 0x1000 bytes, sometimes we'd end up doing ones of 0x41a
-> bytes. Those 0x41a byte transfers were the problem.
->
-> NOTE: a future change will enable the SPI "mem ops" to help avoid this
-> case, but it still seems good to add the extra check in the transfer.
->
-> Fixes: b5762d95607e ("spi: spi-qcom-qspi: Add DMA mode support")
-> Signed-off-by: Douglas Anderson <dianders@chromium.org>
+This enables SPI controller Testing driver, which provides a way to
+test SPI subsystem.
 
-Reviewed-by: Vijaya Krishna Nivarthi <quic_vnivarth@quicinc.com>
+This is accomplished by executing the following command:
 
+$ echo adcxx1s 0 > /sys/class/spi_master/spi0/new_device
 
-Thank you for the fix,
+The name of the target driver and its chip select were used to
+instantiate the device.
 
-Vijay/
+$ ls /sys/bus/spi/devices/spi0.0/hwmon/hwmon0/ -l
+ total 0
+ lrwxrwxrwx 1 root root    0 Aug 10 08:58 device -> ../../../spi0.0
+ drwxr-xr-x 2 root root    0 Aug 10 08:58 power
+ lrwxrwxrwx 1 root root    0 Aug 10 08:58 subsystem -> ../../../../../../../../class/hwmon
+ -rw-r--r-- 1 root root 4096 Aug 10 08:58 uevent
 
+Remove target device by executing the following command:
+$ echo 0 > /sys/class/spi_master/spi0/delete_device
 
-> ---
->
->   drivers/spi/spi-qcom-qspi.c | 12 ++++++++++++
->   1 file changed, 12 insertions(+)
->
-> diff --git a/drivers/spi/spi-qcom-qspi.c b/drivers/spi/spi-qcom-qspi.c
-> index a0ad9802b606..39b4d8a8107a 100644
-> --- a/drivers/spi/spi-qcom-qspi.c
-> +++ b/drivers/spi/spi-qcom-qspi.c
-> @@ -355,10 +355,22 @@ static int qcom_qspi_setup_dma_desc(struct qcom_qspi *ctrl,
->   
->   	for (i = 0; i < sgt->nents; i++) {
->   		dma_ptr_sg = sg_dma_address(sgt->sgl + i);
-> +		dma_len_sg = sg_dma_len(sgt->sgl + i);
->   		if (!IS_ALIGNED(dma_ptr_sg, QSPI_ALIGN_REQ)) {
->   			dev_warn_once(ctrl->dev, "dma_address not aligned to %d\n", QSPI_ALIGN_REQ);
->   			return -EAGAIN;
->   		}
-> +		/*
-> +		 * When reading with DMA the controller writes to memory 1 word
-> +		 * at a time. If the length isn't a multiple of 4 bytes then
-> +		 * the controller can clobber the things later in memory.
-> +		 * Fallback to PIO to be safe.
-> +		 */
-> +		if (ctrl->xfer.dir == QSPI_READ && (dma_len_sg & 0x03)) {
-> +			dev_warn_once(ctrl->dev, "fallback to PIO for read of size %#010x\n",
-> +				      dma_len_sg);
-> +			return -EAGAIN;
-> +		}
->   	}
->   
->   	for (i = 0; i < sgt->nents; i++) {
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+Signed-off-by: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
+---
+ drivers/spi/Kconfig      |  12 +++
+ drivers/spi/Makefile     |   1 +
+ drivers/spi/spi-mockup.c | 212 +++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 225 insertions(+)
+ create mode 100644 drivers/spi/spi-mockup.c
+
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 8962b2557615..1768e57f0088 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -1185,6 +1185,18 @@ config SPI_TLE62X0
+ 	  sysfs interface, with each line presented as a kind of GPIO
+ 	  exposing both switch control and diagnostic feedback.
+ 
++config SPI_MOCKUP
++	tristate "SPI controller Testing Driver"
++	depends on OF
++	help
++	  This enables SPI controller testing driver, which provides a way to
++	  test SPI subsystem.
++
++	  If you do build this module, be sure to read the notes and warnings
++	  in <file:Documentation/spi/spi-mockup.rst>.
++
++	  If you don't know what to do here, definitely say N.
++
+ #
+ # Add new SPI protocol masters in alphabetical order above this line
+ #
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index 080c2c1b3ec1..8ce94e7295b7 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -12,6 +12,7 @@ obj-$(CONFIG_SPI_MEM)			+= spi-mem.o
+ obj-$(CONFIG_SPI_MUX)			+= spi-mux.o
+ obj-$(CONFIG_SPI_SPIDEV)		+= spidev.o
+ obj-$(CONFIG_SPI_LOOPBACK_TEST)		+= spi-loopback-test.o
++obj-$(CONFIG_SPI_MOCKUP)		+= spi-mockup.o
+ 
+ # SPI master controller drivers (bus)
+ obj-$(CONFIG_SPI_ALTERA)		+= spi-altera-platform.o
+diff --git a/drivers/spi/spi-mockup.c b/drivers/spi/spi-mockup.c
+new file mode 100644
+index 000000000000..4debfd1fb9fd
+--- /dev/null
++++ b/drivers/spi/spi-mockup.c
+@@ -0,0 +1,212 @@
++/*
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ *
++ * SPI controller Testing Driver
++ *
++ * Copyright(c) 2022 Huawei Technologies Co., Ltd.
++ */
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/init.h>
++#include <linux/string.h>
++#include <linux/slab.h>
++#include <linux/of.h>
++#include <linux/platform_device.h>
++#include <linux/spi/spi.h>
++
++#define MOCKUP_CHIPSELECT_MAX		8
++
++struct mockup_spi {
++	struct mutex lock;
++	struct spi_device *devs[MOCKUP_CHIPSELECT_MAX];
++};
++
++static struct spi_controller *to_spi_controller(struct device *dev)
++{
++	return container_of(dev, struct spi_controller, dev);
++}
++
++static ssize_t
++new_device_store(struct device *dev, struct device_attribute *attr,
++		 const char *buf, size_t count)
++{
++	struct spi_controller *ctrl = to_spi_controller(dev);
++	struct spi_board_info info;
++	struct mockup_spi *mock;
++	struct spi_device *spi;
++	char *blank, end;
++	int status;
++
++	memset(&info, 0, sizeof(struct spi_board_info));
++
++	blank = strchr(buf, ' ');
++	if (!blank) {
++		dev_err(dev, "%s: Extra parameters\n", "new_device");
++		return -EINVAL;
++	}
++
++	if (blank - buf > SPI_NAME_SIZE - 1) {
++		dev_err(dev, "%s: Invalid device name\n", "new_device");
++		return -EINVAL;
++	}
++
++	memcpy(info.modalias, buf, blank - buf);
++
++	status = sscanf(++blank, "%hi%c", &info.chip_select, &end);
++	if (status < 1) {
++		dev_err(dev, "%s: Can't parse SPI chipselect\n", "new_device");
++		return -EINVAL;
++	}
++
++	if (status > 1 && end != '\n') {
++		dev_err(dev, "%s: Extra parameters\n", "new_device");
++		return -EINVAL;
++	}
++
++	if (info.chip_select >= ctrl->num_chipselect) {
++		dev_err(dev, "%s: Invalid chip_select\n", "new_device");
++		return -EINVAL;
++	}
++
++	mock = spi_controller_get_devdata(ctrl);
++	mutex_lock(&mock->lock);
++
++	if (mock->devs[info.chip_select]) {
++		dev_err(dev, "%s: Chipselect %d already in use\n",
++			"new_device", info.chip_select);
++		mutex_unlock(&mock->lock);
++		return -EINVAL;
++	}
++
++	spi = spi_new_device(ctrl, &info);
++	if (!spi) {
++		mutex_unlock(&mock->lock);
++		return -ENOMEM;
++	}
++	mock->devs[info.chip_select] = spi;
++
++	mutex_unlock(&mock->lock);
++
++	dev_info(dev, "%s: Instantiated device %s at 0x%02x\n", "new_device",
++		 info.modalias, info.chip_select);
++
++	return count;
++}
++static DEVICE_ATTR_WO(new_device);
++
++static ssize_t
++delete_device_store(struct device *dev, struct device_attribute *attr,
++		    const char *buf, size_t count)
++{
++	struct spi_controller *ctrl = to_spi_controller(dev);
++	struct mockup_spi *mock;
++	struct spi_device *spi;
++	unsigned short chip;
++	char end;
++	int res;
++
++	/* Parse parameters, reject extra parameters */
++	res = sscanf(buf, "%hi%c", &chip, &end);
++	if (res < 1) {
++		dev_err(dev, "%s: Can't parse SPI address\n", "delete_device");
++		return -EINVAL;
++	}
++	if (res > 1  && end != '\n') {
++		dev_err(dev, "%s: Extra parameters\n", "delete_device");
++		return -EINVAL;
++	}
++
++	if (chip >= ctrl->num_chipselect) {
++		dev_err(dev, "%s: Invalid chip_select\n", "delete_device");
++		return -EINVAL;
++	}
++
++	mock = spi_controller_get_devdata(ctrl);
++	mutex_lock(&mock->lock);
++
++	spi = mock->devs[chip];
++	if (!spi) {
++		mutex_unlock(&mock->lock);
++		dev_err(dev, "%s: Invalid chip_select\n", "delete_device");
++		return -ENOENT;
++	}
++
++	dev_info(dev, "%s: Deleting device %s at 0x%02hx\n", "delete_device",
++		 dev_name(&spi->dev), chip);
++
++	spi_unregister_device(spi);
++	mock->devs[chip] = NULL;
++
++	mutex_unlock(&mock->lock);
++
++	return count;
++}
++static DEVICE_ATTR_WO(delete_device);
++
++static struct attribute *spi_mockup_attrs[] = {
++	&dev_attr_new_device.attr,
++	&dev_attr_delete_device.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(spi_mockup);
++
++static int spi_mockup_transfer(struct spi_controller *ctrl,
++			       struct spi_message *msg)
++{
++	msg->status = 0;
++	spi_finalize_current_message(ctrl);
++
++	return 0;
++}
++
++static int spi_mockup_probe(struct platform_device *pdev)
++{
++	struct spi_controller *ctrl;
++	struct mockup_spi *mock;
++	int ret;
++
++	ctrl = spi_alloc_host(&pdev->dev, sizeof(struct mockup_spi));
++	if (!ctrl) {
++		pr_err("failed to alloc spi controller\n");
++		return -ENOMEM;
++	}
++
++	platform_set_drvdata(pdev, ctrl);
++
++	ctrl->dev.of_node = pdev->dev.of_node;
++	ctrl->dev.groups = spi_mockup_groups;
++	ctrl->num_chipselect = MOCKUP_CHIPSELECT_MAX;
++	ctrl->mode_bits = SPI_MODE_USER_MASK;
++	ctrl->bus_num = 0;
++	ctrl->transfer_one_message = spi_mockup_transfer;
++
++	mock = spi_controller_get_devdata(ctrl);
++	mutex_init(&mock->lock);
++
++	ret = devm_spi_register_controller(&pdev->dev, ctrl);
++	if (ret) {
++		spi_controller_put(ctrl);
++		return ret;
++	}
++
++	return 0;
++}
++
++static const struct of_device_id spi_mockup_match[] = {
++	{ .compatible = "spi-mockup", },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, spi_mockup_match);
++
++static struct platform_driver spi_mockup_driver = {
++	.probe = spi_mockup_probe,
++	.driver = {
++		.name = "spi-mockup",
++		.of_match_table = spi_mockup_match,
++	},
++};
++module_platform_driver(spi_mockup_driver);
++
++MODULE_AUTHOR("Wei Yongjun <weiyongjun1@huawei.com>");
++MODULE_DESCRIPTION("SPI controller Testing Driver");
++MODULE_LICENSE("GPL");
+-- 
+2.34.1
+

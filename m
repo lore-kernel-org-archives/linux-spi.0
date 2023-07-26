@@ -2,231 +2,153 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 72797C41513
-	for <linux-spi@archiver.kernel.org>; Wed, 26 Jul 2023 07:14:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1797DC0015E
+	for <linux-spi@archiver.kernel.org>; Wed, 26 Jul 2023 07:30:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232460AbjGZHOl (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 26 Jul 2023 03:14:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48588 "EHLO
+        id S232540AbjGZHaP (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 26 Jul 2023 03:30:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232132AbjGZHON (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 26 Jul 2023 03:14:13 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9CED2D42;
-        Wed, 26 Jul 2023 00:10:32 -0700 (PDT)
-Received: from dggpeml100024.china.huawei.com (unknown [172.30.72.57])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4R9lMG6mlqzCrW0;
-        Wed, 26 Jul 2023 15:07:06 +0800 (CST)
-Received: from china (10.175.101.107) by dggpeml100024.china.huawei.com
- (7.185.36.115) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Wed, 26 Jul
- 2023 15:10:29 +0800
-From:   Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
-To:     <broonie@kernel.org>, <rostedt@goodmis.org>, <mingo@redhat.com>,
-        <frowand.list@gmail.com>
-CC:     <zhangxiaoxu5@huawei.com>, <weiyongjun1@huawei.com>,
-        <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>
-Subject: [PATCH v2 -next 2/3] spi: mockup: Add writeable tracepoint for spi transfer
-Date:   Wed, 26 Jul 2023 15:08:48 +0000
-Message-ID: <20230726150849.28407-3-zhangxiaoxu5@huawei.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230726150849.28407-1-zhangxiaoxu5@huawei.com>
-References: <20230726150849.28407-1-zhangxiaoxu5@huawei.com>
+        with ESMTP id S231481AbjGZH3Y (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 26 Jul 2023 03:29:24 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E283E2D68;
+        Wed, 26 Jul 2023 00:28:00 -0700 (PDT)
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36Q6FgbZ023720;
+        Wed, 26 Jul 2023 07:27:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=tT7G2j3HSZWRAH7XDW1HDetddXyDBJGikutodB97Mwo=;
+ b=ALGErt7Snj0CaCMLSWamol1bCn4oO8DlpSOnSlo8T1VNCdJftl+m2u6DOfRXfXYJDo72
+ zBX1prZWREjGLKPSWTeRpEjzL3ubHrD6ce/zqvU2UNhb0EjdDbMBezwOa/HU4/YSPpTa
+ UCpRVK8LiLdX8+PzeX4dslIOwICSgM3JRlU0FIYNBmfz/TfvPs7lWrIweM6krV3HWumI
+ vgh+JE3pbdL13w/xP1TxAeZdG2vdCqXnBpd5zyTcVvi/Emtc6qjr+hUOg9LXFNdF7IC+
+ gUmf7lKKlngHUkF+WUmW7sBJiqgCbuqhNR/cyi3fSaJ2tAwdz5dvczD9/ofOnRNDWko0 Cg== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3s2dqaj8eq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 26 Jul 2023 07:27:55 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36Q7RscN021675
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 26 Jul 2023 07:27:54 GMT
+Received: from [10.216.26.63] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Wed, 26 Jul
+ 2023 00:27:51 -0700
+Message-ID: <faa31984-7185-6d25-dbb7-3e25e0883e5b@quicinc.com>
+Date:   Wed, 26 Jul 2023 12:57:48 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.101.107]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpeml100024.china.huawei.com (7.185.36.115)
-X-CFilter-Loop: Reflected
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH 2/2] spi: spi-qcom-qspi: Add mem_ops to avoid PIO for
+ badly sized reads
+Content-Language: en-CA
+To:     Douglas Anderson <dianders@chromium.org>,
+        Mark Brown <broonie@kernel.org>
+CC:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>
+References: <20230725110226.1.Ia2f980fc7cd0b831e633391f0bb1272914d8f381@changeid>
+ <20230725110226.2.Id4a39804e01e4a06dae9b73fd2a5194c4c7ea453@changeid>
+From:   Vijaya Krishna Nivarthi <quic_vnivarth@quicinc.com>
+In-Reply-To: <20230725110226.2.Id4a39804e01e4a06dae9b73fd2a5194c4c7ea453@changeid>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: I6GRsnzcu_DfHsA6s8xbHSrncElncclz
+X-Proofpoint-ORIG-GUID: I6GRsnzcu_DfHsA6s8xbHSrncElncclz
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-26_01,2023-07-25_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=947
+ bulkscore=0 adultscore=0 lowpriorityscore=0 priorityscore=1501
+ phishscore=0 suspectscore=0 clxscore=1015 spamscore=0 malwarescore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2307260064
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Wei Yongjun <weiyongjun1@huawei.com>
 
-Add writeable tracepoint for transfer_one_message(), then bpf program
-can be used to control read and write data from spi host, as mockup
-chip's expectation.
+On 7/25/2023 11:32 PM, Douglas Anderson wrote:
+> In the patch ("spi: spi-qcom-qspi: Fallback to PIO for xfers that
+> aren't multiples of 4 bytes") we detect reads that we can't handle
+> properly and fallback to PIO mode. While that's correct behavior, we
+> can do better by adding "spi_controller_mem_ops" for our
+> controller. Once we do this then the caller will give us a transfer
+> that's a multiple of 4-bytes so we can DMA.
+>
+> Fixes: b5762d95607e ("spi: spi-qcom-qspi: Add DMA mode support")
+> Signed-off-by: Douglas Anderson <dianders@chromium.org>
 
-For example:
+I checked with a couple of folks here and seemingly the POR for QSPI 
+controller is for storage device only, so in all likelihood we should be 
+having a spi-flash at the other end.
 
-  #include "vmlinux.h"
-  #include <bpf/bpf_helpers.h>
-  #include <bpf/bpf_tracing.h>
+For other devices there is QUP anyway.
 
-  SEC("raw_tp.w/spi_transfer_writeable")
-  int BPF_PROG(spi_transfer_writeable_test, struct spi_msg_ctx *msg,
-               u8 chip, unsigned int len)
-  {
-      if (msg->tx_nbits)
-          msg->data[0] = 0x20;
+Hence personally I am happy with this change.
 
-      return 0;
-  }
+Thank you...
 
-  char LICENSE[] SEC("license") = "GPL";
 
-This will be useful for writing spi device mockup backend.
+Reviewed-by: Vijaya Krishna Nivarthi <quic_vnivarth@quicinc.com>
 
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-Signed-off-by: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
----
- drivers/spi/Kconfig               |  1 +
- drivers/spi/spi-mockup.c          | 52 +++++++++++++++++++++++++++++--
- include/linux/spi/spi-mockup.h    | 17 ++++++++++
- include/trace/events/spi_mockup.h | 31 ++++++++++++++++++
- 4 files changed, 99 insertions(+), 2 deletions(-)
- create mode 100644 include/linux/spi/spi-mockup.h
- create mode 100644 include/trace/events/spi_mockup.h
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 1768e57f0088..608e224e52ef 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -1188,6 +1188,7 @@ config SPI_TLE62X0
- config SPI_MOCKUP
- 	tristate "SPI controller Testing Driver"
- 	depends on OF
-+	select BPF_EVENTS
- 	help
- 	  This enables SPI controller testing driver, which provides a way to
- 	  test SPI subsystem.
-diff --git a/drivers/spi/spi-mockup.c b/drivers/spi/spi-mockup.c
-index 4debfd1fb9fd..3835012e2ee8 100644
---- a/drivers/spi/spi-mockup.c
-+++ b/drivers/spi/spi-mockup.c
-@@ -14,6 +14,9 @@
- #include <linux/platform_device.h>
- #include <linux/spi/spi.h>
- 
-+#define CREATE_TRACE_POINTS
-+#include <trace/events/spi_mockup.h>
-+
- #define MOCKUP_CHIPSELECT_MAX		8
- 
- struct mockup_spi {
-@@ -150,13 +153,58 @@ static struct attribute *spi_mockup_attrs[] = {
- };
- ATTRIBUTE_GROUPS(spi_mockup);
- 
-+static int spi_mockup_transfer_writeable(struct spi_message *msg)
-+{
-+	struct spi_msg_ctx *ctx;
-+	struct spi_transfer *t;
-+	int ret = 0;
-+
-+	ctx = kmalloc(sizeof(*ctx), GFP_ATOMIC);
-+	if (!ctx)
-+		return -ENOMEM;
-+
-+	list_for_each_entry(t, &msg->transfers, transfer_list) {
-+		if (t->len > SPI_BUFSIZ_MAX)
-+			return -E2BIG;
-+
-+		memset(ctx, 0, sizeof(*ctx));
-+		ctx->cs_off = t->cs_off;
-+		ctx->cs_change = t->cs_change;
-+		ctx->tx_nbits = t->tx_nbits;
-+		ctx->rx_nbits = t->rx_nbits;
-+
-+		if (t->tx_nbits)
-+			memcpy(ctx->data, t->tx_buf, t->len);
-+
-+		trace_spi_transfer_writeable(ctx, msg->spi->chip_select, t->len);
-+
-+		if (ctx->ret) {
-+			ret = ctx->ret;
-+			break;
-+		}
-+
-+		if (t->rx_nbits)
-+			memcpy(t->rx_buf, ctx->data, t->len);
-+		msg->actual_length += t->len;
-+	}
-+
-+	kfree(ctx);
-+
-+	return ret;
-+}
-+
- static int spi_mockup_transfer(struct spi_controller *ctrl,
- 			       struct spi_message *msg)
- {
--	msg->status = 0;
-+	int ret = 0;
-+
-+	if (trace_spi_transfer_writeable_enabled())
-+		ret = spi_mockup_transfer_writeable(msg);
-+
-+	msg->status = ret;
- 	spi_finalize_current_message(ctrl);
- 
--	return 0;
-+	return ret;
- }
- 
- static int spi_mockup_probe(struct platform_device *pdev)
-diff --git a/include/linux/spi/spi-mockup.h b/include/linux/spi/spi-mockup.h
-new file mode 100644
-index 000000000000..224894b416fb
---- /dev/null
-+++ b/include/linux/spi/spi-mockup.h
-@@ -0,0 +1,17 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+
-+#ifndef __LINUX_SPI_MOCKUP_H
-+#define __LINUX_SPI_MOCKUP_H
-+
-+#define SPI_BUFSIZ_MAX		0x1000
-+
-+struct spi_msg_ctx {
-+	int ret;
-+	unsigned cs_off:1;
-+	unsigned cs_change:1;
-+	unsigned tx_nbits:3;
-+	unsigned rx_nbits:3;
-+	__u8 data[SPI_BUFSIZ_MAX];
-+};
-+
-+#endif
-diff --git a/include/trace/events/spi_mockup.h b/include/trace/events/spi_mockup.h
-new file mode 100644
-index 000000000000..46debf26a5e3
---- /dev/null
-+++ b/include/trace/events/spi_mockup.h
-@@ -0,0 +1,31 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * SPI mockup controller transfer writeable tracepoint
-+ *
-+ * Copyright(c) 2022 Huawei Technologies Co., Ltd.
-+ */
-+
-+#undef TRACE_SYSTEM
-+#define TRACE_SYSTEM spi_mockup
-+
-+#if !defined(_TRACE_SPI_MOCKUP_H) || defined(TRACE_HEADER_MULTI_READ)
-+#define _TRACE_SPI_MOCKUP_H
-+
-+#include <linux/tracepoint.h>
-+#include <linux/spi/spi-mockup.h>
-+
-+#ifndef DECLARE_TRACE_WRITABLE
-+#define DECLARE_TRACE_WRITABLE(call, proto, args, size) \
-+	DECLARE_TRACE(call, PARAMS(proto), PARAMS(args))
-+#endif
-+
-+DECLARE_TRACE_WRITABLE(spi_transfer_writeable,
-+	TP_PROTO(struct spi_msg_ctx *msg, u8 chip_select, unsigned int len),
-+	TP_ARGS(msg, chip_select, len),
-+	sizeof(struct spi_msg_ctx)
-+);
-+
-+#endif /* _TRACE_SPI_MOCKUP_H */
-+
-+/* This part must be outside protection */
-+#include <trace/define_trace.h>
--- 
-2.34.1
-
+> ---
+>
+>   drivers/spi/spi-qcom-qspi.c | 25 +++++++++++++++++++++++++
+>   1 file changed, 25 insertions(+)
+>
+> diff --git a/drivers/spi/spi-qcom-qspi.c b/drivers/spi/spi-qcom-qspi.c
+> index 39b4d8a8107a..b2bbcfd93637 100644
+> --- a/drivers/spi/spi-qcom-qspi.c
+> +++ b/drivers/spi/spi-qcom-qspi.c
+> @@ -659,6 +659,30 @@ static irqreturn_t qcom_qspi_irq(int irq, void *dev_id)
+>   	return ret;
+>   }
+>   
+> +static int qcom_qspi_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
+> +{
+> +	/*
+> +	 * If qcom_qspi_can_dma() is going to return false we don't need to
+> +	 * adjust anything.
+> +	 */
+> +	if (op->data.nbytes <= QSPI_MAX_BYTES_FIFO)
+> +		return 0;
+> +
+> +	/*
+> +	 * When reading, the transfer needs to be a multiple of 4 bytes so
+> +	 * shrink the transfer if that's not true. The caller will then do a
+> +	 * second transfer to finish things up.
+> +	 */
+> +	if (op->data.dir == SPI_MEM_DATA_IN && (op->data.nbytes & 0x3))
+> +		op->data.nbytes &= ~0x3;
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct spi_controller_mem_ops qcom_qspi_mem_ops = {
+> +	.adjust_op_size = qcom_qspi_adjust_op_size,
+> +};
+> +
+>   static int qcom_qspi_probe(struct platform_device *pdev)
+>   {
+>   	int ret;
+> @@ -743,6 +767,7 @@ static int qcom_qspi_probe(struct platform_device *pdev)
+>   	if (of_property_read_bool(pdev->dev.of_node, "iommus"))
+>   		master->can_dma = qcom_qspi_can_dma;
+>   	master->auto_runtime_pm = true;
+> +	master->mem_ops = &qcom_qspi_mem_ops;
+>   
+>   	ret = devm_pm_opp_set_clkname(&pdev->dev, "core");
+>   	if (ret)

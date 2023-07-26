@@ -2,153 +2,216 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1797DC0015E
-	for <linux-spi@archiver.kernel.org>; Wed, 26 Jul 2023 07:30:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A41C1C07E8A
+	for <linux-spi@archiver.kernel.org>; Wed, 26 Jul 2023 08:46:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232540AbjGZHaP (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 26 Jul 2023 03:30:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58200 "EHLO
+        id S233465AbjGZIq5 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 26 Jul 2023 04:46:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231481AbjGZH3Y (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 26 Jul 2023 03:29:24 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E283E2D68;
-        Wed, 26 Jul 2023 00:28:00 -0700 (PDT)
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36Q6FgbZ023720;
-        Wed, 26 Jul 2023 07:27:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=tT7G2j3HSZWRAH7XDW1HDetddXyDBJGikutodB97Mwo=;
- b=ALGErt7Snj0CaCMLSWamol1bCn4oO8DlpSOnSlo8T1VNCdJftl+m2u6DOfRXfXYJDo72
- zBX1prZWREjGLKPSWTeRpEjzL3ubHrD6ce/zqvU2UNhb0EjdDbMBezwOa/HU4/YSPpTa
- UCpRVK8LiLdX8+PzeX4dslIOwICSgM3JRlU0FIYNBmfz/TfvPs7lWrIweM6krV3HWumI
- vgh+JE3pbdL13w/xP1TxAeZdG2vdCqXnBpd5zyTcVvi/Emtc6qjr+hUOg9LXFNdF7IC+
- gUmf7lKKlngHUkF+WUmW7sBJiqgCbuqhNR/cyi3fSaJ2tAwdz5dvczD9/ofOnRNDWko0 Cg== 
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3s2dqaj8eq-1
+        with ESMTP id S233421AbjGZIq2 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 26 Jul 2023 04:46:28 -0400
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 659884EC8;
+        Wed, 26 Jul 2023 01:38:58 -0700 (PDT)
+Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36Q7Va8P008022;
+        Wed, 26 Jul 2023 10:38:20 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding : content-type; s=selector1;
+ bh=+UNuTiEun7FhBdsfcJqf/qnk8DNj8pRVH/wzdvv/e68=;
+ b=4VfijQiCAGoIOVR4ZEre3LMsXnWRT82xkx0GxR88KgvWtydYfRHzk3VwCG8qfEs+8Mef
+ LAVqksmTmDX5eXE9s2qw+5O/YZoeDAg5nATTvkFKboek0hhOsTfhRp1RjeI5vTy7h/rQ
+ Npfbnh0T3S4IRS6z/XNmIUC+wHg+swW23KDUkUip7W1XfNjkcT3GcLAI70SzQTBpMx0X
+ NmGOsAWOUwu8MQyju/HT5F/E3cvjXgJf0O1azw/oAEoQa3v1Z/CYofFMx8ZdNaL+ElFk
+ J9vRJM8Pi/y/bbd3rqTsyftgnLy5auJFA6dUQ4Jwt+N0DCCU0s5XFBVrnNzKlelGCXn4 OA== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3s2y640hfq-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 26 Jul 2023 07:27:55 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36Q7RscN021675
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 26 Jul 2023 07:27:54 GMT
-Received: from [10.216.26.63] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Wed, 26 Jul
- 2023 00:27:51 -0700
-Message-ID: <faa31984-7185-6d25-dbb7-3e25e0883e5b@quicinc.com>
-Date:   Wed, 26 Jul 2023 12:57:48 +0530
+        Wed, 26 Jul 2023 10:38:20 +0200
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 798DB10002A;
+        Wed, 26 Jul 2023 10:38:19 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 6D95720FA38;
+        Wed, 26 Jul 2023 10:38:19 +0200 (CEST)
+Received: from localhost (10.201.21.121) by SHFDAG1NODE1.st.com (10.75.129.69)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21; Wed, 26 Jul
+ 2023 10:38:19 +0200
+From:   Gatien Chevallier <gatien.chevallier@foss.st.com>
+To:     <Oleksii_Moisieiev@epam.com>, <gregkh@linuxfoundation.org>,
+        <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
+        <robh+dt@kernel.org>, <krzysztof.kozlowski+dt@linaro.org>,
+        <conor+dt@kernel.org>, <alexandre.torgue@foss.st.com>,
+        <vkoul@kernel.org>, <jic23@kernel.org>,
+        <olivier.moysan@foss.st.com>, <arnaud.pouliquen@foss.st.com>,
+        <mchehab@kernel.org>, <fabrice.gasnier@foss.st.com>,
+        <andi.shyti@kernel.org>, <ulf.hansson@linaro.org>,
+        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+        <hugues.fruchet@foss.st.com>, <lee@kernel.org>, <will@kernel.org>,
+        <catalin.marinas@arm.com>, <arnd@kernel.org>,
+        <richardcochran@gmail.com>, Frank Rowand <frowand.list@gmail.com>
+CC:     <linux-crypto@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <dmaengine@vger.kernel.org>,
+        <linux-i2c@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <alsa-devel@alsa-project.org>, <linux-media@vger.kernel.org>,
+        <linux-mmc@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-phy@lists.infradead.org>, <linux-serial@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>, <linux-usb@vger.kernel.org>,
+        Gatien Chevallier <gatien.chevallier@foss.st.com>
+Subject: [PATCH v3 03/11] dt-bindings: bus: document RIFSC
+Date:   Wed, 26 Jul 2023 10:38:02 +0200
+Message-ID: <20230726083810.232100-4-gatien.chevallier@foss.st.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20230726083810.232100-1-gatien.chevallier@foss.st.com>
+References: <20230726083810.232100-1-gatien.chevallier@foss.st.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH 2/2] spi: spi-qcom-qspi: Add mem_ops to avoid PIO for
- badly sized reads
-Content-Language: en-CA
-To:     Douglas Anderson <dianders@chromium.org>,
-        Mark Brown <broonie@kernel.org>
-CC:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>
-References: <20230725110226.1.Ia2f980fc7cd0b831e633391f0bb1272914d8f381@changeid>
- <20230725110226.2.Id4a39804e01e4a06dae9b73fd2a5194c4c7ea453@changeid>
-From:   Vijaya Krishna Nivarthi <quic_vnivarth@quicinc.com>
-In-Reply-To: <20230725110226.2.Id4a39804e01e4a06dae9b73fd2a5194c4c7ea453@changeid>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: I6GRsnzcu_DfHsA6s8xbHSrncElncclz
-X-Proofpoint-ORIG-GUID: I6GRsnzcu_DfHsA6s8xbHSrncElncclz
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.201.21.121]
+X-ClientProxiedBy: SHFCAS1NODE2.st.com (10.75.129.73) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
 X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-07-26_01,2023-07-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=947
- bulkscore=0 adultscore=0 lowpriorityscore=0 priorityscore=1501
- phishscore=0 suspectscore=0 clxscore=1015 spamscore=0 malwarescore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2307260064
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+Document RIFSC (RIF security controller). RIFSC is a firewall controller
+composed of different kinds of hardware resources.
 
-On 7/25/2023 11:32 PM, Douglas Anderson wrote:
-> In the patch ("spi: spi-qcom-qspi: Fallback to PIO for xfers that
-> aren't multiples of 4 bytes") we detect reads that we can't handle
-> properly and fallback to PIO mode. While that's correct behavior, we
-> can do better by adding "spi_controller_mem_ops" for our
-> controller. Once we do this then the caller will give us a transfer
-> that's a multiple of 4-bytes so we can DMA.
->
-> Fixes: b5762d95607e ("spi: spi-qcom-qspi: Add DMA mode support")
-> Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
+---
 
-I checked with a couple of folks here and seemingly the POR for QSPI 
-controller is for storage device only, so in all likelihood we should be 
-having a spi-flash at the other end.
+Changes in V2: 
+	- Corrected errors highlighted by Rob's robot
+	- No longer define the maxItems for the "feature-domains"
+	  property
+	- Fix example (node name, status)
+	- Declare "feature-domain-names" as an optional
+	  property for child nodes
+	- Fix description of "feature-domains" property
 
-For other devices there is QUP anyway.
+ .../bindings/bus/st,stm32mp25-rifsc.yaml      | 105 ++++++++++++++++++
+ 1 file changed, 105 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/bus/st,stm32mp25-rifsc.yaml
 
-Hence personally I am happy with this change.
+diff --git a/Documentation/devicetree/bindings/bus/st,stm32mp25-rifsc.yaml b/Documentation/devicetree/bindings/bus/st,stm32mp25-rifsc.yaml
+new file mode 100644
+index 000000000000..7aeb38296616
+--- /dev/null
++++ b/Documentation/devicetree/bindings/bus/st,stm32mp25-rifsc.yaml
+@@ -0,0 +1,105 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/bus/st,stm32mp25-rifsc.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: STM32 Resource isolation framework security controller
++
++maintainers:
++  - Gatien Chevallier <gatien.chevallier@foss.st.com>
++
++description: |
++  Resource isolation framework (RIF) is a comprehensive set of hardware blocks
++  designed to enforce and manage isolation of STM32 hardware resources like
++  memory and peripherals.
++
++  The RIFSC (RIF security controller) is composed of three sets of registers,
++  each managing a specific set of hardware resources:
++    - RISC registers associated with RISUP logic (resource isolation device unit
++      for peripherals), assign all non-RIF aware peripherals to zero, one or
++      any security domains (secure, privilege, compartment).
++    - RIMC registers: associated with RIMU logic (resource isolation master
++      unit), assign all non RIF-aware bus master to one security domain by
++      setting secure, privileged and compartment information on the system bus.
++      Alternatively, the RISUP logic controlling the device port access to a
++      peripheral can assign target bus attributes to this peripheral master port
++      (supported attribute: CID).
++    - RISC registers associated with RISAL logic (resource isolation device unit
++      for address space - Lite version), assign address space subregions to one
++      security domains (secure, privilege, compartment).
++
++properties:
++  compatible:
++    contains:
++      const: st,stm32mp25-rifsc
++
++  reg:
++    maxItems: 1
++
++  "#address-cells":
++    const: 1
++
++  "#size-cells":
++    const: 1
++
++  ranges: true
++
++  "#feature-domain-cells":
++    const: 1
++
++  feature-domain-controller: true
++
++patternProperties:
++  "^.*@[0-9a-f]+$":
++    description: Peripherals
++    type: object
++    properties:
++      feature-domains:
++        minItems: 1
++        description:
++          The phandle of the firewall controller of the peripheral and the
++          platform-specific firewall ID of the peripheral.
++
++      feature-domain-names:
++        minItems: 1
++
++    required:
++      - feature-domains
++
++required:
++  - compatible
++  - reg
++  - "#address-cells"
++  - "#size-cells"
++  - feature-domain-controller
++  - "#feature-domain-cells"
++  - ranges
++
++additionalProperties: false
++
++examples:
++  - |
++    // In this example, the usart2 device refers to rifsc as its domain
++    // controller.
++    // Access rights are verified before creating devices.
++
++    #include <dt-bindings/interrupt-controller/arm-gic.h>
++
++    rifsc: bus@42080000 {
++        compatible = "st,stm32mp25-rifsc";
++        reg = <0x42080000 0x1000>;
++        #address-cells = <1>;
++        #size-cells = <1>;
++        feature-domain-controller;
++        #feature-domain-cells = <1>;
++        ranges;
++
++        usart2: serial@400e0000 {
++              compatible = "st,stm32h7-uart";
++              reg = <0x400e0000 0x400>;
++              interrupts = <GIC_SPI 115 IRQ_TYPE_LEVEL_HIGH>;
++              clocks = <&ck_flexgen_08>;
++              feature-domains = <&rifsc 32>;
++        };
++    };
+-- 
+2.25.1
 
-Thank you...
-
-
-Reviewed-by: Vijaya Krishna Nivarthi <quic_vnivarth@quicinc.com>
-
-
-> ---
->
->   drivers/spi/spi-qcom-qspi.c | 25 +++++++++++++++++++++++++
->   1 file changed, 25 insertions(+)
->
-> diff --git a/drivers/spi/spi-qcom-qspi.c b/drivers/spi/spi-qcom-qspi.c
-> index 39b4d8a8107a..b2bbcfd93637 100644
-> --- a/drivers/spi/spi-qcom-qspi.c
-> +++ b/drivers/spi/spi-qcom-qspi.c
-> @@ -659,6 +659,30 @@ static irqreturn_t qcom_qspi_irq(int irq, void *dev_id)
->   	return ret;
->   }
->   
-> +static int qcom_qspi_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
-> +{
-> +	/*
-> +	 * If qcom_qspi_can_dma() is going to return false we don't need to
-> +	 * adjust anything.
-> +	 */
-> +	if (op->data.nbytes <= QSPI_MAX_BYTES_FIFO)
-> +		return 0;
-> +
-> +	/*
-> +	 * When reading, the transfer needs to be a multiple of 4 bytes so
-> +	 * shrink the transfer if that's not true. The caller will then do a
-> +	 * second transfer to finish things up.
-> +	 */
-> +	if (op->data.dir == SPI_MEM_DATA_IN && (op->data.nbytes & 0x3))
-> +		op->data.nbytes &= ~0x3;
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct spi_controller_mem_ops qcom_qspi_mem_ops = {
-> +	.adjust_op_size = qcom_qspi_adjust_op_size,
-> +};
-> +
->   static int qcom_qspi_probe(struct platform_device *pdev)
->   {
->   	int ret;
-> @@ -743,6 +767,7 @@ static int qcom_qspi_probe(struct platform_device *pdev)
->   	if (of_property_read_bool(pdev->dev.of_node, "iommus"))
->   		master->can_dma = qcom_qspi_can_dma;
->   	master->auto_runtime_pm = true;
-> +	master->mem_ops = &qcom_qspi_mem_ops;
->   
->   	ret = devm_pm_opp_set_clkname(&pdev->dev, "core");
->   	if (ret)

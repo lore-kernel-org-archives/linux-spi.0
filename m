@@ -2,67 +2,71 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 23EA7C001DC
-	for <linux-spi@archiver.kernel.org>; Wed, 26 Jul 2023 19:10:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1EE75C001DF
+	for <linux-spi@archiver.kernel.org>; Thu, 27 Jul 2023 03:05:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229692AbjGZTK0 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 26 Jul 2023 15:10:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54884 "EHLO
+        id S229733AbjG0DF1 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 26 Jul 2023 23:05:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229461AbjGZTKZ (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 26 Jul 2023 15:10:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6FB41FF0
-        for <linux-spi@vger.kernel.org>; Wed, 26 Jul 2023 12:10:24 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5517C617DB
-        for <linux-spi@vger.kernel.org>; Wed, 26 Jul 2023 19:10:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id BB412C433C7;
-        Wed, 26 Jul 2023 19:10:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690398623;
-        bh=jOkRbqzsaeqf5NKSPNV1OsFi/h86Sxo3EcaPihw+KJI=;
-        h=Subject:From:Date:To:From;
-        b=edKsaFVJ9No5rsKuuxukGRl2S//6DllPA+1gn2oOXSeBqCaMWvIT0CwEXOcrL6FPD
-         pqZXxYaYmYv5N6Ysb1SmJIWstGe1Qj3eBYwh9bbSI/x6PWlXaSVO97dE8W21eUNuxV
-         nO5icO9mSpXTOI/FwEzoScgC7xVSYxOTCKrY9cfjRqUgKYTeL2uhWJ0JUU98XuGVwE
-         efeneA4JD2P87m89wmMv9Xwjv+69pXfPtIytAnsnbe1pyQDxp3hTx8eEh3Cl5Hnw1X
-         7p63WwUsbAJp+8pZu/mJDC7z2Cfaks954njgdkZeWAeO6qqkcHa5xnAnum/aAV1wDc
-         xZfdtghezPGYg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 952ADC41672;
-        Wed, 26 Jul 2023 19:10:23 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S229655AbjG0DF0 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 26 Jul 2023 23:05:26 -0400
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E06761BCB;
+        Wed, 26 Jul 2023 20:05:24 -0700 (PDT)
+Received: from kwepemi500008.china.huawei.com (unknown [172.30.72.57])
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4RBFwk1S6mz1K9TL;
+        Thu, 27 Jul 2023 11:04:22 +0800 (CST)
+Received: from huawei.com (10.90.53.73) by kwepemi500008.china.huawei.com
+ (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 27 Jul
+ 2023 11:05:15 +0800
+From:   Ruan Jinjie <ruanjinjie@huawei.com>
+To:     <alain.volmat@foss.st.com>, <broonie@kernel.org>,
+        <mcoquelin.stm32@gmail.com>, <alexandre.torgue@foss.st.com>,
+        <linux-spi@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+CC:     <ruanjinjie@huawei.com>
+Subject: [PATCH -next] spi: stm32: Remove redundant dev_err_probe()
+Date:   Thu, 27 Jul 2023 11:05:58 +0000
+Message-ID: <20230727110558.2904084-1-ruanjinjie@huawei.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From:   patchwork-bot+spi-devel-general@kernel.org
-Message-Id: <169039862355.16406.16087739274627835762.git-patchwork-summary@kernel.org>
-Date:   Wed, 26 Jul 2023 19:10:23 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.90.53.73]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ kwepemi500008.china.huawei.com (7.221.188.139)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hello:
+There is no need to call the dev_err_probe() function directly to print
+a custom message when handling an error from platform_get_irq() function as
+it is going to display an appropriate error message in case of a failure.
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (for-next):
+Signed-off-by: Ruan Jinjie <ruanjinjie@huawei.com>
+---
+ drivers/spi/spi-stm32.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Patch: [v2] spi: tegra20-sflash: fix to check return value of platform_get_irq() in tegra_sflash_probe()
-  Submitter: Zhang Shurong <zhang_shurong@foxmail.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=768552
-  Lore link: https://lore.kernel.org/r/tencent_71FC162D589E4788C2152AAC84CD8D5C6D06@qq.com
-
-
-Total patches: 1
-
+diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
+index 8cf7b41481b2..d16ee6e54de9 100644
+--- a/drivers/spi/spi-stm32.c
++++ b/drivers/spi/spi-stm32.c
+@@ -1836,8 +1836,7 @@ static int stm32_spi_probe(struct platform_device *pdev)
+ 
+ 	spi->irq = platform_get_irq(pdev, 0);
+ 	if (spi->irq <= 0)
+-		return dev_err_probe(&pdev->dev, spi->irq,
+-				     "failed to get irq\n");
++		return spi->irq;
+ 
+ 	ret = devm_request_threaded_irq(&pdev->dev, spi->irq,
+ 					spi->cfg->irq_handler_event,
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.34.1
 

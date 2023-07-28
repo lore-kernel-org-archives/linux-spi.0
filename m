@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 94A67C00528
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 025F2C001DE
 	for <linux-spi@archiver.kernel.org>; Fri, 28 Jul 2023 09:35:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235524AbjG1JfU (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 28 Jul 2023 05:35:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49528 "EHLO
+        id S235483AbjG1JfV (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 28 Jul 2023 05:35:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235496AbjG1JfN (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 28 Jul 2023 05:35:13 -0400
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11A2910F9
-        for <linux-spi@vger.kernel.org>; Fri, 28 Jul 2023 02:35:12 -0700 (PDT)
-Received: from dggpemm500005.china.huawei.com (unknown [172.30.72.55])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4RC2V91y8YzLnyh;
-        Fri, 28 Jul 2023 17:32:33 +0800 (CST)
+        with ESMTP id S235504AbjG1JfO (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 28 Jul 2023 05:35:14 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CD8A1739
+        for <linux-spi@vger.kernel.org>; Fri, 28 Jul 2023 02:35:13 -0700 (PDT)
+Received: from dggpemm500011.china.huawei.com (unknown [172.30.72.53])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RC2WL1tGjzVjw3;
+        Fri, 28 Jul 2023 17:33:34 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500005.china.huawei.com (7.185.36.74) with Microsoft SMTP Server
+ dggpemm500011.china.huawei.com (7.185.36.110) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Fri, 28 Jul 2023 17:35:10 +0800
+ 15.1.2507.27; Fri, 28 Jul 2023 17:35:11 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 28 Jul
- 2023 17:35:09 +0800
+ 2023 17:35:10 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
         <yangyingliang@huawei.com>
-Subject: [PATCH -next 15/21] spi: spi-cavium-thunderx: switch to use modern name
-Date:   Fri, 28 Jul 2023 17:32:15 +0800
-Message-ID: <20230728093221.3312026-16-yangyingliang@huawei.com>
+Subject: [PATCH -next 17/21] spi: davinci: switch to use modern name
+Date:   Fri, 28 Jul 2023 17:32:17 +0800
+Message-ID: <20230728093221.3312026-18-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230728093221.3312026-1-yangyingliang@huawei.com>
 References: <20230728093221.3312026-1-yangyingliang@huawei.com>
@@ -52,81 +52,231 @@ No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-cavium-thunderx.c | 32 +++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+ drivers/spi/spi-davinci.c | 76 +++++++++++++++++++--------------------
+ 1 file changed, 38 insertions(+), 38 deletions(-)
 
-diff --git a/drivers/spi/spi-cavium-thunderx.c b/drivers/spi/spi-cavium-thunderx.c
-index 535f7eb9fa69..f7c378a5f1bc 100644
---- a/drivers/spi/spi-cavium-thunderx.c
-+++ b/drivers/spi/spi-cavium-thunderx.c
-@@ -20,15 +20,15 @@ static int thunderx_spi_probe(struct pci_dev *pdev,
- 			      const struct pci_device_id *ent)
+diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
+index 9a9f3bc0e2d5..c457b550d3ad 100644
+--- a/drivers/spi/spi-davinci.c
++++ b/drivers/spi/spi-davinci.c
+@@ -201,7 +201,7 @@ static void davinci_spi_chipselect(struct spi_device *spi, int value)
+ 	u8 chip_sel = spi_get_chipselect(spi, 0);
+ 	u16 spidat1 = CS_DEFAULT;
+ 
+-	dspi = spi_master_get_devdata(spi->master);
++	dspi = spi_controller_get_devdata(spi->controller);
+ 
+ 	/* program delay transfers if tx_delay is non zero */
+ 	if (spicfg && spicfg->wdelay)
+@@ -271,7 +271,7 @@ static int davinci_spi_setup_transfer(struct spi_device *spi,
+ 	u32 hz = 0, spifmt = 0;
+ 	int prescale;
+ 
+-	dspi = spi_master_get_devdata(spi->master);
++	dspi = spi_controller_get_devdata(spi->controller);
+ 	spicfg = spi->controller_data;
+ 	if (!spicfg)
+ 		spicfg = &davinci_spi_default_cfg;
+@@ -379,7 +379,7 @@ static int davinci_spi_of_setup(struct spi_device *spi)
  {
- 	struct device *dev = &pdev->dev;
--	struct spi_master *master;
-+	struct spi_controller *host;
- 	struct octeon_spi *p;
- 	int ret;
+ 	struct davinci_spi_config *spicfg = spi->controller_data;
+ 	struct device_node *np = spi->dev.of_node;
+-	struct davinci_spi *dspi = spi_master_get_devdata(spi->master);
++	struct davinci_spi *dspi = spi_controller_get_devdata(spi->controller);
+ 	u32 prop;
  
--	master = spi_alloc_master(dev, sizeof(struct octeon_spi));
--	if (!master)
-+	host = spi_alloc_host(dev, sizeof(struct octeon_spi));
-+	if (!host)
- 		return -ENOMEM;
+ 	if (spicfg == NULL && np) {
+@@ -411,7 +411,7 @@ static int davinci_spi_setup(struct spi_device *spi)
+ 	struct device_node *np = spi->dev.of_node;
+ 	bool internal_cs = true;
  
--	p = spi_master_get_devdata(master);
-+	p = spi_controller_get_devdata(host);
+-	dspi = spi_master_get_devdata(spi->master);
++	dspi = spi_controller_get_devdata(spi->controller);
  
- 	ret = pcim_enable_device(pdev);
- 	if (ret)
-@@ -64,18 +64,18 @@ static int thunderx_spi_probe(struct pci_dev *pdev,
- 		p->sys_freq = SYS_FREQ_DEFAULT;
- 	dev_info(dev, "Set system clock to %u\n", p->sys_freq);
- 
--	master->flags = SPI_CONTROLLER_HALF_DUPLEX;
--	master->num_chipselect = 4;
--	master->mode_bits = SPI_CPHA | SPI_CPOL | SPI_CS_HIGH |
-+	host->flags = SPI_CONTROLLER_HALF_DUPLEX;
-+	host->num_chipselect = 4;
-+	host->mode_bits = SPI_CPHA | SPI_CPOL | SPI_CS_HIGH |
- 			    SPI_LSB_FIRST | SPI_3WIRE;
--	master->transfer_one_message = octeon_spi_transfer_one_message;
--	master->bits_per_word_mask = SPI_BPW_MASK(8);
--	master->max_speed_hz = OCTEON_SPI_MAX_CLOCK_HZ;
--	master->dev.of_node = pdev->dev.of_node;
-+	host->transfer_one_message = octeon_spi_transfer_one_message;
-+	host->bits_per_word_mask = SPI_BPW_MASK(8);
-+	host->max_speed_hz = OCTEON_SPI_MAX_CLOCK_HZ;
-+	host->dev.of_node = pdev->dev.of_node;
- 
--	pci_set_drvdata(pdev, master);
-+	pci_set_drvdata(pdev, host);
- 
--	ret = devm_spi_register_master(dev, master);
-+	ret = devm_spi_register_controller(dev, host);
- 	if (ret)
- 		goto error;
- 
-@@ -84,16 +84,16 @@ static int thunderx_spi_probe(struct pci_dev *pdev,
- error:
- 	clk_disable_unprepare(p->clk);
- 	pci_release_regions(pdev);
--	spi_master_put(master);
-+	spi_controller_put(host);
- 	return ret;
+ 	if (!(spi->mode & SPI_NO_CS)) {
+ 		if (np && spi_get_csgpiod(spi, 0))
+@@ -441,7 +441,7 @@ static void davinci_spi_cleanup(struct spi_device *spi)
+ 		kfree(spicfg);
  }
  
- static void thunderx_spi_remove(struct pci_dev *pdev)
+-static bool davinci_spi_can_dma(struct spi_master *master,
++static bool davinci_spi_can_dma(struct spi_controller *host,
+ 				struct spi_device *spi,
+ 				struct spi_transfer *xfer)
  {
--	struct spi_master *master = pci_get_drvdata(pdev);
-+	struct spi_controller *host = pci_get_drvdata(pdev);
- 	struct octeon_spi *p;
+@@ -571,7 +571,7 @@ static int davinci_spi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 	struct davinci_spi_config *spicfg;
+ 	struct davinci_spi_platform_data *pdata;
  
--	p = spi_master_get_devdata(master);
-+	p = spi_controller_get_devdata(host);
- 	if (!p)
- 		return;
+-	dspi = spi_master_get_devdata(spi->master);
++	dspi = spi_controller_get_devdata(spi->controller);
+ 	pdata = &dspi->pdata;
+ 	spicfg = (struct davinci_spi_config *)spi->controller_data;
+ 	if (!spicfg)
+@@ -592,7 +592,7 @@ static int davinci_spi_bufs(struct spi_device *spi, struct spi_transfer *t)
  
+ 	reinit_completion(&dspi->done);
+ 
+-	if (!davinci_spi_can_dma(spi->master, spi, t)) {
++	if (!davinci_spi_can_dma(spi->controller, spi, t)) {
+ 		if (spicfg->io_type != SPI_IO_TYPE_POLL)
+ 			set_io_bits(dspi->base + SPIINT, SPIINT_MASKINT);
+ 		/* start the transfer */
+@@ -673,7 +673,7 @@ static int davinci_spi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 	}
+ 
+ 	clear_io_bits(dspi->base + SPIINT, SPIINT_MASKALL);
+-	if (davinci_spi_can_dma(spi->master, spi, t))
++	if (davinci_spi_can_dma(spi->controller, spi, t))
+ 		clear_io_bits(dspi->base + SPIINT, SPIINT_DMA_REQ_EN);
+ 
+ 	clear_io_bits(dspi->base + SPIGCR1, SPIGCR1_SPIENA_MASK);
+@@ -855,22 +855,22 @@ static int spi_davinci_get_pdata(struct platform_device *pdev,
+  */
+ static int davinci_spi_probe(struct platform_device *pdev)
+ {
+-	struct spi_master *master;
++	struct spi_controller *host;
+ 	struct davinci_spi *dspi;
+ 	struct davinci_spi_platform_data *pdata;
+ 	struct resource *r;
+ 	int ret = 0;
+ 	u32 spipc0;
+ 
+-	master = spi_alloc_master(&pdev->dev, sizeof(struct davinci_spi));
+-	if (master == NULL) {
++	host = spi_alloc_host(&pdev->dev, sizeof(struct davinci_spi));
++	if (host == NULL) {
+ 		ret = -ENOMEM;
+ 		goto err;
+ 	}
+ 
+-	platform_set_drvdata(pdev, master);
++	platform_set_drvdata(pdev, host);
+ 
+-	dspi = spi_master_get_devdata(master);
++	dspi = spi_controller_get_devdata(host);
+ 
+ 	if (dev_get_platdata(&pdev->dev)) {
+ 		pdata = dev_get_platdata(&pdev->dev);
+@@ -879,7 +879,7 @@ static int davinci_spi_probe(struct platform_device *pdev)
+ 		/* update dspi pdata with that from the DT */
+ 		ret = spi_davinci_get_pdata(pdev, dspi);
+ 		if (ret < 0)
+-			goto free_master;
++			goto free_host;
+ 	}
+ 
+ 	/* pdata in dspi is now updated and point pdata to that */
+@@ -891,13 +891,13 @@ static int davinci_spi_probe(struct platform_device *pdev)
+ 					    GFP_KERNEL);
+ 	if (dspi->bytes_per_word == NULL) {
+ 		ret = -ENOMEM;
+-		goto free_master;
++		goto free_host;
+ 	}
+ 
+ 	dspi->base = devm_platform_get_and_ioremap_resource(pdev, 0, &r);
+ 	if (IS_ERR(dspi->base)) {
+ 		ret = PTR_ERR(dspi->base);
+-		goto free_master;
++		goto free_host;
+ 	}
+ 	dspi->pbase = r->start;
+ 
+@@ -905,34 +905,34 @@ static int davinci_spi_probe(struct platform_device *pdev)
+ 
+ 	ret = platform_get_irq(pdev, 0);
+ 	if (ret < 0)
+-		goto free_master;
++		goto free_host;
+ 	dspi->irq = ret;
+ 
+ 	ret = devm_request_threaded_irq(&pdev->dev, dspi->irq, davinci_spi_irq,
+ 				dummy_thread_fn, 0, dev_name(&pdev->dev), dspi);
+ 	if (ret)
+-		goto free_master;
++		goto free_host;
+ 
+-	dspi->bitbang.master = master;
++	dspi->bitbang.master = host;
+ 
+ 	dspi->clk = devm_clk_get(&pdev->dev, NULL);
+ 	if (IS_ERR(dspi->clk)) {
+ 		ret = -ENODEV;
+-		goto free_master;
++		goto free_host;
+ 	}
+ 	ret = clk_prepare_enable(dspi->clk);
+ 	if (ret)
+-		goto free_master;
+-
+-	master->use_gpio_descriptors = true;
+-	master->dev.of_node = pdev->dev.of_node;
+-	master->bus_num = pdev->id;
+-	master->num_chipselect = pdata->num_chipselect;
+-	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(2, 16);
+-	master->flags = SPI_CONTROLLER_MUST_RX | SPI_CONTROLLER_GPIO_SS;
+-	master->setup = davinci_spi_setup;
+-	master->cleanup = davinci_spi_cleanup;
+-	master->can_dma = davinci_spi_can_dma;
++		goto free_host;
++
++	host->use_gpio_descriptors = true;
++	host->dev.of_node = pdev->dev.of_node;
++	host->bus_num = pdev->id;
++	host->num_chipselect = pdata->num_chipselect;
++	host->bits_per_word_mask = SPI_BPW_RANGE_MASK(2, 16);
++	host->flags = SPI_CONTROLLER_MUST_RX | SPI_CONTROLLER_GPIO_SS;
++	host->setup = davinci_spi_setup;
++	host->cleanup = davinci_spi_cleanup;
++	host->can_dma = davinci_spi_can_dma;
+ 
+ 	dspi->bitbang.chipselect = davinci_spi_chipselect;
+ 	dspi->bitbang.setup_transfer = davinci_spi_setup_transfer;
+@@ -973,7 +973,7 @@ static int davinci_spi_probe(struct platform_device *pdev)
+ 
+ 	iowrite32(CS_DEFAULT, dspi->base + SPIDEF);
+ 
+-	/* master mode default */
++	/* host mode default */
+ 	set_io_bits(dspi->base + SPIGCR1, SPIGCR1_CLKMOD_MASK);
+ 	set_io_bits(dspi->base + SPIGCR1, SPIGCR1_MASTER_MASK);
+ 	set_io_bits(dspi->base + SPIGCR1, SPIGCR1_POWERDOWN_MASK);
+@@ -993,8 +993,8 @@ static int davinci_spi_probe(struct platform_device *pdev)
+ 	}
+ free_clk:
+ 	clk_disable_unprepare(dspi->clk);
+-free_master:
+-	spi_master_put(master);
++free_host:
++	spi_controller_put(host);
+ err:
+ 	return ret;
+ }
+@@ -1011,10 +1011,10 @@ static int davinci_spi_probe(struct platform_device *pdev)
+ static void davinci_spi_remove(struct platform_device *pdev)
+ {
+ 	struct davinci_spi *dspi;
+-	struct spi_master *master;
++	struct spi_controller *host;
+ 
+-	master = platform_get_drvdata(pdev);
+-	dspi = spi_master_get_devdata(master);
++	host = platform_get_drvdata(pdev);
++	dspi = spi_controller_get_devdata(host);
+ 
+ 	spi_bitbang_stop(&dspi->bitbang);
+ 
+@@ -1025,7 +1025,7 @@ static void davinci_spi_remove(struct platform_device *pdev)
+ 		dma_release_channel(dspi->dma_tx);
+ 	}
+ 
+-	spi_master_put(master);
++	spi_controller_put(host);
+ }
+ 
+ static struct platform_driver davinci_spi_driver = {
 -- 
 2.25.1
 

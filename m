@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A55EC04FDF
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A36B8C001E0
 	for <linux-spi@archiver.kernel.org>; Fri, 28 Jul 2023 09:35:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235496AbjG1JfV (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 28 Jul 2023 05:35:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49562 "EHLO
+        id S235476AbjG1JfW (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 28 Jul 2023 05:35:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235476AbjG1JfP (ORCPT
+        with ESMTP id S235377AbjG1JfP (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Fri, 28 Jul 2023 05:35:15 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0846E173F
-        for <linux-spi@vger.kernel.org>; Fri, 28 Jul 2023 02:35:14 -0700 (PDT)
-Received: from dggpemm500008.china.huawei.com (unknown [172.30.72.55])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RC2WM35jCzVjsd;
-        Fri, 28 Jul 2023 17:33:35 +0800 (CST)
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFB4A10D2
+        for <linux-spi@vger.kernel.org>; Fri, 28 Jul 2023 02:35:13 -0700 (PDT)
+Received: from dggpemm500016.china.huawei.com (unknown [172.30.72.54])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4RC2VC0B2gzLnwP;
+        Fri, 28 Jul 2023 17:32:35 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500008.china.huawei.com (7.185.36.136) with Microsoft SMTP Server
+ dggpemm500016.china.huawei.com (7.185.36.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Fri, 28 Jul 2023 17:35:08 +0800
+ 15.1.2507.27; Fri, 28 Jul 2023 17:35:12 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 28 Jul
- 2023 17:35:08 +0800
+ 2023 17:35:11 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
         <yangyingliang@huawei.com>
-Subject: [PATCH -next 10/21] spi: cadence-quadspi: switch to use modern name
-Date:   Fri, 28 Jul 2023 17:32:10 +0800
-Message-ID: <20230728093221.3312026-11-yangyingliang@huawei.com>
+Subject: [PATCH -next 18/21] spi: dln2: switch to use modern name
+Date:   Fri, 28 Jul 2023 17:32:18 +0800
+Message-ID: <20230728093221.3312026-19-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230728093221.3312026-1-yangyingliang@huawei.com>
 References: <20230728093221.3312026-1-yangyingliang@huawei.com>
@@ -52,153 +52,265 @@ No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-cadence-quadspi.c | 44 +++++++++++++++----------------
- 1 file changed, 22 insertions(+), 22 deletions(-)
+ drivers/spi/spi-dln2.c | 94 +++++++++++++++++++++---------------------
+ 1 file changed, 47 insertions(+), 47 deletions(-)
 
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index e1a8cf08ef66..1c28f02042b0 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -61,7 +61,7 @@ struct cqspi_flash_pdata {
+diff --git a/drivers/spi/spi-dln2.c b/drivers/spi/spi-dln2.c
+index 6bd93c47853c..d319dc357fef 100644
+--- a/drivers/spi/spi-dln2.c
++++ b/drivers/spi/spi-dln2.c
+@@ -79,7 +79,7 @@
  
- struct cqspi_st {
- 	struct platform_device	*pdev;
--	struct spi_master	*master;
-+	struct spi_controller	*host;
- 	struct clk		*clk;
- 	unsigned int		sclk;
- 
-@@ -1368,7 +1368,7 @@ static ssize_t cqspi_read(struct cqspi_flash_pdata *f_pdata,
- 
- static int cqspi_mem_process(struct spi_mem *mem, const struct spi_mem_op *op)
- {
--	struct cqspi_st *cqspi = spi_master_get_devdata(mem->spi->master);
-+	struct cqspi_st *cqspi = spi_controller_get_devdata(mem->spi->controller);
- 	struct cqspi_flash_pdata *f_pdata;
- 
- 	f_pdata = &cqspi->f_pdata[spi_get_chipselect(mem->spi, 0)];
-@@ -1574,7 +1574,7 @@ static int cqspi_request_mmap_dma(struct cqspi_st *cqspi)
- 
- static const char *cqspi_get_name(struct spi_mem *mem)
- {
--	struct cqspi_st *cqspi = spi_master_get_devdata(mem->spi->master);
-+	struct cqspi_st *cqspi = spi_controller_get_devdata(mem->spi->controller);
- 	struct device *dev = &cqspi->pdev->dev;
- 
- 	return devm_kasprintf(dev, GFP_KERNEL, "%s.%d", dev_name(dev),
-@@ -1634,26 +1634,26 @@ static int cqspi_probe(struct platform_device *pdev)
- 	const struct cqspi_driver_platdata *ddata;
- 	struct reset_control *rstc, *rstc_ocp, *rstc_ref;
- 	struct device *dev = &pdev->dev;
+ struct dln2_spi {
+ 	struct platform_device *pdev;
 -	struct spi_master *master;
 +	struct spi_controller *host;
- 	struct resource *res_ahb;
- 	struct cqspi_st *cqspi;
- 	int ret;
- 	int irq;
+ 	u8 port;
  
--	master = devm_spi_alloc_master(&pdev->dev, sizeof(*cqspi));
--	if (!master) {
--		dev_err(&pdev->dev, "spi_alloc_master failed\n");
-+	host = devm_spi_alloc_host(&pdev->dev, sizeof(*cqspi));
-+	if (!host) {
-+		dev_err(&pdev->dev, "devm_spi_alloc_host failed\n");
+ 	/*
+@@ -176,7 +176,7 @@ static int dln2_spi_cs_enable(struct dln2_spi *dln2, u8 cs_mask, bool enable)
+ 
+ static int dln2_spi_cs_enable_all(struct dln2_spi *dln2, bool enable)
+ {
+-	u8 cs_mask = GENMASK(dln2->master->num_chipselect - 1, 0);
++	u8 cs_mask = GENMASK(dln2->host->num_chipselect - 1, 0);
+ 
+ 	return dln2_spi_cs_enable(dln2, cs_mask, enable);
+ }
+@@ -589,11 +589,11 @@ static int dln2_spi_rdwr(struct dln2_spi *dln2, const u8 *tx_data,
+ 	return 0;
+ }
+ 
+-static int dln2_spi_prepare_message(struct spi_master *master,
++static int dln2_spi_prepare_message(struct spi_controller *host,
+ 				    struct spi_message *message)
+ {
+ 	int ret;
+-	struct dln2_spi *dln2 = spi_master_get_devdata(master);
++	struct dln2_spi *dln2 = spi_controller_get_devdata(host);
+ 	struct spi_device *spi = message->spi;
+ 
+ 	if (dln2->cs != spi_get_chipselect(spi, 0)) {
+@@ -650,11 +650,11 @@ static int dln2_spi_transfer_setup(struct dln2_spi *dln2, u32 speed,
+ 	return dln2_spi_enable(dln2, true);
+ }
+ 
+-static int dln2_spi_transfer_one(struct spi_master *master,
++static int dln2_spi_transfer_one(struct spi_controller *host,
+ 				 struct spi_device *spi,
+ 				 struct spi_transfer *xfer)
+ {
+-	struct dln2_spi *dln2 = spi_master_get_devdata(master);
++	struct dln2_spi *dln2 = spi_controller_get_devdata(host);
+ 	int status;
+ 	u8 attr = 0;
+ 
+@@ -666,7 +666,7 @@ static int dln2_spi_transfer_one(struct spi_master *master,
+ 		return status;
+ 	}
+ 
+-	if (!xfer->cs_change && !spi_transfer_is_last(master, xfer))
++	if (!xfer->cs_change && !spi_transfer_is_last(host, xfer))
+ 		attr = DLN2_SPI_ATTR_LEAVE_SS_LOW;
+ 
+ 	status = dln2_spi_rdwr(dln2, xfer->tx_buf, xfer->rx_buf,
+@@ -679,29 +679,29 @@ static int dln2_spi_transfer_one(struct spi_master *master,
+ 
+ static int dln2_spi_probe(struct platform_device *pdev)
+ {
+-	struct spi_master *master;
++	struct spi_controller *host;
+ 	struct dln2_spi *dln2;
+ 	struct dln2_platform_data *pdata = dev_get_platdata(&pdev->dev);
+ 	struct device *dev = &pdev->dev;
+ 	int ret;
+ 
+-	master = spi_alloc_master(&pdev->dev, sizeof(*dln2));
+-	if (!master)
++	host = spi_alloc_host(&pdev->dev, sizeof(*dln2));
++	if (!host)
  		return -ENOMEM;
- 	}
--	master->mode_bits = SPI_RX_QUAD | SPI_RX_DUAL;
--	master->mem_ops = &cqspi_mem_ops;
--	master->mem_caps = &cqspi_mem_caps;
--	master->dev.of_node = pdev->dev.of_node;
-+	host->mode_bits = SPI_RX_QUAD | SPI_RX_DUAL;
-+	host->mem_ops = &cqspi_mem_ops;
-+	host->mem_caps = &cqspi_mem_caps;
-+	host->dev.of_node = pdev->dev.of_node;
  
--	cqspi = spi_master_get_devdata(master);
-+	cqspi = spi_controller_get_devdata(host);
+-	device_set_node(&master->dev, dev_fwnode(dev));
++	device_set_node(&host->dev, dev_fwnode(dev));
  
- 	cqspi->pdev = pdev;
--	cqspi->master = master;
-+	cqspi->host = host;
- 	platform_set_drvdata(pdev, cqspi);
+-	platform_set_drvdata(pdev, master);
++	platform_set_drvdata(pdev, host);
  
- 	/* Obtain configuration from OF. */
-@@ -1740,7 +1740,7 @@ static int cqspi_probe(struct platform_device *pdev)
- 	reset_control_deassert(rstc_ocp);
+-	dln2 = spi_master_get_devdata(master);
++	dln2 = spi_controller_get_devdata(host);
  
- 	cqspi->master_ref_clk_hz = clk_get_rate(cqspi->clk);
--	master->max_speed_hz = cqspi->master_ref_clk_hz;
-+	host->max_speed_hz = cqspi->master_ref_clk_hz;
- 
- 	/* write completion is supported by default */
- 	cqspi->wr_completion = true;
-@@ -1751,7 +1751,7 @@ static int cqspi_probe(struct platform_device *pdev)
- 			cqspi->wr_delay = 50 * DIV_ROUND_UP(NSEC_PER_SEC,
- 						cqspi->master_ref_clk_hz);
- 		if (ddata->hwcaps_mask & CQSPI_SUPPORTS_OCTAL)
--			master->mode_bits |= SPI_RX_OCTAL | SPI_TX_OCTAL;
-+			host->mode_bits |= SPI_RX_OCTAL | SPI_TX_OCTAL;
- 		if (!(ddata->quirks & CQSPI_DISABLE_DAC_MODE)) {
- 			cqspi->use_direct_mode = true;
- 			cqspi->use_direct_mode_wr = true;
-@@ -1785,7 +1785,7 @@ static int cqspi_probe(struct platform_device *pdev)
- 	cqspi->current_cs = -1;
- 	cqspi->sclk = 0;
- 
--	master->num_chipselect = cqspi->num_chipselect;
-+	host->num_chipselect = cqspi->num_chipselect;
- 
- 	ret = cqspi_setup_flash(cqspi);
- 	if (ret) {
-@@ -1799,7 +1799,7 @@ static int cqspi_probe(struct platform_device *pdev)
- 			goto probe_setup_failed;
+ 	dln2->buf = devm_kmalloc(&pdev->dev, DLN2_SPI_BUF_SIZE, GFP_KERNEL);
+ 	if (!dln2->buf) {
+ 		ret = -ENOMEM;
+-		goto exit_free_master;
++		goto exit_free_host;
  	}
  
--	ret = spi_register_master(master);
-+	ret = spi_register_controller(host);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to register SPI ctlr %d\n", ret);
- 		goto probe_setup_failed;
-@@ -1821,7 +1821,7 @@ static void cqspi_remove(struct platform_device *pdev)
- {
- 	struct cqspi_st *cqspi = platform_get_drvdata(pdev);
+-	dln2->master = master;
++	dln2->host = host;
+ 	dln2->pdev = pdev;
+ 	dln2->port = pdata->port;
+ 	/* cs/mode can never be 0xff, so the first transfer will set them */
+@@ -712,47 +712,47 @@ static int dln2_spi_probe(struct platform_device *pdev)
+ 	ret = dln2_spi_enable(dln2, false);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "Failed to disable SPI module\n");
+-		goto exit_free_master;
++		goto exit_free_host;
+ 	}
  
--	spi_unregister_master(cqspi->master);
-+	spi_unregister_controller(cqspi->host);
- 	cqspi_controller_enable(cqspi, 0);
+-	ret = dln2_spi_get_cs_num(dln2, &master->num_chipselect);
++	ret = dln2_spi_get_cs_num(dln2, &host->num_chipselect);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "Failed to get number of CS pins\n");
+-		goto exit_free_master;
++		goto exit_free_host;
+ 	}
  
- 	if (cqspi->rx_chan)
-@@ -1836,10 +1836,10 @@ static void cqspi_remove(struct platform_device *pdev)
- static int cqspi_suspend(struct device *dev)
+ 	ret = dln2_spi_get_speed_range(dln2,
+-				       &master->min_speed_hz,
+-				       &master->max_speed_hz);
++				       &host->min_speed_hz,
++				       &host->max_speed_hz);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "Failed to read bus min/max freqs\n");
+-		goto exit_free_master;
++		goto exit_free_host;
+ 	}
+ 
+ 	ret = dln2_spi_get_supported_frame_sizes(dln2,
+-						 &master->bits_per_word_mask);
++						 &host->bits_per_word_mask);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "Failed to read supported frame sizes\n");
+-		goto exit_free_master;
++		goto exit_free_host;
+ 	}
+ 
+ 	ret = dln2_spi_cs_enable_all(dln2, true);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "Failed to enable CS pins\n");
+-		goto exit_free_master;
++		goto exit_free_host;
+ 	}
+ 
+-	master->bus_num = -1;
+-	master->mode_bits = SPI_CPOL | SPI_CPHA;
+-	master->prepare_message = dln2_spi_prepare_message;
+-	master->transfer_one = dln2_spi_transfer_one;
+-	master->auto_runtime_pm = true;
++	host->bus_num = -1;
++	host->mode_bits = SPI_CPOL | SPI_CPHA;
++	host->prepare_message = dln2_spi_prepare_message;
++	host->transfer_one = dln2_spi_transfer_one;
++	host->auto_runtime_pm = true;
+ 
+ 	/* enable SPI module, we're good to go */
+ 	ret = dln2_spi_enable(dln2, true);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "Failed to enable SPI module\n");
+-		goto exit_free_master;
++		goto exit_free_host;
+ 	}
+ 
+ 	pm_runtime_set_autosuspend_delay(&pdev->dev,
+@@ -761,9 +761,9 @@ static int dln2_spi_probe(struct platform_device *pdev)
+ 	pm_runtime_set_active(&pdev->dev);
+ 	pm_runtime_enable(&pdev->dev);
+ 
+-	ret = devm_spi_register_master(&pdev->dev, master);
++	ret = devm_spi_register_controller(&pdev->dev, host);
+ 	if (ret < 0) {
+-		dev_err(&pdev->dev, "Failed to register master\n");
++		dev_err(&pdev->dev, "Failed to register host\n");
+ 		goto exit_register;
+ 	}
+ 
+@@ -775,16 +775,16 @@ static int dln2_spi_probe(struct platform_device *pdev)
+ 
+ 	if (dln2_spi_enable(dln2, false) < 0)
+ 		dev_err(&pdev->dev, "Failed to disable SPI module\n");
+-exit_free_master:
+-	spi_master_put(master);
++exit_free_host:
++	spi_controller_put(host);
+ 
+ 	return ret;
+ }
+ 
+ static void dln2_spi_remove(struct platform_device *pdev)
  {
- 	struct cqspi_st *cqspi = dev_get_drvdata(dev);
--	struct spi_master *master = dev_get_drvdata(dev);
-+	struct spi_controller *host = dev_get_drvdata(dev);
+-	struct spi_master *master = platform_get_drvdata(pdev);
+-	struct dln2_spi *dln2 = spi_master_get_devdata(master);
++	struct spi_controller *host = platform_get_drvdata(pdev);
++	struct dln2_spi *dln2 = spi_controller_get_devdata(host);
+ 
+ 	pm_runtime_disable(&pdev->dev);
+ 
+@@ -796,10 +796,10 @@ static void dln2_spi_remove(struct platform_device *pdev)
+ static int dln2_spi_suspend(struct device *dev)
+ {
  	int ret;
+-	struct spi_master *master = dev_get_drvdata(dev);
+-	struct dln2_spi *dln2 = spi_master_get_devdata(master);
++	struct spi_controller *host = dev_get_drvdata(dev);
++	struct dln2_spi *dln2 = spi_controller_get_devdata(host);
  
 -	ret = spi_master_suspend(master);
 +	ret = spi_controller_suspend(host);
- 	cqspi_controller_enable(cqspi, 0);
+ 	if (ret < 0)
+ 		return ret;
  
- 	clk_disable_unprepare(cqspi->clk);
-@@ -1850,7 +1850,7 @@ static int cqspi_suspend(struct device *dev)
- static int cqspi_resume(struct device *dev)
+@@ -824,8 +824,8 @@ static int dln2_spi_suspend(struct device *dev)
+ static int dln2_spi_resume(struct device *dev)
  {
- 	struct cqspi_st *cqspi = dev_get_drvdata(dev);
+ 	int ret;
 -	struct spi_master *master = dev_get_drvdata(dev);
+-	struct dln2_spi *dln2 = spi_master_get_devdata(master);
 +	struct spi_controller *host = dev_get_drvdata(dev);
++	struct dln2_spi *dln2 = spi_controller_get_devdata(host);
  
- 	clk_prepare_enable(cqspi->clk);
- 	cqspi_wait_idle(cqspi);
-@@ -1859,7 +1859,7 @@ static int cqspi_resume(struct device *dev)
- 	cqspi->current_cs = -1;
- 	cqspi->sclk = 0;
+ 	if (!pm_runtime_suspended(dev)) {
+ 		ret = dln2_spi_cs_enable_all(dln2, true);
+@@ -837,23 +837,23 @@ static int dln2_spi_resume(struct device *dev)
+ 			return ret;
+ 	}
  
 -	return spi_master_resume(master);
 +	return spi_controller_resume(host);
  }
+ #endif /* CONFIG_PM_SLEEP */
  
- static DEFINE_SIMPLE_DEV_PM_OPS(cqspi_dev_pm_ops, cqspi_suspend, cqspi_resume);
+ #ifdef CONFIG_PM
+ static int dln2_spi_runtime_suspend(struct device *dev)
+ {
+-	struct spi_master *master = dev_get_drvdata(dev);
+-	struct dln2_spi *dln2 = spi_master_get_devdata(master);
++	struct spi_controller *host = dev_get_drvdata(dev);
++	struct dln2_spi *dln2 = spi_controller_get_devdata(host);
+ 
+ 	return dln2_spi_enable(dln2, false);
+ }
+ 
+ static int dln2_spi_runtime_resume(struct device *dev)
+ {
+-	struct spi_master *master = dev_get_drvdata(dev);
+-	struct dln2_spi *dln2 = spi_master_get_devdata(master);
++	struct spi_controller *host = dev_get_drvdata(dev);
++	struct dln2_spi *dln2 = spi_controller_get_devdata(host);
+ 
+ 	return  dln2_spi_enable(dln2, true);
+ }
+@@ -875,7 +875,7 @@ static struct platform_driver spi_dln2_driver = {
+ };
+ module_platform_driver(spi_dln2_driver);
+ 
+-MODULE_DESCRIPTION("Driver for the Diolan DLN2 SPI master interface");
++MODULE_DESCRIPTION("Driver for the Diolan DLN2 SPI host interface");
+ MODULE_AUTHOR("Laurentiu Palcu <laurentiu.palcu@intel.com>");
+ MODULE_LICENSE("GPL v2");
+ MODULE_ALIAS("platform:dln2-spi");
 -- 
 2.25.1
 

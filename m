@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 025F2C001DE
-	for <linux-spi@archiver.kernel.org>; Fri, 28 Jul 2023 09:35:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A55EC04FDF
+	for <linux-spi@archiver.kernel.org>; Fri, 28 Jul 2023 09:35:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235483AbjG1JfV (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S235496AbjG1JfV (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Fri, 28 Jul 2023 05:35:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49526 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235504AbjG1JfO (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 28 Jul 2023 05:35:14 -0400
+        with ESMTP id S235476AbjG1JfP (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 28 Jul 2023 05:35:15 -0400
 Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CD8A1739
-        for <linux-spi@vger.kernel.org>; Fri, 28 Jul 2023 02:35:13 -0700 (PDT)
-Received: from dggpemm500011.china.huawei.com (unknown [172.30.72.53])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RC2WL1tGjzVjw3;
-        Fri, 28 Jul 2023 17:33:34 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0846E173F
+        for <linux-spi@vger.kernel.org>; Fri, 28 Jul 2023 02:35:14 -0700 (PDT)
+Received: from dggpemm500008.china.huawei.com (unknown [172.30.72.55])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RC2WM35jCzVjsd;
+        Fri, 28 Jul 2023 17:33:35 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500011.china.huawei.com (7.185.36.110) with Microsoft SMTP Server
+ dggpemm500008.china.huawei.com (7.185.36.136) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Fri, 28 Jul 2023 17:35:11 +0800
+ 15.1.2507.27; Fri, 28 Jul 2023 17:35:08 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 28 Jul
- 2023 17:35:10 +0800
+ 2023 17:35:08 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
         <yangyingliang@huawei.com>
-Subject: [PATCH -next 17/21] spi: davinci: switch to use modern name
-Date:   Fri, 28 Jul 2023 17:32:17 +0800
-Message-ID: <20230728093221.3312026-18-yangyingliang@huawei.com>
+Subject: [PATCH -next 10/21] spi: cadence-quadspi: switch to use modern name
+Date:   Fri, 28 Jul 2023 17:32:10 +0800
+Message-ID: <20230728093221.3312026-11-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230728093221.3312026-1-yangyingliang@huawei.com>
 References: <20230728093221.3312026-1-yangyingliang@huawei.com>
@@ -52,231 +52,153 @@ No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-davinci.c | 76 +++++++++++++++++++--------------------
- 1 file changed, 38 insertions(+), 38 deletions(-)
+ drivers/spi/spi-cadence-quadspi.c | 44 +++++++++++++++----------------
+ 1 file changed, 22 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
-index 9a9f3bc0e2d5..c457b550d3ad 100644
---- a/drivers/spi/spi-davinci.c
-+++ b/drivers/spi/spi-davinci.c
-@@ -201,7 +201,7 @@ static void davinci_spi_chipselect(struct spi_device *spi, int value)
- 	u8 chip_sel = spi_get_chipselect(spi, 0);
- 	u16 spidat1 = CS_DEFAULT;
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index e1a8cf08ef66..1c28f02042b0 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -61,7 +61,7 @@ struct cqspi_flash_pdata {
  
--	dspi = spi_master_get_devdata(spi->master);
-+	dspi = spi_controller_get_devdata(spi->controller);
+ struct cqspi_st {
+ 	struct platform_device	*pdev;
+-	struct spi_master	*master;
++	struct spi_controller	*host;
+ 	struct clk		*clk;
+ 	unsigned int		sclk;
  
- 	/* program delay transfers if tx_delay is non zero */
- 	if (spicfg && spicfg->wdelay)
-@@ -271,7 +271,7 @@ static int davinci_spi_setup_transfer(struct spi_device *spi,
- 	u32 hz = 0, spifmt = 0;
- 	int prescale;
+@@ -1368,7 +1368,7 @@ static ssize_t cqspi_read(struct cqspi_flash_pdata *f_pdata,
  
--	dspi = spi_master_get_devdata(spi->master);
-+	dspi = spi_controller_get_devdata(spi->controller);
- 	spicfg = spi->controller_data;
- 	if (!spicfg)
- 		spicfg = &davinci_spi_default_cfg;
-@@ -379,7 +379,7 @@ static int davinci_spi_of_setup(struct spi_device *spi)
+ static int cqspi_mem_process(struct spi_mem *mem, const struct spi_mem_op *op)
  {
- 	struct davinci_spi_config *spicfg = spi->controller_data;
- 	struct device_node *np = spi->dev.of_node;
--	struct davinci_spi *dspi = spi_master_get_devdata(spi->master);
-+	struct davinci_spi *dspi = spi_controller_get_devdata(spi->controller);
- 	u32 prop;
+-	struct cqspi_st *cqspi = spi_master_get_devdata(mem->spi->master);
++	struct cqspi_st *cqspi = spi_controller_get_devdata(mem->spi->controller);
+ 	struct cqspi_flash_pdata *f_pdata;
  
- 	if (spicfg == NULL && np) {
-@@ -411,7 +411,7 @@ static int davinci_spi_setup(struct spi_device *spi)
- 	struct device_node *np = spi->dev.of_node;
- 	bool internal_cs = true;
+ 	f_pdata = &cqspi->f_pdata[spi_get_chipselect(mem->spi, 0)];
+@@ -1574,7 +1574,7 @@ static int cqspi_request_mmap_dma(struct cqspi_st *cqspi)
  
--	dspi = spi_master_get_devdata(spi->master);
-+	dspi = spi_controller_get_devdata(spi->controller);
- 
- 	if (!(spi->mode & SPI_NO_CS)) {
- 		if (np && spi_get_csgpiod(spi, 0))
-@@ -441,7 +441,7 @@ static void davinci_spi_cleanup(struct spi_device *spi)
- 		kfree(spicfg);
- }
- 
--static bool davinci_spi_can_dma(struct spi_master *master,
-+static bool davinci_spi_can_dma(struct spi_controller *host,
- 				struct spi_device *spi,
- 				struct spi_transfer *xfer)
+ static const char *cqspi_get_name(struct spi_mem *mem)
  {
-@@ -571,7 +571,7 @@ static int davinci_spi_bufs(struct spi_device *spi, struct spi_transfer *t)
- 	struct davinci_spi_config *spicfg;
- 	struct davinci_spi_platform_data *pdata;
+-	struct cqspi_st *cqspi = spi_master_get_devdata(mem->spi->master);
++	struct cqspi_st *cqspi = spi_controller_get_devdata(mem->spi->controller);
+ 	struct device *dev = &cqspi->pdev->dev;
  
--	dspi = spi_master_get_devdata(spi->master);
-+	dspi = spi_controller_get_devdata(spi->controller);
- 	pdata = &dspi->pdata;
- 	spicfg = (struct davinci_spi_config *)spi->controller_data;
- 	if (!spicfg)
-@@ -592,7 +592,7 @@ static int davinci_spi_bufs(struct spi_device *spi, struct spi_transfer *t)
- 
- 	reinit_completion(&dspi->done);
- 
--	if (!davinci_spi_can_dma(spi->master, spi, t)) {
-+	if (!davinci_spi_can_dma(spi->controller, spi, t)) {
- 		if (spicfg->io_type != SPI_IO_TYPE_POLL)
- 			set_io_bits(dspi->base + SPIINT, SPIINT_MASKINT);
- 		/* start the transfer */
-@@ -673,7 +673,7 @@ static int davinci_spi_bufs(struct spi_device *spi, struct spi_transfer *t)
- 	}
- 
- 	clear_io_bits(dspi->base + SPIINT, SPIINT_MASKALL);
--	if (davinci_spi_can_dma(spi->master, spi, t))
-+	if (davinci_spi_can_dma(spi->controller, spi, t))
- 		clear_io_bits(dspi->base + SPIINT, SPIINT_DMA_REQ_EN);
- 
- 	clear_io_bits(dspi->base + SPIGCR1, SPIGCR1_SPIENA_MASK);
-@@ -855,22 +855,22 @@ static int spi_davinci_get_pdata(struct platform_device *pdev,
-  */
- static int davinci_spi_probe(struct platform_device *pdev)
- {
+ 	return devm_kasprintf(dev, GFP_KERNEL, "%s.%d", dev_name(dev),
+@@ -1634,26 +1634,26 @@ static int cqspi_probe(struct platform_device *pdev)
+ 	const struct cqspi_driver_platdata *ddata;
+ 	struct reset_control *rstc, *rstc_ocp, *rstc_ref;
+ 	struct device *dev = &pdev->dev;
 -	struct spi_master *master;
 +	struct spi_controller *host;
- 	struct davinci_spi *dspi;
- 	struct davinci_spi_platform_data *pdata;
- 	struct resource *r;
- 	int ret = 0;
- 	u32 spipc0;
+ 	struct resource *res_ahb;
+ 	struct cqspi_st *cqspi;
+ 	int ret;
+ 	int irq;
  
--	master = spi_alloc_master(&pdev->dev, sizeof(struct davinci_spi));
--	if (master == NULL) {
-+	host = spi_alloc_host(&pdev->dev, sizeof(struct davinci_spi));
-+	if (host == NULL) {
- 		ret = -ENOMEM;
- 		goto err;
+-	master = devm_spi_alloc_master(&pdev->dev, sizeof(*cqspi));
+-	if (!master) {
+-		dev_err(&pdev->dev, "spi_alloc_master failed\n");
++	host = devm_spi_alloc_host(&pdev->dev, sizeof(*cqspi));
++	if (!host) {
++		dev_err(&pdev->dev, "devm_spi_alloc_host failed\n");
+ 		return -ENOMEM;
  	}
- 
--	platform_set_drvdata(pdev, master);
-+	platform_set_drvdata(pdev, host);
- 
--	dspi = spi_master_get_devdata(master);
-+	dspi = spi_controller_get_devdata(host);
- 
- 	if (dev_get_platdata(&pdev->dev)) {
- 		pdata = dev_get_platdata(&pdev->dev);
-@@ -879,7 +879,7 @@ static int davinci_spi_probe(struct platform_device *pdev)
- 		/* update dspi pdata with that from the DT */
- 		ret = spi_davinci_get_pdata(pdev, dspi);
- 		if (ret < 0)
--			goto free_master;
-+			goto free_host;
- 	}
- 
- 	/* pdata in dspi is now updated and point pdata to that */
-@@ -891,13 +891,13 @@ static int davinci_spi_probe(struct platform_device *pdev)
- 					    GFP_KERNEL);
- 	if (dspi->bytes_per_word == NULL) {
- 		ret = -ENOMEM;
--		goto free_master;
-+		goto free_host;
- 	}
- 
- 	dspi->base = devm_platform_get_and_ioremap_resource(pdev, 0, &r);
- 	if (IS_ERR(dspi->base)) {
- 		ret = PTR_ERR(dspi->base);
--		goto free_master;
-+		goto free_host;
- 	}
- 	dspi->pbase = r->start;
- 
-@@ -905,34 +905,34 @@ static int davinci_spi_probe(struct platform_device *pdev)
- 
- 	ret = platform_get_irq(pdev, 0);
- 	if (ret < 0)
--		goto free_master;
-+		goto free_host;
- 	dspi->irq = ret;
- 
- 	ret = devm_request_threaded_irq(&pdev->dev, dspi->irq, davinci_spi_irq,
- 				dummy_thread_fn, 0, dev_name(&pdev->dev), dspi);
- 	if (ret)
--		goto free_master;
-+		goto free_host;
- 
--	dspi->bitbang.master = master;
-+	dspi->bitbang.master = host;
- 
- 	dspi->clk = devm_clk_get(&pdev->dev, NULL);
- 	if (IS_ERR(dspi->clk)) {
- 		ret = -ENODEV;
--		goto free_master;
-+		goto free_host;
- 	}
- 	ret = clk_prepare_enable(dspi->clk);
- 	if (ret)
--		goto free_master;
--
--	master->use_gpio_descriptors = true;
+-	master->mode_bits = SPI_RX_QUAD | SPI_RX_DUAL;
+-	master->mem_ops = &cqspi_mem_ops;
+-	master->mem_caps = &cqspi_mem_caps;
 -	master->dev.of_node = pdev->dev.of_node;
--	master->bus_num = pdev->id;
--	master->num_chipselect = pdata->num_chipselect;
--	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(2, 16);
--	master->flags = SPI_CONTROLLER_MUST_RX | SPI_CONTROLLER_GPIO_SS;
--	master->setup = davinci_spi_setup;
--	master->cleanup = davinci_spi_cleanup;
--	master->can_dma = davinci_spi_can_dma;
-+		goto free_host;
-+
-+	host->use_gpio_descriptors = true;
++	host->mode_bits = SPI_RX_QUAD | SPI_RX_DUAL;
++	host->mem_ops = &cqspi_mem_ops;
++	host->mem_caps = &cqspi_mem_caps;
 +	host->dev.of_node = pdev->dev.of_node;
-+	host->bus_num = pdev->id;
-+	host->num_chipselect = pdata->num_chipselect;
-+	host->bits_per_word_mask = SPI_BPW_RANGE_MASK(2, 16);
-+	host->flags = SPI_CONTROLLER_MUST_RX | SPI_CONTROLLER_GPIO_SS;
-+	host->setup = davinci_spi_setup;
-+	host->cleanup = davinci_spi_cleanup;
-+	host->can_dma = davinci_spi_can_dma;
  
- 	dspi->bitbang.chipselect = davinci_spi_chipselect;
- 	dspi->bitbang.setup_transfer = davinci_spi_setup_transfer;
-@@ -973,7 +973,7 @@ static int davinci_spi_probe(struct platform_device *pdev)
+-	cqspi = spi_master_get_devdata(master);
++	cqspi = spi_controller_get_devdata(host);
  
- 	iowrite32(CS_DEFAULT, dspi->base + SPIDEF);
+ 	cqspi->pdev = pdev;
+-	cqspi->master = master;
++	cqspi->host = host;
+ 	platform_set_drvdata(pdev, cqspi);
  
--	/* master mode default */
-+	/* host mode default */
- 	set_io_bits(dspi->base + SPIGCR1, SPIGCR1_CLKMOD_MASK);
- 	set_io_bits(dspi->base + SPIGCR1, SPIGCR1_MASTER_MASK);
- 	set_io_bits(dspi->base + SPIGCR1, SPIGCR1_POWERDOWN_MASK);
-@@ -993,8 +993,8 @@ static int davinci_spi_probe(struct platform_device *pdev)
+ 	/* Obtain configuration from OF. */
+@@ -1740,7 +1740,7 @@ static int cqspi_probe(struct platform_device *pdev)
+ 	reset_control_deassert(rstc_ocp);
+ 
+ 	cqspi->master_ref_clk_hz = clk_get_rate(cqspi->clk);
+-	master->max_speed_hz = cqspi->master_ref_clk_hz;
++	host->max_speed_hz = cqspi->master_ref_clk_hz;
+ 
+ 	/* write completion is supported by default */
+ 	cqspi->wr_completion = true;
+@@ -1751,7 +1751,7 @@ static int cqspi_probe(struct platform_device *pdev)
+ 			cqspi->wr_delay = 50 * DIV_ROUND_UP(NSEC_PER_SEC,
+ 						cqspi->master_ref_clk_hz);
+ 		if (ddata->hwcaps_mask & CQSPI_SUPPORTS_OCTAL)
+-			master->mode_bits |= SPI_RX_OCTAL | SPI_TX_OCTAL;
++			host->mode_bits |= SPI_RX_OCTAL | SPI_TX_OCTAL;
+ 		if (!(ddata->quirks & CQSPI_DISABLE_DAC_MODE)) {
+ 			cqspi->use_direct_mode = true;
+ 			cqspi->use_direct_mode_wr = true;
+@@ -1785,7 +1785,7 @@ static int cqspi_probe(struct platform_device *pdev)
+ 	cqspi->current_cs = -1;
+ 	cqspi->sclk = 0;
+ 
+-	master->num_chipselect = cqspi->num_chipselect;
++	host->num_chipselect = cqspi->num_chipselect;
+ 
+ 	ret = cqspi_setup_flash(cqspi);
+ 	if (ret) {
+@@ -1799,7 +1799,7 @@ static int cqspi_probe(struct platform_device *pdev)
+ 			goto probe_setup_failed;
  	}
- free_clk:
- 	clk_disable_unprepare(dspi->clk);
--free_master:
--	spi_master_put(master);
-+free_host:
-+	spi_controller_put(host);
- err:
- 	return ret;
- }
-@@ -1011,10 +1011,10 @@ static int davinci_spi_probe(struct platform_device *pdev)
- static void davinci_spi_remove(struct platform_device *pdev)
+ 
+-	ret = spi_register_master(master);
++	ret = spi_register_controller(host);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to register SPI ctlr %d\n", ret);
+ 		goto probe_setup_failed;
+@@ -1821,7 +1821,7 @@ static void cqspi_remove(struct platform_device *pdev)
  {
- 	struct davinci_spi *dspi;
--	struct spi_master *master;
-+	struct spi_controller *host;
+ 	struct cqspi_st *cqspi = platform_get_drvdata(pdev);
  
--	master = platform_get_drvdata(pdev);
--	dspi = spi_master_get_devdata(master);
-+	host = platform_get_drvdata(pdev);
-+	dspi = spi_controller_get_devdata(host);
+-	spi_unregister_master(cqspi->master);
++	spi_unregister_controller(cqspi->host);
+ 	cqspi_controller_enable(cqspi, 0);
  
- 	spi_bitbang_stop(&dspi->bitbang);
+ 	if (cqspi->rx_chan)
+@@ -1836,10 +1836,10 @@ static void cqspi_remove(struct platform_device *pdev)
+ static int cqspi_suspend(struct device *dev)
+ {
+ 	struct cqspi_st *cqspi = dev_get_drvdata(dev);
+-	struct spi_master *master = dev_get_drvdata(dev);
++	struct spi_controller *host = dev_get_drvdata(dev);
+ 	int ret;
  
-@@ -1025,7 +1025,7 @@ static void davinci_spi_remove(struct platform_device *pdev)
- 		dma_release_channel(dspi->dma_tx);
- 	}
+-	ret = spi_master_suspend(master);
++	ret = spi_controller_suspend(host);
+ 	cqspi_controller_enable(cqspi, 0);
  
--	spi_master_put(master);
-+	spi_controller_put(host);
+ 	clk_disable_unprepare(cqspi->clk);
+@@ -1850,7 +1850,7 @@ static int cqspi_suspend(struct device *dev)
+ static int cqspi_resume(struct device *dev)
+ {
+ 	struct cqspi_st *cqspi = dev_get_drvdata(dev);
+-	struct spi_master *master = dev_get_drvdata(dev);
++	struct spi_controller *host = dev_get_drvdata(dev);
+ 
+ 	clk_prepare_enable(cqspi->clk);
+ 	cqspi_wait_idle(cqspi);
+@@ -1859,7 +1859,7 @@ static int cqspi_resume(struct device *dev)
+ 	cqspi->current_cs = -1;
+ 	cqspi->sclk = 0;
+ 
+-	return spi_master_resume(master);
++	return spi_controller_resume(host);
  }
  
- static struct platform_driver davinci_spi_driver = {
+ static DEFINE_SIMPLE_DEV_PM_OPS(cqspi_dev_pm_ops, cqspi_suspend, cqspi_resume);
 -- 
 2.25.1
 

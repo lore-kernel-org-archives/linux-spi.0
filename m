@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3726AC001E0
-	for <linux-spi@archiver.kernel.org>; Mon, 31 Jul 2023 19:57:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1E5B3C04A94
+	for <linux-spi@archiver.kernel.org>; Mon, 31 Jul 2023 19:57:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229557AbjGaT5f (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 31 Jul 2023 15:57:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40092 "EHLO
+        id S229927AbjGaT5k (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 31 Jul 2023 15:57:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229538AbjGaT5e (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 31 Jul 2023 15:57:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCF9A19A1;
-        Mon, 31 Jul 2023 12:57:33 -0700 (PDT)
+        with ESMTP id S229538AbjGaT5h (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 31 Jul 2023 15:57:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57EBA19A1;
+        Mon, 31 Jul 2023 12:57:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7B462612A3;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E0C77612A3;
+        Mon, 31 Jul 2023 19:57:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C6BFC433C8;
         Mon, 31 Jul 2023 19:57:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8C26C433C9;
-        Mon, 31 Jul 2023 19:57:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690833452;
-        bh=gVWhENbW2svJWpdqp8/zaoWH73GFpHEoK7J6e76AXJw=;
+        s=k20201202; t=1690833455;
+        bh=QUQHFJZm1uP00SXvtfdNIreDRBrLkAn5yzx0uxpzQkg=;
         h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=cl5vreo/BbOp/GK45AoGthPj1BDPBaH5Ct5CWKi8GvTLwBQoTIzJCopjpKTB6Buki
-         /uQpj98TbnzVf8TmzjNRRbhlYegZrCx7SHwv9ePPR+F3j6p7LfZTtUiIqFnjo6zoqn
-         5te0Ey4ITo7ag1wUH18fggs4jLTO09KzmzW9eniT8+Ig2OxZKiNFUNANzrwN/EfDFq
-         Z7Pk9IvV3NcwOgZwY/yqRSvby3AtASwXZn/HCy4jxaulNrpfWNRMLd4vHFeVjqic0J
-         zJ32n3zbE0Lgc3MXbGYHJXaBxLfkbpi10MOaE26iUAbgUEnhp5qB8uOeYk1riQt7N4
-         GWncRapjHeYfA==
+        b=El5iWZFiyLFKYy7WYltaIIFz7kA7M+OD0qproiGceDtGL396EBNEdW+T59rhvwhD+
+         jpLeA/s2KP6aucL8hkoDh3ctNLhmm51zZAOMNjD4HUjxIkAhvlV548WPFx3SUYl/i4
+         EorwUnjhrjx/q0Rw81KhR1GEnWzqTvgY0A5EN5SfKmP/jdi8diQw8ncKWRF3rhkSFn
+         8moXyIvmJnt6ttIf2WtYiwp5/P8qIY2aGQkcR9Uk4Kz+hDlNV3crZZ2cufux6Fp4Kw
+         0Er7xdGMaunNVf4cWmn6AUCBeGxNp6aA9klpB7KfgDwoTKLs1PXD4l/6+j5HCtXOSX
+         5a0BmRGmTn5Vw==
 From:   Mark Brown <broonie@kernel.org>
 To:     Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
@@ -40,12 +40,12 @@ To:     Rob Herring <robh+dt@kernel.org>,
 Cc:     Jianmin Lv <lvjianmin@loongson.cn>, wanghongliang@loongson.cn,
         Liu Peibao <liupeibao@loongson.cn>,
         loongson-kernel@lists.loongnix.cn
-In-Reply-To: <20230522071030.5193-1-zhuyinbo@loongson.cn>
-References: <20230522071030.5193-1-zhuyinbo@loongson.cn>
-Subject: Re: [PATCH v11 0/2] spi: loongson: add bus driver for the loongson
+In-Reply-To: <20230613075834.5219-1-zhuyinbo@loongson.cn>
+References: <20230613075834.5219-1-zhuyinbo@loongson.cn>
+Subject: Re: [PATCH v13 0/2] spi: loongson: add bus driver for the loongson
  spi
-Message-Id: <169083345067.549704.9124509502835129039.b4-ty@kernel.org>
-Date:   Mon, 31 Jul 2023 20:57:30 +0100
+Message-Id: <169083345309.549704.12141806282033029411.b4-ty@kernel.org>
+Date:   Mon, 31 Jul 2023 20:57:33 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
@@ -54,7 +54,7 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Mon, 22 May 2023 15:10:28 +0800, Yinbo Zhu wrote:
+On Tue, 13 Jun 2023 15:58:32 +0800, Yinbo Zhu wrote:
 > Loongson platform support spi hardware controller and this series patch
 > was to add spi driver and binding support.
 > 
@@ -148,6 +148,33 @@ On Mon, 22 May 2023 15:10:28 +0800, Yinbo Zhu wrote:
 > Change in v11:
 > 		1. Use spi_get_chipselect() to replace all spi->chip_select in
 > 		   spi driver
+> Change in v12:
+> 		1. Reword the dt-bindings patch title.
+> 		2. Use a specific spi compatible in dt-bindings and spi driver.
+> 		3. Add Cc list for the reviewers of the previous version.
+> 		4. Add a static for rdiv[12] array in loongson_spi_set_clk.
+> 		5. Fixup the compile warning for spi HZ that reported by robot.
+> 		6. Use "#define LOONGSON_... BIT(0)" in readb_poll_timeout.
+> 		7. Add a error code return that when write spi failed.
+> 		8. Use spi_controller* instead of spi_master* in all cases.
+> 		9. Check for the error first which for clock gain.
+> 		10. Drop the ->remove() in spi pci driver.
+> 		11. Drop the comma for the terminator entry in pci_device_id.
+> 		12. Adjust the head file in spi driver.
+> 		13. Use forward declarations for device and spi_controller.
+> Change in v13:
+> 		1. Reword the dt-bindings patch title.
+> 		2. Add the items for compatible with 2k500 in dts-bindings.
+> 		3. Add a bit changes in commit log.
+> 		4. Add a Reviewed-by for spi driver patch.
+> 		5. Rework the function loongson_spi_set_cs.
+> 		6. Use GENMASK() to replace some constant in function
+> 		   loongson_spi_set_clk.
+> 		7. Add or remove some blank lines.
+> 		8. Use LOONGSON_SPI_PARA_MEM_EN replace a constant in
+> 		   loongson_spi_prepare_message.
+> 		9. Use SPI_MODE_X_MASK to replace "SPI_CPOL | SPI_CPHA".
+> 		10. Use USEC_PER_MSEC to replace MSEC_PER_SEC.
 > 
 > [...]
 
@@ -157,8 +184,8 @@ Applied to
 
 Thanks!
 
-[1/2] dt-bindings: spi: add loongson spi
-      (no commit info)
+[1/2] spi: dt-bindings: add loongson spi
+      commit: b350e6c6297aaa2533da23a21398751eeeecc101
 [2/2] spi: loongson: add bus driver for the loongson spi controller
       commit: 6c7a864007b66e60a3f64858a9555efed408b048
 

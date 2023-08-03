@@ -2,139 +2,71 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7011FC001E0
-	for <linux-spi@archiver.kernel.org>; Wed,  2 Aug 2023 19:50:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AE12BC001DF
+	for <linux-spi@archiver.kernel.org>; Thu,  3 Aug 2023 02:17:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230460AbjHBTut (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 2 Aug 2023 15:50:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48938 "EHLO
+        id S231185AbjHCCR3 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 2 Aug 2023 22:17:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231218AbjHBTus (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 2 Aug 2023 15:50:48 -0400
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 797AB1BD9;
-        Wed,  2 Aug 2023 12:50:46 -0700 (PDT)
-Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-3fe1fc8768aso2402545e9.1;
-        Wed, 02 Aug 2023 12:50:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691005845; x=1691610645;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GIsEdvHTkRHt69kFNg/UK9NrCtXb0lJcor4CbmeS9Hk=;
-        b=R5wZp/xcsv35BlfRKilsYrHF1dhaqJAiOM88mITtX2ac33Ys3k+SZ6hzpyoP/EncS0
-         PlQlnh1B7WsiB34wEYWeyPFGel3GTMWqUs22JBAS+xCX34/eQc8oHTV20pe079jQhUco
-         AldAYBl/7BQOilco0TIDkaCBEW0kNsLo3iTG/2CPGR1jfreq+IHr2a+e3MGq5JIKK8dg
-         SW7X+kfIrvWwvm0b7kU7zwCGGHiZ97UmhrFkkEnCt2Uyb9Ui9eqGZrbQPt1HyrL+vrBA
-         67CIrGTNbdPKee5Va56I3zOhucFhXGpEIe34NknlPMpPBl9onEfZdJ0qge0LONsurRXX
-         uSXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691005845; x=1691610645;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GIsEdvHTkRHt69kFNg/UK9NrCtXb0lJcor4CbmeS9Hk=;
-        b=A2u/RVhOGRAe2Y76PY1FWmC5Amv7pRAk8WqcHEB2/eSmnKwG00hsHjblqsIzi/rO3A
-         /1xCtLe2ShZoCyz0hKkgto2RAJDYPHzqKqGOFPH+dJru580m2KwEep4sA0M/coQcQOZa
-         rOt67Swj4sxOmsd3+aB7gLEGTPQ3V5ISyPjdxsxgP3Lh0NyQL2+bEqQHKty1CaMcvLlx
-         ubbQe3YHYPoTAmQFyNovN/C8/lZYe0XcF61qEJJTRaLMksWoXXAqe29kTLTZSnANJdrw
-         0Ar4mCmVnQVcR3X51Dk14cV7+PY63dqvabE4pBHAhQedrLntIHp1HegRyL5eZGHDHrhq
-         lmPA==
-X-Gm-Message-State: ABy/qLZFB4WDiPbFQLHaAScETyCmrO7JMtnWC4ksEW5j6ZjVaI0BcVsp
-        TNVRp+ec4c24wb0Y86ftaqs=
-X-Google-Smtp-Source: APBJJlHHgd2WIdq0IccJQZ2AKkE0gkK04uGb9tNRmFHgVwOqmlDWdtUcLWuRXjitS2H+CPmD7MrvSg==
-X-Received: by 2002:a1c:7511:0:b0:3fe:2f31:8bf7 with SMTP id o17-20020a1c7511000000b003fe2f318bf7mr2864638wmc.26.1691005844631;
-        Wed, 02 Aug 2023 12:50:44 -0700 (PDT)
-Received: from jernej-laptop.localnet (82-149-1-233.dynamic.telemach.net. [82.149.1.233])
-        by smtp.gmail.com with ESMTPSA id a23-20020a05600c225700b003fc01495383sm2418619wmm.6.2023.08.02.12.50.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Aug 2023 12:50:44 -0700 (PDT)
-From:   Jernej =?utf-8?B?xaBrcmFiZWM=?= <jernej.skrabec@gmail.com>
-To:     Maxim Kiselev <bigunclemax@gmail.com>
-Cc:     linux-spi@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Samuel Holland <samuel@sholland.org>,
-        Mark Brown <broonie@kernel.org>,
-        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-        devicetree@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 3/3] riscv: dts: allwinner: d1: Add QSPI pins node for pinmux
- PC port
-Date:   Wed, 02 Aug 2023 21:50:39 +0200
-Message-ID: <5956489.lOV4Wx5bFT@jernej-laptop>
-In-Reply-To: <CALHCpMgXy0pLiVR8V48Roi82EJ7Zrx-Xyc-6etjgkmN0B7pb8A@mail.gmail.com>
-References: <20230624131632.2972546-1-bigunclemax@gmail.com>
- <10311404.nUPlyArG6x@jernej-laptop>
- <CALHCpMgXy0pLiVR8V48Roi82EJ7Zrx-Xyc-6etjgkmN0B7pb8A@mail.gmail.com>
+        with ESMTP id S229446AbjHCCR2 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 2 Aug 2023 22:17:28 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 902222D49
+        for <linux-spi@vger.kernel.org>; Wed,  2 Aug 2023 19:17:16 -0700 (PDT)
+Received: from dggpemm500003.china.huawei.com (unknown [172.30.72.53])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RGXTC6vGWztRp1;
+        Thu,  3 Aug 2023 10:13:51 +0800 (CST)
+Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
+ dggpemm500003.china.huawei.com (7.185.36.56) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Thu, 3 Aug 2023 10:17:14 +0800
+Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
+ (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 3 Aug
+ 2023 10:17:13 +0800
+From:   Yang Yingliang <yangyingliang@huawei.com>
+To:     <linux-spi@vger.kernel.org>
+CC:     <j.neuschaefer@gmx.net>, <broonie@kernel.org>,
+        <yangyingliang@huawei.com>
+Subject: [PATCH -next] spi: wpcm-fiu: switch to use devm_platform_ioremap_resource_byname()
+Date:   Thu, 3 Aug 2023 10:14:28 +0800
+Message-ID: <20230803021428.3739149-1-yangyingliang@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.103.91]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggpemm500007.china.huawei.com (7.185.36.183)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Dne ponedeljek, 31. julij 2023 ob 17:22:11 CEST je Maxim Kiselev napisal(a):
-> =D0=BF=D0=BD, 31 =D0=B8=D1=8E=D0=BB. 2023=E2=80=AF=D0=B3. =D0=B2 01:30, J=
-ernej =C5=A0krabec <jernej.skrabec@gmail.com>:
-> > Dne sobota, 24. junij 2023 ob 15:16:24 CEST je Maksim Kiselev napisal(a=
-):
-> > > Add pinmux node that describes pins on PC port which required for
-> > > QSPI mode.
-> > >=20
-> > > Signed-off-by: Maksim Kiselev <bigunclemax@gmail.com>
-> > > ---
-> > >=20
-> > >  arch/riscv/boot/dts/allwinner/sunxi-d1s-t113.dtsi | 7 +++++++
-> > >  1 file changed, 7 insertions(+)
-> > >=20
-> > > diff --git a/arch/riscv/boot/dts/allwinner/sunxi-d1s-t113.dtsi
-> > > b/arch/riscv/boot/dts/allwinner/sunxi-d1s-t113.dtsi index
-> > > 1bb1e5cae602..9f754dd03d85 100644
-> > > --- a/arch/riscv/boot/dts/allwinner/sunxi-d1s-t113.dtsi
-> > > +++ b/arch/riscv/boot/dts/allwinner/sunxi-d1s-t113.dtsi
-> > > @@ -131,6 +131,13 @@ uart3_pb_pins: uart3-pb-pins {
-> > >=20
-> > >                               pins =3D "PB6", "PB7";
-> > >                               function =3D "uart3";
-> > >                      =20
-> > >                       };
-> > >=20
-> > > +
-> > > +                     /omit-if-no-ref/
-> > > +                     qspi0_pc_pins: qspi0-pc-pins {
-> > > +                             pins =3D "PC2", "PC3", "PC4", "PC5",
-> >=20
-> > "PC6",
-> >=20
-> > > +                                    "PC7";
-> > > +                             function =3D "spi0";
-> > > +                     };
-> >=20
-> > Sorry for late review, but it seems I'm missing something. D1 manual sa=
-ys
-> > those are pins for ordinary SPI, with HOLD and WP signals. Can they be
-> > repurposed for quad SPI?
->=20
-> Yes, they can. Here is a quote from D1 datasheet (9.3.3.8 SPI
-> Quad-Input/Quad-Output Mode):
-> "Using the quad mode allows data to be transferred to or from the
-> device at 4 times the rate of standard single mode, the data can be
-> read
-> at fast speed using four data bits (MOSI, MISO, IO2 (WP#) and IO3
-> (HOLD#)) at the same time."
+Use the devm_platform_ioremap_resource_byname() helper instead of
+calling platform_get_resource_byname() and devm_ioremap_resource()
+separately.
 
-Alright then.
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+---
+ drivers/spi/spi-wpcm-fiu.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-
-Best regards,
-Jernej
-
-
+diff --git a/drivers/spi/spi-wpcm-fiu.c b/drivers/spi/spi-wpcm-fiu.c
+index 852ffe013d32..d07a06f49204 100644
+--- a/drivers/spi/spi-wpcm-fiu.c
++++ b/drivers/spi/spi-wpcm-fiu.c
+@@ -448,8 +448,7 @@ static int wpcm_fiu_probe(struct platform_device *pdev)
+ 	fiu = spi_controller_get_devdata(ctrl);
+ 	fiu->dev = dev;
+ 
+-	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "control");
+-	fiu->regs = devm_ioremap_resource(dev, res);
++	fiu->regs = devm_platform_ioremap_resource_byname(pdev, "control");
+ 	if (IS_ERR(fiu->regs)) {
+ 		dev_err(dev, "Failed to map registers\n");
+ 		return PTR_ERR(fiu->regs);
+-- 
+2.25.1
 

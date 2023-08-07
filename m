@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0E711C001B0
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DA717C04A94
 	for <linux-spi@archiver.kernel.org>; Mon,  7 Aug 2023 12:44:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233745AbjHGMo3 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 7 Aug 2023 08:44:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42746 "EHLO
+        id S231430AbjHGMoa (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 7 Aug 2023 08:44:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231430AbjHGMoV (ORCPT
+        with ESMTP id S233652AbjHGMoV (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Mon, 7 Aug 2023 08:44:21 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A72621722
-        for <linux-spi@vger.kernel.org>; Mon,  7 Aug 2023 05:44:14 -0700 (PDT)
-Received: from dggpemm100012.china.huawei.com (unknown [172.30.72.54])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RKGFJ5cgczfbnf;
-        Mon,  7 Aug 2023 20:43:00 +0800 (CST)
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21636172B
+        for <linux-spi@vger.kernel.org>; Mon,  7 Aug 2023 05:44:15 -0700 (PDT)
+Received: from dggpemm100009.china.huawei.com (unknown [172.30.72.53])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4RKGCR4nClz1Z1WN;
+        Mon,  7 Aug 2023 20:41:23 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm100012.china.huawei.com (7.185.36.212) with Microsoft SMTP Server
+ dggpemm100009.china.huawei.com (7.185.36.113) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Mon, 7 Aug 2023 20:44:10 +0800
+ 15.1.2507.27; Mon, 7 Aug 2023 20:44:11 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 7 Aug
- 2023 20:44:09 +0800
+ 2023 20:44:11 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
         <yangyingliang@huawei.com>
-Subject: [PATCH -next 08/20] spi: fsl-lpspi: switch to use modern name
-Date:   Mon, 7 Aug 2023 20:40:53 +0800
-Message-ID: <20230807124105.3429709-9-yangyingliang@huawei.com>
+Subject: [PATCH -next 12/20] spi: gxp: switch to use modern name
+Date:   Mon, 7 Aug 2023 20:40:57 +0800
+Message-ID: <20230807124105.3429709-13-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230807124105.3429709-1-yangyingliang@huawei.com>
 References: <20230807124105.3429709-1-yangyingliang@huawei.com>
@@ -46,193 +46,46 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Change legacy name master/target to modern name host/target
+Change legacy name master to modern name host or controller.
 
 No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-fsl-lpspi.c | 54 ++++++++++++++++++-------------------
- 1 file changed, 27 insertions(+), 27 deletions(-)
+ drivers/spi/spi-gxp.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index e32e8cab5aa8..11991eb12636 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -72,7 +72,7 @@
- #define CFGR1_PINCFG	(BIT(24)|BIT(25))
- #define CFGR1_PCSPOL	BIT(8)
- #define CFGR1_NOSTALL	BIT(3)
--#define CFGR1_MASTER	BIT(0)
-+#define CFGR1_HOST	BIT(0)
- #define FSR_TXCOUNT	(0xFF)
- #define RSR_RXEMPTY	BIT(1)
- #define TCR_CPOL	BIT(31)
-@@ -96,7 +96,7 @@ struct fsl_lpspi_data {
- 	unsigned long base_phys;
- 	struct clk *clk_ipg;
- 	struct clk *clk_per;
--	bool is_slave;
-+	bool is_target;
- 	bool is_only_cs1;
- 	bool is_first_byte;
+diff --git a/drivers/spi/spi-gxp.c b/drivers/spi/spi-gxp.c
+index 88ab3032736b..fd2fac236bbd 100644
+--- a/drivers/spi/spi-gxp.c
++++ b/drivers/spi/spi-gxp.c
+@@ -199,7 +199,7 @@ static ssize_t gxp_spi_write(struct gxp_spi_chip *chip, const struct spi_mem_op
  
-@@ -113,7 +113,7 @@ struct fsl_lpspi_data {
- 	struct lpspi_config config;
- 	struct completion xfer_done;
- 
--	bool slave_aborted;
-+	bool target_aborted;
- 
- 	/* DMA */
- 	bool usedma;
-@@ -234,7 +234,7 @@ static void fsl_lpspi_write_tx_fifo(struct fsl_lpspi_data *fsl_lpspi)
- 	}
- 
- 	if (txfifo_cnt < fsl_lpspi->txfifosize) {
--		if (!fsl_lpspi->is_slave) {
-+		if (!fsl_lpspi->is_target) {
- 			temp = readl(fsl_lpspi->base + IMX7ULP_TCR);
- 			temp &= ~TCR_CONTC;
- 			writel(temp, fsl_lpspi->base + IMX7ULP_TCR);
-@@ -258,7 +258,7 @@ static void fsl_lpspi_set_cmd(struct fsl_lpspi_data *fsl_lpspi)
- 	temp |= fsl_lpspi->config.bpw - 1;
- 	temp |= (fsl_lpspi->config.mode & 0x3) << 30;
- 	temp |= (fsl_lpspi->config.chip_select & 0x3) << 24;
--	if (!fsl_lpspi->is_slave) {
-+	if (!fsl_lpspi->is_target) {
- 		temp |= fsl_lpspi->config.prescale << 27;
- 		/*
- 		 * Set TCR_CONT will keep SS asserted after current transfer.
-@@ -385,7 +385,7 @@ static int fsl_lpspi_config(struct fsl_lpspi_data *fsl_lpspi)
- 	u32 temp;
+ static int do_gxp_exec_mem_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ {
+-	struct gxp_spi *spifi = spi_controller_get_devdata(mem->spi->master);
++	struct gxp_spi *spifi = spi_controller_get_devdata(mem->spi->controller);
+ 	struct gxp_spi_chip *chip = &spifi->chips[spi_get_chipselect(mem->spi, 0)];
  	int ret;
  
--	if (!fsl_lpspi->is_slave) {
-+	if (!fsl_lpspi->is_target) {
- 		ret = fsl_lpspi_set_bitrate(fsl_lpspi);
- 		if (ret)
- 			return ret;
-@@ -393,8 +393,8 @@ static int fsl_lpspi_config(struct fsl_lpspi_data *fsl_lpspi)
+@@ -235,7 +235,7 @@ static const struct spi_controller_mem_ops gxp_spi_mem_ops = {
  
- 	fsl_lpspi_set_watermark(fsl_lpspi);
- 
--	if (!fsl_lpspi->is_slave)
--		temp = CFGR1_MASTER;
-+	if (!fsl_lpspi->is_target)
-+		temp = CFGR1_HOST;
- 	else
- 		temp = CFGR1_PINCFG;
- 	if (fsl_lpspi->config.mode & SPI_CS_HIGH)
-@@ -461,12 +461,12 @@ static int fsl_lpspi_setup_transfer(struct spi_controller *controller,
- 	return fsl_lpspi_config(fsl_lpspi);
- }
- 
--static int fsl_lpspi_slave_abort(struct spi_controller *controller)
-+static int fsl_lpspi_target_abort(struct spi_controller *controller)
+ static int gxp_spi_setup(struct spi_device *spi)
  {
- 	struct fsl_lpspi_data *fsl_lpspi =
- 				spi_controller_get_devdata(controller);
+-	struct gxp_spi *spifi = spi_controller_get_devdata(spi->master);
++	struct gxp_spi *spifi = spi_controller_get_devdata(spi->controller);
+ 	unsigned int cs = spi_get_chipselect(spi, 0);
+ 	struct gxp_spi_chip *chip = &spifi->chips[cs];
  
--	fsl_lpspi->slave_aborted = true;
-+	fsl_lpspi->target_aborted = true;
- 	if (!fsl_lpspi->usedma)
- 		complete(&fsl_lpspi->xfer_done);
- 	else {
-@@ -482,9 +482,9 @@ static int fsl_lpspi_wait_for_completion(struct spi_controller *controller)
- 	struct fsl_lpspi_data *fsl_lpspi =
- 				spi_controller_get_devdata(controller);
+@@ -257,7 +257,7 @@ static int gxp_spifi_probe(struct platform_device *pdev)
  
--	if (fsl_lpspi->is_slave) {
-+	if (fsl_lpspi->is_target) {
- 		if (wait_for_completion_interruptible(&fsl_lpspi->xfer_done) ||
--			fsl_lpspi->slave_aborted) {
-+			fsl_lpspi->target_aborted) {
- 			dev_dbg(fsl_lpspi->dev, "interrupted\n");
- 			return -EINTR;
- 		}
-@@ -587,9 +587,9 @@ static int fsl_lpspi_dma_transfer(struct spi_controller *controller,
- 	reinit_completion(&fsl_lpspi->dma_tx_completion);
- 	dma_async_issue_pending(controller->dma_tx);
+ 	data = of_device_get_match_data(&pdev->dev);
  
--	fsl_lpspi->slave_aborted = false;
-+	fsl_lpspi->target_aborted = false;
- 
--	if (!fsl_lpspi->is_slave) {
-+	if (!fsl_lpspi->is_target) {
- 		transfer_timeout = fsl_lpspi_calculate_timeout(fsl_lpspi,
- 							       transfer->len);
- 
-@@ -615,7 +615,7 @@ static int fsl_lpspi_dma_transfer(struct spi_controller *controller,
- 		}
- 	} else {
- 		if (wait_for_completion_interruptible(&fsl_lpspi->dma_tx_completion) ||
--			fsl_lpspi->slave_aborted) {
-+			fsl_lpspi->target_aborted) {
- 			dev_dbg(fsl_lpspi->dev,
- 				"I/O Error in DMA TX interrupted\n");
- 			dmaengine_terminate_all(controller->dma_tx);
-@@ -625,7 +625,7 @@ static int fsl_lpspi_dma_transfer(struct spi_controller *controller,
- 		}
- 
- 		if (wait_for_completion_interruptible(&fsl_lpspi->dma_rx_completion) ||
--			fsl_lpspi->slave_aborted) {
-+			fsl_lpspi->target_aborted) {
- 			dev_dbg(fsl_lpspi->dev,
- 				"I/O Error in DMA RX interrupted\n");
- 			dmaengine_terminate_all(controller->dma_tx);
-@@ -700,7 +700,7 @@ static int fsl_lpspi_pio_transfer(struct spi_controller *controller,
- 	fsl_lpspi->remain = t->len;
- 
- 	reinit_completion(&fsl_lpspi->xfer_done);
--	fsl_lpspi->slave_aborted = false;
-+	fsl_lpspi->target_aborted = false;
- 
- 	fsl_lpspi_write_tx_fifo(fsl_lpspi);
- 
-@@ -826,15 +826,15 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
- 	int ret, irq;
- 	u32 num_cs;
- 	u32 temp;
--	bool is_slave;
-+	bool is_target;
- 
--	is_slave = of_property_read_bool((&pdev->dev)->of_node, "spi-slave");
--	if (is_slave)
--		controller = spi_alloc_slave(&pdev->dev,
--					sizeof(struct fsl_lpspi_data));
-+	is_target = of_property_read_bool((&pdev->dev)->of_node, "spi-slave");
-+	if (is_target)
-+		controller = spi_alloc_target(&pdev->dev,
-+					      sizeof(struct fsl_lpspi_data));
- 	else
--		controller = spi_alloc_master(&pdev->dev,
--					sizeof(struct fsl_lpspi_data));
-+		controller = spi_alloc_host(&pdev->dev,
-+					    sizeof(struct fsl_lpspi_data));
- 
- 	if (!controller)
+-	ctlr = devm_spi_alloc_master(dev, sizeof(*spifi));
++	ctlr = devm_spi_alloc_host(dev, sizeof(*spifi));
+ 	if (!ctlr)
  		return -ENOMEM;
-@@ -843,7 +843,7 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
  
- 	fsl_lpspi = spi_controller_get_devdata(controller);
- 	fsl_lpspi->dev = &pdev->dev;
--	fsl_lpspi->is_slave = is_slave;
-+	fsl_lpspi->is_target = is_target;
- 	fsl_lpspi->is_only_cs1 = of_property_read_bool((&pdev->dev)->of_node,
- 						"fsl,spi-only-use-cs1-sel");
- 
-@@ -912,8 +912,8 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
- 	controller->dev.of_node = pdev->dev.of_node;
- 	controller->bus_num = pdev->id;
- 	controller->num_chipselect = num_cs;
--	controller->slave_abort = fsl_lpspi_slave_abort;
--	if (!fsl_lpspi->is_slave)
-+	controller->target_abort = fsl_lpspi_target_abort;
-+	if (!fsl_lpspi->is_target)
- 		controller->use_gpio_descriptors = true;
- 
- 	ret = fsl_lpspi_dma_init(&pdev->dev, fsl_lpspi, controller);
 -- 
 2.25.1
 

@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BDA76C04E69
-	for <linux-spi@archiver.kernel.org>; Mon,  7 Aug 2023 14:10:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0ECD4C04A6A
+	for <linux-spi@archiver.kernel.org>; Mon,  7 Aug 2023 14:10:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231942AbjHGOKY (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 7 Aug 2023 10:10:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58656 "EHLO
+        id S232355AbjHGOKZ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 7 Aug 2023 10:10:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232355AbjHGOKV (ORCPT
+        with ESMTP id S231947AbjHGOKV (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Mon, 7 Aug 2023 10:10:21 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAB0D9E
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F51A92
         for <linux-spi@vger.kernel.org>; Mon,  7 Aug 2023 07:10:19 -0700 (PDT)
-Received: from dggpemm500001.china.huawei.com (unknown [172.30.72.56])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RKJ613lZYzNmqJ;
-        Mon,  7 Aug 2023 22:06:49 +0800 (CST)
+Received: from dggpemm100005.china.huawei.com (unknown [172.30.72.55])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RKJ5z3NFXztRfG;
+        Mon,  7 Aug 2023 22:06:47 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
+ dggpemm100005.china.huawei.com (7.185.36.231) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Mon, 7 Aug 2023 22:10:17 +0800
+ 15.1.2507.27; Mon, 7 Aug 2023 22:10:14 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 7 Aug
- 2023 22:10:16 +0800
+ 2023 22:10:14 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
         <yangyingliang@huawei.com>
-Subject: [PATCH -next v2 18/21] spi: dln2: switch to use modern name
-Date:   Mon, 7 Aug 2023 22:07:14 +0800
-Message-ID: <20230807140717.3484180-19-yangyingliang@huawei.com>
+Subject: [PATCH -next v2 11/21] spi: cadence-xspi: switch to use modern name
+Date:   Mon, 7 Aug 2023 22:07:07 +0800
+Message-ID: <20230807140717.3484180-12-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230807140717.3484180-1-yangyingliang@huawei.com>
 References: <20230807140717.3484180-1-yangyingliang@huawei.com>
@@ -52,265 +52,87 @@ No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-dln2.c | 94 +++++++++++++++++++++---------------------
- 1 file changed, 47 insertions(+), 47 deletions(-)
+ drivers/spi/spi-cadence-xspi.c | 30 +++++++++++++++---------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/spi/spi-dln2.c b/drivers/spi/spi-dln2.c
-index 6bd93c47853c..d319dc357fef 100644
---- a/drivers/spi/spi-dln2.c
-+++ b/drivers/spi/spi-dln2.c
-@@ -79,7 +79,7 @@
- 
- struct dln2_spi {
- 	struct platform_device *pdev;
--	struct spi_master *master;
-+	struct spi_controller *host;
- 	u8 port;
- 
- 	/*
-@@ -176,7 +176,7 @@ static int dln2_spi_cs_enable(struct dln2_spi *dln2, u8 cs_mask, bool enable)
- 
- static int dln2_spi_cs_enable_all(struct dln2_spi *dln2, bool enable)
+diff --git a/drivers/spi/spi-cadence-xspi.c b/drivers/spi/spi-cadence-xspi.c
+index 11d623cbba2e..b7e04b03be58 100644
+--- a/drivers/spi/spi-cadence-xspi.c
++++ b/drivers/spi/spi-cadence-xspi.c
+@@ -419,7 +419,7 @@ static int cdns_xspi_mem_op_execute(struct spi_mem *mem,
+ 				    const struct spi_mem_op *op)
  {
--	u8 cs_mask = GENMASK(dln2->master->num_chipselect - 1, 0);
-+	u8 cs_mask = GENMASK(dln2->host->num_chipselect - 1, 0);
+ 	struct cdns_xspi_dev *cdns_xspi =
+-		spi_master_get_devdata(mem->spi->master);
++		spi_controller_get_devdata(mem->spi->controller);
+ 	int ret = 0;
  
- 	return dln2_spi_cs_enable(dln2, cs_mask, enable);
- }
-@@ -589,11 +589,11 @@ static int dln2_spi_rdwr(struct dln2_spi *dln2, const u8 *tx_data,
- 	return 0;
- }
- 
--static int dln2_spi_prepare_message(struct spi_master *master,
-+static int dln2_spi_prepare_message(struct spi_controller *host,
- 				    struct spi_message *message)
+ 	ret = cdns_xspi_mem_op(cdns_xspi, mem, op);
+@@ -430,7 +430,7 @@ static int cdns_xspi_mem_op_execute(struct spi_mem *mem,
+ static int cdns_xspi_adjust_mem_op_size(struct spi_mem *mem, struct spi_mem_op *op)
  {
- 	int ret;
--	struct dln2_spi *dln2 = spi_master_get_devdata(master);
-+	struct dln2_spi *dln2 = spi_controller_get_devdata(host);
- 	struct spi_device *spi = message->spi;
+ 	struct cdns_xspi_dev *cdns_xspi =
+-		spi_master_get_devdata(mem->spi->master);
++		spi_controller_get_devdata(mem->spi->controller);
  
- 	if (dln2->cs != spi_get_chipselect(spi, 0)) {
-@@ -650,11 +650,11 @@ static int dln2_spi_transfer_setup(struct dln2_spi *dln2, u32 speed,
- 	return dln2_spi_enable(dln2, true);
- }
+ 	op->data.nbytes = clamp_val(op->data.nbytes, 0, cdns_xspi->sdmasize);
  
--static int dln2_spi_transfer_one(struct spi_master *master,
-+static int dln2_spi_transfer_one(struct spi_controller *host,
- 				 struct spi_device *spi,
- 				 struct spi_transfer *xfer)
+@@ -527,26 +527,26 @@ static void cdns_xspi_print_phy_config(struct cdns_xspi_dev *cdns_xspi)
+ static int cdns_xspi_probe(struct platform_device *pdev)
  {
--	struct dln2_spi *dln2 = spi_master_get_devdata(master);
-+	struct dln2_spi *dln2 = spi_controller_get_devdata(host);
- 	int status;
- 	u8 attr = 0;
- 
-@@ -666,7 +666,7 @@ static int dln2_spi_transfer_one(struct spi_master *master,
- 		return status;
- 	}
- 
--	if (!xfer->cs_change && !spi_transfer_is_last(master, xfer))
-+	if (!xfer->cs_change && !spi_transfer_is_last(host, xfer))
- 		attr = DLN2_SPI_ATTR_LEAVE_SS_LOW;
- 
- 	status = dln2_spi_rdwr(dln2, xfer->tx_buf, xfer->rx_buf,
-@@ -679,29 +679,29 @@ static int dln2_spi_transfer_one(struct spi_master *master,
- 
- static int dln2_spi_probe(struct platform_device *pdev)
- {
--	struct spi_master *master;
-+	struct spi_controller *host;
- 	struct dln2_spi *dln2;
- 	struct dln2_platform_data *pdata = dev_get_platdata(&pdev->dev);
  	struct device *dev = &pdev->dev;
+-	struct spi_master *master = NULL;
++	struct spi_controller *host = NULL;
+ 	struct cdns_xspi_dev *cdns_xspi = NULL;
+ 	struct resource *res;
  	int ret;
  
--	master = spi_alloc_master(&pdev->dev, sizeof(*dln2));
+-	master = devm_spi_alloc_master(dev, sizeof(*cdns_xspi));
 -	if (!master)
-+	host = spi_alloc_host(&pdev->dev, sizeof(*dln2));
++	host = devm_spi_alloc_host(dev, sizeof(*cdns_xspi));
 +	if (!host)
  		return -ENOMEM;
  
--	device_set_node(&master->dev, dev_fwnode(dev));
-+	device_set_node(&host->dev, dev_fwnode(dev));
+-	master->mode_bits = SPI_3WIRE | SPI_TX_DUAL  | SPI_TX_QUAD  |
++	host->mode_bits = SPI_3WIRE | SPI_TX_DUAL  | SPI_TX_QUAD  |
+ 		SPI_RX_DUAL | SPI_RX_QUAD | SPI_TX_OCTAL | SPI_RX_OCTAL |
+ 		SPI_MODE_0  | SPI_MODE_3;
+ 
+-	master->mem_ops = &cadence_xspi_mem_ops;
+-	master->dev.of_node = pdev->dev.of_node;
+-	master->bus_num = -1;
++	host->mem_ops = &cadence_xspi_mem_ops;
++	host->dev.of_node = pdev->dev.of_node;
++	host->bus_num = -1;
  
 -	platform_set_drvdata(pdev, master);
 +	platform_set_drvdata(pdev, host);
  
--	dln2 = spi_master_get_devdata(master);
-+	dln2 = spi_controller_get_devdata(host);
- 
- 	dln2->buf = devm_kmalloc(&pdev->dev, DLN2_SPI_BUF_SIZE, GFP_KERNEL);
- 	if (!dln2->buf) {
- 		ret = -ENOMEM;
--		goto exit_free_master;
-+		goto exit_free_host;
- 	}
- 
--	dln2->master = master;
-+	dln2->host = host;
- 	dln2->pdev = pdev;
- 	dln2->port = pdata->port;
- 	/* cs/mode can never be 0xff, so the first transfer will set them */
-@@ -712,47 +712,47 @@ static int dln2_spi_probe(struct platform_device *pdev)
- 	ret = dln2_spi_enable(dln2, false);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "Failed to disable SPI module\n");
--		goto exit_free_master;
-+		goto exit_free_host;
- 	}
- 
--	ret = dln2_spi_get_cs_num(dln2, &master->num_chipselect);
-+	ret = dln2_spi_get_cs_num(dln2, &host->num_chipselect);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "Failed to get number of CS pins\n");
--		goto exit_free_master;
-+		goto exit_free_host;
- 	}
- 
- 	ret = dln2_spi_get_speed_range(dln2,
--				       &master->min_speed_hz,
--				       &master->max_speed_hz);
-+				       &host->min_speed_hz,
-+				       &host->max_speed_hz);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "Failed to read bus min/max freqs\n");
--		goto exit_free_master;
-+		goto exit_free_host;
- 	}
- 
- 	ret = dln2_spi_get_supported_frame_sizes(dln2,
--						 &master->bits_per_word_mask);
-+						 &host->bits_per_word_mask);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "Failed to read supported frame sizes\n");
--		goto exit_free_master;
-+		goto exit_free_host;
- 	}
- 
- 	ret = dln2_spi_cs_enable_all(dln2, true);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "Failed to enable CS pins\n");
--		goto exit_free_master;
-+		goto exit_free_host;
- 	}
- 
--	master->bus_num = -1;
--	master->mode_bits = SPI_CPOL | SPI_CPHA;
--	master->prepare_message = dln2_spi_prepare_message;
--	master->transfer_one = dln2_spi_transfer_one;
--	master->auto_runtime_pm = true;
-+	host->bus_num = -1;
-+	host->mode_bits = SPI_CPOL | SPI_CPHA;
-+	host->prepare_message = dln2_spi_prepare_message;
-+	host->transfer_one = dln2_spi_transfer_one;
-+	host->auto_runtime_pm = true;
- 
- 	/* enable SPI module, we're good to go */
- 	ret = dln2_spi_enable(dln2, true);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "Failed to enable SPI module\n");
--		goto exit_free_master;
-+		goto exit_free_host;
- 	}
- 
- 	pm_runtime_set_autosuspend_delay(&pdev->dev,
-@@ -761,9 +761,9 @@ static int dln2_spi_probe(struct platform_device *pdev)
- 	pm_runtime_set_active(&pdev->dev);
- 	pm_runtime_enable(&pdev->dev);
- 
--	ret = devm_spi_register_master(&pdev->dev, master);
-+	ret = devm_spi_register_controller(&pdev->dev, host);
- 	if (ret < 0) {
--		dev_err(&pdev->dev, "Failed to register master\n");
-+		dev_err(&pdev->dev, "Failed to register host\n");
- 		goto exit_register;
- 	}
- 
-@@ -775,16 +775,16 @@ static int dln2_spi_probe(struct platform_device *pdev)
- 
- 	if (dln2_spi_enable(dln2, false) < 0)
- 		dev_err(&pdev->dev, "Failed to disable SPI module\n");
--exit_free_master:
--	spi_master_put(master);
-+exit_free_host:
-+	spi_controller_put(host);
- 
- 	return ret;
- }
- 
- static void dln2_spi_remove(struct platform_device *pdev)
- {
--	struct spi_master *master = platform_get_drvdata(pdev);
--	struct dln2_spi *dln2 = spi_master_get_devdata(master);
-+	struct spi_controller *host = platform_get_drvdata(pdev);
-+	struct dln2_spi *dln2 = spi_controller_get_devdata(host);
- 
- 	pm_runtime_disable(&pdev->dev);
- 
-@@ -796,10 +796,10 @@ static void dln2_spi_remove(struct platform_device *pdev)
- static int dln2_spi_suspend(struct device *dev)
- {
- 	int ret;
--	struct spi_master *master = dev_get_drvdata(dev);
--	struct dln2_spi *dln2 = spi_master_get_devdata(master);
-+	struct spi_controller *host = dev_get_drvdata(dev);
-+	struct dln2_spi *dln2 = spi_controller_get_devdata(host);
- 
--	ret = spi_master_suspend(master);
-+	ret = spi_controller_suspend(host);
- 	if (ret < 0)
+-	cdns_xspi = spi_master_get_devdata(master);
++	cdns_xspi = spi_controller_get_devdata(host);
+ 	cdns_xspi->pdev = pdev;
+ 	cdns_xspi->dev = &pdev->dev;
+ 	cdns_xspi->cur_cs = 0;
+@@ -596,15 +596,15 @@ static int cdns_xspi_probe(struct platform_device *pdev)
  		return ret;
- 
-@@ -824,8 +824,8 @@ static int dln2_spi_suspend(struct device *dev)
- static int dln2_spi_resume(struct device *dev)
- {
- 	int ret;
--	struct spi_master *master = dev_get_drvdata(dev);
--	struct dln2_spi *dln2 = spi_master_get_devdata(master);
-+	struct spi_controller *host = dev_get_drvdata(dev);
-+	struct dln2_spi *dln2 = spi_controller_get_devdata(host);
- 
- 	if (!pm_runtime_suspended(dev)) {
- 		ret = dln2_spi_cs_enable_all(dln2, true);
-@@ -837,23 +837,23 @@ static int dln2_spi_resume(struct device *dev)
- 			return ret;
  	}
  
--	return spi_master_resume(master);
-+	return spi_controller_resume(host);
+-	master->num_chipselect = 1 << cdns_xspi->hw_num_banks;
++	host->num_chipselect = 1 << cdns_xspi->hw_num_banks;
+ 
+-	ret = devm_spi_register_master(dev, master);
++	ret = devm_spi_register_controller(dev, host);
+ 	if (ret) {
+-		dev_err(dev, "Failed to register SPI master\n");
++		dev_err(dev, "Failed to register SPI host\n");
+ 		return ret;
+ 	}
+ 
+-	dev_info(dev, "Successfully registered SPI master\n");
++	dev_info(dev, "Successfully registered SPI host\n");
+ 
+ 	return 0;
  }
- #endif /* CONFIG_PM_SLEEP */
- 
- #ifdef CONFIG_PM
- static int dln2_spi_runtime_suspend(struct device *dev)
- {
--	struct spi_master *master = dev_get_drvdata(dev);
--	struct dln2_spi *dln2 = spi_master_get_devdata(master);
-+	struct spi_controller *host = dev_get_drvdata(dev);
-+	struct dln2_spi *dln2 = spi_controller_get_devdata(host);
- 
- 	return dln2_spi_enable(dln2, false);
- }
- 
- static int dln2_spi_runtime_resume(struct device *dev)
- {
--	struct spi_master *master = dev_get_drvdata(dev);
--	struct dln2_spi *dln2 = spi_master_get_devdata(master);
-+	struct spi_controller *host = dev_get_drvdata(dev);
-+	struct dln2_spi *dln2 = spi_controller_get_devdata(host);
- 
- 	return  dln2_spi_enable(dln2, true);
- }
-@@ -875,7 +875,7 @@ static struct platform_driver spi_dln2_driver = {
- };
- module_platform_driver(spi_dln2_driver);
- 
--MODULE_DESCRIPTION("Driver for the Diolan DLN2 SPI master interface");
-+MODULE_DESCRIPTION("Driver for the Diolan DLN2 SPI host interface");
- MODULE_AUTHOR("Laurentiu Palcu <laurentiu.palcu@intel.com>");
- MODULE_LICENSE("GPL v2");
- MODULE_ALIAS("platform:dln2-spi");
 -- 
 2.25.1
 

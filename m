@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CA632C04FE0
-	for <linux-spi@archiver.kernel.org>; Mon,  7 Aug 2023 12:44:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 61F4AC04FE1
+	for <linux-spi@archiver.kernel.org>; Mon,  7 Aug 2023 12:44:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229469AbjHGMoM (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 7 Aug 2023 08:44:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42444 "EHLO
+        id S232805AbjHGMoN (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 7 Aug 2023 08:44:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229752AbjHGMoL (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 7 Aug 2023 08:44:11 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 575561701
-        for <linux-spi@vger.kernel.org>; Mon,  7 Aug 2023 05:44:10 -0700 (PDT)
-Received: from dggpemm100020.china.huawei.com (unknown [172.30.72.56])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RKGBb3Zb2zNmmp;
-        Mon,  7 Aug 2023 20:40:39 +0800 (CST)
+        with ESMTP id S232861AbjHGMoN (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 7 Aug 2023 08:44:13 -0400
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50AA1171A
+        for <linux-spi@vger.kernel.org>; Mon,  7 Aug 2023 05:44:11 -0700 (PDT)
+Received: from dggpemm100015.china.huawei.com (unknown [172.30.72.56])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4RKGCP06ynz1Z1WM;
+        Mon,  7 Aug 2023 20:41:21 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm100020.china.huawei.com (7.185.36.32) with Microsoft SMTP Server
+ dggpemm100015.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Mon, 7 Aug 2023 20:44:07 +0800
+ 15.1.2507.27; Mon, 7 Aug 2023 20:44:08 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 7 Aug
- 2023 20:44:06 +0800
+ 2023 20:44:08 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
         <yangyingliang@huawei.com>
-Subject: [PATCH -next 01/20] spi: amlogic-spifc-a1: switch to use devm_spi_alloc_host()
-Date:   Mon, 7 Aug 2023 20:40:46 +0800
-Message-ID: <20230807124105.3429709-2-yangyingliang@huawei.com>
+Subject: [PATCH -next 05/20] spi: fsi: switch to use spi_alloc_host()
+Date:   Mon, 7 Aug 2023 20:40:50 +0800
+Message-ID: <20230807124105.3429709-6-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230807124105.3429709-1-yangyingliang@huawei.com>
 References: <20230807124105.3429709-1-yangyingliang@huawei.com>
@@ -46,28 +46,28 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Switch to use modern name function devm_spi_alloc_host().
+Switch to use modern name function spi_alloc_host().
 
 No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-amlogic-spifc-a1.c | 2 +-
+ drivers/spi/spi-fsi.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-amlogic-spifc-a1.c b/drivers/spi/spi-amlogic-spifc-a1.c
-index 605e9e40455c..fadf6667cd51 100644
---- a/drivers/spi/spi-amlogic-spifc-a1.c
-+++ b/drivers/spi/spi-amlogic-spifc-a1.c
-@@ -326,7 +326,7 @@ static int amlogic_spifc_a1_probe(struct platform_device *pdev)
- 	struct amlogic_spifc_a1 *spifc;
- 	int ret;
+diff --git a/drivers/spi/spi-fsi.c b/drivers/spi/spi-fsi.c
+index ba3b17d7c9ec..fc9e33be1e0e 100644
+--- a/drivers/spi/spi-fsi.c
++++ b/drivers/spi/spi-fsi.c
+@@ -542,7 +542,7 @@ static int fsi_spi_probe(struct device *dev)
+ 		if (of_property_read_u32(np, "reg", &base))
+ 			continue;
  
--	ctrl = devm_spi_alloc_master(&pdev->dev, sizeof(*spifc));
-+	ctrl = devm_spi_alloc_host(&pdev->dev, sizeof(*spifc));
- 	if (!ctrl)
- 		return -ENOMEM;
- 
+-		ctlr = spi_alloc_master(dev, sizeof(*ctx));
++		ctlr = spi_alloc_host(dev, sizeof(*ctx));
+ 		if (!ctlr) {
+ 			of_node_put(np);
+ 			break;
 -- 
 2.25.1
 

@@ -2,81 +2,126 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 25044C04A94
-	for <linux-spi@archiver.kernel.org>; Mon,  7 Aug 2023 13:38:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CB914C001B0
+	for <linux-spi@archiver.kernel.org>; Mon,  7 Aug 2023 14:10:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231838AbjHGNiY (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 7 Aug 2023 09:38:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53394 "EHLO
+        id S231789AbjHGOKQ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 7 Aug 2023 10:10:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234280AbjHGNiF (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 7 Aug 2023 09:38:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39EDDE51
-        for <linux-spi@vger.kernel.org>; Mon,  7 Aug 2023 06:38:04 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C3E5A61B47
-        for <linux-spi@vger.kernel.org>; Mon,  7 Aug 2023 13:38:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2051EC433C7;
-        Mon,  7 Aug 2023 13:38:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691415483;
-        bh=zSbaVCU0Fn2wndPq6jwQUcPtwTZUL68zx6zxIhPQOnc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=KvbtOB1F8fm61Z1dr4hFCXIVESGKI0VvIsHp6QNqEXXtKapBcwQ3Nw1nTeAdMTP3U
-         HeXWakGBiMhbqSvvKoioe9dqeqpY/A4TiWIQqux5spg0i1vXp4yqoV4Jk+tpjAVe5B
-         AsBeOsdIhMVWp3X6WtL4P8F0aXXjfrw1mpkbJ5KDiKp3VYEmol8wxEI9vnyiAptl2p
-         q5SHrUaN6zUSndFaBy7m5XFDVSknCsCpInrDsX6pcAY58oT/uYF+MqFCfT8IyNY90D
-         R1op0+4JR3cWlU6HlAfVTG+o2enKv2k9XLucRMjhIo1nX2L8saWkgPDNuAQR2OyYGD
-         NFMDkyIDQYrYA==
-Date:   Mon, 7 Aug 2023 14:37:58 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Yang Yingliang <yangyingliang@huawei.com>
-Cc:     linux-spi@vger.kernel.org, geert@linux-m68k.org, lukas@wunner.de
-Subject: Re: [PATCH -next 10/21] spi: cadence-quadspi: switch to use modern
- name
-Message-ID: <1f8e961d-1810-4130-9403-793a28548140@sirena.org.uk>
-References: <20230728093221.3312026-1-yangyingliang@huawei.com>
- <20230728093221.3312026-11-yangyingliang@huawei.com>
+        with ESMTP id S231376AbjHGOKO (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 7 Aug 2023 10:10:14 -0400
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BBE783
+        for <linux-spi@vger.kernel.org>; Mon,  7 Aug 2023 07:10:13 -0700 (PDT)
+Received: from dggpemm100014.china.huawei.com (unknown [172.30.72.54])
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4RKJ8Z42dGz1KCNN;
+        Mon,  7 Aug 2023 22:09:02 +0800 (CST)
+Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
+ dggpemm100014.china.huawei.com (7.185.36.55) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Mon, 7 Aug 2023 22:10:11 +0800
+Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
+ (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 7 Aug
+ 2023 22:10:10 +0800
+From:   Yang Yingliang <yangyingliang@huawei.com>
+To:     <linux-spi@vger.kernel.org>
+CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
+        <yangyingliang@huawei.com>
+Subject: [PATCH -next v2 02/21] spi: aspeed: switch to use modern name
+Date:   Mon, 7 Aug 2023 22:06:58 +0800
+Message-ID: <20230807140717.3484180-3-yangyingliang@huawei.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20230807140717.3484180-1-yangyingliang@huawei.com>
+References: <20230807140717.3484180-1-yangyingliang@huawei.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="vR7gYHqnNQ4kCgn8"
-Content-Disposition: inline
-In-Reply-To: <20230728093221.3312026-11-yangyingliang@huawei.com>
-X-Cookie: hacker, n.:
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.103.91]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggpemm500007.china.huawei.com (7.185.36.183)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+Change legacy name master to modern name host or controller.
 
---vR7gYHqnNQ4kCgn8
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+No functional changed.
 
-On Fri, Jul 28, 2023 at 05:32:10PM +0800, Yang Yingliang wrote:
-> Change legacy name master to modern name host or controller.
->=20
-> No functional changed.
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+---
+ drivers/spi/spi-aspeed-smc.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-This doesn't apply against current code, please check and resend.
+diff --git a/drivers/spi/spi-aspeed-smc.c b/drivers/spi/spi-aspeed-smc.c
+index e75b0d51f06a..21b0fa646c7d 100644
+--- a/drivers/spi/spi-aspeed-smc.c
++++ b/drivers/spi/spi-aspeed-smc.c
+@@ -295,7 +295,7 @@ static const struct aspeed_spi_data ast2400_spi_data;
+ 
+ static int do_aspeed_spi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ {
+-	struct aspeed_spi *aspi = spi_controller_get_devdata(mem->spi->master);
++	struct aspeed_spi *aspi = spi_controller_get_devdata(mem->spi->controller);
+ 	struct aspeed_spi_chip *chip = &aspi->chips[spi_get_chipselect(mem->spi, 0)];
+ 	u32 addr_mode, addr_mode_backup;
+ 	u32 ctl_val;
+@@ -374,7 +374,7 @@ static int aspeed_spi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 
+ static const char *aspeed_spi_get_name(struct spi_mem *mem)
+ {
+-	struct aspeed_spi *aspi = spi_controller_get_devdata(mem->spi->master);
++	struct aspeed_spi *aspi = spi_controller_get_devdata(mem->spi->controller);
+ 	struct device *dev = aspi->dev;
+ 
+ 	return devm_kasprintf(dev, GFP_KERNEL, "%s.%d", dev_name(dev),
+@@ -553,7 +553,7 @@ static int aspeed_spi_do_calibration(struct aspeed_spi_chip *chip);
+ 
+ static int aspeed_spi_dirmap_create(struct spi_mem_dirmap_desc *desc)
+ {
+-	struct aspeed_spi *aspi = spi_controller_get_devdata(desc->mem->spi->master);
++	struct aspeed_spi *aspi = spi_controller_get_devdata(desc->mem->spi->controller);
+ 	struct aspeed_spi_chip *chip = &aspi->chips[spi_get_chipselect(desc->mem->spi, 0)];
+ 	struct spi_mem_op *op = &desc->info.op_tmpl;
+ 	u32 ctl_val;
+@@ -620,7 +620,7 @@ static int aspeed_spi_dirmap_create(struct spi_mem_dirmap_desc *desc)
+ static ssize_t aspeed_spi_dirmap_read(struct spi_mem_dirmap_desc *desc,
+ 				      u64 offset, size_t len, void *buf)
+ {
+-	struct aspeed_spi *aspi = spi_controller_get_devdata(desc->mem->spi->master);
++	struct aspeed_spi *aspi = spi_controller_get_devdata(desc->mem->spi->controller);
+ 	struct aspeed_spi_chip *chip = &aspi->chips[spi_get_chipselect(desc->mem->spi, 0)];
+ 
+ 	/* Switch to USER command mode if mapping window is too small */
+@@ -669,7 +669,7 @@ static void aspeed_spi_chip_enable(struct aspeed_spi *aspi, unsigned int cs, boo
+ 
+ static int aspeed_spi_setup(struct spi_device *spi)
+ {
+-	struct aspeed_spi *aspi = spi_controller_get_devdata(spi->master);
++	struct aspeed_spi *aspi = spi_controller_get_devdata(spi->controller);
+ 	const struct aspeed_spi_data *data = aspi->data;
+ 	unsigned int cs = spi_get_chipselect(spi, 0);
+ 	struct aspeed_spi_chip *chip = &aspi->chips[cs];
+@@ -697,7 +697,7 @@ static int aspeed_spi_setup(struct spi_device *spi)
+ 
+ static void aspeed_spi_cleanup(struct spi_device *spi)
+ {
+-	struct aspeed_spi *aspi = spi_controller_get_devdata(spi->master);
++	struct aspeed_spi *aspi = spi_controller_get_devdata(spi->controller);
+ 	unsigned int cs = spi_get_chipselect(spi, 0);
+ 
+ 	aspeed_spi_chip_enable(aspi, cs, false);
+@@ -726,7 +726,7 @@ static int aspeed_spi_probe(struct platform_device *pdev)
+ 	if (!data)
+ 		return -ENODEV;
+ 
+-	ctlr = devm_spi_alloc_master(dev, sizeof(*aspi));
++	ctlr = devm_spi_alloc_host(dev, sizeof(*aspi));
+ 	if (!ctlr)
+ 		return -ENOMEM;
+ 
+-- 
+2.25.1
 
---vR7gYHqnNQ4kCgn8
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmTQ87YACgkQJNaLcl1U
-h9Adqgf/XTdoL2KAVztDTqjSYhQw6y7fK/Xz85SQ0ysRy+ZlVT+CgXM4quo3Mw8w
-EZB9lnr8Jqaal6YItryg2Cp+CW+splJnBEgH0iKw5rDN8BRcL+l0ktLc8bLVtTFE
-XRvXLL5gFR2sde+zhrZ4IVzd7F63r3GCROLGzq1Upr1pzav9hUzruprErfWQBO7z
-paMtktdIWE+ReP6ti9b+UIcjUSem7KI2kl/fnzL4NLk578sUHHEmKrw5Z0ef2AgE
-4gm4BmHuOlGtf0EUut3BA2VY5lw/kH4vYuCtitIHA3Isfs16P81DGwIK3jmGo85B
-sYjWSUhT68gbBvE/Az0XWtFJwRFawA==
-=8p4J
------END PGP SIGNATURE-----
-
---vR7gYHqnNQ4kCgn8--

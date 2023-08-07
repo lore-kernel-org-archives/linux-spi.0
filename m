@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DD914C04FDF
-	for <linux-spi@archiver.kernel.org>; Mon,  7 Aug 2023 14:10:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E570DC41513
+	for <linux-spi@archiver.kernel.org>; Mon,  7 Aug 2023 14:10:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231911AbjHGOKV (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 7 Aug 2023 10:10:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58594 "EHLO
+        id S231776AbjHGOKU (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 7 Aug 2023 10:10:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231947AbjHGOKS (ORCPT
+        with ESMTP id S231942AbjHGOKS (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Mon, 7 Aug 2023 10:10:18 -0400
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15D0D92
-        for <linux-spi@vger.kernel.org>; Mon,  7 Aug 2023 07:10:14 -0700 (PDT)
-Received: from dggpemm100013.china.huawei.com (unknown [172.30.72.54])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4RKJ6g4KM7z1Z1Z5;
-        Mon,  7 Aug 2023 22:07:23 +0800 (CST)
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0FB383
+        for <linux-spi@vger.kernel.org>; Mon,  7 Aug 2023 07:10:15 -0700 (PDT)
+Received: from dggpemm100008.china.huawei.com (unknown [172.30.72.54])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RKJ8b5Mljzfbp0;
+        Mon,  7 Aug 2023 22:09:03 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm100013.china.huawei.com (7.185.36.33) with Microsoft SMTP Server
+ dggpemm100008.china.huawei.com (7.185.36.125) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Mon, 7 Aug 2023 22:10:11 +0800
+ 15.1.2507.27; Mon, 7 Aug 2023 22:10:13 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 7 Aug
- 2023 22:10:11 +0800
+ 2023 22:10:12 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
         <yangyingliang@huawei.com>
-Subject: [PATCH -next v2 03/21] spi: spi-axi-spi-engine: switch to use modern name
-Date:   Mon, 7 Aug 2023 22:06:59 +0800
-Message-ID: <20230807140717.3484180-4-yangyingliang@huawei.com>
+Subject: [PATCH -next v2 07/21] spi: bcm63xx-hsspi: switch to use modern name
+Date:   Mon, 7 Aug 2023 22:07:03 +0800
+Message-ID: <20230807140717.3484180-8-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230807140717.3484180-1-yangyingliang@huawei.com>
 References: <20230807140717.3484180-1-yangyingliang@huawei.com>
@@ -52,156 +52,281 @@ No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-axi-spi-engine.c | 58 ++++++++++++++++----------------
- 1 file changed, 29 insertions(+), 29 deletions(-)
+ drivers/spi/spi-bcm63xx-hsspi.c | 86 ++++++++++++++++-----------------
+ 1 file changed, 43 insertions(+), 43 deletions(-)
 
-diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-engine.c
-index 89661f3b0d44..c5b568543149 100644
---- a/drivers/spi/spi-axi-spi-engine.c
-+++ b/drivers/spi/spi-axi-spi-engine.c
-@@ -356,8 +356,8 @@ static bool spi_engine_read_rx_fifo(struct spi_engine *spi_engine)
- 
- static irqreturn_t spi_engine_irq(int irq, void *devid)
+diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
+index 9e218e143263..1ca857c2a4aa 100644
+--- a/drivers/spi/spi-bcm63xx-hsspi.c
++++ b/drivers/spi/spi-bcm63xx-hsspi.c
+@@ -149,7 +149,7 @@ static ssize_t wait_mode_show(struct device *dev, struct device_attribute *attr,
+ 			 char *buf)
  {
--	struct spi_master *master = devid;
--	struct spi_engine *spi_engine = spi_master_get_devdata(master);
-+	struct spi_controller *host = devid;
-+	struct spi_engine *spi_engine = spi_controller_get_devdata(host);
- 	unsigned int disable_int = 0;
- 	unsigned int pending;
+ 	struct spi_controller *ctrl = dev_get_drvdata(dev);
+-	struct bcm63xx_hsspi *bs = spi_master_get_devdata(ctrl);
++	struct bcm63xx_hsspi *bs = spi_controller_get_devdata(ctrl);
  
-@@ -396,7 +396,7 @@ static irqreturn_t spi_engine_irq(int irq, void *devid)
- 			msg->status = 0;
- 			msg->actual_length = msg->frame_length;
- 			spi_engine->msg = NULL;
--			spi_finalize_current_message(master);
-+			spi_finalize_current_message(host);
- 			disable_int |= SPI_ENGINE_INT_SYNC;
- 		}
- 	}
-@@ -412,11 +412,11 @@ static irqreturn_t spi_engine_irq(int irq, void *devid)
- 	return IRQ_HANDLED;
+ 	return sprintf(buf, "%d\n", bs->wait_mode);
+ }
+@@ -158,7 +158,7 @@ static ssize_t wait_mode_store(struct device *dev, struct device_attribute *attr
+ 			  const char *buf, size_t count)
+ {
+ 	struct spi_controller *ctrl = dev_get_drvdata(dev);
+-	struct bcm63xx_hsspi *bs = spi_master_get_devdata(ctrl);
++	struct bcm63xx_hsspi *bs = spi_controller_get_devdata(ctrl);
+ 	u32 val;
+ 
+ 	if (kstrtou32(buf, 10, &val))
+@@ -185,7 +185,7 @@ static ssize_t xfer_mode_show(struct device *dev, struct device_attribute *attr,
+ 			 char *buf)
+ {
+ 	struct spi_controller *ctrl = dev_get_drvdata(dev);
+-	struct bcm63xx_hsspi *bs = spi_master_get_devdata(ctrl);
++	struct bcm63xx_hsspi *bs = spi_controller_get_devdata(ctrl);
+ 
+ 	return sprintf(buf, "%d\n", bs->xfer_mode);
+ }
+@@ -194,7 +194,7 @@ static ssize_t xfer_mode_store(struct device *dev, struct device_attribute *attr
+ 			  const char *buf, size_t count)
+ {
+ 	struct spi_controller *ctrl = dev_get_drvdata(dev);
+-	struct bcm63xx_hsspi *bs = spi_master_get_devdata(ctrl);
++	struct bcm63xx_hsspi *bs = spi_controller_get_devdata(ctrl);
+ 	u32 val;
+ 
+ 	if (kstrtou32(buf, 10, &val))
+@@ -262,12 +262,12 @@ static int bcm63xx_hsspi_wait_cmd(struct bcm63xx_hsspi *bs)
+ 	return rc;
  }
  
--static int spi_engine_transfer_one_message(struct spi_master *master,
-+static int spi_engine_transfer_one_message(struct spi_controller *host,
- 	struct spi_message *msg)
+-static bool bcm63xx_prepare_prepend_transfer(struct spi_master *master,
++static bool bcm63xx_prepare_prepend_transfer(struct spi_controller *host,
+ 					  struct spi_message *msg,
+ 					  struct spi_transfer *t_prepend)
  {
- 	struct spi_engine_program p_dry, *p;
--	struct spi_engine *spi_engine = spi_master_get_devdata(master);
-+	struct spi_engine *spi_engine = spi_controller_get_devdata(host);
- 	unsigned int int_enable = 0;
- 	unsigned long flags;
- 	size_t size;
-@@ -464,7 +464,7 @@ static int spi_engine_transfer_one_message(struct spi_master *master,
- static int spi_engine_probe(struct platform_device *pdev)
+ 
+-	struct bcm63xx_hsspi *bs = spi_master_get_devdata(master);
++	struct bcm63xx_hsspi *bs = spi_controller_get_devdata(host);
+ 	bool tx_only = false;
+ 	struct spi_transfer *t;
+ 
+@@ -348,7 +348,7 @@ static bool bcm63xx_prepare_prepend_transfer(struct spi_master *master,
+ static int bcm63xx_hsspi_do_prepend_txrx(struct spi_device *spi,
+ 					 struct spi_transfer *t)
  {
- 	struct spi_engine *spi_engine;
+-	struct bcm63xx_hsspi *bs = spi_master_get_devdata(spi->master);
++	struct bcm63xx_hsspi *bs = spi_controller_get_devdata(spi->controller);
+ 	unsigned int chip_select = spi_get_chipselect(spi, 0);
+ 	u16 opcode = 0, val;
+ 	const u8 *tx = t->tx_buf;
+@@ -467,7 +467,7 @@ static void bcm63xx_hsspi_set_clk(struct bcm63xx_hsspi *bs,
+ 
+ static int bcm63xx_hsspi_do_txrx(struct spi_device *spi, struct spi_transfer *t)
+ {
+-	struct bcm63xx_hsspi *bs = spi_master_get_devdata(spi->master);
++	struct bcm63xx_hsspi *bs = spi_controller_get_devdata(spi->controller);
+ 	unsigned int chip_select = spi_get_chipselect(spi, 0);
+ 	u16 opcode = 0, val;
+ 	int pending = t->len;
+@@ -541,7 +541,7 @@ static int bcm63xx_hsspi_do_txrx(struct spi_device *spi, struct spi_transfer *t)
+ 
+ static int bcm63xx_hsspi_setup(struct spi_device *spi)
+ {
+-	struct bcm63xx_hsspi *bs = spi_master_get_devdata(spi->master);
++	struct bcm63xx_hsspi *bs = spi_controller_get_devdata(spi->controller);
+ 	u32 reg;
+ 
+ 	reg = __raw_readl(bs->regs +
+@@ -579,7 +579,7 @@ static int bcm63xx_hsspi_setup(struct spi_device *spi)
+ static int bcm63xx_hsspi_do_dummy_cs_txrx(struct spi_device *spi,
+ 				      struct spi_message *msg)
+ {
+-	struct bcm63xx_hsspi *bs = spi_master_get_devdata(spi->master);
++	struct bcm63xx_hsspi *bs = spi_controller_get_devdata(spi->controller);
+ 	int status = -EINVAL;
+ 	int dummy_cs;
+ 	bool keep_cs = false;
+@@ -653,10 +653,10 @@ static int bcm63xx_hsspi_do_dummy_cs_txrx(struct spi_device *spi,
+ 	return status;
+ }
+ 
+-static int bcm63xx_hsspi_transfer_one(struct spi_master *master,
++static int bcm63xx_hsspi_transfer_one(struct spi_controller *host,
+ 				      struct spi_message *msg)
+ {
+-	struct bcm63xx_hsspi *bs = spi_master_get_devdata(master);
++	struct bcm63xx_hsspi *bs = spi_controller_get_devdata(host);
+ 	struct spi_device *spi = msg->spi;
+ 	int status = -EINVAL;
+ 	bool prependable = false;
+@@ -665,7 +665,7 @@ static int bcm63xx_hsspi_transfer_one(struct spi_master *master,
+ 	mutex_lock(&bs->msg_mutex);
+ 
+ 	if (bs->xfer_mode != HSSPI_XFER_MODE_DUMMYCS)
+-		prependable = bcm63xx_prepare_prepend_transfer(master, msg, &t_prepend);
++		prependable = bcm63xx_prepare_prepend_transfer(host, msg, &t_prepend);
+ 
+ 	if (prependable) {
+ 		status = bcm63xx_hsspi_do_prepend_txrx(spi, &t_prepend);
+@@ -681,7 +681,7 @@ static int bcm63xx_hsspi_transfer_one(struct spi_master *master,
+ 
+ 	mutex_unlock(&bs->msg_mutex);
+ 	msg->status = status;
+-	spi_finalize_current_message(master);
++	spi_finalize_current_message(host);
+ 
+ 	return 0;
+ }
+@@ -723,7 +723,7 @@ static irqreturn_t bcm63xx_hsspi_interrupt(int irq, void *dev_id)
+ 
+ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
+ {
 -	struct spi_master *master;
 +	struct spi_controller *host;
- 	unsigned int version;
- 	int irq;
- 	int ret;
-@@ -477,29 +477,29 @@ static int spi_engine_probe(struct platform_device *pdev)
- 	if (!spi_engine)
- 		return -ENOMEM;
- 
--	master = spi_alloc_master(&pdev->dev, 0);
--	if (!master)
-+	host = spi_alloc_host(&pdev->dev, 0);
-+	if (!host)
- 		return -ENOMEM;
- 
--	spi_master_set_devdata(master, spi_engine);
-+	spi_controller_set_devdata(host, spi_engine);
- 
- 	spin_lock_init(&spi_engine->lock);
- 
- 	spi_engine->clk = devm_clk_get(&pdev->dev, "s_axi_aclk");
- 	if (IS_ERR(spi_engine->clk)) {
- 		ret = PTR_ERR(spi_engine->clk);
--		goto err_put_master;
-+		goto err_put_host;
+ 	struct bcm63xx_hsspi *bs;
+ 	void __iomem *regs;
+ 	struct device *dev = &pdev->dev;
+@@ -779,13 +779,13 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
+ 		}
  	}
  
- 	spi_engine->ref_clk = devm_clk_get(&pdev->dev, "spi_clk");
- 	if (IS_ERR(spi_engine->ref_clk)) {
- 		ret = PTR_ERR(spi_engine->ref_clk);
--		goto err_put_master;
-+		goto err_put_host;
+-	master = spi_alloc_master(&pdev->dev, sizeof(*bs));
+-	if (!master) {
++	host = spi_alloc_host(&pdev->dev, sizeof(*bs));
++	if (!host) {
+ 		ret = -ENOMEM;
+ 		goto out_disable_pll_clk;
  	}
  
- 	ret = clk_prepare_enable(spi_engine->clk);
- 	if (ret)
--		goto err_put_master;
-+		goto err_put_host;
+-	bs = spi_master_get_devdata(master);
++	bs = spi_controller_get_devdata(host);
+ 	bs->pdev = pdev;
+ 	bs->clk = clk;
+ 	bs->pll_clk = pll_clk;
+@@ -796,17 +796,17 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
+ 	bs->prepend_buf = devm_kzalloc(dev, HSSPI_BUFFER_LEN, GFP_KERNEL);
+ 	if (!bs->prepend_buf) {
+ 		ret = -ENOMEM;
+-		goto out_put_master;
++		goto out_put_host;
+ 	}
  
- 	ret = clk_prepare_enable(spi_engine->ref_clk);
- 	if (ret)
-@@ -525,46 +525,46 @@ static int spi_engine_probe(struct platform_device *pdev)
- 	writel_relaxed(0xff, spi_engine->base + SPI_ENGINE_REG_INT_PENDING);
- 	writel_relaxed(0x00, spi_engine->base + SPI_ENGINE_REG_INT_ENABLE);
+ 	mutex_init(&bs->bus_mutex);
+ 	mutex_init(&bs->msg_mutex);
+ 	init_completion(&bs->done);
  
--	ret = request_irq(irq, spi_engine_irq, 0, pdev->name, master);
-+	ret = request_irq(irq, spi_engine_irq, 0, pdev->name, host);
- 	if (ret)
- 		goto err_ref_clk_disable;
+-	master->mem_ops = &bcm63xx_hsspi_mem_ops;
+-	master->dev.of_node = dev->of_node;
++	host->mem_ops = &bcm63xx_hsspi_mem_ops;
++	host->dev.of_node = dev->of_node;
+ 	if (!dev->of_node)
+-		master->bus_num = HSSPI_BUS_NUM;
++		host->bus_num = HSSPI_BUS_NUM;
  
--	master->dev.of_node = pdev->dev.of_node;
--	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_3WIRE;
+ 	of_property_read_u32(dev->of_node, "num-cs", &num_cs);
+ 	if (num_cs > 8) {
+@@ -814,18 +814,18 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
+ 			 num_cs);
+ 		num_cs = HSSPI_SPI_MAX_CS;
+ 	}
+-	master->num_chipselect = num_cs;
+-	master->setup = bcm63xx_hsspi_setup;
+-	master->transfer_one_message = bcm63xx_hsspi_transfer_one;
+-	master->max_transfer_size = bcm63xx_hsspi_max_message_size;
+-	master->max_message_size = bcm63xx_hsspi_max_message_size;
++	host->num_chipselect = num_cs;
++	host->setup = bcm63xx_hsspi_setup;
++	host->transfer_one_message = bcm63xx_hsspi_transfer_one;
++	host->max_transfer_size = bcm63xx_hsspi_max_message_size;
++	host->max_message_size = bcm63xx_hsspi_max_message_size;
+ 
+-	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH |
++	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH |
+ 			    SPI_RX_DUAL | SPI_TX_DUAL;
 -	master->bits_per_word_mask = SPI_BPW_MASK(8);
--	master->max_speed_hz = clk_get_rate(spi_engine->ref_clk) / 2;
--	master->transfer_one_message = spi_engine_transfer_one_message;
--	master->num_chipselect = 8;
-+	host->dev.of_node = pdev->dev.of_node;
-+	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_3WIRE;
+-	master->auto_runtime_pm = true;
 +	host->bits_per_word_mask = SPI_BPW_MASK(8);
-+	host->max_speed_hz = clk_get_rate(spi_engine->ref_clk) / 2;
-+	host->transfer_one_message = spi_engine_transfer_one_message;
-+	host->num_chipselect = 8;
- 
--	ret = spi_register_master(master);
-+	ret = spi_register_controller(host);
- 	if (ret)
- 		goto err_free_irq;
++	host->auto_runtime_pm = true;
  
 -	platform_set_drvdata(pdev, master);
 +	platform_set_drvdata(pdev, host);
  
- 	return 0;
- err_free_irq:
--	free_irq(irq, master);
-+	free_irq(irq, host);
- err_ref_clk_disable:
- 	clk_disable_unprepare(spi_engine->ref_clk);
- err_clk_disable:
- 	clk_disable_unprepare(spi_engine->clk);
--err_put_master:
--	spi_master_put(master);
-+err_put_host:
-+	spi_controller_put(host);
- 	return ret;
- }
+ 	/* Initialize the hardware */
+ 	__raw_writel(0, bs->regs + HSSPI_INT_MASK_REG);
+@@ -844,7 +844,7 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
+ 				       pdev->name, bs);
  
- static void spi_engine_remove(struct platform_device *pdev)
+ 		if (ret)
+-			goto out_put_master;
++			goto out_put_host;
+ 	}
+ 
+ 	pm_runtime_enable(&pdev->dev);
+@@ -856,7 +856,7 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	/* register and we are done */
+-	ret = devm_spi_register_master(dev, master);
++	ret = devm_spi_register_controller(dev, host);
+ 	if (ret)
+ 		goto out_sysgroup_disable;
+ 
+@@ -868,8 +868,8 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
+ 	sysfs_remove_group(&pdev->dev.kobj, &bcm63xx_hsspi_group);
+ out_pm_disable:
+ 	pm_runtime_disable(&pdev->dev);
+-out_put_master:
+-	spi_master_put(master);
++out_put_host:
++	spi_controller_put(host);
+ out_disable_pll_clk:
+ 	clk_disable_unprepare(pll_clk);
+ out_disable_clk:
+@@ -880,8 +880,8 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
+ 
+ static void bcm63xx_hsspi_remove(struct platform_device *pdev)
  {
--	struct spi_master *master = spi_master_get(platform_get_drvdata(pdev));
--	struct spi_engine *spi_engine = spi_master_get_devdata(master);
-+	struct spi_controller *host = spi_controller_get(platform_get_drvdata(pdev));
-+	struct spi_engine *spi_engine = spi_controller_get_devdata(host);
- 	int irq = platform_get_irq(pdev, 0);
+-	struct spi_master *master = platform_get_drvdata(pdev);
+-	struct bcm63xx_hsspi *bs = spi_master_get_devdata(master);
++	struct spi_controller *host = platform_get_drvdata(pdev);
++	struct bcm63xx_hsspi *bs = spi_controller_get_devdata(host);
  
--	spi_unregister_master(master);
-+	spi_unregister_controller(host);
+ 	/* reset the hardware and block queue progress */
+ 	__raw_writel(0, bs->regs + HSSPI_INT_MASK_REG);
+@@ -893,10 +893,10 @@ static void bcm63xx_hsspi_remove(struct platform_device *pdev)
+ #ifdef CONFIG_PM_SLEEP
+ static int bcm63xx_hsspi_suspend(struct device *dev)
+ {
+-	struct spi_master *master = dev_get_drvdata(dev);
+-	struct bcm63xx_hsspi *bs = spi_master_get_devdata(master);
++	struct spi_controller *host = dev_get_drvdata(dev);
++	struct bcm63xx_hsspi *bs = spi_controller_get_devdata(host);
  
--	free_irq(irq, master);
-+	free_irq(irq, host);
+-	spi_master_suspend(master);
++	spi_controller_suspend(host);
+ 	clk_disable_unprepare(bs->pll_clk);
+ 	clk_disable_unprepare(bs->clk);
  
--	spi_master_put(master);
-+	spi_controller_put(host);
+@@ -905,8 +905,8 @@ static int bcm63xx_hsspi_suspend(struct device *dev)
  
- 	writel_relaxed(0xff, spi_engine->base + SPI_ENGINE_REG_INT_PENDING);
- 	writel_relaxed(0x00, spi_engine->base + SPI_ENGINE_REG_INT_ENABLE);
+ static int bcm63xx_hsspi_resume(struct device *dev)
+ {
+-	struct spi_master *master = dev_get_drvdata(dev);
+-	struct bcm63xx_hsspi *bs = spi_master_get_devdata(master);
++	struct spi_controller *host = dev_get_drvdata(dev);
++	struct bcm63xx_hsspi *bs = spi_controller_get_devdata(host);
+ 	int ret;
+ 
+ 	ret = clk_prepare_enable(bs->clk);
+@@ -921,7 +921,7 @@ static int bcm63xx_hsspi_resume(struct device *dev)
+ 		}
+ 	}
+ 
+-	spi_master_resume(master);
++	spi_controller_resume(host);
+ 
+ 	return 0;
+ }
 -- 
 2.25.1
 

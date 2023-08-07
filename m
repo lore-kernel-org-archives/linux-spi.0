@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F2201C04E69
-	for <linux-spi@archiver.kernel.org>; Mon,  7 Aug 2023 12:44:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 22C50C04FDF
+	for <linux-spi@archiver.kernel.org>; Mon,  7 Aug 2023 12:44:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233694AbjHGMoe (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 7 Aug 2023 08:44:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42890 "EHLO
+        id S232849AbjHGMof (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 7 Aug 2023 08:44:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233697AbjHGMo0 (ORCPT
+        with ESMTP id S233698AbjHGMo0 (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Mon, 7 Aug 2023 08:44:26 -0400
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08A321989
-        for <linux-spi@vger.kernel.org>; Mon,  7 Aug 2023 05:44:17 -0700 (PDT)
-Received: from dggpemm500002.china.huawei.com (unknown [172.30.72.57])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4RKGFQ1FLFz1KCNc;
-        Mon,  7 Aug 2023 20:43:06 +0800 (CST)
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1B431988
+        for <linux-spi@vger.kernel.org>; Mon,  7 Aug 2023 05:44:16 -0700 (PDT)
+Received: from dggpemm100001.china.huawei.com (unknown [172.30.72.55])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4RKGCV0404z1Z1WG;
+        Mon,  7 Aug 2023 20:41:26 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500002.china.huawei.com (7.185.36.229) with Microsoft SMTP Server
+ dggpemm100001.china.huawei.com (7.185.36.93) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Mon, 7 Aug 2023 20:44:14 +0800
+ 15.1.2507.27; Mon, 7 Aug 2023 20:44:13 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 7 Aug
- 2023 20:44:14 +0800
+ 2023 20:44:13 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
         <yangyingliang@huawei.com>
-Subject: [PATCH -next 20/20] spi: lantiq: switch to use modern name
-Date:   Mon, 7 Aug 2023 20:41:05 +0800
-Message-ID: <20230807124105.3429709-21-yangyingliang@huawei.com>
+Subject: [PATCH -next 18/20] spi: intel: switch to use modern name
+Date:   Mon, 7 Aug 2023 20:41:03 +0800
+Message-ID: <20230807124105.3429709-19-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230807124105.3429709-1-yangyingliang@huawei.com>
 References: <20230807124105.3429709-1-yangyingliang@huawei.com>
@@ -46,264 +46,173 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Change legacy name master/slave to modern name host/target or controller.
+Change legacy name master to modern name host or controller.
 
 No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-lantiq-ssc.c | 96 ++++++++++++++++++------------------
- 1 file changed, 48 insertions(+), 48 deletions(-)
+ drivers/spi/spi-intel.c | 42 ++++++++++++++++++++---------------------
+ 1 file changed, 21 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/spi/spi-lantiq-ssc.c b/drivers/spi/spi-lantiq-ssc.c
-index 65568272cfd9..938e9e577e4f 100644
---- a/drivers/spi/spi-lantiq-ssc.c
-+++ b/drivers/spi/spi-lantiq-ssc.c
-@@ -92,7 +92,7 @@
- #define LTQ_SPI_STAT_RE		BIT(9)	/* Receive error flag */
- #define LTQ_SPI_STAT_TE		BIT(8)	/* Transmit error flag */
- #define LTQ_SPI_STAT_ME		BIT(7)	/* Mode error flag */
--#define LTQ_SPI_STAT_MS		BIT(1)	/* Master/slave select bit */
-+#define LTQ_SPI_STAT_MS		BIT(1)	/* Host/target select bit */
- #define LTQ_SPI_STAT_EN		BIT(0)	/* Enable bit */
- #define LTQ_SPI_STAT_ERRORS	(LTQ_SPI_STAT_ME | LTQ_SPI_STAT_TE | \
- 				 LTQ_SPI_STAT_RE | LTQ_SPI_STAT_AE | \
-@@ -110,8 +110,8 @@
- #define LTQ_SPI_WHBSTATE_CLRME	BIT(6)	/* Clear mode error flag */
- #define LTQ_SPI_WHBSTATE_SETRUE	BIT(5)	/* Set receive underflow error flag */
- #define LTQ_SPI_WHBSTATE_CLRRUE	BIT(4)	/* Clear receive underflow error flag */
--#define LTQ_SPI_WHBSTATE_SETMS	BIT(3)	/* Set master select bit */
--#define LTQ_SPI_WHBSTATE_CLRMS	BIT(2)	/* Clear master select bit */
-+#define LTQ_SPI_WHBSTATE_SETMS	BIT(3)	/* Set host select bit */
-+#define LTQ_SPI_WHBSTATE_CLRMS	BIT(2)	/* Clear host select bit */
- #define LTQ_SPI_WHBSTATE_SETEN	BIT(1)	/* Set enable bit (operational mode) */
- #define LTQ_SPI_WHBSTATE_CLREN	BIT(0)	/* Clear enable bit (config mode */
- #define LTQ_SPI_WHBSTATE_CLR_ERRORS	(LTQ_SPI_WHBSTATE_CLRRUE | \
-@@ -163,7 +163,7 @@ struct lantiq_ssc_hwcfg {
- };
- 
- struct lantiq_ssc_spi {
--	struct spi_master		*master;
-+	struct spi_controller		*host;
- 	struct device			*dev;
- 	void __iomem			*regbase;
- 	struct clk			*spi_clk;
-@@ -367,7 +367,7 @@ static void lantiq_ssc_hw_init(const struct lantiq_ssc_spi *spi)
- 	hw_setup_bits_per_word(spi, spi->bits_per_word);
- 	hw_setup_clock_mode(spi, SPI_MODE_0);
- 
--	/* Enable master mode and clear error flags */
-+	/* Enable host mode and clear error flags */
- 	lantiq_ssc_writel(spi, LTQ_SPI_WHBSTATE_SETMS |
- 			       LTQ_SPI_WHBSTATE_CLR_ERRORS,
- 			       LTQ_SPI_WHBSTATE);
-@@ -387,8 +387,8 @@ static void lantiq_ssc_hw_init(const struct lantiq_ssc_spi *spi)
- 
- static int lantiq_ssc_setup(struct spi_device *spidev)
+diff --git a/drivers/spi/spi-intel.c b/drivers/spi/spi-intel.c
+index bc6d22149e7e..98ec4dc22b81 100644
+--- a/drivers/spi/spi-intel.c
++++ b/drivers/spi/spi-intel.c
+@@ -143,7 +143,7 @@
+  * @base: Beginning of MMIO space
+  * @pregs: Start of protection registers
+  * @sregs: Start of software sequencer registers
+- * @master: Pointer to the SPI controller structure
++ * @host: Pointer to the SPI controller structure
+  * @nregions: Maximum number of regions
+  * @pr_num: Maximum number of protected range registers
+  * @chip0_size: Size of the first flash chip in bytes
+@@ -161,7 +161,7 @@ struct intel_spi {
+ 	void __iomem *base;
+ 	void __iomem *pregs;
+ 	void __iomem *sregs;
+-	struct spi_controller *master;
++	struct spi_controller *host;
+ 	size_t nregions;
+ 	size_t pr_num;
+ 	size_t chip0_size;
+@@ -747,7 +747,7 @@ intel_spi_match_mem_op(struct intel_spi *ispi, const struct spi_mem_op *op)
+ static bool intel_spi_supports_mem_op(struct spi_mem *mem,
+ 				      const struct spi_mem_op *op)
  {
--	struct spi_master *master = spidev->master;
--	struct lantiq_ssc_spi *spi = spi_master_get_devdata(master);
-+	struct spi_controller *host = spidev->controller;
-+	struct lantiq_ssc_spi *spi = spi_controller_get_devdata(host);
- 	unsigned int cs = spi_get_chipselect(spidev, 0);
- 	u32 gpocon;
+-	struct intel_spi *ispi = spi_master_get_devdata(mem->spi->master);
++	struct intel_spi *ispi = spi_controller_get_devdata(mem->spi->controller);
+ 	const struct intel_spi_mem_op *iop;
  
-@@ -416,10 +416,10 @@ static int lantiq_ssc_setup(struct spi_device *spidev)
+ 	iop = intel_spi_match_mem_op(ispi, op);
+@@ -778,7 +778,7 @@ static bool intel_spi_supports_mem_op(struct spi_mem *mem,
+ 
+ static int intel_spi_exec_mem_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ {
+-	struct intel_spi *ispi = spi_master_get_devdata(mem->spi->master);
++	struct intel_spi *ispi = spi_controller_get_devdata(mem->spi->controller);
+ 	const struct intel_spi_mem_op *iop;
+ 
+ 	iop = intel_spi_match_mem_op(ispi, op);
+@@ -790,7 +790,7 @@ static int intel_spi_exec_mem_op(struct spi_mem *mem, const struct spi_mem_op *o
+ 
+ static const char *intel_spi_get_name(struct spi_mem *mem)
+ {
+-	const struct intel_spi *ispi = spi_master_get_devdata(mem->spi->master);
++	const struct intel_spi *ispi = spi_controller_get_devdata(mem->spi->controller);
+ 
+ 	/*
+ 	 * Return name of the flash controller device to be compatible
+@@ -801,7 +801,7 @@ static const char *intel_spi_get_name(struct spi_mem *mem)
+ 
+ static int intel_spi_dirmap_create(struct spi_mem_dirmap_desc *desc)
+ {
+-	struct intel_spi *ispi = spi_master_get_devdata(desc->mem->spi->master);
++	struct intel_spi *ispi = spi_controller_get_devdata(desc->mem->spi->controller);
+ 	const struct intel_spi_mem_op *iop;
+ 
+ 	iop = intel_spi_match_mem_op(ispi, &desc->info.op_tmpl);
+@@ -815,7 +815,7 @@ static int intel_spi_dirmap_create(struct spi_mem_dirmap_desc *desc)
+ static ssize_t intel_spi_dirmap_read(struct spi_mem_dirmap_desc *desc, u64 offs,
+ 				     size_t len, void *buf)
+ {
+-	struct intel_spi *ispi = spi_master_get_devdata(desc->mem->spi->master);
++	struct intel_spi *ispi = spi_controller_get_devdata(desc->mem->spi->controller);
+ 	const struct intel_spi_mem_op *iop = desc->priv;
+ 	struct spi_mem_op op = desc->info.op_tmpl;
+ 	int ret;
+@@ -832,7 +832,7 @@ static ssize_t intel_spi_dirmap_read(struct spi_mem_dirmap_desc *desc, u64 offs,
+ static ssize_t intel_spi_dirmap_write(struct spi_mem_dirmap_desc *desc, u64 offs,
+ 				      size_t len, const void *buf)
+ {
+-	struct intel_spi *ispi = spi_master_get_devdata(desc->mem->spi->master);
++	struct intel_spi *ispi = spi_controller_get_devdata(desc->mem->spi->controller);
+ 	const struct intel_spi_mem_op *iop = desc->priv;
+ 	struct spi_mem_op op = desc->info.op_tmpl;
+ 	int ret;
+@@ -1332,14 +1332,14 @@ static int intel_spi_read_desc(struct intel_spi *ispi)
+ 
+ 	nc = (buf[1] & FLMAP0_NC_MASK) >> FLMAP0_NC_SHIFT;
+ 	if (!nc)
+-		ispi->master->num_chipselect = 1;
++		ispi->host->num_chipselect = 1;
+ 	else if (nc == 1)
+-		ispi->master->num_chipselect = 2;
++		ispi->host->num_chipselect = 2;
+ 	else
+ 		return -EINVAL;
+ 
+ 	dev_dbg(ispi->dev, "%u flash components found\n",
+-		ispi->master->num_chipselect);
++		ispi->host->num_chipselect);
  	return 0;
  }
  
--static int lantiq_ssc_prepare_message(struct spi_master *master,
-+static int lantiq_ssc_prepare_message(struct spi_controller *host,
- 				      struct spi_message *message)
- {
--	struct lantiq_ssc_spi *spi = spi_master_get_devdata(master);
-+	struct lantiq_ssc_spi *spi = spi_controller_get_devdata(host);
+@@ -1365,7 +1365,7 @@ static int intel_spi_populate_chip(struct intel_spi *ispi)
+ 	snprintf(chip.modalias, 8, "spi-nor");
+ 	chip.platform_data = pdata;
  
- 	hw_enter_config_mode(spi);
- 	hw_setup_clock_mode(spi, message->spi->mode);
-@@ -461,10 +461,10 @@ static void hw_setup_transfer(struct lantiq_ssc_spi *spi,
- 	lantiq_ssc_writel(spi, con, LTQ_SPI_CON);
+-	if (!spi_new_device(ispi->master, &chip))
++	if (!spi_new_device(ispi->host, &chip))
+ 		return -ENODEV;
+ 
+ 	ret = intel_spi_read_desc(ispi);
+@@ -1373,13 +1373,13 @@ static int intel_spi_populate_chip(struct intel_spi *ispi)
+ 		return ret;
+ 
+ 	/* Add the second chip if present */
+-	if (ispi->master->num_chipselect < 2)
++	if (ispi->host->num_chipselect < 2)
+ 		return 0;
+ 
+ 	chip.platform_data = NULL;
+ 	chip.chip_select = 1;
+ 
+-	if (!spi_new_device(ispi->master, &chip))
++	if (!spi_new_device(ispi->host, &chip))
+ 		return -ENODEV;
+ 	return 0;
  }
- 
--static int lantiq_ssc_unprepare_message(struct spi_master *master,
-+static int lantiq_ssc_unprepare_message(struct spi_controller *host,
- 					struct spi_message *message)
+@@ -1396,31 +1396,31 @@ static int intel_spi_populate_chip(struct intel_spi *ispi)
+ int intel_spi_probe(struct device *dev, struct resource *mem,
+ 		    const struct intel_spi_boardinfo *info)
  {
--	struct lantiq_ssc_spi *spi = spi_master_get_devdata(master);
-+	struct lantiq_ssc_spi *spi = spi_controller_get_devdata(host);
- 
- 	flush_workqueue(spi->wq);
- 
-@@ -693,8 +693,8 @@ static irqreturn_t lantiq_ssc_err_interrupt(int irq, void *data)
- 	lantiq_ssc_maskl(spi, 0, LTQ_SPI_WHBSTATE_CLR_ERRORS, LTQ_SPI_WHBSTATE);
- 
- 	/* set bad status so it can be retried */
--	if (spi->master->cur_msg)
--		spi->master->cur_msg->status = -EIO;
-+	if (spi->host->cur_msg)
-+		spi->host->cur_msg->status = -EIO;
- 	queue_work(spi->wq, &spi->work);
- 	spin_unlock(&spi->lock);
- 
-@@ -772,22 +772,22 @@ static void lantiq_ssc_bussy_work(struct work_struct *work)
- 		u32 stat = lantiq_ssc_readl(spi, LTQ_SPI_STAT);
- 
- 		if (!(stat & LTQ_SPI_STAT_BSY)) {
--			spi_finalize_current_transfer(spi->master);
-+			spi_finalize_current_transfer(spi->host);
- 			return;
- 		}
- 
- 		cond_resched();
- 	} while (!time_after_eq(jiffies, end));
- 
--	if (spi->master->cur_msg)
--		spi->master->cur_msg->status = -EIO;
--	spi_finalize_current_transfer(spi->master);
-+	if (spi->host->cur_msg)
-+		spi->host->cur_msg->status = -EIO;
-+	spi_finalize_current_transfer(spi->host);
- }
- 
--static void lantiq_ssc_handle_err(struct spi_master *master,
-+static void lantiq_ssc_handle_err(struct spi_controller *host,
- 				  struct spi_message *message)
- {
--	struct lantiq_ssc_spi *spi = spi_master_get_devdata(master);
-+	struct lantiq_ssc_spi *spi = spi_controller_get_devdata(host);
- 
- 	/* flush FIFOs on timeout */
- 	rx_fifo_flush(spi);
-@@ -796,7 +796,7 @@ static void lantiq_ssc_handle_err(struct spi_master *master,
- 
- static void lantiq_ssc_set_cs(struct spi_device *spidev, bool enable)
- {
--	struct lantiq_ssc_spi *spi = spi_master_get_devdata(spidev->master);
-+	struct lantiq_ssc_spi *spi = spi_controller_get_devdata(spidev->controller);
- 	unsigned int cs = spi_get_chipselect(spidev, 0);
- 	u32 fgpo;
- 
-@@ -808,11 +808,11 @@ static void lantiq_ssc_set_cs(struct spi_device *spidev, bool enable)
- 	lantiq_ssc_writel(spi, fgpo, LTQ_SPI_FPGO);
- }
- 
--static int lantiq_ssc_transfer_one(struct spi_master *master,
-+static int lantiq_ssc_transfer_one(struct spi_controller *host,
- 				   struct spi_device *spidev,
- 				   struct spi_transfer *t)
- {
--	struct lantiq_ssc_spi *spi = spi_master_get_devdata(master);
-+	struct lantiq_ssc_spi *spi = spi_controller_get_devdata(host);
- 
- 	hw_setup_transfer(spi, spidev, t);
- 
-@@ -904,7 +904,7 @@ MODULE_DEVICE_TABLE(of, lantiq_ssc_match);
- static int lantiq_ssc_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
--	struct spi_master *master;
+-	struct spi_controller *master;
 +	struct spi_controller *host;
- 	struct lantiq_ssc_spi *spi;
- 	const struct lantiq_ssc_hwcfg *hwcfg;
- 	u32 id, supports_dma, revision;
-@@ -913,33 +913,33 @@ static int lantiq_ssc_probe(struct platform_device *pdev)
+ 	struct intel_spi *ispi;
+ 	int ret;
  
- 	hwcfg = of_device_get_match_data(dev);
- 
--	master = spi_alloc_master(dev, sizeof(struct lantiq_ssc_spi));
+-	master = devm_spi_alloc_master(dev, sizeof(*ispi));
 -	if (!master)
-+	host = spi_alloc_host(dev, sizeof(struct lantiq_ssc_spi));
++	host = devm_spi_alloc_host(dev, sizeof(*ispi));
 +	if (!host)
  		return -ENOMEM;
  
--	spi = spi_master_get_devdata(master);
--	spi->master = master;
-+	spi = spi_controller_get_devdata(host);
-+	spi->host = host;
- 	spi->dev = dev;
- 	spi->hwcfg = hwcfg;
- 	platform_set_drvdata(pdev, spi);
- 	spi->regbase = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(spi->regbase)) {
- 		err = PTR_ERR(spi->regbase);
--		goto err_master_put;
-+		goto err_host_put;
- 	}
+-	master->mem_ops = &intel_spi_mem_ops;
++	host->mem_ops = &intel_spi_mem_ops;
  
- 	err = hwcfg->cfg_irq(pdev, spi);
- 	if (err)
--		goto err_master_put;
-+		goto err_host_put;
+-	ispi = spi_master_get_devdata(master);
++	ispi = spi_controller_get_devdata(host);
  
- 	spi->spi_clk = devm_clk_get(dev, "gate");
- 	if (IS_ERR(spi->spi_clk)) {
- 		err = PTR_ERR(spi->spi_clk);
--		goto err_master_put;
-+		goto err_host_put;
- 	}
- 	err = clk_prepare_enable(spi->spi_clk);
- 	if (err)
--		goto err_master_put;
-+		goto err_host_put;
+ 	ispi->base = devm_ioremap_resource(dev, mem);
+ 	if (IS_ERR(ispi->base))
+ 		return PTR_ERR(ispi->base);
  
- 	/*
- 	 * Use the old clk_get_fpi() function on Lantiq platform, till it
-@@ -965,19 +965,19 @@ static int lantiq_ssc_probe(struct platform_device *pdev)
- 	spi->bits_per_word = 8;
- 	spi->speed_hz = 0;
+ 	ispi->dev = dev;
+-	ispi->master = master;
++	ispi->host = host;
+ 	ispi->info = info;
  
--	master->dev.of_node = pdev->dev.of_node;
--	master->num_chipselect = num_cs;
--	master->use_gpio_descriptors = true;
--	master->setup = lantiq_ssc_setup;
--	master->set_cs = lantiq_ssc_set_cs;
--	master->handle_err = lantiq_ssc_handle_err;
--	master->prepare_message = lantiq_ssc_prepare_message;
--	master->unprepare_message = lantiq_ssc_unprepare_message;
--	master->transfer_one = lantiq_ssc_transfer_one;
--	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST | SPI_CS_HIGH |
--				SPI_LOOP;
--	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(2, 8) |
--				     SPI_BPW_MASK(16) | SPI_BPW_MASK(32);
-+	host->dev.of_node = pdev->dev.of_node;
-+	host->num_chipselect = num_cs;
-+	host->use_gpio_descriptors = true;
-+	host->setup = lantiq_ssc_setup;
-+	host->set_cs = lantiq_ssc_set_cs;
-+	host->handle_err = lantiq_ssc_handle_err;
-+	host->prepare_message = lantiq_ssc_prepare_message;
-+	host->unprepare_message = lantiq_ssc_unprepare_message;
-+	host->transfer_one = lantiq_ssc_transfer_one;
-+	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST | SPI_CS_HIGH |
-+			  SPI_LOOP;
-+	host->bits_per_word_mask = SPI_BPW_RANGE_MASK(2, 8) |
-+				   SPI_BPW_MASK(16) | SPI_BPW_MASK(32);
+ 	ret = intel_spi_init(ispi);
+ 	if (ret)
+ 		return ret;
  
- 	spi->wq = alloc_ordered_workqueue(dev_name(dev), WQ_MEM_RECLAIM);
- 	if (!spi->wq) {
-@@ -998,9 +998,9 @@ static int lantiq_ssc_probe(struct platform_device *pdev)
- 		"Lantiq SSC SPI controller (Rev %i, TXFS %u, RXFS %u, DMA %u)\n",
- 		revision, spi->tx_fifo_size, spi->rx_fifo_size, supports_dma);
+-	ret = devm_spi_register_master(dev, master);
++	ret = devm_spi_register_controller(dev, host);
+ 	if (ret)
+ 		return ret;
  
--	err = devm_spi_register_master(dev, master);
-+	err = devm_spi_register_controller(dev, host);
- 	if (err) {
--		dev_err(dev, "failed to register spi_master\n");
-+		dev_err(dev, "failed to register spi host\n");
- 		goto err_wq_destroy;
- 	}
- 
-@@ -1012,8 +1012,8 @@ static int lantiq_ssc_probe(struct platform_device *pdev)
- 	clk_put(spi->fpi_clk);
- err_clk_disable:
- 	clk_disable_unprepare(spi->spi_clk);
--err_master_put:
--	spi_master_put(master);
-+err_host_put:
-+	spi_controller_put(host);
- 
- 	return err;
- }
 -- 
 2.25.1
 

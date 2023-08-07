@@ -2,44 +2,47 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E18EBC001DE
-	for <linux-spi@archiver.kernel.org>; Mon,  7 Aug 2023 21:57:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E71DC04FDF
+	for <linux-spi@archiver.kernel.org>; Mon,  7 Aug 2023 21:57:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230024AbjHGV5e (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 7 Aug 2023 17:57:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39570 "EHLO
+        id S229977AbjHGV5f (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 7 Aug 2023 17:57:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229977AbjHGV5d (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 7 Aug 2023 17:57:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19DD9B3
-        for <linux-spi@vger.kernel.org>; Mon,  7 Aug 2023 14:57:31 -0700 (PDT)
+        with ESMTP id S229986AbjHGV5e (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 7 Aug 2023 17:57:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA44AA8;
+        Mon,  7 Aug 2023 14:57:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 960FE6223E
-        for <linux-spi@vger.kernel.org>; Mon,  7 Aug 2023 21:57:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F8DDC433C7;
-        Mon,  7 Aug 2023 21:57:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 490AF6228D;
+        Mon,  7 Aug 2023 21:57:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFC70C433C7;
+        Mon,  7 Aug 2023 21:57:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691445450;
-        bh=dW5uG1HSVmUAqZ1GgM9+74p4RHlWKXIwvURreli0GDE=;
-        h=From:To:In-Reply-To:References:Subject:Date:From;
-        b=p7I6IAsk/PkJiR7jHg1nBr/XA2HsNC3hd7nSC9CeHkcuTpbVDEmVjtFs0DU/t4H26
-         9VSiczl9CYfdUw2+tk7jPNCrsK27tCMofvR+mn5dir8cSaKOAMToyCjTR1bqZQmXOp
-         YebI1D9ukLIkaOrWiShs9XKjTs4tYqj4YRl1aKEsdi71liq/Wfd2Ac4hQg6u0U8P/T
-         83TH3JGx/ZvzajwNI/SfuWIo6giJcSU+UWETnraAD53zsrggxF0LccWrcpmi+tEK0e
-         nJi8W8SSbP8AiiU0DaGg24Uqm0fsBfHlfp50jam5EFSLoV+78r6SPgQQuQhlCNpqKN
-         Pc+AskBWJsdlA==
+        s=k20201202; t=1691445452;
+        bh=Hjr9TC5T/2rdK2wbUjAujziz8ImCXcl8RITuuGXMqSk=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=Im0t4U06DzMB4wtkyZXrmkFPUAX3Fxpyy0MDNdyekL5M8fCCdm9IruGDp55cDUa2w
+         +4hYC7Lt2/hI5/bWH9o/ATBup8f0cH//laVEISqdoteME7mL9Wx0x5wW66Huqywfh1
+         eOI7UhXge1+CKSoneaH9ALInBa+g8+qiVziGELnC3q7YZs57nWrupd2RwZlptO1IxA
+         IkmvQ+LuA1Vzy9Z0jgQfMRuYdmtzrgwdgsjhYonsOh8PX91D+K8rpuHYeGCPhd9ZPa
+         UYQigIMTSBeBsUyX7cXNbClECaSC6tBL2hPVuKPanreOgnJsPwDJfsNR+YicvABe02
+         5sSPavZGYoiRA==
 From:   Mark Brown <broonie@kernel.org>
-To:     linux-spi@vger.kernel.org, Zhu Wang <wangzhu9@huawei.com>
-In-Reply-To: <20230801135442.255604-1-wangzhu9@huawei.com>
-References: <20230801135442.255604-1-wangzhu9@huawei.com>
-Subject: Re: [PATCH -next] spi: omap2-mcspi: remove redundant
- dev_err_probe()
-Message-Id: <169144544923.329334.11971424668619291344.b4-ty@kernel.org>
-Date:   Mon, 07 Aug 2023 22:57:29 +0100
+To:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        coolrrsh@gmail.com
+Cc:     linux-kernel-mentees@lists.linuxfoundation.org
+In-Reply-To: <20230806083734.7685-2-coolrrsh@gmail.com>
+References: <20230806083734.7685-1-coolrrsh@gmail.com>
+ <20230806083734.7685-2-coolrrsh@gmail.com>
+Subject: Re: [PATCH v3] spi: spi-mpc52xx-psc: Fix an unsigned comparison
+ that can never be negative
+Message-Id: <169144545157.329334.2631329470445507219.b4-ty@kernel.org>
+Date:   Mon, 07 Aug 2023 22:57:31 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
@@ -48,12 +51,17 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Tue, 01 Aug 2023 21:54:42 +0800, Zhu Wang wrote:
-> When platform_get_irq() is called, the error message has been printed,
-> so it need not to call dev_err_probe() to print error, we remove the
-> redundant platform_get_irq().
+On Sun, 06 Aug 2023 14:07:34 +0530, coolrrsh@gmail.com wrote:
+> In struct mpc52xx_psc_spi, the variable 'irq' is declared as an unsigned int.
+> The comparison of variable 'irq'  with signed int operand is incorrect. Also,
+> the return value from the call to platform_get_irq(pdev,0) is int and it is
+> assigned to an unsigned int variable 'irq', thus redeclaring the type of
+> variable 'irq' to signed int.
 > 
+> This fixes warning such as:
+> drivers/spi/spi-mpc52xx-psc.c:332:5-13:
 > 
+> [...]
 
 Applied to
 
@@ -61,8 +69,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: omap2-mcspi: remove redundant dev_err_probe()
-      commit: 142c61a5fddeb755c420cb2e23b4bc0c0901308f
+[1/1] spi: spi-mpc52xx-psc: Fix an unsigned comparison that can never be negative
+      commit: 4f5177458ba97734149897c5d4d44f85b8fe0348
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

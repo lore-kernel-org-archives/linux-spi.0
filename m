@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3A40AC001DF
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8A8BEC04FE2
 	for <linux-spi@archiver.kernel.org>; Mon,  7 Aug 2023 12:44:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232408AbjHGMoc (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 7 Aug 2023 08:44:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42780 "EHLO
+        id S233759AbjHGMod (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 7 Aug 2023 08:44:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233657AbjHGMoW (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 7 Aug 2023 08:44:22 -0400
+        with ESMTP id S231500AbjHGMo0 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 7 Aug 2023 08:44:26 -0400
 Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C85E71724
-        for <linux-spi@vger.kernel.org>; Mon,  7 Aug 2023 05:44:14 -0700 (PDT)
-Received: from dggpemm100005.china.huawei.com (unknown [172.30.72.53])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RKGFM3GlXzfbnZ;
-        Mon,  7 Aug 2023 20:43:03 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC0211735
+        for <linux-spi@vger.kernel.org>; Mon,  7 Aug 2023 05:44:15 -0700 (PDT)
+Received: from dggpemm100008.china.huawei.com (unknown [172.30.72.57])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RKGBh0trWztS13;
+        Mon,  7 Aug 2023 20:40:44 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm100005.china.huawei.com (7.185.36.231) with Microsoft SMTP Server
+ dggpemm100008.china.huawei.com (7.185.36.125) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Mon, 7 Aug 2023 20:44:12 +0800
+ 15.1.2507.27; Mon, 7 Aug 2023 20:44:11 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 7 Aug
- 2023 20:44:12 +0800
+ 2023 20:44:10 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
         <yangyingliang@huawei.com>
-Subject: [PATCH -next 15/20] spi: img-spfi: switch to use modern name
-Date:   Mon, 7 Aug 2023 20:41:00 +0800
-Message-ID: <20230807124105.3429709-16-yangyingliang@huawei.com>
+Subject: [PATCH -next 11/20] spi: gpio: switch to use modern name
+Date:   Mon, 7 Aug 2023 20:40:56 +0800
+Message-ID: <20230807124105.3429709-12-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230807124105.3429709-1-yangyingliang@huawei.com>
 References: <20230807124105.3429709-1-yangyingliang@huawei.com>
@@ -52,314 +52,240 @@ No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-img-spfi.c | 118 ++++++++++++++++++-------------------
- 1 file changed, 59 insertions(+), 59 deletions(-)
+ drivers/spi/spi-gpio.c | 72 +++++++++++++++++++++---------------------
+ 1 file changed, 36 insertions(+), 36 deletions(-)
 
-diff --git a/drivers/spi/spi-img-spfi.c b/drivers/spi/spi-img-spfi.c
-index d775f87770e3..d8360f94d3b7 100644
---- a/drivers/spi/spi-img-spfi.c
-+++ b/drivers/spi/spi-img-spfi.c
-@@ -86,7 +86,7 @@
+diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
+index 8aa905e407a8..d8db4564b406 100644
+--- a/drivers/spi/spi-gpio.c
++++ b/drivers/spi/spi-gpio.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later
+ /*
+- * SPI master driver using generic bitbanged GPIO
++ * SPI host driver using generic bitbanged GPIO
+  *
+  * Copyright (C) 2006,2008 David Brownell
+  * Copyright (C) 2017 Linus Walleij
+@@ -17,7 +17,7 @@
  
- struct img_spfi {
- 	struct device *dev;
--	struct spi_master *master;
-+	struct spi_controller *host;
- 	spinlock_t lock;
  
- 	void __iomem *regs;
-@@ -221,11 +221,11 @@ static unsigned int spfi_pio_read8(struct img_spfi *spfi, u8 *buf,
- 	return count;
+ /*
+- * This bitbanging SPI master driver should help make systems usable
++ * This bitbanging SPI host driver should help make systems usable
+  * when a native hardware SPI engine is not available, perhaps because
+  * its driver isn't yet working or because the I/O pins it requires
+  * are used for other purposes.
+@@ -26,7 +26,7 @@
+  *
+  * spi->controller_state ... reserved for bitbang framework code
+  *
+- * spi->master->dev.driver_data ... points to spi_gpio->bitbang
++ * spi->controller->dev.driver_data ... points to spi_gpio->bitbang
+  */
+ 
+ struct spi_gpio {
+@@ -77,7 +77,7 @@ spi_to_spi_gpio(const struct spi_device *spi)
+ 	const struct spi_bitbang	*bang;
+ 	struct spi_gpio			*spi_gpio;
+ 
+-	bang = spi_master_get_devdata(spi->master);
++	bang = spi_controller_get_devdata(spi->controller);
+ 	spi_gpio = container_of(bang, struct spi_gpio, bitbang);
+ 	return spi_gpio;
  }
- 
--static int img_spfi_start_pio(struct spi_master *master,
-+static int img_spfi_start_pio(struct spi_controller *host,
- 			       struct spi_device *spi,
- 			       struct spi_transfer *xfer)
+@@ -180,7 +180,7 @@ static u32 spi_gpio_txrx_word_mode3(struct spi_device *spi,
+ static u32 spi_gpio_spec_txrx_word_mode0(struct spi_device *spi,
+ 		unsigned nsecs, u32 word, u8 bits, unsigned flags)
  {
--	struct img_spfi *spfi = spi_master_get_devdata(spi->master);
-+	struct img_spfi *spfi = spi_controller_get_devdata(spi->controller);
- 	unsigned int tx_bytes = 0, rx_bytes = 0;
- 	const void *tx_buf = xfer->tx_buf;
- 	void *rx_buf = xfer->rx_buf;
-@@ -285,7 +285,7 @@ static void img_spfi_dma_rx_cb(void *data)
- 	spin_lock_irqsave(&spfi->lock, flags);
- 	spfi->rx_dma_busy = false;
- 	if (!spfi->tx_dma_busy)
--		spi_finalize_current_transfer(spfi->master);
-+		spi_finalize_current_transfer(spfi->host);
- 	spin_unlock_irqrestore(&spfi->lock, flags);
- }
- 
-@@ -299,15 +299,15 @@ static void img_spfi_dma_tx_cb(void *data)
- 	spin_lock_irqsave(&spfi->lock, flags);
- 	spfi->tx_dma_busy = false;
- 	if (!spfi->rx_dma_busy)
--		spi_finalize_current_transfer(spfi->master);
-+		spi_finalize_current_transfer(spfi->host);
- 	spin_unlock_irqrestore(&spfi->lock, flags);
- }
- 
--static int img_spfi_start_dma(struct spi_master *master,
-+static int img_spfi_start_dma(struct spi_controller *host,
- 			      struct spi_device *spi,
- 			      struct spi_transfer *xfer)
- {
--	struct img_spfi *spfi = spi_master_get_devdata(spi->master);
-+	struct img_spfi *spfi = spi_controller_get_devdata(spi->controller);
- 	struct dma_async_tx_descriptor *rxdesc = NULL, *txdesc = NULL;
- 	struct dma_slave_config rxconf, txconf;
- 
-@@ -384,10 +384,10 @@ static int img_spfi_start_dma(struct spi_master *master,
- 	return -EIO;
- }
- 
--static void img_spfi_handle_err(struct spi_master *master,
-+static void img_spfi_handle_err(struct spi_controller *host,
- 				struct spi_message *msg)
- {
--	struct img_spfi *spfi = spi_master_get_devdata(master);
-+	struct img_spfi *spfi = spi_controller_get_devdata(host);
- 	unsigned long flags;
- 
- 	/*
-@@ -405,9 +405,9 @@ static void img_spfi_handle_err(struct spi_master *master,
- 	spin_unlock_irqrestore(&spfi->lock, flags);
- }
- 
--static int img_spfi_prepare(struct spi_master *master, struct spi_message *msg)
-+static int img_spfi_prepare(struct spi_controller *host, struct spi_message *msg)
- {
--	struct img_spfi *spfi = spi_master_get_devdata(master);
-+	struct img_spfi *spfi = spi_controller_get_devdata(host);
- 	u32 val;
- 
- 	val = spfi_readl(spfi, SPFI_PORT_STATE);
-@@ -427,20 +427,20 @@ static int img_spfi_prepare(struct spi_master *master, struct spi_message *msg)
- 	return 0;
- }
- 
--static int img_spfi_unprepare(struct spi_master *master,
-+static int img_spfi_unprepare(struct spi_controller *host,
- 			      struct spi_message *msg)
- {
--	struct img_spfi *spfi = spi_master_get_devdata(master);
-+	struct img_spfi *spfi = spi_controller_get_devdata(host);
- 
- 	spfi_reset(spfi);
- 
- 	return 0;
- }
- 
--static void img_spfi_config(struct spi_master *master, struct spi_device *spi,
-+static void img_spfi_config(struct spi_controller *host, struct spi_device *spi,
- 			    struct spi_transfer *xfer)
- {
--	struct img_spfi *spfi = spi_master_get_devdata(spi->master);
-+	struct img_spfi *spfi = spi_controller_get_devdata(spi->controller);
- 	u32 val, div;
- 
- 	/*
-@@ -476,11 +476,11 @@ static void img_spfi_config(struct spi_master *master, struct spi_device *spi,
- 	spfi_writel(spfi, val, SPFI_CONTROL);
- }
- 
--static int img_spfi_transfer_one(struct spi_master *master,
-+static int img_spfi_transfer_one(struct spi_controller *host,
- 				 struct spi_device *spi,
- 				 struct spi_transfer *xfer)
- {
--	struct img_spfi *spfi = spi_master_get_devdata(spi->master);
-+	struct img_spfi *spfi = spi_controller_get_devdata(spi->controller);
- 	int ret;
- 
- 	if (xfer->len > SPFI_TRANSACTION_TSIZE_MASK) {
-@@ -490,16 +490,16 @@ static int img_spfi_transfer_one(struct spi_master *master,
- 		return -EINVAL;
- 	}
- 
--	img_spfi_config(master, spi, xfer);
--	if (master->can_dma && master->can_dma(master, spi, xfer))
--		ret = img_spfi_start_dma(master, spi, xfer);
-+	img_spfi_config(host, spi, xfer);
-+	if (host->can_dma && host->can_dma(host, spi, xfer))
-+		ret = img_spfi_start_dma(host, spi, xfer);
+-	flags = spi->master->flags;
++	flags = spi->controller->flags;
+ 	if (unlikely(spi->mode & SPI_LSB_FIRST))
+ 		return bitbang_txrx_le_cpha0(spi, nsecs, 0, flags, word, bits);
  	else
--		ret = img_spfi_start_pio(master, spi, xfer);
-+		ret = img_spfi_start_pio(host, spi, xfer);
- 
- 	return ret;
- }
- 
--static bool img_spfi_can_dma(struct spi_master *master, struct spi_device *spi,
-+static bool img_spfi_can_dma(struct spi_controller *host, struct spi_device *spi,
- 			     struct spi_transfer *xfer)
+@@ -190,7 +190,7 @@ static u32 spi_gpio_spec_txrx_word_mode0(struct spi_device *spi,
+ static u32 spi_gpio_spec_txrx_word_mode1(struct spi_device *spi,
+ 		unsigned nsecs, u32 word, u8 bits, unsigned flags)
  {
- 	if (xfer->len > SPFI_32BIT_FIFO_SIZE)
-@@ -524,20 +524,20 @@ static irqreturn_t img_spfi_irq(int irq, void *dev_id)
- 
- static int img_spfi_probe(struct platform_device *pdev)
+-	flags = spi->master->flags;
++	flags = spi->controller->flags;
+ 	if (unlikely(spi->mode & SPI_LSB_FIRST))
+ 		return bitbang_txrx_le_cpha1(spi, nsecs, 0, flags, word, bits);
+ 	else
+@@ -200,7 +200,7 @@ static u32 spi_gpio_spec_txrx_word_mode1(struct spi_device *spi,
+ static u32 spi_gpio_spec_txrx_word_mode2(struct spi_device *spi,
+ 		unsigned nsecs, u32 word, u8 bits, unsigned flags)
  {
--	struct spi_master *master;
-+	struct spi_controller *host;
- 	struct img_spfi *spfi;
- 	struct resource *res;
- 	int ret;
- 	u32 max_speed_hz;
+-	flags = spi->master->flags;
++	flags = spi->controller->flags;
+ 	if (unlikely(spi->mode & SPI_LSB_FIRST))
+ 		return bitbang_txrx_le_cpha0(spi, nsecs, 1, flags, word, bits);
+ 	else
+@@ -210,7 +210,7 @@ static u32 spi_gpio_spec_txrx_word_mode2(struct spi_device *spi,
+ static u32 spi_gpio_spec_txrx_word_mode3(struct spi_device *spi,
+ 		unsigned nsecs, u32 word, u8 bits, unsigned flags)
+ {
+-	flags = spi->master->flags;
++	flags = spi->controller->flags;
+ 	if (unlikely(spi->mode & SPI_LSB_FIRST))
+ 		return bitbang_txrx_le_cpha1(spi, nsecs, 1, flags, word, bits);
+ 	else
+@@ -310,7 +310,7 @@ static void spi_gpio_cleanup(struct spi_device *spi)
+  * On platforms which can do so, configure MISO with a weak pullup unless
+  * there's an external pullup on that signal.  That saves power by avoiding
+  * floating signals.  (A weak pulldown would save power too, but many
+- * drivers expect to see all-ones data as the no slave "response".)
++ * drivers expect to see all-ones data as the no target "response".)
+  */
+ static int spi_gpio_request(struct device *dev, struct spi_gpio *spi_gpio)
+ {
+@@ -334,27 +334,27 @@ static const struct of_device_id spi_gpio_dt_ids[] = {
+ MODULE_DEVICE_TABLE(of, spi_gpio_dt_ids);
  
--	master = spi_alloc_master(&pdev->dev, sizeof(*spfi));
--	if (!master)
-+	host = spi_alloc_host(&pdev->dev, sizeof(*spfi));
-+	if (!host)
- 		return -ENOMEM;
--	platform_set_drvdata(pdev, master);
-+	platform_set_drvdata(pdev, host);
- 
--	spfi = spi_master_get_devdata(master);
-+	spfi = spi_controller_get_devdata(host);
- 	spfi->dev = &pdev->dev;
--	spfi->master = master;
-+	spfi->host = host;
- 	spin_lock_init(&spfi->lock);
- 
- 	spfi->regs = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
-@@ -582,15 +582,15 @@ static int img_spfi_probe(struct platform_device *pdev)
- 	 */
- 	spfi_writel(spfi, SPFI_INTERRUPT_IACCESS, SPFI_INTERRUPT_ENABLE);
- 
--	master->auto_runtime_pm = true;
--	master->bus_num = pdev->id;
--	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_TX_DUAL | SPI_RX_DUAL;
-+	host->auto_runtime_pm = true;
-+	host->bus_num = pdev->id;
-+	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_TX_DUAL | SPI_RX_DUAL;
- 	if (of_property_read_bool(spfi->dev->of_node, "img,supports-quad-mode"))
--		master->mode_bits |= SPI_TX_QUAD | SPI_RX_QUAD;
+ static int spi_gpio_probe_dt(struct platform_device *pdev,
+-			     struct spi_master *master)
++			     struct spi_controller *host)
+ {
 -	master->dev.of_node = pdev->dev.of_node;
--	master->bits_per_word_mask = SPI_BPW_MASK(32) | SPI_BPW_MASK(8);
--	master->max_speed_hz = clk_get_rate(spfi->spfi_clk) / 4;
--	master->min_speed_hz = clk_get_rate(spfi->spfi_clk) / 512;
-+		host->mode_bits |= SPI_TX_QUAD | SPI_RX_QUAD;
-+	host->dev.of_node = pdev->dev.of_node;
-+	host->bits_per_word_mask = SPI_BPW_MASK(32) | SPI_BPW_MASK(8);
-+	host->max_speed_hz = clk_get_rate(spfi->spfi_clk) / 4;
-+	host->min_speed_hz = clk_get_rate(spfi->spfi_clk) / 512;
- 
- 	/*
- 	 * Maximum speed supported by spfi is limited to the lower value
-@@ -601,15 +601,15 @@ static int img_spfi_probe(struct platform_device *pdev)
- 	 */
- 	if (!of_property_read_u32(spfi->dev->of_node, "spfi-max-frequency",
- 				  &max_speed_hz)) {
--		if (master->max_speed_hz > max_speed_hz)
--			master->max_speed_hz = max_speed_hz;
-+		if (host->max_speed_hz > max_speed_hz)
-+			host->max_speed_hz = max_speed_hz;
- 	}
- 
--	master->transfer_one = img_spfi_transfer_one;
--	master->prepare_message = img_spfi_prepare;
--	master->unprepare_message = img_spfi_unprepare;
--	master->handle_err = img_spfi_handle_err;
 -	master->use_gpio_descriptors = true;
-+	host->transfer_one = img_spfi_transfer_one;
-+	host->prepare_message = img_spfi_prepare;
-+	host->unprepare_message = img_spfi_unprepare;
-+	host->handle_err = img_spfi_handle_err;
++	host->dev.of_node = pdev->dev.of_node;
 +	host->use_gpio_descriptors = true;
  
- 	spfi->tx_ch = dma_request_chan(spfi->dev, "tx");
- 	if (IS_ERR(spfi->tx_ch)) {
-@@ -636,15 +636,15 @@ static int img_spfi_probe(struct platform_device *pdev)
- 		spfi->rx_ch = NULL;
- 		dev_warn(spfi->dev, "Failed to get DMA channels, falling back to PIO mode\n");
- 	} else {
--		master->dma_tx = spfi->tx_ch;
--		master->dma_rx = spfi->rx_ch;
--		master->can_dma = img_spfi_can_dma;
-+		host->dma_tx = spfi->tx_ch;
-+		host->dma_rx = spfi->rx_ch;
-+		host->can_dma = img_spfi_can_dma;
+ 	return 0;
+ }
+ #else
+ static inline int spi_gpio_probe_dt(struct platform_device *pdev,
+-				    struct spi_master *master)
++				    struct spi_controller *host)
+ {
+ 	return 0;
+ }
+ #endif
+ 
+ static int spi_gpio_probe_pdata(struct platform_device *pdev,
+-				struct spi_master *master)
++				struct spi_controller *host)
+ {
+ 	struct device *dev = &pdev->dev;
+ 	struct spi_gpio_platform_data *pdata = dev_get_platdata(dev);
+-	struct spi_gpio *spi_gpio = spi_master_get_devdata(master);
++	struct spi_gpio *spi_gpio = spi_controller_get_devdata(host);
+ 	int i;
+ 
+ #ifdef GENERIC_BITBANG
+@@ -362,18 +362,18 @@ static int spi_gpio_probe_pdata(struct platform_device *pdev,
+ 		return -ENODEV;
+ #endif
+ 	/*
+-	 * The master needs to think there is a chipselect even if not
++	 * The host needs to think there is a chipselect even if not
+ 	 * connected
+ 	 */
+-	master->num_chipselect = pdata->num_chipselect ?: 1;
++	host->num_chipselect = pdata->num_chipselect ?: 1;
+ 
+-	spi_gpio->cs_gpios = devm_kcalloc(dev, master->num_chipselect,
++	spi_gpio->cs_gpios = devm_kcalloc(dev, host->num_chipselect,
+ 					  sizeof(*spi_gpio->cs_gpios),
+ 					  GFP_KERNEL);
+ 	if (!spi_gpio->cs_gpios)
+ 		return -ENOMEM;
+ 
+-	for (i = 0; i < master->num_chipselect; i++) {
++	for (i = 0; i < host->num_chipselect; i++) {
+ 		spi_gpio->cs_gpios[i] = devm_gpiod_get_index(dev, "cs", i,
+ 							     GPIOD_OUT_HIGH);
+ 		if (IS_ERR(spi_gpio->cs_gpios[i]))
+@@ -386,31 +386,31 @@ static int spi_gpio_probe_pdata(struct platform_device *pdev,
+ static int spi_gpio_probe(struct platform_device *pdev)
+ {
+ 	int				status;
+-	struct spi_master		*master;
++	struct spi_controller		*host;
+ 	struct spi_gpio			*spi_gpio;
+ 	struct device			*dev = &pdev->dev;
+ 	struct spi_bitbang		*bb;
+ 
+-	master = devm_spi_alloc_master(dev, sizeof(*spi_gpio));
+-	if (!master)
++	host = devm_spi_alloc_host(dev, sizeof(*spi_gpio));
++	if (!host)
+ 		return -ENOMEM;
+ 
+ 	if (pdev->dev.of_node)
+-		status = spi_gpio_probe_dt(pdev, master);
++		status = spi_gpio_probe_dt(pdev, host);
+ 	else
+-		status = spi_gpio_probe_pdata(pdev, master);
++		status = spi_gpio_probe_pdata(pdev, host);
+ 
+ 	if (status)
+ 		return status;
+ 
+-	spi_gpio = spi_master_get_devdata(master);
++	spi_gpio = spi_controller_get_devdata(host);
+ 
+ 	status = spi_gpio_request(dev, spi_gpio);
+ 	if (status)
+ 		return status;
+ 
+-	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 32);
+-	master->mode_bits = SPI_3WIRE | SPI_3WIRE_HIZ | SPI_CPHA | SPI_CPOL |
++	host->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 32);
++	host->mode_bits = SPI_3WIRE | SPI_3WIRE_HIZ | SPI_CPHA | SPI_CPOL |
+ 			    SPI_CS_HIGH | SPI_LSB_FIRST;
+ 	if (!spi_gpio->mosi) {
+ 		/* HW configuration without MOSI pin
+@@ -419,25 +419,25 @@ static int spi_gpio_probe(struct platform_device *pdev)
+ 		 * a MOSI pin connected the host can still do RX by
+ 		 * changing the direction of the line.
+ 		 */
+-		master->flags = SPI_CONTROLLER_NO_TX;
++		host->flags = SPI_CONTROLLER_NO_TX;
  	}
  
- 	pm_runtime_set_active(spfi->dev);
- 	pm_runtime_enable(spfi->dev);
+-	master->bus_num = pdev->id;
+-	master->setup = spi_gpio_setup;
+-	master->cleanup = spi_gpio_cleanup;
++	host->bus_num = pdev->id;
++	host->setup = spi_gpio_setup;
++	host->cleanup = spi_gpio_cleanup;
  
--	ret = devm_spi_register_master(spfi->dev, master);
-+	ret = devm_spi_register_controller(spfi->dev, host);
- 	if (ret)
- 		goto disable_pm;
+ 	bb = &spi_gpio->bitbang;
+-	bb->master = master;
++	bb->master = host;
+ 	/*
+ 	 * There is some additional business, apart from driving the CS GPIO
+ 	 * line, that we need to do on selection. This makes the local
+ 	 * callback for chipselect always get called.
+ 	 */
+-	master->flags |= SPI_CONTROLLER_GPIO_SS;
++	host->flags |= SPI_CONTROLLER_GPIO_SS;
+ 	bb->chipselect = spi_gpio_chipselect;
+ 	bb->set_line_direction = spi_gpio_set_direction;
  
-@@ -660,15 +660,15 @@ static int img_spfi_probe(struct platform_device *pdev)
- disable_pclk:
- 	clk_disable_unprepare(spfi->sys_clk);
- put_spi:
--	spi_master_put(master);
-+	spi_controller_put(host);
+-	if (master->flags & SPI_CONTROLLER_NO_TX) {
++	if (host->flags & SPI_CONTROLLER_NO_TX) {
+ 		bb->txrx_word[SPI_MODE_0] = spi_gpio_spec_txrx_word_mode0;
+ 		bb->txrx_word[SPI_MODE_1] = spi_gpio_spec_txrx_word_mode1;
+ 		bb->txrx_word[SPI_MODE_2] = spi_gpio_spec_txrx_word_mode2;
+@@ -454,7 +454,7 @@ static int spi_gpio_probe(struct platform_device *pdev)
+ 	if (status)
+ 		return status;
  
- 	return ret;
+-	return devm_spi_register_master(&pdev->dev, master);
++	return devm_spi_register_controller(&pdev->dev, host);
  }
  
- static void img_spfi_remove(struct platform_device *pdev)
- {
--	struct spi_master *master = platform_get_drvdata(pdev);
--	struct img_spfi *spfi = spi_master_get_devdata(master);
-+	struct spi_controller *host = platform_get_drvdata(pdev);
-+	struct img_spfi *spfi = spi_controller_get_devdata(host);
+ MODULE_ALIAS("platform:" DRIVER_NAME);
+@@ -468,6 +468,6 @@ static struct platform_driver spi_gpio_driver = {
+ };
+ module_platform_driver(spi_gpio_driver);
  
- 	if (spfi->tx_ch)
- 		dma_release_channel(spfi->tx_ch);
-@@ -685,8 +685,8 @@ static void img_spfi_remove(struct platform_device *pdev)
- #ifdef CONFIG_PM
- static int img_spfi_runtime_suspend(struct device *dev)
- {
--	struct spi_master *master = dev_get_drvdata(dev);
--	struct img_spfi *spfi = spi_master_get_devdata(master);
-+	struct spi_controller *host = dev_get_drvdata(dev);
-+	struct img_spfi *spfi = spi_controller_get_devdata(host);
- 
- 	clk_disable_unprepare(spfi->spfi_clk);
- 	clk_disable_unprepare(spfi->sys_clk);
-@@ -696,8 +696,8 @@ static int img_spfi_runtime_suspend(struct device *dev)
- 
- static int img_spfi_runtime_resume(struct device *dev)
- {
--	struct spi_master *master = dev_get_drvdata(dev);
--	struct img_spfi *spfi = spi_master_get_devdata(master);
-+	struct spi_controller *host = dev_get_drvdata(dev);
-+	struct img_spfi *spfi = spi_controller_get_devdata(host);
- 	int ret;
- 
- 	ret = clk_prepare_enable(spfi->sys_clk);
-@@ -716,15 +716,15 @@ static int img_spfi_runtime_resume(struct device *dev)
- #ifdef CONFIG_PM_SLEEP
- static int img_spfi_suspend(struct device *dev)
- {
--	struct spi_master *master = dev_get_drvdata(dev);
-+	struct spi_controller *host = dev_get_drvdata(dev);
- 
--	return spi_master_suspend(master);
-+	return spi_controller_suspend(host);
- }
- 
- static int img_spfi_resume(struct device *dev)
- {
--	struct spi_master *master = dev_get_drvdata(dev);
--	struct img_spfi *spfi = spi_master_get_devdata(master);
-+	struct spi_controller *host = dev_get_drvdata(dev);
-+	struct img_spfi *spfi = spi_controller_get_devdata(host);
- 	int ret;
- 
- 	ret = pm_runtime_resume_and_get(dev);
-@@ -733,7 +733,7 @@ static int img_spfi_resume(struct device *dev)
- 	spfi_reset(spfi);
- 	pm_runtime_put(dev);
- 
--	return spi_master_resume(master);
-+	return spi_controller_resume(host);
- }
- #endif /* CONFIG_PM_SLEEP */
- 
+-MODULE_DESCRIPTION("SPI master driver using generic bitbanged GPIO ");
++MODULE_DESCRIPTION("SPI host driver using generic bitbanged GPIO ");
+ MODULE_AUTHOR("David Brownell");
+ MODULE_LICENSE("GPL");
 -- 
 2.25.1
 

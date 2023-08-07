@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8A8BEC04FE2
-	for <linux-spi@archiver.kernel.org>; Mon,  7 Aug 2023 12:44:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 53565C001B0
+	for <linux-spi@archiver.kernel.org>; Mon,  7 Aug 2023 12:44:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233759AbjHGMod (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S233705AbjHGMod (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Mon, 7 Aug 2023 08:44:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42882 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231500AbjHGMo0 (ORCPT
+        with ESMTP id S233694AbjHGMo0 (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Mon, 7 Aug 2023 08:44:26 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC0211735
-        for <linux-spi@vger.kernel.org>; Mon,  7 Aug 2023 05:44:15 -0700 (PDT)
-Received: from dggpemm100008.china.huawei.com (unknown [172.30.72.57])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RKGBh0trWztS13;
-        Mon,  7 Aug 2023 20:40:44 +0800 (CST)
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC643173E
+        for <linux-spi@vger.kernel.org>; Mon,  7 Aug 2023 05:44:16 -0700 (PDT)
+Received: from dggpemm100002.china.huawei.com (unknown [172.30.72.57])
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4RKGFP5PlSz1KCHh;
+        Mon,  7 Aug 2023 20:43:05 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm100008.china.huawei.com (7.185.36.125) with Microsoft SMTP Server
+ dggpemm100002.china.huawei.com (7.185.36.179) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Mon, 7 Aug 2023 20:44:11 +0800
+ 15.1.2507.27; Mon, 7 Aug 2023 20:44:14 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 7 Aug
- 2023 20:44:10 +0800
+ 2023 20:44:13 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
         <yangyingliang@huawei.com>
-Subject: [PATCH -next 11/20] spi: gpio: switch to use modern name
-Date:   Mon, 7 Aug 2023 20:40:56 +0800
-Message-ID: <20230807124105.3429709-12-yangyingliang@huawei.com>
+Subject: [PATCH -next 19/20] spi: jcore: switch to use modern name
+Date:   Mon, 7 Aug 2023 20:41:04 +0800
+Message-ID: <20230807124105.3429709-20-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230807124105.3429709-1-yangyingliang@huawei.com>
 References: <20230807124105.3429709-1-yangyingliang@huawei.com>
@@ -52,240 +52,128 @@ No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-gpio.c | 72 +++++++++++++++++++++---------------------
- 1 file changed, 36 insertions(+), 36 deletions(-)
+ drivers/spi/spi-jcore.c | 44 ++++++++++++++++++++---------------------
+ 1 file changed, 22 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
-index 8aa905e407a8..d8db4564b406 100644
---- a/drivers/spi/spi-gpio.c
-+++ b/drivers/spi/spi-gpio.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-or-later
- /*
-- * SPI master driver using generic bitbanged GPIO
-+ * SPI host driver using generic bitbanged GPIO
-  *
-  * Copyright (C) 2006,2008 David Brownell
-  * Copyright (C) 2017 Linus Walleij
-@@ -17,7 +17,7 @@
+diff --git a/drivers/spi/spi-jcore.c b/drivers/spi/spi-jcore.c
+index c42a3358e8c9..e37ca22e04ba 100644
+--- a/drivers/spi/spi-jcore.c
++++ b/drivers/spi/spi-jcore.c
+@@ -33,7 +33,7 @@
+ #define JCORE_SPI_WAIT_RDY_MAX_LOOP	2000000
  
+ struct jcore_spi {
+-	struct spi_master *master;
++	struct spi_controller *host;
+ 	void __iomem *base;
+ 	unsigned int cs_reg;
+ 	unsigned int speed_reg;
+@@ -59,7 +59,7 @@ static void jcore_spi_program(struct jcore_spi *hw)
+ 	void __iomem *ctrl_reg = hw->base + CTRL_REG;
  
- /*
-- * This bitbanging SPI master driver should help make systems usable
-+ * This bitbanging SPI host driver should help make systems usable
-  * when a native hardware SPI engine is not available, perhaps because
-  * its driver isn't yet working or because the I/O pins it requires
-  * are used for other purposes.
-@@ -26,7 +26,7 @@
-  *
-  * spi->controller_state ... reserved for bitbang framework code
-  *
-- * spi->master->dev.driver_data ... points to spi_gpio->bitbang
-+ * spi->controller->dev.driver_data ... points to spi_gpio->bitbang
-  */
+ 	if (jcore_spi_wait(ctrl_reg))
+-		dev_err(hw->master->dev.parent,
++		dev_err(hw->host->dev.parent,
+ 			"timeout waiting to program ctrl reg.\n");
  
- struct spi_gpio {
-@@ -77,7 +77,7 @@ spi_to_spi_gpio(const struct spi_device *spi)
- 	const struct spi_bitbang	*bang;
- 	struct spi_gpio			*spi_gpio;
+ 	writel(hw->cs_reg | hw->speed_reg, ctrl_reg);
+@@ -67,10 +67,10 @@ static void jcore_spi_program(struct jcore_spi *hw)
  
--	bang = spi_master_get_devdata(spi->master);
-+	bang = spi_controller_get_devdata(spi->controller);
- 	spi_gpio = container_of(bang, struct spi_gpio, bitbang);
- 	return spi_gpio;
+ static void jcore_spi_chipsel(struct spi_device *spi, bool value)
+ {
+-	struct jcore_spi *hw = spi_master_get_devdata(spi->master);
++	struct jcore_spi *hw = spi_controller_get_devdata(spi->controller);
+ 	u32 csbit = 1U << (2 * spi_get_chipselect(spi, 0));
+ 
+-	dev_dbg(hw->master->dev.parent, "chipselect %d\n", spi_get_chipselect(spi, 0));
++	dev_dbg(hw->host->dev.parent, "chipselect %d\n", spi_get_chipselect(spi, 0));
+ 
+ 	if (value)
+ 		hw->cs_reg |= csbit;
+@@ -90,14 +90,14 @@ static void jcore_spi_baudrate(struct jcore_spi *hw, int speed)
+ 	else
+ 		hw->speed_reg = ((hw->clock_freq / 2 / speed) - 1) << 27;
+ 	jcore_spi_program(hw);
+-	dev_dbg(hw->master->dev.parent, "speed=%d reg=0x%x\n",
++	dev_dbg(hw->host->dev.parent, "speed=%d reg=0x%x\n",
+ 		speed, hw->speed_reg);
  }
-@@ -180,7 +180,7 @@ static u32 spi_gpio_txrx_word_mode3(struct spi_device *spi,
- static u32 spi_gpio_spec_txrx_word_mode0(struct spi_device *spi,
- 		unsigned nsecs, u32 word, u8 bits, unsigned flags)
+ 
+-static int jcore_spi_txrx(struct spi_master *master, struct spi_device *spi,
++static int jcore_spi_txrx(struct spi_controller *host, struct spi_device *spi,
+ 			  struct spi_transfer *t)
  {
--	flags = spi->master->flags;
-+	flags = spi->controller->flags;
- 	if (unlikely(spi->mode & SPI_LSB_FIRST))
- 		return bitbang_txrx_le_cpha0(spi, nsecs, 0, flags, word, bits);
- 	else
-@@ -190,7 +190,7 @@ static u32 spi_gpio_spec_txrx_word_mode0(struct spi_device *spi,
- static u32 spi_gpio_spec_txrx_word_mode1(struct spi_device *spi,
- 		unsigned nsecs, u32 word, u8 bits, unsigned flags)
- {
--	flags = spi->master->flags;
-+	flags = spi->controller->flags;
- 	if (unlikely(spi->mode & SPI_LSB_FIRST))
- 		return bitbang_txrx_le_cpha1(spi, nsecs, 0, flags, word, bits);
- 	else
-@@ -200,7 +200,7 @@ static u32 spi_gpio_spec_txrx_word_mode1(struct spi_device *spi,
- static u32 spi_gpio_spec_txrx_word_mode2(struct spi_device *spi,
- 		unsigned nsecs, u32 word, u8 bits, unsigned flags)
- {
--	flags = spi->master->flags;
-+	flags = spi->controller->flags;
- 	if (unlikely(spi->mode & SPI_LSB_FIRST))
- 		return bitbang_txrx_le_cpha0(spi, nsecs, 1, flags, word, bits);
- 	else
-@@ -210,7 +210,7 @@ static u32 spi_gpio_spec_txrx_word_mode2(struct spi_device *spi,
- static u32 spi_gpio_spec_txrx_word_mode3(struct spi_device *spi,
- 		unsigned nsecs, u32 word, u8 bits, unsigned flags)
- {
--	flags = spi->master->flags;
-+	flags = spi->controller->flags;
- 	if (unlikely(spi->mode & SPI_LSB_FIRST))
- 		return bitbang_txrx_le_cpha1(spi, nsecs, 1, flags, word, bits);
- 	else
-@@ -310,7 +310,7 @@ static void spi_gpio_cleanup(struct spi_device *spi)
-  * On platforms which can do so, configure MISO with a weak pullup unless
-  * there's an external pullup on that signal.  That saves power by avoiding
-  * floating signals.  (A weak pulldown would save power too, but many
-- * drivers expect to see all-ones data as the no slave "response".)
-+ * drivers expect to see all-ones data as the no target "response".)
-  */
- static int spi_gpio_request(struct device *dev, struct spi_gpio *spi_gpio)
- {
-@@ -334,27 +334,27 @@ static const struct of_device_id spi_gpio_dt_ids[] = {
- MODULE_DEVICE_TABLE(of, spi_gpio_dt_ids);
+-	struct jcore_spi *hw = spi_master_get_devdata(master);
++	struct jcore_spi *hw = spi_controller_get_devdata(host);
  
- static int spi_gpio_probe_dt(struct platform_device *pdev,
--			     struct spi_master *master)
-+			     struct spi_controller *host)
- {
--	master->dev.of_node = pdev->dev.of_node;
--	master->use_gpio_descriptors = true;
-+	host->dev.of_node = pdev->dev.of_node;
-+	host->use_gpio_descriptors = true;
- 
- 	return 0;
- }
- #else
- static inline int spi_gpio_probe_dt(struct platform_device *pdev,
--				    struct spi_master *master)
-+				    struct spi_controller *host)
- {
- 	return 0;
- }
- #endif
- 
- static int spi_gpio_probe_pdata(struct platform_device *pdev,
--				struct spi_master *master)
-+				struct spi_controller *host)
- {
- 	struct device *dev = &pdev->dev;
- 	struct spi_gpio_platform_data *pdata = dev_get_platdata(dev);
--	struct spi_gpio *spi_gpio = spi_master_get_devdata(master);
-+	struct spi_gpio *spi_gpio = spi_controller_get_devdata(host);
- 	int i;
- 
- #ifdef GENERIC_BITBANG
-@@ -362,18 +362,18 @@ static int spi_gpio_probe_pdata(struct platform_device *pdev,
- 		return -ENODEV;
- #endif
- 	/*
--	 * The master needs to think there is a chipselect even if not
-+	 * The host needs to think there is a chipselect even if not
- 	 * connected
- 	 */
--	master->num_chipselect = pdata->num_chipselect ?: 1;
-+	host->num_chipselect = pdata->num_chipselect ?: 1;
- 
--	spi_gpio->cs_gpios = devm_kcalloc(dev, master->num_chipselect,
-+	spi_gpio->cs_gpios = devm_kcalloc(dev, host->num_chipselect,
- 					  sizeof(*spi_gpio->cs_gpios),
- 					  GFP_KERNEL);
- 	if (!spi_gpio->cs_gpios)
- 		return -ENOMEM;
- 
--	for (i = 0; i < master->num_chipselect; i++) {
-+	for (i = 0; i < host->num_chipselect; i++) {
- 		spi_gpio->cs_gpios[i] = devm_gpiod_get_index(dev, "cs", i,
- 							     GPIOD_OUT_HIGH);
- 		if (IS_ERR(spi_gpio->cs_gpios[i]))
-@@ -386,31 +386,31 @@ static int spi_gpio_probe_pdata(struct platform_device *pdev,
- static int spi_gpio_probe(struct platform_device *pdev)
- {
- 	int				status;
--	struct spi_master		*master;
-+	struct spi_controller		*host;
- 	struct spi_gpio			*spi_gpio;
- 	struct device			*dev = &pdev->dev;
- 	struct spi_bitbang		*bb;
- 
--	master = devm_spi_alloc_master(dev, sizeof(*spi_gpio));
--	if (!master)
-+	host = devm_spi_alloc_host(dev, sizeof(*spi_gpio));
-+	if (!host)
- 		return -ENOMEM;
- 
- 	if (pdev->dev.of_node)
--		status = spi_gpio_probe_dt(pdev, master);
-+		status = spi_gpio_probe_dt(pdev, host);
- 	else
--		status = spi_gpio_probe_pdata(pdev, master);
-+		status = spi_gpio_probe_pdata(pdev, host);
- 
- 	if (status)
- 		return status;
- 
--	spi_gpio = spi_master_get_devdata(master);
-+	spi_gpio = spi_controller_get_devdata(host);
- 
- 	status = spi_gpio_request(dev, spi_gpio);
- 	if (status)
- 		return status;
- 
--	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 32);
--	master->mode_bits = SPI_3WIRE | SPI_3WIRE_HIZ | SPI_CPHA | SPI_CPOL |
-+	host->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 32);
-+	host->mode_bits = SPI_3WIRE | SPI_3WIRE_HIZ | SPI_CPHA | SPI_CPOL |
- 			    SPI_CS_HIGH | SPI_LSB_FIRST;
- 	if (!spi_gpio->mosi) {
- 		/* HW configuration without MOSI pin
-@@ -419,25 +419,25 @@ static int spi_gpio_probe(struct platform_device *pdev)
- 		 * a MOSI pin connected the host can still do RX by
- 		 * changing the direction of the line.
- 		 */
--		master->flags = SPI_CONTROLLER_NO_TX;
-+		host->flags = SPI_CONTROLLER_NO_TX;
+ 	void __iomem *ctrl_reg = hw->base + CTRL_REG;
+ 	void __iomem *data_reg = hw->base + DATA_REG;
+@@ -130,7 +130,7 @@ static int jcore_spi_txrx(struct spi_master *master, struct spi_device *spi,
+ 			*rx++ = readl(data_reg);
  	}
  
+-	spi_finalize_current_transfer(master);
++	spi_finalize_current_transfer(host);
+ 
+ 	if (count < len)
+ 		return -EREMOTEIO;
+@@ -142,26 +142,26 @@ static int jcore_spi_probe(struct platform_device *pdev)
+ {
+ 	struct device_node *node = pdev->dev.of_node;
+ 	struct jcore_spi *hw;
+-	struct spi_master *master;
++	struct spi_controller *host;
+ 	struct resource *res;
+ 	u32 clock_freq;
+ 	struct clk *clk;
+ 	int err = -ENODEV;
+ 
+-	master = spi_alloc_master(&pdev->dev, sizeof(struct jcore_spi));
+-	if (!master)
++	host = spi_alloc_host(&pdev->dev, sizeof(struct jcore_spi));
++	if (!host)
+ 		return err;
+ 
+-	/* Setup the master state. */
+-	master->num_chipselect = 3;
+-	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
+-	master->transfer_one = jcore_spi_txrx;
+-	master->set_cs = jcore_spi_chipsel;
+-	master->dev.of_node = node;
 -	master->bus_num = pdev->id;
--	master->setup = spi_gpio_setup;
--	master->cleanup = spi_gpio_cleanup;
++	/* Setup the host state. */
++	host->num_chipselect = 3;
++	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
++	host->transfer_one = jcore_spi_txrx;
++	host->set_cs = jcore_spi_chipsel;
++	host->dev.of_node = node;
 +	host->bus_num = pdev->id;
-+	host->setup = spi_gpio_setup;
-+	host->cleanup = spi_gpio_cleanup;
  
- 	bb = &spi_gpio->bitbang;
--	bb->master = master;
-+	bb->master = host;
- 	/*
- 	 * There is some additional business, apart from driving the CS GPIO
- 	 * line, that we need to do on selection. This makes the local
- 	 * callback for chipselect always get called.
- 	 */
--	master->flags |= SPI_CONTROLLER_GPIO_SS;
-+	host->flags |= SPI_CONTROLLER_GPIO_SS;
- 	bb->chipselect = spi_gpio_chipselect;
- 	bb->set_line_direction = spi_gpio_set_direction;
+-	hw = spi_master_get_devdata(master);
+-	hw->master = master;
++	hw = spi_controller_get_devdata(host);
++	hw->host = host;
+ 	platform_set_drvdata(pdev, hw);
  
--	if (master->flags & SPI_CONTROLLER_NO_TX) {
-+	if (host->flags & SPI_CONTROLLER_NO_TX) {
- 		bb->txrx_word[SPI_MODE_0] = spi_gpio_spec_txrx_word_mode0;
- 		bb->txrx_word[SPI_MODE_1] = spi_gpio_spec_txrx_word_mode1;
- 		bb->txrx_word[SPI_MODE_2] = spi_gpio_spec_txrx_word_mode2;
-@@ -454,7 +454,7 @@ static int spi_gpio_probe(struct platform_device *pdev)
- 	if (status)
- 		return status;
+ 	/* Find and map our resources */
+@@ -200,7 +200,7 @@ static int jcore_spi_probe(struct platform_device *pdev)
+ 	jcore_spi_baudrate(hw, 400000);
  
--	return devm_spi_register_master(&pdev->dev, master);
-+	return devm_spi_register_controller(&pdev->dev, host);
+ 	/* Register our spi controller */
+-	err = devm_spi_register_master(&pdev->dev, master);
++	err = devm_spi_register_controller(&pdev->dev, host);
+ 	if (err)
+ 		goto exit;
+ 
+@@ -209,7 +209,7 @@ static int jcore_spi_probe(struct platform_device *pdev)
+ exit_busy:
+ 	err = -EBUSY;
+ exit:
+-	spi_master_put(master);
++	spi_controller_put(host);
+ 	return err;
  }
  
- MODULE_ALIAS("platform:" DRIVER_NAME);
-@@ -468,6 +468,6 @@ static struct platform_driver spi_gpio_driver = {
- };
- module_platform_driver(spi_gpio_driver);
- 
--MODULE_DESCRIPTION("SPI master driver using generic bitbanged GPIO ");
-+MODULE_DESCRIPTION("SPI host driver using generic bitbanged GPIO ");
- MODULE_AUTHOR("David Brownell");
- MODULE_LICENSE("GPL");
 -- 
 2.25.1
 

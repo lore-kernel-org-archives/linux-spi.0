@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C7C34C00528
-	for <linux-spi@archiver.kernel.org>; Mon,  7 Aug 2023 14:10:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E1BB7C001B0
+	for <linux-spi@archiver.kernel.org>; Mon,  7 Aug 2023 14:10:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231941AbjHGOKR (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 7 Aug 2023 10:10:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58560 "EHLO
+        id S232024AbjHGOKT (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 7 Aug 2023 10:10:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231370AbjHGOKQ (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 7 Aug 2023 10:10:16 -0400
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DBE7E53
+        with ESMTP id S231859AbjHGOKR (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 7 Aug 2023 10:10:17 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82BE7E79
         for <linux-spi@vger.kernel.org>; Mon,  7 Aug 2023 07:10:15 -0700 (PDT)
-Received: from dggpemm100015.china.huawei.com (unknown [172.30.72.56])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4RKJ6f65KBz1Z1YW;
-        Mon,  7 Aug 2023 22:07:22 +0800 (CST)
+Received: from dggpemm100012.china.huawei.com (unknown [172.30.72.55])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RKJ5w14mgzNmm7;
+        Mon,  7 Aug 2023 22:06:44 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm100015.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
+ dggpemm100012.china.huawei.com (7.185.36.212) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Mon, 7 Aug 2023 22:10:10 +0800
+ 15.1.2507.27; Mon, 7 Aug 2023 22:10:11 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 7 Aug
- 2023 22:10:10 +0800
+ 2023 22:10:11 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
         <yangyingliang@huawei.com>
-Subject: [PATCH -next v2 01/21] spi: amd: switch to use modern name
-Date:   Mon, 7 Aug 2023 22:06:57 +0800
-Message-ID: <20230807140717.3484180-2-yangyingliang@huawei.com>
+Subject: [PATCH -next v2 04/21] spi: bcm-qspi: switch to use modern name
+Date:   Mon, 7 Aug 2023 22:07:00 +0800
+Message-ID: <20230807140717.3484180-5-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230807140717.3484180-1-yangyingliang@huawei.com>
 References: <20230807140717.3484180-1-yangyingliang@huawei.com>
@@ -52,118 +52,202 @@ No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-amd.c | 50 +++++++++++++++++++++----------------------
- 1 file changed, 25 insertions(+), 25 deletions(-)
+ drivers/spi/spi-bcm-qspi.c | 64 +++++++++++++++++++-------------------
+ 1 file changed, 32 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/spi/spi-amd.c b/drivers/spi/spi-amd.c
-index b19766571f28..e4345ad5cd36 100644
---- a/drivers/spi/spi-amd.c
-+++ b/drivers/spi/spi-amd.c
-@@ -215,9 +215,9 @@ static int amd_spi_execute_opcode(struct amd_spi *amd_spi)
- 	}
- }
+diff --git a/drivers/spi/spi-bcm-qspi.c b/drivers/spi/spi-bcm-qspi.c
+index d91dfbe47aa5..ef08fcac2f6d 100644
+--- a/drivers/spi/spi-bcm-qspi.c
++++ b/drivers/spi/spi-bcm-qspi.c
+@@ -220,7 +220,7 @@ struct qspi_trans {
  
--static int amd_spi_master_setup(struct spi_device *spi)
-+static int amd_spi_host_setup(struct spi_device *spi)
- {
--	struct amd_spi *amd_spi = spi_master_get_devdata(spi->master);
-+	struct amd_spi *amd_spi = spi_controller_get_devdata(spi->controller);
- 
- 	amd_spi_clear_fifo_ptr(amd_spi);
- 
-@@ -272,7 +272,7 @@ static int amd_set_spi_freq(struct amd_spi *amd_spi, u32 speed_hz)
- }
- 
- static inline int amd_spi_fifo_xfer(struct amd_spi *amd_spi,
--				    struct spi_master *master,
-+				    struct spi_controller *host,
- 				    struct spi_message *message)
- {
- 	struct spi_transfer *xfer = NULL;
-@@ -353,15 +353,15 @@ static inline int amd_spi_fifo_xfer(struct amd_spi *amd_spi,
- 		return -ENODEV;
- 	}
- 
--	spi_finalize_current_message(master);
-+	spi_finalize_current_message(host);
- 
- 	return message->status;
- }
- 
--static int amd_spi_master_transfer(struct spi_master *master,
-+static int amd_spi_host_transfer(struct spi_controller *host,
- 				   struct spi_message *msg)
- {
--	struct amd_spi *amd_spi = spi_master_get_devdata(master);
-+	struct amd_spi *amd_spi = spi_controller_get_devdata(host);
- 	struct spi_device *spi = msg->spi;
- 
- 	amd_spi_select_chip(amd_spi, spi_get_chipselect(spi, 0));
-@@ -370,7 +370,7 @@ static int amd_spi_master_transfer(struct spi_master *master,
- 	 * Extract spi_transfers from the spi message and
- 	 * program the controller.
- 	 */
--	return amd_spi_fifo_xfer(amd_spi, master, msg);
-+	return amd_spi_fifo_xfer(amd_spi, host, msg);
- }
- 
- static size_t amd_spi_max_transfer_size(struct spi_device *spi)
-@@ -381,16 +381,16 @@ static size_t amd_spi_max_transfer_size(struct spi_device *spi)
- static int amd_spi_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
+ struct bcm_qspi {
+ 	struct platform_device *pdev;
 -	struct spi_master *master;
 +	struct spi_controller *host;
- 	struct amd_spi *amd_spi;
- 	int err;
+ 	struct clk *clk;
+ 	u32 base_clk;
+ 	u32 max_speed_hz;
+@@ -732,7 +732,7 @@ static bool bcm_qspi_mspi_transfer_is_last(struct bcm_qspi *qspi,
+ 					   struct qspi_trans *qt)
+ {
+ 	if (qt->mspi_last_trans &&
+-	    spi_transfer_is_last(qspi->master, qt->trans))
++	    spi_transfer_is_last(qspi->host, qt->trans))
+ 		return true;
+ 	else
+ 		return false;
+@@ -979,7 +979,7 @@ static int write_to_hw(struct bcm_qspi *qspi, struct spi_device *spi)
+ 		mspi_cdram |= ((tp.trans->bits_per_word <= 8) ? 0 :
+ 			       MSPI_CDRAM_BITSE_BIT);
  
--	/* Allocate storage for spi_master and driver private data */
--	master = devm_spi_alloc_master(dev, sizeof(struct amd_spi));
--	if (!master)
--		return dev_err_probe(dev, -ENOMEM, "Error allocating SPI master\n");
-+	/* Allocate storage for host and driver private data */
-+	host = devm_spi_alloc_host(dev, sizeof(struct amd_spi));
-+	if (!host)
-+		return dev_err_probe(dev, -ENOMEM, "Error allocating SPI host\n");
+-		/* set 3wrire halfduplex mode data from master to slave */
++		/* set 3wrire halfduplex mode data from host to target */
+ 		if ((spi->mode & SPI_3WIRE) && tp.trans->tx_buf)
+ 			mspi_cdram |= MSPI_CDRAM_OUTP;
  
--	amd_spi = spi_master_get_devdata(master);
-+	amd_spi = spi_controller_get_devdata(host);
- 	amd_spi->io_remap_addr = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(amd_spi->io_remap_addr))
- 		return dev_err_probe(dev, PTR_ERR(amd_spi->io_remap_addr),
-@@ -400,20 +400,20 @@ static int amd_spi_probe(struct platform_device *pdev)
+@@ -1035,7 +1035,7 @@ static int write_to_hw(struct bcm_qspi *qspi, struct spi_device *spi)
+ static int bcm_qspi_bspi_exec_mem_op(struct spi_device *spi,
+ 				     const struct spi_mem_op *op)
+ {
+-	struct bcm_qspi *qspi = spi_master_get_devdata(spi->master);
++	struct bcm_qspi *qspi = spi_controller_get_devdata(spi->controller);
+ 	u32 addr = 0, len, rdlen, len_words, from = 0;
+ 	int ret = 0;
+ 	unsigned long timeo = msecs_to_jiffies(100);
+@@ -1118,11 +1118,11 @@ static int bcm_qspi_bspi_exec_mem_op(struct spi_device *spi,
+ 	return ret;
+ }
  
- 	amd_spi->version = (enum amd_spi_versions) device_get_match_data(dev);
+-static int bcm_qspi_transfer_one(struct spi_master *master,
++static int bcm_qspi_transfer_one(struct spi_controller *host,
+ 				 struct spi_device *spi,
+ 				 struct spi_transfer *trans)
+ {
+-	struct bcm_qspi *qspi = spi_master_get_devdata(master);
++	struct bcm_qspi *qspi = spi_controller_get_devdata(host);
+ 	int slots;
+ 	unsigned long timeo = msecs_to_jiffies(100);
  
--	/* Initialize the spi_master fields */
--	master->bus_num = 0;
--	master->num_chipselect = 4;
--	master->mode_bits = 0;
--	master->flags = SPI_CONTROLLER_HALF_DUPLEX;
--	master->max_speed_hz = AMD_SPI_MAX_HZ;
--	master->min_speed_hz = AMD_SPI_MIN_HZ;
--	master->setup = amd_spi_master_setup;
--	master->transfer_one_message = amd_spi_master_transfer;
--	master->max_transfer_size = amd_spi_max_transfer_size;
--	master->max_message_size = amd_spi_max_transfer_size;
-+	/* Initialize the spi_controller fields */
-+	host->bus_num = 0;
-+	host->num_chipselect = 4;
-+	host->mode_bits = 0;
-+	host->flags = SPI_CONTROLLER_HALF_DUPLEX;
-+	host->max_speed_hz = AMD_SPI_MAX_HZ;
-+	host->min_speed_hz = AMD_SPI_MIN_HZ;
-+	host->setup = amd_spi_host_setup;
-+	host->transfer_one_message = amd_spi_host_transfer;
-+	host->max_transfer_size = amd_spi_max_transfer_size;
-+	host->max_message_size = amd_spi_max_transfer_size;
+@@ -1150,8 +1150,8 @@ static int bcm_qspi_transfer_one(struct spi_master *master,
+ static int bcm_qspi_mspi_exec_mem_op(struct spi_device *spi,
+ 				     const struct spi_mem_op *op)
+ {
+-	struct spi_master *master = spi->master;
+-	struct bcm_qspi *qspi = spi_master_get_devdata(master);
++	struct spi_controller *host = spi->controller;
++	struct bcm_qspi *qspi = spi_controller_get_devdata(host);
+ 	struct spi_transfer t[2];
+ 	u8 cmd[6] = { };
+ 	int ret, i;
+@@ -1171,7 +1171,7 @@ static int bcm_qspi_mspi_exec_mem_op(struct spi_device *spi,
+ 	t[0].tx_nbits = op->cmd.buswidth;
+ 	/* lets mspi know that this is not last transfer */
+ 	qspi->trans_pos.mspi_last_trans = false;
+-	ret = bcm_qspi_transfer_one(master, spi, &t[0]);
++	ret = bcm_qspi_transfer_one(host, spi, &t[0]);
  
- 	/* Register the controller with SPI framework */
--	err = devm_spi_register_master(dev, master);
-+	err = devm_spi_register_controller(dev, host);
- 	if (err)
- 		return dev_err_probe(dev, err, "error registering SPI controller\n");
+ 	/* rx */
+ 	qspi->trans_pos.mspi_last_trans = true;
+@@ -1181,7 +1181,7 @@ static int bcm_qspi_mspi_exec_mem_op(struct spi_device *spi,
+ 		t[1].len = op->data.nbytes;
+ 		t[1].rx_nbits =  op->data.buswidth;
+ 		t[1].bits_per_word = spi->bits_per_word;
+-		ret = bcm_qspi_transfer_one(master, spi, &t[1]);
++		ret = bcm_qspi_transfer_one(host, spi, &t[1]);
+ 	}
  
+ 	return ret;
+@@ -1191,7 +1191,7 @@ static int bcm_qspi_exec_mem_op(struct spi_mem *mem,
+ 				const struct spi_mem_op *op)
+ {
+ 	struct spi_device *spi = mem->spi;
+-	struct bcm_qspi *qspi = spi_master_get_devdata(spi->master);
++	struct bcm_qspi *qspi = spi_controller_get_devdata(spi->controller);
+ 	int ret = 0;
+ 	bool mspi_read = false;
+ 	u32 addr = 0, len;
+@@ -1486,7 +1486,7 @@ int bcm_qspi_probe(struct platform_device *pdev,
+ 	const struct bcm_qspi_data *data;
+ 	struct device *dev = &pdev->dev;
+ 	struct bcm_qspi *qspi;
+-	struct spi_master *master;
++	struct spi_controller *host;
+ 	struct resource *res;
+ 	int irq, ret = 0, num_ints = 0;
+ 	u32 val;
+@@ -1504,13 +1504,13 @@ int bcm_qspi_probe(struct platform_device *pdev,
+ 
+ 	data = of_id->data;
+ 
+-	master = devm_spi_alloc_master(dev, sizeof(struct bcm_qspi));
+-	if (!master) {
+-		dev_err(dev, "error allocating spi_master\n");
++	host = devm_spi_alloc_host(dev, sizeof(struct bcm_qspi));
++	if (!host) {
++		dev_err(dev, "error allocating spi_controller\n");
+ 		return -ENOMEM;
+ 	}
+ 
+-	qspi = spi_master_get_devdata(master);
++	qspi = spi_controller_get_devdata(host);
+ 
+ 	qspi->clk = devm_clk_get_optional(&pdev->dev, NULL);
+ 	if (IS_ERR(qspi->clk))
+@@ -1520,23 +1520,23 @@ int bcm_qspi_probe(struct platform_device *pdev,
+ 	qspi->trans_pos.trans = NULL;
+ 	qspi->trans_pos.byte = 0;
+ 	qspi->trans_pos.mspi_last_trans = true;
+-	qspi->master = master;
++	qspi->host = host;
+ 
+-	master->bus_num = -1;
+-	master->mode_bits = SPI_CPHA | SPI_CPOL | SPI_RX_DUAL | SPI_RX_QUAD |
++	host->bus_num = -1;
++	host->mode_bits = SPI_CPHA | SPI_CPOL | SPI_RX_DUAL | SPI_RX_QUAD |
+ 				SPI_3WIRE;
+-	master->setup = bcm_qspi_setup;
+-	master->transfer_one = bcm_qspi_transfer_one;
+-	master->mem_ops = &bcm_qspi_mem_ops;
+-	master->cleanup = bcm_qspi_cleanup;
+-	master->dev.of_node = dev->of_node;
+-	master->num_chipselect = NUM_CHIPSELECT;
+-	master->use_gpio_descriptors = true;
++	host->setup = bcm_qspi_setup;
++	host->transfer_one = bcm_qspi_transfer_one;
++	host->mem_ops = &bcm_qspi_mem_ops;
++	host->cleanup = bcm_qspi_cleanup;
++	host->dev.of_node = dev->of_node;
++	host->num_chipselect = NUM_CHIPSELECT;
++	host->use_gpio_descriptors = true;
+ 
+ 	qspi->big_endian = of_device_is_big_endian(dev->of_node);
+ 
+ 	if (!of_property_read_u32(dev->of_node, "num-cs", &val))
+-		master->num_chipselect = val;
++		host->num_chipselect = val;
+ 
+ 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "hif_mspi");
+ 	if (!res)
+@@ -1659,9 +1659,9 @@ int bcm_qspi_probe(struct platform_device *pdev,
+ 	qspi->xfer_mode.addrlen = -1;
+ 	qspi->xfer_mode.hp = -1;
+ 
+-	ret = spi_register_master(master);
++	ret = spi_register_controller(host);
+ 	if (ret < 0) {
+-		dev_err(dev, "can't register master\n");
++		dev_err(dev, "can't register host\n");
+ 		goto qspi_reg_err;
+ 	}
+ 
+@@ -1682,7 +1682,7 @@ void bcm_qspi_remove(struct platform_device *pdev)
+ {
+ 	struct bcm_qspi *qspi = platform_get_drvdata(pdev);
+ 
+-	spi_unregister_master(qspi->master);
++	spi_unregister_controller(qspi->host);
+ 	bcm_qspi_hw_uninit(qspi);
+ 	clk_disable_unprepare(qspi->clk);
+ 	kfree(qspi->dev_ids);
+@@ -1700,7 +1700,7 @@ static int __maybe_unused bcm_qspi_suspend(struct device *dev)
+ 		qspi->s3_strap_override_ctrl =
+ 			bcm_qspi_read(qspi, BSPI, BSPI_STRAP_OVERRIDE_CTRL);
+ 
+-	spi_master_suspend(qspi->master);
++	spi_controller_suspend(qspi->host);
+ 	clk_disable_unprepare(qspi->clk);
+ 	bcm_qspi_hw_uninit(qspi);
+ 
+@@ -1721,7 +1721,7 @@ static int __maybe_unused bcm_qspi_resume(struct device *dev)
+ 
+ 	ret = clk_prepare_enable(qspi->clk);
+ 	if (!ret)
+-		spi_master_resume(qspi->master);
++		spi_controller_resume(qspi->host);
+ 
+ 	return ret;
+ }
 -- 
 2.25.1
 

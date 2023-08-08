@@ -2,96 +2,110 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5E222C001B0
-	for <linux-spi@archiver.kernel.org>; Tue,  8 Aug 2023 17:56:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 33F41C001DB
+	for <linux-spi@archiver.kernel.org>; Tue,  8 Aug 2023 21:01:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235137AbjHHR4U (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 8 Aug 2023 13:56:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33334 "EHLO
+        id S234461AbjHHVBF (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 8 Aug 2023 17:01:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231946AbjHHRzu (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 8 Aug 2023 13:55:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6345D298B0;
-        Tue,  8 Aug 2023 09:25:16 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B63DB6252F;
-        Tue,  8 Aug 2023 12:46:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18551C433C7;
-        Tue,  8 Aug 2023 12:46:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691498773;
-        bh=t7PyoU8AYWJIwvZWdit4Ps/WdiBR7sDlId44lw9ADY8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=NFworbM+/yJt/EfmhyEMhA9+l2c/miHLb6HaHL9AfsivHW54QG4o5rJ+xtfmhbmfl
-         KSTCPC7+X6XZkhnqMsjuxz/FcklTSQBgOvrrz6nH9Emi+soxo9GbAX8IireViO+rbu
-         epS9AgI4OIh71xEaz1oeMC4LR333iDxuULQEL1x6TUNO/ey/eqnu7vjRxvsgHbMEAX
-         zssnpf5nOVNsK9IhpJdaD/IXyqPGgtn0wLLCFOL4NBm+waWjfAuIx9GnDYIHvrELPV
-         8lbgSu5vKdvg0NY25hEONWmZh6/ZFACWHZtic8o2IsF2uOCFoOrpxGkybit3viqKpy
-         YQYl0oS1JoHBg==
-Date:   Tue, 8 Aug 2023 13:46:08 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-Cc:     Serge Semin <fancer.lancer@gmail.com>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+        with ESMTP id S231645AbjHHVAx (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 8 Aug 2023 17:00:53 -0400
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBFA330C0;
+        Tue,  8 Aug 2023 13:59:29 -0700 (PDT)
+Received: by mail-lf1-x12b.google.com with SMTP id 2adb3069b0e04-4fe0fe622c3so9678707e87.2;
+        Tue, 08 Aug 2023 13:59:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1691528368; x=1692133168;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=YptjaSK25c+LT9Dq7yPSnNM+eMfZSyQd6iKMJ7jTM1Y=;
+        b=sZK+zJ1JWprxyHsNiCXibbwJ5LfUc94PxC84/VHbEISOquUIyQsncIFf9jsa/l944b
+         vIN52UtCgD+GlbKOMvFT6BfSIE7p5+U5s5UxVTMJ+yjV7fzMFgumJJDPkU2hSuYRhVPH
+         sN4W72IzbUeKWnQzIuD4thaUWl8ov1rdprFKplQHRc9zOLfP1FrgeXJcFJhG0nXmy2SH
+         bMw9lrg6AESG8YgaDNoFwmvpGFAalB/7u3LgIkCRpkdmcq6NtUltDlDI9eGXHhtV+A+y
+         sKeXXrE/fXuCBDM4XDCSaaIZ2uLKXKbdiuLKsClFqjzG5qRWVlZHmftGx5KHrP0wIhro
+         9VCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691528368; x=1692133168;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YptjaSK25c+LT9Dq7yPSnNM+eMfZSyQd6iKMJ7jTM1Y=;
+        b=jmHbQaOS06//nurW3wiJE84yRyhtqySIApQisILlfiv4KG1WZY/yS0ss6g7i0YO/FT
+         ysRZZLHL/7V/k5hf8sxvsOwVlkf/FsJD7aAbBzDee/gciq00S5mht+W2Ltv6ZOKm+Ih2
+         1hp5ctb9UUgigCRjC0upPLXqRr+bask0xkicFS3d/GyH6LusJ34hHQqOjPAKHakZfhkZ
+         tLIHFbBkK0hNIlBTGZE8jorG0UQTnhvaE49qkYoAR2PwPdjk4vpMa0EOQ4gcv+p9cIcA
+         e9Npz3hX1x2Q9tCVBxSLFy7SCsYVQfWXKdtiynEDwURdLqNi+cXmKA0/CgE3Fol6nTe1
+         hQ6w==
+X-Gm-Message-State: AOJu0YxqMMGD7oMcinIY4owWlw5b++c3hQgaUQ+pfRkOQBebvGqNmcWo
+        mSjuyaCKlynjB5U0qF/zYbQ=
+X-Google-Smtp-Source: AGHT+IE5QO7/2mwuLU5kziUoaIoYXM/KZLHOk0t03y5qCm3M8qEdwaFJYMxcz+sB2cAtgD1rXaDKNw==
+X-Received: by 2002:a05:6512:3b90:b0:4fd:c785:58b with SMTP id g16-20020a0565123b9000b004fdc785058bmr560301lfv.4.1691528367697;
+        Tue, 08 Aug 2023 13:59:27 -0700 (PDT)
+Received: from mobilestation (89-109-46-22.dynamic.mts-nn.ru. [89.109.46.22])
+        by smtp.gmail.com with ESMTPSA id j20-20020ac253b4000000b004fbdba4b075sm2013185lfh.57.2023.08.08.13.59.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Aug 2023 13:59:26 -0700 (PDT)
+Date:   Tue, 8 Aug 2023 23:59:24 +0300
+From:   Serge Semin <fancer.lancer@gmail.com>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] spi: dw: Set default value if reg-io-width isn't
  specified
-Message-ID: <1505ec01-186d-451a-9164-d42796954c01@sirena.org.uk>
+Message-ID: <4dhdiqmyd2ytpxjv3ph2shxmfu4cg7sshpip7qic6rmqlbfen3@knn33heekvu3>
 References: <20230807001621.196776-1-hayashi.kunihiko@socionext.com>
  <az7wvv5f42mnuuwkqzpfmwg4ngvl4jvpcfmns7d6lhzogc4qdi@ox64l6i7b44r>
  <213763b3-5a8b-3a88-54f1-024325f7fe80@socionext.com>
+ <1505ec01-186d-451a-9164-d42796954c01@sirena.org.uk>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="TJalYs/MizfFRmvC"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <213763b3-5a8b-3a88-54f1-024325f7fe80@socionext.com>
-X-Cookie: You need not be present to win.
+In-Reply-To: <1505ec01-186d-451a-9164-d42796954c01@sirena.org.uk>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+On Tue, Aug 08, 2023 at 01:46:08PM +0100, Mark Brown wrote:
+> On Tue, Aug 08, 2023 at 09:00:18AM +0900, Kunihiko Hayashi wrote:
+> > On 2023/08/08 7:57, Serge Semin wrote:
+> > > On Mon, Aug 07, 2023 at 09:16:21AM +0900, Kunihiko Hayashi wrote:
+> 
+> > > > According to the dt-bindings, the default value of reg-io-width is 4.
+> > > > However, the value becomes zero when reg-io-width isn't specified.
+> 
+> > > This semantic is implied by the dw_read_io_reg() and dw_write_io_reg()
+> > > methods. It doesn't seem like that much necessary duplicating it in the
+> > > property parse procedure, if not to say - redundant.
+> 
+> > I see. Currently since the variable reg_io_width has no other references
+> > other than dw_{read, write}_io_reg(), it means the default value is taken
+> > if this is zero.
+> 
+> > So, I think we should be careful when actually using the value of
+> > this variable.
+> 
+> It does feel like a sensible robustness improvement,
 
---TJalYs/MizfFRmvC
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+I wouldn't call it "a sensible improvement" in this context, but
+merely something like "a data-field/property coherency fixup".
 
-On Tue, Aug 08, 2023 at 09:00:18AM +0900, Kunihiko Hayashi wrote:
-> On 2023/08/08 7:57, Serge Semin wrote:
-> > On Mon, Aug 07, 2023 at 09:16:21AM +0900, Kunihiko Hayashi wrote:
+> even if it's not
+> fixing a specific issue now it might save us from future issues.
 
-> > > According to the dt-bindings, the default value of reg-io-width is 4.
-> > > However, the value becomes zero when reg-io-width isn't specified.
+Such issues are very unlikely to happen unless somebody would try to
+use the dw_spi.reg_io_width field separately from the denoted methods.
+If one does, what he would have needed to make sure is that the field
+always takes a correct value which would have led to this patch anyway
+but at least it would have got a firm justification.
 
-> > This semantic is implied by the dw_read_io_reg() and dw_write_io_reg()
-> > methods. It doesn't seem like that much necessary duplicating it in the
-> > property parse procedure, if not to say - redundant.
+So to speak I wouldn't have bothered with merging the patch now at
+least without changing the patch log which would have had to be
+reduced to just the first paragraph with additional message stating
+that the change just makes sure that the field is in a coherent state
+with the DT-property value in order to improve the code
+maintainability.
 
-> I see. Currently since the variable reg_io_width has no other references
-> other than dw_{read, write}_io_reg(), it means the default value is taken
-> if this is zero.
-
-> So, I think we should be careful when actually using the value of
-> this variable.
-
-It does feel like a sensible robustness improvement, even if it's not
-fixing a specific issue now it might save us from future issues.
-
---TJalYs/MizfFRmvC
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmTSORAACgkQJNaLcl1U
-h9AB8wf/ddcf2la7li0vRgQn1O0T32/K+4cecju7caiwiFf/8icP1QlQpElqHyQw
-nEIpn+pzs8QWVREykUqKt6WWLI+KhtIDrUuSSs3NoIFkQ7yk9Gacfr4Y/SLP0JCf
-uwMaSRVdapPl2ou5KcfyI0MK/Cc1BlMjwNPFb4POpub+0qdJRp8ImCeKfy7wzKSr
-Tx0d7tv/IxzjD3ScGT6ydIm6BTFLJg2g6WXgeJMZQLmX3Kqv1J0Th376pxMNpqST
-EoXlOy5DlAHs3X21KnUeThzEYd8NhCdhi1WYK/02LPG21geKPnYYgsOf3KBbh5nG
-Zx0Ufq9+SoGZEJRJ99eR97Uy09USVQ==
-=2aGO
------END PGP SIGNATURE-----
-
---TJalYs/MizfFRmvC--
+-Serge(y)

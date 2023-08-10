@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B31F1C05051
-	for <linux-spi@archiver.kernel.org>; Thu, 10 Aug 2023 08:33:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 028A3C001DB
+	for <linux-spi@archiver.kernel.org>; Thu, 10 Aug 2023 08:33:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234223AbjHJIdO (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 10 Aug 2023 04:33:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34792 "EHLO
+        id S234212AbjHJIdP (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 10 Aug 2023 04:33:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234215AbjHJIdM (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 10 Aug 2023 04:33:12 -0400
+        with ESMTP id S234222AbjHJIdN (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 10 Aug 2023 04:33:13 -0400
 Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80E5BE40
-        for <linux-spi@vger.kernel.org>; Thu, 10 Aug 2023 01:33:11 -0700 (PDT)
-Received: from dggpemm500012.china.huawei.com (unknown [172.30.72.57])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RM0WN5WbLzTmWv;
-        Thu, 10 Aug 2023 16:31:12 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE08EE7E
+        for <linux-spi@vger.kernel.org>; Thu, 10 Aug 2023 01:33:12 -0700 (PDT)
+Received: from dggpemm500005.china.huawei.com (unknown [172.30.72.55])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RM0Td4kSfzJsg6;
+        Thu, 10 Aug 2023 16:29:41 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500012.china.huawei.com (7.185.36.89) with Microsoft SMTP Server
+ dggpemm500005.china.huawei.com (7.185.36.74) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Thu, 10 Aug 2023 16:33:09 +0800
+ 15.1.2507.27; Thu, 10 Aug 2023 16:33:10 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 10 Aug
- 2023 16:33:08 +0800
+ 2023 16:33:10 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
         <yangyingliang@huawei.com>
-Subject: [PATCH -next 11/21] spi: mt7621: switch to use modern name
-Date:   Thu, 10 Aug 2023 16:29:54 +0800
-Message-ID: <20230810083004.3988597-12-yangyingliang@huawei.com>
+Subject: [PATCH -next 15/21] spi: mxic: switch to use modern name
+Date:   Thu, 10 Aug 2023 16:29:58 +0800
+Message-ID: <20230810083004.3988597-16-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230810083004.3988597-1-yangyingliang@huawei.com>
 References: <20230810083004.3988597-1-yangyingliang@huawei.com>
@@ -46,180 +46,196 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Change legacy name master/slave to modern name host/target or controller.
+Change legacy name master to modern name host or controller.
 
 No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-mt7621.c | 70 ++++++++++++++++++++--------------------
- 1 file changed, 35 insertions(+), 35 deletions(-)
+ drivers/spi/spi-mxic.c | 68 +++++++++++++++++++++---------------------
+ 1 file changed, 34 insertions(+), 34 deletions(-)
 
-diff --git a/drivers/spi/spi-mt7621.c b/drivers/spi/spi-mt7621.c
-index 91600e5c22e4..099d5e119f0a 100644
---- a/drivers/spi/spi-mt7621.c
-+++ b/drivers/spi/spi-mt7621.c
-@@ -37,12 +37,12 @@
- #define SPI_CTL_TX_RX_CNT_MASK	0xff
- #define SPI_CTL_START		BIT(8)
- 
--#define MT7621_SPI_MASTER	0x28
--#define MASTER_MORE_BUFMODE	BIT(2)
--#define MASTER_FULL_DUPLEX	BIT(10)
--#define MASTER_RS_CLK_SEL	GENMASK(27, 16)
--#define MASTER_RS_CLK_SEL_SHIFT	16
--#define MASTER_RS_SLAVE_SEL	GENMASK(31, 29)
-+#define MT7621_SPI_HOST	0x28
-+#define HOST_MORE_BUFMODE	BIT(2)
-+#define HOST_FULL_DUPLEX	BIT(10)
-+#define HOST_RS_CLK_SEL	GENMASK(27, 16)
-+#define HOST_RS_CLK_SEL_SHIFT	16
-+#define HOST_RS_TARGET_SEL	GENMASK(31, 29)
- 
- #define MT7621_SPI_MOREBUF	0x2c
- #define MT7621_SPI_POLAR	0x38
-@@ -53,7 +53,7 @@
- #define MT7621_LSB_FIRST	BIT(3)
- 
- struct mt7621_spi {
--	struct spi_controller	*master;
-+	struct spi_controller	*host;
- 	void __iomem		*base;
- 	unsigned int		sys_freq;
- 	unsigned int		speed;
-@@ -62,7 +62,7 @@ struct mt7621_spi {
- 
- static inline struct mt7621_spi *spidev_to_mt7621_spi(struct spi_device *spi)
+diff --git a/drivers/spi/spi-mxic.c b/drivers/spi/spi-mxic.c
+index 00617fd4b2c3..60c9f3048ac9 100644
+--- a/drivers/spi/spi-mxic.c
++++ b/drivers/spi/spi-mxic.c
+@@ -390,7 +390,7 @@ static int mxic_spi_data_xfer(struct mxic_spi *mxic, const void *txbuf,
+ static ssize_t mxic_spi_mem_dirmap_read(struct spi_mem_dirmap_desc *desc,
+ 					u64 offs, size_t len, void *buf)
  {
--	return spi_controller_get_devdata(spi->master);
-+	return spi_controller_get_devdata(spi->controller);
+-	struct mxic_spi *mxic = spi_master_get_devdata(desc->mem->spi->master);
++	struct mxic_spi *mxic = spi_controller_get_devdata(desc->mem->spi->controller);
+ 	int ret;
+ 	u32 sts;
+ 
+@@ -434,7 +434,7 @@ static ssize_t mxic_spi_mem_dirmap_write(struct spi_mem_dirmap_desc *desc,
+ 					 u64 offs, size_t len,
+ 					 const void *buf)
+ {
+-	struct mxic_spi *mxic = spi_master_get_devdata(desc->mem->spi->master);
++	struct mxic_spi *mxic = spi_controller_get_devdata(desc->mem->spi->controller);
+ 	u32 sts;
+ 	int ret;
+ 
+@@ -493,7 +493,7 @@ static bool mxic_spi_mem_supports_op(struct spi_mem *mem,
+ 
+ static int mxic_spi_mem_dirmap_create(struct spi_mem_dirmap_desc *desc)
+ {
+-	struct mxic_spi *mxic = spi_master_get_devdata(desc->mem->spi->master);
++	struct mxic_spi *mxic = spi_controller_get_devdata(desc->mem->spi->controller);
+ 
+ 	if (!mxic->linear.map)
+ 		return -EINVAL;
+@@ -510,7 +510,7 @@ static int mxic_spi_mem_dirmap_create(struct spi_mem_dirmap_desc *desc)
+ static int mxic_spi_mem_exec_op(struct spi_mem *mem,
+ 				const struct spi_mem_op *op)
+ {
+-	struct mxic_spi *mxic = spi_master_get_devdata(mem->spi->master);
++	struct mxic_spi *mxic = spi_controller_get_devdata(mem->spi->controller);
+ 	int i, ret;
+ 	u8 addr[8], cmd[2];
+ 
+@@ -577,7 +577,7 @@ static const struct spi_controller_mem_caps mxic_spi_mem_caps = {
+ 
+ static void mxic_spi_set_cs(struct spi_device *spi, bool lvl)
+ {
+-	struct mxic_spi *mxic = spi_master_get_devdata(spi->master);
++	struct mxic_spi *mxic = spi_controller_get_devdata(spi->controller);
+ 
+ 	if (!lvl) {
+ 		writel(readl(mxic->regs + HC_CFG) | HC_CFG_MAN_CS_EN,
+@@ -592,11 +592,11 @@ static void mxic_spi_set_cs(struct spi_device *spi, bool lvl)
+ 	}
  }
  
- static inline u32 mt7621_spi_read(struct mt7621_spi *rs, u32 reg)
-@@ -80,17 +80,17 @@ static void mt7621_spi_set_cs(struct spi_device *spi, int enable)
- 	struct mt7621_spi *rs = spidev_to_mt7621_spi(spi);
- 	int cs = spi_get_chipselect(spi, 0);
- 	u32 polar = 0;
--	u32 master;
-+	u32 host;
+-static int mxic_spi_transfer_one(struct spi_master *master,
++static int mxic_spi_transfer_one(struct spi_controller *host,
+ 				 struct spi_device *spi,
+ 				 struct spi_transfer *t)
+ {
+-	struct mxic_spi *mxic = spi_master_get_devdata(master);
++	struct mxic_spi *mxic = spi_controller_get_devdata(host);
+ 	unsigned int busw = OP_BUSW_1;
+ 	int ret;
  
- 	/*
- 	 * Select SPI device 7, enable "more buffer mode" and disable
- 	 * full-duplex (only half-duplex really works on this chip
- 	 * reliably)
- 	 */
--	master = mt7621_spi_read(rs, MT7621_SPI_MASTER);
--	master |= MASTER_RS_SLAVE_SEL | MASTER_MORE_BUFMODE;
--	master &= ~MASTER_FULL_DUPLEX;
--	mt7621_spi_write(rs, MT7621_SPI_MASTER, master);
-+	host = mt7621_spi_read(rs, MT7621_SPI_HOST);
-+	host |= HOST_RS_TARGET_SEL | HOST_MORE_BUFMODE;
-+	host &= ~HOST_FULL_DUPLEX;
-+	mt7621_spi_write(rs, MT7621_SPI_HOST, host);
+@@ -632,7 +632,7 @@ static int mxic_spi_transfer_one(struct spi_master *master,
+ 	if (ret)
+ 		return ret;
  
- 	rs->pending_write = 0;
- 
-@@ -116,9 +116,9 @@ static int mt7621_spi_prepare(struct spi_device *spi, unsigned int speed)
- 	if (rate < 2)
- 		rate = 2;
- 
--	reg = mt7621_spi_read(rs, MT7621_SPI_MASTER);
--	reg &= ~MASTER_RS_CLK_SEL;
--	reg |= (rate - 2) << MASTER_RS_CLK_SEL_SHIFT;
-+	reg = mt7621_spi_read(rs, MT7621_SPI_HOST);
-+	reg &= ~HOST_RS_CLK_SEL;
-+	reg |= (rate - 2) << HOST_RS_CLK_SEL_SHIFT;
- 	rs->speed = speed;
- 
- 	reg &= ~MT7621_LSB_FIRST;
-@@ -132,7 +132,7 @@ static int mt7621_spi_prepare(struct spi_device *spi, unsigned int speed)
- 	 */
- 	reg &= ~(MT7621_CPHA | MT7621_CPOL);
- 
--	mt7621_spi_write(rs, MT7621_SPI_MASTER, reg);
-+	mt7621_spi_write(rs, MT7621_SPI_HOST, reg);
+-	spi_finalize_current_transfer(master);
++	spi_finalize_current_transfer(host);
  
  	return 0;
  }
-@@ -245,10 +245,10 @@ static void mt7621_spi_write_half_duplex(struct mt7621_spi *rs,
- 	rs->pending_write = len;
- }
+@@ -713,8 +713,8 @@ static int mxic_spi_mem_ecc_probe(struct platform_device *pdev,
  
--static int mt7621_spi_transfer_one_message(struct spi_controller *master,
-+static int mt7621_spi_transfer_one_message(struct spi_controller *host,
- 					   struct spi_message *m)
+ static int __maybe_unused mxic_spi_runtime_suspend(struct device *dev)
  {
--	struct mt7621_spi *rs = spi_controller_get_devdata(master);
-+	struct mt7621_spi *rs = spi_controller_get_devdata(host);
- 	struct spi_device *spi = m->spi;
- 	unsigned int speed = spi->max_speed_hz;
- 	struct spi_transfer *t = NULL;
-@@ -294,7 +294,7 @@ static int mt7621_spi_transfer_one_message(struct spi_controller *master,
+-	struct spi_master *master = dev_get_drvdata(dev);
+-	struct mxic_spi *mxic = spi_master_get_devdata(master);
++	struct spi_controller *host = dev_get_drvdata(dev);
++	struct mxic_spi *mxic = spi_controller_get_devdata(host);
  
- msg_done:
- 	m->status = status;
--	spi_finalize_current_message(master);
-+	spi_finalize_current_message(host);
+ 	mxic_spi_clk_disable(mxic);
+ 	clk_disable_unprepare(mxic->ps_clk);
+@@ -724,8 +724,8 @@ static int __maybe_unused mxic_spi_runtime_suspend(struct device *dev)
  
- 	return 0;
- }
-@@ -325,7 +325,7 @@ MODULE_DEVICE_TABLE(of, mt7621_spi_match);
- static int mt7621_spi_probe(struct platform_device *pdev)
+ static int __maybe_unused mxic_spi_runtime_resume(struct device *dev)
  {
- 	const struct of_device_id *match;
--	struct spi_controller *master;
+-	struct spi_master *master = dev_get_drvdata(dev);
+-	struct mxic_spi *mxic = spi_master_get_devdata(master);
++	struct spi_controller *host = dev_get_drvdata(dev);
++	struct mxic_spi *mxic = spi_controller_get_devdata(host);
+ 	int ret;
+ 
+ 	ret = clk_prepare_enable(mxic->ps_clk);
+@@ -744,21 +744,21 @@ static const struct dev_pm_ops mxic_spi_dev_pm_ops = {
+ 
+ static int mxic_spi_probe(struct platform_device *pdev)
+ {
+-	struct spi_master *master;
 +	struct spi_controller *host;
- 	struct mt7621_spi *rs;
- 	void __iomem *base;
- 	struct clk *clk;
-@@ -344,25 +344,25 @@ static int mt7621_spi_probe(struct platform_device *pdev)
- 		return dev_err_probe(&pdev->dev, PTR_ERR(clk),
- 				     "unable to get SYS clock\n");
+ 	struct resource *res;
+ 	struct mxic_spi *mxic;
+ 	int ret;
  
--	master = devm_spi_alloc_master(&pdev->dev, sizeof(*rs));
--	if (!master) {
--		dev_info(&pdev->dev, "master allocation failed\n");
-+	host = devm_spi_alloc_host(&pdev->dev, sizeof(*rs));
-+	if (!host) {
-+		dev_info(&pdev->dev, "host allocation failed\n");
+-	master = devm_spi_alloc_master(&pdev->dev, sizeof(struct mxic_spi));
+-	if (!master)
++	host = devm_spi_alloc_host(&pdev->dev, sizeof(struct mxic_spi));
++	if (!host)
  		return -ENOMEM;
+ 
+-	platform_set_drvdata(pdev, master);
++	platform_set_drvdata(pdev, host);
+ 
+-	mxic = spi_master_get_devdata(master);
++	mxic = spi_controller_get_devdata(host);
+ 	mxic->dev = &pdev->dev;
+ 
+-	master->dev.of_node = pdev->dev.of_node;
++	host->dev.of_node = pdev->dev.of_node;
+ 
+ 	mxic->ps_clk = devm_clk_get(&pdev->dev, "ps_clk");
+ 	if (IS_ERR(mxic->ps_clk))
+@@ -786,19 +786,19 @@ static int mxic_spi_probe(struct platform_device *pdev)
  	}
  
--	master->mode_bits = SPI_LSB_FIRST;
--	master->flags = SPI_CONTROLLER_HALF_DUPLEX;
--	master->setup = mt7621_spi_setup;
--	master->transfer_one_message = mt7621_spi_transfer_one_message;
+ 	pm_runtime_enable(&pdev->dev);
+-	master->auto_runtime_pm = true;
++	host->auto_runtime_pm = true;
+ 
+-	master->num_chipselect = 1;
+-	master->mem_ops = &mxic_spi_mem_ops;
+-	master->mem_caps = &mxic_spi_mem_caps;
++	host->num_chipselect = 1;
++	host->mem_ops = &mxic_spi_mem_ops;
++	host->mem_caps = &mxic_spi_mem_caps;
+ 
+-	master->set_cs = mxic_spi_set_cs;
+-	master->transfer_one = mxic_spi_transfer_one;
 -	master->bits_per_word_mask = SPI_BPW_MASK(8);
--	master->dev.of_node = pdev->dev.of_node;
--	master->num_chipselect = 2;
-+	host->mode_bits = SPI_LSB_FIRST;
-+	host->flags = SPI_CONTROLLER_HALF_DUPLEX;
-+	host->setup = mt7621_spi_setup;
-+	host->transfer_one_message = mt7621_spi_transfer_one_message;
+-	master->mode_bits = SPI_CPOL | SPI_CPHA |
+-			SPI_RX_DUAL | SPI_TX_DUAL |
+-			SPI_RX_QUAD | SPI_TX_QUAD |
+-			SPI_RX_OCTAL | SPI_TX_OCTAL;
++	host->set_cs = mxic_spi_set_cs;
++	host->transfer_one = mxic_spi_transfer_one;
 +	host->bits_per_word_mask = SPI_BPW_MASK(8);
-+	host->dev.of_node = pdev->dev.of_node;
-+	host->num_chipselect = 2;
++	host->mode_bits = SPI_CPOL | SPI_CPHA |
++			  SPI_RX_DUAL | SPI_TX_DUAL |
++			  SPI_RX_QUAD | SPI_TX_QUAD |
++			  SPI_RX_OCTAL | SPI_TX_OCTAL;
  
--	dev_set_drvdata(&pdev->dev, master);
-+	dev_set_drvdata(&pdev->dev, host);
+ 	mxic_spi_hw_init(mxic);
  
--	rs = spi_controller_get_devdata(master);
-+	rs = spi_controller_get_devdata(host);
- 	rs->base = base;
--	rs->master = master;
-+	rs->host = host;
- 	rs->sys_freq = clk_get_rate(clk);
- 	rs->pending_write = 0;
- 	dev_info(&pdev->dev, "sys_freq: %u\n", rs->sys_freq);
-@@ -373,7 +373,7 @@ static int mt7621_spi_probe(struct platform_device *pdev)
+@@ -808,9 +808,9 @@ static int mxic_spi_probe(struct platform_device *pdev)
  		return ret;
  	}
  
--	return devm_spi_register_controller(&pdev->dev, master);
-+	return devm_spi_register_controller(&pdev->dev, host);
+-	ret = spi_register_master(master);
++	ret = spi_register_controller(host);
+ 	if (ret) {
+-		dev_err(&pdev->dev, "spi_register_master failed\n");
++		dev_err(&pdev->dev, "spi_register_controller failed\n");
+ 		pm_runtime_disable(&pdev->dev);
+ 		mxic_spi_mem_ecc_remove(mxic);
+ 	}
+@@ -820,12 +820,12 @@ static int mxic_spi_probe(struct platform_device *pdev)
+ 
+ static void mxic_spi_remove(struct platform_device *pdev)
+ {
+-	struct spi_master *master = platform_get_drvdata(pdev);
+-	struct mxic_spi *mxic = spi_master_get_devdata(master);
++	struct spi_controller *host = platform_get_drvdata(pdev);
++	struct mxic_spi *mxic = spi_controller_get_devdata(host);
+ 
+ 	pm_runtime_disable(&pdev->dev);
+ 	mxic_spi_mem_ecc_remove(mxic);
+-	spi_unregister_master(master);
++	spi_unregister_controller(host);
  }
  
- MODULE_ALIAS("platform:" DRIVER_NAME);
+ static const struct of_device_id mxic_spi_of_ids[] = {
 -- 
 2.25.1
 

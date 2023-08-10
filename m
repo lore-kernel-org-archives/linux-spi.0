@@ -2,25 +2,25 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7EAACC41513
-	for <linux-spi@archiver.kernel.org>; Thu, 10 Aug 2023 08:33:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EE69DC0729B
+	for <linux-spi@archiver.kernel.org>; Thu, 10 Aug 2023 08:33:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234215AbjHJIdQ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S234222AbjHJIdQ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Thu, 10 Aug 2023 04:33:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34900 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234229AbjHJIdP (ORCPT
+        with ESMTP id S234215AbjHJIdP (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Thu, 10 Aug 2023 04:33:15 -0400
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2B7710CF
-        for <linux-spi@vger.kernel.org>; Thu, 10 Aug 2023 01:33:13 -0700 (PDT)
-Received: from dggpemm500014.china.huawei.com (unknown [172.30.72.57])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4RM0XJ05Syz1L9k9;
-        Thu, 10 Aug 2023 16:32:00 +0800 (CST)
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F1D0E56
+        for <linux-spi@vger.kernel.org>; Thu, 10 Aug 2023 01:33:14 -0700 (PDT)
+Received: from dggpemm500016.china.huawei.com (unknown [172.30.72.53])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RM0WR3yjDzTmWy;
+        Thu, 10 Aug 2023 16:31:15 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500014.china.huawei.com (7.185.36.153) with Microsoft SMTP Server
+ dggpemm500016.china.huawei.com (7.185.36.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Thu, 10 Aug 2023 16:33:12 +0800
+ 15.1.2507.27; Thu, 10 Aug 2023 16:33:11 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 10 Aug
@@ -29,9 +29,9 @@ From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
         <yangyingliang@huawei.com>
-Subject: [PATCH -next 19/21] spi: oc-tiny: switch to use modern name
-Date:   Thu, 10 Aug 2023 16:30:02 +0800
-Message-ID: <20230810083004.3988597-20-yangyingliang@huawei.com>
+Subject: [PATCH -next 18/21] spi: nxp-fspi: switch to use modern name
+Date:   Thu, 10 Aug 2023 16:30:01 +0800
+Message-ID: <20230810083004.3988597-19-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230810083004.3988597-1-yangyingliang@huawei.com>
 References: <20230810083004.3988597-1-yangyingliang@huawei.com>
@@ -46,92 +46,139 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Change legacy name master to modern name host or controller.
+Change legacy name master/slave to modern name host/target or controller.
 
 No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-oc-tiny.c | 30 +++++++++++++++---------------
+ drivers/spi/spi-nxp-fspi.c | 30 +++++++++++++++---------------
  1 file changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/spi/spi-oc-tiny.c b/drivers/spi/spi-oc-tiny.c
-index 3af499838e84..cf7c111088a6 100644
---- a/drivers/spi/spi-oc-tiny.c
-+++ b/drivers/spi/spi-oc-tiny.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-only
+diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+index 45a4acc95661..5dc950c87fe1 100644
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -451,7 +451,7 @@ static int nxp_fspi_check_buswidth(struct nxp_fspi *f, u8 width)
+ static bool nxp_fspi_supports_op(struct spi_mem *mem,
+ 				 const struct spi_mem_op *op)
+ {
+-	struct nxp_fspi *f = spi_controller_get_devdata(mem->spi->master);
++	struct nxp_fspi *f = spi_controller_get_devdata(mem->spi->controller);
+ 	int ret;
+ 
+ 	ret = nxp_fspi_check_buswidth(f, op->cmd.buswidth);
+@@ -520,7 +520,7 @@ static int fspi_readl_poll_tout(struct nxp_fspi *f, void __iomem *base,
+ }
+ 
  /*
-- * OpenCores tiny SPI master driver
-+ * OpenCores tiny SPI host driver
+- * If the slave device content being changed by Write/Erase, need to
++ * If the target device content being changed by Write/Erase, need to
+  * invalidate the AHB buffer. This can be achieved by doing the reset
+  * of controller after setting MCR0[SWRESET] bit.
+  */
+@@ -661,7 +661,7 @@ static void nxp_fspi_dll_calibration(struct nxp_fspi *f)
+ 
+ /*
+  * In FlexSPI controller, flash access is based on value of FSPI_FLSHXXCR0
+- * register and start base address of the slave device.
++ * register and start base address of the target device.
   *
-  * https://opencores.org/project,tiny_spi
+  *							    (Higher address)
+  *				--------    <-- FLSHB2CR0
+@@ -680,15 +680,15 @@ static void nxp_fspi_dll_calibration(struct nxp_fspi *f)
   *
-@@ -53,7 +53,7 @@ struct tiny_spi {
+  *
+  * Start base address defines the starting address range for given CS and
+- * FSPI_FLSHXXCR0 defines the size of the slave device connected at given CS.
++ * FSPI_FLSHXXCR0 defines the size of the target device connected at given CS.
+  *
+  * But, different targets are having different combinations of number of CS,
+  * some targets only have single CS or two CS covering controller's full
+  * memory mapped space area.
+  * Thus, implementation is being done as independent of the size and number
+- * of the connected slave device.
++ * of the connected target device.
+  * Assign controller memory mapped space size as the size to the connected
+- * slave device.
++ * target device.
+  * Mark FLSHxxCR0 as zero initially and then assign value only to the selected
+  * chip-select Flash configuration register.
+  *
+@@ -704,8 +704,8 @@ static void nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi)
+ 	uint64_t size_kb;
  
- static inline struct tiny_spi *tiny_spi_to_hw(struct spi_device *sdev)
+ 	/*
+-	 * Return, if previously selected slave device is same as current
+-	 * requested slave device.
++	 * Return, if previously selected target device is same as current
++	 * requested target device.
+ 	 */
+ 	if (f->selected == spi_get_chipselect(spi, 0))
+ 		return;
+@@ -722,7 +722,7 @@ static void nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi)
+ 	fspi_writel(f, size_kb, f->iobase + FSPI_FLSHA1CR0 +
+ 		    4 * spi_get_chipselect(spi, 0));
+ 
+-	dev_dbg(f->dev, "Slave device [CS:%x] selected\n", spi_get_chipselect(spi, 0));
++	dev_dbg(f->dev, "Target device [CS:%x] selected\n", spi_get_chipselect(spi, 0));
+ 
+ 	nxp_fspi_clk_disable_unprep(f);
+ 
+@@ -912,7 +912,7 @@ static int nxp_fspi_do_op(struct nxp_fspi *f, const struct spi_mem_op *op)
+ 
+ static int nxp_fspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
  {
--	return spi_master_get_devdata(sdev->master);
-+	return spi_controller_get_devdata(sdev->controller);
- }
+-	struct nxp_fspi *f = spi_controller_get_devdata(mem->spi->master);
++	struct nxp_fspi *f = spi_controller_get_devdata(mem->spi->controller);
+ 	int err = 0;
  
- static unsigned int tiny_spi_baud(struct spi_device *spi, unsigned int hz)
-@@ -212,24 +212,24 @@ static int tiny_spi_probe(struct platform_device *pdev)
+ 	mutex_lock(&f->lock);
+@@ -952,7 +952,7 @@ static int nxp_fspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 
+ static int nxp_fspi_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
  {
- 	struct tiny_spi_platform_data *platp = dev_get_platdata(&pdev->dev);
- 	struct tiny_spi *hw;
--	struct spi_master *master;
-+	struct spi_controller *host;
- 	int err = -ENODEV;
+-	struct nxp_fspi *f = spi_controller_get_devdata(mem->spi->master);
++	struct nxp_fspi *f = spi_controller_get_devdata(mem->spi->controller);
  
--	master = spi_alloc_master(&pdev->dev, sizeof(struct tiny_spi));
--	if (!master)
-+	host = spi_alloc_host(&pdev->dev, sizeof(struct tiny_spi));
-+	if (!host)
- 		return err;
+ 	if (op->data.dir == SPI_MEM_DATA_OUT) {
+ 		if (op->data.nbytes > f->devtype_data->txfifo)
+@@ -1049,7 +1049,7 @@ static int nxp_fspi_default_setup(struct nxp_fspi *f)
+ 	fspi_writel(f, FSPI_MCR0_MDIS, base + FSPI_MCR0);
  
--	/* setup the master state. */
--	master->bus_num = pdev->id;
--	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
--	master->setup = tiny_spi_setup;
--	master->use_gpio_descriptors = true;
-+	/* setup the host state. */
-+	host->bus_num = pdev->id;
-+	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
-+	host->setup = tiny_spi_setup;
-+	host->use_gpio_descriptors = true;
+ 	/*
+-	 * Config the DLL register to default value, enable the slave clock delay
++	 * Config the DLL register to default value, enable the target clock delay
+ 	 * line delay cell override mode, and use 1 fixed delay cell in DLL delay
+ 	 * chain, this is the suggested setting when clock rate < 100MHz.
+ 	 */
+@@ -1062,7 +1062,7 @@ static int nxp_fspi_default_setup(struct nxp_fspi *f)
+ 		    base + FSPI_MCR0);
  
--	hw = spi_master_get_devdata(master);
-+	hw = spi_controller_get_devdata(host);
- 	platform_set_drvdata(pdev, hw);
+ 	/*
+-	 * Disable same device enable bit and configure all slave devices
++	 * Disable same device enable bit and configure all target devices
+ 	 * independently.
+ 	 */
+ 	reg = fspi_readl(f, f->iobase + FSPI_MCR2);
+@@ -1100,7 +1100,7 @@ static int nxp_fspi_default_setup(struct nxp_fspi *f)
  
- 	/* setup the state for the bitbang driver */
--	hw->bitbang.master = master;
-+	hw->bitbang.master = host;
- 	hw->bitbang.setup_transfer = tiny_spi_setup_transfer;
- 	hw->bitbang.txrx_bufs = tiny_spi_txrx_bufs;
- 
-@@ -267,17 +267,17 @@ static int tiny_spi_probe(struct platform_device *pdev)
- 	return 0;
- 
- exit:
--	spi_master_put(master);
-+	spi_controller_put(host);
- 	return err;
- }
- 
- static void tiny_spi_remove(struct platform_device *pdev)
+ static const char *nxp_fspi_get_name(struct spi_mem *mem)
  {
- 	struct tiny_spi *hw = platform_get_drvdata(pdev);
--	struct spi_master *master = hw->bitbang.master;
-+	struct spi_controller *host = hw->bitbang.master;
+-	struct nxp_fspi *f = spi_controller_get_devdata(mem->spi->master);
++	struct nxp_fspi *f = spi_controller_get_devdata(mem->spi->controller);
+ 	struct device *dev = &mem->spi->dev;
+ 	const char *name;
  
- 	spi_bitbang_stop(&hw->bitbang);
--	spi_master_put(master);
-+	spi_controller_put(host);
- }
+@@ -1137,7 +1137,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ 	int ret;
+ 	u32 reg;
  
- #ifdef CONFIG_OF
+-	ctlr = spi_alloc_master(&pdev->dev, sizeof(*f));
++	ctlr = spi_alloc_host(&pdev->dev, sizeof(*f));
+ 	if (!ctlr)
+ 		return -ENOMEM;
+ 
 -- 
 2.25.1
 

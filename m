@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 75568C001DE
-	for <linux-spi@archiver.kernel.org>; Thu, 10 Aug 2023 08:33:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B4E73C07E8A
+	for <linux-spi@archiver.kernel.org>; Thu, 10 Aug 2023 08:33:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234216AbjHJIdQ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 10 Aug 2023 04:33:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34872 "EHLO
+        id S234229AbjHJIdR (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 10 Aug 2023 04:33:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234218AbjHJIdO (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 10 Aug 2023 04:33:14 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78CA3E64
-        for <linux-spi@vger.kernel.org>; Thu, 10 Aug 2023 01:33:13 -0700 (PDT)
-Received: from dggpemm500011.china.huawei.com (unknown [172.30.72.55])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RM0Td24X7ztSGZ;
-        Thu, 10 Aug 2023 16:29:41 +0800 (CST)
+        with ESMTP id S234231AbjHJIdQ (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 10 Aug 2023 04:33:16 -0400
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 405C4E64
+        for <linux-spi@vger.kernel.org>; Thu, 10 Aug 2023 01:33:15 -0700 (PDT)
+Received: from dggpemm100003.china.huawei.com (unknown [172.30.72.54])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4RM0VQ3hBJzqSrC;
+        Thu, 10 Aug 2023 16:30:22 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500011.china.huawei.com (7.185.36.110) with Microsoft SMTP Server
+ dggpemm100003.china.huawei.com (7.185.36.68) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Thu, 10 Aug 2023 16:33:11 +0800
+ 15.1.2507.27; Thu, 10 Aug 2023 16:33:05 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 10 Aug
- 2023 16:33:10 +0800
+ 2023 16:33:05 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
         <yangyingliang@huawei.com>
-Subject: [PATCH -next 17/21] spi: npcm-pspi: switch to use modern name
-Date:   Thu, 10 Aug 2023 16:30:00 +0800
-Message-ID: <20230810083004.3988597-18-yangyingliang@huawei.com>
+Subject: [PATCH -next 02/21] spi: lp-8841: switch to use modern name
+Date:   Thu, 10 Aug 2023 16:29:45 +0800
+Message-ID: <20230810083004.3988597-3-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230810083004.3988597-1-yangyingliang@huawei.com>
 References: <20230810083004.3988597-1-yangyingliang@huawei.com>
@@ -46,189 +46,152 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Change legacy name master to modern name host or controller.
+Change legacy name master/slave to modern name host/target or controller.
 
 No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-npcm-pspi.c | 68 ++++++++++++++++++-------------------
- 1 file changed, 34 insertions(+), 34 deletions(-)
+ drivers/spi/spi-lp8841-rtc.c | 56 ++++++++++++++++++------------------
+ 1 file changed, 28 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/spi/spi-npcm-pspi.c b/drivers/spi/spi-npcm-pspi.c
-index 64585c2a25c5..a7feb20b06ee 100644
---- a/drivers/spi/spi-npcm-pspi.c
-+++ b/drivers/spi/spi-npcm-pspi.c
-@@ -20,7 +20,7 @@
- struct npcm_pspi {
- 	struct completion xfer_done;
- 	struct reset_control *reset;
--	struct spi_master *master;
-+	struct spi_controller *host;
- 	unsigned int tx_bytes;
- 	unsigned int rx_bytes;
- 	void __iomem *base;
-@@ -101,7 +101,7 @@ static inline void npcm_pspi_disable(struct npcm_pspi *priv)
+diff --git a/drivers/spi/spi-lp8841-rtc.c b/drivers/spi/spi-lp8841-rtc.c
+index b357461f1b8b..382e2a69f7a7 100644
+--- a/drivers/spi/spi-lp8841-rtc.c
++++ b/drivers/spi/spi-lp8841-rtc.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later
+ /*
+- * SPI master driver for ICP DAS LP-8841 RTC
++ * SPI host driver for ICP DAS LP-8841 RTC
+  *
+  * Copyright (C) 2016 Sergei Ianovich
+  *
+@@ -73,13 +73,13 @@ bitbang_txrx_be_cpha0_lsb(struct spi_lp8841_rtc *data,
+ 	/* clock starts at inactive polarity */
+ 	for (; likely(bits); bits--) {
  
- static void npcm_pspi_set_mode(struct spi_device *spi)
+-		/* setup LSB (to slave) on leading edge */
++		/* setup LSB (to target) on leading edge */
+ 		if ((flags & SPI_CONTROLLER_NO_TX) == 0)
+ 			setmosi(data, (word & 1));
+ 
+ 		usleep_range(usecs, usecs + 1);	/* T(setup) */
+ 
+-		/* sample LSB (from slave) on trailing edge */
++		/* sample LSB (from target) on trailing edge */
+ 		word >>= 1;
+ 		if ((flags & SPI_CONTROLLER_NO_RX) == 0)
+ 			word |= (getmiso(data) << 31);
+@@ -95,11 +95,11 @@ bitbang_txrx_be_cpha0_lsb(struct spi_lp8841_rtc *data,
+ }
+ 
+ static int
+-spi_lp8841_rtc_transfer_one(struct spi_master *master,
++spi_lp8841_rtc_transfer_one(struct spi_controller *host,
+ 			    struct spi_device *spi,
+ 			    struct spi_transfer *t)
  {
--	struct npcm_pspi *priv = spi_master_get_devdata(spi->master);
-+	struct npcm_pspi *priv = spi_controller_get_devdata(spi->controller);
- 	u16 regtemp;
- 	u16 mode_val;
- 
-@@ -159,7 +159,7 @@ static void npcm_pspi_set_baudrate(struct npcm_pspi *priv, unsigned int speed)
- static void npcm_pspi_setup_transfer(struct spi_device *spi,
- 				     struct spi_transfer *t)
- {
--	struct npcm_pspi *priv = spi_master_get_devdata(spi->master);
-+	struct npcm_pspi *priv = spi_controller_get_devdata(spi->controller);
- 
- 	priv->tx_buf = t->tx_buf;
- 	priv->rx_buf = t->rx_buf;
-@@ -245,11 +245,11 @@ static void npcm_pspi_recv(struct npcm_pspi *priv)
+-	struct spi_lp8841_rtc	*data = spi_master_get_devdata(master);
++	struct spi_lp8841_rtc	*data = spi_controller_get_devdata(host);
+ 	unsigned		count = t->len;
+ 	const u8		*tx = t->tx_buf;
+ 	u8			*rx = t->rx_buf;
+@@ -128,7 +128,7 @@ spi_lp8841_rtc_transfer_one(struct spi_master *master,
+ 		ret = -EINVAL;
  	}
+ 
+-	spi_finalize_current_transfer(master);
++	spi_finalize_current_transfer(host);
+ 
+ 	return ret;
  }
- 
--static int npcm_pspi_transfer_one(struct spi_master *master,
-+static int npcm_pspi_transfer_one(struct spi_controller *host,
- 				  struct spi_device *spi,
- 				  struct spi_transfer *t)
+@@ -136,7 +136,7 @@ spi_lp8841_rtc_transfer_one(struct spi_master *master,
+ static void
+ spi_lp8841_rtc_set_cs(struct spi_device *spi, bool enable)
  {
--	struct npcm_pspi *priv = spi_master_get_devdata(master);
-+	struct npcm_pspi *priv = spi_controller_get_devdata(host);
- 	int status;
+-	struct spi_lp8841_rtc *data = spi_master_get_devdata(spi->master);
++	struct spi_lp8841_rtc *data = spi_controller_get_devdata(spi->controller);
  
- 	npcm_pspi_setup_transfer(spi, t);
-@@ -266,18 +266,18 @@ static int npcm_pspi_transfer_one(struct spi_master *master,
- 	return 0;
- }
- 
--static int npcm_pspi_prepare_transfer_hardware(struct spi_master *master)
-+static int npcm_pspi_prepare_transfer_hardware(struct spi_controller *host)
+ 	data->state = 0;
+ 	writeb(data->state, data->iomem);
+@@ -182,48 +182,48 @@ static int
+ spi_lp8841_rtc_probe(struct platform_device *pdev)
  {
--	struct npcm_pspi *priv = spi_master_get_devdata(master);
-+	struct npcm_pspi *priv = spi_controller_get_devdata(host);
+ 	int				ret;
+-	struct spi_master		*master;
++	struct spi_controller		*host;
+ 	struct spi_lp8841_rtc		*data;
  
- 	npcm_pspi_irq_enable(priv, NPCM_PSPI_CTL1_EIR | NPCM_PSPI_CTL1_EIW);
- 
- 	return 0;
- }
- 
--static int npcm_pspi_unprepare_transfer_hardware(struct spi_master *master)
-+static int npcm_pspi_unprepare_transfer_hardware(struct spi_controller *host)
- {
--	struct npcm_pspi *priv = spi_master_get_devdata(master);
-+	struct npcm_pspi *priv = spi_controller_get_devdata(host);
- 
- 	npcm_pspi_irq_disable(priv, NPCM_PSPI_CTL1_EIR | NPCM_PSPI_CTL1_EIW);
- 
-@@ -340,37 +340,37 @@ static irqreturn_t npcm_pspi_handler(int irq, void *dev_id)
- static int npcm_pspi_probe(struct platform_device *pdev)
- {
- 	struct npcm_pspi *priv;
--	struct spi_master *master;
-+	struct spi_controller *host;
- 	unsigned long clk_hz;
- 	int irq;
- 	int ret;
- 
--	master = spi_alloc_master(&pdev->dev, sizeof(*priv));
+-	master = spi_alloc_master(&pdev->dev, sizeof(*data));
 -	if (!master)
-+	host = spi_alloc_host(&pdev->dev, sizeof(*priv));
++	host = spi_alloc_host(&pdev->dev, sizeof(*data));
 +	if (!host)
  		return -ENOMEM;
- 
 -	platform_set_drvdata(pdev, master);
 +	platform_set_drvdata(pdev, host);
  
--	priv = spi_master_get_devdata(master);
--	priv->master = master;
-+	priv = spi_controller_get_devdata(host);
-+	priv->host = host;
- 	priv->is_save_param = false;
+-	master->flags = SPI_CONTROLLER_HALF_DUPLEX;
+-	master->mode_bits = SPI_CS_HIGH | SPI_3WIRE | SPI_LSB_FIRST;
++	host->flags = SPI_CONTROLLER_HALF_DUPLEX;
++	host->mode_bits = SPI_CS_HIGH | SPI_3WIRE | SPI_LSB_FIRST;
  
- 	priv->base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(priv->base)) {
- 		ret = PTR_ERR(priv->base);
--		goto out_master_put;
-+		goto out_host_put;
- 	}
- 
- 	priv->clk = devm_clk_get(&pdev->dev, NULL);
- 	if (IS_ERR(priv->clk)) {
- 		dev_err(&pdev->dev, "failed to get clock\n");
- 		ret = PTR_ERR(priv->clk);
--		goto out_master_put;
-+		goto out_host_put;
- 	}
- 
- 	ret = clk_prepare_enable(priv->clk);
- 	if (ret)
--		goto out_master_put;
-+		goto out_host_put;
- 
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0) {
-@@ -398,42 +398,42 @@ static int npcm_pspi_probe(struct platform_device *pdev)
- 
- 	clk_hz = clk_get_rate(priv->clk);
- 
--	master->max_speed_hz = DIV_ROUND_UP(clk_hz, NPCM_PSPI_MIN_CLK_DIVIDER);
--	master->min_speed_hz = DIV_ROUND_UP(clk_hz, NPCM_PSPI_MAX_CLK_DIVIDER);
--	master->mode_bits = SPI_CPHA | SPI_CPOL;
+-	master->bus_num = pdev->id;
+-	master->num_chipselect = 1;
+-	master->setup = spi_lp8841_rtc_setup;
+-	master->set_cs = spi_lp8841_rtc_set_cs;
+-	master->transfer_one = spi_lp8841_rtc_transfer_one;
+-	master->bits_per_word_mask = SPI_BPW_MASK(8);
++	host->bus_num = pdev->id;
++	host->num_chipselect = 1;
++	host->setup = spi_lp8841_rtc_setup;
++	host->set_cs = spi_lp8841_rtc_set_cs;
++	host->transfer_one = spi_lp8841_rtc_transfer_one;
++	host->bits_per_word_mask = SPI_BPW_MASK(8);
+ #ifdef CONFIG_OF
 -	master->dev.of_node = pdev->dev.of_node;
--	master->bus_num = -1;
--	master->bits_per_word_mask = SPI_BPW_MASK(8) | SPI_BPW_MASK(16);
--	master->transfer_one = npcm_pspi_transfer_one;
--	master->prepare_transfer_hardware =
-+	host->max_speed_hz = DIV_ROUND_UP(clk_hz, NPCM_PSPI_MIN_CLK_DIVIDER);
-+	host->min_speed_hz = DIV_ROUND_UP(clk_hz, NPCM_PSPI_MAX_CLK_DIVIDER);
-+	host->mode_bits = SPI_CPHA | SPI_CPOL;
 +	host->dev.of_node = pdev->dev.of_node;
-+	host->bus_num = -1;
-+	host->bits_per_word_mask = SPI_BPW_MASK(8) | SPI_BPW_MASK(16);
-+	host->transfer_one = npcm_pspi_transfer_one;
-+	host->prepare_transfer_hardware =
- 		npcm_pspi_prepare_transfer_hardware;
--	master->unprepare_transfer_hardware =
-+	host->unprepare_transfer_hardware =
- 		npcm_pspi_unprepare_transfer_hardware;
--	master->use_gpio_descriptors = true;
-+	host->use_gpio_descriptors = true;
+ #endif
  
- 	/* set to default clock rate */
- 	npcm_pspi_set_baudrate(priv, NPCM_PSPI_DEFAULT_CLK);
+-	data = spi_master_get_devdata(master);
++	data = spi_controller_get_devdata(host);
  
+ 	data->iomem = devm_platform_ioremap_resource(pdev, 0);
+ 	ret = PTR_ERR_OR_ZERO(data->iomem);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to get IO address\n");
+-		goto err_put_master;
++		goto err_put_host;
+ 	}
+ 
+ 	/* register with the SPI framework */
 -	ret = devm_spi_register_master(&pdev->dev, master);
 +	ret = devm_spi_register_controller(&pdev->dev, host);
- 	if (ret)
- 		goto out_disable_clk;
+ 	if (ret) {
+-		dev_err(&pdev->dev, "cannot register spi master\n");
+-		goto err_put_master;
++		dev_err(&pdev->dev, "cannot register spi host\n");
++		goto err_put_host;
+ 	}
  
--	pr_info("NPCM Peripheral SPI %d probed\n", master->bus_num);
-+	pr_info("NPCM Peripheral SPI %d probed\n", host->bus_num);
+ 	return ret;
  
- 	return 0;
  
- out_disable_clk:
- 	clk_disable_unprepare(priv->clk);
- 
--out_master_put:
+-err_put_master:
 -	spi_master_put(master);
-+out_host_put:
++err_put_host:
 +	spi_controller_put(host);
+ 
  	return ret;
  }
+@@ -239,6 +239,6 @@ static struct platform_driver spi_lp8841_rtc_driver = {
+ };
+ module_platform_driver(spi_lp8841_rtc_driver);
  
- static void npcm_pspi_remove(struct platform_device *pdev)
- {
--	struct spi_master *master = platform_get_drvdata(pdev);
--	struct npcm_pspi *priv = spi_master_get_devdata(master);
-+	struct spi_controller *host = platform_get_drvdata(pdev);
-+	struct npcm_pspi *priv = spi_controller_get_devdata(host);
- 
- 	npcm_pspi_reset_hw(priv);
- 	clk_disable_unprepare(priv->clk);
+-MODULE_DESCRIPTION("SPI master driver for ICP DAS LP-8841 RTC");
++MODULE_DESCRIPTION("SPI host driver for ICP DAS LP-8841 RTC");
+ MODULE_AUTHOR("Sergei Ianovich");
+ MODULE_LICENSE("GPL");
 -- 
 2.25.1
 

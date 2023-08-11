@@ -2,82 +2,198 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0EDB7C04A94
-	for <linux-spi@archiver.kernel.org>; Thu, 10 Aug 2023 13:25:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 44C8DC04FDF
+	for <linux-spi@archiver.kernel.org>; Fri, 11 Aug 2023 10:08:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232925AbjHJNZb (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 10 Aug 2023 09:25:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46376 "EHLO
+        id S235328AbjHKKIi (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 11 Aug 2023 06:08:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235229AbjHJNZN (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 10 Aug 2023 09:25:13 -0400
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90CAB26A9
-        for <linux-spi@vger.kernel.org>; Thu, 10 Aug 2023 06:25:11 -0700 (PDT)
-Received: from kwepemi500019.china.huawei.com (unknown [172.30.72.53])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4RM6zF1Ld3zqT2Z;
-        Thu, 10 Aug 2023 21:22:17 +0800 (CST)
-Received: from huawei.com (10.175.112.208) by kwepemi500019.china.huawei.com
- (7.221.188.117) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 10 Aug
- 2023 21:25:07 +0800
-From:   Zhang Zekun <zhangzekun11@huawei.com>
-To:     <kamal.dasu@broadcom.com>, <bcm-kernel-feedback-list@broadcom.com>,
-        <broonie@kernel.org>, <rjui@broadcom.com>, <sbranden@broadcom.com>,
-        <linux-spi@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
-Subject: [PATCH] spi: bcm-qspi: Simplify logic by using devm_platform_ioremap_resource_byname()
-Date:   Thu, 10 Aug 2023 21:16:50 +0800
-Message-ID: <20230810131650.71916-1-zhangzekun11@huawei.com>
-X-Mailer: git-send-email 2.17.1
+        with ESMTP id S229719AbjHKKIh (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 11 Aug 2023 06:08:37 -0400
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16D95E3;
+        Fri, 11 Aug 2023 03:08:32 -0700 (PDT)
+Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 37B6sQmc008644;
+        Fri, 11 Aug 2023 12:07:44 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+        from:to:cc:subject:date:message-id:in-reply-to:references
+        :mime-version:content-transfer-encoding:content-type; s=
+        selector1; bh=HR3hURRfNMxwM0MNF+bffvIV/HtWswDGC7r7A8PHRvw=; b=zt
+        dLCCs9Mh95e+0719CFdW3EV6mAoXUpTAZGo8U7JU77UEtgPshTkd0IN7xof5vy8h
+        kjkQa4QYKTYkEHuVDbH+wYpvI10km7WmmIUjupCqYBEMDMvxVcVEql/OUlzpNMIO
+        qKrynGR+MoLX5A061Xf5DV/ClsrEe/vQBunQfbZ0VAMxyelZMIx4vQ/uSTzzvSD+
+        DAqCcbBNaOK28L5vBecTAegcqlqG7oSZwBtAB38H2hyN8Hq9wNk5m98SeERclQA+
+        DTHJtwZ2Z42tb/pQi3iCHs57qffMt2rWWumDM4NevRPVGj5nyT7mPxKZV7LfsVpc
+        MaqpOlbkpJX9JIgX7KKA==
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3sd9jrtyf2-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 11 Aug 2023 12:07:43 +0200 (MEST)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id A8031100050;
+        Fri, 11 Aug 2023 12:07:41 +0200 (CEST)
+Received: from Webmail-eu.st.com (eqndag1node4.st.com [10.75.129.133])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 985B02138FD;
+        Fri, 11 Aug 2023 12:07:41 +0200 (CEST)
+Received: from localhost (10.201.21.121) by EQNDAG1NODE4.st.com
+ (10.75.129.133) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21; Fri, 11 Aug
+ 2023 12:07:41 +0200
+From:   Gatien Chevallier <gatien.chevallier@foss.st.com>
+To:     <Oleksii_Moisieiev@epam.com>, <gregkh@linuxfoundation.org>,
+        <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
+        <robh+dt@kernel.org>, <krzysztof.kozlowski+dt@linaro.org>,
+        <conor+dt@kernel.org>, <alexandre.torgue@foss.st.com>,
+        <vkoul@kernel.org>, <jic23@kernel.org>,
+        <olivier.moysan@foss.st.com>, <arnaud.pouliquen@foss.st.com>,
+        <mchehab@kernel.org>, <fabrice.gasnier@foss.st.com>,
+        <andi.shyti@kernel.org>, <ulf.hansson@linaro.org>,
+        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+        <hugues.fruchet@foss.st.com>, <lee@kernel.org>, <will@kernel.org>,
+        <catalin.marinas@arm.com>, <arnd@kernel.org>,
+        <richardcochran@gmail.com>, Frank Rowand <frowand.list@gmail.com>,
+        <peng.fan@oss.nxp.com>
+CC:     <linux-crypto@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <dmaengine@vger.kernel.org>,
+        <linux-i2c@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <alsa-devel@alsa-project.org>, <linux-media@vger.kernel.org>,
+        <linux-mmc@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-phy@lists.infradead.org>, <linux-serial@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>, <linux-usb@vger.kernel.org>,
+        Oleksii Moisieiev <oleksii_moisieiev@epam.com>,
+        Gatien Chevallier <gatien.chevallier@foss.st.com>
+Subject: [IGNORE][PATCH v4 01/11] dt-bindings: Document common device controller bindings
+Date:   Fri, 11 Aug 2023 12:07:21 +0200
+Message-ID: <20230811100731.108145-2-gatien.chevallier@foss.st.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20230811100731.108145-1-gatien.chevallier@foss.st.com>
+References: <20230811100731.108145-1-gatien.chevallier@foss.st.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Originating-IP: [10.175.112.208]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- kwepemi500019.china.huawei.com (7.221.188.117)
-X-CFilter-Loop: Reflected
+X-Originating-IP: [10.201.21.121]
+X-ClientProxiedBy: EQNCAS1NODE4.st.com (10.75.129.82) To EQNDAG1NODE4.st.com
+ (10.75.129.133)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-08-10_20,2023-08-10_01,2023-05-22_02
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-platform_get_resource_byname() and devm_ioremap_resource() can be
-replaced by devm_platform_ioremap_resource_byname(), which can
-simplify the code logic a bit, No functional change here.
+From: Oleksii Moisieiev <Oleksii_Moisieiev@epam.com>
 
-Signed-off-by: Zhang Zekun <zhangzekun11@huawei.com>
+Introducing of the common device controller bindings for the controller
+provider and consumer devices. Those bindings are intended to allow
+divided system on chip into multiple domains, that can be used to
+configure hardware permissions.
+
+Signed-off-by: Oleksii Moisieiev <oleksii_moisieiev@epam.com>
+[Gatien: Fix typos and YAML error]
+Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
 ---
- drivers/spi/spi-iproc-qspi.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/spi/spi-iproc-qspi.c b/drivers/spi/spi-iproc-qspi.c
-index 5980a0dbbccb..39ee2b43a516 100644
---- a/drivers/spi/spi-iproc-qspi.c
-+++ b/drivers/spi/spi-iproc-qspi.c
-@@ -94,7 +94,6 @@ static int bcm_iproc_probe(struct platform_device *pdev)
- 	struct device *dev = &pdev->dev;
- 	struct bcm_iproc_intc *priv;
- 	struct bcm_qspi_soc_intc *soc_intc;
--	struct resource *res;
- 
- 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
- 	if (!priv)
-@@ -104,14 +103,12 @@ static int bcm_iproc_probe(struct platform_device *pdev)
- 
- 	spin_lock_init(&priv->soclock);
- 
--	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "intr_regs");
--	priv->int_reg = devm_ioremap_resource(dev, res);
-+	priv->int_reg = devm_platform_ioremap_resource_byname(pdev, "intr_regs");
- 	if (IS_ERR(priv->int_reg))
- 		return PTR_ERR(priv->int_reg);
- 
--	res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
--					   "intr_status_reg");
--	priv->int_status_reg = devm_ioremap_resource(dev, res);
-+	priv->int_status_reg = devm_platform_ioremap_resource_byname(pdev,
-+								     "intr_status_reg");
- 	if (IS_ERR(priv->int_status_reg))
- 		return PTR_ERR(priv->int_status_reg);
- 
+Changes in V4: 
+	Corrected typos and YAML errors	
+	
+ .../feature-domain-controller.yaml            | 84 +++++++++++++++++++
+ 1 file changed, 84 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/feature-controllers/feature-domain-controller.yaml
+
+diff --git a/Documentation/devicetree/bindings/feature-controllers/feature-domain-controller.yaml b/Documentation/devicetree/bindings/feature-controllers/feature-domain-controller.yaml
+new file mode 100644
+index 000000000000..57217da2d1cf
+--- /dev/null
++++ b/Documentation/devicetree/bindings/feature-controllers/feature-domain-controller.yaml
+@@ -0,0 +1,84 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/feature-controllers/feature-domain-controller.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Generic Domain Controller
++
++maintainers:
++  - Oleksii Moisieiev <oleksii_moisieiev@epam.com>
++
++description: |+
++  Common Feature Domains Controller properties
++
++  Domain controllers allow to divided system on chip into multiple feature
++  domains that can be used to select by who hardware blocks could be accessed.
++  A feature domain could be a cluster of CPUs (or coprocessors), a range of
++  addresses or a group of hardware blocks.
++
++  This device tree bindings can be used to bind feature domain consumer devices
++  with their feature domains provided by feature-domains controllers.
++  Feature omain controller provider can be represened by any node in the
++  device tree and can provide one or more configuration parameters, needed to
++  control parameters of the consumer device. A consumer node can refer to the
++  provider by phandle and a set of phandle arguments, specified by
++  '#feature-domain-cells' property in the device controller provider node.
++
++  Device controllers are typically used to set the permissions of the hardware
++  block. The contents of the feature-domains configuration properties are
++  defined by the binding for the individual feature-domains controller device.
++
++  Each node can be a consumer for the several providers. The first
++  configuration of 'feature-domains' or the one named 'default' is applied
++  before probing the device itself.
++
++# always select the core schema
++select: true
++
++properties:
++  '#feature-domain-cells':
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description:
++      Number of cells in a feature-domains controller specifier;
++      Can be any value as specified by device tree binding documentation
++      of a particular provider.
++
++  feature-domain-controller:
++    description:
++      Indicates that the node is feature-domain-controller provider.
++
++  feature-domain-names:
++    $ref: '/schemas/types.yaml#/definitions/string-array'
++    description:
++      A list of feature-domains names, sorted in the same order as
++      feature-domains entries. Consumer drivers will use feature-domain-names
++      to match with existing feature-domains entries.
++
++  feature-domains:
++    $ref: "/schemas/types.yaml#/definitions/phandle-array"
++    description:
++      A list of feature-domains controller specifiers, as defined by the
++      bindings of the feature-domain-controller provider.
++
++additionalProperties: true
++
++examples:
++  - |
++    ctrl0: ctrl@100 {
++        feature-domain-controller;
++        reg = <0x100 0x10>;
++        #feature-domain-cells = <2>;
++    };
++
++    ctrl1: ctrl@110 {
++        feature-domain-controller;
++        reg = <0x110 0x10>;
++        #feature-domain-cells = <3>;
++    };
++
++    foo@0 {
++        reg = <0x0 0x1>;
++        feature-domains = <&ctrl0 1 2>, <&ctrl1 3 4 5>;
++        feature-domain-names = "default", "unbind";
++    };
 -- 
-2.17.1
+2.25.1
 

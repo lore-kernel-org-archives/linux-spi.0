@@ -2,134 +2,153 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E9CF5C04FDF
-	for <linux-spi@archiver.kernel.org>; Fri, 11 Aug 2023 12:01:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 69716EB64DD
+	for <linux-spi@archiver.kernel.org>; Fri, 11 Aug 2023 18:05:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234926AbjHKMBH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 11 Aug 2023 08:01:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56980 "EHLO
+        id S236703AbjHKSFp (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 11 Aug 2023 14:05:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231285AbjHKMBF (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 11 Aug 2023 08:01:05 -0400
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12C2410F;
-        Fri, 11 Aug 2023 05:01:00 -0700 (PDT)
-Received: from pps.filterd (m0288072.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 37B88G8v008911;
-        Fri, 11 Aug 2023 14:00:30 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-        message-id:date:mime-version:subject:to:cc:references:from
-        :in-reply-to:content-type:content-transfer-encoding; s=
-        selector1; bh=YFHcudHf3KpEu6VK+Oi7sDZa7u7aRH57T4p90BFxYt4=; b=kU
-        O35PwDwyu9KjgW31K5h+6ypqbjSO6SxBadYITZWgPgbjcx7JybnAtEPYUufCNZ1c
-        UmcJYsfb4v5cYrhDkibKKDxm5TpRLh/usyV9eplTbzPk8FWxlpA11SMe+tWFoHtE
-        nXPAN596HtBzcvDnDHR0ekdCH486R0r+TxPzL9tozmYQYoPWnnLGInYl3MRzO4Ve
-        mX/GHIkPAIGcQsdV9V/wrcIE3MhSv5JVpUfvddbdbHMcOV/6LpEQ9KIuJdAz19XH
-        RJctqFi0wSAJ+BRNaqX/iLjVk/ggN6VW/unTU9UDPsJ6xBkOROMcl3YQW+ceqGTb
-        HV30OC1Vqh+PAlrRr7vg==
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3sdh74h9vb-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 11 Aug 2023 14:00:29 +0200 (MEST)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 64D9710004F;
-        Fri, 11 Aug 2023 14:00:27 +0200 (CEST)
-Received: from Webmail-eu.st.com (eqndag1node4.st.com [10.75.129.133])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 287D02171E0;
-        Fri, 11 Aug 2023 14:00:27 +0200 (CEST)
-Received: from [10.201.21.121] (10.201.21.121) by EQNDAG1NODE4.st.com
- (10.75.129.133) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21; Fri, 11 Aug
- 2023 14:00:25 +0200
-Message-ID: <4f0f9d6c-ce4d-73a2-60bf-801c1a1d6cc3@foss.st.com>
-Date:   Fri, 11 Aug 2023 14:00:20 +0200
+        with ESMTP id S235863AbjHKSFo (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 11 Aug 2023 14:05:44 -0400
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2060.outbound.protection.outlook.com [40.107.237.60])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 082372D78;
+        Fri, 11 Aug 2023 11:05:44 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=TIXQdPSejCbnoSdeWNrBdBN5DaesrWThkZX2UDWFpYTQr2Usr2nQ0979nq3pcxsl//EqUqpJd262LPW50h7q2wkrtryng+jH1Acp6LxFCNFQ9Lw3ecL4QNwLPy82/GknqekcKc8NLksuM7IVeCE74Ais+CYH7chOYoaNsJBuy1XZlB2fupb8nCme8Tw434k4kqTCpfMefLmnRQGc9S9ix9OuN4LnesgS/GZ/XN/uYYpBgSYw4l6FPk6A+2/XnR8egUaccg65x4YUBYGcloHxNMu5DKhMaGKspHUc2l0GBRgvFe5s+c3CYwESflqnpyRNQ8Q12BdCkGnhtVPYZMnXKA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dy28TcdtatfE39iP7KmaaFwO5+MCnCgUUyAylO9Y+RE=;
+ b=MMtV0sl1z29gkyke3Yys7TJASfj6+1/NLDEfT7QUmUJOv43798aXiOGXbIEc9zrQHtxNAAuqYao8iHMt+HlokVAY/sjrsxK6SyLDSHV3T/Tc8WWa7QpMAaRjmOz7brC+tIeLAI8Ez/EUPgVgD5T1dQ9DWVteRj/EIRi9bAocR2vCh7l4B69XqR1KJkQhntamgxgmS9lvhBxbhmJnV14uHB1WnlweNvVYhtBXkOqj8NxWFJAik4EPb37b9iY0uioxlZo17No2K70EadLjBCRcqmGna1Bxgr+ttF+LGrohj8gJW95J/ZFQNBCYsWkQt68J8ugEp3YkNXY1Opkmrwvg9A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.infradead.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dy28TcdtatfE39iP7KmaaFwO5+MCnCgUUyAylO9Y+RE=;
+ b=ORL9StktDHvyvpLH/uUIDLqGL9J7sEjiKrlJICwRxiXBc3jwZlZ7tfbDGuj30QOur4dsFutY4mjHCzA7j+2DNzsmVdqg2wHRKJdK+YV3eCWO95Bx67hg/SHHJZy7c99EM1Gfmi7wVYhj/DJlh8mkGI1Sk5yeFwtlUOvaCNSyTyc=
+Received: from SN4PR0501CA0129.namprd05.prod.outlook.com
+ (2603:10b6:803:42::46) by SJ2PR12MB8873.namprd12.prod.outlook.com
+ (2603:10b6:a03:53d::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.30; Fri, 11 Aug
+ 2023 18:05:38 +0000
+Received: from SN1PEPF0002636B.namprd02.prod.outlook.com
+ (2603:10b6:803:42:cafe::f1) by SN4PR0501CA0129.outlook.office365.com
+ (2603:10b6:803:42::46) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6678.22 via Frontend
+ Transport; Fri, 11 Aug 2023 18:05:38 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SN1PEPF0002636B.mail.protection.outlook.com (10.167.241.136) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6652.19 via Frontend Transport; Fri, 11 Aug 2023 18:05:38 +0000
+Received: from platform-dev1.pensando.io (10.180.168.240) by
+ SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Fri, 11 Aug 2023 13:05:34 -0500
+From:   Brad Larson <blarson@amd.com>
+To:     <linux-arm-kernel@lists.infradead.org>
+CC:     <linux-kernel@vger.kernel.org>, <linux-mmc@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>, <adrian.hunter@intel.com>,
+        <alcooperx@gmail.com>, <andy.shevchenko@gmail.com>,
+        <arnd@arndb.de>, <blarson@amd.com>, <brendan.higgins@linux.dev>,
+        <briannorris@chromium.org>, <catalin.marinas@arm.com>,
+        <conor+dt@kernel.org>, <davidgow@google.com>, <gsomlo@gmail.com>,
+        <gerg@linux-m68k.org>, <hal.feng@starfivetech.com>,
+        <hasegawa-hitomi@fujitsu.com>, <j.neuschaefer@gmx.net>,
+        <joel@jms.id.au>, <kernel@esmil.dk>, <krzk@kernel.org>,
+        <krzysztof.kozlowski+dt@linaro.org>, <lee@kernel.org>,
+        <lee.jones@linaro.org>, <broonie@kernel.org>,
+        <p.zabel@pengutronix.de>, <rdunlap@infradead.org>,
+        <robh+dt@kernel.org>, <samuel@sholland.org>,
+        <fancer.lancer@gmail.com>, <skhan@linuxfoundation.org>,
+        <suravee.suthikulpanit@amd.com>, <thomas.lendacky@amd.com>,
+        <tonyhuang.sunplus@gmail.com>, <ulf.hansson@linaro.org>,
+        <vaishnav.a@ti.com>, <walker.chen@starfivetech.com>,
+        <will@kernel.org>, <zhuyinbo@loongson.cn>,
+        <devicetree@vger.kernel.org>
+Subject: [PATCH v15 1/6] dt-bindings: arm: add AMD Pensando boards
+Date:   Fri, 11 Aug 2023 11:05:14 -0700
+Message-ID: <20230811180519.29644-2-blarson@amd.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20230811180519.29644-1-blarson@amd.com>
+References: <20230811180519.29644-1-blarson@amd.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [IGNORE][PATCH v4 01/11] dt-bindings: Document common device
- controller bindings
-Content-Language: en-US
-To:     Greg KH <gregkh@linuxfoundation.org>
-CC:     <Oleksii_Moisieiev@epam.com>, <herbert@gondor.apana.org.au>,
-        <davem@davemloft.net>, <robh+dt@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
-        <alexandre.torgue@foss.st.com>, <vkoul@kernel.org>,
-        <jic23@kernel.org>, <olivier.moysan@foss.st.com>,
-        <arnaud.pouliquen@foss.st.com>, <mchehab@kernel.org>,
-        <fabrice.gasnier@foss.st.com>, <andi.shyti@kernel.org>,
-        <ulf.hansson@linaro.org>, <edumazet@google.com>, <kuba@kernel.org>,
-        <pabeni@redhat.com>, <hugues.fruchet@foss.st.com>,
-        <lee@kernel.org>, <will@kernel.org>, <catalin.marinas@arm.com>,
-        <arnd@kernel.org>, <richardcochran@gmail.com>,
-        Frank Rowand <frowand.list@gmail.com>, <peng.fan@oss.nxp.com>,
-        <linux-crypto@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <dmaengine@vger.kernel.org>,
-        <linux-i2c@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <alsa-devel@alsa-project.org>, <linux-media@vger.kernel.org>,
-        <linux-mmc@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-phy@lists.infradead.org>, <linux-serial@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>, <linux-usb@vger.kernel.org>
-References: <20230811100731.108145-1-gatien.chevallier@foss.st.com>
- <20230811100731.108145-2-gatien.chevallier@foss.st.com>
- <2023081117-sprout-cruncher-862c@gregkh>
-From:   Gatien CHEVALLIER <gatien.chevallier@foss.st.com>
-In-Reply-To: <2023081117-sprout-cruncher-862c@gregkh>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.201.21.121]
-X-ClientProxiedBy: EQNCAS1NODE4.st.com (10.75.129.82) To EQNDAG1NODE4.st.com
- (10.75.129.133)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-08-11_02,2023-08-10_01,2023-05-22_02
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF0002636B:EE_|SJ2PR12MB8873:EE_
+X-MS-Office365-Filtering-Correlation-Id: b9654bb8-646c-4b46-40a9-08db9a959179
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: ElIZPoUuvYHRItE7HBFidv7msCv0wXydsGeeZ2pluSiu8zR6t4TNkhQsPggTD4p/cTkXab41e5M/BUVJDOUQDXdcicEArKMYlYPKKGklY7FWSoesxC+oy9nNJ0zWN1zyb75c1Ltu8UtaDx3ms9HOjLDUoJB4vQCeS9MLi8sXhDAdbXBKLsExy+Vcc3aYy0R67LjAFVMLEYAobPjOqluBGatV3JSGhZV79N3Mh4RijUjbYJQ6bkPsyPY4KPwEaqOWFzDPFLEeYt0wpLmZrap1TVVpHivdH7rXgOSJzVevI9kO4q6ITbguvTE4v/ruza/02EUunI1b8jucSjUZVAExX7q/b7e4e2x0RhM0OJtLPPssARgAM74fofh1j9vYQETI/TpPAdXrJIfU5ywRUCcRntSh2RwU/WgbYPAQ/oR8GTuxa+IaTpJ2UpJD4rI4wBTYPj2pPWOiYcwqOJHPGqEdInCkWpSmKXUv8ypqrtLkXdDQp+DQvd7ft1vt6Tf/qBu9uKEVuT/cy+1vxentnuKSu0VvPaCb6b6Okx63U5UOFPO0pytwZC/eXmC1twHczyGq1VoIYA3COI4Dwk7liE64pOD38GLgOwQo0Lnc2I6aj+/hpLsk8TlcwP+2ObGjGIPtkozTQnxMnjSQLoqYNlaEuOrKWnAtyoHkH7tuwkf6aTsodHV6VseKugi8iWkgs21fbg32rKzM5wKP6qcWEZNeEFcKGd5c6aDdNkpacPA9Y6hjQ2TskxK+tBP9C6KCi4w+EpDpZOp77R5MyaQkN3KL13/UYfD5KEbnz+6/tTCOTME=
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(346002)(376002)(39860400002)(396003)(136003)(82310400008)(1800799006)(451199021)(186006)(46966006)(36840700001)(40470700004)(8676002)(8936002)(26005)(1076003)(41300700001)(82740400003)(40460700003)(36860700001)(47076005)(36756003)(2906002)(426003)(356005)(81166007)(2616005)(7416002)(7406005)(16526019)(336012)(5660300002)(70586007)(70206006)(6916009)(40480700001)(4326008)(966005)(54906003)(6666004)(478600001)(316002)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2023 18:05:38.3879
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b9654bb8-646c-4b46-40a9-08db9a959179
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: SN1PEPF0002636B.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8873
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+Document the compatible for AMD Pensando Elba SoC boards.
 
+Signed-off-by: Brad Larson <blarson@amd.com>
+Reviewed-by: Rob Herring <robh@kernel.org>
+---
+ .../devicetree/bindings/arm/amd,pensando.yaml | 26 +++++++++++++++++++
+ 1 file changed, 26 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/arm/amd,pensando.yaml
 
-On 8/11/23 12:16, Greg KH wrote:
-> On Fri, Aug 11, 2023 at 12:07:21PM +0200, Gatien Chevallier wrote:
->> From: Oleksii Moisieiev <Oleksii_Moisieiev@epam.com>
->>
->> Introducing of the common device controller bindings for the controller
->> provider and consumer devices. Those bindings are intended to allow
->> divided system on chip into multiple domains, that can be used to
->> configure hardware permissions.
->>
->> Signed-off-by: Oleksii Moisieiev <oleksii_moisieiev@epam.com>
->> [Gatien: Fix typos and YAML error]
->> Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
->> ---
->>
->> Changes in V4:
->> 	Corrected typos and YAML errors	
-> 
-> Why are we supposed to ignore the first patch in this series, but pay
-> attention to the 10 after this that depend on it?
-> 
-> totally confused,
-> 
-> greg k-h
+diff --git a/Documentation/devicetree/bindings/arm/amd,pensando.yaml b/Documentation/devicetree/bindings/arm/amd,pensando.yaml
+new file mode 100644
+index 000000000000..e5c2591834a8
+--- /dev/null
++++ b/Documentation/devicetree/bindings/arm/amd,pensando.yaml
+@@ -0,0 +1,26 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/arm/amd,pensando.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: AMD Pensando SoC Platforms
++
++maintainers:
++  - Brad Larson <blarson@amd.com>
++
++properties:
++  $nodename:
++    const: "/"
++  compatible:
++    oneOf:
++
++      - description: Boards with Pensando Elba SoC
++        items:
++          - enum:
++              - amd,pensando-elba-ortano
++          - const: amd,pensando-elba
++
++additionalProperties: true
++
++...
+-- 
+2.17.1
 
-Hello Greg,
-
-I'm sorry that this tag troubles your review. It was first suggested
-in [1]. The "IGNORE" means ignore review on this thread, as it is still
-under review in another thread (Link in the cover letter). It does not
-mean that the content should be ignored for the series. I will change
-this to something else as this is obviously confusing the review.
-
-@Oleksii, can we imagine integrating this patch to this series or do
-you prefer to keep it apart?
-
-Should I consider a resend with another tag if Oleksii prefers to keep
-this patch apart?
-
-[1] 
-https://lore.kernel.org/all/1e498b93-d3bd-bd12-e991-e3f4bedf632d@linaro.org/
-
-Best regards,
-Gatien

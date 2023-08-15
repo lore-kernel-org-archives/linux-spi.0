@@ -2,132 +2,86 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C9B13C41513
-	for <linux-spi@archiver.kernel.org>; Tue, 15 Aug 2023 02:36:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 753F8C41513
+	for <linux-spi@archiver.kernel.org>; Tue, 15 Aug 2023 05:50:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234276AbjHOCfu (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 14 Aug 2023 22:35:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36912 "EHLO
+        id S234665AbjHOFuH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 15 Aug 2023 01:50:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234323AbjHOCf1 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 14 Aug 2023 22:35:27 -0400
-Received: from SHSQR01.spreadtrum.com (unknown [222.66.158.135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28D6010D0;
-        Mon, 14 Aug 2023 19:35:26 -0700 (PDT)
-Received: from dlp.unisoc.com ([10.29.3.86])
-        by SHSQR01.spreadtrum.com with ESMTP id 37F2YvbZ067529;
-        Tue, 15 Aug 2023 10:34:57 +0800 (+08)
-        (envelope-from Jiansheng.Wu@unisoc.com)
-Received: from SHDLP.spreadtrum.com (shmbx05.spreadtrum.com [10.29.1.56])
-        by dlp.unisoc.com (SkyGuard) with ESMTPS id 4RPwKY5TqTz2P8CXW;
-        Tue, 15 Aug 2023 10:32:49 +0800 (CST)
-Received: from xm9614pcu.spreadtrum.com (10.13.2.29) by shmbx05.spreadtrum.com
- (10.29.1.56) with Microsoft SMTP Server (TLS) id 15.0.1497.23; Tue, 15 Aug
- 2023 10:34:55 +0800
-From:   Jiansheng Wu <jiansheng.wu@unisoc.com>
-To:     Mark Brown <broonie@kernel.org>, Orson Zhai <orsonzhai@gmail.com>,
+        with ESMTP id S234666AbjHOFsg (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 15 Aug 2023 01:48:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D7441BF9;
+        Mon, 14 Aug 2023 22:41:22 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 111FE62054;
+        Tue, 15 Aug 2023 05:41:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECF60C433C7;
+        Tue, 15 Aug 2023 05:41:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692078079;
+        bh=VPRHeVBgvZf02se9MrMMfU0xdugo14fh/UuUylChyjI=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=XYhqjQo4YExjQf8+myKGsDnUTCDESm5Iyt118d0ZJKCn8Z8NaL0kvIfHJjO4o2xSs
+         QUYjw5J6eL7xb//qSd2tiKB4BWJLEE1Ub4TbXR42Z/CYAp5aAHIVxXuFeUN4DJG46k
+         4DAnmokfwt3l8nv5B+kWel9WUkDBPbW4LU6DXBF70OBDsC0x4ung3mx3CL7CsFO6NB
+         Lwtv4BIHlW/wyF+mM5oHu5rgME3YY2bMsEj/nXiVLPP+yIDa2IPzS8YoQ8YOirxt4U
+         UcFvgTrdd2PIrQz2lRV+1l343N2o/v01i/8M9/0kGNtI2UW2EecrJ5ZkI1NPt1XcX4
+         cJRMVdTgIJqVQ==
+Message-ID: <7bb37b57-70c2-b752-64fc-fa60bea180e2@kernel.org>
+Date:   Tue, 15 Aug 2023 07:41:12 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH 8/8] spi: add sprd ADI for UMS9620
+To:     Jiansheng Wu <jiansheng.wu@unisoc.com>,
+        Mark Brown <broonie@kernel.org>,
+        Orson Zhai <orsonzhai@gmail.com>,
         Baolin Wang <baolin.wang@linux.alibaba.com>,
         Chunyan Zhang <zhang.lyra@gmail.com>
-CC:     <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <yongzhi.chen@unisoc.com>, <xiaoqing.wu@unisoc.com>,
-        <jianshengwu16@gmail.com>
-Subject: [PATCH 7/8] Spi: sprd-adi: Waiting write_cmd is finished
-Date:   Tue, 15 Aug 2023 10:34:25 +0800
-Message-ID: <20230815023426.15076-7-jiansheng.wu@unisoc.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20230815023426.15076-1-jiansheng.wu@unisoc.com>
+Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        yongzhi.chen@unisoc.com, xiaoqing.wu@unisoc.com,
+        jianshengwu16@gmail.com
 References: <20230815023426.15076-1-jiansheng.wu@unisoc.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.13.2.29]
-X-ClientProxiedBy: SHCAS03.spreadtrum.com (10.0.1.207) To
- shmbx05.spreadtrum.com (10.29.1.56)
-X-MAIL: SHSQR01.spreadtrum.com 37F2YvbZ067529
+ <20230815023426.15076-8-jiansheng.wu@unisoc.com>
+Content-Language: en-US
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+In-Reply-To: <20230815023426.15076-8-jiansheng.wu@unisoc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Checeking state on write_cmd, and return flag of result. It is a new
-function on UMS9620 to verify that the data transfer is complete.
+On 15/08/2023 04:34, Jiansheng Wu wrote:
+> This patch adds support for UMS9620.
+> 
+> Signed-off-by: Jiansheng Wu <jiansheng.wu@unisoc.com>
 
-Signed-off-by: XiaoQing Wu <xiaoqing.wu@unisoc.com>
-Signed-off-by: Jiansheng Wu <jiansheng.wu@unisoc.com>
----
- drivers/spi/spi-sprd-adi.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+2. Please use scripts/get_maintainers.pl to get a list of necessary
+people and lists to CC. It might happen, that command when run on an
+older kernel, gives you outdated entries. Therefore please be sure you
+base your patches on recent Linux kernel.
 
-diff --git a/drivers/spi/spi-sprd-adi.c b/drivers/spi/spi-sprd-adi.c
-index 0b20c228e119..8c518c227549 100644
---- a/drivers/spi/spi-sprd-adi.c
-+++ b/drivers/spi/spi-sprd-adi.c
-@@ -48,6 +48,7 @@
- #define RD_ADDR_MASK			GENMASK(30, 16)
- 
- /* Bits definitions for register REG_ADI_ARM_FIFO_STS */
-+#define BIT_ARM_WR_FREQ			BIT(31)
- #define BIT_FIFO_FULL			BIT(11)
- #define BIT_FIFO_EMPTY			BIT(10)
- 
-@@ -78,6 +79,7 @@
- 
- #define ADI_FIFO_DRAIN_TIMEOUT		1000
- #define ADI_READ_TIMEOUT		2000
-+#define ADI_WRITE_TIMEOUT		2000
- 
- /*
-  * Read back address from REG_ADI_RD_DATA bit[30:16] which maps to:
-@@ -150,6 +152,7 @@
- struct sprd_adi_data {
- 	u32 slave_offset;
- 	u32 slave_addr_size;
-+	int (*write_wait)(void __iomem *adi_base);
- 	int (*read_check)(u32 val, u32 reg);
- 	u32 rst_sts;
- 	u32 swrst_base;
-@@ -247,6 +250,22 @@ static int sprd_adi_read_check(u32 val, u32 addr)
- 	return 0;
- }
- 
-+static int sprd_adi_write_wait(void __iomem *adi_base)
-+{
-+	unsigned int write_timeout = ADI_WRITE_TIMEOUT;
-+	u32 val;
-+
-+	do {
-+		val = readl_relaxed(adi_base + REG_ADI_ARM_FIFO_STS);
-+		if (!(val & BIT_ARM_WR_FREQ))
-+			return 0;
-+		cpu_relax();
-+	} while (--write_timeout);
-+
-+	pr_err("ADI write fail, sts = 0x%02x\n", val);
-+	return -EBUSY;
-+}
-+
- static int sprd_adi_read_check_r2(u32 val, u32 reg)
- {
- 	return sprd_adi_read_check(val, reg & RDBACK_ADDR_MASK_R2);
-@@ -365,8 +384,12 @@ static int sprd_adi_write(struct sprd_adi *sadi, u32 reg, u32 val)
- 	if (timeout == 0) {
- 		dev_err(sadi->dev, "write fifo is full\n");
- 		ret = -EBUSY;
-+		goto out;
- 	}
- 
-+	if (sadi->data->write_wait)
-+		ret = sadi->data->write_wait(sadi->base);
-+
- out:
- 	if (sadi->hwlock)
- 		hwspin_unlock_irqrestore(sadi->hwlock, &flags);
-@@ -691,6 +714,7 @@ static struct sprd_adi_data ums512_data = {
- };
- 
- static struct sprd_adi_data ums9620_data = {
-+	.write_wait = sprd_adi_write_wait,
- 	.slave_offset = ADI_15BIT_SLAVE_OFFSET,
- 	.slave_addr_size = ADI_15BIT_SLAVE_ADDR_SIZE,
- 	.rst_sts = UMP9620_RST_STATUS,
--- 
-2.17.1
+You missed at least DT list (maybe more), so this won't be tested by
+automated tooling. Performing review on untested code might be a waste
+of time, thus I will skip this patch entirely till you follow the
+process allowing the patch to be tested.
+
+Please kindly resend and include all necessary To/Cc entries.
+
+1. Please use subject prefixes matching the subsystem. You can get them
+for example with `git log --oneline -- DIRECTORY_OR_FILE` on the
+directory your patch is touching.
+
+> ---
+>  Documentation/devicetree/bindings/spi/sprd,spi-adi.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+Best regards,
+Krzysztof
 

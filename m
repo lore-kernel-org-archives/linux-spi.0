@@ -2,28 +2,28 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4855DC001DB
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6C04DC04A6A
 	for <linux-spi@archiver.kernel.org>; Tue, 15 Aug 2023 02:35:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234251AbjHOCfS (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 14 Aug 2023 22:35:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51060 "EHLO
+        id S234286AbjHOCfU (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 14 Aug 2023 22:35:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234262AbjHOCfH (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 14 Aug 2023 22:35:07 -0400
+        with ESMTP id S234285AbjHOCfR (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 14 Aug 2023 22:35:17 -0400
 Received: from SHSQR01.spreadtrum.com (unknown [222.66.158.135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1012810D0;
-        Mon, 14 Aug 2023 19:35:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B372B10C1;
+        Mon, 14 Aug 2023 19:35:15 -0700 (PDT)
 Received: from dlp.unisoc.com ([10.29.3.86])
-        by SHSQR01.spreadtrum.com with ESMTP id 37F2YYVR066422;
-        Tue, 15 Aug 2023 10:34:34 +0800 (+08)
+        by SHSQR01.spreadtrum.com with ESMTP id 37F2Ys2f067436;
+        Tue, 15 Aug 2023 10:34:54 +0800 (+08)
         (envelope-from Jiansheng.Wu@unisoc.com)
 Received: from SHDLP.spreadtrum.com (shmbx05.spreadtrum.com [10.29.1.56])
-        by dlp.unisoc.com (SkyGuard) with ESMTPS id 4RPwK704pXz2P8CXW;
-        Tue, 15 Aug 2023 10:32:27 +0800 (CST)
+        by dlp.unisoc.com (SkyGuard) with ESMTPS id 4RPwKV32gXz2P8CXW;
+        Tue, 15 Aug 2023 10:32:46 +0800 (CST)
 Received: from xm9614pcu.spreadtrum.com (10.13.2.29) by shmbx05.spreadtrum.com
  (10.29.1.56) with Microsoft SMTP Server (TLS) id 15.0.1497.23; Tue, 15 Aug
- 2023 10:34:32 +0800
+ 2023 10:34:51 +0800
 From:   Jiansheng Wu <jiansheng.wu@unisoc.com>
 To:     Mark Brown <broonie@kernel.org>, Orson Zhai <orsonzhai@gmail.com>,
         Baolin Wang <baolin.wang@linux.alibaba.com>,
@@ -31,121 +31,97 @@ To:     Mark Brown <broonie@kernel.org>, Orson Zhai <orsonzhai@gmail.com>,
 CC:     <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <yongzhi.chen@unisoc.com>, <xiaoqing.wu@unisoc.com>,
         <jianshengwu16@gmail.com>
-Subject: [PATCH 1/8] Spi: sprd-adi: Getting panic reason before reboot
-Date:   Tue, 15 Aug 2023 10:34:19 +0800
-Message-ID: <20230815023426.15076-1-jiansheng.wu@unisoc.com>
+Subject: [PATCH 4/8] Spi: sprd-adi: Supported multi parameter configurations
+Date:   Tue, 15 Aug 2023 10:34:22 +0800
+Message-ID: <20230815023426.15076-4-jiansheng.wu@unisoc.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20230815023426.15076-1-jiansheng.wu@unisoc.com>
+References: <20230815023426.15076-1-jiansheng.wu@unisoc.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.13.2.29]
 X-ClientProxiedBy: SHCAS03.spreadtrum.com (10.0.1.207) To
  shmbx05.spreadtrum.com (10.29.1.56)
-X-MAIL: SHSQR01.spreadtrum.com 37F2YYVR066422
+X-MAIL: SHSQR01.spreadtrum.com 37F2Ys2f067436
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Registered adi_panic_event to panic_notifier_list, that is used to
-get panic reason and judge restart causes before system reboot.
-It's can improve reboot reasons from panic.
+It is supporting multi hardware and multi config on adi driver.
+That we can define different parameter on boards' dts, and configure
+cannels on adi-device.
 
 Signed-off-by: Jiansheng Wu <jiansheng.wu@unisoc.com>
 ---
- drivers/spi/spi-sprd-adi.c | 46 ++++++++++++++++++++++++++++++++++----
- 1 file changed, 42 insertions(+), 4 deletions(-)
+ drivers/spi/spi-sprd-adi.c | 35 ++++++++++++++++++++++++++++++++++-
+ 1 file changed, 34 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-sprd-adi.c b/drivers/spi/spi-sprd-adi.c
-index 22e39c4c12c4..dd00d63a3cd0 100644
+index 569a66943e8d..eea64d20279e 100644
 --- a/drivers/spi/spi-sprd-adi.c
 +++ b/drivers/spi/spi-sprd-adi.c
-@@ -12,6 +12,7 @@
- #include <linux/module.h>
- #include <linux/of.h>
- #include <linux/of_device.h>
-+#include <linux/panic_notifier.h>
- #include <linux/platform_device.h>
- #include <linux/reboot.h>
- #include <linux/spi/spi.h>
-@@ -128,6 +129,8 @@
- #define WDG_LOAD_MASK			GENMASK(15, 0)
+@@ -140,6 +140,8 @@
  #define WDG_UNLOCK_KEY			0xe551
  
-+#define PANIC_REASON_LEN_MAX		20
-+
- struct sprd_adi_wdg {
- 	u32 base;
- 	u32 rst_sts;
-@@ -155,6 +158,31 @@ struct sprd_adi {
- 	const struct sprd_adi_data *data;
- };
+ #define PANIC_REASON_LEN_MAX		20
++/*Adi single soft multi hard*/
++#define SPRD_ADI_MAGIC_LEN_MAX          5
  
-+static char *panic_reason;
-+static int adi_panic_event(struct notifier_block *self, unsigned long val, void *reason)
+ struct sprd_adi_data {
+ 	u32 slave_offset;
+@@ -471,12 +473,40 @@ static int sprd_adi_restart_handler(struct notifier_block *this, unsigned long m
+ 	return NOTIFY_DONE;
+ }
+ 
++static void sprd_adi_power_ssmh(char *adi_supply)
 +{
-+	if (reason == NULL)
-+		return 0;
++	struct device_node *cmdline_node;
++	const char *cmd_line, *adi_type;
++	char adi_value[SPRD_ADI_MAGIC_LEN_MAX] = "";
++	int ret;
 +
-+	if (strlen(reason) < PANIC_REASON_LEN_MAX)
-+		memcpy(panic_reason, reason, strlen(reason));
-+	else
-+		memcpy(panic_reason, reason, PANIC_REASON_LEN_MAX);
++	cmdline_node = of_find_node_by_path("/chosen");
++	ret = of_property_read_string(cmdline_node, "bootargs", &cmd_line);
++	if (ret) {
++		pr_err("can't parse bootargs property\n");
++		return;
++	}
 +
-+	return 0;
++	adi_type = strstr(cmd_line, "power.from.extern=");
++	if (!adi_type) {
++		pr_err("can't find power.from.extern\n");
++		return;
++	}
++
++	sscanf(adi_type, "power.from.extern=%s\n", adi_value);
++	if (!adi_value[0])
++		return;
++
++	strcat(adi_supply, adi_value);
 +}
 +
-+static struct notifier_block adi_panic_event_nb = {
-+	.notifier_call  = adi_panic_event,
-+	.priority       = INT_MAX,
-+};
-+
-+static int adi_get_panic_reason_init(void)
-+{
-+	atomic_notifier_chain_register(&panic_notifier_list, &adi_panic_event_nb);
-+	return 0;
-+}
-+
- static int sprd_adi_check_addr(struct sprd_adi *sadi, u32 reg)
+ static void sprd_adi_hw_init(struct sprd_adi *sadi)
  {
- 	if (reg >= sadi->data->slave_addr_size) {
-@@ -378,9 +406,15 @@ static int sprd_adi_restart(struct notifier_block *this, unsigned long mode,
- 					     restart_handler);
- 	u32 val, reboot_mode = 0;
+ 	struct device_node *np = sadi->dev->of_node;
+ 	int i, size, chn_cnt;
+ 	const __be32 *list;
+ 	u32 tmp;
++	char adi_supply[25] = "sprd,hw-channels";
  
--	if (!cmd)
--		reboot_mode = HWRST_STATUS_NORMAL;
--	else if (!strncmp(cmd, "recovery", 8))
-+	if (!cmd) {
-+		if (strlen(panic_reason)) {
-+			reboot_mode = HWRST_STATUS_PANIC;
-+			if (strstr(panic_reason, "tospanic"))
-+				reboot_mode = HWRST_STATUS_SECURITY;
-+		} else {
-+			reboot_mode = HWRST_STATUS_NORMAL;
-+		}
-+	} else if (!strncmp(cmd, "recovery", 8))
- 		reboot_mode = HWRST_STATUS_RECOVERY;
- 	else if (!strncmp(cmd, "alarm", 5))
- 		reboot_mode = HWRST_STATUS_ALARM;
-@@ -520,6 +554,10 @@ static int sprd_adi_probe(struct platform_device *pdev)
- 	u16 num_chipselect;
- 	int ret;
+ 	/* Set all channels as default priority */
+ 	writel_relaxed(0, sadi->base + REG_ADI_CHN_PRIL);
+@@ -488,7 +518,10 @@ static void sprd_adi_hw_init(struct sprd_adi *sadi)
+ 	writel_relaxed(tmp, sadi->base + REG_ADI_GSSI_CFG0);
  
-+	panic_reason = devm_kzalloc(&pdev->dev, (sizeof(char))*PANIC_REASON_LEN_MAX, GFP_KERNEL);
-+	if (!panic_reason)
-+		return -ENOMEM;
+ 	/* Set hardware channels setting */
+-	list = of_get_property(np, "sprd,hw-channels", &size);
++	sprd_adi_power_ssmh(adi_supply);
++	dev_info(sadi->dev, "adi supply is %s\n", adi_supply);
 +
- 	if (!np) {
- 		dev_err(&pdev->dev, "can not find the adi bus node\n");
- 		return -ENODEV;
-@@ -573,7 +611,7 @@ static int sprd_adi_probe(struct platform_device *pdev)
- 	}
- 
- 	sprd_adi_hw_init(sadi);
--
-+	adi_get_panic_reason_init();
- 	if (sadi->data->wdg_rst)
- 		sadi->data->wdg_rst(sadi);
- 
++	list = of_get_property(np, adi_supply, &size);
+ 	if (!list || !size) {
+ 		dev_info(sadi->dev, "no hw channels setting in node\n");
+ 		return;
 -- 
 2.17.1
 

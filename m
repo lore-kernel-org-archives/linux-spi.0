@@ -2,28 +2,28 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C20BC41513
-	for <linux-spi@archiver.kernel.org>; Tue, 15 Aug 2023 02:35:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 60F55C001DB
+	for <linux-spi@archiver.kernel.org>; Tue, 15 Aug 2023 02:36:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234264AbjHOCfT (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 14 Aug 2023 22:35:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52612 "EHLO
+        id S234255AbjHOCft (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 14 Aug 2023 22:35:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234266AbjHOCfK (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 14 Aug 2023 22:35:10 -0400
-Received: from SHSQR01.spreadtrum.com (mx1.unisoc.com [222.66.158.135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79C3D10C1;
-        Mon, 14 Aug 2023 19:35:09 -0700 (PDT)
+        with ESMTP id S234265AbjHOCfU (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 14 Aug 2023 22:35:20 -0400
+Received: from SHSQR01.spreadtrum.com (unknown [222.66.158.135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7CC210C1;
+        Mon, 14 Aug 2023 19:35:18 -0700 (PDT)
 Received: from dlp.unisoc.com ([10.29.3.86])
-        by SHSQR01.spreadtrum.com with ESMTP id 37F2Ym7u067138;
-        Tue, 15 Aug 2023 10:34:48 +0800 (+08)
+        by SHSQR01.spreadtrum.com with ESMTP id 37F2Ythv067477;
+        Tue, 15 Aug 2023 10:34:55 +0800 (+08)
         (envelope-from Jiansheng.Wu@unisoc.com)
 Received: from SHDLP.spreadtrum.com (shmbx05.spreadtrum.com [10.29.1.56])
-        by dlp.unisoc.com (SkyGuard) with ESMTPS id 4RPwKN1bytz2P8CXW;
-        Tue, 15 Aug 2023 10:32:40 +0800 (CST)
+        by dlp.unisoc.com (SkyGuard) with ESMTPS id 4RPwKW3cwjz2PgxhY;
+        Tue, 15 Aug 2023 10:32:47 +0800 (CST)
 Received: from xm9614pcu.spreadtrum.com (10.13.2.29) by shmbx05.spreadtrum.com
  (10.29.1.56) with Microsoft SMTP Server (TLS) id 15.0.1497.23; Tue, 15 Aug
- 2023 10:34:45 +0800
+ 2023 10:34:52 +0800
 From:   Jiansheng Wu <jiansheng.wu@unisoc.com>
 To:     Mark Brown <broonie@kernel.org>, Orson Zhai <orsonzhai@gmail.com>,
         Baolin Wang <baolin.wang@linux.alibaba.com>,
@@ -31,9 +31,9 @@ To:     Mark Brown <broonie@kernel.org>, Orson Zhai <orsonzhai@gmail.com>,
 CC:     <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <yongzhi.chen@unisoc.com>, <xiaoqing.wu@unisoc.com>,
         <jianshengwu16@gmail.com>
-Subject: [PATCH 3/8] Spi: sprd-adi: Added the cause of reboot
-Date:   Tue, 15 Aug 2023 10:34:21 +0800
-Message-ID: <20230815023426.15076-3-jiansheng.wu@unisoc.com>
+Subject: [PATCH 5/8] Spi: sprd-adi: Checking panic reason from sml
+Date:   Tue, 15 Aug 2023 10:34:23 +0800
+Message-ID: <20230815023426.15076-5-jiansheng.wu@unisoc.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20230815023426.15076-1-jiansheng.wu@unisoc.com>
 References: <20230815023426.15076-1-jiansheng.wu@unisoc.com>
@@ -42,52 +42,57 @@ Content-Type: text/plain
 X-Originating-IP: [10.13.2.29]
 X-ClientProxiedBy: SHCAS03.spreadtrum.com (10.0.1.207) To
  shmbx05.spreadtrum.com (10.29.1.56)
-X-MAIL: SHSQR01.spreadtrum.com 37F2Ym7u067138
+X-MAIL: SHSQR01.spreadtrum.com 37F2Ythv067477
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Added the silent and dmverity methods to reboot mode that the system
-need enter the silent or secboot mode after restarting system.
+Checking panic reason from sml and recording reboot mode to pmic's reg.
+It used to check reboot reason on next boot.
 
+Signed-off-by: XiaoQing Wu <xiaoqing.wu@unisoc.com>
 Signed-off-by: Jiansheng Wu <jiansheng.wu@unisoc.com>
 ---
- drivers/spi/spi-sprd-adi.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/spi/spi-sprd-adi.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/spi/spi-sprd-adi.c b/drivers/spi/spi-sprd-adi.c
-index 734245492680..569a66943e8d 100644
+index eea64d20279e..c31035fffe4c 100644
 --- a/drivers/spi/spi-sprd-adi.c
 +++ b/drivers/spi/spi-sprd-adi.c
-@@ -118,6 +118,7 @@
- 
+@@ -119,6 +119,7 @@
  /* Definition of PMIC reset status register */
  #define HWRST_STATUS_SECURITY		0x02
-+#define HWRST_STATUS_SECBOOT		0x03
+ #define HWRST_STATUS_SECBOOT		0x03
++#define HWRST_STATUS_SML_PANIC          0x04
  #define HWRST_STATUS_RECOVERY		0x20
  #define HWRST_STATUS_NORMAL		0x40
  #define HWRST_STATUS_ALARM		0x50
-@@ -129,6 +130,7 @@
- #define HWRST_STATUS_AUTODLOADER	0xa0
- #define HWRST_STATUS_IQMODE		0xb0
- #define HWRST_STATUS_SPRDISK		0xc0
-+#define HWRST_STATUS_SILENT             0xd0
- #define HWRST_STATUS_FACTORYTEST	0xe0
- #define HWRST_STATUS_WATCHDOG		0xf0
+@@ -410,7 +411,7 @@ static int sprd_adi_restart_handler(struct notifier_block *this, unsigned long m
+ {
+ 	struct sprd_adi *sadi = container_of(this, struct sprd_adi,
+ 					     restart_handler);
+-	u32 val, reboot_mode = 0;
++	u32 val = 0, reboot_mode = 0, sml_mode;
  
-@@ -438,8 +440,12 @@ static int sprd_adi_restart_handler(struct notifier_block *this, unsigned long m
- 		reboot_mode = HWRST_STATUS_SPRDISK;
- 	else if (!strncmp(cmd, "tospanic", 8))
- 		reboot_mode = HWRST_STATUS_SECURITY;
-+	else if (!strncmp(cmd, "dm-verity", 9))
-+		reboot_mode = HWRST_STATUS_SECBOOT;
- 	else if (!strncmp(cmd, "factorytest", 11))
- 		reboot_mode = HWRST_STATUS_FACTORYTEST;
-+	else if (!strncmp(cmd, "silent", 6))
-+		reboot_mode = HWRST_STATUS_SILENT;
- 	else
- 		reboot_mode = HWRST_STATUS_NORMAL;
+ 	if (!cmd) {
+ 		if (strlen(panic_reason)) {
+@@ -453,9 +454,12 @@ static int sprd_adi_restart_handler(struct notifier_block *this, unsigned long m
  
+ 	/* Record the reboot mode */
+ 	sprd_adi_read(sadi, sadi->data->rst_sts, &val);
+-	val &= ~0xFF;
+-	val |= reboot_mode;
+-	sprd_adi_write(sadi, sadi->data->rst_sts, val);
++	sml_mode = val & 0xFF;
++	if (sml_mode != HWRST_STATUS_SML_PANIC && sml_mode != HWRST_STATUS_SECURITY) {
++		val &= ~0xFF;
++		val |= reboot_mode;
++		sprd_adi_write(sadi, sadi->data->rst_sts, val);
++	}
+ 
+ 	/*enable register reboot mode*/
+ 	sprd_adi_read(sadi, sadi->data->swrst_base, &val);
 -- 
 2.17.1
 

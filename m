@@ -2,85 +2,74 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0C6B9C04E69
-	for <linux-spi@archiver.kernel.org>; Wed, 16 Aug 2023 16:17:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D58C9C001E0
+	for <linux-spi@archiver.kernel.org>; Wed, 16 Aug 2023 16:21:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237832AbjHPQRR (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 16 Aug 2023 12:17:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33704 "EHLO
+        id S1344644AbjHPQVH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 16 Aug 2023 12:21:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344610AbjHPQQr (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 16 Aug 2023 12:16:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23928271D
-        for <linux-spi@vger.kernel.org>; Wed, 16 Aug 2023 09:16:38 -0700 (PDT)
+        with ESMTP id S1344651AbjHPQUz (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 16 Aug 2023 12:20:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31CC62710
+        for <linux-spi@vger.kernel.org>; Wed, 16 Aug 2023 09:20:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B60B062579
-        for <linux-spi@vger.kernel.org>; Wed, 16 Aug 2023 16:16:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B59FC433C7;
-        Wed, 16 Aug 2023 16:16:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BA1046232F
+        for <linux-spi@vger.kernel.org>; Wed, 16 Aug 2023 16:20:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 22D36C433C9;
+        Wed, 16 Aug 2023 16:20:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692202597;
-        bh=XAWwIxT0ic4hoOj1N3TtsNoKTELwd3VIY2VtzSaZ8oQ=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=XxbrkcmMBBqEbSCSPcFENtBnTmOZRAey20uMwml0fqhqmTEAhEQ7BpNEDdxNqf3xx
-         cY4f3V2qKe/CQzeCy8YXPzEEWtMYsl94Gwn++N5SalLbiTx+ZLwblrsZxQjvSojE9I
-         uuMrwt1Wp+InC+Bhk3L5UUTKfTgrdfhj1hNZWO300Rq6ZQb4/+anoKPkNa232vdw4D
-         9qOCw0fxVhjiCfQZFO7qkP0KlJfGlcWAOveHN0SBQ3PKvVU566gqs+uQSKvHdGbw8N
-         i9tHOaWFx570jaNLV37nIsiBuxD7Wu1GlNVmwZwspI5fS4FYmAgIa+SgTaWeuTXCIY
-         UPwrsKdh+O7ZQ==
-From:   Mark Brown <broonie@kernel.org>
-To:     linux-spi@vger.kernel.org,
-        Yang Yingliang <yangyingliang@huawei.com>
-Cc:     geert@linux-m68k.org, lukas@wunner.de, fancer.lancer@gmail.com
-In-Reply-To: <20230816093938.1274806-1-yangyingliang@huawei.com>
-References: <20230816093938.1274806-1-yangyingliang@huawei.com>
-Subject: Re: [PATCH -next] spi: dw-mmio: keep old name same as
- documentation
-Message-Id: <169220259583.817565.3022901800932980623.b4-ty@kernel.org>
-Date:   Wed, 16 Aug 2023 17:16:35 +0100
-MIME-Version: 1.0
+        s=k20201202; t=1692202851;
+        bh=tV27j88vmAWLJke/8IoIkn7PJAJ2hCmbm6d+0ZoDamE=;
+        h=Subject:From:Date:To:From;
+        b=ANCUJfaLWWFwwppm44vtzav1T5ROqdlRcFda2zV9xjBfUkjN2vySSoSmj2Zw3XbSQ
+         KYSV+FOrgRBPP+bVH5x/Um8+uOESOcqtqR2d+7svc9JjPTsIEVQEwqiYmgSJzDo1fg
+         kyA4ZF2Ot1LKly9VrNQGtkthAjW1P7lTPwUuu9WTAtZ8BVTK4KTpC+bhIx3GBUEprP
+         NJcgq5UY7GER3S7EBr4DrXXLaQOkTAeIj2eatBHhTE8LA5XjzIATpHYzTvlPaLX3Vv
+         yiNoLjRpAMAxeMtVuhYqSKCfq6OmK9DJkFDCT5ImdJEEk2gVHzL7sfjv9cQBxnCoOJ
+         QxM5z52A5U+SA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id F2EF2E93B30;
+        Wed, 16 Aug 2023 16:20:50 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13-dev-034f2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <169220285094.377.7117112920070569460.git-patchwork-summary@kernel.org>
+Date:   Wed, 16 Aug 2023 16:20:50 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, 16 Aug 2023 17:39:38 +0800, Yang Yingliang wrote:
-> The documentation has not use the new name(host/target),
-> so keep the comment words same as documentation used.
-> 
-> 
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+Series: spi: switch to use modern name (part4)
+  Submitter: Yang Yingliang <yangyingliang@huawei.com>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=776570
+  Lore link: https://lore.kernel.org/r/20230816094013.1275068-1-yangyingliang@huawei.com
+    Patches: [-next,01/24] spi: orion: switch to use modern name
+             [-next,14/24] spi: rpc-if: switch to use devm_spi_alloc_host()
 
-Thanks!
+Patch: [-next] spi: dw-mmio: keep old name same as documentation
+  Submitter: Yang Yingliang <yangyingliang@huawei.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=776569
+  Lore link: https://lore.kernel.org/r/20230816093938.1274806-1-yangyingliang@huawei.com
 
-[1/1] spi: dw-mmio: keep old name same as documentation
-      commit: ecd02b6dee29b3d3a180cfda39d989752d0e913a
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+Total patches: 3
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
 

@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 895A8C07E8F
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4D3DCC07E8E
 	for <linux-spi@archiver.kernel.org>; Wed, 16 Aug 2023 09:44:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243455AbjHPJnj (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S243454AbjHPJnj (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Wed, 16 Aug 2023 05:43:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49132 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243457AbjHPJna (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 16 Aug 2023 05:43:30 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70F9D26AB
-        for <linux-spi@vger.kernel.org>; Wed, 16 Aug 2023 02:43:28 -0700 (PDT)
-Received: from dggpemm500004.china.huawei.com (unknown [172.30.72.55])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RQjpP1ZdkzrSGD;
-        Wed, 16 Aug 2023 17:42:05 +0800 (CST)
+        with ESMTP id S243453AbjHPJn2 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 16 Aug 2023 05:43:28 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99F391985
+        for <linux-spi@vger.kernel.org>; Wed, 16 Aug 2023 02:43:26 -0700 (PDT)
+Received: from dggpemm100002.china.huawei.com (unknown [172.30.72.54])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RQjnW0sxbzVk8Z;
+        Wed, 16 Aug 2023 17:41:19 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500004.china.huawei.com (7.185.36.219) with Microsoft SMTP Server
+ dggpemm100002.china.huawei.com (7.185.36.179) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Wed, 16 Aug 2023 17:43:26 +0800
+ 15.1.2507.31; Wed, 16 Aug 2023 17:43:24 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Wed, 16 Aug
- 2023 17:43:25 +0800
+ 2023 17:43:24 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
         <yangyingliang@huawei.com>
-Subject: [PATCH -next 13/24] spi: rockchip: switch to use modern name
-Date:   Wed, 16 Aug 2023 17:40:02 +0800
-Message-ID: <20230816094013.1275068-14-yangyingliang@huawei.com>
+Subject: [PATCH -next 09/24] spi: qup: switch to use modern name
+Date:   Wed, 16 Aug 2023 17:39:58 +0800
+Message-ID: <20230816094013.1275068-10-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230816094013.1275068-1-yangyingliang@huawei.com>
 References: <20230816094013.1275068-1-yangyingliang@huawei.com>
@@ -46,202 +46,453 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Change legacy name master/slave to modern name host/target or controller.
+Change legacy name master to modern name host or controller.
 
 No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-rockchip.c | 58 +++++++++++++++++++-------------------
- 1 file changed, 29 insertions(+), 29 deletions(-)
+ drivers/spi/spi-qup.c | 166 +++++++++++++++++++++---------------------
+ 1 file changed, 83 insertions(+), 83 deletions(-)
 
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index a37943847e81..5b010094dace 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -104,8 +104,8 @@
- #define CR0_XFM_RO					0x2
- 
- #define CR0_OPM_OFFSET				20
--#define CR0_OPM_MASTER				0x0
--#define CR0_OPM_SLAVE				0x1
-+#define CR0_OPM_HOST				0x0
-+#define CR0_OPM_TARGET				0x1
- 
- #define CR0_SOI_OFFSET				23
- 
-@@ -125,7 +125,7 @@
- #define SR_TF_EMPTY					(1 << 2)
- #define SR_RF_EMPTY					(1 << 3)
- #define SR_RF_FULL					(1 << 4)
--#define SR_SLAVE_TX_BUSY				(1 << 5)
-+#define SR_TARGET_TX_BUSY				(1 << 5)
- 
- /* Bit fields in ISR, IMR, ISR, RISR, 5bit */
- #define INT_MASK					0x1f
-@@ -151,7 +151,7 @@
- #define RXDMA					(1 << 0)
- #define TXDMA					(1 << 1)
- 
--/* sclk_out: spi master internal logic in rk3x can support 50Mhz */
-+/* sclk_out: spi host internal logic in rk3x can support 50Mhz */
- #define MAX_SCLK_OUT				50000000U
- 
- /*
-@@ -194,8 +194,8 @@ struct rockchip_spi {
- 
- 	bool cs_asserted[ROCKCHIP_SPI_MAX_CS_NUM];
- 
--	bool slave_abort;
--	bool cs_inactive; /* spi slave tansmition stop when cs inactive */
-+	bool target_abort;
-+	bool cs_inactive; /* spi target tansmition stop when cs inactive */
- 	bool cs_high_supported; /* native CS supports active-high polarity */
- 
- 	struct spi_transfer *xfer; /* Store xfer temporarily */
-@@ -206,13 +206,13 @@ static inline void spi_enable_chip(struct rockchip_spi *rs, bool enable)
- 	writel_relaxed((enable ? 1U : 0U), rs->regs + ROCKCHIP_SPI_SSIENR);
+diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
+index fd16acb1f578..4b6f6b25219b 100644
+--- a/drivers/spi/spi-qup.c
++++ b/drivers/spi/spi-qup.c
+@@ -385,20 +385,20 @@ static void spi_qup_write(struct spi_qup *controller)
+ 	} while (remainder);
  }
  
--static inline void wait_for_tx_idle(struct rockchip_spi *rs, bool slave_mode)
-+static inline void wait_for_tx_idle(struct rockchip_spi *rs, bool target_mode)
+-static int spi_qup_prep_sg(struct spi_master *master, struct scatterlist *sgl,
++static int spi_qup_prep_sg(struct spi_controller *host, struct scatterlist *sgl,
+ 			   unsigned int nents, enum dma_transfer_direction dir,
+ 			   dma_async_tx_callback callback)
  {
- 	unsigned long timeout = jiffies + msecs_to_jiffies(5);
+-	struct spi_qup *qup = spi_master_get_devdata(master);
++	struct spi_qup *qup = spi_controller_get_devdata(host);
+ 	unsigned long flags = DMA_PREP_INTERRUPT | DMA_PREP_FENCE;
+ 	struct dma_async_tx_descriptor *desc;
+ 	struct dma_chan *chan;
+ 	dma_cookie_t cookie;
  
- 	do {
--		if (slave_mode) {
--			if (!(readl_relaxed(rs->regs + ROCKCHIP_SPI_SR) & SR_SLAVE_TX_BUSY) &&
-+		if (target_mode) {
-+			if (!(readl_relaxed(rs->regs + ROCKCHIP_SPI_SR) & SR_TARGET_TX_BUSY) &&
- 			    !((readl_relaxed(rs->regs + ROCKCHIP_SPI_SR) & SR_BUSY)))
- 				return;
- 		} else {
-@@ -351,9 +351,9 @@ static irqreturn_t rockchip_spi_isr(int irq, void *dev_id)
- 	struct spi_controller *ctlr = dev_id;
- 	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
+ 	if (dir == DMA_MEM_TO_DEV)
+-		chan = master->dma_tx;
++		chan = host->dma_tx;
+ 	else
+-		chan = master->dma_rx;
++		chan = host->dma_rx;
  
--	/* When int_cs_inactive comes, spi slave abort */
-+	/* When int_cs_inactive comes, spi target abort */
- 	if (rs->cs_inactive && readl_relaxed(rs->regs + ROCKCHIP_SPI_IMR) & INT_CS_INACTIVE) {
--		ctlr->slave_abort(ctlr);
-+		ctlr->target_abort(ctlr);
- 		writel_relaxed(0, rs->regs + ROCKCHIP_SPI_IMR);
- 		writel_relaxed(0xffffffff, rs->regs + ROCKCHIP_SPI_ICR);
- 
-@@ -405,7 +405,7 @@ static void rockchip_spi_dma_rxcb(void *data)
- 	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
- 	int state = atomic_fetch_andnot(RXDMA, &rs->state);
- 
--	if (state & TXDMA && !rs->slave_abort)
-+	if (state & TXDMA && !rs->target_abort)
- 		return;
- 
- 	if (rs->cs_inactive)
-@@ -421,11 +421,11 @@ static void rockchip_spi_dma_txcb(void *data)
- 	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
- 	int state = atomic_fetch_andnot(TXDMA, &rs->state);
- 
--	if (state & RXDMA && !rs->slave_abort)
-+	if (state & RXDMA && !rs->target_abort)
- 		return;
- 
- 	/* Wait until the FIFO data completely. */
--	wait_for_tx_idle(rs, ctlr->slave);
-+	wait_for_tx_idle(rs, ctlr->target);
- 
- 	spi_enable_chip(rs, false);
- 	spi_finalize_current_transfer(ctlr);
-@@ -525,7 +525,7 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs,
- 
- static int rockchip_spi_config(struct rockchip_spi *rs,
- 		struct spi_device *spi, struct spi_transfer *xfer,
--		bool use_dma, bool slave_mode)
-+		bool use_dma, bool target_mode)
- {
- 	u32 cr0 = CR0_FRF_SPI  << CR0_FRF_OFFSET
- 		| CR0_BHT_8BIT << CR0_BHT_OFFSET
-@@ -534,9 +534,9 @@ static int rockchip_spi_config(struct rockchip_spi *rs,
- 	u32 cr1;
- 	u32 dmacr = 0;
- 
--	if (slave_mode)
--		cr0 |= CR0_OPM_SLAVE << CR0_OPM_OFFSET;
--	rs->slave_abort = false;
-+	if (target_mode)
-+		cr0 |= CR0_OPM_TARGET << CR0_OPM_OFFSET;
-+	rs->target_abort = false;
- 
- 	cr0 |= rs->rsd << CR0_RSD_OFFSET;
- 	cr0 |= (spi->mode & 0x3U) << CR0_SCPH_OFFSET;
-@@ -614,7 +614,7 @@ static size_t rockchip_spi_max_transfer_size(struct spi_device *spi)
- 	return ROCKCHIP_SPI_MAX_TRANLEN;
+ 	desc = dmaengine_prep_slave_sg(chan, sgl, nents, dir, flags);
+ 	if (IS_ERR_OR_NULL(desc))
+@@ -412,13 +412,13 @@ static int spi_qup_prep_sg(struct spi_master *master, struct scatterlist *sgl,
+ 	return dma_submit_error(cookie);
  }
  
--static int rockchip_spi_slave_abort(struct spi_controller *ctlr)
-+static int rockchip_spi_target_abort(struct spi_controller *ctlr)
+-static void spi_qup_dma_terminate(struct spi_master *master,
++static void spi_qup_dma_terminate(struct spi_controller *host,
+ 				  struct spi_transfer *xfer)
  {
- 	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
- 	u32 rx_fifo_left;
-@@ -659,7 +659,7 @@ static int rockchip_spi_slave_abort(struct spi_controller *ctlr)
- 		dmaengine_terminate_sync(ctlr->dma_tx);
- 	atomic_set(&rs->state, 0);
- 	spi_enable_chip(rs, false);
--	rs->slave_abort = true;
-+	rs->target_abort = true;
- 	spi_finalize_current_transfer(ctlr);
+ 	if (xfer->tx_buf)
+-		dmaengine_terminate_all(master->dma_tx);
++		dmaengine_terminate_all(host->dma_tx);
+ 	if (xfer->rx_buf)
+-		dmaengine_terminate_all(master->dma_rx);
++		dmaengine_terminate_all(host->dma_rx);
+ }
  
+ static u32 spi_qup_sgl_get_nents_len(struct scatterlist *sgl, u32 max,
+@@ -445,8 +445,8 @@ static int spi_qup_do_dma(struct spi_device *spi, struct spi_transfer *xfer,
+ 			  unsigned long timeout)
+ {
+ 	dma_async_tx_callback rx_done = NULL, tx_done = NULL;
+-	struct spi_master *master = spi->master;
+-	struct spi_qup *qup = spi_master_get_devdata(master);
++	struct spi_controller *host = spi->controller;
++	struct spi_qup *qup = spi_controller_get_devdata(host);
+ 	struct scatterlist *tx_sgl, *rx_sgl;
+ 	int ret;
+ 
+@@ -481,20 +481,20 @@ static int spi_qup_do_dma(struct spi_device *spi, struct spi_transfer *xfer,
+ 			return ret;
+ 		}
+ 		if (rx_sgl) {
+-			ret = spi_qup_prep_sg(master, rx_sgl, rx_nents,
++			ret = spi_qup_prep_sg(host, rx_sgl, rx_nents,
+ 					      DMA_DEV_TO_MEM, rx_done);
+ 			if (ret)
+ 				return ret;
+-			dma_async_issue_pending(master->dma_rx);
++			dma_async_issue_pending(host->dma_rx);
+ 		}
+ 
+ 		if (tx_sgl) {
+-			ret = spi_qup_prep_sg(master, tx_sgl, tx_nents,
++			ret = spi_qup_prep_sg(host, tx_sgl, tx_nents,
+ 					      DMA_MEM_TO_DEV, tx_done);
+ 			if (ret)
+ 				return ret;
+ 
+-			dma_async_issue_pending(master->dma_tx);
++			dma_async_issue_pending(host->dma_tx);
+ 		}
+ 
+ 		if (!wait_for_completion_timeout(&qup->done, timeout))
+@@ -513,8 +513,8 @@ static int spi_qup_do_dma(struct spi_device *spi, struct spi_transfer *xfer,
+ static int spi_qup_do_pio(struct spi_device *spi, struct spi_transfer *xfer,
+ 			  unsigned long timeout)
+ {
+-	struct spi_master *master = spi->master;
+-	struct spi_qup *qup = spi_master_get_devdata(master);
++	struct spi_controller *host = spi->controller;
++	struct spi_qup *qup = spi_controller_get_devdata(host);
+ 	int ret, n_words, iterations, offset = 0;
+ 
+ 	n_words = qup->n_words;
+@@ -658,7 +658,7 @@ static irqreturn_t spi_qup_qup_irq(int irq, void *dev_id)
+ /* set clock freq ... bits per word, determine mode */
+ static int spi_qup_io_prep(struct spi_device *spi, struct spi_transfer *xfer)
+ {
+-	struct spi_qup *controller = spi_master_get_devdata(spi->master);
++	struct spi_qup *controller = spi_controller_get_devdata(spi->controller);
+ 	int ret;
+ 
+ 	if (spi->mode & SPI_LOOP && xfer->len > controller->in_fifo_sz) {
+@@ -679,9 +679,9 @@ static int spi_qup_io_prep(struct spi_device *spi, struct spi_transfer *xfer)
+ 
+ 	if (controller->n_words <= (controller->in_fifo_sz / sizeof(u32)))
+ 		controller->mode = QUP_IO_M_MODE_FIFO;
+-	else if (spi->master->can_dma &&
+-		 spi->master->can_dma(spi->master, spi, xfer) &&
+-		 spi->master->cur_msg_mapped)
++	else if (spi->controller->can_dma &&
++		 spi->controller->can_dma(spi->controller, spi, xfer) &&
++		 spi->controller->cur_msg_mapped)
+ 		controller->mode = QUP_IO_M_MODE_BAM;
+ 	else
+ 		controller->mode = QUP_IO_M_MODE_BLOCK;
+@@ -692,7 +692,7 @@ static int spi_qup_io_prep(struct spi_device *spi, struct spi_transfer *xfer)
+ /* prep qup for another spi transaction of specific type */
+ static int spi_qup_io_config(struct spi_device *spi, struct spi_transfer *xfer)
+ {
+-	struct spi_qup *controller = spi_master_get_devdata(spi->master);
++	struct spi_qup *controller = spi_controller_get_devdata(spi->controller);
+ 	u32 config, iomode, control;
+ 	unsigned long flags;
+ 
+@@ -840,11 +840,11 @@ static int spi_qup_io_config(struct spi_device *spi, struct spi_transfer *xfer)
  	return 0;
-@@ -697,7 +697,7 @@ static int rockchip_spi_transfer_one(
- 	rs->xfer = xfer;
- 	use_dma = ctlr->can_dma ? ctlr->can_dma(ctlr, spi, xfer) : false;
+ }
  
--	ret = rockchip_spi_config(rs, spi, xfer, use_dma, ctlr->slave);
-+	ret = rockchip_spi_config(rs, spi, xfer, use_dma, ctlr->target);
+-static int spi_qup_transfer_one(struct spi_master *master,
++static int spi_qup_transfer_one(struct spi_controller *host,
+ 			      struct spi_device *spi,
+ 			      struct spi_transfer *xfer)
+ {
+-	struct spi_qup *controller = spi_master_get_devdata(master);
++	struct spi_qup *controller = spi_controller_get_devdata(host);
+ 	unsigned long timeout, flags;
+ 	int ret;
+ 
+@@ -878,21 +878,21 @@ static int spi_qup_transfer_one(struct spi_master *master,
+ 	spin_unlock_irqrestore(&controller->lock, flags);
+ 
+ 	if (ret && spi_qup_is_dma_xfer(controller->mode))
+-		spi_qup_dma_terminate(master, xfer);
++		spi_qup_dma_terminate(host, xfer);
+ 
+ 	return ret;
+ }
+ 
+-static bool spi_qup_can_dma(struct spi_master *master, struct spi_device *spi,
++static bool spi_qup_can_dma(struct spi_controller *host, struct spi_device *spi,
+ 			    struct spi_transfer *xfer)
+ {
+-	struct spi_qup *qup = spi_master_get_devdata(master);
++	struct spi_qup *qup = spi_controller_get_devdata(host);
+ 	size_t dma_align = dma_get_cache_alignment();
+ 	int n_words;
+ 
+ 	if (xfer->rx_buf) {
+ 		if (!IS_ALIGNED((size_t)xfer->rx_buf, dma_align) ||
+-		    IS_ERR_OR_NULL(master->dma_rx))
++		    IS_ERR_OR_NULL(host->dma_rx))
+ 			return false;
+ 		if (qup->qup_v1 && (xfer->len % qup->in_blk_sz))
+ 			return false;
+@@ -900,7 +900,7 @@ static bool spi_qup_can_dma(struct spi_master *master, struct spi_device *spi,
+ 
+ 	if (xfer->tx_buf) {
+ 		if (!IS_ALIGNED((size_t)xfer->tx_buf, dma_align) ||
+-		    IS_ERR_OR_NULL(master->dma_tx))
++		    IS_ERR_OR_NULL(host->dma_tx))
+ 			return false;
+ 		if (qup->qup_v1 && (xfer->len % qup->out_blk_sz))
+ 			return false;
+@@ -913,30 +913,30 @@ static bool spi_qup_can_dma(struct spi_master *master, struct spi_device *spi,
+ 	return true;
+ }
+ 
+-static void spi_qup_release_dma(struct spi_master *master)
++static void spi_qup_release_dma(struct spi_controller *host)
+ {
+-	if (!IS_ERR_OR_NULL(master->dma_rx))
+-		dma_release_channel(master->dma_rx);
+-	if (!IS_ERR_OR_NULL(master->dma_tx))
+-		dma_release_channel(master->dma_tx);
++	if (!IS_ERR_OR_NULL(host->dma_rx))
++		dma_release_channel(host->dma_rx);
++	if (!IS_ERR_OR_NULL(host->dma_tx))
++		dma_release_channel(host->dma_tx);
+ }
+ 
+-static int spi_qup_init_dma(struct spi_master *master, resource_size_t base)
++static int spi_qup_init_dma(struct spi_controller *host, resource_size_t base)
+ {
+-	struct spi_qup *spi = spi_master_get_devdata(master);
++	struct spi_qup *spi = spi_controller_get_devdata(host);
+ 	struct dma_slave_config *rx_conf = &spi->rx_conf,
+ 				*tx_conf = &spi->tx_conf;
+ 	struct device *dev = spi->dev;
+ 	int ret;
+ 
+ 	/* allocate dma resources, if available */
+-	master->dma_rx = dma_request_chan(dev, "rx");
+-	if (IS_ERR(master->dma_rx))
+-		return PTR_ERR(master->dma_rx);
++	host->dma_rx = dma_request_chan(dev, "rx");
++	if (IS_ERR(host->dma_rx))
++		return PTR_ERR(host->dma_rx);
+ 
+-	master->dma_tx = dma_request_chan(dev, "tx");
+-	if (IS_ERR(master->dma_tx)) {
+-		ret = PTR_ERR(master->dma_tx);
++	host->dma_tx = dma_request_chan(dev, "tx");
++	if (IS_ERR(host->dma_tx)) {
++		ret = PTR_ERR(host->dma_tx);
+ 		goto err_tx;
+ 	}
+ 
+@@ -951,13 +951,13 @@ static int spi_qup_init_dma(struct spi_master *master, resource_size_t base)
+ 	tx_conf->dst_addr = base + QUP_OUTPUT_FIFO;
+ 	tx_conf->dst_maxburst = spi->out_blk_sz;
+ 
+-	ret = dmaengine_slave_config(master->dma_rx, rx_conf);
++	ret = dmaengine_slave_config(host->dma_rx, rx_conf);
+ 	if (ret) {
+ 		dev_err(dev, "failed to configure RX channel\n");
+ 		goto err;
+ 	}
+ 
+-	ret = dmaengine_slave_config(master->dma_tx, tx_conf);
++	ret = dmaengine_slave_config(host->dma_tx, tx_conf);
+ 	if (ret) {
+ 		dev_err(dev, "failed to configure TX channel\n");
+ 		goto err;
+@@ -966,9 +966,9 @@ static int spi_qup_init_dma(struct spi_master *master, resource_size_t base)
+ 	return 0;
+ 
+ err:
+-	dma_release_channel(master->dma_tx);
++	dma_release_channel(host->dma_tx);
+ err_tx:
+-	dma_release_channel(master->dma_rx);
++	dma_release_channel(host->dma_rx);
+ 	return ret;
+ }
+ 
+@@ -978,7 +978,7 @@ static void spi_qup_set_cs(struct spi_device *spi, bool val)
+ 	u32 spi_ioc;
+ 	u32 spi_ioc_orig;
+ 
+-	controller = spi_master_get_devdata(spi->master);
++	controller = spi_controller_get_devdata(spi->controller);
+ 	spi_ioc = readl_relaxed(controller->base + SPI_IO_CONTROL);
+ 	spi_ioc_orig = spi_ioc;
+ 	if (!val)
+@@ -992,7 +992,7 @@ static void spi_qup_set_cs(struct spi_device *spi, bool val)
+ 
+ static int spi_qup_probe(struct platform_device *pdev)
+ {
+-	struct spi_master *master;
++	struct spi_controller *host;
+ 	struct clk *iclk, *cclk;
+ 	struct spi_qup *controller;
+ 	struct resource *res;
+@@ -1027,34 +1027,34 @@ static int spi_qup_probe(struct platform_device *pdev)
+ 		return -ENXIO;
+ 	}
+ 
+-	master = spi_alloc_master(dev, sizeof(struct spi_qup));
+-	if (!master) {
+-		dev_err(dev, "cannot allocate master\n");
++	host = spi_alloc_host(dev, sizeof(struct spi_qup));
++	if (!host) {
++		dev_err(dev, "cannot allocate host\n");
+ 		return -ENOMEM;
+ 	}
+ 
+ 	/* use num-cs unless not present or out of range */
+ 	if (of_property_read_u32(dev->of_node, "num-cs", &num_cs) ||
+ 	    num_cs > SPI_NUM_CHIPSELECTS)
+-		master->num_chipselect = SPI_NUM_CHIPSELECTS;
++		host->num_chipselect = SPI_NUM_CHIPSELECTS;
+ 	else
+-		master->num_chipselect = num_cs;
++		host->num_chipselect = num_cs;
+ 
+-	master->use_gpio_descriptors = true;
+-	master->max_native_cs = SPI_NUM_CHIPSELECTS;
+-	master->bus_num = pdev->id;
+-	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LOOP;
+-	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
+-	master->max_speed_hz = max_freq;
+-	master->transfer_one = spi_qup_transfer_one;
+-	master->dev.of_node = pdev->dev.of_node;
+-	master->auto_runtime_pm = true;
+-	master->dma_alignment = dma_get_cache_alignment();
+-	master->max_dma_len = SPI_MAX_XFER;
++	host->use_gpio_descriptors = true;
++	host->max_native_cs = SPI_NUM_CHIPSELECTS;
++	host->bus_num = pdev->id;
++	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LOOP;
++	host->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
++	host->max_speed_hz = max_freq;
++	host->transfer_one = spi_qup_transfer_one;
++	host->dev.of_node = pdev->dev.of_node;
++	host->auto_runtime_pm = true;
++	host->dma_alignment = dma_get_cache_alignment();
++	host->max_dma_len = SPI_MAX_XFER;
+ 
+-	platform_set_drvdata(pdev, master);
++	platform_set_drvdata(pdev, host);
+ 
+-	controller = spi_master_get_devdata(master);
++	controller = spi_controller_get_devdata(host);
+ 
+ 	controller->dev = dev;
+ 	controller->base = base;
+@@ -1062,16 +1062,16 @@ static int spi_qup_probe(struct platform_device *pdev)
+ 	controller->cclk = cclk;
+ 	controller->irq = irq;
+ 
+-	ret = spi_qup_init_dma(master, res->start);
++	ret = spi_qup_init_dma(host, res->start);
+ 	if (ret == -EPROBE_DEFER)
+ 		goto error;
+ 	else if (!ret)
+-		master->can_dma = spi_qup_can_dma;
++		host->can_dma = spi_qup_can_dma;
+ 
+ 	controller->qup_v1 = (uintptr_t)of_device_get_match_data(dev);
+ 
+ 	if (!controller->qup_v1)
+-		master->set_cs = spi_qup_set_cs;
++		host->set_cs = spi_qup_set_cs;
+ 
+ 	spin_lock_init(&controller->lock);
+ 	init_completion(&controller->done);
+@@ -1149,7 +1149,7 @@ static int spi_qup_probe(struct platform_device *pdev)
+ 	pm_runtime_set_active(dev);
+ 	pm_runtime_enable(dev);
+ 
+-	ret = devm_spi_register_master(dev, master);
++	ret = devm_spi_register_controller(dev, host);
+ 	if (ret)
+ 		goto disable_pm;
+ 
+@@ -1161,17 +1161,17 @@ static int spi_qup_probe(struct platform_device *pdev)
+ 	clk_disable_unprepare(cclk);
+ 	clk_disable_unprepare(iclk);
+ error_dma:
+-	spi_qup_release_dma(master);
++	spi_qup_release_dma(host);
+ error:
+-	spi_master_put(master);
++	spi_controller_put(host);
+ 	return ret;
+ }
+ 
+ #ifdef CONFIG_PM
+ static int spi_qup_pm_suspend_runtime(struct device *device)
+ {
+-	struct spi_master *master = dev_get_drvdata(device);
+-	struct spi_qup *controller = spi_master_get_devdata(master);
++	struct spi_controller *host = dev_get_drvdata(device);
++	struct spi_qup *controller = spi_controller_get_devdata(host);
+ 	u32 config;
+ 
+ 	/* Enable clocks auto gaiting */
+@@ -1187,8 +1187,8 @@ static int spi_qup_pm_suspend_runtime(struct device *device)
+ 
+ static int spi_qup_pm_resume_runtime(struct device *device)
+ {
+-	struct spi_master *master = dev_get_drvdata(device);
+-	struct spi_qup *controller = spi_master_get_devdata(master);
++	struct spi_controller *host = dev_get_drvdata(device);
++	struct spi_qup *controller = spi_controller_get_devdata(host);
+ 	u32 config;
+ 	int ret;
+ 
+@@ -1213,8 +1213,8 @@ static int spi_qup_pm_resume_runtime(struct device *device)
+ #ifdef CONFIG_PM_SLEEP
+ static int spi_qup_suspend(struct device *device)
+ {
+-	struct spi_master *master = dev_get_drvdata(device);
+-	struct spi_qup *controller = spi_master_get_devdata(master);
++	struct spi_controller *host = dev_get_drvdata(device);
++	struct spi_qup *controller = spi_controller_get_devdata(host);
+ 	int ret;
+ 
+ 	if (pm_runtime_suspended(device)) {
+@@ -1222,7 +1222,7 @@ static int spi_qup_suspend(struct device *device)
+ 		if (ret)
+ 			return ret;
+ 	}
+-	ret = spi_master_suspend(master);
++	ret = spi_controller_suspend(host);
  	if (ret)
  		return ret;
  
-@@ -757,15 +757,15 @@ static int rockchip_spi_probe(struct platform_device *pdev)
- 	struct resource *mem;
- 	struct device_node *np = pdev->dev.of_node;
- 	u32 rsd_nsecs, num_cs;
--	bool slave_mode;
-+	bool target_mode;
+@@ -1237,8 +1237,8 @@ static int spi_qup_suspend(struct device *device)
  
--	slave_mode = of_property_read_bool(np, "spi-slave");
-+	target_mode = of_property_read_bool(np, "spi-slave");
+ static int spi_qup_resume(struct device *device)
+ {
+-	struct spi_master *master = dev_get_drvdata(device);
+-	struct spi_qup *controller = spi_master_get_devdata(master);
++	struct spi_controller *host = dev_get_drvdata(device);
++	struct spi_qup *controller = spi_controller_get_devdata(host);
+ 	int ret;
  
--	if (slave_mode)
--		ctlr = spi_alloc_slave(&pdev->dev,
-+	if (target_mode)
-+		ctlr = spi_alloc_target(&pdev->dev,
- 				sizeof(struct rockchip_spi));
- 	else
--		ctlr = spi_alloc_master(&pdev->dev,
-+		ctlr = spi_alloc_host(&pdev->dev,
- 				sizeof(struct rockchip_spi));
+ 	ret = clk_prepare_enable(controller->iclk);
+@@ -1255,7 +1255,7 @@ static int spi_qup_resume(struct device *device)
+ 	if (ret)
+ 		goto disable_clk;
  
- 	if (!ctlr)
-@@ -854,9 +854,9 @@ static int rockchip_spi_probe(struct platform_device *pdev)
- 	ctlr->auto_runtime_pm = true;
- 	ctlr->bus_num = pdev->id;
- 	ctlr->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LOOP | SPI_LSB_FIRST;
--	if (slave_mode) {
-+	if (target_mode) {
- 		ctlr->mode_bits |= SPI_NO_CS;
--		ctlr->slave_abort = rockchip_spi_slave_abort;
-+		ctlr->target_abort = rockchip_spi_target_abort;
- 	} else {
- 		ctlr->flags = SPI_CONTROLLER_GPIO_SS;
- 		ctlr->max_native_cs = ROCKCHIP_SPI_MAX_CS_NUM;
-@@ -911,7 +911,7 @@ static int rockchip_spi_probe(struct platform_device *pdev)
- 	case ROCKCHIP_SPI_VER2_TYPE2:
- 		rs->cs_high_supported = true;
- 		ctlr->mode_bits |= SPI_CS_HIGH;
--		if (ctlr->can_dma && slave_mode)
-+		if (ctlr->can_dma && target_mode)
- 			rs->cs_inactive = true;
- 		else
- 			rs->cs_inactive = false;
+-	ret = spi_master_resume(master);
++	ret = spi_controller_resume(host);
+ 	if (ret)
+ 		goto disable_clk;
+ 
+@@ -1270,8 +1270,8 @@ static int spi_qup_resume(struct device *device)
+ 
+ static void spi_qup_remove(struct platform_device *pdev)
+ {
+-	struct spi_master *master = dev_get_drvdata(&pdev->dev);
+-	struct spi_qup *controller = spi_master_get_devdata(master);
++	struct spi_controller *host = dev_get_drvdata(&pdev->dev);
++	struct spi_qup *controller = spi_controller_get_devdata(host);
+ 	int ret;
+ 
+ 	ret = pm_runtime_get_sync(&pdev->dev);
+@@ -1289,7 +1289,7 @@ static void spi_qup_remove(struct platform_device *pdev)
+ 			 ERR_PTR(ret));
+ 	}
+ 
+-	spi_qup_release_dma(master);
++	spi_qup_release_dma(host);
+ 
+ 	pm_runtime_put_noidle(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
 -- 
 2.25.1
 

@@ -2,78 +2,119 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 49C21C001DF
-	for <linux-spi@archiver.kernel.org>; Wed, 16 Aug 2023 09:43:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0B10EC04A94
+	for <linux-spi@archiver.kernel.org>; Wed, 16 Aug 2023 09:44:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243333AbjHPJnC (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 16 Aug 2023 05:43:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59288 "EHLO
+        id S243468AbjHPJng (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 16 Aug 2023 05:43:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243441AbjHPJmt (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 16 Aug 2023 05:42:49 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED9E9E74
-        for <linux-spi@vger.kernel.org>; Wed, 16 Aug 2023 02:42:47 -0700 (PDT)
-Received: from dggpemm100011.china.huawei.com (unknown [172.30.72.54])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RQjmm2QVczVk8Z;
-        Wed, 16 Aug 2023 17:40:40 +0800 (CST)
+        with ESMTP id S243430AbjHPJnZ (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 16 Aug 2023 05:43:25 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC71B1985
+        for <linux-spi@vger.kernel.org>; Wed, 16 Aug 2023 02:43:23 -0700 (PDT)
+Received: from dggpemm100009.china.huawei.com (unknown [172.30.72.53])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RQjlj1Ny3ztRny;
+        Wed, 16 Aug 2023 17:39:45 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm100011.china.huawei.com (7.185.36.112) with Microsoft SMTP Server
+ dggpemm100009.china.huawei.com (7.185.36.113) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Wed, 16 Aug 2023 17:42:45 +0800
+ 15.1.2507.31; Wed, 16 Aug 2023 17:43:21 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Wed, 16 Aug
- 2023 17:42:45 +0800
+ 2023 17:43:21 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
-        <fancer.lancer@gmail.com>, <yangyingliang@huawei.com>
-Subject: [PATCH -next] spi: dw-mmio: keep old name same as documentation
-Date:   Wed, 16 Aug 2023 17:39:38 +0800
-Message-ID: <20230816093938.1274806-1-yangyingliang@huawei.com>
+        <yangyingliang@huawei.com>
+Subject: [PATCH -next 02/24] spi: mchp-pci1xxxx: switch to use modern name
+Date:   Wed, 16 Aug 2023 17:39:51 +0800
+Message-ID: <20230816094013.1275068-3-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20230816094013.1275068-1-yangyingliang@huawei.com>
+References: <20230816094013.1275068-1-yangyingliang@huawei.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
 X-Originating-IP: [10.175.103.91]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
  dggpemm500007.china.huawei.com (7.185.36.183)
 X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The documentation has not use the new name(host/target),
-so keep the comment words same as documentation used.
+Change legacy name master to modern name host or controller.
+
+No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-dw-mmio.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-pci1xxxx.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
-index 9e041a28ed47..805264c9c65c 100644
---- a/drivers/spi/spi-dw-mmio.c
-+++ b/drivers/spi/spi-dw-mmio.c
-@@ -68,7 +68,7 @@ struct dw_spi_mscc {
- 		((((val) << 1) | BIT(0)) << ELBA_SPICS_OFFSET(cs))
+diff --git a/drivers/spi/spi-pci1xxxx.c b/drivers/spi/spi-pci1xxxx.c
+index d23c42839da1..3638e974f5d4 100644
+--- a/drivers/spi/spi-pci1xxxx.c
++++ b/drivers/spi/spi-pci1xxxx.c
+@@ -65,7 +65,7 @@ struct pci1xxxx_spi_internal {
+ 	bool spi_xfer_in_progress;
+ 	int irq;
+ 	struct completion spi_xfer_done;
+-	struct spi_master *spi_host;
++	struct spi_controller *spi_host;
+ 	struct pci1xxxx_spi *parent;
+ 	struct {
+ 		unsigned int dev_sel : 3;
+@@ -250,7 +250,7 @@ static int pci1xxxx_spi_probe(struct pci_dev *pdev, const struct pci_device_id *
+ 	struct pci1xxxx_spi_internal *spi_sub_ptr;
+ 	struct device *dev = &pdev->dev;
+ 	struct pci1xxxx_spi *spi_bus;
+-	struct spi_master *spi_host;
++	struct spi_controller *spi_host;
+ 	u32 regval;
+ 	int ret;
  
- /*
-- * The Designware SPI controller (referred to as host in the documentation)
-+ * The Designware SPI controller (referred to as master in the documentation)
-  * automatically deasserts chip select when the tx fifo is empty. The chip
-  * selects then needs to be either driven as GPIOs or, for the first 4 using
-  * the SPI boot controller registers. the final chip select is an OR gate
-@@ -142,7 +142,7 @@ static int dw_spi_mscc_jaguar2_init(struct platform_device *pdev,
- }
+@@ -276,7 +276,7 @@ static int pci1xxxx_spi_probe(struct pci_dev *pdev, const struct pci_device_id *
+ 						      sizeof(struct pci1xxxx_spi_internal),
+ 						      GFP_KERNEL);
+ 		spi_sub_ptr = spi_bus->spi_int[iter];
+-		spi_sub_ptr->spi_host = devm_spi_alloc_master(dev, sizeof(struct spi_master));
++		spi_sub_ptr->spi_host = devm_spi_alloc_host(dev, sizeof(struct spi_controller));
+ 		if (!spi_sub_ptr->spi_host)
+ 			return -ENOMEM;
  
- /*
-- * The Designware SPI controller (referred to as host in the
-+ * The Designware SPI controller (referred to as master in the
-  * documentation) automatically deasserts chip select when the tx fifo
-  * is empty. The chip selects then needs to be driven by a CS override
-  * register. enable is an active low signal.
+@@ -366,8 +366,8 @@ static int pci1xxxx_spi_probe(struct pci_dev *pdev, const struct pci_device_id *
+ 		spi_host->max_speed_hz = PCI1XXXX_SPI_MAX_CLOCK_HZ;
+ 		spi_host->min_speed_hz = PCI1XXXX_SPI_MIN_CLOCK_HZ;
+ 		spi_host->flags = SPI_CONTROLLER_MUST_TX;
+-		spi_master_set_devdata(spi_host, spi_sub_ptr);
+-		ret = devm_spi_register_master(dev, spi_host);
++		spi_controller_set_devdata(spi_host, spi_sub_ptr);
++		ret = devm_spi_register_controller(dev, spi_host);
+ 		if (ret)
+ 			goto error;
+ 	}
+@@ -415,7 +415,7 @@ static int pci1xxxx_spi_resume(struct device *dev)
+ 
+ 	for (iter = 0; iter < spi_ptr->total_hw_instances; iter++) {
+ 		spi_sub_ptr = spi_ptr->spi_int[iter];
+-		spi_master_resume(spi_sub_ptr->spi_host);
++		spi_controller_resume(spi_sub_ptr->spi_host);
+ 		writel(regval, spi_ptr->reg_base +
+ 		       SPI_MST_EVENT_MASK_REG_OFFSET(iter));
+ 
+@@ -441,7 +441,7 @@ static int pci1xxxx_spi_suspend(struct device *dev)
+ 
+ 		/* Store existing config before suspend */
+ 		store_restore_config(spi_ptr, spi_sub_ptr, iter, 1);
+-		spi_master_suspend(spi_sub_ptr->spi_host);
++		spi_controller_suspend(spi_sub_ptr->spi_host);
+ 		writel(reg1, spi_ptr->reg_base +
+ 		       SPI_MST_EVENT_MASK_REG_OFFSET(iter));
+ 	}
 -- 
 2.25.1
 

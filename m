@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A953C2FC24
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 03E6AC2FC22
 	for <linux-spi@archiver.kernel.org>; Thu, 17 Aug 2023 05:08:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348071AbjHQFHy (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 17 Aug 2023 01:07:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58236 "EHLO
+        id S1348066AbjHQFHx (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 17 Aug 2023 01:07:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348072AbjHQFHd (ORCPT
+        with ESMTP id S1348068AbjHQFHd (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Thu, 17 Aug 2023 01:07:33 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3107F268D
-        for <linux-spi@vger.kernel.org>; Wed, 16 Aug 2023 22:07:32 -0700 (PDT)
-Received: from dggpemm100007.china.huawei.com (unknown [172.30.72.53])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RRCdW6Hp9zrSc2;
-        Thu, 17 Aug 2023 13:06:07 +0800 (CST)
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F9E61BF8
+        for <linux-spi@vger.kernel.org>; Wed, 16 Aug 2023 22:07:30 -0700 (PDT)
+Received: from dggpemm100013.china.huawei.com (unknown [172.30.72.53])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RRCb05v3KzNmNC;
+        Thu, 17 Aug 2023 13:03:56 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm100007.china.huawei.com (7.185.36.116) with Microsoft SMTP Server
+ dggpemm100013.china.huawei.com (7.185.36.33) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Thu, 17 Aug 2023 13:07:29 +0800
+ 15.1.2507.31; Thu, 17 Aug 2023 13:07:28 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Thu, 17 Aug
- 2023 13:07:29 +0800
+ 2023 13:07:28 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
         <yangyingliang@huawei.com>
-Subject: [PATCH -next v2 07/23] spi: pxa2xx: switch to use modern name
-Date:   Thu, 17 Aug 2023 13:03:16 +0800
-Message-ID: <20230817050332.1274751-8-yangyingliang@huawei.com>
+Subject: [PATCH -next v2 04/23] spi: pic32: switch to use modern name
+Date:   Thu, 17 Aug 2023 13:03:13 +0800
+Message-ID: <20230817050332.1274751-5-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230817050332.1274751-1-yangyingliang@huawei.com>
 References: <20230817050332.1274751-1-yangyingliang@huawei.com>
@@ -46,137 +46,388 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Change legacy name master/slave to modern name host/target or controller.
+Change legacy name master to modern name host or controller.
 
 No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-pxa2xx.c       | 24 ++++++++++++------------
- include/linux/spi/pxa2xx_spi.h |  4 ++--
- 2 files changed, 14 insertions(+), 14 deletions(-)
+ drivers/spi/spi-pic32.c | 154 ++++++++++++++++++++--------------------
+ 1 file changed, 77 insertions(+), 77 deletions(-)
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 21f156587669..f2a856f6a99e 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1102,7 +1102,7 @@ static int pxa2xx_spi_transfer_one(struct spi_controller *controller,
- 		}
- 	}
+diff --git a/drivers/spi/spi-pic32.c b/drivers/spi/spi-pic32.c
+index e9b4c9cb97fb..52b788dac10a 100644
+--- a/drivers/spi/spi-pic32.c
++++ b/drivers/spi/spi-pic32.c
+@@ -100,7 +100,7 @@ struct pic32_spi {
+ 	int			tx_irq;
+ 	u32			fifo_n_byte; /* FIFO depth in bytes */
+ 	struct clk		*clk;
+-	struct spi_master	*master;
++	struct spi_controller	*host;
+ 	/* Current controller setting */
+ 	u32			speed_hz; /* spi-clk rate */
+ 	u32			mode;
+@@ -224,9 +224,9 @@ static void pic32_err_stop(struct pic32_spi *pic32s, const char *msg)
+ 	disable_irq_nosync(pic32s->tx_irq);
  
--	if (spi_controller_is_slave(controller)) {
-+	if (spi_controller_is_target(controller)) {
- 		while (drv_data->write(drv_data))
- 			;
- 		if (drv_data->gpiod_ready) {
-@@ -1121,7 +1121,7 @@ static int pxa2xx_spi_transfer_one(struct spi_controller *controller,
- 	return 1;
+ 	/* Show err message and abort xfer with err */
+-	dev_err(&pic32s->master->dev, "%s\n", msg);
+-	if (pic32s->master->cur_msg)
+-		pic32s->master->cur_msg->status = -EIO;
++	dev_err(&pic32s->host->dev, "%s\n", msg);
++	if (pic32s->host->cur_msg)
++		pic32s->host->cur_msg->status = -EIO;
+ 	complete(&pic32s->xfer_done);
  }
  
--static int pxa2xx_spi_slave_abort(struct spi_controller *controller)
-+static int pxa2xx_spi_target_abort(struct spi_controller *controller)
+@@ -250,7 +250,7 @@ static irqreturn_t pic32_spi_fault_irq(int irq, void *dev_id)
+ 		return IRQ_HANDLED;
+ 	}
+ 
+-	if (!pic32s->master->cur_msg) {
++	if (!pic32s->host->cur_msg) {
+ 		pic32_err_stop(pic32s, "err_irq: no mesg");
+ 		return IRQ_NONE;
+ 	}
+@@ -300,16 +300,16 @@ static void pic32_spi_dma_rx_notify(void *data)
+ static int pic32_spi_dma_transfer(struct pic32_spi *pic32s,
+ 				  struct spi_transfer *xfer)
  {
- 	struct driver_data *drv_data = spi_controller_get_devdata(controller);
+-	struct spi_master *master = pic32s->master;
++	struct spi_controller *host = pic32s->host;
+ 	struct dma_async_tx_descriptor *desc_rx;
+ 	struct dma_async_tx_descriptor *desc_tx;
+ 	dma_cookie_t cookie;
+ 	int ret;
  
-@@ -1199,7 +1199,7 @@ static int setup(struct spi_device *spi)
- 		break;
- 	default:
- 		tx_hi_thres = 0;
--		if (spi_controller_is_slave(drv_data->controller)) {
-+		if (spi_controller_is_target(drv_data->controller)) {
- 			tx_thres = 1;
- 			rx_thres = 2;
- 		} else {
-@@ -1248,7 +1248,7 @@ static int setup(struct spi_device *spi)
- 	}
- 
- 	chip->cr1 = 0;
--	if (spi_controller_is_slave(drv_data->controller)) {
-+	if (spi_controller_is_target(drv_data->controller)) {
- 		chip->cr1 |= SSCR1_SCFR;
- 		chip->cr1 |= SSCR1_SCLKDIR;
- 		chip->cr1 |= SSCR1_SFRMDIR;
-@@ -1395,7 +1395,7 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
- 	else
- 		ssp->port_id = uid;
- 
--	pdata->is_slave = device_property_read_bool(dev, "spi-slave");
-+	pdata->is_target = device_property_read_bool(dev, "spi-slave");
- 	pdata->num_chipselect = 1;
- 	pdata->enable_dma = true;
- 	pdata->dma_burst_size = 1;
-@@ -1461,10 +1461,10 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
+-	if (!master->dma_rx || !master->dma_tx)
++	if (!host->dma_rx || !host->dma_tx)
  		return -ENODEV;
+ 
+-	desc_rx = dmaengine_prep_slave_sg(master->dma_rx,
++	desc_rx = dmaengine_prep_slave_sg(host->dma_rx,
+ 					  xfer->rx_sg.sgl,
+ 					  xfer->rx_sg.nents,
+ 					  DMA_DEV_TO_MEM,
+@@ -319,7 +319,7 @@ static int pic32_spi_dma_transfer(struct pic32_spi *pic32s,
+ 		goto err_dma;
  	}
  
--	if (platform_info->is_slave)
--		controller = devm_spi_alloc_slave(dev, sizeof(*drv_data));
-+	if (platform_info->is_target)
-+		controller = devm_spi_alloc_target(dev, sizeof(*drv_data));
- 	else
--		controller = devm_spi_alloc_master(dev, sizeof(*drv_data));
-+		controller = devm_spi_alloc_host(dev, sizeof(*drv_data));
+-	desc_tx = dmaengine_prep_slave_sg(master->dma_tx,
++	desc_tx = dmaengine_prep_slave_sg(host->dma_tx,
+ 					  xfer->tx_sg.sgl,
+ 					  xfer->tx_sg.nents,
+ 					  DMA_MEM_TO_DEV,
+@@ -343,13 +343,13 @@ static int pic32_spi_dma_transfer(struct pic32_spi *pic32s,
+ 	if (ret)
+ 		goto err_dma_tx;
  
- 	if (!controller) {
- 		dev_err(&pdev->dev, "cannot alloc spi_controller\n");
-@@ -1487,7 +1487,7 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
- 	controller->setup = setup;
- 	controller->set_cs = pxa2xx_spi_set_cs;
- 	controller->transfer_one = pxa2xx_spi_transfer_one;
--	controller->slave_abort = pxa2xx_spi_slave_abort;
-+	controller->target_abort = pxa2xx_spi_target_abort;
- 	controller->handle_err = pxa2xx_spi_handle_err;
- 	controller->unprepare_transfer_hardware = pxa2xx_spi_unprepare_transfer;
- 	controller->fw_translate_cs = pxa2xx_spi_fw_translate_cs;
-@@ -1579,7 +1579,7 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
- 		break;
- 	default:
+-	dma_async_issue_pending(master->dma_rx);
+-	dma_async_issue_pending(master->dma_tx);
++	dma_async_issue_pending(host->dma_rx);
++	dma_async_issue_pending(host->dma_tx);
  
--		if (spi_controller_is_slave(controller)) {
-+		if (spi_controller_is_target(controller)) {
- 			tmp = SSCR1_SCFR |
- 			      SSCR1_SCLKDIR |
- 			      SSCR1_SFRMDIR |
-@@ -1592,7 +1592,7 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
+ 	return 0;
+ 
+ err_dma_tx:
+-	dmaengine_terminate_all(master->dma_rx);
++	dmaengine_terminate_all(host->dma_rx);
+ err_dma:
+ 	return ret;
+ }
+@@ -357,7 +357,7 @@ static int pic32_spi_dma_transfer(struct pic32_spi *pic32s,
+ static int pic32_spi_dma_config(struct pic32_spi *pic32s, u32 dma_width)
+ {
+ 	int buf_offset = offsetof(struct pic32_spi_regs, buf);
+-	struct spi_master *master = pic32s->master;
++	struct spi_controller *host = pic32s->host;
+ 	struct dma_slave_config cfg;
+ 	int ret;
+ 
+@@ -371,16 +371,16 @@ static int pic32_spi_dma_config(struct pic32_spi *pic32s, u32 dma_width)
+ 	cfg.dst_addr_width = dma_width;
+ 	/* tx channel */
+ 	cfg.direction = DMA_MEM_TO_DEV;
+-	ret = dmaengine_slave_config(master->dma_tx, &cfg);
++	ret = dmaengine_slave_config(host->dma_tx, &cfg);
+ 	if (ret) {
+-		dev_err(&master->dev, "tx channel setup failed\n");
++		dev_err(&host->dev, "tx channel setup failed\n");
+ 		return ret;
+ 	}
+ 	/* rx channel */
+ 	cfg.direction = DMA_DEV_TO_MEM;
+-	ret = dmaengine_slave_config(master->dma_rx, &cfg);
++	ret = dmaengine_slave_config(host->dma_rx, &cfg);
+ 	if (ret)
+-		dev_err(&master->dev, "rx channel setup failed\n");
++		dev_err(&host->dev, "rx channel setup failed\n");
+ 
+ 	return ret;
+ }
+@@ -430,19 +430,19 @@ static int pic32_spi_set_word_size(struct pic32_spi *pic32s, u8 bits_per_word)
+ 	return 0;
+ }
+ 
+-static int pic32_spi_prepare_hardware(struct spi_master *master)
++static int pic32_spi_prepare_hardware(struct spi_controller *host)
+ {
+-	struct pic32_spi *pic32s = spi_master_get_devdata(master);
++	struct pic32_spi *pic32s = spi_controller_get_devdata(host);
+ 
+ 	pic32_spi_enable(pic32s);
+ 
+ 	return 0;
+ }
+ 
+-static int pic32_spi_prepare_message(struct spi_master *master,
++static int pic32_spi_prepare_message(struct spi_controller *host,
+ 				     struct spi_message *msg)
+ {
+-	struct pic32_spi *pic32s = spi_master_get_devdata(master);
++	struct pic32_spi *pic32s = spi_controller_get_devdata(host);
+ 	struct spi_device *spi = msg->spi;
+ 	u32 val;
+ 
+@@ -481,18 +481,18 @@ static int pic32_spi_prepare_message(struct spi_master *master,
+ 	return 0;
+ }
+ 
+-static bool pic32_spi_can_dma(struct spi_master *master,
++static bool pic32_spi_can_dma(struct spi_controller *host,
+ 			      struct spi_device *spi,
+ 			      struct spi_transfer *xfer)
+ {
+-	struct pic32_spi *pic32s = spi_master_get_devdata(master);
++	struct pic32_spi *pic32s = spi_controller_get_devdata(host);
+ 
+ 	/* skip using DMA on small size transfer to avoid overhead.*/
+ 	return (xfer->len >= PIC32_DMA_LEN_MIN) &&
+ 	       test_bit(PIC32F_DMA_PREP, &pic32s->flags);
+ }
+ 
+-static int pic32_spi_one_transfer(struct spi_master *master,
++static int pic32_spi_one_transfer(struct spi_controller *host,
+ 				  struct spi_device *spi,
+ 				  struct spi_transfer *transfer)
+ {
+@@ -501,7 +501,7 @@ static int pic32_spi_one_transfer(struct spi_master *master,
+ 	unsigned long timeout;
+ 	int ret;
+ 
+-	pic32s = spi_master_get_devdata(master);
++	pic32s = spi_controller_get_devdata(host);
+ 
+ 	/* handle transfer specific word size change */
+ 	if (transfer->bits_per_word &&
+@@ -549,8 +549,8 @@ static int pic32_spi_one_transfer(struct spi_master *master,
+ 	if (timeout == 0) {
+ 		dev_err(&spi->dev, "wait error/timedout\n");
+ 		if (dma_issued) {
+-			dmaengine_terminate_all(master->dma_rx);
+-			dmaengine_terminate_all(master->dma_tx);
++			dmaengine_terminate_all(host->dma_rx);
++			dmaengine_terminate_all(host->dma_tx);
  		}
- 		pxa2xx_spi_write(drv_data, SSCR1, tmp);
- 		tmp = SSCR0_Motorola | SSCR0_DataSize(8);
--		if (!spi_controller_is_slave(controller))
-+		if (!spi_controller_is_target(controller))
- 			tmp |= SSCR0_SCR(2);
- 		pxa2xx_spi_write(drv_data, SSCR0, tmp);
- 		break;
-@@ -1620,7 +1620,7 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
- 	controller->num_chipselect = platform_info->num_chipselect;
- 	controller->use_gpio_descriptors = true;
+ 		ret = -ETIMEDOUT;
+ 	} else {
+@@ -560,16 +560,16 @@ static int pic32_spi_one_transfer(struct spi_master *master,
+ 	return ret;
+ }
  
--	if (platform_info->is_slave) {
-+	if (platform_info->is_target) {
- 		drv_data->gpiod_ready = devm_gpiod_get_optional(dev,
- 						"ready", GPIOD_OUT_LOW);
- 		if (IS_ERR(drv_data->gpiod_ready)) {
-diff --git a/include/linux/spi/pxa2xx_spi.h b/include/linux/spi/pxa2xx_spi.h
-index 4658e7801b42..0916cb9bcb0a 100644
---- a/include/linux/spi/pxa2xx_spi.h
-+++ b/include/linux/spi/pxa2xx_spi.h
-@@ -19,7 +19,7 @@ struct pxa2xx_spi_controller {
- 	u16 num_chipselect;
- 	u8 enable_dma;
- 	u8 dma_burst_size;
--	bool is_slave;
-+	bool is_target;
+-static int pic32_spi_unprepare_message(struct spi_master *master,
++static int pic32_spi_unprepare_message(struct spi_controller *host,
+ 				       struct spi_message *msg)
+ {
+ 	/* nothing to do */
+ 	return 0;
+ }
  
- 	/* DMA engine specific config */
- 	bool (*dma_filter)(struct dma_chan *chan, void *param);
-@@ -31,7 +31,7 @@ struct pxa2xx_spi_controller {
- };
+-static int pic32_spi_unprepare_hardware(struct spi_master *master)
++static int pic32_spi_unprepare_hardware(struct spi_controller *host)
+ {
+-	struct pic32_spi *pic32s = spi_master_get_devdata(master);
++	struct pic32_spi *pic32s = spi_controller_get_devdata(host);
  
- /*
-- * The controller specific data for SPI slave devices
-+ * The controller specific data for SPI target devices
-  * (resides in spi_board_info.controller_data),
-  * copied to spi_device.platform_data ... mostly for
-  * DMA tuning.
+ 	pic32_spi_disable(pic32s);
+ 
+@@ -605,28 +605,28 @@ static void pic32_spi_cleanup(struct spi_device *spi)
+ 
+ static int pic32_spi_dma_prep(struct pic32_spi *pic32s, struct device *dev)
+ {
+-	struct spi_master *master = pic32s->master;
++	struct spi_controller *host = pic32s->host;
+ 	int ret = 0;
+ 
+-	master->dma_rx = dma_request_chan(dev, "spi-rx");
+-	if (IS_ERR(master->dma_rx)) {
+-		if (PTR_ERR(master->dma_rx) == -EPROBE_DEFER)
++	host->dma_rx = dma_request_chan(dev, "spi-rx");
++	if (IS_ERR(host->dma_rx)) {
++		if (PTR_ERR(host->dma_rx) == -EPROBE_DEFER)
+ 			ret = -EPROBE_DEFER;
+ 		else
+ 			dev_warn(dev, "RX channel not found.\n");
+ 
+-		master->dma_rx = NULL;
++		host->dma_rx = NULL;
+ 		goto out_err;
+ 	}
+ 
+-	master->dma_tx = dma_request_chan(dev, "spi-tx");
+-	if (IS_ERR(master->dma_tx)) {
+-		if (PTR_ERR(master->dma_tx) == -EPROBE_DEFER)
++	host->dma_tx = dma_request_chan(dev, "spi-tx");
++	if (IS_ERR(host->dma_tx)) {
++		if (PTR_ERR(host->dma_tx) == -EPROBE_DEFER)
+ 			ret = -EPROBE_DEFER;
+ 		else
+ 			dev_warn(dev, "TX channel not found.\n");
+ 
+-		master->dma_tx = NULL;
++		host->dma_tx = NULL;
+ 		goto out_err;
+ 	}
+ 
+@@ -639,14 +639,14 @@ static int pic32_spi_dma_prep(struct pic32_spi *pic32s, struct device *dev)
+ 	return 0;
+ 
+ out_err:
+-	if (master->dma_rx) {
+-		dma_release_channel(master->dma_rx);
+-		master->dma_rx = NULL;
++	if (host->dma_rx) {
++		dma_release_channel(host->dma_rx);
++		host->dma_rx = NULL;
+ 	}
+ 
+-	if (master->dma_tx) {
+-		dma_release_channel(master->dma_tx);
+-		master->dma_tx = NULL;
++	if (host->dma_tx) {
++		dma_release_channel(host->dma_tx);
++		host->dma_tx = NULL;
+ 	}
+ 
+ 	return ret;
+@@ -658,11 +658,11 @@ static void pic32_spi_dma_unprep(struct pic32_spi *pic32s)
+ 		return;
+ 
+ 	clear_bit(PIC32F_DMA_PREP, &pic32s->flags);
+-	if (pic32s->master->dma_rx)
+-		dma_release_channel(pic32s->master->dma_rx);
++	if (pic32s->host->dma_rx)
++		dma_release_channel(pic32s->host->dma_rx);
+ 
+-	if (pic32s->master->dma_tx)
+-		dma_release_channel(pic32s->master->dma_tx);
++	if (pic32s->host->dma_tx)
++		dma_release_channel(pic32s->host->dma_tx);
+ }
+ 
+ static void pic32_spi_hw_init(struct pic32_spi *pic32s)
+@@ -680,7 +680,7 @@ static void pic32_spi_hw_init(struct pic32_spi *pic32s)
+ 	/* disable framing mode */
+ 	ctrl &= ~CTRL_FRMEN;
+ 
+-	/* enable master mode while disabled */
++	/* enable host mode while disabled */
+ 	ctrl |= CTRL_MSTEN;
+ 
+ 	/* set tx fifo threshold interrupt */
+@@ -752,36 +752,36 @@ static int pic32_spi_hw_probe(struct platform_device *pdev,
+ 
+ static int pic32_spi_probe(struct platform_device *pdev)
+ {
+-	struct spi_master *master;
++	struct spi_controller *host;
+ 	struct pic32_spi *pic32s;
+ 	int ret;
+ 
+-	master = spi_alloc_master(&pdev->dev, sizeof(*pic32s));
+-	if (!master)
++	host = spi_alloc_host(&pdev->dev, sizeof(*pic32s));
++	if (!host)
+ 		return -ENOMEM;
+ 
+-	pic32s = spi_master_get_devdata(master);
+-	pic32s->master = master;
++	pic32s = spi_controller_get_devdata(host);
++	pic32s->host = host;
+ 
+ 	ret = pic32_spi_hw_probe(pdev, pic32s);
+ 	if (ret)
+-		goto err_master;
+-
+-	master->dev.of_node	= pdev->dev.of_node;
+-	master->mode_bits	= SPI_MODE_3 | SPI_MODE_0 | SPI_CS_HIGH;
+-	master->num_chipselect	= 1; /* single chip-select */
+-	master->max_speed_hz	= clk_get_rate(pic32s->clk);
+-	master->setup		= pic32_spi_setup;
+-	master->cleanup		= pic32_spi_cleanup;
+-	master->flags		= SPI_CONTROLLER_MUST_TX | SPI_CONTROLLER_MUST_RX;
+-	master->bits_per_word_mask	= SPI_BPW_MASK(8) | SPI_BPW_MASK(16) |
++		goto err_host;
++
++	host->dev.of_node	= pdev->dev.of_node;
++	host->mode_bits	= SPI_MODE_3 | SPI_MODE_0 | SPI_CS_HIGH;
++	host->num_chipselect	= 1; /* single chip-select */
++	host->max_speed_hz	= clk_get_rate(pic32s->clk);
++	host->setup		= pic32_spi_setup;
++	host->cleanup		= pic32_spi_cleanup;
++	host->flags		= SPI_CONTROLLER_MUST_TX | SPI_CONTROLLER_MUST_RX;
++	host->bits_per_word_mask	= SPI_BPW_MASK(8) | SPI_BPW_MASK(16) |
+ 					  SPI_BPW_MASK(32);
+-	master->transfer_one		= pic32_spi_one_transfer;
+-	master->prepare_message		= pic32_spi_prepare_message;
+-	master->unprepare_message	= pic32_spi_unprepare_message;
+-	master->prepare_transfer_hardware	= pic32_spi_prepare_hardware;
+-	master->unprepare_transfer_hardware	= pic32_spi_unprepare_hardware;
+-	master->use_gpio_descriptors = true;
++	host->transfer_one		= pic32_spi_one_transfer;
++	host->prepare_message		= pic32_spi_prepare_message;
++	host->unprepare_message	= pic32_spi_unprepare_message;
++	host->prepare_transfer_hardware	= pic32_spi_prepare_hardware;
++	host->unprepare_transfer_hardware	= pic32_spi_unprepare_hardware;
++	host->use_gpio_descriptors = true;
+ 
+ 	/* optional DMA support */
+ 	ret = pic32_spi_dma_prep(pic32s, &pdev->dev);
+@@ -789,7 +789,7 @@ static int pic32_spi_probe(struct platform_device *pdev)
+ 		goto err_bailout;
+ 
+ 	if (test_bit(PIC32F_DMA_PREP, &pic32s->flags))
+-		master->can_dma	= pic32_spi_can_dma;
++		host->can_dma	= pic32_spi_can_dma;
+ 
+ 	init_completion(&pic32s->xfer_done);
+ 	pic32s->mode = -1;
+@@ -824,10 +824,10 @@ static int pic32_spi_probe(struct platform_device *pdev)
+ 		goto err_bailout;
+ 	}
+ 
+-	/* register master */
+-	ret = devm_spi_register_master(&pdev->dev, master);
++	/* register host */
++	ret = devm_spi_register_controller(&pdev->dev, host);
+ 	if (ret) {
+-		dev_err(&master->dev, "failed registering spi master\n");
++		dev_err(&host->dev, "failed registering spi host\n");
+ 		goto err_bailout;
+ 	}
+ 
+@@ -838,8 +838,8 @@ static int pic32_spi_probe(struct platform_device *pdev)
+ err_bailout:
+ 	pic32_spi_dma_unprep(pic32s);
+ 	clk_disable_unprepare(pic32s->clk);
+-err_master:
+-	spi_master_put(master);
++err_host:
++	spi_controller_put(host);
+ 	return ret;
+ }
+ 
 -- 
 2.25.1
 

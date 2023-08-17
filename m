@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EEC43C2FC3D
-	for <linux-spi@archiver.kernel.org>; Thu, 17 Aug 2023 05:08:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A776C2FC3F
+	for <linux-spi@archiver.kernel.org>; Thu, 17 Aug 2023 05:08:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348080AbjHQFH7 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 17 Aug 2023 01:07:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58314 "EHLO
+        id S1348089AbjHQFIB (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 17 Aug 2023 01:08:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348086AbjHQFHi (ORCPT
+        with ESMTP id S1348088AbjHQFHi (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Thu, 17 Aug 2023 01:07:38 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEB3A269E
-        for <linux-spi@vger.kernel.org>; Wed, 16 Aug 2023 22:07:36 -0700 (PDT)
-Received: from dggpemm500008.china.huawei.com (unknown [172.30.72.56])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RRCb13N7RztSCK;
-        Thu, 17 Aug 2023 13:03:57 +0800 (CST)
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF6CF2684
+        for <linux-spi@vger.kernel.org>; Wed, 16 Aug 2023 22:07:37 -0700 (PDT)
+Received: from dggpemm500009.china.huawei.com (unknown [172.30.72.53])
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4RRCdf3mKJz1GDt8;
+        Thu, 17 Aug 2023 13:06:14 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500008.china.huawei.com (7.185.36.136) with Microsoft SMTP Server
+ dggpemm500009.china.huawei.com (7.185.36.225) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Thu, 17 Aug 2023 13:07:34 +0800
+ 15.1.2507.31; Thu, 17 Aug 2023 13:07:35 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Thu, 17 Aug
- 2023 13:07:34 +0800
+ 2023 13:07:35 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
         <yangyingliang@huawei.com>
-Subject: [PATCH -next v2 21/23] spi: sh: switch to use modern name
-Date:   Thu, 17 Aug 2023 13:03:30 +0800
-Message-ID: <20230817050332.1274751-22-yangyingliang@huawei.com>
+Subject: [PATCH -next v2 23/23] spi: spi-sn-f-ospi: switch to use modern name
+Date:   Thu, 17 Aug 2023 13:03:32 +0800
+Message-ID: <20230817050332.1274751-24-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230817050332.1274751-1-yangyingliang@huawei.com>
 References: <20230817050332.1274751-1-yangyingliang@huawei.com>
@@ -52,106 +52,30 @@ No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-sh.c | 34 +++++++++++++++++-----------------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+ drivers/spi/spi-sn-f-ospi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-sh.c b/drivers/spi/spi-sh.c
-index d358a2a9c3f5..4b873d9a7602 100644
---- a/drivers/spi/spi-sh.c
-+++ b/drivers/spi/spi-sh.c
-@@ -72,7 +72,7 @@
- struct spi_sh_data {
- 	void __iomem *addr;
- 	int irq;
--	struct spi_master *master;
-+	struct spi_controller *host;
- 	unsigned long cr1;
- 	wait_queue_head_t wait;
- 	int width;
-@@ -327,7 +327,7 @@ static int spi_sh_transfer_one_message(struct spi_controller *ctlr,
+diff --git a/drivers/spi/spi-sn-f-ospi.c b/drivers/spi/spi-sn-f-ospi.c
+index 85e4a01bc8b0..a7c3b3923b4a 100644
+--- a/drivers/spi/spi-sn-f-ospi.c
++++ b/drivers/spi/spi-sn-f-ospi.c
+@@ -501,7 +501,7 @@ static int f_ospi_indir_write(struct f_ospi *ospi, struct spi_mem *mem,
  
- static int spi_sh_setup(struct spi_device *spi)
+ static int f_ospi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
  {
--	struct spi_sh_data *ss = spi_master_get_devdata(spi->master);
-+	struct spi_sh_data *ss = spi_controller_get_devdata(spi->controller);
+-	struct f_ospi *ospi = spi_controller_get_devdata(mem->spi->master);
++	struct f_ospi *ospi = spi_controller_get_devdata(mem->spi->controller);
+ 	int err = 0;
  
- 	pr_debug("%s: enter\n", __func__);
+ 	switch (op->data.dir) {
+@@ -606,7 +606,7 @@ static int f_ospi_probe(struct platform_device *pdev)
+ 	u32 num_cs = OSPI_NUM_CS;
+ 	int ret;
  
-@@ -346,7 +346,7 @@ static int spi_sh_setup(struct spi_device *spi)
- 
- static void spi_sh_cleanup(struct spi_device *spi)
- {
--	struct spi_sh_data *ss = spi_master_get_devdata(spi->master);
-+	struct spi_sh_data *ss = spi_controller_get_devdata(spi->controller);
- 
- 	pr_debug("%s: enter\n", __func__);
- 
-@@ -381,14 +381,14 @@ static void spi_sh_remove(struct platform_device *pdev)
- {
- 	struct spi_sh_data *ss = platform_get_drvdata(pdev);
- 
--	spi_unregister_master(ss->master);
-+	spi_unregister_controller(ss->host);
- 	free_irq(ss->irq, ss);
- }
- 
- static int spi_sh_probe(struct platform_device *pdev)
- {
- 	struct resource *res;
--	struct spi_master *master;
-+	struct spi_controller *host;
- 	struct spi_sh_data *ss;
- 	int ret, irq;
- 
-@@ -403,13 +403,13 @@ static int spi_sh_probe(struct platform_device *pdev)
- 	if (irq < 0)
- 		return irq;
- 
--	master = devm_spi_alloc_master(&pdev->dev, sizeof(struct spi_sh_data));
--	if (master == NULL) {
--		dev_err(&pdev->dev, "spi_alloc_master error.\n");
-+	host = devm_spi_alloc_host(&pdev->dev, sizeof(struct spi_sh_data));
-+	if (host == NULL) {
-+		dev_err(&pdev->dev, "devm_spi_alloc_host error.\n");
+-	ctlr = spi_alloc_master(dev, sizeof(*ospi));
++	ctlr = spi_alloc_host(dev, sizeof(*ospi));
+ 	if (!ctlr)
  		return -ENOMEM;
- 	}
- 
--	ss = spi_master_get_devdata(master);
-+	ss = spi_controller_get_devdata(host);
- 	platform_set_drvdata(pdev, ss);
- 
- 	switch (res->flags & IORESOURCE_MEM_TYPE_MASK) {
-@@ -424,7 +424,7 @@ static int spi_sh_probe(struct platform_device *pdev)
- 		return -ENODEV;
- 	}
- 	ss->irq = irq;
--	ss->master = master;
-+	ss->host = host;
- 	ss->addr = devm_ioremap(&pdev->dev, res->start, resource_size(res));
- 	if (ss->addr == NULL) {
- 		dev_err(&pdev->dev, "ioremap error.\n");
-@@ -438,15 +438,15 @@ static int spi_sh_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
--	master->num_chipselect = 2;
--	master->bus_num = pdev->id;
--	master->setup = spi_sh_setup;
--	master->transfer_one_message = spi_sh_transfer_one_message;
--	master->cleanup = spi_sh_cleanup;
-+	host->num_chipselect = 2;
-+	host->bus_num = pdev->id;
-+	host->setup = spi_sh_setup;
-+	host->transfer_one_message = spi_sh_transfer_one_message;
-+	host->cleanup = spi_sh_cleanup;
- 
--	ret = spi_register_master(master);
-+	ret = spi_register_controller(host);
- 	if (ret < 0) {
--		printk(KERN_ERR "spi_register_master error.\n");
-+		printk(KERN_ERR "spi_register_controller error.\n");
- 		goto error3;
- 	}
  
 -- 
 2.25.1

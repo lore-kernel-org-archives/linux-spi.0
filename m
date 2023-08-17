@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 03E6AC2FC22
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5C5C2C2FC27
 	for <linux-spi@archiver.kernel.org>; Thu, 17 Aug 2023 05:08:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348066AbjHQFHx (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 17 Aug 2023 01:07:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58196 "EHLO
+        id S1348070AbjHQFHz (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 17 Aug 2023 01:07:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348068AbjHQFHd (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 17 Aug 2023 01:07:33 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F9E61BF8
-        for <linux-spi@vger.kernel.org>; Wed, 16 Aug 2023 22:07:30 -0700 (PDT)
-Received: from dggpemm100013.china.huawei.com (unknown [172.30.72.53])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RRCb05v3KzNmNC;
-        Thu, 17 Aug 2023 13:03:56 +0800 (CST)
+        with ESMTP id S1348079AbjHQFHf (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 17 Aug 2023 01:07:35 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1932A1BF8
+        for <linux-spi@vger.kernel.org>; Wed, 16 Aug 2023 22:07:34 -0700 (PDT)
+Received: from dggpemm100003.china.huawei.com (unknown [172.30.72.55])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RRCdZ0fj7zrScG;
+        Thu, 17 Aug 2023 13:06:10 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm100013.china.huawei.com (7.185.36.33) with Microsoft SMTP Server
+ dggpemm100003.china.huawei.com (7.185.36.68) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Thu, 17 Aug 2023 13:07:28 +0800
+ 15.1.2507.31; Thu, 17 Aug 2023 13:07:31 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Thu, 17 Aug
- 2023 13:07:28 +0800
+ 2023 13:07:31 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
-        <yangyingliang@huawei.com>
-Subject: [PATCH -next v2 04/23] spi: pic32: switch to use modern name
-Date:   Thu, 17 Aug 2023 13:03:13 +0800
-Message-ID: <20230817050332.1274751-5-yangyingliang@huawei.com>
+        <yangyingliang@huawei.com>, Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH -next v2 13/23] spi: rockchip: switch to use modern name
+Date:   Thu, 17 Aug 2023 13:03:22 +0800
+Message-ID: <20230817050332.1274751-14-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230817050332.1274751-1-yangyingliang@huawei.com>
 References: <20230817050332.1274751-1-yangyingliang@huawei.com>
@@ -46,388 +46,204 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Change legacy name master to modern name host or controller.
+Change legacy name master/slave to modern name host/target or controller.
 
 No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-pic32.c | 154 ++++++++++++++++++++--------------------
- 1 file changed, 77 insertions(+), 77 deletions(-)
+Cc: Heiko Stuebner <heiko@sntech.de>
+---
+ drivers/spi/spi-rockchip.c | 58 +++++++++++++++++++-------------------
+ 1 file changed, 29 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/spi/spi-pic32.c b/drivers/spi/spi-pic32.c
-index e9b4c9cb97fb..52b788dac10a 100644
---- a/drivers/spi/spi-pic32.c
-+++ b/drivers/spi/spi-pic32.c
-@@ -100,7 +100,7 @@ struct pic32_spi {
- 	int			tx_irq;
- 	u32			fifo_n_byte; /* FIFO depth in bytes */
- 	struct clk		*clk;
--	struct spi_master	*master;
-+	struct spi_controller	*host;
- 	/* Current controller setting */
- 	u32			speed_hz; /* spi-clk rate */
- 	u32			mode;
-@@ -224,9 +224,9 @@ static void pic32_err_stop(struct pic32_spi *pic32s, const char *msg)
- 	disable_irq_nosync(pic32s->tx_irq);
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index a37943847e81..5b010094dace 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -104,8 +104,8 @@
+ #define CR0_XFM_RO					0x2
  
- 	/* Show err message and abort xfer with err */
--	dev_err(&pic32s->master->dev, "%s\n", msg);
--	if (pic32s->master->cur_msg)
--		pic32s->master->cur_msg->status = -EIO;
-+	dev_err(&pic32s->host->dev, "%s\n", msg);
-+	if (pic32s->host->cur_msg)
-+		pic32s->host->cur_msg->status = -EIO;
- 	complete(&pic32s->xfer_done);
+ #define CR0_OPM_OFFSET				20
+-#define CR0_OPM_MASTER				0x0
+-#define CR0_OPM_SLAVE				0x1
++#define CR0_OPM_HOST				0x0
++#define CR0_OPM_TARGET				0x1
+ 
+ #define CR0_SOI_OFFSET				23
+ 
+@@ -125,7 +125,7 @@
+ #define SR_TF_EMPTY					(1 << 2)
+ #define SR_RF_EMPTY					(1 << 3)
+ #define SR_RF_FULL					(1 << 4)
+-#define SR_SLAVE_TX_BUSY				(1 << 5)
++#define SR_TARGET_TX_BUSY				(1 << 5)
+ 
+ /* Bit fields in ISR, IMR, ISR, RISR, 5bit */
+ #define INT_MASK					0x1f
+@@ -151,7 +151,7 @@
+ #define RXDMA					(1 << 0)
+ #define TXDMA					(1 << 1)
+ 
+-/* sclk_out: spi master internal logic in rk3x can support 50Mhz */
++/* sclk_out: spi host internal logic in rk3x can support 50Mhz */
+ #define MAX_SCLK_OUT				50000000U
+ 
+ /*
+@@ -194,8 +194,8 @@ struct rockchip_spi {
+ 
+ 	bool cs_asserted[ROCKCHIP_SPI_MAX_CS_NUM];
+ 
+-	bool slave_abort;
+-	bool cs_inactive; /* spi slave tansmition stop when cs inactive */
++	bool target_abort;
++	bool cs_inactive; /* spi target tansmition stop when cs inactive */
+ 	bool cs_high_supported; /* native CS supports active-high polarity */
+ 
+ 	struct spi_transfer *xfer; /* Store xfer temporarily */
+@@ -206,13 +206,13 @@ static inline void spi_enable_chip(struct rockchip_spi *rs, bool enable)
+ 	writel_relaxed((enable ? 1U : 0U), rs->regs + ROCKCHIP_SPI_SSIENR);
  }
  
-@@ -250,7 +250,7 @@ static irqreturn_t pic32_spi_fault_irq(int irq, void *dev_id)
- 		return IRQ_HANDLED;
- 	}
- 
--	if (!pic32s->master->cur_msg) {
-+	if (!pic32s->host->cur_msg) {
- 		pic32_err_stop(pic32s, "err_irq: no mesg");
- 		return IRQ_NONE;
- 	}
-@@ -300,16 +300,16 @@ static void pic32_spi_dma_rx_notify(void *data)
- static int pic32_spi_dma_transfer(struct pic32_spi *pic32s,
- 				  struct spi_transfer *xfer)
+-static inline void wait_for_tx_idle(struct rockchip_spi *rs, bool slave_mode)
++static inline void wait_for_tx_idle(struct rockchip_spi *rs, bool target_mode)
  {
--	struct spi_master *master = pic32s->master;
-+	struct spi_controller *host = pic32s->host;
- 	struct dma_async_tx_descriptor *desc_rx;
- 	struct dma_async_tx_descriptor *desc_tx;
- 	dma_cookie_t cookie;
- 	int ret;
+ 	unsigned long timeout = jiffies + msecs_to_jiffies(5);
  
--	if (!master->dma_rx || !master->dma_tx)
-+	if (!host->dma_rx || !host->dma_tx)
- 		return -ENODEV;
+ 	do {
+-		if (slave_mode) {
+-			if (!(readl_relaxed(rs->regs + ROCKCHIP_SPI_SR) & SR_SLAVE_TX_BUSY) &&
++		if (target_mode) {
++			if (!(readl_relaxed(rs->regs + ROCKCHIP_SPI_SR) & SR_TARGET_TX_BUSY) &&
+ 			    !((readl_relaxed(rs->regs + ROCKCHIP_SPI_SR) & SR_BUSY)))
+ 				return;
+ 		} else {
+@@ -351,9 +351,9 @@ static irqreturn_t rockchip_spi_isr(int irq, void *dev_id)
+ 	struct spi_controller *ctlr = dev_id;
+ 	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
  
--	desc_rx = dmaengine_prep_slave_sg(master->dma_rx,
-+	desc_rx = dmaengine_prep_slave_sg(host->dma_rx,
- 					  xfer->rx_sg.sgl,
- 					  xfer->rx_sg.nents,
- 					  DMA_DEV_TO_MEM,
-@@ -319,7 +319,7 @@ static int pic32_spi_dma_transfer(struct pic32_spi *pic32s,
- 		goto err_dma;
- 	}
+-	/* When int_cs_inactive comes, spi slave abort */
++	/* When int_cs_inactive comes, spi target abort */
+ 	if (rs->cs_inactive && readl_relaxed(rs->regs + ROCKCHIP_SPI_IMR) & INT_CS_INACTIVE) {
+-		ctlr->slave_abort(ctlr);
++		ctlr->target_abort(ctlr);
+ 		writel_relaxed(0, rs->regs + ROCKCHIP_SPI_IMR);
+ 		writel_relaxed(0xffffffff, rs->regs + ROCKCHIP_SPI_ICR);
  
--	desc_tx = dmaengine_prep_slave_sg(master->dma_tx,
-+	desc_tx = dmaengine_prep_slave_sg(host->dma_tx,
- 					  xfer->tx_sg.sgl,
- 					  xfer->tx_sg.nents,
- 					  DMA_MEM_TO_DEV,
-@@ -343,13 +343,13 @@ static int pic32_spi_dma_transfer(struct pic32_spi *pic32s,
- 	if (ret)
- 		goto err_dma_tx;
+@@ -405,7 +405,7 @@ static void rockchip_spi_dma_rxcb(void *data)
+ 	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
+ 	int state = atomic_fetch_andnot(RXDMA, &rs->state);
  
--	dma_async_issue_pending(master->dma_rx);
--	dma_async_issue_pending(master->dma_tx);
-+	dma_async_issue_pending(host->dma_rx);
-+	dma_async_issue_pending(host->dma_tx);
- 
- 	return 0;
- 
- err_dma_tx:
--	dmaengine_terminate_all(master->dma_rx);
-+	dmaengine_terminate_all(host->dma_rx);
- err_dma:
- 	return ret;
- }
-@@ -357,7 +357,7 @@ static int pic32_spi_dma_transfer(struct pic32_spi *pic32s,
- static int pic32_spi_dma_config(struct pic32_spi *pic32s, u32 dma_width)
- {
- 	int buf_offset = offsetof(struct pic32_spi_regs, buf);
--	struct spi_master *master = pic32s->master;
-+	struct spi_controller *host = pic32s->host;
- 	struct dma_slave_config cfg;
- 	int ret;
- 
-@@ -371,16 +371,16 @@ static int pic32_spi_dma_config(struct pic32_spi *pic32s, u32 dma_width)
- 	cfg.dst_addr_width = dma_width;
- 	/* tx channel */
- 	cfg.direction = DMA_MEM_TO_DEV;
--	ret = dmaengine_slave_config(master->dma_tx, &cfg);
-+	ret = dmaengine_slave_config(host->dma_tx, &cfg);
- 	if (ret) {
--		dev_err(&master->dev, "tx channel setup failed\n");
-+		dev_err(&host->dev, "tx channel setup failed\n");
- 		return ret;
- 	}
- 	/* rx channel */
- 	cfg.direction = DMA_DEV_TO_MEM;
--	ret = dmaengine_slave_config(master->dma_rx, &cfg);
-+	ret = dmaengine_slave_config(host->dma_rx, &cfg);
- 	if (ret)
--		dev_err(&master->dev, "rx channel setup failed\n");
-+		dev_err(&host->dev, "rx channel setup failed\n");
- 
- 	return ret;
- }
-@@ -430,19 +430,19 @@ static int pic32_spi_set_word_size(struct pic32_spi *pic32s, u8 bits_per_word)
- 	return 0;
- }
- 
--static int pic32_spi_prepare_hardware(struct spi_master *master)
-+static int pic32_spi_prepare_hardware(struct spi_controller *host)
- {
--	struct pic32_spi *pic32s = spi_master_get_devdata(master);
-+	struct pic32_spi *pic32s = spi_controller_get_devdata(host);
- 
- 	pic32_spi_enable(pic32s);
- 
- 	return 0;
- }
- 
--static int pic32_spi_prepare_message(struct spi_master *master,
-+static int pic32_spi_prepare_message(struct spi_controller *host,
- 				     struct spi_message *msg)
- {
--	struct pic32_spi *pic32s = spi_master_get_devdata(master);
-+	struct pic32_spi *pic32s = spi_controller_get_devdata(host);
- 	struct spi_device *spi = msg->spi;
- 	u32 val;
- 
-@@ -481,18 +481,18 @@ static int pic32_spi_prepare_message(struct spi_master *master,
- 	return 0;
- }
- 
--static bool pic32_spi_can_dma(struct spi_master *master,
-+static bool pic32_spi_can_dma(struct spi_controller *host,
- 			      struct spi_device *spi,
- 			      struct spi_transfer *xfer)
- {
--	struct pic32_spi *pic32s = spi_master_get_devdata(master);
-+	struct pic32_spi *pic32s = spi_controller_get_devdata(host);
- 
- 	/* skip using DMA on small size transfer to avoid overhead.*/
- 	return (xfer->len >= PIC32_DMA_LEN_MIN) &&
- 	       test_bit(PIC32F_DMA_PREP, &pic32s->flags);
- }
- 
--static int pic32_spi_one_transfer(struct spi_master *master,
-+static int pic32_spi_one_transfer(struct spi_controller *host,
- 				  struct spi_device *spi,
- 				  struct spi_transfer *transfer)
- {
-@@ -501,7 +501,7 @@ static int pic32_spi_one_transfer(struct spi_master *master,
- 	unsigned long timeout;
- 	int ret;
- 
--	pic32s = spi_master_get_devdata(master);
-+	pic32s = spi_controller_get_devdata(host);
- 
- 	/* handle transfer specific word size change */
- 	if (transfer->bits_per_word &&
-@@ -549,8 +549,8 @@ static int pic32_spi_one_transfer(struct spi_master *master,
- 	if (timeout == 0) {
- 		dev_err(&spi->dev, "wait error/timedout\n");
- 		if (dma_issued) {
--			dmaengine_terminate_all(master->dma_rx);
--			dmaengine_terminate_all(master->dma_tx);
-+			dmaengine_terminate_all(host->dma_rx);
-+			dmaengine_terminate_all(host->dma_tx);
- 		}
- 		ret = -ETIMEDOUT;
- 	} else {
-@@ -560,16 +560,16 @@ static int pic32_spi_one_transfer(struct spi_master *master,
- 	return ret;
- }
- 
--static int pic32_spi_unprepare_message(struct spi_master *master,
-+static int pic32_spi_unprepare_message(struct spi_controller *host,
- 				       struct spi_message *msg)
- {
- 	/* nothing to do */
- 	return 0;
- }
- 
--static int pic32_spi_unprepare_hardware(struct spi_master *master)
-+static int pic32_spi_unprepare_hardware(struct spi_controller *host)
- {
--	struct pic32_spi *pic32s = spi_master_get_devdata(master);
-+	struct pic32_spi *pic32s = spi_controller_get_devdata(host);
- 
- 	pic32_spi_disable(pic32s);
- 
-@@ -605,28 +605,28 @@ static void pic32_spi_cleanup(struct spi_device *spi)
- 
- static int pic32_spi_dma_prep(struct pic32_spi *pic32s, struct device *dev)
- {
--	struct spi_master *master = pic32s->master;
-+	struct spi_controller *host = pic32s->host;
- 	int ret = 0;
- 
--	master->dma_rx = dma_request_chan(dev, "spi-rx");
--	if (IS_ERR(master->dma_rx)) {
--		if (PTR_ERR(master->dma_rx) == -EPROBE_DEFER)
-+	host->dma_rx = dma_request_chan(dev, "spi-rx");
-+	if (IS_ERR(host->dma_rx)) {
-+		if (PTR_ERR(host->dma_rx) == -EPROBE_DEFER)
- 			ret = -EPROBE_DEFER;
- 		else
- 			dev_warn(dev, "RX channel not found.\n");
- 
--		master->dma_rx = NULL;
-+		host->dma_rx = NULL;
- 		goto out_err;
- 	}
- 
--	master->dma_tx = dma_request_chan(dev, "spi-tx");
--	if (IS_ERR(master->dma_tx)) {
--		if (PTR_ERR(master->dma_tx) == -EPROBE_DEFER)
-+	host->dma_tx = dma_request_chan(dev, "spi-tx");
-+	if (IS_ERR(host->dma_tx)) {
-+		if (PTR_ERR(host->dma_tx) == -EPROBE_DEFER)
- 			ret = -EPROBE_DEFER;
- 		else
- 			dev_warn(dev, "TX channel not found.\n");
- 
--		master->dma_tx = NULL;
-+		host->dma_tx = NULL;
- 		goto out_err;
- 	}
- 
-@@ -639,14 +639,14 @@ static int pic32_spi_dma_prep(struct pic32_spi *pic32s, struct device *dev)
- 	return 0;
- 
- out_err:
--	if (master->dma_rx) {
--		dma_release_channel(master->dma_rx);
--		master->dma_rx = NULL;
-+	if (host->dma_rx) {
-+		dma_release_channel(host->dma_rx);
-+		host->dma_rx = NULL;
- 	}
- 
--	if (master->dma_tx) {
--		dma_release_channel(master->dma_tx);
--		master->dma_tx = NULL;
-+	if (host->dma_tx) {
-+		dma_release_channel(host->dma_tx);
-+		host->dma_tx = NULL;
- 	}
- 
- 	return ret;
-@@ -658,11 +658,11 @@ static void pic32_spi_dma_unprep(struct pic32_spi *pic32s)
+-	if (state & TXDMA && !rs->slave_abort)
++	if (state & TXDMA && !rs->target_abort)
  		return;
  
- 	clear_bit(PIC32F_DMA_PREP, &pic32s->flags);
--	if (pic32s->master->dma_rx)
--		dma_release_channel(pic32s->master->dma_rx);
-+	if (pic32s->host->dma_rx)
-+		dma_release_channel(pic32s->host->dma_rx);
+ 	if (rs->cs_inactive)
+@@ -421,11 +421,11 @@ static void rockchip_spi_dma_txcb(void *data)
+ 	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
+ 	int state = atomic_fetch_andnot(TXDMA, &rs->state);
  
--	if (pic32s->master->dma_tx)
--		dma_release_channel(pic32s->master->dma_tx);
-+	if (pic32s->host->dma_tx)
-+		dma_release_channel(pic32s->host->dma_tx);
- }
+-	if (state & RXDMA && !rs->slave_abort)
++	if (state & RXDMA && !rs->target_abort)
+ 		return;
  
- static void pic32_spi_hw_init(struct pic32_spi *pic32s)
-@@ -680,7 +680,7 @@ static void pic32_spi_hw_init(struct pic32_spi *pic32s)
- 	/* disable framing mode */
- 	ctrl &= ~CTRL_FRMEN;
+ 	/* Wait until the FIFO data completely. */
+-	wait_for_tx_idle(rs, ctlr->slave);
++	wait_for_tx_idle(rs, ctlr->target);
  
--	/* enable master mode while disabled */
-+	/* enable host mode while disabled */
- 	ctrl |= CTRL_MSTEN;
+ 	spi_enable_chip(rs, false);
+ 	spi_finalize_current_transfer(ctlr);
+@@ -525,7 +525,7 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs,
  
- 	/* set tx fifo threshold interrupt */
-@@ -752,36 +752,36 @@ static int pic32_spi_hw_probe(struct platform_device *pdev,
- 
- static int pic32_spi_probe(struct platform_device *pdev)
+ static int rockchip_spi_config(struct rockchip_spi *rs,
+ 		struct spi_device *spi, struct spi_transfer *xfer,
+-		bool use_dma, bool slave_mode)
++		bool use_dma, bool target_mode)
  {
--	struct spi_master *master;
-+	struct spi_controller *host;
- 	struct pic32_spi *pic32s;
- 	int ret;
+ 	u32 cr0 = CR0_FRF_SPI  << CR0_FRF_OFFSET
+ 		| CR0_BHT_8BIT << CR0_BHT_OFFSET
+@@ -534,9 +534,9 @@ static int rockchip_spi_config(struct rockchip_spi *rs,
+ 	u32 cr1;
+ 	u32 dmacr = 0;
  
--	master = spi_alloc_master(&pdev->dev, sizeof(*pic32s));
--	if (!master)
-+	host = spi_alloc_host(&pdev->dev, sizeof(*pic32s));
-+	if (!host)
- 		return -ENOMEM;
+-	if (slave_mode)
+-		cr0 |= CR0_OPM_SLAVE << CR0_OPM_OFFSET;
+-	rs->slave_abort = false;
++	if (target_mode)
++		cr0 |= CR0_OPM_TARGET << CR0_OPM_OFFSET;
++	rs->target_abort = false;
  
--	pic32s = spi_master_get_devdata(master);
--	pic32s->master = master;
-+	pic32s = spi_controller_get_devdata(host);
-+	pic32s->host = host;
- 
- 	ret = pic32_spi_hw_probe(pdev, pic32s);
- 	if (ret)
--		goto err_master;
--
--	master->dev.of_node	= pdev->dev.of_node;
--	master->mode_bits	= SPI_MODE_3 | SPI_MODE_0 | SPI_CS_HIGH;
--	master->num_chipselect	= 1; /* single chip-select */
--	master->max_speed_hz	= clk_get_rate(pic32s->clk);
--	master->setup		= pic32_spi_setup;
--	master->cleanup		= pic32_spi_cleanup;
--	master->flags		= SPI_CONTROLLER_MUST_TX | SPI_CONTROLLER_MUST_RX;
--	master->bits_per_word_mask	= SPI_BPW_MASK(8) | SPI_BPW_MASK(16) |
-+		goto err_host;
-+
-+	host->dev.of_node	= pdev->dev.of_node;
-+	host->mode_bits	= SPI_MODE_3 | SPI_MODE_0 | SPI_CS_HIGH;
-+	host->num_chipselect	= 1; /* single chip-select */
-+	host->max_speed_hz	= clk_get_rate(pic32s->clk);
-+	host->setup		= pic32_spi_setup;
-+	host->cleanup		= pic32_spi_cleanup;
-+	host->flags		= SPI_CONTROLLER_MUST_TX | SPI_CONTROLLER_MUST_RX;
-+	host->bits_per_word_mask	= SPI_BPW_MASK(8) | SPI_BPW_MASK(16) |
- 					  SPI_BPW_MASK(32);
--	master->transfer_one		= pic32_spi_one_transfer;
--	master->prepare_message		= pic32_spi_prepare_message;
--	master->unprepare_message	= pic32_spi_unprepare_message;
--	master->prepare_transfer_hardware	= pic32_spi_prepare_hardware;
--	master->unprepare_transfer_hardware	= pic32_spi_unprepare_hardware;
--	master->use_gpio_descriptors = true;
-+	host->transfer_one		= pic32_spi_one_transfer;
-+	host->prepare_message		= pic32_spi_prepare_message;
-+	host->unprepare_message	= pic32_spi_unprepare_message;
-+	host->prepare_transfer_hardware	= pic32_spi_prepare_hardware;
-+	host->unprepare_transfer_hardware	= pic32_spi_unprepare_hardware;
-+	host->use_gpio_descriptors = true;
- 
- 	/* optional DMA support */
- 	ret = pic32_spi_dma_prep(pic32s, &pdev->dev);
-@@ -789,7 +789,7 @@ static int pic32_spi_probe(struct platform_device *pdev)
- 		goto err_bailout;
- 
- 	if (test_bit(PIC32F_DMA_PREP, &pic32s->flags))
--		master->can_dma	= pic32_spi_can_dma;
-+		host->can_dma	= pic32_spi_can_dma;
- 
- 	init_completion(&pic32s->xfer_done);
- 	pic32s->mode = -1;
-@@ -824,10 +824,10 @@ static int pic32_spi_probe(struct platform_device *pdev)
- 		goto err_bailout;
- 	}
- 
--	/* register master */
--	ret = devm_spi_register_master(&pdev->dev, master);
-+	/* register host */
-+	ret = devm_spi_register_controller(&pdev->dev, host);
- 	if (ret) {
--		dev_err(&master->dev, "failed registering spi master\n");
-+		dev_err(&host->dev, "failed registering spi host\n");
- 		goto err_bailout;
- 	}
- 
-@@ -838,8 +838,8 @@ static int pic32_spi_probe(struct platform_device *pdev)
- err_bailout:
- 	pic32_spi_dma_unprep(pic32s);
- 	clk_disable_unprepare(pic32s->clk);
--err_master:
--	spi_master_put(master);
-+err_host:
-+	spi_controller_put(host);
- 	return ret;
+ 	cr0 |= rs->rsd << CR0_RSD_OFFSET;
+ 	cr0 |= (spi->mode & 0x3U) << CR0_SCPH_OFFSET;
+@@ -614,7 +614,7 @@ static size_t rockchip_spi_max_transfer_size(struct spi_device *spi)
+ 	return ROCKCHIP_SPI_MAX_TRANLEN;
  }
  
+-static int rockchip_spi_slave_abort(struct spi_controller *ctlr)
++static int rockchip_spi_target_abort(struct spi_controller *ctlr)
+ {
+ 	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
+ 	u32 rx_fifo_left;
+@@ -659,7 +659,7 @@ static int rockchip_spi_slave_abort(struct spi_controller *ctlr)
+ 		dmaengine_terminate_sync(ctlr->dma_tx);
+ 	atomic_set(&rs->state, 0);
+ 	spi_enable_chip(rs, false);
+-	rs->slave_abort = true;
++	rs->target_abort = true;
+ 	spi_finalize_current_transfer(ctlr);
+ 
+ 	return 0;
+@@ -697,7 +697,7 @@ static int rockchip_spi_transfer_one(
+ 	rs->xfer = xfer;
+ 	use_dma = ctlr->can_dma ? ctlr->can_dma(ctlr, spi, xfer) : false;
+ 
+-	ret = rockchip_spi_config(rs, spi, xfer, use_dma, ctlr->slave);
++	ret = rockchip_spi_config(rs, spi, xfer, use_dma, ctlr->target);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -757,15 +757,15 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 	struct resource *mem;
+ 	struct device_node *np = pdev->dev.of_node;
+ 	u32 rsd_nsecs, num_cs;
+-	bool slave_mode;
++	bool target_mode;
+ 
+-	slave_mode = of_property_read_bool(np, "spi-slave");
++	target_mode = of_property_read_bool(np, "spi-slave");
+ 
+-	if (slave_mode)
+-		ctlr = spi_alloc_slave(&pdev->dev,
++	if (target_mode)
++		ctlr = spi_alloc_target(&pdev->dev,
+ 				sizeof(struct rockchip_spi));
+ 	else
+-		ctlr = spi_alloc_master(&pdev->dev,
++		ctlr = spi_alloc_host(&pdev->dev,
+ 				sizeof(struct rockchip_spi));
+ 
+ 	if (!ctlr)
+@@ -854,9 +854,9 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 	ctlr->auto_runtime_pm = true;
+ 	ctlr->bus_num = pdev->id;
+ 	ctlr->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LOOP | SPI_LSB_FIRST;
+-	if (slave_mode) {
++	if (target_mode) {
+ 		ctlr->mode_bits |= SPI_NO_CS;
+-		ctlr->slave_abort = rockchip_spi_slave_abort;
++		ctlr->target_abort = rockchip_spi_target_abort;
+ 	} else {
+ 		ctlr->flags = SPI_CONTROLLER_GPIO_SS;
+ 		ctlr->max_native_cs = ROCKCHIP_SPI_MAX_CS_NUM;
+@@ -911,7 +911,7 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 	case ROCKCHIP_SPI_VER2_TYPE2:
+ 		rs->cs_high_supported = true;
+ 		ctlr->mode_bits |= SPI_CS_HIGH;
+-		if (ctlr->can_dma && slave_mode)
++		if (ctlr->can_dma && target_mode)
+ 			rs->cs_inactive = true;
+ 		else
+ 			rs->cs_inactive = false;
 -- 
 2.25.1
 

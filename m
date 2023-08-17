@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CF351C2FC39
-	for <linux-spi@archiver.kernel.org>; Thu, 17 Aug 2023 05:08:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0B3FFC2FC3C
+	for <linux-spi@archiver.kernel.org>; Thu, 17 Aug 2023 05:08:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348085AbjHQFIA (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 17 Aug 2023 01:08:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58306 "EHLO
+        id S1348084AbjHQFIB (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 17 Aug 2023 01:08:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348087AbjHQFHi (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 17 Aug 2023 01:07:38 -0400
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A489C1BF8
-        for <linux-spi@vger.kernel.org>; Wed, 16 Aug 2023 22:07:36 -0700 (PDT)
-Received: from dggpemm500004.china.huawei.com (unknown [172.30.72.57])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4RRCbm2FvzzFqZF;
-        Thu, 17 Aug 2023 13:04:36 +0800 (CST)
+        with ESMTP id S1348083AbjHQFHh (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 17 Aug 2023 01:07:37 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3F5E2684
+        for <linux-spi@vger.kernel.org>; Wed, 16 Aug 2023 22:07:35 -0700 (PDT)
+Received: from dggpemm500006.china.huawei.com (unknown [172.30.72.57])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RRCb602kjzNmwZ;
+        Thu, 17 Aug 2023 13:04:02 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500004.china.huawei.com (7.185.36.219) with Microsoft SMTP Server
+ dggpemm500006.china.huawei.com (7.185.36.236) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Thu, 17 Aug 2023 13:07:34 +0800
+ 15.1.2507.31; Thu, 17 Aug 2023 13:07:33 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Thu, 17 Aug
- 2023 13:07:34 +0800
+ 2023 13:07:33 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
         <yangyingliang@huawei.com>
-Subject: [PATCH -next v2 20/23] spi: sh-sci: switch to use modern name
-Date:   Thu, 17 Aug 2023 13:03:29 +0800
-Message-ID: <20230817050332.1274751-21-yangyingliang@huawei.com>
+Subject: [PATCH -next v2 18/23] spi: sh-hspi: switch to use modern name
+Date:   Thu, 17 Aug 2023 13:03:27 +0800
+Message-ID: <20230817050332.1274751-19-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230817050332.1274751-1-yangyingliang@huawei.com>
 References: <20230817050332.1274751-1-yangyingliang@huawei.com>
@@ -46,100 +46,37 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Change legacy name master to modern name host or controller.
+Change legacy name master to modern name host.
 
 No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-sh-sci.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/spi/spi-sh-hspi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-sh-sci.c b/drivers/spi/spi-sh-sci.c
-index 92ca3f2d61ba..148d615d2f38 100644
---- a/drivers/spi/spi-sh-sci.c
-+++ b/drivers/spi/spi-sh-sci.c
-@@ -56,17 +56,17 @@ static inline void setbits(struct sh_sci_spi *sp, int bits, int on)
- 
- static inline void setsck(struct spi_device *dev, int on)
- {
--	setbits(spi_master_get_devdata(dev->master), PIN_SCK, on);
-+	setbits(spi_controller_get_devdata(dev->controller), PIN_SCK, on);
+diff --git a/drivers/spi/spi-sh-hspi.c b/drivers/spi/spi-sh-hspi.c
+index d6ffeae66ed3..5d63aa1d28e2 100644
+--- a/drivers/spi/spi-sh-hspi.c
++++ b/drivers/spi/spi-sh-hspi.c
+@@ -82,7 +82,7 @@ static int hspi_status_check_timeout(struct hspi_priv *hspi, u32 mask, u32 val)
  }
  
- static inline void setmosi(struct spi_device *dev, int on)
- {
--	setbits(spi_master_get_devdata(dev->master), PIN_TXD, on);
-+	setbits(spi_controller_get_devdata(dev->controller), PIN_TXD, on);
- }
+ /*
+- *		spi master function
++ *		spi host function
+  */
  
- static inline u32 getmiso(struct spi_device *dev)
- {
--	struct sh_sci_spi *sp = spi_master_get_devdata(dev->master);
-+	struct sh_sci_spi *sp = spi_controller_get_devdata(dev->controller);
- 
- 	return (ioread8(SCSPTR(sp)) & PIN_RXD) ? 1 : 0;
- }
-@@ -105,7 +105,7 @@ static u32 sh_sci_spi_txrx_mode3(struct spi_device *spi,
- 
- static void sh_sci_spi_chipselect(struct spi_device *dev, int value)
- {
--	struct sh_sci_spi *sp = spi_master_get_devdata(dev->master);
-+	struct sh_sci_spi *sp = spi_controller_get_devdata(dev->controller);
- 
- 	if (sp->info->chip_select)
- 		(sp->info->chip_select)(sp->info, spi_get_chipselect(dev, 0), value);
-@@ -114,18 +114,18 @@ static void sh_sci_spi_chipselect(struct spi_device *dev, int value)
- static int sh_sci_spi_probe(struct platform_device *dev)
- {
- 	struct resource	*r;
--	struct spi_master *master;
-+	struct spi_controller *host;
- 	struct sh_sci_spi *sp;
- 	int ret;
- 
--	master = spi_alloc_master(&dev->dev, sizeof(struct sh_sci_spi));
--	if (master == NULL) {
--		dev_err(&dev->dev, "failed to allocate spi master\n");
-+	host = spi_alloc_host(&dev->dev, sizeof(struct sh_sci_spi));
-+	if (host == NULL) {
-+		dev_err(&dev->dev, "failed to allocate spi host\n");
- 		ret = -ENOMEM;
- 		goto err0;
+ #define hspi_hw_cs_enable(hspi)		hspi_hw_cs_ctrl(hspi, 0)
+@@ -224,7 +224,7 @@ static int hspi_probe(struct platform_device *pdev)
+ 		return -EINVAL;
  	}
  
--	sp = spi_master_get_devdata(master);
-+	sp = spi_controller_get_devdata(host);
+-	ctlr = spi_alloc_master(&pdev->dev, sizeof(*hspi));
++	ctlr = spi_alloc_host(&pdev->dev, sizeof(*hspi));
+ 	if (!ctlr)
+ 		return -ENOMEM;
  
- 	platform_set_drvdata(dev, sp);
- 	sp->info = dev_get_platdata(&dev->dev);
-@@ -136,7 +136,7 @@ static int sh_sci_spi_probe(struct platform_device *dev)
- 	}
- 
- 	/* setup spi bitbang adaptor */
--	sp->bitbang.master = master;
-+	sp->bitbang.master = host;
- 	sp->bitbang.master->bus_num = sp->info->bus_num;
- 	sp->bitbang.master->num_chipselect = sp->info->num_chipselect;
- 	sp->bitbang.chipselect = sh_sci_spi_chipselect;
-@@ -166,7 +166,7 @@ static int sh_sci_spi_probe(struct platform_device *dev)
- 	setbits(sp, PIN_INIT, 0);
- 	iounmap(sp->membase);
-  err1:
--	spi_master_put(sp->bitbang.master);
-+	spi_controller_put(sp->bitbang.master);
-  err0:
- 	return ret;
- }
-@@ -178,7 +178,7 @@ static void sh_sci_spi_remove(struct platform_device *dev)
- 	spi_bitbang_stop(&sp->bitbang);
- 	setbits(sp, PIN_INIT, 0);
- 	iounmap(sp->membase);
--	spi_master_put(sp->bitbang.master);
-+	spi_controller_put(sp->bitbang.master);
- }
- 
- static struct platform_driver sh_sci_spi_drv = {
 -- 
 2.25.1
 

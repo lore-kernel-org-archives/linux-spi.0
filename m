@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4BA4AC2FC29
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3A8EDC2FC23
 	for <linux-spi@archiver.kernel.org>; Thu, 17 Aug 2023 05:08:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348079AbjHQFHz (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 17 Aug 2023 01:07:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58278 "EHLO
+        id S1348069AbjHQFHy (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 17 Aug 2023 01:07:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348078AbjHQFHf (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 17 Aug 2023 01:07:35 -0400
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D7AC26A5
-        for <linux-spi@vger.kernel.org>; Wed, 16 Aug 2023 22:07:32 -0700 (PDT)
-Received: from dggpemm100009.china.huawei.com (unknown [172.30.72.55])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4RRCdY2QWPz1GDs1;
-        Thu, 17 Aug 2023 13:06:09 +0800 (CST)
+        with ESMTP id S1348071AbjHQFHd (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 17 Aug 2023 01:07:33 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 131312698
+        for <linux-spi@vger.kernel.org>; Wed, 16 Aug 2023 22:07:31 -0700 (PDT)
+Received: from dggpemm100012.china.huawei.com (unknown [172.30.72.54])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RRCb11C3yzNn1F;
+        Thu, 17 Aug 2023 13:03:57 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm100009.china.huawei.com (7.185.36.113) with Microsoft SMTP Server
+ dggpemm100012.china.huawei.com (7.185.36.212) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Thu, 17 Aug 2023 13:07:30 +0800
+ 15.1.2507.31; Thu, 17 Aug 2023 13:07:29 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Thu, 17 Aug
- 2023 13:07:30 +0800
+ 2023 13:07:28 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
         <yangyingliang@huawei.com>
-Subject: [PATCH -next v2 09/23] spi: qup: switch to use modern name
-Date:   Thu, 17 Aug 2023 13:03:18 +0800
-Message-ID: <20230817050332.1274751-10-yangyingliang@huawei.com>
+Subject: [PATCH -next v2 05/23] spi: spl022: switch to use modern name
+Date:   Thu, 17 Aug 2023 13:03:14 +0800
+Message-ID: <20230817050332.1274751-6-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230817050332.1274751-1-yangyingliang@huawei.com>
 References: <20230817050332.1274751-1-yangyingliang@huawei.com>
@@ -52,447 +52,270 @@ No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-qup.c | 166 +++++++++++++++++++++---------------------
- 1 file changed, 83 insertions(+), 83 deletions(-)
+ drivers/spi/spi-pl022.c | 94 ++++++++++++++++++++---------------------
+ 1 file changed, 47 insertions(+), 47 deletions(-)
 
-diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-index fd16acb1f578..4b6f6b25219b 100644
---- a/drivers/spi/spi-qup.c
-+++ b/drivers/spi/spi-qup.c
-@@ -385,20 +385,20 @@ static void spi_qup_write(struct spi_qup *controller)
- 	} while (remainder);
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index 1af75eff26b6..bb347b6bb6f3 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -336,8 +336,8 @@ struct vendor_data {
+  * @phybase: the physical memory where the SSP device resides
+  * @virtbase: the virtual memory where the SSP is mapped
+  * @clk: outgoing clock "SPICLK" for the SPI bus
+- * @master: SPI framework hookup
+- * @master_info: controller-specific data from machine setup
++ * @host: SPI framework hookup
++ * @host_info: controller-specific data from machine setup
+  * @pump_transfers: Tasklet used in Interrupt Transfer mode
+  * @cur_msg: Pointer to current spi_message being processed
+  * @cur_transfer: Pointer to current spi_transfer
+@@ -370,8 +370,8 @@ struct pl022 {
+ 	resource_size_t			phybase;
+ 	void __iomem			*virtbase;
+ 	struct clk			*clk;
+-	struct spi_master		*master;
+-	struct pl022_ssp_controller	*master_info;
++	struct spi_controller		*host;
++	struct pl022_ssp_controller	*host_info;
+ 	/* Message per-transfer pump */
+ 	struct tasklet_struct		pump_transfers;
+ 	struct spi_message		*cur_msg;
+@@ -500,7 +500,7 @@ static void giveback(struct pl022 *pl022)
+ 		 * could invalidate the cs_control() callback...
+ 		 */
+ 		/* get a pointer to the next message, if any */
+-		next_msg = spi_get_next_queued_message(pl022->master);
++		next_msg = spi_get_next_queued_message(pl022->host);
+ 
+ 		/*
+ 		 * see if the next and current messages point
+@@ -523,7 +523,7 @@ static void giveback(struct pl022 *pl022)
+ 	writew((readw(SSP_CR1(pl022->virtbase)) &
+ 		(~SSP_CR1_MASK_SSE)), SSP_CR1(pl022->virtbase));
+ 
+-	spi_finalize_current_message(pl022->master);
++	spi_finalize_current_message(pl022->host);
  }
  
--static int spi_qup_prep_sg(struct spi_master *master, struct scatterlist *sgl,
-+static int spi_qup_prep_sg(struct spi_controller *host, struct scatterlist *sgl,
- 			   unsigned int nents, enum dma_transfer_direction dir,
- 			   dma_async_tx_callback callback)
- {
--	struct spi_qup *qup = spi_master_get_devdata(master);
-+	struct spi_qup *qup = spi_controller_get_devdata(host);
- 	unsigned long flags = DMA_PREP_INTERRUPT | DMA_PREP_FENCE;
- 	struct dma_async_tx_descriptor *desc;
- 	struct dma_chan *chan;
- 	dma_cookie_t cookie;
+ /**
+@@ -1110,16 +1110,16 @@ static int pl022_dma_probe(struct pl022 *pl022)
+ 	 * of them.
+ 	 */
+ 	pl022->dma_rx_channel = dma_request_channel(mask,
+-					    pl022->master_info->dma_filter,
+-					    pl022->master_info->dma_rx_param);
++					    pl022->host_info->dma_filter,
++					    pl022->host_info->dma_rx_param);
+ 	if (!pl022->dma_rx_channel) {
+ 		dev_dbg(&pl022->adev->dev, "no RX DMA channel!\n");
+ 		goto err_no_rxchan;
+ 	}
  
- 	if (dir == DMA_MEM_TO_DEV)
--		chan = master->dma_tx;
-+		chan = host->dma_tx;
- 	else
--		chan = master->dma_rx;
-+		chan = host->dma_rx;
- 
- 	desc = dmaengine_prep_slave_sg(chan, sgl, nents, dir, flags);
- 	if (IS_ERR_OR_NULL(desc))
-@@ -412,13 +412,13 @@ static int spi_qup_prep_sg(struct spi_master *master, struct scatterlist *sgl,
- 	return dma_submit_error(cookie);
+ 	pl022->dma_tx_channel = dma_request_channel(mask,
+-					    pl022->master_info->dma_filter,
+-					    pl022->master_info->dma_tx_param);
++					    pl022->host_info->dma_filter,
++					    pl022->host_info->dma_tx_param);
+ 	if (!pl022->dma_tx_channel) {
+ 		dev_dbg(&pl022->adev->dev, "no TX DMA channel!\n");
+ 		goto err_no_txchan;
+@@ -1573,10 +1573,10 @@ static void do_polling_transfer(struct pl022 *pl022)
+ 	return;
  }
  
--static void spi_qup_dma_terminate(struct spi_master *master,
-+static void spi_qup_dma_terminate(struct spi_controller *host,
- 				  struct spi_transfer *xfer)
+-static int pl022_transfer_one_message(struct spi_master *master,
++static int pl022_transfer_one_message(struct spi_controller *host,
+ 				      struct spi_message *msg)
  {
- 	if (xfer->tx_buf)
--		dmaengine_terminate_all(master->dma_tx);
-+		dmaengine_terminate_all(host->dma_tx);
- 	if (xfer->rx_buf)
--		dmaengine_terminate_all(master->dma_rx);
-+		dmaengine_terminate_all(host->dma_rx);
- }
+-	struct pl022 *pl022 = spi_master_get_devdata(master);
++	struct pl022 *pl022 = spi_controller_get_devdata(host);
  
- static u32 spi_qup_sgl_get_nents_len(struct scatterlist *sgl, u32 max,
-@@ -445,8 +445,8 @@ static int spi_qup_do_dma(struct spi_device *spi, struct spi_transfer *xfer,
- 			  unsigned long timeout)
- {
- 	dma_async_tx_callback rx_done = NULL, tx_done = NULL;
--	struct spi_master *master = spi->master;
--	struct spi_qup *qup = spi_master_get_devdata(master);
-+	struct spi_controller *host = spi->controller;
-+	struct spi_qup *qup = spi_controller_get_devdata(host);
- 	struct scatterlist *tx_sgl, *rx_sgl;
- 	int ret;
- 
-@@ -481,20 +481,20 @@ static int spi_qup_do_dma(struct spi_device *spi, struct spi_transfer *xfer,
- 			return ret;
- 		}
- 		if (rx_sgl) {
--			ret = spi_qup_prep_sg(master, rx_sgl, rx_nents,
-+			ret = spi_qup_prep_sg(host, rx_sgl, rx_nents,
- 					      DMA_DEV_TO_MEM, rx_done);
- 			if (ret)
- 				return ret;
--			dma_async_issue_pending(master->dma_rx);
-+			dma_async_issue_pending(host->dma_rx);
- 		}
- 
- 		if (tx_sgl) {
--			ret = spi_qup_prep_sg(master, tx_sgl, tx_nents,
-+			ret = spi_qup_prep_sg(host, tx_sgl, tx_nents,
- 					      DMA_MEM_TO_DEV, tx_done);
- 			if (ret)
- 				return ret;
- 
--			dma_async_issue_pending(master->dma_tx);
-+			dma_async_issue_pending(host->dma_tx);
- 		}
- 
- 		if (!wait_for_completion_timeout(&qup->done, timeout))
-@@ -513,8 +513,8 @@ static int spi_qup_do_dma(struct spi_device *spi, struct spi_transfer *xfer,
- static int spi_qup_do_pio(struct spi_device *spi, struct spi_transfer *xfer,
- 			  unsigned long timeout)
- {
--	struct spi_master *master = spi->master;
--	struct spi_qup *qup = spi_master_get_devdata(master);
-+	struct spi_controller *host = spi->controller;
-+	struct spi_qup *qup = spi_controller_get_devdata(host);
- 	int ret, n_words, iterations, offset = 0;
- 
- 	n_words = qup->n_words;
-@@ -658,7 +658,7 @@ static irqreturn_t spi_qup_qup_irq(int irq, void *dev_id)
- /* set clock freq ... bits per word, determine mode */
- static int spi_qup_io_prep(struct spi_device *spi, struct spi_transfer *xfer)
- {
--	struct spi_qup *controller = spi_master_get_devdata(spi->master);
-+	struct spi_qup *controller = spi_controller_get_devdata(spi->controller);
- 	int ret;
- 
- 	if (spi->mode & SPI_LOOP && xfer->len > controller->in_fifo_sz) {
-@@ -679,9 +679,9 @@ static int spi_qup_io_prep(struct spi_device *spi, struct spi_transfer *xfer)
- 
- 	if (controller->n_words <= (controller->in_fifo_sz / sizeof(u32)))
- 		controller->mode = QUP_IO_M_MODE_FIFO;
--	else if (spi->master->can_dma &&
--		 spi->master->can_dma(spi->master, spi, xfer) &&
--		 spi->master->cur_msg_mapped)
-+	else if (spi->controller->can_dma &&
-+		 spi->controller->can_dma(spi->controller, spi, xfer) &&
-+		 spi->controller->cur_msg_mapped)
- 		controller->mode = QUP_IO_M_MODE_BAM;
- 	else
- 		controller->mode = QUP_IO_M_MODE_BLOCK;
-@@ -692,7 +692,7 @@ static int spi_qup_io_prep(struct spi_device *spi, struct spi_transfer *xfer)
- /* prep qup for another spi transaction of specific type */
- static int spi_qup_io_config(struct spi_device *spi, struct spi_transfer *xfer)
- {
--	struct spi_qup *controller = spi_master_get_devdata(spi->master);
-+	struct spi_qup *controller = spi_controller_get_devdata(spi->controller);
- 	u32 config, iomode, control;
- 	unsigned long flags;
- 
-@@ -840,11 +840,11 @@ static int spi_qup_io_config(struct spi_device *spi, struct spi_transfer *xfer)
+ 	/* Initial message state */
+ 	pl022->cur_msg = msg;
+@@ -1602,9 +1602,9 @@ static int pl022_transfer_one_message(struct spi_master *master,
  	return 0;
  }
  
--static int spi_qup_transfer_one(struct spi_master *master,
-+static int spi_qup_transfer_one(struct spi_controller *host,
- 			      struct spi_device *spi,
- 			      struct spi_transfer *xfer)
+-static int pl022_unprepare_transfer_hardware(struct spi_master *master)
++static int pl022_unprepare_transfer_hardware(struct spi_controller *host)
  {
--	struct spi_qup *controller = spi_master_get_devdata(master);
-+	struct spi_qup *controller = spi_controller_get_devdata(host);
- 	unsigned long timeout, flags;
- 	int ret;
+-	struct pl022 *pl022 = spi_master_get_devdata(master);
++	struct pl022 *pl022 = spi_controller_get_devdata(host);
  
-@@ -878,21 +878,21 @@ static int spi_qup_transfer_one(struct spi_master *master,
- 	spin_unlock_irqrestore(&controller->lock, flags);
+ 	/* nothing more to do - disable spi/ssp and power off */
+ 	writew((readw(SSP_CR1(pl022->virtbase)) &
+@@ -1826,10 +1826,10 @@ static const struct pl022_config_chip pl022_default_chip_info = {
+ };
  
- 	if (ret && spi_qup_is_dma_xfer(controller->mode))
--		spi_qup_dma_terminate(master, xfer);
-+		spi_qup_dma_terminate(host, xfer);
- 
- 	return ret;
+ /**
+- * pl022_setup - setup function registered to SPI master framework
++ * pl022_setup - setup function registered to SPI host framework
+  * @spi: spi device which is requesting setup
+  *
+- * This function is registered to the SPI framework for this SPI master
++ * This function is registered to the SPI framework for this SPI host
+  * controller. If it is the first time when setup is called by this device,
+  * this function will initialize the runtime state for this chip and save
+  * the same in the device structure. Else it will update the runtime info
+@@ -1844,7 +1844,7 @@ static int pl022_setup(struct spi_device *spi)
+ 	struct chip_data *chip;
+ 	struct ssp_clock_params clk_freq = { .cpsdvsr = 0, .scr = 0};
+ 	int status = 0;
+-	struct pl022 *pl022 = spi_master_get_devdata(spi->master);
++	struct pl022 *pl022 = spi_controller_get_devdata(spi->controller);
+ 	unsigned int bits = spi->bits_per_word;
+ 	u32 tmp;
+ 	struct device_node *np = spi->dev.of_node;
+@@ -1964,7 +1964,7 @@ static int pl022_setup(struct spi_device *spi)
+ 	chip->dmacr = 0;
+ 	chip->cpsr = 0;
+ 	if ((chip_info->com_mode == DMA_TRANSFER)
+-	    && ((pl022->master_info)->enable_dma)) {
++	    && ((pl022->host_info)->enable_dma)) {
+ 		chip->enable_dma = true;
+ 		dev_dbg(&spi->dev, "DMA mode set in controller state\n");
+ 		SSP_WRITE_BITS(chip->dmacr, SSP_DMA_ENABLED,
+@@ -2061,10 +2061,10 @@ static int pl022_setup(struct spi_device *spi)
  }
  
--static bool spi_qup_can_dma(struct spi_master *master, struct spi_device *spi,
-+static bool spi_qup_can_dma(struct spi_controller *host, struct spi_device *spi,
- 			    struct spi_transfer *xfer)
- {
--	struct spi_qup *qup = spi_master_get_devdata(master);
-+	struct spi_qup *qup = spi_controller_get_devdata(host);
- 	size_t dma_align = dma_get_cache_alignment();
- 	int n_words;
- 
- 	if (xfer->rx_buf) {
- 		if (!IS_ALIGNED((size_t)xfer->rx_buf, dma_align) ||
--		    IS_ERR_OR_NULL(master->dma_rx))
-+		    IS_ERR_OR_NULL(host->dma_rx))
- 			return false;
- 		if (qup->qup_v1 && (xfer->len % qup->in_blk_sz))
- 			return false;
-@@ -900,7 +900,7 @@ static bool spi_qup_can_dma(struct spi_master *master, struct spi_device *spi,
- 
- 	if (xfer->tx_buf) {
- 		if (!IS_ALIGNED((size_t)xfer->tx_buf, dma_align) ||
--		    IS_ERR_OR_NULL(master->dma_tx))
-+		    IS_ERR_OR_NULL(host->dma_tx))
- 			return false;
- 		if (qup->qup_v1 && (xfer->len % qup->out_blk_sz))
- 			return false;
-@@ -913,30 +913,30 @@ static bool spi_qup_can_dma(struct spi_master *master, struct spi_device *spi,
- 	return true;
- }
- 
--static void spi_qup_release_dma(struct spi_master *master)
-+static void spi_qup_release_dma(struct spi_controller *host)
- {
--	if (!IS_ERR_OR_NULL(master->dma_rx))
--		dma_release_channel(master->dma_rx);
--	if (!IS_ERR_OR_NULL(master->dma_tx))
--		dma_release_channel(master->dma_tx);
-+	if (!IS_ERR_OR_NULL(host->dma_rx))
-+		dma_release_channel(host->dma_rx);
-+	if (!IS_ERR_OR_NULL(host->dma_tx))
-+		dma_release_channel(host->dma_tx);
- }
- 
--static int spi_qup_init_dma(struct spi_master *master, resource_size_t base)
-+static int spi_qup_init_dma(struct spi_controller *host, resource_size_t base)
- {
--	struct spi_qup *spi = spi_master_get_devdata(master);
-+	struct spi_qup *spi = spi_controller_get_devdata(host);
- 	struct dma_slave_config *rx_conf = &spi->rx_conf,
- 				*tx_conf = &spi->tx_conf;
- 	struct device *dev = spi->dev;
- 	int ret;
- 
- 	/* allocate dma resources, if available */
--	master->dma_rx = dma_request_chan(dev, "rx");
--	if (IS_ERR(master->dma_rx))
--		return PTR_ERR(master->dma_rx);
-+	host->dma_rx = dma_request_chan(dev, "rx");
-+	if (IS_ERR(host->dma_rx))
-+		return PTR_ERR(host->dma_rx);
- 
--	master->dma_tx = dma_request_chan(dev, "tx");
--	if (IS_ERR(master->dma_tx)) {
--		ret = PTR_ERR(master->dma_tx);
-+	host->dma_tx = dma_request_chan(dev, "tx");
-+	if (IS_ERR(host->dma_tx)) {
-+		ret = PTR_ERR(host->dma_tx);
- 		goto err_tx;
- 	}
- 
-@@ -951,13 +951,13 @@ static int spi_qup_init_dma(struct spi_master *master, resource_size_t base)
- 	tx_conf->dst_addr = base + QUP_OUTPUT_FIFO;
- 	tx_conf->dst_maxburst = spi->out_blk_sz;
- 
--	ret = dmaengine_slave_config(master->dma_rx, rx_conf);
-+	ret = dmaengine_slave_config(host->dma_rx, rx_conf);
- 	if (ret) {
- 		dev_err(dev, "failed to configure RX channel\n");
- 		goto err;
- 	}
- 
--	ret = dmaengine_slave_config(master->dma_tx, tx_conf);
-+	ret = dmaengine_slave_config(host->dma_tx, tx_conf);
- 	if (ret) {
- 		dev_err(dev, "failed to configure TX channel\n");
- 		goto err;
-@@ -966,9 +966,9 @@ static int spi_qup_init_dma(struct spi_master *master, resource_size_t base)
- 	return 0;
- 
- err:
--	dma_release_channel(master->dma_tx);
-+	dma_release_channel(host->dma_tx);
- err_tx:
--	dma_release_channel(master->dma_rx);
-+	dma_release_channel(host->dma_rx);
- 	return ret;
- }
- 
-@@ -978,7 +978,7 @@ static void spi_qup_set_cs(struct spi_device *spi, bool val)
- 	u32 spi_ioc;
- 	u32 spi_ioc_orig;
- 
--	controller = spi_master_get_devdata(spi->master);
-+	controller = spi_controller_get_devdata(spi->controller);
- 	spi_ioc = readl_relaxed(controller->base + SPI_IO_CONTROL);
- 	spi_ioc_orig = spi_ioc;
- 	if (!val)
-@@ -992,7 +992,7 @@ static void spi_qup_set_cs(struct spi_device *spi, bool val)
- 
- static int spi_qup_probe(struct platform_device *pdev)
- {
+ /**
+- * pl022_cleanup - cleanup function registered to SPI master framework
++ * pl022_cleanup - cleanup function registered to SPI host framework
+  * @spi: spi device which is requesting cleanup
+  *
+- * This function is registered to the SPI framework for this SPI master
++ * This function is registered to the SPI framework for this SPI host
+  * controller. It will free the runtime state of chip.
+  */
+ static void pl022_cleanup(struct spi_device *spi)
+@@ -2103,7 +2103,7 @@ static int pl022_probe(struct amba_device *adev, const struct amba_id *id)
+ 	struct device *dev = &adev->dev;
+ 	struct pl022_ssp_controller *platform_info =
+ 			dev_get_platdata(&adev->dev);
 -	struct spi_master *master;
 +	struct spi_controller *host;
- 	struct clk *iclk, *cclk;
- 	struct spi_qup *controller;
- 	struct resource *res;
-@@ -1027,34 +1027,34 @@ static int spi_qup_probe(struct platform_device *pdev)
- 		return -ENXIO;
+ 	struct pl022 *pl022 = NULL;	/*Data for this driver */
+ 	int status = 0;
+ 
+@@ -2117,16 +2117,16 @@ static int pl022_probe(struct amba_device *adev, const struct amba_id *id)
+ 		return -ENODEV;
  	}
  
--	master = spi_alloc_master(dev, sizeof(struct spi_qup));
--	if (!master) {
--		dev_err(dev, "cannot allocate master\n");
-+	host = spi_alloc_host(dev, sizeof(struct spi_qup));
-+	if (!host) {
-+		dev_err(dev, "cannot allocate host\n");
+-	/* Allocate master with space for data */
+-	master = spi_alloc_master(dev, sizeof(struct pl022));
+-	if (master == NULL) {
+-		dev_err(&adev->dev, "probe - cannot alloc SPI master\n");
++	/* Allocate host with space for data */
++	host = spi_alloc_host(dev, sizeof(struct pl022));
++	if (host == NULL) {
++		dev_err(&adev->dev, "probe - cannot alloc SPI host\n");
  		return -ENOMEM;
  	}
  
- 	/* use num-cs unless not present or out of range */
- 	if (of_property_read_u32(dev->of_node, "num-cs", &num_cs) ||
- 	    num_cs > SPI_NUM_CHIPSELECTS)
--		master->num_chipselect = SPI_NUM_CHIPSELECTS;
-+		host->num_chipselect = SPI_NUM_CHIPSELECTS;
- 	else
--		master->num_chipselect = num_cs;
-+		host->num_chipselect = num_cs;
+-	pl022 = spi_master_get_devdata(master);
+-	pl022->master = master;
+-	pl022->master_info = platform_info;
++	pl022 = spi_controller_get_devdata(host);
++	pl022->host = host;
++	pl022->host_info = platform_info;
+ 	pl022->adev = adev;
+ 	pl022->vendor = id->data;
  
--	master->use_gpio_descriptors = true;
--	master->max_native_cs = SPI_NUM_CHIPSELECTS;
--	master->bus_num = pdev->id;
--	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LOOP;
--	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
--	master->max_speed_hz = max_freq;
--	master->transfer_one = spi_qup_transfer_one;
--	master->dev.of_node = pdev->dev.of_node;
+@@ -2134,25 +2134,25 @@ static int pl022_probe(struct amba_device *adev, const struct amba_id *id)
+ 	 * Bus Number Which has been Assigned to this SSP controller
+ 	 * on this board
+ 	 */
+-	master->bus_num = platform_info->bus_id;
+-	master->cleanup = pl022_cleanup;
+-	master->setup = pl022_setup;
 -	master->auto_runtime_pm = true;
--	master->dma_alignment = dma_get_cache_alignment();
--	master->max_dma_len = SPI_MAX_XFER;
-+	host->use_gpio_descriptors = true;
-+	host->max_native_cs = SPI_NUM_CHIPSELECTS;
-+	host->bus_num = pdev->id;
-+	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LOOP;
-+	host->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
-+	host->max_speed_hz = max_freq;
-+	host->transfer_one = spi_qup_transfer_one;
-+	host->dev.of_node = pdev->dev.of_node;
+-	master->transfer_one_message = pl022_transfer_one_message;
+-	master->unprepare_transfer_hardware = pl022_unprepare_transfer_hardware;
+-	master->rt = platform_info->rt;
+-	master->dev.of_node = dev->of_node;
+-	master->use_gpio_descriptors = true;
++	host->bus_num = platform_info->bus_id;
++	host->cleanup = pl022_cleanup;
++	host->setup = pl022_setup;
 +	host->auto_runtime_pm = true;
-+	host->dma_alignment = dma_get_cache_alignment();
-+	host->max_dma_len = SPI_MAX_XFER;
++	host->transfer_one_message = pl022_transfer_one_message;
++	host->unprepare_transfer_hardware = pl022_unprepare_transfer_hardware;
++	host->rt = platform_info->rt;
++	host->dev.of_node = dev->of_node;
++	host->use_gpio_descriptors = true;
  
--	platform_set_drvdata(pdev, master);
-+	platform_set_drvdata(pdev, host);
+ 	/*
+ 	 * Supports mode 0-3, loopback, and active low CS. Transfers are
+ 	 * always MS bit first on the original pl022.
+ 	 */
+-	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LOOP;
++	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LOOP;
+ 	if (pl022->vendor->extended_cr)
+-		master->mode_bits |= SPI_LSB_FIRST;
++		host->mode_bits |= SPI_LSB_FIRST;
  
--	controller = spi_master_get_devdata(master);
-+	controller = spi_controller_get_devdata(host);
+-	dev_dbg(&adev->dev, "BUSNO: %d\n", master->bus_num);
++	dev_dbg(&adev->dev, "BUSNO: %d\n", host->bus_num);
  
- 	controller->dev = dev;
- 	controller->base = base;
-@@ -1062,16 +1062,16 @@ static int spi_qup_probe(struct platform_device *pdev)
- 	controller->cclk = cclk;
- 	controller->irq = irq;
+ 	status = amba_request_regions(adev, NULL);
+ 	if (status)
+@@ -2215,10 +2215,10 @@ static int pl022_probe(struct amba_device *adev, const struct amba_id *id)
  
--	ret = spi_qup_init_dma(master, res->start);
-+	ret = spi_qup_init_dma(host, res->start);
- 	if (ret == -EPROBE_DEFER)
- 		goto error;
- 	else if (!ret)
--		master->can_dma = spi_qup_can_dma;
-+		host->can_dma = spi_qup_can_dma;
- 
- 	controller->qup_v1 = (uintptr_t)of_device_get_match_data(dev);
- 
- 	if (!controller->qup_v1)
--		master->set_cs = spi_qup_set_cs;
-+		host->set_cs = spi_qup_set_cs;
- 
- 	spin_lock_init(&controller->lock);
- 	init_completion(&controller->done);
-@@ -1149,7 +1149,7 @@ static int spi_qup_probe(struct platform_device *pdev)
- 	pm_runtime_set_active(dev);
- 	pm_runtime_enable(dev);
- 
--	ret = devm_spi_register_master(dev, master);
-+	ret = devm_spi_register_controller(dev, host);
- 	if (ret)
- 		goto disable_pm;
- 
-@@ -1161,17 +1161,17 @@ static int spi_qup_probe(struct platform_device *pdev)
- 	clk_disable_unprepare(cclk);
- 	clk_disable_unprepare(iclk);
- error_dma:
--	spi_qup_release_dma(master);
-+	spi_qup_release_dma(host);
- error:
+ 	/* Register with the SPI framework */
+ 	amba_set_drvdata(adev, pl022);
+-	status = devm_spi_register_master(&adev->dev, master);
++	status = devm_spi_register_controller(&adev->dev, host);
+ 	if (status != 0) {
+ 		dev_err_probe(&adev->dev, status,
+-			      "problem registering spi master\n");
++			      "problem registering spi host\n");
+ 		goto err_spi_register;
+ 	}
+ 	dev_dbg(dev, "probe succeeded\n");
+@@ -2246,7 +2246,7 @@ static int pl022_probe(struct amba_device *adev, const struct amba_id *id)
+  err_no_ioremap:
+ 	amba_release_regions(adev);
+  err_no_ioregion:
 -	spi_master_put(master);
 +	spi_controller_put(host);
- 	return ret;
+ 	return status;
  }
  
- #ifdef CONFIG_PM
- static int spi_qup_pm_suspend_runtime(struct device *device)
- {
--	struct spi_master *master = dev_get_drvdata(device);
--	struct spi_qup *controller = spi_master_get_devdata(master);
-+	struct spi_controller *host = dev_get_drvdata(device);
-+	struct spi_qup *controller = spi_controller_get_devdata(host);
- 	u32 config;
+@@ -2265,7 +2265,7 @@ pl022_remove(struct amba_device *adev)
+ 	pm_runtime_get_noresume(&adev->dev);
  
- 	/* Enable clocks auto gaiting */
-@@ -1187,8 +1187,8 @@ static int spi_qup_pm_suspend_runtime(struct device *device)
+ 	load_ssp_default_config(pl022);
+-	if (pl022->master_info->enable_dma)
++	if (pl022->host_info->enable_dma)
+ 		pl022_dma_remove(pl022);
  
- static int spi_qup_pm_resume_runtime(struct device *device)
- {
--	struct spi_master *master = dev_get_drvdata(device);
--	struct spi_qup *controller = spi_master_get_devdata(master);
-+	struct spi_controller *host = dev_get_drvdata(device);
-+	struct spi_qup *controller = spi_controller_get_devdata(host);
- 	u32 config;
+ 	clk_disable_unprepare(pl022->clk);
+@@ -2279,13 +2279,13 @@ static int pl022_suspend(struct device *dev)
+ 	struct pl022 *pl022 = dev_get_drvdata(dev);
  	int ret;
  
-@@ -1213,8 +1213,8 @@ static int spi_qup_pm_resume_runtime(struct device *device)
- #ifdef CONFIG_PM_SLEEP
- static int spi_qup_suspend(struct device *device)
- {
--	struct spi_master *master = dev_get_drvdata(device);
--	struct spi_qup *controller = spi_master_get_devdata(master);
-+	struct spi_controller *host = dev_get_drvdata(device);
-+	struct spi_qup *controller = spi_controller_get_devdata(host);
- 	int ret;
- 
- 	if (pm_runtime_suspended(device)) {
-@@ -1222,7 +1222,7 @@ static int spi_qup_suspend(struct device *device)
- 		if (ret)
- 			return ret;
- 	}
--	ret = spi_master_suspend(master);
-+	ret = spi_controller_suspend(host);
+-	ret = spi_master_suspend(pl022->master);
++	ret = spi_controller_suspend(pl022->host);
  	if (ret)
  		return ret;
  
-@@ -1237,8 +1237,8 @@ static int spi_qup_suspend(struct device *device)
- 
- static int spi_qup_resume(struct device *device)
- {
--	struct spi_master *master = dev_get_drvdata(device);
--	struct spi_qup *controller = spi_master_get_devdata(master);
-+	struct spi_controller *host = dev_get_drvdata(device);
-+	struct spi_qup *controller = spi_controller_get_devdata(host);
- 	int ret;
- 
- 	ret = clk_prepare_enable(controller->iclk);
-@@ -1255,7 +1255,7 @@ static int spi_qup_resume(struct device *device)
- 	if (ret)
- 		goto disable_clk;
- 
--	ret = spi_master_resume(master);
-+	ret = spi_controller_resume(host);
- 	if (ret)
- 		goto disable_clk;
- 
-@@ -1270,8 +1270,8 @@ static int spi_qup_resume(struct device *device)
- 
- static void spi_qup_remove(struct platform_device *pdev)
- {
--	struct spi_master *master = dev_get_drvdata(&pdev->dev);
--	struct spi_qup *controller = spi_master_get_devdata(master);
-+	struct spi_controller *host = dev_get_drvdata(&pdev->dev);
-+	struct spi_qup *controller = spi_controller_get_devdata(host);
- 	int ret;
- 
- 	ret = pm_runtime_get_sync(&pdev->dev);
-@@ -1289,7 +1289,7 @@ static void spi_qup_remove(struct platform_device *pdev)
- 			 ERR_PTR(ret));
+ 	ret = pm_runtime_force_suspend(dev);
+ 	if (ret) {
+-		spi_master_resume(pl022->master);
++		spi_controller_resume(pl022->host);
+ 		return ret;
  	}
  
--	spi_qup_release_dma(master);
-+	spi_qup_release_dma(host);
+@@ -2305,7 +2305,7 @@ static int pl022_resume(struct device *dev)
+ 		dev_err(dev, "problem resuming\n");
  
- 	pm_runtime_put_noidle(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
+ 	/* Start the queue running */
+-	ret = spi_master_resume(pl022->master);
++	ret = spi_controller_resume(pl022->host);
+ 	if (!ret)
+ 		dev_dbg(dev, "resumed\n");
+ 
 -- 
 2.25.1
 

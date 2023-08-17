@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BF09FC2FC34
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CF351C2FC39
 	for <linux-spi@archiver.kernel.org>; Thu, 17 Aug 2023 05:08:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348076AbjHQFH6 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 17 Aug 2023 01:07:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58266 "EHLO
+        id S1348085AbjHQFIA (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 17 Aug 2023 01:08:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348082AbjHQFHh (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 17 Aug 2023 01:07:37 -0400
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E14A2698
-        for <linux-spi@vger.kernel.org>; Wed, 16 Aug 2023 22:07:35 -0700 (PDT)
-Received: from dggpemm500002.china.huawei.com (unknown [172.30.72.57])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4RRCdc26ysz1GDsY;
-        Thu, 17 Aug 2023 13:06:12 +0800 (CST)
+        with ESMTP id S1348087AbjHQFHi (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 17 Aug 2023 01:07:38 -0400
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A489C1BF8
+        for <linux-spi@vger.kernel.org>; Wed, 16 Aug 2023 22:07:36 -0700 (PDT)
+Received: from dggpemm500004.china.huawei.com (unknown [172.30.72.57])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4RRCbm2FvzzFqZF;
+        Thu, 17 Aug 2023 13:04:36 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500002.china.huawei.com (7.185.36.229) with Microsoft SMTP Server
+ dggpemm500004.china.huawei.com (7.185.36.219) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Thu, 17 Aug 2023 13:07:33 +0800
+ 15.1.2507.31; Thu, 17 Aug 2023 13:07:34 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Thu, 17 Aug
- 2023 13:07:33 +0800
+ 2023 13:07:34 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
         <yangyingliang@huawei.com>
-Subject: [PATCH -next v2 17/23] spi: sc18is602: switch to use modern name
-Date:   Thu, 17 Aug 2023 13:03:26 +0800
-Message-ID: <20230817050332.1274751-18-yangyingliang@huawei.com>
+Subject: [PATCH -next v2 20/23] spi: sh-sci: switch to use modern name
+Date:   Thu, 17 Aug 2023 13:03:29 +0800
+Message-ID: <20230817050332.1274751-21-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230817050332.1274751-1-yangyingliang@huawei.com>
 References: <20230817050332.1274751-1-yangyingliang@huawei.com>
@@ -52,137 +52,94 @@ No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-sc18is602.c | 50 ++++++++++++++++++-------------------
- 1 file changed, 25 insertions(+), 25 deletions(-)
+ drivers/spi/spi-sh-sci.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/spi/spi-sc18is602.c b/drivers/spi/spi-sc18is602.c
-index 9f98bf350697..eecf9ea95ae3 100644
---- a/drivers/spi/spi-sc18is602.c
-+++ b/drivers/spi/spi-sc18is602.c
-@@ -30,7 +30,7 @@ enum chips { sc18is602, sc18is602b, sc18is603 };
- #define SC18IS602_MODE_CLOCK_DIV_128	0x3
+diff --git a/drivers/spi/spi-sh-sci.c b/drivers/spi/spi-sh-sci.c
+index 92ca3f2d61ba..148d615d2f38 100644
+--- a/drivers/spi/spi-sh-sci.c
++++ b/drivers/spi/spi-sh-sci.c
+@@ -56,17 +56,17 @@ static inline void setbits(struct sh_sci_spi *sp, int bits, int on)
  
- struct sc18is602 {
--	struct spi_master	*master;
-+	struct spi_controller	*host;
- 	struct device		*dev;
- 	u8			ctrl;
- 	u32			freq;
-@@ -179,10 +179,10 @@ static int sc18is602_check_transfer(struct spi_device *spi,
- 	return 0;
+ static inline void setsck(struct spi_device *dev, int on)
+ {
+-	setbits(spi_master_get_devdata(dev->master), PIN_SCK, on);
++	setbits(spi_controller_get_devdata(dev->controller), PIN_SCK, on);
  }
  
--static int sc18is602_transfer_one(struct spi_master *master,
-+static int sc18is602_transfer_one(struct spi_controller *host,
- 				  struct spi_message *m)
+ static inline void setmosi(struct spi_device *dev, int on)
  {
--	struct sc18is602 *hw = spi_master_get_devdata(master);
-+	struct sc18is602 *hw = spi_controller_get_devdata(host);
- 	struct spi_device *spi = m->spi;
- 	struct spi_transfer *t;
- 	int status = 0;
-@@ -213,7 +213,7 @@ static int sc18is602_transfer_one(struct spi_master *master,
- 		spi_transfer_delay_exec(t);
- 	}
- 	m->status = status;
--	spi_finalize_current_message(master);
-+	spi_finalize_current_message(host);
- 
- 	return status;
+-	setbits(spi_master_get_devdata(dev->master), PIN_TXD, on);
++	setbits(spi_controller_get_devdata(dev->controller), PIN_TXD, on);
  }
-@@ -225,7 +225,7 @@ static size_t sc18is602_max_transfer_size(struct spi_device *spi)
  
- static int sc18is602_setup(struct spi_device *spi)
+ static inline u32 getmiso(struct spi_device *dev)
  {
--	struct sc18is602 *hw = spi_master_get_devdata(spi->master);
-+	struct sc18is602 *hw = spi_controller_get_devdata(spi->controller);
+-	struct sh_sci_spi *sp = spi_master_get_devdata(dev->master);
++	struct sh_sci_spi *sp = spi_controller_get_devdata(dev->controller);
  
- 	/* SC18IS602 does not support CS2 */
- 	if (hw->id == sc18is602 && (spi_get_chipselect(spi, 0) == 2))
-@@ -241,17 +241,17 @@ static int sc18is602_probe(struct i2c_client *client)
- 	struct device_node *np = dev->of_node;
- 	struct sc18is602_platform_data *pdata = dev_get_platdata(dev);
- 	struct sc18is602 *hw;
+ 	return (ioread8(SCSPTR(sp)) & PIN_RXD) ? 1 : 0;
+ }
+@@ -105,7 +105,7 @@ static u32 sh_sci_spi_txrx_mode3(struct spi_device *spi,
+ 
+ static void sh_sci_spi_chipselect(struct spi_device *dev, int value)
+ {
+-	struct sh_sci_spi *sp = spi_master_get_devdata(dev->master);
++	struct sh_sci_spi *sp = spi_controller_get_devdata(dev->controller);
+ 
+ 	if (sp->info->chip_select)
+ 		(sp->info->chip_select)(sp->info, spi_get_chipselect(dev, 0), value);
+@@ -114,18 +114,18 @@ static void sh_sci_spi_chipselect(struct spi_device *dev, int value)
+ static int sh_sci_spi_probe(struct platform_device *dev)
+ {
+ 	struct resource	*r;
 -	struct spi_master *master;
 +	struct spi_controller *host;
+ 	struct sh_sci_spi *sp;
+ 	int ret;
  
- 	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C |
- 				     I2C_FUNC_SMBUS_WRITE_BYTE_DATA))
- 		return -EINVAL;
- 
--	master = devm_spi_alloc_master(dev, sizeof(struct sc18is602));
--	if (!master)
-+	host = devm_spi_alloc_host(dev, sizeof(struct sc18is602));
-+	if (!host)
- 		return -ENOMEM;
- 
--	hw = spi_master_get_devdata(master);
-+	hw = spi_controller_get_devdata(host);
- 	i2c_set_clientdata(client, hw);
- 
- 	/* assert reset and then release */
-@@ -260,7 +260,7 @@ static int sc18is602_probe(struct i2c_client *client)
- 		return PTR_ERR(hw->reset);
- 	gpiod_set_value_cansleep(hw->reset, 0);
- 
--	hw->master = master;
-+	hw->host = host;
- 	hw->client = client;
- 	hw->dev = dev;
- 	hw->ctrl = 0xff;
-@@ -273,11 +273,11 @@ static int sc18is602_probe(struct i2c_client *client)
- 	switch (hw->id) {
- 	case sc18is602:
- 	case sc18is602b:
--		master->num_chipselect = 4;
-+		host->num_chipselect = 4;
- 		hw->freq = SC18IS602_CLOCK;
- 		break;
- 	case sc18is603:
--		master->num_chipselect = 2;
-+		host->num_chipselect = 2;
- 		if (pdata) {
- 			hw->freq = pdata->clock_frequency;
- 		} else {
-@@ -292,18 +292,18 @@ static int sc18is602_probe(struct i2c_client *client)
- 			hw->freq = SC18IS602_CLOCK;
- 		break;
+-	master = spi_alloc_master(&dev->dev, sizeof(struct sh_sci_spi));
+-	if (master == NULL) {
+-		dev_err(&dev->dev, "failed to allocate spi master\n");
++	host = spi_alloc_host(&dev->dev, sizeof(struct sh_sci_spi));
++	if (host == NULL) {
++		dev_err(&dev->dev, "failed to allocate spi host\n");
+ 		ret = -ENOMEM;
+ 		goto err0;
  	}
--	master->bus_num = np ? -1 : client->adapter->nr;
--	master->mode_bits = SPI_CPHA | SPI_CPOL | SPI_LSB_FIRST;
--	master->bits_per_word_mask = SPI_BPW_MASK(8);
--	master->setup = sc18is602_setup;
--	master->transfer_one_message = sc18is602_transfer_one;
--	master->max_transfer_size = sc18is602_max_transfer_size;
--	master->max_message_size = sc18is602_max_transfer_size;
--	master->dev.of_node = np;
--	master->min_speed_hz = hw->freq / 128;
--	master->max_speed_hz = hw->freq / 4;
--
--	return devm_spi_register_master(dev, master);
-+	host->bus_num = np ? -1 : client->adapter->nr;
-+	host->mode_bits = SPI_CPHA | SPI_CPOL | SPI_LSB_FIRST;
-+	host->bits_per_word_mask = SPI_BPW_MASK(8);
-+	host->setup = sc18is602_setup;
-+	host->transfer_one_message = sc18is602_transfer_one;
-+	host->max_transfer_size = sc18is602_max_transfer_size;
-+	host->max_message_size = sc18is602_max_transfer_size;
-+	host->dev.of_node = np;
-+	host->min_speed_hz = hw->freq / 128;
-+	host->max_speed_hz = hw->freq / 4;
-+
-+	return devm_spi_register_controller(dev, host);
+ 
+-	sp = spi_master_get_devdata(master);
++	sp = spi_controller_get_devdata(host);
+ 
+ 	platform_set_drvdata(dev, sp);
+ 	sp->info = dev_get_platdata(&dev->dev);
+@@ -136,7 +136,7 @@ static int sh_sci_spi_probe(struct platform_device *dev)
+ 	}
+ 
+ 	/* setup spi bitbang adaptor */
+-	sp->bitbang.master = master;
++	sp->bitbang.master = host;
+ 	sp->bitbang.master->bus_num = sp->info->bus_num;
+ 	sp->bitbang.master->num_chipselect = sp->info->num_chipselect;
+ 	sp->bitbang.chipselect = sh_sci_spi_chipselect;
+@@ -166,7 +166,7 @@ static int sh_sci_spi_probe(struct platform_device *dev)
+ 	setbits(sp, PIN_INIT, 0);
+ 	iounmap(sp->membase);
+  err1:
+-	spi_master_put(sp->bitbang.master);
++	spi_controller_put(sp->bitbang.master);
+  err0:
+ 	return ret;
+ }
+@@ -178,7 +178,7 @@ static void sh_sci_spi_remove(struct platform_device *dev)
+ 	spi_bitbang_stop(&sp->bitbang);
+ 	setbits(sp, PIN_INIT, 0);
+ 	iounmap(sp->membase);
+-	spi_master_put(sp->bitbang.master);
++	spi_controller_put(sp->bitbang.master);
  }
  
- static const struct i2c_device_id sc18is602_id[] = {
-@@ -342,6 +342,6 @@ static struct i2c_driver sc18is602_driver = {
- 
- module_i2c_driver(sc18is602_driver);
- 
--MODULE_DESCRIPTION("SC18IS602/603 SPI Master Driver");
-+MODULE_DESCRIPTION("SC18IS602/603 SPI Host Driver");
- MODULE_AUTHOR("Guenter Roeck");
- MODULE_LICENSE("GPL");
+ static struct platform_driver sh_sci_spi_drv = {
 -- 
 2.25.1
 

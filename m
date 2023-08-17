@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6DF71C2FC2E
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8FC1FC2FC32
 	for <linux-spi@archiver.kernel.org>; Thu, 17 Aug 2023 05:08:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348078AbjHQFH4 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 17 Aug 2023 01:07:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58270 "EHLO
+        id S1348077AbjHQFH5 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 17 Aug 2023 01:07:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348077AbjHQFHf (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 17 Aug 2023 01:07:35 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE3B22D5D
-        for <linux-spi@vger.kernel.org>; Wed, 16 Aug 2023 22:07:33 -0700 (PDT)
-Received: from dggpemm100005.china.huawei.com (unknown [172.30.72.56])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RRCZy1BpsztS9R;
-        Thu, 17 Aug 2023 13:03:54 +0800 (CST)
+        with ESMTP id S1348075AbjHQFHe (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 17 Aug 2023 01:07:34 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE61826AB
+        for <linux-spi@vger.kernel.org>; Wed, 16 Aug 2023 22:07:32 -0700 (PDT)
+Received: from dggpemm100010.china.huawei.com (unknown [172.30.72.55])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RRCch24GPzVk7q;
+        Thu, 17 Aug 2023 13:05:24 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm100005.china.huawei.com (7.185.36.231) with Microsoft SMTP Server
+ dggpemm100010.china.huawei.com (7.185.36.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Thu, 17 Aug 2023 13:07:31 +0800
+ 15.1.2507.31; Thu, 17 Aug 2023 13:07:30 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Thu, 17 Aug
- 2023 13:07:31 +0800
+ 2023 13:07:30 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
         <yangyingliang@huawei.com>
-Subject: [PATCH -next v2 12/23] spi: rockchip-sfc: switch to use modern name
-Date:   Thu, 17 Aug 2023 13:03:21 +0800
-Message-ID: <20230817050332.1274751-13-yangyingliang@huawei.com>
+Subject: [PATCH -next v2 10/23] spi: rb4xx: switch to use modern name
+Date:   Thu, 17 Aug 2023 13:03:19 +0800
+Message-ID: <20230817050332.1274751-11-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230817050332.1274751-1-yangyingliang@huawei.com>
 References: <20230817050332.1274751-1-yangyingliang@huawei.com>
@@ -52,86 +52,97 @@ No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-rockchip-sfc.c | 30 +++++++++++++++---------------
- 1 file changed, 15 insertions(+), 15 deletions(-)
+ drivers/spi/spi-rb4xx.c | 36 ++++++++++++++++++------------------
+ 1 file changed, 18 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/spi/spi-rockchip-sfc.c b/drivers/spi/spi-rockchip-sfc.c
-index bd550e76ab3d..0d7fadcd4ed3 100644
---- a/drivers/spi/spi-rockchip-sfc.c
-+++ b/drivers/spi/spi-rockchip-sfc.c
-@@ -487,7 +487,7 @@ static int rockchip_sfc_xfer_done(struct rockchip_sfc *sfc, u32 timeout_us)
+diff --git a/drivers/spi/spi-rb4xx.c b/drivers/spi/spi-rb4xx.c
+index c817889a7797..225f75550780 100644
+--- a/drivers/spi/spi-rb4xx.c
++++ b/drivers/spi/spi-rb4xx.c
+@@ -80,7 +80,7 @@ static void do_spi_byte_two(struct rb4xx_spi *rbspi, u32 spi_ioc, u8 byte)
  
- static int rockchip_sfc_exec_mem_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ static void rb4xx_set_cs(struct spi_device *spi, bool enable)
  {
--	struct rockchip_sfc *sfc = spi_master_get_devdata(mem->spi->master);
-+	struct rockchip_sfc *sfc = spi_controller_get_devdata(mem->spi->controller);
- 	u32 len = op->data.nbytes;
- 	int ret;
+-	struct rb4xx_spi *rbspi = spi_master_get_devdata(spi->master);
++	struct rb4xx_spi *rbspi = spi_controller_get_devdata(spi->controller);
  
-@@ -523,7 +523,7 @@ static int rockchip_sfc_exec_mem_op(struct spi_mem *mem, const struct spi_mem_op
+ 	/*
+ 	 * Setting CS is done along with bitbanging the actual values,
+@@ -92,10 +92,10 @@ static void rb4xx_set_cs(struct spi_device *spi, bool enable)
+ 			    AR71XX_SPI_IOC_CS0 | AR71XX_SPI_IOC_CS1);
+ }
  
- static int rockchip_sfc_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
+-static int rb4xx_transfer_one(struct spi_master *master,
++static int rb4xx_transfer_one(struct spi_controller *host,
+ 			      struct spi_device *spi, struct spi_transfer *t)
  {
--	struct rockchip_sfc *sfc = spi_master_get_devdata(mem->spi->master);
-+	struct rockchip_sfc *sfc = spi_controller_get_devdata(mem->spi->controller);
+-	struct rb4xx_spi *rbspi = spi_master_get_devdata(master);
++	struct rb4xx_spi *rbspi = spi_controller_get_devdata(host);
+ 	int i;
+ 	u32 spi_ioc;
+ 	u8 *rx_buf;
+@@ -126,14 +126,14 @@ static int rb4xx_transfer_one(struct spi_master *master,
+ 			continue;
+ 		rx_buf[i] = rb4xx_read(rbspi, AR71XX_SPI_REG_RDS);
+ 	}
+-	spi_finalize_current_transfer(master);
++	spi_finalize_current_transfer(host);
  
- 	op->data.nbytes = min(op->data.nbytes, sfc->max_iosize);
+ 	return 0;
+ }
  
-@@ -557,22 +557,22 @@ static irqreturn_t rockchip_sfc_irq_handler(int irq, void *dev_id)
- static int rockchip_sfc_probe(struct platform_device *pdev)
+ static int rb4xx_spi_probe(struct platform_device *pdev)
  {
- 	struct device *dev = &pdev->dev;
 -	struct spi_master *master;
 +	struct spi_controller *host;
- 	struct rockchip_sfc *sfc;
- 	int ret;
+ 	struct clk *ahb_clk;
+ 	struct rb4xx_spi *rbspi;
+ 	int err;
+@@ -143,31 +143,31 @@ static int rb4xx_spi_probe(struct platform_device *pdev)
+ 	if (IS_ERR(spi_base))
+ 		return PTR_ERR(spi_base);
  
--	master = devm_spi_alloc_master(&pdev->dev, sizeof(*sfc));
+-	master = devm_spi_alloc_master(&pdev->dev, sizeof(*rbspi));
 -	if (!master)
-+	host = devm_spi_alloc_host(&pdev->dev, sizeof(*sfc));
++	host = devm_spi_alloc_host(&pdev->dev, sizeof(*rbspi));
 +	if (!host)
  		return -ENOMEM;
  
--	master->flags = SPI_CONTROLLER_HALF_DUPLEX;
--	master->mem_ops = &rockchip_sfc_mem_ops;
+ 	ahb_clk = devm_clk_get(&pdev->dev, "ahb");
+ 	if (IS_ERR(ahb_clk))
+ 		return PTR_ERR(ahb_clk);
+ 
 -	master->dev.of_node = pdev->dev.of_node;
--	master->mode_bits = SPI_TX_QUAD | SPI_TX_DUAL | SPI_RX_QUAD | SPI_RX_DUAL;
--	master->max_speed_hz = SFC_MAX_SPEED;
--	master->num_chipselect = SFC_MAX_CHIPSELECT_NUM;
-+	host->flags = SPI_CONTROLLER_HALF_DUPLEX;
-+	host->mem_ops = &rockchip_sfc_mem_ops;
+-	master->bus_num = 0;
+-	master->num_chipselect = 3;
+-	master->mode_bits = SPI_TX_DUAL;
+-	master->bits_per_word_mask = SPI_BPW_MASK(8);
+-	master->flags = SPI_CONTROLLER_MUST_TX;
+-	master->transfer_one = rb4xx_transfer_one;
+-	master->set_cs = rb4xx_set_cs;
 +	host->dev.of_node = pdev->dev.of_node;
-+	host->mode_bits = SPI_TX_QUAD | SPI_TX_DUAL | SPI_RX_QUAD | SPI_RX_DUAL;
-+	host->max_speed_hz = SFC_MAX_SPEED;
-+	host->num_chipselect = SFC_MAX_CHIPSELECT_NUM;
++	host->bus_num = 0;
++	host->num_chipselect = 3;
++	host->mode_bits = SPI_TX_DUAL;
++	host->bits_per_word_mask = SPI_BPW_MASK(8);
++	host->flags = SPI_CONTROLLER_MUST_TX;
++	host->transfer_one = rb4xx_transfer_one;
++	host->set_cs = rb4xx_set_cs;
  
--	sfc = spi_master_get_devdata(master);
-+	sfc = spi_controller_get_devdata(host);
- 	sfc->dev = dev;
+-	rbspi = spi_master_get_devdata(master);
++	rbspi = spi_controller_get_devdata(host);
+ 	rbspi->base = spi_base;
+ 	rbspi->clk = ahb_clk;
+ 	platform_set_drvdata(pdev, rbspi);
  
- 	sfc->regbase = devm_platform_ioremap_resource(pdev, 0);
-@@ -640,7 +640,7 @@ static int rockchip_sfc_probe(struct platform_device *pdev)
- 	sfc->max_iosize = rockchip_sfc_get_max_iosize(sfc);
- 	sfc->version = rockchip_sfc_get_version(sfc);
+-	err = devm_spi_register_master(&pdev->dev, master);
++	err = devm_spi_register_controller(&pdev->dev, host);
+ 	if (err) {
+-		dev_err(&pdev->dev, "failed to register SPI master\n");
++		dev_err(&pdev->dev, "failed to register SPI host\n");
+ 		return err;
+ 	}
  
--	ret = spi_register_master(master);
-+	ret = spi_register_controller(host);
- 	if (ret)
- 		goto err_irq;
- 
-@@ -656,10 +656,10 @@ static int rockchip_sfc_probe(struct platform_device *pdev)
- 
- static void rockchip_sfc_remove(struct platform_device *pdev)
- {
--	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct spi_controller *host = platform_get_drvdata(pdev);
- 	struct rockchip_sfc *sfc = platform_get_drvdata(pdev);
- 
--	spi_unregister_master(master);
-+	spi_unregister_controller(host);
- 
- 	clk_disable_unprepare(sfc->clk);
- 	clk_disable_unprepare(sfc->hclk);
 -- 
 2.25.1
 

@@ -2,36 +2,37 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ECFF8C71148
-	for <linux-spi@archiver.kernel.org>; Fri, 18 Aug 2023 09:36:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4C526C71150
+	for <linux-spi@archiver.kernel.org>; Fri, 18 Aug 2023 09:36:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359202AbjHRJf5 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 18 Aug 2023 05:35:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39672 "EHLO
+        id S1359249AbjHRJf7 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 18 Aug 2023 05:35:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1359275AbjHRJfZ (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 18 Aug 2023 05:35:25 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D33F73C22
-        for <linux-spi@vger.kernel.org>; Fri, 18 Aug 2023 02:35:22 -0700 (PDT)
-Received: from dggpemm100022.china.huawei.com (unknown [172.30.72.55])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RRxTc0y6CzNnFD;
-        Fri, 18 Aug 2023 17:31:48 +0800 (CST)
+        with ESMTP id S1359293AbjHRJf1 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 18 Aug 2023 05:35:27 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53CE33A84
+        for <linux-spi@vger.kernel.org>; Fri, 18 Aug 2023 02:35:26 -0700 (PDT)
+Received: from dggpemm100012.china.huawei.com (unknown [172.30.72.57])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RRxTY4MYjztSDZ;
+        Fri, 18 Aug 2023 17:31:45 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm100022.china.huawei.com (7.185.36.132) with Microsoft SMTP Server
+ dggpemm100012.china.huawei.com (7.185.36.212) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Fri, 18 Aug 2023 17:35:20 +0800
+ 15.1.2507.31; Fri, 18 Aug 2023 17:35:24 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Fri, 18 Aug
- 2023 17:35:20 +0800
+ 2023 17:35:23 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
-        <yangyingliang@huawei.com>
-Subject: [PATCH -next v3 10/23] spi: rb4xx: switch to use modern name
-Date:   Fri, 18 Aug 2023 17:31:41 +0800
-Message-ID: <20230818093154.1183529-11-yangyingliang@huawei.com>
+        <yangyingliang@huawei.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH -next v3 20/23] spi: sh-sci: switch to use modern name
+Date:   Fri, 18 Aug 2023 17:31:51 +0800
+Message-ID: <20230818093154.1183529-21-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230818093154.1183529-1-yangyingliang@huawei.com>
 References: <20230818093154.1183529-1-yangyingliang@huawei.com>
@@ -51,98 +52,96 @@ Change legacy name master to modern name host or controller.
 No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- drivers/spi/spi-rb4xx.c | 36 ++++++++++++++++++------------------
- 1 file changed, 18 insertions(+), 18 deletions(-)
+ drivers/spi/spi-sh-sci.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/spi/spi-rb4xx.c b/drivers/spi/spi-rb4xx.c
-index c817889a7797..225f75550780 100644
---- a/drivers/spi/spi-rb4xx.c
-+++ b/drivers/spi/spi-rb4xx.c
-@@ -80,7 +80,7 @@ static void do_spi_byte_two(struct rb4xx_spi *rbspi, u32 spi_ioc, u8 byte)
+diff --git a/drivers/spi/spi-sh-sci.c b/drivers/spi/spi-sh-sci.c
+index 92ca3f2d61ba..148d615d2f38 100644
+--- a/drivers/spi/spi-sh-sci.c
++++ b/drivers/spi/spi-sh-sci.c
+@@ -56,17 +56,17 @@ static inline void setbits(struct sh_sci_spi *sp, int bits, int on)
  
- static void rb4xx_set_cs(struct spi_device *spi, bool enable)
+ static inline void setsck(struct spi_device *dev, int on)
  {
--	struct rb4xx_spi *rbspi = spi_master_get_devdata(spi->master);
-+	struct rb4xx_spi *rbspi = spi_controller_get_devdata(spi->controller);
- 
- 	/*
- 	 * Setting CS is done along with bitbanging the actual values,
-@@ -92,10 +92,10 @@ static void rb4xx_set_cs(struct spi_device *spi, bool enable)
- 			    AR71XX_SPI_IOC_CS0 | AR71XX_SPI_IOC_CS1);
+-	setbits(spi_master_get_devdata(dev->master), PIN_SCK, on);
++	setbits(spi_controller_get_devdata(dev->controller), PIN_SCK, on);
  }
  
--static int rb4xx_transfer_one(struct spi_master *master,
-+static int rb4xx_transfer_one(struct spi_controller *host,
- 			      struct spi_device *spi, struct spi_transfer *t)
+ static inline void setmosi(struct spi_device *dev, int on)
  {
--	struct rb4xx_spi *rbspi = spi_master_get_devdata(master);
-+	struct rb4xx_spi *rbspi = spi_controller_get_devdata(host);
- 	int i;
- 	u32 spi_ioc;
- 	u8 *rx_buf;
-@@ -126,14 +126,14 @@ static int rb4xx_transfer_one(struct spi_master *master,
- 			continue;
- 		rx_buf[i] = rb4xx_read(rbspi, AR71XX_SPI_REG_RDS);
- 	}
--	spi_finalize_current_transfer(master);
-+	spi_finalize_current_transfer(host);
- 
- 	return 0;
+-	setbits(spi_master_get_devdata(dev->master), PIN_TXD, on);
++	setbits(spi_controller_get_devdata(dev->controller), PIN_TXD, on);
  }
  
- static int rb4xx_spi_probe(struct platform_device *pdev)
+ static inline u32 getmiso(struct spi_device *dev)
  {
+-	struct sh_sci_spi *sp = spi_master_get_devdata(dev->master);
++	struct sh_sci_spi *sp = spi_controller_get_devdata(dev->controller);
+ 
+ 	return (ioread8(SCSPTR(sp)) & PIN_RXD) ? 1 : 0;
+ }
+@@ -105,7 +105,7 @@ static u32 sh_sci_spi_txrx_mode3(struct spi_device *spi,
+ 
+ static void sh_sci_spi_chipselect(struct spi_device *dev, int value)
+ {
+-	struct sh_sci_spi *sp = spi_master_get_devdata(dev->master);
++	struct sh_sci_spi *sp = spi_controller_get_devdata(dev->controller);
+ 
+ 	if (sp->info->chip_select)
+ 		(sp->info->chip_select)(sp->info, spi_get_chipselect(dev, 0), value);
+@@ -114,18 +114,18 @@ static void sh_sci_spi_chipselect(struct spi_device *dev, int value)
+ static int sh_sci_spi_probe(struct platform_device *dev)
+ {
+ 	struct resource	*r;
 -	struct spi_master *master;
 +	struct spi_controller *host;
- 	struct clk *ahb_clk;
- 	struct rb4xx_spi *rbspi;
- 	int err;
-@@ -143,31 +143,31 @@ static int rb4xx_spi_probe(struct platform_device *pdev)
- 	if (IS_ERR(spi_base))
- 		return PTR_ERR(spi_base);
+ 	struct sh_sci_spi *sp;
+ 	int ret;
  
--	master = devm_spi_alloc_master(&pdev->dev, sizeof(*rbspi));
--	if (!master)
-+	host = devm_spi_alloc_host(&pdev->dev, sizeof(*rbspi));
-+	if (!host)
- 		return -ENOMEM;
- 
- 	ahb_clk = devm_clk_get(&pdev->dev, "ahb");
- 	if (IS_ERR(ahb_clk))
- 		return PTR_ERR(ahb_clk);
- 
--	master->dev.of_node = pdev->dev.of_node;
--	master->bus_num = 0;
--	master->num_chipselect = 3;
--	master->mode_bits = SPI_TX_DUAL;
--	master->bits_per_word_mask = SPI_BPW_MASK(8);
--	master->flags = SPI_CONTROLLER_MUST_TX;
--	master->transfer_one = rb4xx_transfer_one;
--	master->set_cs = rb4xx_set_cs;
-+	host->dev.of_node = pdev->dev.of_node;
-+	host->bus_num = 0;
-+	host->num_chipselect = 3;
-+	host->mode_bits = SPI_TX_DUAL;
-+	host->bits_per_word_mask = SPI_BPW_MASK(8);
-+	host->flags = SPI_CONTROLLER_MUST_TX;
-+	host->transfer_one = rb4xx_transfer_one;
-+	host->set_cs = rb4xx_set_cs;
- 
--	rbspi = spi_master_get_devdata(master);
-+	rbspi = spi_controller_get_devdata(host);
- 	rbspi->base = spi_base;
- 	rbspi->clk = ahb_clk;
- 	platform_set_drvdata(pdev, rbspi);
- 
--	err = devm_spi_register_master(&pdev->dev, master);
-+	err = devm_spi_register_controller(&pdev->dev, host);
- 	if (err) {
--		dev_err(&pdev->dev, "failed to register SPI master\n");
-+		dev_err(&pdev->dev, "failed to register SPI host\n");
- 		return err;
+-	master = spi_alloc_master(&dev->dev, sizeof(struct sh_sci_spi));
+-	if (master == NULL) {
+-		dev_err(&dev->dev, "failed to allocate spi master\n");
++	host = spi_alloc_host(&dev->dev, sizeof(struct sh_sci_spi));
++	if (host == NULL) {
++		dev_err(&dev->dev, "failed to allocate spi host\n");
+ 		ret = -ENOMEM;
+ 		goto err0;
  	}
  
+-	sp = spi_master_get_devdata(master);
++	sp = spi_controller_get_devdata(host);
+ 
+ 	platform_set_drvdata(dev, sp);
+ 	sp->info = dev_get_platdata(&dev->dev);
+@@ -136,7 +136,7 @@ static int sh_sci_spi_probe(struct platform_device *dev)
+ 	}
+ 
+ 	/* setup spi bitbang adaptor */
+-	sp->bitbang.master = master;
++	sp->bitbang.master = host;
+ 	sp->bitbang.master->bus_num = sp->info->bus_num;
+ 	sp->bitbang.master->num_chipselect = sp->info->num_chipselect;
+ 	sp->bitbang.chipselect = sh_sci_spi_chipselect;
+@@ -166,7 +166,7 @@ static int sh_sci_spi_probe(struct platform_device *dev)
+ 	setbits(sp, PIN_INIT, 0);
+ 	iounmap(sp->membase);
+  err1:
+-	spi_master_put(sp->bitbang.master);
++	spi_controller_put(sp->bitbang.master);
+  err0:
+ 	return ret;
+ }
+@@ -178,7 +178,7 @@ static void sh_sci_spi_remove(struct platform_device *dev)
+ 	spi_bitbang_stop(&sp->bitbang);
+ 	setbits(sp, PIN_INIT, 0);
+ 	iounmap(sp->membase);
+-	spi_master_put(sp->bitbang.master);
++	spi_controller_put(sp->bitbang.master);
+ }
+ 
+ static struct platform_driver sh_sci_spi_drv = {
 -- 
 2.25.1
 

@@ -2,270 +2,79 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D6641C7115D
-	for <linux-spi@archiver.kernel.org>; Fri, 18 Aug 2023 09:36:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C0653C678DC
+	for <linux-spi@archiver.kernel.org>; Fri, 18 Aug 2023 09:57:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359275AbjHRJgC (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 18 Aug 2023 05:36:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39634 "EHLO
+        id S1359469AbjHRJ50 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 18 Aug 2023 05:57:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1359296AbjHRJf3 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 18 Aug 2023 05:35:29 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A9EB3A91
-        for <linux-spi@vger.kernel.org>; Fri, 18 Aug 2023 02:35:27 -0700 (PDT)
-Received: from dggpemm100007.china.huawei.com (unknown [172.30.72.55])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RRxX94RwBzkXDW;
-        Fri, 18 Aug 2023 17:34:01 +0800 (CST)
-Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm100007.china.huawei.com (7.185.36.116) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Fri, 18 Aug 2023 17:35:25 +0800
-Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
- (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Fri, 18 Aug
- 2023 17:35:24 +0800
-From:   Yang Yingliang <yangyingliang@huawei.com>
-To:     <linux-spi@vger.kernel.org>
-CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
-        <yangyingliang@huawei.com>
-Subject: [PATCH -next v3 22/23] spi: sifive: switch to use modern name
-Date:   Fri, 18 Aug 2023 17:31:53 +0800
-Message-ID: <20230818093154.1183529-23-yangyingliang@huawei.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230818093154.1183529-1-yangyingliang@huawei.com>
-References: <20230818093154.1183529-1-yangyingliang@huawei.com>
+        with ESMTP id S1359573AbjHRJ5T (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 18 Aug 2023 05:57:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9F4C4205
+        for <linux-spi@vger.kernel.org>; Fri, 18 Aug 2023 02:57:03 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5D19A679CA
+        for <linux-spi@vger.kernel.org>; Fri, 18 Aug 2023 09:57:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id BE103C433CB;
+        Fri, 18 Aug 2023 09:57:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692352622;
+        bh=xjxb9nJ7prGnpC5noRkiuC+lwG6adlYFMBCXtzDva+w=;
+        h=Subject:From:Date:To:From;
+        b=C6332cMMlaXfrT2bHg7QFQ5t5dqH7V40n2tfvfYwhW0sBHDrf6j4f7vReocYOAKvK
+         8gnTfwKgvpkeEfRlRCHDk1cznib+nM/LYVWoIgqCe4PyU5izEwJv6aOeKOHy7Arw1p
+         b3NRkENKnPo/B8vvAEkACIEBquG6kfoYYs271bxUU2jlacGnD23ml3PZQn94u/iUji
+         YYiIAMTQvtf/VI6h2ekruwQOorTCHVzVNhylzs+0GN0BjY7jDhTu1duRNktYEMXPC5
+         hOZT3l9LKOOB4OcGIYPToF3nNS9BJK+O8GWANgTnflE1PnONOE+edsCRvl6ADm8Hgi
+         XMg5zuxyBIsLA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 9F0E9E93B34;
+        Fri, 18 Aug 2023 09:57:02 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.103.91]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- dggpemm500007.china.huawei.com (7.185.36.183)
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <169235262264.3366.13993306940229843838.git-patchwork-housekeeping@kernel.org>
+Date:   Fri, 18 Aug 2023 09:57:02 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Change legacy name master to modern name host or controller.
+Latest series: [v3] spi: switch to use modern name (part4) (2023-08-18T09:31:31)
+  Superseding: [v2] spi: switch to use modern name (part4) (2023-08-17T05:03:09):
+    [-next,v2,01/23] spi: orion: switch to use modern name
+    [-next,v2,02/23] spi: mchp-pci1xxxx: switch to use modern name
+    [-next,v2,03/23] spi: pic32-sqi: switch to use modern name
+    [-next,v2,04/23] spi: pic32: switch to use modern name
+    [-next,v2,05/23] spi: spl022: switch to use modern name
+    [-next,v2,06/23] spi: ppc4xx: switch to use modern name
+    [-next,v2,07/23] spi: pxa2xx: switch to use modern name
+    [-next,v2,08/23] spi: spi-qcom-qspi: switch to use modern name
+    [-next,v2,09/23] spi: qup: switch to use modern name
+    [-next,v2,10/23] spi: rb4xx: switch to use modern name
+    [-next,v2,11/23] spi: realtek-rtl: switch to use devm_spi_alloc_host()
+    [-next,v2,12/23] spi: rockchip-sfc: switch to use modern name
+    [-next,v2,13/23] spi: rockchip: switch to use modern name
+    [-next,v2,14/23] spi: rspi: switch to use spi_alloc_host()
+    [-next,v2,15/23] spi: rzv2m-csi: switch to use devm_spi_alloc_host()
+    [-next,v2,16/23] spi: s3c64xx: switch to use modern name
+    [-next,v2,17/23] spi: sc18is602: switch to use modern name
+    [-next,v2,18/23] spi: sh-hspi: switch to use modern name
+    [-next,v2,19/23] spi: sh-msiof: switch to use modern name
+    [-next,v2,20/23] spi: sh-sci: switch to use modern name
+    [-next,v2,21/23] spi: sh: switch to use modern name
+    [-next,v2,22/23] spi: sifive: switch to use modern name
+    [-next,v2,23/23] spi: spi-sn-f-ospi: switch to use modern name
 
-No functional changed.
 
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
----
- drivers/spi/spi-sifive.c | 80 ++++++++++++++++++++--------------------
- 1 file changed, 40 insertions(+), 40 deletions(-)
-
-diff --git a/drivers/spi/spi-sifive.c b/drivers/spi/spi-sifive.c
-index 2f77dae85386..cfd17bbb2202 100644
---- a/drivers/spi/spi-sifive.c
-+++ b/drivers/spi/spi-sifive.c
-@@ -128,9 +128,9 @@ static void sifive_spi_init(struct sifive_spi *spi)
- }
- 
- static int
--sifive_spi_prepare_message(struct spi_master *master, struct spi_message *msg)
-+sifive_spi_prepare_message(struct spi_controller *host, struct spi_message *msg)
- {
--	struct sifive_spi *spi = spi_master_get_devdata(master);
-+	struct sifive_spi *spi = spi_controller_get_devdata(host);
- 	struct spi_device *device = msg->spi;
- 
- 	/* Update the chip select polarity */
-@@ -152,7 +152,7 @@ sifive_spi_prepare_message(struct spi_master *master, struct spi_message *msg)
- 
- static void sifive_spi_set_cs(struct spi_device *device, bool is_high)
- {
--	struct sifive_spi *spi = spi_master_get_devdata(device->master);
-+	struct sifive_spi *spi = spi_controller_get_devdata(device->controller);
- 
- 	/* Reverse polarity is handled by SCMR/CPOL. Not inverted CS. */
- 	if (device->mode & SPI_CS_HIGH)
-@@ -252,10 +252,10 @@ static void sifive_spi_rx(struct sifive_spi *spi, u8 *rx_ptr)
- }
- 
- static int
--sifive_spi_transfer_one(struct spi_master *master, struct spi_device *device,
-+sifive_spi_transfer_one(struct spi_controller *host, struct spi_device *device,
- 			struct spi_transfer *t)
- {
--	struct sifive_spi *spi = spi_master_get_devdata(master);
-+	struct sifive_spi *spi = spi_controller_get_devdata(host);
- 	int poll = sifive_spi_prep_transfer(spi, device, t);
- 	const u8 *tx_ptr = t->tx_buf;
- 	u8 *rx_ptr = t->rx_buf;
-@@ -294,35 +294,35 @@ static int sifive_spi_probe(struct platform_device *pdev)
- 	struct sifive_spi *spi;
- 	int ret, irq, num_cs;
- 	u32 cs_bits, max_bits_per_word;
--	struct spi_master *master;
-+	struct spi_controller *host;
- 
--	master = spi_alloc_master(&pdev->dev, sizeof(struct sifive_spi));
--	if (!master) {
-+	host = spi_alloc_host(&pdev->dev, sizeof(struct sifive_spi));
-+	if (!host) {
- 		dev_err(&pdev->dev, "out of memory\n");
- 		return -ENOMEM;
- 	}
- 
--	spi = spi_master_get_devdata(master);
-+	spi = spi_controller_get_devdata(host);
- 	init_completion(&spi->done);
--	platform_set_drvdata(pdev, master);
-+	platform_set_drvdata(pdev, host);
- 
- 	spi->regs = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(spi->regs)) {
- 		ret = PTR_ERR(spi->regs);
--		goto put_master;
-+		goto put_host;
- 	}
- 
- 	spi->clk = devm_clk_get(&pdev->dev, NULL);
- 	if (IS_ERR(spi->clk)) {
- 		dev_err(&pdev->dev, "Unable to find bus clock\n");
- 		ret = PTR_ERR(spi->clk);
--		goto put_master;
-+		goto put_host;
- 	}
- 
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0) {
- 		ret = irq;
--		goto put_master;
-+		goto put_host;
- 	}
- 
- 	/* Optional parameters */
-@@ -339,14 +339,14 @@ static int sifive_spi_probe(struct platform_device *pdev)
- 	if (!ret && max_bits_per_word < 8) {
- 		dev_err(&pdev->dev, "Only 8bit SPI words supported by the driver\n");
- 		ret = -EINVAL;
--		goto put_master;
-+		goto put_host;
- 	}
- 
- 	/* Spin up the bus clock before hitting registers */
- 	ret = clk_prepare_enable(spi->clk);
- 	if (ret) {
- 		dev_err(&pdev->dev, "Unable to enable bus clock\n");
--		goto put_master;
-+		goto put_host;
- 	}
- 
- 	/* probe the number of CS lines */
-@@ -362,30 +362,30 @@ static int sifive_spi_probe(struct platform_device *pdev)
- 
- 	num_cs = ilog2(cs_bits) + 1;
- 	if (num_cs > SIFIVE_SPI_MAX_CS) {
--		dev_err(&pdev->dev, "Invalid number of spi slaves\n");
-+		dev_err(&pdev->dev, "Invalid number of spi targets\n");
- 		ret = -EINVAL;
- 		goto disable_clk;
- 	}
- 
--	/* Define our master */
--	master->dev.of_node = pdev->dev.of_node;
--	master->bus_num = pdev->id;
--	master->num_chipselect = num_cs;
--	master->mode_bits = SPI_CPHA | SPI_CPOL
-+	/* Define our host */
-+	host->dev.of_node = pdev->dev.of_node;
-+	host->bus_num = pdev->id;
-+	host->num_chipselect = num_cs;
-+	host->mode_bits = SPI_CPHA | SPI_CPOL
- 			  | SPI_CS_HIGH | SPI_LSB_FIRST
- 			  | SPI_TX_DUAL | SPI_TX_QUAD
- 			  | SPI_RX_DUAL | SPI_RX_QUAD;
- 	/* TODO: add driver support for bits_per_word < 8
- 	 * we need to "left-align" the bits (unless SPI_LSB_FIRST)
- 	 */
--	master->bits_per_word_mask = SPI_BPW_MASK(8);
--	master->flags = SPI_CONTROLLER_MUST_TX | SPI_CONTROLLER_GPIO_SS;
--	master->prepare_message = sifive_spi_prepare_message;
--	master->set_cs = sifive_spi_set_cs;
--	master->transfer_one = sifive_spi_transfer_one;
-+	host->bits_per_word_mask = SPI_BPW_MASK(8);
-+	host->flags = SPI_CONTROLLER_MUST_TX | SPI_CONTROLLER_GPIO_SS;
-+	host->prepare_message = sifive_spi_prepare_message;
-+	host->set_cs = sifive_spi_set_cs;
-+	host->transfer_one = sifive_spi_transfer_one;
- 
- 	pdev->dev.dma_mask = NULL;
--	/* Configure the SPI master hardware */
-+	/* Configure the SPI host hardware */
- 	sifive_spi_init(spi);
- 
- 	/* Register for SPI Interrupt */
-@@ -397,11 +397,11 @@ static int sifive_spi_probe(struct platform_device *pdev)
- 	}
- 
- 	dev_info(&pdev->dev, "mapped; irq=%d, cs=%d\n",
--		 irq, master->num_chipselect);
-+		 irq, host->num_chipselect);
- 
--	ret = devm_spi_register_master(&pdev->dev, master);
-+	ret = devm_spi_register_controller(&pdev->dev, host);
- 	if (ret < 0) {
--		dev_err(&pdev->dev, "spi_register_master failed\n");
-+		dev_err(&pdev->dev, "spi_register_host failed\n");
- 		goto disable_clk;
- 	}
- 
-@@ -409,16 +409,16 @@ static int sifive_spi_probe(struct platform_device *pdev)
- 
- disable_clk:
- 	clk_disable_unprepare(spi->clk);
--put_master:
--	spi_master_put(master);
-+put_host:
-+	spi_controller_put(host);
- 
- 	return ret;
- }
- 
- static void sifive_spi_remove(struct platform_device *pdev)
- {
--	struct spi_master *master = platform_get_drvdata(pdev);
--	struct sifive_spi *spi = spi_master_get_devdata(master);
-+	struct spi_controller *host = platform_get_drvdata(pdev);
-+	struct sifive_spi *spi = spi_controller_get_devdata(host);
- 
- 	/* Disable all the interrupts just in case */
- 	sifive_spi_write(spi, SIFIVE_SPI_REG_IE, 0);
-@@ -427,11 +427,11 @@ static void sifive_spi_remove(struct platform_device *pdev)
- 
- static int sifive_spi_suspend(struct device *dev)
- {
--	struct spi_master *master = dev_get_drvdata(dev);
--	struct sifive_spi *spi = spi_master_get_devdata(master);
-+	struct spi_controller *host = dev_get_drvdata(dev);
-+	struct sifive_spi *spi = spi_controller_get_devdata(host);
- 	int ret;
- 
--	ret = spi_master_suspend(master);
-+	ret = spi_controller_suspend(host);
- 	if (ret)
- 		return ret;
- 
-@@ -445,14 +445,14 @@ static int sifive_spi_suspend(struct device *dev)
- 
- static int sifive_spi_resume(struct device *dev)
- {
--	struct spi_master *master = dev_get_drvdata(dev);
--	struct sifive_spi *spi = spi_master_get_devdata(master);
-+	struct spi_controller *host = dev_get_drvdata(dev);
-+	struct sifive_spi *spi = spi_controller_get_devdata(host);
- 	int ret;
- 
- 	ret = clk_prepare_enable(spi->clk);
- 	if (ret)
- 		return ret;
--	ret = spi_master_resume(master);
-+	ret = spi_controller_resume(host);
- 	if (ret)
- 		clk_disable_unprepare(spi->clk);
- 
 -- 
-2.25.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

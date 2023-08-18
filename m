@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 80004C7113E
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6F648C7113C
 	for <linux-spi@archiver.kernel.org>; Fri, 18 Aug 2023 09:36:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359181AbjHRJfz (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 18 Aug 2023 05:35:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58858 "EHLO
+        id S1359184AbjHRJf4 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 18 Aug 2023 05:35:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1359258AbjHRJfX (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 18 Aug 2023 05:35:23 -0400
+        with ESMTP id S1359270AbjHRJfY (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 18 Aug 2023 05:35:24 -0400
 Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC4EC3C05
-        for <linux-spi@vger.kernel.org>; Fri, 18 Aug 2023 02:35:20 -0700 (PDT)
-Received: from dggpemm500023.china.huawei.com (unknown [172.30.72.57])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RRxX304fBzkXDW;
-        Fri, 18 Aug 2023 17:33:55 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEA573C1D
+        for <linux-spi@vger.kernel.org>; Fri, 18 Aug 2023 02:35:21 -0700 (PDT)
+Received: from dggpemm100023.china.huawei.com (unknown [172.30.72.55])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RRxTS732TztSBX;
+        Fri, 18 Aug 2023 17:31:40 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500023.china.huawei.com (7.185.36.83) with Microsoft SMTP Server
+ dggpemm100023.china.huawei.com (7.185.36.248) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Fri, 18 Aug 2023 17:35:18 +0800
+ 15.1.2507.31; Fri, 18 Aug 2023 17:35:19 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Fri, 18 Aug
- 2023 17:35:17 +0800
+ 2023 17:35:19 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
         <yangyingliang@huawei.com>
-Subject: [PATCH -next v3 03/23] spi: pic32-sqi: switch to use modern name
-Date:   Fri, 18 Aug 2023 17:31:34 +0800
-Message-ID: <20230818093154.1183529-4-yangyingliang@huawei.com>
+Subject: [PATCH -next v3 08/23] spi: spi-qcom-qspi: switch to use modern name
+Date:   Fri, 18 Aug 2023 17:31:39 +0800
+Message-ID: <20230818093154.1183529-9-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230818093154.1183529-1-yangyingliang@huawei.com>
 References: <20230818093154.1183529-1-yangyingliang@huawei.com>
@@ -52,238 +52,210 @@ No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-pic32-sqi.c | 86 ++++++++++++++++++-------------------
- 1 file changed, 43 insertions(+), 43 deletions(-)
+ drivers/spi/spi-qcom-qspi.c | 80 ++++++++++++++++++-------------------
+ 1 file changed, 40 insertions(+), 40 deletions(-)
 
-diff --git a/drivers/spi/spi-pic32-sqi.c b/drivers/spi/spi-pic32-sqi.c
-index 5cbebcf26a2a..883354d0ff52 100644
---- a/drivers/spi/spi-pic32-sqi.c
-+++ b/drivers/spi/spi-pic32-sqi.c
-@@ -139,7 +139,7 @@ struct pic32_sqi {
- 	void __iomem		*regs;
- 	struct clk		*sys_clk;
- 	struct clk		*base_clk; /* drives spi clock */
--	struct spi_master	*master;
-+	struct spi_controller	*host;
- 	int			irq;
- 	struct completion	xfer_done;
- 	struct ring_desc	*ring;
-@@ -316,9 +316,9 @@ static int pic32_sqi_one_transfer(struct pic32_sqi *sqi,
- 	return 0;
+diff --git a/drivers/spi/spi-qcom-qspi.c b/drivers/spi/spi-qcom-qspi.c
+index b9d5641b3365..49b775134485 100644
+--- a/drivers/spi/spi-qcom-qspi.c
++++ b/drivers/spi/spi-qcom-qspi.c
+@@ -247,11 +247,11 @@ static void qcom_qspi_pio_xfer(struct qcom_qspi *ctrl)
+ 	qcom_qspi_pio_xfer_ctrl(ctrl);
  }
  
--static int pic32_sqi_prepare_hardware(struct spi_master *master)
-+static int pic32_sqi_prepare_hardware(struct spi_controller *host)
- {
--	struct pic32_sqi *sqi = spi_master_get_devdata(master);
-+	struct pic32_sqi *sqi = spi_controller_get_devdata(host);
- 
- 	/* enable spi interface */
- 	pic32_setbits(sqi->regs + PESQI_CONF_REG, PESQI_EN);
-@@ -328,7 +328,7 @@ static int pic32_sqi_prepare_hardware(struct spi_master *master)
- 	return 0;
- }
- 
--static bool pic32_sqi_can_dma(struct spi_master *master,
-+static bool pic32_sqi_can_dma(struct spi_controller *host,
- 			      struct spi_device *spi,
- 			      struct spi_transfer *x)
- {
-@@ -336,7 +336,7 @@ static bool pic32_sqi_can_dma(struct spi_master *master,
- 	return true;
- }
- 
--static int pic32_sqi_one_message(struct spi_master *master,
-+static int pic32_sqi_one_message(struct spi_controller *host,
+-static void qcom_qspi_handle_err(struct spi_master *master,
++static void qcom_qspi_handle_err(struct spi_controller *host,
  				 struct spi_message *msg)
  {
- 	struct spi_device *spi = msg->spi;
-@@ -347,7 +347,7 @@ static int pic32_sqi_one_message(struct spi_master *master,
- 	unsigned long timeout;
- 	u32 val;
- 
--	sqi = spi_master_get_devdata(master);
-+	sqi = spi_controller_get_devdata(host);
- 
- 	reinit_completion(&sqi->xfer_done);
- 	msg->actual_length = 0;
-@@ -412,7 +412,7 @@ static int pic32_sqi_one_message(struct spi_master *master,
- 	/* wait for xfer completion */
- 	timeout = wait_for_completion_timeout(&sqi->xfer_done, 5 * HZ);
- 	if (timeout == 0) {
--		dev_err(&sqi->master->dev, "wait timedout/interrupted\n");
-+		dev_err(&sqi->host->dev, "wait timedout/interrupted\n");
- 		ret = -ETIMEDOUT;
- 		msg->status = ret;
- 	} else {
-@@ -434,14 +434,14 @@ static int pic32_sqi_one_message(struct spi_master *master,
- 		/* release ring descr */
- 		ring_desc_put(sqi, rdesc);
- 	}
--	spi_finalize_current_message(spi->master);
-+	spi_finalize_current_message(spi->controller);
- 
- 	return ret;
- }
- 
--static int pic32_sqi_unprepare_hardware(struct spi_master *master)
-+static int pic32_sqi_unprepare_hardware(struct spi_controller *host)
- {
--	struct pic32_sqi *sqi = spi_master_get_devdata(master);
-+	struct pic32_sqi *sqi = spi_controller_get_devdata(host);
- 
- 	/* disable clk */
- 	pic32_clrbits(sqi->regs + PESQI_CLK_CTRL_REG, PESQI_CLK_EN);
-@@ -458,18 +458,18 @@ static int ring_desc_ring_alloc(struct pic32_sqi *sqi)
+ 	u32 int_status;
+-	struct qcom_qspi *ctrl = spi_master_get_devdata(master);
++	struct qcom_qspi *ctrl = spi_controller_get_devdata(host);
+ 	unsigned long flags;
  	int i;
  
- 	/* allocate coherent DMAable memory for hardware buffer descriptors. */
--	sqi->bd = dma_alloc_coherent(&sqi->master->dev,
-+	sqi->bd = dma_alloc_coherent(&sqi->host->dev,
- 				     sizeof(*bd) * PESQI_BD_COUNT,
- 				     &sqi->bd_dma, GFP_KERNEL);
- 	if (!sqi->bd) {
--		dev_err(&sqi->master->dev, "failed allocating dma buffer\n");
-+		dev_err(&sqi->host->dev, "failed allocating dma buffer\n");
- 		return -ENOMEM;
+@@ -411,11 +411,11 @@ static bool qcom_qspi_can_dma(struct spi_controller *ctlr,
+ 	return xfer->len > QSPI_MAX_BYTES_FIFO;
+ }
+ 
+-static int qcom_qspi_transfer_one(struct spi_master *master,
++static int qcom_qspi_transfer_one(struct spi_controller *host,
+ 				  struct spi_device *slv,
+ 				  struct spi_transfer *xfer)
+ {
+-	struct qcom_qspi *ctrl = spi_master_get_devdata(master);
++	struct qcom_qspi *ctrl = spi_controller_get_devdata(host);
+ 	int ret;
+ 	unsigned long speed_hz;
+ 	unsigned long flags;
+@@ -443,7 +443,7 @@ static int qcom_qspi_transfer_one(struct spi_master *master,
+ 		ctrl->xfer.tx_buf = xfer->tx_buf;
  	}
+ 	ctrl->xfer.is_last = list_is_last(&xfer->transfer_list,
+-					  &master->cur_msg->transfers);
++					  &host->cur_msg->transfers);
+ 	ctrl->xfer.rem_bytes = xfer->len;
  
- 	/* allocate software ring descriptors */
- 	sqi->ring = kcalloc(PESQI_BD_COUNT, sizeof(*rdesc), GFP_KERNEL);
- 	if (!sqi->ring) {
--		dma_free_coherent(&sqi->master->dev,
-+		dma_free_coherent(&sqi->host->dev,
- 				  sizeof(*bd) * PESQI_BD_COUNT,
- 				  sqi->bd, sqi->bd_dma);
- 		return -ENOMEM;
-@@ -498,7 +498,7 @@ static int ring_desc_ring_alloc(struct pic32_sqi *sqi)
+ 	if (xfer->rx_sg.nents || xfer->tx_sg.nents) {
+@@ -481,7 +481,7 @@ static int qcom_qspi_transfer_one(struct spi_master *master,
+ 	return 1;
+ }
  
- static void ring_desc_ring_free(struct pic32_sqi *sqi)
+-static int qcom_qspi_prepare_message(struct spi_master *master,
++static int qcom_qspi_prepare_message(struct spi_controller *host,
+ 				     struct spi_message *message)
  {
--	dma_free_coherent(&sqi->master->dev,
-+	dma_free_coherent(&sqi->host->dev,
- 			  sizeof(struct buf_desc) * PESQI_BD_COUNT,
- 			  sqi->bd, sqi->bd_dma);
- 	kfree(sqi->ring);
-@@ -568,28 +568,28 @@ static void pic32_sqi_hw_init(struct pic32_sqi *sqi)
+ 	u32 mstr_cfg;
+@@ -490,7 +490,7 @@ static int qcom_qspi_prepare_message(struct spi_master *master,
+ 	int tx_data_delay = 1;
+ 	unsigned long flags;
  
- static int pic32_sqi_probe(struct platform_device *pdev)
+-	ctrl = spi_master_get_devdata(master);
++	ctrl = spi_controller_get_devdata(host);
+ 	spin_lock_irqsave(&ctrl->lock, flags);
+ 
+ 	mstr_cfg = readl(ctrl->base + MSTR_CONFIG);
+@@ -694,18 +694,18 @@ static int qcom_qspi_probe(struct platform_device *pdev)
  {
+ 	int ret;
+ 	struct device *dev;
 -	struct spi_master *master;
 +	struct spi_controller *host;
- 	struct pic32_sqi *sqi;
- 	int ret;
+ 	struct qcom_qspi *ctrl;
  
--	master = spi_alloc_master(&pdev->dev, sizeof(*sqi));
+ 	dev = &pdev->dev;
+ 
+-	master = devm_spi_alloc_master(dev, sizeof(*ctrl));
 -	if (!master)
-+	host = spi_alloc_host(&pdev->dev, sizeof(*sqi));
++	host = devm_spi_alloc_host(dev, sizeof(*ctrl));
 +	if (!host)
  		return -ENOMEM;
  
--	sqi = spi_master_get_devdata(master);
--	sqi->master = master;
-+	sqi = spi_controller_get_devdata(host);
-+	sqi->host = host;
+-	platform_set_drvdata(pdev, master);
++	platform_set_drvdata(pdev, host);
  
- 	sqi->regs = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(sqi->regs)) {
- 		ret = PTR_ERR(sqi->regs);
--		goto err_free_master;
-+		goto err_free_host;
- 	}
+-	ctrl = spi_master_get_devdata(master);
++	ctrl = spi_controller_get_devdata(host);
  
- 	/* irq */
- 	sqi->irq = platform_get_irq(pdev, 0);
- 	if (sqi->irq < 0) {
- 		ret = sqi->irq;
--		goto err_free_master;
-+		goto err_free_host;
- 	}
+ 	spin_lock_init(&ctrl->lock);
+ 	ctrl->dev = dev;
+@@ -758,23 +758,23 @@ static int qcom_qspi_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return dev_err_probe(dev, ret, "could not set DMA mask\n");
  
- 	/* clocks */
-@@ -597,27 +597,27 @@ static int pic32_sqi_probe(struct platform_device *pdev)
- 	if (IS_ERR(sqi->sys_clk)) {
- 		ret = PTR_ERR(sqi->sys_clk);
- 		dev_err(&pdev->dev, "no sys_clk ?\n");
--		goto err_free_master;
-+		goto err_free_host;
- 	}
+-	master->max_speed_hz = 300000000;
+-	master->max_dma_len = 65536; /* as per HPG */
+-	master->dma_alignment = QSPI_ALIGN_REQ;
+-	master->num_chipselect = QSPI_NUM_CS;
+-	master->bus_num = -1;
+-	master->dev.of_node = pdev->dev.of_node;
+-	master->mode_bits = SPI_MODE_0 |
+-			    SPI_TX_DUAL | SPI_RX_DUAL |
+-			    SPI_TX_QUAD | SPI_RX_QUAD;
+-	master->flags = SPI_CONTROLLER_HALF_DUPLEX;
+-	master->prepare_message = qcom_qspi_prepare_message;
+-	master->transfer_one = qcom_qspi_transfer_one;
+-	master->handle_err = qcom_qspi_handle_err;
++	host->max_speed_hz = 300000000;
++	host->max_dma_len = 65536; /* as per HPG */
++	host->dma_alignment = QSPI_ALIGN_REQ;
++	host->num_chipselect = QSPI_NUM_CS;
++	host->bus_num = -1;
++	host->dev.of_node = pdev->dev.of_node;
++	host->mode_bits = SPI_MODE_0 |
++			  SPI_TX_DUAL | SPI_RX_DUAL |
++			  SPI_TX_QUAD | SPI_RX_QUAD;
++	host->flags = SPI_CONTROLLER_HALF_DUPLEX;
++	host->prepare_message = qcom_qspi_prepare_message;
++	host->transfer_one = qcom_qspi_transfer_one;
++	host->handle_err = qcom_qspi_handle_err;
+ 	if (of_property_read_bool(pdev->dev.of_node, "iommus"))
+-		master->can_dma = qcom_qspi_can_dma;
+-	master->auto_runtime_pm = true;
+-	master->mem_ops = &qcom_qspi_mem_ops;
++		host->can_dma = qcom_qspi_can_dma;
++	host->auto_runtime_pm = true;
++	host->mem_ops = &qcom_qspi_mem_ops;
  
- 	sqi->base_clk = devm_clk_get(&pdev->dev, "spi_ck");
- 	if (IS_ERR(sqi->base_clk)) {
- 		ret = PTR_ERR(sqi->base_clk);
- 		dev_err(&pdev->dev, "no base clk ?\n");
--		goto err_free_master;
-+		goto err_free_host;
- 	}
+ 	ret = devm_pm_opp_set_clkname(&pdev->dev, "core");
+ 	if (ret)
+@@ -794,7 +794,7 @@ static int qcom_qspi_probe(struct platform_device *pdev)
+ 	pm_runtime_set_autosuspend_delay(dev, 250);
+ 	pm_runtime_enable(dev);
  
- 	ret = clk_prepare_enable(sqi->sys_clk);
- 	if (ret) {
- 		dev_err(&pdev->dev, "sys clk enable failed\n");
--		goto err_free_master;
-+		goto err_free_host;
- 	}
+-	ret = spi_register_master(master);
++	ret = spi_register_controller(host);
+ 	if (!ret)
+ 		return 0;
  
- 	ret = clk_prepare_enable(sqi->base_clk);
- 	if (ret) {
- 		dev_err(&pdev->dev, "base clk enable failed\n");
- 		clk_disable_unprepare(sqi->sys_clk);
--		goto err_free_master;
-+		goto err_free_host;
- 	}
+@@ -805,18 +805,18 @@ static int qcom_qspi_probe(struct platform_device *pdev)
  
- 	init_completion(&sqi->xfer_done);
-@@ -640,24 +640,24 @@ static int pic32_sqi_probe(struct platform_device *pdev)
- 		goto err_free_ring;
- 	}
+ static void qcom_qspi_remove(struct platform_device *pdev)
+ {
+-	struct spi_master *master = platform_get_drvdata(pdev);
++	struct spi_controller *host = platform_get_drvdata(pdev);
  
--	/* register master */
--	master->num_chipselect	= 2;
--	master->max_speed_hz	= clk_get_rate(sqi->base_clk);
--	master->dma_alignment	= 32;
--	master->max_dma_len	= PESQI_BD_BUF_LEN_MAX;
--	master->dev.of_node	= pdev->dev.of_node;
--	master->mode_bits	= SPI_MODE_3 | SPI_MODE_0 | SPI_TX_DUAL |
-+	/* register host */
-+	host->num_chipselect	= 2;
-+	host->max_speed_hz	= clk_get_rate(sqi->base_clk);
-+	host->dma_alignment	= 32;
-+	host->max_dma_len	= PESQI_BD_BUF_LEN_MAX;
-+	host->dev.of_node	= pdev->dev.of_node;
-+	host->mode_bits		= SPI_MODE_3 | SPI_MODE_0 | SPI_TX_DUAL |
- 				  SPI_RX_DUAL | SPI_TX_QUAD | SPI_RX_QUAD;
--	master->flags		= SPI_CONTROLLER_HALF_DUPLEX;
--	master->can_dma		= pic32_sqi_can_dma;
--	master->bits_per_word_mask	= SPI_BPW_RANGE_MASK(8, 32);
--	master->transfer_one_message	= pic32_sqi_one_message;
--	master->prepare_transfer_hardware	= pic32_sqi_prepare_hardware;
--	master->unprepare_transfer_hardware	= pic32_sqi_unprepare_hardware;
--
--	ret = devm_spi_register_master(&pdev->dev, master);
-+	host->flags		= SPI_CONTROLLER_HALF_DUPLEX;
-+	host->can_dma		= pic32_sqi_can_dma;
-+	host->bits_per_word_mask	= SPI_BPW_RANGE_MASK(8, 32);
-+	host->transfer_one_message	= pic32_sqi_one_message;
-+	host->prepare_transfer_hardware	= pic32_sqi_prepare_hardware;
-+	host->unprepare_transfer_hardware	= pic32_sqi_unprepare_hardware;
-+
-+	ret = devm_spi_register_controller(&pdev->dev, host);
- 	if (ret) {
--		dev_err(&master->dev, "failed registering spi master\n");
-+		dev_err(&host->dev, "failed registering spi host\n");
- 		free_irq(sqi->irq, sqi);
- 		goto err_free_ring;
- 	}
-@@ -673,8 +673,8 @@ static int pic32_sqi_probe(struct platform_device *pdev)
- 	clk_disable_unprepare(sqi->base_clk);
- 	clk_disable_unprepare(sqi->sys_clk);
+ 	/* Unregister _before_ disabling pm_runtime() so we stop transfers */
+-	spi_unregister_master(master);
++	spi_unregister_controller(host);
  
--err_free_master:
--	spi_master_put(master);
-+err_free_host:
-+	spi_controller_put(host);
+ 	pm_runtime_disable(&pdev->dev);
+ }
+ 
+ static int __maybe_unused qcom_qspi_runtime_suspend(struct device *dev)
+ {
+-	struct spi_master *master = dev_get_drvdata(dev);
+-	struct qcom_qspi *ctrl = spi_master_get_devdata(master);
++	struct spi_controller *host = dev_get_drvdata(dev);
++	struct qcom_qspi *ctrl = spi_controller_get_devdata(host);
+ 	int ret;
+ 
+ 	/* Drop the performance state vote */
+@@ -837,8 +837,8 @@ static int __maybe_unused qcom_qspi_runtime_suspend(struct device *dev)
+ 
+ static int __maybe_unused qcom_qspi_runtime_resume(struct device *dev)
+ {
+-	struct spi_master *master = dev_get_drvdata(dev);
+-	struct qcom_qspi *ctrl = spi_master_get_devdata(master);
++	struct spi_controller *host = dev_get_drvdata(dev);
++	struct qcom_qspi *ctrl = spi_controller_get_devdata(host);
+ 	int ret;
+ 
+ 	pinctrl_pm_select_default_state(dev);
+@@ -859,30 +859,30 @@ static int __maybe_unused qcom_qspi_runtime_resume(struct device *dev)
+ 
+ static int __maybe_unused qcom_qspi_suspend(struct device *dev)
+ {
+-	struct spi_master *master = dev_get_drvdata(dev);
++	struct spi_controller *host = dev_get_drvdata(dev);
+ 	int ret;
+ 
+-	ret = spi_master_suspend(master);
++	ret = spi_controller_suspend(host);
+ 	if (ret)
+ 		return ret;
+ 
+ 	ret = pm_runtime_force_suspend(dev);
+ 	if (ret)
+-		spi_master_resume(master);
++		spi_controller_resume(host);
+ 
  	return ret;
  }
+ 
+ static int __maybe_unused qcom_qspi_resume(struct device *dev)
+ {
+-	struct spi_master *master = dev_get_drvdata(dev);
++	struct spi_controller *host = dev_get_drvdata(dev);
+ 	int ret;
+ 
+ 	ret = pm_runtime_force_resume(dev);
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = spi_master_resume(master);
++	ret = spi_controller_resume(host);
+ 	if (ret)
+ 		pm_runtime_force_suspend(dev);
  
 -- 
 2.25.1

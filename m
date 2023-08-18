@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4144BC7112B
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 80004C7113E
 	for <linux-spi@archiver.kernel.org>; Fri, 18 Aug 2023 09:36:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358262AbjHRJfx (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 18 Aug 2023 05:35:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39472 "EHLO
+        id S1359181AbjHRJfz (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 18 Aug 2023 05:35:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1359252AbjHRJfX (ORCPT
+        with ESMTP id S1359258AbjHRJfX (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Fri, 18 Aug 2023 05:35:23 -0400
 Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 633B03A84
-        for <linux-spi@vger.kernel.org>; Fri, 18 Aug 2023 02:35:19 -0700 (PDT)
-Received: from dggpemm500019.china.huawei.com (unknown [172.30.72.56])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RRxTQ2z8wztSDZ;
-        Fri, 18 Aug 2023 17:31:38 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC4EC3C05
+        for <linux-spi@vger.kernel.org>; Fri, 18 Aug 2023 02:35:20 -0700 (PDT)
+Received: from dggpemm500023.china.huawei.com (unknown [172.30.72.57])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RRxX304fBzkXDW;
+        Fri, 18 Aug 2023 17:33:55 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500019.china.huawei.com (7.185.36.180) with Microsoft SMTP Server
+ dggpemm500023.china.huawei.com (7.185.36.83) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Fri, 18 Aug 2023 17:35:17 +0800
+ 15.1.2507.31; Fri, 18 Aug 2023 17:35:18 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Fri, 18 Aug
- 2023 17:35:16 +0800
+ 2023 17:35:17 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
         <yangyingliang@huawei.com>
-Subject: [PATCH -next v3 01/23] spi: orion: switch to use modern name
-Date:   Fri, 18 Aug 2023 17:31:32 +0800
-Message-ID: <20230818093154.1183529-2-yangyingliang@huawei.com>
+Subject: [PATCH -next v3 03/23] spi: pic32-sqi: switch to use modern name
+Date:   Fri, 18 Aug 2023 17:31:34 +0800
+Message-ID: <20230818093154.1183529-4-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230818093154.1183529-1-yangyingliang@huawei.com>
 References: <20230818093154.1183529-1-yangyingliang@huawei.com>
@@ -52,255 +52,239 @@ No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-orion.c | 90 ++++++++++++++++++++---------------------
- 1 file changed, 45 insertions(+), 45 deletions(-)
+ drivers/spi/spi-pic32-sqi.c | 86 ++++++++++++++++++-------------------
+ 1 file changed, 43 insertions(+), 43 deletions(-)
 
-diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
-index faf2764b91a8..1f10f5c8e34d 100644
---- a/drivers/spi/spi-orion.c
-+++ b/drivers/spi/spi-orion.c
-@@ -90,7 +90,7 @@ struct orion_child_options {
- };
- 
- struct orion_spi {
+diff --git a/drivers/spi/spi-pic32-sqi.c b/drivers/spi/spi-pic32-sqi.c
+index 5cbebcf26a2a..883354d0ff52 100644
+--- a/drivers/spi/spi-pic32-sqi.c
++++ b/drivers/spi/spi-pic32-sqi.c
+@@ -139,7 +139,7 @@ struct pic32_sqi {
+ 	void __iomem		*regs;
+ 	struct clk		*sys_clk;
+ 	struct clk		*base_clk; /* drives spi clock */
 -	struct spi_master	*master;
 +	struct spi_controller	*host;
- 	void __iomem		*base;
- 	struct clk              *clk;
- 	struct clk              *axi_clk;
-@@ -141,7 +141,7 @@ static int orion_spi_baudrate_set(struct spi_device *spi, unsigned int speed)
- 	struct orion_spi *orion_spi;
- 	const struct orion_spi_dev *devdata;
- 
--	orion_spi = spi_master_get_devdata(spi->master);
-+	orion_spi = spi_controller_get_devdata(spi->controller);
- 	devdata = orion_spi->devdata;
- 
- 	tclk_hz = clk_get_rate(orion_spi->clk);
-@@ -235,7 +235,7 @@ orion_spi_mode_set(struct spi_device *spi)
- 	u32 reg;
- 	struct orion_spi *orion_spi;
- 
--	orion_spi = spi_master_get_devdata(spi->master);
-+	orion_spi = spi_controller_get_devdata(spi->controller);
- 
- 	reg = readl(spi_reg(orion_spi, ORION_SPI_IF_CONFIG_REG));
- 	reg &= ~ORION_SPI_MODE_MASK;
-@@ -257,7 +257,7 @@ orion_spi_50mhz_ac_timing_erratum(struct spi_device *spi, unsigned int speed)
- 	u32 reg;
- 	struct orion_spi *orion_spi;
- 
--	orion_spi = spi_master_get_devdata(spi->master);
-+	orion_spi = spi_controller_get_devdata(spi->controller);
- 
- 	/*
- 	 * Erratum description: (Erratum NO. FE-9144572) The device
-@@ -297,7 +297,7 @@ orion_spi_setup_transfer(struct spi_device *spi, struct spi_transfer *t)
- 	unsigned int bits_per_word = spi->bits_per_word;
- 	int	rc;
- 
--	orion_spi = spi_master_get_devdata(spi->master);
-+	orion_spi = spi_controller_get_devdata(spi->controller);
- 
- 	if ((t != NULL) && t->speed_hz)
- 		speed = t->speed_hz;
-@@ -330,7 +330,7 @@ static void orion_spi_set_cs(struct spi_device *spi, bool enable)
- 	void __iomem *ctrl_reg;
- 	u32 val;
- 
--	orion_spi = spi_master_get_devdata(spi->master);
-+	orion_spi = spi_controller_get_devdata(spi->controller);
- 	ctrl_reg = spi_reg(orion_spi, ORION_SPI_IF_CTRL_REG);
- 
- 	val = readl(ctrl_reg);
-@@ -388,7 +388,7 @@ orion_spi_write_read_8bit(struct spi_device *spi,
- 
- 	cs_single_byte = spi->mode & SPI_CS_WORD;
- 
--	orion_spi = spi_master_get_devdata(spi->master);
-+	orion_spi = spi_controller_get_devdata(spi->controller);
- 
- 	if (cs_single_byte)
- 		orion_spi_set_cs(spi, 0);
-@@ -439,7 +439,7 @@ orion_spi_write_read_16bit(struct spi_device *spi,
- 		return -1;
- 	}
- 
--	orion_spi = spi_master_get_devdata(spi->master);
-+	orion_spi = spi_controller_get_devdata(spi->controller);
- 	tx_reg = spi_reg(orion_spi, ORION_SPI_DATA_OUT_REG);
- 	rx_reg = spi_reg(orion_spi, ORION_SPI_DATA_IN_REG);
- 	int_reg = spi_reg(orion_spi, ORION_SPI_INT_CAUSE_REG);
-@@ -475,7 +475,7 @@ orion_spi_write_read(struct spi_device *spi, struct spi_transfer *xfer)
- 	word_len = spi->bits_per_word;
- 	count = xfer->len;
- 
--	orion_spi = spi_master_get_devdata(spi->master);
-+	orion_spi = spi_controller_get_devdata(spi->controller);
- 
- 	/*
- 	 * Use SPI direct write mode if base address is available
-@@ -528,7 +528,7 @@ orion_spi_write_read(struct spi_device *spi, struct spi_transfer *xfer)
- 	return xfer->len - count;
+ 	int			irq;
+ 	struct completion	xfer_done;
+ 	struct ring_desc	*ring;
+@@ -316,9 +316,9 @@ static int pic32_sqi_one_transfer(struct pic32_sqi *sqi,
+ 	return 0;
  }
  
--static int orion_spi_transfer_one(struct spi_master *master,
-+static int orion_spi_transfer_one(struct spi_controller *host,
- 					struct spi_device *spi,
- 					struct spi_transfer *t)
+-static int pic32_sqi_prepare_hardware(struct spi_master *master)
++static int pic32_sqi_prepare_hardware(struct spi_controller *host)
  {
-@@ -548,7 +548,7 @@ static int orion_spi_setup(struct spi_device *spi)
- {
- 	int ret;
- #ifdef CONFIG_PM
--	struct orion_spi *orion_spi = spi_master_get_devdata(spi->master);
-+	struct orion_spi *orion_spi = spi_controller_get_devdata(spi->controller);
- 	struct device *dev = orion_spi->dev;
+-	struct pic32_sqi *sqi = spi_master_get_devdata(master);
++	struct pic32_sqi *sqi = spi_controller_get_devdata(host);
  
- 	orion_spi_runtime_resume(dev);
-@@ -644,44 +644,44 @@ MODULE_DEVICE_TABLE(of, orion_spi_of_match_table);
- static int orion_spi_probe(struct platform_device *pdev)
- {
- 	const struct orion_spi_dev *devdata;
--	struct spi_master *master;
-+	struct spi_controller *host;
- 	struct orion_spi *spi;
- 	struct resource *r;
- 	unsigned long tclk_hz;
- 	int status = 0;
- 	struct device_node *np;
+ 	/* enable spi interface */
+ 	pic32_setbits(sqi->regs + PESQI_CONF_REG, PESQI_EN);
+@@ -328,7 +328,7 @@ static int pic32_sqi_prepare_hardware(struct spi_master *master)
+ 	return 0;
+ }
  
--	master = spi_alloc_master(&pdev->dev, sizeof(*spi));
--	if (master == NULL) {
--		dev_dbg(&pdev->dev, "master allocation failed\n");
-+	host = spi_alloc_host(&pdev->dev, sizeof(*spi));
-+	if (host == NULL) {
-+		dev_dbg(&pdev->dev, "host allocation failed\n");
+-static bool pic32_sqi_can_dma(struct spi_master *master,
++static bool pic32_sqi_can_dma(struct spi_controller *host,
+ 			      struct spi_device *spi,
+ 			      struct spi_transfer *x)
+ {
+@@ -336,7 +336,7 @@ static bool pic32_sqi_can_dma(struct spi_master *master,
+ 	return true;
+ }
+ 
+-static int pic32_sqi_one_message(struct spi_master *master,
++static int pic32_sqi_one_message(struct spi_controller *host,
+ 				 struct spi_message *msg)
+ {
+ 	struct spi_device *spi = msg->spi;
+@@ -347,7 +347,7 @@ static int pic32_sqi_one_message(struct spi_master *master,
+ 	unsigned long timeout;
+ 	u32 val;
+ 
+-	sqi = spi_master_get_devdata(master);
++	sqi = spi_controller_get_devdata(host);
+ 
+ 	reinit_completion(&sqi->xfer_done);
+ 	msg->actual_length = 0;
+@@ -412,7 +412,7 @@ static int pic32_sqi_one_message(struct spi_master *master,
+ 	/* wait for xfer completion */
+ 	timeout = wait_for_completion_timeout(&sqi->xfer_done, 5 * HZ);
+ 	if (timeout == 0) {
+-		dev_err(&sqi->master->dev, "wait timedout/interrupted\n");
++		dev_err(&sqi->host->dev, "wait timedout/interrupted\n");
+ 		ret = -ETIMEDOUT;
+ 		msg->status = ret;
+ 	} else {
+@@ -434,14 +434,14 @@ static int pic32_sqi_one_message(struct spi_master *master,
+ 		/* release ring descr */
+ 		ring_desc_put(sqi, rdesc);
+ 	}
+-	spi_finalize_current_message(spi->master);
++	spi_finalize_current_message(spi->controller);
+ 
+ 	return ret;
+ }
+ 
+-static int pic32_sqi_unprepare_hardware(struct spi_master *master)
++static int pic32_sqi_unprepare_hardware(struct spi_controller *host)
+ {
+-	struct pic32_sqi *sqi = spi_master_get_devdata(master);
++	struct pic32_sqi *sqi = spi_controller_get_devdata(host);
+ 
+ 	/* disable clk */
+ 	pic32_clrbits(sqi->regs + PESQI_CLK_CTRL_REG, PESQI_CLK_EN);
+@@ -458,18 +458,18 @@ static int ring_desc_ring_alloc(struct pic32_sqi *sqi)
+ 	int i;
+ 
+ 	/* allocate coherent DMAable memory for hardware buffer descriptors. */
+-	sqi->bd = dma_alloc_coherent(&sqi->master->dev,
++	sqi->bd = dma_alloc_coherent(&sqi->host->dev,
+ 				     sizeof(*bd) * PESQI_BD_COUNT,
+ 				     &sqi->bd_dma, GFP_KERNEL);
+ 	if (!sqi->bd) {
+-		dev_err(&sqi->master->dev, "failed allocating dma buffer\n");
++		dev_err(&sqi->host->dev, "failed allocating dma buffer\n");
  		return -ENOMEM;
  	}
  
- 	if (pdev->id != -1)
--		master->bus_num = pdev->id;
-+		host->bus_num = pdev->id;
- 	if (pdev->dev.of_node) {
- 		u32 cell_index;
+ 	/* allocate software ring descriptors */
+ 	sqi->ring = kcalloc(PESQI_BD_COUNT, sizeof(*rdesc), GFP_KERNEL);
+ 	if (!sqi->ring) {
+-		dma_free_coherent(&sqi->master->dev,
++		dma_free_coherent(&sqi->host->dev,
+ 				  sizeof(*bd) * PESQI_BD_COUNT,
+ 				  sqi->bd, sqi->bd_dma);
+ 		return -ENOMEM;
+@@ -498,7 +498,7 @@ static int ring_desc_ring_alloc(struct pic32_sqi *sqi)
  
- 		if (!of_property_read_u32(pdev->dev.of_node, "cell-index",
- 					  &cell_index))
--			master->bus_num = cell_index;
-+			host->bus_num = cell_index;
+ static void ring_desc_ring_free(struct pic32_sqi *sqi)
+ {
+-	dma_free_coherent(&sqi->master->dev,
++	dma_free_coherent(&sqi->host->dev,
+ 			  sizeof(struct buf_desc) * PESQI_BD_COUNT,
+ 			  sqi->bd, sqi->bd_dma);
+ 	kfree(sqi->ring);
+@@ -568,28 +568,28 @@ static void pic32_sqi_hw_init(struct pic32_sqi *sqi)
+ 
+ static int pic32_sqi_probe(struct platform_device *pdev)
+ {
+-	struct spi_master *master;
++	struct spi_controller *host;
+ 	struct pic32_sqi *sqi;
+ 	int ret;
+ 
+-	master = spi_alloc_master(&pdev->dev, sizeof(*sqi));
+-	if (!master)
++	host = spi_alloc_host(&pdev->dev, sizeof(*sqi));
++	if (!host)
+ 		return -ENOMEM;
+ 
+-	sqi = spi_master_get_devdata(master);
+-	sqi->master = master;
++	sqi = spi_controller_get_devdata(host);
++	sqi->host = host;
+ 
+ 	sqi->regs = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(sqi->regs)) {
+ 		ret = PTR_ERR(sqi->regs);
+-		goto err_free_master;
++		goto err_free_host;
  	}
  
- 	/* we support all 4 SPI modes and LSB first option */
--	master->mode_bits = SPI_CPHA | SPI_CPOL | SPI_LSB_FIRST | SPI_CS_WORD;
--	master->set_cs = orion_spi_set_cs;
--	master->transfer_one = orion_spi_transfer_one;
--	master->num_chipselect = ORION_NUM_CHIPSELECTS;
--	master->setup = orion_spi_setup;
--	master->bits_per_word_mask = SPI_BPW_MASK(8) | SPI_BPW_MASK(16);
--	master->auto_runtime_pm = true;
--	master->use_gpio_descriptors = true;
--	master->flags = SPI_CONTROLLER_GPIO_SS;
+ 	/* irq */
+ 	sqi->irq = platform_get_irq(pdev, 0);
+ 	if (sqi->irq < 0) {
+ 		ret = sqi->irq;
+-		goto err_free_master;
++		goto err_free_host;
+ 	}
+ 
+ 	/* clocks */
+@@ -597,27 +597,27 @@ static int pic32_sqi_probe(struct platform_device *pdev)
+ 	if (IS_ERR(sqi->sys_clk)) {
+ 		ret = PTR_ERR(sqi->sys_clk);
+ 		dev_err(&pdev->dev, "no sys_clk ?\n");
+-		goto err_free_master;
++		goto err_free_host;
+ 	}
+ 
+ 	sqi->base_clk = devm_clk_get(&pdev->dev, "spi_ck");
+ 	if (IS_ERR(sqi->base_clk)) {
+ 		ret = PTR_ERR(sqi->base_clk);
+ 		dev_err(&pdev->dev, "no base clk ?\n");
+-		goto err_free_master;
++		goto err_free_host;
+ 	}
+ 
+ 	ret = clk_prepare_enable(sqi->sys_clk);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "sys clk enable failed\n");
+-		goto err_free_master;
++		goto err_free_host;
+ 	}
+ 
+ 	ret = clk_prepare_enable(sqi->base_clk);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "base clk enable failed\n");
+ 		clk_disable_unprepare(sqi->sys_clk);
+-		goto err_free_master;
++		goto err_free_host;
+ 	}
+ 
+ 	init_completion(&sqi->xfer_done);
+@@ -640,24 +640,24 @@ static int pic32_sqi_probe(struct platform_device *pdev)
+ 		goto err_free_ring;
+ 	}
+ 
+-	/* register master */
+-	master->num_chipselect	= 2;
+-	master->max_speed_hz	= clk_get_rate(sqi->base_clk);
+-	master->dma_alignment	= 32;
+-	master->max_dma_len	= PESQI_BD_BUF_LEN_MAX;
+-	master->dev.of_node	= pdev->dev.of_node;
+-	master->mode_bits	= SPI_MODE_3 | SPI_MODE_0 | SPI_TX_DUAL |
++	/* register host */
++	host->num_chipselect	= 2;
++	host->max_speed_hz	= clk_get_rate(sqi->base_clk);
++	host->dma_alignment	= 32;
++	host->max_dma_len	= PESQI_BD_BUF_LEN_MAX;
++	host->dev.of_node	= pdev->dev.of_node;
++	host->mode_bits		= SPI_MODE_3 | SPI_MODE_0 | SPI_TX_DUAL |
+ 				  SPI_RX_DUAL | SPI_TX_QUAD | SPI_RX_QUAD;
+-	master->flags		= SPI_CONTROLLER_HALF_DUPLEX;
+-	master->can_dma		= pic32_sqi_can_dma;
+-	master->bits_per_word_mask	= SPI_BPW_RANGE_MASK(8, 32);
+-	master->transfer_one_message	= pic32_sqi_one_message;
+-	master->prepare_transfer_hardware	= pic32_sqi_prepare_hardware;
+-	master->unprepare_transfer_hardware	= pic32_sqi_unprepare_hardware;
 -
--	platform_set_drvdata(pdev, master);
--
--	spi = spi_master_get_devdata(master);
--	spi->master = master;
-+	host->mode_bits = SPI_CPHA | SPI_CPOL | SPI_LSB_FIRST | SPI_CS_WORD;
-+	host->set_cs = orion_spi_set_cs;
-+	host->transfer_one = orion_spi_transfer_one;
-+	host->num_chipselect = ORION_NUM_CHIPSELECTS;
-+	host->setup = orion_spi_setup;
-+	host->bits_per_word_mask = SPI_BPW_MASK(8) | SPI_BPW_MASK(16);
-+	host->auto_runtime_pm = true;
-+	host->use_gpio_descriptors = true;
-+	host->flags = SPI_CONTROLLER_GPIO_SS;
+-	ret = devm_spi_register_master(&pdev->dev, master);
++	host->flags		= SPI_CONTROLLER_HALF_DUPLEX;
++	host->can_dma		= pic32_sqi_can_dma;
++	host->bits_per_word_mask	= SPI_BPW_RANGE_MASK(8, 32);
++	host->transfer_one_message	= pic32_sqi_one_message;
++	host->prepare_transfer_hardware	= pic32_sqi_prepare_hardware;
++	host->unprepare_transfer_hardware	= pic32_sqi_unprepare_hardware;
 +
-+	platform_set_drvdata(pdev, host);
-+
-+	spi = spi_controller_get_devdata(host);
-+	spi->host = host;
- 	spi->dev = &pdev->dev;
++	ret = devm_spi_register_controller(&pdev->dev, host);
+ 	if (ret) {
+-		dev_err(&master->dev, "failed registering spi master\n");
++		dev_err(&host->dev, "failed registering spi host\n");
+ 		free_irq(sqi->irq, sqi);
+ 		goto err_free_ring;
+ 	}
+@@ -673,8 +673,8 @@ static int pic32_sqi_probe(struct platform_device *pdev)
+ 	clk_disable_unprepare(sqi->base_clk);
+ 	clk_disable_unprepare(sqi->sys_clk);
  
- 	devdata = device_get_match_data(&pdev->dev);
-@@ -718,14 +718,14 @@ static int orion_spi_probe(struct platform_device *pdev)
- 	 */
- 	if (of_device_is_compatible(pdev->dev.of_node,
- 					"marvell,armada-370-spi"))
--		master->max_speed_hz = min(devdata->max_hz,
-+		host->max_speed_hz = min(devdata->max_hz,
- 				DIV_ROUND_UP(tclk_hz, devdata->min_divisor));
- 	else if (devdata->min_divisor)
--		master->max_speed_hz =
-+		host->max_speed_hz =
- 			DIV_ROUND_UP(tclk_hz, devdata->min_divisor);
- 	else
--		master->max_speed_hz = devdata->max_hz;
--	master->min_speed_hz = DIV_ROUND_UP(tclk_hz, devdata->max_divisor);
-+		host->max_speed_hz = devdata->max_hz;
-+	host->min_speed_hz = DIV_ROUND_UP(tclk_hz, devdata->max_divisor);
- 
- 	spi->base = devm_platform_get_and_ioremap_resource(pdev, 0, &r);
- 	if (IS_ERR(spi->base)) {
-@@ -784,8 +784,8 @@ static int orion_spi_probe(struct platform_device *pdev)
- 	if (status < 0)
- 		goto out_rel_pm;
- 
--	master->dev.of_node = pdev->dev.of_node;
--	status = spi_register_master(master);
-+	host->dev.of_node = pdev->dev.of_node;
-+	status = spi_register_controller(host);
- 	if (status < 0)
- 		goto out_rel_pm;
- 
-@@ -798,21 +798,21 @@ static int orion_spi_probe(struct platform_device *pdev)
- out_rel_clk:
- 	clk_disable_unprepare(spi->clk);
- out:
+-err_free_master:
 -	spi_master_put(master);
++err_free_host:
 +	spi_controller_put(host);
- 	return status;
+ 	return ret;
  }
  
- 
- static void orion_spi_remove(struct platform_device *pdev)
- {
--	struct spi_master *master = platform_get_drvdata(pdev);
--	struct orion_spi *spi = spi_master_get_devdata(master);
-+	struct spi_controller *host = platform_get_drvdata(pdev);
-+	struct orion_spi *spi = spi_controller_get_devdata(host);
- 
- 	pm_runtime_get_sync(&pdev->dev);
- 	clk_disable_unprepare(spi->axi_clk);
- 	clk_disable_unprepare(spi->clk);
- 
--	spi_unregister_master(master);
-+	spi_unregister_controller(host);
- 	pm_runtime_disable(&pdev->dev);
- }
- 
-@@ -821,8 +821,8 @@ MODULE_ALIAS("platform:" DRIVER_NAME);
- #ifdef CONFIG_PM
- static int orion_spi_runtime_suspend(struct device *dev)
- {
--	struct spi_master *master = dev_get_drvdata(dev);
--	struct orion_spi *spi = spi_master_get_devdata(master);
-+	struct spi_controller *host = dev_get_drvdata(dev);
-+	struct orion_spi *spi = spi_controller_get_devdata(host);
- 
- 	clk_disable_unprepare(spi->axi_clk);
- 	clk_disable_unprepare(spi->clk);
-@@ -831,8 +831,8 @@ static int orion_spi_runtime_suspend(struct device *dev)
- 
- static int orion_spi_runtime_resume(struct device *dev)
- {
--	struct spi_master *master = dev_get_drvdata(dev);
--	struct orion_spi *spi = spi_master_get_devdata(master);
-+	struct spi_controller *host = dev_get_drvdata(dev);
-+	struct orion_spi *spi = spi_controller_get_devdata(host);
- 
- 	if (!IS_ERR(spi->axi_clk))
- 		clk_prepare_enable(spi->axi_clk);
 -- 
 2.25.1
 

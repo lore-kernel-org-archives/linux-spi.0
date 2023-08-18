@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D8B6DC71144
-	for <linux-spi@archiver.kernel.org>; Fri, 18 Aug 2023 09:36:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 19BDBC71147
+	for <linux-spi@archiver.kernel.org>; Fri, 18 Aug 2023 09:36:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359218AbjHRJf6 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 18 Aug 2023 05:35:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39474 "EHLO
+        id S1359240AbjHRJf7 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 18 Aug 2023 05:35:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1359274AbjHRJfZ (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 18 Aug 2023 05:35:25 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BC093C1E
-        for <linux-spi@vger.kernel.org>; Fri, 18 Aug 2023 02:35:21 -0700 (PDT)
-Received: from dggpemm500024.china.huawei.com (unknown [172.30.72.56])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RRxWB4SkczVkYg;
-        Fri, 18 Aug 2023 17:33:10 +0800 (CST)
+        with ESMTP id S1359295AbjHRJf2 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 18 Aug 2023 05:35:28 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7ACF2121
+        for <linux-spi@vger.kernel.org>; Fri, 18 Aug 2023 02:35:27 -0700 (PDT)
+Received: from dggpemm100008.china.huawei.com (unknown [172.30.72.54])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RRxTZ4vFVztSFM;
+        Fri, 18 Aug 2023 17:31:46 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500024.china.huawei.com (7.185.36.203) with Microsoft SMTP Server
+ dggpemm100008.china.huawei.com (7.185.36.125) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Fri, 18 Aug 2023 17:35:18 +0800
+ 15.1.2507.31; Fri, 18 Aug 2023 17:35:25 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Fri, 18 Aug
- 2023 17:35:18 +0800
+ 2023 17:35:25 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
         <yangyingliang@huawei.com>
-Subject: [PATCH -next v3 06/23] spi: ppc4xx: switch to use modern name
-Date:   Fri, 18 Aug 2023 17:31:37 +0800
-Message-ID: <20230818093154.1183529-7-yangyingliang@huawei.com>
+Subject: [PATCH -next v3 23/23] spi: spi-sn-f-ospi: switch to use modern name
+Date:   Fri, 18 Aug 2023 17:31:54 +0800
+Message-ID: <20230818093154.1183529-24-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230818093154.1183529-1-yangyingliang@huawei.com>
 References: <20230818093154.1183529-1-yangyingliang@huawei.com>
@@ -52,160 +52,31 @@ No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-ppc4xx.c | 44 ++++++++++++++++++++--------------------
- 1 file changed, 22 insertions(+), 22 deletions(-)
+ drivers/spi/spi-sn-f-ospi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-ppc4xx.c b/drivers/spi/spi-ppc4xx.c
-index d725e915025d..03aab661be9d 100644
---- a/drivers/spi/spi-ppc4xx.c
-+++ b/drivers/spi/spi-ppc4xx.c
-@@ -126,7 +126,7 @@ struct ppc4xx_spi {
- 	unsigned char *rx;
+diff --git a/drivers/spi/spi-sn-f-ospi.c b/drivers/spi/spi-sn-f-ospi.c
+index 85e4a01bc8b0..a7c3b3923b4a 100644
+--- a/drivers/spi/spi-sn-f-ospi.c
++++ b/drivers/spi/spi-sn-f-ospi.c
+@@ -501,7 +501,7 @@ static int f_ospi_indir_write(struct f_ospi *ospi, struct spi_mem *mem,
  
- 	struct spi_ppc4xx_regs __iomem *regs; /* pointer to the registers */
--	struct spi_master *master;
-+	struct spi_controller *host;
- 	struct device *dev;
- };
- 
-@@ -143,7 +143,7 @@ static int spi_ppc4xx_txrx(struct spi_device *spi, struct spi_transfer *t)
- 	dev_dbg(&spi->dev, "txrx: tx %p, rx %p, len %d\n",
- 		t->tx_buf, t->rx_buf, t->len);
- 
--	hw = spi_master_get_devdata(spi->master);
-+	hw = spi_controller_get_devdata(spi->controller);
- 
- 	hw->tx = t->tx_buf;
- 	hw->rx = t->rx_buf;
-@@ -161,7 +161,7 @@ static int spi_ppc4xx_txrx(struct spi_device *spi, struct spi_transfer *t)
- 
- static int spi_ppc4xx_setupxfer(struct spi_device *spi, struct spi_transfer *t)
+ static int f_ospi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
  {
--	struct ppc4xx_spi *hw = spi_master_get_devdata(spi->master);
-+	struct ppc4xx_spi *hw = spi_controller_get_devdata(spi->controller);
- 	struct spi_ppc4xx_cs *cs = spi->controller_state;
- 	int scr;
- 	u8 cdm = 0;
-@@ -340,7 +340,7 @@ static void spi_ppc4xx_enable(struct ppc4xx_spi *hw)
- static int spi_ppc4xx_of_probe(struct platform_device *op)
- {
- 	struct ppc4xx_spi *hw;
--	struct spi_master *master;
-+	struct spi_controller *host;
- 	struct spi_bitbang *bbp;
- 	struct resource resource;
- 	struct device_node *np = op->dev.of_node;
-@@ -349,20 +349,20 @@ static int spi_ppc4xx_of_probe(struct platform_device *op)
+-	struct f_ospi *ospi = spi_controller_get_devdata(mem->spi->master);
++	struct f_ospi *ospi = spi_controller_get_devdata(mem->spi->controller);
+ 	int err = 0;
+ 
+ 	switch (op->data.dir) {
+@@ -606,7 +606,7 @@ static int f_ospi_probe(struct platform_device *pdev)
+ 	u32 num_cs = OSPI_NUM_CS;
  	int ret;
- 	const unsigned int *clk;
  
--	master = spi_alloc_master(dev, sizeof(*hw));
--	if (master == NULL)
-+	host = spi_alloc_host(dev, sizeof(*hw));
-+	if (host == NULL)
+-	ctlr = spi_alloc_master(dev, sizeof(*ospi));
++	ctlr = spi_alloc_host(dev, sizeof(*ospi));
+ 	if (!ctlr)
  		return -ENOMEM;
--	master->dev.of_node = np;
--	platform_set_drvdata(op, master);
--	hw = spi_master_get_devdata(master);
--	hw->master = master;
-+	host->dev.of_node = np;
-+	platform_set_drvdata(op, host);
-+	hw = spi_controller_get_devdata(host);
-+	hw->host = host;
- 	hw->dev = dev;
  
- 	init_completion(&hw->done);
- 
- 	/* Setup the state for the bitbang driver */
- 	bbp = &hw->bitbang;
--	bbp->master = hw->master;
-+	bbp->master = hw->host;
- 	bbp->setup_transfer = spi_ppc4xx_setupxfer;
- 	bbp->txrx_bufs = spi_ppc4xx_txrx;
- 	bbp->use_dma = 0;
-@@ -385,7 +385,7 @@ static int spi_ppc4xx_of_probe(struct platform_device *op)
- 	if (opbnp == NULL) {
- 		dev_err(dev, "OPB: cannot find node\n");
- 		ret = -ENODEV;
--		goto free_master;
-+		goto free_host;
- 	}
- 	/* Get the clock (Hz) for the OPB */
- 	clk = of_get_property(opbnp, "clock-frequency", NULL);
-@@ -393,7 +393,7 @@ static int spi_ppc4xx_of_probe(struct platform_device *op)
- 		dev_err(dev, "OPB: no clock-frequency property set\n");
- 		of_node_put(opbnp);
- 		ret = -ENODEV;
--		goto free_master;
-+		goto free_host;
- 	}
- 	hw->opb_freq = *clk;
- 	hw->opb_freq >>= 2;
-@@ -402,7 +402,7 @@ static int spi_ppc4xx_of_probe(struct platform_device *op)
- 	ret = of_address_to_resource(np, 0, &resource);
- 	if (ret) {
- 		dev_err(dev, "error while parsing device node resource\n");
--		goto free_master;
-+		goto free_host;
- 	}
- 	hw->mapbase = resource.start;
- 	hw->mapsize = resource_size(&resource);
-@@ -411,7 +411,7 @@ static int spi_ppc4xx_of_probe(struct platform_device *op)
- 	if (hw->mapsize < sizeof(struct spi_ppc4xx_regs)) {
- 		dev_err(dev, "too small to map registers\n");
- 		ret = -EINVAL;
--		goto free_master;
-+		goto free_host;
- 	}
- 
- 	/* Request IRQ */
-@@ -420,7 +420,7 @@ static int spi_ppc4xx_of_probe(struct platform_device *op)
- 			  0, "spi_ppc4xx_of", (void *)hw);
- 	if (ret) {
- 		dev_err(dev, "unable to allocate interrupt\n");
--		goto free_master;
-+		goto free_host;
- 	}
- 
- 	if (!request_mem_region(hw->mapbase, hw->mapsize, DRIVER_NAME)) {
-@@ -443,7 +443,7 @@ static int spi_ppc4xx_of_probe(struct platform_device *op)
- 	dev->dma_mask = 0;
- 	ret = spi_bitbang_start(bbp);
- 	if (ret) {
--		dev_err(dev, "failed to register SPI master\n");
-+		dev_err(dev, "failed to register SPI host\n");
- 		goto unmap_regs;
- 	}
- 
-@@ -457,8 +457,8 @@ static int spi_ppc4xx_of_probe(struct platform_device *op)
- 	release_mem_region(hw->mapbase, hw->mapsize);
- request_mem_error:
- 	free_irq(hw->irqnum, hw);
--free_master:
--	spi_master_put(master);
-+free_host:
-+	spi_controller_put(host);
- 
- 	dev_err(dev, "initialization failed\n");
- 	return ret;
-@@ -466,14 +466,14 @@ static int spi_ppc4xx_of_probe(struct platform_device *op)
- 
- static void spi_ppc4xx_of_remove(struct platform_device *op)
- {
--	struct spi_master *master = platform_get_drvdata(op);
--	struct ppc4xx_spi *hw = spi_master_get_devdata(master);
-+	struct spi_controller *host = platform_get_drvdata(op);
-+	struct ppc4xx_spi *hw = spi_controller_get_devdata(host);
- 
- 	spi_bitbang_stop(&hw->bitbang);
- 	release_mem_region(hw->mapbase, hw->mapsize);
- 	free_irq(hw->irqnum, hw);
- 	iounmap(hw->regs);
--	spi_master_put(master);
-+	spi_controller_put(host);
- }
- 
- static const struct of_device_id spi_ppc4xx_of_match[] = {
 -- 
 2.25.1
 

@@ -2,72 +2,52 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9288EEE4992
-	for <linux-spi@archiver.kernel.org>; Fri, 18 Aug 2023 22:51:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5F50BEE4993
+	for <linux-spi@archiver.kernel.org>; Sat, 19 Aug 2023 13:17:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241700AbjHRWux (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 18 Aug 2023 18:50:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50158 "EHLO
+        id S232646AbjHSNRW (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sat, 19 Aug 2023 09:17:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241874AbjHRWu1 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 18 Aug 2023 18:50:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BF8D4229
-        for <linux-spi@vger.kernel.org>; Fri, 18 Aug 2023 15:50:26 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 21BDC60DBB
-        for <linux-spi@vger.kernel.org>; Fri, 18 Aug 2023 22:50:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7ECDFC433C7;
-        Fri, 18 Aug 2023 22:50:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692399025;
-        bh=V2PFD5Ss+KArk463noyg9BVh4glFMvWPZzJNG4SBG5Y=;
-        h=Subject:From:Date:To:From;
-        b=rf/KHBENiAdIBsD0TBNwlFMzkU3ezT4ycoIafJbjvpjs4rnW5KzyyqcpLp0GQy3kP
-         TWwF5MbGdKdHoW2ntV+dj1GYPa4dPa8nq+1OiCCSv/9iMqamcfqoaydtysqMIdTsM4
-         jXPaMbOWC11JZbYyyIlVZ6NAA/voIFkB22i/65rC+YLqbs0EIi4nbY5Kp3+1PRb+oM
-         xIhpG5ZI9U8+XrhSAL331PThULCGtctVhuFMc5tkxgCyQl686VtLNMT1ws74IY3Pgs
-         //rOcGB2HsoL5yKgPjcDRahoNil8xIBhtLFegV48SZCEA5INOYKo+ViIX34N+Bk3NM
-         Nl2TPxAfljMCw==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 4D782C395DC;
-        Fri, 18 Aug 2023 22:50:25 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S232603AbjHSNRW (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sat, 19 Aug 2023 09:17:22 -0400
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DCA02122E
+        for <linux-spi@vger.kernel.org>; Sat, 19 Aug 2023 06:16:11 -0700 (PDT)
+Received: from i53875a83.versanet.de ([83.135.90.131] helo=diego.localnet)
+        by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <heiko@sntech.de>)
+        id 1qXLoE-0004Ut-7k; Sat, 19 Aug 2023 15:16:06 +0200
+From:   Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
+To:     linux-spi@vger.kernel.org,
+        Yang Yingliang <yangyingliang@huawei.com>
+Cc:     broonie@kernel.org, geert@linux-m68k.org, lukas@wunner.de,
+        yangyingliang@huawei.com
+Subject: Re: [PATCH -next v3 13/23] spi: rockchip: switch to use modern name
+Date:   Sat, 19 Aug 2023 15:16:05 +0200
+Message-ID: <6008610.31r3eYUQgx@diego>
+In-Reply-To: <20230818093154.1183529-14-yangyingliang@huawei.com>
+References: <20230818093154.1183529-1-yangyingliang@huawei.com>
+ <20230818093154.1183529-14-yangyingliang@huawei.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From:   patchwork-bot+spi-devel-general@kernel.org
-Message-Id: <169239902524.7227.284831067363192715.git-patchwork-summary@kernel.org>
-Date:   Fri, 18 Aug 2023 22:50:25 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hello:
+Am Freitag, 18. August 2023, 11:31:44 CEST schrieb Yang Yingliang:
+> Change legacy name master/slave to modern name host/target or controller.
+> 
+> No functional changed.
+> 
+> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (for-next):
+I don't have a preference on these naming things, but for what it's worth
+if people want to rename things:
 
-Series: Add cs42l43 PC focused SoundWire CODEC
-  Submitter: Charles Keepax <ckeepax@opensource.cirrus.com>
-  Committer: Lee Jones <lee@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=773051
-  Lore link: https://lore.kernel.org/r/20230804104602.395892-1-ckeepax@opensource.cirrus.com
-    Patches: [v7,1/6] soundwire: bus: Allow SoundWire peripherals to register IRQ handlers
-             [v7,2/6] dt-bindings: mfd: cirrus,cs42l43: Add initial DT binding
-             [v7,3/6] mfd: cs42l43: Add support for cs42l43 core driver
-             [v7,4/6] pinctrl: cs42l43: Add support for the cs42l43
-             [v7,5/6] spi: cs42l43: Add SPI controller support
+Acked-by: Heiko Stuebner <heiko@sntech.e>
 
-
-Total patches: 5
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
 
 

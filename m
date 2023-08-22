@@ -2,37 +2,39 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 42DD0EE49AA
-	for <linux-spi@archiver.kernel.org>; Tue, 22 Aug 2023 01:38:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 42DB3EE49AE
+	for <linux-spi@archiver.kernel.org>; Tue, 22 Aug 2023 01:38:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232064AbjHVBin (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 21 Aug 2023 21:38:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51808 "EHLO
+        id S232060AbjHVBio (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 21 Aug 2023 21:38:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232058AbjHVBim (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 21 Aug 2023 21:38:42 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDF3D110
-        for <linux-spi@vger.kernel.org>; Mon, 21 Aug 2023 18:38:39 -0700 (PDT)
-Received: from dggpemm500024.china.huawei.com (unknown [172.30.72.53])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RVBjg2jlPzNn3Q;
-        Tue, 22 Aug 2023 09:35:03 +0800 (CST)
+        with ESMTP id S232063AbjHVBin (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 21 Aug 2023 21:38:43 -0400
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4073C13E
+        for <linux-spi@vger.kernel.org>; Mon, 21 Aug 2023 18:38:40 -0700 (PDT)
+Received: from dggpemm100023.china.huawei.com (unknown [172.30.72.57])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4RVBkG4hdBzLpBS;
+        Tue, 22 Aug 2023 09:35:34 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500024.china.huawei.com (7.185.36.203) with Microsoft SMTP Server
+ dggpemm100023.china.huawei.com (7.185.36.248) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Tue, 22 Aug 2023 09:38:37 +0800
+ 15.1.2507.31; Tue, 22 Aug 2023 09:38:38 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Tue, 22 Aug
- 2023 09:38:36 +0800
+ 2023 09:38:37 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
         <yangyingliang@huawei.com>
-Subject: [PATCH -next 00/24] spi: switch to use modern name (part5)
-Date:   Tue, 22 Aug 2023 09:34:47 +0800
-Message-ID: <20230822013511.4161475-1-yangyingliang@huawei.com>
+Subject: [PATCH -next 02/24] spi: sprd: switch to use modern name
+Date:   Tue, 22 Aug 2023 09:34:49 +0800
+Message-ID: <20230822013511.4161475-3-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20230822013511.4161475-1-yangyingliang@huawei.com>
+References: <20230822013511.4161475-1-yangyingliang@huawei.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -44,66 +46,37 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-I'm trying to rename the legacy name to modern name used in SPI drivers,
-this is part5 patchset.
+Change legacy name master to modern name host or controller.
 
-After introducing devm_spi_alloc_host/spi_alloc_host(), the legacy
-named function devm_spi_alloc_master/spi_alloc_master() can be replaced.
-And also change other legacy name master/slave to modern name host/target
-or controller. Each patch compile test passed.
+No functional changed.
 
-Yang Yingliang (24):
-  spi: sprd-adi: switch to use spi_alloc_host()
-  spi: sprd: switch to use modern name
-  spi: st-ssc4: switch to use modern name
-  spi: stm32-qspi: switch to use modern name
-  spi: stm32: switch to use modern name
-  spi: sun4i: switch to use modern name
-  spi: sun6i: switch to use modern name
-  spi: sunplus-sp7021: switch to use modern name
-  spi: synquacer: switch to use modern name
-  spi: geni-qcom: switch to use modern name
-  spi: tegra114: switch to use modern name
-  spi: tegra20-sflash: switch to use modern name
-  spi: tegra20-slink: switch to use modern name
-  spi: tegra210-quad: switch to use modern name
-  spi: spi-ti-qspi: switch to use modern name
-  spi: wpcm-fiu: switch to use devm_spi_alloc_host()
-  spi: topcliff-pch: switch to use modern name
-  spi: uniphier: switch to use modern name
-  spi: xcomm: switch to use modern name
-  spi: xilinx: switch to use modern name
-  spi: xlp: switch to use modern name
-  spi: xtensa-xtfpga: switch to use modern name
-  spi: zynq-qspi: switch to use modern name
-  spi: zynqmp-gqspi: switch to use modern name
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+---
+ drivers/spi/spi-sprd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- drivers/spi/spi-geni-qcom.c      |  96 ++++++-------
- drivers/spi/spi-sprd-adi.c       |   2 +-
- drivers/spi/spi-sprd.c           |   4 +-
- drivers/spi/spi-st-ssc4.c        |  70 +++++-----
- drivers/spi/spi-stm32-qspi.c     |  18 +--
- drivers/spi/spi-stm32.c          |  40 +++---
- drivers/spi/spi-sun4i.c          |  70 +++++-----
- drivers/spi/spi-sun6i.c          | 146 ++++++++++----------
- drivers/spi/spi-sunplus-sp7021.c |  88 ++++++------
- drivers/spi/spi-synquacer.c      |  82 +++++------
- drivers/spi/spi-tegra114.c       | 118 ++++++++--------
- drivers/spi/spi-tegra20-sflash.c |  76 +++++------
- drivers/spi/spi-tegra20-slink.c  |  98 +++++++-------
- drivers/spi/spi-tegra210-quad.c  |  80 +++++------
- drivers/spi/spi-ti-qspi.c        |  86 ++++++------
- drivers/spi/spi-topcliff-pch.c   | 226 +++++++++++++++----------------
- drivers/spi/spi-uniphier.c       | 194 +++++++++++++-------------
- drivers/spi/spi-wpcm-fiu.c       |   2 +-
- drivers/spi/spi-xcomm.c          |  32 ++---
- drivers/spi/spi-xilinx.c         |  58 ++++----
- drivers/spi/spi-xlp.c            |  40 +++---
- drivers/spi/spi-xtensa-xtfpga.c  |  30 ++--
- drivers/spi/spi-zynq-qspi.c      |  28 ++--
- drivers/spi/spi-zynqmp-gqspi.c   |  50 +++----
- 24 files changed, 867 insertions(+), 867 deletions(-)
-
+diff --git a/drivers/spi/spi-sprd.c b/drivers/spi/spi-sprd.c
+index 95377cf748c0..831ebae10fe0 100644
+--- a/drivers/spi/spi-sprd.c
++++ b/drivers/spi/spi-sprd.c
+@@ -578,7 +578,7 @@ static void sprd_spi_dma_release(struct sprd_spi *ss)
+ static int sprd_spi_dma_txrx_bufs(struct spi_device *sdev,
+ 				  struct spi_transfer *t)
+ {
+-	struct sprd_spi *ss = spi_master_get_devdata(sdev->master);
++	struct sprd_spi *ss = spi_controller_get_devdata(sdev->controller);
+ 	u32 trans_len = ss->trans_len;
+ 	int ret, write_size = 0;
+ 
+@@ -923,7 +923,7 @@ static int sprd_spi_probe(struct platform_device *pdev)
+ 	int ret;
+ 
+ 	pdev->id = of_alias_get_id(pdev->dev.of_node, "spi");
+-	sctlr = spi_alloc_master(&pdev->dev, sizeof(*ss));
++	sctlr = spi_alloc_host(&pdev->dev, sizeof(*ss));
+ 	if (!sctlr)
+ 		return -ENOMEM;
+ 
 -- 
 2.25.1
 

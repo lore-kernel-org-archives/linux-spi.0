@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AE7A8EE49AC
-	for <linux-spi@archiver.kernel.org>; Tue, 22 Aug 2023 01:38:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D3319EE49AF
+	for <linux-spi@archiver.kernel.org>; Tue, 22 Aug 2023 01:38:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231562AbjHVBio (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 21 Aug 2023 21:38:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51856 "EHLO
+        id S232063AbjHVBip (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 21 Aug 2023 21:38:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232060AbjHVBin (ORCPT
+        with ESMTP id S232062AbjHVBin (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Mon, 21 Aug 2023 21:38:43 -0400
 Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 412D7186
-        for <linux-spi@vger.kernel.org>; Mon, 21 Aug 2023 18:38:41 -0700 (PDT)
-Received: from dggpemm100019.china.huawei.com (unknown [172.30.72.54])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RVBjY00L2ztS9P;
-        Tue, 22 Aug 2023 09:34:56 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24CF1123
+        for <linux-spi@vger.kernel.org>; Mon, 21 Aug 2023 18:38:40 -0700 (PDT)
+Received: from dggpemm100024.china.huawei.com (unknown [172.30.72.56])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RVBm62K82zrSXg;
+        Tue, 22 Aug 2023 09:37:10 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm100019.china.huawei.com (7.185.36.251) with Microsoft SMTP Server
+ dggpemm100024.china.huawei.com (7.185.36.234) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Tue, 22 Aug 2023 09:38:39 +0800
+ 15.1.2507.31; Tue, 22 Aug 2023 09:38:38 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Tue, 22 Aug
- 2023 09:38:39 +0800
+ 2023 09:38:38 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
         <yangyingliang@huawei.com>
-Subject: [PATCH -next 06/24] spi: sun4i: switch to use modern name
-Date:   Tue, 22 Aug 2023 09:34:53 +0800
-Message-ID: <20230822013511.4161475-7-yangyingliang@huawei.com>
+Subject: [PATCH -next 03/24] spi: st-ssc4: switch to use modern name
+Date:   Tue, 22 Aug 2023 09:34:50 +0800
+Message-ID: <20230822013511.4161475-4-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230822013511.4161475-1-yangyingliang@huawei.com>
 References: <20230822013511.4161475-1-yangyingliang@huawei.com>
@@ -46,196 +46,200 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Change legacy name master to modern name host or controller.
+Change legacy name master/slave to modern name host/target or controller.
 
 No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-sun4i.c | 70 ++++++++++++++++++++---------------------
+ drivers/spi/spi-st-ssc4.c | 70 +++++++++++++++++++--------------------
  1 file changed, 35 insertions(+), 35 deletions(-)
 
-diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
-index b8947265d329..8f1d960ffa29 100644
---- a/drivers/spi/spi-sun4i.c
-+++ b/drivers/spi/spi-sun4i.c
-@@ -75,7 +75,7 @@
- #define SUN4I_FIFO_STA_TF_CNT_BITS		16
+diff --git a/drivers/spi/spi-st-ssc4.c b/drivers/spi/spi-st-ssc4.c
+index 7fcff9c539e2..e064025e2fd6 100644
+--- a/drivers/spi/spi-st-ssc4.c
++++ b/drivers/spi/spi-st-ssc4.c
+@@ -6,7 +6,7 @@
+  *          Patrice Chotard <patrice.chotard@st.com>
+  *          Lee Jones <lee.jones@linaro.org>
+  *
+- *  SPI master mode controller driver, used in STMicroelectronics devices.
++ *  SPI host mode controller driver, used in STMicroelectronics devices.
+  */
  
- struct sun4i_spi {
--	struct spi_master	*master;
-+	struct spi_controller	*host;
- 	void __iomem		*base_addr;
- 	struct clk		*hclk;
- 	struct clk		*mclk;
-@@ -161,7 +161,7 @@ static inline void sun4i_spi_fill_fifo(struct sun4i_spi *sspi, int len)
- 
- static void sun4i_spi_set_cs(struct spi_device *spi, bool enable)
- {
--	struct sun4i_spi *sspi = spi_master_get_devdata(spi->master);
-+	struct sun4i_spi *sspi = spi_controller_get_devdata(spi->controller);
- 	u32 reg;
- 
- 	reg = sun4i_spi_read(sspi, SUN4I_CTL_REG);
-@@ -201,11 +201,11 @@ static size_t sun4i_spi_max_transfer_size(struct spi_device *spi)
- 	return SUN4I_MAX_XFER_SIZE - 1;
+ #include <linux/clk.h>
+@@ -115,10 +115,10 @@ static void ssc_read_rx_fifo(struct spi_st *spi_st)
+ 	spi_st->words_remaining -= count;
  }
  
--static int sun4i_spi_transfer_one(struct spi_master *master,
-+static int sun4i_spi_transfer_one(struct spi_controller *host,
- 				  struct spi_device *spi,
- 				  struct spi_transfer *tfr)
+-static int spi_st_transfer_one(struct spi_master *master,
++static int spi_st_transfer_one(struct spi_controller *host,
+ 			       struct spi_device *spi, struct spi_transfer *t)
  {
--	struct sun4i_spi *sspi = spi_master_get_devdata(master);
-+	struct sun4i_spi *sspi = spi_controller_get_devdata(host);
- 	unsigned int mclk_rate, div, timeout;
- 	unsigned int start, end, tx_time;
- 	unsigned int tx_len = 0;
-@@ -331,7 +331,7 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
- 					      msecs_to_jiffies(tx_time));
- 	end = jiffies;
- 	if (!timeout) {
--		dev_warn(&master->dev,
-+		dev_warn(&host->dev,
- 			 "%s: timeout transferring %u bytes@%iHz for %i(%i)ms",
- 			 dev_name(&spi->dev), tfr->len, tfr->speed_hz,
- 			 jiffies_to_msecs(end - start), tx_time);
-@@ -386,8 +386,8 @@ static irqreturn_t sun4i_spi_handler(int irq, void *dev_id)
+-	struct spi_st *spi_st = spi_master_get_devdata(master);
++	struct spi_st *spi_st = spi_controller_get_devdata(host);
+ 	uint32_t ctl = 0;
  
- static int sun4i_spi_runtime_resume(struct device *dev)
+ 	/* Setup transfer */
+@@ -165,7 +165,7 @@ static int spi_st_transfer_one(struct spi_master *master,
+ 	if (ctl)
+ 		writel_relaxed(ctl, spi_st->base + SSC_CTL);
+ 
+-	spi_finalize_current_transfer(spi->master);
++	spi_finalize_current_transfer(spi->controller);
+ 
+ 	return t->len;
+ }
+@@ -174,7 +174,7 @@ static int spi_st_transfer_one(struct spi_master *master,
+ #define MODEBITS  (SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST | SPI_LOOP | SPI_CS_HIGH)
+ static int spi_st_setup(struct spi_device *spi)
  {
--	struct spi_master *master = dev_get_drvdata(dev);
--	struct sun4i_spi *sspi = spi_master_get_devdata(master);
-+	struct spi_controller *host = dev_get_drvdata(dev);
-+	struct sun4i_spi *sspi = spi_controller_get_devdata(host);
- 	int ret;
+-	struct spi_st *spi_st = spi_master_get_devdata(spi->master);
++	struct spi_st *spi_st = spi_controller_get_devdata(spi->controller);
+ 	u32 spi_st_clk, sscbrg, var;
+ 	u32 hz = spi->max_speed_hz;
  
- 	ret = clk_prepare_enable(sspi->hclk);
-@@ -415,8 +415,8 @@ static int sun4i_spi_runtime_resume(struct device *dev)
- 
- static int sun4i_spi_runtime_suspend(struct device *dev)
+@@ -274,35 +274,35 @@ static irqreturn_t spi_st_irq(int irq, void *dev_id)
+ static int spi_st_probe(struct platform_device *pdev)
  {
--	struct spi_master *master = dev_get_drvdata(dev);
--	struct sun4i_spi *sspi = spi_master_get_devdata(master);
-+	struct spi_controller *host = dev_get_drvdata(dev);
-+	struct sun4i_spi *sspi = spi_controller_get_devdata(host);
- 
- 	clk_disable_unprepare(sspi->mclk);
- 	clk_disable_unprepare(sspi->hclk);
-@@ -426,62 +426,62 @@ static int sun4i_spi_runtime_suspend(struct device *dev)
- 
- static int sun4i_spi_probe(struct platform_device *pdev)
- {
+ 	struct device_node *np = pdev->dev.of_node;
 -	struct spi_master *master;
 +	struct spi_controller *host;
- 	struct sun4i_spi *sspi;
- 	int ret = 0, irq;
+ 	struct spi_st *spi_st;
+ 	int irq, ret = 0;
+ 	u32 var;
  
--	master = spi_alloc_master(&pdev->dev, sizeof(struct sun4i_spi));
--	if (!master) {
-+	host = spi_alloc_host(&pdev->dev, sizeof(struct sun4i_spi));
-+	if (!host) {
- 		dev_err(&pdev->dev, "Unable to allocate SPI Master\n");
+-	master = spi_alloc_master(&pdev->dev, sizeof(*spi_st));
+-	if (!master)
++	host = spi_alloc_host(&pdev->dev, sizeof(*spi_st));
++	if (!host)
  		return -ENOMEM;
+ 
+-	master->dev.of_node		= np;
+-	master->mode_bits		= MODEBITS;
+-	master->setup			= spi_st_setup;
+-	master->transfer_one		= spi_st_transfer_one;
+-	master->bits_per_word_mask	= SPI_BPW_MASK(8) | SPI_BPW_MASK(16);
+-	master->auto_runtime_pm		= true;
+-	master->bus_num			= pdev->id;
+-	master->use_gpio_descriptors	= true;
+-	spi_st				= spi_master_get_devdata(master);
++	host->dev.of_node		= np;
++	host->mode_bits			= MODEBITS;
++	host->setup			= spi_st_setup;
++	host->transfer_one		= spi_st_transfer_one;
++	host->bits_per_word_mask	= SPI_BPW_MASK(8) | SPI_BPW_MASK(16);
++	host->auto_runtime_pm		= true;
++	host->bus_num			= pdev->id;
++	host->use_gpio_descriptors	= true;
++	spi_st				= spi_controller_get_devdata(host);
+ 
+ 	spi_st->clk = devm_clk_get(&pdev->dev, "ssc");
+ 	if (IS_ERR(spi_st->clk)) {
+ 		dev_err(&pdev->dev, "Unable to request clock\n");
+ 		ret = PTR_ERR(spi_st->clk);
+-		goto put_master;
++		goto put_host;
  	}
  
--	platform_set_drvdata(pdev, master);
--	sspi = spi_master_get_devdata(master);
-+	platform_set_drvdata(pdev, host);
-+	sspi = spi_controller_get_devdata(host);
+ 	ret = clk_prepare_enable(spi_st->clk);
+ 	if (ret)
+-		goto put_master;
++		goto put_host;
  
- 	sspi->base_addr = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(sspi->base_addr)) {
- 		ret = PTR_ERR(sspi->base_addr);
--		goto err_free_master;
-+		goto err_free_host;
- 	}
+ 	init_completion(&spi_st->done);
  
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0) {
- 		ret = -ENXIO;
--		goto err_free_master;
-+		goto err_free_host;
- 	}
+@@ -324,7 +324,7 @@ static int spi_st_probe(struct platform_device *pdev)
+ 	var &= ~SSC_CTL_SR;
+ 	writel_relaxed(var, spi_st->base + SSC_CTL);
  
- 	ret = devm_request_irq(&pdev->dev, irq, sun4i_spi_handler,
- 			       0, "sun4i-spi", sspi);
- 	if (ret) {
- 		dev_err(&pdev->dev, "Cannot request IRQ\n");
--		goto err_free_master;
-+		goto err_free_host;
- 	}
- 
--	sspi->master = master;
--	master->max_speed_hz = 100 * 1000 * 1000;
--	master->min_speed_hz = 3 * 1000;
--	master->set_cs = sun4i_spi_set_cs;
--	master->transfer_one = sun4i_spi_transfer_one;
--	master->num_chipselect = 4;
--	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST;
--	master->bits_per_word_mask = SPI_BPW_MASK(8);
--	master->dev.of_node = pdev->dev.of_node;
--	master->auto_runtime_pm = true;
--	master->max_transfer_size = sun4i_spi_max_transfer_size;
-+	sspi->host = host;
-+	host->max_speed_hz = 100 * 1000 * 1000;
-+	host->min_speed_hz = 3 * 1000;
-+	host->set_cs = sun4i_spi_set_cs;
-+	host->transfer_one = sun4i_spi_transfer_one;
-+	host->num_chipselect = 4;
-+	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST;
-+	host->bits_per_word_mask = SPI_BPW_MASK(8);
-+	host->dev.of_node = pdev->dev.of_node;
-+	host->auto_runtime_pm = true;
-+	host->max_transfer_size = sun4i_spi_max_transfer_size;
- 
- 	sspi->hclk = devm_clk_get(&pdev->dev, "ahb");
- 	if (IS_ERR(sspi->hclk)) {
- 		dev_err(&pdev->dev, "Unable to acquire AHB clock\n");
- 		ret = PTR_ERR(sspi->hclk);
--		goto err_free_master;
-+		goto err_free_host;
- 	}
- 
- 	sspi->mclk = devm_clk_get(&pdev->dev, "mod");
- 	if (IS_ERR(sspi->mclk)) {
- 		dev_err(&pdev->dev, "Unable to acquire module clock\n");
- 		ret = PTR_ERR(sspi->mclk);
--		goto err_free_master;
-+		goto err_free_host;
- 	}
- 
- 	init_completion(&sspi->done);
-@@ -493,16 +493,16 @@ static int sun4i_spi_probe(struct platform_device *pdev)
- 	ret = sun4i_spi_runtime_resume(&pdev->dev);
- 	if (ret) {
- 		dev_err(&pdev->dev, "Couldn't resume the device\n");
--		goto err_free_master;
-+		goto err_free_host;
- 	}
- 
+-	/* Set SSC into slave mode before reconfiguring PIO pins */
++	/* Set SSC into target mode before reconfiguring PIO pins */
+ 	var = readl_relaxed(spi_st->base + SSC_CTL);
+ 	var &= ~SSC_CTL_MS;
+ 	writel_relaxed(var, spi_st->base + SSC_CTL);
+@@ -347,11 +347,11 @@ static int spi_st_probe(struct platform_device *pdev)
  	pm_runtime_set_active(&pdev->dev);
  	pm_runtime_enable(&pdev->dev);
- 	pm_runtime_idle(&pdev->dev);
+ 
+-	platform_set_drvdata(pdev, master);
++	platform_set_drvdata(pdev, host);
  
 -	ret = devm_spi_register_master(&pdev->dev, master);
 +	ret = devm_spi_register_controller(&pdev->dev, host);
  	if (ret) {
--		dev_err(&pdev->dev, "cannot register SPI master\n");
-+		dev_err(&pdev->dev, "cannot register SPI host\n");
- 		goto err_pm_disable;
+-		dev_err(&pdev->dev, "Failed to register master\n");
++		dev_err(&pdev->dev, "Failed to register host\n");
+ 		goto rpm_disable;
  	}
  
-@@ -511,8 +511,8 @@ static int sun4i_spi_probe(struct platform_device *pdev)
- err_pm_disable:
+@@ -361,15 +361,15 @@ static int spi_st_probe(struct platform_device *pdev)
  	pm_runtime_disable(&pdev->dev);
- 	sun4i_spi_runtime_suspend(&pdev->dev);
--err_free_master:
+ clk_disable:
+ 	clk_disable_unprepare(spi_st->clk);
+-put_master:
 -	spi_master_put(master);
-+err_free_host:
++put_host:
 +	spi_controller_put(host);
  	return ret;
  }
+ 
+ static void spi_st_remove(struct platform_device *pdev)
+ {
+-	struct spi_master *master = platform_get_drvdata(pdev);
+-	struct spi_st *spi_st = spi_master_get_devdata(master);
++	struct spi_controller *host = platform_get_drvdata(pdev);
++	struct spi_st *spi_st = spi_controller_get_devdata(host);
+ 
+ 	pm_runtime_disable(&pdev->dev);
+ 
+@@ -381,8 +381,8 @@ static void spi_st_remove(struct platform_device *pdev)
+ #ifdef CONFIG_PM
+ static int spi_st_runtime_suspend(struct device *dev)
+ {
+-	struct spi_master *master = dev_get_drvdata(dev);
+-	struct spi_st *spi_st = spi_master_get_devdata(master);
++	struct spi_controller *host = dev_get_drvdata(dev);
++	struct spi_st *spi_st = spi_controller_get_devdata(host);
+ 
+ 	writel_relaxed(0, spi_st->base + SSC_IEN);
+ 	pinctrl_pm_select_sleep_state(dev);
+@@ -394,8 +394,8 @@ static int spi_st_runtime_suspend(struct device *dev)
+ 
+ static int spi_st_runtime_resume(struct device *dev)
+ {
+-	struct spi_master *master = dev_get_drvdata(dev);
+-	struct spi_st *spi_st = spi_master_get_devdata(master);
++	struct spi_controller *host = dev_get_drvdata(dev);
++	struct spi_st *spi_st = spi_controller_get_devdata(host);
+ 	int ret;
+ 
+ 	ret = clk_prepare_enable(spi_st->clk);
+@@ -408,10 +408,10 @@ static int spi_st_runtime_resume(struct device *dev)
+ #ifdef CONFIG_PM_SLEEP
+ static int spi_st_suspend(struct device *dev)
+ {
+-	struct spi_master *master = dev_get_drvdata(dev);
++	struct spi_controller *host = dev_get_drvdata(dev);
+ 	int ret;
+ 
+-	ret = spi_master_suspend(master);
++	ret = spi_controller_suspend(host);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -420,10 +420,10 @@ static int spi_st_suspend(struct device *dev)
+ 
+ static int spi_st_resume(struct device *dev)
+ {
+-	struct spi_master *master = dev_get_drvdata(dev);
++	struct spi_controller *host = dev_get_drvdata(dev);
+ 	int ret;
+ 
+-	ret = spi_master_resume(master);
++	ret = spi_controller_resume(host);
+ 	if (ret)
+ 		return ret;
  
 -- 
 2.25.1

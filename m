@@ -2,73 +2,72 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BE267EE49A0
-	for <linux-spi@archiver.kernel.org>; Mon, 21 Aug 2023 21:10:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BD521EE4996
+	for <linux-spi@archiver.kernel.org>; Tue, 22 Aug 2023 01:38:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229489AbjHUVK3 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 21 Aug 2023 17:10:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40256 "EHLO
+        id S232056AbjHVBim (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 21 Aug 2023 21:38:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229513AbjHUVK2 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 21 Aug 2023 17:10:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED465113
-        for <linux-spi@vger.kernel.org>; Mon, 21 Aug 2023 14:10:26 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7AA5161877
-        for <linux-spi@vger.kernel.org>; Mon, 21 Aug 2023 21:10:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D876DC433C8;
-        Mon, 21 Aug 2023 21:10:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692652225;
-        bh=P4Iqx9sxniOF0J6drECfLlIf2huwgK7EVMGbS0HtPvU=;
-        h=Subject:From:Date:To:From;
-        b=WYRz7gse7VhOT+UIinpMUTPeDEirGPoQa7rd0G8Hfs6WXAk0G+Qfv/0A4GH/ly+s0
-         eC6LwNek18Au+SbRbMfQiIla8UeD6nhniDiheS6MFKjEhsSjb9JBOc8mR07W4Yfigi
-         7JeCjU71gcl6akzmhdxbBfX5k40duBIOijFMtUKKkToGso5+85kZz8bynmx+Fk4sxk
-         59CkX4bbI1aHoiVdzs9+/4j1hFRHJoZJ+majcXzCC+UtZlgVoWxJlF4wQFG2Np8lwU
-         6bFpC8aK8PPkdn71xpvAdDSpX0btVCR5MXckdFmT9Nc+T4W6BZOFoDi8pWNJ1JSwjs
-         6dj+mbSNrWSiw==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id B0074E4EAF9;
-        Mon, 21 Aug 2023 21:10:25 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S231562AbjHVBim (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 21 Aug 2023 21:38:42 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7755101
+        for <linux-spi@vger.kernel.org>; Mon, 21 Aug 2023 18:38:39 -0700 (PDT)
+Received: from dggpemm500021.china.huawei.com (unknown [172.30.72.54])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RVBjV72hWztRm1;
+        Tue, 22 Aug 2023 09:34:54 +0800 (CST)
+Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
+ dggpemm500021.china.huawei.com (7.185.36.109) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.31; Tue, 22 Aug 2023 09:38:37 +0800
+Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
+ (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Tue, 22 Aug
+ 2023 09:38:37 +0800
+From:   Yang Yingliang <yangyingliang@huawei.com>
+To:     <linux-spi@vger.kernel.org>
+CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
+        <yangyingliang@huawei.com>
+Subject: [PATCH -next 01/24] spi: sprd-adi: switch to use spi_alloc_host()
+Date:   Tue, 22 Aug 2023 09:34:48 +0800
+Message-ID: <20230822013511.4161475-2-yangyingliang@huawei.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20230822013511.4161475-1-yangyingliang@huawei.com>
+References: <20230822013511.4161475-1-yangyingliang@huawei.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From:   patchwork-bot+spi-devel-general@kernel.org
-Message-Id: <169265222561.31376.1990190615108270089.git-patchwork-summary@kernel.org>
-Date:   Mon, 21 Aug 2023 21:10:25 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.103.91]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggpemm500007.china.huawei.com (7.185.36.183)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hello:
+Switch to use modern name function spi_alloc_host().
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (for-next):
+No functional changed.
 
-Patch: spi: stm32: fix accidential revert to byte-sized transfer splitting
-  Submitter: Leonard Göhrs <l.goehrs@pengutronix.de>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=776673
-  Lore link: https://lore.kernel.org/r/20230816145237.3159817-1-l.goehrs@pengutronix.de
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+---
+ drivers/spi/spi-sprd-adi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Patch: spi: spi-cadence: Fix data corruption issues in slave mode
-  Submitter: Srinivas Goud <srinivas.goud@amd.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=777833
-  Lore link: https://lore.kernel.org/r/1692610216-217644-1-git-send-email-srinivas.goud@amd.com
-
-
-Total patches: 2
-
+diff --git a/drivers/spi/spi-sprd-adi.c b/drivers/spi/spi-sprd-adi.c
+index bf01feedbf93..d51d350c8643 100644
+--- a/drivers/spi/spi-sprd-adi.c
++++ b/drivers/spi/spi-sprd-adi.c
+@@ -533,7 +533,7 @@ static int sprd_adi_probe(struct platform_device *pdev)
+ 	pdev->id = of_alias_get_id(np, "spi");
+ 	num_chipselect = of_get_child_count(np);
+ 
+-	ctlr = spi_alloc_master(&pdev->dev, sizeof(struct sprd_adi));
++	ctlr = spi_alloc_host(&pdev->dev, sizeof(struct sprd_adi));
+ 	if (!ctlr)
+ 		return -ENOMEM;
+ 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.25.1
 

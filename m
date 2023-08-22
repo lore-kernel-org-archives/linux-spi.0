@@ -2,25 +2,25 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 07387EE4993
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5CA2BEE49AC
 	for <linux-spi@archiver.kernel.org>; Tue, 22 Aug 2023 13:12:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235998AbjHVNM7 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S234873AbjHVNM7 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Tue, 22 Aug 2023 09:12:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38496 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234873AbjHVNM7 (ORCPT
+        with ESMTP id S235997AbjHVNM7 (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Tue, 22 Aug 2023 09:12:59 -0400
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 463BABE
-        for <linux-spi@vger.kernel.org>; Tue, 22 Aug 2023 06:12:55 -0700 (PDT)
-Received: from kwepemi500012.china.huawei.com (unknown [172.30.72.56])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4RVV9821pFz1L9G9;
-        Tue, 22 Aug 2023 21:11:24 +0800 (CST)
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6675FFB
+        for <linux-spi@vger.kernel.org>; Tue, 22 Aug 2023 06:12:57 -0700 (PDT)
+Received: from kwepemi500012.china.huawei.com (unknown [172.30.72.55])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RVV8H6wtKzTm1P;
+        Tue, 22 Aug 2023 21:10:39 +0800 (CST)
 Received: from huawei.com (10.90.53.73) by kwepemi500012.china.huawei.com
  (7.221.188.12) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Tue, 22 Aug
- 2023 21:12:51 +0800
+ 2023 21:12:53 +0800
 From:   Li Zetao <lizetao1@huawei.com>
 To:     <broonie@kernel.org>, <chin-ting_kuo@aspeedtech.com>,
         <clg@kaod.org>, <joel@jms.id.au>, <andrew@aj.id.au>,
@@ -44,9 +44,9 @@ CC:     <lizetao1@huawei.com>, <linux-spi@vger.kernel.org>,
         <linux-riscv@lists.infradead.org>,
         <linux-mediatek@lists.infradead.org>,
         <linux-rockchip@lists.infradead.org>
-Subject: [PATCH -next 03/25] spi: aspeed: Use helper function devm_clk_get_enabled()
-Date:   Tue, 22 Aug 2023 21:12:15 +0800
-Message-ID: <20230822131237.1022815-4-lizetao1@huawei.com>
+Subject: [PATCH -next 05/25] spi: spi-axi-spi-engine: Use helper function devm_clk_get_enabled()
+Date:   Tue, 22 Aug 2023 21:12:17 +0800
+Message-ID: <20230822131237.1022815-6-lizetao1@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230822131237.1022815-1-lizetao1@huawei.com>
 References: <20230822131237.1022815-1-lizetao1@huawei.com>
@@ -69,59 +69,86 @@ no longer necessary to unprepare and disable the clocks explicitly.
 
 Signed-off-by: Li Zetao <lizetao1@huawei.com>
 ---
- drivers/spi/spi-aspeed-smc.c | 16 ++--------------
- 1 file changed, 2 insertions(+), 14 deletions(-)
+ drivers/spi/spi-axi-spi-engine.c | 25 +++++--------------------
+ 1 file changed, 5 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/spi/spi-aspeed-smc.c b/drivers/spi/spi-aspeed-smc.c
-index 21b0fa646c7d..bbd417c55e7f 100644
---- a/drivers/spi/spi-aspeed-smc.c
-+++ b/drivers/spi/spi-aspeed-smc.c
-@@ -748,7 +748,7 @@ static int aspeed_spi_probe(struct platform_device *pdev)
- 	aspi->ahb_window_size = resource_size(res);
- 	aspi->ahb_base_phy = res->start;
+diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-engine.c
+index 0258c9a72fdc..b96e55f59d1a 100644
+--- a/drivers/spi/spi-axi-spi-engine.c
++++ b/drivers/spi/spi-axi-spi-engine.c
+@@ -485,30 +485,22 @@ static int spi_engine_probe(struct platform_device *pdev)
  
--	aspi->clk = devm_clk_get(&pdev->dev, NULL);
-+	aspi->clk = devm_clk_get_enabled(&pdev->dev, NULL);
- 	if (IS_ERR(aspi->clk)) {
- 		dev_err(dev, "missing clock\n");
- 		return PTR_ERR(aspi->clk);
-@@ -760,12 +760,6 @@ static int aspeed_spi_probe(struct platform_device *pdev)
- 		return -EINVAL;
+ 	spin_lock_init(&spi_engine->lock);
+ 
+-	spi_engine->clk = devm_clk_get(&pdev->dev, "s_axi_aclk");
++	spi_engine->clk = devm_clk_get_enabled(&pdev->dev, "s_axi_aclk");
+ 	if (IS_ERR(spi_engine->clk)) {
+ 		ret = PTR_ERR(spi_engine->clk);
+ 		goto err_put_host;
  	}
  
--	ret = clk_prepare_enable(aspi->clk);
--	if (ret) {
--		dev_err(dev, "can not enable the clock\n");
--		return ret;
--	}
+-	spi_engine->ref_clk = devm_clk_get(&pdev->dev, "spi_clk");
++	spi_engine->ref_clk = devm_clk_get_enabled(&pdev->dev, "spi_clk");
+ 	if (IS_ERR(spi_engine->ref_clk)) {
+ 		ret = PTR_ERR(spi_engine->ref_clk);
+ 		goto err_put_host;
+ 	}
+ 
+-	ret = clk_prepare_enable(spi_engine->clk);
+-	if (ret)
+-		goto err_put_host;
 -
- 	/* IRQ is for DMA, which the driver doesn't support yet */
+-	ret = clk_prepare_enable(spi_engine->ref_clk);
+-	if (ret)
+-		goto err_clk_disable;
+-
+ 	spi_engine->base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(spi_engine->base)) {
+ 		ret = PTR_ERR(spi_engine->base);
+-		goto err_ref_clk_disable;
++		goto err_put_host;
+ 	}
  
- 	ctlr->mode_bits = SPI_RX_DUAL | SPI_TX_DUAL | data->mode_bits;
-@@ -777,14 +771,9 @@ static int aspeed_spi_probe(struct platform_device *pdev)
- 	ctlr->dev.of_node = dev->of_node;
+ 	version = readl(spi_engine->base + SPI_ENGINE_REG_VERSION);
+@@ -518,7 +510,7 @@ static int spi_engine_probe(struct platform_device *pdev)
+ 			SPI_ENGINE_VERSION_MINOR(version),
+ 			SPI_ENGINE_VERSION_PATCH(version));
+ 		ret = -ENODEV;
+-		goto err_ref_clk_disable;
++		goto err_put_host;
+ 	}
  
- 	ret = devm_spi_register_controller(dev, ctlr);
--	if (ret) {
-+	if (ret)
- 		dev_err(&pdev->dev, "spi_register_controller failed\n");
--		goto disable_clk;
--	}
--	return 0;
+ 	writel_relaxed(0x00, spi_engine->base + SPI_ENGINE_REG_RESET);
+@@ -527,7 +519,7 @@ static int spi_engine_probe(struct platform_device *pdev)
  
--disable_clk:
--	clk_disable_unprepare(aspi->clk);
+ 	ret = request_irq(irq, spi_engine_irq, 0, pdev->name, host);
+ 	if (ret)
+-		goto err_ref_clk_disable;
++		goto err_put_host;
+ 
+ 	host->dev.of_node = pdev->dev.of_node;
+ 	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_3WIRE;
+@@ -545,10 +537,6 @@ static int spi_engine_probe(struct platform_device *pdev)
+ 	return 0;
+ err_free_irq:
+ 	free_irq(irq, host);
+-err_ref_clk_disable:
+-	clk_disable_unprepare(spi_engine->ref_clk);
+-err_clk_disable:
+-	clk_disable_unprepare(spi_engine->clk);
+ err_put_host:
+ 	spi_controller_put(host);
  	return ret;
+@@ -569,9 +557,6 @@ static void spi_engine_remove(struct platform_device *pdev)
+ 	writel_relaxed(0xff, spi_engine->base + SPI_ENGINE_REG_INT_PENDING);
+ 	writel_relaxed(0x00, spi_engine->base + SPI_ENGINE_REG_INT_ENABLE);
+ 	writel_relaxed(0x01, spi_engine->base + SPI_ENGINE_REG_RESET);
+-
+-	clk_disable_unprepare(spi_engine->ref_clk);
+-	clk_disable_unprepare(spi_engine->clk);
  }
  
-@@ -793,7 +782,6 @@ static void aspeed_spi_remove(struct platform_device *pdev)
- 	struct aspeed_spi *aspi = platform_get_drvdata(pdev);
- 
- 	aspeed_spi_enable(aspi, false);
--	clk_disable_unprepare(aspi->clk);
- }
- 
- /*
+ static const struct of_device_id spi_engine_match_table[] = {
 -- 
 2.34.1
 

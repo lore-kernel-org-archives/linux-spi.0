@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 42DB3EE49AE
-	for <linux-spi@archiver.kernel.org>; Tue, 22 Aug 2023 01:38:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A7CAFEE49AB
+	for <linux-spi@archiver.kernel.org>; Tue, 22 Aug 2023 01:38:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232060AbjHVBio (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 21 Aug 2023 21:38:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51840 "EHLO
+        id S232058AbjHVBin (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 21 Aug 2023 21:38:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232063AbjHVBin (ORCPT
+        with ESMTP id S231562AbjHVBin (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Mon, 21 Aug 2023 21:38:43 -0400
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4073C13E
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74F0D12C
         for <linux-spi@vger.kernel.org>; Mon, 21 Aug 2023 18:38:40 -0700 (PDT)
-Received: from dggpemm100023.china.huawei.com (unknown [172.30.72.57])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4RVBkG4hdBzLpBS;
-        Tue, 22 Aug 2023 09:35:34 +0800 (CST)
+Received: from dggpemm100022.china.huawei.com (unknown [172.30.72.53])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RVBlF05x3zVkGF;
+        Tue, 22 Aug 2023 09:36:25 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm100023.china.huawei.com (7.185.36.248) with Microsoft SMTP Server
+ dggpemm100022.china.huawei.com (7.185.36.132) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
  15.1.2507.31; Tue, 22 Aug 2023 09:38:38 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Tue, 22 Aug
- 2023 09:38:37 +0800
+ 2023 09:38:38 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
         <yangyingliang@huawei.com>
-Subject: [PATCH -next 02/24] spi: sprd: switch to use modern name
-Date:   Tue, 22 Aug 2023 09:34:49 +0800
-Message-ID: <20230822013511.4161475-3-yangyingliang@huawei.com>
+Subject: [PATCH -next 04/24] spi: stm32-qspi: switch to use modern name
+Date:   Tue, 22 Aug 2023 09:34:51 +0800
+Message-ID: <20230822013511.4161475-5-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230822013511.4161475-1-yangyingliang@huawei.com>
 References: <20230822013511.4161475-1-yangyingliang@huawei.com>
@@ -52,31 +52,94 @@ No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-sprd.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-stm32-qspi.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/spi/spi-sprd.c b/drivers/spi/spi-sprd.c
-index 95377cf748c0..831ebae10fe0 100644
---- a/drivers/spi/spi-sprd.c
-+++ b/drivers/spi/spi-sprd.c
-@@ -578,7 +578,7 @@ static void sprd_spi_dma_release(struct sprd_spi *ss)
- static int sprd_spi_dma_txrx_bufs(struct spi_device *sdev,
- 				  struct spi_transfer *t)
- {
--	struct sprd_spi *ss = spi_master_get_devdata(sdev->master);
-+	struct sprd_spi *ss = spi_controller_get_devdata(sdev->controller);
- 	u32 trans_len = ss->trans_len;
- 	int ret, write_size = 0;
+diff --git a/drivers/spi/spi-stm32-qspi.c b/drivers/spi/spi-stm32-qspi.c
+index def74ae9b5f6..385832030459 100644
+--- a/drivers/spi/spi-stm32-qspi.c
++++ b/drivers/spi/spi-stm32-qspi.c
+@@ -357,7 +357,7 @@ static int stm32_qspi_get_mode(u8 buswidth)
  
-@@ -923,7 +923,7 @@ static int sprd_spi_probe(struct platform_device *pdev)
+ static int stm32_qspi_send(struct spi_device *spi, const struct spi_mem_op *op)
+ {
+-	struct stm32_qspi *qspi = spi_controller_get_devdata(spi->master);
++	struct stm32_qspi *qspi = spi_controller_get_devdata(spi->controller);
+ 	struct stm32_qspi_flash *flash = &qspi->flash[spi_get_chipselect(spi, 0)];
+ 	u32 ccr, cr;
+ 	int timeout, err = 0, err_poll_status = 0;
+@@ -448,7 +448,7 @@ static int stm32_qspi_poll_status(struct spi_mem *mem, const struct spi_mem_op *
+ 				  unsigned long polling_rate_us,
+ 				  unsigned long timeout_ms)
+ {
+-	struct stm32_qspi *qspi = spi_controller_get_devdata(mem->spi->master);
++	struct stm32_qspi *qspi = spi_controller_get_devdata(mem->spi->controller);
  	int ret;
  
- 	pdev->id = of_alias_get_id(pdev->dev.of_node, "spi");
--	sctlr = spi_alloc_master(&pdev->dev, sizeof(*ss));
-+	sctlr = spi_alloc_host(&pdev->dev, sizeof(*ss));
- 	if (!sctlr)
+ 	if (!spi_mem_supports_op(mem, op))
+@@ -476,7 +476,7 @@ static int stm32_qspi_poll_status(struct spi_mem *mem, const struct spi_mem_op *
+ 
+ static int stm32_qspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ {
+-	struct stm32_qspi *qspi = spi_controller_get_devdata(mem->spi->master);
++	struct stm32_qspi *qspi = spi_controller_get_devdata(mem->spi->controller);
+ 	int ret;
+ 
+ 	ret = pm_runtime_resume_and_get(qspi->dev);
+@@ -500,7 +500,7 @@ static int stm32_qspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 
+ static int stm32_qspi_dirmap_create(struct spi_mem_dirmap_desc *desc)
+ {
+-	struct stm32_qspi *qspi = spi_controller_get_devdata(desc->mem->spi->master);
++	struct stm32_qspi *qspi = spi_controller_get_devdata(desc->mem->spi->controller);
+ 
+ 	if (desc->info.op_tmpl.data.dir == SPI_MEM_DATA_OUT)
+ 		return -EOPNOTSUPP;
+@@ -518,7 +518,7 @@ static int stm32_qspi_dirmap_create(struct spi_mem_dirmap_desc *desc)
+ static ssize_t stm32_qspi_dirmap_read(struct spi_mem_dirmap_desc *desc,
+ 				      u64 offs, size_t len, void *buf)
+ {
+-	struct stm32_qspi *qspi = spi_controller_get_devdata(desc->mem->spi->master);
++	struct stm32_qspi *qspi = spi_controller_get_devdata(desc->mem->spi->controller);
+ 	struct spi_mem_op op;
+ 	u32 addr_max;
+ 	int ret;
+@@ -640,7 +640,7 @@ static int stm32_qspi_transfer_one_message(struct spi_controller *ctrl,
+ 
+ static int stm32_qspi_setup(struct spi_device *spi)
+ {
+-	struct spi_controller *ctrl = spi->master;
++	struct spi_controller *ctrl = spi->controller;
+ 	struct stm32_qspi *qspi = spi_controller_get_devdata(ctrl);
+ 	struct stm32_qspi_flash *flash;
+ 	u32 presc, mode;
+@@ -775,7 +775,7 @@ static int stm32_qspi_probe(struct platform_device *pdev)
+ 	struct resource *res;
+ 	int ret, irq;
+ 
+-	ctrl = devm_spi_alloc_master(dev, sizeof(*qspi));
++	ctrl = devm_spi_alloc_host(dev, sizeof(*qspi));
+ 	if (!ctrl)
  		return -ENOMEM;
  
+@@ -861,7 +861,7 @@ static int stm32_qspi_probe(struct platform_device *pdev)
+ 	pm_runtime_enable(dev);
+ 	pm_runtime_get_noresume(dev);
+ 
+-	ret = spi_register_master(ctrl);
++	ret = spi_register_controller(ctrl);
+ 	if (ret)
+ 		goto err_pm_runtime_free;
+ 
+@@ -892,7 +892,7 @@ static void stm32_qspi_remove(struct platform_device *pdev)
+ 	struct stm32_qspi *qspi = platform_get_drvdata(pdev);
+ 
+ 	pm_runtime_get_sync(qspi->dev);
+-	spi_unregister_master(qspi->ctrl);
++	spi_unregister_controller(qspi->ctrl);
+ 	/* disable qspi */
+ 	writel_relaxed(0, qspi->io_base + QSPI_CR);
+ 	stm32_qspi_dma_free(qspi);
 -- 
 2.25.1
 

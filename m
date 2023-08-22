@@ -2,132 +2,73 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 02E41EE49AE
-	for <linux-spi@archiver.kernel.org>; Tue, 22 Aug 2023 01:38:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6AC94EE4996
+	for <linux-spi@archiver.kernel.org>; Tue, 22 Aug 2023 12:47:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232083AbjHVBjA (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 21 Aug 2023 21:39:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52000 "EHLO
+        id S235798AbjHVMrK (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 22 Aug 2023 08:47:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232082AbjHVBiu (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 21 Aug 2023 21:38:50 -0400
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 363C6187
-        for <linux-spi@vger.kernel.org>; Mon, 21 Aug 2023 18:38:47 -0700 (PDT)
-Received: from dggpemm100003.china.huawei.com (unknown [172.30.72.55])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4RVBmG1LGgz1L9bq;
-        Tue, 22 Aug 2023 09:37:18 +0800 (CST)
-Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm100003.china.huawei.com (7.185.36.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Tue, 22 Aug 2023 09:38:45 +0800
-Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
- (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
+        with ESMTP id S229891AbjHVMrK (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 22 Aug 2023 08:47:10 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66899196
+        for <linux-spi@vger.kernel.org>; Tue, 22 Aug 2023 05:47:08 -0700 (PDT)
+Received: from kwepemi500008.china.huawei.com (unknown [172.30.72.55])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RVTXw51WRzNnHT;
+        Tue, 22 Aug 2023 20:43:28 +0800 (CST)
+Received: from huawei.com (10.90.53.73) by kwepemi500008.china.huawei.com
+ (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Tue, 22 Aug
- 2023 09:38:45 +0800
-From:   Yang Yingliang <yangyingliang@huawei.com>
-To:     <linux-spi@vger.kernel.org>
-CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
-        <yangyingliang@huawei.com>
-Subject: [PATCH -next 22/24] spi: xtensa-xtfpga: switch to use modern name
-Date:   Tue, 22 Aug 2023 09:35:09 +0800
-Message-ID: <20230822013511.4161475-23-yangyingliang@huawei.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230822013511.4161475-1-yangyingliang@huawei.com>
-References: <20230822013511.4161475-1-yangyingliang@huawei.com>
+ 2023 20:47:02 +0800
+From:   Jinjie Ruan <ruanjinjie@huawei.com>
+To:     <linux-spi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Radu Pirea <radu_nicolae.pirea@upb.ro>,
+        Mark Brown <broonie@kernel.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Claudiu Beznea <claudiu.beznea@tuxon.dev>
+CC:     <ruanjinjie@huawei.com>
+Subject: [PATCH -next] spi: at91-usart: Use PTR_ERR_OR_ZERO() to simplify code
+Date:   Tue, 22 Aug 2023 20:46:42 +0800
+Message-ID: <20230822124643.987079-1-ruanjinjie@huawei.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.103.91]
+X-Originating-IP: [10.90.53.73]
 X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggpemm500007.china.huawei.com (7.185.36.183)
+ kwepemi500008.china.huawei.com (7.221.188.139)
 X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Change legacy name master to modern name host or controller.
+Return PTR_ERR_OR_ZERO() instead of return 0 or PTR_ERR() to
+simplify code.
 
-No functional changed.
-
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 ---
- drivers/spi/spi-xtensa-xtfpga.c | 30 +++++++++++++++---------------
- 1 file changed, 15 insertions(+), 15 deletions(-)
+ drivers/spi/spi-at91-usart.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-xtensa-xtfpga.c b/drivers/spi/spi-xtensa-xtfpga.c
-index dbd85d7a1526..3c7721894376 100644
---- a/drivers/spi/spi-xtensa-xtfpga.c
-+++ b/drivers/spi/spi-xtensa-xtfpga.c
-@@ -53,7 +53,7 @@ static inline void xtfpga_spi_wait_busy(struct xtfpga_spi *xspi)
- static u32 xtfpga_spi_txrx_word(struct spi_device *spi, unsigned nsecs,
- 				u32 v, u8 bits, unsigned flags)
- {
--	struct xtfpga_spi *xspi = spi_master_get_devdata(spi->master);
-+	struct xtfpga_spi *xspi = spi_controller_get_devdata(spi->controller);
+diff --git a/drivers/spi/spi-at91-usart.c b/drivers/spi/spi-at91-usart.c
+index 75d9bc606442..b11d0f993cc7 100644
+--- a/drivers/spi/spi-at91-usart.c
++++ b/drivers/spi/spi-at91-usart.c
+@@ -485,10 +485,7 @@ static int at91_usart_gpio_setup(struct platform_device *pdev)
  
- 	xspi->data = (xspi->data << bits) | (v & GENMASK(bits - 1, 0));
- 	xspi->data_sz += bits;
-@@ -71,7 +71,7 @@ static u32 xtfpga_spi_txrx_word(struct spi_device *spi, unsigned nsecs,
+ 	cs_gpios = devm_gpiod_get_array_optional(&pdev->dev, "cs", GPIOD_OUT_LOW);
  
- static void xtfpga_spi_chipselect(struct spi_device *spi, int is_on)
- {
--	struct xtfpga_spi *xspi = spi_master_get_devdata(spi->master);
-+	struct xtfpga_spi *xspi = spi_controller_get_devdata(spi->controller);
- 
- 	WARN_ON(xspi->data_sz != 0);
- 	xspi->data_sz = 0;
-@@ -81,19 +81,19 @@ static int xtfpga_spi_probe(struct platform_device *pdev)
- {
- 	struct xtfpga_spi *xspi;
- 	int ret;
--	struct spi_master *master;
-+	struct spi_controller *host;
- 
--	master = devm_spi_alloc_master(&pdev->dev, sizeof(struct xtfpga_spi));
--	if (!master)
-+	host = devm_spi_alloc_host(&pdev->dev, sizeof(struct xtfpga_spi));
-+	if (!host)
- 		return -ENOMEM;
- 
--	master->flags = SPI_CONTROLLER_NO_RX;
--	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 16);
--	master->bus_num = pdev->dev.id;
--	master->dev.of_node = pdev->dev.of_node;
-+	host->flags = SPI_CONTROLLER_NO_RX;
-+	host->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 16);
-+	host->bus_num = pdev->dev.id;
-+	host->dev.of_node = pdev->dev.of_node;
- 
--	xspi = spi_master_get_devdata(master);
--	xspi->bitbang.master = master;
-+	xspi = spi_controller_get_devdata(host);
-+	xspi->bitbang.master = host;
- 	xspi->bitbang.chipselect = xtfpga_spi_chipselect;
- 	xspi->bitbang.txrx_word[SPI_MODE_0] = xtfpga_spi_txrx_word;
- 	xspi->regs = devm_platform_ioremap_resource(pdev, 0);
-@@ -113,17 +113,17 @@ static int xtfpga_spi_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
--	platform_set_drvdata(pdev, master);
-+	platform_set_drvdata(pdev, host);
- 	return 0;
+-	if (IS_ERR(cs_gpios))
+-		return PTR_ERR(cs_gpios);
+-
+-	return 0;
++	return PTR_ERR_OR_ZERO(cs_gpios);
  }
  
- static void xtfpga_spi_remove(struct platform_device *pdev)
- {
--	struct spi_master *master = platform_get_drvdata(pdev);
--	struct xtfpga_spi *xspi = spi_master_get_devdata(master);
-+	struct spi_controller *host = platform_get_drvdata(pdev);
-+	struct xtfpga_spi *xspi = spi_controller_get_devdata(host);
- 
- 	spi_bitbang_stop(&xspi->bitbang);
--	spi_master_put(master);
-+	spi_controller_put(host);
- }
- 
- MODULE_ALIAS("platform:" XTFPGA_SPI_NAME);
+ static int at91_usart_spi_probe(struct platform_device *pdev)
 -- 
-2.25.1
+2.34.1
 

@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A534FEE49AB
-	for <linux-spi@archiver.kernel.org>; Tue, 22 Aug 2023 01:38:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7A5E9EE49A6
+	for <linux-spi@archiver.kernel.org>; Tue, 22 Aug 2023 01:38:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232073AbjHVBiw (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 21 Aug 2023 21:38:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51906 "EHLO
+        id S232072AbjHVBix (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 21 Aug 2023 21:38:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232072AbjHVBiq (ORCPT
+        with ESMTP id S232071AbjHVBiq (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Mon, 21 Aug 2023 21:38:46 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1795F110
-        for <linux-spi@vger.kernel.org>; Mon, 21 Aug 2023 18:38:42 -0700 (PDT)
-Received: from dggpemm100017.china.huawei.com (unknown [172.30.72.54])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RVBjl1z7GzNn9n;
-        Tue, 22 Aug 2023 09:35:07 +0800 (CST)
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E973A13E
+        for <linux-spi@vger.kernel.org>; Mon, 21 Aug 2023 18:38:43 -0700 (PDT)
+Received: from dggpemm100013.china.huawei.com (unknown [172.30.72.53])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4RVBkL6BqczLp9v;
+        Tue, 22 Aug 2023 09:35:38 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm100017.china.huawei.com (7.185.36.220) with Microsoft SMTP Server
+ dggpemm100013.china.huawei.com (7.185.36.33) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Tue, 22 Aug 2023 09:38:41 +0800
+ 15.1.2507.31; Tue, 22 Aug 2023 09:38:42 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Tue, 22 Aug
- 2023 09:38:40 +0800
+ 2023 09:38:41 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
         <yangyingliang@huawei.com>
-Subject: [PATCH -next 10/24] spi: geni-qcom: switch to use modern name
-Date:   Tue, 22 Aug 2023 09:34:57 +0800
-Message-ID: <20230822013511.4161475-11-yangyingliang@huawei.com>
+Subject: [PATCH -next 13/24] spi: tegra20-slink: switch to use modern name
+Date:   Tue, 22 Aug 2023 09:35:00 +0800
+Message-ID: <20230822013511.4161475-14-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230822013511.4161475-1-yangyingliang@huawei.com>
 References: <20230822013511.4161475-1-yangyingliang@huawei.com>
@@ -52,312 +52,267 @@ No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-geni-qcom.c | 96 ++++++++++++++++++-------------------
- 1 file changed, 48 insertions(+), 48 deletions(-)
+ drivers/spi/spi-tegra20-slink.c | 98 ++++++++++++++++-----------------
+ 1 file changed, 49 insertions(+), 49 deletions(-)
 
-diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index f4f376a8351b..53d3cabfcf58 100644
---- a/drivers/spi/spi-geni-qcom.c
-+++ b/drivers/spi/spi-geni-qcom.c
-@@ -145,10 +145,10 @@ static int get_spi_clk_cfg(unsigned int speed_hz,
- 	return ret;
+diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
+index 4d6db6182c5e..990187b66f22 100644
+--- a/drivers/spi/spi-tegra20-slink.c
++++ b/drivers/spi/spi-tegra20-slink.c
+@@ -152,7 +152,7 @@ struct tegra_slink_chip_data {
+ 
+ struct tegra_slink_data {
+ 	struct device				*dev;
+-	struct spi_master			*master;
++	struct spi_controller			*host;
+ 	const struct tegra_slink_chip_data	*chip_data;
+ 	spinlock_t				lock;
+ 
+@@ -671,7 +671,7 @@ static void tegra_slink_deinit_dma_param(struct tegra_slink_data *tspi,
+ static int tegra_slink_start_transfer_one(struct spi_device *spi,
+ 		struct spi_transfer *t)
+ {
+-	struct tegra_slink_data *tspi = spi_master_get_devdata(spi->master);
++	struct tegra_slink_data *tspi = spi_controller_get_devdata(spi->controller);
+ 	u32 speed;
+ 	u8 bits_per_word;
+ 	unsigned total_fifo_words;
+@@ -737,7 +737,7 @@ static int tegra_slink_setup(struct spi_device *spi)
+ 			SLINK_CS_POLARITY3,
+ 	};
+ 
+-	struct tegra_slink_data *tspi = spi_master_get_devdata(spi->master);
++	struct tegra_slink_data *tspi = spi_controller_get_devdata(spi->controller);
+ 	u32 val;
+ 	unsigned long flags;
+ 	int ret;
+@@ -768,10 +768,10 @@ static int tegra_slink_setup(struct spi_device *spi)
+ 	return 0;
  }
  
--static void handle_se_timeout(struct spi_master *spi,
--				struct spi_message *msg)
-+static void handle_se_timeout(struct spi_controller *spi,
-+			      struct spi_message *msg)
+-static int tegra_slink_prepare_message(struct spi_master *master,
++static int tegra_slink_prepare_message(struct spi_controller *host,
+ 				       struct spi_message *msg)
  {
--	struct spi_geni_master *mas = spi_master_get_devdata(spi);
-+	struct spi_geni_master *mas = spi_controller_get_devdata(spi);
- 	unsigned long time_left;
- 	struct geni_se *se = &mas->se;
- 	const struct spi_transfer *xfer;
-@@ -160,9 +160,9 @@ static void handle_se_timeout(struct spi_master *spi,
- 	xfer = mas->cur_xfer;
- 	mas->cur_xfer = NULL;
+-	struct tegra_slink_data *tspi = spi_master_get_devdata(master);
++	struct tegra_slink_data *tspi = spi_controller_get_devdata(host);
+ 	struct spi_device *spi = msg->spi;
  
--	if (spi->slave) {
-+	if (spi->target) {
- 		/*
--		 * skip CMD Cancel sequnece since spi slave
-+		 * skip CMD Cancel sequnece since spi target
- 		 * doesn`t support CMD Cancel sequnece
- 		 */
- 		spin_unlock_irq(&mas->lock);
-@@ -225,17 +225,17 @@ static void handle_se_timeout(struct spi_master *spi,
- 	}
+ 	tegra_slink_clear_status(tspi);
+@@ -794,11 +794,11 @@ static int tegra_slink_prepare_message(struct spi_master *master,
+ 	return 0;
  }
  
--static void handle_gpi_timeout(struct spi_master *spi, struct spi_message *msg)
-+static void handle_gpi_timeout(struct spi_controller *spi, struct spi_message *msg)
+-static int tegra_slink_transfer_one(struct spi_master *master,
++static int tegra_slink_transfer_one(struct spi_controller *host,
+ 				    struct spi_device *spi,
+ 				    struct spi_transfer *xfer)
  {
--	struct spi_geni_master *mas = spi_master_get_devdata(spi);
-+	struct spi_geni_master *mas = spi_controller_get_devdata(spi);
- 
- 	dmaengine_terminate_sync(mas->tx);
- 	dmaengine_terminate_sync(mas->rx);
- }
- 
--static void spi_geni_handle_err(struct spi_master *spi, struct spi_message *msg)
-+static void spi_geni_handle_err(struct spi_controller *spi, struct spi_message *msg)
- {
--	struct spi_geni_master *mas = spi_master_get_devdata(spi);
-+	struct spi_geni_master *mas = spi_controller_get_devdata(spi);
- 
- 	switch (mas->cur_xfer_mode) {
- 	case GENI_SE_FIFO:
-@@ -286,8 +286,8 @@ static bool spi_geni_is_abort_still_pending(struct spi_geni_master *mas)
- 
- static void spi_geni_set_cs(struct spi_device *slv, bool set_flag)
- {
--	struct spi_geni_master *mas = spi_master_get_devdata(slv->master);
--	struct spi_master *spi = dev_get_drvdata(mas->dev);
-+	struct spi_geni_master *mas = spi_controller_get_devdata(slv->controller);
-+	struct spi_controller *spi = dev_get_drvdata(mas->dev);
- 	struct geni_se *se = &mas->se;
- 	unsigned long time_left;
- 
-@@ -395,9 +395,9 @@ static int geni_spi_set_clock_and_bw(struct spi_geni_master *mas,
- }
- 
- static int setup_fifo_params(struct spi_device *spi_slv,
--					struct spi_master *spi)
-+					struct spi_controller *spi)
- {
--	struct spi_geni_master *mas = spi_master_get_devdata(spi);
-+	struct spi_geni_master *mas = spi_controller_get_devdata(spi);
- 	struct geni_se *se = &mas->se;
- 	u32 loopback_cfg = 0, cpol = 0, cpha = 0, demux_output_inv = 0;
- 	u32 demux_sel;
-@@ -434,7 +434,7 @@ static int setup_fifo_params(struct spi_device *spi_slv,
- static void
- spi_gsi_callback_result(void *cb, const struct dmaengine_result *result)
- {
--	struct spi_master *spi = cb;
-+	struct spi_controller *spi = cb;
- 
- 	spi->cur_msg->status = -EIO;
- 	if (result->result != DMA_TRANS_NOERROR) {
-@@ -454,7 +454,7 @@ spi_gsi_callback_result(void *cb, const struct dmaengine_result *result)
- }
- 
- static int setup_gsi_xfer(struct spi_transfer *xfer, struct spi_geni_master *mas,
--			  struct spi_device *spi_slv, struct spi_master *spi)
-+			  struct spi_device *spi_slv, struct spi_controller *spi)
- {
- 	unsigned long flags = DMA_PREP_INTERRUPT | DMA_CTRL_ACK;
- 	struct dma_slave_config config = {};
-@@ -560,14 +560,14 @@ static u32 get_xfer_len_in_words(struct spi_transfer *xfer,
- static bool geni_can_dma(struct spi_controller *ctlr,
- 			 struct spi_device *slv, struct spi_transfer *xfer)
- {
--	struct spi_geni_master *mas = spi_master_get_devdata(slv->master);
-+	struct spi_geni_master *mas = spi_controller_get_devdata(slv->controller);
- 	u32 len, fifo_size;
- 
- 	if (mas->cur_xfer_mode == GENI_GPI_DMA)
- 		return true;
- 
--	/* Set SE DMA mode for SPI slave. */
--	if (ctlr->slave)
-+	/* Set SE DMA mode for SPI target. */
-+	if (ctlr->target)
- 		return true;
- 
- 	len = get_xfer_len_in_words(xfer, mas);
-@@ -579,10 +579,10 @@ static bool geni_can_dma(struct spi_controller *ctlr,
- 		return false;
- }
- 
--static int spi_geni_prepare_message(struct spi_master *spi,
--					struct spi_message *spi_msg)
-+static int spi_geni_prepare_message(struct spi_controller *spi,
-+				    struct spi_message *spi_msg)
- {
--	struct spi_geni_master *mas = spi_master_get_devdata(spi);
-+	struct spi_geni_master *mas = spi_controller_get_devdata(spi);
+-	struct tegra_slink_data *tspi = spi_master_get_devdata(master);
++	struct tegra_slink_data *tspi = spi_controller_get_devdata(host);
  	int ret;
  
- 	switch (mas->cur_xfer_mode) {
-@@ -657,7 +657,7 @@ static int spi_geni_init(struct spi_geni_master *mas)
- 
- 	proto = geni_se_read_proto(se);
- 
--	if (spi->slave) {
-+	if (spi->target) {
- 		if (proto != GENI_SE_SPI_SLAVE) {
- 			dev_err(mas->dev, "Invalid proto %d\n", proto);
- 			goto out_pm;
-@@ -715,7 +715,7 @@ static int spi_geni_init(struct spi_geni_master *mas)
- 	}
- 
- 	/* We always control CS manually */
--	if (!spi->slave) {
-+	if (!spi->target) {
- 		spi_tx_cfg = readl(se->base + SE_SPI_TRANS_CFG);
- 		spi_tx_cfg &= ~CS_TOGGLE;
- 		writel(spi_tx_cfg, se->base + SE_SPI_TRANS_CFG);
-@@ -824,7 +824,7 @@ static void geni_spi_handle_rx(struct spi_geni_master *mas)
- 
- static int setup_se_xfer(struct spi_transfer *xfer,
- 				struct spi_geni_master *mas,
--				u16 mode, struct spi_master *spi)
-+				u16 mode, struct spi_controller *spi)
- {
- 	u32 m_cmd = 0;
- 	u32 len;
-@@ -913,11 +913,11 @@ static int setup_se_xfer(struct spi_transfer *xfer,
- 	return ret;
+ 	reinit_completion(&tspi->xfer_completion);
+@@ -825,10 +825,10 @@ static int tegra_slink_transfer_one(struct spi_master *master,
+ 	return 0;
  }
  
--static int spi_geni_transfer_one(struct spi_master *spi,
--				struct spi_device *slv,
--				struct spi_transfer *xfer)
-+static int spi_geni_transfer_one(struct spi_controller *spi,
-+				 struct spi_device *slv,
-+				 struct spi_transfer *xfer)
+-static int tegra_slink_unprepare_message(struct spi_master *master,
++static int tegra_slink_unprepare_message(struct spi_controller *host,
+ 					 struct spi_message *msg)
  {
--	struct spi_geni_master *mas = spi_master_get_devdata(spi);
-+	struct spi_geni_master *mas = spi_controller_get_devdata(spi);
- 	int ret;
+-	struct tegra_slink_data *tspi = spi_master_get_devdata(master);
++	struct tegra_slink_data *tspi = spi_controller_get_devdata(host);
  
- 	if (spi_geni_is_abort_still_pending(mas))
-@@ -939,8 +939,8 @@ static int spi_geni_transfer_one(struct spi_master *spi,
+ 	tegra_slink_writel(tspi, tspi->def_command_reg, SLINK_COMMAND);
+ 	tegra_slink_writel(tspi, tspi->def_command2_reg, SLINK_COMMAND2);
+@@ -999,7 +999,7 @@ MODULE_DEVICE_TABLE(of, tegra_slink_of_match);
  
- static irqreturn_t geni_spi_isr(int irq, void *data)
+ static int tegra_slink_probe(struct platform_device *pdev)
  {
--	struct spi_master *spi = data;
--	struct spi_geni_master *mas = spi_master_get_devdata(spi);
-+	struct spi_controller *spi = data;
-+	struct spi_geni_master *mas = spi_controller_get_devdata(spi);
- 	struct geni_se *se = &mas->se;
- 	u32 m_irq;
+-	struct spi_master	*master;
++	struct spi_controller	*host;
+ 	struct tegra_slink_data	*tspi;
+ 	struct resource		*r;
+ 	int ret, spi_irq;
+@@ -1007,36 +1007,36 @@ static int tegra_slink_probe(struct platform_device *pdev)
  
-@@ -1042,7 +1042,7 @@ static irqreturn_t geni_spi_isr(int irq, void *data)
- static int spi_geni_probe(struct platform_device *pdev)
- {
- 	int ret, irq;
--	struct spi_master *spi;
-+	struct spi_controller *spi;
- 	struct spi_geni_master *mas;
- 	void __iomem *base;
- 	struct clk *clk;
-@@ -1064,12 +1064,12 @@ static int spi_geni_probe(struct platform_device *pdev)
- 	if (IS_ERR(clk))
- 		return PTR_ERR(clk);
+ 	cdata = of_device_get_match_data(&pdev->dev);
  
--	spi = devm_spi_alloc_master(dev, sizeof(*mas));
-+	spi = devm_spi_alloc_host(dev, sizeof(*mas));
- 	if (!spi)
+-	master = spi_alloc_master(&pdev->dev, sizeof(*tspi));
+-	if (!master) {
+-		dev_err(&pdev->dev, "master allocation failed\n");
++	host = spi_alloc_host(&pdev->dev, sizeof(*tspi));
++	if (!host) {
++		dev_err(&pdev->dev, "host allocation failed\n");
  		return -ENOMEM;
+ 	}
  
- 	platform_set_drvdata(pdev, spi);
--	mas = spi_master_get_devdata(spi);
-+	mas = spi_controller_get_devdata(spi);
- 	mas->irq = irq;
- 	mas->dev = dev;
- 	mas->se.dev = dev;
-@@ -1113,7 +1113,7 @@ static int spi_geni_probe(struct platform_device *pdev)
- 	pm_runtime_enable(dev);
+ 	/* the spi->mode bits understood by this driver: */
+-	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
+-	master->setup = tegra_slink_setup;
+-	master->prepare_message = tegra_slink_prepare_message;
+-	master->transfer_one = tegra_slink_transfer_one;
+-	master->unprepare_message = tegra_slink_unprepare_message;
+-	master->auto_runtime_pm = true;
+-	master->num_chipselect = MAX_CHIP_SELECT;
+-
+-	platform_set_drvdata(pdev, master);
+-	tspi = spi_master_get_devdata(master);
+-	tspi->master = master;
++	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
++	host->setup = tegra_slink_setup;
++	host->prepare_message = tegra_slink_prepare_message;
++	host->transfer_one = tegra_slink_transfer_one;
++	host->unprepare_message = tegra_slink_unprepare_message;
++	host->auto_runtime_pm = true;
++	host->num_chipselect = MAX_CHIP_SELECT;
++
++	platform_set_drvdata(pdev, host);
++	tspi = spi_controller_get_devdata(host);
++	tspi->host = host;
+ 	tspi->dev = &pdev->dev;
+ 	tspi->chip_data = cdata;
+ 	spin_lock_init(&tspi->lock);
  
- 	if (device_property_read_bool(&pdev->dev, "spi-slave"))
--		spi->slave = true;
-+		spi->target = true;
+ 	if (of_property_read_u32(tspi->dev->of_node, "spi-max-frequency",
+-				 &master->max_speed_hz))
+-		master->max_speed_hz = 25000000; /* 25MHz */
++				 &host->max_speed_hz))
++		host->max_speed_hz = 25000000; /* 25MHz */
  
- 	ret = geni_icc_get(&mas->se, NULL);
+ 	tspi->base = devm_platform_get_and_ioremap_resource(pdev, 0, &r);
+ 	if (IS_ERR(tspi->base)) {
+ 		ret = PTR_ERR(tspi->base);
+-		goto exit_free_master;
++		goto exit_free_host;
+ 	}
+ 	tspi->phys = r->start;
+ 
+@@ -1045,26 +1045,26 @@ static int tegra_slink_probe(struct platform_device *pdev)
+ 	if (IS_ERR(tspi->clk)) {
+ 		ret = PTR_ERR(tspi->clk);
+ 		dev_err(&pdev->dev, "Can not get clock %d\n", ret);
+-		goto exit_free_master;
++		goto exit_free_host;
+ 	}
+ 
+ 	tspi->rst = devm_reset_control_get_exclusive(&pdev->dev, "spi");
+ 	if (IS_ERR(tspi->rst)) {
+ 		dev_err(&pdev->dev, "can not get reset\n");
+ 		ret = PTR_ERR(tspi->rst);
+-		goto exit_free_master;
++		goto exit_free_host;
+ 	}
+ 
+ 	ret = devm_tegra_core_dev_init_opp_table_common(&pdev->dev);
  	if (ret)
-@@ -1135,7 +1135,7 @@ static int spi_geni_probe(struct platform_device *pdev)
- 	 * for dma (gsi) mode, the gsi will set cs based on params passed in
- 	 * TRE
- 	 */
--	if (!spi->slave && mas->cur_xfer_mode == GENI_SE_FIFO)
-+	if (!spi->target && mas->cur_xfer_mode == GENI_SE_FIFO)
- 		spi->set_cs = spi_geni_set_cs;
+-		goto exit_free_master;
++		goto exit_free_host;
  
- 	/*
-@@ -1148,7 +1148,7 @@ static int spi_geni_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto spi_geni_release_dma;
+ 	tspi->max_buf_size = SLINK_FIFO_DEPTH << 2;
+ 	tspi->dma_buf_size = DEFAULT_SPI_DMA_BUF_LEN;
  
--	ret = spi_register_master(spi);
-+	ret = spi_register_controller(spi);
- 	if (ret)
- 		goto spi_geni_probe_free_irq;
+ 	ret = tegra_slink_init_dma_param(tspi, true);
+ 	if (ret < 0)
+-		goto exit_free_master;
++		goto exit_free_host;
+ 	ret = tegra_slink_init_dma_param(tspi, false);
+ 	if (ret < 0)
+ 		goto exit_rx_dma_free;
+@@ -1101,10 +1101,10 @@ static int tegra_slink_probe(struct platform_device *pdev)
+ 	tegra_slink_writel(tspi, tspi->def_command_reg, SLINK_COMMAND);
+ 	tegra_slink_writel(tspi, tspi->def_command2_reg, SLINK_COMMAND2);
  
-@@ -1164,11 +1164,11 @@ static int spi_geni_probe(struct platform_device *pdev)
+-	master->dev.of_node = pdev->dev.of_node;
+-	ret = spi_register_master(master);
++	host->dev.of_node = pdev->dev.of_node;
++	ret = spi_register_controller(host);
+ 	if (ret < 0) {
+-		dev_err(&pdev->dev, "can not register to master err %d\n", ret);
++		dev_err(&pdev->dev, "can not register to host err %d\n", ret);
+ 		goto exit_free_irq;
+ 	}
  
- static void spi_geni_remove(struct platform_device *pdev)
- {
--	struct spi_master *spi = platform_get_drvdata(pdev);
--	struct spi_geni_master *mas = spi_master_get_devdata(spi);
-+	struct spi_controller *spi = platform_get_drvdata(pdev);
-+	struct spi_geni_master *mas = spi_controller_get_devdata(spi);
- 
- 	/* Unregister _before_ disabling pm_runtime() so we stop transfers */
--	spi_unregister_master(spi);
-+	spi_unregister_controller(spi);
- 
- 	spi_geni_release_dma_chan(mas);
- 
-@@ -1178,8 +1178,8 @@ static void spi_geni_remove(struct platform_device *pdev)
- 
- static int __maybe_unused spi_geni_runtime_suspend(struct device *dev)
- {
--	struct spi_master *spi = dev_get_drvdata(dev);
--	struct spi_geni_master *mas = spi_master_get_devdata(spi);
-+	struct spi_controller *spi = dev_get_drvdata(dev);
-+	struct spi_geni_master *mas = spi_controller_get_devdata(spi);
- 	int ret;
- 
- 	/* Drop the performance state vote */
-@@ -1194,8 +1194,8 @@ static int __maybe_unused spi_geni_runtime_suspend(struct device *dev)
- 
- static int __maybe_unused spi_geni_runtime_resume(struct device *dev)
- {
--	struct spi_master *spi = dev_get_drvdata(dev);
--	struct spi_geni_master *mas = spi_master_get_devdata(spi);
-+	struct spi_controller *spi = dev_get_drvdata(dev);
-+	struct spi_geni_master *mas = spi_controller_get_devdata(spi);
- 	int ret;
- 
- 	ret = geni_icc_enable(&mas->se);
-@@ -1211,30 +1211,30 @@ static int __maybe_unused spi_geni_runtime_resume(struct device *dev)
- 
- static int __maybe_unused spi_geni_suspend(struct device *dev)
- {
--	struct spi_master *spi = dev_get_drvdata(dev);
-+	struct spi_controller *spi = dev_get_drvdata(dev);
- 	int ret;
- 
--	ret = spi_master_suspend(spi);
-+	ret = spi_controller_suspend(spi);
- 	if (ret)
- 		return ret;
- 
- 	ret = pm_runtime_force_suspend(dev);
- 	if (ret)
--		spi_master_resume(spi);
-+		spi_controller_resume(spi);
- 
+@@ -1122,17 +1122,17 @@ static int tegra_slink_probe(struct platform_device *pdev)
+ 	tegra_slink_deinit_dma_param(tspi, false);
+ exit_rx_dma_free:
+ 	tegra_slink_deinit_dma_param(tspi, true);
+-exit_free_master:
+-	spi_master_put(master);
++exit_free_host:
++	spi_controller_put(host);
  	return ret;
  }
  
- static int __maybe_unused spi_geni_resume(struct device *dev)
+ static void tegra_slink_remove(struct platform_device *pdev)
  {
--	struct spi_master *spi = dev_get_drvdata(dev);
-+	struct spi_controller *spi = dev_get_drvdata(dev);
+-	struct spi_master *master = spi_master_get(platform_get_drvdata(pdev));
+-	struct tegra_slink_data	*tspi = spi_master_get_devdata(master);
++	struct spi_controller *host = spi_controller_get(platform_get_drvdata(pdev));
++	struct tegra_slink_data	*tspi = spi_controller_get_devdata(host);
+ 
+-	spi_unregister_master(master);
++	spi_unregister_controller(host);
+ 
+ 	free_irq(tspi->irq, tspi);
+ 
+@@ -1144,21 +1144,21 @@ static void tegra_slink_remove(struct platform_device *pdev)
+ 	if (tspi->rx_dma_chan)
+ 		tegra_slink_deinit_dma_param(tspi, true);
+ 
+-	spi_master_put(master);
++	spi_controller_put(host);
+ }
+ 
+ #ifdef CONFIG_PM_SLEEP
+ static int tegra_slink_suspend(struct device *dev)
+ {
+-	struct spi_master *master = dev_get_drvdata(dev);
++	struct spi_controller *host = dev_get_drvdata(dev);
+ 
+-	return spi_master_suspend(master);
++	return spi_controller_suspend(host);
+ }
+ 
+ static int tegra_slink_resume(struct device *dev)
+ {
+-	struct spi_master *master = dev_get_drvdata(dev);
+-	struct tegra_slink_data *tspi = spi_master_get_devdata(master);
++	struct spi_controller *host = dev_get_drvdata(dev);
++	struct tegra_slink_data *tspi = spi_controller_get_devdata(host);
  	int ret;
  
- 	ret = pm_runtime_force_resume(dev);
- 	if (ret)
- 		return ret;
+ 	ret = pm_runtime_resume_and_get(dev);
+@@ -1170,14 +1170,14 @@ static int tegra_slink_resume(struct device *dev)
+ 	tegra_slink_writel(tspi, tspi->command2_reg, SLINK_COMMAND2);
+ 	pm_runtime_put(dev);
  
--	ret = spi_master_resume(spi);
-+	ret = spi_controller_resume(spi);
- 	if (ret)
- 		pm_runtime_force_suspend(dev);
+-	return spi_master_resume(master);
++	return spi_controller_resume(host);
+ }
+ #endif
  
+ static int __maybe_unused tegra_slink_runtime_suspend(struct device *dev)
+ {
+-	struct spi_master *master = dev_get_drvdata(dev);
+-	struct tegra_slink_data *tspi = spi_master_get_devdata(master);
++	struct spi_controller *host = dev_get_drvdata(dev);
++	struct tegra_slink_data *tspi = spi_controller_get_devdata(host);
+ 
+ 	/* Flush all write which are in PPSB queue by reading back */
+ 	tegra_slink_readl(tspi, SLINK_MAS_DATA);
+@@ -1188,8 +1188,8 @@ static int __maybe_unused tegra_slink_runtime_suspend(struct device *dev)
+ 
+ static int __maybe_unused tegra_slink_runtime_resume(struct device *dev)
+ {
+-	struct spi_master *master = dev_get_drvdata(dev);
+-	struct tegra_slink_data *tspi = spi_master_get_devdata(master);
++	struct spi_controller *host = dev_get_drvdata(dev);
++	struct tegra_slink_data *tspi = spi_controller_get_devdata(host);
+ 	int ret;
+ 
+ 	ret = clk_prepare_enable(tspi->clk);
 -- 
 2.25.1
 

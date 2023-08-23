@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D5137EE49A3
-	for <linux-spi@archiver.kernel.org>; Wed, 23 Aug 2023 03:33:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DA0FDEE49B6
+	for <linux-spi@archiver.kernel.org>; Wed, 23 Aug 2023 03:33:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232394AbjHWDdn (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 22 Aug 2023 23:33:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42672 "EHLO
+        id S232314AbjHWDdl (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 22 Aug 2023 23:33:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232341AbjHWDdk (ORCPT
+        with ESMTP id S232377AbjHWDdk (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Tue, 22 Aug 2023 23:33:40 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89263E4E
-        for <linux-spi@vger.kernel.org>; Tue, 22 Aug 2023 20:33:38 -0700 (PDT)
-Received: from dggpemm500013.china.huawei.com (unknown [172.30.72.57])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RVsCt3gtmzNnGR;
-        Wed, 23 Aug 2023 11:30:02 +0800 (CST)
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C200CE51
+        for <linux-spi@vger.kernel.org>; Tue, 22 Aug 2023 20:33:37 -0700 (PDT)
+Received: from dggpemm500009.china.huawei.com (unknown [172.30.72.55])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4RVsDR3VjjzLpKK;
+        Wed, 23 Aug 2023 11:30:31 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500013.china.huawei.com (7.185.36.172) with Microsoft SMTP Server
+ dggpemm500009.china.huawei.com (7.185.36.225) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
  15.1.2507.31; Wed, 23 Aug 2023 11:33:36 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Wed, 23 Aug
- 2023 11:33:36 +0800
+ 2023 11:33:35 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
         <yangyingliang@huawei.com>
-Subject: [PATCH -next v2 11/21] spi: mt7621: switch to use modern name
-Date:   Wed, 23 Aug 2023 11:29:53 +0800
-Message-ID: <20230823033003.3407403-12-yangyingliang@huawei.com>
+Subject: [PATCH -next v2 09/21] spi: mpc52xx: switch to use modern name
+Date:   Wed, 23 Aug 2023 11:29:51 +0800
+Message-ID: <20230823033003.3407403-10-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230823033003.3407403-1-yangyingliang@huawei.com>
 References: <20230823033003.3407403-1-yangyingliang@huawei.com>
@@ -46,139 +46,183 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Change legacy name master/slave to modern name host/target or controller.
+Change legacy name master to modern name host or controller.
 
 No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-mt7621.c | 50 ++++++++++++++++++++--------------------
- 1 file changed, 25 insertions(+), 25 deletions(-)
+ drivers/spi/spi-mpc52xx.c | 56 +++++++++++++++++++--------------------
+ 1 file changed, 28 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/spi/spi-mt7621.c b/drivers/spi/spi-mt7621.c
-index 91600e5c22e4..4e9053d03d5a 100644
---- a/drivers/spi/spi-mt7621.c
-+++ b/drivers/spi/spi-mt7621.c
-@@ -53,7 +53,7 @@
- #define MT7621_LSB_FIRST	BIT(3)
+diff --git a/drivers/spi/spi-mpc52xx.c b/drivers/spi/spi-mpc52xx.c
+index ab7df5f64342..4a6c984b6bff 100644
+--- a/drivers/spi/spi-mpc52xx.c
++++ b/drivers/spi/spi-mpc52xx.c
+@@ -62,7 +62,7 @@ MODULE_LICENSE("GPL");
  
- struct mt7621_spi {
--	struct spi_controller	*master;
-+	struct spi_controller	*host;
- 	void __iomem		*base;
- 	unsigned int		sys_freq;
- 	unsigned int		speed;
-@@ -62,7 +62,7 @@ struct mt7621_spi {
- 
- static inline struct mt7621_spi *spidev_to_mt7621_spi(struct spi_device *spi)
- {
--	return spi_controller_get_devdata(spi->master);
-+	return spi_controller_get_devdata(spi->controller);
- }
- 
- static inline u32 mt7621_spi_read(struct mt7621_spi *rs, u32 reg)
-@@ -80,17 +80,17 @@ static void mt7621_spi_set_cs(struct spi_device *spi, int enable)
- 	struct mt7621_spi *rs = spidev_to_mt7621_spi(spi);
- 	int cs = spi_get_chipselect(spi, 0);
- 	u32 polar = 0;
--	u32 master;
-+	u32 host;
- 
- 	/*
- 	 * Select SPI device 7, enable "more buffer mode" and disable
- 	 * full-duplex (only half-duplex really works on this chip
- 	 * reliably)
- 	 */
--	master = mt7621_spi_read(rs, MT7621_SPI_MASTER);
--	master |= MASTER_RS_SLAVE_SEL | MASTER_MORE_BUFMODE;
--	master &= ~MASTER_FULL_DUPLEX;
--	mt7621_spi_write(rs, MT7621_SPI_MASTER, master);
-+	host = mt7621_spi_read(rs, MT7621_SPI_MASTER);
-+	host |= MASTER_RS_SLAVE_SEL | MASTER_MORE_BUFMODE;
-+	host &= ~MASTER_FULL_DUPLEX;
-+	mt7621_spi_write(rs, MT7621_SPI_MASTER, host);
- 
- 	rs->pending_write = 0;
- 
-@@ -245,10 +245,10 @@ static void mt7621_spi_write_half_duplex(struct mt7621_spi *rs,
- 	rs->pending_write = len;
- }
- 
--static int mt7621_spi_transfer_one_message(struct spi_controller *master,
-+static int mt7621_spi_transfer_one_message(struct spi_controller *host,
- 					   struct spi_message *m)
- {
--	struct mt7621_spi *rs = spi_controller_get_devdata(master);
-+	struct mt7621_spi *rs = spi_controller_get_devdata(host);
- 	struct spi_device *spi = m->spi;
- 	unsigned int speed = spi->max_speed_hz;
- 	struct spi_transfer *t = NULL;
-@@ -294,7 +294,7 @@ static int mt7621_spi_transfer_one_message(struct spi_controller *master,
- 
- msg_done:
- 	m->status = status;
--	spi_finalize_current_message(master);
-+	spi_finalize_current_message(host);
- 
- 	return 0;
- }
-@@ -325,7 +325,7 @@ MODULE_DEVICE_TABLE(of, mt7621_spi_match);
- static int mt7621_spi_probe(struct platform_device *pdev)
- {
- 	const struct of_device_id *match;
--	struct spi_controller *master;
+ /* Driver internal data */
+ struct mpc52xx_spi {
+-	struct spi_master *master;
 +	struct spi_controller *host;
- 	struct mt7621_spi *rs;
- 	void __iomem *base;
- 	struct clk *clk;
-@@ -344,25 +344,25 @@ static int mt7621_spi_probe(struct platform_device *pdev)
- 		return dev_err_probe(&pdev->dev, PTR_ERR(clk),
- 				     "unable to get SYS clock\n");
+ 	void __iomem *regs;
+ 	int irq0;	/* MODF irq */
+ 	int irq1;	/* SPIF irq */
+@@ -152,7 +152,7 @@ mpc52xx_spi_fsmstate_idle(int irq, struct mpc52xx_spi *ms, u8 status, u8 data)
+ 	u8 ctrl1;
  
--	master = devm_spi_alloc_master(&pdev->dev, sizeof(*rs));
--	if (!master) {
--		dev_info(&pdev->dev, "master allocation failed\n");
-+	host = devm_spi_alloc_host(&pdev->dev, sizeof(*rs));
-+	if (!host) {
-+		dev_info(&pdev->dev, "host allocation failed\n");
- 		return -ENOMEM;
- 	}
+ 	if (status && irq)
+-		dev_err(&ms->master->dev, "spurious irq, status=0x%.2x\n",
++		dev_err(&ms->host->dev, "spurious irq, status=0x%.2x\n",
+ 			status);
  
--	master->mode_bits = SPI_LSB_FIRST;
--	master->flags = SPI_CONTROLLER_HALF_DUPLEX;
--	master->setup = mt7621_spi_setup;
--	master->transfer_one_message = mt7621_spi_transfer_one_message;
--	master->bits_per_word_mask = SPI_BPW_MASK(8);
--	master->dev.of_node = pdev->dev.of_node;
--	master->num_chipselect = 2;
-+	host->mode_bits = SPI_LSB_FIRST;
-+	host->flags = SPI_CONTROLLER_HALF_DUPLEX;
-+	host->setup = mt7621_spi_setup;
-+	host->transfer_one_message = mt7621_spi_transfer_one_message;
-+	host->bits_per_word_mask = SPI_BPW_MASK(8);
-+	host->dev.of_node = pdev->dev.of_node;
-+	host->num_chipselect = 2;
+ 	/* Check if there is another transfer waiting. */
+@@ -235,7 +235,7 @@ static int mpc52xx_spi_fsmstate_transfer(int irq, struct mpc52xx_spi *ms,
+ 		return FSM_CONTINUE;
+ 	} else if (status & SPI_STATUS_MODF) {
+ 		ms->modf_count++;
+-		dev_err(&ms->master->dev, "mode fault\n");
++		dev_err(&ms->host->dev, "mode fault\n");
+ 		mpc52xx_spi_chipsel(ms, 0);
+ 		ms->message->status = -EIO;
+ 		if (ms->message->complete)
+@@ -280,7 +280,7 @@ static int
+ mpc52xx_spi_fsmstate_wait(int irq, struct mpc52xx_spi *ms, u8 status, u8 data)
+ {
+ 	if (status && irq)
+-		dev_err(&ms->master->dev, "spurious irq, status=0x%.2x\n",
++		dev_err(&ms->host->dev, "spurious irq, status=0x%.2x\n",
+ 			status);
  
--	dev_set_drvdata(&pdev->dev, master);
-+	dev_set_drvdata(&pdev->dev, host);
- 
--	rs = spi_controller_get_devdata(master);
-+	rs = spi_controller_get_devdata(host);
- 	rs->base = base;
--	rs->master = master;
-+	rs->host = host;
- 	rs->sys_freq = clk_get_rate(clk);
- 	rs->pending_write = 0;
- 	dev_info(&pdev->dev, "sys_freq: %u\n", rs->sys_freq);
-@@ -373,7 +373,7 @@ static int mt7621_spi_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
--	return devm_spi_register_controller(&pdev->dev, master);
-+	return devm_spi_register_controller(&pdev->dev, host);
+ 	if (((int)mftb()) - ms->timestamp < 0)
+@@ -361,12 +361,12 @@ static void mpc52xx_spi_wq(struct work_struct *work)
  }
  
- MODULE_ALIAS("platform:" DRIVER_NAME);
+ /*
+- * spi_master ops
++ * spi_controller ops
+  */
+ 
+ static int mpc52xx_spi_transfer(struct spi_device *spi, struct spi_message *m)
+ {
+-	struct mpc52xx_spi *ms = spi_master_get_devdata(spi->master);
++	struct mpc52xx_spi *ms = spi_controller_get_devdata(spi->controller);
+ 	unsigned long flags;
+ 
+ 	m->actual_length = 0;
+@@ -385,7 +385,7 @@ static int mpc52xx_spi_transfer(struct spi_device *spi, struct spi_message *m)
+  */
+ static int mpc52xx_spi_probe(struct platform_device *op)
+ {
+-	struct spi_master *master;
++	struct spi_controller *host;
+ 	struct mpc52xx_spi *ms;
+ 	struct gpio_desc *gpio_cs;
+ 	void __iomem *regs;
+@@ -406,7 +406,7 @@ static int mpc52xx_spi_probe(struct platform_device *op)
+ 	out_8(regs + SPI_PORTDATA, 0x8);	/* Deassert /SS signal */
+ 
+ 	/* Clear the status register and re-read it to check for a MODF
+-	 * failure.  This driver cannot currently handle multiple masters
++	 * failure.  This driver cannot currently handle multiple hosts
+ 	 * on the SPI bus.  This fault will also occur if the SPI signals
+ 	 * are not connected to any pins (port_config setting) */
+ 	in_8(regs + SPI_STATUS);
+@@ -419,22 +419,22 @@ static int mpc52xx_spi_probe(struct platform_device *op)
+ 		goto err_init;
+ 	}
+ 
+-	dev_dbg(&op->dev, "allocating spi_master struct\n");
+-	master = spi_alloc_master(&op->dev, sizeof(*ms));
+-	if (!master) {
++	dev_dbg(&op->dev, "allocating spi_controller struct\n");
++	host = spi_alloc_host(&op->dev, sizeof(*ms));
++	if (!host) {
+ 		rc = -ENOMEM;
+ 		goto err_alloc;
+ 	}
+ 
+-	master->transfer = mpc52xx_spi_transfer;
+-	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST;
+-	master->bits_per_word_mask = SPI_BPW_MASK(8);
+-	master->dev.of_node = op->dev.of_node;
++	host->transfer = mpc52xx_spi_transfer;
++	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST;
++	host->bits_per_word_mask = SPI_BPW_MASK(8);
++	host->dev.of_node = op->dev.of_node;
+ 
+-	platform_set_drvdata(op, master);
++	platform_set_drvdata(op, host);
+ 
+-	ms = spi_master_get_devdata(master);
+-	ms->master = master;
++	ms = spi_controller_get_devdata(host);
++	ms->host = host;
+ 	ms->regs = regs;
+ 	ms->irq0 = irq_of_parse_and_map(op->dev.of_node, 0);
+ 	ms->irq1 = irq_of_parse_and_map(op->dev.of_node, 1);
+@@ -442,7 +442,7 @@ static int mpc52xx_spi_probe(struct platform_device *op)
+ 	ms->ipb_freq = mpc5xxx_get_bus_frequency(&op->dev);
+ 	ms->gpio_cs_count = gpiod_count(&op->dev, NULL);
+ 	if (ms->gpio_cs_count > 0) {
+-		master->num_chipselect = ms->gpio_cs_count;
++		host->num_chipselect = ms->gpio_cs_count;
+ 		ms->gpio_cs = kmalloc_array(ms->gpio_cs_count,
+ 					    sizeof(*ms->gpio_cs),
+ 					    GFP_KERNEL);
+@@ -489,24 +489,24 @@ static int mpc52xx_spi_probe(struct platform_device *op)
+ 	if (!ms->irq0)
+ 		dev_info(&op->dev, "using polled mode\n");
+ 
+-	dev_dbg(&op->dev, "registering spi_master struct\n");
+-	rc = spi_register_master(master);
++	dev_dbg(&op->dev, "registering spi_controller struct\n");
++	rc = spi_register_controller(host);
+ 	if (rc)
+ 		goto err_register;
+ 
+-	dev_info(&ms->master->dev, "registered MPC5200 SPI bus\n");
++	dev_info(&ms->host->dev, "registered MPC5200 SPI bus\n");
+ 
+ 	return rc;
+ 
+  err_register:
+-	dev_err(&ms->master->dev, "initialization failed\n");
++	dev_err(&ms->host->dev, "initialization failed\n");
+  err_gpio:
+ 	while (i-- > 0)
+ 		gpiod_put(ms->gpio_cs[i]);
+ 
+ 	kfree(ms->gpio_cs);
+  err_alloc_gpio:
+-	spi_master_put(master);
++	spi_controller_put(host);
+  err_alloc:
+  err_init:
+ 	iounmap(regs);
+@@ -515,8 +515,8 @@ static int mpc52xx_spi_probe(struct platform_device *op)
+ 
+ static void mpc52xx_spi_remove(struct platform_device *op)
+ {
+-	struct spi_master *master = spi_master_get(platform_get_drvdata(op));
+-	struct mpc52xx_spi *ms = spi_master_get_devdata(master);
++	struct spi_controller *host = spi_controller_get(platform_get_drvdata(op));
++	struct mpc52xx_spi *ms = spi_controller_get_devdata(host);
+ 	int i;
+ 
+ 	free_irq(ms->irq0, ms);
+@@ -526,9 +526,9 @@ static void mpc52xx_spi_remove(struct platform_device *op)
+ 		gpiod_put(ms->gpio_cs[i]);
+ 
+ 	kfree(ms->gpio_cs);
+-	spi_unregister_master(master);
++	spi_unregister_controller(host);
+ 	iounmap(ms->regs);
+-	spi_master_put(master);
++	spi_controller_put(host);
+ }
+ 
+ static const struct of_device_id mpc52xx_spi_match[] = {
 -- 
 2.25.1
 

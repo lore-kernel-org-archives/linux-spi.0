@@ -2,25 +2,25 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E458EE4993
-	for <linux-spi@archiver.kernel.org>; Wed, 23 Aug 2023 13:40:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 165B8EE49A3
+	for <linux-spi@archiver.kernel.org>; Wed, 23 Aug 2023 13:40:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236234AbjHWNkM (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 23 Aug 2023 09:40:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54924 "EHLO
+        id S236228AbjHWNkL (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 23 Aug 2023 09:40:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235398AbjHWNkM (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 23 Aug 2023 09:40:12 -0400
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1779319A
-        for <linux-spi@vger.kernel.org>; Wed, 23 Aug 2023 06:40:10 -0700 (PDT)
-Received: from kwepemi500012.china.huawei.com (unknown [172.30.72.55])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4RW6k51HDRz16NsJ;
-        Wed, 23 Aug 2023 21:38:37 +0800 (CST)
+        with ESMTP id S236234AbjHWNkK (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 23 Aug 2023 09:40:10 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 887FFE67
+        for <linux-spi@vger.kernel.org>; Wed, 23 Aug 2023 06:40:07 -0700 (PDT)
+Received: from kwepemi500012.china.huawei.com (unknown [172.30.72.56])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RW6gd72g1zNn6Q;
+        Wed, 23 Aug 2023 21:36:29 +0800 (CST)
 Received: from huawei.com (10.90.53.73) by kwepemi500012.china.huawei.com
  (7.221.188.12) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Wed, 23 Aug
- 2023 21:40:05 +0800
+ 2023 21:40:03 +0800
 From:   Li Zetao <lizetao1@huawei.com>
 To:     <lizetao1@huawei.com>
 CC:     <andrew@aj.id.au>, <angelogioacchino.delregno@collabora.com>,
@@ -43,11 +43,10 @@ CC:     <andrew@aj.id.au>, <angelogioacchino.delregno@collabora.com>,
         <olteanv@gmail.com>, <openbmc@lists.ozlabs.org>,
         <rjui@broadcom.com>, <sbranden@broadcom.com>,
         <tali.perry1@gmail.com>, <tmaimon77@gmail.com>,
-        <venture@google.com>, <yuenn@google.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH -next v2 14/25] spi: lantiq-ssc: Use helper function devm_clk_get_enabled()
-Date:   Wed, 23 Aug 2023 21:39:27 +0800
-Message-ID: <20230823133938.1359106-15-lizetao1@huawei.com>
+        <venture@google.com>, <yuenn@google.com>
+Subject: [PATCH -next v2 12/25] spi: dw-mmio: Use helper function devm_clk_get_*()
+Date:   Wed, 23 Aug 2023 21:39:25 +0800
+Message-ID: <20230823133938.1359106-13-lizetao1@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230823133938.1359106-1-lizetao1@huawei.com>
 References: <20230822131237.1022815-1-lizetao1@huawei.com>
@@ -67,60 +66,88 @@ Since commit 7ef9651e9792 ("clk: Provide new devm_clk helpers for prepared
 and enabled clocks"), devm_clk_get() and clk_prepare_enable() can now be
 replaced by devm_clk_get_enabled() when driver enables (and possibly
 prepares) the clocks for the whole lifetime of the device. Moreover, it is
-no longer necessary to unprepare and disable the clocks explicitly.
+no longer necessary to unprepare and disable the clocks explicitly. Also,
+devm_clk_get_optional() and clk_prepare_enable() can now be replaced by
+devm_clk_get_optional_enabled(). Moreover, the lable "out_clk" no longer
+makes sense, rename it to "out_reset".
 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Li Zetao <lizetao1@huawei.com>
 ---
-v1 -> v2: None
+v1 -> v2: Return directly instead of calling reset_control_deassert()
+before the reset control handler has been requested. And use the
+"out_reset" label instead of "out" before calling pm_runtime_enable().
 
- drivers/spi/spi-lantiq-ssc.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ drivers/spi/spi-dw-mmio.c | 31 +++++++++----------------------
+ 1 file changed, 9 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/spi/spi-lantiq-ssc.c b/drivers/spi/spi-lantiq-ssc.c
-index 938e9e577e4f..18a46569ba46 100644
---- a/drivers/spi/spi-lantiq-ssc.c
-+++ b/drivers/spi/spi-lantiq-ssc.c
-@@ -932,14 +932,11 @@ static int lantiq_ssc_probe(struct platform_device *pdev)
- 	if (err)
- 		goto err_host_put;
+diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
+index 805264c9c65c..46801189a651 100644
+--- a/drivers/spi/spi-dw-mmio.c
++++ b/drivers/spi/spi-dw-mmio.c
+@@ -340,29 +340,20 @@ static int dw_spi_mmio_probe(struct platform_device *pdev)
+ 	if (dws->irq < 0)
+ 		return dws->irq; /* -ENXIO */
  
--	spi->spi_clk = devm_clk_get(dev, "gate");
-+	spi->spi_clk = devm_clk_get_enabled(dev, "gate");
- 	if (IS_ERR(spi->spi_clk)) {
- 		err = PTR_ERR(spi->spi_clk);
- 		goto err_host_put;
+-	dwsmmio->clk = devm_clk_get(&pdev->dev, NULL);
++	dwsmmio->clk = devm_clk_get_enabled(&pdev->dev, NULL);
+ 	if (IS_ERR(dwsmmio->clk))
+ 		return PTR_ERR(dwsmmio->clk);
+-	ret = clk_prepare_enable(dwsmmio->clk);
+-	if (ret)
+-		return ret;
+ 
+ 	/* Optional clock needed to access the registers */
+-	dwsmmio->pclk = devm_clk_get_optional(&pdev->dev, "pclk");
+-	if (IS_ERR(dwsmmio->pclk)) {
+-		ret = PTR_ERR(dwsmmio->pclk);
+-		goto out_clk;
+-	}
+-	ret = clk_prepare_enable(dwsmmio->pclk);
+-	if (ret)
+-		goto out_clk;
++	dwsmmio->pclk = devm_clk_get_optional_enabled(&pdev->dev, "pclk");
++	if (IS_ERR(dwsmmio->pclk))
++		return PTR_ERR(dwsmmio->pclk);
+ 
+ 	/* find an optional reset controller */
+ 	dwsmmio->rstc = devm_reset_control_get_optional_exclusive(&pdev->dev, "spi");
+-	if (IS_ERR(dwsmmio->rstc)) {
+-		ret = PTR_ERR(dwsmmio->rstc);
+-		goto out_clk;
+-	}
++	if (IS_ERR(dwsmmio->rstc))
++		return PTR_ERR(dwsmmio->rstc);
++
+ 	reset_control_deassert(dwsmmio->rstc);
+ 
+ 	dws->bus_num = pdev->id;
+@@ -383,7 +374,7 @@ static int dw_spi_mmio_probe(struct platform_device *pdev)
+ 	if (init_func) {
+ 		ret = init_func(pdev, dwsmmio);
+ 		if (ret)
+-			goto out;
++			goto out_reset;
  	}
--	err = clk_prepare_enable(spi->spi_clk);
--	if (err)
--		goto err_host_put;
  
- 	/*
- 	 * Use the old clk_get_fpi() function on Lantiq platform, till it
-@@ -952,7 +949,7 @@ static int lantiq_ssc_probe(struct platform_device *pdev)
- #endif
- 	if (IS_ERR(spi->fpi_clk)) {
- 		err = PTR_ERR(spi->fpi_clk);
--		goto err_clk_disable;
-+		goto err_host_put;
- 	}
+ 	pm_runtime_enable(&pdev->dev);
+@@ -397,9 +388,7 @@ static int dw_spi_mmio_probe(struct platform_device *pdev)
  
- 	num_cs = 8;
-@@ -1010,8 +1007,6 @@ static int lantiq_ssc_probe(struct platform_device *pdev)
- 	destroy_workqueue(spi->wq);
- err_clk_put:
- 	clk_put(spi->fpi_clk);
--err_clk_disable:
--	clk_disable_unprepare(spi->spi_clk);
- err_host_put:
- 	spi_controller_put(host);
+ out:
+ 	pm_runtime_disable(&pdev->dev);
+-	clk_disable_unprepare(dwsmmio->pclk);
+-out_clk:
+-	clk_disable_unprepare(dwsmmio->clk);
++out_reset:
+ 	reset_control_assert(dwsmmio->rstc);
  
-@@ -1029,7 +1024,6 @@ static void lantiq_ssc_remove(struct platform_device *pdev)
- 	hw_enter_config_mode(spi);
+ 	return ret;
+@@ -411,8 +400,6 @@ static void dw_spi_mmio_remove(struct platform_device *pdev)
  
- 	destroy_workqueue(spi->wq);
--	clk_disable_unprepare(spi->spi_clk);
- 	clk_put(spi->fpi_clk);
+ 	dw_spi_remove_host(&dwsmmio->dws);
+ 	pm_runtime_disable(&pdev->dev);
+-	clk_disable_unprepare(dwsmmio->pclk);
+-	clk_disable_unprepare(dwsmmio->clk);
+ 	reset_control_assert(dwsmmio->rstc);
  }
  
 -- 

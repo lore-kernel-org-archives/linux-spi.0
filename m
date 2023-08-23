@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 35C40EE49B5
-	for <linux-spi@archiver.kernel.org>; Wed, 23 Aug 2023 03:33:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B24BEE49B7
+	for <linux-spi@archiver.kernel.org>; Wed, 23 Aug 2023 03:33:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232346AbjHWDdl (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 22 Aug 2023 23:33:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42672 "EHLO
+        id S232432AbjHWDdm (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 22 Aug 2023 23:33:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232314AbjHWDdj (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 22 Aug 2023 23:33:39 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CD54E4A
-        for <linux-spi@vger.kernel.org>; Tue, 22 Aug 2023 20:33:37 -0700 (PDT)
-Received: from dggpemm500012.china.huawei.com (unknown [172.30.72.54])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RVsFN1mJNzTmY4;
-        Wed, 23 Aug 2023 11:31:20 +0800 (CST)
+        with ESMTP id S232394AbjHWDdk (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 22 Aug 2023 23:33:40 -0400
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C86D2CF2
+        for <linux-spi@vger.kernel.org>; Tue, 22 Aug 2023 20:33:38 -0700 (PDT)
+Received: from dggpemm500005.china.huawei.com (unknown [172.30.72.56])
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4RVsGJ2LPhz1L9Zr;
+        Wed, 23 Aug 2023 11:32:08 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500012.china.huawei.com (7.185.36.89) with Microsoft SMTP Server
+ dggpemm500005.china.huawei.com (7.185.36.74) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Wed, 23 Aug 2023 11:33:35 +0800
+ 15.1.2507.31; Wed, 23 Aug 2023 11:33:37 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Wed, 23 Aug
- 2023 11:33:35 +0800
+ 2023 11:33:36 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
         <yangyingliang@huawei.com>
-Subject: [PATCH -next v2 08/21] spi: mpc52xx-psc: switch to use modern name
-Date:   Wed, 23 Aug 2023 11:29:50 +0800
-Message-ID: <20230823033003.3407403-9-yangyingliang@huawei.com>
+Subject: [PATCH -next v2 12/21] spi: mtk-nor: switch to use modern name
+Date:   Wed, 23 Aug 2023 11:29:54 +0800
+Message-ID: <20230823033003.3407403-13-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230823033003.3407403-1-yangyingliang@huawei.com>
 References: <20230823033003.3407403-1-yangyingliang@huawei.com>
@@ -52,100 +52,71 @@ No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-mpc52xx-psc.c | 34 +++++++++++++++++-----------------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+ drivers/spi/spi-mtk-nor.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/spi/spi-mpc52xx-psc.c b/drivers/spi/spi-mpc52xx-psc.c
-index 795c08594a4d..78405cb45c96 100644
---- a/drivers/spi/spi-mpc52xx-psc.c
-+++ b/drivers/spi/spi-mpc52xx-psc.c
-@@ -60,7 +60,7 @@ static int mpc52xx_psc_spi_transfer_setup(struct spi_device *spi,
- static void mpc52xx_psc_spi_activate_cs(struct spi_device *spi)
- {
- 	struct mpc52xx_psc_spi_cs *cs = spi->controller_state;
--	struct mpc52xx_psc_spi *mps = spi_master_get_devdata(spi->master);
-+	struct mpc52xx_psc_spi *mps = spi_controller_get_devdata(spi->controller);
- 	struct mpc52xx_psc __iomem *psc = mps->psc;
- 	u32 sicr;
- 	u16 ccr;
-@@ -104,7 +104,7 @@ static void mpc52xx_psc_spi_activate_cs(struct spi_device *spi)
- static int mpc52xx_psc_spi_transfer_rxtx(struct spi_device *spi,
- 						struct spi_transfer *t)
- {
--	struct mpc52xx_psc_spi *mps = spi_master_get_devdata(spi->master);
-+	struct mpc52xx_psc_spi *mps = spi_controller_get_devdata(spi->controller);
- 	struct mpc52xx_psc __iomem *psc = mps->psc;
- 	struct mpc52xx_psc_fifo __iomem *fifo = mps->fifo;
- 	unsigned rb = 0;	/* number of bytes receieved */
-@@ -263,7 +263,7 @@ static int mpc52xx_psc_spi_port_config(int psc_id, struct mpc52xx_psc_spi *mps)
- 	out_8(&fifo->rfcntl, 0);
- 	out_8(&psc->mode, MPC52xx_PSC_MODE_FFULL);
+diff --git a/drivers/spi/spi-mtk-nor.c b/drivers/spi/spi-mtk-nor.c
+index cf4ee8b19e42..62b1c8995fa4 100644
+--- a/drivers/spi/spi-mtk-nor.c
++++ b/drivers/spi/spi-mtk-nor.c
+@@ -275,7 +275,7 @@ static void mtk_nor_adj_prg_size(struct spi_mem_op *op)
  
--	/* Configure 8bit codec mode as a SPI master and use EOF flags */
-+	/* Configure 8bit codec mode as a SPI host and use EOF flags */
- 	/* SICR_SIM_CODEC8|SICR_GENCLK|SICR_SPI|SICR_MSTR|SICR_USEEOF */
- 	out_be32(&psc->sicr, 0x0180C800);
- 	out_be16((u16 __iomem *)&psc->ccr, 0x070F); /* default SPI Clk 1MHz */
-@@ -295,31 +295,31 @@ static int mpc52xx_psc_spi_of_probe(struct platform_device *pdev)
+ static int mtk_nor_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
  {
- 	struct device *dev = &pdev->dev;
- 	struct mpc52xx_psc_spi *mps;
--	struct spi_master *master;
-+	struct spi_controller *host;
- 	u32 bus_num;
+-	struct mtk_nor *sp = spi_controller_get_devdata(mem->spi->master);
++	struct mtk_nor *sp = spi_controller_get_devdata(mem->spi->controller);
+ 
+ 	if (!op->data.nbytes)
+ 		return 0;
+@@ -598,7 +598,7 @@ static int mtk_nor_spi_mem_prg(struct mtk_nor *sp, const struct spi_mem_op *op)
+ 
+ static int mtk_nor_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ {
+-	struct mtk_nor *sp = spi_controller_get_devdata(mem->spi->master);
++	struct mtk_nor *sp = spi_controller_get_devdata(mem->spi->controller);
  	int ret;
  
--	master = devm_spi_alloc_master(dev, sizeof(*mps));
--	if (master == NULL)
-+	host = devm_spi_alloc_host(dev, sizeof(*mps));
-+	if (host == NULL)
- 		return -ENOMEM;
+ 	if ((op->data.nbytes == 0) ||
+@@ -639,7 +639,7 @@ static int mtk_nor_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
  
--	dev_set_drvdata(dev, master);
--	mps = spi_master_get_devdata(master);
-+	dev_set_drvdata(dev, host);
-+	mps = spi_controller_get_devdata(host);
+ static int mtk_nor_setup(struct spi_device *spi)
+ {
+-	struct mtk_nor *sp = spi_controller_get_devdata(spi->master);
++	struct mtk_nor *sp = spi_controller_get_devdata(spi->controller);
  
- 	/* the spi->mode bits understood by this driver: */
--	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST;
-+	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST;
- 
- 	ret = device_property_read_u32(dev, "cell-index", &bus_num);
- 	if (ret || bus_num > 5)
- 		return dev_err_probe(dev, ret ? : -EINVAL, "Invalid cell-index property\n");
--	master->bus_num = bus_num + 1;
-+	host->bus_num = bus_num + 1;
- 
--	master->num_chipselect = 255;
--	master->setup = mpc52xx_psc_spi_setup;
--	master->transfer_one_message = mpc52xx_psc_spi_transfer_one_message;
--	master->cleanup = mpc52xx_psc_spi_cleanup;
-+	host->num_chipselect = 255;
-+	host->setup = mpc52xx_psc_spi_setup;
-+	host->transfer_one_message = mpc52xx_psc_spi_transfer_one_message;
-+	host->cleanup = mpc52xx_psc_spi_cleanup;
- 
--	device_set_node(&master->dev, dev_fwnode(dev));
-+	device_set_node(&host->dev, dev_fwnode(dev));
- 
- 	mps->psc = devm_platform_get_and_ioremap_resource(pdev, 0, NULL);
- 	if (IS_ERR(mps->psc))
-@@ -337,13 +337,13 @@ static int mpc52xx_psc_spi_of_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
--	ret = mpc52xx_psc_spi_port_config(master->bus_num, mps);
-+	ret = mpc52xx_psc_spi_port_config(host->bus_num, mps);
- 	if (ret < 0)
- 		return dev_err_probe(dev, ret, "can't configure PSC! Is it capable of SPI?\n");
- 
- 	init_completion(&mps->done);
- 
--	return devm_spi_register_master(dev, master);
-+	return devm_spi_register_controller(dev, host);
+ 	if (spi->max_speed_hz && (spi->max_speed_hz < sp->spi_freq)) {
+ 		dev_err(&spi->dev, "spi clock should be %u Hz.\n",
+@@ -651,10 +651,10 @@ static int mtk_nor_setup(struct spi_device *spi)
+ 	return 0;
  }
  
- static const struct of_device_id mpc52xx_psc_spi_of_match[] = {
+-static int mtk_nor_transfer_one_message(struct spi_controller *master,
++static int mtk_nor_transfer_one_message(struct spi_controller *host,
+ 					struct spi_message *m)
+ {
+-	struct mtk_nor *sp = spi_controller_get_devdata(master);
++	struct mtk_nor *sp = spi_controller_get_devdata(host);
+ 	struct spi_transfer *t = NULL;
+ 	unsigned long trx_len = 0;
+ 	int stat = 0;
+@@ -696,7 +696,7 @@ static int mtk_nor_transfer_one_message(struct spi_controller *master,
+ 	m->actual_length = trx_len;
+ msg_done:
+ 	m->status = stat;
+-	spi_finalize_current_message(master);
++	spi_finalize_current_message(host);
+ 
+ 	return 0;
+ }
+@@ -844,7 +844,7 @@ static int mtk_nor_probe(struct platform_device *pdev)
+ 		return ret;
+ 	}
+ 
+-	ctlr = devm_spi_alloc_master(&pdev->dev, sizeof(*sp));
++	ctlr = devm_spi_alloc_host(&pdev->dev, sizeof(*sp));
+ 	if (!ctlr) {
+ 		dev_err(&pdev->dev, "failed to allocate spi controller\n");
+ 		return -ENOMEM;
 -- 
 2.25.1
 

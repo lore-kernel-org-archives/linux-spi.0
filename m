@@ -2,123 +2,182 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4BDECEE49B6
-	for <linux-spi@archiver.kernel.org>; Wed, 23 Aug 2023 13:40:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6C250EE4993
+	for <linux-spi@archiver.kernel.org>; Wed, 23 Aug 2023 14:20:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236252AbjHWNkX (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 23 Aug 2023 09:40:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34012 "EHLO
+        id S232884AbjHWOUV (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 23 Aug 2023 10:20:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236258AbjHWNkX (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 23 Aug 2023 09:40:23 -0400
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EEB3184
-        for <linux-spi@vger.kernel.org>; Wed, 23 Aug 2023 06:40:20 -0700 (PDT)
-Received: from kwepemi500012.china.huawei.com (unknown [172.30.72.57])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4RW6kH6Qblz16Nym;
-        Wed, 23 Aug 2023 21:38:47 +0800 (CST)
-Received: from huawei.com (10.90.53.73) by kwepemi500012.china.huawei.com
- (7.221.188.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Wed, 23 Aug
- 2023 21:40:16 +0800
-From:   Li Zetao <lizetao1@huawei.com>
-To:     <lizetao1@huawei.com>
-CC:     <andrew@aj.id.au>, <angelogioacchino.delregno@collabora.com>,
-        <avifishman70@gmail.com>, <bcm-kernel-feedback-list@broadcom.com>,
-        <benjaminfair@google.com>, <broonie@kernel.org>,
-        <chin-ting_kuo@aspeedtech.com>, <clg@kaod.org>,
-        <conor.dooley@microchip.com>, <daire.mcnamara@microchip.com>,
-        <fancer.lancer@gmail.com>, <florian.fainelli@broadcom.com>,
-        <heiko@sntech.de>, <jbrunet@baylibre.com>, <joel@jms.id.au>,
-        <khilman@baylibre.com>, <linus.walleij@linaro.org>,
-        <linux-amlogic@lists.infradead.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-aspeed@lists.ozlabs.org>,
-        <linux-mediatek@lists.infradead.org>,
-        <linux-riscv@lists.infradead.org>,
-        <linux-rockchip@lists.infradead.org>,
-        <linux-rpi-kernel@lists.infradead.org>,
-        <linux-spi@vger.kernel.org>, <martin.blumenstingl@googlemail.com>,
-        <matthias.bgg@gmail.com>, <neil.armstrong@linaro.org>,
-        <olteanv@gmail.com>, <openbmc@lists.ozlabs.org>,
-        <rjui@broadcom.com>, <sbranden@broadcom.com>,
-        <tali.perry1@gmail.com>, <tmaimon77@gmail.com>,
-        <venture@google.com>, <yuenn@google.com>
-Subject: [PATCH -next v2 24/25] spi: spl022: Use helper function devm_clk_get_enabled()
-Date:   Wed, 23 Aug 2023 21:39:37 +0800
-Message-ID: <20230823133938.1359106-25-lizetao1@huawei.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230823133938.1359106-1-lizetao1@huawei.com>
+        with ESMTP id S231387AbjHWOUV (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 23 Aug 2023 10:20:21 -0400
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 130D2E47
+        for <linux-spi@vger.kernel.org>; Wed, 23 Aug 2023 07:20:19 -0700 (PDT)
+Received: by mail-lf1-x12a.google.com with SMTP id 2adb3069b0e04-50078eba7afso5966029e87.0
+        for <linux-spi@vger.kernel.org>; Wed, 23 Aug 2023 07:20:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1692800417; x=1693405217;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=vhfwjT4tlvrzpnKCjflm2Sl+ahwu3aFmaWxJvLIkO98=;
+        b=VWsAu4zctYB4Hj/BaIyGIeHN/WvcmeJ/TP2QJwdpFBduBe0n2TqhZyfZtLBY5a19IU
+         JJbacgfTX7UUbBIvmR5AM/98hrPGlJh5mNQjrhPJzkNuDJqRuLHpSXJpmGfSNMtSqoXQ
+         tWNAHKYmpkPTfZuBWQsIMmFPP4gpVQm1jWNtcL/NCJ+KdhkAEV+3NHCXnyKFuQi4Jb9b
+         G9PQEMPPEZeG9A/gduv2m7TC8UG4POhqqRy1ecmOu6wcIEUVChopMYhCWugbOa/IzEKL
+         rHQs3bfRDGRKIHmpIdxO3aJ20/h0c2cNzM/nTl8hd/hBAfXmxyh5lYQcnAvvfcL8Hlle
+         ZSyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692800417; x=1693405217;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vhfwjT4tlvrzpnKCjflm2Sl+ahwu3aFmaWxJvLIkO98=;
+        b=PLNUzAGYpLDWRVyT8UbLhu6GHgr27hKHvz1+qeJgrw4PLDFYx3NksSa/OIIOGCd9Oe
+         oxyOs0NQKspXXEKzTb2OQTShAaqkNxarKhj7+MnMWbJ2TUCVGs8POsc67Nfyi1gJai/5
+         UC7cg/Gp8g6A+a5svpoUU0zfHrvHy/Hsqaxa+UQZWct55D0USzbiYHDdglZ2+my7XQpU
+         t22v+P3znqdypgSR9AExJt0pltVFbQN/xmwReYw8Cp656ZN+r8EmUWxC/bW5IClg/YPc
+         bM8KJ7QO4Wf/uQvsHHpX6pafahvamoYeAv8w/ukNdk16CVxCm0FE3dr8GbsThrfm4jyV
+         3V+w==
+X-Gm-Message-State: AOJu0YzNw2JItptcGih/mtEo3mzBAD5igCJUQyFMuB8948mn52fTwZ1R
+        00DujWVc9LoL4nZWlYksc8Y=
+X-Google-Smtp-Source: AGHT+IEGS4rOzzVhq/5nNxTOyLpTJO6FicNda11SZK9keATWBdGhEq2mwTZDRVciIV7jhQm6tMni+w==
+X-Received: by 2002:a05:6512:312b:b0:4fd:c884:51fc with SMTP id p11-20020a056512312b00b004fdc88451fcmr8129845lfd.58.1692800416942;
+        Wed, 23 Aug 2023 07:20:16 -0700 (PDT)
+Received: from mobilestation ([178.176.56.174])
+        by smtp.gmail.com with ESMTPSA id w15-20020ac254af000000b004f85d80ca64sm1551281lfk.221.2023.08.23.07.20.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Aug 2023 07:20:16 -0700 (PDT)
+Date:   Wed, 23 Aug 2023 17:20:12 +0300
+From:   Serge Semin <fancer.lancer@gmail.com>
+To:     Li Zetao <lizetao1@huawei.com>
+Cc:     andrew@aj.id.au, angelogioacchino.delregno@collabora.com,
+        avifishman70@gmail.com, bcm-kernel-feedback-list@broadcom.com,
+        benjaminfair@google.com, broonie@kernel.org,
+        chin-ting_kuo@aspeedtech.com, clg@kaod.org,
+        conor.dooley@microchip.com, daire.mcnamara@microchip.com,
+        florian.fainelli@broadcom.com, heiko@sntech.de,
+        jbrunet@baylibre.com, joel@jms.id.au, khilman@baylibre.com,
+        linus.walleij@linaro.org, linux-amlogic@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-aspeed@lists.ozlabs.org, linux-mediatek@lists.infradead.org,
+        linux-riscv@lists.infradead.org,
+        linux-rockchip@lists.infradead.org,
+        linux-rpi-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        martin.blumenstingl@googlemail.com, matthias.bgg@gmail.com,
+        neil.armstrong@linaro.org, olteanv@gmail.com,
+        openbmc@lists.ozlabs.org, rjui@broadcom.com, sbranden@broadcom.com,
+        tali.perry1@gmail.com, tmaimon77@gmail.com, venture@google.com,
+        yuenn@google.com
+Subject: Re: [PATCH -next v2 12/25] spi: dw-mmio: Use helper function
+ devm_clk_get_*()
+Message-ID: <pflv2canelmm3ea7zpqgxrzj3s7cl56crpdbupkgqlabfnasjj@dkfyiubao2gj>
 References: <20230822131237.1022815-1-lizetao1@huawei.com>
  <20230823133938.1359106-1-lizetao1@huawei.com>
+ <20230823133938.1359106-13-lizetao1@huawei.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.90.53.73]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- kwepemi500012.china.huawei.com (7.221.188.12)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230823133938.1359106-13-lizetao1@huawei.com>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Since commit 7ef9651e9792 ("clk: Provide new devm_clk helpers for prepared
-and enabled clocks"), devm_clk_get() and clk_prepare_enable() can now be
-replaced by devm_clk_get_enabled() when driver enables (and possibly
-prepares) the clocks for the whole lifetime of the device. Moreover, it is
-no longer necessary to unprepare and disable the clocks explicitly.
-Moreover, the label "err_no_clk_en" is no used, drop it for clean code.
+On Wed, Aug 23, 2023 at 09:39:25PM +0800, Li Zetao wrote:
+> Since commit 7ef9651e9792 ("clk: Provide new devm_clk helpers for prepared
+> and enabled clocks"), devm_clk_get() and clk_prepare_enable() can now be
+> replaced by devm_clk_get_enabled() when driver enables (and possibly
+> prepares) the clocks for the whole lifetime of the device. Moreover, it is
+> no longer necessary to unprepare and disable the clocks explicitly. Also,
+> devm_clk_get_optional() and clk_prepare_enable() can now be replaced by
+> devm_clk_get_optional_enabled(). Moreover, the lable "out_clk" no longer
+> makes sense, rename it to "out_reset".
+> 
+> Signed-off-by: Li Zetao <lizetao1@huawei.com>
+> ---
+> v1 -> v2: Return directly instead of calling reset_control_deassert()
+> before the reset control handler has been requested. And use the
+> "out_reset" label instead of "out" before calling pm_runtime_enable().
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Li Zetao <lizetao1@huawei.com>
----
-v1 -> v2: Delete the modification of odd formatting.
+LGTM. Thanks!
+Acked-by: Serge Semin <fancer.lancer@gmail.com>
 
- drivers/spi/spi-pl022.c | 11 +----------
- 1 file changed, 1 insertion(+), 10 deletions(-)
+-Serge(y)
 
-diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-index bb347b6bb6f3..d1b6110b38fc 100644
---- a/drivers/spi/spi-pl022.c
-+++ b/drivers/spi/spi-pl022.c
-@@ -2168,19 +2168,13 @@ static int pl022_probe(struct amba_device *adev, const struct amba_id *id)
- 	dev_info(&adev->dev, "mapped registers from %pa to %p\n",
- 		&adev->res.start, pl022->virtbase);
- 
--	pl022->clk = devm_clk_get(&adev->dev, NULL);
-+	pl022->clk = devm_clk_get_enabled(&adev->dev, NULL);
- 	if (IS_ERR(pl022->clk)) {
- 		status = PTR_ERR(pl022->clk);
- 		dev_err(&adev->dev, "could not retrieve SSP/SPI bus clock\n");
- 		goto err_no_clk;
- 	}
- 
--	status = clk_prepare_enable(pl022->clk);
--	if (status) {
--		dev_err(&adev->dev, "could not enable SSP/SPI bus clock\n");
--		goto err_no_clk_en;
--	}
--
- 	/* Initialize transfer pump */
- 	tasklet_init(&pl022->pump_transfers, pump_transfers,
- 		     (unsigned long)pl022);
-@@ -2240,8 +2234,6 @@ static int pl022_probe(struct amba_device *adev, const struct amba_id *id)
- 	if (platform_info->enable_dma)
- 		pl022_dma_remove(pl022);
-  err_no_irq:
--	clk_disable_unprepare(pl022->clk);
-- err_no_clk_en:
-  err_no_clk:
-  err_no_ioremap:
- 	amba_release_regions(adev);
-@@ -2268,7 +2260,6 @@ pl022_remove(struct amba_device *adev)
- 	if (pl022->host_info->enable_dma)
- 		pl022_dma_remove(pl022);
- 
--	clk_disable_unprepare(pl022->clk);
- 	amba_release_regions(adev);
- 	tasklet_disable(&pl022->pump_transfers);
- }
--- 
-2.34.1
-
+> 
+>  drivers/spi/spi-dw-mmio.c | 31 +++++++++----------------------
+>  1 file changed, 9 insertions(+), 22 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
+> index 805264c9c65c..46801189a651 100644
+> --- a/drivers/spi/spi-dw-mmio.c
+> +++ b/drivers/spi/spi-dw-mmio.c
+> @@ -340,29 +340,20 @@ static int dw_spi_mmio_probe(struct platform_device *pdev)
+>  	if (dws->irq < 0)
+>  		return dws->irq; /* -ENXIO */
+>  
+> -	dwsmmio->clk = devm_clk_get(&pdev->dev, NULL);
+> +	dwsmmio->clk = devm_clk_get_enabled(&pdev->dev, NULL);
+>  	if (IS_ERR(dwsmmio->clk))
+>  		return PTR_ERR(dwsmmio->clk);
+> -	ret = clk_prepare_enable(dwsmmio->clk);
+> -	if (ret)
+> -		return ret;
+>  
+>  	/* Optional clock needed to access the registers */
+> -	dwsmmio->pclk = devm_clk_get_optional(&pdev->dev, "pclk");
+> -	if (IS_ERR(dwsmmio->pclk)) {
+> -		ret = PTR_ERR(dwsmmio->pclk);
+> -		goto out_clk;
+> -	}
+> -	ret = clk_prepare_enable(dwsmmio->pclk);
+> -	if (ret)
+> -		goto out_clk;
+> +	dwsmmio->pclk = devm_clk_get_optional_enabled(&pdev->dev, "pclk");
+> +	if (IS_ERR(dwsmmio->pclk))
+> +		return PTR_ERR(dwsmmio->pclk);
+>  
+>  	/* find an optional reset controller */
+>  	dwsmmio->rstc = devm_reset_control_get_optional_exclusive(&pdev->dev, "spi");
+> -	if (IS_ERR(dwsmmio->rstc)) {
+> -		ret = PTR_ERR(dwsmmio->rstc);
+> -		goto out_clk;
+> -	}
+> +	if (IS_ERR(dwsmmio->rstc))
+> +		return PTR_ERR(dwsmmio->rstc);
+> +
+>  	reset_control_deassert(dwsmmio->rstc);
+>  
+>  	dws->bus_num = pdev->id;
+> @@ -383,7 +374,7 @@ static int dw_spi_mmio_probe(struct platform_device *pdev)
+>  	if (init_func) {
+>  		ret = init_func(pdev, dwsmmio);
+>  		if (ret)
+> -			goto out;
+> +			goto out_reset;
+>  	}
+>  
+>  	pm_runtime_enable(&pdev->dev);
+> @@ -397,9 +388,7 @@ static int dw_spi_mmio_probe(struct platform_device *pdev)
+>  
+>  out:
+>  	pm_runtime_disable(&pdev->dev);
+> -	clk_disable_unprepare(dwsmmio->pclk);
+> -out_clk:
+> -	clk_disable_unprepare(dwsmmio->clk);
+> +out_reset:
+>  	reset_control_assert(dwsmmio->rstc);
+>  
+>  	return ret;
+> @@ -411,8 +400,6 @@ static void dw_spi_mmio_remove(struct platform_device *pdev)
+>  
+>  	dw_spi_remove_host(&dwsmmio->dws);
+>  	pm_runtime_disable(&pdev->dev);
+> -	clk_disable_unprepare(dwsmmio->pclk);
+> -	clk_disable_unprepare(dwsmmio->clk);
+>  	reset_control_assert(dwsmmio->rstc);
+>  }
+>  
+> -- 
+> 2.34.1
+> 

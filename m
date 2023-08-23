@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 476FAEE49B2
-	for <linux-spi@archiver.kernel.org>; Wed, 23 Aug 2023 03:33:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0E187EE49B4
+	for <linux-spi@archiver.kernel.org>; Wed, 23 Aug 2023 03:33:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232376AbjHWDdj (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 22 Aug 2023 23:33:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42672 "EHLO
+        id S232326AbjHWDdk (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 22 Aug 2023 23:33:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229824AbjHWDdi (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 22 Aug 2023 23:33:38 -0400
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 096DEE50
-        for <linux-spi@vger.kernel.org>; Tue, 22 Aug 2023 20:33:36 -0700 (PDT)
-Received: from dggpemm500006.china.huawei.com (unknown [172.30.72.56])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4RVsDP4NMWzLp6M;
-        Wed, 23 Aug 2023 11:30:29 +0800 (CST)
+        with ESMTP id S232341AbjHWDdj (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 22 Aug 2023 23:33:39 -0400
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01DE4CF2
+        for <linux-spi@vger.kernel.org>; Tue, 22 Aug 2023 20:33:37 -0700 (PDT)
+Received: from dggpemm500008.china.huawei.com (unknown [172.30.72.56])
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4RVsGG3K1tz1L9SS;
+        Wed, 23 Aug 2023 11:32:06 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500006.china.huawei.com (7.185.36.236) with Microsoft SMTP Server
+ dggpemm500008.china.huawei.com (7.185.36.136) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Wed, 23 Aug 2023 11:33:34 +0800
+ 15.1.2507.31; Wed, 23 Aug 2023 11:33:35 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Wed, 23 Aug
- 2023 11:33:33 +0800
+ 2023 11:33:34 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
         <yangyingliang@huawei.com>
-Subject: [PATCH -next v2 04/21] spi: meson-spifc: switch to use modern name
-Date:   Wed, 23 Aug 2023 11:29:46 +0800
-Message-ID: <20230823033003.3407403-5-yangyingliang@huawei.com>
+Subject: [PATCH -next v2 07/21] spi: mpc512x-psc: switch to use modern name
+Date:   Wed, 23 Aug 2023 11:29:49 +0800
+Message-ID: <20230823033003.3407403-8-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230823033003.3407403-1-yangyingliang@huawei.com>
 References: <20230823033003.3407403-1-yangyingliang@huawei.com>
@@ -46,196 +46,156 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Change legacy name master/slave to modern name host/target or controller.
+Change legacy name master to modern name host or controller.
 
 No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-meson-spifc.c | 66 +++++++++++++++++------------------
- 1 file changed, 33 insertions(+), 33 deletions(-)
+ drivers/spi/spi-mpc512x-psc.c | 54 +++++++++++++++++------------------
+ 1 file changed, 27 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/spi/spi-meson-spifc.c b/drivers/spi/spi-meson-spifc.c
-index 06626f406f68..de56d38edf40 100644
---- a/drivers/spi/spi-meson-spifc.c
-+++ b/drivers/spi/spi-meson-spifc.c
-@@ -67,13 +67,13 @@
+diff --git a/drivers/spi/spi-mpc512x-psc.c b/drivers/spi/spi-mpc512x-psc.c
+index 5cecca1bef02..3c1638ba5bee 100644
+--- a/drivers/spi/spi-mpc512x-psc.c
++++ b/drivers/spi/spi-mpc512x-psc.c
+@@ -85,7 +85,7 @@ static int mpc512x_psc_spi_transfer_setup(struct spi_device *spi,
+ static void mpc512x_psc_spi_activate_cs(struct spi_device *spi)
+ {
+ 	struct mpc512x_psc_spi_cs *cs = spi->controller_state;
+-	struct mpc512x_psc_spi *mps = spi_master_get_devdata(spi->master);
++	struct mpc512x_psc_spi *mps = spi_controller_get_devdata(spi->controller);
+ 	u32 sicr;
+ 	u32 ccr;
+ 	int speed;
+@@ -143,7 +143,7 @@ static void mpc512x_psc_spi_deactivate_cs(struct spi_device *spi)
+ static int mpc512x_psc_spi_transfer_rxtx(struct spi_device *spi,
+ 					 struct spi_transfer *t)
+ {
+-	struct mpc512x_psc_spi *mps = spi_master_get_devdata(spi->master);
++	struct mpc512x_psc_spi *mps = spi_controller_get_devdata(spi->controller);
+ 	struct mpc512x_psc_fifo __iomem *fifo = mps->fifo;
+ 	size_t tx_len = t->len;
+ 	size_t rx_len = t->len;
+@@ -280,7 +280,7 @@ static int mpc512x_psc_spi_transfer_rxtx(struct spi_device *spi,
+ 	return 0;
+ }
  
- /**
-  * struct meson_spifc
-- * @master:	the SPI master
-+ * @host:	the SPI host
-  * @regmap:	regmap for device registers
-  * @clk:	input clock of the built-in baud rate generator
-  * @dev:	the device structure
-  */
- struct meson_spifc {
+-static int mpc512x_psc_spi_msg_xfer(struct spi_master *master,
++static int mpc512x_psc_spi_msg_xfer(struct spi_controller *host,
+ 				    struct spi_message *m)
+ {
+ 	struct spi_device *spi;
+@@ -320,15 +320,15 @@ static int mpc512x_psc_spi_msg_xfer(struct spi_master *master,
+ 
+ 	mpc512x_psc_spi_transfer_setup(spi, NULL);
+ 
+-	spi_finalize_current_message(master);
++	spi_finalize_current_message(host);
+ 	return status;
+ }
+ 
+-static int mpc512x_psc_spi_prep_xfer_hw(struct spi_master *master)
++static int mpc512x_psc_spi_prep_xfer_hw(struct spi_controller *host)
+ {
+-	struct mpc512x_psc_spi *mps = spi_master_get_devdata(master);
++	struct mpc512x_psc_spi *mps = spi_controller_get_devdata(host);
+ 
+-	dev_dbg(&master->dev, "%s()\n", __func__);
++	dev_dbg(&host->dev, "%s()\n", __func__);
+ 
+ 	/* Zero MR2 */
+ 	in_8(psc_addr(mps, mr2));
+@@ -340,12 +340,12 @@ static int mpc512x_psc_spi_prep_xfer_hw(struct spi_master *master)
+ 	return 0;
+ }
+ 
+-static int mpc512x_psc_spi_unprep_xfer_hw(struct spi_master *master)
++static int mpc512x_psc_spi_unprep_xfer_hw(struct spi_controller *host)
+ {
+-	struct mpc512x_psc_spi *mps = spi_master_get_devdata(master);
++	struct mpc512x_psc_spi *mps = spi_controller_get_devdata(host);
+ 	struct mpc512x_psc_fifo __iomem *fifo = mps->fifo;
+ 
+-	dev_dbg(&master->dev, "%s()\n", __func__);
++	dev_dbg(&host->dev, "%s()\n", __func__);
+ 
+ 	/* disable transmitter/receiver and fifo interrupt */
+ 	out_8(psc_addr(mps, command), MPC52xx_PSC_TX_DISABLE | MPC52xx_PSC_RX_DISABLE);
+@@ -380,7 +380,7 @@ static void mpc512x_psc_spi_cleanup(struct spi_device *spi)
+ 	kfree(spi->controller_state);
+ }
+ 
+-static int mpc512x_psc_spi_port_config(struct spi_master *master,
++static int mpc512x_psc_spi_port_config(struct spi_controller *host,
+ 				       struct mpc512x_psc_spi *mps)
+ {
+ 	struct mpc512x_psc_fifo __iomem *fifo = mps->fifo;
+@@ -408,7 +408,7 @@ static int mpc512x_psc_spi_port_config(struct spi_master *master,
+ 	sicr =	0x01000000 |	/* SIM = 0001 -- 8 bit */
+ 		0x00800000 |	/* GenClk = 1 -- internal clk */
+ 		0x00008000 |	/* SPI = 1 */
+-		0x00004000 |	/* MSTR = 1   -- SPI master */
++		0x00004000 |	/* MSTR = 1   -- SPI host */
+ 		0x00000800;	/* UseEOF = 1 -- SS low until EOF */
+ 
+ 	out_be32(psc_addr(mps, sicr), sicr);
+@@ -459,28 +459,28 @@ static int mpc512x_psc_spi_of_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+ 	struct mpc512x_psc_spi *mps;
 -	struct spi_master *master;
 +	struct spi_controller *host;
- 	struct regmap *regmap;
+ 	int ret;
+ 	void *tempp;
  	struct clk *clk;
- 	struct device *dev;
-@@ -237,16 +237,16 @@ static int meson_spifc_txrx(struct meson_spifc *spifc,
  
- /**
-  * meson_spifc_transfer_one() - perform a single transfer
-- * @master:	the SPI master
-+ * @host:	the SPI host
-  * @spi:	the SPI device
-  * @xfer:	the current SPI transfer
-  * Return:	0 on success, a negative value on error
-  */
--static int meson_spifc_transfer_one(struct spi_master *master,
-+static int meson_spifc_transfer_one(struct spi_controller *host,
- 				    struct spi_device *spi,
- 				    struct spi_transfer *xfer)
- {
--	struct meson_spifc *spifc = spi_master_get_devdata(master);
-+	struct meson_spifc *spifc = spi_controller_get_devdata(host);
- 	int len, done = 0, ret = 0;
- 
- 	meson_spifc_setup_speed(spifc, xfer->speed_hz);
-@@ -256,7 +256,7 @@ static int meson_spifc_transfer_one(struct spi_master *master,
- 	while (done < xfer->len && !ret) {
- 		len = min_t(int, xfer->len - done, SPIFC_BUFFER_SIZE);
- 		ret = meson_spifc_txrx(spifc, xfer, done, len,
--				       spi_transfer_is_last(master, xfer),
-+				       spi_transfer_is_last(host, xfer),
- 				       done + len >= xfer->len);
- 		done += len;
- 	}
-@@ -284,19 +284,19 @@ static void meson_spifc_hw_init(struct meson_spifc *spifc)
- 
- static int meson_spifc_probe(struct platform_device *pdev)
- {
--	struct spi_master *master;
-+	struct spi_controller *host;
- 	struct meson_spifc *spifc;
- 	void __iomem *base;
- 	unsigned int rate;
- 	int ret = 0;
- 
--	master = spi_alloc_master(&pdev->dev, sizeof(struct meson_spifc));
--	if (!master)
-+	host = spi_alloc_host(&pdev->dev, sizeof(struct meson_spifc));
-+	if (!host)
+-	master = devm_spi_alloc_master(dev, sizeof(*mps));
+-	if (master == NULL)
++	host = devm_spi_alloc_host(dev, sizeof(*mps));
++	if (host == NULL)
  		return -ENOMEM;
  
--	platform_set_drvdata(pdev, master);
-+	platform_set_drvdata(pdev, host);
+-	dev_set_drvdata(dev, master);
+-	mps = spi_master_get_devdata(master);
++	dev_set_drvdata(dev, host);
++	mps = spi_controller_get_devdata(host);
+ 	mps->type = (int)device_get_match_data(dev);
  
--	spifc = spi_master_get_devdata(master);
-+	spifc = spi_controller_get_devdata(host);
- 	spifc->dev = &pdev->dev;
+-	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST;
+-	master->setup = mpc512x_psc_spi_setup;
+-	master->prepare_transfer_hardware = mpc512x_psc_spi_prep_xfer_hw;
+-	master->transfer_one_message = mpc512x_psc_spi_msg_xfer;
+-	master->unprepare_transfer_hardware = mpc512x_psc_spi_unprep_xfer_hw;
+-	master->use_gpio_descriptors = true;
+-	master->cleanup = mpc512x_psc_spi_cleanup;
++	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST;
++	host->setup = mpc512x_psc_spi_setup;
++	host->prepare_transfer_hardware = mpc512x_psc_spi_prep_xfer_hw;
++	host->transfer_one_message = mpc512x_psc_spi_msg_xfer;
++	host->unprepare_transfer_hardware = mpc512x_psc_spi_unprep_xfer_hw;
++	host->use_gpio_descriptors = true;
++	host->cleanup = mpc512x_psc_spi_cleanup;
  
- 	base = devm_platform_ioremap_resource(pdev, 0);
-@@ -327,22 +327,22 @@ static int meson_spifc_probe(struct platform_device *pdev)
+-	device_set_node(&master->dev, dev_fwnode(dev));
++	device_set_node(&host->dev, dev_fwnode(dev));
  
- 	rate = clk_get_rate(spifc->clk);
+ 	tempp = devm_platform_get_and_ioremap_resource(pdev, 0, NULL);
+ 	if (IS_ERR(tempp))
+@@ -509,11 +509,11 @@ static int mpc512x_psc_spi_of_probe(struct platform_device *pdev)
+ 	if (IS_ERR(clk))
+ 		return PTR_ERR(clk);
  
--	master->num_chipselect = 1;
--	master->dev.of_node = pdev->dev.of_node;
--	master->bits_per_word_mask = SPI_BPW_MASK(8);
--	master->auto_runtime_pm = true;
--	master->transfer_one = meson_spifc_transfer_one;
--	master->min_speed_hz = rate >> 6;
--	master->max_speed_hz = rate >> 1;
-+	host->num_chipselect = 1;
-+	host->dev.of_node = pdev->dev.of_node;
-+	host->bits_per_word_mask = SPI_BPW_MASK(8);
-+	host->auto_runtime_pm = true;
-+	host->transfer_one = meson_spifc_transfer_one;
-+	host->min_speed_hz = rate >> 6;
-+	host->max_speed_hz = rate >> 1;
- 
- 	meson_spifc_hw_init(spifc);
- 
- 	pm_runtime_set_active(spifc->dev);
- 	pm_runtime_enable(spifc->dev);
- 
--	ret = devm_spi_register_master(spifc->dev, master);
-+	ret = devm_spi_register_controller(spifc->dev, host);
- 	if (ret) {
--		dev_err(spifc->dev, "failed to register spi master\n");
-+		dev_err(spifc->dev, "failed to register spi host\n");
- 		goto out_clk;
- 	}
- 
-@@ -351,14 +351,14 @@ static int meson_spifc_probe(struct platform_device *pdev)
- 	clk_disable_unprepare(spifc->clk);
- 	pm_runtime_disable(spifc->dev);
- out_err:
--	spi_master_put(master);
-+	spi_controller_put(host);
- 	return ret;
- }
- 
- static void meson_spifc_remove(struct platform_device *pdev)
- {
--	struct spi_master *master = platform_get_drvdata(pdev);
--	struct meson_spifc *spifc = spi_master_get_devdata(master);
-+	struct spi_controller *host = platform_get_drvdata(pdev);
-+	struct meson_spifc *spifc = spi_controller_get_devdata(host);
- 
- 	pm_runtime_get_sync(&pdev->dev);
- 	clk_disable_unprepare(spifc->clk);
-@@ -368,11 +368,11 @@ static void meson_spifc_remove(struct platform_device *pdev)
- #ifdef CONFIG_PM_SLEEP
- static int meson_spifc_suspend(struct device *dev)
- {
--	struct spi_master *master = dev_get_drvdata(dev);
--	struct meson_spifc *spifc = spi_master_get_devdata(master);
-+	struct spi_controller *host = dev_get_drvdata(dev);
-+	struct meson_spifc *spifc = spi_controller_get_devdata(host);
- 	int ret;
- 
--	ret = spi_master_suspend(master);
-+	ret = spi_controller_suspend(host);
- 	if (ret)
+-	ret = mpc512x_psc_spi_port_config(master, mps);
++	ret = mpc512x_psc_spi_port_config(host, mps);
+ 	if (ret < 0)
  		return ret;
  
-@@ -384,8 +384,8 @@ static int meson_spifc_suspend(struct device *dev)
- 
- static int meson_spifc_resume(struct device *dev)
- {
--	struct spi_master *master = dev_get_drvdata(dev);
--	struct meson_spifc *spifc = spi_master_get_devdata(master);
-+	struct spi_controller *host = dev_get_drvdata(dev);
-+	struct meson_spifc *spifc = spi_controller_get_devdata(host);
- 	int ret;
- 
- 	if (!pm_runtime_suspended(dev)) {
-@@ -396,7 +396,7 @@ static int meson_spifc_resume(struct device *dev)
- 
- 	meson_spifc_hw_init(spifc);
- 
--	ret = spi_master_resume(master);
-+	ret = spi_controller_resume(host);
- 	if (ret)
- 		clk_disable_unprepare(spifc->clk);
- 
-@@ -407,8 +407,8 @@ static int meson_spifc_resume(struct device *dev)
- #ifdef CONFIG_PM
- static int meson_spifc_runtime_suspend(struct device *dev)
- {
--	struct spi_master *master = dev_get_drvdata(dev);
--	struct meson_spifc *spifc = spi_master_get_devdata(master);
-+	struct spi_controller *host = dev_get_drvdata(dev);
-+	struct meson_spifc *spifc = spi_controller_get_devdata(host);
- 
- 	clk_disable_unprepare(spifc->clk);
- 
-@@ -417,8 +417,8 @@ static int meson_spifc_runtime_suspend(struct device *dev)
- 
- static int meson_spifc_runtime_resume(struct device *dev)
- {
--	struct spi_master *master = dev_get_drvdata(dev);
--	struct meson_spifc *spifc = spi_master_get_devdata(master);
-+	struct spi_controller *host = dev_get_drvdata(dev);
-+	struct meson_spifc *spifc = spi_controller_get_devdata(host);
- 
- 	return clk_prepare_enable(spifc->clk);
+-	return devm_spi_register_master(dev, master);
++	return devm_spi_register_controller(dev, host);
  }
+ 
+ static const struct of_device_id mpc512x_psc_spi_of_match[] = {
 -- 
 2.25.1
 

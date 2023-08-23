@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DA0FDEE49B6
-	for <linux-spi@archiver.kernel.org>; Wed, 23 Aug 2023 03:33:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B7240EE49AF
+	for <linux-spi@archiver.kernel.org>; Wed, 23 Aug 2023 03:33:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232314AbjHWDdl (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 22 Aug 2023 23:33:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42702 "EHLO
+        id S232341AbjHWDdn (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 22 Aug 2023 23:33:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232377AbjHWDdk (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 22 Aug 2023 23:33:40 -0400
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C200CE51
-        for <linux-spi@vger.kernel.org>; Tue, 22 Aug 2023 20:33:37 -0700 (PDT)
-Received: from dggpemm500009.china.huawei.com (unknown [172.30.72.55])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4RVsDR3VjjzLpKK;
-        Wed, 23 Aug 2023 11:30:31 +0800 (CST)
+        with ESMTP id S232424AbjHWDdl (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 22 Aug 2023 23:33:41 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B23AE4A
+        for <linux-spi@vger.kernel.org>; Tue, 22 Aug 2023 20:33:39 -0700 (PDT)
+Received: from dggpemm500010.china.huawei.com (unknown [172.30.72.55])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RVsGH6Yd0zrSd5;
+        Wed, 23 Aug 2023 11:32:07 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500009.china.huawei.com (7.185.36.225) with Microsoft SMTP Server
+ dggpemm500010.china.huawei.com (7.185.36.134) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Wed, 23 Aug 2023 11:33:36 +0800
+ 15.1.2507.31; Wed, 23 Aug 2023 11:33:37 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Wed, 23 Aug
- 2023 11:33:35 +0800
+ 2023 11:33:37 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
         <yangyingliang@huawei.com>
-Subject: [PATCH -next v2 09/21] spi: mpc52xx: switch to use modern name
-Date:   Wed, 23 Aug 2023 11:29:51 +0800
-Message-ID: <20230823033003.3407403-10-yangyingliang@huawei.com>
+Subject: [PATCH -next v2 13/21] spi: mtk-snfi: switch to use modern name
+Date:   Wed, 23 Aug 2023 11:29:55 +0800
+Message-ID: <20230823033003.3407403-14-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230823033003.3407403-1-yangyingliang@huawei.com>
 References: <20230823033003.3407403-1-yangyingliang@huawei.com>
@@ -52,177 +52,40 @@ No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-mpc52xx.c | 56 +++++++++++++++++++--------------------
- 1 file changed, 28 insertions(+), 28 deletions(-)
+ drivers/spi/spi-mtk-snfi.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-mpc52xx.c b/drivers/spi/spi-mpc52xx.c
-index ab7df5f64342..4a6c984b6bff 100644
---- a/drivers/spi/spi-mpc52xx.c
-+++ b/drivers/spi/spi-mpc52xx.c
-@@ -62,7 +62,7 @@ MODULE_LICENSE("GPL");
+diff --git a/drivers/spi/spi-mtk-snfi.c b/drivers/spi/spi-mtk-snfi.c
+index 4433a8a9299f..43659014bef8 100644
+--- a/drivers/spi/spi-mtk-snfi.c
++++ b/drivers/spi/spi-mtk-snfi.c
+@@ -1255,7 +1255,7 @@ static bool mtk_snand_supports_op(struct spi_mem *mem,
  
- /* Driver internal data */
- struct mpc52xx_spi {
--	struct spi_master *master;
-+	struct spi_controller *host;
- 	void __iomem *regs;
- 	int irq0;	/* MODF irq */
- 	int irq1;	/* SPIF irq */
-@@ -152,7 +152,7 @@ mpc52xx_spi_fsmstate_idle(int irq, struct mpc52xx_spi *ms, u8 status, u8 data)
- 	u8 ctrl1;
- 
- 	if (status && irq)
--		dev_err(&ms->master->dev, "spurious irq, status=0x%.2x\n",
-+		dev_err(&ms->host->dev, "spurious irq, status=0x%.2x\n",
- 			status);
- 
- 	/* Check if there is another transfer waiting. */
-@@ -235,7 +235,7 @@ static int mpc52xx_spi_fsmstate_transfer(int irq, struct mpc52xx_spi *ms,
- 		return FSM_CONTINUE;
- 	} else if (status & SPI_STATUS_MODF) {
- 		ms->modf_count++;
--		dev_err(&ms->master->dev, "mode fault\n");
-+		dev_err(&ms->host->dev, "mode fault\n");
- 		mpc52xx_spi_chipsel(ms, 0);
- 		ms->message->status = -EIO;
- 		if (ms->message->complete)
-@@ -280,7 +280,7 @@ static int
- mpc52xx_spi_fsmstate_wait(int irq, struct mpc52xx_spi *ms, u8 status, u8 data)
+ static int mtk_snand_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
  {
- 	if (status && irq)
--		dev_err(&ms->master->dev, "spurious irq, status=0x%.2x\n",
-+		dev_err(&ms->host->dev, "spurious irq, status=0x%.2x\n",
- 			status);
+-	struct mtk_snand *ms = spi_controller_get_devdata(mem->spi->master);
++	struct mtk_snand *ms = spi_controller_get_devdata(mem->spi->controller);
+ 	// page ops transfer size must be exactly ((sector_size + spare_size) *
+ 	// nsectors). Limit the op size if the caller requests more than that.
+ 	// exec_op will read more than needed and discard the leftover if the
+@@ -1282,7 +1282,7 @@ static int mtk_snand_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
  
- 	if (((int)mftb()) - ms->timestamp < 0)
-@@ -361,12 +361,12 @@ static void mpc52xx_spi_wq(struct work_struct *work)
- }
- 
- /*
-- * spi_master ops
-+ * spi_controller ops
-  */
- 
- static int mpc52xx_spi_transfer(struct spi_device *spi, struct spi_message *m)
+ static int mtk_snand_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
  {
--	struct mpc52xx_spi *ms = spi_master_get_devdata(spi->master);
-+	struct mpc52xx_spi *ms = spi_controller_get_devdata(spi->controller);
- 	unsigned long flags;
+-	struct mtk_snand *ms = spi_controller_get_devdata(mem->spi->master);
++	struct mtk_snand *ms = spi_controller_get_devdata(mem->spi->controller);
  
- 	m->actual_length = 0;
-@@ -385,7 +385,7 @@ static int mpc52xx_spi_transfer(struct spi_device *spi, struct spi_message *m)
-  */
- static int mpc52xx_spi_probe(struct platform_device *op)
- {
--	struct spi_master *master;
-+	struct spi_controller *host;
- 	struct mpc52xx_spi *ms;
- 	struct gpio_desc *gpio_cs;
- 	void __iomem *regs;
-@@ -406,7 +406,7 @@ static int mpc52xx_spi_probe(struct platform_device *op)
- 	out_8(regs + SPI_PORTDATA, 0x8);	/* Deassert /SS signal */
+ 	dev_dbg(ms->dev, "OP %02x ADDR %08llX@%d:%u DATA %d:%u", op->cmd.opcode,
+ 		op->addr.val, op->addr.buswidth, op->addr.nbytes,
+@@ -1382,7 +1382,7 @@ static int mtk_snand_probe(struct platform_device *pdev)
+ 	if (!dev_id)
+ 		return -EINVAL;
  
- 	/* Clear the status register and re-read it to check for a MODF
--	 * failure.  This driver cannot currently handle multiple masters
-+	 * failure.  This driver cannot currently handle multiple hosts
- 	 * on the SPI bus.  This fault will also occur if the SPI signals
- 	 * are not connected to any pins (port_config setting) */
- 	in_8(regs + SPI_STATUS);
-@@ -419,22 +419,22 @@ static int mpc52xx_spi_probe(struct platform_device *op)
- 		goto err_init;
- 	}
- 
--	dev_dbg(&op->dev, "allocating spi_master struct\n");
--	master = spi_alloc_master(&op->dev, sizeof(*ms));
--	if (!master) {
-+	dev_dbg(&op->dev, "allocating spi_controller struct\n");
-+	host = spi_alloc_host(&op->dev, sizeof(*ms));
-+	if (!host) {
- 		rc = -ENOMEM;
- 		goto err_alloc;
- 	}
- 
--	master->transfer = mpc52xx_spi_transfer;
--	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST;
--	master->bits_per_word_mask = SPI_BPW_MASK(8);
--	master->dev.of_node = op->dev.of_node;
-+	host->transfer = mpc52xx_spi_transfer;
-+	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST;
-+	host->bits_per_word_mask = SPI_BPW_MASK(8);
-+	host->dev.of_node = op->dev.of_node;
- 
--	platform_set_drvdata(op, master);
-+	platform_set_drvdata(op, host);
- 
--	ms = spi_master_get_devdata(master);
--	ms->master = master;
-+	ms = spi_controller_get_devdata(host);
-+	ms->host = host;
- 	ms->regs = regs;
- 	ms->irq0 = irq_of_parse_and_map(op->dev.of_node, 0);
- 	ms->irq1 = irq_of_parse_and_map(op->dev.of_node, 1);
-@@ -442,7 +442,7 @@ static int mpc52xx_spi_probe(struct platform_device *op)
- 	ms->ipb_freq = mpc5xxx_get_bus_frequency(&op->dev);
- 	ms->gpio_cs_count = gpiod_count(&op->dev, NULL);
- 	if (ms->gpio_cs_count > 0) {
--		master->num_chipselect = ms->gpio_cs_count;
-+		host->num_chipselect = ms->gpio_cs_count;
- 		ms->gpio_cs = kmalloc_array(ms->gpio_cs_count,
- 					    sizeof(*ms->gpio_cs),
- 					    GFP_KERNEL);
-@@ -489,24 +489,24 @@ static int mpc52xx_spi_probe(struct platform_device *op)
- 	if (!ms->irq0)
- 		dev_info(&op->dev, "using polled mode\n");
- 
--	dev_dbg(&op->dev, "registering spi_master struct\n");
--	rc = spi_register_master(master);
-+	dev_dbg(&op->dev, "registering spi_controller struct\n");
-+	rc = spi_register_controller(host);
- 	if (rc)
- 		goto err_register;
- 
--	dev_info(&ms->master->dev, "registered MPC5200 SPI bus\n");
-+	dev_info(&ms->host->dev, "registered MPC5200 SPI bus\n");
- 
- 	return rc;
- 
-  err_register:
--	dev_err(&ms->master->dev, "initialization failed\n");
-+	dev_err(&ms->host->dev, "initialization failed\n");
-  err_gpio:
- 	while (i-- > 0)
- 		gpiod_put(ms->gpio_cs[i]);
- 
- 	kfree(ms->gpio_cs);
-  err_alloc_gpio:
--	spi_master_put(master);
-+	spi_controller_put(host);
-  err_alloc:
-  err_init:
- 	iounmap(regs);
-@@ -515,8 +515,8 @@ static int mpc52xx_spi_probe(struct platform_device *op)
- 
- static void mpc52xx_spi_remove(struct platform_device *op)
- {
--	struct spi_master *master = spi_master_get(platform_get_drvdata(op));
--	struct mpc52xx_spi *ms = spi_master_get_devdata(master);
-+	struct spi_controller *host = spi_controller_get(platform_get_drvdata(op));
-+	struct mpc52xx_spi *ms = spi_controller_get_devdata(host);
- 	int i;
- 
- 	free_irq(ms->irq0, ms);
-@@ -526,9 +526,9 @@ static void mpc52xx_spi_remove(struct platform_device *op)
- 		gpiod_put(ms->gpio_cs[i]);
- 
- 	kfree(ms->gpio_cs);
--	spi_unregister_master(master);
-+	spi_unregister_controller(host);
- 	iounmap(ms->regs);
--	spi_master_put(master);
-+	spi_controller_put(host);
- }
- 
- static const struct of_device_id mpc52xx_spi_match[] = {
+-	ctlr = devm_spi_alloc_master(&pdev->dev, sizeof(*ms));
++	ctlr = devm_spi_alloc_host(&pdev->dev, sizeof(*ms));
+ 	if (!ctlr)
+ 		return -ENOMEM;
+ 	platform_set_drvdata(pdev, ctlr);
 -- 
 2.25.1
 

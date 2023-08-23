@@ -2,25 +2,25 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BC707EE4993
-	for <linux-spi@archiver.kernel.org>; Wed, 23 Aug 2023 13:40:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B3CD7EE49B2
+	for <linux-spi@archiver.kernel.org>; Wed, 23 Aug 2023 13:40:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236248AbjHWNkT (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 23 Aug 2023 09:40:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55014 "EHLO
+        id S236255AbjHWNkV (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 23 Aug 2023 09:40:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236246AbjHWNkS (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 23 Aug 2023 09:40:18 -0400
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F08BE184
-        for <linux-spi@vger.kernel.org>; Wed, 23 Aug 2023 06:40:15 -0700 (PDT)
+        with ESMTP id S236246AbjHWNkU (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 23 Aug 2023 09:40:20 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 601F0184
+        for <linux-spi@vger.kernel.org>; Wed, 23 Aug 2023 06:40:18 -0700 (PDT)
 Received: from kwepemi500012.china.huawei.com (unknown [172.30.72.57])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4RW6kC4Q7nz16Nxc;
-        Wed, 23 Aug 2023 21:38:43 +0800 (CST)
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RW6gf6j7LztSFf;
+        Wed, 23 Aug 2023 21:36:30 +0800 (CST)
 Received: from huawei.com (10.90.53.73) by kwepemi500012.china.huawei.com
  (7.221.188.12) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Wed, 23 Aug
- 2023 21:40:11 +0800
+ 2023 21:40:14 +0800
 From:   Li Zetao <lizetao1@huawei.com>
 To:     <lizetao1@huawei.com>
 CC:     <andrew@aj.id.au>, <angelogioacchino.delregno@collabora.com>,
@@ -45,9 +45,9 @@ CC:     <andrew@aj.id.au>, <angelogioacchino.delregno@collabora.com>,
         <tali.perry1@gmail.com>, <tmaimon77@gmail.com>,
         <venture@google.com>, <yuenn@google.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH -next v2 20/25] spi: npcm-fiu: Use helper function devm_clk_get_enabled()
-Date:   Wed, 23 Aug 2023 21:39:33 +0800
-Message-ID: <20230823133938.1359106-21-lizetao1@huawei.com>
+Subject: [PATCH -next v2 22/25] spi: pic32-sqi: Use helper function devm_clk_get_enabled()
+Date:   Wed, 23 Aug 2023 21:39:35 +0800
+Message-ID: <20230823133938.1359106-23-lizetao1@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230823133938.1359106-1-lizetao1@huawei.com>
 References: <20230822131237.1022815-1-lizetao1@huawei.com>
@@ -74,59 +74,80 @@ Signed-off-by: Li Zetao <lizetao1@huawei.com>
 ---
 v1 -> v2: None
 
- drivers/spi/spi-npcm-fiu.c | 14 +++-----------
- 1 file changed, 3 insertions(+), 11 deletions(-)
+ drivers/spi/spi-pic32-sqi.c | 27 +++------------------------
+ 1 file changed, 3 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/spi/spi-npcm-fiu.c b/drivers/spi/spi-npcm-fiu.c
-index 0ca21ff0e9cc..1a5277ff349f 100644
---- a/drivers/spi/spi-npcm-fiu.c
-+++ b/drivers/spi/spi-npcm-fiu.c
-@@ -699,7 +699,7 @@ static int npcm_fiu_probe(struct platform_device *pdev)
- 	struct spi_controller *ctrl;
- 	struct npcm_fiu_spi *fiu;
- 	void __iomem *regbase;
--	int id, ret;
-+	int id;
+diff --git a/drivers/spi/spi-pic32-sqi.c b/drivers/spi/spi-pic32-sqi.c
+index 883354d0ff52..3f1e5b27776b 100644
+--- a/drivers/spi/spi-pic32-sqi.c
++++ b/drivers/spi/spi-pic32-sqi.c
+@@ -593,33 +593,20 @@ static int pic32_sqi_probe(struct platform_device *pdev)
+ 	}
  
- 	ctrl = devm_spi_alloc_host(dev, sizeof(*fiu));
- 	if (!ctrl)
-@@ -737,7 +737,7 @@ static int npcm_fiu_probe(struct platform_device *pdev)
+ 	/* clocks */
+-	sqi->sys_clk = devm_clk_get(&pdev->dev, "reg_ck");
++	sqi->sys_clk = devm_clk_get_enabled(&pdev->dev, "reg_ck");
+ 	if (IS_ERR(sqi->sys_clk)) {
+ 		ret = PTR_ERR(sqi->sys_clk);
+ 		dev_err(&pdev->dev, "no sys_clk ?\n");
+ 		goto err_free_host;
+ 	}
  
- 	fiu->res_mem = platform_get_resource_byname(pdev, IORESOURCE_MEM,
- 						    "memory");
--	fiu->clk = devm_clk_get(dev, NULL);
-+	fiu->clk = devm_clk_get_enabled(dev, NULL);
- 	if (IS_ERR(fiu->clk))
- 		return PTR_ERR(fiu->clk);
+-	sqi->base_clk = devm_clk_get(&pdev->dev, "spi_ck");
++	sqi->base_clk = devm_clk_get_enabled(&pdev->dev, "spi_ck");
+ 	if (IS_ERR(sqi->base_clk)) {
+ 		ret = PTR_ERR(sqi->base_clk);
+ 		dev_err(&pdev->dev, "no base clk ?\n");
+ 		goto err_free_host;
+ 	}
  
-@@ -745,7 +745,6 @@ static int npcm_fiu_probe(struct platform_device *pdev)
- 					       "nuvoton,spix-mode");
- 
- 	platform_set_drvdata(pdev, fiu);
--	clk_prepare_enable(fiu->clk);
- 
- 	ctrl->mode_bits = SPI_RX_DUAL | SPI_RX_QUAD
- 		| SPI_TX_DUAL | SPI_TX_QUAD;
-@@ -755,18 +754,11 @@ static int npcm_fiu_probe(struct platform_device *pdev)
- 	ctrl->num_chipselect = fiu->info->max_cs;
- 	ctrl->dev.of_node = dev->of_node;
- 
--	ret = devm_spi_register_controller(dev, ctrl);
--	if (ret)
--		clk_disable_unprepare(fiu->clk);
+-	ret = clk_prepare_enable(sqi->sys_clk);
+-	if (ret) {
+-		dev_err(&pdev->dev, "sys clk enable failed\n");
+-		goto err_free_host;
+-	}
 -
--	return ret;
-+	return devm_spi_register_controller(dev, ctrl);
+-	ret = clk_prepare_enable(sqi->base_clk);
+-	if (ret) {
+-		dev_err(&pdev->dev, "base clk enable failed\n");
+-		clk_disable_unprepare(sqi->sys_clk);
+-		goto err_free_host;
+-	}
+-
+ 	init_completion(&sqi->xfer_done);
+ 
+ 	/* initialize hardware */
+@@ -629,7 +616,7 @@ static int pic32_sqi_probe(struct platform_device *pdev)
+ 	ret = ring_desc_ring_alloc(sqi);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "ring alloc failed\n");
+-		goto err_disable_clk;
++		goto err_free_host;
+ 	}
+ 
+ 	/* install irq handlers */
+@@ -669,10 +656,6 @@ static int pic32_sqi_probe(struct platform_device *pdev)
+ err_free_ring:
+ 	ring_desc_ring_free(sqi);
+ 
+-err_disable_clk:
+-	clk_disable_unprepare(sqi->base_clk);
+-	clk_disable_unprepare(sqi->sys_clk);
+-
+ err_free_host:
+ 	spi_controller_put(host);
+ 	return ret;
+@@ -685,10 +668,6 @@ static void pic32_sqi_remove(struct platform_device *pdev)
+ 	/* release resources */
+ 	free_irq(sqi->irq, sqi);
+ 	ring_desc_ring_free(sqi);
+-
+-	/* disable clk */
+-	clk_disable_unprepare(sqi->base_clk);
+-	clk_disable_unprepare(sqi->sys_clk);
  }
  
- static void npcm_fiu_remove(struct platform_device *pdev)
- {
--	struct npcm_fiu_spi *fiu = platform_get_drvdata(pdev);
--
--	clk_disable_unprepare(fiu->clk);
- }
- 
- MODULE_DEVICE_TABLE(of, npcm_fiu_dt_ids);
+ static const struct of_device_id pic32_sqi_of_ids[] = {
 -- 
 2.34.1
 

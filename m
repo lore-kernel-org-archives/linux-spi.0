@@ -2,25 +2,25 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 45B28EE49B9
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A3F06EE49B5
 	for <linux-spi@archiver.kernel.org>; Wed, 23 Aug 2023 03:33:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232433AbjHWDdq (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S232434AbjHWDdq (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Tue, 22 Aug 2023 23:33:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42690 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232434AbjHWDdn (ORCPT
+        with ESMTP id S230525AbjHWDdn (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Tue, 22 Aug 2023 23:33:43 -0400
 Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EAF0E54
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1AF7CF2
         for <linux-spi@vger.kernel.org>; Tue, 22 Aug 2023 20:33:41 -0700 (PDT)
-Received: from dggpemm500015.china.huawei.com (unknown [172.30.72.56])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RVsCx0qV9zNnGQ;
+Received: from dggpemm500017.china.huawei.com (unknown [172.30.72.57])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RVsCx6FykzNnGV;
         Wed, 23 Aug 2023 11:30:05 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500015.china.huawei.com (7.185.36.181) with Microsoft SMTP Server
+ dggpemm500017.china.huawei.com (7.185.36.178) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Wed, 23 Aug 2023 11:33:39 +0800
+ 15.1.2507.31; Wed, 23 Aug 2023 11:33:40 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Wed, 23 Aug
@@ -29,9 +29,9 @@ From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
         <yangyingliang@huawei.com>
-Subject: [PATCH -next v2 18/21] spi: nxp-fspi: switch to use modern name
-Date:   Wed, 23 Aug 2023 11:30:00 +0800
-Message-ID: <20230823033003.3407403-19-yangyingliang@huawei.com>
+Subject: [PATCH -next v2 20/21] spi: omap-uwire: switch to use modern name
+Date:   Wed, 23 Aug 2023 11:30:02 +0800
+Message-ID: <20230823033003.3407403-21-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230823033003.3407403-1-yangyingliang@huawei.com>
 References: <20230823033003.3407403-1-yangyingliang@huawei.com>
@@ -46,139 +46,94 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Change legacy name master/slave to modern name host/target or controller.
+Change legacy name master to modern name host or controller.
 
 No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-nxp-fspi.c | 30 +++++++++++++++---------------
- 1 file changed, 15 insertions(+), 15 deletions(-)
+ drivers/spi/spi-omap-uwire.c | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-index 45a4acc95661..5dc950c87fe1 100644
---- a/drivers/spi/spi-nxp-fspi.c
-+++ b/drivers/spi/spi-nxp-fspi.c
-@@ -451,7 +451,7 @@ static int nxp_fspi_check_buswidth(struct nxp_fspi *f, u8 width)
- static bool nxp_fspi_supports_op(struct spi_mem *mem,
- 				 const struct spi_mem_op *op)
- {
--	struct nxp_fspi *f = spi_controller_get_devdata(mem->spi->master);
-+	struct nxp_fspi *f = spi_controller_get_devdata(mem->spi->controller);
- 	int ret;
+diff --git a/drivers/spi/spi-omap-uwire.c b/drivers/spi/spi-omap-uwire.c
+index f89aa9e52c23..2dd1c1bcf4bf 100644
+--- a/drivers/spi/spi-omap-uwire.c
++++ b/drivers/spi/spi-omap-uwire.c
+@@ -315,7 +315,7 @@ static int uwire_setup_transfer(struct spi_device *spi, struct spi_transfer *t)
+ 	int			div2;
+ 	int			status;
  
- 	ret = nxp_fspi_check_buswidth(f, op->cmd.buswidth);
-@@ -520,7 +520,7 @@ static int fspi_readl_poll_tout(struct nxp_fspi *f, void __iomem *base,
+-	uwire = spi_master_get_devdata(spi->master);
++	uwire = spi_controller_get_devdata(spi->controller);
+ 
+ 	/* mode 0..3, clock inverted separately;
+ 	 * standard nCS signaling;
+@@ -448,25 +448,25 @@ static void uwire_off(struct uwire_spi *uwire)
+ {
+ 	uwire_write_reg(UWIRE_SR3, 0);
+ 	clk_disable_unprepare(uwire->ck);
+-	spi_master_put(uwire->bitbang.master);
++	spi_controller_put(uwire->bitbang.master);
  }
  
- /*
-- * If the slave device content being changed by Write/Erase, need to
-+ * If the target device content being changed by Write/Erase, need to
-  * invalidate the AHB buffer. This can be achieved by doing the reset
-  * of controller after setting MCR0[SWRESET] bit.
-  */
-@@ -661,7 +661,7 @@ static void nxp_fspi_dll_calibration(struct nxp_fspi *f)
- 
- /*
-  * In FlexSPI controller, flash access is based on value of FSPI_FLSHXXCR0
-- * register and start base address of the slave device.
-+ * register and start base address of the target device.
-  *
-  *							    (Higher address)
-  *				--------    <-- FLSHB2CR0
-@@ -680,15 +680,15 @@ static void nxp_fspi_dll_calibration(struct nxp_fspi *f)
-  *
-  *
-  * Start base address defines the starting address range for given CS and
-- * FSPI_FLSHXXCR0 defines the size of the slave device connected at given CS.
-+ * FSPI_FLSHXXCR0 defines the size of the target device connected at given CS.
-  *
-  * But, different targets are having different combinations of number of CS,
-  * some targets only have single CS or two CS covering controller's full
-  * memory mapped space area.
-  * Thus, implementation is being done as independent of the size and number
-- * of the connected slave device.
-+ * of the connected target device.
-  * Assign controller memory mapped space size as the size to the connected
-- * slave device.
-+ * target device.
-  * Mark FLSHxxCR0 as zero initially and then assign value only to the selected
-  * chip-select Flash configuration register.
-  *
-@@ -704,8 +704,8 @@ static void nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi)
- 	uint64_t size_kb;
- 
- 	/*
--	 * Return, if previously selected slave device is same as current
--	 * requested slave device.
-+	 * Return, if previously selected target device is same as current
-+	 * requested target device.
- 	 */
- 	if (f->selected == spi_get_chipselect(spi, 0))
- 		return;
-@@ -722,7 +722,7 @@ static void nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi)
- 	fspi_writel(f, size_kb, f->iobase + FSPI_FLSHA1CR0 +
- 		    4 * spi_get_chipselect(spi, 0));
- 
--	dev_dbg(f->dev, "Slave device [CS:%x] selected\n", spi_get_chipselect(spi, 0));
-+	dev_dbg(f->dev, "Target device [CS:%x] selected\n", spi_get_chipselect(spi, 0));
- 
- 	nxp_fspi_clk_disable_unprep(f);
- 
-@@ -912,7 +912,7 @@ static int nxp_fspi_do_op(struct nxp_fspi *f, const struct spi_mem_op *op)
- 
- static int nxp_fspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ static int uwire_probe(struct platform_device *pdev)
  {
--	struct nxp_fspi *f = spi_controller_get_devdata(mem->spi->master);
-+	struct nxp_fspi *f = spi_controller_get_devdata(mem->spi->controller);
- 	int err = 0;
+-	struct spi_master	*master;
++	struct spi_controller	*host;
+ 	struct uwire_spi	*uwire;
+ 	int			status;
  
- 	mutex_lock(&f->lock);
-@@ -952,7 +952,7 @@ static int nxp_fspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+-	master = spi_alloc_master(&pdev->dev, sizeof(*uwire));
+-	if (!master)
++	host = spi_alloc_host(&pdev->dev, sizeof(*uwire));
++	if (!host)
+ 		return -ENODEV;
  
- static int nxp_fspi_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
- {
--	struct nxp_fspi *f = spi_controller_get_devdata(mem->spi->master);
-+	struct nxp_fspi *f = spi_controller_get_devdata(mem->spi->controller);
+-	uwire = spi_master_get_devdata(master);
++	uwire = spi_controller_get_devdata(host);
  
- 	if (op->data.dir == SPI_MEM_DATA_OUT) {
- 		if (op->data.nbytes > f->devtype_data->txfifo)
-@@ -1049,7 +1049,7 @@ static int nxp_fspi_default_setup(struct nxp_fspi *f)
- 	fspi_writel(f, FSPI_MCR0_MDIS, base + FSPI_MCR0);
- 
- 	/*
--	 * Config the DLL register to default value, enable the slave clock delay
-+	 * Config the DLL register to default value, enable the target clock delay
- 	 * line delay cell override mode, and use 1 fixed delay cell in DLL delay
- 	 * chain, this is the suggested setting when clock rate < 100MHz.
- 	 */
-@@ -1062,7 +1062,7 @@ static int nxp_fspi_default_setup(struct nxp_fspi *f)
- 		    base + FSPI_MCR0);
- 
- 	/*
--	 * Disable same device enable bit and configure all slave devices
-+	 * Disable same device enable bit and configure all target devices
- 	 * independently.
- 	 */
- 	reg = fspi_readl(f, f->iobase + FSPI_MCR2);
-@@ -1100,7 +1100,7 @@ static int nxp_fspi_default_setup(struct nxp_fspi *f)
- 
- static const char *nxp_fspi_get_name(struct spi_mem *mem)
- {
--	struct nxp_fspi *f = spi_controller_get_devdata(mem->spi->master);
-+	struct nxp_fspi *f = spi_controller_get_devdata(mem->spi->controller);
- 	struct device *dev = &mem->spi->dev;
- 	const char *name;
- 
-@@ -1137,7 +1137,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
- 	int ret;
- 	u32 reg;
- 
--	ctlr = spi_alloc_master(&pdev->dev, sizeof(*f));
-+	ctlr = spi_alloc_host(&pdev->dev, sizeof(*f));
- 	if (!ctlr)
+ 	uwire_base = devm_ioremap(&pdev->dev, UWIRE_BASE_PHYS, UWIRE_IO_SIZE);
+ 	if (!uwire_base) {
+ 		dev_dbg(&pdev->dev, "can't ioremap UWIRE\n");
+-		spi_master_put(master);
++		spi_controller_put(host);
  		return -ENOMEM;
+ 	}
  
+@@ -476,7 +476,7 @@ static int uwire_probe(struct platform_device *pdev)
+ 	if (IS_ERR(uwire->ck)) {
+ 		status = PTR_ERR(uwire->ck);
+ 		dev_dbg(&pdev->dev, "no functional clock?\n");
+-		spi_master_put(master);
++		spi_controller_put(host);
+ 		return status;
+ 	}
+ 	clk_prepare_enable(uwire->ck);
+@@ -484,16 +484,16 @@ static int uwire_probe(struct platform_device *pdev)
+ 	uwire_write_reg(UWIRE_SR3, 1);
+ 
+ 	/* the spi->mode bits understood by this driver: */
+-	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
+-	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 16);
+-	master->flags = SPI_CONTROLLER_HALF_DUPLEX;
++	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
++	host->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 16);
++	host->flags = SPI_CONTROLLER_HALF_DUPLEX;
+ 
+-	master->bus_num = 2;	/* "official" */
+-	master->num_chipselect = 4;
+-	master->setup = uwire_setup;
+-	master->cleanup = uwire_cleanup;
++	host->bus_num = 2;	/* "official" */
++	host->num_chipselect = 4;
++	host->setup = uwire_setup;
++	host->cleanup = uwire_cleanup;
+ 
+-	uwire->bitbang.master = master;
++	uwire->bitbang.master = host;
+ 	uwire->bitbang.chipselect = uwire_chipselect;
+ 	uwire->bitbang.setup_transfer = uwire_setup_transfer;
+ 	uwire->bitbang.txrx_bufs = uwire_txrx;
 -- 
 2.25.1
 

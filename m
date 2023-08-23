@@ -2,25 +2,25 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 165B8EE49A3
-	for <linux-spi@archiver.kernel.org>; Wed, 23 Aug 2023 13:40:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 258A8EE49B6
+	for <linux-spi@archiver.kernel.org>; Wed, 23 Aug 2023 13:40:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236228AbjHWNkL (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 23 Aug 2023 09:40:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54886 "EHLO
+        id S236243AbjHWNkN (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 23 Aug 2023 09:40:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236234AbjHWNkK (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 23 Aug 2023 09:40:10 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 887FFE67
-        for <linux-spi@vger.kernel.org>; Wed, 23 Aug 2023 06:40:07 -0700 (PDT)
-Received: from kwepemi500012.china.huawei.com (unknown [172.30.72.56])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RW6gd72g1zNn6Q;
-        Wed, 23 Aug 2023 21:36:29 +0800 (CST)
+        with ESMTP id S235398AbjHWNkM (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 23 Aug 2023 09:40:12 -0400
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9AE9FB
+        for <linux-spi@vger.kernel.org>; Wed, 23 Aug 2023 06:40:10 -0700 (PDT)
+Received: from kwepemi500012.china.huawei.com (unknown [172.30.72.55])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4RW6hG4ZB9zLpCH;
+        Wed, 23 Aug 2023 21:37:02 +0800 (CST)
 Received: from huawei.com (10.90.53.73) by kwepemi500012.china.huawei.com
  (7.221.188.12) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Wed, 23 Aug
- 2023 21:40:03 +0800
+ 2023 21:40:06 +0800
 From:   Li Zetao <lizetao1@huawei.com>
 To:     <lizetao1@huawei.com>
 CC:     <andrew@aj.id.au>, <angelogioacchino.delregno@collabora.com>,
@@ -43,10 +43,11 @@ CC:     <andrew@aj.id.au>, <angelogioacchino.delregno@collabora.com>,
         <olteanv@gmail.com>, <openbmc@lists.ozlabs.org>,
         <rjui@broadcom.com>, <sbranden@broadcom.com>,
         <tali.perry1@gmail.com>, <tmaimon77@gmail.com>,
-        <venture@google.com>, <yuenn@google.com>
-Subject: [PATCH -next v2 12/25] spi: dw-mmio: Use helper function devm_clk_get_*()
-Date:   Wed, 23 Aug 2023 21:39:25 +0800
-Message-ID: <20230823133938.1359106-13-lizetao1@huawei.com>
+        <venture@google.com>, <yuenn@google.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH -next v2 15/25] spi: meson-spicc: Use helper function devm_clk_get_enabled()
+Date:   Wed, 23 Aug 2023 21:39:28 +0800
+Message-ID: <20230823133938.1359106-16-lizetao1@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230823133938.1359106-1-lizetao1@huawei.com>
 References: <20230822131237.1022815-1-lizetao1@huawei.com>
@@ -66,88 +67,105 @@ Since commit 7ef9651e9792 ("clk: Provide new devm_clk helpers for prepared
 and enabled clocks"), devm_clk_get() and clk_prepare_enable() can now be
 replaced by devm_clk_get_enabled() when driver enables (and possibly
 prepares) the clocks for the whole lifetime of the device. Moreover, it is
-no longer necessary to unprepare and disable the clocks explicitly. Also,
-devm_clk_get_optional() and clk_prepare_enable() can now be replaced by
-devm_clk_get_optional_enabled(). Moreover, the lable "out_clk" no longer
-makes sense, rename it to "out_reset".
+no longer necessary to unprepare and disable the clocks explicitly.
 
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Li Zetao <lizetao1@huawei.com>
 ---
-v1 -> v2: Return directly instead of calling reset_control_deassert()
-before the reset control handler has been requested. And use the
-"out_reset" label instead of "out" before calling pm_runtime_enable().
+v1 -> v2: None
 
- drivers/spi/spi-dw-mmio.c | 31 +++++++++----------------------
- 1 file changed, 9 insertions(+), 22 deletions(-)
+ drivers/spi/spi-meson-spicc.c | 33 ++++++---------------------------
+ 1 file changed, 6 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
-index 805264c9c65c..46801189a651 100644
---- a/drivers/spi/spi-dw-mmio.c
-+++ b/drivers/spi/spi-dw-mmio.c
-@@ -340,29 +340,20 @@ static int dw_spi_mmio_probe(struct platform_device *pdev)
- 	if (dws->irq < 0)
- 		return dws->irq; /* -ENXIO */
- 
--	dwsmmio->clk = devm_clk_get(&pdev->dev, NULL);
-+	dwsmmio->clk = devm_clk_get_enabled(&pdev->dev, NULL);
- 	if (IS_ERR(dwsmmio->clk))
- 		return PTR_ERR(dwsmmio->clk);
--	ret = clk_prepare_enable(dwsmmio->clk);
--	if (ret)
--		return ret;
- 
- 	/* Optional clock needed to access the registers */
--	dwsmmio->pclk = devm_clk_get_optional(&pdev->dev, "pclk");
--	if (IS_ERR(dwsmmio->pclk)) {
--		ret = PTR_ERR(dwsmmio->pclk);
--		goto out_clk;
--	}
--	ret = clk_prepare_enable(dwsmmio->pclk);
--	if (ret)
--		goto out_clk;
-+	dwsmmio->pclk = devm_clk_get_optional_enabled(&pdev->dev, "pclk");
-+	if (IS_ERR(dwsmmio->pclk))
-+		return PTR_ERR(dwsmmio->pclk);
- 
- 	/* find an optional reset controller */
- 	dwsmmio->rstc = devm_reset_control_get_optional_exclusive(&pdev->dev, "spi");
--	if (IS_ERR(dwsmmio->rstc)) {
--		ret = PTR_ERR(dwsmmio->rstc);
--		goto out_clk;
--	}
-+	if (IS_ERR(dwsmmio->rstc))
-+		return PTR_ERR(dwsmmio->rstc);
-+
- 	reset_control_deassert(dwsmmio->rstc);
- 
- 	dws->bus_num = pdev->id;
-@@ -383,7 +374,7 @@ static int dw_spi_mmio_probe(struct platform_device *pdev)
- 	if (init_func) {
- 		ret = init_func(pdev, dwsmmio);
- 		if (ret)
--			goto out;
-+			goto out_reset;
+diff --git a/drivers/spi/spi-meson-spicc.c b/drivers/spi/spi-meson-spicc.c
+index 43d134f4b42b..1f2d26254e03 100644
+--- a/drivers/spi/spi-meson-spicc.c
++++ b/drivers/spi/spi-meson-spicc.c
+@@ -820,7 +820,7 @@ static int meson_spicc_probe(struct platform_device *pdev)
+ 		goto out_master;
  	}
  
- 	pm_runtime_enable(&pdev->dev);
-@@ -397,9 +388,7 @@ static int dw_spi_mmio_probe(struct platform_device *pdev)
+-	spicc->core = devm_clk_get(&pdev->dev, "core");
++	spicc->core = devm_clk_get_enabled(&pdev->dev, "core");
+ 	if (IS_ERR(spicc->core)) {
+ 		dev_err(&pdev->dev, "core clock request failed\n");
+ 		ret = PTR_ERR(spicc->core);
+@@ -828,7 +828,7 @@ static int meson_spicc_probe(struct platform_device *pdev)
+ 	}
  
- out:
- 	pm_runtime_disable(&pdev->dev);
--	clk_disable_unprepare(dwsmmio->pclk);
+ 	if (spicc->data->has_pclk) {
+-		spicc->pclk = devm_clk_get(&pdev->dev, "pclk");
++		spicc->pclk = devm_clk_get_enabled(&pdev->dev, "pclk");
+ 		if (IS_ERR(spicc->pclk)) {
+ 			dev_err(&pdev->dev, "pclk clock request failed\n");
+ 			ret = PTR_ERR(spicc->pclk);
+@@ -836,22 +836,10 @@ static int meson_spicc_probe(struct platform_device *pdev)
+ 		}
+ 	}
+ 
+-	ret = clk_prepare_enable(spicc->core);
+-	if (ret) {
+-		dev_err(&pdev->dev, "core clock enable failed\n");
+-		goto out_master;
+-	}
+-
+-	ret = clk_prepare_enable(spicc->pclk);
+-	if (ret) {
+-		dev_err(&pdev->dev, "pclk clock enable failed\n");
+-		goto out_core_clk;
+-	}
+-
+ 	spicc->pinctrl = devm_pinctrl_get(&pdev->dev);
+ 	if (IS_ERR(spicc->pinctrl)) {
+ 		ret = PTR_ERR(spicc->pinctrl);
+-		goto out_clk;
++		goto out_master;
+ 	}
+ 
+ 	device_reset_optional(&pdev->dev);
+@@ -878,31 +866,25 @@ static int meson_spicc_probe(struct platform_device *pdev)
+ 	ret = meson_spicc_pow2_clk_init(spicc);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "pow2 clock registration failed\n");
+-		goto out_clk;
++		goto out_master;
+ 	}
+ 
+ 	if (spicc->data->has_enhance_clk_div) {
+ 		ret = meson_spicc_enh_clk_init(spicc);
+ 		if (ret) {
+ 			dev_err(&pdev->dev, "clock registration failed\n");
+-			goto out_clk;
++			goto out_master;
+ 		}
+ 	}
+ 
+ 	ret = devm_spi_register_master(&pdev->dev, master);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "spi master registration failed\n");
+-		goto out_clk;
++		goto out_master;
+ 	}
+ 
+ 	return 0;
+ 
 -out_clk:
--	clk_disable_unprepare(dwsmmio->clk);
-+out_reset:
- 	reset_control_assert(dwsmmio->rstc);
+-	clk_disable_unprepare(spicc->pclk);
+-
+-out_core_clk:
+-	clk_disable_unprepare(spicc->core);
+-
+ out_master:
+ 	spi_master_put(master);
  
- 	return ret;
-@@ -411,8 +400,6 @@ static void dw_spi_mmio_remove(struct platform_device *pdev)
+@@ -916,9 +898,6 @@ static void meson_spicc_remove(struct platform_device *pdev)
+ 	/* Disable SPI */
+ 	writel(0, spicc->base + SPICC_CONREG);
  
- 	dw_spi_remove_host(&dwsmmio->dws);
- 	pm_runtime_disable(&pdev->dev);
--	clk_disable_unprepare(dwsmmio->pclk);
--	clk_disable_unprepare(dwsmmio->clk);
- 	reset_control_assert(dwsmmio->rstc);
+-	clk_disable_unprepare(spicc->core);
+-	clk_disable_unprepare(spicc->pclk);
+-
+ 	spi_master_put(spicc->master);
  }
  
 -- 

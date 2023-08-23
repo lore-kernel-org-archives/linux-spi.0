@@ -2,36 +2,36 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F130BEE49AF
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8394AEE49B0
 	for <linux-spi@archiver.kernel.org>; Wed, 23 Aug 2023 03:33:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232297AbjHWDdj (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 22 Aug 2023 23:33:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42648 "EHLO
+        id S232321AbjHWDdi (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 22 Aug 2023 23:33:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232314AbjHWDdi (ORCPT
+        with ESMTP id S232297AbjHWDdi (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Tue, 22 Aug 2023 23:33:38 -0400
 Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3D0CE4D
-        for <linux-spi@vger.kernel.org>; Tue, 22 Aug 2023 20:33:35 -0700 (PDT)
-Received: from dggpemm100002.china.huawei.com (unknown [172.30.72.57])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4RVsDN6M69zLpJk;
-        Wed, 23 Aug 2023 11:30:28 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AC07E51
+        for <linux-spi@vger.kernel.org>; Tue, 22 Aug 2023 20:33:36 -0700 (PDT)
+Received: from dggpemm500001.china.huawei.com (unknown [172.30.72.57])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4RVsDP70JJzLpK5;
+        Wed, 23 Aug 2023 11:30:29 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm100002.china.huawei.com (7.185.36.179) with Microsoft SMTP Server
+ dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Wed, 23 Aug 2023 11:33:33 +0800
+ 15.1.2507.31; Wed, 23 Aug 2023 11:33:34 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Wed, 23 Aug
- 2023 11:33:33 +0800
+ 2023 11:33:34 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
         <yangyingliang@huawei.com>
-Subject: [PATCH -next v2 02/21] spi: lp-8841: switch to use modern name
-Date:   Wed, 23 Aug 2023 11:29:44 +0800
-Message-ID: <20230823033003.3407403-3-yangyingliang@huawei.com>
+Subject: [PATCH -next v2 05/21] spi: microchip-core-qspi: switch to use modern name
+Date:   Wed, 23 Aug 2023 11:29:47 +0800
+Message-ID: <20230823033003.3407403-6-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230823033003.3407403-1-yangyingliang@huawei.com>
 References: <20230823033003.3407403-1-yangyingliang@huawei.com>
@@ -46,152 +46,59 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Change legacy name master/slave to modern name host/target or controller.
+Change legacy name master to modern name host or controller.
 
 No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-lp8841-rtc.c | 56 ++++++++++++++++++------------------
- 1 file changed, 28 insertions(+), 28 deletions(-)
+ drivers/spi/spi-microchip-core-qspi.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/spi/spi-lp8841-rtc.c b/drivers/spi/spi-lp8841-rtc.c
-index b357461f1b8b..382e2a69f7a7 100644
---- a/drivers/spi/spi-lp8841-rtc.c
-+++ b/drivers/spi/spi-lp8841-rtc.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-or-later
- /*
-- * SPI master driver for ICP DAS LP-8841 RTC
-+ * SPI host driver for ICP DAS LP-8841 RTC
-  *
-  * Copyright (C) 2016 Sergei Ianovich
-  *
-@@ -73,13 +73,13 @@ bitbang_txrx_be_cpha0_lsb(struct spi_lp8841_rtc *data,
- 	/* clock starts at inactive polarity */
- 	for (; likely(bits); bits--) {
+diff --git a/drivers/spi/spi-microchip-core-qspi.c b/drivers/spi/spi-microchip-core-qspi.c
+index 4f76ddf97b10..306b38f1dc15 100644
+--- a/drivers/spi/spi-microchip-core-qspi.c
++++ b/drivers/spi/spi-microchip-core-qspi.c
+@@ -299,7 +299,7 @@ static int mchp_coreqspi_setup_clock(struct mchp_coreqspi *qspi, struct spi_devi
  
--		/* setup LSB (to slave) on leading edge */
-+		/* setup LSB (to target) on leading edge */
- 		if ((flags & SPI_CONTROLLER_NO_TX) == 0)
- 			setmosi(data, (word & 1));
- 
- 		usleep_range(usecs, usecs + 1);	/* T(setup) */
- 
--		/* sample LSB (from slave) on trailing edge */
-+		/* sample LSB (from target) on trailing edge */
- 		word >>= 1;
- 		if ((flags & SPI_CONTROLLER_NO_RX) == 0)
- 			word |= (getmiso(data) << 31);
-@@ -95,11 +95,11 @@ bitbang_txrx_be_cpha0_lsb(struct spi_lp8841_rtc *data,
- }
- 
- static int
--spi_lp8841_rtc_transfer_one(struct spi_master *master,
-+spi_lp8841_rtc_transfer_one(struct spi_controller *host,
- 			    struct spi_device *spi,
- 			    struct spi_transfer *t)
+ static int mchp_coreqspi_setup_op(struct spi_device *spi_dev)
  {
--	struct spi_lp8841_rtc	*data = spi_master_get_devdata(master);
-+	struct spi_lp8841_rtc	*data = spi_controller_get_devdata(host);
- 	unsigned		count = t->len;
- 	const u8		*tx = t->tx_buf;
- 	u8			*rx = t->rx_buf;
-@@ -128,7 +128,7 @@ spi_lp8841_rtc_transfer_one(struct spi_master *master,
- 		ret = -EINVAL;
- 	}
+-	struct spi_controller *ctlr = spi_dev->master;
++	struct spi_controller *ctlr = spi_dev->controller;
+ 	struct mchp_coreqspi *qspi = spi_controller_get_devdata(ctlr);
+ 	u32 control = readl_relaxed(qspi->regs + REG_CONTROL);
  
--	spi_finalize_current_transfer(master);
-+	spi_finalize_current_transfer(host);
- 
- 	return ret;
- }
-@@ -136,7 +136,7 @@ spi_lp8841_rtc_transfer_one(struct spi_master *master,
- static void
- spi_lp8841_rtc_set_cs(struct spi_device *spi, bool enable)
+@@ -368,7 +368,7 @@ static inline void mchp_coreqspi_config_op(struct mchp_coreqspi *qspi, const str
+ static int mchp_qspi_wait_for_ready(struct spi_mem *mem)
  {
--	struct spi_lp8841_rtc *data = spi_master_get_devdata(spi->master);
-+	struct spi_lp8841_rtc *data = spi_controller_get_devdata(spi->controller);
+ 	struct mchp_coreqspi *qspi = spi_controller_get_devdata
+-				    (mem->spi->master);
++				    (mem->spi->controller);
+ 	u32 status;
+ 	int ret;
  
- 	data->state = 0;
- 	writeb(data->state, data->iomem);
-@@ -182,48 +182,48 @@ static int
- spi_lp8841_rtc_probe(struct platform_device *pdev)
+@@ -387,7 +387,7 @@ static int mchp_qspi_wait_for_ready(struct spi_mem *mem)
+ static int mchp_coreqspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
  {
- 	int				ret;
--	struct spi_master		*master;
-+	struct spi_controller		*host;
- 	struct spi_lp8841_rtc		*data;
+ 	struct mchp_coreqspi *qspi = spi_controller_get_devdata
+-				    (mem->spi->master);
++				    (mem->spi->controller);
+ 	u32 address = op->addr.val;
+ 	u8 opcode = op->cmd.opcode;
+ 	u8 opaddr[5];
+@@ -505,10 +505,10 @@ static int mchp_coreqspi_probe(struct platform_device *pdev)
+ 	struct device_node *np = dev->of_node;
+ 	int ret;
  
--	master = spi_alloc_master(&pdev->dev, sizeof(*data));
--	if (!master)
-+	host = spi_alloc_host(&pdev->dev, sizeof(*data));
-+	if (!host)
- 		return -ENOMEM;
--	platform_set_drvdata(pdev, master);
-+	platform_set_drvdata(pdev, host);
+-	ctlr = devm_spi_alloc_master(&pdev->dev, sizeof(*qspi));
++	ctlr = devm_spi_alloc_host(&pdev->dev, sizeof(*qspi));
+ 	if (!ctlr)
+ 		return dev_err_probe(&pdev->dev, -ENOMEM,
+-				     "unable to allocate master for QSPI controller\n");
++				     "unable to allocate host for QSPI controller\n");
  
--	master->flags = SPI_CONTROLLER_HALF_DUPLEX;
--	master->mode_bits = SPI_CS_HIGH | SPI_3WIRE | SPI_LSB_FIRST;
-+	host->flags = SPI_CONTROLLER_HALF_DUPLEX;
-+	host->mode_bits = SPI_CS_HIGH | SPI_3WIRE | SPI_LSB_FIRST;
- 
--	master->bus_num = pdev->id;
--	master->num_chipselect = 1;
--	master->setup = spi_lp8841_rtc_setup;
--	master->set_cs = spi_lp8841_rtc_set_cs;
--	master->transfer_one = spi_lp8841_rtc_transfer_one;
--	master->bits_per_word_mask = SPI_BPW_MASK(8);
-+	host->bus_num = pdev->id;
-+	host->num_chipselect = 1;
-+	host->setup = spi_lp8841_rtc_setup;
-+	host->set_cs = spi_lp8841_rtc_set_cs;
-+	host->transfer_one = spi_lp8841_rtc_transfer_one;
-+	host->bits_per_word_mask = SPI_BPW_MASK(8);
- #ifdef CONFIG_OF
--	master->dev.of_node = pdev->dev.of_node;
-+	host->dev.of_node = pdev->dev.of_node;
- #endif
- 
--	data = spi_master_get_devdata(master);
-+	data = spi_controller_get_devdata(host);
- 
- 	data->iomem = devm_platform_ioremap_resource(pdev, 0);
- 	ret = PTR_ERR_OR_ZERO(data->iomem);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to get IO address\n");
--		goto err_put_master;
-+		goto err_put_host;
- 	}
- 
- 	/* register with the SPI framework */
--	ret = devm_spi_register_master(&pdev->dev, master);
-+	ret = devm_spi_register_controller(&pdev->dev, host);
- 	if (ret) {
--		dev_err(&pdev->dev, "cannot register spi master\n");
--		goto err_put_master;
-+		dev_err(&pdev->dev, "cannot register spi host\n");
-+		goto err_put_host;
- 	}
- 
- 	return ret;
- 
- 
--err_put_master:
--	spi_master_put(master);
-+err_put_host:
-+	spi_controller_put(host);
- 
- 	return ret;
- }
-@@ -239,6 +239,6 @@ static struct platform_driver spi_lp8841_rtc_driver = {
- };
- module_platform_driver(spi_lp8841_rtc_driver);
- 
--MODULE_DESCRIPTION("SPI master driver for ICP DAS LP-8841 RTC");
-+MODULE_DESCRIPTION("SPI host driver for ICP DAS LP-8841 RTC");
- MODULE_AUTHOR("Sergei Ianovich");
- MODULE_LICENSE("GPL");
+ 	qspi = spi_controller_get_devdata(ctlr);
+ 	platform_set_drvdata(pdev, qspi);
 -- 
 2.25.1
 

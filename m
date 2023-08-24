@@ -2,74 +2,69 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6A918C3DA6F
-	for <linux-spi@archiver.kernel.org>; Thu, 24 Aug 2023 19:45:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F3F30C88CB2
+	for <linux-spi@archiver.kernel.org>; Thu, 24 Aug 2023 23:16:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237969AbjHXTpF (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 24 Aug 2023 15:45:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52462 "EHLO
+        id S244014AbjHXXPo (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 24 Aug 2023 19:15:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243355AbjHXToq (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 24 Aug 2023 15:44:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A7651FC1;
-        Thu, 24 Aug 2023 12:44:28 -0700 (PDT)
+        with ESMTP id S243944AbjHXXPX (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 24 Aug 2023 19:15:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 287931BD4;
+        Thu, 24 Aug 2023 16:15:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3028D66EBA;
-        Thu, 24 Aug 2023 19:44:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB375C433C7;
-        Thu, 24 Aug 2023 19:44:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BAD9D64A46;
+        Thu, 24 Aug 2023 23:15:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 2BCCAC433C8;
+        Thu, 24 Aug 2023 23:15:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692906267;
-        bh=xyMcHvNO8wXBTatKUK3qpMMhOqKl23C9JPMzqwblmfM=;
-        h=From:To:Cc:Subject:Date:From;
-        b=GWzOEQnFv+ltauBMjimchKlOB6fl9XwiAFFSuLLHs3KxNYo3kB70se5Fpo60YrMg2
-         1RpwnO/MWHPgnd7w9lmUZEfeKHiEzNYfwZyLa+KCpQ61A85omod/c9BKbv03wTEbgk
-         ULF+/lMzNZGq3pd2GkJGflAJm+ofvSscVdx17PS5yc/GsJHd7xBN5V8pHaNtB+sRbs
-         hDYbzyCWWy0g731xUmSChW9wFTJ+evD+ZdQA/e2VJ+0f6s0G0sIXftGRHW4WWXiVuk
-         dwcdQnz9SREIvxAcLdUpzEhXVCFg2+0ZRJ361Z/XyDRi1jWN7Kcf5MGIwkWwcQFOTl
-         AeRDBF/pftGmA==
-Message-ID: <9a29df1bae4a68227ef337ae9f0a4cf6.broonie@kernel.org>
-From:   Mark Brown <broonie@kernel.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        s=k20201202; t=1692918921;
+        bh=q1qRoKFqM3T35QVHRGSxfbO5j++EBRhx/zhr2cPRrBE=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=HjZBCww4kNH4BHQ7jOVBai1E01oZKLEy0DdWtsgwJvflRDFNLQklpx8TsnPcRDmUM
+         Gorard2SwxU0ba8n09DRhwonhzrXwTCOrOhS3pPjK4jPbwK/Yuv9U33Y7VZGcMk17m
+         msF5/k4qss2/lepvWt2lIHR8O7desIeQVharHJTyAj+LtCOpHCb4/K/GVjLYE4OJDt
+         U2qBpVZiaRo1APO9+Am/Ty8TSf3cFYv0v/4XrNItdBn7LcQMfGHpHpJH7I+lUTskr3
+         dAh2+SIlLE60mRn03y7bMDHNYeMfuw475NjoK/Nmc0QXENIpmqxkMvs6atpL31453W
+         NQdgbKsPp1FcQ==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 0D286E21EDF;
+        Thu, 24 Aug 2023 23:15:21 +0000 (UTC)
+Subject: Re: [GIT PULL] SPI fixes for v6.5-rc7
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <9a29df1bae4a68227ef337ae9f0a4cf6.broonie@kernel.org>
+References: <9a29df1bae4a68227ef337ae9f0a4cf6.broonie@kernel.org>
+X-PR-Tracked-List-Id: <linux-spi.vger.kernel.org>
+X-PR-Tracked-Message-Id: <9a29df1bae4a68227ef337ae9f0a4cf6.broonie@kernel.org>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v6.5-rc7
+X-PR-Tracked-Commit-Id: 627d05a41ca1fbb9d390f9513af262f001f261f7
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 0de5ec446310ddc2fc8d446c9bcd69313e0ce9d2
+Message-Id: <169291892104.17835.5529881174011794721.pr-tracker-bot@kernel.org>
+Date:   Thu, 24 Aug 2023 23:15:21 +0000
+To:     Mark Brown <broonie@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
         Mark Brown <broonie@kernel.org>
-Subject: [GIT PULL] SPI fixes for v6.5-rc7
-Date:   Thu, 24 Aug 2023 20:44:21 +0100
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The following changes since commit 2ccdd1b13c591d306f0401d98dedc4bdcd02b421:
+The pull request you sent on Thu, 24 Aug 2023 20:44:21 +0100:
 
-  Linux 6.5-rc6 (2023-08-13 11:29:55 -0700)
+> https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v6.5-rc7
 
-are available in the Git repository at:
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/0de5ec446310ddc2fc8d446c9bcd69313e0ce9d2
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v6.5-rc7
+Thank you!
 
-for you to fetch changes up to 627d05a41ca1fbb9d390f9513af262f001f261f7:
-
-  spi: spi-cadence: Fix data corruption issues in slave mode (2023-08-21 13:09:57 +0100)
-
-----------------------------------------------------------------
-spi: Fixes for v6.5
-
-A couple more small driver specific fixes for v6.5, the device mode for
-Cadence had been broken by some recent updates done for host mode and
-large transfers for multi-byte words on stm32 had been broken by an API
-update in what I think was a rebasing incident.
-
-----------------------------------------------------------------
-Leonard Göhrs (1):
-      spi: stm32: fix accidential revert to byte-sized transfer splitting
-
-Srinivas Goud (1):
-      spi: spi-cadence: Fix data corruption issues in slave mode
-
- drivers/spi/spi-cadence.c | 19 ++++++++++++-------
- drivers/spi/spi-stm32.c   |  6 +++---
- 2 files changed, 15 insertions(+), 10 deletions(-)
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html

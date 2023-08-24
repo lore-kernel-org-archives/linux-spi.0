@@ -2,93 +2,74 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A1966C71153
-	for <linux-spi@archiver.kernel.org>; Thu, 24 Aug 2023 16:24:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6A918C3DA6F
+	for <linux-spi@archiver.kernel.org>; Thu, 24 Aug 2023 19:45:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242494AbjHXQYH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 24 Aug 2023 12:24:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57262 "EHLO
+        id S237969AbjHXTpF (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 24 Aug 2023 15:45:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242500AbjHXQXm (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 24 Aug 2023 12:23:42 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 179FE1736;
-        Thu, 24 Aug 2023 09:23:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692894221; x=1724430221;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Ax0zHaeo1VbO9tta1swVNEvMf/cRovUF7DQd8Gh1DLo=;
-  b=XflR0nA8kfstZBWi/XIKWg1UKTbtRexw205bEKucbhDGifqxKy7Jsiaq
-   0+FS7PplDGBfwxkxGerI/ZSosFl6c+9Gn2sU6URQtP65k1H9WRzwprVfq
-   K96S83rloAY6ZRBg/NzcbAS7aMbmU8LiCpKACqo/boneCChBaIh/x+0OM
-   EGgZjHnPj55tQwN6ZPsVWLxLoGTi0Ye/Va8oWWE/YnQB+Hdu0THyYFNdn
-   BfIenw70P+bjV4TnmZdlxonjqmLjOx6pj+taEemyPiojlQ137ygeEangR
-   IAtAFvOce4T2oEmitHWurm3HHWasBbElqvhKHxRXwhjp7ZJDR/XpOQipR
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10812"; a="377235990"
-X-IronPort-AV: E=Sophos;i="6.02,195,1688454000"; 
-   d="scan'208";a="377235990"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2023 09:22:17 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10812"; a="851582218"
-X-IronPort-AV: E=Sophos;i="6.02,195,1688454000"; 
-   d="scan'208";a="851582218"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga002.fm.intel.com with ESMTP; 24 Aug 2023 09:22:15 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id E528E1CA; Thu, 24 Aug 2023 19:22:13 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 2/3] spidev: Switch to use spi_get_csgpiod()
-Date:   Thu, 24 Aug 2023 19:22:08 +0300
-Message-Id: <20230824162209.2890440-3-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.40.0.1.gaa8946217a0b
-In-Reply-To: <20230824162209.2890440-1-andriy.shevchenko@linux.intel.com>
-References: <20230824162209.2890440-1-andriy.shevchenko@linux.intel.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        with ESMTP id S243355AbjHXToq (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 24 Aug 2023 15:44:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A7651FC1;
+        Thu, 24 Aug 2023 12:44:28 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3028D66EBA;
+        Thu, 24 Aug 2023 19:44:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB375C433C7;
+        Thu, 24 Aug 2023 19:44:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692906267;
+        bh=xyMcHvNO8wXBTatKUK3qpMMhOqKl23C9JPMzqwblmfM=;
+        h=From:To:Cc:Subject:Date:From;
+        b=GWzOEQnFv+ltauBMjimchKlOB6fl9XwiAFFSuLLHs3KxNYo3kB70se5Fpo60YrMg2
+         1RpwnO/MWHPgnd7w9lmUZEfeKHiEzNYfwZyLa+KCpQ61A85omod/c9BKbv03wTEbgk
+         ULF+/lMzNZGq3pd2GkJGflAJm+ofvSscVdx17PS5yc/GsJHd7xBN5V8pHaNtB+sRbs
+         hDYbzyCWWy0g731xUmSChW9wFTJ+evD+ZdQA/e2VJ+0f6s0G0sIXftGRHW4WWXiVuk
+         dwcdQnz9SREIvxAcLdUpzEhXVCFg2+0ZRJ361Z/XyDRi1jWN7Kcf5MGIwkWwcQFOTl
+         AeRDBF/pftGmA==
+Message-ID: <9a29df1bae4a68227ef337ae9f0a4cf6.broonie@kernel.org>
+From:   Mark Brown <broonie@kernel.org>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>
+Subject: [GIT PULL] SPI fixes for v6.5-rc7
+Date:   Thu, 24 Aug 2023 20:44:21 +0100
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-spidev_ioctl() checks if there is an SPI chip select is driven by GPIO.
-Instead of current code, we can call spi_get_csgpiod().
+The following changes since commit 2ccdd1b13c591d306f0401d98dedc4bdcd02b421:
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/spi/spidev.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+  Linux 6.5-rc6 (2023-08-13 11:29:55 -0700)
 
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index dc516f0ca71f..e324b42c658c 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -393,8 +393,7 @@ spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
- 	case SPI_IOC_RD_MODE32:
- 		tmp = spi->mode;
- 
--		if (ctlr->use_gpio_descriptors && ctlr->cs_gpiods &&
--		    ctlr->cs_gpiods[spi_get_chipselect(spi, 0)])
-+		if (ctlr->use_gpio_descriptors && spi_get_csgpiod(spi, 0))
- 			tmp &= ~SPI_CS_HIGH;
- 
- 		if (cmd == SPI_IOC_RD_MODE)
-@@ -430,8 +429,7 @@ spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
- 				break;
- 			}
- 
--			if (ctlr->use_gpio_descriptors && ctlr->cs_gpiods &&
--			    ctlr->cs_gpiods[spi_get_chipselect(spi, 0)])
-+			if (ctlr->use_gpio_descriptors && spi_get_csgpiod(spi, 0))
- 				tmp |= SPI_CS_HIGH;
- 
- 			tmp |= spi->mode & ~SPI_MODE_MASK;
--- 
-2.40.0.1.gaa8946217a0b
+are available in the Git repository at:
 
+  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v6.5-rc7
+
+for you to fetch changes up to 627d05a41ca1fbb9d390f9513af262f001f261f7:
+
+  spi: spi-cadence: Fix data corruption issues in slave mode (2023-08-21 13:09:57 +0100)
+
+----------------------------------------------------------------
+spi: Fixes for v6.5
+
+A couple more small driver specific fixes for v6.5, the device mode for
+Cadence had been broken by some recent updates done for host mode and
+large transfers for multi-byte words on stm32 had been broken by an API
+update in what I think was a rebasing incident.
+
+----------------------------------------------------------------
+Leonard Göhrs (1):
+      spi: stm32: fix accidential revert to byte-sized transfer splitting
+
+Srinivas Goud (1):
+      spi: spi-cadence: Fix data corruption issues in slave mode
+
+ drivers/spi/spi-cadence.c | 19 ++++++++++++-------
+ drivers/spi/spi-stm32.c   |  6 +++---
+ 2 files changed, 15 insertions(+), 10 deletions(-)

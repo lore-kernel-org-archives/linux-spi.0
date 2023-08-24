@@ -2,96 +2,70 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AECDBC6FA8F
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C6D1AC27C40
 	for <linux-spi@archiver.kernel.org>; Thu, 24 Aug 2023 16:24:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242481AbjHXQXe (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 24 Aug 2023 12:23:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42372 "EHLO
+        id S237725AbjHXQXd (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 24 Aug 2023 12:23:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242483AbjHXQXN (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 24 Aug 2023 12:23:13 -0400
+        with ESMTP id S242482AbjHXQXM (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 24 Aug 2023 12:23:12 -0400
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1ED0619AC;
-        Thu, 24 Aug 2023 09:23:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 572041BE;
+        Thu, 24 Aug 2023 09:23:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692894192; x=1724430192;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=JFT3ymVXjR1RLSxdJttkiZY5DC9NsR7CjrAq8kMVtrg=;
-  b=ht9dsrw08+rb4YcivnfjxvswRz8maXsoFTVjkeYGTNJmm9No6OxuPYAg
-   Vpdv/ZglEWZvN89nU5p5zd7EEzCDJq8cLXXFQlc7tBQWr62ZymEV7j9rs
-   HfaB3Xe/yeQy8X5wtWnxZOzb7iefKbQvDIdsPnuNBWTrCNuTZpXGPZG9W
-   0OGXvmuqGyM3orf8mxDjDequurfXeAGDB5Zt1Aa66XtBiGME0si5vXQCK
-   KIxlr0swMXKknMZzx7U/6YFWWK+EFG6Ke1WHJ+TGoMaZIUQozO0hfRUYN
-   EIAaLBQhS9hG44P3qG8EXu1ZiREJNW4wETWK1z5WGG6Vlcse+9V7iy/bv
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10812"; a="359487450"
+  t=1692894191; x=1724430191;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=uPZl3A1E/HN3ZBXL6HTSeqA4Zt056qb4CBV9knYq6wA=;
+  b=hG4iO3BEpPfTtH5nD1k5gFnpwagB3JPPBxXHN23p6Q5+vWF1HZ8xYaFt
+   BSX3x+gGZC5T/NBUMPq/U4J94NQAaxiU7CbO87Lw5vAjsNeDRYJQjS8bw
+   vbXvZUgn0HH0xyzsoSmt3EfKVzGD/N7PlpRN8oi6KBXLJ4ggskraaRCH5
+   nU2ODdz/Th89ifZ6n9qDmRy16FfMMO3FEoRHblYdH+rkiSGtJhBuzuOqH
+   eIA+mNMxE5/gLAcleOCgiefMLufQ3Fz4Bqff/MO/JIWWZ7IgC/H8XqmxH
+   HKuk6ZgLDyx1O/Z8rEA4R0VtoOAGFptb1pWoiK8rvE3Ph/SG3rCpwDUf1
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10812"; a="359487447"
 X-IronPort-AV: E=Sophos;i="6.02,195,1688454000"; 
-   d="scan'208";a="359487450"
+   d="scan'208";a="359487447"
 Received: from orsmga008.jf.intel.com ([10.7.209.65])
   by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2023 09:22:16 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10812"; a="766599817"
+X-IronPort-AV: E=McAfee;i="6600,9927,10812"; a="766599818"
 X-IronPort-AV: E=Sophos;i="6.02,195,1688454000"; 
-   d="scan'208";a="766599817"
+   d="scan'208";a="766599818"
 Received: from black.fi.intel.com ([10.237.72.28])
   by orsmga008.jf.intel.com with ESMTP; 24 Aug 2023 09:22:15 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id F390924C; Thu, 24 Aug 2023 19:22:13 +0300 (EEST)
+        id CAFE4F4; Thu, 24 Aug 2023 19:22:13 +0300 (EEST)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
         linux-kernel@vger.kernel.org
 Cc:     Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Lukas Wunner <lukas@wunner.de>
-Subject: [PATCH v1 3/3] spidev: Simplify SPI_IOC_RD_MODE* cases in spidev_ioctl()
-Date:   Thu, 24 Aug 2023 19:22:09 +0300
-Message-Id: <20230824162209.2890440-4-andriy.shevchenko@linux.intel.com>
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 0/3] spidev: A few cleanups
+Date:   Thu, 24 Aug 2023 19:22:06 +0300
+Message-Id: <20230824162209.2890440-1-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.40.0.1.gaa8946217a0b
-In-Reply-To: <20230824162209.2890440-1-andriy.shevchenko@linux.intel.com>
-References: <20230824162209.2890440-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The temporary variable tmp is not used outside of the
-SPI_IOC_RD_MODE* cases, hence we can optimize its use.
+A few cleanups to the spidev.c to utilize existing APIs and make it
+use less amount of Lines of Code. No functional change intended.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
----
- drivers/spi/spidev.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+Andy Shevchenko (3):
+  spidev: Decrease indentation level in spidev_ioctl() SPI_IOC_RD_MODE*
+  spidev: Switch to use spi_get_csgpiod()
+  spidev: Simplify SPI_IOC_RD_MODE* cases in spidev_ioctl()
 
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index e324b42c658c..c5450217528b 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -391,17 +391,15 @@ spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
- 	/* read requests */
- 	case SPI_IOC_RD_MODE:
- 	case SPI_IOC_RD_MODE32:
--		tmp = spi->mode;
-+		tmp = spi->mode & SPI_MODE_MASK;
- 
- 		if (ctlr->use_gpio_descriptors && spi_get_csgpiod(spi, 0))
- 			tmp &= ~SPI_CS_HIGH;
- 
- 		if (cmd == SPI_IOC_RD_MODE)
--			retval = put_user(tmp & SPI_MODE_MASK,
--					  (__u8 __user *)arg);
-+			retval = put_user(tmp, (__u8 __user *)arg);
- 		else
--			retval = put_user(tmp & SPI_MODE_MASK,
--					  (__u32 __user *)arg);
-+			retval = put_user(tmp, (__u32 __user *)arg);
- 		break;
- 	case SPI_IOC_RD_LSB_FIRST:
- 		retval = put_user((spi->mode & SPI_LSB_FIRST) ?  1 : 0,
+ drivers/spi/spidev.c | 24 +++++++++---------------
+ 1 file changed, 9 insertions(+), 15 deletions(-)
+
 -- 
 2.40.0.1.gaa8946217a0b
 

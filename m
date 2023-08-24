@@ -2,76 +2,96 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5B563C27C40
-	for <linux-spi@archiver.kernel.org>; Thu, 24 Aug 2023 08:57:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AECDBC6FA8F
+	for <linux-spi@archiver.kernel.org>; Thu, 24 Aug 2023 16:24:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234735AbjHXI4c (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 24 Aug 2023 04:56:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51824 "EHLO
+        id S242481AbjHXQXe (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 24 Aug 2023 12:23:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234108AbjHXI4B (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 24 Aug 2023 04:56:01 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0CDD10D3
-        for <linux-spi@vger.kernel.org>; Thu, 24 Aug 2023 01:55:59 -0700 (PDT)
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-        by gandalf.ozlabs.org (Postfix) with ESMTP id 4RWcPT715Jz4wy7;
-        Thu, 24 Aug 2023 18:55:57 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4RWcPD1WXsz4wxn;
-        Thu, 24 Aug 2023 18:55:43 +1000 (AEST)
-Message-ID: <4450e65b-5de4-e503-ea2e-da95410f4c50@kaod.org>
-Date:   Thu, 24 Aug 2023 10:55:37 +0200
+        with ESMTP id S242483AbjHXQXN (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 24 Aug 2023 12:23:13 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1ED0619AC;
+        Thu, 24 Aug 2023 09:23:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1692894192; x=1724430192;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=JFT3ymVXjR1RLSxdJttkiZY5DC9NsR7CjrAq8kMVtrg=;
+  b=ht9dsrw08+rb4YcivnfjxvswRz8maXsoFTVjkeYGTNJmm9No6OxuPYAg
+   Vpdv/ZglEWZvN89nU5p5zd7EEzCDJq8cLXXFQlc7tBQWr62ZymEV7j9rs
+   HfaB3Xe/yeQy8X5wtWnxZOzb7iefKbQvDIdsPnuNBWTrCNuTZpXGPZG9W
+   0OGXvmuqGyM3orf8mxDjDequurfXeAGDB5Zt1Aa66XtBiGME0si5vXQCK
+   KIxlr0swMXKknMZzx7U/6YFWWK+EFG6Ke1WHJ+TGoMaZIUQozO0hfRUYN
+   EIAaLBQhS9hG44P3qG8EXu1ZiREJNW4wETWK1z5WGG6Vlcse+9V7iy/bv
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10812"; a="359487450"
+X-IronPort-AV: E=Sophos;i="6.02,195,1688454000"; 
+   d="scan'208";a="359487450"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2023 09:22:16 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10812"; a="766599817"
+X-IronPort-AV: E=Sophos;i="6.02,195,1688454000"; 
+   d="scan'208";a="766599817"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga008.jf.intel.com with ESMTP; 24 Aug 2023 09:22:15 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id F390924C; Thu, 24 Aug 2023 19:22:13 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Lukas Wunner <lukas@wunner.de>
+Subject: [PATCH v1 3/3] spidev: Simplify SPI_IOC_RD_MODE* cases in spidev_ioctl()
+Date:   Thu, 24 Aug 2023 19:22:09 +0300
+Message-Id: <20230824162209.2890440-4-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.40.0.1.gaa8946217a0b
+In-Reply-To: <20230824162209.2890440-1-andriy.shevchenko@linux.intel.com>
+References: <20230824162209.2890440-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH -next 03/25] spi: aspeed: Use helper function
- devm_clk_get_enabled()
-Content-Language: en-US
-To:     Li Zetao <lizetao1@huawei.com>, broonie@kernel.org,
-        chin-ting_kuo@aspeedtech.com, joel@jms.id.au, andrew@aj.id.au,
-        florian.fainelli@broadcom.com, rjui@broadcom.com,
-        sbranden@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
-        fancer.lancer@gmail.com, olteanv@gmail.com,
-        neil.armstrong@linaro.org, khilman@baylibre.com,
-        jbrunet@baylibre.com, martin.blumenstingl@googlemail.com,
-        conor.dooley@microchip.com, daire.mcnamara@microchip.com,
-        matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
-        avifishman70@gmail.com, tmaimon77@gmail.com, tali.perry1@gmail.com,
-        venture@google.com, yuenn@google.com, benjaminfair@google.com,
-        linus.walleij@linaro.org, heiko@sntech.de
-Cc:     linux-spi@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
-        openbmc@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
-        linux-rpi-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org, linux-riscv@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        linux-rockchip@lists.infradead.org
-References: <20230822131237.1022815-1-lizetao1@huawei.com>
- <20230822131237.1022815-4-lizetao1@huawei.com>
-From:   =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230822131237.1022815-4-lizetao1@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On 8/22/23 15:12, Li Zetao wrote:
-> Since commit 7ef9651e9792 ("clk: Provide new devm_clk helpers for prepared
-> and enabled clocks"), devm_clk_get() and clk_prepare_enable() can now be
-> replaced by devm_clk_get_enabled() when driver enables (and possibly
-> prepares) the clocks for the whole lifetime of the device. Moreover, it is
-> no longer necessary to unprepare and disable the clocks explicitly.
-> 
-> Signed-off-by: Li Zetao <lizetao1@huawei.com>
+The temporary variable tmp is not used outside of the
+SPI_IOC_RD_MODE* cases, hence we can optimize its use.
 
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
+---
+ drivers/spi/spidev.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-
-Thanks,
-
-C.
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index e324b42c658c..c5450217528b 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -391,17 +391,15 @@ spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+ 	/* read requests */
+ 	case SPI_IOC_RD_MODE:
+ 	case SPI_IOC_RD_MODE32:
+-		tmp = spi->mode;
++		tmp = spi->mode & SPI_MODE_MASK;
+ 
+ 		if (ctlr->use_gpio_descriptors && spi_get_csgpiod(spi, 0))
+ 			tmp &= ~SPI_CS_HIGH;
+ 
+ 		if (cmd == SPI_IOC_RD_MODE)
+-			retval = put_user(tmp & SPI_MODE_MASK,
+-					  (__u8 __user *)arg);
++			retval = put_user(tmp, (__u8 __user *)arg);
+ 		else
+-			retval = put_user(tmp & SPI_MODE_MASK,
+-					  (__u32 __user *)arg);
++			retval = put_user(tmp, (__u32 __user *)arg);
+ 		break;
+ 	case SPI_IOC_RD_LSB_FIRST:
+ 		retval = put_user((spi->mode & SPI_LSB_FIRST) ?  1 : 0,
+-- 
+2.40.0.1.gaa8946217a0b
 

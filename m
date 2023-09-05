@@ -2,112 +2,125 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0A4D4CA0FF8
-	for <linux-spi@archiver.kernel.org>; Tue,  5 Sep 2023 16:20:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3CC36CA0FFC
+	for <linux-spi@archiver.kernel.org>; Tue,  5 Sep 2023 16:20:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229727AbjIEQTb (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 5 Sep 2023 12:19:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58380 "EHLO
+        id S232258AbjIEQTh (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 5 Sep 2023 12:19:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353878AbjIEI2C (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 5 Sep 2023 04:28:02 -0400
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E68D8CC7
-        for <linux-spi@vger.kernel.org>; Tue,  5 Sep 2023 01:27:55 -0700 (PDT)
-Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-401187f8071so14405535e9.0
-        for <linux-spi@vger.kernel.org>; Tue, 05 Sep 2023 01:27:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1693902474; x=1694507274; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=yZOJVeABpFpne+4zxTVbLhiPldIS4DZuhrgZSQO5xhg=;
-        b=C7jRPpvPWdKNofhdUtxIkmuetQa24LV+ISujOD1s0qovUmBNySN/gzmGe7K50ny1EO
-         dMqdwWj3WkwqwPHF9Q9HS1osrF2/whi54U9+wviKwCRqYRMFUL2vOBq2bk0/JWUNUppb
-         JVDL8WbeCxGgO2VclnkxO1yXxQ57ve+5ASmo7o2haJBuLp1kIRt9l3DMZCpJcsqv38If
-         Ivf5BwtycJQzfh9qPqug81e+x064j/ARInbhzd8nW87vMel7Deg+na53fa5Nec8INQL9
-         bMBNNUmCPK1s5GOBERoMYnh3yZ2fnq6P3kaYXJPIYD0pNJnYWj/q2Fpgv6S/I4x0q4pf
-         aylQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693902474; x=1694507274;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yZOJVeABpFpne+4zxTVbLhiPldIS4DZuhrgZSQO5xhg=;
-        b=GOiACw/f0QVWkJWqVEi9a0RRdyuotzHwYkdPPXRau+cqVuvvnjhZqat08mrcyU4ibc
-         lzwpZUuuAwAeOF4HE2k9hDAGQEPFB7AfDo1xHJKsBml509Bo5oiJvIJzTG/9Orei7hDw
-         WDmlxVearNZL2HldK8UbrNq9/Wc/Y4vK9cXB5x0tEz+ke5cNm9nN1b2T0pxDqEDzSy80
-         xXLtCY6LY9zRP3vfJCpALzS+Qo6kAK26fGEWUzAq9gnxMSQdsTkySgYnMaK+d7J0Qycn
-         ptxBkKRFrKsN2v6MSdgwUVPB/zrjuilrzFX5AHFNJcWprU6mamNlI1TvLZgI9OroFpag
-         LU3Q==
-X-Gm-Message-State: AOJu0YwwuHJkJoz/IzkoG3hPoN7KxiIMtECFNe+z+q3vnrS6S3IJ1Hlb
-        59lDvpadBP9pGFLhk78DQtIbBA==
-X-Google-Smtp-Source: AGHT+IG/8oMolQYl3peTlkwkusxIIAHFH1Y84dqOJM5uxINZi5NFn9P2rlDqHiO5pvuSl/HD1+tYoQ==
-X-Received: by 2002:a05:600c:4656:b0:401:b24b:8279 with SMTP id n22-20020a05600c465600b00401b24b8279mr12036182wmo.1.1693902474406;
-        Tue, 05 Sep 2023 01:27:54 -0700 (PDT)
-Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id n9-20020a05600c294900b003feff926fc5sm16206338wmd.17.2023.09.05.01.27.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Sep 2023 01:27:53 -0700 (PDT)
-Date:   Tue, 5 Sep 2023 11:27:50 +0300
-From:   Dan Carpenter <dan.carpenter@linaro.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Bartosz Golaszewski <brgl@bgdev.pl>,
-        Mark Brown <broonie@kernel.org>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Broadcom internal kernel review list 
-        <bcm-kernel-feedback-list@broadcom.com>, linux-spi@vger.kernel.org,
-        linux-rpi-kernel@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-gpio@vger.kernel.org,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [RFT PATCH v2] spi: bcm2835: reduce the abuse of the GPIO API
-Message-ID: <527c52aa-e9c6-41d5-a60d-60d79ab94439@kadam.mountain>
-References: <20230901111548.12733-1-brgl@bgdev.pl>
- <CACRpkdYLcOZQ9r46aBwesh-H392C_0AWC8n2ikuwUknfEhoNNA@mail.gmail.com>
+        with ESMTP id S1354171AbjIEKEU (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 5 Sep 2023 06:04:20 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67F1E198;
+        Tue,  5 Sep 2023 03:04:16 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id E6B0FB81104;
+        Tue,  5 Sep 2023 10:04:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 134C4C433C8;
+        Tue,  5 Sep 2023 10:04:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1693908253;
+        bh=cQTnkMhDRy5JwEJ7hQwW45cTKaEjXmpkptxk9UnTN9c=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=gX2uxS5VVjeEKiCCpQxqG55A1d6tr08FU879bG5+NXYZLFyFaMPppX3z5yy4yLqod
+         dNwYiKnW4TFGr/ImkTHkmpe/bve7rwiugwIiFQfqwrKvi/9HkBUuW6mmPCH3GfZ6Tf
+         q5pVNKTsBUkwS9aQg+3O3Ii2W/CsulKJysn/CMDM=
+Date:   Tue, 5 Sep 2023 11:04:10 +0100
+From:   "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+To:     "Wu, Wentong" <wentong.wu@intel.com>
+Cc:     Oliver Neukum <oneukum@suse.com>, "arnd@arndb.de" <arnd@arndb.de>,
+        "mka@chromium.org" <mka@chromium.org>,
+        "lee@kernel.org" <lee@kernel.org>,
+        "wsa@kernel.org" <wsa@kernel.org>,
+        "kfting@nuvoton.com" <kfting@nuvoton.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
+        "hdegoede@redhat.com" <hdegoede@redhat.com>,
+        "maz@kernel.org" <maz@kernel.org>, "brgl@bgdev.pl" <brgl@bgdev.pl>,
+        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "andriy.shevchenko@linux.intel.com" 
+        <andriy.shevchenko@linux.intel.com>,
+        "heikki.krogerus@linux.intel.com" <heikki.krogerus@linux.intel.com>,
+        "andi.shyti@linux.intel.com" <andi.shyti@linux.intel.com>,
+        "sakari.ailus@linux.intel.com" <sakari.ailus@linux.intel.com>,
+        "bartosz.golaszewski@linaro.org" <bartosz.golaszewski@linaro.org>,
+        "Pandruvada, Srinivas" <srinivas.pandruvada@intel.com>,
+        "Wang, Zhifeng" <zhifeng.wang@intel.com>
+Subject: Re: [PATCH v14 1/4] usb: Add support for Intel LJCA device
+Message-ID: <2023090530-cleft-chivalry-b59f@gregkh>
+References: <1693806261-12958-1-git-send-email-wentong.wu@intel.com>
+ <1693806261-12958-2-git-send-email-wentong.wu@intel.com>
+ <a8c8af1b-9399-6ca9-ea3d-b71e6ee68cad@suse.com>
+ <DM6PR11MB43166D27FB15905CB02DBC5B8DE9A@DM6PR11MB4316.namprd11.prod.outlook.com>
+ <7755c3ee-9d7e-8ae5-1cf7-a5247cc4e6e5@suse.com>
+ <DM6PR11MB4316C70D7C14B56ED349F01F8DE8A@DM6PR11MB4316.namprd11.prod.outlook.com>
+ <f6f8a9c4-faf1-f9da-e688-a29eb267fabc@suse.com>
+ <DM6PR11MB4316F903C524668BA35707398DE8A@DM6PR11MB4316.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACRpkdYLcOZQ9r46aBwesh-H392C_0AWC8n2ikuwUknfEhoNNA@mail.gmail.com>
+In-Reply-To: <DM6PR11MB4316F903C524668BA35707398DE8A@DM6PR11MB4316.namprd11.prod.outlook.com>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Fri, Sep 01, 2023 at 02:15:39PM +0200, Linus Walleij wrote:
-> On Fri, Sep 1, 2023 at 1:15 PM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
+On Tue, Sep 05, 2023 at 08:53:43AM +0000, Wu, Wentong wrote:
+> > From: Oliver Neukum <oneukum@suse.com>
+> > 
+> > On 05.09.23 04:20, Wu, Wentong wrote:
+> > 
+> > Hi,
+> > 
+> > >> That is that you will hang arbitrarily long in disconnect?
+> > > This routine isn't called in an interrupt context, and it allows sleep
+> > > or wait something before the real shutdown like many drivers' remove()
+> > > or
+> > > disconnect() do.
+> > 
+> > It is, however, in the context of a kernel thread. We can wait, but not for
+> > arbitrary periods.
 > 
-> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> >
-> > Currently the bcm2835 SPI driver uses functions that are available
-> > exclusively to GPIO providers as a way to handle a platform quirk. Let's
-> > use a slightly better alternative that avoids poking around in GPIOLIB's
-> > internals and use GPIO lookup tables.
-> >
-> > Link: https://www.spinics.net/lists/linux-gpio/msg36218.html
-> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> AFAIK, this is very common.
 > 
-> > +#include <linux/cleanup.h>
-> (...)
-> > -       struct gpio_chip *chip;
-> > +       struct gpiod_lookup_table *lookup __free(kfree) = NULL;
+> > 
+> > > If we want to speed up the disconnect(), below changes is to complete
+> > > the cmd_completion if usb_kill_urb() has been called, but there is
+> > > still possibility ljca client init one more transfer before
+> > > auxiliary_device_delete()
+> > >
+> > > @@ -206,7 +206,11 @@ static void ljca_recv(struct urb *urb)
+> > >
+> > >          if (urb->status) {
+> > >                  /* sync/async unlink faults aren't errors */
+> > > -               if (urb->status == -ENOENT || urb->status == -ECONNRESET ||
+> > > +               if (urb->status == -ENOENT) {
+> > > +                       complete(&adap->cmd_completion);
+> > > +                       return;
+> > 
+> > I'd say you'd break suspend() by such a change.
+> > You cannot complete in the interrupt handler, unless you can determine why the
+> > URB is killed.
 > 
-> Whoa!
-> This is really neat.
+> With below status field in ljca_adapter to determine if it's killed by disconnect().
+> 
+> If this is preferred, I could cook the patch for review.
+> 
+> If this is fixed, could you please help merge this usb-ljca driver so that it won't
+> block others which depends on this driver?
 
-Yeah.  I like this stuff.  It should fix a lot of issues.  In some ways
-I prefer this kind of clean up to devm_ managed resources.
+Please relax, we can't do anything until after -rc1 is out, and for me,
+that includes reviewing the code.
 
-> As noted, it will confuse static checkers at no end, but they just have
-> to adopt. (CC to Dan C if he now runs into this.)
+There is no rush, or deadline, here at all.  It will be merged when it
+is acceptable.
 
-I think I updated Smatch to parse this correctly.  I've tested on this
-patch and it seems to work okay.  There probably will be some fall out
-in weird corners of Smatch.  Let me know if you see any problems.
+thanks,
 
-regards,
-dan carpenter
-
+greg k-h

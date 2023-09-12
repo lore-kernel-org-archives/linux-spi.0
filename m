@@ -2,39 +2,44 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 044CACA0ECA
-	for <linux-spi@archiver.kernel.org>; Tue, 12 Sep 2023 11:38:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F40E8CA0EC3
+	for <linux-spi@archiver.kernel.org>; Tue, 12 Sep 2023 11:38:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234474AbjILLib (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 12 Sep 2023 07:38:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36026 "EHLO
+        id S234756AbjILLid (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 12 Sep 2023 07:38:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234955AbjILLiN (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 12 Sep 2023 07:38:13 -0400
+        with ESMTP id S234869AbjILLiR (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 12 Sep 2023 07:38:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 671971720
-        for <linux-spi@vger.kernel.org>; Tue, 12 Sep 2023 04:38:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E98B4C433C9;
-        Tue, 12 Sep 2023 11:38:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 725461722;
+        Tue, 12 Sep 2023 04:38:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4C8EC433C9;
+        Tue, 12 Sep 2023 11:38:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694518686;
-        bh=jGOb8p0iFPelyIa1fHJXIHdxwDD9zeW/3Ogzu5SdZNA=;
+        s=k20201202; t=1694518693;
+        bh=h30b56RrRORKmlU4pC18wtn1e1EQ/8raoGBkCT361sM=;
         h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=YOCInVGng7AojuY0Q4DwAidn7PR0Qs6davwA+UcHFCMQn7v/1Hi++wm5hVCl1UbyM
-         3eLB7xqYZlMvdY7yrPF7v1xg82NyGXEckZCp/tnmRAibjOyZvNhsTYlHQ6TSOiCma9
-         rqLC4pQZOMIUyT4C4lnaK33/CWeMmxyoa0U/Gt9VYlVOC4sx7tVtmDqQYhOPiONY78
-         w5Y/08B5CzgW1LfQw7YSm+3L4jGKFf7tZKRzcTg9zvBYt/UdlMQ6w9GcyW3UEu1gbt
-         SCQ/0rz9YFJ8nVh7poIKCmg3y7sBx0GRUM/xkVtCWXJM/lzQ7Dh7Jjta1lXhJ8PsKT
-         zCyx3+P4AG0wQ==
+        b=K4YOz5hNZrqjLdTbhxxFHvS2l4kzfDALcCAxmSU6AUaAhJs3afTFzWBtzbY+FWOxd
+         /LGrRgZYBnek1Y85XT26sSfS+eQZx6uc12ooEAvV0IOKlY80nX6tskwzTg9/c85ymE
+         fQR+hvjnHnkdHiKCPwux7J790Kwu8YmOkreruYmvpvOItqfLUd8BZ26bSLqzzyN3Zg
+         zCoyLw9u9CzQSwSzcKK9W/bxFVRJexG48oHeaNiGi0+xm+32KnoedCoKgMt+96CqjN
+         eAM/NEjdZ7OShOMnE8pBTH8fYY5cGDez5JMFmGUXsiLaRmr+iGRqetl+dVbMtbQu1S
+         AsIApVkwkhzxQ==
 From:   Mark Brown <broonie@kernel.org>
-To:     linux-spi@vger.kernel.org,
-        Yang Yingliang <yangyingliang@huawei.com>
-Cc:     geert@linux-m68k.org, lukas@wunner.de
-In-Reply-To: <20230823033003.3407403-1-yangyingliang@huawei.com>
-References: <20230823033003.3407403-1-yangyingliang@huawei.com>
-Subject: Re: [PATCH -next v2 00/21] spi: switch to use modern name (part3)
-Message-Id: <169451868421.2398433.5025415834504395177.b4-ty@kernel.org>
-Date:   Tue, 12 Sep 2023 12:38:04 +0100
+To:     ldewangan@nvidia.com, Zhang Shurong <zhang_shurong@foxmail.com>
+Cc:     thierry.reding@gmail.com, jonathanh@nvidia.com,
+        p.zabel@pengutronix.de, sumit.semwal@linaro.org,
+        christian.koenig@amd.com, linux-spi@vger.kernel.org,
+        linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linaro-mm-sig@lists.linaro.org
+In-Reply-To: <tencent_73FCC06A3D1C14EE5175253C6FB46A07B709@qq.com>
+References: <tencent_73FCC06A3D1C14EE5175253C6FB46A07B709@qq.com>
+Subject: Re: [PATCH] spi: tegra: Fix missing IRQ check in
+ tegra_slink_probe()
+Message-Id: <169451868918.2398433.15693451802537494964.b4-ty@kernel.org>
+Date:   Tue, 12 Sep 2023 12:38:09 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
@@ -43,14 +48,13 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, 23 Aug 2023 11:29:42 +0800, Yang Yingliang wrote:
-> I'm trying to rename the legacy name to modern name used in SPI drivers,
-> this is part3 patchset.
+On Sat, 26 Aug 2023 18:02:54 +0800, Zhang Shurong wrote:
+> This func misses checking for platform_get_irq()'s call and may passes the
+> negative error codes to request_irq(), which takes unsigned IRQ #,
+> causing it to fail with -EINVAL, overriding an original error code.
 > 
-> After introducing devm_spi_alloc_host/spi_alloc_host(), the legacy
-> named function devm_spi_alloc_master/spi_alloc_master() can be replaced.
-> And also change other legacy name master/slave to modern name host/target
-> or controller. Each patch compile test passed.
+> Fix this by stop calling request_irq() with invalid IRQ #s.
+> 
 > 
 > [...]
 
@@ -60,48 +64,8 @@ Applied to
 
 Thanks!
 
-[01/21] spi: lm70llp: switch to use modern name
-        commit: 7c5d1d9787d67966c6e45643920e5bbfa859ccb8
-[02/21] spi: lp-8841: switch to use modern name
-        commit: 48815830a9f66cbec343f078da4ab72b2bdf992e
-[03/21] spi: meson-spicc: switch to use modern name
-        commit: 68bf3288c7ebc0b9ca8ba9b5b748bd306a3649a3
-[04/21] spi: meson-spifc: switch to use modern name
-        commit: 55591ac48152a5f5760b5a989654b95985861ac9
-[05/21] spi: microchip-core-qspi: switch to use modern name
-        commit: 5d97a3abbb5e24cf208f0339e09e58a591652818
-[06/21] spi: microchip-core: switch to use modern name
-        commit: 8f8bf52ed5b76fc7958b0fbe3131540aecdff8ac
-[07/21] spi: mpc512x-psc: switch to use modern name
-        commit: a21db73963c837332e21f1b7a7ee71ae7fd2ec16
-[08/21] spi: mpc52xx-psc: switch to use modern name
-        commit: 171639f8459192d1f7cc505a7a4269f916d3e4b5
-[09/21] spi: mpc52xx: switch to use modern name
-        commit: d6503d1192491bb9d38916b70f87e77ce93c3bb6
-[10/21] spi: mt65xx: switch to use modern name
-        commit: cae1578847e60a5cfb4ff881a1670c4b008ce37d
-[11/21] spi: mt7621: switch to use modern name
-        commit: e56e3de0039d66b1fe5a0e1b3338907797ef79cd
-[12/21] spi: mtk-nor: switch to use modern name
-        commit: a3a77a4268929888ab3ce9e68c83f0d7e63505df
-[13/21] spi: mtk-snfi: switch to use modern name
-        commit: efdf4c993494a52ee86fc7db83bb257c74cb8184
-[14/21] spi: mux: switch to use spi_alloc_host()
-        commit: 0fc8a1a43122d3775eb2fff2dc4ee9ff7828b15c
-[15/21] spi: mxic: switch to use modern name
-        commit: fc42bb55c05fa737b3057bbc5349f5fc8c6e68b5
-[16/21] spi: mxs: switch to use modern name
-        commit: 7647a16b682ea388830748efd8a8b85c51654dbf
-[17/21] spi: npcm-pspi: switch to use modern name
-        commit: 2b0aa563b36442068379909a880a741105d0d039
-[18/21] spi: nxp-fspi: switch to use modern name
-        commit: 8af8a27b7898ad688b7c50c404ed01cec54078a2
-[19/21] spi: oc-tiny: switch to use modern name
-        commit: ba0dada2ba1c9a1a948cdec91f4cc3c3efae2911
-[20/21] spi: omap-uwire: switch to use modern name
-        commit: 0d81c46e702903c75cce195ed0d3fb968e8341c0
-[21/21] spi: omap2-mcspi: switch to use modern name
-        commit: ee0f793cc1881225dee04216f1080201603b46bb
+[1/1] spi: tegra: Fix missing IRQ check in tegra_slink_probe()
+      commit: eb9913b511f10968a02cfa5329a896855dd152a3
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

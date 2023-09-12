@@ -2,41 +2,42 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A893CA0EF1
-	for <linux-spi@archiver.kernel.org>; Tue, 12 Sep 2023 15:00:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 096AFCA0EF2
+	for <linux-spi@archiver.kernel.org>; Tue, 12 Sep 2023 15:00:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236055AbjILPAE (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 12 Sep 2023 11:00:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42924 "EHLO
+        id S236069AbjILPAH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 12 Sep 2023 11:00:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229556AbjILPAE (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 12 Sep 2023 11:00:04 -0400
+        with ESMTP id S229556AbjILPAG (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 12 Sep 2023 11:00:06 -0400
 Received: from mx.kernkonzept.com (serv1.kernkonzept.com [IPv6:2a01:4f8:1c1c:b490::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9974E115
-        for <linux-spi@vger.kernel.org>; Tue, 12 Sep 2023 08:00:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D68B1115
+        for <linux-spi@vger.kernel.org>; Tue, 12 Sep 2023 08:00:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kernkonzept.com; s=mx1; h=Cc:To:In-Reply-To:References:Message-Id:
-        Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
-        Reply-To:Content-ID:Content-Description;
-        bh=d8aTXSfXKUiK1Xyz5/399gXFzKYpAJm1Z7s+7n6AgiA=; b=VW2OT9MEsssDRMkwh3Uc/UV/sU
-        ZvJI7PAAq82QQLTuNMbZ4JB2NvSLaDDhCPziIIIXjoZuw5Si5G7cBoMsE6xSHv21w48NpUQnK+0aS
-        xlAPsANfObrC1zT09ttft7W+z3JCpckVRiUodnA48hUGcsuU5GRfWlotgo1sSQ/yewjwa4Ld/fYdl
-        nImSY9IBb27xYyDp8bkpdUjxhq30ecnHdGpf0m7nyf5FLHMUCl0mrXQXGHsMEw7GBj54hLCAAKRa7
-        hNAcKfTXX6fvIWrmTWQ9wqC2+4JOJBdElsYVcng7iofUJJ6jJIG88oT9CmsDCrBpjht7ereCuItgF
-        jxnItlew==;
+        d=kernkonzept.com; s=mx1; h=Cc:To:Content-Transfer-Encoding:Content-Type:
+        MIME-Version:Message-Id:Date:Subject:From:References:In-Reply-To:Reply-To:
+        Content-ID:Content-Description;
+        bh=X5d4RzC/AYaU+6u1i64mjtb2PzI89u77tGMpUXMkujQ=; b=Fc/S8eph0RXiXyaMyyWngueNO2
+        FBq953keUXIJtiNeVow6xIDJOYi/87GDmPZUrZ4wr/MrV18JI7yLq2wsrVkbaGq+IDUTaQGJ/w+0i
+        6+aqh1OELOGoC0JTU/7rguCzTRMS3DaTq/zCOkjGPtzhNTE//RaGV3xGy5SQMrlt1gh2QguLnzb0D
+        nOH49cJCOLKRCUevDTcF7n/GDeh/C+JcXaDU/YnoO0bCj1d9YUkl3jjqNHfalm6TX9qNUL4nXBltR
+        JXPHnaynY3hLPRWvN1LDiP0GMQkb9LfAYz44vEs5fueY8n0VDWdHOZUtTkDxFwI0CVgrXrUWTbn52
+        MmNX6H6g==;
 Received: from [10.22.3.24] (helo=serv1.dd1.int.kernkonzept.com)
         by mx.kernkonzept.com with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim 4.96)
-        id 1qg4Pk-0034i9-1z;
-        Tue, 12 Sep 2023 16:30:52 +0200
+        id 1qg4Pe-0034i9-0X;
+        Tue, 12 Sep 2023 16:30:46 +0200
 From:   Stephan Gerhold <stephan.gerhold@kernkonzept.com>
-Date:   Tue, 12 Sep 2023 16:30:39 +0200
-Subject: [PATCH 4/4] spi: qup: Vote for interconnect bandwidth to DRAM
+Subject: [PATCH 0/4] spi: qup: Allow scaling power domains and interconnect
+Date:   Tue, 12 Sep 2023 16:30:35 +0200
+Message-Id: <20230912-spi-qup-dvfs-v1-0-3e38aa09c2bd@kernkonzept.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230912-spi-qup-dvfs-v1-4-3e38aa09c2bd@kernkonzept.com>
-References: <20230912-spi-qup-dvfs-v1-0-3e38aa09c2bd@kernkonzept.com>
-In-Reply-To: <20230912-spi-qup-dvfs-v1-0-3e38aa09c2bd@kernkonzept.com>
+X-B4-Tracking: v=1; b=H4sIAAt2AGUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI2MDS0Mj3eKCTN3C0gLdlLK0Yl1zw7Rki0TTVIPkJEMloJaCotS0zAqwcdG
+ xtbUAQeNq3V4AAAA=
 To:     Mark Brown <broonie@kernel.org>
 Cc:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
@@ -53,148 +54,31 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-When the SPI QUP controller is used together with a DMA engine it needs
-to vote for the interconnect path to the DRAM. Otherwise it may be
-unable to access the memory quickly enough.
+Make it possible to scale performance states of the power domain and
+interconnect of the SPI QUP controller in relation to the selected SPI
+speed / core clock. This is done separately by:
 
-The requested peak bandwidth is dependent on the SPI core/bus clock so
-that the bandwidth scales together with the selected SPI speed.
-
-To avoid sending votes too often the bandwidth is always requested when
-a transfer starts, but dropped only on runtime suspend. Runtime suspend
-should only happen if no transfer is active. After resumption we can
-defer the next vote until the first transfer actually happens.
+  - Parsing the OPP table from the device tree for performance state
+    votes of the power domain
+  - Voting for the necessary bandwidth on the interconnect path to DRAM
 
 Signed-off-by: Stephan Gerhold <stephan.gerhold@kernkonzept.com>
 ---
-The bandwidth calculation is taken over from Qualcomm's
-downstream/vendor driver [1]. Due to lack of documentation about the
-interconnect setup/behavior I cannot say exactly if this is right.
-Unfortunately, this is not implemented very consistently downstream...
+Stephan Gerhold (4):
+      spi: dt-bindings: qup: Document power-domains and OPP
+      spi: qup: Parse OPP table for DVFS support
+      spi: dt-bindings: qup: Document interconnects
+      spi: qup: Vote for interconnect bandwidth to DRAM
 
-[1]: https://git.codelinaro.org/clo/la/kernel/msm-3.18/-/commit/deca0f346089d32941d6d8194ae9605554486413
+ .../devicetree/bindings/spi/qcom,spi-qup.yaml      | 13 ++++++
+ drivers/spi/spi-qup.c                              | 50 +++++++++++++++++++++-
+ 2 files changed, 62 insertions(+), 1 deletion(-)
 ---
- drivers/spi/spi-qup.c | 38 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 38 insertions(+)
+base-commit: 678466ba68915d452c200b78d0385931e6f8e907
+change-id: 20230912-spi-qup-dvfs-71fc8a5e0cb1
 
-diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-index bf043be3a2a9..e9c186bc530c 100644
---- a/drivers/spi/spi-qup.c
-+++ b/drivers/spi/spi-qup.c
-@@ -6,6 +6,7 @@
- #include <linux/clk.h>
- #include <linux/delay.h>
- #include <linux/err.h>
-+#include <linux/interconnect.h>
- #include <linux/interrupt.h>
- #include <linux/io.h>
- #include <linux/list.h>
-@@ -122,11 +123,14 @@
- #define SPI_DELAY_THRESHOLD		1
- #define SPI_DELAY_RETRY			10
- 
-+#define SPI_BUS_WIDTH			8
-+
- struct spi_qup {
- 	void __iomem		*base;
- 	struct device		*dev;
- 	struct clk		*cclk;	/* core clock */
- 	struct clk		*iclk;	/* interface clock */
-+	struct icc_path		*icc_path; /* interconnect to RAM */
- 	int			irq;
- 	spinlock_t		lock;
- 
-@@ -149,6 +153,8 @@ struct spi_qup {
- 	int			mode;
- 	struct dma_slave_config	rx_conf;
- 	struct dma_slave_config	tx_conf;
-+
-+	u32			bw_speed_hz;
- };
- 
- static int spi_qup_io_config(struct spi_device *spi, struct spi_transfer *xfer);
-@@ -181,6 +187,23 @@ static inline bool spi_qup_is_valid_state(struct spi_qup *controller)
- 	return opstate & QUP_STATE_VALID;
- }
- 
-+static int spi_qup_vote_bw(struct spi_qup *controller, u32 speed_hz)
-+{
-+	u32 needed_peak_bw;
-+	int ret;
-+
-+	if (controller->bw_speed_hz == speed_hz)
-+		return 0;
-+
-+	needed_peak_bw = Bps_to_icc(speed_hz * SPI_BUS_WIDTH);
-+	ret = icc_set_bw(controller->icc_path, 0, needed_peak_bw);
-+	if (ret)
-+		return ret;
-+
-+	controller->bw_speed_hz = speed_hz;
-+	return 0;
-+}
-+
- static int spi_qup_set_state(struct spi_qup *controller, u32 state)
- {
- 	unsigned long loop;
-@@ -675,6 +698,12 @@ static int spi_qup_io_prep(struct spi_device *spi, struct spi_transfer *xfer)
- 		return -EIO;
- 	}
- 
-+	ret = spi_qup_vote_bw(controller, xfer->speed_hz);
-+	if (ret) {
-+		dev_err(controller->dev, "fail to vote for ICC bandwidth: %d\n", ret);
-+		return -EIO;
-+	}
-+
- 	controller->w_size = DIV_ROUND_UP(xfer->bits_per_word, 8);
- 	controller->n_words = xfer->len / controller->w_size;
- 
-@@ -994,6 +1023,7 @@ static void spi_qup_set_cs(struct spi_device *spi, bool val)
- static int spi_qup_probe(struct platform_device *pdev)
- {
- 	struct spi_controller *host;
-+	struct icc_path *icc_path;
- 	struct clk *iclk, *cclk;
- 	struct spi_qup *controller;
- 	struct resource *res;
-@@ -1019,6 +1049,11 @@ static int spi_qup_probe(struct platform_device *pdev)
- 	if (IS_ERR(iclk))
- 		return PTR_ERR(iclk);
- 
-+	icc_path = devm_of_icc_get(dev, NULL);
-+	if (IS_ERR(icc_path))
-+		return dev_err_probe(dev, PTR_ERR(icc_path),
-+				     "failed to get interconnect path\n");
-+
- 	/* This is optional parameter */
- 	if (of_property_read_u32(dev->of_node, "spi-max-frequency", &max_freq))
- 		max_freq = SPI_MAX_RATE;
-@@ -1070,6 +1105,7 @@ static int spi_qup_probe(struct platform_device *pdev)
- 	controller->base = base;
- 	controller->iclk = iclk;
- 	controller->cclk = cclk;
-+	controller->icc_path = icc_path;
- 	controller->irq = irq;
- 
- 	ret = spi_qup_init_dma(host, res->start);
-@@ -1190,6 +1226,7 @@ static int spi_qup_pm_suspend_runtime(struct device *device)
- 	writel_relaxed(config, controller->base + QUP_CONFIG);
- 
- 	clk_disable_unprepare(controller->cclk);
-+	spi_qup_vote_bw(controller, 0);
- 	clk_disable_unprepare(controller->iclk);
- 
- 	return 0;
-@@ -1241,6 +1278,7 @@ static int spi_qup_suspend(struct device *device)
- 		return ret;
- 
- 	clk_disable_unprepare(controller->cclk);
-+	spi_qup_vote_bw(controller, 0);
- 	clk_disable_unprepare(controller->iclk);
- 	return 0;
- }
-
+Best regards,
 -- 
-2.39.2
+Stephan Gerhold <stephan.gerhold@kernkonzept.com>
+Kernkonzept GmbH at Dresden, Germany, HRB 31129, CEO Dr.-Ing. Michael Hohmuth
 

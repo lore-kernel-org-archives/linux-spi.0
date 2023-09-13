@@ -2,97 +2,135 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0E74ECA0EF1
-	for <linux-spi@archiver.kernel.org>; Tue, 12 Sep 2023 15:00:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DB70AEE3F3F
+	for <linux-spi@archiver.kernel.org>; Wed, 13 Sep 2023 01:40:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235032AbjILPAM (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 12 Sep 2023 11:00:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42982 "EHLO
+        id S234247AbjIMBkg (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 12 Sep 2023 21:40:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236098AbjILPAL (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 12 Sep 2023 11:00:11 -0400
-Received: from mx.kernkonzept.com (serv1.kernkonzept.com [IPv6:2a01:4f8:1c1c:b490::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8028F115
-        for <linux-spi@vger.kernel.org>; Tue, 12 Sep 2023 08:00:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kernkonzept.com; s=mx1; h=Cc:To:In-Reply-To:References:Message-Id:
-        Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
-        Reply-To:Content-ID:Content-Description;
-        bh=rqAqXU+BauAuZhoJ6lkP5DQOkX1bFvCYekVfXB5a7v4=; b=GgHrrHIgtFRan0MheQxCydItfh
-        ekI6z8r3PAlYr1ztBSOqu+VTwuTgU30ollUcc+9On7jCN6lrdTW5t+ufWif2ZMJ8cP6YSTcVoHIsy
-        /KiNRrW5tQm2JWo029WCYDLPBpSXo+Ag3wS+ouooevmNh/CQ47Kdp1YxIaQKjDv9lodJlnrZJOszc
-        K1O9n9nQ38uQTsgi8NcaVIhfE0ow29Yy2nwVqZehpT6rZY3KythGZcAqjjkvtNXnXJD+wWuT9U2Oc
-        VcCmXOgOei5oKnn0NGptbKFMRzjiPeq4+Jxu8rt6v20gYhkcref5r4ORCbXiN0HeeqiRzHMed/dfq
-        62nNSxxw==;
-Received: from [10.22.3.24] (helo=serv1.dd1.int.kernkonzept.com)
-        by mx.kernkonzept.com with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim 4.96)
-        id 1qg4Pj-0034i9-02;
-        Tue, 12 Sep 2023 16:30:51 +0200
-From:   Stephan Gerhold <stephan.gerhold@kernkonzept.com>
-Date:   Tue, 12 Sep 2023 16:30:38 +0200
-Subject: [PATCH 3/4] spi: dt-bindings: qup: Document interconnects
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230912-spi-qup-dvfs-v1-3-3e38aa09c2bd@kernkonzept.com>
-References: <20230912-spi-qup-dvfs-v1-0-3e38aa09c2bd@kernkonzept.com>
-In-Reply-To: <20230912-spi-qup-dvfs-v1-0-3e38aa09c2bd@kernkonzept.com>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Stephan Gerhold <stephan.gerhold@kernkonzept.com>
-X-Mailer: b4 0.12.3
+        with ESMTP id S231204AbjIMBkg (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 12 Sep 2023 21:40:36 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 426CC115;
+        Tue, 12 Sep 2023 18:40:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1694569232; x=1726105232;
+  h=from:to:cc:subject:date:message-id;
+  bh=/I8UieFHVV2NROB2Mt1XVnCEdqjl4s68bAj+HN2soQI=;
+  b=GLV6hOLc7ASQByE3U6AEHPVN2WmA00gSzmp7FTWVrtXcs3d0tKPYHsm4
+   zbuzyFLvytWxog09xddNrmsvpDgiDJeGkjlISYC1YbL94k1SRmp8Y5CQK
+   Gt3WLFr+JEAHwx4OYN28pN01yYzhE9UuPptiSIMcCaiilKabiQTPxiJ7k
+   3S6voc2d5UFNKbRmgv0mBqPSuYWzEkl+4mXx9LOOfbf7YsSMI62Yh9UVB
+   E5NWFcnVSPrSk7HE/0waW+6U+jc7uIMI1KsrCM/D3LBDCnB7KfuMRsHN6
+   9JLnstMQG6Vh3ZfmWUmXiUCrUumVPR+DN62xbl8+8k7x+mEgYaUieUeKZ
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10831"; a="442569057"
+X-IronPort-AV: E=Sophos;i="6.02,141,1688454000"; 
+   d="scan'208";a="442569057"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2023 18:40:29 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10831"; a="773250091"
+X-IronPort-AV: E=Sophos;i="6.02,141,1688454000"; 
+   d="scan'208";a="773250091"
+Received: from shsensorbuild2.sh.intel.com ([10.239.134.197])
+  by orsmga008.jf.intel.com with ESMTP; 12 Sep 2023 18:40:23 -0700
+From:   Wentong Wu <wentong.wu@intel.com>
+To:     gregkh@linuxfoundation.org, arnd@arndb.de, mka@chromium.org,
+        oneukum@suse.com, lee@kernel.org, wsa@kernel.org,
+        kfting@nuvoton.com, broonie@kernel.org, linus.walleij@linaro.org,
+        hdegoede@redhat.com, maz@kernel.org, brgl@bgdev.pl,
+        linux-usb@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-gpio@vger.kernel.org,
+        andriy.shevchenko@linux.intel.com, heikki.krogerus@linux.intel.com,
+        andi.shyti@linux.intel.com, sakari.ailus@linux.intel.com,
+        bartosz.golaszewski@linaro.org, srinivas.pandruvada@intel.com
+Cc:     zhifeng.wang@intel.com, Wentong Wu <wentong.wu@intel.com>
+Subject: [PATCH v16 0/4] Add Intel LJCA device driver
+Date:   Wed, 13 Sep 2023 09:40:08 +0800
+Message-Id: <1694569212-10080-1-git-send-email-wentong.wu@intel.com>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-When the SPI QUP controller is used together with a DMA engine it needs
-to vote for the interconnect path to the DRAM. Otherwise it may be
-unable to access the memory quickly enough.
+Add driver for Intel La Jolla Cove Adapter (LJCA) device. This
+IO-expander adds additional functions to the host system such
+as GPIO, I2C and SPI with USB host interface. We add 4 drivers
+to support this device: a USB driver, a GPIO chip driver, a I2C
+controller driver and a SPI controller driver.
 
-Signed-off-by: Stephan Gerhold <stephan.gerhold@kernkonzept.com>
 ---
- Documentation/devicetree/bindings/spi/qcom,spi-qup.yaml | 5 +++++
- 1 file changed, 5 insertions(+)
+v16:
+ - drop all void * and use real types in the exported apis and internal ljca_send()
+ - remove #ifdef in usb-ljca.c file
+ - add documentation in ljca.h for the public structures
+ - add error message in ljca_handle_cmd_ack() if error happens and remove blank line
+ - use the functionality in cleanup.h for spinlock to make function much simpler
+ - change the type of ex_buf in struct ljca_adapter to u8 *
 
-diff --git a/Documentation/devicetree/bindings/spi/qcom,spi-qup.yaml b/Documentation/devicetree/bindings/spi/qcom,spi-qup.yaml
-index 1e498a791406..88be13268962 100644
---- a/Documentation/devicetree/bindings/spi/qcom,spi-qup.yaml
-+++ b/Documentation/devicetree/bindings/spi/qcom,spi-qup.yaml
-@@ -44,6 +44,9 @@ properties:
-       - const: tx
-       - const: rx
- 
-+  interconnects:
-+    maxItems: 1
-+
-   interrupts:
-     maxItems: 1
- 
-@@ -67,6 +70,7 @@ unevaluatedProperties: false
- examples:
-   - |
-     #include <dt-bindings/clock/qcom,gcc-msm8996.h>
-+    #include <dt-bindings/interconnect/qcom,msm8996.h>
-     #include <dt-bindings/interrupt-controller/arm-gic.h>
-     #include <dt-bindings/power/qcom-rpmpd.h>
- 
-@@ -84,6 +88,7 @@ examples:
-         dma-names = "tx", "rx";
-         power-domains = <&rpmpd MSM8996_VDDCX>;
-         operating-points-v2 = <&spi_opp_table>;
-+        interconnects = <&pnoc MASTER_BLSP_1 &bimc SLAVE_EBI_CH0>;
-         #address-cells = <1>;
-         #size-cells = <0>;
-     };
+v15:
+ - enhance disconnect() of usb-ljca driver
+ - change memchr to strchr in ljca_match_device_ids() of usb-ljca driver
+
+v14:
+ - fix build error: implicit declaration of function 'acpi_dev_clear_dependencies'
+
+v13:
+ - make ljca-usb more robust with the help of Hans de Goede
+ - call acpi_dev_clear_dependencies() to mark _DEP ACPI dependencies on the I2C controller as satisfied, and patch is from Hans de Goede
+
+v12:
+ - switch dev_err to dev_dbg for i2c-ljca driver
+ - avoid err printing because of calling usb_kill_urb when attempts to resubmit the rx urb
+
+v11:
+ - switch dev_err to dev_dbg for i2c-ljca driver
+ - remove message length check because of defined quirk structure
+ - remove I2C_FUNC_SMBUS_EMUL support
+
+v10:
+ - remove ljca_i2c_format_slave_addr
+ - remove memset before write write w_packet
+ - make ljca_i2c_stop void and print err message in case failure
+ - use dev_err_probe in ljca_i2c_probe function
+
+v9:
+ - overhaul usb-ljca driver to make it more structured and easy understand
+ - fix memory leak issue for usb-ljca driver
+ - add spinlock to protect tx_buf and ex_buf
+ - change exported APIs for usb-ljca driver
+ - unify prefix for structures and functions for i2c-ljca driver
+ - unify prefix for structures and functions for spi-ljca driver
+ - unify prefix for structures and functions for gpio-ljca driver
+ - update gpio-ljca, i2c-ljca and spi-ljca drivers according to usb-ljca's changes
+
+Wentong Wu (4):
+  usb: Add support for Intel LJCA device
+  i2c: Add support for Intel LJCA USB I2C driver
+  spi: Add support for Intel LJCA USB SPI driver
+  gpio: update Intel LJCA USB GPIO driver
+
+ drivers/gpio/Kconfig          |   4 +-
+ drivers/gpio/gpio-ljca.c      | 246 +++++++------
+ drivers/i2c/busses/Kconfig    |  11 +
+ drivers/i2c/busses/Makefile   |   1 +
+ drivers/i2c/busses/i2c-ljca.c | 342 +++++++++++++++++
+ drivers/spi/Kconfig           |  11 +
+ drivers/spi/Makefile          |   1 +
+ drivers/spi/spi-ljca.c        | 297 +++++++++++++++
+ drivers/usb/misc/Kconfig      |  14 +
+ drivers/usb/misc/Makefile     |   1 +
+ drivers/usb/misc/usb-ljca.c   | 835 ++++++++++++++++++++++++++++++++++++++++++
+ include/linux/usb/ljca.h      | 145 ++++++++
+ 12 files changed, 1803 insertions(+), 105 deletions(-)
+ create mode 100644 drivers/i2c/busses/i2c-ljca.c
+ create mode 100644 drivers/spi/spi-ljca.c
+ create mode 100644 drivers/usb/misc/usb-ljca.c
+ create mode 100644 include/linux/usb/ljca.h
 
 -- 
-2.39.2
+2.7.4
 

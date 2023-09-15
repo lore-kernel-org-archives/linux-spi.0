@@ -2,87 +2,79 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2FB0BEE6455
-	for <linux-spi@archiver.kernel.org>; Fri, 15 Sep 2023 10:47:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AA904EE6457
+	for <linux-spi@archiver.kernel.org>; Fri, 15 Sep 2023 12:39:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232147AbjIOKrP (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 15 Sep 2023 06:47:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55004 "EHLO
+        id S234940AbjIOMjD (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 15 Sep 2023 08:39:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233553AbjIOKrO (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 15 Sep 2023 06:47:14 -0400
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB34B18D
-        for <linux-spi@vger.kernel.org>; Fri, 15 Sep 2023 03:47:07 -0700 (PDT)
-Received: by mail-ej1-x636.google.com with SMTP id a640c23a62f3a-99357737980so260554566b.2
-        for <linux-spi@vger.kernel.org>; Fri, 15 Sep 2023 03:47:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1694774826; x=1695379626; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=K/o4N+rJdDvPOkHZP4rGeji09Be+GMTp3ncXx+q6uC0=;
-        b=icG5iIDZbs+c41vEqRqwJCd2yZhBnHjuWRpAGvFzCVGt1LybTXZIJnG5IyVWedUCsu
-         A3l1kbET70LN0DcPv7u97MkPJ0KjmsN1D92X47rb49tnmWT37ByXSlP1BbtSM11JInTX
-         MF1K6rnHPcFuaOHkHVxUNQBe8PhUFCL6L/HL0cCcJGshExeIFsP95CeWS/Fqv5FClh2S
-         fIW3/iGywh+JEf9gZ/Z82dEjqNHyuDq4MFTUOssybK8sgixh/1G1b0wbGL82rK5rwDcg
-         NqVmKnqSct8EXVgxB7XGHWt4/5EFN3boSG/cVCx8mDnWQUQi8w4gElQCiT7E8HrqZL0k
-         vUdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694774826; x=1695379626;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=K/o4N+rJdDvPOkHZP4rGeji09Be+GMTp3ncXx+q6uC0=;
-        b=edf/pM9FpHmiT6tdYBOiHZhJg1zLU/p+Rj2yE8mBu38t6kcEPdRZmQFXiDpzqsBaYE
-         rYonMXN3seiCJIZQRydM1H0syxdVoQ4LL4RW6hmEe/WY0Ce3mc9xD/0p/QONEabw9q6g
-         33HTbpl6EzUe2ciy4X+pgJRykgt3v1Tdr1EExRz3pVhMTdPzG8ieEQcf2gSq8DE480AM
-         jSRzl0WPRYmo6wm+fUDnCkTvvvoLV+FAQYNRfiHVEBUQd/mIBZ5JsVZMLrEeEqrx4KLB
-         C/wPGb+5/q6qhGxpppXd4dr/1q37yCjpR9Qn5dT8SMxxsCTxjTIHRdMSWsvKgYC4DWN6
-         GA8w==
-X-Gm-Message-State: AOJu0YwyKjy82839U8/7m6B+UfMP542wyBcMcxW93WTZt+waNOPTipe+
-        gN+tf8oiko62gtLeSg4HABSclQ==
-X-Google-Smtp-Source: AGHT+IHVOd/ddryjn2v0lhERAAcKk6mQCZCf4sdk9KrpW6+CUqWi6F4ZfilyAWQn9jSB9zOV0NnX8g==
-X-Received: by 2002:a17:906:311b:b0:9a1:c352:b6a5 with SMTP id 27-20020a170906311b00b009a1c352b6a5mr1069106ejx.69.1694774826009;
-        Fri, 15 Sep 2023 03:47:06 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.214.188])
-        by smtp.gmail.com with ESMTPSA id a18-20020a170906191200b0098e42bef736sm2224043eje.176.2023.09.15.03.47.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 15 Sep 2023 03:47:05 -0700 (PDT)
-Message-ID: <d334267f-38dd-bf70-4246-263de1a4747f@linaro.org>
-Date:   Fri, 15 Sep 2023 12:47:03 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: [PATCH v4 19/42] dt-bindings: spi: Add Cirrus EP93xx
-Content-Language: en-US
-To:     nikita.shubin@maquefel.me, Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
+        with ESMTP id S234928AbjIOMjD (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 15 Sep 2023 08:39:03 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0852D3;
+        Fri, 15 Sep 2023 05:38:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69FDCC433C7;
+        Fri, 15 Sep 2023 12:38:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1694781538;
+        bh=mRQTHLiQNiezev/fSOVUsH4pXbjz2KXmTCJMT2uy6iU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=M5VRQBuISF5o0cX4pNz1TeB/qx+iYlw56EvN73M7Keg6VmooMrWleYnOjVJJmDOtu
+         z7736AaRdgx4focfn0I03OmiR+HxrUrXlh7W82mFYgjfgGi3yW6M9gV0GTETYHQ7b6
+         R3XCgBJ2HArMNRhuShb0qpV24WE+Qyr7Zb1ZTpWO2CM4qUo/Js+LqE/ra2gqiHCTVH
+         H2IiFlSvfH0GQ/U7l8DSLqZFaJD6Cg57NbOcPo+YhzHNdhG3WgczJiW2H93s+yts7P
+         yIPxAWz4Bja74i+i+SaNG+CNbVKvJLmwiKbwX9EFMgClvrIRHZcCJdwUjKqfPmcKiT
+         1gzIseVt5sDAA==
+Date:   Fri, 15 Sep 2023 13:38:52 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     nikita.shubin@maquefel.me
+Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Arnd Bergmann <arnd@arndb.de>,
         Alexander Sverdlin <alexander.sverdlin@gmail.com>
-Cc:     linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH v4 20/42] spi: ep93xx: add DT support for Cirrus EP93xx
+Message-ID: <1c7d3ca5-d252-4396-8209-a8b2560d2130@sirena.org.uk>
 References: <20230915-ep93xx-v4-0-a1d779dcec10@maquefel.me>
- <20230915-ep93xx-v4-19-a1d779dcec10@maquefel.me>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230915-ep93xx-v4-19-a1d779dcec10@maquefel.me>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <20230915-ep93xx-v4-20-a1d779dcec10@maquefel.me>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="i7I/TpJIjLVV3Jql"
+Content-Disposition: inline
+In-Reply-To: <20230915-ep93xx-v4-20-a1d779dcec10@maquefel.me>
+X-Cookie: Gravity brings me down.
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On 15/09/2023 10:11, Nikita Shubin via B4 Relay wrote:
+
+--i7I/TpJIjLVV3Jql
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, Sep 15, 2023 at 11:11:02AM +0300, Nikita Shubin via B4 Relay wrote:
 > From: Nikita Shubin <nikita.shubin@maquefel.me>
-> 
-> Add YAML bindings for ep93xx SoC SPI.
-> 
-> Signed-off-by: Nikita Shubin <nikita.shubin@maquefel.me>
-> ---
+>=20
+> - add OF ID match table
+>=20
+> Instead of platform use_dma flag - check if DT dmas property is present to
+> decide to use dma ot not.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Mark Brown <broonie@kernel.org>
 
-Best regards,
-Krzysztof
+--i7I/TpJIjLVV3Jql
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmUEUFsACgkQJNaLcl1U
+h9BSwgf+KanICmRYsi086ZOx5WT6SHGv73D96RwtgpLL2/Ef+M4SGlSEotTKA32a
+nxh7DgyjXwLCZaRCMQO0GPZp2S13DTxseRqkzeDAR3gUGvfir3UKyH553IOjOZPX
+6GY5hoVmjmXhQzzYPDqowgLGIH71gIRLX7KsXG86YwhaNs/XloBx+p2pAFyYm/Gc
+k34BM+e0CY6sJ4JJ7NNlTyZS7g7XkoTLgOplojGPksnToDz+X39SzsEhk3dA+BeQ
+Il/K/JKM/EoSuvcSK2YNd4l6ddgQD5mxrnCL3i4EWv1/vAWW7OVkEQ/Px33gq57f
+Rn02UNn4Nl0fSGYVkKOTJ0+gH0kaYg==
+=chJq
+-----END PGP SIGNATURE-----
+
+--i7I/TpJIjLVV3Jql--

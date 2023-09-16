@@ -2,416 +2,217 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DABE1C2BA2B
-	for <linux-spi@archiver.kernel.org>; Sat, 16 Sep 2023 18:55:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BFBD7C2BA12
+	for <linux-spi@archiver.kernel.org>; Sat, 16 Sep 2023 18:57:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236073AbjIPSyj (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sat, 16 Sep 2023 14:54:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52018 "EHLO
+        id S238669AbjIPS4r (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sat, 16 Sep 2023 14:56:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232114AbjIPSyK (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sat, 16 Sep 2023 14:54:10 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDDAACE7;
-        Sat, 16 Sep 2023 11:54:03 -0700 (PDT)
+        with ESMTP id S239195AbjIPS4p (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sat, 16 Sep 2023 14:56:45 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46A61CE7;
+        Sat, 16 Sep 2023 11:56:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694890443; x=1726426443;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references;
-  bh=CzWCn8DEPLzc3exetOdS+R82o0EEqzA+3nbKZL20ZiI=;
-  b=ASGO9kOd3KE0BHTQUFujd2xzP/JFrRD9i/oo6K+9rpJXIcd8IlcANqqO
-   2aTFLJPCrJps7rrMjl8eWJoXxSxi/bOYibuhVajA1Yl/PPQO5U6EnxPDF
-   FTR5oJf5z9U5yAN9MYNvcAtFWLeOV4GNUOzLLiZGkaUewKGh+mhUEE9n8
-   jx+1luOtL2Q4kEqVrrhUVcAJBMELT54RyMTaJwuKvOO3D993GxEXibdGJ
-   9NFGi/bkkh25gVYKrMMmlWGa3hSbwtrDW/zALk37GzLNdfXsRXz1o5s9e
-   JIRPRPrlfMIqVwF8JE+1M/ueMjS6qivETY+YkBMiU8kqS89jNRgXE+qiI
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10835"; a="465794039"
+  t=1694890600; x=1726426600;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=IqopkPCuspStzQRzGMvs1IfE2m249q0xLRIRKCbvc0k=;
+  b=lXDcPRL+/dIEUgnpcx5de4f0L1ENJXLJ+hF5R1YZaCVhoe+JPnDGpfsL
+   MJeWdNwJg6wobWGqXWFs0NTs0A+aQ/iZZqIPFARrw4BX0GtEQG8Kq6ypN
+   s/Rn08/qeCehJmxPSb3QyLkZm26taEQ0C4FGclX6goBcKCtKT7erSm6/p
+   Os7L3K6wkkUkza12XkgqX1XnQhEBSvT9xV1cfIJlGAWt/CG3Udv7LlG92
+   vGNuVxKjnz6GgUM+4oczhBekXcKtUs9ZdX5gFkbdspB0ap48lfi/2tjgI
+   YjBPbKNIthUViqtpkzHWSJ5lToOYmb686xHoms6IZwyYqFNuf0uoDmV0H
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10835"; a="382176111"
 X-IronPort-AV: E=Sophos;i="6.02,152,1688454000"; 
-   d="scan'208";a="465794039"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2023 11:54:03 -0700
+   d="scan'208";a="382176111"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2023 11:56:39 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10835"; a="810907593"
+X-IronPort-AV: E=McAfee;i="6600,9927,10835"; a="919020312"
 X-IronPort-AV: E=Sophos;i="6.02,152,1688454000"; 
-   d="scan'208";a="810907593"
-Received: from shsensorbuild2.sh.intel.com ([10.239.134.197])
-  by fmsmga008.fm.intel.com with ESMTP; 16 Sep 2023 11:53:58 -0700
-From:   Wentong Wu <wentong.wu@intel.com>
-To:     gregkh@linuxfoundation.org, arnd@arndb.de, mka@chromium.org,
-        oneukum@suse.com, lee@kernel.org, wsa@kernel.org,
-        kfting@nuvoton.com, broonie@kernel.org, linus.walleij@linaro.org,
-        hdegoede@redhat.com, maz@kernel.org, brgl@bgdev.pl,
-        linux-usb@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-gpio@vger.kernel.org,
-        andriy.shevchenko@linux.intel.com, heikki.krogerus@linux.intel.com,
-        andi.shyti@linux.intel.com, sakari.ailus@linux.intel.com,
-        bartosz.golaszewski@linaro.org, srinivas.pandruvada@intel.com
-Cc:     zhifeng.wang@intel.com, Wentong Wu <wentong.wu@intel.com>
-Subject: [PATCH v19 3/4] spi: Add support for Intel LJCA USB SPI driver
-Date:   Sun, 17 Sep 2023 02:53:35 +0800
-Message-Id: <1694890416-14409-4-git-send-email-wentong.wu@intel.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1694890416-14409-1-git-send-email-wentong.wu@intel.com>
-References: <1694890416-14409-1-git-send-email-wentong.wu@intel.com>
+   d="scan'208";a="919020312"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+  by orsmga005.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 16 Sep 2023 11:56:39 -0700
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32; Sat, 16 Sep 2023 11:56:39 -0700
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32 via Frontend Transport; Sat, 16 Sep 2023 11:56:39 -0700
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (104.47.57.43) by
+ edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.32; Sat, 16 Sep 2023 11:56:39 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Y/m/qyH3cIbagRJaqZtI5/HY/+rho/eLcd52UzXOpRi38aVI/mIIaoCqlVbvkb/f8yGxg0NT0BivWz/U3rsi1z0l1nFggAOgoD71KerB8/wcW3hhQ3yOHEBpFNZOv6KBy3OuPlyO0STItGKZOwublx8XUFkShiWdXH/rPrzLujDfBwapAR2X5H0c1Ui48F0EOXCbnsP+5Lrr3s9rYZYcSOcp65+rOcV2GH0pQscYBThSYmJuIYCxzG6eOblJZzEIdq/kNz9LTCAGEdB8tpzr7/I0ktonAxvTDoIpX5gi2gwtlXxWNX+HEwgf7r5zPetmVxR557dqW+/smKvsnzfSUA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=IqopkPCuspStzQRzGMvs1IfE2m249q0xLRIRKCbvc0k=;
+ b=QyNxWrQQfa4v05wlOJRcFYR8B20DhGSUzvV0eURsJy4KyeUqUP+uASynyzX1VJEHbrN8WaK4AZHTSDrUn/duP2B88tVJqeUZuL9Z4JiB6z35LqFXd6uUockXldvpL5oGfjp/GvBlCULS+GlLSeEhGlZ7PiyWRtUBTxQ6Wn/FNCLuWYy2N7W6hEithlNI7apolSKbIl12GCWEd9Wl+p/4E8YjRYZo3zYRz6cRx1gK6L07fmvhzTjm9VOV3Ee9wZesQXa6g5FX3Zi/Jja7AufbCiYwah0t5maf5BJ4LgghKF7GS1Snd3xPWrhPsVcLaJRgZURWXQ06dDRtVZ+edljXuw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from DM6PR11MB4316.namprd11.prod.outlook.com (2603:10b6:5:205::16)
+ by DM3PR11MB8714.namprd11.prod.outlook.com (2603:10b6:0:b::18) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6792.21; Sat, 16 Sep 2023 18:56:37 +0000
+Received: from DM6PR11MB4316.namprd11.prod.outlook.com
+ ([fe80::e836:4003:6244:2466]) by DM6PR11MB4316.namprd11.prod.outlook.com
+ ([fe80::e836:4003:6244:2466%7]) with mapi id 15.20.6792.023; Sat, 16 Sep 2023
+ 18:56:37 +0000
+From:   "Wu, Wentong" <wentong.wu@intel.com>
+To:     Hans de Goede <hdegoede@redhat.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+CC:     "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "arnd@arndb.de" <arnd@arndb.de>,
+        "mka@chromium.org" <mka@chromium.org>,
+        "oneukum@suse.com" <oneukum@suse.com>,
+        "lee@kernel.org" <lee@kernel.org>,
+        "wsa@kernel.org" <wsa@kernel.org>,
+        "kfting@nuvoton.com" <kfting@nuvoton.com>,
+        "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
+        "maz@kernel.org" <maz@kernel.org>, "brgl@bgdev.pl" <brgl@bgdev.pl>,
+        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "andriy.shevchenko@linux.intel.com" 
+        <andriy.shevchenko@linux.intel.com>,
+        "heikki.krogerus@linux.intel.com" <heikki.krogerus@linux.intel.com>,
+        "andi.shyti@linux.intel.com" <andi.shyti@linux.intel.com>,
+        "sakari.ailus@linux.intel.com" <sakari.ailus@linux.intel.com>,
+        "bartosz.golaszewski@linaro.org" <bartosz.golaszewski@linaro.org>,
+        "Pandruvada, Srinivas" <srinivas.pandruvada@intel.com>,
+        "Wang, Zhifeng" <zhifeng.wang@intel.com>
+Subject: RE: [PATCH v17 3/4] spi: Add support for Intel LJCA USB SPI driver
+Thread-Topic: [PATCH v17 3/4] spi: Add support for Intel LJCA USB SPI driver
+Thread-Index: AQHZ5wor5/N5/IsKLEWimd3KHgQ0w7AdcDaAgABcT+A=
+Date:   Sat, 16 Sep 2023 18:56:35 +0000
+Message-ID: <DM6PR11MB4316CAEAA00DBD529CA7F6E98DF5A@DM6PR11MB4316.namprd11.prod.outlook.com>
+References: <1694695530-31645-1-git-send-email-wentong.wu@intel.com>
+ <1694695530-31645-4-git-send-email-wentong.wu@intel.com>
+ <1d02f04c-fd02-38f7-a355-76e4975ce5da@redhat.com>
+In-Reply-To: <1d02f04c-fd02-38f7-a355-76e4975ce5da@redhat.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM6PR11MB4316:EE_|DM3PR11MB8714:EE_
+x-ms-office365-filtering-correlation-id: 03aa02b0-20c5-4e41-1d6b-08dbb6e6a6ba
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: x3pSUtXfzrp5iQg/dUZDGJCQGTOAZ7/UKIhbXOEVzEbhBucLfFtNBv3IygmnSFUtuzfE2+bj5QQYVOjP/ComYHnNiEGW/bHmWouRaHR5fi2CQzFvP1YMlCrqlFPmu7QLgIq77uCp+Q8R/IgHHBgL7ZDdB0NhzLhZOrrW+yGxRZf4VNKaLWjYu5hBE4vNlG7fT8VozR/Dhwu6valBoP2X/eWnYrILL1OBX5Xck8Nhk6YHGLRyzDRklCejYhye0ld82NFJ9+jUhddWk/bgS5i+3mB4k/kfjYtD8RzBXOXlfobL63OMGVdHWt4wybNzP73YnJvD30l+9i5YfvRB6SFgTP4tiSaJSYYHs89CBicvU6tpT/jWubxy+GDZnmAR+ydQJOyTtKRaLpG7hwE1W+9BIAYz3qZiojA7sxVbmxIOuGRq9ZXRlPYBT8WmjL8GOWtBmLsrKKqXVcd6kHwUcsF9hiHlH5+/ENKxJv2myUbjPVenR3274FH39TXOj1DlP05vOHffpDjkV9j7QzBReZbbbTZ1+kXXjug5qWoNOrfAhSezX8PAc3qH5B/mpsyShrsljnJej9Y9RZpLc3DCFXV7LJ4al9xCWJsXbXFfmuVftjy+hFnHq3KVhpL8r1m43T50
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR11MB4316.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(346002)(376002)(396003)(39860400002)(366004)(451199024)(186009)(1800799009)(5660300002)(41300700001)(8936002)(7416002)(66946007)(4326008)(76116006)(110136005)(66556008)(66476007)(64756008)(8676002)(52536014)(316002)(54906003)(66446008)(2906002)(122000001)(38100700002)(38070700005)(55016003)(86362001)(9686003)(53546011)(26005)(82960400001)(33656002)(478600001)(6506007)(7696005)(71200400001);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?eWI0MmN4SHVVS1RHYlRPUHRFOTVTZWdwaEFZcHBTV3JnOHBob09OWXdhODBx?=
+ =?utf-8?B?VW10VEsrQXB0aFgrZTJrQnJXa09YbS9KQjZRN25acUQ1SHFoeTVKRDk2NWhQ?=
+ =?utf-8?B?SDZFdk1uZTg3K2taNHNkUnpaSlpBVUlncWxWcVBsNmw1d29GamU0TkRNTkhq?=
+ =?utf-8?B?dnZydUNvU05hZENrVm5aZ0hvNHUveVRUQlJ5d0xBVlcwOEJrTEY5Y1RoeWM3?=
+ =?utf-8?B?YmF6UFg5VDhIaG5wak1seWtEMzYyeGdYUkpMNXl1aFJSVExwNFJlZ0xhc2Iz?=
+ =?utf-8?B?b2lFRkF3cTRSSjhiSlg0SUNMUSt3RTU2dWlONHVWUCtWQWRHRHRYalh5MVVw?=
+ =?utf-8?B?WFp3ZW1nMTY4clhPYlcwODM2cHNENTE0RjNFcFJUMkdTOGh6d0h2d2JUSEJN?=
+ =?utf-8?B?dy9tazVBWXhoekhqSDJHMHlKQjIrOVdGT3g3d2pPTjAvZkZjYlB5OUJjQ2l2?=
+ =?utf-8?B?WWJtOWN4TWhFSHNHTzdZVGlSSnhsS04xUjU2U1NpNDJablZtTkxNMkdNOGFS?=
+ =?utf-8?B?SG40bWZtYUgrdldRRkJhRG84N0lCMnBRSGh3YzNmSTVaTHErL2djZGlhSy9i?=
+ =?utf-8?B?UWcxbk1YT1FkYmZydWdrVU10cmVXL1htNlRVaWVUS1A2YXFOZmVMaFhyUWdo?=
+ =?utf-8?B?WG5XZis2NVRLZDB1WUZBWll0NG1GWlhZQ1RydnEveXQ0UHNwYW9acU5mdHhs?=
+ =?utf-8?B?ZkNWcjR2SE1iM0JicnIzQzV6NG5TTzM1dmY3clBpM0hkY3RIZE8yRzd3azEw?=
+ =?utf-8?B?SFpvdms4ZEV2UnBzN0ZoWVZUa3NtYUtTUlk5Q0tIR2tBVnNyRTBKSFJtR1Ez?=
+ =?utf-8?B?WVgrcGtvaFV3OGZ1emVLUC8rMmJITjZHak1JeFRHZW9tQkY1YWlRUWZWWU1G?=
+ =?utf-8?B?VUtmQ3EyVkNyRG1BbTJsMmE3YXpjTnh3VUV4SEJtK1AxLzF2MTZBR2ZkY3Rk?=
+ =?utf-8?B?STFFSmplcXhPZGFyQkRJU0JDRjZqdUFFdjYyV1QwSndzaGVNUDV0bHpHdGFF?=
+ =?utf-8?B?eDNwbUtTVkplT2l1RjhMVWVmakp1TUtYNUs1c0VSam0yMzhzVkVISkVSOGxX?=
+ =?utf-8?B?MFdqT3VWTW1QYXdHUVlSbFJKVlU2VGYwaFFwUysvQnFOSWtkUHZScWphNnQ0?=
+ =?utf-8?B?NklraVRuNmdRZktsYVBtZjJFVmdLVDltc0ErWVJ3emxDYm5LMDNqUXRXRGdm?=
+ =?utf-8?B?RWlBR3RCZW5laTVyY3Y2MlpOcVQ5dXFkUnpEVDRvWERnNy9hYlQ5ODEwbFRs?=
+ =?utf-8?B?QVpQc3hYdU01SWJtRFRXNGxINVRidDl6WlRwZENqUVRqK2I5ckpCTll1VzE0?=
+ =?utf-8?B?VXpBL1pQN2NySS9BODNicUxGVVJYbllMUWoraHVDYUF6R3o1LzVFRlEwZzgv?=
+ =?utf-8?B?dER0SkZkdy9zQ1pkdmVxYXNqZFpwTTRvUXRGKy92V05WcG9uM3JmTEE0VlJa?=
+ =?utf-8?B?QmxNT2NSMktkVXpjSE40YlozUGxBK1ZKVXR2cENZNmZTd0kzandIelRnRGNY?=
+ =?utf-8?B?RXRsSDM2cnJoajg3b3JOMmg1OGpBbUNJNkFnbkF3WmNlb3draHlkRS9YUWQx?=
+ =?utf-8?B?dzdmLzdIQlM0NkhCTUpBSENrU2tCUU94eDBaU0JEZzIwNjNNcnVQczQ4eXdC?=
+ =?utf-8?B?OVc4U2tvb21qZUZkNytTUkJ3eU9XY0s1elliTTZKTWxrWEJvS0FVMlhRbjVh?=
+ =?utf-8?B?dGpVR3MvUHlxUnJVcG9pWDRKMWhvMzltaWJlSzdVMy9sZ0p3VWNnTG9JbGRv?=
+ =?utf-8?B?ay85ekJHTmh2MjNPeWtIRU56MXMwQ3lvZFBIOHZSTmUxb0pFWHB2QWJtR24w?=
+ =?utf-8?B?UllWSFZtVzZJaHJEd3NtWUdoL2VjeWp3SEFzNjB0eTdhMkhEY1hzWWJsVzNG?=
+ =?utf-8?B?VHVBN241LzZRbTgxWXhLeEZKR09Fdk5sSHM1aU1xeDRQRmlhQ0hmVHlGVkhX?=
+ =?utf-8?B?UjBOL2xVL2hVbDdULzArZGx6RHdXVVR3dWFVZXplSG5tUlFGa2lOMjZYNGYv?=
+ =?utf-8?B?ZGwzQy95RFIrY3pPWmJVNzNPNUptbUQrNDZ3dXJGaUx6YkFpRnprOElaR1Yr?=
+ =?utf-8?B?Y1FTczlJbzdZeWdveDlFMzZqM3pZTVZ1WTVWUFl5UXVYNFJMNTd3MlFvSlNr?=
+ =?utf-8?Q?gHxAX3NyEiLLY4v5JO9SgI6b9?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR11MB4316.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 03aa02b0-20c5-4e41-1d6b-08dbb6e6a6ba
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Sep 2023 18:56:35.8620
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: YcKnyORUaugnkeKmhBI4P64Dp90MdPOetwk3EyknyHUbubY9oGViihvCSLkiWQLI49mLbRad35TTjmJqOXzh4A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PR11MB8714
+X-OriginatorOrg: intel.com
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Implements the SPI function of Intel USB-I2C/GPIO/SPI adapter device
-named "La Jolla Cove Adapter" (LJCA). It communicate with LJCA SPI
-module with specific protocol through interfaces exported by LJCA USB
-driver.
-
-Signed-off-by: Wentong Wu <wentong.wu@intel.com>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Tested-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/spi/Kconfig    |  11 ++
- drivers/spi/Makefile   |   1 +
- drivers/spi/spi-ljca.c | 297 +++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 309 insertions(+)
- create mode 100644 drivers/spi/spi-ljca.c
-
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 2c21d5b..32d9ea6 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -616,6 +616,17 @@ config SPI_FSL_ESPI
- 	  From MPC8536, 85xx platform uses the controller, and all P10xx,
- 	  P20xx, P30xx,P40xx, P50xx uses this controller.
- 
-+config SPI_LJCA
-+	tristate "Intel La Jolla Cove Adapter SPI support"
-+	depends on USB_LJCA
-+	default USB_LJCA
-+	help
-+	  Select this option to enable SPI driver for the Intel
-+	  La Jolla Cove Adapter (LJCA) board.
-+
-+	  This driver can also be built as a module. If so, the module
-+	  will be called spi-ljca.
-+
- config SPI_MESON_SPICC
- 	tristate "Amlogic Meson SPICC controller"
- 	depends on COMMON_CLK
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index 6af5484..4ff8d72 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -71,6 +71,7 @@ obj-$(CONFIG_SPI_INTEL_PCI)		+= spi-intel-pci.o
- obj-$(CONFIG_SPI_INTEL_PLATFORM)	+= spi-intel-platform.o
- obj-$(CONFIG_SPI_LANTIQ_SSC)		+= spi-lantiq-ssc.o
- obj-$(CONFIG_SPI_JCORE)			+= spi-jcore.o
-+obj-$(CONFIG_SPI_LJCA)			+= spi-ljca.o
- obj-$(CONFIG_SPI_LM70_LLP)		+= spi-lm70llp.o
- obj-$(CONFIG_SPI_LOONGSON_CORE)		+= spi-loongson-core.o
- obj-$(CONFIG_SPI_LOONGSON_PCI)		+= spi-loongson-pci.o
-diff --git a/drivers/spi/spi-ljca.c b/drivers/spi/spi-ljca.c
-new file mode 100644
-index 0000000..6b6d000d
---- /dev/null
-+++ b/drivers/spi/spi-ljca.c
-@@ -0,0 +1,297 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Intel La Jolla Cove Adapter USB-SPI driver
-+ *
-+ * Copyright (c) 2023, Intel Corporation.
-+ */
-+
-+#include <linux/auxiliary_bus.h>
-+#include <linux/bitfield.h>
-+#include <linux/bits.h>
-+#include <linux/dev_printk.h>
-+#include <linux/module.h>
-+#include <linux/spi/spi.h>
-+#include <linux/usb/ljca.h>
-+
-+#define LJCA_SPI_BUS_MAX_HZ		48000000
-+
-+#define LJCA_SPI_BUF_SIZE		60u
-+#define LJCA_SPI_MAX_XFER_SIZE		\
-+	(LJCA_SPI_BUF_SIZE - sizeof(struct ljca_spi_xfer_packet))
-+
-+#define LJCA_SPI_CLK_MODE_POLARITY	BIT(0)
-+#define LJCA_SPI_CLK_MODE_PHASE		BIT(1)
-+
-+#define LJCA_SPI_XFER_INDICATOR_ID	GENMASK(5, 0)
-+#define LJCA_SPI_XFER_INDICATOR_CMPL	BIT(6)
-+#define LJCA_SPI_XFER_INDICATOR_INDEX	BIT(7)
-+
-+/* SPI commands */
-+enum ljca_spi_cmd {
-+	LJCA_SPI_INIT = 1,
-+	LJCA_SPI_READ,
-+	LJCA_SPI_WRITE,
-+	LJCA_SPI_WRITEREAD,
-+	LJCA_SPI_DEINIT,
-+};
-+
-+enum {
-+	LJCA_SPI_BUS_SPEED_24M,
-+	LJCA_SPI_BUS_SPEED_12M,
-+	LJCA_SPI_BUS_SPEED_8M,
-+	LJCA_SPI_BUS_SPEED_6M,
-+	LJCA_SPI_BUS_SPEED_4_8M, /*4.8MHz*/
-+	LJCA_SPI_BUS_SPEED_MIN = LJCA_SPI_BUS_SPEED_4_8M,
-+};
-+
-+enum {
-+	LJCA_SPI_CLOCK_LOW_POLARITY,
-+	LJCA_SPI_CLOCK_HIGH_POLARITY,
-+};
-+
-+enum {
-+	LJCA_SPI_CLOCK_FIRST_PHASE,
-+	LJCA_SPI_CLOCK_SECOND_PHASE,
-+};
-+
-+struct ljca_spi_init_packet {
-+	u8 index;
-+	u8 speed;
-+	u8 mode;
-+} __packed;
-+
-+struct ljca_spi_xfer_packet {
-+	u8 indicator;
-+	u8 len;
-+	u8 data[];
-+} __packed;
-+
-+struct ljca_spi_dev {
-+	struct ljca_client *ljca;
-+	struct spi_controller *controller;
-+	struct ljca_spi_info *spi_info;
-+	u8 speed;
-+	u8 mode;
-+
-+	u8 obuf[LJCA_SPI_BUF_SIZE];
-+	u8 ibuf[LJCA_SPI_BUF_SIZE];
-+};
-+
-+static int ljca_spi_read_write(struct ljca_spi_dev *ljca_spi, const u8 *w_data,
-+			       u8 *r_data, int len, int id, int complete,
-+			       int cmd)
-+{
-+	struct ljca_spi_xfer_packet *w_packet =
-+			(struct ljca_spi_xfer_packet *)ljca_spi->obuf;
-+	struct ljca_spi_xfer_packet *r_packet =
-+			(struct ljca_spi_xfer_packet *)ljca_spi->ibuf;
-+	int ret;
-+
-+	w_packet->indicator = FIELD_PREP(LJCA_SPI_XFER_INDICATOR_ID, id) |
-+			      FIELD_PREP(LJCA_SPI_XFER_INDICATOR_CMPL, complete) |
-+			      FIELD_PREP(LJCA_SPI_XFER_INDICATOR_INDEX,
-+					 ljca_spi->spi_info->id);
-+
-+	if (cmd == LJCA_SPI_READ) {
-+		w_packet->len = sizeof(u16);
-+		*(__le16 *)&w_packet->data[0] = cpu_to_le16(len);
-+	} else {
-+		w_packet->len = len;
-+		memcpy(w_packet->data, w_data, len);
-+	}
-+
-+	ret = ljca_transfer(ljca_spi->ljca, cmd, (u8 *)w_packet,
-+			    struct_size(w_packet, data, w_packet->len),
-+			    (u8 *)r_packet, LJCA_SPI_BUF_SIZE);
-+	if (ret < 0)
-+		return ret;
-+	else if (ret < sizeof(*r_packet) || r_packet->len <= 0)
-+		return -EIO;
-+
-+	if (r_data)
-+		memcpy(r_data, r_packet->data, r_packet->len);
-+
-+	return 0;
-+}
-+
-+static int ljca_spi_init(struct ljca_spi_dev *ljca_spi, u8 div, u8 mode)
-+{
-+	struct ljca_spi_init_packet w_packet = {};
-+	int ret;
-+
-+	if (ljca_spi->mode == mode && ljca_spi->speed == div)
-+		return 0;
-+
-+	w_packet.index = ljca_spi->spi_info->id;
-+	w_packet.speed = div;
-+	w_packet.mode = FIELD_PREP(LJCA_SPI_CLK_MODE_POLARITY,
-+				   (mode & SPI_CPOL) ? LJCA_SPI_CLOCK_HIGH_POLARITY :
-+						       LJCA_SPI_CLOCK_LOW_POLARITY) |
-+			FIELD_PREP(LJCA_SPI_CLK_MODE_PHASE,
-+				   (mode & SPI_CPHA) ? LJCA_SPI_CLOCK_SECOND_PHASE :
-+						       LJCA_SPI_CLOCK_FIRST_PHASE);
-+
-+	ret = ljca_transfer(ljca_spi->ljca, LJCA_SPI_INIT, (u8 *)&w_packet,
-+			    sizeof(w_packet), NULL, 0);
-+	if (ret < 0)
-+		return ret;
-+
-+	ljca_spi->mode = mode;
-+	ljca_spi->speed = div;
-+
-+	return 0;
-+}
-+
-+static int ljca_spi_deinit(struct ljca_spi_dev *ljca_spi)
-+{
-+	struct ljca_spi_init_packet w_packet = {};
-+	int ret;
-+
-+	w_packet.index = ljca_spi->spi_info->id;
-+
-+	ret = ljca_transfer(ljca_spi->ljca, LJCA_SPI_DEINIT, (u8 *)&w_packet,
-+			    sizeof(w_packet), NULL, 0);
-+
-+	return ret < 0 ? ret : 0;
-+}
-+
-+static inline int ljca_spi_transfer(struct ljca_spi_dev *ljca_spi,
-+				    const u8 *tx_data, u8 *rx_data, u16 len)
-+{
-+	int complete, cur_len;
-+	int remaining = len;
-+	int cmd, ret, i;
-+	int offset = 0;
-+
-+	if (tx_data && rx_data)
-+		cmd = LJCA_SPI_WRITEREAD;
-+	else if (tx_data)
-+		cmd = LJCA_SPI_WRITE;
-+	else if (rx_data)
-+		cmd = LJCA_SPI_READ;
-+	else
-+		return -EINVAL;
-+
-+	for (i = 0; remaining > 0; i++) {
-+		cur_len = min_t(unsigned int, remaining, LJCA_SPI_MAX_XFER_SIZE);
-+		complete = (cur_len == remaining);
-+
-+		ret = ljca_spi_read_write(ljca_spi,
-+					  tx_data ? tx_data + offset : NULL,
-+					  rx_data ? rx_data + offset : NULL,
-+					  cur_len, i, complete, cmd);
-+		if (ret)
-+			return ret;
-+
-+		offset += cur_len;
-+		remaining -= cur_len;
-+	}
-+
-+	return 0;
-+}
-+
-+static int ljca_spi_transfer_one(struct spi_controller *controller,
-+				 struct spi_device *spi,
-+				 struct spi_transfer *xfer)
-+{
-+	u8 div = DIV_ROUND_UP(controller->max_speed_hz, xfer->speed_hz) / 2 - 1;
-+	struct ljca_spi_dev *ljca_spi = spi_controller_get_devdata(controller);
-+	int ret;
-+
-+	div = min_t(u8, LJCA_SPI_BUS_SPEED_MIN, div);
-+
-+	ret = ljca_spi_init(ljca_spi, div, spi->mode);
-+	if (ret) {
-+		dev_err(&ljca_spi->ljca->auxdev.dev,
-+			"cannot initialize transfer ret %d\n", ret);
-+		return ret;
-+	}
-+
-+	ret = ljca_spi_transfer(ljca_spi, xfer->tx_buf, xfer->rx_buf, xfer->len);
-+	if (ret)
-+		dev_err(&ljca_spi->ljca->auxdev.dev,
-+			"transfer failed len: %d\n", xfer->len);
-+
-+	return ret;
-+}
-+
-+static int ljca_spi_probe(struct auxiliary_device *auxdev,
-+			  const struct auxiliary_device_id *aux_dev_id)
-+{
-+	struct ljca_client *ljca = auxiliary_dev_to_ljca_client(auxdev);
-+	struct spi_controller *controller;
-+	struct ljca_spi_dev *ljca_spi;
-+	int ret;
-+
-+	controller = devm_spi_alloc_master(&auxdev->dev, sizeof(*ljca_spi));
-+	if (!controller)
-+		return -ENOMEM;
-+
-+	ljca_spi = spi_controller_get_devdata(controller);
-+	ljca_spi->ljca = ljca;
-+	ljca_spi->spi_info = dev_get_platdata(&auxdev->dev);
-+	ljca_spi->controller = controller;
-+
-+	controller->bus_num = -1;
-+	controller->mode_bits = SPI_CPHA | SPI_CPOL;
-+	controller->transfer_one = ljca_spi_transfer_one;
-+	controller->auto_runtime_pm = false;
-+	controller->max_speed_hz = LJCA_SPI_BUS_MAX_HZ;
-+
-+	device_set_node(&ljca_spi->controller->dev, dev_fwnode(&auxdev->dev));
-+	auxiliary_set_drvdata(auxdev, controller);
-+
-+	ret = spi_register_controller(controller);
-+	if (ret)
-+		dev_err(&auxdev->dev, "Failed to register controller\n");
-+
-+	return ret;
-+}
-+
-+static void ljca_spi_dev_remove(struct auxiliary_device *auxdev)
-+{
-+	struct spi_controller *controller = auxiliary_get_drvdata(auxdev);
-+	struct ljca_spi_dev *ljca_spi = spi_controller_get_devdata(controller);
-+
-+	spi_unregister_controller(controller);
-+	ljca_spi_deinit(ljca_spi);
-+}
-+
-+static int ljca_spi_dev_suspend(struct device *dev)
-+{
-+	struct spi_controller *controller = dev_get_drvdata(dev);
-+
-+	return spi_controller_suspend(controller);
-+}
-+
-+static int ljca_spi_dev_resume(struct device *dev)
-+{
-+	struct spi_controller *controller = dev_get_drvdata(dev);
-+
-+	return spi_controller_resume(controller);
-+}
-+
-+static const struct dev_pm_ops ljca_spi_pm = {
-+	SYSTEM_SLEEP_PM_OPS(ljca_spi_dev_suspend, ljca_spi_dev_resume)
-+};
-+
-+static const struct auxiliary_device_id ljca_spi_id_table[] = {
-+	{ "usb_ljca.ljca-spi", 0 },
-+	{ /* sentinel */ }
-+};
-+MODULE_DEVICE_TABLE(auxiliary, ljca_spi_id_table);
-+
-+static struct auxiliary_driver ljca_spi_driver = {
-+	.driver.pm	= &ljca_spi_pm,
-+	.probe		= ljca_spi_probe,
-+	.remove		= ljca_spi_dev_remove,
-+	.id_table	= ljca_spi_id_table,
-+};
-+module_auxiliary_driver(ljca_spi_driver);
-+
-+MODULE_AUTHOR("Wentong Wu <wentong.wu@intel.com>");
-+MODULE_AUTHOR("Zhifeng Wang <zhifeng.wang@intel.com>");
-+MODULE_AUTHOR("Lixu Zhang <lixu.zhang@intel.com>");
-+MODULE_DESCRIPTION("Intel La Jolla Cove Adapter USB-SPI driver");
-+MODULE_LICENSE("GPL");
-+MODULE_IMPORT_NS(LJCA);
--- 
-2.7.4
-
+PiBGcm9tOiBIYW5zIGRlIEdvZWRlDQo+IA0KPiBIaSBXZW50b25nLA0KPiANCj4gT24gOS8xNC8y
+MyAxNDo0NSwgV2VudG9uZyBXdSB3cm90ZToNCj4gPiBJbXBsZW1lbnRzIHRoZSBTUEkgZnVuY3Rp
+b24gb2YgSW50ZWwgVVNCLUkyQy9HUElPL1NQSSBhZGFwdGVyIGRldmljZQ0KPiA+IG5hbWVkICJM
+YSBKb2xsYSBDb3ZlIEFkYXB0ZXIiIChMSkNBKS4gSXQgY29tbXVuaWNhdGUgd2l0aCBMSkNBIFNQ
+SQ0KPiA+IG1vZHVsZSB3aXRoIHNwZWNpZmljIHByb3RvY29sIHRocm91Z2ggaW50ZXJmYWNlcyBl
+eHBvcnRlZCBieSBMSkNBIFVTQg0KPiA+IGRyaXZlci4NCj4gPg0KPiA+IFNpZ25lZC1vZmYtYnk6
+IFdlbnRvbmcgV3UgPHdlbnRvbmcud3VAaW50ZWwuY29tPg0KPiA+IFJldmlld2VkLWJ5OiBTYWth
+cmkgQWlsdXMgPHNha2FyaS5haWx1c0BsaW51eC5pbnRlbC5jb20+DQo+ID4gUmV2aWV3ZWQtYnk6
+IEFuZGkgU2h5dGkgPGFuZGkuc2h5dGlAbGludXguaW50ZWwuY29tPg0KPiA+IFRlc3RlZC1ieTog
+SGFucyBkZSBHb2VkZSA8aGRlZ29lZGVAcmVkaGF0LmNvbT4NCj4gPiAtLS0NCj4gPiAgZHJpdmVy
+cy9zcGkvS2NvbmZpZyAgICB8ICAxMSArKw0KPiA+ICBkcml2ZXJzL3NwaS9NYWtlZmlsZSAgIHwg
+ICAxICsNCj4gPiAgZHJpdmVycy9zcGkvc3BpLWxqY2EuYyB8IDI5Nw0KPiA+ICsrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysNCj4gPiAgMyBmaWxlcyBjaGFu
+Z2VkLCAzMDkgaW5zZXJ0aW9ucygrKQ0KPiA+ICBjcmVhdGUgbW9kZSAxMDA2NDQgZHJpdmVycy9z
+cGkvc3BpLWxqY2EuYw0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvc3BpL0tjb25maWcg
+Yi9kcml2ZXJzL3NwaS9LY29uZmlnIGluZGV4DQo+ID4gODk2MmIyNS4uYWQxODg2NCAxMDA2NDQN
+Cj4gPiAtLS0gYS9kcml2ZXJzL3NwaS9LY29uZmlnDQo+ID4gKysrIGIvZHJpdmVycy9zcGkvS2Nv
+bmZpZw0KPiA+IEBAIC01ODMsNiArNTgzLDE3IEBAIGNvbmZpZyBTUElfRlNMX0VTUEkNCj4gPiAg
+CSAgRnJvbSBNUEM4NTM2LCA4NXh4IHBsYXRmb3JtIHVzZXMgdGhlIGNvbnRyb2xsZXIsIGFuZCBh
+bGwgUDEweHgsDQo+ID4gIAkgIFAyMHh4LCBQMzB4eCxQNDB4eCwgUDUweHggdXNlcyB0aGlzIGNv
+bnRyb2xsZXIuDQo+ID4NCj4gPiArY29uZmlnIFNQSV9MSkNBDQo+ID4gKwl0cmlzdGF0ZSAiSW50
+ZWwgTGEgSm9sbGEgQ292ZSBBZGFwdGVyIFNQSSBzdXBwb3J0Ig0KPiA+ICsJZGVwZW5kcyBvbiBV
+U0JfTEpDQQ0KPiA+ICsJZGVmYXVsdCBVU0JfTEpDQQ0KPiA+ICsJaGVscA0KPiA+ICsJICBTZWxl
+Y3QgdGhpcyBvcHRpb24gdG8gZW5hYmxlIFNQSSBkcml2ZXIgZm9yIHRoZSBJbnRlbA0KPiA+ICsJ
+ICBMYSBKb2xsYSBDb3ZlIEFkYXB0ZXIgKExKQ0EpIGJvYXJkLg0KPiA+ICsNCj4gPiArCSAgVGhp
+cyBkcml2ZXIgY2FuIGFsc28gYmUgYnVpbHQgYXMgYSBtb2R1bGUuIElmIHNvLCB0aGUgbW9kdWxl
+DQo+ID4gKwkgIHdpbGwgYmUgY2FsbGVkIHNwaS1samNhLg0KPiA+ICsNCj4gPiAgY29uZmlnIFNQ
+SV9NRVNPTl9TUElDQw0KPiA+ICAJdHJpc3RhdGUgIkFtbG9naWMgTWVzb24gU1BJQ0MgY29udHJv
+bGxlciINCj4gPiAgCWRlcGVuZHMgb24gQ09NTU9OX0NMSw0KPiA+IGRpZmYgLS1naXQgYS9kcml2
+ZXJzL3NwaS9NYWtlZmlsZSBiL2RyaXZlcnMvc3BpL01ha2VmaWxlIGluZGV4DQo+ID4gMDgwYzJj
+MS4uMDg0Nzk2MiAxMDA2NDQNCj4gPiAtLS0gYS9kcml2ZXJzL3NwaS9NYWtlZmlsZQ0KPiA+ICsr
+KyBiL2RyaXZlcnMvc3BpL01ha2VmaWxlDQo+ID4gQEAgLTcwLDYgKzcwLDcgQEAgb2JqLSQoQ09O
+RklHX1NQSV9JTlRFTF9QQ0kpCQkrPSBzcGktaW50ZWwtDQo+IHBjaS5vDQo+ID4gIG9iai0kKENP
+TkZJR19TUElfSU5URUxfUExBVEZPUk0pCSs9IHNwaS1pbnRlbC1wbGF0Zm9ybS5vDQo+ID4gIG9i
+ai0kKENPTkZJR19TUElfTEFOVElRX1NTQykJCSs9IHNwaS1sYW50aXEtc3NjLm8NCj4gPiAgb2Jq
+LSQoQ09ORklHX1NQSV9KQ09SRSkJCQkrPSBzcGktamNvcmUubw0KPiA+ICtvYmotJChDT05GSUdf
+U1BJX0xKQ0EpCQkJKz0gc3BpLWxqY2Eubw0KPiA+ICBvYmotJChDT05GSUdfU1BJX0xNNzBfTExQ
+KQkJKz0gc3BpLWxtNzBsbHAubw0KPiA+ICBvYmotJChDT05GSUdfU1BJX0xQODg0MV9SVEMpCQkr
+PSBzcGktbHA4ODQxLXJ0Yy5vDQo+ID4gIG9iai0kKENPTkZJR19TUElfTUVTT05fU1BJQ0MpCQkr
+PSBzcGktbWVzb24tc3BpY2Mubw0KPiANCj4gSSBkb24ndCBrbm93IHdoYXQgeW91IGFyZSB1c2lu
+ZyBhcyBhIGJhc2UgY29tbWl0IGZvciB0aGVzZSBwYXRjaGVzLCBidXQgdGhpcw0KPiBkb2VzIG5v
+dCBhcHBseSBjbGVhbmx5IG9uIHRvcCBvZiB2Ni42LXJjMS4NCj4gDQo+IEZvciB0aGUgbmV4dCB2
+ZXJzaW9uIG9mIHRoZXNlIHBhdGNoZXMgcGxlYXNlIHJlYmFzZXMgdGhpcyBvbiB0b3Agb2YgdjYu
+Ni1yYzE7IG9yDQo+IG9uIExpbnVzJyBtYXN0ZXIgYnJhbmNoLg0KPiANCg0KVGhhbmtzLCB2MTcg
+aXMgYmFzZWQgb24gNi41LXJjNCwgbm93IHYxOSBpcyBiYXNlZCBvbiBMaW51cycgbWFzdGVyIGJy
+YW5jaC4NCg0KQlIsDQpXZW50b25nDQoNCj4gUmVnYXJkcywNCj4gDQo+IEhhbnMNCg==

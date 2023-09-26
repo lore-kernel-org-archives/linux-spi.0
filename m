@@ -2,384 +2,387 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 30916E7F124
-	for <linux-spi@archiver.kernel.org>; Tue, 26 Sep 2023 20:05:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 58B8AE7F144
+	for <linux-spi@archiver.kernel.org>; Tue, 26 Sep 2023 23:43:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235810AbjIZUGC (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 26 Sep 2023 16:06:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60646 "EHLO
+        id S232650AbjIZXnz (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 26 Sep 2023 19:43:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235606AbjIZUGB (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 26 Sep 2023 16:06:01 -0400
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2070.outbound.protection.outlook.com [40.107.243.70])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD8D5D6;
-        Tue, 26 Sep 2023 13:05:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=GCFLepEKzGuxn6PTYv4iKe1vgQzmPwQYrru1ad0fV8Vh+v6/oYQou3yfzadJ+NsLmg9xo6/T2bUot+OVKcuDlVbpLytouDFXdwr4/U85DfWqn94m5A83kdhGmPU5khfIyMyrc3OG1zrDUdVaOAS/04gMpxs95BLUyKiZpKR7RIhbOQ5yYHmsApy/j1WE01/fhogUa0nyACkH8TzLsiyOaczLKdUmt+q9KUWOZ5BuhBV8COHLzOazwbv5qH8V/ThH6BUn38GrBQklUxFNYL8a1tCi+8HT15fy4CNN+w+dqs+JMcHYa0j47JgGyELS9KHfLChTNcVgO5ns7qsAppqLlA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uObNh1yKGnx9276qFxdZOOUZx9wJsTpJpILuuNVoRbQ=;
- b=M60Bhx2raTONCJL5tet4Y/ZPUPsSLFge6q9amWqs9uLF9JUu5KE+O9Vyn1/SaUpPr6kj49scoIaokvH/aCqTbBJlZiSabbwC5Y+/Bsoi7AOrJpmlAUaQS9272tH26Dj2SYsuXcFy8RWN6viMwiXpqOHdgrpvSmPbCwnwZcq5dsw4Wdr1tn5OWAUC5iS1r4T9GLXizr8+uAXMV62kgtjK3EDgtMLc9eVWMOF4MhAMutuYVm08XNuYR9SRSYaDqKbdTKlgvCutR4HEi5UY8ge/14lIXMYmxQA8ughfPY1XVxOGJShSzm6mbvWVOkL7zVKGnN6tcnLBZkcgy3WYtU54zg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=gmail.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uObNh1yKGnx9276qFxdZOOUZx9wJsTpJpILuuNVoRbQ=;
- b=p5XLkCQ0lRQ9qO1ZW/HDYa1VQAQSP3jNHs6dxiZSqJRqaMli9GxzxrIOvyEiiKTtLABUmE5ZmhdoE5S2l2qAq1j7Ti4Gj5ziTPfCcUV8yvdJD0l1c7vnkcbeGhfsq4/jHDIUv6fqoeL4OJTH8XojHgFTC/wOyS0DfWImtb4DWFs=
-Received: from BLAPR03CA0114.namprd03.prod.outlook.com (2603:10b6:208:32a::29)
- by BN9PR12MB5033.namprd12.prod.outlook.com (2603:10b6:408:132::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6813.23; Tue, 26 Sep
- 2023 20:05:52 +0000
-Received: from BL6PEPF0001AB75.namprd02.prod.outlook.com
- (2603:10b6:208:32a:cafe::f3) by BLAPR03CA0114.outlook.office365.com
- (2603:10b6:208:32a::29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.35 via Frontend
- Transport; Tue, 26 Sep 2023 20:05:51 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BL6PEPF0001AB75.mail.protection.outlook.com (10.167.242.168) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6838.14 via Frontend Transport; Tue, 26 Sep 2023 20:05:51 +0000
-Received: from platform-dev1.pensando.io (10.180.168.240) by
- SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Tue, 26 Sep 2023 15:05:48 -0500
-From:   Brad Larson <blarson@amd.com>
-To:     <andy.shevchenko@gmail.com>
-CC:     <adrian.hunter@intel.com>, <alcooperx@gmail.com>, <arnd@arndb.de>,
-        <blarson@amd.com>, <brendan.higgins@linux.dev>,
-        <briannorris@chromium.org>, <broonie@kernel.org>,
-        <catalin.marinas@arm.com>, <conor+dt@kernel.org>,
-        <davidgow@google.com>, <devicetree@vger.kernel.org>,
-        <fancer.lancer@gmail.com>, <gerg@linux-m68k.org>,
-        <gsomlo@gmail.com>, <hal.feng@starfivetech.com>,
-        <hasegawa-hitomi@fujitsu.com>, <j.neuschaefer@gmx.net>,
-        <joel@jms.id.au>, <kernel@esmil.dk>, <krzk@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <lee.jones@linaro.org>,
-        <lee@kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <linux-mmc@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>, <p.zabel@pengutronix.de>,
-        <rdunlap@infradead.org>, <robh+dt@kernel.org>,
-        <samuel@sholland.org>, <skhan@linuxfoundation.org>,
-        <suravee.suthikulpanit@amd.com>, <thomas.lendacky@amd.com>,
-        <tonyhuang.sunplus@gmail.com>, <ulf.hansson@linaro.org>,
-        <vaishnav.a@ti.com>, <walker.chen@starfivetech.com>,
-        <will@kernel.org>, <zhuyinbo@loongson.cn>
-Subject: Re: [PATCH v16 6/6] soc: amd: Add support for AMD Pensando SoC Controller
-Date:   Tue, 26 Sep 2023 13:05:41 -0700
-Message-ID: <20230926200541.35787-1-blarson@amd.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <CAHp75VfRLv1=3M+a9pr=ZJgNwtBOrT9xi0UjDJMuY8uM9+ffSw@mail.gmail.com>
-References: <CAHp75VfRLv1=3M+a9pr=ZJgNwtBOrT9xi0UjDJMuY8uM9+ffSw@mail.gmail.com>
+        with ESMTP id S229615AbjIZXlz (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 26 Sep 2023 19:41:55 -0400
+Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0A26876B3;
+        Tue, 26 Sep 2023 15:57:09 -0700 (PDT)
+X-IronPort-AV: E=Sophos;i="6.03,178,1694703600"; 
+   d="scan'208";a="181059348"
+Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
+  by relmlie6.idc.renesas.com with ESMTP; 27 Sep 2023 06:08:35 +0900
+Received: from mulinux.home (unknown [10.226.92.200])
+        by relmlir6.idc.renesas.com (Postfix) with ESMTP id B3D8C40B91B6;
+        Wed, 27 Sep 2023 06:08:31 +0900 (JST)
+From:   Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+To:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Cc:     Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+        Magnus Damm <magnus.damm@gmail.com>, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org,
+        Chris Paterson <Chris.Paterson2@renesas.com>,
+        Biju Das <biju.das@bp.renesas.com>,
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Subject: [PATCH 2/2] spi: rzv2m-csi: Add Slave mode support
+Date:   Tue, 26 Sep 2023 22:08:18 +0100
+Message-Id: <20230926210818.197356-3-fabrizio.castro.jz@renesas.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230926210818.197356-1-fabrizio.castro.jz@renesas.com>
+References: <20230926210818.197356-1-fabrizio.castro.jz@renesas.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB75:EE_|BN9PR12MB5033:EE_
-X-MS-Office365-Filtering-Correlation-Id: b969c263-7d64-46f5-a98f-08dbbecbfc0e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: vQfodNG/N7OkrYS3Cy5LSiTOK3owTPIjuJ9dtt8P7QK7MG04gMCksZUAX8Zo+C6gOqGsjFqAePndpIr7xQKcB+MO++y9n5GMcFG7I0elQlOSuHyjgPZHnVivYgZ4rxo+DR8iMSQKr7eJ8rKvoOsTReKeW3s6LEsl52xB1f1T0SIVnt9D7G6kAQbTwQJc2lMGo7pz9W1kn53kHoeVx32mHSLP3cGwCDm77d8w2j+TxKje4F9Eq1FQoNgiPqt0Lm3ka90lHpHha/iMI7B1whSjSIhrgtIoeEiiawP5Zl9CHTl51BahYDVTkKNdh9s1r6tbQIeVbd3UW0h3iug6Prw02woYpj4CrMn4hOMKC8OjeTZaI+v2ouY+vxJ5oamFL5RZt1r2/dmVljaYmdKoZSpl5O/g4lkigwO6jgQ6KqZbhGwEcuWbx81b7O1micH5uCka0TTegMgyBOoiprnaPBqbaOrJgUTMrcbgdbQXj+1HV3xlDyHJCPhUE9nroy4wKcVxb6gyaKkFlh13ZmM3FwWg2H9NwIZMfmGRr3BrzfUeNMxzKI9b+V7ayQEdTi00K0hx9moHKKNP5Kie6kopZlv5KJCFLNr5VI3hhQ1lHFZHP+18FwsEWvg42FjgvdY1yRjfzR+IAbBV0XZXwlN9rcFU81SRLhKo9AU9IndAkhP7Sl1jBEz6Qu8p3855n62sOmo/XyhbJGx4Az1Y448H91wadDoLDGYE6pxbqjwo3vRs2nQtzeGcJdcR8v3mIeEYHcnaEINXWJ1z2QnK/4QJhBribw==
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(136003)(376002)(346002)(39860400002)(396003)(230922051799003)(82310400011)(451199024)(186009)(1800799009)(36840700001)(46966006)(40470700004)(478600001)(8936002)(70206006)(70586007)(336012)(6916009)(83380400001)(40460700003)(2616005)(1076003)(26005)(16526019)(4326008)(41300700001)(47076005)(426003)(36860700001)(54906003)(7416002)(316002)(7406005)(6666004)(2906002)(8676002)(53546011)(40480700001)(36756003)(81166007)(356005)(82740400003)(5660300002)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Sep 2023 20:05:51.8733
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b969c263-7d64-46f5-a98f-08dbbecbfc0e
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF0001AB75.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR12MB5033
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi Andy,
+The CSI IP found inside the Renesas RZ/V2M SoC supports
+both SPI Master and SPI Slave roles.
 
-On Thu, Sep 21, 2023 at 18:19:57 +0300 Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> On Thu, Sep 14, 2023 at 12:52 AM Brad Larson <blarson@amd.com> wrote:
->>
->> The Pensando SoC controller is a SPI connected companion device
->> that is present in all Pensando SoC board designs.  The essential
->> board management registers are accessed on chip select 0 with
->> board mgmt IO support accessed using additional chip selects.
+When working in slave mode, the CSI IP has the option
+of using its Slave Select (SS) pin to enable TX and RX
+operations. Since the SPI slave cannot control the clock,
+when working as slave it's best not to stop operations
+during a transfer, as by doing so the IP will not send or
+receive data, regardless of clock and active level on pin SS.
+A side effect from not stopping operations is that the RX
+FIFO needs to be flushed, word by word, when RX data needs
+to be discarded.
 
-...
+Finally, when in slave mode timings are tighter, as missing a
+deadline translates to errors being thrown, resulting in
+aborting the transfer. In order to speed things up, we can
+avoid waiting for the TX FIFO to be empty, we can just wait
+for the RX FIFO to contain at least the number of words that
+we expect.
 
->> +#include <linux/cdev.h>
->> +#include <linux/device.h>
->> +#include <linux/err.h>
->> +#include <linux/fs.h>
->> +#include <linux/init.h>
->> +#include <linux/miscdevice.h>
->> +#include <linux/mod_devicetable.h>
->> +#include <linux/module.h>
->> +#include <linux/mutex.h>
->> +#include <linux/reset-controller.h>
->> +#include <linux/spi/spi.h>
->
-> types.h ?
+Add slave support to the currently existing CSI driver.
 
-I'll add types.h
+Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+---
+ drivers/spi/Kconfig         |   4 +-
+ drivers/spi/spi-rzv2m-csi.c | 137 +++++++++++++++++++++++++-----------
+ 2 files changed, 97 insertions(+), 44 deletions(-)
 
->> +#include <linux/uaccess.h>
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 2c21d5b96fdc..2c657df3e304 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -861,8 +861,10 @@ config SPI_RSPI
+ config SPI_RZV2M_CSI
+ 	tristate "Renesas RZ/V2M CSI controller"
+ 	depends on ARCH_RENESAS || COMPILE_TEST
++	depends on SPI_SLAVE
+ 	help
+-	  SPI driver for Renesas RZ/V2M Clocked Serial Interface (CSI)
++	  SPI driver for Renesas RZ/V2M Clocked Serial Interface (CSI).
++	  CSI supports master and slave roles.
+ 
+ config SPI_QCOM_QSPI
+ 	tristate "QTI QSPI controller"
+diff --git a/drivers/spi/spi-rzv2m-csi.c b/drivers/spi/spi-rzv2m-csi.c
+index d0f51b17aa7c..c700a9922402 100644
+--- a/drivers/spi/spi-rzv2m-csi.c
++++ b/drivers/spi/spi-rzv2m-csi.c
+@@ -11,6 +11,7 @@
+ #include <linux/interrupt.h>
+ #include <linux/iopoll.h>
+ #include <linux/log2.h>
++#include <linux/of.h>
+ #include <linux/platform_device.h>
+ #include <linux/property.h>
+ #include <linux/reset.h>
+@@ -38,6 +39,9 @@
+ #define CSI_MODE_SETUP		0x00000040
+ 
+ /* CSI_CLKSEL */
++#define CSI_CLKSEL_SS_ENA	BIT(19)
++#define CSI_CLKSEL_SS_POL	BIT(18)
++#define CSI_CLKSEL_SS		(CSI_CLKSEL_SS_ENA | CSI_CLKSEL_SS_POL)
+ #define CSI_CLKSEL_CKP		BIT(17)
+ #define CSI_CLKSEL_DAP		BIT(16)
+ #define CSI_CLKSEL_MODE		(CSI_CLKSEL_CKP|CSI_CLKSEL_DAP)
+@@ -82,6 +86,15 @@
+ 
+ #define CSI_MAX_SPI_SCKO	(8 * HZ_PER_MHZ)
+ 
++#define CSI_CLKSEL_SS_DISABLED			0
++#define CSI_CLKSEL_SS_ENABLED_ACTIVE_LOW	BIT(1)
++#define CSI_CLKSEL_SS_ENABLED_ACTIVE_HIGH	GENMASK(1, 0)
++
++enum {
++	RZV2M_CSI_SPI_MASTER,
++	RZV2M_CSI_SPI_SLAVE,
++};
++
+ struct rzv2m_csi_priv {
+ 	void __iomem *base;
+ 	struct clk *csiclk;
+@@ -99,6 +112,9 @@ struct rzv2m_csi_priv {
+ 	wait_queue_head_t wait;
+ 	u32 errors;
+ 	u32 status;
++	int mode;
++	int slave_select;
++	bool slave_aborted;
+ };
+ 
+ static void rzv2m_csi_reg_write_bit(const struct rzv2m_csi_priv *csi,
+@@ -193,6 +209,14 @@ static int rzv2m_csi_read_rxfifo(struct rzv2m_csi_priv *csi)
+ 	return 0;
+ }
+ 
++static inline void rzv2m_csi_empty_rxfifo(struct rzv2m_csi_priv *csi)
++{
++	unsigned int i;
++
++	for (i = 0; i < csi->words_to_transfer; i++)
++		readl(csi->base + CSI_IFIFO);
++}
++
+ static inline void rzv2m_csi_calc_current_transfer(struct rzv2m_csi_priv *csi)
+ {
+ 	unsigned int bytes_transferred = max(csi->bytes_received, csi->bytes_sent);
+@@ -279,32 +303,23 @@ static int rzv2m_csi_wait_for_interrupt(struct rzv2m_csi_priv *csi,
+ 
+ 	rzv2m_csi_enable_irqs(csi, enable_bits);
+ 
+-	ret = wait_event_timeout(csi->wait,
+-				 ((csi->status & wait_mask) == wait_mask) ||
+-				 csi->errors, HZ);
++	if (csi->mode == RZV2M_CSI_SPI_SLAVE) {
++		ret = wait_event_interruptible(csi->wait,
++				((csi->status & wait_mask) == wait_mask) ||
++				csi->errors || csi->slave_aborted);
++		if (ret || csi->slave_aborted)
++			ret = -EINTR;
++	} else {
++		ret = wait_event_timeout(csi->wait,
++				((csi->status & wait_mask) == wait_mask) ||
++				csi->errors, HZ) == 0 ? -ETIMEDOUT : 0;
++	}
+ 
+ 	rzv2m_csi_disable_irqs(csi, enable_bits);
+ 
+ 	if (csi->errors)
+ 		return -EIO;
+ 
+-	if (!ret)
+-		return -ETIMEDOUT;
+-
+-	return 0;
+-}
+-
+-static int rzv2m_csi_wait_for_tx_empty(struct rzv2m_csi_priv *csi)
+-{
+-	int ret;
+-
+-	if (readl(csi->base + CSI_OFIFOL) == 0)
+-		return 0;
+-
+-	ret = rzv2m_csi_wait_for_interrupt(csi, CSI_INT_TREND, CSI_CNT_TREND_E);
+-	if (ret == -ETIMEDOUT)
+-		csi->errors |= TX_TIMEOUT_ERROR;
+-
+ 	return ret;
+ }
+ 
+@@ -312,7 +327,7 @@ static inline int rzv2m_csi_wait_for_rx_ready(struct rzv2m_csi_priv *csi)
+ {
+ 	int ret;
+ 
+-	if (readl(csi->base + CSI_IFIFOL) == csi->bytes_to_transfer)
++	if (readl(csi->base + CSI_IFIFOL) >= csi->bytes_to_transfer)
+ 		return 0;
+ 
+ 	ret = rzv2m_csi_wait_for_interrupt(csi, CSI_INT_R_TRGR,
+@@ -402,8 +417,14 @@ static int rzv2m_csi_setup(struct spi_device *spi)
+ 	rzv2m_csi_reg_write_bit(csi, CSI_MODE, CSI_MODE_DIR,
+ 				!!(spi->mode & SPI_LSB_FIRST));
+ 
+-	/* Set the operation mode as master */
+-	rzv2m_csi_reg_write_bit(csi, CSI_CLKSEL, CSI_CLKSEL_SLAVE, 0);
++	/* Set the role, 1 for slave and 0 for master */
++	rzv2m_csi_reg_write_bit(csi, CSI_CLKSEL, CSI_CLKSEL_SLAVE,
++				csi->mode == RZV2M_CSI_SPI_SLAVE);
++
++	if (csi->mode == RZV2M_CSI_SPI_SLAVE)
++		/* Configure the slave select pin */
++		rzv2m_csi_reg_write_bit(csi, CSI_CLKSEL, CSI_CLKSEL_SS,
++					csi->slave_select);
+ 
+ 	/* Give the IP a SW reset */
+ 	ret = rzv2m_csi_sw_reset(csi, 1);
+@@ -431,9 +452,13 @@ static int rzv2m_csi_pio_transfer(struct rzv2m_csi_priv *csi)
+ 	/* Make sure the TX FIFO is empty */
+ 	writel(0, csi->base + CSI_OFIFOL);
+ 
++	/* Make sure the RX FIFO is empty */
++	writel(0, csi->base + CSI_IFIFOL);
++
+ 	csi->bytes_sent = 0;
+ 	csi->bytes_received = 0;
+ 	csi->errors = 0;
++	csi->slave_aborted = false;
+ 
+ 	rzv2m_csi_disable_all_irqs(csi);
+ 	rzv2m_csi_clear_all_irqs(csi);
+@@ -452,28 +477,21 @@ static int rzv2m_csi_pio_transfer(struct rzv2m_csi_priv *csi)
+ 
+ 		rzv2m_csi_enable_irqs(csi, CSI_INT_OVERF | CSI_INT_UNDER);
+ 
+-		/* Make sure the RX FIFO is empty */
+-		writel(0, csi->base + CSI_IFIFOL);
+-
+ 		writel(readl(csi->base + CSI_INT), csi->base + CSI_INT);
+ 		csi->status = 0;
+ 
+-		rzv2m_csi_start_stop_operation(csi, 1, false);
+-
+ 		/* TX */
+ 		if (csi->txbuf) {
+ 			ret = rzv2m_csi_fill_txfifo(csi);
+ 			if (ret)
+ 				break;
+ 
+-			ret = rzv2m_csi_wait_for_tx_empty(csi);
+-			if (ret)
+-				break;
+-
+ 			if (csi->bytes_sent == csi->buffer_len)
+ 				tx_completed = true;
+ 		}
+ 
++		rzv2m_csi_start_stop_operation(csi, 1, false);
++
+ 		/*
+ 		 * Make sure the RX FIFO contains the desired number of words.
+ 		 * We then either flush its content, or we copy it onto
+@@ -483,31 +501,28 @@ static int rzv2m_csi_pio_transfer(struct rzv2m_csi_priv *csi)
+ 		if (ret)
+ 			break;
+ 
+-		/* RX */
+-		if (csi->rxbuf) {
++		if (csi->mode == RZV2M_CSI_SPI_MASTER)
+ 			rzv2m_csi_start_stop_operation(csi, 0, false);
+ 
++		/* RX */
++		if (csi->rxbuf) {
+ 			ret = rzv2m_csi_read_rxfifo(csi);
+ 			if (ret)
+ 				break;
+ 
+ 			if (csi->bytes_received == csi->buffer_len)
+ 				rx_completed = true;
++		} else {
++			rzv2m_csi_empty_rxfifo(csi);
+ 		}
+ 
+-		ret = rzv2m_csi_start_stop_operation(csi, 0, true);
+-		if (ret)
+-			goto pio_quit;
+-
+ 		if (csi->errors) {
+ 			ret = -EIO;
+-			goto pio_quit;
++			break;
+ 		}
+ 	}
+ 
+ 	rzv2m_csi_start_stop_operation(csi, 0, true);
+-
+-pio_quit:
+ 	rzv2m_csi_disable_all_irqs(csi);
+ 	rzv2m_csi_enable_rx_trigger(csi, false);
+ 	rzv2m_csi_clear_all_irqs(csi);
+@@ -529,7 +544,8 @@ static int rzv2m_csi_transfer_one(struct spi_controller *controller,
+ 
+ 	rzv2m_csi_setup_operating_mode(csi, transfer);
+ 
+-	rzv2m_csi_setup_clock(csi, transfer->speed_hz);
++	if (csi->mode == RZV2M_CSI_SPI_MASTER)
++		rzv2m_csi_setup_clock(csi, transfer->speed_hz);
+ 
+ 	ret = rzv2m_csi_pio_transfer(csi);
+ 	if (ret) {
+@@ -546,24 +562,58 @@ static int rzv2m_csi_transfer_one(struct spi_controller *controller,
+ 	return ret;
+ }
+ 
++static int rzv2m_csi_slave_abort(struct spi_controller *ctlr)
++{
++	struct rzv2m_csi_priv *csi = spi_controller_get_devdata(ctlr);
++
++	csi->slave_aborted = true;
++	wake_up(&csi->wait);
++
++	return 0;
++}
++
+ static int rzv2m_csi_probe(struct platform_device *pdev)
+ {
++	struct device_node *np = pdev->dev.of_node;
+ 	struct spi_controller *controller;
+ 	struct device *dev = &pdev->dev;
+ 	struct rzv2m_csi_priv *csi;
+ 	struct reset_control *rstc;
++	int mode;
+ 	int irq;
+ 	int ret;
+ 
+-	controller = devm_spi_alloc_host(dev, sizeof(*csi));
++	mode = of_property_read_bool(np, "spi-slave") ? RZV2M_CSI_SPI_SLAVE :
++							RZV2M_CSI_SPI_MASTER;
++
++	if (mode == RZV2M_CSI_SPI_MASTER)
++		controller = devm_spi_alloc_host(dev, sizeof(*csi));
++	else
++		controller = devm_spi_alloc_target(dev, sizeof(*csi));
++
+ 	if (!controller)
+ 		return -ENOMEM;
+ 
+ 	csi = spi_controller_get_devdata(controller);
+ 	platform_set_drvdata(pdev, csi);
+ 
++	if (mode == RZV2M_CSI_SPI_SLAVE) {
++		if (of_property_read_bool(np, "renesas,csi-ss")) {
++			if (of_property_read_bool(np, "renesas,csi-ss-high"))
++				csi->slave_select =
++					CSI_CLKSEL_SS_ENABLED_ACTIVE_HIGH;
++			else
++				csi->slave_select =
++					CSI_CLKSEL_SS_ENABLED_ACTIVE_LOW;
++		} else {
++			csi->slave_select = CSI_CLKSEL_SS_DISABLED;
++		}
++	}
++
+ 	csi->dev = dev;
+ 	csi->controller = controller;
++	csi->mode = mode;
++	csi->slave_aborted = false;
+ 
+ 	csi->base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(csi->base))
+@@ -594,6 +644,7 @@ static int rzv2m_csi_probe(struct platform_device *pdev)
+ 	controller->setup = rzv2m_csi_setup;
+ 	controller->transfer_one = rzv2m_csi_transfer_one;
+ 	controller->use_gpio_descriptors = true;
++	controller->slave_abort = rzv2m_csi_slave_abort;
+ 
+ 	device_set_node(&controller->dev, dev_fwnode(dev));
+ 
+-- 
+2.34.1
 
-...
-
->> +       struct penctrl_device *penctrl;
->
->> +       u8 tx_buf[PENCTRL_MAX_MSG_LEN];
->> +       u8 rx_buf[PENCTRL_MAX_MSG_LEN];
->
-> These are not DMA-safe, is this a problem?
-
-It's not a problem, the peripheral is PIO FIFO driven only.
-
->> +       struct spi_transfer t[2] = {};
->> +       struct penctrl_spi_xfer *msg;
->> +       struct spi_device *spi;
->> +       unsigned int num_msgs;
->> +       struct spi_message m;
->> +       u32 size;
->> +       int ret;
-
-...
-
->> +       /* Verify and prepare SPI message */
->> +       size = _IOC_SIZE(cmd);
->> +       num_msgs = size / sizeof(struct penctrl_spi_xfer);
->
-> sizeof (*msg) ?
-
-Yes, more compact for here and below.
-
->
->> +       if (num_msgs > 2 || size == 0 || size % sizeof(struct penctrl_spi_xfer)) {
->
-> Dito.
->
->> +               ret = -EINVAL;
->> +               goto out_unlock;
->> +       }
-
-...
-
->> +       msg = memdup_user((struct penctrl_spi_xfer *)arg, size);
->> +       if (IS_ERR(msg)) {
->> +               ret = PTR_ERR(msg);
->> +               goto out_unlock;
->> +       }
->
-> Wondering if you can start using cleanup.h.
-
-Perhaps if recommended, I don't see DEFINE_(FREE,UNLOCK,...) being used.
-
-...
-
->> +       /* Perform the transfer */
->> +       mutex_lock(&spi_lock);
->> +       ret = spi_sync(spi, &m);
->> +       mutex_unlock(&spi_lock);
-
->> +       if (ret || (num_msgs == 1))
->> +               goto out_unlock;
->
-> Second conditional will return 0. Is it by design?
-> Since it's not so obvious I would split these conditionals.
-
-I'll split this to be clear, yes return 0 for success.
-
-...
-
->> +       spi->chip_select = current_cs;
->
-> spi_set_chipselect()
-
-Yes, I'll change to inline function spi_set_chipselect(spi, 0, current_cs).  The
-second arg must be legacy as its unused.
-
-...
-
->> +static int penctrl_regs_read(struct penctrl_device *penctrl, u32 reg, u32 *val)
->> +{
->> +       struct spi_device *spi = penctrl->spi;
->> +       struct spi_transfer t[2] = {};
->> +       struct spi_message m;
->
->> +       u8 txbuf[3];
->> +       u8 rxbuf[1];
->
-> Not DMA-safe. Is it a problem?
->
-
-Not a problem, the peripheral is PIO only using FIFOs.
-
->> +       int ret;
->
->> +       txbuf[0] = PENCTRL_SPI_CMD_REGRD;
->> +       txbuf[1] = reg;
->> +       txbuf[2] = 0;
->
-> Can be assigned in the definition block
->
->       u8 txbuf[] = { ... };
->
-
-I'll change that here and below.
-
->> +       t[0].tx_buf = txbuf;
->> +       t[0].len = sizeof(txbuf);
->
->> +       rxbuf[0] = 0;
->
-> Ditto.
->
->    u8 rxbuf[] = { 0 };
->
->> +       t[1].rx_buf = rxbuf;
->> +       t[1].len = sizeof(rxbuf);
->> +
->> +       spi_message_init_with_transfers(&m, t, ARRAY_SIZE(t));
->> +       ret = spi_sync(spi, &m);
->> +       if (ret)
->> +               return ret;
->> +
->> +       *val = rxbuf[0];
->> +       return 0;
->> +}
-
-...
-
->> +static int penctrl_regs_write(struct penctrl_device *penctrl, u32 reg, u32 val)
->> +{
->> +       struct spi_device *spi = penctrl->spi;
->> +       struct spi_transfer t = {};
->> +       struct spi_message m;
->> +       u8 txbuf[4];
-
->> +       txbuf[0] = PENCTRL_SPI_CMD_REGWR;
->> +       txbuf[1] = reg;
->> +       txbuf[2] = val;
->> +       txbuf[3] = 0;
-
-> Can be assigned in the definition block.
-
->> +       t.tx_buf = txbuf;
->> +       t.len = sizeof(txbuf);
->> +       spi_message_init_with_transfers(&m, &t, 1);
->> +       return spi_sync(spi, &m);
->> +}
-
-...
-
->> +       struct penctrl_device *penctrl =
->> +               container_of(rcdev, struct penctrl_device, rcdev);
->
-> One line?
-
-I'll check/change.
-
->
->...
->
->> +       spi->chip_select = 0;
->
-> spi_set_chipselect()
-
-Yes, spi_set_chipselect(spi, 0, 0);
-
-...
-
->> +       struct penctrl_device *penctrl =
->> +               container_of(rcdev, struct penctrl_device, rcdev);
->
-> One line?
-
-I'll check/change.
-
-...
-
->> +       spi->chip_select = 0;
->
-> spi_set_chipselect()
-
-Yes, spi_set_chipselect(spi, 0, 0);
-
-...
-
->> +static int penctrl_spi_probe(struct spi_device *spi)
->> +{
->> +       int i, ret;
->> +
->> +       /* Allocate driver data */
->> +       penctrl = kzalloc(sizeof(*penctrl), GFP_KERNEL);
->
-> devm_kzalloc() ?
-
-Yes will change to devm_kzalloc().
-
->> +       if (!penctrl)
->> +               return -ENOMEM;
->> +
->> +       penctrl->spi = spi;
->> +       mutex_init(&spi_lock);
->> +
->> +       for (i = 0; i < ARRAY_SIZE(penctrl_devices); i++) {
->> +               ret = misc_register(&penctrl_devices[i]);
->> +               if (ret) {
->> +                       dev_err(&spi->dev, "Failed to register device %s\n",
->> +                               penctrl_devices[i].name);
->> +                       goto cleanup;
->> +               }
->> +       }
->> +
->> +       /* Register reset controller */
->> +       penctrl->rcdev.dev = &spi->dev;
->> +       penctrl->rcdev.ops = &penctrl_reset_ops;
->> +       penctrl->rcdev.owner = THIS_MODULE;
->> +       penctrl->rcdev.of_node = spi->dev.of_node;
->> +       penctrl->rcdev.nr_resets = 1;
->> +       device_set_node(penctrl->rcdev.dev, dev_fwnode(&spi->dev));
->> +
->> +       ret = reset_controller_register(&penctrl->rcdev);
->> +       if (ret)
->> +               return dev_err_probe(&spi->dev, ret,
->> +                                    "failed to register reset controller\n");
->> +       return 0;
->
->> +cleanup:
->
-> err_cleanup: ?
-
-Will use err_cleanup:
-
->> +       for (i = 0; i < ARRAY_SIZE(penctrl_devices); i++) {
->
->  while (i--) {
->
-
-Yes, can change to while(), order doesn't matter.
-
->> +               if (penctrl_devices[i].this_device)
->> +                       misc_deregister(&penctrl_devices[i]);
->> +       }
->> +       return ret;
->> +}
-
-Regards,
-Brad

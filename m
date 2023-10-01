@@ -2,31 +2,32 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 31FBDE748E9
-	for <linux-spi@archiver.kernel.org>; Sun,  1 Oct 2023 14:22:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 19D3DE748F7
+	for <linux-spi@archiver.kernel.org>; Sun,  1 Oct 2023 14:22:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235078AbjJAOWV (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 1 Oct 2023 10:22:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33578 "EHLO
+        id S235074AbjJAOWW (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 1 Oct 2023 10:22:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235005AbjJAOWV (ORCPT
+        with ESMTP id S235080AbjJAOWV (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Sun, 1 Oct 2023 10:22:21 -0400
 Received: from mx.skole.hr (mx1.hosting.skole.hr [161.53.165.185])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D58FB0;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C60BAB;
         Sun,  1 Oct 2023 07:22:18 -0700 (PDT)
 Received: from mx1.hosting.skole.hr (localhost.localdomain [127.0.0.1])
-        by mx.skole.hr (mx.skole.hr) with ESMTP id 5D829820F6;
-        Sun,  1 Oct 2023 16:13:02 +0200 (CEST)
+        by mx.skole.hr (mx.skole.hr) with ESMTP id 3C232836A5;
+        Sun,  1 Oct 2023 16:13:01 +0200 (CEST)
 From:   =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
-Date:   Sun, 01 Oct 2023 16:12:53 +0200
-Subject: [PATCH RFC v4 2/6] ARM: pxa: Convert Spitz LEDs to GPIO
- descriptors
+Subject: [PATCH RFC v4 0/6] ARM: pxa: GPIO descriptor conversions
+Date:   Sun, 01 Oct 2023 16:12:51 +0200
+Message-Id: <20231001-pxa-gpio-v4-0-0f3b975e6ed5@skole.hr>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20231001-pxa-gpio-v4-2-0f3b975e6ed5@skole.hr>
-References: <20231001-pxa-gpio-v4-0-0f3b975e6ed5@skole.hr>
-In-Reply-To: <20231001-pxa-gpio-v4-0-0f3b975e6ed5@skole.hr>
+X-B4-Tracking: v=1; b=H4sIAGN+GWUC/13NSw7CIBCA4as0sxbDY2ipKxMTD+DWuKiFWqIpD
+ RhS0/TuEjYSl8Pw/bNCMN6aAIdqBW+iDdZNacBdBf3YTQ9DrE4zcMoFVbQh89KRx2wdEb3hUss
+ GFUNI32dvBrvk1BUu5xPc0uNow9v5T85Hlle51HL8lSIjlHBF5V01WqkWj+HpXmY/+tyIvHR14
+ XhyrUKsUbNaav3nROnawonkukFpaaRmgyjvbdv2BXLmtYoUAQAA
 To:     Daniel Mack <daniel@zonque.org>,
         Haojian Zhuang <haojian.zhuang@gmail.com>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
@@ -43,84 +44,86 @@ Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-input@vger.kernel.org, linux-spi@vger.kernel.org,
         =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1816;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2325;
  i=duje.mihanovic@skole.hr; h=from:subject:message-id;
- bh=Kq4sitRUky6xb8wL9sBaMZGXvKR+7tYT75wjzOs1EKA=;
- b=owEBbQKS/ZANAwAIAZoRnrBCLZbhAcsmYgBlGX5oiTaZUpJDP7w5L7beBppkIPioNnA8+i8f/
- 4vGwGpa92SJAjMEAAEIAB0WIQRT351NnD/hEPs2LXiaEZ6wQi2W4QUCZRl+aAAKCRCaEZ6wQi2W
- 4a3ID/9kD0IUxsNMJ0Kgzqs2+ecS+vsRfinQKLHtN09655zhXWVN9oGjz+yP46mVg5jX91D+uKN
- QkkD/scdTUAaVgsCKI01u6iKCfaZnzSUSJXcNkk0pSwwfwrtRP0LQxtdhJIoRDrXHL9Gn1NY3Dj
- Li2/9Hzonh+jdTrjFmoX/UmUIiEegu5ll7jDF60T1CwnQ8bDZn4Ulh1MptAymAhrbFD2wV0qsiu
- kcFP0SsgmqqxJ4Lde6pK32w5mjMgpgiLz/ayGUl0RBhhz3W1Pfeqif0tyLJsP0LTJMPKsEpPMUr
- L9lTRfHlL1t9krEVMB9YG9XWO3ZK+qAaVxMzFcdUqjgr0ihj5Nm10bg5vua/M+Ipvwf3x2t14qG
- rUOdQmp3Yc2TwCS2cTmrxsSY/EmScxUNKdlv62VSyids0AeWnYNyyXtuLX70TA1sRf7olJy8ZQz
- 9PG6hTSvqi4dnHIRnFhrUnGP1xcRuzzVvZ2xyWqskxy8Gpp5RXDOgULDTwZw69GOt3zXmiVqWQB
- qXC4h1XjT7fRatDR3J6UGAe4O1N4YD+usOx6TdFroler7JY0Lkp7RzzoyPttwmHc/Me+oVqKVHy
- KW1Azyyv0tUWmKkqxAwEN8O+HF4FCJQKj4JS5EXwwbAIygnsBJEY4KfrUK13FcEyciYOsskWcPU
- F+X4YO720TTYgDg==
+ bh=m8bKiHpWAVkzZ4rX+3MqXGTQKxlWpvxpDzrmC6PtKks=;
+ b=owEBbQKS/ZANAwAIAZoRnrBCLZbhAcsmYgBlGX5nOeDT3j+PeN8XmO9hsa7Y0m/xSrsaviidP
+ P5CN29YWYyJAjMEAAEIAB0WIQRT351NnD/hEPs2LXiaEZ6wQi2W4QUCZRl+ZwAKCRCaEZ6wQi2W
+ 4b/FD/0cgXaU50cz0P86RkEXyT6bFJth3AXwlIJKthxeagxMpUY5yEUqu/T8p8LCOUDexyoLiCl
+ 6kUUOumwEsISsqpv+i4HXGcxRa5bLHWNAm3gXyr2KpAxUA0xnqT300mUeEqeRQCqJOYEgCMdTFi
+ EXCArOgqWkm9INcLP7yGavJ33xgosZeOjnoWaa8uQm4wqohD3wOF4fvCFqiSPFpRvtMmGnvnziu
+ o/TQ2MPZORRpb8fH5GIHj07lDkk5Yu40hVEgRy1p74jVxyB9JFyHsQsM14dV8nQ6ITW/596db+v
+ ldXimOvDHfUH4z5bc4D6GhvIUxpCwCO8CCYPPwxobz8TDhM1UApBu809kONvOMXdQxq4hIoedcD
+ M+hE1KV2BTj7vTvD5XeiNTM0xr0a1iVKOPqcUXRWnjl/Of2zDf5kWWvggXDp/ngD06rBEQbYkAN
+ OxpsNpPK1qrMH0/7AqrPt9EvGdtfhWok3aevethRNvzBJP19asFySsuY9zQ9Q1wArwvgAdA8YB8
+ uLMTl85cku91uvG88Z6GsnR0qq4/Wv8x6iHZImb77tWbfmpCqyEkj3RsNCdYGMqGJF4i2BDUWMX
+ PWqi/v8BGbET6E33UF1dxi3MQtJd3WHpoX+5XoBjgMlbe/nlJ5llpB+iEKSrHbirBoiIlxGitMV
+ iwbjBf5fmjzM4Ng==
 X-Developer-Key: i=duje.mihanovic@skole.hr; a=openpgp;
  fpr=53DF9D4D9C3FE110FB362D789A119EB0422D96E1
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Sharp's Spitz board still uses the legacy GPIO interface for configuring
-its two onboard LEDs.
+Hello,
 
-Convert them to use the GPIO descriptor interface.
+Small series to convert some of the board files in the mach-pxa directory
+to use the new GPIO descriptor interface.
+
+Most notably, the am200epd, am300epd and Spitz matrix keypad among
+others are not converted in this series.
 
 Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
 ---
- arch/arm/mach-pxa/spitz.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+Changes in v4:
+- Address maintainer comments:
+  - Move wait_for_sync() from spitz.c to driver
+  - Register LED platform device before getting its gpiod-s
+- Add Linus' Reviewed-by
+- Link to v3: https://lore.kernel.org/r/20230929-pxa-gpio-v3-0-af8d5e5d1f34@skole.hr
 
-diff --git a/arch/arm/mach-pxa/spitz.c b/arch/arm/mach-pxa/spitz.c
-index 535e2b2e997b..b6a4085e9fb0 100644
---- a/arch/arm/mach-pxa/spitz.c
-+++ b/arch/arm/mach-pxa/spitz.c
-@@ -452,16 +452,25 @@ static inline void spitz_keys_init(void) {}
-  * LEDs
-  ******************************************************************************/
- #if defined(CONFIG_LEDS_GPIO) || defined(CONFIG_LEDS_GPIO_MODULE)
-+static struct gpiod_lookup_table spitz_led_gpio_table = {
-+	.dev_id = "leds-gpio",
-+	.table = {
-+		GPIO_LOOKUP_IDX("pxa-gpio", SPITZ_GPIO_LED_ORANGE, NULL, 0,
-+				GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("pxa-gpio", SPITZ_GPIO_LED_GREEN, NULL, 1,
-+				GPIO_ACTIVE_HIGH),
-+		{ }
-+	}
-+};
-+
- static struct gpio_led spitz_gpio_leds[] = {
- 	{
- 		.name			= "spitz:amber:charge",
- 		.default_trigger	= "sharpsl-charge",
--		.gpio			= SPITZ_GPIO_LED_ORANGE,
- 	},
- 	{
- 		.name			= "spitz:green:hddactivity",
- 		.default_trigger	= "disk-activity",
--		.gpio			= SPITZ_GPIO_LED_GREEN,
- 	},
- };
- 
-@@ -480,7 +489,12 @@ static struct platform_device spitz_led_device = {
- 
- static void __init spitz_leds_init(void)
- {
-+	gpiod_add_lookup_table(&spitz_led_gpio_table);
- 	platform_device_register(&spitz_led_device);
-+	spitz_gpio_leds[0].gpiod = gpiod_get_index(&spitz_led_device.dev,
-+			NULL, 0, GPIOD_ASIS);
-+	spitz_gpio_leds[1].gpiod = gpiod_get_index(&spitz_led_device.dev,
-+			NULL, 1, GPIOD_ASIS);
- }
- #else
- static inline void spitz_leds_init(void) {}
+Changes in v3:
+- Address maintainer comments:
+  - Use GPIO_LOOKUP_IDX for LEDs
+  - Drop unnecessary NULL assignments
+  - Don't give up on *all* SPI devices if hsync cannot be set up
+- Add Linus' Acked-by
+- Link to v2: https://lore.kernel.org/r/20230926-pxa-gpio-v2-0-984464d165dd@skole.hr
 
+Changes in v2:
+- Address maintainer comments:
+  - Change mentions of function to function()
+  - Drop cast in OHCI driver dev_warn() call
+  - Use %pe in OHCI and reset drivers
+  - Use GPIO _optional() API in OHCI driver
+  - Drop unnecessary not-null check in OHCI driver
+  - Use pr_err() instead of printk() in reset driver
+- Rebase on v6.6-rc3
+- Link to v1: https://lore.kernel.org/r/20230924-pxa-gpio-v1-0-2805b87d8894@skole.hr
+
+---
+Duje Mihanović (6):
+      ARM: pxa: Convert Spitz OHCI to GPIO descriptors
+      ARM: pxa: Convert Spitz LEDs to GPIO descriptors
+      ARM: pxa: Convert Spitz CF power control to GPIO descriptors
+      ARM: pxa: Convert reset driver to GPIO descriptors
+      ARM: pxa: Convert gumstix Bluetooth to GPIO descriptors
+      input: ads7846: Move wait_for_sync() logic to driver
+
+ arch/arm/mach-pxa/gumstix.c         | 24 +++++++------
+ arch/arm/mach-pxa/reset.c           | 39 +++++++--------------
+ arch/arm/mach-pxa/reset.h           |  3 +-
+ arch/arm/mach-pxa/spitz.c           | 69 +++++++++++++++++++++++++------------
+ drivers/input/touchscreen/ads7846.c | 22 ++++++++----
+ drivers/usb/host/ohci-pxa27x.c      |  7 ++++
+ include/linux/spi/ads7846.h         |  1 -
+ 7 files changed, 96 insertions(+), 69 deletions(-)
+---
+base-commit: 6465e260f48790807eef06b583b38ca9789b6072
+change-id: 20230807-pxa-gpio-3ce25d574814
+
+Best regards,
 -- 
-2.42.0
+Duje Mihanović <duje.mihanovic@skole.hr>
 
 

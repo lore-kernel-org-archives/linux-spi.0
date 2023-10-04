@@ -2,29 +2,29 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 72364E7C4D1
-	for <linux-spi@archiver.kernel.org>; Wed,  4 Oct 2023 14:57:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F277EE7C4D6
+	for <linux-spi@archiver.kernel.org>; Wed,  4 Oct 2023 14:57:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243211AbjJDO5E (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 4 Oct 2023 10:57:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60360 "EHLO
+        id S243245AbjJDO5G (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 4 Oct 2023 10:57:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243043AbjJDO4x (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 4 Oct 2023 10:56:53 -0400
-Received: from mx.skole.hr (mx2.hosting.skole.hr [161.53.165.186])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC7B4BF;
-        Wed,  4 Oct 2023 07:56:47 -0700 (PDT)
-Received: from mx2.hosting.skole.hr (localhost.localdomain [127.0.0.1])
-        by mx.skole.hr (mx.skole.hr) with ESMTP id 3DC5386058;
-        Wed,  4 Oct 2023 16:56:46 +0200 (CEST)
+        with ESMTP id S243118AbjJDO4v (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 4 Oct 2023 10:56:51 -0400
+Received: from mx.skole.hr (mx1.hosting.skole.hr [161.53.165.185])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFFB3112;
+        Wed,  4 Oct 2023 07:56:46 -0700 (PDT)
+Received: from mx1.hosting.skole.hr (localhost.localdomain [127.0.0.1])
+        by mx.skole.hr (mx.skole.hr) with ESMTP id 8504C84CA0;
+        Wed,  4 Oct 2023 16:56:44 +0200 (CEST)
 From:   =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
-Date:   Wed, 04 Oct 2023 16:56:28 +0200
-Subject: [PATCH RFC v5 4/6] ARM: pxa: Convert reset driver to GPIO
+Date:   Wed, 04 Oct 2023 16:56:26 +0200
+Subject: [PATCH RFC v5 2/6] ARM: pxa: Convert Spitz LEDs to GPIO
  descriptors
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20231004-pxa-gpio-v5-4-d99ae6fceea8@skole.hr>
+Message-Id: <20231004-pxa-gpio-v5-2-d99ae6fceea8@skole.hr>
 References: <20231004-pxa-gpio-v5-0-d99ae6fceea8@skole.hr>
 In-Reply-To: <20231004-pxa-gpio-v5-0-d99ae6fceea8@skole.hr>
 To:     Daniel Mack <daniel@zonque.org>,
@@ -43,151 +43,83 @@ Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-input@vger.kernel.org, linux-spi@vger.kernel.org,
         =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3634;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1871;
  i=duje.mihanovic@skole.hr; h=from:subject:message-id;
- bh=4NSf6nRqHgAPG1WiwL6ByRFscIsi1iq6bpWNwCWgJcw=;
- b=owEBbQKS/ZANAwAIAZoRnrBCLZbhAcsmYgBlHX0kIsnU2yb6NQa+JLbqEVhjjtHyHIfpuJ/1/
- v5rjuAT98qJAjMEAAEIAB0WIQRT351NnD/hEPs2LXiaEZ6wQi2W4QUCZR19JAAKCRCaEZ6wQi2W
- 4fKkD/4lUF/j1aNfU/G+nduzIgzW2XaU0QH3T8Jn+YAS/8GW1LPFo0hc6CCIAZ29U/h+WJHTIeO
- hC/wabf33OODy1Bz06PDGKP2DLehHtSWZ9IRQbhzal7vp27zSp4RXG0MwJe8laVLi66w7cE1aLA
- w1ciX7zv0QhwyryD4jE0lnFiE0qWWz+M6Y15k4CEZqV3i0SDKh/Gad1yf9XFQ0IlwulBfbjezg8
- 5fHnkG+S0UHGO9U89hcy0pNQxjtw77K6BHYL0L9MqpcZQeJoCRQhS141AypHEAB+dkLR3D6+LxJ
- 8Jrj4V6RVGAj5LDtzzhbohULqYd5OE/LrXSUk11FD/d1nwg4NUnPTFwFlKuLcnOsyiryxa6R2D6
- rHxb/Pt4zXGfD2uOXPV/rGlIuq7Bv7FGVwGyCY2LqzCarYx+xynZh9kp+I9dfSY0tS1OkOFSRfj
- PjDDGUEXuCQmwwhZ8Y0IUKBpUqbfOVQYoM9VDWfIyvRk1H+qilvOrZ5Zq+xhqo5sLKzGYZGOOLb
- yyTKm7W3gMGISp7u+oqyl99S64Fl3k36tD5gII75Sto07s88bKCgP8re1DtqJVxGBmIEZD1D/AW
- CHrz7ODutoD/WS3HhXNsfHkFhsLO+21fKQR1inJLknDTYdkIQ0tLZNRQDNLjyQkVtuhkgY5OC5/
- vVD9oUNhdDxDklw==
+ bh=DE2PEskLXScJBG6OV6aN0l1pySPm6nNQ06il8QEoR7s=;
+ b=owEBbQKS/ZANAwAIAZoRnrBCLZbhAcsmYgBlHX0kALPHlN4oJn6kZo3KSvCEzLz38DVYdz/Ba
+ cdGlUtMoGCJAjMEAAEIAB0WIQRT351NnD/hEPs2LXiaEZ6wQi2W4QUCZR19JAAKCRCaEZ6wQi2W
+ 4WtUEACCiGTLN1AbQqVrfDK7Y56hTkXDQVt4zLo7s/AxU5qOIFFW9Rk9uL1rx6av9foW4enZRUC
+ /AN2ZqEM2pS9l3ZIHH2CmIJD7i68hB1oW/W2C++qIoTQfreneKfudMBMH4Km9wYhTZDjIPbJ9I6
+ pe/osql79J6vMKdOcReaQ3ZxMOUxtyTYNZMdRuwSmk7ZeNiJP1VssDlANf2N1LYg+caJ3NwB+cp
+ NVsFa5ma1n/Z3jaFyBSxcAFXmdc0zn/QjRUxpCyYToikVRPax3QXd1aMdlJEKFtGeg82P/EqmU6
+ WO+tKEqsdlLc+QsEyr1/qhkGWKmIHh63sNuSeke62Huofiier20EVS8GWa68VvqW79zJ9+xlLrn
+ OAN37lpWzMIGw6C1z75RJUM82VXYe6ab/wP4i88mtebKkdlJIKungAtsUIAzXXtpU15Jd5y2VLB
+ 0tAt0aUgFfXEVO8a/W0XTcerFNpR32EQCFz32uT6k6gUkrYSm5FM5Dbpg2NqzOzBcKO7bUnzYA5
+ og84IkURN4x910DHcL8P2gdaCYf4XEVyjYO8dVHkLCGp4elHUlMUlzB+tNUHTZZs9lGNmVGAdFz
+ IamCDlLQBCwmjSizLCo77nnqiipo+DSAzwSs/TqLfhd032qT6lzX7uPandRdFfz/nGHmVmB2dqV
+ O74X1KQos5QWDzw==
 X-Developer-Key: i=duje.mihanovic@skole.hr; a=openpgp;
  fpr=53DF9D4D9C3FE110FB362D789A119EB0422D96E1
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The PXA reset driver still uses the legacy GPIO interface for
-configuring and asserting the reset pin.
+Sharp's Spitz board still uses the legacy GPIO interface for configuring
+its two onboard LEDs.
 
-Convert it to use the GPIO descriptor interface.
+Convert them to use the GPIO descriptor interface.
 
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
 ---
- arch/arm/mach-pxa/reset.c | 39 +++++++++++++--------------------------
- arch/arm/mach-pxa/reset.h |  3 +--
- arch/arm/mach-pxa/spitz.c |  6 +++++-
- 3 files changed, 19 insertions(+), 29 deletions(-)
+ arch/arm/mach-pxa/spitz.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-pxa/reset.c b/arch/arm/mach-pxa/reset.c
-index 27293549f8ad..08bc104b9411 100644
---- a/arch/arm/mach-pxa/reset.c
-+++ b/arch/arm/mach-pxa/reset.c
-@@ -2,7 +2,7 @@
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/delay.h>
--#include <linux/gpio.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/io.h>
- #include <asm/proc-fns.h>
- #include <asm/system_misc.h>
-@@ -14,33 +14,20 @@
- 
- static void do_hw_reset(void);
- 
--static int reset_gpio = -1;
-+static struct gpio_desc *reset_gpio;
- 
--int init_gpio_reset(int gpio, int output, int level)
-+int init_gpio_reset(int output, int level)
- {
--	int rc;
--
--	rc = gpio_request(gpio, "reset generator");
--	if (rc) {
--		printk(KERN_ERR "Can't request reset_gpio\n");
--		goto out;
-+	reset_gpio = gpiod_get(NULL, "reset", GPIOD_ASIS);
-+	if (IS_ERR(reset_gpio)) {
-+		pr_err("Can't request reset_gpio: %pe\n", reset_gpio);
-+		return PTR_ERR(reset_gpio);
- 	}
- 
- 	if (output)
--		rc = gpio_direction_output(gpio, level);
-+		return gpiod_direction_output(reset_gpio, level);
- 	else
--		rc = gpio_direction_input(gpio);
--	if (rc) {
--		printk(KERN_ERR "Can't configure reset_gpio\n");
--		gpio_free(gpio);
--		goto out;
--	}
--
--out:
--	if (!rc)
--		reset_gpio = gpio;
--
--	return rc;
-+		return gpiod_direction_input(reset_gpio);
- }
- 
- /*
-@@ -50,16 +37,16 @@ int init_gpio_reset(int gpio, int output, int level)
-  */
- static void do_gpio_reset(void)
- {
--	BUG_ON(reset_gpio == -1);
-+	BUG_ON(IS_ERR(reset_gpio));
- 
- 	/* drive it low */
--	gpio_direction_output(reset_gpio, 0);
-+	gpiod_direction_output(reset_gpio, 0);
- 	mdelay(2);
- 	/* rising edge or drive high */
--	gpio_set_value(reset_gpio, 1);
-+	gpiod_set_value(reset_gpio, 1);
- 	mdelay(2);
- 	/* falling edge */
--	gpio_set_value(reset_gpio, 0);
-+	gpiod_set_value(reset_gpio, 0);
- 
- 	/* give it some time */
- 	mdelay(10);
-diff --git a/arch/arm/mach-pxa/reset.h b/arch/arm/mach-pxa/reset.h
-index 963dd190bc13..5864f61a0e94 100644
---- a/arch/arm/mach-pxa/reset.h
-+++ b/arch/arm/mach-pxa/reset.h
-@@ -13,10 +13,9 @@ extern void pxa_register_wdt(unsigned int reset_status);
- 
- /**
-  * init_gpio_reset() - register GPIO as reset generator
-- * @gpio: gpio nr
-  * @output: set gpio as output instead of input during normal work
-  * @level: output level
-  */
--extern int init_gpio_reset(int gpio, int output, int level);
-+extern int init_gpio_reset(int output, int level);
- 
- #endif /* __ASM_ARCH_RESET_H */
 diff --git a/arch/arm/mach-pxa/spitz.c b/arch/arm/mach-pxa/spitz.c
-index 965354e64c68..26ec29c9cd1b 100644
+index 535e2b2e997b..b6a4085e9fb0 100644
 --- a/arch/arm/mach-pxa/spitz.c
 +++ b/arch/arm/mach-pxa/spitz.c
-@@ -1024,9 +1024,13 @@ static void spitz_restart(enum reboot_mode mode, const char *cmd)
- 	spitz_poweroff();
- }
- 
-+GPIO_LOOKUP_SINGLE(spitz_reset_gpio_table, NULL, "pxa-gpio",
-+		SPITZ_GPIO_ON_RESET, "reset", GPIO_ACTIVE_HIGH);
+@@ -452,16 +452,25 @@ static inline void spitz_keys_init(void) {}
+  * LEDs
+  ******************************************************************************/
+ #if defined(CONFIG_LEDS_GPIO) || defined(CONFIG_LEDS_GPIO_MODULE)
++static struct gpiod_lookup_table spitz_led_gpio_table = {
++	.dev_id = "leds-gpio",
++	.table = {
++		GPIO_LOOKUP_IDX("pxa-gpio", SPITZ_GPIO_LED_ORANGE, NULL, 0,
++				GPIO_ACTIVE_HIGH),
++		GPIO_LOOKUP_IDX("pxa-gpio", SPITZ_GPIO_LED_GREEN, NULL, 1,
++				GPIO_ACTIVE_HIGH),
++		{ }
++	}
++};
 +
- static void __init spitz_init(void)
- {
--	init_gpio_reset(SPITZ_GPIO_ON_RESET, 1, 0);
-+	gpiod_add_lookup_table(&spitz_reset_gpio_table);
-+	init_gpio_reset(1, 0);
- 	pm_power_off = spitz_poweroff;
+ static struct gpio_led spitz_gpio_leds[] = {
+ 	{
+ 		.name			= "spitz:amber:charge",
+ 		.default_trigger	= "sharpsl-charge",
+-		.gpio			= SPITZ_GPIO_LED_ORANGE,
+ 	},
+ 	{
+ 		.name			= "spitz:green:hddactivity",
+ 		.default_trigger	= "disk-activity",
+-		.gpio			= SPITZ_GPIO_LED_GREEN,
+ 	},
+ };
  
- 	PMCR = 0x00;
+@@ -480,7 +489,12 @@ static struct platform_device spitz_led_device = {
+ 
+ static void __init spitz_leds_init(void)
+ {
++	gpiod_add_lookup_table(&spitz_led_gpio_table);
+ 	platform_device_register(&spitz_led_device);
++	spitz_gpio_leds[0].gpiod = gpiod_get_index(&spitz_led_device.dev,
++			NULL, 0, GPIOD_ASIS);
++	spitz_gpio_leds[1].gpiod = gpiod_get_index(&spitz_led_device.dev,
++			NULL, 1, GPIOD_ASIS);
+ }
+ #else
+ static inline void spitz_leds_init(void) {}
 
 -- 
 2.42.0

@@ -2,65 +2,80 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 75CA6E936E6
-	for <linux-spi@archiver.kernel.org>; Wed,  4 Oct 2023 21:19:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 48039E92709
+	for <linux-spi@archiver.kernel.org>; Thu,  5 Oct 2023 14:31:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233365AbjJDVTd (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 4 Oct 2023 17:19:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43488 "EHLO
+        id S234025AbjJEObr (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 5 Oct 2023 10:31:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233310AbjJDVTc (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 4 Oct 2023 17:19:32 -0400
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D5D290
-        for <linux-spi@vger.kernel.org>; Wed,  4 Oct 2023 14:19:28 -0700 (PDT)
-Received: from i53875a3c.versanet.de ([83.135.90.60] helo=diego.localnet)
-        by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <heiko@sntech.de>)
-        id 1qo9GZ-0005NJ-Hp; Wed, 04 Oct 2023 23:18:47 +0200
-From:   Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
-To:     broonie@kernel.org, chin-ting_kuo@aspeedtech.com, clg@kaod.org,
-        joel@jms.id.au, andrew@aj.id.au, florian.fainelli@broadcom.com,
-        rjui@broadcom.com, sbranden@broadcom.com,
-        bcm-kernel-feedback-list@broadcom.com, fancer.lancer@gmail.com,
-        olteanv@gmail.com, neil.armstrong@linaro.org, khilman@baylibre.com,
-        jbrunet@baylibre.com, martin.blumenstingl@googlemail.com,
-        conor.dooley@microchip.com, daire.mcnamara@microchip.com,
-        matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
-        avifishman70@gmail.com, tmaimon77@gmail.com, tali.perry1@gmail.com,
-        venture@google.com, yuenn@google.com, benjaminfair@google.com,
-        linus.walleij@linaro.org, Li Zetao <lizetao1@huawei.com>
-Cc:     lizetao1@huawei.com, linux-spi@vger.kernel.org,
-        linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-rpi-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org, linux-riscv@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        linux-rockchip@lists.infradead.org
-Subject: Re: [PATCH -next 25/25] spi: rockchip: Use helper function
- devm_clk_get_enabled()
-Date:   Wed, 04 Oct 2023 23:18:45 +0200
-Message-ID: <16634210.geO5KgaWL5@diego>
-In-Reply-To: <20230822131237.1022815-26-lizetao1@huawei.com>
-References: <20230822131237.1022815-1-lizetao1@huawei.com>
- <20230822131237.1022815-26-lizetao1@huawei.com>
+        with ESMTP id S233715AbjJEO3m (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 5 Oct 2023 10:29:42 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D7651BFC;
+        Thu,  5 Oct 2023 06:50:01 -0700 (PDT)
+X-IronPort-AV: E=McAfee;i="6600,9927,10853"; a="383353480"
+X-IronPort-AV: E=Sophos;i="6.03,202,1694761200"; 
+   d="scan'208";a="383353480"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2023 02:14:13 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10853"; a="728365949"
+X-IronPort-AV: E=Sophos;i="6.03,202,1694761200"; 
+   d="scan'208";a="728365949"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2023 02:14:09 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97-RC1)
+        (envelope-from <andy@kernel.org>)
+        id 1qoKQn-00000002z4r-1f1n;
+        Thu, 05 Oct 2023 12:14:05 +0300
+Date:   Thu, 5 Oct 2023 12:14:05 +0300
+From:   Andy Shevchenko <andy@kernel.org>
+To:     Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
+Cc:     Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Russell King <linux@armlinux.org.uk>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-spi@vger.kernel.org
+Subject: Re: [PATCH RFC v5 0/6] ARM: pxa: GPIO descriptor conversions
+Message-ID: <ZR5+XWBmg0I7joOg@smile.fi.intel.com>
+References: <20231004-pxa-gpio-v5-0-d99ae6fceea8@skole.hr>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231004-pxa-gpio-v5-0-d99ae6fceea8@skole.hr>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Am Dienstag, 22. August 2023, 15:12:37 CEST schrieb Li Zetao:
-> Since commit 7ef9651e9792 ("clk: Provide new devm_clk helpers for prepared
-> and enabled clocks"), devm_clk_get() and clk_prepare_enable() can now be
-> replaced by devm_clk_get_enabled() when driver enables (and possibly
-> prepares) the clocks for the whole lifetime of the device. Moreover, it is
-> no longer necessary to unprepare and disable the clocks explicitly.
+On Wed, Oct 04, 2023 at 04:56:24PM +0200, Duje Mihanović wrote:
+> Hello,
 > 
-> Signed-off-by: Li Zetao <lizetao1@huawei.com>
+> Small series to convert some of the board files in the mach-pxa directory
+> to use the new GPIO descriptor interface.
+> 
+> Most notably, the am200epd, am300epd and Spitz matrix keypad among
+> others are not converted in this series.
 
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Why is it still RFC?
+I believe it's already good enough to be considered as a real material.
+OTOH "RFT" might make sense. I'm not sure there are any users on the
+planet Earth that have this Sharp device up and running with newest
+kernels.
+
+
+-- 
+With Best Regards,
+Andy Shevchenko
 
 

@@ -2,94 +2,216 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F0F52CD80B7
-	for <linux-spi@archiver.kernel.org>; Tue, 10 Oct 2023 12:04:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AB68DCD80D0
+	for <linux-spi@archiver.kernel.org>; Tue, 10 Oct 2023 12:59:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231509AbjJJMEj (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 10 Oct 2023 08:04:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52958 "EHLO
+        id S232088AbjJJM7b (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 10 Oct 2023 08:59:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231658AbjJJMEh (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 10 Oct 2023 08:04:37 -0400
-Received: from mail-yw1-x1133.google.com (mail-yw1-x1133.google.com [IPv6:2607:f8b0:4864:20::1133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7EADED
-        for <linux-spi@vger.kernel.org>; Tue, 10 Oct 2023 05:04:32 -0700 (PDT)
-Received: by mail-yw1-x1133.google.com with SMTP id 00721157ae682-5a7b92cd0ccso11576717b3.1
-        for <linux-spi@vger.kernel.org>; Tue, 10 Oct 2023 05:04:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1696939472; x=1697544272; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oRm5xwGlZJf/KJnLdBDBwdoT05gZC5H+vASV2Jvu/KQ=;
-        b=TyNTCWuo266bHgiNm+q+Hok6E3nyqyNcwNpxUwClJIBu6FUZQJ9r3f4Xk8y/hqkwGf
-         qRSjkMVrO0VR+p6idEIXDjV6LhE9LfIUZUlRZTcw4EcFUHP3s0w7ZUV7kwl0j0wbHsKa
-         80I8lDp1kZBikaZfdIFLlBZB6XQVIZumNEaeM3EiPccynX3UR7MKnnGQor4R/XNt4uIy
-         9otCZXVPvCJV+VSTmOBD/Srq1H35UEBTWXRCw+VjxQmNBH25AsaZqKCF3I0Elpx4f2Ss
-         YxaoSuejDQnQPibdgMoF2GXw7kT6pjYq2YG4WWNTolSN2Qzx7u1VtZmZ0DsKOoWBold9
-         uQLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696939472; x=1697544272;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oRm5xwGlZJf/KJnLdBDBwdoT05gZC5H+vASV2Jvu/KQ=;
-        b=sNM1plu9nu54Eatj7iaiGUm6lMu8hnEbttvqSyaag9Wdi5GdJEhrZ+K78omNlDIANJ
-         64DnHNTkrM8XVLgF8GS3A46MhL7rVJgfwsnFEDgA9g6rM+ECuFvcrxLwCbSvB1Ixuf9J
-         CTY8ivkNEH8NYpvNib612W5VxyJPCs/xlZhZ1aM9VCH6/oYCWxpHjwc2f60MRkq+ZuV+
-         HO/w36P69Gw0779onO0BESJoEruREfm2Sq1BLSb702J/w6EpPkRHNbb1KpnRToSyNEOC
-         ek2G2Um/7FbgtqDUbWFjQFGgUESHvFEVdTpFWK37lIkixHKOw9JdSJ2aKy6uDeoW2D57
-         P4qg==
-X-Gm-Message-State: AOJu0YymlqM62iU5hzRXy8RG5jxLX4Y/yxdW6k6pe17YDPDGaBhFLEMY
-        cgtZoHkvTfF6Vz1kLlWtecH48TkAuihQeG5dUM3dBA==
-X-Google-Smtp-Source: AGHT+IGVDD7+S69xO3pfTbF949zNCe6yFAK3r96QtSxjKtmrwM3HcJu3N1ThxZ9DhlR9SLOx/kn6XhBTxLOkp/VyWj4=
-X-Received: by 2002:a25:a101:0:b0:d4e:4103:7807 with SMTP id
- z1-20020a25a101000000b00d4e41037807mr16143064ybh.60.1696939471954; Tue, 10
- Oct 2023 05:04:31 -0700 (PDT)
+        with ESMTP id S231400AbjJJM73 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 10 Oct 2023 08:59:29 -0400
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8ECFFA7;
+        Tue, 10 Oct 2023 05:59:27 -0700 (PDT)
+Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 39A8XFEj012493;
+        Tue, 10 Oct 2023 14:58:50 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+        from:to:cc:subject:date:message-id:in-reply-to:references
+        :mime-version:content-transfer-encoding:content-type; s=
+        selector1; bh=pRaHro0Cx77mAnyA1b4ha7ivIMmgkx+PPwasbOVpgNk=; b=aP
+        Uum6UMTy22Gms/T55cBpJ9KqYp8A+MW+OciqhTiewGdmquPbs/9Ivh/cdMnyRIIu
+        DHLv4VPW/rDIS7ZiwgQyJI5lVuokhEfqyLv31IEqcnTwCu/wOjNzogTsv0L4i+U1
+        r674LbOp8cFgIyBfCduoKPYWWwO4jRocfFoaGLwiyHhSpu8WHes5rn+FOqMrfuUG
+        AoUqkn2SCcOKDD3z7Y1m12l2iAE2Jbqu/kwFaUfDJnuviEqNiY0PbkWm2vnijhN/
+        90qv+85u1rts8bmdycNajbh5U/eeBZZGSzQkVoNwaD93xNVhHT2blj5lqB/5IeHa
+        /OPkSweYkqaCH48h3+mw==
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3tkhjga1xf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 10 Oct 2023 14:58:50 +0200 (MEST)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id E771210005A;
+        Tue, 10 Oct 2023 14:58:48 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id D75DE231505;
+        Tue, 10 Oct 2023 14:58:48 +0200 (CEST)
+Received: from localhost (10.201.20.32) by SHFDAG1NODE1.st.com (10.75.129.69)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Tue, 10 Oct
+ 2023 14:58:48 +0200
+From:   Gatien Chevallier <gatien.chevallier@foss.st.com>
+To:     <Oleksii_Moisieiev@epam.com>, <gregkh@linuxfoundation.org>,
+        <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
+        <robh+dt@kernel.org>, <krzysztof.kozlowski+dt@linaro.org>,
+        <conor+dt@kernel.org>, <alexandre.torgue@foss.st.com>,
+        <vkoul@kernel.org>, <jic23@kernel.org>,
+        <olivier.moysan@foss.st.com>, <arnaud.pouliquen@foss.st.com>,
+        <mchehab@kernel.org>, <fabrice.gasnier@foss.st.com>,
+        <andi.shyti@kernel.org>, <ulf.hansson@linaro.org>,
+        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+        <hugues.fruchet@foss.st.com>, <lee@kernel.org>, <will@kernel.org>,
+        <catalin.marinas@arm.com>, <arnd@kernel.org>,
+        <richardcochran@gmail.com>, Frank Rowand <frowand.list@gmail.com>,
+        <peng.fan@oss.nxp.com>
+CC:     <linux-crypto@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <dmaengine@vger.kernel.org>,
+        <linux-i2c@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <alsa-devel@alsa-project.org>, <linux-media@vger.kernel.org>,
+        <linux-mmc@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-phy@lists.infradead.org>, <linux-serial@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>, <linux-usb@vger.kernel.org>,
+        Oleksii Moisieiev <oleksii_moisieiev@epam.com>,
+        Gatien Chevallier <gatien.chevallier@foss.st.com>
+Subject: [PATCH v6 01/11] dt-bindings: document generic access controllers
+Date:   Tue, 10 Oct 2023 14:57:09 +0200
+Message-ID: <20231010125719.784627-2-gatien.chevallier@foss.st.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20231010125719.784627-1-gatien.chevallier@foss.st.com>
+References: <20231010125719.784627-1-gatien.chevallier@foss.st.com>
 MIME-Version: 1.0
-References: <20231004183906.97845-1-brgl@bgdev.pl>
-In-Reply-To: <20231004183906.97845-1-brgl@bgdev.pl>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 10 Oct 2023 14:04:21 +0200
-Message-ID: <CACRpkdaP1AxUyAo2kOm5o3wn-gwfki_52-YJiPpu20cEKLXxjQ@mail.gmail.com>
-Subject: Re: [PATCH] spi: bcm2835: add a sentinel at the end of the lookup array
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     Mark Brown <broonie@kernel.org>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Broadcom internal kernel review list 
-        <bcm-kernel-feedback-list@broadcom.com>, linux-spi@vger.kernel.org,
-        linux-rpi-kernel@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-gpio@vger.kernel.org,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.201.20.32]
+X-ClientProxiedBy: SHFCAS1NODE2.st.com (10.75.129.73) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-10_08,2023-10-10_01,2023-05-22_02
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, Oct 4, 2023 at 8:39=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl> =
-wrote:
+From: Oleksii Moisieiev <Oleksii_Moisieiev@epam.com>
 
+Introducing of the generic access controllers bindings for the
+access controller provider and consumer devices. Those bindings are
+intended to allow a better handling of accesses to resources in a
+hardware architecture supporting several compartments.
 
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->
-> GPIOLIB expects the array of lookup entries to be terminated with an
-> empty member. We need to increase the size of the variable length array
-> in the lookup table by 1.
->
-> Fixes: 21f252cd29f0 ("spi: bcm2835: reduce the abuse of the GPIO API")
-> Reported-by: Hans de Goede <hdegoede@redhat.com>
-> Closes: https://lore.kernel.org/lkml/29764d46-8d3d-9794-bbde-d7928a91cbb5=
-@redhat.com/
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+This patch is based on [1]. It is integrated in this patchset as it
+provides a use-case for it.
 
-OK my bad (I think?)
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Diffs with [1]:
+	- Rename feature-domain* properties to access-control* to narrow
+	  down the scope of the binding
+	- YAML errors and typos corrected.
+	- Example updated
+	- Some rephrasing in the binding description
 
-Yours,
-Linus Walleij
+[1]: https://lore.kernel.org/lkml/0c0a82bb-18ae-d057-562b
+
+Signed-off-by: Oleksii Moisieiev <oleksii_moisieiev@epam.com>
+Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
+---
+
+Changes in V6:
+	- Renamed access-controller to access-controllers
+	- Example updated
+	- Removal of access-control-provider property
+
+Changes in V5:
+	- Diffs with [1]
+	- Discarded the [IGNORE] tag as the patch is now part of the
+	  patchset
+
+ .../access-controllers.yaml                   | 84 +++++++++++++++++++
+ 1 file changed, 84 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/access-controllers/access-controllers.yaml
+
+diff --git a/Documentation/devicetree/bindings/access-controllers/access-controllers.yaml b/Documentation/devicetree/bindings/access-controllers/access-controllers.yaml
+new file mode 100644
+index 000000000000..99e2865f0e46
+--- /dev/null
++++ b/Documentation/devicetree/bindings/access-controllers/access-controllers.yaml
+@@ -0,0 +1,84 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/access-controllers/access-controllers.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Generic Domain Access Controllers
++
++maintainers:
++  - Oleksii Moisieiev <oleksii_moisieiev@epam.com>
++
++description: |+
++  Common access controllers properties
++
++  Access controllers are in charge of stating which of the hardware blocks under
++  their responsibility (their domain) can be accesssed by which compartment. A
++  compartment can be a cluster of CPUs (or coprocessors), a range of addresses
++  or a group of hardware blocks. An access controller's domain is the set of
++  resources covered by the access controller.
++
++  This device tree binding can be used to bind devices to their access
++  controller provided by access-controllers property. In this case, the device
++  is a consumer and the access controller is the provider.
++
++  An access controller can be represented by any node in the device tree and
++  can provide one or more configuration parameters, needed to control parameters
++  of the consumer device. A consumer node can refer to the provider by phandle
++  and a set of phandle arguments, specified by '#access-controller-cells'
++  property in the access controller node.
++
++  Access controllers are typically used to set/read the permissions of a
++  hardware block and grant access to it. Any of which depends on the access
++  controller. The capabilities of each access controller are defined by the
++  binding of the access controller device.
++
++  Each node can be a consumer for the several access controllers.
++
++# always select the core schema
++select: true
++
++properties:
++  "#access-controller-cells":
++    description:
++      Number of cells in an access-controllers specifier;
++      Can be any value as specified by device tree binding documentation
++      of a particular provider. The node is an access controller.
++
++  access-controller-names:
++    $ref: /schemas/types.yaml#/definitions/string-array
++    description:
++      A list of access-controllers names, sorted in the same order as
++      access-controllers entries. Consumer drivers will use
++      access-controller-names to match with existing access-controllers entries.
++
++  access-controllers:
++    $ref: /schemas/types.yaml#/definitions/phandle-array
++    description:
++      A list of access controller specifiers, as defined by the
++      bindings of the access-controllers provider.
++
++additionalProperties: true
++
++examples:
++  - |
++    clock_controller: access-controllers@50000 {
++        reg = <0x50000 0x400>;
++        #access-controller-cells = <2>;
++    };
++
++    bus_controller: bus@60000 {
++        reg = <0x60000 0x10000>;
++        #address-cells = <1>;
++        #size-cells = <1>;
++        ranges;
++        #access-controller-cells = <3>;
++
++        uart4: serial@60100 {
++            reg = <0x60100 0x400>;
++            clocks = <&clk_serial>;
++            access-controllers = <&clock_controller 1 2>,
++                                 <&bus_controller 1 3 5>;
++            access-controller-names = "clock", "bus";
++        };
++    };
+-- 
+2.35.3
+

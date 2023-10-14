@@ -2,41 +2,41 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 69C13C41513
-	for <linux-spi@archiver.kernel.org>; Sat, 14 Oct 2023 20:54:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 67F3DCDB482
+	for <linux-spi@archiver.kernel.org>; Sat, 14 Oct 2023 20:54:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233279AbjJNUyP (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sat, 14 Oct 2023 16:54:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58044 "EHLO
+        id S233306AbjJNUyS (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sat, 14 Oct 2023 16:54:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233033AbjJNUyO (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sat, 14 Oct 2023 16:54:14 -0400
+        with ESMTP id S233033AbjJNUyR (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sat, 14 Oct 2023 16:54:17 -0400
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAFD1CC
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B683BDC
         for <linux-spi@vger.kernel.org>; Sat, 14 Oct 2023 13:53:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1697316806;
+        s=mimecast20190719; t=1697316805;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=RDU841zmqN4EViFwHwGtrWm81faZ2V8ThMs0U5gsSfg=;
-        b=UWzLn7FbxDWoGcKP3UHDQoB2uIwC4VtsZNI6DelLYXHng7fkCN9WCjQ61KXOw8dfGeFtkR
-        7EfV09AUo71D2LnCkP8MpnDeogLEL0T8Kv5icfxjKuXG1bKEKE7MJ244h8iT41tx5HtW3Y
-        pmwsvE+T/JcD/94G8Al/6CXIIK8XtK0=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-355-boqgT2qmMUu5cyR4pnJ96g-1; Sat, 14 Oct 2023 16:53:19 -0400
-X-MC-Unique: boqgT2qmMUu5cyR4pnJ96g-1
+        bh=nVXuRZ43Xjf843BgeSpJhYSd1chgRygz5RuSbmD9+7Q=;
+        b=QH/9vuvqbTn2pmFSitz5mSbYk99fvfHBctIzqQUmsZdpQZieMUwVcSA9ISaDar7jtONuED
+        XF/dJbMo2qnK1+qkx7skYEhTgs+rLRjXiAvRXnM5a4yyrGydLpHbIEEOXZnNxjeFk3Pk+M
+        GYDErUAuFNZqWjLIWIvDv+d7YdFO8F4=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-581-f_G26kRvMhqO5SmTNSEseQ-1; Sat, 14 Oct 2023 16:53:22 -0400
+X-MC-Unique: f_G26kRvMhqO5SmTNSEseQ-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0D4A21C0634B;
-        Sat, 14 Oct 2023 20:53:19 +0000 (UTC)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DC32C185A78E;
+        Sat, 14 Oct 2023 20:53:21 +0000 (UTC)
 Received: from shalem.redhat.com (unknown [10.39.192.6])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id D110325C0;
-        Sat, 14 Oct 2023 20:53:17 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id AB1B425C0;
+        Sat, 14 Oct 2023 20:53:20 +0000 (UTC)
 From:   Hans de Goede <hdegoede@redhat.com>
 To:     "Rafael J . Wysocki" <rafael@kernel.org>,
         =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
@@ -44,9 +44,9 @@ To:     "Rafael J . Wysocki" <rafael@kernel.org>,
         Mark Brown <broonie@kernel.org>
 Cc:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org,
         platform-driver-x86@vger.kernel.org, linux-spi@vger.kernel.org
-Subject: [PATCH 2/4] ACPI: scan: Add LNXVIDEO HID to ignore_serial_bus_ids[]
-Date:   Sat, 14 Oct 2023 22:53:12 +0200
-Message-ID: <20231014205314.59333-3-hdegoede@redhat.com>
+Subject: [PATCH 4/4] platform/x86: x86-android-tablets: Add audio codec info for Lenovo Yoga Tab 3 Pro YT3-X90F
+Date:   Sat, 14 Oct 2023 22:53:14 +0200
+Message-ID: <20231014205314.59333-5-hdegoede@redhat.com>
 In-Reply-To: <20231014205314.59333-1-hdegoede@redhat.com>
 References: <20231014205314.59333-1-hdegoede@redhat.com>
 MIME-Version: 1.0
@@ -56,47 +56,148 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The I2C-core already has filtering to skip i2c_client instantiation for
-LNXVIDEO acpi_device-s with I2cSerialBus resources, since LNXVIDEO devices
-are not i2c_client-s and are handled by the acpi_video driver.
+The SPI attached WM5102 codec on the Lenovo Yoga Tab 3 Pro YT3-X90F
+is not described in the ACPI tables.
 
-This filtering was added to i2c-core-acpi.c in commit 3a4991a9864c ("i2c:
-acpi: Do not create i2c-clients for LNXVIDEO ACPI devices").
-
-Now a similar problem has shown up where the SPI-core is instantiating
-an unwanted SPI-device for a SpiSerialBus resource under a LNXVIDEO
-acpi_device. On a Lenovo Yoga Tab 3 YT3-X90F this unwanted SPI-device
-instanstantiation causes the SPI-device instanstantiation for the WM5102
-audio codec to fail with:
-
-[   21.988441] pxa2xx-spi 8086228E:00: chipselect 0 already in use
-
-Instead of duplicating the I2C-core filtering in the SPI-core code, push
-the filtering of SerialBus resources under LNXVIDEO acpi_device-s up into
-the ACPI-core by adding the LNXVIDEO HID to ignore_serial_bus_ids[].
-
-Note the filtering in the I2C-core i2c_acpi_do_lookup() function is still
-necessary because this not only impacts i2c_client instantiation but it
-also makes the I2C-core ignore the I2cSerialBus resource when checking what
-the maximum speed is the I2C bus supports, which is still necessary.
+Add info to instantiate the SPI device for the codec manually.
 
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/acpi/scan.c | 1 +
- 1 file changed, 1 insertion(+)
+ .../platform/x86/x86-android-tablets/lenovo.c | 99 +++++++++++++++++++
+ 1 file changed, 99 insertions(+)
 
-diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-index 691d4b7686ee..4b6faa2350f5 100644
---- a/drivers/acpi/scan.c
-+++ b/drivers/acpi/scan.c
-@@ -1727,6 +1727,7 @@ static bool acpi_device_enumeration_by_parent(struct acpi_device *device)
- 	 * Some ACPI devs contain SerialBus resources even though they are not
- 	 * attached to a serial bus at all.
- 	 */
-+		{ACPI_VIDEO_HID, },
- 		{"MSHW0028", },
- 	/*
- 	 * HIDs of device with an UartSerialBusV2 resource for which userspace
+diff --git a/drivers/platform/x86/x86-android-tablets/lenovo.c b/drivers/platform/x86/x86-android-tablets/lenovo.c
+index 585f10a57810..d5d815940ce1 100644
+--- a/drivers/platform/x86/x86-android-tablets/lenovo.c
++++ b/drivers/platform/x86/x86-android-tablets/lenovo.c
+@@ -12,6 +12,8 @@
+ 
+ #include <linux/efi.h>
+ #include <linux/gpio/machine.h>
++#include <linux/mfd/arizona/pdata.h>
++#include <linux/mfd/arizona/registers.h>
+ #include <linux/mfd/intel_soc_pmic.h>
+ #include <linux/pinctrl/consumer.h>
+ #include <linux/pinctrl/machine.h>
+@@ -677,6 +679,89 @@ static const struct x86_i2c_client_info lenovo_yt3_i2c_clients[] __initconst = {
+ 	}
+ };
+ 
++/*
++ * The AOSP 3.5 mm Headset: Accessory Specification gives the following values:
++ * Function A Play/Pause:           0 ohm
++ * Function D Voice assistant:    135 ohm
++ * Function B Volume Up           240 ohm
++ * Function C Volume Down         470 ohm
++ * Minimum Mic DC resistance     1000 ohm
++ * Minimum Ear speaker impedance   16 ohm
++ * Note the first max value below must be less then the min. speaker impedance,
++ * to allow CTIA/OMTP detection to work. The other max values are the closest
++ * value from extcon-arizona.c:arizona_micd_levels halfway 2 button resistances.
++ */
++static const struct arizona_micd_range arizona_micd_aosp_ranges[] = {
++	{ .max =  11, .key = KEY_PLAYPAUSE },
++	{ .max = 186, .key = KEY_VOICECOMMAND },
++	{ .max = 348, .key = KEY_VOLUMEUP },
++	{ .max = 752, .key = KEY_VOLUMEDOWN },
++};
++
++/* YT3 WM5102 arizona_micd_config comes from Android kernel sources */
++static struct arizona_micd_config lenovo_yt3_wm5102_micd_config[]={
++	{ 0, 1, 0 },
++	{ ARIZONA_ACCDET_SRC, 2, 1 },
++};
++
++static struct arizona_pdata lenovo_yt3_wm5102_pdata = {
++	.irq_flags = IRQF_TRIGGER_LOW,
++	.micd_detect_debounce = 200,
++	.micd_ranges = arizona_micd_aosp_ranges,
++	.num_micd_ranges = ARRAY_SIZE(arizona_micd_aosp_ranges),
++	.hpdet_channel = ARIZONA_ACCDET_MODE_HPL,
++
++	/* Below settings come from Android kernel sources */
++	.micd_bias_start_time = 1,
++	.micd_rate = 6,
++	.micd_force_micbias = 1,
++	.micd_configs = lenovo_yt3_wm5102_micd_config,
++	.num_micd_configs = ARRAY_SIZE(lenovo_yt3_wm5102_micd_config),
++        .micbias={
++           [0]={ /*MICBIAS1*/
++                 .mV =2800 ,
++                 .ext_cap=1,
++                 .discharge =1 ,
++                 .soft_start =0,
++                 .bypass =0,
++           },
++           [1]={ /*MICBIAS2*/
++                 .mV =2800 ,
++                 .ext_cap=1,
++                 .discharge =1 ,
++                 .soft_start =0,
++                 .bypass =0,
++           },
++           [2]={ /*MICBIAS3*/
++                 .mV =2800 ,
++                 .ext_cap=1,
++                 .discharge =1 ,
++                 .soft_start =0,
++                 .bypass =0,
++           },
++        },
++};
++
++static const struct x86_spi_dev_info lenovo_yt3_spi_devs[] __initconst = {
++	{
++		/* WM5102 codec */
++		.board_info = {
++			.modalias = "wm5102",
++			.platform_data = &lenovo_yt3_wm5102_pdata,
++			.max_speed_hz = 5000000,
++		},
++		.ctrl_path = "\\_SB_.PCI0.SPI1",
++		.irq_data = {
++			.type = X86_ACPI_IRQ_TYPE_GPIOINT,
++			.chip = "INT33FF:00",
++			.index = 91,
++			.trigger = ACPI_LEVEL_SENSITIVE,
++			.polarity = ACPI_ACTIVE_LOW,
++			.con_id = "wm5102_irq",
++		},
++	}
++};
++
+ static int __init lenovo_yt3_init(void)
+ {
+ 	int ret;
+@@ -720,14 +805,28 @@ static struct gpiod_lookup_table lenovo_yt3_hideep_gpios = {
+ 	},
+ };
+ 
++static struct gpiod_lookup_table lenovo_yt3_wm5102_gpios = {
++	.dev_id = "spi1.0",
++	.table = {
++		GPIO_LOOKUP("INT33FF:00", 75, "wlf,spkvdd-ena", GPIO_ACTIVE_HIGH),
++		GPIO_LOOKUP("INT33FF:00", 81, "wlf,ldoena", GPIO_ACTIVE_HIGH),
++		GPIO_LOOKUP("INT33FF:00", 82, "reset", GPIO_ACTIVE_HIGH),
++		GPIO_LOOKUP("arizona", 2, "wlf,micd-pol", GPIO_ACTIVE_HIGH),
++		{ }
++	},
++};
++
+ static struct gpiod_lookup_table * const lenovo_yt3_gpios[] = {
+ 	&lenovo_yt3_hideep_gpios,
++	&lenovo_yt3_wm5102_gpios,
+ 	NULL
+ };
+ 
+ const struct x86_dev_info lenovo_yt3_info __initconst = {
+ 	.i2c_client_info = lenovo_yt3_i2c_clients,
+ 	.i2c_client_count = ARRAY_SIZE(lenovo_yt3_i2c_clients),
++	.spi_dev_info = lenovo_yt3_spi_devs,
++	.spi_dev_count = ARRAY_SIZE(lenovo_yt3_spi_devs),
+ 	.gpiod_lookup_tables = lenovo_yt3_gpios,
+ 	.init = lenovo_yt3_init,
+ };
 -- 
 2.41.0
 

@@ -2,174 +2,129 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E2435C25B6E
-	for <linux-spi@archiver.kernel.org>; Tue, 24 Oct 2023 16:40:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C5629C25B67
+	for <linux-spi@archiver.kernel.org>; Thu, 26 Oct 2023 15:24:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343934AbjJXQkF (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 24 Oct 2023 12:40:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40764 "EHLO
+        id S1345441AbjJZPYP (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 26 Oct 2023 11:24:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343912AbjJXQkD (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 24 Oct 2023 12:40:03 -0400
-Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ACFBD7D;
-        Tue, 24 Oct 2023 09:40:00 -0700 (PDT)
-Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-5845213c583so1594680eaf.0;
-        Tue, 24 Oct 2023 09:40:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698165599; x=1698770399;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4dgLAi1M/nR9fJIQpQVSn3gxY5AOxSN1+8PQWp2ZK3E=;
-        b=dJEL+fgbBkqa2Hxr8owONWDH6pO4QAKL8M6N0LblYDn0D+mvusaM9LI019LIX+Wr3i
-         SBvjWPRMymU3blibDCev3SK/2zggSLh7i4IpkcLL7+56UwaN+3Q+SvbKam8pCpGxanbT
-         He27KYjc4yS6cs4vdNENuanBRdI3kaR7tLAO5bj36M1FDWyM3CJw3cp0SmL52BmqFpit
-         BdEzxk39cE/f7g8NzIovM7D42nhpblBaxWAThWlKCuq1CXkrmypanbfJwfKuwEnp/Q8S
-         InLGUYhaL1tKdHvTD1oRCIWiQ8RKhoO9Sv7r+HPRugFqxsbmNwjwBGYgYl7NZvibTWWM
-         mHUQ==
-X-Gm-Message-State: AOJu0YxSrNVMn+fgX2LQrUQlYDXBSzDJcV9rjwPhKfF+AMIxCWFlyWiP
-        Fy1vX2SNzu3oZN9A3IdBaw==
-X-Google-Smtp-Source: AGHT+IH7r1RypTRYYRKdrh1wNi7leTTNBWI9FBY2oTxpLiREvX3LYW7p4YgROHwYcoRP/a6v+9+WQw==
-X-Received: by 2002:a4a:df11:0:b0:582:28e:93a8 with SMTP id i17-20020a4adf11000000b00582028e93a8mr12468463oou.3.1698165599325;
-        Tue, 24 Oct 2023 09:39:59 -0700 (PDT)
-Received: from herring.priv (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id f22-20020a4ad816000000b0057aef3cab33sm2002659oov.21.2023.10.24.09.39.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Oct 2023 09:39:58 -0700 (PDT)
-Received: (nullmailer pid 4062523 invoked by uid 1000);
-        Tue, 24 Oct 2023 16:39:56 -0000
-Date:   Tue, 24 Oct 2023 11:39:56 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Gatien CHEVALLIER <gatien.chevallier@foss.st.com>
-Cc:     Oleksii_Moisieiev@epam.com, gregkh@linuxfoundation.org,
-        herbert@gondor.apana.org.au, davem@davemloft.net,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        alexandre.torgue@foss.st.com, vkoul@kernel.org, jic23@kernel.org,
-        olivier.moysan@foss.st.com, arnaud.pouliquen@foss.st.com,
-        mchehab@kernel.org, fabrice.gasnier@foss.st.com,
-        andi.shyti@kernel.org, ulf.hansson@linaro.org, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, hugues.fruchet@foss.st.com,
-        lee@kernel.org, will@kernel.org, catalin.marinas@arm.com,
-        arnd@kernel.org, richardcochran@gmail.com,
-        Frank Rowand <frowand.list@gmail.com>, peng.fan@oss.nxp.com,
-        linux-crypto@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        dmaengine@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-iio@vger.kernel.org, alsa-devel@alsa-project.org,
-        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
-        netdev@vger.kernel.org, linux-p.hy@lists.infradead.org,
-        linux-serial@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-usb@vger.kernel.org
-Subject: Re: [PATCH v6 10/11] ARM: dts: stm32: add ETZPC as a system bus for
- STM32MP15x boards
-Message-ID: <20231024163956.GA4049342-robh@kernel.org>
-References: <20231010125719.784627-1-gatien.chevallier@foss.st.com>
- <20231010125719.784627-11-gatien.chevallier@foss.st.com>
- <20231010184212.GA1221641-robh@kernel.org>
- <8f1b6915-68be-a525-c5d5-37f0983c14de@foss.st.com>
- <20231012153012.GA698406-robh@kernel.org>
- <b16ed06f-66fd-457b-9610-a67ad07deb60@foss.st.com>
+        with ESMTP id S1345446AbjJZPYN (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 26 Oct 2023 11:24:13 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12879D7;
+        Thu, 26 Oct 2023 08:24:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=s31663417; t=1698333824; x=1698938624; i=estl@gmx.net;
+        bh=hrkvAOte+Th3rpsByV7vWGNWnYjhb3jN9HoUWbKJ61c=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:
+         References;
+        b=OLZANmlaBqktCjzeDAwa6XgaP5O8HNALrlBsXopEztBlFwCFqJ3Arz89BQwzEYpq
+         86vbRqblqhx9GGWy1eqy1xmH++Dt0Ymrukrbvembq4Bj8e67gi8AIhvkFyACmIwaL
+         Mz5ACJ34KSvPZlZwm7o3SGl7hiW7zgG/xINCaFYj86oeDqNz3nkP1CLSMa6wQolfC
+         Mf57KvFYBq9NM0vTx9kfpuze9PFGg1utXH+dKUEF4CqcUjIAkmFzIiyPU/jjdM9zo
+         ai1Bj8xVGTo83r0ce2tHG1Ac1XFEvaSU+2j4uvPRyFkiglRhcHW+ylXdzoNaeouuE
+         rD5LFo9Puv+6QlX1/A==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from localhost.localdomain ([77.246.119.226]) by mail.gmx.net
+ (mrgmx005 [212.227.17.190]) with ESMTPSA (Nemesis) id
+ 1M9nxn-1qt1Xh3eR3-005qmX; Thu, 26 Oct 2023 17:23:44 +0200
+From:   Eberhard Stoll <estl@gmx.net>
+To:     linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>
+Cc:     Eberhard Stoll <eberhard.stoll@kontron.de>,
+        Frieder Schrempf <frieder.schrempf@kontron.de>,
+        Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Krishna Yarlagadda <kyarlagadda@nvidia.com>,
+        =?UTF-8?q?Leonard=20G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Yang Yingliang <yangyingliang@huawei.com>
+Subject: [PATCH 1/4] spi: Add parameter for clock to rx delay
+Date:   Thu, 26 Oct 2023 17:23:02 +0200
+Message-Id: <20231026152316.2729575-2-estl@gmx.net>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20231026152316.2729575-1-estl@gmx.net>
+References: <20231026152316.2729575-1-estl@gmx.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b16ed06f-66fd-457b-9610-a67ad07deb60@foss.st.com>
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:ZjH2xhKzqHPS+vXFJ+4XQ4H7/hsilX8+hpIYcpOOyrNBd2VVTAp
+ MIAdABQsqj9eI3Z2ADyQE1HeFdIIjm+NjEkIuKv4NSLvB+8floGvBVoi4G/Ss3BdIS1s+i8
+ J3e7NzN2fO2fSvhHzyI1MfoIg+pslsOhhHWsIT0VVgMP0zq3ElpBd464D98fu8ZEDFeE888
+ DLMJcj8cTGvdIp/LZ3GoA==
+UI-OutboundReport: notjunk:1;M01:P0:cVFpXz6rkM8=;b9OZjyEbm3a/50Q/VVJoLXW3AJK
+ UOVel7zUZX+gvp9oIwgSYIW80wXXRZO/0HxPKNxPdVtf3CPMi3v72dD+aFjMWFdMdGlwZg/ga
+ 2RHsqasDn0pc/iVTUbn+lKmWsNFy6Sfn4NhHMo8MvRFtejIyn29M3jmpRBQnonR9cA+usdG6e
+ Ty0pTYliCv+skZ4lXsRiTTdBgIXIBCJdoqaRSs4ejDqPFC8H/H/WNk+LakJRZZHwJVIJ0cK5T
+ w2kvj5Np0He7VWmdUU2Q43NW2W1U+oeCv2QAoH1yoGPVlApEv5r1Z/UJodLRFspeb1hg4mjPt
+ M5hqP8BZytDpqekUBzh5m+/vyxLwoc7g4u9xIfEZJ6zUW739xVAvCbSigay+41F4e6gy07XZi
+ ZmJujFIcevq8qYC+mQ86WhXrKIS2XilI7yN+sEo7Pv22e8XYh3+tdTX96bS5+F4k+BJkq+oxJ
+ wRaIArvaV5QiFliCheogerfYKTNcswTmoTW0yDRdFCzt6V/F+5av23pVD5IuQa70ip6qmiHg/
+ YnbA7rwoheaKZtv7+55wt2iog6ry0+NL4iKnEBuLTUlChIaTXnzXJvxkPqOJhi7LXL7tK3cmB
+ dF7v3aB6vJqQXIsxj09WlXZktsuSK5lSIv3+2yweD+l3MlAvLgNi7J0A5v+I+nFApmtE4s/6L
+ qfuhffL0PZHfSOYo6EghNLaLaU28Pauwx+Bg0bbUOe44em5IOizO2xGYdU3npN7QntyQRxHzJ
+ eXyEGCHVrDnShdR/KHgJHNIYYMhcdXbaG9lC1TTlIWE280nZeErm8/miyNbJOUwg6XElzPsGc
+ 9/mL17gV8JJPmm+2gvkmntMTXgog0tc5PW+yZ+1BRydb+bmyo8vYDn82nBSFooeol3Mlne9fG
+ qQLgeOrkKKPEaNBDc6zmQUWZbng7CYBgOypiOeo7L2IcRMWxfXIbG8RUWkZHw+1Fv17iF5Oiu
+ A2yoThlxsILXrUMdO7ESHjp5xXM=
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Mon, Oct 16, 2023 at 02:02:39PM +0200, Gatien CHEVALLIER wrote:
-> Hi Rob,
-> 
-> On 10/12/23 17:30, Rob Herring wrote:
-> > On Wed, Oct 11, 2023 at 10:49:58AM +0200, Gatien CHEVALLIER wrote:
-> > > Hi Rob,
-> > > 
-> > > On 10/10/23 20:42, Rob Herring wrote:
-> > > > On Tue, Oct 10, 2023 at 02:57:18PM +0200, Gatien Chevallier wrote:
-> > > > > ETZPC is a firewall controller. Put all peripherals filtered by the
-> > > > > ETZPC as ETZPC subnodes and reference ETZPC as an
-> > > > > access-control-provider.
-> > > > > 
-> > > > > For more information on which peripheral is securable or supports MCU
-> > > > > isolation, please read the STM32MP15 reference manual.
-> > > > > 
-> > > > > Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
-> > > > > ---
-> > > > > 
-> > > > > Changes in V6:
-> > > > >       	- Renamed access-controller to access-controllers
-> > > > >       	- Removal of access-control-provider property
-> > > > > 
-> > > > > Changes in V5:
-> > > > >       	- Renamed feature-domain* to access-control*
-> > > > > 
-> > > > >    arch/arm/boot/dts/st/stm32mp151.dtsi  | 2756 +++++++++++++------------
-> > > > >    arch/arm/boot/dts/st/stm32mp153.dtsi  |   52 +-
-> > > > >    arch/arm/boot/dts/st/stm32mp15xc.dtsi |   19 +-
-> > > > >    3 files changed, 1450 insertions(+), 1377 deletions(-)
-> > > > 
-> > > > This is not reviewable. Change the indentation and any non-functional
-> > > > change in one patch and then actual changes in another.
-> > > 
-> > > Ok, I'll make it easier to read.
-> > > 
-> > > > 
-> > > > This is also an ABI break. Though I'm not sure it's avoidable. All the
-> > > > devices below the ETZPC node won't probe on existing kernel. A
-> > > > simple-bus fallback for ETZPC node should solve that.
-> > > > 
-> > > 
-> > > I had one issue when trying with a simple-bus fallback that was the
-> > > drivers were probing even though the access rights aren't correct.
-> > > Hence the removal of the simple-bus compatible in the STM32MP25 patch.
-> > 
-> > But it worked before, right? So the difference is you have either added
-> > new devices which need setup or your firmware changed how devices are
-> > setup (or not setup). Certainly can't fix the latter case. You just need
-> > to be explicit about what you are doing to users.
-> > 
-> 
-> I should've specified it was during a test where I deliberately set
-> incorrect rights on a peripheral and enabled its node to see if the
-> firewall would allow the creation of the device.
-> 
-> > 
-> > > Even though a node is tagged with the OF_POPULATED flag when checking
-> > > the access rights with the firewall controller, it seems that when
-> > > simple-bus is probing, there's no check of this flag.
-> > 
-> > It shouldn't. Those flags are for creating the devices (or not) and
-> > removing only devices of_platform_populate() created.
-> > 
-> 
-> About the "simple-bus" being a fallback, I think I understood why I saw
-> that the devices were created.
-> 
-> All devices under a node whose compatible is "simple-bus" are created
-> in of_platform_device_create_pdata(), called by
-> of_platform_default_populate_init() at arch_initcall level. This
-> before the firewall-controller has a chance to populate it's bus.
-> 
-> Therefore, when I flag nodes when populating the firewall-bus, the
-> devices are already created. The "simple-bus" mechanism is not a
-> fallback here as it precedes the driver probe.
-> 
-> Is there a safe way to safely remove/disable a device created this way?
+From: Eberhard Stoll <eberhard.stoll@kontron.de>
 
-There's 2 ways to handle this. Either controlling creating the device or 
-controlling probing the device. The latter should just work with 
-fw_devlink dependency. The former probably needs some adjustment to 
-simple-pm-bus driver if you have 'simple-bus' compatible. You want it to 
-probe on old kernels and not probe on new kernels with your firewall 
-driver. Look at the commit history for simple-pm-bus. There was some 
-discussion on it as well.
+For spi devices the master clock output defines the sampling point
+for receive data input stream (rising or falling edge). The receive
+data stream from the device is delayed in relation to the master
+clock output.
 
-> Devices that are under the firewall controller (simple-bus) node
-> should not be probed before it as they're child of it.
+For some devices this delay is larger than one half clock period,
+which is normally the sampling point for receive data. In this case
+receive data is sampled too early and the device fails to operate.
+In consequence the spi clock has to be reduced to match the delay
+characteristics and this reduces performance and is therefore not
+recommended.
 
-fw_devlink should take care of parent/child dependencies without any 
-explicit handling of the access ctrl binding.
+Some spi controllers implement a 'clock to receive data delay'
+compensation which shifts the receive sampling point. So we need
+a property to set this value for each spi device.
 
-Rob
+Add a parameter 'rx_sample_delay_ns' to enable setting the clock
+to rx data delay for each spi device separately.
+
+The 'clock to receive data delay' value is often referenced as tCLQV
+in spi device data sheets.
+
+Signed-off-by: Eberhard Stoll <eberhard.stoll@kontron.de>
+Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+=2D--
+ include/linux/spi/spi.h | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 7f8b478fdeb3..14622d47f44f 100644
+=2D-- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -166,6 +166,7 @@ extern void spi_transfer_cs_change_delay_exec(struct s=
+pi_message *msg,
+  * @cs_inactive: delay to be introduced by the controller after CS is
+  *	deasserted. If @cs_change_delay is used from @spi_transfer, then the
+  *	two delays will be added up.
++ * @rx_sample_delay_ns: spi clk to spi rx data delay
+  * @pcpu_statistics: statistics for the spi_device
+  *
+  * A @spi_device is used to interchange data between an SPI slave
+@@ -219,6 +220,8 @@ struct spi_device {
+ 	struct spi_delay	cs_setup;
+ 	struct spi_delay	cs_hold;
+ 	struct spi_delay	cs_inactive;
++	/* Transfer characteristics */
++	u32			rx_sample_delay_ns; /* Clock to RX data delay */
+
+ 	/* The statistics */
+ 	struct spi_statistics __percpu	*pcpu_statistics;
+=2D-
+2.25.1
+

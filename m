@@ -2,30 +2,30 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3D5C5C4167D
-	for <linux-spi@archiver.kernel.org>; Sun, 29 Oct 2023 22:55:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 944F1C4332F
+	for <linux-spi@archiver.kernel.org>; Sun, 29 Oct 2023 23:03:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231213AbjJ2Wzu (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 29 Oct 2023 18:55:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49440 "EHLO
+        id S231481AbjJ2XDr (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 29 Oct 2023 19:03:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231202AbjJ2WzU (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 29 Oct 2023 18:55:20 -0400
+        with ESMTP id S230519AbjJ2XDp (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 29 Oct 2023 19:03:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58B57D3;
-        Sun, 29 Oct 2023 15:55:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF3F2C433CC;
-        Sun, 29 Oct 2023 22:55:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9439C8A41;
+        Sun, 29 Oct 2023 16:02:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EF1BC433C8;
+        Sun, 29 Oct 2023 23:01:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698620106;
-        bh=z+73B1DIL61o1DugN4c5cLyJNVGWOV+lpmfTf8JmyFI=;
+        s=k20201202; t=1698620462;
+        bh=nefNvxaZGIfqqhRnyykqauUv1ya0p4ckjFquWYv42cw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZEoKsDQeHl+fniX6Lyw4iJe3GUH+iMWEYMHZHWDpiVQPLhPM3YfULc3SLzNvXolvH
-         ZOiEnnMVULrRwJPibImUsKV0ApPyPU5xWyFS18tiqR1rXl6VpKAbtG4JNzxB2rDiqP
-         +oROlUWkNYdXNP2tUbK9bNvhmZzwtTkAAOmt7unyE8YDdn/BWIyWRmg1jx4sihegFi
-         jR0eVAs1XZoT0VGFENXh05/VRmefdO6okMi9WeAaq14i/quzRTy+MO8DH8tyvnbxYF
-         eDTR7xoJ+ir1KVbJwhpVNxFTb50gpkGt0K3IDkB5nqs18vUw4x9iFzjxekOzjijC+7
-         K7qUSPkTU2a+Q==
+        b=GrJFT+xVsIshi7TjK31/Sq4pBiyNKgEu/59ZKzgUTJzy5Ae5TYHnV7YiaXqPyfk6l
+         2pLf13ZtZH+cyHFJ3a1YiMXgPVhVhn9TBAFHxr3u+Rpyh9Z+aDhQqcpc+SBBbffesX
+         C1DzFxTdlQkWf23H5UM09YLZyFkNSObh2vopqcOiwQLUvycpV4peJS734Z1s0jSHP0
+         vQ6g12cbTGd1ex2ZONVZ5Th31KD5duc7cbG46H6FyaORlpXIcHrrQi+tk1ULLmcmvq
+         CirLrz0/oLn0hFi7DIgjSRXIMzimqO0OsnaqAbmSxrDxlz9SR1GMJNDNIR8N74px+y
+         Z3fyt7SgM6CNg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     "William A. Kennington III" <william@wkennington.com>,
@@ -33,16 +33,16 @@ Cc:     "William A. Kennington III" <william@wkennington.com>,
         Sasha Levin <sashal@kernel.org>, avifishman70@gmail.com,
         tmaimon77@gmail.com, tali.perry1@gmail.com,
         openbmc@lists.ozlabs.org, linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.5 16/52] spi: npcm-fiu: Fix UMA reads when dummy.nbytes == 0
-Date:   Sun, 29 Oct 2023 18:53:03 -0400
-Message-ID: <20231029225441.789781-16-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 02/13] spi: npcm-fiu: Fix UMA reads when dummy.nbytes == 0
+Date:   Sun, 29 Oct 2023 19:00:35 -0400
+Message-ID: <20231029230057.792930-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231029225441.789781-1-sashal@kernel.org>
-References: <20231029225441.789781-1-sashal@kernel.org>
+In-Reply-To: <20231029230057.792930-1-sashal@kernel.org>
+References: <20231029230057.792930-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.5.9
+X-stable-base: Linux 5.4.259
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
@@ -65,10 +65,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-npcm-fiu.c b/drivers/spi/spi-npcm-fiu.c
-index eb353561509a8..01a2b9de18b7f 100644
+index 1e770d6739050..cc4e29cd86dab 100644
 --- a/drivers/spi/spi-npcm-fiu.c
 +++ b/drivers/spi/spi-npcm-fiu.c
-@@ -353,8 +353,9 @@ static int npcm_fiu_uma_read(struct spi_mem *mem,
+@@ -334,8 +334,9 @@ static int npcm_fiu_uma_read(struct spi_mem *mem,
  		uma_cfg |= ilog2(op->cmd.buswidth);
  		uma_cfg |= ilog2(op->addr.buswidth)
  			<< NPCM_FIU_UMA_CFG_ADBPCK_SHIFT;

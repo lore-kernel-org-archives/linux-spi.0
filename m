@@ -2,194 +2,246 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0A762C4332F
-	for <linux-spi@archiver.kernel.org>; Fri,  3 Nov 2023 19:28:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 95263C4332F
+	for <linux-spi@archiver.kernel.org>; Sat,  4 Nov 2023 06:47:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234356AbjKCT2c (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 3 Nov 2023 15:28:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40812 "EHLO
+        id S231199AbjKDGr2 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sat, 4 Nov 2023 02:47:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234266AbjKCT2b (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 3 Nov 2023 15:28:31 -0400
-Received: from CAN01-YQB-obe.outbound.protection.outlook.com (mail-yqbcan01on2097.outbound.protection.outlook.com [40.107.116.97])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33BECD66
-        for <linux-spi@vger.kernel.org>; Fri,  3 Nov 2023 12:28:26 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=cGL+C+I4rjN5btSXTnBkEF7m0Vf6k4PNHJ0vJ81GlydxMleqSLjdTZZHQXH2d1JQeSUxVKXZbtaj8KA2R97+7rmDL7jz7oNtrSwN+y6JhnvZ07hhOxyENEED6rdwcm0eyOZnNEIfRaKwOgbdXKh3+daCBkEIITkINoHL6JcAACei38vEhjnvSkfT0ZDmFTJMZiCw/CMGMBeJ7y5yHybHrSm1sG4LwtJDYrQQtjn3W/dX94aA15tyLRzAPRcR7Mem5Ce5EhtngoOOWObC9jQl+YB/lI7o1VrDT25Ye1TWF7n4anoa0m+waQw314wbf5E2GwPvqpHl+uMEnptKnGbxxw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/m3/K/vR1i9XKbCjnXB4AEvAlffiPMa9apqSJee0j7U=;
- b=M+gD28hF8ZBPT493BD1yKVyqtp2MLvSXGRnG7kqDnQlfGFEffrNOosAOi8g5e3r9zTRCSfwY+YUHOhpTKPQr0NT3jMzIWGWnaTIe2g+dWPun91LshWe3S9yFPTstUC1fbsN8K02UkJVsu1VW81x1+qLxvMMvDlGhAU97h5Nn7rd+wEsGmFQ053iDebej54nTFZd/23t2yvNzpJpL7QcaUXA+MbSBEy1xgfIrJPYAjNGtHcM/IAqwSyieqMW306fiTCJNrjM9LH9rs8MldostmRCi4AlU80BbDZE9tZg2Q+99tedxTAJrAy8dzgaRs1VTtiUkO5I2xwQkDCk4JrZgmA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nautel.com; dmarc=pass action=none header.from=nautel.com;
- dkim=pass header.d=nautel.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=nautel.onmicrosoft.com; s=selector2-nautel-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/m3/K/vR1i9XKbCjnXB4AEvAlffiPMa9apqSJee0j7U=;
- b=Bvqzo5QJIFGW5EjiJkmpPtxAb24P+UHb4mgY0KhtCosEFdaGnDJHelTiZo2G7FxAlL5oXkjyoPV0NdYHgysGHmKRFuoZVc/Lx/PEf+yLddXg3xttCmmjktF6DaqNALN0ru5IY/olkSbQlNlB3mgvPW1yyCWuBMvheDs3TZygEcA=
-Received: from YT3PR01MB6339.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:67::22)
- by YQBPR01MB10705.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:c01:74::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.21; Fri, 3 Nov
- 2023 19:28:23 +0000
-Received: from YT3PR01MB6339.CANPRD01.PROD.OUTLOOK.COM
- ([fe80::3e8c:ddba:db97:ab5c]) by YT3PR01MB6339.CANPRD01.PROD.OUTLOOK.COM
- ([fe80::3e8c:ddba:db97:ab5c%7]) with mapi id 15.20.6954.024; Fri, 3 Nov 2023
- 19:28:23 +0000
-From:   Luke Morrison <lmorrison@nautel.com>
-To:     Luke Morrison <lmorrison@nautel.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "vz@mleia.com" <vz@mleia.com>
-Subject: RE: spi-pl022 on lpc32xx
-Thread-Topic: spi-pl022 on lpc32xx
-Thread-Index: AQJI1IeDVlIK0r/KprmXy6tPUPEc/K+IDh4QgANZ4tA=
-Date:   Fri, 3 Nov 2023 19:28:22 +0000
-Message-ID: <YT3PR01MB6339DFC8B6304D22DFD276F1C7A5A@YT3PR01MB6339.CANPRD01.PROD.OUTLOOK.COM>
-References: <e060912b-0a7d-9fd5-edde-c27a8da55569 () mleia ! com>
- <YT3PR01MB6339A54903A0DFDD3D1C1598C7A7A@YT3PR01MB6339.CANPRD01.PROD.OUTLOOK.COM>
-In-Reply-To: <YT3PR01MB6339A54903A0DFDD3D1C1598C7A7A@YT3PR01MB6339.CANPRD01.PROD.OUTLOOK.COM>
-Accept-Language: en-CA, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nautel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: YT3PR01MB6339:EE_|YQBPR01MB10705:EE_
-x-ms-office365-filtering-correlation-id: 4e138db4-57e6-481d-d92d-08dbdca30b50
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: vIbGn8/IHK0Us1hMDgqgBWhEPM0JTr25/NdxLSHZGxd/SgzL04lYbI8FrwSYWNc44nfvvhvkmHZ/1P1I9Bc+XYMKuMgdiY/z8UPLplW0cwMdhs/wjVKUbLO+hei2C5zrNlJJdSukLTvQFHSRzHN+82mNdKYvlI7jPC8PWpCP549JPRkGAjY/TBEeSBpW36iqXHxrwHB/d9ozI7GaysjVrHJuYc4V0z59wkq2ZsO75hejbqguui8JN5iAgffEitAnb/anyF5Z/orMMZB7cHUan6Tphp27OsL/G3b06ocPuzZZF15xJDMUQXMEPzQvcdsGgqrY2YMblhVyDStH2gM/oRC0pSBlVwkDWPedjZ8Vc9Mqxw6yghxiCv5mRVRB2uA30YKijkGeMQOoxtJikrpfM6nxvmK9LjjgxFkWyZKzg5RdaWmV5egmqEWo9/pMV+Y6dpCNVXDX+pbjztfyKb9PBqZCca1mBc/MselVPTbWapSt5EgnLKOsvKUuRQWDNUg/MHOBvLVNirvJA/NEVLLho5JMlSXedQmh0uIwFzGpbRuoA+cjyXusJLtsH5NbsPJJ+FjG/Ndon7TQnx88oEO3ZeXQWwT8LLPHtbxxE11hj5Kkp5E48ra9Uzc40lpEN61i
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YT3PR01MB6339.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(366004)(346002)(39850400004)(136003)(376002)(396003)(230922051799003)(451199024)(1800799009)(64100799003)(186009)(86362001)(2906002)(26005)(7696005)(6506007)(53546011)(9686003)(33656002)(71200400001)(38070700009)(38100700002)(83380400001)(122000001)(478600001)(41300700001)(52536014)(316002)(64756008)(110136005)(66556008)(76116006)(66476007)(66946007)(8676002)(8936002)(55016003)(66446008)(5660300002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?xCgukPttfqKsAtLRJKiGN7sLr2KqD2SLoK5uVeC0l9aWcB9ZQsBwdrgdThPs?=
- =?us-ascii?Q?Usriczp9EJPQ8Y6PLF68LN955IXikkLxRHHmjAvthTmGN0lmm7PYg8ThZPGZ?=
- =?us-ascii?Q?RKO+hjyOphTv/cI32ibDh63PCv/Tu3D0OGSyFdLxWdDfwccLsOpr7DsFUrae?=
- =?us-ascii?Q?UmntpFlYDLM2XL4mRnj3k8TM9iQM1RMGbF24MYKyQwPfaN4Rl4RFjSm5AmjO?=
- =?us-ascii?Q?oGvqnNskAMdIcfxQydubpdM0ck0VdnRYIKB5jOpZNj/AukA9Hy27zNwBbPAf?=
- =?us-ascii?Q?Sjg9s0Te8fbkM6klqq0y+D4dJH8OEx4Y7t5luCp6NH3nMcGBVOMZUJdssYgy?=
- =?us-ascii?Q?2gws6IHOyfIPOHa4lJwvYXUfUta22eQaa6pbQfg8imMoMbcRTU0tnUKkax9Z?=
- =?us-ascii?Q?prghAdlns2sZUIkyr3jHMdVgxxYfLIZ89Ylf4GJcII4jf+hWYgI5MAw9gvAH?=
- =?us-ascii?Q?kuAwphmp1lny2dpR+CcRItZ6ir1UOu5iOOFZR4TnOsw+P6tcq3wcMbYPNA6o?=
- =?us-ascii?Q?5LFzm/Ypq6xBNLy0Vk4/GNwv95xKvkJ/fjybiKTXmmhwN4zFcSTeiL14CL0r?=
- =?us-ascii?Q?BUnC3WBSb9pdHsPm+ACsBoVN45Q9+Lbvl4MsvI8KKYD0f12tjzmzXvieGoR2?=
- =?us-ascii?Q?ZbSOsKdcjQZ8+DailKXFexRkOc2ljzqwp758zx0B/Tbz3xTVBLAlpLO/LqXX?=
- =?us-ascii?Q?rfw51X7yMKSGuIsi7p/zXszQQKh1sgaUgfq+EEbTgyY2HJGS5sK/NZ+08Bw3?=
- =?us-ascii?Q?zvVbFQCHlBMQWHCtqvXOuEy8WbogAIW7eq1YxWMvvcgptToxKYP395DINvvf?=
- =?us-ascii?Q?li3v3o9ShUW3tpZ59WQVAPBwfKy/FkfxCZIF88OB+jxkByXMZLJmM8Wd6aa1?=
- =?us-ascii?Q?OAFOYXl7b7w0VhtAyOwNAQtAbSWbUneiKXwibCW78QI1OYhztGEAOFwZ4GNj?=
- =?us-ascii?Q?ujcZ3ygYqB1/R616lzjeRdjI1L9FSAp1z5Gitd1KRwbQHedPg7sq/hTekH9K?=
- =?us-ascii?Q?Fe0S/R8W2LU4lJND1RaAnI7dH5afNAyS01TYfJntX8gUNdNvD1+wwV/NKK0b?=
- =?us-ascii?Q?q0wGs6bSDVT844yF1xmNyq2CCrcn9rLz7SD1JBZ9ZxNRrYHtzJi2nB8ntXLs?=
- =?us-ascii?Q?SeqHMr9rGmKgS9TwBnOjAWxD9ASkbFQfXzOvO1CQ3ymItf0iis/X5jhapfF3?=
- =?us-ascii?Q?wv8aMYVeEEXSmit0Hpzbn8X9ije1wq9iaAC76d4LDIKwp/kCcXcSblt6pBzS?=
- =?us-ascii?Q?zt2acYaBSAZ9THdlKSz3Tvh3N7ZZ7LyuHzLZa+RZ5/yTHwJAp0PZ2zUievNO?=
- =?us-ascii?Q?X73CDFN+qdVtFqCkpUei4bOQfS06ODD269AAmNb09UvqJG5Ds9K9qZWE9Avw?=
- =?us-ascii?Q?9FmyOlL53C6TtbJ/OcsBJexIbj+l7BxzpULVVwPwn57oI4yBeAarqkMrKOxF?=
- =?us-ascii?Q?1ltBtkjzrO1/AR2J6iW1/yaEKl96d5vrzk9c6691KgMwja9XHIl4b2tcvxRi?=
- =?us-ascii?Q?+LmKaPIu18tXSKPrnZ2ZrLSpE9wmdKimIEJWy1m4Ese6aAD/wqZmPJdxLmcw?=
- =?us-ascii?Q?6GwujWHnKiZKjpYha+iaN8BzW9EUqa+m9p3BMOgx?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S229509AbjKDGr1 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sat, 4 Nov 2023 02:47:27 -0400
+Received: from dggsgout11.his.huawei.com (unknown [45.249.212.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D6D51B9;
+        Fri,  3 Nov 2023 23:47:23 -0700 (PDT)
+Received: from mail.maildlp.com (unknown [172.19.163.216])
+        by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4SMp7m5zRbz4f3lVR;
+        Sat,  4 Nov 2023 14:47:16 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+        by mail.maildlp.com (Postfix) with ESMTP id 764561A016F;
+        Sat,  4 Nov 2023 14:47:20 +0800 (CST)
+Received: from huaweicloud.com (unknown [10.175.101.107])
+        by APP4 (Coremail) with SMTP id gCh0CgDnfd3z6EVlglQtEw--.50758S6;
+        Sat, 04 Nov 2023 14:47:20 +0800 (CST)
+From:   Zhang Xiaoxu <zhangxiaoxu@huaweicloud.com>
+To:     zhangxiaoxu5@huawei.com, weiyongjun1@huawei.com,
+        broonie@kernel.org, rostedt@goodmis.org, mingo@redhat.com,
+        frowand.list@gmail.com, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v3 -next 2/5] spi: mockup: Add writeable tracepoint for spi transfer
+Date:   Sat,  4 Nov 2023 14:46:47 +0800
+Message-Id: <20231104064650.972687-3-zhangxiaoxu@huaweicloud.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231104064650.972687-1-zhangxiaoxu@huaweicloud.com>
+References: <20231104064650.972687-1-zhangxiaoxu@huaweicloud.com>
 MIME-Version: 1.0
-X-OriginatorOrg: nautel.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: YT3PR01MB6339.CANPRD01.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4e138db4-57e6-481d-d92d-08dbdca30b50
-X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Nov 2023 19:28:23.0090
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 656f830c-eb88-49fe-90f1-433363ec7ccf
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: myBAsa++GQHR06vALxkl4NfDEc6qIqs6UzUjoaMEKJEIbpTnvnnnfU0lWA56wh1W6Qji7qD2CN3MFAa7E8Qitw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: YQBPR01MB10705
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: gCh0CgDnfd3z6EVlglQtEw--.50758S6
+X-Coremail-Antispam: 1UD129KBjvJXoWxWryrZF4rZF4rZF4UKr1UAwb_yoW7Jw1UpF
+        yUCF45KrW8Jw429F4furW8Ary3Aa1kurW7K3sI9wnIyr1UtF1kXa1qgry5tFy8JrsrKFyU
+        uFZ2kryjkr45Zw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUvGb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
+        6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUXw
+        A2048vs2IY020Ec7CjxVAFwI0_Gr0_Xr1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
+        w2x7M28EF7xvwVC0I7IYx2IY67AKxVWDJVCq3wA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
+        W8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+        6rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMc
+        Ij6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_
+        Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr
+        0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY
+        17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcV
+        C0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY
+        6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa
+        73UjIFyTuYvjxU2-B_UUUUU
+X-CM-SenderInfo: x2kd0wp0ld053x6k3tpzhluzxrxghudrp/
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On 11/1/23, Luke Morrison wrote:
-> Hello,
->=20
-> I'm with a team that's working on picking up this work where Trevor had t=
-o
-> leave it behind. We've worked around the issue up until now with a hack
-> using a userspace program that talks to the SPI peripheral registers thro=
-ugh
-> /dev/mem. This won't be viable over the longer term, and we're revisiting=
- the
-> task of getting the pl022 driver up and running.
->=20
-> On 3/30/22 10:56, Vladimir Zapolskiy wrote:
-> > years ago you've asked the same question, and the answer is that there
-> > is no pinctrl IP or controls on the SoC. This sounds weird, but that's =
-how it
-> goes.
-> >
-> > There are just a few multiplexed pins, and a pin function selection is
-> > done on basis of powering up a corresponding particular IP while
-> > keeping conflicting ones disabled. Such implicit pin multiplexing is
-> > inconvenient, but working, fortunately the SoC is simple to have such a
-> model supported.
-> >
-> > The newer LPC18xx/LPC43xx has a pin control IP, and it makes
-> > everything much more transparent and comprehensible, but it's not
-> > transferable to LPC32xx.
-> >
-> I am really curious about that statement. The LPC32xx reference manual do=
-es
-> document a number of registers related to selecting which peripheral gets=
- to
-> control which shared pins. It's described in chapter 33. Specifically, th=
-e
-> P_MUX_*, P0_MUX_*, P1_MUX_*, P2_MUX_*, and P3_MUX_* registers.
->=20
-> I note that these registers are defined in the kernel, but it doesn't app=
-ear
-> that any drivers are written to actually make use of them. I think this m=
-ight
-> be part of the problem that Trevor was hitting when he was working on thi=
-s.
-> Since neither the kernel nor U-Boot ever attempt to set the bits that wou=
-ld
-> need to be set in order to give the SCU control of these pins, and we kno=
-w
-> that our stage1 bootloader was previously also leaving these bits cleared=
-, it's
-> reasonable to conclude that the SCU wouldn't be able to access them.
->=20
-> We are working on a change that directly set the P*_MUX_* registers to
-> appropriate values for use by the SCU, but I think the more appropriate
-> approach would be to figure out a way to map these registers into a prope=
-r
-> pinmux driver.
->=20
-> > Best wishes,
-> > Vladimir
->=20
-> Regards,
-> Luke
+From: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
 
-I have a follow-up. We have experimentally confirmed that it is not
-enough to shut off the SPI1 peripheral and power on the SSC0
-peripheral; you also need to reconfigure the P*_MUX_* registers to
-take away control of the clock and data pins from the SPI and give it
-to the SSC. Trevor was on the verge of discovering that last year when
-he reached out here, but other obligations stopped him from being
-able to finish that work.
+Add writeable tracepoint for transfer_one_message(), then bpf program
+can be used to control read and write data from spi host, as mockup
+chip's expectation.
 
-In general, it appears that some LPC32xx peripherals will unconditionally
-take over control of pins simply by turning them on. Examples include
-the LCD controller, motor controller, and SD card controller. But equally,
-other peripherals which share pins will defer to pinmux registers instead.
-I can see how that could add complication to a properly implemented
-pinctrl driver.
+For example:
 
-Maybe that is a good enough reason to stick with configuring the pins
-statically the way we need within the stage1 bootloader and let both
-U-Boot and Linux pretend that none of these complexities exist?
+  #include "vmlinux.h"
+  #include <bpf/bpf_helpers.h>
+  #include <bpf/bpf_tracing.h>
 
-Regards,
-Luke
+  SEC("raw_tp.w/spi_transfer_writeable")
+  int BPF_PROG(spi_transfer_writeable_test, struct spi_msg_ctx *msg,
+               u8 chip, unsigned int len)
+  {
+      if (msg->tx_nbits)
+          msg->data[0] = 0x20;
+
+      return 0;
+  }
+
+  char LICENSE[] SEC("license") = "GPL";
+
+This will be useful for writing spi device mockup backend.
+
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+Signed-off-by: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
+---
+ drivers/spi/Kconfig               |  1 +
+ drivers/spi/spi-mockup.c          | 52 +++++++++++++++++++++++++++++--
+ include/linux/spi/spi-mockup.h    | 17 ++++++++++
+ include/trace/events/spi_mockup.h | 31 ++++++++++++++++++
+ 4 files changed, 99 insertions(+), 2 deletions(-)
+ create mode 100644 include/linux/spi/spi-mockup.h
+ create mode 100644 include/trace/events/spi_mockup.h
+
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 9169081cfecb..871e3824b8eb 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -1221,6 +1221,7 @@ config SPI_TLE62X0
+ config SPI_MOCKUP
+ 	tristate "SPI controller Testing Driver"
+ 	depends on OF
++	select BPF_EVENTS
+ 	help
+ 	  This enables SPI controller testing driver, which provides a way to
+ 	  test SPI subsystem.
+diff --git a/drivers/spi/spi-mockup.c b/drivers/spi/spi-mockup.c
+index 683a0fc43f0d..fcaaa61bdb38 100644
+--- a/drivers/spi/spi-mockup.c
++++ b/drivers/spi/spi-mockup.c
+@@ -13,6 +13,9 @@
+ #include <linux/platform_device.h>
+ #include <linux/spi/spi.h>
+ 
++#define CREATE_TRACE_POINTS
++#include <trace/events/spi_mockup.h>
++
+ #define MOCKUP_CHIPSELECT_MAX		8
+ 
+ struct mockup_spi {
+@@ -149,13 +152,58 @@ static struct attribute *spi_mockup_attrs[] = {
+ };
+ ATTRIBUTE_GROUPS(spi_mockup);
+ 
++static int spi_mockup_transfer_writeable(struct spi_message *msg)
++{
++	struct spi_msg_ctx *ctx;
++	struct spi_transfer *t;
++	int ret = 0;
++
++	ctx = kmalloc(sizeof(*ctx), GFP_ATOMIC);
++	if (!ctx)
++		return -ENOMEM;
++
++	list_for_each_entry(t, &msg->transfers, transfer_list) {
++		if (t->len > SPI_BUFSIZ_MAX)
++			return -E2BIG;
++
++		memset(ctx, 0, sizeof(*ctx));
++		ctx->cs_off = t->cs_off;
++		ctx->cs_change = t->cs_change;
++		ctx->tx_nbits = t->tx_nbits;
++		ctx->rx_nbits = t->rx_nbits;
++
++		if (t->tx_nbits)
++			memcpy(ctx->data, t->tx_buf, t->len);
++
++		trace_spi_transfer_writeable(ctx, msg->spi->chip_select, t->len);
++
++		if (ctx->ret) {
++			ret = ctx->ret;
++			break;
++		}
++
++		if (t->rx_nbits)
++			memcpy(t->rx_buf, ctx->data, t->len);
++		msg->actual_length += t->len;
++	}
++
++	kfree(ctx);
++
++	return ret;
++}
++
+ static int spi_mockup_transfer(struct spi_controller *ctrl,
+ 			       struct spi_message *msg)
+ {
+-	msg->status = 0;
++	int ret = 0;
++
++	if (trace_spi_transfer_writeable_enabled())
++		ret = spi_mockup_transfer_writeable(msg);
++
++	msg->status = ret;
+ 	spi_finalize_current_message(ctrl);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static int spi_mockup_probe(struct platform_device *pdev)
+diff --git a/include/linux/spi/spi-mockup.h b/include/linux/spi/spi-mockup.h
+new file mode 100644
+index 000000000000..224894b416fb
+--- /dev/null
++++ b/include/linux/spi/spi-mockup.h
+@@ -0,0 +1,17 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++
++#ifndef __LINUX_SPI_MOCKUP_H
++#define __LINUX_SPI_MOCKUP_H
++
++#define SPI_BUFSIZ_MAX		0x1000
++
++struct spi_msg_ctx {
++	int ret;
++	unsigned cs_off:1;
++	unsigned cs_change:1;
++	unsigned tx_nbits:3;
++	unsigned rx_nbits:3;
++	__u8 data[SPI_BUFSIZ_MAX];
++};
++
++#endif
+diff --git a/include/trace/events/spi_mockup.h b/include/trace/events/spi_mockup.h
+new file mode 100644
+index 000000000000..46debf26a5e3
+--- /dev/null
++++ b/include/trace/events/spi_mockup.h
+@@ -0,0 +1,31 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * SPI mockup controller transfer writeable tracepoint
++ *
++ * Copyright(c) 2022 Huawei Technologies Co., Ltd.
++ */
++
++#undef TRACE_SYSTEM
++#define TRACE_SYSTEM spi_mockup
++
++#if !defined(_TRACE_SPI_MOCKUP_H) || defined(TRACE_HEADER_MULTI_READ)
++#define _TRACE_SPI_MOCKUP_H
++
++#include <linux/tracepoint.h>
++#include <linux/spi/spi-mockup.h>
++
++#ifndef DECLARE_TRACE_WRITABLE
++#define DECLARE_TRACE_WRITABLE(call, proto, args, size) \
++	DECLARE_TRACE(call, PARAMS(proto), PARAMS(args))
++#endif
++
++DECLARE_TRACE_WRITABLE(spi_transfer_writeable,
++	TP_PROTO(struct spi_msg_ctx *msg, u8 chip_select, unsigned int len),
++	TP_ARGS(msg, chip_select, len),
++	sizeof(struct spi_msg_ctx)
++);
++
++#endif /* _TRACE_SPI_MOCKUP_H */
++
++/* This part must be outside protection */
++#include <trace/define_trace.h>
+-- 
+2.34.1
+

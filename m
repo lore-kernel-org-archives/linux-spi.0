@@ -2,133 +2,124 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 22543C4332F
-	for <linux-spi@archiver.kernel.org>; Sun,  5 Nov 2023 17:26:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3C12FC4332F
+	for <linux-spi@archiver.kernel.org>; Mon,  6 Nov 2023 11:59:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229445AbjKER05 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 5 Nov 2023 12:26:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51384 "EHLO
+        id S229689AbjKFL7H (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 6 Nov 2023 06:59:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229524AbjKER04 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 5 Nov 2023 12:26:56 -0500
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7D7FCC
-        for <linux-spi@vger.kernel.org>; Sun,  5 Nov 2023 09:26:53 -0800 (PST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1qzgtg-0007lh-DC; Sun, 05 Nov 2023 18:26:52 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1qzgtf-006q9E-N8; Sun, 05 Nov 2023 18:26:51 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1qzgtf-00DE7g-Bg; Sun, 05 Nov 2023 18:26:51 +0100
-From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     linux-spi@vger.kernel.org, kernel@pengutronix.de,
-        Jean-Jacques Hiblot <jjhiblot@ti.com>
-Subject: [PATCH] spi: spi-ti-qspi: Convert to platform remove callback returning void
-Date:   Sun,  5 Nov 2023 18:26:50 +0100
-Message-ID: <20231105172649.3738556-2-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.42.0
+        with ESMTP id S231421AbjKFL7G (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 6 Nov 2023 06:59:06 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0752CFA;
+        Mon,  6 Nov 2023 03:59:04 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C839C433C7;
+        Mon,  6 Nov 2023 11:59:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1699271943;
+        bh=0/iPB7BGJOOJheSQGLmXtcW0iKZV6qsZ+l3XvUdsfXo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=FlmsGjPON5hG1J3Oy5ruB9nhNCtxbie/6vZipquhRO95/NGJzGLcgdvIDvfSkaWOW
+         N87TIaNrW1H22B+ngSZhdz4hrIYWRfq0Fn007YEyAa3y0TVLukix/kbH5YFqRdZGNB
+         gKhYCz+KCd1OT57XsgTuvhYfG8oyS7EmHT0yEM+BwshCqnHw5+G10YPzdVFoAnEauS
+         aQhXsae4FL7MGT95WgC1uXI8xt6w1XpUO/eyWepbtIF8uKZOM8M6I6NNgn2KC4n0x2
+         bfOI9hF6FN8W+cJDtlnI96QKDy3KNj+Pm0FaId0NB/SLqHvJH4DP22tGHk6jVHVTVr
+         67SaE07Zlsb4w==
+Date:   Mon, 6 Nov 2023 11:59:00 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Zhang Xiaoxu <zhangxiaoxu@huaweicloud.com>
+Cc:     zhangxiaoxu5@huawei.com, weiyongjun1@huawei.com,
+        rostedt@goodmis.org, mingo@redhat.com, frowand.list@gmail.com,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 -next 1/5] spi: mockup: Add SPI controller testing
+ driver
+Message-ID: <ZUjVBKuviXwM0aiR@finisterre.sirena.org.uk>
+References: <20231104064650.972687-1-zhangxiaoxu@huaweicloud.com>
+ <20231104064650.972687-2-zhangxiaoxu@huaweicloud.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2833; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=RfSLjq6v+zcRFVJ1M0dnkcVyE/SNatHmpAUAqvuvrPg=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlR9BZGDFZJ/o8SvBDYxeB05V5n6pwAzrRb1Ttc 4cqexfpTTuJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZUfQWQAKCRCPgPtYfRL+ TjhlB/oDYuA2nrZBRNQSvn9jzcuXTTgw2fkZg3Nd+M2UCGn9y7d7DB8fvBBviWpwITZxiprfDCm t+RqxueMj17iYU8889lDqYMiLYPSCSHaytrsBgw+emJhTW7PVNAt/cX/kuY9FTNGCfB9czIfnJv DILI7r+pka0tZPgHF+t9noJCPxpvrLoac9wQEizwSFmNSbMhz9/H7Vf8ImOGIT/gjqoMLmYe900 sBcz8WBHDFbcz/NpUl65ZBhXQRBfU3jD+Uatad+HWsE9oV7ZWg2rs9+iwWX7T1OBoheUgr5m6zr e+CV8crlIBa0xbC+dOB1gNHRMpI92+66q/bx5s3s/tNW+4d6
-X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-spi@vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="uGI4JZ0hFxEj7pPT"
+Content-Disposition: inline
+In-Reply-To: <20231104064650.972687-2-zhangxiaoxu@huaweicloud.com>
+X-Cookie: Save energy:  Drive a smaller shell.
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is ignored (apart
-from emitting a warning) and this typically results in resource leaks.
 
-To improve here there is a quest to make the remove callback return
-void. In the first step of this quest all drivers are converted to
-.remove_new(), which already returns void. Eventually after all drivers
-are converted, .remove_new() will be renamed to .remove().
+--uGI4JZ0hFxEj7pPT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Add an error message to the error path that returned an error before to
-replace the core's error message with more information. Apart from the
-different wording of the error message, this patch doesn't introduce a
-semantic difference.
+On Sat, Nov 04, 2023 at 02:46:46PM +0800, Zhang Xiaoxu wrote:
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
-Hello,
+> This is accomplished by executing the following command:
+>=20
+> $ echo adcxx1s 0 > /sys/class/spi_master/spi0/new_device
 
-I'm unsure if calling spi_master_suspend() in .remove() is right, all
-other drivers only call it in their suspend callback. Also note that
-after spi_master_suspend() failed ti_qspi_dma_cleanup() isn't called
-which is probably another problem resulting in resource leaks or even
-possible use-after-free bugs. The fix for both is maybe to just drop
-calling spi_master_suspend()?!
+That's not a valid sysfs format, sysfs requires one value per file.
+configfs might be a better fit?
 
-This call was introduced in commit 3ac066e2227c ("spi: spi-ti-qspi:
-Suspend the queue before removing the device"). The commit description
-suggests a bug fix that sounds like something the spi core should do
-right without each individual driver caring.
+> +config SPI_MOCKUP
+> +	tristate "SPI controller Testing Driver"
+> +	depends on OF
 
-Best regards
-Uwe
+Why would this depend on DT?  Given that any test SPI controller is a
+virtual device it should never appear in DT and we probably shouldn't
+require providing DT for the created devices even if we implement
+support for that, only some devices might care.
+`
+> +++ b/drivers/spi/spi-mockup.c
+> @@ -0,0 +1,211 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * SPI controller Testing Driver
+> + *
+> + * Copyright(c) 2022 Huawei Technologies Co., Ltd.
+> + */
 
- drivers/spi/spi-ti-qspi.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+Please keep the entire comment a C++ one so things look more
+intentional.
 
-diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
-index 4c81516b67db..fdc092a05284 100644
---- a/drivers/spi/spi-ti-qspi.c
-+++ b/drivers/spi/spi-ti-qspi.c
-@@ -907,21 +907,22 @@ static int ti_qspi_probe(struct platform_device *pdev)
- 	return ret;
- }
- 
--static int ti_qspi_remove(struct platform_device *pdev)
-+static void ti_qspi_remove(struct platform_device *pdev)
- {
- 	struct ti_qspi *qspi = platform_get_drvdata(pdev);
- 	int rc;
- 
- 	rc = spi_master_suspend(qspi->master);
--	if (rc)
--		return rc;
-+	if (rc) {
-+		dev_alert(&pdev->dev, "spi_master_suspend() failed (%pe)\n",
-+			  ERR_PTR(rc));
-+		return;
-+	}
- 
- 	pm_runtime_put_sync(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- 
- 	ti_qspi_dma_cleanup(qspi);
--
--	return 0;
- }
- 
- static const struct dev_pm_ops ti_qspi_pm_ops = {
-@@ -930,7 +931,7 @@ static const struct dev_pm_ops ti_qspi_pm_ops = {
- 
- static struct platform_driver ti_qspi_driver = {
- 	.probe	= ti_qspi_probe,
--	.remove = ti_qspi_remove,
-+	.remove_new = ti_qspi_remove,
- 	.driver = {
- 		.name	= "ti-qspi",
- 		.pm =   &ti_qspi_pm_ops,
+> +#define MOCKUP_CHIPSELECT_MAX		8
 
-base-commit: e27090b1413ff236ca1aec26d6b022149115de2c
--- 
-2.42.0
+Why would we have a hard coded limit here?
 
+> +	blank =3D strchr(buf, ' ');
+> +	if (!blank) {
+> +		dev_err(dev, "%s: Extra parameters\n", "new_device");
+> +		return -EINVAL;
+> +	}
+
+There is no point in using %s to render a constant string.
+
+> +static const struct of_device_id spi_mockup_match[] =3D {
+> +	{ .compatible =3D "spi-mockup", },
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(of, spi_mockup_match);
+
+If we were going to instantiate this via DT we'd need a binding, but as
+I indicated above since this is purely virtual and not even something
+like virtual hardware provided by a VMM but rather just something kernel
+internal we should probably not be using DT at all.  Providing a device
+facing DT interface might be useful, but that's a second stage thing.
+
+--uGI4JZ0hFxEj7pPT
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmVI1QEACgkQJNaLcl1U
+h9BcjQf+OFqcQORTZmVFQ4Z8rKLWLd8BPf4N5fLNu8+OH3m2IcHHZPMwwSRjzz6b
+93S13ZQYssTnOVk8cuCDsPVUVkHpjEElm/uTCkw8GLfaRX/dabrjA7ztGS06/0Ez
+QsNHNDJ9LIL+qxnZrPmj8Wbp5j8hRIfnHF2uzWHII71kpn8wMguyvqSZ6x1PtbXG
+g6gJGCT3XYDsilQ9wyJphSo3hlPwpjzrexa5nswYzu2T27O6QjDiBp1qc/FqhNbV
+Lg0EjOYJvcjJGZ/GodvKmNnTiT84kvfUAo/xU34s1LLsTKboQ/IAAFYaAyYRz6Wu
+ntj8Xbwan2uotuQFjUkrEny59cP0wA==
+=I7Zx
+-----END PGP SIGNATURE-----
+
+--uGI4JZ0hFxEj7pPT--

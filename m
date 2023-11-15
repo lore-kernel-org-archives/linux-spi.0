@@ -2,197 +2,168 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CF1B3C48BD7
-	for <linux-spi@archiver.kernel.org>; Wed, 15 Nov 2023 14:21:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 27E4FC2BB3F
+	for <linux-spi@archiver.kernel.org>; Wed, 15 Nov 2023 15:38:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344204AbjKOOVH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 15 Nov 2023 09:21:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45168 "EHLO
+        id S230229AbjKOPie (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 15 Nov 2023 10:38:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344217AbjKOOVG (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 15 Nov 2023 09:21:06 -0500
-Received: from mail.pcs.gmbh (mail.pcs.gmbh [89.27.162.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9003D121
-        for <linux-spi@vger.kernel.org>; Wed, 15 Nov 2023 06:20:59 -0800 (PST)
-Received: from mail.csna.de (mail.csna.de [89.27.162.50])
-        by mail.pcs.gmbh with ESMTPA
-        ; Wed, 15 Nov 2023 15:00:12 +0100
-Received: from EXCHANGE2019.pcs.ditec.de (mail.pcs.com [89.27.162.5])
-        by mail.csna.de with ESMTPSA
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256)
-        ; Wed, 15 Nov 2023 15:00:11 +0100
-Received: from EXCHANGE2019.pcs.ditec.de (192.168.8.214) by
- EXCHANGE2019.pcs.ditec.de (192.168.8.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.42; Wed, 15 Nov 2023 15:00:12 +0100
-Received: from lxtpfaff.pcs.ditec.de (192.168.9.96) by
- EXCHANGE2019.pcs.ditec.de (192.168.8.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42
- via Frontend Transport; Wed, 15 Nov 2023 15:00:12 +0100
-Date:   Wed, 15 Nov 2023 15:00:11 +0100
-From:   Thomas Pfaff <tpfaff@pcs.com>
-To:     <tudor.ambarus@microchip.com>
-CC:     <broonie@kernel.org>, <nicolas.ferre@microchip.com>,
-        <alexandre.belloni@bootlin.com>, <claudiu.beznea@microchip.com>,
-        <linux-spi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH RFC 2/3 stable-6.1] spi: spi-atmel: use dma buffers for pdc
- transfer
-Message-ID: <b4b5e37d-9691-ef5e-3e55-84e02e9bfd1f@pcs.com>
+        with ESMTP id S229646AbjKOPie (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 15 Nov 2023 10:38:34 -0500
+Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBB871A4
+        for <linux-spi@vger.kernel.org>; Wed, 15 Nov 2023 07:38:29 -0800 (PST)
+Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-5a8ee23f043so78916767b3.3
+        for <linux-spi@vger.kernel.org>; Wed, 15 Nov 2023 07:38:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1700062709; x=1700667509; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=DrqmeQ1b3jWvPwiKhEDKttHMvlM+GcVpLzujKePYQsk=;
+        b=CuxKxtnH4kzYw+M0xHyaxgP5+GGYXJ70eWVH8/FRkTEnTsxVm22mn6BbJP9uUi03lY
+         0tAwykSybKQkXS90Wv/4gw0D4VBWZ/e9Ka9Wc9cG9q7jF7d/q79P4Y2gZ2nl/m2dZpbi
+         VK+ROHI9Za+s/gCknoD7RxhFNCR957NT1tlARx9LTG8Y9ROPFo0NXLggv++9mTpPg/1i
+         jlkWFnlgKKWCFFjjGmxu6z79kJpvOkEWm2Rc31aB5VyCe0E6M+ThHd+muRI5k+j4ThYG
+         zOd7zCSNhrHCMIielG9tp4KAMxKWW3z3z7aO+t6wPig1gOFM4cZsVrccaTidEy3jpI42
+         LbnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700062709; x=1700667509;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DrqmeQ1b3jWvPwiKhEDKttHMvlM+GcVpLzujKePYQsk=;
+        b=MH9by0YAZ16+a81yTY145EU4Xp59yQz9Wdkb/s3g0wrNI9wv5ce3YCPjPZgo/tcIsP
+         oCrdPY6Zcw7xVZs5BEZPCTMZBDKMLShSNx8V9vw5ZzrwWWVkcuCi4PBHKm2eoku7cU2c
+         heVUrxodtMa+DD4NAP1OhijYnzd2MC1UOINBjgypcC/WVPDjCFS/4DRLnu3B3nEp3JZF
+         aweYpvW98kT+BMrWzg8rnPWAsBLDb20n5Oup3O590E57xVquF4Zz5ThgrqF+2hqhreef
+         sYnOk3zUZlPMdodRruwgmKKhzxROqAf/fVeuieqJaP+kh3NuRPBfY+Zb4gdgebtfedLh
+         dZZw==
+X-Gm-Message-State: AOJu0YwRts/SwZFT2vyAOaadB5nsdonLdMsPi0tFk5YNc/MJHBZrumbA
+        ZLZh+mcyRyQhSAzI+OUDJ3g067wOb+XV+A4zH7Birg==
+X-Google-Smtp-Source: AGHT+IHle69HGMM73axSbTrxTEchdRM11aGWeB2nuHgAcv5unqlb5d7O8Uri7BhbV0Cqu/PwgfL+Pytmev0WUwA2OgM=
+X-Received: by 2002:a0d:e855:0:b0:5a7:f002:4fe4 with SMTP id
+ r82-20020a0de855000000b005a7f0024fe4mr14385322ywe.23.1700062709022; Wed, 15
+ Nov 2023 07:38:29 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-KSE-ServerInfo: EXCHANGE2019.pcs.ditec.de, 9
-X-KSE-AntiSpam-Interceptor-Info: white sender email list
-X-KSE-AttachmentFiltering-Interceptor-Info: protection disabled
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 15.11.2023 11:15:00
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+References: <20231113111249.3982461-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20231113111249.3982461-1-andriy.shevchenko@linux.intel.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Wed, 15 Nov 2023 16:37:52 +0100
+Message-ID: <CAPDyKFrZdHseZ6udjNSdOG7hwK82G1wT30j39A1KwKBAaY_cMg@mail.gmail.com>
+Subject: Re: [PATCH v1 1/1] treewide, spi: Get rid of SPI_MASTER_HALF_DUPLEX
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Yang Yingliang <yangyingliang@huawei.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mark Brown <broonie@kernel.org>, linux-input@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
+        netdev@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-spi@vger.kernel.org,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Thomas Pfaff <tpfaff@pcs.com>
+On Mon, 13 Nov 2023 at 12:15, Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> The SPI_MASTER_HALF_DUPLEX is the legacy name of a definition
+> for a half duplex flag. Since all others had been replaced with
+> the respective SPI_CONTROLLER prefix get rid of the last one
+> as well. There is no functional change intended.
+>
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-pdc transfer is broken (at least on AT91SAM9G45), because dma_map_single 
-will always return false on vmalloc addresses.
-This can be avoided by using the buffers for dma transfers for pdc too.
+Acked-by: Ulf Hansson <ulf.hansson@linaro.org> # For MMC
 
-Signed-off-by: Thomas Pfaff <tpfaff@pcs.com>
----
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index fc566d22aa36..eaf4f9ff2504 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -267,6 +267,7 @@ struct atmel_spi {
- 	dma_addr_t		dma_addr_tx_bbuf;
- 	void			*addr_rx_bbuf;
- 	void			*addr_tx_bbuf;
-+	void			*addr_rx_buf;
- 
- 	struct completion	xfer_completion;
- 
-@@ -906,42 +907,22 @@ static void atmel_spi_pdc_next_xfer(struct spi_master *master,
- }
- 
- /*
-- * For DMA, tx_buf/tx_dma have the same relationship as rx_buf/rx_dma:
-- *  - The buffer is either valid for CPU access, else NULL
-- *  - If the buffer is valid, so is its DMA address
-- *
-- * This driver manages the dma address unless message->is_dma_mapped.
-+ * Use the internal dma buffers for pdc transfers,
-  */
--static int
-+static void
- atmel_spi_dma_map_xfer(struct atmel_spi *as, struct spi_transfer *xfer)
- {
--	struct device	*dev = &as->pdev->dev;
--
- 	xfer->tx_dma = xfer->rx_dma = INVALID_DMA_ADDRESS;
- 	if (xfer->tx_buf) {
--		/* tx_buf is a const void* where we need a void * for the dma
--		 * mapping */
--		void *nonconst_tx = (void *)xfer->tx_buf;
--
--		xfer->tx_dma = dma_map_single(dev,
--				nonconst_tx, xfer->len,
--				DMA_TO_DEVICE);
--		if (dma_mapping_error(dev, xfer->tx_dma))
--			return -ENOMEM;
-+		memcpy(as->addr_tx_bbuf, xfer->tx_buf, xfer->len);
-+		xfer->tx_dma = as->dma_addr_tx_bbuf;
-+		xfer->tx_buf = as->addr_tx_bbuf;
- 	}
- 	if (xfer->rx_buf) {
--		xfer->rx_dma = dma_map_single(dev,
--				xfer->rx_buf, xfer->len,
--				DMA_FROM_DEVICE);
--		if (dma_mapping_error(dev, xfer->rx_dma)) {
--			if (xfer->tx_buf)
--				dma_unmap_single(dev,
--						xfer->tx_dma, xfer->len,
--						DMA_TO_DEVICE);
--			return -ENOMEM;
--		}
-+		as->addr_rx_buf = xfer->rx_buf;
-+		xfer->rx_dma = as->dma_addr_rx_bbuf;
-+		xfer->rx_buf = as->addr_rx_bbuf;
- 	}
--	return 0;
- }
- 
- static void atmel_spi_dma_unmap_xfer(struct spi_master *master,
-@@ -1125,6 +1106,11 @@ atmel_spi_pdc_interrupt(int irq, void *dev_id)
- 
- 		spi_writel(as, IDR, pending);
- 
-+		if (as->addr_rx_buf) {
-+			as->current_transfer->rx_buf = as->addr_rx_buf;
-+			memcpy(as->current_transfer->rx_buf, as->addr_rx_bbuf,
-+			       as->current_transfer->len);
-+		}
- 		complete(&as->xfer_completion);
- 	}
- 
-@@ -1296,10 +1282,10 @@ static int atmel_spi_one_transfer(struct spi_master *master,
- 	 * better fault reporting.
- 	 */
- 	if ((!master->cur_msg->is_dma_mapped)
--		&& as->use_pdc) {
--		if (atmel_spi_dma_map_xfer(as, xfer) < 0)
--			return -ENOMEM;
--	}
-+	    && as->use_pdc)
-+		atmel_spi_dma_map_xfer(as, xfer);
-+	else
-+		as->addr_rx_buf = NULL;
- 
- 	atmel_spi_set_xfer_speed(as, spi, xfer);
- 
-@@ -1512,28 +1498,25 @@ static int atmel_spi_probe(struct platform_device *pdev)
- 		as->use_pdc = true;
- 	}
- 
--	if (IS_ENABLED(CONFIG_SOC_SAM_V4_V5)) {
--		as->addr_rx_bbuf = dmam_alloc_coherent(&pdev->dev,
-+	as->addr_rx_bbuf = dmam_alloc_coherent(&pdev->dev,
-+					       SPI_MAX_DMA_XFER,
-+					       &as->dma_addr_rx_bbuf,
-+					       GFP_KERNEL | GFP_DMA);
-+	if (!as->addr_rx_bbuf) {
-+		as->use_dma = false;
-+		as->use_pdc = false;
-+	} else {
-+		as->addr_tx_bbuf = dmam_alloc_coherent(&pdev->dev,
- 						       SPI_MAX_DMA_XFER,
--						       &as->dma_addr_rx_bbuf,
-+						       &as->dma_addr_tx_bbuf,
- 						       GFP_KERNEL | GFP_DMA);
--		if (!as->addr_rx_bbuf) {
-+		if (!as->addr_tx_bbuf) {
- 			as->use_dma = false;
--		} else {
--			as->addr_tx_bbuf = dmam_alloc_coherent(&pdev->dev,
--							       SPI_MAX_DMA_XFER,
--							       &as->dma_addr_tx_bbuf,
--							       GFP_KERNEL | GFP_DMA);
--			if (!as->addr_tx_bbuf) {
--				as->use_dma = false;
--				dmam_free_coherent(&pdev->dev, SPI_MAX_DMA_XFER,
--						   as->addr_rx_bbuf,
--						   as->dma_addr_rx_bbuf);
--			}
-+			as->use_pdc = false;
-+			dmam_free_coherent(&pdev->dev, SPI_MAX_DMA_XFER,
-+					   as->addr_rx_bbuf,
-+					   as->dma_addr_rx_bbuf);
- 		}
--		if (!as->use_dma)
--			dev_info(master->dev.parent,
--				 "  can not allocate dma coherent memory\n");
- 	}
- 
- 	if (as->caps.has_dma_support && !as->use_dma)
-
-
+> ---
+>  drivers/input/rmi4/rmi_spi.c             | 2 +-
+>  drivers/mmc/host/mmc_spi.c               | 2 +-
+>  drivers/net/ethernet/micrel/ks8851_spi.c | 4 ++--
+>  drivers/usb/gadget/udc/max3420_udc.c     | 2 +-
+>  include/linux/spi/spi.h                  | 2 --
+>  5 files changed, 5 insertions(+), 7 deletions(-)
+>
+> diff --git a/drivers/input/rmi4/rmi_spi.c b/drivers/input/rmi4/rmi_spi.c
+> index 852aeb0b2c07..07c866f42296 100644
+> --- a/drivers/input/rmi4/rmi_spi.c
+> +++ b/drivers/input/rmi4/rmi_spi.c
+> @@ -375,7 +375,7 @@ static int rmi_spi_probe(struct spi_device *spi)
+>         struct rmi_device_platform_data *spi_pdata = spi->dev.platform_data;
+>         int error;
+>
+> -       if (spi->master->flags & SPI_MASTER_HALF_DUPLEX)
+> +       if (spi->master->flags & SPI_CONTROLLER_HALF_DUPLEX)
+>                 return -EINVAL;
+>
+>         rmi_spi = devm_kzalloc(&spi->dev, sizeof(struct rmi_spi_xport),
+> diff --git a/drivers/mmc/host/mmc_spi.c b/drivers/mmc/host/mmc_spi.c
+> index cc333ad67cac..b0cccef4cfbf 100644
+> --- a/drivers/mmc/host/mmc_spi.c
+> +++ b/drivers/mmc/host/mmc_spi.c
+> @@ -1322,7 +1322,7 @@ static int mmc_spi_probe(struct spi_device *spi)
+>         /* We rely on full duplex transfers, mostly to reduce
+>          * per-transfer overheads (by making fewer transfers).
+>          */
+> -       if (spi->master->flags & SPI_MASTER_HALF_DUPLEX)
+> +       if (spi->master->flags & SPI_CONTROLLER_HALF_DUPLEX)
+>                 return -EINVAL;
+>
+>         /* MMC and SD specs only seem to care that sampling is on the
+> diff --git a/drivers/net/ethernet/micrel/ks8851_spi.c b/drivers/net/ethernet/micrel/ks8851_spi.c
+> index 70bc7253454f..7c41623dac90 100644
+> --- a/drivers/net/ethernet/micrel/ks8851_spi.c
+> +++ b/drivers/net/ethernet/micrel/ks8851_spi.c
+> @@ -156,7 +156,7 @@ static void ks8851_rdreg(struct ks8851_net *ks, unsigned int op,
+>
+>         txb[0] = cpu_to_le16(op | KS_SPIOP_RD);
+>
+> -       if (kss->spidev->master->flags & SPI_MASTER_HALF_DUPLEX) {
+> +       if (kss->spidev->master->flags & SPI_CONTROLLER_HALF_DUPLEX) {
+>                 msg = &kss->spi_msg2;
+>                 xfer = kss->spi_xfer2;
+>
+> @@ -180,7 +180,7 @@ static void ks8851_rdreg(struct ks8851_net *ks, unsigned int op,
+>         ret = spi_sync(kss->spidev, msg);
+>         if (ret < 0)
+>                 netdev_err(ks->netdev, "read: spi_sync() failed\n");
+> -       else if (kss->spidev->master->flags & SPI_MASTER_HALF_DUPLEX)
+> +       else if (kss->spidev->master->flags & SPI_CONTROLLER_HALF_DUPLEX)
+>                 memcpy(rxb, trx, rxl);
+>         else
+>                 memcpy(rxb, trx + 2, rxl);
+> diff --git a/drivers/usb/gadget/udc/max3420_udc.c b/drivers/usb/gadget/udc/max3420_udc.c
+> index 2d57786d3db7..89e8cf2a2a7d 100644
+> --- a/drivers/usb/gadget/udc/max3420_udc.c
+> +++ b/drivers/usb/gadget/udc/max3420_udc.c
+> @@ -1201,7 +1201,7 @@ static int max3420_probe(struct spi_device *spi)
+>         int err, irq;
+>         u8 reg[8];
+>
+> -       if (spi->master->flags & SPI_MASTER_HALF_DUPLEX) {
+> +       if (spi->master->flags & SPI_CONTROLLER_HALF_DUPLEX) {
+>                 dev_err(&spi->dev, "UDC needs full duplex to work\n");
+>                 return -EINVAL;
+>         }
+> diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+> index 255a0562aea5..7b4baff63c5c 100644
+> --- a/include/linux/spi/spi.h
+> +++ b/include/linux/spi/spi.h
+> @@ -1638,8 +1638,6 @@ spi_transfer_is_last(struct spi_controller *ctlr, struct spi_transfer *xfer)
+>  /* Compatibility layer */
+>  #define spi_master                     spi_controller
+>
+> -#define SPI_MASTER_HALF_DUPLEX         SPI_CONTROLLER_HALF_DUPLEX
+> -
+>  #define spi_master_get_devdata(_ctlr)  spi_controller_get_devdata(_ctlr)
+>  #define spi_master_set_devdata(_ctlr, _data)   \
+>         spi_controller_set_devdata(_ctlr, _data)
+> --
+> 2.43.0.rc1.1.gbec44491f096
+>

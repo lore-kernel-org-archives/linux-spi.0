@@ -2,35 +2,34 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AF3C5C48BF9
-	for <linux-spi@archiver.kernel.org>; Wed, 15 Nov 2023 14:01:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A11DC48BD7
+	for <linux-spi@archiver.kernel.org>; Wed, 15 Nov 2023 14:20:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234969AbjKOOBS (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 15 Nov 2023 09:01:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36078 "EHLO
+        id S1344191AbjKOOUH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 15 Nov 2023 09:20:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234967AbjKOOBR (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 15 Nov 2023 09:01:17 -0500
-X-Greylist: delayed 76 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 15 Nov 2023 06:01:13 PST
+        with ESMTP id S1344181AbjKOOUH (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 15 Nov 2023 09:20:07 -0500
 Received: from mail.pcs.gmbh (mail.pcs.gmbh [89.27.162.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6A2B123;
-        Wed, 15 Nov 2023 06:01:13 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26BB2B3
+        for <linux-spi@vger.kernel.org>; Wed, 15 Nov 2023 06:20:02 -0800 (PST)
 Received: from mail.csna.de (mail.csna.de [89.27.162.50])
         by mail.pcs.gmbh with ESMTPA
-        ; Wed, 15 Nov 2023 15:01:04 +0100
+        ; Wed, 15 Nov 2023 14:59:17 +0100
 Received: from EXCHANGE2019.pcs.ditec.de (mail.pcs.com [89.27.162.5])
         by mail.csna.de with ESMTPSA
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256)
-        ; Wed, 15 Nov 2023 15:01:04 +0100
+        ; Wed, 15 Nov 2023 14:59:17 +0100
 Received: from EXCHANGE2019.pcs.ditec.de (192.168.8.214) by
  EXCHANGE2019.pcs.ditec.de (192.168.8.214) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.42; Wed, 15 Nov 2023 15:01:04 +0100
+ 15.2.986.42; Wed, 15 Nov 2023 14:59:11 +0100
 Received: from lxtpfaff.pcs.ditec.de (192.168.9.96) by
  EXCHANGE2019.pcs.ditec.de (192.168.8.214) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42
- via Frontend Transport; Wed, 15 Nov 2023 15:01:04 +0100
-Date:   Wed, 15 Nov 2023 15:01:04 +0100
+ via Frontend Transport; Wed, 15 Nov 2023 14:59:06 +0100
+Date:   Wed, 15 Nov 2023 14:59:06 +0100
 From:   Thomas Pfaff <tpfaff@pcs.com>
 To:     <tudor.ambarus@microchip.com>
 CC:     <broonie@kernel.org>, <nicolas.ferre@microchip.com>,
@@ -38,16 +37,16 @@ CC:     <broonie@kernel.org>, <nicolas.ferre@microchip.com>,
         <linux-spi@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-kernel@vger.kernel.org>
-Subject: [PATCH RFC 3/3 stable-6.1] spi: spi-atmel: enable dma on
- AT91SAM9G45
-Message-ID: <2863edc4-5daa-d8d6-5e8d-b9dc244bcb82@pcs.com>
+Subject: [PATCH RFC 1/3 stable-6.1] spi: spi-atmel: switch to managed
+ dma_alloc_coherent
+Message-ID: <c8ac6625-a2d8-171d-f1b5-ad72e34a7645@pcs.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
 X-KSE-ServerInfo: EXCHANGE2019.pcs.ditec.de, 9
 X-KSE-AntiSpam-Interceptor-Info: white sender email list
 X-KSE-AttachmentFiltering-Interceptor-Info: protection disabled
 X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 15.11.2023 13:02:00
+X-KSE-Antivirus-Info: Clean, bases: 15.11.2023 11:15:00
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
@@ -55,24 +54,62 @@ X-Mailing-List: linux-spi@vger.kernel.org
 
 From: Thomas Pfaff <tpfaff@pcs.com>
 
-AT91SAM9G45 spi has version 0x210, but dma is working on it.
+use managed dma_alloc_coherent instead of unmanaged.
 
 Signed-off-by: Thomas Pfaff <tpfaff@pcs.com>
 ---
 diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index eaf4f9ff2504..1e4722bdcb2d 100644
+index c4f22d50dba5..fc566d22aa36 100644
 --- a/drivers/spi/spi-atmel.c
 +++ b/drivers/spi/spi-atmel.c
-@@ -1395,8 +1395,8 @@ static void atmel_get_caps(struct atmel_spi *as)
+@@ -1513,22 +1513,22 @@ static int atmel_spi_probe(struct platform_device *pdev)
+ 	}
  
- 	as->caps.is_spi2 = version > 0x121;
- 	as->caps.has_wdrbt = version >= 0x210;
--	as->caps.has_dma_support = version >= 0x212;
--	as->caps.has_pdc_support = version < 0x212;
-+	as->caps.has_dma_support = version >= 0x210;
-+	as->caps.has_pdc_support = version < 0x210;
- }
+ 	if (IS_ENABLED(CONFIG_SOC_SAM_V4_V5)) {
+-		as->addr_rx_bbuf = dma_alloc_coherent(&pdev->dev,
+-						      SPI_MAX_DMA_XFER,
+-						      &as->dma_addr_rx_bbuf,
+-						      GFP_KERNEL | GFP_DMA);
++		as->addr_rx_bbuf = dmam_alloc_coherent(&pdev->dev,
++						       SPI_MAX_DMA_XFER,
++						       &as->dma_addr_rx_bbuf,
++						       GFP_KERNEL | GFP_DMA);
+ 		if (!as->addr_rx_bbuf) {
+ 			as->use_dma = false;
+ 		} else {
+-			as->addr_tx_bbuf = dma_alloc_coherent(&pdev->dev,
+-					SPI_MAX_DMA_XFER,
+-					&as->dma_addr_tx_bbuf,
+-					GFP_KERNEL | GFP_DMA);
++			as->addr_tx_bbuf = dmam_alloc_coherent(&pdev->dev,
++							       SPI_MAX_DMA_XFER,
++							       &as->dma_addr_tx_bbuf,
++							       GFP_KERNEL | GFP_DMA);
+ 			if (!as->addr_tx_bbuf) {
+ 				as->use_dma = false;
+-				dma_free_coherent(&pdev->dev, SPI_MAX_DMA_XFER,
+-						  as->addr_rx_bbuf,
+-						  as->dma_addr_rx_bbuf);
++				dmam_free_coherent(&pdev->dev, SPI_MAX_DMA_XFER,
++						   as->addr_rx_bbuf,
++						   as->dma_addr_rx_bbuf);
+ 			}
+ 		}
+ 		if (!as->use_dma)
+@@ -1607,14 +1607,6 @@ static int atmel_spi_remove(struct platform_device *pdev)
+ 	if (as->use_dma) {
+ 		atmel_spi_stop_dma(master);
+ 		atmel_spi_release_dma(master);
+-		if (IS_ENABLED(CONFIG_SOC_SAM_V4_V5)) {
+-			dma_free_coherent(&pdev->dev, SPI_MAX_DMA_XFER,
+-					  as->addr_tx_bbuf,
+-					  as->dma_addr_tx_bbuf);
+-			dma_free_coherent(&pdev->dev, SPI_MAX_DMA_XFER,
+-					  as->addr_rx_bbuf,
+-					  as->dma_addr_rx_bbuf);
+-		}
+ 	}
  
- static void atmel_spi_init(struct atmel_spi *as)
+ 	spin_lock_irq(&as->lock);
 
 

@@ -2,52 +2,53 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D4FBEC072A2
-	for <linux-spi@archiver.kernel.org>; Fri, 17 Nov 2023 20:13:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4B917C54FB9
+	for <linux-spi@archiver.kernel.org>; Fri, 17 Nov 2023 20:13:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232279AbjKQUN5 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S231921AbjKQUN5 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Fri, 17 Nov 2023 15:13:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43856 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231921AbjKQUN4 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 17 Nov 2023 15:13:56 -0500
-Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB664D6D
-        for <linux-spi@vger.kernel.org>; Fri, 17 Nov 2023 12:13:51 -0800 (PST)
-Received: by mail-oi1-x22c.google.com with SMTP id 5614622812f47-3b6ce6fac81so1439718b6e.1
-        for <linux-spi@vger.kernel.org>; Fri, 17 Nov 2023 12:13:51 -0800 (PST)
+        with ESMTP id S232067AbjKQUN5 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 17 Nov 2023 15:13:57 -0500
+Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AE9D10D0
+        for <linux-spi@vger.kernel.org>; Fri, 17 Nov 2023 12:13:53 -0800 (PST)
+Received: by mail-oi1-x22f.google.com with SMTP id 5614622812f47-3b2e73a17a0so1480390b6e.3
+        for <linux-spi@vger.kernel.org>; Fri, 17 Nov 2023 12:13:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1700252031; x=1700856831; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=rhumf+S/1zmUfncIex+xhepA+T9wIMv2vyztW6+G6BA=;
-        b=lsqWx7hmnb2o+hQ6cvbPdIkA/XMtr4wg7c8GrbwyNDrm/DgKj/o//s90fnhi++6Jxj
-         znF1XWc+e7ooIFcybvXIkUObb7zB5oPDOx5Zc8c0fcGXKL5spQ+FSqt3Ily4wVyE3gh2
-         0toW1bZPjSsHFkvfA1mEU+DOAvbUX1jvJUDUhp17PsPFv+VxCuYehVTusVJejhljbbLg
-         xouR8VXVlRcsMOH+odeR6T/gwPjHnXVDKdfwhn3MGIf+fDMjxTgApoo2iwwbNHADb9SE
-         wf26BdcW/VcqvbIU/g8j1HLvYh5oqbq7cRQDtZCJGO1jqtBijQ4WyEnp1lG4p97d7yXP
-         7Kvg==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1700252033; x=1700856833; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=daUtcUgvD3JlASmZskT09A6jBu8ff2l03YGGYSvkuOo=;
+        b=f48DKjAEIQUdrbqTo8CyXZNyvcYeKbLZzgsbK9bp6xrsHmzxpAXHkNPhWNfRkTSaLa
+         0S/L9/iwFFvnwYMTjARBSJg3tj8Nb4n9UYVr9cQ0+/A7YKRIr8xhMD34l/INVH9noRdv
+         9sOMzurGwze+y4Z16rKZnoMzqdj7ZsHnFWAFZsmIJPnZM5Ysl96ymCgwGMcU+1Yo+grr
+         R2BMwrIsnXk1o7hHcd4VHpErxPyU2y242szks8KOljLatQlm48qqF/67x7UV5cEjzZF/
+         DOtJgqQZNeC9twILU8f8qd/LocFsJI1WtV6R6aSTts6gmTUm+Hj8/l69wZ17ldD5twCc
+         xi0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700252031; x=1700856831;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rhumf+S/1zmUfncIex+xhepA+T9wIMv2vyztW6+G6BA=;
-        b=qG8nqTL/8fa3T7VyERMLSKcC06V0ZIZPTt3Nk7cIsTomoEgn4z7+JFkFZbD3uaMZaW
-         vHme0FqKH2Wo3BF27y2Lmc2ygeQsEGDCZwgFdCkfyVsJll+f2tnuGn2AfbOf733ELTBq
-         tpHCzLoISWj4bPW/PjAqxUd+CLeTaRV28ATM2Ay2uRCtL+dOSIh1XfyuxXxGYrsRmqnq
-         EgfOQlGBT399CTMh1+DpSmGkM/nmNm4L5HbP2dhy/mVVr2DfYIGpF38VzJ7MbYx1xV3K
-         iw060RUKKUHynvfRlKN27uN1mMLK4wPmAy5R/xoseXCMGWQ5jCjXi1ZvipfdK0mJxoJn
-         8Hfw==
-X-Gm-Message-State: AOJu0YwPT2akZZn60zUSFl97pqmXjlJ2ptZMsevOFK3xRE6g7yKZCPZV
-        pUS6usUZ6ytzg6QxhWE73PJwobeA7ErBA36XQDHlEg==
-X-Google-Smtp-Source: AGHT+IGWJBiZ9GKDWx65XkxF5PxgPchzalM6vQQqXfeWw6zoM9oBeieyq2RA7kcI1qGBrs/oSdE4iQ==
-X-Received: by 2002:a05:6808:19a2:b0:3ab:870d:2d49 with SMTP id bj34-20020a05680819a200b003ab870d2d49mr584414oib.8.1700252031144;
-        Fri, 17 Nov 2023 12:13:51 -0800 (PST)
+        d=1e100.net; s=20230601; t=1700252033; x=1700856833;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=daUtcUgvD3JlASmZskT09A6jBu8ff2l03YGGYSvkuOo=;
+        b=NplrLb2n/21PgYrDpR1My/dS4Ezz6IO3vV+4iVD5Q5FHDiZhuRlPt1FJOQaMNi035a
+         qFmzniz5GaBYLLgFBURTAl0MYDLerxIr7EMFjsVfsgadTLQB6bGYkfvlEhxtBdgd6pAq
+         jhceABdRhinmIPZDYdGH8p7ClD0fmweU/+UdPz0Pl912zz3D51N5/w08nZtmohcK7iI5
+         5yjMGdPNDKZV3KDJXFx8g9C5HxaIt7MNnAdjTLF8J3j54lJCZPVdW/9Sk7KtWtIwhsbn
+         R7z0kC1k6AXixBYXD/tDYKM4Dr2UZGeqCX/GK9i5b5GVjuu1focyHGJtKP1y4MzNmj+F
+         /w9Q==
+X-Gm-Message-State: AOJu0YxpTMgE/+/b8d8OA8zHCT0cmj9KLfNJz7XK6L05uSZY7khMyh5a
+        2/nQD14+JQRRugle+qJNranQj/zGDPf89OyeALuu9w==
+X-Google-Smtp-Source: AGHT+IGupY9tgQkSOvQ1he/qTdneFPbPBSmCn8gJ3wctSyTP/DRvtzXTw5+16bwfGWkofb9g09taVw==
+X-Received: by 2002:a05:6808:1704:b0:3b6:d617:a6f7 with SMTP id bc4-20020a056808170400b003b6d617a6f7mr595509oib.3.1700252032911;
+        Fri, 17 Nov 2023 12:13:52 -0800 (PST)
 Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id l21-20020a544515000000b003a8560a9d34sm393814oil.25.2023.11.17.12.13.50
+        by smtp.gmail.com with ESMTPSA id l21-20020a544515000000b003a8560a9d34sm393814oil.25.2023.11.17.12.13.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Nov 2023 12:13:50 -0800 (PST)
+        Fri, 17 Nov 2023 12:13:52 -0800 (PST)
 From:   David Lechner <dlechner@baylibre.com>
 To:     linux-spi@vger.kernel.org, devicetree@vger.kernel.org
 Cc:     David Lechner <dlechner@baylibre.com>,
@@ -59,10 +60,12 @@ Cc:     David Lechner <dlechner@baylibre.com>,
         =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 00/14] spi: axi-spi-engine improvements
-Date:   Fri, 17 Nov 2023 14:12:51 -0600
-Message-ID: <20231117-axi-spi-engine-series-1-v1-0-cc59db999b87@baylibre.com>
+Subject: [PATCH 02/14] MAINTAINERS: add entry for AXI SPI Engine
+Date:   Fri, 17 Nov 2023 14:12:53 -0600
+Message-ID: <20231117-axi-spi-engine-series-1-v1-2-cc59db999b87@baylibre.com>
 X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20231117-axi-spi-engine-series-1-v1-0-cc59db999b87@baylibre.com>
+References: <20231117-axi-spi-engine-series-1-v1-0-cc59db999b87@baylibre.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.12.4
@@ -71,51 +74,41 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-We are working towards adding support for the offload feature[1] of the
-AXI SPI Engine IP core. Before we can do that, we want to make some
-general fixes and improvements to the driver. In order to avoid a giant
-series with 35+ patches, we are splitting this up into a few smaller
-series.
+The AXI SPI Engine driver has been in the kernel for many years but has
+lacked a proper maintainers entry. This adds a new entry for the driver
+and the devicetree bindings.
 
-This first series mostly doing some housekeeping:
-* Convert device tree bindings to yaml.
-* Add a MAINTAINERS entry.
-* Clean up probe and remove using devm.
-* Separate message state from driver state.
-* Add support for cs_off and variable word size.
-
-Once this series is applied, we will follow up with a second series of
-general improvements, and then finally a 3rd series that implements the
-offload support. The offload support will also involve the IIO
-subsystem (a new IIO driver will depend on the new SPI offload feature),
-so I'm mentioning this now in case we want to do anything ahead of time
-to prepare for that (e.g. putting all of these changes on a separate
-branch).
-
-[1]: https://wiki.analog.com/resources/fpga/peripherals/spi_engine/offload
-
+Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
-David Lechner (14):
-      dt-bindings: spi: axi-spi-engine: convert to yaml
-      MAINTAINERS: add entry for AXI SPI Engine
-      spi: axi-spi-engine: simplify driver data allocation
-      spi: axi-spi-engine: use devm_spi_alloc_host()
-      spi: axi-spi-engine: use devm action to reset hw on remove
-      spi: axi-spi-engine: use devm_request_irq()
-      spi: axi-spi-engine: use devm_spi_register_controller()
-      spi: axi-spi-engine: check for valid clock rate
-      spi: axi-spi-engine: move msg state to new struct
-      spi: axi-spi-engine: use message_prepare/unprepare
-      spi: axi-spi-engine: remove completed_id from driver state
-      spi: axi-spi-engine: remove struct spi_engine::msg
-      spi: axi-spi-engine: add support for cs_off
-      spi: axi-spi-engine: add support for any word size
 
- .../devicetree/bindings/spi/adi,axi-spi-engine.txt |  31 --
- .../bindings/spi/adi,axi-spi-engine.yaml           |  66 ++++
- MAINTAINERS                                        |  10 +
- drivers/spi/spi-axi-spi-engine.c                   | 399 +++++++++++++--------
- 4 files changed, 329 insertions(+), 177 deletions(-)
----
-base-commit: 6f9da18171889fae105e1413a825c53fa5aab40c
-change-id: 20231117-axi-spi-engine-series-1-7c76311440f9
+Note: This work is being done by BayLibre on behalf of Analog Devices Inc.
+This is why the maintainers are @analog.com rather than @baylibre.com.
+
+ MAINTAINERS | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 97f51d5ec1cf..a40f61ad5843 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3415,6 +3415,16 @@ W:	https://ez.analog.com/linux-software-drivers
+ F:	Documentation/devicetree/bindings/hwmon/adi,axi-fan-control.yaml
+ F:	drivers/hwmon/axi-fan-control.c
+ 
++AXI SPI ENGINE
++M:	Michael Hennerich <michael.hennerich@analog.com>
++M:	Nuno Sá <nuno.sa@analog.com>
++R:	David Lechner <dlechner@baylibre.com>
++L:	linux-spi@vger.kernel.org
++S:	Supported
++W:	https://ez.analog.com/linux-software-drivers
++F:	Documentation/devicetree/bindings/spi/adi,axi-spi-engine.yaml
++F:	drivers/spi/spi-axi-spi-engine.c
++
+ AXXIA I2C CONTROLLER
+ M:	Krzysztof Adamski <krzysztof.adamski@nokia.com>
+ L:	linux-i2c@vger.kernel.org
+
+-- 
+2.42.0
+

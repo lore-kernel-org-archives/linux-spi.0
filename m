@@ -2,53 +2,53 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EC3E6C072A2
-	for <linux-spi@archiver.kernel.org>; Fri, 17 Nov 2023 20:13:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6C9A2C5ACB3
+	for <linux-spi@archiver.kernel.org>; Fri, 17 Nov 2023 20:14:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235707AbjKQUOA (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 17 Nov 2023 15:14:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43960 "EHLO
+        id S1345949AbjKQUOH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 17 Nov 2023 15:14:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235193AbjKQUN7 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 17 Nov 2023 15:13:59 -0500
-Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com [IPv6:2607:f8b0:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13E1910D0
-        for <linux-spi@vger.kernel.org>; Fri, 17 Nov 2023 12:13:56 -0800 (PST)
-Received: by mail-oi1-x232.google.com with SMTP id 5614622812f47-3b3f55e1bbbso1513211b6e.2
-        for <linux-spi@vger.kernel.org>; Fri, 17 Nov 2023 12:13:56 -0800 (PST)
+        with ESMTP id S235727AbjKQUOB (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 17 Nov 2023 15:14:01 -0500
+Received: from mail-oi1-x231.google.com (mail-oi1-x231.google.com [IPv6:2607:f8b0:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC201D57
+        for <linux-spi@vger.kernel.org>; Fri, 17 Nov 2023 12:13:57 -0800 (PST)
+Received: by mail-oi1-x231.google.com with SMTP id 5614622812f47-3b512dd7d5bso1595326b6e.1
+        for <linux-spi@vger.kernel.org>; Fri, 17 Nov 2023 12:13:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1700252035; x=1700856835; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1700252037; x=1700856837; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/Uy/nGn2rChA8c7KicPA5RLHwOBZWkxwdXoqQs+T9FI=;
-        b=2+XdxDiOVAUwEHBmlFn/U/iOIbLMEN6BE1ylmm/F72DBfFvWneB9Tkwbs1kV7Iwmxa
-         WKhZLCP1UztnIUpLY4l02FHU/eobad4LFjrmvcLwrBj7/3bfUQrorKrx1vWKdjHRwVlY
-         KsgfhFJKSp2EJMzx56Nbc8GJpZfrV4qEhEcxmvcOl9xsOGWjjt5STQzCRDpT7uH4gBOp
-         9jZVIJDO2OKaKOSFL0uvUu7e+TVErcRkMLqvdvm7f/r8mmI91rHVgv3Y1P51V8h4+jXP
-         fkUsoamL9iJYFbTS1JhmEOCIgbpvfmrm8U2ht0qXHba0UcZWk84RQ/yoLFA3R37/TO8R
-         5naw==
+        bh=M1wQ6CLb/dDh5KiZFFpLs1bmPNGn2Z5vlnYTp1713SY=;
+        b=zs/TE/2dzcTIHUUgBQPW21glYKrUWr6e4lez1HsM2FETRIb0q8ttXaWHDhMMvtxAvz
+         PAhB3Tm0uoj1B5VYSmFBymiCNJ0qscRwXnixBcesVok1F1NthOM3gCQJ55ulb6TnQ81w
+         QoE73k5cJYhWxylpLelYJJ9WOz/68NEgZf77Zx0lX97Ju/Mu1kuYqoQmdP9/AZnwdQKa
+         tTR0PXgA2IwZFFujByP9vR/f06oghFv9yczgJDjOQWmB2ZuW3pJugDhDIl+vje0E7HCk
+         PZ6+/txXyoTmm2d67EzqcMSCnYEhdm1ANSv96YH/3FiQaCQyBA+EZ7MB4QuoamUFPEdh
+         9RIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700252035; x=1700856835;
+        d=1e100.net; s=20230601; t=1700252037; x=1700856837;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/Uy/nGn2rChA8c7KicPA5RLHwOBZWkxwdXoqQs+T9FI=;
-        b=RqmgeOpJaciohB/1MGljZHumaI8qSCTpecc//R1hMHpmw164M4gbpLuMrKczAwEA08
-         BzKvlHEYqLV9JeTpTWNgW1/8nat9wCXk4OSY/nk5cdQ0MQKiyDKrxSNwhCmYLEtWqVRb
-         +0fW26w58voduaq4sbVEQGXpYIyOeg9QbTNRV5APlFVb2YkXV2zxd21OloemFrlZwHKW
-         J9HlhYh9TVOSnokKHwhxGVcte6+BcfPdFH7BFY0w1FTmnQGYFg0QkFVi30xNY43p4ZxU
-         utC+7LRdA/DQgtSpTUF+UyCvEvYdKZ4E6FkeqxRciZw6Oq7uRHNc4B2q5cyNqho/vqkQ
-         sSEg==
-X-Gm-Message-State: AOJu0Yw2b3FokGxvDx47vsfaZYR6unJ1My/jf/sgdFSUF9taXYX8C+PI
-        LggYobeWEcO6T+eQKR4RUFbBPGtCxSyx3cSS9A0EcQ==
-X-Google-Smtp-Source: AGHT+IEpNY443K2DTvic/4nX3g59+w/t2iGjY1+g+xvMgSfgHtSIdUiY9qzOZHhk0/Foi7Fgc7LpRw==
-X-Received: by 2002:a05:6808:14cd:b0:3a4:3b56:72b2 with SMTP id f13-20020a05680814cd00b003a43b5672b2mr589101oiw.8.1700252035422;
-        Fri, 17 Nov 2023 12:13:55 -0800 (PST)
+        bh=M1wQ6CLb/dDh5KiZFFpLs1bmPNGn2Z5vlnYTp1713SY=;
+        b=TgCzFfAVp4rp23wpFpCOeXS4a4Cfp0aqo0Il/WxxJyILyCAN3sADcspgipAe5jAexm
+         34mcN4eQbr0+XNl1XsxWoVixQ6Mud57JbJOqirte9b5Yjq5o3lbZNIOOThFLFLeq4BqV
+         X4O19BWzmAB7ngyn11bnqsygMH3ycRZdrHkjz1hMGeQoiWluvhh1lreMv+Dia8ChuBkP
+         N7f/LD9KUBdaFojtXPFc/yFp1OGN5ofFDSHWD7ifcN6hnOB4ioVgHX/3sW/sFgoTOHGv
+         whxsJcI1rSe7i67ajcijUX43X2AEBTjl8kSM/e5SxHaz4X1WDtZ2dOoAAnGkMj33zp4y
+         0ikw==
+X-Gm-Message-State: AOJu0YwV4Vez13pV7WV1eolSt3HlPk+GkICCcGz1HgjNGdy6DwCO2eph
+        1O18nzM4Ok60MJ8Unv+34/5uo9TDDz8rEUE3yTU47Q==
+X-Google-Smtp-Source: AGHT+IGtzh7e1k7njF++1U+zMaywWCDh65jE1df5WPD+UmMUdAI4bHvmiDb/8jACwIXkHFTXypjZ/g==
+X-Received: by 2002:a05:6808:1922:b0:3b2:e70e:b448 with SMTP id bf34-20020a056808192200b003b2e70eb448mr531624oib.8.1700252037075;
+        Fri, 17 Nov 2023 12:13:57 -0800 (PST)
 Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id l21-20020a544515000000b003a8560a9d34sm393814oil.25.2023.11.17.12.13.54
+        by smtp.gmail.com with ESMTPSA id l21-20020a544515000000b003a8560a9d34sm393814oil.25.2023.11.17.12.13.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Nov 2023 12:13:55 -0800 (PST)
+        Fri, 17 Nov 2023 12:13:56 -0800 (PST)
 From:   David Lechner <dlechner@baylibre.com>
 To:     linux-spi@vger.kernel.org, devicetree@vger.kernel.org
 Cc:     David Lechner <dlechner@baylibre.com>,
@@ -60,9 +60,9 @@ Cc:     David Lechner <dlechner@baylibre.com>,
         =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 05/14] spi: axi-spi-engine: use devm action to reset hw on remove
-Date:   Fri, 17 Nov 2023 14:12:56 -0600
-Message-ID: <20231117-axi-spi-engine-series-1-v1-5-cc59db999b87@baylibre.com>
+Subject: [PATCH 07/14] spi: axi-spi-engine: use devm_spi_register_controller()
+Date:   Fri, 17 Nov 2023 14:12:58 -0600
+Message-ID: <20231117-axi-spi-engine-series-1-v1-7-cc59db999b87@baylibre.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231117-axi-spi-engine-series-1-v1-0-cc59db999b87@baylibre.com>
 References: <20231117-axi-spi-engine-series-1-v1-0-cc59db999b87@baylibre.com>
@@ -74,64 +74,53 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This moves the reset of the hardware to a devm action in the AXI SPI
-Engine driver. This will allow us to use devm on later calls in the
-probe function while preserving the order during cleanup.
+This replaces spi_register_controller() with
+devm_spi_register_controller() in the AXI SPI Engine driver. This
+saves us from having to call spi_unregister_controller() in the
+remove function.
+
+The remove function is also removed since it is no longer needed.
 
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
- drivers/spi/spi-axi-spi-engine.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ drivers/spi/spi-axi-spi-engine.c | 10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
 diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-engine.c
-index 77c1c115448d..c18a4b34777e 100644
+index 81d7352d2b8b..819744246952 100644
 --- a/drivers/spi/spi-axi-spi-engine.c
 +++ b/drivers/spi/spi-axi-spi-engine.c
-@@ -461,6 +461,15 @@ static int spi_engine_transfer_one_message(struct spi_controller *host,
+@@ -532,7 +532,7 @@ static int spi_engine_probe(struct platform_device *pdev)
+ 	host->transfer_one_message = spi_engine_transfer_one_message;
+ 	host->num_chipselect = 8;
+ 
+-	ret = spi_register_controller(host);
++	ret = devm_spi_register_controller(&pdev->dev, host);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -541,13 +541,6 @@ static int spi_engine_probe(struct platform_device *pdev)
  	return 0;
  }
  
-+static void spi_engine_release_hw(void *p)
-+{
-+	struct spi_engine *spi_engine = p;
-+
-+	writel_relaxed(0xff, spi_engine->base + SPI_ENGINE_REG_INT_PENDING);
-+	writel_relaxed(0x00, spi_engine->base + SPI_ENGINE_REG_INT_ENABLE);
-+	writel_relaxed(0x01, spi_engine->base + SPI_ENGINE_REG_RESET);
-+}
-+
- static int spi_engine_probe(struct platform_device *pdev)
- {
- 	struct spi_engine *spi_engine;
-@@ -506,6 +515,11 @@ static int spi_engine_probe(struct platform_device *pdev)
- 	writel_relaxed(0xff, spi_engine->base + SPI_ENGINE_REG_INT_PENDING);
- 	writel_relaxed(0x00, spi_engine->base + SPI_ENGINE_REG_INT_ENABLE);
- 
-+	ret = devm_add_action_or_reset(&pdev->dev, spi_engine_release_hw,
-+				       spi_engine);
-+	if (ret)
-+		return ret;
-+
- 	ret = request_irq(irq, spi_engine_irq, 0, pdev->name, host);
- 	if (ret)
- 		return ret;
-@@ -532,16 +546,11 @@ static int spi_engine_probe(struct platform_device *pdev)
- static void spi_engine_remove(struct platform_device *pdev)
- {
- 	struct spi_controller *host = platform_get_drvdata(pdev);
--	struct spi_engine *spi_engine = spi_controller_get_devdata(host);
- 	int irq = platform_get_irq(pdev, 0);
- 
- 	spi_unregister_controller(host);
- 
- 	free_irq(irq, host);
+-static void spi_engine_remove(struct platform_device *pdev)
+-{
+-	struct spi_controller *host = platform_get_drvdata(pdev);
 -
--	writel_relaxed(0xff, spi_engine->base + SPI_ENGINE_REG_INT_PENDING);
--	writel_relaxed(0x00, spi_engine->base + SPI_ENGINE_REG_INT_ENABLE);
--	writel_relaxed(0x01, spi_engine->base + SPI_ENGINE_REG_RESET);
- }
- 
+-	spi_unregister_controller(host);
+-}
+-
  static const struct of_device_id spi_engine_match_table[] = {
+ 	{ .compatible = "adi,axi-spi-engine-1.00.a" },
+ 	{ },
+@@ -556,7 +549,6 @@ MODULE_DEVICE_TABLE(of, spi_engine_match_table);
+ 
+ static struct platform_driver spi_engine_driver = {
+ 	.probe = spi_engine_probe,
+-	.remove_new = spi_engine_remove,
+ 	.driver = {
+ 		.name = "spi-engine",
+ 		.of_match_table = spi_engine_match_table,
 
 -- 
 2.42.0

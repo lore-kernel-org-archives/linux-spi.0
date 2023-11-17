@@ -2,53 +2,53 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 448F6C5AE4A
-	for <linux-spi@archiver.kernel.org>; Fri, 17 Nov 2023 20:13:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C442BC5ACB3
+	for <linux-spi@archiver.kernel.org>; Fri, 17 Nov 2023 20:13:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235563AbjKQUN7 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 17 Nov 2023 15:13:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43940 "EHLO
+        id S232311AbjKQUN6 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 17 Nov 2023 15:13:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231533AbjKQUN7 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 17 Nov 2023 15:13:59 -0500
-Received: from mail-oi1-x230.google.com (mail-oi1-x230.google.com [IPv6:2607:f8b0:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F52AD7A
-        for <linux-spi@vger.kernel.org>; Fri, 17 Nov 2023 12:13:55 -0800 (PST)
-Received: by mail-oi1-x230.google.com with SMTP id 5614622812f47-3b2e73a17a0so1480415b6e.3
-        for <linux-spi@vger.kernel.org>; Fri, 17 Nov 2023 12:13:55 -0800 (PST)
+        with ESMTP id S231857AbjKQUN5 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 17 Nov 2023 15:13:57 -0500
+Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EB3AD7A
+        for <linux-spi@vger.kernel.org>; Fri, 17 Nov 2023 12:13:53 -0800 (PST)
+Received: by mail-oi1-x22f.google.com with SMTP id 5614622812f47-3b5714439b3so1373277b6e.3
+        for <linux-spi@vger.kernel.org>; Fri, 17 Nov 2023 12:13:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1700252034; x=1700856834; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1700252032; x=1700856832; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kwzXznL4NYavhVUNHzr4kJuVjofxWovc+jaQlF/tetc=;
-        b=EUNEI5bFxbQ+wjUpIFeqryFo8RgL/jszVWX5ykUtkBoQOWq2M/e6FzFsFicDMatiqq
-         cmVlUSsGgNU3HseLs/oWs1599irG5YXdWMAqYadiRsliOHB3GsgJsoNVbNwmNG/k9kPk
-         +vxM2bcGHn3Tk3aYOvBNHLucWF+NGgKTQGxYvl9HElEpy0fd16OxZviC1OOGxmDdQGOM
-         o+sTBaOF6AgqJn+qiBJRBC0kX0qsNV3Dj12lt30uzWQ2e1YYFBYBmxya4hkaGwPEQC7w
-         LlOde6ReuyTrrIRKhc+gCL6y/uqggP0SL7IpTxaZ5z2hsXT6YFT5wYhFxDXrGVdD/sUi
-         zSsg==
+        bh=m9n1o/iZUaxSEnICaWfmjkoxeuoE9nljoI9vgcv8+Pc=;
+        b=ekVvqiLE2X0AyxL40gEGgL8S9/W3gsGfadcgVpEJCyZECyqemP4b6NMfF4Btphzf8l
+         QTRUSjCfVzye+1ry7lGnCcoVXAOhDm+841XSEM+Nq1Tu6oEyh8wUnwzJ2E4fxhqF4dJY
+         G6DlfTtXOszf77/l8q8/mFhcBVx53JNYB2KQm9TX/X8dfvSouFQpiDgxdGQKLvFMYnWo
+         zNIKoyHRhPXqlK0wrCsdRSkZGN2iz/F0m2hKzp44BJEn0gTBMhd9aI4bkk28a4cNpAlF
+         PL6/DYGxqlh3hRdm3R4AOXgdgAshcm2JjospjAhMea+ZcEBAbKyFC//NOhZTv0rTsZTh
+         SRNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700252034; x=1700856834;
+        d=1e100.net; s=20230601; t=1700252032; x=1700856832;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=kwzXznL4NYavhVUNHzr4kJuVjofxWovc+jaQlF/tetc=;
-        b=uemjfqt0enGBALBjMUAABrwSeBsKDpXye6Z6dv02z8LAXYizPsamgbLwYkc0C7aqi0
-         O+ApWEskDAb3VmWzYBjUPde1uJHlmwzfOA/EfqkN3tVfxeGeS9Gh4Xp6jG+8MUnbi0u4
-         LbKv3ehVyxPX+NAAvlnWpmGfzzaM8VS4bk5FQ9PoPh0p0xjUYzfev9GpQxrNo5GDVeKx
-         D4NL7lae8onrZbcjusJcsxbnsf87NeksbkPYvxq3caYSuprncT7xoOH6Lshug9FeJ78b
-         +SxVC/VtEKXKRPgRNT31+FilT8px3fnflvM9S0Co9j5U71wGPbbxpCoBYEudlQIMqxPV
-         m+OA==
-X-Gm-Message-State: AOJu0YyG38TDxazcBjuciBu9hpRn6gBnWIiG7pHuxlOCmPx6eqiWvCWb
-        Po7SZx/6dZPals0ZVlSiDd2UEJVV+Hrc7hfhGU0B7w==
-X-Google-Smtp-Source: AGHT+IGavxcM6yTEubR3PYLm487eVYtQfilkeWcy9vAYSJ/yk+i5Xgcq3QXKWV7F/hyvpN3JwgA7IA==
-X-Received: by 2002:a05:6808:1241:b0:3ae:2b43:dd47 with SMTP id o1-20020a056808124100b003ae2b43dd47mr537281oiv.22.1700252034604;
-        Fri, 17 Nov 2023 12:13:54 -0800 (PST)
+        bh=m9n1o/iZUaxSEnICaWfmjkoxeuoE9nljoI9vgcv8+Pc=;
+        b=bGBVeIYmPnACZh7Itn6JAN88fE6HHKPCb4UsZFwZixCw686zmkI639DTgT16Fsr+zs
+         zfcBDGNt43cfC3t0fA8QWxRiekI6n6PXPWaVNFiV4ZMhQbE4IZFvxsy5832qQHQd0d2I
+         x5gWnjT0C/drtmU70JsAgu4Na88SOJY0VjrlegXRh3JATJE+9DnlR/w8wy6GGyKwO85v
+         wMixAUhr04QFq029AqZ1RTjx7G9NB+oBYRMzti0JQZAKytsALjZjUufQhlovVhNfGfeX
+         2hQ76OfvgbgZ21cJjHy+l8Y1KSudU48Ea4CbB3sMNR0yqp7tKcD8QNqd8FRz3gi6fxGC
+         R+Mg==
+X-Gm-Message-State: AOJu0YzMqg2oN3yNIeoqOQfhT6xxdWpWFjeULAsw8KgjPoI/wQrknqzI
+        5PzN6A/pkhOhpqHXnJpKuesiL1poDIh6Ktr4WR6nfw==
+X-Google-Smtp-Source: AGHT+IGOxWWmVTcro47+CfoBzs66smlpjH26pJyUOrimWvjymyEudIaiiZt12oijMWo9J4oq49iVOg==
+X-Received: by 2002:a05:6808:308a:b0:3a7:4161:44ee with SMTP id bl10-20020a056808308a00b003a7416144eemr509227oib.6.1700252032112;
+        Fri, 17 Nov 2023 12:13:52 -0800 (PST)
 Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id l21-20020a544515000000b003a8560a9d34sm393814oil.25.2023.11.17.12.13.53
+        by smtp.gmail.com with ESMTPSA id l21-20020a544515000000b003a8560a9d34sm393814oil.25.2023.11.17.12.13.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Nov 2023 12:13:54 -0800 (PST)
+        Fri, 17 Nov 2023 12:13:51 -0800 (PST)
 From:   David Lechner <dlechner@baylibre.com>
 To:     linux-spi@vger.kernel.org, devicetree@vger.kernel.org
 Cc:     David Lechner <dlechner@baylibre.com>,
@@ -60,9 +60,9 @@ Cc:     David Lechner <dlechner@baylibre.com>,
         =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 04/14] spi: axi-spi-engine: use devm_spi_alloc_host()
-Date:   Fri, 17 Nov 2023 14:12:55 -0600
-Message-ID: <20231117-axi-spi-engine-series-1-v1-4-cc59db999b87@baylibre.com>
+Subject: [PATCH 01/14] dt-bindings: spi: axi-spi-engine: convert to yaml
+Date:   Fri, 17 Nov 2023 14:12:52 -0600
+Message-ID: <20231117-axi-spi-engine-series-1-v1-1-cc59db999b87@baylibre.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231117-axi-spi-engine-series-1-v1-0-cc59db999b87@baylibre.com>
 References: <20231117-axi-spi-engine-series-1-v1-0-cc59db999b87@baylibre.com>
@@ -74,105 +74,133 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This modifies the AXI SPI Engine driver to use devm_spi_alloc_host()
-instead of spi_alloc_host() to simplify the code a bit.
+This converts the axi-spi-engine binding to yaml.
 
-In addition to simplifying the error paths in the probe function, we
-can also remove spi_controller_get/put() calls in the remove function
-since devm_spi_alloc_host() sets a flag to no longer decrement the
-controller reference count in the spi_unregister_controller() function.
+There are a few minor fixes in the conversion:
+* Added maintainers.
+* Added descriptions for the clocks.
+* Fixed the double "@" in the example.
+* Added a comma between the clocks in the example.
 
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
- drivers/spi/spi-axi-spi-engine.c | 31 ++++++++++---------------------
- 1 file changed, 10 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-engine.c
-index bdf0aa4ceb1d..77c1c115448d 100644
---- a/drivers/spi/spi-axi-spi-engine.c
-+++ b/drivers/spi/spi-axi-spi-engine.c
-@@ -473,7 +473,7 @@ static int spi_engine_probe(struct platform_device *pdev)
- 	if (irq < 0)
- 		return irq;
- 
--	host = spi_alloc_host(&pdev->dev, sizeof(*spi_engine));
-+	host = devm_spi_alloc_host(&pdev->dev, sizeof(*spi_engine));
- 	if (!host)
- 		return -ENOMEM;
- 
-@@ -482,22 +482,16 @@ static int spi_engine_probe(struct platform_device *pdev)
- 	spin_lock_init(&spi_engine->lock);
- 
- 	spi_engine->clk = devm_clk_get_enabled(&pdev->dev, "s_axi_aclk");
--	if (IS_ERR(spi_engine->clk)) {
--		ret = PTR_ERR(spi_engine->clk);
--		goto err_put_host;
--	}
-+	if (IS_ERR(spi_engine->clk))
-+		return PTR_ERR(spi_engine->clk);
- 
- 	spi_engine->ref_clk = devm_clk_get_enabled(&pdev->dev, "spi_clk");
--	if (IS_ERR(spi_engine->ref_clk)) {
--		ret = PTR_ERR(spi_engine->ref_clk);
--		goto err_put_host;
--	}
-+	if (IS_ERR(spi_engine->ref_clk))
-+		return PTR_ERR(spi_engine->ref_clk);
- 
- 	spi_engine->base = devm_platform_ioremap_resource(pdev, 0);
--	if (IS_ERR(spi_engine->base)) {
--		ret = PTR_ERR(spi_engine->base);
--		goto err_put_host;
--	}
-+	if (IS_ERR(spi_engine->base))
-+		return PTR_ERR(spi_engine->base);
- 
- 	version = readl(spi_engine->base + SPI_ENGINE_REG_VERSION);
- 	if (SPI_ENGINE_VERSION_MAJOR(version) != 1) {
-@@ -505,8 +499,7 @@ static int spi_engine_probe(struct platform_device *pdev)
- 			SPI_ENGINE_VERSION_MAJOR(version),
- 			SPI_ENGINE_VERSION_MINOR(version),
- 			SPI_ENGINE_VERSION_PATCH(version));
--		ret = -ENODEV;
--		goto err_put_host;
-+		return -ENODEV;
- 	}
- 
- 	writel_relaxed(0x00, spi_engine->base + SPI_ENGINE_REG_RESET);
-@@ -515,7 +508,7 @@ static int spi_engine_probe(struct platform_device *pdev)
- 
- 	ret = request_irq(irq, spi_engine_irq, 0, pdev->name, host);
- 	if (ret)
--		goto err_put_host;
-+		return ret;
- 
- 	host->dev.of_node = pdev->dev.of_node;
- 	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_3WIRE;
-@@ -533,14 +526,12 @@ static int spi_engine_probe(struct platform_device *pdev)
- 	return 0;
- err_free_irq:
- 	free_irq(irq, host);
--err_put_host:
--	spi_controller_put(host);
- 	return ret;
- }
- 
- static void spi_engine_remove(struct platform_device *pdev)
- {
--	struct spi_controller *host = spi_controller_get(platform_get_drvdata(pdev));
-+	struct spi_controller *host = platform_get_drvdata(pdev);
- 	struct spi_engine *spi_engine = spi_controller_get_devdata(host);
- 	int irq = platform_get_irq(pdev, 0);
- 
-@@ -548,8 +539,6 @@ static void spi_engine_remove(struct platform_device *pdev)
- 
- 	free_irq(irq, host);
- 
--	spi_controller_put(host);
+Note: This work is being done by BayLibre on behalf of Analog Devices Inc.
+This is why the maintainers are @analog.com rather than @baylibre.com.
+
+ .../devicetree/bindings/spi/adi,axi-spi-engine.txt | 31 ----------
+ .../bindings/spi/adi,axi-spi-engine.yaml           | 66 ++++++++++++++++++++++
+ 2 files changed, 66 insertions(+), 31 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/spi/adi,axi-spi-engine.txt b/Documentation/devicetree/bindings/spi/adi,axi-spi-engine.txt
+deleted file mode 100644
+index 8a18d71e6879..000000000000
+--- a/Documentation/devicetree/bindings/spi/adi,axi-spi-engine.txt
++++ /dev/null
+@@ -1,31 +0,0 @@
+-Analog Devices AXI SPI Engine controller Device Tree Bindings
 -
- 	writel_relaxed(0xff, spi_engine->base + SPI_ENGINE_REG_INT_PENDING);
- 	writel_relaxed(0x00, spi_engine->base + SPI_ENGINE_REG_INT_ENABLE);
- 	writel_relaxed(0x01, spi_engine->base + SPI_ENGINE_REG_RESET);
+-Required properties:
+-- compatible		: Must be "adi,axi-spi-engine-1.00.a""
+-- reg			: Physical base address and size of the register map.
+-- interrupts		: Property with a value describing the interrupt
+-			  number.
+-- clock-names		: List of input clock names - "s_axi_aclk", "spi_clk"
+-- clocks		: Clock phandles and specifiers (See clock bindings for
+-			  details on clock-names and clocks).
+-- #address-cells	: Must be <1>
+-- #size-cells		: Must be <0>
+-
+-Optional subnodes:
+-	Subnodes are use to represent the SPI slave devices connected to the SPI
+-	master. They follow the generic SPI bindings as outlined in spi-bus.txt.
+-
+-Example:
+-
+-    spi@@44a00000 {
+-		compatible = "adi,axi-spi-engine-1.00.a";
+-		reg = <0x44a00000 0x1000>;
+-		interrupts = <0 56 4>;
+-		clocks = <&clkc 15 &clkc 15>;
+-		clock-names = "s_axi_aclk", "spi_clk";
+-
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-
+-		/* SPI devices */
+-    };
+diff --git a/Documentation/devicetree/bindings/spi/adi,axi-spi-engine.yaml b/Documentation/devicetree/bindings/spi/adi,axi-spi-engine.yaml
+new file mode 100644
+index 000000000000..d48faa42d025
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/adi,axi-spi-engine.yaml
+@@ -0,0 +1,66 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/spi/adi,axi-spi-engine.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Analog Devices AXI SPI Engine Controller
++
++description: |
++  The AXI SPI Engine controller is part of the SPI Engine framework[1] and
++  allows memory mapped access to the SPI Engine control bus. This allows it
++  to be used as a general purpose software driven SPI controller as well as
++  some optional advanced acceleration and offloading capabilities.
++
++  [1] https://wiki.analog.com/resources/fpga/peripherals/spi_engine
++
++maintainers:
++  - Michael Hennerich <Michael.Hennerich@analog.com>
++  - Nuno Sá <nuno.sa@analog.com>
++
++allOf:
++  - $ref: /schemas/spi/spi-controller.yaml#
++
++properties:
++  compatible:
++    const: adi,axi-spi-engine-1.00.a
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  clocks:
++    items:
++      - description: The AXI interconnect clock.
++      - description: The SPI controller clock.
++
++  clock-names:
++    items:
++      - const: s_axi_aclk
++      - const: spi_clk
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - clocks
++  - clock-names
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    spi@44a00000 {
++        compatible = "adi,axi-spi-engine-1.00.a";
++        reg = <0x44a00000 0x1000>;
++        interrupts = <0 56 4>;
++        clocks = <&clkc 15>, <&clkc 15>;
++        clock-names = "s_axi_aclk", "spi_clk";
++
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        /* SPI devices */
++    };
 
 -- 
 2.42.0

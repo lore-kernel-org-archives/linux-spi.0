@@ -2,97 +2,248 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5838AC2BB3F
-	for <linux-spi@archiver.kernel.org>; Sat, 18 Nov 2023 10:45:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F06D2C5AE5B
+	for <linux-spi@archiver.kernel.org>; Sat, 18 Nov 2023 10:45:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229489AbjKRKpe (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sat, 18 Nov 2023 05:45:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47390 "EHLO
+        id S230015AbjKRKpg (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sat, 18 Nov 2023 05:45:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229449AbjKRKpd (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sat, 18 Nov 2023 05:45:33 -0500
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 396DD10DA;
-        Sat, 18 Nov 2023 02:45:30 -0800 (PST)
+        with ESMTP id S229664AbjKRKpf (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sat, 18 Nov 2023 05:45:35 -0500
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57F6310EC;
+        Sat, 18 Nov 2023 02:45:31 -0800 (PST)
 Received: from mail.maildlp.com (unknown [172.19.163.235])
-        by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4SXVm60rZSz4f3kFd;
+        by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4SXVm60Zxjz4f3jYj;
         Sat, 18 Nov 2023 18:45:26 +0800 (CST)
 Received: from mail02.huawei.com (unknown [10.116.40.112])
-        by mail.maildlp.com (Postfix) with ESMTP id 9B9D71A0175;
-        Sat, 18 Nov 2023 18:45:27 +0800 (CST)
+        by mail.maildlp.com (Postfix) with ESMTP id A90ED1A0176;
+        Sat, 18 Nov 2023 18:45:28 +0800 (CST)
 Received: from huaweicloud.com (unknown [10.175.101.107])
-        by APP1 (Coremail) with SMTP id cCh0CgBXWhDClVhlAjMGBQ--.58652S4;
-        Sat, 18 Nov 2023 18:45:27 +0800 (CST)
+        by APP1 (Coremail) with SMTP id cCh0CgBXWhDClVhlAjMGBQ--.58652S7;
+        Sat, 18 Nov 2023 18:45:28 +0800 (CST)
 From:   Zhang Xiaoxu <zhangxiaoxu@huawecloud.com>
 To:     zhangxiaoxu5@huawei.com, weiyongjun1@huawei.com,
         linux-kernel@vger.kernel.org, broonie@kernel.org,
         rostedt@goodmis.org, mingo@redhat.com, frowand.list@gmail.com,
         linux-spi@vger.kernel.org
-Subject: [PATCH v4 -next 0/4] spi: Introduce BPF based SPI mockup controller
-Date:   Sat, 18 Nov 2023 18:44:38 +0800
-Message-Id: <20231118104442.861759-1-zhangxiaoxu@huawecloud.com>
+Subject: [PATCH v4 -next 3/4] spi: mockup: Add writeable tracepoint for spi transfer
+Date:   Sat, 18 Nov 2023 18:44:41 +0800
+Message-Id: <20231118104442.861759-4-zhangxiaoxu@huawecloud.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231118104442.861759-1-zhangxiaoxu@huawecloud.com>
+References: <20231118104442.861759-1-zhangxiaoxu@huawecloud.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: cCh0CgBXWhDClVhlAjMGBQ--.58652S4
-X-Coremail-Antispam: 1UD129KBjvJXoWrur45KFW5CryDZF15uryDKFg_yoW8JryUpF
-        1kJF13t3ykJrZI9F1fCa4UGFy3Aa4xurWUKa42qw1Fyr9akFyrAw4DKr1Yy3WfJFs7tFyU
-        Zry2kr95KF1UZrJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUkab4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-        6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-        vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
-        xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-        0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-        6I80ewAv7VC0I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-        Cjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JMxAIw28IcxkI7VAKI48JMxAIw28IcVAKzI0E
-        Y4vE52x082I5MxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2
-        IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI
-        42IY6xIIjxv20xvE14v26r4j6ryUMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UMI
-        IF0xvE42xK8VAvwI8IcIk0rVW3JVWrJr1lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2
-        z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x07UG2NtUUUUU=
+X-CM-TRANSID: cCh0CgBXWhDClVhlAjMGBQ--.58652S7
+X-Coremail-Antispam: 1UD129KBjvJXoWxWryrZF4rZF4rZF4UKr1UAwb_yoW7Jr4fpF
+        yUCF45KrW8Jw429F4fuFW8Ary3Aa1kurW7K3sI9wn8Ar18try8Xw4qgry5tFy8JrsFgFyU
+        uFZ2kryjkr45Zw7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUB2b4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
+        6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUWw
+        A2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
+        w2x7M28EF7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
+        W8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+        6rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMc
+        Ij6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_
+        Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2Ij64vIr41l42xK82IY64kExVAvwVAq07
+        x20xyl4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8G
+        jcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2I
+        x0cI8IcVAFwI0_Gr0_Xr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1lIxAIcVCF
+        04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7
+        CjxVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjxUrhFxUUUUU
 Sender: zhangxiaoxu@huaweicloud.com
 X-CM-SenderInfo: x2kd0wp0ld053x6k3tpzhluzxrxghudrp/
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Zhang Xiaoxu <zhangxiaoxu@huawe.com>
+From: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
 
-v3->v4:
-  Use configfs to register the controller and target
-  Modify with the comments from Mark Brown
+Add writeable tracepoint for transfer_one_message(), then bpf program
+can be used to control read and write data from spi host, as mockup
+chip's expectation.
 
-v2->v3:
-  Add configfs to configure and register the device;
-  Fix some misspelling.
+For example:
 
-v1->v2:
-  Use the new _controller() API
-  P1. Move the license identifier to the entrie comment
-  P2. Inherit tx_nbits/rx_nbits/cs_off/cs_change from the
-      spi_transfer to the tracepoint
-  P3. Removed.
-  P4. Update the Document.
+  #include "vmlinux.h"
+  #include <bpf/bpf_helpers.h>
+  #include <bpf/bpf_tracing.h>
 
-Zhang Xiaoxu (4):
-  spi: mockup: Add SPI controller testing driver
-  spi: mockup: Add register spi device support
-  spi: mockup: Add writeable tracepoint for spi transfer
-  spi: mockup: Add documentation
+  SEC("raw_tp.w/spi_transfer_writeable")
+  int BPF_PROG(spi_transfer_writeable_test, struct spi_msg_ctx *msg,
+               u8 chip, unsigned int len)
+  {
+      if (msg->tx_nbits)
+          msg->data[0] = 0x20;
 
- Documentation/spi/index.rst       |   1 +
- Documentation/spi/spi-mockup.rst  | 198 +++++++++++
- drivers/spi/Kconfig               |  12 +
- drivers/spi/Makefile              |   1 +
- drivers/spi/spi-mockup.c          | 562 ++++++++++++++++++++++++++++++
- include/linux/spi/spi-mockup.h    |  17 +
- include/trace/events/spi_mockup.h |  31 ++
- 7 files changed, 822 insertions(+)
- create mode 100644 Documentation/spi/spi-mockup.rst
- create mode 100644 drivers/spi/spi-mockup.c
+      return 0;
+  }
+
+  char LICENSE[] SEC("license") = "GPL";
+
+This will be useful for writing spi device mockup backend.
+
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+Signed-off-by: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
+---
+ drivers/spi/Kconfig               |  1 +
+ drivers/spi/spi-mockup.c          | 53 +++++++++++++++++++++++++++++--
+ include/linux/spi/spi-mockup.h    | 17 ++++++++++
+ include/trace/events/spi_mockup.h | 31 ++++++++++++++++++
+ 4 files changed, 100 insertions(+), 2 deletions(-)
  create mode 100644 include/linux/spi/spi-mockup.h
  create mode 100644 include/trace/events/spi_mockup.h
 
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 6524735a4936..aee2dfcc9e54 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -1232,6 +1232,7 @@ config SPI_TLE62X0
+ 
+ config SPI_MOCKUP
+ 	tristate "SPI controller Testing Driver"
++	select BPF_EVENTS
+ 	help
+ 	  This enables SPI controller testing driver, which provides a way to
+ 	  test SPI subsystem.
+diff --git a/drivers/spi/spi-mockup.c b/drivers/spi/spi-mockup.c
+index f053579cc37f..a86bd6c7bd2e 100644
+--- a/drivers/spi/spi-mockup.c
++++ b/drivers/spi/spi-mockup.c
+@@ -14,6 +14,9 @@
+ #include <linux/spi/spi.h>
+ #include <linux/configfs.h>
+ 
++#define CREATE_TRACE_POINTS
++#include <trace/events/spi_mockup.h>
++
+ #define MOCKUP_CHIPSELECT_MAX	U16_MAX
+ 
+ struct spi_mockup_host {
+@@ -421,13 +424,59 @@ static struct configfs_subsystem spi_mockup_config_subsys = {
+ 	}
+ };
+ 
++static int
++spi_mockup_transfer_writeable(struct spi_message *msg)
++{
++	struct spi_msg_ctx *ctx;
++	struct spi_transfer *t;
++	int ret = 0;
++
++	ctx = kmalloc(sizeof(*ctx), GFP_ATOMIC);
++	if (!ctx)
++		return -ENOMEM;
++
++	list_for_each_entry(t, &msg->transfers, transfer_list) {
++		if (t->len > SPI_BUFSIZ_MAX)
++			return -E2BIG;
++
++		memset(ctx, 0, sizeof(*ctx));
++		ctx->cs_off = t->cs_off;
++		ctx->cs_change = t->cs_change;
++		ctx->tx_nbits = t->tx_nbits;
++		ctx->rx_nbits = t->rx_nbits;
++
++		if (t->tx_nbits)
++			memcpy(ctx->data, t->tx_buf, t->len);
++
++		trace_spi_transfer_writeable(ctx, msg->spi->chip_select, t->len);
++
++		if (ctx->ret) {
++			ret = ctx->ret;
++			break;
++		}
++
++		if (t->rx_nbits)
++			memcpy(t->rx_buf, ctx->data, t->len);
++		msg->actual_length += t->len;
++	}
++
++	kfree(ctx);
++
++	return ret;
++}
++
+ static int
+ spi_mockup_transfer(struct spi_controller *ctrl, struct spi_message *msg)
+ {
+-	msg->status = 0;
++	int ret = 0;
++
++	if (trace_spi_transfer_writeable_enabled())
++		ret = spi_mockup_transfer_writeable(msg);
++
++	msg->status = ret;
+ 	spi_finalize_current_message(ctrl);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static int
+diff --git a/include/linux/spi/spi-mockup.h b/include/linux/spi/spi-mockup.h
+new file mode 100644
+index 000000000000..224894b416fb
+--- /dev/null
++++ b/include/linux/spi/spi-mockup.h
+@@ -0,0 +1,17 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++
++#ifndef __LINUX_SPI_MOCKUP_H
++#define __LINUX_SPI_MOCKUP_H
++
++#define SPI_BUFSIZ_MAX		0x1000
++
++struct spi_msg_ctx {
++	int ret;
++	unsigned cs_off:1;
++	unsigned cs_change:1;
++	unsigned tx_nbits:3;
++	unsigned rx_nbits:3;
++	__u8 data[SPI_BUFSIZ_MAX];
++};
++
++#endif
+diff --git a/include/trace/events/spi_mockup.h b/include/trace/events/spi_mockup.h
+new file mode 100644
+index 000000000000..46debf26a5e3
+--- /dev/null
++++ b/include/trace/events/spi_mockup.h
+@@ -0,0 +1,31 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * SPI mockup controller transfer writeable tracepoint
++ *
++ * Copyright(c) 2022 Huawei Technologies Co., Ltd.
++ */
++
++#undef TRACE_SYSTEM
++#define TRACE_SYSTEM spi_mockup
++
++#if !defined(_TRACE_SPI_MOCKUP_H) || defined(TRACE_HEADER_MULTI_READ)
++#define _TRACE_SPI_MOCKUP_H
++
++#include <linux/tracepoint.h>
++#include <linux/spi/spi-mockup.h>
++
++#ifndef DECLARE_TRACE_WRITABLE
++#define DECLARE_TRACE_WRITABLE(call, proto, args, size) \
++	DECLARE_TRACE(call, PARAMS(proto), PARAMS(args))
++#endif
++
++DECLARE_TRACE_WRITABLE(spi_transfer_writeable,
++	TP_PROTO(struct spi_msg_ctx *msg, u8 chip_select, unsigned int len),
++	TP_ARGS(msg, chip_select, len),
++	sizeof(struct spi_msg_ctx)
++);
++
++#endif /* _TRACE_SPI_MOCKUP_H */
++
++/* This part must be outside protection */
++#include <trace/define_trace.h>
 -- 
 2.34.1
 

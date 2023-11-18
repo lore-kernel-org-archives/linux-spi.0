@@ -2,183 +2,157 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B33BC54FB9
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CAC68C5AE5B
 	for <linux-spi@archiver.kernel.org>; Sat, 18 Nov 2023 10:41:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232611AbjKRKln (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sat, 18 Nov 2023 05:41:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58024 "EHLO
+        id S232649AbjKRKlo (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sat, 18 Nov 2023 05:41:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231782AbjKRKll (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sat, 18 Nov 2023 05:41:41 -0500
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 031BED75;
-        Sat, 18 Nov 2023 02:41:36 -0800 (PST)
+        with ESMTP id S229515AbjKRKlm (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sat, 18 Nov 2023 05:41:42 -0500
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4185510D0;
+        Sat, 18 Nov 2023 02:41:38 -0800 (PST)
 Received: from mail.maildlp.com (unknown [172.19.163.235])
-        by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4SXVgc2NmHz4f3jMP;
-        Sat, 18 Nov 2023 18:41:32 +0800 (CST)
+        by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4SXVgb3bkfz4f3lfh;
+        Sat, 18 Nov 2023 18:41:31 +0800 (CST)
 Received: from mail02.huawei.com (unknown [10.116.40.112])
-        by mail.maildlp.com (Postfix) with ESMTP id CF75C1A0175;
-        Sat, 18 Nov 2023 18:41:33 +0800 (CST)
+        by mail.maildlp.com (Postfix) with ESMTP id 9BC8C1A0176;
+        Sat, 18 Nov 2023 18:41:35 +0800 (CST)
 Received: from huaweicloud.com (unknown [10.175.101.107])
-        by APP1 (Coremail) with SMTP id cCh0CgDn6hDQlFhlQPAFBQ--.58135S4;
-        Sat, 18 Nov 2023 18:41:33 +0800 (CST)
+        by APP1 (Coremail) with SMTP id cCh0CgDn6hDQlFhlQPAFBQ--.58135S9;
+        Sat, 18 Nov 2023 18:41:35 +0800 (CST)
 From:   Zhang Xiaoxu <zhangxiaoxu@huaweicloud.com>
 To:     zhangxiaoxu5@huawei.com, weiyongjun1@huawei.com,
         linux-kernel@vger.kernel.org, broonie@kernel.org,
         rostedt@goodmis.org, mingo@redhat.com, frowand.list@gmail.com,
         linux-spi@vger.kernel.org
-Subject: [PATCH -next 00/14] Implement a ligth weight device driver test framework
-Date:   Sat, 18 Nov 2023 18:40:26 +0800
-Message-Id: <20231118104040.386381-1-zhangxiaoxu@huaweicloud.com>
+Subject: [PATCH -next 05/14] kddv/core: Support kernel memory leak detector
+Date:   Sat, 18 Nov 2023 18:40:31 +0800
+Message-Id: <20231118104040.386381-6-zhangxiaoxu@huaweicloud.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231118104040.386381-1-zhangxiaoxu@huaweicloud.com>
+References: <20231118104040.386381-1-zhangxiaoxu@huaweicloud.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: cCh0CgDn6hDQlFhlQPAFBQ--.58135S4
-X-Coremail-Antispam: 1UD129KBjvJXoWxKry3tw4DWr17WFW3Zr18Zrb_yoWxKF43pF
-        WrJ347Wa1UCF1ftrs5tF4jqFWrXw4kWF4Fkr1IqryxWr93Kr1rCrW2k3WYqF9xua1FqrZ5
-        Aw109ryUCw1UXaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUgKb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-        6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-        vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
-        xVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
-        0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-        x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-        0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Y
-        z7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zV
-        AF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4l
-        IxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWrZr1j6s
-        0DMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBI
-        daVFxhVjvjDU0xZFpf9x07UWE__UUUUU=
+X-CM-TRANSID: cCh0CgDn6hDQlFhlQPAFBQ--.58135S9
+X-Coremail-Antispam: 1UD129KBjvJXoWxAw4kCry3tr43tFW8Cr48JFb_yoW5XF1xpa
+        n5Kr1agF17uF13Krs3tF1UWFWF9rs7GF48tF97Jw45Wry3JFyYyr43t3W2vFyfW3s5t393
+        A3y0gr42krWUJaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUvEb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
+        6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUAV
+        Cq3wA2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0
+        rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267
+        AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E
+        14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7
+        xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Y
+        z7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7
+        v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF
+        1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIx
+        AIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI
+        42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWI
+        evJa73UjIFyTuYvjxUFgAwUUUUU
 X-CM-SenderInfo: x2kd0wp0ld053x6k3tpzhluzxrxghudrp/
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Zhang Xiaoxu <zhangxiaoxu@huawei.com>
+From: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
 
-Implement a ligth weight device driver test framework, KDDV(Kernel
-Device Driver Verification). Which using eBPF based bus controllers
-to mockup device chipsets.
+Check the kmemleak before return from test case,
+fail the test case if a kmemleak is detected.
 
-The kddv already discover the following issues:
-  fc92d9e3de0b iio: health: afe4404: Fix oob read in afe4404_[read|write]_raw
-  58143c1ed588 iio: health: afe4403: Fix oob read in afe4403_read_raw
-  3f4033a811bc iio: filter: admv8818: close potential out-of-bounds read in __admv8818_read_[h|l]pf_freq()
-  8c9a59939deb Input: raydium_ts_i2c - fix memory leak in raydium_i2c_send()
-  7485edb2b6ca media: i2c: ov772x: Fix memleak in ov772x_probe()
-  bab76514aca3 regulator: da9121: Fix uninit-value in da9121_assign_chip_model()
-  9d47e01b9d80 power: supply: adp5061: fix out-of-bounds read in adp5061_get_chg_type()
-  ...
-
-Zhang Xiaoxu (14):
-  kddv/core: Implement a ligth weight device driver test framework
-  kddv/core: Allow test case config bpf program
-  kddv/core: Add io fault support to bpf program
-  kddv/core: Check kmsg before return from test case
-  kddv/core: Support kernel memory leak detector
-  kddv/core: Add page and slab fault inject support
-  kddv/cmd: Add command to create/remove mockup device
-  kddv/cmd: Add command to run testcases
-  kddv/core: Add test support for SPI driver
-  kddv/tests: Add support for testing hwmon driver
-  kddv/tests/hwmon: Add test cases for max31722 driver
-  kddv/tests: Add support for testing mtd driver
-  kddv/tests/mtd: Add test cases for mchp23k256 driver
-  kddv: Add document for kddv
-
- Documentation/dev-tools/index.rst             |   1 +
- Documentation/dev-tools/kddv.rst              | 183 ++++++++
- tools/testing/kddv/.gitignore                 |   3 +
- tools/testing/kddv/Makefile                   |  25 ++
- tools/testing/kddv/kddv/Makefile              |  28 ++
- tools/testing/kddv/kddv/__init__.py           |   0
- tools/testing/kddv/kddv/cmds/__init__.py      |   0
- tools/testing/kddv/kddv/cmds/mock.py          | 105 +++++
- tools/testing/kddv/kddv/cmds/test.py          |  75 ++++
- tools/testing/kddv/kddv/cmds/utils.py         |  28 ++
- tools/testing/kddv/kddv/core/__init__.py      |  13 +
- .../testing/kddv/kddv/core/buses/__init__.py  |  13 +
- tools/testing/kddv/kddv/core/buses/spi.py     |  74 +++
- tools/testing/kddv/kddv/core/consts.py        |  13 +
- tools/testing/kddv/kddv/core/ddunit.py        |  83 ++++
- tools/testing/kddv/kddv/core/device.py        |  78 ++++
- tools/testing/kddv/kddv/core/dmesg.py         |  41 ++
- tools/testing/kddv/kddv/core/driver.py        |  82 ++++
- tools/testing/kddv/kddv/core/environ.py       |  65 +++
- tools/testing/kddv/kddv/core/failnth.py       |  57 +++
- tools/testing/kddv/kddv/core/faulter.py       |  48 ++
- .../testing/kddv/kddv/core/faults/__init__.py |  13 +
- tools/testing/kddv/kddv/core/faults/fail.py   |  86 ++++
- tools/testing/kddv/kddv/core/faults/page.py   |  40 ++
- tools/testing/kddv/kddv/core/faults/slab.py   |  36 ++
- tools/testing/kddv/kddv/core/memleak.py       |  39 ++
- tools/testing/kddv/kddv/core/mockup.py        | 193 ++++++++
- tools/testing/kddv/kddv/core/model.py         |  95 ++++
- tools/testing/kddv/kddv/data/Makefile         |  21 +
- tools/testing/kddv/kddv/data/bpf/Makefile     |  22 +
- .../kddv/data/bpf/include/bpf-xfer-conf.h     | 124 +++++
- .../kddv/kddv/data/bpf/mtd/mtd-mchp23k256.c   |  72 +++
- .../kddv/kddv/data/bpf/spi/spi-xfer-base.h    |  99 ++++
- .../kddv/kddv/data/bpf/spi/spi-xfer-r1v1.c    |  51 +++
- .../kddv/kddv/data/bpf/spi/spi-xfer-r1v2.c    |  51 +++
- .../kddv/kddv/data/bpf/spi/spi-xfer-r1v3.c    |  86 ++++
- .../kddv/kddv/data/bpf/spi/spi-xfer-r2v1.c    |  51 +++
- .../kddv/kddv/data/bpf/spi/spi-xfer-r2v2.c    |  51 +++
- .../kddv/kddv/data/bpf/spi/spi-xfer-r3v1.c    |  52 +++
- .../kddv/kddv/data/bpf/spi/spi-xfer-r4v4.c    |  89 ++++
- tools/testing/kddv/kddv/tests/__init__.py     |   0
- .../testing/kddv/kddv/tests/hwmon/__init__.py | 425 ++++++++++++++++++
- .../kddv/kddv/tests/hwmon/test_max31722.py    |  40 ++
- tools/testing/kddv/kddv/tests/mtd/__init__.py |  63 +++
- .../kddv/kddv/tests/mtd/test_mchp23k256.py    |  41 ++
- 45 files changed, 2855 insertions(+)
- create mode 100755 Documentation/dev-tools/kddv.rst
- create mode 100644 tools/testing/kddv/.gitignore
- create mode 100644 tools/testing/kddv/Makefile
- create mode 100644 tools/testing/kddv/kddv/Makefile
- create mode 100755 tools/testing/kddv/kddv/__init__.py
- create mode 100755 tools/testing/kddv/kddv/cmds/__init__.py
- create mode 100755 tools/testing/kddv/kddv/cmds/mock.py
- create mode 100755 tools/testing/kddv/kddv/cmds/test.py
- create mode 100755 tools/testing/kddv/kddv/cmds/utils.py
- create mode 100755 tools/testing/kddv/kddv/core/__init__.py
- create mode 100755 tools/testing/kddv/kddv/core/buses/__init__.py
- create mode 100755 tools/testing/kddv/kddv/core/buses/spi.py
- create mode 100755 tools/testing/kddv/kddv/core/consts.py
- create mode 100755 tools/testing/kddv/kddv/core/ddunit.py
- create mode 100755 tools/testing/kddv/kddv/core/device.py
- create mode 100755 tools/testing/kddv/kddv/core/dmesg.py
- create mode 100755 tools/testing/kddv/kddv/core/driver.py
- create mode 100755 tools/testing/kddv/kddv/core/environ.py
- create mode 100755 tools/testing/kddv/kddv/core/failnth.py
- create mode 100755 tools/testing/kddv/kddv/core/faulter.py
- create mode 100755 tools/testing/kddv/kddv/core/faults/__init__.py
- create mode 100755 tools/testing/kddv/kddv/core/faults/fail.py
- create mode 100755 tools/testing/kddv/kddv/core/faults/page.py
- create mode 100755 tools/testing/kddv/kddv/core/faults/slab.py
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+Signed-off-by: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
+---
+ tools/testing/kddv/kddv/core/environ.py | 13 ++++++++-
+ tools/testing/kddv/kddv/core/memleak.py | 39 +++++++++++++++++++++++++
+ 2 files changed, 51 insertions(+), 1 deletion(-)
  create mode 100755 tools/testing/kddv/kddv/core/memleak.py
- create mode 100755 tools/testing/kddv/kddv/core/mockup.py
- create mode 100755 tools/testing/kddv/kddv/core/model.py
- create mode 100644 tools/testing/kddv/kddv/data/Makefile
- create mode 100644 tools/testing/kddv/kddv/data/bpf/Makefile
- create mode 100644 tools/testing/kddv/kddv/data/bpf/include/bpf-xfer-conf.h
- create mode 100644 tools/testing/kddv/kddv/data/bpf/mtd/mtd-mchp23k256.c
- create mode 100644 tools/testing/kddv/kddv/data/bpf/spi/spi-xfer-base.h
- create mode 100644 tools/testing/kddv/kddv/data/bpf/spi/spi-xfer-r1v1.c
- create mode 100644 tools/testing/kddv/kddv/data/bpf/spi/spi-xfer-r1v2.c
- create mode 100644 tools/testing/kddv/kddv/data/bpf/spi/spi-xfer-r1v3.c
- create mode 100644 tools/testing/kddv/kddv/data/bpf/spi/spi-xfer-r2v1.c
- create mode 100644 tools/testing/kddv/kddv/data/bpf/spi/spi-xfer-r2v2.c
- create mode 100644 tools/testing/kddv/kddv/data/bpf/spi/spi-xfer-r3v1.c
- create mode 100644 tools/testing/kddv/kddv/data/bpf/spi/spi-xfer-r4v4.c
- create mode 100755 tools/testing/kddv/kddv/tests/__init__.py
- create mode 100755 tools/testing/kddv/kddv/tests/hwmon/__init__.py
- create mode 100755 tools/testing/kddv/kddv/tests/hwmon/test_max31722.py
- create mode 100644 tools/testing/kddv/kddv/tests/mtd/__init__.py
- create mode 100755 tools/testing/kddv/kddv/tests/mtd/test_mchp23k256.py
 
+diff --git a/tools/testing/kddv/kddv/core/environ.py b/tools/testing/kddv/kddv/core/environ.py
+index d57e33a6ac6e..68c98e8c44da 100755
+--- a/tools/testing/kddv/kddv/core/environ.py
++++ b/tools/testing/kddv/kddv/core/environ.py
+@@ -9,20 +9,31 @@
+ import logging
+ 
+ from .dmesg import KernelMessage
++from .memleak import Kmemleak
+ 
+ logger = logging.getLogger(__name__)
+ 
+ class Environ(object):
+     def __init__(self):
+         self.kmsg = KernelMessage()
++        self.leak = Kmemleak()
+ 
+     def setup(self):
+         self.kmsg.setup()
++        self.leak.setup()
+ 
+     def teardown(self):
++        self.leak.teardown()
+         self.kmsg.teardown()
+ 
++    def enable_kmemleak(self):
++        """Enable Kernel memory leak detector"""
++        self.leak.enabled = True
++
+     def check_failure(self):
+-        return self.kmsg.check_failure()
++        msg = self.kmsg.check_failure()
++        if msg:
++            return msg
++        return self.leak.check_failure()
+ 
+ environ = Environ()
+diff --git a/tools/testing/kddv/kddv/core/memleak.py b/tools/testing/kddv/kddv/core/memleak.py
+new file mode 100755
+index 000000000000..7ff67997560f
+--- /dev/null
++++ b/tools/testing/kddv/kddv/core/memleak.py
+@@ -0,0 +1,39 @@
++#!/usr/bin/env python3
++# SPDX-License-Identifier: GPL-2.0
++#
++# Kernel device driver verification
++#
++# Copyright (C) 2022-2023 Huawei Technologies Co., Ltd
++# Author: Wei Yongjun <weiyongjun1@huawei.com>
++
++import os
++import logging
++import pathlib
++
++KMEMLEAK = '/sys/kernel/debug/kmemleak'
++
++logger = logging.getLogger(__name__)
++
++class Kmemleak(object):
++    def __init__(self):
++        self.has_feature = os.path.exists(KMEMLEAK)
++        self.ctrl = pathlib.Path(KMEMLEAK)
++        self.enabled = False
++
++    def setup(self):
++        if not self.has_feature or not self.enabled:
++            return
++        self.ctrl.write_text('clear')
++
++    def teardown(self):
++        if not self.has_feature or not self.enabled:
++            return
++        self.ctrl.write_text('clear')
++
++    def check_failure(self):
++        if not self.has_feature or not self.enabled:
++            return None
++        logger.debug('check kernel memleak')
++        self.ctrl.write_text('scan')
++        self.ctrl.write_text('scan')
++        return self.ctrl.read_text().rstrip()
 -- 
 2.34.1
 

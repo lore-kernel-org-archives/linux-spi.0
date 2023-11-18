@@ -2,44 +2,44 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D359AC54E76
-	for <linux-spi@archiver.kernel.org>; Sat, 18 Nov 2023 10:41:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 666ABC54FB9
+	for <linux-spi@archiver.kernel.org>; Sat, 18 Nov 2023 10:41:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229743AbjKRKlr (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sat, 18 Nov 2023 05:41:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58094 "EHLO
+        id S232923AbjKRKlt (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sat, 18 Nov 2023 05:41:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232166AbjKRKln (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sat, 18 Nov 2023 05:41:43 -0500
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58C0BD6C;
-        Sat, 18 Nov 2023 02:41:39 -0800 (PST)
+        with ESMTP id S232664AbjKRKlo (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sat, 18 Nov 2023 05:41:44 -0500
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C861D10D0;
+        Sat, 18 Nov 2023 02:41:40 -0800 (PST)
 Received: from mail.maildlp.com (unknown [172.19.163.216])
-        by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4SXVgg1JfLz4f3kFl;
-        Sat, 18 Nov 2023 18:41:35 +0800 (CST)
+        by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4SXVgd4krCz4f3lg9;
+        Sat, 18 Nov 2023 18:41:33 +0800 (CST)
 Received: from mail02.huawei.com (unknown [10.116.40.112])
-        by mail.maildlp.com (Postfix) with ESMTP id AB7221A016F;
-        Sat, 18 Nov 2023 18:41:36 +0800 (CST)
+        by mail.maildlp.com (Postfix) with ESMTP id C5AE71A016E;
+        Sat, 18 Nov 2023 18:41:37 +0800 (CST)
 Received: from huaweicloud.com (unknown [10.175.101.107])
-        by APP1 (Coremail) with SMTP id cCh0CgDn6hDQlFhlQPAFBQ--.58135S12;
-        Sat, 18 Nov 2023 18:41:36 +0800 (CST)
+        by APP1 (Coremail) with SMTP id cCh0CgDn6hDQlFhlQPAFBQ--.58135S15;
+        Sat, 18 Nov 2023 18:41:37 +0800 (CST)
 From:   Zhang Xiaoxu <zhangxiaoxu@huaweicloud.com>
 To:     zhangxiaoxu5@huawei.com, weiyongjun1@huawei.com,
         linux-kernel@vger.kernel.org, broonie@kernel.org,
         rostedt@goodmis.org, mingo@redhat.com, frowand.list@gmail.com,
         linux-spi@vger.kernel.org
-Subject: [PATCH -next 08/14] kddv/cmd: Add command to run testcases
-Date:   Sat, 18 Nov 2023 18:40:34 +0800
-Message-Id: <20231118104040.386381-9-zhangxiaoxu@huaweicloud.com>
+Subject: [PATCH -next 11/14] kddv/tests/hwmon: Add test cases for max31722 driver
+Date:   Sat, 18 Nov 2023 18:40:37 +0800
+Message-Id: <20231118104040.386381-12-zhangxiaoxu@huaweicloud.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231118104040.386381-1-zhangxiaoxu@huaweicloud.com>
 References: <20231118104040.386381-1-zhangxiaoxu@huaweicloud.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: cCh0CgDn6hDQlFhlQPAFBQ--.58135S12
-X-Coremail-Antispam: 1UD129KBjvJXoWxXF48Wr4UCr45uw1xGr4Durg_yoW5Zw4Upa
-        4fCr1F9FyfWF1rKwnxCFyUurW5Xan5AF4jkFyxC343ta15CrZF9rWIkayaqF9xWw4rX34a
-        v3W0qr43Gw4DJaUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+X-CM-TRANSID: cCh0CgDn6hDQlFhlQPAFBQ--.58135S15
+X-Coremail-Antispam: 1UD129KBjvJXoW7ZFy5Aw1xKFW7AFWkJF4fKrg_yoW8ZF15pF
+        1fGr1Y9Fn2qr1fXwnakF1a9FyrZF4xuF4Ykr47Aw15WFn8JrySkrZIkFyUAF13XrWFgFWr
+        Z348WF4akw43JaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
         9KBjDU0xBIdaVrnRJUUU90b4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
         6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUAV
         Cq3wA2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0
@@ -49,7 +49,7 @@ X-Coremail-Antispam: 1UD129KBjvJXoWxXF48Wr4UCr45uw1xGr4Durg_yoW5Zw4Upa
         xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Y
         z7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7
         v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF
-        1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIx
+        1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Gr0_Xr1lIx
         AIcVC0I7IYx2IY6xkF7I0E14v26F4j6r4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
         IxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIda
         VFxhVjvjDU0xZFpf9x07UZo7tUUUUU=
@@ -60,38 +60,22 @@ X-Mailing-List: linux-spi@vger.kernel.org
 
 From: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
 
-Add command kddv.cmds.test, which can help to run the testcase
-use the python unittest framework.
-  $ python3 -m kddv.cmd.test
-  or
-  $ python3 -m kddv.cmd.test kddv.tests.hwmon.test_max31722
-
-Also enable fault inject test or enable kmemleak check. Usage:
-
-Enable fault inject test:
-  $ python3 -m kddv.cmds.test --fault-inject=all
-  or
-  $ python3 -m kddv.cmds.test --fault-inject=all \
-  kddv.tests.hwmon.test_max31722.TestMax31722.test_device_probe
-
-Enable kmemleak check:
-  $ python3 -m kddv.cmds.test --kmemleak
-
-Both fault inject and kmemleak will increase the time times.
+This add test case for max31722 hwmon driver, test for
+the device loading and read temperature from the device.
 
 Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 Signed-off-by: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
 ---
- tools/testing/kddv/kddv/cmds/test.py | 75 ++++++++++++++++++++++++++++
- 1 file changed, 75 insertions(+)
- create mode 100755 tools/testing/kddv/kddv/cmds/test.py
+ .../kddv/kddv/tests/hwmon/test_max31722.py    | 40 +++++++++++++++++++
+ 1 file changed, 40 insertions(+)
+ create mode 100755 tools/testing/kddv/kddv/tests/hwmon/test_max31722.py
 
-diff --git a/tools/testing/kddv/kddv/cmds/test.py b/tools/testing/kddv/kddv/cmds/test.py
+diff --git a/tools/testing/kddv/kddv/tests/hwmon/test_max31722.py b/tools/testing/kddv/kddv/tests/hwmon/test_max31722.py
 new file mode 100755
-index 000000000000..9be346983286
+index 000000000000..70223eb0ef7b
 --- /dev/null
-+++ b/tools/testing/kddv/kddv/cmds/test.py
-@@ -0,0 +1,75 @@
++++ b/tools/testing/kddv/kddv/tests/hwmon/test_max31722.py
+@@ -0,0 +1,40 @@
 +#!/usr/bin/env python3
 +# SPDX-License-Identifier: GPL-2.0
 +#
@@ -100,73 +84,38 @@ index 000000000000..9be346983286
 +# Copyright (C) 2022-2023 Huawei Technologies Co., Ltd
 +# Author: Wei Yongjun <weiyongjun1@huawei.com>
 +
-+import os
-+import sys
-+import fnmatch
-+import argparse
-+import unittest
++from kddv.core import SPIDriverTest
++from kddv.core.consts import CFG_REG_MASK
++from . import HwMonDriver
++import errno
 +
-+from kddv.core.ddunit import DriverTest
-+from kddv.core.environ import environ
-+from . import utils
++MAX31722_REG_CFG = 0x00
++MAX31722_REG_TEMP_LSB = 0x01
++MAX31722_MODE_CONTINUOUS = 0x00
++MAX31722_RESOLUTION_12BIT = 0x06
 +
-+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
++class TestMax31722(SPIDriverTest, HwMonDriver):
++    name = 'max31722'
 +
-+def _list_suite(suite, tfilter=None):
-+    for t in suite:
-+        if isinstance(t, unittest.TestSuite):
-+            _list_suite(t, tfilter)
-+        elif isinstance(t, DriverTest):
-+            id = t.id()
-+            if tfilter and not any(fnmatch.fnmatch(id, f) for f in tfilter):
-+                continue
-+            print(f"kddv.tests.{id}")
-+        else:
-+            return None
++    @property
++    def configs(self):
++        return { CFG_REG_MASK: 0x7f }
 +
-+def list_suite(args):
-+    args.filter = [f"*{f}*" for f in args.filter]
-+    loader = unittest.defaultTestLoader
-+    suites = loader.discover(os.path.join(ROOT_DIR, 'tests'))
-+    _list_suite(suites, args.filter)
-+    return 0
++    def test_device_probe(self):
++        with self.assertRaisesFault():
++            with self.device() as dev:
++                self.assertRegEqual(MAX31722_REG_CFG, MAX31722_RESOLUTION_12BIT)
 +
-+def main() -> None:
-+    parser = argparse.ArgumentParser()
++    def test_read_temp_input(self):
++        with self.device() as dev:
++            self.write_regs(MAX31722_REG_TEMP_LSB, [0x12, 0x34])
++            temp = self.hwmon_read_temp_input(dev)
++            self.assertEqual(temp, int(0x3412 * 125 / 32))
 +
-+    parser.add_argument(
-+        "--log-level", type=str, default=None,
-+        choices=utils.LOG_LEVELS, help="Log Level"
-+    )
-+    parser.add_argument(
-+        "--list", action='store_true', default=False,
-+        help="List test cases",
-+    )
-+    parser.add_argument(
-+        "--kmemleak", action='store_true', default=False,
-+        help="Enable kmemeleak check",
-+    )
-+    parser.add_argument(
-+        "--fault-inject", type=str, default=None,
-+        choices=["slab", "page", "all"],
-+        help="Enable fault inject features",
-+    )
-+    parser.add_argument("--filter", nargs="+", default=[],)
-+
-+    args, argv = parser.parse_known_args(sys.argv)
-+    if args.log_level:
-+        utils.setup_logger(args.log_level)
-+    if args.list:
-+        return list_suite(args)
-+    if args.kmemleak:
-+        environ.enable_kmemleak()
-+    if args.fault_inject:
-+        environ.enable_fault_inject(args.fault_inject)
-+
-+    unittest.main(verbosity=2, module=None, argv=argv)
-+
-+if __name__ == "__main__":
-+    main()
++            self.trigger_io_fault()
++            with self.assertRaises(OSError) as cm:
++                self.hwmon_read_temp_input(dev)
++            self.assertEqual(cm.exception.errno, errno.EIO)
 -- 
 2.34.1
 

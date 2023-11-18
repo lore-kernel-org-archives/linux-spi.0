@@ -2,65 +2,198 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 60E22C54E76
-	for <linux-spi@archiver.kernel.org>; Sat, 18 Nov 2023 06:30:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 64F0DC2BB3F
+	for <linux-spi@archiver.kernel.org>; Sat, 18 Nov 2023 10:41:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230091AbjKRGaS (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sat, 18 Nov 2023 01:30:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54656 "EHLO
+        id S232437AbjKRKlm (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sat, 18 Nov 2023 05:41:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230044AbjKRGaR (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sat, 18 Nov 2023 01:30:17 -0500
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEF29D57;
-        Fri, 17 Nov 2023 22:30:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1700289014; x=1731825014;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=NJlCzxx4fg7oaPT+y5aC4GdbEcDuTAQAQV3iOEeBygM=;
-  b=YIRpL4y94nP1OwpmsdkUACPGBgMljhdv1nCq44CCI79WbcZ4ExypDifU
-   YU5K5/QqEtvZhMgLlYOLaZw3c9Slhg3u+6v3geVyimYm1OG9d69iaiuHM
-   Ad2woz5cR0xSzfqf8Bre5S9DwAVqr0BeNq3Cp8EKwXe4YSw+6gw06pl5Z
-   /Jzfv1N/kYtb9VyOvX0A4+T7IBM/PIA6YPaK0a/vtpbF0tCffTkPM7fx6
-   30VKxSsL6wFFgjZ94RZ87hpf2D7T9Ye41dem2mKZM27q1NYlL7YlvKTEm
-   +B9/jzjSCFoqujRzKlN+A0FbKRrN3ZgT6/26Q7/Gknfdszn693F/q4KOa
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10897"; a="4494165"
-X-IronPort-AV: E=Sophos;i="6.04,207,1695711600"; 
-   d="scan'208";a="4494165"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2023 22:30:13 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10897"; a="715738438"
-X-IronPort-AV: E=Sophos;i="6.04,207,1695711600"; 
-   d="scan'208";a="715738438"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga003.jf.intel.com with ESMTP; 17 Nov 2023 22:30:11 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1001)
-        id 5CD6620B; Sat, 18 Nov 2023 08:30:10 +0200 (EET)
-Date:   Sat, 18 Nov 2023 08:30:10 +0200
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     Raag Jadav <raag.jadav@intel.com>
-Cc:     broonie@kernel.org, andriy.shevchenko@linux.intel.com,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] spi: intel: make mem_ops comparison unique to opcode
- match
-Message-ID: <20231118063010.GJ17433@black.fi.intel.com>
-References: <20231117144053.24005-1-raag.jadav@intel.com>
+        with ESMTP id S229449AbjKRKll (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sat, 18 Nov 2023 05:41:41 -0500
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0EF410CE;
+        Sat, 18 Nov 2023 02:41:37 -0800 (PST)
+Received: from mail.maildlp.com (unknown [172.19.163.235])
+        by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4SXVgb137mz4f3lfd;
+        Sat, 18 Nov 2023 18:41:31 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.112])
+        by mail.maildlp.com (Postfix) with ESMTP id 44A8B1A0175;
+        Sat, 18 Nov 2023 18:41:35 +0800 (CST)
+Received: from huaweicloud.com (unknown [10.175.101.107])
+        by APP1 (Coremail) with SMTP id cCh0CgDn6hDQlFhlQPAFBQ--.58135S8;
+        Sat, 18 Nov 2023 18:41:35 +0800 (CST)
+From:   Zhang Xiaoxu <zhangxiaoxu@huaweicloud.com>
+To:     zhangxiaoxu5@huawei.com, weiyongjun1@huawei.com,
+        linux-kernel@vger.kernel.org, broonie@kernel.org,
+        rostedt@goodmis.org, mingo@redhat.com, frowand.list@gmail.com,
+        linux-spi@vger.kernel.org
+Subject: [PATCH -next 04/14] kddv/core: Check kmsg before return from test case
+Date:   Sat, 18 Nov 2023 18:40:30 +0800
+Message-Id: <20231118104040.386381-5-zhangxiaoxu@huaweicloud.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231118104040.386381-1-zhangxiaoxu@huaweicloud.com>
+References: <20231118104040.386381-1-zhangxiaoxu@huaweicloud.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231117144053.24005-1-raag.jadav@intel.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: cCh0CgDn6hDQlFhlQPAFBQ--.58135S8
+X-Coremail-Antispam: 1UD129KBjvJXoWxAw15Jry7ZF13JF1fKF48WFg_yoWrXF4xpa
+        1rGr43WF4xur1Skw1SkF1UuFWrWan7CF4rKrnIy34agr13Aas8Kr47t3WUXFy3urn5t39a
+        va4vgr4jkr47XrJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUvKb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
+        6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUAV
+        Cq3wA2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0
+        rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267
+        AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAF
+        wI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2
+        WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkE
+        bVWUJVW8JwACjcxG0xvY0x0EwIxGrwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbV
+        WUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF
+        67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42
+        IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF
+        0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxh
+        VjvjDU0xZFpf9x07UZo7tUUUUU=
+X-CM-SenderInfo: x2kd0wp0ld053x6k3tpzhluzxrxghudrp/
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Fri, Nov 17, 2023 at 08:10:53PM +0530, Raag Jadav wrote:
-> Instead of comparing parameters for every supported mem_ops, only compare
-> on opcode match, which is relatively more efficient.
-> 
-> Signed-off-by: Raag Jadav <raag.jadav@intel.com>
+From: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
 
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Check kernel message before return from test case, if bug
+or error in kernel message, fail the test case.
+
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+Signed-off-by: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
+---
+ tools/testing/kddv/kddv/core/ddunit.py  | 12 ++++++++
+ tools/testing/kddv/kddv/core/dmesg.py   | 41 +++++++++++++++++++++++++
+ tools/testing/kddv/kddv/core/environ.py | 28 +++++++++++++++++
+ 3 files changed, 81 insertions(+)
+ create mode 100755 tools/testing/kddv/kddv/core/dmesg.py
+ create mode 100755 tools/testing/kddv/kddv/core/environ.py
+
+diff --git a/tools/testing/kddv/kddv/core/ddunit.py b/tools/testing/kddv/kddv/core/ddunit.py
+index fd4ab9fe048c..197300f8a6d4 100755
+--- a/tools/testing/kddv/kddv/core/ddunit.py
++++ b/tools/testing/kddv/kddv/core/ddunit.py
+@@ -10,6 +10,7 @@ import logging
+ import unittest
+ 
+ from .model import DriverModel
++from .environ import environ
+ 
+ logger = logging.getLogger(__name__)
+ 
+@@ -25,12 +26,18 @@ class DriverTest(unittest.TestCase, DriverModel):
+         except:
+             self.skipTest(f"Module {self.module_name} not found")
+         self.mockup.load()
++        environ.setup()
+ 
+     def tearDown(self):
++        environ.teardown()
+         self.mockup.unload()
+         self.driver.teardown()
+         super().tearDown()
+ 
++    def _callTestMethod(self, method):
++        method()
++        self.assertFault()
++
+     def assertRegEqual(self, reg, data, msg=None):
+         value = self.read_reg(reg)
+         self.assertEqual(value, data, msg)
+@@ -42,3 +49,8 @@ class DriverTest(unittest.TestCase, DriverModel):
+     def assertRegsEqual(self, reg, data, msg=None):
+         value = self.read_regs(reg, len(data))
+         self.assertListEqual(value, data, msg)
++
++    def assertFault(self):
++        msg = environ.check_failure()
++        if msg:
++            raise self.failureException(msg)
+diff --git a/tools/testing/kddv/kddv/core/dmesg.py b/tools/testing/kddv/kddv/core/dmesg.py
+new file mode 100755
+index 000000000000..e528b6164f46
+--- /dev/null
++++ b/tools/testing/kddv/kddv/core/dmesg.py
+@@ -0,0 +1,41 @@
++#!/usr/bin/env python3
++# SPDX-License-Identifier: GPL-2.0
++#
++# Kernel device driver verification
++#
++# Copyright (C) 2022-2023 Huawei Technologies Co., Ltd
++# Author: Wei Yongjun <weiyongjun1@huawei.com>
++
++import re
++import logging
++import subprocess
++
++KERNEL_PANIC = [
++    "BUG:",
++    "WARNING:",
++    "INFO:",
++    "[kK]ernel BUG",
++    "PANIC: double fault",
++    "divide error:",
++    "UBSAN:",
++    "Unable to handle kernel",
++    "general protection fault",
++]
++
++logger = logging.getLogger(__name__)
++
++class KernelMessage(object):
++
++    def setup(self):
++        subprocess.run(["/usr/bin/dmesg", "-C"])
++
++    def teardown(self):
++        subprocess.run(["/usr/bin/dmesg", "-C"])
++
++    def check_failure(self):
++        logger.debug('check kernel message')
++        kmsg = subprocess.check_output(["/usr/bin/dmesg", "-c"])
++        regex_pattern = re.compile("|".join(KERNEL_PANIC))
++        if regex_pattern.search(kmsg.decode()):
++            return kmsg.decode()
++        return None
+diff --git a/tools/testing/kddv/kddv/core/environ.py b/tools/testing/kddv/kddv/core/environ.py
+new file mode 100755
+index 000000000000..d57e33a6ac6e
+--- /dev/null
++++ b/tools/testing/kddv/kddv/core/environ.py
+@@ -0,0 +1,28 @@
++#!/usr/bin/env python3
++# SPDX-License-Identifier: GPL-2.0
++#
++# Kernel device driver verification
++#
++# Copyright (C) 2022-2023 Huawei Technologies Co., Ltd
++# Author: Wei Yongjun <weiyongjun1@huawei.com>
++
++import logging
++
++from .dmesg import KernelMessage
++
++logger = logging.getLogger(__name__)
++
++class Environ(object):
++    def __init__(self):
++        self.kmsg = KernelMessage()
++
++    def setup(self):
++        self.kmsg.setup()
++
++    def teardown(self):
++        self.kmsg.teardown()
++
++    def check_failure(self):
++        return self.kmsg.check_failure()
++
++environ = Environ()
+-- 
+2.34.1
+

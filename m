@@ -2,57 +2,57 @@ Return-Path: <linux-spi-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A0D46C5AE5E
-	for <linux-spi@archiver.kernel.org>; Sat, 18 Nov 2023 10:45:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9BDC7C5AE5C
+	for <linux-spi@archiver.kernel.org>; Sat, 18 Nov 2023 10:45:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229449AbjKRKph (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S232457AbjKRKph (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Sat, 18 Nov 2023 05:45:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47410 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229702AbjKRKpf (ORCPT
+        with ESMTP id S229716AbjKRKpf (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Sat, 18 Nov 2023 05:45:35 -0500
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E079710DF;
-        Sat, 18 Nov 2023 02:45:30 -0800 (PST)
-Received: from mail.maildlp.com (unknown [172.19.93.142])
-        by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4SXVm41TWpz4f3lfP;
-        Sat, 18 Nov 2023 18:45:24 +0800 (CST)
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F10610DA;
+        Sat, 18 Nov 2023 02:45:31 -0800 (PST)
+Received: from mail.maildlp.com (unknown [172.19.163.216])
+        by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4SXVm73l0yz4f3kFr;
+        Sat, 18 Nov 2023 18:45:27 +0800 (CST)
 Received: from mail02.huawei.com (unknown [10.116.40.112])
-        by mail.maildlp.com (Postfix) with ESMTP id 540E81A01A1;
-        Sat, 18 Nov 2023 18:45:28 +0800 (CST)
+        by mail.maildlp.com (Postfix) with ESMTP id 0C4761A016E;
+        Sat, 18 Nov 2023 18:45:29 +0800 (CST)
 Received: from huaweicloud.com (unknown [10.175.101.107])
-        by APP1 (Coremail) with SMTP id cCh0CgBXWhDClVhlAjMGBQ--.58652S6;
+        by APP1 (Coremail) with SMTP id cCh0CgBXWhDClVhlAjMGBQ--.58652S8;
         Sat, 18 Nov 2023 18:45:28 +0800 (CST)
 From:   Zhang Xiaoxu <zhangxiaoxu@huawecloud.com>
 To:     zhangxiaoxu5@huawei.com, weiyongjun1@huawei.com,
         linux-kernel@vger.kernel.org, broonie@kernel.org,
         rostedt@goodmis.org, mingo@redhat.com, frowand.list@gmail.com,
         linux-spi@vger.kernel.org
-Subject: [PATCH v4 -next 2/4] spi: mockup: Add register spi device support
-Date:   Sat, 18 Nov 2023 18:44:40 +0800
-Message-Id: <20231118104442.861759-3-zhangxiaoxu@huawecloud.com>
+Subject: [PATCH v4 -next 4/4] spi: mockup: Add documentation
+Date:   Sat, 18 Nov 2023 18:44:42 +0800
+Message-Id: <20231118104442.861759-5-zhangxiaoxu@huawecloud.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231118104442.861759-1-zhangxiaoxu@huawecloud.com>
 References: <20231118104442.861759-1-zhangxiaoxu@huawecloud.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: cCh0CgBXWhDClVhlAjMGBQ--.58652S6
-X-Coremail-Antispam: 1UD129KBjvJXoW3Jr4DAFW7Gw1DWw47GFyDWrg_yoW3JFWDpF
-        yrAa4YvrWrGrZ8Wr45JFW8W34Fkr18KryUA3s3C3WFkwnxJry8Xas7GF1ayF1rAFWkGF17
-        ZFyrAF18Cr4jyrUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUB2b4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
-        6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUXw
-        A2048vs2IY020Ec7CjxVAFwI0_Gr0_Xr1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
-        w2x7M28EF7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
-        W8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-        6rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMc
-        Ij6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_
-        Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2Ij64vIr41l42xK82IY64kExVAvwVAq07
-        x20xyl4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8G
-        jcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2I
-        x0cI8IcVAFwI0_Gr0_Xr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1lIxAIcVCF
-        04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7
-        CjxVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjxU2TmhDUUUU
+X-CM-TRANSID: cCh0CgBXWhDClVhlAjMGBQ--.58652S8
+X-Coremail-Antispam: 1UD129KBjvJXoW3Wry5Jr4xWFW7Jry5WFWkCrg_yoW7trWDpF
+        WUJFy3K3y8XF9xWF1Sq3s5G343Aas7ZFZrGFZ5tF10yr1q9r95AF1xtryYqan8WF4DCFy0
+        vFW5AFW8Kry7Z3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUBSb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
+        6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUAV
+        Cq3wA2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0
+        rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267
+        AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E
+        14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7
+        xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Y
+        z7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2Ij64vIr41l42xK82IY64kExVAvwV
+        Aq07x20xyl4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
+        6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0x
+        vE2Ix0cI8IcVAFwI0_Gr0_Xr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1lIxAI
+        cVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2js
+        IEc7CjxVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjxUruWlDUUUU
 Sender: zhangxiaoxu@huaweicloud.com
 X-CM-SenderInfo: x2kd0wp0ld053x6k3tpzhluzxrxghudrp/
 Precedence: bulk
@@ -61,271 +61,233 @@ X-Mailing-List: linux-spi@vger.kernel.org
 
 From: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
 
-This enable register the spi device to mockup host, it depends
-configfs. After enable the mockup host, register the device by
-executing the following command:
+Add documentation for the SPI mockup controller driver.
+This include the tutorial for how to mockup a spi device.
 
-  $ mkdir /config/spi-mockup/spi0/max31722
-  $ echo -n max31722 > /config/spi-mockup/spi0/max31722/device_id
-  $ echo 1 > /config/spi-mockup/spi0/max31722/live
-
-Unregister by:
-
-  $ echo 0 > /config/spi-mockup/spi0/max31722/live
-  $ rmdir /config/spi-mockup/spi0/max31722
-
-Signed-off-by: Zhang Xiaoxu <zhangxiaoxu@huawei.com>
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+Signed-off-by: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
 ---
- drivers/spi/spi-mockup.c | 208 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 208 insertions(+)
+ Documentation/spi/index.rst      |   1 +
+ Documentation/spi/spi-mockup.rst | 198 +++++++++++++++++++++++++++++++
+ 2 files changed, 199 insertions(+)
+ create mode 100644 Documentation/spi/spi-mockup.rst
 
-diff --git a/drivers/spi/spi-mockup.c b/drivers/spi/spi-mockup.c
-index acb502c14676..f053579cc37f 100644
---- a/drivers/spi/spi-mockup.c
-+++ b/drivers/spi/spi-mockup.c
-@@ -18,6 +18,7 @@
+diff --git a/Documentation/spi/index.rst b/Documentation/spi/index.rst
+index 06c34ea11bcf..a8f4f5cd0f09 100644
+--- a/Documentation/spi/index.rst
++++ b/Documentation/spi/index.rst
+@@ -13,6 +13,7 @@ Serial Peripheral Interface (SPI)
+    pxa2xx
+    spi-lm70llp
+    spi-sc18is602
++   spi-mockup
  
- struct spi_mockup_host {
- 	struct config_group group;
-+	struct config_group targets_group;
+ .. only::  subproject and html
  
- 	struct mutex lock;
- 
-@@ -29,6 +30,7 @@ struct spi_mockup_host {
- 
- 	struct platform_device *pdev;
- 	struct spi_controller *ctrl;
-+	unsigned long bitmap[BITS_TO_LONGS(MOCKUP_CHIPSELECT_MAX)];
- };
- 
- static struct spi_mockup_host *to_spi_mockup_host(struct config_item *item)
-@@ -38,6 +40,205 @@ static struct spi_mockup_host *to_spi_mockup_host(struct config_item *item)
- 	return container_of(group, struct spi_mockup_host, group);
- }
- 
-+static struct spi_mockup_host *
-+to_spi_mockup_host_from_targets(struct config_group *targets_group)
-+{
-+	return container_of(targets_group,
-+			    struct spi_mockup_host, targets_group);
-+}
+diff --git a/Documentation/spi/spi-mockup.rst b/Documentation/spi/spi-mockup.rst
+new file mode 100644
+index 000000000000..a5b69ce83ad9
+--- /dev/null
++++ b/Documentation/spi/spi-mockup.rst
+@@ -0,0 +1,198 @@
++.. SPDX-License-Identifier: GPL-2.0
 +
-+struct spi_mockup_target {
-+	struct config_group group;
-+	unsigned short chip;
-+	char device_id[SPI_NAME_SIZE];
-+	struct spi_device *spi;
-+	struct spi_mockup_host *host;
-+};
++==========
++spi-mockup
++==========
 +
-+static struct spi_mockup_target *to_spi_mockup_target(struct config_item *item)
-+{
-+	struct config_group *group = to_config_group(item);
++Description
++===========
 +
-+	return container_of(group, struct spi_mockup_target, group);
-+}
++This module is a very simple fake SPI controller driver. It implements
++a BPF based interface to mockup SPI device.
 +
-+static ssize_t
-+spi_mockup_target_device_id_show(struct config_item *item, char *buf)
-+{
-+	struct spi_mockup_target *target = to_spi_mockup_target(item);
++No hardware is needed nor associated with this module. It will respond
++spi message by BPF program attached to spi_transfer_writeable tracepoint
++by reading from or writing BPF maps.
 +
-+	return sprintf(buf, "%s\n", target->device_id);
-+}
++The typical use-case is like this:
++        1. create the spi mockup controller;
++        2. load EBPF program as device's backend;
++        3. create target chip device to the spi mockup controller.
 +
-+static ssize_t
-+spi_mockup_target_device_id_store(struct config_item *item,
-+				  const char *buf, size_t len)
-+{
-+	struct spi_mockup_target *target = to_spi_mockup_target(item);
++Example
++=======
 +
-+	if (len > SPI_NAME_SIZE)
-+		return -EINVAL;
++This example show how to mock a MTD device by using spi-mockup driver.
 +
-+	memcpy(target->device_id, buf, len);
++Compile your copy of the kernel source. Make sure to configure the spi-mockup
++and the target chip driver as a module.
 +
-+	return len;
-+}
-+CONFIGFS_ATTR(spi_mockup_target_, device_id);
++Register the spi mockup controller.
 +
-+static int __target_online(struct spi_mockup_target *target)
-+{
-+	struct spi_board_info info = {0};
-+	struct device *dev;
++::
 +
-+	if (target->spi)
-+		return -EBUSY;
++  $ mkdir /sys/kernel/config/spi-mockup/spi0
 +
-+	if (!target->host->pdev)
-+		return -ENODEV;
++  # configure the spi mockup controller attribute
++  $ echo 40000 > /sys/kernel/config/spi-mockup/spi0/min_speed
++  $ echo 25000000 > /sys/kernel/config/spi-mockup/spi0/max_speed
++  $ echo 0 > /sys/kernel/config/spi-mockup/spi0/flags
++  $ echo 8 > /sys/kernel/config/spi-mockup/spi0/num_cs
 +
-+	target->chip = find_first_zero_bit(target->host->bitmap,
-+					   MOCKUP_CHIPSELECT_MAX);
-+	if (target->chip < 0)
-+		return target->chip;
++  # enable the spi mockup controller
++  $ echo 1 > /sys/kernel/config/spi-mockup/spi0/live
 +
-+	if (target->chip > target->host->num_cs)
-+		return -EBUSY;
++Write a BPF program as device's backup.
 +
-+	info.chip_select = target->chip;
-+	strncpy(info.modalias, target->device_id,
-+		strlen(target->device_id));
++::
 +
-+	target->spi = spi_new_device(target->host->ctrl, &info);
-+	if (!target->spi)
-+		return -ENOMEM;
++  #define MCHP23K256_CMD_WRITE_STATUS   0x01
++  #define MCHP23K256_CMD_WRITE          0x02
++  #define MCHP23K256_CMD_READ           0x03
 +
-+	bitmap_set(target->host->bitmap, target->chip, 1);
++  #define CHIP_REGS_SIZE		0x20000
 +
-+	dev = &target->host->ctrl->dev;
-+	dev_info(dev, "Instantiated device %s at 0x%02x\n",
-+		 info.modalias, info.chip_select);
++  #define MAX_CMD_SIZE		        4
++
++  struct {
++	__uint(type, BPF_MAP_TYPE_ARRAY);
++	__uint(max_entries, CHIP_REGS_SIZE);
++	__type(key, __u32);
++	__type(value, __u8);
++  } regs_mchp23k256 SEC(".maps");
++
++  static unsigned int chip_reg = 0;
++
++  static int spi_transfer_read(struct spi_msg_ctx *msg, unsigned int len)
++  {
++	int i, key;
++	u8 *reg;
++
++	for (i = 0; i < len && i < sizeof(msg->data); i++) {
++		key = i + chip_reg;
++
++		reg = bpf_map_lookup_elem(&regs_mchp23k256, &key);
++		if (!reg) {
++			bpf_printk("key %d not exists", key);
++			return -EINVAL;
++		}
++
++		msg->data[i] = *reg;
++	}
 +
 +	return 0;
-+}
++  }
 +
-+static int __target_offline(struct spi_mockup_target *target)
-+{
-+	struct device *dev;
++  static int spi_transfer_write(struct spi_msg_ctx *msg, unsigned int len)
++  {
++	u8 opcode = msg->data[0], value;
++	int i, key;
 +
-+	if (!target->spi)
-+		return -ENODEV;
++	switch (opcode) {
++	case MCHP23K256_CMD_READ:
++	case MCHP23K256_CMD_WRITE:
++		if (len < 2)
++			return -EINVAL;
 +
-+	dev = &target->host->ctrl->dev;
-+	dev_info(dev, "Deleting device %s at 0x%02hx\n",
-+		 dev_name(&target->spi->dev), target->chip);
++		chip_reg = 0;
++		for (i = 0; i < MAX_CMD_SIZE && i < len - 1; i++)
++			chip_reg = (chip_reg << 8) + msg->data[1 + i];
 +
-+	spi_unregister_device(target->spi);
-+	target->spi = NULL;
++		return 0;
++	case MCHP23K256_CMD_WRITE_STATUS:
++		// ignore write status
++		return 0;
++	default:
++		break;
++	}
 +
-+	bitmap_clear(target->host->bitmap, target->chip, 1);
++	for (i = 0; i < len && i < sizeof(msg->data); i++) {
++		value = msg->data[i];
++		key = chip_reg + i;
 +
++		if (bpf_map_update_elem(&regs_mchp23k256, &key, &value,
++					BPF_EXIST)) {
++			bpf_printk("key %d not exists", key);
++			return -EINVAL;
++		}
++	}
 +
 +	return 0;
-+}
++  }
 +
-+static ssize_t
-+spi_mockup_target_live_store(struct config_item *item,
-+			     const char *buf, size_t len)
-+{
-+	struct spi_mockup_target *target = to_spi_mockup_target(item);
-+	int ret;
-+	bool res;
++  SEC("raw_tp.w/spi_transfer_writeable")
++  int BPF_PROG(mtd_mchp23k256, struct spi_msg_ctx *msg, u8 chip, unsigned int len)
++  {
++	int ret = 0;
 +
-+	ret = kstrtobool(buf, &res);
-+	if (ret)
-+		return -EINVAL;
++	if (msg->tx_nbits)
++		ret = spi_transfer_write(msg, len);
++	else if (msg->rx_nbits)
++		ret = spi_transfer_read(msg, len);
 +
-+	if (!strlen(target->device_id))
-+		return -EINVAL;
++	return ret;
++  }
 +
-+	mutex_lock(&target->host->lock);
-+	if (res)
-+		ret = __target_online(target);
-+	else
-+		ret = __target_offline(target);
-+	mutex_unlock(&target->host->lock);
++  char LICENSE[] SEC("license") = "GPL";
 +
-+	return ret ? ret : len;
-+}
++Use bpftool to load the BPF program.
 +
-+static ssize_t
-+spi_mockup_target_live_show(struct config_item *item, char *buf)
-+{
-+	struct spi_mockup_target *target = to_spi_mockup_target(item);
++::
 +
-+	return sprintf(buf, "%s\n", (target->spi) ? "true" : "false");
-+}
-+CONFIGFS_ATTR(spi_mockup_target_, live);
++  $ bpftool prog load mtd-mchp23k256.o /sys/fs/bpf/mtd_mchp23k256 autoattach
++
++Create the mchp23k256 device, this is accomplished by executing the
++following command:
++
++::
++
++  $ mkdir /sys/kernel/config/spi-mockup/spi0/targets/mchp23k256
++  $ echo -n mchp23k256 > /sys/kernel/config/spi-mockup/spi0/targets/mchp23k256/device_id
++  $ echo 1 > /sys/kernel/config/spi-mockup/spi0/targets/mchp23k256/live
 +
 +
-+static struct configfs_attribute *spi_mockup_target_attrs[] = {
-+	&spi_mockup_target_attr_device_id,
-+	&spi_mockup_target_attr_live,
-+	NULL,
-+};
++Now, the mchp23k256 MTD device named /dev/mtd0 has been created successfully.
 +
-+static void spi_mockup_target_release(struct config_item *item)
-+{
-+	struct spi_mockup_target *target = to_spi_mockup_target(item);
++::
 +
-+	__target_offline(target);
-+	kfree(target);
-+}
++  $ ls /sys/bus/spi/devices/spi0.0/mtd/
++  mtd0  mtd0ro
 +
-+static struct configfs_item_operations spi_mockup_target_item_ops = {
-+	.release = spi_mockup_target_release,
-+};
++  $ cat /sys/class/mtd/mtd0/name
++  spi0.0
 +
-+static const struct config_item_type spi_mockup_target_item_type = {
-+	.ct_owner	= THIS_MODULE,
-+	.ct_attrs	= spi_mockup_target_attrs,
-+	.ct_item_ops    = &spi_mockup_target_item_ops,
-+};
++  $ hexdump /dev/mtd0
++  0000000 0000 0000 0000 0000 0000 0000 0000 0000
++  *
++  0008000
 +
-+static struct config_group *
-+spi_mockup_target_make_group(struct config_group *group, const char *name)
-+{
-+	struct spi_mockup_target *target;
-+	struct spi_mockup_host *host = to_spi_mockup_host_from_targets(group);
++  $ echo aaaa > /dev/mtd0
 +
-+	target = kzalloc(sizeof(*target), GFP_KERNEL);
-+	if (!target)
-+		return ERR_PTR(-ENOMEM);
++  $ hexdump /dev/mtd0
++  00000000  61 61 61 61 0a 00 00 00  00 00 00 00 00 00 00 00  |aaaa............|
++  00000010  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
++  *
++  00008000
 +
-+	target->host = host;
++  $ bpftool map update name regs_mchp23k256 key 0 0 0 0 value 0
 +
-+	config_group_init_type_name(&target->group, name,
-+				    &spi_mockup_target_item_type);
++  $ hexdump /dev/mtd0
++  00000000  00 61 61 61 0a 00 00 00  00 00 00 00 00 00 00 00  |.aaa............|
++  00000010  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
++  *
++  00008000
 +
-+	return &target->group;
-+}
 +
-+static struct configfs_group_operations spi_mockup_targets_group_ops = {
-+	.make_group = spi_mockup_target_make_group,
-+};
++Remove the mchp23k256 device by executing the following command:
 +
-+static void spi_mockup_targets_group_release(struct config_item *item)
-+{
-+	struct spi_mockup_target *target = to_spi_mockup_target(item);
++::
 +
-+	kfree(target);
-+}
++  $ echo 0 > /sys/kernel/config/spi-mockup/spi0/targets/mchp23k256/live
++  $ rmdir /sys/kernel/config/spi-mockup/spi0/targets/mchp23k256
 +
-+static struct configfs_item_operations spi_mockup_targets_group_item_ops = {
-+	.release = spi_mockup_targets_group_release,
-+};
++Remove the spi mockup controller by executing the following command:
 +
-+static const struct config_item_type spi_mockup_target_type = {
-+	.ct_owner     = THIS_MODULE,
-+	.ct_group_ops = &spi_mockup_targets_group_ops,
-+	.ct_item_ops  = &spi_mockup_targets_group_item_ops,
-+};
++::
 +
- static ssize_t __host_online(struct spi_mockup_host *host)
- {
- 	int ret;
-@@ -69,6 +270,9 @@ static ssize_t __host_offline(struct spi_mockup_host *host)
- 	if (!host->pdev)
- 		return -ENODEV;
- 
-+	if (!bitmap_empty(host->bitmap, host->num_cs))
-+		return -EBUSY;
-+
- 	platform_device_unregister(host->pdev);
- 	host->pdev = NULL;
- 	host->ctrl = NULL;
-@@ -192,6 +396,10 @@ spi_mockup_host_make_group(struct config_group *group, const char *name)
- 	config_group_init_type_name(&host->group, name,
- 				    &spi_mockup_host_config_group_type);
- 
-+	config_group_init_type_name(&host->targets_group, "targets",
-+				    &spi_mockup_target_type);
-+	configfs_add_default_group(&host->targets_group, &host->group);
-+
- 	return &host->group;
- }
- 
++  $ echo 0 > /sys/kernel/config/spi-mockup/spi0/live
++  $ rmdir /sys/kernel/config/spi-mockup/spi0
 -- 
 2.34.1
 

@@ -1,35 +1,33 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dS1ef+Pf"
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7F63101
-	for <linux-spi@vger.kernel.org>; Mon, 27 Nov 2023 01:58:45 -0800 (PST)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id DD110C0015;
-	Mon, 27 Nov 2023 09:58:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Temh8eAU"
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::226])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C761AF0;
+	Mon, 27 Nov 2023 01:58:45 -0800 (PST)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 10150C0013;
+	Mon, 27 Nov 2023 09:58:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1701079124;
+	t=1701079123;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rHGKlgKxT76iC8mipDwr85DcuoaL+X6WKArNXlsTKSA=;
-	b=dS1ef+Pft6nEAqSbKigFpFnEFxXIV6hTvZs3MwDGFX0g8Op4UXKp4GAaQu6RULQit/u86N
-	XGXWc6xNbp/ObJNYS/1b8Q8N7ZkhRH+jiGQf3+1zYNJ7dc+wXvnIeZ4ztBhmllmU8ySbfB
-	7qjWX5aCLBtQpCWfS8EQQu+tnOZmvo8rp/Gim4gmgWR4jK+HUjdOjgLYUHVmtJaX/tuRkP
-	YzTfHqpbi4IHPGCABZCcj3P7d4pM7TqlrBK4cW1dPVDPaGGSvKICcMizEPwYTd+l4NVHfw
-	/Jb3vt0R5dzJpq/OumM6L8uhEd6hNkBNW/Ojr80VTDAIF8rPTOZ7r+vklhvFzw==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=B5Sho0rj1OqGHldxHSwjpOtKBXGN/gFmtHdV8vDyx1U=;
+	b=Temh8eAUgqp7H2Zv37zsOf7me+IwQdmT5bUFObWSekbbSdjmUq9loQQKowGKfKsQCJXOZf
+	JbV4XmW1ZKIeswj9n8YmKc7Lsy4+9eyR5D/xYz8XhOgB8KUURzR0mTLxk/7nvnj5NHlxEs
+	4lZ96ouNHrsWHyf1l09vc/Frapby+waR8ESVISMcQmBOC9WZHrRxRfqsvF9xkAfGd1cTQo
+	/t9EuguuxVxaIsOrEOODyJGVNH4Ps2Yna/c978NXHpU7DOvyD3iD0QEuQMI68NqeI2u9/x
+	sujPXjsZOey81Sl/d7ujjyvf4zRe1sVNSP9edOUpIgmJz4v3fGDPm36a/rl05w==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
 To: Mark Brown <broonie@kernel.org>,
 	<linux-spi@vger.kernel.org>
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	Ryan Wanner <ryan.wanner@microchip.com>,
 	Miquel Raynal <miquel.raynal@bootlin.com>,
+	stable@vger.kernel.org,
 	Ronald Wahl <ronald.wahl@raritan.com>
-Subject: [PATCH 2/2] spi: atmel: Drop unused defines
-Date: Mon, 27 Nov 2023 10:58:42 +0100
-Message-Id: <20231127095842.389631-2-miquel.raynal@bootlin.com>
+Subject: [PATCH 1/2] spi: atmel: Do not cancel a transfer upon any signal
+Date: Mon, 27 Nov 2023 10:58:41 +0100
+Message-Id: <20231127095842.389631-1-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231127095842.389631-1-miquel.raynal@bootlin.com>
-References: <20231127095842.389631-1-miquel.raynal@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -39,30 +37,45 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: miquel.raynal@bootlin.com
 
-These defines are leftovers from previous versions of the blamed commit,
-they are simply unused so drop them.
+The intended move from wait_for_completion_*() to
+wait_for_completion_interruptible_*() was to allow (very) long spi memory
+transfers to be stopped upon user request instead of freezing the
+machine forever as the timeout value could now be significantly bigger.
+
+However, depending on the user logic, applications can receive many
+signals for their own "internal" purpose and have nothing to do with the
+requested kernel operations, hence interrupting spi transfers upon any
+signal is probably not a wise choice. Instead, let's switch to
+wait_for_completion_killable_*() to only catch the "important"
+signals. This was likely the intended behavior anyway.
 
 Fixes: e0205d6203c2 ("spi: atmel: Prevent false timeouts on long transfers")
+Cc: stable@vger.kernel.org
 Reported-by: Ronald Wahl <ronald.wahl@raritan.com>
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- drivers/spi/spi-atmel.c | 3 ---
- 1 file changed, 3 deletions(-)
+Hello Ronald, this is only compile tested, please let me know if that
+fixes your use case or if you still suffer from interrupted transfers.
+Thanks!
+---
+ drivers/spi/spi-atmel.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index 2e8860865af9..0197c25f5029 100644
+index 6aa8adbe4170..2e8860865af9 100644
 --- a/drivers/spi/spi-atmel.c
 +++ b/drivers/spi/spi-atmel.c
-@@ -233,9 +233,6 @@
-  */
- #define DMA_MIN_BYTES	16
+@@ -1336,8 +1336,8 @@ static int atmel_spi_one_transfer(struct spi_controller *host,
+ 		}
  
--#define SPI_DMA_MIN_TIMEOUT	(msecs_to_jiffies(1000))
--#define SPI_DMA_TIMEOUT_PER_10K	(msecs_to_jiffies(4))
--
- #define AUTOSUSPEND_TIMEOUT	2000
- 
- struct atmel_spi_caps {
+ 		dma_timeout = msecs_to_jiffies(spi_controller_xfer_timeout(host, xfer));
+-		ret_timeout = wait_for_completion_interruptible_timeout(&as->xfer_completion,
+-									dma_timeout);
++		ret_timeout = wait_for_completion_killable_timeout(&as->xfer_completion,
++								   dma_timeout);
+ 		if (ret_timeout <= 0) {
+ 			dev_err(&spi->dev, "spi transfer %s\n",
+ 				!ret_timeout ? "timeout" : "canceled");
 -- 
 2.34.1
 

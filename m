@@ -1,25 +1,25 @@
 Authentication-Results: smtp.subspace.kernel.org; dkim=none
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A0731B8
-	for <linux-spi@vger.kernel.org>; Tue, 28 Nov 2023 01:26:29 -0800 (PST)
-Received: from dggpemm500019.china.huawei.com (unknown [172.30.72.56])
-	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4SfcSC1smcz1P8r5;
-	Tue, 28 Nov 2023 17:22:51 +0800 (CST)
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4706D0
+	for <linux-spi@vger.kernel.org>; Tue, 28 Nov 2023 01:26:34 -0800 (PST)
+Received: from dggpemm500021.china.huawei.com (unknown [172.30.72.54])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4SfcWf6NgYzWhB2;
+	Tue, 28 Nov 2023 17:25:50 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500019.china.huawei.com (7.185.36.180) with Microsoft SMTP Server
+ dggpemm500021.china.huawei.com (7.185.36.109) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 28 Nov 2023 17:26:27 +0800
+ 15.1.2507.35; Tue, 28 Nov 2023 17:26:33 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 28 Nov
- 2023 17:26:27 +0800
+ 2023 17:26:28 +0800
 From: Yang Yingliang <yangyingliang@huawei.com>
 To: <linux-spi@vger.kernel.org>
 CC: <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
 	<yangyingliang@huawei.com>
-Subject: [PATCH -next 22/26] spi: xtensa-xtfpga: switch to use modern name
-Date: Tue, 28 Nov 2023 17:30:27 +0800
-Message-ID: <20231128093031.3707034-23-yangyingliang@huawei.com>
+Subject: [PATCH -next 26/26] spi: ljca: switch to use devm_spi_alloc_host()
+Date: Tue, 28 Nov 2023 17:30:31 +0800
+Message-ID: <20231128093031.3707034-27-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20231128093031.3707034-1-yangyingliang@huawei.com>
 References: <20231128093031.3707034-1-yangyingliang@huawei.com>
@@ -35,88 +35,28 @@ X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
  dggpemm500007.china.huawei.com (7.185.36.183)
 X-CFilter-Loop: Reflected
 
-Change legacy name master to modern name host or controller.
+Switch to use modern name function devm_spi_alloc_host().
 
 No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-xtensa-xtfpga.c | 30 +++++++++++++++---------------
- 1 file changed, 15 insertions(+), 15 deletions(-)
+ drivers/spi/spi-ljca.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-xtensa-xtfpga.c b/drivers/spi/spi-xtensa-xtfpga.c
-index dbd85d7a1526..3c7721894376 100644
---- a/drivers/spi/spi-xtensa-xtfpga.c
-+++ b/drivers/spi/spi-xtensa-xtfpga.c
-@@ -53,7 +53,7 @@ static inline void xtfpga_spi_wait_busy(struct xtfpga_spi *xspi)
- static u32 xtfpga_spi_txrx_word(struct spi_device *spi, unsigned nsecs,
- 				u32 v, u8 bits, unsigned flags)
- {
--	struct xtfpga_spi *xspi = spi_master_get_devdata(spi->master);
-+	struct xtfpga_spi *xspi = spi_controller_get_devdata(spi->controller);
- 
- 	xspi->data = (xspi->data << bits) | (v & GENMASK(bits - 1, 0));
- 	xspi->data_sz += bits;
-@@ -71,7 +71,7 @@ static u32 xtfpga_spi_txrx_word(struct spi_device *spi, unsigned nsecs,
- 
- static void xtfpga_spi_chipselect(struct spi_device *spi, int is_on)
- {
--	struct xtfpga_spi *xspi = spi_master_get_devdata(spi->master);
-+	struct xtfpga_spi *xspi = spi_controller_get_devdata(spi->controller);
- 
- 	WARN_ON(xspi->data_sz != 0);
- 	xspi->data_sz = 0;
-@@ -81,19 +81,19 @@ static int xtfpga_spi_probe(struct platform_device *pdev)
- {
- 	struct xtfpga_spi *xspi;
+diff --git a/drivers/spi/spi-ljca.c b/drivers/spi/spi-ljca.c
+index c5a066c73817..1cc1422ddba0 100644
+--- a/drivers/spi/spi-ljca.c
++++ b/drivers/spi/spi-ljca.c
+@@ -223,7 +223,7 @@ static int ljca_spi_probe(struct auxiliary_device *auxdev,
+ 	struct ljca_spi_dev *ljca_spi;
  	int ret;
--	struct spi_master *master;
-+	struct spi_controller *host;
  
--	master = devm_spi_alloc_master(&pdev->dev, sizeof(struct xtfpga_spi));
--	if (!master)
-+	host = devm_spi_alloc_host(&pdev->dev, sizeof(struct xtfpga_spi));
-+	if (!host)
+-	controller = devm_spi_alloc_master(&auxdev->dev, sizeof(*ljca_spi));
++	controller = devm_spi_alloc_host(&auxdev->dev, sizeof(*ljca_spi));
+ 	if (!controller)
  		return -ENOMEM;
  
--	master->flags = SPI_CONTROLLER_NO_RX;
--	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 16);
--	master->bus_num = pdev->dev.id;
--	master->dev.of_node = pdev->dev.of_node;
-+	host->flags = SPI_CONTROLLER_NO_RX;
-+	host->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 16);
-+	host->bus_num = pdev->dev.id;
-+	host->dev.of_node = pdev->dev.of_node;
- 
--	xspi = spi_master_get_devdata(master);
--	xspi->bitbang.master = master;
-+	xspi = spi_controller_get_devdata(host);
-+	xspi->bitbang.master = host;
- 	xspi->bitbang.chipselect = xtfpga_spi_chipselect;
- 	xspi->bitbang.txrx_word[SPI_MODE_0] = xtfpga_spi_txrx_word;
- 	xspi->regs = devm_platform_ioremap_resource(pdev, 0);
-@@ -113,17 +113,17 @@ static int xtfpga_spi_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
--	platform_set_drvdata(pdev, master);
-+	platform_set_drvdata(pdev, host);
- 	return 0;
- }
- 
- static void xtfpga_spi_remove(struct platform_device *pdev)
- {
--	struct spi_master *master = platform_get_drvdata(pdev);
--	struct xtfpga_spi *xspi = spi_master_get_devdata(master);
-+	struct spi_controller *host = platform_get_drvdata(pdev);
-+	struct xtfpga_spi *xspi = spi_controller_get_devdata(host);
- 
- 	spi_bitbang_stop(&xspi->bitbang);
--	spi_master_put(master);
-+	spi_controller_put(host);
- }
- 
- MODULE_ALIAS("platform:" XTFPGA_SPI_NAME);
 -- 
 2.25.1
 

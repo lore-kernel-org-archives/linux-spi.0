@@ -1,25 +1,25 @@
 Authentication-Results: smtp.subspace.kernel.org; dkim=none
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E624F1A5
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77020109
 	for <linux-spi@vger.kernel.org>; Tue, 28 Nov 2023 01:26:28 -0800 (PST)
-Received: from dggpemm500020.china.huawei.com (unknown [172.30.72.54])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4SfcWm4nBMzvRD4;
-	Tue, 28 Nov 2023 17:25:56 +0800 (CST)
+Received: from dggpemm500006.china.huawei.com (unknown [172.30.72.54])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4SfcRN2mcYzLqCF;
+	Tue, 28 Nov 2023 17:22:08 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500020.china.huawei.com (7.185.36.49) with Microsoft SMTP Server
+ dggpemm500006.china.huawei.com (7.185.36.236) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 28 Nov 2023 17:26:27 +0800
+ 15.1.2507.35; Tue, 28 Nov 2023 17:26:24 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 28 Nov
- 2023 17:26:26 +0800
+ 2023 17:26:24 +0800
 From: Yang Yingliang <yangyingliang@huawei.com>
 To: <linux-spi@vger.kernel.org>
 CC: <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
 	<yangyingliang@huawei.com>
-Subject: [PATCH -next 20/26] spi: xilinx: switch to use modern name
-Date: Tue, 28 Nov 2023 17:30:25 +0800
-Message-ID: <20231128093031.3707034-21-yangyingliang@huawei.com>
+Subject: [PATCH -next 13/26] spi: tegra20-slink: switch to use modern name
+Date: Tue, 28 Nov 2023 17:30:18 +0800
+Message-ID: <20231128093031.3707034-14-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20231128093031.3707034-1-yangyingliang@huawei.com>
 References: <20231128093031.3707034-1-yangyingliang@huawei.com>
@@ -41,186 +41,267 @@ No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-xilinx.c | 58 ++++++++++++++++++++--------------------
- 1 file changed, 29 insertions(+), 29 deletions(-)
+ drivers/spi/spi-tegra20-slink.c | 98 ++++++++++++++++-----------------
+ 1 file changed, 49 insertions(+), 49 deletions(-)
 
-diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
-index 8e6e3876aa9a..12355957be97 100644
---- a/drivers/spi/spi-xilinx.c
-+++ b/drivers/spi/spi-xilinx.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /*
-- * Xilinx SPI controller driver (master mode only)
-+ * Xilinx SPI controller driver (host mode only)
-  *
-  * Author: MontaVista Software, Inc.
-  *	source@mvista.com
-@@ -83,7 +83,7 @@ struct xilinx_spi {
- 	void __iomem	*regs;	/* virt. address of the control registers */
+diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
+index f5cd365c913a..ed1393d159ae 100644
+--- a/drivers/spi/spi-tegra20-slink.c
++++ b/drivers/spi/spi-tegra20-slink.c
+@@ -152,7 +152,7 @@ struct tegra_slink_chip_data {
  
- 	int		irq;
--	bool force_irq;		/* force irq to setup master inhibit */
-+	bool force_irq;		/* force irq to setup host inhibit */
- 	u8 *rx_ptr;		/* pointer in the Tx buffer */
- 	const u8 *tx_ptr;	/* pointer in the Rx buffer */
- 	u8 bytes_per_word;
-@@ -174,10 +174,10 @@ static void xspi_init_hw(struct xilinx_spi *xspi)
- 			regs_base + XIPIF_V123B_IIER_OFFSET);
- 	/* Disable the global IPIF interrupt */
- 	xspi->write_fn(0, regs_base + XIPIF_V123B_DGIER_OFFSET);
--	/* Deselect the slave on the SPI bus */
-+	/* Deselect the Target on the SPI bus */
- 	xspi->write_fn(0xffff, regs_base + XSPI_SSR_OFFSET);
--	/* Disable the transmitter, enable Manual Slave Select Assertion,
--	 * put SPI controller into master mode, and enable it */
-+	/* Disable the transmitter, enable Manual Target Select Assertion,
-+	 * put SPI controller into host mode, and enable it */
- 	xspi->write_fn(XSPI_CR_MANUAL_SSELECT |	XSPI_CR_MASTER_MODE |
- 		XSPI_CR_ENABLE | XSPI_CR_TXFIFO_RESET |	XSPI_CR_RXFIFO_RESET,
- 		regs_base + XSPI_CR_OFFSET);
-@@ -185,12 +185,12 @@ static void xspi_init_hw(struct xilinx_spi *xspi)
+ struct tegra_slink_data {
+ 	struct device				*dev;
+-	struct spi_master			*master;
++	struct spi_controller			*host;
+ 	const struct tegra_slink_chip_data	*chip_data;
+ 	spinlock_t				lock;
  
- static void xilinx_spi_chipselect(struct spi_device *spi, int is_on)
- {
--	struct xilinx_spi *xspi = spi_master_get_devdata(spi->master);
-+	struct xilinx_spi *xspi = spi_controller_get_devdata(spi->controller);
- 	u16 cr;
- 	u32 cs;
- 
- 	if (is_on == BITBANG_CS_INACTIVE) {
--		/* Deselect the slave on the SPI bus */
-+		/* Deselect the target on the SPI bus */
- 		xspi->write_fn(xspi->cs_inactive, xspi->regs + XSPI_SSR_OFFSET);
- 		return;
- 	}
-@@ -225,7 +225,7 @@ static void xilinx_spi_chipselect(struct spi_device *spi, int is_on)
- static int xilinx_spi_setup_transfer(struct spi_device *spi,
+@@ -671,7 +671,7 @@ static void tegra_slink_deinit_dma_param(struct tegra_slink_data *tspi,
+ static int tegra_slink_start_transfer_one(struct spi_device *spi,
  		struct spi_transfer *t)
  {
--	struct xilinx_spi *xspi = spi_master_get_devdata(spi->master);
-+	struct xilinx_spi *xspi = spi_controller_get_devdata(spi->controller);
+-	struct tegra_slink_data *tspi = spi_master_get_devdata(spi->master);
++	struct tegra_slink_data *tspi = spi_controller_get_devdata(spi->controller);
+ 	u32 speed;
+ 	u8 bits_per_word;
+ 	unsigned total_fifo_words;
+@@ -737,7 +737,7 @@ static int tegra_slink_setup(struct spi_device *spi)
+ 			SLINK_CS_POLARITY3,
+ 	};
  
- 	if (spi->mode & SPI_CS_HIGH)
- 		xspi->cs_inactive &= ~BIT(spi_get_chipselect(spi, 0));
-@@ -237,7 +237,7 @@ static int xilinx_spi_setup_transfer(struct spi_device *spi,
- 
- static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
- {
--	struct xilinx_spi *xspi = spi_master_get_devdata(spi->master);
-+	struct xilinx_spi *xspi = spi_controller_get_devdata(spi->controller);
- 	int remaining_words;	/* the number of words left to transfer */
- 	bool use_irq = false;
- 	u16 cr = 0;
-@@ -335,9 +335,9 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
- }
- 
- 
--/* This driver supports single master mode only. Hence Tx FIFO Empty
-+/* This driver supports single host mode only. Hence Tx FIFO Empty
-  * is the only interrupt we care about.
-- * Receive FIFO Overrun, Transmit FIFO Underrun, Mode Fault, and Slave Mode
-+ * Receive FIFO Overrun, Transmit FIFO Underrun, Mode Fault, and Target Mode
-  * Fault are not to happen.
-  */
- static irqreturn_t xilinx_spi_irq(int irq, void *dev_id)
-@@ -393,7 +393,7 @@ static int xilinx_spi_probe(struct platform_device *pdev)
- 	struct xspi_platform_data *pdata;
- 	struct resource *res;
- 	int ret, num_cs = 0, bits_per_word;
--	struct spi_master *master;
-+	struct spi_controller *host;
- 	bool force_irq = false;
- 	u32 tmp;
- 	u8 i;
-@@ -415,26 +415,26 @@ static int xilinx_spi_probe(struct platform_device *pdev)
- 
- 	if (!num_cs) {
- 		dev_err(&pdev->dev,
--			"Missing slave select configuration data\n");
-+			"Missing target select configuration data\n");
- 		return -EINVAL;
- 	}
- 
- 	if (num_cs > XILINX_SPI_MAX_CS) {
--		dev_err(&pdev->dev, "Invalid number of spi slaves\n");
-+		dev_err(&pdev->dev, "Invalid number of spi targets\n");
- 		return -EINVAL;
- 	}
- 
--	master = devm_spi_alloc_master(&pdev->dev, sizeof(struct xilinx_spi));
--	if (!master)
-+	host = devm_spi_alloc_host(&pdev->dev, sizeof(struct xilinx_spi));
-+	if (!host)
- 		return -ENODEV;
- 
- 	/* the spi->mode bits understood by this driver: */
--	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST | SPI_LOOP |
--			    SPI_CS_HIGH;
-+	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST | SPI_LOOP |
-+			  SPI_CS_HIGH;
- 
--	xspi = spi_master_get_devdata(master);
-+	xspi = spi_controller_get_devdata(host);
- 	xspi->cs_inactive = 0xffffffff;
--	xspi->bitbang.master = master;
-+	xspi->bitbang.master = host;
- 	xspi->bitbang.chipselect = xilinx_spi_chipselect;
- 	xspi->bitbang.setup_transfer = xilinx_spi_setup_transfer;
- 	xspi->bitbang.txrx_bufs = xilinx_spi_txrx_bufs;
-@@ -444,9 +444,9 @@ static int xilinx_spi_probe(struct platform_device *pdev)
- 	if (IS_ERR(xspi->regs))
- 		return PTR_ERR(xspi->regs);
- 
--	master->bus_num = pdev->id;
--	master->num_chipselect = num_cs;
--	master->dev.of_node = pdev->dev.of_node;
-+	host->bus_num = pdev->id;
-+	host->num_chipselect = num_cs;
-+	host->dev.of_node = pdev->dev.of_node;
- 
- 	/*
- 	 * Detect endianess on the IP via loop bit in CR. Detection
-@@ -466,7 +466,7 @@ static int xilinx_spi_probe(struct platform_device *pdev)
- 		xspi->write_fn = xspi_write32_be;
- 	}
- 
--	master->bits_per_word_mask = SPI_BPW_MASK(bits_per_word);
-+	host->bits_per_word_mask = SPI_BPW_MASK(bits_per_word);
- 	xspi->bytes_per_word = bits_per_word / 8;
- 	xspi->buffer_size = xilinx_spi_find_buffer_size(xspi);
- 
-@@ -496,17 +496,17 @@ static int xilinx_spi_probe(struct platform_device *pdev)
- 
- 	if (pdata) {
- 		for (i = 0; i < pdata->num_devices; i++)
--			spi_new_device(master, pdata->devices + i);
-+			spi_new_device(host, pdata->devices + i);
- 	}
- 
--	platform_set_drvdata(pdev, master);
-+	platform_set_drvdata(pdev, host);
+-	struct tegra_slink_data *tspi = spi_master_get_devdata(spi->master);
++	struct tegra_slink_data *tspi = spi_controller_get_devdata(spi->controller);
+ 	u32 val;
+ 	unsigned long flags;
+ 	int ret;
+@@ -768,10 +768,10 @@ static int tegra_slink_setup(struct spi_device *spi)
  	return 0;
  }
  
- static void xilinx_spi_remove(struct platform_device *pdev)
+-static int tegra_slink_prepare_message(struct spi_master *master,
++static int tegra_slink_prepare_message(struct spi_controller *host,
+ 				       struct spi_message *msg)
  {
--	struct spi_master *master = platform_get_drvdata(pdev);
--	struct xilinx_spi *xspi = spi_master_get_devdata(master);
-+	struct spi_controller *host = platform_get_drvdata(pdev);
-+	struct xilinx_spi *xspi = spi_controller_get_devdata(host);
- 	void __iomem *regs_base = xspi->regs;
+-	struct tegra_slink_data *tspi = spi_master_get_devdata(master);
++	struct tegra_slink_data *tspi = spi_controller_get_devdata(host);
+ 	struct spi_device *spi = msg->spi;
  
- 	spi_bitbang_stop(&xspi->bitbang);
-@@ -516,7 +516,7 @@ static void xilinx_spi_remove(struct platform_device *pdev)
- 	/* Disable the global IPIF interrupt */
- 	xspi->write_fn(0, regs_base + XIPIF_V123B_DGIER_OFFSET);
- 
--	spi_master_put(xspi->bitbang.master);
-+	spi_controller_put(xspi->bitbang.master);
+ 	tegra_slink_clear_status(tspi);
+@@ -794,11 +794,11 @@ static int tegra_slink_prepare_message(struct spi_master *master,
+ 	return 0;
  }
  
- /* work with hotplug and coldplug */
+-static int tegra_slink_transfer_one(struct spi_master *master,
++static int tegra_slink_transfer_one(struct spi_controller *host,
+ 				    struct spi_device *spi,
+ 				    struct spi_transfer *xfer)
+ {
+-	struct tegra_slink_data *tspi = spi_master_get_devdata(master);
++	struct tegra_slink_data *tspi = spi_controller_get_devdata(host);
+ 	int ret;
+ 
+ 	reinit_completion(&tspi->xfer_completion);
+@@ -825,10 +825,10 @@ static int tegra_slink_transfer_one(struct spi_master *master,
+ 	return 0;
+ }
+ 
+-static int tegra_slink_unprepare_message(struct spi_master *master,
++static int tegra_slink_unprepare_message(struct spi_controller *host,
+ 					 struct spi_message *msg)
+ {
+-	struct tegra_slink_data *tspi = spi_master_get_devdata(master);
++	struct tegra_slink_data *tspi = spi_controller_get_devdata(host);
+ 
+ 	tegra_slink_writel(tspi, tspi->def_command_reg, SLINK_COMMAND);
+ 	tegra_slink_writel(tspi, tspi->def_command2_reg, SLINK_COMMAND2);
+@@ -999,7 +999,7 @@ MODULE_DEVICE_TABLE(of, tegra_slink_of_match);
+ 
+ static int tegra_slink_probe(struct platform_device *pdev)
+ {
+-	struct spi_master	*master;
++	struct spi_controller	*host;
+ 	struct tegra_slink_data	*tspi;
+ 	struct resource		*r;
+ 	int ret, spi_irq;
+@@ -1007,36 +1007,36 @@ static int tegra_slink_probe(struct platform_device *pdev)
+ 
+ 	cdata = of_device_get_match_data(&pdev->dev);
+ 
+-	master = spi_alloc_master(&pdev->dev, sizeof(*tspi));
+-	if (!master) {
+-		dev_err(&pdev->dev, "master allocation failed\n");
++	host = spi_alloc_host(&pdev->dev, sizeof(*tspi));
++	if (!host) {
++		dev_err(&pdev->dev, "host allocation failed\n");
+ 		return -ENOMEM;
+ 	}
+ 
+ 	/* the spi->mode bits understood by this driver: */
+-	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
+-	master->setup = tegra_slink_setup;
+-	master->prepare_message = tegra_slink_prepare_message;
+-	master->transfer_one = tegra_slink_transfer_one;
+-	master->unprepare_message = tegra_slink_unprepare_message;
+-	master->auto_runtime_pm = true;
+-	master->num_chipselect = MAX_CHIP_SELECT;
+-
+-	platform_set_drvdata(pdev, master);
+-	tspi = spi_master_get_devdata(master);
+-	tspi->master = master;
++	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
++	host->setup = tegra_slink_setup;
++	host->prepare_message = tegra_slink_prepare_message;
++	host->transfer_one = tegra_slink_transfer_one;
++	host->unprepare_message = tegra_slink_unprepare_message;
++	host->auto_runtime_pm = true;
++	host->num_chipselect = MAX_CHIP_SELECT;
++
++	platform_set_drvdata(pdev, host);
++	tspi = spi_controller_get_devdata(host);
++	tspi->host = host;
+ 	tspi->dev = &pdev->dev;
+ 	tspi->chip_data = cdata;
+ 	spin_lock_init(&tspi->lock);
+ 
+ 	if (of_property_read_u32(tspi->dev->of_node, "spi-max-frequency",
+-				 &master->max_speed_hz))
+-		master->max_speed_hz = 25000000; /* 25MHz */
++				 &host->max_speed_hz))
++		host->max_speed_hz = 25000000; /* 25MHz */
+ 
+ 	tspi->base = devm_platform_get_and_ioremap_resource(pdev, 0, &r);
+ 	if (IS_ERR(tspi->base)) {
+ 		ret = PTR_ERR(tspi->base);
+-		goto exit_free_master;
++		goto exit_free_host;
+ 	}
+ 	tspi->phys = r->start;
+ 
+@@ -1045,26 +1045,26 @@ static int tegra_slink_probe(struct platform_device *pdev)
+ 	if (IS_ERR(tspi->clk)) {
+ 		ret = PTR_ERR(tspi->clk);
+ 		dev_err(&pdev->dev, "Can not get clock %d\n", ret);
+-		goto exit_free_master;
++		goto exit_free_host;
+ 	}
+ 
+ 	tspi->rst = devm_reset_control_get_exclusive(&pdev->dev, "spi");
+ 	if (IS_ERR(tspi->rst)) {
+ 		dev_err(&pdev->dev, "can not get reset\n");
+ 		ret = PTR_ERR(tspi->rst);
+-		goto exit_free_master;
++		goto exit_free_host;
+ 	}
+ 
+ 	ret = devm_tegra_core_dev_init_opp_table_common(&pdev->dev);
+ 	if (ret)
+-		goto exit_free_master;
++		goto exit_free_host;
+ 
+ 	tspi->max_buf_size = SLINK_FIFO_DEPTH << 2;
+ 	tspi->dma_buf_size = DEFAULT_SPI_DMA_BUF_LEN;
+ 
+ 	ret = tegra_slink_init_dma_param(tspi, true);
+ 	if (ret < 0)
+-		goto exit_free_master;
++		goto exit_free_host;
+ 	ret = tegra_slink_init_dma_param(tspi, false);
+ 	if (ret < 0)
+ 		goto exit_rx_dma_free;
+@@ -1103,10 +1103,10 @@ static int tegra_slink_probe(struct platform_device *pdev)
+ 	tegra_slink_writel(tspi, tspi->def_command_reg, SLINK_COMMAND);
+ 	tegra_slink_writel(tspi, tspi->def_command2_reg, SLINK_COMMAND2);
+ 
+-	master->dev.of_node = pdev->dev.of_node;
+-	ret = spi_register_master(master);
++	host->dev.of_node = pdev->dev.of_node;
++	ret = spi_register_controller(host);
+ 	if (ret < 0) {
+-		dev_err(&pdev->dev, "can not register to master err %d\n", ret);
++		dev_err(&pdev->dev, "can not register to host err %d\n", ret);
+ 		goto exit_free_irq;
+ 	}
+ 
+@@ -1124,17 +1124,17 @@ static int tegra_slink_probe(struct platform_device *pdev)
+ 	tegra_slink_deinit_dma_param(tspi, false);
+ exit_rx_dma_free:
+ 	tegra_slink_deinit_dma_param(tspi, true);
+-exit_free_master:
+-	spi_master_put(master);
++exit_free_host:
++	spi_controller_put(host);
+ 	return ret;
+ }
+ 
+ static void tegra_slink_remove(struct platform_device *pdev)
+ {
+-	struct spi_master *master = spi_master_get(platform_get_drvdata(pdev));
+-	struct tegra_slink_data	*tspi = spi_master_get_devdata(master);
++	struct spi_controller *host = spi_controller_get(platform_get_drvdata(pdev));
++	struct tegra_slink_data	*tspi = spi_controller_get_devdata(host);
+ 
+-	spi_unregister_master(master);
++	spi_unregister_controller(host);
+ 
+ 	free_irq(tspi->irq, tspi);
+ 
+@@ -1146,21 +1146,21 @@ static void tegra_slink_remove(struct platform_device *pdev)
+ 	if (tspi->rx_dma_chan)
+ 		tegra_slink_deinit_dma_param(tspi, true);
+ 
+-	spi_master_put(master);
++	spi_controller_put(host);
+ }
+ 
+ #ifdef CONFIG_PM_SLEEP
+ static int tegra_slink_suspend(struct device *dev)
+ {
+-	struct spi_master *master = dev_get_drvdata(dev);
++	struct spi_controller *host = dev_get_drvdata(dev);
+ 
+-	return spi_master_suspend(master);
++	return spi_controller_suspend(host);
+ }
+ 
+ static int tegra_slink_resume(struct device *dev)
+ {
+-	struct spi_master *master = dev_get_drvdata(dev);
+-	struct tegra_slink_data *tspi = spi_master_get_devdata(master);
++	struct spi_controller *host = dev_get_drvdata(dev);
++	struct tegra_slink_data *tspi = spi_controller_get_devdata(host);
+ 	int ret;
+ 
+ 	ret = pm_runtime_resume_and_get(dev);
+@@ -1172,14 +1172,14 @@ static int tegra_slink_resume(struct device *dev)
+ 	tegra_slink_writel(tspi, tspi->command2_reg, SLINK_COMMAND2);
+ 	pm_runtime_put(dev);
+ 
+-	return spi_master_resume(master);
++	return spi_controller_resume(host);
+ }
+ #endif
+ 
+ static int __maybe_unused tegra_slink_runtime_suspend(struct device *dev)
+ {
+-	struct spi_master *master = dev_get_drvdata(dev);
+-	struct tegra_slink_data *tspi = spi_master_get_devdata(master);
++	struct spi_controller *host = dev_get_drvdata(dev);
++	struct tegra_slink_data *tspi = spi_controller_get_devdata(host);
+ 
+ 	/* Flush all write which are in PPSB queue by reading back */
+ 	tegra_slink_readl(tspi, SLINK_MAS_DATA);
+@@ -1190,8 +1190,8 @@ static int __maybe_unused tegra_slink_runtime_suspend(struct device *dev)
+ 
+ static int __maybe_unused tegra_slink_runtime_resume(struct device *dev)
+ {
+-	struct spi_master *master = dev_get_drvdata(dev);
+-	struct tegra_slink_data *tspi = spi_master_get_devdata(master);
++	struct spi_controller *host = dev_get_drvdata(dev);
++	struct tegra_slink_data *tspi = spi_controller_get_devdata(host);
+ 	int ret;
+ 
+ 	ret = clk_prepare_enable(tspi->clk);
 -- 
 2.25.1
 

@@ -1,14 +1,14 @@
 Authentication-Results: smtp.subspace.kernel.org; dkim=none
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09A83D4D
-	for <linux-spi@vger.kernel.org>; Tue, 28 Nov 2023 01:26:25 -0800 (PST)
-Received: from dggpemm100001.china.huawei.com (unknown [172.30.72.53])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4SfcQj3xS9zMnVN;
-	Tue, 28 Nov 2023 17:21:33 +0800 (CST)
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2135AD45
+	for <linux-spi@vger.kernel.org>; Tue, 28 Nov 2023 01:26:24 -0800 (PST)
+Received: from dggpemm100003.china.huawei.com (unknown [172.30.72.54])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4SfcWS0rDDzWhdj;
+	Tue, 28 Nov 2023 17:25:40 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm100001.china.huawei.com (7.185.36.93) with Microsoft SMTP Server
+ dggpemm100003.china.huawei.com (7.185.36.68) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 28 Nov 2023 17:26:23 +0800
+ 15.1.2507.35; Tue, 28 Nov 2023 17:26:22 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 28 Nov
@@ -17,9 +17,9 @@ From: Yang Yingliang <yangyingliang@huawei.com>
 To: <linux-spi@vger.kernel.org>
 CC: <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
 	<yangyingliang@huawei.com>
-Subject: [PATCH -next 10/26] spi: geni-qcom: switch to use modern name
-Date: Tue, 28 Nov 2023 17:30:15 +0800
-Message-ID: <20231128093031.3707034-11-yangyingliang@huawei.com>
+Subject: [PATCH -next 08/26] spi: sunplus-sp7021: switch to use modern name
+Date: Tue, 28 Nov 2023 17:30:13 +0800
+Message-ID: <20231128093031.3707034-9-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20231128093031.3707034-1-yangyingliang@huawei.com>
 References: <20231128093031.3707034-1-yangyingliang@huawei.com>
@@ -41,312 +41,321 @@ No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-geni-qcom.c | 96 ++++++++++++++++++-------------------
- 1 file changed, 48 insertions(+), 48 deletions(-)
+ drivers/spi/spi-sunplus-sp7021.c | 88 ++++++++++++++++----------------
+ 1 file changed, 44 insertions(+), 44 deletions(-)
 
-diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index b956a32a4162..15f84e68d4d2 100644
---- a/drivers/spi/spi-geni-qcom.c
-+++ b/drivers/spi/spi-geni-qcom.c
-@@ -145,10 +145,10 @@ static int get_spi_clk_cfg(unsigned int speed_hz,
- 	return ret;
+diff --git a/drivers/spi/spi-sunplus-sp7021.c b/drivers/spi/spi-sunplus-sp7021.c
+index eb8f835a4771..4e481380c259 100644
+--- a/drivers/spi/spi-sunplus-sp7021.c
++++ b/drivers/spi/spi-sunplus-sp7021.c
+@@ -70,8 +70,8 @@
+ #define SP7021_FIFO_DATA_LEN		(16)
+ 
+ enum {
+-	SP7021_MASTER_MODE = 0,
+-	SP7021_SLAVE_MODE = 1,
++	SP7021_HOST_MODE = 0,
++	SP7021_TARGET_MODE = 1,
+ };
+ 
+ struct sp7021_spi_ctlr {
+@@ -88,7 +88,7 @@ struct sp7021_spi_ctlr {
+ 	// data xfer lock
+ 	struct mutex buf_lock;
+ 	struct completion isr_done;
+-	struct completion slave_isr;
++	struct completion target_isr;
+ 	unsigned int  rx_cur_len;
+ 	unsigned int  tx_cur_len;
+ 	unsigned int  data_unit;
+@@ -96,7 +96,7 @@ struct sp7021_spi_ctlr {
+ 	u8 *rx_buf;
+ };
+ 
+-static irqreturn_t sp7021_spi_slave_irq(int irq, void *dev)
++static irqreturn_t sp7021_spi_target_irq(int irq, void *dev)
+ {
+ 	struct sp7021_spi_ctlr *pspim = dev;
+ 	unsigned int data_status;
+@@ -104,25 +104,25 @@ static irqreturn_t sp7021_spi_slave_irq(int irq, void *dev)
+ 	data_status = readl(pspim->s_base + SP7021_DATA_RDY_REG);
+ 	data_status |= SP7021_SLAVE_CLR_INT;
+ 	writel(data_status , pspim->s_base + SP7021_DATA_RDY_REG);
+-	complete(&pspim->slave_isr);
++	complete(&pspim->target_isr);
+ 	return IRQ_HANDLED;
  }
  
--static void handle_se_timeout(struct spi_master *spi,
--				struct spi_message *msg)
-+static void handle_se_timeout(struct spi_controller *spi,
-+			      struct spi_message *msg)
+-static int sp7021_spi_slave_abort(struct spi_controller *ctlr)
++static int sp7021_spi_target_abort(struct spi_controller *ctlr)
  {
--	struct spi_geni_master *mas = spi_master_get_devdata(spi);
-+	struct spi_geni_master *mas = spi_controller_get_devdata(spi);
- 	unsigned long time_left;
- 	struct geni_se *se = &mas->se;
- 	const struct spi_transfer *xfer;
-@@ -160,9 +160,9 @@ static void handle_se_timeout(struct spi_master *spi,
- 	xfer = mas->cur_xfer;
- 	mas->cur_xfer = NULL;
+-	struct sp7021_spi_ctlr *pspim = spi_master_get_devdata(ctlr);
++	struct sp7021_spi_ctlr *pspim = spi_controller_get_devdata(ctlr);
  
--	if (spi->slave) {
-+	if (spi->target) {
- 		/*
--		 * skip CMD Cancel sequnece since spi slave
-+		 * skip CMD Cancel sequnece since spi target
- 		 * doesn`t support CMD Cancel sequnece
- 		 */
- 		spin_unlock_irq(&mas->lock);
-@@ -225,17 +225,17 @@ static void handle_se_timeout(struct spi_master *spi,
+-	complete(&pspim->slave_isr);
++	complete(&pspim->target_isr);
+ 	complete(&pspim->isr_done);
+ 	return 0;
+ }
+ 
+-static int sp7021_spi_slave_tx(struct spi_device *spi, struct spi_transfer *xfer)
++static int sp7021_spi_target_tx(struct spi_device *spi, struct spi_transfer *xfer)
+ {
+ 	struct sp7021_spi_ctlr *pspim = spi_controller_get_devdata(spi->controller);
+ 	u32 value;
+ 
+-	reinit_completion(&pspim->slave_isr);
++	reinit_completion(&pspim->target_isr);
+ 	value = SP7021_SLAVE_DMA_EN | SP7021_SLAVE_DMA_RW | FIELD_PREP(SP7021_SLAVE_DMA_CMD, 3);
+ 	writel(value, pspim->s_base + SP7021_SLAVE_DMA_CTRL_REG);
+ 	writel(xfer->len, pspim->s_base + SP7021_SLAVE_DMA_LENGTH_REG);
+@@ -137,7 +137,7 @@ static int sp7021_spi_slave_tx(struct spi_device *spi, struct spi_transfer *xfer
+ 	return 0;
+ }
+ 
+-static int sp7021_spi_slave_rx(struct spi_device *spi, struct spi_transfer *xfer)
++static int sp7021_spi_target_rx(struct spi_device *spi, struct spi_transfer *xfer)
+ {
+ 	struct sp7021_spi_ctlr *pspim = spi_controller_get_devdata(spi->controller);
+ 	u32 value;
+@@ -155,7 +155,7 @@ static int sp7021_spi_slave_rx(struct spi_device *spi, struct spi_transfer *xfer
+ 	return 0;
+ }
+ 
+-static void sp7021_spi_master_rb(struct sp7021_spi_ctlr *pspim, unsigned int len)
++static void sp7021_spi_host_rb(struct sp7021_spi_ctlr *pspim, unsigned int len)
+ {
+ 	int i;
+ 
+@@ -166,7 +166,7 @@ static void sp7021_spi_master_rb(struct sp7021_spi_ctlr *pspim, unsigned int len
  	}
  }
  
--static void handle_gpi_timeout(struct spi_master *spi, struct spi_message *msg)
-+static void handle_gpi_timeout(struct spi_controller *spi, struct spi_message *msg)
+-static void sp7021_spi_master_wb(struct sp7021_spi_ctlr *pspim, unsigned int len)
++static void sp7021_spi_host_wb(struct sp7021_spi_ctlr *pspim, unsigned int len)
  {
--	struct spi_geni_master *mas = spi_master_get_devdata(spi);
-+	struct spi_geni_master *mas = spi_controller_get_devdata(spi);
+ 	int i;
  
- 	dmaengine_terminate_sync(mas->tx);
- 	dmaengine_terminate_sync(mas->rx);
- }
- 
--static void spi_geni_handle_err(struct spi_master *spi, struct spi_message *msg)
-+static void spi_geni_handle_err(struct spi_controller *spi, struct spi_message *msg)
- {
--	struct spi_geni_master *mas = spi_master_get_devdata(spi);
-+	struct spi_geni_master *mas = spi_controller_get_devdata(spi);
- 
- 	switch (mas->cur_xfer_mode) {
- 	case GENI_SE_FIFO:
-@@ -286,8 +286,8 @@ static bool spi_geni_is_abort_still_pending(struct spi_geni_master *mas)
- 
- static void spi_geni_set_cs(struct spi_device *slv, bool set_flag)
- {
--	struct spi_geni_master *mas = spi_master_get_devdata(slv->master);
--	struct spi_master *spi = dev_get_drvdata(mas->dev);
-+	struct spi_geni_master *mas = spi_controller_get_devdata(slv->controller);
-+	struct spi_controller *spi = dev_get_drvdata(mas->dev);
- 	struct geni_se *se = &mas->se;
- 	unsigned long time_left;
- 
-@@ -395,9 +395,9 @@ static int geni_spi_set_clock_and_bw(struct spi_geni_master *mas,
- }
- 
- static int setup_fifo_params(struct spi_device *spi_slv,
--					struct spi_master *spi)
-+					struct spi_controller *spi)
- {
--	struct spi_geni_master *mas = spi_master_get_devdata(spi);
-+	struct spi_geni_master *mas = spi_controller_get_devdata(spi);
- 	struct geni_se *se = &mas->se;
- 	u32 loopback_cfg = 0, cpol = 0, cpha = 0, demux_output_inv = 0;
- 	u32 demux_sel;
-@@ -434,7 +434,7 @@ static int setup_fifo_params(struct spi_device *spi_slv,
- static void
- spi_gsi_callback_result(void *cb, const struct dmaengine_result *result)
- {
--	struct spi_master *spi = cb;
-+	struct spi_controller *spi = cb;
- 
- 	spi->cur_msg->status = -EIO;
- 	if (result->result != DMA_TRANS_NOERROR) {
-@@ -454,7 +454,7 @@ spi_gsi_callback_result(void *cb, const struct dmaengine_result *result)
- }
- 
- static int setup_gsi_xfer(struct spi_transfer *xfer, struct spi_geni_master *mas,
--			  struct spi_device *spi_slv, struct spi_master *spi)
-+			  struct spi_device *spi_slv, struct spi_controller *spi)
- {
- 	unsigned long flags = DMA_PREP_INTERRUPT | DMA_CTRL_ACK;
- 	struct dma_slave_config config = {};
-@@ -560,14 +560,14 @@ static u32 get_xfer_len_in_words(struct spi_transfer *xfer,
- static bool geni_can_dma(struct spi_controller *ctlr,
- 			 struct spi_device *slv, struct spi_transfer *xfer)
- {
--	struct spi_geni_master *mas = spi_master_get_devdata(slv->master);
-+	struct spi_geni_master *mas = spi_controller_get_devdata(slv->controller);
- 	u32 len, fifo_size;
- 
- 	if (mas->cur_xfer_mode == GENI_GPI_DMA)
- 		return true;
- 
--	/* Set SE DMA mode for SPI slave. */
--	if (ctlr->slave)
-+	/* Set SE DMA mode for SPI target. */
-+	if (ctlr->target)
- 		return true;
- 
- 	len = get_xfer_len_in_words(xfer, mas);
-@@ -579,10 +579,10 @@ static bool geni_can_dma(struct spi_controller *ctlr,
- 		return false;
- }
- 
--static int spi_geni_prepare_message(struct spi_master *spi,
--					struct spi_message *spi_msg)
-+static int spi_geni_prepare_message(struct spi_controller *spi,
-+				    struct spi_message *spi_msg)
- {
--	struct spi_geni_master *mas = spi_master_get_devdata(spi);
-+	struct spi_geni_master *mas = spi_controller_get_devdata(spi);
- 	int ret;
- 
- 	switch (mas->cur_xfer_mode) {
-@@ -657,7 +657,7 @@ static int spi_geni_init(struct spi_geni_master *mas)
- 
- 	proto = geni_se_read_proto(se);
- 
--	if (spi->slave) {
-+	if (spi->target) {
- 		if (proto != GENI_SE_SPI_SLAVE) {
- 			dev_err(mas->dev, "Invalid proto %d\n", proto);
- 			goto out_pm;
-@@ -715,7 +715,7 @@ static int spi_geni_init(struct spi_geni_master *mas)
+@@ -177,7 +177,7 @@ static void sp7021_spi_master_wb(struct sp7021_spi_ctlr *pspim, unsigned int len
  	}
- 
- 	/* We always control CS manually */
--	if (!spi->slave) {
-+	if (!spi->target) {
- 		spi_tx_cfg = readl(se->base + SE_SPI_TRANS_CFG);
- 		spi_tx_cfg &= ~CS_TOGGLE;
- 		writel(spi_tx_cfg, se->base + SE_SPI_TRANS_CFG);
-@@ -824,7 +824,7 @@ static void geni_spi_handle_rx(struct spi_geni_master *mas)
- 
- static int setup_se_xfer(struct spi_transfer *xfer,
- 				struct spi_geni_master *mas,
--				u16 mode, struct spi_master *spi)
-+				u16 mode, struct spi_controller *spi)
- {
- 	u32 m_cmd = 0;
- 	u32 len;
-@@ -913,11 +913,11 @@ static int setup_se_xfer(struct spi_transfer *xfer,
- 	return ret;
  }
  
--static int spi_geni_transfer_one(struct spi_master *spi,
--				struct spi_device *slv,
--				struct spi_transfer *xfer)
-+static int spi_geni_transfer_one(struct spi_controller *spi,
-+				 struct spi_device *slv,
-+				 struct spi_transfer *xfer)
+-static irqreturn_t sp7021_spi_master_irq(int irq, void *dev)
++static irqreturn_t sp7021_spi_host_irq(int irq, void *dev)
  {
--	struct spi_geni_master *mas = spi_master_get_devdata(spi);
-+	struct spi_geni_master *mas = spi_controller_get_devdata(spi);
+ 	struct sp7021_spi_ctlr *pspim = dev;
+ 	unsigned int tx_cnt, total_len;
+@@ -206,9 +206,9 @@ static irqreturn_t sp7021_spi_master_irq(int irq, void *dev)
+ 		fd_status, rx_cnt, tx_cnt, tx_len);
+ 
+ 	if (rx_cnt > 0)
+-		sp7021_spi_master_rb(pspim, rx_cnt);
++		sp7021_spi_host_rb(pspim, rx_cnt);
+ 	if (tx_cnt > 0)
+-		sp7021_spi_master_wb(pspim, tx_cnt);
++		sp7021_spi_host_wb(pspim, tx_cnt);
+ 
+ 	fd_status = readl(pspim->m_base + SP7021_SPI_STATUS_REG);
+ 	tx_len = FIELD_GET(SP7021_TX_LEN_MASK, fd_status);
+@@ -224,7 +224,7 @@ static irqreturn_t sp7021_spi_master_irq(int irq, void *dev)
+ 				rx_cnt = FIELD_GET(SP7021_RX_CNT_MASK, fd_status);
+ 
+ 			if (rx_cnt > 0)
+-				sp7021_spi_master_rb(pspim, rx_cnt);
++				sp7021_spi_host_rb(pspim, rx_cnt);
+ 		}
+ 		value = readl(pspim->m_base + SP7021_INT_BUSY_REG);
+ 		value |= SP7021_CLR_MASTER_INT;
+@@ -240,7 +240,7 @@ static irqreturn_t sp7021_spi_master_irq(int irq, void *dev)
+ 
+ static void sp7021_prep_transfer(struct spi_controller *ctlr, struct spi_device *spi)
+ {
+-	struct sp7021_spi_ctlr *pspim = spi_master_get_devdata(ctlr);
++	struct sp7021_spi_ctlr *pspim = spi_controller_get_devdata(ctlr);
+ 
+ 	pspim->tx_cur_len = 0;
+ 	pspim->rx_cur_len = 0;
+@@ -251,7 +251,7 @@ static void sp7021_prep_transfer(struct spi_controller *ctlr, struct spi_device
+ static int sp7021_spi_controller_prepare_message(struct spi_controller *ctlr,
+ 						 struct spi_message *msg)
+ {
+-	struct sp7021_spi_ctlr *pspim = spi_master_get_devdata(ctlr);
++	struct sp7021_spi_ctlr *pspim = spi_controller_get_devdata(ctlr);
+ 	struct spi_device *s = msg->spi;
+ 	u32 valus, rs = 0;
+ 
+@@ -283,7 +283,7 @@ static int sp7021_spi_controller_prepare_message(struct spi_controller *ctlr,
+ 
+ static void sp7021_spi_setup_clk(struct spi_controller *ctlr, struct spi_transfer *xfer)
+ {
+-	struct sp7021_spi_ctlr *pspim = spi_master_get_devdata(ctlr);
++	struct sp7021_spi_ctlr *pspim = spi_controller_get_devdata(ctlr);
+ 	u32 clk_rate, clk_sel, div;
+ 
+ 	clk_rate = clk_get_rate(pspim->spi_clk);
+@@ -295,10 +295,10 @@ static void sp7021_spi_setup_clk(struct spi_controller *ctlr, struct spi_transfe
+ 	writel(pspim->xfer_conf, pspim->m_base + SP7021_SPI_CONFIG_REG);
+ }
+ 
+-static int sp7021_spi_master_transfer_one(struct spi_controller *ctlr, struct spi_device *spi,
++static int sp7021_spi_host_transfer_one(struct spi_controller *ctlr, struct spi_device *spi,
+ 				       struct spi_transfer *xfer)
+ {
+-	struct sp7021_spi_ctlr *pspim = spi_master_get_devdata(ctlr);
++	struct sp7021_spi_ctlr *pspim = spi_controller_get_devdata(ctlr);
+ 	unsigned long timeout = msecs_to_jiffies(1000);
+ 	unsigned int xfer_cnt, xfer_len, last_len;
+ 	unsigned int i, len_temp;
+@@ -323,7 +323,7 @@ static int sp7021_spi_master_transfer_one(struct spi_controller *ctlr, struct sp
+ 
+ 		if (pspim->tx_cur_len < xfer_len) {
+ 			len_temp = min(pspim->data_unit, xfer_len);
+-			sp7021_spi_master_wb(pspim, len_temp);
++			sp7021_spi_host_wb(pspim, len_temp);
+ 		}
+ 		reg_temp = readl(pspim->m_base + SP7021_SPI_CONFIG_REG);
+ 		reg_temp &= ~SP7021_CLEAN_RW_BYTE;
+@@ -359,10 +359,10 @@ static int sp7021_spi_master_transfer_one(struct spi_controller *ctlr, struct sp
+ 	return 0;
+ }
+ 
+-static int sp7021_spi_slave_transfer_one(struct spi_controller *ctlr, struct spi_device *spi,
++static int sp7021_spi_target_transfer_one(struct spi_controller *ctlr, struct spi_device *spi,
+ 				       struct spi_transfer *xfer)
+ {
+-	struct sp7021_spi_ctlr *pspim = spi_master_get_devdata(ctlr);
++	struct sp7021_spi_ctlr *pspim = spi_controller_get_devdata(ctlr);
+ 	struct device *dev = pspim->dev;
  	int ret;
  
- 	if (spi_geni_is_abort_still_pending(mas))
-@@ -939,8 +939,8 @@ static int spi_geni_transfer_one(struct spi_master *spi,
+@@ -371,14 +371,14 @@ static int sp7021_spi_slave_transfer_one(struct spi_controller *ctlr, struct spi
+ 					      xfer->len, DMA_TO_DEVICE);
+ 		if (dma_mapping_error(dev, xfer->tx_dma))
+ 			return -ENOMEM;
+-		ret = sp7021_spi_slave_tx(spi, xfer);
++		ret = sp7021_spi_target_tx(spi, xfer);
+ 		dma_unmap_single(dev, xfer->tx_dma, xfer->len, DMA_TO_DEVICE);
+ 	} else if (xfer->rx_buf && !xfer->tx_buf) {
+ 		xfer->rx_dma = dma_map_single(dev, xfer->rx_buf, xfer->len,
+ 					      DMA_FROM_DEVICE);
+ 		if (dma_mapping_error(dev, xfer->rx_dma))
+ 			return -ENOMEM;
+-		ret = sp7021_spi_slave_rx(spi, xfer);
++		ret = sp7021_spi_target_rx(spi, xfer);
+ 		dma_unmap_single(dev, xfer->rx_dma, xfer->len, DMA_FROM_DEVICE);
+ 	} else {
+ 		dev_dbg(&ctlr->dev, "%s() wrong command\n", __func__);
+@@ -409,14 +409,14 @@ static int sp7021_spi_controller_probe(struct platform_device *pdev)
+ 	pdev->id = of_alias_get_id(pdev->dev.of_node, "sp_spi");
  
- static irqreturn_t geni_spi_isr(int irq, void *data)
- {
--	struct spi_master *spi = data;
--	struct spi_geni_master *mas = spi_master_get_devdata(spi);
-+	struct spi_controller *spi = data;
-+	struct spi_geni_master *mas = spi_controller_get_devdata(spi);
- 	struct geni_se *se = &mas->se;
- 	u32 m_irq;
+ 	if (device_property_read_bool(dev, "spi-slave"))
+-		mode = SP7021_SLAVE_MODE;
++		mode = SP7021_TARGET_MODE;
+ 	else
+-		mode = SP7021_MASTER_MODE;
++		mode = SP7021_HOST_MODE;
  
-@@ -1042,7 +1042,7 @@ static irqreturn_t geni_spi_isr(int irq, void *data)
- static int spi_geni_probe(struct platform_device *pdev)
- {
- 	int ret, irq;
--	struct spi_master *spi;
-+	struct spi_controller *spi;
- 	struct spi_geni_master *mas;
- 	void __iomem *base;
- 	struct clk *clk;
-@@ -1064,12 +1064,12 @@ static int spi_geni_probe(struct platform_device *pdev)
- 	if (IS_ERR(clk))
- 		return PTR_ERR(clk);
- 
--	spi = devm_spi_alloc_master(dev, sizeof(*mas));
-+	spi = devm_spi_alloc_host(dev, sizeof(*mas));
- 	if (!spi)
+-	if (mode == SP7021_SLAVE_MODE)
+-		ctlr = devm_spi_alloc_slave(dev, sizeof(*pspim));
++	if (mode == SP7021_TARGET_MODE)
++		ctlr = devm_spi_alloc_target(dev, sizeof(*pspim));
+ 	else
+-		ctlr = devm_spi_alloc_master(dev, sizeof(*pspim));
++		ctlr = devm_spi_alloc_host(dev, sizeof(*pspim));
+ 	if (!ctlr)
  		return -ENOMEM;
+ 	device_set_node(&ctlr->dev, dev_fwnode(dev));
+@@ -424,9 +424,9 @@ static int sp7021_spi_controller_probe(struct platform_device *pdev)
+ 	ctlr->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST;
+ 	ctlr->auto_runtime_pm = true;
+ 	ctlr->prepare_message = sp7021_spi_controller_prepare_message;
+-	if (mode == SP7021_SLAVE_MODE) {
+-		ctlr->transfer_one = sp7021_spi_slave_transfer_one;
+-		ctlr->slave_abort = sp7021_spi_slave_abort;
++	if (mode == SP7021_TARGET_MODE) {
++		ctlr->transfer_one = sp7021_spi_target_transfer_one;
++		ctlr->target_abort = sp7021_spi_target_abort;
+ 		ctlr->flags = SPI_CONTROLLER_HALF_DUPLEX;
+ 	} else {
+ 		ctlr->bits_per_word_mask = SPI_BPW_MASK(8);
+@@ -434,7 +434,7 @@ static int sp7021_spi_controller_probe(struct platform_device *pdev)
+ 		ctlr->max_speed_hz = 25000000;
+ 		ctlr->use_gpio_descriptors = true;
+ 		ctlr->flags = SPI_CONTROLLER_MUST_RX | SPI_CONTROLLER_MUST_TX;
+-		ctlr->transfer_one = sp7021_spi_master_transfer_one;
++		ctlr->transfer_one = sp7021_spi_host_transfer_one;
+ 	}
+ 	platform_set_drvdata(pdev, ctlr);
+ 	pspim = spi_controller_get_devdata(ctlr);
+@@ -443,7 +443,7 @@ static int sp7021_spi_controller_probe(struct platform_device *pdev)
+ 	pspim->dev = dev;
+ 	mutex_init(&pspim->buf_lock);
+ 	init_completion(&pspim->isr_done);
+-	init_completion(&pspim->slave_isr);
++	init_completion(&pspim->target_isr);
  
- 	platform_set_drvdata(pdev, spi);
--	mas = spi_master_get_devdata(spi);
-+	mas = spi_controller_get_devdata(spi);
- 	mas->irq = irq;
- 	mas->dev = dev;
- 	mas->se.dev = dev;
-@@ -1113,7 +1113,7 @@ static int spi_geni_probe(struct platform_device *pdev)
- 	pm_runtime_enable(dev);
- 
- 	if (device_property_read_bool(&pdev->dev, "spi-slave"))
--		spi->slave = true;
-+		spi->target = true;
- 
- 	ret = geni_icc_get(&mas->se, NULL);
- 	if (ret)
-@@ -1135,7 +1135,7 @@ static int spi_geni_probe(struct platform_device *pdev)
- 	 * for dma (gsi) mode, the gsi will set cs based on params passed in
- 	 * TRE
- 	 */
--	if (!spi->slave && mas->cur_xfer_mode == GENI_SE_FIFO)
-+	if (!spi->target && mas->cur_xfer_mode == GENI_SE_FIFO)
- 		spi->set_cs = spi_geni_set_cs;
- 
- 	/*
-@@ -1148,7 +1148,7 @@ static int spi_geni_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto spi_geni_release_dma;
- 
--	ret = spi_register_master(spi);
-+	ret = spi_register_controller(spi);
- 	if (ret)
- 		goto spi_geni_probe_free_irq;
- 
-@@ -1164,11 +1164,11 @@ static int spi_geni_probe(struct platform_device *pdev)
- 
- static void spi_geni_remove(struct platform_device *pdev)
- {
--	struct spi_master *spi = platform_get_drvdata(pdev);
--	struct spi_geni_master *mas = spi_master_get_devdata(spi);
-+	struct spi_controller *spi = platform_get_drvdata(pdev);
-+	struct spi_geni_master *mas = spi_controller_get_devdata(spi);
- 
- 	/* Unregister _before_ disabling pm_runtime() so we stop transfers */
--	spi_unregister_master(spi);
-+	spi_unregister_controller(spi);
- 
- 	spi_geni_release_dma_chan(mas);
- 
-@@ -1178,8 +1178,8 @@ static void spi_geni_remove(struct platform_device *pdev)
- 
- static int __maybe_unused spi_geni_runtime_suspend(struct device *dev)
- {
--	struct spi_master *spi = dev_get_drvdata(dev);
--	struct spi_geni_master *mas = spi_master_get_devdata(spi);
-+	struct spi_controller *spi = dev_get_drvdata(dev);
-+	struct spi_geni_master *mas = spi_controller_get_devdata(spi);
- 	int ret;
- 
- 	/* Drop the performance state vote */
-@@ -1194,8 +1194,8 @@ static int __maybe_unused spi_geni_runtime_suspend(struct device *dev)
- 
- static int __maybe_unused spi_geni_runtime_resume(struct device *dev)
- {
--	struct spi_master *spi = dev_get_drvdata(dev);
--	struct spi_geni_master *mas = spi_master_get_devdata(spi);
-+	struct spi_controller *spi = dev_get_drvdata(dev);
-+	struct spi_geni_master *mas = spi_controller_get_devdata(spi);
- 	int ret;
- 
- 	ret = geni_icc_enable(&mas->se);
-@@ -1211,30 +1211,30 @@ static int __maybe_unused spi_geni_runtime_resume(struct device *dev)
- 
- static int __maybe_unused spi_geni_suspend(struct device *dev)
- {
--	struct spi_master *spi = dev_get_drvdata(dev);
-+	struct spi_controller *spi = dev_get_drvdata(dev);
- 	int ret;
- 
--	ret = spi_master_suspend(spi);
-+	ret = spi_controller_suspend(spi);
+ 	pspim->m_base = devm_platform_ioremap_resource_byname(pdev, "master");
+ 	if (IS_ERR(pspim->m_base))
+@@ -485,12 +485,12 @@ static int sp7021_spi_controller_probe(struct platform_device *pdev)
  	if (ret)
  		return ret;
  
- 	ret = pm_runtime_force_suspend(dev);
+-	ret = devm_request_irq(dev, pspim->m_irq, sp7021_spi_master_irq,
++	ret = devm_request_irq(dev, pspim->m_irq, sp7021_spi_host_irq,
+ 			       IRQF_TRIGGER_RISING, pdev->name, pspim);
  	if (ret)
--		spi_master_resume(spi);
-+		spi_controller_resume(spi);
+ 		return ret;
  
- 	return ret;
+-	ret = devm_request_irq(dev, pspim->s_irq, sp7021_spi_slave_irq,
++	ret = devm_request_irq(dev, pspim->s_irq, sp7021_spi_target_irq,
+ 			       IRQF_TRIGGER_RISING, pdev->name, pspim);
+ 	if (ret)
+ 		return ret;
+@@ -499,7 +499,7 @@ static int sp7021_spi_controller_probe(struct platform_device *pdev)
+ 	ret = spi_register_controller(ctlr);
+ 	if (ret) {
+ 		pm_runtime_disable(dev);
+-		return dev_err_probe(dev, ret, "spi_register_master fail\n");
++		return dev_err_probe(dev, ret, "spi_register_controller fail\n");
+ 	}
+ 	return 0;
  }
- 
- static int __maybe_unused spi_geni_resume(struct device *dev)
+@@ -516,7 +516,7 @@ static void sp7021_spi_controller_remove(struct platform_device *pdev)
+ static int __maybe_unused sp7021_spi_controller_suspend(struct device *dev)
  {
--	struct spi_master *spi = dev_get_drvdata(dev);
-+	struct spi_controller *spi = dev_get_drvdata(dev);
- 	int ret;
+ 	struct spi_controller *ctlr = dev_get_drvdata(dev);
+-	struct sp7021_spi_ctlr *pspim = spi_master_get_devdata(ctlr);
++	struct sp7021_spi_ctlr *pspim = spi_controller_get_devdata(ctlr);
  
- 	ret = pm_runtime_force_resume(dev);
- 	if (ret)
- 		return ret;
+ 	return reset_control_assert(pspim->rstc);
+ }
+@@ -524,7 +524,7 @@ static int __maybe_unused sp7021_spi_controller_suspend(struct device *dev)
+ static int __maybe_unused sp7021_spi_controller_resume(struct device *dev)
+ {
+ 	struct spi_controller *ctlr = dev_get_drvdata(dev);
+-	struct sp7021_spi_ctlr *pspim = spi_master_get_devdata(ctlr);
++	struct sp7021_spi_ctlr *pspim = spi_controller_get_devdata(ctlr);
  
--	ret = spi_master_resume(spi);
-+	ret = spi_controller_resume(spi);
- 	if (ret)
- 		pm_runtime_force_suspend(dev);
+ 	reset_control_deassert(pspim->rstc);
+ 	return clk_prepare_enable(pspim->spi_clk);
+@@ -534,7 +534,7 @@ static int __maybe_unused sp7021_spi_controller_resume(struct device *dev)
+ static int sp7021_spi_runtime_suspend(struct device *dev)
+ {
+ 	struct spi_controller *ctlr = dev_get_drvdata(dev);
+-	struct sp7021_spi_ctlr *pspim = spi_master_get_devdata(ctlr);
++	struct sp7021_spi_ctlr *pspim = spi_controller_get_devdata(ctlr);
  
+ 	return reset_control_assert(pspim->rstc);
+ }
+@@ -542,7 +542,7 @@ static int sp7021_spi_runtime_suspend(struct device *dev)
+ static int sp7021_spi_runtime_resume(struct device *dev)
+ {
+ 	struct spi_controller *ctlr = dev_get_drvdata(dev);
+-	struct sp7021_spi_ctlr *pspim = spi_master_get_devdata(ctlr);
++	struct sp7021_spi_ctlr *pspim = spi_controller_get_devdata(ctlr);
+ 
+ 	return reset_control_deassert(pspim->rstc);
+ }
 -- 
 2.25.1
 

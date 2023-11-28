@@ -1,25 +1,25 @@
 Authentication-Results: smtp.subspace.kernel.org; dkim=none
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D541D4C
-	for <linux-spi@vger.kernel.org>; Tue, 28 Nov 2023 01:26:24 -0800 (PST)
-Received: from dggpemm100004.china.huawei.com (unknown [172.30.72.55])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4SfcRJ4BnrzLqCG;
-	Tue, 28 Nov 2023 17:22:04 +0800 (CST)
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67E59DE
+	for <linux-spi@vger.kernel.org>; Tue, 28 Nov 2023 01:26:26 -0800 (PST)
+Received: from dggpemm500001.china.huawei.com (unknown [172.30.72.55])
+	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4SfcS81jkGz1P8r8;
+	Tue, 28 Nov 2023 17:22:48 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm100004.china.huawei.com (7.185.36.189) with Microsoft SMTP Server
+ dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 28 Nov 2023 17:26:22 +0800
+ 15.1.2507.35; Tue, 28 Nov 2023 17:26:24 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 28 Nov
- 2023 17:26:22 +0800
+ 2023 17:26:24 +0800
 From: Yang Yingliang <yangyingliang@huawei.com>
 To: <linux-spi@vger.kernel.org>
 CC: <broonie@kernel.org>, <geert@linux-m68k.org>, <lukas@wunner.de>,
 	<yangyingliang@huawei.com>
-Subject: [PATCH -next 09/26] spi: synquacer: switch to use modern name
-Date: Tue, 28 Nov 2023 17:30:14 +0800
-Message-ID: <20231128093031.3707034-10-yangyingliang@huawei.com>
+Subject: [PATCH -next 14/26] spi: tegra210-quad: switch to use modern name
+Date: Tue, 28 Nov 2023 17:30:19 +0800
+Message-ID: <20231128093031.3707034-15-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20231128093031.3707034-1-yangyingliang@huawei.com>
 References: <20231128093031.3707034-1-yangyingliang@huawei.com>
@@ -41,244 +41,220 @@ No functional changed.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/spi/spi-synquacer.c | 82 ++++++++++++++++++-------------------
- 1 file changed, 41 insertions(+), 41 deletions(-)
+ drivers/spi/spi-tegra210-quad.c | 80 ++++++++++++++++-----------------
+ 1 file changed, 40 insertions(+), 40 deletions(-)
 
-diff --git a/drivers/spi/spi-synquacer.c b/drivers/spi/spi-synquacer.c
-index aeaf7db022f0..7cb4301a6fb2 100644
---- a/drivers/spi/spi-synquacer.c
-+++ b/drivers/spi/spi-synquacer.c
-@@ -225,11 +225,11 @@ static int write_fifo(struct synquacer_spi *sspi)
- 	return 0;
- }
+diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
+index e9ad9b0b598b..afbd64a217eb 100644
+--- a/drivers/spi/spi-tegra210-quad.c
++++ b/drivers/spi/spi-tegra210-quad.c
+@@ -175,7 +175,7 @@ struct tegra_qspi_client_data {
  
--static int synquacer_spi_config(struct spi_master *master,
-+static int synquacer_spi_config(struct spi_controller *host,
- 				struct spi_device *spi,
- 				struct spi_transfer *xfer)
+ struct tegra_qspi {
+ 	struct device				*dev;
+-	struct spi_master			*master;
++	struct spi_controller			*host;
+ 	/* lock to protect data accessed by irq */
+ 	spinlock_t				lock;
+ 
+@@ -809,7 +809,7 @@ static int tegra_qspi_init_dma(struct tegra_qspi *tqspi)
+ static u32 tegra_qspi_setup_transfer_one(struct spi_device *spi, struct spi_transfer *t,
+ 					 bool is_first_of_msg)
  {
--	struct synquacer_spi *sspi = spi_master_get_devdata(master);
-+	struct synquacer_spi *sspi = spi_controller_get_devdata(host);
- 	unsigned int speed, mode, bpw, cs, bus_width, transfer_mode;
- 	u32 rate, val, div;
- 
-@@ -263,7 +263,7 @@ static int synquacer_spi_config(struct spi_master *master,
- 	}
- 
- 	sspi->transfer_mode = transfer_mode;
--	rate = master->max_speed_hz;
-+	rate = host->max_speed_hz;
- 
- 	div = DIV_ROUND_UP(rate, speed);
- 	if (div > 254) {
-@@ -350,11 +350,11 @@ static int synquacer_spi_config(struct spi_master *master,
- 	return 0;
- }
- 
--static int synquacer_spi_transfer_one(struct spi_master *master,
-+static int synquacer_spi_transfer_one(struct spi_controller *host,
- 				      struct spi_device *spi,
- 				      struct spi_transfer *xfer)
+-	struct tegra_qspi *tqspi = spi_master_get_devdata(spi->master);
++	struct tegra_qspi *tqspi = spi_controller_get_devdata(spi->controller);
+ 	struct tegra_qspi_client_data *cdata = spi->controller_data;
+ 	u32 command1, command2, speed = t->speed_hz;
+ 	u8 bits_per_word = t->bits_per_word;
+@@ -870,7 +870,7 @@ static u32 tegra_qspi_setup_transfer_one(struct spi_device *spi, struct spi_tran
+ static int tegra_qspi_start_transfer_one(struct spi_device *spi,
+ 					 struct spi_transfer *t, u32 command1)
  {
--	struct synquacer_spi *sspi = spi_master_get_devdata(master);
-+	struct synquacer_spi *sspi = spi_controller_get_devdata(host);
+-	struct tegra_qspi *tqspi = spi_master_get_devdata(spi->master);
++	struct tegra_qspi *tqspi = spi_controller_get_devdata(spi->controller);
+ 	unsigned int total_fifo_words;
+ 	u8 bus_width = 0;
  	int ret;
- 	int status = 0;
- 	u32 words;
-@@ -378,7 +378,7 @@ static int synquacer_spi_transfer_one(struct spi_master *master,
- 	if (bpw == 8 && !(xfer->len % 4) && !(spi->mode & SPI_LSB_FIRST))
- 		xfer->bits_per_word = 32;
- 
--	ret = synquacer_spi_config(master, spi, xfer);
-+	ret = synquacer_spi_config(host, spi, xfer);
- 
- 	/* restore */
- 	xfer->bits_per_word = bpw;
-@@ -482,7 +482,7 @@ static int synquacer_spi_transfer_one(struct spi_master *master,
- 
- static void synquacer_spi_set_cs(struct spi_device *spi, bool enable)
+@@ -925,7 +925,7 @@ static int tegra_qspi_start_transfer_one(struct spi_device *spi,
+ static struct tegra_qspi_client_data *tegra_qspi_parse_cdata_dt(struct spi_device *spi)
  {
--	struct synquacer_spi *sspi = spi_master_get_devdata(spi->master);
-+	struct synquacer_spi *sspi = spi_controller_get_devdata(spi->controller);
- 	u32 val;
+ 	struct tegra_qspi_client_data *cdata;
+-	struct tegra_qspi *tqspi = spi_master_get_devdata(spi->master);
++	struct tegra_qspi *tqspi = spi_controller_get_devdata(spi->controller);
  
- 	val = readl(sspi->regs + SYNQUACER_HSSPI_REG_DMSTART);
-@@ -517,11 +517,11 @@ static int synquacer_spi_wait_status_update(struct synquacer_spi *sspi,
- 	return -EBUSY;
+ 	cdata = devm_kzalloc(tqspi->dev, sizeof(*cdata), GFP_KERNEL);
+ 	if (!cdata)
+@@ -941,7 +941,7 @@ static struct tegra_qspi_client_data *tegra_qspi_parse_cdata_dt(struct spi_devic
+ 
+ static int tegra_qspi_setup(struct spi_device *spi)
+ {
+-	struct tegra_qspi *tqspi = spi_master_get_devdata(spi->master);
++	struct tegra_qspi *tqspi = spi_controller_get_devdata(spi->controller);
+ 	struct tegra_qspi_client_data *cdata = spi->controller_data;
+ 	unsigned long flags;
+ 	u32 val;
+@@ -1005,7 +1005,7 @@ static void tegra_qspi_handle_error(struct tegra_qspi *tqspi)
+ 
+ static void tegra_qspi_transfer_end(struct spi_device *spi)
+ {
+-	struct tegra_qspi *tqspi = spi_master_get_devdata(spi->master);
++	struct tegra_qspi *tqspi = spi_controller_get_devdata(spi->controller);
+ 	int cs_val = (spi->mode & SPI_CS_HIGH) ? 0 : 1;
+ 
+ 	if (cs_val)
+@@ -1316,10 +1316,10 @@ static bool tegra_qspi_validate_cmb_seq(struct tegra_qspi *tqspi,
+ 	return true;
  }
  
--static int synquacer_spi_enable(struct spi_master *master)
-+static int synquacer_spi_enable(struct spi_controller *host)
+-static int tegra_qspi_transfer_one_message(struct spi_master *master,
++static int tegra_qspi_transfer_one_message(struct spi_controller *host,
+ 					   struct spi_message *msg)
  {
- 	u32 val;
- 	int status;
--	struct synquacer_spi *sspi = spi_master_get_devdata(master);
-+	struct synquacer_spi *sspi = spi_controller_get_devdata(host);
- 
- 	/* Disable module */
- 	writel(0, sspi->regs + SYNQUACER_HSSPI_REG_MCTRL);
-@@ -601,18 +601,18 @@ static irqreturn_t sq_spi_tx_handler(int irq, void *priv)
- static int synquacer_spi_probe(struct platform_device *pdev)
- {
- 	struct device_node *np = pdev->dev.of_node;
--	struct spi_master *master;
-+	struct spi_controller *host;
- 	struct synquacer_spi *sspi;
+-	struct tegra_qspi *tqspi = spi_master_get_devdata(master);
++	struct tegra_qspi *tqspi = spi_controller_get_devdata(host);
  	int ret;
- 	int rx_irq, tx_irq;
  
--	master = spi_alloc_master(&pdev->dev, sizeof(*sspi));
+ 	if (tegra_qspi_validate_cmb_seq(tqspi, msg))
+@@ -1327,7 +1327,7 @@ static int tegra_qspi_transfer_one_message(struct spi_master *master,
+ 	else
+ 		ret = tegra_qspi_non_combined_seq_xfer(tqspi, msg);
+ 
+-	spi_finalize_current_message(master);
++	spi_finalize_current_message(host);
+ 
+ 	return ret;
+ }
+@@ -1533,38 +1533,38 @@ MODULE_DEVICE_TABLE(acpi, tegra_qspi_acpi_match);
+ 
+ static int tegra_qspi_probe(struct platform_device *pdev)
+ {
+-	struct spi_master	*master;
++	struct spi_controller	*host;
+ 	struct tegra_qspi	*tqspi;
+ 	struct resource		*r;
+ 	int ret, qspi_irq;
+ 	int bus_num;
+ 
+-	master = devm_spi_alloc_master(&pdev->dev, sizeof(*tqspi));
 -	if (!master)
-+	host = spi_alloc_host(&pdev->dev, sizeof(*sspi));
++	host = devm_spi_alloc_host(&pdev->dev, sizeof(*tqspi));
 +	if (!host)
  		return -ENOMEM;
  
 -	platform_set_drvdata(pdev, master);
+-	tqspi = spi_master_get_devdata(master);
 +	platform_set_drvdata(pdev, host);
++	tqspi = spi_controller_get_devdata(host);
  
--	sspi = spi_master_get_devdata(master);
-+	sspi = spi_controller_get_devdata(host);
- 	sspi->dev = &pdev->dev;
- 
- 	init_completion(&sspi->transfer_done);
-@@ -625,7 +625,7 @@ static int synquacer_spi_probe(struct platform_device *pdev)
- 
- 	sspi->clk_src_type = SYNQUACER_HSSPI_CLOCK_SRC_IHCLK; /* Default */
- 	device_property_read_u32(&pdev->dev, "socionext,ihclk-rate",
--				 &master->max_speed_hz); /* for ACPI */
-+				 &host->max_speed_hz); /* for ACPI */
- 
- 	if (dev_of_node(&pdev->dev)) {
- 		if (device_property_match_string(&pdev->dev,
-@@ -655,21 +655,21 @@ static int synquacer_spi_probe(struct platform_device *pdev)
- 			goto put_spi;
- 		}
- 
--		master->max_speed_hz = clk_get_rate(sspi->clk);
-+		host->max_speed_hz = clk_get_rate(sspi->clk);
- 	}
- 
--	if (!master->max_speed_hz) {
-+	if (!host->max_speed_hz) {
- 		dev_err(&pdev->dev, "missing clock source\n");
- 		ret = -EINVAL;
- 		goto disable_clk;
- 	}
--	master->min_speed_hz = master->max_speed_hz / 254;
-+	host->min_speed_hz = host->max_speed_hz / 254;
- 
- 	sspi->aces = device_property_read_bool(&pdev->dev,
- 					       "socionext,set-aces");
- 	sspi->rtm = device_property_read_bool(&pdev->dev, "socionext,use-rtm");
- 
--	master->num_chipselect = SYNQUACER_HSSPI_NUM_CHIP_SELECT;
-+	host->num_chipselect = SYNQUACER_HSSPI_NUM_CHIP_SELECT;
- 
- 	rx_irq = platform_get_irq(pdev, 0);
- 	if (rx_irq <= 0) {
-@@ -699,27 +699,27 @@ static int synquacer_spi_probe(struct platform_device *pdev)
- 		goto disable_clk;
- 	}
- 
--	master->dev.of_node = np;
--	master->dev.fwnode = pdev->dev.fwnode;
+-	master->mode_bits = SPI_MODE_0 | SPI_MODE_3 | SPI_CS_HIGH |
+-			    SPI_TX_DUAL | SPI_RX_DUAL | SPI_TX_QUAD | SPI_RX_QUAD;
+-	master->bits_per_word_mask = SPI_BPW_MASK(32) | SPI_BPW_MASK(16) | SPI_BPW_MASK(8);
+-	master->flags = SPI_CONTROLLER_HALF_DUPLEX;
+-	master->setup = tegra_qspi_setup;
+-	master->transfer_one_message = tegra_qspi_transfer_one_message;
+-	master->num_chipselect = 1;
 -	master->auto_runtime_pm = true;
--	master->bus_num = pdev->id;
-+	host->dev.of_node = np;
-+	host->dev.fwnode = pdev->dev.fwnode;
++	host->mode_bits = SPI_MODE_0 | SPI_MODE_3 | SPI_CS_HIGH |
++			  SPI_TX_DUAL | SPI_RX_DUAL | SPI_TX_QUAD | SPI_RX_QUAD;
++	host->bits_per_word_mask = SPI_BPW_MASK(32) | SPI_BPW_MASK(16) | SPI_BPW_MASK(8);
++	host->flags = SPI_CONTROLLER_HALF_DUPLEX;
++	host->setup = tegra_qspi_setup;
++	host->transfer_one_message = tegra_qspi_transfer_one_message;
++	host->num_chipselect = 1;
 +	host->auto_runtime_pm = true;
-+	host->bus_num = pdev->id;
  
--	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_TX_DUAL | SPI_RX_DUAL |
--			    SPI_TX_QUAD | SPI_RX_QUAD;
--	master->bits_per_word_mask = SPI_BPW_MASK(32) | SPI_BPW_MASK(24) |
--				     SPI_BPW_MASK(16) | SPI_BPW_MASK(8);
-+	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_TX_DUAL | SPI_RX_DUAL |
-+			  SPI_TX_QUAD | SPI_RX_QUAD;
-+	host->bits_per_word_mask = SPI_BPW_MASK(32) | SPI_BPW_MASK(24) |
-+				   SPI_BPW_MASK(16) | SPI_BPW_MASK(8);
+ 	bus_num = of_alias_get_id(pdev->dev.of_node, "spi");
+ 	if (bus_num >= 0)
+-		master->bus_num = bus_num;
++		host->bus_num = bus_num;
  
--	master->set_cs = synquacer_spi_set_cs;
--	master->transfer_one = synquacer_spi_transfer_one;
-+	host->set_cs = synquacer_spi_set_cs;
-+	host->transfer_one = synquacer_spi_transfer_one;
+-	tqspi->master = master;
++	tqspi->host = host;
+ 	tqspi->dev = &pdev->dev;
+ 	spin_lock_init(&tqspi->lock);
  
--	ret = synquacer_spi_enable(master);
-+	ret = synquacer_spi_enable(host);
- 	if (ret)
- 		goto disable_clk;
+ 	tqspi->soc_data = device_get_match_data(&pdev->dev);
+-	master->num_chipselect = tqspi->soc_data->cs_count;
++	host->num_chipselect = tqspi->soc_data->cs_count;
+ 	tqspi->base = devm_platform_get_and_ioremap_resource(pdev, 0, &r);
+ 	if (IS_ERR(tqspi->base))
+ 		return PTR_ERR(tqspi->base);
+@@ -1625,10 +1625,10 @@ static int tegra_qspi_probe(struct platform_device *pdev)
+ 		goto exit_pm_disable;
+ 	}
  
- 	pm_runtime_set_active(sspi->dev);
- 	pm_runtime_enable(sspi->dev);
+-	master->dev.of_node = pdev->dev.of_node;
+-	ret = spi_register_master(master);
++	host->dev.of_node = pdev->dev.of_node;
++	ret = spi_register_controller(host);
+ 	if (ret < 0) {
+-		dev_err(&pdev->dev, "failed to register master: %d\n", ret);
++		dev_err(&pdev->dev, "failed to register host: %d\n", ret);
+ 		goto exit_free_irq;
+ 	}
  
--	ret = devm_spi_register_master(sspi->dev, master);
-+	ret = devm_spi_register_controller(sspi->dev, host);
- 	if (ret)
- 		goto disable_pm;
+@@ -1644,10 +1644,10 @@ static int tegra_qspi_probe(struct platform_device *pdev)
  
-@@ -730,15 +730,15 @@ static int synquacer_spi_probe(struct platform_device *pdev)
- disable_clk:
- 	clk_disable_unprepare(sspi->clk);
- put_spi:
--	spi_master_put(master);
-+	spi_controller_put(host);
- 
- 	return ret;
- }
- 
- static void synquacer_spi_remove(struct platform_device *pdev)
+ static void tegra_qspi_remove(struct platform_device *pdev)
  {
 -	struct spi_master *master = platform_get_drvdata(pdev);
--	struct synquacer_spi *sspi = spi_master_get_devdata(master);
+-	struct tegra_qspi *tqspi = spi_master_get_devdata(master);
 +	struct spi_controller *host = platform_get_drvdata(pdev);
-+	struct synquacer_spi *sspi = spi_controller_get_devdata(host);
++	struct tegra_qspi *tqspi = spi_controller_get_devdata(host);
  
- 	pm_runtime_disable(sspi->dev);
+-	spi_unregister_master(master);
++	spi_unregister_controller(host);
+ 	free_irq(tqspi->irq, tqspi);
+ 	pm_runtime_force_suspend(&pdev->dev);
+ 	tegra_qspi_deinit_dma(tqspi);
+@@ -1655,15 +1655,15 @@ static void tegra_qspi_remove(struct platform_device *pdev)
  
-@@ -747,11 +747,11 @@ static void synquacer_spi_remove(struct platform_device *pdev)
- 
- static int __maybe_unused synquacer_spi_suspend(struct device *dev)
+ static int __maybe_unused tegra_qspi_suspend(struct device *dev)
  {
 -	struct spi_master *master = dev_get_drvdata(dev);
--	struct synquacer_spi *sspi = spi_master_get_devdata(master);
 +	struct spi_controller *host = dev_get_drvdata(dev);
-+	struct synquacer_spi *sspi = spi_controller_get_devdata(host);
- 	int ret;
  
--	ret = spi_master_suspend(master);
-+	ret = spi_controller_suspend(host);
- 	if (ret)
- 		return ret;
+-	return spi_master_suspend(master);
++	return spi_controller_suspend(host);
+ }
  
-@@ -763,8 +763,8 @@ static int __maybe_unused synquacer_spi_suspend(struct device *dev)
- 
- static int __maybe_unused synquacer_spi_resume(struct device *dev)
+ static int __maybe_unused tegra_qspi_resume(struct device *dev)
  {
 -	struct spi_master *master = dev_get_drvdata(dev);
--	struct synquacer_spi *sspi = spi_master_get_devdata(master);
+-	struct tegra_qspi *tqspi = spi_master_get_devdata(master);
 +	struct spi_controller *host = dev_get_drvdata(dev);
-+	struct synquacer_spi *sspi = spi_controller_get_devdata(host);
++	struct tegra_qspi *tqspi = spi_controller_get_devdata(host);
  	int ret;
  
- 	if (!pm_runtime_suspended(dev)) {
-@@ -778,7 +778,7 @@ static int __maybe_unused synquacer_spi_resume(struct device *dev)
- 			return ret;
- 		}
+ 	ret = pm_runtime_resume_and_get(dev);
+@@ -1676,13 +1676,13 @@ static int __maybe_unused tegra_qspi_resume(struct device *dev)
+ 	tegra_qspi_writel(tqspi, tqspi->def_command2_reg, QSPI_COMMAND2);
+ 	pm_runtime_put(dev);
  
--		ret = synquacer_spi_enable(master);
-+		ret = synquacer_spi_enable(host);
- 		if (ret) {
- 			clk_disable_unprepare(sspi->clk);
- 			dev_err(dev, "failed to enable spi (%d)\n", ret);
-@@ -786,7 +786,7 @@ static int __maybe_unused synquacer_spi_resume(struct device *dev)
- 		}
- 	}
+-	return spi_master_resume(master);
++	return spi_controller_resume(host);
+ }
  
--	ret = spi_master_resume(master);
-+	ret = spi_controller_resume(host);
- 	if (ret < 0)
- 		clk_disable_unprepare(sspi->clk);
+ static int __maybe_unused tegra_qspi_runtime_suspend(struct device *dev)
+ {
+-	struct spi_master *master = dev_get_drvdata(dev);
+-	struct tegra_qspi *tqspi = spi_master_get_devdata(master);
++	struct spi_controller *host = dev_get_drvdata(dev);
++	struct tegra_qspi *tqspi = spi_controller_get_devdata(host);
  
+ 	/* Runtime pm disabled with ACPI */
+ 	if (has_acpi_companion(tqspi->dev))
+@@ -1697,8 +1697,8 @@ static int __maybe_unused tegra_qspi_runtime_suspend(struct device *dev)
+ 
+ static int __maybe_unused tegra_qspi_runtime_resume(struct device *dev)
+ {
+-	struct spi_master *master = dev_get_drvdata(dev);
+-	struct tegra_qspi *tqspi = spi_master_get_devdata(master);
++	struct spi_controller *host = dev_get_drvdata(dev);
++	struct tegra_qspi *tqspi = spi_controller_get_devdata(host);
+ 	int ret;
+ 
+ 	/* Runtime pm disabled with ACPI */
 -- 
 2.25.1
 

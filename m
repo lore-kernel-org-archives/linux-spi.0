@@ -1,229 +1,207 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vDGMWLCu"
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AA2FE3
-	for <linux-spi@vger.kernel.org>; Tue, 12 Dec 2023 07:02:37 -0800 (PST)
-Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-50d176eb382so5459370e87.2
-        for <linux-spi@vger.kernel.org>; Tue, 12 Dec 2023 07:02:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1702393355; x=1702998155; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=SJSaOj/O3sNlbMjuItblJHTlzvK1I9vT1qpvbGVa2tk=;
-        b=vDGMWLCuntHfOed4j8aufB6g8jpv9cfKx3fD/Ibnx0naMC0Ttbeq94vA6ueDUqJ58c
-         lBXr+c1OKzP2ZLWNtvihMLNVZcWTfAJzy4Mvvy0/lDMjH5TU4GHDyK7djnieZtb5pA+x
-         xWJBHjiYA0zMWq8NaF8IH7PcXXIQ76u1FFujVCMWySlXJox8zNgucuwJxmfkHc5/Cr+p
-         9guQAWnkoC34JHhLaQJIA+INd0DvuiF/LbV4CiJ0gCoWR4v7GuFUqWMEI4KiREx+5E6Z
-         Cf51fAGfhEyFYF6jwmkhLnFvdorvYerIbfvpvrdn3QmCOagdvS+9aMnyy4kPLch+oey6
-         00Tw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702393355; x=1702998155;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SJSaOj/O3sNlbMjuItblJHTlzvK1I9vT1qpvbGVa2tk=;
-        b=Fp5q1vGDKnG0OzuMwVPxeSbrHtdVIM4w4MNPboWjgCbM8oTdkBu4lNDwy8qn8O1KzJ
-         qGevXiBGNQxPl7oTb3oQQ8rWiJ6UZ8BBJ8NjDFe4T8TJ45ga+ldj2kUEI2XVkes2MmHp
-         3SntPagDfQ0u3/jbpMpFsL4bKNB+SQxhjZj5pc75CJQBtY8jfJJXkGLuoXFPznlC5AAB
-         RKveUT0+zYBcW2yvlfg+x7E3ZLklOzfllao/Jcr2jUkLUMwQy6r4r2gyXMntwnlC6/CP
-         mKAqsUDqVHdu0VJ5mI/7I3lEvO+NNwoxNMuyLGEjEsAHK5TzkjruQHPeg2hyvG7mORZX
-         QTLQ==
-X-Gm-Message-State: AOJu0Yyq2n/gCOp03akNeaourisIev7VvhJn2P4RHlhkIAxaYEPcqGYW
-	/3gj8CRv1BkPwyK1EJYbx3OjGA==
-X-Google-Smtp-Source: AGHT+IEQrTt5tPm83DHZ6HyQKpuEeSOXvUyNiD23wBW25lvvmAykVrQcO2UewxP10LZ8abWJJdsapw==
-X-Received: by 2002:a05:6512:3a90:b0:50d:23e4:fe9c with SMTP id q16-20020a0565123a9000b0050d23e4fe9cmr3279122lfu.64.1702393354454;
-        Tue, 12 Dec 2023 07:02:34 -0800 (PST)
-Received: from [192.168.2.107] ([79.115.63.202])
-        by smtp.gmail.com with ESMTPSA id v10-20020a170906564a00b009fea232316bsm6343831ejr.193.2023.12.12.07.02.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 Dec 2023 07:02:33 -0800 (PST)
-Message-ID: <c3fa1e04-92ed-48ab-a509-98e43abd5cd6@linaro.org>
-Date: Tue, 12 Dec 2023 15:02:31 +0000
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="P5a0uB+d"
+Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B74EB100;
+	Tue, 12 Dec 2023 07:25:03 -0800 (PST)
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 3BCCqu7T030022;
+	Tue, 12 Dec 2023 16:24:06 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	from:to:cc:subject:date:message-id:in-reply-to:references
+	:mime-version:content-transfer-encoding:content-type; s=
+	selector1; bh=JpXp2EJHxY+VtUUSPxkkTyJMNNq/ux4P17gSFHI+E8k=; b=P5
+	a0uB+dKMINb+zPuc568irPju8xw51gybAQYBQqrkUxMu3M/daUwzLeBEMD67Z2pW
+	ZH7PDLmlDrfr/B4lVLS62uSacZ8JiKYyAenA/x5fmTYwYB15heyGh8kTJgJvsuQD
+	nOz17WrlMaFrPtHehUiLXYUtOzkQH+B35JMddfZeBL7C1Y/9mRxvGId44wPvcQkH
+	ZdFozR/5Tbj7PdKW+F1yDiqRLPzvxFskqZmlwOKJrkldl/c9NYieo3Ea4A7LIhBO
+	Lb/s9OGh50jT5E2CVdlCnKbHlomgpaRMh5BHVyNnOTf9otZuPl/Nr+TMg4G/wCum
+	7XNZu/4Q52TZ8AlCCM3g==
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3uvg0gusvb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 Dec 2023 16:24:06 +0100 (CET)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 7F638100060;
+	Tue, 12 Dec 2023 16:24:05 +0100 (CET)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 7435A22F7B3;
+	Tue, 12 Dec 2023 16:24:05 +0100 (CET)
+Received: from localhost (10.252.7.20) by SHFDAG1NODE1.st.com (10.75.129.69)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Tue, 12 Dec
+ 2023 16:24:04 +0100
+From: Gatien Chevallier <gatien.chevallier@foss.st.com>
+To: <Oleksii_Moisieiev@epam.com>, <gregkh@linuxfoundation.org>,
+        <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
+        <robh+dt@kernel.org>, <krzysztof.kozlowski+dt@linaro.org>,
+        <conor+dt@kernel.org>, <alexandre.torgue@foss.st.com>,
+        <vkoul@kernel.org>, <jic23@kernel.org>, <olivier.moysan@foss.st.com>,
+        <arnaud.pouliquen@foss.st.com>, <mchehab@kernel.org>,
+        <fabrice.gasnier@foss.st.com>, <andi.shyti@kernel.org>,
+        <ulf.hansson@linaro.org>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <hugues.fruchet@foss.st.com>, <lee@kernel.org>,
+        <will@kernel.org>, <catalin.marinas@arm.com>, <arnd@kernel.org>,
+        <richardcochran@gmail.com>, Frank Rowand <frowand.list@gmail.com>,
+        <peng.fan@oss.nxp.com>, <lars@metafoo.de>, <rcsekar@samsung.com>,
+        <wg@grandegger.com>, <mkl@pengutronix.de>
+CC: <linux-crypto@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <dmaengine@vger.kernel.org>, <linux-i2c@vger.kernel.org>,
+        <linux-iio@vger.kernel.org>, <alsa-devel@alsa-project.org>,
+        <linux-media@vger.kernel.org>, <linux-mmc@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-phy@lists.infradead.org>,
+        <linux-serial@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+        <linux-usb@vger.kernel.org>,
+        Oleksii Moisieiev <oleksii_moisieiev@epam.com>,
+        Gatien Chevallier <gatien.chevallier@foss.st.com>
+Subject: [PATCH v8 01/13] dt-bindings: document generic access controllers
+Date: Tue, 12 Dec 2023 16:23:44 +0100
+Message-ID: <20231212152356.345703-2-gatien.chevallier@foss.st.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20231212152356.345703-1-gatien.chevallier@foss.st.com>
+References: <20231212152356.345703-1-gatien.chevallier@foss.st.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 07/10] mtd: spi-nor: Add stacked memories support in
- spi-nor
-Content-Language: en-US
-To: "Mahapatra, Amit Kumar" <amit.kumar-mahapatra@amd.com>,
- "broonie@kernel.org" <broonie@kernel.org>,
- "pratyush@kernel.org" <pratyush@kernel.org>,
- "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
- "richard@nod.at" <richard@nod.at>, "vigneshr@ti.com" <vigneshr@ti.com>,
- "sbinding@opensource.cirrus.com" <sbinding@opensource.cirrus.com>,
- "lee@kernel.org" <lee@kernel.org>,
- "james.schulman@cirrus.com" <james.schulman@cirrus.com>,
- "david.rhodes@cirrus.com" <david.rhodes@cirrus.com>,
- "rf@opensource.cirrus.com" <rf@opensource.cirrus.com>,
- "perex@perex.cz" <perex@perex.cz>, "tiwai@suse.com" <tiwai@suse.com>
-Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "michael@walle.cc" <michael@walle.cc>,
- "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
- "nicolas.ferre@microchip.com" <nicolas.ferre@microchip.com>,
- "alexandre.belloni@bootlin.com" <alexandre.belloni@bootlin.com>,
- "claudiu.beznea@tuxon.dev" <claudiu.beznea@tuxon.dev>,
- "Simek, Michal" <michal.simek@amd.com>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
- "patches@opensource.cirrus.com" <patches@opensource.cirrus.com>,
- "linux-sound@vger.kernel.org" <linux-sound@vger.kernel.org>,
- "git (AMD-Xilinx)" <git@amd.com>,
- "amitrkcian2002@gmail.com" <amitrkcian2002@gmail.com>
-References: <20231125092137.2948-1-amit.kumar-mahapatra@amd.com>
- <20231125092137.2948-8-amit.kumar-mahapatra@amd.com>
- <e2305642-55f1-4893-bea3-b170ac0a5348@linaro.org>
- <BN7PR12MB2802BEDFB821A1748185794CDC8AA@BN7PR12MB2802.namprd12.prod.outlook.com>
- <f5a47024-514a-4846-bc16-08cf0f9af912@linaro.org>
- <BN7PR12MB2802BB3DA682D9C13EF7DE08DC8FA@BN7PR12MB2802.namprd12.prod.outlook.com>
- <5a6f6764-6779-42b0-b6c6-3f638b85ef78@linaro.org>
- <BN7PR12MB28029EB1A7D09882878499A2DC8FA@BN7PR12MB2802.namprd12.prod.outlook.com>
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
-In-Reply-To: <BN7PR12MB28029EB1A7D09882878499A2DC8FA@BN7PR12MB2802.namprd12.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EQNCAS1NODE3.st.com (10.75.129.80) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-12_09,2023-12-12_01,2023-05-22_02
 
+From: Oleksii Moisieiev <Oleksii_Moisieiev@epam.com>
 
+Introducing of the generic access controllers bindings for the
+access controller provider and consumer devices. Those bindings are
+intended to allow a better handling of accesses to resources in a
+hardware architecture supporting several compartments.
 
-On 12/11/23 13:37, Mahapatra, Amit Kumar wrote:
+This patch is based on [1]. It is integrated in this patchset as it
+provides a use-case for it.
 
-Hi!
+Diffs with [1]:
+	- Rename feature-domain* properties to access-control* to narrow
+	  down the scope of the binding
+	- YAML errors and typos corrected.
+	- Example updated
+	- Some rephrasing in the binding description
 
-cut
+[1]: https://lore.kernel.org/lkml/0c0a82bb-18ae-d057-562b
 
->>>>>>>  drivers/mtd/spi-nor/core.c  | 272
->>>>>>> +++++++++++++++++++++++++++++-----
->>>> --
->>>>>>>  drivers/mtd/spi-nor/core.h  |   4 +
->>>>>>>  include/linux/mtd/spi-nor.h |  15 +-
->>>>>>>  3 files changed, 240 insertions(+), 51 deletions(-)
->>>>>>>
->>>>>>> diff --git a/drivers/mtd/spi-nor/core.c
->>>>>>> b/drivers/mtd/spi-nor/core.c index 93ae69b7ff83..e990be7c7eb6
->>>>>>> 100644
->>>>>>> --- a/drivers/mtd/spi-nor/core.c
->>>>>>> +++ b/drivers/mtd/spi-nor/core.c
->>>>>>
->>>>>> cut
->>>>>>
->>>>>>> @@ -2905,7 +3007,10 @@ static void spi_nor_init_fixup_flags(struct
->>>>>>> spi_nor *nor)  static int spi_nor_late_init_params(struct spi_nor
->>>>>>> *nor)  {
->>>>>>>  	struct spi_nor_flash_parameter *params = spi_nor_get_params(nor,
->>>>>> 0);
->>>>>>> -	int ret;
->>>>>>> +	struct device_node *np = spi_nor_get_flash_node(nor);
->>>>>>> +	u64 flash_size[SNOR_FLASH_CNT_MAX];
->>>>>>> +	u32 idx = 0;
->>>>>>> +	int rc, ret;
->>>>>>>
->>>>>>>  	if (nor->manufacturer && nor->manufacturer->fixups &&
->>>>>>>  	    nor->manufacturer->fixups->late_init) { @@ -2937,6 +3042,44
->>>>>>> @@ static int spi_nor_late_init_params(struct spi_nor *nor)
->>>>>>>  	if (params->n_banks > 1)
->>>>>>>  		params->bank_size = div64_u64(params->size, params-
->>>> n_banks);
->>>>>>>
->>>>>>> +	nor->num_flash = 0;
->>>>>>> +
->>>>>>> +	/*
->>>>>>> +	 * The flashes that are connected in stacked mode should be
->> of
->>>>>>> +same
->>>>>> make.
->>>>>>> +	 * Except the flash size all other properties are identical for all
->> the
->>>>>>> +	 * flashes connected in stacked mode.
->>>>>>> +	 * The flashes that are connected in parallel mode should be
->> identical.
->>>>>>> +	 */
->>>>>>> +	while (idx < SNOR_FLASH_CNT_MAX) {
->>>>>>> +		rc = of_property_read_u64_index(np, "stacked-
->> memories",
->>>>>> idx,
->>>>>>> +&flash_size[idx]);
->>>>>>
->>>>>> This is a little late in my opinion, as we don't have any sanity
->>>>>> check on the flashes that are stacked on top of the first. We shall
->>>>>> at least read and compare the ID for all.
->>>>>
->>>>> Alright, I will incorporate a sanity check for reading and comparing
->>>>> the ID of the stacked flash. Subsequently, I believe this stacked
->>>>> logic should be relocated to spi_nor_get_flash_info() where we
->>>>> identify the first flash. Please share your thoughts on this.
->>>>> Additionally, do you
->>>>
->>>> I'm wondering whether we can add a layer on top of the flash type to
->>>> handle
->>>
->>> When you mention "on top," are you referring to incorporating it into
->>> the MTD layer? Initially, Miquel had submitted this patch to address
->>
->> I mean something above SPI MEM flashes, be it NOR, NANDs or whatever.
->> Instead of treating the stacked flashes as a monolithic device and treat in SPI
->> NOR some array of flashes, to have a layer above which probes the SPI MEM
->> flash driver for each stacked flash. In your case SPI NOR would be probed
->> twice, as you use 2 SPI NOR flashes.
->>
->>> stacked/parallel handling in the MTD layer.
->>> https://lore.kernel.org/linux-mtd/20200114191052.0a16d116@xps13/t/
->>> However, the Device Tree bindings were initially not accepted.
->>
->> Okay, thanks for the pointer. I'll take a look.
+Signed-off-by: Oleksii Moisieiev <oleksii_moisieiev@epam.com>
+Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
+---
 
-haven't yet read the thread from above, but I skimmed over the AMD
-controller datasheet.
+Changes in V6:
+	- Renamed access-controller to access-controllers
+	- Example updated
+	- Removal of access-control-provider property
 
->>
->>> Following a series of discussions, the below bindings were eventually
->>> merged.
->>> https://lore.kernel.org/all/20220126112608.955728-4-miquel.raynal@boot
->>> lin.com/
->>
->> I saw, thanks.
->>
->>>
->>>> the stacked/parallel modes. This way everything will become flash
->>>> type independent. Would it be possible to stack 2 SPI NANDs? How
->>>> about a SPI NOR and a SPI NAND?
->>>>
->>>> Is the datasheet of the controller public?
->>>
->>> Yes,
->>> https://docs.xilinx.com/r/en-US/am011-versal-acap-trm/Quad-SPI-Control
->>> ler
->>>
->>
->> Wonderful, I'll take a look. I see two clocks there. Does this mean that the
->> stacked flashes can be operated at different frequencies? Do you know if we
-> 
-> In stacked configuration, both flashes utilize a common clock (single 
-> clock line). In a parallel setup, the flashes share the same clock but 
-> have distinct clock lines. Please refer the diagrams in the sections 
-> below for reference.
-> https://docs.xilinx.com/r/en-US/am011-versal-acap-trm/QSPI-Flash-Interface-Diagrams
+Changes in V5:
+	- Diffs with [1]
+	- Discarded the [IGNORE] tag as the patch is now part of the
+	  patchset
 
-Thanks! Can you share with us what flashes you used for testing in the
-stacked and parallel configurations?
+ .../access-controllers.yaml                   | 84 +++++++++++++++++++
+ 1 file changed, 84 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/access-controllers/access-controllers.yaml
 
->> can combine a SPI NOR with a SPI NAND in stacked configuration?
-> 
-> No, Xilinx/AMD QSPI controllers doesn't support this configuration.
-> 
+diff --git a/Documentation/devicetree/bindings/access-controllers/access-controllers.yaml b/Documentation/devicetree/bindings/access-controllers/access-controllers.yaml
+new file mode 100644
+index 000000000000..99e2865f0e46
+--- /dev/null
++++ b/Documentation/devicetree/bindings/access-controllers/access-controllers.yaml
+@@ -0,0 +1,84 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/access-controllers/access-controllers.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Generic Domain Access Controllers
++
++maintainers:
++  - Oleksii Moisieiev <oleksii_moisieiev@epam.com>
++
++description: |+
++  Common access controllers properties
++
++  Access controllers are in charge of stating which of the hardware blocks under
++  their responsibility (their domain) can be accesssed by which compartment. A
++  compartment can be a cluster of CPUs (or coprocessors), a range of addresses
++  or a group of hardware blocks. An access controller's domain is the set of
++  resources covered by the access controller.
++
++  This device tree binding can be used to bind devices to their access
++  controller provided by access-controllers property. In this case, the device
++  is a consumer and the access controller is the provider.
++
++  An access controller can be represented by any node in the device tree and
++  can provide one or more configuration parameters, needed to control parameters
++  of the consumer device. A consumer node can refer to the provider by phandle
++  and a set of phandle arguments, specified by '#access-controller-cells'
++  property in the access controller node.
++
++  Access controllers are typically used to set/read the permissions of a
++  hardware block and grant access to it. Any of which depends on the access
++  controller. The capabilities of each access controller are defined by the
++  binding of the access controller device.
++
++  Each node can be a consumer for the several access controllers.
++
++# always select the core schema
++select: true
++
++properties:
++  "#access-controller-cells":
++    description:
++      Number of cells in an access-controllers specifier;
++      Can be any value as specified by device tree binding documentation
++      of a particular provider. The node is an access controller.
++
++  access-controller-names:
++    $ref: /schemas/types.yaml#/definitions/string-array
++    description:
++      A list of access-controllers names, sorted in the same order as
++      access-controllers entries. Consumer drivers will use
++      access-controller-names to match with existing access-controllers entries.
++
++  access-controllers:
++    $ref: /schemas/types.yaml#/definitions/phandle-array
++    description:
++      A list of access controller specifiers, as defined by the
++      bindings of the access-controllers provider.
++
++additionalProperties: true
++
++examples:
++  - |
++    clock_controller: access-controllers@50000 {
++        reg = <0x50000 0x400>;
++        #access-controller-cells = <2>;
++    };
++
++    bus_controller: bus@60000 {
++        reg = <0x60000 0x10000>;
++        #address-cells = <1>;
++        #size-cells = <1>;
++        ranges;
++        #access-controller-cells = <3>;
++
++        uart4: serial@60100 {
++            reg = <0x60100 0x400>;
++            clocks = <&clk_serial>;
++            access-controllers = <&clock_controller 1 2>,
++                                 <&bus_controller 1 3 5>;
++            access-controller-names = "clock", "bus";
++        };
++    };
+-- 
+2.25.1
 
-2 SPI NANDs shall work with the AMD controller, right?
-
-I skimmed over the QSPI controller datasheet and wondered why one would
-get complicated with 2 Quad Flashes when we have Octal. But then I saw
-that the same SoC can configure an Octal controller (the Octal and Quad
-controllers seems mutual exclusive) and that the Octal one can operate 2
-octal flashes in stacked mode :).
-
-Cheers,
-ta

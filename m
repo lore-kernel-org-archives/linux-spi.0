@@ -1,322 +1,169 @@
-Received: from refb02.tmes.trendmicro.eu (refb02.tmes.trendmicro.eu [18.185.115.60])
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0107C22305
-	for <linux-spi@vger.kernel.org>; Thu,  4 Jan 2024 13:13:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensynergy.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensynergy.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99ABA20DC8;
+	Fri,  5 Jan 2024 08:20:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=opensynergy.com header.i=@opensynergy.com header.b="wOf4cC/t"
-Received: from 104.47.7.169_.trendmicro.com (unknown [172.21.19.34])
-	by refb02.tmes.trendmicro.eu (Postfix) with ESMTPS id 55D3B10A32985
-	for <linux-spi@vger.kernel.org>; Thu,  4 Jan 2024 13:01:53 +0000 (UTC)
-Received: from 104.47.7.169_.trendmicro.com (unknown [172.21.176.220])
-	by repost01.tmes.trendmicro.eu (Postfix) with SMTP id 7C7E210000C35;
-	Thu,  4 Jan 2024 13:01:46 +0000 (UTC)
-X-TM-MAIL-RECEIVED-TIME: 1704373306.074000
-X-TM-MAIL-UUID: 5474ea3e-5a98-4133-a7e1-e61acef30fb5
-Received: from DEU01-BE0-obe.outbound.protection.outlook.com (unknown [104.47.7.169])
-	by repre01.tmes.trendmicro.eu (Trend Micro Email Security) with ESMTPS id 123591000040D;
-	Thu,  4 Jan 2024 13:01:46 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=IMTOQVH5GgGvmKH0ocYlm8p9atXFSedlLCoue4ZpWX2ec1VWAAgpvrTVWeSkf/MnZS8oKM6yHz6ztlmlL8j+Vp67Rb2DZ7fp4ItK7C1pQL+cPAlw7/sdcVBxnSF/h/JmGn8NXRSlVbIUbh/BDC048sCkOMKl8qQRzkhlg1DdFEjpnfTY4r9PMXqYYuaKcDLPLcoZUGWsGPrzcyrG02JguO+T81gGDwKtrpzVAYHbI9a70LHdexiYcbhcIKgNCNcy8kymRi00+6Oovgmrf2hj36ZSGHD7RUf4M0lVWlw7nzrLDcdAXy2FbNBEX0osc4c+V5CL3V2VUMp1WisozpM0rw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=k373ENbKKgZEygbJ2ZAkGzkQCJqpH/pxUPIlD6aCUPM=;
- b=YwXq/S1eIESO80Qi3ZVlHgxxakgZf54FAIaBcxguNcWhzHBxtxOEVeAQk9yLzrDCBk8KfW+nNqekElVccaN1JeC3QileZCqbjR9TMg8RHfo10HgUyB1CrXbhWlF1p1pRMCXxxTn82SqUL2OSHgAHf9N23W5RsaSSLDc9MnXRfj2a0h1TbufqGhYipU3NIEUa6iWW7Q733YylF0YFZx/APl2/S1zY1zrqdp+ZwsBVxJI2YfSB3AU6J8uBTm5KyAANEI2xQ7yX4EOXhweMcanoFbOyGfKt5vBsv7vc2CA/0L9ZB+YPX+wkmvdl3L9Gbc1pr8nsNA+/uAu+GaUlulx/bg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 217.66.60.4) smtp.rcpttodomain=kernel.org smtp.mailfrom=opensynergy.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=opensynergy.com; dkim=none (message not signed); arc=none (0)
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 217.66.60.4)
- smtp.mailfrom=opensynergy.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=opensynergy.com;
-Received-SPF: Pass (protection.outlook.com: domain of opensynergy.com
- designates 217.66.60.4 as permitted sender) receiver=protection.outlook.com;
- client-ip=217.66.60.4; helo=SR-MAIL-03.open-synergy.com; pr=C
-From: Harald Mommer <Harald.Mommer@opensynergy.com>
-To: virtio-dev@lists.oasis-open.org,
-	Haixu Cui <quic_haixcui@quicinc.com>,
-	Mark Brown <broonie@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: quic_ztu@quicinc.com,
-	Matti Moell <Matti.Moell@opensynergy.com>,
-	Mikhail Golubev <Mikhail.Golubev@opensynergy.com>,
-	Harald Mommer <harald.mommer@opensynergy.com>
-Subject: [RFC PATCH v2 2/3] virtio-spi: Add virtio-spi.h (V10 draft specification).
-Date: Thu,  4 Jan 2024 14:01:28 +0100
-Message-Id: <20240104130129.17823-3-Harald.Mommer@opensynergy.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240104130129.17823-1-Harald.Mommer@opensynergy.com>
-References: <20240104130129.17823-1-Harald.Mommer@opensynergy.com>
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="tT6cNXeG"
+Received: from pps.filterd (m0369458.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 4052tkx3028984;
+	Fri, 5 Jan 2024 09:19:56 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	selector1; bh=gxrbGKGX0buop+PvuAmG2IkLu4G/QjEo0CpiUPjSvQ4=; b=tT
+	6cNXeGAKaJftgTWYQ4btXPz25NJkoN6rwQ97Z+A70hxVGPC2EACwY9KlFCdwin7x
+	T0eGIn7cyZvSTfTKL9FDgLEXwhSfQvbd3x/0RqhDxui/1vUCSEUHuwwZr9vaSZe9
+	VdlGf5MOsb+NyVQ6ko42YO9d1nlPanGwO/RF/J4coZ/A/Hk91SlDoU+TcPWpChjc
+	VMqXebLXrELMYSyaqHnkwRK2oyoxdP/Ov8ew4yZ4CDuu4GeqUPTeGL0AxMTR94Qn
+	lXgr3Z1OrXzqkGP1ijFxHO1uxSOuRA4iapRhe6ZvvoZRpbUBJFP4zW8Cc7oNPSVD
+	QPxxMGTmlyF9GBQaTcIw==
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3ve9dss0v4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 05 Jan 2024 09:19:56 +0100 (CET)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 086FC10002A;
+	Fri,  5 Jan 2024 09:19:52 +0100 (CET)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id C8B17210587;
+	Fri,  5 Jan 2024 09:19:52 +0100 (CET)
+Received: from [10.201.20.32] (10.201.20.32) by SHFDAG1NODE1.st.com
+ (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 5 Jan
+ 2024 09:19:50 +0100
+Message-ID: <9b66bc71-08de-43bd-b7e1-4e7c9defd400@foss.st.com>
+Date: Fri, 5 Jan 2024 09:19:47 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6EUR05FT019:EE_|FRYP281MB2222:EE_
-Content-Type: text/plain
-X-MS-Office365-Filtering-Correlation-Id: ace742d7-dc55-48b2-2bd1-08dc0d254d8e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	vl+6k2yOnuPB3/qlmHARLnbJnkgRB1el8kTRVQfchI1TU2AYWKDRe9vETrN1cwLOzABgHB+BX2BdDxHptu7sQdggqua1jLtq0m+ko+6rhVL7JPOey7nr7D4vh6U3vwmGKpRfF9FXO0rT2oQXm6cStXf5sTldNsEzNH+hhy/negxmFkbhDyDeTin0ETFFGsLoOhAU67rVDqs00fheWCN6RTs6GT6I3UQZk6JTOB0SZzyH9TLAsh1YwZmuKM1j1N6rkypga3kNS3FmNSmPni4fhPvsHcU2HbhZZj75rfdwC+0qiLA2Zv7D8ZJIau3Bhr7nkaPbXzFtJAPB5jWtb1jnok2Js+GumS3qDmsK970+mw5Alrc7gkuZ0KGBGidKeQaZGEkfD22QIklHqVBOlxGptRctDjfINGAA1VycRAp3A1/mho99i2YSX4woV89oAKvX4ZqUzJgWZcIY22tTpjaEyL49Vbaw+NMDBlEP3XkhJ5WIcvmksq0rGErDfQ5XwJusjWi5czdpb+qMDbkQFh1Fvb9yds/83KeL2fRfV6lNLoZc+LfUjLNSy6awxDvc+QdB1ZsY5OT2lnX5DK57QlZoqxR6LhYC1yPwGEjNW5C7v4NLO/n5YF9sVakLEakvaA7lkGiZPp678O91ajEh3YrZu6kVLe9+PpxBJ6QyqDxCH+tK3n3mpQBaQ2hOxnusnqjKo3yVbBwh7iK9ycL0rBgUti173Wwx25xld094SdWXy9FdRGti7sI1WxYL/NCW7t/V5c+5CLmJgy9aJIRkEg8x5+QEz/7axp1bZWbLyWxOGWU=
-X-Forefront-Antispam-Report:
-	CIP:217.66.60.4;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SR-MAIL-03.open-synergy.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(39840400004)(346002)(376002)(396003)(136003)(230922051799003)(1800799012)(64100799003)(451199024)(186009)(82310400011)(36840700001)(46966006)(81166007)(36756003)(40480700001)(86362001)(2616005)(336012)(1076003)(107886003)(26005)(54906003)(316002)(110136005)(70206006)(42186006)(478600001)(70586007)(4326008)(36860700001)(47076005)(83380400001)(8936002)(8676002)(41300700001)(5660300002)(2906002)(36900700001);DIR:OUT;SFP:1102;
-X-OriginatorOrg: opensynergy.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jan 2024 13:01:44.5256
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ace742d7-dc55-48b2-2bd1-08dc0d254d8e
-X-MS-Exchange-CrossTenant-Id: 800fae25-9b1b-4edc-993d-c939c4e84a64
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=800fae25-9b1b-4edc-993d-c939c4e84a64;Ip=[217.66.60.4];Helo=[SR-MAIL-03.open-synergy.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AM6EUR05FT019.eop-eur05.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: FRYP281MB2222
-X-TM-AS-ERS: 104.47.7.169-0.0.0.0
-X-TMASE-Version: StarCloud-1.3-9.1.1015-28098.007
-X-TMASE-Result: 10--11.476900-4.000000
-X-TMASE-MatchedRID: iooG+Wyw6IPJ+P2VFrJmrNbTOt1RbxD5yiAijCjuVj08Sz17UlfNnyzc
-	BY1cYZWcMpPx8OFzfY3vVaXvN8Hm+HV2KXA5dledcl8xQtDJjP+NZsEXc444sAD8gVkUxyRf/ML
-	WVw0m36wc/67TLVA3Nz5DuftIGbXbh7WxbHud8h0PAv5X53l32wZ56rA8tSWbYUdh2Fo9g6bm+G
-	s9Q6HSkSqWIaOjeKhZVVloj1evxlf0P2k3B8GnhDxl1kIwpaZ64DiXvcLDKwtLzssSnXxLpItLm
-	Ysuoy662mASxyN7woi8HPJVrIH2AQyeroDP4V8LWucEZobOeTTPaW4rD8GWjC6AUFDL7nwFSD/k
-	H/Ym2jL+XkmXDmV7yzsR3s9x8aXjx10k8QqyoAwRLjqoJJt/9Ye8/oJiio9KA3+iPIxcfrYMSiY
-	ZTF5wqnGDuy8y1qku1w49UOADy4V1QXavl7zci/95KamOz/pC1uHWKUg0X2OjeCsfdN2meg==
-X-TMASE-XGENCLOUD: ba89b234-3934-44a6-84c4-040235ab9bcb-0-0-200-0
-X-TM-Deliver-Signature: B72596D4D714A3835748EB46EB5CE90D
-X-TM-Addin-Auth: 1KFVIkCSBGXQXZhP8D5wxfwGbY75+zxOlF3+dl/37jGTiPf4YnygL/nL6ev
-	TjyIirR936Ca8fmIB/TlYCsTHSea2Q3Eo63r+P+FynyxeVBZSkhJHlEwzfo3E37ZRnqOChG7Fqq
-	anS918vSy+xe+cBQJmi5cJ8OBW6FrTZaAeDXK+rH+i8MdwXho6mrS20emW3Hj+g+RDJsEOn6NOS
-	jeeuW8PQ+7Xy8GY1j8IYKYYNXo3qPx/mSsACEXVXM0ddBIUFGacwxZprc6oNthbqvNp/7+s8HOO
-	JhUxUKKcKXGPHyU=.JGCMAh7uqW4fAN+glsdE4l7qrezbL5fL2nAR811mUjrl8/4xCFADlSW7He
-	NAfUn9jYOyjhIgEp6KaVIpkdIdh8dvzpRpMKP1+z5WJs952iHjWvbJgUdqK+zB2fNwqPnm6JUoJ
-	3XNyEVKIz2pYSJiAIhKiGCtgmadPjzxqx3rHcZ7bKbFdHe3EryAhcJxBAfQOZUP70QjgMuZoWPS
-	KmYXn0Vq4QqqsbifJkEs005I4JTwm+pnFv2pIW97OfSzqttytdFil5KcoYMut9duHPbKH7G92ND
-	CBumc+I8Az2xXB6RQ0aCx2oyyv9KCMU28GlPpFZg8Td6WMYNX9973SH1qBw==
-X-TM-Addin-ProductCode: EMS
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=opensynergy.com;
-	s=TM-DKIM-20210503141657; t=1704373306;
-	bh=2+A1XTmnZ9CYy4BncCWNalSIxkrFck8bq/HilGLrGrI=; l=8296;
-	h=From:To:Date;
-	b=wOf4cC/t5PUxVHh32vu3tCFgGnXZouSygqewjDKrh0vMWAdSZ3mMNc88MwAqxJlR2
-	 6Zx+jNLFUYabMYlNiIyCvA7jCAhvZDoVLrhD49kADEIldfNPXJWsgaCzC0AOeMm4hy
-	 9mOX+52xddjwE32+WcEvDEmdI8lZ1wFyLqYCwiIehazE7iH/Bq7I6eanaJV85uYkjr
-	 cllmpb9+wPS7XS5uOC5u9q+41hld0ZGReuSuVUR82J9mlng4tyh5narxDRa+XKqCRv
-	 iEYDuTrKJ0Yhc/UVS9THEs9iUk2y/dSNt7BcmVkhMMNqPqwQRky/Vd5+TrIayN9Wyc
-	 rw52qamO3CJMw==
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 03/13] dt-bindings: bus: document RIFSC
+To: Rob Herring <robh@kernel.org>
+CC: <Oleksii_Moisieiev@epam.com>, <gregkh@linuxfoundation.org>,
+        <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
+        <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
+        <alexandre.torgue@foss.st.com>, <vkoul@kernel.org>, <jic23@kernel.org>,
+        <olivier.moysan@foss.st.com>, <arnaud.pouliquen@foss.st.com>,
+        <mchehab@kernel.org>, <fabrice.gasnier@foss.st.com>,
+        <andi.shyti@kernel.org>, <ulf.hansson@linaro.org>,
+        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+        <hugues.fruchet@foss.st.com>, <lee@kernel.org>, <will@kernel.org>,
+        <catalin.marinas@arm.com>, <arnd@kernel.org>,
+        <richardcochran@gmail.com>, Frank Rowand <frowand.list@gmail.com>,
+        <peng.fan@oss.nxp.com>, <lars@metafoo.de>, <rcsekar@samsung.com>,
+        <wg@grandegger.com>, <mkl@pengutronix.de>,
+        <linux-crypto@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <dmaengine@vger.kernel.org>, <linux-i2c@vger.kernel.org>,
+        <linux-iio@vger.kernel.org>, <alsa-devel@alsa-project.org>,
+        <linux-medi.a@vger.kernel.org>, <linux-mmc@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-phy@lists.infradead.org>,
+        <linux-serial@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+        <linux-usb@vger.kernel.org>
+References: <20231212152356.345703-1-gatien.chevallier@foss.st.com>
+ <20231212152356.345703-4-gatien.chevallier@foss.st.com>
+ <20231221215316.GA155023-robh@kernel.org>
+Content-Language: en-US
+From: Gatien CHEVALLIER <gatien.chevallier@foss.st.com>
+In-Reply-To: <20231221215316.GA155023-robh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: EQNCAS1NODE3.st.com (10.75.129.80) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-05_04,2024-01-05_01,2023-05-22_02
 
-From: Harald Mommer <harald.mommer@opensynergy.com>
+Hi Rob,
 
-Add virtio-spi.h header for virtio SPI. The header file is compliant to
-the virtio SPI draft specification V10.
+On 12/21/23 22:53, Rob Herring wrote:
+> On Tue, Dec 12, 2023 at 04:23:46PM +0100, Gatien Chevallier wrote:
+>> Document RIFSC (RIF security controller). RIFSC is a firewall controller
+>> composed of different kinds of hardware resources.
+>>
+>> Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
+>> ---
+>>
+>> Changes in V6:
+>> 	- Renamed access-controller to access-controllers
+>> 	- Removal of access-control-provider property
+>> 	- Removal of access-controller and access-controller-names
+>> 	  declaration in the patternProperties field. Add
+>> 	  additionalProperties: true in this field.
+>>
+>> Changes in V5:
+>> 	- Renamed feature-domain* to access-control*
+>>
+>> Changes in V2:
+>> 	- Corrected errors highlighted by Rob's robot
+>> 	- No longer define the maxItems for the "feature-domains"
+>> 	  property
+>> 	- Fix example (node name, status)
+>> 	- Declare "feature-domain-names" as an optional
+>> 	  property for child nodes
+>> 	- Fix description of "feature-domains" property
+>>
+>>   .../bindings/bus/st,stm32mp25-rifsc.yaml      | 96 +++++++++++++++++++
+>>   1 file changed, 96 insertions(+)
+>>   create mode 100644 Documentation/devicetree/bindings/bus/st,stm32mp25-rifsc.yaml
+>>
+>> diff --git a/Documentation/devicetree/bindings/bus/st,stm32mp25-rifsc.yaml b/Documentation/devicetree/bindings/bus/st,stm32mp25-rifsc.yaml
+>> new file mode 100644
+>> index 000000000000..95aa7f04c739
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/bus/st,stm32mp25-rifsc.yaml
+>> @@ -0,0 +1,96 @@
+>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/bus/st,stm32mp25-rifsc.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: STM32 Resource isolation framework security controller
+>> +
+>> +maintainers:
+>> +  - Gatien Chevallier <gatien.chevallier@foss.st.com>
+>> +
+>> +description: |
+>> +  Resource isolation framework (RIF) is a comprehensive set of hardware blocks
+>> +  designed to enforce and manage isolation of STM32 hardware resources like
+>> +  memory and peripherals.
+>> +
+>> +  The RIFSC (RIF security controller) is composed of three sets of registers,
+>> +  each managing a specific set of hardware resources:
+>> +    - RISC registers associated with RISUP logic (resource isolation device unit
+>> +      for peripherals), assign all non-RIF aware peripherals to zero, one or
+>> +      any security domains (secure, privilege, compartment).
+>> +    - RIMC registers: associated with RIMU logic (resource isolation master
+>> +      unit), assign all non RIF-aware bus master to one security domain by
+>> +      setting secure, privileged and compartment information on the system bus.
+>> +      Alternatively, the RISUP logic controlling the device port access to a
+>> +      peripheral can assign target bus attributes to this peripheral master port
+>> +      (supported attribute: CID).
+>> +    - RISC registers associated with RISAL logic (resource isolation device unit
+>> +      for address space - Lite version), assign address space subregions to one
+>> +      security domains (secure, privilege, compartment).
+>> +
+>> +properties:
+>> +  compatible:
+>> +    contains:
+>> +      const: st,stm32mp25-rifsc
+> 
+> This needs to be exact and include 'simple-bus'. You'll need a custom
+> 'select' with the above to avoid matching all other 'simple-bus' cases.
+> 
+> With that,
+> 
+> Reviewed-by: Rob Herring <robh@kernel.org>
 
-Signed-off-by: Harald Mommer <harald.mommer@opensynergy.com>
----
- include/uapi/linux/virtio_spi.h | 185 ++++++++++++++++++++++++++++++++
- 1 file changed, 185 insertions(+)
- create mode 100644 include/uapi/linux/virtio_spi.h
+Thank you for the review,
+I'll update this for the next version whilst applying your tag
 
-diff --git a/include/uapi/linux/virtio_spi.h b/include/uapi/linux/virtio_spi.h
-new file mode 100644
-index 000000000000..d56843fcb2ec
---- /dev/null
-+++ b/include/uapi/linux/virtio_spi.h
-@@ -0,0 +1,185 @@
-+/* SPDX-License-Identifier: BSD-3-Clause */
-+/*
-+ * Copyright (C) 2023 OpenSynergy GmbH
-+ */
-+#ifndef _LINUX_VIRTIO_VIRTIO_SPI_H
-+#define _LINUX_VIRTIO_VIRTIO_SPI_H
-+
-+#include <linux/types.h>
-+#include <linux/virtio_types.h>
-+#include <linux/virtio_ids.h>
-+#include <linux/virtio_config.h>
-+
-+/* Sample data on trailing clock edge */
-+#define VIRTIO_SPI_CPHA (1 << 0)
-+/* Clock is high when IDLE */
-+#define VIRTIO_SPI_CPOL (1 << 1)
-+/* Chip Select is active high */
-+#define VIRTIO_SPI_CS_HIGH (1 << 2)
-+/* Transmit LSB first */
-+#define VIRTIO_SPI_MODE_LSB_FIRST (1 << 3)
-+/* Loopback mode */
-+#define VIRTIO_SPI_MODE_LOOP (1 << 4)
-+
-+/*
-+ * All config fields are read-only for the Virtio SPI driver
-+ *
-+ * @cs_max_number: maximum number of chipselect the host SPI controller
-+ *   supports.
-+ * @cs_change_supported: indicates if the host SPI controller supports to toggle
-+ * chipselect after each transfer in one message:
-+ *   0: unsupported, chipselect will be kept in active state throughout the
-+ *      message transaction;
-+ *   1: supported.
-+ *   Note: Message here contains a sequence of SPI transfers.
-+ * @tx_nbits_supported: indicates the supported number of bit for writing:
-+ *   bit 0: DUAL (2-bit transfer), 1 for supported
-+ *   bit 1: QUAD (4-bit transfer), 1 for supported
-+ *   bit 2: OCTAL (8-bit transfer), 1 for supported
-+ *   other bits are reserved as 0, 1-bit transfer is always supported.
-+ * @rx_nbits_supported: indicates the supported number of bit for reading:
-+ *   bit 0: DUAL (2-bit transfer), 1 for supported
-+ *   bit 1: QUAD (4-bit transfer), 1 for supported
-+ *   bit 2: OCTAL (8-bit transfer), 1 for supported
-+ *   other bits are reserved as 0, 1-bit transfer is always supported.
-+ * @bits_per_word_mask: mask indicating which values of bits_per_word are
-+ *   supported. If not set, no limitation for bits_per_word.
-+ * @mode_func_supported: indicates the following features are supported or not:
-+ *   bit 0-1: CPHA feature
-+ *     0b00: invalid, should support as least one CPHA setting
-+ *     0b01: supports CPHA=0 only
-+ *     0b10: supports CPHA=1 only
-+ *     0b11: supports CPHA=0 and CPHA=1.
-+ *   bit 2-3: CPOL feature
-+ *     0b00: invalid, should support as least one CPOL setting
-+ *     0b01: supports CPOL=0 only
-+ *     0b10: supports CPOL=1 only
-+ *     0b11: supports CPOL=0 and CPOL=1.
-+ *   bit 4: chipselect active high feature, 0 for unsupported and 1 for
-+ *     supported, chipselect active low should always be supported.
-+ *   bit 5: LSB first feature, 0 for unsupported and 1 for supported,
-+ *     MSB first should always be supported.
-+ *   bit 6: loopback mode feature, 0 for unsupported and 1 for supported,
-+ *     normal mode should always be supported.
-+ * @max_freq_hz: the maximum clock rate supported in Hz unit, 0 means no
-+ *   limitation for transfer speed.
-+ * @max_word_delay_ns: the maximum word delay supported in ns unit,
-+ *   0 means word delay feature is unsupported.
-+ *   Note: Just as one message contains a sequence of transfers,
-+ *         one transfer may contain a sequence of words.
-+ * @max_cs_setup_ns: the maximum delay supported after chipselect is asserted,
-+ *   in ns unit, 0 means delay is not supported to introduce after chipselect is
-+ *   asserted.
-+ * @max_cs_hold_ns: the maximum delay supported before chipselect is deasserted,
-+ *   in ns unit, 0 means delay is not supported to introduce before chipselect
-+ *   is deasserted.
-+ * @max_cs_incative_ns: maximum delay supported after chipselect is deasserted,
-+ *   in ns unit, 0 means delay is not supported to introduce after chipselect is
-+ *   deasserted.
-+ */
-+struct virtio_spi_config {
-+	/* # of /dev/spidev<bus_num>.CS with CS=0..chip_select_max_number -1 */
-+	__u8 cs_max_number;
-+	__u8 cs_change_supported;
-+#define VIRTIO_SPI_RX_TX_SUPPORT_DUAL (1 << 0)
-+#define VIRTIO_SPI_RX_TX_SUPPORT_QUAD (1 << 1)
-+#define VIRTIO_SPI_RX_TX_SUPPORT_OCTAL (1 << 2)
-+	__u8 tx_nbits_supported;
-+	__u8 rx_nbits_supported;
-+	__le32 bits_per_word_mask;
-+#define VIRTIO_SPI_MF_SUPPORT_CPHA_0 (1 << 0)
-+#define VIRTIO_SPI_MF_SUPPORT_CPHA_1 (1 << 1)
-+#define VIRTIO_SPI_MF_SUPPORT_CPOL_0 (1 << 2)
-+#define VIRTIO_SPI_MF_SUPPORT_CPOL_1 (1 << 3)
-+#define VIRTIO_SPI_MF_SUPPORT_CS_HIGH (1 << 4)
-+#define VIRTIO_SPI_MF_SUPPORT_LSB_FIRST (1 << 5)
-+#define VIRTIO_SPI_MF_SUPPORT_LOOPBACK (1 << 6)
-+	__le32 mode_func_supported;
-+	__le32 max_freq_hz;
-+	__le32 max_word_delay_ns;
-+	__le32 max_cs_setup_ns;
-+	__le32 max_cs_hold_ns;
-+	__le32 max_cs_inactive_ns;
-+};
-+
-+/*
-+ * @chip_select_id: chipselect index the SPI transfer used.
-+ *
-+ * @bits_per_word: the number of bits in each SPI transfer word.
-+ *
-+ * @cs_change: whether to deselect device after finishing this transfer
-+ *     before starting the next transfer, 0 means cs keep asserted and
-+ *     1 means cs deasserted then asserted again.
-+ *
-+ * @tx_nbits: bus width for write transfer.
-+ *     0,1: bus width is 1, also known as SINGLE
-+ *     2  : bus width is 2, also known as DUAL
-+ *     4  : bus width is 4, also known as QUAD
-+ *     8  : bus width is 8, also known as OCTAL
-+ *     other values are invalid.
-+ *
-+ * @rx_nbits: bus width for read transfer.
-+ *     0,1: bus width is 1, also known as SINGLE
-+ *     2  : bus width is 2, also known as DUAL
-+ *     4  : bus width is 4, also known as QUAD
-+ *     8  : bus width is 8, also known as OCTAL
-+ *     other values are invalid.
-+ *
-+ * @reserved: for future use.
-+ *
-+ * @mode: SPI transfer mode.
-+ *     bit 0: CPHA, determines the timing (i.e. phase) of the data
-+ *         bits relative to the clock pulses.For CPHA=0, the
-+ *         "out" side changes the data on the trailing edge of the
-+ *         preceding clock cycle, while the "in" side captures the data
-+ *         on (or shortly after) the leading edge of the clock cycle.
-+ *         For CPHA=1, the "out" side changes the data on the leading
-+ *         edge of the current clock cycle, while the "in" side
-+ *         captures the data on (or shortly after) the trailing edge of
-+ *         the clock cycle.
-+ *     bit 1: CPOL, determines the polarity of the clock. CPOL=0 is a
-+ *         clock which idles at 0, and each cycle consists of a pulse
-+ *         of 1. CPOL=1 is a clock which idles at 1, and each cycle
-+ *         consists of a pulse of 0.
-+ *     bit 2: CS_HIGH, if 1, chip select active high, else active low.
-+ *     bit 3: LSB_FIRST, determines per-word bits-on-wire, if 0, MSB
-+ *         first, else LSB first.
-+ *     bit 4: LOOP, loopback mode.
-+ *
-+ * @freq: the transfer speed in Hz.
-+ *
-+ * @word_delay_ns: delay to be inserted between consecutive words of a
-+ *     transfer, in ns unit.
-+ *
-+ * @cs_setup_ns: delay to be introduced after CS is asserted, in ns
-+ *     unit.
-+ *
-+ * @cs_delay_hold_ns: delay to be introduced before CS is deasserted
-+ *     for each transfer, in ns unit.
-+ *
-+ * @cs_change_delay_inactive_ns: delay to be introduced after CS is
-+ *     deasserted and before next asserted, in ns unit.
-+ */
-+struct spi_transfer_head {
-+	__u8 chip_select_id;
-+	__u8 bits_per_word;
-+	__u8 cs_change;
-+	__u8 tx_nbits;
-+	__u8 rx_nbits;
-+	__u8 reserved[3];
-+	__le32 mode;
-+	__le32 freq;
-+	__le32 word_delay_ns;
-+	__le32 cs_setup_ns;
-+	__le32 cs_delay_hold_ns;
-+	__le32 cs_change_delay_inactive_ns;
-+};
-+
-+struct spi_transfer_result {
-+#define VIRTIO_SPI_TRANS_OK 0
-+#define VIRTIO_SPI_PARAM_ERR 1
-+#define VIRTIO_SPI_TRANS_ERR 2
-+	u8 result;
-+};
-+
-+#endif /* #ifndef _LINUX_VIRTIO_VIRTIO_SPI_H */
--- 
-2.25.1
-
+Gatien

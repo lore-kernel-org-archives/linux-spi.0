@@ -1,47 +1,47 @@
-Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
+Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F0D4F61A
-	for <linux-spi@vger.kernel.org>; Wed, 10 Jan 2024 19:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C0654F8B0
+	for <linux-spi@vger.kernel.org>; Wed, 10 Jan 2024 19:51:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="tMK+bB8F"
-Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-598a2cb5a7cso229485eaf.2
-        for <linux-spi@vger.kernel.org>; Wed, 10 Jan 2024 11:51:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="02WsKl4v"
+Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-598699c0f1eso1522534eaf.2
+        for <linux-spi@vger.kernel.org>; Wed, 10 Jan 2024 11:51:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1704916277; x=1705521077; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1704916279; x=1705521079; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=uvLBZp36pzTyMACXtPdvGno5nE8Tc/vk1PKJFHFwqlw=;
-        b=tMK+bB8FHUKWiY4R5vG+otH2Fl8/4TA2DGMPe9VOBfcGgN3nUeqsw/qbpPo2uF5O0P
-         rrDr4JWl/LJ39a0Rij2SrdeJI1CkjT+3FlDkDe2XCrkhldMAwVgkFNomcSGEL+WfaLXX
-         Dsi4JwQLnY685n5mlP+IyYnJj11sMQXoUxxIqY9iDF6JSVDf7Tuncxw5LYIFa4g2BfpX
-         omQYBiMX8ztrcb+yVkYB3rtHRrcQltIhGXGG1rjg75WVgLwcTG+DkO6pnRcRA1crjZjZ
-         kivj4PZ278PM3jkAQfQExZK7azpKD0SskdULDLWz3kiJ+pZykeylEuO4N4ofg+Qll9Et
-         S7Sg==
+        bh=AA0bcNe9/eac59bnZ/IUUlYB3WuV6EB6kCsXeejEFVs=;
+        b=02WsKl4vaIeUkHFh469ekUOkLLs5JbPq5RX9EcQS5BrIbbISSd++VW4XhrP/bHsz+0
+         ZHghSUVfT6+KTiNlvBk0KB3tiAosRCdJlqhtkK+IaGb7hrhkCxNYnhZHS42VHFmsza++
+         093De/0cvuY4EJc6Iv528DvMX4Q9V+3U46Md5bl8KU6hHJaE3I7Q5GVadA44pZr/0ao5
+         XAfnkbsO2ZM+iEY+7R6mX/4V5k+AKMKs4QFtj70CDopfcm2jbN65/f8pHF8toDUPKfIX
+         K2PvhHDI7uTufif83DZcj16VGjvLABxyjhMSBTvxwAaJwUF8FSarp8KXf/3Qpm1dfvqZ
+         Yp0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704916277; x=1705521077;
+        d=1e100.net; s=20230601; t=1704916279; x=1705521079;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=uvLBZp36pzTyMACXtPdvGno5nE8Tc/vk1PKJFHFwqlw=;
-        b=MrZW5CdjvJIDrlGwbPIoq5ofX3A8X0FiuYksbcxYbcFy0mFgN45keMFxsst3jnwHEM
-         E/q7lYUyAb97XDCzGT/ipAQDur/Oa+pkAU2hieUyHvd+lCks5Vm3gJDEAnjHd6EYm2vc
-         5drFdXHuS9hfwqz5nW60PyGflLxx23BGubjqkqul5el7vhRlilX9iBunkYp9CQhAmzJr
-         xY+92uadsv54vha3pKpu5yG0X4WwFtP7kTwXeS7aagsIrpxoUHo0Oaq3UNltoAJ7WYhV
-         GB4KzRVdrcJEIJeSS1LUviXZFXMeyy3XYNkBGCuaGxnPXPhtIdyQiUitn86IEWM7eIzN
-         WY0w==
-X-Gm-Message-State: AOJu0Yz5B9dTbkmOM/YQanORAq51aBu1ZyJNJ1MJ32Ebr6iBFbOw220/
-	jxQ4i649+WB20kdqrWKC2Z8ZP+JGuZmLpA==
-X-Google-Smtp-Source: AGHT+IFbclB6k8E5/ylz/wBfLjmVg+ND+S+SfqvTYYmbBTtTdhhQGPaDPGrmNj5Z07W3EBq+SgmL3Q==
-X-Received: by 2002:a4a:3543:0:b0:598:1fa3:80b9 with SMTP id w3-20020a4a3543000000b005981fa380b9mr76085oog.14.1704916277632;
-        Wed, 10 Jan 2024 11:51:17 -0800 (PST)
+        bh=AA0bcNe9/eac59bnZ/IUUlYB3WuV6EB6kCsXeejEFVs=;
+        b=NPFIVBDgviph+7yxM7k+2G2vuODNiOIgFB7TiqQlNrBUXV4AaRWh2v733i0eNN/At6
+         ymwewT4mcN9gPk/fo9I5kcPclpQwb7vfb/v9v9qU9OFGtupXVbny8OG/QTdZJoQ30YEB
+         iIXIe8e8MN4QlmT2+F+S2Z9SxUPXw2un0vPpSekDr2tlF8Kp4AIcZElC4/oHws3pxDRN
+         Yf9NynyD2KgJYvVLWE2Nf9WCg922o4THK77GwaEQLpM9JmbhBrJyIXMnR0idzL56KpuF
+         YnhqgyAKBmP5l8Wh4C3unvZ+kJGcjIfVpMENS6nQnkbr51DeHS+QqQV5HEnu0WiyNVKk
+         1RLw==
+X-Gm-Message-State: AOJu0Yw5iwCJQoOMEvfcntVrmGFNxOOCRY03Ge2wGLC3kPbSfSZCh28X
+	9IhHr2FMEncLHpYm83F3PtD7GGo+EB0f8A==
+X-Google-Smtp-Source: AGHT+IG3BhDUaaPc6LLu2Tb07BOZGRGY+lvsOSYjZywg5P+2QNwScjXEW1AdXp5YXMWGQ7WWlOqVlQ==
+X-Received: by 2002:a4a:58cd:0:b0:594:cea0:eeda with SMTP id f196-20020a4a58cd000000b00594cea0eedamr108844oob.2.1704916279403;
+        Wed, 10 Jan 2024 11:51:19 -0800 (PST)
 Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 187-20020a4a0dc4000000b00595b35927a3sm938513oob.39.2024.01.10.11.51.16
+        by smtp.gmail.com with ESMTPSA id 187-20020a4a0dc4000000b00595b35927a3sm938513oob.39.2024.01.10.11.51.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jan 2024 11:51:17 -0800 (PST)
+        Wed, 10 Jan 2024 11:51:19 -0800 (PST)
 From: David Lechner <dlechner@baylibre.com>
 To: Mark Brown <broonie@kernel.org>,
 	Jonathan Cameron <jic23@kernel.org>,
@@ -61,9 +61,9 @@ Cc: David Lechner <dlechner@baylibre.com>,
 	linux-doc@vger.kernel.org,
 	linux-pwm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 09/13] bus: auxiliary: increase AUXILIARY_NAME_SIZE
-Date: Wed, 10 Jan 2024 13:49:50 -0600
-Message-ID: <20240109-axi-spi-engine-series-3-v1-9-e42c6a986580@baylibre.com>
+Subject: [PATCH 11/13] dt-bindings: iio: offload: add binding for PWM/DMA triggered buffer
+Date: Wed, 10 Jan 2024 13:49:52 -0600
+Message-ID: <20240109-axi-spi-engine-series-3-v1-11-e42c6a986580@baylibre.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240109-axi-spi-engine-series-3-v1-0-e42c6a986580@baylibre.com>
 References: <20240109-axi-spi-engine-series-3-v1-0-e42c6a986580@baylibre.com>
@@ -77,32 +77,79 @@ Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.12.4
 Content-Transfer-Encoding: 8bit
 
-The auxiliary bus uses names in the form of "module_name.device_name"
-for matching devices to drivers. Since the module name is the actual
-module name, it can be quite long which doesn't leave enough room for
-the device name.
-
-This patch increases the size AUXILIARY_NAME_SIZE to 64 to allow for
-both a ~32 character module name and a ~32 character device name.
+This adds a new binding for a PWM trigger and DMA data output connected
+to an SPI controller offload instance.
 
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
- include/linux/mod_devicetable.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../adi,spi-offload-pwm-trigger-dma-buffer.yaml    | 59 ++++++++++++++++++++++
+ 1 file changed, 59 insertions(+)
 
-diff --git a/include/linux/mod_devicetable.h b/include/linux/mod_devicetable.h
-index f458469c5ce5..4bd2d20067b6 100644
---- a/include/linux/mod_devicetable.h
-+++ b/include/linux/mod_devicetable.h
-@@ -861,7 +861,7 @@ struct mhi_device_id {
- 	kernel_ulong_t driver_data;
- };
- 
--#define AUXILIARY_NAME_SIZE 32
-+#define AUXILIARY_NAME_SIZE 64
- #define AUXILIARY_MODULE_PREFIX "auxiliary:"
- 
- struct auxiliary_device_id {
+diff --git a/Documentation/devicetree/bindings/iio/offload/adi,spi-offload-pwm-trigger-dma-buffer.yaml b/Documentation/devicetree/bindings/iio/offload/adi,spi-offload-pwm-trigger-dma-buffer.yaml
+new file mode 100644
+index 000000000000..748cfab19eff
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/offload/adi,spi-offload-pwm-trigger-dma-buffer.yaml
+@@ -0,0 +1,59 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/offload/adi,spi-offload-pwm-trigger-dma-buffer.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: SPI Offload with PWM Trigger and DMA Buffer Data Output
++
++maintainers:
++  - Michael Hennerich <Michael.Hennerich@analog.com>
++  - Nuno Sá <nuno.sa@analog.com>
++
++description: |
++  This binding describes the connection of a PWM device to the trigger input
++  and a DMA channel to the output data stream of a SPI Offload instance.
++
++  https://wiki.analog.com/resources/fpga/peripherals/spi_engine/offload
++  https://wiki.analog.com/resources/fpga/peripherals/spi_engine/tutorial
++
++$ref: /schemas/spi/adi,axi-spi-engine.yaml#/$defs/offload
++
++properties:
++  compatible:
++    const: adi,spi-offload-pwm-trigger-dma-buffer
++
++  reg:
++    maxItems: 1
++
++  pwms:
++    maxItems: 1
++
++  dmas:
++    maxItems: 1
++
++required:
++  - compatible
++  - pwms
++  - dmas
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        offloads {
++            #address-cells = <1>;
++            #size-cells = <0>;
++
++            offload@0 {
++                compatible = "adi,spi-offload-pwm-trigger-dma-buffer";
++                reg = <0>;
++                pwms = <&pwm 0>;
++                dmas = <&dma 0>;
++            };
++        };
++    };
 
 -- 
 2.43.0

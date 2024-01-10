@@ -1,47 +1,47 @@
-Received: from mail-oo1-f44.google.com (mail-oo1-f44.google.com [209.85.161.44])
+Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC4614EB4B
-	for <linux-spi@vger.kernel.org>; Wed, 10 Jan 2024 19:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAA894F207
+	for <linux-spi@vger.kernel.org>; Wed, 10 Jan 2024 19:51:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="nooHw6Bw"
-Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-598a5448ef5so270330eaf.0
-        for <linux-spi@vger.kernel.org>; Wed, 10 Jan 2024 11:51:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Y3XOe08z"
+Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-595aa5b1fe0so2793697eaf.2
+        for <linux-spi@vger.kernel.org>; Wed, 10 Jan 2024 11:51:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1704916273; x=1705521073; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1704916275; x=1705521075; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=BxwuK84w923F+g+Vt8AcwM39UH7HsN98gaGyRuSrYT0=;
-        b=nooHw6Bw+oo7gGwZ0e+OXaV63hLdzwuhAFVPwdLJ+J6Q7hO2B6OEDEt1WlHPKM1U0v
-         STcz4y+lFqp0rfW8QkiW2ec+ijvVt2YP49GnGz9RyICdZ05pz9KS9Um+aCIbgaAwZGEp
-         JwJx0qEJoAwnF2V8R7tQQ21+ta/+br44wDRgaW1m6k7vLtsYRZVps+g1Fp62GcyX5wl8
-         wFi5bQWiYHk4CPJcoLaUJeny9f1LT5H7F1vqFEqjkG3xAgov6eOX0RVSy0zKtAWoR1R1
-         ckqo8+920CM3FJsGMk6rfqzPhMxBhuhgUmH9mOWNJJI08RqAZ9OnPe+OKL4Ly48z4/XJ
-         7odQ==
+        bh=UVV1rLtkyln7lfj7tpHcJX2VNB5e7ezkKOUrM/UkYLc=;
+        b=Y3XOe08zJIN6pC3VWbJnk6shnya36LvTiwlT1mpPDBn7HF6W7lf55XtJoLyT01z4Ni
+         kLDrI640BFKYOJV+twIgmxSRyCcIlvgFHw3W3UXoSvqpVwqCdKSP0SodzMi2Nvvr1zk+
+         UZJWRTofD9NbokV1MbC5UAnqAKovP7bc5l8DlzzMdk/vyEoBCwylfHHCh4vUnt8c8CeY
+         3NDrgUiZf6ry3YQaYkeQRQ8KDaW6gnD1blzmY8a6btcB2xN0pez+Ab+s/g29MFhVAVmx
+         koGztaKC54dA6BdPzUJdMwSL1ONMegSuZ13H4StO3j800zWjP90Lc0AWtwnxZHUJ/zme
+         CJcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704916273; x=1705521073;
+        d=1e100.net; s=20230601; t=1704916275; x=1705521075;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=BxwuK84w923F+g+Vt8AcwM39UH7HsN98gaGyRuSrYT0=;
-        b=GNzjjDDvr05eswcGPB3XRmESWgEaFSW4MZCJMa/HrwJnUGc+3dCxMKF+3j7SGHvU5C
-         DWasyw+z6HAwiwe1XhWHYJ7vcu+hYRbJjek+l6DbwKABKHnUbaLcNH+/NgO1BHsALWOx
-         MIYXJ262gKIyaJ4/A0/kPNn3pl9mLyhwbrcE9i/T7POMghJLTBKdCdkSBSoEmFmjA7K3
-         7wJueVvKoBw9ycbtwh22Qa4+5AHjSxdcYra5d0P1nH6zlv9S4xXzJUpaxSszDOHL53wd
-         M/yE6AsAZCTAPwiX5QZk5QA/6In/mTp3mbeRbIH2In/+dzxywEmzjzyNpy9t3Td3t7l9
-         5MLg==
-X-Gm-Message-State: AOJu0YylRIKkjzjXcov20eJd9cKaholzIfuNcx9bN8ii6EkL5L4GHllL
-	jlTEiJlHsXFxp5Zy+O78fBZL2In+FJbr7Q==
-X-Google-Smtp-Source: AGHT+IGJ+O/PYxjqHIL/1LHHTnKjU7G2qVmk8BAvyUKQ/5nDAwbS6rdUFjjZNIceJMm0d4HdbWXbjQ==
-X-Received: by 2002:a4a:5888:0:b0:598:8f50:d37e with SMTP id f130-20020a4a5888000000b005988f50d37emr94684oob.16.1704916272986;
-        Wed, 10 Jan 2024 11:51:12 -0800 (PST)
+        bh=UVV1rLtkyln7lfj7tpHcJX2VNB5e7ezkKOUrM/UkYLc=;
+        b=ta4cb5D9h96VA+ebH4zwzTth0JwfWmjUZTPDau7ePPS1c5qJyRm1Wvv+Y7LgXhneAO
+         kabstyy62QcSuQQuFgOBTOWvUDLz+LI06VjPrucxyDtPQjskcYjHeGBd8pQM1ZnU0kWd
+         Pny6JIW8AC1q+kPr+DPLKmfiadU1eox/mMCFXCkiQ7Bd+qQtYZiLjkMsGaT8/xrkHsqu
+         5Zz6289yQcNzp3awaOWX/Hx6FHH4dY8osIzYWxUWP17SzL4kL0O39/oVP040Xr2iw4qg
+         +AQ6pE2JVO1BMDYcAp17rmsQavwMQh9jcfsabmjwkVUP8+aGT32j22X+3nkIwmsVMEz5
+         QaJg==
+X-Gm-Message-State: AOJu0YxhsZG1yDFQ8vj6RAIOkriwdekpbof6L3MQFyby4qXdYZ8sdpx2
+	JvGhfi9z4qU4jaGSvrNhZb2Lt43su++byQ==
+X-Google-Smtp-Source: AGHT+IGunDU9MSgs9fgHQVRozSUhKU17YNl+rYChXl6jqrO/GSOVN5G2k4xbC6HDR6Xk6s49R7pFjg==
+X-Received: by 2002:a05:6820:1c89:b0:594:6b95:4218 with SMTP id ct9-20020a0568201c8900b005946b954218mr145662oob.1.1704916274825;
+        Wed, 10 Jan 2024 11:51:14 -0800 (PST)
 Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 187-20020a4a0dc4000000b00595b35927a3sm938513oob.39.2024.01.10.11.51.12
+        by smtp.gmail.com with ESMTPSA id 187-20020a4a0dc4000000b00595b35927a3sm938513oob.39.2024.01.10.11.51.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jan 2024 11:51:12 -0800 (PST)
+        Wed, 10 Jan 2024 11:51:14 -0800 (PST)
 From: David Lechner <dlechner@baylibre.com>
 To: Mark Brown <broonie@kernel.org>,
 	Jonathan Cameron <jic23@kernel.org>,
@@ -61,9 +61,9 @@ Cc: David Lechner <dlechner@baylibre.com>,
 	linux-doc@vger.kernel.org,
 	linux-pwm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 04/13] spi: dt-bindings: adi,axi-spi-engine: add offload bindings
-Date: Wed, 10 Jan 2024 13:49:45 -0600
-Message-ID: <20240109-axi-spi-engine-series-3-v1-4-e42c6a986580@baylibre.com>
+Subject: [PATCH 06/13] iio: buffer: add hardware triggered buffer support
+Date: Wed, 10 Jan 2024 13:49:47 -0600
+Message-ID: <20240109-axi-spi-engine-series-3-v1-6-e42c6a986580@baylibre.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240109-axi-spi-engine-series-3-v1-0-e42c6a986580@baylibre.com>
 References: <20240109-axi-spi-engine-series-3-v1-0-e42c6a986580@baylibre.com>
@@ -77,143 +77,147 @@ Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.12.4
 Content-Transfer-Encoding: 8bit
 
-The ADI AXI SPI Engine driver supports offloading SPI transfers to
-hardware. This is essentially a feature that allows recording an
-arbitrary sequence of SPI transfers and then playing them back with
-no CPU intervention via a hardware trigger.
+This adds a new mode INDIO_HW_BUFFER_TRIGGERED to the IIO subsystem.
 
-This adds the bindings for this feature. Each SPI Engine instance
-can have from 0 to 32 offload instances. Each offload instance has a
-trigger input and a data stream output. As an example, this could be
-used with an ADC SPI peripheral. In this case the trigger is connected
-to a PWM/clock to determine the sampling rate for the ADC and the output
-stream is connected to a DMA channel to pipe the sample data to memory.
+This mode is essentially the hardware version of INDIO_BUFFER_TRIGGERED
+where the trigger has the semantics of INDIO_HARDWARE_TRIGGERED and the
+buffer has the semantics of INDIO_BUFFER_HARDWARE.
 
-SPI peripherals act as consumers of the offload instances. Typically,
-one SPI peripheral will be connected to one offload instance. But to
-make the bindings future-proof, the property is an array.
+So basically INDIO_HW_BUFFER_TRIGGERED is the same as
+INDIO_BUFFER_HARDWARE except that it also enables the trigger when the
+buffer is enabled.
 
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
- .../spi/adi,axi-spi-engine-peripheral-props.yaml   | 24 +++++++++++
- .../bindings/spi/adi,axi-spi-engine.yaml           | 49 +++++++++++++++++++++-
- .../bindings/spi/spi-peripheral-props.yaml         |  1 +
- 3 files changed, 73 insertions(+), 1 deletion(-)
+ drivers/iio/industrialio-buffer.c | 43 ++++++++++++++++++++++++++++++++++++---
+ include/linux/iio/iio.h           | 16 ++++++++++++---
+ 2 files changed, 53 insertions(+), 6 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/adi,axi-spi-engine-peripheral-props.yaml b/Documentation/devicetree/bindings/spi/adi,axi-spi-engine-peripheral-props.yaml
-new file mode 100644
-index 000000000000..19b685fc3b39
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/adi,axi-spi-engine-peripheral-props.yaml
-@@ -0,0 +1,24 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/spi/adi,axi-spi-engine-peripheral-props.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Peripheral properties for Analog Devices AXI SPI Engine Controller
-+
-+maintainers:
-+  - Michael Hennerich <Michael.Hennerich@analog.com>
-+  - Nuno Sá <nuno.sa@analog.com>
-+
-+properties:
-+  adi,offloads:
-+    description:
-+      List of AXI SPI Engine offload instances assigned to this peripheral.
-+    $ref: /schemas/types.yaml#/definitions/uint32-array
-+    maxItems: 32
-+    items:
-+      items:
-+        - minimum: 0
-+          maximum: 31
-+
-+additionalProperties: true
-diff --git a/Documentation/devicetree/bindings/spi/adi,axi-spi-engine.yaml b/Documentation/devicetree/bindings/spi/adi,axi-spi-engine.yaml
-index d48faa42d025..69f3261bab47 100644
---- a/Documentation/devicetree/bindings/spi/adi,axi-spi-engine.yaml
-+++ b/Documentation/devicetree/bindings/spi/adi,axi-spi-engine.yaml
-@@ -21,6 +21,23 @@ maintainers:
- allOf:
-   - $ref: /schemas/spi/spi-controller.yaml#
+diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
+index 176d31d9f9d8..ffee3043c65a 100644
+--- a/drivers/iio/industrialio-buffer.c
++++ b/drivers/iio/industrialio-buffer.c
+@@ -27,6 +27,7 @@
+ #include <linux/iio/sysfs.h>
+ #include <linux/iio/buffer.h>
+ #include <linux/iio/buffer_impl.h>
++#include <linux/iio/trigger.h>
  
-+$defs:
-+  offload:
-+    description:
-+      Describes the connections of the trigger input and the data output stream
-+      of one or more offload instances.
-+
-+    properties:
-+      reg:
-+        description:
-+          Index of the offload instance.
-+        items:
-+          - minimum: 0
-+            maximum: 31
-+
-+    required:
-+      - reg
-+
- properties:
-   compatible:
-     const: adi,axi-spi-engine-1.00.a
-@@ -41,6 +58,22 @@ properties:
-       - const: s_axi_aclk
-       - const: spi_clk
+ static const char * const iio_endian_prefix[] = {
+ 	[IIO_BE] = "be",
+@@ -867,8 +868,17 @@ static int iio_verify_update(struct iio_dev *indio_dev,
+ 					insert_buffer->watermark);
+ 	}
  
-+  offloads:
-+    type: object
-+    description: Zero or more offloads supported by the controller.
-+
-+    properties:
-+      "#address-cells":
-+        const: 1
-+
-+      "#size-cells":
-+        const: 0
-+
-+    patternProperties:
-+      "^offload@[0-8a-f]+$":
-+        type: object
-+        $ref: '#/$defs/offload'
-+
- required:
-   - compatible
-   - reg
-@@ -62,5 +95,19 @@ examples:
-         #address-cells = <1>;
-         #size-cells = <0>;
+-	/* Definitely possible for devices to support both of these. */
+-	if ((modes & INDIO_BUFFER_TRIGGERED) && indio_dev->trig) {
++	/* Definitely possible for devices to support all of these. */
++	if (modes & INDIO_HW_BUFFER_TRIGGERED) {
++		/*
++		 * Keep things simple for now and only allow a single buffer to
++		 * be connected in hardware mode.
++		 */
++		if (insert_buffer && !list_empty(&iio_dev_opaque->buffer_list))
++			return -EINVAL;
++		config->mode = INDIO_HW_BUFFER_TRIGGERED;
++		strict_scanmask = true;
++	} else if ((modes & INDIO_BUFFER_TRIGGERED) && indio_dev->trig) {
+ 		config->mode = INDIO_BUFFER_TRIGGERED;
+ 	} else if (modes & INDIO_BUFFER_HARDWARE) {
+ 		/*
+@@ -1107,11 +1117,21 @@ static int iio_enable_buffers(struct iio_dev *indio_dev,
+ 		}
+ 	}
  
--        /* SPI devices */
-+        offloads {
-+            #address-cells = <1>;
-+            #size-cells = <0>;
++	if (iio_dev_opaque->currentmode == INDIO_HW_BUFFER_TRIGGERED) {
++		struct iio_trigger *trig = indio_dev->trig;
 +
-+            offload@0 {
-+                compatible = "adi,example-offload";
-+                reg = <0>;
-+            };
-+        };
++		if (trig->ops && trig->ops->set_trigger_state) {
++			ret = trig->ops->set_trigger_state(trig, true);
++			if (ret)
++				goto err_disable_buffers;
++		}
++	}
 +
-+        adc@0 {
-+            compatible = "adi,example-adc";
-+            reg = <0>;
-+            adi,offloads = <0>;
-+        };
-     };
-diff --git a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-index 1c8e71c18234..7beb5a3798a5 100644
---- a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-+++ b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-@@ -132,6 +132,7 @@ properties:
+ 	if (iio_dev_opaque->currentmode == INDIO_BUFFER_TRIGGERED) {
+ 		ret = iio_trigger_attach_poll_func(indio_dev->trig,
+ 						   indio_dev->pollfunc);
+ 		if (ret)
+-			goto err_disable_buffers;
++			goto err_disable_hw_trigger;
+ 	}
  
- # The controller specific properties go here.
- allOf:
-+  - $ref: adi,axi-spi-engine-peripheral-props.yaml#
-   - $ref: arm,pl022-peripheral-props.yaml#
-   - $ref: cdns,qspi-nor-peripheral-props.yaml#
-   - $ref: samsung,spi-peripheral-props.yaml#
+ 	if (indio_dev->setup_ops->postenable) {
+@@ -1130,6 +1150,16 @@ static int iio_enable_buffers(struct iio_dev *indio_dev,
+ 		iio_trigger_detach_poll_func(indio_dev->trig,
+ 					     indio_dev->pollfunc);
+ 	}
++err_disable_hw_trigger:
++	if (iio_dev_opaque->currentmode == INDIO_HW_BUFFER_TRIGGERED) {
++		struct iio_trigger *trig = indio_dev->trig;
++
++		if (trig->ops && trig->ops->set_trigger_state) {
++			ret = trig->ops->set_trigger_state(trig, false);
++			if (ret)
++				return ret;
++		}
++	}
+ err_disable_buffers:
+ 	buffer = list_prepare_entry(tmp, &iio_dev_opaque->buffer_list, buffer_list);
+ 	list_for_each_entry_continue_reverse(buffer, &iio_dev_opaque->buffer_list,
+@@ -1174,6 +1204,13 @@ static int iio_disable_buffers(struct iio_dev *indio_dev)
+ 					     indio_dev->pollfunc);
+ 	}
+ 
++	if (iio_dev_opaque->currentmode == INDIO_HW_BUFFER_TRIGGERED) {
++		struct iio_trigger *trig = indio_dev->trig;
++
++		if (trig->ops && trig->ops->set_trigger_state)
++			trig->ops->set_trigger_state(trig, false);
++	}
++
+ 	list_for_each_entry(buffer, &iio_dev_opaque->buffer_list, buffer_list) {
+ 		ret2 = iio_buffer_disable(buffer, indio_dev);
+ 		if (ret2 && !ret)
+diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+index d0ce3b71106a..16f62bd38041 100644
+--- a/include/linux/iio/iio.h
++++ b/include/linux/iio/iio.h
+@@ -366,6 +366,11 @@ s64 iio_get_time_ns(const struct iio_dev *indio_dev);
+  * they must be managed by the core, but without the entire interrupts/poll
+  * functions burden. Interrupts are irrelevant as the data flow is hardware
+  * mediated and distributed.
++ * @INDIO_HW_BUFFER_TRIGGERED: Very unusual mode.
++ * This is similar to INDIO_BUFFER_TRIGGERED but everything is done in hardware
++ * therefore there are no poll functions attached. It also implies the semantics
++ * of both INDIO_HARDWARE_TRIGGERED for the trigger and INDIO_BUFFER_HARDWARE
++ * for the buffer.
+  */
+ #define INDIO_DIRECT_MODE		0x01
+ #define INDIO_BUFFER_TRIGGERED		0x02
+@@ -373,14 +378,19 @@ s64 iio_get_time_ns(const struct iio_dev *indio_dev);
+ #define INDIO_BUFFER_HARDWARE		0x08
+ #define INDIO_EVENT_TRIGGERED		0x10
+ #define INDIO_HARDWARE_TRIGGERED	0x20
++#define INDIO_HW_BUFFER_TRIGGERED	0x40
+ 
+-#define INDIO_ALL_BUFFER_MODES					\
+-	(INDIO_BUFFER_TRIGGERED | INDIO_BUFFER_HARDWARE | INDIO_BUFFER_SOFTWARE)
++#define INDIO_ALL_BUFFER_MODES		\
++	(INDIO_BUFFER_TRIGGERED		\
++	 | INDIO_BUFFER_HARDWARE	\
++	 | INDIO_BUFFER_SOFTWARE	\
++	 | INDIO_HW_BUFFER_TRIGGERED)
+ 
+ #define INDIO_ALL_TRIGGERED_MODES	\
+ 	(INDIO_BUFFER_TRIGGERED		\
+ 	 | INDIO_EVENT_TRIGGERED	\
+-	 | INDIO_HARDWARE_TRIGGERED)
++	 | INDIO_HARDWARE_TRIGGERED	\
++	 | INDIO_HW_BUFFER_TRIGGERED)
+ 
+ #define INDIO_MAX_RAW_ELEMENTS		4
+ 
 
 -- 
 2.43.0

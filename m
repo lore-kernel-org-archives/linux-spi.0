@@ -1,36 +1,35 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0809199C5
-	for <linux-spi@vger.kernel.org>; Mon, 15 Jan 2024 20:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC7E199A2
+	for <linux-spi@vger.kernel.org>; Mon, 15 Jan 2024 20:21:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rPTSJ-0004yf-BD; Mon, 15 Jan 2024 21:21:11 +0100
+	id 1rPTSH-0004t1-JC; Mon, 15 Jan 2024 21:21:09 +0100
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rPTSI-0005hl-SJ; Mon, 15 Jan 2024 21:21:10 +0100
+	id 1rPTSH-0005hC-2Q; Mon, 15 Jan 2024 21:21:09 +0100
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rPTSI-000N95-2Z;
-	Mon, 15 Jan 2024 21:21:10 +0100
+	id 1rPTSG-000N8P-3C;
+	Mon, 15 Jan 2024 21:21:09 +0100
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 To: Mark Brown <broonie@kernel.org>,
 	Geert Uytterhoeven <geert+renesas@glider.be>
 Cc: linux-spi@vger.kernel.org,
 	kernel@pengutronix.de,
-	Helge Deller <deller@gmx.de>,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH 29/33] video: fbdev: mmp: Follow renaming of SPI "master" to "controller"
-Date: Mon, 15 Jan 2024 21:13:15 +0100
-Message-ID:  <29daa1fc94443cc392188135217675176b074f35.1705348270.git.u.kleine-koenig@pengutronix.de>
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	linux-arm-msm@vger.kernel.org
+Subject: [PATCH 21/33] spi: geni-qcom: Follow renaming of SPI "master" to "controller"
+Date: Mon, 15 Jan 2024 21:13:07 +0100
+Message-ID:  <60756d0b04397f4dd53e231ff6110755e1902ce0.1705348270.git.u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1705348269.git.u.kleine-koenig@pengutronix.de>
 References: <cover.1705348269.git.u.kleine-koenig@pengutronix.de>
@@ -41,7 +40,7 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2712; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=ijw9anAf6h8n1KBd3RjgyrXHDafUFZIr9UcDRpXmqmg=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlpZHhX60U4n4fkTpjpsvVORb2ta4gfxYPTJcHC 4KyRjHfSSyJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZaWR4QAKCRCPgPtYfRL+ TsogCACMZ24MIfn6AqoSHWGRODHeNgatY1yoerlFkKEV9WEyRwHUA6ML1HIPzXlVJ2KaH+HbDG7 wwPVSJ3743aNR1nrJxk1EnvKNqi8fxgxBGqOUezS/DFI43xWhWC3ermwbKzflTu1lQBMQE8/CCW +6jq7Ra9ehVyG1YjOrGqscaEOOUbIWFE/xNBOplsxSwHO/b2bwbC6ayrigFnkpQK/mUET0k8mWO zBuIPQpAKPIAio9ENQqC3a4QJLctuXV58gGxYibaDWWnpAALzWt2RnHYPSB4KGQ1wlkbHwPrE6Z GFae96/Gipv9gU4+qmTzzm14TxLv559OCnKmt/Rgq+DjBXTT
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1141; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=+iqzpfPfwM8JLJkorLSCUBZld3eFtgJC2EACC7dzGUs=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlpZHYqoNQkvM95uCjewFQHJ0wpYa36bebZajLY fT++UhkC/KJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZaWR2AAKCRCPgPtYfRL+ TvYpB/9OdspTYjISQyUSEH7sPer+bjeJg5sjH2ElrE1iJiws/7A+HO8Pc0EpcJfX1JbGBpQ2d3W 7A+2m7jH6o8DvhWdhnhk0IOavliDdQqUXQMSoEngKn7E+M6CfBq8MUDddzeoX7Oj+K4MnBbjF9d SM0PrxUUDNTAva7TPY3sIIRDqId+DQ61FghuByj5mKwGnZcbJDRPyFNrulIbASDIwFsyXEnkuXL vHx2XoE3mBgFwQ+ydJVQA/fvDv6sNdgVBzUWkmo5J0D1QTXgVThxrQm3dvgb3mmW1ptG8IWud0A aIeB+wJ9GeYZu3CR6HH7IVGgX4zTcIE+PYilDRAZnmhpxgpT
 X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -54,79 +53,28 @@ some functions and struct members were renamed. To not break all drivers
 compatibility macros were provided.
 
 To be able to remove these compatibility macros push the renaming into
-this driver.
+this driver. This was already tried before in commit 8726bdcef62e ("spi:
+geni-qcom: switch to use modern name"), that's why this change is so
+small.
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
- drivers/video/fbdev/mmp/hw/mmp_spi.c | 26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ drivers/spi/spi-geni-qcom.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/mmp/hw/mmp_spi.c b/drivers/video/fbdev/mmp/hw/mmp_spi.c
-index 0f8f0312a7c4..cf23650d7f0b 100644
---- a/drivers/video/fbdev/mmp/hw/mmp_spi.c
-+++ b/drivers/video/fbdev/mmp/hw/mmp_spi.c
-@@ -32,7 +32,7 @@ static inline int lcd_spi_write(struct spi_device *spi, u32 data)
- 	int timeout = 100000, isr, ret = 0;
- 	u32 tmp;
- 	void __iomem *reg_base = (void __iomem *)
--		*(void **)spi_master_get_devdata(spi->master);
-+		*(void **) spi_controller_get_devdata(spi->controller);
+diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
+index 15f84e68d4d2..37ef8c40b276 100644
+--- a/drivers/spi/spi-geni-qcom.c
++++ b/drivers/spi/spi-geni-qcom.c
+@@ -647,7 +647,7 @@ static void spi_geni_release_dma_chan(struct spi_geni_master *mas)
  
- 	/* clear ISR */
- 	writel_relaxed(~SPI_IRQ_MASK, reg_base + SPU_IRQ_ISR);
-@@ -81,7 +81,7 @@ static inline int lcd_spi_write(struct spi_device *spi, u32 data)
- static int lcd_spi_setup(struct spi_device *spi)
+ static int spi_geni_init(struct spi_geni_master *mas)
  {
- 	void __iomem *reg_base = (void __iomem *)
--		*(void **)spi_master_get_devdata(spi->master);
-+		*(void **) spi_controller_get_devdata(spi->controller);
- 	u32 tmp;
- 
- 	tmp = CFG_SCLKCNT(16) |
-@@ -136,32 +136,32 @@ static int lcd_spi_one_transfer(struct spi_device *spi, struct spi_message *m)
- 
- int lcd_spi_register(struct mmphw_ctrl *ctrl)
- {
--	struct spi_master *master;
-+	struct spi_controller *ctlr;
- 	void **p_regbase;
- 	int err;
- 
--	master = spi_alloc_master(ctrl->dev, sizeof(void *));
--	if (!master) {
-+	ctlr = spi_alloc_master(ctrl->dev, sizeof(void *));
-+	if (!ctlr) {
- 		dev_err(ctrl->dev, "unable to allocate SPI master\n");
- 		return -ENOMEM;
- 	}
--	p_regbase = spi_master_get_devdata(master);
-+	p_regbase = spi_controller_get_devdata(ctlr);
- 	*p_regbase = (void __force *)ctrl->reg_base;
- 
- 	/* set bus num to 5 to avoid conflict with other spi hosts */
--	master->bus_num = 5;
--	master->num_chipselect = 1;
--	master->setup = lcd_spi_setup;
--	master->transfer = lcd_spi_one_transfer;
-+	ctlr->bus_num = 5;
-+	ctlr->num_chipselect = 1;
-+	ctlr->setup = lcd_spi_setup;
-+	ctlr->transfer = lcd_spi_one_transfer;
- 
--	err = spi_register_master(master);
-+	err = spi_register_controller(ctlr);
- 	if (err < 0) {
- 		dev_err(ctrl->dev, "unable to register SPI master\n");
--		spi_master_put(master);
-+		spi_controller_put(ctlr);
- 		return err;
- 	}
- 
--	dev_info(&master->dev, "registered\n");
-+	dev_info(&ctlr->dev, "registered\n");
- 
- 	return 0;
- }
+-	struct spi_master *spi = dev_get_drvdata(mas->dev);
++	struct spi_controller *spi = dev_get_drvdata(mas->dev);
+ 	struct geni_se *se = &mas->se;
+ 	unsigned int proto, major, minor, ver;
+ 	u32 spi_tx_cfg, fifo_disable;
 -- 
 2.43.0
 

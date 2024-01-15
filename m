@@ -1,40 +1,32 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5E2119473
-	for <linux-spi@vger.kernel.org>; Mon, 15 Jan 2024 20:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45EB21947A
+	for <linux-spi@vger.kernel.org>; Mon, 15 Jan 2024 20:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rPTSG-0004kf-Uu; Mon, 15 Jan 2024 21:21:08 +0100
+	id 1rPTSH-0004qu-27; Mon, 15 Jan 2024 21:21:09 +0100
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rPTSF-0005gi-HJ; Mon, 15 Jan 2024 21:21:07 +0100
+	id 1rPTSG-0005gx-Ed; Mon, 15 Jan 2024 21:21:08 +0100
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rPTSF-000N7t-1R;
-	Mon, 15 Jan 2024 21:21:07 +0100
+	id 1rPTSG-000N8D-1D;
+	Mon, 15 Jan 2024 21:21:08 +0100
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 To: Mark Brown <broonie@kernel.org>,
 	Geert Uytterhoeven <geert+renesas@glider.be>
 Cc: linux-spi@vger.kernel.org,
-	kernel@pengutronix.de,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	=?utf-8?q?Pali_Roh=C3=A1r?= <pali@kernel.org>,
-	linux-mtd@lists.infradead.org
-Subject: [PATCH 13/33] mtd: rawnand: fsl_elbc: Let .probe retry if local bus is missing
-Date: Mon, 15 Jan 2024 21:12:59 +0100
-Message-ID:  <978d5107646800a2dfa3299e32e2587907d53a87.1705348269.git.u.kleine-koenig@pengutronix.de>
+	kernel@pengutronix.de
+Subject: [PATCH 18/33] spi: cadence-quadspi: Don't emit error message on allocation error
+Date: Mon, 15 Jan 2024 21:13:04 +0100
+Message-ID:  <9ef43fafa33c50e3ece45b065bf860419fdf3523.1705348270.git.u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1705348269.git.u.kleine-koenig@pengutronix.de>
 References: <cover.1705348269.git.u.kleine-koenig@pengutronix.de>
@@ -45,7 +37,7 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=926; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=s+JADGlY1hU/NStvmmbQ8XZ+UID1ILn7ThT9et4DuL4=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlpZHPCEJWc7vdLUmy8+BmgzzT8evOP0zLGbYWS ciV2KzQ93yJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZaWRzwAKCRCPgPtYfRL+ TiVdB/wMSwEC76EmTubxnIK4QkQ+SGwLSbNrGj1gqo0OR0dGoYZmlUtZ4lJgy6bm7ZuExr1OOVZ +nD45sPyuvg6SusiCWNVHmV2Bs/wGWYC+rJogFEKVV1MGghznBcd7jFin7nnYU0ZA6J8MaLmlNA mNILzMZe1SuVNxrbE9VYubQh81lpfU8KVZx/GypYqzbNGLpxZkCZK06v59OSEYcWtmMNtL/KJX1 ZNIvStyr8BUpuLU4UCGrhkA498s3DA+igjki46e0RvjwKnPVPKYB9Z5lCwrut4FVJPrz+aJdpCH gLPB+jWx0B7KKeaqdtcMUayWjw5xqjIZcjLQlqeAH6grisdI
+X-Developer-Signature: v=1; a=openpgp-sha256; l=919; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=JvB30PH3Ov9f9numXa9egPytmZOqbhfvF+Hn9LRiENY=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlpZHVyGbAUuYmgPnkY/EbKJ/8jlr3v/ocTIYDx O8yyQ1acUCJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZaWR1QAKCRCPgPtYfRL+ Th0RCAC6RmYds/UbtzSPMqhQ5dKJ7rGV8MxSYogw8Aq8n9ZAnVKlFgFqI+1VOgXqT6wiDLSS72O RgnJk2oawFFJIkq9sEYKyZMp4+LvZ92vdHpGG00/bC7eIPjh4piicq/ixKFTERqsVwzQyltGdbC JSZTqEFmtsKRlMnz0zBdYwqfFB06LkF/uYvnU9M4v8+u7WfWwWsI5grR+bFARFrNHFcKDnRGgpA 17ceoUg4dVTQCUgtaVQ5P1p10slM2q7AMVvWDCCzrFmivuyQzrGD6KTgTCKma+yNbVTZhzIiQw/ UunnZvpWC6Bh74NGaEkZfZZUEpqwCVqb6Y5xhGZ4fLNUEsa2
 X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -53,29 +45,32 @@ X-SA-Exim-Mail-From: ukl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: linux-spi@vger.kernel.org
 
-If during probe fsl_lbc_ctrl_dev is NULL that might just be because the
-fsl_lbc driver didn't bind yet. So return -EPROBE_DEFER in this case to
-make the driver core retry probing later.
+Drivers are not supposed to emit an error message when a memory
+allocation fails, as the kernel is very loud in this case already
+anyhow.
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
- drivers/mtd/nand/raw/fsl_elbc_nand.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi-cadence-quadspi.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/fsl_elbc_nand.c b/drivers/mtd/nand/raw/fsl_elbc_nand.c
-index 1e3a80f06f33..df6a0d5c86bb 100644
---- a/drivers/mtd/nand/raw/fsl_elbc_nand.c
-+++ b/drivers/mtd/nand/raw/fsl_elbc_nand.c
-@@ -869,7 +869,8 @@ static int fsl_elbc_nand_probe(struct platform_device *pdev)
- 	struct mtd_info *mtd;
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index f94e0d370d46..eb6cc861b00b 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -1712,10 +1712,9 @@ static int cqspi_probe(struct platform_device *pdev)
+ 	int irq;
  
- 	if (!fsl_lbc_ctrl_dev || !fsl_lbc_ctrl_dev->regs)
--		return -ENODEV;
-+		return dev_err_probe(&pdev->dev, -EPROBE_DEFER, "lbc_ctrl_dev missing\n");
+ 	host = devm_spi_alloc_host(&pdev->dev, sizeof(*cqspi));
+-	if (!host) {
+-		dev_err(&pdev->dev, "devm_spi_alloc_host failed\n");
++	if (!host)
+ 		return -ENOMEM;
+-	}
 +
- 	lbc = fsl_lbc_ctrl_dev->regs;
- 	dev = fsl_lbc_ctrl_dev->dev;
- 
+ 	host->mode_bits = SPI_RX_QUAD | SPI_RX_DUAL;
+ 	host->mem_ops = &cqspi_mem_ops;
+ 	host->mem_caps = &cqspi_mem_caps;
 -- 
 2.43.0
 

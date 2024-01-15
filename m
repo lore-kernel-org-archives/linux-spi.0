@@ -1,7 +1,7 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88043199C1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07C7199C4
 	for <linux-spi@vger.kernel.org>; Mon, 15 Jan 2024 20:21:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -9,27 +9,24 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rPTSE-0004gK-Q6; Mon, 15 Jan 2024 21:21:06 +0100
+	id 1rPTSK-00052K-7k; Mon, 15 Jan 2024 21:21:12 +0100
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rPTSE-0005gJ-7R; Mon, 15 Jan 2024 21:21:06 +0100
+	id 1rPTSJ-0005hs-8V; Mon, 15 Jan 2024 21:21:11 +0100
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rPTSE-000N7V-0S;
-	Mon, 15 Jan 2024 21:21:06 +0100
+	id 1rPTSJ-000N9D-0b;
+	Mon, 15 Jan 2024 21:21:11 +0100
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 To: Mark Brown <broonie@kernel.org>,
 	Geert Uytterhoeven <geert+renesas@glider.be>
 Cc: linux-spi@vger.kernel.org,
-	kernel@pengutronix.de,
-	Sergey Kozlov <serjk@netup.ru>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	linux-media@vger.kernel.org
-Subject: [PATCH 07/33] media: netup_unidvb: Follow renaming of SPI "master" to "controller"
-Date: Mon, 15 Jan 2024 21:12:53 +0100
-Message-ID:  <8af8f80b27e32bab773dade327e9694976604e48.1705348269.git.u.kleine-koenig@pengutronix.de>
+	kernel@pengutronix.de
+Subject: [PATCH 31/33] spi: fsl-lib: Follow renaming of SPI "master" to "controller"
+Date: Mon, 15 Jan 2024 21:13:17 +0100
+Message-ID:  <4913c9c4d2db846ab5facc44c016b90a9b06d4f9.1705348270.git.u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1705348269.git.u.kleine-koenig@pengutronix.de>
 References: <cover.1705348269.git.u.kleine-koenig@pengutronix.de>
@@ -40,7 +37,7 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5286; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=87ZsEgNOTheB5G92Taih+d+a9rMdmsqYOADAZ3z0oDk=; b=owGbwMvMwMXY3/A7olbonx/jabUkhtSlE084fVx9TOwKy77Oc62LPi6sKdqmudSwYbK6ZqBEb /72nRYGnYzGLAyMXAyyYoos9o1rMq2q5CI71/67DDOIlQlkCgMXpwBMxIqBg2F+mVV1kfXKqXur 8sq//PT2fLamiP+ri/imMKGDD4qlAtWXGsn/DPWL6vhX9Iu1ZtLjdnaGk8osnJ+jgq2WBTju0Mp qeWi4aX6O/duJiwsUgzjSMkO0p7ItnLw717vrx6H9npbXK37zreSISDeYYLJpV7mBno3l/jrNCp nba64uf/E54RCD6KElvqHKYbzSwaZ6v/ZJ7i+sMOXZdeZO1omfHJW/Nij5csZKtNn8XBAmmvHyc OQJHt69vIrMvWqH+sz5j4RVHptu9EA/Nnp/pq7QiYiDhgqBj/5/Cu1jtXZOjnA/UT9tyYedcxoj i/UN2hc+yLdkPPk/L/HBoWenvonZbwwu2PVZgqV4x7MqAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1854; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=1r57n6pCaby+lv1DE7k3IDX2x7vIaMkEPVZWkUjss+U=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlpZHjiyJ1ISvsJLkPmHkHRonR2C5EuArozYI7+ 6F6Ehdx9AOJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZaWR4wAKCRCPgPtYfRL+ TppfCACR/bZ1MoZufrsGp+zGP2m+xrYx8CHRQFsuSRSCBo6y22Nt9/E0HLPf7JQVCbQGujf75Bi TbTmkp7uiNCVgzHjowUNRXwLWIscIbbY4OGKSf8hQQWlmoODuaDdzli7w8IhBUVhng41wgFOoQ+ UoTuloJoFx05gCBBB9snaimUEt4oVjfIzNsxsvc61fSOPjks1cBOBz/mcQGsG3NHPHZgsqLP9CM 4/teyVinCIgUR7hIPE1XBiG3LbuJCX3TCWlHmzisgOsZC1Nc2OVsVuTaDb3bJOEsFPH4YBaTHuu ZOCnDWJoOT+E6kdDmuslpNjUNDglymd9n4cTutnZBdeq49GO
 X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -57,145 +54,48 @@ this driver.
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
- .../media/pci/netup_unidvb/netup_unidvb_spi.c | 48 +++++++++----------
- 1 file changed, 24 insertions(+), 24 deletions(-)
+ drivers/spi/spi-fsl-lib.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/media/pci/netup_unidvb/netup_unidvb_spi.c b/drivers/media/pci/netup_unidvb/netup_unidvb_spi.c
-index 526042d8afae..e90aa1c1584c 100644
---- a/drivers/media/pci/netup_unidvb/netup_unidvb_spi.c
-+++ b/drivers/media/pci/netup_unidvb/netup_unidvb_spi.c
-@@ -35,7 +35,7 @@ struct netup_spi_regs {
- 
- struct netup_spi {
- 	struct device			*dev;
--	struct spi_master		*master;
-+	struct spi_controller		*ctlr;
- 	struct netup_spi_regs __iomem	*regs;
- 	u8 __iomem			*mmio;
- 	spinlock_t			lock;
-@@ -78,7 +78,7 @@ irqreturn_t netup_spi_interrupt(struct netup_spi *spi)
- 	reg = readw(&spi->regs->control_stat);
- 	if (!(reg & NETUP_SPI_CTRL_IRQ)) {
- 		spin_unlock_irqrestore(&spi->lock, flags);
--		dev_dbg(&spi->master->dev,
-+		dev_dbg(&spi->ctlr->dev,
- 			"%s(): not mine interrupt\n", __func__);
- 		return IRQ_NONE;
- 	}
-@@ -88,15 +88,15 @@ irqreturn_t netup_spi_interrupt(struct netup_spi *spi)
- 	spi->state = SPI_STATE_DONE;
- 	wake_up(&spi->waitq);
- 	spin_unlock_irqrestore(&spi->lock, flags);
--	dev_dbg(&spi->master->dev,
-+	dev_dbg(&spi->ctlr->dev,
- 		"%s(): SPI interrupt handled\n", __func__);
- 	return IRQ_HANDLED;
- }
- 
--static int netup_spi_transfer(struct spi_master *master,
-+static int netup_spi_transfer(struct spi_controller *ctlr,
- 			      struct spi_message *msg)
+diff --git a/drivers/spi/spi-fsl-lib.c b/drivers/spi/spi-fsl-lib.c
+index 885757c29fbb..4fc2c56555b5 100644
+--- a/drivers/spi/spi-fsl-lib.c
++++ b/drivers/spi/spi-fsl-lib.c
+@@ -82,18 +82,18 @@ void mpc8xxx_spi_probe(struct device *dev, struct resource *mem,
+ 			unsigned int irq)
  {
--	struct netup_spi *spi = spi_master_get_devdata(master);
-+	struct netup_spi *spi = spi_controller_get_devdata(ctlr);
- 	struct spi_transfer *t;
- 	int result = 0;
- 	u32 tr_size;
-@@ -131,7 +131,7 @@ static int netup_spi_transfer(struct spi_master *master,
- 				NETUP_SPI_CTRL_START |
- 				(frag_last ? NETUP_SPI_CTRL_LAST_CS : 0),
- 				&spi->regs->control_stat);
--			dev_dbg(&spi->master->dev,
-+			dev_dbg(&spi->ctlr->dev,
- 				"%s(): control_stat 0x%04x\n",
- 				__func__, readw(&spi->regs->control_stat));
- 			wait_event_timeout(spi->waitq,
-@@ -144,11 +144,11 @@ static int netup_spi_transfer(struct spi_master *master,
- 				}
- 			} else {
- 				if (spi->state == SPI_STATE_START) {
--					dev_dbg(&spi->master->dev,
-+					dev_dbg(&spi->ctlr->dev,
- 						"%s(): transfer timeout\n",
- 						__func__);
- 				} else {
--					dev_dbg(&spi->master->dev,
-+					dev_dbg(&spi->ctlr->dev,
- 						"%s(): invalid state %d\n",
- 						__func__, spi->state);
- 				}
-@@ -161,7 +161,7 @@ static int netup_spi_transfer(struct spi_master *master,
- 	}
- done:
- 	msg->status = result;
--	spi_finalize_current_message(master);
-+	spi_finalize_current_message(ctlr);
- 	return result;
- }
- 
-@@ -172,30 +172,30 @@ static int netup_spi_setup(struct spi_device *spi)
- 
- int netup_spi_init(struct netup_unidvb_dev *ndev)
- {
+ 	struct fsl_spi_platform_data *pdata = dev_get_platdata(dev);
 -	struct spi_master *master;
 +	struct spi_controller *ctlr;
- 	struct netup_spi *nspi;
+ 	struct mpc8xxx_spi *mpc8xxx_spi;
  
--	master = devm_spi_alloc_master(&ndev->pci_dev->dev,
--		sizeof(struct netup_spi));
--	if (!master) {
-+	ctlr = devm_spi_alloc_master(&ndev->pci_dev->dev,
-+					 sizeof(struct netup_spi));
-+	if (!ctlr) {
- 		dev_err(&ndev->pci_dev->dev,
- 			"%s(): unable to alloc SPI master\n", __func__);
- 		return -EINVAL;
- 	}
--	nspi = spi_master_get_devdata(master);
--	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST;
--	master->bus_num = -1;
--	master->num_chipselect = 1;
--	master->transfer_one_message = netup_spi_transfer;
--	master->setup = netup_spi_setup;
-+	nspi = spi_controller_get_devdata(ctlr);
-+	ctlr->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST;
-+	ctlr->bus_num = -1;
-+	ctlr->num_chipselect = 1;
-+	ctlr->transfer_one_message = netup_spi_transfer;
-+	ctlr->setup = netup_spi_setup;
- 	spin_lock_init(&nspi->lock);
- 	init_waitqueue_head(&nspi->waitq);
--	nspi->master = master;
-+	nspi->ctlr = ctlr;
- 	nspi->regs = (struct netup_spi_regs __iomem *)(ndev->bmmio0 + 0x4000);
- 	writew(2, &nspi->regs->clock_divider);
- 	writew(NETUP_UNIDVB_IRQ_SPI, ndev->bmmio0 + REG_IMASK_SET);
- 	ndev->spi = nspi;
--	if (spi_register_master(master)) {
-+	if (spi_register_controller(ctlr)) {
- 		ndev->spi = NULL;
- 		dev_err(&ndev->pci_dev->dev,
- 			"%s(): unable to register SPI bus\n", __func__);
-@@ -207,8 +207,8 @@ int netup_spi_init(struct netup_unidvb_dev *ndev)
- 		ndev->pci_bus,
- 		ndev->pci_slot,
- 		ndev->pci_func);
--	if (!spi_new_device(master, &netup_spi_board)) {
--		spi_unregister_master(master);
-+	if (!spi_new_device(ctlr, &netup_spi_board)) {
-+		spi_unregister_controller(ctlr);
- 		ndev->spi = NULL;
- 		dev_err(&ndev->pci_dev->dev,
- 			"%s(): unable to create SPI device\n", __func__);
-@@ -227,7 +227,7 @@ void netup_spi_release(struct netup_unidvb_dev *ndev)
- 	if (!spi)
- 		return;
+-	master = dev_get_drvdata(dev);
++	ctlr = dev_get_drvdata(dev);
  
--	spi_unregister_master(spi->master);
-+	spi_unregister_controller(spi->ctlr);
- 	spin_lock_irqsave(&spi->lock, flags);
- 	reg = readw(&spi->regs->control_stat);
- 	writew(reg | NETUP_SPI_CTRL_IRQ, &spi->regs->control_stat);
+ 	/* the spi->mode bits understood by this driver: */
+-	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH
++	ctlr->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH
+ 			| SPI_LSB_FIRST | SPI_LOOP;
+ 
+-	master->dev.of_node = dev->of_node;
++	ctlr->dev.of_node = dev->of_node;
+ 
+-	mpc8xxx_spi = spi_master_get_devdata(master);
++	mpc8xxx_spi = spi_controller_get_devdata(ctlr);
+ 	mpc8xxx_spi->dev = dev;
+ 	mpc8xxx_spi->get_rx = mpc8xxx_spi_rx_buf_u8;
+ 	mpc8xxx_spi->get_tx = mpc8xxx_spi_tx_buf_u8;
+@@ -104,8 +104,8 @@ void mpc8xxx_spi_probe(struct device *dev, struct resource *mem,
+ 	mpc8xxx_spi->rx_shift = 0;
+ 	mpc8xxx_spi->tx_shift = 0;
+ 
+-	master->bus_num = pdata->bus_num;
+-	master->num_chipselect = pdata->max_chipselect;
++	ctlr->bus_num = pdata->bus_num;
++	ctlr->num_chipselect = pdata->max_chipselect;
+ 
+ 	init_completion(&mpc8xxx_spi->done);
+ }
 -- 
 2.43.0
 

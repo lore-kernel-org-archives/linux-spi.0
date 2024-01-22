@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C3AE612CE
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD785612EB
 	for <linux-spi@vger.kernel.org>; Mon, 22 Jan 2024 18:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705946915; cv=none; b=gt2NcyDb/SWb227F4vnNLJYIWt8icawsumW5XHS/LjK2cyAqU7kgi9JoypiL7SWT439e5qRR0jxRDqaDxEWCMPWquEmevEfQU76lb7A/zOc6zQv6k01lpK/bFsl7+iBd1za8nfha96PpzdpmeHGKp6+6RRFzR7a9X99iNnjfVIQ=
+	t=1705946915; cv=none; b=I1E4rTcQSCY9eh8ZNR/xu8tYlTsWwWaiyaKmIt2u+gWm1I2NMxBTV14RkZUDLCXKLjFUDG/lUD7E9EMsWgPP8EzeTsyn2igaSKO20yB9Pb3+HVs+zHKLqZsmivxKRKXnKWsNsc+B/W1LqFcgB5W116bz38ZP29IezBjr/iCrdZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1705946915; c=relaxed/simple;
-	bh=iR4kxLxaE7Icwhg9XpP8gyJgiftiGtkYPg5z6rw0lWQ=;
+	bh=+0gVSqI5A+fW4njAyRhxUDCiw8TcwVUPcn8k9sD6RGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KGG0V5GQD6qfPp18taDJ/dQ9otO0bX4V23GKEVIV7niRJAG0DuveatjSjQiASlWEm/CSwXjD5mFfmpIghusnVLtya+A3q7K2s7jVtlF2h9dQXpXkb4F3acnpO7Y2W0pYLkxmjngflylwRQGpNSsCRbhz9uXfQUrMxrUo2ON6BVI=
+	 MIME-Version:Content-Type; b=TzcgdxhKvT16ajEl7PLN7ddJGS3pGusZLTJ6luVW3kNg2WolpP6g6JuEBE5wF4aum7xiA2ehlj6zvb6TfVZ3fAAwMPIxHtRestI2sS1SIM1D/WVJznqkGwcSN12oEmalefDXuTzIkBjXZTsPpT7p4/YtIF6AMaL5+ZUh/aRGlFA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,30 +18,28 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rRyiW-0001rw-8O; Mon, 22 Jan 2024 19:08:16 +0100
+	id 1rRyiY-00024i-RB; Mon, 22 Jan 2024 19:08:18 +0100
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rRyiV-001eQ7-Rs; Mon, 22 Jan 2024 19:08:15 +0100
+	id 1rRyiY-001eQu-8c; Mon, 22 Jan 2024 19:08:18 +0100
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rRyiV-005Zxh-2U;
-	Mon, 22 Jan 2024 19:08:15 +0100
+	id 1rRyiY-005Zyd-0Z;
+	Mon, 22 Jan 2024 19:08:18 +0100
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 To: Mark Brown <broonie@kernel.org>
 Cc: kernel@pengutronix.de,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
+	Peter Huewe <peterhuewe@gmx.de>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	linux-integrity@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-spi@vger.kernel.org
-Subject: [PATCH v2 15/33] net: vertexcom: mse102x: Follow renaming of SPI "master" to "controller"
-Date: Mon, 22 Jan 2024 19:07:10 +0100
-Message-ID:  <007fae0c67ce212a1d31082ad5762197c87bcd57.1705944943.git.u.kleine-koenig@pengutronix.de>
+Subject: [PATCH v2 27/33] tpm_tis_spi: Follow renaming of SPI "master" to "controller"
+Date: Mon, 22 Jan 2024 19:07:22 +0100
+Message-ID:  <0dfb829ad4a7ad6b3bab14b53890fa051ab3519f.1705944943.git.u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1705944943.git.u.kleine-koenig@pengutronix.de>
 References: <cover.1705944943.git.u.kleine-koenig@pengutronix.de>
@@ -52,7 +50,7 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1090; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=iR4kxLxaE7Icwhg9XpP8gyJgiftiGtkYPg5z6rw0lWQ=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlrq7UA6Lxfh6Mp7DFurx6GyME0hE2Jfo0sMA4A bE79fFN6giJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZa6u1AAKCRCPgPtYfRL+ Toj2CAC1hxmRZLmZ3JtzHqs9FTXz5bVe80g03g/ovNpfkfb8fWUlgGVKnD/CsjhCxmk+0x6P93R NoBZrY8tYpm30YBtTQlZd3KsuEl2Zh25mFZMBF+clxtH9XzQlxAGtBRzkM1tME1/olDYnibAiAW m4zBqQXqe8rBbzeMsEG02LKYCU1z5Zd7ycJd/5tGChyMkpD+H0SUpB0P+OnQXPATH+kO/+PSb5P OxFvUWgK2txCoZH2pxz2GdKTyTw6NIbwqF3vBNGPJiuK3iatRvJgKLO8s+EMLL/CZq1++cqWTnC cCdTIaJAKLsi7s+NKmdyoe+OcXtNiaxevHmveZclfKW4H3sU
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1296; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=+0gVSqI5A+fW4njAyRhxUDCiw8TcwVUPcn8k9sD6RGI=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlrq7i8JCQBLHYKhHUCPQnSZXDYnTBgbh9T54iw YSPwyZ7AG6JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZa6u4gAKCRCPgPtYfRL+ TlVCB/97E1DEPs+T2txiMz/35GSbwPu/Zk0MraVUmSDupgkZ4C0e/wKJJnZNirlorIwC49L/MX9 v2Pyqw2cRaRRQ/r+0+IB/TtV8TE9C8X3kFN+GbxvsCkvSep66QNwqCVqxc1+GHG8U+pvi3wp3LN B0gJDT8ybONXta7B/sxnSCUNbUPdk5Xq0Ihua3gVA0jLq+wlcB/jx6oPXCnenL8VhiHHQir+sip z097Z9WoL9Xvn7k5Vh5xR2rL2IcYgKGosorQs8LlewQchqEQkEc5TWFHevA7GonwHfkqZRssmgb 4AHiTOsElzCp5vCHEoIsVKPMMmSzTdhYaf2awBYHjUVKbmdB
 X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -67,25 +65,34 @@ compatibility macros were provided.
 To be able to remove these compatibility macros push the renaming into
 this driver.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
- drivers/net/ethernet/vertexcom/mse102x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/char/tpm/tpm_tis_spi_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/vertexcom/mse102x.c b/drivers/net/ethernet/vertexcom/mse102x.c
-index aeed2a093e34..edd8b59680e5 100644
---- a/drivers/net/ethernet/vertexcom/mse102x.c
-+++ b/drivers/net/ethernet/vertexcom/mse102x.c
-@@ -664,7 +664,7 @@ static int mse102x_probe_spi(struct spi_device *spi)
- 	spi->bits_per_word = 8;
- 	spi->mode |= SPI_MODE_3;
- 	/* enforce minimum speed to ensure device functionality */
--	spi->master->min_speed_hz = MIN_FREQ_HZ;
-+	spi->controller->min_speed_hz = MIN_FREQ_HZ;
+diff --git a/drivers/char/tpm/tpm_tis_spi_main.c b/drivers/char/tpm/tpm_tis_spi_main.c
+index c5c3197ee29f..c647de7b3709 100644
+--- a/drivers/char/tpm/tpm_tis_spi_main.c
++++ b/drivers/char/tpm/tpm_tis_spi_main.c
+@@ -146,7 +146,7 @@ static int tpm_tis_spi_transfer_full(struct tpm_tis_data *data, u32 addr,
+ 	struct spi_transfer spi_xfer;
+ 	u8 transfer_len;
  
- 	if (!spi->max_speed_hz)
- 		spi->max_speed_hz = MAX_FREQ_HZ;
+-	spi_bus_lock(phy->spi_device->master);
++	spi_bus_lock(phy->spi_device->controller);
+ 
+ 	while (len) {
+ 		transfer_len = min_t(u16, len, MAX_SPI_FRAMESIZE);
+@@ -210,7 +210,7 @@ static int tpm_tis_spi_transfer_full(struct tpm_tis_data *data, u32 addr,
+ 		spi_sync_locked(phy->spi_device, &m);
+ 	}
+ 
+-	spi_bus_unlock(phy->spi_device->master);
++	spi_bus_unlock(phy->spi_device->controller);
+ 	return ret;
+ }
+ 
 -- 
 2.43.0
 

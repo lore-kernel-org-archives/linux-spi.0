@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08EDB60256
-	for <linux-spi@vger.kernel.org>; Mon, 22 Jan 2024 18:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F107604DB
+	for <linux-spi@vger.kernel.org>; Mon, 22 Jan 2024 18:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705946906; cv=none; b=uujFF37D/Jjc/oIImZZ3MoRaM2XdOGbq8YIKyBMs1JD/TFm9CKO0Ha4wKU+bv8lyKnadW8mxjTBDBtzxlq63HlYYo4gH4h4/OtTdG9Wancyz4MIjIqnNRNUTtyIYZGVjyLp7/QVXmts4mI25HbpvvNKx4Eb2FefnZZsQ71/Va88=
+	t=1705946908; cv=none; b=QTTmW+pW4uY67bceJuMLjGKB3Pfy025NvjAE53NzJv3eu5f618rd3Qk5F8UyO12WrDUQd/C59rp3dH4fMMXI4JceixsoqkDgg9l1NfzMduLZBn7PGd405yS+R9p+gPV2EpoIGyCdetfCxCPY1CLoMskthsvX+F2pTzAspSfcgq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705946906; c=relaxed/simple;
-	bh=+Bwcd8J9EIWwY/Wo93zN3hICZCIsRFvVUKS8EPmC1YE=;
+	s=arc-20240116; t=1705946908; c=relaxed/simple;
+	bh=5kp3Ks9t2Ea2aSTspz0TdIMs+rWMHy3IGA7GHyomVFQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RMr4jaQqyyqMGoMMzAVLAQc05KRz1nH0xOZFGKwIafykhn1Pu7XJjFoEwKLTvLEY817lzbVJLys2T3M6R34SB9jyoGRZC42sWGTzCm+GLoUzOvtmGDWZSnFiqdBu27BpBGsrSMMi8HuIlIS6wSyZzPRRWGTKem14tRviNgRcMcE=
+	 MIME-Version:Content-Type; b=CRCnI5vqUOTnpEq31h57hsJnMh3D5Dc8oVl6q+lszENv8Obf9nIvlPT2eHn5+R5MlU6iv1KfsYvB8kyA8vz8+lu3NhVyYD5TyFrOzbLIvYTD8ylA1D8qi9TS5o/0uI10kScUDyA2n5OXLs+RFacsZ5LPA16TvOqujD7MnRdH1A4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,26 +18,27 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rRyiV-0001pz-Tx; Mon, 22 Jan 2024 19:08:15 +0100
+	id 1rRyiU-0001lr-V1; Mon, 22 Jan 2024 19:08:14 +0100
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rRyiU-001ePl-RG; Mon, 22 Jan 2024 19:08:14 +0100
+	id 1rRyiT-001ePX-Ue; Mon, 22 Jan 2024 19:08:13 +0100
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rRyiU-005ZxN-2S;
-	Mon, 22 Jan 2024 19:08:14 +0100
+	id 1rRyiT-005Zx7-2o;
+	Mon, 22 Jan 2024 19:08:13 +0100
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 To: Mark Brown <broonie@kernel.org>
 Cc: kernel@pengutronix.de,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Martin Tuma <martin.tuma@digiteqautomotive.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	linux-media@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-spi@vger.kernel.org
-Subject: [PATCH v2 10/33] misc: gehc-achc: Follow renaming of SPI "master" to "controller"
-Date: Mon, 22 Jan 2024 19:07:05 +0100
-Message-ID:  <9a5c94968010aaf0c1d013f357fcbef428bb11ce.1705944943.git.u.kleine-koenig@pengutronix.de>
+Subject: [PATCH v2 06/33] media: mgb4: Follow renaming of SPI "master" to "controller"
+Date: Mon, 22 Jan 2024 19:07:01 +0100
+Message-ID:  <250ee63915ba9989bab180200ad2d552e1a765a9.1705944943.git.u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1705944943.git.u.kleine-koenig@pengutronix.de>
 References: <cover.1705944943.git.u.kleine-koenig@pengutronix.de>
@@ -48,7 +49,7 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1529; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=+Bwcd8J9EIWwY/Wo93zN3hICZCIsRFvVUKS8EPmC1YE=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlrq7OFjYWLilaC8RRReNmWpwqu3I1mtgtuidRr cJ7eNh8PJKJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZa6uzgAKCRCPgPtYfRL+ TrTrCACNA0WNx2N0bxGJChpw50BJC7IYMHiiYe8/a1oVkzr7cyT4ud5YLPZyoHoGSaZjBwauYse E04yMykcruJla39DUzsSLx5u5uQAScotkGjWhQbH94TvN54yIO9DFZe5f821hJMXeOM8aEgB2Vs /ZNjP71Muuf5vBMHRcZn/FpMz0cDDQ/CSuifar76fivK95mgf3IgJVgl+PzkIzdAdRrnvUnSmta VPYWNXsVB/O86UCR2tYg4TF8cvNW7qaK06qwDY1e0cSxoGMtu6xQobnsj/fBiYKKvtuzHwCKKoc e9ZE4DUcePQWGQocMJt1ve4pJm44MFeitzE0UqTQbsR9ebWE
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2411; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=5kp3Ks9t2Ea2aSTspz0TdIMs+rWMHy3IGA7GHyomVFQ=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlrq7J1k1XKFTBqaic+XhNlH2OrYCv6WMwqGDjG Emt161au92JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZa6uyQAKCRCPgPtYfRL+ TsYoCACT5+MRbues0ycMQqOGK5MIggyAH9tHi/k/T6TzPkQVDfrm/BcZviCRR2CHptqBQcspWda ib0cCWTR+klniVi2LzgMs/bilyahlav/ceotu3T2n+KNCUM/DOQT3dlXWx5R4LNeS3dWyHHqjlj 89rdMwT4vk7L23lmUfEb5DGFuJDCPN8SGZgbas1XJciQ8ulKy8L51GS5zyGUf1ex9/jlp4FqR/Y 2cbaP6kQPhWwueHyHRLctaL/Oy/93S9UiwKhWcjWlkFPRO7xhXmaNhqSYImDaTuUI24BxrgAu+P gvv5tJZAkOZIkJEuE/EuLlKg362SaGXP/lsbX2Fanwlw5GVj
 X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -63,44 +64,65 @@ compatibility macros were provided.
 To be able to remove these compatibility macros push the renaming into
 this driver.
 
+Reviewed-by: Martin Tůma <martin.tuma@digiteqautomotive.com>
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
- drivers/misc/gehc-achc.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/media/pci/mgb4/mgb4_core.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/misc/gehc-achc.c b/drivers/misc/gehc-achc.c
-index 4c9c5394da6f..b8fca4d393c6 100644
---- a/drivers/misc/gehc-achc.c
-+++ b/drivers/misc/gehc-achc.c
-@@ -65,7 +65,7 @@ static int ezport_start_programming(struct spi_device *spi, struct gpio_desc *re
- 	struct spi_transfer release_cs = { };
- 	int ret;
- 
--	spi_bus_lock(spi->master);
-+	spi_bus_lock(spi->controller);
- 
- 	/* assert chip select */
- 	spi_message_init(&msg);
-@@ -85,16 +85,16 @@ static int ezport_start_programming(struct spi_device *spi, struct gpio_desc *re
- 	ret = spi_sync_locked(spi, &msg);
- 
- fail:
--	spi_bus_unlock(spi->master);
-+	spi_bus_unlock(spi->controller);
- 	return ret;
+diff --git a/drivers/media/pci/mgb4/mgb4_core.c b/drivers/media/pci/mgb4/mgb4_core.c
+index 5bfb8a06202e..9bcf10a77fd3 100644
+--- a/drivers/media/pci/mgb4/mgb4_core.c
++++ b/drivers/media/pci/mgb4/mgb4_core.c
+@@ -144,7 +144,7 @@ static int match_spi_adap(struct device *dev, void *data)
+ 	return to_spi_device(dev) ? 1 : 0;
  }
  
- static void ezport_stop_programming(struct spi_device *spi, struct gpio_desc *reset)
+-static struct spi_master *get_spi_adap(struct platform_device *pdev)
++static struct spi_controller *get_spi_adap(struct platform_device *pdev)
  {
- 	/* reset without asserted chip select to return into normal mode */
--	spi_bus_lock(spi->master);
-+	spi_bus_lock(spi->controller);
- 	ezport_reset(reset);
--	spi_bus_unlock(spi->master);
-+	spi_bus_unlock(spi->controller);
+ 	struct device *dev;
+ 
+@@ -152,7 +152,7 @@ static struct spi_master *get_spi_adap(struct platform_device *pdev)
+ 	dev = device_find_child(&pdev->dev, NULL, match_spi_adap);
+ 	mutex_unlock(&pdev->dev.mutex);
+ 
+-	return dev ? container_of(dev, struct spi_master, dev) : NULL;
++	return dev ? container_of(dev, struct spi_controller, dev) : NULL;
  }
  
- static int ezport_get_status_register(struct spi_device *spi)
+ static int init_spi(struct mgb4_dev *mgbdev, u32 devid)
+@@ -179,7 +179,7 @@ static int init_spi(struct mgb4_dev *mgbdev, u32 devid)
+ 	};
+ 	struct pci_dev *pdev = mgbdev->pdev;
+ 	struct device *dev = &pdev->dev;
+-	struct spi_master *master;
++	struct spi_controller *ctlr;
+ 	struct spi_device *spi_dev;
+ 	u32 irq;
+ 	int rv, id;
+@@ -207,8 +207,8 @@ static int init_spi(struct mgb4_dev *mgbdev, u32 devid)
+ 		return PTR_ERR(mgbdev->spi_pdev);
+ 	}
+ 
+-	master = get_spi_adap(mgbdev->spi_pdev);
+-	if (!master) {
++	ctlr = get_spi_adap(mgbdev->spi_pdev);
++	if (!ctlr) {
+ 		dev_err(dev, "failed to get SPI adapter\n");
+ 		rv = -EINVAL;
+ 		goto err_pdev;
+@@ -242,8 +242,8 @@ static int init_spi(struct mgb4_dev *mgbdev, u32 devid)
+ 
+ 	spi_info.platform_data = &mgbdev->flash_data;
+ 
+-	spi_dev = spi_new_device(master, &spi_info);
+-	put_device(&master->dev);
++	spi_dev = spi_new_device(ctlr, &spi_info);
++	put_device(&ctlr->dev);
+ 	if (!spi_dev) {
+ 		dev_err(dev, "failed to create MTD device\n");
+ 		rv = -EINVAL;
 -- 
 2.43.0
 

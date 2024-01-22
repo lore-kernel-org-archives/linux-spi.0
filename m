@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CFC155E5A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BFC556478
 	for <linux-spi@vger.kernel.org>; Mon, 22 Jan 2024 18:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705946901; cv=none; b=r/06NMGucrmmEUW3xGDDMHUfozMYqFcVC/lI7GogFGaekmzCOXx6cwL+E1tF3875DMKI7t5ZF/SCMKG696wojaOLzmr27cvMvZLYP1zJjax9Hxp+rpvvnwLb1sB8CpkU2lawlHTrgW4XxTVgFw8eNjOykQEjZ8UE+J8ggCbOHOo=
+	t=1705946901; cv=none; b=DZ2HXIVe9a/mxzcq3u1Gty4VtwR8JaFoKJB7DQzdkHexpJJzrHzrHQbv5oRlCQyQevaYhtr5NzOJhNQtRgJkXuaRXT6EEu69mNsSLuCKPABythRFBCaI5z7mAucSlqRWhljQ1XXNYMXvySoBQ/eAyDOJKl/6rJC1kZLhg5g5cqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1705946901; c=relaxed/simple;
-	bh=aQaJs5zOPqrNYXsF86uQSVSe/HBmYb++L9H1dH23v/0=;
+	bh=GJnKadlNnJS1gno0Yw0zl0W6daCJwsdHG/qNey5ch9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=El1kcKo/UbEnpEJziI+qrFCRmc1aUcUdfpHEp8xUJWjQoKW1BnATNxYQV1J7QICAe9iwgnsAUiJV5dSPUZr0w+OZvpzPJAYXFNJicuuVnAyI540yNIoyQHvwDtlrx4ycQmCZpB+jyn33Ad7kWSteVGDUe45E9DHEXkNjcxIAKZQ=
+	 MIME-Version:Content-Type; b=A9AWBzvyZPwLV2eBVkvTOecxLWOvvdb1rDya01BPfeFQ/KngjpGO8ZMKPZOd4dq6J7iZHnXWBBPir0lh+olyeZsrEfzCgG8zNW56DD4+3YMC7FRT99TGh3MQhF7T9kYhfOLcG5APAz2g+0jy9VwpoSoIs7XkMShW5wqVBgP4WXk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,24 +18,24 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rRyiX-0001vA-Cm; Mon, 22 Jan 2024 19:08:17 +0100
+	id 1rRyiX-000216-SG; Mon, 22 Jan 2024 19:08:17 +0100
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rRyiW-001eQP-Kw; Mon, 22 Jan 2024 19:08:16 +0100
+	id 1rRyiX-001eQZ-8y; Mon, 22 Jan 2024 19:08:17 +0100
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rRyiW-005Zy7-1r;
-	Mon, 22 Jan 2024 19:08:16 +0100
+	id 1rRyiX-005ZyJ-0c;
+	Mon, 22 Jan 2024 19:08:17 +0100
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 To: Mark Brown <broonie@kernel.org>
 Cc: kernel@pengutronix.de,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 19/33] spi: cadence-quadspi: Follow renaming of SPI "master" to "controller"
-Date: Mon, 22 Jan 2024 19:07:14 +0100
-Message-ID:  <25ed09fe942039ac3e00051c0576bfa7a588853c.1705944943.git.u.kleine-koenig@pengutronix.de>
+Subject: [PATCH v2 22/33] spi: loopback-test: Follow renaming of SPI "master" to "controller"
+Date: Mon, 22 Jan 2024 19:07:17 +0100
+Message-ID:  <ab9c65cee88831da83150eeac1950e20be5a83a7.1705944943.git.u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1705944943.git.u.kleine-koenig@pengutronix.de>
 References: <cover.1705944943.git.u.kleine-koenig@pengutronix.de>
@@ -46,7 +46,7 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1093; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=aQaJs5zOPqrNYXsF86uQSVSe/HBmYb++L9H1dH23v/0=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlrq7ZdzpRpf6q8UTsNP3T0nfnHawuW0/OpFKXK QmRy5mu8EuJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZa6u2QAKCRCPgPtYfRL+ TmC4B/9sM3Ya60LQkzAlTriXzYLOLMAXgr6PZCcnH3ze9dIP+WcCYjNubsH/Y8wPXICzIfFwSzI Nfchiymlu5dVpX2P7oEGh6WZRujWLpXfEWKt0/DiiuehEb90EkSBNrRZdz2h3l3mI3xXsoo4dqd 0V2T1uyRUYyY789ao1Z888UkZZFlXIFt1/YVnVX0IaiLW1yChw7SaCecKjp1OWlhfO0nY+kfxb6 9Y3Hav2YDuOk3azp13zEC8dfQnswyrm6rOC24etkRGeo8BHH+Wvk5D1XvpsIBmuXjBwLlOwr55l +ZtxRuRSOsiUT/OLreDKgeMm6iBmID5yHdV1X7qIFaHHz6Ly
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1084; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=GJnKadlNnJS1gno0Yw0zl0W6daCJwsdHG/qNey5ch9c=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlrq7cFWUHqF/1PJE9bgirCfBKrrnbczVV9Nzd+ 52F1bO91zuJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZa6u3AAKCRCPgPtYfRL+ TpjtCACopMzJq78D6c9de/3xtOaBrobZMBg3LSNI9eYsfs1uObHHyCx4hgT9/F2yMX2WoGuznXa qviGmFeToNOOm6Otniy17PoTkr4sTwOuyhc1wC4L5kKSYZ2JlmvajXIhmQ8lAR0lPwV/z9KAgvG pPnN/IeraDAuRTl383rvg4so8DZb1DCSBIIOhOi2qbtRyv/sqiLr1uinuatJopsY0KIjtRyloQA u4I1gzEmgVE3WZ2xSNOLgIqJbMDuimF3TIpsH4DwqkumYH4v6n457I5eA9tSGC4HPj3cw47a7P0 VoolGG6sXwSjdmnJw2zmZ/N4+7MJtReEPNKOxERkqGSdGkk0
 X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -63,22 +63,24 @@ this driver.
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
- drivers/spi/spi-cadence-quadspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-loopback-test.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index eb6cc861b00b..a5e2f7786b76 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -1410,7 +1410,7 @@ static int cqspi_mem_process(struct spi_mem *mem, const struct spi_mem_op *op)
- static int cqspi_exec_mem_op(struct spi_mem *mem, const struct spi_mem_op *op)
- {
- 	int ret;
--	struct cqspi_st *cqspi = spi_master_get_devdata(mem->spi->master);
-+	struct cqspi_st *cqspi = spi_controller_get_devdata(mem->spi->controller);
- 	struct device *dev = &cqspi->pdev->dev;
- 
- 	ret = pm_runtime_resume_and_get(dev);
+diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
+index bbf2015d8e5c..fee8893d2751 100644
+--- a/drivers/spi/spi-loopback-test.c
++++ b/drivers/spi/spi-loopback-test.c
+@@ -1031,8 +1031,8 @@ int spi_test_run_test(struct spi_device *spi, const struct spi_test *test,
+ #define FOR_EACH_ALIGNMENT(var)						\
+ 	for (var = 0;							\
+ 	    var < (test->iterate_##var ?				\
+-			(spi->master->dma_alignment ?			\
+-			 spi->master->dma_alignment :			\
++			(spi->controller->dma_alignment ?		\
++			 spi->controller->dma_alignment :		\
+ 			 test->iterate_##var) :				\
+ 			1);						\
+ 	    var++)
 -- 
 2.43.0
 

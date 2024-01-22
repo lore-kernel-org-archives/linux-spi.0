@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F107604DB
-	for <linux-spi@vger.kernel.org>; Mon, 22 Jan 2024 18:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B56B360863
+	for <linux-spi@vger.kernel.org>; Mon, 22 Jan 2024 18:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705946908; cv=none; b=QTTmW+pW4uY67bceJuMLjGKB3Pfy025NvjAE53NzJv3eu5f618rd3Qk5F8UyO12WrDUQd/C59rp3dH4fMMXI4JceixsoqkDgg9l1NfzMduLZBn7PGd405yS+R9p+gPV2EpoIGyCdetfCxCPY1CLoMskthsvX+F2pTzAspSfcgq4=
+	t=1705946910; cv=none; b=rths70fPV1y1xd+bqiCt/uAG/b9vfxyA5KQyw0a7p6eN5SV4jTdNruiqK0Mqch+T+5w+PC8AlgkIXIZGII0R0GtIJxsilW3+O30ea+rTI7ne+adOypbJf8LKunZkfG6b0VMDmDfvchNYYbTJGo6d0s6O9sFoC+oPQvvw1iWKFik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705946908; c=relaxed/simple;
-	bh=5kp3Ks9t2Ea2aSTspz0TdIMs+rWMHy3IGA7GHyomVFQ=;
+	s=arc-20240116; t=1705946910; c=relaxed/simple;
+	bh=8dv/wBsJwJ3/ohbuVOHTuYVGhoSkMc8iB3lWpL8EkJg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CRCnI5vqUOTnpEq31h57hsJnMh3D5Dc8oVl6q+lszENv8Obf9nIvlPT2eHn5+R5MlU6iv1KfsYvB8kyA8vz8+lu3NhVyYD5TyFrOzbLIvYTD8ylA1D8qi9TS5o/0uI10kScUDyA2n5OXLs+RFacsZ5LPA16TvOqujD7MnRdH1A4=
+	 MIME-Version:Content-Type; b=h90ty6qtkrgi+AgN9cOvDwWhIo/vT2/aJ+2v5hBcwTcEtS+M8n4UDtUUduCCrGquZTQOzY3cMrXxCgcA4pG2YMhZBTWu3f+Nt3XedzJ1FBM7vN6nVxeyZV/fnlQd16mxdSgGWgYyZHoY/1q3fScrOf124M2W2Xw0f9IE9vkmFkM=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,27 +18,26 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rRyiU-0001lr-V1; Mon, 22 Jan 2024 19:08:14 +0100
+	id 1rRyiV-0001p0-0K; Mon, 22 Jan 2024 19:08:15 +0100
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rRyiT-001ePX-Ue; Mon, 22 Jan 2024 19:08:13 +0100
+	id 1rRyiU-001ePi-J9; Mon, 22 Jan 2024 19:08:14 +0100
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rRyiT-005Zx7-2o;
-	Mon, 22 Jan 2024 19:08:13 +0100
+	id 1rRyiU-005ZxJ-1f;
+	Mon, 22 Jan 2024 19:08:14 +0100
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 To: Mark Brown <broonie@kernel.org>
 Cc: kernel@pengutronix.de,
-	Martin Tuma <martin.tuma@digiteqautomotive.com>,
 	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	linux-media@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-spi@vger.kernel.org
-Subject: [PATCH v2 06/33] media: mgb4: Follow renaming of SPI "master" to "controller"
-Date: Mon, 22 Jan 2024 19:07:01 +0100
-Message-ID:  <250ee63915ba9989bab180200ad2d552e1a765a9.1705944943.git.u.kleine-koenig@pengutronix.de>
+Subject: [PATCH v2 09/33] media: v4l2-subdev: Follow renaming of SPI "master" to "controller"
+Date: Mon, 22 Jan 2024 19:07:04 +0100
+Message-ID:  <2fde98863c24e77ba9e50ce0acff7a849cbd194d.1705944943.git.u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1705944943.git.u.kleine-koenig@pengutronix.de>
 References: <cover.1705944943.git.u.kleine-koenig@pengutronix.de>
@@ -49,7 +48,7 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2411; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=5kp3Ks9t2Ea2aSTspz0TdIMs+rWMHy3IGA7GHyomVFQ=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlrq7J1k1XKFTBqaic+XhNlH2OrYCv6WMwqGDjG Emt161au92JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZa6uyQAKCRCPgPtYfRL+ TsYoCACT5+MRbues0ycMQqOGK5MIggyAH9tHi/k/T6TzPkQVDfrm/BcZviCRR2CHptqBQcspWda ib0cCWTR+klniVi2LzgMs/bilyahlav/ceotu3T2n+KNCUM/DOQT3dlXWx5R4LNeS3dWyHHqjlj 89rdMwT4vk7L23lmUfEb5DGFuJDCPN8SGZgbas1XJciQ8ulKy8L51GS5zyGUf1ex9/jlp4FqR/Y 2cbaP6kQPhWwueHyHRLctaL/Oy/93S9UiwKhWcjWlkFPRO7xhXmaNhqSYImDaTuUI24BxrgAu+P gvv5tJZAkOZIkJEuE/EuLlKg362SaGXP/lsbX2Fanwlw5GVj
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2489; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=8dv/wBsJwJ3/ohbuVOHTuYVGhoSkMc8iB3lWpL8EkJg=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlrq7NWs6N/jG6Y+Y3QZwxTqvzpAW652qqqy0sh pm9E1vTc6yJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZa6uzQAKCRCPgPtYfRL+ Tg2nCACvoKfBZV0IsTey5o4twVKiWpo9THxbLbr3ENgWSOdukyg8msgQvbfGA7llDN7zSkr0WZp AO0zc/J7Zi5W3iqJGWTzKEtiYsojh4zy36VDhHIECR6frcvotthnfzK+/gYQURmW0wZFdHXGYjt dnDDOzgFGquDV1nu9sgN/+fGnutDwH/zXsuLbqzkXV2TvGZ6ocBwYHDInyfjg6pH+l9r+fh9ZVE WpnH010msNLfjjAvMK2jTti6yXGMqVthFThL/uxB2QRvdCcLaF0DbVbsV5wpXLXbSdfHvf0d6Vy K48aXRo/s7WuiUVOv8SYbY2dfCX5aZgio0sJEtq7S+nfMzV3
 X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -62,67 +61,65 @@ some functions and struct members were renamed. To not break all drivers
 compatibility macros were provided.
 
 To be able to remove these compatibility macros push the renaming into
-this driver.
+v4l2_spi_new_subdev().
 
-Reviewed-by: Martin Tůma <martin.tuma@digiteqautomotive.com>
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
- drivers/media/pci/mgb4/mgb4_core.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/media/v4l2-core/v4l2-spi.c | 4 ++--
+ include/media/v4l2-common.h        | 6 +++---
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/media/pci/mgb4/mgb4_core.c b/drivers/media/pci/mgb4/mgb4_core.c
-index 5bfb8a06202e..9bcf10a77fd3 100644
---- a/drivers/media/pci/mgb4/mgb4_core.c
-+++ b/drivers/media/pci/mgb4/mgb4_core.c
-@@ -144,7 +144,7 @@ static int match_spi_adap(struct device *dev, void *data)
- 	return to_spi_device(dev) ? 1 : 0;
- }
+diff --git a/drivers/media/v4l2-core/v4l2-spi.c b/drivers/media/v4l2-core/v4l2-spi.c
+index eadecdff7349..a7092c3930d6 100644
+--- a/drivers/media/v4l2-core/v4l2-spi.c
++++ b/drivers/media/v4l2-core/v4l2-spi.c
+@@ -34,7 +34,7 @@ void v4l2_spi_subdev_init(struct v4l2_subdev *sd, struct spi_device *spi,
+ EXPORT_SYMBOL_GPL(v4l2_spi_subdev_init);
  
--static struct spi_master *get_spi_adap(struct platform_device *pdev)
-+static struct spi_controller *get_spi_adap(struct platform_device *pdev)
+ struct v4l2_subdev *v4l2_spi_new_subdev(struct v4l2_device *v4l2_dev,
+-					struct spi_master *master,
++					struct spi_controller *ctlr,
+ 					struct spi_board_info *info)
  {
- 	struct device *dev;
+ 	struct v4l2_subdev *sd = NULL;
+@@ -45,7 +45,7 @@ struct v4l2_subdev *v4l2_spi_new_subdev(struct v4l2_device *v4l2_dev,
+ 	if (info->modalias[0])
+ 		request_module(info->modalias);
  
-@@ -152,7 +152,7 @@ static struct spi_master *get_spi_adap(struct platform_device *pdev)
- 	dev = device_find_child(&pdev->dev, NULL, match_spi_adap);
- 	mutex_unlock(&pdev->dev.mutex);
+-	spi = spi_new_device(master, info);
++	spi = spi_new_device(ctlr, info);
  
--	return dev ? container_of(dev, struct spi_master, dev) : NULL;
-+	return dev ? container_of(dev, struct spi_controller, dev) : NULL;
+ 	if (!spi || !spi->dev.driver)
+ 		goto error;
+diff --git a/include/media/v4l2-common.h b/include/media/v4l2-common.h
+index acf5be24a5ca..739b0f0fc1a0 100644
+--- a/include/media/v4l2-common.h
++++ b/include/media/v4l2-common.h
+@@ -278,13 +278,13 @@ static inline void v4l2_i2c_subdev_unregister(struct v4l2_subdev *sd)
+  *
+  *
+  * @v4l2_dev: pointer to &struct v4l2_device.
+- * @master: pointer to struct spi_master.
++ * @ctlr: pointer to struct spi_controller.
+  * @info: pointer to struct spi_board_info.
+  *
+  * returns a &struct v4l2_subdev pointer.
+  */
+ struct v4l2_subdev *v4l2_spi_new_subdev(struct v4l2_device *v4l2_dev,
+-		struct spi_master *master, struct spi_board_info *info);
++		struct spi_controller *ctlr, struct spi_board_info *info);
+ 
+ /**
+  * v4l2_spi_subdev_init - Initialize a v4l2_subdev with data from an
+@@ -308,7 +308,7 @@ void v4l2_spi_subdev_unregister(struct v4l2_subdev *sd);
+ 
+ static inline struct v4l2_subdev *
+ v4l2_spi_new_subdev(struct v4l2_device *v4l2_dev,
+-		    struct spi_master *master, struct spi_board_info *info)
++		    struct spi_controller *ctlr, struct spi_board_info *info)
+ {
+ 	return NULL;
  }
- 
- static int init_spi(struct mgb4_dev *mgbdev, u32 devid)
-@@ -179,7 +179,7 @@ static int init_spi(struct mgb4_dev *mgbdev, u32 devid)
- 	};
- 	struct pci_dev *pdev = mgbdev->pdev;
- 	struct device *dev = &pdev->dev;
--	struct spi_master *master;
-+	struct spi_controller *ctlr;
- 	struct spi_device *spi_dev;
- 	u32 irq;
- 	int rv, id;
-@@ -207,8 +207,8 @@ static int init_spi(struct mgb4_dev *mgbdev, u32 devid)
- 		return PTR_ERR(mgbdev->spi_pdev);
- 	}
- 
--	master = get_spi_adap(mgbdev->spi_pdev);
--	if (!master) {
-+	ctlr = get_spi_adap(mgbdev->spi_pdev);
-+	if (!ctlr) {
- 		dev_err(dev, "failed to get SPI adapter\n");
- 		rv = -EINVAL;
- 		goto err_pdev;
-@@ -242,8 +242,8 @@ static int init_spi(struct mgb4_dev *mgbdev, u32 devid)
- 
- 	spi_info.platform_data = &mgbdev->flash_data;
- 
--	spi_dev = spi_new_device(master, &spi_info);
--	put_device(&master->dev);
-+	spi_dev = spi_new_device(ctlr, &spi_info);
-+	put_device(&ctlr->dev);
- 	if (!spi_dev) {
- 		dev_err(dev, "failed to create MTD device\n");
- 		rv = -EINVAL;
 -- 
 2.43.0
 

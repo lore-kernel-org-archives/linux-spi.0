@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9768A63100
-	for <linux-spi@vger.kernel.org>; Mon, 22 Jan 2024 18:08:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9B856773
+	for <linux-spi@vger.kernel.org>; Mon, 22 Jan 2024 18:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705946919; cv=none; b=YsMxIRsebTYTTvTfCnG4UePSmiNqSqorP3Z37T68xd0TAKEDXkLcexOdU7HflRBXDKh1Nv6rOBWGk4eFGOq9MZQFj3E9Bm6hx2icGiUulyV7qLzpDKfgFcbFnJI/xD3hALIq/ap0PPBQwBDp2yM1x+h8XWRSn03HSXKUQNj6e1o=
+	t=1705946919; cv=none; b=jCZ3kfeDEVv+vPsvV8EgFby/l2EQUbnVpT6cVfzhwCba8/sWATR9VPUkEKRSPuzFC6UwJiJsmi0i0rFzEy2n26Rm5OwwLqYlVcfW2FO7vhbFdv3X2ALW6xW1cpRaZkieluOViuS5IWqZgycwMkVko2H3ALlFl6Lz6MMJ7xjJqtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1705946919; c=relaxed/simple;
-	bh=J5G8sNk8EOiCf1vT1VH2qoFSGlM7S/4V1Y+pnNGwgPk=;
+	bh=XKtQhRqSb5nNqOnG6IfCydGW2PBCJJiRQ5sD9D7wQtw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dh+RznJTkIWL3SK5Ki/oKMSL1Lomia9QsGsBGa1HCXCe7IzTGnTZ5rdmQfu+ahjmjzrcLSS/ErLOhxvymcPJzaYHMkz8sJ0+XgsZR0IQzr7VaBvpoVqK1ouDrDZLmJWeHyKmvpY6ytaxXAwtZCEkuadrqHplbAsniI6GVoNaKVU=
+	 MIME-Version:Content-Type; b=JmmK5NdKkGh3k7M4yf+v2fs3SC2CGrRCT7/n5isASmsIozvIB6+iH/ePE0iqvqh1ywrRGkU9nMXZblHcH7pt2phFzwO4I2Aux6HPBqkEy2Mg6ulYLpRvW1RASfgx8PbAENTupB1uyOL/ewGanxJwO4aR3G2igK3vRsSF3zTzEnA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,33 +18,29 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rRyiW-0001rg-36; Mon, 22 Jan 2024 19:08:16 +0100
+	id 1rRyiZ-00027k-L7; Mon, 22 Jan 2024 19:08:19 +0100
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rRyiV-001eQ2-J1; Mon, 22 Jan 2024 19:08:15 +0100
+	id 1rRyiY-001eR6-S1; Mon, 22 Jan 2024 19:08:18 +0100
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rRyiV-005Zxd-1b;
-	Mon, 22 Jan 2024 19:08:15 +0100
+	id 1rRyiY-005Zyp-2X;
+	Mon, 22 Jan 2024 19:08:18 +0100
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 To: Mark Brown <broonie@kernel.org>
 Cc: kernel@pengutronix.de,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ronald Wahl <ronald.wahl@raritan.com>,
-	netdev@vger.kernel.org,
+	Kalle Valo <kvalo@kernel.org>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>,
+	libertas-dev@lists.infradead.org,
+	linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-spi@vger.kernel.org
-Subject: [PATCH v2 14/33] net: ks8851: Follow renaming of SPI "master" to "controller"
-Date: Mon, 22 Jan 2024 19:07:09 +0100
-Message-ID:  <8fd38ae26985ad770b21979469b36e5afff0473a.1705944943.git.u.kleine-koenig@pengutronix.de>
+Subject: [PATCH v2 30/33] wifi: libertas: Follow renaming of SPI "master" to "controller"
+Date: Mon, 22 Jan 2024 19:07:25 +0100
+Message-ID:  <bc73a4e33fe347298a0a338dd7b720509a6b0081.1705944943.git.u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1705944943.git.u.kleine-koenig@pengutronix.de>
 References: <cover.1705944943.git.u.kleine-koenig@pengutronix.de>
@@ -55,7 +51,7 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1475; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=J5G8sNk8EOiCf1vT1VH2qoFSGlM7S/4V1Y+pnNGwgPk=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlrq7T21kGgzgUSXStTOMt1lumvjV7wRCdpjd8j 2lNzDkK8uyJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZa6u0wAKCRCPgPtYfRL+ Tqs/B/0U7IcHfVYiJyOo5g2gyk1I7tklQqpDglnCsNwWZyldX1WQAg87/+4JRL5VvMD3sOuLObU wOzcy9EzUaq31dmam8Ij3/wjiS9youm4NGNKvfFAJF1hvZvAN0Xytd6N6SbMdcYHpnCeLgRWyUE AvZmteteMvlopxMHDP0Xe71//iQLd1I+LznN+VRaMtDQKnQMZY59hKVL425t50FKKPh4tUMeXiv WOH1Ea/Cj1JrGlzBaxGTOgly/uK1Dw7jQxaRorukPj0RkFN0zpQauSfgumke13cAmYH1A+PnA2Q Tu8wfNU7dlNr/KnziNf0SQ5AdcEd5CEca8ae4Siq22a9QUew
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1161; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=XKtQhRqSb5nNqOnG6IfCydGW2PBCJJiRQ5sD9D7wQtw=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlrq7mROqMmksVXtZKlK5ePULByhi3a7e8uai26 yJC0UxzavSJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZa6u5gAKCRCPgPtYfRL+ TsZpCACIuvX+HHZCs05CT9E3DYKuX7QOYeKsJmVpLGYd1eJU5u9AahYwFkMRkOo8iNokGhL3Eto Mwfjrnk4qbG2gurEV5Yva9HGfCAkewtRlLUmS7rJqasWw5wCBELkyx1C8j3F70j73oi6ALONobR ngQrCZgs7PkA0gb4RFyZF8sXYxI9pWEB+NjljAIVmil8K2mpH1P7MTSzDHbSYXzbrYhXEkmrMAI pz235ikKBD5fn6LWYq3ODbMZRt5WlN7eodgmp0eCNDMrR0Zb/eI1OTbCdnns7IKmeH7oN1Pz4ro CDfjOo0XVPJFZRd1rV4h+EKtA9EqqBMjnXpgetO8PPkpgUk6
 X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -70,34 +66,25 @@ compatibility macros were provided.
 To be able to remove these compatibility macros push the renaming into
 this driver.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Acked-by: Kalle Valo <kvalo@kernel.org>
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
- drivers/net/ethernet/micrel/ks8851_spi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/marvell/libertas/if_spi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/micrel/ks8851_spi.c b/drivers/net/ethernet/micrel/ks8851_spi.c
-index 54f2eac11a63..2f803377c9f9 100644
---- a/drivers/net/ethernet/micrel/ks8851_spi.c
-+++ b/drivers/net/ethernet/micrel/ks8851_spi.c
-@@ -156,7 +156,7 @@ static void ks8851_rdreg(struct ks8851_net *ks, unsigned int op,
- 
- 	txb[0] = cpu_to_le16(op | KS_SPIOP_RD);
- 
--	if (kss->spidev->master->flags & SPI_CONTROLLER_HALF_DUPLEX) {
-+	if (kss->spidev->controller->flags & SPI_CONTROLLER_HALF_DUPLEX) {
- 		msg = &kss->spi_msg2;
- 		xfer = kss->spi_xfer2;
- 
-@@ -180,7 +180,7 @@ static void ks8851_rdreg(struct ks8851_net *ks, unsigned int op,
- 	ret = spi_sync(kss->spidev, msg);
- 	if (ret < 0)
- 		netdev_err(ks->netdev, "read: spi_sync() failed\n");
--	else if (kss->spidev->master->flags & SPI_CONTROLLER_HALF_DUPLEX)
-+	else if (kss->spidev->controller->flags & SPI_CONTROLLER_HALF_DUPLEX)
- 		memcpy(rxb, trx, rxl);
- 	else
- 		memcpy(rxb, trx + 2, rxl);
+diff --git a/drivers/net/wireless/marvell/libertas/if_spi.c b/drivers/net/wireless/marvell/libertas/if_spi.c
+index 8690b0114e23..b722a6587fd3 100644
+--- a/drivers/net/wireless/marvell/libertas/if_spi.c
++++ b/drivers/net/wireless/marvell/libertas/if_spi.c
+@@ -1052,7 +1052,7 @@ static int if_spi_init_card(struct if_spi_card *card)
+ 				"attached to SPI bus_num %d, chip_select %d. "
+ 				"spi->max_speed_hz=%d\n",
+ 				card->card_id, card->card_rev,
+-				card->spi->master->bus_num,
++				card->spi->controller->bus_num,
+ 				spi_get_chipselect(card->spi, 0),
+ 				card->spi->max_speed_hz);
+ 		err = if_spi_prog_helper_firmware(card, helper);
 -- 
 2.43.0
 

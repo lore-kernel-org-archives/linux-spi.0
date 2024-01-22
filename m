@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9B856773
-	for <linux-spi@vger.kernel.org>; Mon, 22 Jan 2024 18:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F3363511
+	for <linux-spi@vger.kernel.org>; Mon, 22 Jan 2024 18:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705946919; cv=none; b=jCZ3kfeDEVv+vPsvV8EgFby/l2EQUbnVpT6cVfzhwCba8/sWATR9VPUkEKRSPuzFC6UwJiJsmi0i0rFzEy2n26Rm5OwwLqYlVcfW2FO7vhbFdv3X2ALW6xW1cpRaZkieluOViuS5IWqZgycwMkVko2H3ALlFl6Lz6MMJ7xjJqtM=
+	t=1705946921; cv=none; b=W/gPZ75CWW6BNce//VNl9S7odjwClu0cMciTL06g+EuRYpOjQ5zFU7YnqYdXYVSTmHFVnjwV3tJCzaU0IShpeFzU2D/Yo/M12r2nk0SAi95CDXybqELdiVJJPEhrZDQo0XiCRZRawIDz/tGzf0o2e6xpbJn5DdZz4h3PnkOIEa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705946919; c=relaxed/simple;
-	bh=XKtQhRqSb5nNqOnG6IfCydGW2PBCJJiRQ5sD9D7wQtw=;
+	s=arc-20240116; t=1705946921; c=relaxed/simple;
+	bh=J3Kg6Pne81WC2uyFntZ9I84SGrw3wcOXoVXD9oa+W64=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JmmK5NdKkGh3k7M4yf+v2fs3SC2CGrRCT7/n5isASmsIozvIB6+iH/ePE0iqvqh1ywrRGkU9nMXZblHcH7pt2phFzwO4I2Aux6HPBqkEy2Mg6ulYLpRvW1RASfgx8PbAENTupB1uyOL/ewGanxJwO4aR3G2igK3vRsSF3zTzEnA=
+	 MIME-Version:Content-Type; b=Nbt/j/J/H5Dqr6wy6HeLebxlAUPWdBvLkbk5wiFPojQkftA7LQho6HpcSWqO+coDRFZY4U6zCBPSoHKd5HqRmPYaRlpNn49Z9ZzQNaTCYy24iqbHiSywuloW/cINn10duYyDzVuq/I/i+DWaExFQvH+XSuPIL6r5VcQS5ev1pQs=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,29 +18,32 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rRyiZ-00027k-L7; Mon, 22 Jan 2024 19:08:19 +0100
+	id 1rRyiZ-00025v-7J; Mon, 22 Jan 2024 19:08:19 +0100
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rRyiY-001eR6-S1; Mon, 22 Jan 2024 19:08:18 +0100
+	id 1rRyiY-001eQx-Fe; Mon, 22 Jan 2024 19:08:18 +0100
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rRyiY-005Zyp-2X;
+	id 1rRyiY-005Zyh-1G;
 	Mon, 22 Jan 2024 19:08:18 +0100
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 To: Mark Brown <broonie@kernel.org>
 Cc: kernel@pengutronix.de,
-	Kalle Valo <kvalo@kernel.org>,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>,
-	libertas-dev@lists.infradead.org,
-	linux-wireless@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Rob Herring <robh@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	linux-usb@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-spi@vger.kernel.org
-Subject: [PATCH v2 30/33] wifi: libertas: Follow renaming of SPI "master" to "controller"
-Date: Mon, 22 Jan 2024 19:07:25 +0100
-Message-ID:  <bc73a4e33fe347298a0a338dd7b720509a6b0081.1705944943.git.u.kleine-koenig@pengutronix.de>
+Subject: [PATCH v2 28/33] usb: gadget: max3420_udc: Follow renaming of SPI "master" to "controller"
+Date: Mon, 22 Jan 2024 19:07:23 +0100
+Message-ID:  <f2a5160a4153b1b0f90bb3f84adc57e035d3da8d.1705944943.git.u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1705944943.git.u.kleine-koenig@pengutronix.de>
 References: <cover.1705944943.git.u.kleine-koenig@pengutronix.de>
@@ -51,7 +54,7 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1161; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=XKtQhRqSb5nNqOnG6IfCydGW2PBCJJiRQ5sD9D7wQtw=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlrq7mROqMmksVXtZKlK5ePULByhi3a7e8uai26 yJC0UxzavSJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZa6u5gAKCRCPgPtYfRL+ TsZpCACIuvX+HHZCs05CT9E3DYKuX7QOYeKsJmVpLGYd1eJU5u9AahYwFkMRkOo8iNokGhL3Eto Mwfjrnk4qbG2gurEV5Yva9HGfCAkewtRlLUmS7rJqasWw5wCBELkyx1C8j3F70j73oi6ALONobR ngQrCZgs7PkA0gb4RFyZF8sXYxI9pWEB+NjljAIVmil8K2mpH1P7MTSzDHbSYXzbrYhXEkmrMAI pz235ikKBD5fn6LWYq3ODbMZRt5WlN7eodgmp0eCNDMrR0Zb/eI1OTbCdnns7IKmeH7oN1Pz4ro CDfjOo0XVPJFZRd1rV4h+EKtA9EqqBMjnXpgetO8PPkpgUk6
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1038; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=J3Kg6Pne81WC2uyFntZ9I84SGrw3wcOXoVXD9oa+W64=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlrq7kW5khjsMXVuni4K5pmatgAOShUKnb79I+b YnyDvvmJHWJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZa6u5AAKCRCPgPtYfRL+ ToUvB/9IR2NnLJS9QkKTZgZnR9AzyxhGIpSQZvr5YdgoAKY7vLJDVUqu6TPNvCcfG57tbbqwt/R 5NU+9tjWJyjIQZ6FCsGqj8u+k93qQIhkAQd8i68TisRhmq3v9sjnThjVafy/PpdShCOWYhyD2rm CKmy/q7cvVxr3GbDYKIbXlcW3eXSa/qBI0Dzx6mE2jGyXbwDzuPutFvLwDnr+P3HSqvWsYyxoua qkhuDNw+exogil4cd0XzDu0fSCnARb66WXxfrF4qFAdq9Bc1Jj7F+HtiaugiBmKrpkfKkzMzNBN 5nTWv2LFS23YMT2yypWQ/9ro2Ly0K2NcE5/I8Me5XgWCHL15
 X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -66,25 +69,25 @@ compatibility macros were provided.
 To be able to remove these compatibility macros push the renaming into
 this driver.
 
-Acked-by: Kalle Valo <kvalo@kernel.org>
+Reviewed-by: Herve Codina <herve.codina@bootlin.com>
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
- drivers/net/wireless/marvell/libertas/if_spi.c | 2 +-
+ drivers/usb/gadget/udc/max3420_udc.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/marvell/libertas/if_spi.c b/drivers/net/wireless/marvell/libertas/if_spi.c
-index 8690b0114e23..b722a6587fd3 100644
---- a/drivers/net/wireless/marvell/libertas/if_spi.c
-+++ b/drivers/net/wireless/marvell/libertas/if_spi.c
-@@ -1052,7 +1052,7 @@ static int if_spi_init_card(struct if_spi_card *card)
- 				"attached to SPI bus_num %d, chip_select %d. "
- 				"spi->max_speed_hz=%d\n",
- 				card->card_id, card->card_rev,
--				card->spi->master->bus_num,
-+				card->spi->controller->bus_num,
- 				spi_get_chipselect(card->spi, 0),
- 				card->spi->max_speed_hz);
- 		err = if_spi_prog_helper_firmware(card, helper);
+diff --git a/drivers/usb/gadget/udc/max3420_udc.c b/drivers/usb/gadget/udc/max3420_udc.c
+index 89e8cf2a2a7d..7349ea774adf 100644
+--- a/drivers/usb/gadget/udc/max3420_udc.c
++++ b/drivers/usb/gadget/udc/max3420_udc.c
+@@ -1201,7 +1201,7 @@ static int max3420_probe(struct spi_device *spi)
+ 	int err, irq;
+ 	u8 reg[8];
+ 
+-	if (spi->master->flags & SPI_CONTROLLER_HALF_DUPLEX) {
++	if (spi->controller->flags & SPI_CONTROLLER_HALF_DUPLEX) {
+ 		dev_err(&spi->dev, "UDC needs full duplex to work\n");
+ 		return -EINVAL;
+ 	}
 -- 
 2.43.0
 

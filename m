@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A11CF65189
-	for <linux-spi@vger.kernel.org>; Mon, 22 Jan 2024 18:08:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1452565BB5
+	for <linux-spi@vger.kernel.org>; Mon, 22 Jan 2024 18:08:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705946922; cv=none; b=OLAulDK5p58yc7W2wlr0oGuLmLJC4kvkG73sy1Or/hT1Ltr1LVEYMRZHvLqAGH6lL32Sk5YsS6W+EBvH5aeag4ZqfoHlCrsKJMThsD4B3hdN5k1x0lfCTsZVmAKNpvG8AtEdlWBhi7I6PyOUdFq9ccuxERG4PfEPs/nuGgXXu94=
+	t=1705946924; cv=none; b=NIpjnzkJNNpbvKHCJ7q/RSRg7x0JPvaN61ei6RKee82qGIs8Lw8o0AC1TbQfasvV9s4VUNLUODVEeazcpQPEEFbjUrPyU7iicqWwzIU724qk7c5A1dVUYRRSBjjWGKCxTl6OaI1rpzNSj9EJj1vFrVhqfjYbO5zq2rjUbvgfigQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705946922; c=relaxed/simple;
-	bh=yu7xNIM8JxCKE+AFbgKgMhwZWwewLVSSPd3EFE9Z4og=;
+	s=arc-20240116; t=1705946924; c=relaxed/simple;
+	bh=lOy0ZmteWVnevRjqTgakjKZrayLKgyaWmhHjW/PK3Qc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bsdtUX4qZXHtyPcbyLywHiItLZ4Wsnf0tFt7KgAmpn4EcSY1SM10GYlIlpL2PKnWee6ghXJ32/kGWnFcoK3d9ruoMMo+lhtwkHjYnR7S1SD/d5QHG0q9F4ewTgfoRE0JBpZML5itzQMWAdrgV+WqvZ18cxzA/ccUL5XZUjzzZAE=
+	 MIME-Version:Content-Type; b=g7M7uNjPawvf4U/QXed1EYFRt80qmp6SJS8gPUHnVCj7SQPs/1+4cAqcZCkkk8Sg/rMrRcr7Qs+4cZoUMawc3F58uKa9+t2sKl0tYSpEi5wFIjkxvX1WLEWqs5fgC1H5UD1FYkITy865WTS5c2XMJY+SYBvhS7RA1pHj+XAU0jI=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,31 +18,32 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rRyia-000293-71; Mon, 22 Jan 2024 19:08:20 +0100
+	id 1rRyiY-000241-Lm; Mon, 22 Jan 2024 19:08:18 +0100
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rRyiZ-001eRE-83; Mon, 22 Jan 2024 19:08:19 +0100
+	id 1rRyiX-001eQl-Sf; Mon, 22 Jan 2024 19:08:17 +0100
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rRyiZ-005Zyx-0W;
-	Mon, 22 Jan 2024 19:08:19 +0100
+	id 1rRyiX-005ZyV-2Y;
+	Mon, 22 Jan 2024 19:08:17 +0100
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 To: Mark Brown <broonie@kernel.org>
 Cc: kernel@pengutronix.de,
-	Jonathan Corbet <corbet@lwn.net>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	James Clark <james.clark@arm.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	linux-doc@vger.kernel.org,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>,
+	dri-devel@lists.freedesktop.org,
+	linux-fbdev@vger.kernel.org,
+	linux-staging@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-spi@vger.kernel.org
-Subject: [PATCH v2 32/33] spi: Drop compat layer from renaming "master" to "controller"
-Date: Mon, 22 Jan 2024 19:07:27 +0100
-Message-ID:  <0107400bb6616ac78c01215320a6bbe6a0d10e7c.1705944943.git.u.kleine-koenig@pengutronix.de>
+Subject: [PATCH v2 25/33] staging: fbtft: Follow renaming of SPI "master" to "controller"
+Date: Mon, 22 Jan 2024 19:07:20 +0100
+Message-ID:  <d486dbb16fafd93a00013a555658a44e975115fd.1705944943.git.u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1705944943.git.u.kleine-koenig@pengutronix.de>
 References: <cover.1705944943.git.u.kleine-koenig@pengutronix.de>
@@ -53,7 +54,7 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3719; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=yu7xNIM8JxCKE+AFbgKgMhwZWwewLVSSPd3EFE9Z4og=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlrq7os4dGrOBFnhGPj4Fn83pUK0AmUqwZwnlbl LI4Yy83kg2JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZa6u6AAKCRCPgPtYfRL+ Tt31CACR9UgCXZ45LhmjKUsgXa+SuEnJYJRWWhSw3fkuVpJnoJ1UJmZwxSvtycT1iektwMC6o16 F/aj7neEXIPe6bdhMswnHJ0idJFDn2DFFW3SPtwPwWIajB/r/BoQSPJKGQJ9i/Z4jSsU8/oywuf QvfT8S/1JF4GcibRnxAQHHoGVxejrvnTNNs2UDEZWvBXljxQ4Y5aYMj3WKZ4WB39WmTRkxzmzrR lcC+LaPH7LMteiam3Ipiz0i0DbYcf2JIG+osJ/3K9L6qkTtqsDlkvlwocyF+BcKv6TyaZ/WkbSs 4yAO/DrV8aOI+zE5D8tHtbvQ1imLkr6hYSAt4w5zeicAZugI
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1528; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=lOy0ZmteWVnevRjqTgakjKZrayLKgyaWmhHjW/PK3Qc=; b=owGbwMvMwMXY3/A7olbonx/jabUkhtR16x44W9/NuexwblKQkcS2eVqdtoxbE2pDa9aufl5So 2JbWHW/k9GYhYGRi0FWTJHFvnFNplWVXGTn2n+XYQaxMoFMYeDiFICJaJuy/zPf0hzD7Xv4XKXA nQ6hKVGCW43/JecF+faw5V2NSIoNXsY1YXm5nNmKKXYS9S8/vzK3nqp7b/PuUv2k5Fr/uGi+iYk nRQOq5/1Ju/K3+FpTk6CUztH44uiXBidcPY35T7bUy7OLrlX7kmPMuK3qWlVDzGuZvLeyUys+CV jbmHIyudxnZTBm6Mr6J8NRU3ApZIrZUb0DvtxGJ3tbfiipm7WV3O01e1/XPOGttuSslTFNkw9fW fdbyTzk8m2bdvVZKRlHXymr7pNt/zLdkuNl7BH1axK6mlZ7c+e8FmvuvPv2cnWky+cFBw+kyu/f kx8wb/oBxd/OjJdPGrkpsT18+rHxpmd+6jLx6yzJbwsB
 X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -61,93 +62,40 @@ X-SA-Exim-Mail-From: ukl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: linux-spi@vger.kernel.org
 
-Now that all in-tree users followed the rename, the compat stuff can go
-away.  This completes the renaming started with commit 8caab75fd2c2
-("spi: Generalize SPI "master" to "controller"")
+In commit 8caab75fd2c2 ("spi: Generalize SPI "master" to "controller"")
+some functions and struct members were renamed. To not break all drivers
+compatibility macros were provided.
+
+To be able to remove these compatibility macros push the renaming into
+this driver.
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
- .../driver-api/driver-model/devres.rst        |  2 +-
- drivers/spi/spi.c                             |  2 +-
- include/linux/spi/spi.h                       | 20 +------------------
- 3 files changed, 3 insertions(+), 21 deletions(-)
+ drivers/staging/fbtft/fbtft-core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/driver-api/driver-model/devres.rst b/Documentation/driver-api/driver-model/devres.rst
-index c5f99d834ec5..49c6fd82cd5d 100644
---- a/Documentation/driver-api/driver-model/devres.rst
-+++ b/Documentation/driver-api/driver-model/devres.rst
-@@ -462,7 +462,7 @@ SLAVE DMA ENGINE
- SPI
-   devm_spi_alloc_master()
-   devm_spi_alloc_slave()
--  devm_spi_register_master()
-+  devm_spi_register_controller()
+diff --git a/drivers/staging/fbtft/fbtft-core.c b/drivers/staging/fbtft/fbtft-core.c
+index 3626f429b002..68add4d598ae 100644
+--- a/drivers/staging/fbtft/fbtft-core.c
++++ b/drivers/staging/fbtft/fbtft-core.c
+@@ -794,7 +794,7 @@ int fbtft_register_framebuffer(struct fb_info *fb_info)
+ 	if (par->txbuf.buf && par->txbuf.len >= 1024)
+ 		sprintf(text1, ", %zu KiB buffer memory", par->txbuf.len >> 10);
+ 	if (spi)
+-		sprintf(text2, ", spi%d.%d at %d MHz", spi->master->bus_num,
++		sprintf(text2, ", spi%d.%d at %d MHz", spi->controller->bus_num,
+ 			spi_get_chipselect(spi, 0), spi->max_speed_hz / 1000000);
+ 	dev_info(fb_info->dev,
+ 		 "%s frame buffer, %dx%d, %d KiB video memory%s, fps=%lu%s\n",
+@@ -1215,7 +1215,7 @@ int fbtft_probe_common(struct fbtft_display *display,
  
- WATCHDOG
-   devm_watchdog_register_device()
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 7477a11e12be..2d7393045384 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -584,7 +584,7 @@ struct spi_device *spi_alloc_device(struct spi_controller *ctlr)
- 		return NULL;
- 	}
- 
--	spi->master = spi->controller = ctlr;
-+	spi->controller = ctlr;
- 	spi->dev.parent = &ctlr->dev;
- 	spi->dev.bus = &spi_bus_type;
- 	spi->dev.release = spidev_release;
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 471fe2ff9066..6a4f8cbba5ef 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -131,7 +131,6 @@ extern void spi_transfer_cs_change_delay_exec(struct spi_message *msg,
-  * struct spi_device - Controller side proxy for an SPI slave device
-  * @dev: Driver model representation of the device.
-  * @controller: SPI controller used with the device.
-- * @master: Copy of controller, for backwards compatibility.
-  * @max_speed_hz: Maximum clock rate to be used with this chip
-  *	(on this board); may be changed by the device's driver.
-  *	The spi_transfer.speed_hz can override this for each transfer.
-@@ -185,7 +184,6 @@ extern void spi_transfer_cs_change_delay_exec(struct spi_message *msg,
- struct spi_device {
- 	struct device		dev;
- 	struct spi_controller	*controller;
--	struct spi_controller	*master;	/* Compatibility layer */
- 	u32			max_speed_hz;
- 	u8			chip_select[SPI_CS_CNT_MAX];
- 	u8			bits_per_word;
-@@ -1298,7 +1296,7 @@ spi_max_transfer_size(struct spi_device *spi)
-  */
- static inline bool spi_is_bpw_supported(struct spi_device *spi, u32 bpw)
- {
--	u32 bpw_mask = spi->master->bits_per_word_mask;
-+	u32 bpw_mask = spi->controller->bits_per_word_mask;
- 
- 	if (bpw == 8 || (bpw <= 32 && bpw_mask & SPI_BPW_MASK(bpw)))
- 		return true;
-@@ -1670,20 +1668,4 @@ spi_transfer_is_last(struct spi_controller *ctlr, struct spi_transfer *xfer)
- 	return list_is_last(&xfer->transfer_list, &ctlr->cur_msg->transfers);
- }
- 
--/* Compatibility layer */
--#define spi_master			spi_controller
--
--#define spi_master_get_devdata(_ctlr)	spi_controller_get_devdata(_ctlr)
--#define spi_master_set_devdata(_ctlr, _data)	\
--	spi_controller_set_devdata(_ctlr, _data)
--#define spi_master_get(_ctlr)		spi_controller_get(_ctlr)
--#define spi_master_put(_ctlr)		spi_controller_put(_ctlr)
--#define spi_master_suspend(_ctlr)	spi_controller_suspend(_ctlr)
--#define spi_master_resume(_ctlr)	spi_controller_resume(_ctlr)
--
--#define spi_register_master(_ctlr)	spi_register_controller(_ctlr)
--#define devm_spi_register_master(_dev, _ctlr) \
--	devm_spi_register_controller(_dev, _ctlr)
--#define spi_unregister_master(_ctlr)	spi_unregister_controller(_ctlr)
--
- #endif /* __LINUX_SPI_H */
+ 	/* 9-bit SPI setup */
+ 	if (par->spi && display->buswidth == 9) {
+-		if (par->spi->master->bits_per_word_mask & SPI_BPW_MASK(9)) {
++		if (par->spi->controller->bits_per_word_mask & SPI_BPW_MASK(9)) {
+ 			par->spi->bits_per_word = 9;
+ 		} else {
+ 			dev_warn(&par->spi->dev,
 -- 
 2.43.0
 

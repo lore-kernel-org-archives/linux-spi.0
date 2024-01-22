@@ -1,57 +1,54 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C85A53B290
-	for <linux-spi@vger.kernel.org>; Mon, 22 Jan 2024 12:18:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6863CF72
+	for <linux-spi@vger.kernel.org>; Mon, 22 Jan 2024 13:18:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705925934; cv=none; b=R5TtVA69ZFEY8OX3eA5Lme2e9IOtS8A9VAt5T9f9TR9o4iqUANhVL95MXrOGT5g/EiD4vjX05DQzKIcid4F+GOnSxNLozKNyjhwT2DUDdJFJgUbvokmvwmW1XoOqbSGQlQfLuhCYWxmrfKotYWkuidfQC7t0tKCPRCk9g21GzWE=
+	t=1705929533; cv=none; b=ZsspXFhfVa7sih6VCLfs8S/tc6eVt7QOw/zqRYm3Fd9cfDJUHHiLGdLzbPKbYuGAgdNKh9abZPpRoA10Q5yV7P5HTm+4AbLgPPiZuMWnTTYii9R8AJOzui2s7kNPDdifGHKHLXrJ1zMT1mC0Cdfo4DZH4uE/FTI+tPYj6+1vvAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705925934; c=relaxed/simple;
-	bh=+D5afzHkCSUgtvf/oWTCN89WJYXKEtkdZefDcQnBq3Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oycCKNVekMNItNzFGJ99nPD+PS7MYzVWV99/SAArC4HMTyWaS+hOiEN6vMgG54LFDrHIUQTfVrWiBUU0ZJJThKF6QNYCKMebhwq6k7XglA0TE3teiboLaxxO1+Pnz/m1xE8Jzf0ComPjmCg6JLaGkgb6X9MLIaDrwunEtEZHx7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ntXCTUVC; arc=none smtp.client-ip=192.198.163.12
+	s=arc-20240116; t=1705929533; c=relaxed/simple;
+	bh=rI5SdAeX+93MZA8iN3wMNvYtSx30nN9lqluSY+TlnI0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bkHdGB6vgwn8ef1B1FFJ5cp+jcYf/2zbl9RjsT7bVdJHjk0BoYyMtgBPPaAF7oTbq6SA2ry6Rw+ij+TL6djZjYBkkSKTx5LxDrlh4RTNBoOZsYeIqEA9XxlGSAOfnyz3iKfNC0j2LT7mrDviMUPtSRiCNC3wHjclASnENGdGoQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=K6mmSP7k; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ntXCTUVC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="K6mmSP7k"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1705925932; x=1737461932;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=+D5afzHkCSUgtvf/oWTCN89WJYXKEtkdZefDcQnBq3Q=;
-  b=ntXCTUVCqWYk/jIpo2x9Yb9VJ2iCMkYCyaYqURZX85XbEA4bJk/9+IpJ
-   msFR3qna3JLvZgW5S4K772hfilspKmQon/YyylzEYe+UqJBNf4TYRMK5G
-   xNj/9d9cVPd+/nCIzGPqvaJT82VvUUNgg2DPUqcp3PDuQ5UKHxUSJ7pmT
-   /Kzxqr16grT7ZR0czSujv46xXONVzeBEfXOB2gL0GIZ2zlY/HtOoJeF0L
-   d11vszKG/sSYbU8RlrHMaGyDhUoY1TPemhn7crulX0cpNv0RucmiUxFZA
-   DjE/SehZbNf1xJBx0dBw5evigf3sef+DhdUxEfO5/h6vAny4IIxFQg27Q
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10960"; a="1051412"
+  t=1705929533; x=1737465533;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=rI5SdAeX+93MZA8iN3wMNvYtSx30nN9lqluSY+TlnI0=;
+  b=K6mmSP7kmlamc0KTIJEJQX/RZhiOy6CQgclII9q+AP9Wo6oQJwiIZBaA
+   I3lUEbS8rzrZnhnX99mkKYyge0O6eZscgPLqWKNkPWxQrhez+lwwzSCeZ
+   4bX5tK1bAl0QRdzvRziBOuDB1c+qUbenl4fjzDhJPxnnuX0V6FobfeJRn
+   ShCBTTeqIM9BjFiWlBSMxhFPVgwXhYyI2QeNFZZM9AOPP/4+LXmeHlnkH
+   qbuzoro+sx6cEEnqKeKbagfQhJU8azeuj1RRWtxKXbM4Q8IvGC0yxxc7j
+   WsiAEOCQQy8ajX/v3qumLBp2EbJBYuoLLG9L9W9k4jgFRxB4xta90DKkD
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10960"; a="8302033"
 X-IronPort-AV: E=Sophos;i="6.05,211,1701158400"; 
-   d="scan'208";a="1051412"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jan 2024 04:18:51 -0800
+   d="scan'208";a="8302033"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jan 2024 05:18:52 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10960"; a="819671553"
+X-IronPort-AV: E=McAfee;i="6600,9927,10960"; a="958731660"
 X-IronPort-AV: E=Sophos;i="6.05,211,1701158400"; 
-   d="scan'208";a="819671553"
+   d="scan'208";a="958731660"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga001.jf.intel.com with ESMTP; 22 Jan 2024 04:18:50 -0800
+  by orsmga005.jf.intel.com with ESMTP; 22 Jan 2024 05:18:50 -0800
 Received: by black.fi.intel.com (Postfix, from userid 1001)
-	id 7299C23A; Mon, 22 Jan 2024 14:00:34 +0200 (EET)
+	id 5EFE224D; Mon, 22 Jan 2024 14:00:34 +0200 (EET)
 From: Mika Westerberg <mika.westerberg@linux.intel.com>
 To: Mark Brown <broonie@kernel.org>
 Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
 	linux-spi@vger.kernel.org
-Subject: [PATCH 1/2] spi: intel-pci: Remove Meteor Lake-S SoC PCI ID from the list
-Date: Mon, 22 Jan 2024 14:00:33 +0200
-Message-ID: <20240122120034.2664812-2-mika.westerberg@linux.intel.com>
+Subject: [PATCH 0/2] spi: intel-pci: Meteor Lake fix and Arrow Lake PCI ID
+Date: Mon, 22 Jan 2024 14:00:32 +0200
+Message-ID: <20240122120034.2664812-1-mika.westerberg@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122120034.2664812-1-mika.westerberg@linux.intel.com>
-References: <20240122120034.2664812-1-mika.westerberg@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -60,29 +57,20 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Turns out this "SoC" side controller does not support certain commands,
-such as reading chip JEDEC ID, so the controller is pretty much unusable
-in Linux. We should be using the "PCH" side controller instead. For this
-reason remove this PCI ID from the list.
+Hi,
 
-Fixes: c2912d42e86e ("spi: intel-pci: Add support for Meteor Lake-S SPI serial flash")
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
----
- drivers/spi/spi-intel-pci.c | 1 -
- 1 file changed, 1 deletion(-)
+The Meteor Lake-S SPI-NOR PCI ID is for a controller that does not
+support all the necessary operations so the first patch removes that
+from the driver. Second one adds the correct one (the same is used in
+Arrow Lake).
 
-diff --git a/drivers/spi/spi-intel-pci.c b/drivers/spi/spi-intel-pci.c
-index 57d767a68e7b..b9918dcc3802 100644
---- a/drivers/spi/spi-intel-pci.c
-+++ b/drivers/spi/spi-intel-pci.c
-@@ -84,7 +84,6 @@ static const struct pci_device_id intel_spi_pci_ids[] = {
- 	{ PCI_VDEVICE(INTEL, 0xa2a4), (unsigned long)&cnl_info },
- 	{ PCI_VDEVICE(INTEL, 0xa324), (unsigned long)&cnl_info },
- 	{ PCI_VDEVICE(INTEL, 0xa3a4), (unsigned long)&cnl_info },
--	{ PCI_VDEVICE(INTEL, 0xae23), (unsigned long)&cnl_info },
- 	{ },
- };
- MODULE_DEVICE_TABLE(pci, intel_spi_pci_ids);
+Mika Westerberg (2):
+  spi: intel-pci: Remove Meteor Lake-S SoC PCI ID from the list
+  spi: intel-pci: Add support for Arrow Lake SPI serial flash
+
+ drivers/spi/spi-intel-pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
 -- 
 2.43.0
 

@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8D0656466
-	for <linux-spi@vger.kernel.org>; Mon, 22 Jan 2024 18:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF12256742
+	for <linux-spi@vger.kernel.org>; Mon, 22 Jan 2024 18:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705946901; cv=none; b=hc3NSV1mGXgL3Ibx/HCJPRuCx3lonwn13qUxyNl+HWdUIxDOzOytZJNXCGn2rRget2BUu2MddGYxxZi5N06Nn/l0vyKKnhKnX5KW1LpsDnR2UCQS+3gLWZ4iNe0usnAgPAyaDEyyXrWBgAokNvy/TSAOcL3BBSdLO/jOc0TA9cQ=
+	t=1705946902; cv=none; b=McAfQG+Tg9srgybcKB92x+ceaseS7e2NxRGWrsD8A7PJFek8PM5ykncUPkBctnZBU2rlumgf3Esm9mgdUbkJebBTMeRY6hJSOTJ9TxQ6gobYDi7Bk3g6GmOzgqaoco/5XyVzFhkIUwqeOtuU9ufzwLssx41lhvxXFOcihji1DBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705946901; c=relaxed/simple;
-	bh=/Yg1W2WDH9FF1Tn6OXe421fMQlr47i+9fDzZFse2hhA=;
+	s=arc-20240116; t=1705946902; c=relaxed/simple;
+	bh=mvkeOe3/BbLvpNEiWVNLyrW1b8wBgb11O+XXVA/j11Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SvedI5chT5AByCHcJJjQNivEfaX1ubuUROZjUc5WvwtPzS410iYzOWJTX6uwGZohb13SKhm/pI9hA+4+tfRchG+e7EWorLxKlMUpRH5/hpadx8XCqSCk1u7SxbvcWtmkG5BdM3mNvKrvPX3VP53yNlntDtrmopXYAjlrWmD1ouU=
+	 MIME-Version:Content-Type; b=hIbMRO4sNgjoEg5qrt48YiQeqYIpnD8RJ5ppUVp2KEefFTQBYKppXmQ4RVVHMXubt8YKz0aUXw142KEwZV+3gt6qvDdzYUSsrDHi7c70QZ+PC4Ih/Xlqcd+BmWGgwFQDY0L9z0Ty72u/q7kr4erQFDKGvuIm+o5B08Ql2xXnDOQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,24 +18,24 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rRyiX-0001wr-Mk; Mon, 22 Jan 2024 19:08:17 +0100
+	id 1rRyiY-00023a-Kk; Mon, 22 Jan 2024 19:08:18 +0100
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rRyiW-001eQS-RW; Mon, 22 Jan 2024 19:08:16 +0100
+	id 1rRyiX-001eQh-LE; Mon, 22 Jan 2024 19:08:17 +0100
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rRyiW-005ZyB-2V;
-	Mon, 22 Jan 2024 19:08:16 +0100
+	id 1rRyiX-005ZyR-1r;
+	Mon, 22 Jan 2024 19:08:17 +0100
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 To: Mark Brown <broonie@kernel.org>
 Cc: kernel@pengutronix.de,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 20/33] spi: cavium: Follow renaming of SPI "master" to "controller"
-Date: Mon, 22 Jan 2024 19:07:15 +0100
-Message-ID:  <bd19e062a6c38add3e44b7a6f19d7108c2251a9e.1705944943.git.u.kleine-koenig@pengutronix.de>
+Subject: [PATCH v2 24/33] spi: spidev: Follow renaming of SPI "master" to "controller"
+Date: Mon, 22 Jan 2024 19:07:19 +0100
+Message-ID:  <750a11c6de7f05d4a2b67bd0755ffec9c685ef00.1705944943.git.u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1705944943.git.u.kleine-koenig@pengutronix.de>
 References: <cover.1705944943.git.u.kleine-koenig@pengutronix.de>
@@ -46,7 +46,7 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1886; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=/Yg1W2WDH9FF1Tn6OXe421fMQlr47i+9fDzZFse2hhA=; b=owGbwMvMwMXY3/A7olbonx/jabUkhtR1625d5ajx7F2fEZkZ+MfVcI8VX+KWConwnSfWOX0JN 4uNeODZyWjMwsDIxSArpshi37gm06pKLrJz7b/LMINYmUCmMHBxCsBEmr6y/8+qex+yepLv3Yt3 84WLEjZbF+ltlI+uEmjT1FO4tdozos7TUGRJevX2/sOl9Sx17QzPvta9E5VJXavi7rzIaEpe9Yb 7/hWPnFyey55/ZW5c2Sy4cmvDpvtV5TyhmT1LdwZNtam7Ha1Tfsdoze0Tbdo2MX/0VXpWXNR94Z pt63XP+tSUKR8kDnC8e5n98wZXw5vcWzOyWsyfiM86Z/MkTlX34SVuBY64h3szmFQMr63ovqfnJ vg/cob/fX6rKJ7tXNmrv0QKva5Zebnn7O3Q/O7XvOfyzKuvzD/zOKhAc5VUX4FU+cbVB6JYNVOq J+2UTraS+ugmbWHa8DlBOuzbpiqfo3unXtglI5ikpKMDAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1036; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=mvkeOe3/BbLvpNEiWVNLyrW1b8wBgb11O+XXVA/j11Y=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlrq7fuoBn6fzRmbFYDJIj2kALvEOLDrp6km3Hg 4tYXzqXfJKJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZa6u3wAKCRCPgPtYfRL+ Ts1/CACCRASPL+iccfwcaVlzRk+w7x5SN7bd+3c8RwXU/uUDeQ7iJpN5pLzhjBx1W31sSQ/i1+4 daiiNxgP/bTbAaDmtjAPzACu9qBTERw5mSZiWpG0AWwW3F2fAU/dtLc34aUgKvcdabi7GoKcmyx /sKUxN9rla7/vuSeKJRtIXD0C+MiYs++tyu7PRLbYR3C4hqSJ7I7LRGy9D5CIzkK2sRTcwCn86Z Yo7VPFPjS7quusoKxFeRy3Osb1V/W6oycNfoWs26JvSaWXodXK1LKl9BOaa9QNPSIaN13Edb6x1 79G5UeM98EvCTKH1pPr709fNrxEGsSqXRQvz6CELWQci2BjM
 X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -63,48 +63,22 @@ this driver.
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
- drivers/spi/spi-cavium.c | 6 +++---
- drivers/spi/spi-cavium.h | 2 +-
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/spi/spidev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-cavium.c b/drivers/spi/spi-cavium.c
-index dfe224defd6e..26b8cd1c76e1 100644
---- a/drivers/spi/spi-cavium.c
-+++ b/drivers/spi/spi-cavium.c
-@@ -124,10 +124,10 @@ static int octeon_spi_do_transfer(struct octeon_spi *p,
- 	return xfer->len;
- }
- 
--int octeon_spi_transfer_one_message(struct spi_master *master,
-+int octeon_spi_transfer_one_message(struct spi_controller *ctlr,
- 				    struct spi_message *msg)
- {
--	struct octeon_spi *p = spi_master_get_devdata(master);
-+	struct octeon_spi *p = spi_controller_get_devdata(ctlr);
- 	unsigned int total_len = 0;
- 	int status = 0;
- 	struct spi_transfer *xfer;
-@@ -145,6 +145,6 @@ int octeon_spi_transfer_one_message(struct spi_master *master,
- err:
- 	msg->status = status;
- 	msg->actual_length = total_len;
--	spi_finalize_current_message(master);
-+	spi_finalize_current_message(ctlr);
- 	return status;
- }
-diff --git a/drivers/spi/spi-cavium.h b/drivers/spi/spi-cavium.h
-index 1f3ac463a20b..af53a0c31476 100644
---- a/drivers/spi/spi-cavium.h
-+++ b/drivers/spi/spi-cavium.h
-@@ -28,7 +28,7 @@ struct octeon_spi {
- #define OCTEON_SPI_TX(x)	(x->regs.tx)
- #define OCTEON_SPI_DAT0(x)	(x->regs.data)
- 
--int octeon_spi_transfer_one_message(struct spi_master *master,
-+int octeon_spi_transfer_one_message(struct spi_controller *ctlr,
- 				    struct spi_message *msg);
- 
- /* MPI register descriptions */
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index 655f2c959cd4..95fb5f1c91c1 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -802,7 +802,7 @@ static int spidev_probe(struct spi_device *spi)
+ 		spidev->devt = MKDEV(SPIDEV_MAJOR, minor);
+ 		dev = device_create(&spidev_class, &spi->dev, spidev->devt,
+ 				    spidev, "spidev%d.%d",
+-				    spi->master->bus_num, spi_get_chipselect(spi, 0));
++				    spi->controller->bus_num, spi_get_chipselect(spi, 0));
+ 		status = PTR_ERR_OR_ZERO(dev);
+ 	} else {
+ 		dev_dbg(&spi->dev, "no minor number available!\n");
 -- 
 2.43.0
 

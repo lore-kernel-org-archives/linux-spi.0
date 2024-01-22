@@ -1,120 +1,86 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A06939ACA;
-	Mon, 22 Jan 2024 09:33:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04FDE37144
+	for <linux-spi@vger.kernel.org>; Mon, 22 Jan 2024 12:00:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705915985; cv=none; b=ncwbVb+zDOmGscRAV8rBoWdu01P1jdIf568NzG3jKcSLa28HzX4V2uBgUK23gIiV0mr94hRnYbZk7MUp/L08C4TPDwve3zDqyM7AZgCSM8uF66JmmyFSs0GumqAaJL4q6817lWasOMLywF3Mxkt4aC2BCitcRioGhzgtUI2t5RM=
+	t=1705924839; cv=none; b=NXiSznhe/bE9BbEVS0OTvXGmWfDSUNTYzyzvRv7Z1weIZQw3tHNSSZZ9EHsCmxZg0MSbin7Sji1m2KQgxmxd+pkQslsqEs9DklxUszFvq2c0OE0o/ehWjxkn4k3cGrEkZmz1nDnml8ZoLdIhUwgBAvRAUkkPIzhFHaZkd+eZ0LM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705915985; c=relaxed/simple;
-	bh=S6s4EtVqBSvAaKFT9SU46dJKrkzU7pcRxs4qug349Iw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y5qsQKrd6iyt8IJPg01B552LTxtAEddgG+sDF0mR4hwgv5MX36Tk6zBz1/tT++fV0wt0HyxNmjrk/KWxjEsNfwyj9ZWwpDKwU6jPhDcKIM7Ma4Afvmk9bz4UTFYf46GpSuTqa6yFu5GOheu2BTfIknkvKJE0PTt8u0sl0+2O5bA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VUv5PgcR; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1705924839; c=relaxed/simple;
+	bh=53pvPQIjhOm0vA33Ijdc2HrRy5UfknmCjZF7bXUddd4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pfXcZN2lB+hIvX94zoKe4gqRdnEU+4vSlp3GUmcyihsJ0ADskz/4XBdr6OE1iTzcq6+YhyvJvwyBb0RyhHkNSh3Hx+Eu7hM9Q4XVMEi9t+qXgRyU5LcqM1FLPoiV1WcL0LbARNE7qz4wzJprhTlVrWT9G6kenWKm/phddiTVK70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=duRQlHOj; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VUv5PgcR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF7EC433C7;
-	Mon, 22 Jan 2024 09:33:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705915984;
-	bh=S6s4EtVqBSvAaKFT9SU46dJKrkzU7pcRxs4qug349Iw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VUv5PgcRLcc+SSNBl4cvP7XNYUAyr4sW8nWbjpz66OnozCzVvAspXl+qp7hD4MkAk
-	 +PN+tSH+O5/J8z0u5CnZBJ302hpsM/SVhQ/GYXjzUhffIYqshdQga5wMozLhiGvB5G
-	 oEMDX/ayfIAGY8xTTUdG6DO8NvVfHNymS1a/R2j/XAFouLDSFsEHy/qyaJKN1XQ40W
-	 i5PPXPqeLiuVYhglNfDPNM93gd8z3bRlvHpKeFPQQ7SdOFg4WW1o5hSUILi2+ELZ5w
-	 PQn8MTykhdiINJ8PphytWsQ1rDX5eO+1TREO1DZIYsr/ZKg6ZbYRo8MCzxuhEb9wLx
-	 SIpgrCuHrD5/A==
-Date: Mon, 22 Jan 2024 09:32:59 +0000
-From: Conor Dooley <conor@kernel.org>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: broonie@kernel.org, conor+dt@kernel.org, robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, han.xu@nxp.com,
-	haibo.chen@nxp.com, yogeshgaur.83@gmail.com,
-	linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH 2/2] dt-bindings: spi: nxp-fspi: support i.MX93 and i.MX95
-Message-ID: <20240122-smuggler-wrath-843cb20a8e07@spud>
-References: <20240122091510.2077498-1-peng.fan@oss.nxp.com>
- <20240122091510.2077498-2-peng.fan@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="duRQlHOj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1705924838; x=1737460838;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=53pvPQIjhOm0vA33Ijdc2HrRy5UfknmCjZF7bXUddd4=;
+  b=duRQlHOjAYG8JRIpq/hBMp6tXT+zJesdCFWslJwmwahujILt1vQsPwSC
+   p8/6DaUfVjfl+6Iad8rgGXxOAWqGzxwfh5YFrxNGBi+bzkP/d12nuiCgn
+   KfVFLLhK2w60GCsUCLHqnIrWnnmb063BFpopvPlXHgB8Q/0fLot59Ki5S
+   HBHAyqve4dFanVxC02bXRcMtt0k6nAfr9JurvdJVoKIxnFar/6TNcpXgy
+   NA3jcV5wDs4CniF6QNADuuWiXn4pU0TB3ol5AxM5zpnlXIFUO3iYAkegE
+   2jZsIFXYE4xzadK/ru6F77jANIl1hSVRlLPkQnbsPcWTheHOG/bn8dEdA
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10960"; a="22667311"
+X-IronPort-AV: E=Sophos;i="6.05,211,1701158400"; 
+   d="scan'208";a="22667311"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jan 2024 04:00:36 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10960"; a="875951757"
+X-IronPort-AV: E=Sophos;i="6.05,211,1701158400"; 
+   d="scan'208";a="875951757"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by FMSMGA003.fm.intel.com with ESMTP; 22 Jan 2024 04:00:35 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+	id 7BC0638C; Mon, 22 Jan 2024 14:00:34 +0200 (EET)
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
+	linux-spi@vger.kernel.org
+Subject: [PATCH 2/2] spi: intel-pci: Add support for Arrow Lake SPI serial flash
+Date: Mon, 22 Jan 2024 14:00:34 +0200
+Message-ID: <20240122120034.2664812-3-mika.westerberg@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240122120034.2664812-1-mika.westerberg@linux.intel.com>
+References: <20240122120034.2664812-1-mika.westerberg@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="pfapuoot4ESQXufK"
-Content-Disposition: inline
-In-Reply-To: <20240122091510.2077498-2-peng.fan@oss.nxp.com>
+Content-Transfer-Encoding: 8bit
 
+This adds the PCI ID of the Arrow Lake and Meteor Lake-S PCH SPI serial
+flash controller. This one supports all the necessary commands Linux
+SPI-NOR stack requires.
 
---pfapuoot4ESQXufK
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+---
+ drivers/spi/spi-intel-pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-On Mon, Jan 22, 2024 at 05:15:10PM +0800, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
->=20
-> Add i.MX93/95 flexspi compatible strings, which are compatible with
-> i.MX8MM
->=20
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+diff --git a/drivers/spi/spi-intel-pci.c b/drivers/spi/spi-intel-pci.c
+index b9918dcc3802..07d20ca1164c 100644
+--- a/drivers/spi/spi-intel-pci.c
++++ b/drivers/spi/spi-intel-pci.c
+@@ -76,6 +76,7 @@ static const struct pci_device_id intel_spi_pci_ids[] = {
+ 	{ PCI_VDEVICE(INTEL, 0x7a24), (unsigned long)&cnl_info },
+ 	{ PCI_VDEVICE(INTEL, 0x7aa4), (unsigned long)&cnl_info },
+ 	{ PCI_VDEVICE(INTEL, 0x7e23), (unsigned long)&cnl_info },
++	{ PCI_VDEVICE(INTEL, 0x7f24), (unsigned long)&cnl_info },
+ 	{ PCI_VDEVICE(INTEL, 0x9d24), (unsigned long)&cnl_info },
+ 	{ PCI_VDEVICE(INTEL, 0x9da4), (unsigned long)&cnl_info },
+ 	{ PCI_VDEVICE(INTEL, 0xa0a4), (unsigned long)&cnl_info },
+-- 
+2.43.0
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-
-Cheers,
-Conor.
-
-> ---
->  .../devicetree/bindings/spi/spi-nxp-fspi.yaml  | 18 ++++++++++++------
->  1 file changed, 12 insertions(+), 6 deletions(-)
->=20
-> diff --git a/Documentation/devicetree/bindings/spi/spi-nxp-fspi.yaml b/Do=
-cumentation/devicetree/bindings/spi/spi-nxp-fspi.yaml
-> index 7fd591145480..4a5f41bde00f 100644
-> --- a/Documentation/devicetree/bindings/spi/spi-nxp-fspi.yaml
-> +++ b/Documentation/devicetree/bindings/spi/spi-nxp-fspi.yaml
-> @@ -15,12 +15,18 @@ allOf:
-> =20
->  properties:
->    compatible:
-> -    enum:
-> -      - nxp,imx8dxl-fspi
-> -      - nxp,imx8mm-fspi
-> -      - nxp,imx8mp-fspi
-> -      - nxp,imx8qxp-fspi
-> -      - nxp,lx2160a-fspi
-> +    oneOf:
-> +      - enum:
-> +          - nxp,imx8dxl-fspi
-> +          - nxp,imx8mm-fspi
-> +          - nxp,imx8mp-fspi
-> +          - nxp,imx8qxp-fspi
-> +          - nxp,lx2160a-fspi
-> +      - items:
-> +          - enum:
-> +              - nxp,imx93-fspi
-> +              - nxp,imx95-fspi
-> +          - const: nxp,imx8mm-fspi
-> =20
->    reg:
->      items:
-> --=20
-> 2.37.1
->=20
-
---pfapuoot4ESQXufK
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZa42SwAKCRB4tDGHoIJi
-0tdXAP98HpM2PK3w7yVrMJ8SZk8ztWP8ufj76c/z3c/OsyqXMQD+McQ49WApWvAd
-u2jR/iBqItcGxbfMgGsMUl8f7Wc1UQA=
-=EkRj
------END PGP SIGNATURE-----
-
---pfapuoot4ESQXufK--

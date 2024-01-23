@@ -1,97 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BBE35F571;
-	Tue, 23 Jan 2024 13:53:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685465FEEE
+	for <linux-spi@vger.kernel.org>; Tue, 23 Jan 2024 15:34:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706018032; cv=none; b=rN2EJP58E2kK5U9x8q5Tv7+uMB/yFm1NSoxx744BAXIRICW3MZN2mBdXjO1cCIHE9DX+5AZj+AWJFDpz1Uz4I4NsH6csPxtv4WyQ0cfR6V5wWKiG6efnCgo4F9m+BG3xlf/mONU8+7sNFSzCHRstx0OCsdZXdsOiB+kDs44jkRc=
+	t=1706024070; cv=none; b=AX3KwPrCFlw/9lNC2RwuyAbmR0AoMTh4BjKoOEtgcH35Um5hubiNCGWOJPHHHu/UxZRafLEkrMBc7G3KnZijixrsGJUd5LzLxMi+9v5ZDnCW2CHfKcYNo4b9XD8dsOL6L0ze7OrGgbcvfarjfm7fFYj2YLpgQwcUzMWjmCKT9WI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706018032; c=relaxed/simple;
-	bh=lHE5qALm5p12AB5xvDSRbe8fy7YDuNGo659MXcjmjg0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FHUr3vtv4H0XbANQH1A/A2gz/j+rz2UuTtuoym8vc5W1rFYE9AxHgRaOZ8chZ4XQa0QjRKviBO8umHuVoqSjshLApIxgKS6XJ5cTnRYJ+zlJdi2vd+1CniIU+kHXN5mjFih3rfMFPV90pHMghDcWmB9SrC/IZKa6/+euh9QllLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LibUh6Yz; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1706024070; c=relaxed/simple;
+	bh=uoqIziOYe4QOe66kMTI7DN3VeKJax6+qP/nGQ6cKH+s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=V+xcGE2wLMwY/FO3yeI6PHq3N6gQCXuNeCBBq2BW2/rJRzvh6tc2mOnBUYmxnPuNJurWma3FlJgYpZN8YzJYmy/CwWXAmx05FyV0qM2x/uGf1XwWJI6SUXTOcYDs1DVun/tUXsW1UqS3j/N3FDzdQBjRNBvoUTFhi7HTyPjG0dM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=L1RlvM5o; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LibUh6Yz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF38C43394;
-	Tue, 23 Jan 2024 13:53:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706018031;
-	bh=lHE5qALm5p12AB5xvDSRbe8fy7YDuNGo659MXcjmjg0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LibUh6YzFkdUMB5x2vFIMHn5ljzZklpQUEiBWgYGgCLS0iN+7E9H71pJJUTuv5v24
-	 XktRUEpqulVCDQuLbUYwyHbKqRUkzsJ6EvqDBJLMUYicLRjtN3PTO2iPxcHKPuE9NT
-	 /mi6gbNT+CZepyR04uxdX1R0Qz3/oap2nrbrMNGUYiSwbX5IkJCZUhlJN1jadvgi6l
-	 wwx5DaglOxbrBFGyBdoMkNleEfepDSIeBJtxJaUsNxYpFZR/yGrOQBClykVKwTwsaZ
-	 WFZGhKW8pgTMb7JKk9RMA7qvTqPtHZIqsjaC0eixb4XeTDfRe+3kIc/S/1Rruxfyew
-	 hv2PShG0Npm4Q==
-Date: Tue, 23 Jan 2024 13:53:46 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Herve Codina <herve.codina@bootlin.com>,
-	Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH] spi: Raise limit on number of chip selects
-Message-ID: <49b52941-6205-48bd-b2ae-e334018ac5cd@sirena.org.uk>
-References: <20240122-spi-multi-cs-max-v1-1-a7e98cd5f6c7@kernel.org>
- <20240123120430.75c7ace0@bootlin.com>
- <cefafa30-b78d-471b-83e0-b05060d806d4@sirena.org.uk>
- <93385fc2-7596-4f66-b0c1-07d7d5c9ed8d@csgroup.eu>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="L1RlvM5o"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-40eacb4bfa0so24556785e9.1
+        for <linux-spi@vger.kernel.org>; Tue, 23 Jan 2024 07:34:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1706024066; x=1706628866; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VjipWcrbNy/QID8T6cAOMZwyasQD1NXUWSbF3OJYF5I=;
+        b=L1RlvM5oE0Oj1RrDBTSBpU+1U3MdF8SqeYR1ZU9HUn77CTtbXhHOj3Af41WBYv5nWT
+         aMKEDw2ZDUCFSmGY1IPx4IqF3S67VYbQkEbGA2Kt4m4bGZVLvj2UYGfWlANbNe1fitwO
+         pPiE/TvXjug1hdgITiQ/DD6LhV2WF4E7I++nkoyyreqrlA4iFUhhEtRNURDzOPii1oB0
+         Sxsq91N71uF8qkhcUsKzKkF3f3FXny+RTuFD7Jvr37ZtLba1PmTv80AthUxnbfAkOJKI
+         BTP4ZjwqVu2bGM9kNYj7GnhP9XP4b3oX36SZ4oqtlG9vCOsO4g/3z6s1Pk3nNKtj9DNW
+         QCJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706024066; x=1706628866;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VjipWcrbNy/QID8T6cAOMZwyasQD1NXUWSbF3OJYF5I=;
+        b=kStGCyb2a37mXYyobpnAx1eprN/K9HuUPKBpj/rBy9PvAGysoFLNIXk7E/nzFgcUYp
+         GYR7AtP03dEsh/dFi8QjkX7nAKYNiJ45Be/CaLNkxBsNp/BddqI6NAQuW6legz/ER1+L
+         7efZU0oNG/CRPQXfuDvEIElmGP+/gIdzzbd+wzn3sHQ5bl+ACtWQWSyDpylUGGzsVYjY
+         JgzIEh6piSW7KDsb1hHVvJ5hhWFVG3v0n9Bi+J3kxB2FnSS54KJWfkNfJ/s7FjE2K4ek
+         BGwflg88jvvtk4KCDXWWts8I2ISBZjRxmfJ61vR3MXJCa9jKa41IfxdnVcflmGfT+c2N
+         QU8Q==
+X-Gm-Message-State: AOJu0YzjyStB37C+PhGnin/0yLuAJ5R9JZcyTAlVPqijI8hL8DL0eyOb
+	fbHKRiCOao6FhotNqcU0TIlHqBNKS+vqsWqo349xMA9HWRanUQ3P/ZbttuW/OaQ=
+X-Google-Smtp-Source: AGHT+IHosPR7aXkGESXR19H32liyG2yCDhVCsytyJRVKkzbH8iGrmrZbLr9K8ewIBbwBtT6UmR9VcQ==
+X-Received: by 2002:a05:600c:9a2:b0:40e:4694:38a6 with SMTP id w34-20020a05600c09a200b0040e469438a6mr248582wmp.157.1706024066574;
+        Tue, 23 Jan 2024 07:34:26 -0800 (PST)
+Received: from ta2.c.googlers.com.com (88.140.78.34.bc.googleusercontent.com. [34.78.140.88])
+        by smtp.gmail.com with ESMTPSA id p21-20020a05600c359500b0040e3488f16dsm42457536wmq.12.2024.01.23.07.34.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Jan 2024 07:34:26 -0800 (PST)
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
+To: broonie@kernel.org,
+	andi.shyti@kernel.org,
+	arnd@arndb.de
+Cc: robh+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org,
+	alim.akhtar@samsung.com,
+	linux-spi@vger.kernel.org,
+	linux-samsung-soc@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-arch@vger.kernel.org,
+	andre.draszik@linaro.org,
+	peter.griffin@linaro.org,
+	semen.protsenko@linaro.org,
+	kernel-team@android.com,
+	willmcvicker@google.com,
+	Tudor Ambarus <tudor.ambarus@linaro.org>
+Subject: [PATCH 01/21] spi: dt-bindings: samsung: add google,gs101-spi compatible
+Date: Tue, 23 Jan 2024 15:34:00 +0000
+Message-ID: <20240123153421.715951-2-tudor.ambarus@linaro.org>
+X-Mailer: git-send-email 2.43.0.429.g432eaa2c6b-goog
+In-Reply-To: <20240123153421.715951-1-tudor.ambarus@linaro.org>
+References: <20240123153421.715951-1-tudor.ambarus@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ksPexoEfm+2lrFiK"
-Content-Disposition: inline
-In-Reply-To: <93385fc2-7596-4f66-b0c1-07d7d5c9ed8d@csgroup.eu>
-X-Cookie: Stay together, drag each other down.
+Content-Transfer-Encoding: 8bit
 
+Add "google,gs101-spi" dedicated compatible for representing SPI of
+Google GS101 SoC.
 
---ksPexoEfm+2lrFiK
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+---
+ Documentation/devicetree/bindings/spi/samsung,spi.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-On Tue, Jan 23, 2024 at 01:26:04PM +0000, Christophe Leroy wrote:
-> Le 23/01/2024 =E0 14:18, Mark Brown a =E9crit=A0:
-> > On Tue, Jan 23, 2024 at 12:04:30PM +0100, Herve Codina wrote:
+diff --git a/Documentation/devicetree/bindings/spi/samsung,spi.yaml b/Documentation/devicetree/bindings/spi/samsung,spi.yaml
+index 79da99ca0e53..386ea8b23993 100644
+--- a/Documentation/devicetree/bindings/spi/samsung,spi.yaml
++++ b/Documentation/devicetree/bindings/spi/samsung,spi.yaml
+@@ -17,6 +17,7 @@ properties:
+   compatible:
+     oneOf:
+       - enum:
++          - google,gs101-spi
+           - samsung,s3c2443-spi # for S3C2443, S3C2416 and S3C2450
+           - samsung,s3c6410-spi
+           - samsung,s5pv210-spi # for S5PV210 and S5PC110
+-- 
+2.43.0.429.g432eaa2c6b-goog
 
-> >> Moving the SPI_CS_CNT_MAX value from 4 to 8 is not enough to handle my=
- case.
-> >> Tested moving SPI_CS_CNT_MAX to 16 and it was ok.
-
-> > OK, I've also heard 12 as a number which this would cover.
-
-> By the way the comment in include/linux/spi/spi.h is confusing. This=20
-> SPI_CS_CNT_MAX is really not the max number of CS supported per SPI=20
-> device but the max number of CS supported per SPI controller.
-
-Well, it's a combination of the comment being confusing and the
-implementation being a bit broken - we simply shouldn't be limiting the
-number of chip selects per controller, the per device limit is much more
-reasonable.  So ideally the code would be changed to reflect the
-comment.
-
---ksPexoEfm+2lrFiK
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmWvxOkACgkQJNaLcl1U
-h9DsFgf/QUPZ739YoVwE9AXX/Fu7c+/pK0+faTgklg4rcrPdwL4KfG2hDxeSCIgO
-VrIS2x9/tHUAm8Ghk7K5gh8CT8QpNm999loqbnAir3W0NUc2maVrLhXq7CLheFD8
-qL4RXybqiojosu1HFZdmJTK7K+qgMxJ4sxXGc+yBk2Eh+wN7SBI5UH8YX7oLMoGx
-+bUYOZ6PV52rx8ZxUp2t4AOk8y6lmeWv9aDvkkTl7mTk733N21TjOHvT9QIolcyM
-WPK3SZ6/8WNu52LOFkkf2QeXrhAQ52jeiI1MXaKSfv9U0MxTG8074g6YiiBNzm4A
-7GzfXCbs1EXXZ6Zs2feBR2DLcTSqFA==
-=zIhb
------END PGP SIGNATURE-----
-
---ksPexoEfm+2lrFiK--

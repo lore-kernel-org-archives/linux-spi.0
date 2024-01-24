@@ -1,200 +1,95 @@
-Received: from mx0b-001ae601.pphosted.com (mx0b-001ae601.pphosted.com [67.231.152.168])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41D347A73E;
-	Wed, 24 Jan 2024 15:30:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.152.168
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A9697CF0F;
+	Wed, 24 Jan 2024 16:08:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706110229; cv=none; b=dHUUsKOGF4RksU70FWNSmy/ViiOhF9VhMXZ2Wr7un0LvHrmM4mqvkiiPuhAg9jRzo6Ht452tdZ2HryyNeZJUEb/bUqEst1y9oSdr0qubOMdH+2pcyhG200xZSl7kZygv1L/FvJF9spMpM45XS3f5V9UheTI98/6L29umuL+GuQY=
+	t=1706112507; cv=none; b=sf8dscwkNa6RsScf/86zMCnkioKdgDDaFJiJSTlgU3TxfxLcgqzLPzRe6kr96kICsD3O3bAQukw9tx8baLogKeBKOQZ1oYnvKwbHE+tHq7hyVEQdoSFY8rR2eI+D7T9CfKMmEgC0FKJC8nlYO2ZWRqDIS+Y9zDZpgrEoe7ZjSho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706110229; c=relaxed/simple;
-	bh=q1qljiRKaxjntRw5kG7QwnLqBgJ0tPa/yRRn7mQMqbE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZzuYO2Jsf9jD1W2/okK+p/Q/RIikKZeS3mOwgy7uvRfDPqBhmUj4SY47D/Wf/xBD477UVS4jhGR7tE9J58a3rQ2VppFjw2qHrwoQ4SHBuuhruLHcqjiF/SsssiNxgYUfO9K13K/HrW8d6Nj5a4CgH2LnA93aVtNepJx5TwQi6yk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com; spf=pass smtp.mailfrom=opensource.cirrus.com; dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b=HWPNmwS5; arc=none smtp.client-ip=67.231.152.168
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensource.cirrus.com
+	s=arc-20240116; t=1706112507; c=relaxed/simple;
+	bh=DaWdpN7BwW9Rz3N8clEZtNYY2V+QP/urU1Sjx36U/Bk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oAQiOrSyDRqDXh1rvDrskykIG+QVw34qgQOetyPqwUQUvM0cGOUfdqFav0IucDbqrI9vHIKiJF6UenCA0askaBKVAuEvqfzyeAw7EMtliEycwvF5gTPFIeP0RGz6nlGUBqy2kXSWESKXLhM7Q8g28lvLT+a0dINoOFUT6dcbfE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RihsbLcV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b="HWPNmwS5"
-Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
-	by mx0b-001ae601.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40O8MvMp030107;
-	Wed, 24 Jan 2024 09:30:21 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=
-	from:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-transfer-encoding:content-type; s=
-	PODMain02222019; bh=DjhIKQsx+swONFXaIPFE3+Q7LSkupW8SdUx6aCYcm08=; b=
-	HWPNmwS5/OVqhYrm/vEuYjjefPPFMufxudHfOgq0uSm3fRhq2U173znDXxXIHNJR
-	PKKF6U4wSV6VNm+5QCS2NpCr6vUbqpRQn7bmsmwcKHNUWSKjXSx6LHVa/ibh2hEb
-	P9DPbhVkvyJCHIe6U8viVIkVYMS8nm4FzNnvpNIV7uvcQjUAmsjcemzWwjUB9/Ut
-	5P5KWKkuuNLCTHIr6yKRAUtei1ZCvUMqpa3hr9GFA6Gyas850QUkNYPzYQhI0v/K
-	2q1mAJV44O6fu85KjVBCCMW1BMg0eyCoRT2P6yr8PVBIlfobJCL8/vWMlgrLP/Th
-	mJLCYkc8WATva3vt8N7dig==
-Received: from ediex01.ad.cirrus.com ([84.19.233.68])
-	by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 3vtmf9ryqc-5
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 24 Jan 2024 09:30:20 -0600 (CST)
-Received: from ediex02.ad.cirrus.com (198.61.84.81) by ediex01.ad.cirrus.com
- (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 24 Jan
- 2024 15:30:16 +0000
-Received: from ediswmail9.ad.cirrus.com (198.61.86.93) by
- anon-ediex02.ad.cirrus.com (198.61.84.81) with Microsoft SMTP Server id
- 15.2.1118.40 via Frontend Transport; Wed, 24 Jan 2024 15:30:16 +0000
-Received: from ediswws07.ad.cirrus.com (ediswws07.ad.cirrus.com [198.90.208.14])
-	by ediswmail9.ad.cirrus.com (Postfix) with ESMTP id BAFC7820249;
-	Wed, 24 Jan 2024 15:30:16 +0000 (UTC)
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
-To: <lee@kernel.org>, <broonie@kernel.org>
-CC: <andy.shevchenko@gmail.com>, <alsa-devel@alsa-project.org>,
-        <patches@opensource.cirrus.com>, <linux-kernel@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>
-Subject: [PATCH v2 4/6] mfd: cs42l43: Add time postfixes on defines
-Date: Wed, 24 Jan 2024 15:30:14 +0000
-Message-ID: <20240124153016.1541616-4-ckeepax@opensource.cirrus.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20240124153016.1541616-1-ckeepax@opensource.cirrus.com>
-References: <20240124153016.1541616-1-ckeepax@opensource.cirrus.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RihsbLcV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FE91C433C7;
+	Wed, 24 Jan 2024 16:08:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706112507;
+	bh=DaWdpN7BwW9Rz3N8clEZtNYY2V+QP/urU1Sjx36U/Bk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RihsbLcVCC6tH/nJwjn7CCvFgwm8zNWzNMQq6aGrHx04N1lljeiUcNpM8F96CR+JW
+	 XbYFOgVdK1D/kSgWO49KB+iQsthwA3p3z/QaQg4NQBvHfT7/0o09sLfHnRzctIwm1D
+	 NJf2ErpXMaQMZfZGNtE+fLccoHe+jcP34ol9dTcaFVPU6nfjNGDzu5nsH0pJyGEHYX
+	 79GCzjK4/CY1Q7Jr+XHS5g/FqPATtiu+a0B8eecWxIDqcrjI0K3AlrnZ4E0RHaZCOr
+	 qU2PC9fO5iN+EUJOetdXdVvgvxnNuDnriE/uk3FM6IggoE/hKO7HSoV3DTG5DLREvf
+	 7TlGEc9ULeVbw==
+Date: Wed, 24 Jan 2024 16:08:22 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Jonas Gorski <jonas.gorski@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH] spi: Raise limit on number of chip selects
+Message-ID: <e7e5982b-7b85-477d-8649-a58ea1d40e29@sirena.org.uk>
+References: <20240122-spi-multi-cs-max-v1-1-a7e98cd5f6c7@kernel.org>
+ <20240123120430.75c7ace0@bootlin.com>
+ <cefafa30-b78d-471b-83e0-b05060d806d4@sirena.org.uk>
+ <93385fc2-7596-4f66-b0c1-07d7d5c9ed8d@csgroup.eu>
+ <49b52941-6205-48bd-b2ae-e334018ac5cd@sirena.org.uk>
+ <CAOiHx==FzSyyqP3NzLTeOSVxUQYy3ZhypZrDLsc-OjGCdSzvUA@mail.gmail.com>
+ <801eecbe-4bf9-4bb8-9de0-1a7ca6673ddf@roeck-us.net>
+ <CAOiHx=mM7kpzR-MOshsgXZM+CSB0nawfWxMhpt=tuhmJyMTCzQ@mail.gmail.com>
+ <38630519-733c-4598-97a7-19a5e6306513@sirena.org.uk>
+ <bc19929e-8231-4bb6-bb36-555a68cb7335@csgroup.eu>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: _wosBvJXISbzl8day1vReIkCMywQVGoO
-X-Proofpoint-ORIG-GUID: _wosBvJXISbzl8day1vReIkCMywQVGoO
-X-Proofpoint-Spam-Reason: safe
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="La/ghchXRX65G8k0"
+Content-Disposition: inline
+In-Reply-To: <bc19929e-8231-4bb6-bb36-555a68cb7335@csgroup.eu>
+X-Cookie: To err is human, to moo bovine.
 
-Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
----
 
-No changes since v1.
+--La/ghchXRX65G8k0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
- drivers/mfd/cs42l43.c | 36 ++++++++++++++++++------------------
- 1 file changed, 18 insertions(+), 18 deletions(-)
+On Wed, Jan 24, 2024 at 03:28:32PM +0000, Christophe Leroy wrote:
 
-diff --git a/drivers/mfd/cs42l43.c b/drivers/mfd/cs42l43.c
-index 65a331481d975..aea0f8f485785 100644
---- a/drivers/mfd/cs42l43.c
-+++ b/drivers/mfd/cs42l43.c
-@@ -27,30 +27,30 @@
- 
- #include "cs42l43.h"
- 
--#define CS42L43_RESET_DELAY			20
-+#define CS42L43_RESET_DELAY_MS			20
- 
--#define CS42L43_SDW_ATTACH_TIMEOUT		500
--#define CS42L43_SDW_DETACH_TIMEOUT		100
-+#define CS42L43_SDW_ATTACH_TIMEOUT_MS		500
-+#define CS42L43_SDW_DETACH_TIMEOUT_MS		100
- 
- #define CS42L43_MCU_BOOT_STAGE1			1
- #define CS42L43_MCU_BOOT_STAGE2			2
- #define CS42L43_MCU_BOOT_STAGE3			3
- #define CS42L43_MCU_BOOT_STAGE4			4
--#define CS42L43_MCU_POLL			5000
--#define CS42L43_MCU_CMD_TIMEOUT			20000
-+#define CS42L43_MCU_POLL_US			5000
-+#define CS42L43_MCU_CMD_TIMEOUT_US		20000
- #define CS42L43_MCU_UPDATE_FORMAT		3
- #define CS42L43_MCU_UPDATE_OFFSET		0x100000
--#define CS42L43_MCU_UPDATE_TIMEOUT		500000
-+#define CS42L43_MCU_UPDATE_TIMEOUT_US		500000
- #define CS42L43_MCU_UPDATE_RETRIES		5
- 
- #define CS42L43_MCU_SUPPORTED_REV		0x2105
- #define CS42L43_MCU_SHADOW_REGS_REQUIRED_REV	0x2200
- #define CS42L43_MCU_SUPPORTED_BIOS_REV		0x0001
- 
--#define CS42L43_VDDP_DELAY			50
--#define CS42L43_VDDD_DELAY			1000
-+#define CS42L43_VDDP_DELAY_US			50
-+#define CS42L43_VDDD_DELAY_US			1000
- 
--#define CS42L43_AUTOSUSPEND_TIME		250
-+#define CS42L43_AUTOSUSPEND_TIME_MS		250
- 
- struct cs42l43_patch_header {
- 	__le16 version;
-@@ -538,10 +538,10 @@ static int cs42l43_soft_reset(struct cs42l43 *cs42l43)
- 	regcache_cache_only(cs42l43->regmap, true);
- 	regmap_multi_reg_write_bypassed(cs42l43->regmap, reset, ARRAY_SIZE(reset));
- 
--	msleep(CS42L43_RESET_DELAY);
-+	msleep(CS42L43_RESET_DELAY_MS);
- 
- 	if (cs42l43->sdw) {
--		unsigned long timeout = msecs_to_jiffies(CS42L43_SDW_DETACH_TIMEOUT);
-+		unsigned long timeout = msecs_to_jiffies(CS42L43_SDW_DETACH_TIMEOUT_MS);
- 		unsigned long time;
- 
- 		time = wait_for_completion_timeout(&cs42l43->device_detach, timeout);
-@@ -561,7 +561,7 @@ static int cs42l43_soft_reset(struct cs42l43 *cs42l43)
- static int cs42l43_wait_for_attach(struct cs42l43 *cs42l43)
- {
- 	if (!cs42l43->attached) {
--		unsigned long timeout = msecs_to_jiffies(CS42L43_SDW_ATTACH_TIMEOUT);
-+		unsigned long timeout = msecs_to_jiffies(CS42L43_SDW_ATTACH_TIMEOUT_MS);
- 		unsigned long time;
- 
- 		time = wait_for_completion_timeout(&cs42l43->device_attach, timeout);
-@@ -603,7 +603,7 @@ static int cs42l43_mcu_stage_2_3(struct cs42l43 *cs42l43, bool shadow)
- 
- 	ret = regmap_read_poll_timeout(cs42l43->regmap, CS42L43_BOOT_STATUS,
- 				       val, (val == CS42L43_MCU_BOOT_STAGE3),
--				       CS42L43_MCU_POLL, CS42L43_MCU_CMD_TIMEOUT);
-+				       CS42L43_MCU_POLL_US, CS42L43_MCU_CMD_TIMEOUT_US);
- 	if (ret) {
- 		dev_err(cs42l43->dev, "Failed to move to stage 3: %d, 0x%x\n", ret, val);
- 		return ret;
-@@ -652,7 +652,7 @@ static int cs42l43_mcu_disable(struct cs42l43 *cs42l43)
- 
- 	ret = regmap_read_poll_timeout(cs42l43->regmap, CS42L43_SOFT_INT_SHADOW, val,
- 				       (val & CS42L43_CONTROL_APPLIED_INT_MASK),
--				       CS42L43_MCU_POLL, CS42L43_MCU_CMD_TIMEOUT);
-+				       CS42L43_MCU_POLL_US, CS42L43_MCU_CMD_TIMEOUT_US);
- 	if (ret) {
- 		dev_err(cs42l43->dev, "Failed to disable firmware: %d, 0x%x\n", ret, val);
- 		return ret;
-@@ -696,7 +696,7 @@ static void cs42l43_mcu_load_firmware(const struct firmware *firmware, void *con
- 
- 	ret = regmap_read_poll_timeout(cs42l43->regmap, CS42L43_SOFT_INT_SHADOW, val,
- 				       (val & CS42L43_PATCH_APPLIED_INT_MASK),
--				       CS42L43_MCU_POLL, CS42L43_MCU_UPDATE_TIMEOUT);
-+				       CS42L43_MCU_POLL_US, CS42L43_MCU_UPDATE_TIMEOUT_US);
- 	if (ret) {
- 		dev_err(cs42l43->dev, "Failed to update firmware: %d, 0x%x\n", ret, val);
- 		cs42l43->firmware_error = ret;
-@@ -957,7 +957,7 @@ static int cs42l43_power_up(struct cs42l43 *cs42l43)
- 	}
- 
- 	/* vdd-p must be on for 50uS before any other supply */
--	usleep_range(CS42L43_VDDP_DELAY, 2 * CS42L43_VDDP_DELAY);
-+	usleep_range(CS42L43_VDDP_DELAY_US, 2 * CS42L43_VDDP_DELAY_US);
- 
- 	gpiod_set_value_cansleep(cs42l43->reset, 1);
- 
-@@ -973,7 +973,7 @@ static int cs42l43_power_up(struct cs42l43 *cs42l43)
- 		goto err_core_supplies;
- 	}
- 
--	usleep_range(CS42L43_VDDD_DELAY, 2 * CS42L43_VDDD_DELAY);
-+	usleep_range(CS42L43_VDDD_DELAY_US, 2 * CS42L43_VDDD_DELAY_US);
- 
- 	return 0;
- 
-@@ -1057,7 +1057,7 @@ int cs42l43_dev_probe(struct cs42l43 *cs42l43)
- 	if (ret)
- 		return ret;
- 
--	pm_runtime_set_autosuspend_delay(cs42l43->dev, CS42L43_AUTOSUSPEND_TIME);
-+	pm_runtime_set_autosuspend_delay(cs42l43->dev, CS42L43_AUTOSUSPEND_TIME_MS);
- 	pm_runtime_use_autosuspend(cs42l43->dev);
- 	pm_runtime_set_active(cs42l43->dev);
- 	/*
--- 
-2.30.2
+> Should we revert that commit 4d8ff6b0991d ("spi: Add multi-cs memories=20
+> support in SPI core") and implement something simpler ?
 
+I really don't want to keep going through the pain with having people
+constantly adding access for chip select that bypass the helpers if we
+can avoid it, there's been a constant need for fixups which have just
+added to the pain with the multi CS stuff.  My thinking was to get the
+API in place and then improve the implementation behind it.
+
+--La/ghchXRX65G8k0
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmWxNfUACgkQJNaLcl1U
+h9ANugf/ZmDCYh5tXW2idgNrbFAju9Znmq74ViirQWDW6ezLyn3RTrKW3DErXQFA
+KZR5lkvczxXmU2MGa3Po06YCvGwkSTbNPydt1k9U2eZJ+J6tS8Rf+wKQFbsbg4IC
+8SsYWl4muzcTU12DdIIrNwpb4m6IQNGIaoSlDgC9Nr1k0rX4SGnbLtS1cCKspaDA
+Gc6VnRxjITw1NxqXbA8lWXT/DR4ESVCcUvIpKfnkhqaceWy26o6lJTkzYBhqx//3
+vW6lZZGOqz9BwDNgim/I0RWkus3Rn5rTP5vCwejLvBCuQaki7MS7qfmrCrDfOA1+
+uny2FStMImMdPvWqoi79dau1Kc/PdA==
+=dJ/B
+-----END PGP SIGNATURE-----
+
+--La/ghchXRX65G8k0--

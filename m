@@ -1,57 +1,59 @@
 Received: from mx0b-001ae601.pphosted.com (mx0b-001ae601.pphosted.com [67.231.152.168])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7544409;
-	Wed, 24 Jan 2024 15:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ADD27A707;
+	Wed, 24 Jan 2024 15:30:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.152.168
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706110227; cv=none; b=UkRkjli76IBC4FV+cPQGhwBzdxZGZvdBxnzUlRbCEEjs2tu9sJuVWbxH/O/it6I78bx0ashz3rrKTmLOiUzWLEm+O3nJJKm+rTM6FvQ0CJgnFL4N/4TcXz05qRRl/9mZDApxDPLD0CHzKJzoK3FWHroYHhsk3K2pqwrowo3vCPk=
+	t=1706110228; cv=none; b=X7qe0K3Ndjt09ljaNlki6+QWrYbk8BSKltBixlRrBaLvJfvLZeaTWQ28pfhBz+xVjQCZsYcrNWPNLylVnZbYuJxQJ6pmwHGJ2vhaM8Y4NwtWyOrbrkL//OzASy3/9FUJBt+EycMWRvG4/nOsHFuQgU//uFNG4Ox2eK5PAJqcH68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706110227; c=relaxed/simple;
-	bh=xX8V+ooBoGuO9/qAZe63ZvqC3unGlMbM7oteiXO0RC4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=X+kjZyIHxuY2+7viC3Hk5F9sALPGnp4FLmdK1rJ1rXaJB/xA5K2n4eHVjYmthVLDkpFNA4l6WJuGGG737+ZiIFVgWsUVYQ0FMSJyySkKWlc5rdVvVPedLWOjKdj91PBP1CVea3FqItrhNqFs8sGPwTElkBhCP9BpQZkgkiDys0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com; spf=pass smtp.mailfrom=opensource.cirrus.com; dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b=LweXCt7J; arc=none smtp.client-ip=67.231.152.168
+	s=arc-20240116; t=1706110228; c=relaxed/simple;
+	bh=dwNSFLpQJ15WSNLHQJc0HWdI5vgJK4PLbibeEt3onbM=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=R9yqIV4h6u4ESD1wXfBMaPlb6umB5pyVHbkIEG+3RaN+sQI5icuQmsWg3V3YVitzRnZvSYgxCfr/kP1U2tAIIc9UHMnV77V+xASAVs0QOlZreJfqOxYsvhpajXgb5jVYc4GU46GnTPRflzWejqNdDqrT4oYCuwi8TLQofXTx4JU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com; spf=pass smtp.mailfrom=opensource.cirrus.com; dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b=m3cpJ6vr; arc=none smtp.client-ip=67.231.152.168
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensource.cirrus.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b="LweXCt7J"
+	dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b="m3cpJ6vr"
 Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
-	by mx0b-001ae601.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40O8MvMl030107;
-	Wed, 24 Jan 2024 09:30:18 -0600
+	by mx0b-001ae601.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40O8MvMn030107;
+	Wed, 24 Jan 2024 09:30:19 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=
-	from:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding:content-type; s=PODMain02222019; bh=l
-	RLqdGz9nV9jBTZzuw5ozwQtDA2zkxWRDOuyDlnnA78=; b=LweXCt7JqcK49xNqX
-	jp/83OkDlTze3OwnFiOBAR2BUrWPPy3ikkugkAcdCc7bNBsxBOAylOB0QiqSYNJr
-	Xnd9kWLFasRG7pAbdJpobqUV6a3XRP7s41pRXKfyzmm98DkcheM26N0fiUaEOj2Y
-	I/RO4rdrwJoc/OgG9JHPMqoCKgb7N3lvKcv7a9BtaCNwTqDz+pPX0o3PMcM7lFbF
-	p8PNYvGaWf45HSIV6e+y2ZRegGU9uJRX3soOUiSxVMreZzSCSx3s42AQV7dYe68c
-	5pOy22uQtZzd5k+FoKAHaarDBypFg7neXNfws3El6CvQUFhjMttQqiWnj/DdSliE
-	dFhZA==
+	from:to:cc:subject:date:message-id:in-reply-to:references
+	:mime-version:content-transfer-encoding:content-type; s=
+	PODMain02222019; bh=3wVnz+qTDhd7ewymUmUS+IuKvNXLSEtQi0GPLXhpiT0=; b=
+	m3cpJ6vr/YsEf11Pw5ubyLoyQUN5DQGyV0NH7Y41V7Z+oRk9aHEoKwSwzexEUK+T
+	EpjpRsej/rMkxErRj58nk8ZN5ZrtmA2W6x+fL87NIAwmC7iaasUxbks6xhkxHFfm
+	G/m2gSluhoAvxmwQUyg4r6M3F4jVt/HBAjETHak8vCn5n0jVVVdtBO5ofltWUoCV
+	4Pi3EDoA5xIUQOgPAgmBZ9NonPEJ/mDsvQx6ZK4ET/nknOQEGMM5wPA2YuhPoeN5
+	o2fQAudasr+J+A6vFf0AbT73RC+O+95f//oy6Wx8mibsVwT/SU0ELKKaNcKMf//b
+	dqt51C/Rc6q4cqV+G0OG1w==
 Received: from ediex01.ad.cirrus.com ([84.19.233.68])
-	by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 3vtmf9ryqc-1
+	by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 3vtmf9ryqc-3
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 24 Jan 2024 09:30:18 -0600 (CST)
-Received: from ediex01.ad.cirrus.com (198.61.84.80) by ediex01.ad.cirrus.com
+	Wed, 24 Jan 2024 09:30:19 -0600 (CST)
+Received: from ediex02.ad.cirrus.com (198.61.84.81) by ediex01.ad.cirrus.com
  (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 24 Jan
  2024 15:30:16 +0000
 Received: from ediswmail9.ad.cirrus.com (198.61.86.93) by
- ediex01.ad.cirrus.com (198.61.84.80) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ anon-ediex02.ad.cirrus.com (198.61.84.81) with Microsoft SMTP Server id
  15.2.1118.40 via Frontend Transport; Wed, 24 Jan 2024 15:30:16 +0000
 Received: from ediswws07.ad.cirrus.com (ediswws07.ad.cirrus.com [198.90.208.14])
-	by ediswmail9.ad.cirrus.com (Postfix) with ESMTP id 98D63820246;
+	by ediswmail9.ad.cirrus.com (Postfix) with ESMTP id CAFCB82024B;
 	Wed, 24 Jan 2024 15:30:16 +0000 (UTC)
 From: Charles Keepax <ckeepax@opensource.cirrus.com>
 To: <lee@kernel.org>, <broonie@kernel.org>
 CC: <andy.shevchenko@gmail.com>, <alsa-devel@alsa-project.org>,
         <patches@opensource.cirrus.com>, <linux-kernel@vger.kernel.org>,
         <linux-spi@vger.kernel.org>
-Subject: [PATCH v2 1/6] spi: cs42l43: Tidy up header includes
-Date: Wed, 24 Jan 2024 15:30:11 +0000
-Message-ID: <20240124153016.1541616-1-ckeepax@opensource.cirrus.com>
+Subject: [PATCH v2 6/6] mfd: cs42l43: Handle error from devm_pm_runtime_enable
+Date: Wed, 24 Jan 2024 15:30:16 +0000
+Message-ID: <20240124153016.1541616-6-ckeepax@opensource.cirrus.com>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20240124153016.1541616-1-ckeepax@opensource.cirrus.com>
+References: <20240124153016.1541616-1-ckeepax@opensource.cirrus.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -60,45 +62,37 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-GUID: m-fKSUnpiyZc6hYMIqEPaZ1VCktx70Fo
-X-Proofpoint-ORIG-GUID: m-fKSUnpiyZc6hYMIqEPaZ1VCktx70Fo
+X-Proofpoint-GUID: c8Z7e5c67-GQC_sft4G-zoF0go-TruDf
+X-Proofpoint-ORIG-GUID: c8Z7e5c67-GQC_sft4G-zoF0go-TruDf
 X-Proofpoint-Spam-Reason: safe
 
-Including some missing headers.
+As it devm_pm_runtime_enable can fail due to memory allocations, it is
+best to handle the error.
 
 Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Acked-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
 ---
 
-Changes since v1:
- - Moved to start of the series
+No changes since v1.
 
-The changes to the MFD headers necessitate the inclusion of of.h here to
-keep things building, hence my including this SPI change in the this MFD
-series. The rest of the SPI fixups will be sent separately, as they are
-also not dependent on this change.
+ drivers/mfd/cs42l43.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Thanks,
-Charles
-
- drivers/spi/spi-cs42l43.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/spi/spi-cs42l43.c b/drivers/spi/spi-cs42l43.c
-index d239fc5a49ccc..fb62807fc991c 100644
---- a/drivers/spi/spi-cs42l43.c
-+++ b/drivers/spi/spi-cs42l43.c
-@@ -11,7 +11,9 @@
- #include <linux/errno.h>
- #include <linux/mfd/cs42l43.h>
- #include <linux/mfd/cs42l43-regs.h>
-+#include <linux/mod_devicetable.h>
- #include <linux/module.h>
-+#include <linux/of.h>
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
- #include <linux/regmap.h>
+diff --git a/drivers/mfd/cs42l43.c b/drivers/mfd/cs42l43.c
+index aea0f8f485785..56bd9dbbe10b0 100644
+--- a/drivers/mfd/cs42l43.c
++++ b/drivers/mfd/cs42l43.c
+@@ -1065,7 +1065,9 @@ int cs42l43_dev_probe(struct cs42l43 *cs42l43)
+ 	 * the boot work runs.
+ 	 */
+ 	pm_runtime_get_noresume(cs42l43->dev);
+-	devm_pm_runtime_enable(cs42l43->dev);
++	ret = devm_pm_runtime_enable(cs42l43->dev);
++	if (ret)
++		return ret;
+ 
+ 	queue_work(system_long_wq, &cs42l43->boot_work);
+ 
 -- 
 2.30.2
 

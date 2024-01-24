@@ -1,56 +1,56 @@
-Received: from mx0b-001ae601.pphosted.com (mx0a-001ae601.pphosted.com [67.231.149.25])
+Received: from mx0b-001ae601.pphosted.com (mx0b-001ae601.pphosted.com [67.231.152.168])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448447A729;
-	Wed, 24 Jan 2024 15:30:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.149.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41D347A73E;
+	Wed, 24 Jan 2024 15:30:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.152.168
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706110228; cv=none; b=fGpVmg/HTR/0B0gsfm5GbGpdV2HvvpWQD2xNDgWXMEuroIYxhsMKmI2Dj7flP7ehfT+Z4PsR8+tNSkt3dV9LC5/zBx16KVxIncGyvBelqlmaWXkoTQ68TkOJHmvcQD8Jzwq2mzzHccHyvhY+11axhmu12bR85xtA54zEkgJfpjg=
+	t=1706110229; cv=none; b=dHUUsKOGF4RksU70FWNSmy/ViiOhF9VhMXZ2Wr7un0LvHrmM4mqvkiiPuhAg9jRzo6Ht452tdZ2HryyNeZJUEb/bUqEst1y9oSdr0qubOMdH+2pcyhG200xZSl7kZygv1L/FvJF9spMpM45XS3f5V9UheTI98/6L29umuL+GuQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706110228; c=relaxed/simple;
-	bh=wYSLCOGRNXXv1Vi8jzuH0RFFj80iLBVjvc3k9ghGQDo=;
+	s=arc-20240116; t=1706110229; c=relaxed/simple;
+	bh=q1qljiRKaxjntRw5kG7QwnLqBgJ0tPa/yRRn7mQMqbE=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YzXBztO8J2+49/PkewNtlhVx+yp9hbZnElU/k1kl0TlGTT7jm3HMKNEO6byntX/uq8nOl+ius61+kqKpkkgUXLXkvvJ4N4nLaI3pqVaOVcc17aFc27k0upE09Wf6lCgnoSf6+JWA7eKPhy4jlIqMhnqAGTHni49fx3XqLxG5+LA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com; spf=pass smtp.mailfrom=opensource.cirrus.com; dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b=aH65Nxxk; arc=none smtp.client-ip=67.231.149.25
+	 MIME-Version:Content-Type; b=ZzuYO2Jsf9jD1W2/okK+p/Q/RIikKZeS3mOwgy7uvRfDPqBhmUj4SY47D/Wf/xBD477UVS4jhGR7tE9J58a3rQ2VppFjw2qHrwoQ4SHBuuhruLHcqjiF/SsssiNxgYUfO9K13K/HrW8d6Nj5a4CgH2LnA93aVtNepJx5TwQi6yk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com; spf=pass smtp.mailfrom=opensource.cirrus.com; dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b=HWPNmwS5; arc=none smtp.client-ip=67.231.152.168
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensource.cirrus.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b="aH65Nxxk"
-Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
-	by mx0a-001ae601.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40O5ABcJ018377;
-	Wed, 24 Jan 2024 09:30:19 -0600
+	dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b="HWPNmwS5"
+Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
+	by mx0b-001ae601.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40O8MvMp030107;
+	Wed, 24 Jan 2024 09:30:21 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=
 	from:to:cc:subject:date:message-id:in-reply-to:references
 	:mime-version:content-transfer-encoding:content-type; s=
-	PODMain02222019; bh=E2XWBHwq6ltlZasJbVG3NX2UFpIfLf7u9nZRl21LhxE=; b=
-	aH65NxxknFPzb6+Mg4oTB/tdjPkpk8lRRnacmPCJcfp1hhuGVjk6d4kIn/OmnbjZ
-	Wg9y6n4YYSne60qFsKqCaIdcLMWLNxQnkC5U1vhsx0aZ6/18ca1FXSoqStqi5tVS
-	OncF9gUGZl4KElLuMnYlS+eweDKb0onBdIDkulUi9vuiUqE163vikRTnW1XBxIZ2
-	p/JW/hVxFiYip95AfH6mV3bBq1qQfFg9y8oz3PYY3Tycum7dFNfTXQcLwqIN/EBa
-	BR5Oij1WSzS5/E8bkFzUITwvWpns7b1Dvr28W8cVYCFs3Z+2oxGpm+PIfiWzgW3D
-	j5Z44c1mzAb9wXpaM+AdJg==
-Received: from ediex02.ad.cirrus.com ([84.19.233.68])
-	by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 3vtmfhgyrg-1
+	PODMain02222019; bh=DjhIKQsx+swONFXaIPFE3+Q7LSkupW8SdUx6aCYcm08=; b=
+	HWPNmwS5/OVqhYrm/vEuYjjefPPFMufxudHfOgq0uSm3fRhq2U173znDXxXIHNJR
+	PKKF6U4wSV6VNm+5QCS2NpCr6vUbqpRQn7bmsmwcKHNUWSKjXSx6LHVa/ibh2hEb
+	P9DPbhVkvyJCHIe6U8viVIkVYMS8nm4FzNnvpNIV7uvcQjUAmsjcemzWwjUB9/Ut
+	5P5KWKkuuNLCTHIr6yKRAUtei1ZCvUMqpa3hr9GFA6Gyas850QUkNYPzYQhI0v/K
+	2q1mAJV44O6fu85KjVBCCMW1BMg0eyCoRT2P6yr8PVBIlfobJCL8/vWMlgrLP/Th
+	mJLCYkc8WATva3vt8N7dig==
+Received: from ediex01.ad.cirrus.com ([84.19.233.68])
+	by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 3vtmf9ryqc-5
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 24 Jan 2024 09:30:18 -0600 (CST)
-Received: from ediex02.ad.cirrus.com (198.61.84.81) by ediex02.ad.cirrus.com
- (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
+	Wed, 24 Jan 2024 09:30:20 -0600 (CST)
+Received: from ediex02.ad.cirrus.com (198.61.84.81) by ediex01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 24 Jan
  2024 15:30:16 +0000
 Received: from ediswmail9.ad.cirrus.com (198.61.86.93) by
  anon-ediex02.ad.cirrus.com (198.61.84.81) with Microsoft SMTP Server id
  15.2.1118.40 via Frontend Transport; Wed, 24 Jan 2024 15:30:16 +0000
 Received: from ediswws07.ad.cirrus.com (ediswws07.ad.cirrus.com [198.90.208.14])
-	by ediswmail9.ad.cirrus.com (Postfix) with ESMTP id ABAF5820247;
+	by ediswmail9.ad.cirrus.com (Postfix) with ESMTP id BAFC7820249;
 	Wed, 24 Jan 2024 15:30:16 +0000 (UTC)
 From: Charles Keepax <ckeepax@opensource.cirrus.com>
 To: <lee@kernel.org>, <broonie@kernel.org>
 CC: <andy.shevchenko@gmail.com>, <alsa-devel@alsa-project.org>,
         <patches@opensource.cirrus.com>, <linux-kernel@vger.kernel.org>,
         <linux-spi@vger.kernel.org>
-Subject: [PATCH v2 2/6] mfd: cs42l43: Tidy up header includes
-Date: Wed, 24 Jan 2024 15:30:12 +0000
-Message-ID: <20240124153016.1541616-2-ckeepax@opensource.cirrus.com>
+Subject: [PATCH v2 4/6] mfd: cs42l43: Add time postfixes on defines
+Date: Wed, 24 Jan 2024 15:30:14 +0000
+Message-ID: <20240124153016.1541616-4-ckeepax@opensource.cirrus.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20240124153016.1541616-1-ckeepax@opensource.cirrus.com>
 References: <20240124153016.1541616-1-ckeepax@opensource.cirrus.com>
@@ -62,12 +62,9 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: UpLMu7Puv_9W5cJe5TyYpu1GUr74z5EA
-X-Proofpoint-GUID: UpLMu7Puv_9W5cJe5TyYpu1GUr74z5EA
+X-Proofpoint-GUID: _wosBvJXISbzl8day1vReIkCMywQVGoO
+X-Proofpoint-ORIG-GUID: _wosBvJXISbzl8day1vReIkCMywQVGoO
 X-Proofpoint-Spam-Reason: safe
-
-Use more forward declarations, move header guards to cover other
-includes, and rely less on including headers through other headers.
 
 Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
@@ -75,142 +72,129 @@ Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
 
 No changes since v1.
 
- drivers/mfd/cs42l43-i2c.c   |  6 +++++-
- drivers/mfd/cs42l43-sdw.c   |  6 +++++-
- drivers/mfd/cs42l43.c       |  8 +++++++-
- drivers/mfd/cs42l43.h       |  9 +++++----
- include/linux/mfd/cs42l43.h | 13 +++++++------
- 5 files changed, 29 insertions(+), 13 deletions(-)
+ drivers/mfd/cs42l43.c | 36 ++++++++++++++++++------------------
+ 1 file changed, 18 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/mfd/cs42l43-i2c.c b/drivers/mfd/cs42l43-i2c.c
-index 4922211680c96..7162274a0b551 100644
---- a/drivers/mfd/cs42l43-i2c.c
-+++ b/drivers/mfd/cs42l43-i2c.c
-@@ -6,11 +6,15 @@
-  *                         Cirrus Logic International Semiconductor Ltd.
-  */
- 
-+#include <linux/array_size.h>
- #include <linux/err.h>
--#include <linux/errno.h>
- #include <linux/i2c.h>
-+#include <linux/mfd/cs42l43.h>
- #include <linux/mfd/cs42l43-regs.h>
-+#include <linux/mod_devicetable.h>
- #include <linux/module.h>
-+#include <linux/pm.h>
-+#include <linux/regmap.h>
- 
- #include "cs42l43.h"
- 
-diff --git a/drivers/mfd/cs42l43-sdw.c b/drivers/mfd/cs42l43-sdw.c
-index 1d85bbf8cdd5d..d6962a5a35f65 100644
---- a/drivers/mfd/cs42l43-sdw.c
-+++ b/drivers/mfd/cs42l43-sdw.c
-@@ -6,11 +6,15 @@
-  *                         Cirrus Logic International Semiconductor Ltd.
-  */
- 
-+#include <linux/array_size.h>
- #include <linux/device.h>
- #include <linux/err.h>
--#include <linux/errno.h>
-+#include <linux/mfd/cs42l43.h>
- #include <linux/mfd/cs42l43-regs.h>
-+#include <linux/mod_devicetable.h>
- #include <linux/module.h>
-+#include <linux/pm.h>
-+#include <linux/regmap.h>
- #include <linux/soundwire/sdw.h>
- #include <linux/soundwire/sdw_registers.h>
- #include <linux/soundwire/sdw_type.h>
 diff --git a/drivers/mfd/cs42l43.c b/drivers/mfd/cs42l43.c
-index 7b6d07cbe6fc6..4e2bc5ad244a5 100644
+index 65a331481d975..aea0f8f485785 100644
 --- a/drivers/mfd/cs42l43.c
 +++ b/drivers/mfd/cs42l43.c
-@@ -6,18 +6,24 @@
-  *                         Cirrus Logic International Semiconductor Ltd.
-  */
- 
-+#include <linux/array_size.h>
- #include <linux/bitops.h>
- #include <linux/build_bug.h>
- #include <linux/delay.h>
-+#include <linux/device.h>
- #include <linux/err.h>
--#include <linux/errno.h>
- #include <linux/firmware.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/jiffies.h>
- #include <linux/mfd/core.h>
-+#include <linux/mfd/cs42l43.h>
- #include <linux/mfd/cs42l43-regs.h>
- #include <linux/module.h>
-+#include <linux/pm.h>
- #include <linux/pm_runtime.h>
-+#include <linux/regmap.h>
- #include <linux/soundwire/sdw.h>
-+#include <linux/types.h>
+@@ -27,30 +27,30 @@
  
  #include "cs42l43.h"
  
-diff --git a/drivers/mfd/cs42l43.h b/drivers/mfd/cs42l43.h
-index eb4caf3938332..70129db9f916e 100644
---- a/drivers/mfd/cs42l43.h
-+++ b/drivers/mfd/cs42l43.h
-@@ -6,15 +6,16 @@
-  *                         Cirrus Logic International Semiconductor Ltd.
-  */
+-#define CS42L43_RESET_DELAY			20
++#define CS42L43_RESET_DELAY_MS			20
  
--#include <linux/mfd/cs42l43.h>
--#include <linux/pm.h>
--#include <linux/regmap.h>
--
- #ifndef CS42L43_CORE_INT_H
- #define CS42L43_CORE_INT_H
+-#define CS42L43_SDW_ATTACH_TIMEOUT		500
+-#define CS42L43_SDW_DETACH_TIMEOUT		100
++#define CS42L43_SDW_ATTACH_TIMEOUT_MS		500
++#define CS42L43_SDW_DETACH_TIMEOUT_MS		100
  
- #define CS42L43_N_DEFAULTS 176
+ #define CS42L43_MCU_BOOT_STAGE1			1
+ #define CS42L43_MCU_BOOT_STAGE2			2
+ #define CS42L43_MCU_BOOT_STAGE3			3
+ #define CS42L43_MCU_BOOT_STAGE4			4
+-#define CS42L43_MCU_POLL			5000
+-#define CS42L43_MCU_CMD_TIMEOUT			20000
++#define CS42L43_MCU_POLL_US			5000
++#define CS42L43_MCU_CMD_TIMEOUT_US		20000
+ #define CS42L43_MCU_UPDATE_FORMAT		3
+ #define CS42L43_MCU_UPDATE_OFFSET		0x100000
+-#define CS42L43_MCU_UPDATE_TIMEOUT		500000
++#define CS42L43_MCU_UPDATE_TIMEOUT_US		500000
+ #define CS42L43_MCU_UPDATE_RETRIES		5
  
-+struct cs42l43;
-+struct dev_pm_ops;
-+struct device;
-+struct reg_default;
-+
- extern const struct dev_pm_ops cs42l43_pm_ops;
- extern const struct reg_default cs42l43_reg_default[CS42L43_N_DEFAULTS];
+ #define CS42L43_MCU_SUPPORTED_REV		0x2105
+ #define CS42L43_MCU_SHADOW_REGS_REQUIRED_REV	0x2200
+ #define CS42L43_MCU_SUPPORTED_BIOS_REV		0x0001
  
-diff --git a/include/linux/mfd/cs42l43.h b/include/linux/mfd/cs42l43.h
-index cf8263aab41bd..2239d8585e785 100644
---- a/include/linux/mfd/cs42l43.h
-+++ b/include/linux/mfd/cs42l43.h
-@@ -6,20 +6,21 @@
-  *                         Cirrus Logic International Semiconductor Ltd.
-  */
+-#define CS42L43_VDDP_DELAY			50
+-#define CS42L43_VDDD_DELAY			1000
++#define CS42L43_VDDP_DELAY_US			50
++#define CS42L43_VDDD_DELAY_US			1000
  
-+#ifndef CS42L43_CORE_EXT_H
-+#define CS42L43_CORE_EXT_H
-+
- #include <linux/completion.h>
--#include <linux/device.h>
--#include <linux/gpio/consumer.h>
- #include <linux/mutex.h>
- #include <linux/regmap.h>
- #include <linux/regulator/consumer.h>
--#include <linux/soundwire/sdw.h>
- #include <linux/workqueue.h>
+-#define CS42L43_AUTOSUSPEND_TIME		250
++#define CS42L43_AUTOSUSPEND_TIME_MS		250
  
--#ifndef CS42L43_CORE_EXT_H
--#define CS42L43_CORE_EXT_H
--
- #define CS42L43_N_SUPPLIES		3
+ struct cs42l43_patch_header {
+ 	__le16 version;
+@@ -538,10 +538,10 @@ static int cs42l43_soft_reset(struct cs42l43 *cs42l43)
+ 	regcache_cache_only(cs42l43->regmap, true);
+ 	regmap_multi_reg_write_bypassed(cs42l43->regmap, reset, ARRAY_SIZE(reset));
  
-+struct device;
-+struct gpio_desc;
-+struct sdw_slave;
-+
- enum cs42l43_irq_numbers {
- 	CS42L43_PLL_LOST_LOCK,
- 	CS42L43_PLL_READY,
+-	msleep(CS42L43_RESET_DELAY);
++	msleep(CS42L43_RESET_DELAY_MS);
+ 
+ 	if (cs42l43->sdw) {
+-		unsigned long timeout = msecs_to_jiffies(CS42L43_SDW_DETACH_TIMEOUT);
++		unsigned long timeout = msecs_to_jiffies(CS42L43_SDW_DETACH_TIMEOUT_MS);
+ 		unsigned long time;
+ 
+ 		time = wait_for_completion_timeout(&cs42l43->device_detach, timeout);
+@@ -561,7 +561,7 @@ static int cs42l43_soft_reset(struct cs42l43 *cs42l43)
+ static int cs42l43_wait_for_attach(struct cs42l43 *cs42l43)
+ {
+ 	if (!cs42l43->attached) {
+-		unsigned long timeout = msecs_to_jiffies(CS42L43_SDW_ATTACH_TIMEOUT);
++		unsigned long timeout = msecs_to_jiffies(CS42L43_SDW_ATTACH_TIMEOUT_MS);
+ 		unsigned long time;
+ 
+ 		time = wait_for_completion_timeout(&cs42l43->device_attach, timeout);
+@@ -603,7 +603,7 @@ static int cs42l43_mcu_stage_2_3(struct cs42l43 *cs42l43, bool shadow)
+ 
+ 	ret = regmap_read_poll_timeout(cs42l43->regmap, CS42L43_BOOT_STATUS,
+ 				       val, (val == CS42L43_MCU_BOOT_STAGE3),
+-				       CS42L43_MCU_POLL, CS42L43_MCU_CMD_TIMEOUT);
++				       CS42L43_MCU_POLL_US, CS42L43_MCU_CMD_TIMEOUT_US);
+ 	if (ret) {
+ 		dev_err(cs42l43->dev, "Failed to move to stage 3: %d, 0x%x\n", ret, val);
+ 		return ret;
+@@ -652,7 +652,7 @@ static int cs42l43_mcu_disable(struct cs42l43 *cs42l43)
+ 
+ 	ret = regmap_read_poll_timeout(cs42l43->regmap, CS42L43_SOFT_INT_SHADOW, val,
+ 				       (val & CS42L43_CONTROL_APPLIED_INT_MASK),
+-				       CS42L43_MCU_POLL, CS42L43_MCU_CMD_TIMEOUT);
++				       CS42L43_MCU_POLL_US, CS42L43_MCU_CMD_TIMEOUT_US);
+ 	if (ret) {
+ 		dev_err(cs42l43->dev, "Failed to disable firmware: %d, 0x%x\n", ret, val);
+ 		return ret;
+@@ -696,7 +696,7 @@ static void cs42l43_mcu_load_firmware(const struct firmware *firmware, void *con
+ 
+ 	ret = regmap_read_poll_timeout(cs42l43->regmap, CS42L43_SOFT_INT_SHADOW, val,
+ 				       (val & CS42L43_PATCH_APPLIED_INT_MASK),
+-				       CS42L43_MCU_POLL, CS42L43_MCU_UPDATE_TIMEOUT);
++				       CS42L43_MCU_POLL_US, CS42L43_MCU_UPDATE_TIMEOUT_US);
+ 	if (ret) {
+ 		dev_err(cs42l43->dev, "Failed to update firmware: %d, 0x%x\n", ret, val);
+ 		cs42l43->firmware_error = ret;
+@@ -957,7 +957,7 @@ static int cs42l43_power_up(struct cs42l43 *cs42l43)
+ 	}
+ 
+ 	/* vdd-p must be on for 50uS before any other supply */
+-	usleep_range(CS42L43_VDDP_DELAY, 2 * CS42L43_VDDP_DELAY);
++	usleep_range(CS42L43_VDDP_DELAY_US, 2 * CS42L43_VDDP_DELAY_US);
+ 
+ 	gpiod_set_value_cansleep(cs42l43->reset, 1);
+ 
+@@ -973,7 +973,7 @@ static int cs42l43_power_up(struct cs42l43 *cs42l43)
+ 		goto err_core_supplies;
+ 	}
+ 
+-	usleep_range(CS42L43_VDDD_DELAY, 2 * CS42L43_VDDD_DELAY);
++	usleep_range(CS42L43_VDDD_DELAY_US, 2 * CS42L43_VDDD_DELAY_US);
+ 
+ 	return 0;
+ 
+@@ -1057,7 +1057,7 @@ int cs42l43_dev_probe(struct cs42l43 *cs42l43)
+ 	if (ret)
+ 		return ret;
+ 
+-	pm_runtime_set_autosuspend_delay(cs42l43->dev, CS42L43_AUTOSUSPEND_TIME);
++	pm_runtime_set_autosuspend_delay(cs42l43->dev, CS42L43_AUTOSUSPEND_TIME_MS);
+ 	pm_runtime_use_autosuspend(cs42l43->dev);
+ 	pm_runtime_set_active(cs42l43->dev);
+ 	/*
 -- 
 2.30.2
 

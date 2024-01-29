@@ -1,59 +1,34 @@
-Received: from mx0b-001ae601.pphosted.com (mx0b-001ae601.pphosted.com [67.231.152.168])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4FE8155A59;
-	Mon, 29 Jan 2024 15:26:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.152.168
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C05B154BEE
+	for <linux-spi@vger.kernel.org>; Mon, 29 Jan 2024 15:56:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706541976; cv=none; b=aShp6LT3i5O2IXtkxT613qgzyP6SQ8+wwe7EICwdBTrQ1L5TLf4trR8o3i2SoT46hjUocUOQ4CJdL7PNNmdrdtyQwqWYyAxU6TcK9w8RwQNSR9fq87nwUl4bXMr8ktjJf9xXvizaGiju3xA4QtoIDPcq/Qeh7GMdJ4IuW4rEJow=
+	t=1706543786; cv=none; b=vC7xuN7cTv8u43Otj7WzOAOF1xT0UHKN/MN5WZGr3nHqwQToc+SdMgA10FR23fRQzfVXNU11jHTCSH4z14/X/d/sPyxyTWj7BY/QXG9YYAO4xXQPb/LggrK0csWVV1wSEk/xVPCi8KkvvKtuU8uHzQKOrP5vKMvHcuzO1uH2PAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706541976; c=relaxed/simple;
-	bh=68yJ9U7yDOQN/tmXLFDBJ2RA3Jr4KUc5Ol0WN9miz6k=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uskceqwgZAvQ1qjaP9bAvwuUE/RjBtypk31pC28nXleRIq03ZYsEsNKlwqsG9j/2XUxEi41j36v3M0LOcFSV8lXRH7duQXMymq2FpzJq3O+ihZwvs7BWwE2wDJj+aWa+4oka+bO1i6p5JUzxggNyr/Maiuq16ow594uq19lYG+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com; spf=pass smtp.mailfrom=opensource.cirrus.com; dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b=BgFpVD/z; arc=none smtp.client-ip=67.231.152.168
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensource.cirrus.com
+	s=arc-20240116; t=1706543786; c=relaxed/simple;
+	bh=Hu11+AaocNOWnGTcH+NXzBwTn/cDXqsWCDddAnMFfjk=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=uhVOY4d9e3Obqnw77B+IlIZkvq6v5gw2OOQsdlyZ2oboPViTsWOXGxeHSgcZ6IdhMM9C4Yfpssa8XCnwL5ubyF5V33p3OLzG/152QsxQmq+WLiYDIA65ACFOPexsayfgcOM07XQzEVvB4ozLasRppywEBgftNKPphahTRpj984s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gAmA97LA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b="BgFpVD/z"
-Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
-	by mx0b-001ae601.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40T5ga4N008621;
-	Mon, 29 Jan 2024 09:26:00 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=
-	from:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-transfer-encoding:content-type; s=
-	PODMain02222019; bh=zml9ilUhvsqCAh5cH8JndKwXXuBxD+atI54RnGVm2Bk=; b=
-	BgFpVD/z66u1pteeL5S3eYNSF7D+gSSj6+O4JgJJYoiZma7MKBdVc74pjdJVGp56
-	dvYrgAMLGOazp/CEpmioDsjg7GNWtYfeu7+QXz5rF0JscNmhSYzUQdlVWjnihb27
-	gclt8jepTECtGu2gMwSqCv3hdi0SUu7Lty/DIN/Xtigq+/MjX3++nXBoDz3xh3Xm
-	MlUSFL5eyIDGZ56XGDrZGaOUSzo9E3P3Vp4it4NEn6xqDKoDCa6bgKsfFbDI9Zsc
-	/KMy4cLoY5po4Z5AHR83Lztm8YZCnEGdTCdiaPPBI4WltjRIe6hGkEY3z9Jp3JhA
-	Tz3xIqNadm6i1kQukRvE4g==
-Received: from ediex02.ad.cirrus.com ([84.19.233.68])
-	by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 3vvy4nt7ne-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 29 Jan 2024 09:25:59 -0600 (CST)
-Received: from ediex01.ad.cirrus.com (198.61.84.80) by ediex02.ad.cirrus.com
- (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Mon, 29 Jan
- 2024 15:25:58 +0000
-Received: from ediswmail9.ad.cirrus.com (198.61.86.93) by
- ediex01.ad.cirrus.com (198.61.84.80) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40 via Frontend Transport; Mon, 29 Jan 2024 15:25:58 +0000
-Received: from ediswws07.ad.cirrus.com (ediswws07.ad.cirrus.com [198.90.208.14])
-	by ediswmail9.ad.cirrus.com (Postfix) with ESMTP id C66A4820248;
-	Mon, 29 Jan 2024 15:25:57 +0000 (UTC)
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
-To: <lee@kernel.org>, <broonie@kernel.org>
-CC: <andy.shevchenko@gmail.com>, <patches@opensource.cirrus.com>,
-        <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>
-Subject: [PATCH v4 3/6] mfd: cs42l43: Use __u8 type rather than u8 for firmware interface
-Date: Mon, 29 Jan 2024 15:25:54 +0000
-Message-ID: <20240129152557.3221212-3-ckeepax@opensource.cirrus.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20240129152557.3221212-1-ckeepax@opensource.cirrus.com>
-References: <20240129152557.3221212-1-ckeepax@opensource.cirrus.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gAmA97LA"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 13850C433F1;
+	Mon, 29 Jan 2024 15:56:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706543786;
+	bh=Hu11+AaocNOWnGTcH+NXzBwTn/cDXqsWCDddAnMFfjk=;
+	h=Subject:From:Date:To:From;
+	b=gAmA97LAZw54dE3F+jXHh3hWswKvaIcU6988UOkbxKPfx/MfyFKAX6jgkdxn0jfP3
+	 BEvDyPH+8DfeYeIqSfIwYWNAO2Mwd04/cfkpBo5ljHFL3Dkmkz1u109zrPXGoKOElp
+	 jjHIA/uUjYTBWCCPmXdtGCXXfBsF2cQUMvLdhm4vZ96nhqK3+oK4wxQsknGBLNnZ4c
+	 gbOBuAE86Hs1VqfSU8a0tuir2TvijEa6005H4Z6wX0plRJ/FXGkZO360hRWu4TDyWS
+	 qmaVXOAqQZwMrxB4F1PkwavEoQ7jVJj98k1fWHLDTN5IuysdIoC7MpowOWIRgodeu1
+	 hm2ypy8sIU7VA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id E481EC43153;
+	Mon, 29 Jan 2024 15:56:25 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -61,41 +36,24 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: gdghCE4TGgvasgVyNJlJSWeJmIiytLmo
-X-Proofpoint-GUID: gdghCE4TGgvasgVyNJlJSWeJmIiytLmo
-X-Proofpoint-Spam-Reason: safe
+Subject: Patchwork housekeeping for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <170654378585.19862.18067086862094771002.git-patchwork-housekeeping@kernel.org>
+Date: Mon, 29 Jan 2024 15:56:25 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-__xxx is the preferred type for firmware interfaces.
+Latest series: [v4] spi: cs42l43: Tidy up header includes (2024-01-29T15:25:52)
+  Superseding: [v3] spi: cs42l43: Tidy up header includes (2024-01-25T10:25:50):
+    [v3,1/6] spi: cs42l43: Tidy up header includes
+    [v3,2/6] mfd: cs42l43: Tidy up header includes
+    [v3,3/6] mfd: cs42l43: Use __u8 type rather than u8 for firmware interface
+    [v3,4/6] mfd: cs42l43: Add time postfixes on defines
+    [v3,5/6] mfd: cs42l43: Add some missing dev_err_probe()s
+    [v3,6/6] mfd: cs42l43: Handle error from devm_pm_runtime_enable()
 
-Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
----
 
-No change since v3.
-
-Thanks,
-Charles
-
- drivers/mfd/cs42l43.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/mfd/cs42l43.c b/drivers/mfd/cs42l43.c
-index 4e2bc5ad244a..65a331481d97 100644
---- a/drivers/mfd/cs42l43.c
-+++ b/drivers/mfd/cs42l43.c
-@@ -55,8 +55,8 @@
- struct cs42l43_patch_header {
- 	__le16 version;
- 	__le16 size;
--	u8 reserved;
--	u8 secure;
-+	__u8 reserved;
-+	__u8 secure;
- 	__le16 bss_size;
- 	__le32 apply_addr;
- 	__le32 checksum;
 -- 
-2.30.2
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

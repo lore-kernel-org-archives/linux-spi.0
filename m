@@ -1,132 +1,77 @@
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709552D608;
-	Mon,  5 Feb 2024 14:57:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF4B2E629;
+	Mon,  5 Feb 2024 14:59:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707145061; cv=none; b=dVtv4UONLpqyAZVvIO21LQ6OW2yZvjAwiYAL2V38+ASlx47wbkZ379eftmHJGVczM9d/hJjvXUsvo1Oto9+r0p09MLX/0lp2Y/yqnDWbYjaWm3TrLPnoSp/nCFr2juUo098cgGFwmpjUnWnlv/UiqZstpEMzXujo6NGvZyyhIuM=
+	t=1707145175; cv=none; b=EKHLxgvHvUDNqcFjiG8GrwL3JcHfoO+G4oDl1jm1ncrzjg8LLDzB28QMJfL1JzI26lmg+jqmGM0hGImQxUFu9FCPnVh4yugdLVfuPn6C2bU1TSLf794QSwqmVgn1wZSzXHr5FkYmoQUctKQ6/gBhJcLZClSLfg6la+68CeB8KyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707145061; c=relaxed/simple;
-	bh=JMbhlud7refefepc6cbZbO1h9xgdtvzBjl+BpdUwOjs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=H5K2+kq6D4IKTt/A0hIY8UMPK2S+Ur/fsDSPU4RQzIAH3SF8wXDik13jQDMaK4Jr8Utri4UUekUi1oHeaWEM+fDUC352g7uia9gCRE1D8h1rpwJvFVjBQBiyimZFTDRODzfjGcedPJl6FIcDL2mi+VU79t051ob4etetrjNUlG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=g9KSmxUv; arc=none smtp.client-ip=217.70.183.200
+	s=arc-20240116; t=1707145175; c=relaxed/simple;
+	bh=CyjNOwtxlSVa7OBG7E0Bp2hlmgZowX9ccOU7gtl0t+w=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=qv5OCm33pytAgytQlXp5r6+/sKzuI/Z26fsLMoVOpBuoqf+61SC59141awKIe3+i60Ik2S4tfZGulZq+3g47s6NYDD55XvUsnkaKOBIIqkzFXnfTTicyC3uBv2d55V/7zQBv3CUWYJowQMaeX2U9GbVzimqQeXeWFTlZi9DdcMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=U64wxXUG; arc=none smtp.client-ip=217.70.183.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="g9KSmxUv"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 8DA612000A;
-	Mon,  5 Feb 2024 14:57:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="U64wxXUG"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id B1EED1C000E;
+	Mon,  5 Feb 2024 14:59:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1707145051;
+	t=1707145171;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=r4OQzcLAofPBxtpl+SThQ0jsbUehiX/Q8NETsj1jEIk=;
-	b=g9KSmxUvJv9MIFtkvV5a5uGHLifTWOtHoD5jHFbj0uYp57gcoPoA8Rfw1g4ZOYbyWCf/pD
-	7ItfRjRHVhnprJEGxW/xwMaEG0FWRvcC8SkncfeIyHkd5pnaZh+T9opoXpPddLG3uoxEm1
-	YsB8MWInPq4QoZVsguPKdxLZlfBB+xmKhDJjPUr5AmnN3/79YQp/auCJuAiWqpePyuR39P
-	INmIDdIoC3udR989OppJNOZtNeEbZZEkhusai3+8rWW10zI1f2UqH7L/AN2JX5iB414jGC
-	U3NjgoD3tfI13G+NWwoAB95DwDseaOgxavQLFoTSzoUsyYjRpOopqFbweL4kjA==
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Date: Mon, 05 Feb 2024 15:57:31 +0100
-Subject: [PATCH v2 3/4] spi: cadence-qspi: remove system-wide suspend
- helper calls from runtime PM hooks
+	bh=CyjNOwtxlSVa7OBG7E0Bp2hlmgZowX9ccOU7gtl0t+w=;
+	b=U64wxXUGqvGXmARAf0uerbpGmfXM8Wj5pVw5k9ELtWlvuINv4u1g+6SFxkD/TLOqvcQGJn
+	SQkU085REcikKFGz6lmL0vKvtlL5odZ5CCDJkJ+gRxicjyGd3k0H+OOYyYrri2/c6Jg/qt
+	SCvV6cx34kPQQ9HVchYdDwTMcnwRIYBBJnL31ndeoiJO2+VyoRbUZXKFfqJcEkC8LLqdww
+	qCUZzGUdIQ2Elo+IyvMXRiomIsDjzMRBmkXvOOcMhPSMvIhwvEXGoqpKv4rekBL/YDEIvo
+	woxArfmP/EBpIEgzFzsu1DPC7/zRWKOBNaLfcOkFXZTlVgn76nJOqW+57CkEjw==
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240205-cdns-qspi-pm-fix-v2-3-2e7bbad49a46@bootlin.com>
-References: <20240205-cdns-qspi-pm-fix-v2-0-2e7bbad49a46@bootlin.com>
-In-Reply-To: <20240205-cdns-qspi-pm-fix-v2-0-2e7bbad49a46@bootlin.com>
-To: Mark Brown <broonie@kernel.org>, Apurva Nandan <a-nandan@ti.com>, 
- Dhruva Gole <d-gole@ti.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Gregory CLEMENT <gregory.clement@bootlin.com>, 
- Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Tawfik Bayouk <tawfik.bayouk@mobileye.com>, 
- =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-X-Mailer: b4 0.12.4
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 05 Feb 2024 15:59:30 +0100
+Message-Id: <CYX8GGLNXYJS.1GR11DNL2AOG8@bootlin.com>
+To: "Dhruva Gole" <d-gole@ti.com>
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Subject: Re: [PATCH v2 0/5] spi: cadence-qspi: Fix runtime PM and
+ system-wide suspend
+Cc: "Mark Brown" <broonie@kernel.org>, "Apurva Nandan" <a-nandan@ti.com>,
+ <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Gregory
+ CLEMENT" <gregory.clement@bootlin.com>, "Vladimir Kondratiev"
+ <vladimir.kondratiev@mobileye.com>, "Thomas Petazzoni"
+ <thomas.petazzoni@bootlin.com>, "Tawfik Bayouk"
+ <tawfik.bayouk@mobileye.com>
+X-Mailer: aerc 0.15.2
+References: <20240205-cdns-qspi-pm-fix-v2-0-c59ac6996428@bootlin.com>
+ <20240205144417.44jidulexgyccodv@dhruva>
+In-Reply-To: <20240205144417.44jidulexgyccodv@dhruva>
 X-GND-Sasl: theo.lebrun@bootlin.com
 
-The ->runtime_suspend() and ->runtime_resume() callbacks are not
-expected to call spi_controller_suspend() and spi_controller_resume().
-Remove calls to those in the cadence-qspi driver.
+Hi Dhruva,
 
-Those helpers have two roles currently:
- - They stop/start the queue, including dealing with the kworker.
- - They toggle the SPI controller SPI_CONTROLLER_SUSPENDED flag. It
-   requires acquiring ctlr->bus_lock_mutex.
+On Mon Feb 5, 2024 at 3:44 PM CET, Dhruva Gole wrote:
+> On Feb 05, 2024 at 15:22:34 +0100, Th=C3=A9o Lebrun wrote:
+> > TODO: changelog below
+>
+> Accidental "git-sent" email? ;)
 
-Step one is irrelevant because cadence-qspi is not queued. Step two
-however has two implications:
- - A deadlock occurs, because ->runtime_resume() is called in a context
-   where the lock is already taken (in the ->exec_op() callback, where
-   the usage count is incremented).
- - It would disallow all operations once the device is auto-suspended.
+Indeed. :-) I wanted to share the series with a colleague for testing on
+J7200 and messed up.
 
-Here is a brief call tree highlighting the mutex deadlock:
+Looking forward to your review and testing on the V2.
 
-spi_mem_exec_op()
-        ...
-        spi_mem_access_start()
-                mutex_lock(&ctlr->bus_lock_mutex)
+Thanks,
 
-        cqspi_exec_mem_op()
-                pm_runtime_resume_and_get()
-                        cqspi_resume()
-                                spi_controller_resume()
-                                        mutex_lock(&ctlr->bus_lock_mutex)
-                ...
-
-        spi_mem_access_end()
-                mutex_unlock(&ctlr->bus_lock_mutex)
-        ...
-
-Fixes: 0578a6dbfe75 ("spi: spi-cadence-quadspi: add runtime pm support")
-Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
----
- drivers/spi/spi-cadence-quadspi.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index 1a27987638f0..ee14965142ba 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -1930,14 +1930,10 @@ static void cqspi_remove(struct platform_device *pdev)
- static int cqspi_runtime_suspend(struct device *dev)
- {
- 	struct cqspi_st *cqspi = dev_get_drvdata(dev);
--	int ret;
- 
--	ret = spi_controller_suspend(cqspi->host);
- 	cqspi_controller_enable(cqspi, 0);
--
- 	clk_disable_unprepare(cqspi->clk);
--
--	return ret;
-+	return 0;
- }
- 
- static int cqspi_runtime_resume(struct device *dev)
-@@ -1950,8 +1946,7 @@ static int cqspi_runtime_resume(struct device *dev)
- 
- 	cqspi->current_cs = -1;
- 	cqspi->sclk = 0;
--
--	return spi_controller_resume(cqspi->host);
-+	return 0;
- }
- 
- static DEFINE_RUNTIME_DEV_PM_OPS(cqspi_dev_pm_ops, cqspi_runtime_suspend,
-
--- 
-2.43.0
-
+--
+Th=C3=A9o Lebrun, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com

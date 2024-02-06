@@ -1,41 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B396F1353ED
-	for <linux-spi@vger.kernel.org>; Tue,  6 Feb 2024 12:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44513137C39
+	for <linux-spi@vger.kernel.org>; Tue,  6 Feb 2024 12:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707221359; cv=none; b=UeCk6WB8hBi8VfiE0lfjuIzc5c1+Y7Evg6Q+ExHH1VGbsA4phuUfMgTW7eCAGOv9Vxk55BmyLK4DdUOT5oieQo838/PchmQeiZ8csKwZWPctGDnZLnU5osLcPm8wcOFbP1k5Vlvs9Z+afOszeI5jpm/eGR0wzUdcNXLkI3HJ/rs=
+	t=1707221362; cv=none; b=AGQE4q1Z8sC+HIaPPZDr/UlIYaHok8a/APpE0cZbujjWLyf0S7OCExENmoR2/LjzSeKi6C3+E3lVawzMw3QGWDNECM0282xu4+QeSTLgWSVnAcagBkpy1tvXZxfZsOY1BI4kKeH2eXIcF62If3aPGX5FMrO2PuohaM4Op7n/3vY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707221359; c=relaxed/simple;
-	bh=pPf6zjaw0YWgrtDcTtvZK7on5ZzqnlKWLo8vYaA+ARw=;
+	s=arc-20240116; t=1707221362; c=relaxed/simple;
+	bh=bhzjs8R7sbGn+87s1FW9V15rI90gCXYsB4OLyhnwb+I=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=ZJoTe8mzkNixWC+6RNgnLS2U4Lmy0Bcu/N/jTvjnFi+QUztw6ywIbFMbUUHzy2yygxRZ/FyJ2+gn4TJpTWwL0QSYHQnaUHFWVRjMTtemQYwkZroxPDX2zKDK3xILd6+LcY0VNu/kS0yu8PWFrLV0SNthifjroPgIu2+mZFI8KcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZIMVt54X; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=msOUnIdGcfqp0e6/VoyE5D/Dtjc07yrTIhYTSX6nJETlsT3ZNym1CBV4T1zPZ1YuORW7PBhB30Jh+8CZemN0HV0iX4JSfWkPdj42vWjFZ1jcqAL3kzDGXZHHlqvHdfbzVLLk7rubZeH/1Pc5lQ/dIJLF8Kxzdjrs19KByYTUcA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bfGM1OFY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZIMVt54X"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0196C433C7;
-	Tue,  6 Feb 2024 12:09:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bfGM1OFY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2143DC43142;
+	Tue,  6 Feb 2024 12:09:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707221359;
-	bh=pPf6zjaw0YWgrtDcTtvZK7on5ZzqnlKWLo8vYaA+ARw=;
+	s=k20201202; t=1707221361;
+	bh=bhzjs8R7sbGn+87s1FW9V15rI90gCXYsB4OLyhnwb+I=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=ZIMVt54XGHwiMU68KbTAlOJMOmh/RYRANZ0l8J50GXFWUrJA34B/t/A3e/Q+w+eeu
-	 YmDioFUEZSWZ7cGAehoLlZZt7jZ7h+gRFKmaHBAqhMQrsxRRpwcf9Bv+6b1J4CGdiY
-	 wUuOnHHacs5bPJhsypJIxGq58KlCSYa0hxDX41FesmXJEFid9UVpxZQuR1n7gM8+rx
-	 MwwcOhCZbjnvi39U7mg9V5jdUvZwQ3WFcpUW4aiPkmERCZ56bDtYkmssLp1EzwDDJW
-	 BZ6ZCXcZmQwSvxJvjQFslfN8UGOJrKqHyKFI0wdPCOstdq98t7KCHYyLIuf5897GEC
-	 TPTWg8l52s/nA==
+	b=bfGM1OFYU4HkcmBMBddbA/WPbkmm8Sm3dEMhc36T8tBLGium8YmlmZrNB/nl6Xrqh
+	 rOQ+hVKxL/cOVKOHGc6qa1u5T9ZElmXe2Z5BdEf/grW5faIAAFZK0eeNEiJj9re+4D
+	 xQnXMgvt6PEDO83IPp/VDuyvTalhUyARsOOy7ilLUONORRBhzekD3Pi3z/vOFfDzB1
+	 YMQmQoMU6VfkaAdWXcvnrYMnDixCKCJ21IWLfGcfG/gZCDnPdLr00G6cs30wZEIpt6
+	 kZnMuOAO4EGcsb48EAxDmXpwofmFiTEm77w4lhpHufziLvZCTxS3RsH++PlTVB3+bE
+	 hZH62IbetfUkA==
 From: Mark Brown <broonie@kernel.org>
 To: linux-spi@vger.kernel.org, linux-rockchip@lists.infradead.org, 
  Luis de Arquer <ldearquer@gmail.com>
 Cc: heiko@sntech.de, linux-arm-kernel@lists.infradead.org, 
  Robin Murphy <robin.murphy@arm.com>, luis.dearquer@inertim.com
-In-Reply-To: <d0a0c4b94f933f7f43973c34765214303ee82b77.camel@gmail.com>
-References: <d0a0c4b94f933f7f43973c34765214303ee82b77.camel@gmail.com>
-Subject: Re: [PATCH 1/3] spi: spi-rockchip: Fix out of bounds array access
-Message-Id: <170722135749.992289.15697794972690614056.b4-ty@kernel.org>
-Date: Tue, 06 Feb 2024 12:09:17 +0000
+In-Reply-To: <4d18808e85b85077761c5655083f20ebfd7d3770.camel@gmail.com>
+References: <4d18808e85b85077761c5655083f20ebfd7d3770.camel@gmail.com>
+Subject: Re: [PATCH 2/3] spi: spi-rockchip: Fix max_native_cs
+Message-Id: <170722135988.992289.16551970004382399267.b4-ty@kernel.org>
+Date: Tue, 06 Feb 2024 12:09:19 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -46,17 +46,9 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.13-dev-0438c
 
-On Fri, 26 Jan 2024 20:46:22 +0100, Luis de Arquer wrote:
-> Since spi-rockchip enables use_gpio_descriptors and the
-> SPI_CONTROLLER_GPIO_SS flag, the spi subsytem may call set_cs()
-> for spi devices with indexes above ROCKCHIP_SPI_MAX_CS_NUM
+On Fri, 26 Jan 2024 20:46:44 +0100, Luis de Arquer wrote:
 > 
-> Remove array cs_asserted[] which held a shadow copy of the state
-> of the chip select lines with the only purpose of optimizing out
-> rewriting a chip select line to the current state (no-op)
-> This case is already handled by spi.c
-> 
-> [...]
+
 
 Applied to
 
@@ -64,8 +56,8 @@ Applied to
 
 Thanks!
 
-[1/3] spi: spi-rockchip: Fix out of bounds array access
-      commit: 5c018e378f916b56503bba65cbdec66ad16f20b7
+[2/3] spi: spi-rockchip: Fix max_native_cs
+      commit: 07d6749317bf8cc416fb7eb8f997a884bd610f8d
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

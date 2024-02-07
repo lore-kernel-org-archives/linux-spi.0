@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2B6157059;
-	Wed,  7 Feb 2024 21:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656BF16E36F;
+	Wed,  7 Feb 2024 21:26:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707341128; cv=none; b=PS1jHzstMCBdIAEDf25uo9FlSgAC4i9osQlX1/E6/T3VcWB2Hx3dl6w/EiKAZkZrzTro1Xu0KcCzsGOIXqvcmtqBQyV2XTcVtgGwg/6vmVH+kRqbAx51j1/dnwxtAXtcnoSUJel2ou4PdBFcnUh6T3gMeFPC3eRliHIdvxsvqvM=
+	t=1707341190; cv=none; b=R/gPcsqXEWrgKf/I47Fj79adv9akFJjNxeacuzgiPFxC23JAsoiDnkgt83Y25ZviWoTB9jnvW9vfaJLBsDeaxT4PqN4M4qRTwt+ZaVY/EFlVjXLTbXMahUbFFK0BiP4yMjU0VgXTmA6BTSOK0HPItRk8vDSE+Gf1kBnOmSxiii0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707341128; c=relaxed/simple;
-	bh=pUapY0eizi0jwq6pjThZK/3NtTcTS8vPfN1bWyS0kSo=;
+	s=arc-20240116; t=1707341190; c=relaxed/simple;
+	bh=DjgFIZsIJHQtauIY3Ym8/w6PerCGUhGpApxoInI12lo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xzy3ARcKiGii0ZU6LiF9dyXEuO4GPpmPKZSW5TtkuRAkIEMC8C7pTMHNLI2oqiuwQ14yHYNAIZ35Ti32xl2f+JQgotpQ+Ey21KG2/f/KVHgdD8+7mpJa+Koww1DeDBNHePm5mhn3mdnG02lzaMRkDYB5h3ChIBWNPJ+C85CapzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jo5VHiyD; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=oTAflYWg36eds020PCp8FpIqtHZFahvsmE6iA+BFdM4T86VU9kTtGBo6Y/FeovWJllrfb0Ky0vHy0fsrcgiBpRImTM4aOKyR7OR07GXbesyPkAAqNkW5wZ51B1Ft60NcZyHCewKiW/M+NAIuq3qa8tPrOHc0PxI1iEhZalwTwdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dtiGKcTr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jo5VHiyD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD34AC433A6;
-	Wed,  7 Feb 2024 21:25:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dtiGKcTr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46C60C43399;
+	Wed,  7 Feb 2024 21:26:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707341128;
-	bh=pUapY0eizi0jwq6pjThZK/3NtTcTS8vPfN1bWyS0kSo=;
+	s=k20201202; t=1707341190;
+	bh=DjgFIZsIJHQtauIY3Ym8/w6PerCGUhGpApxoInI12lo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jo5VHiyDz8wz/3+MmzRYRYCvpkq3lQL6IVOUD7qjtjV59KLB/mRxppak/AVSNmTFp
-	 Tyu/CMc9gCqWrvH9YAkx7wt04SUUisUGNHKV5L9uXiBV8ID8le+AZh5qE5UJCOTvu9
-	 Kf/xH0RORqF5TrdlIcllAlkjkmN5bO9SsixSTTodzjdbVY16MwnEmR2B07sA87Cpnb
-	 Qoqx5zPI0V0zjvytVDVuorTP3Oac/4ARgs8Yv37FHyDhGfgHCt57LMZi3P+/Aj/gyU
-	 gY831TD4E8PLURdjvAjnzz94r8BBEbN0WQ6PKmcmeEkTKKOlcKVx0z2tzsYYmsl4Kv
-	 NWEqBywoieyzg==
+	b=dtiGKcTrCw3HMAwPC5o+MrTc/ezkg2QVgYoGTVSa9X5PqomK9hmmIMtVRiTPBbd64
+	 MlwIoiMvOW9oXFZ8SoW7LIDRAY5LAQEmTGkTXFx23VQRgiKjd/TDMYU6RnXvH7yxmk
+	 DaL7MCk+oxKkfNRP/35db74lDHAFsabL5EGkTl8Ha+irCNyn9TcDzk1azpsiyCYUG5
+	 ePUz7CztpjJpmzULkX6vnKxZs1XI44mnmQIvRMMiuetygsfUh8DAGGzcuMI0vdDuzh
+	 87NfkfTitWyyeuwW3p9nfVeJYKo/YXshh48nt3maV0aoLQyGJCl1Ge43x23e9tzbcK
+	 obS0+yZE57lgA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -34,12 +34,12 @@ Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 12/29] spi: sh-msiof: avoid integer overflow in constants
-Date: Wed,  7 Feb 2024 16:24:37 -0500
-Message-ID: <20240207212505.3169-12-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 10/23] spi: sh-msiof: avoid integer overflow in constants
+Date: Wed,  7 Feb 2024 16:25:51 -0500
+Message-ID: <20240207212611.3793-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240207212505.3169-1-sashal@kernel.org>
-References: <20240207212505.3169-1-sashal@kernel.org>
+In-Reply-To: <20240207212611.3793-1-sashal@kernel.org>
+References: <20240207212611.3793-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -48,7 +48,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.77
+X-stable-base: Linux 5.15.148
 Content-Transfer-Encoding: 8bit
 
 From: Wolfram Sang <wsa+renesas@sang-engineering.com>
@@ -70,7 +70,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 51ceaa485724..ec3a4939ee98 100644
+index eb2c64e0a5f7..b7b3ec76e2cb 100644
 --- a/drivers/spi/spi-sh-msiof.c
 +++ b/drivers/spi/spi-sh-msiof.c
 @@ -137,14 +137,14 @@ struct sh_msiof_spi_priv {

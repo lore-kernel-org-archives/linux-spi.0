@@ -1,93 +1,87 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD5D20DCF;
-	Wed,  7 Feb 2024 16:07:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC8183CCB
+	for <linux-spi@vger.kernel.org>; Wed,  7 Feb 2024 18:43:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707322048; cv=none; b=KZjkoevMqrPaEu3saz4S8Ir7ppyGwjjoEW10leMfs4axvzyFYNYBTSsaAsVGRLXp8G8XdL9lVplJ8Oe6I1NLhrMSqdUvEYdk2qpRAiEzffnhT15jBDrP1mCUlt4XKVlzzVYLc4zL/Z+uMvhSvpYfHrNXgeKHF0GZtbIDzhV0KKs=
+	t=1707331397; cv=none; b=p6cHiHOOuk+qXG1B7WDGdheSrdJUKMB+597cQtSl1NM1yQgKnx9CibykCHHaBwx+CvizI+Jea6WubI30p5gmTkRseFnIIEUbA+4Iqd5LD578rk3G/3QmT+hLE2jiIE+pjqAo82MNijcfykKP190dRh73zpiYyMUsX4WZv25losc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707322048; c=relaxed/simple;
-	bh=w89gPUiH2GFyzMuya9r1GY0cQM/mwmbHow3AGlWcAZs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lCbmCqyTClBJjdZqQtxydKYB7RLqW15gd6OiD777Oy7WkoRYKgakUVsVG3j/Pf5nkNybktKNKhn50CloHi/z7g8sxI295Kb6JoCwbwmWJ5lAuBCGfy/3ndj3w/yzx1Krp1iBjDoC5l/dIb6PHSaHEtpS4E1xmC31K4sD8hkF4wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XCaJYNCf; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XCaJYNCf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 406DAC433C7;
-	Wed,  7 Feb 2024 16:07:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707322048;
-	bh=w89gPUiH2GFyzMuya9r1GY0cQM/mwmbHow3AGlWcAZs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XCaJYNCfowgodW1MO1w12b/zjLj2VrhP+WN5E+ktslv0h3/s4QbKY9nniB1FEBJE9
-	 A6E3U/gOcG5Sw0X7sHSK12csUTYOeIz8/tzbEikUnZ+ea9cn2YmIP+NDxMsiAfdvdx
-	 UZoXzJ49zBTqNK7KD//xsnnQQCAs/HXAHKnrmlMWfN3yUC3Ob6LSo6WE2L7y66VLpu
-	 mjUnDICGUO5L4xo6XCZz0ekOxc/2LXnNAoTofLADqdP5ggm1XM6HWSsjzlQlSs4+Jt
-	 RlEBvQssJcnCGMv/NymY45f/PSVmVgt/5w1NQGElLZ+M8IhFVjaiUa2p2cYj322cy9
-	 1t0qj0YkjKbpQ==
-Date: Wed, 7 Feb 2024 16:07:24 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Sam Protsenko <semen.protsenko@linaro.org>
-Cc: Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	andi.shyti@kernel.org, krzysztof.kozlowski@linaro.org,
-	alim.akhtar@samsung.com, linux-spi@vger.kernel.org,
-	linux-samsung-soc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	andre.draszik@linaro.org, peter.griffin@linaro.org,
-	kernel-team@android.com, willmcvicker@google.com,
-	robh+dt@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH 1/4] spi: s3c64xx: explicitly include <linux/types.h>
-Message-ID: <ZcOqvEPJIff69L8H@finisterre.sirena.org.uk>
-References: <20240206085238.1208256-1-tudor.ambarus@linaro.org>
- <20240206085238.1208256-2-tudor.ambarus@linaro.org>
- <CAPLW+4=Xd+B=ZncqPgU4qaJ8zY8JJvJZApdUW_v0w6yr2cy9Sg@mail.gmail.com>
- <16a5e423-1111-49ff-ad6c-b0bb89a4879a@linaro.org>
- <CAPLW+4n_1yBOuzW3Ke2DKh_0EBZMUrd3nyGd=U0TeOML_2dXuw@mail.gmail.com>
+	s=arc-20240116; t=1707331397; c=relaxed/simple;
+	bh=JgBVUlN1d7qYFnm0ZKVPd582aguOzqNX2Ijr5H69uZY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uJXhsqScOjNoWtGDQv17AItPVUcltY08pKNw4SQU85wolRJgWS+HtbNJ9q6jmR+rlbyAbHSpJq1VQ8p58Vc8uhyvv8lg5vWyQXeGoOcfTDhu7v1G6J+3MXTYWyftMZS9Yg55TWhlKoqs4hYwjUjV1USu4MSHOp6aQ9GkfJP04/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1rXmt7-0007iL-Hm; Wed, 07 Feb 2024 19:43:13 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1rXmt7-0054Xq-1P; Wed, 07 Feb 2024 19:43:13 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1rXmt6-00HRss-36;
+	Wed, 07 Feb 2024 19:43:12 +0100
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Mark Brown <broonie@kernel.org>
+Cc: kernel@pengutronix.de,
+	linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH v3 17/32] spi: cadence-quadspi: Don't emit error message on allocation error
+Date: Wed,  7 Feb 2024 19:40:31 +0100
+Message-ID:  <8da90785395664bf17d16428f46e84b95ef5cc3b.1707324794.git.u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1707324793.git.u.kleine-koenig@pengutronix.de>
+References: <cover.1707324793.git.u.kleine-koenig@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="EMSNjjacnJJg0VVX"
-Content-Disposition: inline
-In-Reply-To: <CAPLW+4n_1yBOuzW3Ke2DKh_0EBZMUrd3nyGd=U0TeOML_2dXuw@mail.gmail.com>
-X-Cookie: You might have mail.
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=977; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=JgBVUlN1d7qYFnm0ZKVPd582aguOzqNX2Ijr5H69uZY=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlw86pp9uzxmuDyQ0mFGdNd2DpAvbKt7gfjHNv9 bKDArohENOJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZcPOqQAKCRCPgPtYfRL+ TuIlB/9IqxAwKlOkz/l+TR7Hb1usnQ7iK++5ehWAYDu/QUDiAb0Yl6oDxx1gkrkZoMLbBbVL8ZZ HZ2aSBvGj/+pdWAEzqQiRLKWaOnlmljb9ZUigfxDM6ncvtG30HQ7kiQ1qizjLR+4diCVKZsR1Md fGAfxverac0tyFjzbeCouufNq/jVaDgEvLMpgp19kIz4IMGODU8wcTHr+/wWD9HbzZLeVo8LNYx EeQdKkrVAkOdnpay8fJ9nfaZAFUySgRpBRETYDKjauJ8Vtc7d0ifrcVHE2/auIeHfeC1kMcGFeX 5nJz+ea84Omsw9yoUs5bwsTeEzWUHJG0NLjokzF7tUN2MARp
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-spi@vger.kernel.org
 
+Drivers are not supposed to emit an error message when a memory
+allocation fails, as the kernel is very loud in this case already
+anyhow.
 
---EMSNjjacnJJg0VVX
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+ drivers/spi/spi-cadence-quadspi.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-On Wed, Feb 07, 2024 at 09:42:20AM -0600, Sam Protsenko wrote:
-> On Wed, Feb 7, 2024 at 12:21=E2=80=AFAM Tudor Ambarus <tudor.ambarus@lina=
-ro.org> wrote:
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index f94e0d370d46..eb6cc861b00b 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -1712,10 +1712,9 @@ static int cqspi_probe(struct platform_device *pdev)
+ 	int irq;
+ 
+ 	host = devm_spi_alloc_host(&pdev->dev, sizeof(*cqspi));
+-	if (!host) {
+-		dev_err(&pdev->dev, "devm_spi_alloc_host failed\n");
++	if (!host)
+ 		return -ENOMEM;
+-	}
++
+ 	host->mode_bits = SPI_RX_QUAD | SPI_RX_DUAL;
+ 	host->mem_ops = &cqspi_mem_ops;
+ 	host->mem_caps = &cqspi_mem_caps;
+-- 
+2.43.0
 
-> > Yes, because in patch 3/4 I use u8 and u16 and I don't want to use those
-> > without having the header included. Do you find this wrong?
-
-> I'd say if this header is really needed for your patch 3/4 to have a
-> successful build, just merge this patch into the patch 3/4 then.
-
-The series was already resent, not worth a new version just for this...
-
---EMSNjjacnJJg0VVX
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmXDqrkACgkQJNaLcl1U
-h9B9/Qf+Pfv7AOc3q7abu46R1WsdYSCk01fP9ut5hrYz6KPZdbf4QA9wq3+uqWWy
-W2A13zVcPV25wslX16UekFIXAaVu4uLH9R3nNY2m0XUzMDWqeS8kXSitV/gjyPLs
-M0iaLPctUa10ny39CddPXR7sBG16vJSUCyd1bz7vEWE2YeKgBScTooJ576rm5F7J
-twRkSDnSnmlqDMwU7nlSuDUk2wT5NbOF8DdbqVjVzcb+awOY/PkUwrhmU/V/x7tn
-70zTdvvFE6skI+TxEURqRsX6d74phHQ14uLplqtv9peTDsi3ZSfWrAEsMkkodSaa
-pXtz6O0UpWZtoAEzxSnbfPbVpSHcMQ==
-=iScE
------END PGP SIGNATURE-----
-
---EMSNjjacnJJg0VVX--

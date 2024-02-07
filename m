@@ -1,39 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 750CC3C466
-	for <linux-spi@vger.kernel.org>; Wed,  7 Feb 2024 09:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A79D1224CC;
+	Wed,  7 Feb 2024 09:50:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707298712; cv=none; b=qNmXZeWdF57OMr4e9HwJhZOH0cWD7w6wznzsBWHLsFvV8JpDJASgwKhxlYS+lZ3CYNilLgiLJGVIshOR+uu9R7Zjk0NUQ1XKTLHhXJhj87KOLcZSm5MIH9choo4kYTBAlKYgbqzFdKOIym0kgNUOarxxWxL39jyPwAhZuLeXOvQ=
+	t=1707299419; cv=none; b=ATNJB3FzSBwaLu+IF2aMMwsjpDguXMeyi/SgnCIgbbLxvDsl25LnREHXxKjIqn1ptjm2m1HO79lMXfh193tRWngDyCOPservv24MpqJbvQEXpBxRLdKWmdegVGRa3IqBRGkT7lZerOGvornzUesWCqydLLQo0jYDqbZd2+d9Sds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707298712; c=relaxed/simple;
-	bh=+MnEmPiPW3ByNQkxRAp6q2I4EMRUQl7iUXohSuwBMkU=;
+	s=arc-20240116; t=1707299419; c=relaxed/simple;
+	bh=M1ta89V8AB5yJhhSl1CeMPbzafjggbkHhxGqO2RD4Qs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SXBJDHE7DhkHlcJtGqjInDEDjP3qcGSQlFVMUJk97rVT2H9ETlbuhId9YdZ6+xDCxdp0+dm7vcE0sOuk54/MYc3cIOijNaE3KnQL2r4AZXSnqYMtRK6Eq+0ufIyCZz3yNp0CNOmQTcgTZIeprRJCo7aWypZNSi/H14Qyvcxciso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QlCawc2T; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=G164sePLLLbEr4y/pjdWMP4O97EWvXOpERmKR9+vmNKnsyiqae5qdICkPFkrfP7TJj1GGFTFVCixG56xvw9NXNIX/icMqxqdSYcwpCY5PtqmGxArSNCeGwiPFBz1J/7BgEp9nB9DaAZzPTqA2sqjGlQZtSQ1bjZyfgRo6m+FXAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J162WSTh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QlCawc2T"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20617C433C7;
-	Wed,  7 Feb 2024 09:38:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J162WSTh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDC6DC43390;
+	Wed,  7 Feb 2024 09:50:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707298711;
-	bh=+MnEmPiPW3ByNQkxRAp6q2I4EMRUQl7iUXohSuwBMkU=;
+	s=k20201202; t=1707299419;
+	bh=M1ta89V8AB5yJhhSl1CeMPbzafjggbkHhxGqO2RD4Qs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QlCawc2TqTP4BCnmN2V6OCsWpd8sjTfk0ZLnqh/KskmS8m8pOwrvHAs2n/pEIsnqT
-	 0fQRej8nbdjPTMtqAHeJPIe1x0ajMtueb8OPPXHLGWnal4+iT4cw9cd7ErszMuitP7
-	 nUczoWEL513/clXZAL0/8S4kiq9/CQpBHkswVIwcrL37PtdON3bUwdnoJelvKRBT4I
-	 0ltgTRYdChgh/thJrj8VpKavILp8aRUMZanCzONkHkFl2Td76nUanJ2Bf3aXjEg2Vx
-	 b4H3THQ3tTTJYRG3FiBtLRYuCy+90ojqUZpZpB0KzDGtZ+LuETjrczw1JT5UYuQI8P
-	 kbjp+fEXlPT9Q==
-Date: Wed, 7 Feb 2024 09:38:27 +0000
+	b=J162WSThIE3H02LQNVV2E9du8wM6DKtdvi7z8HYBDqXzzUm1Ndln/9jywJHBVaE71
+	 85YZ9j3CIjAbBpTZh92GkwpLp/VKVT20WACgj+loL1CFPgCQTzUlJ3fJ+3YnFmLP6V
+	 m7oajI341msnA4nCcRg/MrDBCVepUYwmTWtKDZsx6tUeisCUZ5DWPAsvmkL+PvdPFN
+	 7ahey9M0Eimtecpvqf/pg7LBfAffhNTeV6K0V+/ENJ8iUJ+OUIsfjD8cUo8NPywEQa
+	 iQ9bZupe5F/YRS7dEETqeUzqecB310HLGUEcVheuXpNNjaIxnMlQJhnV+sTuFDzkGz
+	 4HkDDeCw9kvzg==
+Date: Wed, 7 Feb 2024 09:50:16 +0000
 From: Mark Brown <broonie@kernel.org>
-To: Luis de Arquer <ldearquer@gmail.com>
-Cc: amit.kumar-mahapatra@amd.com, linux@roeck-us.net,
-	linux-spi@vger.kernel.org
-Subject: Re: Regression on max controller CS lines
-Message-ID: <ZcNPk5KVq8BkXihw@finisterre.sirena.org.uk>
-References: <c518235ce0ccc878726fd1d97d0e56070ed89103.camel@gmail.com>
+To: Dhruva Gole <d-gole@ti.com>
+Cc: =?iso-8859-1?Q?Th=E9o?= Lebrun <theo.lebrun@bootlin.com>,
+	Apurva Nandan <a-nandan@ti.com>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
+	Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Tawfik Bayouk <tawfik.bayouk@mobileye.com>
+Subject: Re: [PATCH v2 2/4] spi: cadence-qspi: fix pointer reference in
+ runtime PM hooks
+Message-ID: <ZcNSWPucn6Vg43Wu@finisterre.sirena.org.uk>
+References: <20240205-cdns-qspi-pm-fix-v2-0-2e7bbad49a46@bootlin.com>
+ <20240205-cdns-qspi-pm-fix-v2-2-2e7bbad49a46@bootlin.com>
+ <ZcD6yqc+o62x2AjA@finisterre.sirena.org.uk>
+ <20240207083902.mzkcsqf3tbwkkxd2@dhruva>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -41,43 +50,42 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="xhavOE9WFwa3UHHP"
+	protocol="application/pgp-signature"; boundary="8hJZUwphHllQZKzw"
 Content-Disposition: inline
-In-Reply-To: <c518235ce0ccc878726fd1d97d0e56070ed89103.camel@gmail.com>
+In-Reply-To: <20240207083902.mzkcsqf3tbwkkxd2@dhruva>
 X-Cookie: You might have mail.
 
 
---xhavOE9WFwa3UHHP
+--8hJZUwphHllQZKzw
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, Feb 06, 2024 at 07:59:20PM +0100, Luis de Arquer wrote:
+On Wed, Feb 07, 2024 at 02:09:02PM +0530, Dhruva Gole wrote:
+> On Feb 05, 2024 at 15:12:10 +0000, Mark Brown wrote:
 
-> I have seen this has been discussed already[1], but rather than increasing SPI_CS_CNT_MAX, isn't it better to remove this check altogether?
+> > Please place fixes at the start of serieses so that they don't end up
+> > with spurious dependencies on other changes and can more easily be
+> > applied as fixes.
 
-Yes, it would be better to remove the limit entirely.
+> Didn't really understand the comment here, aren't the 1,2 and 3 patches
+> fixes and the last one the non-fix? Thus fixes are indeed placed at
+> start of this series right?
 
-> (I ended up here because I am using a board with 12 CS gpio lines, and this change broke it)
+Patch 1 is a rename, this is obviously cosmetic and not a bug fix.
 
-The limit has since been raised to 16.
-
-Please fix your mail client to word wrap within paragraphs at something
-substantially less than 80 columns.  Doing this makes your messages much
-easier to read and reply to.
-
---xhavOE9WFwa3UHHP
+--8hJZUwphHllQZKzw
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmXDT5IACgkQJNaLcl1U
-h9CpTgf+NznTZ88RXoqUDcAJ/cC1/c/ER7QOI/2hNjUSD+FTLLpUZ9ZbBhjIn4sd
-LiMuTNx/JivGXeDhE/ta4dHZU2XocLiTnlGfalw3H+txJrm4I6Ia5xWCl9vkWwXk
-RRl7y4wS4klx3i8qgzE7zoiELgbj/boxOmrHbxWgJimQ2JGZByNVkuuPzg96xPKC
-rlskG+gPO/NETG7Y7/d/FVJ6zZh+CdIdnUqJ09kDKW4vVSP4/RKY338Wo9s0uo6x
-TuKQvXFDp8xe0MVzB2BVgoAQgEl4iHkkqLuP9R1pn6JJc2m6N7jQP7FyfNrGIXWJ
-rLM7daGQ8Es2DYsjqOpijr2uL9b9+Q==
-=mkVo
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmXDUlcACgkQJNaLcl1U
+h9DIXwf+J/u1u4AZtGji0lT2UBDnRwkuZLPS4tvXyX/lFxCWUMX4z0ZXqer0/8Sj
+A4YryZnYd9LkGj350WVwq5UwPTGs2XyXOlenM7I57li0+vLOpzV4neBXROX5PGw/
+03FSh3Qfx6t9Y3TYki26NPEyObj1NTZ3lXw6FQrAHMSLZV09PxbL3C+MY15GKJhx
+Pw6dzSoX8loijGLYDKxNKCGTKldou/JeL2v4HDq4uetGbQM0nlFm4R4nhg21Ohkz
+vijLB0G0bjq384zAko4p8BXX7fkXOAl8vYJ/4PsiNeIrokUWf63B8a8P5eI2BUMi
+lAJEkXO2jyuzLqqwNTclcQaKCxN7Cg==
+=GIf5
 -----END PGP SIGNATURE-----
 
---xhavOE9WFwa3UHHP--
+--8hJZUwphHllQZKzw--

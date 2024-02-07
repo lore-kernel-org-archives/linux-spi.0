@@ -1,57 +1,57 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D27C5B5B0
-	for <linux-spi@vger.kernel.org>; Wed,  7 Feb 2024 12:04:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EDCD5BAD4
+	for <linux-spi@vger.kernel.org>; Wed,  7 Feb 2024 12:04:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707307497; cv=none; b=oXGtG7r0fybUfyVB088pNVHct++QjVae8v+GuF556YbXKza4DHfS9LhKuJnaipOLVzsCAhg02a/Dtq6X5Klzzn2h23GxZZX74w5mzBe6uVOV5njBcADHODJlbU9k0ek5EUSLigKlHbm7HH9DJWpEVHvUYleZlu1SkxyH6vDgZkk=
+	t=1707307497; cv=none; b=nmHh5MCQuE4qzSh+YINUWArHsjZKgLuWz4D4MOuPHvmobag9fR8S0mqUHwlFe6b6Dxx9oNKo37ncUjf6GJZqY4066CAuWNxeRokErw8Ddwji/1lrdh9Kes07hDsrZ/HVB5cljc/1laGVEgau5bdJAs+lP76Y84PSiLXq++T6mco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1707307497; c=relaxed/simple;
-	bh=OIp9JH/BebRZSk0u8jiRPSS3x+B/WlpXIe18LZxE+e4=;
+	bh=7G2GlqK62V886iyFZZshyXOs/6SvUTM52aE4t6xMb4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HAT5RfC6d053hHSkewxQq8NgrPpS1TyUQnRiKxXSN6C29mmMYhTdvJfDi9Kvo1uqYc0xLrH2ovWTfdSv0uffeXVyMGedVGGI9kGugCnyFXcWRQVkEjv3s6uOuMnQZwXW972zwGVncvdyp1/O63OPFXQHxjE4xP7N+7mb/YXVIS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mS4nqEmd; arc=none smtp.client-ip=209.85.221.48
+	 MIME-Version; b=SL9nS0L+fbqWnN/iHpmr2aZT4S7FSKS7/F1w/m6NvA5yDTITzYHu4w4Jf9WAatIFvRPgzE+lmqHUmWSNQncXlCpLFeHnZx4vDTR42nlF/5i3UKhWOjn4T64McDBrq7Dh81Pg70Ezd1G8B9s3KYgGROS9GbEZx4YMusa2UNAcd7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=HMSNrQGA; arc=none smtp.client-ip=209.85.221.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mS4nqEmd"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-33b18099411so405867f8f.0
-        for <linux-spi@vger.kernel.org>; Wed, 07 Feb 2024 04:04:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="HMSNrQGA"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-33b4db36eb1so411471f8f.0
+        for <linux-spi@vger.kernel.org>; Wed, 07 Feb 2024 04:04:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1707307491; x=1707912291; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1707307494; x=1707912294; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=F6pV2GvkwiGM8sZS3wOj9QdqoXevBRStq9r4pHeBHjM=;
-        b=mS4nqEmd4esmINx3t5Ynvx3+BTOB4c9Ne3lZQx75bHZiEZbhOyhpOTnZfUailb6b+T
-         F+5ENTZkIMAvJRhueXHlHmO/i/tfpaM73mLjm6JCYedZp2giECtcCVs3SJdbpiS2ebfA
-         VujsDNdw/9GCLRVZnBVs5vDhfB3KxmpH2ItHGOFgzb58ZN1qBxKWZ3+SkbTlqXgTK71A
-         V5apmOpxJ56EfymnuXNHk8ngQSrWIE6lfuxvE/i7Y9cJoDStZ0cu8Qy13mcioQvxnzDW
-         3bTJZxeYpFhRQwTU1vTJjflWjVzCDAWCkkJ2wMBS7U6RtJowPDC7zicy8R/I71tjjqoV
-         VTpw==
+        bh=4ufnZbtzqByKMCHA6c4FVXpl44oTWg4jCcYWjZ5sNSY=;
+        b=HMSNrQGAWGZKONwbf5NCDZjNrBZyc3EjyMb71QoOprug4CwbzO8NMVdZ/sP+K1AWGy
+         4FRYJhPYgg4LvxlPGnisi6GwuScfAROD3ESZGYMIFcaRLteLqpRg/eTuMnqnBJfW7w0N
+         yhpoW793BWEoh2bjjdBnA3PRI7HOvwZb0fk9HlQLL1flwH6k+/6S3sRxAZXAarR1R6n6
+         Iss7Dyw6kyqCRkcutm1h6k6TN2vmRx2hgUA7Tt08UoTyFUF2k1sYWMAYB+xBu4Q8YWWm
+         V5inO2Qo+0tQl5vNXhWyNnCoUoCUNUKyomAF8/mgpvPwXcOpVSQ7JTrI2NrTdKQc90v9
+         lVAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707307491; x=1707912291;
+        d=1e100.net; s=20230601; t=1707307494; x=1707912294;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=F6pV2GvkwiGM8sZS3wOj9QdqoXevBRStq9r4pHeBHjM=;
-        b=lSV5uv4iH/iovgvn6E6xlUlFfBhlpWuqdLIjaUvsVSRTyuxVMqEZcUhAtJP9K4i7wi
-         mTceKz7wzg4PE6tJljz507I7YFVg008NLK1OCs4W4TvMswAZCGtOBLMF+qjpT0LM3e4p
-         Lsdys0nHewuelEcFHWSkasdZZMCjybLPwxDRfh6aROgVKYKtRIlgvyVdFAJbg/layL4U
-         3I2YHdKcvqoVB7jHzOETy7HG5VHpeVVharC34IPeQplR/S82jaT30rTeY8xGETrRtmAb
-         w1aP8Wb0OD51V8ZNEh0NrtxXwEmhuE07MCOj9d8lJZ4NznTiS06RXYlfUx3Jm5xo/176
-         s0bA==
-X-Gm-Message-State: AOJu0Yx1GFv3I96+5nPsVO12vqQgbpN3kkqcCxUDlHN5E+PmdCvNlhBh
-	xlF81qW8WKWlgfOSuKbo4ZdD1ABjS9bsVyS381KxAZk1HhKDOj6DApBJbDEiib0=
-X-Google-Smtp-Source: AGHT+IEdlw8JH/QSRtZd610quS8/RIT1PIG99ZFWjrLwu4MmQXZ8BT3xN451LK0X9PBzhn/DnxzkDw==
-X-Received: by 2002:adf:ffce:0:b0:33a:e9b5:b14d with SMTP id x14-20020adfffce000000b0033ae9b5b14dmr2977897wrs.65.1707307491634;
-        Wed, 07 Feb 2024 04:04:51 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCV9mcRhUWoZkdqVD1YlZ6mDdMCTzp1K/WKzzPN4YOBL5kh2SFeTNNxJZf1WDk1W6nxUSQmICF1O6KtpyZarM4cbiucm88AXeVYKYiuI+uqjA8Pp05Bpm64G2BCdofnYzEG6DmG4KqN191ATxgJWReswzMyc/nnJOCseTlvj5o1G73v8XSCr6Kx8veIaeF1Z+id3kC3qqBTdRl2yOfTQM1p94DZmpY3FQ9wcR/Y588JOHAwabMZL4posJJnzDTijw3mPQUcOkXyqiD7jO5vbiUIJBCa8kHXNZfsIVsmyvpmdoM3HTA74Vq42TkhtIfbdVfqqKjMsVLNyuap1GuNGx6TiXFGmZ5lRD89Bd5vXETxVKdGLQI1Vu5KPVRl4eZ76GKjumcZbNppknmACOU9ujo7bcbtowkHm5azyJVZeIaGECyW9I9fYYtiKufG6vZouxyW0geiFIuOBN1JW0rkOb90zn/G8qizQ5DO4UnNTzuQAHLQ3Jt7VwVy4cfR1yA==
+        bh=4ufnZbtzqByKMCHA6c4FVXpl44oTWg4jCcYWjZ5sNSY=;
+        b=K/jv1gVm+G2pH2+fWucGFbMmjleeuV3qLZe0bB7LV4DWwK/4z5J3FuFWYCAz+RQECK
+         K+1WfmrJ5foxlAUTc5ODwzd4NgE695/OgsEh/WZVSoK7odlE/DcpjdIkFBk3ciX5V0Mg
+         TDTR0FXZhSKKZ31qnDQvS3wa6ENsmtgRpTkHz0LtvWnZCNGcZ6BV7uDBgGOIdQ80kmf0
+         ekcsp23KCyD/k82SSlDc3AH8kL+L/QXDlWVaUChR4i7csP5wPZ1oiIsqpZQDqDde/3Co
+         qJRwyJSObLHNLbKtiI7tKvpt17uexUsYZGSOsZ6prWewqXqXXRRycrcOyY/6jfXnAEzn
+         f3rg==
+X-Gm-Message-State: AOJu0Yy0GKC3Mn5g7OJ26fABuidiqw6BtM5MvZ7OCuRCAYwBeUn36/4d
+	+xww4ZwPhNY1i2VZ0jti6Ynhuu4uoCic+xiVig6JQFdx7XFOZqxf+AnU3kJX4NA=
+X-Google-Smtp-Source: AGHT+IFZT5HUj9Ch4rJSbpsip/HdNmr4oB4W9qCQPJGoBiXBqnNcx3ls5M2NAsHLNwHzFc9V7e/f8g==
+X-Received: by 2002:a5d:678a:0:b0:33b:28ee:645d with SMTP id v10-20020a5d678a000000b0033b28ee645dmr3154982wru.68.1707307494003;
+        Wed, 07 Feb 2024 04:04:54 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUNBdOIH9bdH2mdNGvnteDdhtUtg423gHhRiIU8EipuSYxB4Jnvvy22Q4JUM6af/vtArLs6sopAQyYgAGNfcDYmd53wkvBPISfzd0y2hz3Ek8HK82t5uw1PU2fLLv/hJBZQA8Qo5Qky9n2NsHsAM/yazfDafaDpQvIr1jQvtkxKDVthlEomBOD9wlt3mKqkNm7g/75X3+drUsCUY9qwQi9RwlE7kLFWk42CTQcAYtcv/18q11HfXqHNSzv4nIRR2QlRQXd421oB+UQl6aAhoQ0hVxnf0C4EhAROGBBr93NOlVU0PFQ0DF+cpJwm2ZKcGvzeZQxaJjAE9f6sVbg/OF17uJWCXSpTAK/PgprTd9oYC3hF70hM2Jc5SEgZESMTUQPv/657od8oQU7q0I2xQsbNP9V83hjk2ENO0fTTf+ZMuQKgJzvPG8P3BA71+veRH+i+KtJ0dPd1y+vLf+0/iHPVa2GL8hiJ+zr68QTWM+n69yK9iQiuHnnW9cir4Q==
 Received: from ta2.c.googlers.com.com (105.168.195.35.bc.googleusercontent.com. [35.195.168.105])
-        by smtp.gmail.com with ESMTPSA id d15-20020a5d644f000000b0033b44a349e1sm1349967wrw.38.2024.02.07.04.04.50
+        by smtp.gmail.com with ESMTPSA id d15-20020a5d644f000000b0033b44a349e1sm1349967wrw.38.2024.02.07.04.04.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Feb 2024 04:04:51 -0800 (PST)
+        Wed, 07 Feb 2024 04:04:53 -0800 (PST)
 From: Tudor Ambarus <tudor.ambarus@linaro.org>
 To: broonie@kernel.org,
 	andi.shyti@kernel.org,
@@ -67,9 +67,9 @@ Cc: krzysztof.kozlowski@linaro.org,
 	kernel-team@android.com,
 	willmcvicker@google.com,
 	Tudor Ambarus <tudor.ambarus@linaro.org>
-Subject: [PATCH v5 14/17] spi: s3c64xx: drop blank line between declarations
-Date: Wed,  7 Feb 2024 12:04:28 +0000
-Message-ID: <20240207120431.2766269-15-tudor.ambarus@linaro.org>
+Subject: [PATCH v5 16/17] spi: s3c64xx: remove duplicated definition
+Date: Wed,  7 Feb 2024 12:04:30 +0000
+Message-ID: <20240207120431.2766269-17-tudor.ambarus@linaro.org>
 X-Mailer: git-send-email 2.43.0.687.g38aa6559b0-goog
 In-Reply-To: <20240207120431.2766269-1-tudor.ambarus@linaro.org>
 References: <20240207120431.2766269-1-tudor.ambarus@linaro.org>
@@ -81,30 +81,37 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Drop the blank line and move the logical operation in the body of the
-function rather than in initialization list.
+S3C64XX_SPI_TRAILCNT brings no benefit in terms of name over
+S3C64XX_SPI_MAX_TRAILCNT. Remove the duplicated definition.
 
 Reviewed-by: Sam Protsenko <semen.protsenko@linaro.org>
 Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
 ---
- drivers/spi/spi-s3c64xx.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi-s3c64xx.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index bcc00cb5e0d1..d257c4f5623e 100644
+index 8ad28ec3e6c1..b618efba0509 100644
 --- a/drivers/spi/spi-s3c64xx.c
 +++ b/drivers/spi/spi-s3c64xx.c
-@@ -1360,8 +1360,9 @@ static int s3c64xx_spi_suspend(struct device *dev)
- {
- 	struct spi_controller *host = dev_get_drvdata(dev);
- 	struct s3c64xx_spi_driver_data *sdd = spi_controller_get_devdata(host);
-+	int ret;
+@@ -116,8 +116,6 @@
+ #define S3C64XX_SPI_MAX_TRAILCNT	0x3ff
+ #define S3C64XX_SPI_TRAILCNT_OFF	19
  
--	int ret = spi_controller_suspend(host);
-+	ret = spi_controller_suspend(host);
- 	if (ret)
- 		return ret;
+-#define S3C64XX_SPI_TRAILCNT		S3C64XX_SPI_MAX_TRAILCNT
+-
+ #define S3C64XX_SPI_POLLING_SIZE	32
  
+ #define msecs_to_loops(t) (loops_per_jiffy / 1000 * HZ * t)
+@@ -1132,7 +1130,7 @@ static void s3c64xx_spi_hwinit(struct s3c64xx_spi_driver_data *sdd)
+ 	val = readl(regs + S3C64XX_SPI_MODE_CFG);
+ 	val &= ~S3C64XX_SPI_MODE_4BURST;
+ 	val &= ~(S3C64XX_SPI_MAX_TRAILCNT << S3C64XX_SPI_TRAILCNT_OFF);
+-	val |= (S3C64XX_SPI_TRAILCNT << S3C64XX_SPI_TRAILCNT_OFF);
++	val |= (S3C64XX_SPI_MAX_TRAILCNT << S3C64XX_SPI_TRAILCNT_OFF);
+ 	writel(val, regs + S3C64XX_SPI_MODE_CFG);
+ 
+ 	s3c64xx_flush_fifo(sdd);
 -- 
 2.43.0.687.g38aa6559b0-goog
 

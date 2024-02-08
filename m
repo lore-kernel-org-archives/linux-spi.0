@@ -1,57 +1,57 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D24F57D41A
-	for <linux-spi@vger.kernel.org>; Thu,  8 Feb 2024 13:51:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAFE87EF11
+	for <linux-spi@vger.kernel.org>; Thu,  8 Feb 2024 13:51:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707400268; cv=none; b=d7IqkyK7SHrabz6W+blVKw7bvBLVJmKjcZcUuz1+6x5aQKGIHEmdbR3/ynKN84tFfAjs3jL9L9fFptordTToDcMbW54pLCG3nAtC/hbof6SN7nTZpHyxsDL33EtRksoBxbfEMkQSIrNdOCAB5BKKJVPHdG+KMcE25YeKj03qpBQ=
+	t=1707400268; cv=none; b=gPAKgs5Z+frecg/cpT+aCLU0suc1bTodmclwU3a06CEqrbRgZYikI8nSor5rhvO97yLRrrnjwYRCAyQ666IIBxy6NJo4uOMQWl+svERy9hg7fUv6BLISY4WJ7FYWeqmXSRxbrJFStEh7fZOmvm2EHJ87w36LfIOJdph+aEUEQT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1707400268; c=relaxed/simple;
-	bh=2cLaT7PEBsclspzR4xlswlgWO289KYuc6LcLsObPHq0=;
+	bh=QDMQ1KkcYtiV6MjOl7LHm4vYVsmfWSXZLbn40VwBYc8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h/X4Xs+bpGRe/PqpwWFciotW8qQnBXQurKI+Jy2MGnPJst/fBgSdsJzioeldST/mKBorkfYR5Y6i1bE8i8K7AMFjm/BaG+1Ly+5nxo51P4AJTbe198Cb9iqpAnwV4rrQ6OEbXngpjug1NytEiO7Hf2fgK7HM0/i1bx3WVKyrDF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=WUHc5/oq; arc=none smtp.client-ip=209.85.221.51
+	 MIME-Version; b=pfLADqidiIrewG4hIGPR2/SPisgaYezlsBgRCfaM7EacZ5baia5c3m/h11kYHu458nS+3xllsFY9E1TRhv/P46rXL0q2O1lB5JahbW2IbsolPD7buBjM8MaToO84gZwpGJ9SwXc2wkHLROLaeYcRQep2DIyMs/UThIHSGzZR1uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=MfDQL3PU; arc=none smtp.client-ip=209.85.221.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WUHc5/oq"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-33b58ca0b95so368771f8f.0
-        for <linux-spi@vger.kernel.org>; Thu, 08 Feb 2024 05:51:04 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="MfDQL3PU"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-337d05b8942so1365367f8f.3
+        for <linux-spi@vger.kernel.org>; Thu, 08 Feb 2024 05:51:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1707400263; x=1708005063; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1707400265; x=1708005065; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fm5OjWDCnevgUex+kbg78oFWzlDeXhj9v/6Ap/z4iAc=;
-        b=WUHc5/oqJOlHox1OCKCNj+Dc+AkV2FfXt2dRfBnMzh0N+erlwppKgGjsXh3qSUOpq3
-         mKJ4q8jCXpuiWw2DndysR4srnbHowsrby4cn0VomAHn8eBRl9AzvraNYljErZmiTU0GY
-         6ucH76JDPm5XqnjYr72Fqbbg/JV7JcMzVNhybymuvYoal+wokKKT+7Ndcn6Ao2ucJREn
-         9LXMaT6oyUT5uy2mQNJfoDG/Ca9E1rxRTFRodpaeCWnbKcqyntC0QOJHfJSYe3cauozk
-         U/AuVfdaJdfUGJfJ4gG7s5sKIAkdGuCmMMFCD8E9c8LqmwDOKddx+T1wH/XMYyNalawK
-         v7Jw==
+        bh=dzqxKaIV5lycuIt7a1okhuIIh6nU9oeZCJpLQ+HKFAg=;
+        b=MfDQL3PUQaKxfMJmVH5Lu7nQMEdxejTo9BdsdN0SGShXXgCtgCk8RpNeO/C7PeSkAR
+         hdo3mfmUdNY+HRbQU3+Sr+Fmolc9dN9gnKbJuOopFyHksLUBYh1ytrOI3P/ZOXcN5Cm6
+         gptbT43sdpVXufKe51qwZwCADuvyiM/6yuc1m+30/G+VfUll4TOljgKUuFB/nvCE15xD
+         aoUwxyXsiSXu2GS/C1A5tljTIrVZFLGCus9KVt4cmV0q8iMHgPGyhWc+CAIpu8xX/8Dl
+         FhvpGfqqqKKQMU1Oex2cSLstzDrtvNk47LacbwLWEmf70JlZz3N2RScpKsjzHVwBNeUV
+         rENA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707400263; x=1708005063;
+        d=1e100.net; s=20230601; t=1707400265; x=1708005065;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=fm5OjWDCnevgUex+kbg78oFWzlDeXhj9v/6Ap/z4iAc=;
-        b=Do3fY4wI0F6cb41s0tZsgUTr7kQ4DxexHnsPJeVqd9NmopH9rUqcYJJsWVJg8ynEX8
-         PVpzQgexmlHYZvQqvn8gtN1peZ6C6q6esPuH5lIotWie50kQxRsabzVENsGmmUZjo2PF
-         Dk97i3YqVM0oWm/QnVyNcrhgnxCsNDypWifbyyJf+K1yURbwB8Q93wwVWyVLNqZ4mnjn
-         XrnLo6ZAhAw4+OHM3l24DQbz2ReEp6j8JOTykNAwqKDrgVHraqwXB06qV9DRJgJd8VdU
-         LIkuvEGceMoOrLT3jnDvxV3jKQig8M82pHbZMdHDV5TeBolvIc2EWZAayLqVwuhAQ/P4
-         8m+w==
-X-Gm-Message-State: AOJu0YzeKAoSmO4W2jJ9pYn2AYSVRIgUGGMrmV4q83ZyJExoUH4KbePZ
-	nIpnpw7oc93RTgUB6TNE6SrZ9xBM0cDBTfm7FjZxNtEfF9PeiWzBL9qdaFVXnxs=
-X-Google-Smtp-Source: AGHT+IHkT2KabKwJqHn5D6S9UamMC+qKbPV38ucdmsL7XdSG4X7zy/LYHiL4yWGLYGV6qAaBZUH14g==
-X-Received: by 2002:adf:f9cb:0:b0:33b:2477:b78f with SMTP id w11-20020adff9cb000000b0033b2477b78fmr6250799wrr.27.1707400262992;
-        Thu, 08 Feb 2024 05:51:02 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCV0Hw2JdvA4cj5CQxt06n/bgZBtdy5/fKrK5V7+dfpbuRTlYAQ/SeFLCK5Z7S1F8BV57T3AzUSMnLiN5Qnj/elw/hENEJzlwiyDlgFhnF6/9GJvtqnZXD2MwqKppnnuNHYm5OJpxGNaqt4DknERSJ6Liguor6WeFi4bbBvuDkG5eanrwlARVmWtlM+l9tp+9SnaUGFLzFCaR47zyOVJuLS1rtZF0mZaIGtzoKjU/BxTsrsGAVpDXiGu0ZWnvm1mddSP1aU7+Pm6/eZ9v7fN/QoNbGKty7TxjAVQrahscohNko4mKnONh77y8GPIMO+WKiqn8naUJS2N0HHYEuoYGvxjMByLkz3TRyhI8kCybSuNcV1kHyU1yPFAsnFpyxDcadTJ89GkbLOdIkzaLOoXvSCL3tVsSk2no2RGe9CU/8LSiBr/02JdkQ8+CxekxVeffhu+vO2ydEota6tfZSW6U18TmdolOV8LAY4kZdF9PyztxU+VbRFSELt28k6SqVJ54IX3K36AE0R3vIFMsLZupS5OVc/KJlh9SMPLpevJEzOaZZLLXaXklEj9KkgN2kRTBQ4b5Zu8vxz3Vfh1Fzumu4gDUO+Ukx82QQnXJENhew==
+        bh=dzqxKaIV5lycuIt7a1okhuIIh6nU9oeZCJpLQ+HKFAg=;
+        b=cBZuiSKGhHKGucJzXS2rkSA0wzaYUGya1zgdvBxoprnxhoGh6ByT2yBrfDZ42Ycv/0
+         n5kE+8eC1hp2n58WZtWUSwerUXgdQxb3fJLoAoxBm5xCmKucRSrsZWiCkQMuq7QgHptj
+         mDfC5o+tZIGSIkTmOiA2cTjJEiKXZBSZAkcg5XGs/TYJEtpSHaJeoArP3+KLgtfz9N8H
+         pmBaCRreR/2WggAcjLu22OWDbwdDL2iRQgI/oCRRKfUQ2Ro6x8vb+c/VK4FJGgPeyb+H
+         S1KAXxOuqwCMu1jWnOPAxtrt/pt9THwivDWdNQzzw86IMZFrGwJ4AUcjU+YYsB7EBjBC
+         dGOw==
+X-Gm-Message-State: AOJu0YyjBRQfy7CxkWhcTAlPIDPt2prqxE+47OondbNnQj7oshIEElFV
+	QWj/5vVBKMEKdbtbc1b6Kb5wg/HJCTRy4l6qqFPyBPmdJyQbg2tdFs8gOfTleJE=
+X-Google-Smtp-Source: AGHT+IHWIjXxPYN55agE12/MHmkqXhHPtF1gnuJNIC45a25qfLfhPZOuIq3uWHUK5ZgGJZLOtFpkJA==
+X-Received: by 2002:a5d:5915:0:b0:33b:5955:80f0 with SMTP id v21-20020a5d5915000000b0033b595580f0mr1256423wrd.21.1707400265049;
+        Thu, 08 Feb 2024 05:51:05 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCV0g5/QpwgVtEE+r/3+XY/sOhedUizACmG5fdHi6VpzcVaBsZdi6cByCvkvZEIO3ZlW0QNef4727PNWVfQtjQwvDhW1c7sA99vH/Z4wwTJfAGNmblZzzuSb5q1yC1jSXHQrao9emy/77l6oVWMPbvObQWFw5cIycpm/owUy/H/OLpkobNFWm1Tdp2UGNHkPIKuUfDBsyzu1q+V+h2Po6cxe5dQg6Ey9ZfwkbiPLWeGHwq790T9/hORNfXtVSgPg7xruKOfADvxxggItqPiohmyoRw2tD+at0PCxH3cDmNPoNFdtNVIztl6r6NNnfrPF9Y92iyFO45RpqCJnP29SiuJpMeDHDKEAbSvSS4AU3KpJIgxSXAJh1Tr+JElVQPaoy6dOKTzOK4pxZ4GVRbY8TZw/DGqD2AwryQvg03FXsJ/JJEvGj6gjeubnozOKzfLoMLQkMQyIg+pb6LKH1p8oOu8MqhFOj4OdBhwIrU9arwKijcC+edxb7O/eeQSqi4JZOXhe00lwMdT1ff2sGKJeafo8ZB7xqb87ZyxkBCNjSrnQj2qLYnNbWnlUQ+6Qn4R09EPNXTrnFq0pwZaYpt4WSS6DvZBxu/ey/S2MWvhLuQ==
 Received: from ta2.c.googlers.com.com (105.168.195.35.bc.googleusercontent.com. [35.195.168.105])
-        by smtp.gmail.com with ESMTPSA id m20-20020a056000181400b0033b43a5f53csm3618820wrh.103.2024.02.08.05.51.01
+        by smtp.gmail.com with ESMTPSA id m20-20020a056000181400b0033b43a5f53csm3618820wrh.103.2024.02.08.05.51.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Feb 2024 05:51:02 -0800 (PST)
+        Thu, 08 Feb 2024 05:51:04 -0800 (PST)
 From: Tudor Ambarus <tudor.ambarus@linaro.org>
 To: broonie@kernel.org,
 	robh@kernel.org,
@@ -71,9 +71,9 @@ Cc: krzysztof.kozlowski@linaro.org,
 	devicetree@vger.kernel.org,
 	arnd@arndb.de,
 	Tudor Ambarus <tudor.ambarus@linaro.org>
-Subject: [PATCH 10/12] spi: s3c64xx: deprecate fifo_lvl_mask, rx_lvl_offset and port_id
-Date: Thu,  8 Feb 2024 13:50:43 +0000
-Message-ID: <20240208135045.3728927-11-tudor.ambarus@linaro.org>
+Subject: [PATCH 12/12] spi: s3c64xx: switch exynos850 to new port config data
+Date: Thu,  8 Feb 2024 13:50:45 +0000
+Message-ID: <20240208135045.3728927-13-tudor.ambarus@linaro.org>
 X-Mailer: git-send-email 2.43.0.687.g38aa6559b0-goog
 In-Reply-To: <20240208135045.3728927-1-tudor.ambarus@linaro.org>
 References: <20240208135045.3728927-1-tudor.ambarus@linaro.org>
@@ -85,140 +85,48 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Deprecate fifo_lvl_mask, rx_lvl_offset and port_id. One shall use
-{rx, tx}_fifomask instead. Add messages to each port configuration.
+Exynos850 has the same version of USI SPI (v2.1) as GS101.
+Drop the fifo_lvl_mask and rx_lvl_offset and switch to the new port
+config data.
 
-Suggested-by: Sam Protsenko <semen.protsenko@linaro.org>
+Backward compatibility with DT is not broken because when alises are
+set:
+- the SPI core will set the bus number according to the alias ID
+- the FIFO depth is always the same size for exynos850 (64 bytes) no
+  matter the alias ID number.
+
+Advantages of the change:
+- drop dependency on the OF alias ID.
+- FIFO depth is inferred from the compatible. Exynos850 integrates 3 SPI
+  IPs, all with 64 bytes FIFO depths.
+- use full mask for SPI_STATUS.{RX, TX}_FIFO_LVL fields. Using partial
+  masks is misleading and can hide problems of the driver logic.
+
+Just compiled tested.
+
 Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
 ---
- drivers/spi/spi-s3c64xx.c | 26 +++++++++++++++++++++++---
- 1 file changed, 23 insertions(+), 3 deletions(-)
+ drivers/spi/spi-s3c64xx.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index d2d1c9767145..128f4a7c4bd9 100644
+index 784786407d2e..9fcbe040cb2f 100644
 --- a/drivers/spi/spi-s3c64xx.c
 +++ b/drivers/spi/spi-s3c64xx.c
-@@ -135,8 +135,8 @@ struct s3c64xx_spi_dma_data {
- 
- /**
-  * struct s3c64xx_spi_port_config - SPI Controller hardware info
-- * @fifo_lvl_mask: Bit-mask for {TX|RX}_FIFO_LVL bits in SPI_STATUS register.
-- * @rx_lvl_offset: Bit offset of RX_FIFO_LVL bits in SPI_STATUS regiter.
-+ * @fifo_lvl_mask: [DEPRECATED] use @{rx, tx}_fifomask instead.
-+ * @rx_lvl_offset: [DEPRECATED] use @{rx,tx}_fifomask instead.
-  * @fifo_depth: depth of the FIFO.
-  * @rx_fifomask: SPI_STATUS.RX_FIFO_LVL mask. Shifted mask defining the field's
-  *               length and position.
-@@ -192,7 +192,7 @@ struct s3c64xx_spi_port_config {
-  * @rx_dma: Local receive DMA data (e.g. chan and direction)
-  * @tx_dma: Local transmit DMA data (e.g. chan and direction)
-  * @port_conf: Local SPI port configuration data
-- * @port_id: Port identification number
-+ * @port_id: [DEPRECATED] use @{rx,tx}_fifomask instead.
-  * @fifo_depth: depth of the FIFO.
-  * @rx_fifomask: SPI_STATUS.RX_FIFO_LVL mask. Shifted mask defining the field's
-  *               length and position.
-@@ -1508,7 +1508,9 @@ static const struct dev_pm_ops s3c64xx_spi_pm = {
- };
- 
- static const struct s3c64xx_spi_port_config s3c2443_spi_port_config = {
-+	/* fifo_lvl_mask is deprecated. Use {rx, tx}_fifomask instead. */
- 	.fifo_lvl_mask	= { 0x7f },
-+	/* rx_lvl_offset is deprecated. Use {rx, tx}_fifomask instead. */
- 	.rx_lvl_offset	= 13,
- 	.tx_st_done	= 21,
- 	.clk_div	= 2,
-@@ -1516,14 +1518,18 @@ static const struct s3c64xx_spi_port_config s3c2443_spi_port_config = {
- };
- 
- static const struct s3c64xx_spi_port_config s3c6410_spi_port_config = {
-+	/* fifo_lvl_mask is deprecated. Use {rx, tx}_fifomask instead. */
- 	.fifo_lvl_mask	= { 0x7f, 0x7F },
-+	/* rx_lvl_offset is deprecated. Use {rx, tx}_fifomask instead. */
- 	.rx_lvl_offset	= 13,
- 	.tx_st_done	= 21,
- 	.clk_div	= 2,
- };
- 
- static const struct s3c64xx_spi_port_config s5pv210_spi_port_config = {
-+	/* fifo_lvl_mask is deprecated. Use {rx, tx}_fifomask instead. */
- 	.fifo_lvl_mask	= { 0x1ff, 0x7F },
-+	/* rx_lvl_offset is deprecated. Use {rx, tx}_fifomask instead. */
- 	.rx_lvl_offset	= 15,
- 	.tx_st_done	= 25,
- 	.clk_div	= 2,
-@@ -1531,7 +1537,9 @@ static const struct s3c64xx_spi_port_config s5pv210_spi_port_config = {
- };
- 
- static const struct s3c64xx_spi_port_config exynos4_spi_port_config = {
-+	/* fifo_lvl_mask is deprecated. Use {rx, tx}_fifomask instead. */
- 	.fifo_lvl_mask	= { 0x1ff, 0x7F, 0x7F },
-+	/* rx_lvl_offset is deprecated. Use {rx, tx}_fifomask instead. */
- 	.rx_lvl_offset	= 15,
- 	.tx_st_done	= 25,
- 	.clk_div	= 2,
-@@ -1541,7 +1549,9 @@ static const struct s3c64xx_spi_port_config exynos4_spi_port_config = {
- };
- 
- static const struct s3c64xx_spi_port_config exynos7_spi_port_config = {
-+	/* fifo_lvl_mask is deprecated. Use {rx, tx}_fifomask instead. */
- 	.fifo_lvl_mask	= { 0x1ff, 0x7F, 0x7F, 0x7F, 0x7F, 0x1ff},
-+	/* rx_lvl_offset is deprecated. Use {rx, tx}_fifomask instead. */
- 	.rx_lvl_offset	= 15,
- 	.tx_st_done	= 25,
- 	.clk_div	= 2,
-@@ -1551,7 +1561,9 @@ static const struct s3c64xx_spi_port_config exynos7_spi_port_config = {
- };
- 
- static const struct s3c64xx_spi_port_config exynos5433_spi_port_config = {
-+	/* fifo_lvl_mask is deprecated. Use {rx, tx}_fifomask instead. */
- 	.fifo_lvl_mask	= { 0x1ff, 0x7f, 0x7f, 0x7f, 0x7f, 0x1ff},
-+	/* rx_lvl_offset is deprecated. Use {rx, tx}_fifomask instead. */
- 	.rx_lvl_offset	= 15,
- 	.tx_st_done	= 25,
- 	.clk_div	= 2,
-@@ -1562,7 +1574,9 @@ static const struct s3c64xx_spi_port_config exynos5433_spi_port_config = {
+@@ -1576,10 +1576,9 @@ static const struct s3c64xx_spi_port_config exynos5433_spi_port_config = {
  };
  
  static const struct s3c64xx_spi_port_config exynos850_spi_port_config = {
-+	/* fifo_lvl_mask is deprecated. Use {rx, tx}_fifomask instead. */
- 	.fifo_lvl_mask	= { 0x7f, 0x7f, 0x7f },
-+	/* rx_lvl_offset is deprecated. Use {rx, tx}_fifomask instead. */
- 	.rx_lvl_offset	= 15,
+-	/* fifo_lvl_mask is deprecated. Use {rx, tx}_fifomask instead. */
+-	.fifo_lvl_mask	= { 0x7f, 0x7f, 0x7f },
+-	/* rx_lvl_offset is deprecated. Use {rx, tx}_fifomask instead. */
+-	.rx_lvl_offset	= 15,
++	.fifo_depth	= 64,
++	.rx_fifomask	= S3C64XX_SPI_ST_RX_FIFO_RDY_V2,
++	.tx_fifomask	= S3C64XX_SPI_ST_TX_FIFO_RDY_V2,
  	.tx_st_done	= 25,
  	.clk_div	= 4,
-@@ -1573,8 +1587,10 @@ static const struct s3c64xx_spi_port_config exynos850_spi_port_config = {
- };
- 
- static const struct s3c64xx_spi_port_config exynosautov9_spi_port_config = {
-+	/* fifo_lvl_mask is deprecated. Use {rx, tx}_fifomask instead. */
- 	.fifo_lvl_mask	= { 0x1ff, 0x1ff, 0x7f, 0x7f, 0x7f, 0x7f, 0x1ff, 0x7f,
- 			    0x7f, 0x7f, 0x7f, 0x7f},
-+	/* rx_lvl_offset is deprecated. Use {rx, tx}_fifomask instead. */
- 	.rx_lvl_offset	= 15,
- 	.tx_st_done	= 25,
- 	.clk_div	= 4,
-@@ -1586,7 +1602,9 @@ static const struct s3c64xx_spi_port_config exynosautov9_spi_port_config = {
- };
- 
- static const struct s3c64xx_spi_port_config fsd_spi_port_config = {
-+	/* fifo_lvl_mask is deprecated. Use {rx, tx}_fifomask instead. */
- 	.fifo_lvl_mask	= { 0x7f, 0x7f, 0x7f, 0x7f, 0x7f},
-+	/* rx_lvl_offset is deprecated. Use {rx, tx}_fifomask instead. */
- 	.rx_lvl_offset	= 15,
- 	.tx_st_done	= 25,
- 	.clk_div	= 2,
-@@ -1597,8 +1615,10 @@ static const struct s3c64xx_spi_port_config fsd_spi_port_config = {
- };
- 
- static const struct s3c64xx_spi_port_config gs101_spi_port_config = {
-+	/* fifo_lvl_mask is deprecated. Use {rx, tx}_fifomask instead. */
- 	.fifo_lvl_mask	= { 0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0x7f,
- 			    0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0x7f},
-+	/* rx_lvl_offset is deprecated. Use {rx, tx}_fifomask instead. */
- 	.rx_lvl_offset	= 15,
- 	.tx_st_done	= 25,
- 	.clk_div	= 4,
+ 	.high_speed	= true,
 -- 
 2.43.0.687.g38aa6559b0-goog
 

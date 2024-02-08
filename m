@@ -1,97 +1,118 @@
-Received: from mx0b-001ae601.pphosted.com (mx0a-001ae601.pphosted.com [67.231.149.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3999763EF;
-	Thu,  8 Feb 2024 13:35:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.149.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45A8B76414
+	for <linux-spi@vger.kernel.org>; Thu,  8 Feb 2024 13:50:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707399314; cv=none; b=Vk51LCAxJzP+45kNYNqLRqSQ5inVOqPdHiqJOOtsxI+mwRToSqoqEEP3dYIUviLXZfIwZqpwqY2J2ovj7p930RkjaeGQGDN6LFiGq22eAmCbz1bRKnxRgjyG3S4V0vGvFccXdxbhYaRRKFixzYSrHblCeQmnnjSzNIGr6bxWZgw=
+	t=1707400256; cv=none; b=tTP9gf7WInOV63JPfwStqBD6luZoRMk7FqmFgKMF7mRCJXjcxrmKiiWnkkJi07s0cIwDDorQowpbkJvhmTNZ6Aiui3rUhVjm/wbPhmhy3y7tLGlVfFrDzOyrZkspOrbfoXlh3zemDnyOwOE76d9VX3qpkxVWCAFmdaxS6Ni69Hw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707399314; c=relaxed/simple;
-	bh=zLQhZr8yGUt3B2m7CqB+4AxyhWRzVNenVlrezkIRqNo=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NgPkIzgv8HhQvvUiy5JbN18GNho+HuzEuuM03FK/g4Vi24cDoXazbQe9NZCZR8rw+K4yhS8O16psPkHxixgIP+HmcxyNQc1ehi9PBXD8Vjc2HCijZPYeeTq8D0Ea0wHcQ5qpafNIIIw/RsjJIamUK6AE4mGL1cX4ZfTxpIUxPYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com; spf=pass smtp.mailfrom=opensource.cirrus.com; dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b=J6XSgqol; arc=none smtp.client-ip=67.231.149.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensource.cirrus.com
+	s=arc-20240116; t=1707400256; c=relaxed/simple;
+	bh=p2usWgPysTo/9X224ZyHEY+TGT4J7QxxP4dWqWMr0XI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=e8FbGz2JyhI40kSbEYLIVwxjJlvEDn87Mqz5HL+mzEe7e3rGWrh/j6waIm1wf1nPSX/G6HpzyQ9xo2XnHH8q7iAqP2FLwin7VCZ3nyzeIFiB78/rZAVddRnLBFxmWqWvNT9kUaL+jYcNknnxigqrcxIONis/W+h6MR7Bary61vA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=AoVlE0sO; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b="J6XSgqol"
-Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
-	by mx0a-001ae601.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41861Rub021374;
-	Thu, 8 Feb 2024 07:35:09 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=
-	date:from:to:cc:subject:message-id:references:mime-version
-	:content-type:content-transfer-encoding:in-reply-to; s=
-	PODMain02222019; bh=DV/lXCim1BwQxa2+q6Mt8a8g3JVHmhpC7TxpWpWSHwg=; b=
-	J6XSgqoljGZ8a0PZwEcuHm9FH7yrLXoMsRq5jRp4h83wSOa59OCoy7cGe1HtwEJW
-	V98SZnehgNqOjYWBZsc7zeZ5Seo45P/YseJ+S3PM5+UNUYTjxKErqWqiXtgEyPad
-	5PAl77xCJBeafKu7g09JnD0FixYr1lsQmEg/z/VtJWRPCizxAymMiQrSjKyB12p5
-	W9W1Vl+NWxq6Cz7f+txjoXFYP3z4oPz7o3nifMob2Li/szTw/Pcvf+BpI1Ggx6Sz
-	iYbr4zUldvrEIYgtrwkq1dZnwi2O54GRRluL18cUV4E2s2SI/AtLFlVCbYaPJPKu
-	pPNQBqRB4McACi+KQYdHVg==
-Received: from ediex02.ad.cirrus.com ([84.19.233.68])
-	by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 3w1ks2ej3w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Feb 2024 07:35:08 -0600 (CST)
-Received: from ediex02.ad.cirrus.com (198.61.84.81) by ediex02.ad.cirrus.com
- (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Thu, 8 Feb
- 2024 13:35:06 +0000
-Received: from ediswmail9.ad.cirrus.com (198.61.86.93) by
- anon-ediex02.ad.cirrus.com (198.61.84.81) with Microsoft SMTP Server id
- 15.2.1118.40 via Frontend Transport; Thu, 8 Feb 2024 13:35:06 +0000
-Received: from ediswmail9.ad.cirrus.com (ediswmail9.ad.cirrus.com [198.61.86.93])
-	by ediswmail9.ad.cirrus.com (Postfix) with ESMTPS id 8CA67820243;
-	Thu,  8 Feb 2024 13:35:06 +0000 (UTC)
-Date: Thu, 8 Feb 2024 13:35:05 +0000
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
-To: Lee Jones <lee@kernel.org>
-CC: <broonie@kernel.org>, <andy.shevchenko@gmail.com>,
-        <patches@opensource.cirrus.com>, <linux-kernel@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>
-Subject: Re: (subset) [PATCH v4 1/6] spi: cs42l43: Tidy up header includes
-Message-ID: <ZcTYift6P9KkiI7g@ediswmail9.ad.cirrus.com>
-References: <20240129152557.3221212-1-ckeepax@opensource.cirrus.com>
- <170738736196.904064.7729211182384063971.b4-ty@kernel.org>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="AoVlE0sO"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-40fe3141e1cso17392125e9.0
+        for <linux-spi@vger.kernel.org>; Thu, 08 Feb 2024 05:50:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1707400253; x=1708005053; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rjENHLcLIAVWZiAZ2HXcUWfnK57wdK8wfcg4H3+qzmM=;
+        b=AoVlE0sOiLAEnTCHm4OGJBe0gKJ7eNEeKclZqC9ZQuYla3RMkNoFF3jt81+GyYrQKJ
+         btOBnbavW+LavtkdLKdb6ltdQd56NG/JSLdly0y0w/Fa/8MhcV6rZj7JZ+J7olNuu1vf
+         I6yexrc9G/Cx7dQmdLG5c3I+JtEQmPlt/a32m1fs/zfDkqCRg68ZpvLFhhpvo4+Nf13r
+         Ba4Em1LlxWJURfHrg7RUNVouPOnXHA5538lpA7+v8DJj6J2xc7Nu3QDtVEALoclbysG7
+         niOwuJhjYkZ7Ux3DGgn+LHgAyO/7gRIrgBbhhlChAg9PO1R7rJmb3V13uHQRWUkHdlGp
+         j8nA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707400253; x=1708005053;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rjENHLcLIAVWZiAZ2HXcUWfnK57wdK8wfcg4H3+qzmM=;
+        b=Ue7PfC1txBM4s7YXieNGDCjF28jqwvfIidmKa9jQN8EmJSwzL6HFfrAqt0pwJjvweS
+         kmeZuiVfRoqGcHZp+3tmea0nK61u3AjkiHioGc9Ab/3QtWITwZTbeJqAvTnV92x+whgS
+         wVo/X2BzcjJFvHTYU0U5OXmP7+hWP8yd8Lm+0TcUqQcRTzNyy71/WeGSb7+WtIrSgRtC
+         cZ/mlEoxLjEJJb6HvQx7P84U+7cebixlbGzaVX+bp3UC+Z3+3ZzNTVHQzy7FVDh98I6v
+         0QNH/IoxITUFM6XHOdy9p40+wptPKTYbd9JWuqbWvJqT2RbvYv1hT5FHRt03Jlw+IzX8
+         ivnA==
+X-Gm-Message-State: AOJu0YyaWv2E41+BPiKxXmCMimL/GW5B7Ob1fNA+bbn3vwESpMZfRJyK
+	YZi4pE1oduiSfd0qfGjVTAohul4h05DbLvTuJj+VaUkFABuSNLtPpLIKqqrsAm0=
+X-Google-Smtp-Source: AGHT+IFTzzez+1+BjUzZhqbA4z1KJveyYp9cLpDPWcvVsrOfjjaaWuyzUn2pNT6GoKgQyYhXLuBEYw==
+X-Received: by 2002:adf:f34f:0:b0:33b:295d:19b6 with SMTP id e15-20020adff34f000000b0033b295d19b6mr6293505wrp.69.1707400253564;
+        Thu, 08 Feb 2024 05:50:53 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUi6mIo+LskNjMyaaVLjIy6CST18FnOprx16kaQQ3OihpdMbQUNWNaYUGAGHR93OtO6K92p6mEtJnar2aOye3GKZ7S34SIxXYa+NqaxXYQo7K4Ivxg24z1FFeT4A9ctzPYwr9CmtVcR1DlJ1DV0hIjNjdzb/HZH5//1D89Tg7hXr7m7iT0ouvMzj4MT4kNjxbZfPO/wFZZlRiHkOD3AOiraCwZoUF5ZtjLwvqaUGCN0zh8xwoWx4JbnUHZu5fG+rWITuh6NDPZ2Fxk0dy22n64L6of90Y1YfLEdNX6U0knQT6hLUFxUjzM11umvZo1e5T3n9a8Xukm7pSFizaVq1rqG4ixTdfA74DMnekHEVDFCUZDiV5jhyi0FmDlVpVkbkVafpoBJWblDTQhXbaIft4ZeRKdgXTvDZYizOv9lGifXCb2RI/9EWHU8c1Z1F9nfWaSho2vrgPbQOO7prFhiFARfNnY/SWpbFq5gSKeqqhIYlESgaEt4kOZRhUZxkrTQYhJoXc263scl/YdNAZR3vwDhs4pXP7TGQvp+1vlyCf8U3f4K8b71k45qm0fLeIhjhndFbOt0Sh+5Kezk2X5q6Cd3H0Htj6huuB9EEbrBWw==
+Received: from ta2.c.googlers.com.com (105.168.195.35.bc.googleusercontent.com. [35.195.168.105])
+        by smtp.gmail.com with ESMTPSA id m20-20020a056000181400b0033b43a5f53csm3618820wrh.103.2024.02.08.05.50.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Feb 2024 05:50:53 -0800 (PST)
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
+To: broonie@kernel.org,
+	robh@kernel.org,
+	andi.shyti@kernel.org,
+	semen.protsenko@linaro.org
+Cc: krzysztof.kozlowski@linaro.org,
+	alim.akhtar@samsung.com,
+	linux-spi@vger.kernel.org,
+	linux-samsung-soc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	andre.draszik@linaro.org,
+	peter.griffin@linaro.org,
+	kernel-team@android.com,
+	willmcvicker@google.com,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org,
+	arnd@arndb.de,
+	Tudor Ambarus <tudor.ambarus@linaro.org>
+Subject: [PATCH 01/12] spi: dt-bindings: introduce the ``fifo-depth`` property
+Date: Thu,  8 Feb 2024 13:50:34 +0000
+Message-ID: <20240208135045.3728927-2-tudor.ambarus@linaro.org>
+X-Mailer: git-send-email 2.43.0.687.g38aa6559b0-goog
+In-Reply-To: <20240208135045.3728927-1-tudor.ambarus@linaro.org>
+References: <20240208135045.3728927-1-tudor.ambarus@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <170738736196.904064.7729211182384063971.b4-ty@kernel.org>
-X-Proofpoint-GUID: TuDgfRtjaHTaj92qeYgJTSHdd5sRWAki
-X-Proofpoint-ORIG-GUID: TuDgfRtjaHTaj92qeYgJTSHdd5sRWAki
-X-Proofpoint-Spam-Reason: safe
 
-On Thu, Feb 08, 2024 at 10:16:01AM +0000, Lee Jones wrote:
-> On Mon, 29 Jan 2024 15:25:52 +0000, Charles Keepax wrote:
-> > Including some missing headers.
-> > 
-> > 
-> 
-> Applied, thanks!
-> 
-> [2/6] mfd: cs42l43: Tidy up header includes
->       commit: a5bc1c6c93853fb1026fb5feb6c36c9cd9512724
-> [3/6] mfd: cs42l43: Use __u8 type rather than u8 for firmware interface
->       commit: eb40e181cc480c89b906aca1f29ff6f6df6b66b9
-> [4/6] mfd: cs42l43: Add time postfixes on defines
->       commit: 43a94a8cf0fa136d5fc726121ff7a602754c9680
-> [5/6] mfd: cs42l43: Add some missing dev_err_probe()s
->       commit: 104c68194edbe0e8c3036ce283a3f69434415be2
-> [6/6] mfd: cs42l43: Handle error from devm_pm_runtime_enable()
->       commit: 8716f2c79eb82bd4dc5d7f9523a560e35efe0795
-> 
-> --
-> Lee Jones [李琼斯]
-> 
+There are instances of the same IP that are configured by the integrator
+with different FIFO depths. Introduce the fifo-depth property to allow
+such nodes to specify their FIFO depth.
 
-The SPI one needs to be applied along with these, otherwise
-this will cause build breakage in the SPI driver.
+We haven't seen SPI IPs with different FIFO depths for RX and TX, thus
+introduce a single property.
 
-Thanks,
-Charles
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+---
+ Documentation/devicetree/bindings/spi/spi-controller.yaml | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/spi/spi-controller.yaml b/Documentation/devicetree/bindings/spi/spi-controller.yaml
+index 524f6fe8c27b..99272e6f115e 100644
+--- a/Documentation/devicetree/bindings/spi/spi-controller.yaml
++++ b/Documentation/devicetree/bindings/spi/spi-controller.yaml
+@@ -69,6 +69,11 @@ properties:
+          Should be generally avoided and be replaced by
+          spi-cs-high + ACTIVE_HIGH.
+ 
++  fifo-depth:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description:
++      Size of the data FIFO in bytes.
++
+   num-cs:
+     $ref: /schemas/types.yaml#/definitions/uint32
+     description:
+-- 
+2.43.0.687.g38aa6559b0-goog
+

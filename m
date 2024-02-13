@@ -1,76 +1,145 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from repost01.tmes.trendmicro.eu (repost01.tmes.trendmicro.eu [18.185.115.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E752455769;
-	Tue, 13 Feb 2024 13:14:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707830048; cv=none; b=Q2Y9rQjg891Tz1Zl9olfhbn79NbDUInEsDI6a5czK0FYGPSlpF6YYuBvubPwqAuDhvAsEiFRHKhsSiOKfVUfM8TGxVCKLBhpl+qbhTM1yikIK7l23+mGMcYXQy3gfOJvpkShfa7GMvbj1RQnQbDIGo6ovIu5VP27qS9+RWasMWY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707830048; c=relaxed/simple;
-	bh=+vPxa+J/7hvWU17r1zp1OBnxkzfzLxPHNrKMEj/0zHM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NeXfIlCS7QOucrDNNoJNLSOuZ2NGNKcJxComBqtapZDbHP8yDeSg8jc6dHo7ovPZrT3u7FFnL7WItqje0AUw4uiYmNT1ujiu2/PBJNCRBjKuJass6SdlzGkOsWUkVs82zefmSun+zBEfnPuCvihx+FINryv14au8/6ZrZX67rt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BAMkzeJy; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 557BE54FBB
+	for <linux-spi@vger.kernel.org>; Tue, 13 Feb 2024 13:54:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=18.185.115.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1707832445; cv=fail; b=eMBYUUmXj4bJ1OIVZro3abnoGGP9FdbkAdZcaz7UFsHOagR0mNcgo3hVULrgocFe8JxxrCqozxUWBHpTEyIIDg7Ajm3Co7fzKgHydT0FMYeiKJDXRN6GHbLaT2dQ8gqAzNYF4gxaMxwSKBEO/Py5JObUQJXXVTnSjcJNmwAYLFE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1707832445; c=relaxed/simple;
+	bh=vxJDzfugATK5AKeNs1Bln9eDUQfEBCiBMJjhnvCsSdM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SYECSJNho4tfk+J0uaoK38jTehcqJz870Itaq9A+6EqOV2RtXyaNrSjq1IT7AzpEKkzqczQ2fkQYNQ+F9nratsiJIXJmbv2pHKvSQKMwsB4ZvZ2rc9emlUM9ITu8XO2wXG6z6ZFCe0ckby/uUYXfZiDBJuOhJ0DKhrViAkU7cEs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensynergy.com; spf=pass smtp.mailfrom=opensynergy.com; dkim=pass (2048-bit key) header.d=opensynergy.com header.i=@opensynergy.com header.b=LNZxWmwK; arc=fail smtp.client-ip=18.185.115.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensynergy.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensynergy.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BAMkzeJy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7880AC433C7;
-	Tue, 13 Feb 2024 13:14:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707830047;
-	bh=+vPxa+J/7hvWU17r1zp1OBnxkzfzLxPHNrKMEj/0zHM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BAMkzeJy/N+tXl6fJq0i5v/9/D7xKPiPfkk8frxKtzxqgTm6cNqAPXlx5mpeMynZm
-	 O9LaDS26HkHo1o+t2sBfTVm+PnNvnkWI50/XnL1Kg63X0Xq1zjET1euoaLzUHi+Cdz
-	 eIVwTGN4SZig9BQKzob5vpyCYpRCRf2WFQQBmfXsHtWDZUTTiQmeKK4vrjq41z+NNt
-	 1U3GluvfX5JtfgQ4lc87G1cxIkquX+8eG3Yl0RRwdSwZJkl99IdksbSsYM76WTfCbQ
-	 JLw9i612XyMWFhObBP4mCagDCE8XRZCOd2unYxJ+ThKA7CRPiaLdTpL/LPediFjNRp
-	 enjhVdi+75UnQ==
-Date: Tue, 13 Feb 2024 07:14:05 -0600
-From: Rob Herring <robh@kernel.org>
-To: Tudor Ambarus <tudor.ambarus@linaro.org>
-Cc: broonie@kernel.org, andi.shyti@kernel.org,
-	krzysztof.kozlowski@linaro.org, semen.protsenko@linaro.org,
-	conor+dt@kernel.org, alim.akhtar@samsung.com,
-	linux-spi@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	andre.draszik@linaro.org, peter.griffin@linaro.org,
-	kernel-team@android.com, willmcvicker@google.com,
-	devicetree@vger.kernel.org, arnd@arndb.de
-Subject: Re: [PATCH v2 01/12] spi: dt-bindings: introduce FIFO depth
- properties
-Message-ID: <20240213131405.GA1047438-robh@kernel.org>
-References: <20240212140331.915498-1-tudor.ambarus@linaro.org>
- <20240212140331.915498-2-tudor.ambarus@linaro.org>
+	dkim=pass (2048-bit key) header.d=opensynergy.com header.i=@opensynergy.com header.b="LNZxWmwK"
+Received: from 104.47.11.168_.trendmicro.com (unknown [172.21.181.221])
+	by repost01.tmes.trendmicro.eu (Postfix) with SMTP id B2BB110000F6A;
+	Tue, 13 Feb 2024 13:54:00 +0000 (UTC)
+X-TM-MAIL-RECEIVED-TIME: 1707832440.377000
+X-TM-MAIL-UUID: 8e28b5ff-b99d-4da1-81e5-b1a7645edc48
+Received: from DEU01-FR2-obe.outbound.protection.outlook.com (unknown [104.47.11.168])
+	by repre01.tmes.trendmicro.eu (Trend Micro Email Security) with ESMTPS id 5C21810006A64;
+	Tue, 13 Feb 2024 13:54:00 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=RV+SUVWXya7nNmUsrhnIuUW0yZPvdhzMN6vilwnKGE3cHW4ZiMoDP2qxy8p2xYc8uizYTmfWYZ50YZNilcdUIbylB+EO9AktF/lhfFRaqtfpr1mLzXHBcxvQDz4uE20qc35gH5vw8U2OOvmQ/dVsaaLvtB6yXRDRvAgaIKPQBrbbOAApGOVs+9RW4as2HKGdtEtNfRfh2Ivcntz1+HhWuPaFbOGM8FqqV16G2wC+6L3AHbm8YfNkVKEyLY6we3m3u31vpFwrjDufpbpl1VUbErRbZ9158GkamNzOa3YKONQG684dPsOcq6nnz+qV8LbgsHZI+URXEyLwQQTyIqxDgw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=viyVWJnpcnHHn4e7wd6VomAquY+WU2DNfPs+h1iKMyg=;
+ b=kV4BkLbA45Hch3Jw+B8/mH7HRQ8crvkJaifsi3R8lzFCDJV7G28Y+KoLtf6YDlsKn9Mx52sauwLF3y3QqZLKMpYJNJ8bxGzYZ+EHtHyeakwD8kL3TohTcTW8rodVsaA/VWo+emgX4c4nNgYU5+K7iAmqS6RLCUHRdeGE0B6HKnlvEd10igtEaCR9rgSDW1ramxpexGylhtKE2n4/tpGLTqXM4Yds/0MKhXN51rde/KAPLDzYq2+YGNj7a6fLEu4boJMPrIYudzxRwkTK0bdv6F+jpISE97utyui6FRwFfC0g5azsoH2biadrHV7xaNq3md7AeSw4V9H4VBy0URbkGQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 217.66.60.4) smtp.rcpttodomain=kernel.org smtp.mailfrom=opensynergy.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=opensynergy.com; dkim=none (message not signed); arc=none (0)
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 217.66.60.4)
+ smtp.mailfrom=opensynergy.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=opensynergy.com;
+Received-SPF: Pass (protection.outlook.com: domain of opensynergy.com
+ designates 217.66.60.4 as permitted sender) receiver=protection.outlook.com;
+ client-ip=217.66.60.4; helo=SR-MAIL-03.open-synergy.com; pr=C
+From: Harald Mommer <Harald.Mommer@opensynergy.com>
+To: virtio-dev@lists.oasis-open.org,
+	Haixu Cui <quic_haixcui@quicinc.com>,
+	Mark Brown <broonie@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: quic_ztu@quicinc.com,
+	Matti Moell <Matti.Moell@opensynergy.com>,
+	Mikhail Golubev <Mikhail.Golubev@opensynergy.com>,
+	Harald Mommer <harald.mommer@opensynergy.com>
+Subject: [RFC PATCH v3 1/3] virtio: Add ID for virtio SPI.
+Date: Tue, 13 Feb 2024 14:53:48 +0100
+Message-Id: <20240213135350.5878-2-Harald.Mommer@opensynergy.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240213135350.5878-1-Harald.Mommer@opensynergy.com>
+References: <20240213135350.5878-1-Harald.Mommer@opensynergy.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240212140331.915498-2-tudor.ambarus@linaro.org>
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AMS0EPF000001B7:EE_|FR0P281MB2812:EE_
+Content-Type: text/plain
+X-MS-Office365-Filtering-Correlation-Id: ef0117d9-a0b1-4f7c-ca73-08dc2c9b3a8f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	LKBRatVhTWeY+up/njWv32ZbWpEaweOIfFzAzKVBhV71fQUZoXba2ydx7SKg2H6/f2s3z2+THgh/fE6Xfzc+Vazo8Fm5mFuXfJHTGhHykZCuD5trpflOcGOGdTfcH8R3OOP92GdDuvW87oyBA2vwqOEn8qlKYbkPdxcxEzNsMxHFhGlN3KoPKBc7KF5RLdMAgPbBawwxQxnRLysZC17lNXh2bMqRh31HVeIkVr2InHwG3/TTqy2A1mrU/CkT5YWnYl5qbzBkUplxVYIDSXyI7p/AdAeRw++BXBh2Mg3HQ4lwmptUbPKhUUyZSdUhg1Lg5FNvibfYC/5/TUzcEzLtFJGVyq5WRZrxQUMoWRIWYOF5emG+b+68ujdMbHKh7TIeN1Rm/nosgCCFejelI7kYPByZcl0ujnPVbxdPu1FqVTWe9tg7/oDLU4Gp7JZtUwUnrKhYo+xBaHoDMO0OpKyi29TdMS/c8TABNQFq33uonryxNDNDNJYwbI8LnKgVmGGZ7hdCfe7y3ALhGBkA04EV7bQ42zRqGaF1cN67gzRcjxagcQOwJ9xLFc/gqRG1Rq9jDfPqaCKww8aRx/jNA1DX0ilISaG77Q+2SRli4A7p5mo=
+X-Forefront-Antispam-Report:
+	CIP:217.66.60.4;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SR-MAIL-03.open-synergy.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(346002)(396003)(39840400004)(136003)(376002)(230922051799003)(64100799003)(82310400011)(451199024)(1800799012)(186009)(46966006)(36840700001)(2906002)(4744005)(41300700001)(1076003)(107886003)(336012)(478600001)(5660300002)(8936002)(8676002)(4326008)(70586007)(70206006)(26005)(36756003)(2616005)(81166007)(110136005)(54906003)(42186006)(316002)(86362001);DIR:OUT;SFP:1102;
+X-OriginatorOrg: opensynergy.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Feb 2024 13:53:59.3041
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ef0117d9-a0b1-4f7c-ca73-08dc2c9b3a8f
+X-MS-Exchange-CrossTenant-Id: 800fae25-9b1b-4edc-993d-c939c4e84a64
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=800fae25-9b1b-4edc-993d-c939c4e84a64;Ip=[217.66.60.4];Helo=[SR-MAIL-03.open-synergy.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AMS0EPF000001B7.eurprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: FR0P281MB2812
+X-TM-AS-ERS: 104.47.11.168-0.0.0.0
+X-TMASE-Version: StarCloud-1.3-9.1.1015-28190.000
+X-TMASE-Result: 10-0.491300-4.000000
+X-TMASE-MatchedRID: Dkfyeyxtv0bJ+P2VFrJmrBkPtuOr7qUwbNjTSFpLxCgW+iZuJylrLk9A
+	UWTSPmMGupoogdfVK+Jd4x1IUlKnFM8TyCfmBrmqW8gh3wzbqBNwRUdni9UCWPdzaXqYo8IqVxH
+	vEGsKrsW/2tJ3foSBQiPzRlrdFGDwfH2QXwfwYBCUHCQ9y5SdWZ7ayFyYRC038/sI6NCSAcVCG+
+	H1Pc3TBA==
+X-TMASE-XGENCLOUD: 390dc103-7c3e-4f1d-bc12-401e097fd074-0-0-200-0
+X-TM-Deliver-Signature: 3A4896915A1EF00C4841768F8BE5A47F
+X-TM-Addin-Auth: uwk93VsQgaowyGSVkHEK87ECh00UIDv4RsAmklPO4ufb4WqXtNw9H7OAWy3
+	8vNeIkjRsZNww0Dk373g6LRuxem/xLVcZPIw2oP+TyhtGNz0KddxsS3AfY2kLmk+B7JQXbg78Y5
+	xkw0LNiHjkG1xe2VKBxMcr317bKgZIH9m7u8eKGj5QbOvPA3ocsqLydgfzlmVifB/q0XBSrjvib
+	MSh0jHdiNHnLwP4jhdAP9SYq1rzwwc/O3vFlXFaWnvW6g4T5Xv1BXwixaX17G3uJUsbXvJUUIOh
+	f0Vs0OsdW8viVD4=.ZpApugKF5Yd9EaUBdKWP4+IGzg/0tuqkC2pt6z44PopaYj9Oajxh57bohY
+	1aUv9Ah01iXTa2Dn8bGrAhEtKvuigV4N13xjZK3x8LMXq09TGkBGBKVnPGnP9H7kJInB16ooBN1
+	qKnixkhfclBQocjU6Eok7BKyaJyANhaK5LlJo9QQqwrOSt6HuiPaUrHOxNJbqmuG3vU6KwpzGZN
+	3AJBsnvaysheN1N0RUpuCC4+a2TSKKBrYRhArbYmYJrD4Sh+Pxk1Rkeq8WQaQrTCgkf/aSY9mkM
+	aqyQcp9jzbqJlMJJw3g6h4v0a9e0pefpIvFGwtL2W6u6v2dwXoHU/IBc1vA==
+X-TM-Addin-ProductCode: EMS
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=opensynergy.com;
+	s=TM-DKIM-20210503141657; t=1707832440;
+	bh=vxJDzfugATK5AKeNs1Bln9eDUQfEBCiBMJjhnvCsSdM=; l=777;
+	h=From:To:Date;
+	b=LNZxWmwKqR/jUiNfGFTrGsOI1gSshHvAy5fR/Wb7N86VAJZArcuSe+uMSd+5asvOh
+	 eOkXb2nqqRoexH1mz3V703E39EUY4OMFwu/Lv1VuGsGNFEtO4s17Ye/K0USB0LmWQU
+	 UOmk4W2TRiAuOiZFMJyO8JM7CCkQth1jlLCfucHrY0x1T3rusjQ2pFMIRo1oa5dwaJ
+	 K+NmjCms9c6Xx7rm9F+3iNGmr6lZFbIIVby8JajbMkCMtN0dasKb0GXQKATzC7OSqn
+	 V/jK4a01scbBRKftm88oKoDSgYY0aLgBJSisjOB/4EeWMdH5cI15dlUv9aKAXyFKXI
+	 VGzSrSudt7Ipg==
 
-On Mon, Feb 12, 2024 at 02:03:20PM +0000, Tudor Ambarus wrote:
-> There are SPI IPs that can be configured by the integrator with a
-> specific FIFO depth depending on the system's capabilities. For example,
-> the samsung USI SPI IP can be configured by the integrator with a TX/RX
-> FIFO from 8 byte to 256 bytes.
-> 
-> Introduce the ``fifo-depth`` property for such instances of IPs where the
-> same FIFO depth is used for both RX and TX. Introduce ``rx-fifo-depth``
-> and ``tx-fifo-depth`` properties for cases where the RX FIFO depth is
-> different from the TX FIFO depth.
-> 
-> Make the dedicated RX/TX properties dependent on each other and mutual
-> exclusive with the other.
-> 
-> Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-> ---
->  .../bindings/spi/spi-controller.yaml          | 27 +++++++++++++++++++
->  1 file changed, 27 insertions(+)
+From: Harald Mommer <harald.mommer@opensynergy.com>
 
-With the indentation fixed,
+Add #define ID VIRTIO_ID_SPI 45 for virtio SPI.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Harald Mommer <harald.mommer@opensynergy.com>
+Reviewed-by: Viresh Kumar <viresh.kumar@linaro.org>
+---
+ include/uapi/linux/virtio_ids.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/include/uapi/linux/virtio_ids.h b/include/uapi/linux/virtio_ids.h
+index 7aa2eb766205..6c12db16faa3 100644
+--- a/include/uapi/linux/virtio_ids.h
++++ b/include/uapi/linux/virtio_ids.h
+@@ -68,6 +68,7 @@
+ #define VIRTIO_ID_AUDIO_POLICY		39 /* virtio audio policy */
+ #define VIRTIO_ID_BT			40 /* virtio bluetooth */
+ #define VIRTIO_ID_GPIO			41 /* virtio gpio */
++#define VIRTIO_ID_SPI			45 /* virtio spi */
+ 
+ /*
+  * Virtio Transitional IDs
+-- 
+2.43.0
+

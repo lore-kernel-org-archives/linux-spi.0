@@ -1,109 +1,95 @@
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADA8A39864;
-	Thu, 22 Feb 2024 10:12:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9857F51B;
+	Thu, 22 Feb 2024 10:22:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.248
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708596759; cv=none; b=tATfKLumMEmykV4X8GNmo82jpVup/qIjG2osBe18wncspJoLWVycbxDT9ENVW4kkT4U70qq1BOFCpQ6+j9uN5CRXJQYaFy2rAqDHDbVcb4GOV7yOBfwMc3AVrx4vqway/9J0vcv0JJo7TQV2/aa5YpxytT39a0BxP4v8DDMumv8=
+	t=1708597350; cv=none; b=Bw8m4pPvq1NuHkbn1xmg4xW92gqifiB7Ur/yWex6EsKNFQwOsjpq5EYDCaPL564ZFTQqNupikkuJWiLhzEy7ws+XCffLyKoSScYNsCkhDh+ExrRYY5kxGktyHLMVkwNriIwIjj2ZNyrQZ/RyHORT8JjNUJUZECehyaGCgwLMSBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708596759; c=relaxed/simple;
-	bh=pM5LYZyHZMUxJj8CsXE8e5NI/BUXEphnfuI4iyKBZ3I=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=MEWqwmOO+CcbX9N4TRwdS4GBD2VVRm/in+yc63gtHBjzxyq7bH+p+Grg4uVZP/kP0gbzwYym3yezMsQ1k55rmQSm0+HFWuP6+Cji/6CtCwjc6MHNTb+I8irOvt1f/rzzH8RE9tVcdaILQGhZXiVjN61pdMQR0ChbkzmOE8X7NkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=C12geg+A; arc=none smtp.client-ip=217.70.183.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1708597350; c=relaxed/simple;
+	bh=5u/5ihWUR+PL3goonlKbJDj1aaRfJ+VBubXkq4gGc34=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mqjJFMj0QXwID16iQReeWbZ540TXNIjVrQI6SqzFb2e7WQOt0chPICDTxx7UEx8m/RYUF83naoes/zYITIHNMJxT7rnFTiFc8FthNzrNKa6OyUGvERDASjI1eo+vNr+77MfjCUG5wrnRhVQ/jMLs3j7WkXBCqRIXUmhRc+zV2rY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=fLZDdS6F; arc=none smtp.client-ip=198.47.23.248
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="C12geg+A"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id CC85B20004;
-	Thu, 22 Feb 2024 10:12:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1708596751;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PYyfGG5F+SG8R9R5MyMBf2L1QHcp8qaW343NfMmdTxo=;
-	b=C12geg+ATDXZAWApHIm+FM8jNWV2pVTmU59v+gb3sVRSDhDlvErRLgwTh0Uv8UIkhVzs+4
-	YnDYb5yCVWElbCaz7tP4LNhgwfa6O9ppsCMqWnUeC0qzFiLGe5GeclDxvWjnUtXKHFe9Gl
-	dmG5QRnAoXHR1Z1vShl8oobqr5esxgh4PL2vEdTigvUqGbM58T7eZL0SptBIYTPZ87qQMJ
-	5fukdbCBjFHL3amwiG2kEZ/AZ2zb29hi8EEfwJMKvvqfcQy7sV81sGECuUB9LJRKR9IbuK
-	Rj5Bsvn2QVdXVG6mcnO2EMKOAgdxhs15vkdxAQ1z/DtH0wGrGkkIZbXkfDESLg==
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Date: Thu, 22 Feb 2024 11:12:29 +0100
-Subject: [PATCH v4 1/4] spi: cadence-qspi: fix pointer reference in runtime
- PM hooks
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="fLZDdS6F"
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+	by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 41MAMLtP004722;
+	Thu, 22 Feb 2024 04:22:21 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1708597341;
+	bh=ixHXj7OdIRV4zJ2FsJmNcakskY+4z5DDjV41JAZk8SE=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To;
+	b=fLZDdS6FGw9uLcoy3A53a7LTx3O7nUEOVpBln0HK6pXSIIexKFnFiFSqL+dy6h8h3
+	 r8NLePenxmRU66TKTZLf0OJcPDVGW4GmEugYTy1V7UuCKMGpz0pHLSqnXbFdGZnuRq
+	 eypw/eZPfeUERw4Hj3q3GklIERbJ8f6vCRBZo4EE=
+Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
+	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 41MAMLLq113308
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 22 Feb 2024 04:22:21 -0600
+Received: from DLEE102.ent.ti.com (157.170.170.32) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 22
+ Feb 2024 04:22:20 -0600
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE102.ent.ti.com
+ (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Thu, 22 Feb 2024 04:22:20 -0600
+Received: from localhost (dhruva.dhcp.ti.com [172.24.227.68])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 41MAMJgf039156;
+	Thu, 22 Feb 2024 04:22:20 -0600
+Date: Thu, 22 Feb 2024 15:52:19 +0530
+From: Dhruva Gole <d-gole@ti.com>
+To: =?utf-8?B?VGjDqW8=?= Lebrun <theo.lebrun@bootlin.com>
+CC: Mark Brown <broonie@kernel.org>, Apurva Nandan <a-nandan@ti.com>,
+        <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Gregory CLEMENT
+	<gregory.clement@bootlin.com>,
+        Vladimir Kondratiev
+	<vladimir.kondratiev@mobileye.com>,
+        Thomas Petazzoni
+	<thomas.petazzoni@bootlin.com>,
+        Tawfik Bayouk <tawfik.bayouk@mobileye.com>
+Subject: Re: [PATCH v4 3/4] spi: cadence-qspi: put runtime in runtime PM
+ hooks names
+Message-ID: <20240222102219.gwpgxlbxpodavxr2@dhruva>
+References: <20240222-cdns-qspi-pm-fix-v4-0-6b6af8bcbf59@bootlin.com>
+ <20240222-cdns-qspi-pm-fix-v4-3-6b6af8bcbf59@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240222-cdns-qspi-pm-fix-v4-1-6b6af8bcbf59@bootlin.com>
-References: <20240222-cdns-qspi-pm-fix-v4-0-6b6af8bcbf59@bootlin.com>
-In-Reply-To: <20240222-cdns-qspi-pm-fix-v4-0-6b6af8bcbf59@bootlin.com>
-To: Mark Brown <broonie@kernel.org>, Apurva Nandan <a-nandan@ti.com>, 
- Dhruva Gole <d-gole@ti.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Gregory CLEMENT <gregory.clement@bootlin.com>, 
- Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Tawfik Bayouk <tawfik.bayouk@mobileye.com>, 
- =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-X-Mailer: b4 0.13.0
-X-GND-Sasl: theo.lebrun@bootlin.com
+In-Reply-To: <20240222-cdns-qspi-pm-fix-v4-3-6b6af8bcbf59@bootlin.com>
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-dev_get_drvdata() gets used to acquire the pointer to cqspi and the SPI
-controller. Neither embed the other; this lead to memory corruption.
+Hi,
 
-On a given platform (Mobileye EyeQ5) the memory corruption is hidden
-inside cqspi->f_pdata. Also, this uninitialised memory is used as a
-mutex (ctlr->bus_lock_mutex) by spi_controller_suspend().
+On Feb 22, 2024 at 11:12:31 +0100, Théo Lebrun wrote:
+> Follow kernel naming convention with regards to power-management
+> callback function names.
+> 
+> The convention in the kernel is:
+>  - prefix_suspend means the system-wide suspend callback;
+>  - prefix_runtime_suspend means the runtime PM suspend callback.
+> The same applies to resume callbacks.
+> 
+> Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
+> ---
 
-Fixes: 2087e85bb66e ("spi: cadence-quadspi: fix suspend-resume implementations")
+LGTM!
+
 Reviewed-by: Dhruva Gole <d-gole@ti.com>
-Signed-off-by: ThÃ©o Lebrun <theo.lebrun@bootlin.com>
----
- drivers/spi/spi-cadence-quadspi.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index 74647dfcb86c..d19ba024c80b 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -1930,10 +1930,9 @@ static void cqspi_remove(struct platform_device *pdev)
- static int cqspi_suspend(struct device *dev)
- {
- 	struct cqspi_st *cqspi = dev_get_drvdata(dev);
--	struct spi_controller *host = dev_get_drvdata(dev);
- 	int ret;
- 
--	ret = spi_controller_suspend(host);
-+	ret = spi_controller_suspend(cqspi->host);
- 	cqspi_controller_enable(cqspi, 0);
- 
- 	clk_disable_unprepare(cqspi->clk);
-@@ -1944,7 +1943,6 @@ static int cqspi_suspend(struct device *dev)
- static int cqspi_resume(struct device *dev)
- {
- 	struct cqspi_st *cqspi = dev_get_drvdata(dev);
--	struct spi_controller *host = dev_get_drvdata(dev);
- 
- 	clk_prepare_enable(cqspi->clk);
- 	cqspi_wait_idle(cqspi);
-@@ -1953,7 +1951,7 @@ static int cqspi_resume(struct device *dev)
- 	cqspi->current_cs = -1;
- 	cqspi->sclk = 0;
- 
--	return spi_controller_resume(host);
-+	return spi_controller_resume(cqspi->host);
- }
- 
- static DEFINE_RUNTIME_DEV_PM_OPS(cqspi_dev_pm_ops, cqspi_suspend,
+
 
 -- 
-2.43.2
-
+Best regards,
+Dhruva Gole <d-gole@ti.com>

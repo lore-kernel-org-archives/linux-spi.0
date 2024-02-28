@@ -1,163 +1,148 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from refb01.tmes.trendmicro.eu (refb01.tmes.trendmicro.eu [18.185.115.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCDA96CDDB;
-	Wed, 28 Feb 2024 11:49:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709120988; cv=none; b=WiDj5k/jwWqVIa1q54yl5vHznpNLKmPDo8I4SbxKJdactHzB08OaiSI1sxGb7CcbZ7nUnpqhOHMLL9fe9s4z3/QnuzhuDQ43PsjI1+u9Rau+Mx7Y7IHdHYLV7hy/knaPE1TsdJigVLI9qDsqkTk7z2u3S6HP7d36bxUrkAfxO2o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709120988; c=relaxed/simple;
-	bh=P9ZISTEIn48zfYIAKIiJExn1v/AewX92la45i1qfzqw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gX+rT2HMWMN8o/qerAByoAVmKXh4wbw/izU20WpTzsZfhfFDbLRkBhc6PHCPomSBu0zRbSEES2Q0JJrtUBCxqIGFx1DMHSS4nYj/yaNVZ2TLoYdeyo+4PKCxw7waSxzyVXyXHepUi4zTw4DpJeFc/vxsITfP0jxYZPAB1EikPk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oT1b+VhH; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD0BE159573
+	for <linux-spi@vger.kernel.org>; Wed, 28 Feb 2024 14:28:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=18.185.115.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709130502; cv=fail; b=PM6uxEu8HtsUbh17OlCmXMv7UUjU33QrfIHWC13PEM0g43q5ATrx3UdJerzkNoxN7lgLO4nJmpURMifHkeF15aaFCnCOWpTkqNaIcq2LkGCmgPDeH1uBkRU3x8T/syxz6L/DRszsGYy2BRuww/9sa4moZD+qzDpJOOxMTKRYAKA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709130502; c=relaxed/simple;
+	bh=V1NM7comayqquyIZj6XeIozgkyq2rfEs0Y4VFB/Im7E=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=aEE3Q3SNjERc06zR/6uX/j0p7v4bm8bmfU/o1rdcEYz9zcpIRHnF8/vmcL+cbVOfmK2198sQv/y5isOfuzFLUpzjcc5VTpLvG0OBT725O8lKK5lEhy8ktz5EPseoO51vMwHWp/86AgbPnYV/oa+bs5MU5A9UmayZB621mA5w1Ew=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensynergy.com; spf=pass smtp.mailfrom=opensynergy.com; dkim=pass (2048-bit key) header.d=opensynergy.com header.i=@opensynergy.com header.b=oNJKQz4V; arc=fail smtp.client-ip=18.185.115.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensynergy.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensynergy.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oT1b+VhH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B28DC43390;
-	Wed, 28 Feb 2024 11:49:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709120988;
-	bh=P9ZISTEIn48zfYIAKIiJExn1v/AewX92la45i1qfzqw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oT1b+VhHCgNS1MYbgUqUjxaRVhmDlzO5LGCIfTZnL/gzArI8T1kcpggoCKQLe4qf9
-	 t+RZKJmYHXWCBRitnM2n9NHkT9J1g2nqB1ChsYTQjqpFv1pKSyd1ASVHYSeQ1a0j/E
-	 qolNNFIUzHucLZW2jCYRNz5txSYxeDzbqtllXVzeOp8YatYAAdvsTxI7R1Q21NljLW
-	 2mbXenNlwK7wIsf943XGUqMrgA27breU1aNvMmjNeNmDidZiNXzH77uA+eZasLWDnB
-	 afT+LHlvke2A6BycMxuqPUyTzJ58vxykPHl1/20qaR3Whep+bDYuhkIB65M3SIDnhy
-	 jHLEUEl+lN4IQ==
-Date: Wed, 28 Feb 2024 11:49:42 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Varshini.Rajendran@microchip.com
-Cc: radu_nicolae.pirea@upb.ro, richard.genoud@gmail.com,
-	gregkh@linuxfoundation.org, jirislaby@kernel.org,
-	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-	conor+dt@kernel.org, Nicolas.Ferre@microchip.com,
-	alexandre.belloni@bootlin.com, claudiu.beznea@tuxon.dev,
-	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v4 12/39] dt-bindings: serial: atmel,at91-usart: add
- compatible for sam9x7.
-Message-ID: <20240228-capital-nickname-696dfcd655de@spud>
-References: <20240223171342.669133-1-varshini.rajendran@microchip.com>
- <20240223172559.672142-1-varshini.rajendran@microchip.com>
- <20240224-kimono-stress-898eae80abd3@spud>
- <b49572d4-b52e-4655-8d10-2709e2fbe803@microchip.com>
+	dkim=pass (2048-bit key) header.d=opensynergy.com header.i=@opensynergy.com header.b="oNJKQz4V"
+Received: from 104.47.7.168_.trendmicro.com (unknown [172.21.19.198])
+	by refb01.tmes.trendmicro.eu (Postfix) with ESMTPS id 7E9D010050142;
+	Wed, 28 Feb 2024 14:28:10 +0000 (UTC)
+Received: from 104.47.7.168_.trendmicro.com (unknown [172.21.197.65])
+	by repost01.tmes.trendmicro.eu (Postfix) with SMTP id D211710000F2D;
+	Wed, 28 Feb 2024 14:28:02 +0000 (UTC)
+X-TM-MAIL-RECEIVED-TIME: 1709130482.555000
+X-TM-MAIL-UUID: b87ca807-3a99-4a9f-ba48-222bb185718e
+Received: from DEU01-BE0-obe.outbound.protection.outlook.com (unknown [104.47.7.168])
+	by repre01.tmes.trendmicro.eu (Trend Micro Email Security) with ESMTPS id 87BC210004D8B;
+	Wed, 28 Feb 2024 14:28:02 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=UidLQtGN4jiBr3upsnE4iIVFBXOpaJvECL08uFD9xXr/fbuJ+Q6HpbVSWDb6ISj5qQytxHgHIoHYDcS+h1OLIw7ep2MyES4HLdYN4/N+Q3hpnQuFk4oUZmo0hgusS7xXL6c6pxzfSKE4btsdoBTG7CbfOGzJ36BIip4qQ1FqYHyjeP/srevAfJ9Z746a3/c9hBXYHKYFkoBIlQ+vlM5wtdz9WHKLgIodwJBt4WsZXIlUJNraxnf9YlOkfM8ezD18PqMTls0PlEStkSdvON8gPgQYY7WTkyh5ySXCUsV/Wd1qfvfJaaS/KaZaQ10oGEYB1tHy35s2m/ZSqMwXdSeabg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=OgqwcFQA4akIkJAuAlqUX0IBOrtaip8D9sVqIdUbFqw=;
+ b=M1XWElRWQXUl+3s7NhA63feSSNc4vrNOEX737h8rQ8Z6tCgxFhH6ESVNFuRWZ9tnKx7NLII7qcuvhDZjnPmR32DaXGgfQGBmjmGedytXfMXqg6lZv1Ref/azKarIDh1x2q5ii4TXtDVlaAvvI80kZGz2eSQ7hblHxlE9GJhyhUZbHF/D/MzLQA2RypQwreNJ/uRADRBVfigJpIR+jD6Xyg0I6uuNEUv3p9VC2zkCPPXzR1oYyjaytOAbLyq9NYIdzuo2RFitcV9AbXC/p2R7munzYqSuAZgyxiol6SgxOJkBhT9iUPcbXxYmnwgZJ1llhjroyGJClKwqAGIu1CgXjQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 217.66.60.4) smtp.rcpttodomain=kernel.org smtp.mailfrom=opensynergy.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=opensynergy.com; dkim=none (message not signed); arc=none (0)
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 217.66.60.4)
+ smtp.mailfrom=opensynergy.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=opensynergy.com;
+Received-SPF: Pass (protection.outlook.com: domain of opensynergy.com
+ designates 217.66.60.4 as permitted sender) receiver=protection.outlook.com;
+ client-ip=217.66.60.4; helo=SR-MAIL-03.open-synergy.com; pr=C
+From: Harald Mommer <Harald.Mommer@opensynergy.com>
+To: virtio-dev@lists.oasis-open.org,
+	Haixu Cui <quic_haixcui@quicinc.com>,
+	Mark Brown <broonie@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: quic_ztu@quicinc.com,
+	Matti Moell <Matti.Moell@opensynergy.com>,
+	Mikhail Golubev <Mikhail.Golubev@opensynergy.com>,
+	Harald Mommer <harald.mommer@opensynergy.com>
+Subject: [PATCH v1 1/3] virtio: Add ID for virtio SPI.
+Date: Wed, 28 Feb 2024 15:27:53 +0100
+Message-Id: <20240228142755.4061-2-Harald.Mommer@opensynergy.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240228142755.4061-1-Harald.Mommer@opensynergy.com>
+References: <20240228142755.4061-1-Harald.Mommer@opensynergy.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="naR5QLUVU6sxm80i"
-Content-Disposition: inline
-In-Reply-To: <b49572d4-b52e-4655-8d10-2709e2fbe803@microchip.com>
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AMS1EPF0000004A:EE_|FR0P281MB2089:EE_
+Content-Type: text/plain
+X-MS-Office365-Filtering-Correlation-Id: 19302f3d-9bb7-4d0d-e351-08dc386977ca
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	DLxstYOV5VE0Rx2v5EGhWTy/UprEI4S6l9o/4xsvKU5vI2+abH34D2F1hqFu4ygSGZlp96zqJe0g4l0Bb8rmhmoOUd8KrA7W5EztK72J+z+FxjmT6NqKVUy0jC6jDHu+n28M5dqoB1+mVXTc8wnnQqfqNP5HfAiywoVl4NspA9RXXO1psQ6tBqfjzk1TdJa6mAu8Jj+G+sgcYl+gesraiUBRG++h8T9/f8WbiUpo+9dKJBWdfoeCiQni7Bwj1GwN26bdEZ14JPfbxQjyYhVNpNSC73ebSJ+NlGnk5nVYfikux7T09JayjRT1CdlmDxWPunmfkhY2+zFdQA+1qopTTHmzQUsPc2nN8fmojn02BAWyU2OTT7aGZwxRhJTBuOavMZFoyusG8X69j3AqfF5puEipSPvxXT1JxZWfDG0YfK4x7jmFFOfiH1m8IiOx4NUJtXt9WFFYTLskVm/Jkfx1JlT7GWfY5ztomGPPfBcPcGOaZuQ3M0Lpt/KyQPFiwIDHe0Slt6YoTxL3gCIfWpuOW8eKC9mBtm/N9SiRlFYyan6eFhdpZiUIqGcku3EDZT8S+7k4xGwLKJP4gZSoki/N6df0gICglkqGxIcSpY30B11EkI5fG2Sx2nmw3ty+YW6eyMIGBEvPJOMTzp2MrZyQY4W47P3j309HgC1zZJn5paY6/9Qr2+uykp3W3Q3NRyhJsVyFf4VjSCUbu+MvXR/Jh+M5o9Z+bKz74Z8EiA+kQVVg1Vc3Qmq4RnVxmz3U/Kmo
+X-Forefront-Antispam-Report:
+	CIP:217.66.60.4;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SR-MAIL-03.open-synergy.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(36860700004)(82310400014);DIR:OUT;SFP:1102;
+X-OriginatorOrg: opensynergy.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Feb 2024 14:28:01.1493
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 19302f3d-9bb7-4d0d-e351-08dc386977ca
+X-MS-Exchange-CrossTenant-Id: 800fae25-9b1b-4edc-993d-c939c4e84a64
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=800fae25-9b1b-4edc-993d-c939c4e84a64;Ip=[217.66.60.4];Helo=[SR-MAIL-03.open-synergy.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AMS1EPF0000004A.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: FR0P281MB2089
+X-TM-AS-ERS: 104.47.7.168-0.0.0.0
+X-TMASE-Version: StarCloud-1.3-9.1.1015-28218.007
+X-TMASE-Result: 10-0.491300-4.000000
+X-TMASE-MatchedRID: Dkfyeyxtv0bJ+P2VFrJmrBkPtuOr7qUwbNjTSFpLxCgW+iZuJylrLk9A
+	UWTSPmMGupoogdfVK+Jd4x1IUlKnFM8TyCfmBrmqW8gh3wzbqBNwRUdni9UCWPdzaXqYo8IqVxH
+	vEGsKrsW/2tJ3foSBQiPzRlrdFGDwfH2QXwfwYBCUHCQ9y5SdWZ7ayFyYRC038/sI6NCSAcVCG+
+	H1Pc3TBA==
+X-TMASE-XGENCLOUD: b735a1cf-1976-4b90-88e2-ddd3f7a8b3b8-0-0-200-0
+X-TM-Deliver-Signature: 2D089C40A783FCB8D0BEF08BB5813936
+X-TM-Addin-Auth: RF7bVIu8C1u3az0nbR3z5Z6BQGKYS8nVx01kJQjkD80RVb2jz8Y9WzU+RfQ
+	NyapUVYJ3zdyS0AxYF7E/za/BeqQq8tTy7x1zDnHg/7Rvn6gKO5FYd6mSjwGxuoABuW5Iur+o0H
+	xpbAyf3R8U7+z0+D1U7ye3baBJgvw/5gKjT7ky1w0vN7me9F2Zv8WcWU6jGxmJzkeBrJ3fZoxBz
+	GkdqJAyl80m0f1ht+KsC4JnqqZoO64+41MZt8styPtYFtyD4Nplo/godsysrjeOK8SQUnnIVOUk
+	PJsXQP5Ywzod9Vc=.kWi2Git16ehkPFoCCU2yoyVxBZwQdc7DcNZ8p1OReEPiaR31xzmWOv2g5L
+	TJ4zZqF3xypSW8DgagUs3HKILIIhlVnfPaqmvqMfJBcuxyn7OVAyoS8wYeLC4DizqjzzPV/s6mI
+	dwpUHj6sNlT3hYf3/GCtiOu8/MFqwR8g4p4ee78ZomLatF54kqMBgJaJ0Rfw3NPK/6mFDepP2lo
+	RxwEb6ja74vZz3n+QWjsjf/3UtwT/5D6pSctDvfFl+kgpMjQ+XHUu76lk7PBFuYJGFk0iVogPgI
+	SZaoDAPC3rXKzPWDUy5uBbZasNI0Lqywyb4vxYOJ0SbPMz5KI9DWJRkAc6Q==
+X-TM-Addin-ProductCode: EMS
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=opensynergy.com;
+	s=TM-DKIM-20210503141657; t=1709130482;
+	bh=V1NM7comayqquyIZj6XeIozgkyq2rfEs0Y4VFB/Im7E=; l=777;
+	h=From:To:Date;
+	b=oNJKQz4Vg/zTKbPcAcvMiB9es6fHhiYj8hDnpwFkSK6NO094mz71iXk8vAt8NF7qZ
+	 jWTTpghyhfvTpmaGfDKqywUTDqS4F/Gops3xJGA3pohneeT2t1Ko6azeXR4mXrbuJC
+	 4wyg2YcY/InamvbI9T7lYxGrPia204IatOTT6nspfvRVor9lyUD65vNqd+9hs24+gu
+	 sTEwBHtgBSwArIzrOgJraSv4I5XvvXwAkUdWPryLSfQgN/eHdWmU5FdC6yA4clLAJO
+	 tqX/NqXY6kzKRrUe1kZ5EIrcHfxMrtQ4gcgV6X9bHzLxXKnxNArBgxub1m96r6ZF5o
+	 JzSxdzAM9bKAw==
 
+From: Harald Mommer <harald.mommer@opensynergy.com>
 
---naR5QLUVU6sxm80i
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Add #define ID VIRTIO_ID_SPI 45 for virtio SPI.
 
-On Wed, Feb 28, 2024 at 07:03:01AM +0000, Varshini.Rajendran@microchip.com =
-wrote:
-> Hi Conor,
->=20
-> On 25/02/24 1:32 am, Conor Dooley wrote:
-> > EXTERNAL EMAIL: Do not click links or open attachments unless you know =
-the content is safe
-> > On Fri, Feb 23, 2024 at 10:55:59PM +0530, Varshini Rajendran wrote:
-> >> Add sam9x7 compatible to DT bindings documentation.
-> >>
-> >> Signed-off-by: Varshini Rajendran <varshini.rajendran@microchip.com>
-> >> ---
-> >> Changes in v4:
-> >> - Fixed the wrong addition of compatible
-> >> - Added further compatibles that are possible correct (as per DT)
-> >> ---
-> >>  .../devicetree/bindings/serial/atmel,at91-usart.yaml | 12 +++++++++---
-> >>  1 file changed, 9 insertions(+), 3 deletions(-)
-> >>
-> >> diff --git a/Documentation/devicetree/bindings/serial/atmel,at91-usart=
-=2Eyaml b/Documentation/devicetree/bindings/serial/atmel,at91-usart.yaml
-> >> index 65cb2e5c5eee..30af537e8e81 100644
-> >> --- a/Documentation/devicetree/bindings/serial/atmel,at91-usart.yaml
-> >> +++ b/Documentation/devicetree/bindings/serial/atmel,at91-usart.yaml
-> >> @@ -23,11 +23,17 @@ properties:
-> >>            - const: atmel,at91sam9260-dbgu
-> >>            - const: atmel,at91sam9260-usart
-> >>        - items:
-> >> -          - const: microchip,sam9x60-usart
-> >> +          - enum:
-> >> +              - microchip,sam9x60-usart
-> >> +              - microchip,sam9x7-usart
-> >>            - const: atmel,at91sam9260-usart
-> >>        - items:
-> >> -          - const: microchip,sam9x60-dbgu
-> >> -          - const: microchip,sam9x60-usart
-> >> +          - enum:
-> >> +              - microchip,sam9x60-dbgu
-> >> +              - microchip,sam9x7-dbgu
-> >=20
-> >> +          - enum:
-> >> +              - microchip,sam9x60-usart
-> >> +              - microchip,sam9x7-usart
-> >=20
-> > This doesn't make sense - this enum should be a const.
-> > I don't really understand the idea behind of the original binding here =
-that
-> > allowed:
-> > "microchip,sam9x60-dbgu", "microchip,sam9x60-usart", "atmel,at91sam9260=
--dbgu", "atmel,at91sam9260-usart"
-> >=20
-> > Specifically, I don't get the purpose of the "microchip,sam9x60-usart".
-> > Either make it
-> >       - items:
-> >           - enum:
-> >               - microchip,sam9x60-dbgu
-> >               - microchip,sam9x7-dbgu
-> >           - const: microchip,sam9x60-usart
-> >           - const: atmel,at91sam9260-dbgu
-> >           - const: atmel,at91sam9260-usart
-> > or add
-> >       - items:
-> >           - const: microchip,sam9x60-dbgu
-> >           - const: atmel,at91sam9260-dbgu
-> >           - const: atmel,at91sam9260-usart
-> > or explain exactly why this needs to be
-> > "chipa-dgbu", "chipa-usart", "chipb-dbgu", "chipb-dbgu"
-> The compatible has to be "chipa-usart", "chipb-usart", "chipa-dbgu",=20
-> "chipb-dbgu" for the device to work as a debug console over UART
-> wher the chipa-<periph> is the device specific compatible
-> and the chipb-<periph> is the fallback compatible that the driver=20
-> actually uses.
+Signed-off-by: Harald Mommer <harald.mommer@opensynergy.com>
+Reviewed-by: Viresh Kumar <viresh.kumar@linaro.org>
+---
+ include/uapi/linux/virtio_ids.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-This examples why you have "microchip,sam9x60-dbgu", "atmel,at91sam9260-dbg=
-u"
-and "atmel,at91sam9260-usart".
-It does not explain "microchip,sam9x60-usart" though, I don't see what
-purpose that serves. If used as a debug uart, you fall back to the
-sam9260 debug uart compatible and if not you fall back to the sam9260
-usart compatible.
+diff --git a/include/uapi/linux/virtio_ids.h b/include/uapi/linux/virtio_ids.h
+index 7aa2eb766205..6c12db16faa3 100644
+--- a/include/uapi/linux/virtio_ids.h
++++ b/include/uapi/linux/virtio_ids.h
+@@ -68,6 +68,7 @@
+ #define VIRTIO_ID_AUDIO_POLICY		39 /* virtio audio policy */
+ #define VIRTIO_ID_BT			40 /* virtio bluetooth */
+ #define VIRTIO_ID_GPIO			41 /* virtio gpio */
++#define VIRTIO_ID_SPI			45 /* virtio spi */
+ 
+ /*
+  * Virtio Transitional IDs
+-- 
+2.25.1
 
-In addition, the current setup implies that sam9x60 usart supports all
-the features that the sam9260 debug usart does. I doubt that that is
-true.
-
-Thanks,
-Conor.
-
---naR5QLUVU6sxm80i
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZd8d1gAKCRB4tDGHoIJi
-0jU8AQDfAMBhvlKIn3K9UK4JvgmYK7R9RtnCCLD4gz08rgwRgAEApDdb5EYy1wap
-lFgNHMX2Z4M+6mlS9jnCV+apFqxAgAM=
-=s5+L
------END PGP SIGNATURE-----
-
---naR5QLUVU6sxm80i--

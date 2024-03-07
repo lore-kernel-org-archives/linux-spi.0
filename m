@@ -1,47 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 377EF12F390;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDAB512F39C;
 	Thu,  7 Mar 2024 15:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709826318; cv=none; b=uI+E1w9wP4gD1/KHyt0DFKMwbefpZAKx9FElqd8GPIPx0Y7x4DtM7IsNSx62semzUKfLt4y6RKWc+3ZKOhoOyjVkrOR+u1y+3BpSAy/U6sVHWUKsn6dLGuPqi1uIRVsfUJ80VFqLxSdTHdIsdzAjukDYZHZ2qI8C6yuLFQhYF18=
+	t=1709826320; cv=none; b=bTuJSDj6KS+BYCuTWq8vts7F096Uf13Q8CLr3aN1rv25cQpuFwLKihIX/GjdkfEvQ8nayDpgSHUIvyMGcCkLXiygkDCG7cu0WFZViEb5XN3W97rAO43rrNwbqvit9FSo4WqafhpR9DBrIGe94ntNbeLhXoESyLZTHxk/cZ4L8fM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709826318; c=relaxed/simple;
-	bh=mj0GXkXy9Xs5y8Ltp8TCGwDRTY+Y95OlKnsw/V6zXtA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pknVQ8TJxjJqqEz22q0Nd4poRPwKv6MSfOXalob7++DQpjci3ZYYF0RXJJ7WehDo1HptXs1VWCfY0Me03XLcSnmOoP+buVXKiwDtFnHSmT1TS5sr+q40OPZVlAbI+zl1KJd5qd2Uc8O4ZgvG9Yyj3qZ/ofzRCKGZgAiPW7k8XGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aogAz55Y; arc=none smtp.client-ip=192.198.163.9
+	s=arc-20240116; t=1709826320; c=relaxed/simple;
+	bh=ZTPKDVQ3ao/mp9y2Lnh/Vze6rnyYpTSQXwLgljoiS1g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=vAcCoiXjzhqEGU6MQp73Dn8FyRak3tQkrAy16pJio6yncUSH4iJ5tkqEZFSnf55pqY2PsG1XWi2S1Gxn+xS9Z2PTUx8i+PtpBALH2rYqdJPwv9ql835oGVrS6+J+5r30pIAER4q9rYkcsHmvP+o8LUDSfA5Xunyx8Hrep70bTgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=g4AxfVfg; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aogAz55Y"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="g4AxfVfg"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709826317; x=1741362317;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=mj0GXkXy9Xs5y8Ltp8TCGwDRTY+Y95OlKnsw/V6zXtA=;
-  b=aogAz55Y4LgVy4tFKytrr9+WAqXBYAtkiDfFdYxdBzSZ5NYFb4CTKkSR
-   sKifNBK3excT7V2gvJRd/vknt0RP69dvz5qFy8PajpCPbSIvq3ug8SkoI
-   Xlq/8IV93SOo65052ahWUJQG8GJ2VMCZsbVAvipmTyqln7+zcgg9xOu0o
-   3NT8SNuXJdLeRqKhVhhVON3rv+ouALukFx5KHUJSIEOE4F3517uNIpopN
-   siM3lG005o2quhOFq2bOxvPmwXXKMkMdYlOIr32Wy9QWzf0aJ6Ra3FV5R
-   LDnONwfRPj9OK/sFZ40OQA3iEcaKONgH3JIQ+ypngyG8xPnYsEqoIczgN
+  t=1709826318; x=1741362318;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ZTPKDVQ3ao/mp9y2Lnh/Vze6rnyYpTSQXwLgljoiS1g=;
+  b=g4AxfVfgr/P3cX7T6uBnIO1kbvL+YxLHKE6vwxc8i1uUn2DrVtoIYEIl
+   qjSebYaylLl7V7hqhR5Ywz7U2Vudzb06v3K53d9Rtj8o9MJ5tntnkL/Jo
+   pwZek357PDwjbJwwyX1K1rnBlX/RbLgZvCwpLCsM+qaYOY5gozwXALhsw
+   eJdoFYDIzlVLFkCDdr57HOaF/5C2puE1JJMhlCJj9lb8EKgjmYGZnbA4j
+   UeeUtwviFcCZl1anub8TvSpxlr2mIKRMyyOCjFz86K46bOTihVFLWbD+R
+   y7DMrwfdpLI3KYedt2MMJXGJRv4+l32nnZJErPkZiV+Sl04LChFCqgUdi
    g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="15221965"
+X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="15221957"
 X-IronPort-AV: E=Sophos;i="6.07,211,1708416000"; 
-   d="scan'208";a="15221965"
+   d="scan'208";a="15221957"
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
   by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2024 07:45:14 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="937046336"
+X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="937046334"
 X-IronPort-AV: E=Sophos;i="6.07,211,1708416000"; 
-   d="scan'208";a="937046336"
+   d="scan'208";a="937046334"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 07 Mar 2024 07:45:13 -0800
+  by fmsmga001.fm.intel.com with ESMTP; 07 Mar 2024 07:45:12 -0800
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id E64465BB; Thu,  7 Mar 2024 17:45:11 +0200 (EET)
+	id C635F3C0; Thu,  7 Mar 2024 17:45:11 +0200 (EET)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	linux-spi@vger.kernel.org,
@@ -49,12 +48,10 @@ To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	linux-kernel@vger.kernel.org
 Cc: Mark Brown <broonie@kernel.org>,
 	Michal Simek <michal.simek@amd.com>
-Subject: [PATCH v1 3/3] spi: xilinx: Make num_chipselect 8-bit in the struct xspi_platform_data
-Date: Thu,  7 Mar 2024 17:43:59 +0200
-Message-ID: <20240307154510.3795380-4-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 0/3] spi: xilinx: Massage xilinx_spi.h
+Date: Thu,  7 Mar 2024 17:43:56 +0200
+Message-ID: <20240307154510.3795380-1-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.43.0.rc1.1.gbec44491f096
-In-Reply-To: <20240307154510.3795380-1-andriy.shevchenko@linux.intel.com>
-References: <20240307154510.3795380-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -63,44 +60,18 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-There is no use for whole 16-bit for the number of chip select pins.
-Drop it to 8 bits and reshuffle the data structure layout to avoid
-unnecessary paddings.
+Fix kernel documentation and inclusion block, and dropping the size
+of the num_chipselect.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- include/linux/spi/xilinx_spi.h | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+Andy Shevchenko (3):
+  spi: xilinx: Fix kernel documentation in the xilinx_spi.h
+  spi: xilinx: Add necessary inclusion and forward declaration
+  spi: xilinx: Make num_chipselect 8-bit in the struct
+    xspi_platform_data
 
-diff --git a/include/linux/spi/xilinx_spi.h b/include/linux/spi/xilinx_spi.h
-index 4ba8f53ce570..a638ba2a55bd 100644
---- a/include/linux/spi/xilinx_spi.h
-+++ b/include/linux/spi/xilinx_spi.h
-@@ -8,18 +8,18 @@ struct spi_board_info;
- 
- /**
-  * struct xspi_platform_data - Platform data of the Xilinx SPI driver
-+ * @force_irq:		If set, forces QSPI transaction requirements.
-  * @num_chipselect:	Number of chip select by the IP.
-  * @bits_per_word:	Number of bits per word.
-- * @devices:		Devices to add when the driver is probed.
-  * @num_devices:	Number of devices in the devices array.
-- * @force_irq:		If set, forces QSPI transaction requirements.
-+ * @devices:		Devices to add when the driver is probed.
-  */
- struct xspi_platform_data {
--	u16 num_chipselect;
--	u8 bits_per_word;
--	struct spi_board_info *devices;
--	u8 num_devices;
- 	bool force_irq;
-+	u8 num_chipselect;
-+	u8 bits_per_word;
-+	u8 num_devices;
-+	struct spi_board_info *devices;
- };
- 
- #endif /* __LINUX_SPI_XILINX_SPI_H */
+ include/linux/spi/xilinx_spi.h | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
+
 -- 
 2.43.0.rc1.1.gbec44491f096
 

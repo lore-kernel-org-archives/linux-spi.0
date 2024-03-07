@@ -1,46 +1,47 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C2312FF70;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4ABD12FF96;
 	Thu,  7 Mar 2024 17:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709831089; cv=none; b=XV9WLEdRp8//ZAJiGaszxF/hDhwpLwfuXz3hEmmsQmIlnQWPyE6gAKJ6WSaRbh2Uoka13bF+hW66+jcZI3OFEkp5eGAZ79smFMYu9+zCihbOk2b5zYV2yEvWJLvfkY3mBBjeFZJlX/uS46uEuRN1A1l3q4YzVJYspVCQ3ulcQls=
+	t=1709831090; cv=none; b=BkiiS+aOX4q8AZ4ImfNDYJpbBamd2IYsMcKIc9jNX8dEDHYLtRnUDRKlfD42RNP1vLZQyv1f4GyN0emqHf609FCxPkS9vUYjUVwl0IU+i3ivOrzG5gEChA84bWGAbG1oD26hoAkaZ9emEGdvvHwLteNGgw7X+MTbqwI6bvFUK20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709831089; c=relaxed/simple;
-	bh=d5h4kxnC4gBSEdY31qlOBXqdv3M4Wv0YWmCTsRTCDA0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rXNgdfOhTlF+ncclDChB6+mFVwelRIpwhiJQnTqxJX+msB9kyKrzTyuRv9J6VCn6gcWfeGm+59CEWpKDY5WQ3AWQxA2U87lRR3Bnqt0kRYHVCj0NynK5zTL1jYigq9B+SdkSFN2glSDZ0gtAIIuE+KnH1SRJYfq8/AbU4/eKThk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CQs8Etcl; arc=none smtp.client-ip=198.175.65.20
+	s=arc-20240116; t=1709831090; c=relaxed/simple;
+	bh=k2iqYWkJ/g6zSAYNGIBSWfD8NyYp6rFQOmMuXPYLaRg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=uvflmwsHyNYR1rIcN2VcRuq39S8ttesWQG+1J1s4zqFGPhRdIw5D1KhPxLOhbCfABo/79cffM3h7F+jrnVK1VhXYKV+UvaJQksV8QSHYd8yNTSQUf41Nd5aO5zKtrgWyAMMFYbLpdCBpj6uf3iCZ/B03n/wE8jdbzb88Y8D/Cmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RT1jHz2C; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CQs8Etcl"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RT1jHz2C"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709831088; x=1741367088;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=d5h4kxnC4gBSEdY31qlOBXqdv3M4Wv0YWmCTsRTCDA0=;
-  b=CQs8EtclHlbxXXoSuBHBFA20o8LIXcnNsGzdcpkm/gXZ3Xb7FmcIfMyS
-   deJE4rq+CcWTSWpHqSYz1/d/ZD+X8h2xOUtYqTKEIgMNOKT19Cm/1HRQu
-   lvErKRP8FMWlvmRHhcjRMU3sxrEkzgtEaACIQofXogXuhcVgZyqUCfgaK
-   OyhhGjg0t8G+RgoEBb2i5T8ax1vqEXR5K44ZVh78zdRYz2eb8M+IckE3q
-   KbWByqfF3+x/fe7VwoBUNCe7uLFC0AHl2Nq7iv00q2+g0Q655PbsJB5aQ
-   AL2nPlatEQN0XAaBPSpEgsBqsp7uLWGzIwRcNqf7ea5xFCbFfzXVPEcZZ
+  t=1709831089; x=1741367089;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=k2iqYWkJ/g6zSAYNGIBSWfD8NyYp6rFQOmMuXPYLaRg=;
+  b=RT1jHz2C/fWgCKjq+LgNurMnRIpG2/G3dWyiOWWCRN/AxJSHHKShK3r+
+   pzxhc8sQZXJgot3B2+kIfnjRA2xSc6MuYQKsvXhltA1MrmGzg18ysBMnS
+   9znvl1lBrh2wBe19+ln/BihLUXeXdWopD0kBKNsgtI6dyg4WXHoyAx1G7
+   mJNqvDME3Y09mx8+VOLw/E6XIJBlj7T5SVhwFK4i5FHScjt8Pl9usVltB
+   caFYONCGTS4GZ6xcAJVts+hhlWfmv1DMiGzAvXeUWxId2/Lxqp7hjtH86
+   ecKbDkLiX063A4pkM1lJuBuH50zj1NaXaIJ8ZU7mwT+l4l8rcseWrmQoA
    w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="4392402"
+X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="4392421"
 X-IronPort-AV: E=Sophos;i="6.07,212,1708416000"; 
-   d="scan'208";a="4392402"
+   d="scan'208";a="4392421"
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
   by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2024 09:04:46 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="937046410"
+X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="937046412"
 X-IronPort-AV: E=Sophos;i="6.07,212,1708416000"; 
-   d="scan'208";a="937046410"
+   d="scan'208";a="937046412"
 Received: from black.fi.intel.com ([10.237.72.28])
   by fmsmga001.fm.intel.com with ESMTP; 07 Mar 2024 09:04:43 -0800
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 56CDC128; Thu,  7 Mar 2024 19:04:42 +0200 (EET)
+	id 7BCFE13F; Thu,  7 Mar 2024 19:04:42 +0200 (EET)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Arnd Bergmann <arnd@arndb.de>,
@@ -52,10 +53,12 @@ Cc: Daniel Mack <daniel@zonque.org>,
 	Robert Jarzmik <robert.jarzmik@free.fr>,
 	Russell King <linux@armlinux.org.uk>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH v2 0/3] spi: pxa2xx: Clean up linux/spi/pxa2xx_spi.h
-Date: Thu,  7 Mar 2024 19:03:14 +0200
-Message-ID: <20240307170441.3884452-1-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v2 3/3] spi: pxa2xx: Use proper SSP header in soc/pxa/ssp.c
+Date: Thu,  7 Mar 2024 19:03:17 +0200
+Message-ID: <20240307170441.3884452-4-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.43.0.rc1.1.gbec44491f096
+In-Reply-To: <20240307170441.3884452-1-andriy.shevchenko@linux.intel.com>
+References: <20240307170441.3884452-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -64,25 +67,27 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-A couple of cleanups against linux/spi/pxa2xx_spi.h.
+There is nothing from pxa2xx_spi.h used by soc/pxa/ssp.c.
+Replace it with pxa2xx_ssp.h.
 
-In v2:
-- preserved a comment (Arnd)
-- added tag (Arnd)
-- added new patch to avoid using unneeded header in soc/pxa/ssp.c
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/soc/pxa/ssp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Andy Shevchenko (3):
-  spi: pxa2xx: Kill pxa2xx_set_spi_info()
-  spi: pxa2xx: Make num_chipselect 8-bit in the struct
-    pxa2xx_spi_controller
-  spi: pxa2xx: Use proper SSP header in soc/pxa/ssp.c
-
- arch/arm/mach-pxa/devices.c    | 18 ------------------
- arch/arm/mach-pxa/spitz.c      | 14 +++++++++++++-
- drivers/soc/pxa/ssp.c          |  2 +-
- include/linux/spi/pxa2xx_spi.h | 10 +---------
- 4 files changed, 15 insertions(+), 29 deletions(-)
-
+diff --git a/drivers/soc/pxa/ssp.c b/drivers/soc/pxa/ssp.c
+index 7af04e8b8163..854d32e04558 100644
+--- a/drivers/soc/pxa/ssp.c
++++ b/drivers/soc/pxa/ssp.c
+@@ -25,7 +25,7 @@
+ #include <linux/clk.h>
+ #include <linux/err.h>
+ #include <linux/platform_device.h>
+-#include <linux/spi/pxa2xx_spi.h>
++#include <linux/pxa2xx_ssp.h>
+ #include <linux/io.h>
+ #include <linux/of.h>
+ #include <linux/of_device.h>
 -- 
 2.43.0.rc1.1.gbec44491f096
 

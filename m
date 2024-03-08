@@ -1,56 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BFC6179B1
-	for <linux-spi@vger.kernel.org>; Fri,  8 Mar 2024 16:57:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60F25282E1;
+	Fri,  8 Mar 2024 17:18:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709917021; cv=none; b=pCpYNoMgV7U8XK+9o4O2yHeqHP2Mr50K8Dzo+ct9Zt149O7QjyOiazV8dUJ/T9z62jRVpuLNGinZbVOnrzh/z8xu/1hVK3d0cqvKZ5km5SIk06ij0WvQv0byHw5S0ReJpr7yhgPXLk3woO/6cKKekr1kT4Ve5j0j4cdBVUpfvwY=
+	t=1709918307; cv=none; b=LXvKMd30C98kvf1RbjIhqj6NFO/T3SrhIK7d073hmVbXnsVJemJKTGOwb+8hk/Li7F4Z/BiObEE/TxMECrnGstk4xEYk7iH+bT3XNYnHx0OFMv56TsZ4Suyt4+fUjUQhJJ2zBtZP/7v0Se3Ws6La6hq+65suHUnbIVXVOHO9wm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709917021; c=relaxed/simple;
-	bh=eZuhftrC1PzRIcpY4w4fddvMQixFSi25UkZy8odU9tU=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=NOlr/4VCJk1b7VJPlwRFIWlawsuf6MHJMU2fvir7URomdOs+VwB9BF2B/1PnRRK5ZpoWNvOtkNhQ0RrSSmlm9gAuNfWnw4063zOdSHShT0+9l1UT9xk3lpGaAm8qJx03gaxDenCPxdFX9B7ycjhiPTUCfkF1DnenVUgm0HbbgDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qQYjPZzi; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1709918307; c=relaxed/simple;
+	bh=SU8R2y4/XuqxTtYghpt2nzG2hjyN0IAUqTl830ap1V0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=gEThSgtCgALTpe8pGe2qMKFw2tfXm7gR+PIu8Xdfa1I/DRyV/MjAnXKIGOPw8bJfl+MEzKhMN9+I2dqztHNYa+PJ6+ZwWeTOLT/1BKrP2dhjtHkiYUomzubyoNFnYEjsLi1DyQZh9mY3Ihj3HZppw2ojAQymEri8LGtlhUa4TEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=JinAFtZD; arc=none smtp.client-ip=217.70.183.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qQYjPZzi"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E410EC433F1;
-	Fri,  8 Mar 2024 16:57:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709917020;
-	bh=eZuhftrC1PzRIcpY4w4fddvMQixFSi25UkZy8odU9tU=;
-	h=Subject:From:Date:To:From;
-	b=qQYjPZziWnT195f65KpW1TnhqS8vKyrFO+AsDGZvewfBFwcro1XJd3udUbHl8BtC+
-	 leNTf+O2Ru1qMl8XgLSy6G5D4WacnJa4GO8ItAvP4PB6denIiTngndw/bfnUTczjAT
-	 uQLBGITtE8U+vYk7FblOX32KE8xXeUmaJ+vACDYgeeZacA3gUhe1JVrA8IkVcsrjlZ
-	 cYr6E9bIXIZt1c8dNzhNS1XPu80O/MSt9kjK+DH47cQG9yxWlB2maCjMZP224UPB4k
-	 E0vbtNqvDGJle1Nw8UoBSxiiUg51SR5/o1CgzH+I0dxXd91i/Yoy2fLeJOSPGY1ttP
-	 tPVNbbNLbFEyQ==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id C2389C39562;
-	Fri,  8 Mar 2024 16:57:00 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="JinAFtZD"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 0D838C0006;
+	Fri,  8 Mar 2024 17:18:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1709918298;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=I1ZW8csWkCGVE3gvbimGZ4O77Vq0iVPh60n1dHennJc=;
+	b=JinAFtZDuCzcKJiWT9oO4ML2pG9VbIGv91fydzWzixAiXLdPrz07Po3Wr7LFPvUdI54XC1
+	PhhwaZJppQ2SRbH9z7o0CX1cG8k9PJkSrR2W72EFX5ZBEz02a9KzBnMoclawK7e1qmDsT0
+	Jfvg1kbQQndhMh/cvGynw2deAAEm2w7EYqrWdlzGWWhB8/8DV6SZ4cqX2EQ3Z7saeK0FYH
+	Ype7+iBLH/3Od/xDTPNmcsfBPT328Cnhq+7FB1dhVQNg/hVR6j52GPu9ZHyzbnjT7EeBdY
+	Eroimu6mS2SIguDsea1fNOnFpJP/XxSMdZ9s8WeS8+kFo07b+f6az5Enqtj0uA==
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Date: Fri, 08 Mar 2024 18:18:16 +0100
+Subject: [PATCH 01/11] dt-bindings: qspi: cdns,qspi-nor: add
+ mobileye,eyeq5-ospi compatible
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <170991702069.13717.13671070874878420774.git-patchwork-housekeeping@kernel.org>
-Date: Fri, 08 Mar 2024 16:57:00 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
+Message-Id: <20240308-cdns-qspi-mbly-v1-1-a503856dd205@bootlin.com>
+References: <20240308-cdns-qspi-mbly-v1-0-a503856dd205@bootlin.com>
+In-Reply-To: <20240308-cdns-qspi-mbly-v1-0-a503856dd205@bootlin.com>
+To: Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Vaishnav Achath <vaishnav.a@ti.com>, 
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, 
+ Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>, 
+ Gregory CLEMENT <gregory.clement@bootlin.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Tawfik Bayouk <tawfik.bayouk@mobileye.com>, 
+ =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+X-Mailer: b4 0.13.0
+X-GND-Sasl: theo.lebrun@bootlin.com
 
-Latest series: [v2] spi: xilinx: Massage xilinx_spi.h (2024-03-08T16:27:45)
-  Superseding: [v1] spi: xilinx: Massage xilinx_spi.h (2024-03-07T15:43:57):
-    [v1,1/3] spi: xilinx: Fix kernel documentation in the xilinx_spi.h
-    [v1,2/3] spi: xilinx: Add necessary inclusion and forward declaration
-    [v1,3/3] spi: xilinx: Make num_chipselect 8-bit in the struct xspi_platform_data
+Add Mobileye EyeQ5 compatible.
+FIFO depth shall not be passed; hardware can detect it.
 
+Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
+---
+ Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml b/Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml
+index cca81f89e252..cf7abf48673a 100644
+--- a/Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml
++++ b/Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml
+@@ -61,6 +61,17 @@ allOf:
+         cdns,fifo-depth:
+           enum: [ 128, 256 ]
+           default: 128
++  - if:
++      properties:
++        compatible:
++          contains:
++            const: mobileye,eyeq5-ospi
++    then:
++      properties:
++        cdns,fifo-depth: false
++    else:
++      required:
++        - cdns,fifo-depth
+ 
+ properties:
+   compatible:
+@@ -74,6 +85,7 @@ properties:
+               - xlnx,versal-ospi-1.0
+               - intel,socfpga-qspi
+               - starfive,jh7110-qspi
++              - mobileye,eyeq5-ospi
+           - const: cdns,qspi-nor
+       - const: cdns,qspi-nor
+ 
+@@ -145,7 +157,6 @@ required:
+   - reg
+   - interrupts
+   - clocks
+-  - cdns,fifo-depth
+   - cdns,fifo-width
+   - cdns,trigger-address
+   - '#address-cells'
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+2.44.0
 

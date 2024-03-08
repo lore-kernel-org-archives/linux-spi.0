@@ -1,38 +1,39 @@
 Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC3133FB97;
-	Fri,  8 Mar 2024 17:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79C415675B;
+	Fri,  8 Mar 2024 17:18:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709918311; cv=none; b=OSRbggxF9o4Z1hlRamO6AL/N2F9HjPBUVNy46mxs/spa7nkzHgpjh+p48wbSyWz6oKpIkvrEYrobSH4hMmWLFLkWnE9uBf8XC6WoaUkNzFPdarIBsMAfU/CebAQ4lLDuhOTR3ICwSwc+8F9PKyr9nYb3be1MwE/Q09ZF7nkDh70=
+	t=1709918311; cv=none; b=A/MkfDEod6RTqtWon6age0xLLEKoHn/LJ4LllL6L/NQF3EUNo6u5GWnpIubchcRytE6+XBg9GDYL+94jA2PdA87EYGdeWtujOKdyY1wbzWmgk2ru+WSbZlqvU3gzThvs2FagW8zMstr6lUH45iTbe6eHX5Kz9KbiBPrPU71BjME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1709918311; c=relaxed/simple;
-	bh=jlFnwVJ2+yN7WbcGylgwhY0XKMcETFhGvGIzaOVZbUY=;
+	bh=F/9Yanst1hBH0HDc3LX9DP2jVFZb4lsc+NgoZKuU+jU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=BRnlAO/ffzgxaVZKwC62lBCyPSEydDUVzihpk8s6e0rVfpRwyPUYRfgo+cnMlM+iJEjp65Le/1jQQvvKaHlrMJvgUVT6QdAmHXmiaYnvOPsRfPCi68YV+IP17fWQv+Mv12oBgJNckUFWG61sQ33pwq27nZpADu7/Vs2GBZChtHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=XK3MmF07; arc=none smtp.client-ip=217.70.183.198
+	 In-Reply-To:To:Cc; b=V8rpViz+b6KERCCgpLGNP9Vouxo/O59cx1xCKc7L0pCUG4gVVdOByhtaK9BIJwN4PjbtI+yWhnDBmWC1qUOVsIinbYrLAc0uIG9CLha5WSJ7xMzSX6c/4M1D9/cdHIBwMtStzZ/OqD2LA+LmCTHN7OC1MEceqdwfujGLe7MLyOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=HSbkESLk; arc=none smtp.client-ip=217.70.183.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="XK3MmF07"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 6F831C0009;
-	Fri,  8 Mar 2024 17:18:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="HSbkESLk"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 3A057C0002;
+	Fri,  8 Mar 2024 17:18:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1709918300;
+	t=1709918304;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7yJcTfycgZt7wFIJiCcPAwyIVYEvz5zzBGPjCoMBUvY=;
-	b=XK3MmF07ayuYTAuLQz1JMIpJ2h2S4Tsj+QmEOpAXDFD3vdNJX2lKaBgRDT5irkYH/ROyNn
-	bZzrtQpR2xxjRE1raMAJKFjmCIG7P4Ezx16hCxWccBk0ClsMWlpuMJKGt28JqWGfIgXv8n
-	VRsgiXHPszgCWhG5FgG7UIhxEtPLkbymARmOm2N9otmG1NKWpjA5b1lf2rGCxUUevQzTKp
-	tBnmXNcci+8T+g5YQfcLZLYMH3b/Tk5QtM4F8Tvk6scgEA7UAD8P86LWsLK8aG58X29dqc
-	vwKuq4x+BXUjTSzQkvhWL80xyAkxc0dCOyePlaOeQ5lEt7crvOVgN7o+4aFx1A==
+	bh=0sXwCu/pnKjPhnbG0qZ+rGnft7Ztmr1z9mGamghTqGc=;
+	b=HSbkESLkn/ZN8on+cmLXpGN539iCXlvUuwGXguCM2LbcKcO/Y5s2JZ67Iituk46SZG9Qw4
+	QGuLotcRogiaYD5/Y233NLrU0EHT9aDZn/hfRv1aWtnIaWRKecjEMyHFXtO8VVKPiecJbU
+	pU23Zx30nQzXgOb3TsFkvg7TxsjXxowjRZnCAWKHDLOyVN90HzkYpnYpISkpptx+YNB1dX
+	3HibUlZk3vN6yP6CDJLcDilnmuqKLuOC5CUxL+5QsvB9Kl70hp5sRFTMSwhNNP8Uq0FpDm
+	u3fhvMB1+0LvI2RL3SNa+Dcy/IaiIcZqONXlPoyz6BrcV2SjbCiyn1vwmGlVBg==
 From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Date: Fri, 08 Mar 2024 18:18:20 +0100
-Subject: [PATCH 05/11] spi: cadence-qspi: add FIFO depth detection quirk
+Date: Fri, 08 Mar 2024 18:18:26 +0100
+Subject: [PATCH 11/11] MIPS: mobileye: eyeq5: add octal flash node to eval
+ board DTS
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -41,7 +42,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240308-cdns-qspi-mbly-v1-5-a503856dd205@bootlin.com>
+Message-Id: <20240308-cdns-qspi-mbly-v1-11-a503856dd205@bootlin.com>
 References: <20240308-cdns-qspi-mbly-v1-0-a503856dd205@bootlin.com>
 In-Reply-To: <20240308-cdns-qspi-mbly-v1-0-a503856dd205@bootlin.com>
 To: Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
@@ -58,127 +59,36 @@ Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
 X-Mailer: b4 0.13.0
 X-GND-Sasl: theo.lebrun@bootlin.com
 
-Use hardware ability to read the FIFO depth thanks to
-CQSPI_REG_SRAMPARTITION that is partially read-only. Keep current
-behavior identical for existing compatibles.
-
-Hide feature behind a flag. If unset and detected value is different
-from the devicetree-provided value, warn.
-
-Move probe cqspi->ddata assignment prior to cqspi_of_get_pdata() call.
+Add SPI-NOR octal flash node to evaluation board devicetree.
 
 Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
 ---
- drivers/spi/spi-cadence-quadspi.c | 38 ++++++++++++++++++++++++++++++++------
- 1 file changed, 32 insertions(+), 6 deletions(-)
+ arch/mips/boot/dts/mobileye/eyeq5-epm5.dts | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index 02a80745fa6d..d178148788f0 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -42,6 +42,7 @@ static_assert(CQSPI_MAX_CHIPSELECT <= SPI_CS_CNT_MAX);
- #define CQSPI_NO_SUPPORT_WR_COMPLETION	BIT(3)
- #define CQSPI_SLOW_SRAM		BIT(4)
- #define CQSPI_NEEDS_APB_AHB_HAZARD_WAR	BIT(5)
-+#define CQSPI_DETECT_FIFO_DEPTH		BIT(6)
- 
- /* Capabilities */
- #define CQSPI_SUPPORTS_OCTAL		BIT(0)
-@@ -1500,13 +1501,15 @@ static int cqspi_of_get_flash_pdata(struct platform_device *pdev,
- 
- static int cqspi_of_get_pdata(struct cqspi_st *cqspi)
- {
-+	const struct cqspi_driver_platdata *ddata = cqspi->ddata;
- 	struct device *dev = &cqspi->pdev->dev;
- 	struct device_node *np = dev->of_node;
- 	u32 id[2];
- 
- 	cqspi->is_decoded_cs = of_property_read_bool(np, "cdns,is-decoded-cs");
- 
--	if (of_property_read_u32(np, "cdns,fifo-depth", &cqspi->fifo_depth)) {
-+	if (!(ddata && ddata->quirks & CQSPI_DETECT_FIFO_DEPTH) &&
-+	    of_property_read_u32(np, "cdns,fifo-depth", &cqspi->fifo_depth)) {
- 		dev_err(dev, "couldn't determine fifo-depth\n");
- 		return -ENXIO;
- 	}
-@@ -1538,8 +1541,6 @@ static void cqspi_controller_init(struct cqspi_st *cqspi)
- {
- 	u32 reg;
- 
--	cqspi_controller_enable(cqspi, 0);
--
- 	/* Configure the remap address register, no remap */
- 	writel(0, cqspi->iobase + CQSPI_REG_REMAP);
- 
-@@ -1573,8 +1574,29 @@ static void cqspi_controller_init(struct cqspi_st *cqspi)
- 		reg |= CQSPI_REG_CONFIG_DMA_MASK;
- 		writel(reg, cqspi->iobase + CQSPI_REG_CONFIG);
- 	}
-+}
- 
--	cqspi_controller_enable(cqspi, 1);
-+static void cqspi_controller_detect_fifo_depth(struct cqspi_st *cqspi)
-+{
-+	const struct cqspi_driver_platdata *ddata = cqspi->ddata;
-+	struct device *dev = &cqspi->pdev->dev;
-+	u32 reg, fifo_depth;
+diff --git a/arch/mips/boot/dts/mobileye/eyeq5-epm5.dts b/arch/mips/boot/dts/mobileye/eyeq5-epm5.dts
+index 6898b2d8267d..0e5fee7b680c 100644
+--- a/arch/mips/boot/dts/mobileye/eyeq5-epm5.dts
++++ b/arch/mips/boot/dts/mobileye/eyeq5-epm5.dts
+@@ -21,3 +21,18 @@ memory@0 {
+ 		      <0x8 0x02000000 0x0 0x7E000000>;
+ 	};
+ };
 +
-+	/*
-+	 * Bits N-1:0 are writable while bits 31:N are read as zero, with 2^N
-+	 * the FIFO depth.
-+	 */
-+	writel(U32_MAX, cqspi->iobase + CQSPI_REG_SRAMPARTITION);
-+	reg = readl(cqspi->iobase + CQSPI_REG_SRAMPARTITION);
-+	fifo_depth = reg + 1;
++&ospi {
++	flash0: flash@0 {
++		compatible = "jedec,spi-nor";
++		reg = <0>; /* chip select */
 +
-+	if (ddata && ddata->quirks & CQSPI_DETECT_FIFO_DEPTH) {
-+		cqspi->fifo_depth = fifo_depth;
-+		dev_dbg(dev, "using FIFO depth of %u\n", fifo_depth);
-+	} else if (fifo_depth != cqspi->fifo_depth) {
-+		dev_warn(dev, "detected FIFO depth (%u) different from config (%u)\n",
-+			 fifo_depth, cqspi->fifo_depth);
-+	}
- }
- 
- static int cqspi_request_mmap_dma(struct cqspi_st *cqspi)
-@@ -1728,6 +1750,7 @@ static int cqspi_probe(struct platform_device *pdev)
- 	cqspi->pdev = pdev;
- 	cqspi->host = host;
- 	cqspi->is_jh7110 = false;
-+	cqspi->ddata = ddata = of_device_get_match_data(dev);
- 	platform_set_drvdata(pdev, cqspi);
- 
- 	/* Obtain configuration from OF. */
-@@ -1819,8 +1842,6 @@ static int cqspi_probe(struct platform_device *pdev)
- 	/* write completion is supported by default */
- 	cqspi->wr_completion = true;
- 
--	ddata = of_device_get_match_data(dev);
--	cqspi->ddata = ddata;
- 	if (ddata) {
- 		if (ddata->quirks & CQSPI_NEEDS_WR_DELAY)
- 			cqspi->wr_delay = 50 * DIV_ROUND_UP(NSEC_PER_SEC,
-@@ -1862,7 +1883,10 @@ static int cqspi_probe(struct platform_device *pdev)
- 	}
- 
- 	cqspi_wait_idle(cqspi);
-+	cqspi_controller_enable(cqspi, 0);
-+	cqspi_controller_detect_fifo_depth(cqspi);
- 	cqspi_controller_init(cqspi);
-+	cqspi_controller_enable(cqspi, 1);
- 	cqspi->current_cs = -1;
- 	cqspi->sclk = 0;
- 
-@@ -1945,7 +1969,9 @@ static int cqspi_runtime_resume(struct device *dev)
- 
- 	clk_prepare_enable(cqspi->clk);
- 	cqspi_wait_idle(cqspi);
-+	cqspi_controller_enable(cqspi, 0);
- 	cqspi_controller_init(cqspi);
-+	cqspi_controller_enable(cqspi, 1);
- 
- 	cqspi->current_cs = -1;
- 	cqspi->sclk = 0;
++		spi-max-frequency = <40000000>;
++		spi-rx-bus-width = <8>;
++		cdns,read-delay = <1>;
++		cdns,tshsl-ns = <400>;
++		cdns,tsd2d-ns = <400>;
++		cdns,tchsh-ns = <125>;
++		cdns,tslch-ns = <50>;
++	};
++};
 
 -- 
 2.44.0

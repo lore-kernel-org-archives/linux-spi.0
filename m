@@ -1,38 +1,39 @@
 Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 416E656473;
-	Fri,  8 Mar 2024 17:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DD1657884;
+	Fri,  8 Mar 2024 17:18:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709918311; cv=none; b=TFnCS+3CGq8yn9weCwgjPhKsJ35xmUABumF6AHw/KbqePi3TN6RdtUVfdC8WMb47zYmm3CDtMBuwsyHQwXdA1KTQpGHAEVuZrhQZbI+chaq6vfOKl0+dbeS7nn8rMkbGIa5b7zzVeo9PxU7GsvzF7BzLp4Rw4tegtt8VPikA9b0=
+	t=1709918312; cv=none; b=H4+7M4g9MUAsmPBD492aKb+Zcw5fLucGRgknpzM7rDKeFZGkWykVGN/aoFbNc8MiaHIyLEOdwMJsn7JQz4tVojcto6Z3y9jjgu86JWAktWUDi+Ntc3Cwk1P8It5domCZIII7NaxGqVfiXD7Jy+YnXSECUQJ53/H0wSBrvl2BbCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709918311; c=relaxed/simple;
-	bh=M9X2TXlu0Zd1vsp9mlncE7tOEu3zaByCOibyclsjtko=;
+	s=arc-20240116; t=1709918312; c=relaxed/simple;
+	bh=E0t6bF/4dRoh6j8qffNxazRcYBw8oIfU33XsZM5uMLM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=J+MfcuZb2TNrHqEyEITGRl7uLOTEFEV52KazhsX922TdymSij5soS5HQ+sYIbNfRUzIrPS3RJzgBO1hVmkSZYMlfAYY5dKqxm90AlbAJ8wE2DXddEIErj9i3xfCBtLOpOup5qzz2RyCtywvvEVLTaRoIaocCreI3H4+HbDv3NSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Z0eJ2djL; arc=none smtp.client-ip=217.70.183.198
+	 In-Reply-To:To:Cc; b=utl/uF4EO7/1uEpps7YZ3DNYz2PXedbTqYIeffxulKn71qkdTpjibNaIxi91FJaQY1FttLiKLPWbRc64vsafUVeSWr+rn9irzMcKd1GzOPacTNcxIuUKirCNFEugPupSbfC62uTGVKrjKuXb5L1j9+2z74MW9VKWNRsoVFIzCt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=X9aVg9/q; arc=none smtp.client-ip=217.70.183.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Z0eJ2djL"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id A85F4C000B;
-	Fri,  8 Mar 2024 17:18:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="X9aVg9/q"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 03FD3C000E;
+	Fri,  8 Mar 2024 17:18:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1709918302;
+	t=1709918303;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6miKRXN1WuQxZt8v8O82Gej5zMYl19Jf0WHTTc8pDtQ=;
-	b=Z0eJ2djL/tGY3KS/eUjK/7fhC3Fz726SexT0tMJ9i1AZAHmQ21UG3Y+8ieG3sDhNIGJyKp
-	umYdWzHGKKU1caWTQTrVq/UvnFrgwHz0ik+9XOLHpoPQX+DovUFY9sqqx9adeKu3VkT8FU
-	jDdUvCosL6DDHdBThi5MzkZcfwJ1pN7qSb9Vfor8I/FPNinHnAhYATTnsj2beNeSv8M8xp
-	LghlihkzDe5ECKXoBpv5MC+aqRmfBT0iTCRQsNKQMSk80gLD5DT9oMTpfY9rnjZGn3eRz9
-	hN6sLAuRtkbMgdXTFcR84IHDBzhzyOFrs5ET+jF3KylC53gSO9gj+eDo4rOzXA==
+	bh=OGb9e89q1LiUktbIoiZeA2KMG4e+G1lEPOW1m5KfN4U=;
+	b=X9aVg9/qhraKN94VDBDlfhLYjXH67Q+YJ6LtY368WNqu1tKWcWUHk/XN7rP75AlNcvAd5h
+	9zHJPH89XoFQm+gbwb6wNY9n43mUhI2y4BpX4RaSq14SwDWQSfQFCTFPsX6xdOqd62j6Bj
+	VTtBm/3VhnuECzWOnV+Irf1YV9kgF2zWrmjaF7uklybXJBkCTl2vn3X58wOruAprKQfloi
+	1ShWi8uuDvxE7tcAxyiF/fVxhn4QMZILWZVBvkWtsrFvo9o1FXdqzL80tn+f62xfnUM5xV
+	O8jxlL+j+WbCcjtEULFuKDAeaMF5XPQ/Z5skpk3u+M5VGgwlS3RSKMKWzZeMPg==
 From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Date: Fri, 08 Mar 2024 18:18:22 +0100
-Subject: [PATCH 07/11] spi: cadence-qspi: add no-IRQ mode to indirect reads
+Date: Fri, 08 Mar 2024 18:18:24 +0100
+Subject: [PATCH 09/11] spi: cadence-qspi: add mobileye,eyeq5-ospi
+ compatible
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -41,7 +42,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240308-cdns-qspi-mbly-v1-7-a503856dd205@bootlin.com>
+Message-Id: <20240308-cdns-qspi-mbly-v1-9-a503856dd205@bootlin.com>
 References: <20240308-cdns-qspi-mbly-v1-0-a503856dd205@bootlin.com>
 In-Reply-To: <20240308-cdns-qspi-mbly-v1-0-a503856dd205@bootlin.com>
 To: Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
@@ -58,78 +59,44 @@ Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
 X-Mailer: b4 0.13.0
 X-GND-Sasl: theo.lebrun@bootlin.com
 
-Support reads through polling, without any IRQ. The main reason is
-performance; profiling shows that the first IRQ comes quickly on our
-specific hardware. Once this IRQ arrives, we poll until all data is
-retrieved. Avoid initial sleep to reduce IRQ count.
-
-Hide this behavior behind a quirk flag.
-
-This is confirmed through micro-benchmarks, but also end-to-end
-performance tests. Mobileye EyeQ5, octal flash, reading 235M on a UBIFS
-filesystem:
- - No optimizations, ~10.34s, ~22.7 MB/s, 199230 IRQs
- - CQSPI_SLOW_SRAM,  ~10.34s, ~22.7 MB/s,  70284 IRQs
- - CQSPI_RD_NO_IRQ,   ~9.37s, ~25.1 MB/s,    521 IRQs
+Declare a new mobileye,eyeq5-ospi compatible. Exploit quirk flags:
+detect FIFO depth through SRAMPARTITION register; avoid IRQs during
+read operations.
 
 Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
 ---
- drivers/spi/spi-cadence-quadspi.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/spi/spi-cadence-quadspi.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
 diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index 0fc452bab0ee..973ea4edbe3a 100644
+index 2ad9c736f85f..046388cacc66 100644
 --- a/drivers/spi/spi-cadence-quadspi.c
 +++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -43,6 +43,7 @@ static_assert(CQSPI_MAX_CHIPSELECT <= SPI_CS_CNT_MAX);
- #define CQSPI_SLOW_SRAM		BIT(4)
- #define CQSPI_NEEDS_APB_AHB_HAZARD_WAR	BIT(5)
- #define CQSPI_DETECT_FIFO_DEPTH		BIT(6)
-+#define CQSPI_RD_NO_IRQ			BIT(7)
+@@ -2060,6 +2060,13 @@ static const struct cqspi_driver_platdata pensando_cdns_qspi = {
+ 	.quirks = CQSPI_NEEDS_APB_AHB_HAZARD_WAR | CQSPI_DISABLE_DAC_MODE,
+ };
  
- /* Capabilities */
- #define CQSPI_SUPPORTS_OCTAL		BIT(0)
-@@ -703,6 +704,7 @@ static int cqspi_indirect_read_execute(struct cqspi_flash_pdata *f_pdata,
- 				       const size_t n_rx)
- {
- 	struct cqspi_st *cqspi = f_pdata->cqspi;
-+	bool use_irq = !(cqspi->ddata && cqspi->ddata->quirks & CQSPI_RD_NO_IRQ);
- 	struct device *dev = &cqspi->pdev->dev;
- 	void __iomem *reg_base = cqspi->iobase;
- 	void __iomem *ahb_base = cqspi->ahb_base;
-@@ -726,17 +728,20 @@ static int cqspi_indirect_read_execute(struct cqspi_flash_pdata *f_pdata,
- 	 * all the read interrupts disabled for max performance.
- 	 */
++static const struct cqspi_driver_platdata mobileye_eyeq5_ospi = {
++	.hwcaps_mask = CQSPI_SUPPORTS_OCTAL,
++	.quirks = CQSPI_DISABLE_DAC_MODE | CQSPI_NO_SUPPORT_WR_COMPLETION |
++			CQSPI_DETECT_FIFO_DEPTH | CQSPI_RD_NO_IRQ |
++			CQSPI_BUSYWAIT_EARLY,
++};
++
+ static const struct of_device_id cqspi_dt_ids[] = {
+ 	{
+ 		.compatible = "cdns,qspi-nor",
+@@ -2093,6 +2100,10 @@ static const struct of_device_id cqspi_dt_ids[] = {
+ 		.compatible = "amd,pensando-elba-qspi",
+ 		.data = &pensando_cdns_qspi,
+ 	},
++	{
++		.compatible = "mobileye,eyeq5-ospi",
++		.data = &mobileye_eyeq5_ospi,
++	},
+ 	{ /* end of table */ }
+ };
  
--	if (!cqspi->slow_sram)
-+	if (use_irq && cqspi->slow_sram)
-+		writel(CQSPI_REG_IRQ_WATERMARK, reg_base + CQSPI_REG_IRQMASK);
-+	else if (use_irq)
- 		writel(CQSPI_IRQ_MASK_RD, reg_base + CQSPI_REG_IRQMASK);
- 	else
--		writel(CQSPI_REG_IRQ_WATERMARK, reg_base + CQSPI_REG_IRQMASK);
-+		writel(0, reg_base + CQSPI_REG_IRQMASK);
- 
- 	reinit_completion(&cqspi->transfer_complete);
- 	writel(CQSPI_REG_INDIRECTRD_START_MASK,
- 	       reg_base + CQSPI_REG_INDIRECTRD);
- 
- 	while (remaining > 0) {
--		if (!wait_for_completion_timeout(&cqspi->transfer_complete,
-+		if (use_irq &&
-+		    !wait_for_completion_timeout(&cqspi->transfer_complete,
- 						 msecs_to_jiffies(CQSPI_READ_TIMEOUT_MS)))
- 			ret = -ETIMEDOUT;
- 
-@@ -778,7 +783,7 @@ static int cqspi_indirect_read_execute(struct cqspi_flash_pdata *f_pdata,
- 			bytes_to_read = cqspi_get_rd_sram_level(cqspi);
- 		}
- 
--		if (remaining > 0) {
-+		if (use_irq && remaining > 0) {
- 			reinit_completion(&cqspi->transfer_complete);
- 			if (cqspi->slow_sram)
- 				writel(CQSPI_REG_IRQ_WATERMARK, reg_base + CQSPI_REG_IRQMASK);
 
 -- 
 2.44.0

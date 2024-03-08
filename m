@@ -1,37 +1,39 @@
 Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60F5E288DF;
-	Fri,  8 Mar 2024 17:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8A8F28DA4;
+	Fri,  8 Mar 2024 17:18:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709918307; cv=none; b=Og8MIBmiit880lY0w1BtFmFZ8QvWHvGvkZvuoQLJHZ5Cg9ri9lWGVZMih0NJMPeWfkoucb4OKnAoMRAbM0q4SJ2PP5a7FvHq6pmpnpZZb8ZkE0m387yT7BKXzGDqAIfnnXlr1JwjP0x1Gk5njlgD8YJZMzGnLIHDTsJIrS9GieM=
+	t=1709918308; cv=none; b=K5IPchO2rVOXLVAB54QEt8f61SW3PXtA/yX8vn81/oOA6yVZot9k1qOOYjmp45/VVNrvefa5QgNesZ6x1GsJ7CeCi4s2KbyevN1pIK56lcFnnrxTbGmLNWJBxLAuI4/bMFvwJaa+6dwrmLTPApCSzy1ZhAa/irch5Twf9RL1yPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709918307; c=relaxed/simple;
-	bh=E9zIsvVNRn8j4lhi50pwwgBFUNkIhRKOyHxnyO71DhM=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=UsQiKs2rLSKccVnaFxEcfegVL625IvBnb9iwYvcLnDcki4m4vwnEm7s9DROm88AbssiuVIbIw/TnoUzQsWXUFlZl3ZXgf/WKMpTc07XFknOR06uI5NI5N0t5x/xUL5vIutJ+xFJWO/sXoSQTtED8jEU0xDpHsVPXom69ogXzLAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=oFUgdZhv; arc=none smtp.client-ip=217.70.183.198
+	s=arc-20240116; t=1709918308; c=relaxed/simple;
+	bh=/IUtR1QhrOh+Npea2oe41h1LCefsP4M9voCRGpR8M7s=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=sQ0/egMyZ+puHNJroPHMDBYje/ZUpAd5sR2I5HQqAVAOrlgx4s0yzwFU8DTIJXh6HbtSVt3JYqejcVIJBxst4yG44GMMEHNQ+z1DlF7XDnEgr1FHBmYj2HOTPs9eEOQFNduKuwv8heisecwuOdijIAtV/xJ5CaYp3e2l1eHM08s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=N0vqFYfj; arc=none smtp.client-ip=217.70.183.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="oFUgdZhv"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 1A7D4C0004;
-	Fri,  8 Mar 2024 17:18:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="N0vqFYfj"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id AD624C0007;
+	Fri,  8 Mar 2024 17:18:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1709918297;
+	t=1709918299;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=etEfqzz8TOqTFJ75eijfjqT82zhkln77NmZ5u7BdmUU=;
-	b=oFUgdZhvNKKb4KFTUgyP1N9FJqGTP23MtFum4hwewtoqDF66h04/rW23qwmYftCihi1n/2
-	I1Ev7PzlnpCYtr4Y9n67hx1fbKdoXMppEDVrZiHbdG9v+UrpX7pcY0MjbT4O/4rRtfsajO
-	CyxhJsNnmxpxTsFQBNU7Pg864EJdKvUiEPgWG7WMMBBn+/KNTFsueWlcpu92e418SAK1MU
-	UcLe+Azh/5loljbHvqV4TAvKsU7U/321eMNvrq2syioMQYmDxbD7KfsK+6ZfIYoovcO0En
-	FjLvOr54XzZWwliC6cQlroL/qlX/wlN+wsXH74vVJYmf8Iu3QG4/ZkttY+i4Yg==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QMNvpchq6L9NiooxCj/RaP2N+unTTBYKBtPBw/XfUSY=;
+	b=N0vqFYfjmYFxrSNypQ/bG9DaU49kgOcdKSYl+GUe8G6eQjh6IA8hBGAv5ZLv1ZDR8HJbfY
+	tuRs+1+DtJwo0dgY52Jb2cwr9frsC0bW9ysa9W1aVs3pnESLkNQHgfOE/J9NXBdQlfqiyE
+	8qjLNi5f192YhIqegXckujWjgUAkAh51VPDTSTDezNI/H1XSOjBmyjUfatsyoCKO1+2SmT
+	MdZU+MRcua8V1KktjstYHyqfxWAFp9BIe4Vc42+cNPdFc4Ly4txrBDZ+qdI6ZA2T/M1PjX
+	+yNAc97U3J4/O9Ed7gyd+7NdzttWrj3Jp4viUxe0vhk5TdmYnsfRUqeJym8YXQ==
 From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Subject: [PATCH 00/11] spi: cadence-qspi: add Mobileye EyeQ5 support
-Date: Fri, 08 Mar 2024 18:18:15 +0100
-Message-Id: <20240308-cdns-qspi-mbly-v1-0-a503856dd205@bootlin.com>
+Date: Fri, 08 Mar 2024 18:18:17 +0100
+Subject: [PATCH 02/11] spi: cadence-qspi: switch from legacy names to
+ modern ones
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -40,9 +42,9 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAFdI62UC/x3MQQ5AMBBA0avIrE1SoxZcRSxKB5NQdBIh4u4ay
- 7f4/wHlKKzQZA9EPkVlCwlFnsEwuzAxik8GMmQNmRoHHxQP3QXXfrnRM5GpnLWuLyFFe+RRrn/
- Ydu/7AdZccshgAAAA
+Message-Id: <20240308-cdns-qspi-mbly-v1-2-a503856dd205@bootlin.com>
+References: <20240308-cdns-qspi-mbly-v1-0-a503856dd205@bootlin.com>
+In-Reply-To: <20240308-cdns-qspi-mbly-v1-0-a503856dd205@bootlin.com>
 To: Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
  Conor Dooley <conor+dt@kernel.org>, Vaishnav Achath <vaishnav.a@ti.com>, 
@@ -57,74 +59,29 @@ Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
 X-Mailer: b4 0.13.0
 X-GND-Sasl: theo.lebrun@bootlin.com
 
-Hi all,
-
-This series adds support for the embedded Cadence Quad SPI controller on
-Mobileye EyeQ5. In our case "quad" is inappropriate as we support
-octal. Most patches aim to improve performance and avoid interrupts.
-Stuff to talk about:
-
- - Both IRQ handler and read operation callbacks called
-   of_device_get_match_data(). This has a cost which we avoid.
-
- - Add a flag to detect FIFO depth at runtime. The SRAMPARTITION
-   register is partially read-only: writel() then readl() to get the
-   depth.
-
-   This implies cdns,fifo-depth devicetree property is unused on this
-   platform.
-
- - Add a flag to avoid IRQs for indirect reads. Hardware is way too fast
-   for sleeping to make sense.
-
- - Add a flag to busywait in read operations. We avoid many hrtimer
-   interrupts this way. Fallback to sleeping, which shouldn't happen.
-
- - End this by adding the compatible to the driver, add the controller
-   to the SoC devicetree and add an octal flash to the eval board
-   devicetree.
-
-Dependencies:
- - Devicetree:
-    - Patches [0][1] adding platform DTS, found in mips-next [2].
-    - System-controller series [3] for <&clocks> phandle.
- - Driver: patches that fix this driver's runtime PM, see spi-next [4].
-
-Have a nice day,
-Théo
-
-[0]: https://lore.kernel.org/lkml/20240216174227.409400-1-gregory.clement@bootlin.com/
-[1]: https://lore.kernel.org/linux-mips/20240209-regname-v1-0-2125efa016ef@flygoat.com/
-[2]: https://git.kernel.org/pub/scm/linux/kernel/git/mips/linux.git/log/
-[3]: https://lore.kernel.org/lkml/20240301-mbly-clk-v9-0-cbf06eb88708@bootlin.com/
-[4]: https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git/log/
+Both spi_master_get_devdata() and the ->master field in struct
+spi_device are part of the compatibility layer provided by
+<linux/spi/spi.h>. Switch away from them.
 
 Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
 ---
-Théo Lebrun (11):
-      dt-bindings: qspi: cdns,qspi-nor: add mobileye,eyeq5-ospi compatible
-      spi: cadence-qspi: switch from legacy names to modern ones
-      spi: cadence-qspi: allow building for MIPS
-      spi: cadence-qspi: store device data pointer in private struct
-      spi: cadence-qspi: add FIFO depth detection quirk
-      spi: cadence-qspi: minimise register accesses on each op if !DTR
-      spi: cadence-qspi: add no-IRQ mode to indirect reads
-      spi: cadence-qspi: add early busywait to cqspi_wait_for_bit()
-      spi: cadence-qspi: add mobileye,eyeq5-ospi compatible
-      MIPS: mobileye: eyeq5: Add SPI-NOR controller node
-      MIPS: mobileye: eyeq5: add octal flash node to eval board DTS
+ drivers/spi/spi-cadence-quadspi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- .../devicetree/bindings/spi/cdns,qspi-nor.yaml     |  13 ++-
- arch/mips/boot/dts/mobileye/eyeq5-epm5.dts         |  15 +++
- arch/mips/boot/dts/mobileye/eyeq5.dtsi             |  15 +++
- drivers/spi/Kconfig                                |   2 +-
- drivers/spi/spi-cadence-quadspi.c                  | 116 +++++++++++++++------
- 5 files changed, 130 insertions(+), 31 deletions(-)
----
-base-commit: ecd5ff483c763ca368f815fafc954f6db9788143
-change-id: 20240209-cdns-qspi-mbly-de2205a44ab3
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index 1f2d404c2cde..266a5d5dcfaf 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -1412,7 +1412,7 @@ static int cqspi_mem_process(struct spi_mem *mem, const struct spi_mem_op *op)
+ static int cqspi_exec_mem_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ {
+ 	int ret;
+-	struct cqspi_st *cqspi = spi_master_get_devdata(mem->spi->master);
++	struct cqspi_st *cqspi = spi_controller_get_devdata(mem->spi->controller);
+ 	struct device *dev = &cqspi->pdev->dev;
+ 
+ 	ret = pm_runtime_resume_and_get(dev);
 
-Best regards,
 -- 
-Théo Lebrun <theo.lebrun@bootlin.com>
+2.44.0
 

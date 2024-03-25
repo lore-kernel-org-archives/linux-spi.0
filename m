@@ -1,86 +1,87 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12568144D29;
-	Mon, 25 Mar 2024 14:08:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3667C84A3E;
+	Mon, 25 Mar 2024 14:21:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711375733; cv=none; b=EF86jAMCRyXbIQpB9NxAbndJO+LTqX6jsvNV0XUSr20N+yaZJ/EPk+hQUNmotz5+ttsSDXYeoP6dbH8fOokXky1KPvVjZrpPLI2u5f9+xr1yPlx7TUBkxJvH2QuHiUozDPX1i+1lAN0X3UpHKNX2OriYwngDT7CbC27t+OMEpxk=
+	t=1711376467; cv=none; b=nKNFMrUXlJIJ5jT4E0wLjhQtXwL66Cp/5IENxPcSlMnx1HAvKIONVnbzQAGiLfH5WpQiqqLrhFlZdo4YULr6mKk9Ekc4ENISGBMvXq1SZu2zZjkC6mebumWVgfVt2MQ/fAG2VxzhqehbT1lJ3DbkkKGj8ZWOXyGZIuPGzfJRj2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711375733; c=relaxed/simple;
-	bh=v77K2lXCAffaMNsAT9TfKHWPDHhZTtkwYbbgpXH3MNU=;
+	s=arc-20240116; t=1711376467; c=relaxed/simple;
+	bh=Nbky7w1K9krHxCztmzHbc4cyv0j40xX3Yglo1Am08Xo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=klEVPSxKi5XedjIV5bQu9xUo65pJr4STeKLpGY4BCtTpG1f1vrf6+B5+G9wPIbvDmIQFAqACMoargxVPuZO9B8WqD7Ip75DAWhJJvr2KTpXRarmDsTh1MayjoJ2bXuxITdnND8bUO9tmQKEZtlQS202XrXJqQmxJxE7+dTdZT64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hOTzcdvu; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=gp6cJ8B8a5y5EhWW8uJLF2yCm6bexRsz5tO7U2nfpTk/pJTXxbxKPatleHxWCHaxrQHtjG7g21LzAmci1XULxgpv+5mbXd7UW/1y3hgejbJv6ylVWzbhOoHUeyIOW4AEkLchJ03N41dJwV7DJC4D5YzL8YRquelPUlLqAmupql0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LT6sUl4F; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hOTzcdvu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC103C433C7;
-	Mon, 25 Mar 2024 14:08:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711375732;
-	bh=v77K2lXCAffaMNsAT9TfKHWPDHhZTtkwYbbgpXH3MNU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hOTzcdvuzEQbUyKqPngIrTSSaxzjhmCgTRw715aFVrTUhhI3tpue6Ntodf9E77lPQ
-	 jVSfIJ3nUhOqpQYoIy8LcXfEjRvk8pEMcPBukIEHDqb5s85enMZptO8RwKWhO7jsZ+
-	 T0PgtsMn6CGcwZ38cTt9342eD+MQQCHOMDEHCt/3TahsldVPl+kxRPrjSi5GOZ40e0
-	 KnivdXGE3PMp9Z/wRPfMd/arg+u+FDCAS2W0JpTNXKoZF6EcXcBGOk+lo/b2CAVJ7p
-	 gsPv+8xRJzlm7gM929L67DEfGsFKFKbTz1iQv8fn0/nbxoJjZgx/1klQQydbewQyqG
-	 SAXMdt36YZpUA==
-Date: Mon, 25 Mar 2024 14:08:49 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LT6sUl4F"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1711376465; x=1742912465;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Nbky7w1K9krHxCztmzHbc4cyv0j40xX3Yglo1Am08Xo=;
+  b=LT6sUl4F1mPdzJv/VKLC0+H9r38x77pPUiO/GqQEF4v0SNGy2RnPGUf1
+   LGdVv7yk+YOQn8xNHSQ8OBiduc5LMj2Sw3A7kWQKgCSZhSeV9+pHgV+2u
+   lFB5FQqBUb59EsRxlAxaflSKAXQhl5MT/CAgudTysmWKq9oNkheOcI2by
+   sudqtv2P9Uwh0yPPnByE/l8YaRRbkXbzxh3pCFr08v/k0LXiiCTf34CuE
+   m8+MOOvml22sVvRzMlDypWyf6RH/fL1qGeuM2MNcvsjboRn1kILQd3O7i
+   mrOFYQbpD9AWCTj+oyGIOol1XUhaukxKE27lnCHh8ugcq371LhD5uQrF4
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="17813575"
+X-IronPort-AV: E=Sophos;i="6.07,153,1708416000"; 
+   d="scan'208";a="17813575"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2024 07:21:03 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="914844803"
+X-IronPort-AV: E=Sophos;i="6.07,153,1708416000"; 
+   d="scan'208";a="914844803"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2024 07:21:01 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rolC7-0000000G0Wp-2ZXA;
+	Mon, 25 Mar 2024 16:20:59 +0200
+Date: Mon, 25 Mar 2024 16:20:59 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Mark Brown <broonie@kernel.org>
 Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
 Subject: Re: [PATCH v1 1/1] spi: rspi: Get rid of unused struct rspi_plat_data
-Message-ID: <8c75da02-ff4c-4a31-93ae-7b55d16e1bf8@sirena.org.uk>
+Message-ID: <ZgGISy3Wjz_f1EFM@smile.fi.intel.com>
 References: <20240307155045.3796045-1-andriy.shevchenko@linux.intel.com>
+ <8c75da02-ff4c-4a31-93ae-7b55d16e1bf8@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="zT+t8iy7V+f39IXG"
-Content-Disposition: inline
-In-Reply-To: <20240307155045.3796045-1-andriy.shevchenko@linux.intel.com>
-X-Cookie: This report is filled with omissions.
-
-
---zT+t8iy7V+f39IXG
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <8c75da02-ff4c-4a31-93ae-7b55d16e1bf8@sirena.org.uk>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Thu, Mar 07, 2024 at 05:50:45PM +0200, Andy Shevchenko wrote:
-> No in-kernel users of struct rspi_plat_data. If required,
-> the software nodes should be used for such users. For now
-> just get rid of it.
->=20
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
->  drivers/spi/spi-rspi.c   | 11 +----------
->  include/linux/spi/rspi.h | 18 ------------------
+On Mon, Mar 25, 2024 at 02:08:49PM +0000, Mark Brown wrote:
+> On Thu, Mar 07, 2024 at 05:50:45PM +0200, Andy Shevchenko wrote:
 
-This breaks the build:
+...
 
-/build/stage/linux/drivers/spi/spi-rspi.c:27:10: fatal error: linux/spi/rsp=
-i.h: No such file or directory
-   27 | #include <linux/spi/rspi.h>
-      |          ^~~~~~~~~~~~~~~~~~
+> >  drivers/spi/spi-rspi.c   | 11 +----------
+> >  include/linux/spi/rspi.h | 18 ------------------
+> 
+> This breaks the build:
+> 
+> /build/stage/linux/drivers/spi/spi-rspi.c:27:10: fatal error: linux/spi/rspi.h: No such file or directory
+>    27 | #include <linux/spi/rspi.h>
+>       |          ^~~~~~~~~~~~~~~~~~
 
---zT+t8iy7V+f39IXG
-Content-Type: application/pgp-signature; name="signature.asc"
+Indeed... Yet another driver that depends on the custom ARCH_*.
+I'll send v2. At least now it compiles on x86_64.
 
------BEGIN PGP SIGNATURE-----
+-- 
+With Best Regards,
+Andy Shevchenko
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmYBhXAACgkQJNaLcl1U
-h9BzhAf/eMt6n0rJgrp1dAwYh6D9LcoV/DHbbI0Ysn/8ChKMNwolhqPpldOGyrBh
-prmxAYC8bJR0cY0HjJK43I7JucJcX6G30N6LQokKLnDhEIpI3VhlucmJyZN7C++e
-5Mh3lyATeUFqLmnDfsAPOM3sM1A0jVM/NZrD15fQS37wZGlqeEB7PEJUrKuYx6co
-5LkkUjQUdAOwqeP5KWvtbwt7QJmMS1d5zSnM3aYs4Wn8FOB6BZ+4B1BPBlHxY6wn
-fHIiPYGQfGQKxlYre+CJL/piJH08BZnHVIEOZY8v82QbFc04fDF9Wt+ye9Nd8+hD
-UezmJK7vDO86F52eeIglCU9RLKCnMg==
-=3lel
------END PGP SIGNATURE-----
 
---zT+t8iy7V+f39IXG--

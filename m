@@ -1,55 +1,34 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31ADE84FD8;
-	Mon, 25 Mar 2024 14:21:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A854316F91E
+	for <linux-spi@vger.kernel.org>; Mon, 25 Mar 2024 14:56:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711376484; cv=none; b=oP7wb1BNrnaKAWnWs6tMgTkx7gkstM9bWUo8aZMAKJXMXw9JVVjSOLn1kxE7uw+GNWnMTbo01NSBJUUUfGirB6BRNEZ0Vi2Z7QNE+CY9qSSS1a/G5d3ALYIHs8M2xzdZZcrecm7IsAgQpwWnLzjF5sF19ppNtEgHYvCHCAbH20c=
+	t=1711378599; cv=none; b=sob+ZeUhbT2T1RI4dwpkzshsIZmoOel/UnF9UOFlXchotLicazE1DHAN3Ox7x9hhC5oqiyE1e/7TX/lx/ynEVZOVlQ4pEpfUBv7WPmU4QuLV97AJFAgU3YR3Ti+6Uu7ihugAQOKoogwcxLayAkoBCqR0AbPABwFIPMxKGXxfN+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711376484; c=relaxed/simple;
-	bh=zO/SdrfhF6UzSZrQoEGUuyMdVnlo03Kah+CLPwIYCrw=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=Y3o334FF1vtAXS/sqMh8ReMfKT61il375JBXXScmMXAUg44s5Un9R2gK+jgabmFIcVfKsAgFj6AFc5cRj9rWLCAHWu6S/GI2ODm3HhFDRBvSSrWDYR3PppcYRozd2Q1JsJEWmGVGN08nCflYFGDSxaeBTA4S4yZb9G+DX1GtF3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KFfeCClY; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1711378599; c=relaxed/simple;
+	bh=TNaEsVQymByE8LdC0R6SQJEwFxBZ1/N1XhnxDAaLwQo=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=JO39ES9six12M1V6EIvR5JuMajfHvFXdWt1MicOfour76RD27YLOx59ARLrq/t5SDtQ6fitR6cpCqVTTLmnfF9D762peotKawMnv3vAgtxWR7ukjwjo63I0YZVmAkrfi8+iP7YQNx3xQWi1zGbaOWUP+Fd3nlxNkdvF4S+2BNG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AXWdZPhx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KFfeCClY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711376482; x=1742912482;
-  h=from:to:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=zO/SdrfhF6UzSZrQoEGUuyMdVnlo03Kah+CLPwIYCrw=;
-  b=KFfeCClY4cllCbsPNoA/ViAXc54hJbixiiaX1rOjopN4H2EkG69lP/P/
-   X4KtcnpCAsmsTmJe8JolX+5eavNqeNADAAIFHQLVDoJKg8aJA9b0QrZYb
-   vKV/DtsS7i3OOQetNZ2sZGO4k4SGevs65XRHS1dQsdiQWHT0aUpahs9i7
-   sWJM/iyxn6OkgO4cD7Lp9jkGD6Y6wuABC4TjaMTBtx4HxctVNPFtKJOYv
-   dbrArNlu19rx6IW4L+6UfwCJeSlUgocx4dvg280BblzHAAtJpwk4ow3lZ
-   WlSWaF8igPsRLYICGuEbOxy5Cy1WUgslA6DhUdX9F6SgbcFT9kkcqGvf2
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="6210318"
-X-IronPort-AV: E=Sophos;i="6.07,153,1708416000"; 
-   d="scan'208";a="6210318"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2024 07:21:21 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="937070498"
-X-IronPort-AV: E=Sophos;i="6.07,153,1708416000"; 
-   d="scan'208";a="937070498"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 25 Mar 2024 07:21:20 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 2BA37101; Mon, 25 Mar 2024 16:21:19 +0200 (EET)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Mark Brown <broonie@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org
-Subject: [PATCH v2 1/1] spi: rspi: Get rid of unused struct rspi_plat_data
-Date: Mon, 25 Mar 2024 16:20:04 +0200
-Message-ID: <20240325142118.3210915-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.43.0.rc1.1.gbec44491f096
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AXWdZPhx"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 2FB55C433F1;
+	Mon, 25 Mar 2024 14:56:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711378599;
+	bh=TNaEsVQymByE8LdC0R6SQJEwFxBZ1/N1XhnxDAaLwQo=;
+	h=Subject:From:Date:To:From;
+	b=AXWdZPhxwQSOSILNQ6B9sp2ZXJqpk8V58XmnXC6KMBYOpdtMISrXOQXy0Rd3eFBZ4
+	 q2XQh7ZAK3iD7iu7UxBOCyMv9e4emLc4LeiydTHPizSVNiN59SikNQYNC4p++wGJ7u
+	 qz+ut3QxF89DwbgXvbMEIrp15jQKIqsGGmXyCwmo29TkR9SMGZovQkXZDZjDsXcbF8
+	 2idu7+Oat5VqToWVe77EXtNwd7e0ui41xhLcQlKMHpAsTikf77xNsLnEu8jQzC86zk
+	 NlXPoWhZxW5lZC+StHyXLpzZOh3CeMHk0BU7axwsNWrI/c8IzqWpz5OIIMMdMJklIb
+	 mBWf67X2PBRyg==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 25B83D2D0EA;
+	Mon, 25 Mar 2024 14:56:39 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -57,93 +36,19 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <171137859914.15287.4388980857167647250.git-patchwork-housekeeping@kernel.org>
+Date: Mon, 25 Mar 2024 14:56:39 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-No in-kernel users of struct rspi_plat_data. If required,
-the software nodes should be used for such users. For now
-just get rid of it.
+Latest series: [v2] spi: rspi: Get rid of unused struct rspi_plat_data (2024-03-25T14:20:04)
+  Superseding: [v1] spi: rspi: Get rid of unused struct rspi_plat_data (2024-03-07T15:50:45):
+    [v1,1/1] spi: rspi: Get rid of unused struct rspi_plat_data
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
-v2: fixed compilation error (Mark)
- drivers/spi/spi-rspi.c   | 12 +-----------
- include/linux/spi/rspi.h | 18 ------------------
- 2 files changed, 1 insertion(+), 29 deletions(-)
- delete mode 100644 include/linux/spi/rspi.h
 
-diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index 8e81f1a8623f..7f95d22fb1ac 100644
---- a/drivers/spi/spi-rspi.c
-+++ b/drivers/spi/spi-rspi.c
-@@ -24,7 +24,6 @@
- #include <linux/reset.h>
- #include <linux/sh_dma.h>
- #include <linux/spi/spi.h>
--#include <linux/spi/rspi.h>
- #include <linux/spinlock.h>
- 
- #define RSPI_SPCR		0x00	/* Control Register */
-@@ -1131,16 +1130,12 @@ static struct dma_chan *rspi_request_dma_chan(struct device *dev,
- static int rspi_request_dma(struct device *dev, struct spi_controller *ctlr,
- 			    const struct resource *res)
- {
--	const struct rspi_plat_data *rspi_pd = dev_get_platdata(dev);
- 	unsigned int dma_tx_id, dma_rx_id;
- 
- 	if (dev->of_node) {
- 		/* In the OF case we will get the slave IDs from the DT */
- 		dma_tx_id = 0;
- 		dma_rx_id = 0;
--	} else if (rspi_pd && rspi_pd->dma_tx_id && rspi_pd->dma_rx_id) {
--		dma_tx_id = rspi_pd->dma_tx_id;
--		dma_rx_id = rspi_pd->dma_rx_id;
- 	} else {
- 		/* The driver assumes no error. */
- 		return 0;
-@@ -1290,7 +1285,6 @@ static int rspi_probe(struct platform_device *pdev)
- 	struct spi_controller *ctlr;
- 	struct rspi_data *rspi;
- 	int ret;
--	const struct rspi_plat_data *rspi_pd;
- 	const struct spi_ops *ops;
- 	unsigned long clksrc;
- 
-@@ -1305,11 +1299,7 @@ static int rspi_probe(struct platform_device *pdev)
- 			goto error1;
- 	} else {
- 		ops = (struct spi_ops *)pdev->id_entry->driver_data;
--		rspi_pd = dev_get_platdata(&pdev->dev);
--		if (rspi_pd && rspi_pd->num_chipselect)
--			ctlr->num_chipselect = rspi_pd->num_chipselect;
--		else
--			ctlr->num_chipselect = 2; /* default */
-+		ctlr->num_chipselect = 2; /* default */
- 	}
- 
- 	rspi = spi_controller_get_devdata(ctlr);
-diff --git a/include/linux/spi/rspi.h b/include/linux/spi/rspi.h
-deleted file mode 100644
-index dbdfcc7a3db2..000000000000
---- a/include/linux/spi/rspi.h
-+++ /dev/null
-@@ -1,18 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0-only */
--/*
-- * Renesas SPI driver
-- *
-- * Copyright (C) 2012  Renesas Solutions Corp.
-- */
--
--#ifndef __LINUX_SPI_RENESAS_SPI_H__
--#define __LINUX_SPI_RENESAS_SPI_H__
--
--struct rspi_plat_data {
--	unsigned int dma_tx_id;
--	unsigned int dma_rx_id;
--
--	u16 num_chipselect;
--};
--
--#endif
 -- 
-2.43.0.rc1.1.gbec44491f096
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

@@ -1,91 +1,96 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DF1D17BA0;
-	Tue, 26 Mar 2024 17:06:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D3DA21344;
+	Tue, 26 Mar 2024 18:10:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711472814; cv=none; b=N4LvMJmawVNlMMiVxwGB+G2fOr7TXkdNcv2lxVkqYzuljCjKy4TJAUVj25qZSqSNfRNAW1iOntxnVj/pgj2MvT2VhUD33meEYFU8SE5GOyZbIuPilhq9iC0n3q5mX48FY19Agj0RQ6PYbPVfbTqYIS9IAqJ/UUu/tagZLeAQYwM=
+	t=1711476640; cv=none; b=Rl2bAlYGIOEa4jQvhTJomlmRa2NlxY35Ux5TdbVcVosaQzozjDeY+twgTifqqPJwwIUbbX+fVbRNF9lS18z12Is7roYsOveSxV8BMPhOoVlipLf3SF5WFXchbmcNblbWZmfHfkVOoJWXH6FK+LlKHRrn8WukSc49kCB4cryar/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711472814; c=relaxed/simple;
-	bh=tEGEBe98n5yV7Nin67LqiSt90t6EYdkW6aOGPf8PFJQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JLPgGqJ6kHrSROGksaI3B+rCYnalh2Mc0N9t9A/yh7AevsDQAmweMSnZHUycd+z6XafdXa9SspmLDI5NrIAFDAejI+s+v8+1FBgqKAA7b91YC7qLd9y/vhdLOu3rrtBZpuM7Uck6e5XIUTXtjwknfhmeOhAJV/dBwGhpo9SD+k0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nZIaAvtO; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1711476640; c=relaxed/simple;
+	bh=X27htwA7sCrDGlSqisjWeGimBkuhSBHYDfK89zkUYkM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=SAiJe/QW3z0tHOaRxRaPQ3/NOLh09cfcLJzm+UReRHKJNasAPwFsevTZULJMGfDzK+k/y4OSJLyB0JtdPO6XPvHNSwK/i6MwB3cYA5h84jiTo7r8r3mCMVNqEVmdTIWMsjU3UxZ7QYLpInWoWoL0kjtFKL8nsbR9UFmtucXIOds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Q8nKDkgq; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nZIaAvtO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q8nKDkgq"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711472813; x=1743008813;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=tEGEBe98n5yV7Nin67LqiSt90t6EYdkW6aOGPf8PFJQ=;
-  b=nZIaAvtOP52f5VsDnQxIwftJylLniK/cEZj2XjBOt7bctkfPhJ2Ik5Wn
-   LvAHEz6P7YFLMOT0nU2KsyNKYui1mEWXah3bzckVqAw3cBnevY+ePBq7J
-   9N0O7aDfpfiGFPS6WljI1L8sK73D5tBIZLwWG64+qf/vV4Mu0OuU0VSxA
-   gRLK0T1njRhMqOArbcVjQq2Udq/PdYwzI9w2Y6wd7pvRnC8oLhqMFVxmb
-   15SFjHZtS2AuPukWKcW7XW1HIeic1z7JfJ8/v6aCKcVPtusf51mcEtuwC
-   94UgFuycXGzQ4yXvmx7LKZuqh0ggo7PqIu+/5/0h6hTuBh9I07cRojMtM
-   w==;
-X-CSE-ConnectionGUID: 4SRYtynuQx6uP0dV9+0glw==
-X-CSE-MsgGUID: LSH6xxiDTKaTWF5/IWnQoA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="24026924"
+  t=1711476639; x=1743012639;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=X27htwA7sCrDGlSqisjWeGimBkuhSBHYDfK89zkUYkM=;
+  b=Q8nKDkgq9eCrrcGVZNJSQqO6LH/kaBMunai/jXQa7pDmHqx46aLhJHcN
+   QHx+iTd65fpj9Ix+mgjUY3kUOW2mH+4O4GHE71iLd7wSbM41vXMFgfkFr
+   psTrQA4uhRlaX5qc3KpRajvcyWFa9s7bHTUstiD9pb7JMaU+1cuJoTFsZ
+   wi0Gne33Ay+ufrmXTQJHyfiIYyt6fK8jS1K7/69MpPhD7qG2L2NiJ6AY5
+   zG4G13R91W2p0pthLQnRECZyh4z7IL5VVv4xz0rJ+/NszbX3CLEucRWHc
+   wrMP9Zred31KSFm0Lg2AAYQpzWm1azm7tODMzl+wRsOgMI7mPZrelncLi
+   A==;
+X-CSE-ConnectionGUID: F1Mm8bO5SZKziOdbIB+yJw==
+X-CSE-MsgGUID: QN+NZjlxSRuhAoXA/wQwNA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="10325661"
 X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; 
-   d="scan'208";a="24026924"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2024 10:06:52 -0700
+   d="scan'208";a="10325661"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2024 11:10:38 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="914885445"
+X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="937072936"
 X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; 
-   d="scan'208";a="914885445"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2024 10:06:49 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1rpAG6-0000000GOc7-0Hn7;
-	Tue, 26 Mar 2024 19:06:46 +0200
-Date: Tue, 26 Mar 2024 19:06:45 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Mark Brown <broonie@kernel.org>,
-	Ryan Wanner <ryan.wanner@microchip.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Daniel Mack <daniel@zonque.org>,
+   d="scan'208";a="937072936"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 26 Mar 2024 11:10:35 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id DA566524; Tue, 26 Mar 2024 20:10:34 +0200 (EET)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Cc: Daniel Mack <daniel@zonque.org>,
 	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2] spi: remove struct spi_message::is_dma_mapped
-Message-ID: <ZgMApTO6nuDNzNs_@smile.fi.intel.com>
-References: <20240325-spi-remove-is_dma_mapped-v2-1-d08d62b61f1c@baylibre.com>
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Russell King <linux@armlinux.org.uk>
+Subject: [PATCH v1 02/10] spi: pxa2xx: Keep PXA*_SSP types together
+Date: Tue, 26 Mar 2024 20:07:52 +0200
+Message-ID: <20240326181027.1418989-3-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.43.0.rc1.1.gbec44491f096
+In-Reply-To: <20240326181027.1418989-1-andriy.shevchenko@linux.intel.com>
+References: <20240326181027.1418989-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240325-spi-remove-is_dma_mapped-v2-1-d08d62b61f1c@baylibre.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 
-On Mon, Mar 25, 2024 at 02:22:53PM -0500, David Lechner wrote:
-> There are no more users of the deprecated is_dma_mapped in struct
-> spi_message so it can be removed.
-> 
-> References in documentation and comments are also removed.
-> 
-> A few similar checks if xfer->tx_dma or xfer->rx_dma are not NULL are
-> also removed since these are now guaranteed to be NULL because they
-> were previously set only if is_dma_mapped was true.
+Keep the PXA*_SSP types together in enum pxa_ssp_type
+for better maintenance.
 
-Nice cleanup, thank you!
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ include/linux/pxa2xx_ssp.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/include/linux/pxa2xx_ssp.h b/include/linux/pxa2xx_ssp.h
+index cd1973e6ac4b..844a2743ca94 100644
+--- a/include/linux/pxa2xx_ssp.h
++++ b/include/linux/pxa2xx_ssp.h
+@@ -217,9 +217,9 @@ enum pxa_ssp_type {
+ 	PXA27x_SSP,
+ 	PXA3xx_SSP,
+ 	PXA168_SSP,
+-	MMP2_SSP,
+ 	PXA910_SSP,
+ 	CE4100_SSP,
++	MMP2_SSP,
+ 	MRFLD_SSP,
+ 	QUARK_X1000_SSP,
+ 	/* Keep LPSS types sorted with lpss_platforms[] */
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.43.0.rc1.1.gbec44491f096
 

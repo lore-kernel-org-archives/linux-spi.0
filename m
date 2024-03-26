@@ -1,49 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AA4C8527A;
-	Tue, 26 Mar 2024 18:10:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 834128662A;
+	Tue, 26 Mar 2024 18:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711476643; cv=none; b=OI4K9oHpotP1FHtYswi78IxnEeW9s3IRkDAqsXvYTNMsjGqgibBaOstZvGbRD3ereG3ZS5J2puMRZX0xZU9ej9vT7IZIPAfNKiubsf/re9PQSinLGpWBqVkMyEsz36xXOBA6wHPVNW7w80y8u7kGoDaGgDDY6FhWpx9gaVE/Ce8=
+	t=1711476644; cv=none; b=UN4dXKTb82wJ4v58OP/IHZNL/6oCF8tXM78d7gao7+Tzpa7dIQfxLWqDi032D+orqXwi4s1MZ+WUXzm5u85qyZb8lkrQJsaUlk6LY3pDpScr1g8c2xJeSdIh7JdoIoZNGAlf+HW6XzG/PGbsv0/0WiG8oRcIJIKM57iCr7BBAV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711476643; c=relaxed/simple;
-	bh=Oh3MUbUj1XxFveo7rtHk0ivojd56U90Z0wqM4ju1lRM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t4YOzmjpwI+6amm+32dR/vL9QTb8U3wfNtZGQXqmm7l9sr7C9IiHT2OnawnEvkrMlZDAzy25yCMVx44fo/HfWPWiVD1LqYF68uIFenhXy1eMj9WTcDs8z47eCoA/K2say/RRmu1hRUq1uGbeyxl0RJddLb3bsHyGaDGNe6MhJL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dUIQxt75; arc=none smtp.client-ip=192.198.163.12
+	s=arc-20240116; t=1711476644; c=relaxed/simple;
+	bh=kZ6a9T0dNBuKKdOYe4rTeQVlWUgy3Put+CwhdI3cS/s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=I8rKU2D4ASxs46kon9G+aKgVM96fkcc67ltdh5j7kp5hEZsBXicfK54WG96UG2TkDSPAAP1DRVYRSyDpwNFxGOyB7bSEWrYv11soQ41LTLf3zv4+mQ8CbnM08AgQju56bLo7j/EhpNN+tkYrrL5Jhu2+6nnKawAnTjw7hkk8LFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H8GMemLf; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dUIQxt75"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H8GMemLf"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711476641; x=1743012641;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Oh3MUbUj1XxFveo7rtHk0ivojd56U90Z0wqM4ju1lRM=;
-  b=dUIQxt75uZSrD5IDlFZagD1OUOuoGcj7x2zv2WvCfk+Cdjh/pexUZ/6y
-   oQsUKaQaNaKSHHlXhmRICuQOZJSTBsxOhoyC7Zp1HHsQc0w83WP6u8Nen
-   T8gZ//D4QSVHZyJT4TS0ztYhuNgxXE/t+SUIRJzA4YV5cbq3mFKWLXw9S
-   nS9UX8Btoe688TaUN4xWeP7mkAQYJw2vRAa4layQocNL0IQ8d7PLyBh6B
-   uBWBxLqlnhltg2Q1Oh71HLWkFPC+UrSGUUJi2vws3sOLaxX/40lBca3tq
-   ISgBfDd1IMG6DFo2WNern3nttTcy4/NAKCgB2OxzsR01GPwjQrGI2TAgW
-   g==;
-X-CSE-ConnectionGUID: UNYDaGnBRSGpMTj8mNcifQ==
-X-CSE-MsgGUID: J56FEiQqTUCFRjiICENRcw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="10325675"
+  t=1711476642; x=1743012642;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=kZ6a9T0dNBuKKdOYe4rTeQVlWUgy3Put+CwhdI3cS/s=;
+  b=H8GMemLfsSehpKxn4WgtMa6k6tic4TM9Ps7sVSgR27WK86GPhGQoTXie
+   afid1ENe1lb3lxiEIACv/pK9LmofrSSroYaix+vOlboLok/AtzSFesThw
+   VUXFt5lfK8KrC+lqwoRd3fJieJOePJHlvlKjEHCJhW+/qjyghjkDJPfh0
+   dKPr8wzwAcDR1wS+D4As8WJT7vHvaIbGEG8BGnfsC5pL5zw0XRn4XWzhM
+   /SSv2nUcMEItoXf+8eAlw+8HBOF8z8fUM99qzRmvOzliRMrHi1BUZeOA4
+   +A1bvqZYhLV3hP0/Mvh8kUaiqwB/jQM75Nu6vbn69P/KMXjTSYFc1Xso3
+   w==;
+X-CSE-ConnectionGUID: OgSP28rdS4apnX7gyzBcqg==
+X-CSE-MsgGUID: ejC9wCQyRWGLM2eRGVfeMA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="10325683"
 X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; 
-   d="scan'208";a="10325675"
+   d="scan'208";a="10325683"
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
   by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2024 11:10:38 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="937072938"
+X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="937072935"
 X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; 
-   d="scan'208";a="937072938"
+   d="scan'208";a="937072935"
 Received: from black.fi.intel.com ([10.237.72.28])
   by fmsmga001.fm.intel.com with ESMTP; 26 Mar 2024 11:10:35 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id E35AA2CA; Tue, 26 Mar 2024 20:10:34 +0200 (EET)
+	id C251A284; Tue, 26 Mar 2024 20:10:34 +0200 (EET)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Mark Brown <broonie@kernel.org>,
@@ -53,13 +52,12 @@ To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 Cc: Daniel Mack <daniel@zonque.org>,
 	Haojian Zhuang <haojian.zhuang@gmail.com>,
 	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Russell King <linux@armlinux.org.uk>
-Subject: [PATCH v1 03/10] spi: pxa2xx: Switch to use dev_err_probe()
-Date: Tue, 26 Mar 2024 20:07:53 +0200
-Message-ID: <20240326181027.1418989-4-andriy.shevchenko@linux.intel.com>
+	Russell King <linux@armlinux.org.uk>,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH v1 00/10] spi: pxa2xx: Drop linux/spi/pxa2xx_spi.h
+Date: Tue, 26 Mar 2024 20:07:50 +0200
+Message-ID: <20240326181027.1418989-1-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.43.0.rc1.1.gbec44491f096
-In-Reply-To: <20240326181027.1418989-1-andriy.shevchenko@linux.intel.com>
-References: <20240326181027.1418989-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -68,71 +66,38 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Switch to use dev_err_probe() to simplify the error path and
-unify a message template.
+As Arnd suggested we may drop linux/spi/pxa2xx_spi.h as most of
+its content is being used solely internally to SPI subsystem
+(PXA2xx drivers). Hence this refactoring series with the additional
+win of getting rid of legacy documentation.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/spi/spi-pxa2xx.c | 19 +++++++------------
- 1 file changed, 7 insertions(+), 12 deletions(-)
+Cc: Arnd Bergmann <arnd@arndb.de>
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 2c39d3ff498e..75d208087748 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1434,20 +1434,16 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
- 	platform_info = dev_get_platdata(dev);
- 	if (!platform_info) {
- 		platform_info = pxa2xx_spi_init_pdata(pdev);
--		if (IS_ERR(platform_info)) {
--			dev_err(&pdev->dev, "missing platform data\n");
--			return PTR_ERR(platform_info);
--		}
-+		if (IS_ERR(platform_info))
-+			return dev_err_probe(dev, PTR_ERR(platform_info), "missing platform data\n");
- 	}
- 
- 	ssp = pxa_ssp_request(pdev->id, pdev->name);
- 	if (!ssp)
- 		ssp = &platform_info->ssp;
- 
--	if (!ssp->mmio_base) {
--		dev_err(&pdev->dev, "failed to get SSP\n");
--		return -ENODEV;
--	}
-+	if (!ssp->mmio_base)
-+		return dev_err_probe(dev, -ENODEV, "failed to get SSP\n");
- 
- 	if (platform_info->is_target)
- 		controller = devm_spi_alloc_target(dev, sizeof(*drv_data));
-@@ -1455,8 +1451,7 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
- 		controller = devm_spi_alloc_host(dev, sizeof(*drv_data));
- 
- 	if (!controller) {
--		dev_err(&pdev->dev, "cannot alloc spi_controller\n");
--		status = -ENOMEM;
-+		status = dev_err_probe(dev, -ENOMEM, "cannot alloc spi_controller\n");
- 		goto out_error_controller_alloc;
- 	}
- 	drv_data = spi_controller_get_devdata(controller);
-@@ -1510,7 +1505,7 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
- 	status = request_irq(ssp->irq, ssp_int, IRQF_SHARED, dev_name(dev),
- 			drv_data);
- 	if (status < 0) {
--		dev_err(&pdev->dev, "cannot get IRQ %d\n", ssp->irq);
-+		dev_err_probe(dev, status, "cannot get IRQ %d\n", ssp->irq);
- 		goto out_error_controller_alloc;
- 	}
- 
-@@ -1626,7 +1621,7 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, drv_data);
- 	status = spi_register_controller(controller);
- 	if (status) {
--		dev_err(&pdev->dev, "problem registering SPI controller\n");
-+		dev_err_probe(dev, status, "problem registering SPI controller\n");
- 		goto out_error_pm_runtime_enabled;
- 	}
- 
+Andy Shevchenko (10):
+  spi: pxa2xx: Drop ACPI_PTR() and of_match_ptr()
+  spi: pxa2xx: Keep PXA*_SSP types together
+  spi: pxa2xx: Switch to use dev_err_probe()
+  spi: pxa2xx: Extract pxa2xx_spi_init_ssp() helper
+  spi: pxa2xx: Skip SSP initialization if it's done elsewhere
+  spi: pxa2xx: Allow number of chip select pins to be read from property
+  spi: pxa2xx: Provide num-cs for Sharp PDAs via device properties
+  spi: pxa2xx: Move contents of linux/spi/pxa2xx_spi.h to a local one
+  spi: pxa2xx: Remove outdated documentation
+  spi: pxa2xx: Don't use "proxy" headers
+
+ Documentation/spi/pxa2xx.rst   | 208 ---------------------------------
+ arch/arm/mach-pxa/spitz.c      |  25 ++--
+ drivers/spi/Kconfig            |   2 +-
+ drivers/spi/spi-pxa2xx-dma.c   |  11 +-
+ drivers/spi/spi-pxa2xx-pci.c   |  10 +-
+ drivers/spi/spi-pxa2xx.c       | 118 +++++++++++--------
+ drivers/spi/spi-pxa2xx.h       |  39 ++++++-
+ include/linux/pxa2xx_ssp.h     |   2 +-
+ include/linux/spi/pxa2xx_spi.h |  48 --------
+ 9 files changed, 140 insertions(+), 323 deletions(-)
+ delete mode 100644 Documentation/spi/pxa2xx.rst
+ delete mode 100644 include/linux/spi/pxa2xx_spi.h
+
 -- 
 2.43.0.rc1.1.gbec44491f096
 

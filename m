@@ -1,238 +1,83 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 465E613CC4A;
-	Tue, 26 Mar 2024 18:10:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C12D1CAA6;
+	Tue, 26 Mar 2024 18:16:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711476648; cv=none; b=tqsOBgo6r3dP1ei3HXKI4plVW3/HL9fEInY1nXdq/82RMm2vna3/ye3NqwL4tJU4/TYeFKbZ1mfj9DkvPC4y8j6ZDPlRMadXfNVhmopZGbLr1OwOSULpEIgnWIXdW1sYf5le4kg1x3SUJJ9MEexZz8M6LawXArgNTiUfCvKBvcw=
+	t=1711476994; cv=none; b=ZErd3fshhJKelHhdX5OutLXRU8t8fqmCMcnMcDmXDYIMDYH/eTxD9EqzELjiaAl4kDdfqSqonNDShGc3rSrO7m30QgiKSPBGQ7FAxc/IA8T1cGuhMbaRtpExFSlPjXIJrZYVJNem366WwaTPpPoal7piW+REr938hs+QpHlbxrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711476648; c=relaxed/simple;
-	bh=y3OFV8ojkqypOZZ1eY8yTN0O6AaepbldILI9QHFUGRI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a/4oWDrvbRnGgegb0kiivrWHxDRRjg1NVoxCNtEqkUiaGggyet4hOQr4IiRzr6U00U1TCf73ahBRrzLoNfGjL/aCpzfGapKNVd/1Vi0dmsMjy+9tGeDaqfzs0Fll3vJk5qUbGmMd0Zq5wkSLBT1+O6zbgflUkVaiJKqCe4ICojE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PjUe2jSY; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1711476994; c=relaxed/simple;
+	bh=uE1PCGry2C3KAziExolCdXLEmnkMrxJrBq9fma9G5bY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=epcoX45GWS3R/S5G5E345jw+2UKuPhQtamMzhoKKprs+PhrN3DZB3VE3IaCyTB6Z/jdeuy3rsU/UBDWuQ0VPVdJWK8LBm5ZH++LSrGrDj6C53czni39JQnpUOST1LPJcEl8blV23KmsomrtgY01ZtU99VIor44ntZfdVBD9ADlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EjgrPov3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PjUe2jSY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711476646; x=1743012646;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=y3OFV8ojkqypOZZ1eY8yTN0O6AaepbldILI9QHFUGRI=;
-  b=PjUe2jSYSRkeah+XZE4iL6B9YK8fKX2NBOSV1vZy3uWnGC4qk7sxeB9n
-   HhQZtZj4nnJ/CuGQjazTzJdLnCCtsAQ0EjrZ0+z/0KgJkdg+ugnsdHvoX
-   HwvuoZna0BQhnA8p9p+ImBxPBTJndBgeAZMDRJGWfSbor0l4iYr2f3k1U
-   Gmc5WHwmKdpihkLO4rQRavnJBjlUV4Z3q6XxrjqQ7n7gyPt1+3nefYX+2
-   j8iKW/MaagXbFTN+kmYdKLCYVLmRudpGhvzi/Z1hGMPhANABLWXnhy0gJ
-   1xfsg0OXc+cAa7e7cn3jgM2ruo2u0HR+uN0UZmbhcDlycYTaRIXjYaAb9
-   Q==;
-X-CSE-ConnectionGUID: XGp6xilJRSu/1HfJGBsI4Q==
-X-CSE-MsgGUID: q5JPCNn5QDOP8/a5LD9QKQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="10325741"
-X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; 
-   d="scan'208";a="10325741"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2024 11:10:41 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="937072943"
-X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; 
-   d="scan'208";a="937072943"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 26 Mar 2024 11:10:38 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 3A02FE3C; Tue, 26 Mar 2024 20:10:35 +0200 (EET)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Cc: Daniel Mack <daniel@zonque.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EjgrPov3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D496AC433C7;
+	Tue, 26 Mar 2024 18:16:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711476992;
+	bh=uE1PCGry2C3KAziExolCdXLEmnkMrxJrBq9fma9G5bY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EjgrPov3ARcTNv+E6ROoIN/SV//236j46ESmnVCp7/dz6qqzMR+t6xHxm78v6jGDg
+	 If4HrrwDcYowWOtGnYqX/iaQw9eTFAR4WTtuE3/T0Qhpc7dzyo9CM62yRL5ziO+EMq
+	 Wl1q/WEea74tYce5ognkYGx3kkBAUnSJhuZN5mCwjWREQUDnJ0hdJg7OwK7uQNc+u1
+	 e+4llKKZ3ILx+7+6POVn806PR1dFBRbQBMrhLn3KxFSlB42WFIn5422/Z1HX52Xic+
+	 x6RhohfZKKcfZlZENlNwA9yFe1eOFQ1QGaoPin9ZF/Mn7btot+sWr0ITzolyHC4W0q
+	 7MpGiBzyLAngg==
+Date: Tue, 26 Mar 2024 18:16:28 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Daniel Mack <daniel@zonque.org>,
 	Haojian Zhuang <haojian.zhuang@gmail.com>,
 	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Russell King <linux@armlinux.org.uk>,
-	Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH v1 08/10] spi: pxa2xx: Move contents of linux/spi/pxa2xx_spi.h to a local one
-Date: Tue, 26 Mar 2024 20:07:58 +0200
-Message-ID: <20240326181027.1418989-9-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.43.0.rc1.1.gbec44491f096
-In-Reply-To: <20240326181027.1418989-1-andriy.shevchenko@linux.intel.com>
+	Russell King <linux@armlinux.org.uk>
+Subject: Re: [PATCH v1 01/10] spi: pxa2xx: Drop ACPI_PTR() and of_match_ptr()
+Message-ID: <14f08a50-edef-4b36-891e-2b4b2283f40c@sirena.org.uk>
 References: <20240326181027.1418989-1-andriy.shevchenko@linux.intel.com>
+ <20240326181027.1418989-2-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="02hLAl/Gk7DHYzY5"
+Content-Disposition: inline
+In-Reply-To: <20240326181027.1418989-2-andriy.shevchenko@linux.intel.com>
+X-Cookie: Equal bytes for women.
 
-There is no user of the linux/spi/pxa2xx_spi.h. Move its contents
-to the drivers/spi/spi-pxa2xx.h.
 
-Suggested-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/spi/spi-pxa2xx-dma.c   |  1 -
- drivers/spi/spi-pxa2xx-pci.c   |  4 +--
- drivers/spi/spi-pxa2xx.c       |  1 -
- drivers/spi/spi-pxa2xx.h       | 36 ++++++++++++++++++++++++-
- include/linux/spi/pxa2xx_spi.h | 48 ----------------------------------
- 5 files changed, 37 insertions(+), 53 deletions(-)
- delete mode 100644 include/linux/spi/pxa2xx_spi.h
+--02hLAl/Gk7DHYzY5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/spi/spi-pxa2xx-dma.c b/drivers/spi/spi-pxa2xx-dma.c
-index be563f0dd03a..26416ced6505 100644
---- a/drivers/spi/spi-pxa2xx-dma.c
-+++ b/drivers/spi/spi-pxa2xx-dma.c
-@@ -12,7 +12,6 @@
- #include <linux/scatterlist.h>
- #include <linux/sizes.h>
- 
--#include <linux/spi/pxa2xx_spi.h>
- #include <linux/spi/spi.h>
- 
- #include "spi-pxa2xx.h"
-diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
-index 861b21c63504..e11a613bc340 100644
---- a/drivers/spi/spi-pxa2xx-pci.c
-+++ b/drivers/spi/spi-pxa2xx-pci.c
-@@ -10,11 +10,11 @@
- #include <linux/pci.h>
- #include <linux/platform_device.h>
- 
--#include <linux/spi/pxa2xx_spi.h>
--
- #include <linux/dmaengine.h>
- #include <linux/platform_data/dma-dw.h>
- 
-+#include "spi-pxa2xx.h"
-+
- #define PCI_DEVICE_ID_INTEL_QUARK_X1000		0x0935
- #define PCI_DEVICE_ID_INTEL_BYT			0x0f0e
- #define PCI_DEVICE_ID_INTEL_MRFLD		0x1194
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index f4435c39d096..e22d9d29c7e9 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -24,7 +24,6 @@
- #include <linux/property.h>
- #include <linux/slab.h>
- 
--#include <linux/spi/pxa2xx_spi.h>
- #include <linux/spi/spi.h>
- 
- #include "spi-pxa2xx.h"
-diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
-index 45cdbbc71c4b..08296729ea80 100644
---- a/drivers/spi/spi-pxa2xx.h
-+++ b/drivers/spi/spi-pxa2xx.h
-@@ -7,6 +7,7 @@
- #ifndef SPI_PXA2XX_H
- #define SPI_PXA2XX_H
- 
-+#include <linux/dmaengine.h>
- #include <linux/interrupt.h>
- #include <linux/io.h>
- #include <linux/types.h>
-@@ -15,7 +16,40 @@
- #include <linux/pxa2xx_ssp.h>
- 
- struct gpio_desc;
--struct pxa2xx_spi_controller;
-+
-+/*
-+ * The platform data for SSP controller devices
-+ * (resides in device.platform_data).
-+ */
-+struct pxa2xx_spi_controller {
-+	u8 num_chipselect;
-+	u8 enable_dma;
-+	u8 dma_burst_size;
-+	bool is_target;
-+
-+	/* DMA engine specific config */
-+	dma_filter_fn dma_filter;
-+	void *tx_param;
-+	void *rx_param;
-+
-+	/* For non-PXA arches */
-+	struct ssp_device ssp;
-+};
-+
-+/*
-+ * The controller specific data for SPI target devices
-+ * (resides in spi_board_info.controller_data),
-+ * copied to spi_device.platform_data ... mostly for
-+ * DMA tuning.
-+ */
-+struct pxa2xx_spi_chip {
-+	u8 tx_threshold;
-+	u8 tx_hi_threshold;
-+	u8 rx_threshold;
-+	u8 dma_burst_size;
-+	u32 timeout;
-+};
-+
- struct spi_controller;
- struct spi_device;
- struct spi_transfer;
-diff --git a/include/linux/spi/pxa2xx_spi.h b/include/linux/spi/pxa2xx_spi.h
-deleted file mode 100644
-index e5a4a045fb67..000000000000
---- a/include/linux/spi/pxa2xx_spi.h
-+++ /dev/null
-@@ -1,48 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0-or-later */
--/*
-- * Copyright (C) 2005 Stephen Street / StreetFire Sound Labs
-- */
--#ifndef __LINUX_SPI_PXA2XX_SPI_H
--#define __LINUX_SPI_PXA2XX_SPI_H
--
--#include <linux/dmaengine.h>
--#include <linux/types.h>
--
--#include <linux/pxa2xx_ssp.h>
--
--struct dma_chan;
--
--/*
-- * The platform data for SSP controller devices
-- * (resides in device.platform_data).
-- */
--struct pxa2xx_spi_controller {
--	u8 num_chipselect;
--	u8 enable_dma;
--	u8 dma_burst_size;
--	bool is_target;
--
--	/* DMA engine specific config */
--	dma_filter_fn dma_filter;
--	void *tx_param;
--	void *rx_param;
--
--	/* For non-PXA arches */
--	struct ssp_device ssp;
--};
--
--/*
-- * The controller specific data for SPI target devices
-- * (resides in spi_board_info.controller_data),
-- * copied to spi_device.platform_data ... mostly for
-- * DMA tuning.
-- */
--struct pxa2xx_spi_chip {
--	u8 tx_threshold;
--	u8 tx_hi_threshold;
--	u8 rx_threshold;
--	u8 dma_burst_size;
--	u32 timeout;
--};
--
--#endif	/* __LINUX_SPI_PXA2XX_SPI_H */
--- 
-2.43.0.rc1.1.gbec44491f096
+On Tue, Mar 26, 2024 at 08:07:51PM +0200, Andy Shevchenko wrote:
+> Drop rather useless use of ACPI_PTR() and of_match_ptr().
+> It also removes the necessity to be dependent on ACPI and
+> of.h inclusion.
 
+I think the ACPI dependency there is as much about hiding the device on
+irrelevant platforms as anything else, might be better replaced with an
+x86 dependency though.
+
+--02hLAl/Gk7DHYzY5
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmYDEPsACgkQJNaLcl1U
+h9BfcQf+MyppfojZvc5Bzad4vswSibGPW/eX/Ah+HKVl8je+MCOV5zjAsv7LsFDR
+ivHdSBESyAUR5lDMdZ4It/Kf2zPElke0WbKT227h7XKHmQEjZSMXkWxXOfh62Qjk
+e7WOBTCcc1EOZSr4EI+S2bLHW/EL9fg9rNeFj07Hy5ucQfHZREJ3x8wyu6G1QWE7
+kOWF2cKhEykLS/g+Vyd9iXyGjR9HLkIGEz8duxSatdrk2B7F/5gO67E9wDej7Ikh
++Va8iJW0JgolKWtyk9F0MpYdTm3r1wmRtOA/3UQL8hK3M0bXY7EzfYfnQ8pFblig
+1iFyFaxWSQBVlxBBdjsJ0K7Lo7Ua7g==
+=YGEB
+-----END PGP SIGNATURE-----
+
+--02hLAl/Gk7DHYzY5--

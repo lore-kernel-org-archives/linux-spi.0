@@ -1,126 +1,102 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13DAC150990;
-	Wed, 27 Mar 2024 18:34:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A0614D45F;
+	Wed, 27 Mar 2024 19:31:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711564484; cv=none; b=MhxMhvSKH7PFHB8camgfgbetKchtdRB+tE50ZISOZ55aLiS7IcfgXgNr8dQg5REqX/6eT6+8F/Gk72x0LHKoIfmQVbXfUWZEyf4mmjCnUX9Fc8aeRcKqXzIycNBG/bzNCUEPcgKZHttOd5VXebPY+10BJsJpkPGSMRp+4mxcTHc=
+	t=1711567908; cv=none; b=tlLbF9V56VfdQWfbhdOHXKe8F37EC4IQ12WEGQfXerxxrurtdinHpFUe+CDKoxs1qHYVsgdelHnXH1m/jjxfW+m1K/n9osrd3eFvPoNJX4Bsebg/AjLoc7Wmw3QPTxGOAkBkAxhEaYwoNZLgNQ6W+nab8IicpbALF4Y3FB19qMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711564484; c=relaxed/simple;
-	bh=Zf3UfhIck5KDNQ4IxrlGr07PKbPDztgAtgN/Cvzlkjg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s5rj/oM3e7J3XQHhc6MK1KvixfD9j9StClDkmLCtwY7s0ghbgGHMkAK8Z6evELoZjDFGwPBac5fiAV0RqX707q4NTSWD/r4k//hqpIkcTDfDFdAD3aIkQleS20MlzgS2fb8du8MZpmZEK2ns1TgX5v3PK6fotMB1yUtnM8MGiV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JsYdqusI; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1711567908; c=relaxed/simple;
+	bh=szcPeNpPGwcpTv/vYr7M/HOPTxqfODzCAhPTU5Lf2p8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=J2FWhpTe+RH1jXhzjIeRTyJt29NB+CWvJgG/GJVB2VCcEWed7soCl2CePxmk9C3BUVqkfzSJKpKSaBJjrYy759SFw0Fr/PmVMabgrHH0VMRmQ7vNVU8piI6mKQBvXIh8D8I3N8P5w4MupqttAXzdDc/QehDQLb7D7jpGm/WEwnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TfjkrigF; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JsYdqusI"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TfjkrigF"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711564479; x=1743100479;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Zf3UfhIck5KDNQ4IxrlGr07PKbPDztgAtgN/Cvzlkjg=;
-  b=JsYdqusIcMun0jBBSGJcDHiPMIqzw+Ozxx8lq1mInVZaYxRecVpt6cbU
-   3+WcFhIe1P6k3BuW7aZtaNUE39yb1o9jk3+0qrH9IgVNU1QUs3MIicCgR
-   044VmMzf8DnNZXJG6rjlA67QjuV6bxpG/JeeGVlxDCKMgkUvBxaBfV2fC
-   wegilxPBMHawHT5+JPTNoAVbzdDkHieVsTCRt50/T+aetyODiokNaqmAR
-   j9A1ddkhSbnMYmG5j4IWbEU/rKzPr9iPpse0j3NiN01l8KllwlYciPMqi
-   9PW3XMoV6yp8rdOxl49Gh1Jjg8XQxuUwWoQxIkL9kfHbdvWiCLJbQFhsY
-   w==;
-X-CSE-ConnectionGUID: cRiO+wQoTRu2fu5d39v8UA==
-X-CSE-MsgGUID: +8K2+WYASzSAOp3UVTT8EQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11026"; a="6803435"
+  t=1711567906; x=1743103906;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=szcPeNpPGwcpTv/vYr7M/HOPTxqfODzCAhPTU5Lf2p8=;
+  b=TfjkrigF67j7HTPhFvjep4uHHFFHai8UvJi0UwcBk7EK4FfrYc3SLf6N
+   6MbzxyCSVlSVGNp2lyWFfrIhTtRTcRMS7nklg8WLDqZiqAk4tks9nOrtn
+   Xh3XZ845Sx4v/GItCfAzw3DIheLbzNya6bry2Pk9CICpAzF2hlHcwGe/A
+   vue09EzlVPMWnfDQHFrZrmYWExohAMqaO7Lgfztb6u0RBqHWCkZL9/4yb
+   ai6BPytBPYzcidcCqSyId6XslC7KjfiPUEv68EBaeKfToM/mlJOg1BzHY
+   ntbulodjIl73DPtxe7/RTHNZz+hyLn3nYFNY/fUd4yJ20L95/zftcog47
+   A==;
+X-CSE-ConnectionGUID: SZeVmNAQQLGZmLzLQHYksQ==
+X-CSE-MsgGUID: zKy3ztoYSQ23/RMnlhPg4g==
+X-IronPort-AV: E=McAfee;i="6600,9927,11026"; a="24187276"
 X-IronPort-AV: E=Sophos;i="6.07,159,1708416000"; 
-   d="scan'208";a="6803435"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2024 11:34:39 -0700
+   d="scan'208";a="24187276"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2024 12:31:45 -0700
 X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11026"; a="937075022"
 X-IronPort-AV: E=Sophos;i="6.07,159,1708416000"; 
-   d="scan'208";a="47384400"
-Received: from lkp-server01.sh.intel.com (HELO be39aa325d23) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 27 Mar 2024 11:34:37 -0700
-Received: from kbuild by be39aa325d23 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rpY6b-0001Mw-2v;
-	Wed, 27 Mar 2024 18:34:33 +0000
-Date: Thu, 28 Mar 2024 02:34:25 +0800
-From: kernel test robot <lkp@intel.com>
-To: Charles Keepax <ckeepax@opensource.cirrus.com>, broonie@kernel.org,
-	linus.walleij@linaro.org, brgl@bgdev.pl
-Cc: oe-kbuild-all@lists.linux.dev, linux-gpio@vger.kernel.org,
-	linux-spi@vger.kernel.org, patches@opensource.cirrus.com
-Subject: Re: [PATCH 3/3] spi: cs42l43: Add bridged cs35l56 amplifiers
-Message-ID: <202403280258.rjWikSAr-lkp@intel.com>
-References: <20240326141108.1079993-4-ckeepax@opensource.cirrus.com>
+   d="scan'208";a="937075022"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 27 Mar 2024 12:31:43 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id 85059284; Wed, 27 Mar 2024 21:31:42 +0200 (EET)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Mark Brown <broonie@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Cc: Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Russell King <linux@armlinux.org.uk>
+Subject: [PATCH v2 1/9] spi: pxa2xx: Narrow the Kconfig option visibility
+Date: Wed, 27 Mar 2024 21:29:20 +0200
+Message-ID: <20240327193138.2385910-2-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.43.0.rc1.1.gbec44491f096
+In-Reply-To: <20240327193138.2385910-1-andriy.shevchenko@linux.intel.com>
+References: <20240327193138.2385910-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240326141108.1079993-4-ckeepax@opensource.cirrus.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Charles,
+The PCI || ACPI dependency is the historical part of the x86 support.
+Narrow the Kconfig option visibility by limiting this dependency to x86.
 
-kernel test robot noticed the following build warnings:
+The drop of x86 for PCI case had happened in the commit 2b49ebda39d6
+("spi/pxa2xx: allow building on a 64-bit kernel"), while the ACPI
+was specifically added for Intel Lynx Point in the commit a3496855d9f1
+("spi/pxa2xx: add support for Lynxpoint SPI controllers").
 
-[auto build test WARNING on broonie-spi/for-next]
-[also build test WARNING on brgl/gpio/for-next linus/master v6.9-rc1 next-20240327]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Note that X86 covers both 32- and 64-bit variants.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Charles-Keepax/gpio-swnode-Add-ability-to-specify-native-chip-selects-for-SPI/20240326-221422
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
-patch link:    https://lore.kernel.org/r/20240326141108.1079993-4-ckeepax%40opensource.cirrus.com
-patch subject: [PATCH 3/3] spi: cs42l43: Add bridged cs35l56 amplifiers
-config: sh-randconfig-r121-20240327 (https://download.01.org/0day-ci/archive/20240328/202403280258.rjWikSAr-lkp@intel.com/config)
-compiler: sh4-linux-gcc (GCC) 13.2.0
-reproduce: (https://download.01.org/0day-ci/archive/20240328/202403280258.rjWikSAr-lkp@intel.com/reproduce)
+Suggested-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/spi/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202403280258.rjWikSAr-lkp@intel.com/
-
-sparse warnings: (new ones prefixed by >>)
->> drivers/spi/spi-cs42l43.c:48:28: sparse: sparse: symbol 'ampr' was not declared. Should it be static?
->> drivers/spi/spi-cs42l43.c:52:23: sparse: sparse: symbol 'ampl_info' was not declared. Should it be static?
->> drivers/spi/spi-cs42l43.c:61:23: sparse: sparse: symbol 'ampr_info' was not declared. Should it be static?
-   drivers/spi/spi-cs42l43.c: note: in included file (through include/linux/mmzone.h, include/linux/gfp.h, include/linux/slab.h, ...):
-   include/linux/page-flags.h:242:46: sparse: sparse: self-comparison always evaluates to false
-   include/linux/page-flags.h:242:46: sparse: sparse: self-comparison always evaluates to false
-
-vim +/ampr +48 drivers/spi/spi-cs42l43.c
-
-    47	
-  > 48	const struct software_node ampr = {
-    49		.name			= "cs35l56-right",
-    50	};
-    51	
-  > 52	struct spi_board_info ampl_info = {
-    53		.modalias		= "cs35l56",
-    54		.max_speed_hz		= 2000000,
-    55		.chip_select		= 0,
-    56		.mode			= SPI_MODE_0,
-    57		.swnode			= &ampl,
-    58		.use_fwnode_name	= true,
-    59	};
-    60	
-  > 61	struct spi_board_info ampr_info = {
-    62		.modalias		= "cs35l56",
-    63		.max_speed_hz		= 2000000,
-    64		.chip_select		= 1,
-    65		.mode			= SPI_MODE_0,
-    66		.swnode			= &ampr,
-    67		.use_fwnode_name	= true,
-    68	};
-    69	
-
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 26ba34a4100b..c1bb1895009c 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -817,7 +817,7 @@ config SPI_PPC4xx
+ 
+ config SPI_PXA2XX
+ 	tristate "PXA2xx SSP SPI master"
+-	depends on ARCH_PXA || ARCH_MMP || PCI || ACPI || COMPILE_TEST
++	depends on ARCH_PXA || ARCH_MMP || (X86 && (PCI || ACPI)) || COMPILE_TEST
+ 	select PXA_SSP if ARCH_PXA || ARCH_MMP
+ 	help
+ 	  This enables using a PXA2xx or Sodaville SSP port as a SPI master
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.43.0.rc1.1.gbec44491f096
+

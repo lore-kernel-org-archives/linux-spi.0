@@ -1,126 +1,132 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from mx0b-001ae601.pphosted.com (mx0b-001ae601.pphosted.com [67.231.152.168])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34572B9D7;
-	Thu, 28 Mar 2024 13:15:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E7E57895;
+	Thu, 28 Mar 2024 14:01:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.152.168
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711631715; cv=none; b=vAvrtwPAE6Avce4eDtrJd7eZf+gpJqwQvr76H46e7M2aRHoY5u+jSXP+ujEh227PNcpH1YIBRTgxf8ehNmHYM892HBfe/CcUyJdhQvN0nwoFBmCY6gCZl63Ij3kUasfTzKcUV+EF5Zy9+JtWjsz75k0TYgYd5p0GIFW/5U9gePg=
+	t=1711634493; cv=none; b=cipqDPXweZIyxNsOycp/3CUUzNmaY1WVFRoTZu1kgAorS+vkVbgiEx4xBbly4i5tKlXw6LaFlkcIzrLOVOaIhhxGFeL/MHK7jh4Q59s5ebMYvLoQaCbSNpK6LZl3s8wLqMaoolkD7UbvKESWAv9O/E19VcIoepEQ3scAUrwKyX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711631715; c=relaxed/simple;
-	bh=pjqaQ071/VMsOTmA8BpkoiGRbVmT/eomFxqIvEbUJhM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eX4gXc0cAm7uOoZqtsxdv1RbfcgxlkDf3XjHT0gaGehFHXD8dXuAbI4ro3lL+8QcY0pIOCUk7zVEEXK2Ep+D50loO2n6g3tE6yTRe1NfOZFgoqgdii1fK6NI6taTMZqHeDVReIl6cjUTOVwvhEP20CksW/f61sKNpbO0n1EgM68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EA2H29ff; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1711634493; c=relaxed/simple;
+	bh=bW9oeNxOUCK8arG9GOfJG98kVBiZAFEHPeFGnEThLS4=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=En+xD45NQTrpr1ai0c2SoeUkG1t1vb5MwFJLOzDeHKMQB8+SJedf/rvP97SiLC3064bqt5avNHxAG/RGhefkUKU1oD4Pv6D/ZlEVACn0CiWFYH0uE9zhOZU9OZWqqdraQwjwIWGjxDhnTAWAQNEv5FHRpY9lRyKDVZGPWQ/bieY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com; spf=pass smtp.mailfrom=opensource.cirrus.com; dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b=gnyu0O+y; arc=none smtp.client-ip=67.231.152.168
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensource.cirrus.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EA2H29ff"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711631714; x=1743167714;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=pjqaQ071/VMsOTmA8BpkoiGRbVmT/eomFxqIvEbUJhM=;
-  b=EA2H29ffUnZkq2XkvmJPVslsMeD4SEMO0EcIyCUNa4XK6pzrHs5CUgPo
-   ijwJQ7/oqPqNgqpSQVuLq21OEVmsA+9M4dynjRE3LSotOcCgJfLuYvyFR
-   e6DdQk9gvznih5nYdoly06pgCxZAuMJXcEb+DIAKhD5UzJ/wvi9K0CWPQ
-   q5CshY7DJE6tDgANcdgXz2OO/iWGsRupf39z8aRfpAyvyUe0yZ5FaKCD1
-   BR7Se5tlfDonDS8lGOCjc6O+80/5uThH2cWPU5DynnErNgSZhmV8JP1rX
-   5XcTM9sxUVOoQhggm9GubEGbr/jvfgUT6oXGba9MvTcnHghmnPDWfDwLU
-   w==;
-X-CSE-ConnectionGUID: 8iSdQXwnTKaMNVhzmTGP8A==
-X-CSE-MsgGUID: uFvKlNKfQlij22CTZc1XSg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11026"; a="6638888"
-X-IronPort-AV: E=Sophos;i="6.07,161,1708416000"; 
-   d="scan'208";a="6638888"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2024 06:15:10 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,161,1708416000"; 
-   d="scan'208";a="47827968"
-Received: from lkp-server01.sh.intel.com (HELO be39aa325d23) ([10.239.97.150])
-  by fmviesa001.fm.intel.com with ESMTP; 28 Mar 2024 06:15:08 -0700
-Received: from kbuild by be39aa325d23 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rppb0-0002AD-0M;
-	Thu, 28 Mar 2024 13:15:06 +0000
-Date: Thu, 28 Mar 2024 21:15:02 +0800
-From: kernel test robot <lkp@intel.com>
-To: Charles Keepax <ckeepax@opensource.cirrus.com>, broonie@kernel.org,
-	linus.walleij@linaro.org, brgl@bgdev.pl
-Cc: oe-kbuild-all@lists.linux.dev, linux-gpio@vger.kernel.org,
-	linux-spi@vger.kernel.org, patches@opensource.cirrus.com
-Subject: Re: [PATCH 3/3] spi: cs42l43: Add bridged cs35l56 amplifiers
-Message-ID: <202403282033.oFvCtRT7-lkp@intel.com>
-References: <20240326141108.1079993-4-ckeepax@opensource.cirrus.com>
+	dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b="gnyu0O+y"
+Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
+	by mx0b-001ae601.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42SCxqrf012070;
+	Thu, 28 Mar 2024 09:01:23 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=
+	from:to:cc:subject:date:message-id:in-reply-to:references
+	:mime-version:content-transfer-encoding:content-type; s=
+	PODMain02222019; bh=bkfRGhVtbDns6zx6tQ3A0VuWqG9lQAXJjHbcRzzlzzk=; b=
+	gnyu0O+yC5kSDqmkUNmblo11N91muRqvuHO7ZDl6AQhm9/xwLo1CQRKskaJU7Xdp
+	IMEf8CTvTmXUq5YzE/9fERrnWjWv8rnPzfjLTzowkjUM+S1S/OJrhQaktyZDKe+C
+	YaQWlU1bMVL6BJKL+0uhVyRYAb5XRpUz139EIGTR5SbaOHPXAQ8nQ34/lQBNeAi1
+	YOxSt2zfV2Q098KUhFaApBRr3ah0e7D2SDFszUHZaWBUYlvx0UPF+ftCl90iBG/b
+	PXsIfC80aY/bDurH+lp9ej6xQAasiCbzlXoR9BIsgGFIwexZVkQstJFFy5KMEPwU
+	RdasB/2lI/prhQTyCPDuog==
+Received: from ediex02.ad.cirrus.com ([84.19.233.68])
+	by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 3x4et832uk-2
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 28 Mar 2024 09:01:23 -0500 (CDT)
+Received: from ediex01.ad.cirrus.com (198.61.84.80) by ediex02.ad.cirrus.com
+ (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 28 Mar
+ 2024 14:01:19 +0000
+Received: from ediswmail9.ad.cirrus.com (198.61.86.93) by
+ ediex01.ad.cirrus.com (198.61.84.80) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4
+ via Frontend Transport; Thu, 28 Mar 2024 14:01:19 +0000
+Received: from ediswws07.ad.cirrus.com (ediswws07.ad.cirrus.com [198.90.208.14])
+	by ediswmail9.ad.cirrus.com (Postfix) with ESMTP id 60AB082024B;
+	Thu, 28 Mar 2024 14:01:19 +0000 (UTC)
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
+To: <broonie@kernel.org>, <linus.walleij@linaro.org>, <brgl@bgdev.pl>
+CC: <linux-gpio@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+        <patches@opensource.cirrus.com>
+Subject: [PATCH v2 2/3] spi: Add a mechanism to use the fwnode name for the SPI device
+Date: Thu, 28 Mar 2024 14:01:18 +0000
+Message-ID: <20240328140119.1784350-3-ckeepax@opensource.cirrus.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240328140119.1784350-1-ckeepax@opensource.cirrus.com>
+References: <20240328140119.1784350-1-ckeepax@opensource.cirrus.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240326141108.1079993-4-ckeepax@opensource.cirrus.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-GUID: EMYdVaGgINgGmOVV5Z3vdgrTp_1gyilt
+X-Proofpoint-ORIG-GUID: EMYdVaGgINgGmOVV5Z3vdgrTp_1gyilt
+X-Proofpoint-Spam-Reason: safe
 
-Hi Charles,
+Add a mechanism to force the use of the fwnode name for the name of the
+SPI device itself. This is useful when devices need to be manually added
+within the kernel.
 
-kernel test robot noticed the following build warnings:
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+---
 
-[auto build test WARNING on broonie-spi/for-next]
-[also build test WARNING on brgl/gpio/for-next linus/master v6.9-rc1 next-20240328]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+No changes since v1.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Charles-Keepax/gpio-swnode-Add-ability-to-specify-native-chip-selects-for-SPI/20240326-221422
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
-patch link:    https://lore.kernel.org/r/20240326141108.1079993-4-ckeepax%40opensource.cirrus.com
-patch subject: [PATCH 3/3] spi: cs42l43: Add bridged cs35l56 amplifiers
-config: sh-randconfig-r121-20240327 (https://download.01.org/0day-ci/archive/20240328/202403282033.oFvCtRT7-lkp@intel.com/config)
-compiler: sh4-linux-gcc (GCC) 13.2.0
-reproduce: (https://download.01.org/0day-ci/archive/20240328/202403282033.oFvCtRT7-lkp@intel.com/reproduce)
+Thanks,
+Charles
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202403282033.oFvCtRT7-lkp@intel.com/
+ drivers/spi/spi.c       | 7 +++++++
+ include/linux/spi/spi.h | 2 ++
+ 2 files changed, 9 insertions(+)
 
-sparse warnings: (new ones prefixed by >>)
->> drivers/spi/spi-cs42l43.c:48:28: sparse: sparse: symbol 'ampr' was not declared. Should it be static?
->> drivers/spi/spi-cs42l43.c:52:23: sparse: sparse: symbol 'ampl_info' was not declared. Should it be static?
->> drivers/spi/spi-cs42l43.c:61:23: sparse: sparse: symbol 'ampr_info' was not declared. Should it be static?
-   drivers/spi/spi-cs42l43.c: note: in included file (through include/linux/mmzone.h, include/linux/gfp.h, include/linux/slab.h, ...):
-   include/linux/page-flags.h:242:46: sparse: sparse: self-comparison always evaluates to false
-   include/linux/page-flags.h:242:46: sparse: sparse: self-comparison always evaluates to false
-
-vim +/ampr +48 drivers/spi/spi-cs42l43.c
-
-    47	
-  > 48	const struct software_node ampr = {
-    49		.name			= "cs35l56-right",
-    50	};
-    51	
-  > 52	struct spi_board_info ampl_info = {
-    53		.modalias		= "cs35l56",
-    54		.max_speed_hz		= 2000000,
-    55		.chip_select		= 0,
-    56		.mode			= SPI_MODE_0,
-    57		.swnode			= &ampl,
-    58		.use_fwnode_name	= true,
-    59	};
-    60	
-  > 61	struct spi_board_info ampr_info = {
-    62		.modalias		= "cs35l56",
-    63		.max_speed_hz		= 2000000,
-    64		.chip_select		= 1,
-    65		.mode			= SPI_MODE_0,
-    66		.swnode			= &ampr,
-    67		.use_fwnode_name	= true,
-    68	};
-    69	
-
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index a2f01116ba092..a38a4960032b8 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -598,6 +598,12 @@ EXPORT_SYMBOL_GPL(spi_alloc_device);
+ static void spi_dev_set_name(struct spi_device *spi)
+ {
+ 	struct acpi_device *adev = ACPI_COMPANION(&spi->dev);
++	struct fwnode_handle *fwnode = dev_fwnode(&spi->dev);
++
++	if (spi->use_fwnode_name && fwnode) {
++		dev_set_name(&spi->dev, "spi-%s", fwnode_get_name(fwnode));
++		return;
++	}
+ 
+ 	if (adev) {
+ 		dev_set_name(&spi->dev, "spi-%s", acpi_dev_name(adev));
+@@ -830,6 +836,7 @@ struct spi_device *spi_new_device(struct spi_controller *ctlr,
+ 	 * spi->cs_index_mask as 0x01.
+ 	 */
+ 	proxy->cs_index_mask = 0x01;
++	proxy->use_fwnode_name = chip->use_fwnode_name;
+ 
+ 	if (chip->swnode) {
+ 		status = device_add_software_node(&proxy->dev, chip->swnode);
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index b589e25474393..265f5d0c15304 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -222,6 +222,7 @@ struct spi_device {
+ 	struct spi_delay	cs_setup;
+ 	struct spi_delay	cs_hold;
+ 	struct spi_delay	cs_inactive;
++	bool			use_fwnode_name;
+ 
+ 	/* The statistics */
+ 	struct spi_statistics __percpu	*pcpu_statistics;
+@@ -1603,6 +1604,7 @@ struct spi_board_info {
+ 	char		modalias[SPI_NAME_SIZE];
+ 	const void	*platform_data;
+ 	const struct software_node *swnode;
++	bool		use_fwnode_name;
+ 	void		*controller_data;
+ 	int		irq;
+ 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.39.2
+

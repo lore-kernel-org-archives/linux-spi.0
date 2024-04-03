@@ -1,136 +1,179 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C552152505;
-	Wed,  3 Apr 2024 17:13:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738A515253C;
+	Wed,  3 Apr 2024 17:15:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712164437; cv=none; b=FX97sW5gC79mLiTBq9I1WEGbsnAymgNbX0tBiT7v7v5+iJ8Z/KjXWPHc+W8TQA0w+c3LDCMEx/T7wsqgh5soTJOHYoUtFnMZCZzsXZB+DF5IX4ZNdIfEXyxNh8KRfI9klHVWSk0JxHBnV6lRVDS5Fy9VYbM937c7NbRsoIWI0kw=
+	t=1712164558; cv=none; b=U5Iv3c18Tt13cLHV9EBoPIX2yp+x/A5nBH45goeGVWsAAP1/FKRqz4R+AmuVLik9nIUFIrCBm/9cQZhlNBDx76w5/78XiRMRcSOtDc1qpmchaBEJxWwmky5G2s5g5vbNhg0ILGUAy95Jixz3eobOWkHvU1nHsbm5ciclH+CC3sk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712164437; c=relaxed/simple;
-	bh=TNkWDibBTEIwV1X2Lgomv9lI/EaSLAXMzptGvnPP67I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MQfIc961MFSqIlgqYfdXDKJFANl6MPvGr9n0Sp5PNYGNIrj5mV0O093NLBg8EZTiHvbaeJ/PWKKK1tO2CcqnJrVrXpRZlqjbp2dHAS6Nj/NbEsEYT4wyi566FfkRviEAFUjoiTwscNhehFOs7eJ+CM52jvS7a+XJRR+mopm8cy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dULEcOKS; arc=none smtp.client-ip=198.175.65.17
+	s=arc-20240116; t=1712164558; c=relaxed/simple;
+	bh=QAzx1E0qxAXDPG02iR8YPBeHMYqiPk9cu41jsTna2jo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dirdWXerbtEx2GOnucsNxjln3m0oW+YpxlghwDBI68g9vSvEqc5lK1XCHu7dLyt3sO7Hi6QoibZxirx9yGlS67hwmyxPK28BaGVIjCTcrqG6QTZ0HiBRrc1XCQlTgW8FwCxtS0p4u0OKPNvGH1oOcpdUgfpuQgHsbk6q7mGv3nQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SDAAOw2Q; arc=none smtp.client-ip=198.175.65.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dULEcOKS"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SDAAOw2Q"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712164437; x=1743700437;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=TNkWDibBTEIwV1X2Lgomv9lI/EaSLAXMzptGvnPP67I=;
-  b=dULEcOKS15LRXC6fQzjUeQWAqewiEPRD9Ag4DpePk1CKg8IEDsL2kJBl
-   2P1/g3F+RRxq6UXXVN0zCmdXecH6RBGfDXFunoNN3USdYJqxHufC6Ludl
-   U6YXTfvj5Q0RGyeGw8jP6PWH6BLER3nuwfus2NxrzrLoHb2kYw1LlbZC/
-   mzZdkQb8+9ui7JaZhC/Qy1i9mN/KnHFdyozXHVnACLtaQNNVKgoDU6kOx
-   DYCf0ZqMPIHWbUXcVmPZsi7xGqYu01h2FNF6wxJFSRyuRzsVHYrjFIzTw
-   jGmb1SGufGb0EpR3khxgx0CHXkLEAMC962nT3jlKSgnwYEZyKfnvGnopu
-   w==;
-X-CSE-ConnectionGUID: CAl+pwicSgGAkq/p+7542w==
-X-CSE-MsgGUID: qFylQ2p5QSKisEvVjowDNw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11033"; a="7529370"
+  t=1712164558; x=1743700558;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=QAzx1E0qxAXDPG02iR8YPBeHMYqiPk9cu41jsTna2jo=;
+  b=SDAAOw2QamXNc/6LU5lbUbWv8EIqbKRtyjwuMdkqYiihoCwAvvlS3MEd
+   r3YVR+Yz/8Yc2xN4g2EKqXpL47txGpn0qim1eSP6ilQ5NqTpGd8NB5bFu
+   iXAtrIuyLQnf2oKXrKevbp3OSx38L3/8JhyxSC15+V2yZmWre14AAGYya
+   HRVenAIqiIIvH3596T76s07r+UGx0lrZOAnPnUTwrffUhhHRE8SMU4m41
+   wG10UWqGL4YGbP7ZaeZNPkf/aZkrFakKjh/68Ny8uHvJDP+BfX+5DK/x+
+   +7rLCDcLsG/eT5AprnmkwRZvfqoc4/Su8BwUnwBQciIbpDaKY7NbvtAqw
+   g==;
+X-CSE-ConnectionGUID: yuc1hlB/TIGqew0/HUF1/Q==
+X-CSE-MsgGUID: Hc18hjsmRJquoCW/EaW+pw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11033"; a="18863544"
 X-IronPort-AV: E=Sophos;i="6.07,177,1708416000"; 
-   d="scan'208";a="7529370"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2024 10:13:56 -0700
+   d="scan'208";a="18863544"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2024 10:15:57 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11033"; a="915189030"
+X-IronPort-AV: E=McAfee;i="6600,9927,11033"; a="937085337"
 X-IronPort-AV: E=Sophos;i="6.07,177,1708416000"; 
-   d="scan'208";a="915189030"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2024 10:13:52 -0700
-Received: from andy by smile with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rs4BK-00000001Ba4-13lW;
-	Wed, 03 Apr 2024 20:13:50 +0300
-Date: Wed, 3 Apr 2024 20:13:50 +0300
+   d="scan'208";a="937085337"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 03 Apr 2024 10:15:54 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id A8DAB57D; Wed,  3 Apr 2024 20:15:53 +0300 (EEST)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	linux-arm-kernel@lists.infradead.org,
-	Daniel Mack <daniel@zonque.org>,
+	linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Daniel Mack <daniel@zonque.org>,
 	Haojian Zhuang <haojian.zhuang@gmail.com>,
 	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Russell King <linux@armlinux.org.uk>, Arnd Bergmann <arnd@arndb.de>
-Subject: Re: (subset) [PATCH v2 0/9] spi: pxa2xx: Drop linux/spi/pxa2xx_spi.h
-Message-ID: <Zg2OTvXCUhsk4KVr@smile.fi.intel.com>
-References: <20240327193138.2385910-1-andriy.shevchenko@linux.intel.com>
- <171167575036.187521.17547262230962160149.b4-ty@kernel.org>
- <Zg04cWhT_Dl6AUik@smile.fi.intel.com>
- <b7ac20d0-ca45-4e65-92ff-ddf84da6645a@sirena.org.uk>
- <Zg1cAHEkhIf2vpwJ@smile.fi.intel.com>
- <Zg1clCuOwkCNzSgy@smile.fi.intel.com>
- <0af775e1-f5f7-4ad4-b336-78834a9e0342@sirena.org.uk>
- <Zg1qmlX78lQGLC3B@smile.fi.intel.com>
- <48793ea5-92ca-4529-bad0-35d8c4e3f0c8@sirena.org.uk>
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH v1 2/5] spi: pxa2xx: Drop struct pxa2xx_spi_chip
+Date: Wed,  3 Apr 2024 20:06:36 +0300
+Message-ID: <20240403171550.1074644-3-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.43.0.rc1.1.gbec44491f096
+In-Reply-To: <20240403171550.1074644-1-andriy.shevchenko@linux.intel.com>
+References: <20240403171550.1074644-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <48793ea5-92ca-4529-bad0-35d8c4e3f0c8@sirena.org.uk>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 
-On Wed, Apr 03, 2024 at 04:50:00PM +0100, Mark Brown wrote:
-> On Wed, Apr 03, 2024 at 05:41:30PM +0300, Andy Shevchenko wrote:
-> 
-> > Linus was long time ago against board files. Yet, we have a few old
-> > (kinda supported) boards left in the tree. The conversion makes the
-> > driver be prepared for the DT conversion when it happens. From maintenance
-> > perspective my patch reduced the code under the maintenance, which reduces
-> > time spent by both contributors and maintainers on this.
-> 
-> > AFAIU all what you are moaning about is type checking. Okay, I got
-> 
-> The type checking is part of it, but it's more a general taste thing
-> with using swnodes like this.  You've not actually removed the board
-> file and it's hard to get enthusiastic about the change to the board
-> file that results, or to see this as a substantial step towards DT
-> conversion for the platform given the trivialness of the single
-> property here.  As a general thing I don't want to encourage people to
-> start randomly converting things to swnode rather than to DT.
+No more users.
 
-Conversion to GPIO lookup tables is also the same in this sense.
-But with it in place, the drivers aren't needed to be touched
-when the real conversion happens. I agree, that _ideally_ we should
-take that shot, but I am not an expert in DT and it will take a lot
-for me to get to the shape, besides the fact of the ARM (platform)
-specifics, which I'm far from. So, I prefer do step-by-step approach
-if one developer can't fulfill the task. I.o.w. perfect is enemy of
-good.
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/spi/spi-pxa2xx-dma.c |  9 ++-------
+ drivers/spi/spi-pxa2xx.c     | 25 -------------------------
+ drivers/spi/spi-pxa2xx.h     | 14 --------------
+ 3 files changed, 2 insertions(+), 46 deletions(-)
 
-> > it, but we have a lot of other places with similar approach done,
-> > e.g. GPIO_LOOKUP*() tables that basically gives something unconnected to the
-> > driver without any platform data being involved and you seems to be fine with
-> > that:
-> 
-> > $ git log --oneline --no-merges --grep 'Mark Brown' -- arch/ | grep 'GPIO desc'
-> 
-> > I randomly took this 366f36e2a ("ASoC: wm1250-ev1: Convert to GPIO descriptors").
-> 
-> > Can you tell how it is different to my proposal?
-> 
-> The main difference with the GPIO lookup tables is that they are
-> structured data specifically for GPIOs rather than the general purpose
-> free for all we have with swnode.
-
-Semantically yes, technically they have all the same issues you pointed out
-that swnode has.
-
-Nevertheless, I'm about to send a part 2 of cleanup (I decided not mangle
-this series, so it will be on top of this) for you to see how we can go
-forward.
-
-And thank you for this discussion.
-
+diff --git a/drivers/spi/spi-pxa2xx-dma.c b/drivers/spi/spi-pxa2xx-dma.c
+index 751cb0f77b62..d77279c3acd8 100644
+--- a/drivers/spi/spi-pxa2xx-dma.c
++++ b/drivers/spi/spi-pxa2xx-dma.c
+@@ -231,16 +231,11 @@ int pxa2xx_spi_set_dma_burst_and_threshold(struct chip_data *chip,
+ 					   u8 bits_per_word, u32 *burst_code,
+ 					   u32 *threshold)
+ {
+-	struct pxa2xx_spi_chip *chip_info = spi->controller_data;
+ 	struct driver_data *drv_data = spi_controller_get_devdata(spi->controller);
+ 	u32 dma_burst_size = drv_data->controller_info->dma_burst_size;
+ 
+-	/*
+-	 * If the DMA burst size is given in chip_info we use that,
+-	 * otherwise we use the default. Also we use the default FIFO
+-	 * thresholds for now.
+-	 */
+-	*burst_code = chip_info ? chip_info->dma_burst_size : dma_burst_size;
++	/* We use the default the DMA burst size and FIFO thresholds for now */
++	*burst_code = dma_burst_size;
+ 	*threshold = SSCR1_RxTresh(RX_THRESH_DFLT)
+ 		   | SSCR1_TxTresh(TX_THRESH_DFLT);
+ 
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index cc0e54f8d2c3..00aa33c937bf 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1154,7 +1154,6 @@ static int pxa2xx_spi_unprepare_transfer(struct spi_controller *controller)
+ 
+ static int setup(struct spi_device *spi)
+ {
+-	struct pxa2xx_spi_chip *chip_info;
+ 	struct chip_data *chip;
+ 	const struct lpss_config *config;
+ 	struct driver_data *drv_data =
+@@ -1218,25 +1217,6 @@ static int setup(struct spi_device *spi)
+ 		chip->timeout = TIMOUT_DFLT;
+ 	}
+ 
+-	/*
+-	 * Protocol drivers may change the chip settings, so...
+-	 * if chip_info exists, use it.
+-	 */
+-	chip_info = spi->controller_data;
+-
+-	/* chip_info isn't always needed */
+-	if (chip_info) {
+-		if (chip_info->timeout)
+-			chip->timeout = chip_info->timeout;
+-		if (chip_info->tx_threshold)
+-			tx_thres = chip_info->tx_threshold;
+-		if (chip_info->tx_hi_threshold)
+-			tx_hi_thres = chip_info->tx_hi_threshold;
+-		if (chip_info->rx_threshold)
+-			rx_thres = chip_info->rx_threshold;
+-		chip->dma_threshold = 0;
+-	}
+-
+ 	chip->cr1 = 0;
+ 	if (spi_controller_is_target(drv_data->controller)) {
+ 		chip->cr1 |= SSCR1_SCFR;
+@@ -1256,11 +1236,6 @@ static int setup(struct spi_device *spi)
+ 		chip->lpss_tx_threshold = tx_thres;
+ 	}
+ 
+-	/*
+-	 * Set DMA burst and threshold outside of chip_info path so that if
+-	 * chip_info goes away after setting chip->enable_dma, the burst and
+-	 * threshold can still respond to changes in bits_per_word.
+-	 */
+ 	if (chip->enable_dma) {
+ 		/* Set up legal burst and threshold for DMA */
+ 		if (pxa2xx_spi_set_dma_burst_and_threshold(chip, spi,
+diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
+index f1097c96c50f..ae9c99bc9f6c 100644
+--- a/drivers/spi/spi-pxa2xx.h
++++ b/drivers/spi/spi-pxa2xx.h
+@@ -35,20 +35,6 @@ struct pxa2xx_spi_controller {
+ 	struct ssp_device ssp;
+ };
+ 
+-/*
+- * The controller specific data for SPI target devices
+- * (resides in spi_board_info.controller_data),
+- * copied to spi_device.platform_data ... mostly for
+- * DMA tuning.
+- */
+-struct pxa2xx_spi_chip {
+-	u8 tx_threshold;
+-	u8 tx_hi_threshold;
+-	u8 rx_threshold;
+-	u8 dma_burst_size;
+-	u32 timeout;
+-};
+-
+ struct spi_controller;
+ struct spi_device;
+ struct spi_transfer;
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.43.0.rc1.1.gbec44491f096
 

@@ -1,120 +1,125 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from fgw21-7.mail.saunalahti.fi (fgw21-7.mail.saunalahti.fi [62.142.5.82])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D299153572;
-	Wed,  3 Apr 2024 17:16:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C81261552FD
+	for <linux-spi@vger.kernel.org>; Wed,  3 Apr 2024 20:21:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.82
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712164562; cv=none; b=FBGqQ4O9XdJsDsHoObb9in9TlZz0D1oXJm6uChs3IVuv741yVu/xL0jgVzYac5aYVfb4d/D1ed6fet+Tcbu0W1s1LvhojhXdSXG3iEJPQqBCbVc9ayvHZrcx0uXP9hgXt98OhyyIrWVGr/N9TLe7uHkpofwPhpDLvlqnACKjr/o=
+	t=1712175699; cv=none; b=HaQXhJJX3IyrD2USomm0bkmo5XuwWNGVCgyjOArFfVhr6og0DkTyyvZmHMQU6AaSOFq1snoc/OPFgVdTwpWz6o+JtHWanH+0/eJi8UZthpCPZQRs2n67lsS/HxGhCj4hjNux8leSSREtmNeP0O0NvDKnrGk0ZGAwoZAGBzrN38Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712164562; c=relaxed/simple;
-	bh=me4cMeii27/KaK0gEtLaIGUNWbUm95Gjy18PkqtFUnE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ad9Vp1wTCENqvqlb7SkDY9rRvfrPY/vHjDcZFI5ylF6Tn8a/J+Ki0cWcIZKI9sjq3uboJ5+RmmNhrgWAYd1wh9WtO1mAkl9rCqXxdvKT/LphC46TM0kkt+n4/nkQMFNbYhYJyCjPzah/VrYfZOgOmM2GTPwN8WYBENmW/Y+EWl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WPGzCHnp; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WPGzCHnp"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712164561; x=1743700561;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=me4cMeii27/KaK0gEtLaIGUNWbUm95Gjy18PkqtFUnE=;
-  b=WPGzCHnpDiYTqX3vwPpWpNNAbSfzh5JCMwtlbISb2lXwb6WsVp3+AAyf
-   8WGK9mFYpYV0DMp/sbM9ROT4FRXMchZkJj8YNCNIlreUckmOzUkf+GEtY
-   ey/t1MTWZ2Bjiyxifc5bd5uSIDqUbBrrMWEanSiWPc44B4/f0WNRsib5w
-   9GtNrCiAdS+5adIbPSNqFmzacbnYZ+3M1Tcnx9ROsMTfCooXCNmPwsC22
-   oFL7XUMU31+xkAr4WUphEREHW/c1QR9XFAs3UquLbw0htmNJuO4fPPxGO
-   ZDF1FJnvCDWS7RMn4hQpMBmSaQQJJgQiAA2IZ0oUkSGphuJGdRRMS857c
-   w==;
-X-CSE-ConnectionGUID: nw8DCGwFQEGOIVFRV7sXxQ==
-X-CSE-MsgGUID: E3jdQWR8R1eFIXMHvcVxug==
-X-IronPort-AV: E=McAfee;i="6600,9927,11033"; a="18863578"
-X-IronPort-AV: E=Sophos;i="6.07,177,1708416000"; 
-   d="scan'208";a="18863578"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2024 10:16:00 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11033"; a="937085342"
-X-IronPort-AV: E=Sophos;i="6.07,177,1708416000"; 
-   d="scan'208";a="937085342"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 03 Apr 2024 10:15:57 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id CCAAE812; Wed,  3 Apr 2024 20:15:53 +0300 (EEST)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Daniel Mack <daniel@zonque.org>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH v1 5/5] spi: pxa2xx: Don't provide struct chip_data for others
-Date: Wed,  3 Apr 2024 20:06:39 +0300
-Message-ID: <20240403171550.1074644-6-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.43.0.rc1.1.gbec44491f096
-In-Reply-To: <20240403171550.1074644-1-andriy.shevchenko@linux.intel.com>
-References: <20240403171550.1074644-1-andriy.shevchenko@linux.intel.com>
+	s=arc-20240116; t=1712175699; c=relaxed/simple;
+	bh=6ik5zYeoSy13e/6i/ggDabkweeldqQoJRkzAijEiRh8=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KpkCMV7bUqxwByZC0dY/WzsIW4PubwnrW3zujiW3LsQrKSPvsdtkcThlm1hZlZ/35dtZgikZ6gW/kTXNqvCnWSHsTvICjKXJvZ+AsN2EkVoU7rCgg/OV8HHQQf+///ZmBfJlfDD85maraF6js/jAIjFJMZya1iQP7D2clgjJPos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
+Received: from localhost (88-113-26-217.elisa-laajakaista.fi [88.113.26.217])
+	by fgw21.mail.saunalahti.fi (Halon) with ESMTP
+	id c0efb0c7-f1f7-11ee-abf4-005056bdd08f;
+	Wed, 03 Apr 2024 23:21:29 +0300 (EEST)
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Wed, 3 Apr 2024 23:21:28 +0300
+To: Charles Keepax <ckeepax@opensource.cirrus.com>
+Cc: broonie@kernel.org, linus.walleij@linaro.org, brgl@bgdev.pl,
+	linux-gpio@vger.kernel.org, linux-spi@vger.kernel.org,
+	patches@opensource.cirrus.com
+Subject: Re: [PATCH v3 1/3] gpio: swnode: Add ability to specify native chip
+ selects for SPI
+Message-ID: <Zg26SKlGtwRvoUDW@surfacebook.localdomain>
+References: <20240329114730.360313-1-ckeepax@opensource.cirrus.com>
+ <20240329114730.360313-2-ckeepax@opensource.cirrus.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240329114730.360313-2-ckeepax@opensource.cirrus.com>
 
-Now the struct chip_data is local to spi-pxa2xx.c, move
-its definition to the C file. This will slightly speed up
-a build and also hide badly named data type (too generic).
+Fri, Mar 29, 2024 at 11:47:28AM +0000, Charles Keepax kirjoitti:
+> SPI devices can specify a cs-gpios property to enumerate their
+> chip selects. Under device tree, a zero entry in this property can
+> be used to specify that a particular chip select is using the SPI
+> controllers native chip select, for example:
+> 
+>         cs-gpios = <&gpio1 0 0>, <0>;
+> 
+> Here the second chip select is native. However, when using swnodes
+> there is currently no way to specify a native chip select. The
+> proposal here is to register a swnode_gpio_undefined software node,
+> that can be specified to allow the indication of a native chip
+> select. For example:
+> 
+> static const struct software_node_ref_args device_cs_refs[] = {
+> 	{
+> 		.node  = &device_gpiochip_swnode,
+> 		.nargs = 2,
+> 		.args  = { 0, GPIO_ACTIVE_LOW },
+> 	},
+> 	{
+> 		.node  = &swnode_gpio_undefined,
+> 		.nargs = 0,
+> 	},
+> };
+> 
+> Register the swnode as the gpiolib is initialised and
+> check in swnode_get_gpio_device if the returned node matches
+> swnode_gpio_undefined and return -ENOENT, which matches the behaviour
+> of the device tree system when it encounters a 0 phandle.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/spi/spi-pxa2xx.c | 8 ++++++++
- drivers/spi/spi-pxa2xx.h | 8 --------
- 2 files changed, 8 insertions(+), 8 deletions(-)
+...
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 030afb17e606..efe76d0c21bb 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -66,6 +66,14 @@ MODULE_ALIAS("platform:pxa2xx-spi");
- 				| CE4100_SSCR1_RFT | CE4100_SSCR1_TFT | SSCR1_MWDS \
- 				| SSCR1_SPH | SSCR1_SPO | SSCR1_LBM)
- 
-+struct chip_data {
-+	u32 cr1;
-+	u32 dds_rate;
-+	u32 threshold;
-+	u16 lpss_rx_threshold;
-+	u16 lpss_tx_threshold;
-+};
-+
- #define LPSS_GENERAL_REG_RXTO_HOLDOFF_DISABLE	BIT(24)
- #define LPSS_CS_CONTROL_SW_MODE			BIT(0)
- #define LPSS_CS_CONTROL_CS_HIGH			BIT(1)
-diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
-index 5f741bb30240..93e1e471e1c6 100644
---- a/drivers/spi/spi-pxa2xx.h
-+++ b/drivers/spi/spi-pxa2xx.h
-@@ -75,14 +75,6 @@ struct driver_data {
- 	struct gpio_desc *gpiod_ready;
- };
- 
--struct chip_data {
--	u32 cr1;
--	u32 dds_rate;
--	u32 threshold;
--	u16 lpss_rx_threshold;
--	u16 lpss_tx_threshold;
--};
--
- static inline u32 pxa2xx_spi_read(const struct driver_data *drv_data, u32 reg)
- {
- 	return pxa_ssp_read_reg(drv_data->ssp, reg);
+> +const struct software_node swnode_gpio_undefined = {
+> +	.name = "gpio-internal-undefined",
+
+This name is still too generic, perhaps "software-node-undefined-gpio"?
+
+> +};
+> +EXPORT_SYMBOL_GPL(swnode_gpio_undefined);
+
+Maybe we can start using namespaces?
+
+...
+
+> +	if (!strcmp(gdev_node->name, "gpio-internal-undefined"))
+
+Probably it needs a definition to avoid typos in case somebody wants to change
+the name.
+
+#define	GPIOLIB_SWNODE_UNDEFINED	"..."
+
+?
+
+> +		return ERR_PTR(-ENOENT);
+
+...
+
+>  static int __init gpiolib_debugfs_init(void)
+>  {
+> +	int ret;
+> +
+> +	ret = software_node_register(&swnode_gpio_undefined);
+> +	if (ret < 0) {
+> +		pr_err("gpiolib: failed to register swnode: %d\n", ret);
+> +		return ret;
+> +	}
+> +
+>  	/* /sys/kernel/debug/gpio */
+>  	debugfs_create_file("gpio", 0444, NULL, NULL, &gpiolib_fops);
+> +
+>  	return 0;
+>  }
+>  subsys_initcall(gpiolib_debugfs_init);
+
+I believe now it's time to get __exitcall to be implemented. Actually the above
+already needs that. Besides that, what you are adding doesn't belong to debugfs
+AFAICS. And why it can't be done in gpiolib-swnode.c?
+
 -- 
-2.43.0.rc1.1.gbec44491f096
+With Best Regards,
+Andy Shevchenko
+
 

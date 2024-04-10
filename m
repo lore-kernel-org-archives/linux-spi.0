@@ -1,157 +1,90 @@
-Received: from mx0b-001ae601.pphosted.com (mx0b-001ae601.pphosted.com [67.231.152.168])
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A30D715B136;
-	Wed, 10 Apr 2024 09:11:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.152.168
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E8D1552EF;
+	Wed, 10 Apr 2024 09:29:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712740281; cv=none; b=n1/DyaRrl6Z2RUNWumZSA0pAgDpudTrTWQtVn4bPamXwKg4Eery+W+1lgDmcxhYbCN9hcr3CoP7O9rQhs7R+d78f/RTtHMB+nuUtduU4ot8YtNc2BL8gj+49IxOU7GcS+9GUH6W9syUs34RE0+hrZFGDl6EjEvlrLvxSKtkQJUI=
+	t=1712741355; cv=none; b=aKX9TXgXEzWxJPIQsaAIsLv/sGAgHOViJmzjB2R5smyuuXAMHSz2TQa48hS5qm1d5YlN67AQMGkrLvB4QKgOcphxc/gHMrBoj95VZKJfoT4gEx2J9EMX2I8s9UeQnvGtQbpTDjECaFdPhOMcaEc+5kbwGK8HLV1ZbtjZIhTnx5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712740281; c=relaxed/simple;
-	bh=p5F27ONbMRrQRdaZ0/ZOdVNjuebqisJicpg9RkysEso=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NUqBoyfrv7LDeIrKYVfafhHUQfSSkHS8MBEy+Gb48pyBUpyA+zPN97H4kDocq2EcDzCQAuq6PuvGTtN2dRaVpB/q9nNkJmR800dew9xoN2Eh+zNKjr7itGBif6yyUnPTaTXp7RmoAmau/jmUO3jgXuLdmW1q5XkrsJBFCHVyH2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com; spf=pass smtp.mailfrom=opensource.cirrus.com; dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b=BV5sn5Ea; arc=none smtp.client-ip=67.231.152.168
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensource.cirrus.com
+	s=arc-20240116; t=1712741355; c=relaxed/simple;
+	bh=j7jp4MN+LYsXlZP8dNCi02N09LjgAISkwlJ4l3i8sX0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=c01EP8ZRMPFFAiIpFppMTVzMK9dfeciyyOenGDcHpxRbWPojdCPhxX24PERttt+HZLyWanpT9NouB/PI8ZCCHXMTTILlhBguZY6o1Wex9tE6EVFmtMGjO/29aL48ekmy+42/fJUEVZN5sY5CgAb3biQ/ieNzft4qPq60VpMWpgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ShY5u6HQ; arc=none smtp.client-ip=217.70.183.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b="BV5sn5Ea"
-Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
-	by mx0b-001ae601.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43A5xQD4021393;
-	Wed, 10 Apr 2024 04:11:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=
-	date:from:to:cc:subject:message-id:references:mime-version
-	:content-type:in-reply-to; s=PODMain02222019; bh=CAUqWZKDqMAAw+b
-	Psj5Kx0blcFeAd9SEsPTRUe4qNAQ=; b=BV5sn5EaD8z/NgenKsBaKCGmrYZ9+rf
-	phA0EiDWJK5ALDf6QG65rWi1RwkpQtxVck8Tfp9FXngOPkdKad3QWkg/vPigjK97
-	/p31htNuT5hX5l5GN0OBxE7EMS5kDjz/Zq0ySm0ASKXyAoOMO/ahoudUwLkmbmvK
-	i8SI5mc32l8j4RgHNk1Wf4/7GlLqPcif7NHTKwGZ8CrzjLSeTkIbVrkv2tJt3S7A
-	8bVb/VtOlETBgHDmhYsAQ3h9/sFVyM7MGVwJXmXxVx5P/l3rcZ0P9QwxDHK82ZLN
-	28jnR79LC4HW5Xu85eGFxHZ3WVbU8Y/WXgTVjyR2i94LlleC6DS2TjQ==
-Received: from ediex02.ad.cirrus.com ([84.19.233.68])
-	by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 3xb2tjmpqb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 10 Apr 2024 04:11:14 -0500 (CDT)
-Received: from ediex01.ad.cirrus.com (198.61.84.80) by ediex02.ad.cirrus.com
- (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 10 Apr
- 2024 10:11:13 +0100
-Received: from ediswmail9.ad.cirrus.com (198.61.86.93) by
- ediex01.ad.cirrus.com (198.61.84.80) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9
- via Frontend Transport; Wed, 10 Apr 2024 10:11:13 +0100
-Received: from ediswmail9.ad.cirrus.com (ediswmail9.ad.cirrus.com [198.61.86.93])
-	by ediswmail9.ad.cirrus.com (Postfix) with ESMTPS id 4A645820245;
-	Wed, 10 Apr 2024 09:11:13 +0000 (UTC)
-Date: Wed, 10 Apr 2024 09:11:12 +0000
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
-To: Andy Shevchenko <andy@black.fi.intel.com>
-CC: <broonie@kernel.org>, <linus.walleij@linaro.org>, <brgl@bgdev.pl>,
-        <linux-gpio@vger.kernel.org>, <linux-spi@vger.kernel.org>,
-        <patches@opensource.cirrus.com>
-Subject: Re: [PATCH v4 3/3] spi: cs42l43: Add bridged cs35l56 amplifiers
-Message-ID: <ZhZXsLj4NSjbpbh1@ediswmail9.ad.cirrus.com>
-References: <20240409132126.1117916-1-ckeepax@opensource.cirrus.com>
- <20240409132126.1117916-4-ckeepax@opensource.cirrus.com>
- <ZhWIZFvfYb85Pftm@black.fi.intel.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ShY5u6HQ"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id D0E77C0012;
+	Wed, 10 Apr 2024 09:29:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1712741351;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=P1LLm8lZtTD1zK+wyxxMiKmW0zGXnL2EmRjIXVJmlh0=;
+	b=ShY5u6HQKpRjc9102JH/yeSKOKqNlzqtHFNDhJUmcL6DZxI7jY7CLMsSbKxXhGvJfGdceH
+	A58Pot/m0M3MMrodrmWO/N8ROTyROR04/hvwSgY/Ah9kAjLpxtpey5UjQg5BlZZ0thqfqr
+	7CHxue0v3VWpH6KeADzxOy+BBYJlnwh5BVwCxQVkdyNB5lmzmNRIitBbbT5u2q4Pz589Qf
+	W4B1WXvJXjxazWKSN9OtitzacjGIoB310anB4VyLiKLGYP+XhEGZqAfBdZ9UI4bxfSxN2l
+	fa6ohyeNP1Y7exaFfezZ4kUQomnzGcbqqlM6rJ07sKzMeVA75laMfKfVdBZ+iw==
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Date: Wed, 10 Apr 2024 11:29:06 +0200
+Subject: [PATCH v3 3/9] spi: dt-bindings: cdns,qspi-nor: make
+ cdns,fifo-depth optional
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <ZhWIZFvfYb85Pftm@black.fi.intel.com>
-X-Proofpoint-ORIG-GUID: kQQFLRptjzAocexBDoUOclU9d9AP-whY
-X-Proofpoint-GUID: kQQFLRptjzAocexBDoUOclU9d9AP-whY
-X-Proofpoint-Spam-Reason: safe
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20240410-cdns-qspi-mbly-v3-3-7b7053449cf7@bootlin.com>
+References: <20240410-cdns-qspi-mbly-v3-0-7b7053449cf7@bootlin.com>
+In-Reply-To: <20240410-cdns-qspi-mbly-v3-0-7b7053449cf7@bootlin.com>
+To: Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Vaishnav Achath <vaishnav.a@ti.com>, 
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+ Rob Herring <robh@kernel.org>
+Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, 
+ Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>, 
+ Gregory CLEMENT <gregory.clement@bootlin.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Tawfik Bayouk <tawfik.bayouk@mobileye.com>, 
+ =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+X-Mailer: b4 0.13.0
+X-GND-Sasl: theo.lebrun@bootlin.com
 
-On Tue, Apr 09, 2024 at 09:26:44PM +0300, Andy Shevchenko wrote:
-> On Tue, Apr 09, 2024 at 02:21:26PM +0100, Charles Keepax wrote:
-> > From: Maciej Strozek <mstrozek@opensource.cirrus.com>
-> > +#include <linux/acpi.h>
-> > +#include <linux/array_size.h>
-> >  #include <linux/bits.h>
-> >  #include <linux/bitfield.h>
-> >  #include <linux/device.h>
-> >  #include <linux/errno.h>
-> > +#include <linux/gpio/machine.h>
-> 
-> Shouldn't you include gpio/property.h as well?
-> Ah, in the previous patch you put swnode to consumer.h instead of
-> gpio/property.h. Please, fix that.
-> 
+Make cdns,fifo-depth devicetree property optional.
+Value can be detected at runtime.
 
-Sorry not sure I follow here, nothing is using
-PROPERTY_ENTRY_GPIO and not sure why that is needed in the swnode
-patch either?
+Upper SRAMPARTITION register bits are read-only. Procedure to find FIFO
+depth is therefore to write 0xFFFFFFFF and read back to get amount of
+writeable bits.
 
-> >  #include <linux/mfd/cs42l43.h>
-> >  #include <linux/mfd/cs42l43-regs.h>
-> >  #include <linux/mod_devicetable.h>
-> 
-> >  #include <linux/of.h>
-> >  #include <linux/platform_device.h>
-> >  #include <linux/pm_runtime.h>
-> > +#include <linux/property.h>
-> >  #include <linux/regmap.h>
-> >  #include <linux/spi/spi.h>
-> >  #include <linux/units.h>
-> 
-> ...
-> 
-> > +static const struct software_node ampl = {
-> > +	.name			= "cs35l56-left",
-> > +};
-> > +
-> > +static const struct software_node ampr = {
-> > +	.name			= "cs35l56-right",
-> > +};
-> 
-> What these swnodes are for?
-> 
+Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
+---
+ Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml | 1 -
+ 1 file changed, 1 deletion(-)
 
-The two amps we are adding, not sure I entirely follow what you
-are asking here. We need the software nodes so we can name the
-amps something such that we can find them from the machine driver
-later.
+diff --git a/Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml b/Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml
+index 587baf35e4e3..d48ecd6cd5ad 100644
+--- a/Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml
++++ b/Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml
+@@ -146,7 +146,6 @@ required:
+   - reg
+   - interrupts
+   - clocks
+-  - cdns,fifo-depth
+   - cdns,fifo-width
+   - cdns,trigger-address
+   - '#address-cells'
 
-> ...
-> 
-> > +static bool cs42l43_has_sidecar(struct fwnode_handle *fwnode)
-> > +{
-> > +	static const u32 func_smart_amp = 0x1;
-> > +	struct fwnode_handle *child_fwnode, *ext_fwnode;
-> > +	unsigned int val;
-> > +	u32 function;
-> > +	int ret;
-> > +
-> > +	fwnode_for_each_child_node(fwnode, child_fwnode) {
-> > +		struct acpi_device *adev = to_acpi_device_node(child_fwnode);
-> > +
-> > +		if (!adev)
-> > +			continue;
-> > +
-> > +		ret = acpi_get_local_address(adev->handle, &function);
-> > +		if (ret || function != func_smart_amp) {
-> 
-> > +			fwnode_handle_put(child_fwnode);
-> 
-> Why?
-> 
+-- 
+2.44.0
 
-Ah had missed the fwnode_for_each_child will do the put itself,
-will fix that up.
-
-> > +MODULE_IMPORT_NS(GPIO_SWNODE);
-> 
-> > +
-> 
-> Stray blank line.
-> 
-
-Fair enough will remove.
-
-Thanks,
-Charles

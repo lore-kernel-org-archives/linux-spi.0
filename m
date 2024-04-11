@@ -1,76 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-001ae601.pphosted.com (mx0b-001ae601.pphosted.com [67.231.152.168])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3C5F1836D8;
-	Wed, 10 Apr 2024 20:22:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D01113CF91;
+	Thu, 11 Apr 2024 09:06:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.152.168
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712780575; cv=none; b=EWSYAMWiyvvkGL+77UTeAEvAtQ9HgjKsCevp5UhPom5o+fe5izq6gBBm9spX1B2d3JpUMYgT6BEo4TGXTwOHaTMPbuqpmj99R09yEXgP2g3hkfyCry+rzbYE0APMOGqtuIbjsE292GvXRgOay78vUQSrYj7jfYxVGwlaqwBg25k=
+	t=1712826399; cv=none; b=bf4SfkC3ju8/byfXM92SbFVw2IAQ4pGPcl9zTQlZPMIGgY9okm8PM0WOwOrSFrjHWKW/EiwbHAhG5F9bfNqbnU0Xaf30Oe3vLdhgzsIK2FJaJaHpf+TCKHo87lCldT3DihWM1KEm6g0FQQ27e5tdVBL/sJTzw42MnI+fs+brmmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712780575; c=relaxed/simple;
-	bh=zvb47o4mf8GUH8SVKa0m5GiIb1eeKuKunwVjqMtmuhk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N/WU2SLFYdPINbqqPOWlP0CF9Dzkli8br1yc/1m8bcicWCsSSOzKmh/sxO7dabVtpRV9Lnxl+1i1LKmWtCuDx8rn5TwZHGQnfpRGjS7LZtUqjNERSojjZoFnTuMjVuGCPagCuH8Qmm/CCBzFvuRlasiLUe4t5bAScihBTnKmJK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WAxFe44W; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1712826399; c=relaxed/simple;
+	bh=g9Z/t8dYQdb1h+aQuS3sfiFZ0+gR5gKxTF6GAduXUfM=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=m0++DXOGe6uulA/RcTuqfyHS8/VS9yTRogin58IH4vZKrR71A/jvOihlRKByHh0ifehoLfZWBT/HI66YzGc7Bo6ibEp0r11UlfzLJSdU0vySDX6/0VzX2xcQPXiJhhb3EB4cwVmSKzoXbzgVtD3B2xox57V67/rCbiL3G6h/vgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com; spf=pass smtp.mailfrom=opensource.cirrus.com; dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b=lwxwIUEg; arc=none smtp.client-ip=67.231.152.168
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensource.cirrus.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WAxFe44W"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 759F2C43394;
-	Wed, 10 Apr 2024 20:22:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712780575;
-	bh=zvb47o4mf8GUH8SVKa0m5GiIb1eeKuKunwVjqMtmuhk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WAxFe44Wo9BGnqrVxsazyCzHllK6MSAnUlKym5Kj51SsjK0vgNjrmieVANrt6HX+G
-	 qQLEKWx5FAWHk42/PSn8UCU0XiCsvKwv1Cq1RSNJUoLiAFYldoa/naDB8idGENz8Cn
-	 7oaS8fmWVd8LGC+mpBxWyO9BkTmLMG2xmtXojemYJ2E8ZuB5gv7BUjUJkUXZjsQuTi
-	 8hfn7TaJBDH9fQGzY4heUCmkhNs7SP6C5BcAUavExJ3xURQKb5RfB7P5FtiJsckTuB
-	 Av0L+T7ZKoZJ3/W/1a7E40itpF9Rznpyxv9yEZNFHQ9IL/FCJMS9TEDk01ZV6G6XbU
-	 BcF363w7Bc0Ug==
-Date: Wed, 10 Apr 2024 15:22:53 -0500
-From: Rob Herring <robh@kernel.org>
-To: =?iso-8859-1?Q?Th=E9o?= Lebrun <theo.lebrun@bootlin.com>
-Cc: Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	Mark Brown <broonie@kernel.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	devicetree@vger.kernel.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Tawfik Bayouk <tawfik.bayouk@mobileye.com>,
-	Vaishnav Achath <vaishnav.a@ti.com>, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
-	linux-mips@vger.kernel.org
-Subject: Re: [PATCH v3 3/9] spi: dt-bindings: cdns,qspi-nor: make
- cdns,fifo-depth optional
-Message-ID: <171278057106.1281345.946727466928284923.robh@kernel.org>
-References: <20240410-cdns-qspi-mbly-v3-0-7b7053449cf7@bootlin.com>
- <20240410-cdns-qspi-mbly-v3-3-7b7053449cf7@bootlin.com>
+	dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b="lwxwIUEg"
+Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
+	by mx0b-001ae601.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43B5naFI004518;
+	Thu, 11 Apr 2024 04:06:30 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=
+	from:to:cc:subject:date:message-id:in-reply-to:references
+	:mime-version:content-transfer-encoding:content-type; s=
+	PODMain02222019; bh=QipT1LO8OVfinJXkxYJET0u0cQqkXzki4p4BFttvsKo=; b=
+	lwxwIUEgLk1PV10KHOYpa0hTExYqLQ+2SUf3+yRGDF7RTPwkowZqjZZx0C2KNdMz
+	HfEL3qwdfLdBbJmiXDxP2R5dSaXgnktGLYoBGciLaNbIL3dGArNXJkOYTab4PyzU
+	W/AHJcY0ktmHsymC6WIUjbxommw76M0kLkrFl3NrD9ZDkOsmINfgIqsJgJfAn4CT
+	09az5rYDX1XaUGtNHfhcYLOLU6pT+SW0K/36KPJdt3YTF3vbJOUd09hX362qu1Xo
+	sbVEytpeVa4JD3y/WKZIHdL43i3NlIx9SKZk39o+LGMy/UsdHygqJqF8lVlNyUxk
+	tFWx5/gL+n0gyx4EAM/MEg==
+Received: from ediex01.ad.cirrus.com ([84.19.233.68])
+	by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 3xb2tjq0gx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 11 Apr 2024 04:06:30 -0500 (CDT)
+Received: from ediex02.ad.cirrus.com (198.61.84.81) by ediex01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 11 Apr
+ 2024 10:06:28 +0100
+Received: from ediswmail9.ad.cirrus.com (198.61.86.93) by
+ anon-ediex02.ad.cirrus.com (198.61.84.81) with Microsoft SMTP Server id
+ 15.2.1544.9 via Frontend Transport; Thu, 11 Apr 2024 10:06:28 +0100
+Received: from ediswws07.ad.cirrus.com (ediswws07.ad.cirrus.com [198.90.208.14])
+	by ediswmail9.ad.cirrus.com (Postfix) with ESMTP id 7302582024A;
+	Thu, 11 Apr 2024 09:06:28 +0000 (UTC)
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
+To: <broonie@kernel.org>, <linus.walleij@linaro.org>, <brgl@bgdev.pl>
+CC: <andy.shevchenko@gmail.com>, <bard.liao@intel.com>,
+        <linux-gpio@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+        <patches@opensource.cirrus.com>
+Subject: [PATCH v5 2/4] spi: Switch to using is_acpi_device_node() in spi_dev_set_name()
+Date: Thu, 11 Apr 2024 10:06:26 +0100
+Message-ID: <20240411090628.2436389-3-ckeepax@opensource.cirrus.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240411090628.2436389-1-ckeepax@opensource.cirrus.com>
+References: <20240411090628.2436389-1-ckeepax@opensource.cirrus.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240410-cdns-qspi-mbly-v3-3-7b7053449cf7@bootlin.com>
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: bqrTTMQeB6VtG5rBBR32TDmTiw_OSygV
+X-Proofpoint-GUID: bqrTTMQeB6VtG5rBBR32TDmTiw_OSygV
+X-Proofpoint-Spam-Reason: safe
 
+Use the more modern is_acpi_device_node() rather than checking
+ACPI_COMPANION().
 
-On Wed, 10 Apr 2024 11:29:06 +0200, Théo Lebrun wrote:
-> Make cdns,fifo-depth devicetree property optional.
-> Value can be detected at runtime.
-> 
-> Upper SRAMPARTITION register bits are read-only. Procedure to find FIFO
-> depth is therefore to write 0xFFFFFFFF and read back to get amount of
-> writeable bits.
-> 
-> Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
-> ---
->  Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml | 1 -
->  1 file changed, 1 deletion(-)
-> 
+Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+---
 
-Acked-by: Rob Herring <robh@kernel.org>
+New since v4 of the series.
+
+Thanks,
+Charles
+
+ drivers/spi/spi.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index a2f01116ba09..05b33901eaa9 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -12,6 +12,7 @@
+ #include <linux/dmaengine.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/export.h>
++#include <linux/fwnode.h>
+ #include <linux/gpio/consumer.h>
+ #include <linux/highmem.h>
+ #include <linux/idr.h>
+@@ -597,10 +598,11 @@ EXPORT_SYMBOL_GPL(spi_alloc_device);
+ 
+ static void spi_dev_set_name(struct spi_device *spi)
+ {
+-	struct acpi_device *adev = ACPI_COMPANION(&spi->dev);
++	struct device *dev = &spi->dev;
++	struct fwnode_handle *fwnode = dev_fwnode(dev);
+ 
+-	if (adev) {
+-		dev_set_name(&spi->dev, "spi-%s", acpi_dev_name(adev));
++	if (is_acpi_device_node(fwnode)) {
++		dev_set_name(dev, "spi-%s", acpi_dev_name(to_acpi_device_node(fwnode)));
+ 		return;
+ 	}
+ 
+-- 
+2.39.2
 

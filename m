@@ -1,38 +1,38 @@
 Received: from mx0b-001ae601.pphosted.com (mx0b-001ae601.pphosted.com [67.231.152.168])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3FE8664D;
-	Tue, 16 Apr 2024 10:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3118385280;
+	Tue, 16 Apr 2024 10:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.152.168
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713262160; cv=none; b=M7JvnhgTOxYGQaZl2hdYM2BsDDSDWyTX6pvOWCZwUnPvoq4jXp3ARrkjDDanJgS+waaC80YQ3zJfJqCdk9AS+V1KcGkLqSc0HwCWjdxMyuUBkjIiW5UG0ikCI5rATqU6Te8/zjMDiqPHzBjfBriMU1Eu6GCv1esGrvVXZNV+5bg=
+	t=1713262161; cv=none; b=DtDWNEanWp5dxu3Z8622ZhWqIT0eziuZPzlD3m+Y6AGzbod9r1Gz7K8Xh5nrF0FWIUuH49g/O4V4vTmL08sy06D5cf8sGMKgrZeyTbvbw7acN4z5VZ7r9Xt9vWEhDkCSVtuVAsgt+amr8jpDECGB6FfBV9wPNucLpZbhJG7E9q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713262160; c=relaxed/simple;
-	bh=7d8QTyQm0t8Rnfhnfjy0WU9F1cAQyPWJE+m3DEf+o90=;
+	s=arc-20240116; t=1713262161; c=relaxed/simple;
+	bh=YwjZ9bjEEkqnJ0RWhrU5nYGUiuB6bwh74gPwvb2Xjt0=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CmI8Riz1BoyDgX37LhE4s7nNi1yaNuSXgRL1vBd0Y9oO2Hon9HwBN3+9atceBUAz1Aeu/hU4rr3yow2AIsz+yC3vBF5zwDST71Lq79fWo/u6N59d5q1HC1mkWn5B7FoyUWvN6sobIy7IaTeB/GQmVb6jqKdQPXLXnehsh9Fy3LY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com; spf=pass smtp.mailfrom=opensource.cirrus.com; dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b=KuryvxYw; arc=none smtp.client-ip=67.231.152.168
+	 MIME-Version:Content-Type; b=E2+BSWEU0vzevi9JRrjpJpvwK6Mmj9GD6sJtiYn6+6a/7lFE14OBxt7mHb6FSn01ZUEQEMkuSy/aUTKQp9007MFxbW69kjZhsUiIJbn8AdIMFV7ujRm2E9XmmbMOXBhfNCeVKiDRc1rEQvSBQVLgaKP6XStxEk3SU/DPCeNNviM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com; spf=pass smtp.mailfrom=opensource.cirrus.com; dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b=ee/zkp7E; arc=none smtp.client-ip=67.231.152.168
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensource.cirrus.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b="KuryvxYw"
+	dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b="ee/zkp7E"
 Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
-	by mx0b-001ae601.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43G4X60H024041;
-	Tue, 16 Apr 2024 05:09:06 -0500
+	by mx0b-001ae601.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43G4X60I024041;
+	Tue, 16 Apr 2024 05:09:07 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=
 	from:to:cc:subject:date:message-id:in-reply-to:references
 	:mime-version:content-transfer-encoding:content-type; s=
-	PODMain02222019; bh=B/CISAwwleZAwjFJS0XuO+w5MFROMqr1aiiP/a2r0aA=; b=
-	KuryvxYwBANrPknEG18opg2uGjv3vBwIz8kmDIs6sVrHPux9rRpoeqFGUFi03AfZ
-	4bh3V1qPLb9GBQTYaKSmBt7yQEBVldQR5UY4thQmiTsr5nUVI4Q9AsddeVbnXV1/
-	4K/9cpcJ2kR1fwBkq/3f8KG812pumGAhzXMuDMj2RmB1RNJNmSd2FfC7p5aTK7f6
-	WKTL8/TDFd/Av15ABbCKeWFcMmyvK9rQdQNCU9Nyi9nmaLxANJqZkaybjvyZ3l2H
-	y9Z5PP0a7nbFiPNAPcOjh42QDxvxUPicVoOkDyXEGnmjLdE0w/1mtYwUG+/dpWUU
-	a0h+6k5rXamqGvZRTLpv9Q==
+	PODMain02222019; bh=VLqgZQfKs+RFz8QI4MedGFmMGIjabv2Bh0O2ni/YHG0=; b=
+	ee/zkp7EskiKCnaOkawbMjBT1GqzqQyxGhgWpLlPx+MuEenSc/r1MdfG3C3D+FMQ
+	LTDPgHML4nzYiTJ9POVvrVZp3CKBN/ec0nYncViEHnynRbqLMDI2QqG25aheYHTd
+	eBi+o3N/IH16efYVIir3px1XH7h+MbyWh4vEDPPQf7VXq2f9XKeqezKAhmdFAYbg
+	50c7YVM/boUhJ1Bj8u8ncw3wRyKtClKmNa8dsdwm2WwyPP9VZKbY4mCLhWEaGlWk
+	NHMGYFo5ekNErG+36FTRlTip6q8TcG9MWnJxwbkqGHUsmpKZLBqjIXWByjndWgcL
+	L2TNifDiNQqa8qkpkRIb3A==
 Received: from ediex02.ad.cirrus.com ([84.19.233.68])
-	by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 3xfpfhtdkv-1
+	by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 3xfpfhtdkv-2
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Apr 2024 05:09:06 -0500 (CDT)
+	Tue, 16 Apr 2024 05:09:07 -0500 (CDT)
 Received: from ediex02.ad.cirrus.com (198.61.84.81) by ediex02.ad.cirrus.com
  (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 16 Apr
@@ -41,16 +41,16 @@ Received: from ediswmail9.ad.cirrus.com (198.61.86.93) by
  anon-ediex02.ad.cirrus.com (198.61.84.81) with Microsoft SMTP Server id
  15.2.1544.9 via Frontend Transport; Tue, 16 Apr 2024 11:09:05 +0100
 Received: from ediswws07.ad.cirrus.com (ediswws07.ad.cirrus.com [198.90.208.14])
-	by ediswmail9.ad.cirrus.com (Postfix) with ESMTP id E1C1D82024A;
-	Tue, 16 Apr 2024 10:09:04 +0000 (UTC)
+	by ediswmail9.ad.cirrus.com (Postfix) with ESMTP id 09623820258;
+	Tue, 16 Apr 2024 10:09:05 +0000 (UTC)
 From: Charles Keepax <ckeepax@opensource.cirrus.com>
 To: <broonie@kernel.org>, <linus.walleij@linaro.org>, <brgl@bgdev.pl>
 CC: <andy.shevchenko@gmail.com>, <bard.liao@intel.com>,
         <linux-gpio@vger.kernel.org>, <linux-spi@vger.kernel.org>,
         <patches@opensource.cirrus.com>
-Subject: [PATCH v7 2/4] spi: Switch to using is_acpi_device_node() in spi_dev_set_name()
-Date: Tue, 16 Apr 2024 11:09:02 +0100
-Message-ID: <20240416100904.3738093-3-ckeepax@opensource.cirrus.com>
+Subject: [PATCH v7 4/4] spi: cs42l43: Add bridged cs35l56 amplifiers
+Date: Tue, 16 Apr 2024 11:09:04 +0100
+Message-ID: <20240416100904.3738093-5-ckeepax@opensource.cirrus.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240416100904.3738093-1-ckeepax@opensource.cirrus.com>
 References: <20240416100904.3738093-1-ckeepax@opensource.cirrus.com>
@@ -62,46 +62,240 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: Yr1sgpNIfLZdyJODVcbIxWkF8Ry-AmVg
-X-Proofpoint-GUID: Yr1sgpNIfLZdyJODVcbIxWkF8Ry-AmVg
+X-Proofpoint-ORIG-GUID: LZPH7xu_UclCTUwAOtyb9CfRX3fDfIf0
+X-Proofpoint-GUID: LZPH7xu_UclCTUwAOtyb9CfRX3fDfIf0
 X-Proofpoint-Spam-Reason: safe
 
-Use is_acpi_device_node() rather than checking ACPI_COMPANION(), such
-that when checking for other types of firmware node, the code can
-consistently do checks against the fwnode.
+From: Maciej Strozek <mstrozek@opensource.cirrus.com>
 
-Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+On some cs42l43 systems a couple of cs35l56 amplifiers are attached
+to the cs42l43's SPI and I2S. On Windows the cs42l43 is controlled
+by a SDCA class driver and these two amplifiers are controlled by
+firmware running on the cs42l43. However, under Linux the decision
+was made to interact with the cs42l43 directly, affording the user
+greater control over the audio system. However, this has resulted
+in an issue where these two bridged cs35l56 amplifiers are not
+populated in ACPI and must be added manually.
+
+Check for the presence of the "01fa-cirrus-sidecar-instances" property
+in the SDCA extension unit's ACPI properties to confirm the presence
+of these two amplifiers and if they exist add them manually onto the
+SPI bus.
+
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Maciej Strozek <mstrozek@opensource.cirrus.com>
 Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
 ---
 
-No changes since v6.
+Changes since v6:
+ - Use devm_add_action to free swnode
 
 Thanks,
 Charles
 
- drivers/spi/spi.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/spi/Kconfig       |   1 +
+ drivers/spi/spi-cs42l43.c | 123 ++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 120 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index a2f01116ba09..d1f82a35f2d0 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -597,10 +597,11 @@ EXPORT_SYMBOL_GPL(spi_alloc_device);
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 554664efda86..17325e0b7bd5 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -284,6 +284,7 @@ config SPI_COLDFIRE_QSPI
+ config SPI_CS42L43
+ 	tristate "Cirrus Logic CS42L43 SPI controller"
+ 	depends on MFD_CS42L43 && PINCTRL_CS42L43
++	select GPIO_SWNODE_UNDEFINED
+ 	help
+ 	  This enables support for the SPI controller inside the Cirrus Logic
+ 	  CS42L43 audio codec.
+diff --git a/drivers/spi/spi-cs42l43.c b/drivers/spi/spi-cs42l43.c
+index aabef9fc84bd..cffd9a177808 100644
+--- a/drivers/spi/spi-cs42l43.c
++++ b/drivers/spi/spi-cs42l43.c
+@@ -5,10 +5,14 @@
+ // Copyright (C) 2022-2023 Cirrus Logic, Inc. and
+ //                         Cirrus Logic International Semiconductor Ltd.
  
- static void spi_dev_set_name(struct spi_device *spi)
++#include <linux/acpi.h>
++#include <linux/array_size.h>
+ #include <linux/bits.h>
+ #include <linux/bitfield.h>
+ #include <linux/device.h>
+ #include <linux/errno.h>
++#include <linux/gpio/machine.h>
++#include <linux/gpio/property.h>
+ #include <linux/mfd/cs42l43.h>
+ #include <linux/mfd/cs42l43-regs.h>
+ #include <linux/mod_devicetable.h>
+@@ -16,6 +20,7 @@
+ #include <linux/of.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
++#include <linux/property.h>
+ #include <linux/regmap.h>
+ #include <linux/spi/spi.h>
+ #include <linux/units.h>
+@@ -39,6 +44,44 @@ static const unsigned int cs42l43_clock_divs[] = {
+ 	2, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30
+ };
+ 
++static const struct software_node ampl = {
++	.name			= "cs35l56-left",
++};
++
++static const struct software_node ampr = {
++	.name			= "cs35l56-right",
++};
++
++static struct spi_board_info ampl_info = {
++	.modalias		= "cs35l56",
++	.max_speed_hz		= 20 * HZ_PER_MHZ,
++	.chip_select		= 0,
++	.mode			= SPI_MODE_0,
++	.swnode			= &ampl,
++};
++
++static struct spi_board_info ampr_info = {
++	.modalias		= "cs35l56",
++	.max_speed_hz		= 20 * HZ_PER_MHZ,
++	.chip_select		= 1,
++	.mode			= SPI_MODE_0,
++	.swnode			= &ampr,
++};
++
++static const struct software_node cs42l43_gpiochip_swnode = {
++	.name			= "cs42l43-pinctrl",
++};
++
++static const struct software_node_ref_args cs42l43_cs_refs[] = {
++	SOFTWARE_NODE_REFERENCE(&cs42l43_gpiochip_swnode, 0, GPIO_ACTIVE_LOW),
++	SOFTWARE_NODE_REFERENCE(&swnode_gpio_undefined),
++};
++
++static const struct property_entry cs42l43_cs_props[] = {
++	PROPERTY_ENTRY_REF_ARRAY("cs-gpios", cs42l43_cs_refs),
++	{}
++};
++
+ static int cs42l43_spi_tx(struct regmap *regmap, const u8 *buf, unsigned int len)
  {
--	struct acpi_device *adev = ACPI_COMPANION(&spi->dev);
-+	struct device *dev = &spi->dev;
-+	struct fwnode_handle *fwnode = dev_fwnode(dev);
+ 	const u8 *end = buf + len;
+@@ -203,16 +246,59 @@ static size_t cs42l43_spi_max_length(struct spi_device *spi)
+ 	return CS42L43_SPI_MAX_LENGTH;
+ }
  
--	if (adev) {
--		dev_set_name(&spi->dev, "spi-%s", acpi_dev_name(adev));
-+	if (is_acpi_device_node(fwnode)) {
-+		dev_set_name(dev, "spi-%s", acpi_dev_name(to_acpi_device_node(fwnode)));
- 		return;
++static bool cs42l43_has_sidecar(struct fwnode_handle *fwnode)
++{
++	static const u32 func_smart_amp = 0x1;
++	struct fwnode_handle *child_fwnode, *ext_fwnode;
++	unsigned int val;
++	u32 function;
++	int ret;
++
++	fwnode_for_each_child_node(fwnode, child_fwnode) {
++		acpi_handle handle = ACPI_HANDLE_FWNODE(child_fwnode);
++
++		ret = acpi_get_local_address(handle, &function);
++		if (ret || function != func_smart_amp)
++			continue;
++
++		ext_fwnode = fwnode_get_named_child_node(child_fwnode,
++				"mipi-sdca-function-expansion-subproperties");
++		if (!ext_fwnode)
++			continue;
++
++		ret = fwnode_property_read_u32(ext_fwnode,
++					       "01fa-cirrus-sidecar-instances",
++					       &val);
++
++		fwnode_handle_put(ext_fwnode);
++
++		if (ret)
++			continue;
++
++		fwnode_handle_put(child_fwnode);
++
++		return !!val;
++	}
++
++	return false;
++}
++
+ static void cs42l43_release_of_node(void *data)
+ {
+ 	fwnode_handle_put(data);
+ }
+ 
++static void cs42l43_release_sw_node(void *data)
++{
++	software_node_unregister(&cs42l43_gpiochip_swnode);
++}
++
+ static int cs42l43_spi_probe(struct platform_device *pdev)
+ {
+ 	struct cs42l43 *cs42l43 = dev_get_drvdata(pdev->dev.parent);
+ 	struct cs42l43_spi *priv;
+ 	struct fwnode_handle *fwnode = dev_fwnode(cs42l43->dev);
++	bool has_sidecar = cs42l43_has_sidecar(fwnode);
+ 	int ret;
+ 
+ 	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
+@@ -266,14 +352,42 @@ static int cs42l43_spi_probe(struct platform_device *pdev)
+ 		}
  	}
  
+-	device_set_node(&priv->ctlr->dev, fwnode);
++	if (has_sidecar) {
++		ret = software_node_register(&cs42l43_gpiochip_swnode);
++		if (ret)
++			return dev_err_probe(priv->dev, ret,
++					     "Failed to register gpio swnode\n");
++
++		ret = devm_add_action(priv->dev, cs42l43_release_sw_node, NULL);
++		if (ret) {
++			software_node_unregister(&cs42l43_gpiochip_swnode);
++			return ret;
++		}
++
++		ret = device_create_managed_software_node(&priv->ctlr->dev,
++							  cs42l43_cs_props, NULL);
++		if (ret)
++			return dev_err_probe(priv->dev, ret, "Failed to add swnode\n");
++	} else {
++		device_set_node(&priv->ctlr->dev, fwnode);
++	}
+ 
+ 	ret = devm_spi_register_controller(priv->dev, priv->ctlr);
+-	if (ret) {
+-		dev_err(priv->dev, "Failed to register SPI controller: %d\n", ret);
++	if (ret)
++		return dev_err_probe(priv->dev, ret,
++				     "Failed to register SPI controller\n");
++
++	if (has_sidecar) {
++		if (!spi_new_device(priv->ctlr, &ampl_info))
++			return dev_err_probe(priv->dev, -ENODEV,
++					     "Failed to create left amp slave\n");
++
++		if (!spi_new_device(priv->ctlr, &ampr_info))
++			return dev_err_probe(priv->dev, -ENODEV,
++					     "Failed to create right amp slave\n");
+ 	}
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ static const struct platform_device_id cs42l43_spi_id_table[] = {
+@@ -291,6 +405,7 @@ static struct platform_driver cs42l43_spi_driver = {
+ };
+ module_platform_driver(cs42l43_spi_driver);
+ 
++MODULE_IMPORT_NS(GPIO_SWNODE);
+ MODULE_DESCRIPTION("CS42L43 SPI Driver");
+ MODULE_AUTHOR("Lucas Tanure <tanureal@opensource.cirrus.com>");
+ MODULE_AUTHOR("Maciej Strozek <mstrozek@opensource.cirrus.com>");
 -- 
 2.39.2
 

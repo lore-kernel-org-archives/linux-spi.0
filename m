@@ -1,50 +1,50 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD8D913C8E6;
-	Wed, 17 Apr 2024 11:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F065313CFB1;
+	Wed, 17 Apr 2024 11:03:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713351831; cv=none; b=btGUqtXXjL7MZL5Pj3nDfaolTFNd+WpmmEMU38pk3u3V//o9ceS45Tv2zlqDJ/2DLu2UZ02SuIM9Hg8lt+mBRyW6IvII/SZciyLQEZdLnQ6N2yv2HEv5Y9QsyZeMoxeYnLe0jl+tm1x+kjLE2J3Wnl94cnSxuoqbveCGtEDw3HI=
+	t=1713351832; cv=none; b=opAx4rHjd1Xu4uc4baIfG20bLFXvBpSp6TFaPrFRUu2s/3k7FIyDw1gh0Cn0cLzG5WsTpbaNxtzi2n4PkOMJRHRBQ47kGwfyhhNg6gjB4a/kDdYkTfANMcggALCy8278lors2flxBrRoINAqgxusSPQ0JzrPSUu7IVQF+rUOO0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713351831; c=relaxed/simple;
-	bh=7sawocPjOagJUQ2+8wxEYpmTin9d1vFp3+a7/mwIYfc=;
+	s=arc-20240116; t=1713351832; c=relaxed/simple;
+	bh=fTowosBJawg2jktG1ze451cVnqPzvsaV6zeLVnumwuA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G62PIwtNb1LARIY0SgQ8yYokkfpEXlO9PfljIj6CpvcU+uCPUM88K3FXAWi8fxbcpWlJqlW+LBFcQYuleQgIJf+3mTlkKqNB0P8YA4czf/6medY4vRfL8ZqqtyRnzo829ncEmtFxFxUilR2UqNr3HQolqSjVTzJzFO2dzBkVpMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C0sZTOY1; arc=none smtp.client-ip=192.198.163.19
+	 MIME-Version; b=fHCvJeH4uqM1RDsxao8/25EcbAsndmyJrgthKzF5Hs/Jxh0Rzi72DzikT7T/DwYDmkwIkutnzbrvsUU/LNTKxl9Wbd2QaMvactGZPqRlYaB9GKLk8fmiuUnrHFCIWYzOKXIoQVo8VcorJ8gWkJ7DYnOpjIaPNOvsjYekMbjChw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OOh3VPBG; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C0sZTOY1"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OOh3VPBG"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713351827; x=1744887827;
+  t=1713351829; x=1744887829;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=7sawocPjOagJUQ2+8wxEYpmTin9d1vFp3+a7/mwIYfc=;
-  b=C0sZTOY1/JUvfgi8bASZRU/le36jk/j5mQBG7xYNl0T0u5nBY0kPJlCD
-   bx4zFMbM9NGBvlCnHt57RUx30VZfiuLe1rvjMeHqIqEI/QRKxEMkoVo8Z
-   g+sgDffq5HiztoPQ45ad0/ePziqWV7KGiHGXJAN524jzeP8SZMh1zfsbD
-   hUdiORayR9rGBRC4+h0w21vQZa179LqNeArXL+CDYrgr4p+Ocbmbq7v+D
-   5PGF72zZVyFtUyvBXVtniJjmD8Ir2s8CBZ2PiM40elV7iRyVPJH9xnLOj
-   QZRQK4y1lStk6xF0kONPPqk0UOYkOqu8NU79m7QpDy0mvB+o3dWrvlhtl
+  bh=fTowosBJawg2jktG1ze451cVnqPzvsaV6zeLVnumwuA=;
+  b=OOh3VPBGlDCbF2REGLlSMNjLPdtmALVUnByowv5WNbKfjI11z1tbgcfR
+   Jjk6+iJgU3Qyn4cNhF0PuN+umt++jgoVhwqj6Xmna70sSZoYhiZLRzrtn
+   EOue2MD+CgLWM+wphGFCWWSaxFus75lvebzcetylpsVtsZrphwkxh7TF3
+   z1OMsbiICqVwqpexb2/PdXp9hdW1Wf595PGGSo9Q06TGeS9BF2ByNylsm
+   KTtU/Exg0PmHCxeot+i5P5AH+u7I41X4bnrDDpFHeKGTaXY7QZU70zdMj
+   w9OPyck67wif5TL8UVRsw+4TaA1VNa3RSQIanM5igfTsbs/L0Bwq56S/5
    g==;
-X-CSE-ConnectionGUID: ShePTBwfTkq+WEW0Sf4lqw==
-X-CSE-MsgGUID: kmEtQreqRSyVtQjTcOboOA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11046"; a="8698134"
+X-CSE-ConnectionGUID: Y72OuRhxQ3WPgMwVbpRhhA==
+X-CSE-MsgGUID: mL5UuXUKShmo6Nj0jUyrWw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11046"; a="8698171"
 X-IronPort-AV: E=Sophos;i="6.07,209,1708416000"; 
-   d="scan'208";a="8698134"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2024 04:03:40 -0700
-X-CSE-ConnectionGUID: p/Zrm9xVRU21uEXEaLnLUA==
-X-CSE-MsgGUID: RTEU5jY+TESOsi2V5D/y/A==
+   d="scan'208";a="8698171"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2024 04:03:43 -0700
+X-CSE-ConnectionGUID: WpLsJvJ1SNiayBxDZVMrRw==
+X-CSE-MsgGUID: n7HqInwdROGiMLC6JgpESw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,209,1708416000"; 
-   d="scan'208";a="27380696"
+   d="scan'208";a="22653280"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa004.jf.intel.com with ESMTP; 17 Apr 2024 04:03:37 -0700
+  by fmviesa006.fm.intel.com with ESMTP; 17 Apr 2024 04:03:40 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 655EDBCD; Wed, 17 Apr 2024 14:03:36 +0300 (EEST)
+	id 9232D134D; Wed, 17 Apr 2024 14:03:36 +0300 (EEST)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Mark Brown <broonie@kernel.org>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
@@ -55,9 +55,9 @@ Cc: Daniel Mack <daniel@zonque.org>,
 	Haojian Zhuang <haojian.zhuang@gmail.com>,
 	Robert Jarzmik <robert.jarzmik@free.fr>,
 	Russell King <linux@armlinux.org.uk>
-Subject: [PATCH v3 2/9] spi: pxa2xx: Provide num-cs for Sharp PDAs via device properties
-Date: Wed, 17 Apr 2024 13:54:29 +0300
-Message-ID: <20240417110334.2671228-3-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v3 5/9] spi: pxa2xx: Don't use "proxy" headers
+Date: Wed, 17 Apr 2024 13:54:32 +0300
+Message-ID: <20240417110334.2671228-6-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
 In-Reply-To: <20240417110334.2671228-1-andriy.shevchenko@linux.intel.com>
 References: <20240417110334.2671228-1-andriy.shevchenko@linux.intel.com>
@@ -69,87 +69,116 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Since driver can parse num-cs device property, replace platform data
-with this new approach. This pursues the following objectives:
-
-- getting rid of the public header that barely used outside of
-  the SPI subsystem (more specifically the SPI PXA2xx drivers)
-
-- making a trampoline for the driver to support non-default number
-  of the chip select pins in case the original code is going to be
-  converted to Device Tree model
-
-It's not expected to have more users in board files except this one.
+Update header inclusions to follow IWYU (Include What You Use)
+principle.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- arch/arm/mach-pxa/spitz.c | 25 ++++++++++++++++++-------
- 1 file changed, 18 insertions(+), 7 deletions(-)
+ drivers/spi/spi-pxa2xx-dma.c | 10 ++++++++--
+ drivers/spi/spi-pxa2xx-pci.c |  6 ++++++
+ drivers/spi/spi-pxa2xx.c     | 10 +++++++---
+ drivers/spi/spi-pxa2xx.h     |  3 +--
+ 4 files changed, 22 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm/mach-pxa/spitz.c b/arch/arm/mach-pxa/spitz.c
-index 318402ad685e..3c5f5a3cb480 100644
---- a/arch/arm/mach-pxa/spitz.c
-+++ b/arch/arm/mach-pxa/spitz.c
-@@ -18,10 +18,10 @@
- #include <linux/i2c.h>
- #include <linux/platform_data/i2c-pxa.h>
- #include <linux/platform_data/pca953x.h>
-+#include <linux/property.h>
+diff --git a/drivers/spi/spi-pxa2xx-dma.c b/drivers/spi/spi-pxa2xx-dma.c
+index 26416ced6505..751cb0f77b62 100644
+--- a/drivers/spi/spi-pxa2xx-dma.c
++++ b/drivers/spi/spi-pxa2xx-dma.c
+@@ -6,16 +6,22 @@
+  * Author: Mika Westerberg <mika.westerberg@linux.intel.com>
+  */
+ 
+-#include <linux/device.h>
++#include <linux/atomic.h>
++#include <linux/dev_printk.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/dmaengine.h>
++#include <linux/errno.h>
++#include <linux/irqreturn.h>
+ #include <linux/scatterlist.h>
+-#include <linux/sizes.h>
++#include <linux/string.h>
++#include <linux/types.h>
+ 
  #include <linux/spi/spi.h>
- #include <linux/spi/ads7846.h>
- #include <linux/spi/corgi_lcd.h>
--#include <linux/spi/pxa2xx_spi.h>
- #include <linux/mtd/sharpsl.h>
- #include <linux/mtd/physmap.h>
- #include <linux/input-event-codes.h>
-@@ -569,10 +569,6 @@ static struct spi_board_info spitz_spi_devices[] = {
- 	},
- };
  
--static struct pxa2xx_spi_controller spitz_spi_info = {
--	.num_chipselect	= 3,
--};
--
- static struct gpiod_lookup_table spitz_spi_gpio_table = {
- 	.dev_id = "spi2",
- 	.table = {
-@@ -583,10 +579,20 @@ static struct gpiod_lookup_table spitz_spi_gpio_table = {
- 	},
- };
+ #include "spi-pxa2xx.h"
  
-+static const struct property_entry spitz_spi_properties[] = {
-+	PROPERTY_ENTRY_U32("num-cs", 3),
-+	{ }
-+};
++struct device;
 +
-+static const struct software_node spitz_spi_node = {
-+	.properties = spitz_spi_properties,
-+};
-+
- static void __init spitz_spi_init(void)
+ static void pxa2xx_spi_dma_transfer_complete(struct driver_data *drv_data,
+ 					     bool error)
  {
- 	struct platform_device *pd;
- 	int id = 2;
-+	int err;
+diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
+index e11a613bc340..6d2efdb0e95f 100644
+--- a/drivers/spi/spi-pxa2xx-pci.c
++++ b/drivers/spi/spi-pxa2xx-pci.c
+@@ -6,9 +6,15 @@
+  * Copyright (C) 2016, 2021 Intel Corporation
+  */
+ #include <linux/clk-provider.h>
++#include <linux/device.h>
++#include <linux/err.h>
+ #include <linux/module.h>
+ #include <linux/pci.h>
+ #include <linux/platform_device.h>
++#include <linux/property.h>
++#include <linux/sprintf.h>
++#include <linux/string.h>
++#include <linux/types.h>
  
- 	if (machine_is_akita())
- 		gpiod_add_lookup_table(&akita_lcdcon_gpio_table);
-@@ -601,8 +607,13 @@ static void __init spitz_spi_init(void)
- 	if (pd == NULL) {
- 		pr_err("pxa2xx-spi: failed to allocate device id %d\n", id);
- 	} else {
--		pd->dev.platform_data = &spitz_spi_info;
--		platform_device_add(pd);
-+		err = device_add_software_node(&pd->dev, &spitz_spi_node);
-+		if (err) {
-+			platform_device_put(pd);
-+			pr_err("pxa2xx-spi: failed to add software node\n");
-+		} else {
-+			platform_device_add(pd);
-+		}
- 	}
+ #include <linux/dmaengine.h>
+ #include <linux/platform_data/dma-dw.h>
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 82633682b581..cc0e54f8d2c3 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -5,24 +5,28 @@
+  */
  
- 	spi_register_board_info(ARRAY_AND_SIZE(spitz_spi_devices));
+ #include <linux/acpi.h>
++#include <linux/atomic.h>
+ #include <linux/bitops.h>
++#include <linux/bug.h>
+ #include <linux/clk.h>
+ #include <linux/delay.h>
+ #include <linux/device.h>
+ #include <linux/dmaengine.h>
+ #include <linux/err.h>
+-#include <linux/errno.h>
+ #include <linux/gpio/consumer.h>
+ #include <linux/init.h>
+ #include <linux/interrupt.h>
++#include <linux/io.h>
+ #include <linux/ioport.h>
+-#include <linux/kernel.h>
+-#include <linux/module.h>
++#include <linux/math64.h>
++#include <linux/minmax.h>
+ #include <linux/mod_devicetable.h>
++#include <linux/module.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/property.h>
+ #include <linux/slab.h>
++#include <linux/types.h>
+ 
+ #include <linux/spi/spi.h>
+ 
+diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
+index 08296729ea80..f1097c96c50f 100644
+--- a/drivers/spi/spi-pxa2xx.h
++++ b/drivers/spi/spi-pxa2xx.h
+@@ -8,8 +8,7 @@
+ #define SPI_PXA2XX_H
+ 
+ #include <linux/dmaengine.h>
+-#include <linux/interrupt.h>
+-#include <linux/io.h>
++#include <linux/irqreturn.h>
+ #include <linux/types.h>
+ #include <linux/sizes.h>
+ 
 -- 
 2.43.0.rc1.1336.g36b5255a03ac
 

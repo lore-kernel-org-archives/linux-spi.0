@@ -1,59 +1,34 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09A413AA47;
-	Wed, 17 Apr 2024 10:47:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C675313E041
+	for <linux-spi@vger.kernel.org>; Wed, 17 Apr 2024 10:57:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713350855; cv=none; b=o6KVCqC5V266f46Y0D9+P1sKFbhwR3HOb/ycbvtPe13cuP+vd0CiRML84ontxBs+gm6wuNewZWkbatGaOUifiFHHwEe5k+5kOf+iIGlAut+KF3/gdPEiPzcfqUSyG5tTi3Gr318AR7oM5G37HjyEIGJyr+qr0lpNHN8QwzcpnWY=
+	t=1713351434; cv=none; b=NnOqpYueseNWWGD4XznC2HNrd2YLtgeEMsAlzoIadJ84uoVeDp93tISUoQE8QO+2h2r0a+AZ0PNYxNqmR9oBs8EZ7zxZq6CTJwvpttuYDv9S8aM6gya/dTZO0CnTf9/RW/MIMO9gE+I6QiYBGKDvdzNHkzPjhZd1gs2Cvltql3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713350855; c=relaxed/simple;
-	bh=z15lbw3E+MVh2E9Btp8J5lNMZuF6JooxbLbwXO8HnKw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Tny6iEaiHVljNcUn2WVv8EEyYoqSJcwAiHOSdsOZ/bNFmguelGDg2JtJKsWMFvOxYV2rNnmmU3Y9qvywLIaRjPt+x8/7xwuLskooPYBjjWMuXJk5jxeXmHJihRKLfM7lGWYQ1b3dHgYzvCcmv7KtgsS5Ph7kEQQT27OLsId+yDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Zq95OrO7; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1713351434; c=relaxed/simple;
+	bh=TVQJNskexyWKC9o6jiMZJZuK2csHqqLJe19k94aArw0=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=SLeLbpnkJ8II5pLiYW+yh8CxiwaWkAqQCrXnaKpnXaRIItiU2J9qNdh1WD2I5EgynEMSIUuAnZbjcW6dKWisI1gKgwaY+L6Sm6cp6yuq26vTIl3i7c18BnQcvD/mKSSkBYTT+S6jxleAizUR5SmT1TelIz/3wVPMxQz25BPGud4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N7nOVviz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Zq95OrO7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713350855; x=1744886855;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=z15lbw3E+MVh2E9Btp8J5lNMZuF6JooxbLbwXO8HnKw=;
-  b=Zq95OrO7FK1Hs6a75Mbn5pZUpJLmGwgAU0bvl1XiYnmgtYY9et76M2x7
-   6b5rTCnHDEWYRD/u3dNQDz5uj/Xnnfsvv88MWfNNEBULHDQqe0MeQ8rgu
-   ePIHp/zWo9onKJbhKJdWXuW10LZTQ+4Bsm/jV9P/mOz8CBLEEH/adOs/d
-   1WNx7jzF4QoOiyCK9UCu78GqaIG1V/vBv3tYEXpqZ+RDf55f/Jf7w2FmJ
-   TsYWuRDXHkzvYh66S6lh3NMX8DnpwB6QtkVfGXqja0ZJlJrA9LAWxMyjn
-   TngDVuD70ezQ2KZw+88F7436USes58yTXuryyMjBq4yd4xKzbg8LGyM9X
-   w==;
-X-CSE-ConnectionGUID: KWIxECnJQ+qFZ8Tn3wFmwQ==
-X-CSE-MsgGUID: 23rsJ8vDTVOCEuqaVhaLNg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11046"; a="11777157"
-X-IronPort-AV: E=Sophos;i="6.07,209,1708416000"; 
-   d="scan'208";a="11777157"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2024 03:47:34 -0700
-X-CSE-ConnectionGUID: pUescb3cRMCFXivxEZAC9Q==
-X-CSE-MsgGUID: FzK+3X84Swuuq6G/CDyoTg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,209,1708416000"; 
-   d="scan'208";a="22465156"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa010.jf.intel.com with ESMTP; 17 Apr 2024 03:47:32 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 1850F491; Wed, 17 Apr 2024 13:47:31 +0300 (EEST)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Yang Yingliang <yangyingliang@huawei.com>,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Mark Brown <broonie@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH, resend v1 1/1] spi: oc-tiny: Remove unused of_gpio.h
-Date: Wed, 17 Apr 2024 13:47:30 +0300
-Message-ID: <20240417104730.2510856-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N7nOVviz"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 9B3E9C2BD10;
+	Wed, 17 Apr 2024 10:57:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713351434;
+	bh=TVQJNskexyWKC9o6jiMZJZuK2csHqqLJe19k94aArw0=;
+	h=Subject:From:Date:To:From;
+	b=N7nOVvizsOYEWPT5oSLZcL2U7paAtUNWKPnck37GW76qeQrr5HBiRaq/oMes82nLZ
+	 Iy3LSQg8SNXqLBG6887y8rqZX6o8trATxuxHaKnQG85+EXxADQdsdlKsRwen38PUS8
+	 6Gc3BRQpoZ3xQoufybTOAMGfMZVOfcan2sNpJmkf4zy/YEF1PynF7AnQDk7OYL7+d0
+	 SrKDGZY/QR+IBplzaHHCSm/K+YSNCH0F4+HAM2rWllbFKqgN1V5c7QwqyPIksGqqwW
+	 vBJV7ecqkfDjdwjzj2Q1AhtIgGq/oRsn7l4zaE/4JaHjHwjkxVNMkyPNpgAQpNgkw3
+	 rGqieQWH1WfsA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 85A85D5B3FD;
+	Wed, 17 Apr 2024 10:57:14 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -61,28 +36,19 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <171335143450.22263.10225259082886286624.git-patchwork-housekeeping@kernel.org>
+Date: Wed, 17 Apr 2024 10:57:14 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-of_gpio.h is deprecated and subject to remove.
-The driver doesn't use it, simply remove the unused header.
+Latest series: [v1] spi: oc-tiny: Remove unused of_gpio.h (2024-04-17T10:47:30)
+  Superseding: [v1] spi: oc-tiny: Remove unused of_gpio.h (2024-02-28T19:37:31):
+    [v1,1/1] spi: oc-tiny: Remove unused of_gpio.h
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/spi/spi-oc-tiny.c | 2 --
- 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/spi/spi-oc-tiny.c b/drivers/spi/spi-oc-tiny.c
-index 6ea38f5e7d64..7d8c5cd680d1 100644
---- a/drivers/spi/spi-oc-tiny.c
-+++ b/drivers/spi/spi-oc-tiny.c
-@@ -184,8 +184,6 @@ static irqreturn_t tiny_spi_irq(int irq, void *dev)
- }
- 
- #ifdef CONFIG_OF
--#include <linux/of_gpio.h>
--
- static int tiny_spi_of_probe(struct platform_device *pdev)
- {
- 	struct tiny_spi *hw = platform_get_drvdata(pdev);
 -- 
-2.43.0.rc1.1336.g36b5255a03ac
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

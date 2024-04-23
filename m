@@ -1,39 +1,38 @@
 Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A820E5FBA6;
-	Tue, 23 Apr 2024 10:01:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF8F5FDB5;
+	Tue, 23 Apr 2024 10:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713866515; cv=none; b=IWL+mcUE1xg+nkXATJivQ24mMvBFUCGewZS7Dsn2Sxq1RTbu0A08ptNgK9p6BSkjTBp9ztk7lbV5fAnQFiP1aqFes7o6aG0UQhGMeua0OzSQXsO85UVqXkVFQxbeMHVB05Ro8MGdpHyhVVwGH+BMVQo49WyE+24KkjUpuO5qeAs=
+	t=1713866515; cv=none; b=cIoBS3Umg/UdMcQj0xJXiETGaOOIG7HAvj9vV9oHIvhhvmmKKp59+zTiYZx9rRXvzbxnmHD1KGkwKuuC9iiAq3vce7PrZVXFtn+dj1imVF26mW6i6WJUdbfwtphGOtxjHe3Qjfusez+iiMdOkyp6uapi73gjr9pehabH8coM5os=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1713866515; c=relaxed/simple;
-	bh=2Zz3RXshc8WET0P4aEvTzfn2hm0aXcIB9jA/MA1isRc=;
+	bh=vuFml2Tbieyo6tIWPbphQoCJOz5E27f346lkQPXpqDA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=uwuBFc32R/ftOojOhzCI7kdW6S/k5w93ze0jOwvSrkXC/Zm5zQjF41myM8LEYSWPGxSvI92fZvUEIz5jk2L/ERUBekE1I4398Uy7LJhvklJRtwMGjAjvN+FS9yhtVrDl7gY32AXx+Qz4ynC5x1wRRFMJ6uyrgwJBFMO2I2DZaZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=IWB+ViNj; arc=none smtp.client-ip=217.70.183.197
+	 In-Reply-To:To:Cc; b=BBMU6/oh1j1N43IeK6o7gBvgmsrJjGxPxQCGcpMIk5KCDQC/puhcoomy/fP+Iy1O/u9KYNFb7HcBQOAVAn65/Gi6XekS3Uo6cQVU/69ckOkFFBWRZrxXQuyd/iW+bolyr6/7msydM2/dGKi3QRKnmQXlg6YhNMynl+msM3yvMo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=YuTbLg8u; arc=none smtp.client-ip=217.70.183.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="IWB+ViNj"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id AB4241C0014;
-	Tue, 23 Apr 2024 10:01:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="YuTbLg8u"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 4543D1C000D;
+	Tue, 23 Apr 2024 10:01:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1713866510;
+	t=1713866511;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=69cnUQUcGYJmLIaC0THyrs7sb2kh2LjvS2li/WRvhmg=;
-	b=IWB+ViNjDlwEDhQ0mU6ufOVJejzzXLai/lEyNOE7G/lilUbSF+mSHCkCfrsekEHbnM6Q4M
-	k42SHhMZINUZJi4/55djZmTBgvXCmqf7IL2GLm1a50Zy/VE3kqhcIp3fhiAJM807Cq+YvN
-	qQksQiVEc2Lwp0vQa0v2uueqeFxeeyRXqg2/2T3+9tjb+Hdn76+NjlLQ1nbeh9nOtCcWvp
-	YY5TqkOBgeMd41f8fSJw9w5080f1fFl/SagcXgKxboEeuCn2K7KKFYFlzvIawod6r+JB6F
-	0cLbYlQ8mNvac75PwQRZLA0mva4mhSbKyOJMFNK9tIClzXqE7b7dJMaW42nIAw==
+	bh=/Ysm4DbzpqSZj84XzesirmTyGQsD5pPgqx8ZXriQXW0=;
+	b=YuTbLg8utCHFpsX8uzPncIZO3UoXEJ6hPAhIx9QypocJwztMd4Wvkh1lzBBdIXXLUD797z
+	QLoZNrmiL89sYRd5BmaTrT3fsZI0Sx+SIAsZ9CADbFzQQDmnRFW64w7KO+8lLz8arDqtjq
+	aH62QIia9RLUZPjd5i7f5IFxnf/wRq1e4cxCxKGJDzVbLfclHwxCcO1FQlfopij/JxNmx6
+	6Z0lRATv5nZ/fkrTUutfwekh4b2vbxP0vEh/NAXNs34SVS9PRfEm0udQX6i06jUalbFzCv
+	geM/2HajDCXmsUMqFDcxv/WjSo2IyM7TM9dhCwnMqQwKIOrWBdflhpQviRE1dA==
 From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Date: Tue, 23 Apr 2024 12:01:42 +0200
-Subject: [PATCH v4 3/6] spi: cadence-qspi: add early busywait to
- cqspi_wait_for_bit()
+Date: Tue, 23 Apr 2024 12:01:44 +0200
+Subject: [PATCH v4 5/6] MIPS: mobileye: eyeq5: Add SPI-NOR controller node
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -42,7 +41,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240423-cdns-qspi-mbly-v4-3-3d2a7b535ad0@bootlin.com>
+Message-Id: <20240423-cdns-qspi-mbly-v4-5-3d2a7b535ad0@bootlin.com>
 References: <20240423-cdns-qspi-mbly-v4-0-3d2a7b535ad0@bootlin.com>
 In-Reply-To: <20240423-cdns-qspi-mbly-v4-0-3d2a7b535ad0@bootlin.com>
 To: Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
@@ -60,93 +59,40 @@ Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
 X-Mailer: b4 0.13.0
 X-GND-Sasl: theo.lebrun@bootlin.com
 
-Call readl_relaxed_poll_timeout() with no sleep at the start of
-cqspi_wait_for_bit(). If its short timeout expires, a sleeping
-readl_relaxed_poll_timeout() call takes the relay.
-
-The reason is to avoid hrtimer interrupts on the system. All read
-operations are expected to take less than 100µs.
+Add Cadence Quad SPI controller node to EyeQ5 SoC devicetree.
+Octal is supported.
 
 Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
 ---
- drivers/spi/spi-cadence-quadspi.c | 31 +++++++++++++++++++++++--------
- 1 file changed, 23 insertions(+), 8 deletions(-)
+ arch/mips/boot/dts/mobileye/eyeq5.dtsi | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index a82e23526a6f..87c88ee708e4 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -120,6 +120,7 @@ struct cqspi_driver_platdata {
- /* Operation timeout value */
- #define CQSPI_TIMEOUT_MS			500
- #define CQSPI_READ_TIMEOUT_MS			10
-+#define CQSPI_BUSYWAIT_TIMEOUT_US		500
- 
- /* Runtime_pm autosuspend delay */
- #define CQSPI_AUTOSUSPEND_TIMEOUT		2000
-@@ -298,13 +299,27 @@ struct cqspi_driver_platdata {
- 
- #define CQSPI_REG_VERSAL_DMA_VAL		0x602
- 
--static int cqspi_wait_for_bit(void __iomem *reg, const u32 mask, bool clr)
-+static int cqspi_wait_for_bit(const struct cqspi_driver_platdata *ddata,
-+			      void __iomem *reg, const u32 mask, bool clr,
-+			      bool busywait)
- {
-+	u64 timeout_us = CQSPI_TIMEOUT_MS * USEC_PER_MSEC;
- 	u32 val;
- 
-+	if (busywait) {
-+		int ret = readl_relaxed_poll_timeout(reg, val,
-+						     (((clr ? ~val : val) & mask) == mask),
-+						     0, CQSPI_BUSYWAIT_TIMEOUT_US);
+diff --git a/arch/mips/boot/dts/mobileye/eyeq5.dtsi b/arch/mips/boot/dts/mobileye/eyeq5.dtsi
+index 8d4f65ec912d..1543c2b9bcb6 100644
+--- a/arch/mips/boot/dts/mobileye/eyeq5.dtsi
++++ b/arch/mips/boot/dts/mobileye/eyeq5.dtsi
+@@ -158,6 +158,21 @@ timer {
+ 				clocks = <&core0_clk>;
+ 			};
+ 		};
 +
-+		if (ret != -ETIMEDOUT)
-+			return ret;
-+
-+		timeout_us -= CQSPI_BUSYWAIT_TIMEOUT_US;
-+	}
-+
- 	return readl_relaxed_poll_timeout(reg, val,
- 					  (((clr ? ~val : val) & mask) == mask),
--					  10, CQSPI_TIMEOUT_MS * 1000);
-+					  10, timeout_us);
- }
++		ospi: spi@2100000 {
++			compatible = "mobileye,eyeq5-ospi", "cdns,qspi-nor";
++			reg = <0 0x2100000 0x0 0x1000>,
++			      <0 0x10000000 0x0 0x8000000>;
++			interrupt-parent = <&gic>;
++			interrupts = <GIC_SHARED 20 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&clocks EQ5C_DIV_OSPI>;
++			assigned-clocks = <&clocks EQ5C_DIV_OSPI>;
++			assigned-clock-rates = <167000000>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++			cdns,fifo-width = <4>;
++			cdns,trigger-address = <0x00000000>;
++		};
+ 	};
+ };
  
- static bool cqspi_is_idle(struct cqspi_st *cqspi)
-@@ -434,8 +449,8 @@ static int cqspi_exec_flash_cmd(struct cqspi_st *cqspi, unsigned int reg)
- 	writel(reg, reg_base + CQSPI_REG_CMDCTRL);
- 
- 	/* Polling for completion. */
--	ret = cqspi_wait_for_bit(reg_base + CQSPI_REG_CMDCTRL,
--				 CQSPI_REG_CMDCTRL_INPROGRESS_MASK, 1);
-+	ret = cqspi_wait_for_bit(cqspi->ddata, reg_base + CQSPI_REG_CMDCTRL,
-+				 CQSPI_REG_CMDCTRL_INPROGRESS_MASK, 1, true);
- 	if (ret) {
- 		dev_err(&cqspi->pdev->dev,
- 			"Flash command execution timed out.\n");
-@@ -790,8 +805,8 @@ static int cqspi_indirect_read_execute(struct cqspi_flash_pdata *f_pdata,
- 	}
- 
- 	/* Check indirect done status */
--	ret = cqspi_wait_for_bit(reg_base + CQSPI_REG_INDIRECTRD,
--				 CQSPI_REG_INDIRECTRD_DONE_MASK, 0);
-+	ret = cqspi_wait_for_bit(cqspi->ddata, reg_base + CQSPI_REG_INDIRECTRD,
-+				 CQSPI_REG_INDIRECTRD_DONE_MASK, 0, true);
- 	if (ret) {
- 		dev_err(dev, "Indirect read completion error (%i)\n", ret);
- 		goto failrd;
-@@ -1091,8 +1106,8 @@ static int cqspi_indirect_write_execute(struct cqspi_flash_pdata *f_pdata,
- 	}
- 
- 	/* Check indirect done status */
--	ret = cqspi_wait_for_bit(reg_base + CQSPI_REG_INDIRECTWR,
--				 CQSPI_REG_INDIRECTWR_DONE_MASK, 0);
-+	ret = cqspi_wait_for_bit(cqspi->ddata, reg_base + CQSPI_REG_INDIRECTWR,
-+				 CQSPI_REG_INDIRECTWR_DONE_MASK, 0, false);
- 	if (ret) {
- 		dev_err(dev, "Indirect write completion error (%i)\n", ret);
- 		goto failwr;
 
 -- 
 2.44.0

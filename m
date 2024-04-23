@@ -1,38 +1,36 @@
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D10677E792
-	for <linux-spi@vger.kernel.org>; Tue, 23 Apr 2024 11:35:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46222E576;
+	Tue, 23 Apr 2024 11:35:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713872151; cv=none; b=rKtOlUA17VHpVH1MxiZ+K3xn/FaAqeOInudOVsxo73TpIFAfLfKH0qX3i4x+c16/D3llWeRFVRE2DswHgn/F6ajyFHylR4wd+BWbEH7vSvoWXzoGsljqRrvsybtP5VouXxBKwCSf3nxdjMEAovjwuUR9u+igt95svpQYofRmnVw=
+	t=1713872152; cv=none; b=u4Q/RrrswW/1mK579kgYicf00xbMKEKjfdx4ZC9uA5YEZtwqAnzCCsJm7oi+/+7HTnF7r09c63EWLjzpbRg4vnsjQVPbEFlhS+O1NOD/33MHOh1DgPJyFDgjddZ6gYmIAYRPEyvX6D7W+inoIt+1Jq2NIqvy7MWCrdrQWjNdvrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713872151; c=relaxed/simple;
-	bh=9vP4mBM6tkos6CoZHwx0vDDQJ//HL3Wf+tFRftdDnPs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SrO+WQfbQJNSC8sa+/xJPBY+XwF7tQApY6cry5q6aQNeamVUYcElmC9JbOjNJoCJ+4+B/19ukmg/mj6Ld8fzrrN+domzqg26Odb55Z030FhhkOE0e59p/NguB/+qn87OCzZr1P0y/eaDK/Qlz71oGPgL0HQ7dX+Mxg7RgkcnFks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pqrs.dk; spf=pass smtp.mailfrom=pqrs.dk; dkim=pass (2048-bit key) header.d=pqrs.dk header.i=@pqrs.dk header.b=ihznQ1EJ; arc=none smtp.client-ip=91.218.175.182
+	s=arc-20240116; t=1713872152; c=relaxed/simple;
+	bh=lJt8E0U3Mk8gFwh7JvTQ5k6BmWh49nIGxdJHH7cyVEc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ct6yk8DCFxRwf035BG2y4tKPwbJJd7bRvYKzFLlBI+C6d2ITebi165a3ZmaKgDlsdReXP36lfie1/S2TcTc4i0JXSY2Eg6+kPLHdrJb6VISFhuT2h00UFuvlFn5+Or1zh6AYUMnULuw0Ua32Oz3Pm7bt28Gv1RnExmawruWF0YY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pqrs.dk; spf=pass smtp.mailfrom=pqrs.dk; dkim=pass (2048-bit key) header.d=pqrs.dk header.i=@pqrs.dk header.b=D4KlswLM; arc=none smtp.client-ip=91.218.175.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pqrs.dk
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pqrs.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pqrs.dk header.i=@pqrs.dk header.b="ihznQ1EJ"
+	dkim=pass (2048-bit key) header.d=pqrs.dk header.i=@pqrs.dk header.b="D4KlswLM"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pqrs.dk; s=key1;
-	t=1713872148;
+	t=1713872145;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ScAzNfep4eEm1vY7gR4iZr889YiTgmobWqSLElHBrnQ=;
-	b=ihznQ1EJpwJlGH9l73N+J6VA9xAPP4Qdh1bBkiIpzQvBa52c9oC3HNrG7ivZiL5+BSR51V
-	bR0d6C8k/xuXQs3OW/JENlG1ZthT18iccUP7oUlx8dKQtdYLLazsd3nVTOuGihF38H/4/h
-	CyrNzOgPuKwGY5yDd3yCGoAc37Ji+Lf8JhbRWFy2gywtVq6VgEIHoE+mPdjLG4P2ciTIyc
-	AdhtJY0jPunrinNQrtAZeVjB+gHNMJ3M18pdT6rwbm3atT2Y6h1BPmMzqjXIEeTprfmQ8H
-	tCyoLyV+ypYx2cH2xrGslHONHgl/wSOcJth93kuAqw8HjGSfpfld4homQqSc4Q==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=SeGdmR9Tag7SOUwFc4v/9fCbObSDxffUEqU54SLcBGw=;
+	b=D4KlswLM0VXPMkuJTMq35iulmEONaMwMfl8HvhVphaihApvIHqllOgFN5Y0nWva7M7lurJ
+	q4yNNV0XZVvh6doS2hT5OTxjs/h39LV0LlXkEheJcH7L1vxntdsjTZy10g0RSFlH/dP4OJ
+	V3lji1l8Nw9kb7dqL8Y0Z4eHKA7T5QdDClIqR0UC7UrLzQvpU+68jwpmdzbB0Ra7x497HW
+	2RI8kJ5IR5bcKL11KMq0lI84xnDyn/rk2ugJhBGxGalKS5Ev+NB5BdqW+ydF1mokVIkgKl
+	AIBNCwu+00UeA2MhmfGUtpiiqWejUDRzeRe1dZmVHWC6evCtvfRhFNX3OumR7A==
 From: =?utf-8?q?Alvin_=C5=A0ipraga?= <alvin@pqrs.dk>
-Date: Tue, 23 Apr 2024 13:35:31 +0200
-Subject: [PATCH 2/3] spi: dt-bindings: nxp,sc18is602: add compatible for
- SC18IS606
+Subject: [PATCH 0/3] spi: sc18is602: add support for SC18IS606
+Date: Tue, 23 Apr 2024 13:35:29 +0200
+Message-Id: <20240423-sc18is606-v1-0-094ef37d5a59@bang-olufsen.dk>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -41,9 +39,9 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240423-sc18is606-v1-2-094ef37d5a59@bang-olufsen.dk>
-References: <20240423-sc18is606-v1-0-094ef37d5a59@bang-olufsen.dk>
-In-Reply-To: <20240423-sc18is606-v1-0-094ef37d5a59@bang-olufsen.dk>
+X-B4-Tracking: v=1; b=H4sIAAGdJ2YC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDEyNj3eJkQ4vMYjMDM90UY3NTM0Pj1KQUCyMloPqCotS0zAqwWdGxtbU
+ ACtPpnVsAAAA=
 To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
  Conor Dooley <conor+dt@kernel.org>
@@ -52,39 +50,26 @@ Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
  =?utf-8?q?Alvin_=C5=A0ipraga?= <alsi@bang-olufsen.dk>
 X-Migadu-Flow: FLOW_OUT
 
-From: Alvin Šipraga <alsi@bang-olufsen.dk>
+The SC18IS606 is basically already supported by the driver, but since it
+has a larger data buffer and fewer chip selects, it deserves its own
+compatible string together with some minor modifications to the driver
+to support this.
 
-The compatible string is nxp,sc18is606. It is a functional replacement
-for the SC18IS602B with a larger data buffer, three (rather than four)
-chip selects, and lacks support for quasi-directional GPIO.
+While at it, convert the device tree bindings to YAML before adding an
+additional compatible string.
 
 Signed-off-by: Alvin Šipraga <alsi@bang-olufsen.dk>
 ---
- Documentation/devicetree/bindings/spi/nxp,sc18is602.yaml | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Alvin Šipraga (3):
+      spi: dt-bindings: nxp,sc18is602: convert binding to YAML
+      spi: dt-bindings: nxp,sc18is602: add compatible for SC18IS606
+      spi: sc18is602: add support for SC18IS606
 
-diff --git a/Documentation/devicetree/bindings/spi/nxp,sc18is602.yaml b/Documentation/devicetree/bindings/spi/nxp,sc18is602.yaml
-index 5b34fdf6148a..8fbf74b95708 100644
---- a/Documentation/devicetree/bindings/spi/nxp,sc18is602.yaml
-+++ b/Documentation/devicetree/bindings/spi/nxp,sc18is602.yaml
-@@ -4,7 +4,7 @@
- $id: http://devicetree.org/schemas/spi/nxp,sc18is602.yaml#
- $schema: http://devicetree.org/meta-schemas/core.yaml#
- 
--title: NXP SC18IS602/602B/603 I2C to SPI bridge
-+title: NXP SC18IS602/602B/603/606 I2C to SPI bridge
- 
- maintainers:
-   - Alvin Šipraga <alsi@bang-olufsen.dk>
-@@ -15,6 +15,7 @@ properties:
-       - nxp,sc18is602
-       - nxp,sc18is602b
-       - nxp,sc18is603
-+      - nxp,sc18is606
- 
-   reg:
-     maxItems: 1
-
--- 
-2.44.0
+ .../devicetree/bindings/spi/nxp,sc18is602.yaml     | 60 ++++++++++++++++++++++
+ .../devicetree/bindings/spi/spi-sc18is602.txt      | 23 ---------
+ drivers/spi/spi-sc18is602.c                        | 29 ++++++++---
+ 3 files changed, 83 insertions(+), 29 deletions(-)
+---
+base-commit: 5343a65e03e4ee9f81508032e70b547e3c9f99ed
+change-id: 20240423-sc18is606-d375613ebd82
 

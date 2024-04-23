@@ -1,167 +1,104 @@
-Received: from out-176.mta0.migadu.com (out-176.mta0.migadu.com [91.218.175.176])
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AE447C6DF
-	for <linux-spi@vger.kernel.org>; Tue, 23 Apr 2024 11:35:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50282135A6E;
+	Tue, 23 Apr 2024 13:08:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713872152; cv=none; b=BcfSZXr/XBs9ZBeJN99pY9Lt2aHRteuUZDtbKBI+A4rfRfqAc04KkmBj0cjQRKFwvCMxSepuNgnZHp/Fd5kLt4Rh4mRNwo2YOhi18KKJyuFBa7sG9v+tV3v2xjoYBblKP5aHnc+h8PL4DPgCbHaNQncjNLWByBbuD2tWPmKj/08=
+	t=1713877698; cv=none; b=g6kiTwmFkbyCc/QZr/KQnb+jw09YzqXhN/ktrFVB4xULRDeNtT6LdQbPCtbzB3eLI3VtSnnaJdDs+4E1CUm4SzOsdPxz2Kd3v9X7ourzFm8bGdbXyElzZ9PRPQ8wgbXIGTMBqPapwxjigE/4Dn3Sdx6XaO+DP3pq2gDNBPjIRGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713872152; c=relaxed/simple;
-	bh=ki//Tt205CP3YcLxLRsMRa+b8m19nQ1T9y6zr7KpK04=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=huqFRlBpNxhHogfZeVgyl/nBAM7R+FdUj1W6Q1PaMxrYpIyHTNcaJQACzqvhaB3Km3zPnV91EpUw3PESNOoPvDBUg1LfSNENAKKa+TQ7/uN2dZtkJb0f84vApjX292c5/LRDygjtigZipRa0H6xqsVC/2xk612AH4SWjmTuY4cE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pqrs.dk; spf=pass smtp.mailfrom=pqrs.dk; dkim=pass (2048-bit key) header.d=pqrs.dk header.i=@pqrs.dk header.b=AUxcy6v1; arc=none smtp.client-ip=91.218.175.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pqrs.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pqrs.dk
+	s=arc-20240116; t=1713877698; c=relaxed/simple;
+	bh=dlhH2ikJL+CjYyT5tXlg1eD1GvZPgftjtRMAdq5xhKc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=YWx2AxkgCQTkriIi3GXNJySIRH4i1CJKUUlJMrVJm6zr9G3eeQtxcR8KBu5g34g9h573Ys/Wz1Ic7VgfHprbf3rxYUzlg4dRhpwbcngksdXextZIUEwyVn0kn38K17NGPpIYHqU5Qz4PgxZzt5CwkbPkm4sFd76Vd9hxA06YYuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=DbElU/od; arc=none smtp.client-ip=217.70.183.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pqrs.dk header.i=@pqrs.dk header.b="AUxcy6v1"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pqrs.dk; s=key1;
-	t=1713872147;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="DbElU/od"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 6BFD7240002;
+	Tue, 23 Apr 2024 13:08:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1713877686;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rBFOR6K3nryIYvB1WHqkFDTsIb/yzyHQ+hBKBc86J5I=;
-	b=AUxcy6v1mcV8Q23klVD/k0SYtmUfCbYAlb5Fi/g2laDbaZ3/UcLrrAaZnglqLU8vsboOpY
-	Oz+TyFsDctq2V6EKfVQ2lYN5KtIEuexFtgGGWuKs61V4S4lkgeuyDptZwOC7gWB/hOo5PW
-	P7IvedaOTyuRnL/HxxrjKqActog+hmeIE/r1qciUiyCwHIjpPwcjZ4EajYXD2wwQda/uQI
-	z3O143bsl9prKdVvkxJ7P4Bc/dLt7750X0dbLCPHMhNeHVbcjOUT2sCxw0N3y9LAbvAiUv
-	gWk3m5GPPeEsfMiKxZTmC89CdRxw1RccWRNww0RL6DBco7l/InhCkxHx2GzglQ==
-From: =?utf-8?q?Alvin_=C5=A0ipraga?= <alvin@pqrs.dk>
-Date: Tue, 23 Apr 2024 13:35:30 +0200
-Subject: [PATCH 1/3] spi: dt-bindings: nxp,sc18is602: convert binding to
- YAML
+	bh=fkEpdkG026UGxnP+K6Y14R8MUybzKxtIX1NVxXz3z98=;
+	b=DbElU/odY8l5M8g9YDeNsim7YMAfn5f6facsnHHOshFQExqhgFztKsG8IWz97QrGxydv0j
+	U13+KtzqtZOvO+YsuFabrlIfBWZUh7bKbJwU83vgryN2U+7tyGZZd/4CN1jA9r6+1Zsuou
+	oKzkIAxED8RTiRxCyu5vVWrHW69QraZfnT0TU79tLywPPkcQQVmiy9WZ0muAG2JuR/ShII
+	oUMHYHOH7+clvPjVKNEA1l8svyYL3dwGHE3jC0CabRhsbuaQWzxxi8E1hUO3fHSMkj4CJs
+	7sJ4YKhwuhzVkSEbKvQNedoo/GajcAxkMgtAIAfl81qQXV2cACcux2R/Cg3llw==
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240423-sc18is606-v1-1-094ef37d5a59@bang-olufsen.dk>
-References: <20240423-sc18is606-v1-0-094ef37d5a59@bang-olufsen.dk>
-In-Reply-To: <20240423-sc18is606-v1-0-094ef37d5a59@bang-olufsen.dk>
-To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- =?utf-8?q?Alvin_=C5=A0ipraga?= <alsi@bang-olufsen.dk>
-X-Migadu-Flow: FLOW_OUT
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 23 Apr 2024 15:08:05 +0200
+Message-Id: <D0RIXN4JG6ZA.4W4HN68M9U6I@bootlin.com>
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Subject: Re: (subset) [PATCH v3 0/9] spi: cadence-qspi: add Mobileye EyeQ5
+ support
+Cc: "Rob Herring" <robh+dt@kernel.org>, "Krzysztof Kozlowski"
+ <krzysztof.kozlowski+dt@linaro.org>, "Conor Dooley" <conor+dt@kernel.org>,
+ "Vaishnav Achath" <vaishnav.a@ti.com>, "Thomas Bogendoerfer"
+ <tsbogend@alpha.franken.de>, "Rob Herring" <robh@kernel.org>,
+ <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-mips@vger.kernel.org>, "Vladimir
+ Kondratiev" <vladimir.kondratiev@mobileye.com>, "Gregory CLEMENT"
+ <gregory.clement@bootlin.com>, "Thomas Petazzoni"
+ <thomas.petazzoni@bootlin.com>, "Tawfik Bayouk"
+ <tawfik.bayouk@mobileye.com>
+To: "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>, "Mark Brown"
+ <broonie@kernel.org>
+X-Mailer: aerc 0.17.0
+References: <20240410-cdns-qspi-mbly-v3-0-7b7053449cf7@bootlin.com>
+ <171283699002.32012.7629247540689477794.b4-ty@kernel.org>
+ <D0QT350IJHFH.36EXE1UT9QM10@bootlin.com>
+ <ZidAefc0Ejrklopf@finisterre.sirena.org.uk>
+ <D0RF1AKWAEAE.44N64GHMV2ZY@bootlin.com>
+ <3f891794-0083-4245-bad7-518b1c48bb7c@linaro.org>
+In-Reply-To: <3f891794-0083-4245-bad7-518b1c48bb7c@linaro.org>
+X-GND-Sasl: theo.lebrun@bootlin.com
 
-From: Alvin Šipraga <alsi@bang-olufsen.dk>
+Hello,
 
-Convert the txt binding to YAML. In the example, the node name was
-changed from sc18is603@28 to spi@28 to conform with the standard
-$nodename property in the spi-controller.yaml schema.
+On Tue Apr 23, 2024 at 12:25 PM CEST, Krzysztof Kozlowski wrote:
+> On 23/04/2024 12:04, Th=C3=A9o Lebrun wrote:
+> > Hello,
+> >=20
+> > On Tue Apr 23, 2024 at 7:00 AM CEST, Mark Brown wrote:
+> >> On Mon, Apr 22, 2024 at 06:52:47PM +0200, Th=C3=A9o Lebrun wrote:
+> >>> All commits tagged "(no commit info)" do not show up in your for-next
+> >>> branch. Is that expected and is there anything I can do? There was on=
+e
+> >>> pending -Wunused-variable compiler warning to be addressed for
+> >>> example, see [0].
+> >>
+> >> Please submit any patches you'd like to see included.  If there were
+> >> outstanding issues that need fixing then fixing those prior to
+> >> submitting would be sensible.
+> >=20
+> > Seeing "Applied" followed by a list of commits, with some of those not
+> > being applied confused me.
+>
+> That's a standard output of b4 and maybe also Patchwork, if some parts
+> are applied.
 
-Make myself maintainer of this binding, since nobody else has
-volunteered themselves.
+Thanks for the pointer. I've created an issue over at b4 to see what
+people think about this matter. Current behavior is not intuitive as a
+young contributor.
 
-Signed-off-by: Alvin Šipraga <alsi@bang-olufsen.dk>
----
- .../devicetree/bindings/spi/nxp,sc18is602.yaml     | 59 ++++++++++++++++++++++
- .../devicetree/bindings/spi/spi-sc18is602.txt      | 23 ---------
- 2 files changed, 59 insertions(+), 23 deletions(-)
+See: https://github.com/mricon/b4/issues/26
 
-diff --git a/Documentation/devicetree/bindings/spi/nxp,sc18is602.yaml b/Documentation/devicetree/bindings/spi/nxp,sc18is602.yaml
-new file mode 100644
-index 000000000000..5b34fdf6148a
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/nxp,sc18is602.yaml
-@@ -0,0 +1,59 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/spi/nxp,sc18is602.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: NXP SC18IS602/602B/603 I2C to SPI bridge
-+
-+maintainers:
-+  - Alvin Šipraga <alsi@bang-olufsen.dk>
-+
-+properties:
-+  compatible:
-+    enum:
-+      - nxp,sc18is602
-+      - nxp,sc18is602b
-+      - nxp,sc18is603
-+
-+  reg:
-+    maxItems: 1
-+
-+  clock-frequency:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description:
-+      External oscillator clock frequency. Only relevant if the chip has an
-+      external oscillator (SC18IS603).
-+    default: 7372000
-+
-+required:
-+  - compatible
-+  - reg
-+
-+allOf:
-+  - $ref: spi-controller.yaml#
-+  - if:
-+      not:
-+        properties:
-+          comptaible:
-+            contains:
-+              enum:
-+                - nxp,sc18is603
-+    then:
-+      properties:
-+        clock-frequency: false
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    i2c {
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+
-+      spi@28 {
-+        compatible = "nxp,sc18is603";
-+        reg = <0x28>;
-+        clock-frequency = <14744000>;
-+      };
-+    };
-diff --git a/Documentation/devicetree/bindings/spi/spi-sc18is602.txt b/Documentation/devicetree/bindings/spi/spi-sc18is602.txt
-deleted file mode 100644
-index 02f9033270a2..000000000000
---- a/Documentation/devicetree/bindings/spi/spi-sc18is602.txt
-+++ /dev/null
-@@ -1,23 +0,0 @@
--NXP SC18IS602/SCIS603
--
--Required properties:
--	- compatible : Should be one of
--		"nxp,sc18is602"
--		"nxp,sc18is602b"
--		"nxp,sc18is603"
--	- reg: I2C bus address
--
--Optional properties:
--	- clock-frequency : external oscillator clock frequency. If not
--	  specified, the SC18IS602 default frequency (7372000) will be used.
--
--The clock-frequency property is relevant and needed only if the chip has an
--external oscillator (SC18IS603).
--
--Example:
--
--	sc18is603@28 {
--		compatible = "nxp,sc18is603";
--		reg = <0x28>;
--		clock-frequency = <14744000>;
--	}
+Regards,
 
--- 
-2.44.0
+--
+Th=C3=A9o Lebrun, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 

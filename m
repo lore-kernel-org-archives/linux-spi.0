@@ -1,81 +1,89 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2EC015AABA
-	for <linux-spi@vger.kernel.org>; Wed, 24 Apr 2024 13:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E3C015AABA;
+	Wed, 24 Apr 2024 13:58:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713966753; cv=none; b=plAfbHqo8cNOULbGLFXjR3TsfiRszQRrMBFuNCrMMwQWXFreGoIpNfU/CjjgG7fbJrS6Rf5x5WFk5mWx4blVUhYGVICMIX8CkiiDJ1dmB8efnSV9Y6exqKwDsM6JdlgQdegHz5WObIWlK3iJjtDq8PvzGq8FihtREhMULgyj5FQ=
+	t=1713967097; cv=none; b=ZO21wCkp2X7hQjxQSfpeGkSKAw7KBebHo+oC4dZ/zsBgBMot7cK4qgqfkIWm5GNXd7ASfdUlVKq7VuJqGl9BMtWDE+TvuI88zEdryJu9dPkV/LBOHy+PC0Yi/OHT6vmX0rQ/R727YJPfwZznS2z9SfkkQDss/6SYRWKv+gKYdsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713966753; c=relaxed/simple;
-	bh=KwUqZ5b3VatqNchJbtKfHK9H8iLfVlyu9gx9r7Cmz8E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NYWYNKw8jEMZaQZO1ANE6cwtfkxi5obAX6nIVVum6JPGE7yPkXMp1NxWQMBd7vsKzQQMA+iE1UzQwRQdOvezvfKwxn35aVvfgQloRIA3iyYwVqjgHOUuz+7tDk7HmCI4fDlQ01zPh8GJ8T9zgfuIxThd/39/HIfEXVkrJeXTRF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dy4DhCtd; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1713967097; c=relaxed/simple;
+	bh=Afq8vLmAE+qCCl2HmnmDP+o9JdHQk9PnlwEPI8RcoBs=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=CVVgdpJAf5ybNodZlmfIABj9ablXVK/0eIs10z3S49083b6eocp8OodoEehepbPDUl24dGa0PYuKPS1cjsChDPL7lP6OUeQm1Bwz36fuerr6zwiWi80usWh2oNPNCBzV3ThNDFWbCBO7kVhtQH26jvymlPm+n/nttHfTklhAY7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F07vCwnL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dy4DhCtd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B199C113CD;
-	Wed, 24 Apr 2024 13:52:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F07vCwnL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F01EC113CD;
+	Wed, 24 Apr 2024 13:58:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713966752;
-	bh=KwUqZ5b3VatqNchJbtKfHK9H8iLfVlyu9gx9r7Cmz8E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Dy4DhCtdlkrj5RzZRe3IZNv327ycfOEfjujqTrR91Ocuc+U4NGt1oeqvegELKRoV0
-	 rjry+r3o7Dmkfq3rFQD+3Rd+JI0CQ24Dn1HZxVyOzFn21Gfd0fLHiCL9RAuPs4NS4r
-	 vZqRcNLkmiLvnTrtZRmLWJ9yaT6D6kXRBL0tTS6nLc1lg14keVpvpsKQIAYNXKAOxt
-	 1l/LPfCjdSYVmr5VMW6w3rzExBFs8nml+6zJDmSJz3FDV8xz8S1eUw30/fjmlfs14R
-	 yrrr25Fr0XgtbHJZQTlYOBnhL/dp84YKh3qh+ch0+w9ocyJ/x0DgZJZpQRyuM0bWCS
-	 iEaTV5R/rbjRw==
-Date: Wed, 24 Apr 2024 22:52:28 +0900
+	s=k20201202; t=1713967097;
+	bh=Afq8vLmAE+qCCl2HmnmDP+o9JdHQk9PnlwEPI8RcoBs=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=F07vCwnLUDITkyHbO7sRvmeoHVumKv/tMB2rYMt21SAhH1Sio36ZjznBvnYA2aHCg
+	 D5lVguP1spjgSIl94M4ykdxT+Q9g0qXWuWgwxX6HFYNXh8ahhfxxtNGR0TJ8F91s51
+	 ssHAAkPcnH1UnAXv/n4fYugSUSIBe7BHf/qTonWOCuPlZC/ftBwqpYOFfoOuTpWejM
+	 Fma6w+IFDza+s2YfIxNknwwATDzI/bbO7r8Zo64LDentxSDAs6d99xCFjr5jEIxFav
+	 ID8jeGXcZi1pvrPgnS7mU42QI+eGvXL3TgOYAoAf/1NF5j/K/q5uTFtgy5igOjZuYL
+	 Pbk53lCF6JMTw==
 From: Mark Brown <broonie@kernel.org>
-To: Heikki Keranen <heikki.keranen@bittium.com>
-Cc: andy.shevchenko@gmail.com, linux-spi@vger.kernel.org,
-	petri.tauriainen@bittium.com
-Subject: Re: [PATCH v2] spi: mux: Fix master controller settings after mux
- select
-Message-ID: <ZikOnAPi0K20quZS@finisterre.sirena.org.uk>
-References: <ZieRYJat7Y0ISbks@surfacebook.localdomain>
- <20240424111647.81286-1-heikki.keranen@bittium.com>
+To: andi.shyti@kernel.org, krzysztof.kozlowski@linaro.org, 
+ alim.akhtar@samsung.com, Shivani Gupta <shivani07g@gmail.com>
+Cc: linux-spi@vger.kernel.org, linux-samsung-soc@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ skhan@linuxfoundation.org, javier.carrasco.cruz@gmail.com, 
+ Julia Lawall <julia.lawall@inria.fr>
+In-Reply-To: <20240418000505.731724-1-shivani07g@gmail.com>
+References: <20240418000505.731724-1-shivani07g@gmail.com>
+Subject: Re: [PATCH] spi: spi-s3c64xx.c: Remove of_node_put for auto
+ cleanup
+Message-Id: <171396709284.1797640.6026362113699687178.b4-ty@kernel.org>
+Date: Wed, 24 Apr 2024 22:58:12 +0900
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="1hdA+dkz3i/MG3aE"
-Content-Disposition: inline
-In-Reply-To: <20240424111647.81286-1-heikki.keranen@bittium.com>
-X-Cookie: TANSTAAFL
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14-dev
 
+On Thu, 18 Apr 2024 00:05:05 +0000, Shivani Gupta wrote:
+> Use the scope based of_node_put() cleanup in s3c64xx_spi_csinfo to
+> automatically release the device node with the __free() cleanup handler
+> Initialize data_np at the point of declaration for clarity of scope.
+> 
+> This change reduces the risk of memory leaks and simplifies the code by
+> removing manual node put call.
+> 
+> [...]
 
---1hdA+dkz3i/MG3aE
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Applied to
 
-On Wed, Apr 24, 2024 at 02:16:47PM +0300, Heikki Keranen wrote:
-> In some cases SPI child devices behind spi-mux require different
-> settings like: max_speed_hz, mode and bits_per_word.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-Please do not submit new versions of already applied patches, please
-submit incremental updates to the existing code.  Modifying existing
-commits creates problems for other users building on top of those
-commits so it's best practice to only change pubished git commits if
-absolutely essential.
+Thanks!
 
---1hdA+dkz3i/MG3aE
-Content-Type: application/pgp-signature; name="signature.asc"
+[1/1] spi: spi-s3c64xx.c: Remove of_node_put for auto cleanup
+      commit: abba116f601800a0c74b9a9c2c91e2eebca791c1
 
------BEGIN PGP SIGNATURE-----
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmYpDpsACgkQJNaLcl1U
-h9CgQQf/e5eu8AUFeNi5eM4P8CMi5EXmaUqujm+vL3v8MocDYBwCXFAlS+VMn3UU
-AcBh5Lcow1MwzEQIGctInAnx9LBVTxx08TFQBTYnXaB7W2uu+LMIAlcub7MfkpP9
-XvIxYrTnM17HB90tgDIQrfvBf+9CNxZiLmyyGFCMPNb9XRi5WcyPj3Ji6JdxTjnq
-kGOwOJ6M15Rr3lMV4ZhB6um+1e8npWnfc5ar/bkoF4MVaIybA5ItQ9pMWV7eLoTk
-ztfo5/+vEvwAfy0VJlEUwREp0t7S5xQNCloHSmlDoxTE7Czy+d8nkFTOd9STZuB/
-ZbZBm3/ghRNWZOLEpunRBOufhOHuHA==
-=mNRv
------END PGP SIGNATURE-----
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---1hdA+dkz3i/MG3aE--
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+

@@ -1,56 +1,56 @@
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54DDE1E880;
-	Thu, 25 Apr 2024 21:37:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DD98156255;
+	Thu, 25 Apr 2024 21:37:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714081045; cv=none; b=ROjSrdEcKXPWKdGpPKpEAMdX1PSZowRLctgLR6EyXBQw/6mf9kKD8dWrnIpWRFHj0c3B9k1o/vyk/0rRfF2QinPhWsA9gqrsVU8bdMJVQrJCqqz8pNVU+NExEsMZv9y69Sg2GBhs5Fky00L0TccJUK/kQ5ep/hooN8Hrpfa24gc=
+	t=1714081046; cv=none; b=W4uWvmFvKZZK1VTu83viqJbomiRnSZuR6jbdv3aQUk5ZriPzoLIFGLBtGDVptv2CfErbsuz7QAjN5iv5BLFkgXN+fFrtmEzkogNO4U0cSnYp9iBEVqS1FYcUfylIiNaaRazf/KaXrve9+djocy/oFsF+7YH5l0b5iyl/3iSoTsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714081045; c=relaxed/simple;
-	bh=PstmOnLB1y+SZhW8qwId6xQcDH/lYicXrI15Ug8VQX4=;
+	s=arc-20240116; t=1714081046; c=relaxed/simple;
+	bh=+VS7Pko+XUTWlrgbQJM3OxyaaIDDKdbqZYaTUvTdr2A=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=m7UuZGr8e4i3F7MsfGP/sjO14qsGwDJQKx1QPQbLAG85+ypnDE39nZWzQq7O38ahLBplyhSe3YaxcKDGQsoSYcbm5ex/xqChrYhK4YK3DcEzeDpq03yaYnO/honHaliBtBAITvAipG31pBKfo1E5NhN1RYDSkSgsBcEM3AfAgeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Ak36ax/V; arc=none smtp.client-ip=148.163.156.1
+	 MIME-Version; b=NvrSABLjx5waEHdvJ7ebmYeWWEDyLj+YvJBLXkYj8hYJa6ADlwcQCAMckif5zdOPpLuVhyGJtyMRONg7QpMvXVPG+LivuVA05P0o4M/XLNsC0DMdHhouwbmzzdQf1mz2aBmO9pGTuYIrq2T7hrfgZSht6dpPjChFRCruQtJXCBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=sUotYd49; arc=none smtp.client-ip=148.163.156.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Ak36ax/V"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 43PLRZpQ023945;
-	Thu, 25 Apr 2024 21:37:08 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="sUotYd49"
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 43PLTF8q023436;
+	Thu, 25 Apr 2024 21:37:15 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : content-transfer-encoding
- : mime-version; s=pp1; bh=vljfLK7IdmW1h+WmlMs60MBJIB+Xr90wGR2klKX6RpU=;
- b=Ak36ax/VDbcK9GhBIGMVPhy1edgiJbFugxBDNfkVGZU/Pc5S3oDUCGQI8kM9RgfX5bqa
- 4F6z5nSSqHu3ts3aChW/LvqLXPN2hmIjsPJjtyy+ySdGXGu+gFP5TyKaAEtffVArMmx3
- 9Eb65bnejXjkGnjui0z40Z4/80HFJjdqOCM7dr6kfWsIjUGHxHed4IDEwmfPBs9PwwPd
- Vvm3OQMa9o7KLK9cLslhlpIhGRHz6Yj80aNypUVXXdHGBhRj0cjynjvBUMQQBdRUtJNa
- lafZVwC9Nr9rRiX24BEtrouz4NSlPaI2vjHB/yyeUqWD06171C0th+KtfxjWV0h1xdQN ww== 
+ : mime-version; s=pp1; bh=e019qJxWGd+7tgOXf2N9kmlaOBludFeBpLUYHpyQtHc=;
+ b=sUotYd49OvZ9qZpUVDQ7R2T84LzpDfYLNpcTPHZj+Hyivy7K3mFDDOTXXySQz0LaOo0c
+ lRyoqIbHnzQKl+l8NxT72tiE8ftlmTzfbmPJBg2JAWdrLfcprexxZ4cG+iunumy/O5Q5
+ +PO3qU3ZBeGFOsQZ0Q0yGBDOY3MT6FJILfxSHpPiKaZwAXE8ngcTipeGxXvu+c20LXru
+ lKLXW5syaZ1kTdxC904K2vbiz4ONai1oWN18Meyi2eNIIksPYFoIOP3nraq+7tFxvvoM
+ GpC5b377bn5iuuTNFYdmRWgf5ndOya78gRbWibpeXaohCuu53qepxwfWI/wOiWi66xtR Dg== 
 Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xqy3qg0gc-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xqy3q80gs-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 25 Apr 2024 21:37:07 +0000
+	Thu, 25 Apr 2024 21:37:15 +0000
 Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 43PLK7O4029905;
-	Thu, 25 Apr 2024 21:37:06 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3xmr1tvck6-1
+	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 43PKfQ2A029873;
+	Thu, 25 Apr 2024 21:37:14 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3xmr1tvckk-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 25 Apr 2024 21:37:06 +0000
+	Thu, 25 Apr 2024 21:37:14 +0000
 Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 43PLb3Gc48693872
+	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 43PLbAvT62587214
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 25 Apr 2024 21:37:06 GMT
+	Thu, 25 Apr 2024 21:37:12 GMT
 Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B04F458062;
-	Thu, 25 Apr 2024 21:37:03 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id AA7D858056;
+	Thu, 25 Apr 2024 21:37:10 +0000 (GMT)
 Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0832E58050;
-	Thu, 25 Apr 2024 21:37:03 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 0621258045;
+	Thu, 25 Apr 2024 21:37:10 +0000 (GMT)
 Received: from slate16.aus.stglabs.ibm.com (unknown [9.61.133.34])
 	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 25 Apr 2024 21:37:02 +0000 (GMT)
+	Thu, 25 Apr 2024 21:37:09 +0000 (GMT)
 From: Eddie James <eajames@linux.ibm.com>
 To: linux-aspeed@lists.ozlabs.org
 Cc: eajames@linux.ibm.com, devicetree@vger.kernel.org,
@@ -58,15 +58,15 @@ Cc: eajames@linux.ibm.com, devicetree@vger.kernel.org,
         linux-spi@vger.kernel.org, linux-i2c@vger.kernel.org,
         lakshmiy@us.ibm.com, robh@kernel.org, krzk+dt@kernel.org,
         conor+dt@kernel.org, joel@jms.id.au, andrew@codeconstruct.com.au
-Subject: [PATCH v3 01/14] dt-bindings: spi: Document the IBM Power SPI controller
-Date: Thu, 25 Apr 2024 16:36:48 -0500
-Message-Id: <20240425213701.655540-2-eajames@linux.ibm.com>
+Subject: [PATCH v3 10/14] dt-bindings: i2c: i2c-fsi: Switch to yaml format
+Date: Thu, 25 Apr 2024 16:36:57 -0500
+Message-Id: <20240425213701.655540-11-eajames@linux.ibm.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240425213701.655540-1-eajames@linux.ibm.com>
 References: <20240425213701.655540-1-eajames@linux.ibm.com>
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: L2CB35zkDOgx9l7mycCD7d5qdof1u4bU
-X-Proofpoint-GUID: L2CB35zkDOgx9l7mycCD7d5qdof1u4bU
+X-Proofpoint-ORIG-GUID: N7PnNbDrtAQvnbUeJNl16DrgEq-Iy9SF
+X-Proofpoint-GUID: N7PnNbDrtAQvnbUeJNl16DrgEq-Iy9SF
 Content-Transfer-Encoding: 8bit
 X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 Precedence: bulk
@@ -78,79 +78,130 @@ MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
  definitions=2024-04-25_21,2024-04-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 spamscore=0
- clxscore=1015 mlxscore=0 bulkscore=0 priorityscore=1501 malwarescore=0
- lowpriorityscore=0 suspectscore=0 impostorscore=0 phishscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 bulkscore=0
+ suspectscore=0 malwarescore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ phishscore=0 priorityscore=1501 adultscore=0 clxscore=1015
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2404010000 definitions=main-2404250157
 
-The IBM Power chips have a basic SPI controller. Document it.
+Switch to yaml for the FSI-attached I2C controller.
 
 Signed-off-by: Eddie James <eajames@linux.ibm.com>
 ---
- .../devicetree/bindings/spi/ibm,p10-spi.yaml  | 56 +++++++++++++++++++
- 1 file changed, 56 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/ibm,p10-spi.yaml
+ .../devicetree/bindings/i2c/i2c-fsi.txt       | 40 -------------
+ .../devicetree/bindings/i2c/ibm,i2c-fsi.yaml  | 59 +++++++++++++++++++
+ 2 files changed, 59 insertions(+), 40 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/i2c/i2c-fsi.txt
+ create mode 100644 Documentation/devicetree/bindings/i2c/ibm,i2c-fsi.yaml
 
-diff --git a/Documentation/devicetree/bindings/spi/ibm,p10-spi.yaml b/Documentation/devicetree/bindings/spi/ibm,p10-spi.yaml
+diff --git a/Documentation/devicetree/bindings/i2c/i2c-fsi.txt b/Documentation/devicetree/bindings/i2c/i2c-fsi.txt
+deleted file mode 100644
+index b1be2ceb7e69..000000000000
+--- a/Documentation/devicetree/bindings/i2c/i2c-fsi.txt
++++ /dev/null
+@@ -1,40 +0,0 @@
+-Device-tree bindings for FSI-attached I2C master and busses
+------------------------------------------------------------
+-
+-Required properties:
+- - compatible = "ibm,i2c-fsi";
+- - reg = < address size >;		: The FSI CFAM address and address
+-					  space size.
+- - #address-cells = <1>;		: Number of address cells in child
+-					  nodes.
+- - #size-cells = <0>;			: Number of size cells in child nodes.
+- - child nodes				: Nodes to describe busses off the I2C
+-					  master.
+-
+-Child node required properties:
+- - reg = < port number >		: The port number on the I2C master.
+-
+-Child node optional properties:
+- - child nodes				: Nodes to describe devices on the I2C
+-					  bus.
+-
+-Examples:
+-
+-    i2c@1800 {
+-        compatible = "ibm,i2c-fsi";
+-        reg = < 0x1800 0x400 >;
+-        #address-cells = <1>;
+-        #size-cells = <0>;
+-
+-        i2c-bus@0 {
+-            reg = <0>;
+-        };
+-
+-        i2c-bus@1 {
+-            reg = <1>;
+-
+-            eeprom@50 {
+-                compatible = "vendor,dev-name";
+-            };
+-        };
+-    };
+diff --git a/Documentation/devicetree/bindings/i2c/ibm,i2c-fsi.yaml b/Documentation/devicetree/bindings/i2c/ibm,i2c-fsi.yaml
 new file mode 100644
-index 000000000000..9bf57b621c1f
+index 000000000000..473a45de1b6c
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/ibm,p10-spi.yaml
-@@ -0,0 +1,56 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++++ b/Documentation/devicetree/bindings/i2c/ibm,i2c-fsi.yaml
+@@ -0,0 +1,59 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/spi/ibm,p10-spi.yaml#
++$id: http://devicetree.org/schemas/i2c/ibm,i2c-fsi.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: IBM SPI Controller
++title: IBM FSI-attached I2C controller
 +
 +maintainers:
 +  - Eddie James <eajames@linux.ibm.com>
 +
 +description:
-+  A basic SPI controller found on IBM Power chips, accessed over FSI. This
-+  node will always be a child node of an ibm,fsi2spi node.
++  This I2C controller is an FSI CFAM engine, providing access to a number of
++  I2C busses. Therefore this node will always be a child of an FSI CFAM node;
++  see fsi.txt for details on FSI slave and CFAM nodes.
 +
 +properties:
 +  compatible:
 +    enum:
-+      - ibm,p10-spi
++      - ibm,i2c-fsi
 +
 +  reg:
-+    maxItems: 1
++    items:
++      - description: FSI slave address
 +
 +required:
 +  - compatible
 +  - reg
 +
 +allOf:
-+  - $ref: spi-controller.yaml#
++  - $ref: /schemas/i2c/i2c-controller.yaml#
 +
 +unevaluatedProperties: false
 +
 +examples:
 +  - |
-+    fsi2spi@1c00 {
-+        compatible = "ibm,fsi2spi";
-+        reg = <0x1c00 0x400>;
++    i2c@1800 {
++        compatible = "ibm,i2c-fsi";
++        reg = <0x1800 0x400>;
 +        #address-cells = <1>;
 +        #size-cells = <0>;
 +
-+        spi@0 {
-+            compatible = "ibm,p10-spi";
-+            reg = <0>;
++        i2c-bus@0 {
 +            #address-cells = <1>;
 +            #size-cells = <0>;
++            reg = <0>;
++        };
 +
-+            eeprom@0 {
-+                compatible = "atmel,at25";
-+                reg = <0>;
-+                size = <0x80000>;
-+                address-width = <24>;
-+                pagesize = <256>;
-+                spi-max-frequency = <1000000>;
++        i2c-bus@1 {
++            #address-cells = <1>;
++            #size-cells = <0>;
++            reg = <1>;
++
++            eeprom@50 {
++                compatible = "atmel,24c64";
++                reg = <0x50>;
 +            };
 +        };
 +    };

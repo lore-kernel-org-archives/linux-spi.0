@@ -1,132 +1,169 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE7B86655;
-	Mon, 29 Apr 2024 18:17:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799911779AB;
+	Mon, 29 Apr 2024 21:01:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714414629; cv=none; b=IRgHqUqbILJjsAj7SxkiuVH/uS9t77D0KOm9WSEkB/IP3cM/ILqAnIaQbpXDlVEGk0IkMdaoIC817s9G/fV0PpHCRXD1TzjN3TfPQ9AWyRe34E3ytBhAMnOQacojKBBvBbgyN3k8NkfpJnIjLWndIG5q49B/sBENxPFJoM4cfiM=
+	t=1714424513; cv=none; b=QGRHhHtlJfRApH35dw7bfrv05lphm9PC3XoCO7UGs8m/gDAiyT9J8SvUiP/+Md+SXrB8klxaG/aWir2+H1jFWYTjY5txksD9N16MitAjy9MbaklIGRTI+El82n13Nmul6lHj4xkoitDKznY4ZEPjtVRYO8tfxoW/hmnSpe23MZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714414629; c=relaxed/simple;
-	bh=KTs/zoUiuae6edwc/kqu2RFwwl4StxbktlOIiidz9wI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VZE7XY1yqF5jZNE44hifq6OXTGMZLRP0xmI9PDpCQCGy5XEOD6uMFzvi+ByPnuCgKBCXKUbcgw47V/NpYguGt7Fo+XtN7RJVxl2Zv2UzAJmRok5uJe4l4U11pRTbiX7CoOgwfLiODd8Fy3gJ7G5pcw+rMjIx833XME8eEBEFjec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AaRV4J4W; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1714424513; c=relaxed/simple;
+	bh=tJtT6SJcxygZJigtjXGpaCTFihPswhU54KabrqX2zI0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=TWRLLd7KQ/+nyzg3C73B4VGlZB4gem5Ep2DBsIjHN1IL/xxN+d3Ix5NOTkFmLHH1O04G54n0efnHQMjHqSIf+nOU4nIu5oQTUMw2F+rbxREFTCF9sITYSmuZRnGYwegsHXR0y1CeiHq3lTDkP2XD/Gl0PyYumiEOfdT08d9UCRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=jXhggTGH; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AaRV4J4W"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6A80C113CD;
-	Mon, 29 Apr 2024 18:17:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714414628;
-	bh=KTs/zoUiuae6edwc/kqu2RFwwl4StxbktlOIiidz9wI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=AaRV4J4WwE56BJrb1a7pnWvHCVi37mvSMiwZvqd2OJ2r9Xn0nWr+shOzejtptHMpJ
-	 tzl1n0xI3FBsQxbLk3Il2FAyYmn8N9Rt6sHlYmV+TZ4JdymsV4oAdeI/k8bJ13q8mB
-	 yB7pC3/URzZTb5Df740Q4fY69qSp+wjGc7cfE2S1LwzJoaBwzdebwEPU70kYFa5QWj
-	 aWjOBxQetkxdn2Ln411xP/1mbBtcpo4JA/Gf9NtKbg/avE+Ai66b18sVLIN8ClZcf3
-	 Q0HLgMRSHq9NKERVTsrbdtK88dQZVM32da2AP46tIyYZ/V8UnG3pdMEzX9RZd26r2Z
-	 mJ34PvcHMtfog==
-Message-ID: <f817d567-1b36-4c1a-aa2c-81615ac8fe76@kernel.org>
-Date: Mon, 29 Apr 2024 20:17:02 +0200
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="jXhggTGH"
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 43TL0j3I007565;
+	Mon, 29 Apr 2024 21:01:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : in-reply-to : references : content-transfer-encoding
+ : mime-version; s=pp1; bh=Y6BfD87dhIahpAAn0fI2lxisJ1uEIS/kOaJdXV3TE6A=;
+ b=jXhggTGHMMfndlCju8KyX8GgE7Ut4brvYk/qVtxXPlIB54pi+EWolflc53XP+6ET1aix
+ l6rBpFSFjU1IczGHuMa3EubYtzN0dM2OlKenBPSJYM42JcQp8tmWksE7s27jctniwgTw
+ xZZYUtSlXdj++tZY0btibR3bElHX0tZFFTj/xMGhZvE2RFN7EZ8LBzdYRAoegslw9s0L
+ fXbdQ/NG/ihj//gAZ0jw4MOlDYhjVIFx6GQDOWqeejV5QLRSPDDs95uOGhHymJwc7TCG
+ Ms6qnbYuxjjBJi68eHKIX1QuoCNMQQIIw2UetEcbMxEGS/wOon9km0077sA32rv19qBU nQ== 
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xtjy9g0fu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 29 Apr 2024 21:01:40 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 43TIWu7f022271;
+	Mon, 29 Apr 2024 21:01:38 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3xsd6mhceu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 29 Apr 2024 21:01:38 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 43TL1ZgM32703022
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 29 Apr 2024 21:01:37 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E6C2F58074;
+	Mon, 29 Apr 2024 21:01:33 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2D03758065;
+	Mon, 29 Apr 2024 21:01:33 +0000 (GMT)
+Received: from slate16.aus.stglabs.ibm.com (unknown [9.61.151.254])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 29 Apr 2024 21:01:33 +0000 (GMT)
+From: Eddie James <eajames@linux.ibm.com>
+To: linux-aspeed@lists.ozlabs.org
+Cc: eajames@linux.ibm.com, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-fsi@lists.ozlabs.org,
+        linux-spi@vger.kernel.org, linux-i2c@vger.kernel.org,
+        lakshmiy@us.ibm.com, robh@kernel.org, krzk+dt@kernel.org,
+        conor+dt@kernel.org, joel@jms.id.au, andrew@codeconstruct.com.au,
+        andi.shyti@kernel.org
+Subject: [PATCH v4 01/17] spi: dt-bindings: Document the IBM FSI-attached SPI controller
+Date: Mon, 29 Apr 2024 16:01:15 -0500
+Message-Id: <20240429210131.373487-2-eajames@linux.ibm.com>
+X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20240429210131.373487-1-eajames@linux.ibm.com>
+References: <20240429210131.373487-1-eajames@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 56vcOkUhOyuUK9TIxydtPRgtIcKh6eEV
+X-Proofpoint-GUID: 56vcOkUhOyuUK9TIxydtPRgtIcKh6eEV
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 01/14] dt-bindings: spi: Document the IBM Power SPI
- controller
-To: Eddie James <eajames@linux.ibm.com>, linux-aspeed@lists.ozlabs.org
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-fsi@lists.ozlabs.org, linux-spi@vger.kernel.org,
- linux-i2c@vger.kernel.org, lakshmiy@us.ibm.com, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, joel@jms.id.au,
- andrew@codeconstruct.com.au
-References: <20240425213701.655540-1-eajames@linux.ibm.com>
- <20240425213701.655540-2-eajames@linux.ibm.com>
- <e2b52bfb-0742-4baf-8269-86075b5cc54e@kernel.org>
- <f1c3947c-e1c8-4dac-bbf7-e9c0dc9c27e9@linux.ibm.com>
- <992317a7-2606-404c-bc62-4d181ea9e147@kernel.org>
- <b2bdae97-7cd5-4961-9cd4-1142a862d55f@linux.ibm.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <b2bdae97-7cd5-4961-9cd4-1142a862d55f@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-04-29_18,2024-04-29_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
+ malwarescore=0 mlxlogscore=999 priorityscore=1501 lowpriorityscore=0
+ mlxscore=0 bulkscore=0 phishscore=0 suspectscore=0 spamscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2404010000 definitions=main-2404290138
 
-On 29/04/2024 16:38, Eddie James wrote:
-> 
-> On 4/28/24 11:39, Krzysztof Kozlowski wrote:
->> On 26/04/2024 16:49, Eddie James wrote:
->>> On 4/26/24 01:15, Krzysztof Kozlowski wrote:
->>>> On 25/04/2024 23:36, Eddie James wrote:
->>>>> The IBM Power chips have a basic SPI controller. Document it.
->>>> Please use subject prefixes matching the subsystem. You can get them for
->>>> example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
->>>> your patch is touching.
->>>
->>> Isn't spi the right subsystem here?
->> And what prefix shall be for SPI bindings? Did you run the command or
->> just replying to disagree with me?
-> 
-> 
-> The correct prefix is either dt-bindings: spi or spi: dt-bindings. I 
-> used the former. Would you prefer I use the latter? I followed your 
+IBM Power processors have a SPI controller that can be accessed
+over FSI from a service processor. Document it.
 
-The correct is the latter, although I see now Mark stopped stripping
-dt-bindings in such case. Log is still suggesting that (git log
---oneline -- Documentation/devicetree/bindings/spi/ | grep "^[0-9a-f]\+
-spi:" | wc -l gives 370 vs 130), although I understand now different
-approach.
+Signed-off-by: Eddie James <eajames@linux.ibm.com>
+---
+Changes since v2: 
+ - Change name from ibm,p10-spi to ibm,spi-fsi for two reasons. One, this
+   matches the I2C controller binding (ibm,i2c-fsi), and two, this binding
+   is specifically for the FSI-attached SPI controllers on the P10 but
+   accessed from the service processor. P10 SPI controllers accessed from
+   the P10 would have different bindings.
+ - Fix warnings by using generic FSI parent node
+ - Fix prefix
 
-It's also mentioned here:
-https://www.kernel.org/doc/html/latest/devicetree/bindings/submitting-patches.html
+ .../devicetree/bindings/spi/ibm,spi-fsi.yaml  | 55 +++++++++++++++++++
+ 1 file changed, 55 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/ibm,spi-fsi.yaml
 
-
-Best regards,
-Krzysztof
+diff --git a/Documentation/devicetree/bindings/spi/ibm,spi-fsi.yaml b/Documentation/devicetree/bindings/spi/ibm,spi-fsi.yaml
+new file mode 100644
+index 000000000000..d7fec4c3a801
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/ibm,spi-fsi.yaml
+@@ -0,0 +1,55 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/spi/ibm,spi-fsi.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: IBM FSI-attached SPI Controller
++
++maintainers:
++  - Eddie James <eajames@linux.ibm.com>
++
++description:
++  A SPI controller found on IBM Power processors, accessed over FSI from a
++  service processor. This node will always be a child node of an ibm,fsi2spi
++  node.
++
++properties:
++  compatible:
++    enum:
++      - ibm,spi-fsi
++
++  reg:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++
++allOf:
++  - $ref: spi-controller.yaml#
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    fsi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        spi@0 {
++            compatible = "ibm,spi-fsi";
++            reg = <0>;
++            #address-cells = <1>;
++            #size-cells = <0>;
++
++            eeprom@0 {
++                compatible = "atmel,at25";
++                reg = <0>;
++                size = <0x80000>;
++                address-width = <24>;
++                pagesize = <256>;
++                spi-max-frequency = <1000000>;
++            };
++        };
++    };
+-- 
+2.39.3
 

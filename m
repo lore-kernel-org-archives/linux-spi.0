@@ -1,82 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0304211C;
-	Tue, 30 Apr 2024 11:13:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81312132808
+	for <linux-spi@vger.kernel.org>; Tue, 30 Apr 2024 11:41:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475617; cv=none; b=XF6NeDfBQ93Tyig7knxBJVN4XWAVk2sOqGo+3SPwuGomUj17GwYV/p6AE2lYrO9jaZ+dHam9zjmcSoarxTxRUnJU9Pz9sPY3D7gvAkjJ2+5A1dz+jZPu6MF5v4uQD2DcQdgYadTfsrjwpjKzGd/FsydwhymPRiwRHEYHdrDdmJE=
+	t=1714477314; cv=none; b=o/9VkmWfcZRt0pd1MTAeuNIv4PHbXvm/B39ymSD8kSY+ZZH8EAsIOiJK4ftOu/W5G6zZdbu9RLOvgYKDybt9IJr7vGndXqh3ufkmH1F5aydmx1vqLEH3gjT7BGq5UsC24S8Kst6dcksurTc3npv91jlKiT/B8dlhXiAVdcSb3yM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475617; c=relaxed/simple;
-	bh=muqIjVHzEEG31WNmMmWpy+dDISrb8zNJmjv3GCbIVe0=;
-	h=Content-Type:Date:Message-Id:Subject:Cc:From:To:References:
-	 In-Reply-To; b=sO0xokcris3Pu38VDJnZTQF+EUwFmnsfw5FdcYP4ICjpfA2yDjB0XnN1cBzYDxC8o8UPKw+OxRvIZu/eYHnUYDVt2YcLgd4u3LK3/KnAVNs+DGAz2UbF2c33jdEyDogPzOIFA6s2M8Y8MTlzvfqhMTKC+WZivh+lBmcFmp28iQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A8WKV1Ii; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1714477314; c=relaxed/simple;
+	bh=Zmt3mvVxR8/6eumvAZBZCb07XHV0s9S1SjrKXTEDONg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=MqgMARY5cnR5zTLwUBvH04KJFntYehJoVoCxgwfM0O1gzBkOa3lEiytNJxfm2EcpbOKzxznc/hLJOFnu+gAcE4N8tlvT8dPvA/Uenq35BB3mTjJv14x1l5jbafMcb93I7VRxgn3XpEHBxiodQGylYmRc9altdUfY8K771TBqah4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=PFBQx0Lc; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A8WKV1Ii"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2A1EC4AF19;
-	Tue, 30 Apr 2024 11:13:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714475617;
-	bh=muqIjVHzEEG31WNmMmWpy+dDISrb8zNJmjv3GCbIVe0=;
-	h=Date:Subject:Cc:From:To:References:In-Reply-To:From;
-	b=A8WKV1IiC2YbOETMl3IwqBVrJwEyUixq5N0/xh7CbUanUOA9PF10Z/sODAuJTZ1B7
-	 dKZDkKK72C/tIsxotGu/eQVuq0xsdtmX5MtV9EL2TWz9Me8RdWHM2hQREMeFkmO8u+
-	 ZuuEN/XBBIBymUUOgnNw/E7CWJBH7m9YOqb47x2QHJMj9/FEFguvnykzMVIbOqTCbf
-	 Nu99AxmdjhKV5NZEb765CHHOfyMWOv+G7Bm2n3J4Dt8eHR70l2eekpQxCOQVwsPCil
-	 mtfV4HTRdCgM+Mj/FSxkuxVuO2v/CO+xJFaL4wJ3jv0paUWqL/Jos1ri/krUsUEKBu
-	 L1GN5kUrOrTdA==
-Content-Type: multipart/signed;
- boundary=ae9f0f2df1a869383dbbc955fdbb73d48e8e25c89c9e6058d7bd4b04b596;
- micalg=pgp-sha384; protocol="application/pgp-signature"
-Date: Tue, 30 Apr 2024 13:13:33 +0200
-Message-Id: <D0XEVRFIP18W.2QSS5RI8KJT03@kernel.org>
-Subject: Re: [PATCH v1 1/2] dt-bindings: mtd: add sophgo spi-nor-controller
-Cc: <dlan@gentoo.org>, <linux-spi@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-riscv@lists.infradead.org>
-From: "Michael Walle" <mwalle@kernel.org>
-To: "Jingbao Qiu" <qiujingbao.dlmu@gmail.com>, <broonie@kernel.org>,
- <robh@kernel.org>, <krzysztof.kozlowski+dt@linaro.org>,
- <conor+dt@kernel.org>, <unicorn_wang@outlook.com>, <inochiama@outlook.com>,
- <paul.walmsley@sifive.com>, <palmer@dabbelt.com>, <aou@eecs.berkeley.edu>
-X-Mailer: aerc 0.16.0
-References: <20240427075426.662671-1-qiujingbao.dlmu@gmail.com>
- <20240427075426.662671-2-qiujingbao.dlmu@gmail.com>
-In-Reply-To: <20240427075426.662671-2-qiujingbao.dlmu@gmail.com>
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="PFBQx0Lc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=from:to:cc:subject:date:message-id
+	:in-reply-to:references:mime-version:content-transfer-encoding;
+	 s=k1; bh=MInQ7pWHBpWvz99BT9rM0W6PRLzDwOBqZlUusbB0xrA=; b=PFBQx0
+	LcjP1lOQmgur5cxsF4MmLzW62BCayntJYN4KnDO2hx/4ZDpKZii/2uEIF9Sscfxn
+	LbychW4mVAebCRENjb91HKlc8I3v1lzbj+e664RMGpIh7RHb/yyn5uHfi1BllnY8
+	JKFCp8aftvut1CRRGWDsxpTUmuBseaPoSfVXXFLoqZZQ+mGSUi1g+/6vBEU++D5o
+	sxLMOR67vLtttJ/NnYJ5tpJqUsoVq445SdbggPqlfECvUV3w75FLmmvVxB0HMGiQ
+	UhQrbU0OMXVgiLlqDLuEdKTe4sMVkcRzdJtNvqBy39RJugUQ6ha7TzI/reM5RYNW
+	RnMBlBWupT4CC4fA==
+Received: (qmail 2617804 invoked from network); 30 Apr 2024 13:41:45 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 30 Apr 2024 13:41:45 +0200
+X-UD-Smtp-Session: l3s3148p1@2Qu+2k4Xtuhehhrb
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: linux-spi@vger.kernel.org
+Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Mark Brown <broonie@kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 2/8] spi: fsl-lpspi: use 'time_left' variable with wait_for_completion_timeout()
+Date: Tue, 30 Apr 2024 13:41:34 +0200
+Message-ID: <20240430114142.28551-3-wsa+renesas@sang-engineering.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240430114142.28551-1-wsa+renesas@sang-engineering.com>
+References: <20240430114142.28551-1-wsa+renesas@sang-engineering.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
---ae9f0f2df1a869383dbbc955fdbb73d48e8e25c89c9e6058d7bd4b04b596
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
+There is a confusing pattern in the kernel to use a variable named 'timeout' to
+store the result of wait_for_completion_timeout() causing patterns like:
 
-Hi,
+	timeout = wait_for_completion_timeout(...)
+	if (!timeout) return -ETIMEDOUT;
 
-On Sat Apr 27, 2024 at 9:54 AM CEST, Jingbao Qiu wrote:
-> Add YAML bindings for cv1800 spi nor controller.
+with all kinds of permutations. Use 'time_left' as a variable to make the code
+self explaining.
 
-nit: SPI NOR
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+---
+ drivers/spi/spi-fsl-lpspi.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-Is this really just an SPI NOR controller? Doesn't it work with
-SPI NAND? Or in general, any memory like SPI device.
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 92a662d1b55c..aa5ed254be46 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -553,7 +553,7 @@ static int fsl_lpspi_dma_transfer(struct spi_controller *controller,
+ {
+ 	struct dma_async_tx_descriptor *desc_tx, *desc_rx;
+ 	unsigned long transfer_timeout;
+-	unsigned long timeout;
++	unsigned long time_left;
+ 	struct sg_table *tx = &transfer->tx_sg, *rx = &transfer->rx_sg;
+ 	int ret;
+ 
+@@ -594,9 +594,9 @@ static int fsl_lpspi_dma_transfer(struct spi_controller *controller,
+ 							       transfer->len);
+ 
+ 		/* Wait eDMA to finish the data transfer.*/
+-		timeout = wait_for_completion_timeout(&fsl_lpspi->dma_tx_completion,
+-						      transfer_timeout);
+-		if (!timeout) {
++		time_left = wait_for_completion_timeout(&fsl_lpspi->dma_tx_completion,
++							transfer_timeout);
++		if (!time_left) {
+ 			dev_err(fsl_lpspi->dev, "I/O Error in DMA TX\n");
+ 			dmaengine_terminate_all(controller->dma_tx);
+ 			dmaengine_terminate_all(controller->dma_rx);
+@@ -604,9 +604,9 @@ static int fsl_lpspi_dma_transfer(struct spi_controller *controller,
+ 			return -ETIMEDOUT;
+ 		}
+ 
+-		timeout = wait_for_completion_timeout(&fsl_lpspi->dma_rx_completion,
+-						      transfer_timeout);
+-		if (!timeout) {
++		time_left = wait_for_completion_timeout(&fsl_lpspi->dma_rx_completion,
++							transfer_timeout);
++		if (!time_left) {
+ 			dev_err(fsl_lpspi->dev, "I/O Error in DMA RX\n");
+ 			dmaengine_terminate_all(controller->dma_tx);
+ 			dmaengine_terminate_all(controller->dma_rx);
+-- 
+2.43.0
 
--michael
-
---ae9f0f2df1a869383dbbc955fdbb73d48e8e25c89c9e6058d7bd4b04b596
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iKgEABMJADAWIQTIVZIcOo5wfU/AngkSJzzuPgIf+AUCZjDSXRIcbXdhbGxlQGtl
-cm5lbC5vcmcACgkQEic87j4CH/iJNAGAu32BEX3H9O4Pu7etz7CVD8z8oeIH+VWu
-FhiufQ1Ev62lT1+WvRo8Ss00OwbKkTuIAYC4EmvZxvqIXaZUDHHxu8EeMSzG9jjD
-lQNZ0+rPTwQUevpVOS1HsZsQ76GPaHGSKHI=
-=ftlX
------END PGP SIGNATURE-----
-
---ae9f0f2df1a869383dbbc955fdbb73d48e8e25c89c9e6058d7bd4b04b596--

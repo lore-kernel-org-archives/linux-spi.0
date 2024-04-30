@@ -1,42 +1,42 @@
 Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81312132808
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3FE7132C3B
 	for <linux-spi@vger.kernel.org>; Tue, 30 Apr 2024 11:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714477314; cv=none; b=o/9VkmWfcZRt0pd1MTAeuNIv4PHbXvm/B39ymSD8kSY+ZZH8EAsIOiJK4ftOu/W5G6zZdbu9RLOvgYKDybt9IJr7vGndXqh3ufkmH1F5aydmx1vqLEH3gjT7BGq5UsC24S8Kst6dcksurTc3npv91jlKiT/B8dlhXiAVdcSb3yM=
+	t=1714477314; cv=none; b=OjgrRlx6amp7qYhUHHrTs44yi32I+p0Gb9deH3spwQocmSpVgXO7qLXYTJ6kW7DzFt0pJj6cvDiVOpHGuMEG6rp7gAuLA5eg49A1B8ZuhejozsIB5K3gt1JTdCKfHykX19bssiAO0gtL6fMTveZJBDqsrchI4jp25+Sf77bSzTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1714477314; c=relaxed/simple;
-	bh=Zmt3mvVxR8/6eumvAZBZCb07XHV0s9S1SjrKXTEDONg=;
+	bh=6lX6Ow8+WDkXB8QGR8oS5cwaB8Odx+W5VMP6TmmTnWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MqgMARY5cnR5zTLwUBvH04KJFntYehJoVoCxgwfM0O1gzBkOa3lEiytNJxfm2EcpbOKzxznc/hLJOFnu+gAcE4N8tlvT8dPvA/Uenq35BB3mTjJv14x1l5jbafMcb93I7VRxgn3XpEHBxiodQGylYmRc9altdUfY8K771TBqah4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=PFBQx0Lc; arc=none smtp.client-ip=194.117.254.33
+	 MIME-Version; b=qlkiP29EucpTSj4sHWuSLI372uN/qmfc6T/8JZfcFXMG83CejDMHW0fsi7KY643pl/EN06xMnH7STGD7i9mbuldw7BOi8r8mNf2BWCbn+y3/1kmAD1ALlvAbWXeoP5WfAW2u9+6VNkYYMzoLhzI5mekkDVhqpABW+WtiuB0iFw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=a1Cz8AEY; arc=none smtp.client-ip=194.117.254.33
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="PFBQx0Lc"
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="a1Cz8AEY"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	sang-engineering.com; h=from:to:cc:subject:date:message-id
 	:in-reply-to:references:mime-version:content-transfer-encoding;
-	 s=k1; bh=MInQ7pWHBpWvz99BT9rM0W6PRLzDwOBqZlUusbB0xrA=; b=PFBQx0
-	LcjP1lOQmgur5cxsF4MmLzW62BCayntJYN4KnDO2hx/4ZDpKZii/2uEIF9Sscfxn
-	LbychW4mVAebCRENjb91HKlc8I3v1lzbj+e664RMGpIh7RHb/yyn5uHfi1BllnY8
-	JKFCp8aftvut1CRRGWDsxpTUmuBseaPoSfVXXFLoqZZQ+mGSUi1g+/6vBEU++D5o
-	sxLMOR67vLtttJ/NnYJ5tpJqUsoVq445SdbggPqlfECvUV3w75FLmmvVxB0HMGiQ
-	UhQrbU0OMXVgiLlqDLuEdKTe4sMVkcRzdJtNvqBy39RJugUQ6ha7TzI/reM5RYNW
-	RnMBlBWupT4CC4fA==
-Received: (qmail 2617804 invoked from network); 30 Apr 2024 13:41:45 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 30 Apr 2024 13:41:45 +0200
-X-UD-Smtp-Session: l3s3148p1@2Qu+2k4Xtuhehhrb
+	 s=k1; bh=yUtX8ec+dY41NIYbceVd82J6yRSNmS1VfJIrMLj50Sk=; b=a1Cz8A
+	EYPrgkxSROqZth1JA3IC3tcoMIeq28Ja9BQbRljoG5aotPKjPXq9BTsMrWz08sYP
+	fAsN7Hq0o29DXBYRshFlDIxyBxkv5m84TJv8zQbzhx1YdniH8gS/M5JIAH1UFLeF
+	G7RM638uFcXPF8o3SRCMPYOiaGmjgCsKtoR7J6YXhZvXiJn/fqc/bgM2bzAXOAG9
+	f0p7QGqDsOSSPFF0KcVoB5NEX7uQwdnBwUfVT4DstrcAQ1jb85/sCuz4BnZwu3gD
+	RDqdCSjMHBksc4qM4V/cXqumlh1ECO4W3AlRw9+mPa/wxg9x4uuOh2L0XWwz9SYo
+	X7NcZAap1VTASr+w==
+Received: (qmail 2617870 invoked from network); 30 Apr 2024 13:41:47 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 30 Apr 2024 13:41:47 +0200
+X-UD-Smtp-Session: l3s3148p1@Tbzb2k4Xxuhehhrb
 From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 To: linux-spi@vger.kernel.org
 Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Mark Brown <broonie@kernel.org>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/8] spi: fsl-lpspi: use 'time_left' variable with wait_for_completion_timeout()
-Date: Tue, 30 Apr 2024 13:41:34 +0200
-Message-ID: <20240430114142.28551-3-wsa+renesas@sang-engineering.com>
+Subject: [PATCH v2 4/8] spi: pic32-sqi: use 'time_left' variable with wait_for_completion_timeout()
+Date: Tue, 30 Apr 2024 13:41:36 +0200
+Message-ID: <20240430114142.28551-5-wsa+renesas@sang-engineering.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240430114142.28551-1-wsa+renesas@sang-engineering.com>
 References: <20240430114142.28551-1-wsa+renesas@sang-engineering.com>
@@ -59,48 +59,33 @@ self explaining.
 
 Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 ---
- drivers/spi/spi-fsl-lpspi.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/spi/spi-pic32-sqi.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 92a662d1b55c..aa5ed254be46 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -553,7 +553,7 @@ static int fsl_lpspi_dma_transfer(struct spi_controller *controller,
- {
- 	struct dma_async_tx_descriptor *desc_tx, *desc_rx;
- 	unsigned long transfer_timeout;
+diff --git a/drivers/spi/spi-pic32-sqi.c b/drivers/spi/spi-pic32-sqi.c
+index 3f1e5b27776b..0031063a7e25 100644
+--- a/drivers/spi/spi-pic32-sqi.c
++++ b/drivers/spi/spi-pic32-sqi.c
+@@ -344,7 +344,7 @@ static int pic32_sqi_one_message(struct spi_controller *host,
+ 	struct spi_transfer *xfer;
+ 	struct pic32_sqi *sqi;
+ 	int ret = 0, mode;
 -	unsigned long timeout;
 +	unsigned long time_left;
- 	struct sg_table *tx = &transfer->tx_sg, *rx = &transfer->rx_sg;
- 	int ret;
+ 	u32 val;
  
-@@ -594,9 +594,9 @@ static int fsl_lpspi_dma_transfer(struct spi_controller *controller,
- 							       transfer->len);
+ 	sqi = spi_controller_get_devdata(host);
+@@ -410,8 +410,8 @@ static int pic32_sqi_one_message(struct spi_controller *host,
+ 	writel(val, sqi->regs + PESQI_BD_CTRL_REG);
  
- 		/* Wait eDMA to finish the data transfer.*/
--		timeout = wait_for_completion_timeout(&fsl_lpspi->dma_tx_completion,
--						      transfer_timeout);
--		if (!timeout) {
-+		time_left = wait_for_completion_timeout(&fsl_lpspi->dma_tx_completion,
-+							transfer_timeout);
-+		if (!time_left) {
- 			dev_err(fsl_lpspi->dev, "I/O Error in DMA TX\n");
- 			dmaengine_terminate_all(controller->dma_tx);
- 			dmaengine_terminate_all(controller->dma_rx);
-@@ -604,9 +604,9 @@ static int fsl_lpspi_dma_transfer(struct spi_controller *controller,
- 			return -ETIMEDOUT;
- 		}
- 
--		timeout = wait_for_completion_timeout(&fsl_lpspi->dma_rx_completion,
--						      transfer_timeout);
--		if (!timeout) {
-+		time_left = wait_for_completion_timeout(&fsl_lpspi->dma_rx_completion,
-+							transfer_timeout);
-+		if (!time_left) {
- 			dev_err(fsl_lpspi->dev, "I/O Error in DMA RX\n");
- 			dmaengine_terminate_all(controller->dma_tx);
- 			dmaengine_terminate_all(controller->dma_rx);
+ 	/* wait for xfer completion */
+-	timeout = wait_for_completion_timeout(&sqi->xfer_done, 5 * HZ);
+-	if (timeout == 0) {
++	time_left = wait_for_completion_timeout(&sqi->xfer_done, 5 * HZ);
++	if (time_left == 0) {
+ 		dev_err(&sqi->host->dev, "wait timedout/interrupted\n");
+ 		ret = -ETIMEDOUT;
+ 		msg->status = ret;
 -- 
 2.43.0
 

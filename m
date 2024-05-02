@@ -1,145 +1,177 @@
-Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2119.outbound.protection.partner.outlook.cn [139.219.17.119])
+Received: from CHN02-SH0-obe.outbound.protection.partner.outlook.cn (mail-sh0chn02on2095.outbound.protection.partner.outlook.cn [139.219.146.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32994824AC;
-	Thu,  2 May 2024 13:13:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.119
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E890AC8F3;
+	Thu,  2 May 2024 13:21:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.146.95
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714655624; cv=fail; b=d5dY2xxQ/a78IMKX1fI1msYXQZ4FzQTg7jDU2/K3tXVnb4QWdYHOdvhCf/P0N/B9SYHjI8Px94yHanD+nJSh1mNQt3gDATtpFcUYLju1cfs/O/Rf35jm/U99jNrqUhfyF1Fa3h1EKLPOGFZ6J0LUHgunGjCpSloZxfOJ+zqWVps=
+	t=1714656107; cv=fail; b=eJfJVFOx/maLWR9OfqWqj7f38ey8ddma2Nw86OCrQ9LUd3u6F57x5+UnGIy9da/GlIHuYWHwfWRsuIhBhm1WmHgbNKzl9/T/c6vbACJdJ96ZnHIzzbrIPZcbVltXYm2IvKqDkjzkSyVIfCtwqMKyqJXyWAJciU0j5zHSECFI3sQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714655624; c=relaxed/simple;
-	bh=Y+t4jh9ItlV5uG63DXPLk7KpWeg2fgmI3UZxxYPuXes=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ubwhmWI4TD+wvPLCWdlTwXqLoruJUJUfZTkqX25c1c6/KsUDrqMo5FC/HqRz9VSxaCcvQ1RloSD7AyEgrSzRBRC6phLM8IOH8wx1wRwm2+RsP05Rrk1wUfjBRY5LjDMwQi8heG7rwSjndMXUzw+IEK9A3w9n5DkkMq5/l50c3f4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.17.119
+	s=arc-20240116; t=1714656107; c=relaxed/simple;
+	bh=Sa7Mj290ohsbo1pEDefO/T0g83LDkHIYxLomRyhhjbo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=U5LsZGTk1wHUutnk/qmdVs5ARrlbBE2gTL+mKXTZlOKyvsVP8Kfdl+h7qodDnGJgaKZubg73ZLidgaC5pdNqw9qmrNdMTG7dEWMVCuiuGx2PTr4N2oAe/PsfCd/jF6WPwULzIzAbjag45B2kFHggOtJ+wkUlqPE6kyIxwsy1Ezc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.146.95
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=starfivetech.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=j1lpFNapH0PKYfGa/lHFalqL0Flceh1eMXthgruSZ5elSQFjJvs0MGlQyq6EUaMPKw2bGM401QHfavUwblX0Qa3ZkCU7pKSGULEWaHAAHOk19EeVas3QeDzjeU5UhojOE3mgothSjNe1TO751SkC0QY+xGfr7Gx3xJ9BHiGJQySHnBIhJTNihDX+UksbSwmM4nPPnzXIZPxplUySk6W34+yIgI+wchBRvcFdmIedVmU2szxvnGc7LrVtPyZujB9FePYKf8w4OapfJvsljKyzMYavo9QYo8UgnG6Q4Qs8+JL+J3bFPuyqjix6lqGqd09COfeNZsSOgfCeoGr4Tp8l/w==
+ b=hxbEIEUBkIRL4gPVKXKKoj19TK4InzbHB2Jbj/strm/rPsmkFJP5vtC8dJB0k4vaooaTKa58HBT91vncymV3NiuuHAhuELUfs7JjilzvNGUQ7/xmsnKuLW/SKB2AuNFHNEYi/rY7SRYWwyeU0VUSDWm1jocOie9eou9Vw6lAD++DpxqSnuSgBrC1+8D2dc2bk3rbJf0xNqXNWpE2gmiSpzUwaGOf2IA+qJR7puTV9FH4WYbq4BoQMcVQ75i8qqm3qOkTgDKgJe6oY7UV9yqkdafXos/5ieLMNzq0G5MIqhQ50XsxIR6t5oS/9016MMuWWjQKdJFsMX7+0xrXRvixRg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Y+t4jh9ItlV5uG63DXPLk7KpWeg2fgmI3UZxxYPuXes=;
- b=QjyNMtqEpWv+Uz/0X7dk7dxdnv7E9FWMUtjITbU4w55YB9Jk/WcfRAGgFikWj3BdFkjHeO7QKf0o2H8whVf+paY8B9plQhBXI2uSPFtcYqU4zaAPCKwjTyydCQjZbGCnojQFXZ1oUgd4skrFWQb2gvsn08mNVLAkuBsE6PFudui7g/D55LXPlgHcfILmTsL6MPexNkqDGM/qwnxQJBl3e87RYdK1JvZ5n2zKvYbv1tLKMsHQ5p7Yz3RKeiWOGE8NIrquVCpGUT9MTFDfw30xGHwwdykavScudXZd2Tegxpk636AbTh7wlyj1j0PQn/SXxjYxGUqQe5q7vw+mn2uHxw==
+ bh=8nUR3fTHZD3S9JUM0dPVceXYbag/qTldA54Y0UH3SEc=;
+ b=kvIKtvYl+MPpcC2OhHHIhk+J9IoLRSs6TaJVeE/p7ykD5pm41YWoHW+ZW2NYBu5oZDlDB8bAvDSfBcZYL35elQLvXrdfZyKBp9sIHR9e6pm0b1qS0ad+1hg+jP5bk+8oF4yKC5kK+9WMJjqH+5J9IKwK9ckABfcbApuwa4ljfnkZWqQwjC/9rx0AIwNjMXRrrHvD3+Z/kMVoaLczsTpc9+qBr4UaHecagXjDItq/kI/db4gy8JRQVwLJSqnoIVVq451CyYyRPWz6WY1WHwEPtvy2uDhwnoOOay6c2xFsXnMV3j+6k08KXKH6YbP34fWUfev2RU7VD6PcjKz1HcnqmQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=starfivetech.com; dmarc=pass action=none
  header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=starfivetech.com;
 Received: from ZQ4PR01MB1154.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:17::9) by ZQ4PR01MB1235.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:15::12) with Microsoft SMTP Server (version=TLS1_2,
+ (2406:e500:c550:17::9) by ZQ4PR01MB1284.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c550:14::6) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.44; Thu, 2 May
- 2024 12:58:13 +0000
+ 2024 10:48:34 +0000
 Received: from ZQ4PR01MB1154.CHNPR01.prod.partner.outlook.cn
  ([fe80::301e:ec80:4356:8b14]) by
  ZQ4PR01MB1154.CHNPR01.prod.partner.outlook.cn ([fe80::301e:ec80:4356:8b14%6])
- with mapi id 15.20.7472.044; Thu, 2 May 2024 12:58:13 +0000
-From: JiSheng Teoh <jisheng.teoh@starfivetech.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>, Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>,
-	Michal Simek <michal.simek@amd.com>, Lars-Peter Clausen <lars@metafoo.de>
-CC: Leyfoon Tan <leyfoon.tan@starfivetech.com>, "linux-spi@vger.kernel.org"
-	<linux-spi@vger.kernel.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, EngLee Teh <englee.teh@starfivetech.com>
-Subject: RE: [PATCH v2 2/2] dt-bindings: spi: spi-cadence: Add optional reset
- control
-Thread-Topic: [PATCH v2 2/2] dt-bindings: spi: spi-cadence: Add optional reset
- control
-Thread-Index: AQHanH5J1xo3ta2QXkGkfo2fF/uLg7GD3ZcAgAADf9CAAAQVgIAAAXwQ
-Date: Thu, 2 May 2024 12:58:13 +0000
-Message-ID:
- <ZQ4PR01MB1154491D456521284B3BACFBEB18A@ZQ4PR01MB1154.CHNPR01.prod.partner.outlook.cn>
+ with mapi id 15.20.7472.044; Thu, 2 May 2024 10:48:34 +0000
+From: Ji Sheng Teoh <jisheng.teoh@starfivetech.com>
+To: Mark Brown <broonie@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Michal Simek <michal.simek@amd.com>,
+	Lars-Peter Clausen <lars@metafoo.de>
+Cc: Ji Sheng Teoh <jisheng.teoh@starfivetech.com>,
+	Ley Foon Tan <leyfoon.tan@starfivetech.com>,
+	linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Eng Lee Teh <englee.teh@starfivetech.com>
+Subject: [PATCH v2 1/2] spi: spi-cadence: Add optional reset control support
+Date: Thu,  2 May 2024 18:47:59 +0800
+Message-ID: <20240502104800.3030486-2-jisheng.teoh@starfivetech.com>
+X-Mailer: git-send-email 2.43.2
+In-Reply-To: <20240502104800.3030486-1-jisheng.teoh@starfivetech.com>
 References: <20240502104800.3030486-1-jisheng.teoh@starfivetech.com>
- <20240502104800.3030486-3-jisheng.teoh@starfivetech.com>
- <89f96e06-1966-43c2-b4c4-17e1669c2566@kernel.org>
- <ZQ4PR01MB1154B6FBA361C503AC10E6B6EB18A@ZQ4PR01MB1154.CHNPR01.prod.partner.outlook.cn>
- <ea96eb15-2cd0-4f0a-8bba-8bd7f37cbbc2@kernel.org>
-In-Reply-To: <ea96eb15-2cd0-4f0a-8bba-8bd7f37cbbc2@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=starfivetech.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: ZQ4PR01MB1154:EE_|ZQ4PR01MB1235:EE_
-x-ms-office365-filtering-correlation-id: 60ba3ba4-991c-4b3e-17cd-08dc6aa786e7
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- e6e6ZNDmKCx5RyxCtrl1+saN3SEHZo7oL8PRHJCcKAXIcHrJT4o+9g1JiJs9LMyl5s3a3F37i8KYy7tiOsiSkGYYue1mNQY4NydoLb0B0Max7omNNHYRKjsPMTso6HT6HBo5S2AUYJt0GpX4HALrhHlYLzv4jSUzTb43cLjutBEyO2cj88g4Igu4nh+LuON8iEH38XkTLTKSIcU19ZjRCTUjT1RcSnZw0nLIqrKWtMMX/wgn4OXFTMiahlb2C2RClAiipO2Mvr0obsYB2XgqwFK07/lzP68bpWxqcWHUAaGiIkS5QaiAe3KkWobG3U5Po/kgZ95Lctgd61Z0LRoGIukQ8p2S7veixR0p1sK42Q++aYY8xzk9BCySnl0y0ty/o7P/2oshroMrTIL1tTMbuSt2BU1RMI500qPSt/1TC9geyVUpWzToMYtiibXNwjAOYb/+RVVcqqGxx517tQ0nNG0cqgn7QnfW407rFeUiWE7BlVVLvGU48qRRUk9rkpRLOlo+UScyJnuC5LNh/Q0X6OxBOcBcwExKDaQfP8pQrfrG/KkGV4DS9HuiEir68bbRq/QpVIyQHBlq1bGR9OUSesVG628MGdAlv9svQ/hPwTFpbDiFNOMnfPdzNsB/Jt9N
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQ4PR01MB1154.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230031)(41320700004)(1800799015)(7416005)(366007)(38070700009);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?WHRKc2NEZjMya1hub282TllnY2FZcTF0cmI4L3ovaDlDb3VtMXYxb0k5dHBq?=
- =?utf-8?B?VDdMMGZ6Y2M5S2pBVTJoMDg4ODJvWllCZFB0MG9Na0Y4YU56Q1pQcTlscnBh?=
- =?utf-8?B?Ym1oMGtkcWEwODAyVUh5K2JHSGRmVWVBMjA4UGpIMXJWVHZxOTZsSEsrZkVu?=
- =?utf-8?B?SERGNnBWQmlWWlprSDkxSGQ1U1lSeHppQVkraWFKWlRSSXdNY01UZ0JJdmZ5?=
- =?utf-8?B?SjlDeGRDRkdnd3Z6cm1keEYrWFBIbTdrbzhQb256K3NTVTJCNWJUQ2JVNWJt?=
- =?utf-8?B?TWZIeW5RakdQb05XaHFndUdMbjIzWnRVQ1NDMnlVOUZncjUxWTdycituUFo2?=
- =?utf-8?B?MmpRYkNiRmZvSzZXZ2V0NElISVo5VjREQzNCS3JwY1RKdjFtQllLQmtiaTcr?=
- =?utf-8?B?NGZHZXUxcm1zSVR4angwaXRLMUNieFgwZzA0bEdrdFpuR0toZnlVVEFhRElq?=
- =?utf-8?B?dXNPOWZRbUhMejlnQlJmN1dhdzd6M0ZrWVR0RE56c1ZRTTZDdFEwRTJhek55?=
- =?utf-8?B?QkJKSFFOU1dBT0ZBZ2tzMTcwN1JmOEs4RE5POXFGVis0WHp5QkdOcWRoRHJG?=
- =?utf-8?B?YzlzMWhZMldYOG4zaVd6MTJNOFlTTEw5OGFlSWFqN1NpcU5mQnkzZ0VoTWpC?=
- =?utf-8?B?VzdKNDZxMlp5WERzYUw2aFNLcEtiZGtwZW9GVk8yWDk5Vk1FanpJU3RVN1lQ?=
- =?utf-8?B?WEM2cVkzejc1eng4YUNuMXFIT05DSllhTWxLdVE4VkIvbWRBemlCTVNidjZ5?=
- =?utf-8?B?RnhvVnB4eGUwa05NK01OKzhJZ0FmT0N4SHJwMnA1TDVTYW15TFZTdktPMDl2?=
- =?utf-8?B?ZHNHemJFUzFRNkE4QTJlQnZKNHhIcm4rcFVmdkRyQ0g5Yjd0bklRbjJBc25i?=
- =?utf-8?B?ZFVxSXV0TUR6NzZwQk1hR0ZQU3RwRlhhNnk5VUgxQmxFTGo1bkg3Yk5UNitE?=
- =?utf-8?B?QmU4UUFDaWdEYStnemFlelE0Z1BZL3RVbjFGUmFqd2N2cW1RNUdkdHdnMWxJ?=
- =?utf-8?B?UXdnbThzYlh2bmcvWFBIdldXeEpZbWxLc1NteThPK1lOSWhVWXhNaE8rWlZw?=
- =?utf-8?B?WFZ0U1lHNUtuVW40dkRBQTc2VnI3YlBuc2NFT2FBYTRLL3NDbjA0K3lZN0dr?=
- =?utf-8?B?UGlZS3dpT0FwOWQ2Sml6dlljUmI4YXF6QzBnZm5LLzNhNXptUlNRY2Y3WDFJ?=
- =?utf-8?B?NFRZU2tzUW5sK3hNTjBINzRUQkFud3hJVHExSGhzQUNJSEV3ZURWcXowN1pa?=
- =?utf-8?B?eWg5T2pGeGNXQWNoeno5cjFOMGJFTGkvSlh6YithNEVXV3NTeFl0NWdyN1FS?=
- =?utf-8?B?YVZmWndZRHIwSjZSazZjQmhYQWdpTThCSk9vZWhUdmVXN2ZOZE5uMXg2WDBo?=
- =?utf-8?B?YkVRc1FkYUk1clJLWUxsclZUZ0lURkZ5Zkx5dXEwQWd5S3pxMjRmT0FtdDZX?=
- =?utf-8?B?VE9BODhJa3Ezd1F2bGEvL0c5VXg3OWVic3hjbkZRS1FKcFArYlVRd0xVQ2pJ?=
- =?utf-8?B?NkZQRi9nMnphelhNQWV5MjVRWjNyUElMZnZZZlNzaWF1ZWdYRytwKzFqUWh6?=
- =?utf-8?B?RGRQdVEyYUcvWTlDSURPWXA5U2MzalJDUTBJYTR0cWtEUUVpSVpucmI1UHA0?=
- =?utf-8?B?TFZiODhLK2FPeVdoOE4yUFhoWGR5U1JIaDBmVXpBc1c1M3poMnNJdzRjRDVq?=
- =?utf-8?B?M3AzL3kvSUw0UzdSMVBhdUtScXViczNMRFJnVTc0SVZTQkcyRHRUOUZqVUtW?=
- =?utf-8?B?VlpaSTJqb3E2d1FkbkZ1VXVPbmF4Rmo3RVhHdHppRkF4M3FObnpKUTFkbHds?=
- =?utf-8?B?dGFPc21QZ2MwMmFnSzNVbFJoMUJTclRqdUtuQlpJRGdiU1RMSlAxL1QzOTNM?=
- =?utf-8?B?QlJRTjYrTmVnK1pWYzNHK3pYQldCdnd2YUc0K3JYVEl4VUZvQ04xQVp4TERZ?=
- =?utf-8?B?azBrVFYwV2IvOXBlUnZWQWNsQVVtamE4blBkOHNvY2xlQVRsZHk1VmdFb040?=
- =?utf-8?B?ZnZETmxTVXFxVXBXc0UxUnJPcVRQR1ZpMUUvREF3MHZkNjNBUHUwT0JDU2xH?=
- =?utf-8?B?eG5Mb0tOdjU1czc1NEllOFRMa0h5Wk9mUnZsTTA0RWtJcjRyOEcwMkllQksy?=
- =?utf-8?B?cEdKYTFNd294S1h1Mm04dFBpNGdvMmdzK2JNZ0xrWEdITGNmeU5UTm9mNjVK?=
- =?utf-8?B?MVE9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SH0PR01CA0005.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c311:5::17) To ZQ4PR01MB1154.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c550:17::9)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: ZQ4PR01MB1154:EE_|ZQ4PR01MB1284:EE_
+X-MS-Office365-Filtering-Correlation-Id: 99ccb9fc-9e60-4e26-6b1a-08dc6a956a44
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	IIm24CYcey8ZSGgxX9j0aJ4CwuQVh8rmQdA69HZNgCOJlbDobVzI8g+nPi5JzTmVM/P+Dy00tb66Z4W3KvtJUwdLm9BwjVEDFcxJZq0HVtrFRT0ZdVGLz4t19I3JnjMk2tIh/BNFgX12uss2/TUDO5nh9XuqQ1/aK2w6PBKh6rTo0FpuK0svB6MrfsiwcAblqrrhclmBCX0K39SlEA5vJqp6NpuL7v1CskH9uwqvIUfkOj4Xwha+Qg9BvzfmNVpK65ZcMUI+bKwhwgnJxF5TUNUW3gieUuz7YfHpRYhT4p8bXf+Ggx9uzZbYSeh/I0KFBKeL5faiJcA+zg4J9DIFOjFlFicGUACBNiJmTzHT37fcXSxsBcDrduAyPkAdUWJbFWn3Dxu1NGNmWYVJmMLDzh10qpr8QzANky8WPY1OoBrCgHEys3g9VvnoRxhlVYizOQvVXzljoeeHAR+dhmlDgq5VDKe5hhXev0Pxnz9nfeCEmCl1+F4v5gWbWCYeZUBaei+YMfVX6yIkaE+nb9QmoLmUTMNeMiMyEh/alsR/YXIlD59/vFISFXaImt8bSo8WDqlJViUfiBf0+xS81iWkZW+YR+RQO4gTgtcPUVEz9OCHMVDYKkHq5aMrA7hgMVNX
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQ4PR01MB1154.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230031)(52116005)(7416005)(41320700004)(1800799015)(366007)(38350700005);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?/FUFsA/krzI7zJc90xD1SdhKtg7pbjwEYKkyTZ2ikLc56obAJUCvyKXzYqPy?=
+ =?us-ascii?Q?tob7dzW8NoTfeZMwoA5UkiK9E2ujkq07yTWJZvuJ+nBWFQ+CEuaTg1YuZgC0?=
+ =?us-ascii?Q?t3hKJgGe43gQX2YrLkLKB3DH4VSgRkZMqPpnudGxBbrLKAmcLMa9StPVv7Pe?=
+ =?us-ascii?Q?Nyrsx8xnCHus2NlASWm617TDCWpw9HfRiyu7LhZoHXWF6/7pse6Ovgp99VhS?=
+ =?us-ascii?Q?rMlpRrBnbQUert4X/mM+pG26BvLiuEnKrQbBmz7lP+yQHpqOtWfO3QWqdqHl?=
+ =?us-ascii?Q?q4nQZT+SSIn68FKuqI26bIMUVzkUlYnK9xTPM5ULim9w07P1NLCSsfxsrr/G?=
+ =?us-ascii?Q?Ese46+t3DdEJXlfPvQLGVa0yv2cHCZn4cCOOOm7l3wTDEKKA4Z805cDjnDmE?=
+ =?us-ascii?Q?doQ6edWZEWdh0DvBv9qp6LC0tMF6UqHViO5jXiAcvMQ2DAdUURKurhi310IH?=
+ =?us-ascii?Q?3WnJsdIqv7RGSdXuV362JqnAles+GnZohVSM3mGu4DZfJD/koorkjZ/Gi69k?=
+ =?us-ascii?Q?5u4gdP32QUvhNSH1YlA8qbYjwLYCiczqfsuVJb51fQqpSKxD30jB03uZqpBA?=
+ =?us-ascii?Q?11laGKduAghRkCIMOZdoUgDV+kQEtEDPAiRx3/saC5+JF84BqG6SBHmHkjni?=
+ =?us-ascii?Q?6vbVNbpYq47t0dHk8a5W5dUinEhwWgzb5Ncy2Mbg/DI128keBTCGwsWq9A8a?=
+ =?us-ascii?Q?vcQCAB/y3Xt2ChJZtwPahji9QA/ZTGRg0dA1tqGtukRptrTmoY9tXtV2h+Pj?=
+ =?us-ascii?Q?gQFuzjZTPGJuc4yv9QSk26Iel4OlKHFVehClmnYbEywoEuOyFM/cm4i2eF/0?=
+ =?us-ascii?Q?eHx1nmFRlYAlTygSprcLkgs5hOeJCQyNjqsMueR7IgKyuiPvfr2D4tQ5Asq2?=
+ =?us-ascii?Q?x7C7fuMTZuvYjJ9XBadblOFB2rnbtV1uvsxf3MqqEkqdMhtGZWsMRf097Bpu?=
+ =?us-ascii?Q?PgEjJLnNZu5sqDdTlf2bniGnegUekp78c163GfnufmUQzyKgeRaTeQwp+eHv?=
+ =?us-ascii?Q?KPN3aAnFyZr5hfnxxajtZ5f7T3rYdtceq+AsUXa8my8MohzQxiBG0CK2yf3Q?=
+ =?us-ascii?Q?PJ46yXz89hqNtzPJ1NACGyz9viOqZGf89mO8592G9XpMq+tYA85lzK0d6P5y?=
+ =?us-ascii?Q?FVBgOtDNjAen4fIFgCeSPrL0sUVENzOn4hUqH2ZzRlxEt7xOCDKNn2dFWIdf?=
+ =?us-ascii?Q?TYzc5AtvnEpQiJ5mfLZOfobO15OUAObDv0CABcT3PG0nnPHC8/ot2hk4I+EM?=
+ =?us-ascii?Q?BrgHH/ZnpT4FHlefhvUaoaXrtq4lZERkB0p240fE1TOoaRcx+wdzTKhIFgkt?=
+ =?us-ascii?Q?/h+5HpooJaV5Gi4dYMHQlrYvyD0IS5cbfPSgRiKadV4Waweo/4KuDxitTa1p?=
+ =?us-ascii?Q?VMRg+gcnlCeMzS9yQw5IhYOyWocX/E96OpwltXv10U2MjAvJ5nYF1rOtL+fn?=
+ =?us-ascii?Q?L1w2/05ccn4R0wRwOUad2EfQgIfAGRdXV7CSai0DFPDRTM7/nax/9OQOvK/Q?=
+ =?us-ascii?Q?QSvZ+a44Olon4XBftDWNCd+TANS3eTRIXT6kkxZMXwe85LrxX5mpc23C1+D2?=
+ =?us-ascii?Q?M60XpfClc68ZPT+0KZkd2Lr4D8IvMzpWokkyh4av5PlSbZNtiY93li05CBf+?=
+ =?us-ascii?Q?HDAKpEMM2E1gBjmoIeCPd00=3D?=
 X-OriginatorOrg: starfivetech.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-Network-Message-Id: 99ccb9fc-9e60-4e26-6b1a-08dc6a956a44
 X-MS-Exchange-CrossTenant-AuthSource: ZQ4PR01MB1154.CHNPR01.prod.partner.outlook.cn
-X-MS-Exchange-CrossTenant-Network-Message-Id: 60ba3ba4-991c-4b3e-17cd-08dc6aa786e7
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 May 2024 12:58:13.4807
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 May 2024 10:48:34.6666
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: WsqAAvMNrbtKCr5rS9opy3EfQDDRYTjHtSrz7kSNnmGlXE2F08dKCSf3KZO9El501AUykJjSWMT+eeP23NLXjoizn6C1Qrq2rwNrJmJSaTw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZQ4PR01MB1235
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: JnPnkIRSeKZfrlX413UrBnJDEcGfarp6JPDdr+1KGr6jlowlAQh32GWk4FpskLetSXB45oyfqdtjfQvAx+AM/ewLIVFqDzaG8UzQuyO48hU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZQ4PR01MB1284
 
-PiBPbiAwMi8wNS8yMDI0IDE0OjQ1LCBKaVNoZW5nIFRlb2ggd3JvdGU6DQo+ID4+IE9uIDAyLzA1
-LzIwMjQgMTI6NDgsIEppIFNoZW5nIFRlb2ggd3JvdGU6DQo+ID4+PiBEb2N1bWVudCB0aGUgb3B0
-aW9uYWwgcmVzZXQgY29udHJvbCB0byBTUEkuDQo+ID4+Pg0KPiA+Pj4gU2lnbmVkLW9mZi1ieTog
-RW5nIExlZSBUZWggPGVuZ2xlZS50ZWhAc3RhcmZpdmV0ZWNoLmNvbT4NCj4gPj4+IFNpZ25lZC1v
-ZmYtYnk6IExleSBGb29uIFRhbiA8bGV5Zm9vbi50YW5Ac3RhcmZpdmV0ZWNoLmNvbT4NCj4gPj4+
-IFNpZ25lZC1vZmYtYnk6IEppIFNoZW5nIFRlb2ggPGppc2hlbmcudGVvaEBzdGFyZml2ZXRlY2gu
-Y29tPg0KPiA+Pg0KPiA+PiBXaG8gaXMgdGhlIGF1dGhvciBoZXJlPyBXaGF0IGFyZSB0aGVzZSB0
-aHJlZSBTb0JzIGV4cHJlc3Npbmc/IFJvYiBhc2tlZCBmb3IgdGhpcyBsYXN0IHRpbWUuDQo+ID4N
-Cj4gPiBGaXJzdCBTb0Igd2FzIHRoZSBvcmlnaW5hbCBhdXRob3IsIHRoZSBzdWJzZXF1ZW50IFNv
-QiBtYWRlIGNoYW5nZXMgdG8gdGhlIG9yaWdpbmFsIHBhdGNoLg0KPiA+IElmIGludGVuZCB0byBv
-bmx5IGtlZXAgdGhlIGF1dGhvciwgdGhlbiBwbGVhc2UgdGFrZSB0aGUgZmlyc3QgU29CLiBTb3Jy
-eSBmb3IgdGhlIG5vaXNlLg0KPiANCj4gVGhlbiB5b3UgbWlzcyBDby1kZXZlbG9wZWQtYnkgdGFn
-cy4NCg0KVGhhbmtzLCBJIHdpbGwgZml4IHRoZSB0YWdzIGluIHRoZSBuZXh0IHJldmlzaW9uLg0K
+Add optional reset control support for spi-cadence to properly bring
+the SPI device into an operating condition.
+
+Signed-off-by: Eng Lee Teh <englee.teh@starfivetech.com>
+Signed-off-by: Ley Foon Tan <leyfoon.tan@starfivetech.com>
+Signed-off-by: Ji Sheng Teoh <jisheng.teoh@starfivetech.com>
+---
+ drivers/spi/spi-cadence.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
+index e5140532071d..11530a531673 100644
+--- a/drivers/spi/spi-cadence.c
++++ b/drivers/spi/spi-cadence.c
+@@ -18,6 +18,7 @@
+ #include <linux/of_address.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
++#include <linux/reset.h>
+ #include <linux/spi/spi.h>
+ 
+ /* Name of this driver */
+@@ -111,6 +112,7 @@
+  * @dev_busy:		Device busy flag
+  * @is_decoded_cs:	Flag for decoder property set or not
+  * @tx_fifo_depth:	Depth of the TX FIFO
++ * @rstc:		Optional reset control for SPI controller
+  */
+ struct cdns_spi {
+ 	void __iomem *regs;
+@@ -125,6 +127,7 @@ struct cdns_spi {
+ 	u8 dev_busy;
+ 	u32 is_decoded_cs;
+ 	unsigned int tx_fifo_depth;
++	struct reset_control *rstc;
+ };
+ 
+ /* Macros for the SPI controller read/write */
+@@ -588,6 +591,16 @@ static int cdns_spi_probe(struct platform_device *pdev)
+ 		goto remove_ctlr;
+ 	}
+ 
++	xspi->rstc = devm_reset_control_get_optional_exclusive(&pdev->dev, "spi");
++	if (IS_ERR(xspi->rstc)) {
++		ret = PTR_ERR(xspi->rstc);
++		dev_err(&pdev->dev, "Cannot get SPI reset.\n");
++		goto remove_ctlr;
++	}
++
++	reset_control_assert(xspi->rstc);
++	reset_control_deassert(xspi->rstc);
++
+ 	if (!spi_controller_is_target(ctlr)) {
+ 		xspi->ref_clk = devm_clk_get_enabled(&pdev->dev, "ref_clk");
+ 		if (IS_ERR(xspi->ref_clk)) {
+-- 
+2.43.2
+

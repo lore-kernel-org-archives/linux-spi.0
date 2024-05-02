@@ -1,116 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8376413C687;
-	Thu,  2 May 2024 14:16:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8E75FEE6;
+	Thu,  2 May 2024 14:34:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714659406; cv=none; b=SjFkkO28eG2Mx0DLFRA7Dj/W7hm0hbxMT2Ybg7Mh4n5zWfwWWajK7fFh61PRNIpjG2W6BVLtBDZapmmv1R+KWhEjY6RjmkDYPf9qhTCn2YUibfnlDIUYNK7mskSs/OW2OKSEHzX4vhrrLy7eMEhhb9lbqDnzGT7qKCqRYoIfvSk=
+	t=1714660499; cv=none; b=XNyvn4EYFzy0NboE67XwjMrGMG8Y1gcysYZh6ZG/F/S/Ik4G8fO9rXvuFGlSCAQCaPupVtK1hchixkrVFHO2Kr3Tm6MI0fqhb3j+2GTIfIxUBuUt9zW7qH/P9KYmc0g/YDH9gbBXw9HbOxYM36lbgGdSb/PBvGJCNVAf4inOq6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714659406; c=relaxed/simple;
-	bh=3RBBOW+rshzFs1S3SAZzaRZ3GGcmNPFboYktTF3HBj4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ooUbex0A/FUOPVz+d6o/JE4t2xpdf6pBwRijaChrfVMiHCMqcWjENlQCX3i5na7AeWHU2XWi+Q3PSyMrB22NolW1rXTt1YUT+7rewei79UPPcHKJ0ADwDmdzq4Eh0N/IxMZrpRFjsEifTDkWW9sjKO/Xkm78hY5LpCgrfxjfl3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EqTJTRH5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1714660499; c=relaxed/simple;
+	bh=v9aRfS2wsTb+7Z0gnOhNLJHtPwt86gf3YphRSYDX72k=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oLBYeaFAxC5V6iwOAUYULI3PFy4fENtIJfGauEofIHPwpVmTKa1o74rLs5Nw/LGM7io1G9LcfPt+JV6LAwzIX/SJSH6xNNJ6xVcDvE/svkB6BrxJDYaxoU2G/Pz//N5Fz0xZjN2grANXHXt14pmDI1VGWIJQHnKEvjbs+P3jeQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=hrArQcUn; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EqTJTRH5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 263BBC113CC;
-	Thu,  2 May 2024 14:16:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714659406;
-	bh=3RBBOW+rshzFs1S3SAZzaRZ3GGcmNPFboYktTF3HBj4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=EqTJTRH5D7Xwct54c7wXhOGl6mIORyt9dYdzyFTzjsNRBhNN6K7hwxn6ENfiFWxBh
-	 A+0h4J2DIzSO6O9hPblsM4jUGVTfTVawxnJB96G3DVjW2soPc070qxDvvnGTuJ5B2C
-	 +1fQ+abMQ6nUd4iXXyBNdJJ7tRnsLtU6aO1OSGXQ/6piKfwNI+VocTeKwGofnCqF06
-	 RYeBqrmg3cgGFMtbzGm73uIZKc/GGPeMiuXNajZM0ooWsETueeVEetXdr+mSgORUqO
-	 JX4T6W5SGtYp3bumSRbw1tdUyRObERvmrAbgQ4cp0hcEBDoU5NiyOmVoEHfzDobhSB
-	 /3coG9WF5D7gw==
-Message-ID: <b0c9aa87-ae84-4979-b26b-8fd0579c5f08@kernel.org>
-Date: Thu, 2 May 2024 16:16:41 +0200
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="hrArQcUn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1714660497; x=1746196497;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=v9aRfS2wsTb+7Z0gnOhNLJHtPwt86gf3YphRSYDX72k=;
+  b=hrArQcUnYZRjQiMM4SsGOczSSysqUbit7X2n7aouoXxi91gPXA6qVQsh
+   xfz05YgfbSqj+5N0Ntke1KLx/68fiy0F+Eaqf5IN3X6bhwaQbdEY9HS5Z
+   KKNESu9sT3UidQS9xpJon8Kzgm1rj4mePenj2tiZ0WxGP055pazhZb4/w
+   6m/bU9oX7XxoZuvviKeewD/LiICUeO90WgsIQGyVHGiRUF30JowOZb9p0
+   QcGqavoPJJyijsMc6pqd19zOdiFhizLaPqoPmCNyDFqAXJPJxXYU+d0n+
+   0d58HoHWs1+broo68P4fFNHHIPBGiAu20xRut8utXeVDTU+UrW2vjnvdm
+   g==;
+X-CSE-ConnectionGUID: 6Y5bhyOoSXq5FFQlA0lIog==
+X-CSE-MsgGUID: yXfQee23ReykRQVaYGMsQg==
+X-IronPort-AV: E=Sophos;i="6.07,247,1708412400"; 
+   d="scan'208";a="23394531"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 02 May 2024 07:34:56 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Thu, 2 May 2024 07:34:46 -0700
+Received: from Lily.microchip.com (10.10.85.11) by chn-vm-ex04.mchp-main.com
+ (10.10.85.152) with Microsoft SMTP Server id 15.1.2507.35 via Frontend
+ Transport; Thu, 2 May 2024 07:34:44 -0700
+From: Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>
+To: Mark Brown <broonie@kernel.org>
+CC: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	<linux-riscv@lists.infradead.org>, <linux-spi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>, Conor Dooley
+	<conor.dooley@microchip.com>, Daire McNamara <daire.mcnamara@microchip.com>,
+	<valentina.fernandezalanis@microchip.com>, Prajna Rajendra Kumar
+	<prajna.rajendrakumar@microchip.com>
+Subject: [PATCH 1/3] spi: spi-microchip-core: Add support for GPIO based CS
+Date: Thu, 2 May 2024 15:34:08 +0100
+Message-ID: <20240502143410.12629-2-prajna.rajendrakumar@microchip.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240502143410.12629-1-prajna.rajendrakumar@microchip.com>
+References: <20240502143410.12629-1-prajna.rajendrakumar@microchip.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] spi: spi-cadence: Add optional reset control
- support
-To: Ji Sheng Teoh <jisheng.teoh@starfivetech.com>,
- Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>,
- Michal Simek <michal.simek@amd.com>, Lars-Peter Clausen <lars@metafoo.de>
-Cc: Ley Foon Tan <leyfoon.tan@starfivetech.com>, linux-spi@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- Eng Lee Teh <englee.teh@starfivetech.com>
-References: <20240502104800.3030486-1-jisheng.teoh@starfivetech.com>
- <20240502104800.3030486-2-jisheng.teoh@starfivetech.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240502104800.3030486-2-jisheng.teoh@starfivetech.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On 02/05/2024 12:47, Ji Sheng Teoh wrote:
->  
->  /* Macros for the SPI controller read/write */
-> @@ -588,6 +591,16 @@ static int cdns_spi_probe(struct platform_device *pdev)
->  		goto remove_ctlr;
->  	}
->  
-> +	xspi->rstc = devm_reset_control_get_optional_exclusive(&pdev->dev, "spi");
-> +	if (IS_ERR(xspi->rstc)) {
-> +		ret = PTR_ERR(xspi->rstc);
-> +		dev_err(&pdev->dev, "Cannot get SPI reset.\n");
+The SPI controller within the PolarFire SoC is capable of handling
+multiple CS, but only one CS line is wired in the MSS. Therefore,
+use GPIO descriptors to configure additional CS lines.
 
-Please switch to:
-ret = dev_err_probe()
+Signed-off-by: Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>
+---
+ drivers/spi/spi-microchip-core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Best regards,
-Krzysztof
+diff --git a/drivers/spi/spi-microchip-core.c b/drivers/spi/spi-microchip-core.c
+index 634364c7cfe6..71886c27bca3 100644
+--- a/drivers/spi/spi-microchip-core.c
++++ b/drivers/spi/spi-microchip-core.c
+@@ -258,6 +258,9 @@ static int mchp_corespi_setup(struct spi_device *spi)
+ 	struct mchp_corespi *corespi = spi_controller_get_devdata(spi->controller);
+ 	u32 reg;
+ 
++	if (spi->cs_gpiod)
++		return 0;
++
+ 	/*
+ 	 * Active high targets need to be specifically set to their inactive
+ 	 * states during probe by adding them to the "control group" & thus
+@@ -516,6 +519,7 @@ static int mchp_corespi_probe(struct platform_device *pdev)
+ 
+ 	host->num_chipselect = num_cs;
+ 	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
++	host->use_gpio_descriptors = true;
+ 	host->setup = mchp_corespi_setup;
+ 	host->bits_per_word_mask = SPI_BPW_MASK(8);
+ 	host->transfer_one = mchp_corespi_transfer_one;
+-- 
+2.25.1
 

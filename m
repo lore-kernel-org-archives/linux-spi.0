@@ -1,57 +1,57 @@
-Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
+Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F84C17991
-	for <linux-spi@vger.kernel.org>; Sat, 11 May 2024 00:50:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D3E91BC41
+	for <linux-spi@vger.kernel.org>; Sat, 11 May 2024 00:50:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715388606; cv=none; b=QlgxnRBupySE2V1XLAdFwaO0pB12oIhpf/VL8a+XI2XRn6Hr1LZBhM/eCjIr74/85nxRm5PmrEQUynOi4Z/Up+uxZRAaSMHsJrcqTZ52Sugy3nrXdn844HTGK10+ZCS8ESWJnSS0f8nGchvqc/Sp2pKyBUDBfQpX2ygNJuNmhtk=
+	t=1715388607; cv=none; b=I8838Y0xbOmeYeGy8W0myO9LyGKPVKdbhIbUyCJwjFW2Rj3KSxdR7kYKqUcRc0WLOUA2LAH4pJnsVORMsSSiqKVTCdT4jMsBJMr3bMPhtfL6tdhHqJKGEizM7hxVu+9qQC4bb7xeZ+9LbYBsy7Rs0ojjbXlmgHIp5IiX7jpcze8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715388606; c=relaxed/simple;
-	bh=jbDclhJ4Ltz6ZIxwFk59d4Jg2Ugn8KcUJw9iSCDHoOw=;
+	s=arc-20240116; t=1715388607; c=relaxed/simple;
+	bh=qfovg8GPkCrYv+M58MvC1AwOylMJYvN79Ny2UrHzdtM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Wx8Mannxu1N3PT/J7aOuHzg8d2MCJ1PQjYZO/wFYyu27ovLaaY72HA5rRVn7+XFMzxXcXpE0/MWoQkRTLgd4GJ33snodKTFrtSZBosx82XBskyE7Sc5oMJFPYUaWlZK/BSmzlpddVslAPmwquttrlSrxbmcn6cHfvbkdtuEzCe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=G/vOyQCS; arc=none smtp.client-ip=209.85.167.180
+	 MIME-Version:Content-Type; b=lbuCdC/oO3+8EWsBT4k22YVsquuuaUMKKIQxMhVsHE17c/oesyiDmreJOHcIgEKdQEICh12DIx1+L4TjNxg80WeE8ETmiBbbeXUSsL7RUd0Wlvfdc3VGkGomHZbcsgHCe/xpp5IuDDnvLaTwTOzqEzVDIeit/k//Fi4CvMoW1c8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=JXcOWyD8; arc=none smtp.client-ip=209.85.161.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="G/vOyQCS"
-Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-3c998aed0e0so525634b6e.0
-        for <linux-spi@vger.kernel.org>; Fri, 10 May 2024 17:50:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="JXcOWyD8"
+Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-5aa1bf6cb40so1774234eaf.1
+        for <linux-spi@vger.kernel.org>; Fri, 10 May 2024 17:50:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1715388602; x=1715993402; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1715388604; x=1715993404; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=M4udCyI6Qf35BCwIyLv7+9qZLaDg57Ov9S/WGjBd7b4=;
-        b=G/vOyQCSJmalYI8BtwMcqgeCoKL/bFvAowtdzpJz1PJru6f3eTCJKlGsTmLYlC/qbF
-         A49c9RGczMPY+6xvWzpOL+DQmIc2x68NB0DSWitlWKYQJdVHyXb87b0E6NGaitCH7KCh
-         qoaBrCA23sF6Jc4UFYGcwn7vkJj38yTYg9i9nbtapkIa1dWiSWJRNEfdAa9c5DIgL3NL
-         REXf5y2PIj6RU9Xa3sE9ksC43BVkCQXZKW7HpjngZoRlwD0KczsSzK3qvwMZEVIlYYqC
-         bUIfPV6t9w/PpJcPXY8HO/nUJUHkAu+SwxwpKVEvvaEMhNLlnZDQoJ7KALVwA+MT2KWH
-         GYXg==
+        bh=Sef0yxj3M0McfXOWyYuZh5QNVIS4E8ybwIxSMPcOtQk=;
+        b=JXcOWyD8VBvKnYW77q19opIK1vz4yClDsHyCvB/utsUPEdO5Mr3R39PJR0/oEAbYcl
+         kRviy2Kc2QENOgs/R/0n8vfpVSKhaazqNdkght3zIY+CDWkj99Mj1NNanFdfDdHAPqVC
+         FX4K8EJPdTWfYltaAHNSPWg4LysuT7tfgPNhhlv+6MhHXSn199YjNx0wkqmTD1nUOqdv
+         o7xXLsZJXsMqrWd4Fia5EPtoMEtxhptNowK7IofVxdaAIuMzZLEOzAw6aLkzs2pz8Sq5
+         KApBEZVm6pufbasNL/la4BRiH6YW9OQsKeYQYvpLtt8GGMqaGm8VXFZUd6pg22pMJViR
+         fQ6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715388602; x=1715993402;
+        d=1e100.net; s=20230601; t=1715388604; x=1715993404;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=M4udCyI6Qf35BCwIyLv7+9qZLaDg57Ov9S/WGjBd7b4=;
-        b=HQ12F7YWlA1CA23Hz4V8qjMe2OuPkb4ILRYhrHQz0ReoVu+FyQzIwon1NWCTdb4j+l
-         /4+LDrcpYBHhyyolNnauNk0piMZLwcvoF4aWAF/U33GjSzj1uD3pmcvGvKjZot3HUABZ
-         pJ/x9/Fa484MmG8QjrFwsrgYahuBjKXERKDpbJHYF6JJDKPnn8iBAMaauZuYAI4LhL7o
-         mUbJDeK1b8f3lVSOntaAFtOhdvyH7EjMeCWUUONAVEeB1q89mQl14EYGLzs0HOZ9DH9B
-         aCfJw7bEN22Hw+e7WWZxuz51HZYeFakAeU/uNdVLC8in17RmMjt1K5iufAV0JXWjfClu
-         b73g==
-X-Forwarded-Encrypted: i=1; AJvYcCXJWYUM6SMp7aeQXqQfPk3Tvf8yMZm5MXBvoeGxSlSkxzKIGEZNhD8AlRZBG4vnE9nf80X5i2aL1b3jW5gS2tNR/5oDw/GktAJA
-X-Gm-Message-State: AOJu0Yzhp3DiMVoF12S0f0ZLlS09QerzfrqpHXxL4w3y4XRlHGgywa/p
-	/gBp9KO6J8jPv1cguYozxbEjwsjuHX45yKZsMbOFKG8xqkGG9Wp3EWI0c5BCJEw=
-X-Google-Smtp-Source: AGHT+IGjahhfc8kV980Ug9+SQb7W2MTT4ztWS460Tcv/qBM3UEkIaIx+68c/zVIPIHDpTlI0koIHpg==
-X-Received: by 2002:a05:6808:180a:b0:3c7:4613:9913 with SMTP id 5614622812f47-3c98d906880mr3409340b6e.10.1715388602094;
-        Fri, 10 May 2024 17:50:02 -0700 (PDT)
+        bh=Sef0yxj3M0McfXOWyYuZh5QNVIS4E8ybwIxSMPcOtQk=;
+        b=coF3+ycDz/GATUuL9wpbRnUZhlQCY2TjPwO4fFeij9IlZMtQHIUmQ8bKiAtgGyQ6HS
+         1qgFrCgcbgvNOuSq4ROSZLkMy9IHFv/VcdV+xV4PEmASAf1E1/crlVitMIrFpiNTm+EW
+         BrBi52Jnx96vN/GEaYd3w/7sYjCAVmSP365wcPHHtfkmXRT0y04kuatxMefcTdPngk57
+         iTpsNoa1kDM5seWlsrZ8ip69dPt0ZzOtXfLZUsur2gIXaRUk2IblguusT+YId+pU35UB
+         d+ihM1ou/RSwOgYtCmII1BJyqXOnwUubiziS/feve7D+Nmy+2jfCF46psZB4QzICCryc
+         tFRg==
+X-Forwarded-Encrypted: i=1; AJvYcCX3RrMi/dO8n+iktGYpEvop4xQniLMjN0sPtv9REJ8Avx2/0sGAL3U5Fbyas26BL5lkc/D5CWs43URPVMeTtIDTEJLn+UmTWVZb
+X-Gm-Message-State: AOJu0YwsBdj8B7EU+DxdsvjqMzSNzMDgf87ePqK3mLElKxLd5TL1JyH6
+	puRG6/TtH/IV7bnYGQ30/C6al0qLDo+vMYvZAoYEQX4t0AFI8Whq+TTs8zaxgio=
+X-Google-Smtp-Source: AGHT+IFISSd56LKo6PC65Rb6v16dDvY0nToNpJBuoPHdhJJv2V9+3eeHEwn6BehsohvwaWKdMXJowQ==
+X-Received: by 2002:a4a:8c21:0:b0:5b1:b8a4:bce4 with SMTP id 006d021491bc7-5b281a1b6a7mr4188517eaf.8.1715388604085;
+        Fri, 10 May 2024 17:50:04 -0700 (PDT)
 Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5b29015a3dbsm321132eaf.46.2024.05.10.17.50.01
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5b29015a3dbsm321132eaf.46.2024.05.10.17.50.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 May 2024 17:50:01 -0700 (PDT)
+        Fri, 10 May 2024 17:50:03 -0700 (PDT)
 From: David Lechner <dlechner@baylibre.com>
 To: Mark Brown <broonie@kernel.org>,
 	Jonathan Cameron <jic23@kernel.org>,
@@ -68,9 +68,9 @@ Cc: David Lechner <dlechner@baylibre.com>,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-iio@vger.kernel.org
-Subject: [PATCH RFC v2 6/8] spi: axi-spi-engine: add offload support
-Date: Fri, 10 May 2024 19:44:29 -0500
-Message-ID: <20240510-dlech-mainline-spi-engine-offload-2-v2-6-8707a870c435@baylibre.com>
+Subject: [PATCH RFC v2 8/8] iio: adc: ad7944: add support for SPI offload
+Date: Fri, 10 May 2024 19:44:31 -0500
+Message-ID: <20240510-dlech-mainline-spi-engine-offload-2-v2-8-8707a870c435@baylibre.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240510-dlech-mainline-spi-engine-offload-2-v2-0-8707a870c435@baylibre.com>
 References: <20240510-dlech-mainline-spi-engine-offload-2-v2-0-8707a870c435@baylibre.com>
@@ -84,407 +84,282 @@ Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.12.4
 Content-Transfer-Encoding: 8bit
 
-This implements SPI offload support for the AXI SPI Engine. Currently,
-the hardware only supports triggering offload transfers with a hardware
-trigger so attempting to use an offload message in the regular SPI
-message queue will fail. Also, only allows streaming rx data to an
-external sink, so attempts to use a rx_buf in the offload message will
-fail.
+This adds support for SPI offload to the ad7944 driver. This allows
+reading data at the max sample rate of 2.5 MSPS.
 
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
 
 v2 changes:
 
-This patch has been reworked to accommodate the changes described in all
-of the other patches.
----
- drivers/spi/spi-axi-spi-engine.c | 267 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 264 insertions(+), 3 deletions(-)
+In the previous version, there was a new separate driver for the PWM
+trigger and DMA hardware buffer. This was deemed too complex so they
+are moved into the ad7944 driver.
 
-diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-engine.c
-index e358ac5b4509..95327df572a0 100644
---- a/drivers/spi/spi-axi-spi-engine.c
-+++ b/drivers/spi/spi-axi-spi-engine.c
-@@ -2,6 +2,7 @@
- /*
-  * SPI-Engine SPI controller driver
-  * Copyright 2015 Analog Devices Inc.
-+ * Copyright 2024 BayLibre, SAS
-  *  Author: Lars-Peter Clausen <lars@metafoo.de>
-  */
+It has also been reworked to accommodate for the changes described in
+the other patches.
+
+RFC: This isn't very polished yet, just FYI. A few things to sort out:
+
+Rather than making the buffer either triggered buffer or hardware buffer,
+I'm considering allowing both, e.g. buffer0 will always be the triggered
+buffer and buffer1 will will be the hardware buffer if connected to a SPI
+controller with offload support, otherwise buffer1 is absent. But since
+multiple buffers haven't been used much so far, more investigation is
+needed to see how that would work in practice. If we do that though, then
+we would always have the sampling_frequency attribute though even though
+it only applies to one buffer.
+---
+ drivers/iio/adc/ad7944.c | 147 +++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 111 insertions(+), 36 deletions(-)
+
+diff --git a/drivers/iio/adc/ad7944.c b/drivers/iio/adc/ad7944.c
+index 4602ab5ed2a6..6724d6c92778 100644
+--- a/drivers/iio/adc/ad7944.c
++++ b/drivers/iio/adc/ad7944.c
+@@ -9,6 +9,7 @@
+ #include <linux/align.h>
+ #include <linux/bitfield.h>
+ #include <linux/bitops.h>
++#include <linux/clk.h>
+ #include <linux/delay.h>
+ #include <linux/device.h>
+ #include <linux/err.h>
+@@ -21,6 +22,7 @@
  
-@@ -16,6 +17,7 @@
- #include <linux/platform_device.h>
- #include <linux/spi/spi.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/sysfs.h>
++#include <linux/iio/buffer-dmaengine.h>
+ #include <linux/iio/trigger_consumer.h>
+ #include <linux/iio/triggered_buffer.h>
  
-+#define SPI_ENGINE_REG_OFFLOAD_MEM_ADDR_WIDTH	0x10
- #define SPI_ENGINE_REG_RESET			0x40
+@@ -65,6 +67,8 @@ struct ad7944_adc {
+ 	bool always_turbo;
+ 	/* Reference voltage (millivolts). */
+ 	unsigned int ref_mv;
++	/* Clock that triggers SPI offload. */
++	struct clk *trigger_clk;
  
- #define SPI_ENGINE_REG_INT_ENABLE		0x80
-@@ -23,6 +25,7 @@
- #define SPI_ENGINE_REG_INT_SOURCE		0x88
+ 	/*
+ 	 * DMA (thus cache coherency maintenance) requires the
+@@ -123,6 +127,7 @@ static const struct ad7944_chip_info _name##_chip_info = {		\
+ 			.scan_type.endianness = IIO_CPU,		\
+ 			.info_mask_separate = BIT(IIO_CHAN_INFO_RAW)	\
+ 					| BIT(IIO_CHAN_INFO_SCALE),	\
++			.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SAMP_FREQ),\
+ 		},							\
+ 		IIO_CHAN_SOFT_TIMESTAMP(1),				\
+ 	},								\
+@@ -134,18 +139,12 @@ AD7944_DEFINE_CHIP_INFO(ad7985, ad7944, 16, 0);
+ /* fully differential */
+ AD7944_DEFINE_CHIP_INFO(ad7986, ad7986, 18, 1);
  
- #define SPI_ENGINE_REG_SYNC_ID			0xc0
-+#define SPI_ENGINE_REG_OFFLOAD_SYNC_ID		0xc4
- 
- #define SPI_ENGINE_REG_CMD_FIFO_ROOM		0xd0
- #define SPI_ENGINE_REG_SDO_FIFO_ROOM		0xd4
-@@ -33,10 +36,24 @@
- #define SPI_ENGINE_REG_SDI_DATA_FIFO		0xe8
- #define SPI_ENGINE_REG_SDI_DATA_FIFO_PEEK	0xec
- 
-+#define SPI_ENGINE_MAX_NUM_OFFLOADS		32
-+
-+#define SPI_ENGINE_REG_OFFLOAD_CTRL(x)		(0x100 + SPI_ENGINE_MAX_NUM_OFFLOADS * (x))
-+#define SPI_ENGINE_REG_OFFLOAD_STATUS(x)	(0x104 + SPI_ENGINE_MAX_NUM_OFFLOADS * (x))
-+#define SPI_ENGINE_REG_OFFLOAD_RESET(x)		(0x108 + SPI_ENGINE_MAX_NUM_OFFLOADS * (x))
-+#define SPI_ENGINE_REG_OFFLOAD_CMD_FIFO(x)	(0x110 + SPI_ENGINE_MAX_NUM_OFFLOADS * (x))
-+#define SPI_ENGINE_REG_OFFLOAD_SDO_FIFO(x)	(0x114 + SPI_ENGINE_MAX_NUM_OFFLOADS * (x))
-+
-+#define SPI_ENGINE_SPI_OFFLOAD_MEM_WIDTH_SDO	GENMASK(15, 8)
-+#define SPI_ENGINE_SPI_OFFLOAD_MEM_WIDTH_CMD	GENMASK(7, 0)
-+
- #define SPI_ENGINE_INT_CMD_ALMOST_EMPTY		BIT(0)
- #define SPI_ENGINE_INT_SDO_ALMOST_EMPTY		BIT(1)
- #define SPI_ENGINE_INT_SDI_ALMOST_FULL		BIT(2)
- #define SPI_ENGINE_INT_SYNC			BIT(3)
-+#define SPI_ENGINE_INT_OFFLOAD_SYNC		BIT(4)
-+
-+#define SPI_ENGINE_OFFLOAD_CTRL_ENABLE		BIT(0)
- 
- #define SPI_ENGINE_CONFIG_CPHA			BIT(0)
- #define SPI_ENGINE_CONFIG_CPOL			BIT(1)
-@@ -74,6 +91,10 @@
- #define SPI_ENGINE_CMD_SYNC(id) \
- 	SPI_ENGINE_CMD(SPI_ENGINE_INST_MISC, SPI_ENGINE_MISC_SYNC, (id))
- 
-+/* default sizes - can be changed when SPI Engine firmware is compiled */
-+#define SPI_ENGINE_OFFLOAD_CMD_FIFO_SIZE	16
-+#define SPI_ENGINE_OFFLOAD_SDO_FIFO_SIZE	16
-+
- struct spi_engine_program {
- 	unsigned int length;
- 	uint16_t instructions[] __counted_by(length);
-@@ -101,6 +122,12 @@ struct spi_engine_message_state {
- 	uint8_t *rx_buf;
- };
- 
-+struct spi_engine_offload {
-+	struct spi_device *spi;
-+	unsigned int id;
-+	bool prepared;
-+};
-+
- struct spi_engine {
- 	struct clk *clk;
- 	struct clk *ref_clk;
-@@ -111,6 +138,10 @@ struct spi_engine {
- 	struct spi_engine_message_state msg_state;
- 	struct completion msg_complete;
- 	unsigned int int_enable;
-+
-+	unsigned int offload_ctrl_mem_size;
-+	unsigned int offload_sdo_mem_size;
-+	struct spi_engine_offload offload_priv[SPI_ENGINE_MAX_NUM_OFFLOADS];
- };
- 
- static void spi_engine_program_add_cmd(struct spi_engine_program *p,
-@@ -154,7 +185,7 @@ static void spi_engine_gen_xfer(struct spi_engine_program *p, bool dry,
- 
- 		if (xfer->tx_buf)
- 			flags |= SPI_ENGINE_TRANSFER_WRITE;
--		if (xfer->rx_buf)
-+		if (xfer->rx_buf || (xfer->offload_flags & SPI_OFFLOAD_XFER_RX_STREAM))
- 			flags |= SPI_ENGINE_TRANSFER_READ;
- 
- 		spi_engine_program_add_cmd(p, dry,
-@@ -202,16 +233,24 @@ static void spi_engine_gen_cs(struct spi_engine_program *p, bool dry,
-  *
-  * NB: This is separate from spi_engine_compile_message() because the latter
-  * is called twice and would otherwise result in double-evaluation.
-+ *
-+ * Returns 0 on success, -EINVAL on failure.
-  */
--static void spi_engine_precompile_message(struct spi_message *msg)
-+static int spi_engine_precompile_message(struct spi_message *msg)
+-static void ad7944_unoptimize_msg(void *msg)
+-{
+-	spi_unoptimize_message(msg);
+-}
+-
+-static int ad7944_3wire_cs_mode_init_msg(struct device *dev, struct ad7944_adc *adc,
+-					 const struct iio_chan_spec *chan)
++static void ad7944_3wire_cs_mode_init_msg(struct device *dev, struct ad7944_adc *adc,
++					  const struct iio_chan_spec *chan)
  {
- 	unsigned int clk_div, max_hz = msg->spi->controller->max_speed_hz;
- 	struct spi_transfer *xfer;
+ 	unsigned int t_conv_ns = adc->always_turbo ? adc->timing_spec->turbo_conv_ns
+ 						   : adc->timing_spec->conv_ns;
+ 	struct spi_transfer *xfers = adc->xfers;
+-	int ret;
  
- 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
-+		/* If we have an offload transfer, we can't rx to buffer */
-+		if (msg->offload && xfer->rx_buf)
-+			return -EINVAL;
-+
- 		clk_div = DIV_ROUND_UP(max_hz, xfer->speed_hz);
- 		xfer->effective_speed_hz = max_hz / min(clk_div, 256U);
- 	}
-+
-+	return 0;
+ 	/*
+ 	 * NB: can get better performance from some SPI controllers if we use
+@@ -174,21 +173,14 @@ static int ad7944_3wire_cs_mode_init_msg(struct device *dev, struct ad7944_adc *
+ 	xfers[2].bits_per_word = chan->scan_type.realbits;
+ 
+ 	spi_message_init_with_transfers(&adc->msg, xfers, 3);
+-
+-	ret = spi_optimize_message(adc->spi, &adc->msg);
+-	if (ret)
+-		return ret;
+-
+-	return devm_add_action_or_reset(dev, ad7944_unoptimize_msg, &adc->msg);
  }
  
- static void spi_engine_compile_message(struct spi_message *msg, bool dry,
-@@ -503,8 +542,11 @@ static irqreturn_t spi_engine_irq(int irq, void *devid)
- static int spi_engine_optimize_message(struct spi_message *msg)
+-static int ad7944_4wire_mode_init_msg(struct device *dev, struct ad7944_adc *adc,
+-				      const struct iio_chan_spec *chan)
++static void ad7944_4wire_mode_init_msg(struct device *dev, struct ad7944_adc *adc,
++				       const struct iio_chan_spec *chan)
  {
- 	struct spi_engine_program p_dry, *p;
-+	int ret;
+ 	unsigned int t_conv_ns = adc->always_turbo ? adc->timing_spec->turbo_conv_ns
+ 						   : adc->timing_spec->conv_ns;
+ 	struct spi_transfer *xfers = adc->xfers;
+-	int ret;
  
--	spi_engine_precompile_message(msg);
-+	ret = spi_engine_precompile_message(msg);
-+	if (ret)
-+		return ret;
+ 	/*
+ 	 * NB: can get better performance from some SPI controllers if we use
+@@ -208,12 +200,6 @@ static int ad7944_4wire_mode_init_msg(struct device *dev, struct ad7944_adc *adc
+ 	xfers[1].bits_per_word = chan->scan_type.realbits;
  
- 	p_dry.length = 0;
- 	spi_engine_compile_message(msg, true, &p_dry);
-@@ -539,6 +581,11 @@ static int spi_engine_transfer_one_message(struct spi_controller *host,
- 	unsigned int int_enable = 0;
- 	unsigned long flags;
- 
-+	if (msg->offload) {
-+		dev_err(&host->dev, "Single transfer offload not supported\n");
-+		return -EOPNOTSUPP;
-+	}
-+
- 	/* reinitialize message state for this transfer */
- 	memset(st, 0, sizeof(*st));
- 	st->cmd_buf = p->instructions;
-@@ -579,6 +626,204 @@ static int spi_engine_transfer_one_message(struct spi_controller *host,
- 	return msg->status;
+ 	spi_message_init_with_transfers(&adc->msg, xfers, 2);
+-
+-	ret = spi_optimize_message(adc->spi, &adc->msg);
+-	if (ret)
+-		return ret;
+-
+-	return devm_add_action_or_reset(dev, ad7944_unoptimize_msg, &adc->msg);
  }
  
-+static struct spi_engine_offload *spi_engine_get_offload(struct spi_device *spi,
-+							 unsigned int id,
-+							 unsigned int *offload_num)
-+{
-+	struct spi_controller *host = spi->controller;
-+	struct spi_engine *spi_engine = spi_controller_get_devdata(host);
-+	struct spi_engine_offload *priv;
-+	int i;
+ static int ad7944_chain_mode_init_msg(struct device *dev, struct ad7944_adc *adc,
+@@ -345,6 +331,30 @@ static int ad7944_read_raw(struct iio_dev *indio_dev,
+ 			return -EINVAL;
+ 		}
+ 
++	case IIO_CHAN_INFO_SAMP_FREQ:
++		if (!adc->trigger_clk)
++			return -EOPNOTSUPP;
 +
-+	for (i = 0; i < SPI_ENGINE_MAX_NUM_OFFLOADS; i++) {
-+		priv = &spi_engine->offload_priv[i];
++		*val = clk_get_rate(adc->trigger_clk);
++		return IIO_VAL_INT;
 +
-+		if (priv->spi == spi && priv->id == id) {
-+			*offload_num = i;
-+			return priv;
-+		}
-+	}
-+
-+	return ERR_PTR(-ENODEV);
-+}
-+
-+static int spi_engine_offload_map_channel(struct spi_device *spi,
-+					  unsigned int id,
-+					  unsigned int channel)
-+{
-+	struct spi_controller *host = spi->controller;
-+	struct spi_engine *spi_engine = spi_controller_get_devdata(host);
-+	struct spi_engine_offload *priv;
-+
-+	if (channel >= SPI_ENGINE_MAX_NUM_OFFLOADS)
++	default:
 +		return -EINVAL;
-+
-+	priv = &spi_engine->offload_priv[channel];
-+
-+	if (priv->spi)
-+		return -EBUSY;
-+
-+	priv->spi = spi;
-+	priv->id = id;
-+
-+	return 0;
-+}
-+
-+static int spi_engine_offload_prepare(struct spi_device *spi, unsigned int id,
-+				      struct spi_message *msg)
-+{
-+	struct spi_controller *host = spi->controller;
-+	struct spi_engine *spi_engine = spi_controller_get_devdata(host);
-+	struct spi_engine_program *p = msg->opt_state;
-+	struct spi_engine_offload *priv;
-+	struct spi_transfer *xfer;
-+	void __iomem *cmd_addr;
-+	void __iomem *sdo_addr;
-+	size_t tx_word_count = 0;
-+	unsigned int offload_num, i;
-+
-+	priv = spi_engine_get_offload(spi, id, &offload_num);
-+	if (IS_ERR(priv))
-+		return PTR_ERR(priv);
-+
-+	if (priv->prepared)
-+		return -EBUSY;
-+
-+	if (p->length > spi_engine->offload_ctrl_mem_size)
-+		return -EINVAL;
-+
-+	/* count total number of tx words in message */
-+	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
-+		if (!xfer->tx_buf)
-+			continue;
-+
-+		if (xfer->bits_per_word <= 8)
-+			tx_word_count += xfer->len;
-+		else if (xfer->bits_per_word <= 16)
-+			tx_word_count += xfer->len / 2;
-+		else
-+			tx_word_count += xfer->len / 4;
 +	}
-+
-+	if (tx_word_count > spi_engine->offload_sdo_mem_size)
-+		return -EINVAL;
-+
-+	cmd_addr = spi_engine->base + SPI_ENGINE_REG_OFFLOAD_CMD_FIFO(priv->id);
-+	sdo_addr = spi_engine->base + SPI_ENGINE_REG_OFFLOAD_SDO_FIFO(offload_num);
-+
-+	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
-+		if (!xfer->tx_buf)
-+			continue;
-+
-+		if (xfer->bits_per_word <= 8) {
-+			const u8 *buf = xfer->tx_buf;
-+
-+			for (i = 0; i < xfer->len; i++)
-+				writel_relaxed(buf[i], sdo_addr);
-+		} else if (xfer->bits_per_word <= 16) {
-+			const u16 *buf = xfer->tx_buf;
-+
-+			for (i = 0; i < xfer->len / 2; i++)
-+				writel_relaxed(buf[i], sdo_addr);
-+		} else {
-+			const u32 *buf = xfer->tx_buf;
-+
-+			for (i = 0; i < xfer->len / 4; i++)
-+				writel_relaxed(buf[i], sdo_addr);
-+		}
-+	}
-+
-+	for (i = 0; i < p->length; i++)
-+		writel_relaxed(p->instructions[i], cmd_addr);
-+
-+	msg->offload_state = (void *)(intptr_t)offload_num;
-+	priv->prepared = true;
-+
-+	return 0;
 +}
 +
-+static void spi_engine_offload_unprepare(struct spi_device *spi, unsigned int id)
++static int ad7944_write_raw(struct iio_dev *indio_dev,
++			    const struct iio_chan_spec *chan,
++			    int val, int val2, long info)
 +{
-+	struct spi_controller *host = spi->controller;
-+	struct spi_engine *spi_engine = spi_controller_get_devdata(host);
-+	struct spi_engine_offload *priv;
-+	unsigned int offload_num;
++	struct ad7944_adc *adc = iio_priv(indio_dev);
 +
-+	priv = spi_engine_get_offload(spi, id, &offload_num);
-+	if (IS_ERR(priv)) {
-+		dev_warn(&spi->dev, "failed match offload in unprepare\n");
-+		return;
-+	}
++	switch (info) {
++	case IIO_CHAN_INFO_SAMP_FREQ:
++		if (!adc->trigger_clk)
++			return -EOPNOTSUPP;
 +
-+	writel_relaxed(1, spi_engine->base + SPI_ENGINE_REG_OFFLOAD_RESET(offload_num));
-+	writel_relaxed(0, spi_engine->base + SPI_ENGINE_REG_OFFLOAD_RESET(offload_num));
-+
-+	priv->prepared = false;
-+}
-+
-+static int spi_engine_offload_enable(struct spi_device *spi, unsigned int id)
-+{
-+	struct spi_controller *host = spi->controller;
-+	struct spi_engine *spi_engine = spi_controller_get_devdata(host);
-+	struct spi_engine_offload *priv;
-+	unsigned int offload_num, reg;
-+
-+	priv = spi_engine_get_offload(spi, id, &offload_num);
-+	if (IS_ERR(priv))
-+		return PTR_ERR(priv);
-+
-+	reg = readl_relaxed(spi_engine->base +
-+			    SPI_ENGINE_REG_OFFLOAD_CTRL(offload_num));
-+	reg |= SPI_ENGINE_OFFLOAD_CTRL_ENABLE;
-+	writel_relaxed(reg, spi_engine->base +
-+			    SPI_ENGINE_REG_OFFLOAD_CTRL(offload_num));
-+
-+	return 0;
-+}
-+
-+static void spi_engine_offload_disable(struct spi_device *spi, unsigned int id)
-+{
-+	struct spi_controller *host = spi->controller;
-+	struct spi_engine *spi_engine = spi_controller_get_devdata(host);
-+	struct spi_engine_offload *priv;
-+	unsigned int offload_num, reg;
-+
-+	priv = spi_engine_get_offload(spi, id, &offload_num);
-+	if (IS_ERR(priv)) {
-+		dev_warn(&spi->dev, "failed match offload in disable\n");
-+		return;
-+	}
-+
-+	reg = readl_relaxed(spi_engine->base +
-+			    SPI_ENGINE_REG_OFFLOAD_CTRL(offload_num));
-+	reg &= ~SPI_ENGINE_OFFLOAD_CTRL_ENABLE;
-+	writel_relaxed(reg, spi_engine->base +
-+			    SPI_ENGINE_REG_OFFLOAD_CTRL(offload_num));
-+}
-+
-+static const struct spi_controller_offload_ops spi_engine_offload_ops = {
-+	.map_channel = spi_engine_offload_map_channel,
-+	.prepare = spi_engine_offload_prepare,
-+	.unprepare = spi_engine_offload_unprepare,
-+	.hw_trigger_enable = spi_engine_offload_enable,
-+	.hw_trigger_disable = spi_engine_offload_disable,
++		return clk_set_rate(adc->trigger_clk, val);
+ 	default:
+ 		return -EINVAL;
+ 	}
+@@ -352,6 +362,28 @@ static int ad7944_read_raw(struct iio_dev *indio_dev,
+ 
+ static const struct iio_info ad7944_iio_info = {
+ 	.read_raw = &ad7944_read_raw,
++	.write_raw = &ad7944_write_raw,
 +};
 +
-+static void spi_engine_cleanup(struct spi_device *spi)
++static int ad7944_offload_ex_buffer_postenable(struct iio_dev *indio_dev)
 +{
-+	struct spi_controller *host = spi->controller;
-+	struct spi_engine *spi_engine = spi_controller_get_devdata(host);
-+	int i;
++	struct ad7944_adc *adc = iio_priv(indio_dev);
 +
-+	/* remove spi device to offload mapping */
-+	for (i = 0; i < SPI_ENGINE_MAX_NUM_OFFLOADS; i++) {
-+		struct spi_engine_offload *priv = &spi_engine->offload_priv[i];
-+
-+		if (priv->spi == spi)
-+			priv->spi = NULL;
-+	}
++	return spi_offload_hw_trigger_enable(adc->spi, 0);
 +}
 +
- static void spi_engine_release_hw(void *p)
++static int ad7944_offload_ex_buffer_predisable(struct iio_dev *indio_dev)
++{
++	struct ad7944_adc *adc = iio_priv(indio_dev);
++
++	spi_offload_hw_trigger_disable(adc->spi, 0);
++
++	return 0;
++}
++
++static const struct iio_buffer_setup_ops ad7944_offload_ex_buffer_setup_ops = {
++	.postenable = &ad7944_offload_ex_buffer_postenable,
++	.predisable = &ad7944_offload_ex_buffer_predisable,
+ };
+ 
+ static irqreturn_t ad7944_trigger_handler(int irq, void *p)
+@@ -471,6 +503,18 @@ static void ad7944_ref_disable(void *ref)
+ 	regulator_disable(ref);
+ }
+ 
++static void ad7944_offload_unprepare(void *p)
++{
++	struct ad7944_adc *adc = p;
++
++	spi_offload_unprepare(adc->spi, 0, &adc->msg);
++}
++
++static void ad7944_unoptimize_msg(void *msg)
++{
++	spi_unoptimize_message(msg);
++}
++
+ static int ad7944_probe(struct spi_device *spi)
  {
- 	struct spi_engine *spi_engine = p;
-@@ -630,6 +875,19 @@ static int spi_engine_probe(struct platform_device *pdev)
- 		return -ENODEV;
+ 	const struct ad7944_chip_info *chip_info;
+@@ -603,16 +647,10 @@ static int ad7944_probe(struct spi_device *spi)
+ 
+ 	switch (adc->spi_mode) {
+ 	case AD7944_SPI_MODE_DEFAULT:
+-		ret = ad7944_4wire_mode_init_msg(dev, adc, &chip_info->channels[0]);
+-		if (ret)
+-			return ret;
+-
++		ad7944_4wire_mode_init_msg(dev, adc, &chip_info->channels[0]);
+ 		break;
+ 	case AD7944_SPI_MODE_SINGLE:
+-		ret = ad7944_3wire_cs_mode_init_msg(dev, adc, &chip_info->channels[0]);
+-		if (ret)
+-			return ret;
+-
++		ad7944_3wire_cs_mode_init_msg(dev, adc, &chip_info->channels[0]);
+ 		break;
+ 	case AD7944_SPI_MODE_CHAIN:
+ 		ret = device_property_read_u32(dev, "#daisy-chained-devices",
+@@ -649,11 +687,48 @@ static int ad7944_probe(struct spi_device *spi)
+ 		indio_dev->num_channels = ARRAY_SIZE(chip_info->channels);
  	}
  
-+	if (ADI_AXI_PCORE_VER_MINOR(version) >= 1) {
-+		unsigned int sizes = readl(spi_engine->base +
-+				SPI_ENGINE_REG_OFFLOAD_MEM_ADDR_WIDTH);
+-	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
+-					      iio_pollfunc_store_time,
+-					      ad7944_trigger_handler, NULL);
+-	if (ret)
+-		return ret;
++	if (device_property_present(dev, "spi-offloads")) {
++		/* TODO: make this a parameter to ad7944_3wire_cs_mode_init_msg() */
++		/* FIXME: wrong index for 4-wire mode */
++		adc->xfers[2].rx_buf = NULL;
++		adc->xfers[2].offload_flags = SPI_OFFLOAD_XFER_RX_STREAM;
 +
-+		spi_engine->offload_ctrl_mem_size = 1 <<
-+			FIELD_GET(SPI_ENGINE_SPI_OFFLOAD_MEM_WIDTH_CMD, sizes);
-+		spi_engine->offload_sdo_mem_size = 1 <<
-+			FIELD_GET(SPI_ENGINE_SPI_OFFLOAD_MEM_WIDTH_SDO, sizes);
++		ret = spi_offload_prepare(adc->spi, 0, &adc->msg);
++		if (ret)
++			return dev_err_probe(dev, ret, "failed to prepare offload\n");
++
++		ret = devm_add_action_or_reset(dev, ad7944_offload_unprepare, adc);
++		if (ret)
++			return ret;
++
++		adc->trigger_clk = devm_clk_get_enabled(dev, "trigger");
++		if (IS_ERR(adc->trigger_clk))
++			return dev_err_probe(dev, PTR_ERR(adc->trigger_clk),
++					     "failed to get trigger clk\n");
++
++		ret = devm_iio_dmaengine_buffer_setup(dev, indio_dev, "rx");
++		if (ret)
++			return ret;
++
++		indio_dev->setup_ops = &ad7944_offload_ex_buffer_setup_ops;
++		/* offload can't have soft timestamp */
++		indio_dev->num_channels--;
 +	} else {
-+		spi_engine->offload_ctrl_mem_size = SPI_ENGINE_OFFLOAD_CMD_FIFO_SIZE;
-+		spi_engine->offload_sdo_mem_size = SPI_ENGINE_OFFLOAD_SDO_FIFO_SIZE;
-+	}
++		ret = spi_optimize_message(adc->spi, &adc->msg);
++		if (ret)
++			return ret;
 +
- 	writel_relaxed(0x00, spi_engine->base + SPI_ENGINE_REG_RESET);
- 	writel_relaxed(0xff, spi_engine->base + SPI_ENGINE_REG_INT_PENDING);
- 	writel_relaxed(0x00, spi_engine->base + SPI_ENGINE_REG_INT_ENABLE);
-@@ -652,6 +910,9 @@ static int spi_engine_probe(struct platform_device *pdev)
- 	host->optimize_message = spi_engine_optimize_message;
- 	host->unoptimize_message = spi_engine_unoptimize_message;
- 	host->num_chipselect = 8;
-+	host->offload_xfer_flags = SPI_OFFLOAD_XFER_RX_STREAM;
-+	host->offload_ops = &spi_engine_offload_ops;
-+	host->cleanup = spi_engine_cleanup;
++		ret = devm_add_action_or_reset(dev, ad7944_unoptimize_msg, &adc->msg);
++		if (ret)
++			return ret;
++
++		ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
++						      iio_pollfunc_store_time,
++						      ad7944_trigger_handler,
++						      NULL);
++		if (ret)
++			return ret;
++	}
  
- 	if (host->max_speed_hz == 0)
- 		return dev_err_probe(&pdev->dev, -EINVAL, "spi_clk rate is 0");
+ 	return devm_iio_device_register(dev, indio_dev);
+ }
 
 -- 
 2.43.2

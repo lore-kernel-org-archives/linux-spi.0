@@ -1,57 +1,57 @@
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C32A51598E2;
-	Thu, 16 May 2024 18:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA94915D5A8;
+	Thu, 16 May 2024 18:19:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715883580; cv=none; b=Qh2wuzktU12r0IIf0ROUNJu7DQtoJqor4s722/FUKO8+ujBsYSD4VvOVXG8xyuPPLRSbIMH6/a1SjjotW4EQwe0dJ95EKwSVFcCOHgm/lnW+eYrv4fPoHYr0DEeh7EJzXwZXNkd0RLEcveeZ7q2l0LCvp/Zmco7FtSh2mHrVI8I=
+	t=1715883583; cv=none; b=axTxMDIV6MQyp5/Xwz9IPngJ35nAZ6EfNjHKf0qQhWiikt0keAtw9aIvs56wbhlm9z79HmDj8HR7dU+bSXjUSeaWOHMuPBtbBIpcR/NyBuE+xBNdIGnOpawG0u51AIZomlZ0mUqD0P9USww4s6ayXMwgpG8efjxM91CRKjb4fyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715883580; c=relaxed/simple;
-	bh=SJUTkBqyyZTlwDRg7ldRmAZztx4EwiyDcC6kI4kRcwc=;
+	s=arc-20240116; t=1715883583; c=relaxed/simple;
+	bh=AuC+Y+ZK74jIE049rKGnNJvpOszF86lhBze7azNlgSQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dnVwfzd+tr8199p4N25M6pPA5E/lkTLB7hAQYokH8QZUYs8CR+oveIsdToylr2raOAMsTM4hGIY61kAU0q68XpYst3K2crBo+tW1uKsnhC4Z+78m8O4DtNOWqsf2MB50p0dKku0yRBKAh2Td8Wq6FhdkcD4v8p2CVkfLJwAJxHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=LAVrrGGI; arc=none smtp.client-ip=148.163.158.5
+	 MIME-Version; b=t4XJny+I4fa8EoMeRnXsD+mkSCDR6xhPBIiH3QsohLhhzZYaHmNHMM7pM12PXMH3QvAtVuCto3gnK5LZlsNWzVIZmtSQr0eGcMN+QNQHvhtgZ3y+HEzve406OpUrfUGtBYwUb8pr7qetVV3Q4qeyv9s/mFp3ZeQnAZheZQiOG/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=AEia5N9s; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="LAVrrGGI"
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44GHbvhH010836;
-	Thu, 16 May 2024 18:19:17 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="AEia5N9s"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44GF0D2X001858;
+	Thu, 16 May 2024 18:19:22 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=IS0irjXh2U091zKbKR7d+9rVvpukYBODxtV/+wXMALY=;
- b=LAVrrGGIKeMKY1Eg1La1dhURSkr87BqPf/8Kv68jMCoZn8ws3VWZ3duHCRnVi28fOqgp
- +cd/gv8VTCHgKx2aW1Nf98GptbN0EuqxxlbEllipcWKkL7ewdOKrFwxxE4N+rKLwDbkw
- urEeBZAj2LtNucp5AQyTuD/hKQdHZYDa62Bs31KtX1D1i36XhikeFqcQFEg+fxoziQ3D
- Ohju8txrwWR+KywxPG+0DOFCulyjIDWIpZ3DQGcFJm/LEKpzBN8IbnykMK/QyJq0AziK
- 5UbgynHe8hjS8ZSs7MXr8DucldiVY7aLhwUDn0/8/2LskhGvic+lEoK3QnqWLirSrQii 3w== 
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y5pq5r365-1
+ bh=rh16LoMvI5aSfDuJEJUykTNuVLuDCD0QxyjI1piREzo=;
+ b=AEia5N9stBz/6PlUWlSTkGRV4blLVzLWjUoS+DsOKILWopa5BxEc5DJEuUGxA7CkVgtf
+ maKcTcYgRor6DqSzMSw0tdcO1wiZHSb4RKUdoLTcUpXYTlUVRpI6JOve3n0C5pDdYCXF
+ +wszPJFYE6uiR79h8y7KIAXNuaRQtyVH9q0MW6CmjNYG4Nd44MFBpkOFCnAWNipeQ1vQ
+ xE0kap4HMkiOem0ouamsAc6xCqQD0uCbTEcE9DvKqVYdWVV4/aUx1ZXBnB8+3E9uG84+
+ v0Gzksgy6g6Tc4cUpMPRo/oy1sye1MCl+5S+Vf+01tL5AppA/JRrDjOEGaDNRojh4xJE 3w== 
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y5mce8frv-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 May 2024 18:19:17 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 44GG03Yg006027;
-	Thu, 16 May 2024 18:19:16 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3y2nq331w2-1
+	Thu, 16 May 2024 18:19:21 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 44GGV9SF018764;
+	Thu, 16 May 2024 18:19:21 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3y2k0tuqeg-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 May 2024 18:19:16 +0000
+	Thu, 16 May 2024 18:19:21 +0000
 Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 44GIJDvg35455468
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 44GIJI7V28050008
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 16 May 2024 18:19:16 GMT
+	Thu, 16 May 2024 18:19:20 GMT
 Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C6EAB58080;
-	Thu, 16 May 2024 18:19:11 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 08F5558065;
+	Thu, 16 May 2024 18:19:18 +0000 (GMT)
 Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 87A0258075;
-	Thu, 16 May 2024 18:19:11 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id B44DD58074;
+	Thu, 16 May 2024 18:19:17 +0000 (GMT)
 Received: from slate16.aus.stglabs.ibm.com (unknown [9.61.107.19])
 	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 16 May 2024 18:19:11 +0000 (GMT)
+	Thu, 16 May 2024 18:19:17 +0000 (GMT)
 From: Eddie James <eajames@linux.ibm.com>
 To: linux-fsi@lists.ozlabs.org
 Cc: linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
@@ -59,9 +59,9 @@ Cc: linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
         joel@jms.id.au, alistair@popple.id.au, jk@ozlabs.org,
         andrew@codeconstruct.com.au, linux-aspeed@lists.ozlabs.org,
         eajames@linux.ibm.com
-Subject: [PATCH v3 14/40] fsi: hub: Use common initialization and link enable
-Date: Thu, 16 May 2024 13:18:41 -0500
-Message-Id: <20240516181907.3468796-15-eajames@linux.ibm.com>
+Subject: [PATCH v3 35/40] fsi: core: Add slave register read-only sysfs
+Date: Thu, 16 May 2024 13:19:02 -0500
+Message-Id: <20240516181907.3468796-36-eajames@linux.ibm.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240516181907.3468796-1-eajames@linux.ibm.com>
 References: <20240516181907.3468796-1-eajames@linux.ibm.com>
@@ -73,244 +73,246 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: PERxO3mfmi5SQtAcViUm7s-hG3sfF54E
-X-Proofpoint-ORIG-GUID: PERxO3mfmi5SQtAcViUm7s-hG3sfF54E
+X-Proofpoint-GUID: 1YthwWDd3b8-ixTTYuqMQDMbuMyPoReq
+X-Proofpoint-ORIG-GUID: 1YthwWDd3b8-ixTTYuqMQDMbuMyPoReq
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
  definitions=2024-05-16_07,2024-05-15_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- suspectscore=0 bulkscore=0 spamscore=0 malwarescore=0 phishscore=0
- clxscore=1015 mlxlogscore=904 priorityscore=1501 adultscore=0
- impostorscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2405010000 definitions=main-2405160132
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 phishscore=0
+ adultscore=0 priorityscore=1501 malwarescore=0 suspectscore=0 bulkscore=0
+ mlxscore=0 spamscore=0 lowpriorityscore=0 impostorscore=0 clxscore=1015
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2405010000
+ definitions=main-2405160132
 
-Set up an FSI regmap for the hub master to use the new common
-master initialization and link enable procedures.
+The slave registers are commonly used for debugging or diagnosis
+so provide them in sysfs files.
 
 Signed-off-by: Eddie James <eajames@linux.ibm.com>
 ---
- drivers/fsi/fsi-master-hub.c | 142 ++++++-----------------------------
- 1 file changed, 23 insertions(+), 119 deletions(-)
+ drivers/fsi/fsi-core.c  | 144 +++++++++++++++++++++++++++++++++++++---
+ drivers/fsi/fsi-slave.h |  21 ++++++
+ 2 files changed, 155 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/fsi/fsi-master-hub.c b/drivers/fsi/fsi-master-hub.c
-index eea8649fee74d..91ad6b7728fa2 100644
---- a/drivers/fsi/fsi-master-hub.c
-+++ b/drivers/fsi/fsi-master-hub.c
-@@ -9,6 +9,7 @@
- #include <linux/fsi.h>
- #include <linux/module.h>
- #include <linux/of.h>
-+#include <linux/regmap.h>
- #include <linux/slab.h>
+diff --git a/drivers/fsi/fsi-core.c b/drivers/fsi/fsi-core.c
+index 096b26c6421f2..3d2bedb3ad51b 100644
+--- a/drivers/fsi/fsi-core.c
++++ b/drivers/fsi/fsi-core.c
+@@ -887,22 +887,146 @@ static ssize_t cfam_id_show(struct device *dev,
  
- #include "fsi-master.h"
-@@ -16,8 +17,6 @@
+ static DEVICE_ATTR_RO(cfam_id);
  
- #define FSI_ENGID_HUB_MASTER		0x1c
- 
--#define FSI_LINK_ENABLE_SETUP_TIME	10	/* in mS */
--
- /*
-  * FSI hub master support
-  *
-@@ -78,134 +77,33 @@ static int hub_master_break(struct fsi_master *master, int link)
- 	return hub_master_write(master, link, 0, addr, &cmd, sizeof(cmd));
- }
- 
--static int hub_master_link_enable(struct fsi_master *master, int link,
--				  bool enable)
--{
--	struct fsi_master_hub *hub = to_fsi_master_hub(master);
--	int idx, bit;
--	__be32 reg;
--	int rc;
--
--	idx = link / 32;
--	bit = link % 32;
--
--	reg = cpu_to_be32(0x80000000 >> bit);
--
--	if (!enable)
--		return fsi_device_write(hub->upstream, FSI_MCENP0 + (4 * idx),
--					&reg, 4);
--
--	rc = fsi_device_write(hub->upstream, FSI_MSENP0 + (4 * idx), &reg, 4);
--	if (rc)
--		return rc;
--
--	mdelay(FSI_LINK_ENABLE_SETUP_TIME);
--
--	return 0;
--}
--
- static void hub_master_release(struct device *dev)
- {
- 	struct fsi_master_hub *hub = to_fsi_master_hub(to_fsi_master(dev));
- 
-+	regmap_exit(hub->master.map);
- 	kfree(hub);
- }
- 
--/* mmode encoders */
--static inline u32 fsi_mmode_crs0(u32 x)
--{
--	return (x & FSI_MMODE_CRS0MASK) << FSI_MMODE_CRS0SHFT;
--}
--
--static inline u32 fsi_mmode_crs1(u32 x)
--{
--	return (x & FSI_MMODE_CRS1MASK) << FSI_MMODE_CRS1SHFT;
--}
--
--static int hub_master_init(struct fsi_master_hub *hub)
--{
--	struct fsi_device *dev = hub->upstream;
--	__be32 reg;
--	int rc;
--
--	reg = cpu_to_be32(FSI_MRESP_RST_ALL_MASTER | FSI_MRESP_RST_ALL_LINK
--			| FSI_MRESP_RST_MCR | FSI_MRESP_RST_PYE);
--	rc = fsi_device_write(dev, FSI_MRESP0, &reg, sizeof(reg));
--	if (rc)
--		return rc;
--
--	/* Initialize the MFSI (hub master) engine */
--	reg = cpu_to_be32(FSI_MRESP_RST_ALL_MASTER | FSI_MRESP_RST_ALL_LINK
--			| FSI_MRESP_RST_MCR | FSI_MRESP_RST_PYE);
--	rc = fsi_device_write(dev, FSI_MRESP0, &reg, sizeof(reg));
--	if (rc)
--		return rc;
--
--	reg = cpu_to_be32(FSI_MECTRL_EOAE | FSI_MECTRL_P8_AUTO_TERM);
--	rc = fsi_device_write(dev, FSI_MECTRL, &reg, sizeof(reg));
--	if (rc)
--		return rc;
--
--	reg = cpu_to_be32(FSI_MMODE_EIP | FSI_MMODE_ECRC | FSI_MMODE_EPC
--			| fsi_mmode_crs0(1) | fsi_mmode_crs1(1)
--			| FSI_MMODE_P8_TO_LSB);
--	rc = fsi_device_write(dev, FSI_MMODE, &reg, sizeof(reg));
--	if (rc)
--		return rc;
--
--	reg = cpu_to_be32(0xffff0000);
--	rc = fsi_device_write(dev, FSI_MDLYR, &reg, sizeof(reg));
--	if (rc)
--		return rc;
--
--	reg = cpu_to_be32(~0);
--	rc = fsi_device_write(dev, FSI_MSENP0, &reg, sizeof(reg));
--	if (rc)
--		return rc;
--
--	/* Leave enabled long enough for master logic to set up */
--	mdelay(FSI_LINK_ENABLE_SETUP_TIME);
--
--	rc = fsi_device_write(dev, FSI_MCENP0, &reg, sizeof(reg));
--	if (rc)
--		return rc;
--
--	rc = fsi_device_read(dev, FSI_MAEB, &reg, sizeof(reg));
--	if (rc)
--		return rc;
--
--	reg = cpu_to_be32(FSI_MRESP_RST_ALL_MASTER | FSI_MRESP_RST_ALL_LINK);
--	rc = fsi_device_write(dev, FSI_MRESP0, &reg, sizeof(reg));
--	if (rc)
--		return rc;
--
--	rc = fsi_device_read(dev, FSI_MLEVP0, &reg, sizeof(reg));
--	if (rc)
--		return rc;
--
--	/* Reset the master bridge */
--	reg = cpu_to_be32(FSI_MRESB_RST_GEN);
--	rc = fsi_device_write(dev, FSI_MRESB0, &reg, sizeof(reg));
--	if (rc)
--		return rc;
--
--	reg = cpu_to_be32(FSI_MRESB_RST_ERR);
--	return fsi_device_write(dev, FSI_MRESB0, &reg, sizeof(reg));
--}
--
- static int hub_master_probe(struct device *dev)
- {
-+	struct regmap_config hub_master_regmap_config;
- 	struct fsi_device *fsi_dev = to_fsi_dev(dev);
- 	struct fsi_master_hub *hub;
-+	struct regmap *map;
- 	uint32_t reg, links;
--	__be32 __reg;
- 	int rc;
- 
--	rc = fsi_device_read(fsi_dev, FSI_MVER, &__reg, sizeof(__reg));
-+	fsi_master_regmap_config(&hub_master_regmap_config);
-+	hub_master_regmap_config.reg_base = fsi_dev->addr;
-+	map = regmap_init_fsi(fsi_dev, &hub_master_regmap_config);
-+	if (IS_ERR(map))
-+		return PTR_ERR(map);
+-static struct attribute *cfam_attr[] = {
++static ssize_t config_table_show(struct device *dev, struct device_attribute *attr, char *buf)
++{
++	const unsigned int end = engine_page_size / sizeof(u32);
++	struct fsi_slave *slave = to_fsi_slave(dev);
++	__be32 data;
++	int len = 0;
++	u32 conf;
++	int rc;
 +
-+	rc = regmap_read(map, FSI_MVER, &reg);
- 	if (rc)
--		return rc;
-+		goto err_regmap;
- 
--	reg = be32_to_cpu(__reg);
- 	links = (reg >> 8) & 0xff;
- 	dev_dbg(dev, "hub version %08x (%d links)\n", reg, links);
- 
-@@ -213,7 +111,7 @@ static int hub_master_probe(struct device *dev)
- 			FSI_HUB_LINK_SIZE * links);
- 	if (rc) {
- 		dev_err(dev, "can't claim slave address range for links");
--		return rc;
-+		goto err_regmap;
- 	}
- 
- 	hub = kzalloc(sizeof(*hub), GFP_KERNEL);
-@@ -229,22 +127,24 @@ static int hub_master_probe(struct device *dev)
- 	hub->master.dev.parent = dev;
- 	hub->master.dev.release = hub_master_release;
- 	hub->master.dev.of_node = of_node_get(dev_of_node(dev));
-+	hub->master.map = map;
- 
- 	hub->master.idx = fsi_dev->slave->link + 1;
- 	hub->master.n_links = links;
--	hub->master.flags = FSI_MASTER_FLAG_NO_BREAK_SID;
-+	hub->master.flags = FSI_MASTER_FLAG_NO_BREAK_SID | FSI_MASTER_FLAG_INTERRUPT;
- 	hub->master.read = hub_master_read;
- 	hub->master.write = hub_master_write;
- 	hub->master.send_break = hub_master_break;
--	hub->master.link_enable = hub_master_link_enable;
- 
- 	dev_set_drvdata(dev, hub);
- 
--	hub_master_init(hub);
-+	rc = fsi_master_init(&hub->master, fsi_dev->slave->master->clock_frequency);
++	for (unsigned int i = 0; i < end; ++i) {
++		rc = fsi_slave_read(slave, i * sizeof(data), &data, sizeof(data));
++		if (rc)
++			return rc;
++
++		conf = be32_to_cpu(data);
++		if (crc4(0, conf, 32))
++			return -EBADMSG;
++
++		len += sysfs_emit_at(buf, len, "%08x\n", conf);
++		if (!(conf & FSI_SLAVE_CONF_NEXT_MASK))
++			break;
++	}
++
++	return len;
++}
++
++static DEVICE_ATTR_RO(config_table);
++
++struct fsi_slave_attribute {
++	struct device_attribute attr;
++	int reg;
++};
++
++static ssize_t slave_reg_show(struct device *dev, struct device_attribute *attr, char *buf)
++{
++	struct fsi_slave_attribute *fattr = container_of(attr, struct fsi_slave_attribute, attr);
++	struct fsi_slave *slave = to_fsi_slave(dev);
++	__be32 data;
++	int rc;
++
++	rc = fsi_slave_read(slave, FSI_SLAVE_BASE + fattr->reg, &data, sizeof(data));
 +	if (rc)
-+		goto err_free;
++		return rc;
++
++	return sysfs_emit(buf, "%08x\n", be32_to_cpu(data));
++}
++
++static ssize_t slave_reg_8bpp_show(struct device *dev, struct device_attribute *attr, char *buf)
++{
++	struct fsi_slave_attribute *fattr = container_of(attr, struct fsi_slave_attribute, attr);
++	struct fsi_slave *slave = to_fsi_slave(dev);
++	__be32 data;
++	int len = 0;
++	int rc;
++	int i;
++
++	for (i = 0; i < 2; ++i) {
++		rc = fsi_slave_read(slave, FSI_SLAVE_BASE + fattr->reg + (i * 4), &data,
++				    sizeof(data));
++		if (rc)
++			return rc;
++
++		len += sysfs_emit_at(buf, len, "%08x\n", be32_to_cpu(data));
++	}
++
++	return len;
++}
++
++#define FSI_SLAVE_ATTR(name, reg) \
++	struct fsi_slave_attribute dev_attr_##name = { __ATTR(name, 0444, slave_reg_show, NULL), reg }
++#define FSI_SLAVE_ATTR_8BPP(name, reg) \
++	struct fsi_slave_attribute dev_attr_##name = { __ATTR(name, 0444, slave_reg_8bpp_show, NULL), reg }
++
++static FSI_SLAVE_ATTR(smode, FSI_SMODE);
++static FSI_SLAVE_ATTR(sdma, FSI_SDMA);
++static FSI_SLAVE_ATTR(sisc, FSI_SISC);
++static FSI_SLAVE_ATTR(sism, FSI_SISM);
++static FSI_SLAVE_ATTR(siss, FSI_SISS);
++static FSI_SLAVE_ATTR(sstat, FSI_SSTAT);
++static FSI_SLAVE_ATTR(si1m, FSI_SI1M);
++static FSI_SLAVE_ATTR(si1s, FSI_SI1S);
++static FSI_SLAVE_ATTR(sic, FSI_SIC);
++static FSI_SLAVE_ATTR(si2m, FSI_SI2M);
++static FSI_SLAVE_ATTR(si2s, FSI_SI2S);
++static FSI_SLAVE_ATTR(scmdt, FSI_SCMDT);
++static FSI_SLAVE_ATTR(sdata, FSI_SDATA);
++static FSI_SLAVE_ATTR(slastd, FSI_SLASTD);
++static FSI_SLAVE_ATTR(smbl, FSI_SMBL);
++static FSI_SLAVE_ATTR(soml, FSI_SOML);
++static FSI_SLAVE_ATTR(snml, FSI_SNML);
++static FSI_SLAVE_ATTR(smbr, FSI_SMBR);
++static FSI_SLAVE_ATTR(somr, FSI_SOMR);
++static FSI_SLAVE_ATTR(snmr, FSI_SNMR);
++static FSI_SLAVE_ATTR_8BPP(scrsic, FSI_ScRSIC0);
++static FSI_SLAVE_ATTR_8BPP(scrsim, FSI_ScRSIM0);
++static FSI_SLAVE_ATTR_8BPP(scrsis, FSI_ScRSIS0);
++static FSI_SLAVE_ATTR_8BPP(srsic, FSI_SRSIC0);
++static FSI_SLAVE_ATTR_8BPP(srsim, FSI_SRSIM0);
++static FSI_SLAVE_ATTR_8BPP(srsis, FSI_SRSIS0);
++static FSI_SLAVE_ATTR(llmode, FSI_LLMODE);
++static FSI_SLAVE_ATTR(llstat, FSI_LLSTAT);
++
++static struct attribute *cfam_attrs[] = {
+ 	&dev_attr_send_echo_delays.attr,
+ 	&dev_attr_chip_id.attr,
+ 	&dev_attr_cfam_id.attr,
+ 	&dev_attr_send_term.attr,
++	&dev_attr_config_table.attr,
++	&dev_attr_smode.attr.attr,
++	&dev_attr_sdma.attr.attr,
++	&dev_attr_sisc.attr.attr,
++	&dev_attr_sism.attr.attr,
++	&dev_attr_siss.attr.attr,
++	&dev_attr_sstat.attr.attr,
++	&dev_attr_si1m.attr.attr,
++	&dev_attr_si1s.attr.attr,
++	&dev_attr_sic.attr.attr,
++	&dev_attr_si2m.attr.attr,
++	&dev_attr_si2s.attr.attr,
++	&dev_attr_scmdt.attr.attr,
++	&dev_attr_sdata.attr.attr,
++	&dev_attr_slastd.attr.attr,
++	&dev_attr_smbl.attr.attr,
++	&dev_attr_soml.attr.attr,
++	&dev_attr_snml.attr.attr,
++	&dev_attr_smbr.attr.attr,
++	&dev_attr_somr.attr.attr,
++	&dev_attr_snmr.attr.attr,
++	&dev_attr_scrsic.attr.attr,
++	&dev_attr_scrsim.attr.attr,
++	&dev_attr_scrsis.attr.attr,
++	&dev_attr_srsic.attr.attr,
++	&dev_attr_srsim.attr.attr,
++	&dev_attr_srsis.attr.attr,
++	&dev_attr_llmode.attr.attr,
++	&dev_attr_llstat.attr.attr,
+ 	NULL,
+ };
  
- 	rc = fsi_master_register(&hub->master);
- 	if (rc)
--		goto err_release;
-+		goto err_free;
+-static const struct attribute_group cfam_attr_group = {
+-	.attrs = cfam_attr,
+-};
+-
+-static const struct attribute_group *cfam_attr_groups[] = {
+-	&cfam_attr_group,
+-	NULL,
+-};
++ATTRIBUTE_GROUPS(cfam);
  
- 	/* At this point, fsi_master_register performs the device_initialize(),
- 	 * and holds the sole reference on master.dev. This means the device
-@@ -256,9 +156,13 @@ static int hub_master_probe(struct device *dev)
- 	get_device(&hub->master.dev);
- 	return 0;
+ static char *cfam_devnode(const struct device *dev, umode_t *mode,
+ 			  kuid_t *uid, kgid_t *gid)
+@@ -919,7 +1043,7 @@ static char *cfam_devnode(const struct device *dev, umode_t *mode,
+ static const struct device_type cfam_type = {
+ 	.name = "cfam",
+ 	.devnode = cfam_devnode,
+-	.groups = cfam_attr_groups
++	.groups = cfam_groups
+ };
  
-+err_free:
-+	kfree(hub);
- err_release:
- 	fsi_slave_release_range(fsi_dev->slave, FSI_HUB_LINK_OFFSET,
- 			FSI_HUB_LINK_SIZE * links);
-+err_regmap:
-+	regmap_exit(map);
- 	return rc;
- }
+ static char *fsi_cdev_devnode(const struct device *dev, umode_t *mode,
+diff --git a/drivers/fsi/fsi-slave.h b/drivers/fsi/fsi-slave.h
+index 0468ec1c60db2..1478ee561b85c 100644
+--- a/drivers/fsi/fsi-slave.h
++++ b/drivers/fsi/fsi-slave.h
+@@ -14,6 +14,7 @@
+  * FSI slave engine control register offsets
+  */
+ #define FSI_SMODE		0x0	/* R/W: Mode register */
++#define FSI_SDMA		0x4	/* R/W: DMA control */
+ #define FSI_SISC		0x8	/* R  : Interrupt condition */
+ #define FSI_SCISC		0x8	/* C  : Clear interrupt condition */
+ #define FSI_SISM		0xc	/* R/W: Interrupt mask */
+@@ -21,11 +22,30 @@
+ #define FSI_SSISM		0x10	/* S  : Set interrupt mask */
+ #define FSI_SCISM		0x14	/* C  : Clear interrupt mask */
+ #define FSI_SSTAT		0x14	/* R  : Slave status */
++#define FSI_SI1M		0x18	/* R/W: Interrupt 1 mask */
+ #define FSI_SI1S		0x1c	/* R  : Slave interrupt 1 status */
+ #define FSI_SSI1M		0x1c	/* S  : Set slave interrupt 1 mask */
++#define FSI_SIC			0x20	/* R  : Interrupt 1 condition */
+ #define FSI_SCI1M		0x20	/* C  : Clear slave interrupt 1 mask */
++#define FSI_SI2M		0x24	/* R/W: Interrupt 2 mask */
++#define FSI_SI2S		0x28	/* R  : Interrupt 2 status */
++#define FSI_SCMDT		0x2c	/* R  : Last command trace */
++#define FSI_SDATA		0x30	/* R  : Last data trace */
+ #define FSI_SLBUS		0x30	/* W  : LBUS Ownership */
++#define FSI_SLASTD		0x34	/* R  : Last data sent */
+ #define FSI_SRES		0x34	/* W  : Reset */
++#define FSI_SMBL		0x38
++#define FSI_SOML		0x3c
++#define FSI_SNML		0x40
++#define FSI_SMBR		0x44
++#define FSI_SOMR		0x48
++#define FSI_SNMR		0x4c
++#define FSI_ScRSIC0		0x50
++#define FSI_ScRSIC4		0x54
++#define FSI_ScRSIM0		0x58
++#define FSI_ScRSIM4		0x5c
++#define FSI_ScRSIS0		0x60
++#define FSI_ScRSIS4		0x64
+ #define FSI_SRSIC0		0x68	/* C  : Clear remote interrupt condition */
+ #define FSI_SRSIC4		0x6c	/* C  : Clear remote interrupt condition */
+ #define FSI_SRSIM0		0x70	/* R/W: Remote interrupt mask */
+@@ -33,6 +53,7 @@
+ #define FSI_SRSIS0		0x78	/* R  : Remote interrupt status */
+ #define FSI_SRSIS4		0x7c	/* R  : Remote interrupt status */
+ #define FSI_LLMODE		0x100	/* R/W: Link layer mode register */
++#define FSI_LLSTAT		0x104
  
+ /*
+  * SMODE fields
 -- 
 2.39.3
 

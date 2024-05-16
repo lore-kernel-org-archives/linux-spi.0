@@ -1,57 +1,55 @@
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BD40156C5E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1308156C7F;
 	Thu, 16 May 2024 18:19:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715883571; cv=none; b=ljeIfTC1ejwnMBj18WurIV6fr5HxE3SpGDFq0QROzBEm0+aW6A7Ek+g1T7IJBpVSoO97t0aH1rp110gUkJgMX4TIq8vnIrdotqsqACnNBw2RHjPOe8zFhhjOZYwA2/SOViOAo6Hd6d0NPAzLdOsG5Nmh199UVxjsbRP6WBcb5rc=
+	t=1715883571; cv=none; b=f68xDnN/C3GWh7pUQkkh/+TPdjV/aiTUU5xOliK8L1TUmx+rs5t4A+DI23K9ZFpK9QwQdFIhG5CLEowYugpjT2OdOUlI0i4xDp7itZZpg7s8EFxEKxyASMW5mICvPSNmD3n4U6p8tSDzeYj+LkQL4anu564NvelvLsRjeiBxoBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1715883571; c=relaxed/simple;
-	bh=c6X5cBeVcHCy2khqupbb2XqaXAyq1jU0VNJD2arVWzs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TmCr5U25aIh2S9HRvDaT1nmRc7dWIFht8UaNDcRR6uiB8RribXGqJokX6P7MWPYWh4MLW+mIUWhbBnDgUIOaXfCPWGXd9rGrs9zjBxHCBM80wqz2AhmQK7FVpXwcuN3rCEiSBeGaFR6KqYVhmEZ31oNNWcL85ggPHrg5B0Wk8SU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=mOiO6qze; arc=none smtp.client-ip=148.163.156.1
+	bh=ExutKnV3UQZbIBtujoabH4xx2CzRGq4fc0a43cX5pfM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=U7PENah6mdxGhZorkpfje7ZymdEhs01xKBeaKaICUh5JaYdnEPidnL3Zu0nv9MVl3PcSHIXeIkMBc9wla1yc9ci2anT62qqUyUrQkgo5SW/Ww4s7VWYLz/HyQaRryAgjDjE2rQmnZIqbyBQ3wIEa38k6pkzyf2v5YbyxvuhpgDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=QjZAp9gN; arc=none smtp.client-ip=148.163.156.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="mOiO6qze"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="QjZAp9gN"
 Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44GIAW5O020133;
-	Thu, 16 May 2024 18:19:14 GMT
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44GIAWgt020164;
+	Thu, 16 May 2024 18:19:13 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=c52WiDs0KUXzepuhSz5qr9KqOUKGpDG3JkjIGvE1bYo=;
- b=mOiO6qze8ViIey1TofP9PLm/uW6joTcjzj8b2R5ROLYJX/AH2Uzv4sDZTEk1Ern91I99
- ysq8gS/h8eORjIr1Tu5kIyLcgft8dWsJRkg2meBHb4XnORx+sQ5GaRBzsDvyWCnfECLn
- QC30hY39RgS6BtykwIuekBBASaLRJjiRpaBUAsfl1HEEM46oA4pA7k5Cg/vy21JXb1wn
- 6YGsWMPf2iHFcVeSqhlDhNi6E0FNcRgtHbUiNzDW5mK4BDXJSpTPLsxvMM0S9kjW4o8I
- 0oSoaI29qWmUJiwud3kJ7UeaTJGabjgNhnPNXku8wgM9oS9PomK6Rzv1971qk81r0hbw 7Q== 
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y5p6gg5my-1
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=+VmPdD1ZCzBwv6fiFfXvgra3YJsljjbDY8PAdvzuhIg=;
+ b=QjZAp9gN0WmYnEr+caWtpKR2MYfc18ZW9RUK7zMD660Hq8a2ax500rUKg9RvsyoishXg
+ jpMyB6+3n8Vii5Gi6E2qwBO7As5oxL1vQNCkUYLzlDjx0k7t+7E+Jp/rCt953XEFEP4U
+ lLVbfKJmCe9wRWVT9X3i9hzSa/xUAlv+RwncbAEiZGxELuaYb3WO4vVaM5GetKKEmLql
+ CV03YMupkJAlHDpGG3eibvisuTy4P9eO/RuaRTS3cBRC6dq83d92XJPm0Zi0dZm3JlKZ
+ Uxd1/K0e83WzCJ55SIeUj3msUQ3WDIJ5Fz4u/x2SPc31pRKC0CngsAS2ZJpUERuoI8kj nA== 
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y5p6gg5mx-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Thu, 16 May 2024 18:19:13 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 44GG5g8M029591;
-	Thu, 16 May 2024 18:19:12 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3y2n7m34m1-1
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 44GHh6bg002288;
+	Thu, 16 May 2024 18:19:11 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3y2m0pkfua-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 May 2024 18:19:12 +0000
+	Thu, 16 May 2024 18:19:11 +0000
 Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 44GIJA5T12649170
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 44GIJ9OE41943336
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 16 May 2024 18:19:12 GMT
+	Thu, 16 May 2024 18:19:11 GMT
 Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C85F958071;
-	Thu, 16 May 2024 18:19:08 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 8F0825807C;
+	Thu, 16 May 2024 18:19:07 +0000 (GMT)
 Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 889AA5806D;
-	Thu, 16 May 2024 18:19:08 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 4E57358072;
+	Thu, 16 May 2024 18:19:07 +0000 (GMT)
 Received: from slate16.aus.stglabs.ibm.com (unknown [9.61.107.19])
 	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 16 May 2024 18:19:08 +0000 (GMT)
+	Thu, 16 May 2024 18:19:07 +0000 (GMT)
 From: Eddie James <eajames@linux.ibm.com>
 To: linux-fsi@lists.ozlabs.org
 Cc: linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
@@ -59,12 +57,10 @@ Cc: linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
         joel@jms.id.au, alistair@popple.id.au, jk@ozlabs.org,
         andrew@codeconstruct.com.au, linux-aspeed@lists.ozlabs.org,
         eajames@linux.ibm.com
-Subject: [PATCH v3 04/40] fsi: Use a defined value for default echo delay
-Date: Thu, 16 May 2024 13:18:31 -0500
-Message-Id: <20240516181907.3468796-5-eajames@linux.ibm.com>
+Subject: [PATCH v3 00/40] fsi: Add interrupt support
+Date: Thu, 16 May 2024 13:18:27 -0500
+Message-Id: <20240516181907.3468796-1-eajames@linux.ibm.com>
 X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20240516181907.3468796-1-eajames@linux.ibm.com>
-References: <20240516181907.3468796-1-eajames@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -73,8 +69,8 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: qYdum3aqYtzRi4afjttFASsNwG_Y8jsn
-X-Proofpoint-ORIG-GUID: qYdum3aqYtzRi4afjttFASsNwG_Y8jsn
+X-Proofpoint-GUID: QJkshgFbOWAlRIPiYzVmd7sTJFRCCRnr
+X-Proofpoint-ORIG-GUID: QJkshgFbOWAlRIPiYzVmd7sTJFRCCRnr
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
  definitions=2024-05-16_07,2024-05-15_01,2023-05-22_02
@@ -84,53 +80,90 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowprio
  phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2405010000 definitions=main-2405160132
 
-Avoid hardcoding '16' several times.
+This series primarily adds interrupt support to the FSI driver subsystem.
+There are a number of related changes and fixes. Firstly, the FSI clocking
+model is improved to allow FSI engine drivers to obtain real clock rates
+and calculate appropriate clock dividers. Secondly, much master code is
+made common through the use of a regmap to access master registers. This
+will prove more useful as additional FSI master drivers are added. Lastly,
+interrupt support is added to the FSI I2C driver.
 
-Signed-off-by: Eddie James <eajames@linux.ibm.com>
----
- drivers/fsi/fsi-core.c  | 6 +++---
- drivers/fsi/fsi-slave.h | 2 ++
- 2 files changed, 5 insertions(+), 3 deletions(-)
+Changes since v2:
+ - Add several patches to fix additional issues found during testing
+ - For local bus frequenccy, use cfam clock-frequency property instead of
+   hardcoded master local bus divider
+ - Change default local bus clock divider from 8 to 2
+ - Zero the regmap_config structure in the common FSI initialization
+   function
+ - Add AST2700 direct AHB access of master registers
+ - Remove slave interrupt handler since it's not used yet
+ - For I2C driver, change minimum clock div to 3, use DIV_ROUND_UP instead
+   of re-implementing it, and use better logic for checking for
+   clock-frequency property
+ - Add detail to I2C driver formatting change
 
-diff --git a/drivers/fsi/fsi-core.c b/drivers/fsi/fsi-core.c
-index e8dbf5e95c234..27235583183e5 100644
---- a/drivers/fsi/fsi-core.c
-+++ b/drivers/fsi/fsi-core.c
-@@ -1008,8 +1008,8 @@ static int fsi_slave_init(struct fsi_master *master, int link, uint8_t id)
- 	slave->link = link;
- 	slave->id = id;
- 	slave->size = FSI_SLAVE_SIZE_23b;
--	slave->t_send_delay = 16;
--	slave->t_echo_delay = 16;
-+	slave->t_send_delay = FSI_SMODE_SD_DEFAULT;
-+	slave->t_echo_delay = FSI_SMODE_ED_DEFAULT;
- 
- 	/* Get chip ID if any */
- 	slave->chip_id = -1;
-@@ -1160,7 +1160,7 @@ static int fsi_master_break(struct fsi_master *master, int link)
- 	if (master->send_break)
- 		rc = master->send_break(master, link);
- 	if (master->link_config)
--		master->link_config(master, link, 16, 16);
-+		master->link_config(master, link, FSI_SMODE_SD_DEFAULT, FSI_SMODE_ED_DEFAULT);
- 
- 	return rc;
- }
-diff --git a/drivers/fsi/fsi-slave.h b/drivers/fsi/fsi-slave.h
-index f6cca04131a92..45190b06fa027 100644
---- a/drivers/fsi/fsi-slave.h
-+++ b/drivers/fsi/fsi-slave.h
-@@ -42,8 +42,10 @@
- #define FSI_SMODE_SID_BREAK	3		/* ID after break command */
- #define FSI_SMODE_ED_SHIFT	20		/* Echo delay shift */
- #define FSI_SMODE_ED_MASK	0xf		/* Echo delay mask */
-+#define FSI_SMODE_ED_DEFAULT	 16		/* Default echo delay */
- #define FSI_SMODE_SD_SHIFT	16		/* Send delay shift */
- #define FSI_SMODE_SD_MASK	0xf		/* Send delay mask */
-+#define FSI_SMODE_SD_DEFAULT	 16		/* Default send delay */
- #define FSI_SMODE_LBCRR_SHIFT	8		/* Clk ratio shift */
- #define FSI_SMODE_LBCRR_MASK	0xf		/* Clk ratio mask */
- 
+Eddie James (40):
+  fsi: hub: Set master index to link number plus one
+  fsi: Move slave definitions to fsi-slave.h
+  fsi: Fix slave addressing after break command
+  fsi: Use a defined value for default echo delay
+  fsi: Calculate local bus clock frequency
+  fsi: core: Improve master read/write/error traces
+  fsi: core: Add slave error trace
+  fsi: core: Reset errors instead of clearing interrupts
+  fsi: aspeed: Add AST2700 support
+  fsi: core: Add slave spinlock
+  fsi: core: Allow cfam device type aliases
+  fsi: core: Add common regmap master functions
+  fsi: core: Disable relative addressing during scan
+  fsi: hub: Use common initialization and link enable
+  fsi: aspeed: Use common initialization and link enable
+  fsi: aspeed: Remove cfam reset sysfs file in error path and remove
+  fsi: aspeed: Refactor trace functions
+  fsi: aspeed: Don't clear all IRQs during OPB transfers
+  fsi: aspeed: Only read result register for successful read
+  fsi: aspeed: Switch to spinlock
+  fsi: aspeed: Disable relative addressing and IPOLL for cfam reset
+  fsi: aspeed: Use common master error handler
+  fsi: core: Add interrupt support
+  fsi: aspeed: Add interrupt support
+  fsi: hub: Add interrupt support
+  i2c: fsi: Calculate clock divider from local bus frequency
+  i2c: fsi: Improve formatting
+  i2c: fsi: Change fsi_i2c_write_reg to accept data instead of a pointer
+  i2c: fsi: Remove list structure of ports
+  i2c: fsi: Define a function to check status error bits
+  i2c: fsi: Add boolean for skip stop command on abort
+  i2c: fsi: Add interrupt support
+  fsi: hub master: Reset hub master after errors
+  fsi: core: Add master register read-only sysfs
+  fsi: core: Add slave register read-only sysfs
+  fsi: i2cr: Adjust virtual CFAM ID to match Odyssey chip
+  fsi: core: Add different types of CFAM
+  spi: fsi: Calculate clock divider from local bus frequency
+  ARM: dts: aspeed: P10 and tacoma: Set FSI clock frequency
+  ARM: dts: aspeed: P10: Bump SPI max frequencies
+
+ .../dts/aspeed/aspeed-bmc-ibm-everest.dts     |  32 +-
+ .../boot/dts/aspeed/aspeed-bmc-opp-tacoma.dts |   1 +
+ .../arm/boot/dts/aspeed/ibm-power10-dual.dtsi |  17 +-
+ .../arm/boot/dts/aspeed/ibm-power10-quad.dtsi |  16 +-
+ drivers/fsi/Kconfig                           |   2 +
+ drivers/fsi/fsi-core.c                        | 888 +++++++++++++++---
+ drivers/fsi/fsi-master-aspeed.c               | 431 +++++----
+ drivers/fsi/fsi-master-hub.c                  | 244 ++---
+ drivers/fsi/fsi-master-i2cr.c                 |   2 +-
+ drivers/fsi/fsi-master.h                      |  33 +
+ drivers/fsi/fsi-slave.h                       | 118 +++
+ drivers/i2c/busses/i2c-fsi.c                  | 463 ++++++---
+ drivers/spi/spi-fsi.c                         |  33 +-
+ include/linux/fsi.h                           |   3 +
+ include/trace/events/fsi.h                    | 190 ++--
+ include/trace/events/fsi_master_aspeed.h      |  86 +-
+ include/trace/events/i2c_fsi.h                |  45 +
+ 17 files changed, 1917 insertions(+), 687 deletions(-)
+ create mode 100644 include/trace/events/i2c_fsi.h
+
 -- 
 2.39.3
 

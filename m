@@ -1,53 +1,53 @@
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE46156C7C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3E2156C60;
 	Thu, 16 May 2024 18:19:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715883571; cv=none; b=AzMyEEK6LUw48GdiWTCHbwrAoS2iakz2R+ZygxjySqXusgGDH1sUzXuU4RYxUkW5UbG09ySCrrZQ4MS4A7cic3W/KFuGVMlWhu8qI70mhC6pVI3nJvobwoKFE40LQ57CHiIo413gdRomzw3v5Wo5ee/CceDB1AAgCCk+xT8HuEk=
+	t=1715883573; cv=none; b=YA5lhNVLvobdCO5LEsy8muRoS99Wt9bhuBbNnfFyO+BzrmJxefwTsqLMEKz1Ykv5VJ5yX9RNa2tJIaRDuYo29roHvnbJQIMbQNtjR8K8fywhKj7c69HAsf+iGUh+gvKsvY1ngtqC4Tpm6kUpTLDA4FTJKWwDILrNqjsvSZV/RHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715883571; c=relaxed/simple;
-	bh=4ZjZj3THCOKVgY6viW7Cea0T7GWn/8Z7ggQPNe7qU2s=;
+	s=arc-20240116; t=1715883573; c=relaxed/simple;
+	bh=yUz/ROMGEoe6+SLnrmcPZvLaUjxobW2ydVpNVylcngM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=L3ujDwQbWVAE/mbEdRoGpLgwC7AhQY9S/pkPJLh+9JYQJKoi2r3/9utIyjeA8XhA9mIZGRF1H6cxJuYXPUkQw/ELjxB/QfiiBMgPMLfZFDnbwFYf8LI8TBYyIZgpg8tUwDv/SXZhczksQe8Zn6XSfkhLqfq6Ss9oWaFmECFEZnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=W2hyvCjO; arc=none smtp.client-ip=148.163.156.1
+	 MIME-Version; b=cXNfBLLG5hno34eih0BD/Glxp7FA6yDOOX74C7MStpiBeuGGVeF4RMiu3eGFMYRqZjIYNZ523N1M72WuKKhagr1hoIrYvLp75jzKqZ8rc+6LSOAZIy5J1M6I9z3z8VKoVMjKXC5HfGvjrDOVITDhsWl4s3OKA73S6g0XI2qbJAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=FxGoWv0Y; arc=none smtp.client-ip=148.163.156.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="W2hyvCjO"
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44GHRRmq002291;
-	Thu, 16 May 2024 18:19:14 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="FxGoWv0Y"
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44GGl7Po022376;
+	Thu, 16 May 2024 18:19:13 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=35QhAQ7kX9QHCSy8fxK00Ig3Cr+S1lp5g6DIkdhYmNw=;
- b=W2hyvCjOJkT5vCeNZ523rlDuSALQ3RX+Dg4i46pkZSGN46mlN2Y6f9vQwHzOmJbasn6U
- oeXeQnnGX93h1Vbpy7LUC57JfN1gTg9otcVj0xsjR5+qG8awUzTEFyrMHWlHLbke0bdQ
- l4GyJKoaLEbAtLnsHZvUxavo7CXSV/uJN/NoGCy5c2hS3JfiDrWe3DoZWkwJX3t+rvLf
- GSdpBfjXqSrVqFLY50bx3B/MyLGkjZleyA0oSFeXJ0GoDwYgYP3Dv6z0XWaF60F1IxHq
- zOdeaCZTXld49ZNYOIGXfAEQ8QJyMN6vQvRCuKUzsYjVPiePWNt/OujBB/ptTUuBDlG/ WA== 
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y5pj6g4en-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 May 2024 18:19:14 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 44GGVOH5005821;
-	Thu, 16 May 2024 18:19:13 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3y2nq331vr-1
+ bh=5eeoXCbaU56E8ifND9k7gRXOpAZyJwysFP2rCDv7kG0=;
+ b=FxGoWv0Y9wMBGc4p8nTH25aHPVJhrGdgY7nO/NpEAEcJncObclh2XbUBzZEkpr9+hZ3n
+ GQ8YGqsjLekaqJiByMM08b4DZ+Sk0wMmjl0dHWwSuLaW1Vysw5YnNLThmwQmaPn5tyMb
+ YUy3YTK4MIJZFUu87Q97WQmsGkmzdLGZyeDiCKJ2dIk5lGZw801fyNPc+/GUt85GGOVw
+ nISNO1FyQuJXVwCJowOY7kpshJS6giUzzq+wP5l5F7jy39B8isL+c+TPKWlCFXdAaTIj
+ FXyKFa2ZAXPzwrgR3pdS0Y6swpEQHkhtwUMJuBgiQ6z+l56iA8O4U0zDcWoIx/I0r+eb LA== 
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y5nycr8d7-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Thu, 16 May 2024 18:19:12 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 44GFXZgi029599;
+	Thu, 16 May 2024 18:19:11 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3y2n7m34kx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 May 2024 18:19:11 +0000
 Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 44GIJAmo27001458
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 44GIJ9If28574388
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 16 May 2024 18:19:12 GMT
+	Thu, 16 May 2024 18:19:11 GMT
 Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 015DA5807A;
-	Thu, 16 May 2024 18:19:10 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 6503B58087;
+	Thu, 16 May 2024 18:19:09 +0000 (GMT)
 Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B5D605808B;
+	by IMSVA (Postfix) with ESMTP id 2500D58065;
 	Thu, 16 May 2024 18:19:09 +0000 (GMT)
 Received: from slate16.aus.stglabs.ibm.com (unknown [9.61.107.19])
 	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
@@ -59,9 +59,9 @@ Cc: linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
         joel@jms.id.au, alistair@popple.id.au, jk@ozlabs.org,
         andrew@codeconstruct.com.au, linux-aspeed@lists.ozlabs.org,
         eajames@linux.ibm.com
-Subject: [PATCH v3 08/40] fsi: core: Reset errors instead of clearing interrupts
-Date: Thu, 16 May 2024 13:18:35 -0500
-Message-Id: <20240516181907.3468796-9-eajames@linux.ibm.com>
+Subject: [PATCH v3 06/40] fsi: core: Improve master read/write/error traces
+Date: Thu, 16 May 2024 13:18:33 -0500
+Message-Id: <20240516181907.3468796-7-eajames@linux.ibm.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240516181907.3468796-1-eajames@linux.ibm.com>
 References: <20240516181907.3468796-1-eajames@linux.ibm.com>
@@ -73,77 +73,217 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: OeLpiFkQuiAjXgMzGoRM9L88eQWvf1vM
-X-Proofpoint-ORIG-GUID: OeLpiFkQuiAjXgMzGoRM9L88eQWvf1vM
+X-Proofpoint-GUID: 7nyjdNlNVNj31MUGPHseawf0FtNyXecb
+X-Proofpoint-ORIG-GUID: 7nyjdNlNVNj31MUGPHseawf0FtNyXecb
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
  definitions=2024-05-16_07,2024-05-15_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
- bulkscore=0 adultscore=0 malwarescore=0 spamscore=0 phishscore=0
- priorityscore=1501 impostorscore=0 mlxlogscore=999 suspectscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 bulkscore=0
+ malwarescore=0 priorityscore=1501 mlxscore=0 phishscore=0 suspectscore=0
+ mlxlogscore=881 adultscore=0 lowpriorityscore=0 impostorscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2405010000 definitions=main-2405160132
 
-The proper way to clear error conditions is to use the SRES
-register rather than simple clearing SISC.
+Consolidate the master read and write traces into one trace and
+change the result trace into an error trace for less spam.
 
 Signed-off-by: Eddie James <eajames@linux.ibm.com>
 ---
- drivers/fsi/fsi-core.c  | 9 +++++----
- drivers/fsi/fsi-slave.h | 6 ++++++
- 2 files changed, 11 insertions(+), 4 deletions(-)
+ drivers/fsi/fsi-core.c     |  26 +++++----
+ include/trace/events/fsi.h | 112 ++++++++++++-------------------------
+ 2 files changed, 51 insertions(+), 87 deletions(-)
 
 diff --git a/drivers/fsi/fsi-core.c b/drivers/fsi/fsi-core.c
-index 93bbdcf50a89a..ce9762d1bd8b0 100644
+index 44875f2350b04..b3029f9c05e4a 100644
 --- a/drivers/fsi/fsi-core.c
 +++ b/drivers/fsi/fsi-core.c
-@@ -166,7 +166,7 @@ static int fsi_slave_calc_addr(struct fsi_slave *slave, uint32_t *addrp,
- static int fsi_slave_report_and_clear_errors(struct fsi_slave *slave)
+@@ -1116,14 +1116,15 @@ static int fsi_master_read(struct fsi_master *master, int link,
  {
- 	struct fsi_master *master = slave->master;
--	__be32 irq, stat;
-+	__be32 irq, reset, stat;
- 	int rc, link;
- 	uint8_t id;
+ 	int rc;
  
-@@ -187,9 +187,10 @@ static int fsi_slave_report_and_clear_errors(struct fsi_slave *slave)
- 			be32_to_cpu(stat), be32_to_cpu(irq));
- 	trace_fsi_slave_error(slave, be32_to_cpu(irq), be32_to_cpu(stat));
+-	trace_fsi_master_read(master, link, slave_id, addr, size);
+-
+ 	rc = fsi_check_access(addr, size);
+-	if (!rc)
++	if (!rc) {
+ 		rc = master->read(master, link, slave_id, addr, val, size);
+-
+-	trace_fsi_master_rw_result(master, link, slave_id, addr, size,
+-			false, val, rc);
++		if (rc)
++			trace_fsi_master_error(master->idx, link, slave_id, addr, size, val, rc,
++					       true);
++		else
++			trace_fsi_master_xfer(master->idx, link, slave_id, addr, size, val, true);
++	}
  
--	/* clear interrupts */
--	return fsi_master_write(master, link, id, FSI_SLAVE_BASE + FSI_SISC,
--			&irq, sizeof(irq));
-+	/* reset errors */
-+	reset = cpu_to_be32(FSI_SRES_ERRS);
-+	return fsi_master_write(master, link, id, FSI_SLAVE_BASE + FSI_SRES, &reset,
-+				sizeof(reset));
+ 	return rc;
  }
+@@ -1133,14 +1134,15 @@ static int fsi_master_write(struct fsi_master *master, int link,
+ {
+ 	int rc;
  
- /* Encode slave local bus echo delay */
-diff --git a/drivers/fsi/fsi-slave.h b/drivers/fsi/fsi-slave.h
-index fabc0b66d5bf3..e9fd4be6f3760 100644
---- a/drivers/fsi/fsi-slave.h
-+++ b/drivers/fsi/fsi-slave.h
-@@ -24,6 +24,7 @@
- #define FSI_SSI1M		0x1c	/* S  : Set slave interrupt 1 mask */
- #define FSI_SCI1M		0x20	/* C  : Clear slave interrupt 1 mask */
- #define FSI_SLBUS		0x30	/* W  : LBUS Ownership */
-+#define FSI_SRES		0x34	/* W  : Reset */
- #define FSI_SRSIC0		0x68	/* C  : Clear remote interrupt condition */
- #define FSI_SRSIC4		0x6c	/* C  : Clear remote interrupt condition */
- #define FSI_SRSIM0		0x70	/* R/W: Remote interrupt mask */
-@@ -90,6 +91,11 @@
-  */
- #define FSI_SLBUS_FORCE		0x80000000	/* Force LBUS ownership */
+-	trace_fsi_master_write(master, link, slave_id, addr, size, val);
+-
+ 	rc = fsi_check_access(addr, size);
+-	if (!rc)
++	if (!rc) {
+ 		rc = master->write(master, link, slave_id, addr, val, size);
+-
+-	trace_fsi_master_rw_result(master, link, slave_id, addr, size,
+-			true, val, rc);
++		if (rc)
++			trace_fsi_master_error(master->idx, link, slave_id, addr, size, val, rc,
++					       false);
++		else
++			trace_fsi_master_xfer(master->idx, link, slave_id, addr, size, val, false);
++	}
  
-+/*
-+ * SRES fields
-+ */
-+#define FSI_SRES_ERRS		0x40000000	/* Reset FSI slave errors */
-+
- /*
-  * LLMODE fields
-  */
+ 	return rc;
+ }
+diff --git a/include/trace/events/fsi.h b/include/trace/events/fsi.h
+index 5ff15126ad9d5..fed8835f438e5 100644
+--- a/include/trace/events/fsi.h
++++ b/include/trace/events/fsi.h
+@@ -8,101 +8,63 @@
+ 
+ #include <linux/tracepoint.h>
+ 
+-TRACE_EVENT(fsi_master_read,
+-	TP_PROTO(const struct fsi_master *master, int link, int id,
+-			uint32_t addr, size_t size),
+-	TP_ARGS(master, link, id, addr, size),
++TRACE_EVENT(fsi_master_xfer,
++	TP_PROTO(int master_idx, int link, int id, uint32_t addr, size_t size, const void *data,
++		 bool read),
++	TP_ARGS(master_idx, link, id, addr, size, data, read),
+ 	TP_STRUCT__entry(
+-		__field(int,	master_idx)
+-		__field(int,	link)
+-		__field(int,	id)
+-		__field(__u32,	addr)
+-		__field(size_t,	size)
++		__field(int, master_idx)
++		__field(int, link)
++		__field(int, id)
++		__field(uint32_t, addr)
++		__field(int, size)
++		__field(uint32_t, data)
++		__field(bool, read)
+ 	),
+ 	TP_fast_assign(
+-		__entry->master_idx = master->idx;
++		__entry->master_idx = master_idx;
+ 		__entry->link = link;
+ 		__entry->id = id;
+ 		__entry->addr = addr;
+-		__entry->size = size;
+-	),
+-	TP_printk("fsi%d:%02d:%02d %08x[%zu]",
+-		__entry->master_idx,
+-		__entry->link,
+-		__entry->id,
+-		__entry->addr,
+-		__entry->size
+-	)
+-);
+-
+-TRACE_EVENT(fsi_master_write,
+-	TP_PROTO(const struct fsi_master *master, int link, int id,
+-			uint32_t addr, size_t size, const void *data),
+-	TP_ARGS(master, link, id, addr, size, data),
+-	TP_STRUCT__entry(
+-		__field(int,	master_idx)
+-		__field(int,	link)
+-		__field(int,	id)
+-		__field(__u32,	addr)
+-		__field(size_t,	size)
+-		__field(__u32,	data)
+-	),
+-	TP_fast_assign(
+-		__entry->master_idx = master->idx;
+-		__entry->link = link;
+-		__entry->id = id;
+-		__entry->addr = addr;
+-		__entry->size = size;
++		__entry->size = (int)size;
+ 		__entry->data = 0;
+ 		memcpy(&__entry->data, data, size);
++		__entry->read = read;
+ 	),
+-	TP_printk("fsi%d:%02d:%02d %08x[%zu] <= {%*ph}",
+-		__entry->master_idx,
+-		__entry->link,
+-		__entry->id,
+-		__entry->addr,
+-		__entry->size,
+-		(int)__entry->size, &__entry->data
+-	)
++	TP_printk("fsi%d:%02d:%02d %s %08x {%*ph}", __entry->master_idx, __entry->link,
++		  __entry->id, __entry->read ? "read" : "write", __entry->addr, __entry->size,
++		  &__entry->data)
+ );
+ 
+-TRACE_EVENT(fsi_master_rw_result,
+-	TP_PROTO(const struct fsi_master *master, int link, int id,
+-			uint32_t addr, size_t size,
+-			bool write, const void *data, int ret),
+-	TP_ARGS(master, link, id, addr, size, write, data, ret),
++TRACE_EVENT(fsi_master_error,
++	TP_PROTO(int master_idx, int link, int id, uint32_t addr, size_t size, const void *data,
++		 int ret, bool read),
++	TP_ARGS(master_idx, link, id, addr, size, data, ret, read),
+ 	TP_STRUCT__entry(
+-		__field(int,	master_idx)
+-		__field(int,	link)
+-		__field(int,	id)
+-		__field(__u32,	addr)
+-		__field(size_t,	size)
+-		__field(bool,	write)
+-		__field(__u32,	data)
+-		__field(int,	ret)
++		__field(int, master_idx)
++		__field(int, link)
++		__field(int, id)
++		__field(uint32_t, addr)
++		__field(int, size)
++		__field(uint32_t, data)
++		__field(int, ret)
++		__field(bool, read)
+ 	),
+ 	TP_fast_assign(
+-		__entry->master_idx = master->idx;
++		__entry->master_idx = master_idx;
+ 		__entry->link = link;
+ 		__entry->id = id;
+ 		__entry->addr = addr;
+-		__entry->size = size;
+-		__entry->write = write;
++		__entry->size = (int)size;
+ 		__entry->data = 0;
+-		__entry->ret = ret;
+-		if (__entry->write || !__entry->ret)
++		if (!read)
+ 			memcpy(&__entry->data, data, size);
++		__entry->ret = ret;
++		__entry->read = read;
+ 	),
+-	TP_printk("fsi%d:%02d:%02d %08x[%zu] %s {%*ph} ret %d",
+-		__entry->master_idx,
+-		__entry->link,
+-		__entry->id,
+-		__entry->addr,
+-		__entry->size,
+-		__entry->write ? "<=" : "=>",
+-		(int)__entry->size, &__entry->data,
+-		__entry->ret
+-	)
++	TP_printk("fsi%d:%02d:%02d %s %08x {%*ph} %d", __entry->master_idx, __entry->link,
++		  __entry->id, __entry->read ? "read" : "write", __entry->addr, __entry->size,
++		  &__entry->data, __entry->ret)
+ );
+ 
+ TRACE_EVENT(fsi_master_break,
 -- 
 2.39.3
 

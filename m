@@ -1,57 +1,57 @@
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B525815ECCD;
-	Thu, 16 May 2024 18:19:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD74215ECE8;
+	Thu, 16 May 2024 18:19:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715883588; cv=none; b=mRy7gi29YUNE9i4mJIyFc8fK1O9BXk+2fHqGR5J+iTykcfwvmoqaUr8g8O66N+m1AaHglu84Gky2dMma2nQVGugoxxyt1DeoIpx9/+vW/p2GlFSRNMgASWFAKiyejYADqhoyYsHYakRoRbXKpqSDw3JKfp/srNq2nxBV4QCvHxk=
+	t=1715883589; cv=none; b=iBl9opR9kjuM0jzJVcM+zoG2M2MLiw2Yxd4m/fhVWWpk1XZL9MKYUJC0dICjpeMbu7Hy844EZvq8zMJsJxT0thMCbyeET2QbkLhchgXfs9fiwWmyU8ubKqCYNyADFgVQc3hMuHhVOJ4eAGa2+kHqQ1Z3i8xZvNQx9AyqS8RS7L8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715883588; c=relaxed/simple;
-	bh=R8kfSOGnIrv271rmukmsk0724R5JFYbq2WSrn+gmnEY=;
+	s=arc-20240116; t=1715883589; c=relaxed/simple;
+	bh=3+V1BYHv7imAhNsodfDuqzyVlub/3rC7336E+6Ul+HU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=chm1Ja9CnePheqE95J/POfXLA2K20DtOT5DA4pprFiWumncJzzyabh0ysu79VYvP/M5iTQMh4cW3ZYA6Onnpaz+zW30+Yw6dsBg/iQB+ORBFuLpTI/4sO4OUUSV0oc78x5+lgTPIpqUxcRU4/HVpy6DnaFCRXXke0m1/+IAEruw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=nVUma1ij; arc=none smtp.client-ip=148.163.158.5
+	 MIME-Version; b=roQLl+pWiRKjJGenpQPo+Y3qFCrU06IfcZgQFVMzq0v00QUX8HcKiKU8XCUyKheHSdiguu3C/m2XQ6HTSdNYBp51MSxkwNnTyknvrxytMNKLsY2bbvjmvKbIVLGvO59uk8XpepAn6PQrDaWln1FLmmoYXf/IS6grYvSaktJPQps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=S6JHHJzz; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="nVUma1ij"
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44GHc1KK010912;
-	Thu, 16 May 2024 18:19:22 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="S6JHHJzz"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44GHPJ0B028004;
+	Thu, 16 May 2024 18:19:18 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=ZC7HnfyHXbwd7VWU1F8seLX5ZR6fsIL25JIyeogTRXM=;
- b=nVUma1ij5cGidjjt05EOxmpZVJwe5pSrz9fm9Brq4MX4S2v0haE6Qjz4fz3D3Uxu8ISx
- lbNewkfpl8IGqI1m7DmM1X/euv7CmS1D4PFOvzH0xrWSLAE8lo31fHoVRSWUOHuNZ59h
- cNx2YFuJtsOs5sHfMQUSCryR46Acobq0thliYFnFCvyrVyX0kX7iQ4zQZGOl+nFR0hgD
- +VRoydLMEfUANWMwFSOwwzpuypbNlw9lsS1idLnckHWhvQIMALNCcIKOswKYzgVIOLxs
- +bY5vttkgSAVjOdh54vIZsIy1Q8DW3+TmBsLLcGJPoD5GD9gzyWIKmxflHwbXFRK6BwD bQ== 
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y5pq5r36b-1
+ bh=kxSj0cj+SHG6G3CgN+VDhbwxi4I1ZjlQ60/1SQ/PgFM=;
+ b=S6JHHJzz6KAnXYx712hsIj2stJW0R9yomexkW9PX4jxFnuH2HAZj9UhQupQ6ti2OQiJR
+ 9CDTGbIEVCO4dRNxK+VpTMLg+FECT60CgmtDpLYTx3MFaDjQJgzEvGAi37rnHQpYK8qD
+ fmrZDF/7FoFCx+j8ArOi2hB+dzjobGrZJPxPanTpgBV6Up4JPB+DL0EcCxoVtfNMRyDr
+ DK0xmDbI2RrHGi51s2+45/0j79rsMZNykN/4G94zyrVuYQXiX4xGXh3XXVLKUTuRcG3i
+ 0yk5BnmwDwmCYColkivezpQ8RtxN4BKdhZZ6fXx8vdKphW8SWx8wWUVKbG7OFQb/4Qa2 qg== 
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y5mce8frp-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 May 2024 18:19:22 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 44GFVnDw029571;
-	Thu, 16 May 2024 18:19:21 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3y2n7m34mk-1
+	Thu, 16 May 2024 18:19:17 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 44GHVOC7020165;
+	Thu, 16 May 2024 18:19:16 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3y2kd0bmck-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 May 2024 18:19:21 +0000
+	Thu, 16 May 2024 18:19:16 +0000
 Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 44GIJIHR23724566
+	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 44GIJEeC21496474
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 16 May 2024 18:19:20 GMT
+	Thu, 16 May 2024 18:19:16 GMT
 Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 587ED58068;
-	Thu, 16 May 2024 18:19:18 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 2DC5D58074;
+	Thu, 16 May 2024 18:19:14 +0000 (GMT)
 Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 107F75806A;
-	Thu, 16 May 2024 18:19:18 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id E373858076;
+	Thu, 16 May 2024 18:19:13 +0000 (GMT)
 Received: from slate16.aus.stglabs.ibm.com (unknown [9.61.107.19])
 	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 16 May 2024 18:19:18 +0000 (GMT)
+	Thu, 16 May 2024 18:19:13 +0000 (GMT)
 From: Eddie James <eajames@linux.ibm.com>
 To: linux-fsi@lists.ozlabs.org
 Cc: linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
@@ -59,9 +59,9 @@ Cc: linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
         joel@jms.id.au, alistair@popple.id.au, jk@ozlabs.org,
         andrew@codeconstruct.com.au, linux-aspeed@lists.ozlabs.org,
         eajames@linux.ibm.com
-Subject: [PATCH v3 36/40] fsi: i2cr: Adjust virtual CFAM ID to match Odyssey chip
-Date: Thu, 16 May 2024 13:19:03 -0500
-Message-Id: <20240516181907.3468796-37-eajames@linux.ibm.com>
+Subject: [PATCH v3 22/40] fsi: aspeed: Use common master error handler
+Date: Thu, 16 May 2024 13:18:49 -0500
+Message-Id: <20240516181907.3468796-23-eajames@linux.ibm.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240516181907.3468796-1-eajames@linux.ibm.com>
 References: <20240516181907.3468796-1-eajames@linux.ibm.com>
@@ -73,37 +73,77 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: KT-Gr733a-CMLZ2zRrfFUMS4dqD5j0SW
-X-Proofpoint-ORIG-GUID: KT-Gr733a-CMLZ2zRrfFUMS4dqD5j0SW
+X-Proofpoint-GUID: mNQb2WIZQn7bcU-F0x82aAhQb5jhTRBU
+X-Proofpoint-ORIG-GUID: mNQb2WIZQn7bcU-F0x82aAhQb5jhTRBU
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
  definitions=2024-05-16_07,2024-05-15_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- suspectscore=0 bulkscore=0 spamscore=0 malwarescore=0 phishscore=0
- clxscore=1015 mlxlogscore=870 priorityscore=1501 adultscore=0
- impostorscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2405010000 definitions=main-2405160132
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 phishscore=0
+ adultscore=0 priorityscore=1501 malwarescore=0 suspectscore=0 bulkscore=0
+ mlxscore=0 spamscore=0 lowpriorityscore=0 impostorscore=0 clxscore=1015
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2405010000
+ definitions=main-2405160132
 
-The CFAM ID for the I2CR should be the same as the Odyssey chip.
+This will do the correct mmode manipulation to do the master
+reset.
 
 Signed-off-by: Eddie James <eajames@linux.ibm.com>
 ---
- drivers/fsi/fsi-master-i2cr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/fsi/fsi-master-aspeed.c | 27 ++++-----------------------
+ 1 file changed, 4 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/fsi/fsi-master-i2cr.c b/drivers/fsi/fsi-master-i2cr.c
-index 40f1f4d231e52..c032ba7938815 100644
---- a/drivers/fsi/fsi-master-i2cr.c
-+++ b/drivers/fsi/fsi-master-i2cr.c
-@@ -22,7 +22,7 @@
- #define I2CR_LOG_CMD		0x60008
+diff --git a/drivers/fsi/fsi-master-aspeed.c b/drivers/fsi/fsi-master-aspeed.c
+index c9f6d84e1a372..eecd64bc29512 100644
+--- a/drivers/fsi/fsi-master-aspeed.c
++++ b/drivers/fsi/fsi-master-aspeed.c
+@@ -226,27 +226,6 @@ static int opb_readb(struct fsi_master_aspeed *aspeed, uint32_t addr, u8 *out)
+ 	return __opb_read(aspeed, addr, XFER_BYTE, (void *)out);
+ }
  
- static const u8 i2cr_cfam[] = {
--	0xc0, 0x02, 0x0d, 0xa6,
-+	0xc0, 0x01, 0x0c, 0x07,
- 	0x80, 0x01, 0x10, 0x02,
- 	0x80, 0x01, 0x10, 0x02,
- 	0x80, 0x01, 0x10, 0x02,
+-static int check_errors(struct fsi_master_aspeed *aspeed, int err)
+-{
+-	int ret;
+-
+-	if (err == -EIO) {
+-		/* Check MAEB (0x70) ? */
+-
+-		/* Then clear errors in master */
+-		ret = opb_writel(aspeed, ctrl_base + FSI_MRESP0,
+-				cpu_to_be32(FSI_MRESP_RST_ALL_MASTER));
+-		if (ret) {
+-			/* TODO: log? return different code? */
+-			return ret;
+-		}
+-		/* TODO: confirm that 0x70 was okay */
+-	}
+-
+-	/* This will pass through timeout errors */
+-	return err;
+-}
+-
+ static int aspeed_master_read(struct fsi_master *master, int link,
+ 			uint8_t id, uint32_t addr, void *val, size_t size)
+ {
+@@ -277,7 +256,8 @@ static int aspeed_master_read(struct fsi_master *master, int link,
+ 		goto done;
+ 	}
+ 
+-	ret = check_errors(aspeed, ret);
++	if (ret == -EIO)
++		fsi_master_error(&aspeed->master, link);
+ done:
+ 	spin_unlock_irqrestore(&aspeed->lock, flags);
+ 	return ret;
+@@ -313,7 +293,8 @@ static int aspeed_master_write(struct fsi_master *master, int link,
+ 		goto done;
+ 	}
+ 
+-	ret = check_errors(aspeed, ret);
++	if (ret == -EIO)
++		fsi_master_error(&aspeed->master, link);
+ done:
+ 	spin_unlock_irqrestore(&aspeed->lock, flags);
+ 	return ret;
 -- 
 2.39.3
 

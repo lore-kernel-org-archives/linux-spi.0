@@ -1,57 +1,57 @@
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8638158D96;
-	Thu, 16 May 2024 18:19:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C32A51598E2;
+	Thu, 16 May 2024 18:19:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715883579; cv=none; b=Eg6+YI6fvw23YBNe7VH7AUkVusGcC/K0PyxZlo2ongXzXf6pPOGzjbA1YuppS84ojaWhWC7lkwF7m5zoSlgQBl9tct/umfH/GAGgfSXKBev0EFMS3z5RaHOeWONoFrnVzsIkOYTVGVpzy3AZ1SL2mhSNOZZO44zrPbyTroYY3SY=
+	t=1715883580; cv=none; b=Qh2wuzktU12r0IIf0ROUNJu7DQtoJqor4s722/FUKO8+ujBsYSD4VvOVXG8xyuPPLRSbIMH6/a1SjjotW4EQwe0dJ95EKwSVFcCOHgm/lnW+eYrv4fPoHYr0DEeh7EJzXwZXNkd0RLEcveeZ7q2l0LCvp/Zmco7FtSh2mHrVI8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715883579; c=relaxed/simple;
-	bh=Go/Sw2mfEMY8QsnrCy8Zm/3ksaghSmu3WnFOYYCPdrQ=;
+	s=arc-20240116; t=1715883580; c=relaxed/simple;
+	bh=SJUTkBqyyZTlwDRg7ldRmAZztx4EwiyDcC6kI4kRcwc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=o/FBz5aii2v3s5OiFu81Ysi20sSqhMI5FbYWKuXV/SIXowlW8a82HhQVVE8UKPy33h0xrUUW+CH/CuQz+782TRCJLaDD3mHrAo1a3JQ/zfS6rfiYPO6LVPZfuCvv63JZI3R1CCkUhPMT19zN12d8CSAtVUbUCGRJ428uYWb87aY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=CBpF0bfq; arc=none smtp.client-ip=148.163.158.5
+	 MIME-Version; b=dnVwfzd+tr8199p4N25M6pPA5E/lkTLB7hAQYokH8QZUYs8CR+oveIsdToylr2raOAMsTM4hGIY61kAU0q68XpYst3K2crBo+tW1uKsnhC4Z+78m8O4DtNOWqsf2MB50p0dKku0yRBKAh2Td8Wq6FhdkcD4v8p2CVkfLJwAJxHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=LAVrrGGI; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="CBpF0bfq"
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44GGGhsV017307;
-	Thu, 16 May 2024 18:19:20 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="LAVrrGGI"
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44GHbvhH010836;
+	Thu, 16 May 2024 18:19:17 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=VVh0pOteeIri9qqbCA+sDhPXPbv1rTPqRDlFd5iwUgU=;
- b=CBpF0bfq14Bidhp2u9USoXYqO32AsN5P4l6L1UXf44LnWOXNYObxr8i4XW5VDzB//2BT
- bVPCfW4cj8XDufo45+2ZLx6/eak1t2H52FLL8pT0k2gNHqSb9Jadcbk3JaW5BNL/0cy1
- RV5FqESr2ZJIPq2yCGyGwcVIYPiBVCn+XxVoGoc4uRrBS614rcbWy8GY/H4xdS77i3KM
- Tm2I3JLqcD4rF4UlZvm6vb/mS6h0YFIBgyf7ka6FO2Wob9fVATUWHN1x8zrZowSGP85t
- WlJwJwfeHq9yqdadr7AD0EyDhZ9WughihlOXMeK10ytK42UMCQkRySm5kKx8mHn1zRi0 4g== 
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y5g6jh6u7-1
+ bh=IS0irjXh2U091zKbKR7d+9rVvpukYBODxtV/+wXMALY=;
+ b=LAVrrGGIKeMKY1Eg1La1dhURSkr87BqPf/8Kv68jMCoZn8ws3VWZ3duHCRnVi28fOqgp
+ +cd/gv8VTCHgKx2aW1Nf98GptbN0EuqxxlbEllipcWKkL7ewdOKrFwxxE4N+rKLwDbkw
+ urEeBZAj2LtNucp5AQyTuD/hKQdHZYDa62Bs31KtX1D1i36XhikeFqcQFEg+fxoziQ3D
+ Ohju8txrwWR+KywxPG+0DOFCulyjIDWIpZ3DQGcFJm/LEKpzBN8IbnykMK/QyJq0AziK
+ 5UbgynHe8hjS8ZSs7MXr8DucldiVY7aLhwUDn0/8/2LskhGvic+lEoK3QnqWLirSrQii 3w== 
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y5pq5r365-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 May 2024 18:19:19 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 44GHGL9l020367;
-	Thu, 16 May 2024 18:19:19 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3y2kd0bmcs-1
+	Thu, 16 May 2024 18:19:17 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 44GG03Yg006027;
+	Thu, 16 May 2024 18:19:16 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3y2nq331w2-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 May 2024 18:19:19 +0000
+	Thu, 16 May 2024 18:19:16 +0000
 Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 44GIJGs547186520
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 44GIJDvg35455468
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 16 May 2024 18:19:18 GMT
+	Thu, 16 May 2024 18:19:16 GMT
 Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8341C58070;
-	Thu, 16 May 2024 18:19:16 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id C6EAB58080;
+	Thu, 16 May 2024 18:19:11 +0000 (GMT)
 Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 44C2758077;
-	Thu, 16 May 2024 18:19:16 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 87A0258075;
+	Thu, 16 May 2024 18:19:11 +0000 (GMT)
 Received: from slate16.aus.stglabs.ibm.com (unknown [9.61.107.19])
 	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 16 May 2024 18:19:16 +0000 (GMT)
+	Thu, 16 May 2024 18:19:11 +0000 (GMT)
 From: Eddie James <eajames@linux.ibm.com>
 To: linux-fsi@lists.ozlabs.org
 Cc: linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
@@ -59,9 +59,9 @@ Cc: linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
         joel@jms.id.au, alistair@popple.id.au, jk@ozlabs.org,
         andrew@codeconstruct.com.au, linux-aspeed@lists.ozlabs.org,
         eajames@linux.ibm.com
-Subject: [PATCH v3 30/40] i2c: fsi: Define a function to check status error bits
-Date: Thu, 16 May 2024 13:18:57 -0500
-Message-Id: <20240516181907.3468796-31-eajames@linux.ibm.com>
+Subject: [PATCH v3 14/40] fsi: hub: Use common initialization and link enable
+Date: Thu, 16 May 2024 13:18:41 -0500
+Message-Id: <20240516181907.3468796-15-eajames@linux.ibm.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240516181907.3468796-1-eajames@linux.ibm.com>
 References: <20240516181907.3468796-1-eajames@linux.ibm.com>
@@ -73,81 +73,244 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: l4qsawXBH5DZE4kPrPiIerJHHxTa_PJ2
-X-Proofpoint-GUID: l4qsawXBH5DZE4kPrPiIerJHHxTa_PJ2
+X-Proofpoint-GUID: PERxO3mfmi5SQtAcViUm7s-hG3sfF54E
+X-Proofpoint-ORIG-GUID: PERxO3mfmi5SQtAcViUm7s-hG3sfF54E
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
  definitions=2024-05-16_07,2024-05-15_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- bulkscore=0 lowpriorityscore=0 mlxlogscore=915 mlxscore=0 impostorscore=0
- spamscore=0 phishscore=0 suspectscore=0 clxscore=1015 adultscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ suspectscore=0 bulkscore=0 spamscore=0 malwarescore=0 phishscore=0
+ clxscore=1015 mlxlogscore=904 priorityscore=1501 adultscore=0
+ impostorscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2405010000 definitions=main-2405160132
 
-This will be used more than once with interrupt support, so split
-the error bit checks into a function.
+Set up an FSI regmap for the hub master to use the new common
+master initialization and link enable procedures.
 
 Signed-off-by: Eddie James <eajames@linux.ibm.com>
 ---
- drivers/i2c/busses/i2c-fsi.c | 38 ++++++++++++++++++++----------------
- 1 file changed, 21 insertions(+), 17 deletions(-)
+ drivers/fsi/fsi-master-hub.c | 142 ++++++-----------------------------
+ 1 file changed, 23 insertions(+), 119 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-fsi.c b/drivers/i2c/busses/i2c-fsi.c
-index f3b97bf88d0f9..022f1287aa0e3 100644
---- a/drivers/i2c/busses/i2c-fsi.c
-+++ b/drivers/i2c/busses/i2c-fsi.c
-@@ -507,6 +507,26 @@ static int fsi_i2c_abort(struct fsi_i2c_port *port, u32 status)
- 	return -ETIMEDOUT;
+diff --git a/drivers/fsi/fsi-master-hub.c b/drivers/fsi/fsi-master-hub.c
+index eea8649fee74d..91ad6b7728fa2 100644
+--- a/drivers/fsi/fsi-master-hub.c
++++ b/drivers/fsi/fsi-master-hub.c
+@@ -9,6 +9,7 @@
+ #include <linux/fsi.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
++#include <linux/regmap.h>
+ #include <linux/slab.h>
+ 
+ #include "fsi-master.h"
+@@ -16,8 +17,6 @@
+ 
+ #define FSI_ENGID_HUB_MASTER		0x1c
+ 
+-#define FSI_LINK_ENABLE_SETUP_TIME	10	/* in mS */
+-
+ /*
+  * FSI hub master support
+  *
+@@ -78,134 +77,33 @@ static int hub_master_break(struct fsi_master *master, int link)
+ 	return hub_master_write(master, link, 0, addr, &cmd, sizeof(cmd));
  }
  
-+static int fsi_i2c_error_status_to_rc(u32 status)
-+{
-+	if (status & I2C_STAT_INV_CMD)
-+		return -EINVAL;
-+
-+	if (status & (I2C_STAT_PARITY | I2C_STAT_BE_OVERRUN | I2C_STAT_BE_ACCESS))
-+		return -EPROTO;
-+
-+	if (status & I2C_STAT_NACK)
-+		return -ENXIO;
-+
-+	if (status & I2C_STAT_LOST_ARB)
-+		return -EAGAIN;
-+
-+	if (status & I2C_STAT_STOP_ERR)
-+		return -EBADMSG;
-+
-+	return -EIO;
-+}
-+
- static int fsi_i2c_handle_status(struct fsi_i2c_port *port,
- 				 struct i2c_msg *msg, u32 status)
+-static int hub_master_link_enable(struct fsi_master *master, int link,
+-				  bool enable)
+-{
+-	struct fsi_master_hub *hub = to_fsi_master_hub(master);
+-	int idx, bit;
+-	__be32 reg;
+-	int rc;
+-
+-	idx = link / 32;
+-	bit = link % 32;
+-
+-	reg = cpu_to_be32(0x80000000 >> bit);
+-
+-	if (!enable)
+-		return fsi_device_write(hub->upstream, FSI_MCENP0 + (4 * idx),
+-					&reg, 4);
+-
+-	rc = fsi_device_write(hub->upstream, FSI_MSENP0 + (4 * idx), &reg, 4);
+-	if (rc)
+-		return rc;
+-
+-	mdelay(FSI_LINK_ENABLE_SETUP_TIME);
+-
+-	return 0;
+-}
+-
+ static void hub_master_release(struct device *dev)
  {
-@@ -518,23 +538,7 @@ static int fsi_i2c_handle_status(struct fsi_i2c_port *port,
- 		if (rc)
- 			return rc;
+ 	struct fsi_master_hub *hub = to_fsi_master_hub(to_fsi_master(dev));
  
--		if (status & I2C_STAT_INV_CMD)
--			return -EINVAL;
++	regmap_exit(hub->master.map);
+ 	kfree(hub);
+ }
+ 
+-/* mmode encoders */
+-static inline u32 fsi_mmode_crs0(u32 x)
+-{
+-	return (x & FSI_MMODE_CRS0MASK) << FSI_MMODE_CRS0SHFT;
+-}
 -
--		if (status & (I2C_STAT_PARITY | I2C_STAT_BE_OVERRUN |
--		    I2C_STAT_BE_ACCESS))
--			return -EPROTO;
+-static inline u32 fsi_mmode_crs1(u32 x)
+-{
+-	return (x & FSI_MMODE_CRS1MASK) << FSI_MMODE_CRS1SHFT;
+-}
 -
--		if (status & I2C_STAT_NACK)
--			return -ENXIO;
+-static int hub_master_init(struct fsi_master_hub *hub)
+-{
+-	struct fsi_device *dev = hub->upstream;
+-	__be32 reg;
+-	int rc;
 -
--		if (status & I2C_STAT_LOST_ARB)
--			return -EAGAIN;
+-	reg = cpu_to_be32(FSI_MRESP_RST_ALL_MASTER | FSI_MRESP_RST_ALL_LINK
+-			| FSI_MRESP_RST_MCR | FSI_MRESP_RST_PYE);
+-	rc = fsi_device_write(dev, FSI_MRESP0, &reg, sizeof(reg));
+-	if (rc)
+-		return rc;
 -
--		if (status & I2C_STAT_STOP_ERR)
--			return -EBADMSG;
+-	/* Initialize the MFSI (hub master) engine */
+-	reg = cpu_to_be32(FSI_MRESP_RST_ALL_MASTER | FSI_MRESP_RST_ALL_LINK
+-			| FSI_MRESP_RST_MCR | FSI_MRESP_RST_PYE);
+-	rc = fsi_device_write(dev, FSI_MRESP0, &reg, sizeof(reg));
+-	if (rc)
+-		return rc;
 -
--		return -EIO;
-+		return fsi_i2c_error_status_to_rc(status);
+-	reg = cpu_to_be32(FSI_MECTRL_EOAE | FSI_MECTRL_P8_AUTO_TERM);
+-	rc = fsi_device_write(dev, FSI_MECTRL, &reg, sizeof(reg));
+-	if (rc)
+-		return rc;
+-
+-	reg = cpu_to_be32(FSI_MMODE_EIP | FSI_MMODE_ECRC | FSI_MMODE_EPC
+-			| fsi_mmode_crs0(1) | fsi_mmode_crs1(1)
+-			| FSI_MMODE_P8_TO_LSB);
+-	rc = fsi_device_write(dev, FSI_MMODE, &reg, sizeof(reg));
+-	if (rc)
+-		return rc;
+-
+-	reg = cpu_to_be32(0xffff0000);
+-	rc = fsi_device_write(dev, FSI_MDLYR, &reg, sizeof(reg));
+-	if (rc)
+-		return rc;
+-
+-	reg = cpu_to_be32(~0);
+-	rc = fsi_device_write(dev, FSI_MSENP0, &reg, sizeof(reg));
+-	if (rc)
+-		return rc;
+-
+-	/* Leave enabled long enough for master logic to set up */
+-	mdelay(FSI_LINK_ENABLE_SETUP_TIME);
+-
+-	rc = fsi_device_write(dev, FSI_MCENP0, &reg, sizeof(reg));
+-	if (rc)
+-		return rc;
+-
+-	rc = fsi_device_read(dev, FSI_MAEB, &reg, sizeof(reg));
+-	if (rc)
+-		return rc;
+-
+-	reg = cpu_to_be32(FSI_MRESP_RST_ALL_MASTER | FSI_MRESP_RST_ALL_LINK);
+-	rc = fsi_device_write(dev, FSI_MRESP0, &reg, sizeof(reg));
+-	if (rc)
+-		return rc;
+-
+-	rc = fsi_device_read(dev, FSI_MLEVP0, &reg, sizeof(reg));
+-	if (rc)
+-		return rc;
+-
+-	/* Reset the master bridge */
+-	reg = cpu_to_be32(FSI_MRESB_RST_GEN);
+-	rc = fsi_device_write(dev, FSI_MRESB0, &reg, sizeof(reg));
+-	if (rc)
+-		return rc;
+-
+-	reg = cpu_to_be32(FSI_MRESB_RST_ERR);
+-	return fsi_device_write(dev, FSI_MRESB0, &reg, sizeof(reg));
+-}
+-
+ static int hub_master_probe(struct device *dev)
+ {
++	struct regmap_config hub_master_regmap_config;
+ 	struct fsi_device *fsi_dev = to_fsi_dev(dev);
+ 	struct fsi_master_hub *hub;
++	struct regmap *map;
+ 	uint32_t reg, links;
+-	__be32 __reg;
+ 	int rc;
+ 
+-	rc = fsi_device_read(fsi_dev, FSI_MVER, &__reg, sizeof(__reg));
++	fsi_master_regmap_config(&hub_master_regmap_config);
++	hub_master_regmap_config.reg_base = fsi_dev->addr;
++	map = regmap_init_fsi(fsi_dev, &hub_master_regmap_config);
++	if (IS_ERR(map))
++		return PTR_ERR(map);
++
++	rc = regmap_read(map, FSI_MVER, &reg);
+ 	if (rc)
+-		return rc;
++		goto err_regmap;
+ 
+-	reg = be32_to_cpu(__reg);
+ 	links = (reg >> 8) & 0xff;
+ 	dev_dbg(dev, "hub version %08x (%d links)\n", reg, links);
+ 
+@@ -213,7 +111,7 @@ static int hub_master_probe(struct device *dev)
+ 			FSI_HUB_LINK_SIZE * links);
+ 	if (rc) {
+ 		dev_err(dev, "can't claim slave address range for links");
+-		return rc;
++		goto err_regmap;
  	}
  
- 	if (status & I2C_STAT_DAT_REQ) {
+ 	hub = kzalloc(sizeof(*hub), GFP_KERNEL);
+@@ -229,22 +127,24 @@ static int hub_master_probe(struct device *dev)
+ 	hub->master.dev.parent = dev;
+ 	hub->master.dev.release = hub_master_release;
+ 	hub->master.dev.of_node = of_node_get(dev_of_node(dev));
++	hub->master.map = map;
+ 
+ 	hub->master.idx = fsi_dev->slave->link + 1;
+ 	hub->master.n_links = links;
+-	hub->master.flags = FSI_MASTER_FLAG_NO_BREAK_SID;
++	hub->master.flags = FSI_MASTER_FLAG_NO_BREAK_SID | FSI_MASTER_FLAG_INTERRUPT;
+ 	hub->master.read = hub_master_read;
+ 	hub->master.write = hub_master_write;
+ 	hub->master.send_break = hub_master_break;
+-	hub->master.link_enable = hub_master_link_enable;
+ 
+ 	dev_set_drvdata(dev, hub);
+ 
+-	hub_master_init(hub);
++	rc = fsi_master_init(&hub->master, fsi_dev->slave->master->clock_frequency);
++	if (rc)
++		goto err_free;
+ 
+ 	rc = fsi_master_register(&hub->master);
+ 	if (rc)
+-		goto err_release;
++		goto err_free;
+ 
+ 	/* At this point, fsi_master_register performs the device_initialize(),
+ 	 * and holds the sole reference on master.dev. This means the device
+@@ -256,9 +156,13 @@ static int hub_master_probe(struct device *dev)
+ 	get_device(&hub->master.dev);
+ 	return 0;
+ 
++err_free:
++	kfree(hub);
+ err_release:
+ 	fsi_slave_release_range(fsi_dev->slave, FSI_HUB_LINK_OFFSET,
+ 			FSI_HUB_LINK_SIZE * links);
++err_regmap:
++	regmap_exit(map);
+ 	return rc;
+ }
+ 
 -- 
 2.39.3
 

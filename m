@@ -1,58 +1,58 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02CF5140389;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D887140374;
 	Fri, 17 May 2024 19:42:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715974973; cv=none; b=WHvBeppmVqgzr1ncb8fCJ0ASppccfGHHoXP58Sfv6FwcbsTrOpu5Ora0jUG0wiGhr9lWJ/mx7SLBc6IjA3eql+13bk5xUIxrqCZ7yteBgyF7YEZzURNorZaVnMOpsrjc/3tBzEfWrXHasfUl1bsQV3DmXfn5VcLv/sw9MnIRpVw=
+	t=1715974974; cv=none; b=jeOqM8n+WZ/oa6U/Ey6tax47X2N+ahwVlPiPqO3BEkIllyiP7lTNa1mrEop6/+aoWdzmJiNvLPWpNTJwkpSjgo/NnFk/oobzUFuI5UVUXgwYIZzfPxhf/K1QwJpWKzXvsuUWAzjS3GzbVrvlb4H3tWwVl36qTayqX52H9WlHlZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715974973; c=relaxed/simple;
-	bh=T1kuw4kCQWu1DfL0XSLMFMWTgv2DAoA+X+Ligd/mQMI=;
+	s=arc-20240116; t=1715974974; c=relaxed/simple;
+	bh=mNrq6bM6WjtCihUhoILAJJMc4Q5aBcdCL+ohBoGOtxs=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qTlUz6qyaszDeeVTA1ipZ5AmcHroFhMktJxJB5W9Ld4qv8HG6LnPkuo52enKOethWyRUtcDFFhL16jQJyqSkc5ejFA8/PFznZRrrhU6FFXaADB4phH+UQAcK+sBxQViTwkymhyft0eKje6uBf7iuS9M2u63KRArj2/DAFqn8wV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GqJ6o4sf; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version; b=gTwvUiJXuDMYaoH1VtFgPDe73r2NBVLVChOi+YjqEIx2R1QQhFHK78N4xd3ySQy4ABRyE/+ZGGd6LWB4Br7OpNg0m/9VBCnNw1NM/tcsvs3UE/J4maV+walx7wSgdvqiTgt/QfTWx0AUe19Jg3/D8xfDs2P7cueWzF7HjHWHkxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hi4beZuA; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GqJ6o4sf"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hi4beZuA"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1715974972; x=1747510972;
   h=from:to:subject:date:message-id:in-reply-to:references:
    mime-version:content-transfer-encoding;
-  bh=T1kuw4kCQWu1DfL0XSLMFMWTgv2DAoA+X+Ligd/mQMI=;
-  b=GqJ6o4sfDzw+EX7tfWxPDqOVt+/ejxQUCWTJrnI61Mb+yNFzqwoP2ZNq
-   bUl6ar8Gqv2JE+LLAx9IAJ473jmXc542QDTCuzQoc/XdllZuhs7wnjO/j
-   nekBgSrcJDUQQQwvZvq2If5XSUdn80tW88AVaxSim0CWfo4WtDa9BUDaj
-   4b+10raSbmk0qh9n8MY8h8ivFQ1+N6aoxxhM0X3pqYOeUl1cMqU/363I/
-   pGoaxEut8i3lo2icDP11fccFcHrgSMpexaEyhMwq5WXgOimMCobqM0vxx
-   ueTRvzSxu/nXbPZFFGJzH/QX+fua3iz4/66I9cT63eGnjQSn4d1R7KIg2
+  bh=mNrq6bM6WjtCihUhoILAJJMc4Q5aBcdCL+ohBoGOtxs=;
+  b=hi4beZuA69WWXjslrbHgLKwB5Sbd0TTF4hiO320rcJm1FHO9H2FcvXLu
+   8GKLEoYzXMP2G+9lFESDMmJaFfiW1uuGzUWB2NaoMWPHmom8tJKnykxQT
+   Y911dwYIIxznnRCihT2nnFaj+IlrH34+2cpezGdGl88tih44xINa7A+os
+   lZFputwfnl8AnUXVQNZAQXzmnCTGHpNDEqnmZ58TjvFCPVhDGmpY8pxxf
+   kA9C5vf/1HRLHXUl/OscQutiLeqe/0hqDgGpZK81uybPPUcDnkJvidmGS
+   FU37iAH1IDhreg03KwPHoQwO6PqHQ2+y3+VsTIBFYVcFFiryYzqajlr9t
    g==;
-X-CSE-ConnectionGUID: sal2Nk4GSIWnMTmWUsBqbQ==
-X-CSE-MsgGUID: xSv3uM8VSfijCMYulG1hIw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11075"; a="12284443"
+X-CSE-ConnectionGUID: 13AMwrsLTcam47HMQEQE5w==
+X-CSE-MsgGUID: u+y5xakwRYyAFSKpXhQ3Ag==
+X-IronPort-AV: E=McAfee;i="6600,9927,11075"; a="12284441"
 X-IronPort-AV: E=Sophos;i="6.08,168,1712646000"; 
-   d="scan'208";a="12284443"
+   d="scan'208";a="12284441"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
   by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 12:42:50 -0700
-X-CSE-ConnectionGUID: PLe1T2pqTAC0fd0MbVuRgw==
-X-CSE-MsgGUID: zPPbqklARa6KYf38OCmlCg==
+X-CSE-ConnectionGUID: 1zXn1NLrRSSi4cIybbQj7Q==
+X-CSE-MsgGUID: LFC95adQRt+5hFgJRvo9XA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,168,1712646000"; 
-   d="scan'208";a="31877130"
+   d="scan'208";a="31877129"
 Received: from black.fi.intel.com ([10.237.72.28])
   by fmviesa008.fm.intel.com with ESMTP; 17 May 2024 12:42:49 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 786F644E; Fri, 17 May 2024 22:42:47 +0300 (EEST)
+	id 59707118; Fri, 17 May 2024 22:42:47 +0300 (EEST)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Mark Brown <broonie@kernel.org>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v1 3/3] spi: gpio: Make num_chipselect 8-bit in the struct spi_gpio_platform_data
-Date: Fri, 17 May 2024 22:42:03 +0300
-Message-ID: <20240517194246.747427-4-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 1/3] spi: gpio: Make use of device properties
+Date: Fri, 17 May 2024 22:42:01 +0300
+Message-ID: <20240517194246.747427-2-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
 In-Reply-To: <20240517194246.747427-1-andriy.shevchenko@linux.intel.com>
 References: <20240517194246.747427-1-andriy.shevchenko@linux.intel.com>
@@ -64,27 +64,118 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-There is no use for whole 16-bit for the number of chip select pins.
-Drop it to 8 bits.
+Convert the module to be property provider agnostic and allow
+it to be used on non-OF platforms.
+
+Include mod_devicetable.h explicitly to replace the dropped of.h
+which included mod_devicetable.h indirectly.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- include/linux/spi/spi_gpio.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-gpio.c | 51 +++++++++++++++---------------------------
+ 1 file changed, 18 insertions(+), 33 deletions(-)
 
-diff --git a/include/linux/spi/spi_gpio.h b/include/linux/spi/spi_gpio.h
-index 5f0e1407917a..30f29df811a4 100644
---- a/include/linux/spi/spi_gpio.h
-+++ b/include/linux/spi/spi_gpio.h
-@@ -19,7 +19,7 @@
-  * @num_chipselect: how many target devices to allow
+diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
+index 909cce109bba..abf426711c22 100644
+--- a/drivers/spi/spi-gpio.c
++++ b/drivers/spi/spi-gpio.c
+@@ -5,17 +5,17 @@
+  * Copyright (C) 2006,2008 David Brownell
+  * Copyright (C) 2017 Linus Walleij
   */
- struct spi_gpio_platform_data {
--	u16		num_chipselect;
-+	u8	num_chipselect;
- };
++#include <linux/gpio/consumer.h>
+ #include <linux/kernel.h>
++#include <linux/mod_devicetable.h>
+ #include <linux/module.h>
+ #include <linux/platform_device.h>
+-#include <linux/gpio/consumer.h>
+-#include <linux/of.h>
++#include <linux/property.h>
  
- #endif /* __LINUX_SPI_GPIO_H */
+ #include <linux/spi/spi.h>
+ #include <linux/spi/spi_bitbang.h>
+ #include <linux/spi/spi_gpio.h>
+ 
+-
+ /*
+  * This bitbanging SPI host driver should help make systems usable
+  * when a native hardware SPI engine is not available, perhaps because
+@@ -326,29 +326,6 @@ static int spi_gpio_request(struct device *dev, struct spi_gpio *spi_gpio)
+ 	return PTR_ERR_OR_ZERO(spi_gpio->sck);
+ }
+ 
+-#ifdef CONFIG_OF
+-static const struct of_device_id spi_gpio_dt_ids[] = {
+-	{ .compatible = "spi-gpio" },
+-	{}
+-};
+-MODULE_DEVICE_TABLE(of, spi_gpio_dt_ids);
+-
+-static int spi_gpio_probe_dt(struct platform_device *pdev,
+-			     struct spi_controller *host)
+-{
+-	host->dev.of_node = pdev->dev.of_node;
+-	host->use_gpio_descriptors = true;
+-
+-	return 0;
+-}
+-#else
+-static inline int spi_gpio_probe_dt(struct platform_device *pdev,
+-				    struct spi_controller *host)
+-{
+-	return 0;
+-}
+-#endif
+-
+ static int spi_gpio_probe_pdata(struct platform_device *pdev,
+ 				struct spi_controller *host)
+ {
+@@ -389,19 +366,21 @@ static int spi_gpio_probe(struct platform_device *pdev)
+ 	struct spi_controller		*host;
+ 	struct spi_gpio			*spi_gpio;
+ 	struct device			*dev = &pdev->dev;
++	struct fwnode_handle		*fwnode = dev_fwnode(dev);
+ 	struct spi_bitbang		*bb;
+ 
+ 	host = devm_spi_alloc_host(dev, sizeof(*spi_gpio));
+ 	if (!host)
+ 		return -ENOMEM;
+ 
+-	if (pdev->dev.of_node)
+-		status = spi_gpio_probe_dt(pdev, host);
+-	else
++	if (fwnode) {
++		device_set_node(&host->dev, fwnode);
++		host->use_gpio_descriptors = true;
++	} else {
+ 		status = spi_gpio_probe_pdata(pdev, host);
+-
+-	if (status)
+-		return status;
++		if (status)
++			return status;
++	}
+ 
+ 	spi_gpio = spi_controller_get_devdata(host);
+ 
+@@ -459,10 +438,16 @@ static int spi_gpio_probe(struct platform_device *pdev)
+ 
+ MODULE_ALIAS("platform:" DRIVER_NAME);
+ 
++static const struct of_device_id spi_gpio_dt_ids[] = {
++	{ .compatible = "spi-gpio" },
++	{}
++};
++MODULE_DEVICE_TABLE(of, spi_gpio_dt_ids);
++
+ static struct platform_driver spi_gpio_driver = {
+ 	.driver = {
+ 		.name	= DRIVER_NAME,
+-		.of_match_table = of_match_ptr(spi_gpio_dt_ids),
++		.of_match_table = spi_gpio_dt_ids,
+ 	},
+ 	.probe		= spi_gpio_probe,
+ };
 -- 
 2.43.0.rc1.1336.g36b5255a03ac
 

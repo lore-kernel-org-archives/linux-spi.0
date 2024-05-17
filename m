@@ -1,123 +1,136 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05441321D
-	for <linux-spi@vger.kernel.org>; Fri, 17 May 2024 19:49:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2E7713DDB0;
+	Fri, 17 May 2024 19:53:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715975401; cv=none; b=DIU5VH2SgiVouEuZhhijDAcF2IisvCpLyndpqBVupQS+uIZ8QDgwR1kup2iX3lGhJ+BDNAIgUdJ/wajb2ppUqWqKQ36GhpcR5FNYhisHRNXaUKyWJaBZqGknHSDkT4wPzddrDIC2WTBLQRHZ4lWX84HHB/CR/5yk+MgJPn489gE=
+	t=1715975630; cv=none; b=n59YJpdKu7d0QpimQXVHkKwSEGx+CILxDLDdV0LlBInW+I70HylHfuQk41TshUmltNVmvTyvXy7b8bDZW6ImWLVBH3DVhFSj3swTCAqIzM05llDkQF1N2Q5xpcVOWWpqzi4g0UiplED1Ypxn+wa0S7mkBikdhswlSECqoM81VcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715975401; c=relaxed/simple;
-	bh=qxfsT7ecf4gb5JgTuu3Xv6rMxJDtUmvA5c8dvCMJZdY=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=IVxkiYysZZ8HSLgFXY0eImQg8+WeJ9G1KGfRcl7U+gfMCXjNfM+ndJ0sYiYWqozm7XDti/ecrbJw+tdAi0cZ3M3KlIGJHcytp0NVXlMCKL6VzeZRfvHEibU366zyYJhURLddNnd45Ibo98GmcynyCdvjDXJtIcssul6Z2hILI/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Re409t6S; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1715975630; c=relaxed/simple;
+	bh=jyYGQlzaUy8BwNeOWGIhenb9cBWqNz5Bb5cNI/enzAQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=PFsDsBeYDm+l6CrXZdMSKJc9xCvdCjZ9zDc2vUviS1XDutiKpJwCtqayCWrb/5yabwM2ilxrdAu41MfQa1rGKtPPW0W5B9M6url3S1ffquhJ+iCE+h2xQjWS+ZfPUxE30gW23JhTus1wdo9fuSF326lGNGTEzvSpALpB0X3tojk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lZlmtNKH; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Re409t6S"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-1e5c7dfe277so1288745ad.1
-        for <linux-spi@vger.kernel.org>; Fri, 17 May 2024 12:49:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1715975399; x=1716580199; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=DkC02ajmDp8au8nOQAmSiKZwlbDJdPCrp7KJQmbB5LI=;
-        b=Re409t6SRct4M/kyvW8siWjRHbh+Y0/tygAlmRBA1dCo9R6I7mXwqh8v4Uu/kacZsg
-         oXGsVAeIxCNEIOA4UTJJzkuVFWL8QLMtuPADbvSzzphaYnVP3/GGqlPinNl5/uPZE6NZ
-         dLVlRYkIbKArbD7uGQyCQBt/0HX2VBhvjN+rFhDYQZ9tYyKMs33XtNvkpcjadzo8ajwn
-         QTxBRZ6q5zpKHcWCNbrnMOMFd9Oby7FJMhn5Rku5YX3cYFneHjwvxnyKH2D6vi4tEJ5e
-         xWJfYSplmdq67hQIiZVHGX81BhrswGWwDtBmvYqgpq14KTZ6OfAVnFQ0QO9l0G8zrE4w
-         83UQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715975399; x=1716580199;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DkC02ajmDp8au8nOQAmSiKZwlbDJdPCrp7KJQmbB5LI=;
-        b=jurPEdK4sdPv+6X+klnPjyPaEfM2Jq0HfxFA96KIUEQY4V7WkngoUKGACgQRfSnLCO
-         Ae1WL8QDHCkAO/VNAYGWf4ZW+8OT339U0O9XkR8cq0786eAG1BBrumYe6nwwtrZ3tAL3
-         cpwXY1F/HsnGsM6KPVmnYwy3groZNOb0eCyHfZ20PhwoQ9dc4ghPbydJn3QqM79SvD/P
-         Xgs4tBDWpsjsBQF6QeauoojHSbZ1U9ZNROFfeSAIPEX/8VzTlpnFd0nr0NfzZrtKu+3+
-         yi748Izow0z+RklaDxPQeYc852PMnLbaRuWB+Nw3rgQ1WUBPtbMaQk67iTohWGNeSJiY
-         wYKw==
-X-Forwarded-Encrypted: i=1; AJvYcCXPwTZSsxsTQulvABCNO8J+QVH88jEn01oyYjso28L1LB1oKrME28F8LmWZpEt0nr6Bpw9q5OAzeSaqwxAExKPJ1NOYNBNASb1M
-X-Gm-Message-State: AOJu0YxS1TxI2K75EBgcBSk3Eae/1Tgd2N48Yn/rCjkaRypGoB+Hg7kn
-	+b6cfOke44B+k0ZeVxeojZjkQCL+eN1+RvNKa5yZdUwOIml7w2Jx2BUnmDr1m6kaqyBehKyt7GE
-	xj2c3VnsLkZ1XHD74KNpbjb0ylebBd7V5U78=
-X-Google-Smtp-Source: AGHT+IHoGq3IWj7advFtjZZYLQJht5smm9rTMguTThuxymXQmX3xKdysGKnWcNRH2uPZihxbeifZaQku1+dwYWHzZSM=
-X-Received: by 2002:a17:90a:8c7:b0:2b6:20a0:441e with SMTP id
- 98e67ed59e1d1-2b6cd1f1b31mr21460875a91.4.1715975399291; Fri, 17 May 2024
- 12:49:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lZlmtNKH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1715975629; x=1747511629;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=jyYGQlzaUy8BwNeOWGIhenb9cBWqNz5Bb5cNI/enzAQ=;
+  b=lZlmtNKHkMN7YT+Kv4LG2P71kOUDICgLtI85Y/erorTJJzHcgrj8Gtx7
+   iyzmGvuIkwP7kqNHvUVMO+CjLMXReQnSfdc32S9yjsdJXBpHikINagEFS
+   RbQzVO5mLwdTAT5bZ6IRxa3sQIocU58DDZwy+pErKidZ3CN/cjhbFD6DD
+   HxM72xZEtUqeCBmBZhu+lsFe5l3XvgEtrmccg1UTxUsyBk4NN3EsYkf9L
+   mtVrjieJ4ZGqu0KcGLtHQ4KinhqnaeVYLR+6O5Xe9uvNAkM3Ck1+FFvFk
+   vG0mMQaPzx7Gb4UrvPWwNKemyv/UzzMYuayWpAvh9DqoNUXW9pE8Y1ec4
+   w==;
+X-CSE-ConnectionGUID: KTC5qtx9SlGdtkTjb6A25w==
+X-CSE-MsgGUID: LRi5uRXuT0+FCjeXuwWWdQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11075"; a="12348646"
+X-IronPort-AV: E=Sophos;i="6.08,168,1712646000"; 
+   d="scan'208";a="12348646"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 12:53:49 -0700
+X-CSE-ConnectionGUID: a2vzALrrSBuLGdm6o6BN0Q==
+X-CSE-MsgGUID: fu+sBTnTR22Wj8TvwYEG/A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,168,1712646000"; 
+   d="scan'208";a="31915005"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa006.fm.intel.com with ESMTP; 17 May 2024 12:53:46 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id 1FC47118; Fri, 17 May 2024 22:53:45 +0300 (EEST)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Mark Brown <broonie@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Cc: Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>
+Subject: [PATCH v1 01/10] spi: pxa2xx: Reorganize the SSP type retrieval
+Date: Fri, 17 May 2024 22:47:35 +0300
+Message-ID: <20240517195344.813032-2-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
+In-Reply-To: <20240517195344.813032-1-andriy.shevchenko@linux.intel.com>
+References: <20240517195344.813032-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Fabio Estevam <festevam@gmail.com>
-Date: Fri, 17 May 2024 16:49:47 -0300
-Message-ID: <CAOMZO5Bp1kfq9C7HpK=V+v=LytZFdbfcvgg1MmhYqqkntHVb2A@mail.gmail.com>
-Subject: rv1108: SPI DMA failure
-To: Mark Brown <broonie@kernel.org>, Andy Yan <andy.yan@rock-chips.com>
-Cc: =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, 
-	linux-rockchip@lists.infradead.org, 
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, 
-	linux-spi <linux-spi@vger.kernel.org>, Otavio Salvador <otavio@ossystems.com.br>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hi,
+The old Intel platforms, such as Intel Braswell, also provide
+the property of SSP type. Reorganize the pxa2xx_spi_init_pdata()
+to take that into account.
 
-On the new revision of a rv1108-elgin board, there is an Infineon SPL9670
-TPM device connected to the SPI bus.
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/spi/spi-pxa2xx.c | 22 +++++++++-------------
+ 1 file changed, 9 insertions(+), 13 deletions(-)
 
-On kernel 6.9, the following SPI transfer errors occur:
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index efe76d0c21bb..877fb6d01cd1 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1310,19 +1310,20 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+ 	struct pxa2xx_spi_controller *pdata;
+ 	struct device *dev = &pdev->dev;
+ 	struct device *parent = dev->parent;
++	const void *match = device_get_match_data(dev);
+ 	enum pxa_ssp_type type = SSP_UNDEFINED;
+ 	struct ssp_device *ssp = NULL;
+-	const void *match;
+ 	bool is_lpss_priv;
+ 	u32 num_cs = 1;
+ 	int status;
+ 
+-	is_lpss_priv = platform_get_resource_byname(pdev, IORESOURCE_MEM, "lpss_priv");
+-
+-	match = device_get_match_data(dev);
+-	if (match)
+-		type = (uintptr_t)match;
+-	else if (is_lpss_priv) {
++	ssp = pxa_ssp_request(pdev->id, pdev->name);
++	if (ssp) {
++		type = ssp->type;
++		pxa_ssp_free(ssp);
++	} else if (match) {
++		type = (enum pxa_ssp_type)(uintptr_t)match;
++	} else {
+ 		u32 value;
+ 
+ 		status = device_property_read_u32(dev, "intel,spi-pxa2xx-type", &value);
+@@ -1330,12 +1331,6 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+ 			return ERR_PTR(status);
+ 
+ 		type = (enum pxa_ssp_type)value;
+-	} else {
+-		ssp = pxa_ssp_request(pdev->id, pdev->name);
+-		if (ssp) {
+-			type = ssp->type;
+-			pxa_ssp_free(ssp);
+-		}
+ 	}
+ 
+ 	/* Validate the SSP type correctness */
+@@ -1347,6 +1342,7 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+ 		return ERR_PTR(-ENOMEM);
+ 
+ 	/* Platforms with iDMA 64-bit */
++	is_lpss_priv = platform_get_resource_byname(pdev, IORESOURCE_MEM, "lpss_priv");
+ 	if (is_lpss_priv) {
+ 		pdata->tx_param = parent;
+ 		pdata->rx_param = parent;
+-- 
+2.43.0.rc1.1336.g36b5255a03ac
 
-[    2.747002] tpm_tis_spi spi0.0: SPI transfer timed out
-[    2.747564] spi_master spi0: failed to transfer one message from queue
-[    2.748239] spi_master spi0: noqueue transfer failed
-[    2.749039] tpm tpm0: tpm_transmit: tpm_recv: error -110
-[    2.749569] tpm tpm0: TPM in field failure mode, requires firmware upgrade
-
-The same issue happens with older kernels, such as 5.4.
-
-If SPI DMA support is removed like this:
-
-&spi {
-    pinctrl-names = "default";
-    pinctrl-0 = <&spim1_clk &spim1_cs0 &spim1_tx &spim1_rx>;
-    /delete-property/ dmas;
-    /delete-property/ dma-names;
-    status = "okay";
-
-    tpm@0 {
-        compatible = "infineon,slb9670", "tcg,tpm_tis-spi";
-        reg = <0>;
-        spi-max-frequency = <10000000>;
-    };
-};
-
-
-Then the TPM device works correctly.
-
-An old RV1108 SPI bug was reported by Otavio:
-
-https://lore.kernel.org/linux-spi/CAP9ODKpW=h6SVtsn-uuDQ4+TgR0NnjBW==8vwyQD4+x_dbFzRQ@mail.gmail.com/
-
-That indicates an RV1108 SPI problem after moving from polling to IRQ.
-
-Mark's made a good point in reply to Otavio's report:
-
-"Does the interrupt ever fire?  I'm wondering if the DT is wired up
-correctly for the particular SoC you have, or if it's even wired up at
-all in the hardware."
-
-Can we get some help from Rockchip to clarify these issues on the RV1108 SPI?
-
-Have RV1108 SPI DMA and IRQ been tested by Rockchip?
-
-Are the rv1108 SPI DMA/IRQ descriptions in the rv1108.dtsi correct?
-
-Any known SPI hardware issue on RV1108?
-
-Thanks,
-
-Fabio Estevam

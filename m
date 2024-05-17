@@ -1,50 +1,50 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F9661422A4;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BB3B1422C2;
 	Fri, 17 May 2024 19:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715975634; cv=none; b=ENUSZSLMUztPDvj0Yr9I+VnWd8lyaD8+MqE41JZvclILhEGdspEza5ZCnm4RwGZ8q/jw7SqRELe+YqRD4GluAo7C/mq99UoV5O7CgeqBVj+WfIeazBx2iLDxgWtzo/rSw8/7t8u+Rny7EcRiw4Iphperg1aiUSzRySI4tTjGb+A=
+	t=1715975635; cv=none; b=Dpj1qPRs0fZCZOysM3eV/lSnLNe+iofdLDh77lnkvCPaJUtO1/54rinqr1I/d3rNbqjmr/cmLrT5YVfBMiUUx2jSoMtUwT0M+J5TMFZZyS97QCjmP3WrvSRFIklQCncUDMpKuLQFhDrFl/V2GcPYWE63I1vl8Oo2+GM4Q8nsZsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715975634; c=relaxed/simple;
-	bh=y0fN4jjiP8CI1asO2p9oSxaF0MzR6arWo4rn+6QIULI=;
+	s=arc-20240116; t=1715975635; c=relaxed/simple;
+	bh=7g0FrtRJTKHe6RD7B4mm9xOD9+Ic1TmeKGG546OwPqo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=itblkTHLy/Ebh6Kn4T/FGc0Df9DhnSWcyUXH9FQwJOnDtwwaYU2z9Yft/0Quulmd1f39wpjOufTzhQZ3TCsVbPbHzrrC89LBJoBbMo0cqbVcGQdcSanVcVA5ABhnQJZX/CoXI0J7MnYYbNTnsYAJxZMzQ0G+lOXyEOIW0tOFjVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RwvGRjHG; arc=none smtp.client-ip=198.175.65.18
+	 MIME-Version; b=MyYkheVq/8utgxU9O8bJPJK7IHgEadkopgRKAteBPivjNbo7Nxns47zYUspoMqVao3G3+ugB9RPPNJj/tDYIizJOfiiXxRvnuSwHa+T1BnGF6vEpSLkhzDHfZcyc0keb+DTExXC1dsNPBBLK47D8NWiAbXDcBhYEyoUhx2hm8ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fnP194dF; arc=none smtp.client-ip=198.175.65.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RwvGRjHG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fnP194dF"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715975633; x=1747511633;
+  t=1715975634; x=1747511634;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=y0fN4jjiP8CI1asO2p9oSxaF0MzR6arWo4rn+6QIULI=;
-  b=RwvGRjHGgiw/tu+QPvI5IKtewo67YGbMhGg40JVd98TcIS+bdBnFKuPZ
-   5SRRyvLxZQV0RrxHpyHmtE7sM0B3HaINS29nq6qDA79vSx8sXg8Iu0SkV
-   gP2kxEi92Fo6bqurHLpnyCsiPvztVzWfWK9cfaFpbgg+8L625Ibl56RB4
-   8M8RR3vT0UH+MxPrQS5KvLeL6z3sghwBKE+lfcDD6MncuFIFzS/Qz6KrU
-   bvyVzYUHvQQ6svFpAuQOfUDWyFYj9YDXIw78RpFP27uA2LGOVrOjzPzJT
-   kAeepbZQh1CeBeGiV6RdSUyMmZmEMKdfw9SvyejQu23+2rwXtkllZqj+2
-   w==;
-X-CSE-ConnectionGUID: jfCCpSd2Ts2JWp4IoqElzw==
-X-CSE-MsgGUID: Ni+KzhoESdyBFNa/uBl8+w==
-X-IronPort-AV: E=McAfee;i="6600,9927,11075"; a="12348679"
+  bh=7g0FrtRJTKHe6RD7B4mm9xOD9+Ic1TmeKGG546OwPqo=;
+  b=fnP194dFcpGHhuXxLHJCbPM0ZKbn9HMX4PqssY2Clon1vYM+njKUETY8
+   w7Cz60C16PBse+ZZbV5e06aTJpxK6JDf4saUnyb4PeEsrXl/dozUOcR+I
+   zxKCJCWAoz6CWvhYkdd7uRChu9+wKXhe+Xcj3TB4m+yhCkNowgIEe1JWi
+   SJFWhxQR53DzdJkc1FwVukgFyIDOAJM2NTk7Y/Ok6ifowBQ7LOzbLe4cp
+   rY8cWNHPo15GOPvcZCM/teFnO4GIoifroRpHWOgCKAqad3PaEc1JfO92M
+   KSawEB2NA4s2IzBAQB3qC4l5pLBQYpxQfnop8bj0ovMMkmNohIYaLzveE
+   Q==;
+X-CSE-ConnectionGUID: c43CvMwlSwCMsBfmL8z82Q==
+X-CSE-MsgGUID: s8FwEi0GSkaayeMsQc5uew==
+X-IronPort-AV: E=McAfee;i="6600,9927,11075"; a="12348686"
 X-IronPort-AV: E=Sophos;i="6.08,168,1712646000"; 
-   d="scan'208";a="12348679"
+   d="scan'208";a="12348686"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
   by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 12:53:52 -0700
-X-CSE-ConnectionGUID: cp0OGmhWSwOiPsy7hw7/TA==
-X-CSE-MsgGUID: 44wEwEV0SbmoZyp3eCNvrw==
+X-CSE-ConnectionGUID: PSNZlpLGT0GsLptac8sf7w==
+X-CSE-MsgGUID: 6JKeLPUWTwmH9hdkS/K0yw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,168,1712646000"; 
-   d="scan'208";a="31915017"
+   d="scan'208";a="31915018"
 Received: from black.fi.intel.com ([10.237.72.28])
   by fmviesa006.fm.intel.com with ESMTP; 17 May 2024 12:53:49 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 665A455A; Fri, 17 May 2024 22:53:45 +0300 (EEST)
+	id 831C4656; Fri, 17 May 2024 22:53:45 +0300 (EEST)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Mark Brown <broonie@kernel.org>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
@@ -55,9 +55,9 @@ To: Mark Brown <broonie@kernel.org>,
 Cc: Daniel Mack <daniel@zonque.org>,
 	Haojian Zhuang <haojian.zhuang@gmail.com>,
 	Robert Jarzmik <robert.jarzmik@free.fr>
-Subject: [PATCH v1 07/10] spi: pxa2xx: Remove superflous check for Intel Atom SoCs
-Date: Fri, 17 May 2024 22:47:41 +0300
-Message-ID: <20240517195344.813032-8-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 10/10] spi: pxa2xx: Convert PCI driver to use spi-pxa2xx code directly
+Date: Fri, 17 May 2024 22:47:44 +0300
+Message-ID: <20240517195344.813032-11-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
 In-Reply-To: <20240517195344.813032-1-andriy.shevchenko@linux.intel.com>
 References: <20240517195344.813032-1-andriy.shevchenko@linux.intel.com>
@@ -69,54 +69,108 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-pxa2xx_spi_fw_translate_cs() checks for the ACPI companion device
-presence along with the SSP type. But the SSP type is uniquely
-determines the case. Hence remove the superflous check.
+PCI driver has an additional device layer for enumeration.
+Remove that layer and use spi-pxa2xx code directly.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/spi/spi-pxa2xx.c | 26 +++++++++++---------------
- 1 file changed, 11 insertions(+), 15 deletions(-)
+ drivers/spi/spi-pxa2xx-pci.c | 39 ++++++++++++------------------------
+ 1 file changed, 13 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index cd28b798b53b..3ea4b9821a8e 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1371,23 +1371,19 @@ static int pxa2xx_spi_fw_translate_cs(struct spi_controller *controller,
+diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
+index 6d2efdb0e95f..616d032f1a89 100644
+--- a/drivers/spi/spi-pxa2xx-pci.c
++++ b/drivers/spi/spi-pxa2xx-pci.c
+@@ -10,8 +10,7 @@
+ #include <linux/err.h>
+ #include <linux/module.h>
+ #include <linux/pci.h>
+-#include <linux/platform_device.h>
+-#include <linux/property.h>
++#include <linux/pm.h>
+ #include <linux/sprintf.h>
+ #include <linux/string.h>
+ #include <linux/types.h>
+@@ -265,10 +264,8 @@ static int pxa2xx_spi_pci_probe(struct pci_dev *dev,
+ 		const struct pci_device_id *ent)
  {
- 	struct driver_data *drv_data = spi_controller_get_devdata(controller);
+ 	const struct pxa_spi_info *info;
+-	struct platform_device_info pi;
+ 	int ret;
+-	struct platform_device *pdev;
+-	struct pxa2xx_spi_controller spi_pdata;
++	struct pxa2xx_spi_controller *pdata;
+ 	struct ssp_device *ssp;
  
--	if (has_acpi_companion(drv_data->ssp->dev)) {
--		switch (drv_data->ssp_type) {
--		/*
--		 * For Atoms the ACPI DeviceSelection used by the Windows
--		 * driver starts from 1 instead of 0 so translate it here
--		 * to match what Linux expects.
--		 */
--		case LPSS_BYT_SSP:
--		case LPSS_BSW_SSP:
--			return cs - 1;
-+	switch (drv_data->ssp_type) {
-+	/*
-+	 * For some of Intel Atoms the ACPI DeviceSelection used by the Windows
-+	 * driver starts from 1 instead of 0 so translate it here to match what
-+	 * Linux expects.
-+	 */
-+	case LPSS_BYT_SSP:
-+	case LPSS_BSW_SSP:
-+		return cs - 1;
+ 	ret = pcim_enable_device(dev);
+@@ -279,15 +276,17 @@ static int pxa2xx_spi_pci_probe(struct pci_dev *dev,
+ 	if (ret)
+ 		return ret;
  
--		default:
--			break;
--		}
-+	default:
-+		return cs;
- 	}
+-	memset(&spi_pdata, 0, sizeof(spi_pdata));
++	pdata = devm_kzalloc(&dev->dev, sizeof(*pdata), GFP_KERNEL);
++	if (!pdata)
++		return -ENOMEM;
+ 
+-	ssp = &spi_pdata.ssp;
++	ssp = &pdata->ssp;
+ 	ssp->dev = &dev->dev;
+ 	ssp->phys_base = pci_resource_start(dev, 0);
+ 	ssp->mmio_base = pcim_iomap_table(dev)[0];
+ 
+ 	info = (struct pxa_spi_info *)ent->driver_data;
+-	ret = info->setup(dev, &spi_pdata);
++	ret = info->setup(dev, pdata);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -298,28 +297,12 @@ static int pxa2xx_spi_pci_probe(struct pci_dev *dev,
+ 		return ret;
+ 	ssp->irq = pci_irq_vector(dev, 0);
+ 
+-	memset(&pi, 0, sizeof(pi));
+-	pi.fwnode = dev_fwnode(&dev->dev);
+-	pi.parent = &dev->dev;
+-	pi.name = "pxa2xx-spi";
+-	pi.id = ssp->port_id;
+-	pi.data = &spi_pdata;
+-	pi.size_data = sizeof(spi_pdata);
 -
--	return cs;
+-	pdev = platform_device_register_full(&pi);
+-	if (IS_ERR(pdev))
+-		return PTR_ERR(pdev);
+-
+-	pci_set_drvdata(dev, pdev);
+-
+-	return 0;
++	return pxa2xx_spi_probe(&dev->dev, ssp);
  }
  
- static size_t pxa2xx_spi_max_dma_transfer_size(struct spi_device *spi)
+ static void pxa2xx_spi_pci_remove(struct pci_dev *dev)
+ {
+-	struct platform_device *pdev = pci_get_drvdata(dev);
+-
+-	platform_device_unregister(pdev);
++	pxa2xx_spi_remove(&dev->dev);
+ }
+ 
+ static const struct pci_device_id pxa2xx_spi_pci_devices[] = {
+@@ -341,6 +324,9 @@ MODULE_DEVICE_TABLE(pci, pxa2xx_spi_pci_devices);
+ static struct pci_driver pxa2xx_spi_pci_driver = {
+ 	.name           = "pxa2xx_spi_pci",
+ 	.id_table       = pxa2xx_spi_pci_devices,
++	.driver = {
++		.pm	= pm_ptr(&pxa2xx_spi_pm_ops),
++	},
+ 	.probe          = pxa2xx_spi_pci_probe,
+ 	.remove         = pxa2xx_spi_pci_remove,
+ };
+@@ -349,4 +335,5 @@ module_pci_driver(pxa2xx_spi_pci_driver);
+ 
+ MODULE_DESCRIPTION("CE4100/LPSS PCI-SPI glue code for PXA's driver");
+ MODULE_LICENSE("GPL v2");
++MODULE_IMPORT_NS(SPI_PXA2xx);
+ MODULE_AUTHOR("Sebastian Andrzej Siewior <bigeasy@linutronix.de>");
 -- 
 2.43.0.rc1.1336.g36b5255a03ac
 

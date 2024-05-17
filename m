@@ -1,49 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E951213DDB7;
-	Fri, 17 May 2024 19:53:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F3CF140E2F;
+	Fri, 17 May 2024 19:53:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715975630; cv=none; b=f2MS2wY14QKQFAnjdBRlTm/5xbYbRptE924qW+otGgI8cNBqrFSTsbJ2V/Yk99iACmRYEx+Xs3Ij9SL4s93JO7t3IHZAfncuxWl9iw20xad+6qqol6j8KYxLWe/pZcE+gHOEZWgHpCuznHwQQlRQDKUsdrGwuRNWxD0bdr1E9Yw=
+	t=1715975631; cv=none; b=XQp3DLe2/5sWvQssRbhAb7ThEYAvwKGs8+HB/l6p19aANrqGys6DVfhpABTWkhjom2POY5SOOPxehE3Xsi7esnjG/Ra0QgmHcalqst9TD32y8NsAVKsgzYr/Oths3ie94dGmuhER0iNa84/EcHlO/joJPRCVJ0Y+L2vbJ9iyHug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715975630; c=relaxed/simple;
-	bh=W74Sr8/Vl4jMDBj2h37bhjcq6haC1CF9rXzNCjYjzdU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sGGAAUlPTRUnis+r9ZWsn4wC0gJ+4IPNCme6DBY+K8JKkufFPOGdfo7Nv3t0itEMx3odveO8zxObaK+2H10tpxCctmvHYQnKT3BqVeqbekYP8LAO/u89N4rrHJ1lAomMgCa33tp6zHb/KQlOUDQ8jkM9vTUO0q9NA6c+Fd7AGkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VLDgmwVq; arc=none smtp.client-ip=192.198.163.12
+	s=arc-20240116; t=1715975631; c=relaxed/simple;
+	bh=W/bNA4S9nX43IbueQuZhsG1Td45DsiMHiPAvcVuKhwM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=PTtcUbZ32w1reVj+0Ko9lbMulk20oepzOgBGs3s+UKV1t/3iv2TrVtf1V21hPU/jlafPre4iQf7ToQ4ZY7i/l2jW5Z931ipZX7ot78KoLs5oZV1UwDCunLVEobKZZJYWlGkJHyY4QHpwhGjP9OT4nxJjU65M/0dxR2Hb2NZ6OLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nbBQAY+A; arc=none smtp.client-ip=198.175.65.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VLDgmwVq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nbBQAY+A"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715975629; x=1747511629;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=W74Sr8/Vl4jMDBj2h37bhjcq6haC1CF9rXzNCjYjzdU=;
-  b=VLDgmwVqLL2k4LhWUCz5DCURms1YCA+GSkHfzmjHdd5sb2I49hielR5e
-   9vnck9kg/zdbs6HTQXS/g/vTanjJUXU0t0BxRkSX1Xo7ZroCJ7ca93qcD
-   itLSr0b0MDKk8c9aRjgk9gxbDbuQ5maGh1CI+V78EKnQinbdhsXTAKiuD
-   ZaHsr/aTPaM2BXe8mfp6d2pseW3sDjiTDxQ1IkHW5S2tP0ORLHEsrcvBe
-   ZGGWeZtcsv027qN/XMspmv3uqgkpcTVXNqn6XR0r1Y9fJ3Ghr5s75Y5Qq
-   6SQ7dKsE4I6Ui6I2PbeCRkAsLnhR6DW+TFYqW4oZQ1sH/DOqNSe/7dy6U
+  t=1715975631; x=1747511631;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=W/bNA4S9nX43IbueQuZhsG1Td45DsiMHiPAvcVuKhwM=;
+  b=nbBQAY+ANBIw1Xxiayvrm++f0pE4oDm+WkZ+cSJpjwE5tf6PtDp+9tNM
+   NPpBQ2VrcnxUBLnc9TtbOp4loO6dKXcI9J8nUeFIAISb/eFRYtaUYWSei
+   LxRgc+fwZRhYmMtFNXqXYXJhjNbyf17toK8pw6wNzduRML9884gkSj2RA
+   idSgCESbzsUIcjeDWks0+AHT8U7MiC1b0osqkWFRMyU9YincCWyM2H0No
+   t/DEiW6kuSDuwL2TdcdcOXqD/Op9Yvi/3UpCHwkARACmafqS3ImZZLQjM
+   RatXTCpFGW2WIFhKd3MNfuEOsJgM/FExhOa23lH8PClDZBc48SVgDJaXy
    Q==;
-X-CSE-ConnectionGUID: y38FtwBYTQyGMjR+b22ndw==
-X-CSE-MsgGUID: D4nn1iMZT+umwNpvwm/rhg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11075"; a="16004897"
+X-CSE-ConnectionGUID: Z8LSm04dTeqqKJIyorm5Qw==
+X-CSE-MsgGUID: JavCBzajRSGQXaE2giRBAg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11075"; a="12348655"
 X-IronPort-AV: E=Sophos;i="6.08,168,1712646000"; 
-   d="scan'208";a="16004897"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 12:53:48 -0700
-X-CSE-ConnectionGUID: BEOGN0UBQVuc0qUa+8N0/A==
-X-CSE-MsgGUID: zmDG+niGQOG6krsXxWrqYQ==
+   d="scan'208";a="12348655"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 12:53:49 -0700
+X-CSE-ConnectionGUID: X5j2mwAORaSWH/dU5mJkTA==
+X-CSE-MsgGUID: YbHcHS0jSwufIy8LJM+1HA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,168,1712646000"; 
-   d="scan'208";a="36313501"
+   d="scan'208";a="31915006"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa005.fm.intel.com with ESMTP; 17 May 2024 12:53:46 -0700
+  by fmviesa006.fm.intel.com with ESMTP; 17 May 2024 12:53:46 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 09C171F1; Fri, 17 May 2024 22:53:44 +0300 (EEST)
+	id 2C135412; Fri, 17 May 2024 22:53:45 +0300 (EEST)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Mark Brown <broonie@kernel.org>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
@@ -54,10 +55,12 @@ To: Mark Brown <broonie@kernel.org>,
 Cc: Daniel Mack <daniel@zonque.org>,
 	Haojian Zhuang <haojian.zhuang@gmail.com>,
 	Robert Jarzmik <robert.jarzmik@free.fr>
-Subject: [PATCH v1 00/10] spi: pxa2xx: Get rid of an additional layer in PCI driver
-Date: Fri, 17 May 2024 22:47:34 +0300
-Message-ID: <20240517195344.813032-1-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 02/10] spi: pxa2xx: Remove no more needed driver data
+Date: Fri, 17 May 2024 22:47:36 +0300
+Message-ID: <20240517195344.813032-3-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
+In-Reply-To: <20240517195344.813032-1-andriy.shevchenko@linux.intel.com>
+References: <20240517195344.813032-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -66,31 +69,38 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-SPI PXA2xx main driver is a compound of a core library and
-a platform driver code. Decoupling that allows to eventually
-get rid of an additional layer of devices hierarchy in PCI driver.
-There are also precursor cleanups.
+Since the ACPI enumerated devices provide a property with SSP type,
+there is no more necessity to bear the copy of them in the ID table.
+Drop the driver data in ACPI ID table.
 
-Andy Shevchenko (10):
-  spi: pxa2xx: Reorganize the SSP type retrieval
-  spi: pxa2xx: Remove no more needed driver data
-  spi: pxa2xx: Remove hard coded number of chip select pins
-  spi: pxa2xx: Utilise temporary variable for struct device
-  spi: pxa2xx: Print DMA burst size only when DMA is enabled
-  spi: pxa2xx: Remove duplicate check
-  spi: pxa2xx: Remove superflous check for Intel Atom SoCs
-  spi: pxa2xx: Extract pxa2xx_spi_platform_*() callbacks
-  spi: pxa2xx: Move platform driver to a separate file
-  spi: pxa2xx: Convert PCI driver to use spi-pxa2xx code directly
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/spi/spi-pxa2xx.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
- drivers/spi/Makefile              |   3 +-
- drivers/spi/spi-pxa2xx-pci.c      |  39 ++---
- drivers/spi/spi-pxa2xx-platform.c | 201 +++++++++++++++++++++++++
- drivers/spi/spi-pxa2xx.c          | 239 ++++--------------------------
- drivers/spi/spi-pxa2xx.h          |   6 +
- 5 files changed, 253 insertions(+), 235 deletions(-)
- create mode 100644 drivers/spi/spi-pxa2xx-platform.c
-
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 877fb6d01cd1..dee5513936ec 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1703,12 +1703,12 @@ static const struct dev_pm_ops pxa2xx_spi_pm_ops = {
+ };
+ 
+ static const struct acpi_device_id pxa2xx_spi_acpi_match[] = {
+-	{ "80860F0E", LPSS_BYT_SSP },
+-	{ "8086228E", LPSS_BSW_SSP },
+-	{ "INT33C0", LPSS_LPT_SSP },
+-	{ "INT33C1", LPSS_LPT_SSP },
+-	{ "INT3430", LPSS_LPT_SSP },
+-	{ "INT3431", LPSS_LPT_SSP },
++	{ "80860F0E" },
++	{ "8086228E" },
++	{ "INT33C0" },
++	{ "INT33C1" },
++	{ "INT3430" },
++	{ "INT3431" },
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(acpi, pxa2xx_spi_acpi_match);
 -- 
 2.43.0.rc1.1336.g36b5255a03ac
 

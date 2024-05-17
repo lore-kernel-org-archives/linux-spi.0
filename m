@@ -1,86 +1,90 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60B0F38DD6;
-	Fri, 17 May 2024 17:24:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA5F13DDB0;
+	Fri, 17 May 2024 19:41:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715966683; cv=none; b=YlbcdPPDWkEfKrpXsQszbVC1/hCY4rVTs8Edw3tUP5hmn61/fx6z6qmMLz1LBeTW/T52sQRftpardiItuq+qg/YRPe3YHiYo+V3ha0ZBargytUsdq6LozpUCxbQRc47dvH/yX+mIWYhIFK+jh95ez+1de3P3ejDH8NDcNYMkcRw=
+	t=1715974872; cv=none; b=TYwSbBCFh51gNPmttJLoNqt8tDR7VafSTxIDrj0wbnPCBks91edzcANtpfMLLOLeAKdM6r5Nc/MXlIDRJmXDTpwUU2HXM+TBh18gssxPwYStCiiQqGh+q2loq0aVUCBe4BapKlt6erGSM1lKXsFJezye+/CAV8YYxJusgvlypB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715966683; c=relaxed/simple;
-	bh=rjTs1bN+hgsUK6tXA1jKQzxe9KRIcBfqG1Hp0wZaUbE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mC+C4AXu2Q7xTb0QBiyteczK+lfbsbWp5+ssUE06N0CuO5nPKcrrOJXhkv2kVPe7jC/NOq8o1gESWTSIrtyU8XGULstQm9xDlqVqdc4STxTGZ0LRwCWJshiztCdRMuN0WNOye3SY/ZxZNpnTjVpTdE4HzO7kc3YUHP8PbJ9bDxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M5hRCUIj; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1715974872; c=relaxed/simple;
+	bh=fu2ycGfiDHO09k7hG2n7b4YA7Q5TXBs64qVIrhAtvt8=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=k9FC4hm04k8Od1chJV5bt6Azfou3pFid1Hlp5w+O6AlCPFO1bUeKhVRTrCIGrtH9RK/dua+9Iiyna4Gu4xQIQT/AVsAvdwKQ5J3aNHiIuXEbkF4qRTy7gvX+amDzw2U0DY5WUEp7qviucTEKBcXi3HAweTq4M4TuE8NR91AJ7Ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LMpZE6WD; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M5hRCUIj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5BACC2BD10;
-	Fri, 17 May 2024 17:24:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715966682;
-	bh=rjTs1bN+hgsUK6tXA1jKQzxe9KRIcBfqG1Hp0wZaUbE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=M5hRCUIjC9rVrZwTGH2u6b8M8J93C9mUq6Ubs923sLq747034VxoBbds4Ebnw0A0k
-	 37M1vm9bDfDzm15Voz3iUqflqKvqGmsXSMqbr54U+ZaXE59eoVoDb/4ZSrUy2aXICv
-	 jUYtDnHX/agDZIs5BMMS46zYKiUxoG7wkABQz/KkO33wx3t31uS1HH3o2QmXd3WmhS
-	 vO+ti7w1BIrn6O7m72Rp0qsjdzWH+HdhaM219dgY2qB1OABitAXi17VAklciDmdd5T
-	 gfv/a783xy85MpepntAdmuUCCWBmd2HeScUEJ4BdK7imRdaZGq3DoAkeC9U2z6n4kG
-	 UvowbL+WniRIg==
-Date: Fri, 17 May 2024 18:24:37 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Subject: Re: [PATCH v1 1/1] spi: pxa2xx: Move PXA SSP bindings to the correct
- folder
-Message-ID: <e81d43f8-a3ba-41b4-a86f-af2d6943e917@sirena.org.uk>
-References: <20240517171103.221856-1-andriy.shevchenko@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LMpZE6WD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1715974871; x=1747510871;
+  h=from:to:subject:date:message-id:in-reply-to:references:
+   mime-version:content-transfer-encoding;
+  bh=fu2ycGfiDHO09k7hG2n7b4YA7Q5TXBs64qVIrhAtvt8=;
+  b=LMpZE6WDh17BtvSi6CxAplGrwmLEJReQpFB0/HxagJ+TQukehS4K0KGg
+   wfb3sq1hWtsj1sRNTQm1ud0ZwCao41idYiMXnrDNq6TrEKryj4SCE50/F
+   btGllPiDTNf+ZTyEINSkIIqb0CvX15FaOOCbxUtAiRcgw24qsQ0VD1iQ/
+   k7QARoSoXIe7aboPV106UbJdIgGFFwqTts7fjB0G9XEBe6ChVuAwXjfVV
+   W9QlRpBxIeRgjaG/iS4EEd3iccWf2sUROzGGTo++uRpVvK/y52xxHcQuk
+   UuZ5eVmjzyRoFPUnkIrPwUmDdY/9CqTstajHsIt+eYBZuDH9IJg1xuoLR
+   g==;
+X-CSE-ConnectionGUID: dvHHu8OTRHaWx6W2axOMEg==
+X-CSE-MsgGUID: QwwQ7ivkSTuWU42INeryag==
+X-IronPort-AV: E=McAfee;i="6600,9927,11075"; a="22783100"
+X-IronPort-AV: E=Sophos;i="6.08,168,1712646000"; 
+   d="scan'208";a="22783100"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 12:41:09 -0700
+X-CSE-ConnectionGUID: x6nY/ggpQq6CNBcAPSPyVA==
+X-CSE-MsgGUID: sEUCPdqXSoysdRNhWW/50Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,168,1712646000"; 
+   d="scan'208";a="32503703"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa007.jf.intel.com with ESMTP; 17 May 2024 12:41:09 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id 6F74B44E; Fri, 17 May 2024 22:41:07 +0300 (EEST)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v1 3/3] spi: bitbang: Replace hard coded number of SPI modes
+Date: Fri, 17 May 2024 22:40:22 +0300
+Message-ID: <20240517194104.747328-4-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
+In-Reply-To: <20240517194104.747328-1-andriy.shevchenko@linux.intel.com>
+References: <20240517194104.747328-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="yglz+J6siImMAjPA"
-Content-Disposition: inline
-In-Reply-To: <20240517171103.221856-1-andriy.shevchenko@linux.intel.com>
-X-Cookie: Function reject.
+Content-Transfer-Encoding: 8bit
 
+Instead of using hard coded number of modes, replace it with
+SPI_MODE_X_MASK + 1 to show relation to the SPI modes.
 
---yglz+J6siImMAjPA
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ include/linux/spi/spi_bitbang.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On Fri, May 17, 2024 at 08:11:03PM +0300, Andy Shevchenko wrote:
-> SSP stands for Serial Synchronous Protocol and has nothing to do with
-> UART, also known as USART, where 'A' stands for Asynchronous.
->=20
-> Move the SSP bindings to where it belongs.
+diff --git a/include/linux/spi/spi_bitbang.h b/include/linux/spi/spi_bitbang.h
+index 7ca08b430ed5..d4cb83195f7a 100644
+--- a/include/linux/spi/spi_bitbang.h
++++ b/include/linux/spi/spi_bitbang.h
+@@ -30,7 +30,7 @@ struct spi_bitbang {
+ 	int	(*txrx_bufs)(struct spi_device *spi, struct spi_transfer *t);
+ 
+ 	/* txrx_word[SPI_MODE_*]() just looks like a shift register */
+-	spi_bb_txrx_word_fn txrx_word[4];
++	spi_bb_txrx_word_fn txrx_word[SPI_MODE_X_MASK + 1];
+ 
+ 	int	(*set_line_direction)(struct spi_device *spi, bool output);
+ };
+-- 
+2.43.0.rc1.1336.g36b5255a03ac
 
-It's a serial device which is also used for other applications (the
-other one upstream being audio) so I can see where the current binding
-comes from and it's not super obvious that spi is especially better
-here.
-
---yglz+J6siImMAjPA
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZHktQACgkQJNaLcl1U
-h9Dkegf+PfmAzJMnJ7JxbPX21j0FUyCOCV8ZS8xqbV52T3VQ0lfj0ocnx7b4gTFc
-G/brmViTfVU6isTz1SEMEkYm04dRfcCkzCQNi22abMDops27xiKvIhOhw6WlrzUN
-vljrkpudj8MI+Gb76u/dY/MXjnjASj5o3qFSIAZZoZO7B8ws6ofjLeAdynAY/Re9
-z0dokasDuiujuIeO4QY70ZNj4jezgFN/8Wnp+DUpa07XyQvTV6lvplKIRBVUbOPt
-gREMbGy996hEf55KgEwsr3Nft6HahmHVd1T4CVI6gnTHYE1OzoXzTbFmUyHeXb08
-ffJckIM6CffQdDRBbmCEeYSH/HPaaA==
-=Argb
------END PGP SIGNATURE-----
-
---yglz+J6siImMAjPA--

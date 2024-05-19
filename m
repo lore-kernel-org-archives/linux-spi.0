@@ -1,61 +1,61 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED4F31804F;
-	Sun, 19 May 2024 20:36:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E46747A60;
+	Sun, 19 May 2024 21:18:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716150971; cv=none; b=Ul0+1rwMKNcYHUq34Vlwz5epzpZBHKBMEyRpWgwXa/125L4Qdd+C0WFXVA6a8pb/H4IfEi0y2UDot5NmgclV56vbWhdEKBaNLXur2clsDGicE1nFYHDjFGEtiihvfWo5mjhEmQ7PkudnUZRNAtL32dvXTfqHpCJ7iox4wBku+rI=
+	t=1716153496; cv=none; b=WFksDbhHRhSzzc98Fqh34g2RfPjl9ckEgCp6lQDdv33XbnVV6g5W6/Gl/EN6y+BbYrgFXb6+68duRDI/157d/2SO10E8dCmO1414lSWyaCe/pHWWN9sI8jd2OdUcRR0KvUXHW/2ZMyxdSW3KEy1FCi5PqvkU/mTskxhH9Re4fOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716150971; c=relaxed/simple;
-	bh=PvchwwyHop/XcvwdlyaD/GxovOSOTuEM6HwG18aSwr4=;
+	s=arc-20240116; t=1716153496; c=relaxed/simple;
+	bh=nRNvrAUDokkFb+DAB7wQjB6l6bkHSaKn/msMtWmOAfw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jYuMF2jvV9rQtI/YqPNUpY/88xhQ3GC1Y5WRiNU5ToGdx/HU5zGRBvQDbyzt0y3fNbTUTog/FlBRfMtH2SLzNCXZNysJjxROM2hrwA/5Qzp1zvLUgirjxLXVz2T+Reem2Ti/w2jDt1Vp8CvjAtEkPJUq8Mx/CdmcCe0QkZAvF24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZnLdR+QN; arc=none smtp.client-ip=198.175.65.13
+	 Content-Type:Content-Disposition:In-Reply-To; b=s7KeYpXYtDQNL855hzWY32cn/NYJlUsXb+1M4L1pR+cTRLN1xo60E2Q4ho8cJZzoGiAv0kY2RhocjZTZ/dXBDpufgNfAaC6aSjXB1cuzU96NDnQ2lVDkwDRE8yNTTxyYHR7+p2jUzfbHuUuCDp91ZCtQwrMj0JUe8EKW9POS9PE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=G761Mc+9; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZnLdR+QN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="G761Mc+9"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1716150969; x=1747686969;
+  t=1716153495; x=1747689495;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=PvchwwyHop/XcvwdlyaD/GxovOSOTuEM6HwG18aSwr4=;
-  b=ZnLdR+QNpIzU0DSGwznHv8vy7I6bqey3jn3jGQYj/r3FLZgmoA9Bs0s6
-   Y3o+jmEkwN7CkOAgyjfyAD8wv3kGJ4KmMcmgVZXs8weBz+KI908cKMJdA
-   3KgiX864D6xrFYyQci8jSj0HA9yBtOvTATLer5VuYqMYzAIrKSy8yKImH
-   X/QvYt6hQsxzT3Dm6nf62q08NdmwQYfjXTV1S/DV6ApKo7grTtDpLWRu3
-   oHGBC2OWQwU8kDhAWjt2GRcQC4pCqVfFU/DO2sU8qaDn6t1ljJjC7FvA5
-   XNpkpqz/tBQ3bowqI1QmtN+149vMAAdyJE/jkjN228S1pJ/70B2RJXCij
+  bh=nRNvrAUDokkFb+DAB7wQjB6l6bkHSaKn/msMtWmOAfw=;
+  b=G761Mc+9s/FZ2k4/B34fXdA42ANSvdM2pCRh6OGaHFN9CkchpaCsMkNR
+   AObPncZxcfATg46GZk8+vTeWWOSGItx3hqa4BzValvJBR+2C+kLLBx+k9
+   f2Tw/boUJ1zpmWSAWJ/n0aVpcdZyLon7nhqW6eWvI8MPMnivpkmiErvj2
+   8xS+yKeESe++Tsjc35qcTeEtAZ/RXo1LCMnsP9JApy+L/XS996wQ8EoGq
+   8Rzgik4QxskSQLF7aMf8fYENXW0GjN0+7RzUEPWli5GTpul0UCSdK9Dc2
+   p7Q0IOibXnezMm0AqRrurGCMQ7NPfshvCms9YdvCY8hHpur5LbeA3vAXr
    w==;
-X-CSE-ConnectionGUID: TTzI/6HpQGGDNZ/3z2nVBA==
-X-CSE-MsgGUID: c0HcY28ASQmxIlzsGwg2AA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11077"; a="23412065"
+X-CSE-ConnectionGUID: dYouk8QFSJuNWfgpZnhA9g==
+X-CSE-MsgGUID: aWHl9PpKTXSiZUdEnGhFPg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11077"; a="12391407"
 X-IronPort-AV: E=Sophos;i="6.08,173,1712646000"; 
-   d="scan'208";a="23412065"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2024 13:36:09 -0700
-X-CSE-ConnectionGUID: hAuS7mItQAGZRzMpvNwHeg==
-X-CSE-MsgGUID: DNMCxiFmSyuh2hG4uII5KA==
+   d="scan'208";a="12391407"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2024 14:18:14 -0700
+X-CSE-ConnectionGUID: Rd3jNdoHR+SCh4DnKDKHtg==
+X-CSE-MsgGUID: lLMNmTPWQF2iBWCW8ZK2UA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,173,1712646000"; 
-   d="scan'208";a="63150766"
+   d="scan'208";a="32355541"
 Received: from unknown (HELO 108735ec233b) ([10.239.97.151])
-  by orviesa002.jf.intel.com with ESMTP; 19 May 2024 13:36:07 -0700
+  by fmviesa006.fm.intel.com with ESMTP; 19 May 2024 14:18:12 -0700
 Received: from kbuild by 108735ec233b with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1s8nGG-0004Au-1Q;
-	Sun, 19 May 2024 20:36:04 +0000
-Date: Mon, 20 May 2024 04:35:49 +0800
+	id 1s8nuz-0004BS-2V;
+	Sun, 19 May 2024 21:18:09 +0000
+Date: Mon, 20 May 2024 05:18:00 +0800
 From: kernel test robot <lkp@intel.com>
 To: egyszeregy@freemail.hu, broonie@kernel.org, linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+Cc: oe-kbuild-all@lists.linux.dev,
 	Benjamin =?utf-8?B?U3rFkWtl?= <egyszeregy@freemail.hu>
 Subject: Re: [PATCH] spidev: Introduce "linux,spidev-name" property for
  device tree of spidev.
-Message-ID: <202405200406.PHvbYk5Z-lkp@intel.com>
+Message-ID: <202405200442.ydsaBrDZ-lkp@intel.com>
 References: <20240519181039.23147-1-egyszeregy@freemail.hu>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
@@ -81,35 +81,38 @@ url:    https://github.com/intel-lab-lkp/linux/commits/egyszeregy-freemail-hu/sp
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 patch link:    https://lore.kernel.org/r/20240519181039.23147-1-egyszeregy%40freemail.hu
 patch subject: [PATCH] spidev: Introduce "linux,spidev-name" property for device tree of spidev.
-config: arm-defconfig (https://download.01.org/0day-ci/archive/20240520/202405200406.PHvbYk5Z-lkp@intel.com/config)
-compiler: clang version 14.0.6 (https://github.com/llvm/llvm-project f28c006a5895fc0e329fe15fead81e37457cb1d1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240520/202405200406.PHvbYk5Z-lkp@intel.com/reproduce)
+config: arm64-defconfig (https://download.01.org/0day-ci/archive/20240520/202405200442.ydsaBrDZ-lkp@intel.com/config)
+compiler: aarch64-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240520/202405200442.ydsaBrDZ-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202405200406.PHvbYk5Z-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202405200442.ydsaBrDZ-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
->> drivers/spi/spidev.c:812:24: error: passing 'const struct class' to parameter of incompatible type 'const struct class *'; take the address with &
-                           dev = device_create(spidev_class, &spi->dev, spidev->devt,
-                                               ^~~~~~~~~~~~
-                                               &
-   include/linux/device.h:1175:35: note: passing argument to parameter 'cls' here
-   device_create(const struct class *cls, struct device *parent, dev_t devt,
-                                     ^
-   drivers/spi/spidev.c:816:24: error: passing 'const struct class' to parameter of incompatible type 'const struct class *'; take the address with &
-                           dev = device_create(spidev_class, &spi->dev, spidev->devt,
-                                               ^~~~~~~~~~~~
-                                               &
-   include/linux/device.h:1175:35: note: passing argument to parameter 'cls' here
-   device_create(const struct class *cls, struct device *parent, dev_t devt,
-                                     ^
-   2 errors generated.
+   drivers/spi/spidev.c: In function 'spidev_probe':
+>> drivers/spi/spidev.c:812:45: error: incompatible type for argument 1 of 'device_create'
+     812 |                         dev = device_create(spidev_class, &spi->dev, spidev->devt,
+         |                                             ^~~~~~~~~~~~
+         |                                             |
+         |                                             struct class
+   In file included from drivers/spi/spidev.c:13:
+   include/linux/device.h:1175:35: note: expected 'const struct class *' but argument is of type 'struct class'
+    1175 | device_create(const struct class *cls, struct device *parent, dev_t devt,
+         |               ~~~~~~~~~~~~~~~~~~~~^~~
+   drivers/spi/spidev.c:816:45: error: incompatible type for argument 1 of 'device_create'
+     816 |                         dev = device_create(spidev_class, &spi->dev, spidev->devt,
+         |                                             ^~~~~~~~~~~~
+         |                                             |
+         |                                             struct class
+   include/linux/device.h:1175:35: note: expected 'const struct class *' but argument is of type 'struct class'
+    1175 | device_create(const struct class *cls, struct device *parent, dev_t devt,
+         |               ~~~~~~~~~~~~~~~~~~~~^~~
 
 
-vim +812 drivers/spi/spidev.c
+vim +/device_create +812 drivers/spi/spidev.c
 
    767	
    768	static int spidev_probe(struct spi_device *spi)

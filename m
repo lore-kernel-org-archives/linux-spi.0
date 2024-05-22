@@ -1,57 +1,56 @@
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD6E4145B2F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F5B4145B35;
 	Wed, 22 May 2024 19:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716406003; cv=none; b=kA/FCEJDWZDjUBExgNwRR0r9PryhSDKKeRewj61OCv010hCnE0TXfqCDVthxnFlWfWqCCkea+k7Z+l9HQPYLiuR69ENDEQRUwaLJnQjZk7RrELJ1jyGTEfSYo/HkZNtfNG5kAEF0g02P1ZOxVudU4vf7TOVXSIZd6w8AH5h4vno=
+	t=1716406003; cv=none; b=ElnAYMsPduBJFDaGMYhaLdSJqejREYEBvbknR8KuOxWO24h/9Ou3ezKqJ6Uz/ptWMgcqKqKVOqa2DJUixM8XqOPFS4fo83p3CGBMqnGb0cQ/wCtovArs14MaEAw/m+/acQ3Ho/U43iBHQ8pzx8Gpq3HaUs/Cqau8h+Xuuik9kGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1716406003; c=relaxed/simple;
-	bh=cFWcpARcjYT9zgqi3WWrWm5Xze5Fb0jQpNzucFqM79k=;
+	bh=CUrJ5Gu3phSulzvatvhZSag83EpG0yxPg8pFVkgEFtw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BWaeySQ5Z2nnkc3jYyDb1Ds0qCNrPLLvk5wwdVaWSzAUeLoFJEN9zkEyysg/Cj3hLOQQB33uhOgesz8LEHDewV3J+3PH1R0YfKs4YUvrH0v2RWpxwRtJi6YkuOw5NGSQ2AZCFpJcGWFA9reIUe3oHC90UEecYthubRVV4lwK8Zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rVEi0nUu; arc=none smtp.client-ip=148.163.156.1
+	 MIME-Version; b=oL/aNgAlTHLBeq0lTzYvLYWkS4BJ7DwcnOKkXUcBiqSNibdRydWC9VfMOmWK4guf3FTcv5+i4SifsIaYAGqtg8Lvf6FUt/lp6olSW6uitQwNqDZ9UL9jwpM/YMLGNTX7YzIfoxjcXRkvYsd1fbwBi8PoEJGTTUXpiFrawhGTgPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=qY2XYRfY; arc=none smtp.client-ip=148.163.156.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="rVEi0nUu"
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44MINKxp011088;
-	Wed, 22 May 2024 19:25:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=Lee03BLXifhyW6cVx+t02zzYMJGHqQXg03t0Uf26jiE=;
- b=rVEi0nUuZrtwZvO53NNDoN+BbhMBdsysL4A4/TzZ/C/0HeeTXJxF5F7ptxf6y018sz2t
- aq15g978utHsUGmweF1YPaX5SYxy4wcgFLZoSCjbbLkAjoN/fkJYDIv2exVEF/e7UV2+
- c9RO0SiA31zOedGJtyf6byl8/Qv+4QTfBCexDPeEFeYlL73ROKLqddFjtpSyA0uyW/Zz
- Th8NNetI3hofNBOsYS8fYUKxAS4amIpOimIWY9P0EOlCDjLRDAE9lTRS8dP8k3VUEtTR
- qTXSGCRsK9+RbpKgOQ0NyjjKF+r8ORdpJUTA2vp4+4qwvTI5OAYnoIF3SjPoUAgG+kIl sA== 
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y9nx0g4yq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 May 2024 19:25:36 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 44MJ5Mav008123;
-	Wed, 22 May 2024 19:25:35 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3y78vm5a62-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 May 2024 19:25:35 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 44MJPVbs36700826
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="qY2XYRfY"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44MJMHhM019254;
 	Wed, 22 May 2024 19:25:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : in-reply-to : references : content-transfer-encoding
+ : mime-version; s=pp1; bh=i25QKyN7M2GvSJcgjQJBO7ej2MnuXeNYmIhBHP9S6sY=;
+ b=qY2XYRfYk876hATt2OOTF48ew50AMEXfQ8YYy7oZ6oCbBafqwmtC856mGmJl69EDs5fb
+ zgrVqIsRRDkUlE35yQGrOjAmLXsVQQGjgzSfDvHZ4q6n6zAJx5IE0ma0hA1emqI9xBKL
+ JwhzkZfT9BgTu+9VCCaEpbscUFNl8R+ShCApUi22KHZxWAf1d67Qbz6DzHLhdc6vMwW+
+ J6taP3vhKm2DdD+QxRr16kzdOXjiS0HxQiqN7BijC/JrmSCYjVe5daAnKo31W/pPVlY+
+ KhYGoSuLsNRVQMeqQ4LVZbTS3mOFXbmGjy5ciyJp2WDyfBsQIdqwS9uWsTWk8I5cP3Z1 ZA== 
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y9pt1006x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 May 2024 19:25:33 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 44MGxqI7023460;
+	Wed, 22 May 2024 19:25:32 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3y77npdqqq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 May 2024 19:25:32 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 44MJPSR54719314
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 22 May 2024 19:25:31 GMT
 Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6CA8D58062;
-	Wed, 22 May 2024 19:25:31 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id A4B4A5805D;
+	Wed, 22 May 2024 19:25:28 +0000 (GMT)
 Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1FB095805D;
-	Wed, 22 May 2024 19:25:31 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 563AA58066;
+	Wed, 22 May 2024 19:25:28 +0000 (GMT)
 Received: from slate16.aus.stglabs.ibm.com (unknown [9.61.104.209])
 	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 22 May 2024 19:25:31 +0000 (GMT)
+	Wed, 22 May 2024 19:25:28 +0000 (GMT)
 From: Eddie James <eajames@linux.ibm.com>
 To: linux-fsi@lists.ozlabs.org
 Cc: eajames@linux.ibm.com, devicetree@vger.kernel.org,
@@ -60,81 +59,92 @@ Cc: eajames@linux.ibm.com, devicetree@vger.kernel.org,
         linux-aspeed@lists.ozlabs.org, andrew@codeconstruct.com.au,
         joel@jms.id.au, robh@kernel.org, conor+dt@kernel.org,
         krzk+dt@kernel.org, andi.shyti@kernel.org, broonie@kernel.org
-Subject: [PATCH v6 17/20] ARM: dts: aspeed: Add IBM Huygens BMC system
-Date: Wed, 22 May 2024 14:25:21 -0500
-Message-Id: <20240522192524.3286237-18-eajames@linux.ibm.com>
+Subject: [PATCH v6 10/20] dt-bindings: fsi: Document the FSI Hub Controller
+Date: Wed, 22 May 2024 14:25:14 -0500
+Message-Id: <20240522192524.3286237-11-eajames@linux.ibm.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240522192524.3286237-1-eajames@linux.ibm.com>
 References: <20240522192524.3286237-1-eajames@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: jlrqvCmpk_p5hGjUfFPvi7NHpVsKGMqA
+X-Proofpoint-ORIG-GUID: jlrqvCmpk_p5hGjUfFPvi7NHpVsKGMqA
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 2DIixh4kmnmVHg76-TI-thoi7B-3m9oJ
-X-Proofpoint-GUID: 2DIixh4kmnmVHg76-TI-thoi7B-3m9oJ
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
  definitions=2024-05-22_10,2024-05-22_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
- lowpriorityscore=0 mlxscore=0 suspectscore=0 adultscore=0 mlxlogscore=943
- impostorscore=0 clxscore=1015 priorityscore=1501 malwarescore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
+ impostorscore=0 phishscore=0 spamscore=0 bulkscore=0 adultscore=0
+ priorityscore=1501 suspectscore=0 lowpriorityscore=0 mlxlogscore=999
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2405010000 definitions=main-2405220134
 
-The Huygens is a Rainier with modifed FSI wiring.
+Document the FSI Hub Controller CFAM engine.
 
 Signed-off-by: Eddie James <eajames@linux.ibm.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- arch/arm/boot/dts/aspeed/Makefile             |  1 +
- .../dts/aspeed/aspeed-bmc-ibm-huygens.dts     | 23 +++++++++++++++++++
- 2 files changed, 24 insertions(+)
- create mode 100644 arch/arm/boot/dts/aspeed/aspeed-bmc-ibm-huygens.dts
+ .../bindings/fsi/ibm,p9-fsi-controller.yaml   | 45 +++++++++++++++++++
+ 1 file changed, 45 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/fsi/ibm,p9-fsi-controller.yaml
 
-diff --git a/arch/arm/boot/dts/aspeed/Makefile b/arch/arm/boot/dts/aspeed/Makefile
-index 5e3392621697a..ac2804c96554a 100644
---- a/arch/arm/boot/dts/aspeed/Makefile
-+++ b/arch/arm/boot/dts/aspeed/Makefile
-@@ -36,6 +36,7 @@ dtb-$(CONFIG_ARCH_ASPEED) += \
- 	aspeed-bmc-ibm-bonnell.dtb \
- 	aspeed-bmc-ibm-everest.dtb \
- 	aspeed-bmc-ibm-fuji.dtb \
-+	aspeed-bmc-ibm-huygens.dtb \
- 	aspeed-bmc-ibm-rainier.dtb \
- 	aspeed-bmc-ibm-rainier-1s4u.dtb \
- 	aspeed-bmc-ibm-rainier-4u.dtb \
-diff --git a/arch/arm/boot/dts/aspeed/aspeed-bmc-ibm-huygens.dts b/arch/arm/boot/dts/aspeed/aspeed-bmc-ibm-huygens.dts
+diff --git a/Documentation/devicetree/bindings/fsi/ibm,p9-fsi-controller.yaml b/Documentation/devicetree/bindings/fsi/ibm,p9-fsi-controller.yaml
 new file mode 100644
-index 0000000000000..4a731b772fc0b
+index 0000000000000..29ea80ff915ef
 --- /dev/null
-+++ b/arch/arm/boot/dts/aspeed/aspeed-bmc-ibm-huygens.dts
-@@ -0,0 +1,23 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+// Copyright 2024 IBM Corp.
-+/dts-v1/;
++++ b/Documentation/devicetree/bindings/fsi/ibm,p9-fsi-controller.yaml
+@@ -0,0 +1,45 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/fsi/ibm,p9-fsi-controller.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+#include "aspeed-bmc-ibm-rainier.dts"
++title: IBM FSI-attached FSI Hub Controller
 +
-+/ {
-+	model = "Huygens";
-+};
++maintainers:
++  - Eddie James <eajames@linux.ibm.com>
 +
-+&fsim0 {
-+	/delete-node/ cfam@0,0;
-+	/delete-property/ cfam-reset-gpios;
++description:
++  The FSI Hub Controller is an FSI controller, providing a number of FSI links,
++  located on a CFAM. Therefore this node will always be a child of an FSI CFAM
++  node.
 +
-+	bus-frequency = <100000000>;
-+};
++properties:
++  compatible:
++    enum:
++      - ibm,p9-fsi-controller
 +
-+&fsim1 {
-+	#address-cells = <2>;
-+	#size-cells = <0>;
-+	status = "okay";
-+	bus-frequency = <100000000>;
-+};
++  reg:
++    items:
++      - description: FSI slave address
++
++allOf:
++  - $ref: fsi-controller.yaml#
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    fsi@3400 {
++        compatible = "ibm,p9-fsi-controller";
++        reg = <0x3400 0x400>;
++        #address-cells = <2>;
++        #size-cells = <0>;
++
++        cfam@0,0 {
++            reg = <0 0>;
++            #address-cells = <1>;
++            #size-cells = <1>;
++            chip-id = <0>;
++        };
++    };
 -- 
 2.39.3
 

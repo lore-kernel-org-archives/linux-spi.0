@@ -1,56 +1,56 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774E11422B7;
-	Wed, 22 May 2024 19:25:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886FC145B1F;
+	Wed, 22 May 2024 19:26:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716405959; cv=none; b=p1rv6v5A+fX1oIcXyuxytM+Psi2paaA0c2MtPNAcLhoi++C86GszmvQioEQquSso8REU13iqq39uo5ZO5mSDVBXxTJsjkzBMsGTetHpLJb8U0cO7Fy3c3iHiE8j/Nxs6OFLyRoAKEQta1EbnbgXl0MkA3M7kf8vhpDdyw+XgeYw=
+	t=1716406002; cv=none; b=a8J68mBAg4VEIKORKkwQ1KWKdJKRZmH+krnmeH9ju2A4j/tZ3wI4D+XnFJD57D0PYtK0pRUok2OcZ6fr4yCnpc3jO1w1bV1ui+pawzsuB8uLw8lXgs3tVCxU4HmY9q4HSgJ0HnU2d8bCVSZhVzjUI9HPrXtPgEdKZExPgmBjOgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716405959; c=relaxed/simple;
-	bh=uDU5ELBTf8zySUhNXHrvPqNK4kQ+x2w+KGk4ZslrO0M=;
+	s=arc-20240116; t=1716406002; c=relaxed/simple;
+	bh=wdN0qcX4GOtD/L6kzvrvPX7TsEMKv1p1pgP+PyEDc3o=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Y3qocJl0o6hw5fH0fXAK1WagnyJNgUSBhuk2Fi6IUVUTWIKzQRptlOb0LAXVbblSwoRoWM6l4t3N8dz2aHcTOIW5bzCvPjjAlj+zJiGakLOpRggjje+/wxhllpkEZm3WqOFWHdTkmUGL5jIHNm8kSywphp55IAbuknde6Oq2Iqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ejSKahD2; arc=none smtp.client-ip=148.163.158.5
+	 MIME-Version; b=PqAXTZpx/Bqi/DeH1a/NYgjxO1LVVMKVVMAokA6OzbXaChMowTnWXLMNisfTpGamGEiyG/v61ym1hKse5EvLNI+bjpOCHYXTYueBR6jA9a/5YeMta2CsPY7yhp1U2QlkRE5Gd5+TbqioHUFdUtrgAp2fzeKTQwn/frOwvmQlT9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=cMksKs1C; arc=none smtp.client-ip=148.163.156.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ejSKahD2"
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44MJJv7h021712;
-	Wed, 22 May 2024 19:25:29 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="cMksKs1C"
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44MHq8K1032103;
+	Wed, 22 May 2024 19:25:31 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : content-transfer-encoding
- : mime-version; s=pp1; bh=zoTnKXLL2Skz2o8iAXlb0tVFZAdIXzU3Pr1JzFRMJhY=;
- b=ejSKahD2YMaT6CQ5rI8pneeFyKOo59spPZFKuNucKdNMuEoo6ErQr2hxtu/s62ON70+/
- teTjnEM0SVw6AN42p5yRCxZW7+xtIVhs89MPlaROPaTeLchyWOP8tWMq5hMfO5pspOFE
- qsAgxhlOZf4+p+2yXWyuoFH0P6FF9bd/evgO9LdkqXIWkZU1A5OySp5RtCDs1Xfgeloo
- bbGZiTBAU+w+cYf9veBk8dUcEK7tF1leh2ItdIIxNsL4cbtSbhFrAKWmrLmuR5I3oS1e
- DKiJQydGaW8WWg017kD14eSjE/bho/dNfloUSEcq+930/eU0weutwa0u9RjZBKIgt5O4 OA== 
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y9mp70bhx-1
+ : mime-version; s=pp1; bh=5/P5I3r0HtCrWN/Tm0eKLRakv2Z5/M+3szaCrZDETAI=;
+ b=cMksKs1CjqAJ33sWGpRtsOvp0PktUDBmXb0HIo+0HuMMvnaH3wUdqL0jSV6fO0wjQvia
+ wyZ0R07v8j6YgGUrEaBe85NH10AyDmYM2+1NMQGv6Bl42rmaBVBl9gfLH39682dLrR6w
+ 36rV6Q4k1v2XbV542hUC6L0YM1Y8ZUZBL9HrLS1Iai+ixtImQhaQxx+fyWMx0p83IKlZ
+ O7lWsoRD3W0q85LSNjwKtmS7YykZperh3tlwZcociroyLKCMxNhP2fXnnRcwPbBm4eOc
+ DNb8JT6D7BH2HOqh5ItTjminNU6sEEiWgVhi8feFSra+z9O0FbhI4jT9qxlGAMUlF/pm gw== 
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y9n4888qd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 May 2024 19:25:30 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 44MGaLIQ000967;
+	Wed, 22 May 2024 19:25:29 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3y7720dvam-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Wed, 22 May 2024 19:25:29 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 44MIKLQO008188;
-	Wed, 22 May 2024 19:25:28 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3y78vm5a5r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 May 2024 19:25:28 +0000
 Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 44MJPP0V13566510
+	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 44MJPQ5D38601144
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 22 May 2024 19:25:27 GMT
+	Wed, 22 May 2024 19:25:28 GMT
 Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6A79158058;
-	Wed, 22 May 2024 19:25:25 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 7D6115805D;
+	Wed, 22 May 2024 19:25:26 +0000 (GMT)
 Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1A45E58063;
-	Wed, 22 May 2024 19:25:25 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 2E27558067;
+	Wed, 22 May 2024 19:25:26 +0000 (GMT)
 Received: from slate16.aus.stglabs.ibm.com (unknown [9.61.104.209])
 	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 22 May 2024 19:25:25 +0000 (GMT)
+	Wed, 22 May 2024 19:25:26 +0000 (GMT)
 From: Eddie James <eajames@linux.ibm.com>
 To: linux-fsi@lists.ozlabs.org
 Cc: eajames@linux.ibm.com, devicetree@vger.kernel.org,
@@ -59,15 +59,15 @@ Cc: eajames@linux.ibm.com, devicetree@vger.kernel.org,
         linux-aspeed@lists.ozlabs.org, andrew@codeconstruct.com.au,
         joel@jms.id.au, robh@kernel.org, conor+dt@kernel.org,
         krzk+dt@kernel.org, andi.shyti@kernel.org, broonie@kernel.org
-Subject: [PATCH v6 01/20] spi: dt-bindings: Document the IBM FSI-attached SPI controller
-Date: Wed, 22 May 2024 14:25:05 -0500
-Message-Id: <20240522192524.3286237-2-eajames@linux.ibm.com>
+Subject: [PATCH v6 04/20] dt-bindings: fsi: p9-occ: Convert to json-schema
+Date: Wed, 22 May 2024 14:25:08 -0500
+Message-Id: <20240522192524.3286237-5-eajames@linux.ibm.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240522192524.3286237-1-eajames@linux.ibm.com>
 References: <20240522192524.3286237-1-eajames@linux.ibm.com>
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 5mz-mYk2MD67nVTPLgFP443_FJ6nuRhR
-X-Proofpoint-GUID: 5mz-mYk2MD67nVTPLgFP443_FJ6nuRhR
+X-Proofpoint-GUID: hjvotV3zW-ZvF-wCN4Udzmgf-6kiElBt
+X-Proofpoint-ORIG-GUID: hjvotV3zW-ZvF-wCN4Udzmgf-6kiElBt
 Content-Transfer-Encoding: 8bit
 X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 Precedence: bulk
@@ -79,81 +79,91 @@ MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
  definitions=2024-05-22_10,2024-05-22_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 impostorscore=0
- lowpriorityscore=0 adultscore=0 spamscore=0 clxscore=1015 mlxlogscore=999
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1015
+ impostorscore=0 suspectscore=0 adultscore=0 priorityscore=1501
+ lowpriorityscore=0 mlxlogscore=999 mlxscore=0 phishscore=0 bulkscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2405010000 definitions=main-2405220134
 
-IBM Power processors have a SPI controller that can be accessed
-over FSI from a service processor. Document it.
+Conver to json-schema for the OCC documentation. Also document the fact
+that the OCC "bridge" device will often have the hwmon node as a
+child.
 
 Signed-off-by: Eddie James <eajames@linux.ibm.com>
 Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- .../devicetree/bindings/spi/ibm,spi-fsi.yaml  | 55 +++++++++++++++++++
- 1 file changed, 55 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/ibm,spi-fsi.yaml
+ .../devicetree/bindings/fsi/ibm,p9-occ.txt    | 16 --------
+ .../devicetree/bindings/fsi/ibm,p9-occ.yaml   | 40 +++++++++++++++++++
+ 2 files changed, 40 insertions(+), 16 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/fsi/ibm,p9-occ.txt
+ create mode 100644 Documentation/devicetree/bindings/fsi/ibm,p9-occ.yaml
 
-diff --git a/Documentation/devicetree/bindings/spi/ibm,spi-fsi.yaml b/Documentation/devicetree/bindings/spi/ibm,spi-fsi.yaml
+diff --git a/Documentation/devicetree/bindings/fsi/ibm,p9-occ.txt b/Documentation/devicetree/bindings/fsi/ibm,p9-occ.txt
+deleted file mode 100644
+index e73358075a903..0000000000000
+--- a/Documentation/devicetree/bindings/fsi/ibm,p9-occ.txt
++++ /dev/null
+@@ -1,16 +0,0 @@
+-Device-tree bindings for FSI-attached POWER9/POWER10 On-Chip Controller (OCC)
+------------------------------------------------------------------------------
+-
+-This is the binding for the P9 or P10 On-Chip Controller accessed over FSI from
+-a service processor. See fsi.txt for details on bindings for FSI slave and CFAM
+-nodes. The OCC is not an FSI slave device itself, rather it is accessed
+-through the SBE FIFO.
+-
+-Required properties:
+- - compatible = "ibm,p9-occ" or "ibm,p10-occ"
+-
+-Examples:
+-
+-    occ {
+-        compatible = "ibm,p9-occ";
+-    };
+diff --git a/Documentation/devicetree/bindings/fsi/ibm,p9-occ.yaml b/Documentation/devicetree/bindings/fsi/ibm,p9-occ.yaml
 new file mode 100644
-index 0000000000000..d7fec4c3a8016
+index 0000000000000..537eac70447c0
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/ibm,spi-fsi.yaml
-@@ -0,0 +1,55 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++++ b/Documentation/devicetree/bindings/fsi/ibm,p9-occ.yaml
+@@ -0,0 +1,40 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/spi/ibm,spi-fsi.yaml#
++$id: http://devicetree.org/schemas/fsi/ibm,p9-occ.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: IBM FSI-attached SPI Controller
++title: IBM FSI-attached On-Chip Controller (OCC)
 +
 +maintainers:
 +  - Eddie James <eajames@linux.ibm.com>
 +
 +description:
-+  A SPI controller found on IBM Power processors, accessed over FSI from a
-+  service processor. This node will always be a child node of an ibm,fsi2spi
-+  node.
++  The POWER processor On-Chip Controller (OCC) helps manage power and
++  thermals for the system, accessed through the FSI-attached SBEFIFO
++  from a service processor.
 +
 +properties:
 +  compatible:
 +    enum:
-+      - ibm,spi-fsi
++      - ibm,p9-occ
++      - ibm,p10-occ
 +
-+  reg:
-+    maxItems: 1
++  hwmon:
++    type: object
++    $ref: /schemas/hwmon/ibm,occ-hwmon.yaml
 +
 +required:
 +  - compatible
-+  - reg
 +
-+allOf:
-+  - $ref: spi-controller.yaml#
-+
-+unevaluatedProperties: false
++additionalProperties: false
 +
 +examples:
 +  - |
-+    fsi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
++    occ {
++        compatible = "ibm,p9-occ";
 +
-+        spi@0 {
-+            compatible = "ibm,spi-fsi";
-+            reg = <0>;
-+            #address-cells = <1>;
-+            #size-cells = <0>;
-+
-+            eeprom@0 {
-+                compatible = "atmel,at25";
-+                reg = <0>;
-+                size = <0x80000>;
-+                address-width = <24>;
-+                pagesize = <256>;
-+                spi-max-frequency = <1000000>;
-+            };
++        hwmon {
++            compatible = "ibm,p9-occ-hwmon";
 +        };
 +    };
 -- 

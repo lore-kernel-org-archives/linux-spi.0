@@ -1,35 +1,35 @@
 Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC01A18645
-	for <linux-spi@vger.kernel.org>; Wed, 22 May 2024 14:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8676F1C683
+	for <linux-spi@vger.kernel.org>; Wed, 22 May 2024 14:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716389586; cv=none; b=t6NQl+1nDr2m9ImgqWEK3lYo0DR0m2NsdAi4m9whM3VKNm0nRbG+BiNUb50iSOHsrodZf/ynyqT4QNOJHOYw4TtB5+UaDD5Xk4kKY3CF3Nbt9KI5eSa1La9pQzCR7FtoKfoyAJxb27P3i78DNLo+2CgOvXGp18IAPesIO+0+vqI=
+	t=1716389587; cv=none; b=mO0PmdQaaT5AvMirixxMjPYH9c+YhmQbRmYDUsd8JiDADHimVGiCm3GtnH0+YJHWchwjoTi4mLBIswrUpVEPuA/DpyiznjjVKNuAkC+eDoRtoLoZhuto6tYiruSn7z/A8WwyxImEPbbrctr8hMXN6GP/31hR2xGCEzBHGMW3QVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716389586; c=relaxed/simple;
-	bh=cHsLDnIFM6cGXLl/mTrYK0SMWcluyeiGdD9kJN8/Tys=;
+	s=arc-20240116; t=1716389587; c=relaxed/simple;
+	bh=Zrqq3v+gWeA4mFC2n5UPdzePnpObTzWZ1ZYSmifSyYU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SYzMpRIaHeMxwJwn482FNtz7yq7gNZyKJj9vyFZTp9RN/xiBTmqew8GsMnpa56UFM8EHMPRz68sW+msnyZCWkbBr+z2ZJaDIYshrTlP+8ZO2pGI1rBNR0xwjoMhdtJH2Kia2/AYbxAeDypwPGp8fUA6TpR+MGBDBrLQF5FpZEgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=kkHEfkgR; arc=none smtp.client-ip=217.70.183.195
+	 MIME-Version; b=pKli0AlGKNLilI7G8gcOT2R1HxkZ/EINVSI9EdbLnVkaH/zl6jDqjChXsG+rIMAIJZcq276fBbi3pjOQV4/4l5EwUkmZlirAC7EfOXXE5zoBKXFR3y5bC38yxMDP3VvDoKEhDwNgvJ7SrIMiMpZVEvmkFwYjlRc7DR8VlciaDOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=E2ME/nBK; arc=none smtp.client-ip=217.70.183.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="kkHEfkgR"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 14A9B60007;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="E2ME/nBK"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 0232E6000B;
 	Wed, 22 May 2024 14:52:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1716389577;
+	t=1716389578;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=yiJ8+52qzPzJhiZXAoVRGuwroXBLtuhBrnUsdkuLofI=;
-	b=kkHEfkgRcSejbG46aRF34vUmzBfcI79bApNfNfQhGhIh15giaJsOa+Fssmypvhve+SJ+kv
-	g8OmNBmChkqqjQQffgZ4UVICfuddVM4TW5r3TXK2EVmajXopGhuaECRj05hne77XGieskp
-	U6iyIshtZ3v442IX/14mfVj2BgkyqsYcFqz6AjPh8xqmzG3wbGjRstR/BKufO7Xu64/kzX
-	wXJRj8NggpUPyT2fqKYK97fing8wppcU/5XcsmeKA64SJMl7iLhbPH1JFwI2+BPZaTiOnh
-	U0BwlB2QQzI7BcAfcC/gmm8yNBdz7D8woZilhI9zVvUDk/Q5F6bNOrjS03A+bA==
+	bh=+bST3qn/qVYTYtwFvPSVOnQ/ZhNC2iNknto2WIVA8Qs=;
+	b=E2ME/nBKQad0QetS16bfwCcmpGVa37z1yMFCF+8LxPk/pr+OZoqgRNp2AqJQGOYqkhlGS1
+	fQiqa9sc5BR+L3ryPWCtI52h9+RBjikmMnslb1EKOR9TeE/N2zX5J+cw9CCA92zmGMNB9G
+	4I7rW9DbWGv9FrFFjTuU37BhnDw1SFrlhpISuhHvN8fzhYMuhdZbKel/dp/BGxp8sCqk9N
+	Qs0lFC72JmO8lhypgelT25H/4R0odgCW8gGFCPLKGaiATyMFQ1rwvBSsQpQUYUxW9ngVm9
+	YvDrDPEMnMQfIh26ew+VinpLvNFtPmkCHRyuUfkG1kldnuYhmlA/tWMJVMWn8w==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
 To: Mark Brown <broonie@kernel.org>,
 	<linux-spi@vger.kernel.org>
@@ -39,9 +39,9 @@ Cc: Serge Semin <fancer.lancer@gmail.com>,
 	Alvin Zhou <alvinzhou@mxic.com.tw>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 1/4] spi: dw: differentiate between unsupported and invalid requests
-Date: Wed, 22 May 2024 16:52:52 +0200
-Message-Id: <20240522145255.995778-2-miquel.raynal@bootlin.com>
+Subject: [PATCH 3/4] spi: rpc-if: differentiate between unsupported and invalid requests
+Date: Wed, 22 May 2024 16:52:54 +0200
+Message-Id: <20240522145255.995778-4-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20240522145255.995778-1-miquel.raynal@bootlin.com>
 References: <20240522145255.995778-1-miquel.raynal@bootlin.com>
@@ -54,11 +54,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: miquel.raynal@bootlin.com
 
-The driver does not support dirmap write operations, return -EOPTNOTSUPP
-in this case.
-
-Most controllers have a maximum linear mapping area. Requests beyond
-this limit can be considered invalid, rather than unsupported.
+If the request is out of range, returning -EINVAL seems a better pick
+than -ENOTSUPP.
 
 From a caller (and reviewer) point of view, distinguising between the
 two may be helpful because somehow one can be "fixed" while the other
@@ -69,32 +66,43 @@ useful to easily catch the upper limit direct mapping boundaries for
 each controller, with the idea of enlarging this area from a page to an
 eraseblock, without risking too many regressions.
 
+In all other cases, as part of a wider work towards using -EOPNOTSUP
+rather than -ENOTSUPP (which is not a SUSV4 code), let's change the
+error code to be uniform across spi-mem controller drivers.
+
+Finally, reword a little bit the conditions to clarify what is intended
+(ie. checking for the presence of a direct mapping, and also ensuring we
+create a dirmap only on DATA_IN flows).
+
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- drivers/spi/spi-dw-bt1.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/spi/spi-rpc-if.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/spi/spi-dw-bt1.c b/drivers/spi/spi-dw-bt1.c
-index 5391bcac305c..4577e8096cd9 100644
---- a/drivers/spi/spi-dw-bt1.c
-+++ b/drivers/spi/spi-dw-bt1.c
-@@ -55,13 +55,15 @@ static int dw_spi_bt1_dirmap_create(struct spi_mem_dirmap_desc *desc)
- 	    !dwsbt1->dws.mem_ops.supports_op(desc->mem, &desc->info.op_tmpl))
- 		return -EOPNOTSUPP;
+diff --git a/drivers/spi/spi-rpc-if.c b/drivers/spi/spi-rpc-if.c
+index e11146932828..d3f07fd719bd 100644
+--- a/drivers/spi/spi-rpc-if.c
++++ b/drivers/spi/spi-rpc-if.c
+@@ -95,16 +95,16 @@ static int rpcif_spi_mem_dirmap_create(struct spi_mem_dirmap_desc *desc)
+ 		spi_controller_get_devdata(desc->mem->spi->controller);
  
+ 	if (desc->info.offset + desc->info.length > U32_MAX)
+-		return -ENOTSUPP;
++		return -EINVAL;
+ 
+ 	if (!rpcif_spi_mem_supports_op(desc->mem, &desc->info.op_tmpl))
+-		return -ENOTSUPP;
++		return -EOPNOTSUPP;
+ 
+-	if (!rpc->dirmap && desc->info.op_tmpl.data.dir == SPI_MEM_DATA_IN)
+-		return -ENOTSUPP;
++	if (!rpc->dirmap)
++		return -EOPNOTSUPP;
+ 
+-	if (desc->info.op_tmpl.data.dir == SPI_MEM_DATA_OUT)
+-		return -ENOTSUPP;
 +	if (desc->info.op_tmpl.data.dir != SPI_MEM_DATA_IN)
 +		return -EOPNOTSUPP;
-+
- 	/*
- 	 * Make sure the requested region doesn't go out of the physically
--	 * mapped flash memory bounds and the operation is read-only.
-+	 * mapped flash memory bounds.
- 	 */
--	if (desc->info.offset + desc->info.length > dwsbt1->map_len ||
--	    desc->info.op_tmpl.data.dir != SPI_MEM_DATA_IN)
--		return -EOPNOTSUPP;
-+	if (desc->info.offset + desc->info.length > dwsbt1->map_len)
-+		return -EINVAL;
  
  	return 0;
  }

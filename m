@@ -1,35 +1,35 @@
 Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8676F1C683
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 867A91C694
 	for <linux-spi@vger.kernel.org>; Wed, 22 May 2024 14:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716389587; cv=none; b=mO0PmdQaaT5AvMirixxMjPYH9c+YhmQbRmYDUsd8JiDADHimVGiCm3GtnH0+YJHWchwjoTi4mLBIswrUpVEPuA/DpyiznjjVKNuAkC+eDoRtoLoZhuto6tYiruSn7z/A8WwyxImEPbbrctr8hMXN6GP/31hR2xGCEzBHGMW3QVw=
+	t=1716389587; cv=none; b=VKvNpBfboQ8W3EfQaqeSB1d0NuYKYiiPo/QL4ZyAh+VzN/y8q5GcP95UfT1C5z6Ikz5sLK+uA0XDq08RcfY4IJURHJIjJh/+okNV13wXLfybUIJEGsv2WSN/ZQhUj8X73z1fNaKr2G4tnAer5QC9e5OpkCdEVzSERt6hMyEp8vI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1716389587; c=relaxed/simple;
-	bh=Zrqq3v+gWeA4mFC2n5UPdzePnpObTzWZ1ZYSmifSyYU=;
+	bh=mEnTvtAtNzZxsg2CVtceiOZ1xONw8v+MdMWLL5+Pmg0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pKli0AlGKNLilI7G8gcOT2R1HxkZ/EINVSI9EdbLnVkaH/zl6jDqjChXsG+rIMAIJZcq276fBbi3pjOQV4/4l5EwUkmZlirAC7EfOXXE5zoBKXFR3y5bC38yxMDP3VvDoKEhDwNgvJ7SrIMiMpZVEvmkFwYjlRc7DR8VlciaDOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=E2ME/nBK; arc=none smtp.client-ip=217.70.183.195
+	 MIME-Version; b=C0s67QOfYD+WKgQA2PGwrUXJW0wT/2clo+kgP+rbcoJJDGtmVNGnF6/0+l8ajGVdc3BMNGajkpmVELj8YSiBo+mx5Zo44xzGI3vy99hqO+IzfucQTFKBOQBindXSiwr/EZf/IS14BxTM9KiwRdEvF5Hyq7fVQcFUbybBfPlJfJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=GNx5SFn0; arc=none smtp.client-ip=217.70.183.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="E2ME/nBK"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 0232E6000B;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="GNx5SFn0"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 8046260009;
 	Wed, 22 May 2024 14:52:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1716389578;
+	t=1716389577;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+bST3qn/qVYTYtwFvPSVOnQ/ZhNC2iNknto2WIVA8Qs=;
-	b=E2ME/nBKQad0QetS16bfwCcmpGVa37z1yMFCF+8LxPk/pr+OZoqgRNp2AqJQGOYqkhlGS1
-	fQiqa9sc5BR+L3ryPWCtI52h9+RBjikmMnslb1EKOR9TeE/N2zX5J+cw9CCA92zmGMNB9G
-	4I7rW9DbWGv9FrFFjTuU37BhnDw1SFrlhpISuhHvN8fzhYMuhdZbKel/dp/BGxp8sCqk9N
-	Qs0lFC72JmO8lhypgelT25H/4R0odgCW8gGFCPLKGaiATyMFQ1rwvBSsQpQUYUxW9ngVm9
-	YvDrDPEMnMQfIh26ew+VinpLvNFtPmkCHRyuUfkG1kldnuYhmlA/tWMJVMWn8w==
+	bh=IRQfo211pDzLhnjQrRk/5xMC5CrZJdpHPQsiNLKisI0=;
+	b=GNx5SFn0dzrqKTH2GadTmU1XS/hDzQNPapcf87tP2+Qe+d3mpb0jhaFwZL9boDq2n/IZLz
+	taQteEWYP2hPm3X021W4kbAfLB78A1nwLVf8EvQQW3TO5sIiN9iF7EOH2bb1DeqXv0znLX
+	ZWG5X8/9XxENQPQi4BChfCrV/h1YLMYHwzFShKuKQRYxZzP32ORVP6opwnmUw2Hu8Roq4+
+	UAx1gAmvzIUqZTQmvJ4i2KJ7XNZTpfkz6FRzIVfFl1g7fJoAxXlBb2ekt90PYkJ6tvfUa8
+	fGKsRGs8sKQfsQxkU9ZufgD7RDwVzCM5Bx7eRNZbO26qlAeaYzwrAYebxnifNw==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
 To: Mark Brown <broonie@kernel.org>,
 	<linux-spi@vger.kernel.org>
@@ -39,9 +39,9 @@ Cc: Serge Semin <fancer.lancer@gmail.com>,
 	Alvin Zhou <alvinzhou@mxic.com.tw>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 3/4] spi: rpc-if: differentiate between unsupported and invalid requests
-Date: Wed, 22 May 2024 16:52:54 +0200
-Message-Id: <20240522145255.995778-4-miquel.raynal@bootlin.com>
+Subject: [PATCH 2/4] spi: mxic: differentiate between unsupported and invalid requests
+Date: Wed, 22 May 2024 16:52:53 +0200
+Message-Id: <20240522145255.995778-3-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20240522145255.995778-1-miquel.raynal@bootlin.com>
 References: <20240522145255.995778-1-miquel.raynal@bootlin.com>
@@ -54,8 +54,10 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: miquel.raynal@bootlin.com
 
-If the request is out of range, returning -EINVAL seems a better pick
-than -ENOTSUPP.
+If the request is out of range, returning -EINVAL seems
+sensible. However if there is no direct mapping available (which is a
+possible case), no direct mapping will ever be allowed, hence -EOPNOTSUP
+is probably more relevant in this case.
 
 From a caller (and reviewer) point of view, distinguising between the
 two may be helpful because somehow one can be "fixed" while the other
@@ -66,46 +68,24 @@ useful to easily catch the upper limit direct mapping boundaries for
 each controller, with the idea of enlarging this area from a page to an
 eraseblock, without risking too many regressions.
 
-In all other cases, as part of a wider work towards using -EOPNOTSUP
-rather than -ENOTSUPP (which is not a SUSV4 code), let's change the
-error code to be uniform across spi-mem controller drivers.
-
-Finally, reword a little bit the conditions to clarify what is intended
-(ie. checking for the presence of a direct mapping, and also ensuring we
-create a dirmap only on DATA_IN flows).
-
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- drivers/spi/spi-rpc-if.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/spi/spi-mxic.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-rpc-if.c b/drivers/spi/spi-rpc-if.c
-index e11146932828..d3f07fd719bd 100644
---- a/drivers/spi/spi-rpc-if.c
-+++ b/drivers/spi/spi-rpc-if.c
-@@ -95,16 +95,16 @@ static int rpcif_spi_mem_dirmap_create(struct spi_mem_dirmap_desc *desc)
- 		spi_controller_get_devdata(desc->mem->spi->controller);
+diff --git a/drivers/spi/spi-mxic.c b/drivers/spi/spi-mxic.c
+index 60c9f3048ac9..6156d691630a 100644
+--- a/drivers/spi/spi-mxic.c
++++ b/drivers/spi/spi-mxic.c
+@@ -496,7 +496,7 @@ static int mxic_spi_mem_dirmap_create(struct spi_mem_dirmap_desc *desc)
+ 	struct mxic_spi *mxic = spi_controller_get_devdata(desc->mem->spi->controller);
+ 
+ 	if (!mxic->linear.map)
+-		return -EINVAL;
++		return -EOPNOTSUPP;
  
  	if (desc->info.offset + desc->info.length > U32_MAX)
--		return -ENOTSUPP;
-+		return -EINVAL;
- 
- 	if (!rpcif_spi_mem_supports_op(desc->mem, &desc->info.op_tmpl))
--		return -ENOTSUPP;
-+		return -EOPNOTSUPP;
- 
--	if (!rpc->dirmap && desc->info.op_tmpl.data.dir == SPI_MEM_DATA_IN)
--		return -ENOTSUPP;
-+	if (!rpc->dirmap)
-+		return -EOPNOTSUPP;
- 
--	if (desc->info.op_tmpl.data.dir == SPI_MEM_DATA_OUT)
--		return -ENOTSUPP;
-+	if (desc->info.op_tmpl.data.dir != SPI_MEM_DATA_IN)
-+		return -EOPNOTSUPP;
- 
- 	return 0;
- }
+ 		return -EINVAL;
 -- 
 2.40.1
 

@@ -1,58 +1,58 @@
-Received: from mail-wm1-f99.google.com (mail-wm1-f99.google.com [209.85.128.99])
+Received: from mail-wm1-f100.google.com (mail-wm1-f100.google.com [209.85.128.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E88D3D966
-	for <linux-spi@vger.kernel.org>; Fri, 24 May 2024 18:27:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8561F3FB01
+	for <linux-spi@vger.kernel.org>; Fri, 24 May 2024 18:27:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716575277; cv=none; b=cQ/b6gU6fIjpqbZhdHgXfMkmt5j978mp02X/Hioq/4TDl147J/rhZPKVf7IeFsYhCqIRktFLgvq/j1FPq91H/Squ6dYMbhhtTiBJG7Z35JUYQD86GQbeSPZ9HyttoPoeckrFppP6IT4LZ1Y8F59xRGFYrx0NFYf7w13HNTKv+ZQ=
+	t=1716575277; cv=none; b=gQXkpm35Ez3FnuTInupm7EOdkJtFKP5hEBRdz3VeIE6pcrMZ37590Xrp27mBPAUWYT3xtzVKZqPXALZ0AUl863acM//nGK16hRCIap94cI1tI3FqSBtiJFqzh0nk5S7VQgTdhn2weUDFvtHnkCYXJzUqgmwVZtQPh3twd9geqTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1716575277; c=relaxed/simple;
-	bh=guK+qXaJ8AZoVR69jRMhph9+Ra3UDqbRnwvqmJc9gsI=;
+	bh=KzZ2/ILylgxy50sk/StCVlBR9s2jedRDn061bSZ6QRA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=FnpG4Mx23njlknzUiml9nJHblZ8H3PXAKF6Qah6ANCrYj03fvjrmASCwbngn+P+Kswc1fH/FZoRkvFyYxMFOIv9NdybBYVaZ60A0SIpA0GdFJEAnieRdNwD9ASI73w0f9X18MPvF53jzuQtBfvf120jCbJFno6hReNZsIn/sIJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=raspberrypi.com; spf=pass smtp.mailfrom=raspberrypi.com; dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b=RXXjQD6d; arc=none smtp.client-ip=209.85.128.99
+	 MIME-Version; b=OxceezYc5DIUnZ9Z9DGCqoKdRchQexUPjm2x38j5MhcXH4PzycTFkXVxGoJjb/1WWDc9pjUcYGRm5x7jRuNyu4t5DhC2Yd3tO+lsEGwgnOWfIpHPeGezjHHdUxFOfp9KGQPL3QrwRulYZrW3wJON6cUCv8VFnB+HNnqM36gECvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=raspberrypi.com; spf=pass smtp.mailfrom=raspberrypi.com; dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b=TXjTMPjv; arc=none smtp.client-ip=209.85.128.100
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=raspberrypi.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=raspberrypi.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b="RXXjQD6d"
-Received: by mail-wm1-f99.google.com with SMTP id 5b1f17b1804b1-42011507a54so20436635e9.0
-        for <linux-spi@vger.kernel.org>; Fri, 24 May 2024 11:27:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b="TXjTMPjv"
+Received: by mail-wm1-f100.google.com with SMTP id 5b1f17b1804b1-4202c1d19d5so64558375e9.2
+        for <linux-spi@vger.kernel.org>; Fri, 24 May 2024 11:27:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=raspberrypi.com; s=google; t=1716575272; x=1717180072; darn=vger.kernel.org;
+        d=raspberrypi.com; s=google; t=1716575273; x=1717180073; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=BSFDj4ol3AWAL0GeTo1h24EE4RwMrFwKLsNkcBtWgJ8=;
-        b=RXXjQD6dzwStvDqi+42tP00mk/CVTm2VB2sOJMazc+QH6UwOGZWlZkSHfslgQych+T
-         I8TfXS5wDEd2vdmawaUMTmI/Ux1N9sHlZn+FneXjPVb35XSTGVT1M0pWEtMR4JOWkeZG
-         MhOZLJvb8KKmbnvA5TTG/O3qAZRp7HGvTZMTgFQhG1eRlIpyhldAZvUHzttyDLJf0DFO
-         1M5a19di362OhlMryLr9Ck30vwnekJ5AP7GwPX0u5HgE/p1Skd3SitHMNA/Vcwq6iVyw
-         CVpUpQnSARVOdJAPqyqrFn0ZFpO4uhRsmdUjNSqcmq40KoxFLw3v4VPucXK1j1YoP+nl
-         lVNA==
+        bh=2MV7QZf2fhH+OEhBA38QGxT92fUaASU1Nxo1nxUSVd8=;
+        b=TXjTMPjvEB/mpo5ZJFhiMaaLnozrvLslAQ+8QJMzQMCPL24NoORbh/iE+2u0VB2MfZ
+         1EfFvNlEv3pYHOX3PLnPH81gO8rl+M3C9pwpf76F3Ym4Cmroc3xhPvVpSak5XcrMHzHm
+         D5mZhstvelzEAdDlKGhTP6mZHGx2SL2LLuA04oOSyJeQ+FQhAeR9LYDZn2a0FSVJcOeD
+         W5NC7dvCF5W0HL2IU8T53zi9BLYm9nBfyYCdJDv1I0XaAJ2lJvQom18lNOpjx5B8xXTs
+         qytn/30BOA7mU5yGUg/NF7guE60VaGTNLsr7ROhtnuCRWtpSC6DJpuLb4qAgg1xJpb67
+         HmOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716575272; x=1717180072;
+        d=1e100.net; s=20230601; t=1716575273; x=1717180073;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=BSFDj4ol3AWAL0GeTo1h24EE4RwMrFwKLsNkcBtWgJ8=;
-        b=cHP/lKjPU7PNBOx+H8b+LIfg0l7xa6reydZ9qX4wvqRwuDFtL7ORwffSU9pqE7jka7
-         Ggw5yw9HHSLRE4fsbt43wkRW6gafyDKsQenFmO6ajB1cV2DRS8WGKV7hWv7EylJSKviJ
-         bNOG3hUWdwfU5/ntOfMIKqcamnF8R/dfA0tBaV5DvvOPsIV7Ym1f4CsBshS8T+fG6F9s
-         cAIqcboyj5yjA1TD5CQ90euslMTABOg/nCyZFpmzjlcZi41+VN81N8Rl+yJkVwvjPzbr
-         6VQa5YrxeK3YGmkWrtPGWcm1z7/cE8YiLgxIxDx9gHz+41+1T7FU9REYkGBIv41TCeDD
-         45Yw==
-X-Forwarded-Encrypted: i=1; AJvYcCXW2B21p57aX8e4/7P5qAQ0Oi+oWxnBHA62jSw9KvgmUHEM8jzkkZuC8AcY/I/roxIfYR/J6u1o8HhYKog+8rZo9PEGBw0Shmxd
-X-Gm-Message-State: AOJu0YxSZ9W0Hm92iiv8W7c8bfD/8Fjc7qcIl5xUq2sSQdP+T4BFZfkF
-	9/jcAkTm67h6St5I1LF0sxlgGktZRCPmho7jzRDQDHF0On8tOR/o28eqafRcgTEI6CABccUnGVB
-	zu6fyL4ML6W+SaY19qmltp8a0Mo3RKbcT
-X-Google-Smtp-Source: AGHT+IGoEzQFTvVJkKaznbn3tsRrsBHXrR2xRBfQSwJwq8OyKLj9sbB3e3hIegjaXdW0XFK+xVpzR1K4PrIS
-X-Received: by 2002:a05:600c:4695:b0:41a:4623:7ee9 with SMTP id 5b1f17b1804b1-421015b3ccemr57035725e9.10.1716575271904;
-        Fri, 24 May 2024 11:27:51 -0700 (PDT)
+        bh=2MV7QZf2fhH+OEhBA38QGxT92fUaASU1Nxo1nxUSVd8=;
+        b=Z/W9qcuP4ZvjyVR7BbLuFdA6oD/E926sQHOCZWMwRT5l5+2KfmcILlxH+lv35zu9Zo
+         2g62b7prmvi9kqXfC9+ucIiQBKLB+llPPyCc7m2GxaWrPEbF7BRQoMsHa5GGgxw+wCJ2
+         Gt3IjtBeOJlOFRZzBvP6wn1/rROkc8wGuGdlSZEu75d2Mc+kR27VPmfhGctCexCNJKc6
+         tPgoNxkzUusIBSSxNHvlrAeMYtMocIMtJRFUUaUim9Lenmleh0e5BPXYYBsjejZ9hSuS
+         9QeiMv4/oPguieN+lsEst1JpTMsyeMYizny+X+dtlD/xygPbbYIPA/E1sBkxnhRq0z3b
+         SQIA==
+X-Forwarded-Encrypted: i=1; AJvYcCVMSU0P+qyPqYiKWirq5nG1Jn7m/5v7sDNCjo7p+moJ1mMWGOGkqRIL9qfaeUwOlI5VrHnimHsuU1fOv34X6ZXoPi0MMsEjc+OG
+X-Gm-Message-State: AOJu0YyiupEP2EUvAjp4l0gFbEbeWPojOrex5SNhheweSckGEp2y9VGh
+	xG/77gGaGvO5dLu2mmR9+xK5xL2cmQ5AYpeSOj/GFmOhiZCW2+w8yAfAtU8cT5YXw4cqSan+wCk
+	YFv1CEldmMZtrG7yNqpqSj01iQKPcsUtg
+X-Google-Smtp-Source: AGHT+IHWZ0JTRBQwe/XochchvTJaAoc7r7/ijNNUJ35CDCjZA7ALjlPQSMAk7tENe+DW/f85sGYNAcbTrrfr
+X-Received: by 2002:a05:600c:5799:b0:41b:f2ca:19cc with SMTP id 5b1f17b1804b1-421089f93b7mr26088945e9.34.1716575272958;
+        Fri, 24 May 2024 11:27:52 -0700 (PDT)
 Received: from raspberrypi.com ([188.39.149.98])
-        by smtp-relay.gmail.com with ESMTPS id 5b1f17b1804b1-4210890571asm1226495e9.7.2024.05.24.11.27.51
+        by smtp-relay.gmail.com with ESMTPS id 5b1f17b1804b1-4210891c6edsm1217615e9.20.2024.05.24.11.27.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 May 2024 11:27:51 -0700 (PDT)
+        Fri, 24 May 2024 11:27:52 -0700 (PDT)
 X-Relaying-Domain: raspberrypi.com
 From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 To: Rob Herring <robh@kernel.org>,
@@ -91,9 +91,9 @@ Cc: devicetree@vger.kernel.org,
 	iommu@lists.linux.dev,
 	linux-sound@vger.kernel.org,
 	Dave Stevenson <dave.stevenson@raspberrypi.com>
-Subject: [PATCH 01/18] dma-direct: take dma-ranges/offsets into account in resource mapping
-Date: Fri, 24 May 2024 19:26:45 +0100
-Message-Id: <20240524182702.1317935-2-dave.stevenson@raspberrypi.com>
+Subject: [PATCH 03/18] ARM: dts: bcm283x: Update to use dma-channel-mask
+Date: Fri, 24 May 2024 19:26:47 +0100
+Message-Id: <20240524182702.1317935-4-dave.stevenson@raspberrypi.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240524182702.1317935-1-dave.stevenson@raspberrypi.com>
 References: <20240524182702.1317935-1-dave.stevenson@raspberrypi.com>
@@ -105,43 +105,42 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Serge Semin <Sergey.Semin@baikalelectronics.ru>
+Now the driver looks for the common dma-channel-mask property
+rather than the vendor-specific brcm,dma-channel-mask, update
+the dt files to follow suit.
 
-A basic device-specific linear memory mapping was introduced back in
-commit ("dma: Take into account dma_pfn_offset") as a single-valued offset
-preserved in the device.dma_pfn_offset field, which was initialized for
-instance by means of the "dma-ranges" DT property. Afterwards the
-functionality was extended to support more than one device-specific region
-defined in the device.dma_range_map list of maps. But all of these
-improvements concerned a single pointer, page or sg DMA-mapping methods,
-while the system resource mapping function turned to miss the
-corresponding modification. Thus the dma_direct_map_resource() method now
-just casts the CPU physical address to the device DMA address with no
-dma-ranges-based mapping taking into account, which is obviously wrong.
-Let's fix it by using the phys_to_dma_direct() method to get the
-device-specific bus address from the passed memory resource for the case
-of the directly mapped DMA.
-
-Fixes: 25f1e1887088 ("dma: Take into account dma_pfn_offset")
-Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
 ---
- kernel/dma/direct.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/broadcom/bcm2711.dtsi        | 2 +-
+ arch/arm/boot/dts/broadcom/bcm2835-common.dtsi | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
-index 4d543b1e9d57..916a16959575 100644
---- a/kernel/dma/direct.c
-+++ b/kernel/dma/direct.c
-@@ -509,7 +509,7 @@ int dma_direct_map_sg(struct device *dev, struct scatterlist *sgl, int nents,
- dma_addr_t dma_direct_map_resource(struct device *dev, phys_addr_t paddr,
- 		size_t size, enum dma_data_direction dir, unsigned long attrs)
- {
--	dma_addr_t dma_addr = paddr;
-+	dma_addr_t dma_addr = phys_to_dma_direct(dev, paddr);
+diff --git a/arch/arm/boot/dts/broadcom/bcm2711.dtsi b/arch/arm/boot/dts/broadcom/bcm2711.dtsi
+index e4e42af21ef3..d64bf098b697 100644
+--- a/arch/arm/boot/dts/broadcom/bcm2711.dtsi
++++ b/arch/arm/boot/dts/broadcom/bcm2711.dtsi
+@@ -103,7 +103,7 @@ dma: dma-controller@7e007000 {
+ 					  "dma9",
+ 					  "dma10";
+ 			#dma-cells = <1>;
+-			brcm,dma-channel-mask = <0x07f5>;
++			dma-channel-mask = <0x07f5>;
+ 		};
  
- 	if (unlikely(!dma_capable(dev, dma_addr, size, false))) {
- 		dev_err_once(dev,
+ 		pm: watchdog@7e100000 {
+diff --git a/arch/arm/boot/dts/broadcom/bcm2835-common.dtsi b/arch/arm/boot/dts/broadcom/bcm2835-common.dtsi
+index 9261b67dbee1..3ba8db8eed0f 100644
+--- a/arch/arm/boot/dts/broadcom/bcm2835-common.dtsi
++++ b/arch/arm/boot/dts/broadcom/bcm2835-common.dtsi
+@@ -46,7 +46,7 @@ dma: dma-controller@7e007000 {
+ 					  "dma14",
+ 					  "dma-shared-all";
+ 			#dma-cells = <1>;
+-			brcm,dma-channel-mask = <0x7f35>;
++			dma-channel-mask = <0x7f35>;
+ 		};
+ 
+ 		intc: interrupt-controller@7e00b200 {
 -- 
 2.34.1
 

@@ -1,57 +1,59 @@
-Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7F4169399;
-	Wed, 29 May 2024 07:40:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3883169AD7;
+	Wed, 29 May 2024 07:40:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716968449; cv=none; b=OrEd654x+STlPc95PwAK0OJS+o0nuSjzonLfjiK7HC5A3+FANQq50L0pgHbtgKB8k5aHXG8SBEGpLRTLqn4HUPCHAF3re7R2NZ1mGCGur9fPA4Y5XDiB6NX+Zxv6Ei3teUU/g8mp/GTeUSJWd+9Hb1sJFg0s5VSFo7vSuR187iA=
+	t=1716968450; cv=none; b=uGAZd7T87EieSRhiVWTE5H+NvZZqlZcfyxDwksGtdE5zvGCZNdmzI01L/UlC9Ut49A3OQKuUHQUSgoja01BEaPAg8ZxxDjNHjPtOTLOSXvPyJHzWMY9rHgTqw9IHUS15kWw1GZTx57wSgltMZYfeai7bTtvXLW4eN8a9Wv25o/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716968449; c=relaxed/simple;
-	bh=BmWczAvYIeY9VwvByXvG9gzCDUlCbbCoQ+eCq6ftLcc=;
+	s=arc-20240116; t=1716968450; c=relaxed/simple;
+	bh=PHJigxpV+zdQT6oSY17JxD0LsV5i8XOQw4gsOOMSFCU=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=L/qepRrZQdqcbETqA73PUf8XmjfALa/oRtd0NR8RBS1srg0xd7EgX3pFcQKPEybnralVJJWqx7ttzBYFHaBz+meZLG1jiPw1RyFo11GbJtt96fwLv+n6Ztczl+ZDjfIWYeFpNIEw8EKB0HBaFfRwk9/TGSUTCvkCEv2qxIlaEvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=OWwgYptm; arc=none smtp.client-ip=67.231.148.174
+	 MIME-Version:Content-Type; b=IaQ0raKeB2uXWJ6M1ZXyszc8cSxV9O6YTPBibvELC6pOmNvuOGZNwiVgQQHPz5BqgWCeFxivmiz69hkYMQOJiwZfUnsfoaElJqryW7uchCgS1w1awWF9CzBMmmk09BSjIJALJZydi5gQmf/7m0A0B7ClWSP48AA9Z4iRnbJltzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=Powr24X3; arc=none smtp.client-ip=67.231.156.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="OWwgYptm"
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44T61TAL007720;
-	Wed, 29 May 2024 00:40:42 -0700
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="Powr24X3"
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44T3mGtS007681;
+	Wed, 29 May 2024 00:40:43 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=3
-	y7USUWFIL48Kqj676CFLy76yOo1qxAqx2O8QrwalVM=; b=OWwgYptmQKzMbGSLv
-	VWmdlbnAfNDMQpapjDKRM8CRtASmg8pN21FTnHxPuyzplhnUVOBXF3ar0oVXqv/+
-	EL/JcAieR18Qy8nYuh9JbmiMuxnY4lQ5V7rpF4x1vPq0kYkOEl2p0Ps2Jpi3l9a2
-	buRB80HESk+oREw808bVIedRprwwBfNkVX1m2M7Yc5oDx3tD9+XbBUvaEQxtAQdO
-	s9n7DFAmM+BBr66Ed4jNptG5EetTimez0Op+FEBqt+jkt6Oa8/fkAio8usKy15RT
-	vNru0ihhxHUtF7utzf8SBZQqZZrSiQeeIK4vmbtfakA28YOMP266xIzx4520RFYt
-	k9xLg==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 3ydxqq0977-1
+	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=U
+	tOI3pKChoknJFYIiDIhTy3uBc1YXnfRLV/g6M+gMcM=; b=Powr24X3aRTjg6UvE
+	NG/OIfcsE6CFvw63aJOk6ZFVC9YVf/5NQdipC1RUC6N8o4jlRQ40yY4J24KhW1ps
+	OO4P7mNJVf67fQ95tHAaHR4waSWxgGUu1GUaKo1ATisAAyOSFbyKx5aLFedbu6Ig
+	+JcBQBNBbBOZSki+x+zateqMLl+3XgM+jqZrTAG1MLHzZ8DbaAq7HsBmEUUHjjsq
+	aBsNr79Bf09sLYdr4ZA/+hi55xagOP4EZGFEtqOkabrWlqi0iPCWnOVzNSdW9LSV
+	12jbFji+P+JIeHQglyrtTDLqRWCtsHjCy20MGj6xXDt/o0u1rdFX/PPTaj9XmVus
+	HcNgA==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 3yddnvc79e-4
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 May 2024 00:40:42 -0700 (PDT)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+	Wed, 29 May 2024 00:40:43 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Wed, 29 May 2024 00:40:40 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
- Transport; Wed, 29 May 2024 00:40:40 -0700
+ 15.2.1544.4; Wed, 29 May 2024 00:40:41 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
+ Transport; Wed, 29 May 2024 00:40:41 -0700
 Received: from Dell2s-9.sclab.marvell.com (unknown [10.110.150.250])
-	by maili.marvell.com (Postfix) with ESMTP id 7722F5B6949;
-	Wed, 29 May 2024 00:40:40 -0700 (PDT)
+	by maili.marvell.com (Postfix) with ESMTP id 685DA5B694A;
+	Wed, 29 May 2024 00:40:41 -0700 (PDT)
 From: Witold Sadowski <wsadowski@marvell.com>
 To: <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
         <devicetree@vger.kernel.org>
 CC: <broonie@kernel.org>, <robh@kernel.org>,
         <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
-        <pthombar@cadence.com>, Witold Sadowski <wsadowski@marvell.com>
-Subject: [PATCH v6 1/5] spi: cadence: Ensure data lines set to low during dummy-cycle period
-Date: Wed, 29 May 2024 00:40:32 -0700
-Message-ID: <20240529074037.1345882-2-wsadowski@marvell.com>
+        <pthombar@cadence.com>, Piyush Malgujar <pmalgujar@marvell.com>,
+        "Witold
+ Sadowski" <wsadowski@marvell.com>
+Subject: [PATCH v6 4/5] spi: cadence: Allow to read basic xSPI configuration from ACPI
+Date: Wed, 29 May 2024 00:40:35 -0700
+Message-ID: <20240529074037.1345882-5-wsadowski@marvell.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240529074037.1345882-1-wsadowski@marvell.com>
 References: <20240529074037.1345882-1-wsadowski@marvell.com>
@@ -63,99 +65,186 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-GUID: XM9EtSmt13a7HSU8gCyqIt74a_QkVHYM
-X-Proofpoint-ORIG-GUID: XM9EtSmt13a7HSU8gCyqIt74a_QkVHYM
+X-Proofpoint-GUID: ZjMc309sWp7h0vs4U_if3GseymTNa7PQ
+X-Proofpoint-ORIG-GUID: ZjMc309sWp7h0vs4U_if3GseymTNa7PQ
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
  definitions=2024-05-28_14,2024-05-28_01,2024-05-17_01
 
-During dummy-cycles xSPI will switch GPIO into Hi-Z mode. In that dummy
-period voltage on data lines will slowly drop, what can cause
-unintentional modebyte transmission. Value send to SPI memory chip will
-depend on last address, and clock frequency.
-To prevent unforeseen consequences of that behaviour, force send
-single modebyte(0x00).
-Modebyte will be send only if number of dummy-cycles is not equal
-to 0. Code must also reduce dummycycle byte count by one - as one byte
-is send as modebyte.
+From: Piyush Malgujar <pmalgujar@marvell.com>
 
+These changes enable reading the configurations from ACPI tables as
+required for successful probing in an ACPI UEFI environment. In the
+case of an ACPI-disabled or DTS-based environment, it will continue
+to read configurations from DTS as before.
+
+Signed-off-by: Piyush Malgujar <pmalgujar@marvell.com>
 Signed-off-by: Witold Sadowski <wsadowski@marvell.com>
 ---
- drivers/spi/spi-cadence-xspi.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ drivers/spi/spi-cadence-xspi.c | 90 ++++++++++++++++++++++++++++++----
+ 1 file changed, 80 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/spi/spi-cadence-xspi.c b/drivers/spi/spi-cadence-xspi.c
-index 8648b8eb080d..cdce2e280f66 100644
+index 3ba0269f1cc3..490bba7a0fc8 100644
 --- a/drivers/spi/spi-cadence-xspi.c
 +++ b/drivers/spi/spi-cadence-xspi.c
-@@ -145,6 +145,9 @@
- #define CDNS_XSPI_STIG_DONE_FLAG		BIT(0)
- #define CDNS_XSPI_TRD_STATUS			0x0104
+@@ -2,6 +2,7 @@
+ // Cadence XSPI flash controller driver
+ // Copyright (C) 2020-21 Cadence
  
-+#define MODE_NO_OF_BYTES			GENMASK(25, 24)
-+#define MODEBYTES_COUNT			1
++#include <linux/acpi.h>
+ #include <linux/completion.h>
+ #include <linux/delay.h>
+ #include <linux/err.h>
+@@ -14,6 +15,7 @@
+ #include <linux/of.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
++#include <linux/property.h>
+ #include <linux/spi/spi.h>
+ #include <linux/spi/spi-mem.h>
+ #include <linux/bitfield.h>
+@@ -647,6 +649,67 @@ static int cdns_xspi_mem_op(struct cdns_xspi_dev *cdns_xspi,
+ 					   (dir != SPI_MEM_NO_DATA));
+ }
+ 
++#ifdef CONFIG_ACPI
++static bool cdns_xspi_supports_op(struct spi_mem *mem,
++				  const struct spi_mem_op *op)
++{
++	struct spi_device *spi = mem->spi;
++	const union acpi_object *obj;
++	struct acpi_device *adev;
 +
- /* Helper macros for filling command registers */
- #define CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_1(op, data_phase) ( \
- 	FIELD_PREP(CDNS_XSPI_CMD_INSTR_TYPE, (data_phase) ? \
-@@ -157,9 +160,10 @@
- 	FIELD_PREP(CDNS_XSPI_CMD_P1_R2_ADDR3, ((op)->addr.val >> 24) & 0xFF) | \
- 	FIELD_PREP(CDNS_XSPI_CMD_P1_R2_ADDR4, ((op)->addr.val >> 32) & 0xFF))
- 
--#define CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_3(op) ( \
-+#define CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_3(op, modebytes) ( \
- 	FIELD_PREP(CDNS_XSPI_CMD_P1_R3_ADDR5, ((op)->addr.val >> 40) & 0xFF) | \
- 	FIELD_PREP(CDNS_XSPI_CMD_P1_R3_CMD, (op)->cmd.opcode) | \
-+	FIELD_PREP(MODE_NO_OF_BYTES, modebytes) | \
- 	FIELD_PREP(CDNS_XSPI_CMD_P1_R3_NUM_ADDR_BYTES, (op)->addr.nbytes))
- 
- #define CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_4(op, chipsel) ( \
-@@ -173,12 +177,12 @@
- #define CDNS_XSPI_CMD_FLD_DSEQ_CMD_2(op) \
- 	FIELD_PREP(CDNS_XSPI_CMD_DSEQ_R2_DCNT_L, (op)->data.nbytes & 0xFFFF)
- 
--#define CDNS_XSPI_CMD_FLD_DSEQ_CMD_3(op) ( \
-+#define CDNS_XSPI_CMD_FLD_DSEQ_CMD_3(op, dummybytes) ( \
- 	FIELD_PREP(CDNS_XSPI_CMD_DSEQ_R3_DCNT_H, \
- 		((op)->data.nbytes >> 16) & 0xffff) | \
- 	FIELD_PREP(CDNS_XSPI_CMD_DSEQ_R3_NUM_OF_DUMMY, \
- 		  (op)->dummy.buswidth != 0 ? \
--		  (((op)->dummy.nbytes * 8) / (op)->dummy.buswidth) : \
-+		  (((dummybytes) * 8) / (op)->dummy.buswidth) : \
- 		  0))
- 
- #define CDNS_XSPI_CMD_FLD_DSEQ_CMD_4(op, chipsel) ( \
-@@ -351,6 +355,7 @@ static int cdns_xspi_send_stig_command(struct cdns_xspi_dev *cdns_xspi,
- 	u32 cmd_regs[6];
- 	u32 cmd_status;
- 	int ret;
-+	int dummybytes = op->dummy.nbytes;
- 
- 	ret = cdns_xspi_wait_for_controller_idle(cdns_xspi);
- 	if (ret < 0)
-@@ -365,7 +370,12 @@ static int cdns_xspi_send_stig_command(struct cdns_xspi_dev *cdns_xspi,
- 	memset(cmd_regs, 0, sizeof(cmd_regs));
- 	cmd_regs[1] = CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_1(op, data_phase);
- 	cmd_regs[2] = CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_2(op);
--	cmd_regs[3] = CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_3(op);
-+	if (dummybytes != 0) {
-+		cmd_regs[3] = CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_3(op, 1);
-+		dummybytes--;
-+	} else {
-+		cmd_regs[3] = CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_3(op, 0);
++	adev = ACPI_COMPANION(&spi->dev);
++
++	if (!acpi_dev_get_property(adev, "spi-tx-bus-width", ACPI_TYPE_INTEGER,
++				   &obj)) {
++		switch (obj->integer.value) {
++		case 1:
++			break;
++		case 2:
++			spi->mode |= SPI_TX_DUAL;
++			break;
++		case 4:
++			spi->mode |= SPI_TX_QUAD;
++			break;
++		case 8:
++			spi->mode |= SPI_TX_OCTAL;
++			break;
++		default:
++			dev_warn(&spi->dev,
++				 "spi-tx-bus-width %lld not supported\n",
++				 obj->integer.value);
++			break;
++		}
 +	}
- 	cmd_regs[4] = CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_4(op,
- 						       cdns_xspi->cur_cs);
++
++	if (!acpi_dev_get_property(adev, "spi-rx-bus-width", ACPI_TYPE_INTEGER,
++				   &obj)) {
++		switch (obj->integer.value) {
++		case 1:
++			break;
++		case 2:
++			spi->mode |= SPI_RX_DUAL;
++			break;
++		case 4:
++			spi->mode |= SPI_RX_QUAD;
++			break;
++		case 8:
++			spi->mode |= SPI_RX_OCTAL;
++			break;
++		default:
++			dev_warn(&spi->dev,
++				 "spi-rx-bus-width %lld not supported\n",
++				 obj->integer.value);
++			break;
++		}
++	}
++
++	if (!spi_mem_default_supports_op(mem, op))
++		return false;
++
++	return true;
++}
++#endif
++
+ static int cdns_xspi_mem_op_execute(struct spi_mem *mem,
+ 				    const struct spi_mem_op *op)
+ {
+@@ -670,6 +733,9 @@ static int cdns_xspi_adjust_mem_op_size(struct spi_mem *mem, struct spi_mem_op *
+ }
  
-@@ -375,7 +385,7 @@ static int cdns_xspi_send_stig_command(struct cdns_xspi_dev *cdns_xspi,
- 		cmd_regs[0] = CDNS_XSPI_STIG_DONE_FLAG;
- 		cmd_regs[1] = CDNS_XSPI_CMD_FLD_DSEQ_CMD_1(op);
- 		cmd_regs[2] = CDNS_XSPI_CMD_FLD_DSEQ_CMD_2(op);
--		cmd_regs[3] = CDNS_XSPI_CMD_FLD_DSEQ_CMD_3(op);
-+		cmd_regs[3] = CDNS_XSPI_CMD_FLD_DSEQ_CMD_3(op, dummybytes);
- 		cmd_regs[4] = CDNS_XSPI_CMD_FLD_DSEQ_CMD_4(op,
- 							   cdns_xspi->cur_cs);
+ static const struct spi_controller_mem_ops cadence_xspi_mem_ops = {
++#ifdef CONFIG_ACPI
++	.supports_op = cdns_xspi_supports_op,
++#endif
+ 	.exec_op = cdns_xspi_mem_op_execute,
+ 	.adjust_op_size = cdns_xspi_adjust_mem_op_size,
+ };
+@@ -721,21 +787,20 @@ static irqreturn_t cdns_xspi_irq_handler(int this_irq, void *dev)
  
+ static int cdns_xspi_of_get_plat_data(struct platform_device *pdev)
+ {
+-	struct device_node *node_prop = pdev->dev.of_node;
+-	struct device_node *node_child;
++	struct fwnode_handle *fwnode_child;
+ 	unsigned int cs;
+ 
+-	for_each_child_of_node(node_prop, node_child) {
+-		if (!of_device_is_available(node_child))
++	device_for_each_child_node(&pdev->dev, fwnode_child) {
++		if (!fwnode_device_is_available(fwnode_child))
+ 			continue;
+ 
+-		if (of_property_read_u32(node_child, "reg", &cs)) {
++		if (fwnode_property_read_u32(fwnode_child, "reg", &cs)) {
+ 			dev_err(&pdev->dev, "Couldn't get memory chip select\n");
+-			of_node_put(node_child);
++			fwnode_handle_put(fwnode_child);
+ 			return -ENXIO;
+ 		} else if (cs >= CDNS_XSPI_MAX_BANKS) {
+ 			dev_err(&pdev->dev, "reg (cs) parameter value too large\n");
+-			of_node_put(node_child);
++			fwnode_handle_put(fwnode_child);
+ 			return -ENXIO;
+ 		}
+ 	}
+@@ -789,6 +854,11 @@ static int cdns_xspi_probe(struct platform_device *pdev)
+ 		SPI_MODE_0  | SPI_MODE_3;
+ 
+ 	drv_data = of_device_get_match_data(dev);
++	if (!drv_data) {
++		drv_data = acpi_device_get_match_data(dev);
++		if (!drv_data)
++			return -ENODEV;
++	}
+ 
+ 	host->mem_ops = &cadence_xspi_mem_ops;
+ 	host->dev.of_node = pdev->dev.of_node;
+@@ -815,19 +885,19 @@ static int cdns_xspi_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return -ENODEV;
+ 
+-	cdns_xspi->iobase = devm_platform_ioremap_resource_byname(pdev, "io");
++	cdns_xspi->iobase = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(cdns_xspi->iobase)) {
+ 		dev_err(dev, "Failed to remap controller base address\n");
+ 		return PTR_ERR(cdns_xspi->iobase);
+ 	}
+ 
+-	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "sdma");
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
+ 	cdns_xspi->sdmabase = devm_ioremap_resource(dev, res);
+ 	if (IS_ERR(cdns_xspi->sdmabase))
+ 		return PTR_ERR(cdns_xspi->sdmabase);
+ 	cdns_xspi->sdmasize = resource_size(res);
+ 
+-	cdns_xspi->auxbase = devm_platform_ioremap_resource_byname(pdev, "aux");
++	cdns_xspi->auxbase = devm_platform_ioremap_resource(pdev, 2);
+ 	if (IS_ERR(cdns_xspi->auxbase)) {
+ 		dev_err(dev, "Failed to remap AUX address\n");
+ 		return PTR_ERR(cdns_xspi->auxbase);
 -- 
 2.43.0
 

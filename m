@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C5617F51A;
-	Thu, 30 May 2024 15:11:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23CB1183069;
+	Thu, 30 May 2024 15:11:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717081886; cv=none; b=pDTxdPE5IiCbzOvjYY3dQoCSIpA69Q8aQhL0BdLCfvt3ndlJjJT6k0CSt57vbetXo91OEvOIGuet1eWijceIByrZ417/u9/MfNtqXZgTbv8MSU2GhjPgQh//7Yg45GJHWNi3k0HObyRmEWO1MKj29UvEkLmJ43apWNJ8xAGJ/rY=
+	t=1717081886; cv=none; b=L0Eq7JrRjvJewebE2hEaC0lcaibtbOAMz8dvrYY5lPix7AE2MUrBiQDu8XpFfxcC9uNd1Yym1w+qhKCRloSONWTOS6uzTPeJc0yxWEdMzeko1HxCwCSO5hu7fHy0a8dzTJDvnM088QbyMpyvw50uPJKPg41FISHtYq8oySz3JrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1717081886; c=relaxed/simple;
-	bh=Iq9RkCVt6cK9FjvsEVBSiepSsecDquk00YCQe7trEiE=;
+	bh=xuQ6DZkTEDRxFoGQhloOJPIufIaUVMudZOmQbEL7V4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rgA0Tsz6AmcLV7MkBq/Rk5gPKma2rBLO5qg52Vg4Wcumik6NwUJ3cyIuP38vBwDnEgQvLVvXdOh7nikqa67oAwcTQOLAG06R8okcSe7YxkY4pZDbKmdDDK5RO1isEatRuwh2j7Umwj1r3eYpIFX2u+uz5VNxOLUM/BLz16jg/do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Yc01nAOy; arc=none smtp.client-ip=192.198.163.8
+	 MIME-Version; b=lm/tP6lVYWg+yrKUPzBk2fbfGr9wkyLgfaG8gdjp4ignsFwwIAuf6Bh84I9We+u3kdlSkrnr/rDh9VElusEsX92TuFj0xo2bu1EWCplOXfkRhYIFl+p/cAxVETsKh+jBC616D5izq/GASyl+7aWHmBcJs+84ujZP8n01Rn34OUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QMnHOawy; arc=none smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Yc01nAOy"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QMnHOawy"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1717081885; x=1748617885;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Iq9RkCVt6cK9FjvsEVBSiepSsecDquk00YCQe7trEiE=;
-  b=Yc01nAOyIL4YHSCkTUI2NORVogqajT1LmMnQAhmIRoeYA2Kfe15IOjIX
-   haQswrBt5DW9/dApS1Ps4PZN5VETL9udDKASummTWWMiEq5ZLN/0Eez5W
-   rNAbtwR6DC7Es7sYBHvGqZY4kobccChWRM4CBtHjA3h3dRreAaVjcoovc
-   4K99M8EV670Apap2pQ8G/8TZsINV+Jo7Yg0uGJTp8pv1hq6N6yNLwEvku
-   akL+GkD/wC7XLLboLIcA7bZNO1gQvM60hxZ+sGLYL7bNDDb6spGuoQbao
-   LHU920cZyg4EmMpNXGYUNYaKIbh0RGmsMQTqrvlBihzoDT+9SxiAERWR2
-   g==;
-X-CSE-ConnectionGUID: SHa4VpxOSDK0jhih79Jh5g==
-X-CSE-MsgGUID: VWUWFameSkGAO3zRYH+CXw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="31093039"
+  bh=xuQ6DZkTEDRxFoGQhloOJPIufIaUVMudZOmQbEL7V4Q=;
+  b=QMnHOawylzn5BpobWuukWsrntADyQKpMT//9lujXVWwgSSv+ozPvoXh/
+   WVdt6zd+f62f4+vc595dCuSpcW6puTe0dkLzpIYqMaItnw/T1U7HOzBjB
+   sdKt04hQo/idrHa3RpkhmIP7smXbxfMkNAZVTcM3Hm4cV1/AbpcfdxDSl
+   Z+88XSm3/2s39Cx0wyTJAJN2FuEajeOqmz+h76jHbYgg8h5XZ1/4c8OZj
+   tn3y0/0RxgLNtcJK+mx2PcsuXA6BVRF7gDr9m4ShzhGkH9VSKfOFQAwRr
+   rPs+KwnA4BEtMH6BDSgQ4c3wU07qxmM8yyX6e/izVfO/30SgOhI8k4jn2
+   w==;
+X-CSE-ConnectionGUID: igPybMNDQHGXLEI0PLk+wg==
+X-CSE-MsgGUID: 6j5A4VV8TyaimG7B+w1d6w==
+X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="31067931"
 X-IronPort-AV: E=Sophos;i="6.08,201,1712646000"; 
-   d="scan'208";a="31093039"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2024 08:11:22 -0700
-X-CSE-ConnectionGUID: G8o5fUUqTo2Es22qCMzxKg==
-X-CSE-MsgGUID: /TE0xF6cRluJM0rR4Vu7wg==
+   d="scan'208";a="31067931"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2024 08:11:22 -0700
+X-CSE-ConnectionGUID: RHkbdXUlRvKwVAoxgpxB+g==
+X-CSE-MsgGUID: wsKMsGyIQ363d/2wS2JSeA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,201,1712646000"; 
-   d="scan'208";a="40288500"
+   d="scan'208";a="73329421"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa005.fm.intel.com with ESMTP; 30 May 2024 08:11:20 -0700
+  by orviesa001.jf.intel.com with ESMTP; 30 May 2024 08:11:21 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 4322937D; Thu, 30 May 2024 18:11:19 +0300 (EEST)
+	id 2C1252DC; Thu, 30 May 2024 18:11:19 +0300 (EEST)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Mark Brown <broonie@kernel.org>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
@@ -55,9 +55,9 @@ To: Mark Brown <broonie@kernel.org>,
 Cc: Daniel Mack <daniel@zonque.org>,
 	Haojian Zhuang <haojian.zhuang@gmail.com>,
 	Robert Jarzmik <robert.jarzmik@free.fr>
-Subject: [PATCH v2 04/11] spi: pxa2xx: Remove hard coded number of chip select pins
-Date: Thu, 30 May 2024 18:10:00 +0300
-Message-ID: <20240530151117.1130792-5-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v2 02/11] spi: pxa2xx: Reorganize the SSP type retrieval
+Date: Thu, 30 May 2024 18:09:58 +0300
+Message-ID: <20240530151117.1130792-3-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
 In-Reply-To: <20240530151117.1130792-1-andriy.shevchenko@linux.intel.com>
 References: <20240530151117.1130792-1-andriy.shevchenko@linux.intel.com>
@@ -69,43 +69,70 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Remove hard coded number of chip select pins for Intel Braswell.
-This comes via property.
+The old Intel platforms, such as Intel Braswell, also provide
+the property of SSP type. Reorganize the pxa2xx_spi_init_pdata()
+to take that into account.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/spi/spi-pxa2xx.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/spi/spi-pxa2xx.c | 25 +++++++++++--------------
+ 1 file changed, 11 insertions(+), 14 deletions(-)
 
 diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index b62a613378e0..53815aab41aa 100644
+index 820a3702447a..f4dc113768cd 100644
 --- a/drivers/spi/spi-pxa2xx.c
 +++ b/drivers/spi/spi-pxa2xx.c
-@@ -99,7 +99,6 @@ struct lpss_config {
- 	/* Chip select control */
- 	unsigned cs_sel_shift;
- 	unsigned cs_sel_mask;
--	unsigned cs_num;
- 	/* Quirks */
- 	unsigned cs_clk_stays_gated : 1;
- };
-@@ -137,7 +136,6 @@ static const struct lpss_config lpss_platforms[] = {
- 		.tx_threshold_hi = 224,
- 		.cs_sel_shift = 2,
- 		.cs_sel_mask = 1 << 2,
--		.cs_num = 2,
- 	},
- 	{	/* LPSS_SPT_SSP */
- 		.offset = 0x200,
-@@ -1594,8 +1592,6 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
- 			tmp &= LPSS_CAPS_CS_EN_MASK;
- 			tmp >>= LPSS_CAPS_CS_EN_SHIFT;
- 			platform_info->num_chipselect = ffz(tmp);
--		} else if (config->cs_num) {
--			platform_info->num_chipselect = config->cs_num;
- 		}
+@@ -1331,19 +1331,21 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+ 	struct pxa2xx_spi_controller *pdata;
+ 	struct device *dev = &pdev->dev;
+ 	struct device *parent = dev->parent;
++	const void *match = device_get_match_data(dev);
+ 	enum pxa_ssp_type type = SSP_UNDEFINED;
+-	struct ssp_device *ssp = NULL;
+-	const void *match;
++	struct ssp_device *ssp;
+ 	bool is_lpss_priv;
+ 	u32 num_cs = 1;
+ 	int status;
+ 
+-	is_lpss_priv = platform_get_resource_byname(pdev, IORESOURCE_MEM, "lpss_priv");
+-
+-	match = device_get_match_data(dev);
+-	if (match)
+-		type = (uintptr_t)match;
+-	else if (is_lpss_priv) {
++	ssp = pxa2xx_spi_ssp_request(pdev);
++	if (IS_ERR(ssp))
++		return ERR_CAST(ssp);
++	if (ssp) {
++		type = ssp->type;
++	} else if (match) {
++		type = (enum pxa_ssp_type)(uintptr_t)match;
++	} else {
+ 		u32 value;
+ 
+ 		status = device_property_read_u32(dev, "intel,spi-pxa2xx-type", &value);
+@@ -1351,12 +1353,6 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+ 			return ERR_PTR(status);
+ 
+ 		type = (enum pxa_ssp_type)value;
+-	} else {
+-		ssp = pxa2xx_spi_ssp_request(pdev);
+-		if (IS_ERR(ssp))
+-			return ERR_CAST(ssp);
+-		if (ssp)
+-			type = ssp->type;
  	}
- 	controller->num_chipselect = platform_info->num_chipselect;
+ 
+ 	/* Validate the SSP type correctness */
+@@ -1368,6 +1364,7 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+ 		return ERR_PTR(-ENOMEM);
+ 
+ 	/* Platforms with iDMA 64-bit */
++	is_lpss_priv = platform_get_resource_byname(pdev, IORESOURCE_MEM, "lpss_priv");
+ 	if (is_lpss_priv) {
+ 		pdata->tx_param = parent;
+ 		pdata->rx_param = parent;
 -- 
 2.43.0.rc1.1336.g36b5255a03ac
 

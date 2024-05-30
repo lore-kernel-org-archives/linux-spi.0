@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1292F186E38;
-	Thu, 30 May 2024 15:11:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AF1E17D8A0;
+	Thu, 30 May 2024 15:11:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717081884; cv=none; b=LqNU0Cnrt1Dd/q9jXIfbRYEi8qR13uYZn4qrGLE2EyqR0biT9u5SOPY+fmT/VrNUYdKtQRnto/P8dj5RsIddgRFGhT3fK/f9w5D2fzuwlsrYMlhAVircTcE7yMp862GmVBwpELd1Ylvqa5FzBMS1k+RCbZUtNxU+EpQ61VmSPZQ=
+	t=1717081885; cv=none; b=dqPJGdJK8eX4NxQBlPNda8vM3SzQYKXdRjUIm6hcpHokNS7VPnp3/p6tT/gYHWgygL957nbLL0252vVg/oRdVQeG2OcnNcoRVMrOvxOiwFOapPIdpEsl7htu/2C78xRoaKJUjqHjGJNj5hjyqGYkOt2gtFJT3bpVS1SROP78JgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717081884; c=relaxed/simple;
-	bh=TQxj52QzB21T4oND+oGj5zj9iueR9JjcCvK8NiCC4XM=;
+	s=arc-20240116; t=1717081885; c=relaxed/simple;
+	bh=k3Jy0JpJWn+p7UbeUn2JOtEhZjdt6wmsCwt1uObyvpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CzRAWMn07wZmKdHiJZIve5OyWm/NVleZTDt1hDof4rJxkX4oOQieib1sePRDs6jFbbKiZarT84QJfwlCM+AixsUjFyRne51sD73mU23rFDSLZ+QVkgBy96eSmG4ryTxgEJlwQOfyChdCD/0I9Z0Vwlm2bJ9uh4skq7dFCDz8zd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=d5O0iuE4; arc=none smtp.client-ip=192.198.163.8
+	 MIME-Version; b=lpR6kWvYKKv/MUrUP64A7MHT6VVk/E1PHs5k2o/j0/EOBwDcRDIOnf7JS1VfSMvfMkr3Qxeb2FawTBCzyeakL+5AzTdRXma679GGpUaGwbwa1LJw7UhQIAVhC0PjPNlAo10ny76ujBjkekjRGXEsbqrz3DpqE9eYfqzOGf/TjgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZmScHrAw; arc=none smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="d5O0iuE4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZmScHrAw"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1717081883; x=1748617883;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=TQxj52QzB21T4oND+oGj5zj9iueR9JjcCvK8NiCC4XM=;
-  b=d5O0iuE4HOdEdVLfK7uYrohyvYml5731JHTwX70KjtnMlrJTmp20u53x
-   6vqcGd+JMGRjdmyDmUt7u6y5EHwpu1VhEogHNWZqt/BBhG6+FuE7btdwp
-   Vr651/wU9CTrGsWbBDLaVzIIgYHmZC98W71JzLts11ZBigyc1rmA+CUp+
-   FYqZ1lRWfSzbCWY8G3EUMWF4Sdrb6TZzX+nHIscbDMxyeFwUgcrNgJ3Bo
-   NBdGfE+jO70Xkos7w7fujoEu7Jv4GG/sy91DxTp5LcoriS9lrhREDRUY9
-   QURNilHH+Ng/6NwGoZb6KWbtyNx6IH1sLD2B7uvb86uZiSYEcHzXuVks4
+  bh=k3Jy0JpJWn+p7UbeUn2JOtEhZjdt6wmsCwt1uObyvpA=;
+  b=ZmScHrAw3M+hFiIrvptF5EaBYlM8ZCjf81yaddD0i6nMmB09CmPUwAdS
+   ALbsn9QOp0vcGiPs711vSG/EKMYQuKJ6j3aZLZbTnnTJCFagIjKIQpckl
+   aSPvPxSXiOMue5F5cCJq46Am+ATEJ4bpRaX6Z3TsfLbpVaoDFIlOXoPWR
+   OLQXtmPmVa2ViGgCXkXQunJylCUsyk/B1ouSTwPZ8lIYS+8X1V416nIzO
+   CsoQgpcH4fYiZw0p/txG6+SkUtDdvY29yhDn+9HfMebEfkaSGEKUcprrn
+   OgZo4dY140skcplqGQMtCxceZw1e2kPsixzIBE/pwbuAimB3bbvmGiZx6
    Q==;
-X-CSE-ConnectionGUID: 9ObHPrdaS8KW6hufCLRqBw==
-X-CSE-MsgGUID: U9FPRV6MS3GcPsidT5PYzA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="31093031"
+X-CSE-ConnectionGUID: 88tGk9vWSoKQV/jRgiKYAA==
+X-CSE-MsgGUID: DWqNC1mSRum5pxfG87EjpA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="31067913"
 X-IronPort-AV: E=Sophos;i="6.08,201,1712646000"; 
-   d="scan'208";a="31093031"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2024 08:11:22 -0700
-X-CSE-ConnectionGUID: /FZZb/pJSWy8TGVnqxXSMA==
-X-CSE-MsgGUID: XT/+hSA9QyKUq3odAWBusg==
+   d="scan'208";a="31067913"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2024 08:11:22 -0700
+X-CSE-ConnectionGUID: ygWNtsUCSgCvlGSapsJ15A==
+X-CSE-MsgGUID: PLdcGkwCRzas9WXXnyuVnQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,201,1712646000"; 
-   d="scan'208";a="40288501"
+   d="scan'208";a="73329420"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa005.fm.intel.com with ESMTP; 30 May 2024 08:11:20 -0700
+  by orviesa001.jf.intel.com with ESMTP; 30 May 2024 08:11:21 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 3D9C44DE; Thu, 30 May 2024 18:11:19 +0300 (EEST)
+	id 2268B184; Thu, 30 May 2024 18:11:19 +0300 (EEST)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Mark Brown <broonie@kernel.org>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
@@ -55,9 +55,9 @@ To: Mark Brown <broonie@kernel.org>,
 Cc: Daniel Mack <daniel@zonque.org>,
 	Haojian Zhuang <haojian.zhuang@gmail.com>,
 	Robert Jarzmik <robert.jarzmik@free.fr>
-Subject: [PATCH v2 03/11] spi: pxa2xx: Remove no more needed driver data
-Date: Thu, 30 May 2024 18:09:59 +0300
-Message-ID: <20240530151117.1130792-4-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v2 01/11] spi: pxa2xx: Wrap pxa_ssp_request() to be device managed resource
+Date: Thu, 30 May 2024 18:09:57 +0300
+Message-ID: <20240530151117.1130792-2-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
 In-Reply-To: <20240530151117.1130792-1-andriy.shevchenko@linux.intel.com>
 References: <20240530151117.1130792-1-andriy.shevchenko@linux.intel.com>
@@ -69,38 +69,122 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Since the ACPI enumerated devices provide a property with SSP type,
-there is no more necessity to bear the copy of them in the ID table.
-Drop the driver data in ACPI ID table.
+In the error path or remove path the reference counter in PXA SSP driver
+may be dropped before the other resources, that were allocated after
+bumbing the reference counter. This breaks reversed order of freeing and
+might have an undesired side effects. Prevent this from happening by
+wrapping pxa_ssp_request() to be device managed resource.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/spi/spi-pxa2xx.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/spi/spi-pxa2xx.c | 50 +++++++++++++++++++++++++---------------
+ 1 file changed, 32 insertions(+), 18 deletions(-)
 
 diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index f4dc113768cd..b62a613378e0 100644
+index efe76d0c21bb..820a3702447a 100644
 --- a/drivers/spi/spi-pxa2xx.c
 +++ b/drivers/spi/spi-pxa2xx.c
-@@ -1718,12 +1718,12 @@ static const struct dev_pm_ops pxa2xx_spi_pm_ops = {
- };
+@@ -1304,6 +1304,27 @@ pxa2xx_spi_init_ssp(struct platform_device *pdev, struct ssp_device *ssp, enum p
+ 	return 0;
+ }
  
- static const struct acpi_device_id pxa2xx_spi_acpi_match[] = {
--	{ "80860F0E", LPSS_BYT_SSP },
--	{ "8086228E", LPSS_BSW_SSP },
--	{ "INT33C0", LPSS_LPT_SSP },
--	{ "INT33C1", LPSS_LPT_SSP },
--	{ "INT3430", LPSS_LPT_SSP },
--	{ "INT3431", LPSS_LPT_SSP },
-+	{ "80860F0E" },
-+	{ "8086228E" },
-+	{ "INT33C0" },
-+	{ "INT33C1" },
-+	{ "INT3430" },
-+	{ "INT3431" },
- 	{}
- };
- MODULE_DEVICE_TABLE(acpi, pxa2xx_spi_acpi_match);
++static void pxa2xx_spi_ssp_release(void *ssp)
++{
++	pxa_ssp_free(ssp);
++}
++
++static struct ssp_device *pxa2xx_spi_ssp_request(struct platform_device *pdev)
++{
++	struct ssp_device *ssp;
++	int status;
++
++	ssp = pxa_ssp_request(pdev->id, pdev->name);
++	if (!ssp)
++		return ssp;
++
++	status = devm_add_action_or_reset(&pdev->dev, pxa2xx_spi_ssp_release, ssp);
++	if (status)
++		return ERR_PTR(status);
++
++	return ssp;
++}
++
+ static struct pxa2xx_spi_controller *
+ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+ {
+@@ -1331,11 +1352,11 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+ 
+ 		type = (enum pxa_ssp_type)value;
+ 	} else {
+-		ssp = pxa_ssp_request(pdev->id, pdev->name);
+-		if (ssp) {
++		ssp = pxa2xx_spi_ssp_request(pdev);
++		if (IS_ERR(ssp))
++			return ERR_CAST(ssp);
++		if (ssp)
+ 			type = ssp->type;
+-			pxa_ssp_free(ssp);
+-		}
+ 	}
+ 
+ 	/* Validate the SSP type correctness */
+@@ -1420,7 +1441,9 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
+ 	}
+ 	dev_dbg(dev, "DMA burst size set to %u\n", platform_info->dma_burst_size);
+ 
+-	ssp = pxa_ssp_request(pdev->id, pdev->name);
++	ssp = pxa2xx_spi_ssp_request(pdev);
++	if (IS_ERR(ssp))
++		return PTR_ERR(ssp);
+ 	if (!ssp)
+ 		ssp = &platform_info->ssp;
+ 
+@@ -1431,11 +1454,9 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
+ 		controller = devm_spi_alloc_target(dev, sizeof(*drv_data));
+ 	else
+ 		controller = devm_spi_alloc_host(dev, sizeof(*drv_data));
++	if (!controller)
++		return dev_err_probe(dev, -ENOMEM, "cannot alloc spi_controller\n");
+ 
+-	if (!controller) {
+-		status = dev_err_probe(dev, -ENOMEM, "cannot alloc spi_controller\n");
+-		goto out_error_controller_alloc;
+-	}
+ 	drv_data = spi_controller_get_devdata(controller);
+ 	drv_data->controller = controller;
+ 	drv_data->controller_info = platform_info;
+@@ -1486,10 +1507,8 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
+ 
+ 	status = request_irq(ssp->irq, ssp_int, IRQF_SHARED, dev_name(dev),
+ 			drv_data);
+-	if (status < 0) {
+-		dev_err_probe(dev, status, "cannot get IRQ %d\n", ssp->irq);
+-		goto out_error_controller_alloc;
+-	}
++	if (status < 0)
++		return dev_err_probe(dev, status, "cannot get IRQ %d\n", ssp->irq);
+ 
+ 	/* Setup DMA if requested */
+ 	if (platform_info->enable_dma) {
+@@ -1619,8 +1638,6 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
+ 	pxa2xx_spi_dma_release(drv_data);
+ 	free_irq(ssp->irq, drv_data);
+ 
+-out_error_controller_alloc:
+-	pxa_ssp_free(ssp);
+ 	return status;
+ }
+ 
+@@ -1646,9 +1663,6 @@ static void pxa2xx_spi_remove(struct platform_device *pdev)
+ 
+ 	/* Release IRQ */
+ 	free_irq(ssp->irq, drv_data);
+-
+-	/* Release SSP */
+-	pxa_ssp_free(ssp);
+ }
+ 
+ static int pxa2xx_spi_suspend(struct device *dev)
 -- 
 2.43.0.rc1.1336.g36b5255a03ac
 

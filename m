@@ -1,57 +1,57 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6474D16DECE;
-	Wed,  5 Jun 2024 21:23:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BC40174EC9;
+	Wed,  5 Jun 2024 21:23:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717622627; cv=none; b=D58MBvBMNhDv1/XIsBZdkY5oWU2+tQjHIpFFPqs4JJkCV9QRr7TqxWpsPNOzlIcUyzQuDKmPrPFf00bjGcChssvAz+AjyszhXZ6phAXCGhxDGn2urEd7rehieLltgjSj+0X+eX4m80ghn9QXpvB2R2RSJ+IJy1Txv+NiXg59nmo=
+	t=1717622627; cv=none; b=IcRHzmJ/zvLeE+WOUqsfPLbN/IEfzNZ3ViTKBPIYsxhYJgzD4WhEiKmp5IQ/+k2ZF+a5XRrWJmjT7n0ooVH2VuoB/i3zwIWlPGR74391LODqGis2U5AJogDKiT4hhLXQnDvKOZfxeBU7cJSbTmj7J2Luiu7ZsHmh37TiXozBCxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1717622627; c=relaxed/simple;
-	bh=zMJ+8CKS5IsMYaQmugxKikdp5cTIBgraD/MHYZfjCLw=;
+	bh=3+V1BYHv7imAhNsodfDuqzyVlub/3rC7336E+6Ul+HU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZYPxJS8wbgPMppKQ2lwlBAJLoHqzJeGwOzYQCYsdDsTqCKoHxVn5EqcbJvD+t+Ox866oWAd/5ijUpjvJ+Bs16RfUieyeLoJ4ikaMRM4UyJoyhWxG94hDv6R9eZ3grDaNymfJyRQoE3zY3OK2u6Sv1xAU23k915EGGqgjp+03Udw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=h2RoRc5h; arc=none smtp.client-ip=148.163.156.1
+	 MIME-Version; b=g1/boQzdJiOn8meEO61XDSNo3lto0hZXj5oh12LVtxfFq/N5AhaTgNgKKeVTCJdDk0W4n0+XfPrp2c23VKyOgwRaCw4s6uQvkxC9XfwxWzGIFkW7RWCdc8ifyTmu2oDPAnditNuGW0E6pB14fZdsdYLGkh53jMebzjyG+gwhhrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=sNYBpF0y; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="h2RoRc5h"
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 455KKjwf025645;
-	Wed, 5 Jun 2024 21:23:30 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="sNYBpF0y"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 455K8Rdf009413;
+	Wed, 5 Jun 2024 21:23:24 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc :
  content-transfer-encoding : date : from : in-reply-to : message-id :
  mime-version : references : subject : to; s=pp1;
- bh=HSXJ9y93L2w7WCAUvMAiyKwD8OoKP9OCmQlQEBeTKjo=;
- b=h2RoRc5hkNiq33dYGtaDUsQNjDVbRXf/FYGirO4oFwkZ/aZMMUJZI9B6c4gJACYclT0G
- Ydefg8POZqrT0aNB2wCaOXBoQzA9V14TmLiyLec8vJOHNLhbkKEHBdDw67GiKS3RdDfO
- FQGOvfhYQsgC9fpFt+CVYlQckIGPM24n2bF1al5Y337SPaGZCkD20JKNmqXsBJDLfm9B
- pJ+5aFXN0McAYK8tpL2ly/XiiQf7i9db9tzRtrz137ECvlfcaRINKnSl62Vcy0DUL4th
- KY2Iy53h7v5sL/k2w5l/OE7/UM6Oe4J2DKsPgi8snqMdw+XRYOX0yAB1oEtBqofEf7Xl 5g== 
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yjuwr0qc4-1
+ bh=kxSj0cj+SHG6G3CgN+VDhbwxi4I1ZjlQ60/1SQ/PgFM=;
+ b=sNYBpF0yZJhYUumcRcGzpnM8KTcckFRjdFV9alyg8qURpJSwIfgY5oyN2gubUtRuDlIA
+ 3aTFz+DN07nDx/DCXWg+zN4S1UmriHRX7JmS0MvBLlg2vMwrb5TrAxjrUfg5aA0aiZBp
+ zbvipDJZ2OMD3bPAJjoywSCTUlO3KYrdE5fP4IAsBI9rqo5Q3i0mupLiVfRn0cGVBGHU
+ rxoTd6egTkPNy82w0idL1ykIrhWFuMeuZid6CGSe1JR3SEs9RvIEoE6urHK9GSbpSb3S
+ brBJIE8NbtZDkFVoZI4BdSLL2ufwYfM9elMgl/7B1de3b3MEq2oZ6nOmUVmrAcWeprA1 VA== 
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yjxse06rk-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Jun 2024 21:23:29 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 455IKan1000800;
-	Wed, 5 Jun 2024 21:23:28 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ygdyu6wt5-1
+	Wed, 05 Jun 2024 21:23:24 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 455IZCbw031109;
+	Wed, 5 Jun 2024 21:23:23 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ygeyppnua-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Jun 2024 21:23:28 +0000
+	Wed, 05 Jun 2024 21:23:23 +0000
 Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 455LNOR459900160
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 455LNKaI17367726
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 5 Jun 2024 21:23:27 GMT
+	Wed, 5 Jun 2024 21:23:22 GMT
 Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BEB8158055;
-	Wed,  5 Jun 2024 21:23:24 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 1E59358059;
+	Wed,  5 Jun 2024 21:23:20 +0000 (GMT)
 Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8134658069;
-	Wed,  5 Jun 2024 21:23:24 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id D4B2758065;
+	Wed,  5 Jun 2024 21:23:19 +0000 (GMT)
 Received: from slate16.aus.stglabs.ibm.com (unknown [9.61.121.242])
 	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  5 Jun 2024 21:23:24 +0000 (GMT)
+	Wed,  5 Jun 2024 21:23:19 +0000 (GMT)
 From: Eddie James <eajames@linux.ibm.com>
 To: linux-fsi@lists.ozlabs.org
 Cc: eajames@linux.ibm.com, linux-kernel@vger.kernel.org,
@@ -60,9 +60,9 @@ Cc: eajames@linux.ibm.com, linux-kernel@vger.kernel.org,
         alistair@popple.id.au, jk@ozlabs.org, andrew@codeconstruct.com.au,
         linux-aspeed@lists.ozlabs.org, ninad@linux.ibm.com,
         lakshmiy@us.ibm.com
-Subject: [PATCH v4 38/40] spi: fsi: Calculate clock divider from local bus frequency
-Date: Wed,  5 Jun 2024 16:23:10 -0500
-Message-Id: <20240605212312.349188-39-eajames@linux.ibm.com>
+Subject: [PATCH v4 22/40] fsi: aspeed: Use common master error handler
+Date: Wed,  5 Jun 2024 16:22:54 -0500
+Message-Id: <20240605212312.349188-23-eajames@linux.ibm.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240605212312.349188-1-eajames@linux.ibm.com>
 References: <20240605212312.349188-1-eajames@linux.ibm.com>
@@ -74,126 +74,77 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: pXJf5SWkcjqXjY5lUhHcF8kD5LZGfCph
-X-Proofpoint-GUID: pXJf5SWkcjqXjY5lUhHcF8kD5LZGfCph
+X-Proofpoint-ORIG-GUID: NEm3V_-JbDh5Z16bQusD7g1wrzAk3zLR
+X-Proofpoint-GUID: NEm3V_-JbDh5Z16bQusD7g1wrzAk3zLR
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-06-05_02,2024-06-05_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 phishscore=0
- adultscore=0 priorityscore=1501 lowpriorityscore=0 bulkscore=0
- clxscore=1015 impostorscore=0 malwarescore=0 spamscore=0 mlxlogscore=856
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
+ clxscore=1015 bulkscore=0 priorityscore=1501 malwarescore=0
+ mlxlogscore=999 mlxscore=0 spamscore=0 phishscore=0 lowpriorityscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2405010000 definitions=main-2406050160
 
-Use the new FSI device local bus clock to calculate the proper SPI
-clock divider.
+This will do the correct mmode manipulation to do the master
+reset.
 
 Signed-off-by: Eddie James <eajames@linux.ibm.com>
-Acked-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-fsi.c | 33 ++++++++++++++++++++++++++++++---
- 1 file changed, 30 insertions(+), 3 deletions(-)
+ drivers/fsi/fsi-master-aspeed.c | 27 ++++-----------------------
+ 1 file changed, 4 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/spi/spi-fsi.c b/drivers/spi/spi-fsi.c
-index fc9e33be1e0e7..e762690f1a390 100644
---- a/drivers/spi/spi-fsi.c
-+++ b/drivers/spi/spi-fsi.c
-@@ -40,6 +40,7 @@
- #define  SPI_FSI_CLOCK_CFG_SCK_RECV_DEL	 GENMASK_ULL(51, 44)
- #define   SPI_FSI_CLOCK_CFG_SCK_NO_DEL	  BIT_ULL(51)
- #define  SPI_FSI_CLOCK_CFG_SCK_DIV	 GENMASK_ULL(63, 52)
-+#define  SPI_FSI_CLOCK_CFG_SCK_DIV_MIN	  0x4
- #define SPI_FSI_MMAP			0x4
- #define SPI_FSI_DATA_TX			0x5
- #define SPI_FSI_DATA_RX			0x6
-@@ -70,6 +71,7 @@
- struct fsi2spi {
- 	struct fsi_device *fsi; /* FSI2SPI CFAM engine device */
- 	struct mutex lock; /* lock access to the device */
-+	u32 lbus_freq;
- };
- 
- struct fsi_spi {
-@@ -359,7 +361,7 @@ static int fsi_spi_transfer_data(struct fsi_spi *ctx,
- 	return 0;
+diff --git a/drivers/fsi/fsi-master-aspeed.c b/drivers/fsi/fsi-master-aspeed.c
+index c9f6d84e1a372..eecd64bc29512 100644
+--- a/drivers/fsi/fsi-master-aspeed.c
++++ b/drivers/fsi/fsi-master-aspeed.c
+@@ -226,27 +226,6 @@ static int opb_readb(struct fsi_master_aspeed *aspeed, uint32_t addr, u8 *out)
+ 	return __opb_read(aspeed, addr, XFER_BYTE, (void *)out);
  }
  
--static int fsi_spi_transfer_init(struct fsi_spi *ctx)
-+static int fsi_spi_transfer_init(struct fsi_spi *ctx, u32 clock_div)
+-static int check_errors(struct fsi_master_aspeed *aspeed, int err)
+-{
+-	int ret;
+-
+-	if (err == -EIO) {
+-		/* Check MAEB (0x70) ? */
+-
+-		/* Then clear errors in master */
+-		ret = opb_writel(aspeed, ctrl_base + FSI_MRESP0,
+-				cpu_to_be32(FSI_MRESP_RST_ALL_MASTER));
+-		if (ret) {
+-			/* TODO: log? return different code? */
+-			return ret;
+-		}
+-		/* TODO: confirm that 0x70 was okay */
+-	}
+-
+-	/* This will pass through timeout errors */
+-	return err;
+-}
+-
+ static int aspeed_master_read(struct fsi_master *master, int link,
+ 			uint8_t id, uint32_t addr, void *val, size_t size)
  {
- 	int loops = 0;
- 	int rc;
-@@ -370,7 +372,7 @@ static int fsi_spi_transfer_init(struct fsi_spi *ctx)
- 	u64 status = 0ULL;
- 	u64 wanted_clock_cfg = SPI_FSI_CLOCK_CFG_ECC_DISABLE |
- 		SPI_FSI_CLOCK_CFG_SCK_NO_DEL |
--		FIELD_PREP(SPI_FSI_CLOCK_CFG_SCK_DIV, 19);
-+		FIELD_PREP(SPI_FSI_CLOCK_CFG_SCK_DIV, clock_div);
+@@ -277,7 +256,8 @@ static int aspeed_master_read(struct fsi_master *master, int link,
+ 		goto done;
+ 	}
  
- 	end = jiffies + msecs_to_jiffies(SPI_FSI_TIMEOUT_MS);
- 	do {
-@@ -421,6 +423,24 @@ static int fsi_spi_transfer_init(struct fsi_spi *ctx)
- 	return rc;
- }
+-	ret = check_errors(aspeed, ret);
++	if (ret == -EIO)
++		fsi_master_error(&aspeed->master, link);
+ done:
+ 	spin_unlock_irqrestore(&aspeed->lock, flags);
+ 	return ret;
+@@ -313,7 +293,8 @@ static int aspeed_master_write(struct fsi_master *master, int link,
+ 		goto done;
+ 	}
  
-+static u32 fsi_spi_calculate_clock_div(struct fsi2spi *bridge, struct spi_device *dev,
-+				       struct spi_transfer *transfer)
-+{
-+	u32 div = 19;
-+
-+	if (bridge->lbus_freq) {
-+		u32 desired_speed_hz = transfer->speed_hz ?: dev->max_speed_hz;
-+
-+		div = DIV_ROUND_UP(bridge->lbus_freq, desired_speed_hz);
-+		if (div < SPI_FSI_CLOCK_CFG_SCK_DIV_MIN)
-+			div = SPI_FSI_CLOCK_CFG_SCK_DIV_MIN;
-+
-+		transfer->effective_speed_hz = bridge->lbus_freq / div;
-+	}
-+
-+	return div;
-+}
-+
- static int fsi_spi_transfer_one_message(struct spi_controller *ctlr,
- 					struct spi_message *mesg)
- {
-@@ -429,6 +449,7 @@ static int fsi_spi_transfer_one_message(struct spi_controller *ctlr,
- 	unsigned int len;
- 	struct spi_transfer *transfer;
- 	struct fsi_spi *ctx = spi_controller_get_devdata(ctlr);
-+	u32 div;
- 
- 	rc = fsi_spi_check_mux(ctx->bridge->fsi, ctx->dev);
- 	if (rc)
-@@ -446,7 +467,8 @@ static int fsi_spi_transfer_one_message(struct spi_controller *ctlr,
- 
- 		dev_dbg(ctx->dev, "Start tx of %d bytes.\n", transfer->len);
- 
--		rc = fsi_spi_transfer_init(ctx);
-+		div = fsi_spi_calculate_clock_div(ctx->bridge, mesg->spi, transfer);
-+		rc = fsi_spi_transfer_init(ctx, div);
- 		if (rc < 0)
- 			goto error;
- 
-@@ -533,6 +555,7 @@ static int fsi_spi_probe(struct device *dev)
- 
- 	bridge->fsi = fsi;
- 	mutex_init(&bridge->lock);
-+	bridge->lbus_freq = fsi_device_local_bus_frequency(fsi);
- 
- 	for_each_available_child_of_node(dev->of_node, np) {
- 		u32 base;
-@@ -550,6 +573,10 @@ static int fsi_spi_probe(struct device *dev)
- 
- 		ctlr->dev.of_node = np;
- 		ctlr->num_chipselect = of_get_available_child_count(np) ?: 1;
-+		if (bridge->lbus_freq) {
-+			ctlr->min_speed_hz = DIV_ROUND_UP(bridge->lbus_freq, 0xfff);
-+			ctlr->max_speed_hz = bridge->lbus_freq / SPI_FSI_CLOCK_CFG_SCK_DIV_MIN;
-+		}
- 		ctlr->flags = SPI_CONTROLLER_HALF_DUPLEX;
- 		ctlr->max_transfer_size = fsi_spi_max_transfer_size;
- 		ctlr->transfer_one_message = fsi_spi_transfer_one_message;
+-	ret = check_errors(aspeed, ret);
++	if (ret == -EIO)
++		fsi_master_error(&aspeed->master, link);
+ done:
+ 	spin_unlock_irqrestore(&aspeed->lock, flags);
+ 	return ret;
 -- 
 2.39.3
 

@@ -1,57 +1,57 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468EB1607BC;
-	Wed,  5 Jun 2024 21:23:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F00715FA97;
+	Wed,  5 Jun 2024 21:23:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717622621; cv=none; b=ICiMWuuZgTcdhadqM52wr3q27NcjKUE7BQJRfGUt21yhL+M0epfIUJ4AMBTtYhTAH8YvMAL3vvbWhMwcVd0vSYXnx7d8WW+4FuzetcQgeUvlAFLyVHzaE7US6qjYU8NElZoqyH6DZLTWG8r+D72eSkJihwurrmwEzR0YRvammhc=
+	t=1717622621; cv=none; b=t82eKomG+TaUK62czPMrFpnnxwYLQEX4psrI64rb+Ld7mdLrbKItBYEr99jcUZmJQ2Fl5AsDBYqcmeXJ2OTGLSrxut6sgEuflqBAkhNqedaL4aIj/pSu1ggwqCRjZX0RV0WGzXNZbtVe0Uel50NLLkjf0rrvzJW0znkGP53OwzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1717622621; c=relaxed/simple;
-	bh=3CmP8SDqXBiFId98haK+7Undt4Hf31Bd450GNQU9UOg=;
+	bh=4ZjZj3THCOKVgY6viW7Cea0T7GWn/8Z7ggQPNe7qU2s=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=peRvBwHsGz/fLYceEACda5bOdPMNzbUS4K8OzKurJBKkWDxtghGW4JAL7h3PhqAzN7vMM6FaHAlr2mFeQawZXBgzKGcqZ2pk8kLD4RdV9dmnUwPinL91Fp5NegtKbJvueYRMnzrkcLM10j5Ult4JVs3jKzlah/W46zo4pS2hALQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=hGDMIDpS; arc=none smtp.client-ip=148.163.156.1
+	 MIME-Version; b=FniHr3s/Jgq3fSMxO3NV2DDLAmuuPZCJEu67qYQDs5MdaAfhQR95Bm19uLxv9nPaiUFhe0Ep/ymwUskxKOINOnVXTD2EMs4t4vIKsZSUerg6IZHBpRou3Zkk7lB8jRWLKA/MUkj6EwnfBZ+hJ7WYrBrMtGqkTLZYhsJcmlCrvRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=CAPpPLi4; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="hGDMIDpS"
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 455L0dbZ020650;
-	Wed, 5 Jun 2024 21:23:24 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="CAPpPLi4"
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 455L22RL000949;
+	Wed, 5 Jun 2024 21:23:21 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc :
  content-transfer-encoding : date : from : in-reply-to : message-id :
  mime-version : references : subject : to; s=pp1;
- bh=dqdJlR5MaTztZMJgWYsXAeJqjv1L5VBfiwva68G3Zto=;
- b=hGDMIDpS0M7aoWUNZgqpIHhh5x/XsCAyhUXPhjmsgVncnwGmPz4xybC5RkwVbQRR3QP9
- kiFkMhWYFXpoh7pibMsIACyLTc6Szn3QisF9aWN+6URVsEOCIa1ODVsHpFuIYaODHttN
- 3IRwKZqRgSQbt3yUee40Vq7UlGKqLw9EB9eQc4U51lp9rM8bfQWl+WgfMg1wqlPiz1vG
- dho3aTgjQCd2jMA7UkWj4bGiSO8X70GJH4KX3Z9rjFTUViqeOomZ1DE56ANMEmIyf7ie
- XUzZtKyiD7Lw0/4/4GLWulVBjUlhEJsaHXWogJ6JEy4fQ6Xrc0CIfpvK4/cgVnJWOXd4 qA== 
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yjyhyr1mr-1
+ bh=35QhAQ7kX9QHCSy8fxK00Ig3Cr+S1lp5g6DIkdhYmNw=;
+ b=CAPpPLi4bVRRGc//GeterL+0O98Y3jyYLFp6r0c6dCG6SdxJfZxHVW+ZemHNDydGjV/M
+ 4j1K7LHAKhuYLktvbmxz7okeFTRSNRYiIlVULjbqGEmVaZwoOgHUzpBSDE0IU/p0WHSw
+ O8J2dfE1+Wh53Hq1AwpiHgWBKMT16+fkwKqP9+O3qBh9bJg5i6CDJ0ajLQmdiK8iu1f0
+ K14upxagk3g9wEiB4k9OWFEQXQrRyCqXk65UZ57yTBiQXLv4YeZviw2TSEh370MTjCoN
+ IfyRWvwbxZ6tALzfsC3OceELQgqpZCwi6e0LStany7AUMLmoSewZ6HmdrlYabuvKNgIS fw== 
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yjxbg09vm-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Jun 2024 21:23:23 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 455IRgLm000829;
-	Wed, 5 Jun 2024 21:23:22 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ygdyu6wsc-1
+	Wed, 05 Jun 2024 21:23:21 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 455IX4mD008479;
+	Wed, 5 Jun 2024 21:23:20 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ygec0xv56-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Jun 2024 21:23:22 +0000
+	Wed, 05 Jun 2024 21:23:20 +0000
 Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 455LNJew40042804
+	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 455LNHeq26215124
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 5 Jun 2024 21:23:21 GMT
+	Wed, 5 Jun 2024 21:23:19 GMT
 Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ED52A58066;
-	Wed,  5 Jun 2024 21:23:18 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id DC0F95805E;
+	Wed,  5 Jun 2024 21:23:15 +0000 (GMT)
 Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B1DA358063;
-	Wed,  5 Jun 2024 21:23:18 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 9DC5158068;
+	Wed,  5 Jun 2024 21:23:15 +0000 (GMT)
 Received: from slate16.aus.stglabs.ibm.com (unknown [9.61.121.242])
 	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  5 Jun 2024 21:23:18 +0000 (GMT)
+	Wed,  5 Jun 2024 21:23:15 +0000 (GMT)
 From: Eddie James <eajames@linux.ibm.com>
 To: linux-fsi@lists.ozlabs.org
 Cc: eajames@linux.ibm.com, linux-kernel@vger.kernel.org,
@@ -60,9 +60,9 @@ Cc: eajames@linux.ibm.com, linux-kernel@vger.kernel.org,
         alistair@popple.id.au, jk@ozlabs.org, andrew@codeconstruct.com.au,
         linux-aspeed@lists.ozlabs.org, ninad@linux.ibm.com,
         lakshmiy@us.ibm.com
-Subject: [PATCH v4 18/40] fsi: aspeed: Don't clear all IRQs during OPB transfers
-Date: Wed,  5 Jun 2024 16:22:50 -0500
-Message-Id: <20240605212312.349188-19-eajames@linux.ibm.com>
+Subject: [PATCH v4 08/40] fsi: core: Reset errors instead of clearing interrupts
+Date: Wed,  5 Jun 2024 16:22:40 -0500
+Message-Id: <20240605212312.349188-9-eajames@linux.ibm.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240605212312.349188-1-eajames@linux.ibm.com>
 References: <20240605212312.349188-1-eajames@linux.ibm.com>
@@ -74,85 +74,77 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: UiNXHZseH_KlB6lbNa7IxWdp0FQw7QVl
-X-Proofpoint-GUID: UiNXHZseH_KlB6lbNa7IxWdp0FQw7QVl
+X-Proofpoint-GUID: 4jj5RR4L9-1uNJtIYpjzprPcMIaCAcXq
+X-Proofpoint-ORIG-GUID: 4jj5RR4L9-1uNJtIYpjzprPcMIaCAcXq
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-06-05_02,2024-06-05_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- spamscore=0 mlxscore=0 suspectscore=0 malwarescore=0 impostorscore=0
- phishscore=0 adultscore=0 clxscore=1015 mlxlogscore=999 bulkscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1015
+ malwarescore=0 phishscore=0 lowpriorityscore=0 bulkscore=0
+ priorityscore=1501 suspectscore=0 mlxlogscore=999 mlxscore=0 spamscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2405010000 definitions=main-2406050160
 
-In order to support FSI interrupts, the OPB transfer functions should
-not clear all the IRQs pending. Instead, just write the OPB ACK bit
-to the IRQ status register. As commented, this register invisibly
-masks the interrupt once the interrupt condition is cleared. Fix this
-by writing 0 before each OPB transfer.
+The proper way to clear error conditions is to use the SRES
+register rather than simple clearing SISC.
 
 Signed-off-by: Eddie James <eajames@linux.ibm.com>
 ---
- drivers/fsi/fsi-master-aspeed.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/fsi/fsi-core.c  | 9 +++++----
+ drivers/fsi/fsi-slave.h | 6 ++++++
+ 2 files changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/fsi/fsi-master-aspeed.c b/drivers/fsi/fsi-master-aspeed.c
-index 04aa5cb9b6fad..f840c7c4a56b9 100644
---- a/drivers/fsi/fsi-master-aspeed.c
-+++ b/drivers/fsi/fsi-master-aspeed.c
-@@ -47,6 +47,11 @@ static const u32 fsi_base = 0xa0000000;
- #define OPB_CLK_SYNC	0x3c
- #define OPB_IRQ_CLEAR	0x40
- #define OPB_IRQ_MASK	0x44
+diff --git a/drivers/fsi/fsi-core.c b/drivers/fsi/fsi-core.c
+index 93bbdcf50a89a..ce9762d1bd8b0 100644
+--- a/drivers/fsi/fsi-core.c
++++ b/drivers/fsi/fsi-core.c
+@@ -166,7 +166,7 @@ static int fsi_slave_calc_addr(struct fsi_slave *slave, uint32_t *addrp,
+ static int fsi_slave_report_and_clear_errors(struct fsi_slave *slave)
+ {
+ 	struct fsi_master *master = slave->master;
+-	__be32 irq, stat;
++	__be32 irq, reset, stat;
+ 	int rc, link;
+ 	uint8_t id;
+ 
+@@ -187,9 +187,10 @@ static int fsi_slave_report_and_clear_errors(struct fsi_slave *slave)
+ 			be32_to_cpu(stat), be32_to_cpu(irq));
+ 	trace_fsi_slave_error(slave, be32_to_cpu(irq), be32_to_cpu(stat));
+ 
+-	/* clear interrupts */
+-	return fsi_master_write(master, link, id, FSI_SLAVE_BASE + FSI_SISC,
+-			&irq, sizeof(irq));
++	/* reset errors */
++	reset = cpu_to_be32(FSI_SRES_ERRS);
++	return fsi_master_write(master, link, id, FSI_SLAVE_BASE + FSI_SRES, &reset,
++				sizeof(reset));
+ }
+ 
+ /* Encode slave local bus echo delay */
+diff --git a/drivers/fsi/fsi-slave.h b/drivers/fsi/fsi-slave.h
+index fabc0b66d5bf3..e9fd4be6f3760 100644
+--- a/drivers/fsi/fsi-slave.h
++++ b/drivers/fsi/fsi-slave.h
+@@ -24,6 +24,7 @@
+ #define FSI_SSI1M		0x1c	/* S  : Set slave interrupt 1 mask */
+ #define FSI_SCI1M		0x20	/* C  : Clear slave interrupt 1 mask */
+ #define FSI_SLBUS		0x30	/* W  : LBUS Ownership */
++#define FSI_SRES		0x34	/* W  : Reset */
+ #define FSI_SRSIC0		0x68	/* C  : Clear remote interrupt condition */
+ #define FSI_SRSIC4		0x6c	/* C  : Clear remote interrupt condition */
+ #define FSI_SRSIM0		0x70	/* R/W: Remote interrupt mask */
+@@ -90,6 +91,11 @@
+  */
+ #define FSI_SLBUS_FORCE		0x80000000	/* Force LBUS ownership */
+ 
 +/*
-+ * This register does NOT behave in the expected manner. It is expected that writing 1b would clear
-+ * the corresponding interrupt condition. However it also invisibly masks the interrupt! Writing 0b
-+ * unmasks again.
++ * SRES fields
 + */
- #define OPB_IRQ_STATUS	0x48
- 
- #define OPB0_SELECT	0x10
-@@ -113,13 +118,14 @@ static int __opb_write(struct fsi_master_aspeed *aspeed, u32 addr,
- 	writel_relaxed(transfer_size, base + OPB0_XFER_SIZE);
- 	writel_relaxed(addr, base + OPB0_FSI_ADDR);
- 	writel_relaxed(val, base + OPB0_FSI_DATA_W);
--	writel_relaxed(0x1, base + OPB_IRQ_CLEAR);
-+	writel_relaxed(0, base + OPB_IRQ_STATUS);
- 	writel(0x1, base + OPB_TRIGGER);
- 
- 	ret = readl_poll_timeout(base + OPB_IRQ_STATUS, reg,
- 				(reg & OPB0_XFER_ACK_EN) != 0,
- 				0, OPB_POLL_TIMEOUT);
- 
-+	writel(OPB0_XFER_ACK_EN, base + OPB_IRQ_STATUS);
- 	status = readl(base + OPB0_STATUS);
- 
- 	/* Return error when poll timed out */
-@@ -165,13 +171,14 @@ static int __opb_read(struct fsi_master_aspeed *aspeed, uint32_t addr,
- 	writel_relaxed(CMD_READ, base + OPB0_RW);
- 	writel_relaxed(transfer_size, base + OPB0_XFER_SIZE);
- 	writel_relaxed(addr, base + OPB0_FSI_ADDR);
--	writel_relaxed(0x1, base + OPB_IRQ_CLEAR);
-+	writel_relaxed(0, aspeed->base + OPB_IRQ_STATUS);
- 	writel(0x1, base + OPB_TRIGGER);
- 
- 	ret = readl_poll_timeout(base + OPB_IRQ_STATUS, reg,
- 			   (reg & OPB0_XFER_ACK_EN) != 0,
- 			   0, OPB_POLL_TIMEOUT);
- 
-+	writel(OPB0_XFER_ACK_EN, base + OPB_IRQ_STATUS);
- 	status = readl(base + OPB0_STATUS);
- 
- 	result = readl(base + OPB0_FSI_DATA_R);
-@@ -530,8 +537,6 @@ static int fsi_master_aspeed_probe(struct platform_device *pdev)
- 	}
- 
- 	writel(0x1, aspeed->base + OPB_CLK_SYNC);
--	writel(OPB1_XFER_ACK_EN | OPB0_XFER_ACK_EN,
--			aspeed->base + OPB_IRQ_MASK);
- 
- 	writel(opb_retry_counter, aspeed->base + OPB_RETRY_COUNTER);
- 
++#define FSI_SRES_ERRS		0x40000000	/* Reset FSI slave errors */
++
+ /*
+  * LLMODE fields
+  */
 -- 
 2.39.3
 

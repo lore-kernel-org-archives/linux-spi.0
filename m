@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E58C01A0DF2;
-	Wed,  5 Jun 2024 12:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF7E1C4B5F;
+	Wed,  5 Jun 2024 12:03:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717588971; cv=none; b=ceqo047/7x+hvRG3xZ109/5etT+1Lih5P6kJoddQ3Eps+PtiMpJ20JLARGqyHk6J5SxjcYf3vupynldWYTV7Q1BEKKhZXBis5D32AzmkHYTojZDBUCCFaDwFeER+Q1hm9EsMEfaurD24belbe+6rauZkEPMQLSWubBrOZG2JAog=
+	t=1717589021; cv=none; b=lGwLfJc57Ol4D+uP0T6+5/fvo1xW76dEI+T8wScJzl2ZZGMHSX/F1EX60ZvqNg2T4nukOv4qiXtcEJ0itWc/igQYTPiqdk/tI9k+o5stDoB8cQ4L2pDLPkLpjKYDiyc3n9okzRVwAvJjqhLZi9IhwROhsQuWsQi+P6NThHjDppQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717588971; c=relaxed/simple;
+	s=arc-20240116; t=1717589021; c=relaxed/simple;
 	bh=miWF0EhdzQHWTZJygReqmuJhFVGFLmr1odB17pUnQiI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z3Y/fVVd7rAMgRxj3xuQnVGqQheJYShXjHyUa9YtZiKRb7HLGT0iYuhAElqFlAzDy3s8i78ewUH/jcRamZWTqHX79Nz7PEycgDdyq/6DCxGPW6YhFw+5vriN/2AhItrKaeQAFuDwOm2u2FwXmQhNIGeHsKUIPG1Af+Au7c5YY+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aANO43HV; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=JwXxMzVEc+47q68rmggRpP3G/MJKCSrraxWm3uw49UIBwYmPa/AnNxzWaU/K7eXNmNvkdg0rXYi///GK39Fx1naRI32UEt4mtCE2482iDEWwWItiJYG9kKfLonfBo+gq9WCVPcAXnnip4p1thWKv6eY+65+YR8SN2cYIr4sDoKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iiaU9VjM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aANO43HV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8A95C32781;
-	Wed,  5 Jun 2024 12:02:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iiaU9VjM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31CDEC3277B;
+	Wed,  5 Jun 2024 12:03:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717588970;
+	s=k20201202; t=1717589020;
 	bh=miWF0EhdzQHWTZJygReqmuJhFVGFLmr1odB17pUnQiI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aANO43HV9DyW3f/OEo3WT5+83Hrg7AVWn3pA0tUHN49URImuO46XukApc0wQuXNG+
-	 PsaIiQCLg4f6QEsy+wkjS16ShZUpOwIhHgP8CXU3dexWfg8yL7WivPOuKXept83xxN
-	 0WKgg8lPpoPGPWi+3si1ozJ9wuG07wsYz8Pwsd+1+s9J2zxeMNHCrwXYdDB67Awugp
-	 r7Gw4ajHpp4XbUfyeE6t/oQu8AVI5G4Xr/Y1RSQW/qncLMmHlLSuCYgoLaER1Humc7
-	 ZbmNbZwjLQxtYN1lT7jWuilloEXs81S5errhdycXhXJ5rXTgJ0l1hUZTyfkwygIaTE
-	 5ZZ7KhzcDLSFw==
+	b=iiaU9VjMp+z24bAtserjnpD2IuJQHd+78Mm2fXJrgJkQNE2SMey2CaPVxWZ0oZqhB
+	 wF+NxMEZrp+5xmH5x8Lbz83vYEIDkMZD/IaWbmVJAR6JGiDML4/M65Jx51vaxxDd4p
+	 HZCqpqeoFjOG/lyYW+Ka2iSlScaBJ3l/3EIZs98dCGUjFmzyn0fBcph/y1QuuIIu3L
+	 SOx+r1M9SF9/wAzI2QHFn1Habjpl4yCWpUkkThOJO0Oz6HcqbJ9T5Qv9+FIC8WW+II
+	 yeXpEr4Fe9BZcmcgeeA8orsKSWuh75EWAazynJOBl02idz4XFG2OEcY1dUDfhmFVPg
+	 RBzIstqpAV4rQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -33,12 +33,12 @@ Cc: Witold Sadowski <wsadowski@marvell.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 17/23] spi: cadence: Ensure data lines set to low during dummy-cycle period
-Date: Wed,  5 Jun 2024 08:02:00 -0400
-Message-ID: <20240605120220.2966127-17-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.8 13/18] spi: cadence: Ensure data lines set to low during dummy-cycle period
+Date: Wed,  5 Jun 2024 08:03:03 -0400
+Message-ID: <20240605120319.2966627-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240605120220.2966127-1-sashal@kernel.org>
-References: <20240605120220.2966127-1-sashal@kernel.org>
+In-Reply-To: <20240605120319.2966627-1-sashal@kernel.org>
+References: <20240605120319.2966627-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -47,7 +47,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.9.3
+X-stable-base: Linux 6.8.12
 Content-Transfer-Encoding: 8bit
 
 From: Witold Sadowski <wsadowski@marvell.com>

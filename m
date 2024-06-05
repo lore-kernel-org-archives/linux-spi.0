@@ -1,40 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D436B15F418;
-	Wed,  5 Jun 2024 21:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E63CB15F321;
+	Wed,  5 Jun 2024 21:22:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717622537; cv=none; b=kFxJisMD5Mwzy3Oqw8MOj3UTafN3f12nwlDxKaWIm4yyqMn9FQgwP1up5R4jRLQTb8677/Av+qJWX0HCmxmrF7MxKSAZkKEPXuUQAkRG2GhgCQJPFsrrLdC3kKRCZ9L0qTPKVLT6IEiANboH464p8yQSmZ8nHjxB/Uuw7ILob8o=
+	t=1717622569; cv=none; b=dq8RkDaGaNaeY57wImMSJRE6oVCiqjdpRg1cabnHTO8c+exiSVxLWaPRDfMKKjERz0/ekhIgUPoRhZ2U6Wi19s871Vd+YmXnHZ0jirhYXo2SvHYUCQKA0UuOY+4NViJNoKECKdXCpDp+wW+63/jx7iNF816X/CX3TBa7Z5R6Ss0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717622537; c=relaxed/simple;
-	bh=3GMJykvY6Qbl/kX1fJnvOrtZkr9wNdc+KmSjvJ/eZw0=;
+	s=arc-20240116; t=1717622569; c=relaxed/simple;
+	bh=9ELB2XwksNK1kao5A30aeiFYFmaXRPLHmU2DJV4DaqU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Uu7rstHMADFmTiEAx+ZQfg+uujt3zw1rSyfXUMc4OwghUGeJ7mqq7qzdSdxeWSOzmDmkezMCH59k1UKHttB8a0WPjL/u+I/e20WGR384LMHEL96uJIxLdk4A+HHjIZ4OzUdSzC3wa9mVKBN8Y0xKBfJlTGHxT6OZsuzJ7NaeY+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fv6rVAAq; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=DF7dahkpVtWSM5LCurLgGYquI9tFMNOZqkNYtt6lupEUBNBz30L2EcCjJU93MhBYTY/1lpztPy8SJMaYlSde0a1hAiuqk4SLJ7hYSVhO7VFNwYLX3QldSyy3x52fBZbT5m28Z9fCdBK+Jf4gwWhjN8UJylYigA7yqNGUPef0/7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s5eTOdPO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fv6rVAAq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88676C32782;
-	Wed,  5 Jun 2024 21:22:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s5eTOdPO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E1E0C2BD11;
+	Wed,  5 Jun 2024 21:22:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717622537;
-	bh=3GMJykvY6Qbl/kX1fJnvOrtZkr9wNdc+KmSjvJ/eZw0=;
+	s=k20201202; t=1717622568;
+	bh=9ELB2XwksNK1kao5A30aeiFYFmaXRPLHmU2DJV4DaqU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fv6rVAAq5S7CCo3Bq5FuNG73jj9DTBx6LKjjdlM7biZIpZe6rS1PSaD7wYBXXNRor
-	 6edyN2zsSegbaAk+d2V9IBaLTxmfJT1zyBuv9mUJsS0uW5oM6NnIAdrYOBx/7MlHkm
-	 iS+envfS5ctNxQW20p/YH5F/efHJBQbUUY57XsgfqBY4We0SuC6TPWH4Vx1pbmDkZG
-	 56PALS/o0WzRc6YPd0q+Y1X4P5diki2uJk+rWRututSOeii9FAz2JnVDBwPcpwPfQ4
-	 TvC2R42Wk6BnbAGlTSz2G94omYGJ/BkZuBLpNAQEKaa+IlkrHN2pqn2PMVWJeAtazn
-	 GUsjLoOgWjVNA==
-Date: Wed, 5 Jun 2024 22:22:13 +0100
+	b=s5eTOdPOXuhVSSvFZ0phbOxUcn4jf5NFQdlrmwrWhuJCd5KgGjBaP0mEgAdsllc+z
+	 r3yeGPPS4Cg8GXM267to+0sy8XSf+wTpbUQ5XUV1s7gHtXzUaFueV0GyEOCCv5DAnh
+	 E1xpTUe3Lh4pWFUpkRlLCcGfguW05lfX6FvCdoxpnQK2CSYCa4a4SM9mxh2RdOsJdq
+	 fND3yQ7l9IHHq5EbmKTVxD8pXWSnv2MHFM1gqtOy/Tkev2Yv4GWBMvznw/qbNPCu5l
+	 GfPwE3NgtZEKKpH86eWEzfKOpUnXCKPN79bmj3dIHqWX5LshnJBYKrK1vtVx4jCMyc
+	 5rxMGrRPMQL1A==
+Date: Wed, 5 Jun 2024 22:22:44 +0100
 From: Mark Brown <broonie@kernel.org>
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 1/1] spi: Replace custom code with
- device_match_acpi_handle()
-Message-ID: <251030bd-f0ef-4417-962a-b7d9abd768e5@sirena.org.uk>
-References: <20240510204952.2582093-1-andriy.shevchenko@linux.intel.com>
- <ZmDT03c_rcPfzMUh@smile.fi.intel.com>
+Subject: Re: [PATCH v1 3/3] spi: gpio: Make num_chipselect 8-bit in the
+ struct spi_gpio_platform_data
+Message-ID: <c7ba4e75-0577-487c-9e79-e8693bd66de9@sirena.org.uk>
+References: <20240517194246.747427-1-andriy.shevchenko@linux.intel.com>
+ <20240517194246.747427-4-andriy.shevchenko@linux.intel.com>
+ <ce75b03e-e061-43ac-94fa-1539c8fe6203@sirena.org.uk>
+ <ZksXrM-W_69e5q2m@smile.fi.intel.com>
+ <ZmDUBHUyy1uozcn2@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -42,23 +45,21 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="JEUZqhSYDnvybeu1"
+	protocol="application/pgp-signature"; boundary="kIGtS6zyCrkHUyx5"
 Content-Disposition: inline
-In-Reply-To: <ZmDT03c_rcPfzMUh@smile.fi.intel.com>
+In-Reply-To: <ZmDUBHUyy1uozcn2@smile.fi.intel.com>
 X-Cookie: Simulated picture.
 
 
---JEUZqhSYDnvybeu1
+--kIGtS6zyCrkHUyx5
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 06, 2024 at 12:08:35AM +0300, Andy Shevchenko wrote:
-> On Fri, May 10, 2024 at 11:49:52PM +0300, Andy Shevchenko wrote:
-> > Since driver core provides a generic device_match_acpi_handle()
-> > we may replace the custom code with it.
+On Thu, Jun 06, 2024 at 12:09:24AM +0300, Andy Shevchenko wrote:
 
-> Hmm... Other more recent patches went through, is this lost in cracks?
+> Should I do something about the first two patches or is it fine to get th=
+em in?
 
 Please don't send content free pings and please allow a reasonable time
 for review.  People get busy, go on holiday, attend conferences and so=20
@@ -73,19 +74,19 @@ anyway, so sending again is generally a better approach though there are
 some other maintainers who like them - if in doubt look at how patches
 for the subsystem are normally handled.
 
---JEUZqhSYDnvybeu1
+--kIGtS6zyCrkHUyx5
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZg1wUACgkQJNaLcl1U
-h9Cg/Af/egpG8KyVTDtZVsKIWq3GIf2e8ltsSBpgZLI+xTev6aCV1XQuc9/uXFHk
-+m1mlBxbWhUrSfV7x4a75UUyQupxWtp9CST99KQxW3CzMm4vuCthcE8qCu50/qr0
-voMZf37FWdh+9NCiFYfjpWu/46hiJYq9j+MKL4xv6YCg6bNCdwMs/UrXm7wgUsfw
-U1MJR/UCuNBJYYN43DfgO7jdCjSstifCyE51ID1OKrkUW36y8/w7hwA8YXZ2PB96
-d24zRuoEu1AqF8SGiRFxzsl1ygiubbosFYsHJtNm9GxNFPn9qV1NYnwvVgdHATrD
-xQ/JGIAb+StOeu7tGKE/GYZboIq8kg==
-=sFsr
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZg1yQACgkQJNaLcl1U
+h9AN7Af8CEZYtjw+hfXN5Z9zpRSvcnt7ICD9AB3oWsv4UM/9hERrcnLE+IxvNgNR
+hGVd8vDG/VPcgZx2yDtdIj4CWi65Gwyups/N/ON4ZcgvYxFZDtYfI198RZyIyMAL
+MsNTldJjvMju/4saXVShmApuEt/hgAci77IAVdxaspMqKywJEnsE17DWkp5GNjAl
+F+L6F84h15DO0UApym4obk9rVGqGlvcuGot8OAuhA1xiVborcD8beOAq2uCN3grt
+wLuVGxLe7FUyyerM4DMTurL54HIRU91Fi4HxH5oOpxhkED4KCDdVwXZwjU7tx/of
+Y5uSnOC6zLu28BPpjPT3kUxxIy2Esg==
+=4pcS
 -----END PGP SIGNATURE-----
 
---JEUZqhSYDnvybeu1--
+--kIGtS6zyCrkHUyx5--

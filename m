@@ -1,57 +1,57 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F2AB16C86C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19BA916C6A7;
 	Wed,  5 Jun 2024 21:23:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717622626; cv=none; b=ZeI89Vq0xc3kqtGMQGcd5Jh4mOCBr3EFWlTYcA7roWVVov/umwFm84Ao491MGHM40QqTDgQLv3X2c42BOg1uXZDkGWf5Qb5vA6X7x0QFfdoEM1+A+odJKBQUslSbWSL94qeZ30mtO5l+d1DLEuJFZIyczZg7bNE1d8Ews9UjJ9o=
+	t=1717622626; cv=none; b=UII7Unxy5pHXuZdGqMRXMWV59z5PKemRKOrl0tmIX40uuNFLJTNrrazewXqgVBmnQ7e3aWqD37rm8wZ5L+/lQLzMA8LHDDjF9+YsNj8NEI+2QI2Bkwfwwat8kbpaVUgS1VPW5JnAlHIPuK2rmiLd4zVJTyHvNNw7bGrGHyLWAF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1717622626; c=relaxed/simple;
-	bh=kU908GL/srmIXI7xAwaPMDqc8xqY+P18Q4IHnIBP/W4=;
+	bh=qaKSN57DFhgzUoIJwygcbsMbYI7rqB3nhHlVwwQrD0s=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=lr85eI7W75L7Q25igdN4QoYhQwvOeWRClRLoyrvSZxb1AiTGdHIUGFkWN8yXaU2TWeO7TfFr+abyQwwbbl/1wWqSUgNID7rbqqYGxTgNxOtgmd1OSyt3cZHQfLcD/i1TPxZZGdWleiFg301FEtU9iR5bAXuZdH6oQiDcosdJa50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=KPCEMYYU; arc=none smtp.client-ip=148.163.156.1
+	 MIME-Version; b=cmS4SrlMnfpf0Cq55JTkxnUKi81ePTKlpZuLL1ELoRANchsHXZKbYxsIFUEgF0xbquDweLrSdsANNnXqoV8aOHvR3x6yYraN79PQl632Jcgd9vGV/lY2yiAL2xKPfitmlK6WZ+Y9Udyi0jAhQyt6/MYhuKHhq4fsTLOsQb4snPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Hnz9qoQf; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="KPCEMYYU"
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 455KuMLg009075;
-	Wed, 5 Jun 2024 21:23:29 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Hnz9qoQf"
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 455KujBr001492;
+	Wed, 5 Jun 2024 21:23:26 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc :
  content-transfer-encoding : date : from : in-reply-to : message-id :
  mime-version : references : subject : to; s=pp1;
- bh=BxMhdEaKT8dV7A/LdNz6MzdJUjUzgPRl+V7XDXpB1LI=;
- b=KPCEMYYUm+TLLe7S1jz+3KW2OLMmABfIhuw/jJStuad6ofleXlJpYq4YlGZ/FVdO+LYB
- 0duXeY06eWCcB9gjeCna0Pi54ULsA0gD6adyKWzJYaNTj9iM/N+LGjpEsUqL8isAqIPZ
- PYj0eDIbR9RwbJSsQVTGy6ydXq15C+VFKnkWQ0Sx7bEDDtCGPJ8Pa2mObzexkyNZsN1i
- bT4+8Ha/6gpDdlw8IvmSs9av11Dbojsr3cTzpK3Gp3qZ0Db3KtMLcv8qOToQgiqZFkmO
- zJ0wI8tIF82Ui08RRoEc14eLqfKLYd0O+q1yyaeI+cd6ATlaLEqGGg0UrUTkd45yUH7h Mg== 
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yjy09g4hv-1
+ bh=7144/LG2eNgprd/415eaf17snNBOk8+YXJ4liDEExS4=;
+ b=Hnz9qoQfLlYK1z9pOG3ZjpNsxjMGqKoy5B44PYAjz19geFUXipws6KjO10JMJmM09rkb
+ hG+YYFzhFQrMUEB5Bo2Hfv9oYTIbJifbh4ZPHbd2/00bbUV+FAxadR7GbFzZsO3UM0ZS
+ Tkj+fzNwwLic/bGFn13YPugrKkLPQTsN/CYnlQBW3bmz4ugkq4+c0xH8rKAIfnNoy0y4
+ 5SLM3SA6OqBrQI7fSNK35QL4FVw+cImVNhStIn+lVpn9aF7VvuQm4C0iODqrbVfZj/bJ
+ W6ahSSwr5snqa5g3PJKz0nbNdG0/pE0KIxf+Zb6TuCGhGieandJ+KKx5rXRSFoZGrtAz ig== 
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yjwppgcg6-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Jun 2024 21:23:29 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 455J3GeC031147;
-	Wed, 5 Jun 2024 21:23:27 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ygeyppnv1-1
+	Wed, 05 Jun 2024 21:23:25 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 455LKarF026550;
+	Wed, 5 Jun 2024 21:23:25 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3yggp366fh-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Jun 2024 21:23:27 +0000
+	Wed, 05 Jun 2024 21:23:25 +0000
 Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 455LNOfK29098574
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 455LNL6f40042806
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 5 Jun 2024 21:23:26 GMT
+	Wed, 5 Jun 2024 21:23:23 GMT
 Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7AE2458060;
-	Wed,  5 Jun 2024 21:23:24 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 7F84358060;
+	Wed,  5 Jun 2024 21:23:19 +0000 (GMT)
 Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3EA085805D;
-	Wed,  5 Jun 2024 21:23:24 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 423615806E;
+	Wed,  5 Jun 2024 21:23:19 +0000 (GMT)
 Received: from slate16.aus.stglabs.ibm.com (unknown [9.61.121.242])
 	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  5 Jun 2024 21:23:24 +0000 (GMT)
+	Wed,  5 Jun 2024 21:23:19 +0000 (GMT)
 From: Eddie James <eajames@linux.ibm.com>
 To: linux-fsi@lists.ozlabs.org
 Cc: eajames@linux.ibm.com, linux-kernel@vger.kernel.org,
@@ -60,9 +60,9 @@ Cc: eajames@linux.ibm.com, linux-kernel@vger.kernel.org,
         alistair@popple.id.au, jk@ozlabs.org, andrew@codeconstruct.com.au,
         linux-aspeed@lists.ozlabs.org, ninad@linux.ibm.com,
         lakshmiy@us.ibm.com
-Subject: [PATCH v4 37/40] fsi: core: Add different types of CFAM
-Date: Wed,  5 Jun 2024 16:23:09 -0500
-Message-Id: <20240605212312.349188-38-eajames@linux.ibm.com>
+Subject: [PATCH v4 20/40] fsi: aspeed: Switch to spinlock
+Date: Wed,  5 Jun 2024 16:22:52 -0500
+Message-Id: <20240605212312.349188-21-eajames@linux.ibm.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240605212312.349188-1-eajames@linux.ibm.com>
 References: <20240605212312.349188-1-eajames@linux.ibm.com>
@@ -74,137 +74,140 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: oq3YQgc51Bj1t642DBPdkOGSijCMXwYa
-X-Proofpoint-GUID: oq3YQgc51Bj1t642DBPdkOGSijCMXwYa
+X-Proofpoint-ORIG-GUID: tUwL7hjLp28dY9WByyu26kuCsCiScvUz
+X-Proofpoint-GUID: tUwL7hjLp28dY9WByyu26kuCsCiScvUz
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-06-05_02,2024-06-05_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- priorityscore=1501 adultscore=0 mlxlogscore=999 impostorscore=0
- suspectscore=0 clxscore=1015 spamscore=0 phishscore=0 bulkscore=0
- lowpriorityscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2405010000 definitions=main-2406050160
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
+ impostorscore=0 suspectscore=0 priorityscore=1501 clxscore=1015
+ adultscore=0 mlxlogscore=988 malwarescore=0 mlxscore=0 spamscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2405010000 definitions=main-2406050160
 
-Detect the CFAM type based on the chip id and set up the device
-type based on the CFAM type.
+In preparation for interrupt support, switch to a spinlock rather
+than a mutex.
 
 Signed-off-by: Eddie James <eajames@linux.ibm.com>
 ---
-Changes since v3:
- - Define fsi_get_cfam_type as static
+ drivers/fsi/fsi-master-aspeed.c | 25 ++++++++++++++-----------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
 
- drivers/fsi/fsi-core.c | 84 +++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 83 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/fsi/fsi-core.c b/drivers/fsi/fsi-core.c
-index 62a14a7f28498..bc561d1b2701c 100644
---- a/drivers/fsi/fsi-core.c
-+++ b/drivers/fsi/fsi-core.c
-@@ -1028,6 +1028,37 @@ static struct attribute *cfam_attrs[] = {
+diff --git a/drivers/fsi/fsi-master-aspeed.c b/drivers/fsi/fsi-master-aspeed.c
+index 10ca23cf58c2e..176e596b4391b 100644
+--- a/drivers/fsi/fsi-master-aspeed.c
++++ b/drivers/fsi/fsi-master-aspeed.c
+@@ -8,11 +8,11 @@
+ #include <linux/io.h>
+ #include <linux/mfd/syscon.h>
+ #include <linux/module.h>
+-#include <linux/mutex.h>
+ #include <linux/of.h>
+ #include <linux/platform_device.h>
+ #include <linux/regmap.h>
+ #include <linux/slab.h>
++#include <linux/spinlock.h>
+ #include <linux/iopoll.h>
+ #include <linux/gpio/consumer.h>
  
- ATTRIBUTE_GROUPS(cfam);
+@@ -24,7 +24,7 @@ struct fsi_master_aspeed_data {
  
-+static struct attribute *cfam_s_attrs[] = {
-+	&dev_attr_send_echo_delays.attr,
-+	&dev_attr_chip_id.attr,
-+	&dev_attr_cfam_id.attr,
-+	&dev_attr_send_term.attr,
-+	&dev_attr_config_table.attr,
-+	&dev_attr_smode.attr.attr,
-+	&dev_attr_sdma.attr.attr,
-+	&dev_attr_sisc.attr.attr,
-+	&dev_attr_sism.attr.attr,
-+	&dev_attr_siss.attr.attr,
-+	&dev_attr_sstat.attr.attr,
-+	&dev_attr_si1m.attr.attr,
-+	&dev_attr_si1s.attr.attr,
-+	&dev_attr_sic.attr.attr,
-+	&dev_attr_si2m.attr.attr,
-+	&dev_attr_si2s.attr.attr,
-+	&dev_attr_scmdt.attr.attr,
-+	&dev_attr_sdata.attr.attr,
-+	&dev_attr_slastd.attr.attr,
-+	&dev_attr_smbl.attr.attr,
-+	&dev_attr_soml.attr.attr,
-+	&dev_attr_snml.attr.attr,
-+	&dev_attr_smbr.attr.attr,
-+	&dev_attr_somr.attr.attr,
-+	&dev_attr_snmr.attr.attr,
-+	NULL,
-+};
-+
-+ATTRIBUTE_GROUPS(cfam_s);
-+
- static char *cfam_devnode(const struct device *dev, umode_t *mode,
- 			  kuid_t *uid, kgid_t *gid)
+ struct fsi_master_aspeed {
+ 	struct fsi_master	master;
+-	struct mutex		lock;	/* protect HW access */
++	spinlock_t		lock;	/* protect HW access */
+ 	struct device		*dev;
+ 	void __iomem		*base;
+ 	void __iomem		*ctrl;
+@@ -251,6 +251,7 @@ static int aspeed_master_read(struct fsi_master *master, int link,
+ 			uint8_t id, uint32_t addr, void *val, size_t size)
  {
-@@ -1046,6 +1077,57 @@ static const struct device_type cfam_type = {
- 	.groups = cfam_groups
- };
+ 	struct fsi_master_aspeed *aspeed = to_fsi_master_aspeed(master);
++	unsigned long flags;
+ 	int ret;
  
-+static char *cfam_ody_devnode(const struct device *dev, umode_t *mode, kuid_t *uid, kgid_t *gid)
-+{
-+	const struct fsi_slave *slave = to_fsi_slave(dev);
-+
-+#ifdef CONFIG_FSI_NEW_DEV_NODE
-+	return kasprintf(GFP_KERNEL, "fsi/ody%d", slave->cdev_idx);
-+#else
-+	return kasprintf(GFP_KERNEL, "ody%d", slave->cdev_idx);
-+#endif
-+}
-+
-+static const struct device_type cfam_ody_type = {
-+	.name = "ody",
-+	.devnode = cfam_ody_devnode
-+};
-+
-+static char *cfam_s_devnode(const struct device *dev, umode_t *mode, kuid_t *uid, kgid_t *gid)
-+{
-+	const struct fsi_slave *slave = to_fsi_slave(dev);
-+
-+#ifdef CONFIG_FSI_NEW_DEV_NODE
-+	return kasprintf(GFP_KERNEL, "fsi/cfam-s%d", slave->cdev_idx);
-+#else
-+	return kasprintf(GFP_KERNEL, "cfam-s%d", slave->cdev_idx);
-+#endif
-+}
-+
-+static const struct device_type cfam_s_type = {
-+	.name = "cfam-s",
-+	.devnode = cfam_s_devnode,
-+	.groups = cfam_s_groups,
-+};
-+
-+static const struct device_type *fsi_get_cfam_type(u32 id)
-+{
-+	u32 major = (id & 0xf00) >> 8;
-+	u32 minor = (id & 0xf0) >> 4;
-+
-+	switch (major) {
-+	case 0x9:
-+		return &cfam_s_type;
-+	case 0xc:
-+		if (minor == 0)
-+			return &cfam_ody_type;
-+		fallthrough;
-+	case 0xd:
-+	default:
-+		return &cfam_type;
-+	}
-+}
-+
- static char *fsi_cdev_devnode(const struct device *dev, umode_t *mode,
- 			      kuid_t *uid, kgid_t *gid)
+ 	if (id > 0x3)
+@@ -259,7 +260,7 @@ static int aspeed_master_read(struct fsi_master *master, int link,
+ 	addr |= id << 21;
+ 	addr += link * FSI_HUB_LINK_SIZE;
+ 
+-	mutex_lock(&aspeed->lock);
++	spin_lock_irqsave(&aspeed->lock, flags);
+ 
+ 	switch (size) {
+ 	case 1:
+@@ -278,7 +279,7 @@ static int aspeed_master_read(struct fsi_master *master, int link,
+ 
+ 	ret = check_errors(aspeed, ret);
+ done:
+-	mutex_unlock(&aspeed->lock);
++	spin_unlock_irqrestore(&aspeed->lock, flags);
+ 	return ret;
+ }
+ 
+@@ -286,6 +287,7 @@ static int aspeed_master_write(struct fsi_master *master, int link,
+ 			uint8_t id, uint32_t addr, const void *val, size_t size)
  {
-@@ -1202,7 +1284,7 @@ static int fsi_slave_init(struct fsi_master *master, int link, uint8_t id)
+ 	struct fsi_master_aspeed *aspeed = to_fsi_master_aspeed(master);
++	unsigned long flags;
+ 	int ret;
  
- 	spin_lock_init(&slave->lock);
- 	dev_set_name(&slave->dev, "slave@%02x:%02x", link, id);
--	slave->dev.type = &cfam_type;
-+	slave->dev.type = fsi_get_cfam_type(cfam_id);
- 	slave->dev.parent = &master->dev;
- 	slave->dev.of_node = fsi_slave_find_of_node(master, link, id);
- 	slave->dev.release = fsi_slave_release;
+ 	if (id > 0x3)
+@@ -294,7 +296,7 @@ static int aspeed_master_write(struct fsi_master *master, int link,
+ 	addr |= id << 21;
+ 	addr += link * FSI_HUB_LINK_SIZE;
+ 
+-	mutex_lock(&aspeed->lock);
++	spin_lock_irqsave(&aspeed->lock, flags);
+ 
+ 	switch (size) {
+ 	case 1:
+@@ -313,7 +315,7 @@ static int aspeed_master_write(struct fsi_master *master, int link,
+ 
+ 	ret = check_errors(aspeed, ret);
+ done:
+-	mutex_unlock(&aspeed->lock);
++	spin_unlock_irqrestore(&aspeed->lock, flags);
+ 	return ret;
+ }
+ 
+@@ -396,15 +398,16 @@ static ssize_t cfam_reset_store(struct device *dev, struct device_attribute *att
+ 				const char *buf, size_t count)
+ {
+ 	struct fsi_master_aspeed *aspeed = dev_get_drvdata(dev);
++	unsigned long flags;
+ 
+ 	trace_fsi_master_aspeed_cfam_reset(true);
+-	mutex_lock(&aspeed->lock);
++	spin_lock_irqsave(&aspeed->lock, flags);
+ 	gpiod_set_value(aspeed->cfam_reset_gpio, 1);
+-	usleep_range(900, 1000);
++	udelay(900);
+ 	gpiod_set_value(aspeed->cfam_reset_gpio, 0);
+-	usleep_range(900, 1000);
++	udelay(900);
+ 	regmap_write(aspeed->master.map, FSI_MRESP0, FSI_MRESP_RST_ALL_MASTER);
+-	mutex_unlock(&aspeed->lock);
++	spin_unlock_irqrestore(&aspeed->lock, flags);
+ 	trace_fsi_master_aspeed_cfam_reset(false);
+ 
+ 	return count;
+@@ -498,6 +501,7 @@ static int fsi_master_aspeed_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 
+ 	aspeed->dev = &pdev->dev;
++	spin_lock_init(&aspeed->lock);
+ 
+ 	aspeed->base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(aspeed->base)) {
+@@ -583,7 +587,6 @@ static int fsi_master_aspeed_probe(struct platform_device *pdev)
+ 
+ 	dev_set_drvdata(&pdev->dev, aspeed);
+ 
+-	mutex_init(&aspeed->lock);
+ 	rc = fsi_master_init(&aspeed->master, clk_get_rate(aspeed->clk));
+ 	if (rc)
+ 		goto err_regmap;
 -- 
 2.39.3
 

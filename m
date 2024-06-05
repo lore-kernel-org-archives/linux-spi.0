@@ -1,57 +1,57 @@
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4BB816D9A1;
-	Wed,  5 Jun 2024 21:23:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64FA17837D;
+	Wed,  5 Jun 2024 21:23:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717622627; cv=none; b=Qjpq5vkGKYgOV7VjGq85N8aUJiHNZjhV/H+Z+iUAMQC2S3/XCyr0R0GQNNecg55L1lG7bx9eJqFDXTQkohROdFtCZ7SFGrFGSuNDCByIQRoObN9kMJOvAaz11EQQnQP3N59I86OJ6Osfv62YxsaGJ+Rb5ogHOWh5y6VuK4CLq/4=
+	t=1717622628; cv=none; b=LumNGE+8/HhHoO4CoOsc9NxYPe4Cnf67xDF3kRp6gL/McUggSjbO8tDrQXeQIHCd7ZDVj/5ui6ppS0BDr2IBjq+1RoYAPHjAe+IxoTagWBeG4cxn3pu/WhhQaL06ZvMEP7sT1blIYDPH0gm6feUgKXUzNkv0ntUe7IyhnS8vzk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717622627; c=relaxed/simple;
-	bh=Vc/Ctrqo5sSCNIMESKkxnmoeauNn4qTseHw+BxaGLyU=;
+	s=arc-20240116; t=1717622628; c=relaxed/simple;
+	bh=M9G0C5XMvwwySAScbo9qEW4QmuRwYiNTlRB1r+pCTRQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=OZ5NX5MKig/C5IomdfPVgep6bZR3T6bWLHsr2uYSP2NWMQYazQGBZ/NpQ7z4COBWCnE6koP7ELSP9flCpqAfycs+VMSXuTKtxjoloKh7QLMI5pXso9p7fLdtIPca6EbPSJlzCMOdk6YgVBfOn8hK1VgAxLran/RqTpOme8Guudg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=XJvYaEoc; arc=none smtp.client-ip=148.163.158.5
+	 MIME-Version; b=caTTpt6js40DiH9FII3tFXpffQlKmx8vQCXLCYx46JtH707M7g7Je1xVEjVJmbXYbiIlVnUzZ6a49LPlsIseNVmteNA8f71BW849hBmhghSGGlRYVcVwLPHBwcJM8CJblTCEDPSThzK1KgSiQnuctdlO4hZbK6yOJsm/7mNnanw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=XEEDeGR+; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="XJvYaEoc"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 455LE2FX012448;
-	Wed, 5 Jun 2024 21:23:27 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="XEEDeGR+"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 455K7DIq006862;
+	Wed, 5 Jun 2024 21:23:30 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc :
  content-transfer-encoding : date : from : in-reply-to : message-id :
  mime-version : references : subject : to; s=pp1;
- bh=YxdI1uYsH7cLX7wJt08viDpVjHn4EWk+CktSg/LfJFE=;
- b=XJvYaEocHaQGaa55cMdn+9IX5q6NyuxlNyLCb/edXaKCtvsBbQxYlKURrv/7OqvAOGax
- BGgruYy6e2gH5PJDX00phKMQpBqM1TJU1fjRXqQLLIklDtgjWsztgsSCZ/UfsYkQw+/i
- tNopqeLwpLRI/myI/kW4nElVbpw7ZcsyoMyik39PEHIf1uTtG1/SL1paeWgFwj/UPlnN
- gV4lWjpD9n4eCT8hnLsomp0UaulNESto3qyLor8LebEWjEsfYCzu7Yr79UhxMNeIJWWc
- +p6aDEswz5f/hImNLLeWM2/NTmx47kxr2e6tKgwUdF/Z+/6UPFchBmcci8uOA5XJwpCF uQ== 
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yjyr080s9-1
+ bh=MU/yVusaZAzYIm5jhrcns6ij25EwWFQhZWpvdpTtNWw=;
+ b=XEEDeGR+ZYYmnLGurKIeipX8pgtDkOyhp1yIlpjqvAMMLwj8C6XEAEowiR3tuJVFXlX0
+ EVTty9dknzNlwEnRkODi7LhjV/CDuOy3HfOTQXW9Wgub0MmLJSFDWwoxD3arsGMXE4Ct
+ dQ/TcFYmV0zHk+BmryL89HIy7b/jLJuU1lIsm9isxHpd7/TLdGrupPCtlt+Vkyyy4Btx
+ d9U1BnjfqEmJX2HfjoFmCBaCsiBTGJw97CMXczh1c2VSEgdN0DD69U2ePQM6CYkm2BG/
+ XjcGrraP7d5RRjPItAe+EYO973NTporg2clKxT0rmA41dXGyoKcqzW1qw/WUOsN8YqlH PQ== 
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yjxjmr903-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Jun 2024 21:23:27 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 455JlkIS026600;
-	Wed, 5 Jun 2024 21:23:26 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ygffn6hjc-1
+	Wed, 05 Jun 2024 21:23:29 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 455KwRtG026549;
+	Wed, 5 Jun 2024 21:23:29 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3yggp366g3-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Jun 2024 21:23:26 +0000
+	Wed, 05 Jun 2024 21:23:29 +0000
 Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 455LNNwB23790302
+	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 455LNP2X24642218
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 5 Jun 2024 21:23:25 GMT
+	Wed, 5 Jun 2024 21:23:27 GMT
 Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 062A058061;
-	Wed,  5 Jun 2024 21:23:23 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 5C5255805D;
+	Wed,  5 Jun 2024 21:23:25 +0000 (GMT)
 Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B5BBD5806A;
-	Wed,  5 Jun 2024 21:23:22 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 1ED6058065;
+	Wed,  5 Jun 2024 21:23:25 +0000 (GMT)
 Received: from slate16.aus.stglabs.ibm.com (unknown [9.61.121.242])
 	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  5 Jun 2024 21:23:22 +0000 (GMT)
+	Wed,  5 Jun 2024 21:23:25 +0000 (GMT)
 From: Eddie James <eajames@linux.ibm.com>
 To: linux-fsi@lists.ozlabs.org
 Cc: eajames@linux.ibm.com, linux-kernel@vger.kernel.org,
@@ -60,9 +60,9 @@ Cc: eajames@linux.ibm.com, linux-kernel@vger.kernel.org,
         alistair@popple.id.au, jk@ozlabs.org, andrew@codeconstruct.com.au,
         linux-aspeed@lists.ozlabs.org, ninad@linux.ibm.com,
         lakshmiy@us.ibm.com
-Subject: [PATCH v4 32/40] i2c: fsi: Add interrupt support
-Date: Wed,  5 Jun 2024 16:23:04 -0500
-Message-Id: <20240605212312.349188-33-eajames@linux.ibm.com>
+Subject: [PATCH v4 40/40] ARM: dts: aspeed: P10: Bump SPI max frequencies
+Date: Wed,  5 Jun 2024 16:23:12 -0500
+Message-Id: <20240605212312.349188-41-eajames@linux.ibm.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240605212312.349188-1-eajames@linux.ibm.com>
 References: <20240605212312.349188-1-eajames@linux.ibm.com>
@@ -74,436 +74,326 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Eze2TnuZ5ZbI2cln7BOhaVQHB_SCg28a
-X-Proofpoint-ORIG-GUID: Eze2TnuZ5ZbI2cln7BOhaVQHB_SCg28a
+X-Proofpoint-GUID: Qb4eb5mdv3-HGoqZyiKOPrRsovDjbZAy
+X-Proofpoint-ORIG-GUID: Qb4eb5mdv3-HGoqZyiKOPrRsovDjbZAy
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-06-05_02,2024-06-05_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- mlxlogscore=999 spamscore=0 phishscore=0 malwarescore=0 mlxscore=0
- priorityscore=1501 bulkscore=0 impostorscore=0 clxscore=1015 adultscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2405010000 definitions=main-2406050160
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
+ priorityscore=1501 bulkscore=0 suspectscore=0 clxscore=1015 adultscore=0
+ impostorscore=0 lowpriorityscore=0 spamscore=0 mlxlogscore=891 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2405010000
+ definitions=main-2406050160
 
-Optionally support interrupts from the I2C controller so that
-the driver can wait rather than poll the status register.
+These parts support 10MHZ.
 
 Signed-off-by: Eddie James <eajames@linux.ibm.com>
 ---
- drivers/i2c/busses/i2c-fsi.c   | 215 ++++++++++++++++++++++++++++++---
- include/trace/events/i2c_fsi.h |  45 +++++++
- 2 files changed, 245 insertions(+), 15 deletions(-)
- create mode 100644 include/trace/events/i2c_fsi.h
+ .../dts/aspeed/aspeed-bmc-ibm-everest.dts     | 32 +++++++++----------
+ .../arm/boot/dts/aspeed/ibm-power10-dual.dtsi | 16 +++++-----
+ .../arm/boot/dts/aspeed/ibm-power10-quad.dtsi | 16 +++++-----
+ 3 files changed, 32 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-fsi.c b/drivers/i2c/busses/i2c-fsi.c
-index 614d830419bb8..f8d9bc178ef5b 100644
---- a/drivers/i2c/busses/i2c-fsi.c
-+++ b/drivers/i2c/busses/i2c-fsi.c
-@@ -23,6 +23,7 @@
- #include <linux/mutex.h>
- #include <linux/of.h>
- #include <linux/slab.h>
-+#include <linux/wait.h>
+diff --git a/arch/arm/boot/dts/aspeed/aspeed-bmc-ibm-everest.dts b/arch/arm/boot/dts/aspeed/aspeed-bmc-ibm-everest.dts
+index 214b2e6a4c6df..1365dc95f1352 100644
+--- a/arch/arm/boot/dts/aspeed/aspeed-bmc-ibm-everest.dts
++++ b/arch/arm/boot/dts/aspeed/aspeed-bmc-ibm-everest.dts
+@@ -2797,7 +2797,7 @@ eeprom@0 {
  
- #define FSI_ENGID_I2C		0x7
+ 					compatible = "atmel,at25";
+ 					reg = <0>;
+-					spi-max-frequency = <1000000>;
++					spi-max-frequency = <10000000>;
+ 				};
+ 			};
  
-@@ -87,6 +88,7 @@
- #define I2C_INT_STOP_ERR	BIT(7)
- #define I2C_INT_BUSY		BIT(6)
- #define I2C_INT_IDLE		BIT(5)
-+#define I2C_INT_ANY		GENMASK(15, 7)
+@@ -2813,7 +2813,7 @@ eeprom@0 {
  
- /* status register */
- #define I2C_STAT_INV_CMD	BIT(31)
-@@ -148,21 +150,35 @@
- /* choose timeout length from legacy driver; it's well tested */
- #define I2C_ABORT_TIMEOUT	msecs_to_jiffies(100)
+ 					compatible = "atmel,at25";
+ 					reg = <0>;
+-					spi-max-frequency = <1000000>;
++					spi-max-frequency = <10000000>;
+ 				};
+ 			};
  
-+struct fsi_i2c_port;
-+
- struct fsi_i2c_master {
- 	struct fsi_device	*fsi;
-+	struct fsi_i2c_port	*port;
- 	struct mutex		lock;
-+	wait_queue_head_t	wait;
- 	u32			clock_div;
- 	u8			fifo_size;
-+	bool			interrupts;
- 	bool			skip_stop;
-+	bool			abort;
- };
+@@ -2830,7 +2830,7 @@ eeprom@0 {
  
- struct fsi_i2c_port {
- 	struct i2c_adapter	adapter;
- 	struct fsi_i2c_master	*master;
-+	struct i2c_msg		*msgs;
-+	int			nmsgs;
-+	int			rc;
-+	int			i;
- 	u16			port;
- 	u16			xfrd;
-+	bool			wake;
- };
+ 					compatible = "atmel,at25";
+ 					reg = <0>;
+-					spi-max-frequency = <1000000>;
++					spi-max-frequency = <10000000>;
+ 				};
+ 			};
  
-+#define CREATE_TRACE_POINTS
-+#include <trace/events/i2c_fsi.h>
-+
- static int fsi_i2c_read_reg(struct fsi_device *fsi, unsigned int reg,
- 			    u32 *data)
- {
-@@ -192,7 +208,7 @@ static int fsi_i2c_dev_init(struct fsi_i2c_master *i2c)
- 	u32 watermark;
- 	int rc;
+@@ -2847,7 +2847,7 @@ eeprom@0 {
  
--	/* since we use polling, disable interrupts */
-+	/* start with interrupts disabled */
- 	rc = fsi_i2c_write_reg(i2c->fsi, I2C_FSI_INT_MASK, 0);
- 	if (rc)
- 		return rc;
-@@ -236,22 +252,24 @@ static int fsi_i2c_set_port(struct fsi_i2c_port *port)
- 	return fsi_i2c_write_reg(fsi, I2C_FSI_RESET_ERR, 0);
- }
+ 					compatible = "atmel,at25";
+ 					reg = <0>;
+-					spi-max-frequency = <1000000>;
++					spi-max-frequency = <10000000>;
+ 				};
+ 			};
+ 		};
+@@ -3170,7 +3170,7 @@ eeprom@0 {
  
--static int fsi_i2c_start(struct fsi_i2c_port *port, struct i2c_msg *msg,
--			 bool stop)
-+static int fsi_i2c_start(struct fsi_i2c_port *port)
- {
- 	u32 cmd = I2C_CMD_WITH_START | I2C_CMD_WITH_ADDR;
-+	struct i2c_msg *msg = &port->msgs[port->i];
+ 					compatible = "atmel,at25";
+ 					reg = <0>;
+-					spi-max-frequency = <1000000>;
++					spi-max-frequency = <10000000>;
+ 				};
+ 			};
  
- 	port->xfrd = 0;
+@@ -3186,7 +3186,7 @@ eeprom@0 {
  
- 	if (msg->flags & I2C_M_RD)
- 		cmd |= I2C_CMD_READ;
+ 					compatible = "atmel,at25";
+ 					reg = <0>;
+-					spi-max-frequency = <1000000>;
++					spi-max-frequency = <10000000>;
+ 				};
+ 			};
  
--	if (stop || msg->flags & I2C_M_STOP)
-+	if ((port->i == (port->nmsgs - 1)) || (msg->flags & I2C_M_STOP))
- 		cmd |= I2C_CMD_WITH_STOP;
+@@ -3203,7 +3203,7 @@ eeprom@0 {
  
- 	cmd |= FIELD_PREP(I2C_CMD_ADDR, msg->addr);
- 	cmd |= FIELD_PREP(I2C_CMD_LEN, msg->len);
+ 					compatible = "atmel,at25";
+ 					reg = <0>;
+-					spi-max-frequency = <1000000>;
++					spi-max-frequency = <10000000>;
+ 				};
+ 			};
  
-+	trace_i2c_fsi_start(port, cmd);
-+
- 	return fsi_i2c_write_reg(port->master->fsi, I2C_FSI_CMD, cmd);
- }
+@@ -3220,7 +3220,7 @@ eeprom@0 {
  
-@@ -489,11 +507,38 @@ static int fsi_i2c_abort(struct fsi_i2c_port *port)
- 	if (i2c->skip_stop)
- 		return 0;
+ 					compatible = "atmel,at25";
+ 					reg = <0>;
+-					spi-max-frequency = <1000000>;
++					spi-max-frequency = <10000000>;
+ 				};
+ 			};
+ 		};
+@@ -3543,7 +3543,7 @@ eeprom@0 {
  
-+	if (i2c->interrupts) {
-+		i2c->abort = true;
-+		port->wake = false;
-+
-+		rc = fsi_i2c_write_reg(i2c->fsi, I2C_FSI_INT_MASK, I2C_INT_ANY);
-+		if (rc)
-+			return rc;
-+	}
-+
- 	/* write stop command */
- 	rc = fsi_i2c_write_reg(i2c->fsi, I2C_FSI_CMD, cmd);
- 	if (rc)
- 		return rc;
+ 					compatible = "atmel,at25";
+ 					reg = <0>;
+-					spi-max-frequency = <1000000>;
++					spi-max-frequency = <10000000>;
+ 				};
+ 			};
  
-+	if (i2c->interrupts) {
-+		rc = wait_event_interruptible_timeout(i2c->wait, port->wake, I2C_ABORT_TIMEOUT);
-+		if (rc > 0)
-+			return port->rc;
-+
-+		fsi_i2c_write_reg(i2c->fsi, I2C_FSI_INT_MASK, 0);
-+
-+		if (!rc) {
-+			rc = fsi_i2c_read_reg(i2c->fsi, I2C_FSI_STAT, &status);
-+			if (!rc && (status & I2C_STAT_CMD_COMP))
-+				rc = 0;
-+			else
-+				rc = -ETIMEDOUT;
-+		}
-+
-+		return rc;
-+	}
-+
- 	/* wait until we see command complete in the master */
- 	start = jiffies;
- 	do {
-@@ -564,8 +609,59 @@ static int fsi_i2c_handle_status(struct fsi_i2c_port *port,
- 	return 0;
- }
+@@ -3559,7 +3559,7 @@ eeprom@0 {
  
--static int fsi_i2c_wait(struct fsi_i2c_port *port, struct i2c_msg *msg,
--			unsigned long timeout)
-+static int fsi_i2c_wait_irq(struct fsi_i2c_port *port, unsigned long timeout)
-+{
-+	int rc;
-+
-+	port->wake = false;
-+
-+	rc = fsi_i2c_write_reg(port->master->fsi, I2C_FSI_INT_MASK, I2C_INT_ANY);
-+	if (rc)
-+		return rc;
-+
-+	rc = wait_event_interruptible_timeout(port->master->wait, port->wake, timeout);
-+	if (rc > 0) {
-+		rc = port->rc;
-+
-+		if (port->master->abort) {
-+			int rc2 = fsi_i2c_abort(port);
-+
-+			if (rc2)
-+				return rc2;
-+		}
-+
-+		return rc;
-+	}
-+
-+	/*
-+	 * The interrupt handler should turn off interrupts once it's done, but in this
-+	 * case we timed out or were interrupted, so mask them off here.
-+	 */
-+	fsi_i2c_write_reg(port->master->fsi, I2C_FSI_INT_MASK, 0);
-+
-+	if (!rc) {
-+		u32 status;
-+
-+		rc = fsi_i2c_read_reg(port->master->fsi, I2C_FSI_STAT, &status);
-+		if (!rc && (status & I2C_STAT_ANY_RESP)) {
-+			rc = fsi_i2c_handle_status(port, &port->msgs[port->i], status);
-+			if (rc < 0)
-+				return rc;
-+
-+			/* cmd complete and all data xfrd */
-+			if (rc == port->msgs[port->i].len)
-+				return 0;
-+
-+			rc = -ETIMEDOUT;
-+		} else {
-+			rc = -ETIMEDOUT;
-+		}
-+	}
-+
-+	return rc;
-+}
-+
-+static int fsi_i2c_wait_poll(struct fsi_i2c_port *port, unsigned long timeout)
- {
- 	unsigned long start = jiffies;
- 	u32 status;
-@@ -578,12 +674,12 @@ static int fsi_i2c_wait(struct fsi_i2c_port *port, struct i2c_msg *msg,
- 			return rc;
+ 					compatible = "atmel,at25";
+ 					reg = <0>;
+-					spi-max-frequency = <1000000>;
++					spi-max-frequency = <10000000>;
+ 				};
+ 			};
  
- 		if (status & I2C_STAT_ANY_RESP) {
--			rc = fsi_i2c_handle_status(port, msg, status);
-+			rc = fsi_i2c_handle_status(port, &port->msgs[port->i], status);
- 			if (rc < 0)
- 				return rc;
+@@ -3576,7 +3576,7 @@ eeprom@0 {
  
- 			/* cmd complete and all data xfrd */
--			if (rc == msg->len)
-+			if (rc == port->msgs[port->i].len)
- 				return 0;
+ 					compatible = "atmel,at25";
+ 					reg = <0>;
+-					spi-max-frequency = <1000000>;
++					spi-max-frequency = <10000000>;
+ 				};
+ 			};
  
- 			/* need to xfr more data, but maybe don't need wait */
-@@ -601,9 +697,7 @@ static int fsi_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs,
- {
- 	struct fsi_i2c_port *port = i2c_get_adapdata(adap);
- 	unsigned long start_time;
--	struct i2c_msg *msg;
- 	int rc;
--	int i;
+@@ -3593,7 +3593,7 @@ eeprom@0 {
  
- 	mutex_lock(&port->master->lock);
+ 					compatible = "atmel,at25";
+ 					reg = <0>;
+-					spi-max-frequency = <1000000>;
++					spi-max-frequency = <10000000>;
+ 				};
+ 			};
+ 		};
+@@ -3916,7 +3916,7 @@ eeprom@0 {
  
-@@ -611,21 +705,28 @@ static int fsi_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs,
- 	if (rc)
- 		goto unlock;
+ 					compatible = "atmel,at25";
+ 					reg = <0>;
+-					spi-max-frequency = <1000000>;
++					spi-max-frequency = <10000000>;
+ 				};
+ 			};
  
--	for (i = 0; i < num; i++) {
--		msg = msgs + i;
-+	port->master->port = port;
-+	port->master->abort = false;
-+	port->msgs = msgs;
-+	port->nmsgs = num;
-+	for (port->i = 0; port->i < num; ++port->i) {
- 		start_time = jiffies;
+@@ -3932,7 +3932,7 @@ eeprom@0 {
  
--		rc = fsi_i2c_start(port, msg, i == num - 1);
-+		rc = fsi_i2c_start(port);
- 		if (rc)
- 			goto unlock;
+ 					compatible = "atmel,at25";
+ 					reg = <0>;
+-					spi-max-frequency = <1000000>;
++					spi-max-frequency = <10000000>;
+ 				};
+ 			};
  
--		rc = fsi_i2c_wait(port, msg,
--				  adap->timeout - (jiffies - start_time));
-+		if (port->master->interrupts)
-+			rc = fsi_i2c_wait_irq(port, adap->timeout - (jiffies - start_time));
-+		else
-+			rc = fsi_i2c_wait_poll(port, adap->timeout - (jiffies - start_time));
- 		if (rc)
- 			goto unlock;
- 	}
+@@ -3949,7 +3949,7 @@ eeprom@0 {
  
- unlock:
-+	port->msgs = NULL;
-+	port->master->port = NULL;
- 	mutex_unlock(&port->master->lock);
- 	return rc ? : num;
- }
-@@ -636,6 +737,85 @@ static u32 fsi_i2c_functionality(struct i2c_adapter *adap)
- 		I2C_FUNC_SMBUS_EMUL | I2C_FUNC_SMBUS_BLOCK_DATA;
- }
+ 					compatible = "atmel,at25";
+ 					reg = <0>;
+-					spi-max-frequency = <1000000>;
++					spi-max-frequency = <10000000>;
+ 				};
+ 			};
  
-+static irqreturn_t fsi_i2c_irq(int irq, void *data)
-+{
-+	struct fsi_i2c_master *i2c = data;
-+	struct fsi_i2c_port *port;
-+	struct i2c_msg *msg;
-+	u32 status;
-+	int rc;
-+
-+	rc = fsi_i2c_write_reg(i2c->fsi, I2C_FSI_INT_MASK, 0);
-+	if (rc)
-+		return IRQ_NONE;
-+
-+	if (!i2c->port)
-+		return IRQ_HANDLED;
-+
-+	port = i2c->port;
-+	rc = fsi_i2c_read_reg(i2c->fsi, I2C_FSI_STAT, &status);
-+	if (rc)
-+		goto wake;
-+
-+	trace_i2c_fsi_irq(port, status);
-+
-+	if (i2c->abort) {
-+		if (status & I2C_STAT_CMD_COMP) {
-+			port->wake = true;
-+			goto done;
-+		} else {
-+			rc = fsi_i2c_error_status_to_rc(status);
-+			goto wake;
-+		}
-+	}
-+
-+	if (status & I2C_STAT_ERR) {
-+		i2c->abort = true;
-+		i2c->skip_stop = status & I2C_STAT_SKIP_STOP;
-+		rc = fsi_i2c_error_status_to_rc(status);
-+		goto wake;
-+	}
-+
-+	if (!port->msgs || port->i >= port->nmsgs) {
-+		rc = -ENODEV;
-+		goto wake;
-+	}
-+
-+	msg = &port->msgs[port->i];
-+	if (status & I2C_STAT_DAT_REQ) {
-+		u8 fifo_count = FIELD_GET(I2C_STAT_FIFO_COUNT, status);
-+
-+		if (msg->flags & I2C_M_RD)
-+			rc = fsi_i2c_read_fifo(port, msg, fifo_count);
-+		else
-+			rc = fsi_i2c_write_fifo(port, msg, fifo_count);
-+	} else if (status & I2C_STAT_CMD_COMP) {
-+		if (port->xfrd < msg->len) {
-+			rc = -ENODATA;
-+		} else {
-+			++port->i;
-+			if (port->i < port->nmsgs) {
-+				rc = fsi_i2c_start(port);
-+			} else {
-+				port->wake = true;
-+				goto done;
-+			}
-+		}
-+	}
-+
-+	if (!rc)
-+		rc = fsi_i2c_write_reg(i2c->fsi, I2C_FSI_INT_MASK, I2C_INT_ANY);
-+
-+wake:
-+	if (rc)
-+		port->wake = true;
-+done:
-+	port->rc = rc;
-+	if (port->wake)
-+		wake_up_interruptible_all(&i2c->wait);
-+	return IRQ_HANDLED;
-+}
-+
- static struct i2c_bus_recovery_info fsi_i2c_bus_recovery_info = {
- 	.recover_bus = i2c_generic_scl_recovery,
- 	.get_scl = fsi_i2c_get_scl,
-@@ -683,6 +863,7 @@ static int fsi_i2c_probe(struct device *dev)
- 		return -ENOMEM;
+@@ -3966,7 +3966,7 @@ eeprom@0 {
  
- 	mutex_init(&i2c->lock);
-+	init_waitqueue_head(&i2c->wait);
- 	i2c->fsi = to_fsi_dev(dev);
- 	i2c->clock_div = I2C_DEFAULT_CLK_DIV;
+ 					compatible = "atmel,at25";
+ 					reg = <0>;
+-					spi-max-frequency = <1000000>;
++					spi-max-frequency = <10000000>;
+ 				};
+ 			};
+ 		};
+diff --git a/arch/arm/boot/dts/aspeed/ibm-power10-dual.dtsi b/arch/arm/boot/dts/aspeed/ibm-power10-dual.dtsi
+index 44e48e39e6e96..e11354bb384c2 100644
+--- a/arch/arm/boot/dts/aspeed/ibm-power10-dual.dtsi
++++ b/arch/arm/boot/dts/aspeed/ibm-power10-dual.dtsi
+@@ -94,7 +94,7 @@ eeprom@0 {
  
-@@ -706,6 +887,10 @@ static int fsi_i2c_probe(struct device *dev)
- 	if (rc)
- 		return rc;
+ 					compatible = "atmel,at25";
+ 					reg = <0>;
+-					spi-max-frequency = <1000000>;
++					spi-max-frequency = <10000000>;
+ 				};
+ 			};
  
-+	rc = fsi_device_request_irq(i2c->fsi, fsi_i2c_irq, i2c);
-+	if (!rc)
-+		i2c->interrupts = true;
-+
- 	ports = FIELD_GET(I2C_STAT_MAX_PORT, stat) + 1;
- 	dev_dbg(dev, "I2C master has %d ports\n", ports);
+@@ -110,7 +110,7 @@ eeprom@0 {
  
-diff --git a/include/trace/events/i2c_fsi.h b/include/trace/events/i2c_fsi.h
-new file mode 100644
-index 0000000000000..ac49ae9be356b
---- /dev/null
-+++ b/include/trace/events/i2c_fsi.h
-@@ -0,0 +1,45 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+
-+#undef TRACE_SYSTEM
-+#define TRACE_SYSTEM i2c_fsi
-+
-+#if !defined(_TRACE_I2C_FSI_H) || defined(TRACE_HEADER_MULTI_READ)
-+#define _TRACE_I2C_FSI_H
-+
-+#include <linux/tracepoint.h>
-+
-+TRACE_EVENT(i2c_fsi_irq,
-+	TP_PROTO(const struct fsi_i2c_port *port, uint32_t status),
-+	TP_ARGS(port, status),
-+	TP_STRUCT__entry(
-+		__field(int, bus)
-+		__field(int, msg_idx)
-+		__field(uint32_t, status)
-+	),
-+	TP_fast_assign(
-+		__entry->bus = port->adapter.nr;
-+		__entry->msg_idx = port->i;
-+		__entry->status = status;
-+	),
-+	TP_printk("i2c-%d [%d] status:%08x", __entry->bus, __entry->msg_idx, __entry->status)
-+);
-+
-+TRACE_EVENT(i2c_fsi_start,
-+	TP_PROTO(const struct fsi_i2c_port *port, uint32_t command),
-+	TP_ARGS(port, command),
-+	TP_STRUCT__entry(
-+		__field(int, bus)
-+		__field(int, msg_idx)
-+		__field(uint32_t, command)
-+	),
-+	TP_fast_assign(
-+		__entry->bus = port->adapter.nr;
-+		__entry->msg_idx = port->i;
-+		__entry->command = command;
-+	),
-+	TP_printk("i2c-%d [%d] command:%08x", __entry->bus, __entry->msg_idx, __entry->command)
-+);
-+
-+#endif
-+
-+#include <trace/define_trace.h>
+ 					compatible = "atmel,at25";
+ 					reg = <0>;
+-					spi-max-frequency = <1000000>;
++					spi-max-frequency = <10000000>;
+ 				};
+ 			};
+ 
+@@ -127,7 +127,7 @@ eeprom@0 {
+ 
+ 					compatible = "atmel,at25";
+ 					reg = <0>;
+-					spi-max-frequency = <1000000>;
++					spi-max-frequency = <10000000>;
+ 				};
+ 			};
+ 
+@@ -144,7 +144,7 @@ eeprom@0 {
+ 
+ 					compatible = "atmel,at25";
+ 					reg = <0>;
+-					spi-max-frequency = <1000000>;
++					spi-max-frequency = <10000000>;
+ 				};
+ 			};
+ 		};
+@@ -261,7 +261,7 @@ eeprom@0 {
+ 
+ 					compatible = "atmel,at25";
+ 					reg = <0>;
+-					spi-max-frequency = <1000000>;
++					spi-max-frequency = <10000000>;
+ 				};
+ 			};
+ 
+@@ -277,7 +277,7 @@ eeprom@0 {
+ 
+ 					compatible = "atmel,at25";
+ 					reg = <0>;
+-					spi-max-frequency = <1000000>;
++					spi-max-frequency = <10000000>;
+ 				};
+ 			};
+ 
+@@ -294,7 +294,7 @@ eeprom@0 {
+ 
+ 					compatible = "atmel,at25";
+ 					reg = <0>;
+-					spi-max-frequency = <1000000>;
++					spi-max-frequency = <10000000>;
+ 				};
+ 			};
+ 
+@@ -311,7 +311,7 @@ eeprom@0 {
+ 
+ 					compatible = "atmel,at25";
+ 					reg = <0>;
+-					spi-max-frequency = <1000000>;
++					spi-max-frequency = <10000000>;
+ 				};
+ 			};
+ 		};
+diff --git a/arch/arm/boot/dts/aspeed/ibm-power10-quad.dtsi b/arch/arm/boot/dts/aspeed/ibm-power10-quad.dtsi
+index 57494c744b5d0..0ffb4ae6423fc 100644
+--- a/arch/arm/boot/dts/aspeed/ibm-power10-quad.dtsi
++++ b/arch/arm/boot/dts/aspeed/ibm-power10-quad.dtsi
+@@ -744,7 +744,7 @@ eeprom@0 {
+ 
+ 					compatible = "atmel,at25";
+ 					reg = <0>;
+-					spi-max-frequency = <1000000>;
++					spi-max-frequency = <10000000>;
+ 				};
+ 			};
+ 
+@@ -760,7 +760,7 @@ eeprom@0 {
+ 
+ 					compatible = "atmel,at25";
+ 					reg = <0>;
+-					spi-max-frequency = <1000000>;
++					spi-max-frequency = <10000000>;
+ 				};
+ 			};
+ 
+@@ -777,7 +777,7 @@ eeprom@0 {
+ 
+ 					compatible = "atmel,at25";
+ 					reg = <0>;
+-					spi-max-frequency = <1000000>;
++					spi-max-frequency = <10000000>;
+ 				};
+ 			};
+ 
+@@ -794,7 +794,7 @@ eeprom@0 {
+ 
+ 					compatible = "atmel,at25";
+ 					reg = <0>;
+-					spi-max-frequency = <1000000>;
++					spi-max-frequency = <10000000>;
+ 				};
+ 			};
+ 		};
+@@ -1117,7 +1117,7 @@ eeprom@0 {
+ 
+ 					compatible = "atmel,at25";
+ 					reg = <0>;
+-					spi-max-frequency = <1000000>;
++					spi-max-frequency = <10000000>;
+ 				};
+ 			};
+ 
+@@ -1133,7 +1133,7 @@ eeprom@0 {
+ 
+ 					compatible = "atmel,at25";
+ 					reg = <0>;
+-					spi-max-frequency = <1000000>;
++					spi-max-frequency = <10000000>;
+ 				};
+ 			};
+ 
+@@ -1150,7 +1150,7 @@ eeprom@0 {
+ 
+ 					compatible = "atmel,at25";
+ 					reg = <0>;
+-					spi-max-frequency = <1000000>;
++					spi-max-frequency = <10000000>;
+ 				};
+ 			};
+ 
+@@ -1167,7 +1167,7 @@ eeprom@0 {
+ 
+ 					compatible = "atmel,at25";
+ 					reg = <0>;
+-					spi-max-frequency = <1000000>;
++					spi-max-frequency = <10000000>;
+ 				};
+ 			};
+ 		};
 -- 
 2.39.3
 

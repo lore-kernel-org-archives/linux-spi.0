@@ -1,147 +1,158 @@
-Received: from mx0b-001ae601.pphosted.com (mx0b-001ae601.pphosted.com [67.231.152.168])
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2130.outbound.protection.outlook.com [40.107.220.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4876217C9F9;
-	Tue, 11 Jun 2024 13:26:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.152.168
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718112364; cv=none; b=QVHjidh6Embrw5ftKtZDJ7M+02JvGaYmu1kDPMlb/BMTlwvl/ofykRYMrIK8kI73r7UoxvS3RJennaaEoRtMCY4Nj5rRzbYaUhHymvJRf+U68iUT6kP+uvRj631ETRfn7XOPzHkqU7ggQKVJqNtxReGE3H9bQ2NsJni8rTAZJAc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718112364; c=relaxed/simple;
-	bh=xsUIs1Kt5mpQP6+VuDxqZD5NRvHeR1YK4OYtm7Chvk0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Cr+X9QKjDZkjWHoDUY6BpdG1VGE4lEg51hTI384I68G3tKW/UZGqOr8KF2ogZKyAksVItRci95gYLbl1OQmbc0HXdZ6JUAgdntDVBJVwSXABfL1Lw+BCl9T0PmqvlNQ83cr9wzcSJWGCBcqcsD3J2jIH7ypCYp25rp5CHV48tME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com; spf=pass smtp.mailfrom=opensource.cirrus.com; dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b=lybl2cGR; arc=none smtp.client-ip=67.231.152.168
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensource.cirrus.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A75AD2C;
+	Tue, 11 Jun 2024 14:21:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.130
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1718115685; cv=fail; b=KauJcd3LHEWqn4o6emzXG6gFUgzm1OZoO2Cqvhx5gJg6FJYXQ8QusPJP97Z5nQk9z7QsxAnhxH6sQdXYqCzTX4Ku6nyX1yMv+S24hzVZB1wVQUeJw8IQy3rICMMqtKrxYQ7dX4od/1B9NBgnlOei5efwvCOAxkDvPSXfZNAiAWs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1718115685; c=relaxed/simple;
+	bh=WohYFxrVQX2OhSJ8bMKaNgUY5Gf+44fdGeYPBiL5N14=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Z1zyC8mInxljGIvFrt++BuiA8wcmcjw0vZxAukrt4A7jLO7jrVpJVe29OACRRmnDthIEXEtpOBpbnubHGUFEJwmEnL78DzJTRtjJHTQyonEieS08W+TB2Ut18D1Md5HUQyPRXreSGG0tBu9qqZla3O4U79Mxboczddk32y/i484=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=in-advantage.com; spf=pass smtp.mailfrom=in-advantage.com; dkim=pass (1024-bit key) header.d=inadvantage.onmicrosoft.com header.i=@inadvantage.onmicrosoft.com header.b=oMcsH1mk; arc=fail smtp.client-ip=40.107.220.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=in-advantage.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=in-advantage.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b="lybl2cGR"
-Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
-	by mx0b-001ae601.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45B4c4Kv010402;
-	Tue, 11 Jun 2024 08:25:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=PODMain02222019; bh=T4zM91sFnNYIgYO3
-	pQDLwJ7ZrWumJOlcKaLpF6K+kHA=; b=lybl2cGR4J0+/ktWFPOcUvBGZynyg4jv
-	qhetaj5NuYGCqzX4DxNKB5zPnJwkve5hwwQ1U+Fg3OPD0egfrlzRehz5NxgQEzh9
-	M/HQf9Ec2OBt+1zC/wzAs3Vpqkh3lpJSwOjKYT4VCqjLvEgHa3aUQTX/cQ8YU2ja
-	SRs/w6dvmUlPpQXkWYew1/oUooAW17LCr8L0YhgF+omPRVmXyz5wIIQw6RKCgeeX
-	UqgYLiAN2jg30PnM7zRvF5Zf3sw2vU9bQi0PEv8zWx6hVkAVqXIoH68v2MIR45nO
-	2cOo2wsx1ExG9MVTuoyYrGyEJ+Y4Sun3T7Ox0Ju97+UlqVV1I8B5Tg==
-Received: from ediex01.ad.cirrus.com ([84.19.233.68])
-	by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 3ymkqhtuvb-2
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Jun 2024 08:25:59 -0500 (CDT)
-Received: from ediex02.ad.cirrus.com (198.61.84.81) by ediex01.ad.cirrus.com
- (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 11 Jun
- 2024 14:25:56 +0100
-Received: from ediswmail9.ad.cirrus.com (198.61.86.93) by
- anon-ediex02.ad.cirrus.com (198.61.84.81) with Microsoft SMTP Server id
- 15.2.1544.9 via Frontend Transport; Tue, 11 Jun 2024 14:25:56 +0100
-Received: from ediswws07.ad.cirrus.com (ediswws07.ad.cirrus.com [198.90.208.14])
-	by ediswmail9.ad.cirrus.com (Postfix) with ESMTP id B4FB6820244;
-	Tue, 11 Jun 2024 13:25:56 +0000 (UTC)
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
-To: <broonie@kernel.org>
-CC: <lgirdwood@gmail.com>, <linux-sound@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <patches@opensource.cirrus.com>
-Subject: [PATCH 1/3] spi: cs42l43: Refactor accessing the SDCA extension properties
-Date: Tue, 11 Jun 2024 14:25:54 +0100
-Message-ID: <20240611132556.1557075-1-ckeepax@opensource.cirrus.com>
-X-Mailer: git-send-email 2.39.2
+	dkim=pass (1024-bit key) header.d=inadvantage.onmicrosoft.com header.i=@inadvantage.onmicrosoft.com header.b="oMcsH1mk"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=gdAsFvZIcN3Cc5Z1C/uiVtG3zi0HxwnxJe6DSWufUTH/pKbOPPaL6Cw2UPl5K/zdINmpt+WKR4bCwRyTZRAebVMvtY+zRFpuMLsSqKU1M/r9gYYtoIqDlJZiWH0ZsxTS/99qOCOv7DIdkQsG67hOyjTklAzOqfni5hfaryUMPz8TlOKojVRsnqkDDrWkihyfpP56nL7AHTa+ZlnxYrrbORgttq8w52lwG3wrKkhaGEF75Sns1OlLl5yMcPLJT/DjOtLTk9omTqHnGdPQ9Aqh2Uoy6bpZesY2VMA0oiDT+svQ5N2J1aSAQRqG92CvEwh662yTlGhNXxS/KrnNcSqhCA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=U9OrdR56qxF5XXhRzyIlayb056N3hUfN/nI5T3laWGA=;
+ b=YKEJu5UDPa3PXKcOloOw3H4Iz6jf6zxt2NxGszrhdmAL5jrbpXFtKFPNyqxtwZAO9JlHePWsa42KN9X2rNASqhcsUWrpfeVW0SpWAN+SJrN+rs/Q2S+r14Jt0bPNT1z+llEHXgpSLquVpBqLJcdwyux00JEjH/lvqADYsq8v4v+QIwcful7W/94Mf/h5X4UDD5acpSEdgztwihUm3aV8Ei6ZK3vf+RrrpBFnuLk6Zk3K0/kHYONc/BwvRBgrxHO/BlbvgjxhLxvWqqn8zQ0T/52I7e06rKV/WGuv1yu69hiElfhHs6+mS4/Yp7svolHuSRO/Dh/Jpc+pxPFxM3hbPg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=in-advantage.com; dmarc=pass action=none
+ header.from=in-advantage.com; dkim=pass header.d=in-advantage.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=inadvantage.onmicrosoft.com; s=selector2-inadvantage-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=U9OrdR56qxF5XXhRzyIlayb056N3hUfN/nI5T3laWGA=;
+ b=oMcsH1mkbn75P+5f4kc4Zzkv//qsyJBxyggzF0Ad4QtEE1fKoLascc0EACskclBD++0zDuPP6GcyPnhpxC4ZuRV965/Q9zMlZm7mX4+PbvWCcv3M/kPBFFZSkvYQWGo2C/tZSwcJPdhRWSO6UitnNRQ5iQTclWqdWzxZvO0Qg6Q=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=in-advantage.com;
+Received: from DS0PR10MB6974.namprd10.prod.outlook.com (2603:10b6:8:148::12)
+ by SJ0PR10MB4510.namprd10.prod.outlook.com (2603:10b6:a03:2d6::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.36; Tue, 11 Jun
+ 2024 14:21:20 +0000
+Received: from DS0PR10MB6974.namprd10.prod.outlook.com
+ ([fe80::7603:d234:e4ab:3fea]) by DS0PR10MB6974.namprd10.prod.outlook.com
+ ([fe80::7603:d234:e4ab:3fea%7]) with mapi id 15.20.7633.036; Tue, 11 Jun 2024
+ 14:21:19 +0000
+Date: Tue, 11 Jun 2024 09:21:15 -0500
+From: Colin Foster <colin.foster@in-advantage.com>
+To: Mark Brown <broonie@kernel.org>,
+	Louis Chauvet <louis.chauvet@bootlin.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	miquel.raynal@bootlin.com
+Subject: Re: omap2-mcspi multi mode
+Message-ID: <ZmhdWw/dV5HRU/Nh@colin-ia-desktop>
+References: <Zl/V0dU6SjAMkpLG@colin-ia-desktop>
+ <ZmFt7yfZFFJdsZuJ@localhost.localdomain>
+ <ZmJ7E305ow91ez2U@euler>
+ <ZmMrJ8uaw85a03Ce@finisterre.sirena.org.uk>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZmMrJ8uaw85a03Ce@finisterre.sirena.org.uk>
+X-ClientProxiedBy: MN2PR10CA0004.namprd10.prod.outlook.com
+ (2603:10b6:208:120::17) To DS0PR10MB6974.namprd10.prod.outlook.com
+ (2603:10b6:8:148::12)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: RlxZDK-G1HOQKD9cYSixedcmOG006PmH
-X-Proofpoint-ORIG-GUID: RlxZDK-G1HOQKD9cYSixedcmOG006PmH
-X-Proofpoint-Spam-Reason: safe
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR10MB6974:EE_|SJ0PR10MB4510:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5d185508-611d-4df4-a9a9-08dc8a21c332
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230031|376005|1800799015|366007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Ou5KVwcabBSM+62NS6UMTzZn9B0tjwcy7nb5ydiqEgKO805DApbp7v+8ag9O?=
+ =?us-ascii?Q?e5HB9l71is+sTFtDJHNC6gmNwlc+geUjk7oZ4eIHUjgBqhPGImOU1X/3BELL?=
+ =?us-ascii?Q?jYv2alpxAyT8daLkP1suzpNhV2zAndH2vI+baT2KK2Gd9z51Enexa+kFNyto?=
+ =?us-ascii?Q?MV4Tg8w4VU5jQjbB1AiGJPPws72866EC1iIRPqrWESQ+cKbd/uC87m4nPI9z?=
+ =?us-ascii?Q?aev+nBAoTU121+b+VVmYbpiHvT9gLLmHVMfi+r5QNscI8PnTPwPiRZGKo+Jz?=
+ =?us-ascii?Q?mlCseHZhxo+4t6ohFLkuVYqfpF9EypDL0O7Q6ShccMxvS62HpH1x8FkNaFtr?=
+ =?us-ascii?Q?SGYdVwZskjJG274zTiDVgespNZlbMQHtfyfaLIcWmOnapVQqyZpItrsBNvQ8?=
+ =?us-ascii?Q?d2HI5Qq5U+hRIT54jCxDF3UmV54HdLR4DHZmIH8SCw7hVOMQHn6WhyK61i9i?=
+ =?us-ascii?Q?s14et5ZXEhIu+FMZSxpufpsZ5UVT3a8bTKoZnQK9TrAkUdSfJ104tDLOByR+?=
+ =?us-ascii?Q?jrAAw6zfWBclZXRcuz8opwCCZCEsdTppnXqrKJ8EgUN958axQdePVW15RPST?=
+ =?us-ascii?Q?q2mEZ0WibgzFjjBYtIdAq5cYYYneSoyfEx28hZYVyIw2eyQlgwqPiKrWS6G9?=
+ =?us-ascii?Q?rCF5GoviWUNW/xi7GGzTGtjLqQ0dsVOvzOGq4YZIexWnkdX7exNd6npJ5Goo?=
+ =?us-ascii?Q?+4rxkJVce2ja6wgB1lMGmnx84vZM0n5P1MGZhQR+PzQcqPitI9zOMEmcp9hF?=
+ =?us-ascii?Q?vrZFi7aiIfv9VybXLk6YQNR1T5fOerxMSyWWD+6eV9dQJLGCnGie9Xf0L6d3?=
+ =?us-ascii?Q?3/Ex5AWqMxa/QbYnBsF5caFSfvTdwIbtpZSRUdRmNAbseyAl16jgbgBWRydy?=
+ =?us-ascii?Q?eH63ROkeuoEtTLE513HDSASIqe8Isddbp5lEnLrlkwHg4rCMYiE8oj9lT00g?=
+ =?us-ascii?Q?Pq+35CCZMJCueXQqJrWGWWlE4jE8nvITrTqSNOc41mPaDgFKghVbPty+napo?=
+ =?us-ascii?Q?slPPPrxD1AARTH0+mo2Ki3hqCEgPSp30jqL8mQ9OXSOsgyMWDIFAWcE5xIXp?=
+ =?us-ascii?Q?RRvf68xl9yL9+B+t6iWblUTRkKX5fQSweL4Z9/3B8PGXSLuvrldBZLejtwgC?=
+ =?us-ascii?Q?pBqNcgSPJpnFuLny+2IgPR4UIMJI11NQ3VtNn0nGcIqGKR0yW1aBhQ8JHxVb?=
+ =?us-ascii?Q?GqB6CfSjJwTglxBza8ug78LfjmewEepGOKA+y4R0ye4wr1FfqIsScOIgKNf1?=
+ =?us-ascii?Q?Z4/EmcSaDQG3kD8n9TubyVLpVsF8/fB+SaomPZFbWtr+oL8dZa25Qei/qToH?=
+ =?us-ascii?Q?jXXOyFYVS83Vf6uZNCbSSkRr?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR10MB6974.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(1800799015)(366007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?ngDkAbbvRizTL1iLviCQlr4fLId0FVYXgJ0nSU/PHSpN4wLjFIT3lyih/5Yf?=
+ =?us-ascii?Q?w3pzQy7bCm9Zl1G5lLfKKp9VrFtv9mHdo9VYeGNWdHUnq9xzkuEoF8S6KCBN?=
+ =?us-ascii?Q?pyYJxvoW1BCiRP6dyiXQk1+kuAsAagcd1Cb9U+cYHohTy15b3u4WMbE4LkL9?=
+ =?us-ascii?Q?57lKQQzT2OTYTGcBK7QU40n0vpfmi/bl2dufodIUbDEiCK5GNJaJ7LgBbjad?=
+ =?us-ascii?Q?ORDzMqJmUIYg/P7Z2QmU5kLQESYXdExoy9K+HdmXtcPXAWta/ALE/LMQT9hi?=
+ =?us-ascii?Q?Yw4wjBOCx3cm0Jo4FuyeIYe1geBFjn6MR5t9jUgAMS/w7D0WmYs8rK++OjXY?=
+ =?us-ascii?Q?CfHFRa/Khrh4nL2y2pNTfv0+u7vEKRp1foswa4N8eiwIc0NJw6dey+U5IhyF?=
+ =?us-ascii?Q?b4AZYentgBxteSoKyzQ45u8SP7JIALj+502iUMIVwpcgEPFziaBGG8HsgZkX?=
+ =?us-ascii?Q?pZZo7Q0DC8t6tuCRHur0Mq+K51JcdlpPmAUXm18mzP+GIfrhXlziuFjskUxv?=
+ =?us-ascii?Q?q8ozhWsRGxcLuGsix+G42LjyU9Z2Y4Ht+BCxt5JdTY04I1h+kcY1HaE09xDX?=
+ =?us-ascii?Q?LV5LuxxrXn1FctdWzk0rmYlDZ9NfY4PoD12tkxSbfDqSJ4z7hn6JxP+9mo/t?=
+ =?us-ascii?Q?zgcxEQXKiv4DhT6pNcuU3GMh/KNvM+0ZtTc7VnnzsGdwiSu66JEluyi/xrA0?=
+ =?us-ascii?Q?KRZVDTPi16wjW+eA4GBTXte7xIaEq4DfL9PPr69Bc3L8I0lVH64s2F2i6QY1?=
+ =?us-ascii?Q?Lp4QmVsAMUkZ6DfaBA/MNAGjFgRXGXkQItk2GrOWUtrHTpXxTQsjW++0D40j?=
+ =?us-ascii?Q?Nqmyd48fGw2urfC/f+gMVm++CdSJM+NHDnVbuDeeBaVQRLh+CcInu33YavnT?=
+ =?us-ascii?Q?zFc1993q6VxHXQAxZZN7lcEL94YfS4XlsNhxTISRPtYVbH7e6ioUXAKpeGzo?=
+ =?us-ascii?Q?OGLfZg96BnCBWbz+1zfhgr/Fd/OcZPhSpqcgW1IodkO2beJEXd0Lx/+/vyVE?=
+ =?us-ascii?Q?/h3DhUT/d+ZvW8jwS10QyQgA/YAH6eZbXVAyaeMlzGJYfq7+vWXFSeu+X24U?=
+ =?us-ascii?Q?SJt92KLEe+WnlUbdNo91wGn8iVYkpl8ZUF/kmeeRryv9BZ4OuHL4UwBxcyDL?=
+ =?us-ascii?Q?l8ESzi4PnQtaFkpDpi28qjAIb0C5T+Pc8AiJeJYIkhlL1pwPWIfRJswAGrS6?=
+ =?us-ascii?Q?kZFIvusXoZwm0b0y7cCjIX1VXvQbufrhMw3gngA/1TSOpWaSyVNOvPyNBklL?=
+ =?us-ascii?Q?O8L9EXW48FqBTecL4oAd10492l3DCghTCChD37h1zfpbKn0hLohMAvKhaodQ?=
+ =?us-ascii?Q?QbljpUKPJ+AcLx+txv6tHZqZj1XJuNCSGiZ6FrS5NydASolFWZ+FJdpV2bt3?=
+ =?us-ascii?Q?nf+aYaQcRz1fMv+NPzXMcdbOMaoTmkh5oc57UaaJHeHB6DA5GdZ2V7Tc3vlT?=
+ =?us-ascii?Q?LtxYxxayxe+2OSJsbgjsksbqH6vOlhabpCQPVmbD/ysioUmECpC9kPAgyHtz?=
+ =?us-ascii?Q?mdAGxJvEA7l+zjmHFH7V3keKmBvYitgtGRARw5burOQcvkNofTIDytaSIgJ8?=
+ =?us-ascii?Q?AjTYzZYyVjx1vsygmbDquJiu3OgaoxaV/oLqGevwdIsCi7Zs/ppGBs5/+OvC?=
+ =?us-ascii?Q?IaHqE+HzmqcMW+ja9Vo2TW8=3D?=
+X-OriginatorOrg: in-advantage.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5d185508-611d-4df4-a9a9-08dc8a21c332
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR10MB6974.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2024 14:21:19.7227
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 48e842ca-fbd8-4633-a79d-0c955a7d3aae
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FCjQM1IsV7iS5O8QeNrNTBbI6D/5sgQdR5iz2eKeko8wJuVhMwcE0mbDYdAuHc2DziOhofqOswym+JZl1X7nzlD7iZV+1QPHG8Cm+oKINmI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR10MB4510
 
-Refactor accessing the SDCA extension properties to make it easier to
-access multiple properties to assist with future features. Return the
-node itself and allow the caller to read the actual properties.
+Hi Louis,
 
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
----
- drivers/spi/spi-cs42l43.c | 25 +++++++++----------------
- 1 file changed, 9 insertions(+), 16 deletions(-)
+On Fri, Jun 07, 2024 at 04:45:43PM +0100, Mark Brown wrote:
+> On Thu, Jun 06, 2024 at 10:14:27PM -0500, Colin Foster wrote:
+> 
+> > So I think the question I have is:
+> 
+> > Should the CS line be de-asserted at the end of "spi_write"?
+> 
+> Absent bodging with cs_change after any spi message the chip select
+> should be left deasserted.
 
-diff --git a/drivers/spi/spi-cs42l43.c b/drivers/spi/spi-cs42l43.c
-index 8b618ef0f711..0a4475ae931b 100644
---- a/drivers/spi/spi-cs42l43.c
-+++ b/drivers/spi/spi-cs42l43.c
-@@ -246,11 +246,10 @@ static size_t cs42l43_spi_max_length(struct spi_device *spi)
- 	return CS42L43_SPI_MAX_LENGTH;
- }
- 
--static bool cs42l43_has_sidecar(struct fwnode_handle *fwnode)
-+static struct fwnode_handle *cs42l43_find_xu_node(struct fwnode_handle *fwnode)
- {
- 	static const u32 func_smart_amp = 0x1;
- 	struct fwnode_handle *child_fwnode, *ext_fwnode;
--	unsigned int val;
- 	u32 function;
- 	int ret;
- 
-@@ -266,21 +265,12 @@ static bool cs42l43_has_sidecar(struct fwnode_handle *fwnode)
- 		if (!ext_fwnode)
- 			continue;
- 
--		ret = fwnode_property_read_u32(ext_fwnode,
--					       "01fa-sidecar-instances",
--					       &val);
--
--		fwnode_handle_put(ext_fwnode);
--
--		if (ret)
--			continue;
--
- 		fwnode_handle_put(child_fwnode);
- 
--		return !!val;
-+		return ext_fwnode;
- 	}
- 
--	return false;
-+	return NULL;
- }
- 
- static void cs42l43_release_of_node(void *data)
-@@ -298,7 +288,8 @@ static int cs42l43_spi_probe(struct platform_device *pdev)
- 	struct cs42l43 *cs42l43 = dev_get_drvdata(pdev->dev.parent);
- 	struct cs42l43_spi *priv;
- 	struct fwnode_handle *fwnode = dev_fwnode(cs42l43->dev);
--	bool has_sidecar = cs42l43_has_sidecar(fwnode);
-+	struct fwnode_handle *xu_fwnode __free(fwnode_handle) = cs42l43_find_xu_node(fwnode);
-+	int nsidecars = 0;
- 	int ret;
- 
- 	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
-@@ -350,7 +341,9 @@ static int cs42l43_spi_probe(struct platform_device *pdev)
- 			return ret;
- 	}
- 
--	if (has_sidecar) {
-+	fwnode_property_read_u32(xu_fwnode, "01fa-sidecar-instances", &nsidecars);
-+
-+	if (nsidecars) {
- 		ret = software_node_register(&cs42l43_gpiochip_swnode);
- 		if (ret)
- 			return dev_err_probe(priv->dev, ret,
-@@ -373,7 +366,7 @@ static int cs42l43_spi_probe(struct platform_device *pdev)
- 		return dev_err_probe(priv->dev, ret,
- 				     "Failed to register SPI controller\n");
- 
--	if (has_sidecar) {
-+	if (nsidecars) {
- 		if (!spi_new_device(priv->ctlr, &ampl_info))
- 			return dev_err_probe(priv->dev, -ENODEV,
- 					     "Failed to create left amp slave\n");
--- 
-2.39.2
+Do you have hardware to reproduce my results of two spi messages no
+longer toggling the CS line and leaving the line at GND through the
+transactions?
 

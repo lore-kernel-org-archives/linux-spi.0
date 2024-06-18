@@ -1,118 +1,81 @@
-Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D6215B118;
-	Tue, 18 Jun 2024 13:30:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CB4913A899;
+	Tue, 18 Jun 2024 13:49:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718717444; cv=none; b=ZpyQMF/KHOMStaFYKLREfeTKQKqkmENMiI9UtP1FZmKW9haBrfVV42qttyaB+mL8oBZEqbBhFiYOE8CQFwF3ro3S7mGfbLYByoaZoKdgJQgFc+gxDewrQg2k/7ta1TVUas5DjdWkhvBgQ6R9HmWqDQ7yAjC84uf6ni/z9j9YRns=
+	t=1718718580; cv=none; b=p+qYQV61cKZmXfV2/u5tELML8w6RBN5OD04JCJMF7MBgvVLz3ESr0yiK0cq7JNeK1y2ogdE913r50TAd5b1AvswuhV5Pf2RB/uYm4zsDAJRJBXrNd7UxM2aXCv+zUHZNbCUxp5D1rrCCKlRTUAorlis9AsUrT360Vex+pRV6y4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718717444; c=relaxed/simple;
-	bh=5QjYLMT+uxnnMaR4y4r1pk2F/qUzGLWhr9DcbV9oLQc=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IqEdMJh9g39fkJnTGMa4TXOPnTq6pMWdymYABbfBHI3Nm9xOVZlkyGLCcsK6383PCrxlsbAs1Q2KLYZz1jYpM5a0gNxhLhYtLr4l2qxaapyFX+OEadGjoZ6gi8OQF9MCMWORn2ywPVniZP05c1FXRZhDo8pdqWhoze6iPDKA2fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=s+0qJ32l; arc=none smtp.client-ip=91.207.212.93
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+	s=arc-20240116; t=1718718580; c=relaxed/simple;
+	bh=E17YAOzFbfC+jQEJ9xvHNzCYANA0NHzB40zEgSfNb8o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Tkaxz2R2zdVcegNe7nVeilMy3F9t0gWIQva8zFkCQeAmh3z6zF/PVhi2QA+jxYUf8wVy3otGYI3/kzNtI4n6vmnghbX35XQ4N//mEYFEJdCUA+7n+XqNJGqXIQU9bgJ4TUc1w3KCexrDFOtOIxS+FYPwCO+5n6jJoq26lBw3GCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FyBXJ8sb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="s+0qJ32l"
-Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45IAWtTa014183;
-	Tue, 18 Jun 2024 15:30:23 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=selector1; bh=
-	ciCfElUMcOpp1w1OhQ/bb7mu8bN6hikfM6sV85h4FHY=; b=s+0qJ32lLaejpGCQ
-	OMgimN0FYisM0/qRKamDZv1HU2RaotZuHvHF92iyclCrpWv6SRTdagD5hkihqCDs
-	m6c6t2OPynWUiYLDjE9ToGXcnVs8d72EM8VE50FXPoGdt5pQxcDukaupVtayO609
-	10bCVjODgAp6bwz9iiiQTQLme8OAQSmgYXvHyIVRBLVrRCx6zmqVLX0x+iaz65uE
-	En/UP/QGJQcIJHYUT2DThUc3dAaQcVigtRjNJ3mXiI8cipGPcz1T1dbnmZJgGbj+
-	j27oBeAp/0gxcVzQqaoF+uPuQQhgoXx8DWKT/05TTxeCzponcbxCo6UdKAlHgq89
-	skN3Mg==
-Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3ys035knhw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Jun 2024 15:30:23 +0200 (MEST)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 3F81A40045;
-	Tue, 18 Jun 2024 15:30:20 +0200 (CEST)
-Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 1C38421862A;
-	Tue, 18 Jun 2024 15:29:56 +0200 (CEST)
-Received: from localhost (10.48.87.62) by SHFDAG1NODE1.st.com (10.75.129.69)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 18 Jun
- 2024 15:29:55 +0200
-From: <patrice.chotard@foss.st.com>
-To: Mark Brown <broonie@kernel.org>
-CC: <linux-spi@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <christophe.kerello@foss.st.com>, <patrice.chotard@foss.st.com>,
-        <stable@vger.kernel.org>
-Subject: [PATCH 1/3] spi: stm32: qspi: Fix dual flash mode sanity test in stm32_qspi_setup()
-Date: Tue, 18 Jun 2024 15:29:49 +0200
-Message-ID: <20240618132951.2743935-2-patrice.chotard@foss.st.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240618132951.2743935-1-patrice.chotard@foss.st.com>
-References: <20240618132951.2743935-1-patrice.chotard@foss.st.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FyBXJ8sb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1732DC4AF48;
+	Tue, 18 Jun 2024 13:49:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718718580;
+	bh=E17YAOzFbfC+jQEJ9xvHNzCYANA0NHzB40zEgSfNb8o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FyBXJ8sbS3dmNBGeyUaA+c+2R2KiipS5dL9JTLa8BnYrINsYiaFxPkIHwoKrj2EHn
+	 g1lu1bBF2p7MkvVsQN/cNCZaE+04AaKlBul9WrDNWDTv0V1E9ZfURi9po4dgpH5Pqv
+	 wn8jFHlvmmo8C955fOQ3FRiahq3Lm5uidyyKdCpXfYkk6XB7K6PQiMMxm3pY7FIfoi
+	 +lxKdpd/Ml8nGui7OaKx7RJNOsh+jY2SF7m6pkzrK/mYAfDPm1yNF/3gUsw9iOOacc
+	 Qj7zeLkvXSLMsbGQW08X2cu9QnSDa9/CHzkwdiMOMJb05+Gpprb3PlZ7fxOHSHtFOk
+	 wntuIYlFNeW0w==
+Date: Tue, 18 Jun 2024 14:49:36 +0100
+From: Mark Brown <broonie@kernel.org>
+To: alain.peteut@gmail.com
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	alain.peteut@spacetek.ch
+Subject: Re: [PATCH] spi: omap2-mcspi: consider gpiod chip selects.
+Message-ID: <c7239675-6021-46d5-8325-03059db244aa@sirena.org.uk>
+References: <20240615100610.11587-2-alain.peteut@spacetek.ch>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SAFCAS1NODE2.st.com (10.75.90.13) To SHFDAG1NODE1.st.com
- (10.75.129.69)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-18_02,2024-06-17_01,2024-05-17_01
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="QuW5hXZiGpRnuM4b"
+Content-Disposition: inline
+In-Reply-To: <20240615100610.11587-2-alain.peteut@spacetek.ch>
+X-Cookie: Do you like "TENDER VITTLES"?
 
-From: Patrice Chotard <patrice.chotard@foss.st.com>
 
-Misplaced parenthesis make test of mode wrong in case mode is equal to
-SPI_TX_OCTAL or SPI_RX_OCTAL.
+--QuW5hXZiGpRnuM4b
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Simplify this sanity test, if one of this bit is set, property
-cs-gpio must be present in DT.
+On Sat, Jun 15, 2024 at 12:06:11PM +0200, alain.peteut@gmail.com wrote:
+> From: Alain P=E9teut <alain.peteut@spacetek.ch>
+>=20
+> Consider gpiod chip selects, in which case channel 0 is used.
 
-Fixes: a557fca630cc ("spi: stm32_qspi: Add transfer_one_message() spi callback")
-Cc: stable@vger.kernel.org
-Signed-off-by: Patrice Chotard <patrice.chotard@foss.st.com>
----
- drivers/spi/spi-stm32-qspi.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+This doesn't apply against current code, please check and resend.
 
-diff --git a/drivers/spi/spi-stm32-qspi.c b/drivers/spi/spi-stm32-qspi.c
-index f1e922fd362a..6944e85d8367 100644
---- a/drivers/spi/spi-stm32-qspi.c
-+++ b/drivers/spi/spi-stm32-qspi.c
-@@ -653,9 +653,7 @@ static int stm32_qspi_setup(struct spi_device *spi)
- 		return -EINVAL;
- 
- 	mode = spi->mode & (SPI_TX_OCTAL | SPI_RX_OCTAL);
--	if ((mode == SPI_TX_OCTAL || mode == SPI_RX_OCTAL) ||
--	    ((mode == (SPI_TX_OCTAL | SPI_RX_OCTAL)) &&
--	    gpiod_count(qspi->dev, "cs") == -ENOENT)) {
-+	if (mode && gpiod_count(qspi->dev, "cs") == -ENOENT) {
- 		dev_err(qspi->dev, "spi-rx-bus-width\\/spi-tx-bus-width\\/cs-gpios\n");
- 		dev_err(qspi->dev, "configuration not supported\n");
- 
-@@ -676,10 +674,10 @@ static int stm32_qspi_setup(struct spi_device *spi)
- 	qspi->cr_reg = CR_APMS | 3 << CR_FTHRES_SHIFT | CR_SSHIFT | CR_EN;
- 
- 	/*
--	 * Dual flash mode is only enable in case SPI_TX_OCTAL and SPI_TX_OCTAL
--	 * are both set in spi->mode and "cs-gpios" properties is found in DT
-+	 * Dual flash mode is only enable in case SPI_TX_OCTAL or SPI_RX_OCTAL
-+	 * is set in spi->mode and "cs-gpios" properties is found in DT
- 	 */
--	if (mode == (SPI_TX_OCTAL | SPI_RX_OCTAL)) {
-+	if (mode) {
- 		qspi->cr_reg |= CR_DFM;
- 		dev_dbg(qspi->dev, "Dual flash mode enable");
- 	}
--- 
-2.25.1
+> Upstream-Status: Pending
 
+That upstream-status thing probably shouldn't be in submissions.
+
+--QuW5hXZiGpRnuM4b
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZxkG8ACgkQJNaLcl1U
+h9BYrgf+PP4V3EMTNKTKmYva3ta57wFqC/Ry0F0M+v9gryMZ+k9VrJFwoeYn+zkj
+v1yGf6oC+PEuYPNB+kfRz6wGCmEYH5N5ax0d258jO3hOyjWGuL1X3TtaCtIuo3mL
+lnyxo0wZJjLC2mBxcs1iuRHKWkeuBRaXA4AkXxWIxxAT4XXsgfiY1IvfF2ni9kcR
+ullWDv2EWRGNvTb7PpDbmgQLSzU1Q+Yx3Xt8JWLMkWwbVqhqNvvyeW6NltV3QDuU
+gFr/YTMXU0+Iak4JRIr5MWOE1yftndbVyMd/Qo6x5l8yrW2eeF37R2T/OQqmESs1
+79vKDOBkh2xoqOOSSx5FIKlbHIrqkw==
+=aTGY
+-----END PGP SIGNATURE-----
+
+--QuW5hXZiGpRnuM4b--

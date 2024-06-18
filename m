@@ -1,59 +1,55 @@
 Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D0315B113;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D3B15B116;
 	Tue, 18 Jun 2024 13:30:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718717443; cv=none; b=kB5D095WQKFFwwB4AcUoXwAE71rI9cMom7NdlA+JiWlUtsFNYFzylQ2V5QzmkG60yKScQwGR19Vtf7j2GRqk84i6sd8GAeEOlsLEnTDe5nNt/1el/p7empz+JQbBxRqd+dExc+Q7OT7+K3nTdAekZCg1hyq8hC/mrUKhu27VPo0=
+	t=1718717444; cv=none; b=mmpfE7a/cbApgT90n/8EGiCimvqwijeICVlD/iaZrKWKkU8peinDfGBUYuypeOVQqzHGN+UPsqljDAxBcyRkvJmzcpVNYJp2Ihe5nqpYiweehzCc79W+UVjZd6kxm3MMZ7N6sblxWnvfsPWuaMukHRxqtmEHNLWg56RzixEFj40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718717443; c=relaxed/simple;
-	bh=ZCNklMtl1o4pb1hLgwUSq0UnNbdO14NpMfKZsfzcIfQ=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fbdu395PvReFZohUYeoQ7rx9ttJDgeN2trzH3khsv/KNCgCE97A6VaMe6McA8vTkEpTdsKb/2JB/2OuPekoLaUgGgXllZrtGZNO1MwyNBY00oJRbDFlkWHE0jhIQKM+/YaWioNXhqR0hkGs1cdxyNe8uEoCYhLksBCX63OqScYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=NfFNU26a; arc=none smtp.client-ip=91.207.212.93
+	s=arc-20240116; t=1718717444; c=relaxed/simple;
+	bh=3Ku7tt0x0btNh8Wd88wUPxBrwTQbJyMIjIf/cX2NEwo=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VyYPsij+qVN4pIoqLyMmtg6YZ7n25akhEmNJ8Kb1Rmu9A0SnCcjjm2krYG+0rs3MsTUU2ng59NsGdemP+q8aOjsuQ+gnwkK5PRpB68ZWJn1wWIn/pDXdmnXVna3atucWxqULp2BkLX8auUs5483L7fuxnQoDHwEgiq1/l3pqRh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=783wEJQ0; arc=none smtp.client-ip=91.207.212.93
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="NfFNU26a"
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="783wEJQ0"
 Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45IACIj1029241;
-	Tue, 18 Jun 2024 15:30:23 +0200
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45IAQ9b4022142;
+	Tue, 18 Jun 2024 15:30:22 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=selector1; bh=
-	HYcrM2zeixLrf144VTZhcSvMBMDzoKSjg21opagkbjU=; b=NfFNU26ajJSx2lLd
-	R6Mx9zmU03eEM7cIEMorjN6d/T2NRISho6aP7QdOLve7WuL3VDU4DIQR/4xESXUO
-	Wz5Ucew1Ou+dI+kLRsUIGnTl+2w8CO4FNEjA1DT+ptVGQE1CTuUin8+oN22dOMOE
-	VcS+yNv7P7CWZVdU5j1kPVEvUXdxCZkKMkmJ6f2FZd+MtHiLKGK9a5guC85ereht
-	xQrWX5CrI7/K2qZFWOG9jxrN231VzPN2NBzmRueZydrdXBmdxbxcrEtOfcBIYDRX
-	Ck/Vfena/lHQzU8R53TOf8dVi+H/QOinT5+J7kWVMwl+9QoKYyh7BDo3/YiOe4fd
-	Mt87Dw==
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=selector1; bh=11DwoO2SWX8eyBwLh+xLeu
+	RA7wZ4nhz85Dd9E+yYocs=; b=783wEJQ0aDuSD566NOC+elkNLZSaRBKE+g+HWr
+	3fZ3QtqkAZlac6oCfEq/pKh/VyCPMQv5XeMYdbn6CEMxL7dQ709Mhh6rKjvnpS5/
+	SmVepiMBuD5ScHT/AM4NoTbFOzAcydfoi9rDSs9d+FImL88fKAZbckcF/lrpWBAj
+	1zIfx/p3i64+3brjUUWonY6z+bIpdqSqFfcLyrbgIMA1E8hcCoGriQqwDohusSeR
+	JGJgHywLADt2CSWMH+XbhwIC+Qj/5/co9HLbmCNj/j79j9OWj4prfqO7vAiTwjdj
+	4TvqPJcMM7SndjnjzSFOMbz1r2q6+I/8wodYYeh1xhqnn5dA==
 Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3ys1ucuek4-1
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3ys1ucueju-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Jun 2024 15:30:23 +0200 (MEST)
+	Tue, 18 Jun 2024 15:30:22 +0200 (MEST)
 Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 4B49E4002D;
-	Tue, 18 Jun 2024 15:30:19 +0200 (CEST)
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 416A240044;
+	Tue, 18 Jun 2024 15:30:16 +0200 (CEST)
 Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 8DA80218623;
-	Tue, 18 Jun 2024 15:29:57 +0200 (CEST)
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 5EFF7218624;
+	Tue, 18 Jun 2024 15:29:55 +0200 (CEST)
 Received: from localhost (10.48.87.62) by SHFDAG1NODE1.st.com (10.75.129.69)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 18 Jun
- 2024 15:29:57 +0200
+ 2024 15:29:55 +0200
 From: <patrice.chotard@foss.st.com>
 To: Mark Brown <broonie@kernel.org>
 CC: <linux-spi@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
         <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
         <christophe.kerello@foss.st.com>, <patrice.chotard@foss.st.com>
-Subject: [PATCH 3/3] spi: add OCTAL mode support
-Date: Tue, 18 Jun 2024 15:29:51 +0200
-Message-ID: <20240618132951.2743935-4-patrice.chotard@foss.st.com>
+Subject: [PATCH 0/3] spi: OCTAL mode fixes
+Date: Tue, 18 Jun 2024 15:29:48 +0200
+Message-ID: <20240618132951.2743935-1-patrice.chotard@foss.st.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240618132951.2743935-1-patrice.chotard@foss.st.com>
-References: <20240618132951.2743935-1-patrice.chotard@foss.st.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -70,59 +66,23 @@ X-Proofpoint-Virus-Version: vendor=baseguard
 
 From: Patrice Chotard <patrice.chotard@foss.st.com>
 
-Add OCTAL mode support.
-Issue detected using "--octal" spidev_test's option.
+During tests performed using spidev_test in OCTAL mode with spi-stm32-qspi.c,
+several issues has been found :
+  _ OCTAL mode wasn't supported in spi.c
+  _ CCR register wasn't set correctly when OCTAL mode is set in spi-stm32-qspi.c.
+  _ Fix dual flash mode sanity test in spi-stm32-qspi.c
 
-Signed-off-by: Patrice Chotard <patrice.chotard@foss.st.com>
----
- drivers/spi/spi.c       | 6 ++++--
- include/linux/spi/spi.h | 5 +++--
- 2 files changed, 7 insertions(+), 4 deletions(-)
+Patrice Chotard (3):
+  spi: stm32: qspi: Fix dual flash mode sanity test in
+    stm32_qspi_setup()
+  spi: stm32: qspi: Clamp stm32_qspi_get_mode() output to CCR_BUSWIDTH_4
+  spi: add OCTAL mode support
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 9bc9fd10d538..9da736d51a2b 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -4156,7 +4156,8 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
- 				return -EINVAL;
- 			if (xfer->tx_nbits != SPI_NBITS_SINGLE &&
- 				xfer->tx_nbits != SPI_NBITS_DUAL &&
--				xfer->tx_nbits != SPI_NBITS_QUAD)
-+				xfer->tx_nbits != SPI_NBITS_QUAD &&
-+				xfer->tx_nbits != SPI_NBITS_OCTAL)
- 				return -EINVAL;
- 			if ((xfer->tx_nbits == SPI_NBITS_DUAL) &&
- 				!(spi->mode & (SPI_TX_DUAL | SPI_TX_QUAD)))
-@@ -4171,7 +4172,8 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
- 				return -EINVAL;
- 			if (xfer->rx_nbits != SPI_NBITS_SINGLE &&
- 				xfer->rx_nbits != SPI_NBITS_DUAL &&
--				xfer->rx_nbits != SPI_NBITS_QUAD)
-+				xfer->rx_nbits != SPI_NBITS_QUAD &&
-+				xfer->rx_nbits != SPI_NBITS_OCTAL)
- 				return -EINVAL;
- 			if ((xfer->rx_nbits == SPI_NBITS_DUAL) &&
- 				!(spi->mode & (SPI_RX_DUAL | SPI_RX_QUAD)))
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index e8e1e798924f..98fdef6e28f2 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -1085,12 +1085,13 @@ struct spi_transfer {
- 	unsigned	dummy_data:1;
- 	unsigned	cs_off:1;
- 	unsigned	cs_change:1;
--	unsigned	tx_nbits:3;
--	unsigned	rx_nbits:3;
-+	unsigned	tx_nbits:4;
-+	unsigned	rx_nbits:4;
- 	unsigned	timestamped:1;
- #define	SPI_NBITS_SINGLE	0x01 /* 1-bit transfer */
- #define	SPI_NBITS_DUAL		0x02 /* 2-bit transfer */
- #define	SPI_NBITS_QUAD		0x04 /* 4-bit transfer */
-+#define	SPI_NBITS_OCTAL	0x08 /* 8-bit transfer */
- 	u8		bits_per_word;
- 	struct spi_delay	delay;
- 	struct spi_delay	cs_change_delay;
+ drivers/spi/spi-stm32-qspi.c | 12 +++++-------
+ drivers/spi/spi.c            |  6 ++++--
+ include/linux/spi/spi.h      |  5 +++--
+ 3 files changed, 12 insertions(+), 11 deletions(-)
+
 -- 
 2.25.1
 

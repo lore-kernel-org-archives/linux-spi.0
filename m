@@ -1,85 +1,197 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-001ae601.pphosted.com (mx0b-001ae601.pphosted.com [67.231.152.168])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E89F20B34;
-	Wed, 19 Jun 2024 12:08:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85B65140360;
+	Wed, 19 Jun 2024 12:17:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.152.168
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718798885; cv=none; b=ofpufYozXaIrj2vHHO19xzEILOYhJJr1chUR+o9rWHIFAIPLM7eifVvjQo8nJbYs/r+TJOno8adGSRfBENMXs2uH2wjWYTyeoSGTvXStk6asOFl7QiUm4V/5U7jizU5+BdCk9+pb/s9hvep6RgITI1NuY60ZbELLVViDKrNEMeI=
+	t=1718799431; cv=none; b=PpbPwGoXeaYAgyIuO8qeJ9b0CgJT8i5SOPVijZOZp49pVZY0ofrIJhC0Ze4HW4zvNaPeSwfY5qY33G51SMwbh2YmOi/GFNpaboF6MHSmGZiIp1wqrnXWtGNCPeBzYuM3QhOH8hWF3qzXmYbaLkAiTHYRAjwycuR/8L7I7k5OPxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718798885; c=relaxed/simple;
-	bh=SehDOVj0xcMmEoe78u3jDOta+JmRt6fmwneR9FCzK7U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OOWsxM0qWdSC9dOyeJi0IbQjNj7YJ9FR0b93206Y7KIAEIBPbx5Hf+2OpUx53sn7Y6GYCsmH6K4i0qiLqLOLZeWQG/dZP3/Zh5/99lcCruu2sN6iIWJEr7ajt6jxJeU7rPbMQ8J6zIcERyou5VERdYXNaxwt3tthZNcnMgAV9LQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Iew0RSTw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1718799431; c=relaxed/simple;
+	bh=3Nfc9qTrzhoyruiWP0Sm39r61eJRz96SU2sZ+DEAy0M=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JVEZnhwgTgzCW9+YoHUNVvKCm2LTrg8EETs4tvLhfOHj9UGG4I7yYPYPqk2hJyQhEyyUOJOPaAHLNTWj6mvMjv3Y4F0tkwRgrlt3sGfknVZgY5M2R0V69crnLonaZTfzLD9jony2UxG4A8TjQo6cpc5d3MAGtOIsmXwK8TaKqOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com; spf=pass smtp.mailfrom=opensource.cirrus.com; dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b=VKvK12lU; arc=none smtp.client-ip=67.231.152.168
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensource.cirrus.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Iew0RSTw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A48DDC2BBFC;
-	Wed, 19 Jun 2024 12:08:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718798884;
-	bh=SehDOVj0xcMmEoe78u3jDOta+JmRt6fmwneR9FCzK7U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Iew0RSTwct1BQsvJDNOLo9Xi4avPrBNVX4Mom0A5+ovGuO/6i/Fdvcc/21VqQOdRG
-	 Po3Xnxk6cfOytUfhqJRAsgOMZKJSOhAwXumb6HX3chubWZ/AnDLVtd4rm2fKMser2P
-	 lxUtKY9vwF8yiWEbip1vtalrze9EU+YSlgKvbaRrN14lL8UwaYRbefCm3WqdZBkj5b
-	 7D+4TULE5IXxENs+y4U0mxBRtXNmw5x4S5Pp0+AeuGpIwkn7Ou6GLm0oNdyCGwpdSv
-	 viV8jesakSxfU313MWCQZhAjyMjCjnsSN+qFK2gJsgomm+1pNfltQZXUY0OJCU/KHq
-	 hSCVnsoVKM6KA==
-Date: Wed, 19 Jun 2024 13:07:58 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
-	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-	conor+dt@kernel.org, nuno.sa@analog.com, dlechner@baylibre.com,
-	marcelo.schmitt1@gmail.com, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 1/6] spi: Enable controllers to extend the SPI
- protocol with MOSI idle configuration
-Message-ID: <5f89baeb-c95a-4ad9-adc7-769fb124c0d4@sirena.org.uk>
-References: <cover.1718749981.git.marcelo.schmitt@analog.com>
- <36eefb860f660e2cadb13b00aca04b5a65498993.1718749981.git.marcelo.schmitt@analog.com>
+	dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b="VKvK12lU"
+Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
+	by mx0b-001ae601.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45J5ecEE006698;
+	Wed, 19 Jun 2024 07:17:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	PODMain02222019; bh=M+XNeP4vrTMboLr4R7ijBBTatNPgu6loYHa23IGjAgE=; b=
+	VKvK12lUAz+C4IR6LIhBs9QHMqe0jdVOwMHsFj4+tI+imXOd+s4i2LE9JWBmMFHT
+	ZDkemej5VFTWwYxyklmqcHCgg5z2aOgxmiJ+uyxDptMG8lnE8yGMBJ3g0EAyVa9k
+	eVvB5zMhFEn+cLofd+SeW2NUJ7bVvH/OJckB26FySJcyrChH33lungzBNPB7ppI8
+	jLbajxd672FhreH2H1fzCVhQrnk6vLkyAlu9RVSbsx2HUlSeA2pfix4y71ReQ298
+	8IWJu7COBrLRktgtM56EL8EHnHvsGhvew+EuCK9ZXBtazKAG4NruKZaBk59rc6aA
+	b1H2fCqhZ1PVfdod9jp18g==
+Received: from ediex02.ad.cirrus.com ([84.19.233.68])
+	by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 3yujb10kgc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 19 Jun 2024 07:17:05 -0500 (CDT)
+Received: from ediex02.ad.cirrus.com (198.61.84.81) by ediex02.ad.cirrus.com
+ (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 19 Jun
+ 2024 13:17:03 +0100
+Received: from ediswmail9.ad.cirrus.com (198.61.86.93) by
+ anon-ediex02.ad.cirrus.com (198.61.84.81) with Microsoft SMTP Server id
+ 15.2.1544.9 via Frontend Transport; Wed, 19 Jun 2024 13:17:03 +0100
+Received: from ediswws07.ad.cirrus.com (ediswws07.ad.cirrus.com [198.90.208.14])
+	by ediswmail9.ad.cirrus.com (Postfix) with ESMTP id 3C83C82024D;
+	Wed, 19 Jun 2024 12:17:03 +0000 (UTC)
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
+To: <broonie@kernel.org>
+CC: <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <patches@opensource.cirrus.com>
+Subject: [PATCH v2 2/2] spi: cs42l43: Add speaker id support to the bridge configuration
+Date: Wed, 19 Jun 2024 13:17:03 +0100
+Message-ID: <20240619121703.3411989-2-ckeepax@opensource.cirrus.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240619121703.3411989-1-ckeepax@opensource.cirrus.com>
+References: <20240619121703.3411989-1-ckeepax@opensource.cirrus.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="QH6J6xih8fp6IIfc"
-Content-Disposition: inline
-In-Reply-To: <36eefb860f660e2cadb13b00aca04b5a65498993.1718749981.git.marcelo.schmitt@analog.com>
-X-Cookie: Don't I know you?
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: NuaHAG3etiZu26oPqo63gHAjmc8vdl4v
+X-Proofpoint-GUID: NuaHAG3etiZu26oPqo63gHAjmc8vdl4v
+X-Proofpoint-Spam-Reason: safe
 
+From: Simon Trimmer <simont@opensource.cirrus.com>
 
---QH6J6xih8fp6IIfc
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+OEMs can connect a number of types of speakers to the sidecar cs35l56
+amplifiers and a different speaker requires a different firmware
+configuration.
 
-On Tue, Jun 18, 2024 at 08:10:44PM -0300, Marcelo Schmitt wrote:
+When the cs42l43 ACPI includes a property indicating a particular type
+of speaker has been installed this should be passed to the cs35l56
+driver instances as a device property.
 
-> First replies to v3 brought the idea of having a feature detection mechan=
-ism.
-> I didn't really get how to do that. If feature detection is required, can
-> somebody please provide some pointers on how to implement that?
+Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+---
 
-Look at the checks in spi_setup() for bad_bits. =20
+Changes since v1:
+ - Just a rebase
 
---QH6J6xih8fp6IIfc
-Content-Type: application/pgp-signature; name="signature.asc"
+Thanks,
+Charles
 
------BEGIN PGP SIGNATURE-----
+ drivers/spi/spi-cs42l43.c | 73 ++++++++++++++++++++++++++++-----------
+ 1 file changed, 52 insertions(+), 21 deletions(-)
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZyyh0ACgkQJNaLcl1U
-h9ABLgf/XM3S8vAY2xtIjPhw+56Z159aXWzIYnT0IGXhhosxN+39kKViSxaSuO+W
-5xpbfrztdw+y//xbq8xYwOXL8o8/k9s6PCXjJgPJ0pqTWdsXUWNB8ofaPQPZO+Bx
-F/vaxzGc2Rv42MGjSjAp9bMck8a7UCGTxPQRjlhEIcT8fsRGuy+nuYngKekxgz7b
-NI4gBSAnRjYhS8GII4iMdNMqeUuAfLE2d4bwgekJ20E+m28HZWlL86+gwwqCNk6n
-6WSesT5eGGJXaxSm4JJ8UnQTbP/qAWtN9FTFq5riu9APPnXmzvfXHGajMwpEpS6w
-5wS5FeRNgr5EKM5cng2zcjnT8E6a0Q==
-=shHL
------END PGP SIGNATURE-----
+diff --git a/drivers/spi/spi-cs42l43.c b/drivers/spi/spi-cs42l43.c
+index 7b6fc6158a3b..5b8ed65f8094 100644
+--- a/drivers/spi/spi-cs42l43.c
++++ b/drivers/spi/spi-cs42l43.c
+@@ -45,28 +45,10 @@ static const unsigned int cs42l43_clock_divs[] = {
+ 	2, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30
+ };
+ 
+-static const struct software_node ampl = {
+-	.name			= "cs35l56-left",
+-};
+-
+-static const struct software_node ampr = {
+-	.name			= "cs35l56-right",
+-};
+-
+-static struct spi_board_info ampl_info = {
++static struct spi_board_info amp_info_template = {
+ 	.modalias		= "cs35l56",
+ 	.max_speed_hz		= 11 * HZ_PER_MHZ,
+-	.chip_select		= 0,
+ 	.mode			= SPI_MODE_0,
+-	.swnode			= &ampl,
+-};
+-
+-static struct spi_board_info ampr_info = {
+-	.modalias		= "cs35l56",
+-	.max_speed_hz		= 11 * HZ_PER_MHZ,
+-	.chip_select		= 1,
+-	.mode			= SPI_MODE_0,
+-	.swnode			= &ampr,
+ };
+ 
+ static const struct software_node cs42l43_gpiochip_swnode = {
+@@ -274,6 +256,39 @@ static struct fwnode_handle *cs42l43_find_xu_node(struct fwnode_handle *fwnode)
+ 	return NULL;
+ }
+ 
++static struct spi_board_info *cs42l43_create_bridge_amp(struct cs42l43_spi *priv,
++							const char * const name,
++							int cs, int spkid)
++{
++	struct property_entry *props = NULL;
++	struct software_node *swnode;
++	struct spi_board_info *info;
++
++	if (spkid >= 0) {
++		props = devm_kmalloc(priv->dev, sizeof(*props), GFP_KERNEL);
++		if (!props)
++			return NULL;
++
++		*props = PROPERTY_ENTRY_U32("cirrus,speaker-id", spkid);
++	}
++
++	swnode = devm_kmalloc(priv->dev, sizeof(*swnode), GFP_KERNEL);
++	if (!swnode)
++		return NULL;
++
++	*swnode = SOFTWARE_NODE(name, props, NULL);
++
++	info = devm_kmemdup(priv->dev, &amp_info_template,
++			    sizeof(amp_info_template), GFP_KERNEL);
++	if (!info)
++		return NULL;
++
++	info->chip_select = cs;
++	info->swnode = swnode;
++
++	return info;
++}
++
+ static void cs42l43_release_of_node(void *data)
+ {
+ 	fwnode_handle_put(data);
+@@ -368,11 +383,27 @@ static int cs42l43_spi_probe(struct platform_device *pdev)
+ 				     "Failed to register SPI controller\n");
+ 
+ 	if (nsidecars) {
+-		if (!spi_new_device(priv->ctlr, &ampl_info))
++		struct spi_board_info *ampl_info;
++		struct spi_board_info *ampr_info;
++		int spkid = -EINVAL;
++
++		fwnode_property_read_u32(xu_fwnode, "01fa-spk-id-val", &spkid);
++
++		dev_dbg(priv->dev, "Found speaker ID %d\n", spkid);
++
++		ampl_info = cs42l43_create_bridge_amp(priv, "cs35l56-left", 0, spkid);
++		if (!ampl_info)
++			return -ENOMEM;
++
++		ampr_info = cs42l43_create_bridge_amp(priv, "cs35l56-right", 1, spkid);
++		if (!ampr_info)
++			return -ENOMEM;
++
++		if (!spi_new_device(priv->ctlr, ampl_info))
+ 			return dev_err_probe(priv->dev, -ENODEV,
+ 					     "Failed to create left amp slave\n");
+ 
+-		if (!spi_new_device(priv->ctlr, &ampr_info))
++		if (!spi_new_device(priv->ctlr, ampr_info))
+ 			return dev_err_probe(priv->dev, -ENODEV,
+ 					     "Failed to create right amp slave\n");
+ 	}
+-- 
+2.39.2
 
---QH6J6xih8fp6IIfc--

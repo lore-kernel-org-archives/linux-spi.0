@@ -1,42 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A93B1FC1F;
-	Wed, 19 Jun 2024 12:50:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E7C41442F1;
+	Wed, 19 Jun 2024 12:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718801448; cv=none; b=eP/Zh2Q9cbwU68py45inGRrw4lzXM2TXivEE2NgVrhHfsQTvMdIf0QbShxUvwIIrvdksYrzBTweMcfDKQlkPZmKq7EsWoKqktCpQ1d9yfMjKu39h3ih/bGoV9IgO+vHWt3fPjHMG0w9xPg8W4KRQiPpx1wZePscq7eXG5hGv0ek=
+	t=1718801450; cv=none; b=LEgRn3Pn65pmxrfGdAnvNPMrbCgqyBfE3UT7fImxk1IH6pqavbAeoNp4P8JmbOn/vphYoBZis7WazHza+wBwK4mAuAPYeWPbgVMqLMkaWXNBXakYhQGnrwkEDvPN0jazhfooaHVmQ+au4UXce0AMiw+SwyO2yA8zXBAz/nIUCro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718801448; c=relaxed/simple;
-	bh=MKPk/xGcsJ3mkq4leddfFyEcbWWZuDqiYmtRl4qAla0=;
+	s=arc-20240116; t=1718801450; c=relaxed/simple;
+	bh=6K6iblTkgTBTOPh40fvr/BKHmHNj+OuCMWSU1j1l17o=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=bHNNG4g7KqpA2ioqd5cRftbOROUva2QEui5j5hjFeuYcCf2RwH5Qb9NcW4mPLLvG3tqML3J6/uSgJrlaH2i08k2YuGp22u4XA18wHwO3HcTWvedjSV6uhLfQjckFZFdkQgxkC0ZJbWxAxfLGJIOgzpCBSZfV8pW0Dvc4pfis9CE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FCjG6aYr; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=D8YRfb4YA5o3Mptfxs7dIt0ZWc38QzC9HDuVoEnNc/3/TvZYMdYr6gGJAgcBWEl8we9esq5SFQihuOt+/vLqIQjQ+HEHXX+15u8s8BLeaCNNZSZTG64Of1pdeJqdFb1xvKlCydJbjl1A435q7tZyE/WcvhM+I5Sq6bKw/XZWCps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q2I+uINO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FCjG6aYr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AAEBC32786;
-	Wed, 19 Jun 2024 12:50:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q2I+uINO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB836C4AF1A;
+	Wed, 19 Jun 2024 12:50:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718801448;
-	bh=MKPk/xGcsJ3mkq4leddfFyEcbWWZuDqiYmtRl4qAla0=;
+	s=k20201202; t=1718801449;
+	bh=6K6iblTkgTBTOPh40fvr/BKHmHNj+OuCMWSU1j1l17o=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=FCjG6aYrVO1Gzy26UZkn4XkbRaHhGbrSdq0QKhnT7G0X1k/tJOH7nSLWFZcYcjjds
-	 PCBM/ZgxUmclO83HXWNZ32CdKscjV/0JrhuJpxNs5nx8qNGV0s7GhUjLSasmm6UZjJ
-	 7J7O57r2dsXWxy1BQPQX4W4Kum3TwPSapqNDl5qDmkOv0zFmw0JOGTCWBEE32VX4EU
-	 kIixfIL2N+oHUKwqLl7V7OFYXLxgjqZdNbScnMq22vwc9x9Z+Vyih/Fadvx+wZBy9r
-	 RzPbBzKEqOv1oZiRny3D80vDhxs1B48KSNAox59JK8eQS/jOYUGAbdoUGk4FloVHez
-	 mMzv2N2ULqxvA==
+	b=Q2I+uINOriJX8XjkW3c8/BNkNskneTJZJOMY6Cl2ieA5XORuUq54zTiD8V6FL2pLx
+	 HU8XfBYOVUVk2yr132flM6NMaJJoii5VDBZKOOZEqfbs61YbeWTTgq/TYKD3gFu+gW
+	 dAPLbcOF2vFi1TKQvbdUhdjd2d2hOPW4/cPgjQhY2XCjbwLQCE5jjMQltQPt53HbxF
+	 1wH9iHu4dHAZYqptFP/vAXiKt6dB5RV31P7Hb7TnzH9FNhumMgvUSDwQoEMIoEoIKw
+	 duEkbvex2leqTxDRspE35tW6vwCPUcR3InfoeEq2N+JNF2+HUdTv+geSm/6Wv6bQxH
+	 7wiyQL1xNfTLA==
 From: Mark Brown <broonie@kernel.org>
 To: Charles Keepax <ckeepax@opensource.cirrus.com>
-Cc: lgirdwood@gmail.com, linux-sound@vger.kernel.org, 
- linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
  patches@opensource.cirrus.com
-In-Reply-To: <20240611132556.1557075-1-ckeepax@opensource.cirrus.com>
-References: <20240611132556.1557075-1-ckeepax@opensource.cirrus.com>
-Subject: Re: (subset) [PATCH 1/3] spi: cs42l43: Refactor accessing the SDCA
+In-Reply-To: <20240619121703.3411989-1-ckeepax@opensource.cirrus.com>
+References: <20240619121703.3411989-1-ckeepax@opensource.cirrus.com>
+Subject: Re: [PATCH v2 1/2] spi: cs42l43: Refactor accessing the SDCA
  extension properties
-Message-Id: <171880144676.113265.5971230343895935810.b4-ty@kernel.org>
-Date: Wed, 19 Jun 2024 13:50:46 +0100
+Message-Id: <171880144842.113265.13864100805243474696.b4-ty@kernel.org>
+Date: Wed, 19 Jun 2024 13:50:48 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -47,7 +46,7 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14-dev-d4707
 
-On Tue, 11 Jun 2024 14:25:54 +0100, Charles Keepax wrote:
+On Wed, 19 Jun 2024 13:17:02 +0100, Charles Keepax wrote:
 > Refactor accessing the SDCA extension properties to make it easier to
 > access multiple properties to assist with future features. Return the
 > node itself and allow the caller to read the actual properties.
@@ -60,9 +59,9 @@ Applied to
 
 Thanks!
 
-[1/3] spi: cs42l43: Refactor accessing the SDCA extension properties
+[1/2] spi: cs42l43: Refactor accessing the SDCA extension properties
       commit: 6914ee9cd1b0c91bd2fb4dbe204947c3c31259e1
-[2/3] spi: cs42l43: Add speaker id support to the bridge configuration
+[2/2] spi: cs42l43: Add speaker id support to the bridge configuration
       (no commit info)
 
 All being well this means that it will be integrated into the linux-next

@@ -1,56 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DF19383B1
-	for <linux-spi@vger.kernel.org>; Mon, 24 Jun 2024 19:56:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015FD1A01DD
+	for <linux-spi@vger.kernel.org>; Mon, 24 Jun 2024 20:10:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719259003; cv=none; b=PvatDkFRRGcxSSn2pmvLvgpkUSlklMUw1I7oA6R+uCzRUfEqjkTo5r4FHOxclChSTrHJaeZlbfCsiN59f6MYwz07F8SB7pCO/70d8ClOUT6GKyDb1bGQD6k0fKk+LH9eoWcwT13XUCO5F2p3TqcK9igaQOQLJzmGHIhPaV8Ndis=
+	t=1719259850; cv=none; b=iH3n6ywXtI1Wur/uB/2JZu0aywLTpfdBTdIPdXys+GYTsqnQD6JXmTUHA4AWBjyBSV2etOV27fp4FJTGXo2j+KRC+7f+7SKKTuvP3ue+Penw916DFGsxYJgtIA1dKWJ/VcB3K7rG5SFm5UnmDi1fWQfEyRLGNkwos6OuCGmijYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719259003; c=relaxed/simple;
-	bh=ru1lFfSWXFGGhLCIidW2zysHG2JQO2TZ8HsD5wk72Dg=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=I/PnrjdSthwAGsCvsSY5iRc4uDCek0B5EuCyXAkjExUq7lF+XGcgrtEq/HBwyzYY9FH/anXF3qLBFljMmXnN4Z10DRGqKx8FtJjPW2RkEBqAeBb0wQ+fAtl45H6s4iFn9IkvlW09D0MDDCtij2dHdntGasWLmeFvsUJX1o4oZc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J2ptslED; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1719259850; c=relaxed/simple;
+	bh=gwveKsBVtN7JFtmU94y848i/o5pT/Jhq2LKbTqkccp4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ODA/cNaNzYG5Eg7XmEStQHzXRnx0X+JgQ1R2JWUMCCmf8tBSeDwJR8v+C1yqJhNvL8sLATOhCR2NPXdV1InFM9QrE1AzeFX8+ifou+K3M91F3EF3kKB4AADWabCqsmW9mljztisAOe46C2vuPBkneL2t09KSKB3MSxAxbb6V20s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=fkzpX3pd; arc=none smtp.client-ip=209.85.160.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J2ptslED"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id DEC09C2BBFC;
-	Mon, 24 Jun 2024 19:56:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719259002;
-	bh=ru1lFfSWXFGGhLCIidW2zysHG2JQO2TZ8HsD5wk72Dg=;
-	h=Subject:From:Date:To:From;
-	b=J2ptslEDBWVYq478O/ryub1/0qFGTbxe/erjZE2Q58jTlpkb/KexSE32kwrn4sooL
-	 sQM7cL4TiJ/oj3Z01yIVv946QddG4p0XbF3erFZNXgr+lSOi/j9aE/fddyT/FjhTNM
-	 JRWQt55lZBL1v91hP5Ey/YQdlevMQvgtiQ1dOc18xkd/9HonnNjpzkCgj3hmg1vXya
-	 /An5jGmKVFeoaTVVyfAQtND0U3K1b4qW+b9dUkpgW2t055uAJVNKpH5CYRYkRjQaGP
-	 bz9yILtiUon7mVFgHGERW3CdB1o3A6nBeAQGO1DsUpWBnnojcbUkInIULoH1zXuytG
-	 IB719Gfg4I5Pw==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id C9F35C4166E;
-	Mon, 24 Jun 2024 19:56:42 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="fkzpX3pd"
+Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-25cba5eea69so2301980fac.2
+        for <linux-spi@vger.kernel.org>; Mon, 24 Jun 2024 13:10:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1719259848; x=1719864648; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pynIwSYLtFCFqE/LQh0xYvfYgPBDJkazLg5naxF4gSA=;
+        b=fkzpX3pdQsNMGXaaXbgrCM8rgVlEgWID9r2Jw7nTTqnKu3J4VtKfnXp+CRGTMijmvN
+         xt+KtfzfapDKixaeOzyaZBxbPARuoxrdtVpjPkj2ED1I6U5iaaoWF6LlFP06XotfCEhp
+         b26CvwuJ9XHtbBQMlAAKK3PtQbdg4/wt+ZTOr0m5wN6eP7jM8uBEsZ7bB6pV7A8qptCc
+         d/5U5wTN9GRifeOzHQOnk5a3d3r+4WrwT1PyKHZFG95l27UbXhHqsfctbWTrz4g7beCR
+         PYJt8w0Fn2WxUeLQ0bhYyZRK3WZB+21FxMAGTUzS6DLT7eKDo3sx4iuLVAU5CEmhNdSq
+         FbzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719259848; x=1719864648;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pynIwSYLtFCFqE/LQh0xYvfYgPBDJkazLg5naxF4gSA=;
+        b=WaPMjxFJnlMWKeb53jhsHmM3i3KNk6bsUyz7+9rNWBIG/p5are1WGRLHH036iVSP7w
+         claxr8yOsBtPw5EIstX7pkYgtNeRlRXNORhz4fcQSPOxF/oVTMNtf/ryNrAYD0sJthZM
+         U2tTsyVi6w504J+gPUh8kZXeCL9q2G3caJLvQAts03eK5McsZFGNu1Uvm0Ymr0pjkd3f
+         lcFK64kFzBzRoF4viEQFvfexLPNHbwbonl6Sp/jX7hpaEuL8AU7GL0hbDxRDa5/hy0K4
+         fN331c4FXSVLnULi17b4FqUC525iPEsjxXprBuomi2o/DkKUqRCytJpAGwdLw2XnXUdY
+         5raw==
+X-Forwarded-Encrypted: i=1; AJvYcCWsuvzhXAWBvEBMq2zEhomGpCJJsDwaiO1nPwNa3JF4DRVcTHhFNibc3nHBszAyjOIJORDRvNRvqMs60+0DoF0Hod5V0NiMfTnU
+X-Gm-Message-State: AOJu0YzmGnz0iCm8AahP3UJ1z8e4krA+YrwQZdWoZgY41QD0H2wZEYtZ
+	yqL2zr2ex7w36PyfVBT0aMvCDSNw+XdovdqtKWs03VrdWsFi6L/M/vK3sHDAKp4=
+X-Google-Smtp-Source: AGHT+IHRPUfp+ZBPyKVGnp8PYVSyxPlPBcZpQHC+Oj3KSMk2tSXxZxcaP2yg1g1kDGwwn06PCl+SEA==
+X-Received: by 2002:a05:6870:40c8:b0:250:7a8d:1756 with SMTP id 586e51a60fabf-25d0163e8d0mr6380388fac.12.1719259848112;
+        Mon, 24 Jun 2024 13:10:48 -0700 (PDT)
+Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-25cd498872csm2056581fac.21.2024.06.24.13.10.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Jun 2024 13:10:47 -0700 (PDT)
+From: David Lechner <dlechner@baylibre.com>
+To: Mark Brown <broonie@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>
+Cc: David Lechner <dlechner@baylibre.com>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	=?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org,
+	linux-iio@vger.kernel.org
+Subject: [PATCH v2 1/2] spi: add EXPORT_SYMBOL_GPL(devm_spi_optimize_message)
+Date: Mon, 24 Jun 2024 15:10:30 -0500
+Message-ID: <20240624-devm_spi_optimize_message-v2-1-58155c0180c2@baylibre.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240624-devm_spi_optimize_message-v2-0-58155c0180c2@baylibre.com>
+References: <20240624-devm_spi_optimize_message-v2-0-58155c0180c2@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+X-Mailer: b4 0.12.4
 Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <171925900282.3329.13206172138860318895.git-patchwork-housekeeping@kernel.org>
-Date: Mon, 24 Jun 2024 19:56:42 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-Latest series: [v4] spi: fsl-dspi: Convert to yaml format and use common SPI property (2024-06-24T18:55:26)
-  Superseding: [v3] spi: fsl-dspi: Convert to yaml format and use common SPI property (2024-06-20T16:58:26):
-    [v3,1/3] spi: fsl-dspi: use common proptery 'spi-cs-setup(hold)-delay-ns'
-    [v3,2/3] spi: dt-bindings: fsl-dspi: Convert to yaml format
-    [v3,3/3] arm64: dts: fsl-ls1043a-rdb: use common spi-cs-setup(hold)-delay-ns
+devm_spi_optimize_message() is a public function and needs
+EXPORT_SYMBOL_GPL.
 
+Reported-by: Jonathan Cameron <jic23@kernel.org>
+Closes: https://lore.kernel.org/linux-iio/20240624204424.6a91a5e4@jic23-huawei/
+Fixes: 17436001a6bc ("spi: add devm_spi_optimize_message() helper")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+---
+ drivers/spi/spi.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 3f953504244b..814d66fc9753 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -4384,6 +4384,7 @@ int devm_spi_optimize_message(struct device *dev, struct spi_device *spi,
+ 
+ 	return devm_add_action_or_reset(dev, devm_spi_unoptimize_message, msg);
+ }
++EXPORT_SYMBOL_GPL(devm_spi_optimize_message);
+ 
+ /**
+  * spi_async - asynchronous SPI transfer
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+2.45.2
 

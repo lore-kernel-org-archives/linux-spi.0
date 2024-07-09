@@ -1,57 +1,57 @@
-Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
+Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F27E02837D
-	for <linux-spi@vger.kernel.org>; Tue,  9 Jul 2024 01:05:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3829381BE
+	for <linux-spi@vger.kernel.org>; Tue,  9 Jul 2024 01:05:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720487149; cv=none; b=Pvbm9HyRmZ7R0GSqjeGUA/PmUbvlBIpnkfzqMC+XGdZBFse9KNSK395euqVEPzlHth4ROW7JYi13KTIYWbMIKHc5V/LYqcjelOS+PKmls/7RK1ydgaaes6Tx/rSkrPDK/wMyeWMAB/4ZhV8N6EQY2TI9zk7EBGWrJaW73Dya1iA=
+	t=1720487151; cv=none; b=oLCFallt925ECTxYtIIJB3KmrbZcK32qOknI5kuikPGkP+2WG9FIZiGaNnsLbZWqglwY/Jkp4/+OYIuyIxxJSy87+0Qw/phbvRqBZSIkmwd+JRvFvWsupkje+1WXGAqWjWwyi0+Qa+anmCivw6CXeauyDGX7FtmOjFGfDnyAp1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720487149; c=relaxed/simple;
-	bh=MCMshjCn4X7qsHq4kXqJP0zCCRHD6RupPbdPAs9uLOw=;
+	s=arc-20240116; t=1720487151; c=relaxed/simple;
+	bh=zhXUxg9EOpmx0CiXmSG794sId4TJVZklA0dfYHPw/DM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nGQcO8BmexFFZTLWZg1UkxQjpWJjH2EKTGi2wDq5WWrh1hNB/eXF1G/1VPcFxhRwavr9AKDVaWv4Juo0ltucCH5Ctr7Puf7XBoiiF0vgjnjVeivqn2yMASgICV8jCqI0G//BNh6RvNL/H8PZu495L7RG2xkYe4xT0gunbKiRysQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=flQiI1G6; arc=none smtp.client-ip=209.85.167.171
+	 MIME-Version:Content-Type; b=MEP/N1zo4Pu0nW1H/EH609ox2VjggIe+Uih56r/SQZeZt2F7lfSIeaegnC6/XHcNpucD7xdvjkbWsZjBv/rqQwNWQjefisTfdty2SJvbIpLE/GVghOFRCVsRQtFNbVGZxNpqmBqQ+hTrBS3ehg5LD7HaKfSsQOo9svI1vMI4t2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=W6CI5h3l; arc=none smtp.client-ip=209.85.167.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="flQiI1G6"
-Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-3d925e50f33so1615886b6e.2
-        for <linux-spi@vger.kernel.org>; Mon, 08 Jul 2024 18:05:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="W6CI5h3l"
+Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-3d92e1bc90dso681123b6e.0
+        for <linux-spi@vger.kernel.org>; Mon, 08 Jul 2024 18:05:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1720487146; x=1721091946; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1720487149; x=1721091949; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4pqUInDFYH5yNjfgMFCM2DbLWsqlTAzTUfTi1S8oEnY=;
-        b=flQiI1G6Gt8tKkMq14TZ197Kca36qGR25TWjXdj4Ok9kDxlTZKcESVgoA6zF5UmSbS
-         2ITQNODMquatcMfHEuJuy9zI4tAKDswks2N3Zwa3eigkcMtgcwP0ou8j8GRjOGYBeA+o
-         XSxjHb/hPKZWDjk3/DvSBdDnncE/zyOLAgYEB6TWo1sgQa2wna4TK8CBtABpY9FU4M4h
-         fheTH8tEJNUeuYhsvm9syguYKUloUg0qfvTfo1pf9bAXjeUXjs0sld6cXddB1/B44SE1
-         KFSKm/9i2rC6iHmIuABTrNVPl7GvmQiRohdA4vFa3fVc2HF0vGcUyYHnwfMsfRaV4jjd
-         /7gA==
+        bh=bxt6sRBunEAJdmr/SMQIrLMhyKmCuiWg3A5plz8J5+8=;
+        b=W6CI5h3lC1KoLwMAZA9GskkbrMCdqI1bj+tEUVGG+jD4QocknpFzHYI8+SxnES9CCz
+         FjgsILHtjKy2eYJBdUSeBM9voUQ5oW2W7V1XKYtvzmsaFuP4SJIyW/11lo8gQer8zPuw
+         QY0+ntxDME93cMyG3zezbJ/eUL8JPqYRjioEFlQbtJagPlYOAcTF3J6j6nfGsempqHmK
+         R0Ac8kWDhZNe5BQQO0vNX43umzSzxYuqlUdSAkhkZm7i/vT/Vm5zwhPUG54KEpQWA1PN
+         XvB06ARd/L/fhjuh1kB7tm6UBJ2ABuwrVKEn9HD9DrygdE7JCXUiAgqbzE525KIJIHZ/
+         DdBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720487146; x=1721091946;
+        d=1e100.net; s=20230601; t=1720487149; x=1721091949;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=4pqUInDFYH5yNjfgMFCM2DbLWsqlTAzTUfTi1S8oEnY=;
-        b=B9rgpf7urhoLJ2KGUkIvahLEJDuAKlakSkhXKn3SoTXsgB66Kqv21mHDhzJgLE+nSw
-         xuN3LGlePV0drtqJ7XCyCQ9L3LrO73Hbjz/H35YV4L6pJIK6Ogg8BB/S69pUgu5m4EY7
-         XRrbCw+Hqtd3zOmb0yyIZ/F0q4UxbdbfaBojRFi27LCS8gffx9Z+25WZ6cojZTurSqP4
-         g0oDlUc3dQKeN8FJSjXyQZMBTlbCqY/DFaW/vWaxF6s4xDNk9Br7EHyrUnYOBj4oF9fL
-         V72ZDyCD6taQDZGSeO/Ha7RGZ+c6LW2xOYqxcHFCZBs4xUM9lK61mMy8h/IXK2iuSJqR
-         KLcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWwu6NBVZ7c68kunOBIe+BZuDqXwyqowbbHoQxfySPk9+0MtHMP/OCkUY50wOLy+Y68WrC8KcRU1CNq/DN2mhvDwyZW7hm5AEbr
-X-Gm-Message-State: AOJu0YyGnsf6M8rlTsr5QQ/mqeMd4ueuKtrYYNszyMxdH0QFIODklcMB
-	OIKW/aQ2PlH40BHGnYHeNq3jdYuXv+cHy+GoTHtj9ffbsQyFmEd2zFypNbhLaJQ=
-X-Google-Smtp-Source: AGHT+IE04QAcCc+Ka9CUVQ8BW9t27zTe7aVThg+fBFSpAfZ7YHIzZcBJfHAy7mKt7Ub74D1fCpW4tQ==
-X-Received: by 2002:a05:6808:1785:b0:3d5:64be:890f with SMTP id 5614622812f47-3d93c0b0401mr1042371b6e.49.1720487146135;
-        Mon, 08 Jul 2024 18:05:46 -0700 (PDT)
+        bh=bxt6sRBunEAJdmr/SMQIrLMhyKmCuiWg3A5plz8J5+8=;
+        b=QjSmidQWVrywzg3lUYGFPJLcG5n0Sl9kNn70fHWquvwIN5TU5NgaMnR4zP0jsI2d0N
+         yTkI3tzx9I7e5yT6q4t2RUQEwbZQLiOL7jUmFYnuPMO053IV7u/CeQ778S2/sqcMWb+8
+         R1YLe4stsE5kMmSWPEwkoBiUqRFICYft05t31uy63ARX0G8CdlauHTCjwhBjYX/v1/Nv
+         H4oMkonuLvi0iSe82UhGps5I1qkUmb55+H1qwgym2eWQhHTWBPlFqOGgIeEJCXr5Eto6
+         u7IxvaNm59uN1HXJWzM5lSIDzr+4J9ZlqLAE70SIT+PJ9/kK2pK14F6ff4fLBG30bFtD
+         RkZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU7GqTlAf7WZcKWqu0Z0FHQ0iEY/+2uxbi7MEB1NiK/GnnzR8BXM0cfAQpQv6lV4t4iN3EDpsO4VCIV0IEKHnH4+MAYMNRfowlf
+X-Gm-Message-State: AOJu0YwliM2Xdan0I8EIghcGJrjVwXwI3avMT5pvFCHuyN22Ov7lmIUc
+	3z38H8AnxjOZgIjBOJNmAfIoCIFhhRcj7dEbbW34rmD1L/WYhR9z2gQVGBrKY50=
+X-Google-Smtp-Source: AGHT+IFZVZrSxg89uP9Je/FmpgZThlv+Nr0TXf60j4XST0/pMpypzFZ30CE5rmjYzzIiFHdN2u8Dcg==
+X-Received: by 2002:a05:6808:144f:b0:3d2:95f:da8c with SMTP id 5614622812f47-3d93c4931b3mr371575b6e.18.1720487148945;
+        Mon, 08 Jul 2024 18:05:48 -0700 (PDT)
 Received: from localhost.localdomain (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-3d93acff694sm215442b6e.3.2024.07.08.18.05.45
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3d93acff694sm215442b6e.3.2024.07.08.18.05.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jul 2024 18:05:45 -0700 (PDT)
+        Mon, 08 Jul 2024 18:05:48 -0700 (PDT)
 From: David Lechner <dlechner@baylibre.com>
 To: Mark Brown <broonie@kernel.org>,
 	Oleksij Rempel <o.rempel@pengutronix.de>,
@@ -60,9 +60,9 @@ Cc: David Lechner <dlechner@baylibre.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/3] spi: don't unoptimize message in spi_async()
-Date: Mon,  8 Jul 2024 20:05:28 -0500
-Message-ID: <20240708-spi-mux-fix-v1-1-6c8845193128@baylibre.com>
+Subject: [PATCH 3/3] spi: mux: set ctlr->bits_per_word_mask
+Date: Mon,  8 Jul 2024 20:05:30 -0500
+Message-ID: <20240708-spi-mux-fix-v1-3-6c8845193128@baylibre.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240708-spi-mux-fix-v1-0-6c8845193128@baylibre.com>
 References: <20240708-spi-mux-fix-v1-0-6c8845193128@baylibre.com>
@@ -76,33 +76,27 @@ Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.14.0
 Content-Transfer-Encoding: 8bit
 
-Calling spi_maybe_unoptimize_message() in spi_async() is wrong because
-the message is likely to be in the queue and not transferred yet. This
-can corrupt the message while it is being used by the controller driver.
+Like other SPI controller flags, bits_per_word_mask may be used by a
+peripheral driver, so it needs to reflect the capabilities of the
+underlying controller.
 
-spi_maybe_unoptimize_message() is already called in the correct place
-in spi_finalize_current_message() to balance the call to
-spi_maybe_optimize_message() in spi_async().
-
-Fixes: 7b1d87af14d9 ("spi: add spi_optimize_message() APIs")
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
- drivers/spi/spi.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/spi/spi-mux.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 5e715a640237..e48c2fdd7204 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -4436,8 +4436,6 @@ int spi_async(struct spi_device *spi, struct spi_message *message)
- 
- 	spin_unlock_irqrestore(&ctlr->bus_lock_spinlock, flags);
- 
--	spi_maybe_unoptimize_message(message);
--
- 	return ret;
- }
- EXPORT_SYMBOL_GPL(spi_async);
+diff --git a/drivers/spi/spi-mux.c b/drivers/spi/spi-mux.c
+index f4b619cc2657..c02c4204442f 100644
+--- a/drivers/spi/spi-mux.c
++++ b/drivers/spi/spi-mux.c
+@@ -158,6 +158,7 @@ static int spi_mux_probe(struct spi_device *spi)
+ 	/* supported modes are the same as our parent's */
+ 	ctlr->mode_bits = spi->controller->mode_bits;
+ 	ctlr->flags = spi->controller->flags;
++	ctlr->bits_per_word_mask = spi->controller->bits_per_word_mask;
+ 	ctlr->transfer_one_message = spi_mux_transfer_one_message;
+ 	ctlr->setup = spi_mux_setup;
+ 	ctlr->num_chipselect = mux_control_states(priv->mux);
 
 -- 
 2.43.0

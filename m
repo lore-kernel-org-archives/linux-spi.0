@@ -1,56 +1,60 @@
 Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B037717B05D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD35180020;
 	Tue,  9 Jul 2024 22:12:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720563143; cv=none; b=ngwfoGOV9xcviatsORmjymYucEeGQxVcjNGPUsTALhHcOGKHYBfcJfKTMCESOpdZ4YvLYb+dlYet2fYgt5rlPH4ljXvuXzAJ4PWQkDcrVl46pwXelQvRxejZgQub48k9SVz+WHoUJyiThkGztJEa2T29dOF6RFNpSVn+YALmr2c=
+	t=1720563143; cv=none; b=aOzAuGC6iEwk5o7TFrEXkLCi0nw/uJg80GDk/OMw+bXekWwEg8TF4CMIfLlcgEfq7XwFAeVkX8cVfIe4sjyPEdOoC/U/4ZhUSE+oGSLK+7M0N8OyzkM26ioGt4Iq+Yf31U7RNwdqvufq1vHMGqERXXeSSTaxI+ntIe+7j2RUe6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1720563143; c=relaxed/simple;
-	bh=muXHBhPz3CpmZlzgRxiV683ZZacXLrqG4BWt+dPe/Fg=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BhWpYb9TYnek5OZGaosEctxaaP2q6pc4ROM2xzhmpdyoeoLZUgcL+dsAGXygWlDnUSx6SeqDmfHKBWYzRS3S+OGpcFK7NTDvPSRkKcxQY+PTTuPl9NTfexuCbtp5f9eRB9wj43g6U2EJ9VjJr5UwsQ1cuwXWCq+UB8/0WMCIZXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=eeQNiwN/; arc=none smtp.client-ip=67.231.156.173
+	bh=b5cjOu83TDmksf6XRjwFTyRA0+qjFjXUhNWl5XTqpDw=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lGyzmiuUQrPSAB5S+UHB2/V5k69b77zTNWogVovNqqvim/j+x2ytYzOUlaiAlUGOLBEW62K/c4fKMUK+dLGguD053PiHhwErPR5E/wIKU7lL5BtciZ7/9XWui1QCXuDiNkTn2biwGZxnvqUAwNVbNhHDkcRBMNlvtutg4EQeVRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=UAoLeJ5j; arc=none smtp.client-ip=67.231.156.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="eeQNiwN/"
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="UAoLeJ5j"
 Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 469KH3Li020309;
-	Tue, 9 Jul 2024 15:12:15 -0700
+	by mx0b-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 469KH3Ll020309;
+	Tue, 9 Jul 2024 15:12:16 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=ZwtohZT/dGEt6pKD0UeX4Ie
-	ypm55GaWGCGmHh5Aau9U=; b=eeQNiwN/z9ghutVERWUbJzIam8Kbw3ZywKLLUhD
-	033FGZ3xvKKE1C1yC/fbdewmY0cQ3wuq2fc0r+zn6bFzB8Tpiq0G+GOh9xKIYnQ5
-	DryLdNClgmr/BtgBv0AN7JxF2H5dMnoRgXbSuURucax0RD2Pzl//PX8c77aMS2q0
-	k4itmTKRXOIP6bNiupwPeb0C/f7tDqLSWjuHSS+syXE6FCyoX+hEbU+VIMU4rZZN
-	4bBWj9hbodQXM71SA+jQvjJK7o25LD9wCUxcU4GcFMCFJsTQUrkW2FFCIrmycJue
-	WS5v9LZUoCK9mfU8mSXaDCmfCLJxaxN4yD7Ojfgx1gEnvpg==
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=u
+	MQtua/CuQqrl89OPpcuuPZ275HXNqSmNen8Z444i64=; b=UAoLeJ5jL3k0aSrJO
+	+UC1SVbzIn79kHfHg17S82UVsZZGmFkXjxbW7GCuMoE6mwKePTQlv7fV06L5yjaB
+	/0MCWadSQYfb4LyEizSIE1FmXBHTO9qyWNhFsFDOmmuEVmmIo6YorqsRHfwJTezu
+	ykgIJ1eUPYoTUECVLwMJLqpgFt1CF09CXlml6KA6v/Xyhs1NU7TftnEJNJjYRV1N
+	u62+H0c3PInwmQLIlppwujvJ82+uW6qTTMociiNacfT3RyTC0BJjpwTyWmStmih9
+	CAkgbu4Sshe4Y0FpYpj0iijfckFQVLpg9wRdGrRn11Ohl3JOxtqlyUIFssEzWOXf
+	lykQw==
 Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 408ntymyxg-1
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 408ntymyxg-4
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 09 Jul 2024 15:12:15 -0700 (PDT)
+	Tue, 09 Jul 2024 15:12:16 -0700 (PDT)
 Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
  DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Tue, 9 Jul 2024 15:12:14 -0700
+ 15.2.1544.4; Tue, 9 Jul 2024 15:12:15 -0700
 Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
  (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
- Transport; Tue, 9 Jul 2024 15:12:14 -0700
+ Transport; Tue, 9 Jul 2024 15:12:15 -0700
 Received: from Dell2s-9.sclab.marvell.com (unknown [10.110.150.250])
-	by maili.marvell.com (Postfix) with ESMTP id 807673F7073;
-	Tue,  9 Jul 2024 15:12:14 -0700 (PDT)
+	by maili.marvell.com (Postfix) with ESMTP id 57B6B3F7066;
+	Tue,  9 Jul 2024 15:12:15 -0700 (PDT)
 From: Witold Sadowski <wsadowski@marvell.com>
 To: <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
         <devicetree@vger.kernel.org>
 CC: <broonie@kernel.org>, <robh@kernel.org>,
         <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
         <pthombar@cadence.com>, Witold Sadowski <wsadowski@marvell.com>
-Subject: [PATCH v10 0/9] Marvell HW overlay support for Cadence xSPI
-Date: Tue, 9 Jul 2024 15:12:02 -0700
-Message-ID: <20240709221211.2130456-1-wsadowski@marvell.com>
+Subject: [PATCH v10 4/9] spi: cadence: Add Marvell SDMA operations
+Date: Tue, 9 Jul 2024 15:12:06 -0700
+Message-ID: <20240709221211.2130456-5-wsadowski@marvell.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240709221211.2130456-1-wsadowski@marvell.com>
+References: <20240709221211.2130456-1-wsadowski@marvell.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -59,175 +63,128 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: tFZpmLLU9_2HFlgitghP0Oje7_Ld_2vO
-X-Proofpoint-GUID: tFZpmLLU9_2HFlgitghP0Oje7_Ld_2vO
+X-Proofpoint-ORIG-GUID: KXRQMdB-CZzPLZVWpNNCZHLjrnXssuJa
+X-Proofpoint-GUID: KXRQMdB-CZzPLZVWpNNCZHLjrnXssuJa
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-07-09_10,2024-07-09_01,2024-05-17_01
 
-This patch series adds support for the second version of the Marvell
-hardware overlay for the Cadence xSPI IP block. The overlay is a hardware
-change made around the original xSPI block. It extends xSPI features with
-clock configuration, interrupt masking, and full-duplex, variable-length SPI
-operations.
+In Marvell xSPI implementation any access to SDMA register will result
+in 8 byte SPI data transfer. Reading less data(eg. 1B) will result in
+losing remaining bytes. To avoid that read/write 8 bytes into temporary
+buffer, and read/write whole temporary buffer into SDMA.
 
-These functionalities allow the xSPI block to operate not only with memory
-devices but also with simple SPI devices and TPM devices.
+Signed-off-by: Witold Sadowski <wsadowski@marvell.com>
+---
+ drivers/spi/spi-cadence-xspi.c | 72 ++++++++++++++++++++++++++++++++--
+ 1 file changed, 69 insertions(+), 3 deletions(-)
 
-Example ACPI entry:
-      Device (SPI0) {
-        Name (_HID, "PRP0001")          // ACPI_DT_NAMESPACE_HID
-        Name (_UID, 0)
-        Name (_DDN, "SPI controller 0")
-        Name (_CCA, ONE)
-
-        Method (_STA) {Return (0xF)}
-
-        Name (_CRS, ResourceTemplate() {
-
-          QWordMemory ( ResourceConsumer,// ResourceUsage
-                        PosDecode,       // Decode
-                        MinFixed,        // MinType
-                        MaxFixed,        // MaxType
-                        NonCacheable,    // MemType
-                        ReadWrite,       // ReadWriteType
-                        0,               // AddressGranularity
-                        0x804000000000,  // MinAddress
-                        0x804000001037,  // MaxAddress
-                        0,               // AddressTranslation
-                        0x1038)          // AddressLength
-
-          QWordMemory ( ResourceConsumer,// ResourceUsage
-                        PosDecode,       // Decode
-                        MinFixed,        // MinType
-                        MaxFixed,        // MaxType
-                        NonCacheable,    // MemType
-                        ReadWrite,       // ReadWriteType
-                        0,               // AddressGranularity
-                        0x804010000000,  // MinAddress
-                        0x804010000007,  // MaxAddress
-                        0,               // AddressTranslation
-                        0x8)             // AddressLength
-
-          QWordMemory ( ResourceConsumer,// ResourceUsage
-                        PosDecode,       // Decode
-                        MinFixed,        // MinType
-                        MaxFixed,        // MaxType
-                        NonCacheable,    // MemType
-                        ReadWrite,       // ReadWriteType
-                        0,               // AddressGranularity
-                        0x804000002000,  // MinAddress
-                        0x804000004027,  // MaxAddress
-                        0,               // AddressTranslation
-                        0x2028)          // AddressLength
-
-          QWordMemory ( ResourceConsumer,// ResourceUsage
-            PosDecode,       // Decode
-            MinFixed,        // MinType
-            MaxFixed,        // MaxType
-            NonCacheable,    // MemType
-            ReadWrite,       // ReadWriteType
-            0,               // AddressGranularity
-            0x804000008000,  // MinAddress
-            0x804000008237,  // MaxAddress
-            0,               // AddressTranslation
-            0x238)           // AddressLength
-
-          Interrupt(ResourceConsumer, Edge, ActiveHigh, Exclusive) { 0x7A }
-        })
-
-        Name (_DSD, Package() {
-            ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-            Package () {
-                Package () { "compatible", "marvell,cn10-xspi-nor"},
-                Package () { "reg", 0x8040},
-            }
-        })
-      } // SPI0
-
-Changes:
-v10:
-  Modify SDMA operation - Read as much data as possible using ioread64_rep, complete transfer with
-  memcpy. Ignore first step if buffer is not alligned
-  Clean unnecesary tennary operators
-  Add spi_transfer_delay_exec call
-  Rename "current_cycle_count" to "current_transfer_length"
-
-v9:
-  Split into smaller patches:
-    - Marvell overlay splitted into: PHY, Clock, Interrupt and SDMA ops
-    - ACPI support splitted into resource mapping, CS parameter reading and tx/rx bus length
-  Add separate ops and a few function pointers to distinguish between Cadence and Marvell:
-    - SDMA read handler.
-    - IRQ enable/disable handler
-    - Separate mem_ops for Marvell xSPI
-  Cleanup xfer code from magic numbers
-  Add more descriptive commit msg for xfer block
-  Use bitrev8 instead of custom bit reversal
-  Rework Marvell SDMA read operations
-  Add example ACPI entry
-
-v8:
-  Rename xferbase to xfer
-  Rework DLL reset, to return non inverted boolean value
-  Rework STIG and SDMA status check, to return non inverted boolean value
-
-v7:
-  Rebase patches to latest sources, changes in "Allow to read basic xSPI configuration
- from ACPI"
-  Removed bugfix, as it was integrated to next tree from v6
-
-v6:
-  Fix item order in cdns,xspi.yaml
-
-v5:
-  Rework cdns,xspi.yaml file
-  Reword commit messages
-  Move mamory mapping to ACPI patch
-  Use devm_platform_ioremap_resource instead of two step mapping
-
-v4:
-  Rename new Marvell registers to keep naming conventions
-  Rename mrvl,xspi-nor to marvell,cnxx,xspi-nor
-  Various fixed for cdns,xspi.yaml file:
-    - Remove unnecesary parameters
-    - Link register xferbase with marvell,cn10-xspi-nor
-    - Move default values to .c file from device-tree
-  Clock configuration optimization
-  ACPI fixes:
-    - Remove incorrect ACPI match table
-  Added .data field to device_id, fixes for matching in ACPI and dtb case
-  Minor style comment changes
-
-v3:
-  Removed all kconfig changes
-  Added device-tree mrvl,xspi-nor tag
-
-v2:
-  Support for second overlay iteration
-
-v1:
-  -
-
-v0:
-  Initial support for v1 overlay
-
-Witold Sadowski (9):
-  spi: dt-bindings: cadence: Add Marvell overlay bindings documentation
-    for Cadence XSPI
-  spi: cadence: Add static PHY configuration in Marvell overlay
-  spi: cadence: Add clock configuration for Marvell xSPI overlay
-  spi: cadence: Add Marvell SDMA operations
-  spi: cadence: Add Marvell xSPI interrupt changes
-  spi: cadence: Add Marvell xfer operation support
-  spi: cadence: Change resource mapping
-  spi: cadence: Change cs property reading.
-  spi: cadence: Try to read spi-tx/rx-bus width property using ACPI
-
- .../devicetree/bindings/spi/cdns,xspi.yaml    |  32 +-
- drivers/spi/spi-cadence-xspi.c                | 682 +++++++++++++++++-
- 2 files changed, 694 insertions(+), 20 deletions(-)
-
+diff --git a/drivers/spi/spi-cadence-xspi.c b/drivers/spi/spi-cadence-xspi.c
+index d0222284c507..5952ca4593bb 100644
+--- a/drivers/spi/spi-cadence-xspi.c
++++ b/drivers/spi/spi-cadence-xspi.c
+@@ -310,6 +310,7 @@ struct cdns_xspi_dev {
+ 	u8 hw_num_banks;
+ 
+ 	const struct cdns_xspi_driver_data *driver_data;
++	void (*sdma_handler)(struct cdns_xspi_dev *cdns_xspi);
+ };
+ 
+ static void cdns_xspi_reset_dll(struct cdns_xspi_dev *cdns_xspi)
+@@ -515,6 +516,68 @@ static void cdns_xspi_sdma_handle(struct cdns_xspi_dev *cdns_xspi)
+ 	}
+ }
+ 
++static void m_ioreadq(void __iomem  *addr, void *buf, int len)
++{
++	if (IS_ALIGNED((long)buf, 8) && len >= 8) {
++		u64 full_ops = len / 8;
++
++		ioread64_rep(addr, buf, full_ops);
++		len -= full_ops * 8;
++		buf += full_ops * 8;
++	}
++
++	while (len) {
++		u64 tmp_buf;
++
++		tmp_buf = readq(addr);
++		memcpy(buf, &tmp_buf, min(len, 8));
++		len = len > 8 ? len - 8 : 0;
++		buf += 8;
++	}
++}
++
++static void m_iowriteq(void __iomem *addr, const void *buf, int len)
++{
++	if (IS_ALIGNED((long)buf, 8) && len >= 8) {
++		u64 full_ops = len / 8;
++
++		iowrite64_rep(addr, buf, full_ops);
++		len -= full_ops * 8;
++		buf += full_ops * 8;
++	}
++
++	while (len) {
++		u64 tmp_buf;
++
++		memcpy(&tmp_buf, buf, min(len, 8));
++		writeq(tmp_buf, addr);
++		len = len > 8 ? len - 8 : 0;
++		buf += 8;
++	}
++}
++
++static void marvell_xspi_sdma_handle(struct cdns_xspi_dev *cdns_xspi)
++{
++	u32 sdma_size, sdma_trd_info;
++	u8 sdma_dir;
++
++	sdma_size = readl(cdns_xspi->iobase + CDNS_XSPI_SDMA_SIZE_REG);
++	sdma_trd_info = readl(cdns_xspi->iobase + CDNS_XSPI_SDMA_TRD_INFO_REG);
++	sdma_dir = FIELD_GET(CDNS_XSPI_SDMA_DIR, sdma_trd_info);
++
++	switch (sdma_dir) {
++	case CDNS_XSPI_SDMA_DIR_READ:
++		m_ioreadq(cdns_xspi->sdmabase,
++			    cdns_xspi->in_buffer, sdma_size);
++		break;
++
++	case CDNS_XSPI_SDMA_DIR_WRITE:
++		m_iowriteq(cdns_xspi->sdmabase,
++			     cdns_xspi->out_buffer, sdma_size);
++		break;
++	}
++}
++
+ static int cdns_xspi_send_stig_command(struct cdns_xspi_dev *cdns_xspi,
+ 				       const struct spi_mem_op *op,
+ 				       bool data_phase)
+@@ -566,7 +629,7 @@ static int cdns_xspi_send_stig_command(struct cdns_xspi_dev *cdns_xspi,
+ 			cdns_xspi_set_interrupts(cdns_xspi, false);
+ 			return -EIO;
+ 		}
+-		cdns_xspi_sdma_handle(cdns_xspi);
++		cdns_xspi->sdma_handler(cdns_xspi);
+ 	}
+ 
+ 	wait_for_completion(&cdns_xspi->cmd_complete);
+@@ -736,10 +799,13 @@ static int cdns_xspi_probe(struct platform_device *pdev)
+ 	if (!cdns_xspi->driver_data)
+ 		return -ENODEV;
+ 
+-	if (cdns_xspi->driver_data->mrvl_hw_overlay)
++	if (cdns_xspi->driver_data->mrvl_hw_overlay) {
+ 		host->mem_ops = &marvell_xspi_mem_ops;
+-	else
++		cdns_xspi->sdma_handler = &marvell_xspi_sdma_handle;
++	} else {
+ 		host->mem_ops = &cadence_xspi_mem_ops;
++		cdns_xspi->sdma_handler = &cdns_xspi_sdma_handle;
++	}
+ 	host->dev.of_node = pdev->dev.of_node;
+ 	host->bus_num = -1;
+ 
 -- 
 2.43.0
 

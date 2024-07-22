@@ -1,107 +1,162 @@
-Received: from mout.web.de (mout.web.de [212.227.17.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91D5C16F0C2;
-	Mon, 22 Jul 2024 18:25:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40484437A
+	for <linux-spi@vger.kernel.org>; Mon, 22 Jul 2024 22:01:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721672704; cv=none; b=NAf09XdSHwEMsqYUhT8nBRNnyNAUVD0gxUlG0GME/sgZjOhMsi9yfq/VFD00Mual4t6tO6+8+ICDJaxaLeDj76pq5GIHzGzUqSy1I8xNPdB+LGulnL3vGZuh0baiVaeJ6zq/PyxiGKsKR2A09cutFBbk4aaqO7Vlmm4XHTcFJCE=
+	t=1721685689; cv=none; b=YvDoutyZQ5QDiPBWt2G89KGqjVIwdWcF2d5TkJRyWGtcfK1RbmvGr0ApkhsuaU7AApANhBwyPeDkqLehCdzRj6fFTqKv3bFvXY7Nmi38+jUnmtL6XKvGHh9MraNkUlnrr5+p8CdNg0SIz4Ho4k/kAqtDizTrueBhvW0p4tFqNSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721672704; c=relaxed/simple;
-	bh=WX0VtNoRbqAErf90cp8dai9ieT+dqy97QRBrWMOGyxA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qKs6Ind66pLl88UFIEsira9ZEgpEujg6zi8fsDU18RJ7hVIvOud98Nk5zRU0+hwUFB41ldyOvXTGwG/UHlR7gC/nihT7+W7TWpifD480t1HC/51YCCr/5FX7mCM2rD2vXNdTOndJ7W52crtid385DCilW1FhMhguAikw5mugMjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=sWp9LK1o; arc=none smtp.client-ip=212.227.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+	s=arc-20240116; t=1721685689; c=relaxed/simple;
+	bh=wulqRuubMrgRAM7cMPkpHvYollCniUKOOXs7X5dxBfI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jNvnmT+DRac9CbFv7iZ1JtjiTVUZ8IuzuF6D+q1yM0ARMpwzq/zqVZb4bCggNobS5P3JsQqCzY6+WJpXINZJegA3uy3DRF7TbYbzHtpFKzqQjSB/3PaaUo7fgpC8Bq929DGs1isr+tVceFpFdhi99WPlzTXkVm0uq5SRhdkF7wc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=MKnS9PXz; arc=none smtp.client-ip=209.85.210.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="sWp9LK1o"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1721672670; x=1722277470; i=markus.elfring@web.de;
-	bh=WX0VtNoRbqAErf90cp8dai9ieT+dqy97QRBrWMOGyxA=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=sWp9LK1o0zo1bsYiWtoXQpWIehoYLBcW99+brcppQpT/GMYOn42MR5eEeJwcWJ/X
-	 MqS/fEgF1qxl7Zr35fjxE7KOkrpo2ajOhwpfeK2EXirfc3AWba2005NbrmWg9LID7
-	 0xFLpBndEHCLXx9PGZXofwBVW5x1BA5GuQRcoj0evAg43Mg1WnBcTE/Aib4pisgdu
-	 YmidHxjbjcTtXy5Us5HkrTLgqU3UNPsJzRZXO1cKZAOqGWR0gGYJzLRUTWCgyqUyy
-	 t74pnjujIWOxlF3KfJG3FVOGrMz2ZJPC49B+nsBTCRkubBI7tFk5kcMUeohtntZZC
-	 28cOx/+bpeh9lIaRBw==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.89.95]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MHVal-1sacPc480n-00HRTA; Mon, 22
- Jul 2024 20:24:30 +0200
-Message-ID: <3fa16801-50f2-482d-93db-29a7b07c2a06@web.de>
-Date: Mon, 22 Jul 2024 20:24:28 +0200
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="MKnS9PXz"
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-7037c464792so2678610a34.2
+        for <linux-spi@vger.kernel.org>; Mon, 22 Jul 2024 15:01:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1721685687; x=1722290487; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ja5JNhTBrJAtUikvnEnwKbaUm2FfY83ptA2bQUTuqEw=;
+        b=MKnS9PXzhioTmGHpkDNWAw8tFQA+5qLpn1Kjz6XRFIPRWrMxKyfGugbzWGu95JtTcK
+         fkmD89klXmOD+aN/s4fBEEIqCjtaKqCvCb+I8HUb0WhkPeHgDGiesUNHA6u2jYwk/aXM
+         0uuHwUvVUQ1yi9BV3lDHL1atL+kIcZh9wrWpvzIxfen8nav8Py6Mdcp1ggTleCiS5RuJ
+         chaslxdIcS7xrQFliFSpFb7uCuPojalrIH3boIyn2pilFbwpbFtQDfaVbfIOINkHV53g
+         C5PwOFqQl+H/SDnPGqY0ziVxnIr/nca0fKG3IqMC2VB31K3HmWMaBZ2mXCSk7E80rFt4
+         KASA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721685687; x=1722290487;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Ja5JNhTBrJAtUikvnEnwKbaUm2FfY83ptA2bQUTuqEw=;
+        b=diOwt3LT23PGEF4MrO/h6BL+XEAjWk0lGUs5bf1LexHEEjdKrJmw71rD1gJfDIaYlX
+         nQXk0uqD0s+9+Qqg6mZMlR69akLb4IiZtVxZjEX9ZnvB3DCXGJwCH0sur61m6VSQ4YS0
+         8bNTr82K35ofJs6vkreTPfcUbci6gJB3iWI7qQCbDQJs0GxAyR/l0v7YFx2LJUNc8DGU
+         82H7PC6Vrj3/u5cqOl7dTx09n2gIdGJJgRZOiZQ6FVxb1YewmbmHYgRKCeBcV00uFxsi
+         Xxq6mZtZlK4BZGrfAviQ+F7fXbLEh2wyW+4x8zOynmQCOBo3/zYJvURJN0bRaBMhVQYh
+         SP+A==
+X-Forwarded-Encrypted: i=1; AJvYcCWz5kHqb/blpqFP0jb48Vhg2Ysldv+t30yQPJlUwpN3ViQBEjRuO+xuzmToV50pAbml3qD+HYvQVyXVjZct5lQ51WneWoq7FGVL
+X-Gm-Message-State: AOJu0YxRd2/V7fXaua16vOLnc9YSAZiarDLH4T1P+LjHZWizTQDeHjV7
+	YPRkbZr2FUgLRBayS4xsEAp/2ukVorlaIqcR64dsXAZKACXdUaNEjnAn2Bldz+Q=
+X-Google-Smtp-Source: AGHT+IG+ELjG5K5NexgQuh6kX11Z7bpUaRB99zGM4WXSrAFQFtdiLR6aW3LuDQ0CxXhP8HJIaai2rA==
+X-Received: by 2002:a05:6830:6f4b:b0:703:ba24:7320 with SMTP id 46e09a7af769-708fdb0c45cmr11516484a34.10.1721685686745;
+        Mon, 22 Jul 2024 15:01:26 -0700 (PDT)
+Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-708f60a55e1sm1719911a34.11.2024.07.22.15.01.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Jul 2024 15:01:26 -0700 (PDT)
+From: David Lechner <dlechner@baylibre.com>
+To: Mark Brown <broonie@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	=?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>
+Cc: David Lechner <dlechner@baylibre.com>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	David Jander <david@protonic.nl>,
+	Martin Sperl <kernel@martin.sperl.org>,
+	linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org
+Subject: [PATCH RFC v3 1/9] spi: dt-bindings: add spi-offload properties
+Date: Mon, 22 Jul 2024 16:57:08 -0500
+Message-ID: <20240722-dlech-mainline-spi-engine-offload-2-v3-1-7420e45df69b@baylibre.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240722-dlech-mainline-spi-engine-offload-2-v3-0-7420e45df69b@baylibre.com>
+References: <20240722-dlech-mainline-spi-engine-offload-2-v3-0-7420e45df69b@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [v3] spi: ppc4xx: handle irq_of_parse_and_map() errors
-To: Mark Brown <broonie@kernel.org>, make24@iscas.ac.cn,
- linux-spi@vger.kernel.org
-Cc: LKML <linux-kernel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Josh Boyer <jwboyer@linux.vnet.ibm.com>, Stefan Roese <sr@denx.de>
-References: <20240722141822.1052370-1-make24@iscas.ac.cn>
- <bceb4055-e315-4c70-a682-228cb997f86c@web.de>
- <2dbd470c-80aa-45af-9324-0e81e1d9196c@sirena.org.uk>
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <2dbd470c-80aa-45af-9324-0e81e1d9196c@sirena.org.uk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:/3LgpV7XD650P1s0vnkTrTFzdMAHohEwIKAEGlt6sPHdBOV7ZNl
- /i73lC4fFCUFk6iS+MvLGJfOEuHvZ4vvHRB/PpOfLEgE3sCQYW8uGmSNfkU8t27+nSwSsSw
- YqSM93NeZCaXTDGjZVWaKSZJuaFb41dJchZpcMdpJtpQ37gMpaoRwC3DGlwgbN35nRwSKyz
- Uo08+VzK7vFyU3EVuUQUg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:oxmBtoTqeLA=;XSjYid3KsQVMMUpM6vIHFYrVNoU
- ll3tc+7uG0tsTghMq/gInUe/NI1QVqW18c/K4uoqbehBlmSHqikYznjdOCA8j1oEeMlU/mUK9
- Fwq4LSuMMQ5lzIFTdzYiZHRrvMdzIfV6Hs7EVYja9Kt01TYf7vdwP+WD2InYLs9SSCpPr2nRV
- 8LuU3usq0L0TDpQ+rLXUAFHdm8v0K3iMaiUaBfjjVJBqgKA7LrqEi2ku/zMMyqGrZUpWkafmc
- yl6+KBX09MjvQAM8kbyxH7JxWcE3Sv0Ea0eq13NKAa92uJriHYDodnoDD+bt6HmaACAbiwM2k
- 30ZJxdbgWOksYj6EAMd1lT+dCCbSxMlC9QwETVkxAqyIuMl1cz3FVuRSJGYKhdtjxXI8AkXyL
- MgtpJdeQwKgkDwZcJ9znIkT/puBI9S4K1d2mvBF8YKHedlA8nW4vG8gicbyVwsUnKjo3nAmM+
- W8L78yDAgxmQ8ppwxKLspT0IQ5fsW5cjP+c2i0eI1F6QYjjnAhxy2TclOi8qIfQAeMRNuYD+5
- /FQD/T4fAid1ZbCVEXUeNDku9IeeuZXZj4rO8e0eRgH51q8t74bsQSaG/91IhYMPn0672E3Rg
- zJrh9iom6izQzO3nf/Xz3j3/ZmgcOdHsBvPOPJa6B8x/DzR3Nr8kNx0x5TGFoAlzE1pa+kMFm
- t0V4+eZxZZQUSYxLpd9a0xj5zvgSFbDtDO9hGugjLMeNBmgXPv+TIxDEd7gky1Yk81dZGScis
- nN27MoWTjqMdFHR7sPxS8SBNm6gWaigQ2Nyjsd08ccZzt+gX5SmwgELu3DMOWgb/vJOHdstxo
- 8y+HpwFVSL0jO7/c2g4qpfsQ==
+Content-Type: text/plain; charset="utf-8"
+X-Mailer: b4 0.14.0
+Content-Transfer-Encoding: 8bit
 
->> =E2=80=A6
->>> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
->>
->> Will any contributors care more for rules also according to such inform=
-ation?
->> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
-/Documentation/process/submitting-patches.rst?h=3Dv6.10#n398
->> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
-/Documentation/process/researcher-guidelines.rst?h=3Dv6.10#n5
->
-> Feel free to ignore Markus,
+This adds a new provider/consumer property pair to the generic SPI
+bindings for use with peripherals connected to controllers that support
+offloading.
 
-Form letter =E2=80=A6?
+Here, offloading means that the controller has the ability to perform
+SPI transactions without any CPU intervention in some shape or form.
 
+The spi-offloads property will be used to assign controller offload
+resources to each peripheral that needs them. What these resources are
+will be defined by each specific controller binding by specifying the
+value of the #spi-offload-cells property.
 
-> he has a long history of sending unhelpful review comments
+SPI peripherals that use multiple offload instances at the same time
+for different functions can describe the functions using the
+spi-offload-names property, for example, for a SPI flash memory, this
+might be "read", "erase" and "write" functions.
 
-The offered information can occasionally be handled in more constructive w=
-ays,
-can't it?
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+---
 
+v3 changes:
+* Added #spi-offload-cells property to the controller binding.
+* Changed spi-offloads to phandle-array.
+* Added spi-offload-names property.
 
-> and continues to ignore repeated requests to stop.
+v2 changes:
 
-I hope that circumstances will evolve somehow so that additional views
-will trigger further positive effects.
+In v1, instead of generic SPI bindings, there were only controller-
+specific bindings, so this is a new patch.
+---
+ Documentation/devicetree/bindings/spi/spi-controller.yaml     |  5 +++++
+ .../devicetree/bindings/spi/spi-peripheral-props.yaml         | 11 +++++++++++
+ 2 files changed, 16 insertions(+)
 
-Regards,
-Markus
+diff --git a/Documentation/devicetree/bindings/spi/spi-controller.yaml b/Documentation/devicetree/bindings/spi/spi-controller.yaml
+index 093150c0cb87..0af9cce80be9 100644
+--- a/Documentation/devicetree/bindings/spi/spi-controller.yaml
++++ b/Documentation/devicetree/bindings/spi/spi-controller.yaml
+@@ -105,6 +105,11 @@ properties:
+     required:
+       - compatible
+ 
++  '#spi-offload-cells':
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description:
++      Number of cells in a SPI offload specifier.
++
+ patternProperties:
+   "^.*@[0-9a-f]+$":
+     type: object
+diff --git a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
+index 0bb443b8decd..e27577bdae48 100644
+--- a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
++++ b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
+@@ -113,6 +113,17 @@ properties:
+     minItems: 2
+     maxItems: 4
+ 
++  spi-offloads:
++    $ref: /schemas/types.yaml#/definitions/phandle-array
++    description:
++      Array of SPI offload instances that are used by the peripheral.
++
++  spi-offload-names:
++    $ref: /schemas/types.yaml#/definitions/string-array
++    description:
++      Describes the function of each offload instance. Can be omitted if there
++      is only one item allowed in the spi-offloads array.
++
+   st,spi-midi-ns:
+     description: |
+       Only for STM32H7, (Master Inter-Data Idleness) minimum time
+
+-- 
+2.43.0
+

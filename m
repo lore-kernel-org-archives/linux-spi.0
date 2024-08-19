@@ -1,39 +1,36 @@
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3B5B16CD01;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54A916CD02;
 	Mon, 19 Aug 2024 12:26:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724070393; cv=none; b=XFC8QZZKyLBtsHMP3zGYRL47L/ORByNIrv1WfPdyktNAEe3XG22zUK9iPM/sHDrBiSu5GtBZjvO7Fg7alcB+cyzf90Cnk45UCctqTKvbtZ5GOHobrVamX5BbhbPl4cxI/qNq1SJ1sVcuKlGfoaHfxEL9P1phlU9ifHmSxe3iL0U=
+	t=1724070393; cv=none; b=bY124Rcg+rIzKf66fXVMBf9hi7ZnhzeSqVBzPnFh6Cr77XUQoHasrbldp143wzohW41As6lWWILXPLx3POsv9NuD3SUdSrpik3iDXL6e4MRTpkmNAgflJli9bwU6Y4gbwiW3Bnc94bV1ZRsbzAWSPVhBCIoNq1XN+4vYdGhmr9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1724070393; c=relaxed/simple;
-	bh=aK8DHVfkVZISmQEbSj/+H3OwAxquMaD5EXh1ACr8Pe4=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H2SUaa/O+5ksYy96AAD61lIZ+OBi8QQ7nwyKgXvRpaut75KwnSXk1MCViXdHA0oWpwreBK7BcZ6pj8C3H+SkbptYs7ALU0XJmh9BZmSkKJPInH2CIGUWh7r/PidQzQoLFw+H8F81bm8Q7AxVz6/d2z0bj8Jhb+vJ6TByn7/WgP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+	bh=+NeEq+oX4D3bHvYU64Dvb7RzOVdWxOWs8QwWPhoaWMA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BMNn33GlQwg9CDto/1J27XxG6MQmT6pK82PrPr0dJNbb+Xl0pFMcKlQBfwycjTK0/EGDefpOuJMq7xnhmFJHzJr//QpG8WkypkaA++VbymK2TLN5f4B3RiD/C3CzXQrgMi0K9yzKoQxNcZEE8bIsvUHMne/d74qbmT2/u2+AZA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.17])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4WnWt337nkz2Cn02;
-	Mon, 19 Aug 2024 20:21:31 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4WnWy506JRzpSsv;
+	Mon, 19 Aug 2024 20:25:01 +0800 (CST)
 Received: from kwepemh500013.china.huawei.com (unknown [7.202.181.146])
-	by mail.maildlp.com (Postfix) with ESMTPS id EC3B61A0188;
+	by mail.maildlp.com (Postfix) with ESMTPS id 603DE1800A5;
 	Mon, 19 Aug 2024 20:26:29 +0800 (CST)
 Received: from huawei.com (10.90.53.73) by kwepemh500013.china.huawei.com
  (7.202.181.146) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 19 Aug
- 2024 20:26:29 +0800
+ 2024 20:26:28 +0800
 From: Jinjie Ruan <ruanjinjie@huawei.com>
 To: <jonas.gorski@gmail.com>, <broonie@kernel.org>,
 	<linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 CC: <ruanjinjie@huawei.com>
-Subject: [PATCH -next v2 RESEND 2/2] spi: bcm63xx: Fix missing pm_runtime_disable()
-Date: Mon, 19 Aug 2024 20:33:49 +0800
-Message-ID: <20240819123349.4020472-3-ruanjinjie@huawei.com>
+Subject: [PATCH -next v2 RESEND 0/2] spi: bcm63xx: Fix two bugs
+Date: Mon, 19 Aug 2024 20:33:47 +0800
+Message-ID: <20240819123349.4020472-1-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240819123349.4020472-1-ruanjinjie@huawei.com>
-References: <20240819123349.4020472-1-ruanjinjie@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -45,54 +42,21 @@ Content-Type: text/plain
 X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
  kwepemh500013.china.huawei.com (7.202.181.146)
 
-The pm_runtime_disable() is missing in the remove function, fix it
-by using devm_pm_runtime_enable(), so the pm_runtime_disable() in
-the probe error path can also be removed.
+Fix module autoloading and missing pm_runtime_disable().
 
-Fixes: 2d13f2ff6073 ("spi: bcm63xx-spi: fix pm_runtime")
-Cc: <stable@vger.kernel.org> # v5.13+
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Suggested-by: Jonas Gorski <jonas.gorski@gmail.com>
----
-v2:
-- Change the fix way.
+Chanegs in v2:
+- Add Reviewed-by and Suggested-by.
+- Cc stable.
+- Change the fix way for the 2th patch.
 - Update the commit message.
-- Add Suggested-by and Cc stable.
----
- drivers/spi/spi-bcm63xx.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index 289f8a94980b..2fb79701a525 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -583,13 +583,15 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
- 
- 	bcm_spi_writeb(bs, SPI_INTR_CLEAR_ALL, SPI_INT_STATUS);
- 
--	pm_runtime_enable(&pdev->dev);
-+	ret = devm_pm_runtime_enable(&pdev->dev);
-+	if (ret)
-+		goto out_clk_disable;
- 
- 	/* register and we are done */
- 	ret = devm_spi_register_controller(dev, host);
- 	if (ret) {
- 		dev_err(dev, "spi register failed\n");
--		goto out_pm_disable;
-+		goto out_clk_disable;
- 	}
- 
- 	dev_info(dev, "at %pr (irq %d, FIFOs size %d)\n",
-@@ -597,8 +599,6 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
- 
- 	return 0;
- 
--out_pm_disable:
--	pm_runtime_disable(&pdev->dev);
- out_clk_disable:
- 	clk_disable_unprepare(clk);
- out_err:
+Jinjie Ruan (2):
+  spi: bcm63xx: Fix module autoloading
+  spi: bcm63xx: Fix missing pm_runtime_disable()
+
+ drivers/spi/spi-bcm63xx.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
 -- 
 2.34.1
 

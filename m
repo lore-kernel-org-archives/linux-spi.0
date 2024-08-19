@@ -1,39 +1,39 @@
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FBE216C42C;
-	Mon, 19 Aug 2024 12:24:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3B5B16CD01;
+	Mon, 19 Aug 2024 12:26:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724070294; cv=none; b=HGUdn6oUH7gRU+3oKA2jpk84HaVeDPgaTReyXIv4Is5cfA78xk5NIrQyjp9p5H2dREkZanQjinTUlKjmFYW1VlJDv22X1OtidTB+VBQeouxhegdy3VIwMqs0kehFn0KuVw/u2dOk7+mXjSLSwsAg3K1cY/hnxm6/yj73UDCubrw=
+	t=1724070393; cv=none; b=XFC8QZZKyLBtsHMP3zGYRL47L/ORByNIrv1WfPdyktNAEe3XG22zUK9iPM/sHDrBiSu5GtBZjvO7Fg7alcB+cyzf90Cnk45UCctqTKvbtZ5GOHobrVamX5BbhbPl4cxI/qNq1SJ1sVcuKlGfoaHfxEL9P1phlU9ifHmSxe3iL0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724070294; c=relaxed/simple;
+	s=arc-20240116; t=1724070393; c=relaxed/simple;
 	bh=aK8DHVfkVZISmQEbSj/+H3OwAxquMaD5EXh1ACr8Pe4=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g/QmxTFuWLg32Moj9kaQ+HnIiNX/6MwP9tv54I4VmNwG4aDwzc9wA27i99ah3eboARuPrAytNA+CX8yf6YEGr452iGy3qYnmt+hRQr+LyQFPZTPFzjr7U1tvm+uvQCA0pD+cKU1F0/TXKuFDeVcO8PQGrs0y2UTO6gx4ATKbw8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
+	 MIME-Version:Content-Type; b=H2SUaa/O+5ksYy96AAD61lIZ+OBi8QQ7nwyKgXvRpaut75KwnSXk1MCViXdHA0oWpwreBK7BcZ6pj8C3H+SkbptYs7ALU0XJmh9BZmSkKJPInH2CIGUWh7r/PidQzQoLFw+H8F81bm8Q7AxVz6/d2z0bj8Jhb+vJ6TByn7/WgP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4WnWrP0TsjzQq7L;
-	Mon, 19 Aug 2024 20:20:05 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4WnWt337nkz2Cn02;
+	Mon, 19 Aug 2024 20:21:31 +0800 (CST)
 Received: from kwepemh500013.china.huawei.com (unknown [7.202.181.146])
-	by mail.maildlp.com (Postfix) with ESMTPS id 0811B1800A5;
-	Mon, 19 Aug 2024 20:24:45 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id EC3B61A0188;
+	Mon, 19 Aug 2024 20:26:29 +0800 (CST)
 Received: from huawei.com (10.90.53.73) by kwepemh500013.china.huawei.com
  (7.202.181.146) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 19 Aug
- 2024 20:24:44 +0800
+ 2024 20:26:29 +0800
 From: Jinjie Ruan <ruanjinjie@huawei.com>
 To: <jonas.gorski@gmail.com>, <broonie@kernel.org>,
 	<linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 CC: <ruanjinjie@huawei.com>
-Subject: [PATCH -next 2/2] spi: bcm63xx: Fix missing pm_runtime_disable()
-Date: Mon, 19 Aug 2024 20:31:56 +0800
-Message-ID: <20240819123156.4020377-3-ruanjinjie@huawei.com>
+Subject: [PATCH -next v2 RESEND 2/2] spi: bcm63xx: Fix missing pm_runtime_disable()
+Date: Mon, 19 Aug 2024 20:33:49 +0800
+Message-ID: <20240819123349.4020472-3-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240819123156.4020377-1-ruanjinjie@huawei.com>
-References: <20240819123156.4020377-1-ruanjinjie@huawei.com>
+In-Reply-To: <20240819123349.4020472-1-ruanjinjie@huawei.com>
+References: <20240819123349.4020472-1-ruanjinjie@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -42,7 +42,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
  kwepemh500013.china.huawei.com (7.202.181.146)
 
 The pm_runtime_disable() is missing in the remove function, fix it

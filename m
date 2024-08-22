@@ -1,175 +1,112 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD9251C9426;
-	Thu, 22 Aug 2024 11:34:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A1241CB329;
+	Thu, 22 Aug 2024 14:58:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724326461; cv=none; b=P9aphHKCczc23MKZKfQPgDtoq67MIoJQUcLao5v7MBsKb450+WrznjZ8diRZeXH5Yta9HHje3r7b3gMsuMdjMtQBvGarHkjU0R9P1DQqtf6G1dR7uvRXfHYkVe/nuEnIecX+BPPtnSiLqnSbKIQsmiIZI8ssBoOJ7HNnVvCp3QQ=
+	t=1724338691; cv=none; b=UI/e/ExhPZMb9VY7zElUADTJG0VvH3xGeugcl9LDARWdmiLizTN3xRJgkwtVtDEY79tHVqVC5+UY/lUT7gAtBhvmh4ioBsZ1geJvlqR2sULF+ZpNoliXfeaiDvR+yEeFAJYHL54UQgErr8SWjBs4Q3TM5FAVozNK8yMKLjbSaEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724326461; c=relaxed/simple;
-	bh=b0Zy460fRKKLuxb9DRCTkqckSrkfUegLFAgVrZNZEhs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TRRtrw1lMbPx+8rljHv7KjrKPrXbqjjaoMWej32uyD0DPDV0TAoCf9lgmavesJq2/1c8p8YCMiaAubY76bzroZZEvIgyXyINqyZk2fy3G7ehcgnU6cLlRJ+PlikLPfWHSIZ8USxoCLj0iKyw9LDizii3j0Jb/6A4CxUboq4vmN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XG+r0S8L; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1724338691; c=relaxed/simple;
+	bh=Bj+Yrsv0zLoxJiQB3tANzn1xKu5HVSY1AdAXVzJxuO4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i1nYQ18gJsPHRxxux9gjAasPoiewffRRfRvejdgy7g5ifOUCVaANlJ61V0pw/bkn4oFhqgVhxMhsajHQAOQy3fFQjOOnmFGd36CzTQfL200XsWYyfpgRqCvq0JIB9EeTBR6+BYzAzf+ubSganFraLX5zXTkG071CI+deRBLXpik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tM6ilSH4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XG+r0S8L"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1724326459; x=1755862459;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=b0Zy460fRKKLuxb9DRCTkqckSrkfUegLFAgVrZNZEhs=;
-  b=XG+r0S8LA7vgtRDHzkvRlMNooAzs4eb5DPjibcZfe+eQeE+HPfHhozQ3
-   fUH0ikKwGTTErFuZm67XXNaJCfppVe24Hkp9sT4TG1C1VfNFCXVhF/JkG
-   8NaMACPYmUfTcHOqd6s8U91KZbqifJ+0pikTF0ci+OqOmPMo4IC15vYxn
-   0BpGWjVDZVv5Xg+OAGyMOwaD5R28cd94A7/F67sSkdX7Ygsx3f/sHnGeO
-   4E418tqUfaFvJApM0UUYj/TCG2VSBrBkpbSeTN716b6e56/eocX4p6BJD
-   yDV9JcqPK6a2YFTb9XnPBo9+HdZXQ0FaTJSbkjwnll/EQJSWnBS3O7fO8
-   g==;
-X-CSE-ConnectionGUID: Cy7nqBYsR/+4ualbrYBE7Q==
-X-CSE-MsgGUID: jxTA2nrVTmWoIFV6ULfEUQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11171"; a="22547604"
-X-IronPort-AV: E=Sophos;i="6.10,166,1719903600"; 
-   d="scan'208";a="22547604"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2024 04:34:13 -0700
-X-CSE-ConnectionGUID: 1dgtJN+9Se6cxFzk8J55kg==
-X-CSE-MsgGUID: mSHf4CnBTbOCXCt3+uGGgg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,166,1719903600"; 
-   d="scan'208";a="61566056"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa010.fm.intel.com with ESMTP; 22 Aug 2024 04:34:11 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 95EE7268; Thu, 22 Aug 2024 14:34:09 +0300 (EEST)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Daniel Mack <daniel@zonque.org>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Hao Ma <hao.ma@intel.com>
-Subject: [PATCH v1 1/2] spi: pxa2xx: Do not override dev->platform_data on probe
-Date: Thu, 22 Aug 2024 14:30:53 +0300
-Message-ID: <20240822113408.750831-2-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
-In-Reply-To: <20240822113408.750831-1-andriy.shevchenko@linux.intel.com>
-References: <20240822113408.750831-1-andriy.shevchenko@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tM6ilSH4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD805C32782;
+	Thu, 22 Aug 2024 14:58:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724338690;
+	bh=Bj+Yrsv0zLoxJiQB3tANzn1xKu5HVSY1AdAXVzJxuO4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tM6ilSH4HBJRpOK1zAJJmcsiHCcE5dbLSp11N7aT+RNDIybd0nm+lK5oOzSZhoJrb
+	 LW13yqbfvG52RMcGF2Dx3XKUHldPuBmSaRbmLtbhUsGWv4KiPY2mskfWNdSB21Jke8
+	 3OuJFcqtdBrg/EueNBG5SPcisUHeioOKP9QJUqcMeB+lZ3eevDHFJigOA2+GyrktVt
+	 0+CqqF7iGPTLbAflCUlQJTUR6AKpy6c6C7L3VI7YmrrWBIB+vuMA63K/NaI4BudXEJ
+	 TWHTDQ41zdkRNtHN6LLakNLEcWz74EuL9elqikX3pKKXSMU3P74qljf1UVyt9Nf0IF
+	 pUUDNGQR6Y0bA==
+Date: Thu, 22 Aug 2024 15:58:00 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Jinjie Ruan <ruanjinjie@huawei.com>
+Cc: mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+	linux-spi@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH -next] spi: stm32-qspi: Simpify resource lookup
+Message-ID: <ZsdR-G9S5nYbQX4s@finisterre.sirena.org.uk>
+References: <20240820123707.1788370-1-ruanjinjie@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="6s/GAhPIkOk69QT9"
+Content-Disposition: inline
+In-Reply-To: <20240820123707.1788370-1-ruanjinjie@huawei.com>
+X-Cookie: You need not be present to win.
 
-The platform_data field may be supplied by legacy board code.
-In other cases we override it, and module remove and probe cycle
-will crash the kernel since it will carry a stale pointer.
 
-Fix this by supplying a third argument to the pxa2xx_spi_probe()
-and avoid overriding dev->platform_data.
+--6s/GAhPIkOk69QT9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Reported-by: Hao Ma <hao.ma@intel.com>
-Fixes: cc160697a576 ("spi: pxa2xx: Convert PCI driver to use spi-pxa2xx code directly")
-Fixes: 3d8f037fbcab ("spi: pxa2xx: Move platform driver to a separate file")
-Fixes: 20ade9b9771c ("spi: pxa2xx: Extract pxa2xx_spi_platform_*() callbacks")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/spi/spi-pxa2xx-pci.c      | 2 +-
- drivers/spi/spi-pxa2xx-platform.c | 6 ++----
- drivers/spi/spi-pxa2xx.c          | 5 ++---
- drivers/spi/spi-pxa2xx.h          | 3 ++-
- 4 files changed, 7 insertions(+), 9 deletions(-)
+On Tue, Aug 20, 2024 at 08:37:07PM +0800, Jinjie Ruan wrote:
+> Use the devm_platform_ioremap_resource_byname() helper instead of
+> calling platform_get_resource_byname() and devm_ioremap_resource()
+> separately.
 
-diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
-index 616d032f1a89..c98bb214b6ae 100644
---- a/drivers/spi/spi-pxa2xx-pci.c
-+++ b/drivers/spi/spi-pxa2xx-pci.c
-@@ -297,7 +297,7 @@ static int pxa2xx_spi_pci_probe(struct pci_dev *dev,
- 		return ret;
- 	ssp->irq = pci_irq_vector(dev, 0);
- 
--	return pxa2xx_spi_probe(&dev->dev, ssp);
-+	return pxa2xx_spi_probe(&dev->dev, ssp, pdata);
- }
- 
- static void pxa2xx_spi_pci_remove(struct pci_dev *dev)
-diff --git a/drivers/spi/spi-pxa2xx-platform.c b/drivers/spi/spi-pxa2xx-platform.c
-index 98a8ceb7db6f..f9504cddc7ba 100644
---- a/drivers/spi/spi-pxa2xx-platform.c
-+++ b/drivers/spi/spi-pxa2xx-platform.c
-@@ -63,7 +63,7 @@ static struct ssp_device *pxa2xx_spi_ssp_request(struct platform_device *pdev)
- 
- 	ssp = pxa_ssp_request(pdev->id, pdev->name);
- 	if (!ssp)
--		return ssp;
-+		return NULL;
- 
- 	status = devm_add_action_or_reset(&pdev->dev, pxa2xx_spi_ssp_release, ssp);
- 	if (status)
-@@ -148,8 +148,6 @@ static int pxa2xx_spi_platform_probe(struct platform_device *pdev)
- 		platform_info = pxa2xx_spi_init_pdata(pdev);
- 		if (IS_ERR(platform_info))
- 			return dev_err_probe(dev, PTR_ERR(platform_info), "missing platform data\n");
--
--		dev->platform_data = platform_info;
- 	}
- 
- 	ssp = pxa2xx_spi_ssp_request(pdev);
-@@ -158,7 +156,7 @@ static int pxa2xx_spi_platform_probe(struct platform_device *pdev)
- 	if (!ssp)
- 		ssp = &platform_info->ssp;
- 
--	return pxa2xx_spi_probe(dev, ssp);
-+	return pxa2xx_spi_probe(dev, ssp, platform_info);
- }
- 
- static void pxa2xx_spi_platform_remove(struct platform_device *pdev)
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 16b96eb176cd..e3a95adc5279 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1277,16 +1277,15 @@ static size_t pxa2xx_spi_max_dma_transfer_size(struct spi_device *spi)
- 	return MAX_DMA_LEN;
- }
- 
--int pxa2xx_spi_probe(struct device *dev, struct ssp_device *ssp)
-+int pxa2xx_spi_probe(struct device *dev, struct ssp_device *ssp,
-+		     struct pxa2xx_spi_controller *platform_info)
- {
--	struct pxa2xx_spi_controller *platform_info;
- 	struct spi_controller *controller;
- 	struct driver_data *drv_data;
- 	const struct lpss_config *config;
- 	int status;
- 	u32 tmp;
- 
--	platform_info = dev_get_platdata(dev);
- 	if (platform_info->is_target)
- 		controller = devm_spi_alloc_target(dev, sizeof(*drv_data));
- 	else
-diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
-index a470d3d634d3..447be0369384 100644
---- a/drivers/spi/spi-pxa2xx.h
-+++ b/drivers/spi/spi-pxa2xx.h
-@@ -132,7 +132,8 @@ extern void pxa2xx_spi_dma_stop(struct driver_data *drv_data);
- extern int pxa2xx_spi_dma_setup(struct driver_data *drv_data);
- extern void pxa2xx_spi_dma_release(struct driver_data *drv_data);
- 
--int pxa2xx_spi_probe(struct device *dev, struct ssp_device *ssp);
-+int pxa2xx_spi_probe(struct device *dev, struct ssp_device *ssp,
-+		     struct pxa2xx_spi_controller *platform_info);
- void pxa2xx_spi_remove(struct device *dev);
- 
- extern const struct dev_pm_ops pxa2xx_spi_pm_ops;
--- 
-2.43.0.rc1.1336.g36b5255a03ac
+This breaks boot on the Avenger96 board, it causes a NULL pointer
+dereference:
 
+[    2.350480] Unable to handle kernel NULL pointer dereference at virtual =
+address 00000000 when read
+
+=2E..
+
+[    2.695787] Call trace:
+[    2.695807]  stm32_qspi_probe from platform_probe+0x5c/0xb0
+[    2.703914]  platform_probe from really_probe+0xc8/0x2c8
+[    2.709284]  really_probe from __driver_probe_device+0x88/0x19c
+[    2.715145]  __driver_probe_device from driver_probe_device+0x30/0x104
+
+https://lava.sirena.org.uk/scheduler/job/650792
+
+> -	res =3D platform_get_resource_byname(pdev, IORESOURCE_MEM, "qspi");
+> -	qspi->io_base =3D devm_ioremap_resource(dev, res);
+> +	qspi->io_base =3D devm_platform_ioremap_resource_byname(pdev, "qspi");
+>  	if (IS_ERR(qspi->io_base))
+>  		return PTR_ERR(qspi->io_base);
+> =20
+>  	qspi->phys_base =3D res->start;
+> =20
+> -	res =3D platform_get_resource_byname(pdev, IORESOURCE_MEM, "qspi_mm");
+> -	qspi->mm_base =3D devm_ioremap_resource(dev, res);
+> +	qspi->mm_base =3D devm_platform_ioremap_resource_byname(pdev, "qspi_mm"=
+);
+>  	if (IS_ERR(qspi->mm_base))
+>  		return PTR_ERR(qspi->mm_base);
+
+I can't identify any obvious error here, these look like a direct
+subsitution - the implementation of devm_platform_ioremap_resource_byname()
+looks to be the same as the replaced code and dev is set to &pdev->dev
+but I'm seeing the above behaviour.
+
+--6s/GAhPIkOk69QT9
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmbHUfcACgkQJNaLcl1U
+h9CN8Af8DY4LE/KzrL+ENEN0vrqUzAsXF0kFyjft3xYuOnC0JEMBmrZ6/QtgG2JV
+oWwmu82T2kkirx3dgWZn3U6ig9+wTWrdu9mPFPDKzDgl/l7TtO60iojlCNk61c82
+O4Ki59eHrRFKOKffBDCREilTuj7zGUSIp8hfc2oPD8JVWQ7ENQ6nTQ0AZJwUmWuA
+aEhxVuL9+I+IQ+IeG8fzc6S+AAMpaj142AsB5Rft84YRBPWFmt4wnQuaLpVC4SvW
+ftXzNetwjfeTC47eS5B9Ygaslz4pxfxYSVab7VzMSgcBxKl8QBKwXmH+9lSl7yjJ
+cMHHn+8fvbJP2MyGPJ33A/l6U3/HEA==
+=kpgY
+-----END PGP SIGNATURE-----
+
+--6s/GAhPIkOk69QT9--

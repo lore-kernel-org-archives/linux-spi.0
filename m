@@ -1,41 +1,36 @@
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D567419306B;
-	Mon, 26 Aug 2024 12:51:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF46185948;
+	Mon, 26 Aug 2024 13:17:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724676690; cv=none; b=X7l2E3nyS6O0wr7cThRGK8EacBxk6fZj8dEpndvlBONW00GiGjxdOA2DqhLHy1OSsMwyUuKowp8Fv5xzXxuSIKBJ6Eb3WrQNcC5QjYjTVTvPMhmygAf6pg2bUixZ2KCSA0meKN6Rat/d2BVdCjYVOJFSvkp6kLlXyV+JvwDu+YY=
+	t=1724678279; cv=none; b=hoQlofQzY7GQT1sNI7IxzDtQerauO48O0mIv5eEHbRI8qKqDvbV703PGYmB4qnRnub5sIiZ5pI9uYuWcNnbzkxi0TL+5ExCAZf4aLYF4ApEHWRy6p0R0OUl1GlwM8QGhnPAY8OvK+HMu4CjNCysTAwbi2PniVpgTXpjZgc6dp+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724676690; c=relaxed/simple;
-	bh=z9JA6Q66F3olYpaNlUlg6UIMC86k457zMsOADKO0iAg=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h0R2PLTf2Gtoi6ZklziFeWpEaujMCQvwMPvOqJky3kFetgCz0w8NLw08a38UCJVnwpdcv30jY9rJy52dsi+ao9at1M9caIGouTPwowcj7dfX8czIMydELqGUatcUfrTfLpwfRJXaR0uzY0cCd04ypYQG57PiWpGhR6LJeaUeJwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
+	s=arc-20240116; t=1724678279; c=relaxed/simple;
+	bh=C1OQJvYUqHz/dWNOrDMEbCb7PEYW396uCrigkeZ0Qog=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oGDlJ3fmdenqXv+50F09x1nndFwskFnJHKtWdSe5VHYFU6b6OIys1s/norHFSsKgCQ8t0suQADJdcJ6fjM+pf0gtT9D7j0ZxY3saSAJMtwzZ2m1tDB1zjp1zJUQiX+Ldhjiy6mUyByI/hBuTdcgwgOwxGjG2j7JaWbxzLO4nKMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.105])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4Wsr5m2QskzQqhH;
-	Mon, 26 Aug 2024 20:46:36 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.162.254])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Wsrmz59wWzyQKr;
+	Mon, 26 Aug 2024 21:17:07 +0800 (CST)
 Received: from kwepemh500013.china.huawei.com (unknown [7.202.181.146])
-	by mail.maildlp.com (Postfix) with ESMTPS id 0265E14037E;
-	Mon, 26 Aug 2024 20:51:24 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 970341800F2;
+	Mon, 26 Aug 2024 21:17:53 +0800 (CST)
 Received: from huawei.com (10.90.53.73) by kwepemh500013.china.huawei.com
  (7.202.181.146) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 26 Aug
- 2024 20:51:23 +0800
+ 2024 21:17:53 +0800
 From: Jinjie Ruan <ruanjinjie@huawei.com>
-To: <broonie@kernel.org>, <nicolas.ferre@microchip.com>,
-	<alexandre.belloni@bootlin.com>, <claudiu.beznea@tuxon.dev>,
-	<linux-spi@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>
+To: <j.neuschaefer@gmx.net>, <broonie@kernel.org>, <openbmc@lists.ozlabs.org>,
+	<linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 CC: <ruanjinjie@huawei.com>
-Subject: [PATCH -next 1/2] spi: atmel-quadspi: Fix uninitialized res
-Date: Mon, 26 Aug 2024 20:59:12 +0800
-Message-ID: <20240826125913.3434305-2-ruanjinjie@huawei.com>
+Subject: [PATCH -next 0/2] spi: wpcm-fiu: Fix uninitialized res
+Date: Mon, 26 Aug 2024 21:25:42 +0800
+Message-ID: <20240826132544.3463616-1-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240826125913.3434305-1-ruanjinjie@huawei.com>
-References: <20240826125913.3434305-1-ruanjinjie@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -44,33 +39,18 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
  kwepemh500013.china.huawei.com (7.202.181.146)
 
-The second platform_get_resource_byname() can not be replaced with
-devm_platform_ioremap_resource_byname(), because the intermediate "res"
-is used to assign for "aq->mmap_size".
+Fix uninitialized res in probe function.
 
-Fixes: 3ccea1dedef3 ("spi: atmel-quadspi: Simpify resource lookup")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
----
- drivers/spi/atmel-quadspi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Jinjie Ruan (2):
+  spi: wpcm-fiu: Fix uninitialized res
+  spi: wpcm-fiu: Simplify with dev_err_probe()
 
-diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-index 2b5c72176711..56dd8dcb86cb 100644
---- a/drivers/spi/atmel-quadspi.c
-+++ b/drivers/spi/atmel-quadspi.c
-@@ -608,7 +608,8 @@ static int atmel_qspi_probe(struct platform_device *pdev)
- 	}
- 
- 	/* Map the AHB memory */
--	aq->mem = devm_platform_ioremap_resource_byname(pdev, "qspi_mmap");
-+	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "qspi_mmap");
-+	aq->mem = devm_ioremap_resource(&pdev->dev, res);
- 	if (IS_ERR(aq->mem)) {
- 		dev_err(&pdev->dev, "missing AHB memory\n");
- 		return PTR_ERR(aq->mem);
+ drivers/spi/spi-wpcm-fiu.c | 17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
+
 -- 
 2.34.1
 

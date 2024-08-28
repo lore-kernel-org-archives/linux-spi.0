@@ -1,88 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F8C45028;
-	Wed, 28 Aug 2024 16:30:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91C3414EC47;
+	Wed, 28 Aug 2024 18:01:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724862631; cv=none; b=GL7n26timzVaD7NlaFp1QVuhW78BsgnRhn/GjBWdf2sl24eY0m/o0j7aa6XTDVV9Q36L3wnhUoGRO5cODP5qCY6Jh1IXjLIiYXFCvNbNLEPifYtURXAdpg2vFsmXbyVaUWlt6nvR9kRuY4sIpJNQw/inoLWNqjRmZAP4uDbFA5c=
+	t=1724868077; cv=none; b=E+5Rn5l4c2S1NY7UafZ/mqQL6Gz8zzim6pzkyoQc2KyE1A0OzDSxtw/jcvbHSvY42HzI+aPEkQUeZrT04W9+U9xK/wokesY/4W0uJZGLD6lwOrkXI4UX4VtNdIRb8myyM4HmEyqrOA778+DtzDEY3dkJXg3GtkPKk2ipn4nyjig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724862631; c=relaxed/simple;
-	bh=+2M9DfbXL36bIZ5qZ0Kp00d3aasP/QYCZHxSEDtTneM=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=KlPC+ZiS31/OmkWfPNmEZm3tQsbH24uAa4NS4GrP/dY7R46j8DpJUvXEC0xetMKmidyLoC+P1/19bpA8vCftCLLsMcGvwQRm0eK9BDFMXKRWPvyQ/TKZAlg8v8mwz6eY03YZQtxNm2TWJHC2r4B3E1wn2jNOqWf+3JuLCSkiGy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JF4obSZc; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1724868077; c=relaxed/simple;
+	bh=KQoVU0ohfoUcNvHfCK/fBDoRXiT+Jb90mxBNFE81rNQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GW1gwdahZYI/MahBW2/+sG6mASCaeJ/fjrwQmjpRSEXPKneNSq5xsDduIzxtN9KGZp5ZtRp4Ya6qgaf6Hxe9c5BsoRPLcjRIyl1rCry2ym9DhAjKzvoRtFpvwQSD4Lqe106Cwx/FOr6IImcJx6ES7oJTaD6AfbDPsRZKjrj8giM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bZPcQ+Yf; arc=none smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JF4obSZc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B60BC4FF56;
-	Wed, 28 Aug 2024 16:30:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724862630;
-	bh=+2M9DfbXL36bIZ5qZ0Kp00d3aasP/QYCZHxSEDtTneM=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=JF4obSZc0yhW2k3zHttgrUz3D3DHL81z5ulyDpbsgBiqIYOCkreHUennu1mOVFEoy
-	 FXeDEwVgctH1tpKNDwolAMkyJPAUTYA2jq+yLjNeYwx87D1EMGadEdL/bpBRvyrA0/
-	 MvqnLlnN+laIPrlkYtFyE3epAmzM5A3ICllTfOCXHmG58/CeZEbppGR738I/Xu9g/d
-	 rg25ggXIcqgpra18lfAR1C0j5anVGxhkSxc0sU7n7h4txzB169aii8oYBnM7FMUibi
-	 KImkSTHy82VPPFcI2ynxn0hdlPFwrGb/SMISF3Nd6KrufVbsbXJuY8H9phchLYJFC/
-	 OrvEOyzFeJU3Q==
-From: Mark Brown <broonie@kernel.org>
-To: Bastien Curutchet <bastien.curutchet@bootlin.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Herve Codina <herve.codina@bootlin.com>, 
- Christopher Cordahi <christophercordahi@nanometrics.ca>
-In-Reply-To: <20240828063131.10507-1-bastien.curutchet@bootlin.com>
-References: <20240828063131.10507-1-bastien.curutchet@bootlin.com>
-Subject: Re: [PATCH] spi: davinci: Adapt transfer's timeout to transfer's
- length
-Message-Id: <172486262889.93098.17891332820401670505.b4-ty@kernel.org>
-Date: Wed, 28 Aug 2024 17:30:28 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bZPcQ+Yf"
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-7143185edf2so5854261b3a.0;
+        Wed, 28 Aug 2024 11:01:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724868076; x=1725472876; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=YwO1tVhas9mZORSVkPcYgJoFV2fs+6URakIgFUk7sX4=;
+        b=bZPcQ+YfLHBjLpbvYyqjJKIJeMMS1eXNTH5CYfsG8IKrNF1qldU3cWs1M5jlkYc1tE
+         3Bo+hjlt8wsIefC3pqbiZ7gctdYywOv+NWYUlJdIhWru5zq53cMVa+p0+gN0rmqtLF4s
+         k58ble3+go6MkBQVrCaN93JwGTblBqGJxE3YDBP1cQ/qnzNMKVHuyxY1Imt1aSdJgubl
+         OL/FiwBWJZWOmx/C5ZZPyXWzu1wdXPQgSCOhAYKPoXdhsyr5PMoS3B7vFerwXz1GVkja
+         ZH9iYb4EuB2PKZNRBIBAJ6n0MAFCEBsjkxtUtfigCaVasZWyP+xRK2QquiRhFUT/nsoh
+         HRWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724868076; x=1725472876;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YwO1tVhas9mZORSVkPcYgJoFV2fs+6URakIgFUk7sX4=;
+        b=N3X1UEOEQUoChHdZ7vGSlk/zQsleBJB4LmXsf94510DzZsL4y/toA/9AjVWekRO3fi
+         KAhjfYrNNipNOmbbU+bINTsZXUzdJa6F9FddQGGM2U+1WFKoZKxZ/Wud31HaAzdjdL6s
+         NvlHPIkAyihNrDAqM09IrtEB8nEidH68SgK3YdumsY32ZpQlOdjIVLIjREx9Ea2EUgii
+         a1FiBFsTItoeSbSmTLiTxh4/+FHDa9GcoEvJI+Kce9OFXgyZXob/GF2CksHh/h9qrBjo
+         +OJV6vkp7+qJ4hPlsQupJgL2BvcXp1Zd+bEXZhz+/t+lOWAFz6Lp1xzJJkd4zWruFMXg
+         uP2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXieP3Wukf8t1c14L1WGEDF/1OqanXY/G9x8kzrFZFUcxWT7Sbbk29LS0zU4eSJzukTllEcLtpLXXHJ@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTmDTOdkWka7YRPynKprZjLtL9CkcUuRvjqW8mw6AFfxJr33Fj
+	pxXGHUrRTW6kKbckPtkdsfjDwJ22LKhjDbtJ/iW+wsi6aid79dU/
+X-Google-Smtp-Source: AGHT+IGZe7JIGsLE4aR1OrNxkm4LBaa7dLfetL/m/nucpE6rqmJWf1USTSzPH0YjvsyjuK6svnI1NQ==
+X-Received: by 2002:a05:6a20:cd0e:b0:1ca:c673:9793 with SMTP id adf61e73a8af0-1cce1027d15mr129193637.23.1724868075718;
+        Wed, 28 Aug 2024 11:01:15 -0700 (PDT)
+Received: from fabio-Precision-3551.. ([2804:14c:485:4b61:4b3a:557e:6b5b:dbdc])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7143434294asm10300127b3a.216.2024.08.28.11.01.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Aug 2024 11:01:14 -0700 (PDT)
+From: Fabio Estevam <festevam@gmail.com>
+To: broonie@kernel.org
+Cc: linux-spi@vger.kernel.org,
+	otavio.salvador@ossystems.com.br,
+	heiko@sntech.de,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Fabio Estevam <festevam@gmail.com>,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: [PATCH RESEND v2 1/3] dt-bindings: trivial-devices: Document elgin,jg10309-01
+Date: Wed, 28 Aug 2024 15:00:55 -0300
+Message-Id: <20240828180057.3167190-1-festevam@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-37811
+Content-Transfer-Encoding: 8bit
 
-On Wed, 28 Aug 2024 08:31:31 +0200, Bastien Curutchet wrote:
-> The timeout used when waiting for transfer's completion is always set to
-> HZ. This isn't enough if a transfer is too large or if the bus speed is
-> too low.
-> 
-> Use the bus speed and the transfer length to calculate an appropriate
-> timeout
-> 
-> [...]
+The rv1108-elgin-r1 board has an LCD controlled via SPI in userspace.
+The marking on the LCD is JG10309-01.
 
-Applied to
+Add an entry for the "elgin,jg10309-01" compatible string.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+Signed-off-by: Fabio Estevam <festevam@gmail.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Acked-by: Heiko Stuebner <heiko@sntech.de>
+---
+Changes since v1:
+- Use a more specific compatible string. (Conor)
 
-Thanks!
+ Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-[1/1] spi: davinci: Adapt transfer's timeout to transfer's length
-      commit: 2fe6102bf01a5f4f48f211c2e5c8a274342fccb1
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
+index 7913ca9b6b54..49dee2a1f6b4 100644
+--- a/Documentation/devicetree/bindings/trivial-devices.yaml
++++ b/Documentation/devicetree/bindings/trivial-devices.yaml
+@@ -110,6 +110,8 @@ properties:
+           - domintech,dmard09
+             # DMARD10: 3-axis Accelerometer
+           - domintech,dmard10
++            # Elgin SPI-controlled LCD
++          - elgin,jg10309-01
+             # MMA7660FC: 3-Axis Orientation/Motion Detection Sensor
+           - fsl,mma7660
+             # MMA8450Q: Xtrinsic Low-power, 3-axis Xtrinsic Accelerometer
+-- 
+2.34.1
 

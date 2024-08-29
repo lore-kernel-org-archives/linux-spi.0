@@ -1,82 +1,77 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE4A1B655A;
-	Thu, 29 Aug 2024 17:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C9C81B1D61
+	for <linux-spi@vger.kernel.org>; Thu, 29 Aug 2024 17:40:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724953129; cv=none; b=mjrb8j5QavZWxsb9IGgZDwdfKwYDq3dycgkmNYP7WlhGBRQ86OadeHeGF4rP7iL1YkQhY1tHn4gUPUb58W0lBy3sOPNABwYKD/ht7ZvslHojcBub8uNgS/2mMmvacw7jFI4BzT0zpg7fGdk67FrHzsg8YkSNN/lrEJHF5q0ZUCQ=
+	t=1724953226; cv=none; b=GiVgU5XX791WB6/IzKBuaLlup4bYdfdQCXNBZqSgcY2z3sxAyTcp7i6vZsUtkRGtPjXW+l33zwTjD/QEzm/+a5Y+U9S45UX1HmpDPEA0+C9+o/L+VlP50+yeL0WaD51/EwEHtzKH6fxgJ9+bBm/Y+C46iaQuL2B+/vDCtXJwuFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724953129; c=relaxed/simple;
-	bh=D6cDh90LvNxf2g/ZFxNXrnlEDOCi510qk2oefT4tUlI=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=c9mIgcOecOwej/xW9kXumpVBA8EJX8VPS4lx1QuUkVzYOjQZnYRMQHUrtY3PFlburxIFgRHVm9otBzikAzVDqujoGUlhoAGi3DH2IecrDGFHckI721So7X7GI1Amz3MJzTb/b+P+WtC7r8A49UZA7p21F//0lJXN2Yc3eJR/Y4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ox9zYybu; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1724953226; c=relaxed/simple;
+	bh=QvxBu0sJJSWTxtbr3IktDJcegYmU1/3zjwl17rZHL7Y=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=aTr/isdbSDQvswqikhMtfWg8kmdtNnOFw5OVMCyCms3Ngr/s+gVtqD4PCcrExjUmexFdtlG2AY3ykUby1CPHPYOOURCQE8AkXzAM1xd9e/5zPuyxaow3yuROrXSnQFRN6hXRuiMmNYLJOpOyye7cuV66z3cnhXXmIH5Ujh6Tloo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kv6PWUsI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ox9zYybu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAC66C4CEC1;
-	Thu, 29 Aug 2024 17:38:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kv6PWUsI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BB6CC4CEC1;
+	Thu, 29 Aug 2024 17:40:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724953129;
-	bh=D6cDh90LvNxf2g/ZFxNXrnlEDOCi510qk2oefT4tUlI=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=ox9zYybuzoAQDETjydmdnbCF6KZE/oMU7yZ1YiYjAEB13/ZihsieiDHc599ltyt/R
-	 Ia46hSmOyyrN4+pr8kbDweZ5ZgJ6oK7l4YTsFWrsQYi0c8pMz7kzNvnwgu5oPCc1aq
-	 tpubr/J8c068F0OD0YLWWAMqOW4ED5wLGxLDjSKbhLDD2Cv+s7Y8RyfaHGkibuMNUB
-	 +i8yLNbJE1e2oIagYHNQ9oElwiEc0F08Euc3wwpOTvaDSnfle7Pca2VzwlQ4caPYte
-	 QGphuAXQsR6Qn0NLrMq7uQNVHDnTTB/yKnsbw7s821ysvAFGfhsBUMGMhymeiyWLWv
-	 uaIhNxGRDvyaA==
-From: Mark Brown <broonie@kernel.org>
-To: han.xu@nxp.com, haibo.chen@nxp.com, Yan Zhen <yanzhen@vivo.com>
-Cc: yogeshgaur.83@gmail.com, linux-spi@vger.kernel.org, 
- linux-kernel@vger.kernel.org, opensource.kernel@vivo.com
-In-Reply-To: <20240827131203.3918516-1-yanzhen@vivo.com>
-References: <20240827131203.3918516-1-yanzhen@vivo.com>
-Subject: Re: [PATCH v2] spi: nxp-fspi: Use max macro
-Message-Id: <172495312750.812311.6155936564254648481.b4-ty@kernel.org>
-Date: Thu, 29 Aug 2024 18:38:47 +0100
+	s=k20201202; t=1724953226;
+	bh=QvxBu0sJJSWTxtbr3IktDJcegYmU1/3zjwl17rZHL7Y=;
+	h=Subject:From:Date:To:From;
+	b=Kv6PWUsI2NZs6gBTOq+GBiLziN894kb83TV3MV6xK5CXW/A/rwvimGX3xMAHPAl/8
+	 EPfH4xgfiyAgVZnUbgEGFcfqzZqpCzzDNCO8Kx8/6PdhR5jYxsblPExdF8akcq/pT/
+	 oa3PmitIST2PnAVj0Tm+27rUbc3QOz+Lss0VAoUDTlL0IRrbU+w0AUay811zzM/hO/
+	 Xq4girB7gGaEUOv4udS5OMoblC2dVQz2dFM1t45i785LwWYHkZHhga3obA5KzZ6MBE
+	 FxTwYkCNvBvv2FXY0zQMYl7qQr8IX05bHu4fVpfCClzGidlzMl8kFb42h8M1N9r42D
+	 aMBhwavPrKzAw==
+Received: from ip-10-30-226-235.us-west-2.compute.internal (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D1B243805D82;
+	Thu, 29 Aug 2024 17:40:27 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-37811
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <172495322779.2031773.6134179445995282688.git-patchwork-summary@kernel.org>
+Date: Thu, 29 Aug 2024 17:40:27 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-On Tue, 27 Aug 2024 21:12:03 +0800, Yan Zhen wrote:
-> When the original file is guaranteed to contain the minmax.h header file
-> and compile correctly, using the real macro is usually
-> more intuitive and readable.
-> 
-> 
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+Patch: [v2] drivers: spi: Insert the missing pci_dev_put()before return
+  Submitter: Yang Ruibin <11162571@vivo.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=884534
+  Lore link: https://lore.kernel.org/r/20240829033511.1917015-1-11162571@vivo.com
 
-Thanks!
+Series: [v4,1/3] dt-bindings: trivial-devices: Document elgin,jg10309-01
+  Submitter: Fabio Estevam <festevam@gmail.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=884719
+  Lore link: https://lore.kernel.org/r/20240829113158.3324928-1-festevam@gmail.com
+    Patches: [v4,1/3] dt-bindings: trivial-devices: Document elgin,jg10309-01
 
-[1/1] spi: nxp-fspi: Use max macro
-      commit: 3959d1f0f8d6682aa896a8f78a9f5ebfd2b6f6c8
+Patch: [v2] spi: nxp-fspi: Use max macro
+  Submitter: Yan Zhen <yanzhen@vivo.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=883819
+  Lore link: https://lore.kernel.org/r/20240827131203.3918516-1-yanzhen@vivo.com
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+Total patches: 3
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
 

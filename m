@@ -1,141 +1,113 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BBF61B375A;
-	Thu, 29 Aug 2024 19:02:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E241465AB;
+	Thu, 29 Aug 2024 19:07:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724958156; cv=none; b=gwdukc2aWNbWscddkXffWdgKqLcKwMeOMXoGcuAwgj2B3L5oddjOg1L16S9s2O0N6vpNBsYlLMY9X6MG3wVSTLyhia4Us1QGtel1ApAsGtkhGJAXCsfVOM8OmphzB6bwnQOw+bQ7Zi4dDQ0988d4lTtAwT3f2e50Djh5r80IfvM=
+	t=1724958464; cv=none; b=H8QoD7KPouln3XUWDbkY5o7EkqeUFS2XW5HoigTWAHamlToSR1GuNtAZGryxO/X9QbyAjLI9Icui1Zobp3B6a2RQdZIs8nqGqpizU6206gdg8mvkHCWg88yLkXEbxcOwDM55kg8yGkVC8nrs5AQSF1pJLewWh+m1J8oub+f0iNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724958156; c=relaxed/simple;
-	bh=/wmJtwFDN490HIh+23neW3jdiSkIUC6/3Or1KkDeYRU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=I9oYkEckb2ZfJvJVmAXzqnxLhb4LRfmglWqy8CH59AbMiNCvCvIA8D2w9x6XkQHWh//CsR03ypajtGLYERxv803b/6ta0s+mCQJW4+XsVRPA/FRffKeWk2qKjyrg27l3H81+BL9nnvnMmKA5rzsPKeeRvMGRagc5fMA5ToP5c5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=K0LMyed0; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+	s=arc-20240116; t=1724958464; c=relaxed/simple;
+	bh=7GLr8yIVNUtXr0fAQM9DZ2ARJRFJE2UtRt1ZrYnrcto=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fu3fdeUsUsoXKod6I0aFFFSIgQeCFiYmbyHrQvOrTSaE7iFcQf7EW4+H9roADsIeRp/diFLdkmXYZ+Srtsfou3Cxuc6btDXs0IXQbguOmpmT2y6yhkEoLJFI3sIOPTNDHJnUWKgARq+Lou4A1vZqFC+wTUZJ4k+MZlVYBzKuxOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L8oZDa1N; arc=none smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="K0LMyed0"
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47TGjpZ2000576;
-	Thu, 29 Aug 2024 19:01:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	Vk4nZW/bDicP43XO1R2Ns1I318mX58Bj/9S9ag6wloc=; b=K0LMyed0l/G8fkIO
-	NPghrtx7Cso89jMC+5F565Jf/sG5jhoOf7aFuxsRWreH5WluGeLAkXPWNDAdOPZT
-	emdwDaGpjRbsot80jfztJSM+mPrc1jhCVFmZquV1/5tznPwjtR6ydXkDUMNvbtQi
-	aSrOGE11mORKXY0dgUjF19KOw4B0O/3u5/sP8fD/Mfnk0ib6utkcnt+GHsvi2HEK
-	CVf9S5gM0Gejb2RVq0rRWnYCVAH9NSbS7RIIEvim18eBX185hk1HOzOjnZ7aP85N
-	bG25E8Sg3dR3xq+s2bc9LfGwNLFuZQVJ4DoehrHOqdQYqdaSJpgTMphAJMu0hNbz
-	ihKgrg==
-Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 419puw6d4n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 29 Aug 2024 19:01:56 +0000 (GMT)
-Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
-	by NASANPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47TJ1s14030388
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 29 Aug 2024 19:01:54 GMT
-Received: from [10.110.28.107] (10.80.80.8) by nasanex01b.na.qualcomm.com
- (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 29 Aug
- 2024 12:01:50 -0700
-Message-ID: <de0c40c2-3627-4c63-9112-4eb13cf75c0a@quicinc.com>
-Date: Thu, 29 Aug 2024 12:01:50 -0700
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L8oZDa1N"
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-533de5a88f8so1012054e87.3;
+        Thu, 29 Aug 2024 12:07:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724958461; x=1725563261; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mO5QKMFkQGARdNAhLEkb/pyGNB1/CKbDelDoQf4PNG0=;
+        b=L8oZDa1NvVKBDXv1bRrkolZyffgsC1AywlLUS0HjKj+giHhw+9vTgE2VZmExmC5cSu
+         Cf4a0zz21OwPOz/afh0pItQDDrOOjbN7ypxCjQSw9WD4xW7edxb0E6z8pMkA+CMty/6E
+         ff/g81QhymlFtF9oPL6H3aOOmEhMYzXgDItBswpv9AW1hJq05RT1qdx0c5fChd4P2IJK
+         ih+o5qW1ltmt242pL2ZGLTv/Dcd4DGXwYkiKz5DA47g8GummDwl2a7qrztIbLIF5rCP6
+         9ZvEdgtGdtiOfUg2OiY3UO8tearQqVKxfVsOMZD2pgfDJgQr+OpgypCoDDRx5nftdjGc
+         yUig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724958461; x=1725563261;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mO5QKMFkQGARdNAhLEkb/pyGNB1/CKbDelDoQf4PNG0=;
+        b=O6PXZ3t1a43HDvM9SNxPCR3rLStu7X84chCFov3J6OPPZI/M8hp+P82KC1RYCzU2gL
+         hdfPWo1SqVvKegHRlv2fmlOPPk+y2bZzABrFFI0NXaS37tTTjo2718k3VJ5AxltCgQtW
+         e4mHfOnFs8XzCeZjbkY+pvQdxFByV7aiRxR+JlVbb7D4L+IH49CifyX3Za8MlGxNKQzG
+         ShbyIXEyHnAPL7DHaJAIOTFX+/4axi4Mlxu8eQObemXFjus/oKL+duXMj3foyKLMUVaJ
+         gT+luco87xcdHk8BC+09mfNJQzBAfy7qcVEAx/+0Ed4PYa/BYsU2tJZjr0iX7EAIj0Fz
+         GLLg==
+X-Forwarded-Encrypted: i=1; AJvYcCWsuflLlQCX3ORVN4ridHuS+irA32NLh2r+BBSqhc8+1l4LqWS+FRGOlJvA2V0gwgkgofrwBRN40wtg@vger.kernel.org, AJvYcCWxV4jI9m9kjgs7njbpwiI5tcFYPReBRDPikbXvIHAGjseyHa8Y3+ND93gLppOWnF+r/20olFE/6g9m@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQBttut5is/AonVTzGp6kzyfBZ/5zpiYuohEAVq/UF4HEDpf/s
+	kZ4DtFTRZhNHZwzDK7lVk5SZrhFzH1as96EzPdIQ5xol0Kd+xxnUabYVkDdHJ7gvWrzGoSlZqYJ
+	L7PYnwIQnv4tBiwlwcflpoLEjHOc=
+X-Google-Smtp-Source: AGHT+IH+2SifOAvpl4+hv4MuP7AodrgFtL2Z5nNZdIWU4TbOefhzNyxQwOURMOXT4Z0T33GKFBx3C2CRHBq40pPOIiw=
+X-Received: by 2002:a05:6512:b0e:b0:52e:be1f:bf7f with SMTP id
+ 2adb3069b0e04-5353e57afa6mr2356824e87.27.1724958460170; Thu, 29 Aug 2024
+ 12:07:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 21/22] ARM: dt: GIC: add extended SPI specifier
+References: <20240829113158.3324928-1-festevam@gmail.com> <172495658983.899923.10430034751474903183.robh@kernel.org>
+ <CAL_JsqL7+5q=7rag4UqfHUR96ii-j8vDksRj2xWnWs=Y_FWU7A@mail.gmail.com>
+In-Reply-To: <CAL_JsqL7+5q=7rag4UqfHUR96ii-j8vDksRj2xWnWs=Y_FWU7A@mail.gmail.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Thu, 29 Aug 2024 16:07:28 -0300
+Message-ID: <CAOMZO5DVnwrLcswA2sV0EfQwLJx343B2Fq76boPzfKExu1u1qQ@mail.gmail.com>
+Subject: Re: [PATCH v4 1/3] dt-bindings: trivial-devices: Document elgin,jg10309-01
 To: Rob Herring <robh@kernel.org>
-CC: <andersson@kernel.org>, <konradybcio@kernel.org>, <krzk+dt@kernel.org>,
-        <conor+dt@kernel.org>, <rafael@kernel.org>, <viresh.kumar@linaro.org>,
-        <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
-        <sudeep.holla@arm.com>, <andi.shyti@kernel.org>, <tglx@linutronix.de>,
-        <will@kernel.org>, <joro@8bytes.org>, <jassisinghbrar@gmail.com>,
-        <lee@kernel.org>, <linus.walleij@linaro.org>, <amitk@kernel.org>,
-        <thara.gopinath@gmail.com>, <broonie@kernel.org>,
-        <wim@linux-watchdog.org>, <linux@roeck-us.net>, <robin.murphy@arm.com>,
-        <cristian.marussi@arm.com>, <rui.zhang@intel.com>,
-        <lukasz.luba@arm.com>, <vkoul@kernel.org>, <quic_gurus@quicinc.com>,
-        <agross@kernel.org>, <bartosz.golaszewski@linaro.org>,
-        <quic_rjendra@quicinc.com>, <robimarko@gmail.com>,
-        <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-pm@vger.kernel.org>,
-        <linux-crypto@vger.kernel.org>, <arm-scmi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-i2c@vger.kernel.org>,
-        <iommu@lists.linux.dev>, <linux-gpio@vger.kernel.org>,
-        <linux-serial@vger.kernel.org>, <linux-spi@vger.kernel.org>,
-        <linux-watchdog@vger.kernel.org>, <kernel@quicinc.com>,
-        <quic_psodagud@quicinc.com>, <quic_tsoni@quicinc.com>,
-        <quic_shazhuss@quicinc.com>
-References: <20240828203721.2751904-1-quic_nkela@quicinc.com>
- <20240828203721.2751904-22-quic_nkela@quicinc.com>
- <20240829185240.GA914553-robh@kernel.org>
-Content-Language: en-US
-From: Nikunj Kela <quic_nkela@quicinc.com>
-In-Reply-To: <20240829185240.GA914553-robh@kernel.org>
+Cc: heiko@sntech.de, broonie@kernel.org, krzk+dt@kernel.org, 
+	linux-spi@vger.kernel.org, conor+dt@kernel.org, 
+	otavio.salvador@ossystems.com.br, Conor Dooley <conor.dooley@microchip.com>, 
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01b.na.qualcomm.com (10.46.141.250)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: pfQJciifrzl-te3Okl98bZsPdJcXrs6z
-X-Proofpoint-GUID: pfQJciifrzl-te3Okl98bZsPdJcXrs6z
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-29_06,2024-08-29_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- priorityscore=1501 malwarescore=0 bulkscore=0 mlxscore=0
- lowpriorityscore=0 phishscore=0 mlxlogscore=989 suspectscore=0
- adultscore=0 spamscore=0 impostorscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.19.0-2407110000
- definitions=main-2408290136
+Content-Transfer-Encoding: quoted-printable
 
+Hi Rob,
 
-On 8/29/2024 11:52 AM, Rob Herring wrote:
-> On Wed, Aug 28, 2024 at 01:37:20PM -0700, Nikunj Kela wrote:
->> Add interrupt specifier for extended SPI interrupts.
-> What's an "extended SPI"? Is this a GIC spec thing? If so, what version?
+On Thu, Aug 29, 2024 at 3:43=E2=80=AFPM Rob Herring <robh@kernel.org> wrote=
+:
 
-Extended SPI is an extended range of SPI interrupts supported by GIC.
+> > New warnings running 'make CHECK_DTBS=3Dy rockchip/rv1108-elgin-r1.dtb'=
+ for 20240829113158.3324928-1-festevam@gmail.com:
+> >
+> > arch/arm/boot/dts/rockchip/rv1108-elgin-r1.dtb: display@0: 'spi-cpha', =
+'spi-cpol' do not match any of the regexes: 'pinctrl-[0-9]+'
+> >         from schema $id: http://devicetree.org/schemas/trivial-devices.=
+yaml#
+>
+> I'd be okay if trivial-devices.yaml references spi-peripheral-props.yaml.
 
-Excerpt below from
-Documentation/devicetree/bindings/interrupt-controller/arm,gic-v3.yaml
+This is what I tried:
 
-"The 1st cell is the interrupt type; 0 for SPI interrupts, 1 for PPI
-interrupts, 2 for interrupts in the Extended SPI range, 3 for the
-Extended PPI range. Other values are reserved for future use."
+--- a/Documentation/devicetree/bindings/trivial-devices.yaml
++++ b/Documentation/devicetree/bindings/trivial-devices.yaml
+@@ -424,6 +424,9 @@ required:
+   - compatible
+   - reg
 
-"The 2nd cell contains the interrupt number for the interrupt type. SPI
-interrupts are in the range [0-987]. PPI interrupts are in the range
-[0-15]. Extented SPI interrupts are in the range [0-1023]. Extended PPI
-interrupts are in the range [0-127]."
+-additionalProperties: false
++allOf:
++  - $ref: /schemas/spi/spi-peripheral-props.yaml#
++
++unevaluatedProperties: false
 
->> Qualcomm SA8255p platform uses extended SPI for SCMI 'a2p' doorbells.
->>
->> Signed-off-by: Nikunj Kela <quic_nkela@quicinc.com>
->> ---
->>  include/dt-bindings/interrupt-controller/arm-gic.h | 1 +
->>  1 file changed, 1 insertion(+)
->>
->> diff --git a/include/dt-bindings/interrupt-controller/arm-gic.h b/include/dt-bindings/interrupt-controller/arm-gic.h
->> index 35b6f69b7db6..9c06248446b7 100644
->> --- a/include/dt-bindings/interrupt-controller/arm-gic.h
->> +++ b/include/dt-bindings/interrupt-controller/arm-gic.h
->> @@ -12,6 +12,7 @@
->>  
->>  #define GIC_SPI 0
->>  #define GIC_PPI 1
->> +#define GIC_ESPI 2
->>  
->>  /*
->>   * Interrupt specifier cell 2.
->> -- 
->> 2.34.1
->>
+but still get:
+
+$ make CHECK_DTBS=3Dy rockchip/rv1108-elgin-r1.dtb
+  SCHEMA  Documentation/devicetree/bindings/processed-schema.json
+  DTC [C] arch/arm/boot/dts/rockchip/rv1108-elgin-r1.dtb
+/home/fabio/linux-next/arch/arm/boot/dts/rockchip/rv1108-elgin-r1.dtb:
+display@0: Unevaluated properties are not allowed ('spi-cpha',
+'spi-cpol' were unexpected)
+from schema $id: http://devicetree.org/schemas/trivial-devices.yaml#
+
+Any suggestions?

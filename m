@@ -1,64 +1,80 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F89A1CB50B
-	for <linux-spi@vger.kernel.org>; Mon,  2 Sep 2024 15:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F68419CC06;
+	Mon,  2 Sep 2024 18:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725290428; cv=none; b=LqtMrzVN0zQlnhTGmxwUIuVzizADQqqwtkEuewDKV48QPWzzNDWjNnnbqNU1aGXt2/QynR1e/9lAQU8kB2C9OZi50hrhMkf+bP9bXk4oLWeIXODXfMftW8jtzAyaSH16CYdEqueUZAMP8thewPmBXVYe9fenammwJqcQMfVOcw0=
+	t=1725301062; cv=none; b=VFs/+jC8Uhw56WH7jOAy6QjKcFZ5bPiiA1fOZPHuzruVqTb0uQMoYSHPcJisfYM8iRw9mQK10kh2C+LcTUlWi61U2woIFrBXOF3sEGHxp3F0KJMO8LstUUv556M6I3Zpt16WGUBY6QwWJSEpeRAevjx3usS7igg7/qn/W32FJnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725290428; c=relaxed/simple;
-	bh=ZWzF9Y3bq/Vl+qsj0xUHCQIs3txwHQQZm3NIQbehWeg=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=usA0/nDUzn2kuW8wpBrW5LoBOVxVKyz66Qsdf/9mRalfM7d7WJMC2Bp10hhzCtZALNFjUP0ED9xWBuPOuFSZHTbpADsYnvZVr3zfUBFGiNImqQMLpo+syjJQfRQ+XnkXw08G6eZOo/3PR26vyssczpVCiNGNZBnWqH3MjT9WywI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nwj0QY/Z; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1725301062; c=relaxed/simple;
+	bh=lrw0IYsbB+4zJJKJgBaZMoHTR0bRqD90s2UGstycbi8=;
+	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=dHKAAQhJSXPzpGPBxhwbG4BOtr+nut+Av6QlWXsegNZoC/iZl+TTpGlsVrENHTagwRj2gFNnybZbhwq8hNRniOJPiE2+fBU3PoukYPf2oEEloszxgfgpkd7KjcJYW5COzhhSBJeml2g8wy0AMnIhx83aHFuNS9TKnHQ2a4BEnF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZHe5YJwP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nwj0QY/Z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7346DC4CEC2;
-	Mon,  2 Sep 2024 15:20:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZHe5YJwP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 418F9C4CEC7;
+	Mon,  2 Sep 2024 18:17:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725290427;
-	bh=ZWzF9Y3bq/Vl+qsj0xUHCQIs3txwHQQZm3NIQbehWeg=;
-	h=Subject:From:Date:To:From;
-	b=Nwj0QY/Zm8MW70en5s89wnqyr1TRj7npkXTrnpuG+ICTFbo43loneBqkkQ9nYhaOy
-	 dhWfNL32JogruDsRuOPSyp+UYAyjJpjVEzuRE3l2Wv98MRZwVk7uppvExQsK51DV56
-	 LzLnY7kMpyWBh0wo3WHhhKT1/1zOaiHOsu6jjPgR8iZrPtv7Uhn74hIV9zgedj//IW
-	 M2zaN6m5RJX3kDoBHmUU5557gWRPbwWh3hDh/tL/WsWNHoXCKAZ0f6Yz3D7ze9XGgL
-	 BYc/Eb7BkJoQGcKFJmTpWxtE7GhpzbpSXDfszrizb1hGzydEJS4wX1OlWJKPb9rKLH
-	 UAfvkfGYUUI2Q==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 399993805D82;
-	Mon,  2 Sep 2024 15:20:29 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1725301061;
+	bh=lrw0IYsbB+4zJJKJgBaZMoHTR0bRqD90s2UGstycbi8=;
+	h=From:To:In-Reply-To:References:Subject:Date:From;
+	b=ZHe5YJwPkxE+gi3HdsHkYD4HW60hncQx8HLjgRu+F50LeEeGM9M1xYzUPo1ryfUNj
+	 Y7SOri2ZRX0r6RRh55C4SLyi7jiCvBRia8nitDqnhrGVfbd91cVv3uXAdTIcK/3/ds
+	 eo5v79pp7k8ptc1jAxNDcD6khnJj/XtC3gNWu1VEJnpQKa0GvRFcYyNfHsXAAp4JZ5
+	 gG1afdD98Q+NcCpXL/tlAIsfVufFn7gdUBDzW75q0jBf8001+wNLlQr0ULXZST7EDd
+	 an6X8wR0a3rLKvdcAvXVMidQtJ535E7BPl9KjL34XboUBgqJC3YFivsTf8RrK2Depc
+	 /Q3KpenqE1lgA==
+From: Mark Brown <broonie@kernel.org>
+To: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20240902103203.2476576-1-andriy.shevchenko@linux.intel.com>
+References: <20240902103203.2476576-1-andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v1 1/1] spi: ppc4xx: Sort headers
+Message-Id: <172530106100.141806.10211922480486326066.b4-ty@kernel.org>
+Date: Mon, 02 Sep 2024 19:17:41 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <172529042782.3918011.1807091241677486699.git-patchwork-summary@kernel.org>
-Date: Mon, 02 Sep 2024 15:20:27 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-37811
 
-Hello:
+On Mon, 02 Sep 2024 13:30:41 +0300, Andy Shevchenko wrote:
+> Sort the headers in alphabetic order in order to ease
+> the maintenance for this part.
+> 
+> 
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (for-next):
+Applied to
 
-Patch: [-next] spi: bcm63xx: Enable module autoloading
-  Submitter: Liao Chen <liaochen4@huawei.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=885450
-  Lore link: https://lore.kernel.org/r/20240831094231.795024-1-liaochen4@huawei.com
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
+Thanks!
 
-Total patches: 1
+[1/1] spi: ppc4xx: Sort headers
+      commit: e86836883a8a624680f247c7ac200538c6a5ebaa
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 

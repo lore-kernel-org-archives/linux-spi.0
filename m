@@ -1,39 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F68419CC06;
-	Mon,  2 Sep 2024 18:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5192A19CC0D;
+	Mon,  2 Sep 2024 18:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725301062; cv=none; b=VFs/+jC8Uhw56WH7jOAy6QjKcFZ5bPiiA1fOZPHuzruVqTb0uQMoYSHPcJisfYM8iRw9mQK10kh2C+LcTUlWi61U2woIFrBXOF3sEGHxp3F0KJMO8LstUUv556M6I3Zpt16WGUBY6QwWJSEpeRAevjx3usS7igg7/qn/W32FJnc=
+	t=1725301062; cv=none; b=GJMRrJvm9qh6t25BdVBkeEqCmf7RxtGL874Zjyrc+Exs9e5DJGQxv5m8YzG4Zb/AAafYoGE1mTjtbydUewF6dPP0WBO4QAm0PQsIMm84G5MqtqI8yZPJN/gDCMOs0PktEuz4lU1dPqIq9PyqloiihP/ZHyDwaQ76YJKy6pC8wPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1725301062; c=relaxed/simple;
-	bh=lrw0IYsbB+4zJJKJgBaZMoHTR0bRqD90s2UGstycbi8=;
+	bh=AVwxwmBeePTqCN4pf5eLvtb6MHFWxYD/GH+1usLVWzI=;
 	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=dHKAAQhJSXPzpGPBxhwbG4BOtr+nut+Av6QlWXsegNZoC/iZl+TTpGlsVrENHTagwRj2gFNnybZbhwq8hNRniOJPiE2+fBU3PoukYPf2oEEloszxgfgpkd7KjcJYW5COzhhSBJeml2g8wy0AMnIhx83aHFuNS9TKnHQ2a4BEnF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZHe5YJwP; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=OUK6OcUdSfXjgXWJkaY9hu1AJHNuZsAu1fLe6GW50aNfampOhZRJpiUdu8OWpZWZIyjzJTwDwCE2Sl4q2SEYP1ZregqVxw9kZeHSd2rKTELLq4hL1VNSCzrBE7daIZtnLEhw8L4TXNSpgZNuQsSNlMGuLxnGSBahpogbXWC8KXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UG13USCb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZHe5YJwP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 418F9C4CEC7;
-	Mon,  2 Sep 2024 18:17:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UG13USCb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27F2CC4CEC2;
+	Mon,  2 Sep 2024 18:17:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725301061;
-	bh=lrw0IYsbB+4zJJKJgBaZMoHTR0bRqD90s2UGstycbi8=;
+	s=k20201202; t=1725301060;
+	bh=AVwxwmBeePTqCN4pf5eLvtb6MHFWxYD/GH+1usLVWzI=;
 	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=ZHe5YJwPkxE+gi3HdsHkYD4HW60hncQx8HLjgRu+F50LeEeGM9M1xYzUPo1ryfUNj
-	 Y7SOri2ZRX0r6RRh55C4SLyi7jiCvBRia8nitDqnhrGVfbd91cVv3uXAdTIcK/3/ds
-	 eo5v79pp7k8ptc1jAxNDcD6khnJj/XtC3gNWu1VEJnpQKa0GvRFcYyNfHsXAAp4JZ5
-	 gG1afdD98Q+NcCpXL/tlAIsfVufFn7gdUBDzW75q0jBf8001+wNLlQr0ULXZST7EDd
-	 an6X8wR0a3rLKvdcAvXVMidQtJ535E7BPl9KjL34XboUBgqJC3YFivsTf8RrK2Depc
-	 /Q3KpenqE1lgA==
+	b=UG13USCb4WiPKsK5hKo0e2Q2F5AQXkG+BcrvDZVRaqacH6oH1JjtLDQ1JYa2ST7kr
+	 GakGESD0fSAXtZVeG0rGyJVTTXx6oW+m4YZoNwu1Jjqxinjn+eNfYIF2AAE8D5jFd6
+	 U5H5NK2JuETh87Bd+jd1BRfSQ3jt9fv69tV/Z1awr14FyNxChUBuwqnGns4eAffUHz
+	 7FOgkfHDFZWKqyclOmjM62oqKb0FupHo0KZcMw0FAaywwPG83WaHjjfvexWJN+rIRp
+	 rbIjNLRyQd/qJfGnda6PLZquA86adXgmXB6UqGp5TVoOZgTkek3YGzci0kmj2RvJZ5
+	 Pd3a0bjiB+sYw==
 From: Mark Brown <broonie@kernel.org>
 To: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20240902103203.2476576-1-andriy.shevchenko@linux.intel.com>
-References: <20240902103203.2476576-1-andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v1 1/1] spi: ppc4xx: Sort headers
-Message-Id: <172530106100.141806.10211922480486326066.b4-ty@kernel.org>
-Date: Mon, 02 Sep 2024 19:17:41 +0100
+In-Reply-To: <20240902102853.2476165-1-andriy.shevchenko@linux.intel.com>
+References: <20240902102853.2476165-1-andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v2 1/1] spi: ppc4xx: Revert "handle
+ irq_of_parse_and_map() errors"
+Message-Id: <172530105989.141806.10633264451123682243.b4-ty@kernel.org>
+Date: Mon, 02 Sep 2024 19:17:39 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -44,11 +45,15 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.15-dev-37811
 
-On Mon, 02 Sep 2024 13:30:41 +0300, Andy Shevchenko wrote:
-> Sort the headers in alphabetic order in order to ease
-> the maintenance for this part.
+On Mon, 02 Sep 2024 13:28:26 +0300, Andy Shevchenko wrote:
+> The commit had been applied twice as
+>   0f245463b01e ("spi: ppc4xx: handle irq_of_parse_and_map() errors")
+> and
+>   f1011ba20b83 ("spi: ppc4xx: handle irq_of_parse_and_map() errors")
 > 
+> This reverts commit f1011ba20b83da3ee70dcb4a6d9d282a718916fa.
 > 
+> [...]
 
 Applied to
 
@@ -56,8 +61,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: ppc4xx: Sort headers
-      commit: e86836883a8a624680f247c7ac200538c6a5ebaa
+[1/1] spi: ppc4xx: Revert "handle irq_of_parse_and_map() errors"
+      commit: 7f9f8c5939b1d729470a15480a4ffb0512d39d3a
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

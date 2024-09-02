@@ -1,85 +1,76 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5192A19CC0D;
-	Mon,  2 Sep 2024 18:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7135C19CC02
+	for <linux-spi@vger.kernel.org>; Mon,  2 Sep 2024 18:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725301062; cv=none; b=GJMRrJvm9qh6t25BdVBkeEqCmf7RxtGL874Zjyrc+Exs9e5DJGQxv5m8YzG4Zb/AAafYoGE1mTjtbydUewF6dPP0WBO4QAm0PQsIMm84G5MqtqI8yZPJN/gDCMOs0PktEuz4lU1dPqIq9PyqloiihP/ZHyDwaQ76YJKy6pC8wPo=
+	t=1725301229; cv=none; b=UnkkToqIE+Ny/tnGJ4XlsfjUXrJVe/JnrmdCNiveNpampIQlx4tHJG+Vhml3bPXnRbPXwK63Wt1/kp3vC3rH4WIsM2l0sSqjnL7WfYat9zxxHjGaN7nl1mMO93mk2Rn6FoPTAwzklBKORK0pAiWd7ORuvXCoMUDFYqhacvH+UDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725301062; c=relaxed/simple;
-	bh=AVwxwmBeePTqCN4pf5eLvtb6MHFWxYD/GH+1usLVWzI=;
-	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=OUK6OcUdSfXjgXWJkaY9hu1AJHNuZsAu1fLe6GW50aNfampOhZRJpiUdu8OWpZWZIyjzJTwDwCE2Sl4q2SEYP1ZregqVxw9kZeHSd2rKTELLq4hL1VNSCzrBE7daIZtnLEhw8L4TXNSpgZNuQsSNlMGuLxnGSBahpogbXWC8KXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UG13USCb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1725301229; c=relaxed/simple;
+	bh=RAJ67fo9jQfPrWg4BT4iG+UmxiAexjjfVfGlSaizb2w=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=nMP5PJVRMPu5/YIVsB1Kj+By4u6w4tZCeWBsfF3HgCYKTyad4KRhAlAYzj7b1kvkqHsKLB+8mm54AaKcEv/GLk+aysYDMjldKHEh1Q719zq4ykHAcKIU9jN2vpHoIy8pnukgQf8pwhkstEFt1Rhw0Vq6prKj2Q6WyirJ6IbUccY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r702XLkY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UG13USCb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27F2CC4CEC2;
-	Mon,  2 Sep 2024 18:17:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r702XLkY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48C67C4CEC2;
+	Mon,  2 Sep 2024 18:20:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725301060;
-	bh=AVwxwmBeePTqCN4pf5eLvtb6MHFWxYD/GH+1usLVWzI=;
-	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=UG13USCb4WiPKsK5hKo0e2Q2F5AQXkG+BcrvDZVRaqacH6oH1JjtLDQ1JYa2ST7kr
-	 GakGESD0fSAXtZVeG0rGyJVTTXx6oW+m4YZoNwu1Jjqxinjn+eNfYIF2AAE8D5jFd6
-	 U5H5NK2JuETh87Bd+jd1BRfSQ3jt9fv69tV/Z1awr14FyNxChUBuwqnGns4eAffUHz
-	 7FOgkfHDFZWKqyclOmjM62oqKb0FupHo0KZcMw0FAaywwPG83WaHjjfvexWJN+rIRp
-	 rbIjNLRyQd/qJfGnda6PLZquA86adXgmXB6UqGp5TVoOZgTkek3YGzci0kmj2RvJZ5
-	 Pd3a0bjiB+sYw==
-From: Mark Brown <broonie@kernel.org>
-To: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20240902102853.2476165-1-andriy.shevchenko@linux.intel.com>
-References: <20240902102853.2476165-1-andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v2 1/1] spi: ppc4xx: Revert "handle
- irq_of_parse_and_map() errors"
-Message-Id: <172530105989.141806.10633264451123682243.b4-ty@kernel.org>
-Date: Mon, 02 Sep 2024 19:17:39 +0100
+	s=k20201202; t=1725301229;
+	bh=RAJ67fo9jQfPrWg4BT4iG+UmxiAexjjfVfGlSaizb2w=;
+	h=Subject:From:Date:To:From;
+	b=r702XLkYqGUtRScaoYlNi23jOj+DCk/40T416XEuzIOffjsEU5oucE0enXMgkg4/e
+	 lKvLwTh6LmMkdO5FSn/aWu65N85BxzrtnF/omd+kIgdSa4HKeQq0C4NEvETukoGkUv
+	 VsjRsm+VgKZzqJQ+gLABVx6lw4HHDqQ9c0FYMiHFkeg5/0CT6/Z35HgGsmRMYWwBGK
+	 ca0HJ9GH4/NPhyUsw6JeRYpSaxHHYG39bdZqyaAfbOWJhHGR16XyX3XqkN9kz2mjyg
+	 MkiuLyGf088lcKuOW10+Ownjn5/XVs1JExKA2T51Q0dBRal9yA2Rp1uiu7nzs1ZoBC
+	 ct44oAzoL5//g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 028CB3805D82;
+	Mon,  2 Sep 2024 18:20:30 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-37811
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <172530122940.3956957.4576836638322910261.git-patchwork-summary@kernel.org>
+Date: Mon, 02 Sep 2024 18:20:29 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-On Mon, 02 Sep 2024 13:28:26 +0300, Andy Shevchenko wrote:
-> The commit had been applied twice as
->   0f245463b01e ("spi: ppc4xx: handle irq_of_parse_and_map() errors")
-> and
->   f1011ba20b83 ("spi: ppc4xx: handle irq_of_parse_and_map() errors")
-> 
-> This reverts commit f1011ba20b83da3ee70dcb4a6d9d282a718916fa.
-> 
-> [...]
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+Patch: [v1,1/1] Revert "spi: ppc4xx: handle irq_of_parse_and_map() errors"
+  Submitter: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=881038
+  Lore link: https://lore.kernel.org/r/20240819195029.2388397-1-andriy.shevchenko@linux.intel.com
 
-Thanks!
+Patch: [v2,1/1] spi: ppc4xx: Revert "handle irq_of_parse_and_map() errors"
+  Submitter: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=885797
+  Lore link: https://lore.kernel.org/r/20240902102853.2476165-1-andriy.shevchenko@linux.intel.com
 
-[1/1] spi: ppc4xx: Revert "handle irq_of_parse_and_map() errors"
-      commit: 7f9f8c5939b1d729470a15480a4ffb0512d39d3a
+Patch: [v1,1/1] spi: ppc4xx: Sort headers
+  Submitter: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=885798
+  Lore link: https://lore.kernel.org/r/20240902103203.2476576-1-andriy.shevchenko@linux.intel.com
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+Total patches: 3
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
 

@@ -1,77 +1,120 @@
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A71211805A;
-	Fri,  6 Sep 2024 03:05:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5931A3BBEF
+	for <linux-spi@vger.kernel.org>; Fri,  6 Sep 2024 03:15:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725591946; cv=none; b=l0yFbaorotmXkGvm8471Cxh5n+lwFtGFWeiUSGGf7t+WdOMfzVQ0y1MB5Od2+owYVm5ystBeqktud3tdRDvZUOhF4eVMa2+ipL8/jMVpHDj/bWkrv1bhhPTEfyqMns3sfdqY5+6Ozt0vynosEkRm8iXIIjMBhBTn6ZT2+QGAlVM=
+	t=1725592550; cv=none; b=mo+q4LPakrs8Fz/FRHVRxXPFHDYh13ss8fH6si4FTMr4nl/cyHTem2ZZXVgvQMt5YosGyRnNayhO4NhR8hpLWzi2LuKkWmo4lNPtSGIskC4alQG6dwmpTlpAZ6s4y7DIDc/SqFBllvt8E1YS9eEXBN9xIGQH+mzEtkzFjVcYcOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725591946; c=relaxed/simple;
-	bh=DJRHofKba7PsrhmnqDwT2I/meHOOw0CAuhNH1kZIJH8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ILfsDuff8oOskKe9Hd9mtJaA/7oayn6YbtOYb7flFOM9FoU7JQTDy2GrF8DsPK6LKQ5sFu7ySYQ1T4sMBWnOm8qeoguivUrKnmOM8iHXt+1vuBjgg1LmSMjK3jrsqzJyXxfWb3EBsluNYPDd+Wf2n+QhAvvhE4mTJGXNsJc6S80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4X0LYy0tWlz69YJ;
-	Fri,  6 Sep 2024 11:00:06 +0800 (CST)
-Received: from kwepemh500013.china.huawei.com (unknown [7.202.181.146])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7491C1400DC;
-	Fri,  6 Sep 2024 11:05:05 +0800 (CST)
-Received: from huawei.com (10.90.53.73) by kwepemh500013.china.huawei.com
- (7.202.181.146) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 6 Sep
- 2024 11:05:04 +0800
-From: Jinjie Ruan <ruanjinjie@huawei.com>
-To: <broonie@kernel.org>, <vkoul@kernel.org>, <akashast@codeaurora.org>,
-	<dianders@chromium.org>, <linux-arm-msm@vger.kernel.org>,
-	<linux-spi@vger.kernel.org>
-CC: <ruanjinjie@huawei.com>
-Subject: [PATCH v2 1/2] spi: geni-qcom: Fix incorrect free_irq() sequence
-Date: Fri, 6 Sep 2024 11:13:44 +0800
-Message-ID: <20240906031345.1052241-2-ruanjinjie@huawei.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240906031345.1052241-1-ruanjinjie@huawei.com>
+	s=arc-20240116; t=1725592550; c=relaxed/simple;
+	bh=pB+VC1h4yO8GwmTdyZ3PmyYN2qhDHr6PqJoy1/vMIUY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YLO/XlXNKclrN6npnFME+KZd2V9Y/TbnSkobTZ9K6LNyZisKNAxF6aDMuV1jDvDDunlCntkbhv9Xix6YZqirA2Wk142YCVXImvbOC3fMKUdCeiKS28W1FP1jMu/nKRvTpBQy7tfMZ9vYggUVdJoSomWw51PUadsa1NEJFVSChlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KBUT6s8/; arc=none smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KBUT6s8/"
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5353cd2fa28so1722498e87.3
+        for <linux-spi@vger.kernel.org>; Thu, 05 Sep 2024 20:15:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1725592546; x=1726197346; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=KsOD3iArCgZZ77gXylmGUS+aqVsYDnNnCS0fEFsEB94=;
+        b=KBUT6s8/ZEvK2UQBLFmikPB44LWoNh6lstyY+xhzQuWh+tuFVTAwWGRRX0i1B2dhY9
+         BVqEBwONDM9Ha08MuGhQOth0y6z1uPz0E48+QWwl6h08uaH4pg3jZFg9Gl+B6qa91cvB
+         +tQ03vGqbD6RxYxOgiOiURAnxyHAzmg8ELOgGQ4MuMCNR7jMn8mVnwPBvnSMSnUWPnx0
+         QTZXGJpjVDntszQzVVu+0udDbVfMM5fYIn+zWL5y+sMwT1MuKm1E4U5YVrFM2h58TqQc
+         R/ry7pvytAAXpelwt5gJqggYQb7L5Bl28/ZUaM4tXy/OaTbRrgYzBm4oEgsMdKO3nf67
+         ZFPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725592546; x=1726197346;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KsOD3iArCgZZ77gXylmGUS+aqVsYDnNnCS0fEFsEB94=;
+        b=NPhutvv3RJ3RWI0VCWYpS+ayzZ1IBULncDsMu0W0rJZIj6HehVcBiUUTLdn3iC8App
+         1hm5x2WWDhgQ67CtuiRBZRVHViBP8ZKVpeRenfdKS3qui12HltJMJFzWQKCcozupkrp0
+         FZExmJtkh0fy25HsfmutTTHgeLO/rjkKqPGReSwMUgl098oUkbaJwuJ4GLGHM0ZoDc4N
+         jeCtpqFVx9oKNbp15d3Bfww2nJtWQk9dVEgzzVWPx9xw7bQQGUiEMTKkMicuUs/w3128
+         dJPZL5l/RNF7ltLT3rkRKxNYRfHBdZu/qY+qtoZfJ78h57PIjr4XiWq5Hv7CTjsspTOS
+         +40A==
+X-Forwarded-Encrypted: i=1; AJvYcCWdvF38Q2Ze0kJQASKL+0H5LdgyrXmZqs+quZvvYA644WYaV4dliNMG32HoW0HSyz0gnU/Q3q9kgsw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxVeqiZCgLLXUbCROo+19Yr2Ctn6sT6lFyzqr9WPnJKPdy8nlpq
+	VLb4uKLyq1ajoC0E2W+TdTZl5od7Wn/0/NYnKXMtacbhHeO+wj/oyE4MGAgOv9I=
+X-Google-Smtp-Source: AGHT+IF4GNRqTJ/VZ/bkcy+j4piCgqi8x2edA29Dt0TGbBntqzcACyAsSucCg4Har0HjGhKj99iDYw==
+X-Received: by 2002:a05:6512:2514:b0:536:5827:8778 with SMTP id 2adb3069b0e04-536588130d9mr512122e87.53.1725592545690;
+        Thu, 05 Sep 2024 20:15:45 -0700 (PDT)
+Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--7a1.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::7a1])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5354079b6absm2758776e87.52.2024.09.05.20.15.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Sep 2024 20:15:44 -0700 (PDT)
+Date: Fri, 6 Sep 2024 06:15:43 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To: Jinjie Ruan <ruanjinjie@huawei.com>
+Cc: broonie@kernel.org, vkoul@kernel.org, akashast@codeaurora.org, 
+	dianders@chromium.org, linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] spi: spi-geni-qcom: Fix missing undo runtime PM
+ changes at driver exit time
+Message-ID: <hnos3f34ejabyw2yxtpxifskhklunvnufgsuilghjeuzipqkxi@udw5xfeum37a>
 References: <20240906031345.1052241-1-ruanjinjie@huawei.com>
+ <20240906031345.1052241-3-ruanjinjie@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- kwepemh500013.china.huawei.com (7.202.181.146)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240906031345.1052241-3-ruanjinjie@huawei.com>
 
-In spi_geni_remove(), the IRQ will still remain and it's interrupt handler
-may use the dma channel after release dma channel and before free irq,
-which is not secure, fix it.
+On Fri, Sep 06, 2024 at 11:13:45AM GMT, Jinjie Ruan wrote:
+> It's important to undo pm_runtime_use_autosuspend() with
+> pm_runtime_dont_use_autosuspend() at driver exit time unless driver
+> initially enabled pm_runtime with devm_pm_runtime_enable()
+> (which handles it for you).
+> 
+> Hence, call pm_runtime_dont_use_autosuspend() at driver exit time
+> to fix it.
+> 
+> Fixes: cfdab2cd85ec ("spi: spi-geni-qcom: Set an autosuspend delay of 250 ms")
+> ---
+> v2:
+> - Fix it directly instead of use devm_pm_runtime_enable().
 
-Fixes: b59c122484ec ("spi: spi-geni-qcom: Add support for GPI dma")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
----
- drivers/spi/spi-geni-qcom.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Why?
 
-diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index 37ef8c40b276..fc2819effe2d 100644
---- a/drivers/spi/spi-geni-qcom.c
-+++ b/drivers/spi/spi-geni-qcom.c
-@@ -1170,9 +1170,10 @@ static void spi_geni_remove(struct platform_device *pdev)
- 	/* Unregister _before_ disabling pm_runtime() so we stop transfers */
- 	spi_unregister_controller(spi);
- 
-+	free_irq(mas->irq, spi);
-+
- 	spi_geni_release_dma_chan(mas);
- 
--	free_irq(mas->irq, spi);
- 	pm_runtime_disable(&pdev->dev);
- }
- 
+> ---
+>  drivers/spi/spi-geni-qcom.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
+> index fc2819effe2d..38857edbc785 100644
+> --- a/drivers/spi/spi-geni-qcom.c
+> +++ b/drivers/spi/spi-geni-qcom.c
+> @@ -1158,6 +1158,7 @@ static int spi_geni_probe(struct platform_device *pdev)
+>  spi_geni_release_dma:
+>  	spi_geni_release_dma_chan(mas);
+>  spi_geni_probe_runtime_disable:
+> +	pm_runtime_dont_use_autosuspend(dev);
+>  	pm_runtime_disable(dev);
+>  	return ret;
+>  }
+> @@ -1174,6 +1175,7 @@ static void spi_geni_remove(struct platform_device *pdev)
+>  
+>  	spi_geni_release_dma_chan(mas);
+>  
+> +	pm_runtime_dont_use_autosuspend(&pdev->dev);
+>  	pm_runtime_disable(&pdev->dev);
+>  }
+>  
+> -- 
+> 2.34.1
+> 
+
 -- 
-2.34.1
-
+With best wishes
+Dmitry

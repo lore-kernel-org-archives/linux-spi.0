@@ -1,27 +1,28 @@
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B79F1DFE8;
-	Tue, 10 Sep 2024 02:26:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7255143866;
+	Tue, 10 Sep 2024 02:26:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725935188; cv=none; b=AAGDnibYXqzglEoFy+QZZ4yWLKICybL5tYav/mx42bZrbWfgxcwAin3ABjEjjfw+RM7hVROMYFv0DnJDgd4in/yw0ob3fIFG5ph3Vp21GW/p9fTYAaSqdsCD16lyERHdGKeQPwACd6CPATfs4076kypBrgfA/dZcfTaFfS4b26A=
+	t=1725935189; cv=none; b=LNu3zViRkQ1rKdaYyNZrZhTax8kogppBT81bvq9/se5CkipZakY3Ic9Bh1a6jWrixTldwegNzb8lzTJPxMHvm4/wJOJWsH4FqeKQmoYRTeOpncCT3yIlswdMCm5u/kCP4EGEjFcGOibRnhqyNXAw4NC/X5kte2NRtjjBnCrwcnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725935188; c=relaxed/simple;
-	bh=9VCRDvY8u+wzwk1sPlJ8bigTxlZTu00llrSwf4aQ360=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=s5nO+sNCEADLJQ3I4/AvQPx8zKMpesx5AGVZQlwRptls+N4PJfugRmcuvVKEUXaG8uOgP0gJwj8QCx2lMNm5a1iqgaTsqtCXBlW4svP11/9vM9oafttnpkRdMbr0eRpWjlUVv+xb4JOdoYMCMhAQtblRhANo5XCVWYt6w8k/thw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
+	s=arc-20240116; t=1725935189; c=relaxed/simple;
+	bh=VPyx2vnkh+9nUIBGaqOrveNmW1xQjDxdIpSfYpYaRgo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=fk6aX7eiCvNsA12sxzfILM4Na4lsGXestt2HZMEM7/PcbbjGAMHK6Onxo64DKMBt76ua9G9ujbbPpVZA5C/eYsK9EqcHn5ob4gwOOejQyTz70k0EWvFrZDAotcHGSjVY14RvtfAhLxBSb22hEOcapR0iiInRSr688juVZs6azJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
 Received: from mail.maildlp.com (unknown [172.19.93.142])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4X2ncz5mMNz4f3jjw;
-	Tue, 10 Sep 2024 10:26:11 +0800 (CST)
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4X2ncx1KSGz4f3jsJ;
+	Tue, 10 Sep 2024 10:26:09 +0800 (CST)
 Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 5E6C41A0359;
-	Tue, 10 Sep 2024 10:26:22 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTP id 827D41A0359;
+	Tue, 10 Sep 2024 10:26:24 +0800 (CST)
 Received: from huaweicloud.com (unknown [10.48.0.27])
-	by APP4 (Coremail) with SMTP id gCh0CgDH+8dKrt9m1gKTAw--.13967S4;
-	Tue, 10 Sep 2024 10:26:22 +0800 (CST)
+	by APP4 (Coremail) with SMTP id gCh0CgDH+8dKrt9m1gKTAw--.13967S6;
+	Tue, 10 Sep 2024 10:26:24 +0800 (CST)
 From: Yang Yingliang <yangyingliang@huaweicloud.com>
 To: broonie@kernel.org,
 	hdegoede@redhat.com,
@@ -30,10 +31,12 @@ To: broonie@kernel.org,
 	liwei391@huawei.com
 Cc: linux-spi@vger.kernel.org,
 	platform-driver-x86@vger.kernel.org
-Subject: [PATCH -next 0/7] spi: replace and remove spi_slave_abort()
-Date: Tue, 10 Sep 2024 10:26:10 +0800
-Message-ID: <20240910022618.1397-1-yangyingliang@huaweicloud.com>
+Subject: [PATCH -next 2/7] spi: slave-time: switch to use spi_target_abort()
+Date: Tue, 10 Sep 2024 10:26:12 +0800
+Message-ID: <20240910022618.1397-3-yangyingliang@huaweicloud.com>
 X-Mailer: git-send-email 2.46.0.windows.1
+In-Reply-To: <20240910022618.1397-1-yangyingliang@huaweicloud.com>
+References: <20240910022618.1397-1-yangyingliang@huaweicloud.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -41,47 +44,49 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgDH+8dKrt9m1gKTAw--.13967S4
-X-Coremail-Antispam: 1UD129KBjvdXoW7Xw4DZF4ktFyxKF18GryfZwb_yoWDXFc_AF
-	yjgF4UGrW7W39xJFn2kr18X348uayFqrn2qa1vqFWUKF9rXw1UJr4UCFW7uw10vFWkGr1I
-	gr17tan8ur13WjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbzxYFVCjjxCrM7AC8VAFwI0_Gr0_Xr1l1xkIjI8I6I8E6xAIw20E
-	Y4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwV
-	A0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x02
-	67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxV
-	AFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2
-	j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7x
-	kEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0E
-	wIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E74
-	80Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0
-	I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04
-	k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7Cj
-	xVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1veHDUUUUU==
+X-CM-TRANSID:gCh0CgDH+8dKrt9m1gKTAw--.13967S6
+X-Coremail-Antispam: 1UD129KBjvdXoW7Jw1UJFWkGFy8tr47uw48Zwb_yoW3XFbEkF
+	1UAr47WrW7KFsIqF129r1rZas29rW5WF4xKF1qqFW3Ka98Zw1rWw1DJr17Cw1UZr48Kr93
+	uFs3Jwn5ZrnxCjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbTxYFVCjjxCrM7AC8VAFwI0_Wr0E3s1l1xkIjI8I6I8E6xAIw20E
+	Y4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l82xGYIkIc2x26280x7IE14v26r15M2
+	8IrcIa0xkI8VCY1x0267AKxVW8JVW5JwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK
+	021l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F
+	4j6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0
+	oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7V
+	C0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j
+	6r4UM4x0Y48IcxkI7VAKI48JMxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAKI48JMx
+	C20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAF
+	wI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20x
+	vE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v2
+	0xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxV
+	W8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU89NVDUUUUU==
 X-CM-SenderInfo: 51dqw5xlqjzxhdqjqx5xdzvxpfor3voofrz/
 
 From: Yang Yingliang <yangyingliang@huawei.com>
 
-Switch to use spi_controller_is_target() and spi_target_abort(),
-then remove spi_controller_is_slave() and spi_slave_abort().
+Switch to use modern name function spi_target_abort().
 
-Yang Yingliang (7):
-  spi: switch to use spi_controller_is_target()
-  spi: slave-time: switch to use spi_target_abort()
-  spi: slave-system-control: switch to use spi_target_abort()
-  spi: spidev: switch to use spi_target_abort()
-  spi: slave-mt27xx: switch to use target_abort
-  platform/olpc: olpc-xo175-ec: switch to use spi_target_abort().
-  spi: remove spi_controller_is_slave() and spi_slave_abort()
+No functional changed.
 
- drivers/platform/olpc/olpc-xo175-ec.c  |  4 ++--
- drivers/spi/spi-slave-mt27xx.c         | 12 ++++++------
- drivers/spi/spi-slave-system-control.c |  2 +-
- drivers/spi/spi-slave-time.c           |  2 +-
- drivers/spi/spi.c                      | 21 +++++----------------
- drivers/spi/spidev.c                   |  2 +-
- include/linux/spi/spi.h                | 12 +-----------
- 7 files changed, 17 insertions(+), 38 deletions(-)
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+---
+ drivers/spi/spi-slave-time.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/spi/spi-slave-time.c b/drivers/spi/spi-slave-time.c
+index f56c1afb8534..8bb3070e4b80 100644
+--- a/drivers/spi/spi-slave-time.c
++++ b/drivers/spi/spi-slave-time.c
+@@ -110,7 +110,7 @@ static void spi_slave_time_remove(struct spi_device *spi)
+ {
+ 	struct spi_slave_time_priv *priv = spi_get_drvdata(spi);
+ 
+-	spi_slave_abort(spi);
++	spi_target_abort(spi);
+ 	wait_for_completion(&priv->finished);
+ }
+ 
 -- 
 2.33.0
 

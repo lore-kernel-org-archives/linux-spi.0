@@ -1,168 +1,248 @@
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F68716BE17;
-	Thu, 12 Sep 2024 03:53:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E01BB126BE5;
+	Thu, 12 Sep 2024 06:15:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726113206; cv=none; b=EbpOX4KTCTveyHxb2a2w3F9AmY3qZtnAQ3rnK6R9BcHScSFqFRTWrXm/gqrM1m1BO09h2yAqy3LAI6R+A7CUQUhv8maSac2nbxF1vcIweDMeMKaVxJIeNg8A1SrJ+w3GEBTQWmDTQn+CktQmJ+qVx8mCAffHj2bShDCfyH4AsMs=
+	t=1726121760; cv=none; b=CBys6RanWlktTySFnowpgi3QEg7ayXnHrbNWB81T0mevtJlpuac2UGcrxqPj7ee2Ke9dZL+rXdSUAJrSfJyhtjP3xFpkgcwGjR3rHMPOkFyB9ub0gdiF+MF18aHBMCpdSTRMDamBE4K9pG8JHmSEQG/Ifjn7nqQ+gJ5SKJa/f3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726113206; c=relaxed/simple;
-	bh=04aZRYrtm8kYQYqDApOMz2M5HoYXYctrlv4NHXiyWOc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=eKmX/lQkgYbGiZNlRaPuhf7f/INGKF0lqSSE495gBcTcrPWCtXJ/Zwq1eHudfqFDSGBY5QEZTxG3ooIjfWOJTaOB32eqyuUTEHZZ/cTU8sj2nxTOyI0fjB5JuusFv/InVyzWc/rN7m7tvMSgqKS1Xr10+NMDGYqYK/74qfZo5R4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.48])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4X43ST6VjZz69SX;
-	Thu, 12 Sep 2024 11:53:13 +0800 (CST)
-Received: from kwepemh500013.china.huawei.com (unknown [7.202.181.146])
-	by mail.maildlp.com (Postfix) with ESMTPS id D7D0618006C;
-	Thu, 12 Sep 2024 11:53:20 +0800 (CST)
-Received: from [10.67.109.254] (10.67.109.254) by
- kwepemh500013.china.huawei.com (7.202.181.146) with Microsoft SMTP Server
+	s=arc-20240116; t=1726121760; c=relaxed/simple;
+	bh=tZOZBuewPMHa7GYQc1weh9CXlvbfzgZNJezEbLiFqeg=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EVaSgWsibFqNjxRZQVFZHAv9wNwFHj1e/YFb+rFsEzXnxyI4EIKqYhRTuAuxlCTcJwxKAMWE/sukSXYvpmTrlVsM1u5CWTGIVn5H4vFVK3vIUWyvh3OJvJ2vOTHLx4I2PtH/YwDdc2VJOwyEniKMPtZLNcSitr9jE1P6m6P502U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Ccfj5cr3; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Ccfj5cr3"
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48C2KqwT007652;
+	Thu, 12 Sep 2024 06:15:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	1u6hAK53BFy2xr2q5A3du731E6lIVLbDFAFvDE2hXeQ=; b=Ccfj5cr3nGGv9tn/
+	nfuOEcXYDmB93c4wygWoupwLk2KLVZ8rNHJ5dbRBp896EQMOe21u3BpqV+fblr5K
+	sD4kVSxVw/tRivBAJKidAfRZiU29VUkMkuscrrRnILDdP9ci7r1hnEWWxSdmEcLD
+	GJEcHYDvPXaO6zyvpw/wfTARVTwh24IbfBr9U12sf5ye5gaM9vN5vdlGwCUK1bA2
+	NitcZtz3NomZnO5N7Jgwq1vLE56AhMcEE2bhqDK8aRlfmliPZ0956bo4BZE4ZkDr
+	co06D2zk0gZiwjjCv71R68h10KxKX+Wwx2JtFWDXbl80E125Hwtv/jL4Kxyxc2Hn
+	ITyGAw==
+Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41j6gn0a75-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 12 Sep 2024 06:15:30 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 48C6FTuK007627
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 12 Sep 2024 06:15:29 GMT
+Received: from hu-mdalam-blr.qualcomm.com (10.80.80.8) by
+ nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 12 Sep 2024 11:53:20 +0800
-Message-ID: <c662f0b9-31dc-8b97-ef3f-ea33f9fc62af@huawei.com>
-Date: Thu, 12 Sep 2024 11:53:19 +0800
+ 15.2.1544.9; Wed, 11 Sep 2024 23:15:23 -0700
+From: Md Sadre Alam <quic_mdalam@quicinc.com>
+To: <broonie@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+        <conor+dt@kernel.org>, <andersson@kernel.org>,
+        <konradybcio@kernel.org>, <miquel.raynal@bootlin.com>,
+        <richard@nod.at>, <vigneshr@ti.com>,
+        <manivannan.sadhasivam@linaro.org>, <esben@geanix.com>,
+        <linux-arm-msm@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-mtd@lists.infradead.org>
+CC: <quic_mdalam@quicinc.com>, <quic_varada@quicinc.com>,
+        <quic_srichara@quicinc.com>,
+        Krzysztof Kozlowski
+	<krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v9 1/8] spi: dt-bindings: Introduce qcom,spi-qpic-snand
+Date: Thu, 12 Sep 2024 11:44:56 +0530
+Message-ID: <20240912061503.3468147-2-quic_mdalam@quicinc.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240912061503.3468147-1-quic_mdalam@quicinc.com>
+References: <20240912061503.3468147-1-quic_mdalam@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.0
-Subject: Re: [PATCH v4 3/3] spi: geni-qcom: Use devm functions to simplify
- code
-Content-Language: en-US
-To: Doug Anderson <dianders@chromium.org>
-CC: <broonie@kernel.org>, <akashast@codeaurora.org>, <vkoul@kernel.org>,
-	<linux-arm-msm@vger.kernel.org>, <linux-spi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-References: <20240909132810.1296786-1-ruanjinjie@huawei.com>
- <20240909132810.1296786-4-ruanjinjie@huawei.com>
- <CAD=FV=XQ7uf_Y_WTv_6-DX1Mo=+RycKSyxf=E-f3TOKiuE5RMA@mail.gmail.com>
-From: Jinjie Ruan <ruanjinjie@huawei.com>
-In-Reply-To: <CAD=FV=XQ7uf_Y_WTv_6-DX1Mo=+RycKSyxf=E-f3TOKiuE5RMA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- kwepemh500013.china.huawei.com (7.202.181.146)
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 8znoFeMDr4zTAGWawYjdkzmaSKIbuITw
+X-Proofpoint-GUID: 8znoFeMDr4zTAGWawYjdkzmaSKIbuITw
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 adultscore=0
+ clxscore=1015 phishscore=0 mlxlogscore=999 lowpriorityscore=0
+ suspectscore=0 mlxscore=0 priorityscore=1501 malwarescore=0 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2409120042
 
+Document the QPIC-SPI-NAND flash controller present in the IPQ SoCs.
+It can work both in serial and parallel mode and supports typical
+SPI-NAND page cache operations.
 
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Md Sadre Alam <quic_mdalam@quicinc.com>
+---
 
-On 2024/9/12 6:53, Doug Anderson wrote:
-> Hi,
-> 
-> On Mon, Sep 9, 2024 at 6:19 AM Jinjie Ruan <ruanjinjie@huawei.com> wrote:
->>
->> Use devm_pm_runtime_enable(), devm_request_irq() and
->> devm_spi_register_controller() to simplify code.
->>
->> And also register a callback spi_geni_release_dma_chan() with
->> devm_add_action_or_reset(), to release dma channel in both error
->> and device detach path, which can make sure the release sequence is
->> consistent with the original one.
->>
->> 1. Unregister spi controller.
->> 2. Free the IRQ.
->> 3. Free DMA chans
->> 4. Disable runtime PM.
->>
->> So the remove function can also be removed.
->>
->> Suggested-by: Doug Anderson <dianders@chromium.org>
->> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
->> ---
->> v4:
->> - Correct the "data" of devm_add_action_or_reset().
->> v3:
->> - Land the rest of the cleanups afterwards.
->> ---
->>  drivers/spi/spi-geni-qcom.c | 37 +++++++++++++------------------------
->>  1 file changed, 13 insertions(+), 24 deletions(-)
->>
->> diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
->> index 6f4057330444..5cb002d7d4a6 100644
->> --- a/drivers/spi/spi-geni-qcom.c
->> +++ b/drivers/spi/spi-geni-qcom.c
->> @@ -632,8 +632,10 @@ static int spi_geni_grab_gpi_chan(struct spi_geni_master *mas)
->>         return ret;
->>  }
->>
->> -static void spi_geni_release_dma_chan(struct spi_geni_master *mas)
->> +static void spi_geni_release_dma_chan(void *data)
->>  {
->> +       struct spi_geni_master *mas = data;
->> +
->>         if (mas->rx) {
->>                 dma_release_channel(mas->rx);
->>                 mas->rx = NULL;
->> @@ -1132,6 +1134,12 @@ static int spi_geni_probe(struct platform_device *pdev)
->>         if (ret)
->>                 return ret;
->>
->> +       ret = devm_add_action_or_reset(dev, spi_geni_release_dma_chan, mas);
->> +       if (ret) {
->> +               dev_err(dev, "Unable to add action.\n");
->> +               return ret;
->> +       }
-> 
-> Use dev_err_probe() to simplify.
-> 
-> ret = devm_add_action_or_reset(dev, spi_geni_release_dma_chan, mas);
-> if (ret)
->   return dev_err_probe(dev, ret, "Unable to add action.\n");
+Change in [v9]
 
-It seems that if it only return -ENOMEM or 0, using dev_err_probe() has
-not not much value for many community maintainers.
+* No change
 
-> 
-> 
-> Personally I'd also rather that you do the devm_add_action_or_reset()
-> call straight in spi_geni_grab_gpi_chan(). That makes it much more
+Change in [v8]
 
-Yes, it will be more clear.
+* No change
 
-> obvious what's happening. You can still use dev_err_probe() in there
-> since it's called (indirectly) from probe. In that case you'd probably
-> replace the "return 0;" in that function with just "return
-> dev_err_probe(...)".
-> 
-> 
->> @@ -1146,33 +1154,15 @@ static int spi_geni_probe(struct platform_device *pdev)
->>         if (mas->cur_xfer_mode == GENI_GPI_DMA)
->>                 spi->flags = SPI_CONTROLLER_MUST_TX;
->>
->> -       ret = request_irq(mas->irq, geni_spi_isr, 0, dev_name(dev), spi);
->> +       ret = devm_request_irq(dev, mas->irq, geni_spi_isr, 0, dev_name(dev), spi);
->>         if (ret)
->> -               goto spi_geni_release_dma;
->> +               return ret;
->>
->> -       ret = spi_register_controller(spi);
->> +       ret = devm_spi_register_controller(dev, spi);
->>         if (ret)
->> -               goto spi_geni_probe_free_irq;
->> +               return ret;
->>
->>         return 0;
-> 
-> You no longer need the "if" statement or even to assign to "ret". Just:
-> 
-> return devm_spi_register_controller(dev, spi);
+Change in [v7]
 
-Right!
+* No change
 
-> 
-> 
-> Those are just nits, though. I'd be OK with:
-> 
-> Reviewed-by: Douglas Anderson <dianders@chromium.org>
-> 
-> ...since Mark has already landed the first two patches, your v5 would
-> just contain this one patch.
-> 
-> -Doug
+Change in [v6]
+
+* No change
+
+Change in [v5]
+
+* No change
+
+Change in [v4]
+
+* Fix spelling mistake in HW description
+
+* Added commit message
+
+* Removed '|' from description
+
+* Removed minItems in clock
+
+* Added blank line
+
+* Removed co-developed by
+
+Change in [v3]
+
+* Updated commit message, removed "dt-bindings" from commit
+  message
+
+* Updated compatible name as file name
+
+* Added hardware description
+
+* Documented clock-name
+
+* Moved dma-names property to top
+
+* Droped unused label "qpic_nand"
+
+* Fixed indentation in example dt node
+
+Change in [v2]
+
+* Added initial support for dt-bindings
+
+Change in [v1]
+
+* This patch was not included in [v1]
+
+ .../bindings/spi/qcom,spi-qpic-snand.yaml     | 83 +++++++++++++++++++
+ 1 file changed, 83 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/qcom,spi-qpic-snand.yaml
+
+diff --git a/Documentation/devicetree/bindings/spi/qcom,spi-qpic-snand.yaml b/Documentation/devicetree/bindings/spi/qcom,spi-qpic-snand.yaml
+new file mode 100644
+index 000000000000..f0d9f7643849
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/qcom,spi-qpic-snand.yaml
+@@ -0,0 +1,83 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/spi/qcom,spi-qpic-snand.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Qualcomm QPIC NAND controller
++
++maintainers:
++  - Md sadre Alam <quic_mdalam@quicinc.com>
++
++description:
++  The QCOM QPIC-SPI-NAND flash controller is an extended version of
++  the QCOM QPIC NAND flash controller. It can work both in serial
++  and parallel mode. It supports typical SPI-NAND page cache
++  operations in single, dual or quad IO mode with pipelined ECC
++  encoding/decoding using the QPIC ECC HW engine.
++
++allOf:
++  - $ref: /schemas/spi/spi-controller.yaml#
++
++properties:
++  compatible:
++    enum:
++      - qcom,spi-qpic-snand
++
++  reg:
++    maxItems: 1
++
++  clocks:
++    maxItems: 3
++
++  clock-names:
++    items:
++      - const: core
++      - const: aon
++      - const: iom
++
++  dmas:
++    items:
++      - description: tx DMA channel
++      - description: rx DMA channel
++      - description: cmd DMA channel
++
++  dma-names:
++    items:
++      - const: tx
++      - const: rx
++      - const: cmd
++
++required:
++  - compatible
++  - reg
++  - clocks
++  - clock-names
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/clock/qcom,ipq9574-gcc.h>
++    spi@79b0000 {
++        compatible = "qcom,spi-qpic-snand";
++        reg = <0x1ac00000 0x800>;
++
++        clocks = <&gcc GCC_QPIC_CLK>,
++                 <&gcc GCC_QPIC_AHB_CLK>,
++                 <&gcc GCC_QPIC_IO_MACRO_CLK>;
++        clock-names = "core", "aon", "iom";
++
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        flash@0 {
++            compatible = "spi-nand";
++            reg = <0>;
++            #address-cells = <1>;
++            #size-cells = <1>;
++            nand-ecc-engine = <&qpic_nand>;
++            nand-ecc-strength = <4>;
++            nand-ecc-step-size = <512>;
++        };
++    };
+-- 
+2.34.1
+

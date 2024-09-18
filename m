@@ -1,46 +1,46 @@
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2074.outbound.protection.outlook.com [40.107.96.74])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2071.outbound.protection.outlook.com [40.107.94.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D5E1865E8;
-	Wed, 18 Sep 2024 10:58:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.96.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7668381D5;
+	Wed, 18 Sep 2024 10:59:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.71
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726657124; cv=fail; b=Yo0BU4CnWrQSYGnYefvlDgedmGMp43suxjZ1TpuKLbYcIvgIHR4iMYA0SVIo6109d9Nf8RB/TQ1fR9Pnvedv/BlWLTljMrPMJbKFrN6CT4D2NjKWvf6+dpMYIbNunpfldMEyLfx2fMzt/b9kXxWyPfZdWoq8GhTeGeu40PzIymc=
+	t=1726657160; cv=fail; b=CvA0Fv9yXhOne/XmW0C085QBTmY8UtBU8UMpTTbETwSVB+q37KM1ycyBhrm1IWJmIa0La3Spbm9DcLbDr+z/K3eLuYtny2dYxTnm9k+SEqdvBWfYlFwmuLhpqACGPKVnRDIn0PKPmUqQCwBUqYKC1FlQpndh9HDARyWqfPdJBVU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726657124; c=relaxed/simple;
-	bh=fwT9eoj5Ge7g6zySKU/DBPJtURaGRscJUqqpG99Cmdw=;
+	s=arc-20240116; t=1726657160; c=relaxed/simple;
+	bh=/cN0jLeJZqOJELSJDV3QVC70dWoDD5z/IW60y8skhoM=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LRq4so4BlObVodtBKGbCvozDPgJpFsv4w7kGTemXOv1vaffSIdXuhiF5NOUI39Epyb0Lh3QUG/9tPamGdiOqYxoiAdvUSoYlFHjzuiQS1tMS7m2OYrO1ftnam8HYoOCXClHLRVu1PNPmXQkBQaags4RkoBairdH17Oq4445u3Ws=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=DKyC1mLN; arc=fail smtp.client-ip=40.107.96.74
+	 MIME-Version:Content-Type; b=AGGxyy+QfwoHuA0goiuwlNoxbG4bdkpcve+XAjQY5GET82byORUc1199vNAWzab2Kl3WxaQGiRX3v1m6SadQQw2GJT4q8/Ix5s+Xb/AHxc+U7euja9tvevO2MrZyIpenGvUSVnItTCFZf30e9zajyo6qqJ+tkZTS0HuorDT2j0s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Zcofx6oX; arc=fail smtp.client-ip=40.107.94.71
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="DKyC1mLN"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Zcofx6oX"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OHLLWFggT6rW0PvVzYGhtkuen4yeCiagYAJdU3UazYOATDsxVS2EZVcMMk5YHQY+BBYftdO1zn8ECIy/iX+CsQ9ZnNlvdVOsbwh6SN/0jP6CG6NAS0OAs8JF06IgNE3pIUSPkMcFS8rchn1lHj6yYsxCYc7jJcqnT/ycUZrittEuBkK6gvhlcPFPbMw/tVtCc6hmPUpRRZkasbLMnybCzLw4RLfFRxpqPgu5Ar8HDGTP4rRuk66aZ0f7WY328Kt9AfDQ1g7SIsMg3l2WN2S43kS3fkwpMlwjhx7BDgjU41inPHyHEyl68z0eyy03O49BnutSTMGvc9lT74aaDp0GaQ==
+ b=xzkiiYkf+6/Pwl3kwaT5U/pL6QecDTGKi/q9/jLS5gvTMgLnPKu9hVK9sbuxvSSTzZZ58iCmqNSgyTC9v+b+jZCZJsgZjc7/46xt4ATJ0yCmSeKB6vHc3KeAjLqKx38yEpLfYJG/ooumV4p87K4EYXGxC8r2FYq/+sWnFkQZeW3zVQyZ2juDypKvdwWcMN6SxRAStYkKJsLAIV6c/bG/MpR06mluvLANkrZ2MOvHV27h/p4LJQZA9jjPm+/dM/26KPeK5vc1pDv3ezmHCmCVAClAeGr9n1/Veeu7EhMLU0EUXsT6XLXnFtEOfsStiOlwbOzqmPbwfxfsorNyHKo3Dw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PhltcmlkMn9VKOFKWAwXdsOk2KnOtgFX2ETVq8HaxUE=;
- b=I554Be57HSuy9G1NFFmczh2aSD8BMN4lzWjKA2c3w+1MIJqd7A/iVg/8JGFQ+1LpnLopep4G5YU/BrAlvHIPXwzcmK6PdiSYzXyqJsObpxCvhvVP1ZBP7Zx+D6KfxGpazPGwGCxkd4LxQudxS4RjNbPFSzxbmfy3XoUDvf5DoOBZuhdq3mSb934Xlz/V7d6gF8Knnap0+a+ojkVPRJ7MwLjBKzgaGoi6D6esMtpE9VaoIvxdVo4pfHmz7d6b9z0fagaywaGnPPl7Gt51Sf9R1lOEuogdoHU7Tz2JeeKvRYOiw9aqEvXUOKoTd2MisQT6sPc2f9uEyBIxScYErlFq6Q==
+ bh=7TRLtM00Pj/aucppfn7qH4fvZUWzwM37RRlC8UlOfCI=;
+ b=cRyTMzKF42n3odspoJRM/Ly9h+HVd2AusrSKBg3s7H25W5Jvwst8CMwfnuxnMb3aq9Ogi0h98AAbuYTMREEOFfk+SIOykYJTNkNNxMU6w85Y66SIOdjwwNRwukRYEiI3AlnQtxzBF82ftlXCbQEVEUMeXfYdiuz0GxjdIqiwwlECsmPNpc4raXEtHjx1EjJ9oWrRySvFr8Ourp85xoDYwOeipfQ3saQb31telXcCpzu2uExU/ycSPE42cboDjT3dIp/425q0Q1gdbbI49pG20DIZQydoaBUNwD5Iv2FpxR6E9wBaryNbYcjaoiywmG2tAGs9M5z1QMFtj3eyoBQElA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PhltcmlkMn9VKOFKWAwXdsOk2KnOtgFX2ETVq8HaxUE=;
- b=DKyC1mLNU/9+tPSOKy2r2xe20rq/XBKSKRuKau38fjTZwkWm8RyvlZ7DerMIb8l8A4+WOhmbho7D6Gp4NOIVauPMpzKo8GqsAU+F8dXOvjNgLwv+rGx0Tg9xzoB72EIbf4a6JsD310ozm1PQt9roPJ+AompUmuFm1v7gdyT8n7c=
-Received: from BYAPR08CA0064.namprd08.prod.outlook.com (2603:10b6:a03:117::41)
- by CH3PR12MB8545.namprd12.prod.outlook.com (2603:10b6:610:163::8) with
+ bh=7TRLtM00Pj/aucppfn7qH4fvZUWzwM37RRlC8UlOfCI=;
+ b=Zcofx6oXZj2fgn6mV54sGH3lyg7/W7GrPKmYgzXs/tqK+4JyRNh8mKrGkbiGOBbRCCliqItOFqwPYgrGgQ8dD0mR10dY66Hg/rBfH2WaPg4Tvc/BKBzfHE3MX7K6KswvPuiQ2fTi40Gaivh07Yer2yw0V32KYqj3iACLQGB8w44=
+Received: from BYAPR02CA0045.namprd02.prod.outlook.com (2603:10b6:a03:54::22)
+ by CYYPR12MB8752.namprd12.prod.outlook.com (2603:10b6:930:b9::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7962.25; Wed, 18 Sep
- 2024 10:58:38 +0000
-Received: from SJ5PEPF00000205.namprd05.prod.outlook.com
- (2603:10b6:a03:117:cafe::29) by BYAPR08CA0064.outlook.office365.com
- (2603:10b6:a03:117::41) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7982.16; Wed, 18 Sep
+ 2024 10:59:15 +0000
+Received: from SJ5PEPF00000208.namprd05.prod.outlook.com
+ (2603:10b6:a03:54:cafe::f8) by BYAPR02CA0045.outlook.office365.com
+ (2603:10b6:a03:54::22) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7939.30 via Frontend
- Transport; Wed, 18 Sep 2024 10:58:38 +0000
+ Transport; Wed, 18 Sep 2024 10:59:15 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,21 +48,21 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SJ5PEPF00000205.mail.protection.outlook.com (10.167.244.38) with Microsoft
+ SJ5PEPF00000208.mail.protection.outlook.com (10.167.244.41) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7918.13 via Frontend Transport; Wed, 18 Sep 2024 10:58:37 +0000
+ 15.20.7918.13 via Frontend Transport; Wed, 18 Sep 2024 10:59:15 +0000
 Received: from airavat.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 18 Sep
- 2024 05:57:58 -0500
+ 2024 05:58:36 -0500
 From: Raju Rangoju <Raju.Rangoju@amd.com>
 To: <broonie@kernel.org>, <linux-spi@vger.kernel.org>
 CC: <linux-kernel@vger.kernel.org>, <sanju.mehta@amd.com>,
 	<krishnamoorthi.m@amd.com>, <akshata.mukundshetty@amd.com>,
 	<Raju.Rangoju@amd.com>
-Subject: [PATCH 5/9] spi: spi_amd: Optimize IO operations
-Date: Wed, 18 Sep 2024 16:20:33 +0530
-Message-ID: <20240918105037.406003-6-Raju.Rangoju@amd.com>
+Subject: [PATCH 7/9] spi: spi_amd: Enhance SPI-MEM support functions
+Date: Wed, 18 Sep 2024 16:20:35 +0530
+Message-ID: <20240918105037.406003-8-Raju.Rangoju@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240918105037.406003-1-Raju.Rangoju@amd.com>
 References: <20240918105037.406003-1-Raju.Rangoju@amd.com>
@@ -78,57 +78,57 @@ X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF00000205:EE_|CH3PR12MB8545:EE_
-X-MS-Office365-Filtering-Correlation-Id: b637ba53-d9c5-44df-b450-08dcd7d0d978
+X-MS-TrafficTypeDiagnostic: SJ5PEPF00000208:EE_|CYYPR12MB8752:EE_
+X-MS-Office365-Filtering-Correlation-Id: b0ee72b4-71f7-4594-194f-08dcd7d0ef91
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|82310400026|1800799024|376014;
+	BCL:0;ARA:13230040|1800799024|376014|36860700013|82310400026;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?ITHh845hn3cScw+Fgf1Lfss6jLz1/wEdyf3uLqEoY8QKd7RWIvSXQ1CvGlLo?=
- =?us-ascii?Q?44N3r2xbZVN4fnjXpyIIjv0pbpvHoHmU2AATIw+oHQX8WoVJfVOM+oZYfYrf?=
- =?us-ascii?Q?WM+Jr8h5xyS4pT8/wfjBglKVOFfCfEvq0bAtgzVQE6DGoXpQpxUy/KSRO16N?=
- =?us-ascii?Q?QchLrfWB7c+qN7ARgJ1p58HgscX0CzwFssukA9/bjjnvUM3/W30l0i2WVWvu?=
- =?us-ascii?Q?iBsisEIJimFOVHsW+YXK9hXYx/ePI5KJpeIkCToBImmIMyMfBoH3Iu/SOEMa?=
- =?us-ascii?Q?IHcIUssRXwLhu4XMQrhNoYmXTHTWbgDksFnTpy4jUtr5nx+U8NAW2VgZTvV4?=
- =?us-ascii?Q?/wYxoWuGg/CNDpMK+yZy1cYskBiQSs9F/2Xer0VKgzuSBD0DyQ0veAR9qYc0?=
- =?us-ascii?Q?wBbuWFBu2vbNjikBAwI0F3mvJtWdNG5TCQq6KmBYKGh1//1yr1vp8+C/Wt07?=
- =?us-ascii?Q?H8EFn6J+5xB8/l2JZGoF/1l8r9uXafZlphK8tGXugARino73v3Q3Egnsyaab?=
- =?us-ascii?Q?bRymSbDM+j79aLp2rKwyUXLE8Nr3fV2seYEyTWCeGSAXndqsz5AsTi2FricZ?=
- =?us-ascii?Q?3UTAzFBQlQKP5bZlpiEi8evN9/EmViOtQyHtou6pcnEgr8tNehUmK0zPV5O1?=
- =?us-ascii?Q?A8+vKkKR1YJ6IWA/cXdVB6KpJPnflxfW8YHQ3mqM82rLgfnW2vqyMZ6Y9dp/?=
- =?us-ascii?Q?bbr4LNV/ja4xDKP9G/gg1ZLHfsnxnldbhugABUre+SMyxBfPsFsuE7wJIRYR?=
- =?us-ascii?Q?ktt4jOwy4uKjSQX3hgZd+RB6H8/9DbYSljgrkppwDMfCt2j+0Z2cK72GNKyw?=
- =?us-ascii?Q?kWULlO1WSHUhd/VWVKXrjbu/Ws73A9F0UiREy9PU1Xzrt4iIQyDvrUBl05hn?=
- =?us-ascii?Q?VytBzor9PrtgFtBnQYf5KZ485YLkHG6JWDITFK5E0GAmM787q3yBAVJq+QSK?=
- =?us-ascii?Q?6LVz9SRmP0KC2NOEb0CRbHjK72VIVwlx5ErzXBRQdJMUDClKTWY5GbKEw1B0?=
- =?us-ascii?Q?4f1I1T2EBLOz9wOPGCoh3t8TrthTRTQ7vhyG1frq6CCgpZO7HuRalL+Re8m6?=
- =?us-ascii?Q?0QFP9YPmCUrPczAhkn9A4VepkUKh8IK+H8oxF3g0f//AxBz2kjU9QCMvfIWr?=
- =?us-ascii?Q?ENHbp1mRSTdf2/OpZ0Z2FnDtcLJGLyVKQA4EEsqDEAduTcMx0Y3q8ZrOTXlr?=
- =?us-ascii?Q?Y8g0vv50d+zE9Qj+C+rrVUWO5plJVQYKKoIOMT/H9+q5x5zeJl8JDI15xgcx?=
- =?us-ascii?Q?77QwLI4DgQiFA3UJWIq9NzLtTdfVzHE3A8/J/JPmmD7lsJFWjcsT9QnRS/er?=
- =?us-ascii?Q?8IyXLosH0wmKFwUakqVfPqn3IdAizDsItwnu79gYOM2nF+ofR3rodvO52aLX?=
- =?us-ascii?Q?//apAs6w3nrKGIIHe+j5rwdj/4kOVaR4XWiySoKZskGfElDue5buT1VK+jVB?=
- =?us-ascii?Q?carCHTlSGlonRXdrspt0cdG9oa4PNPY7?=
+	=?us-ascii?Q?/oQDP3Q9VB/hjZGrh3mHPOWk3qfBpnuh6dcuvkvAwHmBrAyt9mK5RkyvMHXE?=
+ =?us-ascii?Q?TWQYC0puci3o9IZyUD3OGx/8vGxxuWaM/H355402BEds8QZsO54JUfvifWci?=
+ =?us-ascii?Q?Z03s6YtnUnjq/8jK8qWZCgx1PAzzuX3205tylCq4+o1DicXh8q8UxYSIb1Kl?=
+ =?us-ascii?Q?gsLXBrbltfpcGuaizvS4CKNSwTr/OYz2Cl8j0HmP30h4lwFRLEivgQaVst+D?=
+ =?us-ascii?Q?j5J0qRj3TWUbOBAnfs53MWqQVjdA/cHV0RQ9TdDDVVH0V40jfi6VbPFFHsNX?=
+ =?us-ascii?Q?Ez3gXwsZ0gWZn05W2o/OB3+72sM8SG2hJ0u1xQKY5XUtBGyY8yhZBPkuo4AE?=
+ =?us-ascii?Q?pT71z2xn3GLNM9O6aXHQw0dxGlRlwiPr0VNh8csKnn3js3PF9B1wisosgzxa?=
+ =?us-ascii?Q?0vuI87LjFmEWsBuFg5RawDqU/WNht+XKzj3FOBIvS91zZsuH8H9geQba1klj?=
+ =?us-ascii?Q?nRqzbWwqoSoBGbkctjhqiz80cuJcQQEbYIs4k0CVyd9mPyqE6W+Wh8Hl6xDu?=
+ =?us-ascii?Q?6taP9f8xUqwkSja1GvgTqqNRgi29Kzayt392Zlzwz3UfcR+cHCNn7cOwqnvH?=
+ =?us-ascii?Q?k6IpYB1zWZqQZLrGF7fC0MA7lycRWlVqpkVrNErleVpUlBnca+3o3y+ZJagk?=
+ =?us-ascii?Q?XWVHwJqHE2434unFEe2xOg3peU8CNrGnyWzl/7ektttwMbZu2IgeUcM1w6e4?=
+ =?us-ascii?Q?gKXKOr6UF6GI6eHjZ2Oo4tJfK4ukhQQn43loTBauwGGDNP81uIY0LhWoaxj7?=
+ =?us-ascii?Q?1oLbZoP3uRm4IuLYLu9GPSTeT+yjmJsP00FFF5a5A99aeDPMmKHL3Xi4mJcf?=
+ =?us-ascii?Q?IzFHzPU8w3vGH8HXqWALp1bZ5pW4bWWrbwoW/nrZWppIFbe52VrnNmf+19cZ?=
+ =?us-ascii?Q?oxPsJldk/Y7L9ZYr0pbvhasC8J+s6568ig5v2clq3m7gt4PMHk7gC6Mh9ylp?=
+ =?us-ascii?Q?qRpBDlZKneQAqObIPyiaUK62RvxiFsWidOsv0ant4Iq0atigCUgHgFktyOJt?=
+ =?us-ascii?Q?ubsucJt9xw0aP9bPqyaE2px2PI4K3ajV6w2bqWBctxovLUTEjxDJgB4N98Kp?=
+ =?us-ascii?Q?aG8yTB6hvQvnsQombxiWzjPeGu+il++vwFLT4CibGMqGuDDRRNBp7QifircN?=
+ =?us-ascii?Q?h67ULQ971vbdl+uH21so2OMjfpN9znprCpAKS3c775TCpYaj9n7UNQDDtAwq?=
+ =?us-ascii?Q?3CHJYVWL8XrGOms0umLP5dCsxZI6ai+AE7PpdH293QH0SnnIf6tBCwOKwERK?=
+ =?us-ascii?Q?8RYbpkoEIha+D5/MUKxbiTvJjoBpClqG+RJVX8Y7w0MXxIx/W5Ffg+zPuQHI?=
+ =?us-ascii?Q?fYKHnc2ec9N0/F0g7IwfNGCYr9e0p7WbR85+isNL0+3OIVB5WPPA8nmZiyvw?=
+ =?us-ascii?Q?8+0FT0w52olAb4qhL1/gezhLZS0NUtpYc+6WRpbsUC5+UtjXBzs8wr8NXMsF?=
+ =?us-ascii?Q?HOm5GajgVXZppqFY2XNbT8kcpGvDF1uP?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(1800799024)(376014);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(36860700013)(82310400026);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Sep 2024 10:58:37.9941
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Sep 2024 10:59:15.0482
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b637ba53-d9c5-44df-b450-08dcd7d0d978
+X-MS-Exchange-CrossTenant-Network-Message-Id: b0ee72b4-71f7-4594-194f-08dcd7d0ef91
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF00000205.namprd05.prod.outlook.com
+	SJ5PEPF00000208.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8545
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8752
 
-Read and write the maximum number of data bytes at once, rather than byte
-by byte. This improves AMD SPI controller driver performance by reducing
-the time required to access FIFO registers. For example, with the new
-changes, 64 bytes of data from the FIFO queue can be read in 8 read calls
-(8 bytes per call) instead of 64 read calls(1 byte per call).
+AMD SPI0 controller supports quad mode only for read operations and has
+limited support for quad mode writes. And, the AMD HID2 SPI controller
+supports DMA read, allowing for up to 4 KB of data to be read in single
+transaction. Update the SPI-MEM support functions to reflect these hardware
+capabilities.
 
 Co-developed-by: Krishnamoorthi M <krishnamoorthi.m@amd.com>
 Signed-off-by: Krishnamoorthi M <krishnamoorthi.m@amd.com>
@@ -136,108 +136,129 @@ Co-developed-by: Akshata MukundShetty <akshata.mukundshetty@amd.com>
 Signed-off-by: Akshata MukundShetty <akshata.mukundshetty@amd.com>
 Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
 ---
- drivers/spi/spi-amd.c | 53 +++++++++++++++++++++++++++++++++----------
- 1 file changed, 41 insertions(+), 12 deletions(-)
+ drivers/spi/spi-amd.c | 84 +++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 81 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi-amd.c b/drivers/spi/spi-amd.c
-index eb16063ba121..c265e37cebc4 100644
+index ccad969f501f..f146366a67e7 100644
 --- a/drivers/spi/spi-amd.c
 +++ b/drivers/spi/spi-amd.c
-@@ -9,6 +9,7 @@
- #include <linux/acpi.h>
- #include <linux/delay.h>
- #include <linux/init.h>
-+#include <linux/io-64-nonatomic-lo-hi.h>
- #include <linux/iopoll.h>
- #include <linux/module.h>
- #include <linux/platform_device.h>
-@@ -125,6 +126,16 @@ static inline void amd_spi_writereg32(struct amd_spi *amd_spi, int idx, u32 val)
- 	writel(val, ((u8 __iomem *)amd_spi->io_remap_addr + idx));
+@@ -38,6 +38,7 @@
+ #define AMD_SPI_FIFO_SIZE	70
+ #define AMD_SPI_MEM_SIZE	200
+ #define AMD_SPI_MAX_DATA	64
++#define AMD_SPI_HID2_DMA_SIZE   4096
+ 
+ #define AMD_SPI_ENA_REG		0x20
+ #define AMD_SPI_ALT_SPD_SHIFT	20
+@@ -51,6 +52,21 @@
+ #define AMD_SPI_MAX_HZ		100000000
+ #define AMD_SPI_MIN_HZ		800000
+ 
++/* SPI read command opcodes */
++#define AMD_SPI_OP_READ          0x03	/* Read data bytes (low frequency) */
++#define AMD_SPI_OP_READ_FAST     0x0b	/* Read data bytes (high frequency) */
++#define AMD_SPI_OP_READ_1_1_2    0x3b	/* Read data bytes (Dual Output SPI) */
++#define AMD_SPI_OP_READ_1_2_2    0xbb	/* Read data bytes (Dual I/O SPI) */
++#define AMD_SPI_OP_READ_1_1_4    0x6b	/* Read data bytes (Quad Output SPI) */
++#define AMD_SPI_OP_READ_1_4_4    0xeb	/* Read data bytes (Quad I/O SPI) */
++
++/* SPI read command opcodes - 4B address */
++#define AMD_SPI_OP_READ_FAST_4B		0x0c    /* Read data bytes (high frequency) */
++#define AMD_SPI_OP_READ_1_1_2_4B	0x3c    /* Read data bytes (Dual Output SPI) */
++#define AMD_SPI_OP_READ_1_2_2_4B	0xbc    /* Read data bytes (Dual I/O SPI) */
++#define AMD_SPI_OP_READ_1_1_4_4B	0x6c    /* Read data bytes (Quad Output SPI) */
++#define AMD_SPI_OP_READ_1_4_4_4B	0xec    /* Read data bytes (Quad I/O SPI) */
++
+ /**
+  * enum amd_spi_versions - SPI controller versions
+  * @AMD_SPI_V1:		AMDI0061 hardware version
+@@ -377,20 +393,82 @@ static inline int amd_spi_fifo_xfer(struct amd_spi *amd_spi,
+ 	return message->status;
  }
  
-+static inline u64 amd_spi_readreg64(struct amd_spi *amd_spi, int idx)
++static inline bool amd_is_spi_read_cmd_4b(const u16 op)
 +{
-+	return readq((u8 __iomem *)amd_spi->io_remap_addr + idx);
-+}
-+
-+static inline void amd_spi_writereg64(struct amd_spi *amd_spi, int idx, u64 val)
-+{
-+	writeq(val, ((u8 __iomem *)amd_spi->io_remap_addr + idx));
-+}
-+
- static inline void amd_spi_setclear_reg32(struct amd_spi *amd_spi, int idx, u32 set, u32 clear)
- {
- 	u32 tmp = amd_spi_readreg32(amd_spi, idx);
-@@ -397,15 +408,23 @@ static void amd_spi_mem_data_out(struct amd_spi *amd_spi,
- 				 const struct spi_mem_op *op)
- {
- 	int base_addr = AMD_SPI_FIFO_BASE + op->addr.nbytes;
--	u8 *buf = (u8 *)op->data.buf.out;
-+	u64 *buf_64 = (u64 *)op->data.buf.out;
- 	u32 nbytes = op->data.nbytes;
-+	u32 left_data = nbytes;
-+	u8 *buf;
- 	int i;
- 
- 	amd_spi_set_opcode(amd_spi, op->cmd.opcode);
- 	amd_spi_set_addr(amd_spi, op);
- 
--	for (i = 0; i < nbytes; i++)
--		amd_spi_writereg8(amd_spi, (base_addr + i), buf[i]);
-+	for (i = 0; left_data >= 8; i++, left_data -= 8)
-+		amd_spi_writereg64(amd_spi, base_addr + op->dummy.nbytes + (i * 8), *buf_64++);
-+
-+	buf = (u8 *)buf_64;
-+	for (i = 0; i < left_data; i++) {
-+		amd_spi_writereg8(amd_spi, base_addr + op->dummy.nbytes + nbytes + i - left_data,
-+				  buf[i]);
++	switch (op) {
++	case AMD_SPI_OP_READ_FAST_4B:
++	case AMD_SPI_OP_READ_1_1_2_4B:
++	case AMD_SPI_OP_READ_1_2_2_4B:
++	case AMD_SPI_OP_READ_1_1_4_4B:
++	case AMD_SPI_OP_READ_1_4_4_4B:
++		return true;
++	default:
++		return false;
 +	}
- 
- 	amd_spi_set_tx_count(amd_spi, op->addr.nbytes + op->data.nbytes);
- 	amd_spi_set_rx_count(amd_spi, 0);
-@@ -416,23 +435,33 @@ static void amd_spi_mem_data_out(struct amd_spi *amd_spi,
- static void amd_spi_mem_data_in(struct amd_spi *amd_spi,
++}
++
++static inline bool amd_is_spi_read_cmd(const u16 op)
++{
++	switch (op) {
++	case AMD_SPI_OP_READ:
++	case AMD_SPI_OP_READ_FAST:
++	case AMD_SPI_OP_READ_1_1_2:
++	case AMD_SPI_OP_READ_1_2_2:
++	case AMD_SPI_OP_READ_1_1_4:
++	case AMD_SPI_OP_READ_1_4_4:
++		return true;
++	default:
++		return amd_is_spi_read_cmd_4b(op);
++	}
++}
++
+ static bool amd_spi_supports_op(struct spi_mem *mem,
  				const struct spi_mem_op *op)
  {
--	int offset = (op->addr.nbytes == 0) ? 0 : 1;
--	u8 *buf = (u8 *)op->data.buf.in;
-+	int base_addr = AMD_SPI_FIFO_BASE + op->addr.nbytes;
-+	u64 *buf_64 = (u64 *)op->data.buf.in;
- 	u32 nbytes = op->data.nbytes;
--	int base_addr, i;
--
--	base_addr = AMD_SPI_FIFO_BASE + op->addr.nbytes + offset;
-+	u32 left_data = nbytes;
-+	u8 *buf;
-+	int i;
++	struct amd_spi *amd_spi = spi_controller_get_devdata(mem->spi->controller);
++
+ 	/* bus width is number of IO lines used to transmit */
+-	if (op->cmd.buswidth > 1 || op->addr.buswidth > 4 ||
+-	    op->data.buswidth > 4 || op->data.nbytes > AMD_SPI_MAX_DATA)
++	if (op->cmd.buswidth > 1 || op->addr.buswidth > 4)
++		return false;
++
++	/* AMD SPI controllers support quad mode only for read operations */
++	if (amd_is_spi_read_cmd(op->cmd.opcode)) {
++		if (op->data.buswidth > 4)
++			return false;
++
++		/*
++		 * HID2 SPI controller supports DMA read up to 4K bytes and
++		 * doesn't support 4-byte address commands.
++		 */
++		if (amd_spi->version == AMD_HID2_SPI) {
++			if (amd_is_spi_read_cmd_4b(op->cmd.opcode) ||
++			    op->data.nbytes > AMD_SPI_HID2_DMA_SIZE)
++				return false;
++		} else if (op->data.nbytes > AMD_SPI_MAX_DATA) {
++			return false;
++		}
++	} else if (op->data.buswidth > 1 || op->data.nbytes > AMD_SPI_MAX_DATA) {
+ 		return false;
++	}
  
- 	amd_spi_set_opcode(amd_spi, op->cmd.opcode);
- 	amd_spi_set_addr(amd_spi, op);
--	amd_spi_set_tx_count(amd_spi, op->addr.nbytes);
--	amd_spi_set_rx_count(amd_spi, op->data.nbytes + 1);
-+	amd_spi_set_tx_count(amd_spi, op->addr.nbytes + op->dummy.nbytes);
-+
-+	for (i = 0; i < op->dummy.nbytes; i++)
-+		amd_spi_writereg8(amd_spi, (base_addr + i), 0xff);
-+
-+	amd_spi_set_rx_count(amd_spi, op->data.nbytes);
- 	amd_spi_clear_fifo_ptr(amd_spi);
- 	amd_spi_execute_opcode(amd_spi);
- 	amd_spi_busy_wait(amd_spi);
- 
--	for (i = 0; i < nbytes; i++)
--		buf[i] = amd_spi_readreg8(amd_spi, base_addr + i);
-+	for (i = 0; left_data >= 8; i++, left_data -= 8)
-+		*buf_64++ = amd_spi_readreg64(amd_spi, base_addr + op->dummy.nbytes +
-+					      (i * 8));
-+
-+	buf = (u8 *)buf_64;
-+	for (i = 0; i < left_data; i++)
-+		buf[i] = amd_spi_readreg8(amd_spi, base_addr + op->dummy.nbytes +
-+					  nbytes + i - left_data);
+ 	return spi_mem_default_supports_op(mem, op);
  }
  
- static int amd_spi_exec_mem_op(struct spi_mem *mem,
+ static int amd_spi_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
+ {
+-	op->data.nbytes = clamp_val(op->data.nbytes, 0, AMD_SPI_MAX_DATA);
++	struct amd_spi *amd_spi = spi_controller_get_devdata(mem->spi->controller);
++
++	/*
++	 * HID2 SPI controller DMA read mode supports reading up to 4k
++	 * bytes in single transaction, where as SPI0 and HID2 SPI
++	 * controller index mode supports maximum of 64 bytes in a single
++	 * transaction.
++	 */
++	if (amd_spi->version == AMD_HID2_SPI && amd_is_spi_read_cmd(op->cmd.opcode))
++		op->data.nbytes = clamp_val(op->data.nbytes, 0, AMD_SPI_HID2_DMA_SIZE);
++	else
++		op->data.nbytes = clamp_val(op->data.nbytes, 0, AMD_SPI_MAX_DATA);
++
+ 	return 0;
+ }
+ 
 -- 
 2.34.1
 

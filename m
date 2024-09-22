@@ -1,279 +1,251 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 914FF1547CF
-	for <linux-spi@vger.kernel.org>; Sat, 21 Sep 2024 13:01:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726923662; cv=fail; b=RzJPOBhemCbqRtz3pExORIZYONo4nr0ARSFLQAjF3BV6LMYE/h6yRNHoKMRY6sR0z7HD/QTwUMDuaLYwZMrVDiBFwvhTIM7a+rlZWORu3GkZk5ERQmj4h70SgMT/978h7SvePuFcoPzWz7Mtd2WSE422PPATH1zgGdiw4cL1Og0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726923662; c=relaxed/simple;
-	bh=J2c+LXU+72D7NmOwqUzJhB1/riCFQrcfGPG0+vhVD4w=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=UTyuhPcO8nqe70gBca3ubJvdOJpaiKGSCJfUGDGiRkkGHVAzo2fC1MpdxjgSEp0wXNZYF29nxoShlr6CCoh/oHbcnNKuHHsbxmDIPZ2vjLGs/MxZx2c466unwMlqaZLw3uwyVn5XJ0mYv0VrMoaBPwCpWbLHyHK8UamVsiOZme4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gBT1ZJ5B; arc=fail smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28DD3175D2D;
+	Sun, 22 Sep 2024 11:34:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727004897; cv=none; b=npUlpzgkY9cUabBquti79xoY18gLkBrnpdtU5unyHOMOpu7cOxXv9hi2U3DsFDwFowPZDT4Qt2ta1ZgrVFnYdBfq790rhIkZ0uX3tnMW3dOiEnKFbnZOF4tAC2jtPzGX442gc/lx4FVHaiorq3H8TQ9kFnfiMLyA6cLR2ZECuqQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727004897; c=relaxed/simple;
+	bh=6NvRH/mBXbi7kDiPVFDYI0sSFi6wxtPnVeqxO2sbagE=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qkDKTcsdp6OhvSihfugAFouSzOHzolQVQBdT1my9iiY+H12ejQHm7/yMxhfdy5OtHvXAVS38h1I60en7Ccji8qELDgaNbhWgjVH3vSkhOERJUAdFoWh5xZfLF3Vxb9/JMv40pRpTH4JVrxK6TLLICJtfd5G57owof+SxkhgGZ+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=cl6TTRK6; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gBT1ZJ5B"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1726923661; x=1758459661;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=J2c+LXU+72D7NmOwqUzJhB1/riCFQrcfGPG0+vhVD4w=;
-  b=gBT1ZJ5BgAMXNme3mHguKbOaFKJOgJc96Mc7b6PQWZHNKZh/dMf49HlJ
-   UDcyYcA/N7WJO0eq0pNjP/tUVJfjgDUjy64LJKF79euplz6FI9ZNdCID3
-   IOMedeotTK/4mv1VcmZi2DCPdkQFg1DBSCg75vZ1pb1mIGWMHRE0UPXxD
-   LpD9XWiosclVgCHz4YgS+8/i6EtiI8P+of3YmvEYLslNsIDmliR7WZvA/
-   uJ/X3vf52X3LBrC009fWL+SvSTIT6e0eIrDtBx/J+S/xLSxcDPwhijSg0
-   D43Fls6nlWza2LQV8ujis+8tBAs+t6E1ofuk+xPaQTUm5WkTJ+lvy+qcZ
-   w==;
-X-CSE-ConnectionGUID: nPlI1j7SQuyxACWe8ADGJA==
-X-CSE-MsgGUID: Muwld4CHQaSsfJrtEjQ3+g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11202"; a="13621137"
-X-IronPort-AV: E=Sophos;i="6.10,247,1719903600"; 
-   d="scan'208";a="13621137"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2024 06:01:00 -0700
-X-CSE-ConnectionGUID: eNBNVDvZQgSXgkMdIibwug==
-X-CSE-MsgGUID: D9bzuh27STao4Tfi3MKNqg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,247,1719903600"; 
-   d="scan'208";a="75361388"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
-  by orviesa005.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 21 Sep 2024 06:00:56 -0700
-Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Sat, 21 Sep 2024 06:00:55 -0700
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Sat, 21 Sep 2024 06:00:55 -0700
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.45) by
- edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="cl6TTRK6"
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48MAjrOr008090;
+	Sun, 22 Sep 2024 11:34:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	F8/QEnNeFNsvStEx25ah6Twz/SyxSe4Euvc3it7paiE=; b=cl6TTRK61U3Eb319
+	uWpt1GkKQDnChKAyFtgQo+i0Qu11FLWZuG11icSD3BLj7xqPWKUrMgMMXNKxukJr
+	5BwZ+x1TFhJcMHcki/5NwT+1LE2tB5jHADbw7kq+196UyL+KDiey7ISEof8+ywM+
+	RZiooEy8GaT3a5oTDXpjJ54p4NbNXGJNB50KWb3lrJswBCSY1fSz7eaSj+Ttfi6H
+	1Xrqq4DdNJI3LtkTxUlQFOxi+mwqrhyihSY6G/etLtt5IBb8KdbhFvkN8HD5UCC1
+	E21DvHRV3VcFj5Z1b0eHVCMqocI17IvwTs13l8gwYWu/OuM8+nnsSFvyEBxEWDoi
+	FBxNKA==
+Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41sp7uacef-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 22 Sep 2024 11:34:18 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 48MBYG5F014747
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 22 Sep 2024 11:34:16 GMT
+Received: from hu-mdalam-blr.qualcomm.com (10.80.80.8) by
+ nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Sat, 21 Sep 2024 06:00:55 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Euw09FCJ60+E0SExOoV50eOnqzXsI7hjuc4zN3VgGdlca4tn9Qs9oWpwiSSLVjcV8Fyiqy9S3Yz9iH6KXUbxkGj5CGgDb1FrBuNjR5AcuiyzFJVbGVVOxbP5P1F5d6ZVX2DxbSoZCql55PqvOrJiMH/Oh2mJ3n+lxcV45pvC+BGN8RZCMDnIEJXSw6c8jJOLgD7fix4fUpVIQfqlOeDJLuE6uUpuEdc1D4VMvzsqxY9zigOojaeWR7BS3Stlp6zLQ5MyKzslHQDCMv6wlwXIP7m4Eb+t1Qzzp111nyIk6C16+83tShhGaSrm2YYAvFGMv4jxbP8aigbNjDPsQgm1zQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GA6L6OPYc3ie5YPrJbdI5NTwAZHD2CFvL2oFm72rgUc=;
- b=g7so4vc4LRQSTTTPE9agffStNkOaPeWNXcx6lcgmYx3I8Wbn0fsTpY2ChA6waCM6PWYfsDKv5wU2f623DAITrVS6UGGlHj17V58U8xtt2g+N0uvb0GI1660O8PqUrRgf43gA2Yi6oveAhX++eJ9JCwVZ3CimXKI2J6faic2e6jJMBFEg3AcbOh2nhXS4vbTz1zwIEtAJc2h6BFnU4rt77+UCeabQKdE6i5dZdMsnXai0SRgl2ZWQ8ZTQADeggk2YqXLy/fpSUgIMbcsngn673N4ePozIU44lvFEXTywbTjAs4eTDixuguCK53LX2ow66UcxIxL53HQnmG+CV1nxwcA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB7605.namprd11.prod.outlook.com (2603:10b6:510:277::5)
- by DS0PR11MB8071.namprd11.prod.outlook.com (2603:10b6:8:12e::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7982.23; Sat, 21 Sep
- 2024 13:00:53 +0000
-Received: from PH7PR11MB7605.namprd11.prod.outlook.com
- ([fe80::d720:25db:67bb:6f50]) by PH7PR11MB7605.namprd11.prod.outlook.com
- ([fe80::d720:25db:67bb:6f50%4]) with mapi id 15.20.7982.018; Sat, 21 Sep 2024
- 13:00:52 +0000
-From: "Winkler, Tomas" <tomas.winkler@intel.com>
-To: Mark Brown <broonie@kernel.org>
-CC: "Usyskin, Alexander" <alexander.usyskin@intel.com>, "De Marchi, Lucas"
-	<lucas.demarchi@intel.com>, Oded Gabbay <ogabbay@kernel.org>,
-	=?iso-8859-1?Q?Thomas_Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
-	<mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
-	<airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, Jani Nikula
-	<jani.nikula@linux.intel.com>, Joonas Lahtinen
-	<joonas.lahtinen@linux.intel.com>, "Vivi, Rodrigo" <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>, "Lubart, Vitaly"
-	<vitaly.lubart@intel.com>, "intel-xe@lists.freedesktop.org"
-	<intel-xe@lists.freedesktop.org>, "dri-devel@lists.freedesktop.org"
-	<dri-devel@lists.freedesktop.org>, "linux-spi@vger.kernel.org"
-	<linux-spi@vger.kernel.org>, "intel-gfx@lists.freedesktop.org"
-	<intel-gfx@lists.freedesktop.org>
-Subject: RE: [PATCH v6 01/12] spi: add driver for intel graphics on-die spi
- device
-Thread-Topic: [PATCH v6 01/12] spi: add driver for intel graphics on-die spi
- device
-Thread-Index: AQHbCEBkZ7X5wnyiXEe3qiGmampdoLJdjhaAgAFR0ECAAA32AIADOJHA
-Date: Sat, 21 Sep 2024 13:00:52 +0000
-Message-ID: <PH7PR11MB760505A11C7A41DAB0359184E56D2@PH7PR11MB7605.namprd11.prod.outlook.com>
-References: <20240916134928.3654054-1-alexander.usyskin@intel.com>
- <20240916134928.3654054-2-alexander.usyskin@intel.com>
- <ZurWk_eXSQndgA4Y@finisterre.sirena.org.uk>
- <PH7PR11MB76057D2326D436CA9749A113E5632@PH7PR11MB7605.namprd11.prod.outlook.com>
- <Zuv9qsWJQhx7rbhJ@finisterre.sirena.org.uk>
-In-Reply-To: <Zuv9qsWJQhx7rbhJ@finisterre.sirena.org.uk>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH7PR11MB7605:EE_|DS0PR11MB8071:EE_
-x-ms-office365-filtering-correlation-id: 25f99d30-6159-462f-246b-08dcda3d6c92
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014|38070700018;
-x-microsoft-antispam-message-info: =?iso-8859-1?Q?QYMfMpnL3j9n6WUpEMhOmhYizdEPtYSLFHoEmoz2e2T3bHD+Lck096X/Nu?=
- =?iso-8859-1?Q?78eFVE2N6HWZnklQ6f9AhxNwxjys8Blr/UtNOYbaLN2B/W8Tsnuf2tqh1i?=
- =?iso-8859-1?Q?TZPEVoWqPd3XSmQqaeIm1gzlt68yqoAU7ZCmfydu9PBcIv48+Ks6L/lVWz?=
- =?iso-8859-1?Q?SpdpuNsqteIR4qt29nz2MxuMEOCEfnJnfGIfikOgIv8NDlioQv7+Xjubw3?=
- =?iso-8859-1?Q?fK2fYJy2kZUky7mRwtL2Xe1EcfY/spbw5p/QyqFRVU5LJuD+bEkAjo7ddK?=
- =?iso-8859-1?Q?QCyjNo/OUgFuLiPbUFNMnju0dUa1c0N4+hEPzCO5NlPCFfXqiFqFqKhbYm?=
- =?iso-8859-1?Q?yJALoIzy/02+zahbOPBl6l3VpzTmTHxJHVJaBu9DZymEPmsz7zxD17x4gN?=
- =?iso-8859-1?Q?K7hLVXsFhd8lRoTwKfN8nEdiVKAKj7g8dekNNgs3dEgMQHmYZr9EWtSs7C?=
- =?iso-8859-1?Q?JqaZ3sJtGpM8yGprlaj7GPNMRqigLo0eBOwnWRaaIlo9eHVNJzSrpuLqQ9?=
- =?iso-8859-1?Q?+Gb02L159VaRfFIQP8sVNIKQXx4V1sQ83tmcqm4oOZEf3i7VY7wx/D8mqE?=
- =?iso-8859-1?Q?+edAiiPgLb9+hpwsjUw7eQnK+3Gk4jUvATqS93IkWPOBleaPEj9yper/20?=
- =?iso-8859-1?Q?8rPAwENVo3Kz61pT7u9/8uSq+h+8A3lrTVdywSMSCTw3qRLGhHSzRSApnG?=
- =?iso-8859-1?Q?zyslf8ULsd2fO9VOOUM+CzI5iZFotevnEHqx0SJSCXxnGnFJ+CPBKCfvH0?=
- =?iso-8859-1?Q?J1rXk4EVuGrSa7SRgSXCrZQjAnGGGeXuPWl6bkLhCX5Xu64WHGXTr7VfJR?=
- =?iso-8859-1?Q?gb3asPagE5OaK7yZrPF2bQegCqxvXe5TDVf8w5Eg2reslAb5uUKG69uw8D?=
- =?iso-8859-1?Q?jHf+4Stgd+JIR99DzuAzIiCUCExT9n6yWELxcDzqt81tE6+80u2lWvZztl?=
- =?iso-8859-1?Q?hU754jYbjjbdphpWfCUE4LZpFekcGzWVOA8BWrHIaZRJVPyHM3MBYniG29?=
- =?iso-8859-1?Q?b8gSxidGvhqN9rev1clAXON6TNz5HcRvASzhJaJqfp02AxdVRftawtMlBB?=
- =?iso-8859-1?Q?yg61Z5D+58zl/EGnJR6kwilaHNhL6Dgt3mTMQIbBuHFZ4vWxDKdOZero+7?=
- =?iso-8859-1?Q?WDUIuUgTUOpxQwQ63n8UjbNveMPR/p8wpFWtdYAgCNOYg9kMBYRoFutoOx?=
- =?iso-8859-1?Q?iNTxHa8ookAkPbJjJB3WnYhsAVhzvGDAMP/sTBh1qjtXo1PUFKbD0/N4Sw?=
- =?iso-8859-1?Q?xuCEng2uWiRp4hjYyfnrJNtEHHSl/u0XWoSYiK50KmVEmCDVpvL37DQcgX?=
- =?iso-8859-1?Q?EnFPLPtcNebYn65EWE0fmfXWxEEmCWzSOj+cTtw5LjfwKDYceZDcPl5ERo?=
- =?iso-8859-1?Q?Fr7o6b+wMLs51KsO1VBh+S0XB69OizJF1TDjPw557W1x0XGkV/8r4winyq?=
- =?iso-8859-1?Q?A+Qjj/PpN/40jx3frnhQGd35nrdcjWCOO/Lgwg=3D=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB7605.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?59m91GBI3I5qlY1eZ67zIaqpAot4tp+AHEyJvx1yJi+zz8sambJDGQXCOf?=
- =?iso-8859-1?Q?dGOPOEjPIlQ0e3Ey6U+QE1zyjYkCScv+hTzgpv6q92sCInczyPCx36Uh67?=
- =?iso-8859-1?Q?5Jm8lutdkVREjPTIOJekURuxww2XNHok7OlRYNz2eaag/lawaUsSDxPUI9?=
- =?iso-8859-1?Q?DF+ah9YleIP6NcUi/oaXubHQuhw6ibR30Zzx5do+K/CZ4+l4Wkd3vjqwhf?=
- =?iso-8859-1?Q?7z/cbrn3PnKASABJnLPNYe9HapGoVubaGb9ZBA6xqbBWDiI12km3xZ/8Iq?=
- =?iso-8859-1?Q?aPiXlTm20vdSuxoKgAsj/7k6mquw6HIWExaX0vRi2Es5vrJQy9oqEYxwBS?=
- =?iso-8859-1?Q?5hTK7osL+Myc4fvYWaC4Ru/CHNfkULqfqMQa7dR1+eMDkXsvb/2KLlJf+r?=
- =?iso-8859-1?Q?ou/ZJmVFNKHjXw4CSIfno5tmaAJYgj4erqKIQR4eWFxAjwgQYvD3feotKQ?=
- =?iso-8859-1?Q?FC7keMNZnLhsStv+UImxOE5NPrZ0xUexKd831t7wLormZPhI8+XN/WoOPc?=
- =?iso-8859-1?Q?WFOz0R4r9HmQ1gdH3oefxfQwR0aYUY7iMezezqSJj1Tu6EKr6gFMD6UbZh?=
- =?iso-8859-1?Q?gq0UnXjK3fuSJJwApImt/JbGhhXbzI1ib2WBKDT+gitMqMiFXKgVqBSteg?=
- =?iso-8859-1?Q?/J5FUC++8ZvhSMboBEzKV8o0MOMgj3WShwjNLq8Rqf7Izzkn2q22pkNYhq?=
- =?iso-8859-1?Q?d2xOIQI3G98vfb2HOpmfhmH7KNjcH+5yLdcRf3rWGQDXtz95so18fO2m7X?=
- =?iso-8859-1?Q?g/DuZzu9epWmXdqjHA1i/91uqdlUAuVrWkg7weH/S7Jyrmx/SI3rGk77Sg?=
- =?iso-8859-1?Q?qSirx3GZoSh7EWXODcy75qLU+sQmmz4xZsPl9AYMuqiWCrhIVxaNcL2QrF?=
- =?iso-8859-1?Q?dg+PqGwVI0B8FTLa1sJnvUfJDqpkgKnkO5Txx9X/ljhPKmrYrPBGzkfd6P?=
- =?iso-8859-1?Q?VAvlq6F4AfMxWtuE6AfwABFZi9BDXDoUyjWl8URpztV4A7VMB9Z/Mw7RP4?=
- =?iso-8859-1?Q?BdNx3X7+2uQmI2iCRgqXf8oTro5vNclqVWccJb4/OUf98/CR+LG3zQLBsG?=
- =?iso-8859-1?Q?XbubzFSJIDQn09Kd6z03MHV67sOT+ERel7CSUXR4xc28SnJkaZiooVJm1k?=
- =?iso-8859-1?Q?O6Ug2eF8XDZmFrx1cL16IB4rHjRFpSupFX07x+EmIXGNGoomBNHdTsAL8I?=
- =?iso-8859-1?Q?NdqsQ8Q3lG9EPgMhbVWBTYx5O3QSnIpnc3Quqo3wmUgCi0JJuRvHtaDmcb?=
- =?iso-8859-1?Q?RSpqoNzVoY5UKhJgq/xIXUAFE/ioCpy4eUg9BcuRia5qYOh0vtS0i+YeOR?=
- =?iso-8859-1?Q?bFHBkTFWyQfy2/j8AqCYoRmB7+WPKHwyq4qjicCrQ7Fde7TzE38Jsmkb0q?=
- =?iso-8859-1?Q?xaH5BaQGvqhMWIzOOpgeE8VUwWJ/IAJTP1MCBN3kzKnpMNvvjLf/tQiCTw?=
- =?iso-8859-1?Q?xMIfvuQi81L23yeoIGEy7VUQAWV9RMokp0qO18lSs+b7L92Y/do+Fhdae9?=
- =?iso-8859-1?Q?OWDfBJ95ujQQf9q0/WWdVRi+yJTU/vDdPf9vrrGcH2qOxbcwjgaj/mfKeG?=
- =?iso-8859-1?Q?qrG8W7Q6QEfiMfGUieqXhnEv4JO8Vc53QQDTTQg5b0P07vRfScbFnei1HH?=
- =?iso-8859-1?Q?pSwIBnpWxHG1DXD9hG+W1UmejG8/qmJO8O?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+ 15.2.1544.9; Sun, 22 Sep 2024 04:34:11 -0700
+From: Md Sadre Alam <quic_mdalam@quicinc.com>
+To: <broonie@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+        <conor+dt@kernel.org>, <andersson@kernel.org>,
+        <konradybcio@kernel.org>, <miquel.raynal@bootlin.com>,
+        <richard@nod.at>, <vigneshr@ti.com>,
+        <manivannan.sadhasivam@linaro.org>, <vkoul@kernel.org>,
+        <nikita.shubin@maquefel.me>, <esben@geanix.com>,
+        <linux-arm-msm@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-mtd@lists.infradead.org>
+CC: <quic_srichara@quicinc.com>, <quic_varada@quicinc.com>,
+        <quic_mdalam@quicinc.com>
+Subject: [PATCH v10 1/8] spi: dt-bindings: Introduce qcom,spi-qpic-snand
+Date: Sun, 22 Sep 2024 17:03:44 +0530
+Message-ID: <20240922113351.2390195-2-quic_mdalam@quicinc.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240922113351.2390195-1-quic_mdalam@quicinc.com>
+References: <20240922113351.2390195-1-quic_mdalam@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB7605.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 25f99d30-6159-462f-246b-08dcda3d6c92
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Sep 2024 13:00:52.8676
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: zEc0nGa0IK3tEqDrJAJzwRYETPjyOh4CsWKi6+WIkXsuBSXTYiZehOTVemQuuhvq5EPi4vOF/D0EqTFFeYyfmA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB8071
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: fvMdfPBEyeS_LPHYG0QaY1TfwcdUW1aS
+X-Proofpoint-ORIG-GUID: fvMdfPBEyeS_LPHYG0QaY1TfwcdUW1aS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ clxscore=1015 bulkscore=0 mlxlogscore=999 mlxscore=0 phishscore=0
+ suspectscore=0 impostorscore=0 spamscore=0 malwarescore=0
+ priorityscore=1501 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2408220000 definitions=main-2409220087
 
+Document the QPIC-SPI-NAND flash controller present in the IPQ SoCs.
+It can work both in serial and parallel mode and supports typical
+SPI-NAND page cache operations.
 
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Md Sadre Alam <quic_mdalam@quicinc.com>
+---
 
->=20
-> On Thu, Sep 19, 2024 at 09:54:24AM +0000, Winkler, Tomas wrote:
-> > > On Mon, Sep 16, 2024 at 04:49:17PM +0300, Alexander Usyskin wrote:
->=20
-> > > > @@ -0,0 +1,142 @@
-> > > > +// SPDX-License-Identifier: GPL-2.0
-> > > > +/*
-> > > > + * Copyright(c) 2019-2024, Intel Corporation. All rights reserved.
-> > > > + */
->=20
-> > > Please make the entire comment a C++ one so things look more
-> intentional.
->=20
-> > This is how it is required by Linux spdx checker,
->=20
-> There is no incompatibility between SPDX and what I'm asking for...
->=20
-> > > > +	size =3D sizeof(*spi) + sizeof(spi->regions[0]) * nregions;
-> > > > +	spi =3D kzalloc(size, GFP_KERNEL);
->=20
-> > > Use at least array_size().
->=20
-> > Regions is not fixed size array, it will not work.
->=20
-> Yes, that's the wrong helper - there is a relevent one though which I'm n=
-ot
-> remembering right now.
+Change in [v10]
 
+* No change
 
-I don't think there is one, you can allocate arrays but this is not the cas=
-e here.=20
+Change in [v9]
 
->=20
-> > > > +	kref_init(&spi->refcnt);
->=20
-> > > This refcount feels more complex than just freeing in the error and
-> > > release paths, it's not a common pattern for drivers.
->=20
-> > What are you suggesting
->=20
-> Just do normal open coded allocations, the reference counting is just
-> obscure.
+* No change
 
-The kref here is for reason so we don't need to hunt the close open, I fran=
-kly don't understand
-what is wrong with it,=20
+Change in [v8]
 
+* No change
 
+Change in [v7]
 
-> > > > +		if (ispi->regions[i].name) {
-> > > > +			name_size =3D strlen(dev_name(&aux_dev->dev)) +
-> > > > +				    strlen(ispi->regions[i].name) + 2; /* for
-> > > point */
-> > > > +			name =3D kzalloc(name_size, GFP_KERNEL);
-> > > > +			if (!name)
-> > > > +				continue;
-> > > > +			snprintf(name, name_size, "%s.%s",
-> > > > +				 dev_name(&aux_dev->dev), ispi-
-> > > >regions[i].name);
->=20
-> > > kasprintf().
->=20
-> > As I understand kasprintf allocates memory, this is not required here.
->=20
-> There is a kzalloc() in the above code block?
-Sorry  you are right.=20
+* No change
 
->=20
-> > > > +static void intel_dg_spi_remove(struct auxiliary_device *aux_dev) =
-{
-> > > > +	struct intel_dg_spi *spi =3D dev_get_drvdata(&aux_dev->dev);
->=20
-> > > > +	if (!spi)
-> > > > +		return;
->=20
-> > > > +	dev_set_drvdata(&aux_dev->dev, NULL);
->=20
-> > > If the above is doing anything there's a problem...
-> o
-> > It makes sure the data is set to NULL.
->=20
-> Which is needed because...?
+Change in [v6]
 
-This is a boilerplate part, the content is consequent patches.=20
+* No change
+
+Change in [v5]
+
+* No change
+
+Change in [v4]
+
+* Fix spelling mistake in HW description
+
+* Added commit message
+
+* Removed '|' from description
+
+* Removed minItems in clock
+
+* Added blank line
+
+* Removed co-developed by
+
+Change in [v3]
+
+* Updated commit message, removed "dt-bindings" from commit
+  message
+
+* Updated compatible name as file name
+
+* Added hardware description
+
+* Documented clock-name
+
+* Moved dma-names property to top
+
+* Droped unused label "qpic_nand"
+
+* Fixed indentation in example dt node
+
+Change in [v2]
+
+* Added initial support for dt-bindings
+
+Change in [v1]
+
+* This patch was not included in [v1]
+
+ .../bindings/spi/qcom,spi-qpic-snand.yaml     | 83 +++++++++++++++++++
+ 1 file changed, 83 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/qcom,spi-qpic-snand.yaml
+
+diff --git a/Documentation/devicetree/bindings/spi/qcom,spi-qpic-snand.yaml b/Documentation/devicetree/bindings/spi/qcom,spi-qpic-snand.yaml
+new file mode 100644
+index 000000000000..f0d9f7643849
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/qcom,spi-qpic-snand.yaml
+@@ -0,0 +1,83 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/spi/qcom,spi-qpic-snand.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Qualcomm QPIC NAND controller
++
++maintainers:
++  - Md sadre Alam <quic_mdalam@quicinc.com>
++
++description:
++  The QCOM QPIC-SPI-NAND flash controller is an extended version of
++  the QCOM QPIC NAND flash controller. It can work both in serial
++  and parallel mode. It supports typical SPI-NAND page cache
++  operations in single, dual or quad IO mode with pipelined ECC
++  encoding/decoding using the QPIC ECC HW engine.
++
++allOf:
++  - $ref: /schemas/spi/spi-controller.yaml#
++
++properties:
++  compatible:
++    enum:
++      - qcom,spi-qpic-snand
++
++  reg:
++    maxItems: 1
++
++  clocks:
++    maxItems: 3
++
++  clock-names:
++    items:
++      - const: core
++      - const: aon
++      - const: iom
++
++  dmas:
++    items:
++      - description: tx DMA channel
++      - description: rx DMA channel
++      - description: cmd DMA channel
++
++  dma-names:
++    items:
++      - const: tx
++      - const: rx
++      - const: cmd
++
++required:
++  - compatible
++  - reg
++  - clocks
++  - clock-names
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/clock/qcom,ipq9574-gcc.h>
++    spi@79b0000 {
++        compatible = "qcom,spi-qpic-snand";
++        reg = <0x1ac00000 0x800>;
++
++        clocks = <&gcc GCC_QPIC_CLK>,
++                 <&gcc GCC_QPIC_AHB_CLK>,
++                 <&gcc GCC_QPIC_IO_MACRO_CLK>;
++        clock-names = "core", "aon", "iom";
++
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        flash@0 {
++            compatible = "spi-nand";
++            reg = <0>;
++            #address-cells = <1>;
++            #size-cells = <1>;
++            nand-ecc-engine = <&qpic_nand>;
++            nand-ecc-strength = <4>;
++            nand-ecc-step-size = <512>;
++        };
++    };
+-- 
+2.34.1
 

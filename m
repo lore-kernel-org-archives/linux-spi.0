@@ -1,97 +1,77 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E274F39FCF;
-	Sun, 22 Sep 2024 20:32:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082BB8BE5;
+	Mon, 23 Sep 2024 03:50:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727037137; cv=none; b=hpEZ/Nyj/nBYDX467xs/fuZ/CZdJvYWjDvhUzXMVDsQlRFq/Snw3Zk5lgSjOrOJcqWs2QJ8ksUCO07as2vcpsCjsPPmzRIo1e46FuCJ1N24UdElnYfR+MyWaueY+uAZDkjY2zyTP+2ds61c+u2ikWhZi2WPm33RYet1imUnfaLg=
+	t=1727063422; cv=none; b=do23wjcnQoVTjCdkPIHgh0fhIyjHa1Qi8/U4auF9679TxzeZf6IPfD+eS/S4Jzavi918awLhJOeOAtgA8XlgIxvkQA09VRbVblIbeLN/y8aZV7i6CEroX8Ngd+LdE2+ivnTffr69Bsq4nAlLAbt6ppa+XJghwnQyN3A3mxbk79M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727037137; c=relaxed/simple;
-	bh=Wkhxr7zFNFIazgoASlMplbrwcKNgSTWyidioOVkTuBk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=juD+eXtM6D8BR57WDVLC5tbteRxK/JKQkgkM85uqfPdKwpzSlYU5XEi5l5VNv/kh1ZiJwbfp/lXaej0kj35Ho1Qt8eLLz0bYPC7XhP/v8ErKZuVTKG+r+3pgRCS7iv0rUf9M+wWW8xjZD6NU+5Cb7WpC/ZHQyJPVDnPTeel9Q9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TiDvsu+9; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TiDvsu+9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C88F6C4CEC3;
-	Sun, 22 Sep 2024 20:32:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727037136;
-	bh=Wkhxr7zFNFIazgoASlMplbrwcKNgSTWyidioOVkTuBk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TiDvsu+9gnBUH6LkeNAgFbvmb8NH/msjU0IY5ssA4B4yiyvdSIJOBNVt6vCf+X7YG
-	 WJLbqLlUuc/Te1whGHFwEypeKUFrWs71Bh1+fpInwHV33FhGbpBUTX1jbQ35xmxPB+
-	 TsRxgFFUXsyxhtsD6eQEYfuYmqPak4IBWdVMSgU0lQU2Heut0HrZPS2AbY6B2oADnt
-	 7YwYx+QHfAM1IuTPAuwvjZfHbrt35b0tjZFzqpVzv1x1X4eQoeWM2AhxApYf44d4B0
-	 L8HdmiZEjiRvmc7YWNKlO/6nxa1GF/orW/YVi89RdHNyHrLYhQPcExR94FdWMG1Ya0
-	 aq9rHAbK56XIg==
-Date: Sun, 22 Sep 2024 22:32:12 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Md Sadre Alam <quic_mdalam@quicinc.com>
-Cc: broonie@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, andersson@kernel.org, konradybcio@kernel.org, 
-	miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com, 
-	manivannan.sadhasivam@linaro.org, vkoul@kernel.org, nikita.shubin@maquefel.me, esben@geanix.com, 
-	linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mtd@lists.infradead.org, quic_srichara@quicinc.com, 
-	quic_varada@quicinc.com
-Subject: Re: [PATCH v10 1/8] spi: dt-bindings: Introduce qcom,spi-qpic-snand
-Message-ID: <k3id2ywyghhmoiekehko7ear2nef5ygmizvkax5s6sdi2zhn5d@yfhgl5xte4dw>
-References: <20240922113351.2390195-1-quic_mdalam@quicinc.com>
- <20240922113351.2390195-2-quic_mdalam@quicinc.com>
+	s=arc-20240116; t=1727063422; c=relaxed/simple;
+	bh=2FiUPBy8ZBjGzygKY1qls1DjBQ4IOYwbIG9jNAYhxWs=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NqKL7YZxefmAiRmgiH0cB8/HkEmO57SFa515y5kLGnHOHSln9KMR/owSDh3K0c3DVJKWgzdXcdsZaxLkWJ4jNgES2V6USVw5G0tnGuVByYQgE1t+lIkRVkT7WspXKwWeN3CkoeT3GKoi1+jpauasz7P2SCdk8s1ZPs9VAUfhArM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.48])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4XBpqg49lLzpVp4;
+	Mon, 23 Sep 2024 11:48:15 +0800 (CST)
+Received: from kwepemh500013.china.huawei.com (unknown [7.202.181.146])
+	by mail.maildlp.com (Postfix) with ESMTPS id A5B4E180087;
+	Mon, 23 Sep 2024 11:50:18 +0800 (CST)
+Received: from huawei.com (10.90.53.73) by kwepemh500013.china.huawei.com
+ (7.202.181.146) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 23 Sep
+ 2024 11:50:18 +0800
+From: Jinjie Ruan <ruanjinjie@huawei.com>
+To: <broonie@kernel.org>, <shawnguo@kernel.org>, <s.hauer@pengutronix.de>,
+	<kernel@pengutronix.de>, <festevam@gmail.com>,
+	<shubhrajyoti.datta@xilinx.com>, <srinivas.goud@amd.com>,
+	<linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>
+CC: <ruanjinjie@huawei.com>
+Subject: [PATCH 1/3] spi: spi-imx: Fix pm_runtime_set_suspended() with runtime pm enabled
+Date: Mon, 23 Sep 2024 12:00:13 +0800
+Message-ID: <20240923040015.3009329-2-ruanjinjie@huawei.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240923040015.3009329-1-ruanjinjie@huawei.com>
+References: <20240923040015.3009329-1-ruanjinjie@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240922113351.2390195-2-quic_mdalam@quicinc.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ kwepemh500013.china.huawei.com (7.202.181.146)
 
-On Sun, Sep 22, 2024 at 05:03:44PM +0530, Md Sadre Alam wrote:
-> Document the QPIC-SPI-NAND flash controller present in the IPQ SoCs.
-> It can work both in serial and parallel mode and supports typical
-> SPI-NAND page cache operations.
-> 
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Signed-off-by: Md Sadre Alam <quic_mdalam@quicinc.com>
-> ---
-> 
-> Change in [v10]
-> 
-> * No change
+It is not valid to call pm_runtime_set_suspended() for devices
+with runtime PM enabled because it returns -EAGAIN if it is enabled
+already and working. So, call pm_runtime_disable() before to fix it.
 
-...
+Fixes: 43b6bf406cd0 ("spi: imx: fix runtime pm support for !CONFIG_PM")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+---
+ drivers/spi/spi-imx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> +title: Qualcomm QPIC NAND controller
-> +
-> +maintainers:
-> +  - Md sadre Alam <quic_mdalam@quicinc.com>
-> +
-> +description:
-> +  The QCOM QPIC-SPI-NAND flash controller is an extended version of
-> +  the QCOM QPIC NAND flash controller. It can work both in serial
-> +  and parallel mode. It supports typical SPI-NAND page cache
-> +  operations in single, dual or quad IO mode with pipelined ECC
-> +  encoding/decoding using the QPIC ECC HW engine.
-> +
-> +allOf:
-> +  - $ref: /schemas/spi/spi-controller.yaml#
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - qcom,spi-qpic-snand
-
-Recently it turned out that Qualcomm generic compatibles are not
-generic... That was odd, but to me it is a clear signal that something
-should not be called generic if it is not generic enough.
-
-Please switch to soc-specific compatibles (and drop my reviewed-by, so
-this will appear in my review queue).
-
-Best regards,
-Krzysztof
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 85bd1a82a34e..4c31d36f3130 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -1865,8 +1865,8 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 		spi_imx_sdma_exit(spi_imx);
+ out_runtime_pm_put:
+ 	pm_runtime_dont_use_autosuspend(spi_imx->dev);
+-	pm_runtime_set_suspended(&pdev->dev);
+ 	pm_runtime_disable(spi_imx->dev);
++	pm_runtime_set_suspended(&pdev->dev);
+ 
+ 	clk_disable_unprepare(spi_imx->clk_ipg);
+ out_put_per:
+-- 
+2.34.1
 

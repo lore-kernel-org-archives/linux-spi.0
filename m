@@ -1,32 +1,34 @@
 Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46E672AD38;
-	Sat, 28 Sep 2024 04:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1435165F04;
+	Sat, 28 Sep 2024 04:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727496789; cv=none; b=Ojc0AcTDAHLJPNW6V1NJD9iNctf6eKLKYXWGBc++1n7l0YH8VCEdghklfe2CSevnaKvkaWMz8M58VP6GlWvhu0vnMtLOmvQM0h6qwlVeh/OzUKgXCrQyRGed4Mj6qYjrZcvkGw2QnVRU6eQNnXEErioW+8yXPy+y0rrU0ibU+w4=
+	t=1727496791; cv=none; b=ZtaEpCsZ+T0dtAEizY0hVr95g//aBLcQgo5UWQwqEVPrqIx7uCwxxr6JVOqGOUGUYUlGoWTMYHr4Q4f95IAHweFsuENFKCoG24sBuQyJURkQe24Vvcs7cRGkdX1TADOFVG+duJmDN907plODgRzolq7BoleEdB9JISUD7saKp+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727496789; c=relaxed/simple;
-	bh=aN1p2OFdjo9KJyjFdmoRux9EaVeGyuGdG/IeP2DAHO0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=DRT5iNgYBo5QBCcYuznWYguZ0lYGYf4U2QkieqlT7cW5ms5yK4I0dxghaQQbGgbnsRDCOB3S/nzcjh0eAw+4DvyS07dciXAEVmUeDR0cXQf26iN7LOn8twziCkep8FaiLrEYv2gCipWIKuNV/pEJODov45d+k/8G22bwVxluLgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=KxO0WnHS; arc=none smtp.client-ip=116.203.91.91
+	s=arc-20240116; t=1727496791; c=relaxed/simple;
+	bh=/0dqEeVI0kdnBedaeCOmkKYW/KlhzVR3w6RZjjLJeNI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gOT0fNUO9zecVSHIx+O3fcIZImgp7XMADofvtpkW4SXlcoqYnbmTKj2zVp8eBteEbjof9yJKonTB3oLiDKF1F8ZdZ8swGkuFUfLl4AcsIYQm7ML97NzTjtG+nRibLxzZjbC1BAjgMobo9aoBwhjx++/39waXDxzLYQofaSI8jTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=dGdOAyY2; arc=none smtp.client-ip=116.203.91.91
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="KxO0WnHS"
+	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="dGdOAyY2"
 From: Dragan Simic <dsimic@manjaro.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
-	t=1727496777;
+	t=1727496781;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=qS5nkhcrH6/JPE0N46P3G0z3ZV7o8bVGZuynbcKGW2M=;
-	b=KxO0WnHSIFgSno8fx9WrJMLd/EXOM67M3/NwdWWc+IKTam0akO+1oZZYYSU+Gl9RV/2+N3
-	1OjfQucYTD69xHPDM3weaOYl/1nSd4Sh8dPRpK3p6wlpkNsCe85a4nCrAWEKly7Q6PUE/l
-	WxanNhmbFoiNxNs4cZfknw/c7bxNTrRYZfSyuJV+ePZkGrIrkdzr196sL5AEqLNmId5fnf
-	of/JJuTBKdEH51miIjglNKbRdwArsI2KIYGhiXzwXmaNCXxG3YroiVEhTc6bHUABZW22xO
-	iRLi/3AGz9LBo0+caa2Op/B/sUE0skdDBq/o5tDyRGkFrjxYz0XGFInoJzD5yA==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/j3wHuSvKpQWX/VU5AEDYXLGtmoTcj7Rhg34WD2kMcg=;
+	b=dGdOAyY2RpRJ/zO5zBPDSKb+SEjR9m2ong/UfCBAPqC3XoUki1n9i3k5oNsBnqVvNxLFJ6
+	57ju1SsECm5VXqR3TjmEqIRCZs2FOR0Fjo7u7E/QO4VcVUfaISg5a77WD73kFUMGkIJ996
+	xO+bGaU883XhiKl+t60UvIQQYvGBYWsGF8Axpg8URy9d4m7gtNP53SORnpQuCuqHVdFDQz
+	FUUgr9wSfjtukAq1vs/VIV5n1g9NE45GLf9FsPcWQ2BRMhPM4xIQXrwrCbN37krgFT49dB
+	q4RIe9D3/ecNUgJpEoDbgXzC3lWiDQf8H96OyvTzASWNj51I27gVwd6RiAk5SQ==
 To: linux-spi@vger.kernel.org,
 	linux-rockchip@lists.infradead.org
 Cc: broonie@kernel.org,
@@ -36,9 +38,11 @@ Cc: broonie@kernel.org,
 	oss@helene.moe,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 0/5] Add dev_warn_probe() and improve error handling in Rockchip SPI drivers
-Date: Sat, 28 Sep 2024 06:12:44 +0200
-Message-Id: <cover.1727496560.git.dsimic@manjaro.org>
+Subject: [PATCH v2 5/5] spi: rockchip: Use dev_{err,warn}_probe() in the probe path
+Date: Sat, 28 Sep 2024 06:12:49 +0200
+Message-Id: <b42b681563a75693f7d6bf0a36c8f8db6ba2cc1c.1727496560.git.dsimic@manjaro.org>
+In-Reply-To: <cover.1727496560.git.dsimic@manjaro.org>
+References: <cover.1727496560.git.dsimic@manjaro.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -50,43 +54,85 @@ Content-Transfer-Encoding: 8bit
 Authentication-Results: ORIGINATING;
 	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
 
-This is a small series that introduces dev_warn_probe() function, which
-produces warnings on failed resource acquisitions, and improves error
-handling in the probe paths of Rockchip SPI drivers, by using functions
-dev_err_probe() and dev_warn_probe() properly in multiple places.
+Use function dev_err_probe() in the probe path instead of dev_err() where
+appropriate, to make the code a bit more uniform and compact.  Use the new
+function dev_warn_probe() to improve error handling for the TX and RX DMA
+channel requests, which are actually optional, and tweak the logged warnings
+a bit to additionally describe their optional nature.
 
-This series also performs a bunch of small, rather trivial code cleanups,
-to make the code neater and a bit easier to read.
+Previously, deferred requests for the TX and RX DMA channels produced no
+debug messages, and the final error messages didn't include the error codes,
+which are all highly useful when debugging permanently failed DMA channel
+requests, such as when the required drivers aren't enabled.
 
-Changes in v2:
-  - Collected three Reviewed-by tags from Heiko [1][2][3]
-  - Dropped patch 3/5, [4] as suggested by Mark, [5] improved the check
-    to use dev_err_probe() and folded that into new patch 5/5
-  - Added new patch 4/5 that introduces function dev_warn_probe() that
-    produces warnings in probe paths, to avoid the promotion of logged
-    messages from warnings to errors, as noted by Heiko [6]
-  - Adjusted the description of the series and of the individual patches
-    a bit to reflect the changes, where appropriate
+Suggested-by: Hélene Vulquin <oss@helene.moe>
+Signed-off-by: Dragan Simic <dsimic@manjaro.org>
+---
+ drivers/spi/spi-rockchip.c | 28 +++++++++++++---------------
+ 1 file changed, 13 insertions(+), 15 deletions(-)
 
-Link to v1: https://lore.kernel.org/linux-rockchip/cover.1727337732.git.dsimic@manjaro.org/T/#u
-
-[1] https://lore.kernel.org/linux-rockchip/6085918.31tnzDBltd@phil/
-[2] https://lore.kernel.org/linux-rockchip/2285557.3ZeAukHxDK@phil/
-[3] https://lore.kernel.org/linux-rockchip/10409403.0AQdONaE2F@phil/
-[4] https://lore.kernel.org/linux-rockchip/ce2e7f90e62b15adc2bed1f53122ad39c3a9b5ac.1727337732.git.dsimic@manjaro.org/
-[5] https://lore.kernel.org/linux-rockchip/ZvUmk48R4hZYlO71@finisterre.sirena.org.uk/
-[6] https://lore.kernel.org/linux-rockchip/6673004.tM3a2QDmDi@phil/
-
-Dragan Simic (5):
-  spi: rockchip: Perform trivial code cleanups
-  spi: rockchip-sfc: Perform trivial code cleanups
-  spi: rockchip-sfc: Use dev_err_probe() in the probe path
-  driver core: Add device probe log helper dev_warn_probe()
-  spi: rockchip: Use dev_{err,warn}_probe() in the probe path
-
- drivers/base/core.c            | 110 +++++++++++++++++++++++++--------
- drivers/spi/spi-rockchip-sfc.c |  21 +++----
- drivers/spi/spi-rockchip.c     |  55 ++++++++---------
- include/linux/dev_printk.h     |   1 +
- 4 files changed, 117 insertions(+), 70 deletions(-)
-
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index 81f2a966c124..055cd6066466 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -773,15 +773,15 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 
+ 	rs->apb_pclk = devm_clk_get_enabled(&pdev->dev, "apb_pclk");
+ 	if (IS_ERR(rs->apb_pclk)) {
+-		dev_err(&pdev->dev, "Failed to get apb_pclk\n");
+-		ret = PTR_ERR(rs->apb_pclk);
++		ret = dev_err_probe(&pdev->dev, PTR_ERR(rs->apb_pclk),
++				    "Failed to get apb_pclk\n");
+ 		goto err_put_ctlr;
+ 	}
+ 
+ 	rs->spiclk = devm_clk_get_enabled(&pdev->dev, "spiclk");
+ 	if (IS_ERR(rs->spiclk)) {
+-		dev_err(&pdev->dev, "Failed to get spi_pclk\n");
+-		ret = PTR_ERR(rs->spiclk);
++		ret = dev_err_probe(&pdev->dev, PTR_ERR(rs->spiclk),
++				    "Failed to get spi_pclk\n");
+ 		goto err_put_ctlr;
+ 	}
+ 
+@@ -817,8 +817,7 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 
+ 	rs->fifo_len = get_fifo_len(rs);
+ 	if (!rs->fifo_len) {
+-		dev_err(&pdev->dev, "Failed to get fifo length\n");
+-		ret = -EINVAL;
++		ret = dev_err_probe(&pdev->dev, -EINVAL, "Failed to get fifo length\n");
+ 		goto err_put_ctlr;
+ 	}
+ 
+@@ -858,22 +857,21 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 
+ 	ctlr->dma_tx = dma_request_chan(rs->dev, "tx");
+ 	if (IS_ERR(ctlr->dma_tx)) {
+-		/* Check tx to see if we need defer probing driver */
+-		if (PTR_ERR(ctlr->dma_tx) == -EPROBE_DEFER) {
+-			ret = -EPROBE_DEFER;
++		/* Check tx to see if we need to defer driver probing */
++		ret = dev_warn_probe(rs->dev, PTR_ERR(ctlr->dma_tx),
++				     "Failed to request optional TX DMA channel\n");
++		if (ret == -EPROBE_DEFER)
+ 			goto err_disable_pm_runtime;
+-		}
+-		dev_warn(rs->dev, "Failed to request TX DMA channel\n");
+ 		ctlr->dma_tx = NULL;
+ 	}
+ 
+ 	ctlr->dma_rx = dma_request_chan(rs->dev, "rx");
+ 	if (IS_ERR(ctlr->dma_rx)) {
+-		if (PTR_ERR(ctlr->dma_rx) == -EPROBE_DEFER) {
+-			ret = -EPROBE_DEFER;
++		/* Check rx to see if we need to defer driver probing */
++		ret = dev_warn_probe(rs->dev, PTR_ERR(ctlr->dma_rx),
++				     "Failed to request optional RX DMA channel\n");
++		if (ret == -EPROBE_DEFER)
+ 			goto err_free_dma_tx;
+-		}
+-		dev_warn(rs->dev, "Failed to request RX DMA channel\n");
+ 		ctlr->dma_rx = NULL;
+ 	}
+ 

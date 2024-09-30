@@ -1,125 +1,101 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1AE61885B4;
-	Mon, 30 Sep 2024 09:31:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2817218A6BC;
+	Mon, 30 Sep 2024 09:55:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727688683; cv=none; b=UwvnQP1SxFbj+DGabNknMPTEHhb5Un+CzeGNHpV2QE6sJuflckRfGC1vMV3z+ltgUu17P2XjFXZs+YKav9dMh7kMtMEUT/Pzkf6Uz7+ghc6OioeSFPGfMtQE2r6myGV15+QD6DqYyKChlnTSDAbAs0Zt3A1b0YzCUqL8ONnpBZE=
+	t=1727690148; cv=none; b=BxoGj6kImgUJkh8Bg83aoyqwhn7wGbsCHnN2czvyQDLS0906nLYM440QwNY4QMW66TXjY6E6n51cX9JQijJ+yOjsuC8Sl+drb/E41TN2Yw70Koe/plUlFCjZG9uNu+V8juEYFdoVBvTfk1q1Lis7MMj37KY3FHJu5v3zPBqqpDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727688683; c=relaxed/simple;
-	bh=AlcPv6wM/rPK3vg1wItQUndTOFS+w/FSx2w8cGddILo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jf5PCNEDaXojlbDKyFIG60C6vmXTUeS72xNoLkVc6XDLDyTUEW9dB6wSnFWrlBKzG4gOVhrY547EFSsT2HlWoKFhpfz4sTtC8xXzKAoZpe90EUOo8qLf0rwLsNO6TT40efEzutyNG9erPt3gfP3tS8YiqAaWmauOkLtquy6AuLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=tb3jlyCd; arc=none smtp.client-ip=212.227.15.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
+	s=arc-20240116; t=1727690148; c=relaxed/simple;
+	bh=HIJw5zliYUVkGzj0EIZ2JL0qFEk3m0cp+8xSuU/025g=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gYnxyqgYg61C6ECwCBgnICn6lvhrooBC3vI8NGM30+/dTTBVjvjHEm1dNa7EDxP7S9Cc+ALzpVwQUv5kInL1S+l5WBswmBGJT0mA+VlQF10t7JqdQ4mDWzcxsRZwzsCWxgMOrnVcE7NuWPbFzPgojndWYSDXJoBKL7XU+wQFBxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=lXOB/Ep5; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="tb3jlyCd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1727688660; x=1728293460; i=wahrenst@gmx.net;
-	bh=+X2Z1whVBmZ9pEvWhFlRrTu0QrAjM3Rhzrqj1t1T+q8=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:In-Reply-To:
-	 References:MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=tb3jlyCd87yYAEpScxETYGOSM2yGriatKyogQP0FW01x5A6iIt1ZRvy4rY3C9DAG
-	 0PyJ1gbrIICB5/reMnn46JAWyHuTSfXAXKeu1hyli3WvoM0iIFUWxfEXu7oEDlasZ
-	 AFS7X3nKBUrgBEkWi+rYBcj0huyjIEqDYMaAQ63uRzaVYQ5j05Ro8NoccATOeBp9p
-	 jxVTbTVXeVgBURp8RVhAYOuzal456DcNUnzPPyPcSwVyTh9yBDxdMYc71kddz4ipg
-	 4E8jT6VQArve5VS/K2rPfTsQntOWhpKk+4W8nSPIMd+OiRMS40vxTDbD30tkiPiRt
-	 qdhz9PJ3rDYlt3L6HQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from stefanw-SCHENKER ([37.4.248.43]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1N6siz-1rprum3YVD-013Flj; Mon, 30
- Sep 2024 11:30:59 +0200
-From: Stefan Wahren <wahrenst@gmx.net>
-To: Mark Brown <broonie@kernel.org>,
-	Carlos Song <carlos.song@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org,
-	linux-spi@vger.kernel.org,
-	"imx @ lists . linux . dev" <imx@lists.linux.dev>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Stefan Wahren <wahrenst@gmx.net>
-Subject: [PATCH 1/3] spi: spi-fsl-lpspi: Adjust type of scldiv
-Date: Mon, 30 Sep 2024 11:30:54 +0200
-Message-Id: <20240930093056.93418-2-wahrenst@gmx.net>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240930093056.93418-1-wahrenst@gmx.net>
-References: <20240930093056.93418-1-wahrenst@gmx.net>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="lXOB/Ep5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1727690148; x=1759226148;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=HIJw5zliYUVkGzj0EIZ2JL0qFEk3m0cp+8xSuU/025g=;
+  b=lXOB/Ep5iUPIgI70CcV/JPVbkm53i5ZxNqQqjW4LrtQT0QZG8wds0sOX
+   e3448ltmlPmGtKvwsS58t+latB5HVuVFpwDkXnc+tM+ER0m4hERRFJXmV
+   Fo1KWDUEMcX58tnkqug7fsNRTjgmWUQfW7ykeMTxa1FJn/xrlfSLtYQtq
+   AuHJvnIuohbz5wMFGS2huDLa3mbyIToA1XGYSDNXt31E/XW+PiHvqfb36
+   hVKAbpW6A1iZ37P/JmWiLw2DwPN8CEiQzDYPKMXNJ9fI2meExOVoXGJR/
+   2CH5ThcJUmXmVcRtCFIiGibRBJkuq/sS5arr7p0KsTtJ9t4cVmUQYFosi
+   Q==;
+X-CSE-ConnectionGUID: VDfGPtv3TTmpuSmsWgS4Xg==
+X-CSE-MsgGUID: 2IWO0GoCT4mCcKJ5443kyg==
+X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; 
+   d="scan'208";a="263420159"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 30 Sep 2024 02:55:40 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Mon, 30 Sep 2024 02:55:07 -0700
+Received: from ph-emdalo.microchip.com (10.10.85.11) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
+ 15.1.2507.35 via Frontend Transport; Mon, 30 Sep 2024 02:55:05 -0700
+From: <pierre-henry.moussay@microchip.com>
+To: <Linux4Microchip@microchip.com>, Conor Dooley
+	<conor.dooley@microchip.com>, Daire McNamara <daire.mcnamara@microchip.com>,
+	Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, "Krzysztof
+ Kozlowski" <krzk+dt@kernel.org>
+CC: Pierre-Henry Moussay <pierre-henry.moussay@microchip.com>,
+	<linux-riscv@lists.infradead.org>, <linux-spi@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [linux][PATCH v2 04/20] dt-bindings: spi: add PIC64GX SPI/QSPI compatibility to MPFS SPI/QSPI bindings
+Date: Mon, 30 Sep 2024 10:54:33 +0100
+Message-ID: <20240930095449.1813195-5-pierre-henry.moussay@microchip.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20240930095449.1813195-1-pierre-henry.moussay@microchip.com>
+References: <20240930095449.1813195-1-pierre-henry.moussay@microchip.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:XTojNywJficBHKynfwbKw30/3unuVt9CLczbbmmR3ph54NfvtJf
- w+5dnQ9VXkzW1Y2h6DI71//BvPCeNNObNLwOjRkhz7F5Oq51KpJ6wkIdAwjdtU7FanePGR9
- 8Qg6RQOdDTUYMHtdEmCte65yOyLtG+hdVx1NVKL1mQ/nFdOs9wLRb/X+FP7nuteI68OGWFT
- q9bPY1XVPjlXNz9v+j2Hw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:pe1o77MfILQ=;yCsSTCn15ubxI+rn0svoqKG7UkW
- JPyazT1iKLP3TK/kRPvV6PpLN70T4KY8GFUKpfu7JduaYNcFp5YuCfFynevlo2gPnaEAg5yGS
- eepeMF5pvTqxnrdCMBdYLUtP4fs6mgKKpt1E8rVCe1xrn+MN7SHj/ChjuXM+lg21AqyfXKGJx
- wZkn9lVf/qQuKauk8EcU7qzddtufKa0d74mtzH4fqp7IRJcCMRaIMrNYay3VxtVOzUN9KoVE9
- ld0BBjG6nqnEC505IjsKCer3Tc0RYig0jlQnqgT32pYS3MGDFzNIH92N3rgkINBd9362W3jPx
- Au9nDQOBMSeJHfiTPBLbvC+aTily1Rru0fzyoTdBI/Qwhww4eEAYIiRslhfFifJbJ/c6ajaiK
- sxsPOw2z3baG9zRnuXmIJLxSAvq/qQQHPZPPq/84ftfmT7B0KvaQ2s7+RTOX8PMAMD1yEcy9a
- h7piqnBwS4fgovwd8F9hd9CcTD8EZlT2JUKL3qaxsTuGJc6MkxHpMsQHTlgveMwdtBIOYi7HU
- J8L5tGpMW/l8UMrZtiFLiUVSRD6hjb03EuWMkZYyoIAu1jq0T2tHxILHLKLmwFeM7ySexjNgO
- 4gFJxBNLeveT37b0qkZ01x+uNZIs34L1skFEfYSrbxH0rz8wsiPXf1y5ZZ7e5WUGebxaGSrbu
- TIy5LtUmWi9Nki1WTobhFKaPrCJwzYrsz8FYm38I15U7Da0Zi1kEo1VFzleI1De1hT2Zzd3qm
- trv2qVg60iUG1fpHJBHpXOue7CGg2wm7Msl3IoCW3mHs2IHqK3jIWMOYa5O9jdn3YazNYBX8r
- oS1jykeuNRCQ941z2Ft+g8MQ==
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-The target value of scldiv is just a byte, but its calculation in
-fsl_lpspi_set_bitrate could be negative. So use an adequate type to store
-the result and avoid overflows. After that this needs range check
-adjustments, but this should make the code less opaque.
+From: Pierre-Henry Moussay <pierre-henry.moussay@microchip.com>
 
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-=2D--
- drivers/spi/spi-fsl-lpspi.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+PIC64GX SPI/QSPI are compatible with MPFS SPI/QSPI, just use
+fallback mechanism
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 977e8b55c82b..196cc68f2057 100644
-=2D-- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -315,9 +315,10 @@ static void fsl_lpspi_set_watermark(struct fsl_lpspi_=
-data *fsl_lpspi)
- static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
- {
- 	struct lpspi_config config =3D fsl_lpspi->config;
--	unsigned int perclk_rate, scldiv, div;
-+	unsigned int perclk_rate, div;
- 	u8 prescale_max;
- 	u8 prescale;
-+	int scldiv;
+Signed-off-by: Pierre-Henry Moussay <pierre-henry.moussay@microchip.com>
+---
+ .../devicetree/bindings/spi/microchip,mpfs-spi.yaml        | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
- 	perclk_rate =3D clk_get_rate(fsl_lpspi->clk_per);
- 	prescale_max =3D fsl_lpspi->devtype_data->prescale_max;
-@@ -338,13 +339,13 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_da=
-ta *fsl_lpspi)
-
- 	for (prescale =3D 0; prescale <=3D prescale_max; prescale++) {
- 		scldiv =3D div / (1 << prescale) - 2;
--		if (scldiv < 256) {
-+		if (scldiv >=3D 0 && scldiv < 256) {
- 			fsl_lpspi->config.prescale =3D prescale;
- 			break;
- 		}
- 	}
-
--	if (scldiv >=3D 256)
-+	if (scldiv < 0 || scldiv >=3D 256)
- 		return -EINVAL;
-
- 	writel(scldiv | (scldiv << 8) | ((scldiv >> 1) << 16),
-=2D-
-2.34.1
+diff --git a/Documentation/devicetree/bindings/spi/microchip,mpfs-spi.yaml b/Documentation/devicetree/bindings/spi/microchip,mpfs-spi.yaml
+index ffa8d1b48f8b..62a568bdbfa0 100644
+--- a/Documentation/devicetree/bindings/spi/microchip,mpfs-spi.yaml
++++ b/Documentation/devicetree/bindings/spi/microchip,mpfs-spi.yaml
+@@ -17,9 +17,14 @@ properties:
+   compatible:
+     oneOf:
+       - items:
+-          - const: microchip,mpfs-qspi
++          - enum:
++              - microchip,mpfs-qspi
++              - microchip,pic64gx-qspi
+           - const: microchip,coreqspi-rtl-v2
+       - const: microchip,coreqspi-rtl-v2 # FPGA QSPI
++      - items:
++          - const: microchip,pic64gx-spi
++          - const: microchip,mpfs-spi
+       - const: microchip,mpfs-spi
+ 
+   reg:
+-- 
+2.30.2
 

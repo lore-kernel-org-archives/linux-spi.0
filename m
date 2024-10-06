@@ -1,106 +1,112 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1F12146586;
-	Sun,  6 Oct 2024 15:12:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3193416F908
+	for <linux-spi@vger.kernel.org>; Sun,  6 Oct 2024 23:33:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.36.163.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728227527; cv=none; b=NAEUsqZLraAYioQkGLzm/p0wW8KoJRyI5TgzLPWTWW1YeD/jtfrmoTISJxuQIOT2oJOyVyFD7S3L9xTZwktZHi2xdKdx5r9E2kcluMxyYFw9GENncNb3Rq0iingKzrCNrIoFZapxSoAodZG4rbrfhIvpUq56+04kWWAA+mzyMqw=
+	t=1728257636; cv=none; b=FEpJgODkmIbRD+rEVAQiJa5F0N6eee4BGS7+7PzK59QgVC3MsaS0umRHGwfBcCW7T1o2CvCu4O32iZetb1gZgUn9iI7sIUBu/keeGH9dqW3msBrBhcpa83ENn6mCfHprXEUrj4Pa7rZqnTA8jptZxjquWOlVO7Rc0Dc+XQ1vbbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728227527; c=relaxed/simple;
-	bh=AiUhZYra/S3TwkrQaWv+4k/n6y9o56HzZ1mWTaA3EEo=;
-	h=MIME-Version:Message-ID:From:To:Cc:Subject:Content-Type:Date:
-	 In-Reply-To:References; b=Kc0b23mbGkm6N7rURViKd1RmzuTKFUZDfECuvVxU0exIfVy1Kwhah5B/UB1PjJy1ZaDuFqCuFD/nV63Fw4n1uS5XvclViE7kIwZz2Mt6u//3gDPyB8Ek3DOUsM3kjICN/gjI808rxY+r4QNB9N4BzKK8Th0Y+Q4DFREm8Y8C7xM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=public-files.de; spf=pass smtp.mailfrom=public-files.de; dkim=pass (2048-bit key) header.d=public-files.de header.i=frank-w@public-files.de header.b=IT55S9/z; arc=none smtp.client-ip=212.227.15.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=public-files.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=public-files.de
+	s=arc-20240116; t=1728257636; c=relaxed/simple;
+	bh=suy/TciQ5F4yGeGmpv38NTqyGqkAx+AXpwzelfsiJs4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mqmOmL8C469lQAzX67IQ1XSxVUVuRGaY7yzBlgdv4lvgE6nTrldiCcV7leGbkorxK9eZAOMRTZdor5yiqfcuvVsatjpQUovbS9eO5okyCOSTWmTyl0eAIQAyezX+e64rbPwpvfe2+4opgdwNhZLQscAVrelPhGrlhzOJNeg2W8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=p7hqd6dt; arc=none smtp.client-ip=202.36.163.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alliedtelesis.co.nz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=public-files.de header.i=frank-w@public-files.de header.b="IT55S9/z"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=public-files.de;
-	s=s31663417; t=1728227502; x=1728832302; i=frank-w@public-files.de;
-	bh=AiUhZYra/S3TwkrQaWv+4k/n6y9o56HzZ1mWTaA3EEo=;
-	h=X-UI-Sender-Class:MIME-Version:Message-ID:From:To:Cc:Subject:
-	 Content-Type:Date:In-Reply-To:References:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=IT55S9/zb6+UVYGRv5GNvFhzx8sz4iXDSJdInl2Xq0yCDvJVE0fa55tM7QYRgF0G
-	 sQ38OEVBi7iJedov/PJS+7UvZ7g0q3S368wHAq/Z6EcZsiryLR36r4QMjM9OZkqQd
-	 qqvOM9Oo1mQvAX7yruCmQF/V8eB5+ov5Y3UncVbleJ4jNL7LyF7hMfAFJHXPrPxNP
-	 AHS7OqcrE9vgDYOfeCvLARf7QcDhNn9ErkM+/IGF8GGFZuZOxWPOPaQ3tciPPZQ45
-	 RAB/IVZuqsYvytmXOPulnrBhCsETnhjLPk4Kpc8ogcyIA4den8L75JNse4uUMzUZm
-	 B8L2it+tx7tI2aKobA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [217.61.153.101] ([217.61.153.101]) by web-mail.gmx.net
- (3c-app-gmx-bs41.server.lan [172.19.170.93]) (via HTTP); Sun, 6 Oct 2024
- 17:11:42 +0200
+	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="p7hqd6dt"
+Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 081F42C06BE;
+	Mon,  7 Oct 2024 12:33:52 +1300 (NZDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+	s=mail181024; t=1728257632;
+	bh=NLl4vFdgyWu/Kevg/F09IZgtqafcPxFw/5wOVDaZduk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=p7hqd6dtMxR3rIBW054w6W+kkAUSeJmcNw4LedE77IA9w+UWwwYB7pht27OMdQsnZ
+	 3uNwjuZ6QZN3ZYolRvr+jkSZYb3IaoN9Dwmt8lj+3lPtYlkh+pkofFCDHkNTTR8HvE
+	 U3Mp7sXzjPK/a0JGHi4g81JbMrBWslAHiQwXAvkl+jmRw4k65ZUr0FNnrxm5mUdEzd
+	 QHOP99huYy72rTWi0lsw9/9YrnRRltgVmY1RQG//gVJ62xDg9EgrxWExr7CSbTaEIX
+	 NWu5nJ5wdgx5agjDW1CTV7au84DGCHY1PYCXGpSE3S9fdbzDTh2yKcNprA8xGVww4u
+	 MbBs5ZTfpuzmw==
+Received: from pat.atlnz.lc (Not Verified[10.32.16.33]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
+	id <B67031e5f0002>; Mon, 07 Oct 2024 12:33:51 +1300
+Received: from chrisp-dl.ws.atlnz.lc (chrisp-dl.ws.atlnz.lc [10.33.22.30])
+	by pat.atlnz.lc (Postfix) with ESMTP id B727813EE9B;
+	Mon,  7 Oct 2024 12:33:51 +1300 (NZDT)
+Received: by chrisp-dl.ws.atlnz.lc (Postfix, from userid 1030)
+	id B9C16280442; Mon,  7 Oct 2024 12:33:51 +1300 (NZDT)
+From: Chris Packham <chris.packham@alliedtelesis.co.nz>
+To: broonie@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	tsbogend@alpha.franken.de
+Cc: linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mips@vger.kernel.org,
+	Chris Packham <chris.packham@alliedtelesis.co.nz>
+Subject: [PATCH 2/3] mips: dts: realtek: Add SPI NAND controller
+Date: Mon,  7 Oct 2024 12:33:46 +1300
+Message-ID: <20241006233347.333586-3-chris.packham@alliedtelesis.co.nz>
+X-Mailer: git-send-email 2.46.2
+In-Reply-To: <20241006233347.333586-1-chris.packham@alliedtelesis.co.nz>
+References: <20241006233347.333586-1-chris.packham@alliedtelesis.co.nz>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <trinity-5ceed296-8a65-4892-b449-6f832a978d69-1728227502700@3c-app-gmx-bs41>
-From: Frank Wunderlich <frank-w@public-files.de>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Frank Wunderlich <linux@fw-web.de>, Mark Brown <broonie@kernel.org>, Rob
- Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
- Dooley <conor+dt@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Leilk
- Liu <leilk.liu@mediatek.com>, linux-spi@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- daniel@makrotopia.org, john@phrozen.org, eladwf@gmail.com,
- ansuelsmth@gmail.com
-Subject: Aw: Re: [PATCH v1] dt-bindings: spi: add compatibles for mt7988
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 6 Oct 2024 17:11:42 +0200
-Importance: normal
-Sensitivity: Normal
-In-Reply-To: <kmzl5zmqqudoq2jcdacfsbwq3axdvcml4m5kw5oqqo2hj6iiuq@xzeg6penuic3>
-References: <20241006102740.17948-1-linux@fw-web.de>
- <kmzl5zmqqudoq2jcdacfsbwq3axdvcml4m5kw5oqqo2hj6iiuq@xzeg6penuic3>
-X-UI-Message-Type: mail
-X-Priority: 3
-X-Provags-ID: V03:K1:Btf22OQQiWHbAxP7CwpcejS6hY9mQkc8eIiKzvNtfMmCAlN3qqALUu45gnV+SHw4ffNOm
- vSi1wjtYZBy1hSY9rNpHbU6+Ye7QfBx3k4TmOufADwfaZwZhI/yO6oVjngQPo2YzptkWh/MZupkp
- QPiWcKXAMoQnStXeX8m/Dh41uvECwPHspqdn6TE66cCAm7Lly6UMyiosIpVTqF90TLsz00ojI9qm
- BeaNtuPimSMpdLQiQ/aY+85k3qrfJg/kOZzaPq5dCJydhL6seQoBsSL8cYNbl4bNbTIKmshZ69t0
- rw=
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:O7onKpdDbCQ=;P1dfCcTaf7pXMv38K6Mviv5Zqig
- vo0g/fwJLt9POd1LtSUXZAaYt7sg/LAtgKdTCcgOMwo3X5W8PipUr/JMqJjn8fiOlTbynrUv0
- PYcKwCn3BtdkKoMnVuTz9GKb3belALvCc5uTVVCSv+jSOOXt/+GNWXinC8XmZtjqq1YQaUmrx
- DrdgcHKPLRGkMxDtxwI+AUNjVekHXY5ANDIU6fn3D3NzSGdaSDHxHnY6Fsq0PCDOOCJxCc6B6
- dhX3jBTaDuTNG6huH1BD6ayqRd3nUdFrRMfaashBy3L8zBuzQhWNogQ3jUNZl8GwsGR/++kW0
- TeyBU73mi/H2lYu6pYYWDtnQkhwEppf1UzfQ4u9n8kf/fx7a2U9RoO71uy1nhwAAcjjkRBiaX
- o5sVnWgLyADrobn+L20WmvF2IJ9p03535zf9cYDYdbbHjYq4hFO/NlmbECFz9dr0F2TOQGG2n
- EpxVxHW+P7q2THuQIRyWiUedArJL/ZhSAmvFzKr5Mo70AfJv+olAkwHH15mLTVTmvwCl2cKKX
- 8eWC4t0XVkSuCE1wCaD/AxyxIRFqvvTp8DW08oydRpdyaaYumKTd1sHco6cevpnqovsmmZyyl
- 96hMmUQywTNZU13hFlLttrzX1xYYWajzDfJAs5wLNDWRHzzgq8vu0KxHVevcaH/M7XDAiEcXK
- TBrzmhTwOIYRxLTX89yaXoHk78MEiY4VfudKOmkG/g==
 Content-Transfer-Encoding: quoted-printable
+X-SEG-SpamProfiler-Analysis: v=2.4 cv=Id0kWnqa c=1 sm=1 tr=0 ts=67031e5f a=KLBiSEs5mFS1a/PbTCJxuA==:117 a=DAUX931o1VcA:10 a=8sy3EPFDi6gx0CG-VEIA:9 a=3ZKOabzyN94A:10
+X-SEG-SpamProfiler-Score: 0
+x-atlnz-ls: pat
 
-Hi
+Add the SPI-NAND controller on the RTL9300 family of devices. This
+supports serial/dual/quad data width and DMA for read/program
+operations.
 
-> Gesendet: Sonntag, 06. Oktober 2024 um 14:48 Uhr
-> Von: "Krzysztof Kozlowski" <krzk@kernel.org>
-> Betreff: Re: [PATCH v1] dt-bindings: spi: add compatibles for mt7988
->
-> On Sun, Oct 06, 2024 at 12:27:39PM +0200, Frank Wunderlich wrote:
-> > From: Frank Wunderlich <frank-w@public-files.de>
-> >
-> > MT7988 has 2 different spi controllers. Add mediatek,ipm-spi-single
-> > and mediatek,ipm-spi-quad compatibles.
->
-> Why generic compatibles?
->
-> These are supposed to be SoC-specific.
+Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
+---
+ arch/mips/boot/dts/realtek/rtl930x.dtsi | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-currently i used the compatibles used in SDK, but got info now, that there=
- is some more discussion needed with mtk.
+diff --git a/arch/mips/boot/dts/realtek/rtl930x.dtsi b/arch/mips/boot/dts=
+/realtek/rtl930x.dtsi
+index f271940f82be..aab1823139e1 100644
+--- a/arch/mips/boot/dts/realtek/rtl930x.dtsi
++++ b/arch/mips/boot/dts/realtek/rtl930x.dtsi
+@@ -32,6 +32,8 @@ lx_clk: clock-175mhz {
+ };
+=20
+ &soc {
++	ranges =3D <0x0 0x18000000 0x20000>;
++
+ 	intc: interrupt-controller@3000 {
+ 		compatible =3D "realtek,rtl9300-intc", "realtek,rtl-intc";
+ 		reg =3D <0x3000 0x18>, <0x3018 0x18>;
+@@ -59,6 +61,16 @@ timer0: timer@3200 {
+ 		interrupts =3D <7>, <8>, <9>, <10>, <11>;
+ 		clocks =3D <&lx_clk>;
+ 	};
++
++	snand: spi@1a400 {
++		compatible =3D "realtek,rtl9302c-snand", "realtek,rtl9300-snand";
++		reg =3D <0x1a400 0x44>;
++		interrupt-parent =3D <&intc>;
++		interrupts =3D <19>;
++		#address-cells =3D <1>;
++		#size-cells =3D <0>;
++		status =3D "disabled";
++	};
+ };
+=20
+ &uart0 {
+--=20
+2.46.2
 
-> Best regards,
-> Krzysztof
->
->

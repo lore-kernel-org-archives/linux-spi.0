@@ -1,43 +1,44 @@
 Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6936817BD3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0A01BDC3
 	for <linux-spi@vger.kernel.org>; Mon, 14 Oct 2024 01:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.36.163.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728870777; cv=none; b=YkBMNlNrKDZ5S6lYgE21qWfGLytr6udEosS/XW6D3oGaHgAnw7xFqGSjAmbJ8vau54iPoux62pW7rRyXe23hIV257EHpaBr3VwpkkAUzNALkQGabv1FPffKoyEpCjQgliXOnd0xgWfDaNjUVKKfdfecOr2PsSVjWc1NUovjJkcM=
+	t=1728870777; cv=none; b=CC0l/n0PMC6CEUZeheEx0oYkT0IF+XBsK7fAnxcupD0icraSvhRu1AuMYFL9ERAHlSVsA6WHO4vQzA3YSbZOtwbmZbK0M1NzKATSQizChDPQq6oYeKk92uiPfAvY7qs6HVqayGFWpsqCswFE6D/2Om0Yz5+53ou+DhmxVgnc3Ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1728870777; c=relaxed/simple;
-	bh=ClyJf77WMwJhYRtlV65bUUfuTqGqXSG85K7TOdYkVJc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZfpaQm4TWe+7CmigJW4pCs83D+3frqe8XRVskGu297D4jSFv0NbLgekn8Wgw7YWeKKi2nH2x4mi/Ac/MzIZkdTgFbkmzReI/N43SqaEZzPpl4zHqX4xKWGGkUC5MCB0gM2KUQ8zIAc1U4/ZKncmB6OaBIhwxz6g7ylnklbg7ANc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=ZA9QVnWI; arc=none smtp.client-ip=202.36.163.20
+	bh=mFeyav5QddduTYIUvFeiLPSQs1Gt0Ly4xwRgt5dqZqo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Ct9KGF8IFsNBrTFjptDEU/CID9sO0sVRg35oe7v8NTdAxAxJ4T4KJqVVqCgf8mWPjzXxIw3rAfhFtUHneLNJApbWBNRzxyzXhSatVqL5FBwiZVCfVTaf3fElG7oO+MlKBXb8axdDs15OiB768ICDs4iN5DhIFpudLVsgImzF8Rg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=rjhTLPfL; arc=none smtp.client-ip=202.36.163.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alliedtelesis.co.nz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="ZA9QVnWI"
+	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="rjhTLPfL"
 Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id DC76C2C0404;
-	Mon, 14 Oct 2024 14:52:51 +1300 (NZDT)
+	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 0D0FB2C06C5;
+	Mon, 14 Oct 2024 14:52:52 +1300 (NZDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
-	s=mail181024; t=1728870771;
-	bh=a5ssNrOQTXajXVF6sjA3PEFxVHVs7LZ+OAyyPL5DsL8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ZA9QVnWI/0nft9C4QuWSu3dwd+3u8+N/BkjTM/BrPbeYnZXbM+NWaTQhmUfa7Mfx0
-	 pD8LaXh2G6AMzJq6BgMv7LodvTiebg4U35N/qyNVBBShor68G6QJkigGzGYNR13ZCH
-	 MdQ8LMkxeNyOtbnD1tx2qG35Bg8ERtNWEgCXBgvophrheD4R0KTsmw6xLGv/XJBozd
-	 ofbc0sfVBpK8CDRaEfTugREVj4j2Qs7XWntAe4YIhZyCD014sz6IXNzeF9KDwTixEd
-	 eCgwrwwSZU0dWhZ0XAPo/iTNEhIHcIrWLln1XWDbh98rqo6H0w91gqoQXqK4lsCYnU
-	 61BbAIADiCRPg==
+	s=mail181024; t=1728870772;
+	bh=cqj3hdXBlO1Y2UUkU9a3psR9aKY4yQajoN2+PShqqVg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=rjhTLPfLFLpyWjVRLiLnl0a/FO0QYw2NJEyzfCy/zQoYPeeY/PGk08Jj52Nd+ca6Y
+	 CzA1NRo/WKqueHJ3cLgHvmwqJRgLQQwhDIzCwZw637va+LJaSuHV35yJp7RnJatVZM
+	 uZGGdvz+bzn4r2xHk43Z5ik+uWa3ZH3Mt++Bcm5U5J2nmPOG0Ng2cmE+GAuvn70Jif
+	 mVUh/icoY8oPhxL+MoBKGfxtDWNpob3DtqiSyIpMCGiFMCGlG+1sIZQ9+30HRrdgp2
+	 8KHvMiXOO3bx0L+iTMBm225LtbjxpH1420hBRTZfQGMfXF4lnuiUl0G/cg5Zsd1ax5
+	 Gkz8MBiLzZqJA==
 Received: from pat.atlnz.lc (Not Verified[10.32.16.33]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
-	id <B670c79730000>; Mon, 14 Oct 2024 14:52:51 +1300
+	id <B670c79730002>; Mon, 14 Oct 2024 14:52:51 +1300
 Received: from chrisp-dl.ws.atlnz.lc (chrisp-dl.ws.atlnz.lc [10.33.22.30])
-	by pat.atlnz.lc (Postfix) with ESMTP id 84F1813ED7B;
+	by pat.atlnz.lc (Postfix) with ESMTP id 8BC7C13EE9B;
 	Mon, 14 Oct 2024 14:52:51 +1300 (NZDT)
 Received: by chrisp-dl.ws.atlnz.lc (Postfix, from userid 1030)
-	id 836202806F1; Mon, 14 Oct 2024 14:52:51 +1300 (NZDT)
+	id 8CF34280090; Mon, 14 Oct 2024 14:52:51 +1300 (NZDT)
 From: Chris Packham <chris.packham@alliedtelesis.co.nz>
 To: broonie@kernel.org,
 	robh@kernel.org,
@@ -49,10 +50,12 @@ Cc: linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mips@vger.kernel.org,
 	Chris Packham <chris.packham@alliedtelesis.co.nz>
-Subject: [PATCH v4 0/3] Realtek SPI-NAND controller
-Date: Mon, 14 Oct 2024 14:52:42 +1300
-Message-ID: <20241014015245.2513738-1-chris.packham@alliedtelesis.co.nz>
+Subject: [PATCH v4 2/3] mips: dts: realtek: Add SPI NAND controller
+Date: Mon, 14 Oct 2024 14:52:44 +1300
+Message-ID: <20241014015245.2513738-3-chris.packham@alliedtelesis.co.nz>
 X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241014015245.2513738-1-chris.packham@alliedtelesis.co.nz>
+References: <20241014015245.2513738-1-chris.packham@alliedtelesis.co.nz>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -60,46 +63,59 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-SEG-SpamProfiler-Analysis: v=2.4 cv=ca1xrWDM c=1 sm=1 tr=0 ts=670c7973 a=KLBiSEs5mFS1a/PbTCJxuA==:117 a=DAUX931o1VcA:10 a=63fhtx2pClmO-oMQzGgA:9 a=3ZKOabzyN94A:10
+X-SEG-SpamProfiler-Analysis: v=2.4 cv=ca1xrWDM c=1 sm=1 tr=0 ts=670c7973 a=KLBiSEs5mFS1a/PbTCJxuA==:117 a=DAUX931o1VcA:10 a=8sy3EPFDi6gx0CG-VEIA:9 a=3ZKOabzyN94A:10
 X-SEG-SpamProfiler-Score: 0
 x-atlnz-ls: pat
 
-This series adds support for the SPI-NAND flash controller on the RTL9300
-family of SoCs.
+Add the SPI-NAND controller on the RTL9300 family of devices. This
+supports serial/dual/quad data width and DMA for read/program
+operations.
 
-There are 2 physical chip selects which are called SPI_MST_CS0 and SPI_MS=
-T_CS1
-in the datasheet. Via some pin-strapping these can be assigned to either =
-the
-SPI-NOR controller or the SPI-NAND controller. Which means you can end up=
- with
-the following permutations
+Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
+---
 
-  SPI-Flash
-  Boot Model SPI_MST_CS0 SPI_MST_CS1
-  ---------- ----------- -----------
-  NOR x1     NOR-CS0     X
-  NOR x2     NOR-CS0     NOR-CS1
-  NAND x1    NAND-CS0    X
-  NAND x2    NAND-CS0    NAND-CS1
-  NOR+NAND   NOR-CS0     NAND-CS0
+Notes:
+    Changes in v3:
+    - drop wildcard rtl9300-snand compatible
+    - drop clock-names
+    Changes in v2:
+    - Add clocks
 
-Chris Packham (3):
-  dt-bindings: spi: Add realtek,rtl9301-snand
-  mips: dts: realtek: Add SPI NAND controller
-  spi: spi-mem: Add Realtek SPI-NAND controller
+ arch/mips/boot/dts/realtek/rtl930x.dtsi | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
- .../bindings/spi/realtek,rtl9301-snand.yaml   |  59 +++
- MAINTAINERS                                   |   6 +
- arch/mips/boot/dts/realtek/rtl930x.dtsi       |  13 +
- drivers/spi/Kconfig                           |  11 +
- drivers/spi/Makefile                          |   1 +
- drivers/spi/spi-realtek-rtl-snand.c           | 405 ++++++++++++++++++
- 6 files changed, 495 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/realtek,rtl9301=
--snand.yaml
- create mode 100644 drivers/spi/spi-realtek-rtl-snand.c
-
+diff --git a/arch/mips/boot/dts/realtek/rtl930x.dtsi b/arch/mips/boot/dts=
+/realtek/rtl930x.dtsi
+index f271940f82be..b01a40ec3064 100644
+--- a/arch/mips/boot/dts/realtek/rtl930x.dtsi
++++ b/arch/mips/boot/dts/realtek/rtl930x.dtsi
+@@ -32,6 +32,8 @@ lx_clk: clock-175mhz {
+ };
+=20
+ &soc {
++	ranges =3D <0x0 0x18000000 0x20000>;
++
+ 	intc: interrupt-controller@3000 {
+ 		compatible =3D "realtek,rtl9300-intc", "realtek,rtl-intc";
+ 		reg =3D <0x3000 0x18>, <0x3018 0x18>;
+@@ -59,6 +61,17 @@ timer0: timer@3200 {
+ 		interrupts =3D <7>, <8>, <9>, <10>, <11>;
+ 		clocks =3D <&lx_clk>;
+ 	};
++
++	snand: spi@1a400 {
++		compatible =3D "realtek,rtl9301-snand";
++		reg =3D <0x1a400 0x44>;
++		interrupt-parent =3D <&intc>;
++		interrupts =3D <19>;
++		clocks =3D <&lx_clk>;
++		#address-cells =3D <1>;
++		#size-cells =3D <0>;
++		status =3D "disabled";
++	};
+ };
+=20
+ &uart0 {
 --=20
 2.47.0
 

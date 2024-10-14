@@ -1,105 +1,105 @@
-Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B7BD14F117
-	for <linux-spi@vger.kernel.org>; Sun, 13 Oct 2024 22:39:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.36.163.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA7E4A2F;
+	Mon, 14 Oct 2024 00:40:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728859155; cv=none; b=Uo9LjUo4NI2T4mBc7BoFkYoI8LVIRzmPAKnzNhIdAUUPbeL12O0k2d9lX0YGqUUbqYD46/CpbLmGHlAuY27Jk6dT/3A0VCzBq/sJG9vnOZckB2aHNp0Bt2CmQx2D6BALpP8ZMoB7r5wIs1oj0b4H8IhNBGdWjKiC/MV/227wvDI=
+	t=1728866427; cv=none; b=NSn4h1b9rMZ0KOLJ0/Gzq8+IJ61qzcE7I9aT3yIqKUEl3NNDCt05zqdCHyLlN7JPBnVVB/Wm3/AOcrX1t+A5qoWC1H/JmSCN9kmfI7kg7Za5D7iCFFkT/PTpM5RFbkcN19djnd0z+QKu8WEzzIm3730qk6UbokR1IbnMVSNcTpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728859155; c=relaxed/simple;
-	bh=MQu2My1FyBFYAOcNgYxwTu4ayTpcgi+JzJHWeSwYOFw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jZ6JQFQvO1rKVB6Q8oHrNdHS5+8dYJM/Lh4prscvVBzwjjlbPZb5Jb+Zbb1GRp7JA62kKNivYfZmdynPtpaq0QZGTEjpLpPRM1WT5ZiVB6VWSxHR3RtkOv/SnMFdDxuTmcizhRzbxNzXnLCRZpEmvW1fP9VxVG5v7FRWJKeLi5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=yE6pOGFX; arc=none smtp.client-ip=202.36.163.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alliedtelesis.co.nz
+	s=arc-20240116; t=1728866427; c=relaxed/simple;
+	bh=Dvpf7uGb45guqEjttgIF5nEh7hFJwy6SPLIRx7aPrJE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pEYv6LZqkNmjG79p/adDwdAkbUSgylQ0fnvnOQ4cFFPY7VEEhswwsFOnjNcwJN5BXV97sFeVQ+PzKs3sVDNyrCtlk7DKU+B/HZ8P7/7NRFWYF1hrhHun9Xzg7VWU8HdAxPHrNGpNNJG8eutifYC24Gbzt0qUnx1E/GOfRHYvl4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PassxRw+; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="yE6pOGFX"
-Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id C1D4D2C0404;
-	Mon, 14 Oct 2024 11:39:09 +1300 (NZDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
-	s=mail181024; t=1728859149;
-	bh=cqGHzue0n4aILgBri5fX5e+DLcXOkXfbyVaLXhH1OTg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=yE6pOGFXfNjOD/TEsDPw8ZmpoAHagrn025sdRRtcnIYNsyqFRIui6YuJn7788cwlc
-	 uYl7zACxYK40sIuOkPy7BDE+/qE9a+t2Hlrf2CnlYVbzJLvyU0iWfbs6y62E4GWLIr
-	 wpS4m3n5IYB7GdPh4LAeNjGNHK2OZXAnHMsT5BrJZBH1/PzUMaZSQ45c/eGZ86jIPh
-	 W9ug+1+TjcOvOV592GGApCT8TYw3jG4ykmWfZjjGrNe/DyYCjU2ZWzWvSsHuCjxV1i
-	 uhiuptRxeL6qQQsEVq+WH/8SvZ35zp5sxUyBKRL4diAq+ag1vsoZEJukg2UCdRlil6
-	 Vdsp5424mV8hw==
-Received: from pat.atlnz.lc (Not Verified[10.32.16.33]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
-	id <B670c4c0d0000>; Mon, 14 Oct 2024 11:39:09 +1300
-Received: from chrisp-dl.ws.atlnz.lc (chrisp-dl.ws.atlnz.lc [10.33.22.30])
-	by pat.atlnz.lc (Postfix) with ESMTP id 8252913ED7B;
-	Mon, 14 Oct 2024 11:39:09 +1300 (NZDT)
-Received: by chrisp-dl.ws.atlnz.lc (Postfix, from userid 1030)
-	id 7CFAE280449; Mon, 14 Oct 2024 11:39:09 +1300 (NZDT)
-From: Chris Packham <chris.packham@alliedtelesis.co.nz>
-To: broonie@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PassxRw+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1728866425; x=1760402425;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Dvpf7uGb45guqEjttgIF5nEh7hFJwy6SPLIRx7aPrJE=;
+  b=PassxRw+IeDH0Q3o4SNRWm536EJfI7AuHhc+KZoGZWi2wjwUP0q+qewk
+   WCelS8pbzUIgDNhvWSUXP64OAAYAKJh64kMB/Wz3AH2oEN65nW+Yzw0/V
+   i5g9GCKcrZI7rrxb5oI0vGvdv2KzDQmwFjt3W74jvghvuWSyvpzxlFVsj
+   jVAshkO8slipcRgSdEdgX7eU3NxM++awe2Eo9IhPn3L33ILLcMJYsEafE
+   yJ6FM0QIZGe3B2WKURJN4iwxRmKOZdry0ZXT7b6g/PlgVHFIdPT+c1soP
+   +5Yvwh160hrunJy1bfatnBhubYz1CHev/PMrOSDdAphvWTnTrXp6fl2TB
+   w==;
+X-CSE-ConnectionGUID: PZEM4B5LSdGF4Ujvdn+kqA==
+X-CSE-MsgGUID: jnmwu6V1QAyGOTe1gMNd0g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="45677351"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="45677351"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2024 17:40:24 -0700
+X-CSE-ConnectionGUID: GhojqkraTBuCXQBp+uJ35g==
+X-CSE-MsgGUID: TtZcJkDhS162jIvKGBQPWg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="82207412"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by orviesa003.jf.intel.com with ESMTP; 13 Oct 2024 17:40:22 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t098F-000EnP-1o;
+	Mon, 14 Oct 2024 00:40:19 +0000
+Date: Mon, 14 Oct 2024 08:40:14 +0800
+From: kernel test robot <lkp@intel.com>
+To: Chris Packham <chris.packham@alliedtelesis.co.nz>, broonie@kernel.org,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
 	tsbogend@alpha.franken.de
-Cc: linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+Cc: oe-kbuild-all@lists.linux.dev, linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-mips@vger.kernel.org,
 	Chris Packham <chris.packham@alliedtelesis.co.nz>
-Subject: [PATCH v3 0/3] Realtek SPI-NAND controller
-Date: Mon, 14 Oct 2024 11:39:04 +1300
-Message-ID: <20241013223907.2459099-1-chris.packham@alliedtelesis.co.nz>
-X-Mailer: git-send-email 2.47.0
+Subject: Re: [PATCH v3 3/3] spi: spi-mem: Add Realtek SPI-NAND controller
+Message-ID: <202410140710.qz1xiOo0-lkp@intel.com>
+References: <20241013223907.2459099-4-chris.packham@alliedtelesis.co.nz>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-SEG-SpamProfiler-Analysis: v=2.4 cv=ca1xrWDM c=1 sm=1 tr=0 ts=670c4c0d a=KLBiSEs5mFS1a/PbTCJxuA==:117 a=DAUX931o1VcA:10 a=63fhtx2pClmO-oMQzGgA:9 a=3ZKOabzyN94A:10
-X-SEG-SpamProfiler-Score: 0
-x-atlnz-ls: pat
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241013223907.2459099-4-chris.packham@alliedtelesis.co.nz>
 
-This series adds support for the SPI-NAND flash controller on the RTL9300
-family of SoCs.
+Hi Chris,
 
-There are 2 physical chip selects which are called SPI_MST_CS0 and SPI_MS=
-T_CS1
-in the datasheet. Via some pin-strapping these can be assigned to either =
-the
-SPI-NOR controller or the SPI-NAND controller. Which means you can end up=
- with
-the following permutations
+kernel test robot noticed the following build warnings:
 
-  SPI-Flash
-  Boot Model SPI_MST_CS0 SPI_MST_CS1
-  ---------- ----------- -----------
-  NOR x1     NOR-CS0     X
-  NOR x2     NOR-CS0     NOR-CS1
-  NAND x1    NAND-CS0    X
-  NAND x2    NAND-CS0    NAND-CS1
-  NOR+NAND   NOR-CS0     NAND-CS0
+[auto build test WARNING on broonie-spi/for-next]
+[also build test WARNING on robh/for-next linus/master v6.12-rc3 next-20241011]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Chris Packham (3):
-  dt-bindings: spi: Add realtek,rtl9300-snand
-  mips: dts: realtek: Add SPI NAND controller
-  spi: spi-mem: Add Realtek SPI-NAND controller
+url:    https://github.com/intel-lab-lkp/linux/commits/Chris-Packham/dt-bindings-spi-Add-realtek-rtl9300-snand/20241014-064017
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+patch link:    https://lore.kernel.org/r/20241013223907.2459099-4-chris.packham%40alliedtelesis.co.nz
+patch subject: [PATCH v3 3/3] spi: spi-mem: Add Realtek SPI-NAND controller
+reproduce: (https://download.01.org/0day-ci/archive/20241014/202410140710.qz1xiOo0-lkp@intel.com/reproduce)
 
- .../bindings/spi/realtek,rtl9301-snand.yaml   |  59 +++
- MAINTAINERS                                   |   6 +
- arch/mips/boot/dts/realtek/rtl930x.dtsi       |  13 +
- drivers/spi/Kconfig                           |  11 +
- drivers/spi/Makefile                          |   1 +
- drivers/spi/spi-realtek-rtl-snand.c           | 405 ++++++++++++++++++
- 6 files changed, 495 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/realtek,rtl9301=
--snand.yaml
- create mode 100644 drivers/spi/spi-realtek-rtl-snand.c
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202410140710.qz1xiOo0-lkp@intel.com/
 
---=20
-2.47.0
+All warnings (new ones prefixed by >>):
 
+   Warning: Documentation/hwmon/g762.rst references a file that doesn't exist: Documentation/devicetree/bindings/hwmon/g762.txt
+   Warning: Documentation/userspace-api/netlink/index.rst references a file that doesn't exist: Documentation/networking/netlink_spec/index.rst
+   Warning: Documentation/userspace-api/netlink/specs.rst references a file that doesn't exist: Documentation/networking/netlink_spec/index.rst
+   Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/reserved-memory/qcom
+   Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt
+>> Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/spi/realtek,rtl9300-snand.yaml
+   Using alabaster theme
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki

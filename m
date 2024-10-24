@@ -1,167 +1,140 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 005F71E284B
-	for <linux-spi@vger.kernel.org>; Thu, 24 Oct 2024 14:04:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37AB81E1C33;
+	Thu, 24 Oct 2024 14:12:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729778693; cv=none; b=ifV56lXIVKX9v/TGLfaGgK3L9F0vuYREGrqXdpxubTvheHnbHnNWyQaPiTn3jRqbmvKKqS5E1VOq66sOumqToy2zTco8ArEbKznQU+kmWLRjmKy3s9uVq5WvH+2ZU6Q5ZprrRyBau3XVGAro5kacpj1Xwt25Lp/aVq809oaTV8Y=
+	t=1729779136; cv=none; b=SV31HwW/x3YVdzaZQQaM/Mlbam+k/TyTR68/FqLMbH9ntaNJMkUAbDtG+nnXI3hUC3Vf4Sash7zrBIaBzW2+6CF6KCiEoQ5rlAEygl5pYkvkaB27MRC8HVsjpSkdRh8t6h+4pH0d1XrlmS6BUTU76NaNcDmC9Qgh/pZbVfTgztA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729778693; c=relaxed/simple;
-	bh=bPfOkhab+RdZJQo4Bgv6xEBR2RHMOFXjrb4S0KcA874=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SC+C+6yfoYqdswFOjwkq+JtKy1hnbP40H4cvUzENyCpVslkObC2hxP8xKwqrAAUjkFkgC0QrphJA4qEflZl9xjmtrIw5t0KIAwevVHXvhVbZJMvSvqX6/6itUDw3JU6TKhY2dhFFVNdn5NJZ+UwdejDb3Po+3XHTuCqxgORL9eY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DohlH3wl; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1729779136; c=relaxed/simple;
+	bh=Nj1ebmcv/mm+UDNIZ/dfe2bFowbODDJCifUQEhsRIc0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=bWUMIsTZ0T0CZn267tXThIYOK5hVEQ0XYpak3aF7w4Lfx/xu6Sp2CFSQV3WRW8tDeSOfumJiRg7w50bEG7Ae//gLtVRQWppSORd31nX8+983bZ9JDhSvmbFObDYy5OCRoBOjcAzU6tTfZ80HcK/dqekl1UvOWE+vzzrP3fWM3hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OO8ojSh9; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DohlH3wl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729778689;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=hQSm1B/bBPEQI6fCzkx9lfLG7DkGTIpXzv4hP+8MIq4=;
-	b=DohlH3wl+lWfKDmDFjr4Dg/pWGb1s4MwzPHNgTDN1/QEl1mCo/2kEb7yEE78VerR/kWqHc
-	aowEKVbxzIfpI/O3LSJ/8s8BQ/KjVoPTym9fBnoBFZnjFwMyUQCnm6/QGgxEsw1H6Xjx/u
-	ku4tfVb+ctz02kg1guJHoTZsVJ9dt0s=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-196--Bj9XlWXMcuUu0vJ9fZJcw-1; Thu, 24 Oct 2024 10:04:48 -0400
-X-MC-Unique: -Bj9XlWXMcuUu0vJ9fZJcw-1
-Received: by mail-lf1-f72.google.com with SMTP id 2adb3069b0e04-539f067414fso764269e87.2
-        for <linux-spi@vger.kernel.org>; Thu, 24 Oct 2024 07:04:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OO8ojSh9"
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a93c1cc74fdso124221566b.3;
+        Thu, 24 Oct 2024 07:12:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729779132; x=1730383932; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Nj1ebmcv/mm+UDNIZ/dfe2bFowbODDJCifUQEhsRIc0=;
+        b=OO8ojSh9WDsj0rSgpByfnZd8pchVCJixVmCqBD7Nuq/IafPo//zv4YvTA/jlmifCb6
+         F+sVpCVvOAz5iHnEPZw4xhzQO0+Ck8MlVUTwhNKnDr3ADCw/8KDNtac1+qngjzLVZWMf
+         M/QOHhBiWqgmRyaKwpM8rvTQcEP3f6urnJlFIHVDx2yRXoouMxZAr1C5PbpQD9SxHQih
+         4ryQY/MAY/y9HTia1nzCqLKRG7p+7MgQZ08sl/zG7mbPMaBGd7UH7XLAX0BCPV/yiCIs
+         8t8VwXenp1F3vVOqXjFZMOmLvs4wuvgcLZfG6aZhCIX357yj8vSFdoFofVxQz2y5Rh23
+         cYdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729778687; x=1730383487;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hQSm1B/bBPEQI6fCzkx9lfLG7DkGTIpXzv4hP+8MIq4=;
-        b=eBvIArK+mj4ZHIHt8AoigYbfby8o/73bIdcTU6J67t36pMdpG0NqEWqTD0IXm9iccf
-         Kn+HgLH5yy1Xz1b1k7kb/vpR3GI8xcEXQvmUZ1QDorYCRbQYvThM06EtWdkITpiiSOev
-         feeBbaGkoecUY2H+wtD/F5zzFEAT+G5fe/sOjcp2XRVHUfS/KXCD/JSADClmkNyCjhfG
-         S9Az+kSu9wg6HqTKRRRMGhNmrpHlCuAq0+5/0blWL3jnWvVYh4ertRvA07w0KNmpXJLM
-         hoPSrcWNQMoaaZNPcVTDxjcrr35ZMaT5ZKbJlcc7gVFqttJV+PeliGY/zHSnFLkEAb0j
-         Bi3w==
-X-Gm-Message-State: AOJu0YzKFwirlIyxfnzbYiGl/NNbspEcJK+d98T3c3gIc+uGRpV7Jour
-	BkadU5jzlxG+2XhJHwAzUanUCQHX0Nk+g+olXHmsudqb+42g3/TqjI4OSMgF7iLVVAKB11Nu1CD
-	P5oPRwPXCF71aZOTZbP3swykNenjlLY5OaA9HRiHc5Se8Jrp/G3KgK59fiw==
-X-Received: by 2002:a05:6512:114b:b0:539:f9b9:e6d2 with SMTP id 2adb3069b0e04-53b23e33c6amr1060382e87.35.1729778686857;
-        Thu, 24 Oct 2024 07:04:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHK+Aa3uTsskL25IZrDrkMj9fVpwcg2FaoD/X/Iae1N1I2ol9nC/eMbTbhx8ycQe9G8SPKiMA==
-X-Received: by 2002:a05:6512:114b:b0:539:f9b9:e6d2 with SMTP id 2adb3069b0e04-53b23e33c6amr1060343e87.35.1729778686258;
-        Thu, 24 Oct 2024 07:04:46 -0700 (PDT)
-Received: from eisenberg.redhat.com (nat-pool-muc-t.redhat.com. [149.14.88.26])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43186bde267sm46655925e9.13.2024.10.24.07.04.44
+        d=1e100.net; s=20230601; t=1729779132; x=1730383932;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Nj1ebmcv/mm+UDNIZ/dfe2bFowbODDJCifUQEhsRIc0=;
+        b=M1hfSyAFg+CcONEC7HzZUIxreW4aC2yiL67qybvvtItkeOHr76k4S2JEtIyvkI7m91
+         E5p0ZMq4LvTg1sStrCI3+/918mnE/BrMebXilZV6/eQKfk5bJpmpYl61PPfXPJRFTarE
+         xEYfGr9RjpDodZ2SWzx/V2Y7eudQPVsNHy2Wy4AiA67VaWrYDAGzpG3FF+jWLicc1ZTp
+         nUDRi1u6DPHxun+Pn2p9t1Jx7V7xB8S7cJSHH6FZJpKZkWyIZRz1TrDM5bnXiW8MHsim
+         hhwjJp812s3KKsz0JSsBBbwB7ZOQ7M9cDrb8zOD6N02o3tVcZl3lqDdExohs9Oewbekj
+         Zy8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVdtsi0NSvF5w9GLMocYLbK9+SBiCHsUPBQa2Y8TbnSUb90ApqjIi5sEhK6cjzctLlkeG/sNWK4QOds@vger.kernel.org, AJvYcCVjEPYBHTLeivO1s0jYtIDnkNmT3fG0gxXaDDuGGHE5q4WPtX6N0aIocPmCIjbeX1bgFza0oyD6vA+8@vger.kernel.org, AJvYcCWPqg0b22MDkQkSNYwcKwn80m0crJYIhGNtIzfye7mZbCGEUI9baRnme6t0GJCr5kvjdExp1knRpn3A@vger.kernel.org, AJvYcCXNyyHoN8M7BUuCFcpkpUZo5tSBRPjM+4NxswhUMDlWdCmu9oFp6g0EA70Dm1UHXvFX67Njt8Nesh5O@vger.kernel.org, AJvYcCXjF2z3wqXa5U6vPgAZ1suTuXjX0hU5E9UURxKB8krZWFiuFLQRqJeaaloI2saz+OYddMyoLiKcX1ndL53W@vger.kernel.org
+X-Gm-Message-State: AOJu0YxhVBYtTEkX8wmGP/rcQ0JTqI+mDefSnoOtZcsb7UAkn8y0GvNV
+	ElvPGegIS9TwzFipYJ6+5+UMk0z3Jf478IXE29S/P2FyGoQKl5Sy
+X-Google-Smtp-Source: AGHT+IHpDlN3uiwFaGU+NjrmHJnbgiUpiTHuzfNHuRoy7uR9tWOnbsFsdxmjuDvqcRRC+hYZGgSCDw==
+X-Received: by 2002:a17:906:7309:b0:a9a:55de:11f4 with SMTP id a640c23a62f3a-a9abf96d176mr580734466b.54.1729779132047;
+        Thu, 24 Oct 2024 07:12:12 -0700 (PDT)
+Received: from ?IPv6:2001:a61:34c9:ea01:14b4:7ed9:5135:9381? ([2001:a61:34c9:ea01:14b4:7ed9:5135:9381])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a9159a214sm627093766b.213.2024.10.24.07.12.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Oct 2024 07:04:45 -0700 (PDT)
-From: Philipp Stanner <pstanner@redhat.com>
-To: Mark Brown <broonie@kernel.org>,
-	Yinbo Zhu <zhuyinbo@loongson.cn>,
-	Daniel Mack <daniel@zonque.org>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>
-Cc: linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Philipp Stanner <pstanner@redhat.com>
-Subject: [PATCH] spi: Replace deprecated PCI functions
-Date: Thu, 24 Oct 2024 16:04:27 +0200
-Message-ID: <20241024140426.157444-2-pstanner@redhat.com>
-X-Mailer: git-send-email 2.47.0
+        Thu, 24 Oct 2024 07:12:11 -0700 (PDT)
+Message-ID: <72afe00622075f77b410e9537cca0a7ac5a4cba3.camel@gmail.com>
+Subject: Re: [PATCH RFC v4 00/15] spi: axi-spi-engine: add offload support
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: David Lechner <dlechner@baylibre.com>, Mark Brown <broonie@kernel.org>, 
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>, Uwe
+ =?ISO-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>, Lars-Peter Clausen
+	 <lars@metafoo.de>, David Jander <david@protonic.nl>, Martin Sperl
+	 <kernel@martin.sperl.org>, linux-spi@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org
+Date: Thu, 24 Oct 2024 16:12:11 +0200
+In-Reply-To: <20241023-dlech-mainline-spi-engine-offload-2-v4-0-f8125b99f5a1@baylibre.com>
+References: 
+	<20241023-dlech-mainline-spi-engine-offload-2-v4-0-f8125b99f5a1@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-pcim_iomap_table() and pcim_request_regions() have been deprecated in
-commit e354bb84a4c1 ("PCI: Deprecate pcim_iomap_table(),
-pcim_iomap_regions_request_all()").
+Hi David,
 
-Replace these functions with pcim_iomap_region().
+On Wed, 2024-10-23 at 15:59 -0500, David Lechner wrote:
+> In this revision, I ended up changing quite a bit more that I was
+> expecting.
+>=20
+> In the DT bindings, I ended up dropping the #spi-offload-cells and
+> spi-offload properties. A couple of reasons for this:
+>=20
+> 1. Several people commented that it is odd to have a separate provider/
+> =C2=A0=C2=A0 consumer binding for something that already has a parent/chi=
+ld
+> =C2=A0=C2=A0 relationship (both on this series and in another unrelated s=
+eries
+> =C2=A0=C2=A0 with io-backends). For now, the only SPI offload provider is=
+ the AXI
+> =C2=A0=C2=A0 SPI Engine, which is a SPI controller.
+> 2. In a discussion unrelated to this series, but related to the idea
+> =C2=A0=C2=A0 of SPI offloads [1], it became apparent that the proposed us=
+e for
+> =C2=A0=C2=A0 the cells to select triggers and tx/rx streams doesn't actua=
+lly
+> =C2=A0=C2=A0 work for that case.
+> 3. In offline review, it was suggested that assigning specific offloads
+> =C2=A0=C2=A0 to specific peripherals may be too restrictive, e.g. if ther=
+e are
+> =C2=A0=C2=A0 controllers that have pools of identical offloads. This idea=
+ of
+> =C2=A0=C2=A0 pools of generic offloads has also come up in previous discu=
+ssions
+> =C2=A0=C2=A0 on the mailing list.
+>=20
+> [1]:
+> https://lore.kernel.org/linux-iio/e5310b63-9dc4-43af-9fbe-0cc3b604ab8b@ba=
+ylibre.com/
+>=20
+> So the idea is that if we do end up needing to use DT to assign certain
+> resources (triggers, DMA channels, etc.) to specific peripherals, we
+> would make a mapping attribute in the controller node rather than using
+> phandle cells. But we don't need this yet, so it isn't present in The
+> current patches.
+>=20
+> And if we ever end up with a SPI offload provider that is not a SPI
+> controller, we can bring back the #spi-offload-cells and
+> spi-offload properties.
 
-Signed-off-by: Philipp Stanner <pstanner@redhat.com>
----
- drivers/spi/spi-dw-pci.c       | 9 ++++-----
- drivers/spi/spi-loongson-pci.c | 5 ++---
- drivers/spi/spi-pxa2xx-pci.c   | 8 +++-----
- 3 files changed, 9 insertions(+), 13 deletions(-)
+Well I do like we kind of gave a step back and are more focused in supporti=
+ng what we
+have and know at the moment. And I think (for what I saw so far) things are=
+ being
+implemented in fairly flexible manner. So yeah, as far as I'm concerned, I =
+liked what
+I saw so far. Hopefully everyone can agree on this so we drop the RFC :)
 
-diff --git a/drivers/spi/spi-dw-pci.c b/drivers/spi/spi-dw-pci.c
-index 7c8279d13f31..6b8cc26e06f8 100644
---- a/drivers/spi/spi-dw-pci.c
-+++ b/drivers/spi/spi-dw-pci.c
-@@ -98,15 +98,14 @@ static int dw_spi_pci_probe(struct pci_dev *pdev, const struct pci_device_id *en
- 	dws->paddr = pci_resource_start(pdev, pci_bar);
- 	pci_set_master(pdev);
- 
--	ret = pcim_iomap_regions(pdev, 1 << pci_bar, pci_name(pdev));
--	if (ret)
--		return ret;
--
- 	ret = pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_ALL_TYPES);
- 	if (ret < 0)
- 		return ret;
- 
--	dws->regs = pcim_iomap_table(pdev)[pci_bar];
-+	dws->regs = pcim_iomap_region(pdev, pci_bar, pci_name(pdev));
-+	if (IS_ERR(dws->regs))
-+		return PTR_ERR(dws->regs);
-+
- 	dws->irq = pci_irq_vector(pdev, 0);
- 
- 	/*
-diff --git a/drivers/spi/spi-loongson-pci.c b/drivers/spi/spi-loongson-pci.c
-index 134cda0c13a5..892cf1eba1cf 100644
---- a/drivers/spi/spi-loongson-pci.c
-+++ b/drivers/spi/spi-loongson-pci.c
-@@ -19,12 +19,11 @@ static int loongson_spi_pci_register(struct pci_dev *pdev,
- 	if (ret < 0)
- 		return dev_err_probe(dev, ret, "cannot enable pci device\n");
- 
--	ret = pcim_iomap_regions(pdev, BIT(pci_bar), pci_name(pdev));
-+	reg_base = pcim_iomap_region(pdev, pci_bar, pci_name(pdev));
-+	ret = PTR_ERR_OR_ZERO(reg_base);
- 	if (ret)
- 		return dev_err_probe(dev, ret, "failed to request and remap memory\n");
- 
--	reg_base = pcim_iomap_table(pdev)[pci_bar];
--
- 	ret = loongson_spi_init_controller(dev, reg_base);
- 	if (ret)
- 		return dev_err_probe(dev, ret, "failed to initialize controller\n");
-diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
-index cc8dcf782399..e51c1b492283 100644
---- a/drivers/spi/spi-pxa2xx-pci.c
-+++ b/drivers/spi/spi-pxa2xx-pci.c
-@@ -273,10 +273,6 @@ static int pxa2xx_spi_pci_probe(struct pci_dev *dev,
- 	if (ret)
- 		return ret;
- 
--	ret = pcim_iomap_regions(dev, 1 << 0, "PXA2xx SPI");
--	if (ret)
--		return ret;
--
- 	pdata = devm_kzalloc(&dev->dev, sizeof(*pdata), GFP_KERNEL);
- 	if (!pdata)
- 		return -ENOMEM;
-@@ -284,7 +280,9 @@ static int pxa2xx_spi_pci_probe(struct pci_dev *dev,
- 	ssp = &pdata->ssp;
- 	ssp->dev = &dev->dev;
- 	ssp->phys_base = pci_resource_start(dev, 0);
--	ssp->mmio_base = pcim_iomap_table(dev)[0];
-+	ssp->mmio_base = pcim_iomap_region(dev, 0, "PXA2xx SPI");
-+	if (IS_ERR(ssp->mmio_base))
-+		return PTR_ERR(ssp->mmio_base);
- 
- 	info = (struct pxa_spi_info *)ent->driver_data;
- 	ret = info->setup(dev, pdata);
--- 
-2.47.0
+I'll try to look at the remaining patches tomorrow...
+
+- Nuno S=C3=A1
+
 

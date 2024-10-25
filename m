@@ -1,35 +1,35 @@
 Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21ED4188588
-	for <linux-spi@vger.kernel.org>; Fri, 25 Oct 2024 16:15:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4047082B
+	for <linux-spi@vger.kernel.org>; Fri, 25 Oct 2024 16:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729872930; cv=none; b=X+bHO8BIIKF7bt40ANDlGd4uzcQJOd2NFJRGVq+4kHLfVcyJKC1K5l9/bfwUZjM8WyYaE9iQrBjznO6N4YQ+0fk/k8rOk/RfWJXRDL7w6bOEmGoBPFILamb9OYAvY+Ot7ZL7dpZr9XuSbGHppXDwHMKW7Ug2pBD0HMPIdB2SxPk=
+	t=1729872930; cv=none; b=St8v2pkNV1pVnEuZ3SMJw8LiaNKa9aGGNHjXIfTKN/4TvxGORfZYAII78lWnGbcjxbcpGT/72G3XHxLYlY22NvrX4hx798456sQhbzT66pQU+stEsSD4jGUf3LLlrraUfC+eACHcPDK+Dlzxg0fbfu/yW0horffSr1E4/SVyRp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1729872930; c=relaxed/simple;
-	bh=oVJCG/hHi6oZVqUbh6DN2nobFwTr4s/fTM66bLNxlU8=;
+	bh=bQrbu6pJB7Gqb2YsduL7JRIT54WhjJofGtvgJz1/fY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uP0z9q8/rkBA5C5Ipn8Tb6WeRD7Sg5sZMlAQ3rU77XV9IS6gi/MCql5bIhg/kNhAdmAh3d4LvPMpnjwOcYufVrWp2kj2sXwktzuyCaGGJlOLULwluQyl4BvhCoEk0aYVBZ1iD8DcN6EZo+yt/2k/PtT78QcsbC3aabzrTl6XFVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Ow1aZTTq; arc=none smtp.client-ip=217.70.183.196
+	 MIME-Version; b=Wb5UdFZngMBKBSIGqFMK1tj/4KuIymCGUeJOafWeAI/W6N3UF1i3Yb36VHc5cPSu/nEqA6dm6i3RYkk+tYiBMayS3uzAiHCLYDcPsHBGS1CyM4yn38h/dApEA8TCeChXyshGaGk+/zEQ7oDY3jTX07OZkGeUb7TrnBKwcXBDU8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=S+w1Hwv/; arc=none smtp.client-ip=217.70.183.196
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Ow1aZTTq"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id D8360E0006;
-	Fri, 25 Oct 2024 16:15:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="S+w1Hwv/"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id AFD4AE0005;
+	Fri, 25 Oct 2024 16:15:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1729872926;
+	t=1729872924;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=TnJW+HtAJmLd3pYu1pAxAfjvDVGDfQqGvsxgR8a3u5A=;
-	b=Ow1aZTTqR5JoLQXYRgDRTOlatlI+hWfAjiflxMlwDKSKDiJYfj2nKKQus/aRKP7IQ529cZ
-	wTUcYYzp5I6d0N/CQFXItbD9AyXDUbKD1f/2l16/+R+9+PeXXypElv+LrHEjvgBa0rJke8
-	M0OYaYIFSNsRB8BfZ4UGdJYnApSc1rU4W1gQ/0godMzhyzSSu1XSBfvm9D2y07iU9O2gUl
-	kZPwKK0Db/xC2eUogV/aS87drKU/MoMS1108S7rbCjXHwZK0E3ucHMk4Znckn+2F2povTy
-	htG3JFyegwPDlXDnrxJe8dQSVmuV615r7pCD4mwABUBO1MchURVenklwjZ2y9w==
+	bh=gP/qcdb5gg8KjdWKCoDKUL1fJp7AcT58aQ8bLIsoI4k=;
+	b=S+w1Hwv/fKN1ElmR9O5xc2uFOUZ31/oOHy5biHeSUnEMzALff1tOvwYiMxRQnU6t/9Mw7z
+	nx8mLEm88VZfrOYyJKQ3zZMB26ZyIOO9Ir+Muj8ENUXFlcVJs7P6NDexFsmVkIFpchr7/V
+	gyovMfC7O7/cSWN8pmGUNELYh+MvHAfG+sPb3imx6ZD7YuhWihtfwosj7m+Y7hF1YTdD7h
+	2bX8m/zCCsxrtKz1rmo6ILYvJ+C0EOLCA3RxDet23qNq1APz/4QLW//d8aTO/LDmfENrPo
+	KvWCrDd0vKqxxt9/+WA/XmqqkWKd3kKUCS7C6LFLKkKSsBaiBlBQk3bW29GCvQ==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
 To: Richard Weinberger <richard@nod.at>,
 	Vignesh Raghavendra <vigneshr@ti.com>,
@@ -52,9 +52,9 @@ Cc: Mark Brown <broonie@kernel.org>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Michal Simek <michal.simek@amd.com>,
 	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 21/24] spi: spi-mem: Create macros for DTR operation
-Date: Fri, 25 Oct 2024 18:14:58 +0200
-Message-ID: <20241025161501.485684-22-miquel.raynal@bootlin.com>
+Subject: [PATCH 19/24] mtd: spinand: winbond: Fix the *JW chip definitions
+Date: Fri, 25 Oct 2024 18:14:56 +0200
+Message-ID: <20241025161501.485684-20-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241025161501.485684-1-miquel.raynal@bootlin.com>
 References: <20241025161501.485684-1-miquel.raynal@bootlin.com>
@@ -67,101 +67,65 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: miquel.raynal@bootlin.com
 
-We do have macros for defining command, address, dummy and data
-cycles. We also have a .dtr flag that implies sampling the bus on both
-edges, but there are currently no macros enabling it. We might make use
-of such macros, so let's create:
-- SPI_MEM_DTR_OP_CMD
-- SPI_MEM_DTR_OP_ADDR
-- SPI_MEM_DTR_OP_DUMMY
-- SPI_MEM_DTR_OP_DATA_OUT
-- SPI_MEM_DTR_OP_DATA_OUT
+W25N01JW and W25N02JW use a different technology with higher frequencies
+supported (up to 166MHz). There is one drawback though, the slowest
+READ_FROM_CACHE command cannot run above 54MHz. Because of that, we need
+to set a limit for these chips on the basic READ_FROM_CACHE variant.
+
+Duplicating this list is not a problem because these chips have DTR
+support, and the list of supported variants will diverge from all the
+other chips when adding support for it.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- include/linux/spi/spi-mem.h | 41 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 41 insertions(+)
+ drivers/mtd/nand/spi/winbond.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
-index 318ea7b193cc..d332ac5ce971 100644
---- a/include/linux/spi/spi-mem.h
-+++ b/include/linux/spi/spi-mem.h
-@@ -20,6 +20,14 @@
- 		.buswidth = __buswidth,				\
- 	}
+diff --git a/drivers/mtd/nand/spi/winbond.c b/drivers/mtd/nand/spi/winbond.c
+index 329377bf3717..686e872fe0ff 100644
+--- a/drivers/mtd/nand/spi/winbond.c
++++ b/drivers/mtd/nand/spi/winbond.c
+@@ -10,6 +10,7 @@
+ #include <linux/device.h>
+ #include <linux/kernel.h>
+ #include <linux/mtd/spinand.h>
++#include <linux/units.h>
  
-+#define SPI_MEM_DTR_OP_CMD(__opcode, __buswidth)		\
-+	{							\
-+		.nbytes = 1,					\
-+		.opcode = __opcode,				\
-+		.buswidth = __buswidth,				\
-+		.dtr = true,					\
-+	}
+ #define SPINAND_MFR_WINBOND		0xEF
+ 
+@@ -17,6 +18,14 @@
+ 
+ #define W25N04KV_STATUS_ECC_5_8_BITFLIPS	(3 << 4)
+ 
++static SPINAND_OP_VARIANTS(read_cache_dtr_variants,
++		SPINAND_PAGE_READ_FROM_CACHE_QUADIO_OP(0, 2, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_X4_OP(0, 1, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_DUALIO_OP(0, 1, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_X2_OP(0, 1, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_FAST_OP(0, 1, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_OP(0, 1, NULL, 0, 54 * HZ_PER_MHZ));
 +
- #define SPI_MEM_OP_ADDR(__nbytes, __val, __buswidth)		\
- 	{							\
- 		.nbytes = __nbytes,				\
-@@ -27,6 +35,14 @@
- 		.buswidth = __buswidth,				\
- 	}
- 
-+#define SPI_MEM_DTR_OP_ADDR(__nbytes, __val, __buswidth)	\
-+	{							\
-+		.nbytes = __nbytes,				\
-+		.val = __val,					\
-+		.buswidth = __buswidth,				\
-+		.dtr = true,					\
-+	}
-+
- #define SPI_MEM_OP_NO_ADDR	{ }
- 
- #define SPI_MEM_OP_DUMMY(__nbytes, __buswidth)			\
-@@ -35,6 +51,13 @@
- 		.buswidth = __buswidth,				\
- 	}
- 
-+#define SPI_MEM_DTR_OP_DUMMY(__nbytes, __buswidth)		\
-+	{							\
-+		.nbytes = __nbytes,				\
-+		.buswidth = __buswidth,				\
-+		.dtr = true,					\
-+	}
-+
- #define SPI_MEM_OP_NO_DUMMY	{ }
- 
- #define SPI_MEM_OP_DATA_IN(__nbytes, __buf, __buswidth)		\
-@@ -45,6 +68,15 @@
- 		.buswidth = __buswidth,				\
- 	}
- 
-+#define SPI_MEM_DTR_OP_DATA_IN(__nbytes, __buf, __buswidth)	\
-+	{							\
-+		.dir = SPI_MEM_DATA_IN,				\
-+		.nbytes = __nbytes,				\
-+		.buf.in = __buf,				\
-+		.buswidth = __buswidth,				\
-+		.dtr = true,					\
-+	}
-+
- #define SPI_MEM_OP_DATA_OUT(__nbytes, __buf, __buswidth)	\
- 	{							\
- 		.dir = SPI_MEM_DATA_OUT,			\
-@@ -53,6 +85,15 @@
- 		.buswidth = __buswidth,				\
- 	}
- 
-+#define SPI_MEM_DTR_OP_DATA_OUT(__nbytes, __buf, __buswidth)	\
-+	{							\
-+		.dir = SPI_MEM_DATA_OUT,			\
-+		.nbytes = __nbytes,				\
-+		.buf.out = __buf,				\
-+		.buswidth = __buswidth,				\
-+		.dtr = true,					\
-+	}
-+
- #define SPI_MEM_OP_NO_DATA	{ }
- 
- /**
+ static SPINAND_OP_VARIANTS(read_cache_variants,
+ 		SPINAND_PAGE_READ_FROM_CACHE_QUADIO_OP(0, 2, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_X4_OP(0, 1, NULL, 0),
+@@ -177,7 +186,7 @@ static const struct spinand_info winbond_spinand_table[] = {
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xbc, 0x21),
+ 		     NAND_MEMORG(1, 2048, 64, 64, 1024, 20, 1, 1, 1),
+ 		     NAND_ECCREQ(1, 512),
+-		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
++		     SPINAND_INFO_OP_VARIANTS(&read_cache_dtr_variants,
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     0,
+@@ -197,7 +206,7 @@ static const struct spinand_info winbond_spinand_table[] = {
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xbf, 0x22),
+ 		     NAND_MEMORG(1, 2048, 64, 64, 1024, 20, 1, 2, 1),
+ 		     NAND_ECCREQ(1, 512),
+-		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
++		     SPINAND_INFO_OP_VARIANTS(&read_cache_dtr_variants,
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     0,
 -- 
 2.43.0
 

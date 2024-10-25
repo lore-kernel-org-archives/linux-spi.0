@@ -1,109 +1,165 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFBDB20BB5A;
-	Fri, 25 Oct 2024 18:28:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80189185E50;
+	Fri, 25 Oct 2024 18:40:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729880893; cv=none; b=FEUWuYwuNkEFUHJrZdVQfiyYJzmUgUQf7r4Cd77ZP2QFutowmnyXK3Atxlq9xFGLoqkNmoUQe5wsPTH/dBWo79hhUxUhfyyCqNcwtQg7nhES6TJBLVig4pVZ5koXPM6Zo2H+u0CJNBqdZLitUH6DQfHgJkJ3nqIjMbGEDgZxeqY=
+	t=1729881646; cv=none; b=Ed5awnu1NhkX9URuuMUW/6qU2ysMCntK+QWU85QVkJu2zslEg/OsjXuiwrGJkc2CakNyoirj8JoGmoPfTrDSRq2qdu8x/68cahoGwg4PhwtZa2holVyL6lisNZFuyLCpCXXJqCnvWRCSG8vdv1294aerNuCFTiTxy3jOpyXmpHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729880893; c=relaxed/simple;
-	bh=ETXMGUI5eB1KH5XNFeYeE4GITMkh3IF+X6s9NRMijaA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=LL33lZs4Qq8Y9+uJYyy+Ii/Df++AzhOS1usZnC65GukXBLmiuwrWJIqJY5/PU7q0hUfxxLjEfTYuIirwX5P9vmcpZDHn2WWK+lxKd3s+RO5mVnN/DxyxnDFxEhxH4jzq/7gKlM/nEC4CUwpG2PsgsqJppIwzywb04mP7lLzvWhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ccnyI1/p; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+	s=arc-20240116; t=1729881646; c=relaxed/simple;
+	bh=JRxNUr5yui2gNVAeX4FE/a5Z8KBgsyO2L2DGHu/TKtU=;
+	h=Date:From:To:Cc:Message-ID:Subject:MIME-Version:Content-Type; b=J4sBl3IhfUNIvQS8LUEBhFX2jMXVPrkCR9mL/esmXmQB6DFZvtxCAL3OKT++IKN7ttJ9Klw8jKM6uqpmZFl5FQ6+xnTaSOvL9DvwN/4H0GH32fo274mVXvnn9lfmdynyFtO3HzrHvHjskW2P2bEUxLzpo78iM4pPyxntUAui4So=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PmUlchIc; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ccnyI1/p"
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49PAoKw8006951;
-	Fri, 25 Oct 2024 18:27:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	aeiIjuiCiGELOTopIbo//bFGGETMmV3/7Vt9PUQCGes=; b=ccnyI1/pESHfxTj4
-	rE6uXuGv6QJh7vDzeWCAAWpgG4NwA9BM/xR1AHNbGYf/zgYVfZ4YWyameaCJsQak
-	ZKsq8SldZDHOR7+D5lcZQD3nzxlfPNzukq7ShECkaB4XjrcNIhcmqh+YrXlR4B90
-	okW/dvrE0yHVySq7Snza/XR+GdnzwaoqZN5FOFuXK/KgqjYMqXYohXSH+BKpwkY5
-	JFsrmpFl8y7WXzG6OwPxOHqpgZnAeGhMWzX89dxBHdtV6SrLtVHJEfxmcuv4rdel
-	WaZOdwL6mAb8aA1v6nklThvvuO6SUChjmd7HP64mlT6Nf9vdJC7YLUxJViRQ2TUr
-	kqftHQ==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42g9x6hdgc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 25 Oct 2024 18:27:59 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49PIRmIl000467
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 25 Oct 2024 18:27:48 GMT
-Received: from [10.48.242.80] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 25 Oct
- 2024 11:27:47 -0700
-Message-ID: <dcdd870b-c4b8-4bb8-9c08-82474cc4d872@quicinc.com>
-Date: Fri, 25 Oct 2024 11:27:46 -0700
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PmUlchIc"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-37d462c91a9so1598331f8f.2;
+        Fri, 25 Oct 2024 11:40:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729881643; x=1730486443; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:message-id:cc:to
+         :from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=JRxNUr5yui2gNVAeX4FE/a5Z8KBgsyO2L2DGHu/TKtU=;
+        b=PmUlchIchkKzpGCZm2vPQcINgkMTki8G8xL4aQVHV4lIKyUHIblgMKFC0HQuBdh4w2
+         md1esL0R77wspbiz0v57LTCcdpBYluHBS14BIWj2sy2I6oIvF+s8mg9YGiVHdgqoSOqt
+         HyN6bBLG0Ph5VGL6XYTrKULSx6ICVVkSszKOD3iyErVeCQncF3ZbYEnEVXFPHTG4+Wt2
+         4zqzozTmcQeqd+bCzSBWZ/Qa0IdOzkbnRtNQsTaY2n8BxZMYX/+hklToscp8QpeTdHNv
+         uzLRulQS9uKVY51SZfIu9tuUQoXdSwUyjbj8h0ZoNFSmm3LQn44enhMkGkF2dahV3R99
+         Rrtw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729881643; x=1730486443;
+        h=content-transfer-encoding:mime-version:subject:message-id:cc:to
+         :from:date:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JRxNUr5yui2gNVAeX4FE/a5Z8KBgsyO2L2DGHu/TKtU=;
+        b=xRWs4UwOraFmkorxze2F6cwl07h2MkwqRa9KJHozVsZy1BtehlYRua0pCaZmH7aFfU
+         KDmPvZvl00r/U1YVU2Vs+hFWurZtnKUDZgGvWL7USy59u2cXUgOtv+TzgcQX6LRpf4sh
+         FZqIcPox0RsVGjKvLcQghJ2pbtiJq1hG0lT0gxFPQI26FnAQNWjrFgIAiKStGWg3CYEh
+         dr/tuaA8qJRdfqcktmtMYdxiWxjU7rJG3CtZG78PC72qxIexPXFlyeSO4zG2N77T3NMD
+         0o1pSxnv1UadjN9UbkJHUPWmg/kkw/reJ+C13CpHNZgOZAkspR+JjHU7hL9pNwA9URDL
+         u1gA==
+X-Forwarded-Encrypted: i=1; AJvYcCU80Prdd9iHJTthnpNQfiQRK7iCfZ5uPMPnmLn2OPP6ueHPWP0Kk6Idd1Z8UYYDMRapCWXr8rphKs8j@vger.kernel.org, AJvYcCVBOlO4ZrpibAy0Rt2/xAi4vorXfSA5FaN0M/S0h5JXA9i/YKMtaariCKYKY0Yt9zXAyvKBdbYSAPWV@vger.kernel.org, AJvYcCX+OQET6fwLnlBNoiy4KBIronzbq1DE7HKfcwBfV0kCgQEL/TLgjlYC1WHKTZu4J65ss4S2ryq3qQ3c@vger.kernel.org, AJvYcCXCILfq2rWi4HxBw6dFBdbDG431pGcR+dE9mP87D9s0YwlXqMdLxcfUA45VnXp95pJgZaP8ACA/PBNN@vger.kernel.org, AJvYcCXqn17Q0wNCYjQaaXtWfuSDiiE8TMB+phzRXrzjDrOnxdWwCUbPjAGT/BhAsXBsMMEZIn1DCW1Cik04+Qft@vger.kernel.org
+X-Gm-Message-State: AOJu0YzmdmgqyNNXaaRR0jmeL0/ipbdieoA6uYYx+PuMMD+qc0NbpXkP
+	Ono62HUdZiLJV7rrlw9W9dOPu3IyPKATuimMjT5BGBeBrp4SfpH99slHQj/jEb1kcqtt
+X-Google-Smtp-Source: AGHT+IGS6rcHOlbTprJsbT/HrRycQKHd080NuZIR69soUsvtun0u2f/I9JB4hvq+jJZoGz6PjNSYZQ==
+X-Received: by 2002:a5d:4311:0:b0:374:c17a:55b5 with SMTP id ffacd0b85a97d-3806111a1bemr275137f8f.14.1729881642551;
+        Fri, 25 Oct 2024 11:40:42 -0700 (PDT)
+Received: from [127.0.0.1] (aftr-62-216-210-211.dynamic.mnet-online.de. [62.216.210.211])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38058b70c91sm2193563f8f.85.2024.10.25.11.40.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 25 Oct 2024 11:40:42 -0700 (PDT)
+Date: Fri, 25 Oct 2024 20:40:42 +0200 (GMT+02:00)
+From: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Mark Brown <broonie@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	=?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+	=?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	David Jander <david@protonic.nl>,
+	Martin Sperl <kernel@martin.sperl.org>, linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org
+Message-ID: <dc52cda0-47d9-4cbf-a68e-0af304edc32e@gmail.com>
+Subject: Re: [PATCH RFC v4 11/15] iio: buffer-dmaengine: add
+ devm_iio_dmaengine_buffer_setup_ext2()
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v12 4/8] mtd: nand: Add qpic_common API file
-To: Md Sadre Alam <quic_mdalam@quicinc.com>, <broonie@kernel.org>,
-        <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
-        <andersson@kernel.org>, <konradybcio@kernel.org>,
-        <miquel.raynal@bootlin.com>, <richard@nod.at>, <vigneshr@ti.com>,
-        <manivannan.sadhasivam@linaro.org>, <linux-arm-msm@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-mtd@lists.infradead.org>
-CC: <quic_srichara@quicinc.com>, <quic_varada@quicinc.com>
-References: <20241021115620.1616617-1-quic_mdalam@quicinc.com>
- <20241021115620.1616617-5-quic_mdalam@quicinc.com>
- <41db541a-4de1-409b-bfec-7b9456fc200f@quicinc.com>
- <4c239c07-799c-b910-c6e0-ff717202ceb0@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-Content-Language: en-US
-In-Reply-To: <4c239c07-799c-b910-c6e0-ff717202ceb0@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 5w8o4jkyHpExRaVzhFBXGbmxhFScf2MC
-X-Proofpoint-ORIG-GUID: 5w8o4jkyHpExRaVzhFBXGbmxhFScf2MC
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 adultscore=0
- clxscore=1015 mlxscore=0 phishscore=0 spamscore=0 lowpriorityscore=0
- impostorscore=0 priorityscore=1501 mlxlogscore=885 suspectscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410250141
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Correlation-ID: <dc52cda0-47d9-4cbf-a68e-0af304edc32e@gmail.com>
 
-On 10/21/2024 9:39 PM, Md Sadre Alam wrote:
-> 
-> 
-> On 10/21/2024 11:49 PM, Jeff Johnson wrote:
->> On 10/21/24 04:56, Md Sadre Alam wrote:
->> ...
->>> diff --git a/drivers/mtd/nand/qpic_common.c b/drivers/mtd/nand/qpic_common.c
->>> new file mode 100644
->>> index 000000000000..570ab59ca12b
->>> --- /dev/null
->>> +++ b/drivers/mtd/nand/qpic_common.c
->>> @@ -0,0 +1,757 @@
->>> +// SPDX-License-Identifier: GPL-2.0-only
->>> +/*
->>> + * Copyright (c) 2016, The Linux Foundation. All rights reserved.
+Oct 25, 2024 18:42:02 David Lechner <dlechner@baylibre.com>:
+
+> On 10/25/24 8:24 AM, Nuno S=C3=A1 wrote:
+>> I still need to look better at this but I do have one though already=20
+>> :)
 >>
->> I'm surprised you aren't adding a 2024 Qualcomm Innovation Center copyright
-> qpic_common.c file is derived from drivers/mtd/nand/raw/qcom_nandc.c file
-> so I am retaining the Copyright from the drivers/mtd/nand/raw/qcom_nandc.c file
+>> On Wed, 2024-10-23 at 15:59 -0500, David Lechner wrote:
+>>> Add a new devm_iio_dmaengine_buffer_setup_ext2() function to handle
+>>> cases where the DMA channel is managed by the caller rather than=20
+>>> being
+>>> requested and released by the iio_dmaengine module.
+>>>
+>>> Signed-off-by: David Lechner <dlechner@baylibre.com>
+>>> ---
+>>>
+>>> v4 changes:
+>>> * This replaces "iio: buffer-dmaengine: generalize requesting DMA=20
+>>> channel"
+>>> ---
+>
+> ...
+>
+>>> @@ -282,12 +281,38 @@ void iio_dmaengine_buffer_free(struct=20
+>>> iio_buffer *buffer)
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 iio_buffer_to_dmaengine_buff=
+er(buffer);
+>>> =C2=A0
+>>> =C2=A0=C2=A0=C2=A0 iio_dma_buffer_exit(&dmaengine_buffer->queue);
+>>> -=C2=A0=C2=A0 dma_release_channel(dmaengine_buffer->chan);
+>>> -
+>>> =C2=A0=C2=A0=C2=A0 iio_buffer_put(buffer);
+>>> +
+>>> +=C2=A0=C2=A0 if (dmaengine_buffer->owns_chan)
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dma_release_channel(dmaengine_buf=
+fer->chan);
+>>
+>> Not sure if I agree much with this owns_chan flag. The way I see it,=20
+>> we should always
+>> handover the lifetime of the DMA channel to the IIO DMA framework.=20
+>> Note that even the
+>> device you pass in for both requesting the channel of the spi_offload=C2=
+=A0=20
+>> and for
+>> setting up the DMA buffer is the same (and i suspect it will always=20
+>> be) so I would
+>> not go with the trouble. And with this assumption we could simplify a=20
+>> bit more the
+>> spi implementation.
+>
+> I tried something like this in v3 but Jonathan didn't seem to like it.
+>
+> https://lore.kernel.org/all/20240727144303.4a8604cb@jic23-huawei/
+>
+>>
+>> And not even related but I even suspect the current implementation=20
+>> could be
+>> problematic. Basically I'm suspecting that the lifetime of the DMA=20
+>> channel should be
+>> attached to the lifetime of the iio_buffer. IOW, we should only=20
+>> release the channel
+>> in iio_dmaengine_buffer_release() - in which case the current=20
+>> implementation with the
+>> spi_offload would also be buggy.
+>
+> The buffer can outlive the iio device driver that created the buffer?
 
-If you have a derived file then you should retain the copyright of the
-original but then also add current copyright for all changes made on top of
-the original file.
+Yes, it can as the IIO device itself. In case a userspace app has an open=
+=20
+FD for the buffer chardev, we get a reference that is only released when=20
+the FD is closed (which can outlive the device behind bound to its=20
+driver). That is why we nullify indio_dev->info and check for it on the=20
+read() and write() fops.
 
+FWIW, I raised concerns about this in the past (as we don't have any lock=
+=20
+in those paths) but Jonathan rightfully wanted to see a real race. And I=20
+was too lazy to try and reproduce one but I'm still fairly sure we have=20
+theoretical (at least) races in those paths. And one of them could be (I=20
+think) concurrently hitting a DMA submit block while the device is being=20
+unbound. In that case the DMA chan would be already released and we could=
+=20
+still try to initiate a transfer. I did not check if that would crash or=20
+something but it should still not happen.
+
+- Nuno S=C3=A1

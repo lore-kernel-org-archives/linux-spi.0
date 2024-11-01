@@ -1,103 +1,152 @@
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B94282E62C
-	for <linux-spi@vger.kernel.org>; Fri,  1 Nov 2024 18:45:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABDAA1CEE84;
+	Fri,  1 Nov 2024 19:26:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730486754; cv=none; b=QQ4eFZ9H8Kc49pnnZrMWEcSJ3nu796cyy2bVg3D3KVrQUedjIv6xV99ncTPIjG7va3MTdPT/oe6ZeLkZrBM/SZQqqdLvJR+cHasIMtIW3RJXunBuubk998wZ6r5kCGG5JzVcrU5hFuOLDK9FBDoH1jghl3NGtQ5NMsbYi/iazAk=
+	t=1730489208; cv=none; b=n+ZFeRSZDqFH86yyDQeou7j427wwZqMwcjDCxli7xZRp2c4hLJxL5o1E1aZKlCo8IqgSVjo1srNF3RMXVQAKde0QeEgHYhxDesbsL7NeOuCTyAwjgm7ItFpJiU8W1q4yd1Zek2EA2j42Lp3A532cV7co4JQ0WqEePB9H07T6Y4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730486754; c=relaxed/simple;
-	bh=OT9cBjHQ3ujswZRDw+FNMBH1MtYhwCWqL+mnA9z2tFQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=X8+HR/8piKxBccMGL1wV0Iw6rFwb+AG9qEM7HSR6lgx95i+1cdhNw0+p/hTam5xNhBdMpwzhJCye35LNDEn5uGwKZkxSFv4qKmCkakmhrjRwFLtR0m2+Q8lwgDQ91RLb3rK0pAsuL1LAPwSI8/x3FL0hhKsLJh9uumCDMqchJWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=pYncye6Z; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=sWmxrp/U; arc=none smtp.client-ip=80.241.56.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1730489208; c=relaxed/simple;
+	bh=2+61SXeXGIVwV2Py0mMH4Lf6SswQfF2F/Q38nkoG8tk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=PBcgp7h9bIU53B6kuEcHTEsK7Xuc+Ma6HDkvqRYC855NnN1ZIpwklkOlrFvy6KJzDaUuDjQrZirXHSxkSCLzEJn98pgk5e3TOvNjw7JC7TNcr+NSBxILj46S+r7vJ2DyC9LLHoNpjVQvfQ6NZOSM8MLiPA8S2mCoV3l7y9ws4FQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GnphfbFd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="pYncye6Z";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="sWmxrp/U"
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4Xg8nQ2VNLz9sZH
-	for <linux-spi@vger.kernel.org>; Fri,  1 Nov 2024 19:40:42 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1730486442;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=6/9VnVsmxWUBEZAztesW0Imqm/4b9ZRdQZPnI1KaBCY=;
-	b=pYncye6Z0PAnHdvQ8/fOW5OZwKD/vSHsN3WxnsRw4HFGklC0ugY2YuzxMmlHb1FJEksslm
-	+2rlGBwd0Xr/uRgV3z/BdxnR152FbEQEvsr05GFcslQpvNTnvjkNRKqOobxPnrmelzYLzF
-	5oc+VMgDGqWLMImJJFzhEBeMjKyWtkOQFZW8n8j3IJUvi5mP6VW1rwIzvUpyUrQ1Q0VLuM
-	oROE/jXsP/M5nqRPQIMFMjjp3HXh5wE4XDeJy2doNepVvLqz6zfp7YEUqiomFV9JlXa6AE
-	wXohB2BZHqF3VmIYtexbJCh2JtnI4PaJzNl83EOZ6CX+ShqW+gd3MNdQ3kd3Kw==
-From: Alessandro Grassi <alessandro.grassi@mailbox.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1730486440;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=6/9VnVsmxWUBEZAztesW0Imqm/4b9ZRdQZPnI1KaBCY=;
-	b=sWmxrp/USFBEm83yd+7QAUJxeHh2kyZKt6xhJilH6+T2NeduqkLPxSL5uXCmnBF8yx7qIX
-	9KCOaRUCtAKEZtHRDStGslCvCabtBVee+JN0C8bLVSKaelJSqDmdHhw3JKSB6IRadMlJs7
-	beUD/bC5jVzVUh9tcc7PDZDwuN9EPIXRoimKc6EMNFnhmzn4nf8TTyJPy9+C43rXhn69/e
-	DTYzjCuTR+T29C0C1u16h2bRtfqzZERL6Fu+O1Y9lhvzyZYZbc79Yk+M2Y/osWA0XoN24V
-	EleZUSeeYSlIzJZA8qtxP4qA/mHDRtHUCv1u2PFK6VLUrS0WcCxFkNeGlgHi0w==
-To: linux-spi@vger.kernel.org
-Cc: Alessandro Grassi <alessandro.grassi@mailbox.org>
-Subject: [PATCH] spi: spi-sun4i: fix early activation
-Date: Fri,  1 Nov 2024 19:40:30 +0100
-Message-ID: <20241101184030.51254-1-alessandro.grassi@mailbox.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GnphfbFd"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 4FED1C4CED5;
+	Fri,  1 Nov 2024 19:26:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730489208;
+	bh=2+61SXeXGIVwV2Py0mMH4Lf6SswQfF2F/Q38nkoG8tk=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=GnphfbFdWjKqXyeoQ0fXrKGyXutOeBtasholt8bTjaEBbuXFjUMFr2ApVGt2v8ufz
+	 t0xrn4NsqAGSUmF3pSuTkjrB2SOaaWm9Q6jCnbwgJpJyA+88bYaqrrJwF6Wu3mfns2
+	 B2N++Ge3Nmwv94i5v9gONluT4BIhnOzhnfUeMr9IMyPF9jQQux1cYY+IVS0NCz3ICI
+	 yfbgXHoptYIbEOeTzAJNd/5/bcaFVHjzenf3AkViFWH5sDP33Iz7T01McEZgiJNO/s
+	 zKY0wOV0rARKJMNsPeKSgIj1t29vSzHkgYD1d864zE6Vd6qHTZunXCEv5LwyWw8jP5
+	 uRG/3or9veVzw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B892E6F086;
+	Fri,  1 Nov 2024 19:26:48 +0000 (UTC)
+From: Janne Grunau via B4 Relay <devnull+j.jannau.net@kernel.org>
+Date: Fri, 01 Nov 2024 20:26:12 +0100
+Subject: [PATCH v3 1/3] dt-bindings: spi: apple,spi: Add binding for Apple
+ SPI controllers
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-MBO-RS-META: kw9miziwjmysgwow4xrjg5uy5sfnaa1a
-X-MBO-RS-ID: 09fc033a06fb9b21164
-X-Rspamd-Queue-Id: 4Xg8nQ2VNLz9sZH
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241101-asahi-spi-v3-1-3b411c5fb8e5@jannau.net>
+References: <20241101-asahi-spi-v3-0-3b411c5fb8e5@jannau.net>
+In-Reply-To: <20241101-asahi-spi-v3-0-3b411c5fb8e5@jannau.net>
+To: Hector Martin <marcan@marcan.st>, Sven Peter <sven@svenpeter.dev>, 
+ Alyssa Rosenzweig <alyssa@rosenzweig.io>, Mark Brown <broonie@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-spi@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Janne Grunau <j@jannau.net>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2077; i=j@jannau.net;
+ s=yk2024; h=from:subject:message-id;
+ bh=TsW7zwdUd7DpJxv+e2Rjl4FSQ1yenKbJUaCwJVIeRgk=;
+ b=owGbwMvMwCW2UNrmdq9+ahrjabUkhnRV7bK+lzuPJp1PrtvwrTfuwVU/Tst+lvM/3UsuNsusv
+ 6V83Ci+o5SFQYyLQVZMkSVJ+2UHw+oaxZjaB2Ewc1iZQIYwcHEKwETEJjAyXNXsm612RTNCOJb/
+ zPaqfaz8i/d4aIdeFQxVOyhc8/5oMcN/37Z3KYcFUvfsufS9JszvVmSJTfflF2eWh8zL8lz4oW8
+ /EwA=
+X-Developer-Key: i=j@jannau.net; a=openpgp;
+ fpr=8B336A6BE4E5695E89B8532B81E806F586338419
+X-Endpoint-Received: by B4 Relay for j@jannau.net/yk2024 with auth_id=264
+X-Original-From: Janne Grunau <j@jannau.net>
+Reply-To: j@jannau.net
 
-The SPI interface is activated before the CPOL setting is applied. In
-that moment, the clock idles high and CS goes low. After a short delay,
-CPOL and other settings are applied, which may cause the clock to change
-state and idle low. This transition is not part of a clock cycle, and it
-can confuse the receiving device.
+From: Hector Martin <marcan@marcan.st>
 
-To prevent this unexpected transition, activate the interface while CPOL
-and the other settings are being applied.
+The Apple SPI controller is present in SoCs such as the M1 (t8103) and
+M1 Pro/Max (t600x). This controller uses one IRQ and one clock, and
+doesn't need any special properties, so the binding is trivial.
 
-Signed-off-by: Alessandro Grassi <alessandro.grassi@mailbox.org>
+Signed-off-by: Hector Martin <marcan@marcan.st>
+Signed-off-by: Janne Grunau <j@jannau.net>
 ---
- drivers/spi/spi-sun4i.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ .../devicetree/bindings/spi/apple,spi.yaml         | 62 ++++++++++++++++++++++
+ 1 file changed, 62 insertions(+)
 
-diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
-index fcbe864c9b7d..4b070377e3d1 100644
---- a/drivers/spi/spi-sun4i.c
-+++ b/drivers/spi/spi-sun4i.c
-@@ -264,6 +264,9 @@ static int sun4i_spi_transfer_one(struct spi_controller *host,
- 	else
- 		reg |= SUN4I_CTL_DHB;
- 
-+	/* Now that the settings are correct, enable the interface */
-+	reg |= SUN4I_CTL_ENABLE;
+diff --git a/Documentation/devicetree/bindings/spi/apple,spi.yaml b/Documentation/devicetree/bindings/spi/apple,spi.yaml
+new file mode 100644
+index 0000000000000000000000000000000000000000..8b4f974faa23bcf9a1ea0a0eb52ad17ca196b341
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/apple,spi.yaml
+@@ -0,0 +1,62 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/spi/apple,spi.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
- 	sun4i_spi_write(sspi, SUN4I_CTL_REG, reg);
- 
- 	/* Ensure that we have a parent clock fast enough */
-@@ -404,7 +407,7 @@ static int sun4i_spi_runtime_resume(struct device *dev)
- 	}
- 
- 	sun4i_spi_write(sspi, SUN4I_CTL_REG,
--			SUN4I_CTL_ENABLE | SUN4I_CTL_MASTER | SUN4I_CTL_TP);
-+			SUN4I_CTL_MASTER | SUN4I_CTL_TP);
- 
- 	return 0;
- 
++title: Apple ARM SoC SPI controller
++
++allOf:
++  - $ref: spi-controller.yaml#
++
++maintainers:
++  - Hector Martin <marcan@marcan.st>
++
++properties:
++  compatible:
++    items:
++      - enum:
++          - apple,t8103-spi
++          - apple,t8112-spi
++          - apple,t6000-spi
++      - const: apple,spi
++
++  reg:
++    maxItems: 1
++
++  clocks:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  power-domains:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++  - clocks
++  - interrupts
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/apple-aic.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    soc {
++      #address-cells = <2>;
++      #size-cells = <2>;
++
++      spi: spi@39b104000 {
++        compatible = "apple,t6000-spi", "apple,spi";
++        reg = <0x3 0x9b104000 0x0 0x4000>;
++        interrupt-parent = <&aic>;
++        interrupts = <AIC_IRQ 0 1107 IRQ_TYPE_LEVEL_HIGH>;
++        #address-cells = <1>;
++        #size-cells = <0>;
++        clocks = <&clk>;
++      };
++    };
+
 -- 
-2.45.2
+2.47.0
+
 

@@ -1,103 +1,85 @@
-Received: from mail.thorsis.com (mail.thorsis.com [217.92.40.78])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B08AD188700;
-	Mon,  4 Nov 2024 12:58:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.92.40.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57BD179FD;
+	Mon,  4 Nov 2024 14:06:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730725084; cv=none; b=qU8GKpf0Zfpyt+T8WfxWzg19nuqTFdmaeDISMx49NCgdsP3bVVmOfhcY6e4P1H6sIuBfsi7p9VapevagQX7zL3xyGT5WG3c8NP3VEUBUGjwmKkDbCBrgaQAhQ3jCaLJ9Qs0iLhY98/39XSLtUeJDRfOHaZAWbPgVe9UZlzBzwW0=
+	t=1730729219; cv=none; b=tf0iPo4/m6f97YEboyELsm+T6lapknNO+BmaVaqkIKaRPIbTWm5lgETSxz1MMMgr4g89oYwrsrVy+DAerewwtiXlzz6QpigCLx8TcSly+ORGkPfOjNqxhXMkD7+thWIXHpo10tVt2Yi9YdocOcByx5CRwruLWN/IUzH28UGAEXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730725084; c=relaxed/simple;
-	bh=uWo6MBCWDHenPWPskw9Mha5xIIzATKNCwLzi94uWMXA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h4l1kpdZdeKRy9g/GZfP7IfOTZ8qLAnFXolbnF8s4gS1FCp2InVPccjhK96Qokhj15QC7tKM1lTTVlcV4ij9KE/ZHpx6ejMp70bjwAAXfEEk+03sS6p7NhCGnE2BQCDFS7sTKEw/TZa+RFu+XYrOrZ3vKwDANj9slbYSpXDMC5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com; spf=pass smtp.mailfrom=thorsis.com; dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b=bqca/QcP; arc=none smtp.client-ip=217.92.40.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thorsis.com
+	s=arc-20240116; t=1730729219; c=relaxed/simple;
+	bh=cHw5WjtOXh0me9VqJiV7HdyADOxP6s53il3edf42Mt4=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=LtgiWayFT3Nmw9Wi+QqMtz7hG6y0scnUpKQEdLKI6KfE/bMu8VI7fke/CBZ9NFjAwzaOrHkxwBQ0dJeyoV+EgjIXZ2lCAwhHtZ6MXWnDNUApUWmKxpHfGR4kvQUmE3XoBLMhvFYkCwkq8J3Vq/wM6lRwFvs8PaLze/Cqg4xm9SU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kcTn19Qo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b="bqca/QcP"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9CCD5148169C;
-	Mon,  4 Nov 2024 13:48:18 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=thorsis.com; s=dkim;
-	t=1730724500; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=AYvItjWc7e4pPd+CCBu2oWSX6jirooxClqMJ96xxtcw=;
-	b=bqca/QcPRvHxrrDCthh0DkY0v87ETWZmLpK9jTIXcC/BG7tkQyu0CdN9HTbXkbxPI289eW
-	GN+J8oOvw9/q1uPpjlyZyLsdwoX2UPaUzUfIBqIIf52Ok6vlNNFpy9qTwzGJsLJvjfFdMK
-	mdv3O4Vcx/K+RH5ah7wXRsBdDAaNQFjRbWzDA62iipIndAUsPiqyEkweOnNEgU5wlmmSY9
-	m+zOIDM/MOQaPtuMEQYLYmmDlomqXV0WmGeU0a5pJfSFZLo/u82YB3usg2jWJbTxObtH1v
-	ZYT66nD8mg+tRIIIje0D0CXhWa/qDU7wPLjMEEcjCkgePV1oo5nKLSek/PPIfg==
-Date: Mon, 4 Nov 2024 13:48:12 +0100
-From: Alexander Dahl <ada@thorsis.com>
-To: =?iso-8859-1?B?Q3Pza+Fz?= Bence <csokas.bence@prolan.hu>
-Cc: Tudor Ambarus <tudor.ambarus@linaro.org>, linux-spi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Varshini Rajendran <varshini.rajendran@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Mark Brown <broonie@kernel.org>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Subject: Re: [PATCH v2] spi: atmel-quadspi: Create `atmel_qspi_ops` to
- support newer SoC families
-Message-ID: <20241104-vanilla-operating-de19b033f0a8@thorsis.com>
-Mail-Followup-To: =?iso-8859-1?B?Q3Pza+Fz?= Bence <csokas.bence@prolan.hu>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>, linux-spi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Varshini Rajendran <varshini.rajendran@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Mark Brown <broonie@kernel.org>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>
-References: <20241030084445.2438750-1-csokas.bence@prolan.hu>
- <7cc95e52-7509-44eb-8e30-d518283e7d87@linaro.org>
- <2b310b54-c215-40fa-b6d4-81faf75a8c9e@prolan.hu>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kcTn19Qo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEEABC4CECE;
+	Mon,  4 Nov 2024 14:06:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730729218;
+	bh=cHw5WjtOXh0me9VqJiV7HdyADOxP6s53il3edf42Mt4=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=kcTn19QoOZ8N3noXn3Xf0+pBYAE6lsela1cTKFNWrGKTQSmpsaMtschIea2WiPnae
+	 I/OGGgjNCHCzRKy07B42miiBULfDs+10DVGDdPNwbzX8pn98sFBLxAAIlslDj6rkhW
+	 8ZGtT3CBKixMm7gWTz6betED4jmRhn3PZxfN2IohbPyqJLUIpvPS+p5X4ITIBrkC2j
+	 THEZtvjHDOsXVpTH9Sn8M+UIwEpLZUGHCtL+R4KDHdyDLjGiGG7l9DUfitoegWuX7A
+	 w1pLAGLE6LRDl/7V1zEpJL4IUnYENCQyCJ/gU7r1TKh6wtUy//tiWx2ivMf3UXzhkc
+	 aI08pXU+9iC2w==
+From: Mark Brown <broonie@kernel.org>
+To: miquel.raynal@bootlin.com, 
+ Chris Packham <chris.packham@alliedtelesis.co.nz>
+Cc: linux-spi@vger.kernel.org, linux-mtd@lists.infradead.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20241030194920.3202282-1-chris.packham@alliedtelesis.co.nz>
+References: <94ffb58b-3242-4ab4-b09a-686116ced781@alliedtelesis.co.nz>
+ <20241030194920.3202282-1-chris.packham@alliedtelesis.co.nz>
+Subject: Re: [PATCH v2] spi: spi-mem: rtl-snand: Correctly handle DMA
+ transfers
+Message-Id: <173072921657.32316.5006858752359296486.b4-ty@kernel.org>
+Date: Mon, 04 Nov 2024 14:06:56 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2b310b54-c215-40fa-b6d4-81faf75a8c9e@prolan.hu>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-9b746
 
-Hi,
+On Thu, 31 Oct 2024 08:49:20 +1300, Chris Packham wrote:
+> The RTL9300 has some limitations on the maximum DMA transfers possible.
+> For reads this is 2080 bytes (520*4) for writes this is 520 bytes. Deal
+> with this by splitting transfers into appropriately sized parts.
+> 
+> 
 
-Am Wed, Oct 30, 2024 at 01:37:52PM +0100 schrieb Csókás Bence:
-> Hi,
-> 
-> On 2024. 10. 30. 12:09, Tudor Ambarus wrote:
-> > I think it's fine to split sama7g5 addition in smaller steps. But please
-> > add the sama7g5 support in the same patch set, otherwise this patch
-> > doesn't make sense on its own.
-> 
-> Well, actually, we're using SAMA5D2. My goal was just to somewhat harmonize
-> upstream with the vendor kernel so that we may contribute other patches that
-> we have made on top of the latter, or in the future, take patches from
-> upstream and apply it to our vendor kernel-based tree. This patch was only
-> meant to lay the groundworks for future SAMA7G5 support. I can of course
-> send the "other half" of the original patch if needed, but I wouldn't want
-> it to hold up this refactor.
+Applied to
 
-It would actually be better if vendor would bring their stuff
-upstream, so there's no need for a vendor kernel.  Did you talk to
-Microchip about their upstreaming efforts?  What was the answer?
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-Greets
-Alex
+Thanks!
 
-> 
-> > Also, if you think you significantly changed the code of authors, I
-> > think it's fine to overwrite the authorship. Otherwise, try to keep the
-> > authorship and specify your contributions above your S-o-b tag.
-> 
-> I don't know if it counts as "significantly changed", I split out parts of a
-> patch that were relevant for our device, and made small adjustments to make
-> it correctly apply to master. I didn't find a descriptive enough tag for
-> this, so I just went with Cc:, but if so desired, I could change it to a
-> S-o-b, Co-authored-by, Suggested-by etc.
-> 
-> Bence
-> 
-> 
+[1/1] spi: spi-mem: rtl-snand: Correctly handle DMA transfers
+      commit: 25d284715845a465a1a3693a09cf8b6ab8bd9caf
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+

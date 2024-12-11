@@ -1,42 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB31243B66;
-	Wed, 11 Dec 2024 18:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6B62446BD;
+	Wed, 11 Dec 2024 18:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733943090; cv=none; b=X6bx3pASYC2JNhqNYdBMR+rmfxPO8Z+MxEhZpCSNDla5WqvIDLGdLU7pwCxQ2Y4/yvg+hWz3iA6cae8UgwoX0Zpfg0H6B9YVO3u401syPQxpmxw3FrL3md3K0aqY2q/rdsed7De1GsSucWl1WMuEoZlhqBMG9p2GfA2JUgudXaw=
+	t=1733943106; cv=none; b=tOQ0YTdnGQeYppCFrKhESKh9oMcTOki8tSVWgOvMSw+WeXe4rkyxt3ij/0VKflIvIiq8n5Xjm0K9z/Oa4wQ8KGjDtRkkK884ax5gG06lXHUgQjI5L/1ji4dObDC5CflU/yjJnz224sGXW/6CMX7vYRXVwQAXKBpaisd7VUYe9ao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733943090; c=relaxed/simple;
-	bh=OdvefCJoWaj3RqWLpfvJpNkrDa5VhCq55NCBFCXKcb8=;
+	s=arc-20240116; t=1733943106; c=relaxed/simple;
+	bh=yLHfV8ngkXxhgtHKKyFXreDxZ0ZXQvQnWW97XSfdb98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rL/lBTajVVSAJ/XKDBE9IPqWwDnlwgzwmWJ5+nfOovzTP7FfpEFXr/qtpXHWPWKbRE+pTZqqLAFMCOw+gwSMyk1ZeiD4/MmZ0raxYJmElGN1xkBs95HASyauMAmQPdHJbSBKc6kLB04sMK6WbugI9FLNNjWSi1TWjKdQuis4YBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R0hgi7oo; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=UpUmhP7YikiC6bwB+0knrhAFcbMCLdmP0faVN47rN5+SbcXBH/gzdf3GTvMxMvQr/Up/A1lLEOGgKX1Qj811off0nmo0tUBkhawJWQ4mQJu4++DDcPJhyn2+OnHNvqIDYNE7k0wV6UiI0GbSY0zPywceWQ/UrAIPDyr9KLQpnFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gHnVvbS1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R0hgi7oo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4882BC4CED2;
-	Wed, 11 Dec 2024 18:51:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gHnVvbS1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08F6AC4CEDD;
+	Wed, 11 Dec 2024 18:51:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733943090;
-	bh=OdvefCJoWaj3RqWLpfvJpNkrDa5VhCq55NCBFCXKcb8=;
+	s=k20201202; t=1733943105;
+	bh=yLHfV8ngkXxhgtHKKyFXreDxZ0ZXQvQnWW97XSfdb98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R0hgi7oou1hmKViPZg7C6J08uft9s4g8yS73/NNfdW9EVZBpjcR7c4jfk4OqwyDif
-	 YFoq0cZIjmVuBVbfqHdyqUwWBT4awhmEUgQOzSsundquy+VlBI8qvS4yl0oforqmIb
-	 /Zal6JCJg1K7ZSj4s1gVYWRxXSPovn0PJHN6PmSk6vkmcDEICio1CuhPPRnZuCaW5L
-	 LvgT+e8Y494cLfd6jM7zpA+Hno9azVWVFuiplqTW0HJwxkeO4hMlgXwFtTNIWmatPx
-	 1AhyIXWwSwkx5F8iRPz6AxsPh7NGhc+ksgB83u8ybJMZ0x7jirYnfKHoYzxGhsBfWM
-	 J7QD2jWSwyK/Q==
+	b=gHnVvbS1XB97kpLzTk+1XMagYUCyxC2XQKdqIPD+YRSyVJeKVVovhWljEs/pmWnCO
+	 7ec/udzdaQpn6H1UDUosbAZ2tP+6uQBXYiQuKmfv1OPlFXChovIEW3GTFX9sWlLdQh
+	 wJ13+Drw8prnjqFCT/WJ3+EA/TyBsTKGlURKa0U+KsRQEpbkobvB/PRtzcoiYSpCA2
+	 FTXc53PgXH4czAxu1NE52q73hJdHmA+qgnTZRBMQ5EN0ewh2ewgL2Hfm1cUYjH+Vl2
+	 HGTym8lptC0FAz6Xya+wNx+QPgjHT6erIUkT5V0JRDagNSXBREVe2/OOMCAZ/x/JQ3
+	 SwEKSfBsIr13Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Aapo Vienamo <aapo.vienamo@iki.fi>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
+Cc: Purushothama Siddaiah <psiddaiah@mvista.com>,
+	Corey Minyard <cminyard@mvista.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 23/36] spi: intel: Add Panther Lake SPI controller support
-Date: Wed, 11 Dec 2024 13:49:39 -0500
-Message-ID: <20241211185028.3841047-23-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 31/36] spi: omap2-mcspi: Fix the IS_ERR() bug for devm_clk_get_optional_enabled()
+Date: Wed, 11 Dec 2024 13:49:47 -0500
+Message-ID: <20241211185028.3841047-31-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241211185028.3841047-1-sashal@kernel.org>
 References: <20241211185028.3841047-1-sashal@kernel.org>
@@ -51,38 +51,43 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.4
 Content-Transfer-Encoding: 8bit
 
-From: Aapo Vienamo <aapo.vienamo@iki.fi>
+From: Purushothama Siddaiah <psiddaiah@mvista.com>
 
-[ Upstream commit ceb259e43bf572ba7d766e1679ba73861d16203a ]
+[ Upstream commit 4c6ac5446d060f0bf435ccc8bc3aa7b7b5f718ad ]
 
-The Panther Lake SPI controllers are compatible with the Cannon Lake
-controllers. Add support for following SPI controller device IDs:
- - H-series: 0xe323
- - P-series: 0xe423
- - U-series: 0xe423
+The devm_clk_get_optional_enabled() function returns error
+pointers(PTR_ERR()). So use IS_ERR() to check it.
 
-Signed-off-by: Aapo Vienamo <aapo.vienamo@iki.fi>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Link: https://patch.msgid.link/20241204080208.1036537-1-mika.westerberg@linux.intel.com
+Verified on K3-J7200 EVM board, without clock node mentioned
+in the device tree.
+
+Signed-off-by: Purushothama Siddaiah <psiddaiah@mvista.com>
+Reviewed-by: Corey Minyard <cminyard@mvista.com>
+Link: https://patch.msgid.link/20241205070426.1861048-1-psiddaiah@mvista.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-intel-pci.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/spi/spi-omap2-mcspi.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-intel-pci.c b/drivers/spi/spi-intel-pci.c
-index 4337ca51d7aa2..5c0dec90eec1d 100644
---- a/drivers/spi/spi-intel-pci.c
-+++ b/drivers/spi/spi-intel-pci.c
-@@ -86,6 +86,8 @@ static const struct pci_device_id intel_spi_pci_ids[] = {
- 	{ PCI_VDEVICE(INTEL, 0xa324), (unsigned long)&cnl_info },
- 	{ PCI_VDEVICE(INTEL, 0xa3a4), (unsigned long)&cnl_info },
- 	{ PCI_VDEVICE(INTEL, 0xa823), (unsigned long)&cnl_info },
-+	{ PCI_VDEVICE(INTEL, 0xe323), (unsigned long)&cnl_info },
-+	{ PCI_VDEVICE(INTEL, 0xe423), (unsigned long)&cnl_info },
- 	{ },
- };
- MODULE_DEVICE_TABLE(pci, intel_spi_pci_ids);
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index 2c043817c66a8..4a2f84c4d22e5 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -1561,10 +1561,10 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	mcspi->ref_clk = devm_clk_get_optional_enabled(&pdev->dev, NULL);
+-	if (mcspi->ref_clk)
+-		mcspi->ref_clk_hz = clk_get_rate(mcspi->ref_clk);
+-	else
++	if (IS_ERR(mcspi->ref_clk))
+ 		mcspi->ref_clk_hz = OMAP2_MCSPI_MAX_FREQ;
++	else
++		mcspi->ref_clk_hz = clk_get_rate(mcspi->ref_clk);
+ 	ctlr->max_speed_hz = mcspi->ref_clk_hz;
+ 	ctlr->min_speed_hz = mcspi->ref_clk_hz >> 15;
+ 
 -- 
 2.43.0
 

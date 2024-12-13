@@ -1,35 +1,35 @@
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF16A1B983E
-	for <linux-spi@vger.kernel.org>; Fri, 13 Dec 2024 11:44:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 816284A21
+	for <linux-spi@vger.kernel.org>; Fri, 13 Dec 2024 11:56:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734090251; cv=none; b=oMCTDp+zTFUww3L6hvQzHy8s6Z78YrNLl++bFgE3ozGYnXbLE0YNODvSZm62brZSLfgo5aNKs/ytnnQJNL6AS+NfQPi82KNl9b9LUVkeOH6AoYoKrfd+rrYSxD2nR02uJLuEdMZplEiu9ZKFWsJiByXFqqrdjzaGRJr73pV0jB0=
+	t=1734091005; cv=none; b=Z0oVQspzKL4XSmrol9ufs7X8XA7dsmK5zmFtvS74doif7h40KHoC2Jufo+PvoHesS8fKGj77Pm8qa2xcSO/Jobz797+NMNqAKStYRaPfObYUJvAXOI49bImFin7llquH2Dz7mfbFDevtX6q2ezmjdjQgu0JA/Bz0FmVEZcFBWZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734090251; c=relaxed/simple;
-	bh=+7mATUIHkG8NZSamVn7nrNU4ZayJvQcaDK2lYNCVC+A=;
+	s=arc-20240116; t=1734091005; c=relaxed/simple;
+	bh=1N5Dij8c2GyjzKGRltjjEZbDJ8FA2c7LvDs7UtoWAp8=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=RlOnxfrBiFSL0IurpF+bI+OQOxFTenu9l9QBjHiZX7smPxfKpH4Kwiv8IU022uy8BBAmkq0hWBf4+6YhsT1BAa/AevqqJOvl+gW5EJW91DOa9/DiUYDirO2xPDidbnsl2x1F5CTstk1ypysHMeUrNXl1i3Gn3s0fw2fAZqyBaT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ObR9Upkq; arc=none smtp.client-ip=217.70.183.199
+	 MIME-Version:Content-Type; b=EgP/cjEXbVtga8QSnfkfAM8Ual1jXwtJ2sfX6oUwjypihYNSUJBrm4N9tBdcLtnV/xVBhl6LDE99D6aej7FI6zeAEbFzQsO8XO9nT/23h2RXAGkHVIf5r9ipnPrQG7zCDCIXYqd4XPkQN9I/UtekTRmKzZi10piCv5D/eB1i68w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=jkMXvB2o; arc=none smtp.client-ip=217.70.183.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ObR9Upkq"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id B4CADFF805;
-	Fri, 13 Dec 2024 11:44:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="jkMXvB2o"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 1F204C0002;
+	Fri, 13 Dec 2024 11:56:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1734090245;
+	t=1734090999;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+7mATUIHkG8NZSamVn7nrNU4ZayJvQcaDK2lYNCVC+A=;
-	b=ObR9UpkqoJddCg8QgXMN+prY1i85V/9FhmuXW31mQvqUSgrFM4kILE/bK9hcze6JrOxlDT
-	U2WFnFNpAH/RHnKNVRJkm9FJDZMQF2gdbSm0pDyJnDH//es/bpmsG6XPHQMSjn81sadCvn
-	kmHuFbca+zaweyOmhCwDAiLlcCHqgvSIpk6Yfn5Z7OOLfoqAWdLTK/BRufmSkSExqghzjn
-	QxtFNMfmcZYJgLzz84ukBfO+kHpNRbloTBBYHLRuj1Fe7tCIj5rRBLjrGrNjpcKCXpPCbu
-	3Y26TDBmwSk37J3b6cvxE8ZLIEN1o5QRjWU75mFeHR5Bk97pUCY+ANieMoAsgg==
+	bh=1N5Dij8c2GyjzKGRltjjEZbDJ8FA2c7LvDs7UtoWAp8=;
+	b=jkMXvB2otgUgTbT+cPpsZhN2aWSVafG7uXrKvWiP8pmRrM4H+CZ7R65Na6eGkf2D6/H8YS
+	Syj2D+IbbKSGf1+PnU61bSDVAPRZR6eR+kSWsB7Gtb5tnsEckVvbhNusSlxdRqKaJsplDf
+	rURgMShVsLtOjwutYzPOqNbs/LKauq9HOcwQThjRitkgWXzI206E1eBcthhBMeaw3zhy41
+	tIeDJBo4ExqP/oFrJAgRz0s5ugT5GY7rvXxV2ysStIDuBAdT4Gug2ymr8ULMY7rvoKIf1r
+	mEThihFGsuY/1Uz0+JfAkR2J85bWtEtVsCj5m2Uy9EMpFyk8z1dYO3fwiRVSLQ==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
 To: Tudor Ambarus <tudor.ambarus@linaro.org>
 Cc: Richard Weinberger <richard@nod.at>,  Vignesh Raghavendra
@@ -44,16 +44,16 @@ Cc: Richard Weinberger <richard@nod.at>,  Vignesh Raghavendra
  <angelogioacchino.delregno@collabora.com>,  Haibo Chen
  <haibo.chen@nxp.com>,  Yogesh Gaur <yogeshgaur.83@gmail.com>,  Heiko
  Stuebner <heiko@sntech.de>,  Michal Simek <michal.simek@amd.com>
-Subject: Re: [PATCH 04/24] spi: amlogic-spifc-a1: Support per spi-mem
- operation frequency switches
-In-Reply-To: <9e942bdd-6ade-40a7-ae4a-104ed288a09f@linaro.org> (Tudor
-	Ambarus's message of "Mon, 11 Nov 2024 13:42:31 +0000")
+Subject: Re: [PATCH 18/24] mtd: spinand: Add an optional frequency to read
+ from cache macros
+In-Reply-To: <6e037ce3-1755-4cb5-9124-4b32773fbba4@linaro.org> (Tudor
+	Ambarus's message of "Mon, 11 Nov 2024 14:17:36 +0000")
 References: <20241025161501.485684-1-miquel.raynal@bootlin.com>
-	<20241025161501.485684-5-miquel.raynal@bootlin.com>
-	<9e942bdd-6ade-40a7-ae4a-104ed288a09f@linaro.org>
+	<20241025161501.485684-19-miquel.raynal@bootlin.com>
+	<6e037ce3-1755-4cb5-9124-4b32773fbba4@linaro.org>
 User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Fri, 13 Dec 2024 12:44:02 +0100
-Message-ID: <87o71fn6yl.fsf@bootlin.com>
+Date: Fri, 13 Dec 2024 12:56:37 +0100
+Message-ID: <877c83n6dm.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -64,32 +64,16 @@ Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-GND-Sasl: miquel.raynal@bootlin.com
 
-Hi Tudor,
-
-On 11/11/2024 at 13:42:31 GMT, Tudor Ambarus <tudor.ambarus@linaro.org> wro=
+On 11/11/2024 at 14:17:36 GMT, Tudor Ambarus <tudor.ambarus@linaro.org> wro=
 te:
 
 > On 10/25/24 5:14 PM, Miquel Raynal wrote:
->> Every ->exec_op() call correctly configures the spi bus speed to the
->> maximum allowed frequency for the memory using the constant spi default
->> parameter. Since we can now have per-operation constraints, let's use
->> the value that comes from the spi-mem operation structure instead. In
->> case there is no specific limitation for this operation, the default spi
->> device value will be given anyway.
->>=20
->> The per-operation frequency capability is thus advertised to the spi-mem
->> core.
+>> While the SPINAND_PAGE_READ_FROM_CACHE_FAST_OP macro is supposed to be
+>> able to run at the highest supported frequency, it is not the case of
 >
-> I see the driver sets ctrl->min_speed_hz =3D SPIFC_A1_MIN_HZ;
->
-> Do you want to introduce a struct spi_controller_mem_ops.supports_op and
-> check that the spimem op freq is not below the controller's minimum freq?
+> what do you mean by highest supported frequency? Is it the max freq
+> between the ones supported by the controller, pcb and flash?
 
-I was about to do that but I think we can do better. I am already tuning
-the max frequency depending on the op. I can just check in the default
-supports_op hook that the operation max frequency is not below the
-controller's minimum. So all drivers with this kind of limitation will
-be covered.
+I am really talking about flash limitations here, I will clarify.
 
-Thanks for the heads up!
 Miqu=C3=A8l

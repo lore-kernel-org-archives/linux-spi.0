@@ -1,55 +1,55 @@
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 602021FA828
-	for <linux-spi@vger.kernel.org>; Wed, 18 Dec 2024 19:02:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0094B1FBEAA
+	for <linux-spi@vger.kernel.org>; Wed, 18 Dec 2024 19:11:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734548581; cv=none; b=cRP8dsWoIsGIHQLi+mKn9hg74kZqOjJBHmpOxyPyfcgA1zLegLtGcnPLFNhbr3O97dpj0IFOujspiN2rGRnpWMqZLoydMAP/MevFKTUn1p9Du73y/kKYKWQkbSJrUe8vWB8KSHo7bX4HhzPEAJ49Yr6giHqqUqseLT05diipQ7U=
+	t=1734549074; cv=none; b=Wq30b/zdbXkM/cyh28ewe7rwa0GLgl1cDmEKuM8omvoqR8SKHhktAnUFsMTrkScNpGrqsJemQyY6rKPmFx7qX28nOQLttAEMU66mwBgu1czt8lX3Dxyye0P7gCRCALF0abFvc5eiJ4dnqBYk+tQSPU/NSb0bwcOqhGj6Sx8FiLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734548581; c=relaxed/simple;
-	bh=a4P2aNpfqv+7lX+XfTZe1VWJtsAlRUg0jf7GskDakbc=;
+	s=arc-20240116; t=1734549074; c=relaxed/simple;
+	bh=o8WmGY4A48l9tahSU4Wv0C45hmWVp4/CZf13nXfIEMo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=khdgIU7nKAI5hQcj/aSTkZoPpOAJnNfWwiGeBfzoQ23mmm/T38axYhcKs+paRh2vIVyXxC5mD2D+GkC+dxaV1sGjzpQl7/y4KhG1G9YALvESuVgg08mpmW/lnSLbRGJoAS4p/d+nwBjz25GSMbs8n4+gs2fEMCyQV4k2srAuTYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.182
+	 To:Cc:Content-Type; b=Y544ZHaK7N785sIkhXXQ11ALMdONba4iwFMOSp6hBy14ip5CyE30JjW/zQH7xTAPUolVPql6EdTxc3ccEQr+WJ9CzcLs68pBcgv0jp4w4VpdgBf8mx3ul64Xdv/r1CcT3jZvRniRZWReqodrQtRTgSrmqYeuMcEXIMF4SlbyyI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.219.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-467a63f5d1cso54688931cf.0
-        for <linux-spi@vger.kernel.org>; Wed, 18 Dec 2024 11:02:59 -0800 (PST)
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-6d8adbda583so222566d6.0
+        for <linux-spi@vger.kernel.org>; Wed, 18 Dec 2024 11:11:11 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734548577; x=1735153377;
+        d=1e100.net; s=20230601; t=1734549070; x=1735153870;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=HNd34XU8aNLDZlxIJv9iaXP4x5EO2XO48cl6rZwdKwU=;
-        b=wMAT5j6txWO+2iuo3zl/viciui3ALLfy4pYn8Wc1I4wZIHpn1aIu4Uff5iraw/W4Cs
-         4on8H6jX8+Q7aqa0Mmf0S/YipRgmNaAnT5qsJmIE+/8J0DAvedDpBzxL/htE/0V0gh1G
-         MiXFcSIiHS3vKujfRBc7+IDX3ZGJ058iSCDyLhF/VS2tJHtLM6dUjxVI+30yk3jJLVa6
-         6MgfeALyyD3SNYKfIpO10hNvHLcSIs6+0kJhzf9BIdNJoJ+lnS1WZF7h5hDmcrbSGfWP
-         9l0+14ycIz8hubRgknkHWa73oYeUX5c+4SvUoFsej7N0qFBw/BBiUBNOckY50LyQjvTW
-         ORBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXpE/ukWfXqU9ERUQ8+8YfoEgKiA+0Eqr7/6g4hRJ/HDSNMQE3LjySF/ZtO77e4sH5E1Rrtd2NifKU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPi6RQ04xfDcsvqptG0wRDAB8ad/4iqYhWku7B9d56/l8UkWmc
-	qmCbRQm07cJFloUJsWzWE9iQHb0ZTHxDlxlpf9022BezZDv6FrxQZGMRfDrM
-X-Gm-Gg: ASbGncs4hnW2FmkSFq4BHRJ23fxOFtdKplY+eIbKOuJTX6Nw9LVHXuozfzLdaKjryzS
-	5jCXL4As9RrLYZQzgj2/iFFwl+aA18mxnJj2LLXn0RbRw68oZSMJIjw6BuWbtMd4zSgkUweWeNo
-	bJLd4zm024EIPxK0GbV4oDb+Fp7f5f6YtG/ye3ZO6z2UmtVOe4WOVUpOBVmWrAvRquJ08ITh1mb
-	MNwnYn9DP+bNDaYzMjxblHRsRoSECdrRtBe6AeM0PYHjf/GKrXjm9FC1Ia1Gtq/wX0303BBwkN4
-	AfeixhQPUv6A1Ge5ViftDTc=
-X-Google-Smtp-Source: AGHT+IGKws/6xZNECnbvG5J3MGqIKA1O1UVEPFJdzStBmRm7E5rlrkaiwyRwIbL6RJXQeU6ghJpX/w==
-X-Received: by 2002:a05:6214:3019:b0:6d8:a48e:a027 with SMTP id 6a1803df08f44-6dd14b77a88mr14996586d6.2.1734548577521;
-        Wed, 18 Dec 2024 11:02:57 -0800 (PST)
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com. [209.85.222.181])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6dccd257bf7sm53333646d6.47.2024.12.18.11.02.57
+        bh=2tMeJYQga0hhnHEwekycDFOydstP9TVFTuQ8Wwc6BFo=;
+        b=rJ3hfVfu4idiAFrS8VXPnGA9/aKhm8uMlCfZDB8No9C5IjSyIWJR9G9eGv78BvaY8l
+         I92MzlG7Rth+BzWeWBHvR6dxXBNPn1BqVtqaB2/llaBKZD7XN33ov92k6sVoYErpy14a
+         hB928BLhCYx1XqlBE9uuOFvvxOPMM4gbpFVkyhr7KIiz73Lx68/afYmRavOGstmq6+Ip
+         wGRBjNbHcmS8S+Dv45eP1UnT3u7VDVLiXKiwNFlNKw0pizWT99yjjvxAneo+BQxVC3cu
+         vIdzmona8ls9tl2wkVVWWyzoqSV5jid4jF5CRiKj1sIqnX10u47a0LhMp7AM1F/3FO7+
+         UlTg==
+X-Forwarded-Encrypted: i=1; AJvYcCXEWOnNASj7H9r2hImbcSKK93i5fZ/tC01/0A8HaBwCkRZ9fRnMB6sSflKU/1FUidlVnDWp2NlX9To=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3kIg7d816Ou9z8ito+HK2qXXr44VfzIuaMkGd6rOJUoQFbIpY
+	tJjo4ZVL4LWAqYPrZgtmbQVPT4Y5iSY/AH6lYx/ONwVeAFJWz8r8CWhl9t9B
+X-Gm-Gg: ASbGnctpcR/jT/Od3z+D+Z08otKSrHwETzrLV0+EjxfLl5dWQLdACM7yXYuEId2/4NG
+	29lOfor07R0i0rKnFivJRbwXCUKqNmEtLfyNnjzyjo9qOO5xywz16heRSxnLwfqu6WlI3Rs8zTY
+	GkULcniKRdOf39ERYsWtyedMqO7VSF3TwRcCC+oQtnhwetJ85yBAjNIJGXXfIWWwZOZ70DSNEl6
+	Wowb/uTlSldqvGXKH0egaw4DdmFgqpcywlwdrZ3JTCnB+92HMKlglnsnLqhDPO0yJedZCnaJmsG
+	eQnloDsQLPeASUeNV4vQAmA=
+X-Google-Smtp-Source: AGHT+IG21PLFB/5rZYjoct/mR0DIc81pTmK9Jp78BDxrFRgYZJ63/42c62FR//9OeIEQSjLtIrkZ1A==
+X-Received: by 2002:ad4:5d41:0:b0:6d4:1ea3:981d with SMTP id 6a1803df08f44-6dd14c9d169mr13232496d6.43.1734549069922;
+        Wed, 18 Dec 2024 11:11:09 -0800 (PST)
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com. [209.85.222.177])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6dccd26c8cbsm52981916d6.54.2024.12.18.11.11.09
         for <linux-spi@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 18 Dec 2024 11:02:57 -0800 (PST)
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-7b1601e853eso524362985a.2
-        for <linux-spi@vger.kernel.org>; Wed, 18 Dec 2024 11:02:57 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXE3LMv0PY3RxfZ5UBrIhqG2m+BegRFFLz2GGYfh+Z6UjDjWgr7xSQOxp8gx8oBB8a4L0dFP0zXDEI=@vger.kernel.org
-X-Received: by 2002:a05:620a:24c3:b0:7b7:5d6:37fa with SMTP id
- af79cd13be357-7b9aa9b5a10mr61152385a.41.1734548576963; Wed, 18 Dec 2024
- 11:02:56 -0800 (PST)
+        Wed, 18 Dec 2024 11:11:09 -0800 (PST)
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-7b6ed9ed5b9so773080885a.2
+        for <linux-spi@vger.kernel.org>; Wed, 18 Dec 2024 11:11:09 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUndvHX8CYyYbx0kWBwT0G1VvDJvDQyy8/TnnouBHPctd7M1aUhRKb77X60ZmJlHCzjcDO0krF2sgw=@vger.kernel.org
+X-Received: by 2002:a05:620a:2607:b0:7b6:6a3b:53af with SMTP id
+ af79cd13be357-7b9aa8d5070mr95716985a.14.1734549069081; Wed, 18 Dec 2024
+ 11:11:09 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -57,12 +57,13 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20241217114226.1223724-2-u.kleine-koenig@baylibre.com>
- <CAMuHMdVzyq6L+9iNhtSdGpAJOKyu2vkzvveHXt0in9xUhD6mLQ@mail.gmail.com> <tk6wlbylk7aqfd3sys2jitpnbdz4xomdg2yr7hsppxyptgbek5@3vtvajq7krun>
-In-Reply-To: <tk6wlbylk7aqfd3sys2jitpnbdz4xomdg2yr7hsppxyptgbek5@3vtvajq7krun>
+ <CAMuHMdVzyq6L+9iNhtSdGpAJOKyu2vkzvveHXt0in9xUhD6mLQ@mail.gmail.com>
+ <tk6wlbylk7aqfd3sys2jitpnbdz4xomdg2yr7hsppxyptgbek5@3vtvajq7krun> <CAMuHMdU0FjXBgFLUxxvQeODPsU8xf+LAdQCg4xpAn_omJeA9WQ@mail.gmail.com>
+In-Reply-To: <CAMuHMdU0FjXBgFLUxxvQeODPsU8xf+LAdQCg4xpAn_omJeA9WQ@mail.gmail.com>
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 18 Dec 2024 20:02:45 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdU0FjXBgFLUxxvQeODPsU8xf+LAdQCg4xpAn_omJeA9WQ@mail.gmail.com>
-Message-ID: <CAMuHMdU0FjXBgFLUxxvQeODPsU8xf+LAdQCg4xpAn_omJeA9WQ@mail.gmail.com>
+Date: Wed, 18 Dec 2024 20:10:57 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdUEXFFXt1EkGafv+-arG4x4hFQMGO6E14O7zguyGT0kmQ@mail.gmail.com>
+Message-ID: <CAMuHMdUEXFFXt1EkGafv+-arG4x4hFQMGO6E14O7zguyGT0kmQ@mail.gmail.com>
 Subject: Re: [PATCH] spi: spidev: Align ordering of spidev_spi_ids[] and spidev_dt_ids[]
 To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>
 Cc: Mark Brown <broonie@kernel.org>, 
@@ -70,106 +71,15 @@ Cc: Mark Brown <broonie@kernel.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Uwe,
+On Wed, Dec 18, 2024 at 8:02=E2=80=AFPM Geert Uytterhoeven <geert@linux-m68=
+k.org> wrote:
+> Further improvements could be:
+>   - Generate spidev_spi_ids[] from spidev_dt_ids[] at runtime
+>     during module_init() (consumes cycles :-(,
+>   - Teach the subsystem matching code to strip the vendor prefix,
+>     to get rid of spidev_spi_ids[].
 
-On Wed, Dec 18, 2024 at 6:17=E2=80=AFPM Uwe Kleine-K=C3=B6nig
-<u.kleine-koenig@baylibre.com> wrote:
-> On Wed, Dec 18, 2024 at 11:32:16AM +0100, Geert Uytterhoeven wrote:
-> > On Tue, Dec 17, 2024 at 12:42=E2=80=AFPM Uwe Kleine-K=C3=B6nig
-> > <u.kleine-koenig@baylibre.com> wrote:
-> > > There is a 1:1 correspondance between the list of spi device-ids and =
-the
-> > > devicetree compatibles. The latter is ordered alphabetically by vendo=
-r
-> > > and device. To simplify keeping the two lists in sync, mention the
-> > > vendor in a comment for the spi device-ids and order alphabetically,
-> > > too.
-> > >
-> > > Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
-> >
-> > Thanks for your patch!
-> >
-> > > --- a/drivers/spi/spidev.c
-> > > +++ b/drivers/spi/spidev.c
-> > > @@ -698,20 +698,24 @@ static const struct class spidev_class =3D {
-> > >         .name =3D "spidev",
-> > >  };
-> > >
-> > > +/*
-> > > + * The spi device ids are expected to match the device names of the
-> > > + * spidev_dt_ids array below. Both arrays are kept in the same order=
-ing.
-> > > + */
-> > >  static const struct spi_device_id spidev_spi_ids[] =3D {
-> > > -       { .name =3D "bh2228fv" },
-> > > -       { .name =3D "dh2228fv" },
-> > > -       { .name =3D "jg10309-01" },
-> > > -       { .name =3D "ltc2488" },
-> > > -       { .name =3D "sx1301" },
-> > > -       { .name =3D "bk4" },
-> > > -       { .name =3D "bk4-spi" },
-> > > -       { .name =3D "dhcom-board" },
-> > > -       { .name =3D "m53cpld" },
-> > > -       { .name =3D "spi-petra" },
-> > > -       { .name =3D "spi-authenta" },
-> > > -       { .name =3D "em3581" },
-> > > -       { .name =3D "si3210" },
-> > > +       { .name =3D /* cisco */ "spi-petra" },
-> >
-> > Pity we can't use
-> >
-> >      { .name =3D strchr("cisco,spi-petra", ',') + 1 },
->
-> My suggestion is nice enough IMHO.
-
-Sure.
-
-> > else we could do some macros on top to keep the tables in sync...
->
-> I thought about that already before sending this patch. The best one I
-> came up with is:
->
-> static const struct spi_device_id spidev_spi_ids[] =3D {
-> #define DEVICE(vendor, devname) { .name =3D devname },
-> #include "spidevices.c"
-> #undef DEVICE
->         {}
-> };
-> MODULE_DEVICE_TABLE(spi, spidev_spi_ids);
->
-> static const struct of_device_id spidev_dt_ids[] =3D {
-> #define DEVICE(vendor, devname) { .compatible =3D vendor "," devname, .da=
-ta =3D &spidev_of_check },
-> #include "spidevices.c"
-> #undef DEVICE
->         {}
-> };
-> MODULE_DEVICE_TABLE(of, spidev_dt_ids);
->
-> where spidevices.c looks as follows:
->
->         DEVICE("cisco", "spi-petra")
->         DEVICE("dh", "dhcom-board")
->         DEVICE("elgin", "jg10309-01")
->         DEVICE("lineartechnology", "ltc2488")
->         DEVICE("lwn", "bk4")
->         DEVICE("menlo", "m53cpld")
->         DEVICE("micron", "spi-authenta")
->         DEVICE("rohm", "bh2228fv")
->         DEVICE("rohm", "dh2228fv")
->         DEVICE("semtech", "sx1301")
->         DEVICE("silabs", "em3581")
->         DEVICE("silabs", "si3210")
->
-> I didn't like that enough to propose it.
-
-Indeed, splitting vendor and device names hurts grepability.
-
-Further improvements could be:
-  - Generate spidev_spi_ids[] from spidev_dt_ids[] at runtime
-    during module_init() (consumes cycles :-(,
-  - Teach the subsystem matching code to strip the vendor prefix,
-    to get rid of spidev_spi_ids[].
+Oops, and modutils, as the tables are used by userspace :-(
 
 Gr{oetje,eeting}s,
 

@@ -1,109 +1,85 @@
-Received: from mx0b-001ae601.pphosted.com (mx0a-001ae601.pphosted.com [67.231.149.25])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D1A1DB95E;
-	Mon,  6 Jan 2025 12:04:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.149.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D321C184F;
+	Mon,  6 Jan 2025 12:35:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736165055; cv=none; b=tEvypgq6Ed0HIgbnA4QRVC50tlVkQAwA/g/4/pMfzrXW2hOMa7qTtYxtzlbun5qmJBWY0YQGuQ89WsKRqNh56wvIQpVpL71H+Xg60J2WB8y9A7eymIH++8HTRLYiIbhXtk2q/6SRkJ9V4KcnLuQZp2KJlnG+H+tqgvI5Tv4ZK58=
+	t=1736166949; cv=none; b=m2XJ8fXwFQfQ07U5Kl+KsseSNrLOQFL/Yw26EvpUW7xZ+10DiO5I79Zs+tMopu5ELvqFLcieoAna3l6jHoZEXKyRLCvutMCF4UlpVXSmqexoCh5LaxqeJNCXs7KhmYf9ZmEUSIUbYLXYyCFvT59pVwGrF1EOwQ704WJh0zuYydE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736165055; c=relaxed/simple;
-	bh=ySPlKT7q/5kFyWZC9KwN4ZVNWRjjqJOJMrFFlP+mbbc=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bXQHg6L/W8LsJG8KamxGhoeBMLWVsLhFNbU+BiTaBq7MBkTZmy5Ike3qgdpCcO++0Xu91w5k3dV12VDyO7+JHUzLAPyYx+k+vRDOSQDxD0VvLowwl/NLI9W8vN3jyAm6kFkVViJKngLIigJgoONxacBOeosnFYKsW3BOxGghg7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com; spf=pass smtp.mailfrom=opensource.cirrus.com; dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b=iCpYwVj4; arc=none smtp.client-ip=67.231.149.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensource.cirrus.com
+	s=arc-20240116; t=1736166949; c=relaxed/simple;
+	bh=e6r4bgfMSt6jfSpc0BV4h8ov7eRV/zr34+P2Iggsre4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cwGqlQXPPZ35LjE/eOGMqCKL4vCIIPLcnvNDCUueIZ7waH/J3vCURXKl2yuE7+2aHhewRMbNaIZrNXdCoQLiW6wUUq9yDXpm2/tBQHw6fZPhGo0PKExPEVVCPZkYz9obnStOGsc+bllhV6ueiViDmmBVbN4U+WH2F9PHCo1QKMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qzhuI2hK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b="iCpYwVj4"
-Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
-	by mx0a-001ae601.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5064rhaA021827;
-	Mon, 6 Jan 2025 05:32:16 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=PODMain02222019; bh=2uYJOiM/HbfgHfKrJI
-	1xrTj5cr9v5VZf2W3BJkrW/wE=; b=iCpYwVj4vBbQzhXeGv7EHzyI5VlgS7kpRR
-	8s4EsgjuikitbrZBjkNeKjSA1ITMimEIUy3W7njEMe36Uk0xtYogChunI6et2j84
-	ONhUEoodlSZUwYk+u3rY7G6JjsgljyOFRginAXu1SBWUSHDxi6FHFgwYbzOpkOGN
-	BCakjF8JtACf5tuONR0Hk7UCz0DC5jCmtMWxdEf6Nhgp7ExQ0h1819cxei6sf+qR
-	ZLuDnUmjrQtD1/Yeprnm5eUtYXQxYeKBE0ZFAKL6+8yqKRDGe+01fCt2E2b0pAJH
-	xNrU17Hl1NBjbA+pt12aKwPsv8Q5gT5hgz6lINtUPD+R6nAMqN9A==
-Received: from ediex01.ad.cirrus.com ([84.19.233.68])
-	by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 43y3929mx4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 Jan 2025 05:32:15 -0600 (CST)
-Received: from ediex02.ad.cirrus.com (198.61.84.81) by ediex01.ad.cirrus.com
- (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.13; Mon, 6 Jan
- 2025 11:32:13 +0000
-Received: from ediswmail9.ad.cirrus.com (198.61.86.93) by
- anon-ediex02.ad.cirrus.com (198.61.84.81) with Microsoft SMTP Server id
- 15.2.1544.13 via Frontend Transport; Mon, 6 Jan 2025 11:32:13 +0000
-Received: from opensource.cirrus.com (ediswmail9.ad.cirrus.com [198.61.86.93])
-	by ediswmail9.ad.cirrus.com (Postfix) with ESMTPS id 23024820248;
-	Mon,  6 Jan 2025 11:32:13 +0000 (UTC)
-Date: Mon, 6 Jan 2025 11:32:12 +0000
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qzhuI2hK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4869AC4CED2;
+	Mon,  6 Jan 2025 12:35:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736166949;
+	bh=e6r4bgfMSt6jfSpc0BV4h8ov7eRV/zr34+P2Iggsre4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qzhuI2hKZv4kqRyUpVrnaZWJRr5NdjAstnvc3Ab8/4dpEo8ELGFns3C81vjUpyirM
+	 NEqR8KrN9Rhk+fRfR1o4oiEEPeWVM5kPeKeTriQpKrsy2L8ghxA58d8IafP2sd4CKa
+	 5c13RB73AEXXE5vUrWQDCH/0dcIqU1TMzpjfpJOkDWmBEsOdidPlX3ZkXRI9AN/OpQ
+	 Q7LKSybFr7aBwZtNEEfJI4yKNHYKuNw9hSulSB8PoMnB4/9+rDPfypnNJrIZfFzUuR
+	 plOXVstRIV2mS2wlJay1dL1lGWHTQ5WL/+133D1uhhBsgFdouj1OCNx52m//+Vst60
+	 MtxQQ8ZfBKbpw==
+Date: Mon, 6 Jan 2025 12:35:44 +0000
+From: Mark Brown <broonie@kernel.org>
 To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-CC: Mark Brown <broonie@kernel.org>,
-        Nicolas Ferre
-	<nicolas.ferre@microchip.com>,
-        Alexandre Belloni
-	<alexandre.belloni@bootlin.com>,
-        Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-        David Rhodes <david.rhodes@cirrus.com>,
-        Richard Fitzgerald
-	<rf@opensource.cirrus.com>,
-        <linux-spi@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <linux-sound@vger.kernel.org>,
-        <patches@opensource.cirrus.com>
-Subject: Re: [PATCH 3/4] spi: cs42l43: Make handling missing spk-id GPIOs
- explicit
-Message-ID: <Z3u/PNryXkda7GyO@opensource.cirrus.com>
+Cc: Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	David Rhodes <david.rhodes@cirrus.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org,
+	patches@opensource.cirrus.com
+Subject: Re: [PATCH 1/4] spi: atmel-quadspi: Fix struct atmel_qspi_pcal
+ kerneldoc
+Message-ID: <d5c8ebdc-942a-4bb1-80e9-6eb78fb4601c@sirena.org.uk>
 References: <20250104205437.184782-1-krzysztof.kozlowski@linaro.org>
- <20250104205437.184782-3-krzysztof.kozlowski@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="tt8UwXY8YAkoC5VF"
 Content-Disposition: inline
-In-Reply-To: <20250104205437.184782-3-krzysztof.kozlowski@linaro.org>
-X-Proofpoint-GUID: h7sDSYWgJBRQ--r7QsqI2YX9f7ladere
-X-Proofpoint-ORIG-GUID: h7sDSYWgJBRQ--r7QsqI2YX9f7ladere
-X-Proofpoint-Spam-Reason: safe
+In-Reply-To: <20250104205437.184782-1-krzysztof.kozlowski@linaro.org>
+X-Cookie: Do not pick the flowers.
 
-On Sat, Jan 04, 2025 at 09:54:36PM +0100, Krzysztof Kozlowski wrote:
-> gpiod_get_array_optional() for spk-id GPIOs can return NULL, if they are
-> missing, so do not pass the value to PTR_ERR but instead explicitly
-> treat NULL as acceptable condition.  The old code was correct, but
-> misleading because PTR_ERR usually is used on errors.
-> 
-> Reported by Smatch:
->   drivers/spi/spi-cs42l43.c:241 cs42l43_get_speaker_id_gpios() warn: passing zero to 'PTR_ERR'
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> ---
->  drivers/spi/spi-cs42l43.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/spi/spi-cs42l43.c b/drivers/spi/spi-cs42l43.c
-> index ceefc253c549..90180662c4c2 100644
-> --- a/drivers/spi/spi-cs42l43.c
-> +++ b/drivers/spi/spi-cs42l43.c
-> @@ -237,7 +237,9 @@ static int cs42l43_get_speaker_id_gpios(struct cs42l43_spi *priv, int *result)
->  	int i, ret;
->  
->  	descs = gpiod_get_array_optional(priv->dev, "spk-id", GPIOD_IN);
-> -	if (IS_ERR_OR_NULL(descs))
-> +	if (!descs)
-> +		return 0;
-> +	else if (IS_ERR_OR_NULL(descs))
 
-Should switch to using just IS_ERR() if adding an explicit case
-for the NULL. Otherwise looks good to me.
+--tt8UwXY8YAkoC5VF
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Thanks,
-Charles
+On Sat, Jan 04, 2025 at 09:54:34PM +0100, Krzysztof Kozlowski wrote:
+> Correct the typo in parameter name for 'struct atmel_qspi_pcal'
+> kerneldoc and W=1 warnings:
+
+As mentioned in submitting-patches.rst when submitting a patch series
+you should supply a cover letter for that patch series which describes
+the overall content of the series.  This helps people understand what
+they are looking at and how things fit together.
+
+--tt8UwXY8YAkoC5VF
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmd7zh8ACgkQJNaLcl1U
+h9Avpwf/VmDQFYkimEztMucINFgvQmgRU4GtcluUB7aCNYIqxtIWpEd4wbxd7TOs
+C9tJkZxCIwnRPQ7++omH9um9XYuwj3z+uHSpnd5PzY9rTrQCggnwvVua9Yuxb1+p
+lnVaml6kjoKfLGjtSSAgmFq4qZ1Sye1SEjbgS8AHtFRwg74OEf9vI2ckiPbryAsD
+6zwe9px/GoZWWjhRsmgnmFl4ETAkZ3E6lEQ+odG4oUMl8mn39mbz0efxlAbhmM3+
+jSgghfYLdRcOyafdshmVdZyteaolzYKKPJaUPr5p3i9Q5D0Vq9tClQ/MLSCX9ymY
+Cn9EhGZ9VWnwTh5fHOY3n7z4kpMGcw==
+=EKsI
+-----END PGP SIGNATURE-----
+
+--tt8UwXY8YAkoC5VF--

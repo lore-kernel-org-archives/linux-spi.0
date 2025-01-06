@@ -1,142 +1,166 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA1F1D89FE
-	for <linux-spi@vger.kernel.org>; Mon,  6 Jan 2025 09:47:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EC311DC9AC
+	for <linux-spi@vger.kernel.org>; Mon,  6 Jan 2025 12:02:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736156839; cv=none; b=XG/Mmk86jYTulyVyOpsbxHSNMj6Ur22TNAH/uJ49hnctd0ozrsmPYOEPq7ImZqrpTCx4hoLmGWgN7ZCrW07lSd74BuLeP5Faw7yrFoHxJRtKyJsKh43QtKayOW/7vSn0K4IkFDIf769eX2XJxajqQd/XYB59KEE4EmEWpxdTnHU=
+	t=1736164980; cv=none; b=SEVICfhaoDO12EqM5fF7Jpji6e0Y+Gl/V3C4cl5mX3bzYnDGVzBsufifsAGPQ0AZAx9zuqtt4Kzr+t5t0sz0QMfLRd/0eHcNrsQxgJdzf/Na4pjkbaTrQwaTv06xbjA1BevSzFzOk+F70zQAhls/kiIROIgE1q0nCYe5oV7wUAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736156839; c=relaxed/simple;
-	bh=4FeV6ZPr3jGASfKnVKZgWxePWMd6SkcF8XKyp9R5ZL0=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=MRpRmvgaRo9Bim9GWrfJzCRvOz+k4qKlcXqyeFll/+MBRJx33K6/qt83dV9Fa7M/uHRQZkf17vbpdJWthBD9Ivj/MYbj27ArrtwqPRNdqz9Pqaqipaz1y1+R3l9LrRrRixKc54Ju4Wek57o4tgaAn+PgsKx5BiE6wMkIrXwTD5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=LQwBt9Rx; arc=none smtp.client-ip=209.85.221.54
+	s=arc-20240116; t=1736164980; c=relaxed/simple;
+	bh=tI3JisUUZqv+yYx8ZH1yHQ51IEvfFrNUfANNeJcP6PI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lXnlmb00UqfA59PyJyCFy2LU5zx2we78zcQAX7TGPv6JG23lb44btAu1DZFt0W7f0PyRzqIXSbniBo7EFNdvNdZzoULlVTXJ1fcE5/e/y6aD1FOx9so/GK82GmeHRP4pfD77pPOCI7CsTZDlzJttgPDyDAw/6THBSqgbqBm/gwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zasYgAVz; arc=none smtp.client-ip=209.85.128.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="LQwBt9Rx"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-385e1fcb0e1so7782151f8f.2
-        for <linux-spi@vger.kernel.org>; Mon, 06 Jan 2025 01:47:17 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zasYgAVz"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4363299010dso14316155e9.1
+        for <linux-spi@vger.kernel.org>; Mon, 06 Jan 2025 04:02:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1736156836; x=1736761636; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=drQE5mfG6UfY6qmLY59TYj//IZAj9bk+9THlcgSH/G4=;
-        b=LQwBt9Rx7NJPSocKRwze5M89V256yk4HNe9HD4d5nyucrgT8occFQq9LG0CFv+9ZZ9
-         vQ6HZQeqn3uEn02IKCUCA1lV0InY8BxyIdA0/JFkwybgf5rfJ3Pt7b8fjYsQLLvKTHN0
-         oLqUoPsCnXTRD6dGd6pXq++C8A/beWmDjDf8ny8ST5JL6/VG1ZGIg+mzqNJUGClLXF7Z
-         0uHRng9h1r4AWXSJVHz2luYv+XsSpY+tbVgZ1Vk9Q6V8Vq09e74+OnKCDlX+1ThI9ct4
-         bSBjZUP6ECkTUB23l7v1WABCD1JPZIIwfLIkhX422sssvSQ4rYhvHNgd1vWyZah0swyO
-         cV4A==
+        d=linaro.org; s=google; t=1736164976; x=1736769776; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=LzXFqoXqPeZGihvup/K1NfREk7G96+/CIyQ/UfFxcFQ=;
+        b=zasYgAVzCTNkd3vn/FuQXS3jRDhStTEGRvWygxrI9sz/08KwRX779C1NkbPyMr2t1r
+         vRuk4sIot0RpLJz8O4XE+wWwcKhtV7Uym18QFQgWlYRuam3xNaBfQnnuPTISsOknrbKk
+         rR1iinGeRXpM7Fme2IP2vRWdNRKkCyakN4KuV1SBeRdndgDOn1rj63Qnezzb/zG8mFZI
+         Qg+AQsklMh39XTB6SDqtDb68XdtN+aJrFayFxXtESKfuBij37K9Q3tkJ7MeH6YNsiytQ
+         Qec8SsB0itPK2PqtjCdI3PWj6mIYDG/S+URnTBHG9x27SED/FkfwmvHTc0gp8mUSH+3x
+         IP8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736156836; x=1736761636;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1736164976; x=1736769776;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=drQE5mfG6UfY6qmLY59TYj//IZAj9bk+9THlcgSH/G4=;
-        b=NId4NwbmGHd788koUNhdIKwUWudb/95Fv9btiG747qTxGNN2y9MoQmGJ8/23XmkG+U
-         yxw+u5r3tlEJbJEOyLQElOxW/06HZiujS7hLxCdRN4CBfVvyi37iMcVUPWHlYzDQh1tZ
-         EzEuqUDiibh+1MQpqTzTjnHFwg/9fBPk7MCRIgYc4jDovRzKvimL2VO5FHXhJpaS487a
-         ggntvGdqvQil97SK7C6wHC8+fAzyk8OL5IZoErZ13DnfbejKj4L/+AdteWDMAfWoGnQn
-         O+tH0hV8h2RGMXUQ9t3ic6Uyy9T60p9plbmvRu1v3rTXzw/muDWw83dfxZj4ehnoCOb6
-         r5UA==
-X-Forwarded-Encrypted: i=1; AJvYcCWW5BPxo/0Jc1rTuM70DZzTYfTzt5lSCcUCAQImyTyXQniu0cGLB88V94oD7qfemVZ6qkF600Gwajg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyIAWHrtgO1XjT7dACMLffZPY5Ag6E7EyY5Zt+vkgyNb0e6xin6
-	WfWiLYxwmt50OrW4p7I5WimsE8vsUECdDZJ8UtKQ/gegfnsrZY4MJ+muFE0Az7M=
-X-Gm-Gg: ASbGncuRmjI7vp5cMfe8hhBmMz58WKZT73G/xQeJDZdm04f234mHFbUHsSVDGkgiSY9
-	1MM/nIf2cHOu1bSykUhIWH5mOV+5yxyvmPVGw4HUmhoWttU35842wLWI0zte6cSLHiBr5iiHcV6
-	rkuKs4tEfPiC9kN6onPbL+Z9DqpJp42NDRXQ3En3wJH9SpptDe01JePPtJ9LVjVPfUka08r+/6S
-	F7TcKIDxN7qHHFp04lU1sbO+xWbOKhbE/L+sQ4T8WIRYOpWmL7H5mU4X7OX6Q==
-X-Google-Smtp-Source: AGHT+IE1QA9GPbRGZrUYTaXeGGbTxlnKdAg52i/b75L7wR5SaTyuDJ7JMDNCeaS8O+uXqqVvObeBRQ==
-X-Received: by 2002:a05:6000:156b:b0:385:e30a:e0f7 with SMTP id ffacd0b85a97d-38a221fab38mr48263786f8f.22.1736156835874;
-        Mon, 06 Jan 2025 01:47:15 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c8ace0esm46740074f8f.106.2025.01.06.01.47.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jan 2025 01:47:15 -0800 (PST)
-Date: Mon, 6 Jan 2025 12:47:12 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: oe-kbuild@lists.linux.dev, mtk22730 <Cloud.Zhang@mediatek.com>,
-	Mark Brown <broonie@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Project_Global_Chrome_Upstream_Group@mediatek.com,
-	Cloud Zhang <cloud.zhang@mediatek.com>
-Subject: Re: [PATCH] [v1] spi: spi-mtk-nor: Modify the clock architecture of
- nor controller
-Message-ID: <63ddb297-822c-47bd-a33b-e2203fe1fad1@stanley.mountain>
+        bh=LzXFqoXqPeZGihvup/K1NfREk7G96+/CIyQ/UfFxcFQ=;
+        b=GF5EA56CfwB3ggVr7QsLFQuHA0GT3SwUVnrwaJg4rSUVPvMFunZ8D84rF+XeysWaud
+         iXEAlwJcbtFT+fkaVErdILoaaNfqUq7tIDE+aQFP0eHp9Icb3MLuPQ6Z5EG7VMlEqY/H
+         zSl2ZZ5e8JACWkEFujQZlmIxwA2fRmQ11mdjiqQpvRXQVnY1upmOv5/EDPQuRmr6ALF7
+         jPnYuxgRGS9rplsRQhrs6paaZkd67itXVwwM4/AZ+gpXhakrYQ36SAy3sPAe40pYZvw9
+         NY+zqEk0hiRiEuM+qBJzrqMe3gffmFqagLxtvZhZx3zHZIVzpNziv/hpChSLTE5ioemU
+         iXPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWHeVXm4t9oWf9RW4iHYV5+nxo7lGiUHzEFQHI8fXVig444XYgDShnpV1myEj/Tqw+dkBB3WA1NDaA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxFAF2+B0oKrtW6D802XnT7U1YjjYuzFtrAdSaqfJt9taNt1+mh
+	C25wLW7VXUp5czRAqR+BZKL6QMfsvPUPznYKzLq+6NSXTeeMln4fbm4CrPXlGa0=
+X-Gm-Gg: ASbGncvcA1pFJq7T+fx8G5MHz6lFS7+O9wvLVAmGTNWm+1PG+m+FIJzGdI+aSoNIK4A
+	E5ZoBEUK4eZK784kLHuYEWiLlnE5PMbFWhnvd1xbKEnea1zZqR/4Mjorh4x4OYvYAf8KROLxkn6
+	9YE0MrBFdERFbpGrK9yzI+oGKBgTPa/dlsnPmmmGE+pqhbsoSljxxGMRHcqIwQRJjZalcKjIzqZ
+	V8vAq64m5RXrpVKA88/pP46H44WCAJiDAmKbQOagDEbIb8fZCd3LXvf2DWnaLxv/L6RbIrObReC
+X-Google-Smtp-Source: AGHT+IEGX8sgAfoexYfQwZ1bi3fe5bj/JteQLkwvpGCJUzk+i386H+5bqXijrus4rgkiGH6AiTmalA==
+X-Received: by 2002:a05:600c:1d07:b0:434:f335:aa0d with SMTP id 5b1f17b1804b1-43668547269mr207373935e9.2.1736164976458;
+        Mon, 06 Jan 2025 04:02:56 -0800 (PST)
+Received: from [192.168.1.20] ([178.197.223.165])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c8acabbsm47372769f8f.93.2025.01.06.04.02.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 06 Jan 2025 04:02:55 -0800 (PST)
+Message-ID: <236ec8fe-b562-4242-a1db-48d1744f9d51@linaro.org>
+Date: Mon, 6 Jan 2025 13:02:54 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241212092206.14071-1-Cloud.Zhang@mediatek.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/4] spi: cs42l43: Make handling missing spk-id GPIOs
+ explicit
+To: Charles Keepax <ckeepax@opensource.cirrus.com>
+Cc: Mark Brown <broonie@kernel.org>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ David Rhodes <david.rhodes@cirrus.com>,
+ Richard Fitzgerald <rf@opensource.cirrus.com>, linux-spi@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-sound@vger.kernel.org, patches@opensource.cirrus.com
+References: <20250104205437.184782-1-krzysztof.kozlowski@linaro.org>
+ <20250104205437.184782-3-krzysztof.kozlowski@linaro.org>
+ <Z3u/PNryXkda7GyO@opensource.cirrus.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Content-Language: en-US
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <Z3u/PNryXkda7GyO@opensource.cirrus.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi mtk22730,
+On 06/01/2025 12:32, Charles Keepax wrote:
+> On Sat, Jan 04, 2025 at 09:54:36PM +0100, Krzysztof Kozlowski wrote:
+>> gpiod_get_array_optional() for spk-id GPIOs can return NULL, if they are
+>> missing, so do not pass the value to PTR_ERR but instead explicitly
+>> treat NULL as acceptable condition.  The old code was correct, but
+>> misleading because PTR_ERR usually is used on errors.
+>>
+>> Reported by Smatch:
+>>   drivers/spi/spi-cs42l43.c:241 cs42l43_get_speaker_id_gpios() warn: passing zero to 'PTR_ERR'
+>>
+>> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>> ---
+>>  drivers/spi/spi-cs42l43.c | 4 +++-
+>>  1 file changed, 3 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/spi/spi-cs42l43.c b/drivers/spi/spi-cs42l43.c
+>> index ceefc253c549..90180662c4c2 100644
+>> --- a/drivers/spi/spi-cs42l43.c
+>> +++ b/drivers/spi/spi-cs42l43.c
+>> @@ -237,7 +237,9 @@ static int cs42l43_get_speaker_id_gpios(struct cs42l43_spi *priv, int *result)
+>>  	int i, ret;
+>>  
+>>  	descs = gpiod_get_array_optional(priv->dev, "spk-id", GPIOD_IN);
+>> -	if (IS_ERR_OR_NULL(descs))
+>> +	if (!descs)
+>> +		return 0;
+>> +	else if (IS_ERR_OR_NULL(descs))
+> 
+> Should switch to using just IS_ERR() if adding an explicit case
+> for the NULL. Otherwise looks good to me.
+Yes, of course. I'll fix it in v2.
 
-kernel test robot noticed the following build warnings:
-
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/mtk22730/spi-spi-mtk-nor-Modify-the-clock-architecture-of-nor-controller/20241212-172704
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
-patch link:    https://lore.kernel.org/r/20241212092206.14071-1-Cloud.Zhang%40mediatek.com
-patch subject: [PATCH] [v1] spi: spi-mtk-nor: Modify the clock architecture of nor controller
-config: parisc-randconfig-r073-20241223 (https://download.01.org/0day-ci/archive/20241223/202412232136.cWvRuwoD-lkp@intel.com/config)
-compiler: hppa-linux-gcc (GCC) 14.2.0
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-| Closes: https://lore.kernel.org/r/202412232136.cWvRuwoD-lkp@intel.com/
-
-smatch warnings:
-drivers/spi/spi-mtk-nor.c:746 mtk_nor_parse_clk() warn: impossible condition '(cnt == -22) => (1-255 == (-22))'
-
-vim +746 drivers/spi/spi-mtk-nor.c
-
-87d65a23444841 Cloud Zhang   2024-12-12  738  static int mtk_nor_parse_clk(struct device *dev, struct mtk_nor *sp)
-87d65a23444841 Cloud Zhang   2024-12-12  739  {
-87d65a23444841 Cloud Zhang   2024-12-12  740  	struct device_node *np = dev->of_node;
-87d65a23444841 Cloud Zhang   2024-12-12  741  	int ret;
-87d65a23444841 Cloud Zhang   2024-12-12  742  	const char *name;
-87d65a23444841 Cloud Zhang   2024-12-12  743  	u8 cnt, i;
-                                                ^^^^^^
-
-87d65a23444841 Cloud Zhang   2024-12-12  744  
-87d65a23444841 Cloud Zhang   2024-12-12  745  	cnt = of_property_count_strings(np, "clock-names");
-87d65a23444841 Cloud Zhang   2024-12-12 @746  	if (!cnt || (cnt == -EINVAL)) {
-                                                             ^^^^^^^^^^^^^^
-cnt needs to be declared as an int.
-
-87d65a23444841 Cloud Zhang   2024-12-12  747  		dev_err(dev, "Unable to find clocks\n");
-87d65a23444841 Cloud Zhang   2024-12-12  748  		ret = -EINVAL;
-87d65a23444841 Cloud Zhang   2024-12-12  749  		goto out;
-87d65a23444841 Cloud Zhang   2024-12-12  750  	} else if (cnt < 0) {
-                                                           ^^^^^^^
-It's weird that this doesn't trigger a warning.
-
-87d65a23444841 Cloud Zhang   2024-12-12  751  		dev_err(dev, "Count clock strings failed, err %d\n", cnt);
-87d65a23444841 Cloud Zhang   2024-12-12  752  		ret = cnt;
-87d65a23444841 Cloud Zhang   2024-12-12  753  		goto out;
-87d65a23444841 Cloud Zhang   2024-12-12  754  	} else if (cnt > MAX_CLOCK_CNT) {
-87d65a23444841 Cloud Zhang   2024-12-12  755  		ret = -EINVAL;
-87d65a23444841 Cloud Zhang   2024-12-12  756  		goto out;
-87d65a23444841 Cloud Zhang   2024-12-12  757  	}
-87d65a23444841 Cloud Zhang   2024-12-12  758  
-87d65a23444841 Cloud Zhang   2024-12-12  759  	sp->clock_cnt = cnt;
-87d65a23444841 Cloud Zhang   2024-12-12  760  
-87d65a23444841 Cloud Zhang   2024-12-12  761  	for (i = 0; i < cnt; i++) {
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
+Best regards,
+Krzysztof

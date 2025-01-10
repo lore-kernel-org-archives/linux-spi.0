@@ -1,38 +1,39 @@
 Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8377F21504A;
-	Fri, 10 Jan 2025 14:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75022215F40;
+	Fri, 10 Jan 2025 14:46:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736520370; cv=none; b=bB/yQjPpIIX4etojC1dLfLJciZYQa9bPhk+gZKk6VLpJOwORqTaawauIPJtbgD8puZiVhpr1gVkc9DtZrO4rNskpoGUEo71NYRzu2ETCQ30SQ8NPpGUWI0HNvbXX7o/KCItUFT7wz0uRTNTgXv75O3f280rLaFqtRCVPZ/k82FI=
+	t=1736520372; cv=none; b=NfL/4BehCJogTYhr4vvR19tGL/Pv6cII6obgp3HPvJ4w7oZQJriExjn98ROmwTJf0LRO8as6s056RM+MNG7vRSFOhTxp5bqj8xFSO96VTs3zSnBprR7D26FlPqiL+QYMpPMssKKx+aopOfRq6PmGOG9csH9nCUYEwXSoJp1uyWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736520370; c=relaxed/simple;
-	bh=Nan4mW2mFNUkaXBSqhEupUrXGZUtBKUIr3u2+5970sY=;
+	s=arc-20240116; t=1736520372; c=relaxed/simple;
+	bh=MrBy/TL3M+EY8yuHy2FLKCvPxOGFgVeB8fDNeNkHsgI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=EVc8hVJl5aQ/0K4H+1DObIbAgDib49sWX55QmA2PGTJPhzUz3ZLQOcipWNawY7pAm3IdSBJvNyWgMw3MkahLMu475mZxHTEfOqu03sqEjakudj7NdVAWpsX83H6/PY+HH1m4w1+66Y6fnPLa3Fpz5FRXrjR2R73ZA5oqwjmqs8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=O+oWpv7V; arc=none smtp.client-ip=217.70.183.199
+	 In-Reply-To:To:Cc; b=Zh27AGqabP7thqtDl8TPElFT7MnMFzkU/f+Qds8n5rqNIFm6xq8V3iXSZADUQX8t/lOlZFoPMk3xPUjQ3OMA1iH3PQm2ebPhThxeFbUKqHH28OHu6UVy+nFylLRreB6BJIUzzOYHTjvZ0z/r+u+DjqQEVmSjXy4+KB+chvSxVH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=NBs6xgbj; arc=none smtp.client-ip=217.70.183.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="O+oWpv7V"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 51F62FF806;
-	Fri, 10 Jan 2025 14:46:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="NBs6xgbj"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 380BBFF80D;
+	Fri, 10 Jan 2025 14:46:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1736520367;
+	t=1736520369;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+afwOEQnbaba+LXNGTuAYGtAsSXdRwU1zxfezGFUpKo=;
-	b=O+oWpv7VqHwgKB2LRMBSm6P1zlxFX5oOrJteeRuK1hqSG9EL9cuejOzdVatbBZreNaoZC8
-	abx6NG8HQ4oVqNwz07W3IobsGlRwgow2L+oziF5t4bw+7CNkGjN6GYchh0sy799nSUZ1MX
-	6Xaip51R+rqx8ASpUP2Aellz6S87/vLRev5yCYUA0+Nt5VokvRtyhxS2dN0RtL7cgHnLfo
-	zYliXxMBJ57aoScl31HF9wnet221DnBdWw0Va9718c5O89YeUW6WJm0Pc3X0Ln5XuIlFoQ
-	897QFVDPviRnwPKQryqvo0JQnFGX437WTqmu9fJN2VQbzZkx9olZOY6DFL23cA==
+	bh=st7iZmfts2tp/8JHKFXB7UyuKEKOlhrYdKjKeGEcYRI=;
+	b=NBs6xgbjlIU9ybAGE44SAOa4S8hvC4+KpOFAQfLaiE9FM/aTo/UVX1PPcrZ5Du60REZx0S
+	spGiWaHXSNubiOWCGUiz2LtRj4HbR9Htr3yXMQCWq+PzaSKCnQZ9S8Li5BnQtzR4vHeAME
+	abkERuAUxMNyr4EfhfRFV96cEB6APwvLT65rFWXtmt0chDZbOl24GISzTE1LSmuYjyuZng
+	vefRcAMPfkRs6k0TE9v67XDgOwmrBoVla+NDLdTy1U0212V5Dtz9e6zMryo6jTAk0ly/sF
+	xoIR1a6dwnYYC65PE/lh0eOHpzJuPgucYuloOKp4MNz3Mqg93/n5B5TnTiR67g==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
-Date: Fri, 10 Jan 2025 15:45:28 +0100
-Subject: [PATCH v3 26/27] mtd: spinand: winbond: Add comment about naming
+Date: Fri, 10 Jan 2025 15:45:29 +0100
+Subject: [PATCH v3 27/27] mtd: spinand: winbond: Add support for DTR
+ operations
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -41,7 +42,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250110-winbond-6-11-rc1-quad-support-v3-26-7ab4bd56cf6e@bootlin.com>
+Message-Id: <20250110-winbond-6-11-rc1-quad-support-v3-27-7ab4bd56cf6e@bootlin.com>
 References: <20250110-winbond-6-11-rc1-quad-support-v3-0-7ab4bd56cf6e@bootlin.com>
 In-Reply-To: <20250110-winbond-6-11-rc1-quad-support-v3-0-7ab4bd56cf6e@bootlin.com>
 To: Mark Brown <broonie@kernel.org>, Sanjay R Mehta <sanju.mehta@amd.com>, 
@@ -74,7 +75,11 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 X-Mailer: b4 0.15-dev
 X-GND-Sasl: miquel.raynal@bootlin.com
 
-Make the link between the core macros and the datasheet.
+W25N01JW and W25N02JW support many DTR read modes in single, dual and
+quad configurations.
+
+DTR modes however cannot be used at 166MHz, as the bus frequency in
+this case must be lowered to 80MHz.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
@@ -82,21 +87,25 @@ Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
  1 file changed, 5 insertions(+)
 
 diff --git a/drivers/mtd/nand/spi/winbond.c b/drivers/mtd/nand/spi/winbond.c
-index 97517d495e57a6e9e616ed7e66b4a8e9fc1fe62a..51972ba0f193c7b27ece0296c1590ddfed0ac813 100644
+index 51972ba0f193c7b27ece0296c1590ddfed0ac813..8394a1b1fb0c125ddb614269069d107463e905a3 100644
 --- a/drivers/mtd/nand/spi/winbond.c
 +++ b/drivers/mtd/nand/spi/winbond.c
-@@ -18,6 +18,11 @@
+@@ -24,10 +24,15 @@
+  */
  
- #define W25N04KV_STATUS_ECC_5_8_BITFLIPS	(3 << 4)
- 
-+/*
-+ * "X2" in the core is equivalent to "dual output" in the datasheets,
-+ * "X4" in the core is equivalent to "quad output" in the datasheets.
-+ */
-+
  static SPINAND_OP_VARIANTS(read_cache_dtr_variants,
++		SPINAND_PAGE_READ_FROM_CACHE_QUADIO_DTR_OP(0, 8, NULL, 0, 80 * HZ_PER_MHZ),
++		SPINAND_PAGE_READ_FROM_CACHE_X4_DTR_OP(0, 2, NULL, 0, 80 * HZ_PER_MHZ),
  		SPINAND_PAGE_READ_FROM_CACHE_QUADIO_OP(0, 2, NULL, 0),
  		SPINAND_PAGE_READ_FROM_CACHE_X4_OP(0, 1, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_DUALIO_DTR_OP(0, 4, NULL, 0, 80 * HZ_PER_MHZ),
++		SPINAND_PAGE_READ_FROM_CACHE_X2_DTR_OP(0, 2, NULL, 0, 80 * HZ_PER_MHZ),
+ 		SPINAND_PAGE_READ_FROM_CACHE_DUALIO_OP(0, 1, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_X2_OP(0, 1, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_DTR_OP(0, 2, NULL, 0, 80 * HZ_PER_MHZ),
+ 		SPINAND_PAGE_READ_FROM_CACHE_FAST_OP(0, 1, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_OP(0, 1, NULL, 0, 54 * HZ_PER_MHZ));
+ 
 
 -- 
 2.47.0

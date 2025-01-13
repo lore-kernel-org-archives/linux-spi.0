@@ -1,66 +1,65 @@
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 315AE1F9A98
-	for <linux-spi@vger.kernel.org>; Mon, 13 Jan 2025 21:01:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15F8C1F9F5F
+	for <linux-spi@vger.kernel.org>; Mon, 13 Jan 2025 21:01:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736802068; cv=none; b=d41RcsDeM1t7t6xatX7PNb6UZCUDaeAgB26+VlBkzdv+iKXNpopKUK45S/oaTjlYLs0TW9lAHVSoqF6G+qw27+JYTeBZ7a4ezveMK01CeUOIXBby7aDu3flwwO0gYK7f7W2lce6sCw/R4IIvN9UFjblqyfe3wdnkmYzB7JvLP7M=
+	t=1736802070; cv=none; b=gGCKh7awU/TC34iDAYqONyXoHOF1IsxwUWdwFhAIFaCDP2rCr4c2BanYvE1TJxB84TdfykJ/kJV399oRXlMHZr379JfSG8tWqiH5C5GFXpp3MSLjXxAVk0u+jpYxtDTqosS6GiM4ICj9O60gtC41qsgIXmzPJWT/jZ6wJ48dwjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736802068; c=relaxed/simple;
-	bh=dzCJ6ZEQTNY+z2WK8kNiO9rUSbrCIMXdjhs/EOFJ84k=;
+	s=arc-20240116; t=1736802070; c=relaxed/simple;
+	bh=jRlTs2hPxFTMWzXud2pwyf/gDJQZpce7x7Xes5PCDq0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=PTCo8Hu9PL3rpaIoG85YbeDqCgDaw264/P8dqNWzEj5ygm4lJlH6vtjS3S/+mJLvfzYuoSLJB9urGQyraM9OSxw5ZQ2vOIBd4VVXbVfSnapnYB300AVWFe3OJadeO08hP40oJu8tPmbdTipH/Or1o86AfCRizmhoBr0wwnwfSrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=pq2Lb64b; arc=none smtp.client-ip=209.85.210.43
+	 In-Reply-To:To:Cc; b=qGKUT5DPx1zDAmZYVojbb3h29EgFQRS654fzOenEDiqJjkFFNypUPbGQQ6Bo3Y0BzxhuPTqi4PJozPPv/RlwaoWpnObGMk8rM+WQwAtTJpasCK3NvB0siKbzkFFini8EpoiZP2HlQlTd4LeWpZd5R4a8goWsAcJh+3OBw69I3eE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=FTab2Gif; arc=none smtp.client-ip=209.85.210.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="pq2Lb64b"
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-721d213e2aeso1223494a34.3
-        for <linux-spi@vger.kernel.org>; Mon, 13 Jan 2025 13:01:04 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="FTab2Gif"
+Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-71e1b1767b3so2543156a34.3
+        for <linux-spi@vger.kernel.org>; Mon, 13 Jan 2025 13:01:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736802064; x=1737406864; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736802067; x=1737406867; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=NxYYb5ciTauJBruXQRFcV6o6UAzHMKHqZuEnooTWOkc=;
-        b=pq2Lb64boZlR/t/Zm11UfRQpsVpN0cogam3XtXna8J9hxpqRf9QyXjJJZS0YPUcYm6
-         Ique8xDrTf91TnnfWFlIvsbsA9cQx2C41dZlVru/Bq1/M6YUP1c0mz6MGrZMQZMkdFcb
-         10pj09flrirrF6WEg3OAxfL3MsUbQ8OxibhAHKhANfsskeS6tY8ofIwzQfjP0PDgk+ru
-         0/aRXS5mdPrQK0Fv3/jKgDzt6lEpDlLQdRk/LJk8zasgZjH0j1f4ytiQ3z72tgiJ3K0L
-         pD65AESecqlSpz+oHnq97DIy5EY9gNDJea2QwT3qxtiRezuRlyEQEo4zXiFwt/KvFT1O
-         Eu0Q==
+        bh=m4qOy1E2SWXTRLQzjAjoUUpkXvVJq7HeawRi11wv1CQ=;
+        b=FTab2GifrSjdz1W7bjvBYjUilGHiDoz4r6Q9cZxQUjZT6/S4jKM/5e64KBeK6s6BiR
+         JGeJ2PmIrk/0HUD3u6T5LKtUvO5/uuSCWJwHmP9gIzfNN/oum6nl+C1wf2mVnS+JdP3s
+         T9esDyBsdsPFpYjWYkW4W9NrubDlJbbyKHOgxhF8sLo7bu4IN/tgVl/jh+Ns0XE+VlAC
+         R6uw0cWjFPvco6Q0TJPA8UX97BVESQ9tU3lRqyO7C92sEP7uuIv7H231xIbO9jXwKjT5
+         1NH994K0aig/V0rXPYPTPJMgGTnUCbpsLUVAfBokesH7Vhf6yb8jd2tj2xZTw4H0rbU5
+         IzZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736802064; x=1737406864;
+        d=1e100.net; s=20230601; t=1736802067; x=1737406867;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=NxYYb5ciTauJBruXQRFcV6o6UAzHMKHqZuEnooTWOkc=;
-        b=ovhlrBkkG5+1fHKh7tufJlfEpTg8RaB2OabGAGsjDcZj/G78lrxqe7uE5VBuy541x7
-         VugLUtZvk0W+Ksm9+L8T1VO1AoKQfSoV4uIk3YwCXVOeUNfbdqaBKD1Z9S1znMhdu1Y4
-         kCR0l1pawljhO0cYkJVxd6e55duYgqMUG67G3f5EhW0kzeR0ZbhoiJa0Aa4+5x64aiZ0
-         rcTh782JbOvA3vm5S6UiokxSzMF3JjWWrqD+uOgDXEJx2xSa7mV8GU6jQIJwxXViGZ7H
-         uwz7EnYQcQDBYxpVNAuoE/fRNxweF/7zG/yQAzvZeYlikMpINb1hrw9EzvURspRhMdbo
-         Mq9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUKOsraeK2tkcU7z2QxJVAOZW0+CvU3y2sbCAJYS2aDmRrFm/6FgeRuh6F/0pO5vaxcTTOZsyU71oA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwunOOIdurB2ZEBSsPdvG3cGOULlFQZ7T1ONcyP9mR8m/xOTAm0
-	QkQ5GUX6mTbgi3HK4wWSgimZFXgE9ect8AUvMtmD1GN92SDyF/sDgXAdonJUk0Q=
-X-Gm-Gg: ASbGnculAE4x5u7xROzjCuDjbvPEUCd+fnoBMl8TSGkgSkjGdUDEHcFMe96yua5N664
-	x1yw+q2n/8U2Gzb6i6iHXiXKS02tG40ki15VuZGAXQutlZbwLzzZFLngSUPTFuggogrLdzJsPIv
-	HpygFgbDjVNgyqkSbDl59l2QM+JQtQCbhOQf/jdzd3cuOPF7vbmf3Y+kt0yppKBsIMnFCPGAnSn
-	JyZPxHIT/oL30RO+dvxfmf4QMIw5eYLprnPOKJTqViMTbHAUdxEEG17Y0IB7BYf7yQ3zCoqpyug
-	DXP3SbnT4SoP
-X-Google-Smtp-Source: AGHT+IHc/6DbtaGBxjhYkdrm/LQRXlc6O2w8Y93CVrkI7N1pqF/6N0hFcyMkEAAtuzcIDXFS4nZRzw==
-X-Received: by 2002:a05:6830:601c:b0:71d:3faf:b64e with SMTP id 46e09a7af769-721e2ebcfe3mr13545645a34.23.1736802063746;
-        Mon, 13 Jan 2025 13:01:03 -0800 (PST)
+        bh=m4qOy1E2SWXTRLQzjAjoUUpkXvVJq7HeawRi11wv1CQ=;
+        b=OyZS+50a/XuXIuApGeXpQnfaUE/dPqOGdf+QtwBCGodH1Ec940ptZpHQ249wTXXjzw
+         o4QsJqAeL8uFiWafQB5ztzPNt28n6+bgIfG08Wb5Bvruen7ojFfIlQr/qONcDKjYLLK4
+         xwrQzTWxrMg+IA41yNGLD8MpfeuRU3gOfVZUQsYxA+bbYkZyIgIRkru2ODvCSqlu8h7U
+         lhl8V0BxdXIldYD71M0eZJGFEOgsCM5IVQc9KhXNIS98bizSvnL2hez/+qzgezQ/Zif6
+         mZXWfQ1UNgU8RYgLBQzknHa3aqGrOep1BhRDYTng68iUAlGxTzzxQF/ZrxqBMXj3ZIic
+         N5AA==
+X-Forwarded-Encrypted: i=1; AJvYcCVs0hqWlHGJdTsl3QT4oSa6gnNPIJYg2jTrAZaVCvusLSHjx3gtneAw68uZXTXoe3g7b/jZ3AsneOU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyLrIlBZVeM6NPaWvNIEFq2dDw9n0Wnx+xJjXBuXO/0HZsJSgO3
+	/dKy+Oo1nBIRC9GdFJ3GJD3lPr5pWJjmHUl2/lgVpFZcBiGBGWW2VrrDfmikagc=
+X-Gm-Gg: ASbGnct/avGCmVSqz6QQQm0lbE21IxI9dAFL/0VXrxtdnBvR6lswV6YQAvswRM4m7Pm
+	CWZi5wboZN2FkyqSLtzzKnPP0nR002NUOarkzqUWjlNQJYJQt/N7eup3J+HI+QpSa48TzzAXDEb
+	sUq4qVs459e1SMscxnMlTLjcZ5eTso8TcAjTO4xe8bOnjl875IZ2dIahp/yGYiFJjRBdU1jJFt0
+	FaZeL7eIvh/YIjb/uYNJ0vpWoruwbeddp1Mf/N5UqNAz6JNAGgBqgzywAystXftQS9JNHbRoE6z
+	JwzuWoRMXZHe
+X-Google-Smtp-Source: AGHT+IEhD0Vp5JdEuew98KxE05jR40/4fw1aRh9ZIYPvM+djmKr8mac14kyQAxtYZsi3oBGb27A3Bw==
+X-Received: by 2002:a05:6830:3495:b0:71d:5236:9295 with SMTP id 46e09a7af769-721e2eff802mr13309103a34.24.1736802066783;
+        Mon, 13 Jan 2025 13:01:06 -0800 (PST)
 Received: from [127.0.1.1] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7231855effasm3927744a34.33.2025.01.13.13.01.02
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7231855effasm3927744a34.33.2025.01.13.13.01.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jan 2025 13:01:03 -0800 (PST)
+        Mon, 13 Jan 2025 13:01:06 -0800 (PST)
 From: David Lechner <dlechner@baylibre.com>
-Date: Mon, 13 Jan 2025 15:00:14 -0600
-Subject: [PATCH v7 09/17] iio: buffer-dmaengine: add
- devm_iio_dmaengine_buffer_setup_with_handle()
+Date: Mon, 13 Jan 2025 15:00:17 -0600
+Subject: [PATCH v7 12/17] doc: iio: ad7944: describe offload support
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -69,7 +68,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250113-dlech-mainline-spi-engine-offload-2-v7-9-e0860c81caae@baylibre.com>
+Message-Id: <20250113-dlech-mainline-spi-engine-offload-2-v7-12-e0860c81caae@baylibre.com>
 References: <20250113-dlech-mainline-spi-engine-offload-2-v7-0-e0860c81caae@baylibre.com>
 In-Reply-To: <20250113-dlech-mainline-spi-engine-offload-2-v7-0-e0860c81caae@baylibre.com>
 To: Mark Brown <broonie@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
@@ -86,103 +85,71 @@ Cc: =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
  David Lechner <dlechner@baylibre.com>
 X-Mailer: b4 0.14.2
 
-Add a new devm_iio_dmaengine_buffer_setup_with_handle() function to
-handle cases where the DMA channel is managed by the caller rather than
-being requested and released by the iio_dmaengine module.
+Add a section to the ad7944 documentation describing how to use the
+driver with SPI offloading.
 
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
 
 v7 changes: none
 
-v6 changes:
-* Rename from devm_iio_dmaengine_buffer_setup_ext2()
-* This patch now just adds the new function - prep work was split out
-  to a separate patch
+v6 changes: none
 
-v5 changes: none
-
-v4 changes:
-* This replaces "iio: buffer-dmaengine: generalize requesting DMA channel"
+v5 changes: new patch in v5
 ---
- drivers/iio/buffer/industrialio-buffer-dmaengine.c | 38 ++++++++++++++++++++++
- include/linux/iio/buffer-dmaengine.h               |  5 +++
- 2 files changed, 43 insertions(+)
+ Documentation/iio/ad7944.rst | 24 +++++++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/buffer/industrialio-buffer-dmaengine.c b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-index 02847d3962fcbb43ec76167db6482ab951f20942..e9d9a7d39fe191c2b6e8c196a08cdd26cd3a8d4b 100644
---- a/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-+++ b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-@@ -380,6 +380,44 @@ int devm_iio_dmaengine_buffer_setup_ext(struct device *dev,
- }
- EXPORT_SYMBOL_NS_GPL(devm_iio_dmaengine_buffer_setup_ext, "IIO_DMAENGINE_BUFFER");
+diff --git a/Documentation/iio/ad7944.rst b/Documentation/iio/ad7944.rst
+index 0d26e56aba8862a8d2ff541012bb4681d05c7bb5..e6dbe4d7f58cffd9f700f931ad2641d336526129 100644
+--- a/Documentation/iio/ad7944.rst
++++ b/Documentation/iio/ad7944.rst
+@@ -46,6 +46,8 @@ CS mode, 3-wire, without busy indicator
+ To select this mode in the device tree, set the ``adi,spi-mode`` property to
+ ``"single"`` and omit the ``cnv-gpios`` property.
  
-+static void devm_iio_dmaengine_buffer_free(void *buffer)
-+{
-+	iio_dmaengine_buffer_free(buffer);
-+}
++This is the only wiring configuration supported when using `SPI offload support`_.
 +
-+/**
-+ * devm_iio_dmaengine_buffer_setup_with_handle() - Setup a DMA buffer for an
-+ *						   IIO device
-+ * @dev: Device for devm ownership
-+ * @indio_dev: IIO device to which to attach this buffer.
-+ * @chan: DMA channel
-+ * @dir: Direction of buffer (in or out)
-+ *
-+ * This allocates a new IIO buffer with devm_iio_dmaengine_buffer_alloc()
-+ * and attaches it to an IIO device with iio_device_attach_buffer().
-+ * It also appends the INDIO_BUFFER_HARDWARE mode to the supported modes of the
-+ * IIO device.
-+ *
-+ * This is the same as devm_iio_dmaengine_buffer_setup_ext() except that the
-+ * caller manages requesting and releasing the DMA channel handle.
-+ */
-+int devm_iio_dmaengine_buffer_setup_with_handle(struct device *dev,
-+						struct iio_dev *indio_dev,
-+						struct dma_chan *chan,
-+						enum iio_buffer_direction dir)
-+{
-+	struct iio_buffer *buffer;
-+
-+	buffer = __iio_dmaengine_buffer_setup_ext(indio_dev, chan, dir);
-+	if (IS_ERR(buffer))
-+		return PTR_ERR(buffer);
-+
-+	return devm_add_action_or_reset(dev, devm_iio_dmaengine_buffer_free,
-+					buffer);
-+}
-+EXPORT_SYMBOL_NS_GPL(devm_iio_dmaengine_buffer_setup_with_handle,
-+		     "IIO_DMAENGINE_BUFFER");
-+
- MODULE_AUTHOR("Lars-Peter Clausen <lars@metafoo.de>");
- MODULE_DESCRIPTION("DMA buffer for the IIO framework");
- MODULE_LICENSE("GPL");
-diff --git a/include/linux/iio/buffer-dmaengine.h b/include/linux/iio/buffer-dmaengine.h
-index 72a2e3fd8a5bf5e8f27ee226ddd92979d233754b..37f27545f69f761c3327c307cc6311b02a751096 100644
---- a/include/linux/iio/buffer-dmaengine.h
-+++ b/include/linux/iio/buffer-dmaengine.h
-@@ -11,6 +11,7 @@
+ CS mode, 4-wire, without busy indicator
+ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
  
- struct iio_dev;
- struct device;
-+struct dma_chan;
+@@ -106,7 +108,6 @@ Unimplemented features
+ ----------------------
  
- void iio_dmaengine_buffer_teardown(struct iio_buffer *buffer);
- struct iio_buffer *iio_dmaengine_buffer_setup_ext(struct device *dev,
-@@ -26,6 +27,10 @@ int devm_iio_dmaengine_buffer_setup_ext(struct device *dev,
- 					struct iio_dev *indio_dev,
- 					const char *channel,
- 					enum iio_buffer_direction dir);
-+int devm_iio_dmaengine_buffer_setup_with_handle(struct device *dev,
-+						struct iio_dev *indio_dev,
-+						struct dma_chan *chan,
-+						enum iio_buffer_direction dir);
+ - ``BUSY`` indication
+-- ``TURBO`` mode
  
- #define devm_iio_dmaengine_buffer_setup(dev, indio_dev, channel)	\
- 	devm_iio_dmaengine_buffer_setup_ext(dev, indio_dev, channel,	\
+ 
+ Device attributes
+@@ -147,6 +148,27 @@ AD7986 is a fully-differential ADC and has the following attributes:
+ In "chain" mode, additional chips will appear as additional voltage input
+ channels, e.g. ``in_voltage2-voltage3_raw``.
+ 
++SPI offload support
++===================
++
++To be able to achieve the maximum sample rate, the driver can be used with the
++`AXI SPI Engine`_ to provide SPI offload support.
++
++.. _AXI SPI Engine: http://analogdevicesinc.github.io/hdl/projects/pulsar_adc/index.html
++
++When SPI offload is being used, some attributes will be different.
++
++* ``trigger`` directory is removed.
++* ``in_voltage0_sampling_frequency`` attribute is added for setting the sample
++  rate.
++* ``in_voltage0_sampling_frequency_available`` attribute is added for querying
++  the max sample rate.
++* ``timestamp`` channel is removed.
++* Buffer data format may be different compared to when offload is not used,
++  e.g. the ``in_voltage0_type`` attribute.
++
++If the ``turbo-gpios`` property is present in the device tree, the driver will
++turn on TURBO during buffered reads and turn it off otherwise.
+ 
+ Device buffers
+ ==============
 
 -- 
 2.43.0

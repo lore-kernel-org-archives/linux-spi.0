@@ -1,65 +1,65 @@
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF53C1FA827
-	for <linux-spi@vger.kernel.org>; Mon, 13 Jan 2025 21:01:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3581FA8F6
+	for <linux-spi@vger.kernel.org>; Mon, 13 Jan 2025 21:01:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736802075; cv=none; b=j7YMCyrg0PCZxv4NpL7lMAqReIgLYM/P5VlIBbCn3vK2Etrdwon65RkcZ/ElYF3+JG62CvYpaXlxVtcRX8u2hcXzfW/fA2p8KVJM49Uc1uPOw7IGIPOThzOSmyemG1v3xkpEUUXeFb47ZfCeKQp8E1lspV4s2BLxuKhWjhVt9W4=
+	t=1736802076; cv=none; b=dWJ6a8iDMPKapqa9yCcZdf1biKXbR6oiCNoAfAOHkqGRaCKYSOIW78HBiNkd81OWYErQUvJNo9d7S5kFTxZcGD6+bigM0LLsoPmMU9gjlI7R0TuTdaGEnL/t4ughmBzBiGO2FGxW/5Rz6wigHfFCbZnXzgIE2rV0hhumteA89Uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736802075; c=relaxed/simple;
-	bh=DhX51StZjS6ZG3+/IYLjnj3db6LuckpDYDUdYX9k1yk=;
+	s=arc-20240116; t=1736802076; c=relaxed/simple;
+	bh=VjnhHll/OJ7MvQ7X87mHVdGjGGFGKfjfrLs/98CvvVM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=MsChhZMSwfWHmxihdXHHXF15teGqLnK7V/WnxXU7MNtE2l0vQMObRDmhIg6RgMj5uX1LT4ljtFwl0Pr+4H+a6VCCFOBJLgGyUA7GSElLZG3/8dJENcUxCgcuXbKSPhBpa0CUpBt580PIltqw5fntfP3DBuwYeYwUfnWOCm88diA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=oO8oVVzk; arc=none smtp.client-ip=209.85.210.54
+	 In-Reply-To:To:Cc; b=H2dnq/Gl4rj36CBZ9pNbe3s2waaPVjDCaMfkiGx2kgbNSY6stnj/Pk8fALrag7Mf3xafkdMiDfqAnmBo+EVUGya0lyQO7BarLCnaxeG2v2CFVlAx7aG7hAtTe/3Zu0wDYprrQbxnbgwulTHe4oJgw4XrISGuDMfkuvEEzCXPSeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=aewhOC9m; arc=none smtp.client-ip=209.85.210.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="oO8oVVzk"
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-71e3284f963so2442171a34.1
-        for <linux-spi@vger.kernel.org>; Mon, 13 Jan 2025 13:01:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="aewhOC9m"
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-71e15717a2dso2532288a34.3
+        for <linux-spi@vger.kernel.org>; Mon, 13 Jan 2025 13:01:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736802069; x=1737406869; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736802071; x=1737406871; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=3uXVd6FnRPX1W8Wg/eWBdOZEvpGo7dHFBW2WCW32Bdw=;
-        b=oO8oVVzkgh/3DbqDs4SG4VVOS4uI+OBm5VGglyfYJX0R42kcxpc2GCknp5c/2qWI2/
-         sEN3OE3EQKcokewCpz1Mf8OGnvMt+nLhikf4CYbMbJCdreNJpH1ySgq27ioaYowtp1jB
-         dorfejL39eBJkAB4wHhITwrlkCz/ksL6PWY9ODrC/DOhtyWyHUhIIjy6nqB9KSkzi8bx
-         hRG322g04gTXwnrNI8C8C7qv8xCIFywYxouRWQBFiXsQq7qYEILwTQe5VMAg6r/fyp1M
-         T5onHXNLtdl8o9yzC+Hlx8Gu3DllHKhU943AlXnAQ3eD4h58W8Opb7MoY204C+w3eXLC
-         ABlA==
+        bh=Ut553xAl4qrxbnk0QZzc/W+Fhixkn3BLwHaZPLvysyc=;
+        b=aewhOC9mUbd+MeowPQ492fvWzQ+ZGVv0SLpbeMlZnqOWKWjJQkuSHe1TFslhiV8zb6
+         /MnCbbZpSf0vo6d7GHbYaROq0emcgX7luXMc49JwvFZOj18ch7Iflykr16ZsPAtswXdc
+         F6r3jMff85ywVjFGmNZ5BstpEIxlFtYb8PVJ3AS5zlMkfNYiyvLZe2tE6fedfu8i7vzB
+         mHCVcnI3N+NjpU1tFmyqDONLiFhMEJp3Pd8TsAH9AXj6fYZOTMCM9n2cEmLMuzBQ2VpF
+         EKboghZBtVPokmlNKcOPYys3/I8PoqzO+Vji504JehWTyZs7/aB4BdQ+fMuXg924z+60
+         SRNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736802069; x=1737406869;
+        d=1e100.net; s=20230601; t=1736802071; x=1737406871;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=3uXVd6FnRPX1W8Wg/eWBdOZEvpGo7dHFBW2WCW32Bdw=;
-        b=dJGHkBD8s06GbNdPqVhcqDnHzcPZCCrRktRgWfj/MJck0y4Xkg/9FL7RsnMTw0GoOT
-         0H911kXSFQkzusot6iDqljiizp+MAUTOvx/bcisjX/gQ0zdt40ZH4I40O0riXQAzGkLh
-         I9r2ClrOZQauytuTlRGiaagV5qfScULYfZBP2wTYpyAbTuPWf5XniMtU/Kg11N+/0I6/
-         Ns1uTq79BtCjkMKzcZRph6QpJuRj+pRJI9qbwddWAzPvUVeTfbz9NH4dIW5YU+P/8Vji
-         1JmZIl4wSoHsCO/+EZl7TfaeU540HfxGk1hespu0W7CwBnYQ9S2JDFewPpbJfIO9nAfm
-         qCNw==
-X-Forwarded-Encrypted: i=1; AJvYcCWfV+d3Wog8vVX7a1JRjtFsA4NrY4vWs4ZkaGsJGDrYTQUHY1IKWsrc1NR88rk4GyPt9mBMst7obg0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxEynmkwpP0IACtNilf+7HcJw/nz/aqpi/lc3MSKUTzLHSsna1Y
-	JHNKZ4buOKceIExcEB+ffG7JNbRGcTPefhpg5eP1cO4YYpHVfqysk9vZ9jUL6Xc=
-X-Gm-Gg: ASbGnctC92TwSVlxewpWCh3HDuoNXg9XMktLaimgLFrrmh7PxjHzHekDcb9O9eMZSBc
-	ddKfS/tzhVDGJH7uULoLDDSkjud5+T9ZGQ/VqEvcG7oT7nItUhZVx+1DFotyr2IeLKLf0XwMEhZ
-	pEdqlWbT8znyq1uSIjF9jPMLf38MHycAEIkHLi6gM1xOXhYId6DuoWWnPW4qx+/zchk8/UtSkbV
-	jRXtSM+biI/6XOBKXhA/7GSMpS+bRjrEExs5jXNnPZ0JfOVuQIcKn0Sxd9vSc72dSkGLAp1vZRM
-	vU82IlTiJM+4
-X-Google-Smtp-Source: AGHT+IGulA4qmDQ8WGRs1VyQjDXlPbYFho/RM3G2U9CehZxAyN2Da3u9SYC//Ca05O7nTL9Ydwk4QA==
-X-Received: by 2002:a05:6830:2a9f:b0:71d:fa78:a5e7 with SMTP id 46e09a7af769-721e2cccb60mr16384875a34.0.1736802069599;
-        Mon, 13 Jan 2025 13:01:09 -0800 (PST)
+        bh=Ut553xAl4qrxbnk0QZzc/W+Fhixkn3BLwHaZPLvysyc=;
+        b=ucekX0NzAdLlq/M8pwwkRe4BFhC3Qwbj7aSJGS61lm+fRKkwyvGvUk+OTA0YE8JJsC
+         doq899+tUjLCWI/en7hD2HG4TK7sg/QvL3Ko2CcRIWJJ6eoOFasXdI9i5TMWXRw/l9dA
+         tUk+bM/fOZ1LAgNf0dFYUUVZpWE8mPZO7jo3JeaU1r5EfH+cCCkdxzJK2ElL5q96IORb
+         CvINkiUp4Jh1DmD38egZ9amSrC4syvgS9Gnl5OZr7l3J174MUSP97xhkAOk/5MAONQSQ
+         /bIoa6Va3HS/4pmtaw7Wocesn0/GJaNFokZNhGQsgXJ2Y3Thzickgt5cxlFaAl4UbAe+
+         1R2w==
+X-Forwarded-Encrypted: i=1; AJvYcCX+fDE8d2ElJ+z2wTDh9l+uI5Rw4/1hrqN4QS7PaDhgoR+4IONJ6c4T8TcjEqX1DHoyg1RfU9ymzr4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzT4e3rc7DOfV1jfKPTKaVQCxeKfJTCWycYvr6EA0ytzSRBR0E+
+	97fNJevGJP/bO20y/tnxigvwr80F16IOaOF4GdYopVz/9MQRP0gIYessofneRjs=
+X-Gm-Gg: ASbGncsVlvg1f7joUYk52EbH+5g/HZMflZk9pnrAYnw6DKC9nHw96l95ooPISrTolsS
+	8gIOdySh6aOWLV80APT5hMRNgPMZZRuuv6U0xiE8SoIG1wRXAZ7ot1N1Au6f1s/HqySuBqVpcmV
+	wK1diQksTlRA7crWh8mx/PTp2UxM/SQjRCEM/So6gudZjlcDJnuLyLhX1aRrCPHmRb0PtpTDGM/
+	/4WkaBXA0cj4RAoYNyn5Yx1z3uDDkoFDdvj9s3UcYaHXQaW394r5l1u07ZxId67TqSumBHv2Ep+
+	GHC9tFsI8hdx
+X-Google-Smtp-Source: AGHT+IHrB6vSbspWOk3Rx9IKrNZYhVIur8SbVj/M6Ygov49+hczQXsqAhEvexS5+SvuMDkJrDQpqaQ==
+X-Received: by 2002:a05:6830:6509:b0:718:a52:e1cc with SMTP id 46e09a7af769-721e2ecc7e6mr15932371a34.25.1736802071421;
+        Mon, 13 Jan 2025 13:01:11 -0800 (PST)
 Received: from [127.0.1.1] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7231855effasm3927744a34.33.2025.01.13.13.01.08
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7231855effasm3927744a34.33.2025.01.13.13.01.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jan 2025 13:01:09 -0800 (PST)
+        Mon, 13 Jan 2025 13:01:11 -0800 (PST)
 From: David Lechner <dlechner@baylibre.com>
-Date: Mon, 13 Jan 2025 15:00:20 -0600
-Subject: [PATCH v7 15/17] doc: iio: ad4695: add SPI offload support
+Date: Mon, 13 Jan 2025 15:00:22 -0600
+Subject: [PATCH v7 17/17] iio: dac: ad5791: Add offload support
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -68,7 +68,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250113-dlech-mainline-spi-engine-offload-2-v7-15-e0860c81caae@baylibre.com>
+Message-Id: <20250113-dlech-mainline-spi-engine-offload-2-v7-17-e0860c81caae@baylibre.com>
 References: <20250113-dlech-mainline-spi-engine-offload-2-v7-0-e0860c81caae@baylibre.com>
 In-Reply-To: <20250113-dlech-mainline-spi-engine-offload-2-v7-0-e0860c81caae@baylibre.com>
 To: Mark Brown <broonie@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
@@ -81,115 +81,297 @@ Cc: =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
  Martin Sperl <kernel@martin.sperl.org>, linux-spi@vger.kernel.org, 
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org, 
+ Axel Haslam <ahaslam@baylibre.com>, 
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
  David Lechner <dlechner@baylibre.com>
 X-Mailer: b4 0.14.2
 
-Document SPI offload support for the ad4695 driver.
+From: Axel Haslam <ahaslam@baylibre.com>
 
+Add SPI offload support to stream TX buffers using DMA.
+This allows loading samples to the DAC with a rate of 1 MSPS.
+
+Signed-off-by: Axel Haslam <ahaslam@baylibre.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
 
-v7 changes: none
+v7 changes:
+* Removed extra space character.
+* Added write_raw_get_fmt callback to avoid having to check val2.
+* Don't allow sampling frequency of 0 Hz.
 
-v6 changes:
-* Fixed double "all"
-* Don't abbreviate "sampling_frequency" attribute names for clarity.
-
-v5 changes: new patch in v5
+v6 changes: new patch in v6
 ---
- Documentation/iio/ad4695.rst | 68 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 68 insertions(+)
+ drivers/iio/dac/Kconfig  |   3 +
+ drivers/iio/dac/ad5791.c | 163 +++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 166 insertions(+)
 
-diff --git a/Documentation/iio/ad4695.rst b/Documentation/iio/ad4695.rst
-index 9ec8bf466c15bf94cbae2ebdb61875f66af1264f..ead0faadff4b5aede2a34bac52e103e375da6f21 100644
---- a/Documentation/iio/ad4695.rst
-+++ b/Documentation/iio/ad4695.rst
-@@ -47,6 +47,36 @@ In this mode, CNV and CS are tied together and there is a single SDO line.
- To use this mode, in the device tree, omit the ``cnv-gpios`` and
- ``spi-rx-bus-width`` properties.
+diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
+index 5690a37267d86ea3ec805adfa32e13c052864061..4811ea973125a0dea1f8a9cdee1e0c045bc21981 100644
+--- a/drivers/iio/dac/Kconfig
++++ b/drivers/iio/dac/Kconfig
+@@ -296,6 +296,9 @@ config AD5770R
+ config AD5791
+ 	tristate "Analog Devices AD5760/AD5780/AD5781/AD5790/AD5791 DAC SPI driver"
+ 	depends on SPI
++	select SPI_OFFLOAD
++	select IIO_BUFFER
++	select IIO_BUFFER_DMAENGINE
+ 	help
+ 	  Say yes here to build support for Analog Devices AD5760, AD5780,
+ 	  AD5781, AD5790, AD5791 High Resolution Voltage Output Digital to
+diff --git a/drivers/iio/dac/ad5791.c b/drivers/iio/dac/ad5791.c
+index 24462cb020e19e8e2c6faa13109ac047cf423c37..aacbd22af13c63a44ddd855330dd935dc77f3731 100644
+--- a/drivers/iio/dac/ad5791.c
++++ b/drivers/iio/dac/ad5791.c
+@@ -15,9 +15,12 @@
+ #include <linux/module.h>
+ #include <linux/regulator/consumer.h>
+ #include <linux/slab.h>
++#include <linux/spi/offload/consumer.h>
+ #include <linux/spi/spi.h>
+ #include <linux/sysfs.h>
++#include <linux/units.h>
  
-+SPI offload wiring
-+^^^^^^^^^^^^^^^^^^
-+
-+When used with a SPI offload, the supported wiring configuration is:
-+
-+.. code-block::
-+
-+    +-------------+         +-------------+
-+    |    GP0/BUSY |-------->| TRIGGER     |
-+    |          CS |<--------| CS          |
-+    |             |         |             |
-+    |     ADC     |         |     SPI     |
-+    |             |         |             |
-+    |         SDI |<--------| SDO         |
-+    |         SDO |-------->| SDI         |
-+    |        SCLK |<--------| SCLK        |
-+    |             |         |             |
-+    |             |         +-------------+
-+    |         CNV |<-----+--| PWM         |
-+    |             |      +--| GPIO        |
-+    +-------------+         +-------------+
-+
-+In this case, both the ``cnv-gpios`` and  ``pwms`` properties are required.
-+The ``#trigger-source-cells = <2>`` property is also required to connect back
-+to the SPI offload. The SPI offload will have ``trigger-sources`` property
-+with cells to indicate the busy signal and which GPx pin is used, e.g
-+``<&ad4695 AD4695_TRIGGER_EVENT_BUSY AD4695_TRIGGER_PIN_GP0>``.
-+
-+.. seealso:: `SPI offload support`_
-+
- Channel configuration
- ---------------------
++#include <linux/iio/buffer-dmaengine.h>
+ #include <linux/iio/dac/ad5791.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/sysfs.h>
+@@ -64,11 +67,13 @@
+  * struct ad5791_chip_info - chip specific information
+  * @name:		name of the dac chip
+  * @channel:		channel specification
++ * @channel_offload:	channel specification for offload
+  * @get_lin_comp:	function pointer to the device specific function
+  */
+ struct ad5791_chip_info {
+ 	const char *name;
+ 	const struct iio_chan_spec channel;
++	const struct iio_chan_spec channel_offload;
+ 	int (*get_lin_comp)(unsigned int span);
+ };
  
-@@ -158,6 +188,27 @@ Unimplemented features
- - GPIO support
- - CRC support
+@@ -81,6 +86,11 @@ struct ad5791_chip_info {
+  * @gpio_clear:		clear gpio
+  * @gpio_ldac:		load dac gpio
+  * @chip_info:		chip model specific constants
++ * @offload_msg:	spi message used for offload
++ * @offload_xfer:	spi transfer used for offload
++ * @offload:		offload device
++ * @offload_trigger:	offload trigger
++ * @offload_trigger_hz:	offload sample rate
+  * @vref_mv:		actual reference voltage used
+  * @vref_neg_mv:	voltage of the negative supply
+  * @ctrl:		control register cache
+@@ -96,6 +106,11 @@ struct ad5791_state {
+ 	struct gpio_desc		*gpio_clear;
+ 	struct gpio_desc		*gpio_ldac;
+ 	const struct ad5791_chip_info	*chip_info;
++	struct spi_message		offload_msg;
++	struct spi_transfer		offload_xfer;
++	struct spi_offload		*offload;
++	struct spi_offload_trigger	*offload_trigger;
++	unsigned int			offload_trigger_hz;
+ 	unsigned short			vref_mv;
+ 	unsigned int			vref_neg_mv;
+ 	unsigned			ctrl;
+@@ -232,6 +247,25 @@ static int ad5780_get_lin_comp(unsigned int span)
+ 		return AD5780_LINCOMP_10_20;
+ }
  
-+SPI offload support
-+===================
++static int ad5791_set_sample_freq(struct ad5791_state *st, int val)
++{
++	struct spi_offload_trigger_config config = {
++		.type = SPI_OFFLOAD_TRIGGER_PERIODIC,
++		.periodic = {
++			.frequency_hz = val,
++		},
++	};
++	int ret;
 +
-+To be able to achieve the maximum sample rate, the driver can be used with the
-+`AXI SPI Engine`_ to provide SPI offload support.
++	ret = spi_offload_trigger_validate(st->offload_trigger, &config);
++	if (ret)
++		return ret;
 +
-+.. _AXI SPI Engine: http://analogdevicesinc.github.io/hdl/projects/ad469x_fmc/index.html
++	st->offload_trigger_hz = config.periodic.frequency_hz;
 +
-+.. seealso:: `SPI offload wiring`_
++	return 0;
++}
 +
-+When SPI offload is being used, some attributes will be different.
-+
-+* ``trigger`` directory is removed.
-+* ``in_voltage0_sampling_frequency`` attributes are added for setting the sample
-+  rate.
-+* ``in_voltage0_sampling_frequency_available`` attributes are added for querying
-+  the max sample rate.
-+* ``timestamp`` channel is removed.
-+* Buffer data format may be different compared to when offload is not used,
-+  e.g. the ``buffer0/in_voltage0_type`` attribute.
-+
- Device buffers
- ==============
+ static int ad5791_read_raw(struct iio_dev *indio_dev,
+ 			   struct iio_chan_spec const *chan,
+ 			   int *val,
+@@ -259,6 +293,9 @@ static int ad5791_read_raw(struct iio_dev *indio_dev,
+ 		do_div(val64, st->vref_mv);
+ 		*val = -val64;
+ 		return IIO_VAL_INT;
++	case IIO_CHAN_INFO_SAMP_FREQ:
++		*val = st->offload_trigger_hz;
++		return IIO_VAL_INT;
+ 	default:
+ 		return -EINVAL;
+ 	}
+@@ -299,6 +336,24 @@ static const struct ad5791_chip_info _name##_chip_info = {		\
+ 			},						\
+ 			.ext_info = ad5791_ext_info,			\
+ 	},								\
++	.channel_offload = {						\
++			.type = IIO_VOLTAGE,				\
++			.output = 1,					\
++			.indexed = 1,					\
++			.address = AD5791_ADDR_DAC0,			\
++			.channel = 0,					\
++			.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),	\
++			.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |	\
++				BIT(IIO_CHAN_INFO_OFFSET),		\
++			.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ),\
++			.scan_type = {					\
++				.sign = 'u',				\
++				.realbits = (bits),			\
++				.storagebits = 32,			\
++				.shift = (_shift),			\
++			},						\
++			.ext_info = ad5791_ext_info,			\
++	},								\
+ }
  
-@@ -165,3 +216,20 @@ This driver supports hardware triggered buffers. This uses the "advanced
- sequencer" feature of the chip to trigger a burst of conversions.
+ AD5791_DEFINE_CHIP_INFO(ad5760, 16, 4, ad5780_get_lin_comp);
+@@ -322,14 +377,106 @@ static int ad5791_write_raw(struct iio_dev *indio_dev,
  
- Also see :doc:`iio_devbuf` for more general information.
+ 		return ad5791_spi_write(st, chan->address, val);
+ 
++	case IIO_CHAN_INFO_SAMP_FREQ:
++		if (val < 1)
++			return -EINVAL;
++		return ad5791_set_sample_freq(st, val);
+ 	default:
+ 		return -EINVAL;
+ 	}
+ }
+ 
++static int ad5791_write_raw_get_fmt(struct iio_dev *indio_dev,
++				    struct iio_chan_spec const *chan,
++				    long mask)
++{
++	switch (mask) {
++	case IIO_CHAN_INFO_SAMP_FREQ:
++		return IIO_VAL_INT;
++	default:
++		return IIO_VAL_INT_PLUS_MICRO;
++	}
++}
 +
-+Effective sample rate for buffered reads
-+----------------------------------------
++static int ad5791_buffer_preenable(struct iio_dev *indio_dev)
++{
++	struct ad5791_state *st = iio_priv(indio_dev);
++	struct spi_offload_trigger_config config = {
++		.type = SPI_OFFLOAD_TRIGGER_PERIODIC,
++		.periodic = {
++			.frequency_hz = st->offload_trigger_hz,
++		},
++	};
 +
-+When SPI offload is not used, the sample rate is determined by the trigger that
-+is manually configured in userspace. All enabled channels will be read in a
-+burst when the trigger is received.
++	if (st->pwr_down)
++		return -EINVAL;
 +
-+When SPI offload is used, the sample rate is configured per channel. All
-+channels will have the same rate, so only one ``in_voltageY_sampling_frequency``
-+attribute needs to be set. Since this rate determines the delay between each
-+individual conversion, the effective sample rate for each sample is actually
-+the sum of the periods of each enabled channel in a buffered read. In other
-+words, it is the value of the ``in_voltageY_sampling_frequency`` attribute
-+divided by the number of enabled channels. So if 4 channels are enabled, with
-+the ``in_voltageY_sampling_frequency`` attributes set to 1 MHz, the effective
-+sample rate is 250 kHz.
++	return spi_offload_trigger_enable(st->offload, st->offload_trigger,
++					 &config);
++}
++
++static int ad5791_buffer_postdisable(struct iio_dev *indio_dev)
++{
++	struct ad5791_state *st = iio_priv(indio_dev);
++
++	spi_offload_trigger_disable(st->offload, st->offload_trigger);
++
++	return 0;
++}
++
++static const struct iio_buffer_setup_ops ad5791_buffer_setup_ops = {
++	.preenable = &ad5791_buffer_preenable,
++	.postdisable = &ad5791_buffer_postdisable,
++};
++
++static int ad5791_offload_setup(struct iio_dev *indio_dev)
++{
++	struct ad5791_state *st = iio_priv(indio_dev);
++	struct spi_device *spi = st->spi;
++	struct dma_chan *tx_dma;
++	int ret;
++
++	st->offload_trigger = devm_spi_offload_trigger_get(&spi->dev,
++		st->offload, SPI_OFFLOAD_TRIGGER_PERIODIC);
++	if (IS_ERR(st->offload_trigger))
++		return dev_err_probe(&spi->dev, PTR_ERR(st->offload_trigger),
++				     "failed to get offload trigger\n");
++
++	ret = ad5791_set_sample_freq(st, 1 * MEGA);
++	if (ret)
++		return dev_err_probe(&spi->dev, ret,
++				     "failed to init sample rate\n");
++
++	tx_dma = devm_spi_offload_tx_stream_request_dma_chan(&spi->dev,
++							     st->offload);
++	if (IS_ERR(tx_dma))
++		return dev_err_probe(&spi->dev, PTR_ERR(tx_dma),
++				     "failed to get offload TX DMA\n");
++
++	ret = devm_iio_dmaengine_buffer_setup_with_handle(&spi->dev,
++		indio_dev, tx_dma, IIO_BUFFER_DIRECTION_OUT);
++	if (ret)
++		return ret;
++
++	st->offload_xfer.len = 4;
++	st->offload_xfer.bits_per_word = 24;
++	st->offload_xfer.offload_flags = SPI_OFFLOAD_XFER_TX_STREAM;
++
++	spi_message_init_with_transfers(&st->offload_msg, &st->offload_xfer, 1);
++	st->offload_msg.offload = st->offload;
++
++	return devm_spi_optimize_message(&spi->dev, st->spi, &st->offload_msg);
++}
++
+ static const struct iio_info ad5791_info = {
+ 	.read_raw = &ad5791_read_raw,
+ 	.write_raw = &ad5791_write_raw,
++	.write_raw_get_fmt = &ad5791_write_raw_get_fmt,
++};
++
++static const struct spi_offload_config ad5791_offload_config = {
++	.capability_flags = SPI_OFFLOAD_CAP_TRIGGER |
++			    SPI_OFFLOAD_CAP_TX_STREAM_DMA,
+ };
+ 
+ static int ad5791_probe(struct spi_device *spi)
+@@ -416,6 +563,21 @@ static int ad5791_probe(struct spi_device *spi)
+ 	indio_dev->channels = &st->chip_info->channel;
+ 	indio_dev->num_channels = 1;
+ 	indio_dev->name = st->chip_info->name;
++
++	st->offload = devm_spi_offload_get(&spi->dev, spi, &ad5791_offload_config);
++	ret = PTR_ERR_OR_ZERO(st->offload);
++	if (ret && ret != -ENODEV)
++		return dev_err_probe(&spi->dev, ret, "failed to get offload\n");
++
++	if (ret != -ENODEV) {
++		indio_dev->channels = &st->chip_info->channel_offload;
++		indio_dev->setup_ops = &ad5791_buffer_setup_ops;
++		ret = ad5791_offload_setup(indio_dev);
++		if (ret)
++			return dev_err_probe(&spi->dev, ret,
++					     "fail to setup offload\n");
++	}
++
+ 	return devm_iio_device_register(&spi->dev, indio_dev);
+ }
+ 
+@@ -452,3 +614,4 @@ module_spi_driver(ad5791_driver);
+ MODULE_AUTHOR("Michael Hennerich <michael.hennerich@analog.com>");
+ MODULE_DESCRIPTION("Analog Devices AD5760/AD5780/AD5781/AD5790/AD5791 DAC");
+ MODULE_LICENSE("GPL v2");
++MODULE_IMPORT_NS("IIO_DMAENGINE_BUFFER");
 
 -- 
 2.43.0

@@ -1,137 +1,262 @@
-Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx08-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C32315886D
-	for <linux-spi@vger.kernel.org>; Fri, 24 Jan 2025 15:55:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F78157485;
+	Fri, 24 Jan 2025 15:55:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737734135; cv=none; b=dky32U+N7BuPZrYgXMRk7gRV/yFiMRD1rTiM7ziT6WneY/L3qH/rlrDqjXSVvx04qIdpm535lkZOcFbBcIwnNtwyUWZr2PqKIWbgu6N386cUP1GIoUfbXnWSYtxvCb6ARYpbLysqJfNfYn1b7x6fDZT9ehNWohsyiltMLojdh1I=
+	t=1737734151; cv=none; b=qnBTKsuj1YLIHmZSD5+WU35yuXKQxe1LnF0Pz7oCJ7Ze1K4qrjid5E3gOdvhai+AYHVPGmAD1GisGdFa5iEQdpFNKzfYpJ/Tu2dTvrR/znPMnRBmurg4xhJJmS4qORhndOV1KLXa/QqW/ozV1If1TMwlzJdLtewdTc+RxqpVhUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737734135; c=relaxed/simple;
-	bh=s/jO4NPWKOieyxzi6luyHh+P5ju9zoKIC7bH0SB8o4s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=R8AGUFHKTvZcjryVQY9grTuDtjf02uylwp0RWfgprZvG7+th+WzEjbKGWeQRy8YoDoW6HRgb4imk0PA440/fdryOV5knyxSWD/UOzGby5AFs0gMTHSFQZhKd9Z24Ec6RYmzytdEWhmwrsYoy/NlY/1yJAZsPRmil3sNf2HRTfQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=s7zZ3quV; arc=none smtp.client-ip=209.85.219.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1737734151; c=relaxed/simple;
+	bh=GJ+IrJMpepIUs0ylPLxUpeAwiilnO65BRtpk+vxXIx8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=JztIwp1X2zvi0ZFJq61RAVkic2djzGfnQi7gs3UWoWUVPuvpE1sB8Cgqs2UFTBa6wx2H30einCA+PSir44sqsPY/esqLtHYQB2yBaiReBNpBaQfNiVeEMTCmyNy4ivVivhH895fhSm5pWIwIABuug1Djpn2NTnWZuvKo8Ue/uN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=f1wVHLp8; arc=none smtp.client-ip=91.207.212.93
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="s7zZ3quV"
-Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-e39f43344c5so3223720276.1
-        for <linux-spi@vger.kernel.org>; Fri, 24 Jan 2025 07:55:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1737734131; x=1738338931; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ilPZPULNnLI6UK/uv5dVV+2Dss3A/uBmwkDVQdaY3K0=;
-        b=s7zZ3quV6sSGQi23hJ8dEM4EP7tlS0VnAiaxBv3lK2wpY8qVBS+nv0u+LtSgG3zm7a
-         3jC/AeebNiMJTjl0CVRjs0C+ZCprv/VSwLRNaAB+dBzP91o0J1unli1foSINTUIjCnrN
-         WHlsm/odmDIZNdqV4J+p6YtC9wuZ+t6FP+ZlBqLaLju/eWO3BGhQmaL8HMcSn3NxA5uM
-         wozOiTvrTWMH9N0FeRUT9N3m3ZjyqmTfRJlH4vvuzIdATqdDi3VjBVvW1VdVijcrWkOK
-         N5FZhjLj2bhGl8EF8f1n+WVssM5PB9NIxCkKwnRfCaN37YqkH2LBT4uq39WZsLnGIbfF
-         Dgpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737734131; x=1738338931;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ilPZPULNnLI6UK/uv5dVV+2Dss3A/uBmwkDVQdaY3K0=;
-        b=Nt5AMuJSaddTOJK1axLRFPvhytyih7IPo4L170Bv3RzGIWswEvVbKxdat/5f3nzMPQ
-         I25bbEWz94jXHAF1jaXCp1OccVarSGpFnyMn+HI83lx7xN7ehwwxcBBFHGEd8JfwcmpZ
-         CugPSIoH3etNIMQVTKRbNDiM7zFsykUGZN8y/C/ES7djJ0JeVYTYFAVprB79tY5qm0Ko
-         Ya10i0y7c8GpgoDYUJ487J6Tsc5f488WWW8OuclKpymfzlSn6Gqc3mwyzh4U9Cy737dF
-         ytt7ZU9OpjZxIwn9Y2utuT0nA2rP2YpsK4A2BD1i47pTOaldcGxTxrVcKJWSBdAkiSBw
-         eqcA==
-X-Forwarded-Encrypted: i=1; AJvYcCWIX38k2QdD+nJNXh9TIXDcJXMVDXyTUMBwYSrfrEikD20htah9SgAk4l4yze16qidYbwMI3WdzkGY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YweaS2zYwLi4NBNxoFUq2MljRM97gDCpsURiTekjewIG8tCcXaj
-	XoFeyTsPIJJKyxMmvprlmQLh5cx9jyHB310P/PENq4vvRMomnHsgnxOSVMSEQS7Qze+XLt9Y5jn
-	irQv0Puoo6fd4Hm0vi0YFa5hOdIQFdV/HV29GhA==
-X-Gm-Gg: ASbGnctd0YfW7qF//sp9VymszeyE6k3RVoDzCBaKIIBZPeauX3AwQCogO7Kh8O/YV+g
-	7eMpvOGiAqLkLaHr8mKzS3/EBPv6NcoLW/FpGP5DDfOfcUlFUMBA1JAM/PwrU1MvNDapAZjbrg3
-	qvlD8hh55iH3NCAKYIMg==
-X-Google-Smtp-Source: AGHT+IE5CrP20lwY9b957F+q8FfX4UrWyqpcD5u1RzqaZ3UIpMjXmbJiX0igSbAvphxXL+FBMTlukLRROvc9N2dsUB8=
-X-Received: by 2002:a05:690c:3701:b0:6f6:d4bf:d01a with SMTP id
- 00721157ae682-6f6eb940fb8mr246220177b3.34.1737734131503; Fri, 24 Jan 2025
- 07:55:31 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="f1wVHLp8"
+Received: from pps.filterd (m0369457.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50ODxYEi020373;
+	Fri, 24 Jan 2025 16:55:26 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=selector1; bh=
+	uaG9qa70VJUtRqCzfAg/ikd241yTHwjVfiONCnLuAOQ=; b=f1wVHLp8U2S3Es8D
+	A2T+wuU/bjuhSr9oPF0AO8l+LCmGauZB+2fSIWqQSIz5SO3b7YG0HVwP38CXVp6m
+	b1/45E3b06hFLuSpXH2Xm5qIVnWre2NUcIRckFt/Vw5QlIfo1RvoycFaL+7sX+jM
+	4yPEJdv58N+v++kFWQ/DHPzCvi+M6UjhKK2HOUFMMBGFIukrLHnqsqLDrUOXokEg
+	8bSk+x1rlO1Wc9PWmmgkZ8LUCTfjIogJOElZMesxQk8rE58UY0DSK1tfnSCX1gHT
+	QT3RhR9XZQ4zvEkyRj78bRZ/6rnPccMn2qXGZpU/RSR9kYeI7PW/Ax0zEV4Kvx82
+	NGn/3A==
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 44cc7x8dns-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Jan 2025 16:55:26 +0100 (CET)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 7B0F640046;
+	Fri, 24 Jan 2025 16:54:12 +0100 (CET)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 4AB9428DA13;
+	Fri, 24 Jan 2025 16:53:06 +0100 (CET)
+Received: from [10.48.87.62] (10.48.87.62) by SHFDAG1NODE1.st.com
+ (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.37; Fri, 24 Jan
+ 2025 16:53:05 +0100
+Message-ID: <2d712420-c8ed-4bf9-83ec-348f71aa1ce9@foss.st.com>
+Date: Fri, 24 Jan 2025 16:53:04 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250124105309.295769-1-quic_vdadhani@quicinc.com>
- <20250124105309.295769-7-quic_vdadhani@quicinc.com> <d3tydp3m7pehhiphupwybjlol5v2u3sabqotqximxmnswjlczb@jmdzpbrcrgou>
- <08545d45-bfe6-45e4-b7be-503c318315af@quicinc.com>
-In-Reply-To: <08545d45-bfe6-45e4-b7be-503c318315af@quicinc.com>
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Fri, 24 Jan 2025 17:55:20 +0200
-X-Gm-Features: AWEUYZm4pYCNJdHGiPnsyF_MnRCwaJQzJ4L3pN0DCmSTM3Gxdme16eoXtL4QfTk
-Message-ID: <CAA8EJprSZx9Bx7EXA_RpwZdhieOLtrTARqXSuo-gO9sVMdK5Qg@mail.gmail.com>
-Subject: Re: [PATCH v2 6/8] i2c: qcom-geni: Load i2c qup Firmware from linux side
-To: Viken Dadhaniya <quic_vdadhani@quicinc.com>
-Cc: andi.shyti@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, gregkh@linuxfoundation.org, jirislaby@kernel.org, 
-	broonie@kernel.or, andersson@kernel.org, konradybcio@kernel.org, 
-	johan+linaro@kernel.org, dianders@chromium.org, agross@kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-i2c@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-serial@vger.kernel.org, linux-spi@vger.kernel.org, 
-	quic_msavaliy@quicinc.com, quic_anupkulk@quicinc.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/9] dt-bindings: spi: Add STM32 OSPI controller
+To: Krzysztof Kozlowski <krzk@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Alexandre Torgue
+	<alexandre.torgue@foss.st.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Catalin Marinas
+	<catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>
+CC: <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <christophe.kerello@foss.st.com>
+References: <20250122141037.953934-1-patrice.chotard@foss.st.com>
+ <20250122141037.953934-2-patrice.chotard@foss.st.com>
+ <ea4ca423-c75d-468c-b5b2-673cd58e42c9@kernel.org>
+Content-Language: en-US
+From: Patrice CHOTARD <patrice.chotard@foss.st.com>
+In-Reply-To: <ea4ca423-c75d-468c-b5b2-673cd58e42c9@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-
-On Fri, 24 Jan 2025 at 17:24, Viken Dadhaniya <quic_vdadhani@quicinc.com> wrote:
->
->
->
-> On 1/24/2025 8:34 PM, Dmitry Baryshkov wrote:
-> > On Fri, Jan 24, 2025 at 04:23:07PM +0530, Viken Dadhaniya wrote:
-> >> Add provision to load firmware of Serial engine for I2C protocol from
-> >> Linux Execution Environment on running on APPS processor.
-> >>
-> >> Co-developed-by: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
-> >> Signed-off-by: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
-> >> Signed-off-by: Viken Dadhaniya <quic_vdadhani@quicinc.com>
-> >> ---
-> >>   drivers/i2c/busses/i2c-qcom-geni.c | 7 +++++--
-> >>   1 file changed, 5 insertions(+), 2 deletions(-)
-> >>
-> >> diff --git a/drivers/i2c/busses/i2c-qcom-geni.c b/drivers/i2c/busses/i2c-qcom-geni.c
-> >> index 7bbd478171e0..9ad3b8c9a224 100644
-> >> --- a/drivers/i2c/busses/i2c-qcom-geni.c
-> >> +++ b/drivers/i2c/busses/i2c-qcom-geni.c
-> >> @@ -872,8 +872,11 @@ static int geni_i2c_probe(struct platform_device *pdev)
-> >>      }
-> >>      proto = geni_se_read_proto(&gi2c->se);
-> >>      if (proto != GENI_SE_I2C) {
-> >> -            ret = dev_err_probe(dev, -ENXIO, "Invalid proto %d\n", proto);
-> >> -            goto err_resources;
-> >> +            ret = geni_load_se_firmware(&gi2c->se, GENI_SE_I2C);
-> >
-> > Hmm, so if the SE has been configured to e.g. SPI by the TZ, can we
-> > switch it to the I2C?
->
-> No, in the current design, TZ will not load the SE firmware.
-
-But that's what your patch is doing: if the protocol is not I2C, try
-switching to I2C.
-
-Instead it should be 'if unconfigured, try loading I2C'.
-
->
-> >
-> >> +            if (ret) {
-> >> +                    dev_err(gi2c->se.dev, "i2c firmware load failed ret: %d\n", ret);
-> >> +                    goto err_resources;
-> >> +            }
-> >>      }
-> >>
-> >>      if (desc && desc->no_dma_support)
-> >> --
-> >> 2.34.1
-> >>
-> >
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: EQNCAS1NODE4.st.com (10.75.129.82) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-24_06,2025-01-23_01,2024-11-22_01
 
 
 
--- 
-With best wishes
-Dmitry
+On 1/22/25 16:18, Krzysztof Kozlowski wrote:
+> On 22/01/2025 15:10, patrice.chotard@foss.st.com wrote:
+>> ---
+>>  .../bindings/spi/st,stm32-ospi.yaml           | 109 ++++++++++++++++++
+>>  1 file changed, 109 insertions(+)
+>>  create mode 100644 Documentation/devicetree/bindings/spi/st,stm32-ospi.yaml
+>>
+>> diff --git a/Documentation/devicetree/bindings/spi/st,stm32-ospi.yaml b/Documentation/devicetree/bindings/spi/st,stm32-ospi.yaml
+>> new file mode 100644
+>> index 000000000000..bf16252f85fa
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/spi/st,stm32-ospi.yaml
+> 
+> 
+> Use compatible as filename.
+
+Ok
+
+> 
+>> @@ -0,0 +1,109 @@
+>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/spi/st,stm32-ospi.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: STMicroelectronics STM32 Octal Serial Peripheral Interface (OSPI)
+>> +
+>> +maintainers:
+>> +  - Patrice Chotard <patrice.chotard@foss.st.com>
+>> +
+>> +allOf:
+>> +  - $ref: spi-controller.yaml#
+>> +
+>> +properties:
+>> +  compatible:
+>> +    const: st,stm32mp25-ospi
+>> +
+>> +  reg:
+>> +    description: registers
+> 
+> That's not helping. Please take a look how other bindings do it.
+> maxItems instead or you need to list the items with meaningful description.
+
+ok, will use maxItems
+
+> 
+>> +
+>> +  "#address-cells":
+>> +    const: 1
+>> +
+>> +  "#size-cells":
+>> +    const: 0
+> 
+> Drop *cells.
+
+ok
+
+>> +
+>> +  memory-region:
+>> +    maxItems: 1
+>> +    description: Phandle to a node describing memory-map region to be used
+> 
+> Drop description, redundant. Say something useful - the purpose - or
+> just maxItems if purpose is obvious.
+
+ok, i will add 
+      - description: phandle to OSPI block reset
+      - description: phandle to delay block reset
+
+> 
+>> +
+>> +  clocks:
+>> +    maxItems: 1
+>> +
+>> +  interrupts:
+>> +    maxItems: 1
+>> +
+>> +  resets:
+>> +    maxItems: 2
+> 
+> You need to list and describe the items.
+
+ok
+
+> 
+>> +
+>> +  dmas:
+>> +    items:
+>> +      - description: tx DMA channel
+>> +      - description: rx DMA channel
+> 
+> maxItems: 2 is enough, because names define what these are
+
+ok
+
+> 
+>> +
+>> +  dma-names:
+>> +    items:
+>> +      - const: tx
+>> +      - const: rx
+>> +
+>> +  st,syscfg-dlyb:
+>> +    description: |
+>> +      Use to set the OSPI delay block within SYSCFG to:
+> 
+> Phandles to what? Describe also the destination device.
+> 
+>> +        Tune the phase of the RX sampling clock (or DQS) in order
+> 
+> Unneeded indentation.
+> 
+>> +        to sample the data in their valid window.
+>> +        Tune the phase of the TX launch clock in order to meet setup
+>> +        and hold constraints of TX signals versus the memory clock.
+>> +    $ref: /schemas/types.yaml#/definitions/phandle-array
+>> +    items:
+>> +      minItems: 2
+>> +      maxItems: 2
+> 
+> Your example has only one item, so probably you wanted one more items
+> with description. Now you miss one of matrix constraints.
+
+My fault, only one item is required.
+
+> 
+> git grep -C 8 phandle-array
+> (e.g. some sram or syscon examples)
+> 
+> 
+> 
+>> +
+>> +  access-controllers:
+>> +    minItems: 1
+>> +    maxItems: 2
+> 
+> List the items.
+
+i will update as following:
+  access-controllers:
+    - description: phandle to the rifsc device to check access right.
+    - description: phandle to the rcc device for secure clock control
+    minItems: 1
+    maxItems: 2
+
+> 
+>> +
+>> +  power-domains:
+>> +    maxItems: 1
+>> +
+>> +required:
+>> +  - compatible
+>> +  - reg
+>> +  - "#address-cells"
+>> +  - "#size-cells"
+> 
+> Drop cells
+
+ok
+
+> 
+>> +  - clocks
+>> +  - interrupts
+>> +  - st,syscfg-dlyb
+>> +
+>> +unevaluatedProperties: false
+>> +
+> 
+> 
+> 
+> Best regards,
+> Krzysztof

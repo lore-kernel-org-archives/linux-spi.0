@@ -1,103 +1,64 @@
-Received: from mx08-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3129B15C158;
-	Fri, 24 Jan 2025 15:56:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDE882D98;
+	Fri, 24 Jan 2025 18:03:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737734182; cv=none; b=PE+ZFdeViiKei5TWfkI6mBFjARaplBct31UrjNDwCBtuCgWlZQGzrrTE/BoaWwhjiUrgJFxucVhO/DL6KLpQU854psDmwjLYoYse7dJkNauzagac44+xWSZP6LjPL/rUbSzPdXyZ0dOQD0bIVfcT53czYceCCwfWJtjxXSNz58A=
+	t=1737741816; cv=none; b=fpsChHgViwqIWOtO+BnsIeiw3qAFRC6UX9OLfI/rK0yQWsAXqQF+sHK3qrwqHioOQdtPu17ZK15jfpj4CgKWzM0i9LoFuJ+TUqwKVMHR/luaxiApykOkJxrNhs8ZqPSF/Pnfsk2P5xDOqCw1hGwtBC9lre5JI/QUVfjVY8rOoUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737734182; c=relaxed/simple;
-	bh=TPX1l+SdRIztwMtC4rMs0NLe2T3z4RcX/+NrtMVFUV4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=R7eu0kdtpdtKfohC5B9Pejp2N52ntmqymrfzawCAGjOda49Do8zTt3wgtq2XVP44CkDd75G2CWOwlhfgmR6as6kGG/wnD4sC37+92UNzrzUIx2ACoyg5EY4C7dNb6zVVjJ2Popr8jiktN1vA+06Bc7ab/RQ29XmoJ0Y1QMdQs18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=ieJDbpw+; arc=none smtp.client-ip=91.207.212.93
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+	s=arc-20240116; t=1737741816; c=relaxed/simple;
+	bh=T7jQGhGq4kVFYXEDBLMD5cvlMUwyhfACdNERwvYWewk=;
+	h=Message-ID:From:To:Cc:Subject:Date; b=sD0RDRf2yAMk4vfgbbW0rP2yZODvJ1EABPrqB05L3WElBpXRNgkF/y7z+3DvueG5FNBJ5RdQry51bloXg2yAeFixbqTlX0M6Y3dfhiTOzLKGM3sJbwK7RRKQdzB1JFhO4UTUVEXrVFVPIcjUFL8pNxyEHW1yAQqNjrtt8W3teKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pygbD5Xq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="ieJDbpw+"
-Received: from pps.filterd (m0369457.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50ODxT21020338;
-	Fri, 24 Jan 2025 16:56:07 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=selector1; bh=
-	uQJZ2/IQ+I2p2Ev80yrRLDK6uoLc+JB+saQGoWGX9Ko=; b=ieJDbpw+v0XmJCbj
-	nqWoYbSg0U9tI5gJ86lpMlxkANGFkz/xY7sihPc0Cuo0niayH1GJRA43V2Vc7IFI
-	+unl2mdy8XQkvwV3yF7XPJ3AcJe/su9q8MQS4bXpviGiotw4t9IfOG6bejzeZu13
-	cgnc62DZbOsj9VMJQRPvvwmk4YswWFKLGRsVEAjjny+g9dkhbSwalq+/v4QKLQaY
-	V8lVIMJrwEL5CHMD40ta+q8fHozvS/kps3i0uMx60ten/yqSOI033frL8LfxejdM
-	cG1YeLtd2DVsN/a/rdf4Rkz7V8Ut0MNGL2Xhsw/0fCfsbApyf58HPmSkv2h12PJK
-	27MwLg==
-Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 44cc7x8dqk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Jan 2025 16:56:07 +0100 (CET)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 73A1640049;
-	Fri, 24 Jan 2025 16:54:53 +0100 (CET)
-Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 3B82628DEDE;
-	Fri, 24 Jan 2025 16:53:48 +0100 (CET)
-Received: from [10.48.87.62] (10.48.87.62) by SHFDAG1NODE1.st.com
- (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.37; Fri, 24 Jan
- 2025 16:53:47 +0100
-Message-ID: <5def1249-627b-4daa-a1e5-c0df161dafab@foss.st.com>
-Date: Fri, 24 Jan 2025 16:53:46 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pygbD5Xq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55205C4CED2;
+	Fri, 24 Jan 2025 18:03:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737741815;
+	bh=T7jQGhGq4kVFYXEDBLMD5cvlMUwyhfACdNERwvYWewk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=pygbD5XqjQb0qxXA+ZypMJiCIGwgWJM0H91xQDAehYeP8N6LINpFDE/F7PDF1g9Gl
+	 ZKZ39eoHy86FKI/kTLRWmP+V2jraGdmg2ICt9CHnJ1zZ1ISpuVwMzlh7mbwqppex+z
+	 DQelCvPXiwNNZc+xOnwZ6RDwkm1k6Q9Zz5CUE6ld7BAJ9LFYISakRUnuIKgU9MlngH
+	 GMD9YhnXXk0HKy1uDmfaWP52VN0K1gybOANw8++o6QPyRS6tjKyEVEasEXdt5QUy69
+	 cLYrK2yZpBFSLpeO52olpo5XhSbBFkLnsqJtwYSFfu2qQAY4hoVcKFjiP/Cf/Vm5r+
+	 0ErCFlA2TfmOA==
+Message-ID: <5dc55026c1c6ad511e0ff918b43b6792.broonie@kernel.org>
+From: Mark Brown <broonie@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
+Subject: [GIT PULL] SPI fixes for v6.14-merge-window
+Date: Fri, 24 Jan 2025 18:03:21 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 8/9] arm64: defconfig: Enable STM32 Octo Memory Manager
- driver
-To: Krzysztof Kozlowski <krzk@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Alexandre Torgue
-	<alexandre.torgue@foss.st.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Catalin Marinas
-	<catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>
-CC: <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <christophe.kerello@foss.st.com>
-References: <20250122141037.953934-1-patrice.chotard@foss.st.com>
- <20250122141037.953934-9-patrice.chotard@foss.st.com>
- <ac9bafad-62b8-433e-be43-96a6f9276141@kernel.org>
-Content-Language: en-US
-From: Patrice CHOTARD <patrice.chotard@foss.st.com>
-In-Reply-To: <ac9bafad-62b8-433e-be43-96a6f9276141@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: EQNCAS1NODE4.st.com (10.75.129.82) To SHFDAG1NODE1.st.com
- (10.75.129.69)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-24_06,2025-01-23_01,2024-11-22_01
 
+The following changes since commit 78b435c9044a9ec321da29d299c70cb14b059682:
 
+  spi: pxa2xx: Introduce __lpss_ssp_update_priv() helper (2025-01-16 17:04:31 +0000)
 
-On 1/22/25 16:23, Krzysztof Kozlowski wrote:
-> On 22/01/2025 15:10, patrice.chotard@foss.st.com wrote:
->> From: Patrice Chotard <patrice.chotard@foss.st.com>
->>
->> Enable STM32 Octo Memory Manager (OMM) driver which is needed
->> for OSPI usage on STM32 platforms.
-> ... And which upstream boards need it?
+are available in the Git repository at:
 
-Right, i will add that is needed for stm32mp257f-ev1 board
+  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v6.14-merge-window
 
-> 
-> Best regards,
-> Krzysztof
+for you to fetch changes up to a07eb4f67ed085f32002a1af2b6073546d67de3f:
+
+  spi: omap2-mcspi: Correctly handle devm_clk_get_optional() errors (2025-01-21 13:07:03 +0000)
+
+----------------------------------------------------------------
+spi: Fix for v6.14
+
+A simple fix for mishandling of some clk_get_optional() return codes in
+the OMAP driver, the problem was reported against stable kernels on a
+few platforms after an earlier incomplete fix was backported.
+
+----------------------------------------------------------------
+Mark Brown (1):
+      spi: omap2-mcspi: Correctly handle devm_clk_get_optional() errors
+
+ drivers/spi/spi-omap2-mcspi.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)

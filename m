@@ -1,92 +1,125 @@
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA33D1CEEAA;
-	Fri, 24 Jan 2025 10:50:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98E6823B0;
+	Fri, 24 Jan 2025 10:53:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737715847; cv=none; b=i1z2BhXHiwtIwlyuIz4oQOdN2WGZ815+B/w9RTR3CNpPCJz2jxsKXeith+3x3apGtDSewYVCKgUijxy6ePKbNRK0PKKqt4h8xQM7WUfBOAIw25OQyhTtBxA/UGru3Blj1tTGVwmkAipgfZOEJujbKMzl1VRYSvjoPmJNG9C0KO0=
+	t=1737716010; cv=none; b=mjgQIM4ORirOqE43ep9VqSsaEqgeut/fyIHjT9TPaL12vxMocCVU7BFYOqMt1mSdIX7VG9wRdMMw/lEHTSeIXXCGlpDp4sq442EWDmj5hf5KzIvXUovPz982Vyty6QKvenPPwY9b9Gm6O+EoeQwR4tKmkqBWbWcTK170BffSrtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737715847; c=relaxed/simple;
-	bh=vQ3QgVy3CkIBUmALyEBtabIgy3BO2W/ckTSgo2keC6Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=d+jc9hpy2UWwu82yNVW7uOQ/zgzipB0rF1Usm6r+r/9JXYZjTCElz3A6wR0b/e6dZUWrsGWySUfaZxOjGngO+gqHbb1vkpYhlC3Am1ACzpk66Z0eVz6AUwMxVMDafs4V5SvVjnKdrgMI62hCpclcX4+ES2JLbMXFKprOCxmGAfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=H/wj1Sz/; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
+	s=arc-20240116; t=1737716010; c=relaxed/simple;
+	bh=fwRs0M6wQrVv6R5E7ixYp1uSf49BU6RtPbmGg09b7pY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=p37uL+CI58qe3JDBSu+hYsSY7jhfYicuVkWYnHkiHu/ViR4cTS2PglS/psKMq3tyrBslJx1pI4Xosn2l9YHWEpf/gxAL+RzaKzE8z2tWfe0lvhjGQIDXynt6Lk3Wndaif7188UW5P+6PaaLBhiVLAlzwpFDQxlBTuUozCTCjC18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=E8QLaiIG; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="H/wj1Sz/"
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 8D9AEA0578;
-	Fri, 24 Jan 2025 11:50:40 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:content-transfer-encoding:content-type:content-type:date:from
-	:from:in-reply-to:message-id:mime-version:references:reply-to
-	:subject:subject:to:to; s=mail; bh=RqaazN5MwSV5jN25f6JI+L5jWF8z9
-	mV2n9cXiYMfDyg=; b=H/wj1Sz/BGB+zfpRkapo+9C2+kyX2krx7FMfXb6t9GeCE
-	3fDHRHuKpMAcmk5n8U0nXsZm7Xa1jIsyEGE9A4X1A8+tYPV1IIkeS3erAmC01oQc
-	po8Bc24hJqJ2qUixyL9P7ilY6H3jUbLmznvoACWspEnm7GgO4b0aNwBEB8+lJiHV
-	QjUfVkB6WUWm3752qf5dpHzfvBPUA6vlGaG5ZMzdZbWiQEigvlXXo17yEmKzE0Qo
-	3hSuLpgtEYcFpPBSW64xtDAKP1bNupCefVDvpiziUzFj5v2kVYeLFpD9CDpUj0p2
-	aIgQaWV64IPhvrqv19cMjTbFotCX8tWW9beHWOXEJzsW37db9OEb1urg0ddPN9JN
-	qZlL8zFdnzfNV2c/39BhUG+ozClPw5g36fN5DK0GJUfUUun/HNRjkzUyHZO0M1M7
-	+5b4O/r3VQmbOyETpG9S6lqCQIuprUmrWZvcgE7Du9iAHbT6SCd9ECCyQlA6l5Su
-	gY4rEY0b2mcWMONpqw9gXp6kLCJzDzuO7ym0qOpdzQpt/yPCV8EPN8ivmEmQr0cu
-	qBfSWl1+/lJpEGJTNvSXtXYYT+gHzBetpx8QIt8qtf9JtY3OUxdIBf/mP7SThdTt
-	rUmD4bUMzAIInJHoD/0Ig09IXhvltr1qaAEvkcTt6rZvMcx+HXiM5anHKuz6jM=
-Message-ID: <51d368a3-fcfd-4f0f-9475-877739f19fb2@prolan.hu>
-Date: Fri, 24 Jan 2025 11:50:37 +0100
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="E8QLaiIG"
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50OAKRLL018282;
+	Fri, 24 Jan 2025 10:53:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=qcppdkim1; bh=/WZKAzPK5yS
+	mLS7unqhWA28vUAftnm6t0QD7Z/i/fSU=; b=E8QLaiIGzbcwe+uZ2ZkDtDPMKQp
+	H7CW5LNOxjjatrXe3IrT/9VAR+vDwq62Ct7pifyEJKn9ZMVFC+LmVhTX4gjV/yLQ
+	Jln5pFPyfL5kwAastl2GlvWSphZq4+njfdmUCdntmrfxPuCJ38f/+R5OeVmF6eJ4
+	EAalEvLfjPyAouFh4/OnkyToaW2TLmPoBtYiQS4eWcSTlqk53zyQUy0CHdxpfQ38
+	PtBfTQkB4PxNLl5Z1Q8YUMVpN60jtMiybZP4C5j+i4MFJbrJH+8/1st1/Mqpfz+i
+	7RW/N79zJK0sA0gaEDWqhriAsNFMGlmlL1dfqx7n8MQBcXtIt8pn9/+xEag==
+Received: from apblrppmta02.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44c91ag3ke-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Jan 2025 10:53:24 +0000 (GMT)
+Received: from pps.filterd (APBLRPPMTA02.qualcomm.com [127.0.0.1])
+	by APBLRPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 50OArKOg016276;
+	Fri, 24 Jan 2025 10:53:20 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 4485cm9h05-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Jan 2025 10:53:20 +0000
+Received: from APBLRPPMTA02.qualcomm.com (APBLRPPMTA02.qualcomm.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 50OArKSh016269;
+	Fri, 24 Jan 2025 10:53:20 GMT
+Received: from hu-devc-hyd-u22-c.qualcomm.com ([10.213.97.252])
+	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 50OArJ7d016268
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Jan 2025 10:53:20 +0000
+Received: by hu-devc-hyd-u22-c.qualcomm.com (Postfix, from userid 4047106)
+	id 6069655C; Fri, 24 Jan 2025 16:23:19 +0530 (+0530)
+From: Viken Dadhaniya <quic_vdadhani@quicinc.com>
+To: andi.shyti@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+        conor+dt@kernel.org, gregkh@linuxfoundation.org, jirislaby@kernel.org,
+        broonie@kernel.or, andersson@kernel.org, konradybcio@kernel.org,
+        johan+linaro@kernel.org, dianders@chromium.org, agross@kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-i2c@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-serial@vger.kernel.org, linux-spi@vger.kernel.org
+Cc: quic_msavaliy@quicinc.com, quic_anupkulk@quicinc.com,
+        Viken Dadhaniya <quic_vdadhani@quicinc.com>
+Subject: [PATCH v2 1/8] dt-bindings: qcom: geni-se: Add 'firmware-name' property for firmware loading
+Date: Fri, 24 Jan 2025 16:23:02 +0530
+Message-Id: <20250124105309.295769-2-quic_vdadhani@quicinc.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250124105309.295769-1-quic_vdadhani@quicinc.com>
+References: <20250124105309.295769-1-quic_vdadhani@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/4] Add more devm_ functions to simplify probe path in
- drivers/spi/atmel-quadspi.c
-To: Mark Brown <broonie@kernel.org>, Vinod Koul <vkoul@kernel.org>, "Rafael J
- . Wysocki" <rafael@kernel.org>, Len Brown <len.brown@intel.com>, Pavel Machek
-	<pavel@ucw.cz>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Nicolas
- Ferre" <nicolas.ferre@microchip.com>, Alexandre Belloni
-	<alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>, Varshini Rajendran
-	<varshini.rajendran@microchip.com>, <linux-spi@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <dmaengine@vger.kernel.org>,
-	<linux-pm@vger.kernel.org>
-References: <20250124085221.766303-4-csokas.bence@prolan.hu>
- <20250124-stumble-unpeeled-165f2211dcfb@thorsis.com>
-Content-Language: en-US
-From: =?UTF-8?B?Q3PDs2vDoXMgQmVuY2U=?= <csokas.bence@prolan.hu>
-In-Reply-To: <20250124-stumble-unpeeled-165f2211dcfb@thorsis.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: ATLAS.intranet.prolan.hu (10.254.0.229) To
- ATLAS.intranet.prolan.hu (10.254.0.229)
-X-EsetResult: clean, is OK
-X-EsetId: 37303A2980D94852677063
+Content-Transfer-Encoding: 8bit
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: YDHbwbX1z3SV2z6EIJloLC2qX0Xpl1mf
+X-Proofpoint-GUID: YDHbwbX1z3SV2z6EIJloLC2qX0Xpl1mf
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-24_04,2025-01-23_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
+ priorityscore=1501 impostorscore=0 mlxscore=0 suspectscore=0
+ lowpriorityscore=0 mlxlogscore=999 spamscore=0 phishscore=0 clxscore=1015
+ bulkscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501240079
 
-Hi,
+Document the 'firmware-name' property in the device tree bindings to
+support loading SE (Serial Engine) firmware from the protocol driver,
+allowing for more flexible firmware management.
 
-On 2025. 01. 24. 10:08, Alexander Dahl wrote:
-> You can pass '--base master' or '--base=auto' to `git format-patch`
-> which adds a machine readable line to your patch or cover letter like
-> this:
-> 
-> base-commit: bc8198dc7ebc492ec3e9fa1617dcdfbe98e73b17
-> 
-> This way tools can find out which commit your series was based on.
-> See for reasoning:
-> 
-> https://people.kernel.org/monsieuricon/all-patches-must-include-base-commit-info
+Co-developed-by: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
+Signed-off-by: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
+Signed-off-by: Viken Dadhaniya <quic_vdadhani@quicinc.com>
+---
+ Documentation/devicetree/bindings/soc/qcom/qcom,geni-se.yaml | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Thanks for the tip!
-
-> I'll look into your patch series in February, after my holidays.
-
-Hmm, if my calculations are correct, 6.14-rc1 comes out on 2nd Feb, so 
-does that mean that this series will be pushed to -rc2? Then -rc1 will 
-have the mismatched PM calls...
-
-Bence
+diff --git a/Documentation/devicetree/bindings/soc/qcom/qcom,geni-se.yaml b/Documentation/devicetree/bindings/soc/qcom/qcom,geni-se.yaml
+index 7b031ef09669..3e029d4d6f58 100644
+--- a/Documentation/devicetree/bindings/soc/qcom/qcom,geni-se.yaml
++++ b/Documentation/devicetree/bindings/soc/qcom/qcom,geni-se.yaml
+@@ -54,6 +54,10 @@ properties:
+ 
+   dma-coherent: true
+ 
++  firmware-name:
++    $ref: /schemas/types.yaml#/definitions/string
++    description: Specify the name of the QUP firmware to load.
++
+ required:
+   - compatible
+   - reg
+@@ -135,6 +139,7 @@ examples:
+             #address-cells = <2>;
+             #size-cells = <2>;
+             ranges;
++            firmware-name = "qcom/sa8775p/qupv3fw.elf";
+ 
+             i2c0: i2c@a94000 {
+                 compatible = "qcom,geni-i2c";
+-- 
+2.34.1
 

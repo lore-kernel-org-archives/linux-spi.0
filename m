@@ -1,63 +1,197 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C88C11E86E;
-	Sat, 25 Jan 2025 00:14:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 336DE25A621;
+	Sun, 26 Jan 2025 18:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737764086; cv=none; b=dV4c9TqoHk9+Bktkehe62UHRJtsx+7ASIqa8H2YfLpVXB1AkNjp+szsNggnDOB2JKx4e244X8L1qRZ9ckUMjUb4CPNh9UE2LqJKy5fQu+0wHQdivY7D7V1/zUZOWJGHXmJAPs5NPjE4bH68ObBkRLbxWiGVHTE8CmWIiJLVZMGc=
+	t=1737917946; cv=none; b=Sb8ylXpbq/Npw3pK2T1N/yUyLfXW72++OT/gA9YSDaUnsncX00HqJYctsJcBQkcvdVAnFH5lXT/bd4P6Eg8VO9hCx90HoQx8HOnicXcZ9oB5+Dl34LHgIULqB2D8Dxug2lWgK+Babu47QHALKgHWokRbjA04dRU1mnwfLH0u5jU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737764086; c=relaxed/simple;
-	bh=hAmnSKR1gaTOLwFnVIMMnn+iyj/Fn1eBl8F/R3rsPxM=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=WrLBR/U66o83KURxZovVRJREl3b7+fRvDXqpt3cODujQ7SDdEP72iIpvdF1YX2VYwHP4H81sUFB7oRM/+NvKCtnwMo1eG5LAlE44Pf9bx5R8p0urOQTPab6JeQ8s1tH0mSN1RKb8A0DQS2/HCKyJXAvmPKWXGKc/bhWgf7cN504=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jonIpHso; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1737917946; c=relaxed/simple;
+	bh=PfmNx/8FKpi9tfUAdO7gZEl/uHyfgKgSWW2BXdSdoIQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=T4x/gJwhwDYSFGgzaSQtOgccdsypeI+nbvNywSaKAxDiWDM0V7iMG4icbHmCtM0K9j9l+lXq2mr+ii7F7AP+iau4e4LfuJ8kNhJp8UzyoC9zXw0Kp+qx5lh5/kecmGdhQ9ur8FJ103ae4TFBhX8Xuay2UgzhnuMsyHa5TiBu3gg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hlBl+2Me; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jonIpHso"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8E21C4CED2;
-	Sat, 25 Jan 2025 00:14:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hlBl+2Me"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id AC328C4CEEA;
+	Sun, 26 Jan 2025 18:59:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737764086;
-	bh=hAmnSKR1gaTOLwFnVIMMnn+iyj/Fn1eBl8F/R3rsPxM=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=jonIpHsowoh9OQiXWYgVRBLDbp+OuwRJHUiZZYdP8w1KtCkhov5I+VCZFKzG7g7hh
-	 Rd7fPD6se+Y675MhoNiYux/pW8LyMuonbY1K1Q9rueX1+uJX3z+6dqbROLfWiQ4D/4
-	 g2PD3bq/+plLFOGHAnl3YQsQQpwOtEE2z+TogEEvWV0CfwhxzLs9HBVyC8rL3XsUYY
-	 ZhGrmlI9XOJ0fe6noR1/rqj/9MqhAMdgTGFzTn8l6p4XCRvUEFpf2pQM7m6ckjDIwB
-	 d30KVcW7S1W3bRrVIZzfW1FHLLCHnwtKogw93eQgT4numEJqsaEOzBv8hIpmh32Ruq
-	 MjewdgJV8HqWA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id CD987380AA79;
-	Sat, 25 Jan 2025 00:15:12 +0000 (UTC)
-Subject: Re: [GIT PULL] SPI fixes for v6.14-merge-window
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <5dc55026c1c6ad511e0ff918b43b6792.broonie@kernel.org>
-References: <5dc55026c1c6ad511e0ff918b43b6792.broonie@kernel.org>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <5dc55026c1c6ad511e0ff918b43b6792.broonie@kernel.org>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v6.14-merge-window
-X-PR-Tracked-Commit-Id: a07eb4f67ed085f32002a1af2b6073546d67de3f
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: b46c89c08f4146e7987fc355941a93b12e2c03ef
-Message-Id: <173776411166.2216626.13800467603153993132.pr-tracker-bot@kernel.org>
-Date: Sat, 25 Jan 2025 00:15:11 +0000
-To: Mark Brown <broonie@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
+	s=k20201202; t=1737917945;
+	bh=PfmNx/8FKpi9tfUAdO7gZEl/uHyfgKgSWW2BXdSdoIQ=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=hlBl+2Mepw3J0ugLK7PkI8UhzdeeqA/WiddWAV3kijb7ZnCtkPlAyMnYcEBRKzM8i
+	 szPVi3M92ZsLsWNMLoZRauZkytz+GVITyoORsXs1LFwgUKIAOBOcRIUeYEWQYIQB5A
+	 3eYI/ojthnmUg2xz45MP76X0LM9NAfOUXljfNym5onKAeu0ORIKBMlYvLyLg52/MUk
+	 LP3i9Yb0exACSUyS2RblZUbAjiM5bIAdcVQXNSsneEpXLdeRhG/5cYZlCmEpLJjcp8
+	 rux3S6W1R4QAF0j7ZLLp6ihPOh92E4FabI0Z7i9XcG/fELKiegSW1Clla/onX+AYxA
+	 1R41p4+M9CSFQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 959D7C0218F;
+	Sun, 26 Jan 2025 18:59:05 +0000 (UTC)
+From: =?utf-8?q?J=2E_Neusch=C3=A4fer_via_B4_Relay?= <devnull+j.ne.posteo.net@kernel.org>
+Date: Sun, 26 Jan 2025 19:58:57 +0100
+Subject: [PATCH 2/9] dt-bindings: ata: Convert fsl,pq-sata binding to YAML
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20250126-ppcyaml-v1-2-50649f51c3dd@posteo.net>
+References: <20250126-ppcyaml-v1-0-50649f51c3dd@posteo.net>
+In-Reply-To: <20250126-ppcyaml-v1-0-50649f51c3dd@posteo.net>
+To: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Scott Wood <oss@buserror.net>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ Naveen N Rao <naveen@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Damien Le Moal <dlemoal@kernel.org>, 
+ Niklas Cassel <cassel@kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>, 
+ "David S. Miller" <davem@davemloft.net>, Lee Jones <lee@kernel.org>, 
+ Vinod Koul <vkoul@kernel.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
+ Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+ Bjorn Helgaas <bhelgaas@google.com>, 
+ =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>, 
+ Wim Van Sebroeck <wim@linux-watchdog.org>, 
+ Guenter Roeck <linux@roeck-us.net>, Mark Brown <broonie@kernel.org>, 
+ Miquel Raynal <miquel.raynal@bootlin.com>, 
+ Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
+ linux-kernel@vger.kernel.org, linux-ide@vger.kernel.org, 
+ linux-crypto@vger.kernel.org, dmaengine@vger.kernel.org, 
+ linux-pci@vger.kernel.org, linux-watchdog@vger.kernel.org, 
+ linux-spi@vger.kernel.org, linux-mtd@lists.infradead.org, 
+ =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1737917943; l=3504;
+ i=j.ne@posteo.net; s=20240329; h=from:subject:message-id;
+ bh=48lSRCoXCpxIM3oWRMWEs2/wzI+AW7ICjxV1sPl67HM=;
+ b=bLScZP/2+P6PR65AL0gqKUI72UMsRCVo5PvGbwA6A20OrYb8mo+L9jUpwnATuOGNgbYUCZiMa
+ IDQ1X0kek+XC8PpxrWEqVS4GPZSevrgs3kbZPbmh63BNiFb2AkiKb0p
+X-Developer-Key: i=j.ne@posteo.net; a=ed25519;
+ pk=NIe0bK42wNaX/C4bi6ezm7NJK0IQE+8MKBm7igFMIS4=
+X-Endpoint-Received: by B4 Relay for j.ne@posteo.net/20240329 with
+ auth_id=156
+X-Original-From: =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
+Reply-To: j.ne@posteo.net
 
-The pull request you sent on Fri, 24 Jan 2025 18:03:21 +0000:
+From: "J. Neuschäfer" <j.ne@posteo.net>
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v6.14-merge-window
+Convert the Freescale PowerQUICC SATA controller binding from text form
+to YAML. The list of compatible strings reflects current usage.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/b46c89c08f4146e7987fc355941a93b12e2c03ef
+Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
+---
+ .../devicetree/bindings/ata/fsl,pq-sata.yaml       | 59 ++++++++++++++++++++++
+ Documentation/devicetree/bindings/ata/fsl-sata.txt | 28 ----------
+ 2 files changed, 59 insertions(+), 28 deletions(-)
 
-Thank you!
+diff --git a/Documentation/devicetree/bindings/ata/fsl,pq-sata.yaml b/Documentation/devicetree/bindings/ata/fsl,pq-sata.yaml
+new file mode 100644
+index 0000000000000000000000000000000000000000..6af31ffbcad5e9cc83118a0bd8eaf45351a2823f
+--- /dev/null
++++ b/Documentation/devicetree/bindings/ata/fsl,pq-sata.yaml
+@@ -0,0 +1,59 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/ata/fsl,pq-sata.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Freescale 8xxx/3.0 Gb/s SATA nodes
++
++maintainers:
++  - J. Neuschäfer <j.ne@posteo.net>
++
++description: |
++  SATA nodes are defined to describe on-chip Serial ATA controllers.
++  Each SATA port should have its own node.
++
++properties:
++  compatible:
++    oneOf:
++      - items:
++          - enum:
++              - fsl,mpc8377-sata
++              - fsl,mpc8536-sata
++              - fsl,mpc8315-sata
++              - fsl,mpc8379-sata
++          - const: fsl,pq-sata
++      - const: fsl,pq-sata-v2
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  cell-index:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    enum: [1, 2, 3, 4]
++    description: |
++      1 for controller @ 0x18000
++      2 for controller @ 0x19000
++      3 for controller @ 0x1a000
++      4 for controller @ 0x1b000
++
++required:
++  - compatible
++  - interrupts
++  - cell-index
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++    sata@18000 {
++        compatible = "fsl,mpc8379-sata", "fsl,pq-sata";
++        reg = <0x18000 0x1000>;
++        cell-index = <1>;
++        interrupts = <44 IRQ_TYPE_LEVEL_LOW>;
++        interrupt-parent = <&ipic>;
++    };
+diff --git a/Documentation/devicetree/bindings/ata/fsl-sata.txt b/Documentation/devicetree/bindings/ata/fsl-sata.txt
+deleted file mode 100644
+index fd63bb3becc9363c520a8fd06629fdc52c4d4299..0000000000000000000000000000000000000000
+--- a/Documentation/devicetree/bindings/ata/fsl-sata.txt
++++ /dev/null
+@@ -1,28 +0,0 @@
+-* Freescale 8xxx/3.0 Gb/s SATA nodes
+-
+-SATA nodes are defined to describe on-chip Serial ATA controllers.
+-Each SATA port should have its own node.
+-
+-Required properties:
+-- compatible        : compatible list, contains 2 entries, first is
+-		 "fsl,CHIP-sata", where CHIP is the processor
+-		 (mpc8315, mpc8379, etc.) and the second is
+-		 "fsl,pq-sata"
+-- interrupts        : <interrupt mapping for SATA IRQ>
+-- cell-index        : controller index.
+-                          1 for controller @ 0x18000
+-                          2 for controller @ 0x19000
+-                          3 for controller @ 0x1a000
+-                          4 for controller @ 0x1b000
+-
+-Optional properties:
+-- reg               : <registers mapping>
+-
+-Example:
+-	sata@18000 {
+-		compatible = "fsl,mpc8379-sata", "fsl,pq-sata";
+-		reg = <0x18000 0x1000>;
+-		cell-index = <1>;
+-		interrupts = <2c 8>;
+-		interrupt-parent = < &ipic >;
+-	};
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.48.0.rc1.219.gb6b6757d772
+
+

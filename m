@@ -1,120 +1,146 @@
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 838F117B505
-	for <linux-spi@vger.kernel.org>; Mon, 27 Jan 2025 18:00:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD0291DEFDD;
+	Tue, 28 Jan 2025 08:22:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.182.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738000837; cv=none; b=Ne4mIW9W4x1zCFS6o5NY58mRy0cPZJwkoHTdOWyiD9MB7yN1huDpRa89HK2E/uxpjRMmD0UFan8dBhPSmR8O460Gk1K1a8IoBxJivAwAjGuB994fHNH26f+mRyxX6Lch3VRY0F7TNzd/k10xNnSlHroERc8erlzKbVUHj+wITbo=
+	t=1738052530; cv=none; b=HhjsAtldQ8uiuaPwToNNo5FVe058o2XrGKXgULnjR7twK8TzL8/iw6zn302HflrAdlgwJ+tFDrQ6AihxnucBUR/IgEmo0GUOucEiF8UFUzH5octEOuaZwWz9ApezSFPWk797Y0we7JilB7OJZ/hZHtowqZkYCFumrIbQdyO9RFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738000837; c=relaxed/simple;
-	bh=/xFRDq/2vwCvymGSfdoLId8wVkRDEO8hZUJkiCT0Yg4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PiphrerRM4uKMEVG6FfkL2yBNdmm9S3U9fq7qq2sYAzvRgrGfNWp5N7k4R8x5/08v73gPI40oZ1cDaOEa/+38VdbwKCo2VkqDn8CSrOCOMIvmw3sXqhqbr9UucBYNqmKdzoSjQBYLWecSzWSN/g3/p2l4fqtO0D8drs51ROPEf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=vMhuLTt9; arc=none smtp.client-ip=91.218.175.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1738052530; c=relaxed/simple;
+	bh=yOiVVYzmAk7zL4MCLu28sFP/DeaOa7Cvyp44pBiS+1M=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=odSP32NXzjzWALrhYaJz2A9MUqPEmxpW3X72brYpZDrwH0JxYV4P2SKxrD5ldSvvhfwMOCJVVyWTd/vkAACAfVbWd0pEsejzoeyt345/Wi1tdHVYPORcJUj7wwK1QSm54Pe55p4AJQIB/Ii9oTGjbTz4SP2Y9VjEnDVM7RsnGXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=MygitRF/; arc=none smtp.client-ip=185.132.182.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="vMhuLTt9"
-Message-ID: <50370a62-2e5e-45de-888f-ef3d1bfbb482@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1738000818;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=w8Ru8ILQt5YFwEkLQVtu+jlM11XhzHTarqvoBjmEMYo=;
-	b=vMhuLTt9/XtylOqFAAaifb88drjAdXo0hXinvRFeza0t+LZYsthkZP9Gb987JhA+1/3api
-	N+YiH+hc9iA6eLVCqENqySAKqYDLQq6lTvoE8ewlD//CoW5xnrJIEy/3eMcU5dDeQQ/DEz
-	cbHLRoq6oM+7OWLqg2B1EfwpNuF+UBA=
-Date: Mon, 27 Jan 2025 13:00:14 -0500
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="MygitRF/"
+Received: from pps.filterd (m0288072.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50S215n7000768;
+	Tue, 28 Jan 2025 09:21:28 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=selector1; bh=
+	7LgmonOR7Z7/zkyptgS3TI+r2weye+nRuwwPKbSKc5k=; b=MygitRF/uNoSrQIq
+	R2MMq62eWbMhHIzgHZlIlv1iPikjg0pge8FoD7nPablu6t6c+cmwoezq0Yb0Gj+M
+	usPI66Ky01bESkyGtjiEIGQKw9KCBW9fhcLyFKEpg15vVNVhbdOwGGgBV6KKgIUf
+	kihCScrsDkbULLd+eoDHKgtcldo0xcfFuzHmaz9JpEBrmLkzNUyA0VxV+kJ48Nw8
+	PiBm8RzSfoyQUZ6vqgfhnT6Erkckn7CONv8obdc9UnBNDLusSUds5uTS14ij3/RJ
+	nRqg/LtEuqv0ypFL34KAJmQkn2HY9NBx9dsvmS4YkJE5Sh4hjrb18xw/TjU+zKbs
+	+STpow==
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 44eeqxj1t0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Jan 2025 09:21:28 +0100 (CET)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 6CCFC40054;
+	Tue, 28 Jan 2025 09:20:06 +0100 (CET)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 7A56029C614;
+	Tue, 28 Jan 2025 09:17:47 +0100 (CET)
+Received: from localhost (10.48.87.62) by SHFDAG1NODE1.st.com (10.75.129.69)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.37; Tue, 28 Jan
+ 2025 09:17:47 +0100
+From: <patrice.chotard@foss.st.com>
+To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof
+ Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Alexandre
+ Torgue <alexandre.torgue@foss.st.com>,
+        Philipp Zabel
+	<p.zabel@pengutronix.de>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>
+CC: <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <christophe.kerello@foss.st.com>, <patrice.chotard@foss.st.com>
+Subject: [PATCH v2 7/9] arm64: dts: st: Add SPI NOR flash support on stm32mp257f-ev1 board
+Date: Tue, 28 Jan 2025 09:17:29 +0100
+Message-ID: <20250128081731.2284457-8-patrice.chotard@foss.st.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20250128081731.2284457-1-patrice.chotard@foss.st.com>
+References: <20250128081731.2284457-1-patrice.chotard@foss.st.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH 1/5] dt-bindings: spi: zynqmp-qspi: Add reset
-To: Rob Herring <robh@kernel.org>
-Cc: Michal Simek <michal.simek@amd.com>, Mark Brown <broonie@kernel.org>,
- linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
- Jinjie Ruan <ruanjinjie@huawei.com>, linux-arm-kernel@lists.infradead.org,
- Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>,
- Miquel Raynal <miquel.raynal@bootlin.com>, Conor Dooley
- <conor+dt@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- devicetree@vger.kernel.org
-References: <20250116225521.2688224-1-sean.anderson@linux.dev>
- <20250116225521.2688224-2-sean.anderson@linux.dev>
- <8a0d8789-7a0d-42b7-9aff-e867c14db3c9@amd.com>
- <b8e63009-13fb-493f-adf6-4d30adbe9b1b@linux.dev>
- <20250123224520.GA456390-robh@kernel.org>
- <34e84bd2-381b-4f3e-99e1-92f7a878ed15@linux.dev>
- <20250127175752.GA511180-robh@kernel.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Sean Anderson <sean.anderson@linux.dev>
-In-Reply-To: <20250127175752.GA511180-robh@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SAFCAS1NODE1.st.com (10.75.90.11) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-28_02,2025-01-27_01,2024-11-22_01
 
-On 1/27/25 12:57, Rob Herring wrote:
-> On Thu, Jan 23, 2025 at 05:57:41PM -0500, Sean Anderson wrote:
->> On 1/23/25 17:45, Rob Herring wrote:
->> > On Fri, Jan 17, 2025 at 11:12:15AM -0500, Sean Anderson wrote:
->> >> On 1/17/25 02:14, Michal Simek wrote:
->> >> > 
->> >> > 
->> >> > On 1/16/25 23:55, Sean Anderson wrote:
->> >> >> Add a reset to help recover from cancelled operations.
->> >> >>
->> >> >> Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
->> >> >> ---
->> >> >>
->> >> >>   Documentation/devicetree/bindings/spi/spi-zynqmp-qspi.yaml | 6 ++++++
->> >> >>   1 file changed, 6 insertions(+)
->> >> >>
->> >> >> diff --git a/Documentation/devicetree/bindings/spi/spi-zynqmp-qspi.yaml b/Documentation/devicetree/bindings/spi/spi-zynqmp-qspi.yaml
->> >> >> index 04d4d3b4916d..901e15fcce2d 100644
->> >> >> --- a/Documentation/devicetree/bindings/spi/spi-zynqmp-qspi.yaml
->> >> >> +++ b/Documentation/devicetree/bindings/spi/spi-zynqmp-qspi.yaml
->> >> >> @@ -36,12 +36,16 @@ properties:
->> >> >>     power-domains:
->> >> >>       maxItems: 1
->> >> >>   +  resets:
->> >> >> +    maxItems: 1
->> >> >> +
->> >> >>   required:
->> >> >>     - compatible
->> >> >>     - reg
->> >> >>     - interrupts
->> >> >>     - clock-names
->> >> >>     - clocks
->> >> >> +  - resets
->> >> > 
->> >> > In 2/5 you are calling devm_reset_control_get_optional_exclusive() that's why I expect reset is not really required property.
->> >> 
->> >> It's optional for the driver for backwards compatibility. But for the
->> >> devicetree we make it mandatory since it should be included in all new
->> >> devicetrees.
->> > 
->> > Generally, we discourage new required properties as that's an ABI 
->> > change. The exception is really when optional was a mistake. That's 
->> > arguably the case here if the h/w always has a reset.
->> 
->> This device has a reset on ZynqMP and Versal.
->> 
->> The driver still considers this property optional, so it's not an ABI break.
->> But I made it required in the schema to help out the folks at AMD when they
->> get around to upstreaming the Versal devicetree :)
-> 
-> Not 'the driver', but 'a driver'. You can't say what *all* drivers do. 
-> If I write a new driver and read the schema, then I can say 'resets is 
-> required so I'll make it required in my new driver'. But then my new 
-> driver doesn't work with an older DT that didn't have resets which was 
-> valid at the time.
+From: Patrice Chotard <patrice.chotard@foss.st.com>
 
-OK, I'll add a description to this effect. The humans can read that, and
-the machines won't care.
+Add SPI NOR flash nor support on stm32mp257f-ev1 board.
 
---Sean
+Signed-off-by: Patrice Chotard <patrice.chotard@foss.st.com>
+---
+ arch/arm64/boot/dts/st/stm32mp257f-ev1.dts | 32 ++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/st/stm32mp257f-ev1.dts b/arch/arm64/boot/dts/st/stm32mp257f-ev1.dts
+index 1b88485a62a1..b9d308ea2d21 100644
+--- a/arch/arm64/boot/dts/st/stm32mp257f-ev1.dts
++++ b/arch/arm64/boot/dts/st/stm32mp257f-ev1.dts
+@@ -80,6 +80,11 @@ fw@80000000 {
+ 			reg = <0x0 0x80000000 0x0 0x4000000>;
+ 			no-map;
+ 		};
++
++		mm_ospi1: mm-ospi@60000000 {
++			reg = <0x0 0x60000000 0x0 0x10000000>;
++			no-map;
++		};
+ 	};
+ };
+ 
+@@ -190,6 +195,33 @@ &i2c8 {
+ 	status = "disabled";
+ };
+ 
++&ommanager {
++	memory-region = <&mm_ospi1>;
++	pinctrl-names = "default", "sleep";
++	pinctrl-0 = <&ospi_port1_clk_pins_a
++		     &ospi_port1_io03_pins_a
++		     &ospi_port1_cs0_pins_a>;
++	pinctrl-1 = <&ospi_port1_clk_sleep_pins_a
++		     &ospi_port1_io03_sleep_pins_a
++		     &ospi_port1_cs0_sleep_pins_a>;
++	status = "okay";
++
++	spi@40430000 {
++		#address-cells = <1>;
++		#size-cells = <0>;
++		memory-region = <&mm_ospi1>;
++		status = "okay";
++
++		flash0: flash@0 {
++			compatible = "jedec,spi-nor";
++			reg = <0>;
++			spi-rx-bus-width = <4>;
++			spi-tx-bus-width = <4>;
++			spi-max-frequency = <50000000>;
++		};
++	};
++};
++
+ &rtc {
+ 	status = "okay";
+ };
+-- 
+2.25.1
+

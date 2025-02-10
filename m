@@ -1,48 +1,46 @@
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68872223717;
-	Mon, 10 Feb 2025 13:21:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.182.106
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1C59224899;
+	Mon, 10 Feb 2025 13:21:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739193680; cv=none; b=IwRJ+BXmdQqWSUYjN7vZ5HEk5TxkFt1kVWa3vXXllv/SaVg+HRBzaWSz1immchrTnU7IlRUL0OzwvoUZANQzNsCBsk50+KXvy4Y9+IlrFCnapI9o8jWRWtEFKdypQVlrlTfCPYo2vo6Us/SCBc/NssO77iKFc1osdecUMiJgoHQ=
+	t=1739193681; cv=none; b=i+UeRfWn4RHKdnmtxMhR+QwKsDCa+vwgXHhxfCA/y4NJiG1k3iP05AM9lh5TfPt06Sp49AkAJBS+R/eRF3Egi5iRrDXsNhLX57GL0r/ylWN6kWQoor1JFu3dKxJX61JHgshdswzY7RlF9lGV3ua1gxGienhEBgZuVz6yM//xvGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739193680; c=relaxed/simple;
-	bh=MWUpN7jIrLDKnQNw3DaEFMaJ2vfXAzXJMeKWPz7nGUY=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IFUgQlFeWjcHKgEJ/OF75XE7dnLUAJTiu7ycNK3Srbi44JTiD7NetexoA0r3S9IPwiRLbnuoQo6/zZehEor9kga74jBcaJgPNoIkr8MkazBnHeP58jKoYREG1Z+i5PN0GTu3I3k1AZobYt+LKiqjeR/33YTVUh+M8ijyT9MUjUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=Q2HgVh2L; arc=none smtp.client-ip=185.132.182.106
+	s=arc-20240116; t=1739193681; c=relaxed/simple;
+	bh=ohN9mnqgyFy+8zghXbtRoiTBs07oTPMtAske+nrnrlk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PYJsyxDnoI3CG8wpJ2mp38nN/DkMXtMJhwgf4kNCysX8T/pmjHtn7bpfMy9yIwnND1KHtQP0l6geriGEqif5Vzr7yitFFXMA5YegMXhlH2dzBtyu0/qfT7ud5wQoYdQ0UOFy/PQILTbegz+MlgZhRAXb9hNXw5WAvBpF5jRdBkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=iKpA9097; arc=none smtp.client-ip=91.207.212.93
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="Q2HgVh2L"
-Received: from pps.filterd (m0288072.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51AComCo009308;
-	Mon, 10 Feb 2025 14:20:59 +0100
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="iKpA9097"
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51ACoxU2015234;
+	Mon, 10 Feb 2025 14:20:52 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=selector1; bh=
-	CdybSsPkvSWYJRfesz++DC37KlekJmyO0IzskUGhkLk=; b=Q2HgVh2LvgZ1pjsj
-	GsrlrNHZ405M3Z+Bk9VDrhIkkVp1Bn85rnIZiMvGaSw0dkaVfW0B21Z2aPMPbenE
-	scpT17eW4PUp4Oxjz++r5GdHRKVuiNveixaYxZeTctA8pn4pgGZz8XpJz4j5YhI0
-	y9xlp2ZAsZW1YU6m5rz/a2wtiDfdmOlrIQ55g9r+cE+wmloTSe6qNV/LgA9Z24Xm
-	yYT2Xax8HXzzx6/XIyY0r97dEngDUM4XAGSjbUwheynMc4pQ4xF5EvmifgwM1kUF
-	thJ96X70B3GeeENaWWGkJqEazEXuki4kRTsFdYzVvPee/83ZxlhsdlA7ptK2xcXI
-	9ahuSQ==
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=selector1; bh=+xeBEnkoP/+TuTHHZLeAJE
+	oTX94SaEPrUOWoK3bZLW0=; b=iKpA90971GDP/8qLSl1xzvWQGqb+qVeQJecFT4
+	vNlL2FkVb5VPQe62QgbWLnxSxLlL5fGAuPqQS4I19diqsn8az+gZXkLcAfJna+0/
+	a8y/RRqH2h1ucDEvbx6vnz5HcxqdCBjTLEKqzKkWcyzYp8usCVo2zpU0WFbF0fM2
+	mOBbhY/j7v/q810jTr/eyPRU0g1WHOmtdiMRVojlEagc3p8wZTSswbRpFjmqdNp7
+	tvo/uUlKfwHFVWANSeANXwiX3bh728Ka0/Rq498QJuWgloxMYtiPLblwpHhM7U4o
+	mIPSrhqlroo56NuzU8vELHx2+yllKDUB3CsgFP4iV3prScvg==
 Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 44p0pypq5y-1
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 44p0qrxh3t-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 10 Feb 2025 14:20:58 +0100 (CET)
+	Mon, 10 Feb 2025 14:20:52 +0100 (CET)
 Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 38CC240049;
-	Mon, 10 Feb 2025 14:19:35 +0100 (CET)
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 578BA4002D;
+	Mon, 10 Feb 2025 14:19:31 +0100 (CET)
 Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id D57AD25BCB5;
-	Mon, 10 Feb 2025 14:18:35 +0100 (CET)
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 2DE4125B239;
+	Mon, 10 Feb 2025 14:18:32 +0100 (CET)
 Received: from localhost (10.48.87.62) by SHFDAG1NODE1.st.com (10.75.129.69)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 10 Feb
- 2025 14:18:35 +0100
+ 2025 14:18:31 +0100
 From: <patrice.chotard@foss.st.com>
 To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
         Krzysztof
@@ -62,12 +60,10 @@ CC: <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-stm32@st-md-mailman.stormreply.com>,
         <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
         <christophe.kerello@foss.st.com>, <patrice.chotard@foss.st.com>
-Subject: [PATCH v3 5/8] arm64: dts: st: Add OMM node on stm32mp251
-Date: Mon, 10 Feb 2025 14:18:23 +0100
-Message-ID: <20250210131826.220318-6-patrice.chotard@foss.st.com>
+Subject: [PATCH v3 0/8] Add STM32MP25 SPI NOR support
+Date: Mon, 10 Feb 2025 14:18:18 +0100
+Message-ID: <20250210131826.220318-1-patrice.chotard@foss.st.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250210131826.220318-1-patrice.chotard@foss.st.com>
-References: <20250210131826.220318-1-patrice.chotard@foss.st.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -84,73 +80,68 @@ X-Proofpoint-Virus-Version: vendor=baseguard
 
 From: Patrice Chotard <patrice.chotard@foss.st.com>
 
-Add Octo Memory Manager (OMM) entry on stm32mp251 and its two
-OSPI instance.
+This series adds SPI NOR support for STM32MP25 SoCs from STMicroelectronics,
+for that it adds support for:
+  - Octo Memory Manager driver.
+  - Octo SPI driver.
+  - yaml schema for Octo Memory Manager and Octo SPI drivers.
+
+The device tree files adds Octo Memory Manager and associated Octo SPI instances
+in stm32mp251.dtsi and adds SPI NOR support in stm32mp257f-ev1 board.
 
 Signed-off-by: Patrice Chotard <patrice.chotard@foss.st.com>
----
- arch/arm64/boot/dts/st/stm32mp251.dtsi | 48 ++++++++++++++++++++++++++
- 1 file changed, 48 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/st/stm32mp251.dtsi b/arch/arm64/boot/dts/st/stm32mp251.dtsi
-index f3c6cdfd7008..2565236e369f 100644
---- a/arch/arm64/boot/dts/st/stm32mp251.dtsi
-+++ b/arch/arm64/boot/dts/st/stm32mp251.dtsi
-@@ -768,6 +768,54 @@ rng: rng@42020000 {
- 				status = "disabled";
- 			};
- 
-+			ommanager: ommanager@40500000 {
-+				compatible = "st,stm32mp25-omm";
-+				reg = <0x40500000 0x400>, <0x60000000 0x10000000>;
-+				reg-names = "regs", "memory_map";
-+				ranges = <0 0 0x40430000 0x400>,
-+					 <1 0 0x40440000 0x400>;
-+				clocks = <&rcc CK_BUS_OSPIIOM>;
-+				resets = <&rcc OSPIIOM_R>;
-+				access-controllers = <&rifsc 111>;
-+				power-domains = <&CLUSTER_PD>;
-+				#address-cells = <2>;
-+				#size-cells = <1>;
-+				st,syscfg-amcr = <&syscfg 0x2c00 0x7>;
-+				status = "disabled";
-+
-+				ospi1: spi@40430000 {
-+					compatible = "st,stm32mp25-ospi";
-+					reg = <0 0 0x400>;
-+					interrupts = <GIC_SPI 163 IRQ_TYPE_LEVEL_HIGH>;
-+					dmas = <&hpdma 2 0x62 0x00003121>,
-+					       <&hpdma 2 0x42 0x00003112>;
-+					dma-names = "tx", "rx";
-+					clocks = <&scmi_clk CK_SCMI_OSPI1>;
-+					resets = <&scmi_reset RST_SCMI_OSPI1>,
-+						 <&scmi_reset RST_SCMI_OSPI1DLL>;
-+					access-controllers = <&rifsc 74>;
-+					power-domains = <&CLUSTER_PD>;
-+					st,syscfg-dlyb = <&syscfg 0x1000>;
-+					status = "disabled";
-+				};
-+
-+				ospi2: spi@40440000 {
-+					compatible = "st,stm32mp25-ospi";
-+					reg = <1 0 0x400>;
-+					interrupts = <GIC_SPI 164 IRQ_TYPE_LEVEL_HIGH>;
-+					dmas = <&hpdma 3 0x62 0x00003121>,
-+					       <&hpdma 3 0x42 0x00003112>;
-+					dma-names = "tx", "rx";
-+					clocks = <&scmi_clk CK_SCMI_OSPI2>;
-+					resets = <&scmi_reset RST_SCMI_OSPI2>,
-+						 <&scmi_reset RST_SCMI_OSPI2DLL>;
-+					access-controllers = <&rifsc 75>;
-+					power-domains = <&CLUSTER_PD>;
-+					st,syscfg-dlyb = <&syscfg 0x1400>;
-+					status = "disabled";
-+				};
-+			};
-+
- 			spi8: spi@46020000 {
- 				#address-cells = <1>;
- 				#size-cells = <0>;
+Changes in v3:
+  - Squash defconfig patches 8 and 9.
+  - Update STM32 Octo Memory Manager controller bindings.
+  - Rename st,stm32-omm.yaml to st,stm32mp25-omm.yaml.
+  - Update STM32 OSPI controller bindings.
+  - Reorder DT properties in .dtsi and .dts files.
+  - Replace devm_reset_control_get_optional() by devm_reset_control_get_optional_exclusive() in stm32_omm.c.
+  - Reintroduce region-memory-names management in stm32_omm.c.
+  - Rename stm32_ospi_tx_poll() to stm32_ospi_poll() in spi-stm32-ospi.c.
+  - Set SPI_CONTROLLER_HALF_DUPLEX in controller flags in spi-stm32-ospi.c.
+
+Changes in v2:
+  - Move STM32 Octo Memory Manager controller driver and bindings from
+    misc to memory-controllers.
+  - Update STM32 OSPI controller bindings.
+  - Update STM32 Octo Memory Manager controller bindings.
+  - Update STM32 Octo Memory Manager driver to match bindings update.
+  - Update DT to match bindings update.
+
+
+
+Patrice Chotard (8):
+  dt-bindings: spi: Add STM32 OSPI controller
+  spi: stm32: Add OSPI driver
+  dt-bindings: memory-controllers: Add STM32 Octo Memory Manager
+    controller
+  memory: Add STM32 Octo Memory Manager driver
+  arm64: dts: st: Add OMM node on stm32mp251
+  arm64: dts: st: Add ospi port1 pinctrl entries in
+    stm32mp25-pinctrl.dtsi
+  arm64: dts: st: Add SPI NOR flash support on stm32mp257f-ev1 board
+  arm64: defconfig: Enable STM32 Octo Memory Manager and OcstoSPI driver
+
+ .../memory-controllers/st,stm32mp25-omm.yaml  |  201 ++++
+ .../bindings/spi/st,stm32mp25-ospi.yaml       |  105 ++
+ arch/arm64/boot/dts/st/stm32mp25-pinctrl.dtsi |   51 +
+ arch/arm64/boot/dts/st/stm32mp251.dtsi        |   48 +
+ arch/arm64/boot/dts/st/stm32mp257f-ev1.dts    |   32 +
+ arch/arm64/configs/defconfig                  |    2 +
+ drivers/memory/Kconfig                        |   17 +
+ drivers/memory/Makefile                       |    1 +
+ drivers/memory/stm32_omm.c                    |  520 ++++++++
+ drivers/spi/Kconfig                           |   10 +
+ drivers/spi/Makefile                          |    1 +
+ drivers/spi/spi-stm32-ospi.c                  | 1065 +++++++++++++++++
+ 12 files changed, 2053 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/memory-controllers/st,stm32mp25-omm.yaml
+ create mode 100644 Documentation/devicetree/bindings/spi/st,stm32mp25-ospi.yaml
+ create mode 100644 drivers/memory/stm32_omm.c
+ create mode 100644 drivers/spi/spi-stm32-ospi.c
+
 -- 
 2.25.1
 

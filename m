@@ -1,48 +1,48 @@
 Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E609226A0F6;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39BF26A0EA;
 	Tue, 18 Feb 2025 13:02:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.182.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739883761; cv=none; b=looSItEJ0eG8aX2iG3wnzFS581W4leSmWV2T/6wABov1XQ2TXZE2OY46X1Z0bUsA34P+W28DuJZxDdZqVNuWNUcfzfBSpMmsYOaP2SeWoabhGLCb1yUtcHGdDDhwLWogBA2BSrrXGFPVqMgIoeIkGVNbihApp554vSgXLD6BSqE=
+	t=1739883761; cv=none; b=iFccrq+zsUfd+cWoQmV+ysE4nXYz3bCVtazDjFz7ijpzKrIf3Tata12jAKRKabIv+6juxwxem68efPzO53KdZA71tfCRqEigtuHDGo8y7qeP43xsuOwVKtTWUs1SjIeHnvjyLSXVZvFEBjbGHn1lho1HMBQM2ZECdBqFBUS5nMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1739883761; c=relaxed/simple;
-	bh=6KcRGHRocxE0j0HR0Uu0L86teOfQZnTh/A8PL/UeaR4=;
+	bh=R6e03ZNIQaC8iE6fWn9JSk8yXvEVB8kd2YD8SZHaYJE=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mE/Jpkaca8DT6kWG4blKH31ti9Ap0Z9zL1RVeOkOoItoivKjA1ById06Pwi5ghs5seuIOXfBFccMu/L9W5c69P0bt8IBmhKfqn3IZvPpfjLRjdmuDX6rcHm8Hq8+XQawUAIm46iT3bpqE44Y2YgaWuuDMYRamC9GxYbnOO28ehA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=APjOc9tt; arc=none smtp.client-ip=185.132.182.106
+	 MIME-Version:Content-Type; b=iSJziXZgqQY/9JxqJ+0TzDgvE2s2761JwXEEyZTfi8oV/SdhIfBpN47pNQlufUIOO8/gcDiYmaCz7+iX1CpfAYxl47PDeqS/7xJ2yW+pQb5wxNd4Hoge+TA9NbB3OMm27iyQGZKUAmxWPmcsPZZ2jVr3MCSdxKokA4iHuEKnoMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=VZRk9uH3; arc=none smtp.client-ip=185.132.182.106
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="APjOc9tt"
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="VZRk9uH3"
 Received: from pps.filterd (m0369458.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51ICTLo8005874;
-	Tue, 18 Feb 2025 14:02:20 +0100
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51ICTRea005928;
+	Tue, 18 Feb 2025 14:02:16 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=selector1; bh=
-	+B5bLqS5N8lyMpSFkuejlctXtH6/4yGnXqjE2IWcdB4=; b=APjOc9ttmQHH1vzP
-	pdmCoVcWnCxvjj15xlBaD3XnNE+VYsE6SJgUlgZfIm+OzU9nMCeW4muw+C3Xp8Bt
-	ye13mxd26CfpDcFpagKevoF9dU01B2DG29F7jFIs+na2xee9dXjpDUQ5RxYkbzR8
-	FYf0tv7xrOOXaknBZof8jQ+s973/2MZOtCURwfvLYSVMLb0buapvbtVcEMca/rpo
-	UI5ApNqaztQi7LsjXx9G+iALHbnObVI8WBBmc+JhmJPQpIdscF0NRRRW15pOTzAG
-	XpHnOYfsDcF8RCCjNLJKqCEZ9hh4l+QHVv1TtMMRjjZ4J7G1uOtcCfeHGkIfnpX+
-	zfw3Vw==
+	Ela1abt6qpwMo8wUnmJCmdfpsq2pC4dAoXLF6tJK6Rk=; b=VZRk9uH3+hTlMm70
+	SWxs/isDAmjjoIaVVZ3ngBYhLVXFFrlB0mcerV0xAFd5E9yQIjvjzIHu3Nd9eb/6
+	1h32/f5SiutIwprHXLmstihPNHmhCzRZPKFs+qiT2E16dgB7REh1W9LVXeBWFdtW
+	wfKPXeuBefcW1VWR4QYqGcnWScEKcmIay+3UmUzqbaZ7ExoPE7dPwslzyrQ6LaqS
+	5Dq1UhJGQdTfihiexuEAXxVtFhNBujotahw3qDMZo5FWJXEFyWVkf2DwlzGClhPi
+	8QKYFwbq1n+GBbQn4p1WRQj6pdSw0tBR3CNIzD15Z3/nzBUaGDbs8fR4WXl9legx
+	j2a5aw==
 Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 44u5c3t95c-1
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 44u5c3t94t-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Feb 2025 14:02:19 +0100 (CET)
+	Tue, 18 Feb 2025 14:02:16 +0100 (CET)
 Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 8F3804004D;
-	Tue, 18 Feb 2025 14:01:10 +0100 (CET)
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 0AB6C40048;
+	Tue, 18 Feb 2025 14:01:09 +0100 (CET)
 Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id E68BC3276A1;
-	Tue, 18 Feb 2025 14:00:05 +0100 (CET)
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 772A1327697;
+	Tue, 18 Feb 2025 14:00:04 +0100 (CET)
 Received: from localhost (10.48.87.62) by SHFDAG1NODE1.st.com (10.75.129.69)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 18 Feb
- 2025 14:00:05 +0100
+ 2025 14:00:04 +0100
 From: <patrice.chotard@foss.st.com>
 To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
         Krzysztof
@@ -62,9 +62,9 @@ CC: <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-stm32@st-md-mailman.stormreply.com>,
         <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
         <christophe.kerello@foss.st.com>, <patrice.chotard@foss.st.com>
-Subject: [PATCH v4 4/8] memory: Add STM32 Octo Memory Manager driver
-Date: Tue, 18 Feb 2025 13:59:56 +0100
-Message-ID: <20250218130000.87889-5-patrice.chotard@foss.st.com>
+Subject: [PATCH v4 2/8] spi: stm32: Add OSPI driver
+Date: Tue, 18 Feb 2025 13:59:54 +0100
+Message-ID: <20250218130000.87889-3-patrice.chotard@foss.st.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250218130000.87889-1-patrice.chotard@foss.st.com>
 References: <20250218130000.87889-1-patrice.chotard@foss.st.com>
@@ -84,596 +84,1126 @@ X-Proofpoint-Virus-Version: vendor=baseguard
 
 From: Patrice Chotard <patrice.chotard@foss.st.com>
 
-Octo Memory Manager driver (OMM) manages:
-  - the muxing between 2 OSPI busses and 2 output ports.
-    There are 4 possible muxing configurations:
-      - direct mode (no multiplexing): OSPI1 output is on port 1 and OSPI2
-        output is on port 2
-      - OSPI1 and OSPI2 are multiplexed over the same output port 1
-      - swapped mode (no multiplexing), OSPI1 output is on port 2,
-        OSPI2 output is on port 1
-      - OSPI1 and OSPI2 are multiplexed over the same output port 2
-  - the split of the memory area shared between the 2 OSPI instances.
-  - chip select selection override.
-  - the time between 2 transactions in multiplexed mode.
-  - check firewall access.
+Add STM32 OSPI driver, it supports :
+  - support sNOR / sNAND devices.
+  - Three functional modes: indirect, automatic-status polling,
+    memory-mapped.
+  - Single-, dual-, quad-, and octal-SPI communication.
+  - Dual-quad communication.
+  - Single data rate (SDR).
+  - DMA channel for indirect mode.
 
 Signed-off-by: Patrice Chotard <patrice.chotard@foss.st.com>
-Signed-off-by: Christophe Kerello <christophe.kerello@foss.st.com>
 ---
- drivers/memory/Kconfig     |  17 ++
- drivers/memory/Makefile    |   1 +
- drivers/memory/stm32_omm.c | 522 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 540 insertions(+)
- create mode 100644 drivers/memory/stm32_omm.c
+ drivers/spi/Kconfig          |   10 +
+ drivers/spi/Makefile         |    1 +
+ drivers/spi/spi-stm32-ospi.c | 1065 ++++++++++++++++++++++++++++++++++
+ 3 files changed, 1076 insertions(+)
+ create mode 100644 drivers/spi/spi-stm32-ospi.c
 
-diff --git a/drivers/memory/Kconfig b/drivers/memory/Kconfig
-index c82d8d8a16ea..3a0703fbfee7 100644
---- a/drivers/memory/Kconfig
-+++ b/drivers/memory/Kconfig
-@@ -225,6 +225,23 @@ config STM32_FMC2_EBI
- 	  devices (like SRAM, ethernet adapters, FPGAs, LCD displays, ...) on
- 	  SOCs containing the FMC2 External Bus Interface.
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index ea8a31032927..256a3e23639a 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -1045,6 +1045,16 @@ config SPI_STM32
+ 	  is not available, the driver automatically falls back to
+ 	  PIO mode.
  
-+config STM32_OMM
-+	tristate "STM32 Octo Memory Manager"
-+	depends on SPI_STM32_OSPI || COMPILE_TEST
++config SPI_STM32_OSPI
++	tristate "STMicroelectronics STM32 OCTO SPI controller"
++	depends on ARCH_STM32 || COMPILE_TEST
++	depends on OF
++	depends on SPI_MEM
 +	help
-+	  This driver manages the muxing between the 2 OSPI busses and
-+	  the 2 output ports. There are 4 possible muxing configurations:
-+	  - direct mode (no multiplexing): OSPI1 output is on port 1 and OSPI2
-+	       output is on port 2
-+	  - OSPI1 and OSPI2 are multiplexed over the same output port 1
-+	  - swapped mode (no multiplexing), OSPI1 output is on port 2,
-+	       OSPI2 output is on port 1
-+	  - OSPI1 and OSPI2 are multiplexed over the same output port 2
-+	  It also manages :
-+	    - the split of the memory area shared between the 2 OSPI instances.
-+	    - chip select selection override.
-+	    - the time between 2 transactions in multiplexed mode.
++	  This enables support for the Octo SPI controller in master mode.
++	  This driver does not support generic SPI. The implementation only
++	  supports spi-mem interface.
 +
- source "drivers/memory/samsung/Kconfig"
- source "drivers/memory/tegra/Kconfig"
- 
-diff --git a/drivers/memory/Makefile b/drivers/memory/Makefile
-index d2e6ca9abbe0..c1959661bf63 100644
---- a/drivers/memory/Makefile
-+++ b/drivers/memory/Makefile
-@@ -24,6 +24,7 @@ obj-$(CONFIG_DA8XX_DDRCTL)	+= da8xx-ddrctl.o
- obj-$(CONFIG_PL353_SMC)		+= pl353-smc.o
- obj-$(CONFIG_RENESAS_RPCIF)	+= renesas-rpc-if.o
- obj-$(CONFIG_STM32_FMC2_EBI)	+= stm32-fmc2-ebi.o
-+obj-$(CONFIG_STM32_OMM)		+= stm32_omm.o
- 
- obj-$(CONFIG_SAMSUNG_MC)	+= samsung/
- obj-$(CONFIG_TEGRA_MC)		+= tegra/
-diff --git a/drivers/memory/stm32_omm.c b/drivers/memory/stm32_omm.c
+ config SPI_STM32_QSPI
+ 	tristate "STMicroelectronics STM32 QUAD SPI controller"
+ 	depends on ARCH_STM32 || COMPILE_TEST
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index 9db7554c1864..41cbd6df048f 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -137,6 +137,7 @@ obj-$(CONFIG_SPI_SN_F_OSPI)		+= spi-sn-f-ospi.o
+ obj-$(CONFIG_SPI_SPRD)			+= spi-sprd.o
+ obj-$(CONFIG_SPI_SPRD_ADI)		+= spi-sprd-adi.o
+ obj-$(CONFIG_SPI_STM32) 		+= spi-stm32.o
++obj-$(CONFIG_SPI_STM32_OSPI) 		+= spi-stm32-ospi.o
+ obj-$(CONFIG_SPI_STM32_QSPI) 		+= spi-stm32-qspi.o
+ obj-$(CONFIG_SPI_ST_SSC4)		+= spi-st-ssc4.o
+ obj-$(CONFIG_SPI_SUN4I)			+= spi-sun4i.o
+diff --git a/drivers/spi/spi-stm32-ospi.c b/drivers/spi/spi-stm32-ospi.c
 new file mode 100644
-index 000000000000..8f7f475769e7
+index 000000000000..8eadcb64f34a
 --- /dev/null
-+++ b/drivers/memory/stm32_omm.c
-@@ -0,0 +1,522 @@
++++ b/drivers/spi/spi-stm32-ospi.c
+@@ -0,0 +1,1065 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) STMicroelectronics 2025 - All Rights Reserved
-+ * Author(s): Patrice Chotard <patrice.chotard@foss.st.com> for STMicroelectronics.
 + */
 +
 +#include <linux/bitfield.h>
-+#include <linux/bus/stm32_firewall_device.h>
 +#include <linux/clk.h>
++#include <linux/delay.h>
++#include <linux/dma-mapping.h>
++#include <linux/dmaengine.h>
 +#include <linux/err.h>
++#include <linux/errno.h>
++#include <linux/interrupt.h>
++#include <linux/io.h>
++#include <linux/iopoll.h>
 +#include <linux/mfd/syscon.h>
-+#include <linux/mod_devicetable.h>
 +#include <linux/module.h>
++#include <linux/mutex.h>
++#include <linux/of.h>
 +#include <linux/of_address.h>
-+#include <linux/of_platform.h>
++#include <linux/of_device.h>
++#include <linux/of_gpio.h>
++#include <linux/of_reserved_mem.h>
 +#include <linux/pinctrl/consumer.h>
++#include <linux/platform_device.h>
 +#include <linux/pm_runtime.h>
-+#include <linux/regmap.h>
 +#include <linux/reset.h>
++#include <linux/sizes.h>
++#include <linux/spi/spi-mem.h>
++#include <linux/types.h>
 +
-+#define OMM_CR			0
-+#define CR_MUXEN		BIT(0)
-+#define CR_MUXENMODE_MASK	GENMASK(1, 0)
-+#define CR_CSSEL_OVR_EN		BIT(4)
-+#define CR_CSSEL_OVR_MASK	GENMASK(6, 5)
-+#define CR_REQ2ACK_MASK		GENMASK(23, 16)
++#define OSPI_CR			0x00
++#define CR_EN			BIT(0)
++#define CR_ABORT		BIT(1)
++#define CR_DMAEN		BIT(2)
++#define CR_FTHRES_SHIFT		8
++#define CR_TEIE			BIT(16)
++#define CR_TCIE			BIT(17)
++#define CR_SMIE			BIT(19)
++#define CR_APMS			BIT(22)
++#define CR_CSSEL		BIT(24)
++#define CR_FMODE_MASK		GENMASK(29, 28)
++#define CR_FMODE_INDW		(0U)
++#define CR_FMODE_INDR		(1U)
++#define CR_FMODE_APM		(2U)
++#define CR_FMODE_MM		(3U)
 +
-+#define OMM_CHILD_NB		2
++#define OSPI_DCR1		0x08
++#define DCR1_DLYBYP		BIT(3)
++#define DCR1_DEVSIZE_MASK	GENMASK(20, 16)
++#define DCR1_MTYP_MASK		GENMASK(26, 24)
++#define DCR1_MTYP_MX_MODE	1
++#define DCR1_MTYP_HP_MEMMODE	4
 +
-+struct ospi_child {
++#define OSPI_DCR2		0x0c
++#define DCR2_PRESC_MASK		GENMASK(7, 0)
++
++#define OSPI_SR			0x20
++#define SR_TEF			BIT(0)
++#define SR_TCF			BIT(1)
++#define SR_FTF			BIT(2)
++#define SR_SMF			BIT(3)
++#define SR_BUSY			BIT(5)
++
++#define OSPI_FCR		0x24
++#define FCR_CTEF		BIT(0)
++#define FCR_CTCF		BIT(1)
++#define FCR_CSMF		BIT(3)
++
++#define OSPI_DLR		0x40
++#define OSPI_AR			0x48
++#define OSPI_DR			0x50
++#define OSPI_PSMKR		0x80
++#define OSPI_PSMAR		0x88
++
++#define OSPI_CCR		0x100
++#define CCR_IMODE_MASK		GENMASK(2, 0)
++#define CCR_IDTR		BIT(3)
++#define CCR_ISIZE_MASK		GENMASK(5, 4)
++#define CCR_ADMODE_MASK		GENMASK(10, 8)
++#define CCR_ADMODE_8LINES	4
++#define CCR_ADDTR		BIT(11)
++#define CCR_ADSIZE_MASK		GENMASK(13, 12)
++#define CCR_ADSIZE_32BITS	3
++#define CCR_DMODE_MASK		GENMASK(26, 24)
++#define CCR_DMODE_8LINES	4
++#define CCR_DQSE		BIT(29)
++#define CCR_DDTR		BIT(27)
++#define CCR_BUSWIDTH_0		0x0
++#define CCR_BUSWIDTH_1		0x1
++#define CCR_BUSWIDTH_2		0x2
++#define CCR_BUSWIDTH_4		0x3
++#define CCR_BUSWIDTH_8		0x4
++
++#define OSPI_TCR		0x108
++#define TCR_DCYC_MASK		GENMASK(4, 0)
++#define TCR_DHQC		BIT(28)
++#define TCR_SSHIFT		BIT(30)
++
++#define OSPI_IR			0x110
++
++#define STM32_OSPI_MAX_MMAP_SZ	SZ_256M
++#define STM32_OSPI_MAX_NORCHIP	2
++
++#define STM32_FIFO_TIMEOUT_US		30000
++#define STM32_ABT_TIMEOUT_US		100000
++#define STM32_COMP_TIMEOUT_MS		5000
++#define STM32_BUSY_TIMEOUT_US		100000
++
++
++#define STM32_AUTOSUSPEND_DELAY -1
++
++struct stm32_ospi {
 +	struct device *dev;
-+	struct device_node *node;
++	struct spi_controller *ctrl;
 +	struct clk *clk;
++	struct reset_control *rstc;
++
++	struct completion data_completion;
++	struct completion match_completion;
++
++	struct dma_chan *dma_chtx;
++	struct dma_chan *dma_chrx;
++	struct completion dma_completion;
++
++	void __iomem *regs_base;
++	void __iomem *mm_base;
++	phys_addr_t regs_phys_base;
++	resource_size_t mm_size;
++	u32 clk_rate;
++	u32 fmode;
++	u32 cr_reg;
++	u32 dcr_reg;
++	u32 flash_presc[STM32_OSPI_MAX_NORCHIP];
++	int irq;
++	unsigned long status_timeout;
++
++	/*
++	 * To protect device configuration, could be different between
++	 * 2 flash access
++	 */
++	struct mutex lock;
 +};
 +
-+struct stm32_omm {
-+	struct ospi_child child[OMM_CHILD_NB];
-+	struct resource *mm_res;
-+	struct clk *clk;
-+	void __iomem *io_base;
-+	u32 cr;
-+	u8 nb_child;
-+	bool restore_omm;
-+};
-+
-+static int stm32_omm_set_amcr(struct device *dev, bool set)
++static void stm32_ospi_read_fifo(u8 *val, void __iomem *addr)
 +{
-+	struct stm32_omm *omm = dev_get_drvdata(dev);
-+	struct regmap *syscfg_regmap;
-+	struct device_node *node;
-+	struct resource res, res1;
-+	resource_size_t mm_ospi2_size = 0;
-+	static const char * const mm_name[] = { "ospi1", "ospi2" };
-+	u32 amcr_base, amcr_mask;
-+	int ret, idx;
-+	unsigned int i, amcr, read_amcr;
-+
-+	for (i = 0; i < omm->nb_child; i++) {
-+		idx = of_property_match_string(dev->of_node,
-+					       "memory-region-names",
-+					       mm_name[i]);
-+		if (idx < 0)
-+			continue;
-+
-+		/* res1 only used on second loop iteration */
-+		res1.start = res.start;
-+		res1.end = res.end;
-+
-+		node = of_parse_phandle(dev->of_node, "memory-region", idx);
-+		if (!node)
-+			continue;
-+
-+		ret = of_address_to_resource(node, 0, &res);
-+		if (ret) {
-+			dev_err(dev, "unable to resolve memory region\n");
-+			return ret;
-+		}
-+
-+		/* check that memory region fits inside OMM memory map area */
-+		if (!resource_contains(omm->mm_res, &res)) {
-+			dev_err(dev, "%s doesn't fit inside OMM memory map area\n",
-+				mm_name[i]);
-+			dev_err(dev, "%pR doesn't fit inside %pR\n", &res, omm->mm_res);
-+
-+			return -EFAULT;
-+		}
-+
-+		if (i == 1) {
-+			mm_ospi2_size = resource_size(&res);
-+
-+			/* check that OMM memory region 1 doesn't overlap memory region 2 */
-+			if (resource_overlaps(&res, &res1)) {
-+				dev_err(dev, "OMM memory-region %s overlaps memory region %s\n",
-+					mm_name[0], mm_name[1]);
-+				dev_err(dev, "%pR overlaps %pR\n", &res1, &res);
-+
-+				return -EFAULT;
-+			}
-+		}
-+	}
-+
-+	syscfg_regmap = syscon_regmap_lookup_by_phandle(dev->of_node, "st,syscfg-amcr");
-+	if (IS_ERR(syscfg_regmap)) {
-+		dev_err(dev, "Failed to get st,syscfg-amcr property\n");
-+		return PTR_ERR(syscfg_regmap);
-+	}
-+
-+	ret = of_property_read_u32_index(dev->of_node, "st,syscfg-amcr", 1,
-+					 &amcr_base);
-+	if (ret)
-+		return ret;
-+
-+	ret = of_property_read_u32_index(dev->of_node, "st,syscfg-amcr", 2,
-+					 &amcr_mask);
-+	if (ret)
-+		return ret;
-+
-+	amcr = mm_ospi2_size / SZ_64M;
-+
-+	if (set)
-+		regmap_update_bits(syscfg_regmap, amcr_base, amcr_mask, amcr);
-+
-+	/* read AMCR and check coherency with memory-map areas defined in DT */
-+	regmap_read(syscfg_regmap, amcr_base, &read_amcr);
-+	read_amcr = read_amcr >> (ffs(amcr_mask) - 1);
-+
-+	if (amcr != read_amcr) {
-+		dev_err(dev, "AMCR value not coherent with DT memory-map areas\n");
-+		ret = -EINVAL;
-+	}
-+
-+	return ret;
++	*val = readb_relaxed(addr);
 +}
 +
-+static int stm32_omm_enable_child_clock(struct device *dev, bool enable)
++static void stm32_ospi_write_fifo(u8 *val, void __iomem *addr)
 +{
-+	/* As there is only 2 children, remember first child in case of error */
-+	struct clk *first_child_clk = NULL;
-+	struct stm32_omm *omm = dev_get_drvdata(dev);
-+	u8 i;
++	writeb_relaxed(*val, addr);
++}
++
++static int stm32_ospi_abort(struct stm32_ospi *ospi)
++{
++	void __iomem *regs_base = ospi->regs_base;
++	u32 cr;
++	int timeout;
++
++	cr = readl_relaxed(regs_base + OSPI_CR) | CR_ABORT;
++	writel_relaxed(cr, regs_base + OSPI_CR);
++
++	/* wait clear of abort bit by hw */
++	timeout = readl_relaxed_poll_timeout_atomic(regs_base + OSPI_CR,
++						    cr, !(cr & CR_ABORT), 1,
++						    STM32_ABT_TIMEOUT_US);
++
++	if (timeout)
++		dev_err(ospi->dev, "%s abort timeout:%d\n", __func__, timeout);
++
++	return timeout;
++}
++
++static int stm32_ospi_poll(struct stm32_ospi *ospi, u8 *buf, u32 len, bool read)
++{
++	void __iomem *regs_base = ospi->regs_base;
++	void (*fifo)(u8 *val, void __iomem *addr);
++	u32 sr;
 +	int ret;
 +
-+	for (i = 0; i < omm->nb_child; i++) {
-+		if (enable) {
-+			ret = clk_prepare_enable(omm->child[i].clk);
-+			if (ret) {
-+				if (first_child_clk)
-+					clk_disable_unprepare(first_child_clk);
++	if (read)
++		fifo = stm32_ospi_read_fifo;
++	else
++		fifo = stm32_ospi_write_fifo;
 +
-+				dev_err(dev, "Can not enable clock\n");
-+				return ret;
-+			}
-+		} else {
-+			clk_disable_unprepare(omm->child[i].clk);
++	while (len--) {
++		ret = readl_relaxed_poll_timeout_atomic(regs_base + OSPI_SR,
++							sr, sr & SR_FTF, 1,
++							STM32_FIFO_TIMEOUT_US);
++		if (ret) {
++			dev_err(ospi->dev, "fifo timeout (len:%d stat:%#x)\n",
++				len, sr);
++			return ret;
 +		}
-+
-+		first_child_clk = omm->child[i].clk;
++		fifo(buf++, regs_base + OSPI_DR);
 +	}
 +
 +	return 0;
 +}
 +
-+static int stm32_omm_configure(struct device *dev)
++static int stm32_ospi_wait_nobusy(struct stm32_ospi *ospi)
 +{
-+	struct stm32_omm *omm = dev_get_drvdata(dev);
-+	struct reset_control *rstc;
-+	unsigned long clk_rate, clk_rate_max = 0;
-+	int ret;
-+	u8 i;
-+	u32 mux = 0;
-+	u32 cssel_ovr = 0;
-+	u32 req2ack = 0;
++	u32 sr;
 +
-+	omm->clk = devm_clk_get(dev, NULL);
-+	if (IS_ERR(omm->clk)) {
-+		dev_err(dev, "Failed to get OMM clock (%ld)\n",
-+			PTR_ERR(omm->clk));
++	return readl_relaxed_poll_timeout_atomic(ospi->regs_base + OSPI_SR,
++						 sr, !(sr & SR_BUSY), 1,
++						 STM32_BUSY_TIMEOUT_US);
++}
 +
-+		return PTR_ERR(omm->clk);
++static int stm32_ospi_wait_cmd(struct stm32_ospi *ospi)
++{
++	void __iomem *regs_base = ospi->regs_base;
++	u32 cr, sr;
++	int err = 0;
++
++	if ((readl_relaxed(regs_base + OSPI_SR) & SR_TCF) ||
++	    ospi->fmode == CR_FMODE_APM)
++		goto out;
++
++	reinit_completion(&ospi->data_completion);
++	cr = readl_relaxed(regs_base + OSPI_CR);
++	writel_relaxed(cr | CR_TCIE | CR_TEIE, regs_base + OSPI_CR);
++
++	if (!wait_for_completion_timeout(&ospi->data_completion,
++				msecs_to_jiffies(STM32_COMP_TIMEOUT_MS)))
++		err = -ETIMEDOUT;
++
++	sr = readl_relaxed(regs_base + OSPI_SR);
++	if (sr & SR_TCF)
++		/* avoid false timeout */
++		err = 0;
++	if (sr & SR_TEF)
++		err = -EIO;
++
++out:
++	/* clear flags */
++	writel_relaxed(FCR_CTCF | FCR_CTEF, regs_base + OSPI_FCR);
++
++	if (!err)
++		err = stm32_ospi_wait_nobusy(ospi);
++
++	return err;
++}
++
++static void stm32_ospi_dma_callback(void *arg)
++{
++	struct completion *dma_completion = arg;
++
++	complete(dma_completion);
++}
++
++static irqreturn_t stm32_ospi_irq(int irq, void *dev_id)
++{
++	struct stm32_ospi *ospi = (struct stm32_ospi *)dev_id;
++	void __iomem *regs_base = ospi->regs_base;
++	u32 cr, sr;
++
++	cr = readl_relaxed(regs_base + OSPI_CR);
++	sr = readl_relaxed(regs_base + OSPI_SR);
++
++	if (cr & CR_SMIE && sr & SR_SMF) {
++		/* disable irq */
++		cr &= ~CR_SMIE;
++		writel_relaxed(cr, regs_base + OSPI_CR);
++		complete(&ospi->match_completion);
++
++		return IRQ_HANDLED;
 +	}
 +
-+	ret = pm_runtime_resume_and_get(dev);
++	if (sr & (SR_TEF | SR_TCF)) {
++		/* disable irq */
++		cr &= ~CR_TCIE & ~CR_TEIE;
++		writel_relaxed(cr, regs_base + OSPI_CR);
++		complete(&ospi->data_completion);
++	}
++
++	return IRQ_HANDLED;
++}
++
++static void stm32_ospi_dma_setup(struct stm32_ospi *ospi,
++			 struct dma_slave_config *dma_cfg)
++{
++	if (dma_cfg && ospi->dma_chrx) {
++		if (dmaengine_slave_config(ospi->dma_chrx, dma_cfg)) {
++			dev_err(ospi->dev, "dma rx config failed\n");
++			dma_release_channel(ospi->dma_chrx);
++			ospi->dma_chrx = NULL;
++		}
++	}
++
++	if (dma_cfg && ospi->dma_chtx) {
++		if (dmaengine_slave_config(ospi->dma_chtx, dma_cfg)) {
++			dev_err(ospi->dev, "dma tx config failed\n");
++			dma_release_channel(ospi->dma_chtx);
++			ospi->dma_chtx = NULL;
++		}
++	}
++
++	init_completion(&ospi->dma_completion);
++}
++
++static int stm32_ospi_tx_mm(struct stm32_ospi *ospi,
++			    const struct spi_mem_op *op)
++{
++	memcpy_fromio(op->data.buf.in, ospi->mm_base + op->addr.val,
++		      op->data.nbytes);
++	return 0;
++}
++
++static int stm32_ospi_tx_dma(struct stm32_ospi *ospi,
++			     const struct spi_mem_op *op)
++{
++	struct dma_async_tx_descriptor *desc;
++	void __iomem *regs_base = ospi->regs_base;
++	enum dma_transfer_direction dma_dir;
++	struct dma_chan *dma_ch;
++	struct sg_table sgt;
++	dma_cookie_t cookie;
++	u32 cr, t_out;
++	int err;
++
++	if (op->data.dir == SPI_MEM_DATA_IN) {
++		dma_dir = DMA_DEV_TO_MEM;
++		dma_ch = ospi->dma_chrx;
++	} else {
++		dma_dir = DMA_MEM_TO_DEV;
++		dma_ch = ospi->dma_chtx;
++	}
++
++	/*
++	 * Spi_map_buf return -EINVAL if the buffer is not DMA-able
++	 * (DMA-able: in vmalloc | kmap | virt_addr_valid)
++	 */
++	err = spi_controller_dma_map_mem_op_data(ospi->ctrl, op, &sgt);
++	if (err)
++		return err;
++
++	desc = dmaengine_prep_slave_sg(dma_ch, sgt.sgl, sgt.nents,
++				       dma_dir, DMA_PREP_INTERRUPT);
++	if (!desc) {
++		err = -ENOMEM;
++		goto out_unmap;
++	}
++
++	cr = readl_relaxed(regs_base + OSPI_CR);
++
++	reinit_completion(&ospi->dma_completion);
++	desc->callback = stm32_ospi_dma_callback;
++	desc->callback_param = &ospi->dma_completion;
++	cookie = dmaengine_submit(desc);
++	err = dma_submit_error(cookie);
++	if (err)
++		goto out;
++
++	dma_async_issue_pending(dma_ch);
++
++	writel_relaxed(cr | CR_DMAEN, regs_base + OSPI_CR);
++
++	t_out = sgt.nents * STM32_COMP_TIMEOUT_MS;
++	if (!wait_for_completion_timeout(&ospi->dma_completion,
++					 msecs_to_jiffies(t_out)))
++		err = -ETIMEDOUT;
++
++	if (err)
++		dmaengine_terminate_all(dma_ch);
++
++out:
++	writel_relaxed(cr & ~CR_DMAEN, regs_base + OSPI_CR);
++out_unmap:
++	spi_controller_dma_unmap_mem_op_data(ospi->ctrl, op, &sgt);
++
++	return err;
++}
++
++static int stm32_ospi_xfer(struct stm32_ospi *ospi, const struct spi_mem_op *op)
++{
++	u8 *buf;
++
++	if (!op->data.nbytes)
++		return 0;
++
++	if (ospi->fmode == CR_FMODE_MM)
++		return stm32_ospi_tx_mm(ospi, op);
++	else if (((op->data.dir == SPI_MEM_DATA_IN && ospi->dma_chrx) ||
++		 (op->data.dir == SPI_MEM_DATA_OUT && ospi->dma_chtx)) &&
++		  op->data.nbytes > 8)
++		if (!stm32_ospi_tx_dma(ospi, op))
++			return 0;
++
++	if (op->data.dir == SPI_MEM_DATA_IN)
++		buf = op->data.buf.in;
++	else
++		buf = (u8 *)op->data.buf.out;
++
++	return stm32_ospi_poll(ospi, buf, op->data.nbytes,
++			       op->data.dir == SPI_MEM_DATA_IN);
++}
++
++static int stm32_ospi_wait_poll_status(struct stm32_ospi *ospi,
++				       const struct spi_mem_op *op)
++{
++	void __iomem *regs_base = ospi->regs_base;
++	u32 cr;
++
++	reinit_completion(&ospi->match_completion);
++	cr = readl_relaxed(regs_base + OSPI_CR);
++	writel_relaxed(cr | CR_SMIE, regs_base + OSPI_CR);
++
++	if (!wait_for_completion_timeout(&ospi->match_completion,
++					 msecs_to_jiffies(ospi->status_timeout))) {
++		u32 sr = readl_relaxed(regs_base + OSPI_SR);
++
++		/* Avoid false timeout */
++		if (!(sr & SR_SMF))
++			return -ETIMEDOUT;
++	}
++
++	writel_relaxed(FCR_CSMF, regs_base + OSPI_FCR);
++
++	return 0;
++}
++
++static int stm32_ospi_get_mode(u8 buswidth)
++{
++	switch (buswidth) {
++	case 8:
++		return CCR_BUSWIDTH_8;
++	case 4:
++		return CCR_BUSWIDTH_4;
++	default:
++		return buswidth;
++	}
++}
++
++static int stm32_ospi_send(struct spi_device *spi, const struct spi_mem_op *op)
++{
++	struct stm32_ospi *ospi = spi_controller_get_devdata(spi->controller);
++	void __iomem *regs_base = ospi->regs_base;
++	u32 ccr, cr, dcr2, tcr;
++	int timeout, err = 0, err_poll_status = 0;
++	u8 cs = spi->chip_select[ffs(spi->cs_index_mask) - 1];
++
++	dev_dbg(ospi->dev, "cmd:%#x mode:%d.%d.%d.%d addr:%#llx len:%#x\n",
++		op->cmd.opcode, op->cmd.buswidth, op->addr.buswidth,
++		op->dummy.buswidth, op->data.buswidth,
++		op->addr.val, op->data.nbytes);
++
++	cr = readl_relaxed(ospi->regs_base + OSPI_CR);
++	cr &= ~CR_CSSEL;
++	cr |= FIELD_PREP(CR_CSSEL, cs);
++	cr &= ~CR_FMODE_MASK;
++	cr |= FIELD_PREP(CR_FMODE_MASK, ospi->fmode);
++	writel_relaxed(cr, regs_base + OSPI_CR);
++
++	if (op->data.nbytes)
++		writel_relaxed(op->data.nbytes - 1, regs_base + OSPI_DLR);
++
++	/* set prescaler */
++	dcr2 = readl_relaxed(regs_base + OSPI_DCR2);
++	dcr2 |= FIELD_PREP(DCR2_PRESC_MASK, ospi->flash_presc[cs]);
++	writel_relaxed(dcr2, regs_base + OSPI_DCR2);
++
++	ccr = FIELD_PREP(CCR_IMODE_MASK, stm32_ospi_get_mode(op->cmd.buswidth));
++
++	if (op->addr.nbytes) {
++		ccr |= FIELD_PREP(CCR_ADMODE_MASK,
++				  stm32_ospi_get_mode(op->addr.buswidth));
++		ccr |= FIELD_PREP(CCR_ADSIZE_MASK, op->addr.nbytes - 1);
++	}
++
++	tcr = TCR_SSHIFT;
++	if (op->dummy.buswidth && op->dummy.nbytes) {
++		tcr |= FIELD_PREP(TCR_DCYC_MASK,
++				  op->dummy.nbytes * 8 / op->dummy.buswidth);
++	}
++	writel_relaxed(tcr, regs_base + OSPI_TCR);
++
++	if (op->data.nbytes) {
++		ccr |= FIELD_PREP(CCR_DMODE_MASK,
++				  stm32_ospi_get_mode(op->data.buswidth));
++	}
++
++	writel_relaxed(ccr, regs_base + OSPI_CCR);
++
++	/* set instruction, must be set after ccr register update */
++	writel_relaxed(op->cmd.opcode, regs_base + OSPI_IR);
++
++	if (op->addr.nbytes && ospi->fmode != CR_FMODE_MM)
++		writel_relaxed(op->addr.val, regs_base + OSPI_AR);
++
++	if (ospi->fmode == CR_FMODE_APM)
++		err_poll_status = stm32_ospi_wait_poll_status(ospi, op);
++
++	err = stm32_ospi_xfer(ospi, op);
++
++	/*
++	 * Abort in:
++	 * -error case
++	 * -read memory map: prefetching must be stopped if we read the last
++	 *  byte of device (device size - fifo size). like device size is not
++	 *  knows, the prefetching is always stop.
++	 */
++	if (err || err_poll_status || ospi->fmode == CR_FMODE_MM)
++		goto abort;
++
++	/* Wait end of tx in indirect mode */
++	err = stm32_ospi_wait_cmd(ospi);
++	if (err)
++		goto abort;
++
++	return 0;
++
++abort:
++	timeout = stm32_ospi_abort(ospi);
++	writel_relaxed(FCR_CTCF | FCR_CSMF, regs_base + OSPI_FCR);
++
++	if (err || err_poll_status || timeout)
++		dev_err(ospi->dev, "%s err:%d err_poll_status:%d abort timeout:%d\n",
++			__func__, err, err_poll_status, timeout);
++
++	return err;
++}
++
++static int stm32_ospi_poll_status(struct spi_mem *mem,
++				  const struct spi_mem_op *op,
++				  u16 mask, u16 match,
++				  unsigned long initial_delay_us,
++				  unsigned long polling_rate_us,
++				  unsigned long timeout_ms)
++{
++	struct stm32_ospi *ospi = spi_controller_get_devdata(mem->spi->controller);
++	void __iomem *regs_base = ospi->regs_base;
++	int ret;
++
++	ret = pm_runtime_resume_and_get(ospi->dev);
 +	if (ret < 0)
 +		return ret;
 +
-+	/* parse children's clock */
-+	for (i = 0; i < omm->nb_child; i++) {
-+		clk_rate = clk_get_rate(omm->child[i].clk);
-+		if (!clk_rate) {
-+			dev_err(dev, "Invalid clock rate\n");
-+			pm_runtime_disable(dev);
-+			goto err_clk_disable;
-+		}
++	mutex_lock(&ospi->lock);
 +
-+		if (clk_rate > clk_rate_max)
-+			clk_rate_max = clk_rate;
-+	}
++	writel_relaxed(mask, regs_base + OSPI_PSMKR);
++	writel_relaxed(match, regs_base + OSPI_PSMAR);
++	ospi->fmode = CR_FMODE_APM;
++	ospi->status_timeout = timeout_ms;
 +
-+	rstc = devm_reset_control_get_optional_exclusive(dev, NULL);
-+	if (IS_ERR(rstc)) {
-+		ret = dev_err_probe(dev, PTR_ERR(rstc), "reset get failed\n");
-+		pm_runtime_disable(dev);
-+		goto err_clk_disable;
-+	}
++	ret = stm32_ospi_send(mem->spi, op);
++	mutex_unlock(&ospi->lock);
 +
-+	reset_control_assert(rstc);
-+	udelay(2);
-+	reset_control_deassert(rstc);
-+
-+	omm->cr = readl_relaxed(omm->io_base + OMM_CR);
-+	/* optional */
-+	ret = of_property_read_u32(dev->of_node, "st,omm-mux", &mux);
-+	if (!ret) {
-+		if (mux & CR_MUXEN) {
-+			ret = of_property_read_u32(dev->of_node, "st,omm-req2ack-ns",
-+						   &req2ack);
-+			if (!ret && !req2ack) {
-+				req2ack = DIV_ROUND_UP(req2ack, NSEC_PER_SEC / clk_rate_max) - 1;
-+
-+				if (req2ack > 256)
-+					req2ack = 256;
-+			}
-+
-+			req2ack = FIELD_PREP(CR_REQ2ACK_MASK, req2ack);
-+
-+			omm->cr &= ~CR_REQ2ACK_MASK;
-+			omm->cr |= FIELD_PREP(CR_REQ2ACK_MASK, req2ack);
-+
-+			/*
-+			 * If the mux is enabled, the 2 OSPI clocks have to be
-+			 * always enabled
-+			 */
-+			ret = stm32_omm_enable_child_clock(dev, true);
-+			if (ret) {
-+				pm_runtime_disable(dev);
-+				goto err_clk_disable;
-+			}
-+		}
-+
-+		omm->cr &= ~CR_MUXENMODE_MASK;
-+		omm->cr |= FIELD_PREP(CR_MUXENMODE_MASK, mux);
-+	}
-+
-+	/* optional */
-+	ret = of_property_read_u32(dev->of_node, "st,omm-cssel-ovr", &cssel_ovr);
-+	if (!ret) {
-+		omm->cr &= ~CR_CSSEL_OVR_MASK;
-+		omm->cr |= FIELD_PREP(CR_CSSEL_OVR_MASK, cssel_ovr);
-+		omm->cr |= CR_CSSEL_OVR_EN;
-+	}
-+
-+	omm->restore_omm = true;
-+	writel_relaxed(omm->cr, omm->io_base + OMM_CR);
-+
-+	ret = stm32_omm_set_amcr(dev, true);
-+
-+err_clk_disable:
-+	pm_runtime_put_sync_suspend(dev);
++	pm_runtime_mark_last_busy(ospi->dev);
++	pm_runtime_put_autosuspend(ospi->dev);
 +
 +	return ret;
 +}
 +
-+static int stm32_omm_check_access(struct device *dev, struct device_node *np)
++static int stm32_ospi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
 +{
-+	struct stm32_firewall firewall;
++	struct stm32_ospi *ospi = spi_controller_get_devdata(mem->spi->controller);
 +	int ret;
 +
-+	ret = stm32_firewall_get_firewall(np, &firewall, 1);
++	ret = pm_runtime_resume_and_get(ospi->dev);
++	if (ret < 0)
++		return ret;
++
++	mutex_lock(&ospi->lock);
++	if (op->data.dir == SPI_MEM_DATA_IN && op->data.nbytes)
++		ospi->fmode = CR_FMODE_INDR;
++	else
++		ospi->fmode = CR_FMODE_INDW;
++
++	ret = stm32_ospi_send(mem->spi, op);
++	mutex_unlock(&ospi->lock);
++
++	pm_runtime_mark_last_busy(ospi->dev);
++	pm_runtime_put_autosuspend(ospi->dev);
++
++	return ret;
++}
++
++static int stm32_ospi_dirmap_create(struct spi_mem_dirmap_desc *desc)
++{
++	struct stm32_ospi *ospi = spi_controller_get_devdata(desc->mem->spi->controller);
++
++	if (desc->info.op_tmpl.data.dir == SPI_MEM_DATA_OUT)
++		return -EOPNOTSUPP;
++
++	/* Should never happen, as mm_base == null is an error probe exit condition */
++	if (!ospi->mm_base && desc->info.op_tmpl.data.dir == SPI_MEM_DATA_IN)
++		return -EOPNOTSUPP;
++
++	if (!ospi->mm_size)
++		return -EOPNOTSUPP;
++
++	return 0;
++}
++
++static ssize_t stm32_ospi_dirmap_read(struct spi_mem_dirmap_desc *desc,
++				      u64 offs, size_t len, void *buf)
++{
++	struct stm32_ospi *ospi = spi_controller_get_devdata(desc->mem->spi->controller);
++	struct spi_mem_op op;
++	u32 addr_max;
++	int ret;
++
++	ret = pm_runtime_resume_and_get(ospi->dev);
++	if (ret < 0)
++		return ret;
++
++	mutex_lock(&ospi->lock);
++	/*
++	 * Make a local copy of desc op_tmpl and complete dirmap rdesc
++	 * spi_mem_op template with offs, len and *buf in  order to get
++	 * all needed transfer information into struct spi_mem_op
++	 */
++	memcpy(&op, &desc->info.op_tmpl, sizeof(struct spi_mem_op));
++	dev_dbg(ospi->dev, "%s len = 0x%zx offs = 0x%llx buf = 0x%p\n", __func__, len, offs, buf);
++
++	op.data.nbytes = len;
++	op.addr.val = desc->info.offset + offs;
++	op.data.buf.in = buf;
++
++	addr_max = op.addr.val + op.data.nbytes + 1;
++	if (addr_max < ospi->mm_size && op.addr.buswidth)
++		ospi->fmode = CR_FMODE_MM;
++	else
++		ospi->fmode = CR_FMODE_INDR;
++
++	ret = stm32_ospi_send(desc->mem->spi, &op);
++	mutex_unlock(&ospi->lock);
++
++	pm_runtime_mark_last_busy(ospi->dev);
++	pm_runtime_put_autosuspend(ospi->dev);
++
++	return ret ?: len;
++}
++
++static int stm32_ospi_transfer_one_message(struct spi_controller *ctrl,
++					   struct spi_message *msg)
++{
++	struct stm32_ospi *ospi = spi_controller_get_devdata(ctrl);
++	struct spi_transfer *transfer;
++	struct spi_device *spi = msg->spi;
++	struct spi_mem_op op;
++	struct gpio_desc *cs_gpiod = spi->cs_gpiod[ffs(spi->cs_index_mask) - 1];
++	int ret = 0;
++
++	if (!cs_gpiod)
++		return -EOPNOTSUPP;
++
++	ret = pm_runtime_resume_and_get(ospi->dev);
++	if (ret < 0)
++		return ret;
++
++	mutex_lock(&ospi->lock);
++
++	gpiod_set_value_cansleep(cs_gpiod, true);
++
++	list_for_each_entry(transfer, &msg->transfers, transfer_list) {
++		u8 dummy_bytes = 0;
++
++		memset(&op, 0, sizeof(op));
++
++		dev_dbg(ospi->dev, "tx_buf:%p tx_nbits:%d rx_buf:%p rx_nbits:%d len:%d dummy_data:%d\n",
++			transfer->tx_buf, transfer->tx_nbits,
++			transfer->rx_buf, transfer->rx_nbits,
++			transfer->len, transfer->dummy_data);
++
++		/*
++		 * OSPI hardware supports dummy bytes transfer.
++		 * If current transfer is dummy byte, merge it with the next
++		 * transfer in order to take into account OSPI block constraint
++		 */
++		if (transfer->dummy_data) {
++			op.dummy.buswidth = transfer->tx_nbits;
++			op.dummy.nbytes = transfer->len;
++			dummy_bytes = transfer->len;
++
++			/* If happens, means that message is not correctly built */
++			if (list_is_last(&transfer->transfer_list, &msg->transfers)) {
++				ret = -EINVAL;
++				goto end_of_transfer;
++			}
++
++			transfer = list_next_entry(transfer, transfer_list);
++		}
++
++		op.data.nbytes = transfer->len;
++
++		if (transfer->rx_buf) {
++			ospi->fmode = CR_FMODE_INDR;
++			op.data.buswidth = transfer->rx_nbits;
++			op.data.dir = SPI_MEM_DATA_IN;
++			op.data.buf.in = transfer->rx_buf;
++		} else {
++			ospi->fmode = CR_FMODE_INDW;
++			op.data.buswidth = transfer->tx_nbits;
++			op.data.dir = SPI_MEM_DATA_OUT;
++			op.data.buf.out = transfer->tx_buf;
++		}
++
++		ret = stm32_ospi_send(spi, &op);
++		if (ret)
++			goto end_of_transfer;
++
++		msg->actual_length += transfer->len + dummy_bytes;
++	}
++
++end_of_transfer:
++	gpiod_set_value_cansleep(cs_gpiod, false);
++
++	mutex_unlock(&ospi->lock);
++
++	msg->status = ret;
++	spi_finalize_current_message(ctrl);
++
++	pm_runtime_mark_last_busy(ospi->dev);
++	pm_runtime_put_autosuspend(ospi->dev);
++
++	return ret;
++}
++
++static int stm32_ospi_setup(struct spi_device *spi)
++{
++	struct spi_controller *ctrl = spi->controller;
++	struct stm32_ospi *ospi = spi_controller_get_devdata(ctrl);
++	void __iomem *regs_base = ospi->regs_base;
++	int ret;
++	u8 cs = spi->chip_select[ffs(spi->cs_index_mask) - 1];
++
++	if (ctrl->busy)
++		return -EBUSY;
++
++	if (!spi->max_speed_hz)
++		return -EINVAL;
++
++	ret = pm_runtime_resume_and_get(ospi->dev);
++	if (ret < 0)
++		return ret;
++
++	ospi->flash_presc[cs] = DIV_ROUND_UP(ospi->clk_rate, spi->max_speed_hz) - 1;
++
++	mutex_lock(&ospi->lock);
++
++	ospi->cr_reg = CR_APMS | 3 << CR_FTHRES_SHIFT | CR_EN;
++	writel_relaxed(ospi->cr_reg, regs_base + OSPI_CR);
++
++	/* set dcr fsize to max address */
++	ospi->dcr_reg = DCR1_DEVSIZE_MASK | DCR1_DLYBYP;
++	writel_relaxed(ospi->dcr_reg, regs_base + OSPI_DCR1);
++
++	mutex_unlock(&ospi->lock);
++
++	pm_runtime_mark_last_busy(ospi->dev);
++	pm_runtime_put_autosuspend(ospi->dev);
++
++	return 0;
++}
++
++/*
++ * No special host constraint, so use default spi_mem_default_supports_op
++ * to check supported mode.
++ */
++static const struct spi_controller_mem_ops stm32_ospi_mem_ops = {
++	.exec_op	= stm32_ospi_exec_op,
++	.dirmap_create	= stm32_ospi_dirmap_create,
++	.dirmap_read	= stm32_ospi_dirmap_read,
++	.poll_status	= stm32_ospi_poll_status,
++};
++
++static int stm32_ospi_get_resources(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	struct stm32_ospi *ospi = platform_get_drvdata(pdev);
++	struct resource *res;
++	struct reserved_mem *rmem = NULL;
++	struct device_node *node;
++	int ret;
++
++	ospi->regs_base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
++	if (IS_ERR(ospi->regs_base))
++		return PTR_ERR(ospi->regs_base);
++
++	ospi->regs_phys_base = res->start;
++
++	ospi->clk = devm_clk_get(dev, NULL);
++	if (IS_ERR(ospi->clk))
++		return dev_err_probe(dev, PTR_ERR(ospi->clk),
++				     "Can't get clock\n");
++
++	ospi->clk_rate = clk_get_rate(ospi->clk);
++	if (!ospi->clk_rate) {
++		dev_err(dev, "Invalid clock rate\n");
++		return -EINVAL;
++	}
++
++	ospi->irq = platform_get_irq(pdev, 0);
++	if (ospi->irq < 0) {
++		dev_err(dev, "Can't get irq %d\n", ospi->irq);
++		return ospi->irq;
++	}
++
++	ret = devm_request_irq(dev, ospi->irq, stm32_ospi_irq, 0,
++			       dev_name(dev), ospi);
++	if (ret) {
++		dev_err(dev, "Failed to request irq\n");
++		return ret;
++	}
++
++	ospi->rstc = devm_reset_control_array_get_optional_exclusive(dev);
++	if (IS_ERR(ospi->rstc))
++		return dev_err_probe(dev, PTR_ERR(ospi->rstc),
++				     "Can't get reset\n");
++
++	ospi->dma_chrx = dma_request_chan(dev, "rx");
++	if (IS_ERR(ospi->dma_chrx)) {
++		ret = PTR_ERR(ospi->dma_chrx);
++		ospi->dma_chrx = NULL;
++		if (ret == -EPROBE_DEFER)
++			goto err_dma;
++	}
++
++	ospi->dma_chtx = dma_request_chan(dev, "tx");
++	if (IS_ERR(ospi->dma_chtx)) {
++		ret = PTR_ERR(ospi->dma_chtx);
++		ospi->dma_chtx = NULL;
++		if (ret == -EPROBE_DEFER)
++			goto err_dma;
++	}
++
++	node = of_parse_phandle(dev->of_node, "memory-region", 0);
++	if (node)
++		rmem = of_reserved_mem_lookup(node);
++	of_node_put(node);
++
++	if (rmem) {
++		ospi->mm_size = rmem->size;
++		ospi->mm_base = devm_ioremap(dev, rmem->base, rmem->size);
++		if (IS_ERR(ospi->mm_base)) {
++			dev_err(dev, "unable to map memory region: %pa+%pa\n",
++				&rmem->base, &rmem->size);
++			ret = PTR_ERR(ospi->mm_base);
++			goto err_dma;
++		}
++
++		if (ospi->mm_size > STM32_OSPI_MAX_MMAP_SZ) {
++			dev_err(dev, "Memory map size outsize bounds\n");
++			ret = -EINVAL;
++			goto err_dma;
++		}
++	} else {
++		dev_info(dev, "No memory-map region found\n");
++	}
++
++	init_completion(&ospi->data_completion);
++	init_completion(&ospi->match_completion);
++
++	return 0;
++
++err_dma:
++	dev_info(dev, "Can't get all resources (%d)\n", ret);
++
++	if (ospi->dma_chtx)
++		dma_release_channel(ospi->dma_chtx);
++	if (ospi->dma_chrx)
++		dma_release_channel(ospi->dma_chrx);
++
++	return ret;
++};
++
++static int stm32_ospi_probe(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	struct spi_controller *ctrl;
++	struct stm32_ospi *ospi;
++	struct dma_slave_config dma_cfg;
++	struct device_node *child;
++	int ret;
++	u8 spi_flash_count = 0;
++
++	/*
++	 * Flash subnodes sanity check:
++	 *        1 or 2 spi-nand/spi-nor flashes		=> supported
++	 *	  All other flash node configuration		=> not supported
++	 */
++	for_each_available_child_of_node(dev->of_node, child) {
++		if (of_device_is_compatible(child, "jedec,spi-nor") ||
++		    of_device_is_compatible(child, "spi-nand"))
++			spi_flash_count++;
++	}
++
++	if (spi_flash_count == 0 || spi_flash_count > 2) {
++		dev_err(dev, "Incorrect DT flash node\n");
++		return -ENODEV;
++	}
++
++	ctrl = devm_spi_alloc_host(dev, sizeof(*ospi));
++	if (!ctrl)
++		return -ENOMEM;
++
++	ospi = spi_controller_get_devdata(ctrl);
++	ospi->ctrl = ctrl;
++
++	ospi->dev = &pdev->dev;
++	platform_set_drvdata(pdev, ospi);
++
++	ret = stm32_ospi_get_resources(pdev);
 +	if (ret)
 +		return ret;
 +
-+	return stm32_firewall_grant_access(&firewall);
-+}
++	memset(&dma_cfg, 0, sizeof(dma_cfg));
++	dma_cfg.src_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
++	dma_cfg.dst_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
++	dma_cfg.src_addr = ospi->regs_phys_base + OSPI_DR;
++	dma_cfg.dst_addr = ospi->regs_phys_base + OSPI_DR;
++	dma_cfg.src_maxburst = 4;
++	dma_cfg.dst_maxburst = 4;
++	stm32_ospi_dma_setup(ospi, &dma_cfg);
 +
-+static int stm32_omm_disable_child(struct device *dev)
-+{
-+	struct stm32_omm *omm = dev_get_drvdata(dev);
-+	struct reset_control *reset;
-+	int ret;
-+	u8 i;
++	mutex_init(&ospi->lock);
 +
-+	for (i = 0; i < omm->nb_child; i++) {
-+		ret = clk_prepare_enable(omm->child[i].clk);
-+		if (ret) {
-+			dev_err(dev, "Can not enable clock\n");
-+			return ret;
-+		}
++	ctrl->mode_bits = SPI_RX_DUAL | SPI_RX_QUAD |
++			  SPI_TX_DUAL | SPI_TX_QUAD |
++			  SPI_TX_OCTAL | SPI_RX_OCTAL;
++	ctrl->flags = SPI_CONTROLLER_HALF_DUPLEX;
++	ctrl->setup = stm32_ospi_setup;
++	ctrl->bus_num = -1;
++	ctrl->mem_ops = &stm32_ospi_mem_ops;
++	ctrl->use_gpio_descriptors = true;
++	ctrl->transfer_one_message = stm32_ospi_transfer_one_message;
++	ctrl->num_chipselect = STM32_OSPI_MAX_NORCHIP;
++	ctrl->dev.of_node = dev->of_node;
 +
-+		reset = of_reset_control_get_exclusive(omm->child[i].node, 0);
-+		if (IS_ERR(reset)) {
-+			dev_err(dev, "Can't get child reset\n");
-+			return PTR_ERR(reset);
-+		};
++	pm_runtime_enable(ospi->dev);
++	pm_runtime_set_autosuspend_delay(ospi->dev, STM32_AUTOSUSPEND_DELAY);
++	pm_runtime_use_autosuspend(ospi->dev);
 +
-+		/* reset OSPI to ensure CR_EN bit is set to 0 */
-+		reset_control_assert(reset);
++	ret = pm_runtime_resume_and_get(ospi->dev);
++	if (ret < 0)
++		goto err_pm_enable;
++
++	if (ospi->rstc) {
++		reset_control_assert(ospi->rstc);
 +		udelay(2);
-+		reset_control_deassert(reset);
-+
-+		reset_control_put(reset);
-+		clk_disable_unprepare(omm->child[i].clk);
++		reset_control_deassert(ospi->rstc);
 +	}
++
++	ret = spi_register_controller(ctrl);
++	if (ret) {
++		/* Disable ospi */
++		writel_relaxed(0, ospi->regs_base + OSPI_CR);
++		goto err_pm_resume;
++	}
++
++	pm_runtime_mark_last_busy(ospi->dev);
++	pm_runtime_put_autosuspend(ospi->dev);
 +
 +	return 0;
-+}
 +
-+static int stm32_omm_probe(struct platform_device *pdev)
-+{
-+	struct platform_device *vdev;
-+	struct device *dev = &pdev->dev;
-+	struct stm32_omm *omm;
-+	struct clk *clk;
-+	int ret;
-+	u8 child_access_granted = 0;
-+	u8 i, j;
-+	bool child_access[OMM_CHILD_NB];
++err_pm_resume:
++	pm_runtime_put_sync_suspend(ospi->dev);
 +
-+	omm = devm_kzalloc(dev, sizeof(*omm), GFP_KERNEL);
-+	if (!omm)
-+		return -ENOMEM;
-+
-+	omm->io_base = devm_platform_ioremap_resource_byname(pdev, "regs");
-+	if (IS_ERR(omm->io_base))
-+		return PTR_ERR(omm->io_base);
-+
-+	omm->mm_res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "memory_map");
-+	if (IS_ERR(omm->mm_res))
-+		return PTR_ERR(omm->mm_res);
-+
-+	/* check child's access */
-+	for_each_child_of_node_scoped(dev->of_node, child) {
-+		if (omm->nb_child >= OMM_CHILD_NB) {
-+			dev_err(dev, "Bad DT, found too much children\n");
-+			ret = -E2BIG;
-+			goto err_clk_release;
-+		}
-+
-+		if (!of_device_is_compatible(child, "st,stm32mp25-ospi")) {
-+			ret = -EINVAL;
-+			goto err_clk_release;
-+		}
-+
-+		ret = stm32_omm_check_access(dev, child);
-+		if (ret < 0 && ret != -EACCES)
-+			goto err_clk_release;
-+
-+		child_access[omm->nb_child] = false;
-+		if (!ret) {
-+			child_access_granted++;
-+			child_access[omm->nb_child] = true;
-+		}
-+
-+		omm->child[omm->nb_child].node = child;
-+
-+		clk = of_clk_get(child, 0);
-+		if (IS_ERR(clk)) {
-+			dev_err(dev, "Can't get child clock\n");
-+			ret = PTR_ERR(clk);
-+			goto err_clk_release;
-+		};
-+
-+		omm->child[omm->nb_child].clk = clk;
-+		omm->nb_child++;
-+	}
-+
-+	if (omm->nb_child != OMM_CHILD_NB) {
-+		ret = -EINVAL;
-+		goto err_clk_release;
-+	}
-+
-+	platform_set_drvdata(pdev, omm);
-+
-+	pm_runtime_enable(dev);
-+
-+	/* check if OMM's resource access is granted */
-+	ret = stm32_omm_check_access(dev, dev->of_node);
-+	if (ret < 0 && ret != -EACCES)
-+		goto err_clk_release;
-+
-+	if (!ret && child_access_granted == OMM_CHILD_NB) {
-+		/* Ensure both OSPI instance are disabled before configuring OMM */
-+		ret = stm32_omm_disable_child(dev);
-+		if (ret)
-+			goto err_clk_release;
-+
-+		ret = stm32_omm_configure(dev);
-+		if (ret)
-+			goto err_clk_release;
-+	} else {
-+		dev_dbg(dev, "Octo Memory Manager resource's access not granted\n");
-+		/*
-+		 * AMCR can't be set, so check if current value is coherent
-+		 * with memory-map areas defined in DT
-+		 */
-+		ret = stm32_omm_set_amcr(dev, false);
-+		if (ret)
-+			goto err_clk_release;
-+	}
-+
-+	/* for each child, if resource access is granted and status "okay", probe it */
-+	for (i = 0; i < omm->nb_child; i++) {
-+		if (!child_access[i] || !of_device_is_available(omm->child[i].node))
-+			continue;
-+
-+		vdev = of_platform_device_create(omm->child[i].node, NULL, NULL);
-+		if (!vdev) {
-+			dev_err(dev, "Failed to create Octo Memory Manager child\n");
-+			for (j = i; j > 0; --j) {
-+				if (omm->child[j].dev)
-+					of_platform_device_destroy(omm->child[j].dev, NULL);
-+			}
-+
-+			ret = -EINVAL;
-+			goto err_clk_release;
-+		}
-+		omm->child[i].dev = &vdev->dev;
-+	}
-+
-+err_clk_release:
-+	for (i = 0; i < omm->nb_child; i++)
-+		clk_put(omm->child[i].clk);
++err_pm_enable:
++	pm_runtime_force_suspend(ospi->dev);
++	mutex_destroy(&ospi->lock);
 +
 +	return ret;
 +}
 +
-+static void stm32_omm_remove(struct platform_device *pdev)
++static void stm32_ospi_remove(struct platform_device *pdev)
 +{
-+	struct stm32_omm *omm = platform_get_drvdata(pdev);
-+	int i;
-+
-+	for (i = 0; i < omm->nb_child; i++)
-+		if (omm->child[i].dev)
-+			of_platform_device_destroy(omm->child[i].dev, NULL);
-+
-+	if (omm->cr & CR_MUXEN)
-+		stm32_omm_enable_child_clock(&pdev->dev, false);
-+
-+	pm_runtime_disable(&pdev->dev);
-+}
-+
-+static const struct of_device_id stm32_omm_of_match[] = {
-+	{ .compatible = "st,stm32mp25-omm", },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, stm32_omm_of_match);
-+
-+static int __maybe_unused stm32_omm_runtime_suspend(struct device *dev)
-+{
-+	struct stm32_omm *omm = dev_get_drvdata(dev);
-+
-+	clk_disable_unprepare(omm->clk);
-+
-+	return 0;
-+}
-+
-+static int __maybe_unused stm32_omm_runtime_resume(struct device *dev)
-+{
-+	struct stm32_omm *omm = dev_get_drvdata(dev);
-+
-+	return clk_prepare_enable(omm->clk);
-+}
-+
-+static int __maybe_unused stm32_omm_suspend(struct device *dev)
-+{
-+	struct stm32_omm *omm = dev_get_drvdata(dev);
-+
-+	if (omm->restore_omm && omm->cr & CR_MUXEN)
-+		stm32_omm_enable_child_clock(dev, false);
-+
-+	return pinctrl_pm_select_sleep_state(dev);
-+}
-+
-+static int __maybe_unused stm32_omm_resume(struct device *dev)
-+{
-+	struct stm32_omm *omm = dev_get_drvdata(dev);
++	struct stm32_ospi *ospi = platform_get_drvdata(pdev);
 +	int ret;
++
++	ret = pm_runtime_resume_and_get(ospi->dev);
++	if (ret < 0)
++		return;
++
++	spi_unregister_controller(ospi->ctrl);
++	/* Disable ospi */
++	writel_relaxed(0, ospi->regs_base + OSPI_CR);
++	mutex_destroy(&ospi->lock);
++
++	if (ospi->dma_chtx)
++		dma_release_channel(ospi->dma_chtx);
++	if (ospi->dma_chrx)
++		dma_release_channel(ospi->dma_chrx);
++
++	pm_runtime_put_sync_suspend(ospi->dev);
++	pm_runtime_force_suspend(ospi->dev);
++}
++
++static int __maybe_unused stm32_ospi_suspend(struct device *dev)
++{
++	struct stm32_ospi *ospi = dev_get_drvdata(dev);
++
++	pinctrl_pm_select_sleep_state(dev);
++
++	return pm_runtime_force_suspend(ospi->dev);
++}
++
++static int __maybe_unused stm32_ospi_resume(struct device *dev)
++{
++	struct stm32_ospi *ospi = dev_get_drvdata(dev);
++	void __iomem *regs_base = ospi->regs_base;
++	int ret;
++
++	ret = pm_runtime_force_resume(ospi->dev);
++	if (ret < 0)
++		return ret;
 +
 +	pinctrl_pm_select_default_state(dev);
 +
-+	if (!omm->restore_omm)
-+		return 0;
-+
-+	/* Ensure both OSPI instance are disabled before configuring OMM */
-+	ret = stm32_omm_disable_child(dev);
-+	if (ret)
-+		return ret;
-+
-+	ret = pm_runtime_resume_and_get(dev);
++	ret = pm_runtime_resume_and_get(ospi->dev);
 +	if (ret < 0)
 +		return ret;
 +
-+	writel_relaxed(omm->cr, omm->io_base + OMM_CR);
-+	ret = stm32_omm_set_amcr(dev, true);
-+	pm_runtime_put_sync_suspend(dev);
-+	if (ret)
-+		return ret;
++	writel_relaxed(ospi->cr_reg, regs_base + OSPI_CR);
++	writel_relaxed(ospi->dcr_reg, regs_base + OSPI_DCR1);
++	pm_runtime_mark_last_busy(ospi->dev);
++	pm_runtime_put_autosuspend(ospi->dev);
 +
-+	if (omm->cr & CR_MUXEN)
-+		ret = stm32_omm_enable_child_clock(dev, true);
-+
-+	return ret;
++	return 0;
 +}
 +
-+static const struct dev_pm_ops stm32_omm_pm_ops = {
-+	SET_RUNTIME_PM_OPS(stm32_omm_runtime_suspend,
-+			   stm32_omm_runtime_resume, NULL)
-+	SET_SYSTEM_SLEEP_PM_OPS(stm32_omm_suspend, stm32_omm_resume)
++static int __maybe_unused stm32_ospi_runtime_suspend(struct device *dev)
++{
++	struct stm32_ospi *ospi = dev_get_drvdata(dev);
++
++	clk_disable_unprepare(ospi->clk);
++
++	return 0;
++}
++
++static int __maybe_unused stm32_ospi_runtime_resume(struct device *dev)
++{
++	struct stm32_ospi *ospi = dev_get_drvdata(dev);
++
++	return clk_prepare_enable(ospi->clk);
++}
++
++static const struct dev_pm_ops stm32_ospi_pm_ops = {
++	SET_SYSTEM_SLEEP_PM_OPS(stm32_ospi_suspend, stm32_ospi_resume)
++	SET_RUNTIME_PM_OPS(stm32_ospi_runtime_suspend,
++			   stm32_ospi_runtime_resume, NULL)
 +};
 +
-+static struct platform_driver stm32_omm_driver = {
-+	.probe	= stm32_omm_probe,
-+	.remove = stm32_omm_remove,
++static const struct of_device_id stm32_ospi_of_match[] = {
++	{ .compatible = "st,stm32mp25-ospi" },
++	{},
++};
++MODULE_DEVICE_TABLE(of, stm32_ospi_of_match);
++
++static struct platform_driver stm32_ospi_driver = {
++	.probe	= stm32_ospi_probe,
++	.remove	= stm32_ospi_remove,
 +	.driver	= {
-+		.name = "stm32-omm",
-+		.of_match_table = stm32_omm_of_match,
-+		.pm = &stm32_omm_pm_ops,
++		.name = "stm32-ospi",
++		.pm = &stm32_ospi_pm_ops,
++		.of_match_table = stm32_ospi_of_match,
 +	},
 +};
-+module_platform_driver(stm32_omm_driver);
++module_platform_driver(stm32_ospi_driver);
 +
-+MODULE_DESCRIPTION("STMicroelectronics Octo Memory Manager driver");
++MODULE_DESCRIPTION("STMicroelectronics STM32 OCTO SPI driver");
 +MODULE_LICENSE("GPL");
 -- 
 2.25.1

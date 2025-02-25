@@ -1,175 +1,111 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0F7267F60
-	for <linux-spi@vger.kernel.org>; Tue, 25 Feb 2025 12:54:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 721E920FA9E;
+	Tue, 25 Feb 2025 20:17:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740488077; cv=none; b=IN31AlPRG4yVwJIkgD+qLLu8tv9F9OrgY+TA/eKnKsODzAy7ujvIqtnn1/zkueIMBOoogY7Fa3jHsIo6rF3Fg0n44V9s6BDGBEL5RE6LGJKzGOxA4E0DVW2MwVbG8wsZudcfKDnaiE+1beo3WiBIkzfrQPSWRj8odOBuZdftg9g=
+	t=1740514642; cv=none; b=HfN5ACIIQ4aTXMkuXPurzGkWaRdF6ZKet0Vuu0XmfEacWndGdqZBFwaCIhhqOY10MXEj9cTHxi4e9FF4fDcfcdduWlw421LG+Nr+bFW8HjIPVYIu7yJLFx6eqijsLY1NcFCoE2STLPaiJn0kay1V6OzPg07LSNHf9Fu0TnvGchg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740488077; c=relaxed/simple;
-	bh=W8LIqF7kkH6cCLj3gN0Tz1ix7jTva4xQTCeEx72fA+w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=czr7i4QQgbLLMK1HYhtXXDjKt6Gs/++7dP/wr3Is4CZMajoOg6M2nd1v2nl/EtzO4FyeAS2mEWHmbKyWyW3S7LAcMsfmGoGijde6v7YWmaSI3aM94jkcRoNnTsGHr8KtPz44sYHJI2pl2Bet1yNM9m5zQPmAwtt/+9rRG4EKTvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=mjILcAIk; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
+	s=arc-20240116; t=1740514642; c=relaxed/simple;
+	bh=KhNEyo7WFu+pfBKWpwr7dBCkfYqG9oS0AfyoC6gzP2I=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=b3CDrWiJDIGshR/XpN3pqHS/BsSmvt33nMebk7jMiVa7MQsOzCdU5JwlkeKMsjXF2SgBjJX0S0IFvZttUS1Cg/Ay15em5GbA0wrNRkGzARh34kc8iImSxqoVBwVqB32R2EEn990KaRwXWQ9mjwVAh4sGwKKX8chWalSsBUqtNPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=OP63wp67; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="mjILcAIk"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 6A9ED240104
-	for <linux-spi@vger.kernel.org>; Tue, 25 Feb 2025 13:54:33 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-	t=1740488073; bh=W8LIqF7kkH6cCLj3gN0Tz1ix7jTva4xQTCeEx72fA+w=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:From;
-	b=mjILcAIkXqzqNKdVJx8aNZciCsFDMgWk1hSEOtkfGbO6HFVdhu5Vy04vupoKrYvbv
-	 c6on3zliqSDojlPicjEIhjGdw22NRnh01nANE/3jRMwtf45rqgaGqjBEPbDvvOZQgg
-	 s4Jb6KbceFTD97AcdgGFKHeQkXDlrBbwG3iChrbmjhflZJIT8e5l8aV2shsyZ4sXKo
-	 6ofVmK+sYqzNywRiys2+yrDszLO59sxgwWTEXz+wqj0Y8Kj8BPrm6dHb8ttxz+aByz
-	 WtF5CLyU4itMYTueMHGswR3Km+h6T3R2kOXkZBOleO2kFLusG00NHpXaxrg6YwUFTp
-	 3ou6TTWtB7XpA==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4Z2HcG3WCTz9rxG;
-	Tue, 25 Feb 2025 13:54:21 +0100 (CET)
-Date: Tue, 25 Feb 2025 12:54:21 +0000
-From: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
-To: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
-Cc: Frank Li <Frank.li@nxp.com>, devicetree@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	Krzysztof Kozlowski <krzk@kernel.org>, imx@lists.linux.dev,
-	Scott Wood <oss@buserror.net>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>, Lee Jones <lee@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Guenter Roeck <linux@roeck-us.net>, Mark Brown <broonie@kernel.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>, linux-kernel@vger.kernel.org,
-	linux-ide@vger.kernel.org, linux-crypto@vger.kernel.org,
-	dmaengine@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-watchdog@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-mtd@lists.infradead.org
-Subject: Re: [PATCH v2 05/12] dt-bindings: dma: Convert fsl,elo*-dma to YAML
-Message-ID: <Z729fRBNLAxdYD22@probook>
-References: <20250207-ppcyaml-v2-0-8137b0c42526@posteo.net>
- <20250207-ppcyaml-v2-5-8137b0c42526@posteo.net>
- <Z6pV4eauZj75+911@lizhi-Precision-Tower-5810>
- <Z684nUnDX4Sb98rQ@probook>
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="OP63wp67"
+Received: from eahariha-devbox.internal.cloudapp.net (unknown [40.91.112.99])
+	by linux.microsoft.com (Postfix) with ESMTPSA id BF51B203CDFD;
+	Tue, 25 Feb 2025 12:17:19 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com BF51B203CDFD
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1740514639;
+	bh=iYMbK5A793RDdkoEPga+PoRyWET+ntXiAELhCjFiDKo=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=OP63wp67iKSqHjNTjMNd+sihLCyoASTZi2GNLl0ELqRwvrBXcEngcH+yXafC8Yprq
+	 nAvYY5Wrea0EY1UvsDuANN22sm/ZDZFvEyjRA+KLA6UssBgo0/5UVPQNqQpxTLUDBc
+	 wEQUX4uMwl08WGSAzFvomPPI3q3DYIQICkks+WHI=
+From: Easwar Hariharan <eahariha@linux.microsoft.com>
+Date: Tue, 25 Feb 2025 20:17:15 +0000
+Subject: [PATCH v3 01/16] coccinelle: misc: secs_to_jiffies: Patch
+ expressions too
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z684nUnDX4Sb98rQ@probook>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250225-converge-secs-to-jiffies-part-two-v3-1-a43967e36c88@linux.microsoft.com>
+References: <20250225-converge-secs-to-jiffies-part-two-v3-0-a43967e36c88@linux.microsoft.com>
+In-Reply-To: <20250225-converge-secs-to-jiffies-part-two-v3-0-a43967e36c88@linux.microsoft.com>
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Yaron Avizrat <yaron.avizrat@intel.com>, Oded Gabbay <ogabbay@kernel.org>, 
+ Julia Lawall <Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>, 
+ James Smart <james.smart@broadcom.com>, 
+ Dick Kennedy <dick.kennedy@broadcom.com>, 
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+ "Martin K. Petersen" <martin.petersen@oracle.com>, 
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+ Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>, 
+ David Sterba <dsterba@suse.com>, Ilya Dryomov <idryomov@gmail.com>, 
+ Dongsheng Yang <dongsheng.yang@easystack.cn>, Jens Axboe <axboe@kernel.dk>, 
+ Xiubo Li <xiubli@redhat.com>, Damien Le Moal <dlemoal@kernel.org>, 
+ Niklas Cassel <cassel@kernel.org>, Carlos Maiolino <cem@kernel.org>, 
+ "Darrick J. Wong" <djwong@kernel.org>, Sebastian Reichel <sre@kernel.org>, 
+ Keith Busch <kbusch@kernel.org>, Christoph Hellwig <hch@lst.de>, 
+ Sagi Grimberg <sagi@grimberg.me>, Frank Li <Frank.Li@nxp.com>, 
+ Mark Brown <broonie@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, 
+ Hans de Goede <hdegoede@redhat.com>, 
+ =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+ Henrique de Moraes Holschuh <hmh@hmh.eng.br>, 
+ Selvin Xavier <selvin.xavier@broadcom.com>, 
+ Kalesh AP <kalesh-anakkur.purayil@broadcom.com>, 
+ Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>
+Cc: cocci@inria.fr, linux-kernel@vger.kernel.org, 
+ linux-scsi@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ linux-sound@vger.kernel.org, linux-btrfs@vger.kernel.org, 
+ ceph-devel@vger.kernel.org, linux-block@vger.kernel.org, 
+ linux-ide@vger.kernel.org, linux-xfs@vger.kernel.org, 
+ linux-pm@vger.kernel.org, linux-nvme@lists.infradead.org, 
+ linux-spi@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, platform-driver-x86@vger.kernel.org, 
+ ibm-acpi-devel@lists.sourceforge.net, linux-rdma@vger.kernel.org, 
+ Easwar Hariharan <eahariha@linux.microsoft.com>
+X-Mailer: b4 0.14.2
 
-On Fri, Feb 14, 2025 at 12:35:41PM +0000, J. Neuschäfer wrote:
-> On Mon, Feb 10, 2025 at 02:39:13PM -0500, Frank Li wrote:
-> > On Fri, Feb 07, 2025 at 10:30:22PM +0100, J. Neuschäfer via B4 Relay wrote:
-> > > From: "J. Neuschäfer" <j.ne@posteo.net>
-> > >
-> > > The devicetree bindings for Freescale DMA engines have so far existed as
-> > > a text file. This patch converts them to YAML, and specifies all the
-> > > compatible strings currently in use in arch/powerpc/boot/dts.
-> > >
-> > > Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
-> > > ---
-[...]
-> > Need ref to dma-common.yaml?
-> 
-> Sounds good, but I'm not sure what to do about the #dma-cells property,
-> which is required by dma-common.yaml.
-> 
-> There aren't many examples of DMA channels being explicitly declared in
-> device trees. One example that I could find is the the xilinx_dma.txt
-> binding:
-> 
-> 
-> 	axi_vdma_0: axivdma@40030000 {
-> 		compatible = "xlnx,axi-vdma-1.00.a";
-> 		#dma_cells = <1>;
-> 		reg = < 0x40030000 0x10000 >;
-> 		dma-ranges = <0x00000000 0x00000000 0x40000000>;
-> 		xlnx,num-fstores = <0x8>;
-> 		xlnx,flush-fsync = <0x1>;
-> 		xlnx,addrwidth = <0x20>;
-> 		clocks = <&clk 0>, <&clk 1>, <&clk 2>, <&clk 3>, <&clk 4>;
-> 		clock-names = "s_axi_lite_aclk", "m_axi_mm2s_aclk", "m_axi_s2mm_aclk",
-> 			      "m_axis_mm2s_aclk", "s_axis_s2mm_aclk";
-> 		dma-channel@40030000 {
-> 			compatible = "xlnx,axi-vdma-mm2s-channel";
-> 			interrupts = < 0 54 4 >;
-> 			xlnx,datawidth = <0x40>;
-> 		};
-> 		dma-channel@40030030 {
-> 			compatible = "xlnx,axi-vdma-s2mm-channel";
-> 			interrupts = < 0 53 4 >;
-> 			xlnx,datawidth = <0x40>;
-> 		};
-> 	};
-> 
-> 	...
-> 
-> 	vdmatest_0: vdmatest@0 {
-> 		compatible ="xlnx,axi-vdma-test-1.00.a";
-> 		dmas = <&axi_vdma_0 0
-> 			&axi_vdma_0 1>;
-> 		dma-names = "vdma0", "vdma1";
-> 	};
-> 
-> It has #dma_cells (I'm sure #dma-cells was intended) on the controller.
-> 
-> 
-> Another example is in arch/powerpc/boot/dts/fsl/p1022si-post.dtsi:
-> 
-> 	dma@c300 {
-> 		dma00: dma-channel@0 {
-> 			compatible = "fsl,ssi-dma-channel";
-> 		};
-> 		dma01: dma-channel@80 {
-> 			compatible = "fsl,ssi-dma-channel";
-> 		};
-> 	};
-> 
-> 	...
-> 
-> 	ssi@15000 {
-> 		compatible = "fsl,mpc8610-ssi";
-> 		cell-index = <0>;
-> 		reg = <0x15000 0x100>;
-> 		interrupts = <75 2 0 0>;
-> 		fsl,playback-dma = <&dma00>;
-> 		fsl,capture-dma = <&dma01>;
-> 		fsl,fifo-depth = <15>;
-> 	};
-> 
-> 
-> There, the DMA channels are used directly and without additional
-> information (i.e. #dma-cells = <0>, althought it isn't specified).
+Teach the script to suggest conversions for timeout patterns where the
+arguments to msecs_to_jiffies() are expressions as well.
 
-I had another look at dma-common.yaml and it explicitly requires
-#dma-cells to have a value of at least 1, so this second idea won't
-work.
+Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+---
+ scripts/coccinelle/misc/secs_to_jiffies.cocci | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
+diff --git a/scripts/coccinelle/misc/secs_to_jiffies.cocci b/scripts/coccinelle/misc/secs_to_jiffies.cocci
+index 8bbb2884ea5db939c63fd4513cf5ca8c977aa8cb..416f348174ca659b544441f5f68f04a41d1ad4a3 100644
+--- a/scripts/coccinelle/misc/secs_to_jiffies.cocci
++++ b/scripts/coccinelle/misc/secs_to_jiffies.cocci
+@@ -20,3 +20,13 @@ virtual patch
+ 
+ - msecs_to_jiffies(C * MSEC_PER_SEC)
+ + secs_to_jiffies(C)
++
++@depends on patch@ expression E; @@
++
++- msecs_to_jiffies(E * 1000)
+++ secs_to_jiffies(E)
++
++@depends on patch@ expression E; @@
++
++- msecs_to_jiffies(E * MSEC_PER_SEC)
+++ secs_to_jiffies(E)
 
-Best regards,
-J. Neuschäfer
+-- 
+2.43.0
+

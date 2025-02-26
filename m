@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C48C14D283;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C15D222589;
 	Wed, 26 Feb 2025 14:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740579559; cv=none; b=UwvbKnCe71HUF35Zmd/nULnHV0bDO4r8TGMQD+ru4rLRS9SHkSZfL5rMyspZsdVa5Bx8vxL+y09p2Vm0JeM73YHaevin2ZXA/dQ/uyZH+8caNCfGMlDSGSmDAHHewLWEcKybtx0eQjrK1beE0B94zfwSYa4tB9hfGz3mvE7UtLc=
+	t=1740579559; cv=none; b=auLvt17Whcwf4IWR9qfYKe0GTf+iiZQqLsjrBwNGUaO1XWQwkS8oB3W9v64gOIfKOoKk+BN6TV/2272JeAlOa2qsjTEztiWGEjKhr90nHYDJvqsA5Gqbib/dKUQRwlTu6iW+Sq4zxIx+hv4NvLKtkiuWV12WANhmRgqGN/ot48w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1740579559; c=relaxed/simple;
-	bh=PxgLGq6+qrxKe3Hxsa6qgMFp45GE/6elawfTgJ3Xenw=;
+	bh=9qpPM7N9vuJGBAdiNYiFYqBpqZja21Y/Swf+Oy1Pdo8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=u6Ai2hBi0EnfUseqPoqp2ltvJKI7KB5fSFn+hiDwzmvIALEtAlvpcpDoH4RAOYN64G/LLZDBHQbJKbYA3MmOtJZlhgvJxBjLXj3Dt1ySJmp9wJ5GqVk8+mQw5Yp3pTTSqr90q7Qswy0nAwZwCXMOPlf0/tbc6wUMODMbSqTezGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Spwp8u9F; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=TPnHtGqSxCXKkvEn+tfgkyTcPEyg3kYFKeBMtZzJb/8U9w+5X4pRQH+inu9ObT2hQhnCp+wFinkr+k+JxHGGXGueBl2/S7iGthme+Z8l6mG93Bledn0S3TuOCIATKT7DNVIZJlIDCG1EWsU31JgDOm8/RxO7L6T+otNm4Nj7XwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mwm8sfWD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Spwp8u9F"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 3843DC4CEF6;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mwm8sfWD"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 159D6C4CEF2;
 	Wed, 26 Feb 2025 14:19:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1740579559;
-	bh=PxgLGq6+qrxKe3Hxsa6qgMFp45GE/6elawfTgJ3Xenw=;
+	bh=9qpPM7N9vuJGBAdiNYiFYqBpqZja21Y/Swf+Oy1Pdo8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Spwp8u9FWTDkamXymTccOY/VJczw3W4EolYJxoaflzpLvrdyjDJwQWvkOsBD6qs0g
-	 KG5prWWLZ9ArPRC1Z0QUXMNkv8QNNLL0N64AwT2llROUoGPvth+ABfIByTL7WkYdcB
-	 gmbNVdZm3uL/4p+fMqB3OMo8tblq/hcaJUY7c+QSYbcZS6Jjcn/JoWDa5NxtiyM/HD
-	 HOuD0qlBQv1nxFwSGFqsL0i0jrw/vjXnALMTDDhC3X9Fbz3VQMSwMIDHYjCYAxG68I
-	 Vs+y8RFeXOMJK8njAGBvJd4zY8nvYvzcrYBw7vY4m50OsXnxNc1K8Y3SUw7Qce3jXx
-	 KuIgLvK5M4PcQ==
+	b=Mwm8sfWDAghhoVCU3JKF4khAIR9U2i0rRDUAvxsYHc+34H3KfrApcE9aqk4HIBA0i
+	 pnbyi7NoyModZkjs9Zkgo4YnWElVRRzfqm4oqDdLOrvwJ3mFTMvQ04wlxCsbImHorQ
+	 S9Gf3yoC/MmXpNedhEx06QYKLASykFRVvL3V01m4D27I/9UVZM6A3NdBy6kF8g55O4
+	 QF8LFY8mGomZh57EVk2gBp4jIfzY8RjWHetv5CvSjON+6jVstxQCLzVK997pIL8nBx
+	 bX3aszL35LqeLk01hvxSj2iJp7QR5vTaeV1zsZo+LCWNrcpEINBx3itGM0fY9EflvK
+	 nJ77qr7fbCorQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F7B7C021B8;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 08B5DC021B8;
 	Wed, 26 Feb 2025 14:19:19 +0000 (UTC)
 From: Maud Spierings via B4 Relay <devnull+maudspierings.gocontroll.com@kernel.org>
-Date: Wed, 26 Feb 2025 15:19:18 +0100
-Subject: [PATCH v2 07/12] MAINTAINERS: add maintainer for the GOcontroll
- Moduline controllers
+Date: Wed, 26 Feb 2025 15:19:16 +0100
+Subject: [PATCH v2 05/12] MAINTAINERS: add maintainer for the Ka-Ro
+ tx8p-ml81 COM module
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250226-initial_display-v2-7-23fafa130817@gocontroll.com>
+Message-Id: <20250226-initial_display-v2-5-23fafa130817@gocontroll.com>
 References: <20250226-initial_display-v2-0-23fafa130817@gocontroll.com>
 In-Reply-To: <20250226-initial_display-v2-0-23fafa130817@gocontroll.com>
 To: Neil Armstrong <neil.armstrong@linaro.org>, 
@@ -61,11 +61,11 @@ Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org, 
  Maud Spierings <maudspierings@gocontroll.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1740579556; l=782;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1740579556; l=938;
  i=maudspierings@gocontroll.com; s=20250214; h=from:subject:message-id;
- bh=nusWR5q5TNk92/50ob68LPNw76A3tW54RO2mF3ZYb0Y=;
- b=2CgGNin8Ebwh3dwvAYR2RELJiEsDuzfLytOtPMjDQUyT9S4KJgYogOrsUyQRb3lAL4OlDa0cM
- Ilcbio1GW0/AE0PKNGMKXGCOzztNLF+WAmj2VkhhJ6eGXVBLYODscXl
+ bh=7OO/jW02mlmITYurf1caNsK1hmpbzWDELvNR0DyCiU4=;
+ b=JQF5eJLd8TKcCGD2C+Z9zMlLVrO2fpysnJnOF+AScUx86YmdKVjIT1WI0RHmfVs/wwWBOll1s
+ tmLhs/5IralB0S4so8L4M795iuHqJdftuaxrDYcNgqM95obpIrELjwx
 X-Developer-Key: i=maudspierings@gocontroll.com; a=ed25519;
  pk=7chUb8XpaTQDvWhzTdHC0YPMkTDloELEC7q94tOUyPg=
 X-Endpoint-Received: by B4 Relay for maudspierings@gocontroll.com/20250214
@@ -75,7 +75,11 @@ Reply-To: maudspierings@gocontroll.com
 
 From: Maud Spierings <maudspierings@gocontroll.com>
 
-Add a maintainer for the GOcontroll Moduline series of controllers.
+Add GOcontroll as unofficial maintainers of the Ka-Ro tx8p-ml81 COM
+module bindings.
+
+This support is not officially done by Ka-Ro electronics, if they at
+some point will supporting mainline, this should be changed to them.
 
 Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
 ---
@@ -83,22 +87,22 @@ Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
  1 file changed, 6 insertions(+)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 3d75c66942ca2059e7a054072502b726d1dec04c..47fc659957d94e6dfbe3d8dc4aef80b2349a1104 100644
+index f076360ce3c60123e9afa61e6e5822326f72f244..b4c76d7ad890be0f618109918ad89328bc72e8cd 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -9843,6 +9843,12 @@ L:	linux-media@vger.kernel.org
- S:	Maintained
- F:	drivers/media/usb/go7007/
+@@ -12510,6 +12510,12 @@ S:	Maintained
+ F:	Documentation/hwmon/k8temp.rst
+ F:	drivers/hwmon/k8temp.c
  
-+GOCONTROLL MODULINE CONTROLLERS
++KA-RO TX8P COM MODULE
 +M:	Maud Spierings <maudspierings@gocontroll.com>
 +L:	devicetree@vger.kernel.org
 +S:	Maintained
-+F:	arch/arm64/boot/dts/freescale/*moduline*.dts*
++F:	arch/arm64/boot/dts/freescale/imx8mp-tx8p-ml81.dtsi
 +
- GOCONTROLL MODULINE MODULE SLOT
- M:	Maud Spierings <maudspierings@gocontroll.com>
- S:	Maintained
+ KASAN
+ M:	Andrey Ryabinin <ryabinin.a.a@gmail.com>
+ R:	Alexander Potapenko <glider@google.com>
 
 -- 
 2.48.1

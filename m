@@ -1,66 +1,68 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643CB202F88
-	for <linux-spi@vger.kernel.org>; Tue,  4 Mar 2025 13:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D161A24C093;
+	Tue,  4 Mar 2025 15:11:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741095598; cv=none; b=L5esHVf/N+UyeM0ZX1ODFxKLmLedFdgYf0GXafIWA4k0wZXhHD+dpt2iiONvXYw/PEeSJn6zzHgefOVHWyDGWGovDCqC/Fl0+VwnkMds1hECG5tC0a1kO6aroG9InfOGy4c6TDNUULg70g1dlWPxUfa5tUmbXcDnn+aZ3w/q+1o=
+	t=1741101119; cv=none; b=izd/mMedgMhdFbOo2Sgq6sAgHoOuw56dme0Y/O0c+0cmjryqLN9XPucN8/tlAAIUf9UHeUv0R9mOn9MBhd2dMxE0/AMsxNoCaAWm9suh8MtZEACxToz/0h4A+e0nfOXv35Php3tTd5cSXOtamlSZDlJZUHPPqIB44XWnvAxiKRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741095598; c=relaxed/simple;
-	bh=s6MNCBdyyNNkobKaqGYB5/yiMikaS6DXfiGoEnE4Kpo=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=FUQ/86Atd5U/f0hOxqHrIZAKrhEaGRh1k+9cRYvIiaeLBizYMwiK25S9rERl4X4jMPDPn8+/9iMSXLyPG/xfvd74RH0HKn9adfIUMPw7fb1JeqgFFEjVfeXLyofghZkIEBWDQi7klqr2pDI1D6cwmLzGFibVKAwoXOnJeCof2hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XnrTRuRW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741101119; c=relaxed/simple;
+	bh=4SIBqmrS42kkSMxCMQFChof+F0bMN3x2UOvDWptOUsk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tk0saRSALfHot2T0WLlp1/3QDaiRd8g9IufWj46xkcrDUo1e+ePLpCjGVWVlcl9a67JA3jLS719XVVZU7Dn+6G5zTaPyxDSqBAUOc8eCTKT5+g1f+PoRmK9s1sSCGWHVg+ulr5S47IsE4sP+oaTFjUS0nZbw9cZQxeFxy86xde8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f1RldajX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XnrTRuRW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E640FC4CEE5;
-	Tue,  4 Mar 2025 13:39:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f1RldajX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22280C4CEE5;
+	Tue,  4 Mar 2025 15:11:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741095596;
-	bh=s6MNCBdyyNNkobKaqGYB5/yiMikaS6DXfiGoEnE4Kpo=;
-	h=Subject:From:Date:To:From;
-	b=XnrTRuRWUBanrM84vEZJ8oWL6T/mGixjMt+KdNo63QS5PflNzu4gw5RO0vIv5xdVP
-	 O+VL4WMLWavojobClMkk5iYNT75dtsAqvGnHVTGxHfNyx2g3bGulA0y8mAwmSMRFIt
-	 N1qAmwC59XCcDUpoHroKtI0m1aJ+edSABD3TSvG1ryLMw5zvYVxM+3FhZI6DhcsBvK
-	 XAIiUkBwaCf+hWeqHWSNdmlkYip6YDNqyovcMeEuvdeVvy/VqmFNmh2jfgvkKYCYoT
-	 KPgIfK+yUPOU9OA4H7IDw2LEGD3E9JGuuW58mx+r7Hjrlzkcy1cI8DE6E4f4aDh7Kv
-	 SwvR1oCBQg0Pg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EEB42380AA7F;
-	Tue,  4 Mar 2025 13:40:30 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1741101119;
+	bh=4SIBqmrS42kkSMxCMQFChof+F0bMN3x2UOvDWptOUsk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=f1RldajXPHDVDaV8FrXpmlawZekNo7rfjLrH+iZk48PdTNBRRGoGXlRiD1dMOmiOK
+	 hdPWou5HpOvcLRH93nIoXnoYhrybdWjGDoYCEY6KjmM4THfuQMoeypD3sNZR50pLw3
+	 hoDsuVH5UnLQ8II5S35z2YdM3BZzZT84eDNImYf/MQIiBXd4SuOtjuJda3Jn3pHocW
+	 KaBXHJ0twf+ut9bhI+4tIH7Pfpsi4iTEx4VCI6WIuCQ8FpFOOiJSKVwWSaB2APzLFK
+	 oTX5LqnYHQ8rSsOU8Rljk4c76OrwGylKiU8s1/2pdz4l2fXAEK1tjyxpkrT64br/a/
+	 8THTVDr84zQXw==
+Date: Tue, 4 Mar 2025 09:11:57 -0600
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Longbin Li <looong.bin@gmail.com>
+Cc: linux-riscv@lists.infradead.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	devicetree@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>, linux-spi@vger.kernel.org,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	linux-kernel@vger.kernel.org, Chen Wang <unicorn_wang@outlook.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, sophgo@lists.linux.dev,
+	Conor Dooley <conor+dt@kernel.org>,
+	Inochi Amaoto <inochiama@gmail.com>
+Subject: Re: [PATCH v2 1/2] dt-bindings: spi: add SG2044 SPI NOR controller
+ driver
+Message-ID: <174110111660.2625891.8370014258934747237.robh@kernel.org>
+References: <20250304083548.10101-1-looong.bin@gmail.com>
+ <20250304083548.10101-2-looong.bin@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <174109562941.146024.11158717420088060468.git-patchwork-summary@kernel.org>
-Date: Tue, 04 Mar 2025 13:40:29 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
-
-Hello:
-
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (for-next):
-
-Series: Add STM32MP25 SPI NOR support
-  Submitter: Patrice CHOTARD <patrice.chotard@foss.st.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=935460
-  Lore link: https://lore.kernel.org/r/20250219080059.367045-1-patrice.chotard@foss.st.com
-    Patches: [v5,1/8] dt-bindings: spi: Add STM32 OSPI controller
-             [v5,2/8] spi: stm32: Add OSPI driver
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250304083548.10101-2-looong.bin@gmail.com>
 
 
-Total patches: 2
+On Tue, 04 Mar 2025 16:35:42 +0800, Longbin Li wrote:
+> Add SPI NOR driver for SG2044, including read, write operations.
+> 
+> Signed-off-by: Longbin Li <looong.bin@gmail.com>
+> ---
+>  .../bindings/spi/spi-sg2044-nor.yaml          | 52 +++++++++++++++++++
+>  1 file changed, 52 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/spi/spi-sg2044-nor.yaml
+> 
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 

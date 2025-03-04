@@ -1,72 +1,100 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F1171EA7CE
-	for <linux-spi@vger.kernel.org>; Tue,  4 Mar 2025 12:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5457726ACD;
+	Tue,  4 Mar 2025 13:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741092045; cv=none; b=D88gL6dM2rGFC/kN7Vjvq8fCOMc76HkFLcJ9af/nW0XHSGyPULPoXMiLo1HCyLpeImeUrgeQy2AODBoyFVTpVss2ep3IK7pSNr47UrTjh6XRqf7ssPhxpc2uJwrEoIggkSZdDOdQWCLLfffPvPZEhoIpEeiaXmQHD6fJMQnEFr0=
+	t=1741095555; cv=none; b=OB7vNyStTfoGrYP5gd5HOZLpYgavKtgN9yQJX3levXWJvPPTec+gcsMKP3Ffe9Ophv6VOO4vojiFLR4YWJa/obgMG+iLlCd7wD9ieArWd5h+B23G4bvP3JX2PeOh2EP6ej2qZK8p6Nr4PfTzskgUrgG7aKwLNEMrBfhaBWQxZzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741092045; c=relaxed/simple;
-	bh=7rRN42qGIvXUhT9mR68DgEU0s+uHwqxvcVkdtPxk2QY=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=ddm9DfYvpOqwOHGjdMwAKHpaSMeErOkmypRBOJq8HbDB7EorQzz5l0Px1y3VqD9htKGCvcS397NJeGbLc5sY38JFXLfhGsh9QzTQ6FsZc57E7E6GRQYFcWN+Ob4yAV8WpIJXnJzpeeb5Z5aqfaTPc8Woj2ehPBSp4+M8Dq2TjfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K8NJIsuc; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741095555; c=relaxed/simple;
+	bh=pGtzFJx1ZV7VYljEhRmiQEQlXe0gsXcMJU8mlXh5y94=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=mj4J4SD3zkIpf1wcKafCJGV8pLMPOSeZkl9TMw3+wgwi5V5exOdn7zKQ+tgzecNHrMBSiPKsR0xd5ylDAmNcXQunpf3OP4vtfxG2PDxJijC64XYI6FYu7U+r44qIt8Z7HwTWst4HX0d+ZJhBp2ciPLDnPY/yVCJ4nldgjfiQzfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ua8SHcs2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K8NJIsuc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAF63C4CEE5;
-	Tue,  4 Mar 2025 12:40:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ua8SHcs2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FF77C4CEE5;
+	Tue,  4 Mar 2025 13:39:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741092041;
-	bh=7rRN42qGIvXUhT9mR68DgEU0s+uHwqxvcVkdtPxk2QY=;
-	h=Subject:From:Date:To:From;
-	b=K8NJIsuc15ViUmnGwAEFyVKHThOgKpl+3u3OcqtPoE0BGxvjTPG5jN0oATby02vof
-	 A5JQAJAYg0UX/vzdUmrLUMLli2N9WF6EJcnHu5elXokp1VuMlP5sbTw3t1OMFutUO0
-	 HM2I+9yCjsz0nSlyWwaAJ63uaOWpQEJoXClZk138t1VYu3djWnzK6x4ixd0AafeRA3
-	 l/x5gZsbDaRjAV6BQvsOp4teoZcAkY7so2ppZUlTSzTOLl9kTaTrw9F76yVT2dTe7C
-	 hN07wADTg6+zeRU/riW2dwFjzjecW1g/tRYCjRiWzPwbme2H7cVL99GDkBt9wZzH72
-	 HwZ1Cs2rgRp9A==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B3C10380AA7F;
-	Tue,  4 Mar 2025 12:41:15 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1741095554;
+	bh=pGtzFJx1ZV7VYljEhRmiQEQlXe0gsXcMJU8mlXh5y94=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=ua8SHcs2SV+iodmZpHr+I2lQNiL7Q8nx/hQsIFpPEkKsI+ThVMPFCwdcB9dXNAXZG
+	 uDap1cIyhLgPtqblVuCjxNze/7l9dmvSqwi/YH+JrW5GDyBdS8w05gmF8oM9eH81nN
+	 q9agxYpZqTqHX39z63T5Rut22F0blaOW2rDVTjm12934Wpx5LmmEbVvP6DqbvBL992
+	 Glb4vhxmvUsYQzGUkdFCvs//6EkFyZ28dIJeEec9HsE/IuuHkCpC22loh/gwmGk1tY
+	 SKzG5n0zQhOoAftlwossYjeDu/mrz2X451FvKhwgfWrXP7AzxbfX6WExThpjAnakjD
+	 5NlRxTA3zPalQ==
+From: Mark Brown <broonie@kernel.org>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Arnd Bergmann <arnd@arndb.de>, Catalin Marinas <catalin.marinas@arm.com>, 
+ Will Deacon <will@kernel.org>, patrice.chotard@foss.st.com
+Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ christophe.kerello@foss.st.com
+In-Reply-To: <20250219080059.367045-1-patrice.chotard@foss.st.com>
+References: <20250219080059.367045-1-patrice.chotard@foss.st.com>
+Subject: Re: (subset) [PATCH v5 0/8] Add STM32MP25 SPI NOR support
+Message-Id: <174109554967.53872.7193131885074327926.b4-ty@kernel.org>
+Date: Tue, 04 Mar 2025 13:39:09 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <174109207421.128336.17329572561587282384.git-patchwork-summary@kernel.org>
-Date: Tue, 04 Mar 2025 12:41:14 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-1b0d6
 
-Hello:
+On Wed, 19 Feb 2025 09:00:51 +0100, patrice.chotard@foss.st.com wrote:
+> This series adds SPI NOR support for STM32MP25 SoCs from STMicroelectronics.
+> 
+> On STM32MP25 SoCs family, an Octo Memory Manager block manages the muxing,
+> the memory area split, the chip select override and the time constraint
+> between its 2 Octo SPI children.
+> 
+> Due to these depedencies, this series adds support for:
+>   - Octo Memory Manager driver.
+>   - Octo SPI driver.
+>   - yaml schema for Octo Memory Manager and Octo SPI drivers.
+> 
+> [...]
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (for-next):
+Applied to
 
-Series: Add QPIC SPI NAND driver
-  Submitter: Md Sadre Alam <quic_mdalam@quicinc.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=937013
-  Lore link: https://lore.kernel.org/r/20250224111414.2809669-1-quic_mdalam@quicinc.com
-    Patches: [v15,1/2] spi: dt-bindings: Introduce qcom,spi-qpic-snand
-             [v15,2/2] spi: spi-qpic: add driver for QCOM SPI NAND flash Interface
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-Patch: [v2] spi: microchip-core: prevent RX overflows when transmit size > FIFO size
-  Submitter: Conor Dooley <conor.dooley@microchip.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=939540
-  Lore link: https://lore.kernel.org/r/20250303-veal-snooper-712c1dfad336@wendy
+Thanks!
 
+[1/8] dt-bindings: spi: Add STM32 OSPI controller
+      commit: bed97e35786a7d0141d1ecaaace03c46b5435d75
+[2/8] spi: stm32: Add OSPI driver
+      commit: 79b8a705e26c08f8f09dd55f1dd56f2375973d2d
 
-Total patches: 3
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 

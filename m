@@ -1,60 +1,74 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99837290BB0;
-	Tue,  4 Mar 2025 15:25:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 094E11EB3E;
+	Wed,  5 Mar 2025 01:29:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741101907; cv=none; b=Jm9vKz1y/HEebPYrJAjoteMNW3FSNh2GSBunhkxzzZnZh1X3Zbszz+r5c9KET00Dr8TR8RTPLrlXk9QFX/T1UV8JD1EeOoEah9i+Mccp6uPlkhIrG6hvkCkOIIwfmukQHe5Bo9uVngkqoJrcd/oiUriN+fso2xYPBylww5fz8UM=
+	t=1741138168; cv=none; b=EDB/8CWzJLAj6WgAq/UmvMeHOnJniXyZqnnhmhUNAHSQWYbCLTCnkOl4Ns2eFWi8Ssy9Ky2+h2AaEM9ZY6sRq4pxK39fwiCd7GO1J18S7H/SIYAO8nI6noYk3Si7+u962PAA+QwTlQdLI8j2X/MMXZwHS9TE/+s1EM4UUP4KW4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741101907; c=relaxed/simple;
-	bh=6ZMR3JRh3hbKzX58+/zvS7DWCMOYY0gMB6+P65b4ncA=;
+	s=arc-20240116; t=1741138168; c=relaxed/simple;
+	bh=Mkts6pb/AOEqCXZVNVRMrjdozYBbwYAMrEF68H7BQiQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dZfa+QrwQFlEkcDuwgZf+9kgz+Ipjf5MCY0Qw8TtdMqn2MhPuWjrcJ0VLe/6ZgvRAjGilJwzpBb2bFvHVKrlAndjhjwFUtjJjRsqt0FV71a1CS6d6zzuHb6PqhKp/yRIYB1wMlH6gG0U7RYQqmTcF3HgdA1bFfVUI+SKNsh0HbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=S1G6t6PA; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=ODwnrsq8KJnxnLmpqeUK2+/9AmensZqFECNeoqglr++EGxi74DEAIoMs4KzskIN6JyhuEk/fftIDzWyq1gp53/Sc4Vq355As5baJHwO5WYSd9iueW7OaRcFWRtcKmWp/ualiEL2HGXM9GHDGDrrjnvsbaI8fHyR1dBb8Fa5InD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CekRta1O; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="S1G6t6PA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741101906; x=1772637906;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=6ZMR3JRh3hbKzX58+/zvS7DWCMOYY0gMB6+P65b4ncA=;
-  b=S1G6t6PAYiQMhjG4BMXurHDSRVu5+A1yz/JHfZNHMTNuyjpfquN6ABH3
-   49DKF/rNKftKdSDLG52vzdqvTMuaLLzLzGNIxVxqsSOhm3NPiOsZ8rtET
-   dhuJnD/3TPFtaefWmDBOF7NA1WbbHwVb+GMn8O6rtncXEMwf3doaReUFW
-   XjfdB2bcOFxwckTOmxdKOB6NwyWnL4rt9mfg5WHxUHj0R4fUJU5vAA1dp
-   CvvNeaSLYaMefy4nX1O6rj5TOj97PVyCCC6yuCes1dsfNkzP9fwfQciUL
-   5FsHE971mt9XJtV+EwJRjKZCQ9Vk3n+SBKRcm+vxlKAemzDiKPiOD8KvF
-   g==;
-X-CSE-ConnectionGUID: LNnQwVSCT/22MTLFI5nkvg==
-X-CSE-MsgGUID: S12lcTcOT36QoCL/i34Mpw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="53419958"
-X-IronPort-AV: E=Sophos;i="6.14,220,1736841600"; 
-   d="scan'208";a="53419958"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2025 07:25:05 -0800
-X-CSE-ConnectionGUID: 5LUeupubTcym07sCUcY9Gg==
-X-CSE-MsgGUID: UeGbvbhSRGaCqLepIhePSw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="155600115"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa001.jf.intel.com with ESMTP; 04 Mar 2025 07:25:03 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 0103818F; Tue, 04 Mar 2025 17:25:01 +0200 (EET)
-Date: Tue, 4 Mar 2025 17:25:01 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Conor Dooley <conor.dooley@microchip.com>
-Cc: linux-spi@vger.kernel.org, stable@vger.kernel.org,
-	Daire McNamara <daire.mcnamara@microchip.com>,
-	Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] spi: microchip-core: prevent RX overflows when
- transmit size > FIFO size
-Message-ID: <Z8cbTc7zdT58J4Br@black.fi.intel.com>
-References: <20250303-veal-snooper-712c1dfad336@wendy>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CekRta1O"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2232aead377so123505885ad.0;
+        Tue, 04 Mar 2025 17:29:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741138166; x=1741742966; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=lMhzBhCrPjIqQGQg1Wg59vv0ddj0LU+xkyGOMArKoKg=;
+        b=CekRta1OuL6hdbJoR7m6jLssy55M3E/xjuGBtj+Ax8UJlnqx7uDVjGhmudWE/gSrXL
+         Je0nQV+3gE+XbgJGWGThFSpoufLW5QsYygIV4ItTko7+GCioI5R/r5ejFXVzU73d5oPh
+         UQnyw0STgrP1137bBBzkD2s02hVV+i13xKlCysh5AF22jOTOEZ2+FHOCTUbAEWv3T+Ku
+         SsExMX5eGhMkyHHrc37SkZ0U41CCLS3REjJbHPLlSmQ3a2R2grzG3oinJQ880GxhXTm8
+         13yI7xb4Nkeya+ZkJzoK7m0ZSJqeWGebHQNnpt/wqDAnTYOpvwpnP2OLujUtmRalfF3H
+         i1uw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741138166; x=1741742966;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lMhzBhCrPjIqQGQg1Wg59vv0ddj0LU+xkyGOMArKoKg=;
+        b=JDtU8MyYC26nqVKClplVdh0A6EW9Pt+FKaywM30ArXDSdtKFtogXhiqS4QYHAQOJ4v
+         iUGSX7Xo+2Ls/xt33OegZkshxH/W+iyTMnxnEbIB6Jsj+LIG9VHO2S1Rg6T1gzqMr2xJ
+         C/++/PrbN84jIqM9NM4RZKWsKc2tnNJ72C4ESyuwTb57oD77SN/7Jf3c2XhzR++iCVoo
+         hw0DeZH7nPXDIu+mV1ReLG2Fqe2Iw1pvbTUdPvFOitAJelSPrJAwcLdJy4z1TBKeIj0z
+         BMafOp2mYhMHP+YHHCjIVywopGP2HdPiyftkLhPjn/RPLyRrt1Y2f1dptZOD5jMh1+VD
+         ZMog==
+X-Forwarded-Encrypted: i=1; AJvYcCW4f22WW2/A8tXrsQB6ENbC5qxqsizwKM2OIPwTMWkz7E40s5TAku5IZT+2WlHZIyjRDQ471Y7+1Emjz5yG@vger.kernel.org, AJvYcCWAbv5HB+ezMSn1kqfiIw/C6QtOrG0lYxkT1Jb5e2iaCbMSXZ6cXRh2GPNNJTlV3SYKV26pKKLyse7/@vger.kernel.org, AJvYcCXz/+kR2gB6Ho6Hm5w+snmSjQaCDbfqo4SBO4FUwVxTKwh2PbvOr6gWmYKMP/tjP2RfKx13C1Lf2Uc8@vger.kernel.org
+X-Gm-Message-State: AOJu0YyNqR/7Kzo1cqflnAyXpbo68T7VIHG5wqCT0vWzXt1uwSwrlMbv
+	ay44t/KN7qYuoXWB/nRyAr4eiyiAqzPJv8xSFnl9tPjhOiTwNv7L
+X-Gm-Gg: ASbGncs/XzEkYbWMGzOs5vGoR1VGi/i3Fkkz3OlJ9DKZrOUpTLfH7DzYIPhcQg5cUCE
+	4Zl5HgwkaWZpFbr/UTvqY5WNKyWCtHbfiiYHn821Smxe/00ypcNRw/c8ilTt5TRijgQXGNtECzB
+	oaOLNCYxUw+lg6qIX1hcfRBD7oawo1DWsPesULkWod2zd2xRGf1Tf+EwexTHvw+a5QFk0+oVLPs
+	C74fhtOuyWwsW8wlYSzCg/y8w8Bh9CJ0JvHsixTDHalgjBQOevwbg2NxCICIarTxRR5OaSoZ5k6
+	PccZglP7ADYVycIw59qd2kc=
+X-Google-Smtp-Source: AGHT+IGMYeB1wOukNuf5Z9VnV6HZIq+bca5LXw8M9agga6DcCzRyxOH6Zle9qOflX6ikXDadlX9ecg==
+X-Received: by 2002:a05:6a00:1788:b0:736:533b:f6fa with SMTP id d2e1a72fcca58-73682bef664mr1796095b3a.13.1741138166235;
+        Tue, 04 Mar 2025 17:29:26 -0800 (PST)
+Received: from localhost ([2001:da8:7001:11::460])
+        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-7362c92271fsm8578986b3a.1.2025.03.04.17.29.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Mar 2025 17:29:25 -0800 (PST)
+Date: Wed, 5 Mar 2025 09:29:24 +0800
+From: Longbin Li <looong.bin@gmail.com>
+To: Chen Wang <unicorn_wang@outlook.com>
+Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Inochi Amaoto <inochiama@gmail.com>, linux-spi@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	sophgo@lists.linux.dev
+Subject: Re: [PATCH v2 0/2] spi: sophgo: add Sophgo SPI NOR controller driver
+Message-ID: <oghkqkoilkg7ny5saa4fi77hcawkdbeih5zg5aaliv6kf42jee@2nmyxje7itse>
+References: <20250304083548.10101-1-looong.bin@gmail.com>
+ <PN0PR01MB10393099D28CF3DF75A0F414CFEC82@PN0PR01MB10393.INDPRD01.PROD.OUTLOOK.COM>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -63,46 +77,54 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250303-veal-snooper-712c1dfad336@wendy>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <PN0PR01MB10393099D28CF3DF75A0F414CFEC82@PN0PR01MB10393.INDPRD01.PROD.OUTLOOK.COM>
 
-On Mon, Mar 03, 2025 at 10:47:40AM +0000, Conor Dooley wrote:
-> When the size of a transfer exceeds the size of the FIFO (32 bytes), RX
-> overflows will be generated and receive data will be corrupted and
-> warnings will be produced. For example, here's an error generated by a
-> transfer of 36 bytes:
+On Tue, Mar 04, 2025 at 06:14:54PM +0800, Chen Wang wrote:
 > 
->   spi_master spi0: mchp_corespi_interrupt: RX OVERFLOW: rxlen: 4, txlen: 0
+> On 2025/3/4 16:35, Longbin Li wrote:
+> > Add SPI NOR driver for Sophgo, including read, write operations.
+> > This driver is only suitable for NOR flash.
+> If there is a next patchset, please also replace "Sopgho" with "SG2044" in
+> the cover letter, including the email title.
+
+I will correct it, thanks.
+
+> > ---
+> > 
+> > Changes in v2:
+> > 
+> >    Fixed following issues as per comments from Yixun Lan, Chen Wang, Inochi Amaoto, thanks.
 > 
-> The driver is currently split between handling receiving in the
-> interrupt handler, and sending outside of it. Move all handling out of
-> the interrupt handling, and explicitly link the number of bytes read of
-> of the RX FIFO to the number written into the TX one. This both resolves
-> the overflow problems as well as simplifying the flow of the driver.
+> I feel like you left out Rob, and you also left out his signature in the
+> first patch ;)
+> 
 
-...
+My fault! I will add his signature in the next patch, thanks.
 
-> +static inline void mchp_corespi_read_fifo(struct mchp_corespi *spi, int fifo_max)
->  {
-> +	for (int i = 0; i < fifo_max; i++) {
-> +		u32 data;
-
-> +		while (mchp_corespi_read(spi, REG_STATUS) & STATUS_RXFIFO_EMPTY)
-> +			;
-
-What may go wrong with this code? :-)
-I think limiting the infinite loop by a timeout is a good thing to have.
-
-> +		data = mchp_corespi_read(spi, REG_RX_DATA);
->  
->  		spi->rx_len -= spi->n_bytes;
->  
-
->  	mchp_corespi_write(spi, REG_FRAMESUP, len);
->  }
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+> > 
+> >    - Replaced "sophgo" to "sg2044" to avoid conflicts with other drivers.
+> >    - Improve driver code:
+> >      - Improve coding style.
+> >      - Removed the [PATCH 3/3] in previous submission that based on the baseline not submitted.
+> >      - Added error handler to destroy mutex if probe fail.
+> > 
+> > Changes in v1:
+> >    You can simply review or test the patches at the link [1].
+> > 
+> > Link: https://lore.kernel.org/linux-riscv/20250224101213.26003-1-looong.bin@gmail.com/ [1]
+> > ---
+> > 
+> > Longbin Li (2):
+> >    dt-bindings: spi: add SG2044 SPI NOR controller driver
+> >    spi: sophgo: add SG2044 SPI NOR controller driver
+> > 
+> >   .../bindings/spi/spi-sg2044-nor.yaml          |  52 ++
+> >   drivers/spi/Kconfig                           |   9 +
+> >   drivers/spi/Makefile                          |   1 +
+> >   drivers/spi/spi-sg2044-nor.c                  | 500 ++++++++++++++++++
+> >   4 files changed, 562 insertions(+)
+> >   create mode 100644 Documentation/devicetree/bindings/spi/spi-sg2044-nor.yaml
+> >   create mode 100644 drivers/spi/spi-sg2044-nor.c
+> > 
+> > --
+> > 2.48.1

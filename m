@@ -1,97 +1,86 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C28321149F;
-	Thu,  6 Mar 2025 16:03:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B452211A2A;
+	Thu,  6 Mar 2025 16:10:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741277034; cv=none; b=EL4adsj4o/G+950FenSsgBJxmOLpUzCEq/9WtOhFBkrxCUdQIuI/T9yc9zCNQXKqYGp8nTXAUX4wlbB6l0yF3GlmWLkVBPdkaTKgARvRZjWMMG3KVDTo/EgxDmq/AXOeufBUplCFc+IpVnkDgq7pbjkKY97Wy4+EtIXoap/w3wU=
+	t=1741277442; cv=none; b=imrsCciLKZmHXYGNsXIo8i4EFlEEC09RVIAiq5Vkn83U9Nr4IWw+WWg3F6eCfnY4FRADj6lp0HO2iQQf2LwzRIu/L6iMj6vbPFyc0XwB8610IR/cbFSig7YvDeKPdx5j591LTqBGzQLqjoHOotv0ZNh2Ybo9tk0IzZOqe1ofhdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741277034; c=relaxed/simple;
-	bh=tkTOYHY7R/B78zoatm15ZoMCaySho/QN7uoUcwZA5m0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cgfW/rz2eQNHCY6HpadZVkPESPDrm1QflzR3Rg9QhP2Wq5fyDcLpC2n/cA9TeIyPua0M518XaJpIQGDILGmXnJUDoV7iD56WjqyeDSqkIvsWXWdxNfamUbGPniCtBbrgjPsV/4XQAeEi84PasUA1Jfq6Ei3sKnWWlqiWpRXl3Ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=Wdt8JSwf; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1741277442; c=relaxed/simple;
+	bh=dO5KuEHT5N6JPz0mZT1IGgNKs9grKUWa+Hx4+yx3kc4=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=tzq5kf39wsFuO3rKle4j8s8rfFBS8vg5tYGsxi6VsK4YyIualovMDnYSDvCmrvksughsCC0kx8FJKYtaiyZsE3FNuergUUDXvoj3bQ+yHJwLD//1ulDbRFU1PQCu6Kcbx7bfyLs3c/8J0RUaoNnOok4WoFQxHnGz0s04p7wIDCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JCqBfell; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="Wdt8JSwf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1741277033; x=1772813033;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=tkTOYHY7R/B78zoatm15ZoMCaySho/QN7uoUcwZA5m0=;
-  b=Wdt8JSwfmIvG1uXH+o8iaFCz7PyzOgd6hRZdL+wm7VjnZvqSc8qZNFeE
-   TTt63wkJ/6vvfO2C+9djlJ958Or0/ecPB5sYgcJh9n0eTs3kVEjSJB2+v
-   Vu0Hv6kxO4pFQEpbMNURGn5nOxbrWqM2BPt8H4h1eTu/gdoFKN0SVxfv9
-   sRgeH5E8vTcvxWAiJ5xwXrfFXRYWK320fqUM8sGlp2KdoZEnfONGxGAhe
-   a09DMjVSZK/MwnJHHKMvhXBHDWMY8yC7Fs2VQXTYos/InpzoZBOyebSRz
-   U9zzAOzHl5eGkHnsp7DjE4HHKfRDODfOxE3gPBqyKTlgEFZ7JfPYKyXfv
-   Q==;
-X-CSE-ConnectionGUID: Mtzc/U5nQtqKRw1uIzvygw==
-X-CSE-MsgGUID: D+4/U7qNTAm+QfzadrmBBA==
-X-IronPort-AV: E=Sophos;i="6.14,226,1736838000"; 
-   d="scan'208";a="269901970"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 06 Mar 2025 09:03:42 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 6 Mar 2025 09:02:57 -0700
-Received: from ryan-Precision-3630-Tower.microchip.com (10.10.85.11) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.2507.35 via Frontend Transport; Thu, 6 Mar 2025 09:02:57 -0700
-From: <Ryan.Wanner@microchip.com>
-To: <lee@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
-	<conor+dt@kernel.org>, <nicolas.ferre@microchip.com>,
-	<alexandre.belloni@bootlin.com>, <claudiu.beznea@tuxon.dev>
-CC: <gregkh@linuxfoundation.org>, <jirislaby@kernel.org>,
-	<devicetree@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
-	<linux-spi@vger.kernel.org>, <linux-serial@vger.kernel.org>,
-	<linus.walleij@linaro.org>, <ryan.wanner@microchip.com>, "Dharma
- Balasubiramani" <dharma.b@microchip.com>
-Subject: [RESEND PATCH v6 2/3] dt-bindings: pinctrl: at91-pio4: add microchip,sama7d65-pinctrl
-Date: Thu, 6 Mar 2025 09:03:19 -0700
-Message-ID: <821255840c09d8d9cebbb1f2daaedd8a7c138875.1736522006.git.Ryan.Wanner@microchip.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1736522006.git.Ryan.Wanner@microchip.com>
-References: <cover.1736522006.git.Ryan.Wanner@microchip.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JCqBfell"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11E12C4AF09;
+	Thu,  6 Mar 2025 16:10:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741277441;
+	bh=dO5KuEHT5N6JPz0mZT1IGgNKs9grKUWa+Hx4+yx3kc4=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=JCqBfelle7bd3f+VaMdYkAAJYOLVyqPuRy+iagi9Fuw7JAId6/MsywpvuUBHTwnq1
+	 KvNpYZCs3czm870bWeKDTn0jRE0gxCsoMYcIrC5aYwe5zx/2k9GYF0rw9epTuSDhUV
+	 S0lLbFRV6Ur7yI9KI0CV5CJguD66+/7N1mtPAc6kcrNYarmwS6dTZSHWzB2SZhLc0f
+	 Z+lCGPXOl3bMpSMFPt078zrZtRfxTWL2o3ldBZqMbFYKHtYm4jHknp88vi7GI+GY8V
+	 BuL7zfDzeiyVfRUcZqHoX0TT6Yh8JmS0UYqTnAGpkX09C/tWXrJzOM7bg+FSs6SCkt
+	 wmh0cJSryQ2bA==
+From: Mark Brown <broonie@kernel.org>
+To: Patrice Chotard <patrice.chotard@foss.st.com>, 
+ Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-spi@vger.kernel.org, 
+ linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ kernel-janitors@vger.kernel.org
+In-Reply-To: <bc4c9123-df43-4616-962f-765801d30b4c@stanley.mountain>
+References: <bc4c9123-df43-4616-962f-765801d30b4c@stanley.mountain>
+Subject: Re: [PATCH next] spi: stm32-ospi: Fix an IS_ERR() vs NULL bug in
+ stm32_ospi_get_resources()
+Message-Id: <174127743980.139137.18227484559909848489.b4-ty@kernel.org>
+Date: Thu, 06 Mar 2025 16:10:39 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Message-ID: <20250306160319.m0Xcm0aQHHnuDf2xG0D3sWh8DbTObNSYO3HLsRMhnt0@z>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-1b0d6
 
-From: Dharma Balasubiramani <dharma.b@microchip.com>
+On Thu, 06 Mar 2025 12:48:34 +0300, Dan Carpenter wrote:
+> The devm_ioremap() function returns NULL on error, it doesn't return
+> error pointers.  Fix the check to match.
+> 
+> 
 
-Add pinctrl bindings for microchip sama7d65 SoC.
+Applied to
 
-Signed-off-by: Dharma Balasubiramani <dharma.b@microchip.com>
-Signed-off-by: Ryan Wanner <Ryan.Wanner@microchip.com>
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
----
- .../devicetree/bindings/pinctrl/atmel,at91-pio4-pinctrl.txt      | 1 +
- 1 file changed, 1 insertion(+)
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-diff --git a/Documentation/devicetree/bindings/pinctrl/atmel,at91-pio4-pinctrl.txt b/Documentation/devicetree/bindings/pinctrl/atmel,at91-pio4-pinctrl.txt
-index 774c3c269c40..81a05a09f19f 100644
---- a/Documentation/devicetree/bindings/pinctrl/atmel,at91-pio4-pinctrl.txt
-+++ b/Documentation/devicetree/bindings/pinctrl/atmel,at91-pio4-pinctrl.txt
-@@ -6,6 +6,7 @@ configure it.
- Required properties:
- - compatible:
- 	"atmel,sama5d2-pinctrl"
-+	"microchip,sama7d65-pinctrl", "microchip,sama7g5-pinctrl"
- 	"microchip,sama7g5-pinctrl"
- - reg: base address and length of the PIO controller.
- - interrupts: interrupt outputs from the controller, one for each bank.
--- 
-2.43.0
+Thanks!
+
+[1/1] spi: stm32-ospi: Fix an IS_ERR() vs NULL bug in stm32_ospi_get_resources()
+      commit: 7dfc9bdde9fa20cf1ac5cbea97b0446622ca74c7
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 

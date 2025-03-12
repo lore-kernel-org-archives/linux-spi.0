@@ -1,77 +1,63 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F88924EAAE;
-	Wed, 12 Mar 2025 17:20:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C330B1D5CD4;
+	Wed, 12 Mar 2025 22:09:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741800024; cv=none; b=rMDhLYbBucygxFkAdrYjEMz4ia3bmMqhGY1KnAWvjnr5fdCPSeKKpEtp42zBK+nc4fO2pkOgUMfyruFBPJJTrJptr7YTrKSrrq9x4UVnFDmg/QvgIiz4sAcwxi9o9Xi/SxfxJt0NBuvTEGHZ71lGjjemJZn5Vdqo5+CrPhvOqAc=
+	t=1741817372; cv=none; b=CEOScJmIo5EvrqjPYf+Lzs68g2Q8mFC732iP2XTNjc+lA6+fD0hLuLMAXkuAb156TjgkMPUVhOHWoyA/mUJEKJ4eWdwTREEAwnMe/qM5CPxq99IIbiqJ3K0D9UNkq5KOA5zrKWmu0wjvzaQ/1gOp6EIJaqyXiiRL5xGUTujR9Sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741800024; c=relaxed/simple;
-	bh=Myhv0yGQQB3mIdLPFVgRi5RvxLh/5Iv2Tj7DlB+lz1E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OrHr5VAAAQic3dTSZXe4bRjjyNuli39DLrAoxreyqHLN6vkti3GUhZCRsuA+inw3J5UEuQDrZXdyDb7cE/d1ijOpFPByI5sS5FX/FFpcMF6Wl4qu10CzrxgkDJ5eCmgK6BJwlQhxCF0x1h1AQlIaYgRXbJA+9LMx2lQ1M9c5xpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HD0nQ+8t; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1741817372; c=relaxed/simple;
+	bh=1RxSFH7LP0l1ozoJutBm6MFdFp3GINBmjeiwpGEZAdk=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=JrvUDctlN0O0PUpZVtNdxzcY7ZgW/wiNSGaBV3HsEWPdbLr1qVJWtrmp3pIkXXEj1KwVCULXaJ6mpW6D2nviNBjHSwTy8tsvL/g7IqJuMTKPkwIt7nzladNUsi18TFNyWSD44qGuQ8ShZ/spSmDR+4NH2GYgsBtsIqP345ZYBJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cmGwbVmg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HD0nQ+8t"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741800022; x=1773336022;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=Myhv0yGQQB3mIdLPFVgRi5RvxLh/5Iv2Tj7DlB+lz1E=;
-  b=HD0nQ+8tL35AKHrRCJddVxxjvtORl35xnVK9FbK+dbejJ2nKZqmNKTlB
-   hMR0oEbWjARugKdtecgV7Zzvah6hW+GizH+RuISuMXnpouzLAw8d3XgOd
-   3fVLQtPqkPTmRAgO1JTW+Jh7i7r9GvbAEhBoonwDb1PGHn8c5r7YLhNUu
-   3QAq2Q43VWqISqZTez9a1PZdUpne9TuRqDdx13rSODDsfPnRyunWQaLP5
-   +2+IQVG0GErQEBzBeVXu34ZWRFG46uGwlCGrY8fLW5U38BaFmHsKs5gn1
-   IEM7dA09o4QUgZ5CU8fBKI4T+POl9B7/zR/xWCsxsFLVcYUPNHxTKCX7K
-   w==;
-X-CSE-ConnectionGUID: C+ExU6P4Q2mtbnSyUPOBKg==
-X-CSE-MsgGUID: 8rMeH2MDSKy6EK0pcZk9tw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11371"; a="60290607"
-X-IronPort-AV: E=Sophos;i="6.14,242,1736841600"; 
-   d="scan'208";a="60290607"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2025 10:20:20 -0700
-X-CSE-ConnectionGUID: m+HNnOfRRwCILfckPUhv8A==
-X-CSE-MsgGUID: KZZYwwkfSnKYumrnHVcEPw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,242,1736841600"; 
-   d="scan'208";a="125769470"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa004.jf.intel.com with ESMTP; 12 Mar 2025 10:20:19 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 7D54E1F2; Wed, 12 Mar 2025 19:20:17 +0200 (EET)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Longbin Li <looong.bin@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Mark Brown <broonie@kernel.org>
-Subject: [PATCH v1 0/2] spi: sg2044-nor: A couple of cleanups
-Date: Wed, 12 Mar 2025 19:19:15 +0200
-Message-ID: <20250312172016.4070094-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.47.2
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cmGwbVmg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 463D1C4CEDD;
+	Wed, 12 Mar 2025 22:09:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741817372;
+	bh=1RxSFH7LP0l1ozoJutBm6MFdFp3GINBmjeiwpGEZAdk=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=cmGwbVmgq3Kp7Nz/FH6d37SbQUrD2XkxQEiC2QBL8xsOqJMwmz8eeGQ2sU6kHMryI
+	 ZOgtfJYhZY9KtWkoR6U9dAdcO0wgNOhiOlb7RTdkojNRnDeYpqhDe+PHjKQd2fq9l7
+	 oN5L97U063aanq7acmujPw4vQcedd57e8rv1EWq7Qr3ptOIw0cwR0YqOV6RLBjP+HE
+	 lcY4MH+V20aUgsX/7Wv0QV+JG+e9EleStZRtW2VorJ7scCMpfFwJcnyywPDjxEionJ
+	 idgZAbNX+JEJ+57gad9P5s6ICyLKDUUKrinDLegMCYloWz3dHmbw93lA2HAPcTp7O5
+	 SAEHtFeDvwZbA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB810380DBDF;
+	Wed, 12 Mar 2025 22:10:07 +0000 (UTC)
+Subject: Re: [GIT PULL] SPI fixes for v6.14-rc6
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <a5d6a54f85162906b7ee1e0e9659e8f9.broonie@kernel.org>
+References: <a5d6a54f85162906b7ee1e0e9659e8f9.broonie@kernel.org>
+X-PR-Tracked-List-Id: <linux-spi.vger.kernel.org>
+X-PR-Tracked-Message-Id: <a5d6a54f85162906b7ee1e0e9659e8f9.broonie@kernel.org>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v6.14-rc6
+X-PR-Tracked-Commit-Id: 91cf42c63f2d8a9c1bcdfe923218e079b32e1a69
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 6e8e2f82bc26d4b4ac9bc4f3abe99a5661a04009
+Message-Id: <174181740645.948527.3426782416508957296.pr-tracker-bot@kernel.org>
+Date: Wed, 12 Mar 2025 22:10:06 +0000
+To: Mark Brown <broonie@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-The driver has one ordering issue and one missed case for dev_err_probe().
-Address that in this mini-series.
+The pull request you sent on Wed, 12 Mar 2025 14:08:33 +0000:
 
-Andy Shevchenko (2):
-  spi: sg2044-nor: Fully convert to device managed resources
-  spi: sg2044-nor: Convert to dev_err_probe()
+> https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v6.14-rc6
 
- drivers/spi/spi-sg2044-nor.c | 25 +++++++------------------
- 1 file changed, 7 insertions(+), 18 deletions(-)
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/6e8e2f82bc26d4b4ac9bc4f3abe99a5661a04009
+
+Thank you!
 
 -- 
-2.47.2
-
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html

@@ -1,35 +1,35 @@
 Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE81C20C46A;
-	Wed, 19 Mar 2025 09:46:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A189253B45;
+	Wed, 19 Mar 2025 09:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742377618; cv=none; b=B3mRwrRvCK/nnPIHW/Q6PLQyI0YJ+1/ypKYoB8t7qBYDGvbgpCt99tbPULA76fHtAbIJvn294QOHt491ALcdZo79ny/h5ZLD/MgerEN7n2Q1yIDLt4fZs6eHR6g1K6t3nO0C6+W5q1aOGJnuf9alM1ZxDmT+PHYdtCb94+BWJ2c=
+	t=1742377618; cv=none; b=utNJHIcc4JJzW11ZxCxHOPmg832ESyjtesfLmLt4O9a7pVkiJA/A5Go4VKTlpcpX0mO714AmowyG2bG4o0a4XKY/PYcsdpm6tRAHL0QuZwI5MUsHx98Rm3Gq0j5sHrVrMeqOV+OxAqlQomsY/Yd8D+Nk/hcwZjADnUWZ/vHUQI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1742377618; c=relaxed/simple;
-	bh=9ebwuk88cbMzqm7Ixyid1aTO3Lh4ISnAsGbjbZFF0Ck=;
+	bh=quD0/F2SX9nwG3fRBT1+ertBsAlxDl0EGiWEwUWCBjA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=At7WYr9ANvB1ISmKynxP7X16YH0QuTzRLWCjElCQjgJCoDswAErfxFzrZOmLmZtMeFImUfPs5Eg5Hk3efX5+fT+azcBiXfThBj+QJOW5Wjgaw3stLOCMbJYo36eYO28AFEL2qWkcLyhqaNPAJ0xPT5CzWhlPc/UE/LOlimxBeKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=GPuYt+yx; arc=none smtp.client-ip=217.70.183.201
+	 MIME-Version; b=h9m0DtkxLsyqpvpymSEvDsNBErWeqX8Wvm0JkLUe5sRG6M5Rllg/6ApkWJrmLIPCov+k/sLKV2T/deaSUPaoLisr9hct03+4KrUvRzyAFl360XN9hZ5fbi7GrfuNLa74pn6IcfgQku6y6ELXMu4XAC1t8u7NmW1mM4m/WWQffnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Wzq37Lt3; arc=none smtp.client-ip=217.70.183.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="GPuYt+yx"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id B8AC54341E;
-	Wed, 19 Mar 2025 09:46:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Wzq37Lt3"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id B5780433F6;
+	Wed, 19 Mar 2025 09:46:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1742377614;
+	t=1742377613;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HD/ttrhBkOeCWKNJN7qmCfOGIcFc49e8XnOMUezmGaY=;
-	b=GPuYt+yxN+SuKya+8gYh6O1dQvrpzWSjHiTqhAgAiyA/ezBAOt2Ve+K2eRxGKJ89b1W1Jw
-	mIaWGM8Xjx3kotUG9Fr1nyyV4sJ5u7EhMs7WKLzwwLiQciSgDuwYVBaVPn8Kyvm8YBDRFX
-	J5Nn9U/XbHaubgwzFs7L9V4FZF5Z8r10UL/mJ6EMLNconrmSY7Zv+WBSs2MowynnIMkg6n
-	JQSz8oBvij1/4LqgB1HSKDNcmvmiqT7ikiTRn3rYdh20A+eyKqXOgwhOhJqMMzyJ0+Ovby
-	U1CWC2EM3PRnEDpIC+RwR73Hq40BsiLeFDy5oQXkxwy2NDQ0AsmlMsTf9XbzgA==
+	bh=Qi0auDf79m7JW2NdDjt+zR/OJYqCk0GPHJTRARp/P8c=;
+	b=Wzq37Lt3H0lAbgs4FD3RwrrfmIxqQWCOLz6/12nYLgad/HbSUTtWBQdDM4F0ITGsfvSA7D
+	vYNF5joTe06QVyorwfwWwsLc9kz64Zq/8FjE7prZ3cSc1Nav9R84NwRsHxZCZlX+/Qxotq
+	ZikDBLZDjlOAv/YhGoIsXTVeFxesurh7oWErOlRvTwMcXKy3n0BbXl2D/hz+INq6wCuNRH
+	86xy04RsHi36IjP09N3aPM1cuY/ic6cv6i/YrthRG6q5L7w44A7z+5hWfJO3rsuMl2JOGx
+	wMBpJangVTHH0qJDVfr82KrsrDVCK4ysSzsNKrtt9jvlJiJQQ+kOvQfNms37PQ==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
 To: Mark Brown <broonie@kernel.org>,
 	<linux-spi@vger.kernel.org>
@@ -39,10 +39,11 @@ Cc: Rob Herring <robh+dt@kernel.org>,
 	devicetree@vger.kernel.org,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	Vaishnav Achath <vaishnav.a@ti.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH v2 3/3] spi: dt-bindings: cdns,qspi-nor: Require some peripheral properties
-Date: Wed, 19 Mar 2025 10:46:51 +0100
-Message-ID: <20250319094651.1290509-4-miquel.raynal@bootlin.com>
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v2 1/3] spi: dt-bindings: cdns,qspi-nor: Be more descriptive regarding what this controller is
+Date: Wed, 19 Mar 2025 10:46:49 +0100
+Message-ID: <20250319094651.1290509-2-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250319094651.1290509-1-miquel.raynal@bootlin.com>
 References: <20250319094651.1290509-1-miquel.raynal@bootlin.com>
@@ -55,53 +56,52 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddugeehtdduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpefoihhquhgvlhcutfgrhihnrghluceomhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepueffgeevteevkeegkeehleetteffhffffefgleeuleevjedtgeelgeeutdekgeelnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopehffidrrddpmhgrihhlfhhrohhmpehmihhquhgvlhdrrhgrhihnrghlsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeelpdhrtghpthhtohepsghrohhonhhivgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqshhpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehrohgshhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkrhiikhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegtohhnohhrodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggvvhhitggvthhrvggvs
- ehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtohepvhgrihhshhhnrghvrdgrsehtihdrtghomh
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddugeehtdduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpefoihhquhgvlhcutfgrhihnrghluceomhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhephfdvudekgfdtkeegtddvvdfgjedvffeuhefhieektdevueegieevleeugfefieehnecuffhomhgrihhnpeguvghvihgtvghtrhgvvgdrohhrghenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghlohepfhifrddrpdhmrghilhhfrhhomhepmhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepuddtpdhrtghpthhtohepsghrohhonhhivgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqshhpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehrohgshhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkrhiikhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegtohhnohhrodgutheskhgvrhhnv
+ ghlrdhorhhgpdhrtghpthhtohepuggvvhhitggvthhrvggvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtohepvhgrihhshhhnrghvrdgrsehtihdrtghomh
 X-GND-Sasl: miquel.raynal@bootlin.com
 
-There are 5 mandatory peripheral properties. They are described in a
-separate binding but not explicitly required. Make sure they are
-correctly marked required and update the example to reflect this.
+Despite being very common in commit logs, SPI NOR controllers simply do
+not exist. At least, they are not as specific as the name implies. There
+are SPI memory controllers which are indeed "specialized" and optimized
+for handling "memories", but most of them are just generic and accept
+almost any kind of opcode, address, dummy and data cycles, making them
+as suitable for NANDs than NORs.
+
+Furthermore, this controller supports any kind of bus, from single to
+octal NAND, so make it clear.
+
+Also add a comment to mention that the initial compatible naming is too
+specific (but obviously kept for backward compatibility reasons).
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- .../devicetree/bindings/spi/cdns,qspi-nor.yaml  | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml b/Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml
-index c6705ad846dd..53a52fb8b819 100644
+index b6bc71d19286..c4315b2e04f2 100644
 --- a/Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml
 +++ b/Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml
-@@ -146,6 +146,18 @@ properties:
-     items:
-       enum: [ qspi, qspi-ocp, rstc_ref ]
+@@ -4,7 +4,7 @@
+ $id: http://devicetree.org/schemas/spi/cdns,qspi-nor.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
  
-+patternProperties:
-+  "^flash@[0-9a-f]+$":
-+    type: object
-+    $ref: cdns,qspi-nor-peripheral-props.yaml
-+    additionalProperties: true
-+    required:
-+      - cdns,read-delay
-+      - cdns,tshsl-ns
-+      - cdns,tsd2d-ns
-+      - cdns,tchsh-ns
-+      - cdns,tslch-ns
-+
- required:
-   - compatible
-   - reg
-@@ -177,5 +189,10 @@ examples:
-         flash@0 {
-             compatible = "jedec,spi-nor";
-             reg = <0x0>;
-+            cdns,read-delay = <4>;
-+            cdns,tshsl-ns = <60>;
-+            cdns,tsd2d-ns = <60>;
-+            cdns,tchsh-ns = <60>;
-+            cdns,tslch-ns = <60>;
-         };
-     };
+-title: Cadence Quad SPI controller
++title: Cadence Quad/Octal SPI controller
+ 
+ maintainers:
+   - Vaishnav Achath <vaishnav.a@ti.com>
+@@ -76,6 +76,9 @@ properties:
+               - ti,am654-ospi
+               - ti,k2g-qspi
+               - xlnx,versal-ospi-1.0
++          # The compatible is qspi-nor for historical reasons but such
++          # controllers are meant to be used with flashes of all kinds,
++          # ie. also NAND flashes, not only NOR flashes.
+           - const: cdns,qspi-nor
+       - const: cdns,qspi-nor
+ 
 -- 
 2.48.1
 

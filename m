@@ -1,63 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E271EF08D;
-	Fri, 21 Mar 2025 21:26:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E04225DAEE;
+	Mon, 24 Mar 2025 09:43:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.182.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742592386; cv=none; b=QZv+X3kOVTKVnPFh9SPmIPKRZjgDHdGG6TDEZKBAs81qtnv0pj7GZup5oO9lEjraUbTcFNnwKm2XXz1yp/NU+H5409Ux85aCcdOEJDAz74okwj0kKaN+ksgdP+DQqlVudWWKJ668lIem+EOGSzC5WBCkzztTuPn6u6qy2uwCh+o=
+	t=1742809410; cv=none; b=ggFVeAwkNnQMf0xBo7qyhmrBkph/6FMwgFodDce6obv0apAdbBSi52jUiH3t57mBFrbNrDF1AiL3ApuPCP3h0KIkG119lTI6ecfhw/ZUkpxEqZX3rLFcBLYyfrhW7TyIGARlHzyxVNixVw44qTpTHQQmCtQzoAZMlNpayMh7iqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742592386; c=relaxed/simple;
-	bh=QyJ/ruzc3o3bTATFbHX0o2OHrDLiJdc9CfELSIkf6Go=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=Yg29xzd5LCYNnIFygKVi8mcXHVjA/U8ZiSIlhkuNtbb2RVmhe8GXmxxr2cweLnC1S2ZvoeyGo8BJg1ceuiEE0skish+Bl6hte327km9iBkn0w1VnezzoxK+NlOsBKAiTrpQm5G/5niMC+Aco9FMkseWSCHI9LqI11fcb9H/ZM5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RdZELiqx; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742809410; c=relaxed/simple;
+	bh=lxXDM6IwsJB8cs+wlaDqcJWHjbK0q3C2slLZ72Fn0J4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
+	 In-Reply-To:To:CC; b=nkf9vt3YgOkDj7HwuHbynj+2AGlzZkIklFuuN/lwCUSf5A7REHh1LKGG50FeYuNdNd51BCsnEgpyY6cXQH45ZgHgYEQi2epxNrZQcH6UFKv39KXGOmpoQVgbI49QXC/kcIMwi8jJsKnHmDKemqNADgQZJVvgXgFGDU0hTR/0Zko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=RjZcSVc6; arc=none smtp.client-ip=185.132.182.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RdZELiqx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E8F3C4CEE3;
-	Fri, 21 Mar 2025 21:26:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742592385;
-	bh=QyJ/ruzc3o3bTATFbHX0o2OHrDLiJdc9CfELSIkf6Go=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=RdZELiqx19u7FDEwstcTPga8qOSAGncEuDqxHatiqyioQXpTN2Zw18HcdLp8Tf+Gs
-	 KESpmbKYXbk8VgN+oEdJY33x49fQ2vcS20WFg7JthLKc37G3yl44tccUkyQHmLCTZk
-	 rORQPezbgwqrKR5EM3ImonY9MQT4o1kKCwlv2WpiLrVNMT6JYRUeTufDTdjcF3JyYy
-	 Mf3tRgyNxbK+H/5dIktWMXuF3F/AxJ0EiIblG9fV6OqpzmB3okFkf+rsO8LvrI4+ne
-	 O1XCP+d5HCZNs5zrAyExI825676/UdUXw5lOO+sCyr03Q+Z50VpkCNPqRdMZBth7mU
-	 sUGNo7iuURclQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADD583806659;
-	Fri, 21 Mar 2025 21:27:02 +0000 (UTC)
-Subject: Re: [GIT PULL] SPI fixes for v6.14-rc7
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <a63096e1e044f828a77f611d7ef76140.broonie@kernel.org>
-References: <a63096e1e044f828a77f611d7ef76140.broonie@kernel.org>
-X-PR-Tracked-List-Id: <linux-spi.vger.kernel.org>
-X-PR-Tracked-Message-Id: <a63096e1e044f828a77f611d7ef76140.broonie@kernel.org>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v6.14-rc7
-X-PR-Tracked-Commit-Id: 176fda56d72a267731f82aa4a3aeca430394f10e
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 88d324e69ea9f3ae1c1905ea75d717c08bdb8e15
-Message-Id: <174259242142.2631089.1984753684459844773.pr-tracker-bot@kernel.org>
-Date: Fri, 21 Mar 2025 21:27:01 +0000
-To: Mark Brown <broonie@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="RjZcSVc6"
+Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52O9bkhv012912;
+	Mon, 24 Mar 2025 10:42:59 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=selector1; bh=
+	NzLmfHxTjgjzxH2MLhlvyo1SC7eJ5Hj+e6zOGJcJg9E=; b=RjZcSVc6/aR2sEEY
+	p3+BtYB+Ow7xIIr5Zlmif8LHp0BXyL7U/CXvQCDlo3ElPwrs6FqMnlWzmcXm1DPK
+	rH0kQ3KIL+8NjPBh+buHONUDAD1JKonPfsTnn2Xv+RlWegZzs4TGw4zdWTOJ1qe8
+	t2VkWPdFcgkBHkI+9s41y6qim0O39+VTOlbLMZ6U7Kxcp+Zyn5EToWLu6Hoo7cHj
+	Mkipvnv1f4yVJUmwaGp9h0OVk+pTJqI7d8fpXiJM1zkejYnwv8yBcfgqd4qLy0uT
+	MjO2zzu1L/5TGYKx3FnEDJAcfUG2pfccNb82WW8acU/FxPA7qGYGGDT6x51S+tHl
+	VwAJMw==
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 45hne56t0m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 24 Mar 2025 10:42:59 +0100 (CET)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id E3C6C400DB;
+	Mon, 24 Mar 2025 10:41:40 +0100 (CET)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id CA1817DCB33;
+	Mon, 24 Mar 2025 10:40:16 +0100 (CET)
+Received: from localhost (10.48.87.62) by SHFDAG1NODE1.st.com (10.75.129.69)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 24 Mar
+ 2025 10:40:16 +0100
+From: Patrice Chotard <patrice.chotard@foss.st.com>
+Date: Mon, 24 Mar 2025 10:40:13 +0100
+Subject: [PATCH v2 1/2] spi: dt-bindings: st,stm32mp25-ospi: Make "resets"
+ a required property
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20250324-upstream_ospi_required_resets-v2-1-85a48afcedec@foss.st.com>
+References: <20250324-upstream_ospi_required_resets-v2-0-85a48afcedec@foss.st.com>
+In-Reply-To: <20250324-upstream_ospi_required_resets-v2-0-85a48afcedec@foss.st.com>
+To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof
+ Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Maxime
+ Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue
+	<alexandre.torgue@foss.st.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>
+CC: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        <christophe.kerello@foss.st.com>, <linux-spi@vger.kernel.org>,
+        <devicetree@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        Patrice Chotard <patrice.chotard@foss.st.com>
+X-Mailer: b4 0.14.2
+X-ClientProxiedBy: SAFCAS1NODE1.st.com (10.75.90.11) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-24_04,2025-03-21_01,2024-11-22_01
 
-The pull request you sent on Fri, 21 Mar 2025 14:39:10 +0000:
+On STM32MP2x SoC's family, OSPI is child of Octo Memory Manager which
+must have asccess to OSPI's reset to ensure its initialization.
+Make "resets" a required property.
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v6.14-rc7
+Fixes: bed97e35786a ("dt-bindings: spi: Add STM32 OSPI controller")
+Signed-off-by: Patrice Chotard <patrice.chotard@foss.st.com>
+---
+ Documentation/devicetree/bindings/spi/st,stm32mp25-ospi.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/88d324e69ea9f3ae1c1905ea75d717c08bdb8e15
-
-Thank you!
+diff --git a/Documentation/devicetree/bindings/spi/st,stm32mp25-ospi.yaml b/Documentation/devicetree/bindings/spi/st,stm32mp25-ospi.yaml
+index 5f276f27dc4c1fd2056f129cafc1005eaee8008f..272bc308726b2dfdf3ec80740d70e0fd1bfc4fea 100644
+--- a/Documentation/devicetree/bindings/spi/st,stm32mp25-ospi.yaml
++++ b/Documentation/devicetree/bindings/spi/st,stm32mp25-ospi.yaml
+@@ -68,6 +68,7 @@ required:
+   - compatible
+   - reg
+   - clocks
++  - resets
+   - interrupts
+   - st,syscfg-dlyb
+ 
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.25.1
+

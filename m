@@ -1,55 +1,90 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2D016EB7C
-	for <linux-spi@vger.kernel.org>; Thu, 27 Mar 2025 20:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9118D19DF75;
+	Thu, 27 Mar 2025 21:12:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743109003; cv=none; b=Oj8uw1KSanuPhHGql24vUo1erxmWaJT0DYdRB0GkX+hmYyQBcP2tO5zMJxx1RpdUTH7zETkQ1F+3qEoMXWnEtuaTBxdu1Uwjrp934+meGHfDU1QDCaDP2KHYdqoDLgGF+BKnVw2TbBeBGk65H2YrHQr54SaODEacKh4RYzVcUWk=
+	t=1743109921; cv=none; b=bPq7SLr47K68mhivGEZUMfI0+S4SnegZ2Dp6rK0kppW5tsjlPYhVcvXVPDuyFSxC/2MlDzZvWdWY145GOD/8PKFMCsWoSPLmfTxhyoN55ope8FN0KiMKcJ32LYC9VcA+eok5uISUb7Jh5ij8PEsO6C5kIieEHHIc25T5CGRsWvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743109003; c=relaxed/simple;
-	bh=tjOcZ+xJxF0njxpKyNJRxf6u7jd5PBFVew/s1aqTMtE=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=O1T3BzooAG5+V9x51g0F12Au7Rht/velUMxKJtXxaMH0qFlSHIgtVEWtQoElobJwsZxvAa51K2Tpf6djUpbC6iNyKE6CPbvdSquGm53GJmnk3BlA0ZaojXUhTxA0Hzg2Of4iFVsNmBlI1tOTxJ/VQdEm0re8eDEAUKHDoaUFdg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t+anwWHz; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1743109921; c=relaxed/simple;
+	bh=ByYkNM5OERWUhideqGYvTVTMOWKjfplXMqbr3m6/940=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=g5wIDNKsGaEWWW8H/MBKZBizBbgSJCyLbp6APqu39R0vusA5zT4wBsOa1N+RHPW+SbYpNXmK+8+P6e6Txc6zyLsDgF4PzGoWaDt672lC+tYPxvK7NZbxkxLTR2De5YY+mpqVVusdChUXMbt2py4jRJA1Np95QB9QN8PAL3kHNw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U5y0jVGX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t+anwWHz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 657A3C4CEDD;
-	Thu, 27 Mar 2025 20:56:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U5y0jVGX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E4D4C4CEDD;
+	Thu, 27 Mar 2025 21:11:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743109003;
-	bh=tjOcZ+xJxF0njxpKyNJRxf6u7jd5PBFVew/s1aqTMtE=;
-	h=Subject:From:Date:To:From;
-	b=t+anwWHzN9ySWN/q5WdZ+ZfZLspsJJZDRxKJ1rsPLclLvNYpFXK02FGXmw47+xygT
-	 o27S+GE0WDTo112GfjTFXFmAhVYs63Z9l2jBVdsoZfbH9R/34Hoh/VL6heH9w9Cdi7
-	 lQvWCAHqdUFRb6bhGZhS4h5htW8PwxOG/WiclXCi9gIVcCEdOnC+uubwD30AUctxLS
-	 kO34bwkVWjScM9mVO1C05H5/GWF13YozVR3nsjsMBX/9owcjEXV4OUyH3eAUQ2JlNc
-	 nDl1rUVwUJMQrlbUcMXOm9Ml7Ot7icLq/grRvMtzNvfyWmmflyvr3nP5TXHfQgWW+o
-	 xkz5lRooxg63w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAE39380AAFD;
-	Thu, 27 Mar 2025 20:57:20 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1743109921;
+	bh=ByYkNM5OERWUhideqGYvTVTMOWKjfplXMqbr3m6/940=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=U5y0jVGXrQ8fexhfA/U0PHsfgSeCU8oje7d5hVlBOY7qAu6imaEz8gihZ/uvbe+W/
+	 juYD/ZtsT8XNW3VVIUcwtIH+/oK0pbsZ/y9g3hlXU+G2Y3cxHx3kTUcuSEtmQ/+tuy
+	 KSPZjQUKcGLSvxVGNI8xZPYBfs7SfsXkm9/MuteJQt4vGQqQKudyQdhfWKvF4eLW8T
+	 FYlmjyXMeYD5gWXue1me/2MQ8mjNEOvno7tnOqGuacTC77uwOhqPFMLz1BrMqbXvyX
+	 x2TbPzRFHS8FkPnT9pZtYK8YaNeI/YQEnKjZIbUUSefrqRrd+DPTtOMBawPuAB5hdV
+	 Xv+9BicigW8SA==
+From: Mark Brown <broonie@kernel.org>
+To: John Ogness <john.ogness@linutronix.de>, 
+ Volker Haspel <volker.haspel@linutronix.de>, Han Xu <han.xu@nxp.com>
+Cc: stable@vger.kernel.org, Kevin Hao <haokexin@gmail.com>, 
+ linux-spi@vger.kernel.org, imx@lists.linux.dev, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250326224152.2147099-1-han.xu@nxp.com>
+References: <20250326224152.2147099-1-han.xu@nxp.com>
+Subject: Re: [PATCH] spi: fsl-qspi: use devm function instead of driver
+ remove
+Message-Id: <174310991931.446685.5350029703728855284.b4-ty@kernel.org>
+Date: Thu, 27 Mar 2025 21:11:59 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <174310903946.2217446.3989736422449046866.git-patchwork-housekeeping@kernel.org>
-Date: Thu, 27 Mar 2025 20:57:19 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-1b0d6
 
-Latest series: [v6] Add more devm_ functions to fix PM imbalance in spi/atmel-quadspi.c (2025-03-27T19:59:25)
-  Superseding: [v5] Add more devm_ functions to fix PM imbalance in spi/atmel-quadspi.c (2025-03-17T09:34:43):
-    [v5,1/2] pm: runtime: Add new devm functions
-    [v5,2/2] spi: atmel-quadspi: Fix unbalanced pm_runtime by using devm_ API
+On Wed, 26 Mar 2025 17:41:51 -0500, Han Xu wrote:
+> Driver use devm APIs to manage clk/irq/resources and register the spi
+> controller, but the legacy remove function will be called first during
+> device detach and trigger kernel panic. Drop the remove function and use
+> devm_add_action_or_reset() for driver cleanup to ensure the release
+> sequence.
+> 
+> Trigger kernel panic on i.MX8MQ by
+> echo 30bb0000.spi >/sys/bus/platform/drivers/fsl-quadspi/unbind
+> 
+> [...]
 
+Applied to
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+
+Thanks!
+
+[1/1] spi: fsl-qspi: use devm function instead of driver remove
+      commit: 40369bfe717e96e26650eeecfa5a6363563df6e4
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 

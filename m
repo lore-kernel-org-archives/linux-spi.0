@@ -1,121 +1,114 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 965262045BC;
-	Tue,  1 Apr 2025 13:47:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E2D20485F
+	for <linux-spi@vger.kernel.org>; Tue,  1 Apr 2025 13:48:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743515280; cv=none; b=F9yCAR1pXKGficXuy9SJGpD4qba9h38Wn2/wpy7r/VQqhKl5gP2I6DPqzWWxQkf/7ucf6sSxIG3VxovmYn+wJRAZrVZvYOS4zzSrJkMRGyKb1pIy8ufVPT9f3TkthZZFcipzoehDw31BGiq56308/ktwaYAolUPOdXqh4OLr1zA=
+	t=1743515283; cv=none; b=Y00kh54SosBPDJrC6z59mf/76ZPQKFk2Z4P7S7ryThwEIWrxX47VRQYZ0wwd3wTuZVLIWDo9MAkuEQaus+ioEuYe+sCBpJpkU3F7J2p8lZa0BYRS/CQcsIH03FXEHVLx/6PUbW8aAErBmlm/b7cTHv389gmr8q1BiSNxF9MVmSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743515280; c=relaxed/simple;
-	bh=orIhHZK2mBXOHJ9P6CPj8DtCz0DKuFngNgPnyToyf84=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Y6XZieIvANOGXQwrzCH2OnL9A346qizSyCP9OBtQTpRCFk8Fu6n/xdSULuhb7eZ8LpUIv83hpMZCZjLoqa4kIGLEjqajJTpNBGt+A6TjnS52O80qU1fGKt977RtP3fcgPTxzwFxYhaUtEMG/VAStviUPAw/x6CigRCdnZw0pTP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5e60cfef9cfso9021410a12.2;
-        Tue, 01 Apr 2025 06:47:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743515277; x=1744120077;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=X+rx1qskGEkuP5w6Tn0BhreVF2R/OVnokSpbvWp5rvw=;
-        b=pmJsMc+cSOOx1739QvgfUOpAifNREyMsF4uRcDtuKdwKrZQG5UvSMQyCtv84uphwsj
-         0kkDDZd8eVqwOPqmUk2CBZAbHSKr+DEPvIsuOE3GYuzBDlYwqtywB3Ouiqf1iw2RrBF5
-         x8C3g7eRb3T4ri9LmDNyZK45dTImEo+Un4HR7oZklT1WL37IP5e5ILSbVF74hg+JhAoN
-         36zPAAxDI5rNM85hJkHMBwgfDKXGS5ZqNFR6ZIMuEwmNATKKXTxFvXOiPEZSbgZ1tDxT
-         XFpuuLSqcl20zdwfTEVtJjXxWQ1+eGftYdh9ZrXBcx9PdvfhVRS/cbCuvvF5FngA0lfW
-         ljGg==
-X-Forwarded-Encrypted: i=1; AJvYcCURB4f4zSnasFcXYCzK+jnO1kJYPgYb4YvxxCmYMkdrIRE+9XSdR6JvA5yanoukohp47d5+B2ubr/kFX1k=@vger.kernel.org, AJvYcCXs/f3A0HDJvCBkteV8tB5OX/unr++Y1Cy2ntNn5WvcBwxfZJMnBFalnQOEHxTewmwqi/s+5lVM0XPh@vger.kernel.org
-X-Gm-Message-State: AOJu0YwXahS+YAQ83XMd4CasxR6HcaojE00YOAsh+cyNP4TisonnH13Z
-	gZ1Injl3xobw35Nfn7muT43X5GSTtFW21Rbkn9jYafBclWtnvneq
-X-Gm-Gg: ASbGncvTt8pLCGZL1GhUDRv0krpAbX0+v5P6SjyBRi8hzSAJVgyzm3NAZcSyXmy1tJq
-	JIWjBFj1aACQS7BKIrvsUujGEC4rj7fP3VU3tD4is6gIdDi5TY45F1ZryQdSZgTyBJNPJI2gleD
-	lEckIcC0zPyv2tpOvLezM2BxiLexI4Qmz6TbPCecGamrwkTz/j8m2Qak9HZUDRBdmi4VjMKxU6e
-	/hFsXtB+VJGGY0X40+Fj3MUtcIvaBD0GX5OUjHsnfi+WpS6XYGhVSX1a/+39FHn8QiIZNWQQas6
-	bwc2vJFaPYGQUy0f04VxKqJQqJbzCAKi13Q=
-X-Google-Smtp-Source: AGHT+IF1ZqchpsJl91cjnqOW0TqInkBNKXIBilhyIt5S+CcHOTDLL1ou0xV+jViKplohtQaHQNdGSg==
-X-Received: by 2002:a05:6402:348e:b0:5ec:25d2:8631 with SMTP id 4fb4d7f45d1cf-5edfce7682amr11659933a12.12.1743515276724;
-        Tue, 01 Apr 2025 06:47:56 -0700 (PDT)
-Received: from localhost ([2a03:2880:30ff:7::])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5edc17b30cdsm7015449a12.64.2025.04.01.06.47.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Apr 2025 06:47:56 -0700 (PDT)
-From: Breno Leitao <leitao@debian.org>
-Date: Tue, 01 Apr 2025 06:47:50 -0700
-Subject: [PATCH v2 2/2] spi: tegra210-quad: add rate limiting and simplify
- timeout error message
+	s=arc-20240116; t=1743515283; c=relaxed/simple;
+	bh=/ym8cvjuHsb1Ds08H5CNRdklN3y/CltZnxzPKatc2N4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qYrwDibR7bhfoZI2DpluuWyFGwaVTMerCuRedtyvHBg0k+8dzD5VhpCI6QRYtF9lEz/JY/5B0xsibZAlf/S8SDL7ZwYxWvjprTl2lxoVpRljBsIVKO2YYAmllTMZbEJ7HpqfugtL3//zlZNGmB8ddJjEbWF65YQI5dRLNqZauoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ZAT7Hhw+; arc=none smtp.client-ip=217.70.183.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ZAT7Hhw+"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id C57AA2047D;
+	Tue,  1 Apr 2025 13:47:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1743515278;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=/jNLk2YzhRD5e1B6AbUom+9W3W3S4BlqDMiej6xeu2I=;
+	b=ZAT7Hhw+IvJW2BFSIWaajOfObD+xAk/hRKQFkPiXouSah8yPZuCxEl/B9GyoMB69pO198D
+	ZQcF4loIpLQD8iqb/kDFHAjPBeHr+JBXjn7msHVAyb0RzI5qwyYiDDtET23ipKB0SQBLmy
+	duEnOv5nb49mXzJdSRnztAki6C8V3L4oNq9ibB7XXTXASCdUa0XymZryhZ6RJWedWldvLD
+	h0BsRjoJEDf4nhQw+s83OKIFTmErTFLyU0ieHB9HBhWy18O73JaM/i3oI9ovIfIf3aIANE
+	cDnUrElcWKP4OPooPxsw03q1lqXlhJuQb6nO2xQS5+YwvKJ6qBtI1ofRmWesxw==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Mark Brown <broonie@kernel.org>,
+	<linux-spi@vger.kernel.org>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Steam Lin <stlin2@winbond.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH v2] spi: cadence-qspi: revert "Improve spi memory performance"
+Date: Tue,  1 Apr 2025 15:47:47 +0200
+Message-ID: <20250401134748.242846-1-miquel.raynal@bootlin.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250401-tegra-v2-2-126c293ec047@debian.org>
-References: <20250401-tegra-v2-0-126c293ec047@debian.org>
-In-Reply-To: <20250401-tegra-v2-0-126c293ec047@debian.org>
-To: Thierry Reding <thierry.reding@gmail.com>, 
- Jonathan Hunter <jonathanh@nvidia.com>, 
- Sowjanya Komatineni <skomatineni@nvidia.com>, 
- Laxman Dewangan <ldewangan@nvidia.com>, Mark Brown <broonie@kernel.org>
-Cc: linux-tegra@vger.kernel.org, linux-spi@vger.kernel.org, 
- linux-kernel@vger.kernel.org, rmikey@meta.com, 
- Breno Leitao <leitao@debian.org>, kernel-team@meta.com
-X-Mailer: b4 0.15-dev-42535
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1318; i=leitao@debian.org;
- h=from:subject:message-id; bh=orIhHZK2mBXOHJ9P6CPj8DtCz0DKuFngNgPnyToyf84=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBn6+6IKYuj1Klp3ayQG0I42YY+kWGh8x3sA5+Lx
- 6v4mh/jxHOJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCZ+vuiAAKCRA1o5Of/Hh3
- bZFqEACDPf/gXpU56XhDJIj+HxwyNSXfqDbAYZhODhE8kgP6KjkOZWwTufYJMY7ncMpWLstBcfp
- TSvB2l9gtkkpJlq0p36i1dcMZXpM/WjpNGcEtZ1mbhjQ+NSbbf0Fu68jMpYvGfFJz1vnawGgKbV
- kRSW0SGsZMfdN96xdf2loH+jfGaKkOhTM/yMtWe1cMu5rsf5xkMrnIQEUgw/FYlU5g/YRtxGKDM
- +x0kPH0FRw4FPfRHjLZFTTWJJU/amfvtrguEiWrbhQ+iFTvRZ15FSwbfMvtSfDlz1gtjtrUTQ4i
- 3CAhkkjqHx7OBeuTchajs8Q6CFBzXO8pySTP02ONDG7s+ID18zP4Ne64NiNqKQRv43EzEvA+Aze
- yMXDPIlTKci6lJ3Ch3dNMsXAr/nTCmnAeXwB3VCkEmiuAKMXDoCO24inKOYg91aOAgQqviyJZbC
- luL5JO3p6Xzl4mBGsrFTneKnfDX1Dc5UT1GMexWfIve/nec/A/BNdYPLP83fuoO+yHeaNGZz80W
- Po4+jXp7giue21jQBHCEZyB+HOmk9KJiq1FpHFjKu+g+sKtefLlOQe8fnmZrQYudcCtahRl0EQc
- l1lHwDHVdwExl4VjOhJxtxMhoPwmqWzqsQUOZHk1isi4gwTIXX5QdASAGQZai7jcLVnjiL+ySAG
- Lr8Q8v8i0PDOaLQ==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+Content-Transfer-Encoding: 8bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddukedvleegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffoggfgsedtkeertdertddtnecuhfhrohhmpefoihhquhgvlhcutfgrhihnrghluceomhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgeetfeduleefjeffheevleeggfdtvdduhfdugeeuieejveejiedvhfdugfettdehnecukfhppeelvddrudekgedruddutddrudelfeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeelvddrudekgedruddutddrudelfedphhgvlhhopehlohgtrghlhhhoshhtrdhlohgtrghlughomhgrihhnpdhmrghilhhfrhhomhepmhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepiedprhgtphhtthhopegsrhhoohhnihgvsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhsphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtohepvhhighhnvghshhhrsehtihdrtghomhdprhgtphhtthhopehsthhlihhnvdesfihinhgsohhnu
+ gdrtghomhdprhgtphhtthhopehmihhquhgvlhdrrhgrhihnrghlsegsohhothhlihhnrdgtohhm
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-On malfunctioning hardware, timeout error messages can appear thousands
-of times, creating unnecessary system pressure and log bloat. This patch
-makes two improvements:
+During the v6.14-rc cycles, there has been an issue with syscons which
+prevented TI chipid controller to probe, itself preventing the only DMA
+engine on AM62A with the memcpy capability to probe, which is needed for
+the SPI controller to work in its most efficient configuration.
 
-1. Replace dev_err() with dev_err_ratelimited() to prevent log flooding
-   when hardware errors persist
-2. Remove the redundant timeout value parameter from the error message,
-   as 'ret' is always zero in this error path
+The SPI controller on AM62A can be used in DAC and INDAC mode, which are
+some kind of direct mapping vs. CPU-controlled SPI operations,
+respectively. However, because of hardware constraints (some kind of
+request line not being driven), INDAC mode cannot leverage DMA without
+risking to underflow the SPI FIFO. This mode costs a lot of CPU
+cycles. On the other side however, DAC mode can be used with and without
+DMA support, but in practice, DMA transfers are way more efficient
+because of the burst capabilities that the CPU does not have.
 
-These changes reduce logging overhead while maintaining necessary error
-reporting for debugging purposes.
+As a result, in terms of read throughput, using a Winbond chip in 1-8-8
+SDR mode, we get:
+- 3.5MiB/s in DAC mode without DMA
+- 9.0MiB/s in INDAC mode (CPU more busy)
+- a fluctuating 9 to 12MiB/s in DAC mode with DMA (a constant 14.5MiB/s
+  without CPUfreq)
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
+The reason for the patch that is being reverted is that because of the
+syscon issue, we were using a very un-efficient DAC configuration (no
+DMA), but since:
+
+commit 5728c92ae112 ("mfd: syscon: Restore device_node_to_regmap() for non-syscon nodes")
+
+the probing of the DMA controller has been fixed, and the performances are
+back to normal, so we can safely revert this commit.
+
+This is a revert of:
+commit cce2200dacd6 ("spi: cadence-qspi: Improve spi memory performance")
+
+Suggested-by: Vignesh Raghavendra <vigneshr@ti.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- drivers/spi/spi-tegra210-quad.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Changes in v2:
+- Fix the commit hash.
+- Fix the commit title.
+- Fix the wording around the commit being reverted.
+---
+ drivers/spi/spi-cadence-quadspi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
-index 2d320fbb8875f..64e1b2f8a0001 100644
---- a/drivers/spi/spi-tegra210-quad.c
-+++ b/drivers/spi/spi-tegra210-quad.c
-@@ -1118,8 +1118,8 @@ static int tegra_qspi_combined_seq_xfer(struct tegra_qspi *tqspi,
- 					QSPI_DMA_TIMEOUT);
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index 559fbdfbd9f7..c90462783b3f 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -2073,7 +2073,7 @@ static const struct cqspi_driver_platdata k2g_qspi = {
  
- 			if (WARN_ON_ONCE(ret == 0)) {
--				dev_err(tqspi->dev, "QSPI Transfer failed with timeout: %d\n",
--					ret);
-+				dev_err_ratelimited(tqspi->dev,
-+						    "QSPI Transfer failed with timeout\n");
- 				if (tqspi->is_curr_dma_xfer &&
- 				    (tqspi->cur_direction & DATA_DIR_TX))
- 					dmaengine_terminate_all
-
+ static const struct cqspi_driver_platdata am654_ospi = {
+ 	.hwcaps_mask = CQSPI_SUPPORTS_OCTAL | CQSPI_SUPPORTS_QUAD,
+-	.quirks = CQSPI_DISABLE_DAC_MODE | CQSPI_NEEDS_WR_DELAY,
++	.quirks = CQSPI_NEEDS_WR_DELAY,
+ };
+ 
+ static const struct cqspi_driver_platdata intel_lgm_qspi = {
 -- 
-2.47.1
+2.48.1
 

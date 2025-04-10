@@ -1,124 +1,171 @@
-Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com [209.85.222.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2FC6130A54;
-	Thu, 10 Apr 2025 07:47:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A8926F455;
+	Thu, 10 Apr 2025 10:01:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744271279; cv=none; b=pxMvsPAUZlyHtUz823gznmQKF0Dy0YdgHlnK1I/7Km4dsLRWPpIZ+ANhyTzv9ObEKI8Y5nRXB0qcIAlhIX1ANMBQkPkZDyayB50o0cereFaZDccOrvIVTE92v+h0/VQalLUVcP308iuIqiziZCMjUTMv/uw8e9ZadcSH1Td8Y2U=
+	t=1744279298; cv=none; b=bxV45ScUKRRUy0xfjwjfEonFcr649VkEYahwbdFO/BQ9M5kqEAGMU2Zh/huRnJV36LwI8ET+lBAhoqZu92lOkGKZ+WKe6AcawbgWzFl6AKYsNvTS7xM/E0C0eCYh6BvTe/PPhm6MTaLGRJB9y2obN90aWliPHBvercA8imEfUyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744271279; c=relaxed/simple;
-	bh=RoRER4+1aEdpOme56/aP1R/kwbFrrc4I8Nn6Jg8C1ho=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nXRe7a1O/0jp24dZTH70QZdQRmlvnk/zbUDFSCpHAoSi0m6xbpkid2kYU3DCepRF4UZRajwSf6Z3msCMLhfzM5LBwpaoyDq/4HhRognadoKJVVMXsJsmTDL6G+rlLPE5k5JE0X7IvDLEgnCGqHFZ6rUEESyYEsj73Gu+Z0PFsLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f47.google.com with SMTP id a1e0cc1a2514c-86b9b1def28so460038241.3;
-        Thu, 10 Apr 2025 00:47:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744271276; x=1744876076;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CYlM/NWonpmxHHJcBtv1TyUMxukkVC17bMxK3+UA8ZU=;
-        b=s1UAkivChL4T4cUYx+I2YsPT1upXBoTPjMRLBG7r6EHYcW9JQ1T8BHI5WmPKliNtCt
-         ufynrQM+vLxM67mnJuSyjOGpUKsS1T+m6XPXKNCo7U/nMq+p9bkCoEz/CcEHW2mdb/oF
-         ksSaoLl8mrY0UM4SYVLavyn1whdjpkxWhl269477GSRqJPKwR9vuATnSD5IUi2VhSP7+
-         dptLfuIVYHvfSY9P8Nr1BE7+qQHxAZmScvYozXxRSyGliwl/OTpWJ/QBubvlUxK4x32T
-         7G8KVSlOijPUANbiwzLJE2zcrwW3SXYKC+YIxU8fQQD/9rAf/2j7mNRP7g1Dt1pPJxTW
-         FhEQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV28S0PTyxVGoan19ZxGS5ACrbSqrkqnIMGxCzWuOEJfTNgx4S8Z8LCs9jTXLl8UCZH+1QD1JXQ92XOwpzG0dcq/vw=@vger.kernel.org, AJvYcCV7DZ1NYbPNRamOgxgfjDxvRmxayvEHajd4inPkPq7aGQU99iYi37ob6hYP7Q6V41UgP68z69f8NXaW@vger.kernel.org, AJvYcCVjbMCIivYw5rgBmDyTGwiDFiyT/EgUxGav3bYB+bInQHxLV1TG4kQxgGFb+7f3J6ImKytSGuzIDZ5A@vger.kernel.org, AJvYcCX0hSjJlEuP+QsRnTeaZI8Mlfo+R9JfulaVUYXysSZqOxE1ySJmf+gIIE2Rt3MAxbve7orN+FDmSA+iUho=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwIaJJUGpUJo2A9+EDRWYq4Xmp9NNFy6/E88CsUuV74DlMEPh1U
-	QzLmx/3bmZk07anqVXAoATdeevaDe6y4ZsivDu7zJmayfut95Zpij2Lna+tQJXk=
-X-Gm-Gg: ASbGnctijNc+xM5R0H27eaLK1u//RdK6LgI/FLM18i8GoX/IuCOoloUqFjE2o31EtIk
-	zYxuRUq0Dcf9Myn3jXwrKI/OGRR1PzVl/XNB5Hf8HkeDmYRPjoxmqN3P54+ANqUD4iIHbSefSwS
-	AH1y+Y1R7WuyRorpmWzg0CiBB9giHcRf3rcE0ZDPX2HumLwr4nUZKuan1J4DnIcwTOCTekfofva
-	yNMJR923PxgG8TG81dXe8hf8ocod41IjycvnSwY8wTDVp0GQVDubzsFhQD9aMbdiMC/zDsTHrlE
-	3mlsmR6PSB9z7LQWlKNgxvsLRqd+PpVS7KKQlpo4b5gpRTfIDXxOXHrFdnjXhnTfNrvcYlA67U9
-	mnPE=
-X-Google-Smtp-Source: AGHT+IFWtghlh+ER1WsXyvSCmrqME5dCdsLfms8hbIgVkpugq65/Biw+fMQynCL88Q8G9pOF+qeelQ==
-X-Received: by 2002:a05:6102:3f48:b0:4c1:b2c2:61a with SMTP id ada2fe7eead31-4c9d362a2f9mr1257188137.25.1744271275900;
-        Thu, 10 Apr 2025 00:47:55 -0700 (PDT)
-Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com. [209.85.222.50])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4c9c98ee518sm500928137.28.2025.04.10.00.47.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Apr 2025 00:47:55 -0700 (PDT)
-Received: by mail-ua1-f50.google.com with SMTP id a1e0cc1a2514c-86b9b1def28so460025241.3;
-        Thu, 10 Apr 2025 00:47:55 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU+aHCBr95T2EjIZuuIp1o5b4tLwvnX/DUn/7TH+uwSGfmIfIXhIBRNNlLHryaATsZFgfdpiilhTEOGsNHDVnrucPE=@vger.kernel.org, AJvYcCVLJ6Wj2QFhY9JbXYHBKTYXmFypZfnGBltub5i44t5Ll2eNseBEywL+H9Fpoy47XgaH+E3ROl+CsgHo@vger.kernel.org, AJvYcCW+k+Z0qg1tnmyiem9XOHWCo0YxG/wmQhcppuJkkz3rHfq3ROnVR5l6FyZho6l9/98QEu+2CPhGpZHO@vger.kernel.org, AJvYcCWE8k96qFW4C9zeIeJgDbO2vWEngLbFbjbQWr2WjruGjW3nKXG/UC2PFwWgYMl0Ol1lyv1l73v8Yns4cm8=@vger.kernel.org
-X-Received: by 2002:a05:6102:1515:b0:4bb:de88:d027 with SMTP id
- ada2fe7eead31-4c9d34af187mr1482504137.7.1744271275576; Thu, 10 Apr 2025
- 00:47:55 -0700 (PDT)
+	s=arc-20240116; t=1744279298; c=relaxed/simple;
+	bh=p6/cmrPnX956c7m0Ve6ie7Yb3/ULjjlZiEqa2JNcXLE=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IxLydAuvWGeeI8AT6lvwDLAi92PJWCFJgpPXU5sSmPrZWL+mfKb9j6MF6hHyKHd02L5M+D8Apv39Oiot69In83n19nNG1MG1BFpiJDJsflcAGn9szNKjuHoBWRMBbvHkSE/a9uM8vvhaTkzDwPGTkJqlNhVILZrNFIO2r0G9uQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=F4OG3agz; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="F4OG3agz"
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53A75phu014128;
+	Thu, 10 Apr 2025 10:00:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	2VzEiYKLuTYoxrE/1SYBBmjOa2eW5ZrUtYjIkqtV5tg=; b=F4OG3agzIT0I7IYj
+	RI80JOfa7tEOKuvNWkFWCc4AMzsx6/ZKtYc/m1v+8YmsSXg37jqpLYPcVz9QUhnu
+	e+hskc0kutOOy5ryAwzPsvaEyHjoEYUXOnyP8RZrTYAJzHuppHClSyE9CYeBlLpM
+	TyudUmOwo41XJlarNTc6yymT23evjIuWEd2SkoP1Ug43AycmFIE46zom2b0DhENo
+	POGFjp0KtZ+yTKK+fDtUa3pOEwIOgcd2ZqGFzcPiNrod3WWQn0HZ9DbMqRNiGm/t
+	+uY1CrdmK30f0KE1nzmjvgkoNsRf/Wfn3RXMH4x11oe2okHiyo15koZcZwqeWDSg
+	t2k9oA==
+Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45twbeej9g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 10 Apr 2025 10:00:48 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 53AA0mlx019497
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 10 Apr 2025 10:00:48 GMT
+Received: from hu-mdalam-blr.qualcomm.com (10.80.80.8) by
+ nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Thu, 10 Apr 2025 03:00:44 -0700
+From: Md Sadre Alam <quic_mdalam@quicinc.com>
+To: <miquel.raynal@bootlin.com>, <richard@nod.at>, <vigneshr@ti.com>,
+        <manivannan.sadhasivam@linaro.org>, <broonie@kernel.org>,
+        <absahu@codeaurora.org>, <bbrezillon@kernel.org>,
+        <architt@codeaurora.org>, <quic_srichara@quicinc.com>,
+        <quic_mdalam@quicinc.com>, <linux-mtd@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>
+Subject: [PATCH v4 2/3] mtd: rawnand: qcom: Fix last codeword read in qcom_param_page_type_exec()
+Date: Thu, 10 Apr 2025 15:30:18 +0530
+Message-ID: <20250410100019.2872271-3-quic_mdalam@quicinc.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250410100019.2872271-1-quic_mdalam@quicinc.com>
+References: <20250410100019.2872271-1-quic_mdalam@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <875xjeb0wu.wl-kuninori.morimoto.gx@renesas.com>
- <87wmbu9may.wl-kuninori.morimoto.gx@renesas.com> <CAMuHMdWL_C-Vg3d+fAK_nXvzeZNNPDkkzPjB1oHRKHh16rZUHw@mail.gmail.com>
- <8734egnbl0.wl-kuninori.morimoto.gx@renesas.com>
-In-Reply-To: <8734egnbl0.wl-kuninori.morimoto.gx@renesas.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 10 Apr 2025 09:47:42 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdV3Wm=aES=WZtYNGQrA1W3OFGrrOR=Nwb2FXACeVmPzAg@mail.gmail.com>
-X-Gm-Features: ATxdqUHt59yuP5KWiSc_poBM0f4cr5ZmpOk68rO_kue5X07KSV3L3oZ8ztd4RY0
-Message-ID: <CAMuHMdV3Wm=aES=WZtYNGQrA1W3OFGrrOR=Nwb2FXACeVmPzAg@mail.gmail.com>
-Subject: Re: [PATCH 6/7] ASoC: renesas: add MSIOF sound support
-To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Cc: Conor Dooley <conor+dt@kernel.org>, Jaroslav Kysela <perex@perex.cz>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
-	Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, Takashi Iwai <tiwai@suse.com>, 
-	devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	linux-sound@vger.kernel.org, linux-spi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: POXgbt_7y9zdFjgDL_X9OONDnpMqTucS
+X-Authority-Analysis: v=2.4 cv=T7OMT+KQ c=1 sm=1 tr=0 ts=67f796d0 cx=c_pps a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17 a=GEpy-HfZoHoA:10 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8 a=COk6AnOGAAAA:8 a=OhSYzIeDMC8V1oLpjEAA:9
+ a=cvBusfyB2V15izCimMoJ:22 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-ORIG-GUID: POXgbt_7y9zdFjgDL_X9OONDnpMqTucS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-10_01,2025-04-08_04,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ mlxlogscore=999 lowpriorityscore=0 adultscore=0 phishscore=0 bulkscore=0
+ mlxscore=0 malwarescore=0 suspectscore=0 priorityscore=1501 spamscore=0
+ clxscore=1011 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2504100075
 
-Hi Morimoto-san,
+For QPIC V2 onwards there is a separate register to read
+last code word "QPIC_NAND_READ_LOCATION_LAST_CW_n".
 
-On Thu, 10 Apr 2025 at 01:45, Kuninori Morimoto
-<kuninori.morimoto.gx@renesas.com> wrote:
-> > > +       /* SITMDRx */
-> > > +       if (is_play) {
-> > > +               val = PCON | SYNCMD_LR | SYNCAC | TXSTP;
-> > > +               if (msiof_flag_has(priv, MSIOF_FLAGS_NEED_DELAY))
-> > > +                       val |= DTDL_1;
-> > > +
-> > > +               msiof_write(priv, SITMDR1, val);
-> > > +
-> > > +               val = BITLEN1(width);
-> > > +               msiof_write(priv, SITMDR2, val | GRP);
-> > > +               msiof_write(priv, SITMDR3, val);
-> > > +
-> >
-> > Don't you have to initialize SITMDR[123] unconditionally, as reception
-> > requires transmitting dummy data on R-Car (cfr. SPI_CONTROLLER_MUST_TX)?
->
-> Good catch, but I added 1 restriction for MSIOF-I2S mode.
-> I have explained it on top of this driver. The restriction is
-> "MSIOF-I2S doesn't work as Clock/Frame Provider Mode".
-> So, dummy transmit for RX is not needed/assumed.
-> I think it is one of big-diff between MSIOF-SPI ?
+qcom_param_page_type_exec() is used to read only one code word
+If it configures the number of code words to 1 in QPIC_NAND_DEV0_CFG0
+register then QPIC controller thinks its reading the last code word,
+since we are having separate register to read the last code word,
+we have to configure "QPIC_NAND_READ_LOCATION_LAST_CW_n" register
+to fetch data from QPIC buffer to system memory.
 
-IC.  Being just a mortal sound-noob, I didn't know what "Clock/Frame
-Provider Mode" means ;-) Oh, now I understand. I had missed
-completely that you are running MSIOF in slave mode. So everything
-should be fine.
+Without this change page read was failing with timeout error
 
-And
+/ # hexdump -C /dev/mtd1
+[  129.206113] qcom-nandc 1cc8000.nand-controller: failure to read page/oob
+hexdump: /dev/mtd1: Connection timed out
 
-    /* SITSCR */
-    #define SITSCR_V(p, d) ((p << 8) + d)
+This issue only seen on SDX targets since SDX target used QPICv2. But
+same working on IPQ targets since IPQ used QPICv1.
 
-is unused, and can be removed.
+Cc: stable@vger.kernel.org
+Fixes: 89550beb098e ("mtd: rawnand: qcom: Implement exec_op()")
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Tested-by: Lakshmi Sowjanya D <quic_laksd@quicinc.com>
+Signed-off-by: Md Sadre Alam <quic_mdalam@quicinc.com>
+---
 
-Gr{oetje,eeting}s,
+Change in [v4]
 
-                        Geert
+* No Change
+ 
+Change in [v3]
 
+* Updated commit header and message
+
+* Added condition check for location register
+  and location_last register based on qpic_version2
+
+* Added Reviewed-by tag
+
+Change in [v2]
+
+* Updated commit message
+
+* Added stable kernel tag
+
+* Replaced the buf_count value of 512 with the len in bytes.
+
+Change in [v1]
+
+* Resolved the issue with reading a single code word in the parameter
+  page read
+
+ drivers/mtd/nand/raw/qcom_nandc.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/mtd/nand/raw/qcom_nandc.c b/drivers/mtd/nand/raw/qcom_nandc.c
+index ef2dd158ca34..a73bb154353f 100644
+--- a/drivers/mtd/nand/raw/qcom_nandc.c
++++ b/drivers/mtd/nand/raw/qcom_nandc.c
+@@ -1863,7 +1863,12 @@ static int qcom_param_page_type_exec(struct nand_chip *chip,  const struct nand_
+ 	const struct nand_op_instr *instr = NULL;
+ 	unsigned int op_id = 0;
+ 	unsigned int len = 0;
+-	int ret;
++	int ret, reg_base;
++
++	reg_base = NAND_READ_LOCATION_0;
++
++	if (nandc->props->qpic_version2)
++		reg_base = NAND_READ_LOCATION_LAST_CW_0;
+ 
+ 	ret = qcom_parse_instructions(chip, subop, &q_op);
+ 	if (ret)
+@@ -1915,7 +1920,10 @@ static int qcom_param_page_type_exec(struct nand_chip *chip,  const struct nand_
+ 	op_id = q_op.data_instr_idx;
+ 	len = nand_subop_get_data_len(subop, op_id);
+ 
+-	nandc_set_read_loc(chip, 0, 0, 0, len, 1);
++	if (nandc->props->qpic_version2)
++		nandc_set_read_loc_last(chip, reg_base, 0, len, 1);
++	else
++		nandc_set_read_loc_first(chip, reg_base, 0, len, 1);
+ 
+ 	if (!nandc->props->qpic_version2) {
+ 		qcom_write_reg_dma(nandc, &nandc->regs->vld, NAND_DEV_CMD_VLD, 1, 0);
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+2.34.1
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds

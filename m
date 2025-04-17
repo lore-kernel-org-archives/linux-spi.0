@@ -1,59 +1,62 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F1819D898;
-	Thu, 17 Apr 2025 15:25:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4D3B25395D;
+	Thu, 17 Apr 2025 15:25:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744903536; cv=none; b=mI0sPVdylOvGi+Ct//Ew27MPU2Xj5HNWUJuFPItjm39YgLuAQOUDhErnH5BnoJoGhYLf9Ojp0uiisZ6NkShr/F5A1bioSplvUucxAHd1MTA0FbQZTvFmmAnZ9fPhavHq34TELeVq7RClMjYRUZP857opX3gHBNvbnrXQTh6IA9g=
+	t=1744903538; cv=none; b=QtkvAz44m3cfHQ7ZpuGqFTItEB1q6h3t6fo6IEVjwUOSBBHpd4jLQT9ZfsM1MFi4SOx8fjb62vHI7gwumUq187AcxgsSWenj54sha3sp2vYBkSH/0l+VHOZ3NrB3+B1ZCBXXVzZ2e5p8MB0cmU4Lb53q1uf379GuBybOBY6Ibu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744903536; c=relaxed/simple;
-	bh=0cNODjtMzQvTjxbraB134HV4rNt2CkUTWIKaRQZK7eM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gh0J2pgf8iwL5h4p/BhBVaz+rlHSslN4HQvHFG3MPhxclEGk+ZON6gMr8n9SEqmA54JRchbaQA6ODpOwIyIh8cI0xNZG8AACv4rr024co3ETwz5t+pTQ7jUvnMnsfnqljCG4njLrcnM4e29hiQ9l2O4JvsY6MCrWxbF8euDU6kc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YJTQRwq8; arc=none smtp.client-ip=198.175.65.13
+	s=arc-20240116; t=1744903538; c=relaxed/simple;
+	bh=YNzxg2Cgltshvv/jkfeOT+fz/8OO2VlMUUBbnoXm6YE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Ane+LyvhpzgoPj3lJA2iLCF2LR/TrbwGPJnnJxRqT+biIO1ntNIK9COq5baLpJbAgy/hWLDGEVaToTEvYmWR2xu6Z4USbYoM05UH2FdkzKQpp1tJjlPA4SO/Md2OPRlf4qPzANCxz4TI3BANyqkF5VXeiVrhj8PZV9yUzJFt24A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O09ri3A1; arc=none smtp.client-ip=198.175.65.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YJTQRwq8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O09ri3A1"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744903535; x=1776439535;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=0cNODjtMzQvTjxbraB134HV4rNt2CkUTWIKaRQZK7eM=;
-  b=YJTQRwq8kFtWKQ7T20+oeXCdDBVqf7itQSN8hcYWxBobrUIKNXFd9UMz
-   zJfkZlsUIJybfTTss7aObptnlPJUivF0nEFDiB4VAVo1VpNCsOlRyoZMv
-   kbjCx2WB++kfz/gYcFAO/3KoaddbUM6HRx0rCKYVQ/iUMtVUQzrr/5QC+
-   +87atdcvLACVsJMsgMj+tVQ1M4qHwv2cnBTVBzQ29chV48WR+iuaIMxHt
-   BQfa/nZFvPSvF5yLEYj/NDB/xTpV7Zqcp206lG/+CBCgFfz96ne2ai+fD
-   uB7sFxVZ1Pr8D/nqNyKqqszXv1F3z2YAjK0ls9+0kek9fNJ/Xdi1kOJ/T
-   A==;
-X-CSE-ConnectionGUID: iIZ5SNiKTrCP1aN81CeO+g==
-X-CSE-MsgGUID: lootWWIAQbGkZURLnJ9S8g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11406"; a="57491905"
+  t=1744903537; x=1776439537;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=YNzxg2Cgltshvv/jkfeOT+fz/8OO2VlMUUBbnoXm6YE=;
+  b=O09ri3A1HRDprZ7e5xz5Yea03c8YUTHy+FPjGS6EzWXmYvpq57LomOLz
+   F+XA+Nqp/I2/IzgZrBMCIUMDHlsXA0+qbY+yyUZqi9DVV/h/aADzDO6/o
+   tv06MpUuQxdBj3WWswGhlctIWYRsw8WiPNFhqqg36X3wl8vCVawOsZ1dC
+   kiAPtpGaCzvt1Y9QTSOZ9bqw4Lb5tfE3ApiHrYQgC6Vvcfp4Ot/LItHvF
+   /1Ilo9FlOsUE9vtHVvaQttXXZwvMgBFTCWP/g0DpyCwlpoDEiHzr1SwTj
+   1mFlYVPBUSwPXPbD+ZOxy3LCpiH/7ghktAXq4G/qEHtBXcO/ldVlEiufJ
+   g==;
+X-CSE-ConnectionGUID: V/RnkkpNRXyGcueI1vIZOQ==
+X-CSE-MsgGUID: Iy250Iy7SSWmkW6HMixiZA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11406"; a="57869097"
 X-IronPort-AV: E=Sophos;i="6.15,219,1739865600"; 
-   d="scan'208";a="57491905"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2025 08:25:34 -0700
-X-CSE-ConnectionGUID: +f1x/O7SS1GSEvPFwETy3g==
-X-CSE-MsgGUID: qy7HJ4h/RUSPEq78f7rp+A==
+   d="scan'208";a="57869097"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2025 08:25:35 -0700
+X-CSE-ConnectionGUID: 3/m8YRdqRRe7mSJr2TeNOQ==
+X-CSE-MsgGUID: cz51Zs37StOzlep8bpTmsw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,219,1739865600"; 
-   d="scan'208";a="135688098"
+   d="scan'208";a="136008919"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa003.jf.intel.com with ESMTP; 17 Apr 2025 08:25:32 -0700
+  by orviesa005.jf.intel.com with ESMTP; 17 Apr 2025 08:25:33 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id AF3215D9; Thu, 17 Apr 2025 18:25:31 +0300 (EEST)
+	id CEF1985E; Thu, 17 Apr 2025 18:25:31 +0300 (EEST)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Mark Brown <broonie@kernel.org>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Cc: David Lechner <dlechner@baylibre.com>
-Subject: [PATCH v3 0/2] spi: Introduce and use spi_bpw_to_bytes()
-Date: Thu, 17 Apr 2025 18:24:45 +0300
-Message-ID: <20250417152529.490582-1-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v3 2/2] spi: dw: Use spi_bpw_to_bytes() helper
+Date: Thu, 17 Apr 2025 18:24:47 +0300
+Message-ID: <20250417152529.490582-3-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250417152529.490582-1-andriy.shevchenko@linux.intel.com>
+References: <20250417152529.490582-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -62,34 +65,27 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Recently in the discussion with David the idea of having
-a common helper popped up. The helper converts the given
-bits per word to bytes. The result will always be power-of-two
-(e.g. for 37 bits it returns 8 bytes) or 0 for 0 input.
-More details are in the respective code comment.
+Use existing helper to get amount of bytes (as power-of-two value)
+from bits per word.
 
-This mini-series introduces it and replaces current users
-under drivers/spi and we expect more (and possibly some
-lurking in other subsystems).
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/spi/spi-dw-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Mark, if you okay with the idea, please, make this to be
-an immutable branch or tag for others to pull.
-
-In v3:
-- fixed the typos in the examples
-
-In v2:
-- improved examples in the code comment and commit message (David)
-
-Andy Shevchenko (2):
-  spi: Add spi_bpw_to_bytes() helper and use it
-  spi: dw: Use spi_bpw_to_bytes() helper
-
- drivers/spi/spi-dw-core.c |  2 +-
- drivers/spi/spi.c         |  2 +-
- include/linux/spi/spi.h   | 26 ++++++++++++++++++++++++++
- 3 files changed, 28 insertions(+), 2 deletions(-)
-
+diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
+index 941ecc6f59f8..b3b883cb9541 100644
+--- a/drivers/spi/spi-dw-core.c
++++ b/drivers/spi/spi-dw-core.c
+@@ -423,7 +423,7 @@ static int dw_spi_transfer_one(struct spi_controller *host,
+ 	int ret;
+ 
+ 	dws->dma_mapped = 0;
+-	dws->n_bytes = roundup_pow_of_two(BITS_TO_BYTES(transfer->bits_per_word));
++	dws->n_bytes = spi_bpw_to_bytes(transfer->bits_per_word);
+ 	dws->tx = (void *)transfer->tx_buf;
+ 	dws->tx_len = transfer->len / dws->n_bytes;
+ 	dws->rx = transfer->rx_buf;
 -- 
 2.47.2
 

@@ -1,72 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5304679F5;
-	Thu, 24 Apr 2025 07:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DB571F3D44
+	for <linux-spi@vger.kernel.org>; Thu, 24 Apr 2025 07:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745480001; cv=none; b=HS7PcaPMXkkTXzHPvPJWBgFe3ifDIGFImUl8fSPv+M27vzp3cIiUd5UuSj8CRgdgdBgfN0snkfwxEpRVa7WODBQiBTjVkImsVIRvLfujd7CTNfVln5Pilh47Koncm6RZAaXYSTgb6gdJ3K6Julag6dZTtqlbdX5ekpDzjphVPqI=
+	t=1745481364; cv=none; b=oX0JZvA9x6lKtH1zCvEGIidRwu+N2xuWaCz32wzEnoksU/zriAEfxgyCPrGznRTkqLhwy0xmLR/FHzn3AUW20NCboX14ySWry5XvYaj+HMK+pnFgvolGFJWKZOBd9WhWmlwtYEhgfZ3aGvfbYHy09JcmU6sayW/Fco/AxggctHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745480001; c=relaxed/simple;
-	bh=SuP8EraeigJb0KaR9dhLAlA0oVM0b7bWlw5kuLh8108=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OL0EB1uwycvqQj4SCtwTYM3BjXwCTZLrSNv9wz+pPw9N2gbo9qKfyeUog3EgTG8CcqZ2cPp2nMtdh3ZJX9LTX6rsboZl3XwmfIywXbd0GxAkfc5cOZh6Xgy8P0oHIsMN1wp2OUDhoINY1b0aIFKH316Q7BN5Nxw1RlAnIQOZ5so=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NAn5IBCa; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1745481364; c=relaxed/simple;
+	bh=FfG/nnDyWcgQMZ6fwmcP4IOeZAVsV9j1/ggv+qo05bc=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=CD45lxo2GzIliTggZZLV37JPmiuFRl6fuoA/vKQGuAaWAhoRZgrSqU+aPxabaHjskA0zHCPvfmViLKfMMjxBEvE8LGKF2HU0P5SF8ELV5ymJOkbaUw5Pc6B+mvWE0D1Lu0hVu+hhpGDNUVFgNN/5V5mbRviyNzza/u9M5tQudg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oIQoH6zJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NAn5IBCa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38E2EC4CEE3;
-	Thu, 24 Apr 2025 07:33:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oIQoH6zJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A34F7C4CEEA;
+	Thu, 24 Apr 2025 07:56:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745480000;
-	bh=SuP8EraeigJb0KaR9dhLAlA0oVM0b7bWlw5kuLh8108=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NAn5IBCa1HR8cgzP/yQgp/EiVv3myBY0mp+DotdwTIpXvXyZ14/MJUwmL6OdMvjUv
-	 KI8WGC0P/EY8lc2jDgnXraGmBOZs8wUK39z3R69blFJ54MTgb5/4QLvVHna+buVBNv
-	 GrmUcxdw+gpa6jwyC87fekJTv16cFXG5mp2R97yZGECyBfgX5X/slw0jch2C+MomMs
-	 wixVvFDPCXIzoGsFaR8gYX/kzKrb9Xb4PDWYfTfKK4lX13WCzgQPvOO3N2QsBISx4h
-	 iSOsD7gZKVAFrCoa2x76r1X62CE0B50BtKjwitjKBVFf2P6yFFWLqLN50jK8cF++aW
-	 EvDM3Pn7jCG+A==
-Date: Thu, 24 Apr 2025 09:33:18 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Zixian Zeng <sycamoremoon376@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Chen Wang <unicorn_wang@outlook.com>, 
-	Inochi Amaoto <inochiama@outlook.com>, Alexandre Ghiti <alex@ghiti.fr>, Mark Brown <broonie@kernel.org>, 
-	Inochi Amaoto <inochiama@gmail.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Magnus Damm <magnus.damm@gmail.com>, devicetree@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, sophgo@lists.linux.dev, 
-	chao.wei@sophgo.com, xiaoguang.xing@sophgo.com, dlan@gentoo.org, 
-	linux-renesas-soc@vger.kernel.org
-Subject: Re: [PATCH v5 1/3] spi: dt-bindings: snps,dw-apb-ssi: Merge
- duplicate compatible entry
-Message-ID: <20250424-awesome-caracara-of-priority-57f9dd@kuoka>
-References: <20250422-sfg-spi-v5-0-c7f6554a94a0@gmail.com>
- <20250422-sfg-spi-v5-1-c7f6554a94a0@gmail.com>
+	s=k20201202; t=1745481363;
+	bh=FfG/nnDyWcgQMZ6fwmcP4IOeZAVsV9j1/ggv+qo05bc=;
+	h=Subject:From:Date:To:From;
+	b=oIQoH6zJxxfBSQOovEbeTczkewttcWovyp0GuXPTNsTyFtI9Sk7ptST4JsVyp8PSO
+	 iH+4arIXZjbc38ARWq1w/hEHiaIS23TbmNMpCwiuUyWeFkAni7tKugYkFER8/UvuwI
+	 QsIOAQ2VJom0yMWomOgepGhCribDZvC1WBkC2MF8wWlAc0Pu/kl4WCKSyweWrZjvLP
+	 kzzHDPPQr45iNoojJ1eR632BHAd9hkbPpHSSl81GUq4rYTNFClV4wIlRYU2KUfqbYL
+	 B8z5Lt2Q/VZGnBwUaoeO62wlV9H2TG6L8mWol0SAQmNSGKge5fcM0u2MYeyggz3IBH
+	 viPdDLOn1d5lQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70C9E380CFD9;
+	Thu, 24 Apr 2025 07:56:43 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250422-sfg-spi-v5-1-c7f6554a94a0@gmail.com>
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <174548140196.3249525.17758250817264347472.git-patchwork-housekeeping@kernel.org>
+Date: Thu, 24 Apr 2025 07:56:41 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-On Tue, Apr 22, 2025 at 10:27:08AM GMT, Zixian Zeng wrote:
-> Microsemi Ocelot/Jaguar2, Renesas RZ/N1 and T-HEAD TH1520
-> SoC-specific compatibles, which eventually fallback to the
-> generic DW ssi compatible, it's better to combine them in single entry
-> 
-> Suggested-by: Rob Herring <robh@kernel.org>
-> Signed-off-by: Zixian Zeng <sycamoremoon376@gmail.com>
-> ---
->  .../devicetree/bindings/spi/snps,dw-apb-ssi.yaml       | 18 ++++++------------
->  1 file changed, 6 insertions(+), 12 deletions(-)
+Latest series: [v2] This patch set did some clean up and add runtime pm support for flexspi driver (2025-04-24T07:33:24)
+  Superseding: [v1] This patch set did some clean up and add runtime pm support for flexspi driver (2025-04-23T06:11:37):
+    [v1,1/5] spi: spi-nxp-fspi: remove the goto in probe
+    [v1,2/5] spi: spi-nxp-fspi: enable runtime pm for fspi
+    [v1,3/5] spi: spi-nxp-fspi: use guard(mutex) to simplify the code
+    [v1,4/5] spi: spi-nxp-fspi: remove the unchecked return value for nxp_fspi_clk_disable_unprep
+    [v1,5/5] spi: nxp-fspi: use devm instead of remove for driver detach
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Best regards,
-Krzysztof
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

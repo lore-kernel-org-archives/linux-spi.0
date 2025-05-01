@@ -1,65 +1,65 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBB73202C5A
-	for <linux-spi@vger.kernel.org>; Thu,  1 May 2025 15:02:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6297320298E
+	for <linux-spi@vger.kernel.org>; Thu,  1 May 2025 15:02:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746111735; cv=none; b=GHEKM7eOEoHF3Bks4019MVODX5QFHB/b9hIgh+S+TXgqu8Hd7gL/gfYEofZwsqyvEpDCGnDDIvWKNqtPNRJEYHnKGspdQXTp6x4UuNaWH8/9vL4D/p9Gjnx3fwwLdJHnHCFDAgp6f/ideWUjzrjts5moB37v+eMOAPWotIgJcJs=
+	t=1746111735; cv=none; b=F4tzUn6JmG5QYtYSmFI/CdYsIzybrSEcmS0W/pGjNxYOs+XQnutPQLFLLarqDFNOgZewuxjsHVXeARj2ePOtrkI6NcEHq4H1Pzk5HD7cYs+nnkBuuQJ+sIAIH8y1wsRQrd3o4TL3FVrGk6fvfcV4ZDOwzDQP/U9LLFXMC8uHOuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1746111735; c=relaxed/simple;
-	bh=B3v13NXCER5k3tKhwX7vqb0mye7ltzvO1U+oUASNdgU=;
+	bh=wbJvTFF93vO4XDJ3t3HtJwaTtycPFJ1qGS1kFwex8VI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=bAAPETVn3VRriHaUusDpU3he5noJHQHcOZxhSg2aADaufhDisqcg6HsQF2McbwLOarFlEPY4e5qBIcRrDbXtTG76N2Fipw6ScmxiTQUhT+mGgT9SvhI4etW5USNr+mY5YCjh7CVqRIo/gpFuaFowOdmnr07Vn8JG9WQf+gZ0g7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=cJZzoNfK; arc=none smtp.client-ip=209.85.128.48
+	 In-Reply-To:To:Cc; b=lKuU74CrJ4LHrW4Rr3MZ0Za/ERDn5xkS0ezPOa/fAdJMfIEQvTA8AZlMuaEkH9fhwU5cHKa1NN2jrkfPjDmzQPsqy/BO/3dG1ogE2eetnmULIiYGqgkoFGXESsDv6SfX0AqGxLphA6BEMhX2BQ/rPXGbK469r8Spkm+ozQAV9f0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DL/WqiMp; arc=none smtp.client-ip=209.85.128.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="cJZzoNfK"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-43cfe99f2a7so1733085e9.2
-        for <linux-spi@vger.kernel.org>; Thu, 01 May 2025 08:02:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DL/WqiMp"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-43cf825f46bso1369405e9.3
+        for <linux-spi@vger.kernel.org>; Thu, 01 May 2025 08:02:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1746111732; x=1746716532; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1746111730; x=1746716530; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=0Z1CSMjo4bwXac777IKPq+E/WNf0vRomoDLRk/F823M=;
-        b=cJZzoNfKaFVs6Wa631fHAnHWOWAi9tKBcGDVbS7PCUwViKCuPJ6mw81yJWwjhxjP7I
-         GzpLWXRPuurO5a9CKsGQVBD5gFO20r5wziwHOAMIhBjCTaGvvmxrRGskZn8NmFsAGRqb
-         PiMBPpaePBnbC0n0wLuH1/Y8jUICHDOJPP9q+GclCkrq9GtV2yhg804ykRTJU9qpGzIr
-         H86xd3uqLPjnQoNFc2TCH/3no813MUhZRClYrlVzUFcm7/Ntg1EBFwrzjFYzNfLTQ9eb
-         nnlWJZEnPNmrAa7t9szWIB9Z1E+On8v9iuTZpSxcbge0NPSBYuWCzkUtLTiITUHjQgcH
-         GTuQ==
+        bh=cjFuL+Hxvp62ckp62d4xwkNy5J2SbdNnB8mUiL94WtI=;
+        b=DL/WqiMpmHmG7xwuQNyl0N8kugkWsyVp+aKJg4UF+UgSDjOf/e79DYP10ImXkq+KQ7
+         4ED+6e4dg3F63aBc5QagIBDHWOmzK2ZRR1/OzjBZOx2Kw3MUDNsJcHWpyrhQzqACQchV
+         vCiKtmb/1719Y/ppSAGtwvlQIR8hgxxkdkouusE5KcMw7GP0itQ+mbWbkXg4KKp/k1x3
+         012+iiKrbgUmw84yexLY4bKRkHYY18+zinh9zinCmKorqedksjj2mE/8QdEzHpJhVcjj
+         0Wgcn7dLCGwPix7KTH8cycJMiU2Yq+WYJ5r4lFxrQTM+UD8QTZOB70chNaw0XZHv3JN0
+         HrZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746111732; x=1746716532;
+        d=1e100.net; s=20230601; t=1746111730; x=1746716530;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=0Z1CSMjo4bwXac777IKPq+E/WNf0vRomoDLRk/F823M=;
-        b=P6jo7o7Moo5hxdknHsg81dRxa4EsHO+E778vv42dPF/OSef7D4RuMXG0i7T5Ij2Dyn
-         anD/yTqcY+GF9wfmUmJDmYBuOs0nSKTi0dDY/g3VIgI5G2f/G5Tn+15p51g6DjhSNfdU
-         nyQPAXrbPf7vEKoYDcptpLqdCv3lnAlcBMntE17jcmKOQZKc+3RWqOMYJuIitizozf8M
-         eNtiTP/zJvjgR+jeu7tSNIafygK5HsqN3hVm13u4gbj+W/pU8vbmhZf5LfHA1jEpEUF4
-         Sb7W6r8XJvou6+OYIjAe6oHC7CNj9H58rGEy/GOPT/8RmcA30zmF5xG1yOXxu1SFNhHr
-         SJ/w==
-X-Gm-Message-State: AOJu0YxTOaEYId3Ommkn3pSS1Z3+ds5e8Qqm0h9QHX/psX60we37FRE1
-	HY/xrvoKFbKTSnyoXDex0VRm2UROOIrGtXMwvSLAcFiIzuyIfkaxb26y5R1fh5g=
-X-Gm-Gg: ASbGncv9YZSSdqTJAjnbg73xz+bpGt/WpP4a5vmXIar6bqWAlvWvORJtriIp6RpnGK5
-	Yd8bsf7zVytzJB7ANzVhMIPVYvTtQvjJo0FDwZm5fgFgI00+nBfL+qPAJ+ZtXD/kIRGA7vEM86F
-	hkFP4f2MElAHPMhvaStTc5H3dL4qCUaVVdrtOzCufF+26wWI19sxAiWBTqv9m04jKTnoSAKsvQz
-	HVd90qV3qJGt79z2GjbvvOE1F7/tPk1jLpapxjvmEQedYeHLHJF0xY5M8/jf4sDS/q2XaZrKkup
-	Q61eSSCAWWuq74Yk7XYP4UP5DWCFk2jMjOferYNWpAj8C716R6wtSGBm3Kc=
-X-Google-Smtp-Source: AGHT+IE0ENZdHGkQvgGoH2mnDKlJJ809LkSCtAMhmB4rpgM9Z08EWOHgpBqjUop6OrvJ3Ac5c98Akg==
-X-Received: by 2002:a05:6000:1846:b0:3a0:75ff:261f with SMTP id ffacd0b85a97d-3a094178fb0mr816964f8f.11.1746111731899;
-        Thu, 01 May 2025 08:02:11 -0700 (PDT)
+        bh=cjFuL+Hxvp62ckp62d4xwkNy5J2SbdNnB8mUiL94WtI=;
+        b=mn33f9yfJhdISIcebOTWLxmb6f8hdTY08C7KZyCko6lJIyWuDdUyJFV6Lr6o7toSSD
+         t5mxdVjJ+JWHBChFfshBg/ZFgIJTBAsqg9cLC/TN2A6aHywfHmlAOSO96bveaofzUAkF
+         uJjwrAEzT2ymY74vvl3qiyYRVPMpqrSBaKypFsJDu2Rjpe/N1jFawhXGZVmKiZ2+NSIa
+         tJotpByER0rF4OaqZT48BrUIbgFxh+0/VGydiuM/6vPEp3HBAuz1VcvXzhLvNTpkJTq+
+         PM+/32yghqMSFp7f1XmYNMnVQfFoVVhsmRUDjW+o6jTXUMwuAb4c0dqLZqn4nRXjb2Ny
+         Cybg==
+X-Gm-Message-State: AOJu0YxTdBGPHdY9HgDnpc5lRlyHMMPZETnQpX9eTN/yUmia5eaiT9Nz
+	rPeZZECXACmfOOzgSIJ3eoPnej421O0OjJdTqwBMRlKauvwDdTGbFiN5p4Ey1DM=
+X-Gm-Gg: ASbGncuq1HkZVZIyG3qpzl2C+tT5anldD05FskTHKLIWtjGjjvJNvKGXC4xWB1wjPDA
+	tC1W8QR9yhlEJYNs7NBO+fisR51hQUO0PlyxpAZjOvEpbUbekScRSnvVxdv1xuliqkl156lXPM/
+	6puB2Bsd87YZPPOEaH21+sK4lCtTh3ZBRSM93ZgEecIrxjSef6+oUKBU0849mCUIUN6Y6SObjHc
+	hw8jjh7AkFVGwLGfFIzP7mLmL0G+okqkjlGkSkplMmnhjDM2vvQ/ZZKS2yCHK2fBjiWeHp+J+tT
+	gThgf2OJ6Fo5R4s+HBShcuHWmbBKRUa1pEmUsNWHxswjUZwgkC0hYDQnOYY=
+X-Google-Smtp-Source: AGHT+IHx8sWqPznlt7972Iuo2Aq29rBeEzunJHQrQZKTzx2L2RYiG2zZqFAc0QZBwI42PaKv7Rtz0A==
+X-Received: by 2002:a5d:47c5:0:b0:39c:12ce:697 with SMTP id ffacd0b85a97d-3a08ff740cdmr2119607f8f.7.1746111730466;
+        Thu, 01 May 2025 08:02:10 -0700 (PDT)
 Received: from [192.168.1.28] ([178.197.207.88])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a095a4702csm1033190f8f.40.2025.05.01.08.02.10
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a095a4702csm1033190f8f.40.2025.05.01.08.02.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 May 2025 08:02:11 -0700 (PDT)
+        Thu, 01 May 2025 08:02:10 -0700 (PDT)
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Thu, 01 May 2025 17:02:01 +0200
-Subject: [PATCH v2 3/3] spi: cadence-quadspi: Assume device could match via
- platform
+Date: Thu, 01 May 2025 17:02:00 +0200
+Subject: [PATCH v2 2/3] spi: cs42l43: Make handling missing spk-id GPIOs
+ explicit
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -68,7 +68,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250501-n-smatch-fixes-v2-3-d2ad9c1f2e67@linaro.org>
+Message-Id: <20250501-n-smatch-fixes-v2-2-d2ad9c1f2e67@linaro.org>
 References: <20250501-n-smatch-fixes-v2-0-d2ad9c1f2e67@linaro.org>
 In-Reply-To: <20250501-n-smatch-fixes-v2-0-d2ad9c1f2e67@linaro.org>
 To: Mark Brown <broonie@kernel.org>, 
@@ -82,55 +82,52 @@ Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  patches@opensource.cirrus.com, 
  Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1483;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1111;
  i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
- bh=B3v13NXCER5k3tKhwX7vqb0mye7ltzvO1U+oUASNdgU=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBoE4zs9gNikiLaGr7Pqc78Xp2+VrLMMAjp88bwS
- hB6yBtxryWJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaBOM7AAKCRDBN2bmhouD
- 11VpD/wNiGdprHFBTqCt2CnLkmyOfWKabgzUmeNPQie00KzOgJVHUUjWU4fQaeI30mVt9rfpu10
- llp9+NafbiQoqC/9fHr8ckF1T8bTk0UxAAmqyeIoxupKtWuT8SpFRVhzfWUWaxuAzgzji3dPDHK
- ljhiroQ5K9bYLCIjJ3DMJe2ajG458Q2H7Hj2Pgm0oyGZP6zVIA7fnv4p26E2xOIBkGaZWo57pFe
- bjmmIUqrklHrbwgPT9JjxthHgNtY9wYmOEietCJq06B9o3ATCvBI8OsvrP2VaachROYBHaEKiM8
- 9kifoZWrIGLKbeMbGnJwami0uAWC1TckkzhDv7mVsqLKfToy9rFkSof7/756aD555PbJ9WQ55WJ
- ctyJMPc/lNwv7/qwagVd5gAb0lMZ3MWpgS+ZwEW4JQADcjC/B2Qvl2z8S05COKdPgBV8VaX7Y8p
- UuPfvFDlcmfyuy9ehhlRV3iO/nErNWoZK3M5rfTS/3jBgM2xcLy3CkdJ6+r6Ec2DJBVGtKG65Tu
- Tg87N0s6R+JDC6j2EAjrHOK2giHvXT23YzVbekBecuiJUBmydauJwxTtDQmzpDRFbWz0cB9v+ti
- 5xN+x7ArX5Zwm4w2++0vpqUKE32Jr1CVH3vNQcABVwPWPvo6bd0gkioWh9nKgr83W+A39JkCwYD
- 09YLX6LPBaP50/g==
+ bh=wbJvTFF93vO4XDJ3t3HtJwaTtycPFJ1qGS1kFwex8VI=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBoE4zrtu7znQCsit8jnz6Ax+qO4kjdY1hQPTmwI
+ OVVwvysS82JAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaBOM6wAKCRDBN2bmhouD
+ 147VD/972YtDAImuxcHPXe0MWIDPqszTwkbi59mXMxbvRK6obHdCyrpJkqfn024r4nmdDhOiPb9
+ 4E1FN0hEFSk8JGbXFmIw22G8Bwq5S0k76HOEPL+b0sGuJi6v5uBoyCVhla5wYn7WGuoKF7wMfR5
+ 3G/CPkg+jGFN/OiG3QKQ5KM8zlCxT0gAANfomMj388nuUHZSuVD0TuhI0yZS5hROJ8X1RuDeHqt
+ /qAObojiLu5fNh/M4xgzFtwpyfd9mR95NFNuR3GYoUIomx4WH0bVbEYFEQuafiUhgf98GIi/yun
+ KWucCUhMHpL+B5R5nnhr0lp+gG+9vtbSoNEH2FHo7Ge0+StqKh4wprKlXgVF7Cr7VV6aBZxm6Lr
+ LFf5Xov+wZDaUzXgUpRXCYskqUSS4vnlGHlENlY4WU6Gx1pZA/INSKRbIko/wBrLQsnBgaJ8zQy
+ ez7jNZlgzRl0LoeE2weS23vDqTEDAsxfRtaAxIky7g0tiIq6IAZmMHkoH58PdxPiG7tmyA0O0bw
+ WdP11DStBXyynr8D7wkqgC9snxJkAFL9MuHjwxCdnJJlJhJfl6kOKHeAXSksD0tpm/QXvPH3cKY
+ ExiuTU5tkPKjs2lVv1y8RyO4+fmuArAc2AVddNhlCmhSviquLZH4CBGjenXnX82f0vcLkiZLOSJ
+ N3UJhd6BH8beTlQ==
 X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
  fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 
-Driver has only of_device_id table, however it also has MODULE_ALIAS()
-for platform name, thus assume there is a configuration where this can
-be loaded outside of OF system.  In such case of_device_get_match_data()
-will return NULL, which is already checked in one place of probe()
-function but not in the other, leading to Smatch warning:
+gpiod_get_array_optional() for spk-id GPIOs can return NULL, if they are
+missing, so do not pass the value to PTR_ERR but instead explicitly
+treat NULL as acceptable condition.  The old code was correct, but
+misleading because PTR_ERR usually is used on errors.
 
-  drivers/spi/spi-cadence-quadspi.c:1942 cqspi_probe() error: we previously assumed 'ddata' could be null (see line 1885)
-
-Driver should be consistent, so assume device can be matched via
-platform bus and of_device_get_match_data() can indeed return NULL.
-This is also possible with malformed DTS on OF-platform: no unit address
-and device node name matching driver name.
+Reported by Smatch:
+  drivers/spi/spi-cs42l43.c:241 cs42l43_get_speaker_id_gpios() warn: passing zero to 'PTR_ERR'
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- drivers/spi/spi-cadence-quadspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-cs42l43.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index c90462783b3f9f05e477d337ab4187224992c0a0..fe0f122f07b0206e80cf89bd031106bf8051c789 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -1949,7 +1949,7 @@ static int cqspi_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-cs42l43.c b/drivers/spi/spi-cs42l43.c
+index ceefc253c54904b51a12ff112988d1dfbeed39c1..b28a840b3b04b5a4cce15539188bca02bf36716a 100644
+--- a/drivers/spi/spi-cs42l43.c
++++ b/drivers/spi/spi-cs42l43.c
+@@ -237,7 +237,9 @@ static int cs42l43_get_speaker_id_gpios(struct cs42l43_spi *priv, int *result)
+ 	int i, ret;
  
- 	host->num_chipselect = cqspi->num_chipselect;
+ 	descs = gpiod_get_array_optional(priv->dev, "spk-id", GPIOD_IN);
+-	if (IS_ERR_OR_NULL(descs))
++	if (!descs)
++		return 0;
++	else if (IS_ERR(descs))
+ 		return PTR_ERR(descs);
  
--	if (ddata->quirks & CQSPI_SUPPORT_DEVICE_RESET)
-+	if (ddata && (ddata->quirks & CQSPI_SUPPORT_DEVICE_RESET))
- 		cqspi_device_reset(cqspi);
- 
- 	if (cqspi->use_direct_mode) {
+ 	spkid = 0;
 
 -- 
 2.45.2

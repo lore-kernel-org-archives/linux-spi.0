@@ -1,30 +1,30 @@
 Received: from michel.telenet-ops.be (michel.telenet-ops.be [195.130.137.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A593723C4F3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A966F23C4F7
 	for <linux-spi@vger.kernel.org>; Fri,  2 May 2025 10:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.88
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746180857; cv=none; b=BbppePU/QYj/c3pJlDMJhOlADbdLFasGhqVD7DABlAFScnUrXk/Ubh9oLUnNT0xa3VBLe3Y600adyTkywkkI+RwGIrgAkNmvqgA/rNLr1dlWDn7PAqTXug8Ycpdz8e+za6zcAafBWAiy9K4pHYi9zx1WZoAdRIY+T8uFS/SyTGs=
+	t=1746180857; cv=none; b=LY1YIzpyCTZKSmPx5TRGtXHM8jpr/RL48fQhaiREUYjienMEiVCQXAzdoZNh21r+9QtP1qIk+5iXZg3X5ilV6kzmTf4tC4neW+F+OnEKyK4m6keLibG5ejtfw8DnXTUWAXngfNYDnN7e/c1GKLSf7c6KDCRh8zk60kM66iARyaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1746180857; c=relaxed/simple;
-	bh=rBXLDL+Tkncfv6CsNsB0G/Z3NeKSOP7iOMnaNnuqdME=;
+	bh=2eqVnUZBwrfjmIS21M7Y79WYMnohfN8iZlDyk5bQvX4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p7sv1Wf0XvtHDd5t2H3Tn8ddVzlmbWQVe4jtDIIv5GXOCI+esycMyGrYXWPAdUNz6E+N1vAAS1NXsm8uHjkDEkK2UKGH6/8y47TZ/z3XmoPjVaqN4xLvjAwvp5UduYvmJl12xyaGxj+kJC0y+UWrymfxuIHF4uKCyVVN2oY0ryI=
+	 MIME-Version; b=XZP+a6vZSjx1I1RIlRGMlVoNtj5FDtCC4BVj5y7lsd31uCqh4avGCtb59VTV9TlocDvwctnFyzOfnCi1XlhZI8YJE7gKNhlupWhyeRjl38QLd/g4wUfkuLm5npsT5Jmb/hGPoNeaFHrZq78ijyXQbFo568zUQXcLfHO4W9oqCfE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.88
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:df64:35e8:502:4ac0])
 	by michel.telenet-ops.be with cmsmtp
-	id kAE02E00T4sst1106AE0of; Fri, 02 May 2025 12:14:00 +0200
+	id kAE02E0104sst1106AE0oh; Fri, 02 May 2025 12:14:01 +0200
 Received: from rox.of.borg ([192.168.97.57])
 	by ramsan.of.borg with esmtp (Exim 4.97)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1uAnP1-00000000W9X-38j1;
+	id 1uAnP2-00000000WAX-19a4;
 	Fri, 02 May 2025 12:14:00 +0200
 Received: from geert by rox.of.borg with local (Exim 4.97)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1uAnP6-00000008oWV-0vVd;
+	id 1uAnP6-00000008oXi-2yfq;
 	Fri, 02 May 2025 12:14:00 +0200
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 To: Mark Brown <broonie@kernel.org>,
@@ -37,9 +37,9 @@ Cc: linux-spi@vger.kernel.org,
 	linux-sound@vger.kernel.org,
 	linux-renesas-soc@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 05/22] spi: sh-msiof: Use bool for boolean flags
-Date: Fri,  2 May 2025 12:13:37 +0200
-Message-ID: <8e3d18d685f04e3ab7761167c03b9171c12a86e9.1746180072.git.geert+renesas@glider.be>
+Subject: [PATCH 20/22] spi: sh-msiof: Document frame start sync pulse mode
+Date: Fri,  2 May 2025 12:13:52 +0200
+Message-ID: <e50f4dd4fdc23c1e3f2abece458fe178b76ada1f.1746180072.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1746180072.git.geert+renesas@glider.be>
 References: <cover.1746180072.git.geert+renesas@glider.be>
@@ -51,60 +51,25 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Use bools instead of integers for boolean flags, which allows us to
-remove the "!!" idiom from several expressions.
+Unused, but nice to have it documented.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- drivers/spi/spi-sh-msiof.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/spi/spi-sh-msiof.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 367622985fea2a04..11ef5c0a498d7c1f 100644
+index 4d9a44118e1c9d6c..5d9d551dbd220389 100644
 --- a/drivers/spi/spi-sh-msiof.c
 +++ b/drivers/spi/spi-sh-msiof.c
-@@ -348,11 +348,11 @@ static u32 sh_msiof_spi_get_dtdl_and_syncdl(struct sh_msiof_spi_priv *p)
- }
- 
- static void sh_msiof_spi_set_pin_regs(struct sh_msiof_spi_priv *p, u32 ss,
--				      u32 cpol, u32 cpha,
--				      u32 tx_hi_z, u32 lsb_first, u32 cs_high)
-+				      bool cpol, bool cpha, bool tx_hi_z,
-+				      bool lsb_first, bool cs_high)
- {
-+	bool edge;
- 	u32 tmp;
--	int edge;
- 
- 	/*
- 	 * CPOL CPHA     TSCKIZ RSCKIZ TEDG REDG
-@@ -587,7 +587,8 @@ static int sh_msiof_prepare_message(struct spi_controller *ctlr,
- {
- 	struct sh_msiof_spi_priv *p = spi_controller_get_devdata(ctlr);
- 	const struct spi_device *spi = msg->spi;
--	u32 ss, cs_high;
-+	bool cs_high;
-+	u32 ss;
- 
- 	/* Configure pins before asserting CS */
- 	if (spi_get_csgpiod(spi, 0)) {
-@@ -595,12 +596,11 @@ static int sh_msiof_prepare_message(struct spi_controller *ctlr,
- 		cs_high = p->native_cs_high;
- 	} else {
- 		ss = spi_get_chipselect(spi, 0);
--		cs_high = !!(spi->mode & SPI_CS_HIGH);
-+		cs_high = spi->mode & SPI_CS_HIGH;
- 	}
--	sh_msiof_spi_set_pin_regs(p, ss, !!(spi->mode & SPI_CPOL),
--				  !!(spi->mode & SPI_CPHA),
--				  !!(spi->mode & SPI_3WIRE),
--				  !!(spi->mode & SPI_LSB_FIRST), cs_high);
-+	sh_msiof_spi_set_pin_regs(p, ss, spi->mode & SPI_CPOL,
-+				  spi->mode & SPI_CPHA, spi->mode & SPI_3WIRE,
-+				  spi->mode & SPI_LSB_FIRST, cs_high);
- 	return 0;
- }
- 
+@@ -86,6 +86,7 @@ struct sh_msiof_spi_priv {
+ /* SITMDR1 and SIRMDR1 */
+ #define SIMDR1_TRMD		BIT(31)		/* Transfer Mode (1 = Master mode) */
+ #define SIMDR1_SYNCMD		GENMASK(29, 28)	/* SYNC Mode */
++#define SIMDR1_SYNCMD_PULSE	0U		/*   Frame start sync pulse */
+ #define SIMDR1_SYNCMD_SPI	2U		/*   Level mode/SPI */
+ #define SIMDR1_SYNCMD_LR	3U		/*   L/R mode */
+ #define SIMDR1_SYNCAC		BIT(25)		/* Sync Polarity (1 = Active-low) */
 -- 
 2.43.0
 

@@ -1,33 +1,33 @@
 Received: from cantor.telenet-ops.be (cantor.telenet-ops.be [195.130.132.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7626E238C3F
-	for <linux-spi@vger.kernel.org>; Fri,  2 May 2025 10:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A31F23C50A
+	for <linux-spi@vger.kernel.org>; Fri,  2 May 2025 10:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.132.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746180856; cv=none; b=Z29nMYOL9PAPTb3txWLA7ziEP4x6tZU3yOyqafIMxjX6O/a947ooz3iheipguj8AYUWTkLLzv9rlxc9y/umxcJeiQ4af/zErOs4zIBmpu01v5qUcliVlnJtS8lA8XGyVgpqo7Nuc1LizvS9m/wRIcCAq2XxBeyNx/lhjU2xHU98=
+	t=1746180857; cv=none; b=oJYeK7ddLNoijMZlj9eSgXVkcMouGmBMB9ov+e4a/MjfALV8WsFrKekq1/EXC4UnrrVtS9EKrJVIEGsr5GOlwKwCeiBPPK4DsEgqOsrR8uuxS6o8I9dvmMiuzTTiQKRaXEyu4FKwQDSOknrbPg+N8Hpz/Vuu27HyMGg0kqOhJKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746180856; c=relaxed/simple;
-	bh=SiW5g9xu/u4gHWuwLFs80XYUPkVK1vGnZ9W/+bY5Vvs=;
+	s=arc-20240116; t=1746180857; c=relaxed/simple;
+	bh=FjFdNUSx16sRQrkeVQ0c2raIOoN2qEIzJULZvtRuGFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MCGZ6Xt4iWjV+h1ZTZKwAnP78J6e7SMHQodspaQj0B6sVt9owS6YAltnDE28npTdHpLva6KxHjLi28k0uwTv3jJUQpFKFielwyUZxszA+4GhLAM57NVLBfrz7hzXOYEI0J9KrcR87oueCOuxMx67a/w8wHZPZI6KG/wb3gGsuKI=
+	 MIME-Version; b=V1N5crDqEAk6inWmqmNXK6ybP9cgZfXkDTQsbgwEcC8ViL5585gIcepUPVLTnZ6laNxSJIvDfWX6ACABrJ7wKk+jA2lzS4hyk42wVHlLeHOKbA/5yB05tKGOJMCIos1JSxZgECgo2FfI1jlfC6zPWwwi15Wn4Ae8eiadSa5Nn3o=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.132.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
-Received: from albert.telenet-ops.be (albert.telenet-ops.be [IPv6:2a02:1800:110:4::f00:1a])
-	by cantor.telenet-ops.be (Postfix) with ESMTPS id 4Zpmwn2QL8z4x3Xq
-	for <linux-spi@vger.kernel.org>; Fri, 02 May 2025 12:14:01 +0200 (CEST)
+Received: from xavier.telenet-ops.be (xavier.telenet-ops.be [IPv6:2a02:1800:120:4::f00:14])
+	by cantor.telenet-ops.be (Postfix) with ESMTPS id 4Zpmwx0P9dz4x5HN
+	for <linux-spi@vger.kernel.org>; Fri, 02 May 2025 12:14:09 +0200 (CEST)
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:df64:35e8:502:4ac0])
-	by albert.telenet-ops.be with cmsmtp
-	id kAE02E02f4sst1106AE1Ja; Fri, 02 May 2025 12:14:01 +0200
+	by xavier.telenet-ops.be with cmsmtp
+	id kAE02E00B4sst1101AE0iY; Fri, 02 May 2025 12:14:00 +0200
 Received: from rox.of.borg ([192.168.97.57])
 	by ramsan.of.borg with esmtp (Exim 4.97)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1uAnP2-00000000WAc-1Hya;
+	id 1uAnP1-00000000W9I-2pZ6;
 	Fri, 02 May 2025 12:14:00 +0200
 Received: from geert by rox.of.borg with local (Exim 4.97)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1uAnP6-00000008oXo-3AkR;
+	id 1uAnP6-00000008oWG-0eBD;
 	Fri, 02 May 2025 12:14:00 +0200
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 To: Mark Brown <broonie@kernel.org>,
@@ -40,9 +40,9 @@ Cc: linux-spi@vger.kernel.org,
 	linux-sound@vger.kernel.org,
 	linux-renesas-soc@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 21/22] spi: sh-msiof: Move register definitions to <linux/spi/sh_msiof.h>
-Date: Fri,  2 May 2025 12:13:53 +0200
-Message-ID: <1cbd08f6e5a5ee6e53d22139b8e14be60e7be892.1746180072.git.geert+renesas@glider.be>
+Subject: [PATCH 02/22] spi: sh-msiof: Remove unneeded compatible values
+Date: Fri,  2 May 2025 12:13:34 +0200
+Message-ID: <233d93bf8445e34d46c4aaf449b1c743e7aa02b2.1746180072.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1746180072.git.geert+renesas@glider.be>
 References: <cover.1746180072.git.geert+renesas@glider.be>
@@ -54,283 +54,64 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Move the MSIOF register and register bit definitions from the MSIOF SPI
-driver to the existing header file <linux/spi/sh_msiof.h>, so they can
-be shared with the MSIOF I2S driver.
+The Clock-Synchronized Serial Interfaces with FIFO (MSIOF) driver
+matches against both SoC-specific and family-specific compatible values
+to maintain backwards-compatibility with old DTBs predating the
+introduction of the family-specific compatible values.
 
+For RZ/G1, the SoC-specific compatible match entry can be removed from
+the driver: their DT always had the family-specific compatible values,
+and thus there was never a need to add the SoC-specific compatible
+values to the driver.
+
+For R-Car Gen2 and M3-W, the SoC-specific compatible match entries can
+be removed, too, as there are a few points in time where DT
+backwards-compatibility was broken for other reasons:
+  - Legacy DT clock support is no longer supported since commit
+    58256143cff7c2e0 ("clk: renesas: Remove R-Car Gen2 legacy DT clock
+    support") in v5.5, and the addition of "renesas,rcar-gen2-msiof" to
+    DTS in v4.11 predates the completion of the clock conversion in
+    v4.15,
+  - Legacy DT LVDS support is no longer supported since commit
+    841281fe52a769fe ("drm: rcar-du: Drop LVDS device tree backward
+    compatibility") in v5.18, and the addition of
+    "renesas,rcar-gen3-msiof" in commit 8b51f97138ca22b6 ("arm64: dts:
+    r8a7796: Use R-Car Gen 3 fallback binding for msiof nodes") in v4.11
+    predates the LVDS conversion in commit 58e8ed2ee9abe718 ("arm64:
+    dts: renesas: Convert to new LVDS DT bindings") in v4.20.
+
+For R-Car H3, the SoC-specific compatible match entry cannot be removed,
+as its purpose is to handle an SoC-specific quirk.
+
+Suggested-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- drivers/spi/spi-sh-msiof.c   | 123 -----------------------------------
- include/linux/spi/sh_msiof.h | 122 ++++++++++++++++++++++++++++++++++
- 2 files changed, 122 insertions(+), 123 deletions(-)
+This is a resend of a patch that never received any comments.
+---
+ drivers/spi/spi-sh-msiof.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
 diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 5d9d551dbd220389..38c2d0170430b2ce 100644
+index 325bd5890b78884d..15e42af35f7e4230 100644
 --- a/drivers/spi/spi-sh-msiof.c
 +++ b/drivers/spi/spi-sh-msiof.c
-@@ -64,129 +64,6 @@ struct sh_msiof_spi_priv {
+@@ -1088,16 +1088,8 @@ static const struct sh_msiof_chipdata rcar_r8a7795_data = {
  
- #define MAX_SS	3	/* Maximum number of native chip selects */
- 
--#define SITMDR1	0x00	/* Transmit Mode Register 1 */
--#define SITMDR2	0x04	/* Transmit Mode Register 2 */
--#define SITMDR3	0x08	/* Transmit Mode Register 3 */
--#define SIRMDR1	0x10	/* Receive Mode Register 1 */
--#define SIRMDR2	0x14	/* Receive Mode Register 2 */
--#define SIRMDR3	0x18	/* Receive Mode Register 3 */
--#define SITSCR	0x20	/* Transmit Clock Select Register */
--#define SIRSCR	0x22	/* Receive Clock Select Register (SH, A1, APE6) */
--#define SICTR	0x28	/* Control Register */
--#define SIFCTR	0x30	/* FIFO Control Register */
--#define SISTR	0x40	/* Status Register */
--#define SIIER	0x44	/* Interrupt Enable Register */
--#define SITDR1	0x48	/* Transmit Control Data Register 1 (SH, A1) */
--#define SITDR2	0x4c	/* Transmit Control Data Register 2 (SH, A1) */
--#define SITFDR	0x50	/* Transmit FIFO Data Register */
--#define SIRDR1	0x58	/* Receive Control Data Register 1 (SH, A1) */
--#define SIRDR2	0x5c	/* Receive Control Data Register 2 (SH, A1) */
--#define SIRFDR	0x60	/* Receive FIFO Data Register */
--
--/* SITMDR1 and SIRMDR1 */
--#define SIMDR1_TRMD		BIT(31)		/* Transfer Mode (1 = Master mode) */
--#define SIMDR1_SYNCMD		GENMASK(29, 28)	/* SYNC Mode */
--#define SIMDR1_SYNCMD_PULSE	0U		/*   Frame start sync pulse */
--#define SIMDR1_SYNCMD_SPI	2U		/*   Level mode/SPI */
--#define SIMDR1_SYNCMD_LR	3U		/*   L/R mode */
--#define SIMDR1_SYNCAC		BIT(25)		/* Sync Polarity (1 = Active-low) */
--#define SIMDR1_BITLSB		BIT(24)		/* MSB/LSB First (1 = LSB first) */
--#define SIMDR1_DTDL		GENMASK(22, 20)	/* Data Pin Bit Delay for MSIOF_SYNC */
--#define SIMDR1_SYNCDL		GENMASK(18, 16)	/* Frame Sync Signal Timing Delay */
--#define SIMDR1_FLD		GENMASK(3, 2)	/* Frame Sync Signal Interval (0-3) */
--#define SIMDR1_XXSTP		BIT(0)		/* Transmission/Reception Stop on FIFO */
--/* SITMDR1 */
--#define SITMDR1_PCON		BIT(30)		/* Transfer Signal Connection */
--#define SITMDR1_SYNCCH		GENMASK(27, 26)	/* Sync Signal Channel Select */
--						/* 0=MSIOF_SYNC, 1=MSIOF_SS1, 2=MSIOF_SS2 */
--
--/* SITMDR2 and SIRMDR2 */
--#define SIMDR2_GRP		GENMASK(31, 30)	/* Group Count */
--#define SIMDR2_BITLEN1		GENMASK(28, 24)	/* Data Size (8-32 bits) */
--#define SIMDR2_WDLEN1		GENMASK(23, 16)	/* Word Count (1-64/256 (SH, A1))) */
--#define SIMDR2_GRPMASK		GENMASK(3, 0)	/* Group Output Mask 1-4 (SH, A1) */
--
--/* SITMDR3 and SIRMDR3 */
--#define SIMDR3_BITLEN2		GENMASK(28, 24)	/* Data Size (8-32 bits) */
--#define SIMDR3_WDLEN2		GENMASK(23, 16)	/* Word Count (1-64/256 (SH, A1))) */
--
--/* SITSCR and SIRSCR */
--#define SISCR_BRPS		GENMASK(12, 8)	/* Prescaler Setting (1-32) */
--#define SISCR_BRDV		GENMASK(2, 0)	/* Baud Rate Generator's Division Ratio */
--
--/* SICTR */
--#define SICTR_TSCKIZ		GENMASK(31, 30)	/* Transmit Clock I/O Polarity Select */
--#define SICTR_TSCKIZ_SCK	BIT(31)		/*   Disable SCK when TX disabled */
--#define SICTR_TSCKIZ_POL	BIT(30)		/*   Transmit Clock Polarity */
--#define SICTR_RSCKIZ		GENMASK(29, 28) /* Receive Clock Polarity Select */
--#define SICTR_RSCKIZ_SCK	BIT(29)		/*   Must match CTR_TSCKIZ_SCK */
--#define SICTR_RSCKIZ_POL	BIT(28)		/*   Receive Clock Polarity */
--#define SICTR_TEDG		BIT(27)		/* Transmit Timing (1 = falling edge) */
--#define SICTR_REDG		BIT(26)		/* Receive Timing (1 = falling edge) */
--#define SICTR_TXDIZ		GENMASK(23, 22)	/* Pin Output When TX is Disabled */
--#define SICTR_TXDIZ_LOW		0U		/*   0 */
--#define SICTR_TXDIZ_HIGH	1U		/*   1 */
--#define SICTR_TXDIZ_HIZ		2U		/*   High-impedance */
--#define SICTR_TSCKE		BIT(15)		/* Transmit Serial Clock Output Enable */
--#define SICTR_TFSE		BIT(14)		/* Transmit Frame Sync Signal Output Enable */
--#define SICTR_TXE		BIT(9)		/* Transmit Enable */
--#define SICTR_RXE		BIT(8)		/* Receive Enable */
--#define SICTR_TXRST		BIT(1)		/* Transmit Reset */
--#define SICTR_RXRST		BIT(0)		/* Receive Reset */
--
--/* SIFCTR */
--#define SIFCTR_TFWM		GENMASK(31, 29)	/* Transmit FIFO Watermark */
--#define SIFCTR_TFWM_64		0U		/*  Transfer Request when 64 empty stages */
--#define SIFCTR_TFWM_32		1U		/*  Transfer Request when 32 empty stages */
--#define SIFCTR_TFWM_24		2U		/*  Transfer Request when 24 empty stages */
--#define SIFCTR_TFWM_16		3U		/*  Transfer Request when 16 empty stages */
--#define SIFCTR_TFWM_12		4U		/*  Transfer Request when 12 empty stages */
--#define SIFCTR_TFWM_8		5U		/*  Transfer Request when 8 empty stages */
--#define SIFCTR_TFWM_4		6U		/*  Transfer Request when 4 empty stages */
--#define SIFCTR_TFWM_1		7U		/*  Transfer Request when 1 empty stage */
--#define SIFCTR_TFUA		GENMASK(28, 20) /* Transmit FIFO Usable Area */
--#define SIFCTR_RFWM		GENMASK(15, 13)	/* Receive FIFO Watermark */
--#define SIFCTR_RFWM_1		0U		/*  Transfer Request when 1 valid stages */
--#define SIFCTR_RFWM_4		1U		/*  Transfer Request when 4 valid stages */
--#define SIFCTR_RFWM_8		2U		/*  Transfer Request when 8 valid stages */
--#define SIFCTR_RFWM_16		3U		/*  Transfer Request when 16 valid stages */
--#define SIFCTR_RFWM_32		4U		/*  Transfer Request when 32 valid stages */
--#define SIFCTR_RFWM_64		5U		/*  Transfer Request when 64 valid stages */
--#define SIFCTR_RFWM_128		6U		/*  Transfer Request when 128 valid stages */
--#define SIFCTR_RFWM_256		7U		/*  Transfer Request when 256 valid stages */
--#define SIFCTR_RFUA		GENMASK(12, 4)	/* Receive FIFO Usable Area (0x40 = full) */
--
--/* SISTR */
--#define SISTR_TFEMP		BIT(29) /* Transmit FIFO Empty */
--#define SISTR_TDREQ		BIT(28) /* Transmit Data Transfer Request */
--#define SISTR_TEOF		BIT(23) /* Frame Transmission End */
--#define SISTR_TFSERR		BIT(21) /* Transmit Frame Synchronization Error */
--#define SISTR_TFOVF		BIT(20) /* Transmit FIFO Overflow */
--#define SISTR_TFUDF		BIT(19) /* Transmit FIFO Underflow */
--#define SISTR_RFFUL		BIT(13) /* Receive FIFO Full */
--#define SISTR_RDREQ		BIT(12) /* Receive Data Transfer Request */
--#define SISTR_REOF		BIT(7)  /* Frame Reception End */
--#define SISTR_RFSERR		BIT(5)  /* Receive Frame Synchronization Error */
--#define SISTR_RFUDF		BIT(4)  /* Receive FIFO Underflow */
--#define SISTR_RFOVF		BIT(3)  /* Receive FIFO Overflow */
--
--/* SIIER */
--#define SIIER_TDMAE		BIT(31) /* Transmit Data DMA Transfer Req. Enable */
--#define SIIER_TFEMPE		BIT(29) /* Transmit FIFO Empty Enable */
--#define SIIER_TDREQE		BIT(28) /* Transmit Data Transfer Request Enable */
--#define SIIER_TEOFE		BIT(23) /* Frame Transmission End Enable */
--#define SIIER_TFSERRE		BIT(21) /* Transmit Frame Sync Error Enable */
--#define SIIER_TFOVFE		BIT(20) /* Transmit FIFO Overflow Enable */
--#define SIIER_TFUDFE		BIT(19) /* Transmit FIFO Underflow Enable */
--#define SIIER_RDMAE		BIT(15) /* Receive Data DMA Transfer Req. Enable */
--#define SIIER_RFFULE		BIT(13) /* Receive FIFO Full Enable */
--#define SIIER_RDREQE		BIT(12) /* Receive Data Transfer Request Enable */
--#define SIIER_REOFE		BIT(7)  /* Frame Reception End Enable */
--#define SIIER_RFSERRE		BIT(5)  /* Receive Frame Sync Error Enable */
--#define SIIER_RFUDFE		BIT(4)  /* Receive FIFO Underflow Enable */
--#define SIIER_RFOVFE		BIT(3)  /* Receive FIFO Overflow Enable */
--
--
- static u32 sh_msiof_read(struct sh_msiof_spi_priv *p, int reg_offs)
- {
- 	switch (reg_offs) {
-diff --git a/include/linux/spi/sh_msiof.h b/include/linux/spi/sh_msiof.h
-index f950d280461b917d..6f326d6a27d55b0d 100644
---- a/include/linux/spi/sh_msiof.h
-+++ b/include/linux/spi/sh_msiof.h
-@@ -2,6 +2,128 @@
- #ifndef __SPI_SH_MSIOF_H__
- #define __SPI_SH_MSIOF_H__
- 
-+#define SITMDR1	0x00	/* Transmit Mode Register 1 */
-+#define SITMDR2	0x04	/* Transmit Mode Register 2 */
-+#define SITMDR3	0x08	/* Transmit Mode Register 3 */
-+#define SIRMDR1	0x10	/* Receive Mode Register 1 */
-+#define SIRMDR2	0x14	/* Receive Mode Register 2 */
-+#define SIRMDR3	0x18	/* Receive Mode Register 3 */
-+#define SITSCR	0x20	/* Transmit Clock Select Register */
-+#define SIRSCR	0x22	/* Receive Clock Select Register (SH, A1, APE6) */
-+#define SICTR	0x28	/* Control Register */
-+#define SIFCTR	0x30	/* FIFO Control Register */
-+#define SISTR	0x40	/* Status Register */
-+#define SIIER	0x44	/* Interrupt Enable Register */
-+#define SITDR1	0x48	/* Transmit Control Data Register 1 (SH, A1) */
-+#define SITDR2	0x4c	/* Transmit Control Data Register 2 (SH, A1) */
-+#define SITFDR	0x50	/* Transmit FIFO Data Register */
-+#define SIRDR1	0x58	/* Receive Control Data Register 1 (SH, A1) */
-+#define SIRDR2	0x5c	/* Receive Control Data Register 2 (SH, A1) */
-+#define SIRFDR	0x60	/* Receive FIFO Data Register */
-+
-+/* SITMDR1 and SIRMDR1 */
-+#define SIMDR1_TRMD		BIT(31)		/* Transfer Mode (1 = Master mode) */
-+#define SIMDR1_SYNCMD		GENMASK(29, 28)	/* SYNC Mode */
-+#define SIMDR1_SYNCMD_PULSE	0U		/*   Frame start sync pulse */
-+#define SIMDR1_SYNCMD_SPI	2U		/*   Level mode/SPI */
-+#define SIMDR1_SYNCMD_LR	3U		/*   L/R mode */
-+#define SIMDR1_SYNCAC		BIT(25)		/* Sync Polarity (1 = Active-low) */
-+#define SIMDR1_BITLSB		BIT(24)		/* MSB/LSB First (1 = LSB first) */
-+#define SIMDR1_DTDL		GENMASK(22, 20)	/* Data Pin Bit Delay for MSIOF_SYNC */
-+#define SIMDR1_SYNCDL		GENMASK(18, 16)	/* Frame Sync Signal Timing Delay */
-+#define SIMDR1_FLD		GENMASK(3, 2)	/* Frame Sync Signal Interval (0-3) */
-+#define SIMDR1_XXSTP		BIT(0)		/* Transmission/Reception Stop on FIFO */
-+/* SITMDR1 */
-+#define SITMDR1_PCON		BIT(30)		/* Transfer Signal Connection */
-+#define SITMDR1_SYNCCH		GENMASK(27, 26)	/* Sync Signal Channel Select */
-+						/* 0=MSIOF_SYNC, 1=MSIOF_SS1, 2=MSIOF_SS2 */
-+
-+/* SITMDR2 and SIRMDR2 */
-+#define SIMDR2_GRP		GENMASK(31, 30)	/* Group Count */
-+#define SIMDR2_BITLEN1		GENMASK(28, 24)	/* Data Size (8-32 bits) */
-+#define SIMDR2_WDLEN1		GENMASK(23, 16)	/* Word Count (1-64/256 (SH, A1))) */
-+#define SIMDR2_GRPMASK		GENMASK(3, 0)	/* Group Output Mask 1-4 (SH, A1) */
-+
-+/* SITMDR3 and SIRMDR3 */
-+#define SIMDR3_BITLEN2		GENMASK(28, 24)	/* Data Size (8-32 bits) */
-+#define SIMDR3_WDLEN2		GENMASK(23, 16)	/* Word Count (1-64/256 (SH, A1))) */
-+
-+/* SITSCR and SIRSCR */
-+#define SISCR_BRPS		GENMASK(12, 8)	/* Prescaler Setting (1-32) */
-+#define SISCR_BRDV		GENMASK(2, 0)	/* Baud Rate Generator's Division Ratio */
-+
-+/* SICTR */
-+#define SICTR_TSCKIZ		GENMASK(31, 30)	/* Transmit Clock I/O Polarity Select */
-+#define SICTR_TSCKIZ_SCK	BIT(31)		/*   Disable SCK when TX disabled */
-+#define SICTR_TSCKIZ_POL	BIT(30)		/*   Transmit Clock Polarity */
-+#define SICTR_RSCKIZ		GENMASK(29, 28) /* Receive Clock Polarity Select */
-+#define SICTR_RSCKIZ_SCK	BIT(29)		/*   Must match CTR_TSCKIZ_SCK */
-+#define SICTR_RSCKIZ_POL	BIT(28)		/*   Receive Clock Polarity */
-+#define SICTR_TEDG		BIT(27)		/* Transmit Timing (1 = falling edge) */
-+#define SICTR_REDG		BIT(26)		/* Receive Timing (1 = falling edge) */
-+#define SICTR_TXDIZ		GENMASK(23, 22)	/* Pin Output When TX is Disabled */
-+#define SICTR_TXDIZ_LOW		0U		/*   0 */
-+#define SICTR_TXDIZ_HIGH	1U		/*   1 */
-+#define SICTR_TXDIZ_HIZ		2U		/*   High-impedance */
-+#define SICTR_TSCKE		BIT(15)		/* Transmit Serial Clock Output Enable */
-+#define SICTR_TFSE		BIT(14)		/* Transmit Frame Sync Signal Output Enable */
-+#define SICTR_TXE		BIT(9)		/* Transmit Enable */
-+#define SICTR_RXE		BIT(8)		/* Receive Enable */
-+#define SICTR_TXRST		BIT(1)		/* Transmit Reset */
-+#define SICTR_RXRST		BIT(0)		/* Receive Reset */
-+
-+/* SIFCTR */
-+#define SIFCTR_TFWM		GENMASK(31, 29)	/* Transmit FIFO Watermark */
-+#define SIFCTR_TFWM_64		0U		/*  Transfer Request when 64 empty stages */
-+#define SIFCTR_TFWM_32		1U		/*  Transfer Request when 32 empty stages */
-+#define SIFCTR_TFWM_24		2U		/*  Transfer Request when 24 empty stages */
-+#define SIFCTR_TFWM_16		3U		/*  Transfer Request when 16 empty stages */
-+#define SIFCTR_TFWM_12		4U		/*  Transfer Request when 12 empty stages */
-+#define SIFCTR_TFWM_8		5U		/*  Transfer Request when 8 empty stages */
-+#define SIFCTR_TFWM_4		6U		/*  Transfer Request when 4 empty stages */
-+#define SIFCTR_TFWM_1		7U		/*  Transfer Request when 1 empty stage */
-+#define SIFCTR_TFUA		GENMASK(28, 20) /* Transmit FIFO Usable Area */
-+#define SIFCTR_RFWM		GENMASK(15, 13)	/* Receive FIFO Watermark */
-+#define SIFCTR_RFWM_1		0U		/*  Transfer Request when 1 valid stages */
-+#define SIFCTR_RFWM_4		1U		/*  Transfer Request when 4 valid stages */
-+#define SIFCTR_RFWM_8		2U		/*  Transfer Request when 8 valid stages */
-+#define SIFCTR_RFWM_16		3U		/*  Transfer Request when 16 valid stages */
-+#define SIFCTR_RFWM_32		4U		/*  Transfer Request when 32 valid stages */
-+#define SIFCTR_RFWM_64		5U		/*  Transfer Request when 64 valid stages */
-+#define SIFCTR_RFWM_128		6U		/*  Transfer Request when 128 valid stages */
-+#define SIFCTR_RFWM_256		7U		/*  Transfer Request when 256 valid stages */
-+#define SIFCTR_RFUA		GENMASK(12, 4)	/* Receive FIFO Usable Area (0x40 = full) */
-+
-+/* SISTR */
-+#define SISTR_TFEMP		BIT(29) /* Transmit FIFO Empty */
-+#define SISTR_TDREQ		BIT(28) /* Transmit Data Transfer Request */
-+#define SISTR_TEOF		BIT(23) /* Frame Transmission End */
-+#define SISTR_TFSERR		BIT(21) /* Transmit Frame Synchronization Error */
-+#define SISTR_TFOVF		BIT(20) /* Transmit FIFO Overflow */
-+#define SISTR_TFUDF		BIT(19) /* Transmit FIFO Underflow */
-+#define SISTR_RFFUL		BIT(13) /* Receive FIFO Full */
-+#define SISTR_RDREQ		BIT(12) /* Receive Data Transfer Request */
-+#define SISTR_REOF		BIT(7)  /* Frame Reception End */
-+#define SISTR_RFSERR		BIT(5)  /* Receive Frame Synchronization Error */
-+#define SISTR_RFUDF		BIT(4)  /* Receive FIFO Underflow */
-+#define SISTR_RFOVF		BIT(3)  /* Receive FIFO Overflow */
-+
-+/* SIIER */
-+#define SIIER_TDMAE		BIT(31) /* Transmit Data DMA Transfer Req. Enable */
-+#define SIIER_TFEMPE		BIT(29) /* Transmit FIFO Empty Enable */
-+#define SIIER_TDREQE		BIT(28) /* Transmit Data Transfer Request Enable */
-+#define SIIER_TEOFE		BIT(23) /* Frame Transmission End Enable */
-+#define SIIER_TFSERRE		BIT(21) /* Transmit Frame Sync Error Enable */
-+#define SIIER_TFOVFE		BIT(20) /* Transmit FIFO Overflow Enable */
-+#define SIIER_TFUDFE		BIT(19) /* Transmit FIFO Underflow Enable */
-+#define SIIER_RDMAE		BIT(15) /* Receive Data DMA Transfer Req. Enable */
-+#define SIIER_RFFULE		BIT(13) /* Receive FIFO Full Enable */
-+#define SIIER_RDREQE		BIT(12) /* Receive Data Transfer Request Enable */
-+#define SIIER_REOFE		BIT(7)  /* Frame Reception End Enable */
-+#define SIIER_RFSERRE		BIT(5)  /* Receive Frame Sync Error Enable */
-+#define SIIER_RFUDFE		BIT(4)  /* Receive FIFO Underflow Enable */
-+#define SIIER_RFOVFE		BIT(3)  /* Receive FIFO Overflow Enable */
-+
- enum {
- 	MSIOF_SPI_HOST,
- 	MSIOF_SPI_TARGET,
+ static const struct of_device_id sh_msiof_match[] __maybe_unused = {
+ 	{ .compatible = "renesas,sh-mobile-msiof", .data = &sh_data },
+-	{ .compatible = "renesas,msiof-r8a7743",   .data = &rcar_gen2_data },
+-	{ .compatible = "renesas,msiof-r8a7745",   .data = &rcar_gen2_data },
+-	{ .compatible = "renesas,msiof-r8a7790",   .data = &rcar_gen2_data },
+-	{ .compatible = "renesas,msiof-r8a7791",   .data = &rcar_gen2_data },
+-	{ .compatible = "renesas,msiof-r8a7792",   .data = &rcar_gen2_data },
+-	{ .compatible = "renesas,msiof-r8a7793",   .data = &rcar_gen2_data },
+-	{ .compatible = "renesas,msiof-r8a7794",   .data = &rcar_gen2_data },
+ 	{ .compatible = "renesas,rcar-gen2-msiof", .data = &rcar_gen2_data },
+ 	{ .compatible = "renesas,msiof-r8a7795",   .data = &rcar_r8a7795_data },
+-	{ .compatible = "renesas,msiof-r8a7796",   .data = &rcar_gen3_data },
+ 	{ .compatible = "renesas,rcar-gen3-msiof", .data = &rcar_gen3_data },
+ 	{ .compatible = "renesas,rcar-gen4-msiof", .data = &rcar_gen3_data },
+ 	{ .compatible = "renesas,sh-msiof",        .data = &sh_data }, /* Deprecated */
 -- 
 2.43.0
 

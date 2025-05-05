@@ -1,44 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF4BB34FB11;
-	Mon,  5 May 2025 22:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB1F7359E00;
+	Mon,  5 May 2025 22:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484822; cv=none; b=OJ4l517wqoopQ4mgUw2HXiYBxNRtSnFGWMc3wShQAbiiEMK82kW9Z5YRhxFxBpmZYabgM6T/9oEP3EXrE0qeBsMfTQTSr1CmYsHOwwibk8FomqPU5LoxaGke56izPOTDHhtGYkbYoujF59H0nM8cxUpp27ZiPmgMbUVYPT81bZw=
+	t=1746484978; cv=none; b=Ho8dAstlMz5HRnoFJesWarukPOY+eDCkSMJ2czD0UN15fTFbMwFUah2117y4BZw7ObQk0dDae4TAQvrbMbTtvB5ocRENhJenCwU2svH8EwTkvJ7OKrtVOcdaAr9CVsgkSydqvGggg1NC+CPjAzbQPE/4ZVJpLenEucdYqDQcoCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484822; c=relaxed/simple;
-	bh=DtvHFykVSDQuaO9lkQBRldoHX++x89ZUDYXZWFSdAIA=;
+	s=arc-20240116; t=1746484978; c=relaxed/simple;
+	bh=kjAsViGtHjStfVoskh40kOGVqPEkltRf6p3137feQjU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=tppnNgLvO3Yl/XAts/BYPrHMrbW7VwMFlWx9Ht5VVIIx8MzYTRBjh6xv972XlhNhy+Jj0JCUjXdu1ImbVx4dG7Ja+QwT053wkNogMKRSecOlhR6ttVuZaNdHAfBi2GvCcrcbOMfIuuTHfGBy8Pq5kw/yMT5YxEz0fA9PY6KeTAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gWt3Au6O; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=aUqxxMS9/9HTebUsOZdlSMs5/UZiGHW6crZ2aES+kU9X+HbhtmsQmvJapSVYZoY47x6I0nNyaPyaWwt+lK4/CNss/qTfRpdjbUZLJFKMj8VlgtUQ1wyCkRmfpNNbcOF7gpCpF5gOpGxOG7pC3grL81wk+MIk5P30XeF12LZ9DnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iSVn8joi; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gWt3Au6O"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97A0AC4CEEE;
-	Mon,  5 May 2025 22:40:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iSVn8joi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01DFEC4CEE4;
+	Mon,  5 May 2025 22:42:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484822;
-	bh=DtvHFykVSDQuaO9lkQBRldoHX++x89ZUDYXZWFSdAIA=;
+	s=k20201202; t=1746484978;
+	bh=kjAsViGtHjStfVoskh40kOGVqPEkltRf6p3137feQjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gWt3Au6Oga2Hd+B8hhpeiuFy/MNmC8NbuMn5tzL80rxdeVnRlfi3WDM27EBFtSSHz
-	 Y1aHzp0M28CiXGVa+GJcUsTX9OlqB9vB7dtpGG5J+WanrHqWVNdV8WYYFRWgfwINCZ
-	 Guhf++53j0b7QqcRM5nC+J0saQsWcIgs58/qQuXpWFAD+W8qkHSSVBK/E4OjUTOpiD
-	 ZfElBXIwCBCKq6Bw7N3KvnCmh37hQtjjRiRBkARB5b5SS+VobppRRIfbHzvVXCPHyE
-	 cf78TU+UckenYEVsyuGtL6PMmaGzgCjzitrVOdfCvkEFLy/FIsq7vhI2e1HcDQbFS9
-	 WIckcXpxaUE4w==
+	b=iSVn8joiEkDsoF2EXGVJpdGNfzOh4cIf07pPYv5yZFU8/c9bA4e4Quac5jTMDXUpV
+	 dQAB8gC8irpkNFYeREESyfbDrqvt/QK2jhlwwQ7SWd/WFlgqcd3MI4eM84dwiXfnDH
+	 vOP5RlhGowkyO/r+B1j4AVa42fxpuJHQ/IZtqB7q7NQ6UGfiOVtM7wD/Wiggl3BMB+
+	 ZSc1QopTQY+qlSiwPlapm9RRpfS1W5arhtYiCuOdMUmhhrwQ0Uc+LePw3oxYqfXAcD
+	 iaH+bELdS5qIVZGCV92pPTZyw8H3NPuyygFWfWu7RZZKtn6nie7zvI6C/k+3OJps50
+	 zGttlCnRBgngQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Luis de Arquer <luis.dearquer@inertim.com>,
+Cc: Sergio Perez Gonzalez <sperezglz@gmail.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	heiko@sntech.de,
-	linux-spi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.12 031/486] spi-rockchip: Fix register out of bounds access
-Date: Mon,  5 May 2025 18:31:47 -0400
-Message-Id: <20250505223922.2682012-31-sashal@kernel.org>
+	linux-spi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 108/486] spi: spi-mux: Fix coverity issue, unchecked return value
+Date: Mon,  5 May 2025 18:33:04 -0400
+Message-Id: <20250505223922.2682012-108-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -53,35 +50,38 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Luis de Arquer <luis.dearquer@inertim.com>
+From: Sergio Perez Gonzalez <sperezglz@gmail.com>
 
-[ Upstream commit 7a874e8b54ea21094f7fd2d428b164394c6cb316 ]
+[ Upstream commit 5a5fc308418aca275a898d638bc38c093d101855 ]
 
-Do not write native chip select stuff for GPIO chip selects.
-GPIOs can be numbered much higher than native CS.
-Also, it makes no sense.
+The return value of spi_setup() is not captured within
+spi_mux_select() and it is assumed to be always success.
 
-Signed-off-by: Luis de Arquer <luis.dearquer@inertim.com>
-Link: https://patch.msgid.link/365ccddfba110549202b3520f4401a6a936e82a8.camel@gmail.com
+CID: 1638374
+
+Signed-off-by: Sergio Perez Gonzalez <sperezglz@gmail.com>
+Link: https://patch.msgid.link/20250316054651.13242-1-sperezglz@gmail.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-rockchip.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-mux.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 40a64a598a749..5008489d6fac8 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -547,7 +547,7 @@ static int rockchip_spi_config(struct rockchip_spi *rs,
- 	cr0 |= (spi->mode & 0x3U) << CR0_SCPH_OFFSET;
- 	if (spi->mode & SPI_LSB_FIRST)
- 		cr0 |= CR0_FBM_LSB << CR0_FBM_OFFSET;
--	if (spi->mode & SPI_CS_HIGH)
-+	if ((spi->mode & SPI_CS_HIGH) && !(spi_get_csgpiod(spi, 0)))
- 		cr0 |= BIT(spi_get_chipselect(spi, 0)) << CR0_SOI_OFFSET;
+diff --git a/drivers/spi/spi-mux.c b/drivers/spi/spi-mux.c
+index c02c4204442f5..0eb35c4e3987e 100644
+--- a/drivers/spi/spi-mux.c
++++ b/drivers/spi/spi-mux.c
+@@ -68,9 +68,7 @@ static int spi_mux_select(struct spi_device *spi)
  
- 	if (xfer->rx_buf && xfer->tx_buf)
+ 	priv->current_cs = spi_get_chipselect(spi, 0);
+ 
+-	spi_setup(priv->spi);
+-
+-	return 0;
++	return spi_setup(priv->spi);
+ }
+ 
+ static int spi_mux_setup(struct spi_device *spi)
 -- 
 2.39.5
 

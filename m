@@ -1,253 +1,140 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B996C13AF2;
-	Mon,  5 May 2025 16:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 034121A3144;
+	Mon,  5 May 2025 16:41:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746463180; cv=none; b=hTyvoTAYL3aihW6bvotrTYJFCWbC+4XI5m7I7HC/tNhfN1lprwtrxsdybJrJMA85XV8ej4FMFbWeD+RzDDBJ+zB7Qm1/a1muE/2OcdQEXQjle198W7sDAfAHNRdspZV7w55r9iPNB13kwmwpjuEi9TC90FD6t/an6uy6F2afSm4=
+	t=1746463298; cv=none; b=grV1iUxtTvjstLB6qLKxvDURP/4nk3iSM5tVt5AmCs23d9TvFrOJPrCd0gjlynPn8zYY1hp+1dZHWasLTAfPaifZC9WeoDA90q5mQ4o1EVGnjgkUurHhP49W28Ryt8Gme+Qy6znfI0OBeZJaWMRvezhPu56Q4a8pJKKBYoEKTms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746463180; c=relaxed/simple;
-	bh=5TkvbWijlJPTKwJLH5IndsreaI2ziH2edXKHQRQsc18=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=L5f7GHWNk/7n71OGKQh8xJW5eYDNI60TmGwQI5TJSLNJ7IKh6dgT3helZT7XMzEBfiNmbHyCMNAL/tLkfNvYKCAAJlu8JlbW+vqlYUhXPLVc2lb2VD8QitCyFqMZb1zcTGUT0vCMZ/+rIVu06AUvw/55LhS8ikG+oo66I0R5PLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b8ptWYaK; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746463298; c=relaxed/simple;
+	bh=JYprB8GV8upmRPswjAV50c9OstRoU7o57f50GyAJhd0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=dNBJw0otsTRvr74z0juffzhm22dVWRHU0JfljQMwG5j9VRV6ECV1vazo3XfGrcGOkEw4Nue9LAPArWuJEWunYFqHMDoSnJI8EDuiYpieGHt3LfXIIvvdaU/KPi7rqNzv0UsToP+5DH9/rnxNy6XE/o5ZUoExEySOzj7gEpJdaOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r//XJ3kb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b8ptWYaK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94891C4CEE4;
-	Mon,  5 May 2025 16:39:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r//XJ3kb"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 9FE84C4CEEE;
+	Mon,  5 May 2025 16:41:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746463180;
-	bh=5TkvbWijlJPTKwJLH5IndsreaI2ziH2edXKHQRQsc18=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=b8ptWYaK8Uil7cckLaOfHjIBJEFkX/UV75ynNY/C3dnjoWsdOsme27SlAqqBAoWmA
-	 O73zqHNHQgqd894EOIY9omcxDZGLBzo+ZBIlHM7RLJg1ddXta0M1hBssPoOYVF/MRj
-	 ukgKWiZ1YFvMTt4r3BryWYk0WVWYQRHUkmhGJn4FeRb/+4JCVgkmvXWXeMr3R2wnfA
-	 bs1GQlRu37Y+c2RQPgCPTU7CMtVHL4wNyVYNHWKxN4/vQtmG+2zkqqpo9KEziCW6YD
-	 Y69FLFe1xaSvj/gVjXeT0CAx0pxTVpfzcYSs57QGFvChUistmMe4r6yt7SaqyKBmP2
-	 KMMzswmjz4Lxw==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: liwei song <liwei.song.lsong@gmail.com>
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>,  RichardWeinberger
- <richard@nod.at>,  VigneshRaghavendra <vigneshr@ti.com>,  TudorAmbarus
- <tudor.ambarus@linaro.org>,  PratyushYadav <pratyush@kernel.org>,
-  MichaelWalle <mwalle@kernel.org>,  linux-mtd@lists.infradead.org,
-  linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
- linux-spi@vger.kernel.org
-Subject: Re: [PATCH v2] mtd: core: add sync between read/write and unbind
- device
-In-Reply-To: <CAND4H7dz94Gsi_tXSQmLNme9uROnouOUwuCX9BW_+RCc2ZFDqA@mail.gmail.com>
-References: <20250325133954.3699535-1-liwei.song.lsong@gmail.com>
-	<20250331161542.3040005-1-liwei.song.lsong@gmail.com>
-	<87jz73v1th.fsf@bootlin.com>
-	<CAND4H7dz94Gsi_tXSQmLNme9uROnouOUwuCX9BW_+RCc2ZFDqA@mail.gmail.com>
-Date: Mon, 05 May 2025 16:39:37 +0000
-Message-ID: <mafs0bjs73tbq.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=k20201202; t=1746463297;
+	bh=JYprB8GV8upmRPswjAV50c9OstRoU7o57f50GyAJhd0=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=r//XJ3kbuHw+O+cT0SSFfHR3eCiePMLCmTi339dm4jO9H3SYM4rkBO4Ba7BPbEulA
+	 gOU6hagFow2/7+FOyoUMYGfoeu93vKMqkjXOFTGuZm+DwzYvchdLgBdlZsI8IGsRH7
+	 yNgMjV5zo5zUIcBRvfbW/vxhDfnaasw7X0/oYRpaJK0rd7UPgRl1RpsC6GK/D1eq2y
+	 /WOQ0QBlAkzHM11iDUjLH2440M4/9upb9LzYd8iZ2n0OIGcbbacPbz1TSBccd1Lyje
+	 Hb+m/X4uwq9afxRsRSC6xGaEm+XqObsT5zgSuyPZNHHXPjm/hxtTpBUlTc8YSvqRgk
+	 1+bc5mWJvuB3w==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9428EC3ABAA;
+	Mon,  5 May 2025 16:41:37 +0000 (UTC)
+From: =?utf-8?q?Nuno_S=C3=A1_via_B4_Relay?= <devnull+nuno.sa.analog.com@kernel.org>
+Date: Mon, 05 May 2025 17:41:35 +0100
+Subject: [PATCH v4 4/7] include: fpga: adi-axi-common: add new helper
+ macros
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20250505-dev-axi-clkgen-limits-v4-4-3ad5124e19e1@analog.com>
+References: <20250505-dev-axi-clkgen-limits-v4-0-3ad5124e19e1@analog.com>
+In-Reply-To: <20250505-dev-axi-clkgen-limits-v4-0-3ad5124e19e1@analog.com>
+To: linux-clk@vger.kernel.org, linux-fpga@vger.kernel.org, 
+ dmaengine@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+ linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org, 
+ linux-spi@vger.kernel.org
+Cc: Stephen Boyd <sboyd@kernel.org>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Moritz Fischer <mdf@kernel.org>, Wu Hao <hao.wu@intel.com>, 
+ Xu Yilun <yilun.xu@intel.com>, Tom Rix <trix@redhat.com>, 
+ Vinod Koul <vkoul@kernel.org>, Jean Delvare <jdelvare@suse.com>, 
+ Guenter Roeck <linux@roeck-us.net>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, Trevor Gamblin <tgamblin@baylibre.com>, 
+ =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, Mark Brown <broonie@kernel.org>, 
+ Mike Turquette <mturquette@linaro.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1746463295; l=2042;
+ i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
+ bh=kux5dWzKRW1hlIDODzjfwxlzKIR9+mSKGjP/CVy2QCQ=;
+ b=NPQA6P3E8Q2bOW5clAJxPhP4/IFUC1someMaPC7fea50GQ/1NVcE2NidukGTIOUR0ZpPOLJb0
+ mXNYlC2I/deA7AAw+mQUKXN78awHSKF3Lsn5QhJl2WINr644hq8l7e3
+X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
+ pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
+X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
+ auth_id=100
+X-Original-From: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>
+Reply-To: nuno.sa@analog.com
 
-+Cc Mark and linux-spi@
+From: Nuno Sá <nuno.sa@analog.com>
 
-On Wed, Apr 30 2025, liwei song wrote:
+Add new helper macros and enums to help identifying the platform and some
+characteristics of it at runtime.
 
-> Hi Miqu=C3=A8l,
->
-> On Tue, Apr 29, 2025 at 3:55=E2=80=AFPM Miquel Raynal <miquel.raynal@boot=
-lin.com> wrote:
->>
->> Hello Liwei,
->>
->> On 01/04/2025 at 00:15:20 +08, Liwei Song <liwei.song.lsong@gmail.com> w=
-rote:
->>
->> > When unbind mtd device or qspi controller with a high frequency
->> > reading to /dev/mtd0 device, there will be Calltrace as below:
->> >
->> > $ while true; do cat /dev/mtd0 >/dev/null; done &
->> > $ echo ff8d2000.spi  > /sys/bus/platform/drivers/cadence-qspi/unbind
->> >
->> > Internal error: synchronous external abort: 0000000096000210 [#1] PREE=
-MPT SMP
->> > Modules linked in:
->> > CPU: 3 UID: 0 PID: 466 Comm: cat Not tainted 6.14.0-rc7-yocto-standard=
-+ #1
->> > Hardware name: SoCFPGA Stratix 10 SoCDK (DT)
->> > pc : cqspi_indirect_read_execute.isra.0+0x188/0x330
->> > lr : cqspi_indirect_read_execute.isra.0+0x21c/0x330
->> > Call trace:
->> >  cqspi_indirect_read_execute.isra.0+0x188/0x330 (P)
->> >  cqspi_exec_mem_op+0x8bc/0xe40
->> >  spi_mem_exec_op+0x3e0/0x478
->> >  spi_mem_no_dirmap_read+0xa8/0xc8
->> >  spi_mem_dirmap_read+0xdc/0x150
->> >  spi_nor_read_data+0x120/0x198
->> >  spi_nor_read+0xf0/0x280
->> >  mtd_read_oob_std+0x80/0x98
->> >  mtd_read_oob+0x9c/0x168
->> >  mtd_read+0x6c/0xd8
->> >  mtdchar_read+0xdc/0x288
->> >  vfs_read+0xc8/0x2f8
->> >  ksys_read+0x70/0x110
->> >  __arm64_sys_read+0x24/0x38
->> >  invoke_syscall+0x5c/0x130
->> >  el0_svc_common.constprop.0+0x48/0xf8
->> >  do_el0_svc+0x28/0x40
->> >  el0_svc+0x30/0xd0
->> >  el0t_64_sync_handler+0x144/0x168
->> >  el0t_64_sync+0x198/0x1a0
->> > Code: 927e7442 aa1a03e0 8b020342 d503201f (b9400321)
->> > ---[ end trace 0000000000000000 ]---
->> >
->> > Or:
->> > $ while true; do cat /dev/mtd0 >/dev/null; done &
->> > $ echo spi0.0 > /sys/class/mtd/mtd0/device/driver/unbind
->> >
->> > Unable to handle kernel paging request at virtual address 000000000000=
-12e8
->> > Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
->> > Modules linked in:
->> > CPU: 2 UID: 0 PID: 459 Comm: cat Not tainted 6.14.0-rc7-yocto-standard=
-+ #1
->> > Hardware name: SoCFPGA Stratix 10 SoCDK (DT)
->> > pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=3D--)
->> > pc : spi_mem_exec_op+0x3e8/0x478
->> > lr : spi_mem_exec_op+0x3e0/0x478
->> > Call trace:
->> >  spi_mem_exec_op+0x3e8/0x478 (P)
->> >  spi_mem_no_dirmap_read+0xa8/0xc8
->> >  spi_mem_dirmap_read+0xdc/0x150
->> >  spi_nor_read_data+0x120/0x198
->> >  spi_nor_read+0xf0/0x280
->> >  mtd_read_oob_std+0x80/0x98
->> >  mtd_read_oob+0x9c/0x168
->> >  mtd_read+0x6c/0xd8
->> >  mtdchar_read+0xdc/0x288
->> >  vfs_read+0xc8/0x2f8
->> >  ksys_read+0x70/0x110
->> >  __arm64_sys_read+0x24/0x38
->> >  invoke_syscall+0x5c/0x130
->> >  el0_svc_common.constprop.0+0x48/0xf8
->> >  do_el0_svc+0x28/0x40
->> >  el0_svc+0x30/0xd0
->> >  el0t_64_sync_handler+0x144/0x168
->> >  el0t_64_sync+0x198/0x1a0
->> > Code: f9400842 d63f0040 2a0003f4 f94002a1 (f9417437)
->> > ---[ end trace 0000000000000000 ]---
->> >
->> > when unbind is running, the memory allocated to qspi controller and
->> > mtd device is freed during unbinding, but open/close and reading device
->> > are still running, if the reading process get read lock and start
->> > excuting, there will be above illegal memory access. This issue also
->> > can be repruduced on many other platforms like ls1046 and nxpimx8 which
->> > have qspi flash.
->> >
->> > In this patch, register a spi bus notifier which will be called before
->> > unbind process freeing device memory, add a new member mtd_event_remove
->> > to block mtd open/read, then waiting for the running task to be finish=
-ed,
->> > after that, memory is safe to be free.
->> >
->> > Signed-off-by: Liwei Song <liwei.song.lsong@gmail.com>
->> > ---
->> >
->> > Hi Maintainer,
->> >
->> > This is an improved patch compared with the original one:
->> > (https://patchwork.ozlabs.org/project/linux-mtd/patch/20250325133954.3=
-699535-1-liwei.song.lsong@gmail.com/),
->> > This v2 patch move notifier to spi-nor to avoid crash other types of f=
-lash.
->> > now this patch only aim at fixing nor-flash "bind/unbind while reading=
-" calltrace,
->> > but for other types of flash like nand also have this issue.
->>
->> While I agree with the observation and also the conclusion of adding
->> some kind of notifier, I'd like to understand the rationale behind
->> choosing to fix only spi-nor in v2? If any spi memory registered in the
-[...]
->> > +static int spi_nor_remove_notifier_call(struct notifier_block *nb,
->> > +                                 unsigned long event, void *data)
->> > +{
->> > +     struct device *dev =3D data;
->> > +     struct spi_device *spi;
->> > +     struct spi_mem *mem;
->> > +     struct spi_nor *nor;
->> > +
->> > +     if (!of_match_device(spi_nor_of_table, dev))
->> > +             return 0;
->> > +
->> > +     switch (event) {
->> > +     case BUS_NOTIFY_DEL_DEVICE:
->> > +     case BUS_NOTIFY_UNBIND_DRIVER:
->> > +             spi =3D to_spi_device(dev);
->> > +             mem =3D spi_get_drvdata(spi);
->> > +             if (!mem)
->> > +                     return NOTIFY_DONE;
->> > +             nor =3D spi_mem_get_drvdata(mem);
->> > +
->> > +             mutex_lock(&nor->lock);
->> > +             nor->mtd.mtd_event_remove =3D true;
->> > +             mutex_unlock(&nor->lock);
->> > +             msleep(300);
->>
->> What is this sleep for?
->
-> The sleep is to wait the process which already got the lock and
-> running in reading
-> routine can be finished before memory is released, show in below scenario:
->
-> without sleep:
-> --------------------------------------------------------------------
-> mtd.mtd_event_remove =3D false;
->                                                             reading start;
-> mtd.mtd_event_remove =3D true;
-> release memory
->                                                             reading end;
-> --------------------------------------------------------------------
->
-> with sleep:
-> -------------------------------------------------------------------
-> mtd.mtd_event_remove =3D false;
->                                                            reading start;
-> mtd.mtd_event_remove =3D true;
-> sleep() start
->                                                            reading end;
-> sleep() end
-> release memory
-> -------------------------------------------------------------------
+Signed-off-by: Nuno Sá <nuno.sa@analog.com>
+---
+ include/linux/adi-axi-common.h | 35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-This is not how we should manage lifetimes. Adding arbitrary sleeps to
-hope races go away is flaky and will break in strange ways that would be
-impossible to debug. For example, what if a read happens to take longer
-than 300ms? Instead, we should have a way to properly manage the
-lifetimes and sequence operations.
+diff --git a/include/linux/adi-axi-common.h b/include/linux/adi-axi-common.h
+index 141ac3f251e6f256526812b9d55cd440a2a46e76..a832ef9b37473ca339a2a2ff8a4a5716d428fd29 100644
+--- a/include/linux/adi-axi-common.h
++++ b/include/linux/adi-axi-common.h
+@@ -12,6 +12,8 @@
+ #define ADI_AXI_COMMON_H_
+ 
+ #define ADI_AXI_REG_VERSION			0x0000
++#define ADI_AXI_REG_FPGA_INFO			0x001C
++#define ADI_AXI_REG_FPGA_VOLTAGE		0x0140
+ 
+ #define ADI_AXI_PCORE_VER(major, minor, patch)	\
+ 	(((major) << 16) | ((minor) << 8) | (patch))
+@@ -20,4 +22,37 @@
+ #define ADI_AXI_PCORE_VER_MINOR(version)	(((version) >> 8) & 0xff)
+ #define ADI_AXI_PCORE_VER_PATCH(version)	((version) & 0xff)
+ 
++#define ADI_AXI_INFO_FPGA_TECH(info)            (((info) >> 24) & 0xff)
++#define ADI_AXI_INFO_FPGA_FAMILY(info)          (((info) >> 16) & 0xff)
++#define ADI_AXI_INFO_FPGA_SPEED_GRADE(info)     (((info) >> 8) & 0xff)
++#define ADI_AXI_INFO_FPGA_VOLTAGE(val)          ((val) & 0xffff)
++
++enum adi_axi_fpga_technology {
++	ADI_AXI_FPGA_TECH_UNKNOWN = 0,
++	ADI_AXI_FPGA_TECH_SERIES7,
++	ADI_AXI_FPGA_TECH_ULTRASCALE,
++	ADI_AXI_FPGA_TECH_ULTRASCALE_PLUS,
++};
++
++enum adi_axi_fpga_family {
++	ADI_AXI_FPGA_FAMILY_UNKNOWN = 0,
++	ADI_AXI_FPGA_FAMILY_ARTIX,
++	ADI_AXI_FPGA_FAMILY_KINTEX,
++	ADI_AXI_FPGA_FAMILY_VIRTEX,
++	ADI_AXI_FPGA_FAMILY_ZYNQ,
++};
++
++enum adi_axi_fpga_speed_grade {
++	ADI_AXI_FPGA_SPEED_UNKNOWN      = 0,
++	ADI_AXI_FPGA_SPEED_1    = 10,
++	ADI_AXI_FPGA_SPEED_1L   = 11,
++	ADI_AXI_FPGA_SPEED_1H   = 12,
++	ADI_AXI_FPGA_SPEED_1HV  = 13,
++	ADI_AXI_FPGA_SPEED_1LV  = 14,
++	ADI_AXI_FPGA_SPEED_2    = 20,
++	ADI_AXI_FPGA_SPEED_2L   = 21,
++	ADI_AXI_FPGA_SPEED_2LV  = 22,
++	ADI_AXI_FPGA_SPEED_3    = 30,
++};
++
+ #endif /* ADI_AXI_COMMON_H_ */
 
-I always thought that by the time spi_unregister_controller() returns,
-there are no longer any in-flight operations so freeing stuff after it
-would be safe. Seems not to be the case.
+-- 
+2.49.0
 
-After a quick look, seems like all SPI MEM devices are doing similar
-things in their remove callbacks, so I think they are affected by the
-same race. For example, nxp_fspi_remove() unmaps its AHB area, so in
-flight SPI MEM operations would fail. Similarly, spi-stm32 will release
-its DMA channels, and so on with others.
 
-I suspect that this notifier thing is not the proper way to manage the
-lifetimes here and there should be something better. We need a way for
-the driver to make sure the underlying MTD device is no longer active
-before it frees its memory.
-
-Mark/SPI folks, what do you think is the proper way of doing this?
-
-[...]
-
---=20
-Regards,
-Pratyush Yadav

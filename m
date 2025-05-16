@@ -1,30 +1,30 @@
-Received: from michel.telenet-ops.be (michel.telenet-ops.be [195.130.137.88])
+Received: from xavier.telenet-ops.be (xavier.telenet-ops.be [195.130.132.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC4078F3A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0249D824A3
 	for <linux-spi@vger.kernel.org>; Fri, 16 May 2025 13:32:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.88
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.132.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747402368; cv=none; b=LHCsY8Qpj2DVjEsSEVfaAUNoTUPK6qBcHEP3+J2MTiH4cwzrLnj0gvBCPKDHczVIngTN77f1Mf0cbA0tT213PKVIj+Mx33AawDLlRHl7a8DcLYCP8ZEX+GSNNhCEx0Wd1b5WE8cueTjZnvIOan8WeLtL37bY+j8oWzQZk+Sp2Rw=
+	t=1747402368; cv=none; b=qZH0zOUZzmHR2rpRYrUehik2LHkEXqbZ5baBJ/AHq/YSi+5MQTm8/O6oJrbBvu9DZ3wvHhbHVJXSlXbfzquG4IASRUdJ7fBdIt98QTKqRSB3yUW3Q8bDnJ6FGy8HKuDAhjUbhjodNvreKn93f4PrhIqQ5Km7H/Nc06bI7+1KLxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1747402368; c=relaxed/simple;
-	bh=VvaIqcA29H+k71LVwcDiGbLNtd0liH1S61o55uJ3oHE=;
+	bh=sl8eYgz9s0IQIIJJMg+RvgU0Wqv5wzmfjFIixU3FWao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kYy2zcSzH/Xg+iHygvrV3tlDe/ub2OmuuZucsW0bjBWxaky+YKpu/A0uqv+hD3NFPDzouwdHF382SfU6PZk/iMDkEtcHu6mOh80xyP0c7qF3/2KmhvbiILLif/1B8yk3+imJAmi/kKsE8nK1R9DK5TSiBRubkMp5C8l3WLoxANk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.88
+	 MIME-Version; b=S948qCbSe6EL4oxBGZTglEeUwERnakMASiF+NWVXJ+xURBB3UVavggE30mjpCk+SO9+bDlEcHxMr7WfOlzamIhFVcibPMe/wX49ylSk2aDaqzGIGetqtnTn8Sw63ZzovmZGCoJ4lUGU6Sqwf9QVGNVlDbEXWWcl0YtKYGCk4py8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.132.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:b0d6:ccd4:58dc:70fd])
-	by michel.telenet-ops.be with cmsmtp
-	id ppYX2E00P3S8nz406pYX0Q; Fri, 16 May 2025 15:32:33 +0200
+	by xavier.telenet-ops.be with cmsmtp
+	id ppYX2E00G3S8nz401pYXap; Fri, 16 May 2025 15:32:33 +0200
 Received: from rox.of.borg ([192.168.97.57])
 	by ramsan.of.borg with esmtp (Exim 4.97)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1uFvAi-000000020iK-0dAx;
+	id 1uFvAi-000000020ia-18Mp;
 	Fri, 16 May 2025 15:32:31 +0200
 Received: from geert by rox.of.borg with local (Exim 4.97)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1uFvAt-00000001525-2FGg;
+	id 1uFvAt-0000000152R-2mIN;
 	Fri, 16 May 2025 15:32:31 +0200
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 To: Mark Brown <broonie@kernel.org>,
@@ -38,9 +38,9 @@ Cc: linux-spi@vger.kernel.org,
 	linux-sound@vger.kernel.org,
 	linux-renesas-soc@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH v2 01/22] spi: sh-msiof: Drop comma after OF match table sentinel
-Date: Fri, 16 May 2025 15:32:04 +0200
-Message-ID: <2ab5745407339ba54b63c3e6410082c7c566bf95.1747401908.git.geert+renesas@glider.be>
+Subject: [PATCH v2 06/22] spi: sh-msiof: Make words/bits unsigned in sh_msiof_spi_txrx_once()
+Date: Fri, 16 May 2025 15:32:09 +0200
+Message-ID: <30eff1052642a4bcb0f1bc4bed7aae25d355a7dc.1747401908.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1747401908.git.geert+renesas@glider.be>
 References: <cover.1747401908.git.geert+renesas@glider.be>
@@ -52,32 +52,43 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-It does not make sense to have a comma after a sentinel, as any new
-elements must be added before the sentinel.
+Make the words and bits parameters of sh_msiof_spi_txrx_once() unsigned,
+as that matches what is passed by the caller.
 
-Add a comment to clarify the purpose of the empty element.
+This allows us to replace min_t() by the safer min().
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
 v2:
   - No changes.
 ---
- drivers/spi/spi-sh-msiof.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-sh-msiof.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index d9e3d83fc7e84e03..325bd5890b78884d 100644
+index 11ef5c0a498d7c1f..fdb13dbc175249c4 100644
 --- a/drivers/spi/spi-sh-msiof.c
 +++ b/drivers/spi/spi-sh-msiof.c
-@@ -1101,7 +1101,7 @@ static const struct of_device_id sh_msiof_match[] __maybe_unused = {
- 	{ .compatible = "renesas,rcar-gen3-msiof", .data = &rcar_gen3_data },
- 	{ .compatible = "renesas,rcar-gen4-msiof", .data = &rcar_gen3_data },
- 	{ .compatible = "renesas,sh-msiof",        .data = &sh_data }, /* Deprecated */
--	{},
-+	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, sh_msiof_match);
+@@ -677,16 +677,16 @@ static int sh_msiof_spi_txrx_once(struct sh_msiof_spi_priv *p,
+ 				  void (*rx_fifo)(struct sh_msiof_spi_priv *,
+ 						  void *, int, int),
+ 				  const void *tx_buf, void *rx_buf,
+-				  int words, int bits)
++				  unsigned int words, unsigned int bits)
+ {
+ 	int fifo_shift;
+ 	int ret;
  
+ 	/* limit maximum word transfer to rx/tx fifo size */
+ 	if (tx_buf)
+-		words = min_t(int, words, p->tx_fifo_size);
++		words = min(words, p->tx_fifo_size);
+ 	if (rx_buf)
+-		words = min_t(int, words, p->rx_fifo_size);
++		words = min(words, p->rx_fifo_size);
+ 
+ 	/* the fifo contents need shifting */
+ 	fifo_shift = 32 - bits;
 -- 
 2.43.0
 

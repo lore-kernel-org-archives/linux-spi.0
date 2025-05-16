@@ -1,34 +1,34 @@
 Received: from cantor.telenet-ops.be (cantor.telenet-ops.be [195.130.132.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47761E48A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47AC2A1AA
 	for <linux-spi@vger.kernel.org>; Fri, 16 May 2025 13:32:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.132.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747402363; cv=none; b=IByCuwCgBX34IeZz3Mb0C0rFe3EBnIOjtdTz5rrQYMXw7VqCFvISfbxoOEVxtliDC4isWDWxLzHQJAV8I2c7oaDWGJsG/uw9/k6+b+zHvKgKMLEzAxx4UA7iSmy19m0AKn8UrVPvph4Xr65AuVW/eUqhauAIgFrHMjxzKhCLKzY=
+	t=1747402363; cv=none; b=jZXbKmGYsJkGsaATztYrGSDWIc1vJwyQ9Qd/L9EzqPiQsRDGx/ZLvbnc+5rU9Vyno8uGjkyRAI2R2tqBuh379BuXmCsvkoDmrVZxgNWRVtb1NMxSfF/kBceCS40QTB1z52VoQZ1NYom33c8wnY3AhFDNG8g4JuZaZkIG/q1HSzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1747402363; c=relaxed/simple;
-	bh=LuODtqMqNqE67UFe8dKvyWUrqUEvf/b+rEpkFnOSe+g=;
+	bh=6u9qP4p/k120mz1GOGuRUINaz60Y8hyt8cE4KpTLTuU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cyk/I7mCjnJetZJLsTNuFd0BWh6R8chdWyV9RJEjOoSMOE1GhEjKD5kWcDaz3bPRZ/PP7Pvd3L2mUweZGEGT6DBSvUHwmsj32M+vSbSmtJIMgIayCpLwYJgTs5qYVmwTrnQwzVG2dfnubhCiCVAO9hJWO/VCa1h6f8cgslNyIm0=
+	 MIME-Version; b=scvfylXySh0ViV9TBGq+w9OeGp4zj4YqBWWEWS5uavAAzqwh+wL96S0U1pE4kG5AQ1c8ijb/Eu0Phn8KABpqMj6ecl2lykYj34WCLiIp58nPAPiqGNX35IhuKl1i0YiLTJF5YsFhef3sDqYP8RBuGMMqSgXR5K+Vw9QmYc/Z1sw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.132.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
 Received: from andre.telenet-ops.be (andre.telenet-ops.be [IPv6:2a02:1800:120:4::f00:15])
-	by cantor.telenet-ops.be (Postfix) with ESMTPS id 4ZzSgP37T3z4x92B
+	by cantor.telenet-ops.be (Postfix) with ESMTPS id 4ZzSgP32B4z4x925
 	for <linux-spi@vger.kernel.org>; Fri, 16 May 2025 15:32:33 +0200 (CEST)
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:b0d6:ccd4:58dc:70fd])
 	by andre.telenet-ops.be with cmsmtp
-	id ppYY2E0053S8nz401pYYf4; Fri, 16 May 2025 15:32:33 +0200
+	id ppYY2E0063S8nz401pYYf5; Fri, 16 May 2025 15:32:33 +0200
 Received: from rox.of.borg ([192.168.97.57])
 	by ramsan.of.borg with esmtp (Exim 4.97)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1uFvAi-000000020jL-2Q4O;
+	id 1uFvAi-000000020jY-2jCs;
 	Fri, 16 May 2025 15:32:32 +0200
 Received: from geert by rox.of.borg with local (Exim 4.97)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1uFvAt-0000000153L-44sw;
-	Fri, 16 May 2025 15:32:31 +0200
+	id 1uFvAu-0000000153a-0BbA;
+	Fri, 16 May 2025 15:32:32 +0200
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 To: Mark Brown <broonie@kernel.org>,
 	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
@@ -41,9 +41,9 @@ Cc: linux-spi@vger.kernel.org,
 	linux-sound@vger.kernel.org,
 	linux-renesas-soc@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH v2 17/22] spi: sh-msiof: Increase TX FIFO size for R-Car V4H/V4M
-Date: Fri, 16 May 2025 15:32:20 +0200
-Message-ID: <69cb5fc48f034d37484fa127b9864a1971a83417.1747401908.git.geert+renesas@glider.be>
+Subject: [PATCH v2 20/22] spi: sh-msiof: Document frame start sync pulse mode
+Date: Fri, 16 May 2025 15:32:23 +0200
+Message-ID: <3d3acaab4a4125106a0655d28c09c050341c5eeb.1747401908.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1747401908.git.geert+renesas@glider.be>
 References: <cover.1747401908.git.geert+renesas@glider.be>
@@ -55,68 +55,28 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The MSIOF transmit FIFOs on R-Car V4H and V4M have 256 stages.
-Add a new family-specific match entry to handle this.
-Add quirk match entries for older R-Car Gen4 Socs (R-Car V3U and S4-8)
-that have transmit FIFOs with only 64 stages, just like on R-Car Gen3.
-
-Update the (unused) definition of SIFCTR_TFUA for consistency.
+Unused, but nice to have it documented.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
-Alternatively, the family-specific match entry could keep referring to
-rcar_gen3_data, and R-Car V4H and V4M could refer to the new entry.
-
-Tested on White Hawk (R-Car V4H) and Gray Hawk Single (R-Car V4M) with
-spi-loopback-test and external loopback, DMA and PIO, and a logic
-analyzer.
-
 v2:
   - No changes.
 ---
- drivers/spi/spi-sh-msiof.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/spi/spi-sh-msiof.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 8afb7c1f64cd4486..26e71fc8890fda6d 100644
+index 4d9a44118e1c9d6c..5d9d551dbd220389 100644
 --- a/drivers/spi/spi-sh-msiof.c
 +++ b/drivers/spi/spi-sh-msiof.c
-@@ -149,7 +149,7 @@ struct sh_msiof_spi_priv {
- #define SIFCTR_TFWM_8		5U		/*  Transfer Request when 8 empty stages */
- #define SIFCTR_TFWM_4		6U		/*  Transfer Request when 4 empty stages */
- #define SIFCTR_TFWM_1		7U		/*  Transfer Request when 1 empty stage */
--#define SIFCTR_TFUA		GENMASK(26, 20) /* Transmit FIFO Usable Area */
-+#define SIFCTR_TFUA		GENMASK(28, 20) /* Transmit FIFO Usable Area */
- #define SIFCTR_RFWM		GENMASK(15, 13)	/* Receive FIFO Watermark */
- #define SIFCTR_RFWM_1		0U		/*  Transfer Request when 1 valid stages */
- #define SIFCTR_RFWM_4		1U		/*  Transfer Request when 4 valid stages */
-@@ -1113,6 +1113,15 @@ static const struct sh_msiof_chipdata rcar_gen3_data = {
- 	.min_div_pow = 1,
- };
- 
-+static const struct sh_msiof_chipdata rcar_gen4_data = {
-+	.bits_per_word_mask = SPI_BPW_MASK(8) | SPI_BPW_MASK(16) |
-+			      SPI_BPW_MASK(24) | SPI_BPW_MASK(32),
-+	.tx_fifo_size = 256,
-+	.rx_fifo_size = 256,
-+	.ctlr_flags = SPI_CONTROLLER_MUST_TX,
-+	.min_div_pow = 1,
-+};
-+
- static const struct sh_msiof_chipdata rcar_r8a7795_data = {
- 	.bits_per_word_mask = SPI_BPW_MASK(8) | SPI_BPW_MASK(16) |
- 			      SPI_BPW_MASK(24) | SPI_BPW_MASK(32),
-@@ -1128,7 +1137,9 @@ static const struct of_device_id sh_msiof_match[] __maybe_unused = {
- 	{ .compatible = "renesas,rcar-gen2-msiof", .data = &rcar_gen2_data },
- 	{ .compatible = "renesas,msiof-r8a7795",   .data = &rcar_r8a7795_data },
- 	{ .compatible = "renesas,rcar-gen3-msiof", .data = &rcar_gen3_data },
--	{ .compatible = "renesas,rcar-gen4-msiof", .data = &rcar_gen3_data },
-+	{ .compatible = "renesas,msiof-r8a779a0",  .data = &rcar_gen3_data },
-+	{ .compatible = "renesas,msiof-r8a779f0",  .data = &rcar_gen3_data },
-+	{ .compatible = "renesas,rcar-gen4-msiof", .data = &rcar_gen4_data },
- 	{ .compatible = "renesas,sh-msiof",        .data = &sh_data }, /* Deprecated */
- 	{ /* sentinel */ }
- };
+@@ -86,6 +86,7 @@ struct sh_msiof_spi_priv {
+ /* SITMDR1 and SIRMDR1 */
+ #define SIMDR1_TRMD		BIT(31)		/* Transfer Mode (1 = Master mode) */
+ #define SIMDR1_SYNCMD		GENMASK(29, 28)	/* SYNC Mode */
++#define SIMDR1_SYNCMD_PULSE	0U		/*   Frame start sync pulse */
+ #define SIMDR1_SYNCMD_SPI	2U		/*   Level mode/SPI */
+ #define SIMDR1_SYNCMD_LR	3U		/*   L/R mode */
+ #define SIMDR1_SYNCAC		BIT(25)		/* Sync Polarity (1 = Active-low) */
 -- 
 2.43.0
 

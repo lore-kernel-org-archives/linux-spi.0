@@ -1,33 +1,30 @@
-Received: from riemann.telenet-ops.be (riemann.telenet-ops.be [195.130.137.80])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from xavier.telenet-ops.be (xavier.telenet-ops.be [195.130.132.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F12FD78F5E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0791A86349
 	for <linux-spi@vger.kernel.org>; Fri, 16 May 2025 13:32:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.80
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.132.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747402365; cv=none; b=K8XfZ/UwHL/1QucHKg66PGs48c8iO4MHC4Nz+McMMiWeWJSy4WYD6vfUG/Xp/sZVVA3fjZTroC/o9M/9USTgWgVQbI1ufpkxeeEWzMdFZxMUCXKs883P6LPsO53tr/rRmFPBbpUlSHRMGhhqQTxnUEOWrvUUxlx9+5eIRllzTEE=
+	t=1747402365; cv=none; b=RkWLtmjPuq4/ZmvHH+/r06emz8dHlRQj7ZIjFCKUsTt2+8s5ejo7/naJnHREHpddSXlG7PjrEpndRj2IySsgoxAnHIfhCG7GZ0M7U3F7P93B/ATAhc7Cv0iBmq+mVKFAmugugXy3m0JbUxJCkoN0l6CnPfs64Uc8keVBhjE0twg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1747402365; c=relaxed/simple;
-	bh=mvpjcX/5a0oFb846ghe+MQ7JRUNpQqkMZ0y8uI1l3Rc=;
+	bh=/H3mWcE7eAB1IxlnkiOdWiRkuZJ8qYVI0EAfnC5b02k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bcwwvMaiyirT+Kj9+lP/Pj9PFkw4ohv0wuSU5XefVy6ciYuuxYQPL9YqdpvCzNR7KQrOD0IbIECfH+tK7HA2Tv4uSPFA0GcFNA/JxeVzzekBfyQkNXKiH3cNybH7sW0raGKlxPY+18pf/8bl8nqH9PujOojwDGqOt6YXrsVa/MM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.80
+	 MIME-Version; b=nfo2mnWC8abk8nyFy7ij15YDUcR9xOauvWabJJTt7GvZsm+bFVHbC/Z66FPbxMZM3tBG//yomIlARHBqwB9LtiqPBxuT9ysVA+BybrkI9ENuZ40ej6ZRAl4vSbgLtAYGLP5xeobUAb5O8/X2eVndmdZDYb1sOGpgzmH63HVe7IY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.132.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
-Received: from albert.telenet-ops.be (albert.telenet-ops.be [IPv6:2a02:1800:110:4::f00:1a])
-	by riemann.telenet-ops.be (Postfix) with ESMTPS id 4ZzSgP3wVNz4xBlh
-	for <linux-spi@vger.kernel.org>; Fri, 16 May 2025 15:32:33 +0200 (CEST)
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:b0d6:ccd4:58dc:70fd])
-	by albert.telenet-ops.be with cmsmtp
-	id ppYX2E00B3S8nz406pYXww; Fri, 16 May 2025 15:32:33 +0200
+	by xavier.telenet-ops.be with cmsmtp
+	id ppYX2E00E3S8nz401pYXam; Fri, 16 May 2025 15:32:33 +0200
 Received: from rox.of.borg ([192.168.97.57])
 	by ramsan.of.borg with esmtp (Exim 4.97)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1uFvAi-000000020iV-11f3;
+	id 1uFvAi-000000020iQ-0oc9;
 	Fri, 16 May 2025 15:32:31 +0200
 Received: from geert by rox.of.borg with local (Exim 4.97)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1uFvAt-0000000152L-2erg;
+	id 1uFvAt-0000000152D-2SB4;
 	Fri, 16 May 2025 15:32:31 +0200
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 To: Mark Brown <broonie@kernel.org>,
@@ -41,9 +38,9 @@ Cc: linux-spi@vger.kernel.org,
 	linux-sound@vger.kernel.org,
 	linux-renesas-soc@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH v2 05/22] spi: sh-msiof: Use bool for boolean flags
-Date: Fri, 16 May 2025 15:32:08 +0200
-Message-ID: <35cd51bdfb3c810911a5be757e0ce5bb29dcc755.1747401908.git.geert+renesas@glider.be>
+Subject: [PATCH v2 03/22] spi: sh-msiof: Fix maximum DMA transfer size
+Date: Fri, 16 May 2025 15:32:06 +0200
+Message-ID: <d9961767a97758b2614f2ee8afe1bd56dc900a60.1747401908.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1747401908.git.geert+renesas@glider.be>
 References: <cover.1747401908.git.geert+renesas@glider.be>
@@ -55,63 +52,65 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Use bools instead of integers for boolean flags, which allows us to
-remove the "!!" idiom from several expressions.
+The maximum amount of data to transfer in a single DMA request is
+calculated from the FIFO sizes (which is technically not 100% correct,
+but a simplification, as it is limited by the maximum word count values
+in the Transmit and Control Data Registers).  However, in case there is
+both data to transmit and to receive, the transmit limit is overwritten
+by the receive limit.
 
+Fix this by using the minimum applicable FIFO size instead.  Move the
+calculation outside the loop, so it is not repeated for each individual
+DMA transfer.
+
+As currently tx_fifo_size is always equal to rx_fifo_size, this bug had
+no real impact.
+
+Fixes: fe78d0b7691c0274 ("spi: sh-msiof: Fix FIFO size to 64 word from 256 word")
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
 v2:
   - No changes.
 ---
- drivers/spi/spi-sh-msiof.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/spi/spi-sh-msiof.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 367622985fea2a04..11ef5c0a498d7c1f 100644
+index 15e42af35f7e4230..cf93c2ca821f84fa 100644
 --- a/drivers/spi/spi-sh-msiof.c
 +++ b/drivers/spi/spi-sh-msiof.c
-@@ -348,11 +348,11 @@ static u32 sh_msiof_spi_get_dtdl_and_syncdl(struct sh_msiof_spi_priv *p)
- }
+@@ -919,6 +919,7 @@ static int sh_msiof_transfer_one(struct spi_controller *ctlr,
+ 	void *rx_buf = t->rx_buf;
+ 	unsigned int len = t->len;
+ 	unsigned int bits = t->bits_per_word;
++	unsigned int max_wdlen = 256;
+ 	unsigned int bytes_per_word;
+ 	unsigned int words;
+ 	int n;
+@@ -932,17 +933,17 @@ static int sh_msiof_transfer_one(struct spi_controller *ctlr,
+ 	if (!spi_controller_is_target(p->ctlr))
+ 		sh_msiof_spi_set_clk_regs(p, t);
  
- static void sh_msiof_spi_set_pin_regs(struct sh_msiof_spi_priv *p, u32 ss,
--				      u32 cpol, u32 cpha,
--				      u32 tx_hi_z, u32 lsb_first, u32 cs_high)
-+				      bool cpol, bool cpha, bool tx_hi_z,
-+				      bool lsb_first, bool cs_high)
- {
-+	bool edge;
- 	u32 tmp;
--	int edge;
++	if (tx_buf)
++		max_wdlen = min(max_wdlen, p->tx_fifo_size);
++	if (rx_buf)
++		max_wdlen = min(max_wdlen, p->rx_fifo_size);
++
+ 	while (ctlr->dma_tx && len > 15) {
+ 		/*
+ 		 *  DMA supports 32-bit words only, hence pack 8-bit and 16-bit
+ 		 *  words, with byte resp. word swapping.
+ 		 */
+-		unsigned int l = 0;
+-
+-		if (tx_buf)
+-			l = min(round_down(len, 4), p->tx_fifo_size * 4);
+-		if (rx_buf)
+-			l = min(round_down(len, 4), p->rx_fifo_size * 4);
++		unsigned int l = min(round_down(len, 4), max_wdlen * 4);
  
- 	/*
- 	 * CPOL CPHA     TSCKIZ RSCKIZ TEDG REDG
-@@ -587,7 +587,8 @@ static int sh_msiof_prepare_message(struct spi_controller *ctlr,
- {
- 	struct sh_msiof_spi_priv *p = spi_controller_get_devdata(ctlr);
- 	const struct spi_device *spi = msg->spi;
--	u32 ss, cs_high;
-+	bool cs_high;
-+	u32 ss;
- 
- 	/* Configure pins before asserting CS */
- 	if (spi_get_csgpiod(spi, 0)) {
-@@ -595,12 +596,11 @@ static int sh_msiof_prepare_message(struct spi_controller *ctlr,
- 		cs_high = p->native_cs_high;
- 	} else {
- 		ss = spi_get_chipselect(spi, 0);
--		cs_high = !!(spi->mode & SPI_CS_HIGH);
-+		cs_high = spi->mode & SPI_CS_HIGH;
- 	}
--	sh_msiof_spi_set_pin_regs(p, ss, !!(spi->mode & SPI_CPOL),
--				  !!(spi->mode & SPI_CPHA),
--				  !!(spi->mode & SPI_3WIRE),
--				  !!(spi->mode & SPI_LSB_FIRST), cs_high);
-+	sh_msiof_spi_set_pin_regs(p, ss, spi->mode & SPI_CPOL,
-+				  spi->mode & SPI_CPHA, spi->mode & SPI_3WIRE,
-+				  spi->mode & SPI_LSB_FIRST, cs_high);
- 	return 0;
- }
- 
+ 		if (bits <= 8) {
+ 			copy32 = copy_bswap32;
 -- 
 2.43.0
 

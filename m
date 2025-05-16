@@ -1,30 +1,30 @@
-Received: from xavier.telenet-ops.be (xavier.telenet-ops.be [195.130.132.52])
+Received: from albert.telenet-ops.be (albert.telenet-ops.be [195.130.137.90])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00EC3823DE
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19697263B
 	for <linux-spi@vger.kernel.org>; Fri, 16 May 2025 13:32:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.132.52
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.90
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747402367; cv=none; b=jNb6Hsm93FNFjgX+IAdUfRVShSLNcJVpJIiBj7plvkQPavXQmprZdBSgEhz9PXUxWtAhOVRle4nmZW1NDMtQSMOfblfyUA6F4tZFONQd9Jl81j9wSReE2q0gYSDCxyxBKuQeu5uYmp60MSVeqKQYo2fKcab95Co/r66e3OB8W30=
+	t=1747402368; cv=none; b=SA7Unl6K4d+EVRaAQ6xWPRU3r61BC8mI67Xbffdy7C2NT0AZWZtka0Aa/nyNsjmz7rcAgVWVuqxgiacc8b5WnwqvpVLQB38z5on5sT3aDydJeuYswrssRU/Binz+IhtKwj9uKi5Pnryq7K4ZJ24uE8CktrSgAFYhAkBq3dhvyeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747402367; c=relaxed/simple;
-	bh=MSvhpfzfxRAatgz6Ijb2BdMLJ7N3lj9jgMikPf86PqQ=;
+	s=arc-20240116; t=1747402368; c=relaxed/simple;
+	bh=A1zbrm/YrbGm8KIImpQxtjoyrg4DxOervDggAi0DpmQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ktrx8LgM9e++9qKwTkTecuwtauspSEzNCCjy/CU8AgKN65hNSiybFLy9CXpg9e620H0iwR5Arl3vJVRBfZVsdZHyGBhR6dV+IF5rp0QLtt71bOOvqGFIS1zjo2BlxrblOUkLuBhQpDcedMejmGiEeHPTYeeeafIxr9TL+o2Gv+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.132.52
+	 MIME-Version; b=PUESZa8+J/QoHBkF9SbnX+1jlfS4qdL9ubxV/7OQ40O0CB8ILdg/XvfQcYvZ7XkeGZr+96mdkXeUmimucPvbuXe+Jm1Dx6T65u273PFvRNPH2Derw+hmJ01d2LIyV6Jvri746+AMqBbaCLr4ELQO4uxSSTfE9ZMBXR1E/EnPrrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.90
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:b0d6:ccd4:58dc:70fd])
-	by xavier.telenet-ops.be with cmsmtp
-	id ppYY2E0023S8nz401pYYau; Fri, 16 May 2025 15:32:33 +0200
+	by albert.telenet-ops.be with cmsmtp
+	id ppYX2E00H3S8nz406pYXwy; Fri, 16 May 2025 15:32:33 +0200
 Received: from rox.of.borg ([192.168.97.57])
 	by ramsan.of.borg with esmtp (Exim 4.97)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1uFvAi-000000020j9-27CA;
+	id 1uFvAi-000000020ij-1Fr3;
 	Fri, 16 May 2025 15:32:31 +0200
 Received: from geert by rox.of.borg with local (Exim 4.97)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1uFvAt-00000001536-3fWb;
+	id 1uFvAt-0000000152V-2sXr;
 	Fri, 16 May 2025 15:32:31 +0200
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 To: Mark Brown <broonie@kernel.org>,
@@ -38,9 +38,9 @@ Cc: linux-spi@vger.kernel.org,
 	linux-sound@vger.kernel.org,
 	linux-renesas-soc@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH v2 14/22] spi: sh-msiof: Add core support for dual-group transfers
-Date: Fri, 16 May 2025 15:32:17 +0200
-Message-ID: <be75e20cfcd2a6c0d73ab09e0126f902911adc69.1747401908.git.geert+renesas@glider.be>
+Subject: [PATCH v2 07/22] spi: sh-msiof: Make words/fs unsigned in FIFO helpers
+Date: Fri, 16 May 2025 15:32:10 +0200
+Message-ID: <a7b13ecb1811148227ec8c883079085ed1ea6eac.1747401908.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1747401908.git.geert+renesas@glider.be>
 References: <cover.1747401908.git.geert+renesas@glider.be>
@@ -52,90 +52,236 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-All MSIOF variants support transferring data of multiple (2 or 4)
-groups.  Add definitions for the register bits related to multiple
-groups, and enhance sh_msiof_spi_set_mode_regs() to accept a second
-group size.
-
-For now the second group is unused.
+Make the words and fs parameters of the various FIFO filler and
+emptier functions unsigned, as they can never be negative.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
 v2:
   - No changes.
 ---
- drivers/spi/spi-sh-msiof.c | 25 ++++++++++++++++++++-----
- 1 file changed, 20 insertions(+), 5 deletions(-)
+ drivers/spi/spi-sh-msiof.c | 84 +++++++++++++++++++++++---------------
+ 1 file changed, 51 insertions(+), 33 deletions(-)
 
 diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 57f27040b0fc78d7..ea9277ab87f66cd5 100644
+index fdb13dbc175249c4..7c15de08f4d8f131 100644
 --- a/drivers/spi/spi-sh-msiof.c
 +++ b/drivers/spi/spi-sh-msiof.c
-@@ -100,10 +100,15 @@ struct sh_msiof_spi_priv {
- 						/* 0=MSIOF_SYNC, 1=MSIOF_SS1, 2=MSIOF_SS2 */
- 
- /* SITMDR2 and SIRMDR2 */
-+#define SIMDR2_GRP		GENMASK(31, 30)	/* Group Count */
- #define SIMDR2_BITLEN1		GENMASK(28, 24)	/* Data Size (8-32 bits) */
- #define SIMDR2_WDLEN1		GENMASK(23, 16)	/* Word Count (1-64/256 (SH, A1))) */
- #define SIMDR2_GRPMASK		GENMASK(3, 0)	/* Group Output Mask 1-4 (SH, A1) */
- 
-+/* SITMDR3 and SIRMDR3 */
-+#define SIMDR3_BITLEN2		GENMASK(28, 24)	/* Data Size (8-32 bits) */
-+#define SIMDR3_WDLEN2		GENMASK(23, 16)	/* Word Count (1-64/256 (SH, A1))) */
-+
- /* SITSCR and SIRSCR */
- #define SISCR_BRPS		GENMASK(12, 8)	/* Prescaler Setting (1-32) */
- #define SISCR_BRDV		GENMASK(2, 0)	/* Baud Rate Generator's Division Ratio */
-@@ -392,10 +397,11 @@ static void sh_msiof_spi_set_pin_regs(struct sh_msiof_spi_priv *p, u32 ss,
- 
- static void sh_msiof_spi_set_mode_regs(struct sh_msiof_spi_priv *p,
- 				       const void *tx_buf, void *rx_buf,
--				       u32 bits, u32 words)
-+				       u32 bits, u32 words1, u32 words2)
- {
--	u32 dr2 = FIELD_PREP(SIMDR2_BITLEN1, bits - 1) |
--		  FIELD_PREP(SIMDR2_WDLEN1, words - 1);
-+	u32 dr2 = FIELD_PREP(SIMDR2_GRP, words2 ? 1 : 0) |
-+		  FIELD_PREP(SIMDR2_BITLEN1, bits - 1) |
-+		  FIELD_PREP(SIMDR2_WDLEN1, words1 - 1);
- 
- 	if (tx_buf || (p->ctlr->flags & SPI_CONTROLLER_MUST_TX))
- 		sh_msiof_write(p, SITMDR2, dr2);
-@@ -404,6 +410,15 @@ static void sh_msiof_spi_set_mode_regs(struct sh_msiof_spi_priv *p,
- 
- 	if (rx_buf)
- 		sh_msiof_write(p, SIRMDR2, dr2);
-+
-+	if (words2) {
-+		u32 dr3 = FIELD_PREP(SIMDR3_BITLEN2, bits - 1) |
-+			  FIELD_PREP(SIMDR3_WDLEN2, words2 - 1);
-+
-+		sh_msiof_write(p, SITMDR3, dr3);
-+		if (rx_buf)
-+			sh_msiof_write(p, SIRMDR3, dr3);
-+	}
+@@ -412,140 +412,154 @@ static void sh_msiof_reset_str(struct sh_msiof_spi_priv *p)
  }
  
- static void sh_msiof_reset_str(struct sh_msiof_spi_priv *p)
-@@ -712,7 +727,7 @@ static int sh_msiof_spi_txrx_once(struct sh_msiof_spi_priv *p,
- 	sh_msiof_write(p, SIFCTR, 0);
+ static void sh_msiof_spi_write_fifo_8(struct sh_msiof_spi_priv *p,
+-				      const void *tx_buf, int words, int fs)
++				      const void *tx_buf, unsigned int words,
++				      unsigned int fs)
+ {
+ 	const u8 *buf_8 = tx_buf;
+-	int k;
++	unsigned int k;
  
- 	/* setup msiof transfer mode registers */
--	sh_msiof_spi_set_mode_regs(p, tx_buf, rx_buf, bits, words);
-+	sh_msiof_spi_set_mode_regs(p, tx_buf, rx_buf, bits, words, 0);
- 	sh_msiof_write(p, SIIER, SIIER_TEOFE | SIIER_REOFE);
+ 	for (k = 0; k < words; k++)
+ 		sh_msiof_write(p, SITFDR, buf_8[k] << fs);
+ }
  
- 	/* write tx fifo */
-@@ -812,7 +827,7 @@ static int sh_msiof_dma_once(struct sh_msiof_spi_priv *p, const void *tx,
- 		       FIELD_PREP(SIFCTR_RFWM, SIFCTR_RFWM_1));
+ static void sh_msiof_spi_write_fifo_16(struct sh_msiof_spi_priv *p,
+-				       const void *tx_buf, int words, int fs)
++				       const void *tx_buf, unsigned int words,
++				       unsigned int fs)
+ {
+ 	const u16 *buf_16 = tx_buf;
+-	int k;
++	unsigned int k;
  
- 	/* setup msiof transfer mode registers (32-bit words) */
--	sh_msiof_spi_set_mode_regs(p, tx, rx, 32, len / 4);
-+	sh_msiof_spi_set_mode_regs(p, tx, rx, 32, len / 4, 0);
+ 	for (k = 0; k < words; k++)
+ 		sh_msiof_write(p, SITFDR, buf_16[k] << fs);
+ }
  
- 	sh_msiof_write(p, SIIER, ier_bits);
+ static void sh_msiof_spi_write_fifo_16u(struct sh_msiof_spi_priv *p,
+-					const void *tx_buf, int words, int fs)
++					const void *tx_buf, unsigned int words,
++					unsigned int fs)
+ {
+ 	const u16 *buf_16 = tx_buf;
+-	int k;
++	unsigned int k;
  
+ 	for (k = 0; k < words; k++)
+ 		sh_msiof_write(p, SITFDR, get_unaligned(&buf_16[k]) << fs);
+ }
+ 
+ static void sh_msiof_spi_write_fifo_32(struct sh_msiof_spi_priv *p,
+-				       const void *tx_buf, int words, int fs)
++				       const void *tx_buf, unsigned int words,
++				       unsigned int fs)
+ {
+ 	const u32 *buf_32 = tx_buf;
+-	int k;
++	unsigned int k;
+ 
+ 	for (k = 0; k < words; k++)
+ 		sh_msiof_write(p, SITFDR, buf_32[k] << fs);
+ }
+ 
+ static void sh_msiof_spi_write_fifo_32u(struct sh_msiof_spi_priv *p,
+-					const void *tx_buf, int words, int fs)
++					const void *tx_buf, unsigned int words,
++					unsigned int fs)
+ {
+ 	const u32 *buf_32 = tx_buf;
+-	int k;
++	unsigned int k;
+ 
+ 	for (k = 0; k < words; k++)
+ 		sh_msiof_write(p, SITFDR, get_unaligned(&buf_32[k]) << fs);
+ }
+ 
+ static void sh_msiof_spi_write_fifo_s32(struct sh_msiof_spi_priv *p,
+-					const void *tx_buf, int words, int fs)
++					const void *tx_buf, unsigned int words,
++					unsigned int fs)
+ {
+ 	const u32 *buf_32 = tx_buf;
+-	int k;
++	unsigned int k;
+ 
+ 	for (k = 0; k < words; k++)
+ 		sh_msiof_write(p, SITFDR, swab32(buf_32[k] << fs));
+ }
+ 
+ static void sh_msiof_spi_write_fifo_s32u(struct sh_msiof_spi_priv *p,
+-					 const void *tx_buf, int words, int fs)
++					 const void *tx_buf,
++					 unsigned int words, unsigned int fs)
+ {
+ 	const u32 *buf_32 = tx_buf;
+-	int k;
++	unsigned int k;
+ 
+ 	for (k = 0; k < words; k++)
+ 		sh_msiof_write(p, SITFDR, swab32(get_unaligned(&buf_32[k]) << fs));
+ }
+ 
+ static void sh_msiof_spi_read_fifo_8(struct sh_msiof_spi_priv *p,
+-				     void *rx_buf, int words, int fs)
++				     void *rx_buf, unsigned int words,
++				     unsigned int fs)
+ {
+ 	u8 *buf_8 = rx_buf;
+-	int k;
++	unsigned int k;
+ 
+ 	for (k = 0; k < words; k++)
+ 		buf_8[k] = sh_msiof_read(p, SIRFDR) >> fs;
+ }
+ 
+ static void sh_msiof_spi_read_fifo_16(struct sh_msiof_spi_priv *p,
+-				      void *rx_buf, int words, int fs)
++				      void *rx_buf, unsigned int words,
++				      unsigned int fs)
+ {
+ 	u16 *buf_16 = rx_buf;
+-	int k;
++	unsigned int k;
+ 
+ 	for (k = 0; k < words; k++)
+ 		buf_16[k] = sh_msiof_read(p, SIRFDR) >> fs;
+ }
+ 
+ static void sh_msiof_spi_read_fifo_16u(struct sh_msiof_spi_priv *p,
+-				       void *rx_buf, int words, int fs)
++				       void *rx_buf, unsigned int words,
++				       unsigned int fs)
+ {
+ 	u16 *buf_16 = rx_buf;
+-	int k;
++	unsigned int k;
+ 
+ 	for (k = 0; k < words; k++)
+ 		put_unaligned(sh_msiof_read(p, SIRFDR) >> fs, &buf_16[k]);
+ }
+ 
+ static void sh_msiof_spi_read_fifo_32(struct sh_msiof_spi_priv *p,
+-				      void *rx_buf, int words, int fs)
++				      void *rx_buf, unsigned int words,
++				      unsigned int fs)
+ {
+ 	u32 *buf_32 = rx_buf;
+-	int k;
++	unsigned int k;
+ 
+ 	for (k = 0; k < words; k++)
+ 		buf_32[k] = sh_msiof_read(p, SIRFDR) >> fs;
+ }
+ 
+ static void sh_msiof_spi_read_fifo_32u(struct sh_msiof_spi_priv *p,
+-				       void *rx_buf, int words, int fs)
++				       void *rx_buf, unsigned int words,
++				       unsigned int fs)
+ {
+ 	u32 *buf_32 = rx_buf;
+-	int k;
++	unsigned int k;
+ 
+ 	for (k = 0; k < words; k++)
+ 		put_unaligned(sh_msiof_read(p, SIRFDR) >> fs, &buf_32[k]);
+ }
+ 
+ static void sh_msiof_spi_read_fifo_s32(struct sh_msiof_spi_priv *p,
+-				       void *rx_buf, int words, int fs)
++				       void *rx_buf, unsigned int words,
++				       unsigned int fs)
+ {
+ 	u32 *buf_32 = rx_buf;
+-	int k;
++	unsigned int k;
+ 
+ 	for (k = 0; k < words; k++)
+ 		buf_32[k] = swab32(sh_msiof_read(p, SIRFDR) >> fs);
+ }
+ 
+ static void sh_msiof_spi_read_fifo_s32u(struct sh_msiof_spi_priv *p,
+-				       void *rx_buf, int words, int fs)
++				       void *rx_buf, unsigned int words,
++				       unsigned int fs)
+ {
+ 	u32 *buf_32 = rx_buf;
+-	int k;
++	unsigned int k;
+ 
+ 	for (k = 0; k < words; k++)
+ 		put_unaligned(swab32(sh_msiof_read(p, SIRFDR) >> fs), &buf_32[k]);
+@@ -673,13 +687,15 @@ static int sh_msiof_wait_for_completion(struct sh_msiof_spi_priv *p,
+ 
+ static int sh_msiof_spi_txrx_once(struct sh_msiof_spi_priv *p,
+ 				  void (*tx_fifo)(struct sh_msiof_spi_priv *,
+-						  const void *, int, int),
++						  const void *, unsigned int,
++						  unsigned int),
+ 				  void (*rx_fifo)(struct sh_msiof_spi_priv *,
+-						  void *, int, int),
++						  void *, unsigned int,
++						  unsigned int),
+ 				  const void *tx_buf, void *rx_buf,
+ 				  unsigned int words, unsigned int bits)
+ {
+-	int fifo_shift;
++	unsigned int fifo_shift;
+ 	int ret;
+ 
+ 	/* limit maximum word transfer to rx/tx fifo size */
+@@ -913,8 +929,10 @@ static int sh_msiof_transfer_one(struct spi_controller *ctlr,
+ {
+ 	struct sh_msiof_spi_priv *p = spi_controller_get_devdata(ctlr);
+ 	void (*copy32)(u32 *, const u32 *, unsigned int);
+-	void (*tx_fifo)(struct sh_msiof_spi_priv *, const void *, int, int);
+-	void (*rx_fifo)(struct sh_msiof_spi_priv *, void *, int, int);
++	void (*tx_fifo)(struct sh_msiof_spi_priv *, const void *, unsigned int,
++			unsigned int);
++	void (*rx_fifo)(struct sh_msiof_spi_priv *, void *, unsigned int,
++			unsigned int);
+ 	const void *tx_buf = t->tx_buf;
+ 	void *rx_buf = t->rx_buf;
+ 	unsigned int len = t->len;
 -- 
 2.43.0
 

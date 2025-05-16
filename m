@@ -1,30 +1,30 @@
-Received: from albert.telenet-ops.be (albert.telenet-ops.be [195.130.137.90])
+Received: from laurent.telenet-ops.be (laurent.telenet-ops.be [195.130.137.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC80672619
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A4F113A258
 	for <linux-spi@vger.kernel.org>; Fri, 16 May 2025 13:32:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.90
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747402368; cv=none; b=ZO3GKa8nRlshdsmOsBNoG39iVPQ/3r5I8LdMTRlpEzhVF0uUSjHQbgUNhOBVyKeQ1YhqjSYUpGuGctDUOul9W1ddXWSpOAO/NnUm1khYJacxfyWAnrrdvEle/GgRziKYs9ecAH/xP/NlfrJP6UmBe/QqwradDP0qRoy2muv5abs=
+	t=1747402368; cv=none; b=I4Okcu2GPFbCFICkV5lc74xG0I/7CmEmcbjLIA+FW9ETtKoxVk6lm2EI/KkrzER6hrs5V39CeacO/pWP69kDo6iTMybhbeTuhvulAzrXkhdFF2A1rC/glo6fXwBkkwXfPFi2rc0DMlKQnVtYLgrGQk6i9ozjcbwbEYC7b99HXoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1747402368; c=relaxed/simple;
-	bh=OCAbSjmSLPBTKg4S/+30tDY7Ef6+bvyxjGLe725Pq9Y=;
+	bh=ZBOsQkCpQk4NFJntcIIfakChp5hPIRtn0jQyyUZmxqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aA6PEF8dgRD4x0wTkKvDakDVLa5mcAoKUouf/Ltz2LPIavr/G0XxhhfTR6jC746N75b9XRlhsDo/zecmch+UJioN3BDQH2jllsJRxxxbmdJrpW2jAKciSD9ag5Ro153rlOp+h43wM6/8SHdIsdQbu5hco+f+nqLVsUdqOaVFONM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.90
+	 MIME-Version; b=ddM3WmvylwaF9GCxSSwE054wYez0qrwt0MW8TEqTD7BCZZu7YFL5G4XnRr9g+IMXvs4cJYMrgqF0ZWlB/Kk/iFEfKUQZ6X9GhTF4odswD4I5LtyQcjvfTxeugWSBpvZiLcfsNM7kB5lxN847AtY/HDncActuckQyaICosp0MLmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:b0d6:ccd4:58dc:70fd])
-	by albert.telenet-ops.be with cmsmtp
-	id ppYX2E00M3S8nz406pYXx2; Fri, 16 May 2025 15:32:33 +0200
+	by laurent.telenet-ops.be with cmsmtp
+	id ppYX2E0083S8nz401pYX64; Fri, 16 May 2025 15:32:33 +0200
 Received: from rox.of.borg ([192.168.97.57])
 	by ramsan.of.borg with esmtp (Exim 4.97)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1uFvAi-000000020iu-1aZ7;
+	id 1uFvAi-000000020iT-0ulD;
 	Fri, 16 May 2025 15:32:31 +0200
 Received: from geert by rox.of.borg with local (Exim 4.97)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1uFvAt-0000000152m-3Dct;
+	id 1uFvAt-0000000152H-2YGG;
 	Fri, 16 May 2025 15:32:31 +0200
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 To: Mark Brown <broonie@kernel.org>,
@@ -38,9 +38,9 @@ Cc: linux-spi@vger.kernel.org,
 	linux-sound@vger.kernel.org,
 	linux-renesas-soc@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH v2 10/22] spi: sh-msiof: SITSCR/SIRSCR bitfield conversion
-Date: Fri, 16 May 2025 15:32:13 +0200
-Message-ID: <f2462c99b6ea2e45b995ab4509c2f039043da032.1747401908.git.geert+renesas@glider.be>
+Subject: [PATCH v2 04/22] spi: sh-msiof: Complete using dev in sh_msiof_spi_probe()
+Date: Fri, 16 May 2025 15:32:07 +0200
+Message-ID: <88d271b2d16c6ad7f174858894573f91cec1bc90.1747401908.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1747401908.git.geert+renesas@glider.be>
 References: <cover.1747401908.git.geert+renesas@glider.be>
@@ -52,57 +52,30 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Convert MSIOF Transmit and Receive Clock Select Register field accesses
-to use the FIELD_PREP() bitfield access macro.
-
-This gets rid of explicit shifts and custom field preparation macros.
+Commit c4887bd4b35b225f ("spi: sh-msiof: use dev in
+sh_msiof_spi_probe()") forgot to convert one instance.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
 v2:
   - No changes.
 ---
- drivers/spi/spi-sh-msiof.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ drivers/spi/spi-sh-msiof.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 51a9e89364756af0..9bddf85dd9c7f2a1 100644
+index cf93c2ca821f84fa..367622985fea2a04 100644
 --- a/drivers/spi/spi-sh-msiof.c
 +++ b/drivers/spi/spi-sh-msiof.c
-@@ -105,15 +105,14 @@ struct sh_msiof_spi_priv {
- #define SIMDR2_GRPMASK1		BIT(0)		/* Group Output Mask 1 (SH, A1) */
+@@ -1332,7 +1332,7 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+ 		goto err1;
+ 	}
  
- /* SITSCR and SIRSCR */
--#define SISCR_BRPS_MASK		GENMASK(12, 8)	/* Prescaler Setting (1-32) */
--#define SISCR_BRPS(i)		(((i) - 1) << 8)
--#define SISCR_BRDV_MASK		GENMASK(2, 0)	/* Baud Rate Generator's Division Ratio */
--#define SISCR_BRDV_DIV_2	0
--#define SISCR_BRDV_DIV_4	1
--#define SISCR_BRDV_DIV_8	2
--#define SISCR_BRDV_DIV_16	3
--#define SISCR_BRDV_DIV_32	4
--#define SISCR_BRDV_DIV_1	7
-+#define SISCR_BRPS		GENMASK(12, 8)	/* Prescaler Setting (1-32) */
-+#define SISCR_BRDV		GENMASK(2, 0)	/* Baud Rate Generator's Division Ratio */
-+#define SISCR_BRDV_DIV_2	0U
-+#define SISCR_BRDV_DIV_4	1U
-+#define SISCR_BRDV_DIV_8	2U
-+#define SISCR_BRDV_DIV_16	3U
-+#define SISCR_BRDV_DIV_32	4U
-+#define SISCR_BRDV_DIV_1	7U
- 
- /* SICTR */
- #define SICTR_TSCKIZ_MASK	GENMASK(31, 30)	/* Transmit Clock I/O Polarity Select */
-@@ -299,7 +298,8 @@ static void sh_msiof_spi_set_clk_regs(struct sh_msiof_spi_priv *p,
- 
- 	t->effective_speed_hz = parent_rate / (brps << div_pow);
- 
--	scr = sh_msiof_spi_div_array[div_pow] | SISCR_BRPS(brps);
-+	scr = FIELD_PREP(SISCR_BRDV, sh_msiof_spi_div_array[div_pow]) |
-+	      FIELD_PREP(SISCR_BRPS, brps - 1);
- 	sh_msiof_write(p, SITSCR, scr);
- 	if (!(p->ctlr->flags & SPI_CONTROLLER_MUST_TX))
- 		sh_msiof_write(p, SIRSCR, scr);
+-	ret = devm_request_irq(dev, i, sh_msiof_spi_irq, 0, dev_name(&pdev->dev), p);
++	ret = devm_request_irq(dev, i, sh_msiof_spi_irq, 0, dev_name(dev), p);
+ 	if (ret) {
+ 		dev_err(dev, "unable to request irq\n");
+ 		goto err1;
 -- 
 2.43.0
 

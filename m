@@ -1,30 +1,33 @@
-Received: from baptiste.telenet-ops.be (baptiste.telenet-ops.be [195.130.132.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cantor.telenet-ops.be (cantor.telenet-ops.be [195.130.132.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49B6C2E40B
-	for <linux-spi@vger.kernel.org>; Fri, 16 May 2025 13:32:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.132.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47761E48A
+	for <linux-spi@vger.kernel.org>; Fri, 16 May 2025 13:32:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.132.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747402358; cv=none; b=iDPRUJsdERa2c3CTVj2SpD6+jAS4jP+9lCeUTfsY98ZPf+xjyJVuQZn0FbyKpfebTY4SNs1YOwFXKDNR0B9b1iczY8sAob0OwdJn8uSXZ/mIYufBIa1nhY/YKbuKTdjYkfqV3KlPl/QyfOJgsyilDldhofZ0OmBjBcKJmTGc548=
+	t=1747402363; cv=none; b=IByCuwCgBX34IeZz3Mb0C0rFe3EBnIOjtdTz5rrQYMXw7VqCFvISfbxoOEVxtliDC4isWDWxLzHQJAV8I2c7oaDWGJsG/uw9/k6+b+zHvKgKMLEzAxx4UA7iSmy19m0AKn8UrVPvph4Xr65AuVW/eUqhauAIgFrHMjxzKhCLKzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747402358; c=relaxed/simple;
-	bh=ym1GoUTCYkN02Tub7Wp0X2XBhRpUMwaHua2LRoJKlb0=;
+	s=arc-20240116; t=1747402363; c=relaxed/simple;
+	bh=LuODtqMqNqE67UFe8dKvyWUrqUEvf/b+rEpkFnOSe+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XOm2jOsKVp81uNki/KJ6jaa+G0S+fEVo/pXhUQpB3lS//5gHtSh+9hnp/VSNOBf/vbZlMm+MHNGVqLWBpGcLV4O3sxrchs0WzFFSgU2VGaMWNpk9KcFyAsRef6/3JEW4Kv8/WoeD0YgrvVN1RwUP8MaS6y0U9KpzysAsBVR1Tb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.132.51
+	 MIME-Version; b=Cyk/I7mCjnJetZJLsTNuFd0BWh6R8chdWyV9RJEjOoSMOE1GhEjKD5kWcDaz3bPRZ/PP7Pvd3L2mUweZGEGT6DBSvUHwmsj32M+vSbSmtJIMgIayCpLwYJgTs5qYVmwTrnQwzVG2dfnubhCiCVAO9hJWO/VCa1h6f8cgslNyIm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.132.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
+Received: from andre.telenet-ops.be (andre.telenet-ops.be [IPv6:2a02:1800:120:4::f00:15])
+	by cantor.telenet-ops.be (Postfix) with ESMTPS id 4ZzSgP37T3z4x92B
+	for <linux-spi@vger.kernel.org>; Fri, 16 May 2025 15:32:33 +0200 (CEST)
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:b0d6:ccd4:58dc:70fd])
-	by baptiste.telenet-ops.be with cmsmtp
-	id ppYX2E00L3S8nz401pYYVQ; Fri, 16 May 2025 15:32:33 +0200
+	by andre.telenet-ops.be with cmsmtp
+	id ppYY2E0053S8nz401pYYf4; Fri, 16 May 2025 15:32:33 +0200
 Received: from rox.of.borg ([192.168.97.57])
 	by ramsan.of.borg with esmtp (Exim 4.97)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1uFvAi-000000020iy-1h73;
-	Fri, 16 May 2025 15:32:31 +0200
+	id 1uFvAi-000000020jL-2Q4O;
+	Fri, 16 May 2025 15:32:32 +0200
 Received: from geert by rox.of.borg with local (Exim 4.97)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1uFvAt-0000000152r-3LD2;
+	id 1uFvAt-0000000153L-44sw;
 	Fri, 16 May 2025 15:32:31 +0200
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 To: Mark Brown <broonie@kernel.org>,
@@ -38,9 +41,9 @@ Cc: linux-spi@vger.kernel.org,
 	linux-sound@vger.kernel.org,
 	linux-renesas-soc@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH v2 11/22] spi: sh-msiof: SICTR bitfield conversion
-Date: Fri, 16 May 2025 15:32:14 +0200
-Message-ID: <4511c678c8fce5969eb50ffa7372d53396ff80ff.1747401908.git.geert+renesas@glider.be>
+Subject: [PATCH v2 17/22] spi: sh-msiof: Increase TX FIFO size for R-Car V4H/V4M
+Date: Fri, 16 May 2025 15:32:20 +0200
+Message-ID: <69cb5fc48f034d37484fa127b9864a1971a83417.1747401908.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1747401908.git.geert+renesas@glider.be>
 References: <cover.1747401908.git.geert+renesas@glider.be>
@@ -52,73 +55,68 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Convert MSIOF Control Register field accesses to use the FIELD_PREP()
-bitfield access macro.
+The MSIOF transmit FIFOs on R-Car V4H and V4M have 256 stages.
+Add a new family-specific match entry to handle this.
+Add quirk match entries for older R-Car Gen4 Socs (R-Car V3U and S4-8)
+that have transmit FIFOs with only 64 stages, just like on R-Car Gen3.
 
-This gets rid of explicit shifts.
+Update the (unused) definition of SIFCTR_TFUA for consistency.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
+Alternatively, the family-specific match entry could keep referring to
+rcar_gen3_data, and R-Car V4H and V4M could refer to the new entry.
+
+Tested on White Hawk (R-Car V4H) and Gray Hawk Single (R-Car V4M) with
+spi-loopback-test and external loopback, DMA and PIO, and a logic
+analyzer.
+
 v2:
   - No changes.
 ---
- drivers/spi/spi-sh-msiof.c | 31 ++++++++++++++++---------------
- 1 file changed, 16 insertions(+), 15 deletions(-)
+ drivers/spi/spi-sh-msiof.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 9bddf85dd9c7f2a1..4f582ecc524fe5fa 100644
+index 8afb7c1f64cd4486..26e71fc8890fda6d 100644
 --- a/drivers/spi/spi-sh-msiof.c
 +++ b/drivers/spi/spi-sh-msiof.c
-@@ -115,18 +115,18 @@ struct sh_msiof_spi_priv {
- #define SISCR_BRDV_DIV_1	7U
+@@ -149,7 +149,7 @@ struct sh_msiof_spi_priv {
+ #define SIFCTR_TFWM_8		5U		/*  Transfer Request when 8 empty stages */
+ #define SIFCTR_TFWM_4		6U		/*  Transfer Request when 4 empty stages */
+ #define SIFCTR_TFWM_1		7U		/*  Transfer Request when 1 empty stage */
+-#define SIFCTR_TFUA		GENMASK(26, 20) /* Transmit FIFO Usable Area */
++#define SIFCTR_TFUA		GENMASK(28, 20) /* Transmit FIFO Usable Area */
+ #define SIFCTR_RFWM		GENMASK(15, 13)	/* Receive FIFO Watermark */
+ #define SIFCTR_RFWM_1		0U		/*  Transfer Request when 1 valid stages */
+ #define SIFCTR_RFWM_4		1U		/*  Transfer Request when 4 valid stages */
+@@ -1113,6 +1113,15 @@ static const struct sh_msiof_chipdata rcar_gen3_data = {
+ 	.min_div_pow = 1,
+ };
  
- /* SICTR */
--#define SICTR_TSCKIZ_MASK	GENMASK(31, 30)	/* Transmit Clock I/O Polarity Select */
-+#define SICTR_TSCKIZ		GENMASK(31, 30)	/* Transmit Clock I/O Polarity Select */
- #define SICTR_TSCKIZ_SCK	BIT(31)		/*   Disable SCK when TX disabled */
--#define SICTR_TSCKIZ_POL_SHIFT	30		/*   Transmit Clock Polarity */
--#define SICTR_RSCKIZ_MASK	GENMASK(29, 28) /* Receive Clock Polarity Select */
-+#define SICTR_TSCKIZ_POL	BIT(30)		/*   Transmit Clock Polarity */
-+#define SICTR_RSCKIZ		GENMASK(29, 28) /* Receive Clock Polarity Select */
- #define SICTR_RSCKIZ_SCK	BIT(29)		/*   Must match CTR_TSCKIZ_SCK */
--#define SICTR_RSCKIZ_POL_SHIFT	28		/*   Receive Clock Polarity */
--#define SICTR_TEDG_SHIFT	27		/* Transmit Timing (1 = falling edge) */
--#define SICTR_REDG_SHIFT	26		/* Receive Timing (1 = falling edge) */
--#define SICTR_TXDIZ_MASK	GENMASK(23, 22)	/* Pin Output When TX is Disabled */
--#define SICTR_TXDIZ_LOW		(0 << 22)	/*   0 */
--#define SICTR_TXDIZ_HIGH	(1 << 22)	/*   1 */
--#define SICTR_TXDIZ_HIZ		(2 << 22)	/*   High-impedance */
-+#define SICTR_RSCKIZ_POL	BIT(28)		/*   Receive Clock Polarity */
-+#define SICTR_TEDG		BIT(27)		/* Transmit Timing (1 = falling edge) */
-+#define SICTR_REDG		BIT(26)		/* Receive Timing (1 = falling edge) */
-+#define SICTR_TXDIZ		GENMASK(23, 22)	/* Pin Output When TX is Disabled */
-+#define SICTR_TXDIZ_LOW		0U		/*   0 */
-+#define SICTR_TXDIZ_HIGH	1U		/*   1 */
-+#define SICTR_TXDIZ_HIZ		2U		/*   High-impedance */
- #define SICTR_TSCKE		BIT(15)		/* Transmit Serial Clock Output Enable */
- #define SICTR_TFSE		BIT(14)		/* Transmit Frame Sync Signal Output Enable */
- #define SICTR_TXE		BIT(9)		/* Transmit Enable */
-@@ -382,14 +382,15 @@ static void sh_msiof_spi_set_pin_regs(struct sh_msiof_spi_priv *p, u32 ss,
- 	sh_msiof_write(p, SIRMDR1, tmp);
- 
- 	tmp = 0;
--	tmp |= SICTR_TSCKIZ_SCK | cpol << SICTR_TSCKIZ_POL_SHIFT;
--	tmp |= SICTR_RSCKIZ_SCK | cpol << SICTR_RSCKIZ_POL_SHIFT;
-+	tmp |= SICTR_TSCKIZ_SCK | FIELD_PREP(SICTR_TSCKIZ_POL, cpol);
-+	tmp |= SICTR_RSCKIZ_SCK | FIELD_PREP(SICTR_RSCKIZ_POL, cpol);
- 
- 	edge = cpol ^ !cpha;
- 
--	tmp |= edge << SICTR_TEDG_SHIFT;
--	tmp |= edge << SICTR_REDG_SHIFT;
--	tmp |= tx_hi_z ? SICTR_TXDIZ_HIZ : SICTR_TXDIZ_LOW;
-+	tmp |= FIELD_PREP(SICTR_TEDG, edge);
-+	tmp |= FIELD_PREP(SICTR_REDG, edge);
-+	tmp |= FIELD_PREP(SICTR_TXDIZ,
-+			  tx_hi_z ? SICTR_TXDIZ_HIZ : SICTR_TXDIZ_LOW);
- 	sh_msiof_write(p, SICTR, tmp);
- }
- 
++static const struct sh_msiof_chipdata rcar_gen4_data = {
++	.bits_per_word_mask = SPI_BPW_MASK(8) | SPI_BPW_MASK(16) |
++			      SPI_BPW_MASK(24) | SPI_BPW_MASK(32),
++	.tx_fifo_size = 256,
++	.rx_fifo_size = 256,
++	.ctlr_flags = SPI_CONTROLLER_MUST_TX,
++	.min_div_pow = 1,
++};
++
+ static const struct sh_msiof_chipdata rcar_r8a7795_data = {
+ 	.bits_per_word_mask = SPI_BPW_MASK(8) | SPI_BPW_MASK(16) |
+ 			      SPI_BPW_MASK(24) | SPI_BPW_MASK(32),
+@@ -1128,7 +1137,9 @@ static const struct of_device_id sh_msiof_match[] __maybe_unused = {
+ 	{ .compatible = "renesas,rcar-gen2-msiof", .data = &rcar_gen2_data },
+ 	{ .compatible = "renesas,msiof-r8a7795",   .data = &rcar_r8a7795_data },
+ 	{ .compatible = "renesas,rcar-gen3-msiof", .data = &rcar_gen3_data },
+-	{ .compatible = "renesas,rcar-gen4-msiof", .data = &rcar_gen3_data },
++	{ .compatible = "renesas,msiof-r8a779a0",  .data = &rcar_gen3_data },
++	{ .compatible = "renesas,msiof-r8a779f0",  .data = &rcar_gen3_data },
++	{ .compatible = "renesas,rcar-gen4-msiof", .data = &rcar_gen4_data },
+ 	{ .compatible = "renesas,sh-msiof",        .data = &sh_data }, /* Deprecated */
+ 	{ /* sentinel */ }
+ };
 -- 
 2.43.0
 

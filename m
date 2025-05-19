@@ -1,138 +1,137 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91D912820C6;
-	Mon, 19 May 2025 15:44:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8171715D1;
+	Mon, 19 May 2025 15:50:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747669470; cv=none; b=fTSnr74qZOvgdGVe149C7Bk08UIXwQW5PQ6OSsxoThj2HBSP3+TQPOwMjxNef46k0rTmZnjxfhD+4pZD4A5HGIzncViSltESc3uxefIgd2bxjh7cngYurzZlEC8DcS7CMokrtf8CvHwePvi48tTM8Vxv8F4tgm2XTUeFW1Xo4K4=
+	t=1747669827; cv=none; b=ReWMDU5/eW94kn4W7FdlWYVnUqJS/DWCacvRKtV3yf/e/ZBbEJqczaEVXWd9NgVmgpa86/8v66NR5oUVwIqjtvTH+7u0GS3Cz0hVOph8BZYq44z4UsAh3ze3gMMlzGoiqx/UAKn/X+L9fo2WTbNjbrclkkmCv2jRVBI7K9XAYXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747669470; c=relaxed/simple;
-	bh=ucbRC+By9t6hiwEjSnTGEwM8Sp7zd3PXSGJLq749aGA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qm92AmcR87mf6YgWqphb2IWpliXJ34Epejc8119Sq6cqpJcbaXX0pagIl+7WLlYnLx/dH9buWEVbWl5znbOm6Kop1FfR+RTfZF5oguHp6w8gR14h4i1R/IDYKraJq5GIicufo0QjBXbdCjNJuvYit0cepe/m5V+dYVzOtSwK0Xw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gOMWIman; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1747669827; c=relaxed/simple;
+	bh=CuLVQhdgIPjvHv0rQT6Dmcn56lz0D7swUmu5t+yoFYo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=HRRVRbxJo2dGoYFtJt/Pk1rgrGrheLEohYBY/qRISP+4mT4d1CO9EuZQgIEK0Npwcx5wCEOlorT0r6pqf2W4rojRCV3qI2klXuWdq+2yLbFTc9G9t4znG9jfdeSg+gZB4Zovld/q5fOvBlfbLhzmOJ4Xp9wG+AkPT09Y613pxi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SX8JyjWT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gOMWIman"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747669469; x=1779205469;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ucbRC+By9t6hiwEjSnTGEwM8Sp7zd3PXSGJLq749aGA=;
-  b=gOMWImanockod7A/QxMhBip60hxhwDqRMjfZuqjMPulix1cJgkOeSY9G
-   uVp4Yfeopxznj7KPDWdx8aDdTANeeh0rx/ejfIZCzjkxiti+WqL+PmzFf
-   o1nKoJkAzHClGxWTcgXkZnlKwp4AhiTlkj+901XhieoRlr1OeDhQ1GuCe
-   ztEM0zzEnZyGd/e813Xl1dy35NKQ6y1kG+fb5ugBZeRgcOZQ0s42OGZaB
-   h6DRoK8EOBiuZzWHD4AbfQO1MQw0rWE+a5DeGvFSD1A2mdz0gEuP4HjH3
-   3stFLGelmUzcOHA/rhR55DG/iKyxCkWH6ilFRwL5H5rubH2wuP/0bcbzZ
-   w==;
-X-CSE-ConnectionGUID: WKLKd6ubTY+f8O88tW3VcA==
-X-CSE-MsgGUID: /UA6LEhJRMWQmdgoLNy3YA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11438"; a="60966638"
-X-IronPort-AV: E=Sophos;i="6.15,301,1739865600"; 
-   d="scan'208";a="60966638"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2025 08:44:28 -0700
-X-CSE-ConnectionGUID: D9nnBx4yRm2U9Gb6be0UuQ==
-X-CSE-MsgGUID: O7jOjWPERG2e6Txxz393/g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,301,1739865600"; 
-   d="scan'208";a="176513494"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2025 08:44:18 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1uH2f0-000000034rN-2cA2;
-	Mon, 19 May 2025 18:44:14 +0300
-Date: Mon, 19 May 2025 18:44:14 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Andrew Lunn <andrew@lunn.ch>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Peter Rosin <peda@axentia.se>,
-	Derek Kiernan <derek.kiernan@amd.com>,
-	Dragan Cvetic <dragan.cvetic@amd.com>,
-	Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Wolfram Sang <wsa@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
-	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v2 23/26] misc: lan966x_pci: Introduce board specific data
-Message-ID: <aCtRzm6nPk61WtRj@smile.fi.intel.com>
-References: <20250507071315.394857-1-herve.codina@bootlin.com>
- <20250507071315.394857-24-herve.codina@bootlin.com>
- <aB0ERYKdRreDe7Wt@smile.fi.intel.com>
- <20250519170004.631d99af@bootlin.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SX8JyjWT"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 25960C4CEF6;
+	Mon, 19 May 2025 15:50:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747669827;
+	bh=CuLVQhdgIPjvHv0rQT6Dmcn56lz0D7swUmu5t+yoFYo=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=SX8JyjWT3S0h7mCaXdKxpfHrHcrb2ofxUT9B6/aRtz1ChymPQ/e3Q3jm2WTC+nWS6
+	 2rjv+vXS1z4hjEnXIeiJSJdy77dIk5cmqcQZX+g2rIyfSXqOm7hadog46igXq1QJ8f
+	 0UCtRBQWfnlraww1bVQ/7i2TCubso9MKA0Nc/5WsZijxMWB7YCfcQnrop36dsBC9RT
+	 kVScusZ3feralvtCvB6JzlW0zKnLzrrBnLU/aFco0hnnKUPyjeJ4bmW6eRVZVzHkVj
+	 lztBNuswTI+II6UyMWG8Mc0auzsBJ0JukwAWwshkInMgzqFZ7jrE+U3h5O3odhk8LQ
+	 9rmlvoaRE9qbA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1B20DC54799;
+	Mon, 19 May 2025 15:50:27 +0000 (UTC)
+From: =?utf-8?q?Nuno_S=C3=A1_via_B4_Relay?= <devnull+nuno.sa.analog.com@kernel.org>
+Date: Mon, 19 May 2025 16:41:09 +0100
+Subject: [PATCH v6 4/7] include: adi-axi-common: add new helper macros
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250519170004.631d99af@bootlin.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20250519-dev-axi-clkgen-limits-v6-4-bc4b3b61d1d4@analog.com>
+References: <20250519-dev-axi-clkgen-limits-v6-0-bc4b3b61d1d4@analog.com>
+In-Reply-To: <20250519-dev-axi-clkgen-limits-v6-0-bc4b3b61d1d4@analog.com>
+To: linux-clk@vger.kernel.org, linux-fpga@vger.kernel.org, 
+ dmaengine@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+ linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org, 
+ linux-spi@vger.kernel.org
+Cc: Stephen Boyd <sboyd@kernel.org>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Moritz Fischer <mdf@kernel.org>, Wu Hao <hao.wu@intel.com>, 
+ Xu Yilun <yilun.xu@intel.com>, Tom Rix <trix@redhat.com>, 
+ Vinod Koul <vkoul@kernel.org>, Jean Delvare <jdelvare@suse.com>, 
+ Guenter Roeck <linux@roeck-us.net>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, Trevor Gamblin <tgamblin@baylibre.com>, 
+ =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, Mark Brown <broonie@kernel.org>, 
+ Mike Turquette <mturquette@linaro.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1747669828; l=1930;
+ i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
+ bh=F9rmW1Daru1sdf4SDLslhcn5FXhJbwH5zOEXykHR5J4=;
+ b=B7JGsfdbl+6++EvZGpKy68lHIc+iswr64DD1+xlRa98r3EpBWFgIhI3HlE4S+Y2jY8T8sHwjO
+ 6V9zHqs4G+cAEAD2Hxp21lNU1/8r0NFRlfiDmuCvdAo67xU5SvYa1P4
+X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
+ pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
+X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
+ auth_id=100
+X-Original-From: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>
+Reply-To: nuno.sa@analog.com
 
-On Mon, May 19, 2025 at 05:00:04PM +0200, Herve Codina wrote:
-> On Thu, 8 May 2025 22:21:41 +0300
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> > On Wed, May 07, 2025 at 09:13:05AM +0200, Herve Codina wrote:
+From: Nuno Sá <nuno.sa@analog.com>
 
-...
+Add new helper macros and enums to help identifying the platform and some
+characteristics of it at runtime.
 
-> > >  static struct pci_device_id lan966x_pci_ids[] = {
-> > > -	{ PCI_DEVICE(PCI_VENDOR_ID_EFAR, 0x9660) },
-> > > +	{ PCI_VDEVICE(EFAR, 0x9660), (kernel_ulong_t)&evb_lan9662_nic_info },  
-> > 
-> > PCI_DEVICE_DATA() ?
-> 
-> PCI_DEVICE_DATA() need the device ID defined using a #define in the form
-> PCI_DEVICE_ID_##vend##_##dev
-> 
-> PCI_VDEVICE() allows the device ID value passed as an integer in the same
-> way as for PCI_DEVICE().
-> 
-> Also, according to its kdoc, it allows the next field to follow as the
-> device private data.
-> 
-> IMHO, I think PCI_VDEVICE() use is correct here and I will keep it.
+Signed-off-by: Nuno Sá <nuno.sa@analog.com>
+---
+ include/linux/adi-axi-common.h | 33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
-It's correct, no doubts, but using PCI_DEVICE_DATA() makes sense when you need
-to supply driver_data. In particular it will take care of needed castings and
-also as you noticed asks users to apply the regular pattern for PCI ID
-definitions.
-
-Moreover, the 0x9660 is used in two drivers and it's a good candidate to be in
-pci_ids.h. (Note drivers/pci/quirks.c:6286)
+diff --git a/include/linux/adi-axi-common.h b/include/linux/adi-axi-common.h
+index 141ac3f251e6f256526812b9d55cd440a2a46e76..f64f4ad4bedae312ec450bd5fed09ceaedd5397e 100644
+--- a/include/linux/adi-axi-common.h
++++ b/include/linux/adi-axi-common.h
+@@ -12,6 +12,7 @@
+ #define ADI_AXI_COMMON_H_
+ 
+ #define ADI_AXI_REG_VERSION			0x0000
++#define ADI_AXI_REG_FPGA_INFO			0x001C
+ 
+ #define ADI_AXI_PCORE_VER(major, minor, patch)	\
+ 	(((major) << 16) | ((minor) << 8) | (patch))
+@@ -20,4 +21,36 @@
+ #define ADI_AXI_PCORE_VER_MINOR(version)	(((version) >> 8) & 0xff)
+ #define ADI_AXI_PCORE_VER_PATCH(version)	((version) & 0xff)
+ 
++#define ADI_AXI_INFO_FPGA_TECH(info)            (((info) >> 24) & 0xff)
++#define ADI_AXI_INFO_FPGA_FAMILY(info)          (((info) >> 16) & 0xff)
++#define ADI_AXI_INFO_FPGA_SPEED_GRADE(info)     (((info) >> 8) & 0xff)
++
++enum adi_axi_fpga_technology {
++	ADI_AXI_FPGA_TECH_UNKNOWN = 0,
++	ADI_AXI_FPGA_TECH_SERIES7,
++	ADI_AXI_FPGA_TECH_ULTRASCALE,
++	ADI_AXI_FPGA_TECH_ULTRASCALE_PLUS,
++};
++
++enum adi_axi_fpga_family {
++	ADI_AXI_FPGA_FAMILY_UNKNOWN = 0,
++	ADI_AXI_FPGA_FAMILY_ARTIX,
++	ADI_AXI_FPGA_FAMILY_KINTEX,
++	ADI_AXI_FPGA_FAMILY_VIRTEX,
++	ADI_AXI_FPGA_FAMILY_ZYNQ,
++};
++
++enum adi_axi_fpga_speed_grade {
++	ADI_AXI_FPGA_SPEED_UNKNOWN      = 0,
++	ADI_AXI_FPGA_SPEED_1    = 10,
++	ADI_AXI_FPGA_SPEED_1L   = 11,
++	ADI_AXI_FPGA_SPEED_1H   = 12,
++	ADI_AXI_FPGA_SPEED_1HV  = 13,
++	ADI_AXI_FPGA_SPEED_1LV  = 14,
++	ADI_AXI_FPGA_SPEED_2    = 20,
++	ADI_AXI_FPGA_SPEED_2L   = 21,
++	ADI_AXI_FPGA_SPEED_2LV  = 22,
++	ADI_AXI_FPGA_SPEED_3    = 30,
++};
++
+ #endif /* ADI_AXI_COMMON_H_ */
 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.49.0
 
 

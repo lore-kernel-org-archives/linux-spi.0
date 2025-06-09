@@ -1,50 +1,65 @@
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A37B1DED4C;
-	Mon,  9 Jun 2025 15:08:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.182.106
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B9E1D5145
+	for <linux-spi@vger.kernel.org>; Mon,  9 Jun 2025 15:33:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749481712; cv=none; b=NaKv2M3yprolmWChIkfhWYM8j3jFxBxeCYqfrNI8tVl6w05znQD+3/WJwhHh9erC4rBpOQFc0avDCy1OQSf6qe7uC0Ezs2Ly3FCUJBim9yEipnh87aEUklauY2WyOb8axNZn6yWjk6ITvJ0eceIjgDIH1LniY0jhs2m1780kZYs=
+	t=1749483221; cv=none; b=cnWuqE4kQmNrbgAqPFg856eTv9RHnNrk9cN8cjk6euapW4J6nvk61nA4jVlae4MfjeNaucs5op73X7Ed4f30Zm4TexrI39g/heIguuO3MIbh9WGTgIH36lcnEVbtGZOeYJ1ukO+DcTSaPsCxd00ObfPIxi7A0qf8b/b0kbJD92E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749481712; c=relaxed/simple;
-	bh=6RlQJGYc3cQByqEQ5UnVltcdkYr558XiHh/+3IPkFFk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=EUHiYu/MdCIw5EL68v7NnWPAzbyu9uSfsd89W2KIj/4OoRHNa5i2RaLTX5XzdiuLaKCbnZjafUSi0E/NV4iRl5vqKN0XafMN2bIzXjSnF75oxwzrjZbPZi1UCrK5YmbQjfqaOGtR/MTXC8FaNkoqLyzIgbFKw10NdMypimW/Do4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=zbUEhb1w; arc=none smtp.client-ip=185.132.182.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+	s=arc-20240116; t=1749483221; c=relaxed/simple;
+	bh=Ey72OPsSmpUH6hcCG9cbHDrh6u+W0gYAKs5MnbTd5ew=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=pveNGvvleljuG0t4lBZOf0YrwxxlbW9QrpwN7M/OS0GEzCvPl1qykFrWG/rhv72dPkbq360ptSGbTwrOwgfsgsEIhzVLjRDLNtSHbwjKAfHZ3W1tkgHvAjPWPS4YKc0Tg65Lbaf3Or8PZiG95zBDkSvz391x3sTBCMzO+3rLvas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NDO9dFl4; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="zbUEhb1w"
-Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 559Dtxkd009830;
-	Mon, 9 Jun 2025 17:08:13 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=selector1; bh=RHEwRJAXNMJDW0r76HBXTU
-	vBrd9il/gic2C2Cm/Al7k=; b=zbUEhb1wGJdOJ/EdOcGNg/EOItH3HgAucyc4iH
-	H/6bHmOMVjo3nWzrkxzox/38KHwSZ+84vdNY809jnf2dK4lDD3UzxWuzjbAyJrcR
-	jQHGkOKT6wRfkj3EDEwcYq97C7wgngpdL+FMcHE2fjRmSW/DOqghihikjknX6e6o
-	jYOEiH7+sQRRK4TDHyZO7gBXxCHRfbclXgOhcr1ENV+uC+pCEqTNkh/M1RDCWUwt
-	hkuPcQsuw3iJwYRhV4yTFELIrzn+Xy90Gw5J2J4q5rPRr0R0wrgtjHn38FS8VL/R
-	ZnObw8yfEN8Q6S8TJlcuQeL7jEEEc62pS/qwG2aEYPIsZeGg==
-Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 474cs2g878-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Jun 2025 17:08:12 +0200 (MEST)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 01A8B4004B;
-	Mon,  9 Jun 2025 17:06:53 +0200 (CEST)
-Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 18427BCE4C4;
-	Mon,  9 Jun 2025 17:05:05 +0200 (CEST)
-Received: from localhost (10.48.87.62) by SHFDAG1NODE1.st.com (10.75.129.69)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 9 Jun
- 2025 17:05:04 +0200
-From: Patrice Chotard <patrice.chotard@foss.st.com>
-Date: Mon, 9 Jun 2025 17:05:04 +0200
-Subject: [PATCH v6] spi: stm32-ospi: Make usage of
- reset_control_acquire/release() API
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NDO9dFl4"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-450dd065828so30130435e9.2
+        for <linux-spi@vger.kernel.org>; Mon, 09 Jun 2025 08:33:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1749483217; x=1750088017; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=PvtGT/gXZy9G0z7KUPcczavaKT2KAY8YSEGerfvgk+k=;
+        b=NDO9dFl4z+KZi900V6b+cczdI2ZKvmKWavUCpktm2ILbc+6nvWc3k4uyuU4g0PFGP8
+         DvtK+RFqlT8C7HjVvLo+6Wo3/bpx0NtBzcDPuXl0v9aMFLgRaBwWUlyL/29DjgisTBVP
+         uVWGUDwSvQ2Ftqclg/fzN45pcvAaXHfbpPaxnP3M1BZBWhgG1FfBcEl5kIT0vlexDVFW
+         kCzVV8y6DhmurVmD8WxX2MwtH0FYS000EqPF9gD84b6Z87nLn+RbIIU6VGARzPTHA2fu
+         2yzClwfpFOA/LGk/1X1lAQEfzi9ptMSygVcgvG0j89bmcCPKU7i0JfbgREpZGquskFsx
+         eC3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749483217; x=1750088017;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PvtGT/gXZy9G0z7KUPcczavaKT2KAY8YSEGerfvgk+k=;
+        b=GtpraEShfg9uKmP/bqJc/Ebq9X0t3IdU4GlYGgHrqw62UwIzPugkmnSvuD76RI9c0p
+         wFyp9kPv7GO5RzXNa20iOmd9MU4NTX95hP7bd6IT+zEcbV9a2Zg08Hzb1xoqshOFEDWk
+         U35Fwnbwsb/2tPFgLkdqOor9FUHQgGrnemNwgNnaGsnLoSSh4JiefowzprAyR9nxMTC3
+         yvs4SjeEMaddVIz2QhWaxj8PXe/01/J0OnZPLA5LGESH9p9FKFLiq4q1g6r9YWgi1v+6
+         wGayyK3Ih0OIKpvLiOU5vffFxZAxsR6tH/1809sMD4eRj5ocUP58oPHe2KeEX/Czl7mA
+         tCTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCViEdCVkXcffNwzrOgTpBz6bXZ6QinH1adQo0vNN98sV6pFaLRHkayQqT01PvSG/zW+w7rbmYZU2XY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxX29ceG50BzidDamkjSX2qyJid84v7zQN+EG36bnvN9GFIGKDO
+	mQtIGSB9bgPb5aZtV9HvOpgvA17IEbS2/IUhyKp5SVQ4Ojzd07Csp7elcvVf0uAx5E4jP0NLzoD
+	GJ9YHrns=
+X-Gm-Gg: ASbGnctaNFDVphZkTmZQL+lrOwwIih2+j8/7RYh9Ks8sc9d12K28RTY5By6Wy/OQuDb
+	rnPexeGAUPmsHBujN7regXeiEKbJM2PBF67U0toqIu/ctKvkt1cXtyq7kzc7FvpO4ijJQnlytpc
+	Yc3ZHpXxU5Zx18mfJQdTKRHNEUx2Rz/lzF1VGpO54wosJjr61Z/U3dGksoD8r9i2ndWk9VcffAs
+	Pq0diYYL2jnP1/XexW0JCmDnEPMDCwqHwhRh5fpTbUCYA4e7CTrhITbYEZLMcxTDeSzoU9REsHw
+	kB3jwO1sA7PGoEBSFpUDEDfGy0iwJWkTUk5hLqB5SYDBq17sr48smDPGtguoPXn9cAbjGWk=
+X-Google-Smtp-Source: AGHT+IGUecRwAIMHRhZ9jzGvMSqw8sw1BbFuESQIxyKOrlJ4Q6pTMh4lszRudkvpP6BGsmhYVVJ00A==
+X-Received: by 2002:a05:600c:8212:b0:450:cd50:3c66 with SMTP id 5b1f17b1804b1-452014b39dfmr121204185e9.29.1749483217347;
+        Mon, 09 Jun 2025 08:33:37 -0700 (PDT)
+Received: from ho-tower-lan.lan ([37.18.136.128])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-452137277basm115728695e9.32.2025.06.09.08.33.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Jun 2025 08:33:36 -0700 (PDT)
+From: James Clark <james.clark@linaro.org>
+Subject: [PATCH 0/4] spi: spi-fsl-dspi: Target mode improvements
+Date: Mon, 09 Jun 2025 16:32:37 +0100
+Message-Id: <20250609-james-nxp-spi-dma-v1-0-2b831e714be2@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -53,138 +68,44 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20250609-b4-upstream_ospi_reset_update-v6-1-5b602b567e8a@foss.st.com>
-X-B4-Tracking: v=1; b=H4sIAB/4RmgC/43OsW7DIBDG8VeJmEsEhAPcqe9RVRaBo2FIsDhit
- Yr87sVZmiqDO/5v+H13Y4Q1I7HX3Y1VnDPlculhXnYsnPzlE3mOvZkSCoSWkh81v07UKvrzWGj
- KY0XCNl6n6BtyGExApcFHL1k3poopf93994/ep0yt1O/73KzW63/lWXHBdUSbIEblB/mWCtGe2
- j6UM1vt+fDrgbBb3oFLblEb7+xgwapnTz94Um15unuDU8Ek65zB9OzBo6e3PFj/O0JEAaCCC3+
- 9ZVl+AH+8dva8AQAA
-X-Change-ID: 20250411-b4-upstream_ospi_reset_update-596ce245ada1
-To: Philipp Zabel <p.zabel@pengutronix.de>, Mark Brown <broonie@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue
-	<alexandre.torgue@foss.st.com>,
-        Patrice Chotard <patrice.chotard@foss.st.com>
-CC: <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>
-X-Mailer: b4 0.14.2
-X-ClientProxiedBy: SHFCAS1NODE2.st.com (10.75.129.73) To SHFDAG1NODE1.st.com
- (10.75.129.69)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-09_05,2025-06-09_01,2025-03-28_01
+X-B4-Tracking: v=1; b=H4sIAJX+RmgC/22NQQ6CMBBFr0Jm7Zi2hgquuIdh0cIUxkhLWkMwh
+ LtbSdy5fC/572+QKDIluBUbRFo4cfAZ5KmAbjR+IOQ+MyihSlEqhQ8zUUK/zphmxn4yaOr6Spa
+ ss9pC3s2RHK9H895mHjm9QnwfF4v82l+t+lNbJAqUQlekLiQ6p5snexPDOcQB2n3fP+qH+z+zA
+ AAA
+To: Vladimir Oltean <olteanv@gmail.com>, Mark Brown <broonie@kernel.org>
+Cc: Vladimir Oltean <vladimir.oltean@nxp.com>, linux-spi@vger.kernel.org, 
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ James Clark <james.clark@linaro.org>, Arnd Bergmann <arnd@arndb.de>, 
+ Larisa Grigore <larisa.grigore@nxp.com>
+X-Mailer: b4 0.14.0
 
-As ospi reset is consumed by both OMM and OSPI drivers, use the reset
-acquire/release mechanism which ensure exclusive reset usage.
+Improve usability of target mode by reporting FIFO errors and increasing
+the buffer size when DMA is used. While we're touching DMA stuff also
+switch to non-coherent memory, although this is unrelated to target
+mode.
 
-This avoid to call reset_control_get/put() in OMM driver each time
-we need to reset OSPI children and guarantee the reset line stays
-deasserted.
+The first commit is marked as a fix because it can fix intermittent
+issues with existing transfers, rather than the later fixes which
+improve larger than FIFO target mode transfers which would have never
+worked.
 
-During resume, OMM driver takes temporarily control of reset.
-
-Fixes: 79b8a705e26c ("spi: stm32: Add OSPI driver")
-Signed-off-by: Patrice Chotard <patrice.chotard@foss.st.com>
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+Signed-off-by: James Clark <james.clark@linaro.org>
 ---
-Changes in v6:
-- Add Fixes tag.
-- Rebase on top of v6.16-rc1
-- Link to v5: https://lore.kernel.org/r/20250514-b4-upstream_ospi_reset_update-v5-1-7b5de0552c8c@foss.st.com
+James Clark (3):
+      spi: spi-fsl-dspi: Clear completion counter before initiating transfer
+      spi: spi-fsl-dspi: Use non-coherent memory for DMA
+      spi: spi-fsl-dspi: Report FIFO overflows as errors
 
-Changes in v5:
-  - Add dependency with commit 6b3754009f87 ("reset: Add devm_reset_control_array_get_exclusive_released()")
-    in commit message.
-  - Link to v4: https://lore.kernel.org/r/20250512-b4-upstream_ospi_reset_update-v4-1-982c6f7886ef@foss.st.com
+Larisa Grigore (1):
+      spi: spi-fsl-dspi: Increase DMA buffer size
 
-Changes in v4:
-  - Add a comment about reset sharing between OSPI and OMM drivers durig resume.
-  - Link to v3: https://lore.kernel.org/r/20250507-b4-upstream_ospi_reset_update-v3-1-7e46a8797572@foss.st.com
-
-Changes in v3:
-  - Remove previous patch 1/2 as already merged.
-  - Keep the reset control acquired from probe() to remove().
-  - Link to v2: https://lore.kernel.org/r/20250411-b4-upstream_ospi_reset_update-v2-0-4de7f5dd2a91@foss.st.com
-
-Changes in v2:
-  - Rebased on spi/for-next (7a978d8fcf57).
-  - Remove useless check on reset.
-  - Add error handling on reset_control_acquire().
-  - Link to v1: https://lore.kernel.org/all/20250410-b4-upstream_ospi_reset_update-v1-0-74126a8ceb9c@foss.st.com/
----
- drivers/spi/spi-stm32-ospi.c | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/spi/spi-stm32-ospi.c b/drivers/spi/spi-stm32-ospi.c
-index 7c1fa55fbc4726d2f3c5516245ccd81f59c3c44d..db6b1cfc970f6c80515a39073e2389311796da8f 100644
---- a/drivers/spi/spi-stm32-ospi.c
-+++ b/drivers/spi/spi-stm32-ospi.c
-@@ -804,7 +804,7 @@ static int stm32_ospi_get_resources(struct platform_device *pdev)
- 		return ret;
- 	}
- 
--	ospi->rstc = devm_reset_control_array_get_exclusive(dev);
-+	ospi->rstc = devm_reset_control_array_get_exclusive_released(dev);
- 	if (IS_ERR(ospi->rstc))
- 		return dev_err_probe(dev, PTR_ERR(ospi->rstc),
- 				     "Can't get reset\n");
-@@ -936,11 +936,13 @@ static int stm32_ospi_probe(struct platform_device *pdev)
- 	if (ret < 0)
- 		goto err_pm_enable;
- 
--	if (ospi->rstc) {
--		reset_control_assert(ospi->rstc);
--		udelay(2);
--		reset_control_deassert(ospi->rstc);
--	}
-+	ret = reset_control_acquire(ospi->rstc);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Can not acquire reset %d\n", ret);
-+
-+	reset_control_assert(ospi->rstc);
-+	udelay(2);
-+	reset_control_deassert(ospi->rstc);
- 
- 	ret = spi_register_controller(ctrl);
- 	if (ret) {
-@@ -987,6 +989,8 @@ static void stm32_ospi_remove(struct platform_device *pdev)
- 	if (ospi->dma_chrx)
- 		dma_release_channel(ospi->dma_chrx);
- 
-+	reset_control_release(ospi->rstc);
-+
- 	pm_runtime_put_sync_suspend(ospi->dev);
- 	pm_runtime_force_suspend(ospi->dev);
- }
-@@ -997,6 +1001,8 @@ static int __maybe_unused stm32_ospi_suspend(struct device *dev)
- 
- 	pinctrl_pm_select_sleep_state(dev);
- 
-+	reset_control_release(ospi->rstc);
-+
- 	return pm_runtime_force_suspend(ospi->dev);
- }
- 
-@@ -1016,6 +1022,12 @@ static int __maybe_unused stm32_ospi_resume(struct device *dev)
- 	if (ret < 0)
- 		return ret;
- 
-+	ret = reset_control_acquire(ospi->rstc);
-+	if (ret) {
-+		dev_err(dev, "Can not acquire reset\n");
-+		return ret;
-+	}
-+
- 	writel_relaxed(ospi->cr_reg, regs_base + OSPI_CR);
- 	writel_relaxed(ospi->dcr_reg, regs_base + OSPI_DCR1);
- 	pm_runtime_mark_last_busy(ospi->dev);
-
+ drivers/spi/spi-fsl-dspi.c | 128 ++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 102 insertions(+), 26 deletions(-)
 ---
 base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
-change-id: 20250411-b4-upstream_ospi_reset_update-596ce245ada1
+change-id: 20250522-james-nxp-spi-dma-a997ebebfb6b
 
 Best regards,
 -- 
-Patrice Chotard <patrice.chotard@foss.st.com>
+James Clark <james.clark@linaro.org>
 

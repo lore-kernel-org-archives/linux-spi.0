@@ -1,108 +1,155 @@
-Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A9E8253F35
-	for <linux-spi@vger.kernel.org>; Mon,  9 Jun 2025 13:46:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7731A841A
+	for <linux-spi@vger.kernel.org>; Mon,  9 Jun 2025 15:08:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749476782; cv=none; b=KHlnfoaNv55uET3mPW3WHONsGjqskHZ/K3P+trM9RUK+AwRPX4qBOb4PJRmRiP51X2H2tNgCKOKcKdGfnlnJh/WjnlMIkaYvVQjQBJVTVLwU8nSuK4SesaHBfcAAvL1uY68laDzPwRwv6kSmkblE6mHs5LQT/BZfyms/EdjzQUc=
+	t=1749481699; cv=none; b=Tya9TNjV9OpF1H1RXC+jnGPofDRoPy45Cw28dIGRjcOFKEtS3M+ozOAaZOajKxNwBVwqxp7vr1iKbijRHdu3jiDTDQt7ovjRGI1rmSoM0fQl3O+HCHaNhRkDEA8OHvRkJzC990kgSri1JZxHtUctfjkFGGOdOGnO++Ax3ideTyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749476782; c=relaxed/simple;
-	bh=GBEKj6eJWaaE7cvFETzfPc86aZ4RP1bV4B1Miyqzsbo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fnIKvYC5VcM3f41MAB46z/o/CqN+bss43Nu9kGUqNjGdNsxEbe59ZSFvKpF6yxOfPQtarJ7olIZ4yXO1EqqaJwo9D+MhHBLeIE28xPtQ5De9pqSEd89cUNuMImNgFdgc5l19p3RCsWGTQY1+vzngFAiYoio7EVjTgNXsdBUX0UY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=BSkAtvuD; arc=none smtp.client-ip=209.85.210.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	s=arc-20240116; t=1749481699; c=relaxed/simple;
+	bh=9mFa0rp8B+5wNs/R5dyPySMEUZgssjrZ7l5QQ5LDHhU=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=KkALslxUGA/9rp+2XTyON9jILlTCTvu0P4ihNrdFtSHPrD0MFSjWEgPAKqv8Zizc3BzBKiUY8M/2Z2zj1rI2MfCmoERqryosZHaxVH+bZO7KSV8wDC299Qm3lLdFGd3WHjwvd0GBijUec3toYmoXd5IMPmcB/d/VL5xxar5WlfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JjEVpKPL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="BSkAtvuD"
-Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-73044329768so3359821a34.3
-        for <linux-spi@vger.kernel.org>; Mon, 09 Jun 2025 06:46:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1749476777; x=1750081577; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ptOAEZwd5Fw/VdmARM5svKvaL7+utDTM2cSLfdqSd48=;
-        b=BSkAtvuDvZSiLJogZYY8jLfnW3Va5viPmmpJvAPKYmahTqeezkMx0YhDO0Jct/zGSE
-         q8Cho1W4vKiMqB8tB9/QNX4RH4hRKhlx87kbziVgGq6X2x5XQfLDqoCIhc/pA9KZ7hwj
-         L0txEuukmAYcR2vYmVJmrybtE/CqYdR+XYDMVdC0hixyBjESTtRa/SLnL75I0xv3kNyj
-         eCANFt/Y99D17Cm6EgmCmBdUfkPfrcqaxriMvwiZVFHdXh6qN/w4qVuvCNYozzO11Mer
-         cbAVAuekSz7DM3BdERUU6YSx7OhPqMM5X1EhvmKNdE8Ju6tB4JW46rwH0Cyicro7O0oM
-         9G0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749476777; x=1750081577;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ptOAEZwd5Fw/VdmARM5svKvaL7+utDTM2cSLfdqSd48=;
-        b=YD4JbuidzH0dUH0Auw/XrRgzGrHQH5lE65UlTykk+6X6UkQM2gbjAKtV1D0y2ElG1Z
-         z3v0fRaXecCECbH7/Mh4YZbJkME4+Fy0nT65kIwmtw2szpkeTP7NzkIBRkL/QmzIN14/
-         xs3eXbadks01pwgckoNoCSQYSWzxTaRglrtep/umt+SYRLcVX8KSvvknvkkVcvhAvYzX
-         0EvpqVTKHxMqE7RUVYxgcO/+PKe6fxA+FdiLLa0DbmAdCEgWMDB9IpUZ0w4Cu/iZTYWB
-         ortY1GbfZB8vrmsOmEDzOutDXjYlizykDLcZhoNe+VdVXdgcso3jylS1Ikh9z1aOxrh7
-         jNSw==
-X-Forwarded-Encrypted: i=1; AJvYcCULhyO4GF5HkG+ptczU/uqZcK2q+R/nyRnN/ubFou32/2M+EUZr6eH7yfDI/hVrMwTGXQkRBdavFYI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7ApYOD/DlKwrvKtUCMOQj1Ev8rYre1p8XCp5L/ImkC/lFNC1N
-	Wkp9nG3cQaOG7ICATKHxurdwIs1oV4ln06jLMZqlXakbfUEK4EYqPfdZH7CTtE1J68w=
-X-Gm-Gg: ASbGncuDMxCbofpAAD6VZ36vi+EcjeOlSkxg1pJlrN3H8pFfGZJJmtBcEHEwB3l2fwl
-	+i0jigPQRZK046ti4bo4rZjBxdixoSmlR4YI91L4mNJaHb+TOArxnaVaSAIzuNUGnv08gbRscnf
-	+7bKlG/BaQDqV2wGsl75xxAekAHvv5OoRardi8Uj1Sp9NZshIMUD8snioGDg2nAxHQVWG8qWJyi
-	qk/r9wUwkejLMCdWL8HjZnnQKYWFmcswur5FL5EvqANuHy8x51PDzSp4S9xsnoycvwfH7sYV2dc
-	joBlaWO8t2eKz3AWieyJrrUUfrDdo0GJD0JyXqWbjZ08H4CBVYmgCO4MYVMe6EovC8oWn6xelPt
-	U/ccP6bvraeGnF/R0Bxs70g/CeDEv
-X-Google-Smtp-Source: AGHT+IHd/v00BXad/269Rqd/0cC9wm7vQ4on/F/C+9GFMyd6zzEEXFcWPZmMIilxMsQs+3+D+WxGQA==
-X-Received: by 2002:a9d:3e16:0:b0:72b:9c34:1361 with SMTP id 46e09a7af769-73888df8abdmr8003832a34.15.1749476777408;
-        Mon, 09 Jun 2025 06:46:17 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:c2e7:1c16:22c5:b461? ([2600:8803:e7e4:1d00:c2e7:1c16:22c5:b461])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-73889f7ba55sm1584743a34.30.2025.06.09.06.46.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Jun 2025 06:46:17 -0700 (PDT)
-Message-ID: <756de913-e9c6-443b-844c-8b06eb00ab80@baylibre.com>
-Date: Mon, 9 Jun 2025 08:46:16 -0500
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JjEVpKPL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0A41C4CEEB;
+	Mon,  9 Jun 2025 15:08:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749481697;
+	bh=9mFa0rp8B+5wNs/R5dyPySMEUZgssjrZ7l5QQ5LDHhU=;
+	h=Subject:From:Date:To:From;
+	b=JjEVpKPLAfPktuCHAKDok56aOUCJeLzxa9ZuApFeyRtotVsIHeLWr3hTCFX9IItdP
+	 W9911jR6SEsx3a5eGEBQ8SMrEQG/owm/ctocbIiySh2+hg73D+hn3keQneDjkLUnhD
+	 +5SMqGHzpin/GEbz8Db/F+292y3psdufMgkxE6iaSujzIfPbzSVMlCAj8qGJcxIGY4
+	 VRnbMS/Se9eHZoLir6lc6duXveT7IQzTQYUT80fQgRew01eVfNlEqnWuiSkNYGc4Ws
+	 x2VHWm3wqtcbmrNN3CwQ34FVoIYn+EQ/E4wIPoPPZdC0Kk6rLWC2RYdQsmI1RqI3Vz
+	 zVJI//Z5BxM+g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7501F380DBE9;
+	Mon,  9 Jun 2025 15:08:49 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] spi: offload: check offload ops existence before
- disabling the trigger
-To: Andres Urian Florez <andres.emb.sys@gmail.com>, broonie@kernel.org
-Cc: skhan@linuxfoundation.org, linux-spi@vger.kernel.org
-References: <20250608230422.325360-1-andres.emb.sys@gmail.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20250608230422.325360-1-andres.emb.sys@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <174948172792.1126847.9443962717566870401.git-patchwork-summary@kernel.org>
+Date: Mon, 09 Jun 2025 15:08:47 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-On 6/8/25 6:04 PM, Andres Urian Florez wrote:
-> Add a safe guard in spi_offload_trigger to check the existence of
-> offload->ops before invoking the trigger_disable callback
-> 
-> Signed-off-by: Andres Urian Florez <andres.emb.sys@gmail.com>
-> ---
->  drivers/spi/spi-offload.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/spi/spi-offload.c b/drivers/spi/spi-offload.c
-> index e674097bf3be..d336f4d228d5 100644
-> --- a/drivers/spi/spi-offload.c
-> +++ b/drivers/spi/spi-offload.c
-> @@ -297,7 +297,7 @@ int spi_offload_trigger_enable(struct spi_offload *offload,
->  	if (trigger->ops->enable) {
->  		ret = trigger->ops->enable(trigger, config);
->  		if (ret) {
-> -			if (offload->ops->trigger_disable)
-> +			if (offload->ops && offload->ops->trigger_disable)
->  				offload->ops->trigger_disable(offload);
->  			return ret;
->  		}
+Hello:
 
-It would be unusual to have an enable callback without also having
-a disable callback, but to be symmetric with the same call in
-spi_offload_trigger_disable(), it seems fine to add this check.
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-Reviewed-by: David Lechner <dlechner@baylibre.com>
+Series: ASoC: add Renesas MSIOF sound driver
+  Submitter: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=954674
+  Lore link: https://lore.kernel.org/r/871ptq4blr.wl-kuninori.morimoto.gx@renesas.com
+    Patches: [v4,1/9] dt-bindings: renesas,sh-msiof: Add MSIOF I2S Sound support
+             [v4,4/9] ASoC: renesas: rsnd: allow to use ADG as standalone
+             [v4,5/9] ASoC: renesas: rsnd: care BRGA/BRGB select in rsnd_adg_clk_enable()
+             [v4,6/9] ASoC: renesas: rsnd: enable to use "adg" clock
+             [v4,7/9] ASoC: renesas: add MSIOF sound support
+             [v4,9/9] arm64: defconfig: add Renesas MSIOF sound support
+
+Patch: spi: loongson: Fix build warnings about export.h
+  Submitter: Huacai Chen <chenhuacai@loongson.cn>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=969585
+  Lore link: https://lore.kernel.org/r/20250608142939.172108-1-chenhuacai@loongson.cn
+
+Patch: [next] spi: spi-pci1xxxx: Fix error code in probe
+  Submitter: Dan Carpenter <dan.carpenter@linaro.org>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=969189
+  Lore link: https://lore.kernel.org/r/aEKvDrUxD19GWi0u@stanley.mountain
+
+Series: QPIC v2 fixes for SDX75
+  Submitter: Md Sadre Alam <quic_mdalam@quicinc.com>
+  Committer: Miquel Raynal <miquel.raynal@bootlin.com>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=951957
+  Lore link: https://lore.kernel.org/r/20250410100019.2872271-1-quic_mdalam@quicinc.com
+    Patches: [v4,1/3] mtd: rawnand: qcom: Pass 18 bit offset from NANDc base to BAM base
+             [v4,2/3] mtd: rawnand: qcom: Fix last codeword read in qcom_param_page_type_exec()
+             [v4,3/3] mtd: rawnand: qcom: Fix read len for onfi param page
+
+Patch: dt-bindings: remove RZ/N1S bindings
+  Submitter: Wolfram Sang <wsa+renesas@sang-engineering.com>
+  Committer: Rob Herring (Arm) <robh@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=952624
+  Lore link: https://lore.kernel.org/r/20250411194849.11067-2-wsa+renesas@sang-engineering.com
+
+Patch: [1/1] spi: dt-bindings: mxs-spi: allow clocks properpty
+  Submitter: Frank Li <Frank.Li@nxp.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=967165
+  Lore link: https://lore.kernel.org/r/20250528222821.728544-1-Frank.Li@nxp.com
+
+Patch: spi: spi-qpic-snand: use NANDC_STEP_SIZE consistently
+  Submitter: Gabor Juhos <j4g8y7@gmail.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=966229
+  Lore link: https://lore.kernel.org/r/20250525-qpic-snand-nandc_step_size-v1-1-6039e9bfe1c6@gmail.com
+
+Series: [RESEND,1/3] spi: tegra210-quad: Add iommus property to DT bindings
+  Submitter: Vishwaroop A <va@nvidia.com>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=960089
+  Lore link: https://lore.kernel.org/r/20250506152350.3370291-1-va@nvidia.com
+    Patches: [RESEND,1/3] spi: tegra210-quad: Add iommus property to DT bindings
+             [RESEND,2/3] arm64: tegra: Configure QSPI clocks and add DMA
+
+Patch: spi: spi-qpic-snand: remove 'qpic_snand_op' structure
+  Submitter: Gabor Juhos <j4g8y7@gmail.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=967403
+  Lore link: https://lore.kernel.org/r/20250529-qpic-snand-remove-qpic_snand_op-v1-1-6e42b772d748@gmail.com
+
+Series: Add basic SPI support for SG2042 SoC
+  Submitter: Zixian Zeng <sycamoremoon376@gmail.com>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=950358
+  Lore link: https://lore.kernel.org/r/20250407-sfg-spi-v4-0-30ac949a1e35@gmail.com
+    Patches: [v4,1/2] spi: dt-bindings: snps,dw-apb-ssi: Add compatible for SOPHGO SG2042 SoC
+             [v4,2/2] riscv: sophgo: dts: Add spi controller for SG2042
+
+Series: Add basic SPI support for SOPHGO SG2042 SoC
+  Submitter: Zixian Zeng <sycamoremoon376@gmail.com>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=956817
+  Lore link: https://lore.kernel.org/r/20250425-sfg-spi-v6-0-2dbe7bb46013@gmail.com
+    Patches: [v6,1/3] spi: dt-bindings: snps,dw-apb-ssi: Merge duplicate compatible entry
+             [v6,3/3] riscv: sophgo: dts: Add spi controller for SG2042
+
+Series: reset: Add devm_reset_control_array_get_exclusive_released()
+  Submitter: Patrice CHOTARD <patrice.chotard@foss.st.com>
+  Committer: Philipp Zabel <p.zabel@pengutronix.de>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=952506
+  Lore link: https://lore.kernel.org/r/20250411-b4-upstream_ospi_reset_update-v2-0-4de7f5dd2a91@foss.st.com
+    Patches: [v2,1/2] reset: Add devm_reset_control_array_get_exclusive_released()
+
+Patch: Add support for SAMA7D65
+  Submitter: Ryan Wanner <Ryan.Wanner@microchip.com>
+  Committer: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=959147
+  Lore link: https://lore.kernel.org/r/cover.1746201835.git.Ryan.Wanner@microchip.com
+
+Patch: [v1,for-next] spi: spi-pci1xxxx: Add support for 25MHz Clock frequency in C0
+  Submitter: Thangaraj Samynathan <thangaraj.s@microchip.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=966393
+  Lore link: https://lore.kernel.org/r/20250526104908.404564-1-thangaraj.s@microchip.com
+
+
+Total patches: 24
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+

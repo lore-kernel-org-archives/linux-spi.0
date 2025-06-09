@@ -1,32 +1,32 @@
 Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8622322129F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AEE022170B;
 	Mon,  9 Jun 2025 20:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749501543; cv=none; b=SPtmGH521uczbAxpJl3AZ3wck1oTSpfZNJK0/yNCC8FoLQ76TsN9KcmIMgpc50yd29/aToBY3p6vovmAbFKfM4OxTE95IgSZUBvif3EYYvh/r40xbtuWdE6Gcb7in6hUmT9C3e9GIg+sWvLFWaT0o5JKIyIEQKgLjpiN6hnki8E=
+	t=1749501544; cv=none; b=UYHIb10q/kIcysjxAdMgg/N3o7EDavlay7QpxXXg9kynGTvEWIqBSt3f+muzeWpR0GG7wvXD7m7Kl6K8Op9oZB3nWv1rrlwp+L6rLPh3t3tM3mY0KW7WC7i/77NuLtwlPWeGmUx22EKagsjpYopt0UiqWUoLkt0H6ZzE0DnTlU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749501543; c=relaxed/simple;
-	bh=/FW1uODFNygTPBiads/Cgva/fZBdnCPVHS77URlMjjc=;
+	s=arc-20240116; t=1749501544; c=relaxed/simple;
+	bh=azLvpNS6ccFIPAjwzhhSs7C802wsRdQiR7hKzlK9MIE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=V5QlHZvYTJmfJjkuKMvmu1d7CmGB+hcKnHaRnCxyWz7nyz5EB6ogeSFt0LYJ7AntktET3j9YKwV5etXRZLM7Eep2GMmTfxY9ktfE4H5cp3++Ft9Q7/glK8SUgVFSYc6qtKZ4+PCS6eXRmzAy9GYLgXNZHQxwnUn5Cc0QMIyxIgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=RQ/h7KoF; arc=none smtp.client-ip=159.69.126.157
+	 In-Reply-To:To:Cc; b=d7zQrfdCeWp27Kg1WUkiwSL4i4K1UUGBK2fWqGDnf0BXJix+ulIzPelJaSE4bVegEOlvT8jF4eJdQkAYcp5ktIkSgoTi5h2vLbx+zG101by+5eBGdDLIdMTIomKe77RNmjBK1hiyos6zV2g8Wr/jFNNcYj85uDLDKkOJpWfmIr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=OyJQr67L; arc=none smtp.client-ip=159.69.126.157
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="RQ/h7KoF"
+	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="OyJQr67L"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
 	s=mail; t=1749501539;
-	bh=/FW1uODFNygTPBiads/Cgva/fZBdnCPVHS77URlMjjc=;
+	bh=azLvpNS6ccFIPAjwzhhSs7C802wsRdQiR7hKzlK9MIE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=RQ/h7KoFVxyEaL3gOrcwRIrSgiUi8tpf+8bZ1J3cmHacz1rZSlBzejqnzNA6GJH05
-	 bfa6DvVbFooTRNtO1DccruKYL07wctByi6ad/WxxZxTwEs1/r55W8AD32nJcQP9ng9
-	 k++3zu4wwvtQi17CUEWu2WFdHxXlKbqOsQHqAtV0=
+	b=OyJQr67LA/qATwAcM2WhqumB6/h5LHabx1HOOqJJj/4aqgOxt4mQCoNGLeTYJ3tq0
+	 mw8KIqLu9J10stqYLvrCn/XJNHttRJc/1Azmxulg1VSZC2Ob3A4/pH5LpCNyZe9K53
+	 RZqdxzQIjcTm/Idkzmw9hiYYqMALgBTqK12YJROU=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Mon, 09 Jun 2025 22:38:39 +0200
-Subject: [PATCH v6 3/3] locking/mutex: Mark devm_mutex_init() as
- __must_check
+Date: Mon, 09 Jun 2025 22:38:37 +0200
+Subject: [PATCH v6 1/3] spi: spi-nxp-fspi: check return value of
+ devm_mutex_init()
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -35,7 +35,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250609-must_check-devm_mutex_init-v6-3-9540d5df9704@weissschuh.net>
+Message-Id: <20250609-must_check-devm_mutex_init-v6-1-9540d5df9704@weissschuh.net>
 References: <20250609-must_check-devm_mutex_init-v6-0-9540d5df9704@weissschuh.net>
 In-Reply-To: <20250609-must_check-devm_mutex_init-v6-0-9540d5df9704@weissschuh.net>
 To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
@@ -51,70 +51,41 @@ Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
  linux-spi@vger.kernel.org, imx@lists.linux.dev, linux-leds@vger.kernel.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1749501538; l=2169;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1749501538; l=1078;
  i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=/FW1uODFNygTPBiads/Cgva/fZBdnCPVHS77URlMjjc=;
- b=XMIA2t76cWY8q3SbUJtzN8v1jQ4AwXiPpkwDqG5ui1Cd4AyjqNi3x12hCFUhxnv95kyToir+s
- tiAJIto8fDLApMRKWxsys9+vfQBWRGMaKFmhqy59sHuLny/dl0fQBvt
+ bh=azLvpNS6ccFIPAjwzhhSs7C802wsRdQiR7hKzlK9MIE=;
+ b=7Tex+6NkzoKF+8wCbpZPkHLLVD1gTer+8CN7AMvXQEYZbIKYLsA0sVqRAYKiDEmbz5Dzf9VG4
+ NNarAPkm1mbBgfavw87ucpapLycpxvVCZSoxqzH7ufaohe9/dLEgjBG
 X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
  pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 
 Even if it's not critical, the avoidance of checking the error code
-from devm_mutex_init() call today diminishes the point of using the devm
-variant of it. Tomorrow it may even leak something. Enforce all callers
-checking the return value through the compiler.
+from devm_mutex_init() call today diminishes the point of using devm
+variant of it. Tomorrow it may even leak something.
 
-As devm_mutex_init() itself is a macro, it can not be annotated
-directly. Annotate __devm_mutex_init() instead.
-Unfortunately __must_check/warn_unused_result don't propagate through
-statement expression. So move the statement expression into the argument
-list of the call to __devm_mutex_init() through a helper macro.
+Add the missed check.
 
+Fixes: 48900813abd2 ("spi: spi-nxp-fspi: remove the goto in probe")
 Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 ---
- include/linux/mutex.h | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/spi/spi-nxp-fspi.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/mutex.h b/include/linux/mutex.h
-index a039fa8c17807c700d3b61193feac0418cad1243..00afd341d293ddfcc0a427b576efdce044955e38 100644
---- a/include/linux/mutex.h
-+++ b/include/linux/mutex.h
-@@ -126,11 +126,11 @@ do {							\
+diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+index e63c77e418231cd0698ffb73eeeebfbe63cc3065..f3d5765054132cd18b7257439ece971f58e9ceb2 100644
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -1273,7 +1273,9 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return dev_err_probe(dev, ret, "Failed to request irq\n");
  
- #ifdef CONFIG_DEBUG_MUTEXES
+-	devm_mutex_init(dev, &f->lock);
++	ret = devm_mutex_init(dev, &f->lock);
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to initialize lock\n");
  
--int __devm_mutex_init(struct device *dev, struct mutex *lock);
-+int __must_check __devm_mutex_init(struct device *dev, struct mutex *lock);
- 
- #else
- 
--static inline int __devm_mutex_init(struct device *dev, struct mutex *lock)
-+static inline int __must_check __devm_mutex_init(struct device *dev, struct mutex *lock)
- {
- 	/*
- 	 * When CONFIG_DEBUG_MUTEXES is off mutex_destroy() is just a nop so
-@@ -141,14 +141,17 @@ static inline int __devm_mutex_init(struct device *dev, struct mutex *lock)
- 
- #endif
- 
--#define devm_mutex_init(dev, mutex)			\
-+#define __mutex_init_ret(mutex)				\
- ({							\
- 	typeof(mutex) mutex_ = (mutex);			\
- 							\
- 	mutex_init(mutex_);				\
--	__devm_mutex_init(dev, mutex_);			\
-+	mutex_;						\
- })
- 
-+#define devm_mutex_init(dev, mutex) \
-+	__devm_mutex_init(dev, __mutex_init_ret(mutex))
-+
- /*
-  * See kernel/locking/mutex.c for detailed documentation of these APIs.
-  * Also see Documentation/locking/mutex-design.rst.
+ 	ctlr->bus_num = -1;
+ 	ctlr->num_chipselect = NXP_FSPI_MAX_CHIPSELECT;
 
 -- 
 2.49.0

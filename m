@@ -1,186 +1,120 @@
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE750273804;
-	Mon, 16 Jun 2025 09:23:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.182.106
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4103226D4DF
+	for <linux-spi@vger.kernel.org>; Mon, 16 Jun 2025 09:34:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750065841; cv=none; b=PIYMbIq3VNxobrufE96yUOuebYrlK3ItIMjpzFBWU4O6Js5phYRZGiy8B1MJrWswjsN1/uch8fr6RwWBjQlD8GBUKT35A6Uirks0+Pnf74el4AaWT+fJ4xzvv7uoxX6kHh2e6vvp1GY7POncwCpkm3fKQ3S0jT1K6zNjhTS3CR8=
+	t=1750066460; cv=none; b=CoGV5MPeoPO9wkyU+rdDlIGRybH5FMqf/AFbAzcr6Bxn4F6xm2Dg3ElLCbgt/1N6NW+ljmbxPfbQ5TXTlZxA7ZEqqRQzB3K/pCk7k7cpb7teFSm740jPyepQS1nHe5n3jrFoi0ulyD37TRIpUMVZBM8S83wbvf07x6HVye/JAN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750065841; c=relaxed/simple;
-	bh=A3jYVFOj1AeRkdskbnQ+KgmsePxGvMw1Qau4pL/Dbds=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=KPN1qGJsWm09SKp6lUKFI3LCueBQTQ8Zy6CCcZIPPSpPkmvgZKK1rDGxO8ejqiIEUVidcvjuB+AVdZw1kBwsDniSdS0/5ueGZDn/eOeoF0+mJcbgAXUTAd33ZvbF+ZWv2wGDnugOHOvae3tJfF6b0fs/1pD+1ISMIG1+UTiwC8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=bSznlfWz; arc=none smtp.client-ip=185.132.182.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+	s=arc-20240116; t=1750066460; c=relaxed/simple;
+	bh=yWuVND4T3UIjH81QGhsgSpvTzpQOmi6MbpEzktgkuI0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gSAXiDg9n3o9JnuNp2XdRJVRn0cKmBsbPXIk/VZ8O4jYHoIM5pw5z6f/6P62wk/5yhuFvRQgIVBtksNGNt4lsFjIo/381H9R3xadKsYBvtmi8ARjkQorsc5qW+YC4IyA7AThHJV0SEVsR1VmrLjUsJTDJlNnqDiiCXYNOZs8TyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=MFidEgOK; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="bSznlfWz"
-Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55G8tIwf030344;
-	Mon, 16 Jun 2025 11:23:43 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=selector1; bh=
-	GwJR4L4C5BNi8BSL4VDf9yl7ztEEHcvn8VOyGlQkwDc=; b=bSznlfWzf8JS1yut
-	xodDKNY6JZ0mK216iHwfRMnfrTXP+RL6V9Qsn6T2dY1wQEIrptU2ngmaUFoEpzkW
-	xs12kvgu3T9d64fmqoOWbzluYzFb3IM7p44C3ZniALjxhLOHThYlVo1JBBa1w4RJ
-	L+8XQbTIiwEghZ6GyRfe6G2dRTWwXmz9V9HW0uRtMkxPjUOOGJS6IghQj/BARp7x
-	zVTTwN1xjZa608Jtmhyq5Wsxmg+CGwdEQCheSXt87mwl4mgbN//g0bPF+6sXGMwn
-	cdaDRMx5PXgmSMS+Sm1aMcmHo0y64JFVFzF9thJtFcv/Vw3/uNMRfwvSugZZMd2I
-	ffX3uA==
-Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 4790e1ywha-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 16 Jun 2025 11:23:42 +0200 (MEST)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 0DB8440047;
-	Mon, 16 Jun 2025 11:22:24 +0200 (CEST)
-Received: from Webmail-eu.st.com (shfdag1node2.st.com [10.75.129.70])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 83E60A7D80E;
-	Mon, 16 Jun 2025 11:21:07 +0200 (CEST)
-Received: from localhost (10.252.14.42) by SHFDAG1NODE2.st.com (10.75.129.70)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 16 Jun
- 2025 11:21:07 +0200
-From: =?utf-8?q?Cl=C3=A9ment_Le_Goffic?= <clement.legoffic@foss.st.com>
-Date: Mon, 16 Jun 2025 11:21:02 +0200
-Subject: [PATCH 1/6] spi: stm32: Add SPI_READY mode to spi controller
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="MFidEgOK"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3a54700a46eso2809022f8f.1
+        for <linux-spi@vger.kernel.org>; Mon, 16 Jun 2025 02:34:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1750066456; x=1750671256; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=t9CmXx7Jox2MTWDj8UZuRJKz6FA45h7DTh7MdX7eUyU=;
+        b=MFidEgOKkpw4Z9O7KVk0KUuUoWwhFn/l6i4WUoKLxlApenc/ehCs3ENMT8hJZW/5sp
+         s/6SrY22821PTS/QPYyc1teFOUQ71TodgN73+Ga+bCbHLMKY0DnJaEj2DgDVPLRvDUbY
+         4pFdELkO8z7K3jArSU5t6ZvHf8Ay6W23Skp/St87bxPTEoGQNoxvoMgAbbSGt073Dp8I
+         Ro6YqzOAN7+vLVc6EUqzxw4VNJBJSEJ3px9MnrhQH5ET9XMRBGwG2KbG7oQ2FUlktDUU
+         C35LdAqQEiiUhe0s2LI68DBMIWZEYLE7SWgWLsATa6BfwNslDhuxQpzYmdid+r5KUK2D
+         EI/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750066456; x=1750671256;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=t9CmXx7Jox2MTWDj8UZuRJKz6FA45h7DTh7MdX7eUyU=;
+        b=ww+iGg9rlrAoWOUj7+ZjUFkXrVY9cLvvkdWMpaObzQ2aFxoM844VDtcLrsQCeXxySd
+         UmZ+YWWnU5hvqQMJ/5+bmVdSQTa/pDUWW+RsFbTV9bfjkZHKlpOC+jMZKeCHQgznu6og
+         u3PY5u8FDxvLghKq82esB2hnwp33eCDIKcyfBVbCm0lqTtPiHAou1E7CPSiPJDsOK4NW
+         NgIE/xCBeAlO1ZThdsWPhrcDh5dHqQYrIQ0XLyVqwIPubdxE9K36g33e1G8Q3BcCSgum
+         1wTYHuKSx7j/ieU0Wr5QblIzyJ9uyGuT285PuL1eaDqgeNvhw1s9UEq97NiRT4YZzxff
+         AuvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVjzpOr5WU4W6O66Pdrt0XfDnQF1TnXqP4scVdRhcZPibov6mlqkwWFRph/1lSdYYmgEa73XtkB70o=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7PtxlpZLGWXDqNjNu1CLCrYEKxV1l2pUS6Y/NLo7NalNFRpJB
+	6gHEIKIDDrEzzOjfAq+wWzD9inzM+3OorRzjoL8K+Du53SYT1OMNkGpc7DoZjhw33KE=
+X-Gm-Gg: ASbGncvkPrOv3jFlcwIDJaS50QdETTeZN12R/PE+H7aDWDVLiLniNQ1uVk/bYYMHdfO
+	oozYlqxAsvshrD8q0XpbPAeOeOFYWRCJihrnKzRkeQ3UPBddoew9mZFcemkOT6QOGmiPlZOMzM4
+	Vld4qphOIIauRUgEXGhQFEHw8xai7QbHqah1or2EPU5zCYVwtVsnz44JoHJEwye/h+eU7kuj3xb
+	n4Wy9f6+rUkAe1vk4ksaIKhBITVlNRMP4e6Q+5rlLpXCCgGGTQes49bQkvMZOujSq0u8Y/RJdCG
+	wJ4DMz6uWRoNyWV7RaWT3KBMyIbRmrTAHNhGZoFmbTIHOaeLs0McZpnZI5dkkiWn1IRTxJDWUsP
+	Ytw==
+X-Google-Smtp-Source: AGHT+IH2eCAan9hr2z5r64aFmnkOfZ0VQQsGBIwNUvdyfgouIqWaqapfX02p+ntb3Jt3ejJMX+pmLw==
+X-Received: by 2002:a5d:5f8d:0:b0:3a5:5270:a52c with SMTP id ffacd0b85a97d-3a57189727dmr7228368f8f.0.1750066456498;
+        Mon, 16 Jun 2025 02:34:16 -0700 (PDT)
+Received: from [192.168.1.3] ([37.18.136.128])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a568b403b4sm10327273f8f.80.2025.06.16.02.34.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 16 Jun 2025 02:34:16 -0700 (PDT)
+Message-ID: <9af5522e-02e3-4a82-a9df-20c71ebb3875@linaro.org>
+Date: Mon, 16 Jun 2025 10:34:15 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-ID: <20250616-spi-upstream-v1-1-7e8593f3f75d@foss.st.com>
-References: <20250616-spi-upstream-v1-0-7e8593f3f75d@foss.st.com>
-In-Reply-To: <20250616-spi-upstream-v1-0-7e8593f3f75d@foss.st.com>
-To: Alain Volmat <alain.volmat@foss.st.com>, Mark Brown <broonie@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue
-	<alexandre.torgue@foss.st.com>,
-        Valentin Caron <valentin.caron@foss.st.com>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Erwan Leray <erwan.leray@foss.st.com>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        Sumit Semwal
-	<sumit.semwal@linaro.org>,
-        =?utf-8?q?Christian_K=C3=B6nig?=
-	<christian.koenig@amd.com>
-CC: <linux-spi@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-media@vger.kernel.org>,
-        <dri-devel@lists.freedesktop.org>, <linaro-mm-sig@lists.linaro.org>,
-        =?utf-8?q?Cl=C3=A9ment_Le_Goffic?= <clement.legoffic@foss.st.com>
-X-Mailer: b4 0.15-dev-c25d1
-X-ClientProxiedBy: SHFCAS1NODE2.st.com (10.75.129.73) To SHFDAG1NODE2.st.com
- (10.75.129.70)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-16_04,2025-06-13_01,2025-03-28_01
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] spi: spi-fsl-dspi: Revert unintended dependency change in
+ config SPI_FSL_DSPI
+To: Lukas Bulwahn <lbulwahn@redhat.com>, Mark Brown <broonie@kernel.org>,
+ Ciprian Marian Costea <ciprianmarian.costea@nxp.com>,
+ Larisa Grigore <Larisa.Grigore@nxp.com>,
+ Stoica Cosmin-Stefan <cosmin.stoica@nxp.com>, linux-spi@vger.kernel.org
+Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Lukas Bulwahn <lukas.bulwahn@redhat.com>
+References: <20250616091955.20547-1-lukas.bulwahn@redhat.com>
+Content-Language: en-US
+From: James Clark <james.clark@linaro.org>
+In-Reply-To: <20250616091955.20547-1-lukas.bulwahn@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The spi ready functionality is supported by our peripheral in host and
-target modes on STM32MP2x SoCs.
-Update our spi controller driver to allow devices to use this
-functionality.
 
-Signed-off-by: Clément Le Goffic <clement.legoffic@foss.st.com>
----
- drivers/spi/spi-stm32.c | 28 ++++++++++++++++++++++++----
- 1 file changed, 24 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index da3517d7102d..2bcd4a43676d 100644
---- a/drivers/spi/spi-stm32.c
-+++ b/drivers/spi/spi-stm32.c
-@@ -154,6 +154,9 @@
- /* STM32H7_SPI_I2SCFGR bit fields */
- #define STM32H7_SPI_I2SCFGR_I2SMOD	BIT(0)
- 
-+/* STM32MP25_SPICFG2 bit fields */
-+#define STM32MP25_SPI_CFG2_RDIOM	BIT(13)
-+
- /* STM32MP25 SPI registers bit fields */
- #define STM32MP25_SPI_HWCFGR1			0x3F0
- 
-@@ -222,6 +225,7 @@ struct stm32_spi_reg {
-  * @rx: SPI RX data register
-  * @tx: SPI TX data register
-  * @fullcfg: SPI full or limited feature set register
-+ * @rdy_en: SPI ready feature register
-  */
- struct stm32_spi_regspec {
- 	const struct stm32_spi_reg en;
-@@ -235,6 +239,7 @@ struct stm32_spi_regspec {
- 	const struct stm32_spi_reg rx;
- 	const struct stm32_spi_reg tx;
- 	const struct stm32_spi_reg fullcfg;
-+	const struct stm32_spi_reg rdy_en;
- };
- 
- struct stm32_spi;
-@@ -415,6 +420,8 @@ static const struct stm32_spi_regspec stm32mp25_spi_regspec = {
- 	.tx = { STM32H7_SPI_TXDR },
- 
- 	.fullcfg = { STM32MP25_SPI_HWCFGR1, STM32MP25_SPI_HWCFGR1_FULLCFG },
-+
-+	.rdy_en = { STM32H7_SPI_CFG2, STM32MP25_SPI_CFG2_RDIOM },
- };
- 
- static inline void stm32_spi_set_bits(struct stm32_spi *spi,
-@@ -1172,15 +1179,21 @@ static int stm32_spi_prepare_msg(struct spi_controller *ctrl,
- 	else
- 		clrb |= spi->cfg->regs->cs_high.mask;
- 
--	dev_dbg(spi->dev, "cpol=%d cpha=%d lsb_first=%d cs_high=%d\n",
-+	if (spi_dev->mode & SPI_READY)
-+		setb |= spi->cfg->regs->rdy_en.mask;
-+	else
-+		clrb |= spi->cfg->regs->rdy_en.mask;
-+
-+	dev_dbg(spi->dev, "cpol=%d cpha=%d lsb_first=%d cs_high=%d rdy=%d\n",
- 		!!(spi_dev->mode & SPI_CPOL),
- 		!!(spi_dev->mode & SPI_CPHA),
- 		!!(spi_dev->mode & SPI_LSB_FIRST),
--		!!(spi_dev->mode & SPI_CS_HIGH));
-+		!!(spi_dev->mode & SPI_CS_HIGH),
-+		!!(spi_dev->mode & SPI_READY));
- 
- 	spin_lock_irqsave(&spi->lock, flags);
- 
--	/* CPOL, CPHA and LSB FIRST bits have common register */
-+	/* CPOL, CPHA, LSB FIRST, CS_HIGH and RDY_EN bits have common register */
- 	if (clrb || setb)
- 		writel_relaxed(
- 			(readl_relaxed(spi->base + spi->cfg->regs->cpol.reg) &
-@@ -1768,6 +1781,13 @@ static int stm32_spi_transfer_one_setup(struct stm32_spi *spi,
- 	spi->cur_bpw = transfer->bits_per_word;
- 	spi->cfg->set_bpw(spi);
- 
-+	if (spi_dev->mode & SPI_READY && spi->cur_bpw < 8) {
-+		writel_relaxed(readl_relaxed(spi->base + spi->cfg->regs->rdy_en.reg) &
-+				~spi->cfg->regs->rdy_en.mask,
-+					spi->base + spi->cfg->regs->rdy_en.reg);
-+		dev_dbg(spi->dev, "RDY logic disabled as bits per word < 8\n");
-+	}
-+
- 	/* Update spi->cur_speed with real clock speed */
- 	if (STM32_SPI_HOST_MODE(spi)) {
- 		mbr = stm32_spi_prepare_mbr(spi, transfer->speed_hz,
-@@ -2179,7 +2199,7 @@ static int stm32_spi_probe(struct platform_device *pdev)
- 	ctrl->auto_runtime_pm = true;
- 	ctrl->bus_num = pdev->id;
- 	ctrl->mode_bits = SPI_CPHA | SPI_CPOL | SPI_CS_HIGH | SPI_LSB_FIRST |
--			  SPI_3WIRE;
-+			  SPI_3WIRE | SPI_READY;
- 	ctrl->bits_per_word_mask = spi->cfg->get_bpw_mask(spi);
- 	ctrl->max_speed_hz = spi->clk_rate / spi->cfg->baud_rate_div_min;
- 	ctrl->min_speed_hz = spi->clk_rate / spi->cfg->baud_rate_div_max;
+On 16/06/2025 10:19 am, Lukas Bulwahn wrote:
+> From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+> 
+> Commit 9a30e332c36c ("spi: spi-fsl-dspi: Enable support for S32G
+> platforms") reworks the dependencies of config SPI_FSL_DSPI, but introduces
+> a typo changing the dependency to M5441x to a dependency on a non-existing
+> config M54541x.
+> 
+> Revert the unintended change to depend on the config M5441x.
+> 
+> Fixes: 9a30e332c36c ("spi: spi-fsl-dspi: Enable support for S32G platforms")
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+> ---
+>   drivers/spi/Kconfig | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+> index 60eb65c927b1..f2d2295a5501 100644
+> --- a/drivers/spi/Kconfig
+> +++ b/drivers/spi/Kconfig
+> @@ -647,7 +647,7 @@ config SPI_FSL_SPI
+>   config SPI_FSL_DSPI
+>   	tristate "Freescale DSPI controller"
+>   	select REGMAP_MMIO
+> -	depends on ARCH_MXC || ARCH_NXP || M54541x || COMPILE_TEST
+> +	depends on ARCH_MXC || ARCH_NXP || M5441x || COMPILE_TEST
+>   	help
+>   	  This enables support for the Freescale DSPI controller in master
+>   	  mode. S32, VF610, LS1021A and ColdFire platforms uses the controller.
 
--- 
-2.43.0
+How did that get there... Sorry for the breakage
+
+Reviewed-by: James Clark <james.clark@linaro.org>
 

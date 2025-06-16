@@ -1,128 +1,94 @@
-Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66422289372;
-	Mon, 16 Jun 2025 18:34:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E53A51C4A0A
+	for <linux-spi@vger.kernel.org>; Mon, 16 Jun 2025 22:01:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750098899; cv=none; b=EqA8B6AQb71Ri3NDSj9ZfDuWznDA1FWdEcRe6GwgzoFTIino25YPe6k3vFTvKQFV+RmDNvi4s7Kl5nWchPG+AiFfdRU3Ntu9q0WA4vPCcFPS2eRR6wOA0+E4m5s6GcBCa+Eh5br5WwEt6xwRMx8t/SLl2YYkZ532s+f8WeA5TpA=
+	t=1750111276; cv=none; b=HNWsCGw55h/glG6FYEdpKksF+sdE+PqltCwf7/ZHeIM+y/8ZB/e3CMzTLvXQU6jd0gFZN48VqWtBjWVBvPEp2J1xKErBKOxjNF5ETDrdD5+wKEBpnuNwerOklKZbHCxKEa/99TqdH2u0mauZUiOnJiBPsZgXek6S1WhzGFFhiDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750098899; c=relaxed/simple;
-	bh=k3U8hdUVf2mysDGF9j7sGFSXq/NHg1BAR9W4A1e7FBY=;
-	h=MIME-Version:Date:From:To:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=R0yHX9vWn8ZHzu5DVLC7auJIs5n6v+tYJqygR5XTJByStvvaDnO7FZ/y7YTCESq1bC8APlTg+SJwiKpxLXNfBdv3HEs6l8oJ3P7UG2YD+vPm2Kj9Cap8yLkSEmgryOr4kUMy+O7g3tsXeyQKHoi5m727iHxLkqKfmaJ0vsOuWO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=CkAQbKwL; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=KEsNygaq; arc=none smtp.client-ip=202.12.124.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1750111276; c=relaxed/simple;
+	bh=SFLO0xOMn8PJY80uuJvTi/bHhgq8BmwsE8+5yzDsMRE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=C6QNYiHMtY+d0FTfO7QoBgQ/hl8bmO+31cR2QtxOiS+bZoU7UZSbhB87dQKLlBR3PBG8Da6dnSswvOPllpR1Y6PKV/fKiRZeNReRx0vJodAq6nHCp7sSuLmFx6Ktt5/hTvnE1mxr0nW8u/JPyU6Kb9qPa3cJc5IFt5id1l1yScE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=UadQiczH; arc=none smtp.client-ip=95.215.58.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="CkAQbKwL";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="KEsNygaq"
-Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 337F0254012F;
-	Mon, 16 Jun 2025 14:34:56 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-05.internal (MEProxy); Mon, 16 Jun 2025 14:34:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:content-transfer-encoding:content-type:content-type:date:date
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1750098896;
-	 x=1750185296; bh=qRwibQTbtTFkc/qCHLHPXCkbTuwR1ipXTlm5cdeOUc4=; b=
-	CkAQbKwLRJX2qandCly0sWKOMtf77gN4MgYUuG+OsOzmG9buhoB1zAZUt2ybs+s+
-	WmpvOgS6fN47mDAumZkluDJWBK/0X5X0MWxxxXVGYGEddsSPLnDb4tDzwRPyqEEe
-	1TET4TyLtO+8vp8XiTLBs7hxKkuda37K+lr2eXSvmWrkF5ewuuTW1iQdxwTkdmTk
-	6eXvfnz5QtT1UDMOK+LVbs1kYSHQrteUiv0qfRYwmQD+FUq/jYyvzyxu4CKBn/G7
-	yQkaK3WsuaL9pK8PdvLge8pbRkN1dCtXTgWmBXfDFQp2PJPRo8PNd1aYg+s3DHeI
-	YFB789jS8Qab+ttLYZ/O0w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:content-transfer-encoding:content-type
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm1; t=1750098896; x=1750185296; bh=q
-	RwibQTbtTFkc/qCHLHPXCkbTuwR1ipXTlm5cdeOUc4=; b=KEsNygaqVgj7WbCwZ
-	Lkvakt2piIfCMaBt1ZbJrSwo4TK7oIkyX4Uoa9XJkgfm1OQP+3u1brIo11UMHbL1
-	84tfEe8rsX9Q3gIlO4CAxB2hm2py3yaD8D5YdOUIVdpWbaLmFIopaUFhBbzTs/qe
-	kUTiISvnEf5hjsrwF8mFI49VrSwxA4CnQw01e/+H5PaxqtIQa3SQ3iUwbxKtmZeb
-	ZEnrDwtSNoPspZvBlo3k7hGL85lsrP4TdTtDQ+qF7Xb3o8DBwzPsKR0WobtUQwt2
-	foTLiVMGGX7ZCjuRShvV4eFXAxLJSicbiC+3IxzCRFEqsUSxJqv1SwcRh4l1Rs4u
-	q28pA==
-X-ME-Sender: <xms:zmNQaIO0hvU2mt4H2Xvk5AnX0iB1kD8BTIM0kmdEAL52qNH_X7Zt-A>
-    <xme:zmNQaO-pQtuwcQxZUMYxJEK6v4sPWP1MMPZ4mTg4DyfSTda8L3t54rfvrxWL8zo-n
-    VTn7Y50tNPm6fcmkVo>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddvjeefvdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpefoggffhffvkfgjfhfutgfgsehtjeertdertddt
-    necuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrd
-    guvgeqnecuggftrfgrthhtvghrnhephfekledtffefhffghfetteehuefhgfetgefhtdeu
-    feduueeltefghedtjeeifffhnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
-    hmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepudel
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegtrghtrghlihhnrdhmrghrihhnrg
-    hssegrrhhmrdgtohhmpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgv
-    thdprhgtphhtthhopehhvghrsggvrhhtsehgohhnughorhdrrghprghnrgdrohhrghdrrg
-    hupdhrtghpthhtoheprghnughirdhshhihthhisehkvghrnhgvlhdrohhrghdprhgtphht
-    thhopegsrhhoohhnihgvsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehvkhhouhhlse
-    hkvghrnhgvlhdrohhrghdprhgtphhtthhopeifihhllheskhgvrhhnvghlrdhorhhgpdhr
-    tghpthhtoheplhhinhhugidqrghrmhdqkhgvrhhnvghlsehlihhsthhsrdhinhhfrhgrug
-    gvrggurdhorhhgpdhrtghpthhtohepuggrnhhivghlrdhmrggthhhonhesmhhitghrohgt
-    hhhiphdrtghomh
-X-ME-Proxy: <xmx:zmNQaPRswyGdepgzEcq8ZxPpnVu2Wrc6-oOZ7im99CjLcZTGH4eBjA>
-    <xmx:zmNQaAsI7EG80DBY_yZ4XKwGWgi6xUtMqBQBeetDFZIs5zE557ilxQ>
-    <xmx:zmNQaAcTIVEBWFXjvaHxr56Nf0Ub6-2ApA-P1suW0_0LL4_J5QTA6w>
-    <xmx:zmNQaE0AiF_i6R0owGd_wFWswJPr2jjUGwz6T9iv27LgZiCo4HITeQ>
-    <xmx:0GNQaAnKS3ebf6Eh4ZHo3SUihb-d9QthvKL2qiqOPzxP4wLM775-Y9gS>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 87E5E700062; Mon, 16 Jun 2025 14:34:54 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="UadQiczH"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1750111272;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=k02eg2nEnGNOVqzzGntSYPh+yjp3owIb+q67azvL4JA=;
+	b=UadQiczHIeD6B2nrEfEl0KTczlznS2BpAm4IByPdlh/tvG58UEa+mIg6NA1S7Lc701VBxv
+	9aJRLszvcLyWiPz79MIql9Ggn/GzVrMhLou+zA/KGa5dIWESVTQRgAf7/1nO73SGVYPyHv
+	AnUXRehC7n8USBTzD/K95i0cHdiLV48=
+From: Sean Anderson <sean.anderson@linux.dev>
+To: Mark Brown <broonie@kernel.org>,
+	Michal Simek <michal.simek@amd.com>,
+	linux-spi@vger.kernel.org
+Cc: Jinjie Ruan <ruanjinjie@huawei.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	David Lechner <dlechner@baylibre.com>,
+	Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>,
+	Sean Anderson <sean.anderson@linux.dev>
+Subject: [PATCH v2 1/9] dt-bindings: spi: Add spi-buses property
+Date: Mon, 16 Jun 2025 18:00:46 -0400
+Message-Id: <20250616220054.3968946-2-sean.anderson@linux.dev>
+In-Reply-To: <20250616220054.3968946-1-sean.anderson@linux.dev>
+References: <20250616220054.3968946-1-sean.anderson@linux.dev>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: Tad13d72cbf59a799
-Date: Mon, 16 Jun 2025 20:34:34 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Robert Marko" <robert.marko@sartura.hr>,
- "Catalin Marinas" <catalin.marinas@arm.com>, "Will Deacon" <will@kernel.org>,
- "Olivia Mackall" <olivia@selenic.com>,
- "Herbert Xu" <herbert@gondor.apana.org.au>,
- "David S . Miller" <davem@davemloft.net>, "Vinod Koul" <vkoul@kernel.org>,
- "Andi Shyti" <andi.shyti@kernel.org>, "Mark Brown" <broonie@kernel.org>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-crypto@vger.kernel.org, dmaengine@vger.kernel.org,
- linux-i2c@vger.kernel.org, linux-spi@vger.kernel.org,
- "Pengutronix Kernel Team" <kernel@pengutronix.de>, ore@pengutronix.de,
- luka.perkov@sartura.hr, "Daniel Machon" <daniel.machon@microchip.com>
-Message-Id: <3ba837f8-70bb-4b9e-a9f9-0e71b9e073c4@app.fastmail.com>
-In-Reply-To: <20250613114148.1943267-1-robert.marko@sartura.hr>
-References: <20250613114148.1943267-1-robert.marko@sartura.hr>
-Subject: Re: [PATCH v7 0/6] arm64: lan969x: Add support for Microchip LAN969x SoC
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Fri, Jun 13, 2025, at 13:39, Robert Marko wrote:
-> This patch series adds basic support for Microchip LAN969x SoC.
->
-> It introduces the SoC ARCH symbol itself and allows basic peripheral
-> drivers that are currently marked only for AT91 to be also selected for
-> LAN969x.
->
-> DTS and further driver will be added in follow-up series.
->
-> Robert Marko (6):
->   arm64: lan969x: Add support for Microchip LAN969x SoC
->   spi: atmel: make it selectable for ARCH_LAN969X
->   i2c: at91: make it selectable for ARCH_LAN969X
->   dma: xdmac: make it selectable for ARCH_LAN969X
->   char: hw_random: atmel: make it selectable for ARCH_LAN969X
->   crypto: atmel-aes: make it selectable for ARCH_LAN969X
+From: David Lechner <dlechner@baylibre.com>
 
-If the drivers on ARCH_LAN969X are largely shared with those on
-ARCH_AT91, should they perhaps depend on a common symbol?
+Add a spi-buses property to the spi-peripheral-props binding to allow
+specifying the SPI bus or buses that a peripheral is connected to in
+cases where the SPI controller has more than one physical SPI bus.
 
-That could be either the existing ARCH_AT91 as we do with LAN966,
-or perhaps ARCH_MICROCHIP, which is already used for riscv/polarfire.
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+---
 
-    Arnd
+Changes in v2:
+- New
+
+ .../devicetree/bindings/spi/spi-peripheral-props.yaml  | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
+index 8fc17e16efb2..cfdb55071a08 100644
+--- a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
++++ b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
+@@ -89,6 +89,16 @@ properties:
+     description:
+       Delay, in microseconds, after a write transfer.
+ 
++  spi-buses:
++    description:
++      Array of bus numbers that describes which SPI buses of the controller are
++      connected to the peripheral. This only applies to peripherals connected
++      to specialized SPI controllers that have multiple SPI buses on a single
++      controller.
++    $ref: /schemas/types.yaml#/definitions/uint32-array
++    minItems: 1
++    default: [0]
++
+   stacked-memories:
+     description: Several SPI memories can be wired in stacked mode.
+       This basically means that either a device features several chip
+-- 
+2.35.1.1320.gc452695387.dirty
+

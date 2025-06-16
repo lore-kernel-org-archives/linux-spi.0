@@ -1,32 +1,30 @@
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE14E233156
-	for <linux-spi@vger.kernel.org>; Mon, 16 Jun 2025 22:01:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E36225405
+	for <linux-spi@vger.kernel.org>; Mon, 16 Jun 2025 22:01:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750111283; cv=none; b=oGZGMqUBMSp+JXhOYoGOD6C0ubz8KbDlRqiMFh983vUE+p06aQzLx1GRvgePass8MZJjHaKRKEDek4SdDTajEnbf7+863TNgUJNuGNvpBI3E2J9FqrHZfjY5mt42C8RHZtSeeFPy9JSlmC5rmyVOW7+lDgySk9aX/+X/mTd8GII=
+	t=1750111283; cv=none; b=GrG6yH9y8EbYBbPemJPf07MO9y1/pfFE+3MAnC3uWldwIxz5GgPt30wwu3xfnUNUIvsAhiGWscTIIguvU7w1NqvqZsnM5RiyoB81DoPsIaUI1vGm7Yww/PtO7HklUj3W/FWnzJmsHfoFiPAfTJwz3OC+zFJ87viY/k6X83x1IqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1750111283; c=relaxed/simple;
-	bh=J3HRmysUvAMuPBZHaaEJ3p7CVlln3bfpkvyA/v/2xVE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SFuKlG1DngloKConFWFpJtfWhvBxz2AtaX7IKAJr06gvy8i1QBOdMaLCIMtNxKySQkwKVXjnpgYFj6nu8ntzmz2QtfweFgedKicw1VC0RtIIcrGg7ODLZRLbsAHErQUKE6rJVJioAq+LpU9aHTWJM4RgCOO8FAKQJi9g4ctpzvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=jrwOh4Kh; arc=none smtp.client-ip=95.215.58.170
+	bh=q7tD4d0yNr2pbj8cYfhujZP3byO/0ot0K8Igx0jNNuE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=AMwvWXxzAQgFIm5ZRzeRCfEinXFzI0EKa6pQzGntfk/29ZhKTZWhmHTH/hTpekTD/g+LXszDUh6MVbWwyUmk+BywAlvZ2BPNPZRM160OyCOAslXKzfInyG6Ryc96g0oB2XM/g2Fx1QY1ao0hPU1sGMWooejeijxM/JsnFuWgVQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=iL+3CM+D; arc=none smtp.client-ip=95.215.58.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="jrwOh4Kh"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="iL+3CM+D"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1750111279;
+	t=1750111270;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lKeCmjqMfNPPRNpjK82ZCg/Ku8sd60DeUcDOkrmPcJw=;
-	b=jrwOh4KhAkiVpQJgns719VppdBhUkBodMTpMmBIxn1pEQ5ZOseJMmS01AU9i3k9usbeX2m
-	AIQPuPtqEC1V3cZQr7KCdMicMohKEb8K9jjExEpMsKQxQe4Qtrmpv9A3CJW4ifwu0iDv3H
-	RX4HjQtW2x1O3p8JTtFDKs/Ju8Y8O2A=
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=4s03yPEhF45+lWh5hyBpMppSw2oqj+GdWmyYq1pWC3U=;
+	b=iL+3CM+DtVo4+gmEcNyja3IwWUGWPIvvvUP9mUdkZpBaCIC8Z8NAxdgHcEBFZgeO8YSfJa
+	oNioV1esuk2dUqqUWhTtNaQH8m1XvDXAl6NtTGNZf1TOwE849tKso4U0wbTTOG6SBRnFox
+	+qb/om8Jl/33MlLXRAD+sz9iVuLAUT0=
 From: Sean Anderson <sean.anderson@linux.dev>
 To: Mark Brown <broonie@kernel.org>,
 	Michal Simek <michal.simek@amd.com>,
@@ -37,12 +35,14 @@ Cc: Jinjie Ruan <ruanjinjie@huawei.com>,
 	linux-kernel@vger.kernel.org,
 	David Lechner <dlechner@baylibre.com>,
 	Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>,
-	Sean Anderson <sean.anderson@linux.dev>
-Subject: [PATCH v2 5/9] spi: zynqmp-gqspi: Support multiple buses
-Date: Mon, 16 Jun 2025 18:00:50 -0400
-Message-Id: <20250616220054.3968946-6-sean.anderson@linux.dev>
-In-Reply-To: <20250616220054.3968946-1-sean.anderson@linux.dev>
-References: <20250616220054.3968946-1-sean.anderson@linux.dev>
+	Sean Anderson <sean.anderson@linux.dev>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	devicetree@vger.kernel.org
+Subject: [PATCH v2 0/9] spi: zynqmp-gqspi: Support multiple buses and add GPIO support
+Date: Mon, 16 Jun 2025 18:00:45 -0400
+Message-Id: <20250616220054.3968946-1-sean.anderson@linux.dev>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -52,51 +52,54 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-Currently, selection of the upper/lower buses is determined by the
-chipselect. Decouple this by allowing explicit bus selection through the
-spi-buses property.
+This device really has two SPI buses but they are currently determined
+by the slave's CS. Decouple bus selection from CS, and add support for
+GPIO chipselects. This allows adding arbitrary devices on either bus.
 
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
----
+This version does the bus selction using a spi-buses property in
+slaves's node, as opposed to having separate nodes for the upper and
+lower buses. This should be backwards compatible with existing bindings,
+and could allow supporting "parallel" memories in the future (identical
+flashes on both buses controlled in lockstep).
 
 Changes in v2:
-- New
+- Add spi-buses property
+- Update spi-zynqmp-qspi.yaml with new binding style
+- Support multi-bus controllers
+- Add flag to determine default bus
+- Support multiple buses with spi-buses instead of explicit
+  upper/lower/merged buses
 
- drivers/spi/spi-zynqmp-gqspi.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+David Lechner (2):
+  dt-bindings: spi: Add spi-buses property
+  spi: Support multi-bus controllers
 
-diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
-index 595b6dc10845..add5eea12153 100644
---- a/drivers/spi/spi-zynqmp-gqspi.c
-+++ b/drivers/spi/spi-zynqmp-gqspi.c
-@@ -465,13 +465,13 @@ static void zynqmp_qspi_chipselect(struct spi_device *qspi, bool is_high)
- 	genfifoentry |= GQSPI_GENFIFO_MODE_SPI;
- 
- 	if (!is_high) {
--		if (!spi_get_chipselect(qspi, 0)) {
--			xqspi->genfifobus = GQSPI_GENFIFO_BUS_LOWER;
-+		xqspi->genfifobus =
-+			FIELD_PREP(GQSPI_GENFIFO_BUS_MASK, qspi->buses);
-+		if (!spi_get_chipselect(qspi, 0))
- 			xqspi->genfifocs = GQSPI_GENFIFO_CS_LOWER;
--		} else {
--			xqspi->genfifobus = GQSPI_GENFIFO_BUS_UPPER;
-+		else
- 			xqspi->genfifocs = GQSPI_GENFIFO_CS_UPPER;
--		}
-+
- 		genfifoentry |= xqspi->genfifobus;
- 		genfifoentry |= xqspi->genfifocs;
- 		genfifoentry |= GQSPI_GENFIFO_CS_SETUP;
-@@ -1316,6 +1316,8 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
- 		ctlr->num_chipselect = num_cs;
- 	}
- 
-+	ctlr->num_buses = 2;
-+	ctlr->flags = SPI_CONTROLLER_DEFAULT_BUS_IS_CS;
- 	ctlr->bits_per_word_mask = SPI_BPW_MASK(8);
- 	ctlr->mem_ops = &zynqmp_qspi_mem_ops;
- 	ctlr->mem_caps = &zynqmp_qspi_mem_caps;
+Sean Anderson (7):
+  dt-bindings: spi: zynqmp-qspi: Add example dual upper/lower bus
+  spi: Add flag to determine default bus
+  spi: zynqmp-gqspi: Support multiple buses
+  spi: zynqmp-gqspi: Pass speed directly to config_op
+  spi: zynqmp-gqspi: Configure SPI mode dynamically
+  spi: zynqmp-gqspi: Support GPIO chip selects
+  ARM64: xilinx: zynqmp: Add spi-buses property
+
+ .../bindings/spi/spi-peripheral-props.yaml    |  10 ++
+ .../bindings/spi/spi-zynqmp-qspi.yaml         |  22 ++-
+ .../boot/dts/xilinx/zynqmp-sm-k26-revA.dts    |   1 +
+ .../boot/dts/xilinx/zynqmp-zc1254-revA.dts    |   1 +
+ .../dts/xilinx/zynqmp-zc1751-xm015-dc1.dts    |   1 +
+ .../dts/xilinx/zynqmp-zc1751-xm018-dc4.dts    |   1 +
+ .../boot/dts/xilinx/zynqmp-zcu102-revA.dts    |   1 +
+ .../boot/dts/xilinx/zynqmp-zcu104-revA.dts    |   1 +
+ .../boot/dts/xilinx/zynqmp-zcu104-revC.dts    |   1 +
+ .../boot/dts/xilinx/zynqmp-zcu106-revA.dts    |   1 +
+ .../boot/dts/xilinx/zynqmp-zcu111-revA.dts    |   1 +
+ .../boot/dts/xilinx/zynqmp-zcu1275-revA.dts   |   1 +
+ drivers/spi/spi-zynqmp-gqspi.c                | 155 ++++++++++++++----
+ drivers/spi/spi.c                             |  31 +++-
+ include/linux/spi/spi.h                       |  15 ++
+ 15 files changed, 208 insertions(+), 35 deletions(-)
+
 -- 
 2.35.1.1320.gc452695387.dirty
 

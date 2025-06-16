@@ -1,30 +1,32 @@
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E36225405
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36AD523505E
 	for <linux-spi@vger.kernel.org>; Mon, 16 Jun 2025 22:01:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750111283; cv=none; b=GrG6yH9y8EbYBbPemJPf07MO9y1/pfFE+3MAnC3uWldwIxz5GgPt30wwu3xfnUNUIvsAhiGWscTIIguvU7w1NqvqZsnM5RiyoB81DoPsIaUI1vGm7Yww/PtO7HklUj3W/FWnzJmsHfoFiPAfTJwz3OC+zFJ87viY/k6X83x1IqA=
+	t=1750111284; cv=none; b=I+EYNJqlmMe22TBj+fICHdjJ3fLPeusATTwp+ABD22+mzgPXMDoTmLq30/sPRhlpBph1pGBp117CbluFuerkLQqJE1BcBb1zbIpYkZPhd+lWuxbKdCITH1M8rCnyaW26eNKFVjqG1+ESEXn8YSkMfi3etbHmBYidEuzqhBxIUJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750111283; c=relaxed/simple;
-	bh=q7tD4d0yNr2pbj8cYfhujZP3byO/0ot0K8Igx0jNNuE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=AMwvWXxzAQgFIm5ZRzeRCfEinXFzI0EKa6pQzGntfk/29ZhKTZWhmHTH/hTpekTD/g+LXszDUh6MVbWwyUmk+BywAlvZ2BPNPZRM160OyCOAslXKzfInyG6Ryc96g0oB2XM/g2Fx1QY1ao0hPU1sGMWooejeijxM/JsnFuWgVQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=iL+3CM+D; arc=none smtp.client-ip=95.215.58.176
+	s=arc-20240116; t=1750111284; c=relaxed/simple;
+	bh=NcmTj5O4UnDJpKrXg8mlqcQXqW5kLOfOgZhvciV6zUo=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=PEd3BzsfhP5JKtVjJTsBo8s+2mN7OdZlCUgB9D88284lDeeGTJeBn7ivzOmoQYW3jR8TpAii5yLO0hZoA5Vj/wy5jeP+fqgaed4j1OkzObIkdg/+K05wPOtym/z3xbSa41sYMWQJkLqPyNGo6z0jmG8B1qYmu0jwLR8m/Jd2XCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=udplqrxW; arc=none smtp.client-ip=95.215.58.188
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="iL+3CM+D"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="udplqrxW"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1750111270;
+	t=1750111281;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=4s03yPEhF45+lWh5hyBpMppSw2oqj+GdWmyYq1pWC3U=;
-	b=iL+3CM+DtVo4+gmEcNyja3IwWUGWPIvvvUP9mUdkZpBaCIC8Z8NAxdgHcEBFZgeO8YSfJa
-	oNioV1esuk2dUqqUWhTtNaQH8m1XvDXAl6NtTGNZf1TOwE849tKso4U0wbTTOG6SBRnFox
-	+qb/om8Jl/33MlLXRAD+sz9iVuLAUT0=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UpXv1zP1pu51TTfErAKypkJY3vjgrcKFdh3KjXTzhFA=;
+	b=udplqrxWmGeRFbpu6YjHOGUPktFGJtRBM5UfUSsLYVTGVZ2Yt7dK+XIYp7GzFbUKRk447d
+	nJ8irijhPldc1awyPuB+LHl3oEr9g9aOSJn+LM0DavL274LLBCCTUpZfacG1+O0+A3TrFl
+	NjLIvzJbMesvV/uqBA2M7Ka98jjmCHQ=
 From: Sean Anderson <sean.anderson@linux.dev>
 To: Mark Brown <broonie@kernel.org>,
 	Michal Simek <michal.simek@amd.com>,
@@ -35,14 +37,12 @@ Cc: Jinjie Ruan <ruanjinjie@huawei.com>,
 	linux-kernel@vger.kernel.org,
 	David Lechner <dlechner@baylibre.com>,
 	Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	devicetree@vger.kernel.org
-Subject: [PATCH v2 0/9] spi: zynqmp-gqspi: Support multiple buses and add GPIO support
-Date: Mon, 16 Jun 2025 18:00:45 -0400
-Message-Id: <20250616220054.3968946-1-sean.anderson@linux.dev>
+	Sean Anderson <sean.anderson@linux.dev>
+Subject: [PATCH v2 6/9] spi: zynqmp-gqspi: Pass speed directly to config_op
+Date: Mon, 16 Jun 2025 18:00:51 -0400
+Message-Id: <20250616220054.3968946-7-sean.anderson@linux.dev>
+In-Reply-To: <20250616220054.3968946-1-sean.anderson@linux.dev>
+References: <20250616220054.3968946-1-sean.anderson@linux.dev>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -52,54 +52,58 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-This device really has two SPI buses but they are currently determined
-by the slave's CS. Decouple bus selection from CS, and add support for
-GPIO chipselects. This allows adding arbitrary devices on either bus.
+In preparation for supporting transfer_one, which supplies the speed
+from the spi_transfer instead of the spi_device, convert config_op to
+take the speed directly.
 
-This version does the bus selction using a spi-buses property in
-slaves's node, as opposed to having separate nodes for the upper and
-lower buses. This should be backwards compatible with existing bindings,
-and could allow supporting "parallel" memories in the future (identical
-flashes on both buses controlled in lockstep).
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+---
 
-Changes in v2:
-- Add spi-buses property
-- Update spi-zynqmp-qspi.yaml with new binding style
-- Support multi-bus controllers
-- Add flag to determine default bus
-- Support multiple buses with spi-buses instead of explicit
-  upper/lower/merged buses
+(no changes since v1)
 
-David Lechner (2):
-  dt-bindings: spi: Add spi-buses property
-  spi: Support multi-bus controllers
+ drivers/spi/spi-zynqmp-gqspi.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
-Sean Anderson (7):
-  dt-bindings: spi: zynqmp-qspi: Add example dual upper/lower bus
-  spi: Add flag to determine default bus
-  spi: zynqmp-gqspi: Support multiple buses
-  spi: zynqmp-gqspi: Pass speed directly to config_op
-  spi: zynqmp-gqspi: Configure SPI mode dynamically
-  spi: zynqmp-gqspi: Support GPIO chip selects
-  ARM64: xilinx: zynqmp: Add spi-buses property
-
- .../bindings/spi/spi-peripheral-props.yaml    |  10 ++
- .../bindings/spi/spi-zynqmp-qspi.yaml         |  22 ++-
- .../boot/dts/xilinx/zynqmp-sm-k26-revA.dts    |   1 +
- .../boot/dts/xilinx/zynqmp-zc1254-revA.dts    |   1 +
- .../dts/xilinx/zynqmp-zc1751-xm015-dc1.dts    |   1 +
- .../dts/xilinx/zynqmp-zc1751-xm018-dc4.dts    |   1 +
- .../boot/dts/xilinx/zynqmp-zcu102-revA.dts    |   1 +
- .../boot/dts/xilinx/zynqmp-zcu104-revA.dts    |   1 +
- .../boot/dts/xilinx/zynqmp-zcu104-revC.dts    |   1 +
- .../boot/dts/xilinx/zynqmp-zcu106-revA.dts    |   1 +
- .../boot/dts/xilinx/zynqmp-zcu111-revA.dts    |   1 +
- .../boot/dts/xilinx/zynqmp-zcu1275-revA.dts   |   1 +
- drivers/spi/spi-zynqmp-gqspi.c                | 155 ++++++++++++++----
- drivers/spi/spi.c                             |  31 +++-
- include/linux/spi/spi.h                       |  15 ++
- 15 files changed, 208 insertions(+), 35 deletions(-)
-
+diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
+index add5eea12153..a17e77dc4e27 100644
+--- a/drivers/spi/spi-zynqmp-gqspi.c
++++ b/drivers/spi/spi-zynqmp-gqspi.c
+@@ -533,8 +533,8 @@ static inline u32 zynqmp_qspi_selectspimode(struct zynqmp_qspi *xqspi,
+ /**
+  * zynqmp_qspi_config_op - Configure QSPI controller for specified
+  *				transfer
+- * @xqspi:	Pointer to the zynqmp_qspi structure
+- * @op:		The memory operation to execute
++ * @xqspi: Pointer to the zynqmp_qspi structure
++ * @req_speed_hz: Requested frequency
+  *
+  * Sets the operational mode of QSPI controller for the next QSPI transfer and
+  * sets the requested clock frequency.
+@@ -551,13 +551,10 @@ static inline u32 zynqmp_qspi_selectspimode(struct zynqmp_qspi *xqspi,
+  *	by the QSPI controller the driver will set the highest or lowest
+  *	frequency supported by controller.
+  */
+-static int zynqmp_qspi_config_op(struct zynqmp_qspi *xqspi,
+-				 const struct spi_mem_op *op)
++static int zynqmp_qspi_config_op(struct zynqmp_qspi *xqspi, u32 req_speed_hz)
+ {
+ 	ulong clk_rate;
+-	u32 config_reg, req_speed_hz, baud_rate_val = 0;
+-
+-	req_speed_hz = op->max_freq;
++	u32 config_reg, baud_rate_val = 0;
+ 
+ 	if (xqspi->speed_hz != req_speed_hz) {
+ 		xqspi->speed_hz = req_speed_hz;
+@@ -1053,7 +1050,7 @@ static int zynqmp_qspi_exec_op(struct spi_mem *mem,
+ 	u64 opaddr;
+ 
+ 	mutex_lock(&xqspi->op_lock);
+-	zynqmp_qspi_config_op(xqspi, op);
++	zynqmp_qspi_config_op(xqspi, op->max_freq);
+ 	zynqmp_qspi_chipselect(mem->spi, false);
+ 	genfifoentry |= xqspi->genfifocs;
+ 	genfifoentry |= xqspi->genfifobus;
 -- 
 2.35.1.1320.gc452695387.dirty
 

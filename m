@@ -1,32 +1,32 @@
 Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F5539FD9;
-	Tue, 17 Jun 2025 17:08:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650552FA624;
+	Tue, 17 Jun 2025 17:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750180099; cv=none; b=bN3fPw0eOvOjskpv/uR47FpCWLbarwzKVku5CnW7X/TETWjmz9AH3+ctFvTK3xs7gOMvd+ScR7Nxd3yv+r+ECsrixVFX2pqZhfOnCiJjTkELZVbYNMOYJ5sh3OGIoisq5p2uQ32JOIOoU1NWwC/NA97ib4l7IRmFX3yec0C+bYY=
+	t=1750180100; cv=none; b=dVlmuaGfuzVcdWEDWPCgHNpf/OfBK4OJJdz3qQUj1C7JzdIv3TyDZ4Z36mUhabVtKO/UNBodXk/6Fubi5FBqZEx38p1KhiEAKAm4YD5Mf2O91h6SoZJeXhm1jBbnq7pkp0bfeabVnZCrEayOszfAU/2TBtJWPEFnQrOa4uB6N2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750180099; c=relaxed/simple;
-	bh=9UyZ0qdaeGy00gRF+j/wrolacZtIlCXXNyNgb7kJrIw=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=t+3bUnHQvKoA0r4VA+F9kbCxrwvHvFvZwWCA7XQULyaEOHsNqJHqQmzWrdk5QrjnqrJTkg9bs3qa8KDnJuHuuBGqTDiJ0S9iRIsaklhmiUc0aXcsZ9NESFFkvRuDK8aAaLkElKDAVXwFPPlKxRBPa+C8zZke1ReOK8Pl4qd36ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=ktswG+GO; arc=none smtp.client-ip=159.69.126.157
+	s=arc-20240116; t=1750180100; c=relaxed/simple;
+	bh=AuxtpYqs5FNIL0EGyqHv96U5R2IjhiLssoMKRhLVONY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=PKAwfpcwfqqCh7zFWhY2ni+JP6+KmrdZ08jlnp3Nl6IY2kUiNhHOhHrGox6KLn90oUK1ibI5wYAq4RpzyKwDOCZaCDLlhSU/UITjhzwEqPeVFDBcnYcti9u336xynJme1ptHElbwrcvbsBvwVfNTSEws7zrTjuLCT+d1Rz4QmtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=bvJyziaT; arc=none smtp.client-ip=159.69.126.157
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="ktswG+GO"
+	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="bvJyziaT"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
 	s=mail; t=1750180095;
-	bh=9UyZ0qdaeGy00gRF+j/wrolacZtIlCXXNyNgb7kJrIw=;
-	h=From:Subject:Date:To:Cc:From;
-	b=ktswG+GOeIOYoasueGQUlhW+UxQrm0BD3sE0UvXQt8EIAh1bCLSC4GzRkigYLQX6H
-	 pxm880rM+2J1AD21/1XJakFLjvWzwHCCI3JTLFuKCaZAsiZhxql9rsx6HUjUX/HrD8
-	 gg5D6kUr8X79DkHUffpQdTAVBpMx/vnVL/Tw1avM=
+	bh=AuxtpYqs5FNIL0EGyqHv96U5R2IjhiLssoMKRhLVONY=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=bvJyziaTj0OsANyUxgfo6buQZtHaJtyDKhjeLJ5DFCVT2SjCRGkHoI3xWxsWVDO5w
+	 lEn5eYgrVwOjXpawpzIpRiYnqnchghybuNdGwYqSNzCvbP2H3oVNeEW5GdLjaKhZ3U
+	 35/cWRRYqiWRjyCetcd8DStci9OeTCzGsiMqKeyU=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Subject: [PATCH v7 0/3] locking/mutex: Mark devm_mutex_init() as
+Date: Tue, 17 Jun 2025 19:08:14 +0200
+Subject: [PATCH v7 3/3] locking/mutex: Mark devm_mutex_init() as
  __must_check
-Date: Tue, 17 Jun 2025 19:08:11 +0200
-Message-Id: <20250617-must_check-devm_mutex_init-v7-0-d9e449f4d224@weissschuh.net>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -35,12 +35,9 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAPugUWgC/33P3UrEMBAF4FdZcm0k/2m88j1ESpNMbZB2pWnjy
- tJ3d3ZFKlhCYODMxTc5V5JhTpDJ0+lKZigpp/OEwT6cSBi66Q1oipiJYEJxJjkd17y0YYDwTiO
- UsR3XBS5tmtJCQxd0I33smh4IAh8z9Olyx19eMQ8pL+f5636r8Nv2h8VRYwunnIJh4J31TbDi+
- RNSzjkM6/A4wUJudhG/nmaCqaonKKPWG2F5UN6COfTkX6+pehI9oTQobmMIDg49tXuK2aqnsK9
- urO8Q642Xh57ePXxVT6PnRN9hWSeDOf6f2T3DXNUz2NdpxaKOvbNM/fO2bfsGai28f1kCAAA=
-X-Change-ID: 20241031-must_check-devm_mutex_init-cac583bda8fe
+Message-Id: <20250617-must_check-devm_mutex_init-v7-3-d9e449f4d224@weissschuh.net>
+References: <20250617-must_check-devm_mutex_init-v7-0-d9e449f4d224@weissschuh.net>
+In-Reply-To: <20250617-must_check-devm_mutex_init-v7-0-d9e449f4d224@weissschuh.net>
 To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
  Waiman Long <longman@redhat.com>, Boqun Feng <boqun.feng@gmail.com>, 
  Vicentiu Galanopulo <vicentiu.galanopulo@remote-tech.co.uk>, 
@@ -54,66 +51,70 @@ Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
  linux-spi@vger.kernel.org, imx@lists.linux.dev, linux-leds@vger.kernel.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1750180094; l=1974;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1750180094; l=2094;
  i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=9UyZ0qdaeGy00gRF+j/wrolacZtIlCXXNyNgb7kJrIw=;
- b=dlvyC101vZs+nXCoUmIbNySmNr8nT+TeesQ8Mixx0XtQV21UErBjjo4urgDl7bM1gZ0h6Pemh
- TECmbDf8s8yAZhyLe8Z46N38gQQYj0UCkKTTlVi4+viArc0ivEI0bu7
+ bh=AuxtpYqs5FNIL0EGyqHv96U5R2IjhiLssoMKRhLVONY=;
+ b=znm+IVfmuIlwCHOFshJrDVyhLHYeVY8p6g360HaBwcKqTLL602/KIs0nHvkJxSaPeH7gJe3ky
+ bhh1LIa3n1hCO+pRCyd4t0R6Remyw8aE4sf5NdKgA8vOoccivqNMK3x
 X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
  pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 
-devm_mutex_init() can fail. Make sure everybody checks the return value.
-All patches should go through the mutex tree together.
+devm_mutex_init() can fail. With CONFIG_DEBUG_MUTEXES=y the mutex will be
+marked as unusable and trigger errors on usage.
+Enforce all callers check the return value through the compiler.
 
-It would be great if this could go in through a single tree at once.
+As devm_mutex_init() itself is a macro, it can not be annotated
+directly. Annotate __devm_mutex_init() instead.
+Unfortunately __must_check/warn_unused_result don't propagate through
+statement expression. So move the statement expression into the argument
+list of the call to __devm_mutex_init() through a helper macro.
 
 Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 ---
-Changes in v7:
-- Pick up Ack from Andrew
-- Reword commit messages
-- Link to v6: https://lore.kernel.org/r/20250609-must_check-devm_mutex_init-v6-0-9540d5df9704@weissschuh.net
+ include/linux/mutex.h | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-Changes in v6:
-- Rebase on v6.16-rc1
-- Pick up review tag from Bartosz
-- Fix up spi-nxp-fspi
-- Fix up leds-lp8860
-- Link to v5: https://lore.kernel.org/r/20250505-must_check-devm_mutex_init-v5-1-92fa4b793c6e@weissschuh.net
+diff --git a/include/linux/mutex.h b/include/linux/mutex.h
+index a039fa8c17807c700d3b61193feac0418cad1243..00afd341d293ddfcc0a427b576efdce044955e38 100644
+--- a/include/linux/mutex.h
++++ b/include/linux/mutex.h
+@@ -126,11 +126,11 @@ do {							\
+ 
+ #ifdef CONFIG_DEBUG_MUTEXES
+ 
+-int __devm_mutex_init(struct device *dev, struct mutex *lock);
++int __must_check __devm_mutex_init(struct device *dev, struct mutex *lock);
+ 
+ #else
+ 
+-static inline int __devm_mutex_init(struct device *dev, struct mutex *lock)
++static inline int __must_check __devm_mutex_init(struct device *dev, struct mutex *lock)
+ {
+ 	/*
+ 	 * When CONFIG_DEBUG_MUTEXES is off mutex_destroy() is just a nop so
+@@ -141,14 +141,17 @@ static inline int __devm_mutex_init(struct device *dev, struct mutex *lock)
+ 
+ #endif
+ 
+-#define devm_mutex_init(dev, mutex)			\
++#define __mutex_init_ret(mutex)				\
+ ({							\
+ 	typeof(mutex) mutex_ = (mutex);			\
+ 							\
+ 	mutex_init(mutex_);				\
+-	__devm_mutex_init(dev, mutex_);			\
++	mutex_;						\
+ })
+ 
++#define devm_mutex_init(dev, mutex) \
++	__devm_mutex_init(dev, __mutex_init_ret(mutex))
++
+ /*
+  * See kernel/locking/mutex.c for detailed documentation of these APIs.
+  * Also see Documentation/locking/mutex-design.rst.
 
-Changes in v5:
-- Pick up review tag from Andy
-- Link to v4: https://lore.kernel.org/r/20250407-must_check-devm_mutex_init-v4-1-587bacc9f6b3@weissschuh.net
-
-Changes in v4:
-- Drop already applied leds-1202 driver patch
-- Rebase on v6.15-rc1
-- Link to v3: https://lore.kernel.org/r/20250208-must_check-devm_mutex_init-v3-0-245e417dcc9e@weissschuh.net
-
-Changes in v3:
-- Introduce and use helper macro __mutex_init_ret()
-- Link to v2: https://lore.kernel.org/r/20250204-must_check-devm_mutex_init-v2-0-7b6271c4b7e6@weissschuh.net
-
-Changes in v2:
-- Rebase on 6.14-rc1
-- Fix up leds-1202 driver
-- Link to v1: https://lore.kernel.org/r/20241202-must_check-devm_mutex_init-v1-1-e60eb97b8c72@weissschuh.net
-
----
-Thomas Weißschuh (3):
-      spi: spi-nxp-fspi: check return value of devm_mutex_init()
-      leds: lp8860: Check return value of devm_mutex_init()
-      locking/mutex: Mark devm_mutex_init() as __must_check
-
- drivers/leds/leds-lp8860.c |  4 +++-
- drivers/spi/spi-nxp-fspi.c |  4 +++-
- include/linux/mutex.h      | 11 +++++++----
- 3 files changed, 13 insertions(+), 6 deletions(-)
----
-base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
-change-id: 20241031-must_check-devm_mutex_init-cac583bda8fe
-
-Best regards,
 -- 
-Thomas Weißschuh <linux@weissschuh.net>
+2.50.0
 

@@ -1,39 +1,38 @@
 Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFDE62E7F38;
-	Wed, 18 Jun 2025 12:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF41F9CB;
+	Wed, 18 Jun 2025 12:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750248941; cv=none; b=uBSx3oOAOTx1IFDjAmzBWcjLfcA+XijFCZL8lRfZv//HQzvk5Di8bkSaGk0v93VgLFR650FCTW4CIax96+r/Oh82uwSehgsCHWKndFXOEPr/0B9ccstXkZrJPkKN7zSUiX2IAaZlokRLVIWNvr7nMWIfjRsPGvNg53dzG45Dkc0=
+	t=1750248942; cv=none; b=G2HZFuRMhSRH9JxpDt368WFpHKijVh7tIJMek0lBQKuAxLljxMkNu/1EkLtcafejjSxQaPqL6aJwjJZabOJF2B3uElbT4eRz7hT4dGZ+0sa3g/TxdcOFgbOdOVz+Qe9YqbMAivFzHFOZxSuhJevdDYwF/lqvFO5w2jVabm2/0fM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750248941; c=relaxed/simple;
-	bh=02WLi4M+pNsnbuuLYVR5qxwoHIYVrFMrzO8jkeSWyt4=;
+	s=arc-20240116; t=1750248942; c=relaxed/simple;
+	bh=af7Z/duDzqnUeURCtyDG7bN9lfh0Hcfu3PPcPijVCIk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Iqd15OR9n/W9tsBbZWvmxu+BDN2qOxV8ejHRaSDVpihjemO5/uqin66jKkfM+qd7rREN/t09vI8yWBCLg/PAyxDo2vfZzqWkZQkwHi7Lp8R3uC+rdb7Q0tjOX8ID6JwsLtfiRazyyoo1Kh8aD09l+sNUBj9gAj1unISm+tZHy7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=DtZWb7pz; arc=none smtp.client-ip=217.70.183.194
+	 In-Reply-To:To:Cc; b=j9RUPuUFGiCx1Z8pN7mSHnFyroNr9rmbosfi7fN4bLu/QyUP5e5biOwfnHh4zjLmHn9xan2Ll2IoOopyVBnQpD1RyLTl8QXAWh0z3IdjW+O7n4wAUJYBkLDSix1pRL4BjdudSifx9m7oJL1sHlKz0dKPD4tmJwgpS74TTfTOIZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Qxu7bz+v; arc=none smtp.client-ip=217.70.183.194
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="DtZWb7pz"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 8791B4385A;
-	Wed, 18 Jun 2025 12:15:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Qxu7bz+v"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 0551A4385B;
+	Wed, 18 Jun 2025 12:15:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1750248936;
+	t=1750248938;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WZWJRW69q+SS7CXANDbY2irrOFqYZ2dZT16BR2PmS8w=;
-	b=DtZWb7pzdH4o/7Nzgzkk0725atjbsimy+D+gYddGTforoC1m6f2p02mQUigg4nRo4H8KE3
-	y6u7d9s4F0P+LJwg1fYfzxnVwBEeoCAYZj5VKe5u3K9B9GJmy8iZzbNancOYNAlKA1T99B
-	46n9WbCrgkdJWgV9ejdAutMxJ8mCpjO3bAQqEU97XapNlA34mHgr4PxyJVRqXoNCok5r7A
-	+mT1Lis3KgB9RuyYn6Iz5CacPyQwc52Sgs4VMiZxcmzRIUyfO083HG3eoTEUY46+Ach5qS
-	lbw9TLqhDprM6IDcXWjQU5/FFZI2wisEkoMMLnKFLOGBmu5/09Ey5Iu6VyQeKQ==
+	bh=IhGRtRrllEn9wwjuD72VvaIn4CmLcG96rNB7IF0e98w=;
+	b=Qxu7bz+vAQMMU0BHXeDOS9WMVpT9vLHhozBMXRjPrPNpISFPFV4JCda+4Dl0cGxmz0GWLO
+	YDtZMExLiK1dTCVNW3isAni6OzVDZVFqalOIwj+3I231RS/5EJnVXipTP6X0Ovyjmo8pqh
+	VcwhdibXAsFLo1sCWDRuvZIVYmMPKuqsCE06DceF2ET/pkbuLMZfOq1PaXMYJ5BqbZmL8w
+	oqgm8pJjZU40W0Rq24scmVcZLztV9JWW5OXwqYAtjXvsQ/sYtJKaCgNOd5htnWc3s8utcf
+	1NAuZSMeyKsnltqUfNahoAYDt7t7aud7gAHxOu8rAhO1y75Y5glR0LmNy/Zz3g==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
-Date: Wed, 18 Jun 2025 14:14:18 +0200
-Subject: [PATCH 1/8] spi: spi-mem: Use picoseconds for calculating the op
- durations
+Date: Wed, 18 Jun 2025 14:14:22 +0200
+Subject: [PATCH 5/8] mtd: spinand: Add a ->configure_chip() hook
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -42,7 +41,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250618-winbond-6-16-rc1-octal-phy-upstream-v1-1-513202126013@bootlin.com>
+Message-Id: <20250618-winbond-6-16-rc1-octal-phy-upstream-v1-5-513202126013@bootlin.com>
 References: <20250618-winbond-6-16-rc1-octal-phy-upstream-v1-0-513202126013@bootlin.com>
 In-Reply-To: <20250618-winbond-6-16-rc1-octal-phy-upstream-v1-0-513202126013@bootlin.com>
 To: Mark Brown <broonie@kernel.org>, Richard Weinberger <richard@nod.at>, 
@@ -59,64 +58,97 @@ X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgddvieduucetufdoteggodetrfd
  hhtthhopehmihhquhgvlhdrrhgrhihnrghlsegsohhothhlihhnrdgtohhmpdhrtghpthhtohepuffvnfhinhdvseifihhnsghonhgurdgtohhmpdhrtghpthhtoheplhhinhhugidqmhhtugeslhhishhtshdrihhnfhhrrgguvggrugdrohhrgh
 X-GND-Sasl: miquel.raynal@bootlin.com
 
-spi_mem_calc_op_duration() is deriving the duration of a specific op, by
-multiplying the number of cycles with the time a cycle will last. This
-time was measured in nanoseconds, which means at high frequencies the
-delta between two frequencies might not be properly catch due to
-roundings.
-
-For instance, the Winbond driver has a changing number of dummy cycles
-depending on the speed, adding +8 dummy cycles when running at 166MHz
-compared to 162MHz.
-
-Both frequencies would lead to using a 6ns delay per cycle for the op
-duration computation, whereas in practice there is a small difference
-which actually offsets the number of extra dummy cycles on a normal page
-read.
-
-Augmenting the precision of the calculation by using picoseconds
-prevents selecting a lower frequency if we can do slightly better with
-another frequency involving more cycles. As a result, the above
-situation leads to comparing cycles of 6024 and 6172 picoseconds which
-leads to picking the most efficient variant.
+There is already a manufacturer hook, which is manufacturer specific but
+not chip specific. We no longer have access to the actual NAND identity
+at this stage so let's add a per-chip configuration hook to align the
+chip configuration (if any) with the core's setting.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- drivers/spi/spi-mem.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/mtd/nand/spi/core.c | 16 ++++++++++++++--
+ include/linux/mtd/spinand.h |  7 +++++++
+ 2 files changed, 21 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-index 5db0639d3b01596b6f2f2df4b914422316eb9a3f..c42c227eb2a29ccd291bdced6b9d188c3b0bfb67 100644
---- a/drivers/spi/spi-mem.c
-+++ b/drivers/spi/spi-mem.c
-@@ -591,9 +591,11 @@ EXPORT_SYMBOL_GPL(spi_mem_adjust_op_freq);
- u64 spi_mem_calc_op_duration(struct spi_mem_op *op)
+diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
+index 03b4b0cda815a2ecc456ea25e802c60e32ee2bae..d3c7f7fdfd40469f9d4c16da6215775a8e06fe98 100644
+--- a/drivers/mtd/nand/spi/core.c
++++ b/drivers/mtd/nand/spi/core.c
+@@ -1250,8 +1250,19 @@ static int spinand_id_detect(struct spinand_device *spinand)
+ 
+ static int spinand_manufacturer_init(struct spinand_device *spinand)
  {
- 	u64 ncycles = 0;
--	u32 ns_per_cycles;
-+	u64 ps_per_cycles, duration;
+-	if (spinand->manufacturer->ops->init)
+-		return spinand->manufacturer->ops->init(spinand);
++	int ret;
 +
-+	ps_per_cycles = 1000000000000ULL;
-+	do_div(ps_per_cycles, op->max_freq);
- 
--	ns_per_cycles = 1000000000 / op->max_freq;
- 	ncycles += ((op->cmd.nbytes * 8) / op->cmd.buswidth) / (op->cmd.dtr ? 2 : 1);
- 	ncycles += ((op->addr.nbytes * 8) / op->addr.buswidth) / (op->addr.dtr ? 2 : 1);
- 
-@@ -603,7 +605,12 @@ u64 spi_mem_calc_op_duration(struct spi_mem_op *op)
- 
- 	ncycles += ((op->data.nbytes * 8) / op->data.buswidth) / (op->data.dtr ? 2 : 1);
- 
--	return ncycles * ns_per_cycles;
-+	/* Derive the duration in ps */
-+	duration = ncycles * ps_per_cycles;
-+	/* Convert into ns */
-+	do_div(duration, 1000);
++	if (spinand->manufacturer->ops->init) {
++		ret = spinand->manufacturer->ops->init(spinand);
++		if (ret)
++			return ret;
++	}
 +
-+	return duration;
++	if (spinand->configure_chip) {
++		ret = spinand->configure_chip(spinand);
++		if (ret)
++			return ret;
++	}
+ 
+ 	return 0;
  }
- EXPORT_SYMBOL_GPL(spi_mem_calc_op_duration);
+@@ -1353,6 +1364,7 @@ int spinand_match_and_init(struct spinand_device *spinand,
+ 		spinand->flags = table[i].flags;
+ 		spinand->id.len = 1 + table[i].devid.len;
+ 		spinand->select_target = table[i].select_target;
++		spinand->configure_chip = table[i].configure_chip;
+ 		spinand->set_cont_read = table[i].set_cont_read;
+ 		spinand->fact_otp = &table[i].fact_otp;
+ 		spinand->user_otp = &table[i].user_otp;
+diff --git a/include/linux/mtd/spinand.h b/include/linux/mtd/spinand.h
+index 61a4571cec7ea86bcc5cb439b76964ba778c0f89..69674fd191d9d0753a867334dae2012d8260a02c 100644
+--- a/include/linux/mtd/spinand.h
++++ b/include/linux/mtd/spinand.h
+@@ -493,6 +493,7 @@ struct spinand_user_otp {
+  * @op_variants.update_cache: variants of the update-cache operation
+  * @select_target: function used to select a target/die. Required only for
+  *		   multi-die chips
++ * @configure_chip: Align the chip configuration with the core settings
+  * @set_cont_read: enable/disable continuous cached reads
+  * @fact_otp: SPI NAND factory OTP info.
+  * @user_otp: SPI NAND user OTP info.
+@@ -516,6 +517,7 @@ struct spinand_info {
+ 	} op_variants;
+ 	int (*select_target)(struct spinand_device *spinand,
+ 			     unsigned int target);
++	int (*configure_chip)(struct spinand_device *spinand);
+ 	int (*set_cont_read)(struct spinand_device *spinand,
+ 			     bool enable);
+ 	struct spinand_fact_otp fact_otp;
+@@ -548,6 +550,9 @@ struct spinand_info {
+ #define SPINAND_SELECT_TARGET(__func)					\
+ 	.select_target = __func
  
++#define SPINAND_CONFIGURE_CHIP(__configure_chip)			\
++	.configure_chip = __configure_chip
++
+ #define SPINAND_CONT_READ(__set_cont_read)				\
+ 	.set_cont_read = __set_cont_read
+ 
+@@ -616,6 +621,7 @@ struct spinand_dirmap {
+  *		passed in spi_mem_op be DMA-able, so we can't based the bufs on
+  *		the stack
+  * @manufacturer: SPI NAND manufacturer information
++ * @configure_chip: Align the chip configuration with the core settings
+  * @cont_read_possible: Field filled by the core once the whole system
+  *		configuration is known to tell whether continuous reads are
+  *		suitable to use or not in general with this chip/configuration.
+@@ -656,6 +662,7 @@ struct spinand_device {
+ 	const struct spinand_manufacturer *manufacturer;
+ 	void *priv;
+ 
++	int (*configure_chip)(struct spinand_device *spinand);
+ 	bool cont_read_possible;
+ 	int (*set_cont_read)(struct spinand_device *spinand,
+ 			     bool enable);
 
 -- 
 2.48.1

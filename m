@@ -1,197 +1,137 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787642E8E0E;
-	Fri, 27 Jun 2025 14:59:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6479C29DB6B;
+	Fri, 27 Jun 2025 14:59:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751036355; cv=none; b=IbgU0oBF2yNvFmM9JV4m5XlDoYmcU4MfIPC1n+mGGMQKuVy/ySHrck/1dFfnHYemjW/VeJsKAOvSmOHwWEaNCWi2dM6yTjReW4leEL9bwDSL1/RfLxXEgvU++tp3KjbDu3q39anZ1GNIm4pAZ4x3oeSVvWQCuH3RCYwkWo+tajY=
+	t=1751036382; cv=none; b=BtbMBsi2X0oQfPe3oTZ694CiizSVa+trKPxr4Y21BR++kbDeijB2C3UPF308joSsQiTz3BlRrgyLzBhB+ZEazzy42C18P2Pv0Zkrnx4FuvhRLpE+xDef1B9PUjyP5fy5ngAu40Dn2jU0/SBGbSSNhOY6VDuc1cTz1XefXEbq284=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751036355; c=relaxed/simple;
-	bh=j9/RALxD1SKb25mLlSiuMDxtfhgVeK371XMTkwVz7/k=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=nM6Z8H2w4VHyMfTorQG4mePhi07Kzmo7o5IVCjTeIFze0mOi6K//zRCtwGWhC+iLTt7qlby591ohHLsSyOXlYqcQwlEI3kRtHNCMjxKAhE3FdWZ+CYtH8cHc8Z+WH4FtTns9qyNdI+plY6U57zH0L8/wAdRxQTuQ1ZGNr38fJI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p1S3PWSc; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751036382; c=relaxed/simple;
+	bh=Q624Qj2i25nnhuv7Bqn+nxJwHsYhIYSd8aBORWKkTDM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GUxZ3siR29RkQQ3hzSfsF44cAPFhjlhJ6OB2O3hSA4TH4oGbLanc5cOK52bK4uIWzSJk+A7IUTKYhUMkX5DhGcX5zjFA2sNGueFn266b/SfmpFXanXICW3iE52T9S5uAsM3KYyLCWvTKRZ//U1L+IIKjmxmT0GPEeSj248SfJYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=AZZxZg1s; arc=none smtp.client-ip=217.70.183.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p1S3PWSc"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id ECF75C4CEFB;
-	Fri, 27 Jun 2025 14:59:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751036355;
-	bh=j9/RALxD1SKb25mLlSiuMDxtfhgVeK371XMTkwVz7/k=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=p1S3PWScm2LWqRK2sY2z84G/EXYU/st4dneIm5Z8wNduVfL5X5+4jKMC3gKlOyIgq
-	 iWdBl4N9HM4T0NwD6uwCH60jvgK/ZcpzPw+J5NShhUKoLm3xiEklHKHcL1cwWTVBSh
-	 xn5BUAcosafag2U0Tv3ZChF7l+jFArT6Chk+3SeVejy/G0AEdEcShFhRAF+8oL66Ii
-	 XHGA6NGHPZlJPGE0lzX+fmnXmDVKa7+PIcRT5gU3Q2w00Kbfg24bGK2/I2iRdZqEY1
-	 8e3qd3P+XJpeUr5/1a5Gvm5ydD3WJ+TY0sLgUCupn6yKvv1+nM9CWIGnVPegckVTK5
-	 ecy6rCoRWFX1g==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E3774C83026;
-	Fri, 27 Jun 2025 14:59:14 +0000 (UTC)
-From: =?utf-8?q?Nuno_S=C3=A1_via_B4_Relay?= <devnull+nuno.sa.analog.com@kernel.org>
-Date: Fri, 27 Jun 2025 15:59:14 +0100
-Subject: [PATCH RESEND v7 5/7] clk: clk-axi-clkgen: detect
- axi_clkgen_limits at runtime
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="AZZxZg1s"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id B280243914;
+	Fri, 27 Jun 2025 14:59:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1751036376;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ThiterbTvL+mYGXh+idmEWQ5hcYVOVl2geFkwk5TYJc=;
+	b=AZZxZg1sYkT9vHUrIb2/97+6gfdNO4TtsAae3Q97XVRt49b0/Vi8ATyjffit62MZ37kfFL
+	ymp82e/YrnESaBvIOQpjbOf2NByT+aIPb77AUb4LL4j2gswmjCDrkd8q8JlI9EKD/dTAGv
+	ehdRnIQrsEL+gjpbp5/HZ3gDsDO5/1suKp3xnM2E14rmnSJF/7NfSxhMn203GJECVD9In9
+	m8CXZqLY8ct1ish67IsDUCaBumDTG5qcx7dEbGr9De+dkZwMfiwoTHf5QNh6Zrf48SviUx
+	IemOqFS+LYffkXWwV86Y/xGnsTH8VmnMH3qqowHZYUhXdCZGAKaDau1hHDHE3g==
+Date: Fri, 27 Jun 2025 16:59:30 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: Saravana Kannan <saravanak@google.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
+ Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+ <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Michael
+ Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Andi
+ Shyti <andi.shyti@kernel.org>, Wolfram Sang
+ <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, Derek
+ Kiernan <derek.kiernan@amd.com>, Dragan Cvetic <dragan.cvetic@amd.com>,
+ Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>, Bjorn Helgaas
+ <bhelgaas@google.com>, Mark Brown <broonie@kernel.org>, Len Brown
+ <lenb@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Daniel Scally <djrscally@gmail.com>, Heikki Krogerus
+ <heikki.krogerus@linux.intel.com>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>, Wolfram Sang <wsa@kernel.org>, Geert
+ Uytterhoeven <geert+renesas@glider.be>, Davidlohr Bueso
+ <dave@stgolabs.net>, Dave Jiang <dave.jiang@intel.com>, Alison Schofield
+ <alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, Ira
+ Weiny <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+ linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, Allan Nielsen
+ <allan.nielsen@microchip.com>, Horatiu Vultur
+ <horatiu.vultur@microchip.com>, Steen Hegelund
+ <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v3 06/28] driver core: fw_devlink: Introduce
+ fw_devlink_set_device()
+Message-ID: <20250627165930.344b429c@bootlin.com>
+In-Reply-To: <20250616090406.32f62ca4@bootlin.com>
+References: <20250613134817.681832-1-herve.codina@bootlin.com>
+	<20250613134817.681832-7-herve.codina@bootlin.com>
+	<CAGETcx9u-7TJ6_J5HdmDT=7A6Z08P-rUC0n+qnBoBi+ejRc2SQ@mail.gmail.com>
+	<20250616090406.32f62ca4@bootlin.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250627-dev-axi-clkgen-limits-v7-5-e4f3b1f76189@analog.com>
-References: <20250627-dev-axi-clkgen-limits-v7-0-e4f3b1f76189@analog.com>
-In-Reply-To: <20250627-dev-axi-clkgen-limits-v7-0-e4f3b1f76189@analog.com>
-To: linux-clk@vger.kernel.org, linux-fpga@vger.kernel.org, 
- dmaengine@vger.kernel.org, linux-hwmon@vger.kernel.org, 
- linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org, 
- linux-spi@vger.kernel.org
-Cc: Stephen Boyd <sboyd@kernel.org>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Moritz Fischer <mdf@kernel.org>, Wu Hao <hao.wu@intel.com>, 
- Xu Yilun <yilun.xu@intel.com>, Tom Rix <trix@redhat.com>, 
- Vinod Koul <vkoul@kernel.org>, Jean Delvare <jdelvare@suse.com>, 
- Guenter Roeck <linux@roeck-us.net>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>, Trevor Gamblin <tgamblin@baylibre.com>, 
- =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, Mark Brown <broonie@kernel.org>, 
- Mike Turquette <mturquette@linaro.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1751036364; l=4033;
- i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=oa8GDBu7Mkar5AH+bEzIfBrJjWKmaurG/C1FZ+6SxNw=;
- b=NWYFQTB+C1NRL9WYld+O3gPqFOXHWww3b3sfJevw+Jt6R4nw9+cKlTYhfACH+8xtjfhtdOdv3
- ho2Ti8vdCOXAzDwMdN3IvJW0ZvBxjXDsgS14M8HW1nng1/Xkh5qA3Hp
-X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
- pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
-X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
- auth_id=100
-X-Original-From: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>
-Reply-To: nuno.sa@analog.com
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdeffeeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtkeertdertdejnecuhfhrohhmpefjvghrvhgvucevohguihhnrgcuoehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepveeiffefgeeitdelleeigefhjeelueeuveekveetgeffheeltdekgeduiefggfdvnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomhephhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegkedprhgtphhtthhopehsrghrrghvrghnrghksehgohhoghhlvgdrtghomhdprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehshhgrfihnghhuoheskhgvrhhnv
+ ghlrdhorhhgpdhrtghpthhtohepshdrhhgruhgvrhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepkhgvrhhnvghlsehpvghnghhuthhrohhnihigrdguvg
+X-GND-Sasl: herve.codina@bootlin.com
 
-From: Nuno Sá <nuno.sa@analog.com>
+Hi Saravana,
 
-This patch adds support for setting the limits in struct
-axi_clkgen_limits  in accordance with fpga speed grade, voltage,
-technology and family. This new information is extracted from
-two new registers implemented in the ip core that are only available
-for core versions higher or equal to 4.
+On Mon, 16 Jun 2025 09:04:06 +0200
+Herve Codina <herve.codina@bootlin.com> wrote:
 
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Signed-off-by: Nuno Sá <nuno.sa@analog.com>
----
- drivers/clk/clk-axi-clkgen.c | 65 +++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 64 insertions(+), 1 deletion(-)
+> Hi Saravana,
+> 
+> On Fri, 13 Jun 2025 14:13:49 -0700
+> Saravana Kannan <saravanak@google.com> wrote:
+> 
+> > On Fri, Jun 13, 2025 at 6:49 AM Herve Codina <herve.codina@bootlin.com> wrote:  
+> > >
+> > > Setting fwnode->dev is specific to fw_devlink.
+> > >
+> > > In order to avoid having a direct 'fwnode->dev = dev;' in several
+> > > place in the kernel, introduce fw_devlink_set_device() helper to perform
+> > > this operation.
+> > >    
+> > 
+> > This should not be set anywhere outside the driver core files. I'll
+> > get to reviewing the series, but until then, NACK to this.
+> > 
+> > Is there a specific patch that explain why we need to set this outside
+> > driver core?  
+> 
+> We need to set it in case of creating device-tree node for PCI.
+> 
+> Usually, fwnode are created (based on DT or ACPI) and then, dev are
+> created.
+> 
+> In the PCI DT node creation case, device are already created and then, based
+> on information already computed by the kernel, DT node are created.
+> 
+> You can see that on patch 11 (dev setting was already upstream and it is
+> replace by a call to the helper for PCI host bridge) and on patch 13 (PCI
+> device).
+> 
+> Other patches (8, 9 and 10) replace the existing direct setting of the dev
+> member by a call to the helper.
+> 
 
-diff --git a/drivers/clk/clk-axi-clkgen.c b/drivers/clk/clk-axi-clkgen.c
-index 2a95f9b220234a1245024a821c50e1eb9c104ac9..f4e96394e9c25c817b09ee0c08751147083f19b7 100644
---- a/drivers/clk/clk-axi-clkgen.c
-+++ b/drivers/clk/clk-axi-clkgen.c
-@@ -6,6 +6,8 @@
-  *  Author: Lars-Peter Clausen <lars@metafoo.de>
-  */
- 
-+#include <linux/adi-axi-common.h>
-+#include <linux/bits.h>
- #include <linux/platform_device.h>
- #include <linux/clk.h>
- #include <linux/clk-provider.h>
-@@ -29,6 +31,9 @@
- 
- #define AXI_CLKGEN_V2_DRP_STATUS_BUSY	BIT(16)
- 
-+#define ADI_CLKGEN_REG_FPGA_VOLTAGE		0x0140
-+#define ADI_CLKGEN_INFO_FPGA_VOLTAGE(val)	((val) & GENMASK(15, 0))
-+
- #define MMCM_REG_CLKOUT5_2	0x07
- #define MMCM_REG_CLKOUT0_1	0x08
- #define MMCM_REG_CLKOUT0_2	0x09
-@@ -497,6 +502,54 @@ static u8 axi_clkgen_get_parent(struct clk_hw *clk_hw)
- 	return parent;
- }
- 
-+static int axi_clkgen_setup_limits(struct axi_clkgen *axi_clkgen,
-+				   struct device *dev)
-+{
-+	unsigned int tech, family, speed_grade, reg_value;
-+
-+	axi_clkgen_read(axi_clkgen, ADI_AXI_REG_FPGA_INFO, &reg_value);
-+	tech = ADI_AXI_INFO_FPGA_TECH(reg_value);
-+	family = ADI_AXI_INFO_FPGA_FAMILY(reg_value);
-+	speed_grade = ADI_AXI_INFO_FPGA_SPEED_GRADE(reg_value);
-+
-+	axi_clkgen->limits.fpfd_min = 10000;
-+	axi_clkgen->limits.fvco_min = 600000;
-+
-+	switch (speed_grade) {
-+	case ADI_AXI_FPGA_SPEED_1 ... ADI_AXI_FPGA_SPEED_1LV:
-+		axi_clkgen->limits.fvco_max = 1200000;
-+		axi_clkgen->limits.fpfd_max = 450000;
-+		break;
-+	case ADI_AXI_FPGA_SPEED_2 ... ADI_AXI_FPGA_SPEED_2LV:
-+		axi_clkgen->limits.fvco_max = 1440000;
-+		axi_clkgen->limits.fpfd_max = 500000;
-+		if (family == ADI_AXI_FPGA_FAMILY_KINTEX || family == ADI_AXI_FPGA_FAMILY_ARTIX) {
-+			axi_clkgen_read(axi_clkgen, ADI_CLKGEN_REG_FPGA_VOLTAGE,
-+					&reg_value);
-+			if (ADI_CLKGEN_INFO_FPGA_VOLTAGE(reg_value) < 950) {
-+				axi_clkgen->limits.fvco_max = 1200000;
-+				axi_clkgen->limits.fpfd_max = 450000;
-+			}
-+		}
-+		break;
-+	case ADI_AXI_FPGA_SPEED_3:
-+		axi_clkgen->limits.fvco_max = 1600000;
-+		axi_clkgen->limits.fpfd_max = 550000;
-+		break;
-+	default:
-+		return dev_err_probe(dev, -ENODEV, "Unknown speed grade %d\n",
-+				     speed_grade);
-+	};
-+
-+	/* Overwrite vco limits for ultrascale+ */
-+	if (tech == ADI_AXI_FPGA_TECH_ULTRASCALE_PLUS) {
-+		axi_clkgen->limits.fvco_max = 1600000;
-+		axi_clkgen->limits.fvco_min = 800000;
-+	}
-+
-+	return 0;
-+}
-+
- static const struct clk_ops axi_clkgen_ops = {
- 	.recalc_rate = axi_clkgen_recalc_rate,
- 	.determine_rate = axi_clkgen_determine_rate,
-@@ -511,6 +564,7 @@ static int axi_clkgen_probe(struct platform_device *pdev)
- {
- 	const struct axi_clkgen_limits *dflt_limits;
- 	struct axi_clkgen *axi_clkgen;
-+	unsigned int pcore_version;
- 	struct clk_init_data init;
- 	const char *parent_names[2];
- 	const char *clk_name;
-@@ -556,7 +610,16 @@ static int axi_clkgen_probe(struct platform_device *pdev)
- 			return -EINVAL;
- 	}
- 
--	memcpy(&axi_clkgen->limits, dflt_limits, sizeof(axi_clkgen->limits));
-+	axi_clkgen_read(axi_clkgen, ADI_AXI_REG_VERSION, &pcore_version);
-+
-+	if (ADI_AXI_PCORE_VER_MAJOR(pcore_version) > 0x04) {
-+		ret = axi_clkgen_setup_limits(axi_clkgen, &pdev->dev);
-+		if (ret)
-+			return ret;
-+	} else {
-+		memcpy(&axi_clkgen->limits, dflt_limits,
-+		       sizeof(axi_clkgen->limits));
-+	}
- 
- 	clk_name = pdev->dev.of_node->name;
- 	of_property_read_string(pdev->dev.of_node, "clock-output-names",
+Have you got time to look at the series, patches I pointed out and the reply
+from Andy?
 
--- 
-2.49.0
+Are modifications still nacked on your side?
+If so, what kind of modification would you like to see in order to move
+forward?
 
-
+Best regards,
+Hervé

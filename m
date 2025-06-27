@@ -1,131 +1,102 @@
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992EA219300;
-	Fri, 27 Jun 2025 14:52:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24AB22D662C;
+	Fri, 27 Jun 2025 14:59:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751035969; cv=none; b=b+M/aWOYwQdZkyEI04h/nhsDF95zhI6j4JrFQ86cUcS3cHrFHhO0pGwGmlKsUPyqdmkXHGtY6aVtfG0sDu6yM+QZLvo1mePsoSlw+579hLs5XqGMVUbZwYWIvw2GfcTth/Rb20S1A41z3m9cfCaYwgnHVaw1ChWAmg/N1eyML2g=
+	t=1751036355; cv=none; b=BUn+mQMr8ioCAOOPi+xgC6IQtfP4UaxI0M0UdHFq5tlSbLz3AQrb7umECotBJMyucVlLf6l5Fxl3gguq9d6SfRpJGwgAPft7jZtBu/lkpO1xufkMsxEApUon06t3N1HHpGe6pT9xMXU8vhsiCKhVqzTNnkURutiksLtHX4cqVpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751035969; c=relaxed/simple;
-	bh=Y9PSyNNXun1vslLOG1Em1fG3vkezxqyO8VcmI8EIDLE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=llMag44pWA0tuJbjcLcgaph3FIbCudujUpxnSGe6AX4p2t1tn/oHDPon99IeMNK6nxL2Ojnz8oovOkLl/Ls4XcHoZLCZyuZ/cnk3+h1IxQ8vIylcYPijSYsuU099I9nxZo/0JQupeM1UeFJGsacv+JtQlezelkvdWoLGdQIcd3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OTPRR4yK; arc=none smtp.client-ip=217.70.183.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1751036355; c=relaxed/simple;
+	bh=tYiLJujWc+iv8z7OkMU3wg41iVItPHvcvfpeKX54doE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=asreawR+3PPEzUhx92Jc4PxoAhvQ9MDo4UyM1iiQTUrW3EbLsQ78uwUyB14W7OvQWywSMKebezw9NPcW8hk9QgXKiQUepjJKvILMzTdzQxm/WcpN5pjmJWptjnkxxa9bB5W7IIGCrOsliyDifyaXxQ4YLxJYCoLR0dETU/f/BQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QLowtbml; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OTPRR4yK"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 8126544365;
-	Fri, 27 Jun 2025 14:52:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1751035958;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ga4DYhJ2FO3ImSWe5QoRj6QIF5B7qFE+8eHa0kIn7Ms=;
-	b=OTPRR4yKaNYHU2ov192tpqD6SRrTnToZ1hO2EKs+LgXa/u/n5Ff5+AFuSXuKxf48WQTFy9
-	tvP0bwTeZzQG3M2K/eR7hrlZMT6G/tr8dkcAMFgq0yZpFgxhn1qJYxP+/xp3VX8ODxcLB8
-	ToGFVrpah/FsapRai7V9/GgGbWagJ0lOA/O2Ak6rrtlB9gTfkrlbsfteBQLNa8Gr5HSv/Q
-	PIzpSkoHSZBa3wA1kJ2c4ku32k11PGXFGs00q8vloMEdslC0RUceJAXHB90+PIZ7ZJNG2F
-	uQ5mtoEX9RSsaMLDQqL3bNZ6pMWN0+C9YhJgIXQ/pnLFiGEeqvO4o7iTbCQu4Q==
-Date: Fri, 27 Jun 2025 16:52:32 +0200
-From: Herve Codina <herve.codina@bootlin.com>
-To: Rob Herring <robh@kernel.org>
-Cc: Andrew Lunn <andrew@lunn.ch>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Michael
- Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Andi
- Shyti <andi.shyti@kernel.org>, Wolfram Sang
- <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, Derek
- Kiernan <derek.kiernan@amd.com>, Dragan Cvetic <dragan.cvetic@amd.com>,
- Arnd Bergmann <arnd@arndb.de>, Saravana Kannan <saravanak@google.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Mark Brown <broonie@kernel.org>, Len
- Brown <lenb@kernel.org>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
- <sakari.ailus@linux.intel.com>, Wolfram Sang <wsa@kernel.org>, Geert
- Uytterhoeven <geert+renesas@glider.be>, Davidlohr Bueso
- <dave@stgolabs.net>, Dave Jiang <dave.jiang@intel.com>, Alison Schofield
- <alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, Ira
- Weiny <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
- linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, Allan Nielsen
- <allan.nielsen@microchip.com>, Horatiu Vultur
- <horatiu.vultur@microchip.com>, Steen Hegelund
- <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v3 02/28] driver core: Rename get_dev_from_fwnode()
- wrapper to get_device_from_fwnode()
-Message-ID: <20250627165232.0b3dc935@bootlin.com>
-In-Reply-To: <20250627141846.GA3234475-robh@kernel.org>
-References: <20250613134817.681832-1-herve.codina@bootlin.com>
-	<20250613134817.681832-3-herve.codina@bootlin.com>
-	<20250627141846.GA3234475-robh@kernel.org>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QLowtbml"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id BA8D6C4CEF5;
+	Fri, 27 Jun 2025 14:59:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751036354;
+	bh=tYiLJujWc+iv8z7OkMU3wg41iVItPHvcvfpeKX54doE=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=QLowtbmlA13dsfEoH/r/fdvTymmQz6l01Spbk0Z+HrR44PrXr/wi06PEFXmsQKSp4
+	 1GaI540/fCzWNiE1SdWpCv2wndS80RDhlRMBF6AEH9svvg9wiOTnyPMOq2EehI2GNj
+	 XnJjbZQfyt/xqHvOe+b7qDAs3fw43cTyxg0ieCVk+wdTM0xA05Sqt72+dNPTO1xllI
+	 fFcEqjufhE1sHJXGIoSo3wLcpSXW2YihOR0gb6n/JteVdVwnaQUCYMETaN4yJY5IJn
+	 TCw283sVO2XwGRPe2/5QPzNY7vwUhGW8gpx2TnnIixWqY0QfbZT6KsJTvA+1Fq5dkR
+	 W+52D7vrouCgA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A62A8C77B7F;
+	Fri, 27 Jun 2025 14:59:14 +0000 (UTC)
+From: =?utf-8?q?Nuno_S=C3=A1_via_B4_Relay?= <devnull+nuno.sa.analog.com@kernel.org>
+Date: Fri, 27 Jun 2025 15:59:11 +0100
+Subject: [PATCH RESEND v7 2/7] clk: clk-axi-clkgen: make sure to include
+ mod_devicetable.h
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdeffeehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtkeertdertdejnecuhfhrohhmpefjvghrvhgvucevohguihhnrgcuoehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepvdfhleejtdeftdejveffgedtuddtgefhtedtudfhuefhtddtffeiueeigfdvhfdvnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgeekpdhrtghpthhtoheprhhosghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhop
- ehshhgrfihnghhuoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshdrhhgruhgvrhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepkhgvrhhnvghlsehpvghnghhuthhrohhnihigrdguvg
-X-GND-Sasl: herve.codina@bootlin.com
+Message-Id: <20250627-dev-axi-clkgen-limits-v7-2-e4f3b1f76189@analog.com>
+References: <20250627-dev-axi-clkgen-limits-v7-0-e4f3b1f76189@analog.com>
+In-Reply-To: <20250627-dev-axi-clkgen-limits-v7-0-e4f3b1f76189@analog.com>
+To: linux-clk@vger.kernel.org, linux-fpga@vger.kernel.org, 
+ dmaengine@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+ linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org, 
+ linux-spi@vger.kernel.org
+Cc: Stephen Boyd <sboyd@kernel.org>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Moritz Fischer <mdf@kernel.org>, Wu Hao <hao.wu@intel.com>, 
+ Xu Yilun <yilun.xu@intel.com>, Tom Rix <trix@redhat.com>, 
+ Vinod Koul <vkoul@kernel.org>, Jean Delvare <jdelvare@suse.com>, 
+ Guenter Roeck <linux@roeck-us.net>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, Trevor Gamblin <tgamblin@baylibre.com>, 
+ =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, Mark Brown <broonie@kernel.org>, 
+ Mike Turquette <mturquette@linaro.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1751036364; l=711;
+ i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
+ bh=MyQa116l4E9wDyCm1ZTrQoq6qju7oKOtUMHCY6i0bL8=;
+ b=2tz7oTZMPTpdwccq3C4mYynkH8wyt/mU8mG8vfXZ7twDrZ5eUmC35jV6dn9UsBNjjpYAJPddt
+ p3QC9opyrKCAWBUN6nIpLPGp6B8DVFEdO+wvsbebS81sVuXMBUmiNt6
+X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
+ pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
+X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
+ auth_id=100
+X-Original-From: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>
+Reply-To: nuno.sa@analog.com
 
-Hi Rob,
+From: Nuno Sá <nuno.sa@analog.com>
 
-On Fri, 27 Jun 2025 09:18:46 -0500
-Rob Herring <robh@kernel.org> wrote:
+The mod_devicetable header is the one to be used for struct
+of_device_id.
 
-> On Fri, Jun 13, 2025 at 03:47:42PM +0200, Herve Codina wrote:
-> > get_dev_from_fwnode() calls get_device() and so it acquires a reference
-> > on the device returned.
-> > 
-> > In order to be more obvious that this wrapper is a get_device() variant,
-> > rename it to get_device_from_fwnode().
-> > 
-> > Suggested-by: Mark Brown <broonie@kernel.org>
-> > Link: https://lore.kernel.org/lkml/CAGETcx97QjnjVR8Z5g0ndLHpK96hLd4aYSV=iEkKPNbNOccYmA@mail.gmail.com/
-> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > Reviewed-by: Saravana Kannan <saravanak@google.com>
-> > Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> > ---
-> >  drivers/base/core.c | 14 +++++++-------
-> >  1 file changed, 7 insertions(+), 7 deletions(-)
-> > 
-> > diff --git a/drivers/base/core.c b/drivers/base/core.c
-> > index cbc0099d8ef2..36ccee91ba9a 100644
-> > --- a/drivers/base/core.c
-> > +++ b/drivers/base/core.c
-> > @@ -1881,7 +1881,7 @@ static void fw_devlink_unblock_consumers(struct device *dev)
-> >  	device_links_write_unlock();
-> >  }
-> >  
-> > -#define get_dev_from_fwnode(fwnode)	get_device((fwnode)->dev)
-> > +#define get_device_from_fwnode(fwnode)	get_device((fwnode)->dev)  
-> 
-> In patch 3, you add the same define. Is there some reason to not move it 
-> to a header?
-> 
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Signed-off-by: Nuno Sá <nuno.sa@analog.com>
+---
+ drivers/clk/clk-axi-clkgen.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-In this patch (patch 2), I rename the define. In patch 3, I move the define in
-an other place in the same file (core.c) in order to have it available for the
-function added (also in patch 3).
+diff --git a/drivers/clk/clk-axi-clkgen.c b/drivers/clk/clk-axi-clkgen.c
+index 00bf799964c61a3efc042b0f3a9ec3bc8625c9da..2a95f9b220234a1245024a821c50e1eb9c104ac9 100644
+--- a/drivers/clk/clk-axi-clkgen.c
++++ b/drivers/clk/clk-axi-clkgen.c
+@@ -13,6 +13,7 @@
+ #include <linux/io.h>
+ #include <linux/of.h>
+ #include <linux/module.h>
++#include <linux/mod_devicetable.h>
+ #include <linux/err.h>
+ 
+ #define AXI_CLKGEN_V2_REG_RESET		0x40
 
-I don't think we need to move it to a header.
+-- 
+2.49.0
 
-Best regards,
-Hervé
+

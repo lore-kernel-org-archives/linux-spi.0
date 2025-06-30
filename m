@@ -1,70 +1,133 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077511A2643;
-	Mon, 30 Jun 2025 07:17:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B202221DB1;
+	Mon, 30 Jun 2025 07:36:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751267833; cv=none; b=ECQq29qZG8c8Ezs/FsrMui1bO36univCHIJsvr+VZfOnlCXzFY+jZS4L3Qld12fnX0kjhPFLU0AoLM2je9OksbNeuqEu+SUyCMMo2M4MpzlQOtqNuNK30aQ7A8W18RXcN7384Ms9CwwvgB8fnTKTrAYJ3Nw3JW1i6F3mTkt2khg=
+	t=1751268966; cv=none; b=gzTAfPcKeElm6/sed6X/uoOPW3cZ3bFlXC+G5r/TAoM+Rtigmp2s5ONQrqTtmDGXGOqoNA3ZptQpULr/I+c4KvhwNHXOjzWJWjPL4YseHkVpjuVtKrpxJYxyyVgunKurJ8FV8Q3wIJFCdhVWn2fj8ixxZi2styGL33uXDPEnla0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751267833; c=relaxed/simple;
-	bh=8LwWcL/hfZA2j32lefUf/CPEs9K2wl3Sf8cyvU/E/lg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L57txmmhQ0LahZffQLMAeO/D4lKiu4+u0Bwz7gbbr5pv9jIjJGEebYYuyYf0V1hhb+BbFhnI0ZIG1/CjyHhMBWJYScvMh1XfeihFE/IizpQR92i87r5trfeQcfMohmwX2gb/u0uXa+FIIbtFxbztRLbVd7/8wAdHr0AODTgzVFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wz0GRQRd; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751268966; c=relaxed/simple;
+	bh=iNDrjh0tpRqFMUceSM9T2AlLoJiEFqU5pz2vsAYwVxA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=X0h/W4TdyZg7aLjX10dw/Lu9iyiD0Iu6zUmkXS6ncqv4NhYbAKy7jIrGV2a6jsjQ3qJynXAY/B/kg3ZPJCkpsn1NSqY6ZJdCvwgCsgjKoYPc0tXpDGNLYV0zcqoZltYpVtimZpMopQiHCMsbX0NRuCTgEfnaaFguI9Jau7Hghvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=QA9ziUH7; arc=none smtp.client-ip=91.207.212.93
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wz0GRQRd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8E90C4CEE3;
-	Mon, 30 Jun 2025 07:17:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751267832;
-	bh=8LwWcL/hfZA2j32lefUf/CPEs9K2wl3Sf8cyvU/E/lg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Wz0GRQRdQNz5Yif1YOcTtRFUXi1c6JVSR0V2aLYHWbLenFhxyNnL2akbcAoHXNjqe
-	 QyKC8Anw39HPGPdy1RteDRZZS9FdiWHwn1L/iV3wO7SoaCFksdmKkpQXsWY/XZuqRs
-	 g+OwUb6xvSKSzVKb9PpPFd7rkEzN7S5VHEK4tEHvJm2b4Sel5X19rLn/VyZeE03gOB
-	 BwmDIyTwptn00LersUVi4kBO/CqhtCw621lr5HMT4z2ZxXgCCNhN8gopaAY4t8r1W2
-	 l+5WAsKZQ4ZVhimRZzsyyzJ3wmh9/OebkB/uxpxj9odU3esMhC3Re0hQ2P7xoYm9Xr
-	 wTuOB0cC1LfTg==
-Date: Mon, 30 Jun 2025 09:17:09 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Zixian Zeng <sycamoremoon376@gmail.com>
-Cc: Tudor Ambarus <tudor.ambarus@linaro.org>, 
-	Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>, 
-	Miquel Raynal <miquel.raynal@bootlin.com>, Richard Weinberger <richard@nod.at>, 
-	Vignesh Raghavendra <vigneshr@ti.com>, Chen Wang <unicorn_wang@outlook.com>, 
-	Inochi Amaoto <inochiama@gmail.com>, Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
-	Longbin Li <looong.bin@gmail.com>, linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	sophgo@lists.linux.dev, linux-spi@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-riscv@lists.infradead.org
-Subject: Re: [PATCH v3 1/4] spi: dt-bindings: spi-sg2044-nor: Change SOPHGO
- SG2042
-Message-ID: <20250630-ancient-quail-of-joy-effd60@krzk-bin>
-References: <20250629-sfg-spifmc-v3-0-28db1f27e999@gmail.com>
- <20250629-sfg-spifmc-v3-1-28db1f27e999@gmail.com>
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="QA9ziUH7"
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55U7AniW028032;
+	Mon, 30 Jun 2025 09:35:43 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=selector1; bh=
+	3TeFS+uiHYd7t7KK/aAu0N/KEC1YUemvKeluUuOfecA=; b=QA9ziUH74nPr8B5h
+	tSCcx7WJc5TajZUH1r7XpOAseYVJXtyyrECAhoHZ1w7H621FQsd/wZuiOntoOLux
+	xVb1f3Sq4tnnJX0KF9NbhrT7jrH06muly99q0vw2j8PJgb6cw7X3NQ9vQ6mYIzS7
+	FBVzTYysav1JdMt27wULU2nz24Dd7lfN8oNojqaj8xy/D1X7A3XL2xPzl1Tmm8T4
+	BhKW6UfEbWYU+dQrmaO10MTQwPFFPtS+ruX6uTVqgBZadAunJcSSjXzMMAfwlpiA
+	ANXefcNTmfzo4SoFirZNEOK8fZZWvUkGHf+r+v7WVek7sRmgn+VWHIAHWBqTlFPX
+	+f5lqA==
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 47j79h5udb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 30 Jun 2025 09:35:43 +0200 (MEST)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id ACD4540047;
+	Mon, 30 Jun 2025 09:34:43 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfdag1node2.st.com [10.75.129.70])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id D342946AD15;
+	Mon, 30 Jun 2025 09:34:15 +0200 (CEST)
+Received: from [10.252.20.7] (10.252.20.7) by SHFDAG1NODE2.st.com
+ (10.75.129.70) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 30 Jun
+ 2025 09:34:15 +0200
+Message-ID: <1f49b8f3-44c9-43f3-a3bf-b931fb0726f4@foss.st.com>
+Date: Mon, 30 Jun 2025 09:34:13 +0200
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250629-sfg-spifmc-v3-1-28db1f27e999@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] spi: stm32: fix NULL check on pointer-to-pointer variable
+To: Antonio Quartulli <antonio@mandelbit.com>, <linux-spi@vger.kernel.org>
+CC: <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Maxime Coquelin
+	<mcoquelin.stm32@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Alain Volmat
+	<alain.volmat@foss.st.com>
+References: <20250628000227.22895-1-antonio@mandelbit.com>
+Content-Language: en-US
+From: Clement LE GOFFIC <clement.legoffic@foss.st.com>
+In-Reply-To: <20250628000227.22895-1-antonio@mandelbit.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SHFCAS1NODE2.st.com (10.75.129.73) To SHFDAG1NODE2.st.com
+ (10.75.129.70)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-06-30_01,2025-06-27_01,2025-03-28_01
 
-On Sun, Jun 29, 2025 at 04:23:10PM +0800, Zixian Zeng wrote:
-> SG2042 is not fully compatiable with SG2044,
+Hi Antonio,
 
-Typo, run spellcheck.
+On 6/28/25 02:02, Antonio Quartulli wrote:
+> In stm32_spi_prepare_rx_dma_mdma_chaining() both rx_dma_desc
+> and rx_mdma_desc are passed as pointer-to-pointer arguments.
+> 
+> The goal is to pass back to the caller the value returned
+> by dmaengine_prep_slave_sg(), when it is not NULL.
+> 
+> However, the NULL check on the result is erroneously
+> performed without dereferencing the pointer.
+> 
+> Add the proper dereference operator to both checks.
+> 
+> Fixes: d17dd2f1d8a1 ("spi: stm32: use STM32 DMA with STM32 MDMA to enhance DDR use")
+> Addresses-Coverity-ID: 1644715 ("Null pointer dereferences (REVERSE_INULL)")
+> Signed-off-by: Antonio Quartulli <antonio@mandelbit.com>
+> ---
+>   drivers/spi/spi-stm32.c | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
+> index 3d20f09f1ae7..e9fa17e52fb0 100644
+> --- a/drivers/spi/spi-stm32.c
+> +++ b/drivers/spi/spi-stm32.c
+> @@ -1529,7 +1529,7 @@ static int stm32_spi_prepare_rx_dma_mdma_chaining(struct stm32_spi *spi,
+>   					       DMA_PREP_INTERRUPT);
+>   	sg_free_table(&dma_sgt);
+>   
+> -	if (!rx_dma_desc)
+> +	if (!*rx_dma_desc)
+>   		return -EINVAL;
+>   
+>   	/* Prepare MDMA slave_sg transfer MEM_TO_MEM (SRAM>DDR) */
+> @@ -1563,8 +1563,8 @@ static int stm32_spi_prepare_rx_dma_mdma_chaining(struct stm32_spi *spi,
+>   						DMA_PREP_INTERRUPT);
+>   	sg_free_table(&mdma_sgt);
+>   
+> -	if (!rx_mdma_desc) {
+> -		rx_dma_desc = NULL;
+> +	if (!*rx_mdma_desc) {
+> +		*rx_dma_desc = NULL;
+>   		return -EINVAL;
+>   	}
+>   
 
-> So it is necessary to become independent const
+Good catch for both pointers !
 
-No capital letters after ,. Anyway, explain why it is not fully
-compatible.
+For readability, I would suggest to define two dma_async_tx_descriptor 
+ptr at the beginning of the function such as :
+	struct dma_async_tx_descriptor *_mdma_desc = *rx_mdma_desc;
+	struct dma_async_tx_descriptor *_dma_desc = *rx_dma_desc;
+
+And then use them all along the function even in the assignation.
 
 Best regards,
-Krzysztof
-
+Clément

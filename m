@@ -1,65 +1,64 @@
-Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
+Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B98126B742
-	for <linux-spi@vger.kernel.org>; Tue,  1 Jul 2025 21:39:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA415266576
+	for <linux-spi@vger.kernel.org>; Tue,  1 Jul 2025 21:39:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751405975; cv=none; b=WP/OvuVaHFFjwo52/Y5fG+yiPhywKa5AIC9qsAapCYYckyy+WLaEZlvzamrK709w3LeWQXLeRqjc+zcPKDZmI33mg+peLsodmngY1bQxTo1ril+tapge1bIqQmU2b0deYiqK8qyHNywiITPDj75yF/2809yZKK8j8FwIFD7mfvI=
+	t=1751405975; cv=none; b=fK+mYDLYZlZ9+9zT70WPVW/Uo9+2W4PyewHZkH+E8cTBrVrOkZxLfUK2rPRptr64C8K1Y7pqR1v2vjWG3lv5H8PREHW/r1lpvapmZmkws0D3MgQeDUY1+CDS9dpO36AfqUfCFg5YSFBGZRmOfpDvVQQBW2o9hA5GnjkqIe+8yCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1751405975; c=relaxed/simple;
-	bh=1qU2uE7FMPflcU+JZ/SdmPS+Hm6dJMEmmE25dOPvZxs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=CWvlNFV3XQhv6Z3MnzDP+QT90xE3n6730UtUpPT0UOIyOjqgvX4x/Pun+otZZDDevIm9tMA3moALRvBYf/PpfiC3ywgtPnxgJGruhca3pKvBDvHVBurehjO+0Dkix/IcM4EXBKlDQguoNhVa8Pkaoe5YZbi/LjBPsSlwx1txOmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Jz0LiL07; arc=none smtp.client-ip=209.85.167.180
+	bh=VxYROUM2GfmJ/KXDwxe8XCPoe5O2XiSmt5z/jZcbr3M=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=W/ifyn4gRZXAwXpm4yomlG24keTDo443OTIFpW4pby+N76cCOYsXTMIJoG44hX9BV35GI55b5qnA741n/klBg1IgOlfCXPxYCEtQn8uAxzrfGaU7KeNalyOdH7GsXFYKU47mZOaFFkcfyD7XiQ9AwGBS37sof1qIwI2HS/xU3mE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ANanGD/2; arc=none smtp.client-ip=209.85.167.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Jz0LiL07"
-Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-407a6c6a6d4so2022940b6e.1
-        for <linux-spi@vger.kernel.org>; Tue, 01 Jul 2025 14:39:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ANanGD/2"
+Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-4080548891fso2153538b6e.3
+        for <linux-spi@vger.kernel.org>; Tue, 01 Jul 2025 14:39:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1751405972; x=1752010772; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1w9rUjmeh/tPGSpT8Xheslz7aDCsq9V40QAkh/yUzZo=;
-        b=Jz0LiL07Iv/DuE4ipjOIC8ZQz2FZpc7wXLwTw7L+JwrX3Nzj8kl+xlUyk5bOdiA6Fc
-         RB+ShDt121kcxfw41Y6GOiBfc1TtADI2DJNdd0wlF7gwYSOEftGBjzj/7xjRNpIvRKEA
-         zHr0mqMiGo7n0o5Y3Hi0PiLj9MGijbU63EguxsamByykZuk0V2aLYJU0SmpGA2qkvGK1
-         zYGjv7OvqLAGLdys5kYWhosI/jSVDEItQiwEeZammmqO6X0SAQn8K1TNysYoMkU60hge
-         GmFTGfFmHXMZe/LXCdJPjxw0UPtbS5gj5Z5DtWfxZ2/cj3vfyvFV33c399XhqYMtzoDj
-         3/TQ==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1751405971; x=1752010771; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=FhZPY2wdf4iLhO1Z5AiYBhsJE4q+NPXvJ5l9xNX680M=;
+        b=ANanGD/2CPOtDOWa9dJlBvDj0Ia856+R4cb3N3r7ond96Nj610Nd/VzOBMEuFqRwVw
+         RMoes33uq/AFLKfXnNQTUYr37eQxm1AC17QImVxR6iUVM5wRf8J+3f5BH8E+EM+vMW4H
+         5gMXMScKFA7TC1919ai+U7OBbzpLtsi3HSIqQzum+O7Zfq/gIC0TOtNH0mtRwdEn8UMh
+         Cl8335zl0eZOL5CWqU96a4+cvJIxym51EOdH1IeJHlgQE3uQv594dpit4fowiRtiHErT
+         FZSIw7MyyRYvOZiIVxf49fmsJqmNIzgIgP85AQl3qlybSJ1jh2MtSv0YaKA1ZCzoSjhM
+         XUFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751405972; x=1752010772;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1w9rUjmeh/tPGSpT8Xheslz7aDCsq9V40QAkh/yUzZo=;
-        b=IQbPUE+kx2xdPVcfsmGtsBmjuzj4zWco6fGBrI3liPQZw2i8D886rG+fJ1LAm01wog
-         xwNbxSLboqN/tSo+VnMrA/7BvqUmpbmWkI+MmLwrsN5EWjbt7Cmcs23mNzSET3jEZbdx
-         cysM6cdxSXRZ9+bkkjqI2liQYAFa79CuQjTB40YiTzJEn6RkWwUhdfl6AjRRC1FyfUCb
-         +hyCNzZsIGquVPLgF/FXpW/2RQ/m/qOL2LIuFKXJ3+qrvdFnNU2qIDg2TelKTv1WtP0j
-         92nDcSKFnUSxJaFVxt9DuWLl8/1DpjZ9N6hX1WJN9mXwV33zsxA6D7dihmIHLRXUokt/
-         tF/A==
-X-Forwarded-Encrypted: i=1; AJvYcCXlZXHtpcbgkKiHCRuxon8y3JHaDmJMQrPmpRnd3GbauPaPhwpsz3zinVtUslHal+W+JVDVANsl82o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwkGkaWYn3QQcjk09XqEUiJVJHkpPa3+Kt5UesosxX8V8U+uaUv
-	9s9+rNk+HX0RuUhJqk6COe9LBZY0wi/qXq69W4ZcuVntbV23IXfSaGfn5pgGetYaJ84=
-X-Gm-Gg: ASbGncvTiyS/16D319lt/b9mhm3la+0JPKfW9Zzm83kaCkKTuNlU95H3A186cLdRCBY
-	lyJmj1csUTkshyowzkhBuZM6B5xNDAA94jPXVgnwat3G2U5KNGeT5xPuDBu9gS7HOEfY4ageoXr
-	Z+E67YgTt89ztzV8LXMOJE05v+bepYsHUbU83/5rI77Xzymr2FvrxikTq1SWoTWLFxaUp6HrWNK
-	59R5Fc9G03WipGmF4sMPC73xQW5kF9UQ1nkHPMGptbPDUwxdL1FQHi0Es5GHr+Dvnl4mKWymkSw
-	VTM5+c67Pf8q1I+JBsIN+RYLn64gsqP+2l/aOTgd+LtrgVqV1p6CkhNJ9a3kFERhyFlt
-X-Google-Smtp-Source: AGHT+IEVj+OQx1ExM6bdvzBEpZB3mbKahHnEvuYiD60xCtIPqVZTq6a66aw113ivnak/wvuX0kwIig==
-X-Received: by 2002:a05:6808:130f:b0:401:e933:5dd9 with SMTP id 5614622812f47-40b88818292mr219493b6e.20.1751405972280;
-        Tue, 01 Jul 2025 14:39:32 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1751405971; x=1752010771;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FhZPY2wdf4iLhO1Z5AiYBhsJE4q+NPXvJ5l9xNX680M=;
+        b=vE/lEqORbBu7d9gdvQl61JVca++Mc7FVZlfkjLjucQAxjiI5DQ/FB4NvUF3L33aBmC
+         QzC9xz3Lo2/Qg8MydY1jUJFZHKnJjlu3YRNG/CHDiIsk31IJjvISZC++eSA1x4NjSPyg
+         VTTpweArj3/r2t2mCg9UYZkJURs1huZdAIdpJ1//F7Zdt5EZ8AB7xn5mhuc5xw3zuWUX
+         9uJ3wg4qx0jk+5xhIjgIjVqksUB8Kma5TGP5BzyIiiPdc9enJfcu2WNZirZ+qcifNr49
+         WwTXeispL59UKiCtqRU6ZVd0cH5jUS1AWI+d8i1Y2MQwo3PKXPnbUpo2PeGQUElBrIlW
+         jgQw==
+X-Forwarded-Encrypted: i=1; AJvYcCUzTyrr+fwbwYcakIIF/5+Nqy/c6MWxukXNUvcYiFGkH2V+YIC/gqmcQW7z4lHvJm129SpTYu7BE94=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyjXxkEnMKXDLW4IL4bIa5c6cGfTde44lSyR3cQsEKqRmfdGMLo
+	6FUZ5tddsuznNqg2hTS1+gd7XjNejiJf3da+jRuNQOryp1lbLNz+XF5brUmAHpEsHsc=
+X-Gm-Gg: ASbGnctichqaRvCzd84rysghG+a+pUZaQjOlC6HhBi4VmsLiW8LLuKqufKL1JIWtKgU
+	YLOrUch4kluzIpnemXs23/yygRVz0jTmuMSzowUsPanFuiMAWz0ekrXHypaLjBpX8xm/Q4vbnBt
+	XEw5lop/I9HLqbFkaJuKGzQnKbHbZTiD+yUFHKUmn//nuLp5Tcp2yY05D69DQSSztSrPtfj9uH/
+	d0E6/FlJg0Sg6z1k3I8YBl4NiY4QrlJkSjHdfDN9sECXd9JMCOMMWZknp06bxUjqpmmyNHzQzvM
+	I8V8E8bCdi/ZVzYHRUQo+XD5kkOVIoqk4x1EjQDTin5aPtJ8mxOMZDtXl+SUHqrdiSF8
+X-Google-Smtp-Source: AGHT+IEmIlyTP9bN5FcZOGUVizFGWHz30kCL8m/3oyY91aEG/xyVWS8vK2c7mTxX1xDiOK9rPl6j2A==
+X-Received: by 2002:a05:6808:bcd:b0:40b:1597:b2d1 with SMTP id 5614622812f47-40b88798a87mr254209b6e.17.1751405970662;
+        Tue, 01 Jul 2025 14:39:30 -0700 (PDT)
 Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:70a7:ca49:a250:f1d5])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-40b3243deeesm2288335b6e.48.2025.07.01.14.39.31
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-40b3243deeesm2288335b6e.48.2025.07.01.14.39.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Jul 2025 14:39:31 -0700 (PDT)
+        Tue, 01 Jul 2025 14:39:30 -0700 (PDT)
 From: David Lechner <dlechner@baylibre.com>
-Date: Tue, 01 Jul 2025 16:37:50 -0500
-Subject: [PATCH v3 02/12] iio: adc: ad_sigma_delta: sort includes
+Subject: [PATCH v3 00/12] iio: adc: ad7173: add SPI offload support
+Date: Tue, 01 Jul 2025 16:37:48 -0500
+Message-Id: <20250701-iio-adc-ad7173-add-spi-offload-support-v3-0-42abb83e3dac@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -68,9 +67,12 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250701-iio-adc-ad7173-add-spi-offload-support-v3-2-42abb83e3dac@baylibre.com>
-References: <20250701-iio-adc-ad7173-add-spi-offload-support-v3-0-42abb83e3dac@baylibre.com>
-In-Reply-To: <20250701-iio-adc-ad7173-add-spi-offload-support-v3-0-42abb83e3dac@baylibre.com>
+X-B4-Tracking: v=1; b=H4sIACxVZGgC/5WOPW7DMAxGr2JoDgP9RFKcqfcoOsg21RBILFdSj
+ ASB717WXoJO7UCQHwG+x6comAmLODVPkXGmQmnkYHaN6M9h/ESggbPQUlvptASiBGHoubzyhts
+ AZSJIMV5S4Pk2TSlXMDoof+ycc8EIhk0ZI91X0fvHljN+3dhXt6XoQkHo0/VK9dSMeK+wOaUVP
+ wdnKjXlx/rorNaL//40K5AgvXPR6dYfjHzrwuNCXcY9e1fLrF/J/s9kzeR4aHtrbdsqZX6Rl2X
+ 5BtiZwhZqAQAA
+X-Change-ID: 20250620-iio-adc-ad7173-add-spi-offload-support-32a178b666a3
 To: Michael Hennerich <Michael.Hennerich@analog.com>, 
  Jonathan Cameron <jic23@kernel.org>, 
  =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
@@ -79,64 +81,88 @@ To: Michael Hennerich <Michael.Hennerich@analog.com>,
  Conor Dooley <conor+dt@kernel.org>, Mark Brown <broonie@kernel.org>
 Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
  devicetree@vger.kernel.org, linux-spi@vger.kernel.org, 
- David Lechner <dlechner@baylibre.com>
+ David Lechner <dlechner@baylibre.com>, 
+ Andy Shevchenko <andriy.shevchenko@intel.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1326; i=dlechner@baylibre.com;
- h=from:subject:message-id; bh=1qU2uE7FMPflcU+JZ/SdmPS+Hm6dJMEmmE25dOPvZxs=;
- b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBoZFVC+1/TsWxjv/MzSa6lzkWpzn21t4FgGShZ9
- ysIlXNGMfyJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaGRVQgAKCRDCzCAB/wGP
- wD9PB/9nTBwTyiDomYAZvoIEQmN1g1VBPdOOGeN9ul8WNmQrd1yFi8z32Q6Oj9AkVyyp+dF/KaH
- 3gVlsJof5RxnEUgtgKX4o+ikufQdLfYBJbkaz2Pv5QTWj12+/4TwiHpZr6GLJ4I7v6Nf3jnckWg
- hlKPthQm7S/Ehe9IL7PBNU8c6LIOwO1KhIaH7wQEtwNCVSHUBK3eQ8rtYbu1pANxD0yrFmvHzZV
- GdkuBqVlce7vJMNJhC3bR27n65Kh+U3Pe/I3RccsK3oU/ahh88PAAMFijIgX6vpQAcjaxRWYrUV
- PGCCD8F2afbIdrf6V1n1ndfER60gVI/pZPvEA5axfL0zMGew
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3089; i=dlechner@baylibre.com;
+ h=from:subject:message-id; bh=VxYROUM2GfmJ/KXDwxe8XCPoe5O2XiSmt5z/jZcbr3M=;
+ b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBoZFU0eriObLuCHhRkzBiZdtTzSKJ84cqD8X+HT
+ VCZuuW6AY6JATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaGRVNAAKCRDCzCAB/wGP
+ wJ5JB/9wNv/tkmGqHpQE0xdU0nKNPjt5uVZZSRpYMwVniV7Bgoqplhyejh5v798/ScFEMUwcEYq
+ h7aLymK9ZBWobXWBfPbJPheF9klRDCsOhaYRcUURuqQL4718tnqn6hyjxJjW3CXKLBSK/Ef/0x1
+ 5GkmpAIBkpYsGDmLaoA7qqEfHV486yiKA9K/IECYmrqMOkw+9YUBLd/6LbR5X8q3zbD1zGfDsvq
+ suIYqmbcxmDjewYiC81WPnGDdVLbHnAKgQB3lNxJaOhHiz/wd7M4nywrcnJQ0WFek3tbuOntqH1
+ OckR7WOWS6YVwvmtX2ZgWF2mbnbyNWecno2qDinrbSrC3G0P
 X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
  fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
 
-Sort includes in alphabetical order and fix grouping before we add more.
+Here comes another series for adding SPI offload support to an ADC.
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
+The primary target is AD411x, but since this uses the ad_sigma_delta
+shared module, a lot of this series is focused on that.
+
+To start with, we have some cleanups to the ad_sigma_delta code, so feel
+free to pick these up as they are ready as they generally stand on their
+own.
+
+Then before adding proper SPI offload support, we make use of
+spi_optimize_message() to reduce CPU usage of all users of this driver
+during buffered reads.
+
+Also there is a new dt-binding and driver for a special SPI offload
+trigger FPGA IP core that is used in this particular setup.
+
+Then finally actual SPI offload support is added to the ad_sigma_delta
+module and the ad7173 driver.
+
+This was tested using EVAL-AD4112ARDZ on a DE10-Nano.
+
 ---
- drivers/iio/adc/ad_sigma_delta.c | 16 +++++++---------
- 1 file changed, 7 insertions(+), 9 deletions(-)
+Changes in v3:
+- Added extra patch to replace 8 with sizeof(s64) in ALIGN() [4/12]
+- Fixed typo in commit message. [6/12]
+- Fixed includes in spi offload trigger driver. [10/12]
+- Link to v2: https://lore.kernel.org/r/20250627-iio-adc-ad7173-add-spi-offload-support-v2-0-f49c55599113@baylibre.com
 
-diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
-index 6b3ef7ef403e00804abeb81025ed293b188e492b..5cdd73160c6d6d4d9308eaa3a5aec14529475676 100644
---- a/drivers/iio/adc/ad_sigma_delta.c
-+++ b/drivers/iio/adc/ad_sigma_delta.c
-@@ -7,24 +7,22 @@
-  */
- 
- #include <linux/align.h>
--#include <linux/interrupt.h>
- #include <linux/device.h>
-+#include <linux/err.h>
-+#include <linux/interrupt.h>
- #include <linux/kernel.h>
-+#include <linux/module.h>
- #include <linux/slab.h>
- #include <linux/spi/spi.h>
--#include <linux/err.h>
--#include <linux/module.h>
-+#include <linux/unaligned.h>
- 
-+#include <linux/iio/adc/ad_sigma_delta.h>
-+#include <linux/iio/buffer.h>
- #include <linux/iio/iio.h>
- #include <linux/iio/sysfs.h>
--#include <linux/iio/buffer.h>
--#include <linux/iio/trigger.h>
- #include <linux/iio/trigger_consumer.h>
-+#include <linux/iio/trigger.h>
- #include <linux/iio/triggered_buffer.h>
--#include <linux/iio/adc/ad_sigma_delta.h>
--
--#include <linux/unaligned.h>
--
- 
- #define AD_SD_COMM_CHAN_MASK	0x3
- 
+Changes in v2:
+- New patch to fix overallocation of buffer size. [1/11]
+- Also change int64_t to s64. [3/11]
+- Fix typo in commit message. [4/11]
+- Factor out scan_type to reduce line wraps. [4/11]
+- New patch to clean up include more. [5/11]
+- Duplicate comment about odd case of 24-bit data. [7/11]
+- Fixed missing MODULE_IMPORT_NS() [10/11]
+- Link to v1: https://lore.kernel.org/r/20250620-iio-adc-ad7173-add-spi-offload-support-v1-0-0766f6297430@baylibre.com
 
+---
+David Lechner (12):
+      iio: adc: ad_sigma_delta: don't overallocate scan buffer
+      iio: adc: ad_sigma_delta: sort includes
+      iio: adc: ad_sigma_delta: use u8 instead of uint8_t
+      iio: adc: ad_sigma_delta: use sizeof() in ALIGN()
+      iio: adc: ad_sigma_delta: use BITS_TO_BYTES() macro
+      iio: adc: ad_sigma_delta: audit included headers
+      iio: adc: ad_sigma_delta: refactor setting read address
+      iio: adc: ad_sigma_delta: use spi_optimize_message()
+      dt-bindings: trigger-source: add ADI Util Sigma-Delta SPI
+      spi: offload trigger: add ADI Util Sigma-Delta SPI driver
+      iio: adc: ad_sigma_delta: add SPI offload support
+      iio: adc: ad7173: add SPI offload support
+
+ .../trigger-source/adi,util-sigma-delta-spi.yaml   |  49 ++++
+ MAINTAINERS                                        |   7 +-
+ drivers/iio/adc/ad7173.c                           |  13 +
+ drivers/iio/adc/ad_sigma_delta.c                   | 295 +++++++++++++--------
+ drivers/spi/Kconfig                                |   5 +
+ drivers/spi/Makefile                               |   1 +
+ .../spi/spi-offload-trigger-adi-util-sigma-delta.c |  62 +++++
+ include/linux/iio/adc/ad_sigma_delta.h             |  27 +-
+ 8 files changed, 345 insertions(+), 114 deletions(-)
+---
+base-commit: d02f330b0c78bcf76643fbb7d3215a58b181f829
+change-id: 20250620-iio-adc-ad7173-add-spi-offload-support-32a178b666a3
+
+Best regards,
 -- 
-2.43.0
+David Lechner <dlechner@baylibre.com>
 

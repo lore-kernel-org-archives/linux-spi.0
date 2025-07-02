@@ -1,85 +1,95 @@
-Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9908428640A;
-	Wed,  2 Jul 2025 13:19:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.175.24.41
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0FCA2741A3;
+	Wed,  2 Jul 2025 13:27:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751462372; cv=none; b=kcjmULwDiMF9zSv4xijJzljrz93xwVOHgNukCxl+ftSo22Nr/3a0+y4QLaes8gc6CrzgkPkyJVMMOovqWIEEz9fTmIZL/raIpb+6ypwGp3e7tetMNgJqMu+TBSDXuuU2lkb0oSYoyGqTr04tVOYwFs+r+EJL3NzPhylUXuTcGfQ=
+	t=1751462837; cv=none; b=Oc1b+PR98XLHTBZjz6blIcfLrccZHMFlqkycAyI41DGCUM3zVSVy2S+okPLrqHlTHP3TgorXyFim9uJHcvHws2rnNKB6cP4FGf9eauHcuW6HWwzG1rJXKx3uiPH+XNSqd+96JbPdoEV7mQpkgAoNA3vggjarGXaoZyl0IfgVelU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751462372; c=relaxed/simple;
-	bh=1BbhlC+l1xKw8p+Nevl5eUTHDecQXYfUOAsFqanGWjY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FSkSx8VeMMdEGHUdu1g7B9bbZSPUn0bsNpjJvZqC4+PKMKb/XO/OACXmgTpUyTqGY8mWcDCFaLzmB+vblhV21ivpigl32HBEEvKPdiL0jOil8SYvgzhQYEGS9pSg1Y5Y+jb5fiLbjXfbSpRZCHK3fD96W20AnQUr74BL5G9VK24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpha.franken.de; spf=pass smtp.mailfrom=alpha.franken.de; arc=none smtp.client-ip=193.175.24.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpha.franken.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alpha.franken.de
-Received: from uucp by elvis.franken.de with local-rmail (Exim 3.36 #1)
-	id 1uWwab-00058M-00; Wed, 02 Jul 2025 14:29:25 +0200
-Received: by alpha.franken.de (Postfix, from userid 1000)
-	id A43D6C0C1C; Wed,  2 Jul 2025 14:07:45 +0200 (CEST)
-Date: Wed, 2 Jul 2025 14:07:45 +0200
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To: Shiji Yang <yangshiji66@outlook.com>
-Cc: linux-mips@vger.kernel.org, linux-gpio@vger.kernel.org,
-	linux-spi@vger.kernel.org, John Crispin <john@phrozen.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 00/16] MIPS: some compilation fixes for the Lantiq
- platform
-Message-ID: <aGUhERHN5FH5Rwtc@alpha.franken.de>
-References: <OSBPR01MB1670163BDCA60924B3671D45BC72A@OSBPR01MB1670.jpnprd01.prod.outlook.com>
+	s=arc-20240116; t=1751462837; c=relaxed/simple;
+	bh=aeTthio5tDo5yFm/fY8fIx8z+v+Gb5/rApZk6ukOjtw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=Ryz20oeDYxJGFAPTCKS4NuEWThSawLadQTwJa0L1IPj+eYxQSVhqVWLT9lDfd2HNlSfV4g8NQbbJTh3+HKSdrK4fNIKWL7g9UBkeTLbpgUAzbdFkZQKplXtTVqZOtgTD3pdaMSTTrLP25vk0DI8y13LjTMn3uzBjyzbEnC/IimA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JKq/GDww; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JKq/GDww"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4860C4CEED;
+	Wed,  2 Jul 2025 13:27:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751462836;
+	bh=aeTthio5tDo5yFm/fY8fIx8z+v+Gb5/rApZk6ukOjtw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=JKq/GDwwbJX6fgpyTI0tB/SctVE6EfPuJkKNB1WUSGaHOqJ9tcz+Dc3JuhtcL1BiH
+	 8mIG8Aju1HmStTVgo+ZFy2HTUEmyp+BbknS9eADtTGXNd/L8bOhYZ0qUfnOEc11udG
+	 ZJmyif6Jaw9td5qvaE+h78K9rD0c26XbQiRXHqpMa9rmhQ7VbCliUL+NOLGZJqRflF
+	 ICJFhekExYv4etDDmt7O7I6yND9RlJtmkko8I4MOzivh9dIfk5lYvAS7auctVGyAj1
+	 JU6IJjJRJIeyl7zIgLpu7ZsmJekiGFBhmfCaqURsmSFcFUpUhfgDf1D5hKFiVIA9iR
+	 2FDg8nv1qRFwA==
+From: Mark Brown <broonie@kernel.org>
+To: Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, David Lechner <dlechner@baylibre.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-spi@vger.kernel.org
+In-Reply-To: <20250627-iio-adc-ad7173-add-spi-offload-support-v2-0-f49c55599113@baylibre.com>
+References: <20250627-iio-adc-ad7173-add-spi-offload-support-v2-0-f49c55599113@baylibre.com>
+Subject: Re: (subset) [PATCH v2 00/11] iio: adc: ad7173: add SPI offload
+ support
+Message-Id: <175146283155.53778.17164711650224607474.b4-ty@kernel.org>
+Date: Wed, 02 Jul 2025 14:27:11 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <OSBPR01MB1670163BDCA60924B3671D45BC72A@OSBPR01MB1670.jpnprd01.prod.outlook.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-cff91
 
-On Wed, Jun 18, 2025 at 10:53:13PM +0800, Shiji Yang wrote:
-> This patch series fixes some MIPS Lantiq platform compilation issues
-> found on the 6.12 kernel[1].
+On Fri, 27 Jun 2025 18:39:56 -0500, David Lechner wrote:
+> Here comes another series for adding SPI offload support to an ADC.
 > 
-> [1] https://github.com/openwrt/openwrt/pull/18751
+> The primary target is AD411x, but since this uses the ad_sigma_delta
+> shared module, a lot of this series is focused on that.
 > 
-> Shiji Yang (16):
->   MIPS: lantiq: xway: mark ltq_ar9_sys_hz() as static
->   MIPS: lantiq: xway: mark dma_init() as static
->   MIPS: lantiq: xway: mark dcdc_init() as static
->   MIPS: lantiq: irq: fix misc missing-prototypes warnings
->   MIPS: lantiq: xway: add prototype for ltq_get_cp1_base()
->   MIPS: pci: lantiq: marks pcibios_init() as static
->   MIPS: lantiq: falcon: fix misc missing-prototypes warnings
->   MIPS: lantiq: falcon: sysctrl: remove unused falcon_trigger_hrst()
->   MIPS: lantiq: falcon: sysctrl: add missing header prom.h
->   MIPS: lantiq: falcon: sysctrl: fix request memory check logic
->   MIPS: lantiq: xway: gptu: mark gptu_init() as static
->   MIPS: vpe-mt: mark vpe_free() and vpe_stop() as static
->   MIPS: vpe-mt: drop unused functions vpe_alloc() and vpe_start()
->   pinctrl: xway: mark xway_pinconf_group_set() as static
->   pinctrl: falcon: mark pinctrl_falcon_init() as static
->   spi: falcon: mark falcon_sflash_xfer() as static
+> To start with, we have some cleanups to the ad_sigma_delta code, so feel
+> free to pick these up as they are ready as they generally stand on their
+> own.
 > 
->  .../include/asm/mach-lantiq/xway/lantiq_soc.h |  3 ++
->  arch/mips/kernel/vpe-mt.c                     | 35 ++-----------------
->  arch/mips/lantiq/falcon/prom.c                |  4 +--
->  arch/mips/lantiq/falcon/sysctrl.c             | 29 ++++++---------
->  arch/mips/lantiq/irq.c                        |  3 +-
->  arch/mips/lantiq/xway/clk.c                   |  2 +-
->  arch/mips/lantiq/xway/dcdc.c                  |  2 +-
->  arch/mips/lantiq/xway/dma.c                   |  2 +-
->  arch/mips/lantiq/xway/gptu.c                  |  2 +-
->  arch/mips/pci/pci-lantiq.c                    |  2 +-
->  drivers/pinctrl/pinctrl-falcon.c              |  2 +-
->  drivers/pinctrl/pinctrl-xway.c                |  2 +-
->  drivers/spi/spi-falcon.c                      |  2 +-
->  13 files changed, 28 insertions(+), 62 deletions(-)
+> [...]
 
-applied patches 1-11 to mips-next.
+Applied to
 
-Thomas.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
-good idea.                                                [ RFC1925, 2.3 ]
+Thanks!
+
+[08/11] dt-bindings: trigger-source: add ADI Util Sigma-Delta SPI
+        commit: e47a324d6f07c9ef252cfce1f14cfa5110cbed99
+[09/11] spi: offload trigger: add ADI Util Sigma-Delta SPI driver
+        commit: 3fcd3d2fe44dc9dfca20b6aed117f314a50ba0ff
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+

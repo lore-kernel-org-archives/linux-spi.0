@@ -1,36 +1,35 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42EE71EB3D;
-	Sat, 19 Jul 2025 06:42:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED91E15CD74;
+	Sun, 20 Jul 2025 02:11:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752907342; cv=none; b=L9Qs6UvHyJ0GVPnleL5sUTta+52LE4Jrme2PD0fRSC2jG7706RS8+5r3bHJvcWNrSoJXQsKaebVYC04USZ6YsLLkKj4Xe6Hoh0NljGaP2c2AiImTM5wFgK2kKAkvdFiArV5G3/+CRJ57XyV6tSVS5SXxAJF+r2d9T9q2ZTkG+Ic=
+	t=1752977513; cv=none; b=QJPR5s1bG0ExYCr9+r87h/ERn7kR4jvausv5Vxl3YeGcdSAuGG/teo9LzXwjXIX1E6U+fl7l+hnIgeAsAGdfkiKB6ouE8I8MTqExhMJhROFORbsrAvHMJlUvMo6/06300a+tK9LGRJFte7VI9NntWAihOFSdegI8eSb3eSqgvbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752907342; c=relaxed/simple;
-	bh=ZaaaMC9y/tvIrNbJiz0ihB/v219ZkoS3fwKyb4kFE0s=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=h5r2l/6VVAJiJcCwlZjhk7QUaNCXrM0zWwBKZAmaIU0t+u8DKV5rHCZpBKU6lYaemxlSM6OKzACs4Zu3KJ45zjcNu5Tr0ljfqBMXwGU2IThk2NxkIKSaF+ZsYbRDvibV7tTBMZITy8+rGzy1dYWjmD6d23liPYmLybPULZXDS/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=I+2cPwbW; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1752977513; c=relaxed/simple;
+	bh=2Vi1uU+0bdsQ/W9FjTj69Nz0jBqNK395nfLAmfvn9X8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AGT2iAUalzTe3+n6y8zz4sJXfVy6VOebk8i/do9WrZYNt5skyFIzT+0k5WmzE/wScyQg8Ej4HttR+5zcML2+tNQ2mnRy7bZ1xc7sCdxT8iOs1EgXZHBvU/ZpU/upLqVLWUURzGLXTuq6DdUWuodup5wittdL4KkTzpb+zfrFFmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d8tEhYXJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="I+2cPwbW"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 09B681026E997;
-	Sat, 19 Jul 2025 08:34:19 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1752906861; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=TZcw6V3GROU8ELqtLuN73sY9LOkBh3a89bo1yjYcRlI=;
-	b=I+2cPwbWUHhxZrjezH6Kj1GCdcMTRJWPQtGV3TZ6r9GjGp05x0mHCwYzUurNJGgofGKhpw
-	8M2bp0yJk8znvbZ/SMC3Mm6r37CooKgjIiIS1ZUWauppklLLDkuWWxoXne7nzL2SPURfuu
-	oCECfegPLEB7uWOmNY1KTBTnxNXCZUoKhipFS8Bzs8GcEt3HU3qtPhBHdH1s4fkFeoqCOu
-	HmjAWFTvmuCNAFt1IJS9aZ1+PYAqCKURLwddmbfpVVRlJpq9WrDKiKeqDb7V3aH0/zs95Q
-	h4cr7lYbk7N3ybczHTnhKDEosrgTnhjJ0JAIzVNOlBD1Waf7I55sLWWlqI716w==
-From: Heiko Schocher <hs@denx.de>
-To: linux-spi@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Heiko Schocher <hs@denx.de>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d8tEhYXJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 851EDC4CEE3;
+	Sun, 20 Jul 2025 02:11:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752977512;
+	bh=2Vi1uU+0bdsQ/W9FjTj69Nz0jBqNK395nfLAmfvn9X8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=d8tEhYXJq4CLqp02HKUhUwEpxI7pFBUqC37mc/wPo63A+6HY7hlRNftOqhEZFpx5u
+	 XW7cUoqXCl76PmtjDZQaoWu8xF55oVgTP+Bk/EUOWyuV7yLwhNpqLDSJRUUrvR3ljd
+	 k4/Es0rhytK0O9FEPA+P9833hoxh/hcV0HSsBcH7m3UHU2mB72iAR0lUoczKUnJABK
+	 TB0ReqIeRx0gNyFWS38tMOtUoKqmO7YQOPacNvyPGdmDTkNqa/biLMv/k3cGMp2tf3
+	 pMg6nha3sGCqjEN6WCeyBIBY6gqHObxXjwsUTEZXh5b+Du5Rj9slHGHoyn9bSjs9ed
+	 aSk7kIqhMIpWw==
+Date: Sat, 19 Jul 2025 21:11:51 -0500
+From: Rob Herring <robh@kernel.org>
+To: Heiko Schocher <hs@denx.de>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Andrei Lalaev <andrey.lalaev@gmail.com>,
 	Chanh Nguyen <chanh@os.amperecomputing.com>,
 	Conor Dooley <conor+dt@kernel.org>,
@@ -42,46 +41,51 @@ Cc: linux-kernel@vger.kernel.org,
 	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Michal Simek <michal.simek@amd.com>,
 	Naresh Solanki <naresh.solanki@9elements.com>,
-	Rob Herring <robh@kernel.org>,
 	Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>,
 	devicetree@vger.kernel.org
-Subject: [PATCH v1 1/3] dt-bindings: trivial-devices: Document ABB sensors
-Date: Sat, 19 Jul 2025 08:33:52 +0200
-Message-Id: <20250719063355.73111-2-hs@denx.de>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20250719063355.73111-1-hs@denx.de>
+Subject: Re: [PATCH v1 1/3] dt-bindings: trivial-devices: Document ABB sensors
+Message-ID: <20250720021151.GA931647-robh@kernel.org>
 References: <20250719063355.73111-1-hs@denx.de>
+ <20250719063355.73111-2-hs@denx.de>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250719063355.73111-2-hs@denx.de>
 
-Add documentation for spi based ABB sensors, which are
-currently operated from userspace.
+On Sat, Jul 19, 2025 at 08:33:52AM +0200, Heiko Schocher wrote:
+> Add documentation for spi based ABB sensors, which are
+> currently operated from userspace.
 
-Signed-off-by: Heiko Schocher <hs@denx.de>
----
+What is userspace? That has nothing to do with bindings.
 
- Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
- 1 file changed, 2 insertions(+)
+Please provide some details about this h/w and convince me it is 
+trivial.
 
-diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
-index 27930708ccd5..25260c2b81df 100644
---- a/Documentation/devicetree/bindings/trivial-devices.yaml
-+++ b/Documentation/devicetree/bindings/trivial-devices.yaml
-@@ -30,6 +30,8 @@ properties:
-     items:
-       # Entries are sorted alphanumerically by the compatible
-       - enum:
-+            # ABB register based spi sensors
-+          - abb,spi-sensor
-             # Acbel fsg032 power supply
-           - acbel,fsg032
-             # SMBus/I2C Digital Temperature Sensor in 6-Pin SOT with SMBus Alert and Over Temperature Pin
--- 
-2.20.1
-
+> 
+> Signed-off-by: Heiko Schocher <hs@denx.de>
+> ---
+> 
+>  Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
+> index 27930708ccd5..25260c2b81df 100644
+> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
+> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
+> @@ -30,6 +30,8 @@ properties:
+>      items:
+>        # Entries are sorted alphanumerically by the compatible
+>        - enum:
+> +            # ABB register based spi sensors
+> +          - abb,spi-sensor
+>              # Acbel fsg032 power supply
+>            - acbel,fsg032
+>              # SMBus/I2C Digital Temperature Sensor in 6-Pin SOT with SMBus Alert and Over Temperature Pin
+> -- 
+> 2.20.1
+> 

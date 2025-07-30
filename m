@@ -1,303 +1,162 @@
-Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4149B298CA0;
-	Wed, 30 Jul 2025 18:58:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A889D23ED76;
+	Wed, 30 Jul 2025 23:46:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753901885; cv=none; b=RnmI0uh7GjX1SxH5i/M3qeKgGEFwU76gYXiMp82yRrmTEKZXtYsUWFI9OGKYCb2t/xd2zPOJ2RzwIPYJWklFoduXmohxHxX88+EgiVC+8qqP71ie+aqVmIvazCTgb9igT3dRL6hmJ5Y4AAeu7wm1GyrwPq84gL6gM8UtFyEw0a8=
+	t=1753919193; cv=none; b=tAwPUWwl6mJxi2gitAMtDBHpCBUiQ+QOOLXlMyXa9iw1bIDXEtjbiGkqb/78I3Ok6x64u+maRES53/uOPIwBe92KBfZuABdFQZgaRz6AF8QCluYI3510kFWDKZQ+Bcg5aOYirfeis1sL4VRggGxuWctGPamAbnWzW/eLtzz1x7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753901885; c=relaxed/simple;
-	bh=rlWVA98Nk1xc9d+D4b6/PtmU0tfeo27zyN8Zmh0ftUs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Jk1qu2k/B0poAze8S2vxdWV1imgILTlhoMqbVpAKUJYznCYhx+FHrzJXPKNUpnpfQVr765JBpS4wGKKn9g+0eAukmo9LYKeeWc+USVu73XA8bhaVImmvIP1gWtfe1IKvUelRkATlQrkhx4COgEfe1/wZ0b6MZGY1vQDzQDWOgEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=Av029LSt; arc=none smtp.client-ip=198.47.23.235
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1753919193; c=relaxed/simple;
+	bh=lVT1wO7Gp792FLsRAdREUHlRgKkz5jzpbMWb3qz8oAY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gPB/MkVNtCMEG6TUrVqcoqD6vhQ/tG9tQfzK0z7kDcIIWU7mEHlLAbozIIPcmyfeNcTghomvjhm/kMKpIy1TXoT6at0zhLd7vru1haB2dTk9sPzyZJl2W4NEUdce9VyMco8iI0pwGFdmSi6jFA9cSBI9FQfZwZCoRgK8gY4Jjyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N6aMB3CE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="Av029LSt"
-Received: from lelvem-sh02.itg.ti.com ([10.180.78.226])
-	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTP id 56UIUoFW3307285;
-	Wed, 30 Jul 2025 13:30:50 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1753900250;
-	bh=YGLAgUEXl2AFMUcOtsvCV8sTSwdu2o3sUFAfa7+mU18=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=Av029LSttexiKGknZLD4eSnqX/OfVeyNtZeiJrajkm1c+Bg1fT9h2RULAV6DZNgPO
-	 8BFPEMgi0Otm1f+uIVM+OofEy9WO3BvKRF3n5e7rJqPJUz29PuzBoVNBapEDCGiKFX
-	 Alaqtju5y44PamwXpGdIy/PdGNK1ah8hqMlpwOsk=
-Received: from DLEE102.ent.ti.com (dlee102.ent.ti.com [157.170.170.32])
-	by lelvem-sh02.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 56UIUotF3664115
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Wed, 30 Jul 2025 13:30:50 -0500
-Received: from DLEE113.ent.ti.com (157.170.170.24) by DLEE102.ent.ti.com
- (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Wed, 30
- Jul 2025 13:30:49 -0500
-Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DLEE113.ent.ti.com
- (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
- Frontend Transport; Wed, 30 Jul 2025 13:30:49 -0500
-Received: from [10.249.42.149] ([10.249.42.149])
-	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 56UIUnBh1678461;
-	Wed, 30 Jul 2025 13:30:49 -0500
-Message-ID: <e0383654-ebb5-4b83-8820-bc7eb148f4a7@ti.com>
-Date: Wed, 30 Jul 2025 13:30:49 -0500
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N6aMB3CE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DE60C4CEEB;
+	Wed, 30 Jul 2025 23:46:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753919193;
+	bh=lVT1wO7Gp792FLsRAdREUHlRgKkz5jzpbMWb3qz8oAY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=N6aMB3CEnMYdRMvFhM0HoWxdlsfSHx5m9Bk/+p1Tu0UGicuWCsqhq19gp+dX0Al9h
+	 ufzZFFn01VVIdroTIq4MKl0fZ/jXA0kQi1QCdTjqDcwTjZxYoyfU/uuJyEJFJ07qA3
+	 JeevVFdeYuOabfOwyqTlFCWN1dNkch6m/kOPdEHig9UkogvqR0kkVlL3sW42idySmr
+	 x7aqCguqpUrMz8Z85WFv4WuLtwZBipysMMnejHZV3hwlBdm9je7Ql0SKF+YJtdXmhy
+	 NHQOsrp+G1CwLUn1GZ0rWyOwYzqJkYhvDIzHrpoYxleGqrTIE6mU0fyubuC2rc1aQK
+	 gJh+uVlo0psBg==
+Date: Wed, 30 Jul 2025 18:46:31 -0500
+From: Rob Herring <robh@kernel.org>
+To: Konrad Dybcio <konradybcio@kernel.org>
+Cc: Vinod Koul <vkoul@kernel.org>, Sven Peter <sven@kernel.org>,
+	Janne Grunau <j@jannau.net>,
+	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+	Neal Gompa <neal@gompa.dev>,
+	Ludovic Desroches <ludovic.desroches@microchip.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
+	Paul Cercueil <paul@crapouillou.net>,
+	Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
+	Viresh Kumar <vireshk@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Frank Li <Frank.Li@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Taichi Sugaya <sugaya.taichi@socionext.com>,
+	Takao Orito <orito.takao@socionext.com>,
+	Andreas =?iso-8859-1?Q?F=E4rber?= <afaerber@suse.de>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Patrice Chotard <patrice.chotard@foss.st.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	=?iso-8859-1?Q?Am=E9lie?= Delaunay <amelie.delaunay@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Laxman Dewangan <ldewangan@nvidia.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Michal Simek <michal.simek@amd.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Saravana Kannan <saravanak@google.com>,
+	Martin =?utf-8?Q?Povi=C5=A1er?= <povik+lin@cutebit.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>,
+	Viken Dadhaniya <quic_vdadhani@quicinc.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
+	asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-rpi-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+	imx@lists.linux.dev, linux-actions@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-sound@vger.kernel.org,
+	linux-i2c@vger.kernel.org, linux-spi@vger.kernel.org,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Subject: Re: [PATCH RFC 1/6] dt-bindings: dma: qcom,gpi: Retire passing the
+ protocol ID
+Message-ID: <20250730234631.GA1899887-robh@kernel.org>
+References: <20250730-topic-dma_genise_cookie-v1-0-b505c1238f9f@oss.qualcomm.com>
+ <20250730-topic-dma_genise_cookie-v1-1-b505c1238f9f@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] devicetree: bindings: spi: Introduce SPI bus
- extensions
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>,
-        Krzysztof Kozlowski
-	<krzk@kernel.org>
-CC: Ayush Singh <ayush@beagleboard.org>, Mark Brown <broonie@kernel.org>,
-        <herve.codina@bootlin.com>, <conor+dt@kernel.org>,
-        Jason Kridner
-	<jkridner@beagleboard.org>,
-        Deepak Khatri <lorforlinux@beagleboard.org>,
-        Dhruva Gole <d-gole@ti.com>,
-        Robert Nelson <robertcnelson@beagleboard.org>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>, <linux-spi@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
-References: <20250729-spi-bus-extension-v1-0-b20c73f2161a@beagleboard.org>
- <20250729-spi-bus-extension-v1-4-b20c73f2161a@beagleboard.org>
- <c65d26d0-51b8-4131-a755-6c72b7dea549@kernel.org>
- <20250730174553.4df8037b@booty>
-Content-Language: en-US
-From: Andrew Davis <afd@ti.com>
-In-Reply-To: <20250730174553.4df8037b@booty>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250730-topic-dma_genise_cookie-v1-1-b505c1238f9f@oss.qualcomm.com>
 
-On 7/30/25 10:45 AM, Luca Ceresoli wrote:
-> On Tue, 29 Jul 2025 14:52:00 +0200
-> Krzysztof Kozlowski <krzk@kernel.org> wrote:
+On Wed, Jul 30, 2025 at 11:33:28AM +0200, Konrad Dybcio wrote:
+> From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 > 
->> On 29/07/2025 11:51, Ayush Singh wrote:
->>> An SPI bus can be wired to the connector and allows an add-on board to
->>> connect additional SPI devices to this bus.
->>>    
->>
->> ... so I found the binding. Not marked by my filters due to non-standard
->> subject.
->>
->> Please use subject prefixes matching the subsystem. You can get them for
->> example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
->> your patch is touching. For bindings, the preferred subjects are
->> explained here:
->> https://www.kernel.org/doc/html/latest/devicetree/bindings/submitting-patches.html#i-for-patch-submitters
->>
->>> Those additional SPI devices could be described as sub-nodes of the SPI
->>> bus controller node however for hotplug connectors described via device
->>> tree overlays there is additional level of indirection, which is needed
->>> to decouple the overlay and the base tree:
->>>
->>>    --- base device tree ---
->>>
->>>    spi1: spi@abcd0000 {
->>>        compatible = "xyz,foo";
->>>        spi-bus-extension@0 {
-
-Could we make this more generic so it doesn't need to be specific to each
-type of node/bus? The core goal IIUC is to keep some parts of the node
-out in another node, but have the contents act as if they were part of the
-first node. So how about "node-extension", or if we only need one direction
-links from the second node, "node-extends", something like this:
-
-
---- base device tree ---
-
-spi1: spi@abcd0000 {
-     compatible = "xyz,foo";
-     #address-cells = <1>;
-     #size-cells = <0>;
-     node-extensions = <&spi_sensors>;
-}
-
-connector {
-     spi_sensors: spi-sensors {
-         eeprom@50 { compatible = "atmel,24c64"; ... };
-     };
-};
-
-Or if we want to keep the base device node untouched (this would be my
-preference as otherwise we would have to add modifications in more places):
-
---- base device tree ---
-
-spi1: spi@abcd0000 {
-     compatible = "xyz,foo";
-     #address-cells = <1>;
-     #size-cells = <0>;
-}
-
-connector {
-     spi_sensors: spi-sensors {
-         node-extends = <&spi1>;
-         eeprom@50 { compatible = "atmel,24c64"; ... };
-     };
-};
-
-In either case, the content of the "spi-sensors" node (i.e. eeprom@50)
-acts in all ways as if that was directly inside the "spi1" node.
-
-This should provide the separation you are looking for and be generic for
-*any* node's use. The base OF support could be extended so that functions
-like for_each_available_child_of_node() and property fetching handle
-this transparently. That way you don't need to go make modifications
-to each and every bus and driver that accesses the contents of nodes
-to handle these node extensions.
-
->>>            spi-bus = <&spi_ctrl>;
->>>        };
->>>        ...
->>>    };
->>>
->>>    spi5: spi@cafe0000 {
->>>        compatible = "xyz,bar";
->>>        spi-bus-extension@0 {
->>>            spi-bus = <&spi_sensors>;
->>>        };
->>>        ...
->>>    };
->>>
->>>    connector {
->>>        spi_ctrl: spi-ctrl {
->>>            spi-parent = <&spi1>;
->>>            #address-cells = <1>;
->>>            #size-cells = <0>;
->>>        };
->>>
->>>        spi_sensors: spi-sensors {
->>>            spi-parent = <&spi5>;
->>>            #address-cells = <1>;
->>>            #size-cells = <0>;
->>>        };
->>>    };
->>
->> It looks like you are re-doing I2C work. Please wait till I2C discussion
->> finishes, so we won't have to comment on the same in multiple places.
->>
->>>
->>>    --- device tree overlay ---
->>>
->>>    ...
->>>    // This node will overlay on the spi-ctrl node of the base tree
->>>    spi-ctrl {
->>>        eeprom@50 { compatible = "atmel,24c64"; ... };
->>>    };
->>>    ...
->>>
->>>    --- resulting device tree ---
->>>
->>>    spi1: spi@abcd0000 {
->>>        compatible = "xyz,foo";
->>>        spi-bus-extension@0 {
->>>            spi-bus = <&spi_ctrl>;
->>>        };
->>>        ...
->>>    };
->>>
->>>    spi5: spi@cafe0000 {
->>>        compatible = "xyz,bar";
->>>        spi-bus-extension@0 {
->>>            spi-bus = <&spi_sensors>;
->>>        };
->>>        ...
->>>    };
->>>
->>>    connector {
->>>        spi_ctrl: spi-ctrl {
->>>            spi-parent = <&spi1>;
->>>            #address-cells = <1>;
->>>            #size-cells = <0>;
->>>
->>>            device@1 { compatible = "xyz,foo"; ... };
->>>        };
->>>
->>>        spi_sensors: spi-sensors {
->>>            spi-parent = <&spi5>;
->>>            #address-cells = <1>;
->>>            #size-cells = <0>;
->>>        };
->>>    };
->>>
->>> Here spi-ctrl (same goes for spi-sensors) represent the part of SPI bus
->>> that is on the hot-pluggable add-on. On hot-plugging it will physically
->>> connect to the SPI adapter on the base board. Let's call the 'spi-ctrl'
->>> node an "extension node".
->>>
->>> In order to decouple the overlay from the base tree, the SPI adapter
->>> (spi@abcd0000) and the extension node (spi-ctrl) are separate nodes.
->>>
->>> The extension node is linked to the SPI bus controller in two ways. The
->>> first one with the spi-bus-extension available in SPI controller
->>> sub-node and the second one with the spi-parent property available in
->>> the extension node itself.
->>>
->>> The purpose of those two links is to provide the link in both direction
->>> from the SPI controller to the SPI extension and from the SPI extension
->>> to the SPI controller.
->>>
->>> Signed-off-by: Ayush Singh <ayush@beagleboard.org>
->>> ---
->>>   .../devicetree/bindings/spi/spi-controller.yaml    | 66 +++++++++++++++++++++-
->>>   1 file changed, 65 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/Documentation/devicetree/bindings/spi/spi-controller.yaml b/Documentation/devicetree/bindings/spi/spi-controller.yaml
->>> index 82d051f7bd6e09dab9809c85ff13475d2b118efd..9b44ce4542f9552c94cb0658ffe3f6d3f29bc434 100644
->>> --- a/Documentation/devicetree/bindings/spi/spi-controller.yaml
->>> +++ b/Documentation/devicetree/bindings/spi/spi-controller.yaml
->>> @@ -25,6 +25,13 @@ properties:
->>>     "#size-cells":
->>>       const: 0
->>>   
->>> +  spi-parent:
->>> +    $ref: /schemas/types.yaml#/definitions/phandle
->>> +    description:
->>> +      In case of an SPI bus extension, reference to the SPI bus controller
->>> +      this extension is connected to. In other word, reference the SPI bus
->>> +      controller on the fixed side that drives the bus extension.
->>> +
->>>     cs-gpios:
->>>       description: |
->>>         GPIOs used as chip selects.
->>> @@ -111,7 +118,26 @@ properties:
->>>         - compatible
->>>   
->>>   patternProperties:
->>> -  "^.*@[0-9a-f]+$":
->>> +  'spi-bus-extension@[0-9a-f]+$':
->>> +    type: object
->>> +    description:
->>> +      An SPI bus extension connected to an SPI bus. Those extensions allow to
->>> +      decouple SPI busses when they are wired to connectors.
->>
->> I really do not get why you need separate two-way phandles for marking
->> parent child relationship. IOW, if you need two way, then why not graphs?
->>
->> Or why not just making the device@2 a child of SPI, since it is coming
->> from overlay.
+> This is a software construct that has no business being expressed in
+> dt-bindings. Drivers can be constructed to retrieve the protocol ID at
+> runtime or hardcode them per protocol.
 > 
-> For the same reason as in I2C (and the proposed solution is the same).
+> Remove it, as a pre-requisite for further simplifying the GENI
+> bindings.
 > 
-> As you wrote above, Ayush could wait for the I2C discussion to finish.
-> Problem is, the I2C discussion is not moving forward: Hervé is sending
-> proposals but there is no feedback on the core of the proposal, and no
-> feedback at all on the latest iteration. In case your filters missed it:
-> https://lore.kernel.org/all/20250618082313.549140-1-herve.codina@bootlin.com/
+> Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+> ---
+>  Documentation/devicetree/bindings/dma/qcom,gpi.yaml | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
 > 
+> diff --git a/Documentation/devicetree/bindings/dma/qcom,gpi.yaml b/Documentation/devicetree/bindings/dma/qcom,gpi.yaml
+> index bbe4da2a11054f0d272017ddf5d5f7e47cf7a443..745613b93b210afd38946030f7477e91e08c907a 100644
+> --- a/Documentation/devicetree/bindings/dma/qcom,gpi.yaml
+> +++ b/Documentation/devicetree/bindings/dma/qcom,gpi.yaml
+> @@ -61,14 +61,13 @@ properties:
+>      maxItems: 13
+>  
+>    "#dma-cells":
+> -    const: 3
+> +    const: 2
 
-That series didn't end up in my mailbox for some reason, so replying
-here, but my response above should apply to both I2C and this SPI series
-just the same.
+I think you need to keep 3 and note it is deprecated. Does an existing 
+kernel support this being 2 already. If not, ABI break...
 
-Andrew
-
+>      description: >
+>        DMA clients must use the format described in dma.txt, giving a phandle
+>        to the DMA controller plus the following 3 integer cells:
+>        - channel: if set to 0xffffffff, any available channel will be allocated
+>          for the client. Otherwise, the exact channel specified will be used.
+>        - seid: serial id of the client as defined in the SoC documentation.
+> -      - client: type of the client as defined in dt-bindings/dma/qcom-gpi.h
+>  
+>    iommus:
+>      maxItems: 1
+> @@ -98,7 +97,7 @@ examples:
+>      #include <dt-bindings/dma/qcom-gpi.h>
+>      gpi_dma0: dma-controller@800000 {
+>          compatible = "qcom,sdm845-gpi-dma";
+> -        #dma-cells = <3>;
+> +        #dma-cells = <2>;
+>          reg = <0x00800000 0x60000>;
+>          iommus = <&apps_smmu 0x0016 0x0>;
+>          dma-channels = <13>;
+> 
+> -- 
+> 2.50.1
+> 

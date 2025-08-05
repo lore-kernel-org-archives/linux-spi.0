@@ -1,34 +1,35 @@
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29614747F;
-	Tue,  5 Aug 2025 15:30:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F702242D9D;
+	Tue,  5 Aug 2025 15:36:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754407829; cv=none; b=eMIDIXfRpr8dbRn0i77lhIl26pL2cz+20tsTHf5hnzpKviQeLUidmsY9L/kcewVzmp6q9XAaLzINd1UemmqjQaf3FKFC6B9FKJ5y+5zu2PaTYM+dDWOtSK2lKPavPMKVG2ztaaMJWFshaQP4cJKOuKZVJEJAwBV4yIyObU8aRbU=
+	t=1754408199; cv=none; b=qwoAq/TaLhaeSodiVWWlfZS1Wb2mGRjMkSUeSoBfqG2OXFgtKWPsbU+p+zLnwqjnu9uhrLQeFfipVedNE+AfCYe4GmJDbhN8BhJRWXOj1JtMD6MqFM4KmmhlkhHJFYCgcybEyQA99Gk4SCiYEaBNm6eKb/9g0vttzAUKH2QhEnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754407829; c=relaxed/simple;
-	bh=Kw7eMyWY5zW7INntokk4JGSpcNbA8RU/Mez2RPQZKBw=;
+	s=arc-20240116; t=1754408199; c=relaxed/simple;
+	bh=N0cA2ipKRu37B7BgJXFmMxgzozOcatcMu9xWLMEdF28=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=kH1rGV6p+3ywMZ6cm1aqkfg9NzFG8YNlrCyYl+K+bZWrBWnm9UzJI/hamcs7MhFrUnkVthaZirSxnK2Ygf6V+ABssXSBno261nfaIf3cF41bkelHNKLdM6Gml6dQDgISgVfLgwGZCiHxRXz1pnte+ECRvg6bi8XLKOP3HSkvMF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=pgUOwV3k; arc=none smtp.client-ip=217.70.183.197
+	 MIME-Version:Content-Type; b=inb1USlyK2vhbKdk6jvVkOn7LbYEK12jH4+Mckm4frPwUc3SrgWAD1wTvbhGiCajDehAPMshy03SZOAfEa62knXLtAEcHBSyvZFyp53s42mHdcH+A6gYm/1ByK+8joNkZs+j5P6qqWKS+hqGitpopdhVmm9HaSUYIM4wElRKspg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OJMRPIB0; arc=none smtp.client-ip=217.70.183.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="pgUOwV3k"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 6530C43A0E;
-	Tue,  5 Aug 2025 15:30:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OJMRPIB0"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 0464043913;
+	Tue,  5 Aug 2025 15:36:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1754407819;
+	t=1754408189;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=SgEzWtcjDyKuxbmCqKV4hy0KTKvQ/vKyVEQYqrgBHyY=;
-	b=pgUOwV3ki0x/OqoP8gQIxOi/isGPmWOV76dFtkEXV+TRXpoHunlxrIRxHGPgqisHsTEJx7
-	xooSvd5EkjdxOhz2p8XGcG7qnHFeLP8ovBJ1RCP9hy92NnIxjxJq/05hbSGMvhdlCQDKHw
-	LxvcYugBw+2nhYzfuBqmxU2mv5tOw6sOi43GzDeN9tan1gpYH7dcQDdTqqn97cdYsye68c
-	Rb2hS2ElRdng1BobEiNXBwy0XLVVyP1RA/qUFM4Hp98k1tBQQEVJ/IwrrNZcssi+o3a/oZ
-	LdxY/vWLvk4pDG3VBNBLafNe+BiVf4vdZna5sUWeMSyPVUkAgG8KC+WTsDMicg==
+	bh=3ZcPDMkJ+pPommrt/oJ4Duet/sc/kc8Z/rAj63Jyev8=;
+	b=OJMRPIB0vCWnZyP1Ih+XiHQtPyCjsi7tq/VM5VkDiIGRKSWcw9OotSyUJDJTup6V/6SpTb
+	9y98FQEJVax+Fl7XnbhVvcIAEuRmEjcbevuVs7G/YHtiYwPDG5CoG6XYrZsJ+BQnFzbPSi
+	mhtVYo1anHTJGqw5jq+1FbF9hRnfyEBT95GZwpSGFNpi8gG6ANtbMwqE7JG07mvSwNTOlk
+	RkAgzuXlOZb8IbbfrT2y99gMWSo335fpsSptE5JffHvc40MvwqCsCUTVoV9udOdMrO+J27
+	ycc8Aw5oja8WOpQo0VDR1+3Y0f/AcUH+B/+YrSaFC4wceYpNSpQ1cBVjI2QITQ==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
 To: Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>
 Cc: Richard Weinberger <richard@nod.at>,  Vignesh Raghavendra
@@ -40,107 +41,100 @@ Cc: Richard Weinberger <richard@nod.at>,  Vignesh Raghavendra
  <chengminglin@mxic.com.tw>,  linux-mtd@lists.infradead.org,
   linux-kernel@vger.kernel.org,  linux-arm-kernel@lists.infradead.org,
   linux-spi@vger.kernel.org
-Subject: Re: [PATCH 2/4] drivers: mtd: spi-nand: try a regular dirmap if
- creating a dirmap for continuous reading fails
-In-Reply-To: <20250804192132.1406387-3-mikhail.kshevetskiy@iopsys.eu> (Mikhail
-	Kshevetskiy's message of "Mon, 4 Aug 2025 22:21:30 +0300")
+Subject: Re: [PATCH 3/4] drivers: mtd: spi-nand: repeat reading in regular
+ mode if continuous reading fails
+In-Reply-To: <20250804192132.1406387-4-mikhail.kshevetskiy@iopsys.eu> (Mikhail
+	Kshevetskiy's message of "Mon, 4 Aug 2025 22:21:31 +0300")
 References: <20250804192132.1406387-1-mikhail.kshevetskiy@iopsys.eu>
-	<20250804192132.1406387-3-mikhail.kshevetskiy@iopsys.eu>
+	<20250804192132.1406387-4-mikhail.kshevetskiy@iopsys.eu>
 User-Agent: mu4e 1.12.7; emacs 30.1
-Date: Tue, 05 Aug 2025 17:30:16 +0200
-Message-ID: <87jz3hhjlj.fsf@bootlin.com>
+Date: Tue, 05 Aug 2025 17:36:27 +0200
+Message-ID: <875xf1hjb8.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduudehheefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufgjfhgffffkgggtsehttdertddtredtnecuhfhrohhmpefoihhquhgvlhcutfgrhihnrghluceomhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhephfelkedvveffleeuhfeigfdvvefhgfejgffghfeiteegteeiudegfedtjeehkeefnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomhepmhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepudegpdhrtghpthhtohepmhhikhhhrghilhdrkhhshhgvvhgvthhskhhihiesihhophhshihsrdgvuhdprhgtphhtthhopehrihgthhgrrhgusehnohgurdgrthdprhgtphhtthhopehvihhgnhgvshhhrhesthhirdgtohhmpdhrtghpthhtoheplhhorhgvnhiioheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhgrhidrlhhiuhesrghirhhohhgrrdgtohhmpdhrtghpthhtohepsghrohhonhhivgesk
- hgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhuughorhdrrghmsggrrhhusheslhhinhgrrhhordhorhhgpdhrtghpthhtohepmhhmkhhurhgsrghnohhvsehsrghluhhtvgguvghvihgtvghsrdgtohhm
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduudehheehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufgjfhgffffkgggtgfesthhqredttderjeenucfhrhhomhepofhiqhhuvghlucftrgihnhgrlhcuoehmihhquhgvlhdrrhgrhihnrghlsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeffgefhjedtfeeigeduudekudejkedtiefhleelueeiueevheekvdeludehiedvfeenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpehmihhquhgvlhdrrhgrhihnrghlsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedugedprhgtphhtthhopehmihhkhhgrihhlrdhkshhhvghvvghtshhkihihsehiohhpshihshdrvghupdhrtghpthhtoheprhhitghhrghrugesnhhougdrrghtpdhrtghpthhtohepvhhighhnvghshhhrsehtihdrtghomhdprhgtphhtthhopehlohhrvghniihosehkvghrnhgvlhdrohhrghdprhgtphhtthhopehrrgihrdhlihhusegrihhrohhhrgdrtghomhdprhgtphhtthhopegsrhhoohhnihgvs
+ ehkvghrnhgvlhdrohhrghdprhgtphhtthhopehtuhguohhrrdgrmhgsrghruhhssehlihhnrghrohdrohhrghdprhgtphhtthhopehmmhhkuhhrsggrnhhovhesshgrlhhuthgvuggvvhhitggvshdrtghomh
 X-GND-Sasl: miquel.raynal@bootlin.com
 
-On 04/08/2025 at 22:21:30 +03, Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu> wrote:
+On 04/08/2025 at 22:21:31 +03, Mikhail Kshevetskiy <mikhail.kshevetskiy@iop=
+sys.eu> wrote:
 
 > Continuous reading may result in multiple flash pages reading in one
-> operation. Typically only one flash page has read/written (a little bit
-> more than 2-4 Kb), but continuous reading requires the spi-controller
-> to read up to 512 Kb in one operation without togling CS in beetween.
+> operation. Unfortunately, not all spi-nand controllers support such
+> large reading. They will read less data. Unfortunately, the operation
+> can't be continued.
 >
-> Roughly speaking spi-controllers can be divided on 2 categories:
->  * spi-controllers without dirmap acceleration support
->  * spi-controllers with dirmap acceleration support
->
-> Usually, first of them have no issues with large reading support.
-> Second group often supports acceleration of single page only reading.
-> Thus enabling of continuous reading can break flash reading.
-
-I would be more conservative, I believe it is very implementation
-dependent; many controller drivers do not even advertise a max size.
-
-I agree though that controllers with dirmap support may express
-limitations such as the mapped size which may lead to splitting
-operations into smaller chunks, possibly leading to CS changes which
-would break the continuous read mode on the chip's side.
-
-> This patch tries to create dirmap for continuous reading first and
-> fallback to regular reading if spi-controller refuses to create it.
-
-no '-'                              ^
-
+> In this case:
+>  * disable continuous reading on this (not good enough) spi controller
+>  * repeat reading in regular mode.
 >
 > Signed-off-by: Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>
 > ---
->  drivers/mtd/nand/spi/core.c | 29 +++++++++++++++++++++++++----
->  1 file changed, 25 insertions(+), 4 deletions(-)
+>  drivers/mtd/nand/spi/core.c | 19 +++++++++++++++----
+>  1 file changed, 15 insertions(+), 4 deletions(-)
 >
 > diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
-> index b42c42ec58a4..ff6a1e2fcfdc 100644
+> index ff6a1e2fcfdc..88e4c00cccc4 100644
 > --- a/drivers/mtd/nand/spi/core.c
 > +++ b/drivers/mtd/nand/spi/core.c
-> @@ -1114,11 +1114,32 @@ static int spinand_create_dirmap(struct spinand_device *spinand,
->  
->  	spinand->dirmaps[plane].wdesc = desc;
->  
-> -	if (spinand->cont_read_possible)
-> +	desc = NULL;
-> +	if (spinand->cont_read_possible) {
-> +		/*
-> +		 * spi-controllers may return an error if info.length is
-> +		 * too large
-> +		 */
->  		info.length = nanddev_eraseblock_size(nand);
-> -	info.op_tmpl = *spinand->op_templates.read_cache;
-> -	desc = devm_spi_mem_dirmap_create(&spinand->spimem->spi->dev,
-> -					  spinand->spimem, &info);
-> +		info.op_tmpl = *spinand->op_templates.read_cache;
-> +		desc = devm_spi_mem_dirmap_create(&spinand->spimem->spi->dev,
-> +						  spinand->spimem, &info);
+> @@ -431,7 +431,7 @@ static int spinand_read_from_cache_op(struct spinand_=
+device *spinand,
+>  		 * Toggling the CS during a continuous read is forbidden.
+>  		 */
+>  		if (nbytes && req->continuous)
+> -			return -EIO;
+> +			return -E2BIG;
+>  	}
+>=20=20
+>  	if (req->datalen)
+> @@ -893,15 +893,26 @@ static int spinand_mtd_read(struct mtd_info *mtd, l=
+off_t from,
+>  	struct spinand_device *spinand =3D mtd_to_spinand(mtd);
+>  	struct mtd_ecc_stats old_stats;
+>  	unsigned int max_bitflips =3D 0;
+> -	int ret;
+> +	int ret =3D -E2BIG;
+>=20=20
+>  	mutex_lock(&spinand->lock);
+>=20=20
+>  	old_stats =3D mtd->ecc_stats;
+>=20=20
+> -	if (spinand_use_cont_read(mtd, from, ops))
+> +	if (spinand_use_cont_read(mtd, from, ops)) {
+>  		ret =3D spinand_mtd_continuous_page_read(mtd, from, ops, &max_bitflips=
+);
+> -	else
+> +		if (ret =3D=3D -E2BIG) {
+> +			/*
+> +			 * Some spi controllers may not support reading up to
+> +			 * erase block size. They will read less data than
+> +			 * expected. If this happen disable continuous mode
+
+                                             happens,
+
+> +			 * and repeat reading in normal mode.
+> +			 */
+> +			spinand->cont_read_possible =3D false;
+> +		}
 > +	}
 > +
-> +	if (IS_ERR_OR_NULL(desc)) {
+> +	if (ret =3D=3D -E2BIG)
 
-Here if the problem is continuous reading, I expect an error and not a
-NULL pointer.
+While I agree with the overall logic, I find pretty unreadable to
+perform the regular read upon a return value that is an error code set
+in the init sequence. Can you please propose an alternate implementation?
 
-> +		/*
-> +		 * continuous reading is not supported by flash or
+>  		ret =3D spinand_mtd_regular_page_read(mtd, from, ops, &max_bitflips);
+>=20=20
+>  	if (ops->stats) {
 
-Not by the flash, here if we get an error, it is the spi controller
-(still without '-' ;) ) that fails (please fix the comment).
-
-> +		 * its spi-controller, try regular reading
-> +		 */
-> +		spinand->cont_read_possible = false;
-> +
-> +		info.length = nanddev_page_size(nand) +
-> +			      nanddev_per_page_oobsize(nand);
-> +		info.op_tmpl = *spinand->op_templates.read_cache;
-> +		desc = devm_spi_mem_dirmap_create(&spinand->spimem->spi->dev,
-> +						  spinand->spimem, &info);
-> +	}
-> +
->  	if (IS_ERR(desc))
->  		return PTR_ERR(desc);
+Thanks!
+Miqu=C3=A8l

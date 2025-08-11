@@ -1,46 +1,46 @@
-Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
+Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B9B2D949C;
-	Mon, 11 Aug 2025 19:33:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDAF029BDA7;
+	Mon, 11 Aug 2025 19:56:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754940831; cv=none; b=G88yJLI72tCNSLPbnLglo1Ro4hOXh7KwoFHbfLJyyTATjXOw0d2/m95oS+e6sxVzQDFQcgNDOH2TabWnHalbM9bTWBn+5HevZ5+IZKx7KltX3UBU2xKbr6jvnLuIq8CoT2hblIf10eyPvgi2jByZKKcWv7mvLZ8/FYzLgR24/Uc=
+	t=1754942219; cv=none; b=UxoYTL2BT/ALIJR8P36WBPYVSpNzB7DZgSO3vixveAHSTwLwvqdwvFxxlHnvSFi7PuOWDVI9AVt+CVi5i9/9rM8JEZfGVCEbMFt/1peEn7X7W0uv+P/OxlPLw+WsyxdHVmJHc22XtabXCT/TtDAOQaIAV1e4j3m0MYFFbIq+QiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754940831; c=relaxed/simple;
-	bh=3vK14E6SbeBnJWd93I8RGPb/B/hdo1aya9mqwBariFw=;
+	s=arc-20240116; t=1754942219; c=relaxed/simple;
+	bh=UH866iIoV0BmgwOwOKmrPiamvqbnZJOQBXR1xx6vmt4=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RDQJLmnboragabwFA+GDX2qhXqpdV9n0itX9ZDDYd5MIFhuQQYtuO1ejIqNIJHT/3TiG0FPbaAbUe0EKGHEI8Jb9M2f9VBVAq7/h18QaSjVMuO4gpPTxIIUBd8Jk/Q5qptdiUGv9iCawOu7a0SThEfMSaH8XeCFJp55alZ538j0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=qfjpm+8E; arc=none smtp.client-ip=198.47.23.235
+	 MIME-Version:Content-Type; b=JjPcLXIVa59QAL29RAB/4vORz7Yy/TkFUoM3/IBUyoWn/BazagPurzXk4cfSCATrC+xsIns8KmNoKawzR8Eowb08JR09YlU7r/VDT3WEKiKD6DFZ99wjmCvaSbTiNvNkKN2hGvTZ9wERGD/I7XVO9MBDY3xY/4jPFyaBiAfMs2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=PQUSTZCp; arc=none smtp.client-ip=198.47.23.234
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="qfjpm+8E"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="PQUSTZCp"
 Received: from lelvem-sh01.itg.ti.com ([10.180.77.71])
-	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTP id 57BJXFEj1678217;
-	Mon, 11 Aug 2025 14:33:15 -0500
+	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTP id 57BJXg1s1227857;
+	Mon, 11 Aug 2025 14:33:42 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1754940795;
-	bh=Mbm6XmTsVQep+WWUIidWCy6jZKFBV6BX76B/Uekl5C0=;
+	s=ti-com-17Q1; t=1754940822;
+	bh=Gqtsu4C7TidETAVnE77OpIDvlXHGXv1Mz6JMhY6rGHo=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=qfjpm+8E05PLNOAW/vc62xU1UTRIgM+5e6bKS4F22EGRXQbkd6ZGGwysE5q8h36QY
-	 JFSY7JnG0Id0wk5jBooI+tfoPaCFC3KK1U5T+YsOW71oSpSpdlPLyv7qUkgf5SjED8
-	 gsOt5Tr/FbUd7wzUtZgFIvblBrg9kKoLGssKFwTI=
-Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
-	by lelvem-sh01.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 57BJXFld2910894
+	b=PQUSTZCp5bneAU1Ct823nP1oieJ9HPFezrBrDy5PJQYcEHKWnQHhym+a3JXzM7k5B
+	 Lq/ZSTm2Ai6SxdgUtn38LXIvSnvZFMTFJzzTZPB6PKtvx3fCdizxk4Mq9nwIVgmBRw
+	 O3zN49zwyruOIovEyOZV4kbYyDb3mBhpKrFsW9rY=
+Received: from DLEE113.ent.ti.com (dlee113.ent.ti.com [157.170.170.24])
+	by lelvem-sh01.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 57BJXg2l2910990
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Mon, 11 Aug 2025 14:33:15 -0500
-Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+	Mon, 11 Aug 2025 14:33:42 -0500
+Received: from DLEE107.ent.ti.com (157.170.170.37) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Mon, 11
- Aug 2025 14:33:15 -0500
-Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DFLE111.ent.ti.com
- (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ Aug 2025 14:33:41 -0500
+Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DLEE107.ent.ti.com
+ (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
- Frontend Transport; Mon, 11 Aug 2025 14:33:15 -0500
+ Frontend Transport; Mon, 11 Aug 2025 14:33:41 -0500
 Received: from santhoshkumark.dhcp.ti.com (santhoshkumark.dhcp.ti.com [172.24.233.254])
-	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 57BJWq1r3690681;
-	Mon, 11 Aug 2025 14:33:11 -0500
+	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 57BJWq1x3690681;
+	Mon, 11 Aug 2025 14:33:37 -0500
 From: Santhosh Kumar K <s-k6@ti.com>
 To: <miquel.raynal@bootlin.com>, <richard@nod.at>, <vigneshr@ti.com>,
         <broonie@kernel.org>, <tudor.ambarus@linaro.org>,
@@ -48,9 +48,9 @@ To: <miquel.raynal@bootlin.com>, <richard@nod.at>, <vigneshr@ti.com>,
 CC: <linux-spi@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
         <linux-kernel@vger.kernel.org>, <s-k6@ti.com>, <a-dutta@ti.com>,
         <u-kumar1@ti.com>, <praneeth@ti.com>
-Subject: [RFC PATCH 04/10] mtd: mtdcore: Call mtd_execute_tuning during mtd_register
-Date: Tue, 12 Aug 2025 01:02:13 +0530
-Message-ID: <20250811193219.731851-5-s-k6@ti.com>
+Subject: [RFC PATCH 10/10] spi: cadence-quadspi: Define cqspi_get_tuning_params()
+Date: Tue, 12 Aug 2025 01:02:19 +0530
+Message-ID: <20250811193219.731851-11-s-k6@ti.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250811193219.731851-1-s-k6@ti.com>
 References: <20250811193219.731851-1-s-k6@ti.com>
@@ -64,64 +64,41 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Call mtd_execute_tuning() during the mtd_register() which redirects to
-the flash specific tuning procedure to run at higher frequencies.
+Define cqspi_get_tuning_params() to extract information about the PHY
+tuning pattern and it's size from controller.
 
 Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
 ---
- drivers/mtd/mtdcore.c | 19 +++++++++++++++++++
- drivers/mtd/mtdcore.h |  1 +
- 2 files changed, 20 insertions(+)
+ drivers/spi/spi-cadence-quadspi.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/mtd/mtdcore.c b/drivers/mtd/mtdcore.c
-index 5ba9a741f5ac..f50cebcdb670 100644
---- a/drivers/mtd/mtdcore.c
-+++ b/drivers/mtd/mtdcore.c
-@@ -1023,6 +1023,22 @@ static int mtd_otp_nvmem_add(struct mtd_info *mtd)
- 	return dev_err_probe(dev, err, "Failed to register OTP NVMEM device\n");
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index 1626cb9a9700..c9c4341d3275 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -2170,6 +2170,14 @@ static int cqspi_mem_execute_tuning(struct spi_mem *mem,
+ 	return ret;
  }
  
-+int mtd_execute_tuning(struct mtd_info *mtd)
++static int cqspi_get_tuning_params(struct spi_mem *mem,
++				   struct spi_mem_tuning_params *tuning_params)
 +{
-+	struct mtd_part *part;
-+
-+	list_for_each_entry(part, &mtd->partitions, node) {
-+		struct mtd_info *part_info =
-+			container_of(part, struct mtd_info, part);
-+		if (part_info->name &&
-+		    !strcmp(part_info->name, "ospi.phypattern")) {
-+			return mtd->_execute_tuning(mtd, part);
-+		}
-+	}
-+
-+	return -ENODEV;
++	tuning_params->pattern_ptr = phy_tuning_pattern;
++	tuning_params->pattern_size = sizeof(phy_tuning_pattern);
++	return 0;
 +}
 +
- /**
-  * mtd_device_parse_register - parse partitions and register an MTD device.
-  *
-@@ -1087,6 +1103,9 @@ int mtd_device_parse_register(struct mtd_info *mtd, const char * const *types,
- 	if (ret)
- 		goto out;
+ static int cqspi_of_get_flash_pdata(struct platform_device *pdev,
+ 				    struct cqspi_flash_pdata *f_pdata,
+ 				    struct device_node *np)
+@@ -2345,6 +2353,7 @@ static const struct spi_controller_mem_ops cqspi_mem_ops = {
+ 	.get_name = cqspi_get_name,
+ 	.supports_op = cqspi_supports_mem_op,
+ 	.execute_tuning = cqspi_mem_execute_tuning,
++	.get_tuning_params = cqspi_get_tuning_params,
+ };
  
-+	if (mtd_execute_tuning(mtd) == -ENODEV)
-+		dev_info(&mtd->dev, "PHY pattern partition not found\n");
-+
- 	/*
- 	 * FIXME: some drivers unfortunately call this function more than once.
- 	 * So we have to check if we've already assigned the reboot notifier.
-diff --git a/drivers/mtd/mtdcore.h b/drivers/mtd/mtdcore.h
-index b014861a06a6..04055fcd2df8 100644
---- a/drivers/mtd/mtdcore.h
-+++ b/drivers/mtd/mtdcore.h
-@@ -13,6 +13,7 @@ int del_mtd_device(struct mtd_info *mtd);
- int add_mtd_partitions(struct mtd_info *, const struct mtd_partition *, int);
- int del_mtd_partitions(struct mtd_info *);
- void release_mtd_partition(struct mtd_info *mtd);
-+int mtd_execute_tuning(struct mtd_info *mtd);
- 
- struct mtd_partitions;
- 
+ static const struct spi_controller_mem_caps cqspi_mem_caps = {
 -- 
 2.34.1
 

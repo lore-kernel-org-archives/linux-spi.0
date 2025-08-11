@@ -1,46 +1,46 @@
 Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AD574C7F;
-	Mon, 11 Aug 2025 19:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F322D63EF;
+	Mon, 11 Aug 2025 19:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754940807; cv=none; b=S/dyrwWIGh486PcuTUBUJSH1g6crABYi/BRScvy8c4xPrd+t3aXpXgdgyRFJPPMAbNoCiZTgC7hiY/9YUeqy105/OblVUXgOYqWTQPy0zTHxt3v0gMVSLrH54QnB9krYwOFy9Qck9iER8VETxkixWTLCXdmnTYrwNzkuYguMK5Q=
+	t=1754940814; cv=none; b=T4QjOHlB+IXpCdd1NDzCfpC5X4cOfYlNcrAu1VwSrxSL3OkhFEAtumKvB19zYkJYpj/ttIPQq/CeaN0c0FUld2b5H/pX0/o14kF4Kip8VkKV96DDmXqEyIDwR7TJKPD6zxCqKYJF1li0qObMC//U3eZ5TPuj5a3LN5yJs3dym6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754940807; c=relaxed/simple;
-	bh=g7Ah1kkIryP4xwbXIfsxZ/qF01cVHEDxpMYQcjcLvC4=;
+	s=arc-20240116; t=1754940814; c=relaxed/simple;
+	bh=KEzWFBcwrXQMQm7m4doco1MeSg2Xh+gOQVNxD7S1psU=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GNqY4TEkEhfMs8mnvf0F57jHiDQ6NQd2lGVo0BmnbB6ZovHGr7RgEZKAUr5RHBKpWnpdmen8qT8iWn8G2p4U6q9L7fdWImKQCVA7P5HVDXlgDkCfKM/MoOsr7rBL9tuXjVu5oB3kJLWNu4GvXWKuugmgBLQURfLY0pih/17nHH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=nBVmKFv3; arc=none smtp.client-ip=198.47.19.246
+	 MIME-Version:Content-Type; b=bbvhPCyI5yZP7Fc1Qv3Yw18gsIuAQekhF53EmdBXOA3PeyXy8+23BeC0upQdc1k9m4MP98FkVUD9wpw6TXk+EXKAUEIzOcwqkjk5UHsUdwp1G2pFNF/+RI2aYCJGHeo0sg/MDMB6ipAVUbtTrfs69ej8jd2BQFfohlZFjQVeDDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=cIHNiIc1; arc=none smtp.client-ip=198.47.19.246
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="nBVmKFv3"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="cIHNiIc1"
 Received: from lelvem-sh01.itg.ti.com ([10.180.77.71])
-	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTP id 57BJX6Mr1609373;
-	Mon, 11 Aug 2025 14:33:06 -0500
+	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTP id 57BJXOr41609411;
+	Mon, 11 Aug 2025 14:33:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1754940786;
-	bh=GnCw4UgjQY0VUHwgVnP6axN/oo0k5HxGKufTviylG+k=;
+	s=ti-com-17Q1; t=1754940804;
+	bh=5gk44N9m+4BFJqlP2jfYY0PfWMGLlRjYM9wX9ai9Aag=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=nBVmKFv3COW40w1KPfoV2SJsPzFsOb8qPz5uKlRCJUU2uD/aFYKiRJkcxPNTpxIuo
-	 +K/RlK/2ejMNduU7cukySSup6Q4KhyvtfuGM9vj+iqLU7C05o8TyX3ZjPbnlNaO8YO
-	 2NYp02GbwziBPx9LEIhAG3MB8Kw5Rv4zD+b+jp3s=
-Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
-	by lelvem-sh01.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 57BJX6t22910817
+	b=cIHNiIc1qKSBLG53AFIj+g3eoBXDCHmk36So4EgJLdyix0/W4iAWxSeHMns9xYzIx
+	 Vw83pgdmq2CJajYGpU+jitAMHrfsrnPK+7MiM0kK6ONACoDGiEki0LL8iucYd/bc13
+	 LF6NUbwvVw2hGobHRgpue8epZaQgzJtFcbRUDgzQ=
+Received: from DLEE109.ent.ti.com (dlee109.ent.ti.com [157.170.170.41])
+	by lelvem-sh01.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 57BJXO3s2910915
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Mon, 11 Aug 2025 14:33:06 -0500
-Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE105.ent.ti.com
- (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
+	Mon, 11 Aug 2025 14:33:24 -0500
+Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE109.ent.ti.com
+ (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Mon, 11
- Aug 2025 14:33:06 -0500
-Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DFLE101.ent.ti.com
- (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+ Aug 2025 14:33:23 -0500
+Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
- Frontend Transport; Mon, 11 Aug 2025 14:33:06 -0500
+ Frontend Transport; Mon, 11 Aug 2025 14:33:23 -0500
 Received: from santhoshkumark.dhcp.ti.com (santhoshkumark.dhcp.ti.com [172.24.233.254])
-	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 57BJWq1p3690681;
-	Mon, 11 Aug 2025 14:33:02 -0500
+	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 57BJWq1t3690681;
+	Mon, 11 Aug 2025 14:33:19 -0500
 From: Santhosh Kumar K <s-k6@ti.com>
 To: <miquel.raynal@bootlin.com>, <richard@nod.at>, <vigneshr@ti.com>,
         <broonie@kernel.org>, <tudor.ambarus@linaro.org>,
@@ -48,9 +48,9 @@ To: <miquel.raynal@bootlin.com>, <richard@nod.at>, <vigneshr@ti.com>,
 CC: <linux-spi@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
         <linux-kernel@vger.kernel.org>, <s-k6@ti.com>, <a-dutta@ti.com>,
         <u-kumar1@ti.com>, <praneeth@ti.com>
-Subject: [RFC PATCH 02/10] spi: spi-mem: Define spi_mem_tuning_params and spi_mem_get_tuning_params()
-Date: Tue, 12 Aug 2025 01:02:11 +0530
-Message-ID: <20250811193219.731851-3-s-k6@ti.com>
+Subject: [RFC PATCH 06/10] spi: cadence-quadspi: Use BIT() macro for CQSPI_REG_READCAPTURE_BYPASS
+Date: Tue, 12 Aug 2025 01:02:15 +0530
+Message-ID: <20250811193219.731851-7-s-k6@ti.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250811193219.731851-1-s-k6@ti.com>
 References: <20250811193219.731851-1-s-k6@ti.com>
@@ -64,83 +64,45 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Define a structure 'spi_mem_tuning_params' to store the PHY tuning
-pattern and size of the pattern. Also, define a function
-'spi_mem_get_tuning_params' to retrieve the information from SPI
-controller.
-This is required as different SPI controller may have different
-stress or attack pattern of different length that needs to be read in
-order to tune the controller correctly. In absence of such callback,
-spi-mem clients can use static tables on the flashes like SFDP or NAND
-param page values.
+Simplify CQSPI_REG_READCAPTURE_BYPASS macro and add comment on Bypass
+bit.
 
 Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
 ---
- drivers/spi/spi-mem.c       | 11 +++++++++++
- include/linux/spi/spi-mem.h | 14 ++++++++++++++
- 2 files changed, 25 insertions(+)
+ drivers/spi/spi-cadence-quadspi.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-index 6c254291ee23..cfee5288fc81 100644
---- a/drivers/spi/spi-mem.c
-+++ b/drivers/spi/spi-mem.c
-@@ -570,6 +570,17 @@ int spi_mem_execute_tuning(struct spi_mem *mem, const struct spi_mem_op *op)
- }
- EXPORT_SYMBOL_GPL(spi_mem_execute_tuning);
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index da5823bcc1ea..1d86a7bc405e 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -180,7 +180,7 @@ struct cqspi_driver_platdata {
+ #define CQSPI_REG_DELAY_TSHSL_MASK		0xFF
  
-+int spi_mem_get_tuning_params(struct spi_mem *mem, struct spi_mem_tuning_params *tuning_params)
-+{
-+	struct spi_controller *ctlr = mem->spi->controller;
-+
-+	if (!ctlr->mem_ops || !ctlr->mem_ops->get_tuning_params)
-+		return -EOPNOTSUPP;
-+
-+	return ctlr->mem_ops->get_tuning_params(mem, tuning_params);
-+}
-+EXPORT_SYMBOL_GPL(spi_mem_get_tuning_params);
-+
- /**
-  * spi_mem_adjust_op_freq() - Adjust the frequency of a SPI mem operation to
-  *			      match controller, PCB and chip limitations
-diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
-index 639fee61251c..f0e96cd4a6d4 100644
---- a/include/linux/spi/spi-mem.h
-+++ b/include/linux/spi/spi-mem.h
-@@ -238,6 +238,16 @@ struct spi_mem_dirmap_desc {
- 	void *priv;
- };
+ #define CQSPI_REG_READCAPTURE			0x10
+-#define CQSPI_REG_READCAPTURE_BYPASS_LSB	0
++#define CQSPI_REG_READCAPTURE_BYPASS		BIT(0)
+ #define CQSPI_REG_READCAPTURE_DELAY_LSB		1
+ #define CQSPI_REG_READCAPTURE_DELAY_MASK	0xF
  
-+/**
-+ * struct spi_mem_tuning_params - describes the Tuning parameters
-+ * @pattern_ptr: pointer to the tuning pattern
-+ * @pattern_size: size of the tuning pattern
-+ */
-+struct spi_mem_tuning_params {
-+	u8 *pattern_ptr;
-+	unsigned int pattern_size;
-+};
-+
- /**
-  * struct spi_mem - describes a SPI memory device
-  * @spi: the underlying SPI device
-@@ -352,6 +362,8 @@ struct spi_controller_mem_ops {
- 			   unsigned long timeout_ms);
- 	int (*execute_tuning)(struct spi_mem *mem,
- 			      const struct spi_mem_op *op);
-+	int (*get_tuning_params)(struct spi_mem *mem,
-+				 struct spi_mem_tuning_params *tuning_params);
- };
+@@ -453,10 +453,15 @@ static void cqspi_readdata_capture(struct cqspi_st *cqspi,
  
- /**
-@@ -434,6 +446,8 @@ int spi_mem_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op);
- int spi_mem_execute_tuning(struct spi_mem *mem, const struct spi_mem_op *op);
- void spi_mem_adjust_op_freq(struct spi_mem *mem, struct spi_mem_op *op);
- u64 spi_mem_calc_op_duration(struct spi_mem *mem, struct spi_mem_op *op);
-+int spi_mem_get_tuning_params(struct spi_mem *mem,
-+			      struct spi_mem_tuning_params *tuning_params);
+ 	reg = readl(reg_base + CQSPI_REG_READCAPTURE);
  
- bool spi_mem_supports_op(struct spi_mem *mem,
- 			 const struct spi_mem_op *op);
++	/*
++	 * Bypass bit - to enable/disable the signal from adapted loopback
++	 * clock circuit which is driven into Rx DLL and is used for data
++	 * capturing rather than internally generated ref_clk.
++	 */
+ 	if (bypass)
+-		reg |= (1 << CQSPI_REG_READCAPTURE_BYPASS_LSB);
++		reg |= CQSPI_REG_READCAPTURE_BYPASS;
+ 	else
+-		reg &= ~(1 << CQSPI_REG_READCAPTURE_BYPASS_LSB);
++		reg &= ~CQSPI_REG_READCAPTURE_BYPASS;
+ 
+ 	reg &= ~(CQSPI_REG_READCAPTURE_DELAY_MASK
+ 		 << CQSPI_REG_READCAPTURE_DELAY_LSB);
 -- 
 2.34.1
 

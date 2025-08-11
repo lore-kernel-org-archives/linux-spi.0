@@ -1,38 +1,38 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886D4311C11;
-	Mon, 11 Aug 2025 15:49:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C99311C11;
+	Mon, 11 Aug 2025 15:49:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754927361; cv=none; b=cXetn3WwV0RpyFoQ4RGXD54x5Sv5mpuOx9ZYuAxhvszgJ0rauUJ1MAGnr36lxyPs8Sei7q46hfBM0KGXdx9rxv2oRMHB4mEKgkD3hMXe2AmE2q1EK7hEzyumiT6tKq18cEk6czI/ed4qYtzBM054+f8F28wKl8/1l6uEgPbkPhM=
+	t=1754927365; cv=none; b=QtqFjPbLsy64CKoOIUiUX15QNgSfC67KCse0M1X8FEIMAvPqDzqjautv6WuuzEtq/Ih4x6Id58AP+1vhtUWZkuWbImNi5chX5pPZEQ0T5DeKdGq+x9mcxa4ZfrN6N6Xh6ThfF+ZnR9NKbTIwSWqo0aBBhnXLgI3wtRn9IVZOctc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754927361; c=relaxed/simple;
-	bh=Hgz0GH9KkAA2A3iaMEZ3uglvHCAsGyz5cd2dwHmsJD8=;
+	s=arc-20240116; t=1754927365; c=relaxed/simple;
+	bh=0bGOXUpc5WLtuTTVybp1aSQKWOYrAH8oXKNn0n1p9g0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hhzw0RlC9LbaEkvLWdr4omO+wKvW4HHsexznB6SsmH6Ps6SZo7XXiI24ftYahPZije4i0O7uoiXfUffKPmoAW0ZI7dOP8WLo+RhBYez2vYVUdpyLnZxOdONaTiBWMbytAYN8OqpFETVLXbdRIKD0hXrVErARDZvMq0evdEqG+L4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=CDVr01DL; arc=none smtp.client-ip=212.227.17.20
+	 MIME-Version; b=Hr0v6UVWaxOU/Prl1WpqzlxYjzBya4DKjAejUJ5Ll8TFfqhZg1Ms+EdCB7+j5TQdPKzFbBurIBqjdJiN2gvSfBUIsCV0Cbc9pabynkdFGTwdbyDEPeI/661JJQY62nUEN6MCXxL3FT5QbTyIeLsBBfkDoKxF86EHtr6TCZkdTdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=BpQ7Qpux; arc=none smtp.client-ip=212.227.17.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="CDVr01DL"
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="BpQ7Qpux"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
 	s=s31663417; t=1754927357; x=1755532157; i=wahrenst@gmx.net;
-	bh=enGNwadfiJ/oVGedHPohB/mFksRSDw0yblg2duvrzmA=;
+	bh=tVKkRo0hIxV5OXPiWt0nwFUyWBjXLj5ga1KUsbMzwz8=;
 	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:In-Reply-To:
 	 References:MIME-Version:Content-Transfer-Encoding:cc:
 	 content-transfer-encoding:content-type:date:from:message-id:
 	 mime-version:reply-to:subject:to;
-	b=CDVr01DL3TDrXj7tZnRv2sVqZNQMeW/bgfw3c3Q3tN8T0o/Y2EB3RwT9xNlHxVCO
-	 adKFBzi3Q9/CnBlJysBPOAz01ht/yjqrS0/cEETypK6VJvgEWtQ1cLrWp2G81Yy0X
-	 1dcPk5MujvuXdUYSV5/YHiCDkvXeR17fEOTmcUB1Y5o6i+Py4qyTSVG1ZIzIaCSga
-	 xIJ42K0h5k1aO3jriALISauZC8yhCFnR89XOkhQhsgXBn9xwpaU9/8NjOvALt69yk
-	 VAI42ZcU2CWbXrIoWlsqwL8YVIy9rTZ/pBgPKprFu+ftLxORS1NS0nDR/a/Q0iwlu
-	 jt2YxProSVBhG50Baw==
+	b=BpQ7QpuxW6uLFCdqT2B6bi2MaiVTOCmBgUyAFiqisoypOH05p9FPrdw5ZkxMxVju
+	 Du5ruXe+iClsBqWnwrRlrNmRK71l3CXKcK9BNvtZxFoQGHsX+IZKtFpBA+ZaHxc9v
+	 Cti2cSIA0ytun9qK+0Zc0lSOKNgeWFc8daZ+h9ZsZa09qTUKsNxzap8PnuhISuMBJ
+	 Ezn8E9SvZ1lajkZgmy8SBCWiAuz09UMRgCJALVWbHfpmkT25s2Gk5uiRcYynEFZu8
+	 fa5+3eaaWIYQK4PdP1WpH6IZ6R2F6bQXiXIhspU1gE+c4iEOu/uSq5+ZmLcaTPHIs
+	 JjR24kJ8A40QDrW2Hg==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from stefanw-SCHENKER ([79.235.128.112]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MBUm7-1usyDC2Ern-006Vqx; Mon, 11
- Aug 2025 17:49:17 +0200
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MTABT-1vAdaV3Y8F-00OBGJ; Mon, 11
+ Aug 2025 17:49:16 +0200
 From: Stefan Wahren <wahrenst@gmx.net>
 To: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -43,9 +43,9 @@ To: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
 Cc: linux-spi@vger.kernel.org,
 	netdev@vger.kernel.org,
 	Stefan Wahren <wahrenst@gmx.net>
-Subject: [PATCH 3/3 net] microchip: lan865x: Fix LAN8651 autoloading
-Date: Mon, 11 Aug 2025 17:48:58 +0200
-Message-Id: <20250811154858.8207-4-wahrenst@gmx.net>
+Subject: [PATCH 1/3 net] net: ethernet: oa_tc6: Handle failure of spi_setup
+Date: Mon, 11 Aug 2025 17:48:56 +0200
+Message-Id: <20250811154858.8207-2-wahrenst@gmx.net>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250811154858.8207-1-wahrenst@gmx.net>
 References: <20250811154858.8207-1-wahrenst@gmx.net>
@@ -56,84 +56,86 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:i1mYOZXL2e6pj6xQfY7BB40JFWMv2jxzJEzTR/JbeXbk3HOFwxA
- KREpPa9J+xW/JocHDaAr0j2VPrJgdw+J4LFPdWyb3IoolTIDmmUUYr8QwytEjkMZ2vFXxrQ
- gkV856C3h/bKZ+ihsYAEQv+8rr+66mSjzs5ItRXXh/9HrBBrKFzXcewksm3NpKv3hEkckky
- 4u0TqAzkpUCFzsxN6XTlA==
+X-Provags-ID: V03:K1:ZsH9c7tHOAFg3A1i3dlX/KSCeCBI0bSvBz+U+hApkIlBd23ar4T
+ RWRNhiTwu63ZnUX1qm2GvShaxxCcAOFb5N6qV+IJP/TV9avTRYIANUnIGezPAcyzR6DxDOx
+ i146gT66tnzzInx8AjbGjp+wLzjYin92dLd3+42OmGgvC/1Sc+SNglzPiD9xasX24+N6D5B
+ hiSKURZtx+lnObTriEG8w==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:dAGcJ7WOPzg=;s1hsmXiWguySO4lRmLi4n1+ikkw
- 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
- DO6Hi2LUyRQ==
+UI-OutboundReport: notjunk:1;M01:P0:+XBMW7iuqgg=;JJltkkKZzwgzPzNzGM4BA/seL4Q
+ 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
 
-Add SPI ID for LAN8651 devices, which is also defined in the DT bindings.
+There is no guarantee that spi_setup succeed, so properly handle
+the error case.
 
-Fixes: 5cd2340cb6a3 ("microchip: lan865x: add driver support for Microchip=
-'s LAN865X MAC-PHY")
+Fixes: aa58bec064ab ("net: ethernet: oa_tc6: implement register write oper=
+ation")
 Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
 =2D--
- drivers/net/ethernet/microchip/lan865x/lan865x.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/oa_tc6.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/microchip/lan865x/lan865x.c b/drivers/ne=
-t/ethernet/microchip/lan865x/lan865x.c
-index 190122feb2a4..bf2f8291d817 100644
-=2D-- a/drivers/net/ethernet/microchip/lan865x/lan865x.c
-+++ b/drivers/net/ethernet/microchip/lan865x/lan865x.c
-@@ -404,6 +404,7 @@ static void lan865x_remove(struct spi_device *spi)
+diff --git a/drivers/net/ethernet/oa_tc6.c b/drivers/net/ethernet/oa_tc6.c
+index db200e4ec284..91a906a7918a 100644
+=2D-- a/drivers/net/ethernet/oa_tc6.c
++++ b/drivers/net/ethernet/oa_tc6.c
+@@ -1249,7 +1249,8 @@ struct oa_tc6 *oa_tc6_init(struct spi_device *spi, s=
+truct net_device *netdev)
 =20
- static const struct spi_device_id lan865x_ids[] =3D {
- 	{ .name =3D "lan8650" },
-+	{ .name =3D "lan8651" },
- 	{},
- };
- MODULE_DEVICE_TABLE(spi, lan865x_ids);
+ 	/* Set the SPI controller to pump at realtime priority */
+ 	tc6->spi->rt =3D true;
+-	spi_setup(tc6->spi);
++	if (spi_setup(tc6->spi) < 0)
++		return NULL;
+=20
+ 	tc6->spi_ctrl_tx_buf =3D devm_kzalloc(&tc6->spi->dev,
+ 					    OA_TC6_CTRL_SPI_BUF_SIZE,
 =2D-=20
 2.34.1
 

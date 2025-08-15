@@ -1,65 +1,67 @@
-Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
+Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F055530E0C9
-	for <linux-spi@vger.kernel.org>; Fri, 15 Aug 2025 16:44:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A36230E0E0
+	for <linux-spi@vger.kernel.org>; Fri, 15 Aug 2025 16:44:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755276266; cv=none; b=Y5gKTRACg5y73DbqWmKpW/16HTD7CeWvYkGnSSDph988u02QRe6DoISVjtP1zMF1Av3J+P2sAuoXmBxBhcEgNKyMNNWSNF+4caOGoNYntGajlwi4lrCA9Liy5D7maH5U0iJnqY2Ww4j/qgPxHk7+C/g+ycgdaMabEFUwaa9/H1A=
+	t=1755276267; cv=none; b=VGr38sCAnFR7BSUeGPxcjvzuB5T92wTSOwuDSoftN/HBRLLhcHrQqvSa1JQlqgzqhIV2cEsJrlk96UxpqbKDyh3tCDuWF638s7IesdC/tP7qxGOmda2YMOOVwUfd1SCTsil/4QjcSawDnLL31dLAf0EnaQ/La+3sWEy2kw/XdyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755276266; c=relaxed/simple;
-	bh=4mSg7/FJF+dNCJc9keQwuNfI4XYRtRidKb+j1+8mh8g=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ohUeLNdyi80ULMRgHDZwsi5sVT9IvU5791QzAEUUW9lbdrv3iLsged+MfO+bzNCkQnmkxVUQhjaqfHlJ4aGPzfOZUHiEIQ/VpeXBMY7V2NQ9++sodt/4GEE/OW+3u7lHPUq2NzItIO+21n9iDq+td/yl3UXr/L72R6t/OM3m3A0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=oKCu43NV; arc=none smtp.client-ip=209.85.161.45
+	s=arc-20240116; t=1755276267; c=relaxed/simple;
+	bh=C6Sbq/OY4SHcE/xtSRHV50ylmu+czCYaMl135JwPHbk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=qFph5hWoALOu7VhHgu5ZYob581A6xt+h12gUGNl7w9drXKdTyKBf+MG+VzGXAy6/DyzYvSHoDGheKy8WEDlSuSa91diUWi92XrJPoLptvWxLyhLJJYzFaLN/SPmx4gVRNorFANONsxTuLMlkqwfZeHNcdQ38xH892IyRdNMbdNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=uxKNhrSx; arc=none smtp.client-ip=209.85.167.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="oKCu43NV"
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-61bd4e84776so684045eaf.3
-        for <linux-spi@vger.kernel.org>; Fri, 15 Aug 2025 09:44:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="uxKNhrSx"
+Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-435de7b8158so247615b6e.1
+        for <linux-spi@vger.kernel.org>; Fri, 15 Aug 2025 09:44:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1755276263; x=1755881063; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=jeTCzOhB8KlIbjBAM+JfgXZgHbqV4L9r/ttlxrn63B4=;
-        b=oKCu43NVt953zlSg1P5W1H3Kvf/mnpyXZhDyqd+sJiKSf27o5q9CNPI7DVeQbPLsaJ
-         xfJxSXaySzuDmLVOM3lXjhhi7d3PS/LhIYOHNorx4GMfOAqbflOXTBv0GanK7ZRWkfb2
-         +OuEKcem1aY2YZHcJ9wu7muphRpaBOwvFrbRrQf/8/VB4KKrnQFC9kIUt87H+3kV5+QT
-         SoVJxAHrHwhIsXWzFD6vYyGQ4n+kVkYyyJvVpSfo6LCOYfYkk9g0jrr5GH2D8nXl0i1J
-         GCm9gqNsv0oV8rDi30P2jjV2WbbcRhcJgkfWj3rxpH/yLhZUcW7Vm1N6mWRqLGbXiGMU
-         OMOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755276263; x=1755881063;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1755276264; x=1755881064; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=jeTCzOhB8KlIbjBAM+JfgXZgHbqV4L9r/ttlxrn63B4=;
-        b=P+ExEmHCYNSBvuM2kPzmhfOK2qJZJeG7gno/XKz2/9FSMHlyCyqJfK1NUd69OSDaPd
-         cv6KQp2nUVWW/vVDuYZLG65zm12kEw88ATNhxzYaZzdXkILzX8LK0/6vs42cEmhfq708
-         qTMSQ8iPKIQZ5M/WNKjr2iqhfIQlxl+OrLeVwAG0bKbsojsl79rRdxdWClogUh6jd5UG
-         nDIlufa7btM+IYSoVvVECzp2e/CpLMVKOPJPYDg4w3pvpHPWMZRCHWO6wzkkkITF5HYQ
-         c86Frk4pC7/2L9uYiSHOC2Yu/XGn6gMKG7qWvEFPve1a+doRH1X1XKx9YNNWdbevx11L
-         LpVA==
-X-Forwarded-Encrypted: i=1; AJvYcCW7iWF7ZjP3WuyHu9hvZ2r+BP5crp/QEUhIFFHS1YEqvTiECy+zItq69gEAQPxBuxRtxvM95kRwKio=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKCsigztnWY25Oa5jy625BBTIkdTe+neUFSt4y3lZeqPprv+F2
-	oyQTcx4BwxPrnA//GyIbCwfevg8J7uuM3Cf8iKGXmRRC297Xntu2UNNEQ/sYgsfbiXk=
-X-Gm-Gg: ASbGnctv4FFMsd3yf9khYimUKcfgJQAND2XCgJsiB4yabDhdCuCtBawEoRMhKnlCShs
-	neeWWyNwsyaBbNZa5yoydsWaCUNzWmJxTUSX82oPt+xwPR06K7VYDpT2S5bvDw5rMYyA/2LeZNG
-	Six45oLEQN6CoPESllN8SVyLxOdAtOusnwc53ESoDCFQfbp8UTdJvhR3uYZLFb1SIDISDg73PiD
-	lq54xM4B658Wu68OlvZ97MnIvlwKe0dL5AI/ug7UkK3mC/hUXv6nu+VgUiMqoZIS5j+teCUH/Ny
-	fVI5RCQ7iZqTmJuWgJeTeGes8exrVkFn0P8lQxdS9nrhpbb3VyCn4LWiUuQkrtxGLxEkRu4lSzy
-	WxVy/cjB0GrJLj/vqbttXLkOdb+s=
-X-Google-Smtp-Source: AGHT+IEo11i/uc/Hufr9lPF4hwWNBHjn9+ucSXTQlaalqfaTXDcHGp7UsewwnkPTdi+uu/hMcbjDYg==
-X-Received: by 2002:a05:6808:10d6:b0:434:d39:63bf with SMTP id 5614622812f47-435ec48ee26mr1198739b6e.14.1755276262853;
-        Fri, 15 Aug 2025 09:44:22 -0700 (PDT)
+        bh=a9v5Q7YvIr6z7FxxndA8ulIPadDXolz0J5rCqGDBtwQ=;
+        b=uxKNhrSxZYStuB1NqwfbzFE8OYKNOaGLX63U+9lsA/1xE2M6O7Z0gLxDoG+kRnlkX0
+         M0FVH7SQIF5wt0oD/mphZ7hIUjnhJy4va0di8vTkmnlii/lq2M6zDMzQYL0eQHulU0RQ
+         0BtkNHp4i7Rd9oEwSoVBsB3MlNawxBDCScRo9knOo8+83GztmyhN9FdpGTDV4pgK0Vji
+         wqyPZgd32soePId6+2FFlhnk8KwDUGosmC7rSHBtnUV+GeGFEpob1Rhoi/FzC7T63NaU
+         izrgwmkbq72CosMoSGvqeBObpIiILODyRvG4eXZ8SVcTj9yplcOsYzDA15yhoH5bISDH
+         hyQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755276264; x=1755881064;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=a9v5Q7YvIr6z7FxxndA8ulIPadDXolz0J5rCqGDBtwQ=;
+        b=IlydsE+xedtgXHOIkIM6OU0Iptv2FIxSOEZVCWK4M/RF0lc9miAsItfWLFfWPMCIyT
+         95V63AuwcpV7KYRQY6YJ+g7gH4nh8WlahWaAmTl2WCKlDKDXThh8Holh5fc1gMmWRAnk
+         2xKKUrA3jHe0fEC9Y6/V9ldobpuddmYtMLvVFgYX4e6/RoSSRZYy3Kf6oykaBSzaS/r1
+         veQDio8S9bUybGmWhqnGsmHo2q6mQavGr2sRnudcJCsmmAMKp9Oe8V/az3qkGyA2yvKo
+         VcN6inkzjjCqbfvLUBhoGr7Ob1zoN2n4drPYnmcA5u+b7ywRe7eQKlWP1hMiHItqXVn4
+         ZqqA==
+X-Forwarded-Encrypted: i=1; AJvYcCU+J+fQmKxZG9R4UVAYatnTQfd/K+zLWJ/XOqYwnJJqeZqB7CoSr5nA2ZfXKEtqTcdlf7n9ZuVwA8s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YylcTfdIV3Wut5E7LR8FGvR8FEPsshK/oaQDo80PcNCb6UxJV/7
+	UXPdi94yyzzBzdYPbokL0s1qGuySuL0frMkZ0qdhqFoAXg5X38aWvaFgDhV0GtBdZNA=
+X-Gm-Gg: ASbGncsn3SwjiRVx07EyTzAT2BgWgD77NYy1iGkZkXI1bdUjGRBLSAiUaNDDulcjTUa
+	1WWWaO/aNe1+WyMwHXaywppN8GVh7XLfXp+6EsHMaQU8dVifyceEMiHIhaeTkF5DZNpC/wmV4vt
+	zLRZXY7kBoEYP9P7Sgg8HBsQL+fc+lWbbg8IRmehB7wg34ei6LqEiIhQO80ikjtym8pWwza2evp
+	FXE4wV8/SSTF7aq+xE5R+Bd/Z3J9WzZKRtDWSB11kbNBfg3JhCr28MRc+lANLYm/331M6QCxtzJ
+	Nxcr0eWFG0RlMzs8DF30tCQ+oa32HAEgHAFdRUddyui39mQRTL9/DaglorinQTpKkIZo2DDCp2Y
+	mWHwfsP023VUc6LAdWyt1xoiCdU4=
+X-Google-Smtp-Source: AGHT+IE89r9aei242UabfYdm3XkYBPY9iDF+aY8iCNu/xvh5Kq2pKHmQMS2d47zetchl62kPMT5vxg==
+X-Received: by 2002:a05:6808:190d:b0:434:3f2:4ced with SMTP id 5614622812f47-435e067da34mr4483989b6e.4.1755276264378;
+        Fri, 15 Aug 2025 09:44:24 -0700 (PDT)
 Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:677:c1a1:65b9:2b0c])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-435ed1b186bsm305263b6e.21.2025.08.15.09.44.22
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-435ed1b186bsm305263b6e.21.2025.08.15.09.44.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Aug 2025 09:44:22 -0700 (PDT)
+        Fri, 15 Aug 2025 09:44:24 -0700 (PDT)
 From: David Lechner <dlechner@baylibre.com>
-Subject: [PATCH 0/2] spi: offload-trigger: followup
-Date: Fri, 15 Aug 2025 11:43:59 -0500
-Message-Id: <20250815-spi-offload-trigger-followup-v1-0-8ec5413a8383@baylibre.com>
+Date: Fri, 15 Aug 2025 11:44:01 -0500
+Subject: [PATCH 2/2] spi: offload trigger: adi-util-sigma-delta: clean up
+ imports
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -68,46 +70,56 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAM9jn2gC/x3MzQqDMAwA4FeRnBewrYruVcYOsiZdoJiS7g/Ed
- 7fs+F2+HSqZUIVrt4PRR6ro1uAuHTye65YIJTaD7/3Yz27EWgSVOesa8WWSEhmy5qzfd8EYAvs
- puGmJA7SiGLH8/v3tfhwnv5GMMm4AAAA=
-X-Change-ID: 20250815-spi-offload-trigger-followup-d33f263169d4
+Message-Id: <20250815-spi-offload-trigger-followup-v1-2-8ec5413a8383@baylibre.com>
+References: <20250815-spi-offload-trigger-followup-v1-0-8ec5413a8383@baylibre.com>
+In-Reply-To: <20250815-spi-offload-trigger-followup-v1-0-8ec5413a8383@baylibre.com>
 To: Mark Brown <broonie@kernel.org>
 Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, 
  David Lechner <dlechner@baylibre.com>, 
  Andy Shevchenko <andriy.shevchenko@intel.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=797; i=dlechner@baylibre.com;
- h=from:subject:message-id; bh=4mSg7/FJF+dNCJc9keQwuNfI4XYRtRidKb+j1+8mh8g=;
- b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBon2PRmJwQLsyKooC72AoFETjaYLn/XzO2yFqLJ
- Hs5xJ1Xfi6JATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaJ9j0QAKCRDCzCAB/wGP
- wG8eCACd/wPlJUMamVDnAuTfSpA3J7dv4WgxloBtOsquEjQrCO3X0cBW/ug7R6HkXzAow5IzJqE
- 0Ww0VVJlRZnkiROVGOo5XA4cuCfD4J26plTtoCuK87UQU5MAYdT1USCqP0BF5HudhGybKNo5Vrn
- hSgygwu0YSWDzyGWwrhPddJSr9ZlE7l3CTefIq4BN6z1E9D5h+RDtdtAEFAzZ6BosU1T8Mhmrk4
- cldwTn5U1oY3QPL4+irBqLP3l3Y80fHMcKdmxQfROgoQviSUH6aOQuUr+zmgf9vQ91ZdFSni1/E
- +DpUqPfrXX4IwNknygJazce9M7w17W5KbUMs3OyYbwDf8e9j
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1167; i=dlechner@baylibre.com;
+ h=from:subject:message-id; bh=C6Sbq/OY4SHcE/xtSRHV50ylmu+czCYaMl135JwPHbk=;
+ b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBon2PfvvVd1yFqg6leU7v8wYnKY/5GZDsaVXoU0
+ mYUFPFjKJeJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaJ9j3wAKCRDCzCAB/wGP
+ wPBIB/9NrmkmsU0qBKZoyUr6/EtKwy0QruhG2maoZ8JkoiNtuEYjUBJLz8RDw5/brbXmobDz03f
+ 8oxfXulhvyaMv7OUvSCUjg0spsRcLNk416e1MxxN6f3Ufa9JyUfYJQk94cIwMbhimVEbdcvlfaV
+ FCjZJ17FZYPVGoAU5boL6MD8V2oLUzoEV4QanlW6xwTzGIxbbdwLwYYDq46CVmIK29LT+7puIAe
+ aiQRTOVl1PHZH/1nrgI5Jz9elCOZooPNGDEepHxSB5EWRYZDQwX/KkJLX6JBwDEoncDirpcaZUf
+ HayE21an++0s72qhedqj8nAexaUmDKumzJzwjIJwNYO5ejB2
 X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
  fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
 
-This cleans up a few loose ends from the series that added the ADI Util
-Sigma-Delta SPI driver [1].
+Clean up imports using include-what-you-use principles.
 
-[1]: https://lore.kernel.org/linux-spi/20250701-iio-adc-ad7173-add-spi-offload-support-v3-0-42abb83e3dac@baylibre.com/
-
+Suggested-by: Andy Shevchenko <andriy.shevchenko@intel.com>
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
-David Lechner (2):
-      MAINTAINERS: merge TRIGGER SOURCE sections
-      spi: offload trigger: adi-util-sigma-delta: clean up imports
-
- MAINTAINERS                                            | 8 +-------
  drivers/spi/spi-offload-trigger-adi-util-sigma-delta.c | 5 ++++-
- 2 files changed, 5 insertions(+), 8 deletions(-)
----
-base-commit: bbe4656eae2729b8ca87116defa19c568898d08f
-change-id: 20250815-spi-offload-trigger-followup-d33f263169d4
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-Best regards,
+diff --git a/drivers/spi/spi-offload-trigger-adi-util-sigma-delta.c b/drivers/spi/spi-offload-trigger-adi-util-sigma-delta.c
+index 035d088d4d33d6d32146a340381bb167f080e085..8468c773713a3d203b2e668f340ee3f477b8fb6c 100644
+--- a/drivers/spi/spi-offload-trigger-adi-util-sigma-delta.c
++++ b/drivers/spi/spi-offload-trigger-adi-util-sigma-delta.c
+@@ -5,12 +5,15 @@
+  */
+ 
+ #include <linux/clk.h>
+-#include <linux/device.h>
++#include <linux/dev_printk.h>
++#include <linux/err.h>
+ #include <linux/mod_devicetable.h>
+ #include <linux/module.h>
+ #include <linux/platform_device.h>
+ #include <linux/property.h>
+ #include <linux/spi/offload/provider.h>
++#include <linux/spi/offload/types.h>
++#include <linux/types.h>
+ 
+ static bool adi_util_sigma_delta_match(struct spi_offload_trigger *trigger,
+ 				       enum spi_offload_trigger_type type,
+
 -- 
-David Lechner <dlechner@baylibre.com>
+2.43.0
 

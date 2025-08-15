@@ -1,134 +1,129 @@
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
+Received: from mail-oo1-f44.google.com (mail-oo1-f44.google.com [209.85.161.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02CD230749E
-	for <linux-spi@vger.kernel.org>; Fri, 15 Aug 2025 15:49:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA30E30E0DA
+	for <linux-spi@vger.kernel.org>; Fri, 15 Aug 2025 16:44:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755272985; cv=none; b=L0i3ijx5MmKjCI/43clYn5F/wl/AKxbyKPUJfRVPwFizF/MFjKNnOaNx1U+/ZhGR+enqGE6qVnj2noG8ePd9jYpx+naiUjpEvj9LBVEEcmetueNonOlnYkcGnWLP4Z0lIMvwu2QnRsFX5+vfTAHOqmcD166cTtKYFoZZFlxCAqU=
+	t=1755276266; cv=none; b=IABdE8k96YFI9WKTqtrulBTc710bOLaL9CX1SeBDjRubtlgf4ICYMXcXUb3QuTLY71IEteeUi4c8Ptji11EayXh8N59SpCf5bJMpYL3fHnOULypJ8yMMU+TGjTRhCmqaGdVaF4T4Hnoq/XfjbuiCpNgNhy7CFhirt/qxgkCC+KA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755272985; c=relaxed/simple;
-	bh=LDT1LlSRvClcQTESyvNZOcCDbQzHYlxIpeUOcGdwEq0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fw1VhnPTp4V5LRct0q48m5s2PotlP+0CUzcJIOQ/1Yy+317idNe8EcYRwcX85zE1XLg51v56+W6pNGKPUgP39kqaLCTILKbQoRl0E/1/H69h5S3UGKpp9sb23zdagALqxGFB8rCSm/nImhH/PPkOniMsW0hWiVdMKpdBHOsmokw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=royxHDIp; arc=none smtp.client-ip=209.85.210.42
+	s=arc-20240116; t=1755276266; c=relaxed/simple;
+	bh=n7I3orGRu0gT5onp+LDbL746gxMd1RG+ru+jp/oTuLo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=ZYKqpMVqoHC5iNRJvMQ+fCtCRKO+Oo/9Ghv2QtOeP8x4HOUNwKzQr9pUGV8wZFfhmRM2KmLFuOjv+aZzDDokhDbe6uWOC1MYNwzpPn1tnJqaTgxKj9Vu0SpHtP4x0XpcBwgR2eti7Bj7FQ7nThopkL8EzEq6dClIdhVbZShzGN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Ktves4xJ; arc=none smtp.client-ip=209.85.161.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="royxHDIp"
-Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-74381df8cf1so583369a34.0
-        for <linux-spi@vger.kernel.org>; Fri, 15 Aug 2025 08:49:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Ktves4xJ"
+Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-61bd4e002afso592630eaf.2
+        for <linux-spi@vger.kernel.org>; Fri, 15 Aug 2025 09:44:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1755272982; x=1755877782; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=oYeMUsITLzLzX8aJHEpZBjK6mYQbUKQb8W2QJwQZHWg=;
-        b=royxHDIp6fTpPf7/wF2Uis2NIQDsarsmTXle6OaQMmECNcLb0YOEcVASBVQ+i0V0zc
-         fx8azFrjCN4BPJ1lWqFrnfqh2NcO4NEsTqF9w7d3pJbuTwXM/msNiSmwGLEy77D1moLs
-         bDTEYhfNAgSHvJ9a6LZXFjYcEz2xdaWDJD7l8pyetL5vqh5m+rN8pzWOagnPJ60WnMuU
-         fqvqk4FJF/1p/QFfMvW7BArhAaM/M4ff5vMppz4C9dNueUHbDwrGYLpnquJSbqDOaCOX
-         zJS8U0mkK14N0OorqAZ1NKwV+dtrLPlTTUNdiNoIvVBxs1pWkw6ahiQhhjbmLv9eD0iM
-         btyQ==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1755276264; x=1755881064; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2UDwSuiUo0QvF8XkoXE//Xp/LQx2Zw0bhS6vPnsJexA=;
+        b=Ktves4xJKLicfsGlGAY2spbb+a8Ymemb1mK35Gg9BjZBr0Taic8uxroZgHRo4Skp9o
+         wAkgrWgziey4btOGHirDFqEQkovsCQEPNlOuyV8En/D28EXK9R4h1JG2wAAOoUkhupld
+         KD3X9/jeXSkV02Vq9IDhDaZAz9gU2wSYY3rndyW4D+aciN2ube0kmbPeQSPnQF4MPXOt
+         FdOWbjOl4OjO0KzS1tpPn79dt1qXtp38u1NIuAB3UfoblMFxnWZo3nLj6u8V6umeU88l
+         XrrUsuWLn/FB20HmGUag8wRmATYqNBwAWZARB5keWhUeyOLhd/xvRo8omhL1c/ETX9py
+         WbfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755272982; x=1755877782;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oYeMUsITLzLzX8aJHEpZBjK6mYQbUKQb8W2QJwQZHWg=;
-        b=xPLTJ56OLUA/2HK53o6Ke1/0r5Vn8R8wKcpMIEw0WJKuABUhn/MAf72KSvbgtuhF5w
-         ALFQIFjivIDusRbeZoNlG5D8yrENGu/nT9ufnIb4zhX58OSsUX9SiKH1QM8DlBWlPaGT
-         G+nRvLofOdRID4+3qv+T87Rk+I0GTpQdEyYuTsw2ZdKKKuzFg9lreXRDKU2Vz+RwRqqs
-         5dq7b9dkbd4mSSmLe7wCV+G41gokQXtQub6BdVekmKfBCladpKsj6OcUGqKlzB5uUQCR
-         DBpXUezrQi0R73WzaAtAxlsyBPFjXtrnKTO8qOgN3D5FoMw5Wdrbl4Jnc6mdOJQAa0KL
-         6PcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVV1tNUYhd14shIr69HrNhvoTz9PyRZT0zPCNJGsoWe2TvoMlFrMgNDiH1/IXZGerFhv4UZ1wfi4Wk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+luw/8mEZIz0ARn1r7Qwt5v2eszEOoBY5z5HyefBmP1o7eGc3
-	qtHZFxQOqdROx2fCMEjWVbu0wu6ZwagQbGXy+FGxaHRehdndlMlqK6M8MA2fOjWFjpU=
-X-Gm-Gg: ASbGncvc9dSwfDUq7b6WAbHyPj6NXskdPHyPCDT4pQed/GGPweO/cYrqZAm67epCiMi
-	18chMGNmUfOJF5jH2FiRWJupDoDS1Uq5vYWe4g3qhBL6GykAAkl2+yo9Kfs3DNvY/2DMOPoOKC4
-	I9DzLiIXLdNYSDwfNhnzczINbJuIvzP4WC5Pd4PNQal2DQyjHlrI2FoX0PE3s4uaDSk8OEuBWhq
-	4Q+7m47YbbeNtBAZjkbYSR+u//vGwKpJ7A4NMM1Kdheesk83nHkpxPRq9Muh8f+de0oaEYabFY5
-	rxJyfwB/l3ArxfV+V67fdbyhU7nWKmBTd/p2k5t9F2U07SCKehOdEEAY1YWmgxpLQ6UkqNPVhRy
-	f/PWyauaBK4OFQgrE6FZ4hd4ddCoD0/AS/A0vbuA27pt4QrpjR/VPfp2fctF6VLAflxtSEfThsN
-	LG3Pti+nc=
-X-Google-Smtp-Source: AGHT+IEoVnaL83a5r2gLAMPUw8k6gnxh57UaRSMs78wsysGd8hJtR5B/O1txsAfKqL986GFe82rtXQ==
-X-Received: by 2002:a05:6830:4108:b0:742:f996:ef34 with SMTP id 46e09a7af769-743924f533bmr1526978a34.27.1755272981907;
-        Fri, 15 Aug 2025 08:49:41 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:677:c1a1:65b9:2b0c? ([2600:8803:e7e4:1d00:677:c1a1:65b9:2b0c])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7439203b5ffsm348082a34.25.2025.08.15.08.49.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 15 Aug 2025 08:49:41 -0700 (PDT)
-Message-ID: <ded7ba99-089b-47a7-95b9-ca6666dc3e29@baylibre.com>
-Date: Fri, 15 Aug 2025 10:49:40 -0500
+        d=1e100.net; s=20230601; t=1755276264; x=1755881064;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2UDwSuiUo0QvF8XkoXE//Xp/LQx2Zw0bhS6vPnsJexA=;
+        b=FwggJRn9q9zkxhkt/kZKeYsU2OKPoFBrcY3CfodJh49n5DHNwgK+ekceox4qHr4Ndk
+         rdQZfCk51E3GcDCjch57qY1rIjQXX5YJMi0EGYC7yQt7hY0M6hkPQM3pz0DJ8sGQux6Y
+         1V18kkrDi8142mmuxm1biraRgJxnSf60K9ex8ubwOuWFy9xMpS4YcxxmnAg6f4VvRHbn
+         E9EVVR3vasKKp1/gwl8Q+zIQWxWbfYUNzAYFfGNUp3ofLGhfHXDzMzgj8r+bW3y4dOQM
+         5uFzN3TP/GL9XYOD9TWY8OwbZErKmRbP2oop05HK+9Jd4vVmung4Iag8+Amz3i4cEbtK
+         2NWQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVSWm8Ao6+5ASFazE7O44gjkb0rm2ERIk2XpmQdj39nU8MOcBXCx9UN7/wGxg8V+N9Mhu/jIsqL3tU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzR5Tqh69OOc72LEh2jVS6bixYw6zZ1PRDGwA5YPTSjAtU/ZkoS
+	no2VLOvHcuaDqRaGc9qcbwjA4BbDMiDGowCygH9kBJU5iezzV8a28IRadBLW6jQoZ7WEAsgGYQr
+	WVpVF
+X-Gm-Gg: ASbGncteimpNepStOwwnGWQ25i7PA96oOm8hkjtZ2EnHGHW/UOkOrvgzAD+WKT0UF3G
+	J7cYsu3C7MmFFVOdQcZmCVE2DQZtx8JdSh58axCsAF/Hr9bE6+KO5kPcJxaRPoqqvm/+PS59JF2
+	dW7pe5dn9J92ZdjoCE4Oidn6PohbyCVOMvqotya4LXdrmvlsxdWEhbi6Z4xgoeJpxhyqEXY5bjI
+	VoyrA85xhhkNwOgSSYECNz3NTl09ihZu/9BtaO710rcikhNhLyofXjQb+2gWYj1sKOjP8RNcWCE
+	lXq6f14KLmp1Uy39oLgbacqTsvpWkuR7Kb4B1EP9aXm/9CUY4kxPuegoIDvklnVYPfiIogOT5PJ
+	prZ1Tel9t//V1xVZebAwqMSSUiDngwlG4ola3hg==
+X-Google-Smtp-Source: AGHT+IF/Nar+wKP5e3lUmEDgf1PRwtsVmJbTaF5RTOgkSNGXc3O8szqd0HakjQOSiWM3mfvEm7ijrw==
+X-Received: by 2002:a05:6808:15a7:b0:435:73cc:5b81 with SMTP id 5614622812f47-435ec470c7amr1422549b6e.2.1755276263618;
+        Fri, 15 Aug 2025 09:44:23 -0700 (PDT)
+Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:677:c1a1:65b9:2b0c])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-435ed1b186bsm305263b6e.21.2025.08.15.09.44.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Aug 2025 09:44:23 -0700 (PDT)
+From: David Lechner <dlechner@baylibre.com>
+Date: Fri, 15 Aug 2025 11:44:00 -0500
+Subject: [PATCH 1/2] MAINTAINERS: merge TRIGGER SOURCE sections
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/9] dt-bindings: spi: Add spi-buses property
-To: Sean Anderson <sean.anderson@linux.dev>, Mark Brown <broonie@kernel.org>,
- Michal Simek <michal.simek@amd.com>, linux-spi@vger.kernel.org
-Cc: Jinjie Ruan <ruanjinjie@huawei.com>,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
-References: <20250616220054.3968946-1-sean.anderson@linux.dev>
- <20250616220054.3968946-2-sean.anderson@linux.dev>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20250616220054.3968946-2-sean.anderson@linux.dev>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20250815-spi-offload-trigger-followup-v1-1-8ec5413a8383@baylibre.com>
+References: <20250815-spi-offload-trigger-followup-v1-0-8ec5413a8383@baylibre.com>
+In-Reply-To: <20250815-spi-offload-trigger-followup-v1-0-8ec5413a8383@baylibre.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, 
+ David Lechner <dlechner@baylibre.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1356; i=dlechner@baylibre.com;
+ h=from:subject:message-id; bh=n7I3orGRu0gT5onp+LDbL746gxMd1RG+ru+jp/oTuLo=;
+ b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBon2PYq33ssJJQ3essQ568WxRa51norRkiV3+IG
+ T1yLolF/+2JATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaJ9j2AAKCRDCzCAB/wGP
+ wGodCACHjX8KbW/0fYoYfOnae2echB4YW42JZs+5Q/LLKvFKhUCsX7IwqKPcZ1b357igIKpHy9s
+ RdGHRNN6hEFjgPWh54Fn57LvwekMW6ZrRoG9V9kZODkXV7gcnW1mrKCabcR+CHVaAUzYUOjgoca
+ hMfyKzxaVRQyH/8p1U96AJCzDD9qhCDwE7OqtYdTgz3un7oP6IjjCA9dvBHtLhAPCzUf/zCB3ZJ
+ DqkEIoG24+9/tctkCBBFdHPkiADcntcxSXq7jRST2PVBN1a2AM1+M+q0e88FLghufuox5MPaMUP
+ ys/TuQMik/4mcNn3+mVnvuV74YJV17146EafA5yJCpT/rapr
+X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
+ fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
 
-On 6/16/25 5:00 PM, Sean Anderson wrote:
-> From: David Lechner <dlechner@baylibre.com>
-> 
-> Add a spi-buses property to the spi-peripheral-props binding to allow
-> specifying the SPI bus or buses that a peripheral is connected to in
-> cases where the SPI controller has more than one physical SPI bus.
-> 
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-> Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-> ---
-> 
-> Changes in v2:
-> - New
-> 
->  .../devicetree/bindings/spi/spi-peripheral-props.yaml  | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-> index 8fc17e16efb2..cfdb55071a08 100644
-> --- a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-> +++ b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-> @@ -89,6 +89,16 @@ properties:
->      description:
->        Delay, in microseconds, after a write transfer.
->  
-> +  spi-buses:
-> +    description:
-> +      Array of bus numbers that describes which SPI buses of the controller are
-> +      connected to the peripheral. This only applies to peripherals connected
-> +      to specialized SPI controllers that have multiple SPI buses on a single
-> +      controller.
-> +    $ref: /schemas/types.yaml#/definitions/uint32-array
-> +    minItems: 1
+Merge all of Documentation/devicetree/bindings/trigger-source/* as a
+single entry.
 
-Finally have some hardware to test this series with using 2 or 4 buses.
-I found that we also need an absolute max here to make the bindings checker
-happy. 8 seems sensible since I haven't seen more than that on a peripheral.
-We can always increase it if we find hardware that requires more buses.
+In the previous merge cycle, there was a merge conflict between the IIO
+and SPI trees and we ended up with the current state, but the intention
+was to have a single entry for all trigger-source bindings.
 
-	maxItems: 8
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+---
+ MAINTAINERS | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index fe168477caa45799dfe07de2f54de6d6a1ce0615..4b133ccae8fe5e87a03892d0c30e700cd4df3bf9 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -25603,16 +25603,10 @@ W:	https://github.com/srcres258/linux-doc
+ T:	git https://github.com/srcres258/linux-doc.git doc-zh-tw
+ F:	Documentation/translations/zh_TW/
+ 
+-TRIGGER SOURCE - ADI UTIL SIGMA DELTA SPI
+-M:	David Lechner <dlechner@baylibre.com>
+-S:	Maintained
+-F:	Documentation/devicetree/bindings/trigger-source/adi,util-sigma-delta-spi.yaml
+-
+ TRIGGER SOURCE
+ M:	David Lechner <dlechner@baylibre.com>
+ S:	Maintained
+-F:	Documentation/devicetree/bindings/trigger-source/gpio-trigger.yaml
+-F:	Documentation/devicetree/bindings/trigger-source/pwm-trigger.yaml
++F:	Documentation/devicetree/bindings/trigger-source/*
+ 
+ TRUSTED SECURITY MODULE (TSM) INFRASTRUCTURE
+ M:	Dan Williams <dan.j.williams@intel.com>
 
-
-> +    default: [0]
-> +
->    stacked-memories:
->      description: Several SPI memories can be wired in stacked mode.
->        This basically means that either a device features several chip
+-- 
+2.43.0
 

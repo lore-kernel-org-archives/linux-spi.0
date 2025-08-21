@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAC1649620;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3111270572;
 	Thu, 21 Aug 2025 05:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755753440; cv=none; b=VXAAtKQVQimVNHbexXo9BxPxl1GJCX0NO/XIINcyh+mPy/WEWwoB7zqM6ZBDGi5+oMNyLbCXWsD0FXqj5ZrA9Pz2b8/kFUqpF1pwZOiO/pkM3hKHyq0NuVCpL1YmvUTrhAV05SiQbYAy6VoCtXOHt29MKnfIDAsSrmHjcQoI9gY=
+	t=1755753440; cv=none; b=PXmuWi67C1A3Vza8WFb54h5EyQZGy6/WyZ7FDaV5PwRihOgvWqaHI+I9BHeWbt/JJnc+T/Ocka0lHU7bDEll92+2AZ6D8Gntu7P5sG+V8YtmmYYXR53KudupsNgGx57lnylJc6L6lhPQlxteQxQCeRb/kZOPUOC4wdAcxNDMq9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1755753440; c=relaxed/simple;
-	bh=lgQDiZb0DulClOgWmp02Qm9x5FANbERY8z36HeeKjY0=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=D9iS732I2GDSLRO0G2ZOk/c0rN7rhTUAXOQfVQ7JzBor+vtMo627up1397oBv6z1xEJEXQ7tWRHLZI9hfx6oWzSxrV2iyp921WUPp4tVlWvVTSVmWveq1HISFKEZqgcIUDCDq8IJ045gnp+8t/aBj/Wdm8iKlh0Zaavv4yz7B2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LWOw1CM0; arc=none smtp.client-ip=10.30.226.201
+	bh=SGZ/ztM0Jh+alQljhSybFcNPM0P2ohWIF7g13dEMIfs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=fsWREmp1K6QAWOyreLcHUt/Hp8izWMis1PtC5MgaCVOqSeNWYlVTYfgsR0LtR4HnuCpgD9lbZrj3afh+OmqOR7g2Pola7J0lTFJwNbcnDcdl2aEBRBjT2S7omqF3p0wDf2r+w/UcSwXnP7zRTxglenxwvCN+my392YO17P8V6GE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fOqPJWHo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LWOw1CM0"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 39B84C4CEED;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fOqPJWHo"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 6762BC116B1;
 	Thu, 21 Aug 2025 05:17:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1755753440;
-	bh=lgQDiZb0DulClOgWmp02Qm9x5FANbERY8z36HeeKjY0=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=LWOw1CM0mSeh9LnE4EMguyfD2RqAFFJLfIvFo8UCMsACBpMF1uJdD2cgQYbgpohyF
-	 j3p1hlTvCfx0Du9KWUQEGVs1KMkQoWPn74L0RgzCxLPSjhGLpZmSH2jy9EHsa0W4E3
-	 b6FLItZPhg51Y5b8eixVYqIaL31i5Q6fANR1sFP25UspFoZxdF9TlJi59Gra0+rbtq
-	 WRU05iQG6WZ/u6agK9Oilcj1wknrP2PwGRpUJP7XK+rskOzb413/La0fSZNK+GgCBy
-	 OEI/XWV3TxdsQNPAudUyPireuEd27TPSc23Qne8CgWymFOVvAJYIffZLEnW097Ae/V
-	 IxrNPuGh97VSg==
+	bh=SGZ/ztM0Jh+alQljhSybFcNPM0P2ohWIF7g13dEMIfs=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=fOqPJWHoWnZk7EJtNc+gOUDfUA6OajCqfX5gEfr7lKle9ozbWYfs8XsaRHzsiRSSL
+	 FeUsPH1X0qqnIOlwhYT3MTfC6cUh/j13SnVjH3so6QNdwNceSQTD0xmvY16xb//zJP
+	 Qvw0XEJsiCER70Qn/0nyCN5ZfZJ7t/VLMcv+IN1rE9+drlLzKbJCcVjwA3iOBKiGXS
+	 ro9JZZAA3bGq4GGuEfD/8gW4y1lbx5cr6Lv+EiUNYH+/moYV2WtGAjo4eiBK0jStO9
+	 +bL+RLZvcZcldQIAFljfPpKbdP3/xh+rYO1FKkf8MErO1kiydBnPgJIhk2irh7tgpg
+	 UlpCmuzQU9Xzw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 24450CA0EDC;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5BB82CA0FE0;
 	Thu, 21 Aug 2025 05:17:20 +0000 (UTC)
 From: Xianwei Zhao via B4 Relay <devnull+xianwei.zhao.amlogic.com@kernel.org>
-Subject: [PATCH v2 0/3] support for Amlogic SPI Flash Controller IP
-Date: Thu, 21 Aug 2025 13:17:14 +0800
-Message-Id: <20250821-spifc-v2-0-b119f64b5c09@amlogic.com>
+Date: Thu, 21 Aug 2025 13:17:17 +0800
+Subject: [PATCH v2 3/3] MAINTAINERS: Add an entry for Amlogic spifc driver
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -40,9 +40,9 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIANqrpmgC/zXMQQ6CMBCF4auQWVvTFlqJK+5hWECdgUmEktY0G
- tK7W4ku/5eXb4eIgTHCtdohYOLIfi2hTxW4eVgnFHwvDVpqI1vZiLgxOWEuVmFtaERFUL5bQOL
- X4dz60jPHpw/vg03qu/6F9ickJaQgarCWqO1gx25YHn5id3Z+gT7n/AHK10B2nAAAAA==
+Message-Id: <20250821-spifc-v2-3-b119f64b5c09@amlogic.com>
+References: <20250821-spifc-v2-0-b119f64b5c09@amlogic.com>
+In-Reply-To: <20250821-spifc-v2-0-b119f64b5c09@amlogic.com>
 To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, Liang Yang <liang.yang@amlogic.com>, 
@@ -51,11 +51,11 @@ Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org, 
  Xianwei Zhao <xianwei.zhao@amlogic.com>
 X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1755753436; l=1444;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1755753436; l=935;
  i=xianwei.zhao@amlogic.com; s=20231208; h=from:subject:message-id;
- bh=lgQDiZb0DulClOgWmp02Qm9x5FANbERY8z36HeeKjY0=;
- b=W5vglRBMS++ooBheJlBd00l+epbkQ75pXcWPZlHKO0zWWV5VrVLumigzlXRbPxKKhdcloJmfi
- Cr4bCBYMfSHDSCoG3yqk92DvcWB7SEPkc1YNKiexWvXg2SqBUjOz4+S
+ bh=waH2I+tfwvOLzp50Qi+Yg091qChCxHO4Mz5PuoGKYLg=;
+ b=KAFa60+6MQk6r4CLggQRiBeApIJPazVc2fxGrAnW9/Lxt8/r8EmIMKkkNgyipVV5xFhcgy6II
+ Bif1p7n2ADSC+ZjxQt5N4JV7Cpav1+yA+SvN1OpiW6VVgFYhz4MH3sd
 X-Developer-Key: i=xianwei.zhao@amlogic.com; a=ed25519;
  pk=o4fDH8ZXL6xQg5h17eNzRljf6pwZHWWjqcOSsj3dW24=
 X-Endpoint-Received: by B4 Relay for xianwei.zhao@amlogic.com/20231208 with
@@ -63,42 +63,39 @@ X-Endpoint-Received: by B4 Relay for xianwei.zhao@amlogic.com/20231208 with
 X-Original-From: Xianwei Zhao <xianwei.zhao@amlogic.com>
 Reply-To: xianwei.zhao@amlogic.com
 
-This Flash Controller is derived by adding an SPI path to the original
-raw NAND controller. This controller supports two modes: raw mode and
-SPI mode. The raw mode has already been implemented in the community
-(drivers/mtd/nand/raw/meson_nand.c).
-This submission supports the SPI mode.
+From: Xianwei Zhao <xianwei.zhao@amlogic.com>
 
-Add the drivers and bindings corresponding to the SPI Flash Controller.
+Add Amlogic spi flash controller entry to MAINTAINERS
+to clarify the maintainers.
 
 Signed-off-by: Xianwei Zhao <xianwei.zhao@amlogic.com>
 ---
-Changes in v2:
-- Remove clock reg descriptor and get clock from common clk.
-- Remove ecc and ramdom descriptor in bindings.
-- Modify the format and message description.
-- Link to v1: https://lore.kernel.org/r/20250808-spifc-v1-0-ff4e30e26a6b@amlogic.com
+ MAINTAINERS | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
----
-Feng Chen (2):
-      spi: dt-bindings: add doc for Amlogic A113L2 SFC
-      spi: amlogic: add driver for Amlogic SPI Flash Controller
+diff --git a/MAINTAINERS b/MAINTAINERS
+index b1c081f9c567..9f1f337e9b6d 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1306,6 +1306,16 @@ S:	Maintained
+ F:	Documentation/devicetree/bindings/rtc/amlogic,a4-rtc.yaml
+ F:	drivers/rtc/rtc-amlogic-a4.c
+ 
++AMLOGIC SPIFC DRIVER
++M:	Liang Yang <liang.yang@amlogic.com>
++M:	Feng Chen <feng.chen@amlogic.com>
++M:	Xianwei Zhao <xianwei.zhao@amlogic.com>
++L:	linux-amlogic@lists.infradead.org
++L:	linux-spi@vger.kernel.org
++S:	Maintained
++F:	Documentation/devicetree/bindings/spi/amlogic,a4-spifc.yaml
++F:	drivers/spi/spi-amlogic-spifc-a4.c
++
+ AMLOGIC SPISG DRIVER
+ M:	Sunny Luo <sunny.luo@amlogic.com>
+ M:	Xianwei Zhao <xianwei.zhao@amlogic.com>
 
-Xianwei Zhao (1):
-      MAINTAINERS: Add an entry for Amlogic spifc driver
-
- .../devicetree/bindings/spi/amlogic,a4-spifc.yaml  |   82 ++
- MAINTAINERS                                        |   10 +
- drivers/spi/Kconfig                                |   10 +
- drivers/spi/Makefile                               |    1 +
- drivers/spi/spi-amlogic-spifc-a4.c                 | 1224 ++++++++++++++++++++
- 5 files changed, 1327 insertions(+)
----
-base-commit: 8e13f0500222e187a82dd3c93c0ea8cd2a4d46a6
-change-id: 20250804-spifc-5761e35fbe1f
-
-Best regards,
 -- 
-Xianwei Zhao <xianwei.zhao@amlogic.com>
+2.37.1
 
 

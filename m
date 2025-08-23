@@ -1,47 +1,47 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11020080.outbound.protection.outlook.com [52.101.84.80])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11023102.outbound.protection.outlook.com [52.101.72.102])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD10912C544;
-	Sat, 23 Aug 2025 00:16:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1762E139D1B;
+	Sat, 23 Aug 2025 00:16:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.102
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755908208; cv=fail; b=XZTuNqPGXf5jFfHwoSdKYce5grgO8s8ZaHWgRW2L5gbDB8T9KQtbAyB/ekt4VA+4XMddh9qwnaPCDlUpKyvfMFlKKjT3fEq4GgLJmEIat6WJEM93NojXKGlxIVps2I9wKcZoU4gBus4kjOKyvQInawazPFeg3W/4ZQy4oiluGCs=
+	t=1755908209; cv=fail; b=lXarpbDdp6YgcKOQIMW9lGG4G4htqDtEncefpB/y+/BOxtq82BKlOIu72ERYNdUiAhEJyh6fKPrvG+wNJt/+HE6gr8U1jNySrsOBXwzQNZs90kA++5lWHZ8Yt0opTlT2XWwQJw+eBdJrKsy/gMRdE/3ngw81cLiL8mOB1HGYZvE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755908208; c=relaxed/simple;
-	bh=Kmt2r7+5maZ8YY+BEdbBk8SiipnO2qDo1lPZMvdD7dg=;
+	s=arc-20240116; t=1755908209; c=relaxed/simple;
+	bh=aO3GnJu6lejs3yxXIrTQ0ddPhApAONuTDt/BTjr6tIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pbuW6eDkJ5t6yLYpDixawtgM/PK808KY5ULT1yq4lIR2B8JPtn0617EHgDH0ZilC9L1FZeetH+ot7pi2+9Bx0D72NFtd0E9WbkyhlebZMqljPaINHnflyZfZ4HnA3MHag46IyuY2utvDzJlQV++blPWukx2e11z14d2XhfZmaaM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iopsys.eu; spf=pass smtp.mailfrom=genexis.eu; dkim=pass (2048-bit key) header.d=iopsys.eu header.i=@iopsys.eu header.b=v1lNTA6S; arc=fail smtp.client-ip=52.101.84.80
+	 Content-Type:MIME-Version; b=OIE5CKSoe7JLEsTqjQgqJWRcVjXrrdIjYfyWM600JmyFj1m+YnsJIhek3jThcD34AiBAikrwokD8yDQCvLMn/I2HQ3XPnpZqZUW7FgbqNwWguWwmS4S17iuB90Jmcs5T3CYGNqfJ0TyIDtTEyFR4k1lBUR1I8Imzws5AzCv1fyo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iopsys.eu; spf=pass smtp.mailfrom=genexis.eu; dkim=pass (2048-bit key) header.d=iopsys.eu header.i=@iopsys.eu header.b=EXoul+2z; arc=fail smtp.client-ip=52.101.72.102
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iopsys.eu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=genexis.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iopsys.eu header.i=@iopsys.eu header.b="v1lNTA6S"
+	dkim=pass (2048-bit key) header.d=iopsys.eu header.i=@iopsys.eu header.b="EXoul+2z"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZOH7lvmOQS4Qw22OUgM3RDZpF6/g91a85QY3Fc+e/piHXUFWaEUBEm9PZL63oB79oKaTLjQ56jidl0hKw2ncZ/1DK9yibmw6pXGn6ZCGcg/BoZEDuBDB/eUsJnoeVHC2tezIYvJoK/Yoieg+c3B8IUbbEFlkkI1tpqukGFqqawGzkO2H8Ha0JLD3g6vjzy4ChwdHyAEk5GOSL8I1F5GcHlMD8w/qs9miLd4dAG9tz3VKpTYyhgtatFg/QgQuoyezpl/pixxSS36GV14zXkiUYBRRt5GYr1t+MZx+qLQOLH9Cf2ecO7NX83WFM34atKlDqHHMn21Kn6dj2KV9yIiOJg==
+ b=vnjXwSOtB3Kzm+KSza4O4kJDiYup090+1/fN1GBFnq1qfpVc1pBoE/3uVF5vWiM/NtRWAiSGg4bKyK2j9o2u8mLmzlf6Z0ujhXb1XIvvH3yG0hMwDpl8q4F4Z418oRAk3Rxh6u/TJhGjdC6X6FhktLlu08WgIouuKwpOumnx1vquxvynCBe733VJUS0wvbuuYYt0nuQJcLmQa6/qw3DV73KkxqMeedN4abf1P1QWgjpsDN3pwq5cNeb1eU6+jdwsowWXXf+yKlaqWIg94tfmETzB/nU+y/UQbEdG6tu6yA6KzmY5ezUYPOPXysgIUaKk5cnGaoOASKctF8z2X7GHRg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=osdycdhGmwRiBksVnkrzsGkfdGIw/fyNFUt9fyp5XOo=;
- b=oCn5C5VZCik/PV4ztMxowFa1sMhzqf+diGtuHH/87J56Eg+1EdfiLFBQPG4JwVBznxbRHv0uqsq7BwWFdK+DVlWIf/gPmKHRgEEqSmlwYHbiI9GQ7BsR8ZfkCi/TnqZMcS1gJajrb0SexChqZzEG1ASBxPuHA62fLclY5sQoV3+dQv7Zcu7fnX7LrvpdFrWqeFTVt/ycHx+dNUvzoQniWpWtNzutg3x8Su4hEcR+lFe2v3zAnYt36sO0krKVHOo4UD82/M4NwCpAHWxv+lb6PkHoDes+8CA2uj0HB9sypUOs5KvcVeXMSycEsAeM44Ob/8Ov499Oeg6nprG+CozZJw==
+ bh=KgK6t6s2St14sOjI6n8WumMRK/Rf1vD3Ixtt9ciSuic=;
+ b=lJWfSyr0/v5qr37Ba5VmtmMXQvGp66xSpmUMxaQcWHGBvZ7L+jtaF3FUxa3n3WyF55yLkP9No9v2BJVSUztJkydZnQEe6NY4w5MHQpgHjVs3jjELB3tfgvALHdjHthZUT0eQ2xruB3VdRpS9X/BiArb1rvdgf6LqjiDDW7Hs7S/Dt/9GDHFJ/yNEiHvEd2dEhfuhXaNXn8lAJI9PalPQLn5Auw1NpBMRRbeMwPnJeLnCCu2u0LyqjaoSvPnJUTYlB+8xl/KxYt6EEgcw+ATYCW+4JKkvFlW6pz2swIr2OtC+JmsGGzpRUK2vgytFadSjq4AoEu4XNLSsxQszptPJ7w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=genexis.eu; dmarc=pass action=none header.from=iopsys.eu;
  dkim=pass header.d=iopsys.eu; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iopsys.eu;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=osdycdhGmwRiBksVnkrzsGkfdGIw/fyNFUt9fyp5XOo=;
- b=v1lNTA6SPmVbE4+5tU+IxvSxTcCtHEDZd2vqtF1hSMAyHeQkZJwj5gLezSBecTixKIH69T/0fnrgipLX/++H2wX8/mwXBez7nSXkrPM0GJ9aJtCim2TKmGiL+mxkZj+82hfxFD1Bss7n/vZy5DlmV1u3TLEvubvl6aeeODfhsdVGDFDGHWckK8VUYYJCaIjXXOH0QRSR4gVszNz/bIhcHsb7RjVHAulf+oOGXaMk0yozDCS+2HoikLpWcDlN5cK9ymVwlqCxuO/09E40VYo02EWwHWTlNjUGm1SaEQR25O6OU1D0+jZ7ew2qrwl5En7Z/ul3uI9/BFeuCDDetGnlRg==
+ bh=KgK6t6s2St14sOjI6n8WumMRK/Rf1vD3Ixtt9ciSuic=;
+ b=EXoul+2z9yXyWaA6Ghu2UOfzzJ28B+xLIHEcRfYil3cF7syOoPHhrNqlpDhdEVlhzolvEFB32nctM3k5TPm2JB5AD0W+lO8iAL/LIH920nwz9PrWLkd+339a5Hykwya5x3rb8De8tGyxORYpJEviVcymg8pSz4DVcNyTOOLQUsrWS8La8OuRNwFLCzmTEJkvnjQdGLMO/i36lPb5k4UqLgsBDboHBWC8OOo1hQczLkI/TW0w3Tbam190XI9uJNiQVei0+JSzFP+Ke8PP2e3TU/O0kCs2bSchKYnqyoT2D92TTsRreDZ2kNLu/NGK7q+FIdu38VDFef4cCNYSQJ3pAg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=iopsys.eu;
 Received: from GV2PR08MB8121.eurprd08.prod.outlook.com (2603:10a6:150:7d::22)
- by PAXPR08MB6398.eurprd08.prod.outlook.com (2603:10a6:102:12d::13) with
+ by AM8PR08MB5618.eurprd08.prod.outlook.com (2603:10a6:20b:1d7::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.17; Sat, 23 Aug
- 2025 00:16:41 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.24; Sat, 23 Aug
+ 2025 00:16:34 +0000
 Received: from GV2PR08MB8121.eurprd08.prod.outlook.com
  ([fe80::4cd3:da80:2532:daa0]) by GV2PR08MB8121.eurprd08.prod.outlook.com
  ([fe80::4cd3:da80:2532:daa0%4]) with mapi id 15.20.9031.018; Sat, 23 Aug 2025
- 00:16:41 +0000
+ 00:16:34 +0000
 From: Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>
 To: Lorenzo Bianconi <lorenzo@kernel.org>,
 	Ray Liu <ray.liu@airoha.com>,
@@ -51,13 +51,12 @@ To: Lorenzo Bianconi <lorenzo@kernel.org>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Cc: Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>
-Subject: [PATCH v4 08/13] spi: airoha: support of dualio/quadio flash reading commands
-Date: Sat, 23 Aug 2025 03:16:20 +0300
-Message-ID: <20250823001626.3641935-9-mikhail.kshevetskiy@iopsys.eu>
+Subject: [PATCH v4 00/13] spi: airoha: driver fixes & improvements
+Date: Sat, 23 Aug 2025 03:16:12 +0300
+Message-ID: <20250823001626.3641935-1-mikhail.kshevetskiy@iopsys.eu>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250823001626.3641935-1-mikhail.kshevetskiy@iopsys.eu>
+In-Reply-To: <aKgSY7bOrC8-qZE3@lore-rh-laptop>
 References: <aKgSY7bOrC8-qZE3@lore-rh-laptop>
- <20250823001626.3641935-1-mikhail.kshevetskiy@iopsys.eu>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ClientProxiedBy: GVZP280CA0047.SWEP280.PROD.OUTLOOK.COM
@@ -70,169 +69,474 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR08MB8121:EE_|PAXPR08MB6398:EE_
-X-MS-Office365-Filtering-Correlation-Id: f5539931-d7c8-4986-04e9-08dde1da55a6
+X-MS-TrafficTypeDiagnostic: GV2PR08MB8121:EE_|AM8PR08MB5618:EE_
+X-MS-Office365-Filtering-Correlation-Id: dabe797a-e0a2-4598-3734-08dde1da5137
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|366016|52116014|38350700014;
+	BCL:0;ARA:13230040|366016|376014|1800799024|52116014|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?6G5t7Je7v3MmyYELNSiHC+WbVZw+kvhamNswb59XXbIYEzVa3etTn7Cjtksy?=
- =?us-ascii?Q?JS/6ao/oEEC4D6LrrcnAnGHqapAYd8Jp/4Y+VlO+nw1H7WI+dvmDjvOJ1XjA?=
- =?us-ascii?Q?ac0lttdmW6cvw5dPWo65+qXWoz90O2nLYq4Du+R1Sp0F+W3Jiwh1xNidJ8UX?=
- =?us-ascii?Q?eZDtgmZH2JRvJSQAWKwImEidhUB7hHOD8bBN+/uEwGaZ8EY5MkkrtZ5ATCtf?=
- =?us-ascii?Q?Vgy/orhDFsLvXLP1U4h3DRzYfV/qUMaiZJkjvdL8+IMsNE+4t+EoFu49O1Aa?=
- =?us-ascii?Q?z6OTmKTn/g2obkjRQksa3YR+4yFYD14X7xBS2RXVIvHOjIVYYXKodZy5tOpY?=
- =?us-ascii?Q?Gm9XXDfyK49s+oeJSCCHMoXdSBlTjhXXMedZeA8h1/TTThyCpYQpU02pKAaF?=
- =?us-ascii?Q?JOFoIs4I4sgLq+ox2kJRdrScKejMcAN2dxjiyfuoQrhAgXQZkVqQ8N28ovz+?=
- =?us-ascii?Q?wFpkaKbh3otsv7Z1w5TcB8wyhMqyYA82uRUM7U22AiXTCTBYU4qagdCv2eyU?=
- =?us-ascii?Q?L/SyhQ3/TxaAnOnWQnFsChoW/yYl7PfNeoZoxO7Lm3xs82+FJGWsBWamHXbH?=
- =?us-ascii?Q?1/5HUh4f6bmsvOsPtAvfpak1VQDfXhRnXmNbwrS0jXTgZEyYYIGpMOVLQcbl?=
- =?us-ascii?Q?+wl5aOUnlj83qpZ/UGM7fazkCK1+grbnKT++L9nHLm0pFcEfhiNk514SyWbO?=
- =?us-ascii?Q?pBNsNvPNtuPd2blKD6UpOAJGDk7Is1J7eHc52INMxq3T/c55AjvyP1olhGMo?=
- =?us-ascii?Q?q77uQ8ukw5hAYq54rAYgKgQ6ey3dNGBkM8FH+OWyHmj+Wpzvad9Mcb1f5mPQ?=
- =?us-ascii?Q?eLFeA4t25W8IsbVFCl8pUFwK+AUSGoOjxoQtkE8z9nGPGG18rx7zP+QnwLuJ?=
- =?us-ascii?Q?yWT0+rLpg0BRDxUwj5OBx1FIiJuPrMbCH3sME0N1cMFe5VLeWQvndBdB7PyG?=
- =?us-ascii?Q?bDwOX6+MslfGM4IWKu+CMNQvp93rnN6NXH3rX3Ih57ETzi2KXMmFI/rO5bb4?=
- =?us-ascii?Q?bhEUYsrKl8kgTAZ24eW5umsTO1ty5ExOn6SpIaKBkSrvu1qeozmPYOGSOe6o?=
- =?us-ascii?Q?03DSMb71TUxo2HqeiaUjwQS2S0uD92dvGfEfoGiw7lcSon3av5G0TGNpAHym?=
- =?us-ascii?Q?pxsAi3ZaSZSR/0I/WXtzXjsoUdCrnbT+sol91wGFftu1CJV8yjGO/zep3dqq?=
- =?us-ascii?Q?sY9ar39OUsPvOPnfNuud6OasqNdSVZGtZYW4aKBYzicJ5a5ZdnR8COwwICup?=
- =?us-ascii?Q?Toyuagw7M15ZY4BmUTKE3KR6mwrJZ+ICo2rfueg+cUuX3u4PsQzBwTBdVOYp?=
- =?us-ascii?Q?TcQmgYlgeu3aBxi86IiGyXTZ/nU049lQYkM6/uOiwrwbr50WF4f/L1YiJ65Y?=
- =?us-ascii?Q?fmQNTO2EDks5TdwvTohIDP7DWi0OKkW4S3mSWf0mboDdE7n2bijXpVTIvdyG?=
- =?us-ascii?Q?Z07Bopu7SIkh7QxmZ31oybCh7jB8PKL6xx6ENUbcs7vuGefLlL5pBg=3D=3D?=
+	=?us-ascii?Q?qn9Siu+xdl9C3BJUeX19ohqDRW3Rdw+D1GsiQ0sQLiZFAsX2ignITPOU0Xky?=
+ =?us-ascii?Q?/TaU/Y7fHWd99Wi/+GytfZOi9PAODrKl+X8IXjblp12kd36bR03nNtq1kh04?=
+ =?us-ascii?Q?DkBm61szWqHixsRIBQJUGLXTS17YvezxhhKRQIArYb/GWAyh/HHKpN0NJtjQ?=
+ =?us-ascii?Q?i779XzZNRYxvqv5loE8rdZBOY7vDzPi4OusFbw3BhUtds/d9NSC4JOMVtypv?=
+ =?us-ascii?Q?MtWSPXkRi1ToMHKTiYLnxRMtbTEHwBhVFLZObnubZ9TON0Y0z0VzMjlv02DS?=
+ =?us-ascii?Q?I7PE5Vf/+856t5rqksayiXjSf8AxbfPnp/bP52drE5WvCYadRhNyGOXwBN+0?=
+ =?us-ascii?Q?rRZhg/UN3EFr4H04nRePa73rLbPAAeZZ2+LgIR8pV1gR/fS3SynpQW9oVFV1?=
+ =?us-ascii?Q?sFVV96ic/atjmS/6Vc5n8ASogN2e3eZnW6UwJPviZRdnvHWzraZYZj6LSmMJ?=
+ =?us-ascii?Q?R2xepNb/fpzlLfbwL9bEws8LH2mu2AQs742ND6ps6LbS8SBY2l+JbB6CYq5e?=
+ =?us-ascii?Q?OLBW4AJs5AfgTTnjkTKkPyxgo2LzwzapDrwo5fKSS3F8HNQv0YNT9WWnVWfA?=
+ =?us-ascii?Q?HgGYyUICA/wEZxuHFt0hs2+NQW0VVrYS/wVZkcEWA1xGa2CuDCDQoYrKqj/j?=
+ =?us-ascii?Q?zaJlzFdqqPwBfmcPzN+r2ugPN1LL+eAXdmjJbZ5n3PfEctHjRbZDI7hijTZJ?=
+ =?us-ascii?Q?iXQsAuDUYP5KSqy4SBf7SYSt+RxkDCGwQIHjCsnKxaQ8nTtOFfvVyVBoXSod?=
+ =?us-ascii?Q?sw95Ob/VQlJ7V/bpTfPVwSjOtiIVFnJdtzfFdzxTGLx22iMoMUWwanmeg593?=
+ =?us-ascii?Q?fLsB88pdks/KYDTLdc+8Ew9siX7yEsM5cZS7vftCuijhoTNVN0rKJT6hO0e4?=
+ =?us-ascii?Q?9hOe1nHmEk3BVe0LEO0v8ucJxcVPg2m635LDzxNpw84Vg7INBO7JpipZinSp?=
+ =?us-ascii?Q?+cXk1sM2GlRE9WtVBJdCL9n82x9J9EOrmkgvOo0J+tXBifbxg9HYt26UHsAK?=
+ =?us-ascii?Q?IFj6lnIE/ksbnE53349lIwttPneVqSmJ+Fgd56ZaZAY/V/QAHVEnOiITnDDO?=
+ =?us-ascii?Q?mImWSumr4dQmq7gqd5LrQFbVxnv/uwUmhCssDp4BRO0ZGv8L6l31veNnvwl6?=
+ =?us-ascii?Q?8rjF0CKMmw6nl3SyLqlxuLYBIMRuH7t4FjciWsBwG0Qiijeq/SlsjOd8lRXa?=
+ =?us-ascii?Q?+iNT+MdCwqM/PLegxVKdUZw/0K5g2wHIjAiZbgnRlxQ4RjcVIYfgtzAy1Lpt?=
+ =?us-ascii?Q?7c4c8KnPov9jdjmo/AehRZIReDYCtA2ijZU6gohDBoBqZCBFS2mxHZ6z2d17?=
+ =?us-ascii?Q?3q8tBZVFHrYpSYH2osGsvpqVVN0i7Fk/lXa49FyAZVThNtPgQxD+W2RxHPYc?=
+ =?us-ascii?Q?gsdoAXW3PlmSoApZFvGne85G/8phDrn0ZU/iRoASyR0GV7TsBIVPxWtD631z?=
+ =?us-ascii?Q?FeWrikcVCak27EzyQnX2aWnpNib6nquW3r7PT+35y1zNNtuWyWwpBA=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR08MB8121.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(52116014)(38350700014);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR08MB8121.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(52116014)(38350700014);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?FXPzWb1aQcYWY2/+GYBzVYlFZA2U3fCr6RFQUX4hichGmWUHxjBpi2zWSkml?=
- =?us-ascii?Q?LPrg3WL4tI/ID0muX+i7V/FzBsC/hZ90kGMyUPQSt2jjA6Y0RKf+jBONwS9F?=
- =?us-ascii?Q?2EvHW9rhAM+x3YxjdnZfMQv/rSZaKDi7RGq05vQHmT1FqZ1Od0LkEErQp3vy?=
- =?us-ascii?Q?lHT4w9Hhfp3d9GTLoahPlotxt9G62FASV/jgdcLNEG5r7WfyB7rGxNptZTjE?=
- =?us-ascii?Q?7Xt6Z+4RiyMw3vAo2EUe+q1nHPYefXRaO1cUzu1lJ8S9Eq8jOi/e+NM0LJjV?=
- =?us-ascii?Q?JTdEGaxV746RM3PYllIyA7PrG1hGTNtgf3rR2Thma4/ZRI9EgAVoduglFi6X?=
- =?us-ascii?Q?EUPiQEmFpMpQRdzeGvftPbml7i305rdajGjfhhNlqERP6J66fGziuzH9X0TI?=
- =?us-ascii?Q?+frxMyRZqfVIR/y51tXa5TsJbTkkD7jO9XVkQQj8ZuxXGKku5UhMu8340xWK?=
- =?us-ascii?Q?/qrCCSEpnFjJJG2Aur3sjCNRMTQLbgxPrRDJEYraxw9XpQdVuDEvkTdEAMXv?=
- =?us-ascii?Q?5a9IipPsK7p9rGJBpy5IAqQNmuGu8HCB4bq0AqeUvV2s3FELpn9NKMeW1dUD?=
- =?us-ascii?Q?4SYqasE7+7TDPa0ACQCfFT0FW7PaFIZAk3+l5a/tMmtBOEwV+QPDkfj/L0Kk?=
- =?us-ascii?Q?yZ+AAn9dF934e3bdOfndI1KqlPyOLmrjw/D4HydBmumDMoGNgK5VD8gKvR5K?=
- =?us-ascii?Q?4M3GpsCS7kbNve5mH+WCtYini4XEyXJn7tSg9M7t30bgd7de92PMBYvrCxzO?=
- =?us-ascii?Q?UFn7Vc+KPJOxoNXP0rEMXsnQ6Fa4O5FwjI/7p7mf4Ndc4bZNYhM5CKlvbE3+?=
- =?us-ascii?Q?I1/T/cAQL975snv6JHfg95OkZAHe9hQ/MEVd3vWfY7O1t6Gg/SqhDDTvrAvj?=
- =?us-ascii?Q?Dq1y5uiv5Va5dFgG+dJzOyvEUVrX9mL2XLDMEpXnk8KZvOgQLj0tbAP8+1qz?=
- =?us-ascii?Q?iRALddfcXygo2RRQC9OmHBEID7K/o+PECDNI+fVz8IuRh1mMcXyDgBghz/Z7?=
- =?us-ascii?Q?yz3luMlxmDnBTD9BCz6J1MZi0CokSB8hcl3ydbwVP5qaKB6oy2JfzYZMq8V6?=
- =?us-ascii?Q?sAZte4u0+1Kw+QBv0SL8Rjs5seelOixCt4Ai3SPc1R2TbNUt2t4y+jZIO8UO?=
- =?us-ascii?Q?0Pk/2BnTQrLQXobeHDGYa9QkEootNGf3SfEWc7MYwbp4l4IEl89y8HK+X/cv?=
- =?us-ascii?Q?913en1x4ayFWY8WaXtNqQMQnquoTNKZ83CX56hXysi0hCWGJ1L+Lbx33XH+f?=
- =?us-ascii?Q?FhNpxxXwuYF/lFdFbfvca25gEXroeRm0rQD1rry2g4CtEIYtxCHRceZsmQyu?=
- =?us-ascii?Q?v4P3cEMTKA8PF97p2pmW35n1pBXx7LbkB3VdZuck0AaOPFIkufePz/7ZcwNi?=
- =?us-ascii?Q?oYqtubE5qsXzBdSf+O4rr5XjtfHcD4pmQHzmHCUNX4kqW10WOVufhZwrjjmz?=
- =?us-ascii?Q?iea++VZFMtwSi/dwENGnWlV/u/R14h0IR0QhSWYrYck2m6XwyaEz1FtdNwJ2?=
- =?us-ascii?Q?CBbXnXNmM/VdwpBe56qwA6SKSRYRYzfwERLF26cHK8HZ/Ic32I0MRvLGpqcF?=
- =?us-ascii?Q?haruZO876W4cnu7/dWS/E2ABRsnkxf0Xn2u28mZO6Hx8ZTTtOsEseXB07C9K?=
- =?us-ascii?Q?KZkntzu3TDNbg0arb7Xcb+w=3D?=
+	=?us-ascii?Q?qWJKSZS7cddxx5SgheFThcUfpsziExdl9vO0zqdubQVd0eZKZVGYstHTnA/H?=
+ =?us-ascii?Q?jQky6hgms58mFKl9+amV67D0f5y1DosyogSThid9MKPmEebM3rCBg7/km6H+?=
+ =?us-ascii?Q?6feZAEKvavHLVT8QkRY8vGf59iQsZuDkRKra6ioc9uF2+q9lqyInuR1Vispg?=
+ =?us-ascii?Q?SFQE7DLp6rbuWhHDgP5QebcW1mqCHekoPEEZLJ0HO/hpbCSbBFuY7yi+2yJx?=
+ =?us-ascii?Q?GW9DAUqXkab93hbiXUSZfp+GgpzZZ3l7qYlwojA/ME7dzTEvwIu21RyfEfua?=
+ =?us-ascii?Q?sjTrcZKWjunAOBRxKoH7H0b7lHHHq3cJ6n0t+TjrUVBPnr8rEZEE/HPtSmbW?=
+ =?us-ascii?Q?xc9j60DYlI03PZt0AxB2bKJdZqxcu+6+DNJBtcEDXWzhnki8kXeoiQlsLHq9?=
+ =?us-ascii?Q?3SWGvwWKWdXgE1JBYRS5M1xEGpqmf+I4rmv/snxKVeyr4W0krXLvx9thmG1L?=
+ =?us-ascii?Q?TtCv+2Zb31YFU/sq60Ep77ccvFTGqbQTDWrK1F5ewSn40bLl2qtdJrozWccB?=
+ =?us-ascii?Q?WylwJmceCL4XdfCiMwvp2ac0sHbmN4QStPoleSaPgeUq9tY+tzYM0DVX0LEw?=
+ =?us-ascii?Q?fRLrzHDku3MtehVmzczoToWPEBA1JxPwk8YFHqZETujoOOqzAe+poNirg2aV?=
+ =?us-ascii?Q?7JzTrmRoXa56jBaN4uWU+AupZ39aBdteQZBgeBOU74mzcglEHr1nDFYsFm3r?=
+ =?us-ascii?Q?ij2DXoOwwX0oQgAKa8qNEAAvKbuJgyP9BpI/62ft9F6k6e5QKGsRV64eehEf?=
+ =?us-ascii?Q?M2zAqkfEsje2xHs/YgMOwcI6Gg8F7cY9YG8ltE7uvm3wfSW/MM9F0yo+4k5V?=
+ =?us-ascii?Q?Be5D0ci6SffE6oDoLPhd1C0j6Y2ZEHtziRsCrh+JrfZD5ToO8uvYKo1TgPXV?=
+ =?us-ascii?Q?sXrxuL7HLjAlQj3689VcDZbE+0D1iLVr9FE8HSXHhaw//kwpZDvoyZeQj0ZQ?=
+ =?us-ascii?Q?nqVniI7tne61RZQdgeBjpUKb4EMiKgwrR0+S9QTVgTdUU9u1g9sgc2H8Sqsp?=
+ =?us-ascii?Q?D6ZikzLoYbhZoH2yQ72sY33iQxU3g9HkUGqiOoQhOEL5SKwitgPt3enuGHJ0?=
+ =?us-ascii?Q?5Td1nKqvEykWE6llMGC20l/WVhFntDVTxUPJatgffzMK/oWJaYnQNnjX50fg?=
+ =?us-ascii?Q?ky1fA8jIVJ3wQmJZtyVtIjfwBZFn+WXeSdMWABCKDFv71P9vlxIsWnPmw1tx?=
+ =?us-ascii?Q?TaKZ15/ADxk7AttZNFazTa5tS6c7RLRNRBoQDVNmRzNgD8/3hzyu8mBL42NK?=
+ =?us-ascii?Q?ynibX6CRQutOp3NutPntLu6rO2U38e7AO7MptsJ7TJe13XMORBvA9sB05Y5o?=
+ =?us-ascii?Q?DEpvJXzPmN6WlP5KRim8eFcEM2UZdC9I8HTd+gauVKL+vqGLKps8XhLM4XSn?=
+ =?us-ascii?Q?fPrjaqt/gQwh/8/L9FdhN2Sd6BgslzJK7hVUTnixYJate5kboU+X4wQjJbmQ?=
+ =?us-ascii?Q?pungySIscfw8KmzFPZHA643/SoHL1eY/BSPH6Lyb0f6fzEHQIiA6tplubrJM?=
+ =?us-ascii?Q?5cKBfhVkoqfXfKmwey+3DO+G97wl3ttW1x2DKeiXMdSNaXhVCn8BHN3Of2Yn?=
+ =?us-ascii?Q?xE2rkiJj8DxVCDgvus9KM07C+YEQbQI4V3VlwIo0SpU2OSkaYIRwR+T7wZkc?=
+ =?us-ascii?Q?jfeF/sRXJorRx11KLUhvRfM=3D?=
 X-OriginatorOrg: iopsys.eu
-X-MS-Exchange-CrossTenant-Network-Message-Id: f5539931-d7c8-4986-04e9-08dde1da55a6
+X-MS-Exchange-CrossTenant-Network-Message-Id: dabe797a-e0a2-4598-3734-08dde1da5137
 X-MS-Exchange-CrossTenant-AuthSource: GV2PR08MB8121.eurprd08.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Aug 2025 00:16:41.4377
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Aug 2025 00:16:34.1058
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 8d891be1-7bce-4216-9a99-bee9de02ba58
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XbvNJ89Omq5OG5zXDi1pRGcyqO5IH6h7cn+ZI3Y7rnbjJSd3VuRZkTjPUb+xFG/uthWbOX9o9GScqM4j2ZfvcU/VxGXSQk9Jae915fGnjXw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR08MB6398
+X-MS-Exchange-CrossTenant-UserPrincipalName: ak7T8blgnfhobtDg2KnO1YeH1GNixVLeR+S5hu7YG8W32j4qMgOjeWsZKue14rhnt+NA1otc0CX/yLvbY7akUPJVqVxXFmP/OZ7xNQHWNtE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR08MB5618
 
-Airoha snfi spi controller supports acceleration of DUAL/QUAD
-operations, but does not supports DUAL_IO/QUAD_IO operations.
-Luckily DUAL/QUAD operations do the same as DUAL_IO/QUAD_IO ones,
-so we can issue corresponding DUAL/QUAD operation instead of
-DUAL_IO/QUAD_IO one.
+This patch series greatly improve airoha snfi driver and fix a
+number of serious bug.
 
-Signed-off-by: Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>
----
- drivers/spi/spi-airoha-snfi.c | 28 ++++++++++++++++++++++------
- 1 file changed, 22 insertions(+), 6 deletions(-)
+Fixed bugs:
+ * Fix reading/writing of flashes with more than one plane per lun
+ * Fill the buffer with 0xff before writing
+ * Fix reading of flashes supporting continuous reading mode
+ * Fix error paths
 
-diff --git a/drivers/spi/spi-airoha-snfi.c b/drivers/spi/spi-airoha-snfi.c
-index df2d3d717c00..4587147f9cd3 100644
---- a/drivers/spi/spi-airoha-snfi.c
-+++ b/drivers/spi/spi-airoha-snfi.c
-@@ -147,6 +147,8 @@
- #define SPI_NFI_CUS_SEC_SIZE_EN			BIT(16)
- 
- #define REG_SPI_NFI_RD_CTL2			0x0510
-+#define SPI_NFI_DATA_READ_CMD			GENMASK(7, 0)
-+
- #define REG_SPI_NFI_RD_CTL3			0x0514
- 
- #define REG_SPI_NFI_PG_CTL1			0x0524
-@@ -179,7 +181,9 @@
- #define SPI_NAND_OP_READ_FROM_CACHE_SINGLE	0x03
- #define SPI_NAND_OP_READ_FROM_CACHE_SINGLE_FAST	0x0b
- #define SPI_NAND_OP_READ_FROM_CACHE_DUAL	0x3b
-+#define SPI_NAND_OP_READ_FROM_CACHE_DUALIO	0xbb
- #define SPI_NAND_OP_READ_FROM_CACHE_QUAD	0x6b
-+#define SPI_NAND_OP_READ_FROM_CACHE_QUADIO	0xeb
- #define SPI_NAND_OP_WRITE_ENABLE		0x06
- #define SPI_NAND_OP_WRITE_DISABLE		0x04
- #define SPI_NAND_OP_PROGRAM_LOAD_SINGLE		0x02
-@@ -664,26 +668,38 @@ static int airoha_snand_dirmap_create(struct spi_mem_dirmap_desc *desc)
- static ssize_t airoha_snand_dirmap_read(struct spi_mem_dirmap_desc *desc,
- 					u64 offs, size_t len, void *buf)
- {
--	struct spi_mem_op *op = &desc->info.op_tmpl;
- 	struct spi_device *spi = desc->mem->spi;
- 	struct airoha_snand_ctrl *as_ctrl;
- 	u8 *txrx_buf = spi_get_ctldata(spi);
- 	dma_addr_t dma_addr;
--	u32 val, rd_mode;
-+	u32 val, rd_mode, opcode;
- 	int err;
- 
- 	as_ctrl = spi_controller_get_devdata(spi->controller);
- 
--	switch (op->cmd.opcode) {
-+	/*
-+	 * DUALIO and QUADIO opcodes are not supported by the spi controller,
-+	 * replace them with supported opcodes.
-+	 */
-+	opcode = desc->info.op_tmpl.cmd.opcode;
-+	switch (opcode) {
-+	case SPI_NAND_OP_READ_FROM_CACHE_SINGLE:
-+	case SPI_NAND_OP_READ_FROM_CACHE_SINGLE_FAST:
-+		rd_mode = 0;
-+		break;
- 	case SPI_NAND_OP_READ_FROM_CACHE_DUAL:
-+	case SPI_NAND_OP_READ_FROM_CACHE_DUALIO:
-+		opcode = SPI_NAND_OP_READ_FROM_CACHE_DUAL;
- 		rd_mode = 1;
- 		break;
- 	case SPI_NAND_OP_READ_FROM_CACHE_QUAD:
-+	case SPI_NAND_OP_READ_FROM_CACHE_QUADIO:
-+		opcode = SPI_NAND_OP_READ_FROM_CACHE_QUAD;
- 		rd_mode = 2;
- 		break;
- 	default:
--		rd_mode = 0;
--		break;
-+		/* unknown opcode */
-+		return -EOPNOTSUPP;
- 	}
- 
- 	err = airoha_snand_set_mode(as_ctrl, SPI_MODE_DMA);
-@@ -717,7 +733,7 @@ static ssize_t airoha_snand_dirmap_read(struct spi_mem_dirmap_desc *desc,
- 
- 	/* set read command */
- 	err = regmap_write(as_ctrl->regmap_nfi, REG_SPI_NFI_RD_CTL2,
--			   op->cmd.opcode);
-+			   FIELD_PREP(SPI_NFI_DATA_READ_CMD, opcode));
- 	if (err)
- 		goto error_dma_unmap;
- 
+Improvements:
+ * Add support of dual/quad wires spi modes in exec_op(). This also
+   fix flash reading/writing if dirmap can't be created.
+ * Support of dualio/quadio flash reading commands
+ * Remove dirty hack that reads flash page settings from SNFI registers
+   during driver startup
+
+Test results:
+
+1) Boot without dual/quad wires spi modes support (patch-3) and disabled dirmap support
+
+    [    2.980719] spi-nand spi0.0: Micron SPI NAND was found.
+    [    2.986040] spi-nand spi0.0: 256 MiB, block size: 128 KiB, page size: 2048, OOB size: 128
+    [    2.994709] 2 fixed-partitions partitions found on MTD device spi0.0
+    [    3.001075] Creating 2 MTD partitions on "spi0.0":
+    [    3.005862] 0x000000000000-0x000000020000 : "bl2"
+    [    3.011272] 0x000000020000-0x000010000000 : "ubi"
+    ...
+    [    6.195594] ubi0: attaching mtd1
+    [   13.338398] ubi0: scanning is finished
+    [   13.342188] ubi0 error: ubi_read_volume_table: the layout volume was not found
+    [   13.349784] ubi0 error: ubi_attach_mtd_dev: failed to attach mtd1, error -22
+    [   13.356897] UBI error: cannot attach mtd1
+
+2) Boot without fixes for flashes with more than one plane per lun (patch-7)
+
+    [    2.980989] spi-nand spi0.0: Micron SPI NAND was found.
+    [    2.986309] spi-nand spi0.0: 256 MiB, block size: 128 KiB, page size: 2048, OOB size: 128
+    [    2.994978] 2 fixed-partitions partitions found on MTD device spi0.0
+    [    3.001350] Creating 2 MTD partitions on "spi0.0":
+    [    3.006159] 0x000000000000-0x000000020000 : "bl2"
+    [    3.011663] 0x000000020000-0x000010000000 : "ubi"
+    ...
+    [    6.391748] ubi0: attaching mtd1
+    [    6.412545] ubi0 error: ubi_attach: PEB 0 contains corrupted VID header, and the data does not contain all 0xFF
+    [    6.422677] ubi0 error: ubi_attach: this may be a non-UBI PEB or a severe VID header corruption which requires manual inspection
+    [    6.434249] Volume identifier header dump:
+    [    6.438349]     magic     55424923
+    [    6.441482]     version   1
+    [    6.444007]     vol_type  0
+    [    6.446539]     copy_flag 0
+    [    6.449068]     compat    0
+    [    6.451594]     vol_id    0
+    [    6.454120]     lnum      1
+    [    6.456651]     data_size 4096
+    [    6.459442]     used_ebs  1061644134
+    [    6.462748]     data_pad  0
+    [    6.465274]     sqnum     0
+    [    6.467805]     hdr_crc   61169820
+    [    6.470943] Volume identifier header hexdump:
+    [    6.475308] hexdump of PEB 0 offset 4096, length 126976
+    [    6.507391] ubi0 warning: ubi_attach: valid VID header but corrupted EC header at PEB 4
+    [    6.515415] ubi0 error: ubi_compare_lebs: unsupported on-flash UBI format
+    [    6.522222] ubi0 error: ubi_attach_mtd_dev: failed to attach mtd1, error -22
+    [    6.529294] UBI error: cannot attach mtd1
+    [    6.533450] clk: Disabling unused clocks
+    [    6.537583] Waiting for root device /dev/ubiblock0_5...
+
+3) patched kernel tests
+
+    root@OpenWrt:/lib/modules/6.6.79# insmod mtd_oobtest.ko dev=1
+    [  263.191711] 
+    [  263.193218] =================================================
+    [  263.199014] mtd_oobtest: MTD device: 1
+    [  263.202768] mtd_oobtest: MTD device size 268304384, eraseblock size 131072, page size 2048, count of eraseblocks 2047, pages per eraseblock 64, OOB size 128
+    [  263.216791] mtd_test: scanning for bad eraseblocks
+    [  263.221956] mtd_test: scanned 2047 eraseblocks, 0 are bad
+    [  263.227361] mtd_oobtest: test 1 of 5
+    [  265.077216] mtd_oobtest: writing OOBs of whole device
+    [  265.121767] mtd_oobtest: written up to eraseblock 0
+    [  275.174147] mtd_oobtest: written up to eraseblock 256
+    [  285.210279] mtd_oobtest: written up to eraseblock 512
+    [  295.241724] mtd_oobtest: written up to eraseblock 768
+    [  305.280167] mtd_oobtest: written up to eraseblock 1024
+    [  315.326883] mtd_oobtest: written up to eraseblock 1280
+    [  325.364049] mtd_oobtest: written up to eraseblock 1536
+    [  335.398609] mtd_oobtest: written up to eraseblock 1792
+    [  345.358981] mtd_oobtest: written 2047 eraseblocks
+    [  345.363694] mtd_oobtest: verifying all eraseblocks
+    [  345.386088] mtd_oobtest: verified up to eraseblock 0
+    [  349.830833] mtd_oobtest: verified up to eraseblock 256
+    [  354.276245] mtd_oobtest: verified up to eraseblock 512
+    [  358.721496] mtd_oobtest: verified up to eraseblock 768
+    [  363.166881] mtd_oobtest: verified up to eraseblock 1024
+    [  367.612694] mtd_oobtest: verified up to eraseblock 1280
+    [  372.058211] mtd_oobtest: verified up to eraseblock 1536
+    [  376.503820] mtd_oobtest: verified up to eraseblock 1792
+    [  380.914843] mtd_oobtest: verified 2047 eraseblocks
+    [  380.919660] mtd_oobtest: test 2 of 5
+    [  384.202620] mtd_oobtest: writing OOBs of whole device
+    [  384.247584] mtd_oobtest: written up to eraseblock 0
+    [  394.305121] mtd_oobtest: written up to eraseblock 256
+    [  404.342199] mtd_oobtest: written up to eraseblock 512
+    [  414.374204] mtd_oobtest: written up to eraseblock 768
+    [  424.409891] mtd_oobtest: written up to eraseblock 1024
+    [  434.453378] mtd_oobtest: written up to eraseblock 1280
+    [  444.494321] mtd_oobtest: written up to eraseblock 1536
+    [  454.534480] mtd_oobtest: written up to eraseblock 1792
+    [  464.490962] mtd_oobtest: written 2047 eraseblocks
+    [  464.495681] mtd_oobtest: verifying all eraseblocks
+    [  464.518015] mtd_oobtest: verified up to eraseblock 0
+    [  468.955635] mtd_oobtest: verified up to eraseblock 256
+    [  473.395502] mtd_oobtest: verified up to eraseblock 512
+    [  477.834373] mtd_oobtest: verified up to eraseblock 768
+    [  482.272717] mtd_oobtest: verified up to eraseblock 1024
+    [  486.712148] mtd_oobtest: verified up to eraseblock 1280
+    [  491.150704] mtd_oobtest: verified up to eraseblock 1536
+    [  495.589439] mtd_oobtest: verified up to eraseblock 1792
+    [  499.993138] mtd_oobtest: verified 2047 eraseblocks
+    [  499.997951] mtd_oobtest: test 3 of 5
+    [  503.404228] mtd_oobtest: writing OOBs of whole device
+    [  503.448822] mtd_oobtest: written up to eraseblock 0
+    [  513.480773] mtd_oobtest: written up to eraseblock 256
+    [  523.489361] mtd_oobtest: written up to eraseblock 512
+    [  533.506896] mtd_oobtest: written up to eraseblock 768
+    [  543.506268] mtd_oobtest: written up to eraseblock 1024
+    [  553.506503] mtd_oobtest: written up to eraseblock 1280
+    [  563.511266] mtd_oobtest: written up to eraseblock 1536
+    [  573.519567] mtd_oobtest: written up to eraseblock 1792
+    [  583.455111] mtd_oobtest: written 2047 eraseblocks
+    [  583.459837] mtd_oobtest: verifying all eraseblocks
+    [  583.499358] mtd_oobtest: verified up to eraseblock 0
+    [  592.382953] mtd_oobtest: verified up to eraseblock 256
+    [  601.267297] mtd_oobtest: verified up to eraseblock 512
+    [  610.150907] mtd_oobtest: verified up to eraseblock 768
+    [  619.034702] mtd_oobtest: verified up to eraseblock 1024
+    [  627.919683] mtd_oobtest: verified up to eraseblock 1280
+    [  636.821168] mtd_oobtest: verified up to eraseblock 1536
+    [  645.705487] mtd_oobtest: verified up to eraseblock 1792
+    [  654.520336] mtd_oobtest: verified 2047 eraseblocks
+    [  654.525134] mtd_oobtest: test 4 of 5
+    [  657.578146] mtd_oobtest: attempting to start write past end of OOB
+    [  657.584336] mtd_oobtest: an error is expected...
+    [  657.588974] mtd_oobtest: error occurred as expected
+    [  657.593848] mtd_oobtest: attempting to start read past end of OOB
+    [  657.599953] mtd_oobtest: an error is expected...
+    [  657.604569] mtd_oobtest: error occurred as expected
+    [  657.609450] mtd_oobtest: attempting to write past end of device
+    [  657.615367] mtd_oobtest: an error is expected...
+    [  657.619990] mtd_oobtest: error occurred as expected
+    [  657.624864] mtd_oobtest: attempting to read past end of device
+    [  657.630715] mtd_oobtest: an error is expected...
+    [  657.635333] mtd_oobtest: error occurred as expected
+    [  657.641043] mtd_oobtest: attempting to write past end of device
+    [  657.646966] mtd_oobtest: an error is expected...
+    [  657.651574] mtd_oobtest: error occurred as expected
+    [  657.656451] mtd_oobtest: attempting to read past end of device
+    [  657.662277] mtd_oobtest: an error is expected...
+    [  657.666901] mtd_oobtest: error occurred as expected
+    [  657.671774] mtd_oobtest: test 5 of 5
+    [  659.382333] mtd_oobtest: writing OOBs of whole device
+    [  659.388056] mtd_oobtest: written up to eraseblock 0
+    [  659.393526] mtd_oobtest: written up to eraseblock 0
+    [  659.704525] mtd_oobtest: written up to eraseblock 256
+    [  659.710187] mtd_oobtest: written up to eraseblock 256
+    [  660.021093] mtd_oobtest: written up to eraseblock 512
+    [  660.026752] mtd_oobtest: written up to eraseblock 512
+    [  660.338427] mtd_oobtest: written up to eraseblock 768
+    [  660.344048] mtd_oobtest: written up to eraseblock 768
+    [  660.655718] mtd_oobtest: written up to eraseblock 1024
+    [  660.661462] mtd_oobtest: written up to eraseblock 1024
+    [  660.970676] mtd_oobtest: written up to eraseblock 1280
+    [  660.976386] mtd_oobtest: written up to eraseblock 1280
+    [  661.286858] mtd_oobtest: written up to eraseblock 1536
+    [  661.292587] mtd_oobtest: written up to eraseblock 1536
+    [  661.605397] mtd_oobtest: written up to eraseblock 1792
+    [  661.611142] mtd_oobtest: written up to eraseblock 1792
+    [  661.918754] mtd_oobtest: written 2046 eraseblocks
+    [  661.923458] mtd_oobtest: verifying all eraseblocks
+    [  661.928812] mtd_oobtest: verified up to eraseblock 0
+    [  662.072499] mtd_oobtest: verified up to eraseblock 256
+    [  662.216152] mtd_oobtest: verified up to eraseblock 512
+    [  662.359956] mtd_oobtest: verified up to eraseblock 768
+    [  662.503238] mtd_oobtest: verified up to eraseblock 1024
+    [  662.646847] mtd_oobtest: verified up to eraseblock 1280
+    [  662.790603] mtd_oobtest: verified up to eraseblock 1536
+    [  662.934269] mtd_oobtest: verified up to eraseblock 1792
+    [  663.076329] mtd_oobtest: verified 2046 eraseblocks
+    [  663.081114] mtd_oobtest: finished with 0 errors
+    [  663.085647] =================================================
+
+    root@OpenWrt:/lib/modules/6.6.79# insmod  mtd_pagetest.ko dev=1
+    [ 1142.213082] 
+    [ 1142.214590] =================================================
+    [ 1142.220433] mtd_pagetest: MTD device: 1
+    [ 1142.224278] mtd_pagetest: MTD device size 268304384, eraseblock size 131072, page size 2048, count of eraseblocks 2047, pages per eraseblock 64, OOB size 128
+    [ 1142.238388] mtd_test: scanning for bad eraseblocks
+    [ 1142.243536] mtd_test: scanned 2047 eraseblocks, 0 are bad
+    [ 1142.248935] mtd_pagetest: erasing whole device
+    [ 1143.962562] mtd_pagetest: erased 2047 eraseblocks
+    [ 1143.967301] mtd_pagetest: writing whole device
+    [ 1144.011729] mtd_pagetest: written up to eraseblock 0
+    [ 1154.137933] mtd_pagetest: written up to eraseblock 256
+    [ 1164.265201] mtd_pagetest: written up to eraseblock 512
+    [ 1174.393365] mtd_pagetest: written up to eraseblock 768
+    [ 1184.525700] mtd_pagetest: written up to eraseblock 1024
+    [ 1194.650920] mtd_pagetest: written up to eraseblock 1280
+    [ 1204.773676] mtd_pagetest: written up to eraseblock 1536
+    [ 1214.896934] mtd_pagetest: written up to eraseblock 1792
+    [ 1224.942600] mtd_pagetest: written 2047 eraseblocks
+    [ 1224.947410] mtd_pagetest: verifying all eraseblocks
+    [ 1225.053133] mtd_pagetest: verified up to eraseblock 0
+    [ 1250.760034] mtd_pagetest: verified up to eraseblock 256
+    [ 1276.448242] mtd_pagetest: verified up to eraseblock 512
+    [ 1302.138825] mtd_pagetest: verified up to eraseblock 768
+    [ 1327.824020] mtd_pagetest: verified up to eraseblock 1024
+    [ 1353.532178] mtd_pagetest: verified up to eraseblock 1280
+    [ 1379.234385] mtd_pagetest: verified up to eraseblock 1536
+    [ 1404.943865] mtd_pagetest: verified up to eraseblock 1792
+    [ 1430.468816] mtd_pagetest: verified 2047 eraseblocks
+    [ 1430.473702] mtd_pagetest: crosstest
+    [ 1430.477717] mtd_pagetest: reading page at 0x0
+    [ 1430.482328] mtd_pagetest: reading page at 0xffdf800
+    [ 1430.487469] mtd_pagetest: reading page at 0x0
+    [ 1430.492084] mtd_pagetest: verifying pages read at 0x0 match
+    [ 1430.497668] mtd_pagetest: crosstest ok
+    [ 1430.501409] mtd_pagetest: erasecrosstest
+    [ 1430.505323] mtd_pagetest: erasing block 0
+    [ 1430.511511] mtd_pagetest: writing 1st page of block 0
+    [ 1430.517166] mtd_pagetest: reading 1st page of block 0
+    [ 1430.522505] mtd_pagetest: verifying 1st page of block 0
+    [ 1430.527739] mtd_pagetest: erasing block 0
+    [ 1430.532565] mtd_pagetest: writing 1st page of block 0
+    [ 1430.538229] mtd_pagetest: erasing block 2046
+    [ 1430.544181] mtd_pagetest: reading 1st page of block 0
+    [ 1430.549498] mtd_pagetest: verifying 1st page of block 0
+    [ 1430.554718] mtd_pagetest: erasecrosstest ok
+    [ 1430.558900] mtd_pagetest: erasetest
+    [ 1430.562381] mtd_pagetest: erasing block 0
+    [ 1430.567208] mtd_pagetest: writing 1st page of block 0
+    [ 1430.572858] mtd_pagetest: erasing block 0
+    [ 1430.577680] mtd_pagetest: reading 1st page of block 0
+    [ 1430.582990] mtd_pagetest: verifying 1st page of block 0 is all 0xff
+    [ 1430.589279] mtd_pagetest: erasetest ok
+    [ 1430.593023] mtd_pagetest: finished with 0 errors
+    [ 1430.597651] =================================================
+
+    root@OpenWrt:/lib/modules/6.6.79# insmod  mtd_readtest.ko dev=1
+    [ 1478.691648] 
+    [ 1478.693158] =================================================
+    [ 1478.698981] mtd_readtest: MTD device: 1
+    [ 1478.702829] mtd_readtest: MTD device size 268304384, eraseblock size 131072, page size 2048, count of eraseblocks 2047, pages per eraseblock 64, OOB size 128
+    [ 1478.716939] mtd_test: scanning for bad eraseblocks
+    [ 1478.722072] mtd_test: scanned 2047 eraseblocks, 0 are bad
+    [ 1478.727475] mtd_readtest: testing page read
+    [ 1548.352125] mtd_readtest: finished
+    [ 1548.355553] =================================================
+
+    root@OpenWrt:/lib/modules/6.6.79# insmod  mtd_speedtest.ko dev=1
+    [ 1617.353002] 
+    [ 1617.354511] =================================================
+    [ 1617.360332] mtd_speedtest: MTD device: 1
+    [ 1617.364258] mtd_speedtest: MTD device size 268304384, eraseblock size 131072, page size 2048, count of eraseblocks 2047, pages per eraseblock 64, OOB size 128
+    [ 1617.380150] mtd_test: scanning for bad eraseblocks
+    [ 1617.385428] mtd_test: scanned 2047 eraseblocks, 0 are bad
+    [ 1621.021861] mtd_speedtest: testing eraseblock write speed
+    [ 1700.915306] mtd_speedtest: eraseblock write speed is 3279 KiB/s
+    [ 1700.921250] mtd_speedtest: testing eraseblock read speed
+    [ 1734.931886] mtd_speedtest: eraseblock read speed is 7705 KiB/s
+    [ 1738.682742] mtd_speedtest: testing page write speed
+    [ 1818.818644] mtd_speedtest: page write speed is 3269 KiB/s
+    [ 1818.824058] mtd_speedtest: testing page read speed
+    [ 1852.913595] mtd_speedtest: page read speed is 7687 KiB/s
+    [ 1856.674492] mtd_speedtest: testing 2 page write speed
+    [ 1936.437284] mtd_speedtest: 2 page write speed is 3285 KiB/s
+    [ 1936.442869] mtd_speedtest: testing 2 page read speed
+    [ 1970.498124] mtd_speedtest: 2 page read speed is 7694 KiB/s
+    [ 1970.503624] mtd_speedtest: Testing erase speed
+    [ 1974.343389] mtd_speedtest: erase speed is 68316 KiB/s
+    [ 1974.348479] mtd_speedtest: Testing 2x multi-block erase speed
+    [ 1976.068855] mtd_speedtest: 2x multi-block erase speed is 152811 KiB/s
+    [ 1976.075309] mtd_speedtest: Testing 4x multi-block erase speed
+    [ 1977.790232] mtd_speedtest: 4x multi-block erase speed is 153301 KiB/s
+    [ 1977.796693] mtd_speedtest: Testing 8x multi-block erase speed
+    [ 1979.511905] mtd_speedtest: 8x multi-block erase speed is 153273 KiB/s
+    [ 1979.518367] mtd_speedtest: Testing 16x multi-block erase speed
+    [ 1981.230700] mtd_speedtest: 16x multi-block erase speed is 153539 KiB/s
+    [ 1981.237249] mtd_speedtest: Testing 32x multi-block erase speed
+    [ 1982.948381] mtd_speedtest: 32x multi-block erase speed is 153648 KiB/s
+    [ 1982.954918] mtd_speedtest: Testing 64x multi-block erase speed
+    [ 1984.665992] mtd_speedtest: 64x multi-block erase speed is 153655 KiB/s
+    [ 1984.672531] mtd_speedtest: finished
+    [ 1984.676054] =================================================
+
+    root@OpenWrt:/lib/modules/6.6.79# insmod mtd_stresstest.ko dev=1
+    [ 2190.651750] 
+    [ 2190.653263] =================================================
+    [ 2190.659087] mtd_stresstest: MTD device: 1
+    [ 2190.663105] mtd_stresstest: MTD device size 268304384, eraseblock size 131072, page size 2048, count of eraseblocks 2047, pages per eraseblock 64, OOB size 128
+    [ 2190.679846] mtd_test: scanning for bad eraseblocks
+    [ 2190.684981] mtd_test: scanned 2047 eraseblocks, 0 are bad
+    [ 2190.690389] mtd_stresstest: doing operations
+    [ 2190.694655] mtd_stresstest: 0 operations done
+    [ 2214.262705] mtd_stresstest: 1024 operations done
+    [ 2239.019612] mtd_stresstest: 2048 operations done
+    [ 2262.820899] mtd_stresstest: 3072 operations done
+    [ 2285.061376] mtd_stresstest: 4096 operations done
+    [ 2308.297322] mtd_stresstest: 5120 operations done
+    [ 2330.530459] mtd_stresstest: 6144 operations done
+    [ 2352.651759] mtd_stresstest: 7168 operations done
+    [ 2375.188275] mtd_stresstest: 8192 operations done
+    [ 2397.738174] mtd_stresstest: 9216 operations done
+    [ 2414.792572] mtd_stresstest: finished, 10000 operations done
+    [ 2414.798257] =================================================
+
+4) Speed test of original driver (with patch to fix support of flashes
+   with more than one plane per lun)
+
+    root@OpenWrt:/lib/modules/6.6.79# insmod  mtd_speedtest.ko dev=1
+    [ 2894.142208] 
+    [ 2894.143719] =================================================
+    [ 2894.149556] mtd_speedtest: MTD device: 1
+    [ 2894.153486] mtd_speedtest: MTD device size 268304384, eraseblock size 131072, page size 2048, count of eraseblocks 2047, pages per eraseblock 64, OOB size 128
+    [ 2894.168888] mtd_test: scanning for bad eraseblocks
+    [ 2894.174023] mtd_test: scanned 2047 eraseblocks, 0 are bad
+    [ 2897.500416] mtd_speedtest: testing eraseblock write speed
+    [ 2977.807233] mtd_speedtest: eraseblock write speed is 3262 KiB/s
+    [ 2977.813171] mtd_speedtest: testing eraseblock read speed
+    [ 3013.906597] mtd_speedtest: eraseblock read speed is 7260 KiB/s
+    [ 3017.440320] mtd_speedtest: testing page write speed
+    [ 3097.833394] mtd_speedtest: page write speed is 3259 KiB/s
+    [ 3097.838812] mtd_speedtest: testing page read speed
+    [ 3134.004981] mtd_speedtest: page read speed is 7245 KiB/s
+    [ 3137.538423] mtd_speedtest: testing 2 page write speed
+    [ 3217.906288] mtd_speedtest: 2 page write speed is 3260 KiB/s
+    [ 3217.911883] mtd_speedtest: testing 2 page read speed
+    [ 3254.049757] mtd_speedtest: 2 page read speed is 7251 KiB/s
+    [ 3254.055254] mtd_speedtest: Testing erase speed
+    [ 3257.599146] mtd_speedtest: erase speed is 74027 KiB/s
+    [ 3257.604213] mtd_speedtest: Testing 2x multi-block erase speed
+    [ 3259.320945] mtd_speedtest: 2x multi-block erase speed is 153139 KiB/s
+    [ 3259.327413] mtd_speedtest: Testing 4x multi-block erase speed
+    [ 3261.044585] mtd_speedtest: 4x multi-block erase speed is 153098 KiB/s
+    [ 3261.051047] mtd_speedtest: Testing 8x multi-block erase speed
+    [ 3262.786520] mtd_speedtest: 8x multi-block erase speed is 151479 KiB/s
+    [ 3262.792979] mtd_speedtest: Testing 16x multi-block erase speed
+    [ 3264.509898] mtd_speedtest: 16x multi-block erase speed is 153130 KiB/s
+    [ 3264.516454] mtd_speedtest: Testing 32x multi-block erase speed
+    [ 3266.233403] mtd_speedtest: 32x multi-block erase speed is 153125 KiB/s
+    [ 3266.239961] mtd_speedtest: Testing 64x multi-block erase speed
+    [ 3267.957985] mtd_speedtest: 64x multi-block erase speed is 153029 KiB/s
+    [ 3267.964525] mtd_speedtest: finished
+    [ 3267.968039] =================================================
+
+   It looks like a patched driver is a bit faster
+
+    write speed: 3260 KiB/s  vs  3277 KiB/s
+    read speed:  7252 KiB/s  vs  7695 KiB/s
+
+Changes v2:
+ * minor fix
+ * add comments to code
+
+Changes v3:
+ * add patch to prevent continuous reading
+
+Changes v4:
+ * removed non-needed patch, other patch was a bit updated
+ * treat zero buswidth as single wire buswidth (thanks to Jyothi Kumar Seerapu)
+ * changes were tested with linux
+ * test results was added
+
+Mikhail Kshevetskiy (13):
+  spi: airoha: return an error for continuous mode dirmap creation cases
+  spi: airoha: remove unnecessary restriction length
+  spi: airoha: add support of dual/quad wires spi modes
+  spi: airoha: remove unnecessary switch to non-dma mode
+  spi: airoha: unify dirmap read/write code
+  spi: airoha: switch back to non-dma mode in the case of error
+  spi: airoha: fix reading/writing of flashes with more than one plane
+    per lun
+  spi: airoha: support of dualio/quadio flash reading commands
+  spi: airoha: avoid setting of page/oob sizes in REG_SPI_NFI_PAGEFMT
+  spi: airoha: reduce the number of modification of REG_SPI_NFI_CNFG and
+    REG_SPI_NFI_SECCUS_SIZE registers
+  spi: airoha: set custom sector size equal to flash page size
+  spi: airoha: avoid reading flash page settings from SNFI registers
+    during driver startup
+  spi: airoha: buffer must be 0xff-ed before writing
+
+ drivers/spi/spi-airoha-snfi.c | 510 +++++++++++++++++-----------------
+ 1 file changed, 262 insertions(+), 248 deletions(-)
+
 -- 
 2.50.1
 

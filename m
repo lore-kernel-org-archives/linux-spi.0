@@ -1,70 +1,68 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11023136.outbound.protection.outlook.com [52.101.83.136])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11023102.outbound.protection.outlook.com [52.101.72.102])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42CF52D7DF4;
-	Fri, 22 Aug 2025 20:01:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8475A393DDA;
+	Sat, 23 Aug 2025 00:16:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.102
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755892866; cv=fail; b=H82rAbbxAbbv5MTTjc1tUZvDtqnAe1IK6EIkLQIq6Vs+wpQGI22ApgXYxujTXB0d29fSpf0Qx1yGkxgDahWNqr+eyhNVtQG5EEwUVyg5N9vyb1z8clEJ9TjF/PbrUnRXcpjZZVb6kJMKJydTH0YXejUdn9WuQ26f4qqlxJx3NuY=
+	t=1755908202; cv=fail; b=mV0akpc3ViCpGVVJpRa7Z3fgfkIktiRexMsOE8gHRHz6nSx0yTjoc7xsSNAfHs4357BrEQBgp9YGSyemF4hYkmqaMI64ydauvGiLuL6FksbKkZCs3UoF6itJo9nnXeUPOK3XH2wSa2O0rWl0qyhgJcHojEmu0lHRkbMA9eTLXZE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755892866; c=relaxed/simple;
-	bh=doaw/EkYfsMSXt9PbAzjd2XXh/xHglzEAHWE4Afl52g=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=LEDtvZQerKc9190bQhnqsbwHPN0gzJsyjbT5LVm8zvxxhg3Nbrdik7SdINYlHocCURV5HTnW36B0hjgk9C324lGnwZW7s7osgSfC/nizS3rTfrlRSt3NjRBJVDfiGa+PYDQax3STV+txUK6oE1EvAtPiFNCpN2EKzV3/r4iRQlw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iopsys.eu; spf=pass smtp.mailfrom=genexis.eu; dkim=pass (2048-bit key) header.d=iopsys.eu header.i=@iopsys.eu header.b=BbsI30N7; arc=fail smtp.client-ip=52.101.83.136
+	s=arc-20240116; t=1755908202; c=relaxed/simple;
+	bh=yfVgRyVAlRoU3SzK1GEy9nQvaGLglKASwFFrlb9QsS4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=bqsCM4rkUS27tyETjFEyeFSpJRp86IwYY+WuknV/ORF05QC6X7hBAG46i2pUne/sPj8ZsV9Hla6eLOeg2C5N+I2IayRKuYwbo7oGjoIRVjW0/eiFG4+uXofohQXi7yHo4pY5JmDQqnPdDBTcQVsKKAL0kOao1d84hr/rmriDYzQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iopsys.eu; spf=pass smtp.mailfrom=genexis.eu; dkim=pass (2048-bit key) header.d=iopsys.eu header.i=@iopsys.eu header.b=lmjkNaG7; arc=fail smtp.client-ip=52.101.72.102
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iopsys.eu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=genexis.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iopsys.eu header.i=@iopsys.eu header.b="BbsI30N7"
+	dkim=pass (2048-bit key) header.d=iopsys.eu header.i=@iopsys.eu header.b="lmjkNaG7"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=R001cSQqGcYNP+sH2D0JoMmrpPM+clRRUiyfImRg93gm4T9fO+MIpLH77cT06nTgwONwmWUK8jwKNR0zkpDcx7gUxTK20Su50H7aCcncVWDwe6rKt3f5IUdgl5tvxfK3iWnp8F4ZCxqKnzccQZ+pcGddZiJfpkfTi2VgMF52M7NIXvCWdqaFnf4OLu+WQbSxFJFxu/hikiRCpFbtQPC0FGYFEsptH/FARhdW9nnkLzNcGwghZybGpNxmOysFFR780tzsIH6z4TH5QEmIZsLlddbOXeLDeQiYfSESVJ/pI5UP6aXVoesNgGV5GuwvY66GcSSbFQ7GRZbRnLGRemN+cg==
+ b=ftAEZ83I2HSeasLcwriuYki1Rf2EHLPruZg2QIu6yTVL6lYJHGWHGr10VKbwa/ZpTYaAQmH1v6LOHqweYh0lU19CUHHVwODIwUlKj33IuoqjB7nxOgkgvshG2qz5flgIbJI5lUg05umtN549bhg0nQ2Ko9SeGqrxWE6JCQVvlouZyrMoy3UTjulFAdLMe1NMS9GclEpXb+r6hAXsIMlTZhVUsZo6UD1Ai/pzlNMCl2QKUQBvEnL5e/QmVFlXmThKa0WEae3duAIO6TWKWrkeIuxyja0RcdDwwftDL2fLUeNeiCnOimjt/eBtW8Qyanjl3nFiUZwAcK1/0b0VbRUqyA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kuafhKkU4Fs1aGW8xoqs6Yf+975XHmOPTE1/sKVulnY=;
- b=lbzRZGVO+g89x/X8B8mj2De5Q7GHG/zuxsS0cITr7rqiZPzcUIriT5pDCnMmdKuPLa9KsrpBK4XjTTRNS7rg8cDdKA3fn6xxkd2ontnJ4fJa5ZdnLRIA4rhShFR78Zwy+Xx8RaVJIK4H4CgTV2OM9pc2LlWaSoqY6VRoPoifmNptvOqWQeGpzB9QxJOA8NOfhHnefg+H5TMDGUP/Yzi2gOC4DK6CGOfxuzOjzfixMwWW1S5G+DAPuPtXtmbd30DegUukNi6c4mZdHYcRc9Pi30MxkMAIMSZxVU2/9alhOllaQhbYi8/iEYZtEfaOHR/5ODPuYr+aYb6dait0uLwcoQ==
+ bh=afEq9bHX/2s3KBTTklyPlyvAIAF9EeHEPeuOYA/bDc0=;
+ b=oUQuR+gGvXhO4m6G8ZEE2EWGDLIW5IzwXpZcNo9nmiSm6yAAoNARz2pq91i9rNhd+KS1v1UoEKRrDx8+sJbI4chaY9fK0I3GiWGBKbySDAViHVbxD3H/6opht/kMKGyhJdSW9jzpB3f7OOkYGEVVo1MpQHEsvsXTsAP13FONXACMS4wjXZShM5+d3jEFIs4p+JbZb7j5iID6438NvlaboXoOZCFxYwYCc/Cy745n/YzmiT7tNYnUFxKHYImRvoXDSXl7VGiV2TQ0Rsf/HLMVfR/UHlf1FNyYRGSrlpOq0fBiKZcLAkPpflSqpop280HGxG7czkQWbC/Njw4Z1ZBEfg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=genexis.eu; dmarc=pass action=none header.from=iopsys.eu;
  dkim=pass header.d=iopsys.eu; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iopsys.eu;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kuafhKkU4Fs1aGW8xoqs6Yf+975XHmOPTE1/sKVulnY=;
- b=BbsI30N71BAIhudtuQfpXeSnRPRbxo4/ArgVORnOUDMuf98diIuXmQw1Sy71MxfutSF+1VKMi11rySXczX5KTpSPoE17HJhqVXCdzPl+4XaGffOeVqB0cSi66VMFMUzwQNsh72q3vbB22YniIMhWU+xNgHBAQNRT4QH3dq35/xiibND3XfIHJrR2+A7c9KsZd7NYHAudGRNCBIX2TKiUkxwBR6kJjWwCLyHT0NvHIh8I1629oUgFLinLTQXCdeBGjPsGE95fquvPh8z4if1OXIpPz5XAUH367pvJf5VJ+oix1kNS9o4XdEK+vO0rG/EjwvU1TdE5xkglrv2QSiAxTw==
+ bh=afEq9bHX/2s3KBTTklyPlyvAIAF9EeHEPeuOYA/bDc0=;
+ b=lmjkNaG7K25pNmKSFtEq708XZCAQI8UJcyBEoUa5vsZZ/uTbgPXcCo4hMWdRU4rhObOVQGddqOA2T4Ydzk28FrA0xuRFIkqZ8JITBEz+vgsd7NpBOEMTK2Bbm+Mqi4ajslfYuRyiJnk4hLJWkAD1vy6r6+rQ81A4Edpdz1zUkrJXuOeXf6/w8z1yn9EtKtXbjoHvz1vAactNDr2d64yh7Xo0BvqBsdEjlZW7XNH21VE+zS7a8bcUolQo6XQQg/W4B3HJpbrPBaE8Y1LhrYSYrBoMb0uNrMzU6slNtjwfKvquQCK9iWmIkFayf493Y2DG05p82QcLMCwetfWyThk7lg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=iopsys.eu;
 Received: from GV2PR08MB8121.eurprd08.prod.outlook.com (2603:10a6:150:7d::22)
- by PAWPR08MB9829.eurprd08.prod.outlook.com (2603:10a6:102:2e6::10) with
+ by AM8PR08MB5618.eurprd08.prod.outlook.com (2603:10a6:20b:1d7::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.15; Fri, 22 Aug
- 2025 20:00:59 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.24; Sat, 23 Aug
+ 2025 00:16:35 +0000
 Received: from GV2PR08MB8121.eurprd08.prod.outlook.com
  ([fe80::4cd3:da80:2532:daa0]) by GV2PR08MB8121.eurprd08.prod.outlook.com
- ([fe80::4cd3:da80:2532:daa0%4]) with mapi id 15.20.9031.018; Fri, 22 Aug 2025
- 20:00:59 +0000
-Message-ID: <29d6503d-9e34-4d64-aacb-32f36152ce9c@iopsys.eu>
-Date: Fri, 22 Aug 2025 23:00:57 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 00/14] spi: airoha: driver fixes & improvements
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: Ray Liu <ray.liu@airoha.com>, Mark Brown <broonie@kernel.org>,
- linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
- linux-kernel@vger.kernel.org, Frieder Schrempf <frieder.schrempf@kontron.de>
-References: <20250820123317.728148-1-mikhail.kshevetskiy@iopsys.eu>
- <aKbDjIZhJuWo3yFu@lore-rh-laptop>
- <7bca8089-09ad-4550-93d1-35a365bcd167@iopsys.eu>
- <aKcEYn_hX0ZIusne@lore-rh-laptop>
- <eaea681a-cda8-4066-a58b-61a35e2b8b55@iopsys.eu>
- <aKgSY7bOrC8-qZE3@lore-rh-laptop>
- <1d053317-24a6-4bba-aa30-ad42460ec19b@iopsys.eu>
- <aKhtP1G7as9b2c4f@lore-rh-laptop>
+ ([fe80::4cd3:da80:2532:daa0%4]) with mapi id 15.20.9031.018; Sat, 23 Aug 2025
+ 00:16:35 +0000
 From: Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>
-Content-Language: en-US, ru-RU
-In-Reply-To: <aKhtP1G7as9b2c4f@lore-rh-laptop>
-Content-Type: text/plain; charset=UTF-8
+To: Lorenzo Bianconi <lorenzo@kernel.org>,
+	Ray Liu <ray.liu@airoha.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jyothi Kumar Seerapu <quic_jseerapu@quicinc.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>,
+	Frieder Schrempf <frieder.schrempf@kontron.de>
+Subject: [PATCH v4 01/13] spi: airoha: return an error for continuous mode dirmap creation cases
+Date: Sat, 23 Aug 2025 03:16:13 +0300
+Message-ID: <20250823001626.3641935-2-mikhail.kshevetskiy@iopsys.eu>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250823001626.3641935-1-mikhail.kshevetskiy@iopsys.eu>
+References: <aKgSY7bOrC8-qZE3@lore-rh-laptop>
+ <20250823001626.3641935-1-mikhail.kshevetskiy@iopsys.eu>
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR0P281CA0072.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:49::9) To GV2PR08MB8121.eurprd08.prod.outlook.com
+Content-Type: text/plain
+X-ClientProxiedBy: GVZP280CA0047.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:150:273::8) To GV2PR08MB8121.eurprd08.prod.outlook.com
  (2603:10a6:150:7d::22)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
@@ -73,287 +71,110 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR08MB8121:EE_|PAWPR08MB9829:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0f533de6-102a-489d-c449-08dde1b69d08
+X-MS-TrafficTypeDiagnostic: GV2PR08MB8121:EE_|AM8PR08MB5618:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2b1fc31a-5a67-4951-c188-08dde1da51e4
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|1800799024|52116014|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?WmlwZEMvN0dUeXJodjVKanFUbU51QWlIUmtHRDBRUHFGeDFrK2RIT1RPVDVZ?=
- =?utf-8?B?Y2p2MkxNZE8zcDdjMlZ4YnVZM3VwckttZVFiWGpwMDV6LzMrSXVMazZiQjJW?=
- =?utf-8?B?UjBBME9KaGtCU3pBL0ZEN3B2UFBkZmJ3aEdlTWxsVjNodi9SWmhyWStVWUxC?=
- =?utf-8?B?R1NaeWYwQjJzdERhL2x6TTlRM1VpRmNaSzRTTVJJS2ZRVlg1S2gzQTh1R1hZ?=
- =?utf-8?B?ZklsdEtMOEZVNzl4WGxEa3JVUnIzMHUxQXlnTDFrNUJDdEh0M1VDdloyQXlD?=
- =?utf-8?B?TVppcG5iay9qRjlDUHVWb0h2VWJrdUs4VHN0QkloVmRIbm1iM2xJOTVCajFj?=
- =?utf-8?B?Qk8rczdLT1JmRFdPTXBNWm15L25ZQjdmTWV2OGE5dlI5T0dMbWI5S2svV1Nx?=
- =?utf-8?B?SkVhUElmbFdoRnNoTnF2L3U4MHZROG1yQnBFc3lXRDJGTysvT0FiV3VsYzRw?=
- =?utf-8?B?OEVuTHpkLzB2dlVBc3MzczBzUHdMQ0tJNEZHdHU0dGo1R0VOOWpWa09veVNK?=
- =?utf-8?B?aGl2Q1VXdWdOMFVsR2IrUFdjbnQzTDc0M1J6REMveGlCa0ZZZTErUmdRaVRX?=
- =?utf-8?B?NDlrUzBCa1BWbkN0NUc4Nng1MDYweVNoUDFEWFJJbllkOFM3dytSNE9oTmRp?=
- =?utf-8?B?akxZem9mR0pxMFNQMWFTdnllbDREMTVWZUt6NE4xUGVadThoRDJOdDhmajd5?=
- =?utf-8?B?VlNQNVMrVU1JaFU4YnV1RXdKTlpiWThhVGsvQ0s3L1JjWWlFckprczdHTWRK?=
- =?utf-8?B?YlNtc1crdkJJdU5jWHZ2Z3R3SThVS0lQTms2SW84R3QwUXR4ZUZxcWZoMVNN?=
- =?utf-8?B?SUhKN2EvTVdvZHRCQ2hXUndSMlBsbkwzQ1JBN3BvaDJVSCtPNTM3a1NuSVJ3?=
- =?utf-8?B?NkgySEFkcVdhaUVlNzJlbXZpVkMySDllUVJ6L2oxQkp4Q2ZaM0d6M3RMdXZ2?=
- =?utf-8?B?L3lNM2p0dXdVSU83dE1lQ2FadTN3eTJvbDNraHFXbTFaT0MyTVFpR1B6b1Rq?=
- =?utf-8?B?WnFma0Y3TjZld1lXTDkvTElVRWExOXdvNVpJQml2a1NOWFJDckhidE81aEgr?=
- =?utf-8?B?MWIzb3hGTzQ2OXovNW5pWk9BQ2xjN1lad3ZRSFdvQTZBVlVHL3lGM3FzaUky?=
- =?utf-8?B?eE1CMnpBeU1xYkczU0NhcDdEQ2QyZmRDZnpSSTJHNkdNeEVzRlFLcFhZeDNx?=
- =?utf-8?B?T3gyQk1pcDJCMjRBa1FyVVZxSGNxNXhEdUFyT2YrcTBXellXd2hyZWdhSGk1?=
- =?utf-8?B?RE11YzJxd3dFb1JsM2ZiYjFsY09pMVRXUHc0U1czaE0vYm0zbU00TFkzZVlp?=
- =?utf-8?B?OVkyS0NGbU5jZlRRM0VKc0lQblNXWVEvNVFsNEtpckVrMkJ3d1lqc3d4eTNw?=
- =?utf-8?B?djFQTzAwa2R5RFJ5dUtxbGp0KzRwYkpOOFdsbG50VEhtanUydjQ5c2xXWWJu?=
- =?utf-8?B?WG9ud293VEJkTDlCUE4wdkxqRVQyK25zckpXUXFWdk9BSzI4N0liOEdvTEVw?=
- =?utf-8?B?TnlPejlQaUNEZHdxUHNVSFlyRC9BZFF1dGIycjVicXJPSlFxZG15T1ZPR3R0?=
- =?utf-8?B?eGVHY05kR0N6Y0xaOURsS05Wc1IwbjJnaVRaSGVLdFFQZExFRFZWTG1WRXgy?=
- =?utf-8?B?RmxHYnBVUWRTVHVqSFJBL2s3dHNMWCtOcEtzRFpRa3pyYzdQNFM3T3R5aTVH?=
- =?utf-8?B?c3oveExINGVCWllGL1o5YU9GRTkzb3RXWlpwSHlTYThhME8xcXdkdVAzZXJo?=
- =?utf-8?B?MnY3R2VVbyt5Z3U5STdhU25QcERkVXJrNXpEODc5dWRPNnEzdDlyZDBrV3Q2?=
- =?utf-8?B?YzJ5US9LNjJGVUlWRjByRWdyZHlqdVlKbnFTQy9EWitaU2hMZU10V2RZVzVj?=
- =?utf-8?B?L1kwckNHN29keUtwYk41VFRmTGhnMkprdXFlR1NjYTgwRzhidlpFS251d3ow?=
- =?utf-8?Q?2zsq4962EUg=3D?=
+	=?us-ascii?Q?aq4a8zCk2NnnXripadfqog3QVkgjFD01CAMW8aZn1TM+sgY3LuXOzd4R/CCo?=
+ =?us-ascii?Q?Y/xH7oz1KQxljt3zrUi86d7c7oDOI0haW35F4R4gZjb0ieQ2MidSck1fibJF?=
+ =?us-ascii?Q?keUQT3AA2vIPffKO7tCZPFh8FDlBGfcsmcqzIavyadDJZ/gpNbRug1QnKK5h?=
+ =?us-ascii?Q?Gp8XH0S+6PP6JVq5VCOStYTlgbZWNXsZG6Yx29I+nsxssWoLNdqHKcHKoEOR?=
+ =?us-ascii?Q?jtn5ULTSeYVawfGHL0N67hzlUuM2JrnhDUNrKgkpptoxr0okQoKRq+D4xSw4?=
+ =?us-ascii?Q?M+aT2xWH1v1HO4GCvxI1Xuf9XG7BcWINGu7iq1YkpUIfyPQzuKJ3/LFqC5IP?=
+ =?us-ascii?Q?yDQSY/n+ISgOUByK4yAii6V4r2dEXnp6tX/S5j4+/gAAiaIamSW4mzj36zEm?=
+ =?us-ascii?Q?qMycXWhInQU+tziQpVly4DZC358Z0gmN7gH2/1SJINnXzAc/ZypD1DPEpvep?=
+ =?us-ascii?Q?HUagQhTqMVQcJac7JofBZMDhuzVihPunn5Nblhk8Haf1FlAioklDyOc477CR?=
+ =?us-ascii?Q?55qGYvFs6KtYP1WJscYhbTVJvYO2/twV9fxlTPxzMS0gcxhrMzsY7yQDQQHT?=
+ =?us-ascii?Q?7iEOjjISDAhdLTjzGfAucO0ZD6dv4rr4hp9DIzAT9zpI4ahNtPlWI3O5JWfp?=
+ =?us-ascii?Q?ai8UOQAtCILgFICHa4sG5CheIESP0jt8tFbV3Qvj5dIf5+h96ZPU9Xus81Fd?=
+ =?us-ascii?Q?E6PSewAv/2Rd0sG/9Nh0gs2UB8u8m44sDt4pJE9L6loznLkaGMtNbC6JnQxo?=
+ =?us-ascii?Q?u3L2fku2EPb2BZQ9KeHDBQQ7T3k+jcbduHHcIP0HxCgnyHISyvztxeaIbwBD?=
+ =?us-ascii?Q?ONz/eH40DVdFlSx4+o/LTgtvDrHZliDLMSsYyLDkNEHKFfpEaP9NmGUbOFIn?=
+ =?us-ascii?Q?8L8U3A/KkKAO22wISjq44W6qQGaSpLy7dlo/iWFfXKllI1gBkcGbaV2N2dP+?=
+ =?us-ascii?Q?Y8q3GpcJiOVonfVmuaKgVbUCfbPN4KoN7qz+NZYw2R6Mp5Ihn59olQiXRA20?=
+ =?us-ascii?Q?nF+ZvCU7+8d//pT435FUXkTkXXya/7K640kCFOae6+Zr+nmWHgp8iYCr+rGm?=
+ =?us-ascii?Q?s4Md9CButDLIs3DLAEJDL0D4rzL/fMLtR7ESbYO7qOuAp4T1QoZtYp7FiuMn?=
+ =?us-ascii?Q?bl7SYwvmrIfFyeowwSRQYxc3TKnZVGWI2Qoaa96mK5o9J2szOblNDlt1cASF?=
+ =?us-ascii?Q?EVoM+NGHYlKkr1gVKyUjb394Nn6PxSi81dC0fxrbEmn5hJXRzePOWsvsuzDV?=
+ =?us-ascii?Q?xRyNw0mbwgvGgIHgr8H6Eeb5gCPRUR4tt/VwVmpOvacb+BGlA7uiqqHqe2kn?=
+ =?us-ascii?Q?V/77r+YuXLvD2MdIpbxO2nTp81xyUWvss0Eoh5vJB3Gpq2lfiPvPrBi1Tskv?=
+ =?us-ascii?Q?HRawfLIPgAXGEnDeG7gnXT2zayXkOQvcctz8lkp6VZ2FWAbgg7bDDVFEaQsI?=
+ =?us-ascii?Q?q4ZRcy6lPxFOG2CiQb8KitcJonwFwEHMXCdU80+iJO/MxLMJyuXSRw=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR08MB8121.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR08MB8121.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(52116014)(38350700014);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bjM5U0REMnhwUHZsQkhHUnNkRzcwV2RmL3FtbG5xVDNheE1YRW1DTDdJYXdk?=
- =?utf-8?B?ZXZMeWVJaStxa2pnWHludEJMRkhYQkJ3UGd4dnZVNkpka3FjL2p1a0IweW5p?=
- =?utf-8?B?dlNnNjJNY3dGWEJVLzZUTk1qb0VmTTJvdC9lYVNjWnRiR2VkU1lFeEdFOWRN?=
- =?utf-8?B?d3pST1ZoWHJyYWpOblA1cFozT3d4a1RPZXh5R0RRUmFrSEZMN0t3R1cvamxN?=
- =?utf-8?B?Y1hmT0VudnJuM0pzTVppVWxkamtaMDR4MVF2d0FLYUxjM3MvbDVSNGk3RXJy?=
- =?utf-8?B?aDVnK3VXN3FjUEhITzVNclpURFRUd29kNDlqRTVQS0N3cHJjQ1ZjblFka1Iy?=
- =?utf-8?B?UHFvMjNxQm9lU0ttYTczWW9XdHVGTzBLY2pGcTJuYXlQWmZSVlBXUmw5amdx?=
- =?utf-8?B?SEF6eG5HVi9VMzVvV0U1NlBsVmdNcCtQaGRtZnVmbXFQeWtqd3N6Mk9kVll4?=
- =?utf-8?B?K09mZ3ltTm51eGtnR3dlNVFxbUh6RXlGYXdSMThhTVNUZEtzaDhCeTY5ZUI3?=
- =?utf-8?B?WHBlZ0RMcjgyT0hzZnpnYktYVGk1TmRreS9pZnBQSHRSYk42dnd6K2RIMXl2?=
- =?utf-8?B?d05OQWx4b2puTmd2d2ZoRHlGRlMvWTg0UTFpY2gydjl0S0xLdkVBcng4RTdh?=
- =?utf-8?B?OUFBeitGSHBQRFZvVWRZeGxhTlZaNy9hQ3NKL1VtTktyblFIQ2V5VExJMFJW?=
- =?utf-8?B?Tm41a1JDR1IycllYME5EMWV5SDQ0SVVtWlhpdDJOV2d5aU4xMVFjT2xmRUgv?=
- =?utf-8?B?TTVONCs0aWY2b2dralFrSDMzU0o5UElraHUvRlltZ3djS2tBdW5lRm9QMklK?=
- =?utf-8?B?bndvSG9LMDNsWGovODc3WmRmUkJqcDk1STNaYnNLM2FldTZxZXFKMURMcS9s?=
- =?utf-8?B?dnNyRTllQUZwK0MwaWJqVlkxV0Y5NktpaWV5bVdPRTR5dmFaRFdZRUZ4OVpv?=
- =?utf-8?B?RE5PSXhnczZUOFVwUTQ5aWp1VEg2dDdlZVFVa0xlRG8xUTJTQWxFUzN3V2ZM?=
- =?utf-8?B?RlhUVTAxYWdKYXZCYURvZVZKcTEvVzlybVUxMmFSMTFJMFIvY203VFJxSHox?=
- =?utf-8?B?MHVUQitObWhWMzk3UHJtR2QwWjJPU0RiL2Y5cUpxbExJMHlVOEh3NTh0ckZM?=
- =?utf-8?B?Ny9BSU9nMXBnc05OVlliS3lnSm9qaDhOU2s1ayt4YkxBbVZhUXBYYkEzbFlQ?=
- =?utf-8?B?c0dVVDE2WllOT1ZqQzdOM1JtZkxCNkNWY2RxeGhwdEFYbjZlRDB4NHZnL2Mz?=
- =?utf-8?B?S2h5YjRSdmJTejFSeGdLRTRPVC9ET2xNVTFobW9XeHFhU3JQMmRKcFVVTk5w?=
- =?utf-8?B?azRwcDNGeHNld0FqNEJ3L0lyS1pkZTYydlUvcjZhMk5FODIrMkZjWkhxVktx?=
- =?utf-8?B?UWxxSXIxZmRCSm1lLzg5WHNDYjBXSCtjKzBEQnFIR25IZUpYaFp0OHdBT1Nv?=
- =?utf-8?B?Z3J4cno1QjZ2S0NjVkhYN1E4Z1hnSUxmT0lZVjU4TzdkVGR0NFFMOVlwNCtM?=
- =?utf-8?B?ZmJ5NEx3OGdRM3NRRUx3N1dBNUlxdTBZOHEzTTZKS3hVRkM0ZEdoeTBZOXVW?=
- =?utf-8?B?UWwyKzdlSU0xUVZDNEpRMU1MMkZ2Lzk2cU5OWitjbHVSazQyOFlxRkgzYWdN?=
- =?utf-8?B?aG1mNElZQ1o3Y0srQ2dyREFrcmxBRUhmUzArVUtsdU9zdXJFWlZkSkIzUkFZ?=
- =?utf-8?B?dHF2SzdJV0QwNGxrdVhpc3JhUTZiSERNQ1lWVGh4alNUVGVqVjNaRDdiazFJ?=
- =?utf-8?B?VEVPUytoM2w4dGtjaG1LRCs5UWJLSTBQYnFqd0JLV3ZROFYvQnBKT3djUkZq?=
- =?utf-8?B?Zzc5K0F1YmdSM2c1bHNxTEJNakcrOVZGQjVTNlB1OFVjKys3ZnJKMDFwTkJy?=
- =?utf-8?B?OFVlMXk5azh0UGJIZ1hJRk1XUGlOS3B1aXM0YjZjVXRjU21xalNsaHBHSSs5?=
- =?utf-8?B?dDduTUF6TU9YZ2lHTmt3WGUrZFZUNWY0amptc3h1UnNRWVR5SUF6WGdQbWJ6?=
- =?utf-8?B?OUgzR1FDazZtVnFyV0M3bmtvY1VnM1dqWEg2K3c5MWt6WXJLdGROQzJIMDBJ?=
- =?utf-8?B?N3VldkdSdnpGd29DZWVWOWd2aXBTSjFDR0xpSHk1Y204M09aRXNObUVuTThD?=
- =?utf-8?B?WmpjTEVRUW8zdzhZWTJ2ZjRRbGYxaTV0eVY1R3BaYjYyMWJuR1JGaWhBQXBT?=
- =?utf-8?Q?zRh9w6YTve7eZhVwib553wA=3D?=
+	=?us-ascii?Q?Kwoljv3Ji+PZ5vV6nHkNvUb4RmBB606sB74caxAVUlipADkIxfAxmQ7OXHKj?=
+ =?us-ascii?Q?fAVe/DpnZSZwgXlDOt7hRGB+DjzM3yuAlXupDG+ALbawlrLXjAava5/VOAaA?=
+ =?us-ascii?Q?TEANAv5uVvZhw9yh2KCPv3v/UPgN3gJtkV4FF2KDN81Km0WEFGZ9xD1puUZj?=
+ =?us-ascii?Q?G/MhpQKlmpQlPj8633bH7SuWc5d84lOfTiGmujZMnoJntjq+RfnCjH6NleHJ?=
+ =?us-ascii?Q?c7j3PqCFdlrhEWIG5lDhGrJU6HVg2WLiXW3iEkBl8350vL3f1orEXLvrJw8t?=
+ =?us-ascii?Q?rBcXrmBGiaqHj0W9eWLx2/RZnvBnd4GfDYABfQDNb9qHFR5chpvt5Kayn0kN?=
+ =?us-ascii?Q?zdLmB2N65A4R/lir5foufXSHN3trxoEHoZnO5dyvzR38+KpmQSJpeWuLYOeD?=
+ =?us-ascii?Q?AE0AKqbqcOMCO2KEpt2lKYvw40LpaqGMhYiVmYLRjmPcYDsLJTh1Bo/DI0zE?=
+ =?us-ascii?Q?Q9izfLQy7cXzJ96NnXyDqhUyHL/dBMXYkbuUer0f+ILYty5YAPqissER/wXg?=
+ =?us-ascii?Q?sqFDY+4qPItAWaeMAkwt6V5t16Y61+Jd/gMOthCJ96z7/7wuhx01veg0s/1+?=
+ =?us-ascii?Q?nPIWcUpM+8FHOnoIPl8jqyD1TnMWmhzJSooV5g+TXCqx5HEvhIE+NRe5uV2p?=
+ =?us-ascii?Q?BbfJcckHtzfE2Pd6+IcM3uAi6DlWdX0RHJwd00uH6XkDjs5csHKfg6wKa0KZ?=
+ =?us-ascii?Q?rUkOOfvHaXJmfDVGzgqSF5GmpagekMmCjbutAARBICiltihCZI3KN8eIOfQS?=
+ =?us-ascii?Q?3IqrETu8a6LpiL1iUbVdZTv1LmNR+tXQPxT9mReZO4MZowa1mMjqMQs0XVR3?=
+ =?us-ascii?Q?4FZrZ56zzxUZ1QCTyPOtiU+Z3FZcEGrLpu5M+1n9+4ne8NcoAKToG8NM2IdC?=
+ =?us-ascii?Q?C++FMi9kzR1cvXH8VI6JJ0cGpy6J5vrt5346DuJhpVKd2Ht0o/VrofBC1HMt?=
+ =?us-ascii?Q?uLmGeSMrrfsg8vRP5iwg/r5oAeN+8/bAr9TZproMd85+SeqE3ev7b9NXHYV6?=
+ =?us-ascii?Q?FMDzF6FqH+JthNAguUB+ce8FaMaVGe1KBUDZucgx8naFugkBQ1hkgJy7C+ny?=
+ =?us-ascii?Q?4Wxk4HwucLVWxNEJDzRaM+lLu2xHknYasVhQ/DKpFSwqezT+fzCCd3RHX+ag?=
+ =?us-ascii?Q?DNFZF66t+62k/D1cb3jeWUjJSnEenG5g1wKeTwgMK+W8OTV6IzeH+6ww5fW/?=
+ =?us-ascii?Q?5iWFfdRaXkP10myPZ133yvoya6QkiwE6OOedlDnpGMyDKcNqrpKBwS2QBF+Z?=
+ =?us-ascii?Q?DLSWAjFq7cgsiltbGngd06xGlnt8yrQR3e7eGOrPBbdyJYxgTTglH4kSdMKt?=
+ =?us-ascii?Q?y3d445AXieRWjH+/u5uxRNXS9YBBHp7m4YDPEK4GGZaHNEXVgL1hu3MWmF9U?=
+ =?us-ascii?Q?G2p9NmAG/UQuuNOqDMiWQAgt3STubC66VUFzoL2euk0WiYeSllj60nJ6utMc?=
+ =?us-ascii?Q?5eXi6FVlK18yel+VBix0ewUe1RIzNy8U/yy5zednd5FFHsm8P3d+W9wW8iv/?=
+ =?us-ascii?Q?J79xWhS0zKe8wcPI7z7mD7o2diEmRR5UOWpU9bAVnLyTBNYweYw/epBjHPf+?=
+ =?us-ascii?Q?7tI2j0mv1QVQjNghG/88mB3/jyGUfrh1GqO6q4WB9pqKxcufuufC4kHvLhRG?=
+ =?us-ascii?Q?l4VlkRCOvy0R69yh0pKbqbE=3D?=
 X-OriginatorOrg: iopsys.eu
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0f533de6-102a-489d-c449-08dde1b69d08
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2b1fc31a-5a67-4951-c188-08dde1da51e4
 X-MS-Exchange-CrossTenant-AuthSource: GV2PR08MB8121.eurprd08.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Aug 2025 20:00:59.3525
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Aug 2025 00:16:35.1224
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 8d891be1-7bce-4216-9a99-bee9de02ba58
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DWhxuns8oLgSGngHrK8l2fpcn7hSkqdCjvt5z6O+7KBBXcH1ft0SkAjsxmGQNGax8at3OcW0CxFAvhZT/5ju6jIGGfGUDLT4F41Vj7mg8/Q=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR08MB9829
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4Wf4QN4aZL9GjJRrTQj7dVwERSY88XtMg+DDlMKDyGeAHZHe8G+mM6PCJl342KVFDq33HZwpBm1HQNmqrL4Sau4/4+/lXF4bsI+7BLieN6A=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR08MB5618
 
-patch 3 (spi: airoha: add support of dual/quad wires spi modes) is
-necessary for non-dma reading. This can happen if dirmap creation fails
-by some reason. In this case the kernel uses exec_op() handler to
-execute dirmap requests.
+This driver can accelerate single page operations only, thus
+continuous reading mode should not be used.
 
-According to dtb the device supports dualwire operations, so dualwire
-commands issued for cache reading. Unfortunately  exec_op() handler does
-not supports dual/quad operations, so flash reading fails. Here is the
-corresponding boot log
------------------------------------------------------
-[    2.980719] spi-nand spi0.0: Micron SPI NAND was found.
-[    2.986040] spi-nand spi0.0: 256 MiB, block size: 128 KiB, page size:
-2048, OOB size: 128
-[    2.994709] 2 fixed-partitions partitions found on MTD device spi0.0
-[    3.001075] Creating 2 MTD partitions on "spi0.0":
-[    3.005862] 0x000000000000-0x000000020000 : "bl2"
-[    3.011272] 0x000000020000-0x000010000000 : "ubi"
-...
-[    6.195594] ubi0: attaching mtd1
-[   13.338398] ubi0: scanning is finished
-[   13.342188] ubi0 error: ubi_read_volume_table: the layout volume was
-not found
-[   13.349784] ubi0 error: ubi_attach_mtd_dev: failed to attach mtd1,
-error -22
-[   13.356897] UBI error: cannot attach mtd1
--------------------------------------------------------
+Continuous reading will use sizes up to the size of one erase block.
+This size is much larger than the size of single flash page. Use this
+difference to identify continuous reading and return an error.
 
-If dma=off, but patch-3 is applied -- everything works (but slowly).
+Signed-off-by: Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>
+Reviewed-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+---
+ drivers/spi/spi-airoha-snfi.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Here is a patch to disable DMA operations:
-
- --- a/drivers/spi/spi-airoha-snfi.c
+diff --git a/drivers/spi/spi-airoha-snfi.c b/drivers/spi/spi-airoha-snfi.c
+index dbe640986825..043a03cd90a1 100644
+--- a/drivers/spi/spi-airoha-snfi.c
 +++ b/drivers/spi/spi-airoha-snfi.c
-@@ -618,6 +618,7 @@ static int airoha_snand_dirmap_create(struct
-spi_mem_dirmap_desc *desc)
-        if (desc->info.offset + desc->info.length > U32_MAX)
-                return -EINVAL;
- 
-+       return -E2BIG;
+@@ -618,6 +618,10 @@ static int airoha_snand_dirmap_create(struct spi_mem_dirmap_desc *desc)
+ 	if (desc->info.offset + desc->info.length > U32_MAX)
+ 		return -EINVAL;
+ 
++	/* continuous reading is not supported */
++	if (desc->info.length > SPI_NAND_CACHE_SIZE)
++		return -E2BIG;
++
+ 	if (!airoha_snand_supports_op(desc->mem, &desc->info.op_tmpl))
+ 		return -EOPNOTSUPP;
+ 
+-- 
+2.50.1
 
-        if (!airoha_snand_supports_op(desc->mem, &desc->info.op_tmpl))
-                return -EOPNOTSUPP;
-
-
-
-On 22.08.2025 16:14, Lorenzo Bianconi wrote:
->> On 22.08.2025 09:46, Lorenzo Bianconi wrote:
->>>> On 21.08.2025 14:34, Lorenzo Bianconi wrote:
->>>>>> On 21.08.2025 09:58, Lorenzo Bianconi wrote:
->>>>>>>> This patch series greatly improve airoha snfi driver and fix a
->>>>>>>> number of serious bug.
->>>>>>>>
->>>>>>>> Fixed bugs:
->>>>>>>>  * Fix reading/writing of flashes with more than one plane per lun
->>>>>>>>  * Fix inability to read/write oob area
->>>>>>>>  * Fill the buffer with 0xff before writing
->>>>>>>>  * Fix reading of flashes supporting continuous reading mode
->>>>>>>>  * Fix error paths
->>>>>>>>
->>>>>>>> Improvements:
->>>>>>>>  * Add support of dual/quad wires spi modes in exec_op().
->>>>>>>>  * Support of dualio/quadio flash reading commands
->>>>>>>>  * Remove dirty hack that reads flash page settings from SNFI registers
->>>>>>>>    during driver startup
->>>>>>>>
->>>>>>>> Unfortunately I am unable to test the driver with linux at the moment,
->>>>>>>> so only the following testing was done:
->>>>>>> It seems to me this is quite an important rework of the driver. I would prefer
->>>>>>> to have some test results for this series. Are you able to run mtd_test kernel
->>>>>>> module for testing?
->>>>>> I'll try to build latest openwrt with this patches  and mtd_test kernel
->>>>>> module and try it on one of our boards.
->>>>> what board are you using for testing? If it is based on Airoha-7581 you could
->>>>> use the following repo for testing.
->>>>>
->>>>> https://github.com/Ansuel/openwrt/tree/openwrt-24.10-airoha-an7581-stable
->>>>>
->>>>> Regards,
->>>>> Lorenzo
->>>> What tests do you suggest to run?
->>> IIRC I run all of them. Can you please report even if there are some
->>> improvements (or penalties) in read/write speed
->> Do you mean to run it twice? with patches and without?
-> I mean I would suggest to check if there are any difference in read/write
-> speed (so yes, you need a baseline).
->
-> Regards,
-> Lorenzo
->
->>>> I have a single flash I boot from. It have only 2 mtd partitions:
->>>>
->>>> [    2.980849] spi-nand spi0.0: Micron SPI NAND was found.
->>>> [    2.986102] spi-nand spi0.0: 256 MiB, block size: 128 KiB, page size:
->>>> 2048, OOB size: 128
->>>> [    2.994493] 2 fixed-partitions partitions found on MTD device spi0.0
->>>> [    3.000856] Creating 2 MTD partitions on "spi0.0":
->>>> [    3.005651] 0x000000000000-0x000000020000 : "bl2"
->>>> [    3.011247] 0x000000020000-0x000010000000 : "ubi"
->>>>
->>>> Most of tests are destructive. So If I use "bl2" or "ubi" partition for
->>>> test, next time I will be unable to boot :-(
->>> yes, I flashed the device after carrying out the test.
->>>
->>> Regards,
->>> Lorenzo
->>>
->>>> Do you suggest to patch u-boot & linux to have more mtd partitions?
->>>>
->>>> This is the results of the only read-only test I found.
->>>>
->>>> root@OpenWrt:/lib/modules/6.6.79# insmod mtd_test.ko
->>>> root@OpenWrt:/lib/modules/6.6.79# insmod mtd_readtest.ko dev=1
->>>> [  159.121706]
->>>> [  159.123220] =================================================
->>>> [  159.129053] mtd_readtest: MTD device: 1
->>>> [  159.132898] mtd_readtest: MTD device size 268304384, eraseblock size
->>>> 131072, page size 2048, count of eraseblocks 2047, pages per eraseblock
->>>> 64, OOB size 128
->>>> [  159.147008] mtd_test: scanning for bad eraseblocks
->>>> [  159.152141] mtd_test: scanned 2047 eraseblocks, 0 are bad
->>>> [  159.157549] mtd_readtest: testing page read
->>>>
->>>> Mikhail
->>>>
->>>>>> Actually patches can be divided on to parts:
->>>>>> * fixes of current driver (patches 1-10)
->>>>>> * change of behavior to avoid reading flash page settings from SNFI
->>>>>> registers during driver startup (patches 11-14)
->>>>>>
->>>>>> The changes are based on the code we are using for more than 3 years. I
->>>>>> adapt it to latest linux/u-boot code.
->>>>>>
->>>>>> Up to now the only known issue appears on en7523 chips only. Here a
->>>>>> corresponding patch description (not added to this series)
->>>>>> ====================================================== spi: airoha:
->>>>>> en7523: workaround flash damaging if UART_TXD was short to GND We found
->>>>>> that some serial console may pull TX line to GROUND during board boot
->>>>>> time. Airoha uses TX line as one of it's BOOT pins. This will lead to
->>>>>> booting in RESERVED boot mode. It was found that some flashes operates
->>>>>> incorrectly in RESERVED mode. Micron and Skyhigh flashes are definitely
->>>>>> affected by the issue, Winbond flashes are NOT affected. Details:
->>>>>> -------- DMA reading of odd pages on affected flashes operates
->>>>>> incorrectly. Page reading offset (start of the page) on hardware level
->>>>>> is replaced by 0x10. Thus results in incorrect data reading. Usage of
->>>>>> UBI make things even worse. Any attempt to access UBI leads to ubi
->>>>>> damaging. As result OS loading becomes impossible. Non-DMA reading is
->>>>>> OK. =======================================================
->>>>>>
->>>>>> Regards,
->>>>>> Mikhail
->>>>>>
->>>>>>
->>>>>>> Regards,
->>>>>>> Lorenzo
->>>>>>>
->>>>>>>>  * Driver compiles without error.
->>>>>>>>  * All changes were tested with corresponding u-boot driver. U-Boot
->>>>>>>>    SpiNAND driver was modified as well to match linux-6.17-rc2 with
->>>>>>>>    additional fixes for continuous mode.
->>>>>>>>
->>>>>>>> Changes v2:
->>>>>>>>  * minor fix
->>>>>>>>  * add comments to code
->>>>>>>>
->>>>>>>> Changes v3:
->>>>>>>>  * add patch to prevent continuous reading
->>>>>>>>
->>>>>>>> Mikhail Kshevetskiy (14):
->>>>>>>>   spi: airoha: return an error for continuous mode dirmap creation cases
->>>>>>>>   spi: airoha: remove unnecessary restriction length
->>>>>>>>   spi: airoha: add support of dual/quad wires spi modes
->>>>>>>>   spi: airoha: remove unnecessary switch to non-dma mode
->>>>>>>>   spi: airoha: unify dirmap read/write code
->>>>>>>>   spi: airoha: switch back to non-dma mode in the case of error
->>>>>>>>   spi: airoha: fix reading/writing of flashes with more than one plane
->>>>>>>>     per lun
->>>>>>>>   spi: airoha: support of dualio/quadio flash reading commands
->>>>>>>>   spi: airoha: allow reading/writing of oob area
->>>>>>>>   spi: airoha: buffer must be 0xff-ed before writing
->>>>>>>>   spi: airoha: avoid setting of page/oob sizes in REG_SPI_NFI_PAGEFMT
->>>>>>>>   spi: airoha: reduce the number of modification of REG_SPI_NFI_CNFG and
->>>>>>>>     REG_SPI_NFI_SECCUS_SIZE registers
->>>>>>>>   spi: airoha: set custom sector size equal to flash page size
->>>>>>>>   spi: airoha: avoid reading flash page settings from SNFI registers
->>>>>>>>     during driver startup
->>>>>>>>
->>>>>>>>  drivers/spi/spi-airoha-snfi.c | 508 +++++++++++++++++-----------------
->>>>>>>>  1 file changed, 260 insertions(+), 248 deletions(-)
->>>>>>>>
->>>>>>>> -- 
->>>>>>>> 2.50.1
->>>>>>>>

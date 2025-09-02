@@ -1,65 +1,66 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 144112D9ED8
-	for <linux-spi@vger.kernel.org>; Tue,  2 Sep 2025 12:46:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 164302D543D
+	for <linux-spi@vger.kernel.org>; Tue,  2 Sep 2025 12:46:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756817175; cv=none; b=VwNf+U7qM+XOlR2ikda7dBYjvYZXza0iKCczN1Slw/18shMcAcwUHIF09+w50mux/s5VXGy/XjANLT5IG5rW3/5LvWduYi6tKwCSPjc3nakUTpQ5L1jzfbakkHjT8xw4Kii8Wrjw9J6OtwFI2jFFqSeYkwBomNzX7hnAzBmqySs=
+	t=1756817178; cv=none; b=u8/JOfBTVc0Cb+04iZAWKA5O5PD2zuhmkjY/6cFaMoMcmN3aPGffyo7LLI0qCRsQwpcIY1FGqEqHgooWPCdcFpO6CF/2ZCdXgdcxqFtB/Fg80y9/wGtBZxumP18CDj55UHJEe+wV++hMU5KRX+w+OIaAFq1vdp+ZK5dihYx//ig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756817175; c=relaxed/simple;
-	bh=dLXhXmGBVUdjGWO7AanK630sMzav+5Mv4ke+Z75scWY=;
+	s=arc-20240116; t=1756817178; c=relaxed/simple;
+	bh=xSF+c1quUfEBbfl25vLH7FmwBetOvWPbpnPjJk15kZo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=rgFdzZ2SzqQAMjBUS7yV5t8ygEAoUtQRDjkv2A5FZMWTJBi2qui+k6hHMelRCHymXndMSGsPDPwXZ8eFe1LLSPUwm2jLTfmS7Nac280JUYnWZbjw305A/SjXYumNTGEvaw0bhMl5Jl51SwDmvxn5d+xhgbt8w39f8K9mRMfChhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=bxnWJLCd; arc=none smtp.client-ip=209.85.221.52
+	 In-Reply-To:To:Cc; b=RoGdR/jbOgkOsJgw6b9lXbf0s20GviFxX4yV9qTTA7rZB/olTbBgHS7jvNsuNye9wdsvgFxR3r6jKoZ8UgSKu4U75g5ymnkPbor9rJDZAOKtC7CAmGNt0Z6MCEGPqXDD5q2clUAqXJ7hQ9MhaJ4Frlw0z0jbo5mHv1OknOBimaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zJc6m8TQ; arc=none smtp.client-ip=209.85.221.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="bxnWJLCd"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3d1bf79d75aso1059597f8f.0
-        for <linux-spi@vger.kernel.org>; Tue, 02 Sep 2025 05:46:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zJc6m8TQ"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3d3ff4a4d6fso1799417f8f.0
+        for <linux-spi@vger.kernel.org>; Tue, 02 Sep 2025 05:46:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756817170; x=1757421970; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1756817172; x=1757421972; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=BsDT6IfRm3W35zg8rWWkO4jVs26qP9v/JAyh479nlAw=;
-        b=bxnWJLCd/QOoTj6TyehjWiDDdYez1E5BGTsF5KROrpkTmqDIHSg8ELJELpDEyaxLo6
-         tB//SZ241cApKp+F9glGp4MsTU94TlZTIRC/n5AV6uafo1MEera5/qP6R5QrHu//4y15
-         x+MZWL6BCPifW6GiM5OpUL9xvjlnfx4lTmlO6dYTmgzlutKbKCLOV547vmiXSa3Vwjzq
-         mQea/1RWZ3PGqOZscHbbyusFfBHrydGPEB+EFhld19Lq0tX+IKUwg0lKrMn0HIdOxVyz
-         N+zh87ANdMR01Lai/mTxB7CcTAw1XAKNpqkKwSBA8OWP/NONR9YXbIce09wWMkhrsqpB
-         zZCg==
+        bh=jMvtg5Mq6C/ZSIJ0uJaRfjqxGAaFFsi0SLuwvNPDC3w=;
+        b=zJc6m8TQ05bQPU2RlNZ8v+6oQyr3Fbe+cf4F4//H1hlMJ35KyqYVR+cXj5HkTq2fHN
+         aFogATpc33m0oVEc2lOC7rvHx/2GBwP2QURgMGIDnwd0iU7h4HuuTU6BORPpKLa1VG6z
+         LL0g90qAoGibeENia0UQQXVGyxaCTtjBOpzkk273srnbIq1nVCnuTl/Fbe9FCQ5tsVkf
+         sNHq/NfuWbb3sv5TzUPOy6VfzkjDbWqNcHpmN1Z5mm9WD1PYM5kDOsPVOeDpAMtpVEQS
+         kJ0Ucp074yAi6FgjxNH+1EZEKxMRnzlE5rrDXsYH/h0Cn9GJoPDNYCEpHsDeZuF2FmAv
+         d5Mw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756817170; x=1757421970;
+        d=1e100.net; s=20230601; t=1756817172; x=1757421972;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=BsDT6IfRm3W35zg8rWWkO4jVs26qP9v/JAyh479nlAw=;
-        b=Z1AqZMomDom+xKVnIXTATKZgsZSqanFV2Gvrd3WzwdJk3WsNE23e8xlvWp7MNeW6MU
-         +n70R8NLzfCHOmOPvvtInw5M6+T+pdrZJB0Sw+RW6uot/hlg3qVCqEqb7q0buJBvm1nd
-         AjEO8sKJ5UzMwKbxR4sE334xd4L0ndsAaGf7AKAhCLDVbtJnyTFW78fsIPwFWP58XzGe
-         xth/gBtggrnz4BAKDl4w7P3q6o4A7qgnWe5MsPXWcWxHgPk+Zg/ripkA5Tq5iJ+pTnqv
-         qAKZkVCA6M4ZQTrIY3In/TlZv66jXQx+DcvHBF5X3HVvQbdUI1lVo44M782ubCp8fUoO
-         /M3A==
-X-Gm-Message-State: AOJu0Yx/9hgX7nsthTVnmYMAywR406+ivPysxIB/bKy9h7ZpzRlVSBIS
-	wpQd21GCoPOwmpilw8f2k+jmGZ1qEOVAB3WZJSPx2U13ndwTbW8C5pdflpxqaNFHQhI=
-X-Gm-Gg: ASbGncuAe/sCxmjEC1idzlKNgM+MxuMwJj8hHbolXRVf4DP9IsGav4Pn6NUx+VNIJS0
-	E2wK6sxyW1n3SisdHPlbh07dEpahPAXg/KdL3hqezc0oLorOL4cHrv54UtxzZeNAffzcHz0NasD
-	eLODzGMx5YbtiygBeWrYlcunEL2A1+6kYCkjqaul/hmUsNNexQ42arr4QOpIzx60BuqLG4Qupfq
-	tZ//JOBRDxuGG0Ij8cfqY4kHK28oK9C0ATyOowF/FxBwbpk/OLea9DmeFfa9MG18weuPoLNF8qq
-	7EbldYHnjV7MYrDaf6H2oUtuXYxXbc9wJrcRaI6pQ6J6W87/IHIugzGGm7o9YqjRmxk80td/KFh
-	6ptsTkG54TjN5SpUvmRrQX1wBZe7veqYTtS5Cs7Rt5Q==
-X-Google-Smtp-Source: AGHT+IEwUKz3nl2krF2wHyMlpvQhNKTtJiOLQm9e9D7oVD/bUvk+dX6eDVCzpUFwJ4wbqE7UxEr79w==
-X-Received: by 2002:a05:6000:2212:b0:3b9:14f2:7edf with SMTP id ffacd0b85a97d-3d1af84bfd1mr7494714f8f.1.1756817170353;
-        Tue, 02 Sep 2025 05:46:10 -0700 (PDT)
+        bh=jMvtg5Mq6C/ZSIJ0uJaRfjqxGAaFFsi0SLuwvNPDC3w=;
+        b=lwL8/h1QvN0ytKN+vNe7ME2OnqNfoiS0YKIpRsaXCrxvH9AvW6xpmSGv/czw7rIfDj
+         UENPU8Onxeme/i0yYVWtEgAI86sDNXlOSF9Se7kyY6oKwF8dR1mQ3VNaqE2+8DNOWV4H
+         TsWyrT8bj11ameSx12UtjLrd1eVFSN4BcckELLHYIUDXZsYV11W4Rilsp7HpFgXBGrWZ
+         K21aXgsTNU/A9AScD5P7oGwmmUdQlHSoVgwi+a9b/qTtxU+KFv5AcSJSY6AkG1gMBHQJ
+         wVEEjKCutJhRoDXVbGFAWq8B0IM6yiWk8+T+cvdywNQQJ95nCDQ3ECK5oxnjtp1Frs+u
+         RH9A==
+X-Gm-Message-State: AOJu0YyYva9WufHZFioT+Hj/MAtoRH1T4Tlg3438W2p5VxU7ltyHg7jN
+	4kOtOXUYBWus0fTxtdtVExSx1/QjTd8BNnnHVdwIKUcKKvfWIS/jvad0rBPQue9eQXM=
+X-Gm-Gg: ASbGnctrJ6Pmw0XJqw5Z7njpP5kAsAPGd9NxF59eZh47BNYrKFLu23TlB6CmCawgSsM
+	G8pN4f5/KtgcSR+TIfreh9hLSZ3oJKEZ4ZJwolAl18ZDzHDE1ODLzheAZYzNNMa58+Xw/0k5C7U
+	P44ft9sLbY49kV96/R5O5fztJM9tDDWmiNwXw55LCnZHHsqB2/r3WnSyqd4dKuSq0S15ya93q/W
+	r3YoXlc0CdEDjNV0l099o6w6yQ0kLDlsF77zAudLHset8f3hvoCc+JOTlYpmyLhuOgCQgO7mOU1
+	Xk5sZWHmHnuhFgnmWu741RoXdbI2JwqAhAi670G6Z4OfFNCpevbcdgfXnfEqrrzCKTQEartjV5G
+	1ticDHF8xSwO8Y7LqEnUPGXXuCMeiNuw=
+X-Google-Smtp-Source: AGHT+IHHnLIfKXefUkGxa5EfKnESKjlVPeyNiNsifBpBQEufQVD811lASeZ0fiPvah3xuHy5ugya8g==
+X-Received: by 2002:a05:6000:3110:b0:3d0:b3cc:c1ff with SMTP id ffacd0b85a97d-3d1de4bc2e1mr9092247f8f.39.1756817172368;
+        Tue, 02 Sep 2025 05:46:12 -0700 (PDT)
 Received: from ho-tower-lan.lan ([185.48.76.109])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cf275d2717sm19589896f8f.15.2025.09.02.05.46.09
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cf275d2717sm19589896f8f.15.2025.09.02.05.46.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Sep 2025 05:46:09 -0700 (PDT)
+        Tue, 02 Sep 2025 05:46:11 -0700 (PDT)
 From: James Clark <james.clark@linaro.org>
-Date: Tue, 02 Sep 2025 13:44:56 +0100
-Subject: [PATCH v6 4/7] spi: spi-fsl-dspi: Use non-coherent memory for DMA
+Date: Tue, 02 Sep 2025 13:44:58 +0100
+Subject: [PATCH v6 6/7] spi: spi-fsl-dspi: Increase target mode DMA buffer
+ size
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -68,7 +69,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250902-james-nxp-spi-dma-v6-4-f7aa2c5e56e2@linaro.org>
+Message-Id: <20250902-james-nxp-spi-dma-v6-6-f7aa2c5e56e2@linaro.org>
 References: <20250902-james-nxp-spi-dma-v6-0-f7aa2c5e56e2@linaro.org>
 In-Reply-To: <20250902-james-nxp-spi-dma-v6-0-f7aa2c5e56e2@linaro.org>
 To: Vladimir Oltean <olteanv@gmail.com>, Mark Brown <broonie@kernel.org>, 
@@ -76,171 +77,59 @@ To: Vladimir Oltean <olteanv@gmail.com>, Mark Brown <broonie@kernel.org>,
  Larisa Grigore <larisa.grigore@nxp.com>, Frank Li <Frank.li@nxp.com>, 
  Christoph Hellwig <hch@lst.de>
 Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev, 
- linux-kernel@vger.kernel.org, James Clark <james.clark@linaro.org>, 
- Frank Li <Frank.Li@nxp.com>
+ linux-kernel@vger.kernel.org, James Clark <james.clark@linaro.org>
 X-Mailer: b4 0.14.0
 
-Using coherent memory here isn't functionally necessary, we're only
-either sending data to the device or reading from it. This means
-explicit synchronizations are only required around those points and the
-change is fairly trivial.
+When the device is configured as a target, the host won't stop sending
+data while we're draining the buffer which leads to FIFO underflows
+and corruption.
 
-This gives us around a 10% increase in throughput for large DMA
-transfers and no loss for small transfers.
+Increase the DMA buffer size to the maximum words that edma can
+transfer once to reduce the chance of this happening.
 
-Suggested-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+In host mode, the driver is able to split up a transfer into smaller
+chunks so we don't need to increase the size. While in target mode, the
+length of the transfer is determined by the remote host and can be
+larger than whatever default buffer size we pick. Keeping the buffer
+small in host mode avoids wasting memory, but allocating the largest
+possible in target mode gives the lowest possible chance of dropping any
+data from the host.
+
+While we could allocate per-transfer using the exact size of the
+transfer, 128K is quite a large allocation and there is a chance it
+could fail due to memory fragmentation unless it's allocated once at
+init time.
+
+Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
 Signed-off-by: James Clark <james.clark@linaro.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 65 +++++++++++++++++++++++++++++-----------------
- 1 file changed, 41 insertions(+), 24 deletions(-)
+ drivers/spi/spi-fsl-dspi.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 0baf7e0608f2..81d1e4470f94 100644
+index 6bf87ef01c13..3d29285c772c 100644
 --- a/drivers/spi/spi-fsl-dspi.c
 +++ b/drivers/spi/spi-fsl-dspi.c
-@@ -493,11 +493,19 @@ static u32 dspi_pop_tx_pushr(struct fsl_dspi *dspi)
- 	return cmd << 16 | data;
- }
- 
-+static size_t dspi_dma_transfer_size(struct fsl_dspi *dspi)
-+{
-+	return dspi->words_in_flight * DMA_SLAVE_BUSWIDTH_4_BYTES;
-+}
-+
- static void dspi_tx_dma_callback(void *arg)
- {
- 	struct fsl_dspi *dspi = arg;
- 	struct fsl_dspi_dma *dma = dspi->dma;
-+	struct device *dev = &dspi->pdev->dev;
- 
-+	dma_sync_single_for_cpu(dev, dma->tx_dma_phys,
-+				dspi_dma_transfer_size(dspi), DMA_TO_DEVICE);
- 	complete(&dma->cmd_tx_complete);
- }
- 
-@@ -505,9 +513,13 @@ static void dspi_rx_dma_callback(void *arg)
- {
- 	struct fsl_dspi *dspi = arg;
- 	struct fsl_dspi_dma *dma = dspi->dma;
-+	struct device *dev = &dspi->pdev->dev;
- 	int i;
- 
- 	if (dspi->rx) {
-+		dma_sync_single_for_cpu(dev, dma->rx_dma_phys,
-+					dspi_dma_transfer_size(dspi),
-+					DMA_FROM_DEVICE);
- 		for (i = 0; i < dspi->words_in_flight; i++)
- 			dspi_push_rx(dspi, dspi->dma->rx_dma_buf[i]);
- 	}
-@@ -517,6 +529,7 @@ static void dspi_rx_dma_callback(void *arg)
- 
- static int dspi_next_xfer_dma_submit(struct fsl_dspi *dspi)
- {
-+	size_t size = dspi_dma_transfer_size(dspi);
- 	struct device *dev = &dspi->pdev->dev;
- 	struct fsl_dspi_dma *dma = dspi->dma;
- 	int time_left;
-@@ -525,12 +538,12 @@ static int dspi_next_xfer_dma_submit(struct fsl_dspi *dspi)
- 	for (i = 0; i < dspi->words_in_flight; i++)
- 		dspi->dma->tx_dma_buf[i] = dspi_pop_tx_pushr(dspi);
- 
-+	dma_sync_single_for_device(dev, dma->tx_dma_phys, size, DMA_TO_DEVICE);
- 	dma->tx_desc = dmaengine_prep_slave_single(dma->chan_tx,
--					dma->tx_dma_phys,
--					dspi->words_in_flight *
--					DMA_SLAVE_BUSWIDTH_4_BYTES,
--					DMA_MEM_TO_DEV,
--					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
-+						   dma->tx_dma_phys, size,
-+						   DMA_MEM_TO_DEV,
-+						   DMA_PREP_INTERRUPT |
-+						   DMA_CTRL_ACK);
- 	if (!dma->tx_desc) {
- 		dev_err(dev, "Not able to get desc for DMA xfer\n");
- 		return -EIO;
-@@ -543,12 +556,13 @@ static int dspi_next_xfer_dma_submit(struct fsl_dspi *dspi)
- 		return -EINVAL;
- 	}
- 
-+	dma_sync_single_for_device(dev, dma->rx_dma_phys, size,
-+				   DMA_FROM_DEVICE);
- 	dma->rx_desc = dmaengine_prep_slave_single(dma->chan_rx,
--					dma->rx_dma_phys,
--					dspi->words_in_flight *
--					DMA_SLAVE_BUSWIDTH_4_BYTES,
--					DMA_DEV_TO_MEM,
--					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
-+						   dma->rx_dma_phys, size,
-+						   DMA_DEV_TO_MEM,
-+						   DMA_PREP_INTERRUPT |
-+						   DMA_CTRL_ACK);
- 	if (!dma->rx_desc) {
- 		dev_err(dev, "Not able to get desc for DMA xfer\n");
- 		return -EIO;
-@@ -643,17 +657,17 @@ static int dspi_request_dma(struct fsl_dspi *dspi, phys_addr_t phy_addr)
+@@ -675,7 +675,18 @@ static int dspi_request_dma(struct fsl_dspi *dspi, phys_addr_t phy_addr)
  		goto err_tx_channel;
  	}
  
--	dma->tx_dma_buf = dma_alloc_coherent(dma->chan_tx->device->dev,
--					     dma_bufsize, &dma->tx_dma_phys,
--					     GFP_KERNEL);
-+	dma->tx_dma_buf = dma_alloc_noncoherent(dma->chan_tx->device->dev,
-+						dma_bufsize, &dma->tx_dma_phys,
-+						DMA_TO_DEVICE, GFP_KERNEL);
- 	if (!dma->tx_dma_buf) {
- 		ret = -ENOMEM;
- 		goto err_tx_dma_buf;
- 	}
+-	dma->bufsize = PAGE_SIZE;
++	if (spi_controller_is_target(dspi->ctlr)) {
++		/*
++		 * In target mode we have to be ready to receive the maximum
++		 * that can possibly be transferred at once by EDMA without any
++		 * FIFO underflows.
++		 */
++		dma->bufsize = min(dma_get_max_seg_size(dma->chan_rx->device->dev),
++				   dma_get_max_seg_size(dma->chan_tx->device->dev)) *
++			       DMA_SLAVE_BUSWIDTH_4_BYTES;
++	} else {
++		dma->bufsize = PAGE_SIZE;
++	}
  
--	dma->rx_dma_buf = dma_alloc_coherent(dma->chan_rx->device->dev,
--					     dma_bufsize, &dma->rx_dma_phys,
--					     GFP_KERNEL);
-+	dma->rx_dma_buf = dma_alloc_noncoherent(dma->chan_rx->device->dev,
-+						dma_bufsize, &dma->rx_dma_phys,
-+						DMA_FROM_DEVICE, GFP_KERNEL);
- 	if (!dma->rx_dma_buf) {
- 		ret = -ENOMEM;
- 		goto err_rx_dma_buf;
-@@ -688,11 +702,12 @@ static int dspi_request_dma(struct fsl_dspi *dspi, phys_addr_t phy_addr)
- 	return 0;
- 
- err_slave_config:
--	dma_free_coherent(dma->chan_rx->device->dev,
--			  dma_bufsize, dma->rx_dma_buf, dma->rx_dma_phys);
-+	dma_free_noncoherent(dma->chan_rx->device->dev, dma_bufsize,
-+			     dma->rx_dma_buf, dma->rx_dma_phys,
-+			     DMA_FROM_DEVICE);
- err_rx_dma_buf:
--	dma_free_coherent(dma->chan_tx->device->dev,
--			  dma_bufsize, dma->tx_dma_buf, dma->tx_dma_phys);
-+	dma_free_noncoherent(dma->chan_tx->device->dev, dma_bufsize,
-+			     dma->tx_dma_buf, dma->tx_dma_phys, DMA_TO_DEVICE);
- err_tx_dma_buf:
- 	dma_release_channel(dma->chan_tx);
- err_tx_channel:
-@@ -713,14 +728,16 @@ static void dspi_release_dma(struct fsl_dspi *dspi)
- 		return;
- 
- 	if (dma->chan_tx) {
--		dma_free_coherent(dma->chan_tx->device->dev, dma_bufsize,
--				  dma->tx_dma_buf, dma->tx_dma_phys);
-+		dma_free_noncoherent(dma->chan_tx->device->dev, dma_bufsize,
-+				     dma->tx_dma_buf, dma->tx_dma_phys,
-+				     DMA_TO_DEVICE);
- 		dma_release_channel(dma->chan_tx);
- 	}
- 
- 	if (dma->chan_rx) {
--		dma_free_coherent(dma->chan_rx->device->dev, dma_bufsize,
--				  dma->rx_dma_buf, dma->rx_dma_phys);
-+		dma_free_noncoherent(dma->chan_rx->device->dev, dma_bufsize,
-+				     dma->rx_dma_buf, dma->rx_dma_phys,
-+				     DMA_FROM_DEVICE);
- 		dma_release_channel(dma->chan_rx);
- 	}
- }
+ 	dma->tx_dma_buf = dma_alloc_noncoherent(dma->chan_tx->device->dev,
+ 						dma->bufsize, &dma->tx_dma_phys,
 
 -- 
 2.34.1

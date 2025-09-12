@@ -1,42 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2BC168BD;
-	Fri, 12 Sep 2025 01:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3A40168BD;
+	Fri, 12 Sep 2025 01:11:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757639486; cv=none; b=SLLKLSBlQAzDMSJE3diPfy3Bfe2e7OQrLq+T3m7dFdlDfZErfkEHrSA7jrr/XZgyOLx2b7odnvWPqwkZshzFnR6W4bZYpwF/WqQ+mhjU9cv5YxZ5w2C3BlVCq26LzN9zETzLE2KPu6IORP5SIh9OWhuX9pPqQNd0N7YYRvHZiDE=
+	t=1757639490; cv=none; b=jNSZODbg39EgMyDXWTjIH7P7luE4mT5ySUocb2rPtWC7ogQEZIEaxHrL2f+RIqc7zb3cKgUqunoGNmEgGgKchGB5XRgcPbCm2jf5M0Q5jlPFGeVBSbDM4jwosFEAnXnmGhWK5MM50yMw0ZtXa87yIiQtR7li8xP8GD8o1CmaQdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757639486; c=relaxed/simple;
-	bh=BCQ6ooMUqjJ44vEm08o6flrbCyjr9CZj34vyNm7zsJo=;
+	s=arc-20240116; t=1757639490; c=relaxed/simple;
+	bh=ztRk4wm82f1OoWN0gxCnU/O9HPW2W6wBaaArWkzZyEQ=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=hIOd8YGWCBKlUIDyLyX3Y9AilhdpRy5lDAPUdHRM64MBk5JQfJ6z/w/JZLHTvtdr97fRO+6hwXCizIW/tsrXFKhu4cfFWY+2kwN5+p3QAqqR+KUTb1aQJ6y9qIHD+HccWU5LQQhW/skZRBvUFIuAR1KO6xsc2WY7g+mRUqgzOvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PsKmCw3c; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=iICkWA356pcT6MrTwNpJhqN5k4dJyUCxC2CNu6pbqvN1OiayuTVZxeX9mtx+8F7UYi9jaNLetgX0BHDIH4+PeV3haoMr1jIk6/njJYBwqYiVTzAWSOHs+Yq10d5zVkCjmcQfbZRPweXePdRiMjVaBjcVDLCn8iPfJqFDBG33f/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sBmc2bmO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PsKmCw3c"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EF4AC4CEF0;
-	Fri, 12 Sep 2025 01:11:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sBmc2bmO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 873F6C4CEF1;
+	Fri, 12 Sep 2025 01:11:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757639486;
-	bh=BCQ6ooMUqjJ44vEm08o6flrbCyjr9CZj34vyNm7zsJo=;
+	s=k20201202; t=1757639488;
+	bh=ztRk4wm82f1OoWN0gxCnU/O9HPW2W6wBaaArWkzZyEQ=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=PsKmCw3c6dLI9HzTstQVy1COehG5HkNSo06sr+cOYMAvIH2/z+vxujB30kkBAdsxh
-	 FJ9GzYib6C7RsWJrdqqs4RmB73XKJoi30rzPy2DGLJcY2lBtswMPlHLCJbYRk65Mya
-	 0TroozGbiy3o3Jxkfjn++XOhUNqjelz51XMHn8DRjF1NGCeyD0lWDjg8yo44ojKQQs
-	 tVD7yZd8n54vU3fOSs7Eo5pgpQyHx1f5GKK3NRRr8rMg1hIIFSFGvEGsWhBR3mVo69
-	 qZjDzQJ1TrX9sIsTVcdHI4YmOWBuQMSkr+425c4zVLHRoxBzV3WCpste8SkVvM3tCE
-	 dPJw/0vlJcMfA==
+	b=sBmc2bmOcN/lbu02VIXdF212EPX7LQ/9ELqoFHlcq4JIiD9ZvNGNNFQ/VAv3VLQtP
+	 0LjGgd8bGNS6kGn5i49YcNa5kcH/biFGUfOCKPZTtcUErRNkB7obgBWnHmATIKYGS8
+	 YXeoWsFCd1zg+ZYZke4QgTCAhfdsoH6MmtA2tG+suUkoIm0KOZlVnSS9oM4CE0y1Ir
+	 Zb96dZBZ5H9HR5TFtx9ehgt2/zbHkvjYo1M05GI6KlEg0BewOqozLVpLzc1yHJDyos
+	 BdrEIH+vDi7bo51OUWdJPUooT+E2GcjlisdnZC95uZaVwQgOsaLsVYxz7PxN7Ibjom
+	 d7t62W7sc21vw==
 From: Mark Brown <broonie@kernel.org>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, Liang Yang <liang.yang@amlogic.com>, 
  Feng Chen <feng.chen@amlogic.com>, Xianwei Zhao <xianwei.zhao@amlogic.com>
 Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org
-In-Reply-To: <20250829-spifc-v4-0-1e57fd39f584@amlogic.com>
-References: <20250829-spifc-v4-0-1e57fd39f584@amlogic.com>
-Subject: Re: [PATCH v4 0/3] support for Amlogic SPI Flash Controller IP
-Message-Id: <175763948411.238908.9952245869421618986.b4-ty@kernel.org>
-Date: Fri, 12 Sep 2025 02:11:24 +0100
+ linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org, 
+ Conor Dooley <conor.dooley@microchip.com>
+In-Reply-To: <20250909-spifc-v5-0-962bc147d17f@amlogic.com>
+References: <20250909-spifc-v5-0-962bc147d17f@amlogic.com>
+Subject: Re: [PATCH v5 0/3] support for Amlogic SPI Flash Controller IP
+Message-Id: <175763948630.238908.13896906927374897926.b4-ty@kernel.org>
+Date: Fri, 12 Sep 2025 02:11:26 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -47,7 +48,7 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.15-dev-56183
 
-On Fri, 29 Aug 2025 13:16:12 +0800, Xianwei Zhao wrote:
+On Tue, 09 Sep 2025 13:13:24 +0800, Xianwei Zhao wrote:
 > This Flash Controller is derived by adding an SPI path to the original
 > raw NAND controller. This controller supports two modes: raw mode and
 > SPI mode. The raw mode has already been implemented in the community

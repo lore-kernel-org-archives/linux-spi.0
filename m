@@ -1,73 +1,66 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f176.google.com (mail-il1-f176.google.com [209.85.166.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 430B72E5437
-	for <linux-spi@vger.kernel.org>; Thu, 18 Sep 2025 10:27:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 588C230277A
+	for <linux-spi@vger.kernel.org>; Thu, 18 Sep 2025 12:00:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758191240; cv=none; b=u1fUONDCZoJ+BE74jbBHKAGGmgfUvgeqhco+0XDlloYyJepAMYBPN8l4ms9ZOCyvmxf1pyT+yujLQ7OSvSExNJIrMg9pBL6bEyjVR9r1crIxkX6kl4du1ipXU2+gv/VSTViLFWZRzQD7sKbW3WWhycr+cfS6Gf184/yNFeZHN0o=
+	t=1758196807; cv=none; b=oRX7uBC8KIRpQggmKbgqHxNEcZ5ql4UYUY3qxKt7Nr3Wc2ResLmY+mzawcnB0gmYdvPy2JJTaAYG0Ih23sOrF0jOaAX8zSdLxQ5EGKjZqjD6Sb5EjgkdmcS8hNi/KdlEO51O2zh+Vd8e72GnDE/1Jxhs/Eu43EGgFyAOnc4RfbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758191240; c=relaxed/simple;
-	bh=SFFv6NEMjbrj0MqTLSIDkcH/Ec5UzdpQKT06CrRKoh4=;
+	s=arc-20240116; t=1758196807; c=relaxed/simple;
+	bh=BiCnS6nvRQt9QJIQu21OOgBTBUSKKpEDfAYCnnRz0ZY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jQ/qpeWX/ukopnzDEBox5lFncii1BHud/BGBBNG0s7J4ILKOIc125Rx+oUGPt5HA9LYgrgFndW2C8dgqcKk85/LNDprCvi2lKCVa6C5lGM9GmTGe32FHkRpA67OtiKmxeX4gHSqWMlwzD6wrnVgjUS7G8VZ3HQhv//9OoPzaoHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Xj8+bJON; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	 In-Reply-To:Content-Type; b=nEJY/6c4u4GqMi8G0eu5qgiP2Ai66SMh7jPQR6Ng2WZywG31MW3/Bl2pZVVVMJLCdanNHaC9VxyuLjZlbXnfbUm/UZaC7S5VJM2PIzpE4E/egUbjXNRpAfkRRTBa9vU2vvV8KTplYbgJFj+2F2SO/Zpu6HYturbgJkstQPbqPaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20230601.gappssmtp.com header.i=@riscstar-com.20230601.gappssmtp.com header.b=h2u7dmfD; arc=none smtp.client-ip=209.85.166.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Xj8+bJON"
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58I5U4Oc017736
-	for <linux-spi@vger.kernel.org>; Thu, 18 Sep 2025 10:27:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	SFFv6NEMjbrj0MqTLSIDkcH/Ec5UzdpQKT06CrRKoh4=; b=Xj8+bJON4h6M4tex
-	eud08TlmICVdM46C3Tno3WLRmkhsbNqhTgCberXdpoMD14nQHmlRgjlnHEXKF/2r
-	S+J8P8/fiV2JZRB6IsymMfqP7fIVxiS7amroKAScOlJUSy1NJomH6IwwfhRqqgj9
-	pOsgXIDONGDPuCe7kEo5WyIhMMCjdyDa4Fwe0bV06eO3TXlDh0HbWW7J6QFnh2tc
-	5aR5Xo9CkpAv6qyLtcM8feBGEi3aXP90Yd1yJtKNHZXBbljdopXYR3CgO/pfLQXD
-	RH6tVxKP7ZDMibIcy25K4HSl0x5HyrBVpYvDWcSssdxiUbcI1LEFF3zkxLigFthH
-	+eP9Bw==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4982deaewt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-spi@vger.kernel.org>; Thu, 18 Sep 2025 10:27:18 +0000 (GMT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-80e91c02c8cso22683185a.1
-        for <linux-spi@vger.kernel.org>; Thu, 18 Sep 2025 03:27:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=riscstar-com.20230601.gappssmtp.com header.i=@riscstar-com.20230601.gappssmtp.com header.b="h2u7dmfD"
+Received: by mail-il1-f176.google.com with SMTP id e9e14a558f8ab-4242bb22132so7840725ab.3
+        for <linux-spi@vger.kernel.org>; Thu, 18 Sep 2025 05:00:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=riscstar-com.20230601.gappssmtp.com; s=20230601; t=1758196804; x=1758801604; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=24dAp6S0Mw7uy79hEDvqIYLysQ8ECFwST6qu+5oIS60=;
+        b=h2u7dmfDvRl0BTM+JWf+bCfpVib3YGcBFEpDktZycUTpJPkacyqJGDwEvFSkyA2rOv
+         8hiaamcrVTh87aoIMm0CK4o5cvaIuYWTP5ybJ4XIH1GA1EAHsuEHWVzVGXnUmuuGzcdN
+         LZV2TujwsTVDhiKqbyUW9ytxbt6minzRDdEG+k37CisQJ8vUhHiixbfwOKCDYkEVWjn0
+         St5UK5SHhT7j/3VKsg/lLd0ANQWEgTF6opACKxgBLl8XR/2J3bFHrDiG9fzugut012o8
+         /nS0u+zVDYEcDKY62bRlymTGVAE0nV/yhRFCiJiISBJIQtr9D5lg/rVvgN9g7F6N8NHO
+         uRpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758191237; x=1758796037;
+        d=1e100.net; s=20230601; t=1758196804; x=1758801604;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SFFv6NEMjbrj0MqTLSIDkcH/Ec5UzdpQKT06CrRKoh4=;
-        b=GzI4VReBp24oQvQIbYx58jrY0nU+FQ5n5KcnbVEePcjAfbECvgY7GlPbFoBBOgxbpD
-         G7Kudi6oUnpb0RQ8xmFERnrK71dL9rRvNDsoSI5UmLKYynOIBlyUjfz1sRkZms+F5O+U
-         CbxYk5g+GISZbzAuRhC0XhoEhSbvCQrO9nv2c74xc26M6rJqwcid2Svi1CMo5HWHD6iv
-         QcaJyTAxkieASAaJekAY52DrIX34WFFUJTPdnpsjSjxcbVl5Blkpg0qV62mbNKHSe3lB
-         1qgcet1bgzbVBPAPgNnAUBW3MmJ7xOIPhLtAGUfork988F4+S4j/pBHmkWzz6wiaqngO
-         hD0w==
-X-Forwarded-Encrypted: i=1; AJvYcCVJWhTlxL+0QZNueWER3dQNp6+9xmNv2hspSPy3vqk+WCUjZzpz2p7VDeeFh+APyVUJQ1hO5NeTL08=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQhIrdLLSZGGMVZfn+ylXPGeiNUiKV+RVdOEXhPAQ/29YwB7FZ
-	XhXDe+HpDBQPY7SJCrWNz1GumMWcBd6bukUSWjnB72bTvRqrGyK+fYDpLbJ8kc0nF4yHOb7Xddd
-	wMk+846Y0rAGtQVTYYq2g2Kw1nwmzpk+pTdWiSI9j8pSPCKNwh67tNv8H0uJjW9FK6j+dGfI=
-X-Gm-Gg: ASbGnctI5KbpeV7DpZI3gGQDDuikoqWhRymrx3w2esUl7wfzosF5dYALQ9NfJS5/QNs
-	7M4FltKjmxCwp3+vgVbPTLIsniQq0BBmgyyYI1QniyesoT4vDLOflW4xAQCpNLhDlKtZNqV28e6
-	uY1j0h61t5OfZ7Z74eSiSg/Tt7HztWzqmllzENv3fOX+I1pWuTfjuA8kl90dSzTxKCtnwbXgrtd
-	zimi4E4jOM6f8Iks6v5ku8qX3EcGiW64+3vpZEqpG62vk1FPWXsM3he9P6VaXdejv5uleYr19mh
-	fUTgce641YXRZ8SfqiemMXHe8td6bXLdchUiAVg5AhfjGbwWhJXe4OafsVy30UAWWu+xcj02iCi
-	evklI8Cze4iL3AiFsTHxcxA==
-X-Received: by 2002:a05:6214:519b:b0:795:c55c:87de with SMTP id 6a1803df08f44-795c55c8cffmr4039526d6.5.1758191237100;
-        Thu, 18 Sep 2025 03:27:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEYzlJJuyXGduZqx5WCoB3OgJz/oYERgYQ1D6+IglQ8GmpT3KQfYFFrtxzVLToClE/f0NfFbA==
-X-Received: by 2002:a05:6214:519b:b0:795:c55c:87de with SMTP id 6a1803df08f44-795c55c8cffmr4039366d6.5.1758191236525;
-        Thu, 18 Sep 2025 03:27:16 -0700 (PDT)
-Received: from [192.168.149.223] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-62fa5d1a89esm1217938a12.16.2025.09.18.03.27.13
+        bh=24dAp6S0Mw7uy79hEDvqIYLysQ8ECFwST6qu+5oIS60=;
+        b=qdi3xGKWvNnC6OX4LHaiFoodsWp2V/GgVLyMHKf5Hr9xlzLaMIDcviRKaqndPist6U
+         r1mHeEqEu1XuXycJDd4pqd2aulqyg6nlCDKG3lpOjF2NiR/7zCZFmJ3UMCjgjA5+65Sc
+         RwCCMOW119S1mltM8FGyibGXpxYLpZQHm3CKLIk7v4N1lyF+45f4+Xx1BiN+2kFMJ6Zc
+         EO79ArerRb+x4xEIkKIetqVm9RblSQlXfaFCs/H6m/oXbkVaYZXQP8UvwgnKfq+QkLaC
+         zibF2CThWKwFPI7fxVf3u46bPWZXVbY2esy9vOP4dcvs4BNaFscAQoskwgzuJRZC3Voq
+         bNUg==
+X-Forwarded-Encrypted: i=1; AJvYcCV4jHB5Sh8ox2PC3k5FY/Sa7BQvJb6Jd5XftccvNZBKkctScly8WEeclVn93XZGJ/SXwJgPQwVWRl0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxB8+Qb2cM19AJehGlzjyPA6AJ5Q3wlFDBQ0fK+zW/GE219OqE6
+	EhitV5VcrnlZIbMv4aMo8NBH1WEwMA+iNzRS2nTjTcBRcb/7iAX0MQwBMuG9HdxL3vA=
+X-Gm-Gg: ASbGncsuQ7nFw1ScVbpZYJJjQH/La/wVvXBDH54XCoa7Xgr/I0WABvj+p/vPTQ9c930
+	AUC+W4gSUbQpKwgTSXRcC9P4msh5JoItxFiZogkpTpJueVeME1EMRPXGUVbD8AZQgIIAfZSE1h8
+	A8GD8hQNKHcvwEJLXvt/zp8vDePGYzudcwEy7rwOWl4VD5C9IwKsVOjFtg3oAELODiLVwr7a0YH
+	WZPam9yXikbaVAfqffGALcpxP3KulpsGBeOA1/0hLeiwXsF526t2VGcEB3xmjnsvc9DAYMxNZ9Y
+	eEGuqVCQ/9alyuZnAOBJGUGTxW9cUptc7ZdHm6zlxXcoRTAY1FhyB8Bob0UBsmAJ2c+8h1IpfUX
+	/SJ6azXjHKSqIWPoisqB1TIisvxK/3rV4bCc1iVfHlh3uVBUezU0Sz66epe1HXlPKuB+g6yL8PQ
+	sG92IRdg==
+X-Google-Smtp-Source: AGHT+IFijlR8XeEU0nDd9FqF6SZxYszafUFzoDoP3bqBLd4TIHjKMZRHmvYVFqpT9XVP5Gq1Y4eDhw==
+X-Received: by 2002:a05:6e02:1707:b0:424:485:1f03 with SMTP id e9e14a558f8ab-4241a4d26ecmr81727265ab.13.1758196804240;
+        Thu, 18 Sep 2025 05:00:04 -0700 (PDT)
+Received: from [172.22.22.234] (c-75-72-117-212.hsd1.mn.comcast.net. [75.72.117.212])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-53d50aa5dc6sm876180173.47.2025.09.18.05.00.02
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 Sep 2025 03:27:15 -0700 (PDT)
-Message-ID: <c5d5c026-3240-4828-b9b3-455f057fb041@oss.qualcomm.com>
-Date: Thu, 18 Sep 2025 12:27:12 +0200
+        Thu, 18 Sep 2025 05:00:03 -0700 (PDT)
+Message-ID: <88833bd7-dad5-4613-b29e-2db05d60f3f0@riscstar.com>
+Date: Thu, 18 Sep 2025 07:00:02 -0500
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -75,55 +68,42 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/9] dma: qcom: bam_dma: Fix command element mask field
- for BAM v1.6.0+
-To: Md Sadre Alam <quic_mdalam@quicinc.com>, broonie@kernel.org,
-        robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-        andersson@kernel.org, konradybcio@kernel.org, vkoul@kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dmaengine@vger.kernel.org
-Cc: quic_varada@quicinc.com
-References: <20250918094017.3844338-1-quic_mdalam@quicinc.com>
- <20250918094017.3844338-4-quic_mdalam@quicinc.com>
+Subject: Re: [PATCH 1/3] dt-bindings: spi: add SpacemiT K1 SPI support
+To: Troy Mitchell <troy.mitchell@linux.spacemit.com>,
+ Yixun Lan <dlan@gentoo.org>
+Cc: broonie@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+ paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu,
+ alex@ghiti.fr, p.zabel@pengutronix.de, spacemit@lists.linux.dev,
+ linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20250917220724.288127-1-elder@riscstar.com>
+ <20250917220724.288127-2-elder@riscstar.com>
+ <20250917231520-GYA1269891@gentoo.org>
+ <3b815302-21f2-4ee2-bf83-c1dba77ce3d1@riscstar.com>
+ <20250918001632-GYA1270371@gentoo.org>
+ <f7e12797-ea17-4e92-bd25-cc562c66d2a7@riscstar.com>
+ <D2A109C6A8BDED08+aMu4H4xap2GSP50w@LT-Guozexi>
 Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20250918094017.3844338-4-quic_mdalam@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
+From: Alex Elder <elder@riscstar.com>
+In-Reply-To: <D2A109C6A8BDED08+aMu4H4xap2GSP50w@LT-Guozexi>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=YfO95xRf c=1 sm=1 tr=0 ts=68cbde86 cx=c_pps
- a=HLyN3IcIa5EE8TELMZ618Q==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=MmGnNXLGTzfTIO6JWNsA:9
- a=QEXdDO2ut3YA:10 a=bTQJ7kPSJx9SKPbeHEYW:22
-X-Proofpoint-GUID: QHQoGeeL7ZkaDiVOEeHY2GiCkvIXjE4C
-X-Proofpoint-ORIG-GUID: QHQoGeeL7ZkaDiVOEeHY2GiCkvIXjE4C
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE3MDE4MiBTYWx0ZWRfX4ZXLWlGmkIwR
- kNnFXBuoP4hpqvaMX1NEbHV14/x0jN8IrIMZN88Bmjegas4ffGTG3rSkoiTzKolaoWQx4nEipMo
- t4P2dlQsWvPpNW+w3F4N6nrVSCei3YSJEOz2KvdIT6pQ63A21o6YI+mqZKMZ2UCwT2+hiA2VQ7M
- 9y3RjXPid/LoFb6VbER61HdquUqzBLUKCxENKsJNAFhw27mA/U6nPLkVAFUCA0STUq/JK9sBTGr
- 2BRVqJLunfDMkNoDOMHpeVNgZL3ZxBxIG2CoalM9soFWau2z/LJW4pc6wCdYfHdspIRii9a7W9c
- 3A9kheTSJcjl3LL2o5IvOtaUSTGftGT5EIeU7WDCtREmI7lS5EmBdj+ODv13oBMBv66pI2gX8ao
- dWszaKtQ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-17_01,2025-09-18_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 impostorscore=0 suspectscore=0 clxscore=1015 priorityscore=1501
- spamscore=0 phishscore=0 malwarescore=0 bulkscore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2509170182
 
-On 9/18/25 11:40 AM, Md Sadre Alam wrote:
-> BAM version 1.6.0 and later changed the behavior of the mask field in
-> command elements for read operations. In newer BAM versions, the mask
-> field for read commands contains the upper 4 bits of the destination
-> address to support 36-bit addressing, while for write commands it
-> continues to function as a traditional write mask.
+On 9/18/25 2:43 AM, Troy Mitchell wrote:
+>>> while looking at the code, it seems you can use alias to map specific id
+>>> to the spi controller, it even can do non-linear map, something like
+>>> 	spi0 = &spi3;
+>> I've never used this before, but yes, it looks like it's exactly
+>> what I want.  I'll just get rid of the "spacemit,k1-ssp-id" DT
+>> property entirely.  Easy.
+>>
+>>> plese check of_alias_get_id()
+>>>
+>>> note, I haven't actually verified on board, just look through the code
+> This is the right API that Alex what to use.
+> I have verified it in i2c driver.
 
-So the hardware can read from higher addresses but not write to them?
+Yes, thank you for confirming.  I've already made the change
+and verified it works as desired.
 
-Plus, you didn't explain what the mask register does on BAM <1.6.0.
-If it really masks the address, all reads will now point to 0x0
-
-Konrad
-
+					-Alex

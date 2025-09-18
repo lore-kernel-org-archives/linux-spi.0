@@ -1,125 +1,144 @@
-Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1806275AF6;
-	Thu, 18 Sep 2025 07:48:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.92.39.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5EF21D9663;
+	Thu, 18 Sep 2025 09:41:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758181714; cv=none; b=PnwZcvZXqZgoImSRZ8wjk/tPzyctHlx8dECb7MRxLOPY+oOCG9oeBmIEnwLMsjz0dui5TmRu9q8yRSatcDWKeCRmcHA+9ORPfIrKyg5emWNnuIPZIdXpPe58RNNHBpiZKoEwwcv/XI5JdOciariBHQCKDuk0cZWLFt/NWKqT2Is=
+	t=1758188475; cv=none; b=vF88A94Zt6TsjCLS1Ny6g/bEUTpiWfgTib9CgbgnkhAgFTXLQgKneiazkNw4pciTBPC0KsE+KEvHEJmzajH77K+v/R3C6rA6RdF00BnNuO1y05Zj8I9FjsY1X9WG9X9Xrt8jCViNkkqy4aZaXnVY3yO6ox5MSPgNIjyynJ0ACX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758181714; c=relaxed/simple;
-	bh=9lfc2Fj1bMSccZGCtOqi1S+FUb+q5SAFOr7SmGz0T6o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e6iOqSd+zvAyeadvSgQ3d6avht95j1GGHYTvLIy1eyOGIKP7QgFhHoqPaV9Me6NbCJLzR+V+Wrti1atVkU3AkvNSAWmXYnuVNkG8yhyQQ2i4I+0pKIZnX/WFZBJOTLJT8ieoL1tr+bajw8ueQ6Dhs+yFD6a3Obg4D/Y+cSs4yVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux.spacemit.com; spf=none smtp.mailfrom=linux.spacemit.com; dkim=pass (1024-bit key) header.d=linux.spacemit.com header.i=@linux.spacemit.com header.b=od6Z1jk8; arc=none smtp.client-ip=54.92.39.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux.spacemit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.spacemit.com
+	s=arc-20240116; t=1758188475; c=relaxed/simple;
+	bh=ixkdTPvFUCxFE95etiwcgzZUrptGeYMATeqD3qe54l8=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bJR5kZ3ETPAzgzs0Afqb4k1DOADc2/NLnIJ1PeyS9+AsXspOyCSYtxBvIWmmRvPZwvoVBpg/ncKksPKs247bMWhziN2YmXbzFrJfFU4uLGNTSH3fdT2Kku86l9+EwVSQZnMaYZjxXBpSN6Lb2Uu6tdu0Cpgy+0sycPPPtxoNaU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=mOkN3dLF; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.spacemit.com header.i=@linux.spacemit.com header.b="od6Z1jk8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.spacemit.com;
-	s=mxsw2412; t=1758181676;
-	bh=yrjO2XRs5IM/Lr/k6cLIhIZx2sFkrnGAyhn5oP54jOw=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version;
-	b=od6Z1jk8Xn79AXMZ45Wxxl3pva61PJ48oEMPepHgPGPhCjJ1f/03jYCbyNoUpxyEn
-	 zb7iDIOeCye1q+VpZQN5pKYxaMvzn17a8c/EccO5ZM89G+oD8sWqAsW9gbeCoXhVw1
-	 NVSXTVATDBVUo5reQ7aYlAKkf0aYF7ESTky7Q+n8=
-X-QQ-mid: esmtpsz18t1758181670te2195bfb
-X-QQ-Originating-IP: 2P3awJ/rAckBQ5WJim/2vC85B1eBTLxK95O56RQ2eV8=
-Received: from = ( [120.239.196.247])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 18 Sep 2025 15:47:48 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 5320209065315358107
-EX-QQ-RecipientCnt: 17
-Date: Thu, 18 Sep 2025 15:47:47 +0800
-From: Troy Mitchell <troy.mitchell@linux.spacemit.com>
-To: Alex Elder <elder@riscstar.com>, broonie@kernel.org, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org
-Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org, dlan@gentoo.org,
-	paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu,
-	alex@ghiti.fr, p.zabel@pengutronix.de, spacemit@lists.linux.dev,
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Troy Mitchell <troy.mitchell@linux.spacemit.com>
-Subject: Re: [PATCH 2/3] spi: spacemit: introduce SpacemiT K1 SPI controller
- driver
-Message-ID: <4C1E339412373423+aMu5I4jmngaN0rOy@LT-Guozexi>
-References: <20250917220724.288127-1-elder@riscstar.com>
- <20250917220724.288127-3-elder@riscstar.com>
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="mOkN3dLF"
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58I8BBRf007486;
+	Thu, 18 Sep 2025 09:41:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	6SUqQPxDgyxQKMxp0CuYLZT1/B9YWizmbnY5cZquSxs=; b=mOkN3dLFRLcVIq9b
+	p4OgbGeh9IXe8Jw7GTbdSyIPfQJ2pMGlsBobCfNTJAIHgxDsmVluUzu+RKNoTyPR
+	aSDTWPy4wDxWNlIJ/TCBx94DPTJCslhkjkfrbbjtQlGgixu+j2tflHx2osJw2oGG
+	glBHBhgD0zc5aEGcm6hUU3jqMidf6hVDo3KJ6mZgJA2bO6uS7nu2rcGzLG7CElGF
+	BaaWrCtbJjDFdzKeSrFxJP25TrwsCQwsqiyIv14Zp/7a71z2PfASM81OktPMPIdj
+	3aiSkYVV5yZaDfPfTaBfAhsfmKgYhM6ezeYoezWngyUtVnY+3bDzN1SlRSnqVkoa
+	8gZuUQ==
+Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 498eber9jv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 18 Sep 2025 09:41:09 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 58I9f8gj029124
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 18 Sep 2025 09:41:09 GMT
+Received: from hu-mdalam-blr.qualcomm.com (10.80.80.8) by
+ nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.24; Thu, 18 Sep 2025 02:40:51 -0700
+From: Md Sadre Alam <quic_mdalam@quicinc.com>
+To: <broonie@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+        <conor+dt@kernel.org>, <andersson@kernel.org>,
+        <konradybcio@kernel.org>, <vkoul@kernel.org>,
+        <linux-arm-msm@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <dmaengine@vger.kernel.org>
+CC: <quic_varada@quicinc.com>, <quic_mdalam@quicinc.com>
+Subject: [PATCH 4/9] arm64: dts: qcom: ipq5424: Add QPIC SPI NAND controller support
+Date: Thu, 18 Sep 2025 15:10:12 +0530
+Message-ID: <20250918094017.3844338-5-quic_mdalam@quicinc.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250918094017.3844338-1-quic_mdalam@quicinc.com>
+References: <20250918094017.3844338-1-quic_mdalam@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250917220724.288127-3-elder@riscstar.com>
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:linux.spacemit.com:qybglogicsvrsz:qybglogicsvrsz3a-0
-X-QQ-XMAILINFO: MMnP0fEUKo/hCQaf9kAgAl6sqLKLFHdobLwPxGk8qaNcXQ+EWLyMmbjO
-	YRIrJvAMlDyb7Lc9ZeLE2A2S7LXBuz96DfTJ5GpDmMh41lVMIUzkqGZtyFLZySeA6eoPYPR
-	Yhg+EWEUP72djT9TEyKiXg4XusP3l9QbaopojBPCpRYrq8TtB9uEwwRqbBPUQCXQkQeJojr
-	mp/qJNHdUz1PLKtkWPVJoVl+SvqFxc3P1uXMWwR3bZGxYerKsyfACSmQpdWWqEEHQ2GKnzp
-	9pk3RsF/p2OGJ+lGRh/mwY7pXQOuysLtZ/rpKuNAUtFyFeNsSkgzy3xL3V8bOichOwkFTM3
-	88mFJ8xKuti9ruvyrHEVmfofrV0a2kJTh3F/acdeQMm3nMQxcNPKLh8rEpawiZG5hF1dlcW
-	2+DaWMtuQoGwFm1MNcoJI7NerZ+f9ydYk22xFcIT5zPz38Uy6/YHNEz68qDIZqsiLCoXMup
-	VlmLzAIdfsQSy2PRrCqlQvembuV6DyqeGU21oqBaslDCeSfCla3fpvKsOfQMUbUgm3WerVr
-	V6Dzv0dvhA5grBebWPb1zs0ZGSeOIhRRRqH4eZiDGUeWheO45O/BDBebJN7aC9DXjQMwwQs
-	lI9ayNsTcCRODea/7XsaMoU9x3Fr4imaQBLbyr35eQypKoERCWoKZsU9Y/QoDm9P7BnVzjH
-	FzjsKS/KThXl+nYprRcvKUor+P/RMq7fRImpgxwM52nZskgSeg+y4TxZuOWKrSd5EGI5Gja
-	Kn8hyw1btsABfPytIvpEVKs/NlIm2ZwiPpz+F7dDnsOInpaJwqL3B5O/gDDVF/c97XBNqoP
-	5v7Db0Y0AnNxTFGQYmRrqWV4n5ZXgzRN0ujGCwG05St9KwOs+yuHQFAo5IMGJGwC6qTj5Rm
-	MATjXmKS2EYhKIx6DD8Xx0eFxaN9B1P4UfBglEFXjTWmx+Bfi5qob7469wQu3NfWCUcwtE9
-	GuiQjvT3JDHGHxt2p85zdV2vpFeXnAeSt9K5MHq1xo4T1CvEovsrQ8j1IhAQwFd5vaGJ8Kd
-	ntI0dZJe/YHSlH0fo1G/Ttm6iwCs9swnxFKgNqHJn4Z2ygzsMSMlgJd61ndAetb/MZcnVy8
-	Xf6CCAxz0W4Cla3Erhjzto=
-X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
-X-QQ-RECHKSPAM: 0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: UpztV1MAUS40zeBxrkZgweRycFLAogfL
+X-Authority-Analysis: v=2.4 cv=H6/bw/Yi c=1 sm=1 tr=0 ts=68cbd3b5 cx=c_pps
+ a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=GEpy-HfZoHoA:10 a=yJojWOMRYYMA:10 a=COk6AnOGAAAA:8 a=6UWhdCim3U11iwMnUWwA:9
+ a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-GUID: UpztV1MAUS40zeBxrkZgweRycFLAogfL
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE4MDA3NCBTYWx0ZWRfX5UD0+dg1imQu
+ Gc6HXXFbaR3ISgvtF7cQcCs4q7Z6o0w+NRXCMVL3WbmR3Pwxn4yMLDWJu1DpUmaSKEuRg5XgoL3
+ VX4VOdBUboLy+zdLkYEcEWzxNiL18icJHlnkTHjPqqpW/IjXQRMvYiRqVpGEraFtey34CPTkjqu
+ 96sybM6JhBp+xYp/2Htt8rvNFb5DBuMLFcLbmfkx+h4pNgQsGVv1RiZXc5N9v9kPMlweodE2vLC
+ wSue42xIhT4W0DdQ0NxbIoHAEraZgsdEFe77OO5c5pvmxR8zI/hMB10Sfii3F1L09qKJeAMTlZU
+ vUS8ag/KeCGA6hacEtbTz4npsTiQk2dRV06V0HJ8rP0LgUwOByh3OWdn3TK2I1J2P8a5BZrWeZQ
+ WCBlWqML
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-17_01,2025-09-18_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 phishscore=0 adultscore=0 impostorscore=0 suspectscore=0
+ malwarescore=0 priorityscore=1501 bulkscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509180074
 
-On Wed, Sep 17, 2025 at 05:07:22PM -0500, Alex Elder wrote:
-> This patch introduces the driver for the SPI controller found in the
-> SpacemiT K1 SoC.  Currently the driver supports master mode only.
-> The SPI hardware implements RX and TX FIFOs, 32 entries each, and
-> supports both PIO and DMA mode transfers.
-> 
-> Signed-off-by: Alex Elder <elder@riscstar.com>
-> ---
->  drivers/spi/Kconfig           |   8 +
->  drivers/spi/Makefile          |   1 +
->  drivers/spi/spi-spacemit-k1.c | 985 ++++++++++++++++++++++++++++++++++
->  3 files changed, 994 insertions(+)
->  create mode 100644 drivers/spi/spi-spacemit-k1.c
-> 
-> +static void k1_spi_remove(struct platform_device *pdev)
-> +{
-> +	struct k1_spi_driver_data *drv_data = platform_get_drvdata(pdev);
-> +
-> +	k1_spi_register_reset(drv_data, false);
-> +}
-> +
-> +static struct platform_driver k1_spi_driver = {
-> +	.driver = {
-> +		.name	= "k1x-spi",
-k1x? iis it from vendor driver? please keep k1-spi
+Add device tree nodes for QPIC SPI NAND flash controller support
+on IPQ5424 SoC.
 
-                - Troy
+The IPQ5424 SoC includes a QPIC controller that supports SPI NAND flash
+devices with hardware ECC capabilities and DMA support through BAM
+(Bus Access Manager).
 
-> +		.of_match_table = k1_spi_dt_ids,
-> +	},
-> +	.probe = k1_spi_probe,
-> +	.remove = k1_spi_remove,
-> +};
-> +
-> +module_platform_driver(k1_spi_driver);
-> +
-> +MODULE_DESCRIPTION("SpacemiT K1 SPI controller driver");
-> +MODULE_LICENSE("GPL");
-> -- 
-> 2.48.1
-> 
-> 
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv
+Signed-off-by: Md Sadre Alam <quic_mdalam@quicinc.com>
+---
+ arch/arm64/boot/dts/qcom/ipq5424.dtsi | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/qcom/ipq5424.dtsi b/arch/arm64/boot/dts/qcom/ipq5424.dtsi
+index ef2b52f3597d..81f133568bb6 100644
+--- a/arch/arm64/boot/dts/qcom/ipq5424.dtsi
++++ b/arch/arm64/boot/dts/qcom/ipq5424.dtsi
+@@ -567,6 +567,33 @@ sdhc: mmc@7804000 {
+ 			status = "disabled";
+ 		};
+ 
++		qpic_bam: dma-controller@7984000 {
++			compatible = "qcom,bam-v1.7.4", "qcom,bam-v1.7.0";
++			reg = <0x0 0x07984000 0x0 0x1c000>;
++			interrupts = <GIC_SPI 109 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&gcc GCC_QPIC_AHB_CLK>;
++			clock-names = "bam_clk";
++			#dma-cells = <1>;
++			qcom,ee = <0>;
++			status = "disabled";
++		};
++
++		qpic_nand: spi@79b0000 {
++			compatible = "qcom,ipq5424-snand", "qcom,ipq9574-snand";
++			reg = <0x0 0x079b0000 0x0 0x10000>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++			clocks = <&gcc GCC_QPIC_CLK>,
++				 <&gcc GCC_QPIC_AHB_CLK>,
++				 <&gcc GCC_QPIC_IO_MACRO_CLK>;
++			clock-names = "core", "aon", "iom";
++			dmas = <&qpic_bam 0>,
++			       <&qpic_bam 1>,
++			       <&qpic_bam 2>;
++			dma-names = "tx", "rx", "cmd";
++			status = "disabled";
++		};
++
+ 		intc: interrupt-controller@f200000 {
+ 			compatible = "arm,gic-v3";
+ 			reg = <0 0xf200000 0 0x10000>, /* GICD */
+-- 
+2.34.1
+

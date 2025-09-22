@@ -1,54 +1,54 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F202306482;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF652306B09;
 	Mon, 22 Sep 2025 12:06:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758542803; cv=none; b=QGHSQ3FrHfDDVirHrurAEkGcukohcJgb1pakJBmYapwHT55ua9TgoijiGR1a4TnNQpGOajta1EkFubD/pyjRcqJCSOkriGCIVnm0AsH/TbWokVR0A4fiVqdlUBl6QifS0PhT6wx2ER/dAKMRM/f52ks1E85io0KlqQW3bO7RY+c=
+	t=1758542804; cv=none; b=eRd62yqC3sKTBHKF0kYLHDlyxbTE/zMIuoHrqC7UznieoRjbhkRYf20Z0mPpcJno0+iuPNOgOStsV50W2q6fX4CWuTfr8rWSmUrGAO0pN7eWNQ62DJWfBvyoRD1c5kmpP5cS6bnA23A2/l2snQRJhOVyPHaAl39l7D7xeUydGGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758542803; c=relaxed/simple;
-	bh=9zh0rWyRasPTKX6C/jp7BoJyZWBGuh3aHojR6LfaIt8=;
+	s=arc-20240116; t=1758542804; c=relaxed/simple;
+	bh=BqqaY02AaKRz6FYXRgBC7tGdga5OnpwR2SDTy3uOWLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UN92rgw0enMGn/uXm1YiySFcGzxVr8PPLME/8KmpyEFPnT5OYOYR9DzJG8hFeuqoWsW/CDRINeQm9y2ALSwqZM9+bSXdtvWrITAUUoTW7UwYz8avsooTe1gNdRK85AEbCIY1zLLkGhgvIecJzvaj1zRmTsSWH9CL74CR1jP06hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jLKf3yi5; arc=none smtp.client-ip=192.198.163.13
+	 MIME-Version; b=JwKr2bbzagI+wxKj5Uz6/fr9vSJVdRfPXyUsO15woyYz2su4L4lnscz8SxU6ER52Ho/RzDYZQkYuX0OpGWv1W+/Oa7vcFbSTBZV0dS4igEHYp3NscW8KRKlUO9vXkHUBM2O04ziXZgU3KEYdpnzByL+KY1mKueRk02C6IOS8Re0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Jq6gBx9G; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jLKf3yi5"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Jq6gBx9G"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758542801; x=1790078801;
+  t=1758542802; x=1790078802;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=9zh0rWyRasPTKX6C/jp7BoJyZWBGuh3aHojR6LfaIt8=;
-  b=jLKf3yi5hHcfxeRXLeriQsRK119fwhVEpkR0WpIJ0CdDcqa/TGr86hes
-   HVBl9niW/J529PXZkdFU3ZdJtNrg65AmxCNbQM4w3WK8RgLkMsoV0TjYu
-   8fZRDQqNl1qmSbcHInbW2ARGY0//Xcvj4seNkB+K8cKg0IgZaXBdiHrMd
-   kVM0DIHZ8goZbFMRjD/ObiE/gG6qpHFtBSIuzFDX64bY9vnrNuhmhflte
-   f1DV2UmLdqqZAIsxJB5E52w1S5BdCYhkDpEhAzV7GSCAKH2vciR4Wdry1
-   UI6DyJZtr1dZyeQaqIxetorX39wHhdXuAYZgboPz3EFU6+x7FhHcKtc4j
-   Q==;
-X-CSE-ConnectionGUID: AYeNcWlWQm2V/OoC2fkeig==
-X-CSE-MsgGUID: 1WvLsTVRSumJZ2PvAP986g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11560"; a="63431632"
+  bh=BqqaY02AaKRz6FYXRgBC7tGdga5OnpwR2SDTy3uOWLI=;
+  b=Jq6gBx9GO68WFLd7zbBeca7AZQ5HVCTuyXccU/f6kAZcwKjOx8pcsX+4
+   f7PetNIdpHb8az7v9Q8jn3Dm0RVzVf2OqKwsnWfKqNNQAapnAtanmqb3n
+   Yn5ACULnysPYB2NTrh1G/QHvU/BLKMpsg8tKQxU/ElZ5eNUVcXUtFHE2b
+   wDop4Nq7R5CffO3ZlwAsFEyYsdZgvnHh3pFHllFrt9PM6ColSu9tx2JWY
+   d4jttuxQKkmW+ecFT8crhg/HFauF8KQPhx/pl5YVjQPpNO4BIRy4DPQmA
+   64HWJV+Ekvs+XdYQUA9xDYESyMrfWhme1+Q2CbrU8EECgItnEiQcs4EQ0
+   A==;
+X-CSE-ConnectionGUID: pj/7MX/XStCeHk0nrOHlEQ==
+X-CSE-MsgGUID: kXrO0miXRdi/Zld322YywA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11560"; a="63431642"
 X-IronPort-AV: E=Sophos;i="6.18,285,1751266800"; 
-   d="scan'208";a="63431632"
+   d="scan'208";a="63431642"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
   by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2025 05:06:38 -0700
-X-CSE-ConnectionGUID: WRiWyYRASwGQlvt4sfJpeg==
-X-CSE-MsgGUID: jrEZcGlYSeiQEthkhXb/Jg==
+X-CSE-ConnectionGUID: pzO72+6BRwejA/Z5VIiATQ==
+X-CSE-MsgGUID: LeALQ2uhTX6inN6lFWINnQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,285,1751266800"; 
-   d="scan'208";a="176842511"
+   d="scan'208";a="176842517"
 Received: from bergbenj-mobl1.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.61])
   by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2025 05:06:35 -0700
 Received: from punajuuri.localdomain (unknown [192.168.240.130])
-	by kekkonen.fi.intel.com (Postfix) with ESMTP id EEE46121EE6;
-	Mon, 22 Sep 2025 15:06:32 +0300 (EEST)
+	by kekkonen.fi.intel.com (Postfix) with ESMTP id 01F45121F08;
+	Mon, 22 Sep 2025 15:06:33 +0300 (EEST)
 Received: from sailus by punajuuri.localdomain with local (Exim 4.98.2)
 	(envelope-from <sakari.ailus@linux.intel.com>)
-	id 1v0fJQ-000000002j9-42K2;
+	id 1v0fJQ-000000002jJ-4AhS;
 	Mon, 22 Sep 2025 15:06:32 +0300
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
 From: Sakari Ailus <sakari.ailus@linux.intel.com>
@@ -65,9 +65,9 @@ Cc: Lixu Zhang <lixu.zhang@intel.com>,
 	linux-i2c@vger.kernel.org,
 	linux-spi@vger.kernel.org,
 	linux-usb@vger.kernel.org
-Subject: [PATCH 3/5] i2c: ljca: Remove Wentong's e-mail address
-Date: Mon, 22 Sep 2025 15:06:30 +0300
-Message-ID: <20250922120632.10460-3-sakari.ailus@linux.intel.com>
+Subject: [PATCH 5/5] mei: vsc: Remove Wentong's e-mail address
+Date: Mon, 22 Sep 2025 15:06:32 +0300
+Message-ID: <20250922120632.10460-5-sakari.ailus@linux.intel.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20250922120632.10460-1-sakari.ailus@linux.intel.com>
 References: <20250922120632.10460-1-sakari.ailus@linux.intel.com>
@@ -83,22 +83,36 @@ Wentong's e-mail address no longer works, remove it.
 
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 ---
- drivers/i2c/busses/i2c-ljca.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/misc/mei/platform-vsc.c | 2 +-
+ drivers/misc/mei/vsc-tp.c       | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-ljca.c b/drivers/i2c/busses/i2c-ljca.c
-index 93274f0c2d72..f82336cd1ba8 100644
---- a/drivers/i2c/busses/i2c-ljca.c
-+++ b/drivers/i2c/busses/i2c-ljca.c
-@@ -335,7 +335,7 @@ static struct auxiliary_driver ljca_i2c_driver = {
+diff --git a/drivers/misc/mei/platform-vsc.c b/drivers/misc/mei/platform-vsc.c
+index b2b5a20ae3fa..ce43668ad9fd 100644
+--- a/drivers/misc/mei/platform-vsc.c
++++ b/drivers/misc/mei/platform-vsc.c
+@@ -453,7 +453,7 @@ static struct platform_driver mei_vsc_drv = {
  };
- module_auxiliary_driver(ljca_i2c_driver);
+ module_platform_driver(mei_vsc_drv);
  
 -MODULE_AUTHOR("Wentong Wu <wentong.wu@intel.com>");
 +MODULE_AUTHOR("Wentong Wu");
  MODULE_AUTHOR("Zhifeng Wang <zhifeng.wang@intel.com>");
- MODULE_AUTHOR("Lixu Zhang <lixu.zhang@intel.com>");
- MODULE_DESCRIPTION("Intel La Jolla Cove Adapter USB-I2C driver");
+ MODULE_DESCRIPTION("Intel Visual Sensing Controller Interface");
+ MODULE_LICENSE("GPL");
+diff --git a/drivers/misc/mei/vsc-tp.c b/drivers/misc/mei/vsc-tp.c
+index 5ecf99883996..a75d8307a0f2 100644
+--- a/drivers/misc/mei/vsc-tp.c
++++ b/drivers/misc/mei/vsc-tp.c
+@@ -571,7 +571,7 @@ static struct spi_driver vsc_tp_driver = {
+ };
+ module_spi_driver(vsc_tp_driver);
+ 
+-MODULE_AUTHOR("Wentong Wu <wentong.wu@intel.com>");
++MODULE_AUTHOR("Wentong Wu");
+ MODULE_AUTHOR("Zhifeng Wang <zhifeng.wang@intel.com>");
+ MODULE_DESCRIPTION("Intel Visual Sensing Controller Transport Layer");
+ MODULE_LICENSE("GPL");
 -- 
 2.47.3
 

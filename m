@@ -1,34 +1,60 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E584C281366
-	for <linux-spi@vger.kernel.org>; Fri, 26 Sep 2025 20:56:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D557E34BA4D;
+	Fri, 26 Sep 2025 21:12:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758920210; cv=none; b=NViLo4O8dH1UtqNIVzwRCYP7B/kWy7i3H/yBjDl6x/qYBtZTJCb2yTWythSumNpJuaJPBbOGac6YvyX8ljiyVEVwGyhKhahosVn7rY21p8uNZojkI+V8Vn5fdbrlR8HSyBPCKe2rWdvohrcNxM90cCUfghUN2/73dwTqTb1fNHY=
+	t=1758921155; cv=none; b=qjNESPQ4BNjodFlk0ibj4WWM/pRB84iM3OCkc02X9NySIYezDw6bLJ3vt1Z+dJZ7fAQOc8M6B0sc7bvfXOQ6oZmlM11G8NI2+m7I0fldco1nOqTCTG8VQnP4n3ikSrnZGaHQ0H0GGA8AIOPY0Ws30HyRTl2QIbDi1/m7/+XK3ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758920210; c=relaxed/simple;
-	bh=Cw1X1mEeEqvAQWhsxg2iLNOZrTNoNcGqgmpxA+jEQWM=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=sp6tW4m7lSynOtZr3PygPtZd08ObiKy+73uMszAobVTjH9Yyn5YM1HcXKjbjKOt0rNIYq5GoqM2s9ZvCHNOmF6eBguHHh2xyCBirUictgveYwGorY01M085J9HaapveM7G0Z2buRAt4al9ylZj+g33xfg+Zj5m72FSnWBVw3ixs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AWDsrBMW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1758921155; c=relaxed/simple;
+	bh=CPaFK2Vc9610oLrAE4VTHtYvICfhkshdxskyhGEMgGs=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lhx8uJ6OP5tp846OSUtDVwD1hmuIivuUiYP+ySFTXH0zHhrDhKlXYraUzYNtiQLO/Upne4x6I03x/iSg/BYzDZ1y8pKHC9eALPuGEjWvIE9waw8J1I232sDq41B1O8Q9j0tvNUvc7OrxELmUJiv5g6RyDx+cteBGOpbRnLc5fs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=OkKf3T0q; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AWDsrBMW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 762DCC4CEF4;
-	Fri, 26 Sep 2025 20:56:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758920209;
-	bh=Cw1X1mEeEqvAQWhsxg2iLNOZrTNoNcGqgmpxA+jEQWM=;
-	h=Subject:From:Date:To:From;
-	b=AWDsrBMWg0MExOWmvOgGK5rr1ZoV5CWlznvnycAiRX6ayt2FUn0RpPYBa5yOSe4F2
-	 cv1oDdO0p3MHCTMsXhauObmFosnZP4y7uiqRseP1YoJt9GvELgInaGU+PML2l1aQBZ
-	 ilgJM3C2tupvv7v/umYjf4WKP9352jMqMlqYguSIToIpHvaglrE+Wyo/fkOLOYlvqT
-	 a43zHdwW8PI5ohs3bKlG6hwKj7TrwtMnDmZCjH1ykD1Xp++P3J+3HnmmSonl62jQoR
-	 ovgCcfLeDCf0ZQXJGIh4WbIvLhzqXKV9jA+Rn5h7IMgBzy+98DCitoCzeIMuoVv6dG
-	 BDabzpOOOdOXg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B18BF39D0C3F;
-	Fri, 26 Sep 2025 20:56:45 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="OkKf3T0q"
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58QHOS1u017131;
+	Fri, 26 Sep 2025 15:00:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=JvMSdbdP9VCwaI82pg3rY7gl/Qy
+	LwThdAhGQOGeQS8g=; b=OkKf3T0qp20JcdrD9s/I2J/hPSWXsyvo9eGMb2Fki93
+	sqZZqAUtvgkzAllf0u0glqjCrrnv2bd7w+5Wj0If2sZOa0U1V6KRgHAhSjk6hwlU
+	bHHG+GeUiFeRPeXXb1Y2iN9NPp15rX+j5RB1O74M13Nf+8u+xj/S1Q7+ouJYbjAN
+	MLMyKBsb67c98nfngsR5ay7wOME3Pr6+x+eNaumoqvaUSfDQ9UnF4kC2Lf9S4TDT
+	N4bYE5ar2WsnSrYFm4DtIODm0H9ewIhPJ3AD7OAoJ6qAsm/4QgdPEf+J63nmRywL
+	8PUOTSf8LDRScjmpSeU539qb1OH7+eVacVo0Zd+vJDA==
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 49db1hpp6h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 26 Sep 2025 15:00:58 -0400 (EDT)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 58QJ0u6Q001065
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 26 Sep 2025 15:00:56 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Fri, 26 Sep
+ 2025 15:00:56 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
+ Transport; Fri, 26 Sep 2025 15:00:56 -0400
+Received: from work.ad.analog.com (HYB-hERzalRezfV.ad.analog.com [10.65.205.9])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 58QJ0h1o006117;
+	Fri, 26 Sep 2025 15:00:45 -0400
+From: Marcelo Schmitt <marcelo.schmitt@analog.com>
+To: <linux-spi@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC: <broonie@kernel.org>, <jic23@kernel.org>, <nuno.sa@analog.com>,
+        <dlechner@baylibre.com>, <ahaslam@baylibre.com>, <andy@kernel.org>,
+        <marcelo.schmitt1@gmail.com>
+Subject: [PATCH v3 0/1] Add SPI offload trigger offset
+Date: Fri, 26 Sep 2025 16:00:40 -0300
+Message-ID: <cover.1758913065.git.marcelo.schmitt@analog.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -36,26 +62,58 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <175892020425.55711.1166361462284338651.git-patchwork-housekeeping@kernel.org>
-Date: Fri, 26 Sep 2025 20:56:44 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Authority-Analysis: v=2.4 cv=fd2gCkQF c=1 sm=1 tr=0 ts=68d6e2ea cx=c_pps
+ a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17
+ a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=gAnH3GRIAAAA:8 a=n5SytP7nWlXxJYHU_ogA:9
+ a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI1MDE3MSBTYWx0ZWRfX9Dg01Y8XmBSa
+ HKQ2xQrqb7VMwopsvS7oAhQ4iwit8KRBGDjr2xU6QmbZ6GHjhKM2aqk0Vw4j/C+z0IoDPOzhOWt
+ 41QUHJfm9DLOfGZUZfZ8zehJ/ueDUffUODG4zirzB19Psst9bqR7GiiLV6tyo3q1TK6xpcdPhDK
+ ToVaeYfNkO2TU2tbvPtxr/GNLbyIOvZLzjG/SeBZP8tx4cYXPvGtR1z5JndF4UkNB34azee0juH
+ Ta/mywYyBLbapUcjDFc/y6GCyb4DQINB9Gw1NTf5KPfkSEPHd6h6vpuBb7aTMEawzuuIuoEXdNx
+ uhwQ0gNZ0013Wed2TlFsKiOeQMOviuRd+OcLzbJOFfpCyH1lmU3jXQcUXzrN76uRxqcsMEpqCTU
+ xDio6MvWDnpYp9QINk3Rp4oAsrYseA==
+X-Proofpoint-ORIG-GUID: RSGGw-7FCbqBmFA-alLCGEfSSAo8ErP1
+X-Proofpoint-GUID: RSGGw-7FCbqBmFA-alLCGEfSSAo8ErP1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-26_06,2025-09-26_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 clxscore=1015 phishscore=0 bulkscore=0 priorityscore=1501
+ malwarescore=0 adultscore=0 spamscore=0 impostorscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2509250171
 
-Latest series: [v3] Add SPI offload support to AD4030 (2025-09-26T20:37:48)
-  Superseding: [v2] Add SPI offload support to AD4030 (2025-09-18T17:37:03):
-    [v2,1/8] iio: adc: ad4030: Fix _scale value for common-mode channels
-    [v2,2/8] dt-bindings: iio: adc: adi,ad4030: Reference spi-peripheral-props
-    [v2,3/8] Documentation: iio: ad4030: Add double PWM SPI offload doc
-    [v2,4/8] dt-bindings: iio: adc: adi,ad4030: Add PWM
-    [v2,5/8] iio: adc: ad4030: Use BIT macro to improve code readability
-    [v2,6/8] iio: adc: ad4030: Add SPI offload support
-    [v2,7/8] dt-bindings: iio: adc: adi,ad4030: Add ADAQ4216 and ADAQ4224
-    [v2,8/8] iio: adc: ad4030: Add support for ADAQ4216 and ADAQ4224
+Add SPI offload offset parameter needed to achieve high sample rates with ADCs
+that require some synchronization between a conversion start signal and the issue
+of data transfers.
+
+Change log v1 -> v2
+- Using upper case: adc -> ADC.
+- Codestyle/readability improvements according to suggestions.
+
+Change log v2 -> v3
+- Squashed SPI offload trigger commits.
+- Added documentation to offload trigger periodic parameters.
+- Picked up reviewed-by tags.
+
+The updates to the ADC driver that use these changes proposed to the SPI
+subsystem will go in a patch set titled 'Add SPI offload support to AD4030'.
+
+Link to v1: https://lore.kernel.org/linux-iio/cover.1756511030.git.marcelo.schmitt@analog.com/
+Link to v2: https://lore.kernel.org/linux-spi/cover.1758206554.git.marcelo.schmitt@analog.com/
+
+Axel Haslam (1):
+  spi: offload: Add offset parameter
+
+ drivers/spi/spi-offload-trigger-pwm.c |  3 +++
+ include/linux/spi/offload/types.h     | 10 ++++++++++
+ 2 files changed, 13 insertions(+)
 
 
+base-commit: 7e2212429ec9a7b11644a7971d5d606d44ee4d78
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+2.39.2
 

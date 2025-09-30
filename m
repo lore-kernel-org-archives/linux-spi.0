@@ -1,169 +1,258 @@
-Received: from TYPPR03CU001.outbound.protection.outlook.com (mail-japaneastazon11022088.outbound.protection.outlook.com [52.101.126.88])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5263C22B5AC;
-	Tue, 30 Sep 2025 07:56:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.126.88
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759219014; cv=fail; b=YlIo/veX9qyPVxrY3w3TrmhH3/+VpIMjgF7n/fzftXXX37stKAmWzb0Y2lIFz3P+rL79m55fiUZwke+AToAGB65wEXnUkU5VGzlNblmTsfOebVmQEl7Oan0OkFAV/WFdB4ZeM/bWuPD/lXVB7Dqz0CRlntnnICv5v6Zl4dFhbL0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759219014; c=relaxed/simple;
-	bh=xvkBd8mgCFL7sfjacEt6x8stxgqbp3RyBWBOD6Mc4jk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=CM+SUdFnC/XNAChe85XxYwwk74AVYPBKU0uq5sR/PKReSOCLeCA3yszmyy8zRv1DpaGJ/ODeTsGUZJafuGCznCfZLAf/wftlnQ0Bg960EWPMAPyBXuSrPs4yAOLg9N3+vYzKCM6DfauUIgdRnMjmz5uGq+JNun1eDC8oACj1Wfs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cixtech.com; spf=pass smtp.mailfrom=cixtech.com; arc=fail smtp.client-ip=52.101.126.88
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cixtech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cixtech.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kpMkR4A3XgK+YmhF/bffZ3ajhuFslRnzB/6d4dNpYko7dK51WRR6+H5237QIOznIzCvY/0lzgL3HOC/iuj2N9ZD6HTagQO8CKjiIjHnS3nGyIPZVPWEj04to+KeJRSLfZnlKOOhQ6po8FVgnVE66BLTO6KsJJMRTCVL8JItzRigJWynh3HtTtMFz4ICMN7Ah/HVneV1O52aTkhKM7Lx59ebp8KcHcLXxVVAiQBZx4QjOFrMjJnY2JZyNDnPsd7dLtoo+wh7LFbU9Rc9PPRcGQYN01iSnFt38chjGyirAqGWniXz2F83PCmHY9fMNt4Rgukva1InjPmkc5ajIOaaBww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OZytqp8jHc0j5Ndwle7H43KEOM+xw9TGnMnt3zzOHWk=;
- b=X7gBoltr7wRur8tGDAeUEoJXoX6YCnvH2DVb5hZFmpQxgEo8qa5BVXdMdL7S0u0Rbkc767q0++PfVPzUIeGNso9wi4Q1+jtXCQ09jZzTm8mnINxIDYgt7y9EXz9Ur6iYiN7WpYzgA7d1VZIBLddTCQmRlaJk6JcNfVQRPrDsRGJtCz+9Tg1vZvNmY/RTz4dCETT0MjSHCyKIJcwPtk6NkxA5BWEumbNt5sSy0cUYuxQBcHWLeOutLnA+KL9F6cre8GMeZ+yyBwgt2pH0H1UHkMkrmTdbwlsJtAcyW2SF4dIQGa4NHm41Ek0ZfTEBAeXvJsBcpd3o9sCuM9H4WAZsag==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 222.71.101.198) smtp.rcpttodomain=amd.com smtp.mailfrom=cixtech.com;
- dmarc=bestguesspass action=none header.from=cixtech.com; dkim=none (message
- not signed); arc=none (0)
-Received: from SE2P216CA0047.KORP216.PROD.OUTLOOK.COM (2603:1096:101:115::8)
- by PUZPR06MB6169.apcprd06.prod.outlook.com (2603:1096:301:106::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.17; Tue, 30 Sep
- 2025 07:56:47 +0000
-Received: from TY2PEPF0000AB89.apcprd03.prod.outlook.com
- (2603:1096:101:115:cafe::a2) by SE2P216CA0047.outlook.office365.com
- (2603:1096:101:115::8) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9160.17 via Frontend Transport; Tue,
- 30 Sep 2025 07:56:40 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 222.71.101.198)
- smtp.mailfrom=cixtech.com; dkim=none (message not signed)
- header.d=none;dmarc=bestguesspass action=none header.from=cixtech.com;
-Received-SPF: Pass (protection.outlook.com: domain of cixtech.com designates
- 222.71.101.198 as permitted sender) receiver=protection.outlook.com;
- client-ip=222.71.101.198; helo=smtprelay.cixcomputing.com; pr=C
-Received: from smtprelay.cixcomputing.com (222.71.101.198) by
- TY2PEPF0000AB89.mail.protection.outlook.com (10.167.253.7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9160.9 via Frontend Transport; Tue, 30 Sep 2025 07:56:46 +0000
-Received: from guoo-System-Product-Name.. (unknown [172.20.64.188])
-	by smtprelay.cixcomputing.com (Postfix) with ESMTPSA id 9C3234115DE1;
-	Tue, 30 Sep 2025 15:56:44 +0800 (CST)
-From: Jun Guo <jun.guo@cixtech.com>
-To: peter.chen@cixtech.com,
-	fugang.duan@cixtech.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	broonie@kernel.org
-Cc: linux-spi@vger.kernel.org,
-	michal.simek@amd.com,
-	cix-kernel-upstream@cixtech.com,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jun Guo <jun.guo@cixtech.com>
-Subject: [PATCH 0/3] spi-cadence: support transmission with bits_per_word
-Date: Tue, 30 Sep 2025 15:56:41 +0800
-Message-Id: <20250930075644.1665970-1-jun.guo@cixtech.com>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B36A11D63FB
+	for <linux-spi@vger.kernel.org>; Tue, 30 Sep 2025 14:46:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1759243595; cv=none; b=Erw/Xvoerrxd1la7gkoYVnSB+/vZgG5PjpEPFmn+HSgNzm7XxBTfUFP3rrLwqjrd+t8+D2vDzcQPBdBRLewrcaMoEl6vAHCGh2gyoa+mN7v1UKIICqW6frtcufubYGvXA4b951Ya8nnIvFNDG6pt+q+2/nwK8MRcxHNMH42KS7g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1759243595; c=relaxed/simple;
+	bh=O3iw2GxXiVKzNYOYE/ZVyGls0+ofp0SaOBPPWCbl0uk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OqegOeE2L7BEJNxMRhw8yaBc/0r8TQi5Z93RNThJMkt0ydOD0nDU3bugS8kSVYz0TDfqaM+2snl0D9dyz1XW0d98q0BReiUg3LnIyzWmW7y9TSEBLnbQd+svEirYa47T4EXXUISil28ItMQB6e4/qQ6WGdJ4BwJhutrUxos7PqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jGKwN4Wq; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jGKwN4Wq"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-3306b83ebdaso5915807a91.3
+        for <linux-spi@vger.kernel.org>; Tue, 30 Sep 2025 07:46:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759243593; x=1759848393; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=gtl9s1x2Ex8u74sVxDhnBYLads9LLhbmtzGZjSOpUpQ=;
+        b=jGKwN4Wqr04Uw3I/UPpwk2A6wvL/X4rgbF4N+0eT9v8tTV2rXSRLKKyvAr2Opx+Tmf
+         Go+jxVBArXWirMiKTsK/THViLlbZrSPd9mgGT+IR2M1pNqz9pdSobv3jVB265vlRnlcD
+         /bYYTtV7rEIDn0Tu8o5m7gAOarMTs94ggrQhiQmDCOScO9U5nuzwCibbwAWhM/9lWyvV
+         vgwzIt2/sP4S8T9JVsrne3J0KC6bGCOW2G7/hQ0ZhIoCFy0q4d1DQdEzrUQxT1a2WJDU
+         36o39lVvpCvfkPNhEydtYt17ePNplFALyQpOe6lbDtBVIwviikaT2PRlaR769tmaMUap
+         Uq4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759243593; x=1759848393;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gtl9s1x2Ex8u74sVxDhnBYLads9LLhbmtzGZjSOpUpQ=;
+        b=qYmbDENyJl09dy1s9cdht8otPS/K31Eh+aXjbFr58mF7hxAov2MdLmTfXhj4/dRK6Q
+         7TxNgFwCFd+tYn1AB2HmfWHfmCDmiWCAxGwA/NmTjiSxKyvd4JblG23QH1+X+iQlYBUF
+         ckMlQ0G9EhCuoylXsOxGZFxH4B8B3HZMijq1RUpXtORk9ZnVI/sm6fRQwk4H8DYjTMsU
+         Y1hMIcRXm3INA/2rA6v8xWQu3CK7SdCwVDWCmv1/KafV7Gt/ic79WWGeXCpf7xLKhX10
+         bdW/p+xwi1lBRREzpuV+GsJHlSL2FrBcSSXsgN6lh0ffOz2DeDZNn6Mt/xs1YEXtjoEX
+         yicA==
+X-Forwarded-Encrypted: i=1; AJvYcCXu71WZfY9vip9pIflBiGX+AdGiAgZi2LvmaNPGThfbUTuQ9T2bGcW3RjlGtCJ/rj7wFYl38y+VWNc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxE+QAJhRmyoLBLzXrOmfeyK/kEdt+z40yxAEnqjLpMH1MZqM3+
+	nQk0Oqn80AnoXZodNSfs1VevmYWBHPf9uKlMXjCBQZNyTuF7bucy0Mcw
+X-Gm-Gg: ASbGncvyfgWzRolyY2+iLdW0JUoDpKHwTtPJJ8gDak026bdOn6TodHeC45PQsBApdaS
+	TegXdK1Qvmb+sB4LYWJFJG6043qqORGRibeUVFBeooUqraJ0+HkdnxQu9BPVTIlTwUBWY7q2gBu
+	IW3DQmStdr74CznICT0xhDVZY/LYToG+RRSO217Yka7nQ1jOQI/WLqv6FS8yWxvnjP/CbfvP5XI
+	CLkJUV8YZmKPCScNFEdycuEHZEIgwj2dhLaCT4MGTgpmAllnCQ7eLhrT6WJ+m+N0bUIe/4xkHVX
+	hhcQtqo7u8z6HJZDMkNEBEGwEISnSODDJRhVtLrd2U24+12a5U55HRJTpnTHwmPtoa5voh6TIR8
+	E/aa1+4l1/A4D1HCHnHRlhrNrjyv2ZWIKv3vodq/kU3tp1xt1SS5RjcE=
+X-Google-Smtp-Source: AGHT+IE4hgKlPjRv6CQsulSHO7uaJxWorIuNklCjzaMiGW9OXkndROA3boKX4qKvwUjuv370Yq7hzQ==
+X-Received: by 2002:a17:90b:1647:b0:330:7a32:3290 with SMTP id 98e67ed59e1d1-3342a3471ccmr24460323a91.37.1759243592943;
+        Tue, 30 Sep 2025 07:46:32 -0700 (PDT)
+Received: from localhost ([2804:30c:b65:6a00:ceaa:2ed0:e81e:8f51])
+        by smtp.gmail.com with UTF8SMTPSA id 98e67ed59e1d1-3341bd90367sm20311444a91.5.2025.09.30.07.46.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Sep 2025 07:46:31 -0700 (PDT)
+Date: Tue, 30 Sep 2025 11:47:24 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Rob Herring <robh@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, michael.hennerich@analog.com,
+	nuno.sa@analog.com, eblanc@baylibre.com, andy@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, corbet@lwn.net,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>, linux-gpio@vger.kernel.org
+Subject: Re: [PATCH v3 7/8] dt-bindings: iio: adc: adi,ad4030: Add ADAQ4216
+ and ADAQ4224
+Message-ID: <aNvtfPh2JLdLarE5@debian-BULLSEYE-live-builder-AMD64>
+References: <cover.1758916484.git.marcelo.schmitt@analog.com>
+ <5dc08b622dac1db561f26034c93910ccff75e965.1758916484.git.marcelo.schmitt@analog.com>
+ <20250928111955.175680cb@jic23-huawei>
+ <20250929143132.GA4099970-robh@kernel.org>
+ <CAMknhBHzXLjkbKAjkgRwEps=0YrOgUcdvRpuPRrcPkwfwWo88w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TY2PEPF0000AB89:EE_|PUZPR06MB6169:EE_
-Content-Type: text/plain
-X-MS-Office365-Filtering-Correlation-Id: ef914e8b-46f4-4a7d-6104-08ddfff6e73c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|376014|1800799024|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?8sc5jbhwaIR8+iwmCBkP4p2oLjFg72gOn5ACqP6PA5spaiheQRG1LikHplat?=
- =?us-ascii?Q?lvzzPUuA6feP2iZfE67c4VLo8gZnIXSYzXZUmxUzr/gSJj3jF5wpLHQL7WZw?=
- =?us-ascii?Q?Jv8UCTt7axsR+5KoStjHJfsKM2Lm0dxJh1w/HVUY7nC5gg9UKvOi7wpIdr4Q?=
- =?us-ascii?Q?CWW9ukYugEh4i2taJrw7aCrnoVxCHJbRFrEyvL1yggP8OMrGFBwKcKW9KL75?=
- =?us-ascii?Q?w69SDfmWhh297UyU3aRiQMWTIsezDem4d/FdXlmEPAkDOErpiKBJu5zUSDR0?=
- =?us-ascii?Q?6IHxekAzh31B9V/EIH1NDwhHHZZzb+569lzCsG6UUVRuYAulr6vOJEXiSSgH?=
- =?us-ascii?Q?ArumIAUYYtJIVwtoLkiD9JHARvqzXQjPbg7JXsD2WEtfv2rjNue30qEEgwNT?=
- =?us-ascii?Q?n7VqxtyzwLBuKhFW5uWSt8kHYPUMpPIlbDkS4fJMmyPxD+PC0EvgoJz7BY1r?=
- =?us-ascii?Q?5A0qP39a/Hjr0wEmRDbasWUKYD19+xasox+C2ox1BfVRl2gEqNy8TeGuaTmB?=
- =?us-ascii?Q?ULqDVjPaA28P/w/1oUSBHTMWwk+QhSn1S8Je37fw+LyCBfs+vPB5AEf9bmye?=
- =?us-ascii?Q?JwJhHc9xmy1bBYaIP/wZtKzkGkoFgyxqnzikUMCN8H1B2aGQwUhPXi6/GFMb?=
- =?us-ascii?Q?5bIQfKa9jriLn/xaV5d0d+joifQ7QjcQMWBaKAnoaZUSgFJ7WV8knAUw6izv?=
- =?us-ascii?Q?sexIp6e4b5bdwRq9rks5OIlejkgzEvogttnS4jKe0dMlAHvXnsTckSe8ONn7?=
- =?us-ascii?Q?942ql2KLE/lzqgSTSp3/bN+3ZC2vn3o8b85/MRcII6aKX7vFBgGT8mlg9/WI?=
- =?us-ascii?Q?KuYA1JY7YW3tjcy2/tnx4nBUwGhxqbMz39GK1XMBKnI+cpaFQvc3LoK/ZmrJ?=
- =?us-ascii?Q?agxbGoyVS1eFOwcjQVA4YX15KIBADuBrUbyvT75cK6SUaRbfq5QB3a9pB3Zs?=
- =?us-ascii?Q?hVaye9uegbSRDeD/KVXMPtW1FP7hRP8fbR99SKfDJsn4FZ8Y20UbB4Cob/v4?=
- =?us-ascii?Q?cJ2p3mLDWYWFeCQtZj6tpSav2XzSZnNP8zQHH0sCrlykkeLBihlRtl3b0Ls/?=
- =?us-ascii?Q?4wu+4ea8CUUDo8zcyGQfr+lgTmlJZ7RPuxLDu0pZMAnMvoqtcbH9fuFMYISU?=
- =?us-ascii?Q?Yqy0sBybZCC0eD0TRk+i8hRX59ubSg1TDdFzO0TwR2C2ZdpTj6kKti3S9xdE?=
- =?us-ascii?Q?yQd2Y8gnn0puVeHEowepjN1qTtimr+Pju1y5beMXgYYYWB/r8CMU4jqFWXRK?=
- =?us-ascii?Q?LZ3wj0W/FF+8Mmo4sg/fOg1lmF2R3P71w5ZQJQ/gogQNhzC51gSg+PN9cna6?=
- =?us-ascii?Q?aBGYsQqTuivicSyEIOAsODma9tH/RPkIraB0mFB1u3nMSCvJJ0GyY5QvcTrh?=
- =?us-ascii?Q?XIee6pQLQQAtp/XCAkrFUdoiOoWbf0byQFyQh82lSogzmkjn6GK69gkMh8fc?=
- =?us-ascii?Q?5CWymor/TXMq2OIxhu0+iDR+QjGQ4FDE6dXdpIY4h1AmAzg5oRnseUOtbbWU?=
- =?us-ascii?Q?6cKE8SOfx7+ETcb8J48C946e97FLSrvlHVlnOAil9aLVJols2uZK+hgnbulE?=
- =?us-ascii?Q?4d9naiEJYk3XAyWnZMU=3D?=
-X-Forefront-Antispam-Report:
-	CIP:222.71.101.198;CTRY:CN;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:smtprelay.cixcomputing.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(376014)(1800799024)(82310400026);DIR:OUT;SFP:1102;
-X-OriginatorOrg: cixtech.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2025 07:56:46.0690
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ef914e8b-46f4-4a7d-6104-08ddfff6e73c
-X-MS-Exchange-CrossTenant-Id: 0409f77a-e53d-4d23-943e-ccade7cb4811
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0409f77a-e53d-4d23-943e-ccade7cb4811;Ip=[222.71.101.198];Helo=[smtprelay.cixcomputing.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	TY2PEPF0000AB89.apcprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PUZPR06MB6169
+In-Reply-To: <CAMknhBHzXLjkbKAjkgRwEps=0YrOgUcdvRpuPRrcPkwfwWo88w@mail.gmail.com>
 
-The Cadence SPI IP supports configurable FIFO data widths during
-integration. On some SoCs, the FIFO data width is designed to be 16 or
-32 bits at the chip design stage. However, the current driver only
-supports communication with an 8-bit FIFO data width. Therefore, these
-patches are added to enable the driver to support communication with
-16-bit and 32-bit FIFO data widths.
+On 09/29, David Lechner wrote:
+> On Mon, Sep 29, 2025 at 4:31 PM Rob Herring <robh@kernel.org> wrote:
+> >
+> > On Sun, Sep 28, 2025 at 11:19:55AM +0100, Jonathan Cameron wrote:
+> > > On Fri, 26 Sep 2025 17:40:47 -0300
+> > > Marcelo Schmitt <marcelo.schmitt@analog.com> wrote:
+> > >
+> > > > ADAQ4216 and ADAQ4224 are similar to AD4030 except that ADAQ devices have a
+> > > > PGA (programmable gain amplifier) that scales the input signal prior to it
+> > > > reaching the ADC inputs. The PGA is controlled through a couple of pins (A0
+> > > > and A1) that set one of four possible signal gain configurations.
+> > > >
+> > > > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> > > > ---
+> > > > Change log v2 -> v3
+> > > > - PGA gain now described in decibels.
+> > > >
+> > > > The PGA gain is not going to fit well as a channel property because it may
+> > > > affect more than one channel as in AD7191.
+> > > > https://www.analog.com/media/en/technical-documentation/data-sheets/AD7191.pdf
+> > > >
+> > > > I consulted a very trustworthy source [1, 2] and learned that describing signal
+> > > > gains in decibels is a common practice. I now think it would be ideal to describe
+> > > > these PGA and PGA-like gains with properties in decibel units and this patch
+> > > > is an attempt of doing so. The only problem with this approach is that we end up
+> > > > with negative values when the gain is lower than 1 (the signal is attenuated)
+> > > > and device tree specification doesn't support signed integer types. As the
+> > > > docs being proposed fail dt_binding_check, I guess I have to nack the patch myself.
+> > > > Any chance of dt specification eventually support signed integers?
+> > > > Any suggestions appreciated.
+> > > >
+> > > > [1] https://en.wikipedia.org/wiki/Decibel
+> > > > [2] https://en.wikipedia.org/wiki/Gain_(electronics)
+> > >
+> > > I still wonder if the better way to describe this is to ignore that it
+> > > has anything to do with PGA as such and instead describe the pin strapping.
+> > >
+> > > DT folk, is there an existing way to do that? My grep skills are failing to
+> > > spot one.
+> > >
+> > > We've papered over this for a long time in various IIO drivers by controlling
+> > > directly what the pin strap controls with weird and wonderful device specific
+> > > bindings. I wonder if we can't have a gpio driver + binding that rejects all
+> > > config and just lets us check the current state of an output pin.  Kind of a
+> > > fixed mode regulator equivalent for gpios.
+> >
+> > If these are connected to GPIOs, isn't it possible that someone will
+> > want to change their value?
+> >
+> > Other than some generic 'pinstrap-gpios' property, I don't see what we'd
+> > do here? I don't feel like pin strapping GPIOs is something that we see
+> > all that often.
+> >
+> > Rob
+> 
+> I think the idea is that it is not actually a GPIO, just a hard-wired
+> connection. We would want to have a "fixed-gpios" to describe these
+> hard-wired connections as GPIOs so that we don't have to write complex
+> binding for chip config GPIOs. I've seen configuration pins like on at
+> least half a dozed of the ADCs I've been working on/reviewing over the
+> last two years (since I got involved in IIO again).
 
-This series introduces the following enhancements for Cadence SPI
-controller support on arm64 platforms:
+Yes, the alternative to having GPIOs would be to have pins hard-wired set to a
+specific logic level. And the connection don't need to be to GPIOs. The gain
+pins on the ADC chip can be connected to anything that keeps a constant logic
+level while we capture data from the ADC.
 
-Patch 1: Document the 'fifo-width' property as optional in
-spi-cadence device tree bindings.
-Patch 2: Enhance the SPI Cadence driver to support data transmission
-with bits_per_word values of 16 and 32.
-Patch 3: Add a new 'fifo-width' configuration property to Cadence
-SPI node in the CIX device tree.
+> 
+> For example, there might be 4 mode pins, so we would like to just have
+> a mode-gpios property. So this could be all 4 connected to GPIOs, all
+> 4 hard-wired, or a mix.
 
-The CIX Sky1 SPI supported patch is added:
-https://lore.kernel.org/all/20250919013118.853078-1-jun.guo@cixtech.com/
+Having some pins hard-wired and some connected to GPIOs is possible, but that
+would make things even more complex as each pin on the ADC chip sets a different
+portion of the gain. IMHO, mixed GPIO/hard-wired configuration starts looking
+like over engineering and I haven't been requested for so much configuration
+flexibility. Having either all hard-wired or all connected to GPIOs should be ok.
 
-This series:
-- Documents the new property usage.
-- Enables 16/32 bits per word in the driver for broader hardware
-  compatibility.
-- Makes fifo-width configurable via DT.
+I'm not familiar with pinctrl dt-bindings, but I was wondering if we could get
+to something similar with pinctrl. Based on some pinctrl bindings, I think
+fixed-level GPIOs could look like the following (for the 4 pin-mode example).
 
-The patches have been tested on CIX SKY1 platform.
+pinctrl0: pincontroller@0 {
+    compatible = "vendor,model-pinctrl";
 
-Jun Guo (3):
-  dt-bindings: spi: spi-cadence: document optional fifo-width DT
-    property
-  spi: spi-cadence: supports transmission with bits_per_word of 16 and
-    32
-  arm64: dts: cix: add the fifo-width configuration field for cadence
-    SPI
+    all-low-state: some-gpio-pins {
+        pins = "gpio0", "gpio1", "gpio2", "gpio3";
+        function = "gpio";
+        output-low;
+    };
+    all-high-state: some-gpio-pins {
+        pins = "gpio0", "gpio1", "gpio2", "gpio3";
+        function = "gpio";
+        output-high;
+    };
+    most-high-state: some-gpio-pins {
+        pins1 { 
+            pins = "gpio0", "gpio1", "gpio2";
+            function = "gpio";
+            output-high;
+        };
+        pins2 { 
+            pins = "gpio3";
+            function = "gpio";
+            output-low;
+        };
+    };
+};
+spi {
+    adc@0 {
+        compatible = "vendor,adc";
+        /* All gpios */
+        pga-gpios = <&gpio0 0 GPIO_ACTIVE_HIGH>,
+                    <&gpio0 1 GPIO_ACTIVE_HIGH>,
+                    <&gpio0 2 GPIO_ACTIVE_HIGH>,
+                    <&gpio0 3 GPIO_ACTIVE_HIGH>;
+         /* or all hard-wired */
+		pinctrl-names = "minimum-gain", "moderate-gain", "maximum-gain";
+		pinctrl-0 = <&all-low-state>, <&most-high-state>, <&all-high-state>;
+    };
+};
 
- .../devicetree/bindings/spi/spi-cadence.yaml  |  11 ++
- arch/arm64/boot/dts/cix/sky1.dtsi             |   2 +
- drivers/spi/spi-cadence.c                     | 125 ++++++++++++++++--
- 3 files changed, 125 insertions(+), 13 deletions(-)
+Though, the above is still relying on GPIOs which is not a requirement from
+ADC peripheral perspective. Also, if GPIOs are available, one can just provide
+them through pga-gpios and have full control over the signal gain with the IIO
+driver. It boils down to just telling software what are the logical levels at
+two pins on the ADC chip when GPIOs are not provided.
 
--- 
-2.34.1
+Thanks,
+Marcelo
 
+> 
+> (The actual bindings would need more thought, but this should give the
+> general idea)
+> 
+> fixed_gpio: hard-wires {
+>     compatible = "fixed-gpios";
+>     gpio-controller;
+>     #gpio-cells = <1>;
+> };
+> 
+> gpio0: gpio-controller@4000000 {
+>     compatible = "vendor,soc-gpios";
+>     gpio-controller;
+>     #gpio-cells = <2>;
+> };
+> 
+> spi {
+>     adc@0 {
+>         compatible = "vendor,adc";
+>         /* All gpios */
+>         mode-gpios = <&gpio0 0 GPIO_ACTIVE_HIGH>,
+>                      <&gpio0 1 GPIO_ACTIVE_HIGH>,
+>                      <&gpio0 2 GPIO_ACTIVE_HIGH>,
+>                      <&gpio0 3 GPIO_ACTIVE_HIGH>;
+>          /* or all hard-wired */
+>         mode-gpios = <&fixed_gpio 0 GPIO_FIXED_HIGH>,
+>                      <&fixed_gpio GPIO_FIXED_HIGH>,
+>                      <&fixed_gpio GPIO_FIXED_LOW>,
+>                      <&fixed_gpio GPIO_FIXED_LOW>;
+>          /* or mixed */
+>         mode-gpios = <&gpio0 0 GPIO_ACTIVE_HIGH>,
+>                      <&gpio0 1 GPIO_ACTIVE_HIGH>,
+>                      <&fixed_gpio GPIO_FIXED_LOW>,
+>                      <&fixed_gpio GPIO_FIXED_LOW>;
+>     };
+> };

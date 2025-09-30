@@ -1,40 +1,39 @@
-Received: from TYDPR03CU002.outbound.protection.outlook.com (mail-japaneastazon11023115.outbound.protection.outlook.com [52.101.127.115])
+Received: from TYPPR03CU001.outbound.protection.outlook.com (mail-japaneastazon11022088.outbound.protection.outlook.com [52.101.126.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2428A2C0F87;
-	Tue, 30 Sep 2025 07:56:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.127.115
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5263C22B5AC;
+	Tue, 30 Sep 2025 07:56:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.126.88
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759219013; cv=fail; b=U3+5sO4FxCPLDbuGTI6scpEoBvxAv3lvhMoMKuMxGmmjX6kxF9Krl8EP12IapxG07W1zjoT65y8JrMRaLrnNKmzi/UOPYwXBONnpO+6qf1v9WM7N6pqDMYYdVHGMW3e7Qai60M7+E2ClYu0IK5TtXXJT/zbKfvwLIelc1zeBNtA=
+	t=1759219014; cv=fail; b=YlIo/veX9qyPVxrY3w3TrmhH3/+VpIMjgF7n/fzftXXX37stKAmWzb0Y2lIFz3P+rL79m55fiUZwke+AToAGB65wEXnUkU5VGzlNblmTsfOebVmQEl7Oan0OkFAV/WFdB4ZeM/bWuPD/lXVB7Dqz0CRlntnnICv5v6Zl4dFhbL0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759219013; c=relaxed/simple;
-	bh=jb9rGcRxrG2ji4xfPO/13t/Wh9mDd1HK2S14JYqCGe4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qTSf6ODiqsve3OhJSQPVls2xCk0qKoDRn5xJUHsF45/cN5Mx8Dys85PESzftL5zrTp9RxX9xd3MWxAR9NKxZqe7ZQae+rNjTxAvrwBNHBOw3qDY2aKoOEMDQJjFmvKr93r2gxfR5sR4Gg3Meakc3bbqOKniQj3vb4k7gc4gTsC8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cixtech.com; spf=pass smtp.mailfrom=cixtech.com; arc=fail smtp.client-ip=52.101.127.115
+	s=arc-20240116; t=1759219014; c=relaxed/simple;
+	bh=xvkBd8mgCFL7sfjacEt6x8stxgqbp3RyBWBOD6Mc4jk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=CM+SUdFnC/XNAChe85XxYwwk74AVYPBKU0uq5sR/PKReSOCLeCA3yszmyy8zRv1DpaGJ/ODeTsGUZJafuGCznCfZLAf/wftlnQ0Bg960EWPMAPyBXuSrPs4yAOLg9N3+vYzKCM6DfauUIgdRnMjmz5uGq+JNun1eDC8oACj1Wfs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cixtech.com; spf=pass smtp.mailfrom=cixtech.com; arc=fail smtp.client-ip=52.101.126.88
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cixtech.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cixtech.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=oqqZNZlAAOlGW8Wmz837uXBETMogrDadLkOFy9M8A5g2Oc2TxAF7nl1mYFxsYFdhHSm5hkePIkjDnCul/R9/ZYw23SRCjBaVpiT3Nz4TDCjffQNWYawz+YCmXRUhmCOVQdunR0HiII/bd3wJW/7qVL/+TI8JmKdoCgc25nRzuDBkss9I6zATAAT/6BBeDbDoI0MhWhzFEU2wj2T9sZgyqE5Xm92IPhyuIKqDYvytcqRv25s+4FL9kkGJr3ThGrK5FqqNQG+nnpYmp8N/tujfJWOBP435a5gtmt47O+3J7CDhXZWPakrWC9LOrlBAtGeMCAc/QgWkctGvNSDtBwlVaw==
+ b=kpMkR4A3XgK+YmhF/bffZ3ajhuFslRnzB/6d4dNpYko7dK51WRR6+H5237QIOznIzCvY/0lzgL3HOC/iuj2N9ZD6HTagQO8CKjiIjHnS3nGyIPZVPWEj04to+KeJRSLfZnlKOOhQ6po8FVgnVE66BLTO6KsJJMRTCVL8JItzRigJWynh3HtTtMFz4ICMN7Ah/HVneV1O52aTkhKM7Lx59ebp8KcHcLXxVVAiQBZx4QjOFrMjJnY2JZyNDnPsd7dLtoo+wh7LFbU9Rc9PPRcGQYN01iSnFt38chjGyirAqGWniXz2F83PCmHY9fMNt4Rgukva1InjPmkc5ajIOaaBww==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YkOwIawL+erpluYuJ2Z+HFD22cqsVNx8iFKFXLqrnA8=;
- b=r+9MfI/zAxK3H1DEf27whlLDMj3wiR36xaQtTWb4YdnNfbfWO/D+9VhH0QBJ3KZTGMSb4L4Kn1v8cBYmVFk7dXpulcUNoOfwE01OiuoNqGrvtA36I+ErY0xMxrCpIA5E+VF9wNecuUMc8qo6S5yt1qV7HfnS/5kWTJM+SsqvKENDnP0FjRv5wwQvmvc/vr8NI9EbidlU4i4oD11oNby+eiR6bBra5qzRx1WiCfEhSX7ABdLJyPjQTGc41ntGzDz8glhVbpNGnc25fcAJN1Rj6YRmffWx4T5jd0WYdUN9C9lIOlf59GiQDwB+6QCCixFgzst2yagsAgIxkExJFrVikQ==
+ bh=OZytqp8jHc0j5Ndwle7H43KEOM+xw9TGnMnt3zzOHWk=;
+ b=X7gBoltr7wRur8tGDAeUEoJXoX6YCnvH2DVb5hZFmpQxgEo8qa5BVXdMdL7S0u0Rbkc767q0++PfVPzUIeGNso9wi4Q1+jtXCQ09jZzTm8mnINxIDYgt7y9EXz9Ur6iYiN7WpYzgA7d1VZIBLddTCQmRlaJk6JcNfVQRPrDsRGJtCz+9Tg1vZvNmY/RTz4dCETT0MjSHCyKIJcwPtk6NkxA5BWEumbNt5sSy0cUYuxQBcHWLeOutLnA+KL9F6cre8GMeZ+yyBwgt2pH0H1UHkMkrmTdbwlsJtAcyW2SF4dIQGa4NHm41Ek0ZfTEBAeXvJsBcpd3o9sCuM9H4WAZsag==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  222.71.101.198) smtp.rcpttodomain=amd.com smtp.mailfrom=cixtech.com;
  dmarc=bestguesspass action=none header.from=cixtech.com; dkim=none (message
  not signed); arc=none (0)
-Received: from OS3P286CA0058.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:200::16)
- by SG2PR06MB5216.apcprd06.prod.outlook.com (2603:1096:4:1d6::11) with
+Received: from SE2P216CA0047.KORP216.PROD.OUTLOOK.COM (2603:1096:101:115::8)
+ by PUZPR06MB6169.apcprd06.prod.outlook.com (2603:1096:301:106::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.11; Tue, 30 Sep
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.17; Tue, 30 Sep
  2025 07:56:47 +0000
-Received: from OSA0EPF000000CA.apcprd02.prod.outlook.com
- (2603:1096:604:200:cafe::36) by OS3P286CA0058.outlook.office365.com
- (2603:1096:604:200::16) with Microsoft SMTP Server (version=TLS1_3,
+Received: from TY2PEPF0000AB89.apcprd03.prod.outlook.com
+ (2603:1096:101:115:cafe::a2) by SE2P216CA0047.outlook.office365.com
+ (2603:1096:101:115::8) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9160.17 via Frontend Transport; Tue,
- 30 Sep 2025 07:56:47 +0000
+ 30 Sep 2025 07:56:40 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 222.71.101.198)
  smtp.mailfrom=cixtech.com; dkim=none (message not signed)
  header.d=none;dmarc=bestguesspass action=none header.from=cixtech.com;
@@ -42,12 +41,12 @@ Received-SPF: Pass (protection.outlook.com: domain of cixtech.com designates
  222.71.101.198 as permitted sender) receiver=protection.outlook.com;
  client-ip=222.71.101.198; helo=smtprelay.cixcomputing.com; pr=C
 Received: from smtprelay.cixcomputing.com (222.71.101.198) by
- OSA0EPF000000CA.mail.protection.outlook.com (10.167.240.56) with Microsoft
+ TY2PEPF0000AB89.mail.protection.outlook.com (10.167.253.7) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9160.9 via Frontend Transport; Tue, 30 Sep 2025 07:56:47 +0000
+ 15.20.9160.9 via Frontend Transport; Tue, 30 Sep 2025 07:56:46 +0000
 Received: from guoo-System-Product-Name.. (unknown [172.20.64.188])
-	by smtprelay.cixcomputing.com (Postfix) with ESMTPSA id 9F9084115DE5;
-	Tue, 30 Sep 2025 15:56:45 +0800 (CST)
+	by smtprelay.cixcomputing.com (Postfix) with ESMTPSA id 9C3234115DE1;
+	Tue, 30 Sep 2025 15:56:44 +0800 (CST)
 From: Jun Guo <jun.guo@cixtech.com>
 To: peter.chen@cixtech.com,
 	fugang.duan@cixtech.com,
@@ -62,12 +61,10 @@ Cc: linux-spi@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Jun Guo <jun.guo@cixtech.com>
-Subject: [PATCH 3/3] arm64: dts: cix: add the fifo-width configuration field for cadence SPI
-Date: Tue, 30 Sep 2025 15:56:44 +0800
-Message-Id: <20250930075644.1665970-4-jun.guo@cixtech.com>
+Subject: [PATCH 0/3] spi-cadence: support transmission with bits_per_word
+Date: Tue, 30 Sep 2025 15:56:41 +0800
+Message-Id: <20250930075644.1665970-1-jun.guo@cixtech.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250930075644.1665970-1-jun.guo@cixtech.com>
-References: <20250930075644.1665970-1-jun.guo@cixtech.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -77,84 +74,96 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: OSA0EPF000000CA:EE_|SG2PR06MB5216:EE_
+X-MS-TrafficTypeDiagnostic: TY2PEPF0000AB89:EE_|PUZPR06MB6169:EE_
 Content-Type: text/plain
-X-MS-Office365-Filtering-Correlation-Id: 93c57463-9daa-49cc-d247-08ddfff6e7d2
+X-MS-Office365-Filtering-Correlation-Id: ef914e8b-46f4-4a7d-6104-08ddfff6e73c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|36860700013|376014;
+	BCL:0;ARA:13230040|36860700013|376014|1800799024|82310400026;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?jdvid7MOaEBwHuqbDSdr2dsZCPgXK1CtCnR/Dh0+JwJ65/GcP3aXtgoPKeiy?=
- =?us-ascii?Q?ohMYlYJr2jUsOOO/xw8NkNgOzNBv4msr5awOav13HL2tVQrt63PR7YQ+bgcZ?=
- =?us-ascii?Q?kcuuDICFNjiOETRnaBm+mN63yk6qC59n8qyplo0wrmchdNCIJhn7r8uccu/a?=
- =?us-ascii?Q?Pe/cwtijhP0rh1u4Fsdh5819zr6sK1vXm7jedt3MCAEXNlNY9+lUDWYuWIkQ?=
- =?us-ascii?Q?Gt1PA0VctvYHQ3LR0Bu+j/XYCyOXZFKGY9Umjk3qYi9RC8PE9xlpHcsSI4pE?=
- =?us-ascii?Q?OFd+WuqUQkHlzvzuzuHK/ntxg5Td9mAt6N9Ghl9+Oav6XHsChllIh7RqbOI/?=
- =?us-ascii?Q?4wC1QmPnMdMBKnqiR5DHedtZcsIlmk8T9XxS/4Y4UspoUQPmlX0seZt38Qe4?=
- =?us-ascii?Q?xP8qDFEWqomwzYTtve66gD0m3kJrayYq0gT59Xjuek0dbUQxRWuE01hOAbCz?=
- =?us-ascii?Q?tR62wUVq8exUYfuu2Q0h3GuaqwGRpBnvW/UtD8KCyJc9gban+aQpj6oB9bVS?=
- =?us-ascii?Q?jnLQYqkzieD9uZ63yMCojgPLFLBmkCJSJbvuAXTlf/sckzwqctBaFKMah7Ok?=
- =?us-ascii?Q?LnsUST7yTvSUhWKekDKn5Mw+P1gaj79/4X5T1kaekNyoSUDnCGCtpKTGFQHj?=
- =?us-ascii?Q?oMp+Ef7hCaxAHNTMSi0zwgKwWEgVpVKfVumdUml1dWjOFhGkkWHXDhOawu1r?=
- =?us-ascii?Q?IDGZ//Ve2HinScFTl8IO9S+YtmAMKltKwuCrtqaMyvqST7nunFe5e2qEMx0P?=
- =?us-ascii?Q?RgJK0O+yc/G8mFJybbqcdmjPrCWLhGQatlunuXMJp/5iqG+kGdYnE424WLk9?=
- =?us-ascii?Q?2Ir0ySLHWNN/VKvZqj/RmECypHH0Do7zGDK9x7PUTJV3+7CDI4m1EHo2aNrs?=
- =?us-ascii?Q?obXjl/kftmksVYhFk4fEn/h4ueLAtKkv9KA9m7Fls5D5vvVgsZCq4qbIjdpv?=
- =?us-ascii?Q?1u13YK7xWBhD6mfUeW15pTA46Hj6umJx4IXj3f32BIFlGvspAQ5M3wGeQrQX?=
- =?us-ascii?Q?D+yHK3C3FympfN4gY692kLO74tgsbw+eXq7DeTIaPq4rt+H1npbi+zPux3qi?=
- =?us-ascii?Q?3tgU5AaXBFJK5tcMR2GlHAIps7GSFlOmP6UF9hUzk5C03GD1d2yobiS6jF1x?=
- =?us-ascii?Q?pi1Ld6FbdODUnXjGpTkZeLA6JHrtm5EviMvjUL/G2IiUktELZWl0MO4qg+eG?=
- =?us-ascii?Q?FBr68XczRSKURRccfWxlM4kLsup14Ys322Yj2TszaWqKEXjk1ITECE1O0+XP?=
- =?us-ascii?Q?4bJDH/4CyjZO2f5gjokDQsQYzgHAgisJUr/j/dRzDbFu194r8Kpk92IwKZ5O?=
- =?us-ascii?Q?ODeUKoFR5jNm+TKT3CNyuH4hSq+Aq1vJW3W/OhYtSaYlsK8dImWV/vSsVOEH?=
- =?us-ascii?Q?5BbrrO+EQ60K6UTueGxDX7kZ8t59ZBKjLrwWhk1yJzqC6HXyxf+5ZzD5zCc6?=
- =?us-ascii?Q?EVEP9yK+w/XCSI2ISmgwluMy/lRwRvfNwCqEsXaXyvFqCb/cmjPUbxE9EDuf?=
- =?us-ascii?Q?wrVv9kq3GzKGm9Hd0W8+FwvDtLAa1HoMUGdfNpnIoJEV+beixxc9DLMSlDR7?=
- =?us-ascii?Q?2L+SDfncWY5xW9T0ARg=3D?=
+	=?us-ascii?Q?8sc5jbhwaIR8+iwmCBkP4p2oLjFg72gOn5ACqP6PA5spaiheQRG1LikHplat?=
+ =?us-ascii?Q?lvzzPUuA6feP2iZfE67c4VLo8gZnIXSYzXZUmxUzr/gSJj3jF5wpLHQL7WZw?=
+ =?us-ascii?Q?Jv8UCTt7axsR+5KoStjHJfsKM2Lm0dxJh1w/HVUY7nC5gg9UKvOi7wpIdr4Q?=
+ =?us-ascii?Q?CWW9ukYugEh4i2taJrw7aCrnoVxCHJbRFrEyvL1yggP8OMrGFBwKcKW9KL75?=
+ =?us-ascii?Q?w69SDfmWhh297UyU3aRiQMWTIsezDem4d/FdXlmEPAkDOErpiKBJu5zUSDR0?=
+ =?us-ascii?Q?6IHxekAzh31B9V/EIH1NDwhHHZZzb+569lzCsG6UUVRuYAulr6vOJEXiSSgH?=
+ =?us-ascii?Q?ArumIAUYYtJIVwtoLkiD9JHARvqzXQjPbg7JXsD2WEtfv2rjNue30qEEgwNT?=
+ =?us-ascii?Q?n7VqxtyzwLBuKhFW5uWSt8kHYPUMpPIlbDkS4fJMmyPxD+PC0EvgoJz7BY1r?=
+ =?us-ascii?Q?5A0qP39a/Hjr0wEmRDbasWUKYD19+xasox+C2ox1BfVRl2gEqNy8TeGuaTmB?=
+ =?us-ascii?Q?ULqDVjPaA28P/w/1oUSBHTMWwk+QhSn1S8Je37fw+LyCBfs+vPB5AEf9bmye?=
+ =?us-ascii?Q?JwJhHc9xmy1bBYaIP/wZtKzkGkoFgyxqnzikUMCN8H1B2aGQwUhPXi6/GFMb?=
+ =?us-ascii?Q?5bIQfKa9jriLn/xaV5d0d+joifQ7QjcQMWBaKAnoaZUSgFJ7WV8knAUw6izv?=
+ =?us-ascii?Q?sexIp6e4b5bdwRq9rks5OIlejkgzEvogttnS4jKe0dMlAHvXnsTckSe8ONn7?=
+ =?us-ascii?Q?942ql2KLE/lzqgSTSp3/bN+3ZC2vn3o8b85/MRcII6aKX7vFBgGT8mlg9/WI?=
+ =?us-ascii?Q?KuYA1JY7YW3tjcy2/tnx4nBUwGhxqbMz39GK1XMBKnI+cpaFQvc3LoK/ZmrJ?=
+ =?us-ascii?Q?agxbGoyVS1eFOwcjQVA4YX15KIBADuBrUbyvT75cK6SUaRbfq5QB3a9pB3Zs?=
+ =?us-ascii?Q?hVaye9uegbSRDeD/KVXMPtW1FP7hRP8fbR99SKfDJsn4FZ8Y20UbB4Cob/v4?=
+ =?us-ascii?Q?cJ2p3mLDWYWFeCQtZj6tpSav2XzSZnNP8zQHH0sCrlykkeLBihlRtl3b0Ls/?=
+ =?us-ascii?Q?4wu+4ea8CUUDo8zcyGQfr+lgTmlJZ7RPuxLDu0pZMAnMvoqtcbH9fuFMYISU?=
+ =?us-ascii?Q?Yqy0sBybZCC0eD0TRk+i8hRX59ubSg1TDdFzO0TwR2C2ZdpTj6kKti3S9xdE?=
+ =?us-ascii?Q?yQd2Y8gnn0puVeHEowepjN1qTtimr+Pju1y5beMXgYYYWB/r8CMU4jqFWXRK?=
+ =?us-ascii?Q?LZ3wj0W/FF+8Mmo4sg/fOg1lmF2R3P71w5ZQJQ/gogQNhzC51gSg+PN9cna6?=
+ =?us-ascii?Q?aBGYsQqTuivicSyEIOAsODma9tH/RPkIraB0mFB1u3nMSCvJJ0GyY5QvcTrh?=
+ =?us-ascii?Q?XIee6pQLQQAtp/XCAkrFUdoiOoWbf0byQFyQh82lSogzmkjn6GK69gkMh8fc?=
+ =?us-ascii?Q?5CWymor/TXMq2OIxhu0+iDR+QjGQ4FDE6dXdpIY4h1AmAzg5oRnseUOtbbWU?=
+ =?us-ascii?Q?6cKE8SOfx7+ETcb8J48C946e97FLSrvlHVlnOAil9aLVJols2uZK+hgnbulE?=
+ =?us-ascii?Q?4d9naiEJYk3XAyWnZMU=3D?=
 X-Forefront-Antispam-Report:
-	CIP:222.71.101.198;CTRY:CN;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:smtprelay.cixcomputing.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700013)(376014);DIR:OUT;SFP:1102;
+	CIP:222.71.101.198;CTRY:CN;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:smtprelay.cixcomputing.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(376014)(1800799024)(82310400026);DIR:OUT;SFP:1102;
 X-OriginatorOrg: cixtech.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2025 07:56:47.0586
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2025 07:56:46.0690
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 93c57463-9daa-49cc-d247-08ddfff6e7d2
+X-MS-Exchange-CrossTenant-Network-Message-Id: ef914e8b-46f4-4a7d-6104-08ddfff6e73c
 X-MS-Exchange-CrossTenant-Id: 0409f77a-e53d-4d23-943e-ccade7cb4811
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0409f77a-e53d-4d23-943e-ccade7cb4811;Ip=[222.71.101.198];Helo=[smtprelay.cixcomputing.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	OSA0EPF000000CA.apcprd02.prod.outlook.com
+	TY2PEPF0000AB89.apcprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SG2PR06MB5216
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PUZPR06MB6169
 
-The fifo-width is the FIFO data width (in bits) for the Cadence IP.
-Configure it according to the FIFO data width set during the chip design.
-The current design of sky1 has a FIFO data width of 32 bits.
+The Cadence SPI IP supports configurable FIFO data widths during
+integration. On some SoCs, the FIFO data width is designed to be 16 or
+32 bits at the chip design stage. However, the current driver only
+supports communication with an 8-bit FIFO data width. Therefore, these
+patches are added to enable the driver to support communication with
+16-bit and 32-bit FIFO data widths.
 
-Signed-off-by: Jun Guo <jun.guo@cixtech.com>
----
- arch/arm64/boot/dts/cix/sky1.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+This series introduces the following enhancements for Cadence SPI
+controller support on arm64 platforms:
 
-diff --git a/arch/arm64/boot/dts/cix/sky1.dtsi b/arch/arm64/boot/dts/cix/sky1.dtsi
-index ea324336bf34..c526b92d62ff 100644
---- a/arch/arm64/boot/dts/cix/sky1.dtsi
-+++ b/arch/arm64/boot/dts/cix/sky1.dtsi
-@@ -271,6 +271,7 @@ spi0: spi@4090000 {
- 				 <&scmi_clk CLK_TREE_FCH_SPI0_APB>;
- 			clock-names = "ref_clk", "pclk";
- 			interrupts = <GIC_SPI 294 IRQ_TYPE_LEVEL_HIGH 0>;
-+			fifo-width = <32>;
- 			status = "disabled";
- 		};
- 
-@@ -281,6 +282,7 @@ spi1: spi@40a0000 {
- 				 <&scmi_clk CLK_TREE_FCH_SPI1_APB>;
- 			clock-names = "ref_clk", "pclk";
- 			interrupts = <GIC_SPI 295 IRQ_TYPE_LEVEL_HIGH 0>;
-+			fifo-width = <32>;
- 			status = "disabled";
- 		};
- 
+Patch 1: Document the 'fifo-width' property as optional in
+spi-cadence device tree bindings.
+Patch 2: Enhance the SPI Cadence driver to support data transmission
+with bits_per_word values of 16 and 32.
+Patch 3: Add a new 'fifo-width' configuration property to Cadence
+SPI node in the CIX device tree.
+
+The CIX Sky1 SPI supported patch is added:
+https://lore.kernel.org/all/20250919013118.853078-1-jun.guo@cixtech.com/
+
+This series:
+- Documents the new property usage.
+- Enables 16/32 bits per word in the driver for broader hardware
+  compatibility.
+- Makes fifo-width configurable via DT.
+
+The patches have been tested on CIX SKY1 platform.
+
+Jun Guo (3):
+  dt-bindings: spi: spi-cadence: document optional fifo-width DT
+    property
+  spi: spi-cadence: supports transmission with bits_per_word of 16 and
+    32
+  arm64: dts: cix: add the fifo-width configuration field for cadence
+    SPI
+
+ .../devicetree/bindings/spi/spi-cadence.yaml  |  11 ++
+ arch/arm64/boot/dts/cix/sky1.dtsi             |   2 +
+ drivers/spi/spi-cadence.c                     | 125 ++++++++++++++++--
+ 3 files changed, 125 insertions(+), 13 deletions(-)
+
 -- 
 2.34.1
 

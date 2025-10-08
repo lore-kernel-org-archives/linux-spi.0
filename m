@@ -1,46 +1,46 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A18D2F5469;
-	Wed,  8 Oct 2025 09:05:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB81A2F291D;
+	Wed,  8 Oct 2025 09:05:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759914309; cv=none; b=LVMVgkdw6Y00aPdrkCmp5NyF1O/ptN52ZaMtS30GWCvJI9OZddw/t48mZ82Z6yvdEvJd2kBk928xsQIsMtmjYdDw0Da+jv28+kN1oYpahQhCAs5UF4vYWA0TwNFmmnBh8ngbhKC16hPgZs9uoPYD6B8wQkhBi/wbiDnfpifLei4=
+	t=1759914322; cv=none; b=TTxj4JDH4wis/RPjJoDuOjxe7M9KDOLMCK37+fEr7+YAPwa8+g+VjASaBafhfUVW9KxQCAtCK2Xk+F84nYmWorhXYxNEp3gIA7FyAC/JSPvotrUatspLKGquerihxIUWJ1/mWI1yVQh0oOSDrdKSRqPNnmC3yudp0lskJr0cT60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759914309; c=relaxed/simple;
-	bh=fxTbHvr6H/IYmdnlNibHzyywguwuMvTnOZqWfl9gTn4=;
+	s=arc-20240116; t=1759914322; c=relaxed/simple;
+	bh=zG2SFgAnMTvX66JU4U3aOYt1Khpl+xBXFVeSii48E0U=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=M0qXiE6F98w/ZKtJzl1gKztcdE1UqxNDJhXLSNAJXniXOJJK1E2At3VyyuUHONVnOdm2GrxgJpWcuo7AQLzwa0WkueekZF54Hh5RRRpxp2JwRgncAOEsDERx7TdDtk9Pnwi1JrcudH/yOSUnM3YH4Ig1JLRzWZZMrTRIAJuEYfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=L5wW3zZu; arc=none smtp.client-ip=205.220.168.131
+	 MIME-Version:Content-Type; b=iGvGH+EGhaozZkN/w8qf7bF7cU6rL7uW1XmoZbrskyd/Zokq+/X4QiI5T0C2MkH7BaVY/uyxoY80A/Bz6LNLlEeF7W6cyR6SIkE0hwh2r4c9ixs+Ir3p9g1qoUkmuYjEy1QaYjBXzpquR9d8V9la1RrLw/7awJjmha6N/tuffLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=V+fOwSP5; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="L5wW3zZu"
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59890NAf031343;
-	Wed, 8 Oct 2025 09:05:06 GMT
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="V+fOwSP5"
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59890NNj009328;
+	Wed, 8 Oct 2025 09:05:18 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	0xxP6XLTNf6Z70uNQ6BASjTw+3DVWjC7AGqzsNavxeo=; b=L5wW3zZu7BG703Wz
-	oGykUq2eCIc84FfMecNnLMfGvnronBjAiLD2u3EQg2Rj2H7cf4h1rrKYDQuAfhwr
-	joNgyvDyA/Mh6yEu4Ir4XL1XRlg4w3PkalX/dYysWCA7gS6HpOX/q+1J98aCM2kB
-	MxBHRjS/DbKNqiIBPuIiT5E+j7ypsOUtj1llkr17xHEkza5+9xw9IN3zhnjkIvV/
-	zXIn5F7VKh2bdoQRnxwqGAn6+v9Elsgp2AKj95F29u7prnhcEcPOUOwPICfWW9w9
-	F6GJvdIhL2MXrF1ylP6eoMbszuRkik46Hwe/3J94K0EKeKwXy4OQr2F9NttBZJZq
-	1w2ekw==
-Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49jvv7srb0-1
+	Ya5YD8J5ZfX8Sq9ehJaERVblUtQVWIBl5djuMxZL1Kk=; b=V+fOwSP5DosBlZOA
+	5YGUaC/GyFnDY3KwPhW+Z/folGaIDxq2ZCDDv4aPNbeDDDDlnRBgEBGJC1jCvPSi
+	5yrvSQipG3R/bKCNV9z5ssS6rAi6n6MXcY2ITX3yk4lhY5V1TRup5bgIZ1BFMfct
+	W282U/kKTn1JMsgaxcemReKgLaIPhR5W5qeROodaynEVYmtWpKmwxsYeEq/2UX/o
+	HjthsS5buBoXKHVedGX1MbrVL7Y+lUKYvj3b603kvvHJeHGyBHYZgQ4ngKWkxusl
+	p63G7gPKbJLgrdZlF6wFMACN6+zUWK1CwRY7/e5+HtLqxQ0ZhzhohwcwrW4/yj9D
+	Ifb2Gw==
+Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49junu9vym-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 08 Oct 2025 09:05:06 +0000 (GMT)
+	Wed, 08 Oct 2025 09:05:17 +0000 (GMT)
 Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-	by NASANPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 598955w6003074
+	by NASANPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 59895F1S011846
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 8 Oct 2025 09:05:05 GMT
+	Wed, 8 Oct 2025 09:05:15 GMT
 Received: from hu-mdalam-blr.qualcomm.com (10.80.80.8) by
  nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.24; Wed, 8 Oct 2025 02:05:01 -0700
+ 15.2.1748.24; Wed, 8 Oct 2025 02:05:10 -0700
 From: Md Sadre Alam <quic_mdalam@quicinc.com>
 To: <broonie@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
         <conor+dt@kernel.org>, <andersson@kernel.org>,
@@ -49,9 +49,9 @@ To: <broonie@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <dmaengine@vger.kernel.org>
 CC: <quic_varada@quicinc.com>, <quic_mdalam@quicinc.com>
-Subject: [PATCH v2 7/9] arm64: dts: qcom: ipq5332: Enable QPIC SPI NAND support
-Date: Wed, 8 Oct 2025 14:34:11 +0530
-Message-ID: <20251008090413.458791-8-quic_mdalam@quicinc.com>
+Subject: [PATCH v2 9/9] arm64: dts: qcom: ipq5332-rdp442: Remove eMMC support
+Date: Wed, 8 Oct 2025 14:34:13 +0530
+Message-ID: <20251008090413.458791-10-quic_mdalam@quicinc.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251008090413.458791-1-quic_mdalam@quicinc.com>
 References: <20251008090413.458791-1-quic_mdalam@quicinc.com>
@@ -67,98 +67,101 @@ X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nasanex01a.na.qualcomm.com (10.52.223.231)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA0MDAzNyBTYWx0ZWRfX391iq3butdfK
- 5hI4NfnNGeL37ZqyivlB5vZSkrdLOxLUNxZK53Kc3etB6ZdVLOJCDXfmV2UOzMPEupnxtr2cUzI
- 4ytHRhRPtMAKRWDvW0WKGaXlmoq+5YF63rGPB/7CcivbUMD07H4i11t0ceZ4ILvX2gIs9Ncm3xu
- ShKKKmLJnLh9HtkQf6gk5AryrDpGzdQ68CFX1le+q0no8MY4/5yjB5Cnr7nY2UEzXqI7kxXlRaw
- bgIBgtxfXgt0MdxldprztRitDodo5FU5CI9PJg5kugOaFyEDNQzWv87GRwZ+8RPvZbb7KJcH37L
- s9j5JI3Aed4GojmY8g528wLgfvEBECJtrCi623Bh2q4xrBgOSf+QlzkcuCLIGtnu/9yz2yNelR6
- 5oAf3LDDVWUQIkmmCkJI7zKVJPuUEw==
-X-Proofpoint-ORIG-GUID: wtvhdcCEf1hcD3ItR5OVM5n0wQOgAnMK
-X-Authority-Analysis: v=2.4 cv=WIdyn3sR c=1 sm=1 tr=0 ts=68e62942 cx=c_pps
+X-Proofpoint-ORIG-GUID: Kraq27VDwgEbpSjrNyordR9aADVuwCjK
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA0MDAyMyBTYWx0ZWRfX+JVdjiAOsGT1
+ 4ZGI/4H1Dk5MG2R5+gyw85a7kvF+ZcYpKdQBZ22/amd+/ab5odLg5y4u8CM5PjR1Agg2FsnVFZe
+ 2OEqOQ/6lsd6hPGGmMmBzC5DiTwvk/8q5/chLQvMXzXcnbTmnPtCEwXnMPSgJes79HyKQgFiv1g
+ 6zLJhgminLkds/MbyJye0QnhfobuY/ewJya8/kQ2Nw5AbBV/e3/GcwDnsit01NLFHon1Cv4w67s
+ vhSDJOeJuhy3ONfUH1Zdf19hwwtPmwvCQw907r0lcyZjIhSv3wUcLNt/fBTnT0IQNHjnwVEFY/x
+ ToQI1ClV9mUQ3GeCwRl6Y7FiUcHF6PVQWcX6F8KF072XNbFp4W1sSl0umMx2cwMRE7mYu+UVtr9
+ QJ+zPqUlzIczYNkg48JHR5OYGKDxCQ==
+X-Authority-Analysis: v=2.4 cv=CbIFJbrl c=1 sm=1 tr=0 ts=68e6294d cx=c_pps
  a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=GEpy-HfZoHoA:10 a=x6icFKpwvdMA:10 a=COk6AnOGAAAA:8 a=4HrDLC5MovS5wqADYfcA:9
+ a=GEpy-HfZoHoA:10 a=x6icFKpwvdMA:10 a=COk6AnOGAAAA:8 a=fuWxvNZPvO_ztXA3lyEA:9
  a=TjNXssC_j7lpFel5tvFf:22 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-GUID: wtvhdcCEf1hcD3ItR5OVM5n0wQOgAnMK
+X-Proofpoint-GUID: Kraq27VDwgEbpSjrNyordR9aADVuwCjK
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-10-08_02,2025-10-06_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 phishscore=0 priorityscore=1501 impostorscore=0 malwarescore=0
- bulkscore=0 spamscore=0 adultscore=0 clxscore=1015 lowpriorityscore=0
+ lowpriorityscore=0 malwarescore=0 clxscore=1015 adultscore=0 suspectscore=0
+ spamscore=0 priorityscore=1501 phishscore=0 impostorscore=0 bulkscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2510040037
+ reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2510040023
 
-Enable QPIC SPI NAND flash controller support on the IPQ5332 reference
-design platform.
+Remove eMMC support from the IPQ5332 RDP442 board configuration to
+align with the board's default NOR+NAND boot mode design.
+
+The IPQ5332 RDP442 board is designed with NOR+NAND as the default boot
+mode configuration. The eMMC and SPI NAND interface share
+same GPIO
 
 Signed-off-by: Md Sadre Alam <quic_mdalam@quicinc.com>
 ---
 
 Change in [v2]
 
-* No change
+* updated board name commit message header
 
 Change in [v1]
 
-* Enable bam and spi nand for ipq5332
+* Removed eMMC node
 
- .../boot/dts/qcom/ipq5332-rdp-common.dtsi     | 44 +++++++++++++++++++
- 1 file changed, 44 insertions(+)
+ arch/arm64/boot/dts/qcom/ipq5332-rdp442.dts | 34 ---------------------
+ 1 file changed, 34 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/ipq5332-rdp-common.dtsi b/arch/arm64/boot/dts/qcom/ipq5332-rdp-common.dtsi
-index b37ae7749083..8967861be5fd 100644
---- a/arch/arm64/boot/dts/qcom/ipq5332-rdp-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/ipq5332-rdp-common.dtsi
-@@ -78,4 +78,48 @@ gpio_leds_default: gpio-leds-default-state {
- 		drive-strength = <8>;
- 		bias-pull-down;
+diff --git a/arch/arm64/boot/dts/qcom/ipq5332-rdp442.dts b/arch/arm64/boot/dts/qcom/ipq5332-rdp442.dts
+index ed8a54eb95c0..6e2abde9ed89 100644
+--- a/arch/arm64/boot/dts/qcom/ipq5332-rdp442.dts
++++ b/arch/arm64/boot/dts/qcom/ipq5332-rdp442.dts
+@@ -35,17 +35,6 @@ flash@0 {
  	};
-+
-+	qpic_snand_default_state: qpic-snand-default-state {
-+		clock-pins {
-+			pins = "gpio13";
-+			function = "qspi_clk";
-+			drive-strength = <8>;
-+			bias-disable;
-+		};
-+
-+		cs-pins {
-+			pins = "gpio12";
-+			function = "qspi_cs";
-+			drive-strength = <8>;
-+			bias-disable;
-+		};
-+
-+		data-pins {
-+			pins = "gpio8", "gpio9", "gpio10", "gpio11";
-+			function = "qspi_data";
-+			drive-strength = <8>;
-+			bias-disable;
-+		};
-+	};
-+};
-+
-+&qpic_bam {
-+	status = "okay";
-+};
-+
-+&qpic_nand {
-+	pinctrl-0 = <&qpic_snand_default_state>;
-+	pinctrl-names = "default";
-+
-+	status = "okay";
-+
-+	flash@0 {
-+		compatible = "spi-nand";
-+		reg = <0>;
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		nand-ecc-engine = <&qpic_nand>;
-+		nand-ecc-strength = <4>;
-+		nand-ecc-step-size = <512>;
-+	};
  };
+ 
+-&sdhc {
+-	bus-width = <4>;
+-	max-frequency = <192000000>;
+-	mmc-ddr-1_8v;
+-	mmc-hs200-1_8v;
+-	non-removable;
+-	pinctrl-0 = <&sdc_default_state>;
+-	pinctrl-names = "default";
+-	status = "okay";
+-};
+-
+ &tlmm {
+ 	i2c_1_pins: i2c-1-state {
+ 		pins = "gpio29", "gpio30";
+@@ -54,29 +43,6 @@ i2c_1_pins: i2c-1-state {
+ 		bias-pull-up;
+ 	};
+ 
+-	sdc_default_state: sdc-default-state {
+-		clk-pins {
+-			pins = "gpio13";
+-			function = "sdc_clk";
+-			drive-strength = <8>;
+-			bias-disable;
+-		};
+-
+-		cmd-pins {
+-			pins = "gpio12";
+-			function = "sdc_cmd";
+-			drive-strength = <8>;
+-			bias-pull-up;
+-		};
+-
+-		data-pins {
+-			pins = "gpio8", "gpio9", "gpio10", "gpio11";
+-			function = "sdc_data";
+-			drive-strength = <8>;
+-			bias-pull-up;
+-		};
+-	};
+-
+ 	spi_0_data_clk_pins: spi-0-data-clk-state {
+ 		pins = "gpio14", "gpio15", "gpio16";
+ 		function = "blsp0_spi";
 -- 
 2.34.1
 

@@ -1,186 +1,122 @@
-Received: from srv01.abscue.de (abscue.de [89.58.28.240])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E63321D3E8;
-	Tue,  7 Oct 2025 18:20:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.28.240
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEDB215278E;
+	Wed,  8 Oct 2025 09:04:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759861256; cv=none; b=GdYXipFesO5Wupd8mBmZQ6UgllIx/qYnnREvE6Z1/Dxem3wbusKElL5wpZ8OkAZTVG4Lt2SaFfJXB7m+pZE5s2Mmg77youxT6OsKdQ9k32WnDinayx1mIlgmG0WsrA1RkTC/FAJFtt1PV/Db/BX50eENrJxlbOjkv8/NFZ3paiU=
+	t=1759914280; cv=none; b=F401OK8uISJ3cU48Hdb0xBeR7AY07+ltqjSNy6fcmXAxscmjAIc82SGfN/dAPCShW04tmbYHU0MT4hpAMQz14CnPq/xTA9iMLU3shTZ9TnCKRgCFOsr92CXxVl9A3m5hQs3MU6XMEgztrQk5kvu9RvpckQWmxO8a9Edkos5JSc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759861256; c=relaxed/simple;
-	bh=ncPpQZbFWw8NMSWBPoo/kgtWe5usLDXcsXQuGtximK4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=bpil9E2wOYpUvGrlyNVG/b+WdMFmJ3CtkkF2WKDJQiTc9+7nSZ4QfDDyuLECFNLLJjdPTDQ+Pb2j7VgzT2XHuvWTzQMVd33UeOieJJqKxutz0fo7TSSCZ7tJFnBW2vqHT3EzahCaVvY+LNUS2/ajDnBCBlmMsq2/O2NbzRWNWu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=abscue.de; spf=pass smtp.mailfrom=abscue.de; arc=none smtp.client-ip=89.58.28.240
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=abscue.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=abscue.de
-Received: from srv01.abscue.de (localhost [127.0.0.1])
-	by spamfilter.srv.local (Postfix) with ESMTP id 02DAB1C40CA;
-	Tue, 07 Oct 2025 20:15:18 +0200 (CEST)
-X-Spam-Level: 
-Received: from fluffy-mammal.metal.fwg-cag.de (unknown [IPv6:2001:9e8:cdfe:cd00:889e:d706:979d:b1a])
-	by srv01.abscue.de (Postfix) with ESMTPSA id 5DF991C3B06;
-	Tue, 07 Oct 2025 20:15:18 +0200 (CEST)
-From: =?utf-8?q?Otto_Pfl=C3=BCger?= <otto.pflueger@abscue.de>
-Date: Tue, 07 Oct 2025 20:14:20 +0200
-Subject: [PATCH 2/3] spi: sprd-adi: Remove code for storing the reboot mode
+	s=arc-20240116; t=1759914280; c=relaxed/simple;
+	bh=SdvTlXMKJvyPb3w46Jgj04UcW3a9z7MDoWTznDZvu1U=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=b1GPXpMaf4hwJHpMwctFwrbtrac/5xgUxulEjzxlVnh1CytHXTj/CQEP+05BKHpgzpLIxJj/ghOSxdBc2ZI7+s4S/RLsJ849kiEGMgvtqa29IsklpeMvicwwy1XCOrmeYDWs6wRM1IYFxGbcVQJkmfBDzCKk6WHdw1DCEd4pA9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=P/5hSsVD; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="P/5hSsVD"
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59890ege010088;
+	Wed, 8 Oct 2025 09:04:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=6sCbMgejXco/pdMQUUsUKP
+	TBooMiMHR2wg23BmGSnGA=; b=P/5hSsVDdHiariFcyILuxtFlYHQEjPjOl+RlV7
+	nlv0WjGbz2Bpwy5mbUGHsbqnQNVI4bSLPXplbnSBXPUa0D4d3zhbMCELgKP73tOy
+	jXzmXnfQDePs/ZyFAJ1hXxLh9/zTzBLEQj6Dh/KkxQnmVZ8BqbbQqT6acQMgfa8o
+	5RDpvbbbhMyyP5+VhPjtroqupdAuBwJyTLohlWIUuZCytREOV2ltanGBVwYwGOj9
+	8CgWfK4Is+bSLi1+aW5bgp7zd6yeApbasayFipBNnYulqlQQL5JLfMNgacRZWw34
+	X9kJZL+2B4Wtupcq5elY8DiDNbGpLu47MtOV2TDcV49Irm7g==
+Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49junu9vwc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 08 Oct 2025 09:04:35 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 59894Yts028553
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 8 Oct 2025 09:04:34 GMT
+Received: from hu-mdalam-blr.qualcomm.com (10.80.80.8) by
+ nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.24; Wed, 8 Oct 2025 02:04:29 -0700
+From: Md Sadre Alam <quic_mdalam@quicinc.com>
+To: <broonie@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+        <conor+dt@kernel.org>, <andersson@kernel.org>,
+        <konradybcio@kernel.org>, <vkoul@kernel.org>,
+        <linux-arm-msm@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <dmaengine@vger.kernel.org>
+CC: <quic_varada@quicinc.com>, <quic_mdalam@quicinc.com>
+Subject: [PATCH v2 0/9] Add QPIC SPI NAND support for IPQ5424 and IPQ5332 platforms
+Date: Wed, 8 Oct 2025 14:34:04 +0530
+Message-ID: <20251008090413.458791-1-quic_mdalam@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20251007-sc27xx-mfd-poweroff-v1-2-89a2f919b731@abscue.de>
-References: <20251007-sc27xx-mfd-poweroff-v1-0-89a2f919b731@abscue.de>
-In-Reply-To: <20251007-sc27xx-mfd-poweroff-v1-0-89a2f919b731@abscue.de>
-To: Lee Jones <lee@kernel.org>, Orson Zhai <orsonzhai@gmail.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Chunyan Zhang <zhang.lyra@gmail.com>, Mark Brown <broonie@kernel.org>, 
- Sebastian Reichel <sre@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, linux-kernel@vger.kernel.org, 
- linux-spi@vger.kernel.org, linux-pm@vger.kernel.org, 
- =?utf-8?q?Otto_Pfl=C3=BCger?= <otto.pflueger@abscue.de>
-X-Mailer: b4 0.14.2
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: O3pWC-BqnCKpTxeY4SqgQ9LkbNDNtiLV
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA0MDAyMyBTYWx0ZWRfX7MjHqXdmszv2
+ BA2F/WrEPJykdt/GzC9yeDFk8jVPldsiJS63Ql1jjriq+zVe1S0cPSzj/o3lHNV233gutlBMIbl
+ hEti7Hqt/m+y+VploTTy5K+bUVtrF/jzCXhLVVbVIjUsbf66O/Y9KSYHC5hlQybrrKoDI5/SiB5
+ woLGjcwVjXMCnCJs1h5c1Xew8B0sRA8gQpBYIWyZFl+mnbs93NKcqcEllRhPpAPDlOR2m9CjOZT
+ pwCe1C06H8dRN2Jpa4fIG4moONfGIoxYthLyv750otyr8uUq3G3RskCWXp4iREPpQ6jFkdE9uFg
+ JSRv/RQCkNL9pD+nFiqEYQDbHAMduI5v377B/2R3bOxBta3dB8JS/zZGUrleaYPRpiivqYEbv8Q
+ AfnN25dno+H0x0C/tVCKE7LSTfWxwg==
+X-Authority-Analysis: v=2.4 cv=CbIFJbrl c=1 sm=1 tr=0 ts=68e62923 cx=c_pps
+ a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=GEpy-HfZoHoA:10 a=x6icFKpwvdMA:10 a=bg76ppHvD6wD7w3OU-AA:9
+ a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-GUID: O3pWC-BqnCKpTxeY4SqgQ9LkbNDNtiLV
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-08_02,2025-10-06_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 malwarescore=0 clxscore=1015 adultscore=0 suspectscore=0
+ spamscore=0 priorityscore=1501 phishscore=0 impostorscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2510040023
 
-This functionality is now provided by the PMIC driver. Ideally, the
-entire reboot code should be removed since it does not belong in the bus
-driver, but it is kept for now since there is no driver for the PMIC
-watchdog on SC2731 yet.
+v2:
+ * Added Reviewed-by tag
+ * Added Acked-by tag
+ * Updated board name in commit message header
+ * Added \n before status
 
-Signed-off-by: Otto Pflüger <otto.pflueger@abscue.de>
----
- drivers/spi/spi-sprd-adi.c | 73 +---------------------------------------------
- 1 file changed, 1 insertion(+), 72 deletions(-)
+v1:
+ * Added support for spi nand for IPQ5424 and IPQ5332
+ * Updated bam_prep_ce_le32() to set the mask field conditionally based
+   on command
+ * Removed eMMC node for IPQ5424 and IPQ5332
 
-diff --git a/drivers/spi/spi-sprd-adi.c b/drivers/spi/spi-sprd-adi.c
-index 262c11d977ea350c3b8a861064d9f109cc57a45e..47e6fbbf9991dbe77ad22e03c9709e6ee3a1b01e 100644
---- a/drivers/spi/spi-sprd-adi.c
-+++ b/drivers/spi/spi-sprd-adi.c
-@@ -101,27 +101,10 @@
- #define BIT_WDG_EN			BIT(2)
- 
- /* Registers definitions for PMIC */
--#define PMIC_RST_STATUS			0xee8
- #define PMIC_MODULE_EN			0xc08
- #define PMIC_CLK_EN			0xc18
- #define PMIC_WDG_BASE			0x80
- 
--/* Definition of PMIC reset status register */
--#define HWRST_STATUS_SECURITY		0x02
--#define HWRST_STATUS_RECOVERY		0x20
--#define HWRST_STATUS_NORMAL		0x40
--#define HWRST_STATUS_ALARM		0x50
--#define HWRST_STATUS_SLEEP		0x60
--#define HWRST_STATUS_FASTBOOT		0x30
--#define HWRST_STATUS_SPECIAL		0x70
--#define HWRST_STATUS_PANIC		0x80
--#define HWRST_STATUS_CFTREBOOT		0x90
--#define HWRST_STATUS_AUTODLOADER	0xa0
--#define HWRST_STATUS_IQMODE		0xb0
--#define HWRST_STATUS_SPRDISK		0xc0
--#define HWRST_STATUS_FACTORYTEST	0xe0
--#define HWRST_STATUS_WATCHDOG		0xf0
--
- /* Use default timeout 50 ms that converts to watchdog values */
- #define WDG_LOAD_VAL			((50 * 32768) / 1000)
- #define WDG_LOAD_MASK			GENMASK(15, 0)
-@@ -139,7 +122,6 @@ struct sprd_adi_data {
- 	u32 slave_addr_size;
- 	int (*read_check)(u32 val, u32 reg);
- 	int (*restart)(struct sys_off_data *data);
--	void (*wdg_rst)(void *p);
- };
- 
- struct sprd_adi {
-@@ -355,58 +337,10 @@ static int sprd_adi_transfer_one(struct spi_controller *ctlr,
- 	return ret;
- }
- 
--static void sprd_adi_set_wdt_rst_mode(void *p)
--{
--#if IS_ENABLED(CONFIG_SPRD_WATCHDOG)
--	u32 val;
--	struct sprd_adi *sadi = (struct sprd_adi *)p;
--
--	/* Init watchdog reset mode */
--	sprd_adi_read(sadi, PMIC_RST_STATUS, &val);
--	val |= HWRST_STATUS_WATCHDOG;
--	sprd_adi_write(sadi, PMIC_RST_STATUS, val);
--#endif
--}
--
- static int sprd_adi_restart(struct sprd_adi *sadi, unsigned long mode,
- 			    const char *cmd, struct sprd_adi_wdg *wdg)
- {
--	u32 val, reboot_mode = 0;
--
--	if (!cmd)
--		reboot_mode = HWRST_STATUS_NORMAL;
--	else if (!strncmp(cmd, "recovery", 8))
--		reboot_mode = HWRST_STATUS_RECOVERY;
--	else if (!strncmp(cmd, "alarm", 5))
--		reboot_mode = HWRST_STATUS_ALARM;
--	else if (!strncmp(cmd, "fastsleep", 9))
--		reboot_mode = HWRST_STATUS_SLEEP;
--	else if (!strncmp(cmd, "bootloader", 10))
--		reboot_mode = HWRST_STATUS_FASTBOOT;
--	else if (!strncmp(cmd, "panic", 5))
--		reboot_mode = HWRST_STATUS_PANIC;
--	else if (!strncmp(cmd, "special", 7))
--		reboot_mode = HWRST_STATUS_SPECIAL;
--	else if (!strncmp(cmd, "cftreboot", 9))
--		reboot_mode = HWRST_STATUS_CFTREBOOT;
--	else if (!strncmp(cmd, "autodloader", 11))
--		reboot_mode = HWRST_STATUS_AUTODLOADER;
--	else if (!strncmp(cmd, "iqmode", 6))
--		reboot_mode = HWRST_STATUS_IQMODE;
--	else if (!strncmp(cmd, "sprdisk", 7))
--		reboot_mode = HWRST_STATUS_SPRDISK;
--	else if (!strncmp(cmd, "tospanic", 8))
--		reboot_mode = HWRST_STATUS_SECURITY;
--	else if (!strncmp(cmd, "factorytest", 11))
--		reboot_mode = HWRST_STATUS_FACTORYTEST;
--	else
--		reboot_mode = HWRST_STATUS_NORMAL;
--
--	/* Record the reboot mode */
--	sprd_adi_read(sadi, wdg->rst_sts, &val);
--	val &= ~HWRST_STATUS_WATCHDOG;
--	val |= reboot_mode;
--	sprd_adi_write(sadi, wdg->rst_sts, val);
-+	u32 val;
- 
- 	/* Enable the interface clock of the watchdog */
- 	sprd_adi_read(sadi, wdg->wdg_en, &val);
-@@ -448,7 +382,6 @@ static int sprd_adi_restart_sc9860(struct sys_off_data *data)
- {
- 	struct sprd_adi_wdg wdg = {
- 		.base = PMIC_WDG_BASE,
--		.rst_sts = PMIC_RST_STATUS,
- 		.wdg_en = PMIC_MODULE_EN,
- 		.wdg_clk = PMIC_CLK_EN,
- 	};
-@@ -568,9 +501,6 @@ static int sprd_adi_probe(struct platform_device *pdev)
- 
- 	sprd_adi_hw_init(sadi);
- 
--	if (sadi->data->wdg_rst)
--		sadi->data->wdg_rst(sadi);
--
- 	ctlr->dev.of_node = pdev->dev.of_node;
- 	ctlr->bus_num = pdev->id;
- 	ctlr->num_chipselect = num_chipselect;
-@@ -606,7 +536,6 @@ static struct sprd_adi_data sc9860_data = {
- 	.slave_addr_size = ADI_10BIT_SLAVE_ADDR_SIZE,
- 	.read_check = sprd_adi_read_check_r2,
- 	.restart = sprd_adi_restart_sc9860,
--	.wdg_rst = sprd_adi_set_wdt_rst_mode,
- };
- 
- static struct sprd_adi_data sc9863_data = {
+Md Sadre Alam (9):
+  spi: dt-bindings: spi-qpic-snand: Add IPQ5424 compatible
+  spi: dt-bindings: spi-qpic-snand: Add IPQ5332 compatible
+  dma: qcom: bam_dma: Fix command element mask field for BAM v1.6.0+
+  arm64: dts: qcom: ipq5424: Add QPIC SPI NAND controller support
+  arm64: dts: qcom: ipq5332: Add QPIC SPI NAND controller support
+  arm64: dts: qcom: ipq5424-rdp466: Enable QPIC SPI NAND support
+  arm64: dts: qcom: ipq5332: Enable QPIC SPI NAND support
+  arm64: dts: qcom: ipq5424-rdp466: Remove eMMC support
+  arm64: dts: qcom: ipq5332-rdp442: Remove eMMC support
+
+ .../bindings/spi/qcom,spi-qpic-snand.yaml     |  2 +
+ .../boot/dts/qcom/ipq5332-rdp-common.dtsi     | 44 +++++++++++++++++++
+ arch/arm64/boot/dts/qcom/ipq5332-rdp442.dts   | 34 --------------
+ arch/arm64/boot/dts/qcom/ipq5332.dtsi         | 27 ++++++++++++
+ arch/arm64/boot/dts/qcom/ipq5424-rdp466.dts   | 44 ++++++++++++-------
+ arch/arm64/boot/dts/qcom/ipq5424.dtsi         | 27 ++++++++++++
+ include/linux/dma/qcom_bam_dma.h              | 21 ++++++---
+ 7 files changed, 145 insertions(+), 54 deletions(-)
 
 -- 
-2.50.0
+2.34.1
 

@@ -1,42 +1,42 @@
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A941034EF0B;
-	Fri, 31 Oct 2025 17:28:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F8832C950
+	for <linux-spi@vger.kernel.org>; Fri, 31 Oct 2025 17:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761931712; cv=none; b=AvBCIjxzCKwQ5OWWLjW+8FuLUl67xZ7cjOUvQ3EPEnzALY6J1oBeeYkJ4U9gwe99UIT0FFMtrJI5wfyBrbdBmZ9mebXRpvNi40zqsyLM3uFVxXTEr4rCpQAb6gIHeq/FVtxLfdIPWs49/Rn1uWOcvH2Y/+skWpprY3ZbPR6p+qg=
+	t=1761931715; cv=none; b=YFc6hJqkdQiutesPQko6VoA+ZFjKtn8XXPhTBaXyVw/1q9+T6DA0Q5j9sOh+9a4ooWVU8KrqnUyp4n4RcIZCmJTec07XYuenLGqIDPNrIhdE4TeA9ZJBBDb2C5cK9QPKjvotAKSIE7JZlxvy8F0nVN8wQ+Yzf/iNhU6hKMcBmxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761931712; c=relaxed/simple;
-	bh=07EOgXth6XkPkHWngakcKndxm5s+WUTbZtg+4rzo0eQ=;
+	s=arc-20240116; t=1761931715; c=relaxed/simple;
+	bh=s9QP08vtkGDYwazwgqrfFxRGwX8EU+BTdFOQiiYeVRo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=MnbxIg1xgHyy4Guy3Rk7FvYRglBTCRSTB8SPdbxR4GIaOpFleLDQXFk0TVyyZrGBhG5UScaYxpZdjUh7NBY5yfhJBM0C8LpKkdpeVOGKsp1EtnNVaf78kNDgq0JMKrzyi+cJFp62G67HyqA5RgYUvSaf+f8l1//FyB7YpzkWN6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=hNMbrx24; arc=none smtp.client-ip=185.246.84.56
+	 In-Reply-To:To:Cc; b=FqPFXDPqeXQSgYYmzuA88VHWkeB8HDywBwSKrAsK4LvtfkriRUMq3MIK6yE/R20Hg5tlylu1agi43hctW0NDNS+NdyY9IJreJDBbT3m49ROpLyKOA77VzAUjpkyPiPkll+FTkvcyXU37xGKOBRIZ+bU5j0pA78gDisgF0fl6uqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=RD+p5LMi; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="hNMbrx24"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="RD+p5LMi"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 485E51A17C4;
-	Fri, 31 Oct 2025 17:28:29 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id D1BDD1A17C3;
+	Fri, 31 Oct 2025 17:28:31 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 206F360704;
-	Fri, 31 Oct 2025 17:28:29 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6685E11818468;
-	Fri, 31 Oct 2025 18:28:27 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id A829160704;
+	Fri, 31 Oct 2025 17:28:31 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 176E21181800A;
+	Fri, 31 Oct 2025 18:28:30 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1761931708; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1761931711; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=mXik5j5I11be7gGeEVhCzfvaeTWInz7PcYTvkv28QF0=;
-	b=hNMbrx24fu986J8m5f1/dnFgNLgPP2fiWJWkjZkyUgfgDAF7g1MBpAjsjzFp3+r43dZiQb
-	FaUqXKKkGcO7EcFKlORnUtq/ezPZfNS+gPEiWATs1WLqyIRepEtBhAJWBlUpfN+IO19ZLP
-	FjC3SeNvxJfaiT8TVReVsGcdFRlErz53p1uckIHnF47XO/utmjUihp4LhmH73wtJj82tuO
-	Q1zzXLRixFIp/yOlUOA16mHQeoMqMVWZT8bmINveTGX9W/9Vbxx8uFy747VD5+fiBlO6gG
-	9jV6+SOVxonAzMq5GjOgMxFv++cArYbstP9kLu0JqElIzD26/YTMmC4T+piNZA==
+	bh=SSScNc/ZTYByCMEF9q858dnRFAdSrotGIfTOHWGCemk=;
+	b=RD+p5LMiV31QgnitgyjquqxiAyyuIQfYCl7nXRnzvC2LANs0sSmkqRx4xlfjHbGnFZ0CoQ
+	/iV0N8qk3ji+C+YXK468xQBh6sXnVJpMJsEIU3QPP6G6jCZCBUMFRA1v9EbC0ct61TXHIr
+	NWnq6PAYWI2enYSBP/VuIKLM3mQ9bsvKPN0I6SkLDFAyvXqnvkpMHr5prucSHYrIEbsFjl
+	Bghd1fQ93xZu1bLVPijRSg8Qic7GLdmkcVJUC7J8tSybaV5kFibC2wGEypckFk/hR5ULeU
+	9K9bTwUGFKJ9zACa22v0DBP2wM0Y4Re9uX46aPd1Bi0mrfJCXeteNAwMcAnkMA==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
-Date: Fri, 31 Oct 2025 18:26:58 +0100
-Subject: [PATCH 14/28] mtd: spinand: winbond: Convert W35N specific
- operation to SPINAND_OP()
+Date: Fri, 31 Oct 2025 18:27:00 +0100
+Subject: [PATCH 16/28] mtd: spinand: macronix: Register vendor specific
+ operation
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251031-winbond-v6-17-rc1-oddr-v1-14-be42de23ebf1@bootlin.com>
+Message-Id: <20251031-winbond-v6-17-rc1-oddr-v1-16-be42de23ebf1@bootlin.com>
 References: <20251031-winbond-v6-17-rc1-oddr-v1-0-be42de23ebf1@bootlin.com>
 In-Reply-To: <20251031-winbond-v6-17-rc1-oddr-v1-0-be42de23ebf1@bootlin.com>
 To: Mark Brown <broonie@kernel.org>, Richard Weinberger <richard@nod.at>, 
@@ -59,58 +59,189 @@ Cc: Tudor Ambarus <tudor.ambarus@linaro.org>,
 X-Mailer: b4 0.14.2
 X-Last-TLS-Session-Version: TLSv1.3
 
-Winbond W35N* chips require a vendor specific operation to write their
-VCR register (a configuration register, typically used for tuning the
-number of dummy cycles and switching to a different bus
-interface). Instead of defining this op only in the function that needs
-it, hiding it from the core, make it a proper define like all other
-spi-mem operations, and implement the necessary spinand_fill_*_op()
-helper to make the SPINAND_OP() macro work. This way we can use it from
-any function without any extra handling outside of this helper when we
-will convert the core to support octal DDR busses.
+Provide the Macronix specific "read ECC status register" operation so
+that the core can verify if it is supported by the controller before
+using it.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- drivers/mtd/nand/spi/winbond.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ drivers/mtd/nand/spi/macronix.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/drivers/mtd/nand/spi/winbond.c b/drivers/mtd/nand/spi/winbond.c
-index dde59f8f63f511a298a43a5b43fe07c1d726f179..3003ad7e83ee8f553ec82a0326422916c0ed794c 100644
---- a/drivers/mtd/nand/spi/winbond.c
-+++ b/drivers/mtd/nand/spi/winbond.c
-@@ -87,6 +87,18 @@ static SPINAND_OP_VARIANTS(update_cache_variants,
- 		SPINAND_PROG_LOAD_1S_1S_4S_OP(false, 0, NULL, 0),
- 		SPINAND_PROG_LOAD_1S_1S_1S_OP(false, 0, NULL, 0));
+diff --git a/drivers/mtd/nand/spi/macronix.c b/drivers/mtd/nand/spi/macronix.c
+index a847ea8f49a8a7005405f6083a4aaac942974998..6b7cbcc6e2872d3369b8eb765dede05c7299c896 100644
+--- a/drivers/mtd/nand/spi/macronix.c
++++ b/drivers/mtd/nand/spi/macronix.c
+@@ -47,6 +47,9 @@ static SPINAND_OP_VARIANTS(update_cache_variants,
+ 		   SPI_MEM_OP_DUMMY(1, 1),				\
+ 		   SPI_MEM_OP_DATA_IN(1, buf, 1))
  
-+#define SPINAND_WINBOND_WRITE_VCR_1S_1S_1S(reg, buf)			\
-+	SPI_MEM_OP(SPI_MEM_OP_CMD(0x81, 1),				\
-+		   SPI_MEM_OP_ADDR(3, reg, 1),				\
-+		   SPI_MEM_OP_NO_DUMMY,					\
-+		   SPI_MEM_OP_DATA_OUT(1, buf, 1))
++static SPINAND_OP_VARIANTS(macronix_ops,
++		SPINAND_MACRONIX_READ_ECCSR_1S_0_1S(NULL));
 +
-+static struct spi_mem_op
-+spinand_fill_winbond_write_vcr_op(struct spinand_device *spinand, u8 reg, void *valptr)
-+{
-+	return (struct spi_mem_op)SPINAND_WINBOND_WRITE_VCR_1S_1S_1S(reg, valptr);
-+}
-+
- #define SPINAND_WINBOND_SELECT_TARGET_1S_0_1S(buf)			\
- 	SPI_MEM_OP(SPI_MEM_OP_CMD(0xc2, 1),				\
- 		   SPI_MEM_OP_NO_ADDR,					\
-@@ -329,11 +341,8 @@ static int w25n0xjw_hs_cfg(struct spinand_device *spinand)
- 
- static int w35n0xjw_write_vcr(struct spinand_device *spinand, u8 reg, u8 val)
+ static struct spi_mem_op
+ spinand_fill_macronix_read_eccsr_op(struct spinand_device *spinand, void *valptr)
  {
--	struct spi_mem_op op =
--		SPI_MEM_OP(SPI_MEM_OP_CMD(0x81, 1),
--			   SPI_MEM_OP_ADDR(3, reg, 1),
--			   SPI_MEM_OP_NO_DUMMY,
--			   SPI_MEM_OP_DATA_OUT(1, spinand->scratchbuf, 1));
-+	struct spi_mem_op op = SPINAND_OP(spinand, winbond_write_vcr,
-+					  reg, spinand->scratchbuf);
- 	int ret;
+@@ -174,6 +177,7 @@ static const struct spinand_info macronix_spinand_table[] = {
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     SPINAND_HAS_QE_BIT,
++		     SPINAND_INFO_VENDOR_OPS(&macronix_ops),
+ 		     SPINAND_ECCINFO(&mx35lfxge4ab_ooblayout,
+ 				     macronix_ecc_get_status)),
+ 	SPINAND_INFO("MX35LF2GE4AB",
+@@ -195,6 +199,7 @@ static const struct spinand_info macronix_spinand_table[] = {
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     SPINAND_HAS_QE_BIT,
++		     SPINAND_INFO_VENDOR_OPS(&macronix_ops),
+ 		     SPINAND_ECCINFO(&mx35lfxge4ab_ooblayout,
+ 				     macronix_ecc_get_status),
+ 		     SPINAND_CONT_READ(macronix_set_cont_read),
+@@ -208,6 +213,7 @@ static const struct spinand_info macronix_spinand_table[] = {
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     SPINAND_HAS_QE_BIT,
++		     SPINAND_INFO_VENDOR_OPS(&macronix_ops),
+ 		     SPINAND_ECCINFO(&mx35lfxge4ab_ooblayout,
+ 				     macronix_ecc_get_status),
+ 		     SPINAND_CONT_READ(macronix_set_cont_read),
+@@ -278,6 +284,7 @@ static const struct spinand_info macronix_spinand_table[] = {
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     SPINAND_HAS_QE_BIT,
++		     SPINAND_INFO_VENDOR_OPS(&macronix_ops),
+ 		     SPINAND_ECCINFO(&mx35lfxge4ab_ooblayout,
+ 				     macronix_ecc_get_status)),
+ 	SPINAND_INFO("MX31UF1GE4BC",
+@@ -288,6 +295,7 @@ static const struct spinand_info macronix_spinand_table[] = {
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     SPINAND_HAS_QE_BIT,
++		     SPINAND_INFO_VENDOR_OPS(&macronix_ops),
+ 		     SPINAND_ECCINFO(&mx35lfxge4ab_ooblayout,
+ 				     macronix_ecc_get_status)),
  
- 	*spinand->scratchbuf = val;
+@@ -301,6 +309,7 @@ static const struct spinand_info macronix_spinand_table[] = {
+ 		     SPINAND_HAS_QE_BIT |
+ 		     SPINAND_HAS_PROG_PLANE_SELECT_BIT |
+ 		     SPINAND_HAS_READ_PLANE_SELECT_BIT,
++		     SPINAND_INFO_VENDOR_OPS(&macronix_ops),
+ 		     SPINAND_ECCINFO(&mx35lfxge4ab_ooblayout,
+ 				     macronix_ecc_get_status)),
+ 	SPINAND_INFO("MX35UF4G24AD",
+@@ -312,6 +321,7 @@ static const struct spinand_info macronix_spinand_table[] = {
+ 					      &update_cache_variants),
+ 		     SPINAND_HAS_QE_BIT |
+ 		     SPINAND_HAS_PROG_PLANE_SELECT_BIT,
++		     SPINAND_INFO_VENDOR_OPS(&macronix_ops),
+ 		     SPINAND_ECCINFO(&mx35lfxge4ab_ooblayout,
+ 				     macronix_ecc_get_status),
+ 		     SPINAND_READ_RETRY(MACRONIX_NUM_READ_RETRY_MODES,
+@@ -324,6 +334,7 @@ static const struct spinand_info macronix_spinand_table[] = {
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     SPINAND_HAS_QE_BIT,
++		     SPINAND_INFO_VENDOR_OPS(&macronix_ops),
+ 		     SPINAND_ECCINFO(&mx35lfxge4ab_ooblayout,
+ 				     macronix_ecc_get_status),
+ 		     SPINAND_READ_RETRY(MACRONIX_NUM_READ_RETRY_MODES,
+@@ -336,6 +347,7 @@ static const struct spinand_info macronix_spinand_table[] = {
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     SPINAND_HAS_QE_BIT,
++		     SPINAND_INFO_VENDOR_OPS(&macronix_ops),
+ 		     SPINAND_ECCINFO(&mx35lfxge4ab_ooblayout,
+ 				     macronix_ecc_get_status),
+ 		     SPINAND_CONT_READ(macronix_set_cont_read),
+@@ -351,6 +363,7 @@ static const struct spinand_info macronix_spinand_table[] = {
+ 		     SPINAND_HAS_QE_BIT |
+ 		     SPINAND_HAS_PROG_PLANE_SELECT_BIT |
+ 		     SPINAND_HAS_READ_PLANE_SELECT_BIT,
++		     SPINAND_INFO_VENDOR_OPS(&macronix_ops),
+ 		     SPINAND_ECCINFO(&mx35lfxge4ab_ooblayout,
+ 				     macronix_ecc_get_status)),
+ 	SPINAND_INFO("MX35UF2G24AD",
+@@ -362,6 +375,7 @@ static const struct spinand_info macronix_spinand_table[] = {
+ 					      &update_cache_variants),
+ 		     SPINAND_HAS_QE_BIT |
+ 		     SPINAND_HAS_PROG_PLANE_SELECT_BIT,
++		     SPINAND_INFO_VENDOR_OPS(&macronix_ops),
+ 		     SPINAND_ECCINFO(&mx35lfxge4ab_ooblayout,
+ 				     macronix_ecc_get_status),
+ 		     SPINAND_READ_RETRY(MACRONIX_NUM_READ_RETRY_MODES,
+@@ -374,6 +388,7 @@ static const struct spinand_info macronix_spinand_table[] = {
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     SPINAND_HAS_QE_BIT,
++		     SPINAND_INFO_VENDOR_OPS(&macronix_ops),
+ 		     SPINAND_ECCINFO(&mx35lfxge4ab_ooblayout,
+ 				     macronix_ecc_get_status),
+ 		     SPINAND_READ_RETRY(MACRONIX_NUM_READ_RETRY_MODES,
+@@ -386,6 +401,7 @@ static const struct spinand_info macronix_spinand_table[] = {
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     SPINAND_HAS_QE_BIT,
++		     SPINAND_INFO_VENDOR_OPS(&macronix_ops),
+ 		     SPINAND_ECCINFO(&mx35lfxge4ab_ooblayout,
+ 				     macronix_ecc_get_status),
+ 		     SPINAND_CONT_READ(macronix_set_cont_read),
+@@ -399,6 +415,7 @@ static const struct spinand_info macronix_spinand_table[] = {
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     SPINAND_HAS_QE_BIT,
++		     SPINAND_INFO_VENDOR_OPS(&macronix_ops),
+ 		     SPINAND_ECCINFO(&mx35lfxge4ab_ooblayout,
+ 				     macronix_ecc_get_status),
+ 		     SPINAND_CONT_READ(macronix_set_cont_read)),
+@@ -410,6 +427,7 @@ static const struct spinand_info macronix_spinand_table[] = {
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     SPINAND_HAS_QE_BIT,
++		     SPINAND_INFO_VENDOR_OPS(&macronix_ops),
+ 		     SPINAND_ECCINFO(&mx35lfxge4ab_ooblayout,
+ 				     macronix_ecc_get_status)),
+ 	SPINAND_INFO("MX35UF1G24AD",
+@@ -420,6 +438,7 @@ static const struct spinand_info macronix_spinand_table[] = {
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     SPINAND_HAS_QE_BIT,
++		     SPINAND_INFO_VENDOR_OPS(&macronix_ops),
+ 		     SPINAND_ECCINFO(&mx35lfxge4ab_ooblayout,
+ 				     macronix_ecc_get_status),
+ 		     SPINAND_READ_RETRY(MACRONIX_NUM_READ_RETRY_MODES,
+@@ -432,6 +451,7 @@ static const struct spinand_info macronix_spinand_table[] = {
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     SPINAND_HAS_QE_BIT,
++		     SPINAND_INFO_VENDOR_OPS(&macronix_ops),
+ 		     SPINAND_ECCINFO(&mx35lfxge4ab_ooblayout,
+ 				     macronix_ecc_get_status),
+ 		     SPINAND_CONT_READ(macronix_set_cont_read),
+@@ -445,6 +465,7 @@ static const struct spinand_info macronix_spinand_table[] = {
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     SPINAND_HAS_QE_BIT,
++		     SPINAND_INFO_VENDOR_OPS(&macronix_ops),
+ 		     SPINAND_ECCINFO(&mx35lfxge4ab_ooblayout,
+ 				     macronix_ecc_get_status),
+ 		     SPINAND_CONT_READ(macronix_set_cont_read)),
+@@ -456,6 +477,7 @@ static const struct spinand_info macronix_spinand_table[] = {
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     SPINAND_HAS_QE_BIT,
++		     SPINAND_INFO_VENDOR_OPS(&macronix_ops),
+ 		     SPINAND_ECCINFO(&mx35lfxge4ab_ooblayout,
+ 				     macronix_ecc_get_status)),
+ 	SPINAND_INFO("MX3UF2GE4BC",
+@@ -466,6 +488,7 @@ static const struct spinand_info macronix_spinand_table[] = {
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     SPINAND_HAS_QE_BIT,
++		     SPINAND_INFO_VENDOR_OPS(&macronix_ops),
+ 		     SPINAND_ECCINFO(&mx35lfxge4ab_ooblayout,
+ 				     macronix_ecc_get_status)),
+ };
 
 -- 
 2.51.0

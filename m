@@ -1,42 +1,42 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E810534FF7C
-	for <linux-spi@vger.kernel.org>; Fri, 31 Oct 2025 17:28:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A3E3502AD
+	for <linux-spi@vger.kernel.org>; Fri, 31 Oct 2025 17:28:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761931715; cv=none; b=l12ElhuOAM9kr0jvKBA54Y0dxWArF1SkVKYebVoEVGUsnbQ03EDfOhXe07XASH+iV8aB6QtcSj9xwLk2mGoV3YgEwYH3DpHSoFUT+W+oB6nNzxrvtM5wqabvZfkl8xJ+PYPC2jU17MdY38zhWfskWMRJxe0LwNI2almsX1TLnNE=
+	t=1761931716; cv=none; b=XCSb1CnOT9WFrLnv0vr9fSlwjLyTcGc2ILboaUqKQz+gmoyWHqOVjd3s6aJ+e7t9spNdIqWj7v2ZT2hoaexK4Rb2e/EAXXYDnEJX+uYvG3QnAcCFv7uTcX06uUqUsbv/knEoh+LDMwewNYl45m3SDA8vQK6pFotylw6qFNeeEFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761931715; c=relaxed/simple;
-	bh=SwofGuta5o6W85LlbaSEKjS7hlS8I8TpmVta/kJFyr8=;
+	s=arc-20240116; t=1761931716; c=relaxed/simple;
+	bh=RMbMUEEhl1btP11IBkzunbMSOg/RAvy6gpude6+GCuI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Qqncu4KKqOPe1QRJMCw2FeqFxTTtew/uzhQ8BgkxfHb/flv4hlVl/V70UszUWg/1faTJPcrfPzEUy3i0ss/S5lxQ+EOFJ1FNNwKdg7FYfjBEzSyXdkgwWeLftjWbM2A6vUArXN1QI0YUqJMzczz0RQAvoG6mJtVkQKqySu26ZMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=gpthj2Fs; arc=none smtp.client-ip=185.171.202.116
+	 In-Reply-To:To:Cc; b=do19bI3iP+MwYf/25yVhlaQ0ehiuGpsdyOINLCX4ySlwUV7hzRjbjejXSU2/D5ppAJnvC14TsoWT6ZQjHCqdzxLhMR5cgkCXkITtzvwLg+NrQhfbutjDYs+dpc5+zDaUWIYNgT98TyQ/q2kDEe5EjRYH+t5zdHnEmeaU9AduyY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=LDNV5w1l; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="gpthj2Fs"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="LDNV5w1l"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id D1CD5C0E95A;
-	Fri, 31 Oct 2025 17:28:09 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 2E5D54E41415;
+	Fri, 31 Oct 2025 17:28:33 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 62E5960704;
-	Fri, 31 Oct 2025 17:28:30 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C039411818007;
-	Fri, 31 Oct 2025 18:28:28 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 0524760704;
+	Fri, 31 Oct 2025 17:28:33 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5076E1181800B;
+	Fri, 31 Oct 2025 18:28:31 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1761931709; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1761931712; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=ZnZdiNJPbIqvHm/HDag2fb8foKcg/2VPHnNDy+534Sc=;
-	b=gpthj2FszYm3wOTAqiSK3W+RfJBtylUVIZ+zV2ruI3xuhvmtaMrXhuh1XzdpXJsAHq+R1o
-	89HHVe7LwxFqaQtm2lv/PCN7OSQ2UNeeX07xooxQ9mFgz7moCStfaOwJCXraDPze8FPCP5
-	Y+80heOSuOgs3I2tDYLWGCNACHSVw2IZV0rG5DICtcoo5Kke4mNRBVZ1eN3Tcem3tbc+n4
-	gmAkF7E7zQ/LP1DjWcpgG3QaQzwCIQlkqIqbUtKzC2WE+qVF74XUVFQVEemEK6s6eA0yVi
-	U4MzWcqcBUU7ayKKvKgmE8VORtMuM3g5m/HJM6lvaDDHO3L3X/4NVy4D8405UA==
+	bh=o9wIzIvZiwRUNi0x5RrTd6dDilzMRTH2lHz86yrV8Lw=;
+	b=LDNV5w1lANS5nYtNjr1I5p7kB/z3pWHD38yKtMCCHsO2u4uEbsKvdnLSsEfDOeq/9WQH21
+	w+FIA7SLXadznmJiif0B3U2MqTmZpzZUuZVGc2LusMHMyYpsXK8k2LSNV9XaW4HItAX+7y
+	y9m6hTwQMXA1v6ict7ZW+nhKcW+ixNLaOlgtyRnVaBFapQ2PmdfAj8hixvoDcfNoXc18RQ
+	VAgCDZpG4mAryhbsOD8WOsSiF8ZOBfl6xIuSlg0odP7vVBvU3p+chIf3y4Y9iC13n7ZCVu
+	VaDdFdSp0xeXP5gskJBhAIa5OlC0c8OwCZ+VNA+M8o0JlrtOEjje9dUF65MylQ==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
-Date: Fri, 31 Oct 2025 18:26:59 +0100
-Subject: [PATCH 15/28] mtd: spinand: List vendor specific operations and
- make sure they are supported
+Date: Fri, 31 Oct 2025 18:27:01 +0100
+Subject: [PATCH 17/28] mtd: spinand: winbond: Register W25N vendor specific
+ operation
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251031-winbond-v6-17-rc1-oddr-v1-15-be42de23ebf1@bootlin.com>
+Message-Id: <20251031-winbond-v6-17-rc1-oddr-v1-17-be42de23ebf1@bootlin.com>
 References: <20251031-winbond-v6-17-rc1-oddr-v1-0-be42de23ebf1@bootlin.com>
 In-Reply-To: <20251031-winbond-v6-17-rc1-oddr-v1-0-be42de23ebf1@bootlin.com>
 To: Mark Brown <broonie@kernel.org>, Richard Weinberger <richard@nod.at>, 
@@ -59,108 +59,36 @@ Cc: Tudor Ambarus <tudor.ambarus@linaro.org>,
 X-Mailer: b4 0.14.2
 X-Last-TLS-Session-Version: TLSv1.3
 
-It is probably safe to expect that all SPI controller drivers will ever
-support all the most basic SPI NAND operations, such as write enable,
-register reads, page program, block erases, etc. However, what about
-vendor specific operations? So far nobody complained about it, but as we
-are about to introduce octal DTR support, and as none of the SPI NAND
-instruction set is defined in any standard, we must remain careful about
-these extra operations.
-
-One way to make sure we do not blindly get ourselves in strange
-situations with vendor commands failing silently is to make the check
-once for all, while probing the chip. However at this stage we have no
-such list, so let's add the necessary infrastructure to allow:
-- registering vendor operations,
-- checking they are actually supported when appropriate.
+Provide the Winbond W25N specific "select target" operation to let the
+core verify it is supported by the controller before using it.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- drivers/mtd/nand/spi/core.c | 26 ++++++++++++++++++++++++++
- include/linux/mtd/spinand.h |  5 +++++
- 2 files changed, 31 insertions(+)
+ drivers/mtd/nand/spi/winbond.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
-index d4f46a17f77e15ac0ab26397e88d37119636b003..7c01516c6b6acb41d2cc080d6fbaaa5ace661602 100644
---- a/drivers/mtd/nand/spi/core.c
-+++ b/drivers/mtd/nand/spi/core.c
-@@ -1338,6 +1338,27 @@ static void spinand_init_ssdr_templates(struct spinand_device *spinand)
- 	spinand->op_templates = &spinand->ssdr_op_templates;
- }
+diff --git a/drivers/mtd/nand/spi/winbond.c b/drivers/mtd/nand/spi/winbond.c
+index 3003ad7e83ee8f553ec82a0326422916c0ed794c..36053f35ee5e84eb355343443a28d274cf7ea5c3 100644
+--- a/drivers/mtd/nand/spi/winbond.c
++++ b/drivers/mtd/nand/spi/winbond.c
+@@ -105,6 +105,9 @@ spinand_fill_winbond_write_vcr_op(struct spinand_device *spinand, u8 reg, void *
+ 		   SPI_MEM_OP_NO_DUMMY,					\
+ 		   SPI_MEM_OP_DATA_OUT(1, buf, 1))
  
-+static int spinand_support_vendor_ops(struct spinand_device *spinand,
-+				      const struct spinand_info *info)
-+{
-+	int i;
++static SPINAND_OP_VARIANTS(winbond_w25_ops,
++		SPINAND_WINBOND_SELECT_TARGET_1S_0_1S(NULL));
 +
-+	/*
-+	 * The vendor ops array is only used in order to verify this chip and all its memory
-+	 * operations are supported. If we see patterns emerging, we could ideally name these
-+	 * operations and define them at the SPI NAND core level instead.
-+	 * For now, this only serves as a sanity check.
-+	 */
-+	for (i = 0; i < info->vendor_ops->nops; i++) {
-+		const struct spi_mem_op *op = &info->vendor_ops->ops[i];
-+
-+		if (!spi_mem_supports_op(spinand->spimem, op))
-+			return -EOPNOTSUPP;
-+	}
-+
-+	return 0;
-+}
-+
- static const struct spi_mem_op *
- spinand_select_op_variant(struct spinand_device *spinand,
- 			  const struct spinand_op_variants *variants)
-@@ -1407,6 +1428,7 @@ int spinand_match_and_init(struct spinand_device *spinand,
- 	u8 *id = spinand->id.data;
- 	struct nand_device *nand = spinand_to_nand(spinand);
- 	unsigned int i;
-+	int ret;
- 
- 	for (i = 0; i < table_size; i++) {
- 		const struct spinand_info *info = &table[i];
-@@ -1452,6 +1474,10 @@ int spinand_match_and_init(struct spinand_device *spinand,
- 
- 		spinand->ssdr_op_templates.update_cache = op;
- 
-+		ret = spinand_support_vendor_ops(spinand, info);
-+		if (ret)
-+			return ret;
-+
- 		return 0;
- 	}
- 
-diff --git a/include/linux/mtd/spinand.h b/include/linux/mtd/spinand.h
-index a8fd04a67cfa9925bd68c57539d86e0816b76274..0565cdeb3f7b652699d420a8c05c3fe53fcc2253 100644
---- a/include/linux/mtd/spinand.h
-+++ b/include/linux/mtd/spinand.h
-@@ -492,6 +492,7 @@ struct spinand_user_otp {
-  * @op_variants.read_cache: variants of the read-cache operation
-  * @op_variants.write_cache: variants of the write-cache operation
-  * @op_variants.update_cache: variants of the update-cache operation
-+ * @vendor_ops: vendor specific operations
-  * @select_target: function used to select a target/die. Required only for
-  *		   multi-die chips
-  * @configure_chip: Align the chip configuration with the core settings
-@@ -516,6 +517,7 @@ struct spinand_info {
- 		const struct spinand_op_variants *write_cache;
- 		const struct spinand_op_variants *update_cache;
- 	} op_variants;
-+	const struct spinand_op_variants *vendor_ops;
- 	int (*select_target)(struct spinand_device *spinand,
- 			     unsigned int target);
- 	int (*configure_chip)(struct spinand_device *spinand);
-@@ -542,6 +544,9 @@ struct spinand_info {
- 		.update_cache = __update,				\
- 	}
- 
-+#define SPINAND_INFO_VENDOR_OPS(__ops)					\
-+	.vendor_ops = __ops
-+
- #define SPINAND_ECCINFO(__ooblayout, __get_status)			\
- 	.eccinfo = {							\
- 		.ooblayout = __ooblayout,				\
+ static struct spi_mem_op
+ spinand_fill_winbond_select_target_op(struct spinand_device *spinand, void *valptr)
+ {
+@@ -497,6 +500,7 @@ static const struct spinand_info winbond_spinand_table[] = {
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     0,
++		     SPINAND_INFO_VENDOR_OPS(&winbond_w25_ops),
+ 		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL),
+ 		     SPINAND_SELECT_TARGET(w25m02gv_select_target)),
+ 	SPINAND_INFO("W25N02JW", /* high-speed 1.8V */
 
 -- 
 2.51.0

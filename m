@@ -1,183 +1,90 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B433321BF;
-	Wed,  5 Nov 2025 15:24:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3FE258CD0
+	for <linux-spi@vger.kernel.org>; Wed,  5 Nov 2025 15:35:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762356278; cv=none; b=Wok4yR8GBqmUEdh/ppRI2So/ancZuBkjeJAKqG0AGbAmjdIe5W27EFraY6gYDaeFAUJVMjuiU18g4aBSxQzThFZivh6eL49f2YlS+t9O97Iw6Hc0i1uV0FNbyZljPymvvqNzaN5g9Pc0Z5gD8GrXrVG7VG8s049D+0AQ8UrO33A=
+	t=1762356915; cv=none; b=YvtR5/f/J/f+aeRcIZp7REadG7Vb+5AdlHcbdP329799EnpzJrDbmmz5IwYwK50KRla+8dMqkeuRmoW4JH51plCGVZEYfTUUcD1ZxcnQHYfoT234BHGJEu7F9xi3791lr+FNrH39WI+xFgIjddwRuMkDe7ZbpgOA302yl9/aGhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762356278; c=relaxed/simple;
-	bh=gUnRf6n8ndiHI4YW1DJPBaLZYDQ9YnYfxMEEpRNdoGY=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IyJIEWt+CoGxjOt+zKnDev0FBcspuOxDcxEUDuZR5sUaSxJaHZh8JeGgX4nLv1x5zG1qBeYQFPN0W8ozlXWcofLxRbyHr3Gbh/UjiBce2cdFNewLqgU8bGMmLZoIlNftubFdJKcfZvFrLXXzUfqz/eK8F9W3MDCoD6wj8uONjFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=kZwNeC7V; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1762356915; c=relaxed/simple;
+	bh=gczMRuZ2fsGRpoCXUBhl7NeVLE82+ehtyW2OQrB7AVI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Bd+UNjaXGvKkREqUxbGTKQvl+FfNMXzPowydMKdJ44vHr9KjJcCyTZVu2gXoFgcR0x3C6n/XfJCBT0HsuGlihsvudnUQ6wv2f6vVzr3AflrKUDAnpcCcG2+KkpNII9uDUXitVn1wAHg2LUz3XZXhUkYl68pikbK+0sE9xKRujDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Az15c20r; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="kZwNeC7V"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1762356276; x=1793892276;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=gUnRf6n8ndiHI4YW1DJPBaLZYDQ9YnYfxMEEpRNdoGY=;
-  b=kZwNeC7V/R0bVunI3jVEjzKnNCiQAVVlyHMf4YTNDiFRbcAOk+eIv8GH
-   EET+qFZVuSmvP82bHJkKXmrwjUHY/F5ZLulEIxjNyKyQf5qcrNrBuhyRo
-   qQ1GRPcElCfjdiWi6vxWldBz4HF14JXuyHfBv8xwHE0WB4hqeLUeMBco2
-   3wYLKbm8e+Ex2ytkwFUq2OFvs+dksxXitnLXSiP+cTGAnUrhtTkVmzbic
-   iW0ue0GVzWrr16ts9WCsgNBLBcz/iUlt5R/av6UR2CkAth3YvAvUpSWUK
-   A/PIKknJ2+Sz3GnKM19K/CujsYESCOC9RnPKVwE/UadDp/oafuzj8X2F5
-   Q==;
-X-CSE-ConnectionGUID: yWuSuPPyQzGntaE7tSBgAw==
-X-CSE-MsgGUID: vmskSxkiSSmFxyt7qDsRSQ==
-X-IronPort-AV: E=Sophos;i="6.19,282,1754982000"; 
-   d="scan'208";a="48083051"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 05 Nov 2025 08:24:35 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Wed, 5 Nov 2025 08:23:55 -0700
-Received: from Lily.microchip.com (10.10.85.11) by chn-vm-ex03.mchp-main.com
- (10.10.85.151) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Wed, 5 Nov 2025 08:23:53 -0700
-From: Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>
-To: Mark Brown <broonie@kernel.org>
-CC: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	<linux-riscv@lists.infradead.org>, <linux-spi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>, Conor Dooley
-	<conor.dooley@microchip.com>, Daire McNamara <daire.mcnamara@microchip.com>,
-	Valentina Fernandez Alanis <valentina.fernandezalanis@microchip.com>, "Cyril
- Jean" <cyril.jean@microchip.com>, Prajna Rajendra Kumar
-	<prajna.rajendrakumar@microchip.com>
-Subject: [PATCH v2 2/3] spi: dt-binding: document Microchip CoreSPI
-Date: Wed, 5 Nov 2025 15:28:22 +0000
-Message-ID: <20251105152823.730422-3-prajna.rajendrakumar@microchip.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20251105152823.730422-1-prajna.rajendrakumar@microchip.com>
-References: <20251105152823.730422-1-prajna.rajendrakumar@microchip.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Az15c20r"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b4f323cf89bso479842366b.2
+        for <linux-spi@vger.kernel.org>; Wed, 05 Nov 2025 07:35:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1762356912; x=1762961712; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=gczMRuZ2fsGRpoCXUBhl7NeVLE82+ehtyW2OQrB7AVI=;
+        b=Az15c20rSkoYvwPxvUVQJIrbQfSVMngmjoA/m25zigW1HKN79DAG4lMJSTpaq0dgMY
+         OSRboyigHLIEhKdN9YpeAvM01bojHSnCRWp3MTzKXw29F/GUwd7kW7Gczp6PsgvsjWkh
+         AN6FBuJrQhyEoHJNpNizQEWzBJQ9z3O5Vd1F44BUoZhAD92vEUMHGRg3GMx9b9mZPD+q
+         8mb7nV1YF1nLX99iun0aPtT9xAXs8CIUcpNT5lxa7QNOBhuaAt0Cfu0vcZpcN6iJerLG
+         b3JwJ7lgFVUwgsiOJluTjexeuA3WfSz7hS5yTnLQEUaYqDug0LQymyQ6qGRXyQGvT4ll
+         AKsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762356912; x=1762961712;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gczMRuZ2fsGRpoCXUBhl7NeVLE82+ehtyW2OQrB7AVI=;
+        b=HqQPkyvtKr0CXRxnZ17v1oDsyMIBQFXjpbpXV2Rkqq+BjM3fUvA/dqHc8H/3iBbme+
+         3rZ87GO5KSLYTMnIl6fiKXuX+oAF+A+rIuDrFN6Hv+JqqUMFFIGdU2p9Ex5sJkf4q/QV
+         dd4pikFEzU/K9M3eEK9joNmX7Db74J71DjkG3+f75cgbT1N3FfdVV4mAwexiVXEIKgVt
+         xDbmjTF8cH0Ek9VKNwNBA+17fylo6gxbxE4eXP32sM7S0SIuQs7MDddCEm4+DkgSQzoJ
+         ie5oR61SPwYyY/F/0ORlXIIgv96Q/c62eQcc516sxfBzfYn5YN7r7Q3L32svN2SnE641
+         bW5w==
+X-Forwarded-Encrypted: i=1; AJvYcCVJVTfLcGE02UOeTWzDJviAUZvNGMKKVBKoQox7notpiDn1oh+0DY8iKeHhctE7FJ4wPUL2LuGAeDo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzrYViWWWq+KE7ek569sg2pFjjsCDTvbSOcyQ8+EORxF8ZsdK/L
+	aiClL7L859I/P+QPAZqKGWCjdioY2zKkOSlzrLBY4tsGyFX1DWMyFmSJIpm0rBgt+GE=
+X-Gm-Gg: ASbGncuwX4TjvYJjmB+wJaej78t4WarUKZwSu78zhLzkORilwnJ0EMNr07X9DaEnywS
+	migzUvI1k2ZJ77yYyYBs/u8Tu9NxHBQz0JE+2ZALZFtdvNQqgJd1ZPH4OkACUtR6eZvaBVNxp6X
+	UXnvt2Ui+B/5mVxzxCT94ejZZ/1CxctBp7TyRatuSzFjIOybPdvlfj5AxLfgwqsmGTEAbqum8JX
+	p4XH7L7SQOli6QKqqT3LdrTDH+7MumfANjfADrG//2fb/TORqjbO2ZKujiZex67e0Thpu6o04AB
+	2tjNMxBURPlnaO+o95K8BtcjJQSsTMjuX4oDfUyYvBnIag4qrIAk3GTmGYGEHl4tpbVeyAN5rde
+	Q2hS8fjMr/SGvchUto9nmrO1FTbcBIH82kyMfhFTslHdR47fGEh28Iol3wJXXP9ELe6fWPLJCBu
+	NLWDbPx39mdc/4lRPTQMj6ino=
+X-Google-Smtp-Source: AGHT+IFck5XRDPyHoaLZAuLhkGx4XDGyeWcDyTrgg5x4OYR9WrckK2spEl21YFRwG98d8k3Tyo7H5g==
+X-Received: by 2002:a17:907:2daa:b0:b6d:5840:4b43 with SMTP id a640c23a62f3a-b7265400cacmr325257066b.22.1762356911886;
+        Wed, 05 Nov 2025 07:35:11 -0800 (PST)
+Received: from [172.20.148.132] ([87.213.113.147])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b726ae98aecsm178597866b.11.2025.11.05.07.35.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 05 Nov 2025 07:35:11 -0800 (PST)
+Message-ID: <513be88b-a205-4cea-b9ac-fea4da968f91@linaro.org>
+Date: Wed, 5 Nov 2025 16:35:10 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/28] spi: spi-mem: Make the DTR command operation macro
+ more suitable
+To: Miquel Raynal <miquel.raynal@bootlin.com>, Mark Brown
+ <broonie@kernel.org>, Richard Weinberger <richard@nod.at>,
+ Vignesh Raghavendra <vigneshr@ti.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ Steam Lin <STLin2@winbond.com>, Santhosh Kumar K <s-k6@ti.com>,
+ linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mtd@lists.infradead.org
+References: <20251031-winbond-v6-17-rc1-oddr-v1-0-be42de23ebf1@bootlin.com>
+ <20251031-winbond-v6-17-rc1-oddr-v1-1-be42de23ebf1@bootlin.com>
+Content-Language: en-US
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
+In-Reply-To: <20251031-winbond-v6-17-rc1-oddr-v1-1-be42de23ebf1@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Add device tree bindings for Microchip's CoreSPI controller.
-
-CoreSPI is a "soft" IP core intended for FPGA implementations. Its
-configurations are set in Libero. These properties represent
-non-discoverable configurations determined by Verilog parameters to the
-IP.
-
-Signed-off-by: Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
----
- .../bindings/spi/microchip,mpfs-spi.yaml      | 70 ++++++++++++++++++-
- 1 file changed, 68 insertions(+), 2 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/spi/microchip,mpfs-spi.yaml b/Documentation/devicetree/bindings/spi/microchip,mpfs-spi.yaml
-index 62a568bdbfa0..636338d24bdf 100644
---- a/Documentation/devicetree/bindings/spi/microchip,mpfs-spi.yaml
-+++ b/Documentation/devicetree/bindings/spi/microchip,mpfs-spi.yaml
-@@ -21,11 +21,13 @@ properties:
-               - microchip,mpfs-qspi
-               - microchip,pic64gx-qspi
-           - const: microchip,coreqspi-rtl-v2
--      - const: microchip,coreqspi-rtl-v2 # FPGA QSPI
-+      - enum:
-+          - microchip,coreqspi-rtl-v2 # FPGA QSPI
-+          - microchip,corespi-rtl-v5 # FPGA CoreSPI
-+          - microchip,mpfs-spi
-       - items:
-           - const: microchip,pic64gx-spi
-           - const: microchip,mpfs-spi
--      - const: microchip,mpfs-spi
- 
-   reg:
-     maxItems: 1
-@@ -39,6 +41,45 @@ properties:
-   clocks:
-     maxItems: 1
- 
-+  microchip,apb-datawidth:
-+    description: APB bus data width in bits.
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    enum: [8, 16, 32]
-+    default: 8
-+
-+  microchip,frame-size:
-+    description: |
-+      Number of bits per SPI frame, as configured in Libero.
-+      In Motorola and TI modes, this corresponds directly
-+      to the requested frame size. For NSC mode this is set
-+      to 9 + the required data frame size.
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    minimum: 4
-+    maximum: 32
-+    default: 8
-+
-+  microchip,protocol-configuration:
-+    description: CoreSPI protocol selection. Determines operating mode
-+    $ref: /schemas/types.yaml#/definitions/string
-+    enum:
-+      - motorola
-+      - ti
-+      - nsc
-+    default: motorola
-+
-+  microchip,motorola-mode:
-+    description: Motorola SPI mode selection
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    enum: [0, 1, 2, 3]
-+    default: 3
-+
-+  microchip,ssel-active:
-+    description: |
-+      Keep SSEL asserted between frames when using the Motorola protocol.
-+      When present, the controller keeps SSEL active across contiguous
-+      transfers and deasserts only when the overall transfer completes.
-+    type: boolean
-+
- required:
-   - compatible
-   - reg
-@@ -71,6 +112,31 @@ allOf:
-         num-cs:
-           maximum: 1
- 
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: microchip,corespi-rtl-v5
-+    then:
-+      properties:
-+        num-cs:
-+          minimum: 1
-+          maximum: 8
-+          default: 8
-+
-+        fifo-depth:
-+          minimum: 1
-+          maximum: 32
-+          default: 4
-+
-+    else:
-+      properties:
-+        microchip,apb-datawidth: false
-+        microchip,frame-size: false
-+        microchip,protocol-configuration: false
-+        microchip,motorola-mode: false
-+        microchip,ssel-active: false
-+
- unevaluatedProperties: false
- 
- examples:
--- 
-2.25.1
+Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
 

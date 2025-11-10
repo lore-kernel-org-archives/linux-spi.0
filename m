@@ -1,188 +1,56 @@
-Received: from srv01.abscue.de (abscue.de [89.58.28.240])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5934D321F31;
-	Mon, 10 Nov 2025 19:15:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.28.240
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E58337B80
+	for <linux-spi@vger.kernel.org>; Mon, 10 Nov 2025 19:57:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762802153; cv=none; b=AtaoxkeoIhSTXOmAuf6Kp5LddgFf4VeDKYTfCz8HbUzkoaKZWx22uvoW6cyd7m7Rf/YSoSNnwnBNFQOaMY+AfYzXteRn5UhW8TVFzBk2hZUyqXyFYiZBeURIERTh4xRZypeYf9GGchgjZy86HAuD3Z6xZX0M2jKGlWOSmffxTw0=
+	t=1762804647; cv=none; b=krMozLW7OGPUfEAJwTL9AvPDwO/0Z6XblcbA0y4tCfYicQUqlgqkOqn3vlgBC32TqDduIngvE1rvQUIX3xbbZFeb564KlWsVlp2TQOIkSMgk4g2PvJ2nKLi9P3m0QXNSK2kXgoOimtWhHJcv3ZAVM9jBd4jWXdV47SD2N+YlLIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762802153; c=relaxed/simple;
-	bh=cBXYI7Ip6U6YABa4Zfp8DyYBdPx77L6yue/v252LACw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=eOguXQ+1llbm3pvhGrUDxKXLlFdQxolRSgl+vu/ib8cfVBTyVTgVaHZgDuZjsJFE1/7/Q1Y2x8MgNeU3Jk9Kgu59jzDFa8aVk1NmJ0vawewFmCthTU7ru0zHmqXf6kr9e2EQLzS6QBTbYCw1AC0DShXb/IzJ9SgBHvYzH74jQt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=abscue.de; spf=pass smtp.mailfrom=abscue.de; arc=none smtp.client-ip=89.58.28.240
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=abscue.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=abscue.de
-Received: from srv01.abscue.de (localhost [127.0.0.1])
-	by spamfilter.srv.local (Postfix) with ESMTP id 6CAFF1C24F0;
-	Mon, 10 Nov 2025 20:10:30 +0100 (CET)
-X-Spam-Level: 
-Received: from fluffy-mammal.metal.fwg-cag.de (unknown [IPv6:2001:9e8:cdd8:ff00:36bc:9812:27d4:17cf])
-	by srv01.abscue.de (Postfix) with ESMTPSA id E45B81C0038;
-	Mon, 10 Nov 2025 20:10:29 +0100 (CET)
-From: =?utf-8?q?Otto_Pfl=C3=BCger?= <otto.pflueger@abscue.de>
-Date: Mon, 10 Nov 2025 20:08:59 +0100
-Subject: [PATCH v2 2/3] spi: sprd-adi: Remove code for storing the reboot
- mode
+	s=arc-20240116; t=1762804647; c=relaxed/simple;
+	bh=FTloUZDPxNn2RCzhqkqZMjMs+7EJQFv3MV/s3vhJTZk=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=mRuSd5lUTHTQ8vrXKz/knxMj9cWkR7yO4xnBWEOVehqsHVsuE2z1MMzjIltKgAntgdoqezxwnYSPLfYC1CKdveLFn0k3PIjFyYDt/2myB29co0/7duUgigMFqM8EAOal9PH8ba2EKP+0yXh1NKED2uf8PVKICzqmGMJMqwWynhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E884fINJ; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E884fINJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14306C4CEFB;
+	Mon, 10 Nov 2025 19:57:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762804647;
+	bh=FTloUZDPxNn2RCzhqkqZMjMs+7EJQFv3MV/s3vhJTZk=;
+	h=Subject:From:Date:To:From;
+	b=E884fINJMA/a+qeWInUQXhczSGmqIhHgPTpqnw0vy63jNljjjjD7KzvT1Wgixudyt
+	 mIXyz2+iYbmals6EIOWzQ9SDSzL70NMHqG5yYCIQ+Chpn3IPMQJWhufUROscw9N0v3
+	 wRZEnNAf8ptERZJ7i1ZTNnuxN9jXt/EVpLQ/CdDVTT1wuOz3iPjoGTD2Uy3VGHk9Qu
+	 pac5elNC9fo/pcBnmBWRsQhnHrFuZFwjchiw4WZvosqLMWsFeh9uOwldQqJ5+hQ0pF
+	 YHKqBA4U98YIOaZt5tNnINejjIQw9xk5kF/K5uZkr/k2W/ldN+lm4Y3dYSeiHPlkIa
+	 S2N6dVD6XRxDw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB9A8380CEF8;
+	Mon, 10 Nov 2025 19:56:58 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20251110-sc27xx-mfd-poweroff-v2-2-fd5842e732fe@abscue.de>
-References: <20251110-sc27xx-mfd-poweroff-v2-0-fd5842e732fe@abscue.de>
-In-Reply-To: <20251110-sc27xx-mfd-poweroff-v2-0-fd5842e732fe@abscue.de>
-To: Lee Jones <lee@kernel.org>, Orson Zhai <orsonzhai@gmail.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Chunyan Zhang <zhang.lyra@gmail.com>, Mark Brown <broonie@kernel.org>, 
- Sebastian Reichel <sre@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, linux-kernel@vger.kernel.org, 
- linux-spi@vger.kernel.org, linux-pm@vger.kernel.org, 
- =?utf-8?q?Otto_Pfl=C3=BCger?= <otto.pflueger@abscue.de>
-X-Mailer: b4 0.14.2
+Subject: Patchwork housekeeping for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <176280461753.2755844.15519942272809056749.git-patchwork-housekeeping@kernel.org>
+Date: Mon, 10 Nov 2025 19:56:57 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-This functionality is now provided by the PMIC driver. Ideally, the
-entire reboot code should be removed since it does not belong in the bus
-driver, but it is kept for now since there is no driver for the PMIC
-watchdog on SC2731 yet.
+Latest series: [v2] mfd: sprd-sc27xx: Move poweroff/reboot support to the parent MFD driver (2025-11-10T19:08:57)
+  Superseding: [v1] mfd: sprd-sc27xx: Move poweroff/reboot support to the parent MFD driver (2025-10-07T18:14:18):
+    [1/3] mfd: sprd-sc27xx: Integrate power off and reboot support
+    [2/3] spi: sprd-adi: Remove code for storing the reboot mode
+    [3/3] power: reset: sc27xx: Drop unused driver
 
-Acked-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Otto Pflüger <otto.pflueger@abscue.de>
----
- drivers/spi/spi-sprd-adi.c | 73 +---------------------------------------------
- 1 file changed, 1 insertion(+), 72 deletions(-)
-
-diff --git a/drivers/spi/spi-sprd-adi.c b/drivers/spi/spi-sprd-adi.c
-index 262c11d977ea350c3b8a861064d9f109cc57a45e..47e6fbbf9991dbe77ad22e03c9709e6ee3a1b01e 100644
---- a/drivers/spi/spi-sprd-adi.c
-+++ b/drivers/spi/spi-sprd-adi.c
-@@ -101,27 +101,10 @@
- #define BIT_WDG_EN			BIT(2)
- 
- /* Registers definitions for PMIC */
--#define PMIC_RST_STATUS			0xee8
- #define PMIC_MODULE_EN			0xc08
- #define PMIC_CLK_EN			0xc18
- #define PMIC_WDG_BASE			0x80
- 
--/* Definition of PMIC reset status register */
--#define HWRST_STATUS_SECURITY		0x02
--#define HWRST_STATUS_RECOVERY		0x20
--#define HWRST_STATUS_NORMAL		0x40
--#define HWRST_STATUS_ALARM		0x50
--#define HWRST_STATUS_SLEEP		0x60
--#define HWRST_STATUS_FASTBOOT		0x30
--#define HWRST_STATUS_SPECIAL		0x70
--#define HWRST_STATUS_PANIC		0x80
--#define HWRST_STATUS_CFTREBOOT		0x90
--#define HWRST_STATUS_AUTODLOADER	0xa0
--#define HWRST_STATUS_IQMODE		0xb0
--#define HWRST_STATUS_SPRDISK		0xc0
--#define HWRST_STATUS_FACTORYTEST	0xe0
--#define HWRST_STATUS_WATCHDOG		0xf0
--
- /* Use default timeout 50 ms that converts to watchdog values */
- #define WDG_LOAD_VAL			((50 * 32768) / 1000)
- #define WDG_LOAD_MASK			GENMASK(15, 0)
-@@ -139,7 +122,6 @@ struct sprd_adi_data {
- 	u32 slave_addr_size;
- 	int (*read_check)(u32 val, u32 reg);
- 	int (*restart)(struct sys_off_data *data);
--	void (*wdg_rst)(void *p);
- };
- 
- struct sprd_adi {
-@@ -355,58 +337,10 @@ static int sprd_adi_transfer_one(struct spi_controller *ctlr,
- 	return ret;
- }
- 
--static void sprd_adi_set_wdt_rst_mode(void *p)
--{
--#if IS_ENABLED(CONFIG_SPRD_WATCHDOG)
--	u32 val;
--	struct sprd_adi *sadi = (struct sprd_adi *)p;
--
--	/* Init watchdog reset mode */
--	sprd_adi_read(sadi, PMIC_RST_STATUS, &val);
--	val |= HWRST_STATUS_WATCHDOG;
--	sprd_adi_write(sadi, PMIC_RST_STATUS, val);
--#endif
--}
--
- static int sprd_adi_restart(struct sprd_adi *sadi, unsigned long mode,
- 			    const char *cmd, struct sprd_adi_wdg *wdg)
- {
--	u32 val, reboot_mode = 0;
--
--	if (!cmd)
--		reboot_mode = HWRST_STATUS_NORMAL;
--	else if (!strncmp(cmd, "recovery", 8))
--		reboot_mode = HWRST_STATUS_RECOVERY;
--	else if (!strncmp(cmd, "alarm", 5))
--		reboot_mode = HWRST_STATUS_ALARM;
--	else if (!strncmp(cmd, "fastsleep", 9))
--		reboot_mode = HWRST_STATUS_SLEEP;
--	else if (!strncmp(cmd, "bootloader", 10))
--		reboot_mode = HWRST_STATUS_FASTBOOT;
--	else if (!strncmp(cmd, "panic", 5))
--		reboot_mode = HWRST_STATUS_PANIC;
--	else if (!strncmp(cmd, "special", 7))
--		reboot_mode = HWRST_STATUS_SPECIAL;
--	else if (!strncmp(cmd, "cftreboot", 9))
--		reboot_mode = HWRST_STATUS_CFTREBOOT;
--	else if (!strncmp(cmd, "autodloader", 11))
--		reboot_mode = HWRST_STATUS_AUTODLOADER;
--	else if (!strncmp(cmd, "iqmode", 6))
--		reboot_mode = HWRST_STATUS_IQMODE;
--	else if (!strncmp(cmd, "sprdisk", 7))
--		reboot_mode = HWRST_STATUS_SPRDISK;
--	else if (!strncmp(cmd, "tospanic", 8))
--		reboot_mode = HWRST_STATUS_SECURITY;
--	else if (!strncmp(cmd, "factorytest", 11))
--		reboot_mode = HWRST_STATUS_FACTORYTEST;
--	else
--		reboot_mode = HWRST_STATUS_NORMAL;
--
--	/* Record the reboot mode */
--	sprd_adi_read(sadi, wdg->rst_sts, &val);
--	val &= ~HWRST_STATUS_WATCHDOG;
--	val |= reboot_mode;
--	sprd_adi_write(sadi, wdg->rst_sts, val);
-+	u32 val;
- 
- 	/* Enable the interface clock of the watchdog */
- 	sprd_adi_read(sadi, wdg->wdg_en, &val);
-@@ -448,7 +382,6 @@ static int sprd_adi_restart_sc9860(struct sys_off_data *data)
- {
- 	struct sprd_adi_wdg wdg = {
- 		.base = PMIC_WDG_BASE,
--		.rst_sts = PMIC_RST_STATUS,
- 		.wdg_en = PMIC_MODULE_EN,
- 		.wdg_clk = PMIC_CLK_EN,
- 	};
-@@ -568,9 +501,6 @@ static int sprd_adi_probe(struct platform_device *pdev)
- 
- 	sprd_adi_hw_init(sadi);
- 
--	if (sadi->data->wdg_rst)
--		sadi->data->wdg_rst(sadi);
--
- 	ctlr->dev.of_node = pdev->dev.of_node;
- 	ctlr->bus_num = pdev->id;
- 	ctlr->num_chipselect = num_chipselect;
-@@ -606,7 +536,6 @@ static struct sprd_adi_data sc9860_data = {
- 	.slave_addr_size = ADI_10BIT_SLAVE_ADDR_SIZE,
- 	.read_check = sprd_adi_read_check_r2,
- 	.restart = sprd_adi_restart_sc9860,
--	.wdg_rst = sprd_adi_set_wdt_rst_mode,
- };
- 
- static struct sprd_adi_data sc9863_data = {
 
 -- 
-2.50.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

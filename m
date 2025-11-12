@@ -1,136 +1,174 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from Atcsqr.andestech.com (60-248-80-70.hinet-ip.hinet.net [60.248.80.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F843730D3;
-	Tue, 11 Nov 2025 17:54:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 881352C08AD;
+	Wed, 12 Nov 2025 03:59:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.248.80.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762883663; cv=none; b=lgTnXVHlG4JxaAVMB4nSuUCL9xcZkxpxjmrgyQGLiCTPhjLqzVRNmS78JG7cYl/TrjhVeoedSdtI62P/Y5ceReJcCB0N326YiPcsQTzuB12VrtP1HiCLxAWT6iSIt9ACLadyh0G2JivoDyAvXhnhK/8CcfvmupMfycDPrASHK38=
+	t=1762919974; cv=none; b=jV+h6933OPnv5LRsrR0act/NpVKc9f/gOOOsaw7cxCuELObFU0mBnOn7VTz1eQiGgqHumRBHb1cxxL8WbUU2prm9Gg7m/aylBCbCYFZk2LXmqFwlKxB4tD5JuQ7eKZ2WLbb5nWaKG/S4UESzsdtjv2XNLI9oVHaiQZi1TNDKe3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762883663; c=relaxed/simple;
-	bh=KMhmGUMyDqW0GIqJM0l/jfnu1hESBUqDFKlVQ8RqkCw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FJY5VFNBrHd584aX/yNla8+v3bi2DKJByEC+hlIUV4nc66TW4ZAmBpeLjfFIC3/JzKZUwNskfoOlOsKWB+xx226XUY2hDKtehFI30SyjQmUbxgVaSJRgE1leGdpx+0NWM4doRNHzLVqHpP/8CW3mMeYyYybL/24m4e0s8WZjaCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AnYvEmD+; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AnYvEmD+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 624BFC4CEFB;
-	Tue, 11 Nov 2025 17:54:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762883661;
-	bh=KMhmGUMyDqW0GIqJM0l/jfnu1hESBUqDFKlVQ8RqkCw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AnYvEmD+yYVmOmVTiL2EhQev90J3ezKIzru1Xivm1s24kLEuyX8qWysXnq+y4N8+i
-	 Hx2pNrWeVX3ZcEQLHZ7eiCaRmAnvwCBWgsMogahLtaL7R3Pu/qsSQfVMTk5xmUqDs4
-	 7c/5nOjujJWDZqoK67NlixHK6CGTcbv7ffqRw6xlJ0gno28T4jDd2h75mqWFcEwHgv
-	 V6N/+5RcZ088g11yeC2Q4N5wieoC/a5yuCpsnCtV2jgVer2zY+qGGEG6WtiizCQDRV
-	 JbyKqXjwV7ubta3u9wiGD30T197curlcNOlZ30S0KYF2U3gP/HRDjB1KWCi6qWuk6v
-	 RPr1YZ8uxfNZQ==
-Date: Tue, 11 Nov 2025 17:54:15 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Riccardo Mereu Linux Kernel <r.mereu.kernel@arduino.cc>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, andersson@kernel.org,
-	konradybcio@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, broonie@kernel.org, linux@roeck-us.net,
-	Jonathan.Cameron@huawei.com, wenswang@yeah.net,
-	naresh.solanki@9elements.com, michal.simek@amd.com,
-	nuno.sa@analog.com, chou.cosmo@gmail.com, grantpeltier93@gmail.com,
-	eajames@linux.ibm.com, farouk.bouabid@cherry.de,
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	Riccardo Mereu <r.mereu@arduino.cc>,
-	Martino Facchin <m.facchin@arduino.cc>
-Subject: Re: [PATCH 2/5] drivers: spi: spidev: add compatible for arduino spi
- mcu interface
-Message-ID: <20251111-aviation-distaste-f05c125e44e1@spud>
-References: <20251106153119.266840-1-r.mereu@arduino.cc>
- <20251106153119.266840-3-r.mereu@arduino.cc>
- <84f0ed2f-bf51-4dd5-93f1-f26e077a2549@kernel.org>
- <CAKA1JhYTC5p_7Zj9b7g1YKZhjH0=tnnJkdW1rWv39L-SF-SDoA@mail.gmail.com>
+	s=arc-20240116; t=1762919974; c=relaxed/simple;
+	bh=bT0PZCyjbmsjUInR6RNJH4a4PjJEi4eAnmo7qh5EC4Y=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TbZW7MNGRfLd5iy5Tmeg4bDbc73ev3hA5rh2Se2tPsCSSrn52DepIJ7v3qR96KaCTJ6GzMyxN4YCdDYJ05zxIx2yAcaDeHVhMIZ4qrfTgPPCfWRJ4vhREdzPJjNFKdr8dXWy2aVFAvZkjTZzqeudJQuVyQuTCuvv3dOGOOwBcP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=andestech.com; spf=pass smtp.mailfrom=andestech.com; arc=none smtp.client-ip=60.248.80.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=andestech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=andestech.com
+Received: from Atcsqr.andestech.com (localhost [127.0.0.2] (may be forged))
+	by Atcsqr.andestech.com with ESMTP id 5AC3me9V061615;
+	Wed, 12 Nov 2025 11:48:40 +0800 (+08)
+	(envelope-from cl634@andestech.com)
+Received: from mail.andestech.com (ATCPCS34.andestech.com [10.0.1.134])
+	by Atcsqr.andestech.com with ESMTPS id 5AC3lvH9061437
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+	Wed, 12 Nov 2025 11:47:57 +0800 (+08)
+	(envelope-from cl634@andestech.com)
+Received: from swlinux02.andestech.com (10.0.15.183) by ATCPCS34.andestech.com
+ (10.0.1.134) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 12 Nov
+ 2025 11:47:56 +0800
+From: CL Wang <cl634@andestech.com>
+To: <cl634@andestech.com>, <broonie@kernel.org>, <linux-spi@vger.kernel.org>,
+        <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>
+CC: <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <tim609@andestech.com>
+Subject: [PATCH 1/2] dt-bindings: spi: Add support for ATCSPI200 SPI controller
+Date: Wed, 12 Nov 2025 11:47:23 +0800
+Message-ID: <20251112034724.1977630-2-cl634@andestech.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20251112034724.1977630-1-cl634@andestech.com>
+References: <20251112034724.1977630-1-cl634@andestech.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="A1NPLRkP8HU4DvMZ"
-Content-Disposition: inline
-In-Reply-To: <CAKA1JhYTC5p_7Zj9b7g1YKZhjH0=tnnJkdW1rWv39L-SF-SDoA@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: ATCPCS33.andestech.com (10.0.1.100) To
+ ATCPCS34.andestech.com (10.0.1.134)
+X-DKIM-Results: atcpcs34.andestech.com; dkim=none;
+X-DNSRBL: 
+X-SPAM-SOURCE-CHECK: pass
+X-MAIL:Atcsqr.andestech.com 5AC3me9V061615
 
+Document devicetree bindings for Andes ATCSPI200 SPI controller.
 
---A1NPLRkP8HU4DvMZ
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: CL Wang <cl634@andestech.com>
+---
+ .../bindings/spi/andestech,qilai-spi.yaml     | 84 +++++++++++++++++++
+ MAINTAINERS                                   |  6 ++
+ 2 files changed, 90 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/andestech,qilai-spi.yaml
 
-On Tue, Nov 11, 2025 at 02:33:09PM +0100, Riccardo Mereu Linux Kernel wrote:
-> On Fri, Nov 7, 2025 at 8:13=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.o=
-rg> wrote:
-> >
-> > > ---
-> > >  drivers/spi/spidev.c | 2 ++
-> > >  1 file changed, 2 insertions(+)
-> > >
-> > > diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-> > > index 5300c942a2a4..f0dd516c2083 100644
-> > > --- a/drivers/spi/spidev.c
-> > > +++ b/drivers/spi/spidev.c
-> > > @@ -704,6 +704,7 @@ static const struct class spidev_class =3D {
-> > >   */
-> > >  static const struct spi_device_id spidev_spi_ids[] =3D {
-> > >       { .name =3D /* abb */ "spi-sensor" },
-> > > +     { .name =3D /* arduino */ "mcu" },
-> > >       { .name =3D /* cisco */ "spi-petra" },
-> > >       { .name =3D /* dh */ "dhcom-board" },
-> > >       { .name =3D /* elgin */ "jg10309-01" },
-> > > @@ -737,6 +738,7 @@ static int spidev_of_check(struct device *dev)
-> > >
-> > >  static const struct of_device_id spidev_dt_ids[] =3D {
-> > >       { .compatible =3D "abb,spi-sensor", .data =3D &spidev_of_check =
-},
-> > > +     { .compatible =3D "arduino,mcu", .data =3D &spidev_of_check },
-> >
-> > That's way too generic, IMO. First, I am not aware of Arduino boards
-> > mounted on top of regular development boards, so basically you are not
-> > describing actual hardware setup but what could be potentially plugged
-> > into box with Linux... and then it is like saying "you can plug
-> > anything" because MCU covers everything, like calling it "Raspberry
-> > Pi-clone".
->=20
-> This is used to describe one of the interfaces between the
-> microcontroller and the microprocessor on the Arduino UnoQ board.
-> Since this could be used in other layouts in the future, we thought to
-> keep it generic enough to reuse it.
+diff --git a/Documentation/devicetree/bindings/spi/andestech,qilai-spi.yaml b/Documentation/devicetree/bindings/spi/andestech,qilai-spi.yaml
+new file mode 100644
+index 000000000000..db065062a2af
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/andestech,qilai-spi.yaml
+@@ -0,0 +1,84 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/spi/andestech,qilai-spi.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Andes ATCSPI200 SPI controller
++
++maintainers:
++  - CL Wang <cl634@andestech.com>
++
++properties:
++  compatible:
++    const: andestech,qilai-spi
++
++  reg:
++    maxItems: 1
++
++  clocks:
++    maxItems: 1
++
++  num-cs:
++    description: Number of chip selects supported
++    maxItems: 1
++
++  dmas:
++    items:
++      - description: Transmit FIFO DMA channel
++      - description: Receive FIFO DMA channel
++
++  dma-names:
++    items:
++      - const: spi_tx
++      - const: spi_rx
++
++patternProperties:
++  "@[0-9a-f]+$":
++    type: object
++    additionalProperties: true
++
++    properties:
++      spi-rx-bus-width:
++        enum: [1, 4]
++
++      spi-tx-bus-width:
++        enum: [1, 4]
++
++allOf:
++  - $ref: spi-controller.yaml#
++
++required:
++  - compatible
++  - reg
++  - clocks
++  - dmas
++  - dma-names
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    soc {
++      #address-cells = <2>;
++      #size-cells = <2>;
++
++      spi@f0b00000 {
++        compatible = "andestech,qilai-spi";
++        reg = <0x0 0xf0b00000 0x0 0x1000>;
++        #address-cells = <1>;
++        #size-cells = <0>;
++        clocks = <&clk_spi>;
++        dmas = <&dma0 0>, <&dma0 1>;
++        dma-names = "spi_tx", "spi_rx";
++
++        flash@0 {
++          compatible = "jedec,spi-nor";
++          reg = <0x0>;
++          spi-tx-bus-width = <0x4>;
++          spi-rx-bus-width = <0x4>;
++          spi-cpol;
++          spi-cpha;
++        };
++      };
++    };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index dd99c073a369..55e31996df03 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1803,6 +1803,12 @@ S:	Supported
+ F:	drivers/clk/analogbits/*
+ F:	include/linux/clk/analogbits*
+ 
++ANDES ATCSPI200 SPI DRIVER
++M:	CL Wang <cl634@andestech.com>
++S:	Supported
++F:	Documentation/devicetree/bindings/spi/andestech,qilai-spi.yaml
++F:	drivers/spi/spi-atcspi200.c
++
+ ANDROID DRIVERS
+ M:	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ M:	Arve Hjønnevåg <arve@android.com>
+-- 
+2.34.1
 
-If it is generic enough to reuse in the future, you can have a fallback
-compatible. If it isn't used again with the exact same interface,
-congrats you have avoided confusing compatible naming!
-
-> If this isn't possible, do you have any suggestions?
-
-arduino,unoq-mcu?
-
-Then in the future if the duoq board comes along you can do
-
-compatible =3D "arduino,duoq-mcu", "arduino,unoq-mcu";
-
-btw, thanks for actually introducing a compatible for this, and not
-pretending that you have rohm dac that doesn't even exist like a lot of
-people :)
-
-Cheers,
-Conor.
-
---A1NPLRkP8HU4DvMZ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaRN4RwAKCRB4tDGHoIJi
-0sgFAPwMpqTFQNIsly8DNq+PWcUv6XQvFuGbkzYjnbUNZqX/sAEAw33MY6C2qYiC
-OwkIqZJNDYBHjg1Y/yfz0Dag2EyxFgA=
-=bGLP
------END PGP SIGNATURE-----
-
---A1NPLRkP8HU4DvMZ--

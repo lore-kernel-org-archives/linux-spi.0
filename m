@@ -1,16 +1,16 @@
 Received: from TWMBX01.aspeed.com (mail.aspeedtech.com [211.20.114.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5173C33469F;
-	Thu, 13 Nov 2025 08:53:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994D1337BB0;
+	Thu, 13 Nov 2025 08:53:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.20.114.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763024020; cv=none; b=H8jloRtI0SvhZVzFJ4sd7re95EzzcfxX82Qqb1aKCbti3uuDjCgvlocH95cBTndC1fCtxkL+OQj7BwXaxGxH8gzBJ/gX2vihZZRqtB4rbD4x2GxtkDXKLFg9A8R+S3rLCzwTo8jMqSa3n35FQQpL8477liVANkjcVLxKGWAWjbU=
+	t=1763024022; cv=none; b=q477G4RfIX7T0j/iFzUTBrNNzWY5THSYLxcJNj40sjpxaK/9hXLtFDLOl0sykOT5IyhTJLK3Sk1UneCjoKl2jeoPVcOEFBi6X4k3L8ro0EyMIwE7oGS5u5yy2F+cM5Plj8jCxLU4dpTTOhYqVnF0dx0LwMSLdu+K3yk7RbhxwLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763024020; c=relaxed/simple;
-	bh=tG6vMr2hoVhOuJo5jJ8pdXV4N6JEO7x1fI9tJOFgxrk=;
+	s=arc-20240116; t=1763024022; c=relaxed/simple;
+	bh=y0R355uAebCKJwwcxV5wFFdVmXK5xnO/pzj3PYhKo+Y=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=av7ws5EdcrBaf/m4sBrUgLJ+9RjxGUvZcjQ6es49HrDU/jTsy3LxOEKN0k+YFAyqafhBLVm48VQoLyCW4m+VO5tpm82a+84Xm0XZ4yYHbkRRHGD9D+xJJn1DVI3mqjveih854WfLzy09LVq5ROIk6spDTYgd5Aq/5aNXyAgcLLY=
+	 MIME-Version:Content-Type; b=K6HgECuu6ai8p0N+kSf/gTTbU5sj8a3YZkuQLt5rIvV1t6eFbKgvvNz4+F0YzImFGOZvhoqeI3v8rrV7inGo0T78Cm8CT+OwE5KYmrs2Fln6wDbtfvav6z5rOuOA7Dj3wOwP4HH64s0Cq+ohvf8tXZFV66kKeCZpDvSXyT+76VU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aspeedtech.com; spf=pass smtp.mailfrom=aspeedtech.com; arc=none smtp.client-ip=211.20.114.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aspeedtech.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aspeedtech.com
@@ -28,9 +28,9 @@ To: <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
 	<linux-arm-kernel@lists.infradead.org>, <linux-aspeed@lists.ozlabs.org>,
 	<linux-kernel@vger.kernel.org>, <openbmc@lists.ozlabs.org>,
 	<linux-spi@vger.kernel.org>, <BMC-SW@aspeedtech.com>
-Subject: [PATCH 1/4] dt-bindings: spi: aspeed,ast2600-fmc: Add AST2700 SoC support
-Date: Thu, 13 Nov 2025 16:53:29 +0800
-Message-ID: <20251113085332.89688-2-chin-ting_kuo@aspeedtech.com>
+Subject: [PATCH 2/4] spi: aspeed: Enable Quad SPI mode for page program
+Date: Thu, 13 Nov 2025 16:53:30 +0800
+Message-ID: <20251113085332.89688-3-chin-ting_kuo@aspeedtech.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251113085332.89688-1-chin-ting_kuo@aspeedtech.com>
 References: <20251113085332.89688-1-chin-ting_kuo@aspeedtech.com>
@@ -43,35 +43,36 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 
-Add AST2700 to the list of supported SoCs in the ASPEED FMC/SPI bindings.
+Ensure the controller switches to quad I/O mode when
+spi-tx-bus-width dts property is 4 and the Quad SPI program
+opcode (32h or 34h) is used. Without this change, high-bit
+data will be lost during page programming.
 
 Signed-off-by: Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>
 ---
- Documentation/devicetree/bindings/spi/aspeed,ast2600-fmc.yaml | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/spi/spi-aspeed-smc.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/spi/aspeed,ast2600-fmc.yaml b/Documentation/devicetree/bindings/spi/aspeed,ast2600-fmc.yaml
-index 57d932af4506..80e542624cc6 100644
---- a/Documentation/devicetree/bindings/spi/aspeed,ast2600-fmc.yaml
-+++ b/Documentation/devicetree/bindings/spi/aspeed,ast2600-fmc.yaml
-@@ -12,7 +12,7 @@ maintainers:
+diff --git a/drivers/spi/spi-aspeed-smc.c b/drivers/spi/spi-aspeed-smc.c
+index 179c47ffbfeb..4163632fed8b 100644
+--- a/drivers/spi/spi-aspeed-smc.c
++++ b/drivers/spi/spi-aspeed-smc.c
+@@ -263,11 +263,15 @@ static ssize_t aspeed_spi_write_user(struct aspeed_spi_chip *chip,
+ 				     const struct spi_mem_op *op)
+ {
+ 	int ret;
++	int io_mode = aspeed_spi_get_io_mode(op);
  
- description: |
-   This binding describes the Aspeed Static Memory Controllers (FMC and
--  SPI) of the AST2400, AST2500 and AST2600 SOCs.
-+  SPI) of the AST2400, AST2500, AST2600 and AST2700 SOCs.
- 
- allOf:
-   - $ref: spi-controller.yaml#
-@@ -20,6 +20,8 @@ allOf:
- properties:
-   compatible:
-     enum:
-+      - aspeed,ast2700-fmc
-+      - aspeed,ast2700-spi
-       - aspeed,ast2600-fmc
-       - aspeed,ast2600-spi
-       - aspeed,ast2500-fmc
+ 	aspeed_spi_start_user(chip);
+ 	ret = aspeed_spi_send_cmd_addr(chip, op->addr.nbytes, op->addr.val, op->cmd.opcode);
+ 	if (ret < 0)
+ 		goto stop_user;
++
++	aspeed_spi_set_io_mode(chip, io_mode);
++
+ 	aspeed_spi_write_to_ahb(chip->ahb_base, op->data.buf.out, op->data.nbytes);
+ stop_user:
+ 	aspeed_spi_stop_user(chip);
 -- 
 2.34.1
 

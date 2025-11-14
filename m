@@ -1,63 +1,34 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE013128D7;
-	Fri, 14 Nov 2025 10:34:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE92B30E854
+	for <linux-spi@vger.kernel.org>; Fri, 14 Nov 2025 10:57:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763116492; cv=none; b=qYikG5hEOWZaSEDWDDPhXNeBMKAedIh+Wo+CKKPmv7g0ni9BN6Z6ZRpi8TwEShVkJ5IPjgT94V9XgBpzlqEdHFRmk+HMbMBJVPPNuAZtT8UALSZ6MfNAf7kLwydtmDpIYVyMZI2AeYWanuh8O8WbkaJPaP3E5sfCyIDjKBkg94E=
+	t=1763117864; cv=none; b=FGB1YQ4Gn44O4uvCiy147qnM157+YV/VQqgMzx0BgfuH+iLq06kn7FsovzEttmPUHpGV+xsvxoEvucPNQzG+OxghIr1xUajYudJEjDHcm6oOnzdVw5d9o1ssJrkkY0nK7zBzsH6J4u/dfwRMUIgmgIFc88AloZRMC2H5/VFABJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763116492; c=relaxed/simple;
-	bh=gUnRf6n8ndiHI4YW1DJPBaLZYDQ9YnYfxMEEpRNdoGY=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qRwEdeaHY3PGXqJ0OF9RMSiR1gQYD/9YmyYc2yDEKunYTboD6i+NI+TCOodLKHzhCgBCCkONNErbKkTBRDYk8WE4dDslSCCFDRJEgQR+IiiBPef5wC7e11c1ZLDUiT1/f7H7aOssm7Z+ZtLL4TX/qZtYHCc/s/6QdKWB1j6FlWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=rP+FrgZi; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1763117864; c=relaxed/simple;
+	bh=Cvr0UWvwF20+Bo0o2b1f1rpv8w3yEDsT9xRH8hoINMY=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=i50o8+pjtFm1gvZ1wHzuwQXzShKl5OUeWXcnlq5QAuOswpPNCIT6C51FbylD4wGSIokZDfodhbeIyVo1aUU1Wasg5yxVoBp9igHbP4UMrU8cCCAoC8BnZN7H/BWXJQGUV1z5PFOuZZc8oYCdlkbUlKDxT/304U6bnQLjXuEwYmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ReEmj87S; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="rP+FrgZi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1763116492; x=1794652492;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=gUnRf6n8ndiHI4YW1DJPBaLZYDQ9YnYfxMEEpRNdoGY=;
-  b=rP+FrgZiJR+/HJpKdT3H/Nxrak8Tim3U9oy2+6/owM9S+AzGg0+2F+ys
-   yCHZqp5IKGZW3gQ8mHOwkTOEl1rWrwgy/N5Ofe0gSDf6oPVqlenUIreR9
-   ftbdYqZco7WbIckcBT46vZ9KllTitSGLopyUL9NQcDUn1Qz136xW4ULem
-   QeMNu2X61A5osNUzZ0V9JdAGiTCUFI6lscz0172Hvyh4C9Zvxg3NIwRPO
-   byxTkyjijNbGCvWbgMBCTryOvE3wK0yfggG5pL4unjU55hm0evbaNPSMP
-   f6qZjvoFShkxcJ6vGP7uAUEA7Zg24wz04ypBSaedbnjSNZ4Mdo6QlHrX/
-   w==;
-X-CSE-ConnectionGUID: vmddLFM+TxWWaTCTVpQ/Sw==
-X-CSE-MsgGUID: D1U5If6LSZ2SSnBw6de3uA==
-X-IronPort-AV: E=Sophos;i="6.19,304,1754982000"; 
-   d="scan'208";a="49141521"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 14 Nov 2025 03:34:48 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Fri, 14 Nov 2025 03:34:25 -0700
-Received: from Lily.microchip.com (10.10.85.11) by chn-vm-ex04.mchp-main.com
- (10.10.85.152) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Fri, 14 Nov 2025 03:34:22 -0700
-From: Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>
-To: Mark Brown <broonie@kernel.org>
-CC: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	<linux-riscv@lists.infradead.org>, <linux-spi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>, Conor Dooley
-	<conor.dooley@microchip.com>, Daire McNamara <daire.mcnamara@microchip.com>,
-	Valentina Fernandez Alanis <valentina.fernandezalanis@microchip.com>, "Cyril
- Jean" <cyril.jean@microchip.com>, Prajna Rajendra Kumar
-	<prajna.rajendrakumar@microchip.com>
-Subject: [PATCH v4 2/3] spi: dt-binding: document Microchip CoreSPI
-Date: Fri, 14 Nov 2025 10:45:44 +0000
-Message-ID: <20251114104545.284765-3-prajna.rajendrakumar@microchip.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20251114104545.284765-1-prajna.rajendrakumar@microchip.com>
-References: <20251114104545.284765-1-prajna.rajendrakumar@microchip.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ReEmj87S"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47CE5C4CEF8;
+	Fri, 14 Nov 2025 10:57:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763117863;
+	bh=Cvr0UWvwF20+Bo0o2b1f1rpv8w3yEDsT9xRH8hoINMY=;
+	h=Subject:From:Date:To:From;
+	b=ReEmj87SB2FfK9n9fWtqfxgfPflbhUn5KIvfWe0ovdkk5FtSdj0E9AbNKWlWpDWtp
+	 tVm+CYhR8ayi5szK+9E64u+X1f56dv+2WTqt4bWqVUNy94V9DKOqH2TSGGhOZtuM2Q
+	 BPY3QI0wVaAYffWmzMTie7CqBMJWlMOpSNW6Cs7pI9rEJlbzG5eLLHpnIJPc40M5fz
+	 Gt3V+uuhcnuzs6f4981NTpgQWnq/xpoFSCwMTaz4sf8wv4AB7siEumiex3bisRVr1S
+	 C89j/5qIVPWoas1NbdSZ02qIM/EZXhwnqhdHr/XON4jpfRWDa79BrVG5+Jhva2kwl3
+	 SU0j6ESKFjvDw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33E9F380A94C;
+	Fri, 14 Nov 2025 10:57:13 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -65,119 +36,28 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Subject: Patchwork housekeeping for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <176311783185.1605347.12978872917519007013.git-patchwork-housekeeping@kernel.org>
+Date: Fri, 14 Nov 2025 10:57:11 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-Add device tree bindings for Microchip's CoreSPI controller.
+Latest series: [v4] Add support for Microchip CoreSPI Controller (2025-11-14T10:45:42)
+  Superseding: [v3] Add support for Microchip CoreSPI Controller (2025-11-07T12:21:01):
+    [v3,1/3] spi: microchip: rename driver file and internal identifiers
+    [v3,2/3] spi: dt-binding: document Microchip CoreSPI
+    [v3,3/3] spi: add support for microchip "soft" spi controller
 
-CoreSPI is a "soft" IP core intended for FPGA implementations. Its
-configurations are set in Libero. These properties represent
-non-discoverable configurations determined by Verilog parameters to the
-IP.
+Latest series: [v2] spi: aspeed: Add AST2700 SoC support and Quad SPI handling update (2025-11-14T10:10:38)
+  Superseding: [v1] spi: aspeed: Add AST2700 SoC support and Quad SPI handling update (2025-11-13T08:53:28):
+    [1/4] dt-bindings: spi: aspeed,ast2600-fmc: Add AST2700 SoC support
+    [2/4] spi: aspeed: Enable Quad SPI mode for page program
+    [3/4] spi: aspeed: Use phys_addr_t for bus addresses to support 64-bit platforms
+    [4/4] spi: aspeed: Add support for the AST2700 SPI controller
 
-Signed-off-by: Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
----
- .../bindings/spi/microchip,mpfs-spi.yaml      | 70 ++++++++++++++++++-
- 1 file changed, 68 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/microchip,mpfs-spi.yaml b/Documentation/devicetree/bindings/spi/microchip,mpfs-spi.yaml
-index 62a568bdbfa0..636338d24bdf 100644
---- a/Documentation/devicetree/bindings/spi/microchip,mpfs-spi.yaml
-+++ b/Documentation/devicetree/bindings/spi/microchip,mpfs-spi.yaml
-@@ -21,11 +21,13 @@ properties:
-               - microchip,mpfs-qspi
-               - microchip,pic64gx-qspi
-           - const: microchip,coreqspi-rtl-v2
--      - const: microchip,coreqspi-rtl-v2 # FPGA QSPI
-+      - enum:
-+          - microchip,coreqspi-rtl-v2 # FPGA QSPI
-+          - microchip,corespi-rtl-v5 # FPGA CoreSPI
-+          - microchip,mpfs-spi
-       - items:
-           - const: microchip,pic64gx-spi
-           - const: microchip,mpfs-spi
--      - const: microchip,mpfs-spi
- 
-   reg:
-     maxItems: 1
-@@ -39,6 +41,45 @@ properties:
-   clocks:
-     maxItems: 1
- 
-+  microchip,apb-datawidth:
-+    description: APB bus data width in bits.
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    enum: [8, 16, 32]
-+    default: 8
-+
-+  microchip,frame-size:
-+    description: |
-+      Number of bits per SPI frame, as configured in Libero.
-+      In Motorola and TI modes, this corresponds directly
-+      to the requested frame size. For NSC mode this is set
-+      to 9 + the required data frame size.
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    minimum: 4
-+    maximum: 32
-+    default: 8
-+
-+  microchip,protocol-configuration:
-+    description: CoreSPI protocol selection. Determines operating mode
-+    $ref: /schemas/types.yaml#/definitions/string
-+    enum:
-+      - motorola
-+      - ti
-+      - nsc
-+    default: motorola
-+
-+  microchip,motorola-mode:
-+    description: Motorola SPI mode selection
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    enum: [0, 1, 2, 3]
-+    default: 3
-+
-+  microchip,ssel-active:
-+    description: |
-+      Keep SSEL asserted between frames when using the Motorola protocol.
-+      When present, the controller keeps SSEL active across contiguous
-+      transfers and deasserts only when the overall transfer completes.
-+    type: boolean
-+
- required:
-   - compatible
-   - reg
-@@ -71,6 +112,31 @@ allOf:
-         num-cs:
-           maximum: 1
- 
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: microchip,corespi-rtl-v5
-+    then:
-+      properties:
-+        num-cs:
-+          minimum: 1
-+          maximum: 8
-+          default: 8
-+
-+        fifo-depth:
-+          minimum: 1
-+          maximum: 32
-+          default: 4
-+
-+    else:
-+      properties:
-+        microchip,apb-datawidth: false
-+        microchip,frame-size: false
-+        microchip,protocol-configuration: false
-+        microchip,motorola-mode: false
-+        microchip,ssel-active: false
-+
- unevaluatedProperties: false
- 
- examples:
 -- 
-2.25.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

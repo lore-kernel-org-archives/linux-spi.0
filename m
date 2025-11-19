@@ -1,24 +1,24 @@
-Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C474836B07C;
-	Wed, 19 Nov 2025 16:16:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.172
+Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B5AD341079;
+	Wed, 19 Nov 2025 16:16:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763568987; cv=none; b=Pq70hdJpNwwB4DadFGRHHl5xMyDTw4i2xsq5rmzJqq16WAw7locqkfZxQaj/mHU3zM3d/YLLeB7MFBkX2KJ4Z5/HC1E8e4YVFjKQhaQV6o70GzcUqe8ZA+AritG5YPGftJe3fn75+c6AhL2Bv4CU5ZxERu57Rr3d28ta/gpJEv4=
+	t=1763568992; cv=none; b=CtY6n4rgE2j2GENhWZcyejYgUwJVyC96Vd7HoCNELsktcnvx2feWpGom+a5hkHBJUvXcWOydzB2AX0A0BT/iLHFGWZGzTnFmuvTLP5kg1ie+OmYCcvEP8iDCFbhJ07wt+zYdCUEDULem2hfOvYGnyR1R1aSAXT8I2/HXTWJzjsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763568987; c=relaxed/simple;
-	bh=EHNLMkamvb5MrJoV1zBXo6/t8zu0fgDIPUolFQ+mX3A=;
+	s=arc-20240116; t=1763568992; c=relaxed/simple;
+	bh=vcnDXRA4Tq34eWVLWFAK5aIFtP5uQXeekdfbraqp/RE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QiWWNbVSxWx3TIbCDmaGikssgADjA/ywhLQOHvuKeWI+93giVd8CM6SAQyUQg7zCSbTRleE/hXdYJJbCJs+SzCSWfUT442ahwUOfDGqAm4NTIzjPeWBT6gCQ/U9EKLBjCoTFwPQJzS7r5oD3JXEdnelQPeSRC8rPhI03e4Ksf/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; arc=none smtp.client-ip=210.160.252.172
+	 MIME-Version; b=uv2IzSCpXncsXZNpEQedyvlnCbBRWd97a6dmUeTftj/cCo5jCSakzaPG2nzEVC362FBjHoPYTblXzdYsqvVZfoq0EXk3lPRloN5sj9LgsAX/38bdkhOz43sTqFV1w5dORzXfS7UHrIDI8nC7e3s771WNxSoyOBhbU2LUNeaVScc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; arc=none smtp.client-ip=210.160.252.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
-X-CSE-ConnectionGUID: rI3B6ZOiT16O90q89sY3ag==
-X-CSE-MsgGUID: gTMfLIQ1See8GUx3ZPDB4g==
+X-CSE-ConnectionGUID: vTeI/RA8RwKVdsnBrDxngg==
+X-CSE-MsgGUID: 6wJ0oVXpQMOHFnt6vDqO3A==
 Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
-  by relmlie6.idc.renesas.com with ESMTP; 20 Nov 2025 01:16:24 +0900
+  by relmlie5.idc.renesas.com with ESMTP; 20 Nov 2025 01:16:29 +0900
 Received: from demon-pc.localdomain (unknown [10.226.92.87])
-	by relmlir6.idc.renesas.com (Postfix) with ESMTP id 36D23406C684;
-	Thu, 20 Nov 2025 01:16:19 +0900 (JST)
+	by relmlir6.idc.renesas.com (Postfix) with ESMTP id 6D12A406C471;
+	Thu, 20 Nov 2025 01:16:25 +0900 (JST)
 From: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
 To: Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
 	Mark Brown <broonie@kernel.org>,
@@ -33,9 +33,9 @@ Cc: linux-spi@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
-Subject: [PATCH v4 12/13] arm64: dts: renesas: r9a09g077: Add SPIs support
-Date: Wed, 19 Nov 2025 18:14:33 +0200
-Message-ID: <20251119161434.595677-13-cosmin-gabriel.tanislav.xa@renesas.com>
+Subject: [PATCH v4 13/13] arm64: dts: renesas: r9a09g087: Add SPIs support
+Date: Wed, 19 Nov 2025 18:14:34 +0200
+Message-ID: <20251119161434.595677-14-cosmin-gabriel.tanislav.xa@renesas.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251119161434.595677-1-cosmin-gabriel.tanislav.xa@renesas.com>
 References: <20251119161434.595677-1-cosmin-gabriel.tanislav.xa@renesas.com>
@@ -47,7 +47,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add support for the four SPI peripherals on the Renesas RZ/T2H Soc.
+Add support for the four SPI peripherals on the Renesas RZ/N2H Soc.
 
 Signed-off-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
 ---
@@ -61,19 +61,19 @@ V3:
 V2:
  * no changes
 
- arch/arm64/boot/dts/renesas/r9a09g077.dtsi | 72 ++++++++++++++++++++++
+ arch/arm64/boot/dts/renesas/r9a09g087.dtsi | 72 ++++++++++++++++++++++
  1 file changed, 72 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/renesas/r9a09g077.dtsi b/arch/arm64/boot/dts/renesas/r9a09g077.dtsi
-index d59f70d9f8a9..f80c6d603eea 100644
---- a/arch/arm64/boot/dts/renesas/r9a09g077.dtsi
-+++ b/arch/arm64/boot/dts/renesas/r9a09g077.dtsi
+diff --git a/arch/arm64/boot/dts/renesas/r9a09g087.dtsi b/arch/arm64/boot/dts/renesas/r9a09g087.dtsi
+index c742a67663cc..f9f49bd3e8b0 100644
+--- a/arch/arm64/boot/dts/renesas/r9a09g087.dtsi
++++ b/arch/arm64/boot/dts/renesas/r9a09g087.dtsi
 @@ -188,6 +188,78 @@ sci5: serial@81005000 {
  			status = "disabled";
  		};
  
 +		rspi0: spi@80007000 {
-+			compatible = "renesas,r9a09g077-rspi";
++			compatible = "renesas,r9a09g087-rspi", "renesas,r9a09g077-rspi";
 +			reg = <0x0 0x80007000 0x0 0x400>;
 +			interrupts = <GIC_SPI 636 IRQ_TYPE_LEVEL_HIGH>,
 +				     <GIC_SPI 637 IRQ_TYPE_LEVEL_HIGH>,
@@ -81,7 +81,7 @@ index d59f70d9f8a9..f80c6d603eea 100644
 +				     <GIC_SPI 634 IRQ_TYPE_EDGE_RISING>,
 +				     <GIC_SPI 635 IRQ_TYPE_EDGE_RISING>;
 +			interrupt-names = "idle", "error", "end", "rx", "tx";
-+			clocks = <&cpg CPG_CORE R9A09G077_CLK_PCLKM>,
++			clocks = <&cpg CPG_CORE R9A09G087_CLK_PCLKM>,
 +				 <&cpg CPG_MOD 104>;
 +			clock-names = "pclk", "pclkspi";
 +			power-domains = <&cpg>;
@@ -91,7 +91,7 @@ index d59f70d9f8a9..f80c6d603eea 100644
 +		};
 +
 +		rspi1: spi@80007400 {
-+			compatible = "renesas,r9a09g077-rspi";
++			compatible = "renesas,r9a09g087-rspi", "renesas,r9a09g077-rspi";
 +			reg = <0x0 0x80007400 0x0 0x400>;
 +			interrupts = <GIC_SPI 641 IRQ_TYPE_LEVEL_HIGH>,
 +				     <GIC_SPI 642 IRQ_TYPE_LEVEL_HIGH>,
@@ -99,7 +99,7 @@ index d59f70d9f8a9..f80c6d603eea 100644
 +				     <GIC_SPI 639 IRQ_TYPE_EDGE_RISING>,
 +				     <GIC_SPI 640 IRQ_TYPE_EDGE_RISING>;
 +			interrupt-names = "idle", "error", "end", "rx", "tx";
-+			clocks = <&cpg CPG_CORE R9A09G077_CLK_PCLKM>,
++			clocks = <&cpg CPG_CORE R9A09G087_CLK_PCLKM>,
 +				 <&cpg CPG_MOD 105>;
 +			clock-names = "pclk", "pclkspi";
 +			power-domains = <&cpg>;
@@ -109,7 +109,7 @@ index d59f70d9f8a9..f80c6d603eea 100644
 +		};
 +
 +		rspi2: spi@80007800 {
-+			compatible = "renesas,r9a09g077-rspi";
++			compatible = "renesas,r9a09g087-rspi", "renesas,r9a09g077-rspi";
 +			reg = <0x0 0x80007800 0x0 0x400>;
 +			interrupts = <GIC_SPI 646 IRQ_TYPE_LEVEL_HIGH>,
 +				     <GIC_SPI 647 IRQ_TYPE_LEVEL_HIGH>,
@@ -117,7 +117,7 @@ index d59f70d9f8a9..f80c6d603eea 100644
 +				     <GIC_SPI 644 IRQ_TYPE_EDGE_RISING>,
 +				     <GIC_SPI 645 IRQ_TYPE_EDGE_RISING>;
 +			interrupt-names = "idle", "error", "end", "rx", "tx";
-+			clocks = <&cpg CPG_CORE R9A09G077_CLK_PCLKM>,
++			clocks = <&cpg CPG_CORE R9A09G087_CLK_PCLKM>,
 +				 <&cpg CPG_MOD 106>;
 +			clock-names = "pclk", "pclkspi";
 +			power-domains = <&cpg>;
@@ -127,7 +127,7 @@ index d59f70d9f8a9..f80c6d603eea 100644
 +		};
 +
 +		rspi3: spi@81007000 {
-+			compatible = "renesas,r9a09g077-rspi";
++			compatible = "renesas,r9a09g087-rspi", "renesas,r9a09g077-rspi";
 +			reg = <0x0 0x81007000 0x0 0x400>;
 +			interrupts = <GIC_SPI 651 IRQ_TYPE_LEVEL_HIGH>,
 +				     <GIC_SPI 652 IRQ_TYPE_LEVEL_HIGH>,
@@ -135,7 +135,7 @@ index d59f70d9f8a9..f80c6d603eea 100644
 +				     <GIC_SPI 649 IRQ_TYPE_EDGE_RISING>,
 +				     <GIC_SPI 650 IRQ_TYPE_EDGE_RISING>;
 +			interrupt-names = "idle", "error", "end", "rx", "tx";
-+			clocks = <&cpg CPG_CORE R9A09G077_CLK_PCLKM>,
++			clocks = <&cpg CPG_CORE R9A09G087_CLK_PCLKM>,
 +				 <&cpg CPG_MOD 602>;
 +			clock-names = "pclk", "pclkspi";
 +			power-domains = <&cpg>;
@@ -145,7 +145,7 @@ index d59f70d9f8a9..f80c6d603eea 100644
 +		};
 +
  		wdt0: watchdog@80082000 {
- 			compatible = "renesas,r9a09g077-wdt";
+ 			compatible = "renesas,r9a09g087-wdt", "renesas,r9a09g077-wdt";
  			reg = <0 0x80082000 0 0x400>,
 -- 
 2.52.0

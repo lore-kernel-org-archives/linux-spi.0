@@ -1,73 +1,72 @@
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A729253958
-	for <linux-spi@vger.kernel.org>; Thu, 20 Nov 2025 21:13:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D59308F14
+	for <linux-spi@vger.kernel.org>; Thu, 20 Nov 2025 21:13:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763673231; cv=none; b=iDTSUFhNeBZfIaMuPg73kD4HzxeeFPJOpUDzmULZfBNw+GSNwMLLJ1AvyG33ixtE1wRsKFd1cdgOOMgkqOoxJAsIOwF6vJAugQxSPpJKafAFpgvGyz8MNHwjM+L9saXypexPw9hGIGyQhRWO7Y22CVAjsbESWBHPc9cZSK0hSmc=
+	t=1763673231; cv=none; b=Gudd6AYp/dADBJNOCsN7/Wo4gGhpG01YNhSEyJ9bljXs5GMO8WPAWBXEEaM2XDR2clB+6O1hv4e/OTiuMGiXT9JCPDK/xykIhHoXKGO+SmaA9r9LRyQ0g+LleTP6YHKdZQ/E0SS7RCLG7NTGPQ6jR1c2G7+nIJ3J6re8PDFJjsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1763673231; c=relaxed/simple;
-	bh=Ncr3R3kiVMaRI941uPnNlKBZzB9t5eYETF9gVPClg8o=;
+	bh=VnDw0zvv3GogQgXhxGuqkFEbxhLcCxNhOQ3NhXqX+6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tM4YECPEKqJUrfLZjl5r26uiBBinH4B7SuLeBhHjv10oQw2i4OcIxoUXYMGjNfYBb9VaO4b6sZ8dlpmC2zRjPwdTpyh9KORRFGYLGokyOfKGoCNMyCeYi/s5AaoAnRjgeY3nw3d0rsK6kG7k4DcnTTYbTCst74KHpEn9ID6mT7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=marek.ca; spf=pass smtp.mailfrom=marek.ca; dkim=pass (2048-bit key) header.d=marek.ca header.i=@marek.ca header.b=ei53bGW3; arc=none smtp.client-ip=209.85.222.176
+	 MIME-Version; b=Xa1BiEgWYfpwGHo5NCbWexVam9qnSei0RlX0ds0mmfg83AXrDHilp2jnrRavhS/8V9bR2Qlmq8YfPDz9rEz35zeHRRPKYzcC+lTjCj1bAllcHfMEqAsKIzI1exd3jgH8NdxW7DN9sOViaXpIqsYcyJqVscEikMUoxA8tt2ayZjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=marek.ca; spf=pass smtp.mailfrom=marek.ca; dkim=pass (2048-bit key) header.d=marek.ca header.i=@marek.ca header.b=A1vV/pzQ; arc=none smtp.client-ip=209.85.222.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=marek.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marek.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marek.ca header.i=@marek.ca header.b="ei53bGW3"
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-8b1f2fbaed7so104159185a.2
-        for <linux-spi@vger.kernel.org>; Thu, 20 Nov 2025 13:13:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=marek.ca header.i=@marek.ca header.b="A1vV/pzQ"
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-8b0f54370ecso115340485a.2
+        for <linux-spi@vger.kernel.org>; Thu, 20 Nov 2025 13:13:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=marek.ca; s=google; t=1763673228; x=1764278028; darn=vger.kernel.org;
+        d=marek.ca; s=google; t=1763673229; x=1764278029; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LVTYOQ3QWD4eKEz3wLcBWIsCXGJvwPkc7ixkByGQUus=;
-        b=ei53bGW3MAKcEVvmfM3aX8D7MDUaTeulUUesPqgnIpoNCTjhVlA6wD8m2ozCTGdsP5
-         7xjBfwJQvYPqw0rwJwaOjByhyem3VbfR//HNsJx2y97sLDyfNqLUfHGwDrPg28oW+Oq4
-         wOXtQTczkqEnRoNaSV3xq/IGlUrFeJ9IuSF5FkBJUoB9SzR2Q4DDMpeS5UHr9PpsxeYf
-         qW3RTFJF+mp/iY1ROkH0yabOWIlZEwyntrQtXY/KmpxIqp8tVYdfw/R9yMAmidSON0Yy
-         UUuSphHwys970kGdeE7E2R74S44elp4o+e9wo3RUWyLFAblflcs2ziWhh9xxcuGutLru
-         aNJg==
+        bh=GCl3US01BHeY7ipE4Tn2LpS35TI5yu+VHTAF1Nv080k=;
+        b=A1vV/pzQXZfAGpJKZZDCgvkGJK2DLTxmAlBU5hXmDC4YxSU+dDGQ7QqCTCg4dt5KL3
+         xnBj3G2E9KipxNO0iacyyW+BekIG2GyylnpBDaFMtm3ooJCoerju0+9Z8FjHHC4Q0Raq
+         cK/sYeuP+arMi3AW32+diYL1OlL9driUetCUI1wocNU6VHm4jnn7BBfviqjPhvXIaf4I
+         yMadcX5tb/Pbjt/YAUUpeE/oTqDfuGV2iEg5Mp8JCFUEpMePmiAF4bHg320Nn7tvWzkO
+         OAimJFZvOt7rKLqlTT0dpovrdNcX5cHRklrn2fL2szi+I3J0DM1Xp8w/YYUUfupuAMU/
+         fdAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763673228; x=1764278028;
+        d=1e100.net; s=20230601; t=1763673229; x=1764278029;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=LVTYOQ3QWD4eKEz3wLcBWIsCXGJvwPkc7ixkByGQUus=;
-        b=Xow1Z+awP3HavR3+l8RYJaZkbqdLPlXrApczGhIpkGzDJAL/ICuqD1EYBMgCMUVo2i
-         i3XFvRjIBqMn/7jkGy8rt+MkGYg9npxVigJTgsCxYE5p/VzIZAHoys9vErrFdDJ0hYqW
-         pe0UatNidWDg5REZA7EVs0tm0nciwWL3e0lk4hoRhPDM+UIjFP2V+0FdA/b+3cbn8npZ
-         K0jY+J/QKcmV2q7pPeIVh6htkV12RQO0OuQ6oArwhkUCT7gsZ1fxV9Kinf3kiDaKaqBQ
-         ROX3O30n+/4TuU9apWyblN1lFGYZcNbKH4d5wdSuaZZZTsylmS60fgT16SBh8DwVJJRy
-         8ZRw==
-X-Forwarded-Encrypted: i=1; AJvYcCXZIgAihoZFClmYkcCkI3q2YdSCx6C1mI/Run8TcGQK3yTd9+4EMN03cqVk/Atj8tbnspnk7NsGW2g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjVwhMxMNQVnn3XJ+dNFqbtvNaUk4fxbLD8O9PRtuQI7F0kZZ6
-	Cy2nANISxSbrqCtxjB5vcgp7wo5XgRM61dxjXW2J/cDJbk2pKNOEGGzfo7TTU4L+Fr20DzPkTm/
-	g8iY7
-X-Gm-Gg: ASbGncvHZUcu7kA5U1hoTZHVyvkD5hCJ1wwbcQFRgSLwvafqjeaEDvv/ERk7+YgkLxN
-	Kg6wz8dVWPSlVMMrMVoEtTeLc25/hTlrWQf3hz/Bq+TSoowiIc6K3w7Jff3t11vst7w8kmzcxwo
-	Cdba8W9wjAY7Bat9lUsoZV/AwYo6t2yrVSGQRq3HxUKTP3XT6C0bmVNJsLSdfYOH2g01r3Lz8Yu
-	9cfQt0f41I+JDAt4rRH1Pr7E+2bDHiFCOGHRd3G0+uoyYVxhQitoTqVJuFi8sE1Cu90iWrlam5i
-	OP494tBHUyAF9kOXdMhvLkjgQl0EsHFbVQ7VgFSuyoXf22t+Qbqxe6m/xi7EgZDLeK9RFGRAUUX
-	42d5aSlVQ/GeocIxyQ/k9BCo0m5wbgWByqbm+6BLWcX2vQgJS31NB3kz6+5DKajEZiwsk2OMKga
-	OqT/aqu1Pgbuoel0/tDnd5yy9Hf9GkNRamY7xbbPg5HLJnSCUdt61ANaSRjxLffoQIEg==
-X-Google-Smtp-Source: AGHT+IHhLrKwzSUA1bNd+dPQLHWxvxkUjlw7qu6qycMRLUEdp8icnfz7Y6GJY43AdSETsMFXRXs+JA==
-X-Received: by 2002:a05:620a:2a03:b0:8b2:f1f0:5b87 with SMTP id af79cd13be357-8b3272fd01cmr556804485a.3.1763673226952;
-        Thu, 20 Nov 2025 13:13:46 -0800 (PST)
+        bh=GCl3US01BHeY7ipE4Tn2LpS35TI5yu+VHTAF1Nv080k=;
+        b=eOU08G+UtMiZnqBEbm6jL0GkLcG8GNCHkHP0W6GA5i3wwGOIs1IUcikkgnCxDDTqoB
+         ikdvX17wLIL2iPQL9KhEQdUtgHmJIca1SE1TuEIzKx7PSiZBVlpifWh89rk3JkrML8N5
+         uHt7FaKtDfWOjMIetOgh7angLz67iX1goWvWTlMb6ZJZQscVcaE2PY7KKVvoUgu2xz3v
+         PZimwLC4san3YFyd/Gf/skIkRq/9yRq2/PrDht2Oqpq0//LSatMQaCwXIyR3W/Vap1uo
+         N5irYm5AGTHQuzV3Iou1s5s4KO7vLz771kdagiCQnHLbsOOdSW/Z2jCiqWY4cZMPA7so
+         Czvw==
+X-Forwarded-Encrypted: i=1; AJvYcCU7YdZLl9lPMBIAUFXB4++DBhS3sjWaMuEDxh+Xw/TAl9kYVKmm33snVEWTIaWPg88r3gIJWzIMW4U=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2gkCC3pUk5is9ozpvZekKvDv2utawxWVxdrQhI3S3YSLIQHX2
+	n+705a7BLgJcZLXXkRmwpkWgzthPnNm1x6Il34OztMBXyzcryo8m+rQ2j3yy2e/gjEk=
+X-Gm-Gg: ASbGncuyf2dQMFTkKMh+U+7rNFsMwrNVgzpOjZ6Qs6lqIr+hPbIoIfJI1DLEsvXnP3G
+	hqzHu2Zx7VOadk+zGZ4rCxK1Sr+sQ0m+TbXNvpL+ITNMVG1ZZtKXU9ew22Ng6uW+cuR/fpBRjvU
+	1yEZExWr7ckWYEQQzj1KYTzCfT74DTbhoIQP/30FORDK4fW65T4gkf4/wwN+TY7k1fD+dW/lWTX
+	brvlddR7LqJTA6Tn1SpHqcPw/lKawE+19zKtcArQ9/DPpJvj4J3SPDl46KLa21L5X5JHAQ/sjWl
+	ug+0XNpj4NB4VpIng3YSoqbLc5hadl4qRUaD6cjp6qe4XNUpJoADZkec+1++m7bJsNHnn66vEse
+	faasMN251g6+J27JHVf/pzKRUchY+LEgX898+EHCoo3LaSylKz5ReAHbmB8nCI5mHUT0mrZP4/d
+	pwoRyxvS1N2uGIxwZsEG1Ruasmlnx5F9VH45ZCj575dcxN3GISZ9LUXAJuyRRsQsKESA==
+X-Google-Smtp-Source: AGHT+IHuBplFI5V5Lb1dDPP3u7qdP7GhmlzsKYMVNTFhNncVoUA4QK3005YkGNWMWRXcdG28p7xdfg==
+X-Received: by 2002:a05:620a:4506:b0:892:5b57:ea41 with SMTP id af79cd13be357-8b327310f9emr616076185a.4.1763673229090;
+        Thu, 20 Nov 2025 13:13:49 -0800 (PST)
 Received: from localhost.localdomain (modemcable125.110-19-135.mc.videotron.ca. [135.19.110.125])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b32953735dsm225958685a.24.2025.11.20.13.13.46
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b32953735dsm225958685a.24.2025.11.20.13.13.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Nov 2025 13:13:46 -0800 (PST)
+        Thu, 20 Nov 2025 13:13:48 -0800 (PST)
 From: Jonathan Marek <jonathan@marek.ca>
 To: linux-arm-msm@vger.kernel.org
 Cc: Mark Brown <broonie@kernel.org>,
 	linux-spi@vger.kernel.org (open list:SPI SUBSYSTEM),
 	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH 3/5] spi-geni-qcom: use xfer->bits_per_word for can_dma()
-Date: Thu, 20 Nov 2025 16:12:00 -0500
-Message-ID: <20251120211204.24078-3-jonathan@marek.ca>
+Subject: [PATCH 5/5] spi-geni-qcom: rework setup_fifo_params
+Date: Thu, 20 Nov 2025 16:12:02 -0500
+Message-ID: <20251120211204.24078-5-jonathan@marek.ca>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251120211204.24078-1-jonathan@marek.ca>
 References: <20251120211204.24078-1-jonathan@marek.ca>
@@ -79,41 +78,82 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-mas->cur_bits_per_word may not reflect the value of xfer->bits_per_word
-when can_dma() is called. Use the right value instead.
+Update each register only if it changes.
+
+This also fixes the chipselect related registers not being changed when
+chipselect changes but not the mode.
 
 Signed-off-by: Jonathan Marek <jonathan@marek.ca>
 ---
- drivers/spi/spi-geni-qcom.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/spi/spi-geni-qcom.c | 48 ++++++++++++++++---------------------
+ 1 file changed, 20 insertions(+), 28 deletions(-)
 
 diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index c33d79d9afaf8..575b112d4acb1 100644
+index 53229150b86b5..5cca356cb673a 100644
 --- a/drivers/spi/spi-geni-qcom.c
 +++ b/drivers/spi/spi-geni-qcom.c
-@@ -499,10 +499,10 @@ static u32 get_xfer_len_in_words(struct spi_transfer *xfer,
+@@ -82,6 +82,7 @@ struct spi_geni_master {
+ 	u32 fifo_width_bits;
+ 	u32 tx_wm;
+ 	u32 last_mode;
++	u8 last_cs;
+ 	unsigned long cur_speed_hz;
+ 	unsigned long cur_sclk_hz;
+ 	unsigned int cur_bits_per_word;
+@@ -350,34 +351,25 @@ static int setup_fifo_params(struct spi_device *spi_slv,
  {
- 	u32 len;
+ 	struct spi_geni_master *mas = spi_controller_get_devdata(spi);
+ 	struct geni_se *se = &mas->se;
+-	u32 loopback_cfg = 0, cpol = 0, cpha = 0, demux_output_inv = 0;
+-	u32 demux_sel;
+-
+-	if (mas->last_mode != spi_slv->mode) {
+-		if (spi_slv->mode & SPI_LOOP)
+-			loopback_cfg = LOOPBACK_ENABLE;
+-
+-		if (spi_slv->mode & SPI_CPOL)
+-			cpol = CPOL;
+-
+-		if (spi_slv->mode & SPI_CPHA)
+-			cpha = CPHA;
+-
+-		if (spi_slv->mode & SPI_CS_HIGH)
+-			demux_output_inv = BIT(spi_get_chipselect(spi_slv, 0));
+-
+-		demux_sel = spi_get_chipselect(spi_slv, 0);
+-		mas->cur_bits_per_word = spi_slv->bits_per_word;
+-
+-		spi_setup_word_len(mas, spi_slv->mode, spi_slv->bits_per_word);
+-		writel(loopback_cfg, se->base + SE_SPI_LOOPBACK);
+-		writel(demux_sel, se->base + SE_SPI_DEMUX_SEL);
+-		writel(cpha, se->base + SE_SPI_CPHA);
+-		writel(cpol, se->base + SE_SPI_CPOL);
+-		writel(demux_output_inv, se->base + SE_SPI_DEMUX_OUTPUT_INV);
+-
+-		mas->last_mode = spi_slv->mode;
+-	}
++	u8 chipselect = spi_get_chipselect(spi_slv, 0);
++	bool cs_changed = (mas->last_cs != chipselect);
++	u32 mode_changed = mas->last_mode ^ spi_slv->mode;
++
++	mas->last_cs = chipselect;
++	mas->last_mode = spi_slv->mode;
++
++	if (mode_changed & SPI_LSB_FIRST)
++		mas->cur_bits_per_word = 0; /* force next setup_se_xfer to call spi_setup_word_len */
++	if (mode_changed & SPI_LOOP)
++		writel((spi_slv->mode & SPI_LOOP) ? LOOPBACK_ENABLE : 0, se->base + SE_SPI_LOOPBACK);
++	if (cs_changed)
++		writel(chipselect, se->base + SE_SPI_DEMUX_SEL);
++	if (mode_changed & SE_SPI_CPHA)
++		writel((spi_slv->mode & SPI_CPHA) ? CPHA : 0, se->base + SE_SPI_CPHA);
++	if (mode_changed & SE_SPI_CPOL)
++		writel((spi_slv->mode & SPI_CPOL) ? CPOL : 0, se->base + SE_SPI_CPOL);
++	if ((mode_changed & SPI_CS_HIGH) || (cs_changed && (spi_slv->mode & SPI_CS_HIGH)))
++		writel((spi_slv->mode & SPI_CS_HIGH) ? BIT(chipselect) : 0, se->base + SE_SPI_DEMUX_OUTPUT_INV);
  
--	if (!(mas->cur_bits_per_word % MIN_WORD_LEN))
--		len = xfer->len * BITS_PER_BYTE / mas->cur_bits_per_word;
-+	if (!(xfer->bits_per_word % MIN_WORD_LEN))
-+		len = xfer->len * BITS_PER_BYTE / xfer->bits_per_word;
- 	else
--		len = xfer->len / (mas->cur_bits_per_word / BITS_PER_BYTE + 1);
-+		len = xfer->len / (xfer->bits_per_word / BITS_PER_BYTE + 1);
- 	len &= TRANS_LEN_MSK;
- 
- 	return len;
-@@ -522,7 +522,7 @@ static bool geni_can_dma(struct spi_controller *ctlr,
- 		return true;
- 
- 	len = get_xfer_len_in_words(xfer, mas);
--	fifo_size = mas->tx_fifo_depth * mas->fifo_width_bits / mas->cur_bits_per_word;
-+	fifo_size = mas->tx_fifo_depth * mas->fifo_width_bits / xfer->bits_per_word;
- 
- 	if (len > fifo_size)
- 		return true;
+ 	return 0;
+ }
 -- 
 2.51.0
 

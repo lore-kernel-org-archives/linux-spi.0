@@ -1,68 +1,67 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B5832367CE
-	for <linux-spi@vger.kernel.org>; Thu, 20 Nov 2025 08:35:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D3AB6BB5B
+	for <linux-spi@vger.kernel.org>; Thu, 20 Nov 2025 08:49:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763627753; cv=none; b=Ed+Eul8h+1IbKLDqSNJZUHNcej823ISGyVYw1uZdXqivk+5J3VsbQir6qBi9vlJVfqwNJwuM53Qc/Ppelpr0hHMUWw0cAlzm/AtDudeO4zFZjHp7yOMu++ZiMfcsyjvHCpe0hz/DRr40lL0y+gtxQ2+YprtDw6/LrM++uFwtU4o=
+	t=1763628582; cv=none; b=emB/GNV8ZyFs73exBXBO3BxkjlGIS8ZHeMeLMHMYjKDYz4x+SJ9gGJl92h8mBuaksIYP3XKWOQylSOlIbIMIkj4fsUdY/hhau7a8G/AUaHOudHyrgKR/3p/6Zs+1aOFoRe6R5ORwU1oNW8avuheWS+WjipU/u9yLEi73WFPBQF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763627753; c=relaxed/simple;
-	bh=ady1OctmfWAWlp6ZEv6jm7omLGzqw96V0J9xgYeVwzc=;
+	s=arc-20240116; t=1763628582; c=relaxed/simple;
+	bh=fBIQ1iUSom1JW1iZWyOAUX3M/GlqXi6cGe3IKPBNWcA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GUKWDxPRWXRPRQJcholTVcF35KDt0qGu1wIi+SHggZWk03IjuIGYZ2zUmEYrZqD6GYEf8eHJPk+73GUy2et+XnMaq/JnYLIvpblm/LofLJuqFAh3hIc8tn+TF4zAI/XF6pB1uEvVBAlNZHY91sF4xHaf0+VTOd7/SdthURdJbiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Rr6CbknU; arc=none smtp.client-ip=209.85.128.48
+	 In-Reply-To:Content-Type; b=OC8eT6TmnVDGCqx3y1+M0J+xvqupndiWi15+riRIquTfqVCeXsPWPttQZP9SNwCSFJ+455FBolW/PwSIMMpS/a7XHS2bDYIrfrU0odX4AhAlT7MkNmQf4s98Z18PQRIE/x9nO6F/27GWcHs1TrNf6hfPqidxc4UPJqWM2p+YIa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tKw7SDMq; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Rr6CbknU"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-47775fb6cb4so4175225e9.0
-        for <linux-spi@vger.kernel.org>; Thu, 20 Nov 2025 00:35:51 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tKw7SDMq"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-477563e28a3so3999015e9.1
+        for <linux-spi@vger.kernel.org>; Thu, 20 Nov 2025 00:49:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1763627750; x=1764232550; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1763628579; x=1764233379; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=i1jSWZCgeAfmjjyjsevv49mjqnEq82g0aMsUmMetKc4=;
-        b=Rr6CbknUJEF5fLfGE1JDLrx2CAKmbcLkISHfJoyZP5Ym10G97Iyj0haLvt9BJf8FOg
-         SEtBWkvd1OyjIXKvZEwFhFV3pZ8+5ld4nVAB2TekF/jk0ap4y4Uw6MBCHsWN1MJ3Nz6w
-         5nU/DYjFY9Cooa350PeQhpCdTwY2fbCmdZd+++56NZOLBrXu5452PKC1GQs/Oj8kLeg+
-         /APYgQhHepUsdaW/oFzBdw+CRe7E0cH4AAhWXb7zeg7vgyk8cLVK/GJnAAkR8jMHCh1y
-         NefpENpqAxBK3k9ZRhMYzoLDpVQ4OZDMhEXFib9MS7M2G5fqj/qpiffy8IvLwrrQEf6Y
-         aFLg==
+        bh=tr4vxP+sQBMMwJGPDae6MZt25g996ad6jUynMcaybIQ=;
+        b=tKw7SDMq+dHmfHUbw1sgwocHfVeqw2w4qGqwzAFEsJhOApl7ZrJcfNNkMMJHUYD5rw
+         jSFHLLLaEGj1rgcvbDiBkEN9T/twcGkqWANhTIHvZV0S0tZXdTRqvbwci4qIVXyHLj8U
+         jKDiNXJzG7uMlg/DeiYPnTCl9E+bJwxQvTz/aeLtJ0Gsn0ryKzFmA6GzrCMQV3BYEtwK
+         Pb8cx8BQZt+A0sTCe86mG5X1jDdqy26aEXfxlPbJKflV7Cy7CnNd3LbLw8AoX8gJ4eGk
+         +dUD1dWFCQQPub0dHZhC9bT39iNpyaqurZc0zDlvhWWF45lW9XK7c580INSNJXde0Uin
+         hSCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763627750; x=1764232550;
+        d=1e100.net; s=20230601; t=1763628579; x=1764233379;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=i1jSWZCgeAfmjjyjsevv49mjqnEq82g0aMsUmMetKc4=;
-        b=j+YMT/eV6idB3UUv4h17NM8UUcBXXvT9bXTksxrg0PYjMIzZZ7pU6hAwzN9za2pvZ0
-         ZHP0ihv85sVHZNmyLsYnFuMSGJ6+8nIqGL+LwhHYnuqbJM3Pwai8MKH22yeE7N3ELTYL
-         dgFwOPr9ovW9Ql69lZkkViXb5KQwG92yVBW+W8Cu8FY+9/Mr9tD/uzwQ2NAmnSDK5lfn
-         8OP9Ocdvt6enOdXtQC7KEj1b/r4H7hdK/lvSB0wEqQR8TXbeHcTh56VtkznGqHsjaB60
-         +Z6VvD/jTY7KtTlQk+3LeBmasyLfwp6DYIkOvYgFyGFywM80H1SupveKy+kutL8TkT8/
-         6CHA==
-X-Forwarded-Encrypted: i=1; AJvYcCX2CAr5GKH7PiOBGlQnSt1UhViYPusRyhREnqq1iCKhvEtSbykQaPt4ooqBB2ZpxD8DFT7MT7nuQ9g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxiCYIgsPbRobCsKWXW7rxL2B/lXquuvPU++Tq9ht4SW//DOGE5
-	efEgXW0tPgRr8Snj/UyIUeNpm2YGL+6IpU88c2OO5rfHfSj9P0RHnXaFkFbI4R51c6lMQ6ub1l0
-	cg+KX
-X-Gm-Gg: ASbGnct8gubbkTO/hr4YY4yDPB5lcHp0SCv6oBp7+uc1wkSbED7xRVPtnIvPqOaPHg0
-	rq+CYeyHYZW3oCV3TuZj45MAix4ZRojnABCdft4i4PCA5Q107a8lyYNStmpjLew6zUZ+rIKEz8o
-	Yv/FRnXWZokhLL1+Gh3tiinI/QTJePbZdWXfYGVUbszT+oC/ymZ5517cEOFaYl41yJPKAxPWddP
-	3AEmZ9eH075m7xrGxePo+lMHiJsGUqRWAevjPe/fmy1sIndIDCMOXzpQVyiRpuSShp0yVIWFnZC
-	wUr6nJ/MX9u7R73nemk9Ue/4R1KbiVw9VfxZzvullwF4aOhTcRhz+XBCmDX47BSIIR+Xi2WS30z
-	4bhO2UX8iU6XMoZ86pDIjBCto0tEGS+HICph/rsH4qMiCqKEmiJIJyGlSUW9UQEyANMtzRQgIop
-	1PcunrJajigcO1XHwG
-X-Google-Smtp-Source: AGHT+IF1ZFBDL71uBaSwbhNDatpe1vIJpFPHU6lONyVDyD5pnpwHGngatw+aFLHLdudpyOTvNR4+Tg==
-X-Received: by 2002:a05:600c:1d01:b0:475:daba:d03c with SMTP id 5b1f17b1804b1-477b89541d7mr19670195e9.13.1763627750364;
-        Thu, 20 Nov 2025 00:35:50 -0800 (PST)
+        bh=tr4vxP+sQBMMwJGPDae6MZt25g996ad6jUynMcaybIQ=;
+        b=O7bSNEqxQ6+q0OCOaYT8x02SooPTUGnWzl8QRLBVSPFfP5A6ptdE1SHcSK5mKJzU/l
+         0W6mrCTjkYI91UN8V33v7RnGQMkJCF6DVUf0ufTc7T8ZWsoAezrv4+noppEe4G/yFake
+         RilfNgE2FS/Y+JGWa8FwiTrBq4olyjwkv6y67E9+kzbjGHUnaJKPbGb4NC9ou6ByL3hr
+         P+vKlrqGI7ZZpLiOCmw010WR0QOn6POHk2GVhXQBaYporfOs7AsCCQVcfp+/qlEZNgvb
+         zsBs+3YnPQGcZrqcFuHWFBTq9k2BFmq/8xbCxN/JdbUDBYgtiOk7mxJEuUmnkGXDXjPL
+         tBnA==
+X-Forwarded-Encrypted: i=1; AJvYcCX8ZNhWo1urQ/fKFNTUR9RzFrGkuWXvJDbOwJoZijzYClMilhu7YHIcFvgilI1T59Z/dCo6Npnd1pI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCrPHjmon/467OKG4A6W8a/Ye5O9JbNaUvqY8iPBOFM7c8yC4v
+	6gq7fTBYiWxYaCiH8gztHZR61PJWZfGH2aVVDnx7b25XRnGbiBrcpE+YD7mRq6e2AiI=
+X-Gm-Gg: ASbGncvMVQtTccx4lUkAgfD/SPGe+HuQmvcXFyK2yDTCXPB5XMHvEXyYltw502AFO3M
+	0c53WRZWwB9hXGKg1La2xNe7MOPZzX/qkhI97ev6ichn9R4Ppzv3bOE+s5n6hT7zDbq5zfyrJGT
+	hQSjT52yjVVL3pXLLt1tfg5r9a26VFQyNu3EvGy7dKofYKdHibUwm1AtwzkyinmKdiEe9YYx+e6
+	8Cn69f0y6B1s1pTijm8sZwbCKJlubxgydK1MWR6UmbCu3Lg/pwmcvVcz7V9hk9pQRZcNJlv6xgI
+	v88PDEHyC26r+Hj3NsTId+uhsjqOyHuqCGahMar1VoDH7+X8EPfmnpDpbh2n+cgrzPur/YgTmz5
+	GzwF3jvtkCst9EINDQaVEgZ/al7aORBksmFlnrVSpOhECkXh/ZOrKmGek+/7OtkIew7jLaMlrJP
+	QjeRJF5Vs4JSqwtRLi
+X-Google-Smtp-Source: AGHT+IG08wEeQkKE04km+1877mSVK+vsQ96TT4GEyEbDJFmXtwyb5oX4SsollpOGVesQpgnEz/YLjA==
+X-Received: by 2002:a05:600c:458c:b0:46e:3b58:1b40 with SMTP id 5b1f17b1804b1-477b9ea56eemr17323825e9.4.1763628578701;
+        Thu, 20 Nov 2025 00:49:38 -0800 (PST)
 Received: from [10.11.12.107] ([5.12.85.52])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42cb7f34ffesm4648081f8f.10.2025.11.20.00.35.49
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477b83200f1sm36785945e9.15.2025.11.20.00.49.37
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Nov 2025 00:35:49 -0800 (PST)
-Message-ID: <81a0af49-9c0c-43e7-9a40-d66ba95c578c@linaro.org>
-Date: Thu, 20 Nov 2025 10:35:48 +0200
+        Thu, 20 Nov 2025 00:49:37 -0800 (PST)
+Message-ID: <a9161234-de04-4090-afb4-7b619cae3c35@linaro.org>
+Date: Thu, 20 Nov 2025 10:49:36 +0200
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -70,8 +69,7 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 10/28] mtd: spinand: Make use of the operation templates
- through SPINAND_OP()
+Subject: Re: [PATCH 02/28] spi: spi-mem: Create a repeated address operation
 To: Miquel Raynal <miquel.raynal@bootlin.com>
 Cc: Mark Brown <broonie@kernel.org>, Richard Weinberger <richard@nod.at>,
  Vignesh Raghavendra <vigneshr@ti.com>, Pratyush Yadav <pratyush@kernel.org>,
@@ -80,41 +78,69 @@ Cc: Mark Brown <broonie@kernel.org>, Richard Weinberger <richard@nod.at>,
  linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-mtd@lists.infradead.org
 References: <20251031-winbond-v6-17-rc1-oddr-v1-0-be42de23ebf1@bootlin.com>
- <20251031-winbond-v6-17-rc1-oddr-v1-10-be42de23ebf1@bootlin.com>
- <5680a2a8-aeb3-4274-a264-4ff658cc9246@linaro.org>
- <87jyzmaqcq.fsf@bootlin.com>
+ <20251031-winbond-v6-17-rc1-oddr-v1-2-be42de23ebf1@bootlin.com>
+ <0be97b27-4f8b-4d22-a653-154e87ecbc78@linaro.org>
+ <871pluc5id.fsf@bootlin.com>
 Content-Language: en-US
 From: Tudor Ambarus <tudor.ambarus@linaro.org>
-In-Reply-To: <87jyzmaqcq.fsf@bootlin.com>
+In-Reply-To: <871pluc5id.fsf@bootlin.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 
 
-On 11/19/25 7:23 PM, Miquel Raynal wrote:
-> On 05/11/2025 at 17:28:29 +01, Tudor Ambarus <tudor.ambarus@linaro.org> wrote:
+On 11/19/25 7:10 PM, Miquel Raynal wrote:
+> Hi Tudor,
+> 
+
+Hi, Miquel!
+
+> First, thank you very much for all this precious feedback! I am happy to
+> get feedback not only on the spi-mem side, but also on the NAND changes!
+
+yeah, I had a spare window and reviewed as much as I could. The set won't go
+in this cycle anyway, I plan to review the rest as well. But not just now :)
+
+> 
+> On 05/11/2025 at 16:43:58 +01, Tudor Ambarus <tudor.ambarus@linaro.org> wrote:
 > 
 >> On 10/31/25 6:26 PM, Miquel Raynal wrote:
->>> index 4afebaf5f0195b9bc617ea1f125f637f76fff9f8..a8fd04a67cfa9925bd68c57539d86e0816b76274 100644
->>> --- a/include/linux/mtd/spinand.h
->>> +++ b/include/linux/mtd/spinand.h
->>> @@ -701,6 +701,93 @@ struct spinand_device {
->>>  			     unsigned int retry_mode);
->>>  };
->>>  
->>> +static inline struct spi_mem_op
+>>> In octal DTR mode, while the command opcode is *always* repeated,
 >>
->> Do we still do inlines?
+>> this info is wrong: opcode can be repeated, inverted or a dedicated 16bit,
+>> so please fix this to not mislead readers
 > 
-> Defining functions in headers like that, I think yes? (static inline,
-> not just inline). The full line is something like:
+> I didn't know :) But yeah I had SPI NAND mind which was obviously
+> wrong. I'll correct.
 > 
-> +static inline struct spi_mem_op
-> +spinand_fill_reset_op(struct spinand_device *spinand)
-> +{
+>>> addresses may either be long enough to cover at least two bytes (in
+>>> which case the existing macro works), or otherwise for single byte
+>>> addresses, the byte must also be duplicated and sent twice: on each
+>>> front of the clock. Create a macro for this common case.
+>>>
+>>> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+>>> ---
+>>>  include/linux/spi/spi-mem.h | 8 ++++++++
+>>>  1 file changed, 8 insertions(+)
+>>>
+>>> diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
+>>> index 81c9c7e793b6ab894675e0198d412d84b8525c2e..e4db0924898ce5b17d2b6d4269495bb968db2871 100644
+>>> --- a/include/linux/spi/spi-mem.h
+>>> +++ b/include/linux/spi/spi-mem.h
+>>> @@ -43,6 +43,14 @@
+>>>  		.dtr = true,					\
+>>>  	}
+>>>  
+>>> +#define SPI_MEM_DTR_OP_RPT_ADDR(__val, __buswidth)		\
+>>
+>> I find the name too generic. This is an macro for 1 byte addresses,
+>> right?
 > 
-> So it's not an inline declaration of a variable, but the definition of a
-> function (just saying, in case the diff mislead you).
+> Yes it is. The name mimics the "dtr command repeat" macro name. Maybe
+> you want to include the info that it is  carrying a single byte? maybe
+> "*RPT_SINGLE_BYTE_ADDR"? but that's a big too long IMO. Any other idea?
+Let's keep it as you proposed, I see how they are used in patch 27/28 and
+it looks alright.
 
-I saw it's a static inline function. Check this please:
-https://lore.kernel.org/all/Pine.LNX.4.64.0601021105000.3668@g5.osdl.org/T/#u
+Cheers,
+ta

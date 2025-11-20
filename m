@@ -1,97 +1,132 @@
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77F23307AF3;
-	Thu, 20 Nov 2025 08:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9848310782;
+	Thu, 20 Nov 2025 08:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763628638; cv=none; b=rxA+qRmDdIUVtgJdILf17QFBeOB5yB4O6Jv4RiTdzjDhjuJi+5fsm3c0mKUU85FXt8CFSqZhn+0BFU/poqQ/xtw6ULlSrsBnPIsYBgneQpWnoRiGZSloj0qa3+B9DFvX/FTTBhYob24AzhiKAmucC72uzeNgMMfpUGrfmSWw7lA=
+	t=1763628643; cv=none; b=jj0/fqKnY52Xl/DKbuo67/kRVOjIfHq/D4xX06zmqGGPaAszAZ3A681uWevdMUyBwNDlWbB6906ZPjr/vUSOaPUQw8cZg3sXNqYHyeYlq2wbR0ZhIkYrfLLdJFWIpDMwBoYICVYlGW51VOtP3L6TCcxxHZOfv8M8BZaQmxGrrwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763628638; c=relaxed/simple;
-	bh=YXEuwywmxBkYpZosxSHNtG4VzTQR0mXrJmAC1VDFhBk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VlhB/gR6rR/4arEF9jlxGTSvsrrwhJXsJ9OQmGLTm6B0QLj9K2Zr9OFPP0fk6g3ZqxwLawjZ1vjowW7wY3df1WNFy1+hhMdLtb9z/s0zLzEi2mwGeNW8iRbS2SMbU4Ta76rkmhQlAQhEFlqMJHmMehvb3IwW072Mf/nrs8nKAlc=
+	s=arc-20240116; t=1763628643; c=relaxed/simple;
+	bh=YpqX3lg6SVoUG7k2oQcigsO6X1to9UJN1mMwpem+Ocs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=f4qVG12nrBTokySk0QPa5SkvWZ78lTlcSWgwR/L/SM8sg7WyQrZI/6Awm40VkPjHSrS5bFAn/ZZ6r4EXTMyaP0eMzWXocBuVSCteCqlTFtqCMhRVXMUTvg2HJYdEKGKuQxyRUOSW9FW8cdnj98YXKhG+5mBl7A2LwG/n3mxJwFU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
 Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4dBs9T5DX2z9sTD;
-	Thu, 20 Nov 2025 09:35:09 +0100 (CET)
+	by localhost (Postfix) with ESMTP id 4dBsK64p43z9sTh;
+	Thu, 20 Nov 2025 09:41:46 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
 	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id Fd5cKkgsgj89; Thu, 20 Nov 2025 09:35:09 +0100 (CET)
+	with ESMTP id kGCgBO48RIIZ; Thu, 20 Nov 2025 09:41:46 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4dBs9S4C2Sz9sSn;
-	Thu, 20 Nov 2025 09:35:08 +0100 (CET)
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4dBsK63ZVXz9sTX;
+	Thu, 20 Nov 2025 09:41:46 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 7C5D78B76D;
-	Thu, 20 Nov 2025 09:35:08 +0100 (CET)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 662058B76D;
+	Thu, 20 Nov 2025 09:41:46 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id 92U5nWTLlA_P; Thu, 20 Nov 2025 09:35:08 +0100 (CET)
-Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 0B0608B763;
-	Thu, 20 Nov 2025 09:35:07 +0100 (CET)
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Mark Brown <broonie@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	"florent . trinh-thai @ cs-soprasteria . com" <florent.trinh-thai@cs-soprasteria.com>,
-	Sverdlin Alexander <alexander.sverdlin@siemens.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] spi: fsl-cpm: Check length parity before switching to 16 bit mode
-Date: Thu, 20 Nov 2025 09:34:49 +0100
-Message-ID: <3c4d81c3923c93f95ec56702a454744a4bad3cfc.1763627618.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.49.0
+	with ESMTP id m4DBEhXyjKTc; Thu, 20 Nov 2025 09:41:46 +0100 (CET)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 016F98B763;
+	Thu, 20 Nov 2025 09:41:45 +0100 (CET)
+Message-ID: <8e969a9f-4dc5-4d1e-879b-8092d43c1c38@csgroup.eu>
+Date: Thu, 20 Nov 2025 09:41:45 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1709; i=christophe.leroy@csgroup.eu; h=from:subject:message-id; bh=YXEuwywmxBkYpZosxSHNtG4VzTQR0mXrJmAC1VDFhBk=; b=kA0DAAoW3ZBwJryrz1MByyZiAGke0qvIJOmxgNNVp6vnvYsjQMByo+HWoNXcOHxXDQgIUSs8K 4h1BAAWCgAdFiEEx/8LupiK9GVvlbov3ZBwJryrz1MFAmke0qsACgkQ3ZBwJryrz1NqIgD/cwoQ IJ2HjrFPjCBPxTbdKq7vfJUfc4yYNWwb8JS6bnoBAKGs2xwM+npjfnQMdUmzEzIkW2D4FHwMWpH QB+ORDBkP
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=openpgp; fpr=10FFE6F8B390DE17ACC2632368A92FEB01B8DD78
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] spi: fsl-cpm: Check length parity before switching to 16
+ bit mode
+To: "Sverdlin, Alexander" <alexander.sverdlin@siemens.com>,
+ "broonie@kernel.org" <broonie@kernel.org>,
+ "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "florent.trinh-thai@cs-soprasteria.com"
+ <florent.trinh-thai@cs-soprasteria.com>
+References: <07d1ea39a0e9b56846395d79d489a5153206ff5c.1762714267.git.christophe.leroy@csgroup.eu>
+ <9ff09fa3b2d8efab15d220c88d8bef4cb1cc76b3.camel@siemens.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <9ff09fa3b2d8efab15d220c88d8bef4cb1cc76b3.camel@siemens.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Commit fc96ec826bce ("spi: fsl-cpm: Use 16 bit mode for large transfers
-with even size") failed to make sure that the size is really even
-before switching to 16 bit mode. Until recently the problem went
-unnoticed because kernfs uses a pre-allocated bounce buffer of size
-PAGE_SIZE for reading EEPROM.
 
-But commit 8ad6249c51d0 ("eeprom: at25: convert to spi-mem API")
-introduced an additional dynamically allocated bounce buffer whose size
-is exactly the size of the transfer, leading to a buffer overrun in
-the fsl-cpm driver when that size is odd.
 
-Add the missing length parity verification and remain in 8 bit mode
-when the length is not even.
+Le 10/11/2025 à 14:07, Sverdlin, Alexander a écrit :
+> Hi Christophe,
+> 
+> just a couple of nitpicks below:
+> 
+> On Sun, 2025-11-09 at 19:55 +0100, Christophe Leroy wrote:
+>> Commit fc96ec826bce ("spi: fsl-cpm: Use 16 bit mode for large transfers
+>> with even size") failed to checkout that the size is really even before
+>                               ^^^^^^^^
+> check/verify/"make sure"?
 
-Fixes: fc96ec826bce ("spi: fsl-cpm: Use 16 bit mode for large transfers with even size")
-Cc: stable@vger.kernel.org
-Closes: https://lore.kernel.org/all/638496dd-ec60-4e53-bad7-eb657f67d580@csgroup.eu/
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reviewed-by: Sverdlin Alexander <alexander.sverdlin@siemens.com>
----
-v2: Updated with comments from Alexander
----
- drivers/spi/spi-fsl-spi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+make sure
 
-diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
-index 2f2082652a1a..481a7b28aacd 100644
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -335,7 +335,7 @@ static int fsl_spi_prepare_message(struct spi_controller *ctlr,
- 			if (t->bits_per_word == 16 || t->bits_per_word == 32)
- 				t->bits_per_word = 8; /* pretend its 8 bits */
- 			if (t->bits_per_word == 8 && t->len >= 256 &&
--			    (mpc8xxx_spi->flags & SPI_CPM1))
-+			    !(t->len & 1) && (mpc8xxx_spi->flags & SPI_CPM1))
- 				t->bits_per_word = 16;
- 		}
- 	}
--- 
-2.49.0
+> 
+>> switching to 16 bit mode. Until recently the problem went unnoticed
+>> because kernfs uses a pre-allocated bounce buffer of size PAGE_SIZE for
+>> reading eeprom.
+>            ^^^^^^
+> EEPROM?
 
+ack
+
+> 
+>> But commit 8ad6249c51d0 ("eeprom: at25: convert to spi-mem API")
+>> introduced an additional dynamically allocated bounce buffer whose size
+>> is exactly the size of the transfer, leading to a buffer overrun in
+>> the fsl-cpm driver when that size is odd.
+>>
+>> Add the missing length parity verification and remain in 8 bit mode
+>> when the length is not even.
+>>
+>> Fixes: fc96ec826bce ("spi: fsl-cpm: Use 16 bit mode for large transfers with even size")
+> 
+> Missing Cc: stable@?
+
+Nowadays Fixes: tag seems to be enough to get a fix automagically 
+applied to stable branches, but I added it anyway.
+
+> 
+>> Closes: https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Fall%2F638496dd-ec60-4e53-bad7-eb657f67d580%40csgroup.eu%2F&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C5ac2e78d2c44433141df08de205a1e5a%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638983768580305289%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=juGQhU%2F%2Fp52t9hPZ5PA0Ka8Ng3ITKNoF%2Bf1%2FP93IkOw%3D&reserved=0
+>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>> ---
+>>   drivers/spi/spi-fsl-spi.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
+>> index 2f2082652a1a2..e845baa56cc66 100644
+>> --- a/drivers/spi/spi-fsl-spi.c
+>> +++ b/drivers/spi/spi-fsl-spi.c
+>> @@ -335,7 +335,7 @@ static int fsl_spi_prepare_message(struct spi_controller *ctlr,
+>>   			if (t->bits_per_word == 16 || t->bits_per_word == 32)
+>>   				t->bits_per_word = 8; /* pretend its 8 bits */
+>>   			if (t->bits_per_word == 8 && t->len >= 256 &&
+>> -			    (mpc8xxx_spi->flags & SPI_CPM1))
+>> +			    ((t->len & 1) == 0) && (mpc8xxx_spi->flags & SPI_CPM1))
+> 
+> could be written as "!(t->len & 1) && "...
+
+Done.
+
+> 
+>>   				t->bits_per_word = 16;
+>>   		}
+>>   	}
+> 
+> You can add my RB tag into your v2.
+> 
+
+Thanks
+Christophe

@@ -1,224 +1,86 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7C7312827
-	for <linux-spi@vger.kernel.org>; Mon, 24 Nov 2025 14:53:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D37287246;
+	Mon, 24 Nov 2025 15:32:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763996018; cv=none; b=FLJkCHrnfeyxG/HNkDBkTYzz+QJcqGGRrRUea9YkzavVpZg89o+j5Uo9mPEsplOaYAE4GzPAHXy0gCyow0F3AZqd/w7L6oYLmA1kmRn3G49hf5CiI67lzD/jMbzGVbwfvDof5izuUr9xAicVSGYukYu+fd9SBPJRfnyXWNxKwJ8=
+	t=1763998361; cv=none; b=muNqTWSyNhT+YIZMM5tepHsM9ez16clSjhe5t/DQrrF//MjSgnZKmMj5zIxN7qXzOZx3tQXXXYQbFing/+YvVu2aX+yG0JtVHbkJwKGea1xZoAlKv5wCHZhxw2MfBImcHCAthANayx99t1MVW6E+3n/l0rAOAj0X8evdz2QBXfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763996018; c=relaxed/simple;
-	bh=pqB+fORk4m1HommlyJq2ylzh3yrOPYjttsDy21RyYgU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RWPfQ/BVaL7KJ7SM55uY3NFTIkWoOUqoZTOb6PDNMZVHr33sb0dZgBtBL0ptFqmN/nYMWakzGkJR31bQjtQmviRkWPHgxigXJXI1ZbZAFmHVZ6f0/mRg9EsHjrbWNtG8OBphiCelZkgonDemal0CY9QaVYo8eZdCi2kDLBpzBa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nMb6m25O; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763998361; c=relaxed/simple;
+	bh=XE2VwP4AbYBgZ19uO3JyCWY54UU1ToeK2DpAkXVdP74=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=PGq3he57yEd3keHRcvUwSww5ZYrrpxJIXyhwHIZafJ8MYaZR1Fn9UtW09QyVq191ndlZTBsNXVDBM2IWyjiIDx+deOTtlONI4WQMB772Ls9cS7REusXb7Ef1mKEpFIUlMzDRlr/wqEX+ScFf93zbQhXKrBrNXxEWa+Ii+0gjBEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A5ryJAFd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nMb6m25O"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEA67C4AF0B
-	for <linux-spi@vger.kernel.org>; Mon, 24 Nov 2025 14:53:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A5ryJAFd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E19DAC4CEF1;
+	Mon, 24 Nov 2025 15:32:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763996018;
-	bh=pqB+fORk4m1HommlyJq2ylzh3yrOPYjttsDy21RyYgU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=nMb6m25OZAmG9HoIT2tbcmIEu13l7KCo7qOUGpyGEKCNQcoXyatztdhBRNLniFe9H
-	 iUdVditSVkqyQiMezr7SYacU6Fuh69mx8tZ6HDosgigcJ7TNS8ewvckx1mRHr6NlZt
-	 RWM8icBK1O8jQhaM4gp0YkOJQgjXWAyI8xiPVEYlJ3DkjIoq77cbsLvgsZRPjeajw5
-	 8sEh+NULl+wAlgsYj5XrTH8jDP5jIfl3lXYc/9MC+OwkZ77Z0TrZEH9HA6zGsIGsV0
-	 bCBliNvETdNSesdMuPYmG5wowk+JVHFxuQ5LpJR277mGaalzkxvAyPK9bCT6wAmjCe
-	 fm54dLY0Qsw/w==
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-640a0812658so7094589a12.0
-        for <linux-spi@vger.kernel.org>; Mon, 24 Nov 2025 06:53:38 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXFej6g4I6V5xUohBxo+91C0C+tuUPO9IN+tD5hJ0Bm+lAzLHuR6gy+zC2cUqUDtUdbtSMO5l4rzTA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzn26z9l84dJY3FqHOJZ7ffWCrI0/CJTHy2WCxPybQ2UoRWyQhj
-	4Hmmfr09Xb4fv47oBZcWT8qOESfjMYt4hOvz4Mg1lsQlWgIIfZuCkbg3PrUGhoeR6XE1DcBpBiC
-	Uu17e+IUiCtN91elwrEGj2wqGQYnnYA==
-X-Google-Smtp-Source: AGHT+IFMnKpbOKpALlRbon6njvQlHioDFBZ6ps4Ha77/hkzyeDp8YHGtY6SBZLINsmH8f54C5ek7l5d85xk5VAIwd4A=
-X-Received: by 2002:a05:6402:26c3:b0:639:f7b5:9c2d with SMTP id
- 4fb4d7f45d1cf-6455444987cmr9474492a12.9.1763996016204; Mon, 24 Nov 2025
- 06:53:36 -0800 (PST)
+	s=k20201202; t=1763998360;
+	bh=XE2VwP4AbYBgZ19uO3JyCWY54UU1ToeK2DpAkXVdP74=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=A5ryJAFdjopY/xzg8oq6Qqg0D/jtyEXKzZWE+A0osBdhYqy2HYpmM8p990wqN3N+d
+	 frB1OXVGDrXUK+xTPsT576OKaZzmWPLcoUiY5Ll3VfjPzSmumMjEd3W/I2RVI95gB6
+	 BCHiDfdztLWxB2yQytTf/k94jmklRFi5LBjDQHyF1lxmSDWMPM3M1T2V0QWdXzMc24
+	 EeX402VyrODQL7aX5pORn27rVnk3nqyfiFG7whm3bcFWDd0y2Ze1icPVTz2yvkvXqq
+	 NpbMFAaeJEzoR3eus7nIVQpd7sIEhbxXhTY7Y8Hv3jz/98NWo7G+QtAaxioB3iKEmX
+	 6Eamp9W9LJ3Jg==
+From: Mark Brown <broonie@kernel.org>
+To: Haotian Zhang <vulab@iscas.ac.cn>
+Cc: mmkurbanov@sberdevices.ru, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20251124015852.937-1-vulab@iscas.ac.cn>
+References: <20251124015852.937-1-vulab@iscas.ac.cn>
+Subject: Re: [PATCH] spi: amlogic-spifc-a1: Handle devm_pm_runtime_enable()
+ errors
+Message-Id: <176399835966.59465.258446054961487669.b4-ty@kernel.org>
+Date: Mon, 24 Nov 2025 15:32:39 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251015071420.1173068-1-herve.codina@bootlin.com>
- <20251015071420.1173068-2-herve.codina@bootlin.com> <f74ab0a2-b74b-4b96-8469-a716c850e230@gmail.com>
-In-Reply-To: <f74ab0a2-b74b-4b96-8469-a716c850e230@gmail.com>
-From: Rob Herring <robh@kernel.org>
-Date: Mon, 24 Nov 2025 08:53:25 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqJDOYuzutMHMeFAogd5a_OX6Hwi8Gwz1Vy7HpXgNeYKsg@mail.gmail.com>
-X-Gm-Features: AWmQ_bmYzp1pjz08UuT7I12fxIYXbO1yVvjH9IMl7-quEF7iTRxZTROtz2B7mnw
-Message-ID: <CAL_JsqJDOYuzutMHMeFAogd5a_OX6Hwi8Gwz1Vy7HpXgNeYKsg@mail.gmail.com>
-Subject: Re: [PATCH v4 01/29] Revert "treewide: Fix probing of devices in DT overlays"
-To: Kalle Niemi <kaleposti@gmail.com>
-Cc: Herve Codina <herve.codina@bootlin.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, 
-	Arnd Bergmann <arnd@arndb.de>, Saravana Kannan <saravanak@google.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Charles Keepax <ckeepax@opensource.cirrus.com>, 
-	Richard Fitzgerald <rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, 
-	Linus Walleij <linus.walleij@linaro.org>, Ulf Hansson <ulf.hansson@linaro.org>, 
-	Mark Brown <broonie@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Daniel Scally <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>, 
-	Davidlohr Bueso <dave@stgolabs.net>, Jonathan Cameron <jonathan.cameron@huawei.com>, 
-	Dave Jiang <dave.jiang@intel.com>, Alison Schofield <alison.schofield@intel.com>, 
-	Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
-	Dan Williams <dan.j.williams@intel.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Wolfram Sang <wsa@kernel.org>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
-	patches@opensource.cirrus.com, linux-gpio@vger.kernel.org, 
-	linux-pm@vger.kernel.org, linux-spi@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, 
-	Allan Nielsen <allan.nielsen@microchip.com>, Horatiu Vultur <horatiu.vultur@microchip.com>, 
-	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-88d78
 
-On Mon, Nov 24, 2025 at 8:48=E2=80=AFAM Kalle Niemi <kaleposti@gmail.com> w=
-rote:
->
-> On 10/15/25 10:13, Herve Codina wrote:
-> > From: Saravana Kannan <saravanak@google.com>
-> >
-> > This reverts commit 1a50d9403fb90cbe4dea0ec9fd0351d2ecbd8924.
-> >
-> > While the commit fixed fw_devlink overlay handling for one case, it
-> > broke it for another case. So revert it and redo the fix in a separate
-> > patch.
-> >
-> > Fixes: 1a50d9403fb9 ("treewide: Fix probing of devices in DT overlays")
-> > Reported-by: Herve Codina <herve.codina@bootlin.com>
-> > Closes: https://lore.kernel.org/lkml/CAMuHMdXEnSD4rRJ-o90x4OprUacN_rJgy=
-o8x6=3D9F9rZ+-KzjOg@mail.gmail.com/
-> > Closes: https://lore.kernel.org/all/20240221095137.616d2aaa@bootlin.com=
-/
-> > Closes: https://lore.kernel.org/lkml/20240312151835.29ef62a0@bootlin.co=
-m/
-> > Signed-off-by: Saravana Kannan <saravanak@google.com>
-> > Link: https://lore.kernel.org/lkml/20240411235623.1260061-2-saravanak@g=
-oogle.com/
-> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> > Acked-by: Mark Brown <broonie@kernel.org>
-> > ---
-> >   drivers/bus/imx-weim.c    | 6 ------
-> >   drivers/i2c/i2c-core-of.c | 5 -----
-> >   drivers/of/dynamic.c      | 1 -
-> >   drivers/of/platform.c     | 5 -----
-> >   drivers/spi/spi.c         | 5 -----
-> >   5 files changed, 22 deletions(-)
-> >
-> > diff --git a/drivers/bus/imx-weim.c b/drivers/bus/imx-weim.c
-> > index 83d623d97f5f..87070155b057 100644
-> > --- a/drivers/bus/imx-weim.c
-> > +++ b/drivers/bus/imx-weim.c
-> > @@ -327,12 +327,6 @@ static int of_weim_notify(struct notifier_block *n=
-b, unsigned long action,
-> >                                "Failed to setup timing for '%pOF'\n", r=
-d->dn);
-> >
-> >               if (!of_node_check_flag(rd->dn, OF_POPULATED)) {
-> > -                     /*
-> > -                      * Clear the flag before adding the device so tha=
-t
-> > -                      * fw_devlink doesn't skip adding consumers to th=
-is
-> > -                      * device.
-> > -                      */
-> > -                     rd->dn->fwnode.flags &=3D ~FWNODE_FLAG_NOT_DEVICE=
-;
-> >                       if (!of_platform_device_create(rd->dn, NULL, &pde=
-v->dev)) {
-> >                               dev_err(&pdev->dev,
-> >                                       "Failed to create child device '%=
-pOF'\n",
-> > diff --git a/drivers/i2c/i2c-core-of.c b/drivers/i2c/i2c-core-of.c
-> > index eb7fb202355f..30b48a428c0b 100644
-> > --- a/drivers/i2c/i2c-core-of.c
-> > +++ b/drivers/i2c/i2c-core-of.c
-> > @@ -176,11 +176,6 @@ static int of_i2c_notify(struct notifier_block *nb=
-, unsigned long action,
-> >                       return NOTIFY_OK;
-> >               }
-> >
-> > -             /*
-> > -              * Clear the flag before adding the device so that fw_dev=
-link
-> > -              * doesn't skip adding consumers to this device.
-> > -              */
-> > -             rd->dn->fwnode.flags &=3D ~FWNODE_FLAG_NOT_DEVICE;
-> >               client =3D of_i2c_register_device(adap, rd->dn);
-> >               if (IS_ERR(client)) {
-> >                       dev_err(&adap->dev, "failed to create client for =
-'%pOF'\n",
-> > diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
-> > index 2eaaddcb0ec4..b5be7484fb36 100644
-> > --- a/drivers/of/dynamic.c
-> > +++ b/drivers/of/dynamic.c
-> > @@ -225,7 +225,6 @@ static void __of_attach_node(struct device_node *np=
-)
-> >       np->sibling =3D np->parent->child;
-> >       np->parent->child =3D np;
-> >       of_node_clear_flag(np, OF_DETACHED);
-> > -     np->fwnode.flags |=3D FWNODE_FLAG_NOT_DEVICE;
-> >
-> >       raw_spin_unlock_irqrestore(&devtree_lock, flags);
-> >
-> > diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-> > index f77cb19973a5..ef9445ba168b 100644
-> > --- a/drivers/of/platform.c
-> > +++ b/drivers/of/platform.c
-> > @@ -739,11 +739,6 @@ static int of_platform_notify(struct notifier_bloc=
-k *nb,
-> >               if (of_node_check_flag(rd->dn, OF_POPULATED))
-> >                       return NOTIFY_OK;
-> >
-> > -             /*
-> > -              * Clear the flag before adding the device so that fw_dev=
-link
-> > -              * doesn't skip adding consumers to this device.
-> > -              */
-> > -             rd->dn->fwnode.flags &=3D ~FWNODE_FLAG_NOT_DEVICE;
-> >               /* pdev_parent may be NULL when no bus platform device */
-> >               pdev_parent =3D of_find_device_by_node(parent);
-> >               pdev =3D of_platform_device_create(rd->dn, NULL,
-> > diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> > index 2e0647a06890..b22944a207c9 100644
-> > --- a/drivers/spi/spi.c
-> > +++ b/drivers/spi/spi.c
-> > @@ -4791,11 +4791,6 @@ static int of_spi_notify(struct notifier_block *=
-nb, unsigned long action,
-> >                       return NOTIFY_OK;
-> >               }
-> >
-> > -             /*
-> > -              * Clear the flag before adding the device so that fw_dev=
-link
-> > -              * doesn't skip adding consumers to this device.
-> > -              */
-> > -             rd->dn->fwnode.flags &=3D ~FWNODE_FLAG_NOT_DEVICE;
-> >               spi =3D of_register_spi_device(ctlr, rd->dn);
-> >               put_device(&ctlr->dev);
-> >
-> Sorry, some of you will receive this message now for second time. First
-> message was sent to older series of patches.
-> -
->
-> Hello,
->
-> Test system testing drivers for ROHM ICs bisected this commit to cause
-> BD71847 drivers probe to not be called.
+On Mon, 24 Nov 2025 09:58:52 +0800, Haotian Zhang wrote:
+> devm_pm_runtime_enable() can fail due to memory allocation. The current
+> code ignores its return value, potentially causing runtime PM operations
+> to fail silently after autosuspend configuration.
+> 
+> Check the return value of devm_pm_runtime_enable() and return on failure.
+> 
+> 
+> [...]
 
-This driver (and overlay support) is in linux-next or something out of
-tree on top of linux-next?
+Applied to
 
-Rob
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+
+Thanks!
+
+[1/1] spi: amlogic-spifc-a1: Handle devm_pm_runtime_enable() errors
+      commit: a90903c2a3c38bce475f46ea3f93dbf6a9971553
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+

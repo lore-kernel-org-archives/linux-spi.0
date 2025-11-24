@@ -1,50 +1,67 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1397286422;
-	Mon, 24 Nov 2025 14:50:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4FD287276
+	for <linux-spi@vger.kernel.org>; Mon, 24 Nov 2025 14:50:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763995810; cv=none; b=PjYp3nKrPFCy+NxG68YXXsEjRTvvTo8b2BUBUzH/ttrLkm1yQJwfzFavFcc/qZD/nuHb79N7n7ooDj8e4bXH5tP3ey2B/pV7iut3m1ECq/JB0Z7gceKkcQUNuzbHgDnNaYnzGoNifU1SnayIa8EHeHalxDhsBWNJqC9a1IIgw3Q=
+	t=1763995846; cv=none; b=FGGbIfPU8yphgNeDw7okU62wkTjeQq+rr6njgq6oHwWMps6BdmQPSkZ82EiCuSmDD0LMN+5msOQARPsr5KtZ4N7czxs9fMHPyzuUsY1UN2ZeCBo4WbXkifkCCyGcPWnB6LgJWolDKsQ89zXxUG0zWJ7Mx+NbsT5soVKcjgA5Qao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763995810; c=relaxed/simple;
-	bh=ldR9Jbkn+lG8+Fw1qz6qmlfFqMRuk5844+RygMXc0QE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=GP2yG1C06xAklzKksrqdd5ePxmggTWmOsjOPfhn/bRlleaG+atvU20SSQn7P1xDHNW1B0AL3kOtJdl7FyjvpZENVx0g0+lm8ISQQKrzYb2oYT+hzNDoIdB2t3ADW+1GuWYyGTE7LrHA10iEAQP+hfQ9Dd4p2wy5xHsSfVc64tQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=t/fjJ/Tn; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1763995846; c=relaxed/simple;
+	bh=wSQ341CU5vsOctNXexpEakv7qkoHtZ0v3orCbR3i2WA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fWE0Ho8EIF6P8fIgC9EuCN6iHD6jk8N0PIvW6Rg/29mdOb9XmWHPz35CAAo1odtGcu3/Z/vgEKX5SjLdLQ3tlQNAYU43weTGoZOqvWcQfDL3slEbs6cUayMewRTGwv1f4LMjZxd+9kdL1c/4BKwy9H1Razz+MCjlYQWi6EnMIAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cn3F2qPD; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="t/fjJ/Tn"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1763995807; x=1795531807;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=ldR9Jbkn+lG8+Fw1qz6qmlfFqMRuk5844+RygMXc0QE=;
-  b=t/fjJ/Tn/Ma/J7trnD2N1rPxDiad/VHFHTbwUa1Ii7xJHwoEvsBVOcZI
-   SI3BIkVTNg5cqyJarxwRqccT/mwh7tsx/4sP/3IeHQo/0c9FSkXYaACGL
-   RmwnRn6EtlKpIWiXeg75GRNPrc+x+D6Xd6ATqxP/rbJ3CesjYUXsyqV19
-   T+owh8TP7XvSlhQn6CruB8kx4skv1oHzOfoEqypPZk5aB/EPtCHgrTUuT
-   jSHcHXf3P+cBD6H4TcMhVvgx7ZaMn7H70l8GpAL7C3z/Vx24EPYhNx9wQ
-   Lmmm0W+sN1Eyz01x/cU8ovHxv6FtBIdbdMYoD/bLsgADKfyfp8LZOsqRR
-   A==;
-X-CSE-ConnectionGUID: OeN9174cR8eHEXvZOy+fKg==
-X-CSE-MsgGUID: DtLvZ2mDQxKim2utQ5AXiA==
-X-IronPort-AV: E=Sophos;i="6.20,223,1758610800"; 
-   d="scan'208";a="56142126"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 24 Nov 2025 07:50:06 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Mon, 24 Nov 2025 07:49:47 -0700
-Received: from [10.205.167.104] (10.10.85.11) by chn-vm-ex01.mchp-main.com
- (10.10.85.143) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Mon, 24 Nov 2025 07:49:46 -0700
-Message-ID: <48ad36dc-613f-401f-a8e2-dec832bd6ee1@microchip.com>
-Date: Mon, 24 Nov 2025 15:00:55 +0000
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cn3F2qPD"
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-640ca678745so7317907a12.2
+        for <linux-spi@vger.kernel.org>; Mon, 24 Nov 2025 06:50:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763995843; x=1764600643; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DMHuhLQ2+QePhLbxyyov6Mwfn5dk2KsNTjCwuBZ/B2U=;
+        b=cn3F2qPDnPaIpWWcTJbdGWX+GQRPqM+tuXNwNrYC+k4A+c+wW7KFVdSXpfL5lHsTs0
+         9wTyBAUrKDbbNHvTAzc13jgl6Czw/ljt1iFSiN4iSQsPamjQtmxLxXCK3RlODXi4tkLU
+         D0jl58YQSAVLbhQP7ppMFXUVVa0k1GGuiVTbAhZnLRKZlG0sc9rIVmarNfJPh2Wo4cKU
+         ajLPQXIHES/6buXHvz9Ic+JwCWk/CwZAbNvB2gmkLWlgP+a5UryGmxYGI+nh+oEkg5Ph
+         zzZdC/tGB2S5cWnrQ2Sw1t4QhP9DnswL0KX3C0B75OEhWSpZAsSTuRuOfBQkpWkA7x2r
+         wq4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763995843; x=1764600643;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DMHuhLQ2+QePhLbxyyov6Mwfn5dk2KsNTjCwuBZ/B2U=;
+        b=rJJgK7OQY0ALOf8OndvD8FWHc83qJn1OPOA3hBssDJyZneBufS30ubnoJ0YGnFBZt0
+         Ie/mag9OPfrMzoKMhl6DtSrecBsGGLsA77b1Kug/y7LfiwhJ3f2mZ9vySCcvliFrPnj5
+         l64z3NKFCRODOkrq6U3IJTAoRGVWgt9MouwPveMXpA0ZYiryfUG4AQgQx8JGEMWyLdF1
+         0gRsTzw61NWWl0nm7heCR2PfiNDSj+RN+A6DZakeyI/cewSy1BQqPiGVoiIFt55PwOzz
+         vjCD2B+9oZrpZZ0Jp/bXuKMQIDXcWp+htF/KgeWLAklqPHaztSOmsa+D3HEfmqEpjrJo
+         TQcQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU7AyYAn/xEx+RMpoJJs58rCwcA6xHekwcG5pljrxhp/9+PUyxzmdB4Td01Fu7/399V97Rli+C8DTQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3lVfM2KY1vM83Gkt9RbLfPjnzz/KoqDuPEBtgpFIWjVks2ywd
+	tnLJOhhPAB01U5znzrhTUNe1JrcLKgrZyt9C7b4gQ4ldtVX4/ZKnDGjlCrA1dUhN
+X-Gm-Gg: ASbGnctJBiWuf+QW1b8+rbdtGx1w73uCsVkucnILggKoflJrHXN8ZkB0ISNFLvyOQeN
+	vwjJGeS74yyJJ3t7jloe1MW76XeBiJo4KfuVL/ilr1qE+HpCcNe3NofZGeHxgD8FdbeliZJVyil
+	Qmmx0A6pdOMNDr7Rpknul3qf6l4qnQyy25yxBwFn1cxkFskl+hSQfXRmDu094SJ8r+jkDUEUuFB
+	/ug9uvsCIFIOd/23OMz/lQegxlkxa4XEdkEsKybRD1JZktNnOBH9vzjsn9Apbhraxs65Tyf0zYX
+	6sE2wXFskgszFVGhkN1xZJI+TuQG8wF5FD0x0lEXQ2JZ/GlGp+YWRKaq21flW4LvRmizVphlqfS
+	MPo8IM/vxwp3RlYRHlDBuuiEum53YbKkJJq0qwL6GeRDgg+0aekOxkQJTr/e9Zc/Axtlf+mQFxx
+	3zQ60zVPn/f6ckwA==
+X-Google-Smtp-Source: AGHT+IGs/95/cJ+tL3SsaiiXXgcuCaeuAg21ZTVttRpATbc8iAWB4Al2D0iS745iUZOaE4uems77rg==
+X-Received: by 2002:a2e:95d9:0:b0:37a:5bc6:ab9f with SMTP id 38308e7fff4ca-37cd92392c8mr23746331fa.26.1763989401463;
+        Mon, 24 Nov 2025 05:03:21 -0800 (PST)
+Received: from [10.38.18.76] ([213.255.186.37])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-37cc6b48e26sm27317291fa.1.2025.11.24.05.03.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Nov 2025 05:03:21 -0800 (PST)
+Message-ID: <f74ab0a2-b74b-4b96-8469-a716c850e230@gmail.com>
+Date: Mon, 24 Nov 2025 15:03:19 +0200
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -52,63 +69,223 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH next v2] spi: Fix potential uninitialized variable in
- probe()
-To: Dan Carpenter <dan.carpenter@linaro.org>
-CC: Mark Brown <broonie@kernel.org>, Conor Dooley
-	<conor.dooley@microchip.com>, <linux-spi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-References: <aSQPkfkiJ0w-FJMW@stanley.mountain>
+Subject: Re: [PATCH v4 01/29] Revert "treewide: Fix probing of devices in DT
+ overlays"
+To: Herve Codina <herve.codina@bootlin.com>, Andrew Lunn <andrew@lunn.ch>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
+ Wolfram Sang <wsa+renesas@sang-engineering.com>,
+ Peter Rosin <peda@axentia.se>, Arnd Bergmann <arnd@arndb.de>,
+ Saravana Kannan <saravanak@google.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Charles Keepax <ckeepax@opensource.cirrus.com>,
+ Richard Fitzgerald <rf@opensource.cirrus.com>,
+ David Rhodes <david.rhodes@cirrus.com>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Ulf Hansson <ulf.hansson@linaro.org>, Mark Brown <broonie@kernel.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>,
+ Davidlohr Bueso <dave@stgolabs.net>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Dave Jiang <dave.jiang@intel.com>,
+ Alison Schofield <alison.schofield@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Wolfram Sang <wsa@kernel.org>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+ linux-i2c@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-sound@vger.kernel.org, patches@opensource.cirrus.com,
+ linux-gpio@vger.kernel.org, linux-pm@vger.kernel.org,
+ linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linux-cxl@vger.kernel.org, Allan Nielsen <allan.nielsen@microchip.com>,
+ Horatiu Vultur <horatiu.vultur@microchip.com>,
+ Steen Hegelund <steen.hegelund@microchip.com>,
+ Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+References: <20251015071420.1173068-1-herve.codina@bootlin.com>
+ <20251015071420.1173068-2-herve.codina@bootlin.com>
 Content-Language: en-US
-From: Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>
-In-Reply-To: <aSQPkfkiJ0w-FJMW@stanley.mountain>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+From: Kalle Niemi <kaleposti@gmail.com>
+In-Reply-To: <20251015071420.1173068-2-herve.codina@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 24/11/2025 07:56, Dan Carpenter wrote:
-> EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
->
-> If the device tree is messed up, then potentially the "protocol" string
-> could potentially be uninitialized.  The property is supposed to default
-> to "motorola" so if the of_property_read_string() function returns
-> -EINVAL then default to "motorola".
->
-> Fixes: 059f545832be ("spi: add support for microchip "soft" spi controller")
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>
+On 10/15/25 10:13, Herve Codina wrote:
+> From: Saravana Kannan <saravanak@google.com>
+> 
+> This reverts commit 1a50d9403fb90cbe4dea0ec9fd0351d2ecbd8924.
+> 
+> While the commit fixed fw_devlink overlay handling for one case, it
+> broke it for another case. So revert it and redo the fix in a separate
+> patch.
+> 
+> Fixes: 1a50d9403fb9 ("treewide: Fix probing of devices in DT overlays")
+> Reported-by: Herve Codina <herve.codina@bootlin.com>
+> Closes: https://lore.kernel.org/lkml/CAMuHMdXEnSD4rRJ-o90x4OprUacN_rJgyo8x6=9F9rZ+-KzjOg@mail.gmail.com/
+> Closes: https://lore.kernel.org/all/20240221095137.616d2aaa@bootlin.com/
+> Closes: https://lore.kernel.org/lkml/20240312151835.29ef62a0@bootlin.com/
+> Signed-off-by: Saravana Kannan <saravanak@google.com>
+> Link: https://lore.kernel.org/lkml/20240411235623.1260061-2-saravanak@google.com/
+> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> Acked-by: Mark Brown <broonie@kernel.org>
 > ---
-> v2: Add an error message on failure.
->      Default to "motorola".
->
->   drivers/spi/spi-microchip-core-spi.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/spi/spi-microchip-core-spi.c b/drivers/spi/spi-microchip-core-spi.c
-> index b8738190cdcb..16e0885474a0 100644
-> --- a/drivers/spi/spi-microchip-core-spi.c
-> +++ b/drivers/spi/spi-microchip-core-spi.c
-> @@ -295,10 +295,10 @@ static int mchp_corespi_transfer_one(struct spi_controller *host,
->
->   static int mchp_corespi_probe(struct platform_device *pdev)
->   {
-> +       const char *protocol = "motorola";
->          struct spi_controller *host;
->          struct mchp_corespi *spi;
->          struct resource *res;
-> -       const char *protocol;
->          u32 num_cs, mode, frame_size;
->          bool assert_ssel;
->          int ret = 0;
-> @@ -320,6 +320,8 @@ static int mchp_corespi_probe(struct platform_device *pdev)
->           */
->          ret = of_property_read_string(pdev->dev.of_node, "microchip,protocol-configuration",
->                                        &protocol);
-> +       if (ret && ret != -EINVAL)
-> +               return dev_err_probe(&pdev->dev, ret, "Error reading protocol-configuration\n");
->          if (strcmp(protocol, "motorola") != 0)
->                  return dev_err_probe(&pdev->dev, -EINVAL,
->                                       "CoreSPI: protocol '%s' not supported by this driver\n",
-> --
-> 2.51.0
->
+>   drivers/bus/imx-weim.c    | 6 ------
+>   drivers/i2c/i2c-core-of.c | 5 -----
+>   drivers/of/dynamic.c      | 1 -
+>   drivers/of/platform.c     | 5 -----
+>   drivers/spi/spi.c         | 5 -----
+>   5 files changed, 22 deletions(-)
+> 
+> diff --git a/drivers/bus/imx-weim.c b/drivers/bus/imx-weim.c
+> index 83d623d97f5f..87070155b057 100644
+> --- a/drivers/bus/imx-weim.c
+> +++ b/drivers/bus/imx-weim.c
+> @@ -327,12 +327,6 @@ static int of_weim_notify(struct notifier_block *nb, unsigned long action,
+>   				 "Failed to setup timing for '%pOF'\n", rd->dn);
+>   
+>   		if (!of_node_check_flag(rd->dn, OF_POPULATED)) {
+> -			/*
+> -			 * Clear the flag before adding the device so that
+> -			 * fw_devlink doesn't skip adding consumers to this
+> -			 * device.
+> -			 */
+> -			rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
+>   			if (!of_platform_device_create(rd->dn, NULL, &pdev->dev)) {
+>   				dev_err(&pdev->dev,
+>   					"Failed to create child device '%pOF'\n",
+> diff --git a/drivers/i2c/i2c-core-of.c b/drivers/i2c/i2c-core-of.c
+> index eb7fb202355f..30b48a428c0b 100644
+> --- a/drivers/i2c/i2c-core-of.c
+> +++ b/drivers/i2c/i2c-core-of.c
+> @@ -176,11 +176,6 @@ static int of_i2c_notify(struct notifier_block *nb, unsigned long action,
+>   			return NOTIFY_OK;
+>   		}
+>   
+> -		/*
+> -		 * Clear the flag before adding the device so that fw_devlink
+> -		 * doesn't skip adding consumers to this device.
+> -		 */
+> -		rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
+>   		client = of_i2c_register_device(adap, rd->dn);
+>   		if (IS_ERR(client)) {
+>   			dev_err(&adap->dev, "failed to create client for '%pOF'\n",
+> diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
+> index 2eaaddcb0ec4..b5be7484fb36 100644
+> --- a/drivers/of/dynamic.c
+> +++ b/drivers/of/dynamic.c
+> @@ -225,7 +225,6 @@ static void __of_attach_node(struct device_node *np)
+>   	np->sibling = np->parent->child;
+>   	np->parent->child = np;
+>   	of_node_clear_flag(np, OF_DETACHED);
+> -	np->fwnode.flags |= FWNODE_FLAG_NOT_DEVICE;
+>   
+>   	raw_spin_unlock_irqrestore(&devtree_lock, flags);
+>   
+> diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+> index f77cb19973a5..ef9445ba168b 100644
+> --- a/drivers/of/platform.c
+> +++ b/drivers/of/platform.c
+> @@ -739,11 +739,6 @@ static int of_platform_notify(struct notifier_block *nb,
+>   		if (of_node_check_flag(rd->dn, OF_POPULATED))
+>   			return NOTIFY_OK;
+>   
+> -		/*
+> -		 * Clear the flag before adding the device so that fw_devlink
+> -		 * doesn't skip adding consumers to this device.
+> -		 */
+> -		rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
+>   		/* pdev_parent may be NULL when no bus platform device */
+>   		pdev_parent = of_find_device_by_node(parent);
+>   		pdev = of_platform_device_create(rd->dn, NULL,
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index 2e0647a06890..b22944a207c9 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -4791,11 +4791,6 @@ static int of_spi_notify(struct notifier_block *nb, unsigned long action,
+>   			return NOTIFY_OK;
+>   		}
+>   
+> -		/*
+> -		 * Clear the flag before adding the device so that fw_devlink
+> -		 * doesn't skip adding consumers to this device.
+> -		 */
+> -		rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
+>   		spi = of_register_spi_device(ctlr, rd->dn);
+>   		put_device(&ctlr->dev);
+>   
+Sorry, some of you will receive this message now for second time. First 
+message was sent to older series of patches.
+-
 
+Hello,
+
+Test system testing drivers for ROHM ICs bisected this commit to cause 
+BD71847 drivers probe to not be called.
+
+The devicetree blob overlay describing bd71847 enables I2C1 bus on 
+BeagleBone Black aswell.
+
+Probe is called when the driver is used with HW connected to I2C2 bus. 
+I2C2 bus is enabled before overlaying devicetree blobs.
+
+
+---- BD71847 Devicetree overlay source ----
+
+/dts-v1/;
+/plugin/;
+
+/{ /* this is our device tree overlay root node */
+
+     compatible = "ti,beaglebone", "ti,beaglebone-black";
+     part-number = "BBB-I2C1";
+      version = "00A0";
+
+     fragment@0 {
+         target = <&am33xx_pinmux>; // this is a link to an already 
+defined node in the device tree, so that node is overlayed with our 
+modification
+
+         __overlay__ {
+             i2c1_pins: pinmux_i2c1_pins {
+                 pinctrl-single,pins = <
+                       0x158 0x72 /* spi0_d1.i2c1_sda */
+                       0x15C 0x72 /* spi0_cs0.i2c1_sdl */
+                     >;
+             };
+         };
+     };
+....
+....
+
+     fragment@2 {
+         target = <&i2c1>;
+
+         __overlay__ {
+             pinctrl-0 = <&i2c1_pins>;
+             clock-frequency = <100000>;
+             status = "okay";
+
+             pmic: pmic@4b { /* the "test" defined as child of the i2c1 
+bus */
+                 compatible = "rohm,bd71847";
+                 reg = <0x4b>;
+                 ....
+                 ....
+}; /* root node end */
+
+---- END OF BD71847 Devicetree overlay source ----
+
+Reverting this patch from linux-next from last friday fixes the issue.
+
+BR
+Kalle Niemi

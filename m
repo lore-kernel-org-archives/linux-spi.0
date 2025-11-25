@@ -1,34 +1,62 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C740E2FF144
-	for <linux-spi@vger.kernel.org>; Tue, 25 Nov 2025 19:57:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4624D33ADA7;
+	Tue, 25 Nov 2025 20:17:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764100660; cv=none; b=VzTQMStH/bi90bv+MqtkiDmajhDiQASoc2lANhBbqjTHmvlaAmIyCZqUso5iZUMKpEGxvWvZZpezlRRBi/Q37tLIQZQr+5ZsZRCtWWpdl/Ng1AIZ1FONYGzNY64xioFjT0ds2nCmBYmpcTrfQ86dUlk4DUoJbgB+Kiel+KDRhfA=
+	t=1764101827; cv=none; b=E80sOhFf+8sF3qjYn3XQXiyk7B5yFLKIeRR5u4dIEwD+jiZTVDpkGZWVtgvqOsFnxrYJo5E7UgbdfC/fdn0ogH9BsA1XNCdMJBGXSliMvS/zWds5ARNDc9MQuMKQ5de3jrsySomA+S7MEg0whPeBG/rodIHRjPVOn4J134la6Ho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764100660; c=relaxed/simple;
-	bh=VroK1YwajTxurRrlnTwTtSeVe2VvrGYfyCsX/LMTXKs=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=uYnT/FyMbM/y4p7QjpLKKZhX2TcpRedy8kt2bNm3DovRzwh5zh3+m48nigTin/NxdpAuTqg5hAtopqJrGmbi3/3l7Kzb/Np3JR02ZPtRp+RDnfN+Unof2FoWYcYYlsR/RpvsIiQqGe2ldE5RSBfrjOulZgqA4UKbS2jysCpd1Yc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ilSauQju; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1764101827; c=relaxed/simple;
+	bh=i348gRZwFs1j437kjQtd2OZNYyRNL6pS+Luhhms/cVs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=i8rc4rMX5j9eziTql4U3O/wMMxi3T0tzPDmk1V3sT54aMKYjkSlOhnagIHU8PmZjrwoQ52Htw6lzF1M5qc5fwdZr2YDk9J2EbkmK2LhfI9AHhLJ60gD4Wr8I0B1j/EmFvRYJD5jlQcSRzvQEWzuD4aENBYpsPE4xPLyoDFAXdSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OYiBoCpw; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ilSauQju"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FE2CC4CEF1;
-	Tue, 25 Nov 2025 19:57:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764100660;
-	bh=VroK1YwajTxurRrlnTwTtSeVe2VvrGYfyCsX/LMTXKs=;
-	h=Subject:From:Date:To:From;
-	b=ilSauQju/QJTNAkOJ3S1RSAdRmDAblx7cpyHmGuuKKrNP292MItg5Gnj0tshHrJ5g
-	 OxFhH4376E8I9s6cJRYagImu3K98g8TXYBEDus+7OIoq/CmI5e7SGN0qchTuwd61vm
-	 JkCdAzhWchIMIRnM72fLT1rx1gi5Sr7ysuVa3U2r1++jzjrHWku9vaZcg7wpdALoQb
-	 SyCZf7mgKJ49EZmWKah02y8z6kbecVx/XWCo450OCqZc0MirzUEF95XL7YZ2XN/Vve
-	 qJHgSrsndpmXY8ytLpbQLyBBIeipjIMcZSwRSnQ+oawu5/Ed/eko7cQpg8SimLo9lz
-	 fj05v7EZI4iBQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B1748380AAD9;
-	Tue, 25 Nov 2025 19:57:03 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OYiBoCpw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764101826; x=1795637826;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=i348gRZwFs1j437kjQtd2OZNYyRNL6pS+Luhhms/cVs=;
+  b=OYiBoCpw9XOWpTyqWKObdp5rBtz/Ps5NA+/s80YlT0QiuyncVYfCRO2F
+   sgDdO+uenKilSLD+W2M7lUmgxiFmTcjk3XyQc91jxZHUQmD8uveRYzFxJ
+   p1GF0j+DXyB8weNE2T5DsHkeI3rFtcb2IwyUzIckQGwhyyNPk74GqPHBl
+   MIkvquBWFklR9k0V7OBZGaCo/XulB5tRi5tC38I74+2A5zKNTrgIMp4/J
+   8ONqppFV/ixOqmD5CTAp6zJGtkSkA5TYkk+xLbvhq8KjeE+I/IuvvgdBJ
+   AHLLh6KWz1YiFktk5jSv8GpKG1E9LiI7ywEmYD6Xi6LebHq1TJg3YOq7e
+   w==;
+X-CSE-ConnectionGUID: TT6dfz3RRFuTvYVTwlAuVw==
+X-CSE-MsgGUID: TR76kcVLTxqcsrU+ttnkzQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11624"; a="69990024"
+X-IronPort-AV: E=Sophos;i="6.20,226,1758610800"; 
+   d="scan'208";a="69990024"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 12:17:05 -0800
+X-CSE-ConnectionGUID: sEj+fqk5QMeyiqHbsenffA==
+X-CSE-MsgGUID: dQEvqoEmRNqyCFAXmcnKlQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,226,1758610800"; 
+   d="scan'208";a="223720983"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by fmviesa001.fm.intel.com with ESMTP; 25 Nov 2025 12:17:03 -0800
+Received: by black.igk.intel.com (Postfix, from userid 1003)
+	id 46821A1; Tue, 25 Nov 2025 21:17:02 +0100 (CET)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>,
+	linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Mark Brown <broonie@kernel.org>
+Subject: [PATCH v1 1/7] spi: microchip-core: use min() instead of min_t()
+Date: Tue, 25 Nov 2025 21:15:31 +0100
+Message-ID: <20251125201700.1901959-2-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20251125201700.1901959-1-andriy.shevchenko@linux.intel.com>
+References: <20251125201700.1901959-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -36,21 +64,60 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <176410062222.896754.12240387455432130932.git-patchwork-housekeeping@kernel.org>
-Date: Tue, 25 Nov 2025 19:57:02 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-Latest series: [v5] spi: airoha: add support of en7523 SoC (for 6.19) (2025-11-25T19:16:32)
-  Superseding: [v4] spi: airoha: add support of en7523 SoC (for 6.19) (2025-11-25T02:10:48):
-    [v4,1/3] spi: airoha-snfi: en7523: workaround flash damaging if UART_TXD was short to GND
-    [v4,2/3] dt-bindings: spi: airoha: add compatible for EN7523
-    [v4,3/3] arm: dts: airoha: en7523: add SNAND node
+min_t(int, a, b) casts an 'unsigned int' to 'int'. This might lead
+to the cases when big number is wrongly chosen. On the other hand,
+the SPI transfer length is unsigned and driver uses signed type for
+an unknown reason. Change the type of the transfer length to be
+unsigned and convert use min() instead of min_t().
 
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/spi/spi-microchip-core-spi.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
+diff --git a/drivers/spi/spi-microchip-core-spi.c b/drivers/spi/spi-microchip-core-spi.c
+index 16e0885474a0..08ccdc5f0cc9 100644
+--- a/drivers/spi/spi-microchip-core-spi.c
++++ b/drivers/spi/spi-microchip-core-spi.c
+@@ -74,8 +74,8 @@ struct mchp_corespi {
+ 	u8 *rx_buf;
+ 	u32 clk_gen;
+ 	int irq;
+-	int tx_len;
+-	int rx_len;
++	unsigned int tx_len;
++	unsigned int rx_len;
+ 	u32 fifo_depth;
+ };
+ 
+@@ -214,7 +214,7 @@ static irqreturn_t mchp_corespi_interrupt(int irq, void *dev_id)
+ 		       spi->regs + MCHP_CORESPI_REG_INTCLEAR);
+ 		finalise = true;
+ 		dev_err(&host->dev,
+-			"RX OVERFLOW: rxlen: %d, txlen: %d\n",
++			"RX OVERFLOW: rxlen: %u, txlen: %u\n",
+ 			spi->rx_len, spi->tx_len);
+ 	}
+ 
+@@ -223,7 +223,7 @@ static irqreturn_t mchp_corespi_interrupt(int irq, void *dev_id)
+ 		       spi->regs + MCHP_CORESPI_REG_INTCLEAR);
+ 		finalise = true;
+ 		dev_err(&host->dev,
+-			"TX UNDERFLOW: rxlen: %d, txlen: %d\n",
++			"TX UNDERFLOW: rxlen: %u, txlen: %u\n",
+ 			spi->rx_len, spi->tx_len);
+ 	}
+ 
+@@ -283,7 +283,7 @@ static int mchp_corespi_transfer_one(struct spi_controller *host,
+ 	spi->rx_len = xfer->len;
+ 
+ 	while (spi->tx_len) {
+-		int fifo_max = min_t(int, spi->tx_len, spi->fifo_depth);
++		unsigned int fifo_max = min(spi->tx_len, spi->fifo_depth);
+ 
+ 		mchp_corespi_write_fifo(spi, fifo_max);
+ 		mchp_corespi_read_fifo(spi, fifo_max);
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+2.50.1
 

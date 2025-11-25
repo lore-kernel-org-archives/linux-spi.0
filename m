@@ -1,59 +1,62 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41FE033AD9F;
-	Tue, 25 Nov 2025 20:17:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D695E33B958;
+	Tue, 25 Nov 2025 20:17:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764101827; cv=none; b=NckLV0YsqAzcyKp+6QXigqkXmujcSSFGN/mcNjS3L1jEARZlcO6NysGkxzI9ACqQrtRGZXl54SxC8W5dEsR5rrOC6QoCG5Z0nj26n43Ur1vktIPUT7E6QLV0XC1/lyIGkGdeHpWHZ7ego40Cg7tFb06b27bw/y6Rz8bhjIxmJo8=
+	t=1764101828; cv=none; b=Tnun8Oqw/4qirXLk17mFUjqGN6Pftiu0ifkrOI4P7LVE+Zri01gu5EI9pBm4GqJGmZGBYccz21NXjNJIZsRbbzrf8eXaG9U29a7MYA4Gky64Gd89X8Tayxc/F4GOQs4nXwRb7HHR5eVS1P+ZbeDOgICGbznX1VFcUp1kVGP3hWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764101827; c=relaxed/simple;
-	bh=vFaF1g5B8Q7aSUcTFGv8j9c9zXCldsjAYWwcBxi1wDw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Hny1yoi88tH4j81JcRkN9U8oMFZskQZtUK4QPo2Ke9k5emaYyBZmBFYcf7xNrQagFVniehmI6ka0jmpUQL/Sw/VPwEdPX+QwqD5nEpFKbstNHlF213Sq7WMaDo+uL8ZhhEjXL6RdH+OwYeg23klgk1eqQWgCXzUaAqiokcdGVXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XWc9QPjy; arc=none smtp.client-ip=192.198.163.16
+	s=arc-20240116; t=1764101828; c=relaxed/simple;
+	bh=g7W+a0KDvDNZx8EWxNLukegMDKmdtcKPYfpsSu925Os=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=FdflcZg6ueQ6aaI5p4HIX/KrDoKY2l0O/Cm3oNkZ2IeCI5xdINlk5MLNh+z82jggNH9GjVfiSEAIgMUcnf96aOKAFT+XTGy7yopNKKaY5spJszlFcda/Bl/ye86c75c/fDOHbE51G506iN9PXrJp2HyZ304oP4xYV873f/Xp43s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hcL7USQz; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XWc9QPjy"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hcL7USQz"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764101826; x=1795637826;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=vFaF1g5B8Q7aSUcTFGv8j9c9zXCldsjAYWwcBxi1wDw=;
-  b=XWc9QPjyDBYv9vz8qUvroIXQJE6cvVFEp7wQFLP8n45u9K5KGulqnyov
-   CKYgMKGGPtR3Z25f4YcLmCQZvxVteWb3bpwP4Fjutq8Cacvh2dQeHUe+F
-   o1VHt/+Wd/ocYKNPW5AFsG+ol8NAAdIsxabwi0d6cccK6WYBM7l/LcrR+
-   mdxIy4BUjgBaJLMkxTmf75K6JCLtzgrOSzoXDncAwELuE6oyWpUWX2LXv
-   UL1uWwYs34ipvfw576xag5OH4cR0XyCNBdyiPDlIHartqTIlZ6FcnzSqk
-   nH5IF4LiJoE7SEk8n3K/yEvP2OH00Uo+2ClXceD7ygQKyfNFQpjKehVwJ
-   w==;
-X-CSE-ConnectionGUID: HLK1yy4cQbqGZs9kJypsBw==
-X-CSE-MsgGUID: jrzmB/DMRiOjkCZlnqDj4Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11624"; a="53699524"
+  t=1764101827; x=1795637827;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=g7W+a0KDvDNZx8EWxNLukegMDKmdtcKPYfpsSu925Os=;
+  b=hcL7USQznq6U2ldIS2mqHcvvW1blToKWnjRpZpa+IzLbmQYcZjlC21An
+   ArtnZ8C6NEFU3wkZCPHedw2lb5NTLSnA48ak/77QAZzgNQRzY7VwRYr9L
+   NCjt6WKCmZxGHZsvNHzh+/6uGttQpV95ECAGlUDVHLYbRpmLpStyYJ1s4
+   63EMAUnLS8mKBME487FNgiKhzaTvzcvWwoU/lWM9jAn2LWH5diVNhvnih
+   BunT1OVfgGhM1Ucf7xynEwTzMO2LONwi1k369uHEmMIUXFIuW3/PW8+jV
+   pc0Qq3qBgINAFIBN2K7IEflUd9oa/3ELcTwSjMyd9CV3Owi+ED4+xDRq5
+   g==;
+X-CSE-ConnectionGUID: ePeINc8TSKSbrgZE4xNXKg==
+X-CSE-MsgGUID: 16907jWjS2i+NVRwmnUi4A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11624"; a="69990026"
 X-IronPort-AV: E=Sophos;i="6.20,226,1758610800"; 
-   d="scan'208";a="53699524"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 12:17:05 -0800
-X-CSE-ConnectionGUID: Le4minPJSduAG+vD8u9dRA==
-X-CSE-MsgGUID: mMNGVEAGQ6OC3N4ZaiNspg==
+   d="scan'208";a="69990026"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 12:17:05 -0800
+X-CSE-ConnectionGUID: 3wUjezJsTHSVB77fsgUjLA==
+X-CSE-MsgGUID: ZrBFGRlCQT+Og3T8FVdqyg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.20,226,1758610800"; 
-   d="scan'208";a="192836170"
+   d="scan'208";a="223720982"
 Received: from black.igk.intel.com ([10.91.253.5])
-  by orviesa008.jf.intel.com with ESMTP; 25 Nov 2025 12:17:03 -0800
+  by fmviesa001.fm.intel.com with ESMTP; 25 Nov 2025 12:17:03 -0800
 Received: by black.igk.intel.com (Postfix, from userid 1003)
-	id 43981A0; Tue, 25 Nov 2025 21:17:02 +0100 (CET)
+	id 533B0A4; Tue, 25 Nov 2025 21:17:02 +0100 (CET)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Cc: Mark Brown <broonie@kernel.org>
-Subject: [PATCH v1 0/7] spi: microchip-core: Code improvements
-Date: Tue, 25 Nov 2025 21:15:30 +0100
-Message-ID: <20251125201700.1901959-1-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 4/7] spi: microchip-core: Replace dead code (-ENOMEM error message)
+Date: Tue, 25 Nov 2025 21:15:34 +0100
+Message-ID: <20251125201700.1901959-5-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20251125201700.1901959-1-andriy.shevchenko@linux.intel.com>
+References: <20251125201700.1901959-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -62,21 +65,29 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-While reading some other stuff, I noticed that this driver may
-be improved. Here is the set of refactoring and cleaning it up.
+First of all, the convention in the kernel that we do not issue
+error messages for -ENOMEM. Second, it's ignored by dev_err_probe().
+Replace dead code by a simple return statement.
 
-Andy Shevchenko (7):
-  spi: microchip-core: use min() instead of min_t()
-  spi: microchip-core: Make use of device properties
-  spi: microchip-core: Refactor FIFO read and write handlers
-  spi: microchip-core: Replace dead code (-ENOMEM error message)
-  spi: microchip-core: Utilise temporary variable for struct device
-  spi: microchip-core: Use SPI_MODE_X_MASK
-  spi: microchip-core: Remove unneeded PM related macro
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/spi/spi-microchip-core-spi.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
- drivers/spi/spi-microchip-core-spi.c | 113 +++++++++++----------------
- 1 file changed, 46 insertions(+), 67 deletions(-)
-
+diff --git a/drivers/spi/spi-microchip-core-spi.c b/drivers/spi/spi-microchip-core-spi.c
+index 9620aa886912..dbbfb395c272 100644
+--- a/drivers/spi/spi-microchip-core-spi.c
++++ b/drivers/spi/spi-microchip-core-spi.c
+@@ -295,8 +295,7 @@ static int mchp_corespi_probe(struct platform_device *pdev)
+ 
+ 	host = devm_spi_alloc_host(&pdev->dev, sizeof(*spi));
+ 	if (!host)
+-		return dev_err_probe(&pdev->dev, -ENOMEM,
+-				     "unable to allocate host for SPI controller\n");
++		return -ENOMEM;
+ 
+ 	platform_set_drvdata(pdev, host);
+ 
 -- 
 2.50.1
 

@@ -1,59 +1,60 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71EB52E11D7;
-	Thu, 27 Nov 2025 19:00:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 078B02FFDE2;
+	Thu, 27 Nov 2025 19:00:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764270037; cv=none; b=Enk91FBONJoaJ2eA/QGuCawzH+Nd0uleEPr+WC6b86EbRlmYIM6LpkdJd8n35H4YS564RuYoV9I0LDKKkeM0Vv+6T/T4Bm9gqSct68WyOcSgnpfttwh6ZXPIUmGdI0zTl/mZOi4ue8sZAWc0XizmR+Dq+iY5dyKEjcLmegzj1bg=
+	t=1764270038; cv=none; b=FMJWKtCHPbUN+Sx63RiM4Euq5/nvDcTjkPhLpRGylmS6M6BYP/J3t8ru0lm1rsboMQYuGZt9npQWT6QNmJtenwNgzMMBP3bMQXCTWPpguh7ENFLYTnmREH3zOnm7mM2slDcf8XiwNNAyTqA2sii5cRgD0GnOzpBoLsueXimAkBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764270037; c=relaxed/simple;
-	bh=oYdB1GXPJJOqdeYXnfWfCep2w45kxF/iHqiuAw9Dd8Y=;
+	s=arc-20240116; t=1764270038; c=relaxed/simple;
+	bh=yuDl+vV9uGiSg1HH//XrjlArBAJ2MDXUa6CNLBLNkqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=flrTo3My9L/YoJd2SjaI20zY8zsP3EwmZmhpKFA9mKX8d+Z9UrwD27YJvmR0TVfJKEx2m9ZyeQp+NXbUXTo0d2I0mwCYMRh4wf8smd4k21f7jgTSa+c+hakiyWnRtpLMWtjfGsySqtspC8Pk+laL7iBp7GfRZjTqoYh1VyH1NG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CFA7dQIC; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version; b=IHzn5E5v+GM3U96cxBAcEs4TM6a3NbLnYh5cCpIRW7ToApAK6wm3BYOo9je+C/lOo1/Mwv3fKFJQz7DeyhJiCCzPXZo3Pc4w9WkYcuQpCTAOgnp+mIRyTQRg0p8ZFBDOuItfVVvPWD62GE926FuTVpmLtFSTSjBx0VbUqYqEMbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Yi9tuhDu; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CFA7dQIC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Yi9tuhDu"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764270035; x=1795806035;
+  t=1764270037; x=1795806037;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=oYdB1GXPJJOqdeYXnfWfCep2w45kxF/iHqiuAw9Dd8Y=;
-  b=CFA7dQICEpW4TvkrnBAy1KElZj1e461RkmlZH/ILSxxAql8G8FQYNQ8T
-   uQZnmzyqdtTBBpXGjPGSeawH+WLmzctYLpJsK9mcMFQYSG1V905kNLW58
-   LhITWS2TwF1Q3duNoRaetyyElW2OodYOFknlvwXROjkuk95oqTfEZyKkN
-   GPNVimUvsqvjGbxlQwDUNioE4AlIGUmbzQ4vi2kP1Qes0lnT7zaYZ2vfT
-   hixw6Wqn2WgWUHNS6xYCbxGX1HnGOwVvrXNEDvfAo8QHU+dEaIqbsKI9l
-   D+Uftr7ERZvz7N95ZPiaZQR9PHAqDq4udGMV397BYIwf/fooqalk27mhQ
+  bh=yuDl+vV9uGiSg1HH//XrjlArBAJ2MDXUa6CNLBLNkqc=;
+  b=Yi9tuhDu8ZkFKKb0rP3vKKO6Ogh7bQKEWLQu5mRiyFSZvj7bBEiYEPqR
+   JQ9Z49Cw/oXEBnQo0djeYBLaO1evdO12S+rRcRZMEBS9USRAxSQ9uMOim
+   O4xjDo4Cq6Jk/EAjBsIDr/4h5IlAf6OZUn2ytSac9uwKePJKa6tRFjMHl
+   a6d+cBmVAxvU93oCYohOGKqSqaES8ORzDA1ry641h637xIcKYpT+WshvR
+   ZhspFywfY5ZWhCrHtKl9tumL6OXki8Z7wInm5rggyfmBZgFW/y7l11Uck
+   u4UPjXkGA+5X/2Maq0j7hh0rg9xbJYT2//Dw4dLO5DLQFhF7uudRLkOgW
    Q==;
-X-CSE-ConnectionGUID: 6vSX+E05STWNxQU0OunJuQ==
-X-CSE-MsgGUID: UNVNi81DSzG0BjU/+mpt9w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11626"; a="66480310"
+X-CSE-ConnectionGUID: /gXmrsw3Rs+QQXhJnSTafw==
+X-CSE-MsgGUID: PhOUnBNTTjilPHP7m64vNg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11626"; a="91796255"
 X-IronPort-AV: E=Sophos;i="6.20,231,1758610800"; 
-   d="scan'208";a="66480310"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 11:00:35 -0800
-X-CSE-ConnectionGUID: NnNSyZSvS0SZFo2EAYehbQ==
-X-CSE-MsgGUID: Zxggb9enT3SHj9/RnhR7tw==
+   d="scan'208";a="91796255"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 11:00:35 -0800
+X-CSE-ConnectionGUID: vdevt3uLSx6K1c9n9Gi2Vg==
+X-CSE-MsgGUID: QzmVBog8TnmHOap/Zht6Lw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.20,231,1758610800"; 
-   d="scan'208";a="193312322"
+   d="scan'208";a="216645897"
 Received: from black.igk.intel.com ([10.91.253.5])
-  by orviesa007.jf.intel.com with ESMTP; 27 Nov 2025 11:00:33 -0800
+  by fmviesa002.fm.intel.com with ESMTP; 27 Nov 2025 11:00:33 -0800
 Received: by black.igk.intel.com (Postfix, from userid 1003)
-	id 41A94A2; Thu, 27 Nov 2025 20:00:32 +0100 (CET)
+	id 394FEA0; Thu, 27 Nov 2025 20:00:32 +0100 (CET)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Cc: Mark Brown <broonie@kernel.org>
-Subject: [PATCH v3 3/6] spi: microchip-core: Replace dead code (-ENOMEM error message)
-Date: Thu, 27 Nov 2025 19:59:00 +0100
-Message-ID: <20251127190031.2998705-4-andriy.shevchenko@linux.intel.com>
+Cc: Mark Brown <broonie@kernel.org>,
+	David Laight <david.laight.linux@gmail.com>
+Subject: [PATCH v3 1/6] spi: microchip-core: use min() instead of min_t()
+Date: Thu, 27 Nov 2025 19:58:58 +0100
+Message-ID: <20251127190031.2998705-2-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20251127190031.2998705-1-andriy.shevchenko@linux.intel.com>
 References: <20251127190031.2998705-1-andriy.shevchenko@linux.intel.com>
@@ -65,30 +66,61 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-First of all, the convention in the kernel that we do not issue
-error messages for -ENOMEM. Second, it's ignored by dev_err_probe().
-Replace dead code by a simple return statement.
+min_t(int, a, b) casts an 'unsigned int' to 'int'. This might lead
+to the cases when big number is wrongly chosen. On the other hand,
+the SPI transfer length is unsigned and driver uses signed type for
+an unknown reason. Change the type of the transfer length to be
+unsigned and convert use min() instead of min_t().
 
+Reviewed-by: David Laight <david.laight.linux@gmail.com>
 Reviewed-by: Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/spi/spi-microchip-core-spi.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/spi/spi-microchip-core-spi.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/spi/spi-microchip-core-spi.c b/drivers/spi/spi-microchip-core-spi.c
-index 439745a36f9c..fa6fb2d3f7d0 100644
+index 16e0885474a0..08ccdc5f0cc9 100644
 --- a/drivers/spi/spi-microchip-core-spi.c
 +++ b/drivers/spi/spi-microchip-core-spi.c
-@@ -298,8 +298,7 @@ static int mchp_corespi_probe(struct platform_device *pdev)
+@@ -74,8 +74,8 @@ struct mchp_corespi {
+ 	u8 *rx_buf;
+ 	u32 clk_gen;
+ 	int irq;
+-	int tx_len;
+-	int rx_len;
++	unsigned int tx_len;
++	unsigned int rx_len;
+ 	u32 fifo_depth;
+ };
  
- 	host = devm_spi_alloc_host(&pdev->dev, sizeof(*spi));
- 	if (!host)
--		return dev_err_probe(&pdev->dev, -ENOMEM,
--				     "unable to allocate host for SPI controller\n");
-+		return -ENOMEM;
+@@ -214,7 +214,7 @@ static irqreturn_t mchp_corespi_interrupt(int irq, void *dev_id)
+ 		       spi->regs + MCHP_CORESPI_REG_INTCLEAR);
+ 		finalise = true;
+ 		dev_err(&host->dev,
+-			"RX OVERFLOW: rxlen: %d, txlen: %d\n",
++			"RX OVERFLOW: rxlen: %u, txlen: %u\n",
+ 			spi->rx_len, spi->tx_len);
+ 	}
  
- 	platform_set_drvdata(pdev, host);
+@@ -223,7 +223,7 @@ static irqreturn_t mchp_corespi_interrupt(int irq, void *dev_id)
+ 		       spi->regs + MCHP_CORESPI_REG_INTCLEAR);
+ 		finalise = true;
+ 		dev_err(&host->dev,
+-			"TX UNDERFLOW: rxlen: %d, txlen: %d\n",
++			"TX UNDERFLOW: rxlen: %u, txlen: %u\n",
+ 			spi->rx_len, spi->tx_len);
+ 	}
  
+@@ -283,7 +283,7 @@ static int mchp_corespi_transfer_one(struct spi_controller *host,
+ 	spi->rx_len = xfer->len;
+ 
+ 	while (spi->tx_len) {
+-		int fifo_max = min_t(int, spi->tx_len, spi->fifo_depth);
++		unsigned int fifo_max = min(spi->tx_len, spi->fifo_depth);
+ 
+ 		mchp_corespi_write_fifo(spi, fifo_max);
+ 		mchp_corespi_read_fifo(spi, fifo_max);
 -- 
 2.50.1
 

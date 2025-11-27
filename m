@@ -1,100 +1,114 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A91303A04;
-	Thu, 27 Nov 2025 19:00:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00BCF27380A;
+	Thu, 27 Nov 2025 19:01:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764270040; cv=none; b=n/D1NUyzSU4lWZizq5BIQ+DyQkuUtTX44odcAo1mzd8IDTz4r2FEK5KFu/Q89goEw+d1MxESQ49c0dmu9KsM7IkX2vEHFA0fK3l5FlebuC2FkngjvjIF7yVR7gy2KaSwVzwuAfeQhuqWjJPbTctPKp2oyjLHakrdkGHf9CjyHMg=
+	t=1764270114; cv=none; b=nOje82sbqn/ytjBbaj52l4fgDvYqIRsVYNfIDhGfhVxpdDLi9ZmF7XjCh84Nbz3sZFkeZPTEcK4uYhU4y5lmKfVsxEYW3gtGUOGN8Y0+Bbfthli1BNutQROsmDIHk8ikbosrTdro3U4P/xrGLGTIwShRzDoPf0037MP0zE/SEIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764270040; c=relaxed/simple;
-	bh=yrR4M3AM8ocRqZG2rAtrM+zbjICYzoD9wcqeo39DKV0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kR9mgID9UZQZtVgZ3HiKNv6m3nVSUel0k8OAlsNmqEpk8/p/DC8TMyAR7X1s0VZnleymMHxeF4w9/xv12F4oslxvlIQMakWW5DPGTyEs1x30U+y0hf9r2ti4gcFJJyR5Ired2ixTJFNaKe5W4zqueS4d7zhvGCi1hZ9wMDZac/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lzkVwjCF; arc=none smtp.client-ip=192.198.163.7
+	s=arc-20240116; t=1764270114; c=relaxed/simple;
+	bh=sQd7et9UqRrQNP9xBihl31sNh2PGFV+NmjRTeHy7TcA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eUkvMGPChN9jFWOgQmHIOH54G3JIstuAtLSZ2NWE8sI6aOTp9Yxj1B21Vstxy7AySfVZuR0BUvLa9Nsu9wR0SFTpf435iF1iaved7c3UyRdtgXGD2YT8gMF3XiJHnVNW1dZupM9FxJYCe+6DcTnJYuz4YgKbO9CLGIzCwFLNUGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HugoYkyS; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lzkVwjCF"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HugoYkyS"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764270039; x=1795806039;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=yrR4M3AM8ocRqZG2rAtrM+zbjICYzoD9wcqeo39DKV0=;
-  b=lzkVwjCFm42mJpYQ8ssOBQb9Fw0RRw5aO9h5MpNRlmQB/EBadhk1WHt+
-   ON7VeNzO4bKADcvznVgPNfvBLsEDrKNTysvkmnYf1E5LbIpbv31tkGrg6
-   Hw2XaUtfCNmj+2YsRfiH0HpTIDID/7K58CfezbWq+hYAddGGSitjDJ1ob
-   OkN1u4rC4YVJWAb3B2azvOMc91nRPNlYLMXOOmG/3pA5vr8aL2ZQLReo4
-   JN4XilTe7aIvIcy8Eo4b/hVAL9q4Drnvy+afxhtc3Jj1ins8jCjNbAqWj
-   Z5wBQIaquObMYR94+pFfSrfqn2QGdJVx9amZ1EbJ38BmPP3oJv6dAqW3O
+  t=1764270113; x=1795806113;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=sQd7et9UqRrQNP9xBihl31sNh2PGFV+NmjRTeHy7TcA=;
+  b=HugoYkySQnHfyq6QZdcy0NNZPM9EmdGJ4p7qAlSjdXlfVKvDio223ztm
+   VKvyAQN1GrTHzbVUdOyec4VQBH83V0ExCVTENenKV58mUcRbyPYbziQbr
+   EAiWTnwWTq1IV9O5eC+EN2iFY4tdBQoZXQpkrCyeJ/flNM/bknWz+0egW
+   cqEsloYRNY3uds5qW31gYcL3S/5hCxQlrN6upGzWOu4r87oCw2/7EMCKi
+   pftWuMHxOcIeAjZG1jKmdUMhZWfQw+6wAeaV7yUKPdXxeOpIKWZnAbCd7
+   YYvA5lIsAgJYiWOS9CcJgA8PanaHij2RK2VS5ITqFzVVyQEzDaibbc3Zf
    w==;
-X-CSE-ConnectionGUID: VS+t6cShSa+i52TRFjX01Q==
-X-CSE-MsgGUID: nkJA2n+LTM+CFZ4sUAiAhw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11626"; a="91796265"
+X-CSE-ConnectionGUID: OIn9pUT1TS6iRp6ZdZcV7A==
+X-CSE-MsgGUID: KXUSdC4aS1qFJd7LZo0w0w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11626"; a="66480489"
 X-IronPort-AV: E=Sophos;i="6.20,231,1758610800"; 
-   d="scan'208";a="91796265"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 11:00:37 -0800
-X-CSE-ConnectionGUID: Ai4awCLGRmeJh4R5OK9SDA==
-X-CSE-MsgGUID: 9OgXqwRzT2SOH21mVUJyfQ==
+   d="scan'208";a="66480489"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 11:01:52 -0800
+X-CSE-ConnectionGUID: qb7nlw5vSrOkbaoq6YcGiQ==
+X-CSE-MsgGUID: +8EmmxnfTA+T3AarJah9lw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.20,231,1758610800"; 
-   d="scan'208";a="216645904"
-Received: from black.igk.intel.com ([10.91.253.5])
-  by fmviesa002.fm.intel.com with ESMTP; 27 Nov 2025 11:00:35 -0800
-Received: by black.igk.intel.com (Postfix, from userid 1003)
-	id 4A0FEA4; Thu, 27 Nov 2025 20:00:32 +0100 (CET)
+   d="scan'208";a="193312664"
+Received: from abityuts-desk.ger.corp.intel.com (HELO localhost) ([10.245.245.225])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 11:01:50 -0800
+Date: Thu, 27 Nov 2025 21:01:48 +0200
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Mark Brown <broonie@kernel.org>
-Subject: [PATCH v3 5/6] spi: microchip-core: Use SPI_MODE_X_MASK
-Date: Thu, 27 Nov 2025 19:59:02 +0100
-Message-ID: <20251127190031.2998705-6-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20251127190031.2998705-1-andriy.shevchenko@linux.intel.com>
-References: <20251127190031.2998705-1-andriy.shevchenko@linux.intel.com>
+To: Conor Dooley <conor@kernel.org>
+Cc: Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>,
+	Mark Brown <broonie@kernel.org>,
+	david laight <david.laight@runbox.com>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Conor Dooley - M52691 <Conor.Dooley@microchip.com>
+Subject: Re: [PATCH v2 2/6] spi: microchip-core: Refactor FIFO read and write
+ handlers
+Message-ID: <aSigHJDTfqtnO1XY@smile.fi.intel.com>
+References: <20251126075558.2035012-1-andriy.shevchenko@linux.intel.com>
+ <20251126075558.2035012-3-andriy.shevchenko@linux.intel.com>
+ <20251126092145.2f8e4c8d@pumpkin>
+ <720a960d-797b-4404-90ab-e0c75c12a151@sirena.org.uk>
+ <aSbu4BA8pohsYSQ8@smile.fi.intel.com>
+ <48d3b29b-1010-4749-aef0-c66a72f1d8fa@microchip.com>
+ <aSiBF9nStZzUNGLA@smile.fi.intel.com>
+ <20251127-pliable-magnetism-c59c560e49ad@spud>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251127-pliable-magnetism-c59c560e49ad@spud>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Use SPI_MODE_X_MASK instead of open coded variant.
+On Thu, Nov 27, 2025 at 06:05:04PM +0000, Conor Dooley wrote:
+> On Thu, Nov 27, 2025 at 06:49:27PM +0200, Andy Shevchenko wrote:
+> > On Thu, Nov 27, 2025 at 04:08:25PM +0000, Prajna Rajendra Kumar wrote:
+> > > On 26/11/2025 12:13, Andy Shevchenko wrote:
+> > > > On Wed, Nov 26, 2025 at 12:05:22PM +0000, Mark Brown wrote:
+> > > > > On Wed, Nov 26, 2025 at 09:21:45AM +0000, david laight wrote:
 
-Reviewed-by: Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/spi/spi-microchip-core-spi.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+...
 
-diff --git a/drivers/spi/spi-microchip-core-spi.c b/drivers/spi/spi-microchip-core-spi.c
-index 0ece51460ee0..d37e193e282f 100644
---- a/drivers/spi/spi-microchip-core-spi.c
-+++ b/drivers/spi/spi-microchip-core-spi.c
-@@ -153,8 +153,6 @@ static void mchp_corespi_set_cs(struct spi_device *spi, bool disable)
- 
- static int mchp_corespi_setup(struct spi_device *spi)
- {
--	u32 dev_mode = spi->mode & (SPI_CPOL | SPI_CPHA);
--
- 	if (spi_get_csgpiod(spi, 0))
- 		return 0;
- 
-@@ -163,7 +161,7 @@ static int mchp_corespi_setup(struct spi_device *spi)
- 		return -EOPNOTSUPP;
- 	}
- 
--	if (dev_mode & ~spi->controller->mode_bits) {
-+	if ((spi->mode ^ spi->controller->mode_bits) & SPI_MODE_X_MASK) {
- 		dev_err(&spi->dev, "incompatible CPOL/CPHA, must match controller's Motorola mode\n");
- 		return -EINVAL;
- 	}
+> > > > > > I'm not sure I don't prefer the version with one writeb() call.
+> > > > > > How about:
+> > > > > >              writeb(spi->tx_buf ? *spi->tx_buf++ : 0xaa,
+> > > > > >                      spi->regs + MCHP_CORESPI_REG_TXDATA);
+> > > > > Please don't abuse the ternery operator like this, just write normal
+> > > > > conditional statements.
+> > > > FWIW, that's what my patch does already :-)
+> > > 
+> > > Thanks for the series. However, this particular patch appears to
+> > > introduce a regression. The SPI controller reads an incorrect
+> > > Device ID from the peripheral.
+> > 
+> > Hmm... This is interesting. The only thing I see is missed dummy byte read in
+> > case of TX only transfers. Is this what you have?
+> 
+> Seems very likely, the hardware is pretty simple, so it has no concept
+> of whether bytes it receives are useful or any ability to operate on
+> transfers and discard data from the FIFOs when a new one starts. That's
+> why the unconditional read is there to make sure the rx FIFO is kept in
+> sync.
+
+I have just sent a v3, please, give it a try.
+
 -- 
-2.50.1
+With Best Regards,
+Andy Shevchenko
+
 

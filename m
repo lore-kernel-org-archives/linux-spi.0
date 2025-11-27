@@ -1,59 +1,62 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292AB2C3757;
-	Thu, 27 Nov 2025 19:00:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71EB52E11D7;
+	Thu, 27 Nov 2025 19:00:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764270037; cv=none; b=C9tX9mQVvOI0A09Ma+gg8qPSclfJ3dwXT5207rzU1D0e3J3Y/XLdMG7x1QqCOBh0HesFCpXxIjqBp/nICKyk8cCIzJf56RgQ7LxTOJZEP1HwtO4DYI74YJVxVAHiOmJEZnr6pKs/Ago6Ge0+0ixqwAa49R64yKJO1c3A3JM/S1M=
+	t=1764270037; cv=none; b=Enk91FBONJoaJ2eA/QGuCawzH+Nd0uleEPr+WC6b86EbRlmYIM6LpkdJd8n35H4YS564RuYoV9I0LDKKkeM0Vv+6T/T4Bm9gqSct68WyOcSgnpfttwh6ZXPIUmGdI0zTl/mZOi4ue8sZAWc0XizmR+Dq+iY5dyKEjcLmegzj1bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1764270037; c=relaxed/simple;
-	bh=WejVC7OasaaC3aO+LqcYVQswYBmRhUAqysaoABJy84Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HpHUPTSCKPqSJaceMnqzuwBx/fbrgAxcXxsLJUkG9AN34zeWy2R4xTLg4LLpqdp0B6Fs+XSskg3jEJYVIIQgpQ4d7FyhAdhcyg8oN8jEXq+Efb29zM8SvlM60YMHqE0GP/TeCspc0q/QOYQA2frn9eOCewnJHhbvv7nI39sR6IM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PYWyquNE; arc=none smtp.client-ip=192.198.163.7
+	bh=oYdB1GXPJJOqdeYXnfWfCep2w45kxF/iHqiuAw9Dd8Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=flrTo3My9L/YoJd2SjaI20zY8zsP3EwmZmhpKFA9mKX8d+Z9UrwD27YJvmR0TVfJKEx2m9ZyeQp+NXbUXTo0d2I0mwCYMRh4wf8smd4k21f7jgTSa+c+hakiyWnRtpLMWtjfGsySqtspC8Pk+laL7iBp7GfRZjTqoYh1VyH1NG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CFA7dQIC; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PYWyquNE"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CFA7dQIC"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1764270035; x=1795806035;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=WejVC7OasaaC3aO+LqcYVQswYBmRhUAqysaoABJy84Q=;
-  b=PYWyquNEnJQdR3pAOfK23mNu10OCCLOWFNZ9PqFTtH/rgLGM5EASyGQo
-   m3IvhClrl6lcgRx4f5WSyQMt3W+AE9kmFLcI5Bex7GKmbVav6oB3AIjcm
-   2xJAYjQaLI5U8HpXv3kX8xE2T1nbuxX/cddG5sg+krPel6RvLEbQn4lSS
-   iuvlokNdxtcrpi5ILr33+HMme/aHjByncZjNfsXmLZdwD00fjsxooZkAF
-   GU0Znw6OxbWsAnMZbYX+6kIiQZqSYjpdFt6fZb4SnXWQAKt/wYyVvx5RC
-   aTz6eWgcPWFlA+i/dmiaqJYlPdtGq59yCCaZb9ju+aiMUCl/YHBirF6dD
-   w==;
-X-CSE-ConnectionGUID: BpuQc44OSkqOJjEgh5oILw==
-X-CSE-MsgGUID: wZkEzoItShSv5HmxcV8/SQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11626"; a="91796252"
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=oYdB1GXPJJOqdeYXnfWfCep2w45kxF/iHqiuAw9Dd8Y=;
+  b=CFA7dQICEpW4TvkrnBAy1KElZj1e461RkmlZH/ILSxxAql8G8FQYNQ8T
+   uQZnmzyqdtTBBpXGjPGSeawH+WLmzctYLpJsK9mcMFQYSG1V905kNLW58
+   LhITWS2TwF1Q3duNoRaetyyElW2OodYOFknlvwXROjkuk95oqTfEZyKkN
+   GPNVimUvsqvjGbxlQwDUNioE4AlIGUmbzQ4vi2kP1Qes0lnT7zaYZ2vfT
+   hixw6Wqn2WgWUHNS6xYCbxGX1HnGOwVvrXNEDvfAo8QHU+dEaIqbsKI9l
+   D+Uftr7ERZvz7N95ZPiaZQR9PHAqDq4udGMV397BYIwf/fooqalk27mhQ
+   Q==;
+X-CSE-ConnectionGUID: 6vSX+E05STWNxQU0OunJuQ==
+X-CSE-MsgGUID: UNVNi81DSzG0BjU/+mpt9w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11626"; a="66480310"
 X-IronPort-AV: E=Sophos;i="6.20,231,1758610800"; 
-   d="scan'208";a="91796252"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 11:00:35 -0800
-X-CSE-ConnectionGUID: aZDhr22VTcuSK4iVwy+XWg==
-X-CSE-MsgGUID: /0/OhDTXQhG+J53PjS0RZw==
+   d="scan'208";a="66480310"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 11:00:35 -0800
+X-CSE-ConnectionGUID: NnNSyZSvS0SZFo2EAYehbQ==
+X-CSE-MsgGUID: Zxggb9enT3SHj9/RnhR7tw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.20,231,1758610800"; 
-   d="scan'208";a="216645898"
+   d="scan'208";a="193312322"
 Received: from black.igk.intel.com ([10.91.253.5])
-  by fmviesa002.fm.intel.com with ESMTP; 27 Nov 2025 11:00:33 -0800
+  by orviesa007.jf.intel.com with ESMTP; 27 Nov 2025 11:00:33 -0800
 Received: by black.igk.intel.com (Postfix, from userid 1003)
-	id 3664C9F; Thu, 27 Nov 2025 20:00:32 +0100 (CET)
+	id 41A94A2; Thu, 27 Nov 2025 20:00:32 +0100 (CET)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Cc: Mark Brown <broonie@kernel.org>
-Subject: [PATCH v3 0/6] spi: microchip-core: Code improvements
-Date: Thu, 27 Nov 2025 19:58:57 +0100
-Message-ID: <20251127190031.2998705-1-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v3 3/6] spi: microchip-core: Replace dead code (-ENOMEM error message)
+Date: Thu, 27 Nov 2025 19:59:00 +0100
+Message-ID: <20251127190031.2998705-4-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20251127190031.2998705-1-andriy.shevchenko@linux.intel.com>
+References: <20251127190031.2998705-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -62,30 +65,30 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
+First of all, the convention in the kernel that we do not issue
+error messages for -ENOMEM. Second, it's ignored by dev_err_probe().
+Replace dead code by a simple return statement.
 
-While reading some other stuff, I noticed that this driver may
-be improved. Here is the set of refactoring and cleaning it up.
+Reviewed-by: Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/spi/spi-microchip-core-spi.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Changelog v3:
-- collected tags (Prajna)
-- restored dummy read in TX-only transfers
-
-v2: <20251126075558.2035012-1-andriy.shevchenko@linux.intel.com>
-
-Changelog v2:
-- dropped device property agnostic API conversion change (Mark)
-
-Andy Shevchenko (6):
-  spi: microchip-core: use min() instead of min_t()
-  spi: microchip-core: Refactor FIFO read and write handlers
-  spi: microchip-core: Replace dead code (-ENOMEM error message)
-  spi: microchip-core: Utilise temporary variable for struct device
-  spi: microchip-core: Use SPI_MODE_X_MASK
-  spi: microchip-core: Remove unneeded PM related macro
-
- drivers/spi/spi-microchip-core-spi.c | 95 ++++++++++++----------------
- 1 file changed, 40 insertions(+), 55 deletions(-)
-
+diff --git a/drivers/spi/spi-microchip-core-spi.c b/drivers/spi/spi-microchip-core-spi.c
+index 439745a36f9c..fa6fb2d3f7d0 100644
+--- a/drivers/spi/spi-microchip-core-spi.c
++++ b/drivers/spi/spi-microchip-core-spi.c
+@@ -298,8 +298,7 @@ static int mchp_corespi_probe(struct platform_device *pdev)
+ 
+ 	host = devm_spi_alloc_host(&pdev->dev, sizeof(*spi));
+ 	if (!host)
+-		return dev_err_probe(&pdev->dev, -ENOMEM,
+-				     "unable to allocate host for SPI controller\n");
++		return -ENOMEM;
+ 
+ 	platform_set_drvdata(pdev, host);
+ 
 -- 
 2.50.1
 

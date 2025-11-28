@@ -1,135 +1,120 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BC3B32ED3D;
-	Fri, 28 Nov 2025 18:55:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F11255F31
+	for <linux-spi@vger.kernel.org>; Fri, 28 Nov 2025 19:30:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764356127; cv=none; b=GZpYdSj8nPLxc4UgtbOLXXwgWtv1fykauhkJpMD9/NaRRbDFoW1NMSNephALv76NAaq6wPD2Vt6wol9LXd9gmWeRpNUWhgFoZrGcyOwA6CbX4FoZ5uDX9hoLjoTPNrioLAG7La71gG1pMKkZg4s5HoHD/TgvAOWMKdEmVQ0OOeg=
+	t=1764358257; cv=none; b=RsVYEAWwabVcmfI9igOitRvNhqVIhd5XQ/BIAZqtGoIBWlYdzRn6r8ZreIZGZ13IiNVGtNslsLiVYGx/JnRjSB7XsQ7Q5pJ1kTy/sV8WqlZAkjl40m/anCJLeyCZdHfMS7pSpjLDGfTPsfxUdKqbthdOb/6q2UXBmhyXRTvtuaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764356127; c=relaxed/simple;
-	bh=KdDJzl7xxKiyl6+TxJyvQZiLRbgKc0ABK6CvwwzEZVA=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GHfQjZ0ykiXddOu6HJpYXd2VzYP+QaSEWvOoBoBG9k9uc7jMDEXKHSzL3XYfmbIQpShrUclegKzwNtdb5pVtv6oSWI1dS2jvxITbZVt4JygpBNIP0FduB1LbZvBDmGfiGz/jl9haw0DY7OG5HVDf6GB9TxHUg0N2s78HmKYsTC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RjKq7tlq; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1764358257; c=relaxed/simple;
+	bh=7fDKOiPRL+jeUG4/faH/k6QmMbJQxTR6AB86PQKLOC4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=quaTrRBK2tyhpmDCO+gsKpOujHmfgCTbsfoZ21UsIwPYkGvN9duOBD1U9tDLhV2/XuG3tfznp78GzbZSCDxXRq1O45yGEWF5e3xVi5S2SAXtaenUvUDEAPiYt0k6bRskybp9CtFCoI9167b+DXi29PVyU7yfPT8aCBuIz2Mb4Qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DDZFa99T; arc=none smtp.client-ip=74.125.224.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RjKq7tlq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764356125; x=1795892125;
-  h=from:to:subject:date:message-id:in-reply-to:references:
-   mime-version:content-transfer-encoding;
-  bh=KdDJzl7xxKiyl6+TxJyvQZiLRbgKc0ABK6CvwwzEZVA=;
-  b=RjKq7tlq1OjokVBrHgJIFIbJjYrKDWH2KtJs22fzI31qlTIgUsYYyTOW
-   2BwBOnnxTyief19RJnXPkgDLOoZZBfgsHQ4E+SlDiYpsP/qEfdHR8D955
-   JH9hR6nSxGwX9mQekqr32yBkzimh/623rSOKjFWqIXRl0e6XnrHp45TCh
-   F4Et8TblDOOOcS/2Do+R4VSNz5LWBFB2N7GQppEfUemzWrmBtsnvx1gxC
-   iQoRr0U4I5gpvqZXwNAHARO5KrzORIzzZZLfY1UMWC/8swuXBeV6wsLww
-   /lr68PR67he4kb6QpNhj4w3SBSaIAE5h4K9KRkP3ztKQ15wSSYGtPme8c
-   Q==;
-X-CSE-ConnectionGUID: 1zmkqfxpSlCbB7Rp0kh/DA==
-X-CSE-MsgGUID: AKoyWUEERIOj4Ao8Rgjeow==
-X-IronPort-AV: E=McAfee;i="6800,10657,11627"; a="77856763"
-X-IronPort-AV: E=Sophos;i="6.20,234,1758610800"; 
-   d="scan'208";a="77856763"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2025 10:55:22 -0800
-X-CSE-ConnectionGUID: AWcDyf5WQZyH3lw4wKmOyA==
-X-CSE-MsgGUID: hCxERvQkQMq2busbixFmJg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,234,1758610800"; 
-   d="scan'208";a="230801963"
-Received: from black.igk.intel.com ([10.91.253.5])
-  by orviesa001.jf.intel.com with ESMTP; 28 Nov 2025 10:55:20 -0800
-Received: by black.igk.intel.com (Postfix, from userid 1003)
-	id 8B9E3A0; Fri, 28 Nov 2025 19:55:19 +0100 (CET)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>,
-	Mark Brown <broonie@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 1/2] spi: microchip-core: Refactor FIFO read and write handlers
-Date: Fri, 28 Nov 2025 19:52:39 +0100
-Message-ID: <20251128185518.3989250-2-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20251128185518.3989250-1-andriy.shevchenko@linux.intel.com>
-References: <20251128185518.3989250-1-andriy.shevchenko@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DDZFa99T"
+Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-63f97c4eccaso2000226d50.2
+        for <linux-spi@vger.kernel.org>; Fri, 28 Nov 2025 11:30:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764358255; x=1764963055; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5xAd+ASuEhvruiqqqS1VkXuxRaI3omsRzXSJff68rbE=;
+        b=DDZFa99Tm2JiLOrBFsHcpDYI9Bg6W2b+rcR1l42HOoRPvMnWm9xPmlDIPfDUZ6R4JB
+         MSRgCW/EvDBxZlQ2PMt3PSfQeUGqLsdKYqyTMqfDCkhM27Zi7iMzThgoG03zlKnkh00B
+         LtKy+tI5QHXTZCZKRVN7e5p9jUCKGokP0tI4CZpdXip30B+QaeAmwCcaHDxO0YW3AyCW
+         fZcLus5tuZYmnxl+ShtUvgFa31oN5RLeLiSfGJ8/mS5Bq0GWYdM5EO6l5Ow/+vQhSJ0b
+         LGKWjV/bp7B9jw3eRWxWCiSLOwnsEG+v9UhM985kMdKjo9uGSwQJ5ln/0yGsnbAOEZ77
+         7/gA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764358255; x=1764963055;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=5xAd+ASuEhvruiqqqS1VkXuxRaI3omsRzXSJff68rbE=;
+        b=G0J+xEznTrj6gQwg4QUEHJGNHel6K1+NgcuBkV9dGGCu5HBh7XW2+jY3GPFNMLa7Ta
+         RnurGMmgy4vzRL71q3S8TPcSaoV4h+k82ZqG9hl21rV1LV2Z1DIziEWiq+CDROf5NiHK
+         PweG7upH90VhDeSEhYfoATw4i1KN0PvtXgcS4Ut0P8w58jfFndD2TkOiU0/4EFL89B6C
+         24I9LXvsSZ7eFEOYrZzwmVp2nFM2PUI1F/ELDrro6r+Tci6AOb9sBpKumHi2jbnJ7Lmj
+         nr7X+zyz6G0jVaJxFk55/CrhlE7CGtH8AUTYJbx0pEdtjn7pf7cc1YWbYVRnFlQraCUW
+         X2sQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXtCGBAkRaTlq1S+fAR/2UlefoeMVK8GQ/ZPwTJaLSHtoRLzAYF1Yc992LAonNvSOczX9ZY930Eg3s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAaIBu0hjap4ejTzAzlrj9YtRruGX8XygjbL3gRSyJpLHDZOI/
+	cXez+7on87kF5uDFX91+7/vYJdMX0ddK4BwMQ2azSqY67jtFLmRTiULgKd4qe6nL1UJJCS/oDkf
+	Zy4e7PEpn+bzhL6sYEhT91dhkfF8p+zc=
+X-Gm-Gg: ASbGnctXvDdaTqdwpR4ySuXSeNYQHxm5YwWT7TYOoeTOkGf8MI9QUXkHjUsmngdykTu
+	vuBubbiZIiZnf6l6Zjfh9hakvem4eWpuLmhyTa5FKcaLiVYb2mGtCOX1FE0kd9f9ZgCz0kPUS+K
+	HqS5QAh9agKaq51tHyNhyVtJh0RhwYt7gqFMUPX5ee9tWNRfA708ZVVz3AJSCkL8crUvhSewY7I
+	nB782LLkoUAften1usiAHxg+iLEO1DjUjdoJUQG5VPVAbjiGb6eut1UmjbBEZojcHFCjw==
+X-Google-Smtp-Source: AGHT+IHnC8LPnhSfG+oQ9BnWocPWNMrndMWjmQBMW42OYy0Tfb+ry37q69w8RBuj3IVAcDntxKyjoACvfPod9mNmrPI=
+X-Received: by 2002:a53:c058:0:20b0:63f:abbe:3964 with SMTP id
+ 956f58d0204a3-64302a61a6dmr17349578d50.13.1764358255324; Fri, 28 Nov 2025
+ 11:30:55 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251128185518.3989250-1-andriy.shevchenko@linux.intel.com> <20251128185518.3989250-3-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20251128185518.3989250-3-andriy.shevchenko@linux.intel.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
+Date: Fri, 28 Nov 2025 20:30:43 +0100
+X-Gm-Features: AWmQ_bk9kRjlW72OY4DdLuUSzwXKVWlZA97eNqqfb6mT1rM3GqUOny9E1GJR1EE
+Message-ID: <CAOiHx==y-4Jjckr-KnwdmJhi=TR9_wzcHvNo8GAeUmJ43Y_bHw@mail.gmail.com>
+Subject: Re: [PATCH v4 2/2] spi: microchip-core: use XOR instead of ANDNOT to
+ simplify the logic
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>, Mark Brown <broonie@kernel.org>, 
+	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Make both handlers to be shorter and easier to understand.
-While at it, unify their style.
+On Fri, Nov 28, 2025 at 7:56=E2=80=AFPM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> Use XOR instead of ANDNOT to simplify the logic. The current approach
+> with (foo & BAR & ~baz) is harder to process than more usual pattern
+> for the comparing misconfiguration using ((foo ^ baz) & BAR) which
+> can be read as "find all different bits between foo and baz that are
+> related to BAR (mask)". Besides that it makes binary code shorter.
+>
+> Function                                     old     new   delta
+> mchp_corespi_setup                           103      99      -4
+>
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  drivers/spi/spi-microchip-core-spi.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/spi/spi-microchip-core-spi.c b/drivers/spi/spi-micro=
+chip-core-spi.c
+> index 98bf0e6cd00e..2f4b21ad56a7 100644
+> --- a/drivers/spi/spi-microchip-core-spi.c
+> +++ b/drivers/spi/spi-microchip-core-spi.c
+> @@ -161,7 +161,7 @@ static int mchp_corespi_setup(struct spi_device *spi)
+>                 return -EOPNOTSUPP;
+>         }
+>
+> -       if (spi->mode & SPI_MODE_X_MASK & ~spi->controller->mode_bits) {
+> +       if ((spi->mode ^ spi->controller->mode_bits) & SPI_MODE_X_MASK) {
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>
----
- drivers/spi/spi-microchip-core-spi.c | 31 +++++++++++-----------------
- 1 file changed, 12 insertions(+), 19 deletions(-)
+This changes the behavior: if a bit isn't set in spi->mode that is set
+in mode_bits, it would have been previously accepted, now it's
+refused. E.g. controller has (SPI_CPOL | SPI_CPHA), device only
+SPI_CPOL. 0x1 & 0x3 & ~0x3 =3D> 0, vs (0x1 ^ 0x3) & 0x3 =3D> 0x2
 
-diff --git a/drivers/spi/spi-microchip-core-spi.c b/drivers/spi/spi-microchip-core-spi.c
-index 892f066f0074..98bf0e6cd00e 100644
---- a/drivers/spi/spi-microchip-core-spi.c
-+++ b/drivers/spi/spi-microchip-core-spi.c
-@@ -97,15 +97,12 @@ static inline void mchp_corespi_read_fifo(struct mchp_corespi *spi, u32 fifo_max
- 		       MCHP_CORESPI_STATUS_RXFIFO_EMPTY)
- 			;
- 
-+		/* On TX-only transfers always perform a dummy read */
- 		data = readb(spi->regs + MCHP_CORESPI_REG_RXDATA);
-+		if (spi->rx_buf)
-+			*spi->rx_buf++ = data;
- 
- 		spi->rx_len--;
--		if (!spi->rx_buf)
--			continue;
--
--		*spi->rx_buf = data;
--
--		spi->rx_buf++;
- 	}
- }
- 
-@@ -127,23 +124,19 @@ static void mchp_corespi_disable_ints(struct mchp_corespi *spi)
- 
- static inline void mchp_corespi_write_fifo(struct mchp_corespi *spi, u32 fifo_max)
- {
--	int i = 0;
--
--	while ((i < fifo_max) &&
--	       !(readb(spi->regs + MCHP_CORESPI_REG_STAT) &
--		 MCHP_CORESPI_STATUS_TXFIFO_FULL)) {
--		u32 word;
--
--		word = spi->tx_buf ? *spi->tx_buf : 0xaa;
--		writeb(word, spi->regs + MCHP_CORESPI_REG_TXDATA);
-+	for (int i = 0; i < fifo_max; i++) {
-+		if (readb(spi->regs + MCHP_CORESPI_REG_STAT) &
-+		    MCHP_CORESPI_STATUS_TXFIFO_FULL)
-+			break;
- 
-+		/* On RX-only transfers always perform a dummy write */
- 		if (spi->tx_buf)
--			spi->tx_buf++;
-+			writeb(*spi->tx_buf++, spi->regs + MCHP_CORESPI_REG_TXDATA);
-+		else
-+			writeb(0xaa, spi->regs + MCHP_CORESPI_REG_TXDATA);
- 
--		i++;
-+		spi->tx_len--;
- 	}
--
--	spi->tx_len -= i;
- }
- 
- static void mchp_corespi_set_cs(struct spi_device *spi, bool disable)
--- 
-2.50.1
+If this is the actually intended behavior here, it is a fix and should
+carry a Fixes tag (the message below implies that).
 
+>                 dev_err(&spi->dev, "incompatible CPOL/CPHA, must match co=
+ntroller's Motorola mode\n");
+>                 return -EINVAL;
+>         }
+
+Best regards,
+Jonas

@@ -1,59 +1,62 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7712C21E8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5930326E6F6;
 	Fri, 28 Nov 2025 18:55:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764356124; cv=none; b=RjdHH0OX2R0orsdecRO0BGbRmo0wghq2+kUXZpZp5QYfTAqu1rUmNrXpac+CqAhuHdDYSQjf/rOVKEPq5IxN6eTIXVqeTvcJpUw2aBivfYoB96SV7yC41Qjx4xq3l82pjsWc0/l15ewSiWodzXWLCKApUr3FRXAG/G5RWhx2wcE=
+	t=1764356125; cv=none; b=lIfAYXGgI8vYkGr5OcZUojvJAFuY7VNcpeXmdi9xro/IiHKQkBgrtrxdmUfawBwdUuavw+DM4be1sh73a6YyoXs5+4fy7DnQJqD2zrvH4/BLwqW6EFy0uIrYMeTeIfToRXVpupYZ4ksciHDjAUjElH+q2q9x+7WJR/OnXjbRi/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764356124; c=relaxed/simple;
-	bh=7pjj0HOo51rH302CE+zNUdYttcd94eWKqHleihVdlr0=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=jOfvfblalUFViH5IxH5TA3+xkUM8LW1SilKa/nMPahWIOlrOGCNVwU3F15N2H9a0CxsgyW0IidCdojiPBYiFDlchbkb/QCxeuZvcuM/H4eF1xpCZWwE5j8soIpvXVMYxLaW2UNA+soWr3uB3Yd5Vqfo5h/qrSte6hK4aJ8qGMDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W7iOr+r5; arc=none smtp.client-ip=198.175.65.12
+	s=arc-20240116; t=1764356125; c=relaxed/simple;
+	bh=QTXFkDoItWuX3QVUDfL2ipcz4Tzy87snHGDqslonopc=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=J8ijFWwzA7unaPOL6P4C0ezTyzY/b0BGHsP20HoAJ4CDUz3bNeGoScIwtxx1OQCzCdkBkiYK1deIAiCaWWVpXtkkAFq0tFOpaQpaIQJ60fJXsDTAhjTAfDWfkRfjZjWM1xFk4NNwm1XCXXKWA/NJdPaRvMIelcnV6ppxZiDhGf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fsEsnzkA; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W7iOr+r5"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fsEsnzkA"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1764356123; x=1795892123;
-  h=from:to:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=7pjj0HOo51rH302CE+zNUdYttcd94eWKqHleihVdlr0=;
-  b=W7iOr+r5zNon5/ZwHQ/tgT+wN0/0ocxO0kRBn1vTewA07y1HmtAm5NOf
-   tVpke0l46NNGGhgnb5oGBQ+enSWp2bYkfqGESMscPQoJ1NHq9AEwVIV61
-   AKD9yGtilPxhN/32BDk2LtNtBysirAJSydU5E0ilu4y3N15voTuBeiVdd
-   s1ubDtY21jx5XyVJlc+TTe4dp4ll7yBPdXz9nHROXxmIqGBZcNOsUGDlp
-   hSImSmUgwBTrmHI7x52i1G6C/zgt1kRr+7fsRakRp6BDpU0yytIBdUmj/
-   1NHcud4nGBnsdy3bN950o7gUs2UnBH7depMwHh9dzSb1xknn6sbZrfVQf
-   g==;
-X-CSE-ConnectionGUID: RDR5WjNWRq+FTB8Q7OwypA==
-X-CSE-MsgGUID: PP1Y0E/MTZimx2yHOxHYew==
-X-IronPort-AV: E=McAfee;i="6800,10657,11627"; a="77856767"
+  h=from:to:subject:date:message-id:in-reply-to:references:
+   mime-version:content-transfer-encoding;
+  bh=QTXFkDoItWuX3QVUDfL2ipcz4Tzy87snHGDqslonopc=;
+  b=fsEsnzkAONubfq/ICnxEe1wFFrb+ZawLSCQlAa+32FjBBV6r5bJMChgi
+   KifaMPKzvwMMD/DrtAmv2/u296STAxn9/kc4wroPBFGzpD4xfy+V9wBHD
+   s9QjXSvk+lyIcmNNwRVzAD54QUwJSHF3MEGZlIQd00q1PHwf1n52Fis4J
+   mjMuSBBC+VAbR8gz5C/Ntd9Weh32A6xIRtg5h3e7an1F/R13Y3W5OXAV/
+   +GdTPvmaV9r/KzAQc1iY5KJvmzZVmhKYPkE5DCDzhibdI4s57C7RLJIKf
+   7LShvIPZ2SDAVr1gkPomFylGumsWyH9ffrEXcBVhAKvQUQ0BxSerIwECH
+   w==;
+X-CSE-ConnectionGUID: dX4O8sAuSH6sCJ6o5h67LQ==
+X-CSE-MsgGUID: YDpReluRSw2+pv7kV17HXg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11627"; a="66103470"
 X-IronPort-AV: E=Sophos;i="6.20,234,1758610800"; 
-   d="scan'208";a="77856767"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2025 10:55:22 -0800
-X-CSE-ConnectionGUID: m0uvi7MiQY2PpxNqLXULPg==
-X-CSE-MsgGUID: 9ke+ghsHQCSV+tyeRgMR9A==
+   d="scan'208";a="66103470"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2025 10:55:22 -0800
+X-CSE-ConnectionGUID: Am9LJefCT7eyET6GjVZA4g==
+X-CSE-MsgGUID: +VNEkxV3R5yFLv75Tu7smg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.20,234,1758610800"; 
-   d="scan'208";a="230801964"
+   d="scan'208";a="192641504"
 Received: from black.igk.intel.com ([10.91.253.5])
-  by orviesa001.jf.intel.com with ESMTP; 28 Nov 2025 10:55:20 -0800
+  by orviesa006.jf.intel.com with ESMTP; 28 Nov 2025 10:55:21 -0800
 Received: by black.igk.intel.com (Postfix, from userid 1003)
-	id 87B1F9F; Fri, 28 Nov 2025 19:55:19 +0100 (CET)
+	id 8FF63A1; Fri, 28 Nov 2025 19:55:19 +0100 (CET)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>,
 	Mark Brown <broonie@kernel.org>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 0/2] spi: microchip-core: Code improvements (part 2)
-Date: Fri, 28 Nov 2025 19:52:38 +0100
-Message-ID: <20251128185518.3989250-1-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v4 2/2] spi: microchip-core: use XOR instead of ANDNOT to simplify the logic
+Date: Fri, 28 Nov 2025 19:52:40 +0100
+Message-ID: <20251128185518.3989250-3-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20251128185518.3989250-1-andriy.shevchenko@linux.intel.com>
+References: <20251128185518.3989250-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -62,31 +65,33 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Here is the second part of the set of refactoring and cleaning it up.
+Use XOR instead of ANDNOT to simplify the logic. The current approach
+with (foo & BAR & ~baz) is harder to process than more usual pattern
+for the comparing misconfiguration using ((foo ^ baz) & BAR) which
+can be read as "find all different bits between foo and baz that are
+related to BAR (mask)". Besides that it makes binary code shorter.
 
-Changelog v4:
-- collected tags (Prajna)
-- dropped applied patches
-- added a new patch 2
+Function                                     old     new   delta
+mchp_corespi_setup                           103      99      -4
 
-v3: <20251127190031.2998705-1-andriy.shevchenko@linux.intel.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/spi/spi-microchip-core-spi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Changelog v3:
-- collected tags (Prajna)
-- restored dummy read in TX-only transfers
-
-v2: <20251126075558.2035012-1-andriy.shevchenko@linux.intel.com>
-
-Changelog v2:
-- dropped device property agnostic API conversion change (Mark)
-
-Andy Shevchenko (2):
-  spi: microchip-core: Refactor FIFO read and write handlers
-  spi: microchip-core: use XOR instead of ANDNOT to simplify the logic
-
- drivers/spi/spi-microchip-core-spi.c | 33 +++++++++++-----------------
- 1 file changed, 13 insertions(+), 20 deletions(-)
-
+diff --git a/drivers/spi/spi-microchip-core-spi.c b/drivers/spi/spi-microchip-core-spi.c
+index 98bf0e6cd00e..2f4b21ad56a7 100644
+--- a/drivers/spi/spi-microchip-core-spi.c
++++ b/drivers/spi/spi-microchip-core-spi.c
+@@ -161,7 +161,7 @@ static int mchp_corespi_setup(struct spi_device *spi)
+ 		return -EOPNOTSUPP;
+ 	}
+ 
+-	if (spi->mode & SPI_MODE_X_MASK & ~spi->controller->mode_bits) {
++	if ((spi->mode ^ spi->controller->mode_bits) & SPI_MODE_X_MASK) {
+ 		dev_err(&spi->dev, "incompatible CPOL/CPHA, must match controller's Motorola mode\n");
+ 		return -EINVAL;
+ 	}
 -- 
 2.50.1
 

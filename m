@@ -1,34 +1,59 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4801221770A
-	for <linux-spi@vger.kernel.org>; Fri, 28 Nov 2025 18:03:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7712C21E8;
+	Fri, 28 Nov 2025 18:55:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764352995; cv=none; b=aIesgLrwBjcmGzqEqxMPqxnHpc7z8W5MzE6F0qr+J8EqUM3GHn374ymtLMsnp/d/6npAd4RWAyZRC2Yr1quYAmUvjJaSvvxvxdjp4ZBGQ4hXouhIjgexhs8R1PRrDt3U+WoJlMSeE6mMt/I4n/U+mLqno2tIaPtMq8eH7He7vGA=
+	t=1764356124; cv=none; b=RjdHH0OX2R0orsdecRO0BGbRmo0wghq2+kUXZpZp5QYfTAqu1rUmNrXpac+CqAhuHdDYSQjf/rOVKEPq5IxN6eTIXVqeTvcJpUw2aBivfYoB96SV7yC41Qjx4xq3l82pjsWc0/l15ewSiWodzXWLCKApUr3FRXAG/G5RWhx2wcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764352995; c=relaxed/simple;
-	bh=32VxNtXAZnOAiHM85TIvKYhr8v4Dk3t6YzPEH3YR1Ys=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=XsFmnWf2kKfUtKsEHE3owQ7Go7FvQrTKkAp+s3J/QCUj4N+7BRsxRRC/pu8jL5cIalQGDQOO8ZkcGmf+6H9tRSh5mG+FD0rFhzMHwmJQtxiBo1kX+cgNs4bJG4RW8nkrnGfXvxYUGutrONrLyfQWHZL6jQcCUr49NsxRI+s810Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mqm44Kb9; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1764356124; c=relaxed/simple;
+	bh=7pjj0HOo51rH302CE+zNUdYttcd94eWKqHleihVdlr0=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=jOfvfblalUFViH5IxH5TA3+xkUM8LW1SilKa/nMPahWIOlrOGCNVwU3F15N2H9a0CxsgyW0IidCdojiPBYiFDlchbkb/QCxeuZvcuM/H4eF1xpCZWwE5j8soIpvXVMYxLaW2UNA+soWr3uB3Yd5Vqfo5h/qrSte6hK4aJ8qGMDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W7iOr+r5; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mqm44Kb9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8A1CC4CEF1;
-	Fri, 28 Nov 2025 18:03:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764352993;
-	bh=32VxNtXAZnOAiHM85TIvKYhr8v4Dk3t6YzPEH3YR1Ys=;
-	h=Subject:From:Date:To:From;
-	b=mqm44Kb9Mip5uUZwGq0k1jA0zA74RXqiVzPkD5PZBwF7U4KaJ3E4AFjQG07lJxohR
-	 cgilxtlhj48WtVZ8aGkuvY4nA/Mj2yPBPWk9UbakD0vRooGBKs7pXbn2bkx4ssPlLx
-	 tObbvVbg5tFxNtlJZMngn9DwoevR8apxUbc6fqalWjOrgKqluBQAfdCpW7SGl8g7kL
-	 R31TlKYMqCKmGFJWEtxF4dH1DT9BPuzsyPGK2T2LaNKuKn7jfVspK9Eu8J68U8lIX4
-	 ayiWd/gnQsIJvhyIrgXtu70yXQ8FU/4Y4kZpRoPjHAQCeKrgq01ONE7MFQhy9IxUZn
-	 iCaM/WYcb8Oxw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BB8EB380692A;
-	Fri, 28 Nov 2025 18:00:16 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W7iOr+r5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764356123; x=1795892123;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=7pjj0HOo51rH302CE+zNUdYttcd94eWKqHleihVdlr0=;
+  b=W7iOr+r5zNon5/ZwHQ/tgT+wN0/0ocxO0kRBn1vTewA07y1HmtAm5NOf
+   tVpke0l46NNGGhgnb5oGBQ+enSWp2bYkfqGESMscPQoJ1NHq9AEwVIV61
+   AKD9yGtilPxhN/32BDk2LtNtBysirAJSydU5E0ilu4y3N15voTuBeiVdd
+   s1ubDtY21jx5XyVJlc+TTe4dp4ll7yBPdXz9nHROXxmIqGBZcNOsUGDlp
+   hSImSmUgwBTrmHI7x52i1G6C/zgt1kRr+7fsRakRp6BDpU0yytIBdUmj/
+   1NHcud4nGBnsdy3bN950o7gUs2UnBH7depMwHh9dzSb1xknn6sbZrfVQf
+   g==;
+X-CSE-ConnectionGUID: RDR5WjNWRq+FTB8Q7OwypA==
+X-CSE-MsgGUID: PP1Y0E/MTZimx2yHOxHYew==
+X-IronPort-AV: E=McAfee;i="6800,10657,11627"; a="77856767"
+X-IronPort-AV: E=Sophos;i="6.20,234,1758610800"; 
+   d="scan'208";a="77856767"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2025 10:55:22 -0800
+X-CSE-ConnectionGUID: m0uvi7MiQY2PpxNqLXULPg==
+X-CSE-MsgGUID: 9ke+ghsHQCSV+tyeRgMR9A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,234,1758610800"; 
+   d="scan'208";a="230801964"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by orviesa001.jf.intel.com with ESMTP; 28 Nov 2025 10:55:20 -0800
+Received: by black.igk.intel.com (Postfix, from userid 1003)
+	id 87B1F9F; Fri, 28 Nov 2025 19:55:19 +0100 (CET)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>,
+	Mark Brown <broonie@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4 0/2] spi: microchip-core: Code improvements (part 2)
+Date: Fri, 28 Nov 2025 19:52:38 +0100
+Message-ID: <20251128185518.3989250-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -36,39 +61,32 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <176435281539.748759.5142514739059084054.git-patchwork-summary@kernel.org>
-Date: Fri, 28 Nov 2025 18:00:15 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-Hello:
+Here is the second part of the set of refactoring and cleaning it up.
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (for-next):
+Changelog v4:
+- collected tags (Prajna)
+- dropped applied patches
+- added a new patch 2
 
-Series: spi: microchip-core: Code improvements
-  Submitter: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1028421
-  Lore link: https://lore.kernel.org/r/20251127190031.2998705-1-andriy.shevchenko@linux.intel.com
-    Patches: [v3,1/6] spi: microchip-core: use min() instead of min_t()
-             [v3,3/6] spi: microchip-core: Replace dead code (-ENOMEM error message)
-             [v3,4/6] spi: microchip-core: Utilise temporary variable for struct device
-             [v3,6/6] spi: microchip-core: Remove unneeded PM related macro
+v3: <20251127190031.2998705-1-andriy.shevchenko@linux.intel.com>
 
-Patch: spi: ch341: fix out-of-bounds memory access in ch341_transfer_one
-  Submitter: Tianchu Chen <tianchu.chen@linux.dev>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1028565
-  Lore link: https://lore.kernel.org/r/20251128160630.0f922c45ec6084a46fb57099@linux.dev
+Changelog v3:
+- collected tags (Prajna)
+- restored dummy read in TX-only transfers
 
+v2: <20251126075558.2035012-1-andriy.shevchenko@linux.intel.com>
 
-Total patches: 5
+Changelog v2:
+- dropped device property agnostic API conversion change (Mark)
+
+Andy Shevchenko (2):
+  spi: microchip-core: Refactor FIFO read and write handlers
+  spi: microchip-core: use XOR instead of ANDNOT to simplify the logic
+
+ drivers/spi/spi-microchip-core-spi.c | 33 +++++++++++-----------------
+ 1 file changed, 13 insertions(+), 20 deletions(-)
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.50.1
 

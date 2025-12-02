@@ -1,285 +1,155 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2551A937;
-	Mon,  1 Dec 2025 20:17:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E4BB23E229
+	for <linux-spi@vger.kernel.org>; Tue,  2 Dec 2025 02:21:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764620270; cv=none; b=B50ephAPZ+eEOZ5tdzmhw5bhT0ZokbDjCF4NqG7IgrBDKpEPsZhZYCtSAi6eWUiFlTs75Z4pNti8y8tswCokboCtC8ZfmN8xd3WGCQ/r53oZ/VaL1+9XLlAA9mODkF8FPdtiC0n7e0W485I7ARnsJdr8/3FSFHcAjCHmznKdAxk=
+	t=1764642102; cv=none; b=DIXpywRWIMPz+Dqzd4vQDpbtGMuO0avhLmWs8QN+V6U6TLn2o7yhoXRGATjAekBH46KSdnGbCGiOXr0SPEAZUe2nGEdzOT5jRmDxuFJtZm8Oyh3XwW1q+XkosVjbb68RxSs8dFuqg+VQEORDeHeF8Xsu/TAQowpC3kWDN5qi5zo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764620270; c=relaxed/simple;
-	bh=duGRah4bKaGeEI9oxXWIU+QwOOdpG2+AFL0aw7dP2Q8=;
-	h=Message-ID:From:To:Cc:Subject:Date; b=ZRUiHyGapacdR8OPjlGfXWJDtKYZiBhbDzcaxgEBMlsSjqUoUFCl/XaZPUART46mGOKLEXqEUrDWRlmaceAyMFIzGisrgJVB/ikWYbjm+KSW1lUaah/WiHoiiuXfmT23fs64s2cOaQrAUIm+6uENkgSLc/hEfH53ZR5Xx2JFmWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TgiIi9xa; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1764642102; c=relaxed/simple;
+	bh=hQZOLk8i9DVbMZG4cJemIzrR34rWhbVDk46gXL5wP1c=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=d5Z3Q0BndfY8D4ZWdSKDuPBEroOXiSG01CgzDiEnjq3pd5oZzGs8UnzsnCa2Ufq6JzIkMvWVv5KecVguMmvgdCsgcgvmQB9va+EAWuj7Jqfo71rB0sv0Z/gsFOkxbVirCCxai2NZIzTpTnnL41XDVdsB3MgqzK2y2NNTapKyCYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=sx6YwzeU; arc=none smtp.client-ip=209.85.210.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TgiIi9xa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0A9AC4CEF1;
-	Mon,  1 Dec 2025 20:17:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764620267;
-	bh=duGRah4bKaGeEI9oxXWIU+QwOOdpG2+AFL0aw7dP2Q8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=TgiIi9xaWxibjsHi/m5GiNzQy2M5/WTy/B3O0W7u1+PJ1MDFY7VF2iY296eq6v4tO
-	 wiIFOfYqVirjK3ETgRtxxKzVlLgsB2rpemyjk0XITGuNRhvmlF6LVkuB7k2Ujbb00p
-	 yXSEFvlnsgocIXlG09X80w6GKiN2wHg66xeK3eQM7UN5QMiaL/prkwNjjN5ch4GtIN
-	 iNqGBFHfW7h4SZjl6rDkXLuSFjr7/kF0ys664dG2/BZOFnFNVXY28piYRI0p7Pk1s4
-	 sLPHx2UKrg8qEWWxJqOoHwGCvyOA+PsOreEGxjFyWZ4Sjd+hxFdTiiNUPwu3IEItR+
-	 7LzDsDjdjxwuw==
-Message-ID: <70ee20cc564827dd1636960e670a48af@kernel.org>
-From: Mark Brown <broonie@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
-Subject: [GIT PULL] SPI updates for v6.19
-Date: Mon, 01 Dec 2025 20:17:32 +0000
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="sx6YwzeU"
+Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-7c730af8d69so2835552a34.1
+        for <linux-spi@vger.kernel.org>; Mon, 01 Dec 2025 18:21:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1764642099; x=1765246899; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=doomhoJuMMF1QAGOVBRmzRBJ94ihy9fy+VenqVEanXk=;
+        b=sx6YwzeUVYadh0Q57SwMdDnFTueFYPjpPy19P7Aj3904i8KlIhg51jWTnnhMVhx1i2
+         uwRh/jmH6NthheYjEZ2I/Wu1teDlaGsbxUxMSoopfppBX0UGFYmOhXRQXPXEZ6DrSbZD
+         I6fm2OmtcrwdI/7R/Q0LXE1agCSL1AAeN1pTpfGMdiYAsQZTJANzQa2MISXgOezXZl6f
+         g5vQguvBFq61poVABd3HBaWWhi0hzYcPYP/MGbDJVUaFa4yhCpK8av25RbDHtB36xzDa
+         R1EygurEnRfmpzzjpOnx+Wlv7XRYGPnpNdRRmzKO+EP53dMweFAL+uk92AIzHbO6aKW4
+         YpFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764642099; x=1765246899;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=doomhoJuMMF1QAGOVBRmzRBJ94ihy9fy+VenqVEanXk=;
+        b=g4UFYrPKD5obcMRBRF2ymFYEMnsBJgStWq8jXwkp5pe8MxcURvygL6J+ksQ1B8pETs
+         yXbsbVPV3GlwkmkBIpOFdWo61eFHNgngT8karb8sJtcDf6CzDcKu45fgcHbBYDQKieuo
+         0wjdCKI8D6lKF/+ov2g3sF+VXC6sjLisGKtSLHq9+N/o6IWeSXgjNKDCq3HFWptt5vaV
+         s5kPXYzok4j666kHwrVmDk9wUqS+SPQoCvWqRKDppIflIonzm//nZ/Vg3nlooMGSi5jn
+         FMcOOWZGgnThOJA4we80Q0F/J+H6Xc3ArGeaMg9w3DH4w2zl9pGObyFjS1OnEGP4wnT8
+         J2HA==
+X-Forwarded-Encrypted: i=1; AJvYcCV2hF0V/AkWD7vCQk8sunnVf7SG0QKUUaSFFpA+EOIO2ix0xyyrlassKs6rQuIuVmrxVkdmHSLr8fY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywi/ES+7bv5J2aAm26YGTFUwAfx2uSUrXPc91zUg2Rq1PkbbabU
+	ldiVJDL9Pze8GkGD+NLylT2ld15wqDCF0qGNqtiriSH9Jq/SgtKzrJbifeJaCVyFmr0=
+X-Gm-Gg: ASbGncsCfv/EqX/iBxiLJAbOwI+Sz7QiaY/IQc5p1Jj39KUZADowilSWSu+8qQAEZH2
+	eYZOPI/egynJkZ51quO/xVTPNWLW45ilJWgg8b8568yWTggZEEyIbzDSLnqqTCPOcaF8a+MfeDz
+	Mtzze2odQbP7J00tQsbDdJklpJ59Q2BmctlQ2kx+E6wK+t+yo1XQag41O8sKJ5t9qZ+7YYtJmjQ
+	ZchZo0Eeu7asEZ8r8i//PfA+3iDRcj4643U2G6bwLNaaffrktjfPSJJbQmndT9Jh5dNfiIn5XJS
+	V24gM+xyDF0qfUMHbqkSBqq7i4FVG6AMEDAIAmQ3lpNazPtGTaBRLDsEbcxrG1XXAtNuFGKvRm3
+	bLyJKgchy9mEAaFXbt4B8BJQBkPax5QBMoJX8wNYunBJCLEgSAE7evoBD8z4EMmSKQp1HqUv9nT
+	YH/JkRMfFCrhRPgg==
+X-Google-Smtp-Source: AGHT+IGYdhQZHjywqEbS7m4fq8WaqNIMbtnS2wILUvY6Euq1m9AKjcj01QT+B7Mu/1rPB/uVooCz6g==
+X-Received: by 2002:a05:6830:4118:b0:7c7:10ca:bf with SMTP id 46e09a7af769-7c7c410fc5dmr19052593a34.10.1764642099535;
+        Mon, 01 Dec 2025 18:21:39 -0800 (PST)
+Received: from [127.0.1.1] ([2600:8803:e7e4:500:b67b:16c:f7ae:4908])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-3f0dca0475esm6651747fac.1.2025.12.01.18.21.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Dec 2025 18:21:39 -0800 (PST)
+From: David Lechner <dlechner@baylibre.com>
+Date: Mon, 01 Dec 2025 20:20:39 -0600
+Subject: [PATCH v3 1/7] spi: dt-bindings: Add data-lanes property
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251201-spi-add-multi-bus-support-v3-1-34e05791de83@baylibre.com>
+References: <20251201-spi-add-multi-bus-support-v3-0-34e05791de83@baylibre.com>
+In-Reply-To: <20251201-spi-add-multi-bus-support-v3-0-34e05791de83@baylibre.com>
+To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Marcelo Schmitt <marcelo.schmitt@analog.com>, 
+ Michael Hennerich <michael.hennerich@analog.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, Andy Shevchenko <andy@kernel.org>
+Cc: Sean Anderson <sean.anderson@linux.dev>, linux-spi@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-iio@vger.kernel.org, David Lechner <dlechner@baylibre.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2378; i=dlechner@baylibre.com;
+ h=from:subject:message-id; bh=hQZOLk8i9DVbMZG4cJemIzrR34rWhbVDk46gXL5wP1c=;
+ b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBpLk0D0p4cZWkK6Mc3W7w2xdA3t8b6/WIkrYxAg
+ DacFRekNumJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaS5NAwAKCRDCzCAB/wGP
+ wGUJB/4p+CRbrTI2i7n3RLRe0FCrdrtB2N75kINuMC6YnhaephfWlXEIEmICc09LUccKbGQrzdV
+ J6q1bw4PL6rk4etxr6BUlabnejzYH7nObG3HJ913UwtN3kgWqjZy7+FipWVk5smwfZoT4wXymBk
+ 4uoHyvA8smaC+vj32EAEqZsWI+o62VXAz2aADlc6+TiSS7cjpwBhpOyZE3JqLVKFmb7evZNy9RO
+ lbKnJAcApiJxLNMKAdR4x+/yYtll7JXEmnG5YiKYLSs0ZDvhxDQ3wdlfmq5ZvZA5R+EeZ1uWj/7
+ nrFrKt01cX6eF55TD5ZS3V+GWn99HHgvHbDmZgbuLNGJ18X4
+X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
+ fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
 
-The following changes since commit ac3fd01e4c1efce8f2c054cdeb2ddd2fc0fb150d:
+Add a data-lanes property to the spi-peripheral-props binding to
+allow specifying the SPI data lane or lanes that a peripheral is
+connected to in cases where the SPI controller has more than one
+physical SPI data lane.
 
-  Linux 6.18-rc7 (2025-11-23 14:53:16 -0800)
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+---
+v3 changes:
+* Renamed spi-buses to data-lanes to reuse existing common property name.
+* Added to description to clarify index is peripheral and value is
+  controller.
+v2 changes:
+* Renamed property from spi-buses to spi-data-buses to make it clear
+  that we are only talking about the SDI/SDO lines and not the entire
+  SPI bus (SCK, CS, etc).
+* Fixed prefix order in subject.
 
-are available in the Git repository at:
+This patch has been seen before in a different series from Sean [1].
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-v6.19
+[1]: https://lore.kernel.org/linux-spi/20250616220054.3968946-2-sean.anderson@linux.dev/
 
-for you to fetch changes up to cb5c2eb459f4c98d584eaf3d3ea7c3612385d081:
+Changes:
+* Added maxItems. (8 is the most I've seen so far on an ADC)
+* Tweaked the description a bit.
+---
+ .../devicetree/bindings/spi/spi-peripheral-props.yaml      | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-  spi: microchip-core: Refactor FIFO read and write handlers (2025-11-28 18:03:43 +0000)
+diff --git a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
+index 8b6e8fc009dbdc80978f3afef84ddc688ade4348..a2d1b3d82799f6e93e274711eb57f3739eb8f405 100644
+--- a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
++++ b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
+@@ -89,6 +89,20 @@ properties:
+     description:
+       Delay, in microseconds, after a write transfer.
+ 
++  data-lanes:
++    description:
++      Array of data lane numbers that describes which SPI data lanes of the
++      controller are connected to the peripheral. The index in the array
++      corresponds to the lane on the peripheral and the value corresponds to
++      the lane on the controller. This only applies to peripherals connected to
++      specialized SPI controllers that have multiple SPI data lanes (a set of
++      independent SDI/SDO lines each with its own serializer) on a single
++      controller.
++    $ref: /schemas/types.yaml#/definitions/uint32-array
++    minItems: 1
++    maxItems: 8
++    default: [0]
++
+   stacked-memories:
+     description: Several SPI memories can be wired in stacked mode.
+       This basically means that either a device features several chip
 
-----------------------------------------------------------------
-spi: Updates for v6.19
+-- 
+2.43.0
 
-This release is almost entirely new drivers, with a couple of small
-changes in generic code.  The biggest individual update is a rename of
-the existing Microchip driver and the addition of a new driver for the
-silicon SPI controller in their PolarFire SoCs.  The overlap between the
-soft IP supported by the current driver and this new one is regrettably
-all in the IP and not in the register interface offered to software.
-
- - Add a time offset parameter for offloads, allowing them to be defined
-   in relation to each other.  This is useful for IIO type applcations
-   where you trigger an operation then read the result after a delay.
- - Add a tracepoint for flash exec_ops, bringing the flash support more
-   in line with the debuggability of vanilla SPI.
- - Support for Airoha EN7523, Arduino MCUs, Aspeed AST2700, Microchip
-   PolarFire SPI controllers, NXP i.MX51 ECSPI target mode, Qualcomm
-   IPQ5414 and IPQ5332, Renesas RZ/T2H, RZ/V2N and RZ/2NH and SpacemiT K1
-   QuadSPI.
-
-There's also a small set of ASoC cleanups that I mistakenly applied to
-the SPI tree and then put more stuff on top of before it was brought to
-my attention, sorry about that.
-
-----------------------------------------------------------------
-Alex Elder (7):
-      spi: dt-bindings: fsl-qspi: support SpacemiT K1
-      spi: dt-bindings: fsl-qspi: add optional resets
-      spi: fsl-qspi: add optional reset support
-      spi: fsl-qspi: switch predicates to bool
-      spi: fsl-qspi: add a clock disable quirk
-      spi: fsl-qspi: introduce sfa_size devtype data
-      spi: fsl-qspi: support the SpacemiT K1 SoC
-
-Andy Shevchenko (6):
-      spi: microchip-core: use min() instead of min_t()
-      spi: microchip-core: Replace dead code (-ENOMEM error message)
-      spi: microchip-core: Utilise temporary variable for struct device
-      spi: microchip-core: Use SPI_MODE_X_MASK
-      spi: microchip-core: Remove unneeded PM related macro
-      spi: microchip-core: Refactor FIFO read and write handlers
-
-Axel Haslam (1):
-      spi: offload: Add offset parameter
-
-Bartosz Golaszewski (1):
-      spi: davinci: remove platform data header
-
-Benoît Monin (2):
-      spi: dw: rename the spi controller to ctlr
-      spi: dw: add target mode support
-
-Can Peng (1):
-      spi: spi-qpic-snand: make qcom_spi_ecc_engine_ops_pipelined const
-
-Carlos Song (2):
-      spi: imx: add i.MX51 ECSPI target mode support
-      spi: imx: add 16/32 bits per word support for target PIO mode
-
-Chin-Ting Kuo (11):
-      spi: aspeed: Update clock selection strategy
-      spi: aspeed: Improve timing calibration algorithm for AST2600 platform
-      spi: aspeed: Force default address decoding range assignment for each CS
-      spi: aspeed: Centralize address decoding region management
-      spi: aspeed: Add per-platform adjust_window callback for decoding range
-      spi: aspeed: Only map necessary address window region
-      spi: aspeed: Use devm_iounmap() to unmap devm_ioremap() memory
-      spi: aspeed: Enable Quad SPI mode for page program
-      spi: dt-bindings: aspeed,ast2600-fmc: Add AST2700 SoC support
-      spi: aspeed: Use phys_addr_t for bus addresses to support 64-bit platforms
-      spi: aspeed: Add support for the AST2700 SPI controller
-
-Clark Wang (1):
-      spi: imx: remove CLK calculation and check for target mode
-
-Colin Ian King (1):
-      spi: aspeed: fix spelling mistake "triming" -> "trimming"
-
-Cosmin Tanislav (11):
-      spi: rzv2h-rspi: make resets optional
-      spi: rzv2h-rspi: make FIFO size chip-specific
-      spi: rzv2h-rspi: make clocks chip-specific
-      spi: rzv2h-rspi: move register writes out of rzv2h_rspi_setup_clock()
-      spi: rzv2h-rspi: avoid recomputing transfer frequency
-      spi: rzv2h-rspi: make transfer clock rate finding chip-specific
-      spi: rzv2h-rspi: add support for using PCLK for transfer clock
-      spi: rzv2h-rspi: add support for variable transfer clock
-      spi: rzv2h-rspi: add support for loopback mode
-      spi: dt-bindings: renesas,rzv2h-rspi: document RZ/T2H and RZ/N2H
-      spi: rzv2h-rspi: add support for RZ/T2H and RZ/N2H
-
-Dan Carpenter (2):
-      spi: aspeed: Fix an IS_ERR() vs NULL bug in probe()
-      spi: Fix potential uninitialized variable in probe()
-
-Geert Uytterhoeven (1):
-      spi: microchip: Enable compile-testing for FPGA SPI controllers
-
-Johan Hovold (4):
-      ASoC: stm32: sai: fix device leak on probe
-      ASoC: stm32: sai: fix clk prepare imbalance on probe failure
-      ASoC: stm32: sai: fix OF node leak on probe
-      ASoC: stm32: sai: clean up probe error path
-
-Jonas Gorski (1):
-      spi: bcm63xx: drop wrong casts in probe()
-
-Jun Guo (2):
-      dt-bindings: spi: spi-cadence: update DT binding docs to support cix sky1 SoC
-      spi: spi-cadence: supports transmission with bits_per_word of 16 and 32
-
-Lad Prabhakar (2):
-      spi: dt-bindings: renesas,rzv2h-rspi: Document RZ/V2N SoC support
-      spi: dt-bindings: renesas,rzv2h-rspi: Document RZ/V2N SoC support
-
-Longbin Li (1):
-      spi: sophgo: Fix incorrect use of bus width value macros
-
-Lukas Bulwahn (1):
-      MAINTAINERS: adjust file entry in RISC-V MICROCHIP SUPPORT
-
-Mark Brown (14):
-      Merge existing fixes from spi/for-6.18 into new branch
-      spi: offload: Add offset parameter
-      spi: aspeed: Improve clock, timing and address
-      Add target mode support for the DesignWare SPI
-      spi: airoha: driver fixes & improvements
-      spi: tegra210-quad: Improve timeout handling under
-      spi: enable the SpacemiT K1 SoC QSPI
-      spi-cadence: support transmission with
-      Add support for Microchip CoreSPI Controller
-      spi: aspeed: Add AST2700 SoC support and Quad SPI
-      Add RSPI support for RZ/T2H and RZ/N2H
-      ASoC: stm32: sai: fix device and OF node leaks on
-      spi: airoha: add support of en7523 SoC (for 6.19)
-      spi: microchip-core: Code improvements
-
-Md Sadre Alam (2):
-      spi: dt-bindings: spi-qpic-snand: Add IPQ5424 compatible
-      spi: dt-bindings: spi-qpic-snand: Add IPQ5332 compatible
-
-Mikhail Kshevetskiy (11):
-      spi: airoha: remove unnecessary restriction length
-      spi: airoha: remove unnecessary switch to non-dma mode
-      spi: airoha: unify dirmap read/write code
-      spi: airoha: support of dualio/quadio flash reading commands
-      spi: airoha: avoid setting of page/oob sizes in REG_SPI_NFI_PAGEFMT
-      spi: airoha: reduce the number of modification of REG_SPI_NFI_CNFG and REG_SPI_NFI_SECCUS_SIZE registers
-      spi: airoha: set custom sector size equal to flash page size
-      spi: airoha: avoid reading flash page settings from SNFI registers during driver startup
-      spi: airoha: buffer must be 0xff-ed before writing
-      spi: airoha-snfi: en7523: workaround flash damaging if UART_TXD was short to GND
-      spi: dt-bindings: airoha: add compatible for EN7523
-
-Prajna Rajendra Kumar (3):
-      spi: microchip: rename driver file and internal identifiers
-      spi: dt-binding: document Microchip CoreSPI
-      spi: add support for microchip "soft" spi controller
-
-Riccardo Mereu (2):
-      dt-bindings: trivial-devices: add arduino spi mcu interface
-      spi: spidev: add compatible for arduino spi mcu interface
-
-Sean Anderson (1):
-      spi: spi-mem: Trace exec_op
-
-Tianchu Chen (1):
-      spi: ch341: fix out-of-bounds memory access in ch341_transfer_one
-
-Tomer Maimon (1):
-      spi: dt-bindings: nuvoton,npcm-pspi: Convert to DT schema
-
-Vishwaroop A (3):
-      spi: tegra210-quad: Fix timeout handling
-      spi: tegra210-quad: Refactor error handling into helper functions
-      spi: tegra210-quad: Check hardware status on timeout
-
-Wolfram Sang (1):
-      spi: dt-bindings: don't check node names
-
-Zhongqiu Han (1):
-      spi: tle62x0: Add newline to sysfs attribute output
-
- .../bindings/spi/airoha,en7581-snand.yaml          |   7 +-
- .../bindings/spi/aspeed,ast2600-fmc.yaml           |   4 +-
- .../devicetree/bindings/spi/fsl,spi-fsl-qspi.yaml  |  21 +-
- .../bindings/spi/microchip,mpfs-spi.yaml           |  70 +-
- .../devicetree/bindings/spi/nuvoton,npcm-pspi.txt  |  36 -
- .../devicetree/bindings/spi/nuvoton,npcm-pspi.yaml |  72 ++
- .../bindings/spi/qcom,spi-qpic-snand.yaml          |   2 +
- .../bindings/spi/renesas,rzv2h-rspi.yaml           |  65 +-
- .../devicetree/bindings/spi/snps,dw-apb-ssi.yaml   |   2 +-
- .../devicetree/bindings/spi/spi-cadence.yaml       |   1 +
- .../devicetree/bindings/spi/spi-controller.yaml    |   2 +-
- .../devicetree/bindings/trivial-devices.yaml       |   2 +
- MAINTAINERS                                        |   3 +-
- drivers/spi/Kconfig                                |  31 +-
- drivers/spi/Makefile                               |   3 +-
- drivers/spi/spi-airoha-snfi.c                      | 410 ++++++-----
- drivers/spi/spi-aspeed-smc.c                       | 747 ++++++++++++++++-----
- drivers/spi/spi-bcm63xx.c                          |   4 +-
- drivers/spi/spi-cadence.c                          | 106 ++-
- drivers/spi/spi-ch341.c                            |   2 +-
- drivers/spi/spi-davinci.c                          |  64 +-
- drivers/spi/spi-dw-bt1.c                           |   4 +-
- drivers/spi/spi-dw-core.c                          | 188 +++---
- drivers/spi/spi-dw-dma.c                           |  22 +-
- drivers/spi/spi-dw-mmio.c                          |   9 +-
- drivers/spi/spi-dw-pci.c                           |   8 +-
- drivers/spi/spi-dw.h                               |  12 +-
- drivers/spi/spi-fsl-qspi.c                         |  88 ++-
- drivers/spi/spi-imx.c                              |  58 +-
- drivers/spi/spi-mem.c                              |   5 +
- drivers/spi/spi-microchip-core-spi.c               | 429 ++++++++++++
- drivers/spi/{spi-microchip-core.c => spi-mpfs.c}   | 207 +++---
- drivers/spi/spi-offload-trigger-pwm.c              |   3 +
- drivers/spi/spi-qpic-snand.c                       |   2 +-
- drivers/spi/spi-rzv2h-rspi.c                       | 303 +++++++--
- drivers/spi/spi-sg2044-nor.c                       |   4 +-
- drivers/spi/spi-tegra210-quad.c                    | 174 +++--
- drivers/spi/spi-tle62x0.c                          |   2 +-
- drivers/spi/spidev.c                               |   2 +
- include/linux/platform_data/spi-davinci.h          |  73 --
- include/linux/spi/offload/types.h                  |   9 +
- include/trace/events/spi-mem.h                     | 106 +++
- sound/soc/stm/stm32_sai.c                          |  14 +-
- sound/soc/stm/stm32_sai_sub.c                      |  57 +-
- 44 files changed, 2519 insertions(+), 914 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/spi/nuvoton,npcm-pspi.txt
- create mode 100644 Documentation/devicetree/bindings/spi/nuvoton,npcm-pspi.yaml
- create mode 100644 drivers/spi/spi-microchip-core-spi.c
- rename drivers/spi/{spi-microchip-core.c => spi-mpfs.c} (68%)
- delete mode 100644 include/linux/platform_data/spi-davinci.h
- create mode 100644 include/trace/events/spi-mem.h

@@ -1,44 +1,51 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6003270557;
-	Tue,  2 Dec 2025 16:28:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D76EA293C4E;
+	Tue,  2 Dec 2025 16:36:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764692910; cv=none; b=PLYqTcoxGK4850qLhRNp1V/d35n/oiNldGUuFLXn6+UONHLtvNrEY40/DwKTc5gCtefi7NEz1Ya9tI6E88appZbTRu+HWKiRs5JdRvWXT/21yst4qIFsTXGsKjbEZxVoKF0Lp8vVtSxnYBMNBtjusL6y/SEIJ//sFrtpy7bIbvg=
+	t=1764693413; cv=none; b=Qenrw5+ivwwK0PpEgMylUyMzJc8pV4/9/GVFEaL5Mmu/gdOQ+LXFf6FIlZzx0W9TGyTUR97wOoB828uVxlEIghuCP48b4TmegYuYEwkvKF/fKrSqJvRV8ENPpnOBAiGC8r5QRTVyf8e2LiorNDpWjh97CIlHNS9sXKoezASxjUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764692910; c=relaxed/simple;
-	bh=bMdsKnyhcJs9VfP6ltjW1PuLp0n8+YA6JBJWKjztIQE=;
+	s=arc-20240116; t=1764693413; c=relaxed/simple;
+	bh=83GFMtXEDYJO/Zm4n1Zxl4KGegW2MOstk7NxnWv3J1I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ktpky5KOx3jaG3Gff9eswqWVk5YhMhX2McgRYYq9xZXOeTLYXBquRRIicRmzzUPF0traOM9WPbezU/GynmPZ7XFGxQFcg8TqijMUoZLc3/uJiGgfG3NIKaMgNVNMtTcnBc8tHbYLaTOUODsY1D843Qa9+I0NfJfi0p7aQGpeko8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YTeaHskc; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=t/HMEerR0j3AeZTE9nF/o7nqe3/EaGzLHSKY2aSO8ttoCvHC1g2jfAJi+t/3O6tRRR86JCMI7pTZmV9LiJxt5zivB077YD2sLRoT6/ygNq6qVF8FF1LtZ7eyoBT6pLc+09Xm4atqIKeXLc4eQjlKz08SVoJhIajQ9TI+zWftBTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dAoFrGeV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YTeaHskc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF294C4CEF1;
-	Tue,  2 Dec 2025 16:28:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dAoFrGeV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0D1BC116B1;
+	Tue,  2 Dec 2025 16:36:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764692910;
-	bh=bMdsKnyhcJs9VfP6ltjW1PuLp0n8+YA6JBJWKjztIQE=;
+	s=k20201202; t=1764693412;
+	bh=83GFMtXEDYJO/Zm4n1Zxl4KGegW2MOstk7NxnWv3J1I=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YTeaHskcMr7V4e4oRUflCmsQK79rRG0s4+sy/HW0MYk+5wuws6jJk/nX1K4ZNUal8
-	 sX2gRP/K6zrkRdU3qW0AdVk2NCCGwePDaOfXFmQbzNozXcVJ1C6e/cIE3NvDwyn2Fk
-	 PRFF7H7wg/8QGBIi2vWIb2ndLyujNNrfRWyFdpn0l61LgVsTEcabQyE7cX8lS2GaEN
-	 48Gp+JnsKznxNE0pXVF5j+mYwDOcOoBLCIeZvD5y9pTEE2Dhg2jAnDmNAv7R46lW8T
-	 yq73BGj+Naw8v1nyx+EgMFZvdlEuUZV7taJNh5y8ySmV/P7zW2RxXj2MTge1dMZq9m
-	 4lWSxj3PEdzCw==
-Date: Tue, 2 Dec 2025 16:28:25 +0000
+	b=dAoFrGeVtYJbHrr+45DEpeJsjpFtcRh3hpTT8UcGAld18NrWGF/hf8Xu2/mZY6RgJ
+	 LgSBATGoq+e4307aEGN6nI2PWs3SLKf++NKSTjbHHZPVW6PtE/0ipYCaNkMG605+Fm
+	 VP/mxmYMH6MfbtRtVWHeob/8UOEdvK7eo4hVBAtGkw6wfa46U4RZeX0vkdfa0B4otf
+	 6mxpfxST+FSEOcjO56Ei2tX9ox0Ru+A6ApIvvJqb6OACPOp22SYAd9AAAz/v7gVdR1
+	 ifGjLPEkp2HIgzqrm0ygv3Ldgs1cwwmLRmgVNsdewWYwNW5NmsTDfq/ILRxDdzJe5d
+	 Ham+e9XH3lxoA==
+Date: Tue, 2 Dec 2025 16:36:47 +0000
 From: Mark Brown <broonie@kernel.org>
-To: Siddharth Vadapalli <s-vadapalli@ti.com>
-Cc: Francesco Dolcini <francesco@dolcini.it>, a-dutta@ti.com,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, srk@ti.com
-Subject: Re: [PATCH] spi: cadence-quadspi: Fix cqspi_probe() error handling
- for runtime pm
-Message-ID: <5f288d65-4209-41cd-8f1a-3690f38da7ef@sirena.org.uk>
-References: <20251119152545.2591651-1-s-vadapalli@ti.com>
- <20251201072844.GA6785@francesco-nb>
- <20251201074320.GA8737@francesco-nb>
- <dfbbd5ce209fac9a556c200748d8c521d0d4f450.camel@ti.com>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: David Lechner <dlechner@baylibre.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Andy Shevchenko <andy@kernel.org>,
+	Sean Anderson <sean.anderson@linux.dev>, linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org
+Subject: Re: [PATCH v3 4/7] spi: axi-spi-engine: support
+ SPI_MULTI_LANE_MODE_STRIPE
+Message-ID: <eb36242b-ac82-412c-b14b-648d541dcec1@sirena.org.uk>
+References: <20251201-spi-add-multi-bus-support-v3-0-34e05791de83@baylibre.com>
+ <20251201-spi-add-multi-bus-support-v3-4-34e05791de83@baylibre.com>
+ <aS79ex5Konr_EeMA@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -46,93 +53,52 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="aG5bUVWmZOfsZcU4"
+	protocol="application/pgp-signature"; boundary="FPtsYwuTnMFr+BO8"
 Content-Disposition: inline
-In-Reply-To: <dfbbd5ce209fac9a556c200748d8c521d0d4f450.camel@ti.com>
+In-Reply-To: <aS79ex5Konr_EeMA@smile.fi.intel.com>
 X-Cookie: Beware the new TTY code!
 
 
---aG5bUVWmZOfsZcU4
+--FPtsYwuTnMFr+BO8
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 01, 2025 at 06:08:07PM +0530, Siddharth Vadapalli wrote:
-> On Mon, 2025-12-01 at 08:43 +0100, Francesco Dolcini wrote:
-> > On Mon, Dec 01, 2025 at 08:28:44AM +0100, Francesco Dolcini wrote:
+On Tue, Dec 02, 2025 at 04:53:47PM +0200, Andy Shevchenko wrote:
+> On Mon, Dec 01, 2025 at 08:20:42PM -0600, David Lechner wrote:
+> > Add support for SPI_MULTI_LANE_MODE_STRIPE to the AXI SPI engine driver.
 
-> > > > The error is due to the second invocation of 'clk_disable_unprepare=
-()' on
-> > > > 'cqspi->clk' in the error handling within 'cqspi_probe()', with the=
- first
-> > > > invocation being within 'cqspi_runtime_suspend()'.
+> > +static u8 spi_engine_all_lane_flags(struct spi_device *spi)
+> > +{
+> > +	u8 flags =3D 0;
 
-> > > [    8.648915] cadence-qspi fc40000.spi: No flash device declared
-> > > [    8.675671] cadence-qspi fc40000.spi: failed to setup flash parame=
-ters -19
+> > +	int i;
 
-> Could you please check if the driver's suspend callback has executed befo=
-re
-> the above? The patch intended to fix the very issue being reported.
-> Therefore, the commit corresponding to the current patch might still
-> trigger the issue. Ideally, reverting the commit for the current patch and
-> the commit under Fixes (f1eb4e792bb1 ("spi: spi-cadence-quadspi: Enable pm
-> runtime earlier to avoid imbalance"))
-> should prevent the issue.
+> Why signed?
+>=20
+> > +	for (i =3D 0; i < spi->num_data_lanes; i++)
+> > +		flags |=3D BIT(spi->data_lanes[i]);
+> > +
+> > +	return flags;
 
-Given the above log we've failed at cqspi_setup_flash() so we shouldn't
-have got as far as the code you changed for handling direct mode - I
-think the actual issue is likely Anurag's earlier change f1eb4e792bb1
-(spi: spi-cadence-quadspi: Enable pm runtime earlier to avoid imbalance)
-that you mention, it means we've done a pm_runtime_get_noresume()
-previously.  That shouldn't have done a clock enable due to the
-noresume, but the get() being there will confuse pm_runtime_disable()
-and cause it to invoke the suspend callback as Francesco identified.
-This will have been failing previously if controller registration
-failed, but it's now happening in more situations.
+Variables called i used for iteration are typically declared signed even
+if they never cover negative values; IIRC there used to be some
+compiler interaction reasons to do so although I expect those aren't so
+relevant any more.  Using a signed type here is perfectly normal.
 
-This is all very annoying since runtime PM can be configured off so we
-can't rely on it's callbacks actually happening.  I *think* something
-like the below ought to DTRT (I'd expect it should avoid the reported
-error at least):
-
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-qu=
-adspi.c
-index af6d050da1c8..0833b6f666d0 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -1985,7 +1985,6 @@ static int cqspi_probe(struct platform_device *pdev)
- 		pm_runtime_enable(dev);
- 		pm_runtime_set_autosuspend_delay(dev, CQSPI_AUTOSUSPEND_TIMEOUT);
- 		pm_runtime_use_autosuspend(dev);
--		pm_runtime_get_noresume(dev);
- 	}
-=20
- 	ret =3D cqspi_setup_flash(cqspi);
-@@ -2012,6 +2011,7 @@ static int cqspi_probe(struct platform_device *pdev)
- 	}
-=20
- 	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
-+		pm_runtime_get_noresume(dev);
- 		pm_runtime_mark_last_busy(dev);
- 		pm_runtime_put_autosuspend(dev);
- 	}
-
-Unfortunately none of my testing appears to show the issue.
-
---aG5bUVWmZOfsZcU4
+--FPtsYwuTnMFr+BO8
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmkvE6kACgkQJNaLcl1U
-h9BD0wf/SeW9/3pIxTUbxozYkm7XeHw06XMSrVru1LRh53CJqmPp/CK3yLWHXDZD
-tBkYtKDcyYERihgoqLGUdk3HfETJDoRsnlScHMXeXIiB9ARKkv4CJZ9vS2BE7qYo
-LB6QvkLLyZ4HYM80g3Ty/S/xMoAZwaLK2k5ZQ8eJvf6XP4oDdl2YY9gzeGjydY3U
-bAeF8w1wUsTeaPMLn5wusn6q8hq+taSyjFChkt7HTMImDl8OePN3hURwpi65xX8S
-GIF5nKlxvnHAwifLa6WKXJ+CoRTTs+ZcZ/nL7Yu9RtRciW3vj9hVn1wv7l54GPUL
-SRgRfILunELe5SLkPZGeJ5GL1gFqjw==
-=K6gR
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmkvFZ4ACgkQJNaLcl1U
+h9CGMAf/Z9tgkpoIquZVmlc/mWB7nE71/dWFqZPhVZukwXHsaH6elH+9y4X02z7r
+i8YUfkohYtoIB8wVJwb2B1zgWGV2eHz408B1ukimCf1mw2DFiBgig8E9XmWbIOIj
+RZqc3+I/6YLq4C4ElD/XRDiv5irAiErRKkJdCH7Ffl8eFzUx3Lb2TZHG2RFY7N04
+GQKeByyB2+99v7Xmq+tUyZBR3v6fG7E6ajqkvM488VUx3Bbx75OXWmMvCSZBeiyZ
+vnenKsxUD+Q8BBGMfA/iuAenIQsRjJRVgxY8dTegmOWUkHgmujipLk2y6ePGnqY3
+mxAz2/OS4jfcQl+YEJeksBq44m/HKw==
+=DHFJ
 -----END PGP SIGNATURE-----
 
---aG5bUVWmZOfsZcU4--
+--FPtsYwuTnMFr+BO8--

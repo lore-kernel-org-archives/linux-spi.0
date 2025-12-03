@@ -1,283 +1,215 @@
-Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com [209.85.217.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011071.outbound.protection.outlook.com [52.101.52.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD4B2E7F14
-	for <linux-spi@vger.kernel.org>; Wed,  3 Dec 2025 10:13:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764756836; cv=none; b=V+gFd3bpxqrKFfpjIP4g4l4NdRCqxiYVDLQm+4ymTG4VKYLVAnnad7dWpLY41GaIYPaZhL/WCB3EeMsAC85qi+UK0Ymh+U6KEO+IFjtdf0NiR0c0Ti3Zfo4rK1FtCAoBCcJ1T6y0msP8pfbupD3bBN3yhoejsh74f10BMdr/EoY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764756836; c=relaxed/simple;
-	bh=7ykrGGwCG5UVuu6S46Y+mkYJETdoJx86HhNwtYYoBJs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GxNd1nM9an0s0iDBycw63IDf9bwL3jSMRzk3IycOgnmDcjtj2xgJy7yOOYBz0FjaF3EVe3qRCKqsqHgrK+MfCEci75FqO3k2Jrl8Ke4AKntrCrPhEdbzWrZtmGT5uuD095gh0UF28mdhlUzn8tc/IPyJ2XW4IlcT9XWJ6JVMYUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f52.google.com with SMTP id ada2fe7eead31-5dfa9e34adbso5076914137.0
-        for <linux-spi@vger.kernel.org>; Wed, 03 Dec 2025 02:13:54 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764756833; x=1765361633;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=08y1I8cftAKXa2ZRDPk1QAbO3eRq2UKMz/WOuMZJTrE=;
-        b=qgeEwAawqoE7qTZv5D8Vy6m63Bv+Ofwnopxpemh6w7LJZvP2+KXVX8TOIDigy9EYzj
-         IUghu+yfKr7nhPEgF7W7dVq2VUfOtHtupTkeipPv4c3h9tK7SOWoBRB4vEWAhR7hUY7M
-         pAecHaixSom09vnw6KFB1lpoknsNUlesiNmNZm9VC0gXUMUzjUpBQDKZ35xIFjE6GN8q
-         N2q/9TPPpbAFhc94VYEWq6piJ8m6jGW+ZNNccVxt/t9r413VbSk3E+u0OB3Egm1sHR8S
-         /6jx5PV8si5wqM0BWn7H7EbtelI7N5bL6qE1Zm526Se8LSCa5O1ZI2t2JFV3Zv0Eiyf1
-         5AkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWumi0/QDXRPEN3LY1GdZITphKztECjwlOq/C8f3ko2FDDWQTiFDjLjky8t/P2oQ84rYVAu1x1srlQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRipIioj7RqZ7gUm+BuZqOTV1aL6dTyWw1M1Wk0vuwo+j0+PLK
-	CUohJqq/f/bQjNsFhi3+cbL5ZwODiowcqeWMj63rWgXREPER4n1wtNJggqxYN+yX
-X-Gm-Gg: ASbGnctyQPEhYgY52cjTNdueeZSgeOylv0R+FeLV+ml0CyL40PD9yQFhpTPSBSKAqOs
-	/+hWMy1u86hym+i1kmfLBf5s3rOV0v5EhJRtk1wGPpuQtC5ROmwkm5FzCp1Q/GM4qsY55QtVXVm
-	0p4gQhGpOWvFoI+3Gu4ZNCZRjmhwaHWN9KKL9gfQeq5ghY50F76IWKkTm9suBuc/aDGpkR1xP+B
-	WsHAJjjxHOvCcE1rjkOxumUwGRuUTF7aNKhjlFBKwUJuYROMdV18Wj9vvDB1X+ZCrjbadU9Acai
-	vJec2Ab7BcvBXkFhIIz4yFfUYdk0ZqJde80q84pmCUoba8IT6gN4sikJMCPSY1x060bl4ZINZ9X
-	hlFoJmPKp/9enPbJiTFPl6lzRPj/XAn+yf9JsEBZUeO+le7X5WSWtOE6ouAF5wnUOYYGjMEcNpa
-	VBthCgdzOErX1mUi24DWsNx1KAzeAhWEnLokouoFw1KardnyRu
-X-Google-Smtp-Source: AGHT+IGinYt77jYn0bu6F1cb4Yy++9BRF4mcuaUoX0ecKzsWB3XYXv9dvDsxMMiDNPntRR2KFs582w==
-X-Received: by 2002:a05:6102:f0c:b0:5db:28ef:3dfb with SMTP id ada2fe7eead31-5e48e3bb57cmr485334137.34.1764756833108;
-        Wed, 03 Dec 2025 02:13:53 -0800 (PST)
-Received: from mail-ua1-f46.google.com (mail-ua1-f46.google.com. [209.85.222.46])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-93cd7661ae8sm7583739241.12.2025.12.03.02.13.52
-        for <linux-spi@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Dec 2025 02:13:52 -0800 (PST)
-Received: by mail-ua1-f46.google.com with SMTP id a1e0cc1a2514c-9374ecdccb4so3505666241.3
-        for <linux-spi@vger.kernel.org>; Wed, 03 Dec 2025 02:13:52 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVwU6QLMOane5d2AYt6v9PU3XPbwxN8GOA3OGbQtGAL5oN9Ur8afbfYvXVHtMVwntdKP4NFi7q4w6I=@vger.kernel.org
-X-Received: by 2002:a05:6102:579a:b0:5df:c1ac:8ad4 with SMTP id
- ada2fe7eead31-5e48e01012fmr426535137.0.1764756375911; Wed, 03 Dec 2025
- 02:06:15 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5794D2DCC17;
+	Wed,  3 Dec 2025 10:41:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.71
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764758494; cv=fail; b=I3FsFC/9io6rvnfLIoqW2Qd4lvw6EJD8jT5Qirw4c63+OacaNucvgX3J0/6KN5zbegSvug/fSC2WJbeJczZkvW2gslaeWCEcVwbNAaQoBFCh2H04QV3vF51SyfI58StT9Gc9NbEHkS64ZjG2VaSyT/VspEDQ9G+eVGK+aK3ow28=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764758494; c=relaxed/simple;
+	bh=UKN7E1p2tYGGUa4AS9kU6ta+ls8HuFb3BVSJOK4cJj0=;
+	h=Message-ID:Subject:From:To:CC:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=bEv018lsDq5iKflFD1/ONa2uGjrcZd3UxNN+S34uEBgNNhkDXUjJkIpGBvuWYEm64cS4ZndclZRd4ga7NiB3nLFw6pslgJbBhNzF84gcqnODEbQNgZhXbesmh4Ox/1otnHycaZ/K/d5GXHkrOC1bftCk6x8fjPEGo/sbAQ1EyJc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=IKEx7/ME; arc=fail smtp.client-ip=52.101.52.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="IKEx7/ME"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GS8aK7KGQcWliM+Khq2eeoTOUvUurmcY+iS8VgQ1E7IBBTpesJ76WD0FQfidk+tjyGtpoTfiMIP91Nhk+qZezoHQEpGR/v9NmoVDT1qtYvK6gbI3V3fP8RqtBu+8OCjAZW+ubW24XJnLHXFP+WtGh1HBmoD0Agw4Mf44LxY68PyqB8ebtrd5EccuCtePQ9kvd3Fl5tIOdRSqqWiJtjFMFjjd2y27/ghDBPaQNqbnbWVZz3sGnvNi+YM5UdSYFqG6SuFdY08PGL0wdAhyOJSCPFV1UEbno9n1upghsdZFCEXOxxxrppFeWsZ78sVlmLICMRyE9dQaCe4BCoH8rDjsrw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DolDGMCJlVEtCTFvBEg46ElUKKIeB/pBMOKlL7Arl64=;
+ b=jLWp9mMrbHZs6BD95kyiWcVvzrc32WHfrQ9dhV7+6oaOEK83jttX7wb4dbWAIcnyQALUwrR2vOj3hD1FGoGrta541pJP7iFH4aOwX+noyJw0bb41OKG1vNuXeU9U3AgKD5+2V+tRmCmdmk9wH1fuozvDaUsgmXvzgXPq5RPzpURPbIaK94MVznIDJ6sv1FEceuZv2dKaq8XiD+7vKTaP0KN8QJK7Xl50Iod07AA54dIQEhT7w6sDfBxHBT5NWSRaR+srhP5vPo4Y+W8bKrC6m76x+R42OFxG04ims/osyeQlubA8n9hkYLfnK1A89e3vL6Kndk7dms2Zg8c42VLDzA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 198.47.21.194) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=ti.com;
+ dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DolDGMCJlVEtCTFvBEg46ElUKKIeB/pBMOKlL7Arl64=;
+ b=IKEx7/MEN4Y8dMZVKAq351jASroMjWWIYIJ9LwzwxKth5hS0IHtVbxs+e3ZjOlnW7DZs2rhmFGVGT9Bk+6BqDdHPX/qB7vgf6y+c2faw6vGeum59x11cfq3NNxunpWW5H9aWR/5uc7BvKyyWQViNMpZ/LWaA9aSoWyFVfHXTNRg=
+Received: from BN9PR03CA0251.namprd03.prod.outlook.com (2603:10b6:408:ff::16)
+ by CO1PR10MB4515.namprd10.prod.outlook.com (2603:10b6:303:9b::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Wed, 3 Dec
+ 2025 10:41:28 +0000
+Received: from BN2PEPF000044A3.namprd02.prod.outlook.com
+ (2603:10b6:408:ff:cafe::80) by BN9PR03CA0251.outlook.office365.com
+ (2603:10b6:408:ff::16) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9388.9 via Frontend Transport; Wed, 3
+ Dec 2025 10:41:19 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.21.194)
+ smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
+ action=none header.from=ti.com;
+Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
+ 198.47.21.194 as permitted sender) receiver=protection.outlook.com;
+ client-ip=198.47.21.194; helo=flwvzet200.ext.ti.com; pr=C
+Received: from flwvzet200.ext.ti.com (198.47.21.194) by
+ BN2PEPF000044A3.mail.protection.outlook.com (10.167.243.154) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9388.8 via Frontend Transport; Wed, 3 Dec 2025 10:41:26 +0000
+Received: from DFLE213.ent.ti.com (10.64.6.71) by flwvzet200.ext.ti.com
+ (10.248.192.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 3 Dec
+ 2025 04:41:23 -0600
+Received: from DFLE212.ent.ti.com (10.64.6.70) by DFLE213.ent.ti.com
+ (10.64.6.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 3 Dec
+ 2025 04:41:23 -0600
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE212.ent.ti.com
+ (10.64.6.70) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Wed, 3 Dec 2025 04:41:23 -0600
+Received: from [10.24.73.74] (uda0492258.dhcp.ti.com [10.24.73.74])
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 5B3AfK6q3886452;
+	Wed, 3 Dec 2025 04:41:21 -0600
+Message-ID: <b2c0f5b38ed01836c025f2672a883484765d91f5.camel@ti.com>
+Subject: Re: [PATCH] spi: cadence-quadspi: Fix clock enable underflows due
+ to runtime PM
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
+To: Mark Brown <broonie@kernel.org>, Francesco Dolcini <francesco@dolcini.it>,
+	Anurag Dutta <a-dutta@ti.com>
+CC: <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>, <s-vadapalli@ti.com>
+Date: Wed, 3 Dec 2025 16:12:04 +0530
+In-Reply-To: <20251202-spi-cadence-qspi-runtime-pm-imbalance-v1-1-aee8c7fa21f2@kernel.org>
+References: <20251202-spi-cadence-qspi-runtime-pm-imbalance-v1-1-aee8c7fa21f2@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-0+deb13u1 
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251015071420.1173068-1-herve.codina@bootlin.com>
- <20251015071420.1173068-2-herve.codina@bootlin.com> <f74ab0a2-b74b-4b96-8469-a716c850e230@gmail.com>
- <CAL_JsqJDOYuzutMHMeFAogd5a_OX6Hwi8Gwz1Vy7HpXgNeYKsg@mail.gmail.com>
- <5cf2a12a-7c66-4622-b4a9-14896c6df005@gmail.com> <CAL_JsqJjm12LxpDg6LmpY=Ro_keHwnrWiYMLVnG=s_pSP4X2WQ@mail.gmail.com>
- <072dde7c-a53c-4525-83ac-57ea38edc0b5@gmail.com> <CAL_JsqKyG98pXGKpL=gxSc92izpzN7YCdq62ZJByhE6aFYs1fw@mail.gmail.com>
- <55076f4b-d523-4f8c-8bd4-0645b790737e@gmail.com> <20251202102619.5cd971cc@bootlin.com>
- <CAMuHMdXogrkTAm=4pC0B+Sybr=PR3XovnBgmiEyTvUMmJHvBRA@mail.gmail.com> <20251202182834.65d7f0a1@bootlin.com>
-In-Reply-To: <20251202182834.65d7f0a1@bootlin.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 3 Dec 2025 11:06:04 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdU4y3Faz1nJo5CeYdPY9dgetWrLE9bMdba_QeWwXX41CQ@mail.gmail.com>
-X-Gm-Features: AWmQ_bm_vwtlSlkiVojLd-rzxo_k4pikXV0aLj6bs5bAdLDXgMj28SXkaqQFKI0
-Message-ID: <CAMuHMdU4y3Faz1nJo5CeYdPY9dgetWrLE9bMdba_QeWwXX41CQ@mail.gmail.com>
-Subject: Re: [PATCH v4 01/29] Revert "treewide: Fix probing of devices in DT overlays"
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Kalle Niemi <kaleposti@gmail.com>, Rob Herring <robh@kernel.org>, 
-	Matti Vaittinen <mazziesaccount@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, 
-	Arnd Bergmann <arnd@arndb.de>, Saravana Kannan <saravanak@google.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Charles Keepax <ckeepax@opensource.cirrus.com>, 
-	Richard Fitzgerald <rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, 
-	Linus Walleij <linus.walleij@linaro.org>, Ulf Hansson <ulf.hansson@linaro.org>, 
-	Mark Brown <broonie@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Daniel Scally <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>, 
-	Davidlohr Bueso <dave@stgolabs.net>, Jonathan Cameron <jonathan.cameron@huawei.com>, 
-	Dave Jiang <dave.jiang@intel.com>, Alison Schofield <alison.schofield@intel.com>, 
-	Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
-	Dan Williams <dan.j.williams@intel.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Wolfram Sang <wsa@kernel.org>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
-	patches@opensource.cirrus.com, linux-gpio@vger.kernel.org, 
-	linux-pm@vger.kernel.org, linux-spi@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, 
-	Allan Nielsen <allan.nielsen@microchip.com>, Horatiu Vultur <horatiu.vultur@microchip.com>, 
-	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN2PEPF000044A3:EE_|CO1PR10MB4515:EE_
+X-MS-Office365-Filtering-Correlation-Id: 80bf7593-8eb0-4092-4021-08de325882fe
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|376014|1800799024|82310400026|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ZkZsVmV4RmZrSWNTQytXa1JCK25mdmRxVGhJaXowUUNZdDMxSThsYStGM04z?=
+ =?utf-8?B?bndzNGNXWk9xWXRiSFNuVXNlM3llR1BJRm92Z1RBSGw2U0RXRXF3YzNrQjNR?=
+ =?utf-8?B?TUlhZ2E5QkZmNFhNMmJYWEdqUGM5eGRqZVRtMG4xYlNtTVRUaXhJaWhnRmVC?=
+ =?utf-8?B?TTUyKzZodkd2aVNUY1MyMldRcUtnbVg1Lzhtb0lWSjBmeU5JU0ZIU21mS3Vz?=
+ =?utf-8?B?ejVrenFWeTVwa25rWmpzdTVhbm9XbVdKNG9tSXhjMkZ3NDNOVjh4bG5od2dU?=
+ =?utf-8?B?d1NtWHNEa0N6QXJZUVhQMFRPK3hCSVdMQXdWanR0UEw0TmpNSXlkOWk5Yjgw?=
+ =?utf-8?B?eEtheXk1WHhGbkwvWVJtTXA2Q24raUtXakp1MGJKRE5UU0REUisxOW15ZUw2?=
+ =?utf-8?B?VWxiTytZRlU4TEZ1ZTZFdnk1N2JYK1FEWWN2Z05hdHl3SFpuUi9yS2pBODFx?=
+ =?utf-8?B?MVJhd3drdmJ2UlhNNkRQakdQYW1ieXFlTG55MDZLMmxPQjVxZGxnNnpiUEdI?=
+ =?utf-8?B?Y1VoU0puTERmUjQwc0ZDNWNrL0wyVkdhSVc1L2M1WDNhQnFlNzJwU3hYWnM5?=
+ =?utf-8?B?dW9mejhyMmt4Zm41N0hSUmMrTDJhOUFrcVEzVlRHQnN5cE1GNEh0dnE4bytU?=
+ =?utf-8?B?emQvSVd3azBXaUhtV2twSWtPZG01WS9Xa3g4M1NOVWhnQTFNZTZ0MjRkUU5U?=
+ =?utf-8?B?OGh3TWlQZkxDcGpzcm9vd2lYNVcxelpiTGNwY2xYTjNYdm1WTjFNQ09adlhz?=
+ =?utf-8?B?d3R5U1djaUZOdnZMSHlZNjB3UlUrZUI2SndzZUJyR1l4WXh1dFc1d3YzZjlr?=
+ =?utf-8?B?cmljQmxEejAwN0IvZ3ZWaWo0czRmZmtBeCs2NTF2dmJSTXhXMWkzUzZaWFN6?=
+ =?utf-8?B?eVZ0YlVIbGdYWGxNRXBTN1R3VjI1cGxSQ3YxWGdGMzVGaGh4YVZYYTVlMUl1?=
+ =?utf-8?B?T2tENllsNlp0bzM1VmZGM1dLSE9WeTJjOFRpRnRHL1lnWWpScEpoaXh6UGN0?=
+ =?utf-8?B?VktDSHRqUm0vUVBwbjh1RktmWXJqM3MwRkNBSG9VK2MrOEh3MkZ2MUFyc3pN?=
+ =?utf-8?B?WUlxSXVHRGRjYzN6OStxWHRjbnlNVXFlOHpoTDcwdk5SeG5kakZKZ25BYTBx?=
+ =?utf-8?B?ZFhicU5aOFZkUXBkVXhjTVFnaFM0cUQ3R2c5Q1VWNnpSRWZySjJaK3RiU1p0?=
+ =?utf-8?B?NlpZU0JKdElzb2Z5NkhPS2tEQ1hRcC9Eb2c3cXRRYnhWbmNNZ3F2dUJhZnJx?=
+ =?utf-8?B?QnZGL0FjWVFaNTNuWWQzTm4yblg0bTNGckREeG9NYzhxMi9MTFRreE5XT0Vj?=
+ =?utf-8?B?K0xxSkRSNXFROXk4c1ZTNGhwekp5UzNtbEVQV1NjSlFsdFJISzJDeEV6QnRN?=
+ =?utf-8?B?cUd4VElnZFZuZXR1YXVzbHA3UCtidFJmK21BY2lodEgyMzV1V3g4UkVCNVBa?=
+ =?utf-8?B?L1BHUmVZQUFrV0QrNkhLV0EwT2h6STdrWE5zTjlpbCtTZlorMitaYXJDZDVt?=
+ =?utf-8?B?QnBSaldwNVdsQ2tRQmhXVFBjVElWTWdXMUFVTUpRTnFORXV6TElBYzM3RXBL?=
+ =?utf-8?B?c1huTFMzTnZEUmdsdEFZNVdtTEhoMlI3YUQvMzB5ZHhxOGhzOGZ1YlBmdVMx?=
+ =?utf-8?B?N1VjQ1JkQWJXV2pncXlZREtEaStUamlGQStjMmprbmU1ZzZSZlVXenJuL0JT?=
+ =?utf-8?B?bDBOczAwQ3UvTEw2U0dIajBOVG9VUHJvTE9uMGpaQThScUtsWjc5UTlIMXo4?=
+ =?utf-8?B?eE4yaWh3V1hjcDhXUUI0TVBtMVdNOWQwTzRCYUE4L2tPZWFsNWNSUDBpa0Nj?=
+ =?utf-8?B?N0ZUSjVCVmlZTk44cDB4ckY1NCtNV1RVSGt5QkIyNC81cDdLRzFKTHBScllP?=
+ =?utf-8?B?TUw0NjQ0aEpGSWpYbWFGakdNYk03UmtBQVM3bWc2QjArdEZtSzdqeTdDaVZZ?=
+ =?utf-8?B?Ti90VlZHOVVvcUVtZEMzdWJZcWdacy9aaDZNdjRRamlkLzdLKzJYZEk3cU5L?=
+ =?utf-8?B?YzlGcE9zZXZ2U3hUTFAyRi9uMk9EUmpuWlYwdUV4azBkK3FPSnVTRzBZQWtL?=
+ =?utf-8?B?S2VCbGw2TWRoU0hKRU9sbEREVFAzei9ad2Q1eGQ5Qk1mNmZOM0V2Vlk5K2Fk?=
+ =?utf-8?Q?fuVU=3D?=
+X-Forefront-Antispam-Report:
+	CIP:198.47.21.194;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:flwvzet200.ext.ti.com;PTR:ErrorRetry;CAT:NONE;SFS:(13230040)(36860700013)(376014)(1800799024)(82310400026)(7053199007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: ti.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2025 10:41:26.8173
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 80bf7593-8eb0-4092-4021-08de325882fe
+X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.21.194];Helo=[flwvzet200.ext.ti.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN2PEPF000044A3.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR10MB4515
 
-Hi Herv=C3=A9,
+On Tue, 2025-12-02 at 22:53 +0000, Mark Brown wrote:
+> The recent refactoring of where runtime PM is enabled done in commit
+> f1eb4e792bb1 ("spi: spi-cadence-quadspi: Enable pm runtime earlier to
+> avoid imbalance") made the fact that when we do a pm_runtime_disable()
+> in the error paths of probe() we can trigger a runtime disable which in
+> turn results in duplicate clock disables. Early on in the probe function
+> we do a pm_runtime_get_noresume() since the probe function leaves the
+> device in a powered up state but in the error path we can't assume that P=
+M
+> is enabled so we also manually disable everything, including clocks. This
+> means that when runtime PM is active both it and the probe function relea=
+se
+> the same reference to the main clock for the IP, triggering warnings from
+> the clock subsystem:
+>=20
+> [    8.693719] clk:75:7 already disabled
+> [    8.693791] WARNING: CPU: 1 PID: 185 at /usr/src/kernel/drivers/clk/cl=
+k.c:1188 clk_core_disable+0xa0/0xb
+> ...
+> [    8.694261]  clk_core_disable+0xa0/0xb4 (P)
+> [    8.694272]  clk_disable+0x38/0x60
+> [    8.694283]  cqspi_probe+0x7c8/0xc5c [spi_cadence_quadspi]
+> [    8.694309]  platform_probe+0x5c/0xa4
+>=20
+> Avoid this confused ownership by moving the pm_runtime_get_noresume() to
+> after the last point at which the probe() function can fail.
+>=20
+> Reported-by: Francesco Dolcini <francesco@dolcini.it>
+> Closes: https://lore.kernel.org/r/20251201072844.GA6785@francesco-nb
+> Signed-off-by: Mark Brown <broonie@kernel.org>
+> Cc: stable@vger.kernel.org
+> ---
 
-On Tue, 2 Dec 2025 at 18:29, Herve Codina <herve.codina@bootlin.com> wrote:
-> On Tue, 2 Dec 2025 17:35:35 +0100
-> Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> > On Tue, 2 Dec 2025 at 10:26, Herve Codina <herve.codina@bootlin.com> wr=
-ote:
-> > > On Fri, 28 Nov 2025 10:34:57 +0200
-> > > Kalle Niemi <kaleposti@gmail.com> wrote:
-> > > > >>>>>> Test system testing drivers for ROHM ICs bisected this commi=
-t to cause
-> > > > >>>>>> BD71847 drivers probe to not be called.
-> > > > >>>>> This driver (and overlay support) is in linux-next or somethi=
-ng out of
-> > > > >>>>> tree on top of linux-next?
-> > > > >>>>>
-> > > > >>>>> Rob
-> > > > >>>> Yes the driver is in mainline linux: /drivers/mfd/rohm-bd718x7=
-.c
-> > > > >>> I don't see any support to apply overlays in that driver.
-> > > > >> Ah. Sorry for the confusion peeps. I asked Kalle to report this =
-without
-> > > > >> proper consideration. 100% my bad.
-> > > > >>
-> > > > >> While the bd718x7 drive indeed is mainline (and tested), the act=
-ual
-> > > > >> 'glue-code' doing the overlay is part of the downstream test
-> > > > >> infrastructure. So yes, this is not a bug in upstream kernel - t=
-his
-> > > > >> falls in the category of an upstream change causing downstream t=
-hings to
-> > > > >> break. So, feel free to say: "Go fix your code" :)
-> > > > >>
-> > > > >> Now that this is sorted, if someone is still interested in helpi=
-ng us to
-> > > > >> get our upstream drivers tested - the downstream piece is just t=
-aking
-> > > > >> the compiled device-tree overlay at runtime (via bin-attribute f=
-ile),
-> > > > >> and applying it using the of_overlay_fdt_apply(). The approach i=
-s
-> > > > >> working for our testing purposes when the device is added to I2C=
-/SPI
-> > > > >> node which is already enabled. However, in case where we have th=
-e I2C
-> > > > >> disabled, and enable it in the same overlay where we add the new=
- device
-> > > > >> - then the new device does not get probed.
-> > > > >>
-> > > > >> I would be really grateful if someone had a pointer for us.
-> > > > > Seems to be fw_devlink related. I suppose if you turn it off it w=
-orks?
-> > > > > There's info about the dependencies in sysfs or maybe debugfs. I =
-don't
-> > > > > remember the details, but that should help to tell you why things
-> > > > > aren't probing.
-> > >
-> > > Rob reverted patches but I plan to continue my work on it.
-> > > On my side, I need the reverted patches but I fully understand that, =
-on
-> > > your side, you need a working system.
-> > >
-> > > In order to move forward and find a solution for my next iteration, c=
-an you
-> > > send your overlay (dtso) used in your working and non working cases?
-> >
-> > Hmm, I must have missed when Rob applied (part of) this series, as I
-> > do an overlay test (using the out-of-tree configfs) on top of every
-> > (bi-weekly) renesas-drivers release, and saw no issues during the last
-> > few months.
-> >
-> > So I applied this series and tested loading my SPI EEPROM overlay.
-> > And it indeed breaks, with the culprit being this particular patch.
-> >
-> > Interestingly, quoting from this patch:
-> >
-> >    "While the commit fixed fw_devlink overlay handling for one case, it
-> >     broke it for another case. So revert it and redo the fix in a separ=
-ate
-> >     patch."
-> >
-> > Where is the separate patch that redid the fix? I assume it is "[PATCH
-> > v4 03/29] of: dynamic: Fix overlayed devices not probing because
-> > of fw_devlink"?  Unfortunately that doesn't fix the issue for me.
-> >
-> > Quoting more from this patch:
-> >
-> >    "Closes: https://lore.kernel.org/lkml/CAMuHMdXEnSD4rRJ-o90x4OprUacN_=
-rJgyo8x6=3D9F9rZ+-KzjOg@mail.gmail.com/"
-> >
-> > Strange that it claims to fix the issue reported there, as the failure
-> > mode I am seeing is exactly the same as documented in that report?
-> >
-> > Do you know what is wrong? The overlay I am using is referenced in
-> > the bug report linked above.
->
-> The first patch "Fix probing of devices in DT overlays" didn't fix all ca=
-ses
-> and so Saravana reverted this patch and proposed "of: dynamic: Fix overla=
-yed
-> devices not probing because of fw_devlink".
->
-> This second patch was needed to fix my use case even if more modification=
- were
-> needed to have my use case fully fixed (other patches in my series).
->
-> Rob applied those first patches from my series and some systems were brok=
-en.
-> The breakage has been reported my Kalle and Matti and led to a revert of =
-culprit
-> patches.
->
-> I tried to understand what was wrong. I am pretty convinced that modifica=
-tion
-> done in "of: dynamic: Fix overlayed devices not probing because of fw_dev=
-link"
-> are really better than modification available in "treewide: Fix probing o=
-f
-> devices in DT overlays".
->
-> I proposed an update [0] and I will be glad if you can also test this upd=
-ate
-> on your side and give me your feedback.
->
-> [0] https://lore.kernel.org/lkml/20251202175836.747593c0@bootlin.com/
+Thank you for the patch. The 'clock already disabled' issue persists on
+J721E SoC with the patch applied:
+https://gist.github.com/Siddharth-Vadapalli-at-TI/a664f59366ad681856b862d62=
+1487b7f
 
-Thank you!
+>  drivers/spi/spi-cadence-quadspi.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-=
+quadspi.c
+> index af6d050da1c8..0833b6f666d0 100644
+> --- a/drivers/spi/spi-cadence-quadspi.c
+> +++ b/drivers/spi/spi-cadence-quadspi.c
+> @@ -1985,7 +1985,6 @@ static int cqspi_probe(struct platform_device *pdev=
+)
+>  		pm_runtime_enable(dev);
+>  		pm_runtime_set_autosuspend_delay(dev, CQSPI_AUTOSUSPEND_TIMEOUT);
+>  		pm_runtime_use_autosuspend(dev);
+> -		pm_runtime_get_noresume(dev);
+>  	}
+> =20
+>  	ret =3D cqspi_setup_flash(cqspi);
+> @@ -2012,6 +2011,7 @@ static int cqspi_probe(struct platform_device *pdev=
+)
+>  	}
+> =20
+>  	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
+> +		pm_runtime_get_noresume(dev);
+>  		pm_runtime_mark_last_busy(dev);
+>  		pm_runtime_put_autosuspend(dev);
+>  	}
 
-Unfortunately this does not fix the problem: I still need to do an extra
-overlay rm/add cycle to make the SPI EEPROM work.
-
-In addition, it triggers a bunch of new scary error messages:
-
-rcar_sound ec500000.sound: Failed to create device link (0x180) with
-supplier soc for /soc/sound@ec500000/rcar_sound,src/src-0
-rcar_sound ec500000.sound: Failed to create device link (0x180) with
-supplier soc for /soc/sound@ec500000/rcar_sound,src/src-1
-[...]
-rcar_sound ec500000.sound: Failed to create device link (0x180) with
-supplier soc for /soc/sound@ec500000/rcar_sound,src/src-9
-rcar_sound ec500000.sound: Failed to create device link (0x180) with
-supplier soc for /soc/sound@ec500000/rcar_sound,ssi/ssi-0
-rcar_sound ec500000.sound: Failed to create device link (0x180) with
-supplier soc for /soc/sound@ec500000/rcar_sound,ssi/ssi-1
-[...]
-rcar_sound ec500000.sound: Failed to create device link (0x180) with
-supplier soc for /soc/sound@ec500000/rcar_sound,ssi/ssi-9
-rcar_sound ec500000.sound: Failed to create device link (0x180) with
-supplier soc for /soc/sound@ec500000/rcar_sound,src/src-0
-rcar_sound ec500000.sound: Failed to create device link (0x180) with
-supplier soc for /soc/sound@ec500000/rcar_sound,src/src-1
-[...]
-rcar_sound ec500000.sound: Failed to create device link (0x180) with
-supplier soc for /soc/sound@ec500000/rcar_sound,src/src-9
-rcar_sound ec500000.sound: Failed to create device link (0x180) with
-supplier soc for /soc/sound@ec500000/rcar_sound,ssi/ssi-0
-rcar_sound ec500000.sound: Failed to create device link (0x180) with
-supplier soc for /soc/sound@ec500000/rcar_sound,ssi/ssi-1
-[...]
-rcar_sound ec500000.sound: Failed to create device link (0x180) with
-supplier soc for /soc/sound@ec500000/rcar_sound,ssi/ssi-9
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+Regards,
+Siddharth.

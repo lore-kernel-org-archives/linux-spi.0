@@ -1,175 +1,200 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx08-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3172C21DE
-	for <linux-spi@vger.kernel.org>; Mon,  8 Dec 2025 02:08:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765159722; cv=none; b=fcpM4Ru2Cw1LNutaEM2MTQ915XEz9uY6uBrupozpq14rLCycN7FG3S1mcwq2bWBriAEXMw6JUOLBR7muqQSScp2z+LQiFIRbTTtt8hjCniYcuEEg7NQP5nmr8zagepPxQWoUlr8gfIkYGeySmQLCBKp9CaC4l2/xStXn9UxkScg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765159722; c=relaxed/simple;
-	bh=bYbtRNJ146aC3TMQ8IfFXUbxO5W12g8YSi8uv7SMoh8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RaFZ7eUdAh3qZTXIbp+/Fxl67BO4UpHUu21u5MKbsF3NMxeu52Ej6h4N2KDicZlSJck4Qe+f66MpSAqMUso14knECdvOccfG++3zHsAeGPYY4sRq+xrXwuYlurI8D9mRWsAAuqtLxcX2GJc8b3TJ7q953JRzztzoEs2ixf6YpHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=bFYKzZAI; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=kL5GidKa; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5924223373D;
+	Mon,  8 Dec 2025 07:29:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=91.207.212.93
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765178999; cv=fail; b=oXZjjo+VXaQLhIZWkxhZSRqA5H7bMJ5kEjgn19PJfpi8zWIqVFfAFxYm4zx693Nvy3VRfn2ZdVgCsJJGGD1b1BGJZRRCRgS9wHH9Ar++7H3dxo8rUmodfjcHyRyhYquxbfvndEY7zjjsIXZs3RVHlDuNDU4C6JgZ+lJmUDkFW88=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765178999; c=relaxed/simple;
+	bh=NlHkUdEyW4V34WpHwzzyCkAxXn11iQRYwRFpB8NVhDs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
+	 In-Reply-To:To:CC; b=m3rjLgHQHY+7q0okmao9JieCLPhk1TLGRc8RO7ZYzlX9b5w+fJD760paoY5qesMHhVbe78ZOKxM0e+2X9n1QrsrapDi5/p8IyA5Qwnumko7VDNuJsh2k6V74vUmoLGcDLDAPFA9Wf3SkvaRerlYtL0z2wXxMiDCSp3jbtI+wnlk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=Ym6vjvAH; arc=fail smtp.client-ip=91.207.212.93
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="bFYKzZAI";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="kL5GidKa"
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5B7MpBAI3416185
-	for <linux-spi@vger.kernel.org>; Mon, 8 Dec 2025 02:08:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=2CpbeJ+C4anMYVxEHfQh4qSBUe7MaqTj+bc
-	fxqoQ/vY=; b=bFYKzZAII+9IPC9cDmTe3CL+5j1hBTMXnsFTVvvocwHERVZPzzE
-	B7ut+SM49EogVJxmGHt7IJ74HMiWsQc0xCCyBQ9ZE8avP0iILPjCxhXEFWFwIk3K
-	Ezm2RfCA9z0Q5WMZr+nc2i1zO7b58V9M7AErtpQUQ3p9wh9sDSyaKF6Cy8S7e0SB
-	ri9+MxmeZLlwr+tsXLr6RRH/F/vC5welCyZqGMaPZ/yOPOxCBtiAc4ldCcOhcwwW
-	1azyh4aUD6I72/Fo7IIjXtOKEVL9WJ0KCtXQTMHsKjhfAu69xDkKPRVlN/5D/ZOV
-	MhEXDI6RfcMQRbirR9V2bHo8K1dplWQ4dyQ==
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4avcv837jv-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-spi@vger.kernel.org>; Mon, 08 Dec 2025 02:08:39 +0000 (GMT)
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-349a2f509acso2711627a91.1
-        for <linux-spi@vger.kernel.org>; Sun, 07 Dec 2025 18:08:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1765159718; x=1765764518; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=2CpbeJ+C4anMYVxEHfQh4qSBUe7MaqTj+bcfxqoQ/vY=;
-        b=kL5GidKaw1FFxKfYN/Wbkg8NGfgLRHxtI6CTPeSEWXSvjXbvCz0aNWSJ6mya1pmg9N
-         i1rI2sYKbNaWnij+BEnpPHPUEoJtZxUzLNUFhNC5RPr6MCdY6g8HyB8cFv28Mj/D7uJ8
-         liPPeJYDYkqub9LGlK0L7inOZR+24+69un1brIgbtfSpdP0270rqJ2vpSr/l5FfCX6WS
-         W6DfelNx2EEplm1snjQWqy3Nlw3RIZPp1eyoD/4v1uN5LX5PgTKS/6pz4rnSsEVMnw52
-         lkR3+NXSRZElBlVwxMZhtfzZvldmGgyug1RnCI6EpHjLYmuNdCBT3CcGbnyzqvdGNdsV
-         e2lQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765159718; x=1765764518;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2CpbeJ+C4anMYVxEHfQh4qSBUe7MaqTj+bcfxqoQ/vY=;
-        b=IRxw0m3ZCIchfZyAOZsvtuEx054CLvrm3H/zFqrr9LnKxoz5rJ6VqjKTwhLuZd/sUt
-         pzvzky3Jo3BzY45bpmcp042//7nNWByoJ+lIl06Cs2uF8/WetQ9Y596ibLhXulnW2Hjv
-         EbCm29Emu3TlixNmA+/d9hYFHTizzvAeUIt7lNqazOwch6YOocaYG2kka2aDsRDSqmd2
-         PzQrL1uDP6Vap1qXF4JwmRmNNsfWzhPFAJeFW1OxLKP4gRrLe0E9yGnriR5OqmadPFyc
-         uRDUesjGafEHp7e4zSWa3w/c+/BYTyXwAASq7M67jG/AfrFh/KvOTYABDWXOo6Eu1d0h
-         X3Fg==
-X-Forwarded-Encrypted: i=1; AJvYcCX5YZLjW+ApGdwP4htmRnydrCUF9EXLMJw+M3gZj2NvdBOsdu3XMZFxBdIi2f9wUI/XzPPFDzAHe7E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyiPDA/NW3DTcH6zg+ykvNmXapv5JK9rZc3u8GMVAbxq/dkKz7R
-	ZZdPJDwKDI8ZDvV6L7htOlP8z99Oun5I18uRZIKle1QiZ85zCpvmoeugEfaHssGR37esQuGBr2P
-	WOiQcyDw2ER5lQzOB7cxoWeu8MbjgrJe9b9U49AfArNCcy+i+dVLBgawll4Gu2hs=
-X-Gm-Gg: ASbGncvXw3IaAJfZdLqsiIYGDaiz9b6Vnxq7rsnB9BmTBIMnTKKC0rG1gjEzNtH8ThM
-	Q1Jmq+0zYGSUyjhdwe6MAjxO+1F18/CoYXi65lEA3iTSRsBTj0ohfu200ehr2SeaeyZCKp2LGDE
-	3zcjgoc/b4K2ZJLjgOpvz/+dOP+xd2ysEKjUEv/h/bv5Q2FRKa7PbvdRr8sTEqRREVl9Q+YhCZX
-	2fl0UJXNnkG4Y0k+wkcKTZD9P/K3BmrOqqhraT1URs2eYeX5n+erJ+i66cgwGb5cDhksbvbNVpU
-	r49zp7mBcugb0hPgZWq19HKD916CfZcHtgNyoUzZUc7iWZte48DujzRZ3AJdYxWRa6ECL/Up25y
-	XDHLGhI/0rOS2sdb+eVeJRJpsk7Ths09z0+o+ZhsnS+V/64ERqVXffmqE
-X-Received: by 2002:a17:90b:224c:b0:341:8c15:959e with SMTP id 98e67ed59e1d1-349a2599aedmr5351025a91.17.1765159718109;
-        Sun, 07 Dec 2025 18:08:38 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFZG8yf/Ns1EegSTFE0Rpw5twCPlKcZgHeZqg7GH4TQfQZXerKNzs/OlugiBcRykEiG2Lkmng==
-X-Received: by 2002:a17:90b:224c:b0:341:8c15:959e with SMTP id 98e67ed59e1d1-349a2599aedmr5350993a91.17.1765159717551;
-        Sun, 07 Dec 2025 18:08:37 -0800 (PST)
-Received: from quoll (fs98a57d9d.tkyc007.ap.nuro.jp. [152.165.125.157])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29dae4cfcfasm104991325ad.41.2025.12.07.18.08.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 07 Dec 2025 18:08:37 -0800 (PST)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-To: Haixu Cui <quic_haixcui@quicinc.com>, Mark Brown <broonie@kernel.org>,
-        virtualization@lists.linux.dev, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Subject: [PATCH] spi: virtio: Fix confusing cleanup.h syntax
-Date: Mon,  8 Dec 2025 03:08:31 +0100
-Message-ID: <20251208020830.5225-2-krzysztof.kozlowski@oss.qualcomm.com>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="Ym6vjvAH"
+Received: from pps.filterd (m0369457.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5B87MbUR891586;
+	Mon, 8 Dec 2025 08:29:26 +0100
+Received: from am0pr83cu005.outbound.protection.outlook.com (mail-westeuropeazon11010011.outbound.protection.outlook.com [52.101.69.11])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 4aw0aqapnq-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 08 Dec 2025 08:29:26 +0100 (CET)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=sPkxO3DMsydwIGBuopTCUEmn69ygVBrPomazImqsPEMxtIECTwWg8V49LSUxNgyMIJlHymKC32/e2/ukGeH6Lr+KeryGJHGjlSQZeY/RddKpdAQzAO5Vy8hEpza/j/OAgOOWqc8ZN7JgYfHKS+HZL3vBgt5doMNyUTi0vjpY3mtGMpayTprgZ1uNFH2/e2HJqxfohDVSt49uGH1HCTxtWFU58QVb8i7Y9B88Z021TGKIyijh4DLmlyyT6PuvNOUz2ils2DK9cslwPhD+wMKmMCRsf+rokHnWa2cIAyic2kcx7NAHLoBfGPGfF1JZbQQ3RtOeQRzOTvXPRgigjKqo9w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=m+MOtcmdw7mXYh2wwEOynwkAwFmeDCfRdG8vrF/NyeQ=;
+ b=sbAJY8SZ9+k9pYGRdfFOrQitW6VXR1VDbA/BiJXCukl2PUMxX5l9ifTvjudZpF63nGxytJTK23BK8Z5+Bv7TwLMvl8aihPLBphqC6NOCrKd5ms5xbr9e7OHsGzJHg2XpVZrwgxI6DEvynsVn2qM47bXPdjugEr1W/r+jUHiKMOZ/5/O48T9sy2a6IiK1im1lXa6uYF24gV366vgg/w12WfFz36mlWV1Zo5ch+Z1KZa6kNMGhfrQuvGIdRWF0wEHAZ8eM4tOL8iRgP3INdEqANf4UZEyMwsk5mVELh4+Z3BJw/FMc6v1jd8T7vS59Xc2qzAFGz5YLubZdEBXa4g6Ltw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
+ 164.130.1.59) smtp.rcpttodomain=st-md-mailman.stormreply.com
+ smtp.mailfrom=foss.st.com; dmarc=fail (p=none sp=none pct=100) action=none
+ header.from=foss.st.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=m+MOtcmdw7mXYh2wwEOynwkAwFmeDCfRdG8vrF/NyeQ=;
+ b=Ym6vjvAHIZXHap3Jwab/ynXMX8n6LP2U1jUuKwYfWYEETgPN8PtfF1z0eJ2oxjA5M/MM5/qMJ3vY79v/3U1KxKVJumXuGlc7fo+6kJ8YOZJtB9hq3ra+/N7XpS/Add4F1zWocVIhGZnr8Xoej49eSOfYN8BijLI+zlCKqyZSkXWhsCwf1ScEnw19+ZPPeZaN8xsnRg74s7jBahNi+kO9qbSpe8cyHCuMPpGt1KFhB8GkHXfw8prnwS8iZseobrcW+y5sCAOk6sxtCZ6wj5lXb12C57vPz19PEkAbImcMCxAzXK2CNuwiHsKULwv+QRGSI6lca/unNQDxPdNECOsDew==
+Received: from AM8P190CA0023.EURP190.PROD.OUTLOOK.COM (2603:10a6:20b:219::28)
+ by DU0PR10MB7360.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:444::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.14; Mon, 8 Dec
+ 2025 07:29:24 +0000
+Received: from AM3PEPF0000A79C.eurprd04.prod.outlook.com
+ (2603:10a6:20b:219:cafe::90) by AM8P190CA0023.outlook.office365.com
+ (2603:10a6:20b:219::28) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9388.14 via Frontend Transport; Mon,
+ 8 Dec 2025 07:28:48 +0000
+X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 164.130.1.59)
+ smtp.mailfrom=foss.st.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=none header.from=foss.st.com;
+Received-SPF: Fail (protection.outlook.com: domain of foss.st.com does not
+ designate 164.130.1.59 as permitted sender) receiver=protection.outlook.com;
+ client-ip=164.130.1.59; helo=smtpO365.st.com;
+Received: from smtpO365.st.com (164.130.1.59) by
+ AM3PEPF0000A79C.mail.protection.outlook.com (10.167.16.107) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9412.4 via Frontend Transport; Mon, 8 Dec 2025 07:29:23 +0000
+Received: from STKDAG1NODE1.st.com (10.75.128.132) by smtpo365.st.com
+ (10.250.44.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 8 Dec
+ 2025 08:30:05 +0100
+Received: from localhost (10.48.87.93) by STKDAG1NODE1.st.com (10.75.128.132)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 8 Dec
+ 2025 08:29:22 +0100
+From: Patrice Chotard <patrice.chotard@foss.st.com>
+Date: Mon, 8 Dec 2025 08:29:11 +0100
+Subject: [PATCH v2 4/8] spi: stm32-ospi: Simplify SMIE interrupt test
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1720; i=krzysztof.kozlowski@oss.qualcomm.com;
- h=from:subject; bh=bYbtRNJ146aC3TMQ8IfFXUbxO5W12g8YSi8uv7SMoh8=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBpNjMe0DvQW5czVU9hlSRb6igUPfFufx99kUMHy
- zulbG8OXYCJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaTYzHgAKCRDBN2bmhouD
- 15AED/sGzg5QlPKWdXtKqMXjKN8gqP5QezAXVEFPO/7jfwTrbHUhGjN1jV9Q9DZxUCUMFbN604D
- ZWGlEzAzP2zBLLdv3cx4gZZbSZGGr3V12/2cst/Gj/s3WEpRkaQZeRLmeNCaqb5TZtoytwn24Is
- 10hkKayTWO0z4lmmPGutLSess7wBB6iEMs8bnKZKrJPq4DN+LU0SyOHlqdtTXAXTghoyd0YKgiZ
- RtXtTIOGbsaAUDpw8lFA56EaExiEPWxIntBkG14EQISPOApqlArLYTigF6ivD6x8OmaA1N6Zfx9
- YUDr0uH41XMq4GShO9fZ9q+8uAFmBzXjJGdFJjO2Pz0AXZ3BCGwZksHt2vb8pBc8BrBf6KEMSgR
- ujzIORfuXgqOoPAnQVzyz9rvqMo638Q5VNEdv9uzhjRA4vbiHdX05iq4mOjHAeB0pABTDx/Y7i+
- gHkny3X0/Vo6OqwzPNdB4eumQ27dwbcbYhIlUCFO53TMsbOpZUrtb9e7aeEnOB1SjNzvkbqKJnj
- //B7JxcyqaUD91jSmCTDE3Daa54VnH0NRUjEWM6jexeWYHIrQ/jAUlpKUgbZTi10ze4KLZscXE5
- UkmNS0rNAHywTgPm7j3L5L6NJJozACXaalQQw1VqNWRGpyo3IAa5IHYA7hOVm8V2m0+7Vvcubxp gVxAh8a/px1ySxQ==
-X-Developer-Key: i=krzysztof.kozlowski@oss.qualcomm.com; a=openpgp; fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: SxXGUo6_OnWpDBO4q6Utmapt5V23cg0I
-X-Authority-Analysis: v=2.4 cv=KL9XzVFo c=1 sm=1 tr=0 ts=69363327 cx=c_pps
- a=vVfyC5vLCtgYJKYeQD43oA==:117 a=vTE1kzb4AqIx7XBf0Bkr0A==:17
- a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=EUspDBNiAAAA:8 a=5GyS9ht9Ox2oK99QZPgA:9 a=rl5im9kqc5Lf4LNbBjHf:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA4MDAxNiBTYWx0ZWRfX7Mjy0cOP90b4
- aIj0lPXUc1MgMdEFBpcEa+F2e3nW9qEyHiGeJ4/iAYQz+Cnl0QbJzzrzcde5vjcr3xYP8pc9wvn
- kVlWcTv8K0+FMql7cs7jy0vGP1jYx2e7hnYyeIp7P718XsfGPay6C6lWQ+2X6tRS/kmSQFLGkom
- 7wYV+Rem6EaoIwYLHATs6mTQcdXnZAczXKadbL0JHKj99cwOoyn8/UOgEla4yloWYGGRYCiWcph
- OSrsCzL54Z3ifs/YYn+Y1HP3J1KSEk0GsLGKDte+i+oVw29ioBfWevQxeeRUB9IAEdhPChE/JSH
- FKJILKoYOIZhkaKVYhEut+GVokZ2qJLJ2FxZa6/TXdoF3WwkwubMpAn37+8ldy3AtsN0aOsPz+K
- Wt3QjYz8raprRJFUgo3KjkLwWgYw0w==
-X-Proofpoint-GUID: SxXGUo6_OnWpDBO4q6Utmapt5V23cg0I
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20251208-upstream_qspi_ospi_updates-v2-4-62526c9467dc@foss.st.com>
+References: <20251208-upstream_qspi_ospi_updates-v2-0-62526c9467dc@foss.st.com>
+In-Reply-To: <20251208-upstream_qspi_ospi_updates-v2-0-62526c9467dc@foss.st.com>
+To: Mark Brown <broonie@kernel.org>,
+        Maxime Coquelin
+	<mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>
+CC: <linux-spi@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        Patrice Chotard <patrice.chotard@foss.st.com>
+X-Mailer: b4 0.14.3
+X-ClientProxiedBy: ENXCAS1NODE2.st.com (10.75.128.138) To STKDAG1NODE1.st.com
+ (10.75.128.132)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM3PEPF0000A79C:EE_|DU0PR10MB7360:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6cea5549-0b12-43b7-f989-08de362b82a8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|1800799024|82310400026|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ek8xelhqRW9rc1BEU2d4aGRFWDVaRlZiQW1nYnlTR3ZTR2JFcFc5WkEwTmZz?=
+ =?utf-8?B?SkU4MFZpVk9vbWRYd3dUMlVDaWs3cXUyTGg3WEpwV28xVmluR2RlZTZPNDB6?=
+ =?utf-8?B?bEZPa1haYUNkOWNxL2Y0TEVhcGZFaTl6RUNqODB1RGQxZUNubFdRSWxWQUFi?=
+ =?utf-8?B?VTNEZGhGaVB6cTVIbDZYZlNNUXo4K0RINFQybXdaYzB4aEY0ZlcwOEdCY0Ft?=
+ =?utf-8?B?QUdDby9JWnRURHJhcms5aENoanZlQmIyNDhjY3liS05xRHRFdVJEc1lQUVRG?=
+ =?utf-8?B?azA4MDZ5QjRSU29LaFNHall6WmFOM05ndFk4eDk0WVVPdWo4T2RXV21ob1ZP?=
+ =?utf-8?B?Z3lTcU5hVTFSN0pKQU1SM3dHTlJiZVlqNnl4Y0lJVzNSTEhrYmlvaTJXbzJx?=
+ =?utf-8?B?RU9lc2ZsT2FLUDdVVG9Qejc4bEdtWnRuTXJBajBiRVlKOFZDTTlpVkp3MWF1?=
+ =?utf-8?B?U2N4TVMvY0hmS2hXM1RNSlRGZGgwVWhacXl5RkM1c3BVRVBROVdRWTBhUzlS?=
+ =?utf-8?B?U1h0WTBpcG5uajZCSXZpQUhQQkVyazhUUnRnZlh5QzZYV3IvbCs1ZmtyVEZI?=
+ =?utf-8?B?T0ljWnRUUm1wZmRwSjM4NGtndDlUaFJ0WHdBQXlHOUowd0JXTjcrUVJ5amZK?=
+ =?utf-8?B?Y240MzlpMnJQazJCd0VlRlhEODh4Z0l4U1pJbEFJVmo5dmt0eU1Ja2hjVGRZ?=
+ =?utf-8?B?akYzK0JaTjJrQ3VFakF3VFJtS2pMREowT2RvMFpEcW5UN2VtOFdCcm1EUUJH?=
+ =?utf-8?B?QzIxU1RoNkE4dTVUOHdzRmwwSXZlZzRGN0tjdHQwZ0craUdlclM5TXpqYWND?=
+ =?utf-8?B?MEcxZzVnVGdYMnVWcHhrdzBmNjROZDdmZVMvS3ozQUdkRnlFSTdnbkUxNXVa?=
+ =?utf-8?B?R3I3WG5nUldrc25aY0dKT1AzcmdxOE1IcnUxdmRnOERFZkNQMkNyeU9Dcm1W?=
+ =?utf-8?B?Nm5ydWtobitXVjlYdStlcUphK25yWUg1YXVsazMrbE1zbER3L3IreStrRVBY?=
+ =?utf-8?B?WHAxNEZNR043OUpNOFhyRW5WMlhUZ3JOWFJNakVKTEFnYy9FVjVKZmlISHFH?=
+ =?utf-8?B?QWNmSTJFWmtldEw5V1YwNmh6bzg4YTYyOGNyMmdTbXBTdndqcjdyQTJCTVY5?=
+ =?utf-8?B?aHZOcWZEcEU2MEVSUlMwMWhub3YwVlJwZWNzd1d6dHd3SHFHUlphZVdObkR2?=
+ =?utf-8?B?andFS1JRWFFQZXlTbk12Mk9EMHpxamw5OHU2TGRPekg3VXB3MVF1NmNqWHBQ?=
+ =?utf-8?B?TTVNUFBqcmVtNkVBVXBuUGthcHhZNnlHTUI2R2VBbnJvODliaHYvblAxbHEy?=
+ =?utf-8?B?ZU5scU9vWlhZaTZmbnZPdmtMcE8wS00rcmhSemxrRzVkckNTWTRLeE5vaFkx?=
+ =?utf-8?B?QS90Q3VnWVRFdlhmNlc0TThkb2k0ajdabnJIVms2ZEtYQUlWVks2dlJvdGJ6?=
+ =?utf-8?B?L1RqSERycTI5cFI3dE1qVkhqbjJQejA1c05IS1hvbnRzZldlMVkwdGFsbURN?=
+ =?utf-8?B?VGh3YVUrbWt1bGtvekNOYnFCQjdPdDhRY3Q4bmozSHBNZVJRckdCMFNOdFd6?=
+ =?utf-8?B?MGI1cnQyNWdSa0pGb2p1WndScWZhbnlmbjRnTGJuRUF6WU13d0I0WnVPUEpN?=
+ =?utf-8?B?V0VJNUZGQXB6MFlralZzL1FINGU2S0lkMC9LTEtvdkgzT1NpYlhCdGRkYyt3?=
+ =?utf-8?B?NE9NNlB0c0U4aGlxN2RiQ1htVENTSnVmWEFianREa2JqejVOdWZCeWNRNHFs?=
+ =?utf-8?B?Tko1azh2VHNFL0VlcWV5YkR6a1hod01meGQ1eTlFT3lrWCtqN0loWWc2U1o0?=
+ =?utf-8?B?aFFHeVZCcyt6RG92MFlSWjZHSk5MQ2o3Wm85b3JXT3I2Tzl6ZUtLdHIxeWd4?=
+ =?utf-8?B?KytqNDFzN2I2bnNldUs3TlZGMXNJaU1pZEpiZlBCOUgxeHhCMFNYSmhocHZM?=
+ =?utf-8?B?Z3BBNmw5RFptTlJMNTkvdENQR1dXUGZkTmJBRnFxSkhjejNwOFAwTG4wUndQ?=
+ =?utf-8?B?K2NDMWN6RlFqcTNsOGhRYkw2cllTV3ZKOVVLbmlCa3NnUE9DL2xJYTJzalNr?=
+ =?utf-8?B?cmQrc2w0eWpBSVhXQU9GRHkzbUtzSzZKTGU1SFRuSDdESWZMMysralBGbHcw?=
+ =?utf-8?Q?hwKk=3D?=
+X-Forefront-Antispam-Report:
+	CIP:164.130.1.59;CTRY:IT;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:smtpO365.st.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(82310400026)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: foss.st.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Dec 2025 07:29:23.5998
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6cea5549-0b12-43b7-f989-08de362b82a8
+X-MS-Exchange-CrossTenant-Id: 75e027c9-20d5-47d5-b82f-77d7cd041e8f
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=75e027c9-20d5-47d5-b82f-77d7cd041e8f;Ip=[164.130.1.59];Helo=[smtpO365.st.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AM3PEPF0000A79C.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR10MB7360
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA4MDA2MiBTYWx0ZWRfX8mnwSOBFrNbZ
+ OnCXctjNT/aCnOZfkEZdAAtET1TfFCb9TbioVv9rqsHmkj7rbc0aDZp5G9SSHeTA6krJ3P0aUQk
+ m02tWGNAVSSPonD6Wbp3kNQgSX6H5F0bpvAkEB9tk0N7xZMeSDurkmXkRsLcao+unj+/qyEboMt
+ zNiNnNxCZqe/ENdVdfz5npK9s5kAd22ZZCUWebFz5h5x8BdblG1G6QLl2UwbKvCXkoBHMD+thPD
+ lReaB6xaScUVBV6ArLEfDswy1zAWRy6Tp/3aS3dI/wZDu/CovWVg/Zr4HiYKZOMZ7TJesqjpycw
+ QqYOcy/qNybKQY3Q+C9vGIZODG/vWb+taVZuWB4nHQpI9+EBaC1sAv+se61GII5h3F4xJMKMOig
+ U2i+0NxzKErqwp2YAhHVnRohCKKoOQ==
+X-Proofpoint-GUID: _pQxZNRF75LhDlhiYn5w8UnZikD60jfp
+X-Proofpoint-ORIG-GUID: _pQxZNRF75LhDlhiYn5w8UnZikD60jfp
+X-Authority-Analysis: v=2.4 cv=R/oO2NRX c=1 sm=1 tr=0 ts=69367e56 cx=c_pps
+ a=47WbqJ5M7RG3CIq0ooiKZA==:117 a=d6reE3nDawwanmLcZTMRXA==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=XWp4PHTOCikA:10 a=IkcTkHD0fZMA:10
+ a=wP3pNCr1ah4A:10 a=s63m1ICgrNkA:10 a=KrXZwBdWH7kA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=8b9GpE9nAAAA:8 a=y85xp1xkQ9wiHhBLIzMA:9
+ a=QEXdDO2ut3YA:10 a=T3LWEMljR5ZiDmsYVIUa:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-12-06_02,2025-12-04_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 phishscore=0 impostorscore=0 spamscore=0
- priorityscore=1501 suspectscore=0 clxscore=1011 malwarescore=0 bulkscore=0
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
- definitions=main-2512080016
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
+ suspectscore=0 lowpriorityscore=0 spamscore=0 clxscore=1015 impostorscore=0
+ bulkscore=0 priorityscore=1501 adultscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512080062
 
-Initializing automatic __free variables to NULL without need (e.g.
-branches with different allocations), followed by actual allocation is
-in contrary to explicit coding rules guiding cleanup.h:
+SR_SMF status bit can only be set if CR_SMIE was previously set,
+keep status bit check only.
 
-"Given that the "__free(...) = NULL" pattern for variables defined at
-the top of the function poses this potential interdependency problem the
-recommendation is to always define and assign variables in one statement
-and not group variable definitions at the top of the function when
-__free() is used."
-
-Code does not have a bug, but is less readable and uses discouraged
-coding practice, so fix that by moving declaration to the place of
-assignment.
-
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Signed-off-by: Patrice Chotard <patrice.chotard@foss.st.com>
 ---
- drivers/spi/spi-virtio.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-stm32-ospi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-virtio.c b/drivers/spi/spi-virtio.c
-index 2acb929b2c69..6aad9f1fd016 100644
---- a/drivers/spi/spi-virtio.c
-+++ b/drivers/spi/spi-virtio.c
-@@ -150,7 +150,6 @@ static int virtio_spi_transfer_one(struct spi_controller *ctrl,
- 				   struct spi_transfer *xfer)
- {
- 	struct virtio_spi_priv *priv = spi_controller_get_devdata(ctrl);
--	struct virtio_spi_req *spi_req __free(kfree) = NULL;
- 	struct spi_transfer_head *th;
- 	struct scatterlist sg_out_head, sg_out_payload;
- 	struct scatterlist sg_in_result, sg_in_payload;
-@@ -159,7 +158,8 @@ static int virtio_spi_transfer_one(struct spi_controller *ctrl,
- 	unsigned int incnt = 0;
- 	int ret;
+diff --git a/drivers/spi/spi-stm32-ospi.c b/drivers/spi/spi-stm32-ospi.c
+index 06632cdd1630..c36df8d3f5cb 100644
+--- a/drivers/spi/spi-stm32-ospi.c
++++ b/drivers/spi/spi-stm32-ospi.c
+@@ -279,7 +279,7 @@ static irqreturn_t stm32_ospi_irq(int irq, void *dev_id)
+ 	cr = readl_relaxed(regs_base + OSPI_CR);
+ 	sr = readl_relaxed(regs_base + OSPI_SR);
  
--	spi_req = kzalloc(sizeof(*spi_req), GFP_KERNEL);
-+	struct virtio_spi_req *spi_req __free(kfree) = kzalloc(sizeof(*spi_req),
-+							       GFP_KERNEL);
- 	if (!spi_req)
- 		return -ENOMEM;
- 
+-	if (cr & CR_SMIE && sr & SR_SMF) {
++	if (sr & SR_SMF) {
+ 		/* disable irq */
+ 		cr &= ~CR_SMIE;
+ 		writel_relaxed(cr, regs_base + OSPI_CR);
+
 -- 
-2.51.0
+2.43.0
 

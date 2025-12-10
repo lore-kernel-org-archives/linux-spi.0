@@ -1,39 +1,40 @@
 Received: from Atcsqr.andestech.com (60-248-80-70.hinet-ip.hinet.net [60.248.80.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3312930497C;
-	Wed, 10 Dec 2025 09:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3447F3074B1;
+	Wed, 10 Dec 2025 09:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.248.80.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765357512; cv=none; b=kvbKAlXYGtMnu/GHg27vz4edJidM+pJVpmGEMX92Y+JFBT0E7BiKoMo1i5QYEIABvM4iSnnWIBW8vwa+A+WVBgs+WZ9fbhnPtBnrBE1/4zHu+YVzYaKQM/HY1NYawCLp/wvTrXzyUTHy67MEQ59+H3yhvnGzCszf2f2EgkIpAec=
+	t=1765358064; cv=none; b=ucJIP/nXDdM3ePHWwUCyWjhgl4wYM1IhIYoRsZBVfGIoIVN5hMclu3bxi9aOKSxXgT/tvsMWi4cEeqDDlUlWF2Jm9hdwqeiyoaxQYI2EoOla3efXdeyrpnF1j0CG5hQ3ucA6pIF6qWSGxg6lV8MItFKR2NPQNIpEWXE56gQPZYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765357512; c=relaxed/simple;
-	bh=1pNuUrCkwQCUCVbTWndpLvdT2wMY8V9sH1g+0NmALTk=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PRAIO9+HynpdPL9VmuT/URdUeM6dPSNeh83TeBEAydQPApZhMsZHIwDo/y5fs1nh4RNP+f0Ac1k6aXVCNt4M3BVNJHtOtY/YscEkf5SdZdrNcAAGMMKocNCBbIT9w6dvoiwCPsPQhIgZzV8fh5XdulccU1NGXPYY032tvyQseFc=
+	s=arc-20240116; t=1765358064; c=relaxed/simple;
+	bh=DbrkSK9Pisa5WW6iqrOJfrhgalyCWsjIPOiwfw0BCrs=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VYOrJouSITeXV9tGNhsDPluyYaKdkIFK4BgZUbXDKdeWtVwK2mgZKEQOlk4ni7ICwLlrEVWgKcQceBvIVOjMQKxyamlsgN1NFnJtQD71PDgE87EGy/YE9BSC8y9wXydCSyWZQOGX7tZN8X9uzCkKTjeiM4Vb5rnfe0EW2nxXOMU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=andestech.com; spf=pass smtp.mailfrom=andestech.com; arc=none smtp.client-ip=60.248.80.70
 Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=andestech.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=andestech.com
+Received: from Atcsqr.andestech.com (localhost [127.0.0.2] (may be forged))
+	by Atcsqr.andestech.com with ESMTP id 5BA954uA081275;
+	Wed, 10 Dec 2025 17:05:04 +0800 (+08)
+	(envelope-from cl634@andestech.com)
 Received: from mail.andestech.com (ATCPCS34.andestech.com [10.0.1.134])
-	by Atcsqr.andestech.com with ESMTPS id 5BA950AK081158
+	by Atcsqr.andestech.com with ESMTPS id 5BA94c7R080689
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-	Wed, 10 Dec 2025 17:05:00 +0800 (+08)
+	Wed, 10 Dec 2025 17:04:38 +0800 (+08)
 	(envelope-from cl634@andestech.com)
 Received: from swlinux02.andestech.com (10.0.15.183) by ATCPCS34.andestech.com
  (10.0.1.134) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 10 Dec
- 2025 17:05:00 +0800
+ 2025 17:04:38 +0800
 From: CL Wang <cl634@andestech.com>
 To: <cl634@andestech.com>, <broonie@kernel.org>, <linux-spi@vger.kernel.org>,
         <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>
 CC: <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <tim609@andestech.com>
-Subject: [PATCH V2 3/3] MAINTAINERS: Add MAINTAINERS entry for the ATCSPI200 SPI controller driver
-Date: Wed, 10 Dec 2025 17:04:30 +0800
-Message-ID: <20251210090430.3602380-4-cl634@andestech.com>
+Subject: [PATCH V2 0/3] spi: atcspi200: Add support for Andes ATCSPI200 SPI controller
+Date: Wed, 10 Dec 2025 17:04:27 +0800
+Message-ID: <20251210090430.3602380-1-cl634@andestech.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251210090430.3602380-1-cl634@andestech.com>
-References: <20251210090430.3602380-1-cl634@andestech.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -47,36 +48,63 @@ X-ClientProxiedBy: ATCPCS33.andestech.com (10.0.1.100) To
 X-DKIM-Results: atcpcs34.andestech.com; dkim=none;
 X-DNSRBL: 
 X-SPAM-SOURCE-CHECK: pass
-X-MAIL:Atcsqr.andestech.com 5BA950AK081158
+X-MAIL:Atcsqr.andestech.com 5BA954uA081275
 
-MAINTAINERS: Add entry for the Andes ATCSPI200 SPI controller driver
+Hi all,
 
-Signed-off-by: CL Wang <cl634@andestech.com>
----
-Changes for v2:
- - Split the MAINTAINERS update into a separate patch.
+This series adds support for the Andes ATCSPI200 SPI controller.
 
----
- MAINTAINERS | 6 ++++++
- 1 file changed, 6 insertions(+)
+Changes in v2 include:
+  - Added missing clock disable/unprepare handling in probe error paths.
+  - Switched to devm_dma_request_chan() for proper DMA channel cleanup.
+  - Updated the DT binding and documented all compatible strings.
+  - Dropped the "spi_" prefix from dma-names as suggested.
+  - Added suspend/resume support for power management.
+  - Added the "andestech,ae350-spi" compatible string.
+    
+    AE350 is part of the AndeShape™ platform family and is a commercially
+    supported product with a fixed, documented SoC-level architecture (memory
+    map, interrupt topology, and peripheral integration). Although AE350 is
+    often deployed on FPGA boards, the platform behaves as a stable SoC
+    integration rather than a prototype.
+    
+    Upstream Linux already accepts FPGA-based platform-level compatible strings
+    for stable SoC-like integrations. For example, the Tensilica FPGA platform
+    uses:
+    compatible = "cdns,xtfpga-spi";
+   
+    Following the same rationale, "andestech,ae350-spi" is proposed as the
+    platform-level compatible string for AE350-based devices.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 8b39a55b939a..74ded6a79efd 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1804,6 +1804,12 @@ S:	Supported
- F:	drivers/clk/analogbits/*
- F:	include/linux/clk/analogbits*
- 
-+ANDES ATCSPI200 SPI DRIVER
-+M:	CL Wang <cl634@andestech.com>
-+S:	Supported
-+F:	Documentation/devicetree/bindings/spi/andestech,qilai-spi.yaml
-+F:	drivers/spi/spi-atcspi200.c
-+
- ANDROID DRIVERS
- M:	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
- M:	Arve Hjønnevåg <arve@android.com>
+    More information about AE350 can be found at:
+    https://www.andestech.com/en/products-solutions/andeshape-platforms/ae350-axi-based-platform-pre-integrated-with-n25f-nx25f-a25-ax25/
+
+Patch overview:
+  - Patch 1: Adds the device tree binding documentation.
+  - Patch 2: Add ATCSPI200 SPI controller driver.
+  - Patch 3: Add MAINTAINERS entry for the ATCSPI200 SPI controller driver.
+
+Comments and reviews are welcome.
+Thanks for your time.
+
+Best regards,
+CL
+
+CL Wang (3):
+  dt-bindings: spi: Add support for ATCSPI200 SPI controller
+  spi: atcspi200: Add ATCSPI200 SPI controller driver
+  MAINTAINERS: Add MAINTAINERS entry for the ATCSPI200 SPI controller
+    driver
+
+ .../bindings/spi/andestech,qilai-spi.yaml     |  86 +++
+ MAINTAINERS                                   |   6 +
+ drivers/spi/Kconfig                           |   9 +
+ drivers/spi/Makefile                          |   1 +
+ drivers/spi/spi-atcspi200.c                   | 680 ++++++++++++++++++
+ 5 files changed, 782 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/andestech,qilai-spi.yaml
+ create mode 100644 drivers/spi/spi-atcspi200.c
+
 -- 
 2.34.1
 

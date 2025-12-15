@@ -1,85 +1,92 @@
-Received: from Atcsqr.andestech.com (60-248-80-70.hinet-ip.hinet.net [60.248.80.70])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C6B22FDFF;
-	Mon, 15 Dec 2025 13:24:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.248.80.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7452132BF51;
+	Mon, 15 Dec 2025 13:59:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765805074; cv=none; b=VlsT484Xhfyvy2HjOgeVta+rj6qTXn/1MEXud2udHr5TkSTLGb2e7vQlPEKceGdbovT1tW173XcgmK2ikymHZNd7lXeCwSajFN1atsQcteAIIEyJ+LFiRbuHDAX6Fkeldp9k5Xuo16d8bhjIvBRpzmMiDJGffQg0f9w4IzArcYY=
+	t=1765807160; cv=none; b=knUl76mErd3mtR2JG5YeP6fBDYmVfvT6vUwfMyp0/PdnggeoFXnVV4nKcfDEJX5W1eRb/uJg2/7i+wZ7v4vLIV0GCEqn4SHNCfCvEKUuKtc9zNpwnNjYYKz6qXGqS0U4EpG9e0Fciu/oi7/l92ZkNR9/MxIQGPjxQgYPvyDxi7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765805074; c=relaxed/simple;
-	bh=dwZqDlAZtpYjqFnUGItczi6z1PobsLwEUgdFAO/ahNs=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WnwmrIKXoM1tIR1gzGTwV40Yx+q6hJl4/pK0ZwA9ihtAJnTBoLny7Cbca8KglrRcExMjTHeF9ozNb15KyTU0/XGKSxUtLrfEDGHAUHxuWn1ZDobWRO5UPAUXU5KxXDtDdHUtzJsDyPwrjbHZep8iQ764iuGiAylPACPvyGvHl1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=andestech.com; spf=pass smtp.mailfrom=andestech.com; arc=none smtp.client-ip=60.248.80.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=andestech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=andestech.com
-Received: from mail.andestech.com (ATCPCS34.andestech.com [10.0.1.134])
-	by Atcsqr.andestech.com with ESMTPS id 5BFDOIsZ076978
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-	Mon, 15 Dec 2025 21:24:18 +0800 (+08)
-	(envelope-from cl634@andestech.com)
-Received: from swlinux02.andestech.com (10.0.15.183) by ATCPCS34.andestech.com
- (10.0.1.134) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 15 Dec
- 2025 21:24:18 +0800
-From: CL Wang <cl634@andestech.com>
-To: <cl634@andestech.com>, <broonie@kernel.org>, <linux-spi@vger.kernel.org>,
-        <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>
-CC: <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <tim609@andestech.com>
-Subject: [PATCH V3 3/3] MAINTAINERS: Add MAINTAINERS entry for the ATCSPI200 SPI controller driver
-Date: Mon, 15 Dec 2025 21:23:49 +0800
-Message-ID: <20251215132349.513843-4-cl634@andestech.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251215132349.513843-1-cl634@andestech.com>
-References: <20251215132349.513843-1-cl634@andestech.com>
+	s=arc-20240116; t=1765807160; c=relaxed/simple;
+	bh=/OojgQQEHFpwodZB5vESN5ImwNRR5aNLMCdbYxQXbKg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=Xl+EmQ6fUzcGpuSc0kzrT4TDZHL91DelokQ+gUUtORlIvY2n4MhExCcDdkYGSTaS1Jqss0hwqcFh+08HC4igBCwJC4KdG9ZllorsyZWvgFi4tbDiptSEOP9sDkX3svuZ90zf471LhhikIntsky8l2MGXnZ3RNz5akxPbPJXNMyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CSlevxOy; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CSlevxOy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49437C4CEF5;
+	Mon, 15 Dec 2025 13:59:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765807160;
+	bh=/OojgQQEHFpwodZB5vESN5ImwNRR5aNLMCdbYxQXbKg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=CSlevxOyDZ9hObHyFh3Uvd4eoUUaHdjoOmLWOt+2zykrTvqzdcVuoNsE6xq5qOB82
+	 apkIDV6UT4oK3ofHuIjDz3PgTR0JDE+vMUcg1eYgb1peA+3t4DuVCc3KNT5gqR2rK9
+	 CeETq0a12lIJxC9iIFxvbQVKV/5+5nbN3e2xB7I8qQGlSnY17z4ys9Yjg4chgzPBx2
+	 97HeeMiavJRpwS49Fn/e7GIPR4QHOT3jAV2T1QX0s5X178W1Nub8OBYMdazZtDYpOf
+	 B+95f3EX8AJOuG1793wwOzvq02NTIs2ND/5U7tgU0Fmr+7Q0RUnHWrH0VYn+1smMyo
+	 AU/opUL9+pNFg==
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Christophe Leroy <chleroy@kernel.org>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ "florent . trinh-thai @ cs-soprasteria . com" <florent.trinh-thai@cs-soprasteria.com>, 
+ Alexander Sverdlin <alexander.sverdlin@gmail.com>
+In-Reply-To: <07d1ea39a0e9b56846395d79d489a5153206ff5c.1762714267.git.christophe.leroy@csgroup.eu>
+References: <07d1ea39a0e9b56846395d79d489a5153206ff5c.1762714267.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] spi: fsl-cpm: Check length parity before switching to
+ 16 bit mode
+Message-Id: <176580715873.161463.2257663574111550019.b4-ty@kernel.org>
+Date: Mon, 15 Dec 2025 22:59:18 +0900
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: ATCPCS33.andestech.com (10.0.1.100) To
- ATCPCS34.andestech.com (10.0.1.134)
-X-DKIM-Results: atcpcs34.andestech.com; dkim=none;
-X-DNSRBL: 
-X-SPAM-SOURCE-CHECK: pass
-X-MAIL:Atcsqr.andestech.com 5BFDOIsZ076978
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-47773
 
-MAINTAINERS: Add entry for the Andes ATCSPI200 SPI controller driver
+On Sun, 09 Nov 2025 19:55:50 +0100, Christophe Leroy wrote:
+> Commit fc96ec826bce ("spi: fsl-cpm: Use 16 bit mode for large transfers
+> with even size") failed to checkout that the size is really even before
+> switching to 16 bit mode. Until recently the problem went unnoticed
+> because kernfs uses a pre-allocated bounce buffer of size PAGE_SIZE for
+> reading eeprom.
+> 
+> But commit 8ad6249c51d0 ("eeprom: at25: convert to spi-mem API")
+> introduced an additional dynamically allocated bounce buffer whose size
+> is exactly the size of the transfer, leading to a buffer overrun in
+> the fsl-cpm driver when that size is odd.
+> 
+> [...]
 
-Signed-off-by: CL Wang <cl634@andestech.com>
----
-Changes for v3:
-  - Updated the MAINTAINERS entry to reflect the renamed DT binding file.
+Applied to
 
-Changes for v2:
-  - Split the MAINTAINERS update into a separate patch.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
----
- MAINTAINERS | 6 ++++++
- 1 file changed, 6 insertions(+)
+Thanks!
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 8b39a55b939a..986344d1bce8 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1804,6 +1804,12 @@ S:	Supported
- F:	drivers/clk/analogbits/*
- F:	include/linux/clk/analogbits*
- 
-+ANDES ATCSPI200 SPI DRIVER
-+M:	CL Wang <cl634@andestech.com>
-+S:	Supported
-+F:	Documentation/devicetree/bindings/spi/andestech,ae350-spi.yaml
-+F:	drivers/spi/spi-atcspi200.c
-+
- ANDROID DRIVERS
- M:	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
- M:	Arve Hjønnevåg <arve@android.com>
--- 
-2.34.1
+[1/1] spi: fsl-cpm: Check length parity before switching to 16 bit mode
+      commit: 1417927df8049a0194933861e9b098669a95c762
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 

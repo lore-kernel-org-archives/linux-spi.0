@@ -1,85 +1,56 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277D3334695;
-	Mon, 15 Dec 2025 13:59:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 188CD334C13
+	for <linux-spi@vger.kernel.org>; Mon, 15 Dec 2025 13:59:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765807186; cv=none; b=ndRF7OAbb/NT/UkYTnSKLqcKZjyTA02NTh4USCLqXzViBpEuYoprynkwaqH9pmJjnu4v0KL/CwXiVTiYeXw0GhsmC64OxWyA3cThWjorMDZvz98OACKb68iDWvJ+df1gzFJRcK7S5S1VLJ82KwJ5eG+obko/4+hFqbRVeu/Mwrs=
+	t=1765807189; cv=none; b=RP8eQcGpg97OC0VLANts+YJhFUELea+sdqXOttX1RVsRl/Sik4pecDHIxByVtSPSn7FMIaKLafcRwXQZbV2E1XX71AaCYD8TJ6vF4oUKhXOsrSeZ73FBgE0fR0e3CR0tphtB6YJIw50UwldV4eU0ME9LpvGiFZdwKR8AcvxYu30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765807186; c=relaxed/simple;
-	bh=KOAvoqG7RnTWQZeujmBk7U/h4REQ9si9oHsscWJ0Z1E=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=Pa0C5nAsdMfpCHw7GZDo6Km/fn4G2w+mNmg/Q/clRJmNrq6UMQuvCSHZGWTNNDRM+54aleFftg1TQneiCRIkaeGZfnNFyXWXv1H9gQFXz8MlrTGJfqjUjuyR/gMYyQ7cdZwTW20AjoiL+UO6VjFffZbVPvrPzmiF2JMFIBzjf5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Se0Bz+j9; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1765807189; c=relaxed/simple;
+	bh=6n0LWEmN4UqidHTptn+3zginOOz53lIirfLkkom45Wc=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=AGZV0IkEgw6Svm24VM8YpbyhVi2fcPN2Z7KnU2IITA42W++6B+nDijgfqPB4FWhyvQJsOk9li23gP/QcGEBkIZeoP3TEK19zO7hrW2/0/C1/brD16BXwd+I3RExlSDtiDs1anpYtGmbQRxjuoOQ0i8hD9HjCHlWHQTdhx6MARkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TlJgs+SO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Se0Bz+j9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D60CDC4CEFB;
-	Mon, 15 Dec 2025 13:59:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TlJgs+SO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC232C4CEF5;
+	Mon, 15 Dec 2025 13:59:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765807186;
-	bh=KOAvoqG7RnTWQZeujmBk7U/h4REQ9si9oHsscWJ0Z1E=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=Se0Bz+j9E6Ig2JOTIrffmOVI26Cnyw2L6LpypgVoJlNUoPwpzTfglr1p3QLdiyEuX
-	 iM0A3hf/cQcXntvR1aZP6Go7c5NjXUgtc6NWSrDU8+UVH54LuQOn+mQYdcUD8WACbL
-	 TE+dod2OnSiKfWq3FeZ+ztrKGn+4yMArEbyj8flv2orfJcyDKGDqgZaBHKyiP7T9Gr
-	 f44lBwS59EabRFjINjFb2wanSS26c8/cRLKEO0Mms2q0GrZoXLVuLDj4y/VsQnIaBq
-	 lzouUHQDKs1j2sENAe8fv0Fh6G3khRj5w3Re7bClr0MLDjoYx4mUoy4WJaHzyIe+ja
-	 K39NApFPNubhQ==
-From: Mark Brown <broonie@kernel.org>
-To: Conor Dooley <conor.dooley@microchip.com>, 
- Daire McNamara <daire.mcnamara@microchip.com>, 
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org, 
- linux-riscv@lists.infradead.org, linux-spi@vger.kernel.org
-In-Reply-To: <eb35f168517cc402ef7e78f26da02863e2f45c03.1765612110.git.christophe.jaillet@wanadoo.fr>
-References: <eb35f168517cc402ef7e78f26da02863e2f45c03.1765612110.git.christophe.jaillet@wanadoo.fr>
-Subject: Re: [PATCH] spi: mpfs: Fix an error handling path in
- mpfs_spi_probe()
-Message-Id: <176580718430.161463.4850754049730233485.b4-ty@kernel.org>
-Date: Mon, 15 Dec 2025 22:59:44 +0900
+	s=k20201202; t=1765807188;
+	bh=6n0LWEmN4UqidHTptn+3zginOOz53lIirfLkkom45Wc=;
+	h=Subject:From:Date:To:From;
+	b=TlJgs+SO5nyJ69LuE1u5ylXJk/krxqjyUXWhGAYtRDFSc87YSg0xpkMUJgHTguuPj
+	 OoOZbG80x2zbytavLg7X3bCFj842iJiPYBVJViA3V201Z9Q2s4kFo3BP1N+/NuY8SP
+	 hk1XXnSsuA5c4Ux9dysL139FR+fDYKhA1BrVsVfDoRbxydaI3n3uLuPkIFcntbL8KR
+	 HMLCYoN0jNb3KnsBUmx7mfgXz02CPeEjk0tFTAs/bd3MZ6klUDWS8dTB8pGrlxKFiG
+	 tO9eWcmfWulHH+1i+BLMZaTvny/MsHSJZX7+yE0od09qbDHw2bAYT9sLpH/whOnOsC
+	 H1k0XPbsaqSDA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 42B39380AA77;
+	Mon, 15 Dec 2025 13:56:41 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-47773
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <176580699968.4191605.6978873903465781793.git-patchwork-housekeeping@kernel.org>
+Date: Mon, 15 Dec 2025 13:56:39 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-On Sat, 13 Dec 2025 08:48:51 +0100, Christophe JAILLET wrote:
-> mpfs_spi_init() calls mpfs_spi_enable_ints(), so mpfs_spi_disable_ints()
-> should be called if an error occurs after calling mpfs_spi_init(), as
-> already done in the remove function.
-> 
-> 
+Latest series: [v3] spi: atcspi200: Add support for Andes ATCSPI200 SPI controller (2025-12-15T13:23:46)
+  Superseding: [v2] spi: atcspi200: Add support for Andes ATCSPI200 SPI controller (2025-12-10T09:04:29):
+    [V2,1/3] dt-bindings: spi: Add support for ATCSPI200 SPI controller
+    [V2,2/3] spi: atcspi200: Add ATCSPI200 SPI controller driver
+    [V2,3/3] MAINTAINERS: Add MAINTAINERS entry for the ATCSPI200 SPI controller driver
 
-Applied to
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
-
-Thanks!
-
-[1/1] spi: mpfs: Fix an error handling path in mpfs_spi_probe()
-      commit: a8a313612af7a55083ba5720f14f1835319debee
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

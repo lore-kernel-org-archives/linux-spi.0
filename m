@@ -1,34 +1,58 @@
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB3A933291A;
-	Tue, 16 Dec 2025 04:32:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A0DF33CEB7;
+	Tue, 16 Dec 2025 07:17:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765859578; cv=none; b=LYnvLMSuCKrqWWjMHS13ejJyd3gHDSM33dFxjeyDCPAmL9fgW4B5Y8colbDEI+MeOpqKC6jqRH5r2aRDUNVQYqpgfEe9cecATn4rXsIGo7YPbY726XimlBkbrsyJmL+GmDqwQsgoWgbdTseUlRwQh1JVJj2VDLmvCKKEQ7niCrw=
+	t=1765869474; cv=none; b=JY5zogjdK39lfXj0dBQZ7vnxIhJMO2UYiIoFsrDUHZpqDcAeywMNTr3CJhMAPSV2YEEbm78jehQva8DVV1MVZf3QRcy0+/wioCz9Py3Qj8h1hpwchlHnDGSNe0uJXMgGC1W//1an7RmPN/gMDh35UQz5aUoklcmcKA60OteRVBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765859578; c=relaxed/simple;
-	bh=RIU1Tj0aY8wLbb/bkcLYdm1STWEU+TjQRvLdxBx1M5I=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=j4OyI6nVh9fvdSvd+/Zu1/Ud0P1l+wHhi4QbQaB7G1ua6k9M5hHL40HZzlv7WeEhEz8sqba8kNfif9Ic1zjWGWuw+pum50AzVnRsS8YU95cWjTcfqs8c7vApmTUOkX3nuZPUdVGDLxP/QTLZr8YiS1D1rKdAdjh9kcdhELnlQdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost (unknown [124.16.138.129])
-	by APP-03 (Coremail) with SMTP id rQCowABHaN_j4EBp5ODbAA--.22745S2;
-	Tue, 16 Dec 2025 12:32:35 +0800 (CST)
-From: Chen Ni <nichen@iscas.ac.cn>
-To: broonie@kernel.org,
-	mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com
-Cc: linux-spi@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Chen Ni <nichen@iscas.ac.cn>
-Subject: [PATCH] spi: stm32-ospi: Remove unneeded semicolon
-Date: Tue, 16 Dec 2025 12:32:10 +0800
-Message-Id: <20251216043210.1521722-1-nichen@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1765869474; c=relaxed/simple;
+	bh=I/a2fvl5cM973mSNSEqBU8ga1TYoVjNL+XdtwVAdlyk=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FZsBOs8ykdKng4v9P/9AD55Kb2uvBweoLpjE1skot6LGsD1nBQ3NbpnC1j6tHhmxd38TlJqVgJyP44d7Zotgq+eZw3AMgLZECT259t6959A3o42WDd156DxzlyxswB7qRxzqbI7stHgODSSwtHpaGUf1iVlU+JKmyG0cZoEnl/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=RpLAtZ/t; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="RpLAtZ/t"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5BG7HNiwC3480197, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1765869443; bh=O9P1ZmwkNILnvEnOhiWwKahZCFj/t+KyiynfI1j6KqQ=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding:Content-Type;
+	b=RpLAtZ/tZSFNkspgJjkVha7X/DloMdTbskKkDtlabRQ2K4XmESkF64smMGfu8U8Kn
+	 cqXQsFTZPIF3447ZgGN2xeOp67uMbHN/NQW9RjJTmOnmV8Kmw/XLptUDfJ3t2mSSoW
+	 TIhIZb+ocyIPq5QLTvGml4mVV2XQdoljzZrgfgvwhEEsBbBrI+u+ZJMnQLafAo0QJK
+	 UsXpS5Bt6BAkVQ7wfj+A8kpIrrXbj1RGvLUcocwMmpaoJRn6+h+AeY2yV4sJOH10ix
+	 0dd0PzoOoak57fwZXBiQEdUsJgY6awJbP37DlExe+QH/TjEzzeJ5wavBk2SlhUHVuY
+	 SrfDcRI2SP2ow==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5BG7HNiwC3480197
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 16 Dec 2025 15:17:23 +0800
+Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Tue, 16 Dec 2025 15:17:22 +0800
+Received: from sw-server.localdomain (172.24.54.4) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server id
+ 15.2.1748.10 via Frontend Transport; Tue, 16 Dec 2025 15:17:22 +0800
+From: Oder Chiou <oder_chiou@realtek.com>
+To: <cezary.rojewski@intel.com>, <broonie@kernel.org>, <lgirdwood@gmail.com>,
+        <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>
+CC: <linux-spi@vger.kernel.org>, <perex@perex.cz>,
+        <linux-sound@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <alsa-devel@alsa-project.org>, <flove@realtek.com>,
+        <shumingf@realtek.com>, <jack.yu@realtek.com>,
+        <derek.fang@realtek.com>, Oder Chiou
+	<oder_chiou@realtek.com>
+Subject: [PATCH v10 2/3] ASoC: dt-bindings: realtek,rt5575: add support for ALC5575
+Date: Tue, 16 Dec 2025 15:18:52 +0800
+Message-ID: <20251216071853.3929135-3-oder_chiou@realtek.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20251216071853.3929135-1-oder_chiou@realtek.com>
+References: <20251216071853.3929135-1-oder_chiou@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -36,55 +60,83 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowABHaN_j4EBp5ODbAA--.22745S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrZFWDuF4rXw4DWryfGr13CFg_yoWDJFX_CF
-	1kCw1xC34qvr90y3W7Grn5Jr9Iva1DX3WFqwsYvFsxArZrXa1Uu3y8Zr17Jw47Zw4qk397
-	C3Z7X34akw13KjkaLaAFLSUrUUUUbb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbs8FF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r1q
-	6r43MxkIecxEwVAFwVW8XwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8Jw
-	C20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAF
-	wI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjx
-	v20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2
-	jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43
-	ZEXa7VUjJ5r7UUUUU==
-X-CM-SenderInfo: xqlfxv3q6l2u1dvotugofq/
+Content-Type: text/plain
 
-Remove unnecessary semicolons reported by Coccinelle/coccicheck and the
-semantic patch at scripts/coccinelle/misc/semicolon.cocci.
+Audio codec with I2S, I2C and SPI.
 
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Signed-off-by: Oder Chiou <oder_chiou@realtek.com>
 ---
- drivers/spi/spi-stm32-ospi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../bindings/sound/realtek,rt5575.yaml        | 61 +++++++++++++++++++
+ 1 file changed, 61 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/sound/realtek,rt5575.yaml
 
-diff --git a/drivers/spi/spi-stm32-ospi.c b/drivers/spi/spi-stm32-ospi.c
-index c36df8d3f5cb..f396439e2281 100644
---- a/drivers/spi/spi-stm32-ospi.c
-+++ b/drivers/spi/spi-stm32-ospi.c
-@@ -150,7 +150,7 @@ static void stm32_ospi_read_fifo(void *val, void __iomem *addr, u8 len)
- 		break;
- 	case sizeof(u8):
- 		*((u8 *)val) = readb_relaxed(addr);
--	};
-+	}
- }
- 
- static void stm32_ospi_write_fifo(void *val, void __iomem *addr, u8 len)
-@@ -164,7 +164,7 @@ static void stm32_ospi_write_fifo(void *val, void __iomem *addr, u8 len)
- 		break;
- 	case sizeof(u8):
- 		writeb_relaxed(*((u8 *)val), addr);
--	};
-+	}
- }
- 
- static int stm32_ospi_abort(struct stm32_ospi *ospi)
+diff --git a/Documentation/devicetree/bindings/sound/realtek,rt5575.yaml b/Documentation/devicetree/bindings/sound/realtek,rt5575.yaml
+new file mode 100644
+index 000000000000..981ebc39b195
+--- /dev/null
++++ b/Documentation/devicetree/bindings/sound/realtek,rt5575.yaml
+@@ -0,0 +1,61 @@
++# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/sound/realtek,rt5575.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: ALC5575 audio CODEC
++
++maintainers:
++  - Oder Chiou <oder_chiou@realtek.com>
++
++description:
++  The device supports both I2C and SPI. I2C is mandatory, while SPI is
++  optional depending on the hardware configuration. SPI is used for
++  firmware loading if present.
++
++allOf:
++  - $ref: dai-common.yaml#
++
++properties:
++  compatible:
++    const: realtek,rt5575
++
++  reg:
++    maxItems: 1
++
++  spi-parent:
++    description:
++      Optional phandle reference to the SPI controller used for firmware
++      loading. The argument specifies the chip select.
++    $ref: /schemas/types.yaml#/definitions/phandle-array
++
++required:
++  - compatible
++  - reg
++
++unevaluatedProperties: false
++
++examples:
++  # I2C-only node
++  - |
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++        codec@57 {
++            compatible = "realtek,rt5575";
++            reg = <0x57>;
++        };
++    };
++
++  # I2C + optional SPI node
++  - |
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++        codec@57 {
++            compatible = "realtek,rt5575";
++            reg = <0x57>;
++            spi-parent = <&spi0 0>; /* chip-select 0 */
++        };
++    };
 -- 
-2.25.1
+2.52.0
 

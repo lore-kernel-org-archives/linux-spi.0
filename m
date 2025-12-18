@@ -1,82 +1,70 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 540E2337BBD;
-	Thu, 18 Dec 2025 08:21:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA5A2147FB
+	for <linux-spi@vger.kernel.org>; Thu, 18 Dec 2025 08:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766046101; cv=none; b=fpXfB17Ro6KMCg6T+bn+STPzUnjf7c+C3M6POXV+AUXbc7nzJmTDYfDlpxijiBPM68ndug4X5Vmnz6U8xUJnIUaoQ779rqfL60H8Y2VwLrk5caCKeHRgjJEukNbs2F3dFDWcZerVpwMoYF5sWJUJFvXbhxjzqMQJjPXPWsiE3Xg=
+	t=1766046200; cv=none; b=oUSWm9xTnWgoS8eGXPFmXWheNRIwgzg5BnEjWecImzSqRdRnkT8xx24ivbokotGX9aQQpX0YK0dJlT6nZsIQWVOB2fTcvfDjaDG+wCvq7aYH9lcfttOQAcZbnJbNHoI0Xnw6qVDyPt0xZsB8cFdS+g07KMx14Io6GFAoH4y+p+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766046101; c=relaxed/simple;
-	bh=Hh/3/w5jCO1JSs8bn6HtL1yOfwiRbMzAmbaf4GEsClk=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=dny3n3zBG+8S4A9jyams3hG4L2TvY7proby4ERUAz5dKPJZ6F82mh6wUdPyEM5xWLBKbV7wth0XAjDMdDaqkWZXmp/vWNFu/n2e8tgugNJHUhWWWCeqgNO/hKCoA19fJg2bfbC8hDaPQe5LNvu3SdtpgXQhtPVdoh6lVvzNv8Rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pLzkt0b0; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1766046200; c=relaxed/simple;
+	bh=Vng7/cmEZwjKVRZ01cdTN9i78YrRRSHO/J+G6G3J57U=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=VcKafO7P6JUBEZOxd+Ar5l3KkvN3ZDp/KxpQm1TgP988CmMdAMbp9w0hRPAIh1S5v8unAYwJb+DeJjIzkAdqt7tr91Hk1qoapUw9k/chi0w5iWL16H8RZG8a9u8JDsqN17cBmArntnCEnD8Vr6wF5wE9AqF8fmI2HtV6KIDYYBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qjZk+DRz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pLzkt0b0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E56CC113D0;
-	Thu, 18 Dec 2025 08:21:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qjZk+DRz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DF00C4CEFB;
+	Thu, 18 Dec 2025 08:23:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766046100;
-	bh=Hh/3/w5jCO1JSs8bn6HtL1yOfwiRbMzAmbaf4GEsClk=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=pLzkt0b05zdeneWZAOS+i5nfvIDmdV/9ApM+2e6gUIdeaPZ2lG6x2W5mmM8JMDIAU
-	 CYGMR2n9oWe+MPyGf9An7YX3FGYT88M9Pdkt9ld2QAYnz6y/Rh5I7RCpTgPeQuYIpM
-	 ug55lzQ2ftPWKd1IvFSfmgj5HT8zNIGH2a/bsx8orBkjaP4jFt4wah4MZYxSKMSM4d
-	 zVraU49BDh0ke4hC7XGsan8v+5WAPZ3UZ1ZRnhgvsT2bC8OIVlHgGAIq/iLqR+Z9pD
-	 1uKshmXYeR7uJgh0gDOadKwJNis2VTTd0jriBS82s76ldF9zRW1v2Y+F3beXOZVQQr
-	 gUMk52RWeb5oA==
-From: Mark Brown <broonie@kernel.org>
-To: mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, 
- Chen Ni <nichen@iscas.ac.cn>
-Cc: linux-spi@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20251216043210.1521722-1-nichen@iscas.ac.cn>
-References: <20251216043210.1521722-1-nichen@iscas.ac.cn>
-Subject: Re: [PATCH] spi: stm32-ospi: Remove unneeded semicolon
-Message-Id: <176604609931.49312.660104330580864155.b4-ty@kernel.org>
-Date: Thu, 18 Dec 2025 08:21:39 +0000
+	s=k20201202; t=1766046200;
+	bh=Vng7/cmEZwjKVRZ01cdTN9i78YrRRSHO/J+G6G3J57U=;
+	h=Subject:From:Date:To:From;
+	b=qjZk+DRzjSg0d+epToNXtDmcsyK6lWUJCNT2SrqSFzwLHdk218pj4baDyC1yr/2ZR
+	 Hhp0V7M/EQhfGbbIi/TpYtsUXhggnkPN2TXpLftD8cThbF3NLei/LGONtWelPXvHQX
+	 1IWpF/LEcGWeXpwxvUF0Eah8DV9ZBE8hdLdbI0iZ3WCXcDgl7OELDLOYLFaxjCk1FX
+	 kTM56nq4hBEvauV2a/2Bo6RrT6qEaXgK6dBTJF4HV3wAP7dLbD1AA6QN47NYH4iDLY
+	 JVEe/jHQF1YA9Ne/xorqgbuo9Oc8vo9iiSjsdQazKZ2T715ijqhNVWIgJoGYXuEZYt
+	 QTz/AgLXZiP5g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 0318C3809A8E;
+	Thu, 18 Dec 2025 08:20:11 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-47773
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <176604600944.2446289.10420653928348349884.git-patchwork-summary@kernel.org>
+Date: Thu, 18 Dec 2025 08:20:09 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-On Tue, 16 Dec 2025 12:32:10 +0800, Chen Ni wrote:
-> Remove unnecessary semicolons reported by Coccinelle/coccicheck and the
-> semantic patch at scripts/coccinelle/misc/semicolon.cocci.
-> 
-> 
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+Patch: spi: stm32-ospi: Remove unneeded semicolon
+  Submitter: Chen Ni <nichen@iscas.ac.cn>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1033601
+  Lore link: https://lore.kernel.org/r/20251216043210.1521722-1-nichen@iscas.ac.cn
 
-Thanks!
+Patch: spi: stm32-qspi: Remove unneeded semicolon
+  Submitter: Chen Ni <nichen@iscas.ac.cn>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1033976
+  Lore link: https://lore.kernel.org/r/20251217023721.1684244-1-nichen@iscas.ac.cn
 
-[1/1] spi: stm32-ospi: Remove unneeded semicolon
-      commit: d8ce99b0d384830b0eb6b907f5a428309c70af82
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+Total patches: 2
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
 

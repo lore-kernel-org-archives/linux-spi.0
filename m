@@ -1,84 +1,82 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DFFB139579;
-	Thu, 18 Dec 2025 08:01:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1ACE2BCF7F;
+	Thu, 18 Dec 2025 08:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766044864; cv=none; b=YjUAjhto7YasrX0eESr6/p3oBPBeUguJmfJhxBuT5tjshNgWIHmATte2gXClU6DpsKpkByZtmyjuYsC7002GFcgao/pAGTeXnb4mvlhwbCiFQUVm7UEie263YAbDBONpXZvo1FGuO1cyLBsNcpFYiTV72b5f7eRvtZQ9UIAycTk=
+	t=1766046099; cv=none; b=fcu9vO/9UnJz0WnhX0W0fmRd6vsSEx7mpRQ7bppiMmjkJoWixZiSaM9mtcaS2gEhcKcSAnYAGD18Osw8c0LEMPDJtJ2+tUNz/HNccWpbIcCwvjkrX6jCzmLzxmwC/a7EKHXjgcgfo1a8YfKXDdgGU65kK0VmMvsGnt+ingLHvus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766044864; c=relaxed/simple;
-	bh=HHlYP/1oT2kinphPQ9/3fzfi/qcVW054/WKuEsDPs0E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DxrnVrsOZI9gDegiBnCfDr67nZmB1u952kP7jtDKNfvNf7h1w2w6H+odCcT8bed9foFlmyiI1G6VX0h572Cgo9Ywrl4qBP9Vm0fZE7QtetKhRVjrdv2hTAi9LBKiNcHRM0Bl8HpPK2MR5MMSx1tzPeQt/YtQFm/9EWpSPRQuSUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rwV3hKNz; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1766046099; c=relaxed/simple;
+	bh=lwZky4Sy93K9y11fSHxmJSRldxUDXgP06dp7jqDCMlI=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=RI7NNWo38VyRD2K2YOBtJIqvNF4UCwqIn/+s0c0Zi6Oa5bEhpOrdIVkKfZpIh3/8O5X/ez26zelZNkxWGU5JBYNQ4xdDd78fGURy07BguMnUrlXqf4gbjNHZOYA7O7fPb0P44W/B3Q3e8BGjftvGbIk9z/aMvZQEGHWP0F9ZYjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cFSSX/HS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rwV3hKNz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FDE6C4CEFB;
-	Thu, 18 Dec 2025 08:00:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cFSSX/HS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5581C4CEFB;
+	Thu, 18 Dec 2025 08:21:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766044862;
-	bh=HHlYP/1oT2kinphPQ9/3fzfi/qcVW054/WKuEsDPs0E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rwV3hKNzLZdlo15r6xATauOc2HzLW5FLvt0Sy/qcHArFX7+rnS1maXD1iZWc48330
-	 dkKqbS/udUDkqWveQYdACybLxBc6QoEuNVqLBVYED4s/AqqzvnwD305wSeeO3OMxvS
-	 k/lb3xWkNTasd02uI9ETI0UjGHrCw25GfgI6uYSccJjTgyjIqC6poTL5J5oACHwtJx
-	 mTnwOQKDrdOBba96aUGdQ93nJM5rTkOzUdBFyps3w6c6NnGHgBKFUbqa7iAua948NN
-	 umZyshCU9oNNtN7gnx27obLHQOM7MFudQ89pJfWtBc5oe7/ta8cz82JFUjOmI2JeGC
-	 Y/fvFaTu+9+5A==
-Date: Thu, 18 Dec 2025 08:00:57 +0000
+	s=k20201202; t=1766046099;
+	bh=lwZky4Sy93K9y11fSHxmJSRldxUDXgP06dp7jqDCMlI=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=cFSSX/HSJ7LZ6qlKgCo2crWokvtu3I43Toqfg195RazIZYiSnNKRTALn5hHHmDl64
+	 L+KgQbUDDi761XJ034i1NN+Q8JpzjSmZl/RJIZNTDcU/aH/Iwd+NpT3nZVh/GbCSnF
+	 1G7q/N81N5+whcxTysGOM0CphtEi9GFLqD5DvFK+bFF8TszGFNrGIVD0TNsXs3h74V
+	 Pg/gwwWhaLXK3NhiJSPGrm8CnosSoUyPeMLaiKbbhSfHqWygj730lm/iU/tciIUkGA
+	 /xbYtni/ICrsDfuG+fvgpo6Ygbm5e7sqnk4jVOjCu6giKSonfjVwltKPR2YjjbETB/
+	 b7IrGpzjtJYCQ==
 From: Mark Brown <broonie@kernel.org>
-To: Alain Volmat <alain.volmat@foss.st.com>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-spi@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH 3/4] spi: stm32: properly fail on dma_request_chan error
-Message-ID: <129a4deb-ec9c-41f0-910c-57cd43d17fcd@sirena.org.uk>
-References: <20251217-stm32-spi-enhancements-v1-0-943348b8ff66@foss.st.com>
- <20251217-stm32-spi-enhancements-v1-3-943348b8ff66@foss.st.com>
+To: mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, 
+ Chen Ni <nichen@iscas.ac.cn>
+Cc: linux-spi@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20251217023721.1684244-1-nichen@iscas.ac.cn>
+References: <20251217023721.1684244-1-nichen@iscas.ac.cn>
+Subject: Re: [PATCH] spi: stm32-qspi: Remove unneeded semicolon
+Message-Id: <176604609753.49312.11376425894198542181.b4-ty@kernel.org>
+Date: Thu, 18 Dec 2025 08:21:37 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="xdYKEQLQFnGb8Mm8"
-Content-Disposition: inline
-In-Reply-To: <20251217-stm32-spi-enhancements-v1-3-943348b8ff66@foss.st.com>
-X-Cookie: Close cover before striking.
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-47773
 
+On Wed, 17 Dec 2025 10:37:21 +0800, Chen Ni wrote:
+> Remove unnecessary semicolons reported by Coccinelle/coccicheck and the
+> semantic patch at scripts/coccinelle/misc/semicolon.cocci.
+> 
+> 
 
---xdYKEQLQFnGb8Mm8
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Applied to
 
-On Wed, Dec 17, 2025 at 10:51:33PM +0100, Alain Volmat wrote:
-> Correct handling of the dma_request_chan call in order to avoid
-> misleading warn message if no DMA is provided within the device-tree
-> and moreover fail if dma_request_chan has returned a valid error.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-Bug fixes should go at the start of serieses to avoid spurious
-dependencies on new or cleanup changes.
+Thanks!
 
---xdYKEQLQFnGb8Mm8
-Content-Type: application/pgp-signature; name="signature.asc"
+[1/1] spi: stm32-qspi: Remove unneeded semicolon
+      commit: 7f7b350e4a65446f5d52ea8ae99e12eac8a972db
 
------BEGIN PGP SIGNATURE-----
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmlDtLgACgkQJNaLcl1U
-h9C+xQf/f0u/7bqNRt7Lu7GnVRORacWjnXmidDhHzPASrPGgt/BgyySgqqLUtsT3
-RZnxPRAkHkYlSW+Q5OlSlxnIXV+BBEK80tAUKZmTOSruQQBgkDUm+YJx932XBSUA
-jqRZMpuH3zoYwVrWociYeo2PJClBKdsP8NYvQqj62Ns/xrNy/eM9Ow1afZgt+DQI
-KKE+YHtIFNgTXUOokDuWbNQ6oR1BiP1UYw4M0iIgdSFAJ80q5bDf6EafpZ8s3UN8
-NL6NiqggvpS0sSIJ4PFSheZnwNrdiNoH0I0kvjvuKpmQRBbBE2Jecrzy9WY+G0lA
-brTbY9z8iMKd3oSOP4L64sMAhd1u3A==
-=gJz4
------END PGP SIGNATURE-----
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---xdYKEQLQFnGb8Mm8--
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+

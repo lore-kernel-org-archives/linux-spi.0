@@ -1,68 +1,68 @@
-Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
+Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC4D1346779
-	for <linux-spi@vger.kernel.org>; Fri, 19 Dec 2025 21:33:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BBB834107F
+	for <linux-spi@vger.kernel.org>; Fri, 19 Dec 2025 21:33:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766180018; cv=none; b=AUXEl980teYwyNXS9BRpUqCBlbJiG7h+JaKpDNjBE1NMdbu125iGoJi+aXJq0Mtz4aZ2AW2lwEI/TuO7h3WZ3ovu6HIGrwQrBC8E5nt/5yv4977F7Tc9T2LXMxgVvZMOJtqqX1syalBe7ArP6zu6Yaz/BWFRHV+hayZDD412kto=
+	t=1766180020; cv=none; b=JhAqXCDOqANil7UCKfPOaOIy2uCv4z4zHHKyx+kUcVGYjFitrlD3tXWghJglhIh6aojvXZHCK9EPKPvmWiBNO+8/gphBGFvij4jVp2buwW9+zkENF6Trx+hTNWocafo/MnPEZux4Leu8U1HKu0b1g3nJaUsgA+B2f8hDMXJG61o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766180018; c=relaxed/simple;
-	bh=oWBMnPrpGrThotMU9ljfUzKqVANXXO/+7KS1FgC4pbU=;
+	s=arc-20240116; t=1766180020; c=relaxed/simple;
+	bh=VQOPaqQmoNwtfxLbCSXG6BhStJUeMtFzJ0prIuJB4JY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=U9BRYrOf0UVplfw8aanZnDcVKjE4cUt0lGaaLEjapwl0ZOQQQ9kQbM//eYjPm5XwweSF+/ku/6Cu+F+SSfN0fLrwjeaRi1Z3nBX3s4dQ2moGfcszcAzzipNPYAoSPTOBn1a0G/XPhanoFT8B9uriebQxPy9cxtMHZFKtQp4GdXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Stqqz4GK; arc=none smtp.client-ip=209.85.210.48
+	 In-Reply-To:To:Cc; b=ampj0FMGTvOVlf9ycVYU+nXfjgm2nPjxG5XrlCEp8UrFFJ6Zo0gp25MrtYyX/HZzkYwPEW+eFJUCLlgzP8WwiYTv5I3CIKLK3kjmsd+qsqr7dIh3mt/6wXDU6bTCY/3+qJpr0nZs0LdUqsjZv7/C/PhvcoebGNdmg3qh4gZmtyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ClUwTzIv; arc=none smtp.client-ip=209.85.210.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Stqqz4GK"
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-7c6cc44ff62so1582654a34.3
-        for <linux-spi@vger.kernel.org>; Fri, 19 Dec 2025 13:33:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ClUwTzIv"
+Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-7c71cca8fc2so1369279a34.1
+        for <linux-spi@vger.kernel.org>; Fri, 19 Dec 2025 13:33:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1766180014; x=1766784814; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1766180016; x=1766784816; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=fFWC+IDcRXjpxDjHpjRJWViF/+dbpWmpywiH9Uy/XS4=;
-        b=Stqqz4GKT+59W2DorQQhmiqjT+F3zH3fy0eW9KKs049D5jUlLW2pgnmphlMbxKq+PH
-         o5iv4XBZg0JLRfDAsdyJoBdZm1PHHr2WRs66y95h1QClWcO624IbTCwznkmOrQoCr+T8
-         sAP4LYvzxUD3RYmAvf7IlK9KGNWXH0hFcroPKzgddZ/xtDTOcp3WZWGs2241SdPnEJAS
-         jKaper2njD02W9hkyaam6f6/zseaKc+m1OHXM1A7u9RQxJBNhMBRchrrueUhh9QBWtsA
-         4+Wv3sQp6I+IBu5EAQ9iH8Tl7lhWpjnaKWbxFEDE20dzD4wVFj/+sl6kELv2LL5g7voc
-         3rig==
+        bh=dQ9bA5wAd5cOLSdkvDwsJ4KZGTUhg22dy+q+3KzYnqw=;
+        b=ClUwTzIv7D5PMbxN5U2hCpoVmQmiheLK+Ejx49ksbUV4lrOdVCjjAKSIT8+IHQyPup
+         DRc/RNMyPy+F7GWPXZp0G27Ln1n8gdnJT2F7mUfmaeUZx7jSG90FIYeyYzGuyptEKiZU
+         xAg3NajpQ1u1NrfvwxoouNCJuxsMyYsn/gCdO20tP5DGSdemiv27clgl6bXv7gPpFbUq
+         qoVPyJunXV88TM6awOyQ5WZUKS22Jt8J3BDVyNcI+gNzR//ihSkHqw76NDWQshYj8HZC
+         xJnee4+DRXmrw93yFkX4VV3+AIxtbLgDZTk/tADKOz3TLOxL2l8lhjcXyqHvjPfeiNwl
+         GPUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766180014; x=1766784814;
+        d=1e100.net; s=20230601; t=1766180016; x=1766784816;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=fFWC+IDcRXjpxDjHpjRJWViF/+dbpWmpywiH9Uy/XS4=;
-        b=ccAY3TMQdn5OAXjxgkyKOPs0sttMESXQ4qyD9fWfL84zEnFHPL8HBNI0/6kMJHh6S2
-         yPInAh5n7TG0hBhBrdoN68e6h8vLxxOohjZiYvjbfln2/oMq51MA37mXMIclg2W98JFn
-         pig+RfHurevJEEO1xYS9sN6GZ0Zhu19PiUXUUm1cUvM43mMJcyuVrp0/NuG7d9Os5G8E
-         r8RTipVUmA8mJ1ol4EsRpDry4LXZMZssvg1NG4WgECChsNacFC0FrX48Kz/zUkIAayOT
-         xpREKpuSAb/sQOphNby8vnRhm/PMpathXZW2HjD62tLlBXcotx9WWX3TkREKfVsyI7+b
-         LiPA==
-X-Forwarded-Encrypted: i=1; AJvYcCW9HQB1VMyK/zgWdjrHLQWg2MauLNj8EibERuoj5TrQV5VdYvSiJ/Si4vILpHVX8Nn9lkkfqAcvLw0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzlhi4RZTahm8T37pXkfzi6e3dfIPNmcXA1Rx7gQH8TVnl0t9lM
-	0yqthFrXXqECuzXl/sYV9eRH35HvqLzPqSIQLiagHOhBiNoXT8vltSnhfsx4mFdsJqI=
-X-Gm-Gg: AY/fxX5RL86GUi7HnNbcsildoyemy5WKf6gb6K+iwLqNRsUFsOGAaPTmTMX0c6ZLRtq
-	Nlel/Ft+HAoqZkuTq7F+aiXmDVy+gy/xJ5uMMVbJNrA1hTG/UeSRmfKehLq6XggRN6RybfsbnsE
-	s+yfn7/Yxjq+YqbBLlnIMiIhzilRWyUiUy5+4XY4HZ2aqGZ2UX7NSBHJ7opbiuHUDUGnKDAXXmh
-	LHY0IoGAjvfSeO2ZTF7duy+zzts/PsuHIZqRWvS63kjJTwTkqQZ/jOg6kKTV5tsoU6xoR7ZUDzk
-	wjEmTxgcy4uxD0K3yBPgFA+1BNuGM2J8GoBKmDlyf4ohXACgDkCAe3lULV24O4Chu/k4gG6x5g3
-	05SP2WEadvKE5xGpX9hAsNoSiinJEqKIQ+ZmjjF7DO5Z5JxKHpF9ZemRYGHGuhg05yhe641hU2o
-	BRY+qUKKgVOm9WRg==
-X-Google-Smtp-Source: AGHT+IFSpfHhi8xxfC0/N+lQDDvFqU6CV+t6PQI2c4qXO1CuJXBevV+MJgay8gDTRAmgQdttKD28IA==
-X-Received: by 2002:a05:6830:3698:b0:745:4823:df18 with SMTP id 46e09a7af769-7cc66a468ebmr2322063a34.28.1766180014080;
-        Fri, 19 Dec 2025 13:33:34 -0800 (PST)
+        bh=dQ9bA5wAd5cOLSdkvDwsJ4KZGTUhg22dy+q+3KzYnqw=;
+        b=mZsEfHs9kJpganK7THrEc0NhwhCyn0oJlC+jf7J2cSuOYp9j01oxRlZZ+/pusUX/gk
+         CvT/oPDiAY1Ks3wiQ7xFeqYHT6ERUDGrukxDe+VvNZWlJPWzGvjGRLKL52uYyhcmv5MB
+         yuR0ZmgWRb64Q/h3V7WP7e0fB7WbnRmarYYMCIRyPbAnDgwPv9DW32jsuW5ubHvbubtR
+         3dovjigM7tN7LfgtivlDdUDfUHL824gbNSBWJFx07HKDnMeyhAccZFkLKTJWKCcmAOh6
+         3eHDefG2V8gHp0M0JfzniewynRGDAg4tin3u/OGpzZJheYJ7Ism8hGVG7RnlJj2NYvZu
+         ht/g==
+X-Forwarded-Encrypted: i=1; AJvYcCUjD3gUYQup6qW47yKOzJ+F/+ZQ3trdXhTVDJWKtEn4GnotsOwbYgkRTWcbBh8W2R7xuLjS14jZAEs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZv+IeQaZlPxaAC27cHSWJE5JQnguSFhdX7N5+T6wutHattipI
+	KOQ5vgtEAbXCBBoahy4v1k0O9tIHdID+Cu/+TMtB52tbq76SMwqG0ICwkS/uPb4xMQg=
+X-Gm-Gg: AY/fxX4vjAICNAdYpRhyHz4+brKpar3kkmhjPaTVq2sCc6BiAARTlUr45c0gzzO7HFl
+	LTv3Qe8oTvm0DVSQN5pOK/suDiHUxYB3F4+9yXWvMVR+05UuPw/HHb/L2OcgB3f4r/LExMQkCjw
+	2Soc7OmqZW/B0Y+FCCFkmSoCe6wNpzF9I8fXVRUMti6UC0/egt6n9pkJyIA165LiXpqarJrL6uS
+	lQhmPgeA4H+0lvU04aBeIajsRNKL9PaEWOpWGUbdF5hHamprJXhu2zWS/tUP+p+hxk9tPAHba/L
+	2drsPtgXHMwd9bnUmGeIZsYlZVhjtazreEbY7qhRHLRzMyiqou9Ij83q4S+6pSXcckBQvSa+Zxb
+	7ct8CPvZX+iwQRMXPDlgVsg4/AZVAH4I4hk8LdzZiEl3iPH2W3GaEpY43BFONO2t5A9C25jSiaT
+	LjHLXak2uou+HnYQ==
+X-Google-Smtp-Source: AGHT+IHGyipb98La7XJE4vZ3dHFAmyXLQw9XZJ4q2W59l2gO7JhuowVl43/w0hKUEnQvJoe8SceFQQ==
+X-Received: by 2002:a05:6830:43a4:b0:7c7:6da2:6d67 with SMTP id 46e09a7af769-7cc6689d9a3mr2725997a34.3.1766180016063;
+        Fri, 19 Dec 2025 13:33:36 -0800 (PST)
 Received: from [127.0.1.1] ([2600:8803:e7e4:500:9b20:bac4:9680:435])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7cc667563ffsm2485045a34.13.2025.12.19.13.33.33
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7cc667563ffsm2485045a34.13.2025.12.19.13.33.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Dec 2025 13:33:33 -0800 (PST)
+        Fri, 19 Dec 2025 13:33:35 -0800 (PST)
 From: David Lechner <dlechner@baylibre.com>
-Date: Fri, 19 Dec 2025 15:32:14 -0600
-Subject: [PATCH v4 6/9] spi: dt-bindings: adi,axi-spi-engine: add
- multi-lane support
+Date: Fri, 19 Dec 2025 15:32:16 -0600
+Subject: [PATCH v4 8/9] dt-bindings: iio: adc: adi,ad7380: add
+ spi-rx-bus-width property
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -71,7 +71,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251219-spi-add-multi-bus-support-v4-6-145dc5204cd8@baylibre.com>
+Message-Id: <20251219-spi-add-multi-bus-support-v4-8-145dc5204cd8@baylibre.com>
 References: <20251219-spi-add-multi-bus-support-v4-0-145dc5204cd8@baylibre.com>
 In-Reply-To: <20251219-spi-add-multi-bus-support-v4-0-145dc5204cd8@baylibre.com>
 To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -85,58 +85,81 @@ Cc: Sean Anderson <sean.anderson@linux.dev>, linux-spi@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-iio@vger.kernel.org, David Lechner <dlechner@baylibre.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1281; i=dlechner@baylibre.com;
- h=from:subject:message-id; bh=oWBMnPrpGrThotMU9ljfUzKqVANXXO/+7KS1FgC4pbU=;
- b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBpRcSLtwISQYxTcnaJJr2o02veAMLBoy2FoWzP5
- 60rfky7QuyJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaUXEiwAKCRDCzCAB/wGP
- wIPTB/9h97F8n43Ys3AHntQjx9qaoojBkCy4jOBYYNtyayieVmxE5ACYWaMaGe0VbWRtbg5cNtG
- N9065hQHhag+a0u1tEMj/gyZUGofi1OnwAReLtytYmoqF1T9hn+pfYdGDGGvIPHz7xyup90RHf5
- F5vr+KcwTBI3Hi4UJBiWh3gHE+8mz2UtsneF9YnL1n14coim2fEolihN9D2HMP/+qmTSkAHf4NT
- tIQCLkRZRDgAi8zWG84QPH3arkcvPwoxGdPC5Mde9Di/kP8W1RWAfMJZHuI5KFPs6fHquv2zsBJ
- eUVTihWS6VP4QkML2tUJheSYh6rHcoz/wlW5EHTdrq4Rnay4
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1994; i=dlechner@baylibre.com;
+ h=from:subject:message-id; bh=VQOPaqQmoNwtfxLbCSXG6BhStJUeMtFzJ0prIuJB4JY=;
+ b=owGbwMvMwMV46IwC43/G/gOMp9WSGDJdj8x4ylQ589TTfacs62zckqz2Ftiw2V77mJYWu/bgq
+ w/+tYsyOhmNWRgYuRhkxRRZ3kjcnJfE13xtzo2MGTCDWJlApjBwcQrARJLt2f8nbY/dJ2r7o6ss
+ aqLRboWsvRb9e99U77iS53ubY6mUBEOPqVcD02a3roS3N24zbC+ujhMqz5Jh/MkjxiJtcfnHlMk
+ zTOdLLM6qrZzkWxf4b/7TiybBBQnTNrrILXS64F8a21++6a3oztkttS/P/PJa9mmt3ZJ7go9YGK
+ QVH94TKUhMU21pEvn486BYRmiamG8kC/MrkZNrG34mu8/cmdIjn9nhFxlsvYL3yaz8pgk1N60zY
+ ybYTUq7ZKXyVyug/ORLXquoxnCWU45HtvyU9NpcrtZutTmYpzHfwDhxwaWc/KrX8828t6Q+6d7x
+ v+xx81Xus4eS252a1PkYrZYU7GRx23vIbk+pn92SNOXlAA==
 X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
  fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
 
-Extend the ADI AXI SPI engine binding for multiple data lanes. This SPI
-controller has a capability to read multiple data words at the same
-time (e.g. for use with simultaneous sampling ADCs). The current FPGA
-implementation can support up to 8 data lanes at a time (depending on a
-compile-time configuration option).
+Add spi-rx-bus-width property to describe how many SDO lines are wired
+up on the ADC. These chips are simultaneous sampling ADCs and have one
+SDO line per channel, either 2 or 4 total depending on the part number.
 
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
 v4 changes:
-- Update to use spi-{tx,rx}-bus-width properties.
----
- .../devicetree/bindings/spi/adi,axi-spi-engine.yaml       | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+* Change to use spi-rx-bus-width property instead of spi-lanes.
 
-diff --git a/Documentation/devicetree/bindings/spi/adi,axi-spi-engine.yaml b/Documentation/devicetree/bindings/spi/adi,axi-spi-engine.yaml
-index 4b3828eda6cb..0f2448371f17 100644
---- a/Documentation/devicetree/bindings/spi/adi,axi-spi-engine.yaml
-+++ b/Documentation/devicetree/bindings/spi/adi,axi-spi-engine.yaml
-@@ -70,6 +70,21 @@ required:
+v3 changes:
+* Renamed "buses" to "lanes" to reflect devicetree property name change.
+---
+ .../devicetree/bindings/iio/adc/adi,ad7380.yaml    | 23 ++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
+index b91bfb16ed6b..396e1a1aa805 100644
+--- a/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
+@@ -62,6 +62,11 @@ properties:
+   spi-cpol: true
+   spi-cpha: true
  
++  spi-rx-bus-width:
++    maxItems: 4
++    items:
++      maximum: 1
++
+   vcc-supply:
+     description: A 3V to 3.6V supply that powers the chip.
+ 
+@@ -160,6 +165,23 @@ patternProperties:
  unevaluatedProperties: false
  
-+patternProperties:
-+  "^.*@[0-9a-f]+":
-+    type: object
+ allOf:
++  # 2-channel chips only have two SDO lines
++  - if:
++      properties:
++        compatible:
++          enum:
++            - adi,ad7380
++            - adi,ad7381
++            - adi,ad7383
++            - adi,ad7384
++            - adi,ad7386
++            - adi,ad7387
++            - adi,ad7388
++    then:
++      properties:
++        spi-rx-bus-width:
++          maxItems: 2
 +
-+    properties:
-+      spi-rx-bus-width:
-+        maxItems: 8
-+        items:
-+          enum: [0, 1]
-+
-+      spi-tx-bus-width:
-+        maxItems: 8
-+        items:
-+          enum: [0, 1]
-+
- examples:
-   - |
-     spi@44a00000 {
+   # pseudo-differential chips require common mode voltage supplies,
+   # true differential chips don't use them
+   - if:
+@@ -284,6 +306,7 @@ examples:
+             spi-cpol;
+             spi-cpha;
+             spi-max-frequency = <80000000>;
++            spi-rx-bus-width = <1>, <1>, <1>, <1>;
+ 
+             interrupts = <27 IRQ_TYPE_EDGE_FALLING>;
+             interrupt-parent = <&gpio0>;
 
 -- 
 2.43.0

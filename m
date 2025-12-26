@@ -1,72 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45E02199EAD;
-	Thu, 25 Dec 2025 20:32:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E8A199237;
+	Fri, 26 Dec 2025 08:29:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766694755; cv=none; b=Mf0kOTQmJPcrnNWLyGq51zyoRZ3gBF6k1aZv8+4Sihogbobtsbng1+WEF6+zGkN/m5D+1RQamRluNsLxYsqRI9EP5dJpQTj8KcM5et2pqEV5Rz72YvQM/V0boqLL+m2DSRL3ybldM2bwCOwYKhGrGlv0F+8MhcTHVDPLc4bpz2M=
+	t=1766737800; cv=none; b=qTZuJWr1t9MDIcF/mp+hS/yd1NT6cVHg021WJ1No4B7VkcMCAESYVxrNpbVY5aiU7WErbHhpfgN6XtpLywGVh1FPRoHk+/tTLuD2gfNxbCKZh+uDLvjKAA0gnSDn4CFoLKNqFGCxh9+vstwR1VbFdiv6mFXvvyYQ1MhgXbyoRhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766694755; c=relaxed/simple;
-	bh=OlMwKRemqpxu1qixxaUujZZmxWqSk+fU5T6TjQIfHes=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dldVZvODbPjl2lPSJGOkeRC9SNyn2aEMQWmeQuQ/Olb26j6ti0rROgbWqmQ05JC8sAE+anPUnkycR7YOKQ4emaS2cDInD3CpFmTqRqL5d7LOeweRC80wBXTvdO7WKA5cg0KXk86iAMX2rEZuM6gHqC8cRc/cJaGslNrBr7hmJ5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D6VDcYXt; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1766737800; c=relaxed/simple;
+	bh=M7qsvCYGelc0Rou43P1LQ0jUpto9chj8Lx2VtCUCvYw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=c+636rpGJd+LF5CqF6yHsKHg37IPtiP+UhhEVD+zl9d3mfrka8miujxN8/9Aymv+qjT/o3YmcJfYyuI5+5utr65LDuBNajxk8wuD8TY2TrPjGc8Rd0ne7H9J9KSqi7kVY9AUoiHAXOj22EMN036mMaLktGz1iQjolFAZPGonh/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=Aks4p2pD; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D6VDcYXt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E902FC4CEF1;
-	Thu, 25 Dec 2025 20:32:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766694754;
-	bh=OlMwKRemqpxu1qixxaUujZZmxWqSk+fU5T6TjQIfHes=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=D6VDcYXtHs6fSm0cvzASNAmckB9F9WPZrJj6GFS1DWeG5AyUtnRS+HTxeEn3lfE0j
-	 X0mk5OLc648E+zRf8EuPlbe4TQjE9uTUaOHE2z+vIO9ZWoFEXzjBUIHF9CG4dzPQve
-	 v83KQkZpwBtEZofvB9fY2BqXuG53ojlepTiUErcgXxbaMiU8EDiz5Q7rpj3SvwxMIA
-	 wcqT0kw6j7feBvZO7hZ35tl45EOx8RVFm5K59tqICB2GXAgBdzsEOQf6hJnpK1sT9v
-	 SP56DGjvycoPe2bHyASKmklE74IU5IZSqnnfhTjhhOa8oWJicVV2cLVw9to6ctdIHr
-	 qTvx4sCsAld6A==
-Date: Thu, 25 Dec 2025 21:32:31 +0100
-From: Andi Shyti <andi.shyti@kernel.org>
-To: Robert Marko <robert.marko@sartura.hr>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	nicolas.ferre@microchip.com, alexandre.belloni@bootlin.com, claudiu.beznea@tuxon.dev, 
-	herbert@gondor.apana.org.au, davem@davemloft.net, vkoul@kernel.org, lee@kernel.org, 
-	andrew+netdev@lunn.ch, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	linusw@kernel.org, Steen.Hegelund@microchip.com, daniel.machon@microchip.com, 
-	UNGLinuxDriver@microchip.com, olivia@selenic.com, radu_nicolae.pirea@upb.ro, 
-	richard.genoud@bootlin.com, gregkh@linuxfoundation.org, jirislaby@kernel.org, 
-	broonie@kernel.org, mturquette@baylibre.com, sboyd@kernel.org, 
-	lars.povlsen@microchip.com, devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org, dmaengine@vger.kernel.org, 
-	linux-i2c@vger.kernel.org, netdev@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-spi@vger.kernel.org, linux-serial@vger.kernel.org, linux-usb@vger.kernel.org, 
-	linux-clk@vger.kernel.org, luka.perkov@sartura.hr, 
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: Re: [PATCH v3 06/15] dt-bindings: i2c: atmel,at91sam: add
- microchip,lan9691-i2c
-Message-ID: <plir5hx4hpgrj4emspyu3wyvpnax6zz6tlattwq4l2ye3hohkr@ysbjwf2p53lh>
-References: <20251223201921.1332786-1-robert.marko@sartura.hr>
- <20251223201921.1332786-7-robert.marko@sartura.hr>
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="Aks4p2pD"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5BQ8TmWzA3288560, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1766737788; bh=5ozsshDM7B18aOKkp9lYV89Q21ZPn1UFh2WJqy9/GBg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=Aks4p2pDKCZ8QMABRkIEJKjARILo6AT5pmnNu10/wLXiFyxioVgcH6PUltChOp9mN
+	 /uLFR/aWV9hvRpJx81niN7E5a1+xyqmQ3Jrpq4AAv6EVSomlMT9TyVBzdiN0MUhSuf
+	 /nf2BbBrj/8iya/QU0dXjHoFCrVQ0/IwLkyJaoNcBmhzWlkQ1TJQG3cAASTvGGbIk1
+	 qmAAdgvqbkXtocSW8Wwht70IsmEy6lF3jX7ZS6VUvOas7RscWpKhPxUEI+J24xx6uN
+	 SkP54LnREBNdiUC7NocAeAZXN9k9YZ5JkqczaaYVrjRge0CeUqT0dhqg5xETMMnW0S
+	 3MMvaeta36xGA==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5BQ8TmWzA3288560
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 26 Dec 2025 16:29:48 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Fri, 26 Dec 2025 16:29:48 +0800
+Received: from RTKEXHMBS04.realtek.com.tw (10.21.1.54) by
+ RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Fri, 26 Dec 2025 16:29:47 +0800
+Received: from sw-server.localdomain (172.24.54.4) by
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server id
+ 15.2.1748.10 via Frontend Transport; Fri, 26 Dec 2025 16:29:47 +0800
+From: Oder Chiou <oder_chiou@realtek.com>
+To: <cezary.rojewski@intel.com>, <broonie@kernel.org>, <lgirdwood@gmail.com>,
+        <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>
+CC: <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <flove@realtek.com>, <shumingf@realtek.com>, <jack.yu@realtek.com>,
+        <derek.fang@realtek.com>, Oder Chiou <oder_chiou@realtek.com>
+Subject: [PATCH 1/4] spi: export of_find_spi_controller_by_node()
+Date: Fri, 26 Dec 2025 16:31:01 +0800
+Message-ID: <20251226083101.1052156-1-oder_chiou@realtek.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251223201921.1332786-7-robert.marko@sartura.hr>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Hi Robert,
+Some devices are primarily described on another bus (e.g. I2C) but also
+have an additional SPI connection that serves as a transport for
+firmware loading. Export of_find_spi_controller_by_node() so drivers can
+obtain the SPI controller referenced by a DT phandle.
 
-On Tue, Dec 23, 2025 at 09:16:17PM +0100, Robert Marko wrote:
-> Document Microchip LAN969x I2C compatible.
-> 
-> Signed-off-by: Robert Marko <robert.marko@sartura.hr>
-> Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Oder Chiou <oder_chiou@realtek.com>
+Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
+---
+ drivers/spi/spi.c       | 3 ++-
+ include/linux/spi/spi.h | 9 +++++++++
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
-Acked-by: Andi Shyti <andi.shyti@kernel.org>
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index e25df9990f82..ecb5281b04a2 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -4771,7 +4771,7 @@ static struct spi_device *of_find_spi_device_by_node(struct device_node *node)
+ }
+ 
+ /* The spi controllers are not using spi_bus, so we find it with another way */
+-static struct spi_controller *of_find_spi_controller_by_node(struct device_node *node)
++struct spi_controller *of_find_spi_controller_by_node(struct device_node *node)
+ {
+ 	struct device *dev;
+ 
+@@ -4784,6 +4784,7 @@ static struct spi_controller *of_find_spi_controller_by_node(struct device_node
+ 	/* Reference got in class_find_device */
+ 	return container_of(dev, struct spi_controller, dev);
+ }
++EXPORT_SYMBOL_GPL(of_find_spi_controller_by_node);
+ 
+ static int of_spi_notify(struct notifier_block *nb, unsigned long action,
+ 			 void *arg)
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index cb2c2df31089..e6fdaf02386c 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -882,6 +882,15 @@ extern int devm_spi_register_controller(struct device *dev,
+ 					struct spi_controller *ctlr);
+ extern void spi_unregister_controller(struct spi_controller *ctlr);
+ 
++#if IS_ENABLED(CONFIG_OF_DYNAMIC)
++extern struct spi_controller *of_find_spi_controller_by_node(struct device_node *node);
++#else
++static inline struct spi_controller *of_find_spi_controller_by_node(struct device_node *node)
++{
++	return NULL;
++}
++#endif
++
+ #if IS_ENABLED(CONFIG_ACPI) && IS_ENABLED(CONFIG_SPI_MASTER)
+ extern struct spi_controller *acpi_spi_find_controller_by_adev(struct acpi_device *adev);
+ extern struct spi_device *acpi_spi_device_alloc(struct spi_controller *ctlr,
+-- 
+2.52.0
 
-Thanks,
-Andi

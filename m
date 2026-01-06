@@ -1,83 +1,72 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE37C2DA749;
-	Tue,  6 Jan 2026 12:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C492741DF
+	for <linux-spi@vger.kernel.org>; Tue,  6 Jan 2026 12:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767702146; cv=none; b=CO5f7J3O6ExIEGacQ5ZmpsrMr6tk30B1D5oBn40w2M1DCGB1lm65hxoJVjEBsSurojh9POwmW9VaA7cncPG52cg+qiHqkTx/tXOdHpDWby28izXtTNY3uo+LeIdQnvCQHoS3Lyq5BkY+tqxfCC2O6sDPL9lu+iDCs8AyBX6hbLQ=
+	t=1767702264; cv=none; b=aeTQl7YfroOmaBIXAn3V05U8sTMWEEPfEOqvRJH8FCL4wnKdCCAbuxpqfxJItcOFm8hjjwzhauX0wCVj26c2ePo/sQuNH/mknGA1nrm5cgesEskndx7yzGSqT3vzgEDUG68cuqMQpzjkJct7vaZxIx1tTn+VFfcMBMBiR/oeT2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767702146; c=relaxed/simple;
-	bh=jrWrmUEcepjc/MxZzu/XcC1bCoyGapqRcLqcZx24Lh0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ll8YF34PzM/Tx4b07SPVO+4/GsroLeBVzCtgg0wRr5H4965itGggjOPgNelRXS+V40phtIshPZxR0UcJXVImAjm38XjlcDSgiQ0PAMwqYkccPFniuvNVjDLbQ89tcJdLBSiUHuXETgnykveXUxASjAvgezM16OIcplhqj9/aU1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HLEhYDz1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767702264; c=relaxed/simple;
+	bh=tXKMikyqmUfRTPIvm/XdzhBv17yvutkzeLn18iGUNRc=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=g/9He7PntJ9XkPvGmx7uhIUhQ40m0x2v3hqSlh7sjQ0M2Y9srIhCqQHEHmtyYpWw6FvPWmROiDTgIQ3g+H7bD3wkSZEBbz89ik6BWxFpJ/LrQJ3IEpaFK2OXfRwTrLXaIKrKAii82WvtrknW2cJmDrHBweyNvefkq9zSqFN7vvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uxBbnVgD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HLEhYDz1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11FA7C116C6;
-	Tue,  6 Jan 2026 12:22:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uxBbnVgD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9446FC16AAE;
+	Tue,  6 Jan 2026 12:24:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767702145;
-	bh=jrWrmUEcepjc/MxZzu/XcC1bCoyGapqRcLqcZx24Lh0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HLEhYDz1TABUPl7Bt+1isx1W/IoqjaL0c9Bf8+Ejn7ltzoHcT8txIDSsusunYH2Gd
-	 AEnQpgkabg5E14S7Xsffe5rTmchjuF96RorZW8htJhJ4USnPHdSuWYVef9LslrKGF6
-	 FMtjp0BZiGTmVQvfLfLFUq2igbf2tginL2GyFbTxBCS2S8vPMm0WMyB6HKqdIW92rm
-	 Xrur1LTvo7zCApwER3eHjBOQp0ddEQa7hnOjb71FzT8HSpgFZLzZMTHdqQ+am0Dk4p
-	 pNoAnXaLUS3X+thFmGlAUm0AqjTKfiqo2kXoGqozTqHOzqLHYhE7YqEqaFdG+8vrL4
-	 1+9mS7ARkBKxA==
-Date: Tue, 6 Jan 2026 12:22:21 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Alain Volmat <alain.volmat@foss.st.com>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 0/4] drivers: spi: st: use pm_ptr and remove
- __maybe_unused
-Message-ID: <fe48d1c2-07c4-451c-a2e7-338570557e93@sirena.org.uk>
-References: <20260106-spi_st_maybe_unused_removal-v1-0-8f5ca7136e96@foss.st.com>
+	s=k20201202; t=1767702263;
+	bh=tXKMikyqmUfRTPIvm/XdzhBv17yvutkzeLn18iGUNRc=;
+	h=Subject:From:Date:To:From;
+	b=uxBbnVgDKV6zipCydEIh/H3MeUOkbBgsFCa88KGOnRjQUSx6pM47Y+8yin/sSuoHv
+	 /CLXk8u/AlUnTMkI10kOVILVW08lrIMxUJmuGxxPzD4gHCMY7IGOedJFsY6vQrlDzw
+	 0OJHW20m9q3rT/oN+h4lCYI6A3JZSEWvUwS/DTnHMJkVSFtNeIBB90l9xBBW+hsFVK
+	 IcD2sRtqq+V+mfJ1KMmL0CzFYIK8O66D/QldZLRnoR6/vLvb0DEO14kKCzDz4ohH+6
+	 Noqm8nVtRNzaHiDfmlZwaEXiRaT9KLRooLiakErD3gS0HiHN3UFwq0uTTd1GJNfGf8
+	 2DcmrZu880Okg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7D4FC380CEC9;
+	Tue,  6 Jan 2026 12:21:02 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="RUu1iIbwe7xJ/Z4d"
-Content-Disposition: inline
-In-Reply-To: <20260106-spi_st_maybe_unused_removal-v1-0-8f5ca7136e96@foss.st.com>
-X-Cookie: People respond to people who respond.
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <176770206098.1940354.10823969582438443737.git-patchwork-summary@kernel.org>
+Date: Tue, 06 Jan 2026 12:21:00 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
+
+Hello:
+
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
+
+Series: [v2,01/19] include: dt-bindings: add LAN969x clock bindings
+  Submitter: Robert Marko <robert.marko@sartura.hr>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1033379
+  Lore link: https://lore.kernel.org/r/20251215163820.1584926-1-robert.marko@sartura.hr
+    Patches: [v2,01/19] include: dt-bindings: add LAN969x clock bindings
+             [v2,08/19] dt-bindings: spi: at91: add microchip,lan9691-spi
+
+Series: Add support for Microchip LAN969x
+  Submitter: Robert Marko <robert.marko@sartura.hr>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1037170
+  Lore link: https://lore.kernel.org/r/20251229184004.571837-1-robert.marko@sartura.hr
+    Patches: [v4,01/15] dt-bindings: usb: Add Microchip LAN969x support
+             [v4,04/15] dt-bindings: spi: at91: add microchip,lan9691-spi
 
 
---RUu1iIbwe7xJ/Z4d
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Total patches: 4
 
-On Tue, Jan 06, 2026 at 01:14:16PM +0100, Alain Volmat wrote:
-> Update ST related SPI drivers in order to remove the __maybe_unused
-> statements on pm related functions thanks to the usage of pm_ptr.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Please submit patches using subject lines reflecting the style for the
-subsystem, this makes it easier for people to identify relevant patches.
-Look at what existing commits in the area you're changing are doing and
-make sure your subject lines visually resemble what they're doing.
-There's no need to resubmit to fix this alone.
 
---RUu1iIbwe7xJ/Z4d
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmlc/nwACgkQJNaLcl1U
-h9AbdQf+JYxZvoJLlKwbsDUTQjC4Mk5hdBG2qxuT/3zMqhob+VxeKNv5oFGesf+E
-E3qS3sArsrkBNbU40i4mb4fCuGKhA+WILehyZ0DE3BmyjE1zwBWI6rruHu7AVuMG
-uQ+2IA00P2lMlGF9Nsj5sf2r7kQ+EwOB2IfLJUPQs1BsBk9yoPbp8aNmMPuYWGiB
-o18LxSypSDRAvCLu1IpBQ82TSjuAINHON+dHgiltYVXfebxeyvBocGulD5858d9v
-i4+ghAzTRxSrol2f7BRtHjgK/n8+IVgHEC+FTa400Bwqh5gCezuol2de7fIRDXPK
-NH/e26NI4zMfPcZ7HuTt+orpJyzEfQ==
-=ZYVd
------END PGP SIGNATURE-----
-
---RUu1iIbwe7xJ/Z4d--

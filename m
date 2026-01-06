@@ -1,99 +1,91 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85447342177;
-	Tue,  6 Jan 2026 17:05:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ED5933A70E;
+	Tue,  6 Jan 2026 18:25:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767719131; cv=none; b=N+vJOTWK3t2QAJrU/mSqKo7B72MC1Z4RNcEi9Q6cpFki0bYufPUALNoc3dsh+CcEtDQeCtQZ6KUbrD3Q+HWyMtgCiTBcDZscBQyg28nH8pun2A8PmPuhRUHYRnE8UCIphDybyJ+Ft+vLji2eh8Ah86OrXpBCZ6qmNzxuZ3E89qw=
+	t=1767723947; cv=none; b=SpILJHhq/H5F7TiNy1xjns5fmx1i5icolg71uFHiWCOc/TjwHz0ZN68ZOPVJcV/XktOfYWX9Oc6wjjOyxvzn+TtP9fRkqkB5LM9Hp1bdhYL9e0sUhjpS/xcnxFiEhzUnYso1W0FGd23My0N7aN9AOJYnsbv6upUemgM88FZpnNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767719131; c=relaxed/simple;
-	bh=FvvC6mlJwCFvpAh44L0gF6zkGXFMPkMCkLiTS9mJdKE=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DMxmckPltMdGSe+Ee9QuOJZk2jqkSpr12DFE5bsFJ+/iUUASJHmu25MK0SyEwYrKd+XAPNejH+0peaf+bFTZxzD7Cha0Lw6rdVTv4CmulfJcZZmcrOFWGC3z96Pxwr1iH/AVUSCWP7GPckUDVhwq4uaO9GNDdr5CobO4BL9+IVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dlyGW6FwSzJ46YJ;
-	Wed,  7 Jan 2026 01:05:23 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id B96AC40086;
-	Wed,  7 Jan 2026 01:05:25 +0800 (CST)
-Received: from localhost (10.195.245.156) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Tue, 6 Jan
- 2026 17:05:25 +0000
-Date: Tue, 6 Jan 2026 17:05:21 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Alain Volmat <alain.volmat@foss.st.com>
-CC: Mark Brown <broonie@kernel.org>, Maxime Coquelin
-	<mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	<linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-stm32@st-md-mailman.stormreply.com>,
-	<linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH 1/4] drivers: spi: st: remove __maybe_unused for
- suspend/resume
-Message-ID: <20260106170521.00001668@huawei.com>
-In-Reply-To: <20260106-spi_st_maybe_unused_removal-v1-1-8f5ca7136e96@foss.st.com>
+	s=arc-20240116; t=1767723947; c=relaxed/simple;
+	bh=slrVtXqGp2rp8qqJMjz0DpynF+Z6Or1Xuns3k46Q1B8=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=bvWrTEVqQz3lfbaAQKTeW0Wb7z6sd6Zk4bCjVO+xv2DpQZVwlkSpkWHaFWe0MCeJ5ududleolRGt+ozLzduOpf5A0KUlGEZaml3oC6ihZBnVMXKzAUoEiF7On5nMGHTmiwWsLYiqDrtmVjfnF+mUQgd0h6x+7F+XA+Wxdt2RODw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rq/W70gk; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rq/W70gk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D36CEC116C6;
+	Tue,  6 Jan 2026 18:25:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767723947;
+	bh=slrVtXqGp2rp8qqJMjz0DpynF+Z6Or1Xuns3k46Q1B8=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=Rq/W70gkO2HuPi2yJnnK1gFp7NtCie2ZrAlZQ37kEFnObCPHO69ZHUXn7r9VfI+5x
+	 9f0UdgZCrPIYV0/or6CkdnLp0AHqGatHy6Jcjt1z1okYaNQsg5vQUX8iJHfNEK4rje
+	 An7i1I3Z0Gay4gmzHrrxviHMf/XB70zmVfQw7Dgodz2WL4jmCLB+ZMEuaM9N3p2scy
+	 y3/F7Ne8pjcv1A4YF2NM30mC4RNyDbMPeTpbyXRHDD6WQnz1oeAGV17tmge2XC/gmw
+	 VB4yZE/VP/Qap7eqiLDx//H1ajk+74Z7ERkTORw93N8iO3a7pC5F9pGkXpabZfPhZ1
+	 nHQ2mY3eYNFgw==
+From: Mark Brown <broonie@kernel.org>
+To: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Alain Volmat <alain.volmat@foss.st.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org
+In-Reply-To: <20260106-spi_st_maybe_unused_removal-v1-0-8f5ca7136e96@foss.st.com>
 References: <20260106-spi_st_maybe_unused_removal-v1-0-8f5ca7136e96@foss.st.com>
-	<20260106-spi_st_maybe_unused_removal-v1-1-8f5ca7136e96@foss.st.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+Subject: Re: [PATCH 0/4] drivers: spi: st: use pm_ptr and remove
+ __maybe_unused
+Message-Id: <176772394559.309686.18171199857083341971.b4-ty@kernel.org>
+Date: Tue, 06 Jan 2026 18:25:45 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500011.china.huawei.com (7.191.174.215) To
- dubpeml100005.china.huawei.com (7.214.146.113)
+X-Mailer: b4 0.15-dev-47773
 
-On Tue, 6 Jan 2026 13:14:17 +0100
-Alain Volmat <alain.volmat@foss.st.com> wrote:
-
-> Remove useless __maybe_unused statements for suspend and resume
-> functions since this is now used via pm_ptr.
-Patch is fine, but reasoning not quite right. pm_ptr() allows
-the dropping of the structure without needing a __maybe_unused
-on that, but these are passed to the SYSTEM_SLEEP_PM_OPS()
-macro and that is using pm_sleep_ptr().
-
-So tiny description change needed to reflect that. Probably
-mention the pm_sleep_ptr() is as part of the macro as that
-bit is not totally obvious.
-
-Jonathan
-
-
+On Tue, 06 Jan 2026 13:14:16 +0100, Alain Volmat wrote:
+> Update ST related SPI drivers in order to remove the __maybe_unused
+> statements on pm related functions thanks to the usage of pm_ptr.
 > 
-> Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
-> ---
->  drivers/spi/spi-st-ssc4.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/spi/spi-st-ssc4.c b/drivers/spi/spi-st-ssc4.c
-> index c07c61dc4938..b173ef70d77e 100644
-> --- a/drivers/spi/spi-st-ssc4.c
-> +++ b/drivers/spi/spi-st-ssc4.c
-> @@ -403,7 +403,7 @@ static int spi_st_runtime_resume(struct device *dev)
->  	return ret;
->  }
->  
-> -static int __maybe_unused spi_st_suspend(struct device *dev)
-> +static int spi_st_suspend(struct device *dev)
->  {
->  	struct spi_controller *host = dev_get_drvdata(dev);
->  	int ret;
-> @@ -415,7 +415,7 @@ static int __maybe_unused spi_st_suspend(struct device *dev)
->  	return pm_runtime_force_suspend(dev);
->  }
->  
-> -static int __maybe_unused spi_st_resume(struct device *dev)
-> +static int spi_st_resume(struct device *dev)
->  {
->  	struct spi_controller *host = dev_get_drvdata(dev);
->  	int ret;
-> 
+
+Applied to
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+
+Thanks!
+
+[1/4] drivers: spi: st: remove __maybe_unused for suspend/resume
+      commit: d4469e4ee5da0a93eabfcb89a8c6ecdf7cf1e9be
+[2/4] drivers: spi: stm32-ospi: avoid __maybe_unused and use pm_ptr
+      commit: 2a2d7187f5a7238582c2bbd4a6da7595c20e55a9
+[3/4] drivers: spi: stm32-qspi: avoid __maybe_unused and use pm_ptr
+      commit: 10a6d7507791a667fe1d327056ac3f72934cc7de
+[4/4] drivers: spi: stm32: avoid __maybe_unused and use pm_ptr
+      commit: 75d208bddcca55ec31481420fbb4d6c9703ba195
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 

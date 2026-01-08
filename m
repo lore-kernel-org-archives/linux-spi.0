@@ -1,54 +1,34 @@
-Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9299438B98C
-	for <linux-spi@vger.kernel.org>; Thu,  8 Jan 2026 07:53:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.225
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 298C236829E
+	for <linux-spi@vger.kernel.org>; Thu,  8 Jan 2026 07:59:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767858819; cv=none; b=CuZ2Zk7K/yFY3NHawhf6xvtR46UG1Fj5SAb5LRI/EbaG2OK3wgaKDM8d8TC8SCVqmljgpY9xSa/UXZIdUNEfTBJ6O346H1J0fDxAPK8UyYMcH9OobgG4Gc15xphF6MKPwcYm6L8dXt5P8soK83+BLccsu13Ux3wTeYN8LWCm654=
+	t=1767859187; cv=none; b=l1we0FxVMjmefqH6kSGRmZyiwwPD0LptubGhFLy3XNCivoYQewankNMEVyxaN7zBmNISKpyoEfxugr9lq6/sO0L8I04ljyJohNRK1vpBekxPeACs8RxJsxMHWKC7LVelCl4wpcCsSKKaUL1TEItB4xbDvreRHSkEhvURtJY1qNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767858819; c=relaxed/simple;
-	bh=ZOCtnOIUDGhtXFxpL7a+j98ZZWNUH6g4Uu4CU4oFuNI=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CCNx47Apfk4HBzYfJwut0w/Ueal/wyuhoaNUL5x6ToUKcphGdk2u3DhjjTN1rL0aUNXe43aeglui4GqxiBZWZVpL+tbbzqoGVgr2hgTcf8+MMbZVJ1FCyUWnucsP7ZVUSW3RNbIE+CqilKC8QWjDRvrN44VuctfJg/BMp4AkEUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=h-partners.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=KAlfEiDc; arc=none smtp.client-ip=113.46.200.225
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=h-partners.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
+	s=arc-20240116; t=1767859187; c=relaxed/simple;
+	bh=zybLVtnvlxRGSAy3Ju2hnnE+59U/4RgxNItszAsTvDQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=LxfIXVGMlCQaujRmYh2bL4Pc2SShjuAFB63FluoklkjjQ/R6dWxRfwmazf0gsy2+lWkN/4yccUMQtUorUnnqFgJQXFAC76QYMoxaPJfoGrH+SJVpic0+mm+j2Gr016eEV/5UxS78LXHkr36oOL/ONTPA6iJS9Gxg9pSnPV/KkfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FKw/UVZM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b="KAlfEiDc"
-dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=iWj7nOUU03u7CJJZ4hIqUKWg1L01ZekPymK3iNDetg0=;
-	b=KAlfEiDcTPlBTE0TeRe1SgHGycdGHDWyAl6IiDBzSJZiVp7k48Vtikp3SMGPf3iLR3vMHA9vT
-	gguF4bm0TGDw8D7p+wLG+SVla3pldusU69KmQyvinI0lWMLETiqOrAflCig0IixSBjnmym+2icD
-	JQo4Ut5Fe2xEcKZ/G0rMz5U=
-Received: from mail.maildlp.com (unknown [172.19.163.127])
-	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4dmxrz0p39z1K968;
-	Thu,  8 Jan 2026 15:50:11 +0800 (CST)
-Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 099EF402AB;
-	Thu,  8 Jan 2026 15:53:25 +0800 (CST)
-Received: from kwepemn200006.china.huawei.com (7.202.194.129) by
- dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 8 Jan 2026 15:53:24 +0800
-Received: from localhost.huawei.com (10.90.31.46) by
- kwepemn200006.china.huawei.com (7.202.194.129) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 8 Jan 2026 15:53:24 +0800
-From: Devyn Liu <liudingyuan@h-partners.com>
-To: <shenyang39@huawei.com>, <broonie@kernel.org>
-CC: <linux-spi@vger.kernel.org>, <linuxarm@huawei.com>,
-	<jonathan.cameron@huawei.com>, <yubowen8@huawei.com>,
-	<zhanjie9@hisilicon.com>, <liuyonglong@huawei.com>,
-	<kangfenglong@huawei.com>, <alireza.sanaee@huawei.com>,
-	<salil.mehta@huawei.com>, <shiju.jose@huawei.com>,
-	<kong.kongxinwei@hisilicon.com>, <liudingyuan@h-partners.com>,
-	<lujunhua7@h-partners.com>
-Subject: [PATCH] spi: hisi-kunpeng: Fixed the wrong debugfs node name in hisi_spi debugfs initialization
-Date: Thu, 8 Jan 2026 15:53:23 +0800
-Message-ID: <20260108075323.3831574-1-liudingyuan@h-partners.com>
-X-Mailer: git-send-email 2.33.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FKw/UVZM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A96BC116D0;
+	Thu,  8 Jan 2026 07:59:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767859184;
+	bh=zybLVtnvlxRGSAy3Ju2hnnE+59U/4RgxNItszAsTvDQ=;
+	h=Subject:From:Date:To:From;
+	b=FKw/UVZM49aWQGxZ4NSBBNgERvpByLMRHmwQssMD7huaScoA2ySMyeXkcyGWLYKAA
+	 /RKMnLXBvZw9e0KHu1W1p8bLwFkW4JBJDmVkvysjgALvtqtuFJUVwGsDurOdr6j18K
+	 NmhAbjZ9xLOaGWGYO3Uu8O+K9NFNGmH68R70jhtiCPvWU0yL+8Me9D1omnzDAmpdfd
+	 vm3IPl00z3GuBH5Epm5gWskMXEWXGzCmt9VFEY5vHyXUcOV6Pq80qM4MHJcJIPFr3d
+	 D+b6ps2laJlDRtNMvxU4+T4LtAcxAy1hhHlAI7VKflPLBk49EZwR1Z5drFh1zVN2Wl
+	 rc+l9B/mOfdPQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3B91B3A54A3E;
+	Thu,  8 Jan 2026 07:56:22 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -56,43 +36,19 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemn200006.china.huawei.com (7.202.194.129)
+Subject: Patchwork housekeeping for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <176785898092.3510770.5801095840306131368.git-patchwork-housekeeping@kernel.org>
+Date: Thu, 08 Jan 2026 07:56:20 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-In hisi_spi_debugfs_init, spi controller pointer is calculated
-by container_of macro, and the member is hs->dev. But the host
-cannot be calculated offset directly by this. (hs->dev) points
-to (pdev->dev), and it is the (host->dev.parent) rather than
-(host->dev) points to the (pdev->dev), which is set in
-__spi_alloc_controller.
+Latest series: [v1] spi: hisi-kunpeng: Fixed the wrong debugfs node name in hisi_spi debugfs initialization (2026-01-08T07:53:23)
+  Superseding: [v1] spi: hisi-kunpeng: Fixed the wrong debugfs node name in hisi_spi debugfs initialization (2025-10-24T06:31:33):
+    spi: hisi-kunpeng: Fixed the wrong debugfs node name in hisi_spi debugfs initialization
 
-In this patch, this issues is fixed by getting the spi_controller
-data from pdev->dev by dev_get_drvdata() directly. (dev->driver_data)
-points to the spi controller data in the probe stage.
 
-Signed-off-by: Devyn Liu <liudingyuan@h-partners.com>
-Reviewed-by: Yang Shen <shenyang39@huawei.com>
----
- drivers/spi/spi-hisi-kunpeng.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/drivers/spi/spi-hisi-kunpeng.c b/drivers/spi/spi-hisi-kunpeng.c
-index dadf558dd9c0..80a1a15de0bc 100644
---- a/drivers/spi/spi-hisi-kunpeng.c
-+++ b/drivers/spi/spi-hisi-kunpeng.c
-@@ -161,10 +161,8 @@ static const struct debugfs_reg32 hisi_spi_regs[] = {
- static int hisi_spi_debugfs_init(struct hisi_spi *hs)
- {
- 	char name[32];
-+	struct spi_controller *host = dev_get_drvdata(hs->dev);
- 
--	struct spi_controller *host;
--
--	host = container_of(hs->dev, struct spi_controller, dev);
- 	snprintf(name, 32, "hisi_spi%d", host->bus_num);
- 	hs->debugfs = debugfs_create_dir(name, NULL);
- 	if (IS_ERR(hs->debugfs))
 -- 
-2.33.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

@@ -1,98 +1,73 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0869D3ECBD8;
-	Thu,  8 Jan 2026 10:15:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F286A3A35C7;
+	Thu,  8 Jan 2026 11:02:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767867327; cv=none; b=YI17mWn8hqcVS69EUecVwLvtGnG3vBtIw9kI4Rl4Hz5/X7SNrXFYZOh2caC6WNQGXwOIFA/VSVjb1ORkfsFLcLSlCVPlSn0KGpYHLgoRfUGQjESFmp6Y6cp74oUP167itmbSGXkbLNvfcv5p/oMwAlhaUkyo2138i/m6ShtuF00=
+	t=1767870143; cv=none; b=IbG+JDNGk/DO2Kttd7WD741LovBRWcXy7RJ99yHCjbeLmpSe4yoigJ+V4BsKaSKaRs5ZgHE6k24u92SMSaoz2Yeca0NytCkuZiE0IIj8nOQHv2Zie2jynXAAP4tRlGeVsEO2tXey7f8S85bHc/g59qYAZ7R+w9+rSKJlvBnY2oI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767867327; c=relaxed/simple;
-	bh=/Jo4ameylI0QDhXxQi0CCzG2dUsmHBJUDcZwLC5zwbA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lSn33Ieq/8Sfpe+4EwndNhkW+sTPWS/NDsaagPnnsdCbhCz6oG5RzaiZKiHanu0Gwwk3DZOLIKWclvTYIVDDnSzoEnkMEFTk8++XOhC+LR+xBgmz+JnnCg+8AVWSwSBPlwh8YapP49yqaYw1C/fKvTaJLi+XNNOPuOgE3Fld9c8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VJukXlDr; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767870143; c=relaxed/simple;
+	bh=j+m4pmahMPKTeJHv084pK40Ng7vT7Xd+DmVBZhi+jYo=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=LlEEm9mN0YuSlzFg8pFa6VnXt16IECg26ybJkwXkY7PvXi0qGK5J4FpgEPR6JNPp97dgT9ve/bymTwRIBtzYZvn049XsvxkwTgYENqpuwQeZb6hdhtnsPdpKhXva+OJr3C+NYCTwrpCgkYJlAq5OOJ7cP7DI8CAjvhOcHq4Vaew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YOqzq6Pn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VJukXlDr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2BDDC116C6;
-	Thu,  8 Jan 2026 10:15:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YOqzq6Pn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BAE4C116C6;
+	Thu,  8 Jan 2026 11:02:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767867326;
-	bh=/Jo4ameylI0QDhXxQi0CCzG2dUsmHBJUDcZwLC5zwbA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VJukXlDrCbJOTEghDXLqYk1LyiTsHtYPsvhcEAYVvGBcAW4OMHxk8hZ77RIvCbAq4
-	 Gu49EpVeij/ehMx5DaJK1xGB16fgOe5CikVuGooTBvXGcmnHLC95wIGuwQT8FUVYim
-	 68EfHiAngHTaO1CLjU91vdCTD/5wOyWNwh3TqgSwc7AdZxLZf+YxJfA5sXbHDZx/MQ
-	 prM1AV2uhEVuH4MDU58jbwMXdMUSd2aOX04Mh+iLCHRzFvK5SOA4GtJPZoj1yPZPaa
-	 hTDj2e/FtJIBcmLvFriUiYGzS4WxRpISQRRNPfR9WVHwPlVCERGEqQ4XFR0T7Zzqxj
-	 XjK9vT41zh1ww==
-Date: Thu, 8 Jan 2026 10:15:20 +0000
+	s=k20201202; t=1767870142;
+	bh=j+m4pmahMPKTeJHv084pK40Ng7vT7Xd+DmVBZhi+jYo=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=YOqzq6PnaT+cDFCwGsvnUPhhsiojSFyGw7S2cWyEgMv8hiZvJN2YzGX614CbeH8SK
+	 4rvAMSCrFig2CvVI/OrqXwt0SyrsldGYnESbFifm6AOyHeiIabeVk0YfdjwTrVISos
+	 i8Rs0dOQi4IQlPvBiWvig1L+3x6/Umj/CLhQVDKCBk8n2xvgYisSJj2JbwsmjjQHGF
+	 o5fbJx6bXOGYxKCQ3tAUTlma9mk3aeNSKYHP7mr+Z7/mDYi6iggm0qUywwQCfLPdDj
+	 IeEXrKpO24+QrPdyrObWALgAI5cHneSUTWie5XZmD7RBRhVIydCrcE7CQ+OOyijFhR
+	 ydnfGIsjnTREA==
 From: Lee Jones <lee@kernel.org>
-To: Otto =?iso-8859-1?Q?Pfl=FCger?= <otto.pflueger@abscue.de>
-Cc: Orson Zhai <orsonzhai@gmail.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Mark Brown <broonie@kernel.org>, Sebastian Reichel <sre@kernel.org>,
-	Rob Herring <robh@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] mfd: sprd-sc27xx: Integrate power off and reboot
- support
-Message-ID: <20260108101520.GA302752@google.com>
-References: <20251110-sc27xx-mfd-poweroff-v2-0-fd5842e732fe@abscue.de>
- <20251110-sc27xx-mfd-poweroff-v2-1-fd5842e732fe@abscue.de>
- <20251120153024.GI661940@google.com>
- <aSNFk7tZqcgBqYsI@abscue.de>
- <20251126153619.GH3070764@google.com>
+To: Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Steffen Trumtrar <kernel@pengutronix.de>, Pavel Machek <pavel@kernel.org>, 
+ Mark Brown <broonie@kernel.org>, 
+ Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: linux-leds@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ kernel@pengutronix.de, Jacek Anaszewski <jacek.anaszewski@gmail.com>
+In-Reply-To: <20251201-v6-14-topic-ti-lp5860-v6-0-be9a21218157@pengutronix.de>
+References: <20251201-v6-14-topic-ti-lp5860-v6-0-be9a21218157@pengutronix.de>
+Subject: Re: [PATCH v6 0/2] LED: Add basic LP5860 LED matrix driver
+Message-Id: <176787013936.860906.10157564091923679409.b4-ty@kernel.org>
+Date: Thu, 08 Jan 2026 11:02:19 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251126153619.GH3070764@google.com>
+X-Mailer: b4 0.15-dev-52d38
 
-On Wed, 26 Nov 2025, Lee Jones wrote:
-
-> On Sun, 23 Nov 2025, Otto Pflüger wrote:
+On Mon, 01 Dec 2025 12:19:46 +0100, Steffen Trumtrar wrote:
+> The lp5860 is a LED matrix driver with 18 constant current sinks and 11
+> scan switches which allows controlling up to 196 LED dots.
 > 
-> > On Thu, Nov 20, 2025 at 03:30:24PM +0000, Lee Jones wrote:
-> > > On Mon, 10 Nov 2025, Otto Pflüger wrote:
-> > > 
-> > > > The SC27xx PMICs allow restarting and powering off the device. Since
-> > > > this functionality is rather simple and not configurable in any way,
-> > > > make it part of the main PMIC driver.
-> > > 
-> > > This sounds like more of a drivers/power thing.
-> > 
-> > This was originally in drivers/power, but according to [1], it should
-> > not be a separate device tree node. Using a separate driver without a
-> > separate device tree node would still involve some code here that
-> > instantiates a platform device and selects the right platform data for
-> > it.
-> > 
-> > Registering the poweroff handler directly seemed less complex, and I
-> > assumed it was okay since some other MFD drivers (e.g. rk8xx) also
-> > implement the same functionality without a separate power driver.
-> > 
-> > Is it a good idea to use devm_mfd_add_devices here instead?
-> > 
-> > [1]: https://lore.kernel.org/all/20251002025344.GA2958334-robh@kernel.org/
+> This series adds just the basic support for the device on the SPI bus.
+> It is also possible to use it on I2C. The interface can be
+> switched/selected via an interface select pin.
 > 
-> Well that is quite the predicament.
-> 
-> Let me catch-up with Rob out-of-band and see if we can come up with a
-> solution.
+> [...]
 
-The discussion between Rob and I led to an "agree to disagree" moment.
+Applied, thanks!
 
-I still think that a node to describe this device is the correct
-approach, however without Rob's blessing, you're a bit stuck.
+[1/2] dt-bindings: leds: add lp5860 LED controller
+      commit: 393d56d437c65e4619cadab9f2347167cde99906
+[2/2] leds: add support for TI LP5860 LED driver chip
+      commit: 97ee55eb5d33f6b0d2d72954a8ce8a61c15893c8
 
-I think your best bet at this point is to remove the
-devm_of_platform_populate() and replace it with mfd_add_devices().
-
--- 
+--
 Lee Jones [李琼斯]
+

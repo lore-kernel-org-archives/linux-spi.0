@@ -1,54 +1,81 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFBD335B12B
-	for <linux-spi@vger.kernel.org>; Fri,  9 Jan 2026 12:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48CA5313261;
+	Fri,  9 Jan 2026 15:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767963598; cv=none; b=hRdql7SfVe61PepOndzs4VJbjTQGrXDfLrKqOtKSKkj/8OSn1dbsfOslH9uYVIjDu/na6qiCK9+5M+X01m+8JURSQ/qA36nYqGri679ihZp92/IMD0ZuIbb/imALOnDWDw6sKzHta4MccokQ9RC9A8YfE7WGWVKZUTi2LjLfFvI=
+	t=1767972611; cv=none; b=r3mC1qMW5EoWYh7aKHXfX2b3DpXBvMw9SpxSzaKVxb3VxIcVkwU+iXf/gVTNeBU6LkBNpwWScwc6YpeclpHndue9WA95WPFsForCr4KH6kD8ZCovFKpMB7ysZLdvV0WYPS+KbHG2m89GrR1oAB7wxOdQeIg/B5+8XZ8jq3o831k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767963598; c=relaxed/simple;
-	bh=9FrsQlou9Iky7iVPOJLp5FgzZZwiA306Iw5u6PQI0sE=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=jXecvLpSFUvrRfAq1GC/BGRer5aTshIbyvSVzeJrV6Nno6qF92P+LofDAw8h19gcecj1CIfMv7vW2gmEV/kC33sTGwP9fTIlpSe2vDFI/uMNzYPUSiyEUT0h+8Dh24WTh8Ke6Kh0Z2rnBmsCBilMSykbW5yGKw8Yi7Ah6FcD6uI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IuQnlV5b; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767972611; c=relaxed/simple;
+	bh=Hu+suSqeAC73qWNDwf/X2dCSSGpxuISVJPtVdq1X+x0=;
+	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=sfDAsKK2m0aRd+rN9bgwY6gAgUo99O2pZZG+YFP6G2xmFoMjeQZuA8NYH5IuF6I+XSWoT1n+XUWlyKdqpFjXDeGQIF/o0fOSubcNs+AIKILBZoR3Uk4nirApTDsv+QYgrjbUUZrnLFlbjqK7Tphh8qVDWQUXcZqPKwqfXi+m7QE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t+hZ9rK8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IuQnlV5b"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93F77C4CEF1;
-	Fri,  9 Jan 2026 12:59:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t+hZ9rK8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A2C1C19422;
+	Fri,  9 Jan 2026 15:30:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767963598;
-	bh=9FrsQlou9Iky7iVPOJLp5FgzZZwiA306Iw5u6PQI0sE=;
-	h=Subject:From:Date:To:From;
-	b=IuQnlV5bACtnqETRlcjMnTp1rnIBYy+j3p970nug36GzByFAtA4dDJD5B2DCXD0Ig
-	 NMlze5sk8V+acN1Y1dO4lb/CayF8pIKNV4kLF5osd8i8IugTqX5nhokG5TYVx6KM8d
-	 Q6BlpoeI+9qWCPqYJ3FIizimn3CV/qI457DxAcY8dtdDUQxq1tYT02MDnN7w/+a5b8
-	 iemS4fjHcHM/raoKttPXIEjxoj+ylspk2w/ZJQ/MOSMW8MEU9RbwLk0zqX/67GSALI
-	 OyDnKdXOeOHy8z7KEyIJXE44kUj80htvhZvsluCOmX1cSnh5q93vdWlzSiBunGW3Cw
-	 qY8I2QYxjmy9A==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B59743930CB0;
-	Fri,  9 Jan 2026 12:56:35 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1767972610;
+	bh=Hu+suSqeAC73qWNDwf/X2dCSSGpxuISVJPtVdq1X+x0=;
+	h=From:To:In-Reply-To:References:Subject:Date:From;
+	b=t+hZ9rK8oXWouW48hIJnIVdfBVeTA82wGCzMynnoeCoeHvon0/QV9a0cA1UCT/Ot+
+	 QWwZpI4Py40WoHN5WrBBlMqIEBrywY3R+giBGEH++1o830CwaYJPk3cMiaopBQjeTm
+	 wr7BpkQPoPfqP4ESvxVhzWiaXlfIcnxRb0j4rIbbWSdZhjgtN4eYcNE0DRBzBy/5qI
+	 P5eP8EKJ2I9VTPzyb6r4qfbDxJhg9zXtDqWzlICoY7BvW7+2QDmPeoYstE9VLL39nB
+	 GKvTFwgv9yvfZwMGXAGAMhRnF3L6xOaFmncqWut46F+XGbm3CzA8FIK5mc13j+UXb9
+	 Z0tVo2U99NyxA==
+From: Mark Brown <broonie@kernel.org>
+To: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20260108175145.3535441-1-andriy.shevchenko@linux.intel.com>
+References: <20260108175145.3535441-1-andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v1 1/1] spi: Simplify devm_spi_*_controller()
+Message-Id: <176797260995.67850.318976521283878747.b4-ty@kernel.org>
+Date: Fri, 09 Jan 2026 15:30:09 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <176796339426.245878.6805940078537999002.git-patchwork-housekeeping@kernel.org>
-Date: Fri, 09 Jan 2026 12:56:34 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-47773
 
-Latest series: [v2] spi: spi-sprd-adi: Fix double free in probe error path (2026-01-09T12:49:53)
-  Superseding: [v1] spi: spi-sprd-adi: Fix double free in probe error path (2026-01-08T16:12:59):
-    spi: spi-sprd-adi: Fix double free in probe error path
+On Thu, 08 Jan 2026 18:51:45 +0100, Andy Shevchenko wrote:
+> Use devm_add_action_or_reset() instead of devres_alloc() and
+> devres_add(), which works the same. This will simplify the
+> code. There is no functional changes.
+> 
+> 
 
+Applied to
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+
+Thanks!
+
+[1/1] spi: Simplify devm_spi_*_controller()
+      commit: b6376dbed8e173f9571583b5d358b08ff394e864
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 

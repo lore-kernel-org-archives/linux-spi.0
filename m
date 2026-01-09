@@ -1,87 +1,77 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA158288505;
-	Fri,  9 Jan 2026 15:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F732DA768
+	for <linux-spi@vger.kernel.org>; Fri,  9 Jan 2026 15:33:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767972612; cv=none; b=OXm/gxV7ZaR6u2gt4z2tNSVXnFm4sQXdEYNh6F9m9Cs3wHu6QmJtJt3tA35015mDqZHtAK6qsNfmIapjB0KT6GklaSPUoF0ukYswt4FFcZLE6ux2u+/LfF5mX7I2lrfeSIPjKHYWHERR3ngyruysQC9uXf7n4m15jJwDbGLVVyA=
+	t=1767972811; cv=none; b=HrJJKK+HfamdQ4wJKUmKOWOdDOXoBB+DVhPh/gPjeHrOW7k27Edjdf48NKNyTd/+ras1vVS7i27cOvt1GxJQ4PHiw4LZGerQAfLcuJo6fl1k13gslUAkvYh8lvn+0cfKHAelyynCbG+E4QqEjFYeNorzzcuH4p1gyZg5nd3oCCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767972612; c=relaxed/simple;
-	bh=CVMPOaxDs8+TNFQb6yWujrE4hu02VsB/ZEa3zMEvSfg=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=ZhBhS8QZA7+YFx+jbdYrs3/V7J1/3LYyxVN6e+UzLO1Ldg4B9gkdS/65BJ7IiIyM++lQnY8+shHUlLEPT1j4kdEqQOn7jEZsPMUP6BkzAmSn7e94UjG/KJG11PSctoR2JEgwBMZdnfcnWafsQzRY140mShTfK5K1fo7CNy3HAnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z4w1nxcc; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767972811; c=relaxed/simple;
+	bh=huw7v89IVFlSWbfjlNeD4g542D+0NrOshRzhH1vgahc=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=ea7dAi5igaqRDO+8rLFDiQoSNiZRDcEzCpdgEWbMB2MVHJpkuxYlc9SkYXhVvyrD0QSbWCLAaQ0EfTV92ZHGEcnRXERuNwBOFbdCdN5BNAFPbjmWps6Tu9/4gm1PlBWbKEADNduiHkLhMpn4cfq8F7eAngn2VMO7su90Kb7SYs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=geGlpLOR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z4w1nxcc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6165AC4CEF1;
-	Fri,  9 Jan 2026 15:30:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="geGlpLOR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76E33C4CEF1;
+	Fri,  9 Jan 2026 15:33:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767972612;
-	bh=CVMPOaxDs8+TNFQb6yWujrE4hu02VsB/ZEa3zMEvSfg=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=Z4w1nxccMwDXZMUmWI9nQbpt7pozew5OuQm6gygdaRkuhBILy40StzF90aHnZ6Wn1
-	 6um+2EEDPRXP4j18pcyokjZ03ysOzsS6zjTxmC+U5NSeNsxNh43U3LbtC1hmWzmT1T
-	 mVkAni051WI+p95RNhNp4MnTbVy5IHOgNDS7HUxGRVjp+CgkJDBYx+3jIemfo8LB6Z
-	 KHqfmP5wJrsUwjfh/TVtirswK/XGq1SvLfsyAYVlrnqnz/9E8vaeMhshRY3dsDnpJ+
-	 5b2UTaRg7FZnz+1K4ljx8ZeF8F+N5676dIhE/eIBVeLosdyunmITxsisoql/QM7kNc
-	 jVdm0xAWXs6bw==
-From: Mark Brown <broonie@kernel.org>
-To: Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>, 
- linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Conor Dooley <conor.dooley@microchip.com>
-In-Reply-To: <20260108175100.3535306-1-andriy.shevchenko@linux.intel.com>
-References: <20260108175100.3535306-1-andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v1 1/1] spi: microchip-core: use XOR instead of ANDNOT
- to fix the logic
-Message-Id: <176797261111.67850.5868118938886891604.b4-ty@kernel.org>
-Date: Fri, 09 Jan 2026 15:30:11 +0000
+	s=k20201202; t=1767972810;
+	bh=huw7v89IVFlSWbfjlNeD4g542D+0NrOshRzhH1vgahc=;
+	h=Subject:From:Date:To:From;
+	b=geGlpLORyEG7dPIF6LCysOeNXj3g+NwkPgPhUrHlOZuD2B7+tgeXEMFNXD/3Q/YVL
+	 2VmcTJOSHpeLQb9e+YF9EtvgGfnLkbPjbg1TI+T480SzKUHGcGsyx+0q9zRjSzmKMs
+	 Z+QJSC5NHFqIxGQOgMAKGF4BaBMcm8T5k3kF3IZQOYwSQ0lpa9djDi0KXhd6E3UAUa
+	 6cyfIO1lJ1Ykker6u+AXcVpIlj22GPLT2CvOBwgRWrC8OGup4wn0TCj4782EoMwhmh
+	 q0iZqHvzOWTRL8CW7oG2+9Z1WmBJ/a74qlNqC/KpMbdpOiMhuOHnAMbp85FDzq0jQy
+	 tkkrJWS2RYkjQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7D5813930CB3;
+	Fri,  9 Jan 2026 15:30:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-47773
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <176797260592.293560.16620378279279360829.git-patchwork-summary@kernel.org>
+Date: Fri, 09 Jan 2026 15:30:05 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-On Thu, 08 Jan 2026 18:49:40 +0100, Andy Shevchenko wrote:
-> Use XOR instead of ANDNOT to fix the logic. The current approach with
-> (foo & BAR & ~baz) is harder to process, and it proved to be wrong,
-> than more usual pattern for the comparing misconfiguration using
-> ((foo ^ baz) & BAR) which can be read as "find all different bits
-> between foo and baz that are related to BAR (mask)". Besides that
-> it makes the binary code shorter.
-> 
-> [...]
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+Patch: [v1,1/1] spi: Simplify devm_spi_*_controller()
+  Submitter: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1040071
+  Lore link: https://lore.kernel.org/r/20260108175145.3535441-1-andriy.shevchenko@linux.intel.com
 
-Thanks!
+Series: spi: microchip-core: Code improvements (part 2)
+  Submitter: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1028777
+  Lore link: https://lore.kernel.org/r/20251128185518.3989250-1-andriy.shevchenko@linux.intel.com
+    Patches: [v4,1/2] spi: microchip-core: Refactor FIFO read and write handlers
+             [v4,2/2] spi: microchip-core: use XOR instead of ANDNOT to simplify the logic
 
-[1/1] spi: microchip-core: use XOR instead of ANDNOT to fix the logic
-      commit: 19a4505a7a5d4eea70f1a42d601c25d730922fdf
+Patch: [v1,1/1] spi: microchip-core: use XOR instead of ANDNOT to fix the logic
+  Submitter: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1040070
+  Lore link: https://lore.kernel.org/r/20260108175100.3535306-1-andriy.shevchenko@linux.intel.com
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+Total patches: 4
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
 

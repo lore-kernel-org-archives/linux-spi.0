@@ -1,452 +1,143 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from mout.web.de (mout.web.de [212.227.17.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE2136C594
-	for <linux-spi@vger.kernel.org>; Fri,  9 Jan 2026 17:18:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FCE929405;
+	Fri,  9 Jan 2026 17:40:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767979139; cv=none; b=jXMyQ3lq9OGncN1LgzEfFqmvrsASaJymooajVP+0OcGJfOGEEzfmLLTHoYuifbBSjMoJuC2Y6dyom1AYPqL1MawY5KPKul95Qubh41fuoWAln8YbYPkYBwg7BrSA4jcfKEWdl7B0pYffuqWR8tenz/H1hneIKRwBwo9lVCQBuqg=
+	t=1767980447; cv=none; b=TDP0rxj7YPKgnWkeJn0z+2xEL8Kw+NN7sw0k3fRICYHC8tIcLM5kBOErpMmQAmKmzYwzmZfYtvr+SgqJjRspaEbLD5gvMTJdTq7zutPkNh+3DNavYwGWF/ofr+wco97fRgotqgwyLHve+wvjVR/m2QRy/1eDuJOzsdL94jvgfVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767979139; c=relaxed/simple;
-	bh=Ck66NbxnHoY/dJ5n6YWd09rdI8MKEX0Wdpsh7JS+qZg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=DG3J5fO3yM3m202KGEUinK6I6tILRR/RMQ5MK12KznX+A2QkAIGGFFO32s8BCGd146Nu1C7GjrhHbaxwnnSnTmoNghMkSgfNqI49PHvmHWVvRtvif8a7O6nEwC59EKbvNOoIMrG1TO4+nh51oAGXt9+J5S/axeWYY1TVuH9XAzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=h6Hxf9RF; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1767980447; c=relaxed/simple;
+	bh=t1k65dqgJ6s3S41scUsPIB4jIsXICxKLu1hySpks8qk=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=XP6vlf3XVi5Ig48i0VeIBmC4rZfWd4hiDFGvroizh/hUw6tPWMJlJiR5K4SkU8QPMSRPCGr/MGEyh7xLUesq/qA2ztZS47sZLwFQIv/MzpX+dI5LY4pSqxV2eekGtzg4idcZY5evBdUK1H8dKSWWVzFsgGS/xpXEuDnI/DKp+88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=MSq+z6lZ; arc=none smtp.client-ip=212.227.17.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="h6Hxf9RF"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 994A31A2753;
-	Fri,  9 Jan 2026 17:18:53 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 69A19606C6;
-	Fri,  9 Jan 2026 17:18:53 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A7D36103C89AD;
-	Fri,  9 Jan 2026 18:18:51 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1767979132; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=neklhWF9Sg2eyfEOKn2xQ0FrpcEjSrtWyZMej8TTw7I=;
-	b=h6Hxf9RFggVUKiGmkEU9Oa0WuchAe/mhHHO/U92LClWZAv+vHE4jxtxpRqJVvLPXVdKIvV
-	esUvh1Je7PAYAHFthIMBD8xssvCH3twWgjIu4E7JkiVNilGRjXEu5E4XBRXpjQ2HPjKOWS
-	TSPx24VaurL/qFJOUekxvv3kc15KMt1E/6YFvnPPF4JaZ8kbO/7mAuq7DGNhKtyvCOei58
-	vVnwANeix7HoQZfbEHUFLHqd7xcwWtLJTj+R81mgKiM3IG2aSErK/tx4yEfnV2uGpmIWEO
-	Ndf2yUvluYpyLps0cd5XgKc5hCZdEMBuz3RfA5/2w2dYuelGOC7dYdoF/8lfMQ==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-Date: Fri, 09 Jan 2026 18:18:24 +0100
-Subject: [PATCH v2 26/27] mtd: spinand: Add octal DTR support
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="MSq+z6lZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1767980424; x=1768585224; i=markus.elfring@web.de;
+	bh=t1k65dqgJ6s3S41scUsPIB4jIsXICxKLu1hySpks8qk=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=MSq+z6lZmQ2dFgSZe6uc8OrXpo3yjm5P8h0AN5cY/M3WhzWbycvu5bAI1eYDMoeH
+	 cdNZKpWww/NluKvhqL22rhlaqAvLnmbqn7CBToztwpikMda+xIbh4tcHDXoAG+LYf
+	 RzV06FFObZyhHLMVD7y/X/ms0tPgrpb2WcdupR9OFoxGFT6lP/oKJeVj1E9o9WtXJ
+	 VyC2dbP9D/GKPbjpuZAIozlVrMjw5BcIkxO6Moog5Z4dZAYGeTbvyCaugLcMJtnlD
+	 XrNIoOCUcjskCr+KSZTPXA3RoNCyN9GUqgUz/NV/S4TUfcvzdU6YY0Crb8VMCLI7A
+	 RivIGIszP1Gz+Pg4+g==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.69.182]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1Mmhjw-1w6PhG0H9q-00Zh4w; Fri, 09
+ Jan 2026 18:40:24 +0100
+Message-ID: <cfd8ce35-8aa9-4e9d-bbc2-9c87113e8156@web.de>
+Date: Fri, 9 Jan 2026 18:40:22 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+To: Felix Gu <gu_0233@qq.com>, linux-spi@vger.kernel.org,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Chunyan Zhang <zhang.lyra@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Orson Zhai <orsonzhai@gmail.com>
+Cc: LKML <linux-kernel@vger.kernel.org>
+References: <tencent_AC7D389CE7E24318445E226F7CDCCC2F0D07@qq.com>
+Subject: Re: [PATCH v2] spi: spi-sprd-adi: Fix double free in probe error path
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <tencent_AC7D389CE7E24318445E226F7CDCCC2F0D07@qq.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260109-winbond-v6-17-rc1-oddr-v2-26-1fff6a2ddb80@bootlin.com>
-References: <20260109-winbond-v6-17-rc1-oddr-v2-0-1fff6a2ddb80@bootlin.com>
-In-Reply-To: <20260109-winbond-v6-17-rc1-oddr-v2-0-1fff6a2ddb80@bootlin.com>
-To: Mark Brown <broonie@kernel.org>, Richard Weinberger <richard@nod.at>, 
- Vignesh Raghavendra <vigneshr@ti.com>
-Cc: Tudor Ambarus <tudor.ambarus@linaro.org>, 
- Pratyush Yadav <pratyush@kernel.org>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Steam Lin <STLin2@winbond.com>, Santhosh Kumar K <s-k6@ti.com>, 
- linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-mtd@lists.infradead.org, Miquel Raynal <miquel.raynal@bootlin.com>
-X-Mailer: b4 0.14.3
-X-Last-TLS-Session-Version: TLSv1.3
+X-Provags-ID: V03:K1:22o+883xXcAQIklX/pg77OTpgZ3eNEkv2jk5/nC8VUQ6CDC90No
+ 8ZhBGLWDKERnFvpYByrM3fOgtaymRVbGXMScpN+L7woZk1RN67Zd7wGa6kwVJ0ha5KGqYMs
+ u8n078KpqopeRZWKAep/B3lhk+8QXFJCJ61I5cglzPq62PdvOujrK2SahYzuMU042mFNM1/
+ 7H2czfIUzPCpfQ+MQFJqA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:zDE+7P7g3DM=;ISIrAzBevZYyfEZntxcBTXgioTf
+ OxDdzq17ilKAmw1jTeKwvZi5skSw2P4fBuDF+7hHxYG1PYOx/DMxcld56WUmSO5y9MQ7iCRin
+ DskFNoPUMaJFZ1y15advJvdKlafiMsTI+ypNNcpZx80LZgtB4RJHWr/C4RIxI8Z+a+oWFKftT
+ 6a8jSrzM+GV27/jjYXMxlYp6o8SRd9p9r/5vfsbnp6qaQdKxudABdfKbCATkR/KRvgP6Wmm5t
+ 9bdlSdLK2EvKL2q04gHnbvRRM+avZE0OCAeJkZyxvA3aM5Rrvw8zUYiYJJIB9sqwJFCBR+Ni2
+ kzOf52IxAxgkD+nbU7fv1j2BeA4JEv0x4UbZd86AbaWv/1r2QIscE0GHrlC7BIVbnXh7GPme5
+ GF2RqGDYi/IHNxUCchrzO1v1iDiZPLIx95GCCOUjnLukNTnmo31xQLnSPz4OIODZnW4ZT+YEA
+ auk7Ij1AFfL8Kp8wXH5sh4WVAAr+3USSJcBecMavLBkGJs2Df4hEWaRjznTVw+zd12J9HfmtX
+ hLHJKEd8b6w/iw1k1Ou0KnB6qVjr4ERb6LeI96/11sbEt5S0EQRro2P4yjBqFSBKnp2mIAs1Z
+ 5PrNCLhXXNgAu3VmWGDtRIboX3pwPiefVy4pkgbdB4KpYck3IgmQs1ZkbbYyzJnkNwHE8N0ov
+ z5Uf8BeDnoHpRlc4LeQdmHs30yDsdA9I8w6o+QFJMv+1pOlozt5FSP7O9E62lofN4X0UIauf4
+ ezu2Z8hUZvH5UlQ/J3i7877TKpRL2VPlC6NCg4nXuhDp1CmCNSC+qIhfcg/DJllqolY3oA3dq
+ LZbPdCA6/MO7J8On1VrrJickviiPTFETfEVyvktlD8VZGUOFEMCEJPGzAtrXUiCbwUAaZrYNp
+ vSEzlWgte/SE0/gNBhwjb+tQIrJM8ECLsIk5AkS7bp0w7HnFFwLRg0J6Mpb9WEWBdk8AwziCC
+ fZ1HgNvjALxymqlLVPm9Gv2ZF8xruuptHY0tC/7ff9NuYPH5bQB8iMk2gdF9hR5Nz7BWSuUYo
+ 4Zyoiv+pdiFJKfc1EC42F7s8b2bRlpJEXsXd8Jo7LU2yVBboAQlBcqB+84bZGrPXTMOr6Li1B
+ xvFNxnyydkha9Gni0Gs8XNt0zuXhJ+cuGjisswQfL1kYJWI6V2AGN2MPjfwaa5Wtj03HClNsp
+ 9948HZB6syBYqyLWijhvb6BBsj3eOxmOU+37efLpNCFyb88tg9Fd1U/Ph1u+Wyifa6X6i6urY
+ ccK7RLCbHyhXpmq60OkYfoNd8Hi+vJ2plSDFchxK0z7s0y8czZ+lVV7NOYIP6/ehF4K9CbLc7
+ IEKlgv+cGz3Wqio4JFnf53fJbtoO5Vc8S+QbKQZRXkbappQr7aNbWigCz7/ZDB04To0Lj+XZl
+ pHTfuwwhfmake+fanfUVl69O4dyaPAXP+P92kdzfa1piEW7YnqnV9+mOsuYQpSsszfhuIsRJO
+ lOqEiUHl1YAGJPtT26ARsarGGqnGSU6UGcVxnGAVxso3GG9llgOy7ePYdHxatpCVqCeib4YwW
+ 043tEvczpS9a5ObvY/ISxqi51zrI4QNsqdwyWoGVdS9+bPeu2vJ0wqgDGwwPLwZ2EDk2UH9YQ
+ xPf9pSiwr8PcNU+UrxzmEuoreNz/r7LKw4iLP9y62Dr1iHs0YVZY7Uk7ZJH7lxQsm2vSo9vNb
+ dOwy2/lP+nOHLBtbYSmwgWF/c+H0bf7vbUUqN3FpMsC2+5hPc+/KZ2fgXKIFxOS8XINpEMOJj
+ 6Rt/EE5sf1CuqkyOZdYzwruxwKgmpijFF4A2cyXtGV54ZCMYbbSEO//Gyr7D6L0XFFDd0kTla
+ ygtV+wisxYQq0Ac38G2/svgQSQ+aKCRGFlEUa3Z69UszTsubaVSRn0UioARo9yLPm4idLMtdO
+ n8bLM0lgjhznCK31l9HN6iO1kD2EaKAicd2lkYpE8/WTwss66g8YrreBbJT0+XjAU71GsbTCz
+ 7bITc+XIXe7rIQK88KkO3jUpDNO+a51kBynRCxobI5JjrqddD7SaPzcurNid/kbkWC2r+zNpX
+ YttGvR5JVFu6dyHgHVk1gQbYUfp2kBwG4i4GLaLrXzZhHZ+lTuHcUjddcv7K2eT4WNPXPZIbF
+ B+xAU3r4q4QGHH/Dlle+G9OLbeXJf9Kz4LleU8iInFGzjXwh6U6dbjnXXRrMrKbk/+LNnOtmG
+ vYOrHg2swphb/MyhOFK/zT3y/tbZ+YzeL9Pkxlz0GqRXQc/zX0sFSNDFKKPlpprvqtW5xu+A5
+ /rlPagGFp7lB3HPdlK37ILHv1mxY/U/pYsb0P/9Vr0baGv5bWlSFQhxSFrp+ZBDOFKQ8RUfo0
+ Ts6ArD1tNX0OgrZ5niTgmingPfqLy6u/loLMUtOTw2mGIkkS/QW1/k9HOBd2kicG8yc590Xdf
+ gh7Nx6gTArTgq9D2cuoq7Ewey95F0duEjzeAVtG2HnFUJx3DSreFrz645C0FKmxqRJJZ5zPMR
+ iNJzwEU03tLAH3gXLZEZdxDRXmCDvZr1QS08IYzp8DPgDVa5R07o8wFPrn35LXKRE3Ee+SorU
+ 07sVVnDQ0tZ7tqOsjFVaU5wOf1R6KimpUsbzbliLg0T6IUDlv0W0dS7P2dxD50f5E8kga/ivT
+ +KFHgj9ZAsHGuRuQSaJB3/21U+Qaj5D2H/4Meyagwp6R4gg0jqS+lB1ROvsSLhOt6tFyJnO23
+ IWTIreouEaA4dVHur40/TKdIMx4jYNcnP3/RAlFO/bXRnbMqAh4HWfvjkecR+LUuZ55zRSQnh
+ UHyhxfJgOdp7375koWEs28luybsKR0PusF5priDnz+w5MzTf9di59m9iVPhqZ9gERQ953iDL0
+ AtxNX2vtQQOnDKaJ5F+J1oJN8iQ1wveqbcQPOCfC5Z5haaxqwmsmG5JAdzc4irOID2ySXx0lK
+ Xbd6MX84H+zqs6OBqOvZnx7VwVquuv52WjIB19ifrXcuOME1ldJTZL/4kQTxkY0PBYPWslBe5
+ 5H1+n4+D/hl0rqt2JZX+Re46BIBWLc3U5qBVAlFcW/OWOTJzm5QNa8u3Lf52mPMNKik0RHLLm
+ 53bLuvUUzVecViZbAGZpEQ0GvVeKYlPrNoTMD0QBK3dJn/9Zd5+A98ZkO1km7A7bNm99ZktqT
+ C+ZNqil7MXxZthl3BV40zIgtxjL3FzCLwxWfChbpU4pUeXJQIp/uwyKlf65QvdHAA1d1JX05c
+ 8nEKhs/UxfAOOK8ngqOHhe4MXvtuy6lZLl+y4bQs/nP+4vOSG0jrzc1XfXfRnhVDODOdICRcW
+ Eu3MLQigClm7fs1m+TFN08jBYCwZaQyqCYwgpb2ZSB9UI1a+7lBbWoVYNc9ck7YQDM0LjqpvC
+ ahMwsJPP6oqg2YO/E1yuoAgZ6NRlnvDryMe3apFxcEBi3H+kmNSiiMp+JsN9DTtWfY2SO+Sq+
+ g/XLXjwsJI2sfSy4QrmR1Ps4J5AgBJpuO+0mHvxqsIFJTK7d0Va7WVPc0B0lFeX6FeLWMzGiU
+ L0hNKx8vvdOICluqvtQv8RxpTl5i5XSHuZJnG7vkyIl3Ho88uXC5L/z2JZB0vMMX+zPURA9pn
+ Gb0zclByqJludRRYz7V20e8Pvr0Gnee9U2lpdAdvLWaXRY/uZ5f2flc0WUcDahvK07MYCmcx0
+ AsKFRiFST4HGAWjU6k04/u9eGoXsL7QWvzmClxScuJSLjPOxcr+4XGxRklGqaY80XfYeLI1ZU
+ HyYlWPKJCy4Ozsqt/vXHMLK92uGhQFoNbNrYl1i1yrc0lNNdu2WSwusto5goM+E2XvDHaWFCi
+ /Bh4IT9CZs8iyecYmiVnvbGSvCusGl4Oizg6SEp2UnXOjpR1gvwPgqtv3GuNPOpvwfzo/zKDa
+ dXX4+NTZjH4Qx929/S4AcYrm9uiftOCSuXD3O2XpJhti3lb45ZmDHY4aJjcVQNSqbrRZrR1Um
+ OFc+rL7VTD0O+DTGfxyOjVry+Typ0Se1AgDeTDTrQ87d/4bJQItxQ4JFfRQNR/EAZzsvZ9hm0
+ UzED4SPcbLVMXva8KoLaZcXbTkQZbJ/Mf2BbgVldhqPUBM/5WH/kjhrjSDT3adVQC0UX01OYN
+ Lo2thQ/J6S3pmI1jpBdgr812FSV+whXh+953dxrGfSFSCecJvnom5HQYRvHQ72epBWATWWWPx
+ GcrlpGpWJRSOz0b6ST1jtCl+x8X+TdQHv9P4HmaA4a6uESb/nkARzilkAUoB1sYtPRkamABoy
+ Vb/k/iG2MYporou3Uo6bvNj228XKQ8Lz8xkZIHjAnEHmA+XVJ3cf7pEFvIfwmK0c+raJ4Wfh9
+ HtdZVwbvn26zxJn2C16Czfz6z/E1O0yJBpl+a8ELTwKM1hBcL2bEL3X8wEsi562tsosB9wx0v
+ +Y2GS0r10qgUxg2yofc4MAAqPq2ukyfPssiZfUER/oKXNM0QI/8UHl1GDw+mcwKz6+Dc9P+Pk
+ Yo7q2Om6lveg+hrBlR4E10Uid5ql/lGZZjrlVaLkwGoJ0XL3TJNd6c+Qqs2eLj+OKTDS5+l9F
+ +r5vwCcX0ZVUD6r2bPCwb5wBQLtkrQf2LeQ+q7P1GgqjyyoRJGI80z8mkRj1UYhhdzNEHBOBK
+ cIunserptbTEIbHd1FPh1eIroS5MNChE/+M5798YDzYE66MEUT7Ae8h1BFmLBvrRtObiS7E/J
+ cnmbL9ZB76KpyWESaE6peWTV/IN24Rpp8OQJjddcR/IfU3MBbSYFPQcBlVl4laR7lhdNTuRWk
+ N3NMKnOTH3gGBC64ZQYnsf2QssZOfDp2S7LDykEwptl2J7NKDLBaaa6oV1L/qZkLkpxkLuMCW
+ hPwsc2QdGKPZmCY7HIPX2yMVAYYN52qDSjlzTVjTN6Ers6+g/CFoETsbgZtF8mwk1I37wb4lv
+ N3ljYI2sKP2kVanulxbnC0CAqdjlixz7zCD80BmzRfXVew4BKmp8FoJOjHr4QFBsJNQ1uiS/6
+ /EUKWbCEyU7DUR6qfx6cK72GIQxUUGXZ4XBnTU7aJ7iXQXysHKF7zhbBDaKupanFHQimRzG9O
+ 3AXahklCnHrvWbE7Zs1HZVQJTlDbZWTrLylS+5LlATBgs/i9p/Qigjvf4prdpdogGLh6N5Kno
+ T+ssmr4E60bzCGvPimTP7vNNn5PBflIIS39jTMWQIJAUu9DuPBZlYardtWWpmxxgftCO4CvY7
+ pIa+3eRZn8wIOzh9FeqY1PuDD6j4G5lA9DAp+NgzNTX95AdnLFVRfsMHAM45slWy/6XkmF/LF
+ V741D4TnHw+7KylnWvuv/aIk9yrtCHCztcKP4qoMCEWSBcAxBHw==
 
-Create a new bus interface named ODTR for "octal DTR", which matches the
-following pattern: 8D-8D-8D.
+> Fixes: ac17750 ("spi: sprd: Add the support of restarting the system")
 
-Add octal DTR support for all the existing core operations. Add a second
-set of templates for this bus interface.
+Please choose a longer hash.
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?h=v6.19-rc4#n145
 
-Give the possibility for drivers to register their read, write and
-update cache variants as well as their vendor specific operations.
-
-Check the SPI controller driver supports all the octal DTR commands that
-we might need before switching to the ODTR bus interface.
-
-Make the switch by calling ->configure_chip() with the ODTR
-parameter. Fallback in case this step fails.
-
-If someone ever attempts to suspend a chip in octal DTR mode, there are
-changes that it will loose its configuration at resume. Prevent any
-problem by explicitly switching back to SSDR while suspending. Note:
-there is a limitation in the current approach, page I/Os are not
-available as the dirmaps will be created for the ODTR bus interface if
-that option is supported and not switched back to SSDR during
-suspend. Switching them is possible but would be costly and would not
-bring anything as right after resuming we will switch again to ODTR. In
-case this capability is used for debug, developpers should mind to
-destroy and recreate suitable direct mappings.
-
-Finally, as a side effect, we increase the buffer for reading IDs to
-6. No device at this point returns 6 bytes, but we support 5 bytes IDs,
-which means in octal DTR mode we have no other choice than reading an
-even number of bytes, hence 6.
-
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
----
- drivers/mtd/nand/spi/core.c | 140 +++++++++++++++++++++++++++++++++++++++++++-
- include/linux/mtd/spinand.h |  79 ++++++++++++++++++++++++-
- 2 files changed, 216 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
-index 1ac1d0181a91..e1336859c600 100644
---- a/drivers/mtd/nand/spi/core.c
-+++ b/drivers/mtd/nand/spi/core.c
-@@ -57,6 +57,9 @@ spinand_fill_set_feature_op(struct spinand_device *spinand, u64 reg, const void
- {
- 	struct spi_mem_op op = spinand->op_templates->set_feature;
- 
-+	if (op.cmd.dtr && op.cmd.buswidth == 8)
-+		reg |= reg << 8;
-+
- 	op.addr.val = reg;
- 	op.data.buf.out = valptr;
- 
-@@ -68,6 +71,9 @@ spinand_fill_get_feature_op(struct spinand_device *spinand, u64 reg, void *valpt
- {
- 	struct spi_mem_op op = spinand->op_templates->get_feature;
- 
-+	if (op.cmd.dtr && op.cmd.buswidth == 8)
-+		reg |= reg << 8;
-+
- 	op.addr.val = reg;
- 	op.data.buf.in = valptr;
- 
-@@ -1392,6 +1398,11 @@ static void spinand_manufacturer_cleanup(struct spinand_device *spinand)
- 		return spinand->manufacturer->ops->cleanup(spinand);
- }
- 
-+static bool spinand_op_is_odtr(const struct spi_mem_op *op)
-+{
-+	return op->cmd.dtr && op->cmd.buswidth == 8;
-+}
-+
- static void spinand_init_ssdr_templates(struct spinand_device *spinand)
- {
- 	struct spinand_mem_ops *tmpl = &spinand->ssdr_op_templates;
-@@ -1424,6 +1435,10 @@ static int spinand_support_vendor_ops(struct spinand_device *spinand,
- 	for (i = 0; i < info->vendor_ops->nops; i++) {
- 		const struct spi_mem_op *op = &info->vendor_ops->ops[i];
- 
-+		if ((iface == SSDR && spinand_op_is_odtr(op)) ||
-+		    (iface == ODTR && !spinand_op_is_odtr(op)))
-+			continue;
-+
- 		if (!spi_mem_supports_op(spinand->spimem, op))
- 			return -EOPNOTSUPP;
- 	}
-@@ -1431,6 +1446,49 @@ static int spinand_support_vendor_ops(struct spinand_device *spinand,
- 	return 0;
- }
- 
-+static int spinand_init_odtr_instruction_set(struct spinand_device *spinand)
-+{
-+	struct spinand_mem_ops *tmpl = &spinand->odtr_op_templates;
-+
-+	tmpl->reset = (struct spi_mem_op)SPINAND_RESET_8D_0_0_OP;
-+	if (!spi_mem_supports_op(spinand->spimem, &tmpl->reset))
-+		return -EOPNOTSUPP;
-+
-+	tmpl->readid = (struct spi_mem_op)SPINAND_READID_8D_8D_8D_OP(0, 0, NULL, 0);
-+	if (!spi_mem_supports_op(spinand->spimem, &tmpl->readid))
-+		return -EOPNOTSUPP;
-+
-+	tmpl->wr_en = (struct spi_mem_op)SPINAND_WR_EN_8D_0_0_OP;
-+	if (!spi_mem_supports_op(spinand->spimem, &tmpl->wr_en))
-+		return -EOPNOTSUPP;
-+
-+	tmpl->wr_dis = (struct spi_mem_op)SPINAND_WR_DIS_8D_0_0_OP;
-+	if (!spi_mem_supports_op(spinand->spimem, &tmpl->wr_dis))
-+		return -EOPNOTSUPP;
-+
-+	tmpl->set_feature = (struct spi_mem_op)SPINAND_SET_FEATURE_8D_8D_8D_OP(0, NULL);
-+	if (!spi_mem_supports_op(spinand->spimem, &tmpl->set_feature))
-+		return -EOPNOTSUPP;
-+
-+	tmpl->get_feature = (struct spi_mem_op)SPINAND_GET_FEATURE_8D_8D_8D_OP(0, NULL);
-+	if (!spi_mem_supports_op(spinand->spimem, &tmpl->get_feature))
-+		return -EOPNOTSUPP;
-+
-+	tmpl->blk_erase = (struct spi_mem_op)SPINAND_BLK_ERASE_8D_8D_0_OP(0);
-+	if (!spi_mem_supports_op(spinand->spimem, &tmpl->blk_erase))
-+		return -EOPNOTSUPP;
-+
-+	tmpl->page_read = (struct spi_mem_op)SPINAND_PAGE_READ_8D_8D_0_OP(0);
-+	if (!spi_mem_supports_op(spinand->spimem, &tmpl->page_read))
-+		return -EOPNOTSUPP;
-+
-+	tmpl->prog_exec = (struct spi_mem_op)SPINAND_PROG_EXEC_8D_8D_0_OP(0);
-+	if (!spi_mem_supports_op(spinand->spimem, &tmpl->prog_exec))
-+		return -EOPNOTSUPP;
-+
-+	return 0;
-+}
-+
- static const struct spi_mem_op *
- spinand_select_op_variant(struct spinand_device *spinand, enum spinand_bus_interface iface,
- 			  const struct spinand_op_variants *variants)
-@@ -1446,6 +1504,10 @@ spinand_select_op_variant(struct spinand_device *spinand, enum spinand_bus_inter
- 		unsigned int nbytes;
- 		int ret;
- 
-+		if ((iface == SSDR && spinand_op_is_odtr(&op)) ||
-+		    (iface == ODTR && !spinand_op_is_odtr(&op)))
-+			continue;
-+
- 		nbytes = nanddev_per_page_oobsize(nand) +
- 			 nanddev_page_size(nand);
- 
-@@ -1525,6 +1587,8 @@ int spinand_match_and_init(struct spinand_device *spinand,
- 		spinand->read_retries = table[i].read_retries;
- 		spinand->set_read_retry = table[i].set_read_retry;
- 
-+		/* I/O variants selection with single-spi SDR commands */
-+
- 		op = spinand_select_op_variant(spinand, SSDR,
- 					       info->op_variants.read_cache);
- 		if (!op)
-@@ -1550,6 +1614,28 @@ int spinand_match_and_init(struct spinand_device *spinand,
- 		if (ret)
- 			return ret;
- 
-+		/* I/O variants selection with octo-spi DDR commands (optional) */
-+
-+		ret = spinand_init_odtr_instruction_set(spinand);
-+		if (ret)
-+			return 0;
-+
-+		ret = spinand_support_vendor_ops(spinand, info, ODTR);
-+		if (ret)
-+			return 0;
-+
-+		op = spinand_select_op_variant(spinand, ODTR,
-+					       info->op_variants.read_cache);
-+		spinand->odtr_op_templates.read_cache = op;
-+
-+		op = spinand_select_op_variant(spinand, ODTR,
-+					       info->op_variants.write_cache);
-+		spinand->odtr_op_templates.write_cache = op;
-+
-+		op = spinand_select_op_variant(spinand, ODTR,
-+					       info->op_variants.update_cache);
-+		spinand->odtr_op_templates.update_cache = op;
-+
- 		return 0;
- 	}
- 
-@@ -1591,9 +1677,34 @@ static int spinand_detect(struct spinand_device *spinand)
- 
- static int spinand_configure_chip(struct spinand_device *spinand)
- {
--	bool quad_enable = false;
-+	bool odtr = false, quad_enable = false;
- 	int ret;
- 
-+	if (spinand->odtr_op_templates.read_cache &&
-+	    spinand->odtr_op_templates.write_cache &&
-+	    spinand->odtr_op_templates.update_cache)
-+		odtr = true;
-+
-+	if (odtr) {
-+		if (!spinand->configure_chip)
-+			goto try_ssdr;
-+
-+		/* ODTR bus interface configuration happens here */
-+		ret = spinand->configure_chip(spinand, ODTR);
-+		if (ret) {
-+			spinand->odtr_op_templates.read_cache = NULL;
-+			spinand->odtr_op_templates.write_cache = NULL;
-+			spinand->odtr_op_templates.update_cache = NULL;
-+			goto try_ssdr;
-+		}
-+
-+		spinand->op_templates = &spinand->odtr_op_templates;
-+		spinand->bus_iface = ODTR;
-+
-+		return 0;
-+	}
-+
-+try_ssdr:
- 	if (spinand->flags & SPINAND_HAS_QE_BIT) {
- 		if (spinand->ssdr_op_templates.read_cache->data.buswidth == 4 ||
- 		    spinand->ssdr_op_templates.write_cache->data.buswidth == 4 ||
-@@ -1675,6 +1786,32 @@ static void spinand_mtd_resume(struct mtd_info *mtd)
- 	spinand_ecc_enable(spinand, false);
- }
- 
-+static int spinand_mtd_suspend(struct mtd_info *mtd)
-+{
-+	struct spinand_device *spinand = mtd_to_spinand(mtd);
-+	int ret;
-+
-+	/*
-+	 * Return to SSDR interface in the suspend path to make sure the
-+	 * reset operation is correctly processed upon resume.
-+	 *
-+	 * Note: Once back in SSDR mode, every operation but the page helpers
-+	 * (dirmap based I/O accessors) will work. Page accesses would require
-+	 * destroying and recreating the dirmaps twice to work, which would be
-+	 * impacting for no reason, as this is just a transitional state.
-+	 */
-+	if (spinand->bus_iface == ODTR) {
-+		ret = spinand->configure_chip(spinand, SSDR);
-+		if (ret)
-+			return ret;
-+
-+		spinand->op_templates = &spinand->ssdr_op_templates;
-+		spinand->bus_iface = SSDR;
-+	}
-+
-+	return 0;
-+}
-+
- static int spinand_init(struct spinand_device *spinand)
- {
- 	struct device *dev = &spinand->spimem->spi->dev;
-@@ -1744,6 +1881,7 @@ static int spinand_init(struct spinand_device *spinand)
- 	mtd->_block_isreserved = spinand_mtd_block_isreserved;
- 	mtd->_erase = spinand_mtd_erase;
- 	mtd->_max_bad_blocks = nanddev_mtd_max_bad_blocks;
-+	mtd->_suspend = spinand_mtd_suspend;
- 	mtd->_resume = spinand_mtd_resume;
- 
- 	if (spinand_user_otp_size(spinand) || spinand_fact_otp_size(spinand)) {
-diff --git a/include/linux/mtd/spinand.h b/include/linux/mtd/spinand.h
-index b7eb3eceb138..fc5111fc778f 100644
---- a/include/linux/mtd/spinand.h
-+++ b/include/linux/mtd/spinand.h
-@@ -238,6 +238,77 @@
- 		   SPI_MEM_OP_NO_DUMMY,					\
- 		   SPI_MEM_OP_DATA_OUT(len, buf, 8))
- 
-+/**
-+ * Octal DDR SPI NAND flash operations
-+ */
-+
-+#define SPINAND_RESET_8D_0_0_OP						\
-+	SPI_MEM_OP(SPI_MEM_DTR_OP_RPT_CMD(0xff, 8),			\
-+		   SPI_MEM_OP_NO_ADDR,					\
-+		   SPI_MEM_OP_NO_DUMMY,					\
-+		   SPI_MEM_OP_NO_DATA)
-+
-+#define SPINAND_READID_8D_8D_8D_OP(naddr, ndummy, buf, len)		\
-+	SPI_MEM_OP(SPI_MEM_DTR_OP_RPT_CMD(0x9f, 8),			\
-+		   SPI_MEM_DTR_OP_ADDR(naddr, 0, 8),			\
-+		   SPI_MEM_DTR_OP_DUMMY(ndummy, 8),			\
-+		   SPI_MEM_DTR_OP_DATA_IN(len, buf, 8))
-+
-+#define SPINAND_WR_EN_8D_0_0_OP						\
-+	SPI_MEM_OP(SPI_MEM_DTR_OP_RPT_CMD(0x06, 8),			\
-+		   SPI_MEM_OP_NO_ADDR,					\
-+		   SPI_MEM_OP_NO_DUMMY,					\
-+		   SPI_MEM_OP_NO_DATA)
-+
-+#define SPINAND_WR_DIS_8D_0_0_OP					\
-+	SPI_MEM_OP(SPI_MEM_DTR_OP_RPT_CMD(0x04, 8),			\
-+		   SPI_MEM_OP_NO_ADDR,					\
-+		   SPI_MEM_OP_NO_DUMMY,					\
-+		   SPI_MEM_OP_NO_DATA)
-+
-+#define SPINAND_SET_FEATURE_8D_8D_8D_OP(reg, valptr)			\
-+	SPI_MEM_OP(SPI_MEM_DTR_OP_RPT_CMD(0x1f, 8),			\
-+		   SPI_MEM_DTR_OP_RPT_ADDR(reg, 8),			\
-+		   SPI_MEM_OP_NO_DUMMY,					\
-+		   SPI_MEM_DTR_OP_DATA_OUT(2, valptr, 8))
-+
-+#define SPINAND_GET_FEATURE_8D_8D_8D_OP(reg, valptr)			\
-+	SPI_MEM_OP(SPI_MEM_DTR_OP_RPT_CMD(0x0f, 8),			\
-+		   SPI_MEM_DTR_OP_RPT_ADDR(reg, 8),			\
-+		   SPI_MEM_DTR_OP_DUMMY(14, 8),				\
-+		   SPI_MEM_DTR_OP_DATA_IN(2, valptr, 8))
-+
-+#define SPINAND_BLK_ERASE_8D_8D_0_OP(addr)				\
-+	SPI_MEM_OP(SPI_MEM_DTR_OP_RPT_CMD(0xd8, 8),			\
-+		   SPI_MEM_DTR_OP_ADDR(2, addr, 8),			\
-+		   SPI_MEM_OP_NO_DUMMY,					\
-+		   SPI_MEM_OP_NO_DATA)
-+
-+#define SPINAND_PAGE_READ_8D_8D_0_OP(addr)				\
-+	SPI_MEM_OP(SPI_MEM_DTR_OP_RPT_CMD(0x13, 8),			\
-+		   SPI_MEM_DTR_OP_ADDR(2, addr, 8),			\
-+		   SPI_MEM_OP_NO_DUMMY,					\
-+		   SPI_MEM_OP_NO_DATA)
-+
-+#define SPINAND_PAGE_READ_FROM_CACHE_8D_8D_8D_OP(addr, ndummy, buf, len, freq) \
-+	SPI_MEM_OP(SPI_MEM_DTR_OP_RPT_CMD(0x9d, 8),			\
-+		   SPI_MEM_DTR_OP_ADDR(2, addr, 8),			\
-+		   SPI_MEM_DTR_OP_DUMMY(ndummy, 8),			\
-+		   SPI_MEM_DTR_OP_DATA_IN(len, buf, 8),			\
-+		   SPI_MEM_OP_MAX_FREQ(freq))
-+
-+#define SPINAND_PROG_EXEC_8D_8D_0_OP(addr)				\
-+	SPI_MEM_OP(SPI_MEM_DTR_OP_RPT_CMD(0x10, 8),			\
-+		   SPI_MEM_DTR_OP_ADDR(2, addr, 8),			\
-+		   SPI_MEM_OP_NO_DUMMY,					\
-+		   SPI_MEM_OP_NO_DATA)
-+
-+#define SPINAND_PROG_LOAD_8D_8D_8D_OP(reset, addr, buf, len)		\
-+	SPI_MEM_OP(SPI_MEM_DTR_OP_RPT_CMD((reset ? 0xc2 : 0xc4), 8),	\
-+		   SPI_MEM_DTR_OP_ADDR(2, addr, 8),			\
-+		   SPI_MEM_OP_NO_DUMMY,					\
-+		   SPI_MEM_DTR_OP_DATA_OUT(len, buf, 8))
-+
- /* feature register */
- #define REG_BLOCK_LOCK		0xa0
- #define BL_ALL_UNLOCKED		0x00
-@@ -261,7 +332,7 @@
- struct spinand_op;
- struct spinand_device;
- 
--#define SPINAND_MAX_ID_LEN	5
-+#define SPINAND_MAX_ID_LEN	6
- /*
-  * For erase, write and read operation, we got the following timings :
-  * tBERS (erase) 1ms to 4ms
-@@ -287,7 +358,7 @@ struct spinand_device;
- 
- /**
-  * struct spinand_id - SPI NAND id structure
-- * @data: buffer containing the id bytes. Currently 5 bytes large, but can
-+ * @data: buffer containing the id bytes. Currently 6 bytes large, but can
-  *	  be extended if required
-  * @len: ID length
-  */
-@@ -484,9 +555,11 @@ struct spinand_user_otp {
- /**
-  * enum spinand_bus_interface - SPI NAND bus interface types
-  * @SSDR: Bus configuration supporting all 1S-XX-XX operations, including dual and quad
-+ * @ODTR: Bus configuration supporting only 8D-8D-8D operations
-  */
- enum spinand_bus_interface {
- 	SSDR,
-+	ODTR,
- };
- 
- /**
-@@ -651,6 +724,7 @@ struct spinand_mem_ops {
-  * @id: NAND ID as returned by READ_ID
-  * @flags: NAND flags
-  * @ssdr_op_templates: Templates for all single SDR SPI mem operations
-+ * @odtr_op_templates: Templates for all octal DTR SPI mem operations
-  * @op_templates: Templates for all SPI mem operations
-  * @bus_iface: Current bus interface
-  * @select_target: select a specific target/die. Usually called before sending
-@@ -687,6 +761,7 @@ struct spinand_device {
- 	u32 flags;
- 
- 	struct spinand_mem_ops ssdr_op_templates;
-+	struct spinand_mem_ops odtr_op_templates;
- 	struct spinand_mem_ops *op_templates;
- 	enum spinand_bus_interface bus_iface;
- 
-
--- 
-2.51.1
-
+Regards,
+Markus

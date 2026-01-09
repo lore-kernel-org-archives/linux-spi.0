@@ -1,41 +1,42 @@
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49D330149F;
-	Fri,  9 Jan 2026 17:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D515369970
+	for <linux-spi@vger.kernel.org>; Fri,  9 Jan 2026 17:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767979114; cv=none; b=FoAkV+SS5iH+TgtnZqSol72sVMoEfNQFeCE5uD1TcundnacNukkgTqHgi4G39wklzCOmryuPLYuA1PKRzmD+vEtjQwH4QIZEhfcuLssI8NFx/pnlx+Q/YQLGfqE4yg71kDoqUJh1/6hNLvQuRja1x94tlplkS7ps0yfAWnDcXjQ=
+	t=1767979114; cv=none; b=LCBkemJS3SmbRBlKwtVXCEbV86l9cyTEa+lQ6Fe8Dk5NZwUb6CK34nENy4gCx7p7fyAY6ioKZKdxlYK3AQlndJQ4CpXjaEH5FtJQ84cbHOGAOvD+W5rmHajZA5gYuj4LF8cEx43Ejm4XIx8cxXFLR1CDMmP7MLV7MtxwtpcwI6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1767979114; c=relaxed/simple;
-	bh=t2/eAaKJ9Xy8Li8YXfUEutFre1NJlcHvaAFMV0Kgiuo=;
+	bh=3cnZl6iBYq20G1oigmirIZU3zYFeD3CzrUt2kAf0RZE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=fB0Dh0ROF46fxTlrSY7hVuhLjMC7Q6I8y1pnxeF0Fg0bM5lfQdPGWMlTKyN4D2NQ8XxT6PlV8Nh4vUebA1JlLrTH76y8GLaK1DDxPPFCnQMeHq1l0j8azdcyfQOaSppWF15/csX4XahQqVEY9QDcgbkNftJs6ITK+djaKG88HEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=l4DhprWE; arc=none smtp.client-ip=185.171.202.116
+	 In-Reply-To:To:Cc; b=KJxMI4rh4oFAGFsOoOyHrQLz1B1ABPqmuyB40q1sncnA3Q8ee6CPg0p/0Yvy69tthR/MPgY/B4SxSLAKxSFjMk6OmDMkAkZbngoRuga+1yXveeqkxD3SaKPv0A1CVqbGtfS09IgLSreFC5XLFixfGh8bfQ2Endvos45o0NYnryI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=anUYVoSF; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="l4DhprWE"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="anUYVoSF"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 21635C1F6E4;
-	Fri,  9 Jan 2026 17:18:00 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 701F9C1F6E5;
+	Fri,  9 Jan 2026 17:18:02 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 6A94F606C6;
-	Fri,  9 Jan 2026 17:18:26 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E2028103C8956;
-	Fri,  9 Jan 2026 18:18:24 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B8A2D606C6;
+	Fri,  9 Jan 2026 17:18:28 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 23A93103C89B0;
+	Fri,  9 Jan 2026 18:18:27 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1767979105; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1767979108; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=Ba70zlYcbz8QlJI8mSBGaiXcm4X/itTgn1V4VCKgo+E=;
-	b=l4DhprWEs5zbKkrQZO+XkLm+NE+5V/RcLPIos0dLXX01VbFKN3IP/Ou8JbsNWVZ6tb/Tzo
-	VwUeIRl6DaaNK6kH+bR6imsyI2XRXfADra4GhO29uRY4Lc7hfA1CnmvuB/uRz8AEN+JjUw
-	ErTL8HMqvUTi2fAs0c6G2jjIPFfU+yLDoqh8nSRbdIcHGnffpScPTVduslqBfVMdV3bJoo
-	s+PkqQyLIowQ5fgqwL//6Ng6yfoWktMK0gmrI/HRYSZV9aFIddGtzXq2frc6yk1SrY1IXP
-	pFfYpJE+/M9A6jAFeICx2qynl2KrXmZS01+Q81XpmMnrD9WJv0KxBheGxOkeTA==
+	bh=+jxMeS1xeb2E/hPVCFWCVOrKjIjBVGxQ/ROrL992r1Q=;
+	b=anUYVoSF/XEgcDp6AyMCYYU4XpfSBdPg8hGKre023w+RWt7yJh0T0Nd3i3Kr5jrdQta2v4
+	WT+2Dk3YY0Wboj3L4MyE5Cm2Jb/9YwErd6zxfLmhN9VtXuEd9awgxsAZ3gwieFmbRWih5t
+	Es1nOOTSXTrZl7ySmeGZjK7/EjVyn2PpFyUgudVh76nTzgKeDBYWy/1ZNEkhHaCDlHCHcE
+	XdxgTiVJQlt0ONb3wwDPi43vIShbeXHyxRIEmJTMDv2A/Npvx36Gem/YWTZ13ESZdwW34c
+	RXvo2YVvlIelwY8Rc8M9YP6Yi2CDBouoenRzxJrPhlpU4kgBqzksa/i1q+iAog==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
-Date: Fri, 09 Jan 2026 18:18:04 +0100
-Subject: [PATCH v2 06/27] mtd: spinand: Remove stale definitions
+Date: Fri, 09 Jan 2026 18:18:06 +0100
+Subject: [PATCH v2 08/27] mtd: spinand: Decouple write enable and write
+ disable operations
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -44,7 +45,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260109-winbond-v6-17-rc1-oddr-v2-6-1fff6a2ddb80@bootlin.com>
+Message-Id: <20260109-winbond-v6-17-rc1-oddr-v2-8-1fff6a2ddb80@bootlin.com>
 References: <20260109-winbond-v6-17-rc1-oddr-v2-0-1fff6a2ddb80@bootlin.com>
 In-Reply-To: <20260109-winbond-v6-17-rc1-oddr-v2-0-1fff6a2ddb80@bootlin.com>
 To: Mark Brown <broonie@kernel.org>, Richard Weinberger <richard@nod.at>, 
@@ -58,32 +59,83 @@ Cc: Tudor Ambarus <tudor.ambarus@linaro.org>,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-SPI NAND command values are directly included in the macros defining the
-ops. These are stale definitions, they are unused so drop them.
+In order to introduce templates for all operations and not only for page
+helpers (in order to introduce octal DDR support), decouple the WR_EN
+and WR_DIS operations into two separate macros.
+
+Adapt the callers accordingly.
+
+There is no functional change.
 
 Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- include/linux/mtd/spinand.h | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/mtd/nand/spi/core.c   |  2 +-
+ drivers/mtd/nand/spi/esmt.c   |  2 +-
+ drivers/mtd/nand/spi/micron.c |  2 +-
+ include/linux/mtd/spinand.h   | 10 ++++++++--
+ 4 files changed, 11 insertions(+), 5 deletions(-)
 
+diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
+index 3abc56e4d23f..b6613f2651bd 100644
+--- a/drivers/mtd/nand/spi/core.c
++++ b/drivers/mtd/nand/spi/core.c
+@@ -362,7 +362,7 @@ static void spinand_ondie_ecc_save_status(struct nand_device *nand, u8 status)
+ 
+ int spinand_write_enable_op(struct spinand_device *spinand)
+ {
+-	struct spi_mem_op op = SPINAND_WR_EN_DIS_1S_0_0_OP(true);
++	struct spi_mem_op op = SPINAND_WR_EN_1S_0_0_OP;
+ 
+ 	return spi_mem_exec_op(spinand->spimem, &op);
+ }
+diff --git a/drivers/mtd/nand/spi/esmt.c b/drivers/mtd/nand/spi/esmt.c
+index e60e4ac1fd6f..adadc01e8f2f 100644
+--- a/drivers/mtd/nand/spi/esmt.c
++++ b/drivers/mtd/nand/spi/esmt.c
+@@ -138,7 +138,7 @@ static int f50l1g41lb_user_otp_info(struct spinand_device *spinand, size_t len,
+ static int f50l1g41lb_otp_lock(struct spinand_device *spinand, loff_t from,
+ 			       size_t len)
+ {
+-	struct spi_mem_op write_op = SPINAND_WR_EN_DIS_1S_0_0_OP(true);
++	struct spi_mem_op write_op = SPINAND_WR_EN_1S_0_0_OP;
+ 	struct spi_mem_op exec_op = SPINAND_PROG_EXEC_1S_1S_0_OP(0);
+ 	u8 status;
+ 	int ret;
+diff --git a/drivers/mtd/nand/spi/micron.c b/drivers/mtd/nand/spi/micron.c
+index a49d7cb6a96d..b8130e04e8e7 100644
+--- a/drivers/mtd/nand/spi/micron.c
++++ b/drivers/mtd/nand/spi/micron.c
+@@ -251,7 +251,7 @@ static int mt29f2g01abagd_user_otp_info(struct spinand_device *spinand,
+ static int mt29f2g01abagd_otp_lock(struct spinand_device *spinand, loff_t from,
+ 				   size_t len)
+ {
+-	struct spi_mem_op write_op = SPINAND_WR_EN_DIS_1S_0_0_OP(true);
++	struct spi_mem_op write_op = SPINAND_WR_EN_1S_0_0_OP;
+ 	struct spi_mem_op exec_op = SPINAND_PROG_EXEC_1S_1S_0_OP(0);
+ 	u8 status;
+ 	int ret;
 diff --git a/include/linux/mtd/spinand.h b/include/linux/mtd/spinand.h
-index 049d55c38d52..ad2773f1f963 100644
+index ad2773f1f963..f7621b47b28f 100644
 --- a/include/linux/mtd/spinand.h
 +++ b/include/linux/mtd/spinand.h
-@@ -232,12 +232,6 @@
+@@ -26,8 +26,14 @@
  		   SPI_MEM_OP_NO_DUMMY,					\
- 		   SPI_MEM_OP_DATA_OUT(len, buf, 8))
+ 		   SPI_MEM_OP_NO_DATA)
  
--/**
-- * Standard SPI NAND flash commands
-- */
--#define SPINAND_CMD_PROG_LOAD_X4		0x32
--#define SPINAND_CMD_PROG_LOAD_RDM_DATA_X4	0x34
--
- /* feature register */
- #define REG_BLOCK_LOCK		0xa0
- #define BL_ALL_UNLOCKED		0x00
+-#define SPINAND_WR_EN_DIS_1S_0_0_OP(enable)					\
+-	SPI_MEM_OP(SPI_MEM_OP_CMD((enable) ? 0x06 : 0x04, 1),		\
++#define SPINAND_WR_EN_1S_0_0_OP						\
++	SPI_MEM_OP(SPI_MEM_OP_CMD(0x06, 1),				\
++		   SPI_MEM_OP_NO_ADDR,					\
++		   SPI_MEM_OP_NO_DUMMY,					\
++		   SPI_MEM_OP_NO_DATA)
++
++#define SPINAND_WR_DIS_1S_0_0_OP					\
++	SPI_MEM_OP(SPI_MEM_OP_CMD(0x04, 1),				\
+ 		   SPI_MEM_OP_NO_ADDR,					\
+ 		   SPI_MEM_OP_NO_DUMMY,					\
+ 		   SPI_MEM_OP_NO_DATA)
 
 -- 
 2.51.1

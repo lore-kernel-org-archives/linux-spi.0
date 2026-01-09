@@ -1,41 +1,41 @@
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23202363C7D;
-	Fri,  9 Jan 2026 17:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F569369996
+	for <linux-spi@vger.kernel.org>; Fri,  9 Jan 2026 17:18:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767979117; cv=none; b=apYSSnR/UY0h27r9pLViERO2/25J3+WZGZl+kWF90OkMaXtP9tEfj+r6NeDR5rlr5JiaTxGygPLA7Zldkc8u92CIcvihKAIHiAxPNJI4ra9w5Ml/E9OI4Q6rB1iU1Odq7fgxXHUm90gE9EoWG/K5L2EPR6Ye54fAOd6+NciocYs=
+	t=1767979120; cv=none; b=haWTbHbXWli4OL8gZB8oR+6El9skVOHTMgUT5fkGGa8/AxPvwTqQ55zQ3sd7YgzRLBpo62o4xV6R3HAjrW3MYVm7FngnWAA1x4s+fMtQtlc5DhWoCljNFYLja59dPTAc1mc0X5q8dIcI7u82leXTOAiKMBjRROOjbBT9ft1vpaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767979117; c=relaxed/simple;
-	bh=WcGEMjOmQjM6t96flwtOxzEtnWtvRoR1/zJTT8U0FFE=;
+	s=arc-20240116; t=1767979120; c=relaxed/simple;
+	bh=C9hwsEV3wdatwD062DI30KDF+447ewMTinjMJ6/pCpk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NHUVEM06YzuF5hl9P+xcfvmlmjLwnjwInhN+YGHk3dUiD+2crXIxFhA+ItCBbFPWP2znH5ifPDnimQj/D+dSq9itxEbXesNZC0uA+ZywDBGeEwAHz5uXazaxfYA5T90iDVR6++ucCU+duLq5lrvMgWIUAcJk76JlDgmeGi8aQwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=B/LGMcFR; arc=none smtp.client-ip=185.246.85.4
+	 In-Reply-To:To:Cc; b=Ub0gx8DZSrC/10pUbt31WGDYwqgcMIw4cFZM1hjQheO3Df1XBullm7pT+/fHn7SP5s8T4xHPnqg/ll1dAQks/6zp8zAFoS2yUyNcqTQ4ws9Q92S2zjWeb5MIlRlZoZWVCxbBnXP2KopQsADNOtcNQK5ofUaNwqnsRb+APHS1NHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=UdsMaNco; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="B/LGMcFR"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="UdsMaNco"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id A00594E42029;
-	Fri,  9 Jan 2026 17:18:32 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id DC4A44E4202C;
+	Fri,  9 Jan 2026 17:18:34 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 7557A606C6;
-	Fri,  9 Jan 2026 17:18:32 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CC50D103C89B4;
-	Fri,  9 Jan 2026 18:18:30 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B1DD6606C6;
+	Fri,  9 Jan 2026 17:18:34 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2A784103C89B6;
+	Fri,  9 Jan 2026 18:18:33 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1767979111; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1767979114; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=4zjmlLEWJ7QiWDqCO5iOkGGWDWg9nbW2A4ll6YCRUWA=;
-	b=B/LGMcFRBzv6EB4j2c0orh3cOwxmyU5vLKT8cWE6pXSo3dOam9Qlmkxis31MCOFDMjOEWJ
-	9Woy8QXW8qyBncApfqGJfJu5967gIV0WvoTChgzqGdrnk+QXJvjWh6PKIGobvtqWElc7zW
-	kObxAOHcp+x4HYAT48VfE6sK1iVPr5SogSEAzu5fwdCnl+cLQ1dYjgBPVcy6JBZmGqOu7a
-	alPc8/JLSj7WdeE5Hu9JDXjbMkh9OlrRJ46zQEWHek8zdmWQrHlwq8j5tgo8DuB7oqGbVv
-	kMIfuZDYeTVLFE/LaYh98KDk6XeixcHTniEaTgI7Pl2wnyyI3FzQiFilf8llpg==
+	bh=ByaYUaNaJV4Ff78T5l6xTtVf1Fq+ywBCL3Mu7MTdSkQ=;
+	b=UdsMaNcoXXLblizSSEA94E3C9P1gYOwOG3Vz5eSmiqJHjG5wg6BwLbw8AesjWv6FfCZVdy
+	MJWXpNP5Y2g1QFUXsAOKSy81FE+msf1OCh1zcmjrOBTC6p5EuO8i9z5T7SwzQ8Qotnre56
+	DkwcD5Uql3fcEqo9TV9KN9IC+68+4whP6QJw+XRHDijyQxyLKFjSO8BdnHf34tn1ZEadJi
+	Loj5px3PcU+6lDYLHlzIEqqdZz423KFusUKE7TeNS/SseFaydMgk2PttoEXKB73M8X/E7r
+	nBWITkh/C0maqJiWF9GauvknVG5/lFc7iJBRbASjgrn5fCCSEb7hBLwVAMnyDA==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
-Date: Fri, 09 Jan 2026 18:18:09 +0100
-Subject: [PATCH v2 11/27] mtd: spinand: macronix: Convert vendor specific
+Date: Fri, 09 Jan 2026 18:18:11 +0100
+Subject: [PATCH v2 13/27] mtd: spinand: winbond: Convert W35N specific
  operation to SPINAND_OP()
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260109-winbond-v6-17-rc1-oddr-v2-11-1fff6a2ddb80@bootlin.com>
+Message-Id: <20260109-winbond-v6-17-rc1-oddr-v2-13-1fff6a2ddb80@bootlin.com>
 References: <20260109-winbond-v6-17-rc1-oddr-v2-0-1fff6a2ddb80@bootlin.com>
 In-Reply-To: <20260109-winbond-v6-17-rc1-oddr-v2-0-1fff6a2ddb80@bootlin.com>
 To: Mark Brown <broonie@kernel.org>, Richard Weinberger <richard@nod.at>, 
@@ -59,59 +59,59 @@ Cc: Tudor Ambarus <tudor.ambarus@linaro.org>,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-Macronix chips require a vendor specific operation to read the ECC
-status register. Instead of defining this op only in the function that
-needs it, hiding it from the core, make it a proper define like all
-other spi-mem operations, and implement the necessary
-spinand_fill_*_op() helper to make the SPINAND_OP() macro work. This way
-we can use it from any function without any extra handling outside of
-this helper when we will convert the core to support octal DDR busses.
+Winbond W35N* chips require a vendor specific operation to write their
+VCR register (a configuration register, typically used for tuning the
+number of dummy cycles and switching to a different bus
+interface). Instead of defining this op only in the function that needs
+it, hiding it from the core, make it a proper define like all other
+spi-mem operations, and implement the necessary spinand_fill_*_op()
+helper to make the SPINAND_OP() macro work. This way we can use it from
+any function without any extra handling outside of this helper when we
+will convert the core to support octal DDR busses.
 
 Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- drivers/mtd/nand/spi/macronix.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ drivers/mtd/nand/spi/winbond.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/mtd/nand/spi/macronix.c b/drivers/mtd/nand/spi/macronix.c
-index 143cc120bdec..a847ea8f49a8 100644
---- a/drivers/mtd/nand/spi/macronix.c
-+++ b/drivers/mtd/nand/spi/macronix.c
-@@ -41,6 +41,18 @@ static SPINAND_OP_VARIANTS(update_cache_variants,
+diff --git a/drivers/mtd/nand/spi/winbond.c b/drivers/mtd/nand/spi/winbond.c
+index dde59f8f63f5..3003ad7e83ee 100644
+--- a/drivers/mtd/nand/spi/winbond.c
++++ b/drivers/mtd/nand/spi/winbond.c
+@@ -87,6 +87,18 @@ static SPINAND_OP_VARIANTS(update_cache_variants,
  		SPINAND_PROG_LOAD_1S_1S_4S_OP(false, 0, NULL, 0),
  		SPINAND_PROG_LOAD_1S_1S_1S_OP(false, 0, NULL, 0));
  
-+#define SPINAND_MACRONIX_READ_ECCSR_1S_0_1S(buf)			\
-+	SPI_MEM_OP(SPI_MEM_OP_CMD(0x7c, 1),				\
-+		   SPI_MEM_OP_NO_ADDR,					\
-+		   SPI_MEM_OP_DUMMY(1, 1),				\
-+		   SPI_MEM_OP_DATA_IN(1, buf, 1))
++#define SPINAND_WINBOND_WRITE_VCR_1S_1S_1S(reg, buf)			\
++	SPI_MEM_OP(SPI_MEM_OP_CMD(0x81, 1),				\
++		   SPI_MEM_OP_ADDR(3, reg, 1),				\
++		   SPI_MEM_OP_NO_DUMMY,					\
++		   SPI_MEM_OP_DATA_OUT(1, buf, 1))
 +
 +static struct spi_mem_op
-+spinand_fill_macronix_read_eccsr_op(struct spinand_device *spinand, void *valptr)
++spinand_fill_winbond_write_vcr_op(struct spinand_device *spinand, u8 reg, void *valptr)
 +{
-+	return (struct spi_mem_op)SPINAND_MACRONIX_READ_ECCSR_1S_0_1S(valptr);
++	return (struct spi_mem_op)SPINAND_WINBOND_WRITE_VCR_1S_1S_1S(reg, valptr);
 +}
 +
- static int mx35lfxge4ab_ooblayout_ecc(struct mtd_info *mtd, int section,
- 				      struct mtd_oob_region *region)
- {
-@@ -67,12 +79,10 @@ static const struct mtd_ooblayout_ops mx35lfxge4ab_ooblayout = {
- static int macronix_get_eccsr(struct spinand_device *spinand, u8 *eccsr)
- {
- 	struct macronix_priv *priv = spinand->priv;
--	struct spi_mem_op op = SPI_MEM_OP(SPI_MEM_OP_CMD(0x7c, 1),
--					  SPI_MEM_OP_NO_ADDR,
--					  SPI_MEM_OP_DUMMY(1, 1),
--					  SPI_MEM_OP_DATA_IN(1, eccsr, 1));
-+	struct spi_mem_op op = SPINAND_OP(spinand, macronix_read_eccsr, eccsr);
-+	int ret;
+ #define SPINAND_WINBOND_SELECT_TARGET_1S_0_1S(buf)			\
+ 	SPI_MEM_OP(SPI_MEM_OP_CMD(0xc2, 1),				\
+ 		   SPI_MEM_OP_NO_ADDR,					\
+@@ -329,11 +341,8 @@ static int w25n0xjw_hs_cfg(struct spinand_device *spinand)
  
--	int ret = spi_mem_exec_op(spinand->spimem, &op);
-+	ret = spi_mem_exec_op(spinand->spimem, &op);
- 	if (ret)
- 		return ret;
+ static int w35n0xjw_write_vcr(struct spinand_device *spinand, u8 reg, u8 val)
+ {
+-	struct spi_mem_op op =
+-		SPI_MEM_OP(SPI_MEM_OP_CMD(0x81, 1),
+-			   SPI_MEM_OP_ADDR(3, reg, 1),
+-			   SPI_MEM_OP_NO_DUMMY,
+-			   SPI_MEM_OP_DATA_OUT(1, spinand->scratchbuf, 1));
++	struct spi_mem_op op = SPINAND_OP(spinand, winbond_write_vcr,
++					  reg, spinand->scratchbuf);
+ 	int ret;
  
+ 	*spinand->scratchbuf = val;
 
 -- 
 2.51.1

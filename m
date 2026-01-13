@@ -1,162 +1,81 @@
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F22A33921DB
-	for <linux-spi@vger.kernel.org>; Tue, 13 Jan 2026 13:57:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C506A349B19;
+	Tue, 13 Jan 2026 14:02:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768312659; cv=none; b=IaPuMwYt40X7ItIZdTbR6rJ2boCd2qWWv8DKtVuAKRHXuoGQ8KGh1GlCYVqL80G+/rvh8J0rWstFxrEm2Yzd6GVZudN+ykk3G4x5IYv+SmP4THhbXSmFKGJOW8RXRSKothHkein0SwqxvwTgtZhdm86wD3Wenu+MN7Ch1FOzgNo=
+	t=1768312934; cv=none; b=PH/aMKtM8rAGbkrhK1ls920Kd0SO+5wg/vPZ654GN2dmDL+jmM8toHxU5c5Spa/xIbwJieDGwLGXXKPP9qz+eNrQUsbu5nYde2sOmcfxLxuwHI7iROua/Y5gmaH8KLD6V8teD5p2artTxkIWwt6kNReZ+CxogJ/Fuud7PJL3oeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768312659; c=relaxed/simple;
-	bh=yHQXt2lohILulwRHWO2PwdKgbtksvgC0OIilYDvkikI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=U8Vkrrwc2gUZoE3OgN+Ce8Ay7RHdZ0trf9M+lMRBH4Qu/ODj/9pAGFfq+AxOo+/rvk6pklQrb3wgHlDzDnBCMQy734iJhMV8wyIioZelmfN6Sb2yQvnsN2+pDiarIuKkvQ/j1Wn8gGwTtI0TpejjlIG9MqdkNVxj2xogOnOwDE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sartura.hr; spf=pass smtp.mailfrom=sartura.hr; dkim=pass (2048-bit key) header.d=sartura.hr header.i=@sartura.hr header.b=zvfoV53a; arc=none smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sartura.hr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sartura.hr
+	s=arc-20240116; t=1768312934; c=relaxed/simple;
+	bh=oNGLDlDLasVRtKItmSPWFuUPzymr5T3/0GPoMSDfHro=;
+	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=ESaRrpqFiU2LOaQZOk+x9DZ08BtHGGIRptc4G4cv0pxWUQn5NRUSiPGridiceE951KkvgpjFkUbx1mVFq6o8VAbrz7hW/r0ERj2IzRwr1Z3Wk3fz77Capq7i/369UVXuW1k2GE0UqiKYcWr2s4nYfpuMZspCIAFNhP8qu/Jhppo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fcXcnIeI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sartura.hr header.i=@sartura.hr header.b="zvfoV53a"
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-64b921d9e67so13016221a12.3
-        for <linux-spi@vger.kernel.org>; Tue, 13 Jan 2026 05:57:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sartura.hr; s=sartura; t=1768312655; x=1768917455; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZYgsGgBKZshEd3LQPmk39JcNw7m/fhIkjkE+xKR+bec=;
-        b=zvfoV53a8KKlvQ3d1JQNoqsn1R64meaL/N0gvJBVsP07IpubGxx2QfE84x4Z2+kbFb
-         0hLYvrdv4SXvbje0qJL0Ne6nG9Fm0EboVzJAYkZUYQ9YLVSaQzuc2aaTV6Xaw3fXr4u5
-         epRUQ8Rr1fmQuXUGhAgjyFhKoeU5fsg5c9fXZgvqcAaQm3999ZjhMx1Bh0O7IukctDtr
-         cxNCZsPNksEYEPV48GWIxa6MuU7QzPugngj62cv1/mZlpNlETWTREwFO8KHkhEamhwC4
-         prCUxmFrHMkgeYCQCIr0xyrmQWG7B2ZuuAVRPrT+1i5F97N3cJr9JI7d5M8HP9SZcOFn
-         Uf9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768312655; x=1768917455;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ZYgsGgBKZshEd3LQPmk39JcNw7m/fhIkjkE+xKR+bec=;
-        b=I/0u/osRJ8qiHFqybk+eZ+MTm5g1xM4YeUVDZttdFuzAHVlq5fUP1ufLV8TyFm+UDj
-         vNnkP3MitRqFSi5VB+ACDVuVZYAZc8CeaDznBh4ukvo3seLb79HqPGWVik8815/sbkWu
-         FT4VwV1K+DFJLeIgkbWO6+KrzGn4bUT3Vbxrr8iV379De9udF8pw2H71PImJS8f2/bM3
-         pZPQ1X8IzGJl3ZguGTtyteZNUeM+coD+drd7WTxYWeQHmP3gAU1PT38vuFvy7U8S/yX2
-         eDXCNcPXzFodbxbvHrYYhJRse/RUtvoo3ukqtt1jHL3WVhsoFlnYyiA3ufvIjpMgWPPG
-         zTYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWA4FsS2pD670QdGGWme/c2abIlyL1BltwjMjqs4cUEJmhmQ4y5yeaqJ+0QFfyxEKmvjl/xooxe1M8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxRcUVwt+ZE/wBfjkpDLTWQdGq3iqhGdy3fLejeHiGDc6hFBTki
-	xHWfjI/V3ZIloI/rHY2B59X1Z2yH7FLH1E+FY0cUMJgi1CgP43lAVdwUddcSLSL/wunlWAyuaw+
-	2AwJfDVrqJic7809aPqB98SfDcQxKBXljSGXPB1KEyg==
-X-Gm-Gg: AY/fxX5pntFpzrfcHgmY+/DJU2OxsaHKeqU7JurRHJ4sgTlVoCxbXXi8zWwvjDjNib/
-	pBCLisNpjg4dpss5fay20LWu6FzNoYWqkdGPNFLmSBsbhlCHNDfU60vSPS6JT+n77EDmGUicWQ6
-	q8Ufu9NJtM1YyDhADeeNmXFxpRBhmHR62QfUWOhEVT92AxgVk46iorVTk1Kii5enahz2m8aTd5Z
-	gpF4sFi7BCNa6nfkjUTbUDWU7Vc4mtgFe2Hc7gUJbJaNH4u6CUs5MX5QeCYbTCxErs4ifRxIH+z
-	41R+5nelOjH9pNEOCYgw+2Hn79Wnc8jPd2oLgf8k6aj5hhTBCw==
-X-Google-Smtp-Source: AGHT+IHC69qajNN2R0Oc5VosMApQk8dB2K8/wIPuNuXO4ULHt0+4HajErsuy6Dkjt1+pDa9ixvBw3NRLu/Pa+AU8sC0=
-X-Received: by 2002:a05:6402:1e8c:b0:640:e75a:f95d with SMTP id
- 4fb4d7f45d1cf-65097dfbd5bmr20646641a12.15.1768312655296; Tue, 13 Jan 2026
- 05:57:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fcXcnIeI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF86AC116C6;
+	Tue, 13 Jan 2026 14:02:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768312934;
+	bh=oNGLDlDLasVRtKItmSPWFuUPzymr5T3/0GPoMSDfHro=;
+	h=From:To:In-Reply-To:References:Subject:Date:From;
+	b=fcXcnIeIQ9Yvrjh+ylYnvQkJVRQADwmLAXSHQGoYAWTZq/TrjtQd4dx72DNgitvtQ
+	 0sDSfGl3DhmazNzlKKP6SmmgpVTuhHAUIO6WZcBVx955U8VMg2B5Ff1W9kjfqCw+ai
+	 GJCSNsfBO1LtASX5NECGrpxbDzqa1XzgZ6ybYX7honLJeUSMvIHBDSpHGKn/rzxQ8g
+	 YjR4cCUqE19f3ZI8wW2G03FNRJSN+6rH1LuIAD3VJXj6J7/Ix3GMQPai9yN6CN973L
+	 ICZzJcZcl1fTq7HscJ7Z6rjOh8kLWXjDp8NuJ4f+89EdDbHho3qMqpCPe+ffceLlY+
+	 fRW2yP5HbqzWw==
+From: Mark Brown <broonie@kernel.org>
+To: Eddie James <eajames@linux.ibm.com>, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+In-Reply-To: <20251224110240.56803-2-krzysztof.kozlowski@oss.qualcomm.com>
+References: <20251224110240.56803-2-krzysztof.kozlowski@oss.qualcomm.com>
+Subject: Re: [PATCH] spi: fsi: Simplify with scoped for each OF child loop
+Message-Id: <176831293365.74644.2519567291360760156.b4-ty@kernel.org>
+Date: Tue, 13 Jan 2026 14:02:13 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251229184004.571837-1-robert.marko@sartura.hr>
- <20251229184004.571837-13-robert.marko@sartura.hr> <2cdac084-4924-4ca2-85d6-2e6d9bf284aa@tuxon.dev>
-In-Reply-To: <2cdac084-4924-4ca2-85d6-2e6d9bf284aa@tuxon.dev>
-From: Robert Marko <robert.marko@sartura.hr>
-Date: Tue, 13 Jan 2026 14:57:24 +0100
-X-Gm-Features: AZwV_Qh0sAc6Pa2O_93Ow3lA3FmFDgK6_SoYiCOhp74HuwfyLgAjJuCjbp6xbBo
-Message-ID: <CA+HBbNH4q8o-4Jb=hu7JgE4emxFxktFSLHdfY4J6gCDbYTpWUA@mail.gmail.com>
-Subject: Re: [PATCH v4 12/15] arm64: dts: microchip: add LAN969x clock header file
-To: claudiu beznea <claudiu.beznea@tuxon.dev>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	nicolas.ferre@microchip.com, alexandre.belloni@bootlin.com, 
-	herbert@gondor.apana.org.au, davem@davemloft.net, vkoul@kernel.org, 
-	andi.shyti@kernel.org, lee@kernel.org, andrew+netdev@lunn.ch, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, linusw@kernel.org, 
-	Steen.Hegelund@microchip.com, daniel.machon@microchip.com, 
-	UNGLinuxDriver@microchip.com, olivia@selenic.com, radu_nicolae.pirea@upb.ro, 
-	richard.genoud@bootlin.com, gregkh@linuxfoundation.org, jirislaby@kernel.org, 
-	broonie@kernel.org, lars.povlsen@microchip.com, devicetree@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-crypto@vger.kernel.org, dmaengine@vger.kernel.org, 
-	linux-i2c@vger.kernel.org, netdev@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-spi@vger.kernel.org, linux-serial@vger.kernel.org, 
-	linux-usb@vger.kernel.org, luka.perkov@sartura.hr
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-47773
 
-On Sun, Jan 11, 2026 at 3:42=E2=80=AFPM claudiu beznea <claudiu.beznea@tuxo=
-n.dev> wrote:
->
->
->
-> On 12/29/25 20:37, Robert Marko wrote:
-> > LAN969x uses hardware clock indexes, so document theses in a header to =
-make
-> > them humanly readable.
-> >
-> > Signed-off-by: Robert Marko <robert.marko@sartura.hr>
-> > ---
-> > Changes in v4:
-> > * Move clock indexes from dt-bindings to a DTS header
-> >
-> > Changes in v2:
-> > * Rename file to microchip,lan9691.h
-> >
-> >   arch/arm64/boot/dts/microchip/clk-lan9691.h | 24 ++++++++++++++++++++=
-+
-> >   1 file changed, 24 insertions(+)
-> >   create mode 100644 arch/arm64/boot/dts/microchip/clk-lan9691.h
-> >
-> > diff --git a/arch/arm64/boot/dts/microchip/clk-lan9691.h b/arch/arm64/b=
-oot/dts/microchip/clk-lan9691.h
-> > new file mode 100644
-> > index 000000000000..f0006a603747
-> > --- /dev/null
-> > +++ b/arch/arm64/boot/dts/microchip/clk-lan9691.h
-> > @@ -0,0 +1,24 @@
-> > +/* SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) */
->
-> Shouldn't this use the same license as the dtsi including it?
+On Wed, 24 Dec 2025 12:02:41 +0100, Krzysztof Kozlowski wrote:
+> Use scoped for_each_available_child_of_node_scoped() when iterating over
+> device nodes to make code a bit simpler.
+> 
+> 
 
-Yes, its a mistake on my side, will fix it in v5.
+Applied to
 
-Regards,
-Robert
->
-> > +
-> > +#ifndef _DTS_CLK_LAN9691_H
-> > +#define _DTS_CLK_LAN9691_H
-> > +
-> > +#define GCK_ID_QSPI0         0
-> > +#define GCK_ID_QSPI2         1
-> > +#define GCK_ID_SDMMC0                2
-> > +#define GCK_ID_SDMMC1                3
-> > +#define GCK_ID_MCAN0         4
-> > +#define GCK_ID_MCAN1         5
-> > +#define GCK_ID_FLEXCOM0              6
-> > +#define GCK_ID_FLEXCOM1              7
-> > +#define GCK_ID_FLEXCOM2              8
-> > +#define GCK_ID_FLEXCOM3              9
-> > +#define GCK_ID_TIMER         10
-> > +#define GCK_ID_USB_REFCLK    11
-> > +
-> > +/* Gate clocks */
-> > +#define GCK_GATE_USB_DRD     12
-> > +#define GCK_GATE_MCRAMC              13
-> > +#define GCK_GATE_HMATRIX     14
-> > +
-> > +#endif
->
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
+Thanks!
 
---=20
-Robert Marko
-Staff Embedded Linux Engineer
-Sartura d.d.
-Lendavska ulica 16a
-10000 Zagreb, Croatia
-Email: robert.marko@sartura.hr
-Web: www.sartura.hr
+[1/1] spi: fsi: Simplify with scoped for each OF child loop
+      commit: a014c203b54d9013ad52ad8a531cf46e71028f2b
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+

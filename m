@@ -1,118 +1,81 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF7C37F102;
-	Wed, 14 Jan 2026 08:57:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C30C3803D2;
+	Wed, 14 Jan 2026 09:00:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768381079; cv=none; b=UNEOrvc0K8p4AyJQ+gUOm4XEcWMwgREb0kVImoyprMStIsD/yPfYkIaTXkn5JXqvzueLyQ3+f++u6FuAwLHwdqpBKgMc4mECj8Tie7oUXO4JctyHo/1dwWWmXwPOWcQg2OZJVB9ZGg3GgIiNmByMoaVPzZdYXYAYsLTko6NjjsU=
+	t=1768381209; cv=none; b=T/vWiS+QWpueSVFX4KOhXq7k6zhp027YfDhPVHLr42dqeasnYF1mmysqTD6fdogmzDWUwwJU0nKxS1REde7/u1VKDbCpZNkWFiQ+UxB7vfV6N74Q8YaEmn6jVEVfzXbFH8VEEoeQZd13XvTOgEQikLUWYGuUTLEJxpAc3YVL/f0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768381079; c=relaxed/simple;
-	bh=WWJf+54MxE46DE9/OPvDJcvnLYSe4vAHk2WGR5k5PcE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i9jLMWdOdmTvOI64ZcmyUBvj7SrGNpmapzRa6coogxdsKP33E44ERpzA2U0SLp7aTchqXOh06gs8jKb/WYC6DPCHir7HNltzl8Jx5AvYCH5Wpdj3NpurTzpyxo2IVgwShsPTiWCkxD9Sv/keDZO+k4wcQYGyjLYJGtMuARxnZ2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sUY6FxWf; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768381209; c=relaxed/simple;
+	bh=cMA2KZasj9r0FQVnNn9r02j58aCYrjJl3jl/KgqA7M0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OTTNDuNM97RLVnATsnYgjEB9eW+KFu6ybNQ6XvWgBQ2+PV51MMWr1UkNN5jydqzjMohja/VXWFOTdE4CKfuU7PF+lfJOPg/atmXqibfu1D5X/8m2QmbWxfo44dDbjh6OQy3SoB5HPJEb2fhRL5waji0gFNWb6NAb6aYFKh8XtI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SuNa2oNa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sUY6FxWf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA100C19423;
-	Wed, 14 Jan 2026 08:57:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SuNa2oNa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 945EBC4CEF7;
+	Wed, 14 Jan 2026 09:00:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768381078;
-	bh=WWJf+54MxE46DE9/OPvDJcvnLYSe4vAHk2WGR5k5PcE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=sUY6FxWfr3a+td/KoTJz9Z1lQz1NY0kIowE+9h12lJ6kuVksBiD42Z3QfbhBkxV7b
-	 ikzce3BcKPI7wYB7OFDTSnsncq2YAW/Hf4jeGtmz6++WBXFw5zVBmuVCXwhPjRG2UI
-	 M81XC/aelGJh/7/GkZma6yNoX/l2vFtwEnk4Jir4BafOmsekHK/gQWK2V0F3mW1cb5
-	 L3lkyd2NWplsn1DkeQaHnwjsz7ig4qipaf8rg1XDFKyoSsdnUuu2JYmZ3LEY6dBDiy
-	 p1TiRVin6U3oUbPmQyxVTQKJtj+ccEr9j7Bq3bYizdZT1UUaNZuTEn1ZyapfaEfbhK
-	 GkoL55WlM9uiA==
-Date: Wed, 14 Jan 2026 08:57:47 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Marcelo Schmitt <marcelo.schmitt@analog.com>,
- Michael Hennerich <michael.hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Sean Anderson
- <sean.anderson@linux.dev>, linux-spi@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org
-Subject: Re: [PATCH v5 2/9] spi: dt-bindings: add spi-{tx,rx}-lane-map
- properties
-Message-ID: <20260114085747.4c3ec953@jic23-huawei>
-In-Reply-To: <20260112-spi-add-multi-bus-support-v5-2-295f4f09f6ba@baylibre.com>
-References: <20260112-spi-add-multi-bus-support-v5-0-295f4f09f6ba@baylibre.com>
-	<20260112-spi-add-multi-bus-support-v5-2-295f4f09f6ba@baylibre.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	s=k20201202; t=1768381209;
+	bh=cMA2KZasj9r0FQVnNn9r02j58aCYrjJl3jl/KgqA7M0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SuNa2oNauyr+ScYJaHb2S1v4DJxGFZTR0WEmaD6W7Sz7wSs6lXrRCytqj3CZJjm0M
+	 1Gyo8KJ9JRwfIWNptp1FxJ4L9KYoOvl7QuDHmXKbU+xjiJd7IcXZyoalteTcy+fEvJ
+	 g/5nUYP3zcVO69OKsGsADDrAjgUJvcdMMKvcInPk9J++2TOAnX/12oDHjRlo6EDYkm
+	 /5+6REsrX5NBlpt7uCUefSV8Qmh4oqBJVbhJfh3U5yhifjzlqrLc+ffcay1bDdkm/o
+	 Rg60ayJvZvG+dogQUPk6p7sVsN7sDLnlDIVepvxGj6yKz/bsRocXrM2oJWi9Izbvtu
+	 0dPFLjdTOTHbw==
+Date: Wed, 14 Jan 2026 10:00:06 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Praveen Talari <praveen.talari@oss.qualcomm.com>
+Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, bryan.odonoghue@linaro.org, dmitry.baryshkov@oss.qualcomm.com, 
+	andersson@kernel.org, bjorn.andersson@oss.qualcomm.com, 
+	prasad.sodagudi@oss.qualcomm.com, mukesh.savaliya@oss.qualcomm.com, quic_vtanuku@quicinc.com, 
+	aniket.randive@oss.qualcomm.com, chandana.chiluveru@oss.qualcomm.com
+Subject: Re: [PATCH v1 0/4] Enable SPI on SA8255p Qualcomm platforms
+Message-ID: <20260114-truthful-just-boobook-16494b@quoll>
+References: <20260112190134.1526646-1-praveen.talari@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260112190134.1526646-1-praveen.talari@oss.qualcomm.com>
 
-On Mon, 12 Jan 2026 11:45:20 -0600
-David Lechner <dlechner@baylibre.com> wrote:
+On Tue, Jan 13, 2026 at 12:31:30AM +0530, Praveen Talari wrote:
+> The Qualcomm automotive SA8255p SoC relies on firmware to configure
+> platform resources, including clocks, interconnects and TLMM.
+> The driver requests resources operations over SCMI using power
+> and performance protocols.
+> 
+> The SCMI power protocol enables or disables resources like clocks,
+> interconnect paths, and TLMM (GPIOs) using runtime PM framework APIs,
+> such as resume/suspend, to control power states(on/off).
+> 
+> The SCMI performance protocol manages SPI frequency, with each
+> frequency rate represented by a performance level. The driver uses
+> geni_se_set_perf_opp() API to request the desired frequency rate.
+> 
+> As part of geni_se_set_perf_opp(), the OPP for the requested frequency
+> is obtained using dev_pm_opp_find_freq_floor() and the performance
+> level is set using dev_pm_opp_set_opp().
+> 
+> Dependencies:
+> This series depends on Enable I2C on SA8255p Qualcomm platforms
+> https://lore.kernel.org/all/20260112104722.591521-1-praveen.talari@oss.qualcomm.com/
 
-> Add spi-tx-lane-map and spi-rx-lane-map properties to the SPI peripheral
-> device tree binding. These properties allow specifying the mapping of
-> peripheral data lanes to controller data lanes. This is needed e.g. when
-> some lanes are skipped on the controller side so that the controller
-> can correctly route data to/from the peripheral.
-> 
-> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-LGTM
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+It should not because it means it cannot be easily applied by
+maintainers.
 
-> ---
-> 
-> v5 changes:
-> - Use SDI/SDO terminology in descriptions. (Fixes incorrect use of TX/RX
->   when describing the peripheral lanes.)
-> 
-> v4 changes:
-> - This replaces the data-lanes property from the previous revision. Now
->   there are separate properties for tx and rx lane maps. And instead of
->   being the primary property for determining the number of lanes, this
->   is only needed in special cases where the mapping is non-trivial.
-> ---
->  .../devicetree/bindings/spi/spi-peripheral-props.yaml      | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-> index 59ddead7da14..880a9f624566 100644
-> --- a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-> +++ b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-> @@ -75,6 +75,13 @@ properties:
->        enum: [0, 1, 2, 4, 8]
->      default: [1]
->  
-> +  spi-rx-lane-map:
-> +    description: Mapping of peripheral SDO lanes to controller SDI lanes.
-> +      Each index in the array represents a peripheral SDO lane, and the value
-> +      at that index represents the corresponding controller SDI lane.
-> +    $ref: /schemas/types.yaml#/definitions/uint32-array
-> +    default: [0, 1, 2, 3, 4, 5, 6, 7]
-> +
->    spi-rx-delay-us:
->      description:
->        Delay, in microseconds, after a read transfer.
-> @@ -99,6 +106,13 @@ properties:
->        enum: [0, 1, 2, 4, 8]
->      default: [1]
->  
-> +  spi-tx-lane-map:
-> +    description: Mapping of peripheral SDI lanes to controller SDO lanes.
-> +      Each index in the array represents a peripheral SDI lane, and the value
-> +      at that index represents the corresponding controller SDO lane.
-> +    $ref: /schemas/types.yaml#/definitions/uint32-array
-> +    default: [0, 1, 2, 3, 4, 5, 6, 7]
-> +
->    spi-tx-delay-us:
->      description:
->        Delay, in microseconds, after a write transfer.
-> 
+Why can't you decouple the dependencies?
+
+Best regards,
+Krzysztof
 

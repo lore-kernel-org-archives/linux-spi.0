@@ -1,90 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169E73BFE27;
-	Thu, 15 Jan 2026 18:02:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21E3399011;
+	Thu, 15 Jan 2026 18:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768500141; cv=none; b=cJhHBm7RzjQjGhsk1PK0PPmPzODUye11e+c/Zacln06zv0GPULhFlEUlsZCOVdU4ggnDY+x0ddYDddmRKVGHimWrMFh4n0ltN3wk0N5nbBOttpxJE7feZwDN/zgB0WdPUnM2rK+diQ95pI5WLscPZ9dFbu/a7zIrPfpFepgGWjY=
+	t=1768502525; cv=none; b=sy0skYwX0jk5eiPljxupo5l9q3fQlEVHlq/eWlRKdsgI5Tk4v4iCFH7sfsUnQ9LVsGFb9KY9ycovECxfGqdzbuiI+22z6Uy4+t1Jd5XF9aNKdGjXt61htYwJrQrnCd2uh+SXxQV4y3QdY6fj/QPGETq7usRY00QQqFj3/k43N8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768500141; c=relaxed/simple;
-	bh=Kn6CM13muJURtMblhTu+B8XKHuWGrLq8ki08pxGulnM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LS5LSjxY7o/6dPrNzq8qBUms7oT2v8zifPvt/FugC2YthgIM1DdeM9acItGY0MBBfEOBn5iTblvVPe5LNMtRcMNJdee5e5cTRm9sKD9z34sz44mfBd3MY6qZuzfLBSc6oJ3srw1pFOiKQUYTrR9V0+/M6VJWQnB+eSTGqM+lD3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EnqmmgYL; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768502525; c=relaxed/simple;
+	bh=As+geMpz/z82AIODnSNBNAxX4NNXiKPe7f1jP7D0tGc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=Piyta4eKrCiMjM6DSsAqEoQLTAZRGPKoFoevHvGFTTewiB13i3cLYI20SpK9v+R3Gvv2pgukhfWpJ/7IPv7O6P3Zfhx2djUmFgaEaOxXI0HrB7pQOOuGKilloo3OykPCqw2L98jBIhP5CkXBkkXSXp7zGz+tnxW3hsujn5GrJ/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=epQ/GH/W; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EnqmmgYL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A19EC116D0;
-	Thu, 15 Jan 2026 18:02:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="epQ/GH/W"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D4C5C116D0;
+	Thu, 15 Jan 2026 18:42:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768500140;
-	bh=Kn6CM13muJURtMblhTu+B8XKHuWGrLq8ki08pxGulnM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EnqmmgYLIO6vRVPEhJA3xqQRcAHI6Tr3rX+0ylbgKHHb5hZzfFXPsbTSHSvUoTfcy
-	 KSEvpK0KVybSKHRc9Mk22oQmrUiJfX6pOUH/YzS6T51JTeH3qJ38gmod01boQy8jqo
-	 K35TBA4GxXb79819zJk5FTZ9ho+8gmxwDHciXSKrh45aHekKYMN+BJwNVdDSkq8hL7
-	 IORdvIetisScuTmE9sGnsLeiqZOFuNuYEGCDYzZ3ZVovKy/YM8jkjJohVCRKXhg465
-	 xtFDN2HOrzraBuxvz5OPud2GyD4ZVDXuC0Efsy/YU6x4r6gu2PY7zv5onXLoqE3IBh
-	 AG+iQhZhbQCYA==
-Date: Thu, 15 Jan 2026 18:02:15 +0000
+	s=k20201202; t=1768502525;
+	bh=As+geMpz/z82AIODnSNBNAxX4NNXiKPe7f1jP7D0tGc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=epQ/GH/WebFI7tDbJD3tbv7m9ZrlX05fOKwjfnt7XasEyuc9INLqHy1t8yL3C4Ytu
+	 MAnE67BMjLFbCE023NUYERNfMe6DAKunCgsSqtqG5i0x25w3yjhAxbS3Gko41urLqs
+	 59zjLyXfbkLDE97X9NRGA+BtcuK/kCiyxs40PJrBb0L64fTPj/D6+hyKknQj4RD6fr
+	 Yj9ejZWbnr2G4Q82WYLnUiTqAlR36v7ydkarv9kTiHNkJ3pRPAiPT5xg1li4KOycUy
+	 mH00xtUMB8NK84jW5in83btIPC3sr1PAnYEtf2X/pb55uJ9bEXbpUmg+tuAx6MuD4J
+	 RU1JDnTIENutQ==
 From: Mark Brown <broonie@kernel.org>
-To: Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>
-Cc: clg@kaod.org, boris.brezillon@bootlin.com, joel@jms.id.au,
-	andrew@codeconstruct.com.au, linux-aspeed@lists.ozlabs.org,
-	openbmc@lists.ozlabs.org, linux-spi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	BMC-SW@aspeedtech.com
-Subject: Re: [PATCH 2/2] spi: aspeed: Add support for non-spi-mem devices
-Message-ID: <1adf54a9-56f5-4fc4-bba2-837a132fd123@sirena.org.uk>
-References: <20260115150454.1575970-1-chin-ting_kuo@aspeedtech.com>
- <20260115150454.1575970-3-chin-ting_kuo@aspeedtech.com>
+To: peter.chen@cixtech.com, fugang.duan@cixtech.com, 
+ Jun Guo <jun.guo@cixtech.com>
+Cc: 455.rodrigo.alencar@gmail.com, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20260115091924.844179-1-jun.guo@cixtech.com>
+References: <20260115091924.844179-1-jun.guo@cixtech.com>
+Subject: Re: [PATCH] spi: spi-cadence: enable SPI_CONTROLLER_MUST_TX
+Message-Id: <176850252392.1337956.14416489658978740904.b4-ty@kernel.org>
+Date: Thu, 15 Jan 2026 18:42:03 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="xvW1NsWVoVmF5xI9"
-Content-Disposition: inline
-In-Reply-To: <20260115150454.1575970-3-chin-ting_kuo@aspeedtech.com>
-X-Cookie: Are you sure the back door is locked?
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-47773
 
+On Thu, 15 Jan 2026 17:19:24 +0800, Jun Guo wrote:
+> During an SPI read operation, even if the xspi->txbuf passed to the
+> cdns_spi_writerinterface is empty, it is still necessary to call
+> cdns_spi_write(xspi, CDNS_SPI_TXD, txw); otherwise, the read operation
+> will fail to obtain data correctly due to a lack of clocks.
+> 
+> 
 
---xvW1NsWVoVmF5xI9
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Applied to
 
-On Thu, Jan 15, 2026 at 11:04:54PM +0800, Chin-Ting Kuo wrote:
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-> +static int aspeed_spi_user_transfer(struct spi_controller *ctlr,
-> +				    struct spi_message *msg)
-> +{
+Thanks!
 
-I'm not seeing anything here that won't work with transfer_one() rather
-than transfer_one_message(), that would reduce open coding so if you can
-do it it's preferable.
+[1/1] spi: spi-cadence: enable SPI_CONTROLLER_MUST_TX
+      commit: f6b625639e39bc384a7bddbf134a698d40258b3b
 
-> +	ctrl_val = chip->ctl_val[ASPEED_SPI_BASE];
-> +	ctrl_val &= ~CTRL_IO_MODE_MASK & data->hclk_mask;
-> +	ctrl_val |= clk_div;
-> +	chip->ctl_val[ASPEED_SPI_BASE] = ctrl_val;
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-This should fit with the prepare_message() callback.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---xvW1NsWVoVmF5xI9
-Content-Type: application/pgp-signature; name="signature.asc"
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
------BEGIN PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmlpK6cACgkQJNaLcl1U
-h9DIhwf/W8/a6WTvTXkoR6TsMYE4X1woUmylZmwsFN2UaCmgI1L/AfPz/YPV++Kg
-zpWoAhy89sXrI0dewD0d/9r5c6eV/TvYD0nF4IHAwCU7lDxZf3fet4WOztYITdcI
-J9XpQD+PGCwrjHTRjq+aXUYYhrS7vGhDUOUuY0xwgglOgygS/c8TRAAe7kcaR/jg
-a2X3FYPadw1n/Y44EqG84FWyElTCFCz3V38pry5fc5IPQ9eYIgxD+MkxWa5ReSAg
-byWuVsR0D55WyOEdf+ZSkYm4tvHmiM29MuVJmF5MXfP9jnJeG+2KSwKoDRYDQYWZ
-9bvRisvSKoCqiQKNeacaATDXKGw6Eg==
-=ENSf
------END PGP SIGNATURE-----
+Thanks,
+Mark
 
---xvW1NsWVoVmF5xI9--

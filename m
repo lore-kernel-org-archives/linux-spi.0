@@ -1,82 +1,70 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED333C009A
-	for <linux-spi@vger.kernel.org>; Thu, 15 Jan 2026 18:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2248C39E6EB
+	for <linux-spi@vger.kernel.org>; Thu, 15 Jan 2026 18:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768502526; cv=none; b=QvN9uA9ypoIbjsfnlNipiF7rCr0rC4od9Yh1KotZOK0AAy54uiMZDHaVLAcJfTg/eBVy2DEVFdHRsoPf7KBAXPJhnmryj0O03WCX5fMLf95m6YVpFIDdHkBbxdXux790El5vdrNYho1kXN1UbIN8Kr1lJEJ0E+m0wA2sBHFypXg=
+	t=1768502623; cv=none; b=uHHmVAQE/Ep034iSMXm+hCfrfLkc+YqadzkktL6z9Bw7m3UbJD1gqIahUxovI2Va9yTgE7LnVJUXaPn3J1huYx8QitTn/88B9wvYxl8epG0LnbfYYtDeePXykLlKV4l/pbMr9bdgwqRx1cuWz19+7AF7hF89dKyBRNkfwPX0jdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768502526; c=relaxed/simple;
-	bh=lbfCkxvmlJSqK9PG+rBWWozHAs3UxvN+v4TeaOKgM2s=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=POuhcSEGXBGK46U1l3liwGWOTlTtrjOx2j2pOFuX0iiRz7TfXX/LUz4EFd/E9pgNseNTcHftw+ovjNITZoeT2gAkhZu5cOQKbIlo4HwlsvxavvDuJdLFOQ2Dgw0l+wq9s+/FaXpf1E0yG87THo9m6JIlJuPHcTIKGa/iOb1iktc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Me6PI90r; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768502623; c=relaxed/simple;
+	bh=JaTth9RJ1IL9tWAMh3KG8F0Ft/ZQhHgkjD8O7AVukw8=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=fiuptMNodfGK48QOnFDdTmKDt3gqTUHrrO/P8iKUL043doQXkYnU3NFngcwIKHfCeygpg9KBYShro9xRny3xepT4G+uJAb1YNvAFtafc9MUfT049mCB0iv+Qx7yx+97JmSsy3eJ8AXiFNBcN2UPyqMECDeVVoB+gezo2anSj0Cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kdwsRsNP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Me6PI90r"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2977C16AAE;
-	Thu, 15 Jan 2026 18:42:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kdwsRsNP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7098BC116D0;
+	Thu, 15 Jan 2026 18:43:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768502526;
-	bh=lbfCkxvmlJSqK9PG+rBWWozHAs3UxvN+v4TeaOKgM2s=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=Me6PI90rjuynU11lpSIBC3pv8tqRHAF5Q0pjuFxXSPrwqh2hgLwlMftIF5A76Qc4j
-	 71J772cCNmeto+x2J7MZBaZGZ28eqVqzbZTxjqvb1TbfNaTmHjSFaSvGc5bCTzKBKy
-	 Nu34KDHzVHntF0tUff9Uskaxr3k1NTWxYgDue7gczdaID9JMhpvBnefKWp3uczglP5
-	 FmcrB7WFNEk4aBRNxwu8O/VyktsfN0rP3BLWfQyh3wAzxkfaM4ffgBfAZ58jGUpWJ7
-	 p/oVJYmOkEzWPe00daJwFDbagbfYiVXNapmk+Q2xiCM1rEwW4hy1FHAJlIU6NjnTSL
-	 1nMcaqISCpdow==
-From: Mark Brown <broonie@kernel.org>
-To: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
-Cc: linux-spi@vger.kernel.org, mika.westerberg@linux.intel.com
-In-Reply-To: <20260115120305.10080-1-alan.borzeszkowski@linux.intel.com>
-References: <20260115120305.10080-1-alan.borzeszkowski@linux.intel.com>
-Subject: Re: [PATCH] spi: intel-pci: Add support for Nova Lake SPI serial
- flash
-Message-Id: <176850252554.1337956.17675499224547306784.b4-ty@kernel.org>
-Date: Thu, 15 Jan 2026 18:42:05 +0000
+	s=k20201202; t=1768502622;
+	bh=JaTth9RJ1IL9tWAMh3KG8F0Ft/ZQhHgkjD8O7AVukw8=;
+	h=Subject:From:Date:To:From;
+	b=kdwsRsNP/GkkYGjfSCqQ0DM/qnuIsZ+2oZFjIHq/fIUf1XGgJBtjeyF9YGtWfMhAb
+	 AXfj3EAXxN4MkEZLTJCrqcsy/ahvHmDeQ14XuKvjT0p4cHDgEzug6M9SlIga7iCrvP
+	 x1xTyjt3v3kh0uWqE9CEwbsrWbuhnNEpb95piBygwzES+JqNBGBxyPbAXqVxupo9Vh
+	 3Nkrhc4OvsVoCKMYXFL0ra/5ZhYu/UoN45ojJcSKfcLadkRVW+QBUv3kWn2EVyfyND
+	 DWZC3Uz677i22k4/PGMMK/8ISbFyGk8AsO2xuOukUt9H6/kOLKfRpaEWC23U+421IA
+	 u40FB1+Ut0CFA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B5BE8380A97A;
+	Thu, 15 Jan 2026 18:40:15 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-47773
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <176850241417.4118455.17782394572839183879.git-patchwork-summary@kernel.org>
+Date: Thu, 15 Jan 2026 18:40:14 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-On Thu, 15 Jan 2026 13:03:05 +0100, Alan Borzeszkowski wrote:
-> Add Intel Nova Lake PCH-S SPI serial flash PCI ID to the list of
-> supported devices. This is the same controller found in previous
-> generations.
-> 
-> 
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+Patch: spi: intel-pci: Add support for Nova Lake SPI serial flash
+  Submitter: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1042787
+  Lore link: https://lore.kernel.org/r/20260115120305.10080-1-alan.borzeszkowski@linux.intel.com
 
-Thanks!
+Patch: spi: spi-cadence: enable SPI_CONTROLLER_MUST_TX
+  Submitter: Jun Guo <jun.guo@cixtech.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1042719
+  Lore link: https://lore.kernel.org/r/20260115091924.844179-1-jun.guo@cixtech.com
 
-[1/1] spi: intel-pci: Add support for Nova Lake SPI serial flash
-      commit: caa329649259d0f90c0056c9860ca659d4ba3211
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+Total patches: 2
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
 

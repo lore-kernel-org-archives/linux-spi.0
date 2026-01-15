@@ -1,40 +1,42 @@
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78419356A10;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0F88261B78;
 	Thu, 15 Jan 2026 09:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768469141; cv=none; b=FjBTudzONP5yAEbUh5/bJG6szT6lS4hECeoa+S0XMJ1HFQL1dSPtADi6yQGfRCKiawVP8V49bDHgYuAWkL06S6UR3Iz7yZ2mazkOrCRGDdxesC2MhjNZjVnuiiMIK+yMBKQ/JvcoMHGvsjEC7k3xwg7ngCXb0j852s+RMw6fvWY=
+	t=1768469141; cv=none; b=llZiVknQH3Iti3HHKt0wOgRmujETf3wJ79sd8f4Ft0/sUD9SH8vcMumjm32eb/v1bD5RjfjpdrnfSIn5W9z41JWV3UrFQhVhQiVe+aO/OSLVPAQV9W4Bn3IVYSJqANZHxuaLLezSX7iM+5xoZjER5ihhaOxzxeo8rqDdpaMIeoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1768469141; c=relaxed/simple;
-	bh=/gd41pN+2oJIM9vptIsbXw8vPsTvmjAJ4LLt3mcWAEI=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=QJ6ECZA/Djd5Likrojd6EE8YY2/kSzBH1CA3fMfWP9JEUmYx0ZQvGN50yliMSaBMwk50AhoCEdsA89iPoXgbqX0L1/1CYKAW86oGhdXuwCbs4a1PLubgQWPv3V6taqM3BeL5cceD1afoKKBueEaKrK5OWjH3Y7ElubcalfaeUSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=akI8CD3R; arc=none smtp.client-ip=185.171.202.116
+	bh=r4xsrvUEkrisBm830uVOi5LF7CumvVgNOo2uu+EAufY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=fbDuhvytYQUTgfwSA2HoAf7OUXQ5DyYjTZkyn8SDe9Y2ioyGfdduoAXAhTZBfnhSPE9LEuQlHa5rEDYrpexjrj7oF9qAsUg8jE6cNzWNIDep07t3y2TSshfjGfJQNjxbUq0JK+26Kd8hY6ehGzKAkJIQ4WO/FjLDLqPNOkQEzzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=EbrZSyQK; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="akI8CD3R"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="EbrZSyQK"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 9612AC1F1E5;
-	Thu, 15 Jan 2026 09:25:05 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id D010EC1F1E8;
+	Thu, 15 Jan 2026 09:25:11 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 45027606B6;
-	Thu, 15 Jan 2026 09:25:32 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AB45910B68454;
-	Thu, 15 Jan 2026 10:25:27 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 8913C606B6;
+	Thu, 15 Jan 2026 09:25:38 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A922710B68530;
+	Thu, 15 Jan 2026 10:25:35 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1768469131; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=K1qbl7S2rlm9JCoeIkodciVRDJ3Iedcf5ILamFg+cZg=;
-	b=akI8CD3RJmrxk8tvBidwHPjmgLY26oOmJnPJCIDjAGoaBTuLLD9nIELbBll4eGRD15fCJa
-	ZJXm3JzUvYQOpAfZdnAz/eL+sbiWCLxIiJAk6GSOfwsjqSH1Bn9OdZVUYioOTmTyHDvUoI
-	KP/jn11nU95HrIz+P/fOHdFpUbO4ufM7NFSmMzblD5Q0hqrgQWyl5bnpgwDs6J7nYjzcIh
-	lvABoG7up2UVpPJna220IY/EJOBnm4XHQfIYpm8nFUTbXzuyCtWUOBgHhLYN3vXjbMxDpS
-	XVPuivGafNm48T3tnkLj+eAjTRtXrbTTQz+A9T2fjbxfg3Q2CiDV2mv/dD+yzw==
+	t=1768469137; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=gltgqZxplCK6T7f5+zOiN0+WD5c1Yq1xx9kIlIzwwZA=;
+	b=EbrZSyQKJUUTB5NptiNKVCUwI7JbCfuXCDSqTCUozcFI3T5j2UrOTsmyVkgOEPo/n7zw8q
+	Q6ovswpKZ3Q/l2UNgF/GaCeA6AS12yaf2EJ1crWjCzBRbJsSBbMa4RK5DIF8mVbzyAsOl1
+	9Nn3vzMCVqQfCSos34PzHlwObu62D8CULhpT3ji1ZL7oZG40ffCdknBVTmoRVeuwFMqvkp
+	lnlYx2ctKUjO53L3IwfwUAsRFZmeemQoWYO0eLH+K/Krb877qTO2GNR1w8OqA2bSZTBXVp
+	3L2MRb1AjlD4JizkrcZBOay9/GPNsN436/Fi/k1d9KCx8kibaNede0IKmQiuRQ==
 From: "Miquel Raynal (Schneider Electric)" <miquel.raynal@bootlin.com>
-Subject: [PATCH v2 00/13] spi: cadence-qspi: Add Renesas RZ/N1 support
-Date: Thu, 15 Jan 2026 10:24:51 +0100
-Message-Id: <20260115-schneider-6-19-rc1-qspi-v2-0-7e6a06e1e17b@bootlin.com>
+Date: Thu, 15 Jan 2026 10:24:54 +0100
+Subject: [PATCH v2 03/13] spi: cadence-qspi: Fix style and improve
+ readability
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -42,12 +44,10 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4XNQQ6CMBAF0KuQWTuGKRSUlfcwLGo7yCTaYkuIh
- nB3Kxdw+X7y/18hcRRO0BUrRF4kSfAZ6lCAHY2/M4rLBlUqTYrOmOzoWRxHbDAzWsJXmgRbWzH
- pujVD4yC3p8iDvPfla589SppD/OxHC/3S/5sLYYkn43Spqa24ri+3EOaH+KMNT+i3bfsCYG8BO
- cAAAAA=
-X-Change-ID: 20251219-schneider-6-19-rc1-qspi-7c3e1547af6d
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260115-schneider-6-19-rc1-qspi-v2-3-7e6a06e1e17b@bootlin.com>
+References: <20260115-schneider-6-19-rc1-qspi-v2-0-7e6a06e1e17b@bootlin.com>
+In-Reply-To: <20260115-schneider-6-19-rc1-qspi-v2-0-7e6a06e1e17b@bootlin.com>
 To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, 
@@ -65,65 +65,45 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hello,
+It took me several seconds to correctly understand this block. I
+understand the goal: showing that we are in the if, or in one of the two
+other cases. Improve the organization of the code to both improve
+readability and fix the style.
 
-This series adds support for the QSPI controller available on Renesas
-RZ/N1S and RZ/N1D SoC. It has been tested with a custom board (see last
-SPI patch for details).
-
-Adding support for this SoC required a few adaptations in the Cadence
-QSPI driver. The bulk of the work is in the few last patches. Everything
-else is just misc style fixes and improvements which bothered me while I
-was wandering.
-
-In order to support all constraints, I sometimes used a new quirk (for
-the write protection feature and the "no indirect mode"), and sometimes
-used the compatible directly. The ones I thought might not be RZ/N1
-specific have been implemented under the form of a quirk, in order to
-ease their reuse. The other adaptations, which I believe are more
-Renesas specific, have been handled using the compatible. This is all
-very arbitrary, and can be discussed.
-
-Thanks,
-Miquèl
-
+Suggested-by: Pratyush Yadav <pratyush@kernel.org>
 Signed-off-by: Miquel Raynal (Schneider Electric) <miquel.raynal@bootlin.com>
 ---
-Changes in v2:
-- Fix commit log of DT binding patch, following Krzysztof's comment.
-- Fix properties order in DTSI.
-- Rebase on top of spi/for-next and fix all conflicts.
-- Simplify even further the code in the cleanup patches following
-  Pratyush's advices.
-- Link to v1: https://lore.kernel.org/r/20251219-schneider-6-19-rc1-qspi-v1-0-8ad505173e44@bootlin.com
+ drivers/spi/spi-cadence-quadspi.c | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
----
-Miquel Raynal (1):
-      spi: cadence-qspi: Make sure we filter out unsupported ops
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index cc28da7fc686..c0a507953c58 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -374,17 +374,12 @@ static irqreturn_t cqspi_irq_handler(int this_irq, void *dev)
+ 	/* Clear interrupt */
+ 	writel(irq_status, cqspi->iobase + CQSPI_REG_IRQSTATUS);
+ 
+-	if (cqspi->use_dma_read && ddata && ddata->get_dma_status) {
+-		if (ddata->get_dma_status(cqspi)) {
+-			complete(&cqspi->transfer_complete);
+-			return IRQ_HANDLED;
+-		}
+-	}
+-
+-	else if (!cqspi->slow_sram)
+-		irq_status &= CQSPI_IRQ_MASK_RD | CQSPI_IRQ_MASK_WR;
+-	else
++	if (cqspi->use_dma_read && ddata && ddata->get_dma_status)
++		irq_status = ddata->get_dma_status(cqspi);
++	else if (cqspi->slow_sram)
+ 		irq_status &= CQSPI_IRQ_MASK_RD_SLOW_SRAM | CQSPI_IRQ_MASK_WR;
++	else
++		irq_status &= CQSPI_IRQ_MASK_RD | CQSPI_IRQ_MASK_WR;
+ 
+ 	if (irq_status)
+ 		complete(&cqspi->transfer_complete);
 
-Miquel Raynal (Schneider Electric) (12):
-      spi: dt-bindings: cdns,qspi-nor: Add Renesas RZ/N1D400 to the list
-      spi: cadence-qspi: Align definitions
-      spi: cadence-qspi: Fix style and improve readability
-      spi: cadence-qspi: Fix ORing style and alignments
-      spi: cadence-qspi: Remove an useless operation
-      spi: cadence-qspi: Fix probe error path and remove
-      spi: cadence-qspi: Try hard to disable the clocks
-      spi: cadence-qspi: Kill cqspi_jh7110_clk_init
-      spi: cadence-qspi: Add a flag for controllers without indirect access support
-      spi: cadence-qspi: Make sure write protection is disabled
-      spi: cadence-qspi: Add support for the Renesas RZ/N1 controller
-      ARM: dts: r9a06g032: Describe the QSPI controller
-
- .../devicetree/bindings/spi/cdns,qspi-nor.yaml     |   4 +
- arch/arm/boot/dts/renesas/r9a06g032.dtsi           |  14 ++
- drivers/spi/spi-cadence-quadspi.c                  | 260 ++++++++++-----------
- 3 files changed, 144 insertions(+), 134 deletions(-)
----
-base-commit: 0afb3ab76ffb521700af678ea931d31192f93260
-change-id: 20251219-schneider-6-19-rc1-qspi-7c3e1547af6d
-
-Best regards,
 -- 
-Miquel Raynal (Schneider Electric) <miquel.raynal@bootlin.com>
+2.51.1
 

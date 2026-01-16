@@ -1,128 +1,56 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE5592EDD78;
-	Fri, 16 Jan 2026 15:19:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64A451A316E;
+	Fri, 16 Jan 2026 15:23:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768576760; cv=none; b=NauS5+qqil4MXgdpyVjjMBv7cRK8o8VxsfxWFT/flixier1VXtRWXatfkoMLVLlABymFmjYieDXfVjzK2RcpkYjUxfYi+XGj7Sjlh0gAXTX3MSQFaePRXw5v0OJY3V0Gtvo4Ixdz1CQAgS1+c2w5Q9AqwLgIf4rSFFpJObdiQz4=
+	t=1768577014; cv=none; b=AfwJRF7nOltfOU8Iuw+fNH79bebCTipMoF9o3EXnw71b2gkWlEdw0SMPbJmnevvo2SXWB8m1iJ4eB4sMaqeKjWPxr3UmwF/n0uhdQh3hAqzksWrhP3m/XdLhY5J8sJ+dXWmBfrOyrMy4j/0SsDCa1eYk94f2LOASZvSOFVin4I8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768576760; c=relaxed/simple;
-	bh=OuMwrhqIE5QFFqwcuKtCCRfIyFu7UACpTymHXZqTO2o=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=hU0d5oCFAXWAXDxhH1X59k4X78jUaXRDXUCDq1Jh3HPnl0iJo4QujQjnnOgFwVmGKB2dbSM7cUQFnidlcvY+o2PkWHja7XKtfTPykacvBG7eEQs8hchzEicMWjUsM+peAu6l7c7SiCGGrVBB6DkY3+uFZuUxBVJFIiNOAJ7Ap3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=2nurkf+F; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1768577014; c=relaxed/simple;
+	bh=H/U3z7IKaks6UVO8HMhgeDXnkaldNZ2TN41y01E4zK0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fphFU54JJ/uJAfUTaolzYxGu7EBVy0G9vbyQRI4Lsf0zz1crIRzbB8BEYeBgCMuc7mgJm7CR4S8AeIoZdOXhJV+vHLerVLdhdbku0qABYIye0GP93WRS4r4nHyL07NoV3ToGecWQ34++zaVTeRM7ND0tBI6eJbl4uUFZBfsGQgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=sQkCIrL3; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="2nurkf+F"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 4E2D34E42117;
-	Fri, 16 Jan 2026 15:19:17 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 173BB60732;
-	Fri, 16 Jan 2026 15:19:17 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B402510B68805;
-	Fri, 16 Jan 2026 16:19:12 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1768576756; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=6Qb6R1j3XkkCPFzEwCW5EjhwUD1TxNu62GrWWx9blII=;
-	b=2nurkf+F65xbpXcsEvl+w3o4NK3nIHRVG0yJgO9cNpRLw4CZ3q++Ia8RKyH11g1glP7RrR
-	G67xXg2RJ84TqaV+RExISDdLNHLO/4CCRpca14SZIZuBNXu7VxjtlPLJEGNe3Xdh65qT33
-	F6N8KEXgBvSp4vdbOMTzO5zapn91UMmtmL2xQPsRCPbr4XNSAn9nyNTzuaBvWQ8CdFtTgj
-	Kt4MELzlN/0uZ0nJ5CpoAgLiY/cIJgLfX10ml+rJDa4l0cWq5XzIjieoS1qx1WuJ/Zh8pZ
-	sQkdyP/sRKuSy4tRNNhmOXN670e4Akbw9eDlS+3T9rdfCOXw0dmx2bqoF5c04w==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Mark Brown <broonie@kernel.org>,  Rob Herring <robh@kernel.org>,
-  Krzysztof Kozlowski <krzk+dt@kernel.org>,  Conor Dooley
- <conor+dt@kernel.org>,  Geert Uytterhoeven <geert+renesas@glider.be>,
-  Magnus Damm <magnus.damm@gmail.com>,  Vaishnav Achath
- <vaishnav.a@ti.com>,  Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-  =?utf-8?Q?Herv=C3=A9?= Codina <herve.codina@bootlin.com>,  Wolfram Sang
- <wsa+renesas@sang-engineering.com>,  Vignesh Raghavendra
- <vigneshr@ti.com>,  Santhosh Kumar K <s-k6@ti.com>,  Pratyush Yadav
- <pratyush@kernel.org>,  Pascal Eberhard <pascal.eberhard@se.com>,
-  linux-spi@vger.kernel.org,  devicetree@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  linux-renesas-soc@vger.kernel.org
-Subject: Re: [PATCH v2 13/13] ARM: dts: r9a06g032: Describe the QSPI controller
-In-Reply-To: <CAMuHMdUqWUriQHR8UY631HZfVNsejgXE64jrChi=k2=5E6Hi-Q@mail.gmail.com>
-	(Geert Uytterhoeven's message of "Fri, 16 Jan 2026 11:07:03 +0100")
-References: <20260115-schneider-6-19-rc1-qspi-v2-0-7e6a06e1e17b@bootlin.com>
-	<20260115-schneider-6-19-rc1-qspi-v2-13-7e6a06e1e17b@bootlin.com>
-	<CAMuHMdUHwqBrNMQTO-g7yUA_owWXxT6bPi34Oxjt-J7N0Q2CXQ@mail.gmail.com>
-	<87ldhxubt5.fsf@bootlin.com>
-	<CAMuHMdUqWUriQHR8UY631HZfVNsejgXE64jrChi=k2=5E6Hi-Q@mail.gmail.com>
-User-Agent: mu4e 1.12.7; emacs 30.2
-Date: Fri, 16 Jan 2026 16:19:12 +0100
-Message-ID: <87a4ydtwjz.fsf@bootlin.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="sQkCIrL3"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=SAL69x+aMsb3wJrvEhrX3q6+5c3rIZOTW1Qes4NnKM4=; b=sQkCIrL3ScL+xhdccTjGbKqBDL
+	z4f2Qb/CMhImQ9NrzsrrK+6g52BTgnTHgtWxUysj3Vnk6YmEcodT7DifKUiZmcr8JsD3nzb+PE5yA
+	xt+CkU+Up5VpU0pfaUKF0rL7OQ0nK9RIVCixuIoKnV5+zT2fxN2TA/qmNjM7x+NIfLwM=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vglfY-0035ZG-OV; Fri, 16 Jan 2026 16:23:24 +0100
+Date: Fri, 16 Jan 2026 16:23:24 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+Cc: Mark Brown <broonie@kernel.org>, Michal Simek <michal.simek@amd.com>,
+	linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] spi: xilinx: use device property accessors.
+Message-ID: <12f527c6-7728-4512-a4f1-08c778627ea8@lunn.ch>
+References: <20260115003328.26095-1-abdurrahman@nexthop.ai>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260115003328.26095-1-abdurrahman@nexthop.ai>
 
-On 16/01/2026 at 11:07:03 +01, Geert Uytterhoeven <geert@linux-m68k.org> wr=
-ote:
+On Thu, Jan 15, 2026 at 12:33:28AM +0000, Abdurrahman Hussain wrote:
+> This makes the driver work on non-OF platforms.
+> Also, make irq optional, since the driver can already work in
+> polling mode.
 
-> Hi Miquel,
->
-> On Fri, 16 Jan 2026 at 10:49, Miquel Raynal <miquel.raynal@bootlin.com> w=
-rote:
->> >> +               qspi0: spi@40005000 {
->> >> +                       compatible =3D "renesas,r9a06g032-qspi", "ren=
-esas,rzn1-qspi", "cdns,qspi-nor";
->> >> +                       reg =3D <0x40005000 0x1000>, <0x10000000 0x10=
-000000>;
->> >> +                       interrupts =3D <GIC_SPI 64 IRQ_TYPE_LEVEL_HIG=
-H>;
->> >> +                       clocks =3D <&sysctrl R9A06G032_CLK_QSPI0>, <&=
-sysctrl R9A06G032_HCLK_QSPI0>,
->> >> +                                <&sysctrl R9A06G032_HCLK_QSPI0>;
->> >> +                       clock-names =3D "ref", "ahb", "apb";
->> >> +                       #address-cells =3D <1>;
->> >> +                       #size-cells =3D <0>;
->> >> +                       cdns,fifo-width =3D <4>;
->> >
->> > <4> is the default, right?
->>
->> It is the default in the bindings indeed, however the driver does not
->> imply that default and errors out if the property is missing. The
->> property is also marked required in the bindings, which is kind of
->> incorrect I guess. Also, all DTS explicitly set this value to 4.
->
-> OK.
->
->>
->> However looking into the RM I found "Transmit and receive FIFOs are 16
->> bytes". I haven't tested that, I will.
->
-> Oh, that bullet is not present in the docs on the CD I looked at.
-> It is indeed documented in newer versions.
->
-> There's also cdns,fifo-depth, which thus should be 4?
+Are you saying ACPI cannot describe interrupts?
 
-Ah, that's right. You mean fifo-width =3D 4 and fifo-depth =3D 4, right?
-It is marked as being discoverable by reading CQSPI_REG_SRAMPARTITION,
-but on my board this register returns 0. So I guess yes, I will go for
-fifo-depth =3D 4 and we should be fine.
-
-...
-
->> > The rest LGTM, ignoring my comments on the bindings:
->> > Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
->>
->> Thanks for the review, but I guess if I end up changing the DTS snippet
->> I might drop it. Or would you like me to keep it anyway?
->
-> Please keep it as long as you don't change the (SoC integration)
-> things I typically focus on (address, interrupts, clocks), and don't make
-> too wild changes ;-)
-
-Thanks,
-Miqu=C3=A8l
+    Andrew

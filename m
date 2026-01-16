@@ -1,53 +1,53 @@
-Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
+Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B982361657
-	for <linux-spi@vger.kernel.org>; Fri, 16 Jan 2026 10:42:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94220361DA1
+	for <linux-spi@vger.kernel.org>; Fri, 16 Jan 2026 10:42:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768560128; cv=none; b=RT8NsbL3L9iuXZSZp5DXcfSnA0k2l5p3oHrjYsKeaMOf07uL6NvlXOuwUDy87iZvVstRKO7DaiYVB6Enm4yDUvGcgauF+z3FCJQosOwW5d76siP1N2cs/M/plO7zN0TnPjrstPpbwYRI11a8j5BtVJcIC6czJDAVloqPzS6yI/Q=
+	t=1768560129; cv=none; b=RisKD/Tz8rKx0PokVw1XxPSXW+ezHm8tykE2RBB9Dk/gvoBDUIg6MhT5OaxPVOfxXfo5pCRQp/XWDXJrnJmmByqAKb/5CsMdrZNmE8ytEIETRzlEXDl5l0gdxUHKbyZVID0ORrzWzqZmTu8KzCTHJhuKa9unjY4MVd9Z8Z/De2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768560128; c=relaxed/simple;
-	bh=7Bs83/3GKpZIet4A+GEy6AGATI40T938TARAD1FqpVU=;
+	s=arc-20240116; t=1768560129; c=relaxed/simple;
+	bh=rXTI3sY64hoG5V6aBH3z2wkNQ6wZUnODcq5kb+6G3tU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=DR/6/Xck+G8+i0KKAgvqw6fsCwC4bNBNeaylmTnSRObTPfQ/VexT0aVXL7K232+v5NzP02hu0LMB1BsVJhBcMZJs9SnzifPdC9h6zB5xG2+Jid+T5zeMS4jFqp07+NqXxkQji6mT3QWqpa2UAkF3zjY6lGwrIMJqbGO/IQOX5mg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.45
+	 In-Reply-To:To:Cc; b=CLdndsOm9xdOgya3kyq3pTrLdcv3AdFLyXN9HPJveNsEZrDw0NnROaV7ba6JSCr5RtXBI9K6LqziWhs+Kje5vrWVgo52aR6GstuBY5V0pT/wiYZ6h7Rm3+3jMltLEY858Zv5P2wuZ6P6vg7Krnf73MoQXrkhVZriU+t8c44txW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-4040996405eso1205512fac.2
-        for <linux-spi@vger.kernel.org>; Fri, 16 Jan 2026 02:42:00 -0800 (PST)
+Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-7cfcebf1725so1265882a34.1
+        for <linux-spi@vger.kernel.org>; Fri, 16 Jan 2026 02:42:04 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768560119; x=1769164919;
+        d=1e100.net; s=20230601; t=1768560123; x=1769164923;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=sH5vxI6dNW/ff+71XEyDBEVLOLjPNS7CrwRsoGXUEMk=;
-        b=YKbK/MdahE9Hk5NjYFiYba4NUGP4rWffM7AhMaonc12p8B+7pKkALUPuC9BHHjXIdE
-         tsWvYy0ArW/Y6n4BEJN7IRu9U8x8KlqkLvxm5tMJ64xcmemdBBQ50o39chzj099Jw9+u
-         H0ylv5Xp02GcBRLPQqmuCzncDgLmbmBualyKo1ZFkLkIm+Dpi+Zvj8C0yDINs6pFn/Ct
-         qlQYLtUikxfbn5FAP6yDvwCDA4qXzD82ncmZzrSaz9scFSn7zj8HB6JC7CDLStZvoo01
-         cXergrgG7s0tVtdvg9vvRBFESn2zpqb2kaphPjwcX9tMpjmH1GSeUB0GV03I24w0OKOe
-         i+oA==
-X-Forwarded-Encrypted: i=1; AJvYcCU1lUuUBdfo3hBLE6zMIPKVoFQqFz0/sRH4TLN6yPY7AZhmU5LYNzY9t879U8N7OuveXdQND91Zj9s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNzHKdhLB5MKmsoVO5kv1awfv0nA6BY5jAuuB2MKlrPgl05ihx
-	agqPf/L0hofVBzFhAMUq0Bibpll3peL529v0mwdpfygMKHSIX0RqgNOd
-X-Gm-Gg: AY/fxX6/fVyYJrrKZPJvQA0D6Bau0RycoF5/5CJX+8Gp1Uj3lwdOWQQw+wNU75LrcQD
-	rrQExsbDrUzcHT0cPfc3Ss6iig/UoN4OJS49DM+FefU/N5dhDGFoS4gZhnVRK8DvuUqLVlzPBnW
-	WI7ML0w4NPPE2BbdhTeDSXZiVAzk8XYK22NcHoI+WPgvhZU2p7AUeQ8EaCNV/TUE4HwqyjEUZxY
-	tQbYM5Z8qrwY1SDclI/kmKfN1Bk5rgFl7sVcy4v8vMH3SvxDvp7RLer6rvRIyiKs/mqyANUooWR
-	4B3hhrmo6QutJSuOrQp1COEhnBI5BtgauTlZd5aROHOl3StoNRGqjDPRbEk18P+veX/Os33qGcS
-	pVhhrA+Nu69U0mfMZfVZPU3doSQOnTITEknHowLhX3/CJprk6Zjg9ghME1NxxakDBwx9tjueL8H
-	MgewF81pO3PoG/
-X-Received: by 2002:a05:6820:222a:b0:65d:363:b874 with SMTP id 006d021491bc7-66117990118mr1027149eaf.32.1768560119255;
-        Fri, 16 Jan 2026 02:41:59 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:56::])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4044bd150dasm1639426fac.14.2026.01.16.02.41.57
+        bh=0AA7Y0IuqP0pVl1HcO3QatRU7TWIdgT6ORxtlbMnz/0=;
+        b=gAiF/uML27nFUX2ANxt6oYCXFfu8A8MYWSZW60L4unClbfZu1LbmRlefaGKZouUQQ3
+         r330PiQH2eRzr3XjRhKvNlfaCIMTPdvJxmyXLZoh46Oac4RFBTvzRRIxCRYxJyAPkXX2
+         WwG11sZImnqlI0at7TRUb4SITsQDzaGBhj1rHwipVm2Ce4f7SrZieFphbHKoIQMpVOwr
+         9kBSP7yIPk9QqcMIMljTiVZ6QlU7KeAg26nLaEWddUwn3qDZ94qFaSlg0IOPd2gs++f8
+         1fOwOWMdHbF9GLZOTyOTvQ2FeZtMq7zyXuCpIvFSfYsf1FgIbGm5YHs3vS9QRT4tCaNS
+         n9VQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVlDUfGZCYAkQCp4l6Zdu3oRXkIyvkHkhSeddivspTltVz9iB1/EZ+Lrmq8EpBflrQt+45oQ95L15U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzID8WZwqbdRFlbQsvXDtSZksZvOQL5x/xZTWFResA0ccyxW9Bl
+	pAWIHt/fSZeaGpuJuHZB0imQKXcsda7GpeNkSfN9l2KnspT4RQzFRmMG
+X-Gm-Gg: AY/fxX5mG7Z3h1ux8wNy4DuK1GWjzK9VFhd71ubErJdqmfxtSnMEj9t3f3n1f7y8TRD
+	WLfygbbgugE9fbYV5hbbCv/a8uCp2mne5GVbKpBKLUMc91zpH4ZT3g7xv0DSd3uL4LzuYL7nrW2
+	ZxwsEZfkq2JyjPW49QIRIFAm75/s7BJu1BbXjm9lkjMgsn60s/iy9C1VWRlIjMwOgEz9rmajrZE
+	iU8belNcqO7CA+vRxzds9vkLoGK6bsb8Pmn4b/+f5LqCTM5yEHuG7jpfr3fBxlBqd2mxRR/DtpD
+	oNP6Rk8R+eumv43fUZdDTzIxKcT+0UEf8N9xo1e2KUP6cxDYebS3e8nrdJl69JIElp2pQNceB2N
+	5/n5wsL+SvjyKb72q6MD1973aUQCZXoYEGdvRjTVYeoAMLE5IGjvJ/d6aSdC1w5zha/tq/DYE4g
+	==
+X-Received: by 2002:a05:6830:82e4:b0:7cf:d0b4:bab7 with SMTP id 46e09a7af769-7cfdee8f50emr1640254a34.34.1768560123395;
+        Fri, 16 Jan 2026 02:42:03 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7cfdf0d9142sm1480880a34.1.2026.01.16.02.42.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Jan 2026 02:41:58 -0800 (PST)
+        Fri, 16 Jan 2026 02:42:02 -0800 (PST)
 From: Breno Leitao <leitao@debian.org>
-Date: Fri, 16 Jan 2026 02:41:42 -0800
-Subject: [PATCH 2/6] spi: tegra210-quad: Move curr_xfer read inside
- spinlock
+Date: Fri, 16 Jan 2026 02:41:45 -0800
+Subject: [PATCH 5/6] spi: tegra210-quad: Protect curr_xfer clearing in
+ tegra_qspi_non_combined_seq_xfer
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -56,7 +56,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260116-tegra_xfer-v1-2-02d96c790619@debian.org>
+Message-Id: <20260116-tegra_xfer-v1-5-02d96c790619@debian.org>
 References: <20260116-tegra_xfer-v1-0-02d96c790619@debian.org>
 In-Reply-To: <20260116-tegra_xfer-v1-0-02d96c790619@debian.org>
 To: Thierry Reding <thierry.reding@gmail.com>, 
@@ -69,73 +69,55 @@ Cc: Thierry Reding <treding@nvidia.com>, linux-tegra@vger.kernel.org,
  Breno Leitao <leitao@debian.org>, kernel-team@meta.com, puranjay@kernel.org, 
  usamaarif642@gmail.com
 X-Mailer: b4 0.15-dev-47773
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1886; i=leitao@debian.org;
- h=from:subject:message-id; bh=7Bs83/3GKpZIet4A+GEy6AGATI40T938TARAD1FqpVU=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpahXyQcmiX+lZ6+VH1IlXn9H2/Ow+031UEs7B1
- 9pJkFfc28SJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaWoV8gAKCRA1o5Of/Hh3
- bS7DD/9DE0jwX2tOQ8Bch5QwkoSGgWuEnWGW62EJ8jGhgF8Q4Zuqhdwg45Fol0ls57+b1n/JoHt
- so8t5Cc9inZQqQqUJyifNjdhj168nrbkWC0Wn+hXlSL2mXT/Pt9peV+9yv+zpmQ0a4eSbdzMcUe
- YZZGMMTSyLdrJ+6RAvKWOxeOzPqOfWrX/hoi5cdSVEcTYChZUYlJbfuEEYw55iY9dmYBgjMiqgG
- KzRawCzdM3l98ObQluHtv212HYJlRWAUijDNsl3HpKHWHvdL8oi0kI0MVvw6C511kKAvlRlmnLy
- HDqsj/u8rsjZoSzYz0rOkXIyb8Z839JjE2be6zPGAbKo5W4jtzzg/AIRskCsTwWgobkvCVL0+B4
- v+WLk/qN54dWt/dyShTJgE7t9CTTMGcdIW51PGy4/FPe1B2GaOc7pwkEhDBQQDZUsxhlhzHMTlw
- zufcm2X99yGwpd5DnSzDc0a7QwOOAoGYm65xizvqsAtsqUAEG3/hjwXrgp4Azcm5qyG8tCWcb1X
- GxOWmT+Yn0CYs2s8ZtPjEj2dNSGSKG6+HRywgZtfnReBgYWfRDtGlbb2Cme1Ffuhmj7LlMSdLS/
- eeTIDkht/+X42QhFBiNGh4Un+EjnEaQeBIpj2j+RBCwHg/qAEuBm5wRM4Z8goI+BbVANHqO8E29
- hQnDuJEl5Wybfyw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1208; i=leitao@debian.org;
+ h=from:subject:message-id; bh=rXTI3sY64hoG5V6aBH3z2wkNQ6wZUnODcq5kb+6G3tU=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpahXyKDqDLy9UiFdHIdAnuTY95cnWgrnwOfWdb
+ X+yE3bypBGJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaWoV8gAKCRA1o5Of/Hh3
+ bfe4EACtv6gkekdzoWC0uBpx8BTg11Qj2SxS+lMOa/KXjIBBZrx9Vq4YfUrFK0WRGupFU9VAA+6
+ E3rQLJ14PsLpEjBxO1imfKO4yNi6A10oCPKAmL9Svk5VgvPx3KbMcuc9dg8iPCW8aJjdg0rMj9b
+ sEyWXfoa1kIfUGqpSQ5ZyVbZ7qTl8ZBCOL8WRumWVda+QCYWQph8iFVVRoknhyejv1nx/KNbLua
+ yWAef/c6s8JdwA49o5TsD66LhOwDCTAw3B1zu0pgPbwJGd3BcY0DSsikVFs1UyyLl2jASseYPN6
+ A4VK8cpfci1rSIuXS7V57N0PRhcv4Jno8K06oZP59OqbFHCD+Q7lkGwBP+ojf+R46fmJChCywdZ
+ pLCYs64ioYh3CDNl6usNLABSMxF4U2x6ut4JX0zUECdzRowk4hB5ibbBSgzixZHXHcY5l1g2/Xj
+ waIXTFR6d20JspOHFu8qWBt93haW9vac8wrgm22s5oey13Wlb3k2a1LNZpWSuMo36Jzc7owoHSg
+ mleEkZW4yi3BWXat43Ys/gUixMlmPmsHBMTX25hPruCOWl4Fd9aXBHyhjLEfrZ+MxePO/+FN6jN
+ bjaBDCoEwdwUi8S01QE2iqtv01QNIEMpBQ4BVpNwRFvakn4jjhASR/8Dh1fX+pOAOiSNhTKJTZ7
+ 9J0z3FoDNW9SH2w==
 X-Developer-Key: i=leitao@debian.org; a=openpgp;
  fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 
-Move the assignment of the transfer pointer from curr_xfer inside the
-spinlock critical section in both handle_cpu_based_xfer() and
-handle_dma_based_xfer().
+Protect the curr_xfer clearing in tegra_qspi_non_combined_seq_xfer()
+with the spinlock to prevent a race with the interrupt handler that
+reads this field to check if a transfer is in progress.
 
-Previously, curr_xfer was read before acquiring the lock, creating a
-window where the timeout path could clear curr_xfer between reading it
-and using it. By moving the read inside the lock, the handlers are
-guaranteed to see a consistent value that cannot be modified by the
-timeout path.
-
-Fixes: 921fc1838fb0 ("spi: tegra210-quad: Add support for Tegra210 QSPI controller")
+Fixes: b4e002d8a7ce ("spi: tegra210-quad: Fix timeout handling")
 Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- drivers/spi/spi-tegra210-quad.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/spi/spi-tegra210-quad.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
-index f0408c0b4b98..ee291b9e9e9c 100644
+index 669e01d3f56a..79aeb80aa4a7 100644
 --- a/drivers/spi/spi-tegra210-quad.c
 +++ b/drivers/spi/spi-tegra210-quad.c
-@@ -1440,10 +1440,11 @@ static int tegra_qspi_transfer_one_message(struct spi_controller *host,
+@@ -1288,6 +1288,7 @@ static int tegra_qspi_non_combined_seq_xfer(struct tegra_qspi *tqspi,
+ 	struct spi_transfer *transfer;
+ 	bool is_first_msg = true;
+ 	int ret = 0, val = 0;
++	unsigned long flags;
  
- static irqreturn_t handle_cpu_based_xfer(struct tegra_qspi *tqspi)
- {
--	struct spi_transfer *t = tqspi->curr_xfer;
-+	struct spi_transfer *t;
- 	unsigned long flags;
+ 	msg->status = 0;
+ 	msg->actual_length = 0;
+@@ -1368,7 +1369,9 @@ static int tegra_qspi_non_combined_seq_xfer(struct tegra_qspi *tqspi,
+ 		msg->actual_length += xfer->len + dummy_bytes;
  
- 	spin_lock_irqsave(&tqspi->lock, flags);
-+	t = tqspi->curr_xfer;
+ complete_xfer:
++		spin_lock_irqsave(&tqspi->lock, flags);
+ 		tqspi->curr_xfer = NULL;
++		spin_unlock_irqrestore(&tqspi->lock, flags);
  
- 	if (tqspi->tx_status ||  tqspi->rx_status) {
- 		tegra_qspi_handle_error(tqspi);
-@@ -1474,7 +1475,7 @@ static irqreturn_t handle_cpu_based_xfer(struct tegra_qspi *tqspi)
- 
- static irqreturn_t handle_dma_based_xfer(struct tegra_qspi *tqspi)
- {
--	struct spi_transfer *t = tqspi->curr_xfer;
-+	struct spi_transfer *t;
- 	unsigned int total_fifo_words;
- 	unsigned long flags;
- 	long wait_status;
-@@ -1513,6 +1514,7 @@ static irqreturn_t handle_dma_based_xfer(struct tegra_qspi *tqspi)
- 	}
- 
- 	spin_lock_irqsave(&tqspi->lock, flags);
-+	t = tqspi->curr_xfer;
- 
- 	if (num_errors) {
- 		tegra_qspi_dma_unmap_xfer(tqspi, t);
+ 		if (ret < 0) {
+ 			tegra_qspi_transfer_end(spi);
 
 -- 
 2.47.3

@@ -1,93 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8016D2D6605;
-	Mon, 19 Jan 2026 07:06:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54C082DC76D;
+	Mon, 19 Jan 2026 07:44:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768806394; cv=none; b=ulZgkVBFGpHJsKdKcBc4KDYMQoltRBQd50mhPDWHC2z7iJ+YrBQ2dHOl+JMT6OgYmVsLsnSvnyceJ9M2Uqg7+uOy+UDnjYwuV6UpY2JOxCZS9lRONT52EVkmi71tpe/vc5WIWobFKjC9ko3woKsRUkH+hkzup4Z+C0uJHIMLfhU=
+	t=1768808683; cv=none; b=hTTZ74HwP5WpNBaSLFoNjbM/y6NEhg2OXGS4eKhVjyCFXYCMO3bCfvvCt7DEXPIlm/augm3EAnedgfzqGAWL6hG5ovpCtrwH3mkdAUFwACcAF0BljGJJvpe0HFRP2RmBPP5H97tv4w+/qU3blhNppAm+f1KSzH93JyoUZ8LHHuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768806394; c=relaxed/simple;
-	bh=HBqZZvttDuyVc2JsBsl5S4x97pPOmaIQnnZvUvbafxg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=C5StuvkRTPbuHImuyQmNtL4TK8N0eRD7W/9uarYImSXMeTD8KC8skJsBuyZ3TUlQCmdv92v9JYbKPklv3HrLn1TatINQaLuqlQtbc8KfD63pxljkvPTGomRyksJ7XhZsnaTSKSBbNZ+84FvqfGU8XfkvIfPegz2PuvK+LYHaHA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OFdoEsa1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768808683; c=relaxed/simple;
+	bh=BIo0jKLKMFAIDPL909fz1ND66fdoRIf541c3b307ars=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=b7CwlFFVrhuAX0tCqYMyxFeGc6i22uQH8suVrkB+vJnwHGGGz5pNvSdhjHDuykby7xnDWjlsSrJ/vLxSNn1++aoU3uDgRIe2PgSKhV+BQqBm0yy9v7ObTeSaJOlh7N+5CyY7vWwdHs7hsWQ7pgFqA2jqz6R8Z+Zr1+UCqces1/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cvQ5UY4V; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OFdoEsa1"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 3552AC116C6;
-	Mon, 19 Jan 2026 07:06:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768806394;
-	bh=HBqZZvttDuyVc2JsBsl5S4x97pPOmaIQnnZvUvbafxg=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=OFdoEsa1eUTSjqQReNF/DNXF6nenxZgTiLeddbOqwOZIunyG1rt3VLqqbTMf0H07D
-	 6OfppIZvn/gZIKWnjvL0QVyoy3XoROKy5BZaEm5os0eYcjXBxrP+D7Djzv9XeVm1Pu
-	 gqPeA+HZwxqDEwgvogwfHrWcoDbiqKKSe1vwpNekNBEi6yBFgdKcSJ1Z8lX4OMIwad
-	 nu3w9t853386cRA+xpfcWALBcuRMQFlxwTvNwaqhtbbWk7+4sLS8oM9s2hLVj+c3P1
-	 eFLr7WNMxvzREFUM2a41wWRPP8h9cTB/8yelT8HUpJkv0MFqX9Zd5SXkSUU+nBTNxv
-	 xG5qZbPaQunPA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 24897CA5FF1;
-	Mon, 19 Jan 2026 07:06:34 +0000 (UTC)
-From: Abdurrahman Hussain via B4 Relay <devnull+abdurrahman.nexthop.ai@kernel.org>
-Date: Mon, 19 Jan 2026 07:06:22 +0000
-Subject: [PATCH v3 1/3] spi: dt-bindings: xilinx: make interrupts optional
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cvQ5UY4V"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768808682; x=1800344682;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=BIo0jKLKMFAIDPL909fz1ND66fdoRIf541c3b307ars=;
+  b=cvQ5UY4VQYVJu2vC8zgl/yqtCHepaO5N7aDygkQ77rtUcLxzXK/aEi8N
+   0dG5ZzVWAB0OUkgiFTsM//7OvqvlmavAkWvejqNvkaWwqiIrOEB0CCbQg
+   Otnpmnyk+3oHT7QpP+YM/cW4cvRLqO7mteipUwWVVCLZJ98df+PqlC3gR
+   xG1AM97yXsuTBXtXRTYrJZzZuYB5qNMFjc5MeDsYKz0sVHNfByq55N1Ht
+   0/G4II0FafjuDoHMGroCbDtA/qA2q5BOqXnm4s5pc0+/tCOTluaZAHw0F
+   kJ+P4/m+2tG2tsp7iCar/7veDgV58nUddDL8TcYDy1YORVATtyzV6kEpq
+   w==;
+X-CSE-ConnectionGUID: 3Xwd6yS2TeqfX1fYjDV2EA==
+X-CSE-MsgGUID: LmRXR7mBRaeARW2v/BDFOQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11675"; a="70102679"
+X-IronPort-AV: E=Sophos;i="6.21,237,1763452800"; 
+   d="scan'208";a="70102679"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2026 23:44:42 -0800
+X-CSE-ConnectionGUID: XlhRqnxOSaaCa5PXP0aiaw==
+X-CSE-MsgGUID: Gftq0feoT9yh5s4avZC4kw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,237,1763452800"; 
+   d="scan'208";a="204947944"
+Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost) ([10.245.244.37])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2026 23:44:39 -0800
+Date: Mon, 19 Jan 2026 09:44:35 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Andy Shevchenko <andy@kernel.org>,
+	Sean Anderson <sean.anderson@linux.dev>, linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org
+Subject: Re: [PATCH v5 3/9] spi: support controllers with multiple data lanes
+Message-ID: <aW3g4zg3cRQRPD8R@smile.fi.intel.com>
+References: <20260112-spi-add-multi-bus-support-v5-0-295f4f09f6ba@baylibre.com>
+ <20260112-spi-add-multi-bus-support-v5-3-295f4f09f6ba@baylibre.com>
+ <aWVGZWg7zLpeG3Kz@smile.fi.intel.com>
+ <22a6a28c-0f03-4571-b2a0-8c9b82788b68@sirena.org.uk>
+ <aWVNBPfv-R5erugo@smile.fi.intel.com>
+ <8e12d2a5-3780-45af-a70c-4c112184fcc6@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260119-spi-xilinx-v3-1-4566c33bac0d@nexthop.ai>
-References: <20260119-spi-xilinx-v3-0-4566c33bac0d@nexthop.ai>
-In-Reply-To: <20260119-spi-xilinx-v3-0-4566c33bac0d@nexthop.ai>
-To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Michal Simek <michal.simek@amd.com>
-Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Abdurrahman Hussain <abdurrahman@nexthop.ai>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1768806393; l=837;
- i=abdurrahman@nexthop.ai; s=20260119; h=from:subject:message-id;
- bh=Rbmi4yji+D6yvwIqXdPoR0dJO1NzfG8jvbb3qwJR8Ss=;
- b=JQle1H+it+z7PYjip62TbpkcvzOoAbHLCXfpWxiR0e3EWzfcdXFENf+yN80RvCghBvCtGnzxy
- TNfS8lYEYh6BSevl/AA3QWQj6Fdsc6TRsq6Fcygb9T9ypG0L823enW0
-X-Developer-Key: i=abdurrahman@nexthop.ai; a=ed25519;
- pk=S+ysnf+NwMcBdHBlyKIUEAtaFGSIhQwcJcgcXhq0osg=
-X-Endpoint-Received: by B4 Relay for abdurrahman@nexthop.ai/20260119 with
- auth_id=608
-X-Original-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Reply-To: abdurrahman@nexthop.ai
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8e12d2a5-3780-45af-a70c-4c112184fcc6@baylibre.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+On Fri, Jan 16, 2026 at 05:12:09PM -0600, David Lechner wrote:
+> On 1/12/26 1:35 PM, Andy Shevchenko wrote:
+> > On Mon, Jan 12, 2026 at 07:11:26PM +0000, Mark Brown wrote:
+> >> On Mon, Jan 12, 2026 at 09:07:17PM +0200, Andy Shevchenko wrote:
+> >>> On Mon, Jan 12, 2026 at 11:45:21AM -0600, David Lechner wrote:
 
-Both the hardware and driver already support polling mode. By removing
-the mandatory IRQ requirement during probe, the driver can now fall
-back to polling when an interrupt is unavailable, ensuring
-compatibility with a wider range of systems.
+...
 
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
----
- Documentation/devicetree/bindings/spi/spi-xilinx.yaml | 1 -
- 1 file changed, 1 deletion(-)
+> >>>> +	/* Multi-lane SPI controller support. */
+> >>>> +	u32			tx_lane_map[SPI_DEVICE_DATA_LANE_CNT_MAX];
+> >>>> +	u32			num_tx_lanes;
+> >>>> +	u32			rx_lane_map[SPI_DEVICE_DATA_LANE_CNT_MAX];
+> >>>> +	u32			num_rx_lanes;
+> >>
+> >>> This adds 72 bytes in _each_ instance of spi_device on the platforms that do
+> >>> not use the feature and might not ever use it. Can we move to the pointer
+> >>> and allocate the mentioned fields separately, please?
+> >>
+> >> Do we have real systems where we have enough SPI devices for anyone to
+> >> care?
+> > 
+> > Define "enough" :-) To me even dozen of devices is enough (it gets almost a 1kB
+> > of space) esp. if we are talking about quite low profile embedded systems.
+> 
+> We could make it u8 and save the same amount (on 64-bit systems) while avoiding
+> the extra complexity of separate allocation.
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-xilinx.yaml b/Documentation/devicetree/bindings/spi/spi-xilinx.yaml
-index 4beb3af0416d..24e62530d432 100644
---- a/Documentation/devicetree/bindings/spi/spi-xilinx.yaml
-+++ b/Documentation/devicetree/bindings/spi/spi-xilinx.yaml
-@@ -38,7 +38,6 @@ properties:
- required:
-   - compatible
-   - reg
--  - interrupts
- 
- unevaluatedProperties: false
- 
+Have you run `pahole` on this, btw? How big is it right now and do you fit
+(aligned) with cache lines with this fields?
+
+> I'm not particularly keen on requiring `/bits/ 8` in the devicetree though since
+> it is unusual and often trips people up.
+
+It can be transformed (to a smaller one) after reading
+to a local (bigger) array.
 
 -- 
-2.52.0
+With Best Regards,
+Andy Shevchenko
 
 

@@ -1,79 +1,88 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 137FF33DEF9;
-	Tue, 20 Jan 2026 16:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E03C4328B69;
+	Tue, 20 Jan 2026 17:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768927983; cv=none; b=V8IpksQgFqIjS9q2BjJGHBQm6DMzg1GPERMTe1TXP1oEUOdaNdbIKzaukYzUxlbstizBKFIG9W6U7w8urW/h7SwQFVVd0gT65uQGAGC14DXh8d4a2Lymadz2hldf2NtqaJXrvGr4TtLCnaf+Nhv9cUs6raQMu2x/hRu+GrmNVKA=
+	t=1768931908; cv=none; b=MR741rA21oJtwxqtipjJa+wljUy/wds+34gZYZV5PooDkuEGRw99cF0gyAYQ0o9VjirSheBmvW8Eeb41sdo9RSMNl2j0eYoeJXAWseVPV4ibfleH5oN0xOvXuL+zKNXLm4AmvRapxb52Jy59hXuk+9Fj5+GPE3N+Rd+fmvAUPPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768927983; c=relaxed/simple;
-	bh=Ger41I8x6kqqHGn743sCsSsB7ojX5dsspT8FOm5T+W0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W9NXui7qB1slnefNSWL+w9VmKt57WleVNpRERq0ibyJ9qcWtKP2TDDDtrVL5cuR0r3TVzfL75H/L0rtAbbyhzYo3EKdQanZhGZ31BCNYPUxRxL/O/x7I/XpPpRhpFyXHUmIqo44y718LHR6s+EBxiNTmBnxg95JT0Cqba7A6fJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F8FC16AAE;
-	Tue, 20 Jan 2026 16:52:56 +0000 (UTC)
-Date: Tue, 20 Jan 2026 16:52:53 +0000
-From: Mark Brown <broonie@debian.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Vishwaroop A <va@nvidia.com>, thierry.reding@gmail.com,
-	treding@nvidia.com, jonathanh@nvidia.com, skomatineni@nvidia.com,
-	ldewangan@nvidia.com, linux-spi@vger.kernel.org,
-	linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kernel-team@meta.com, puranjay@kernel.org, usamaarif642@gmail.com
-Subject: Re: [PATCH 0/6] spi: tegra-qspi: Fix race condition causing NULL
- pointer dereference and spurious IRQ
-Message-ID: <0cba7a42-f322-48c8-ae89-966779355420@sirena.org.uk>
-References: <20260116-tegra_xfer-v1-0-02d96c790619@debian.org>
- <20260120112242.3766700-1-va@nvidia.com>
- <aW-seUXIJv4Lz7bK@gmail.com>
+	s=arc-20240116; t=1768931908; c=relaxed/simple;
+	bh=Nk9VnswpvEWj76/iU42LuuRakmT+FfshH+6D9vCd9hQ=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=QZLnVWMynlcq5KT5CirSmilhkhyj5hj2Wf85yk+oetIId+wxsjijj6xvyDtBMQOunlRPRoTtfftbF5f9MN8duVS0DP43SUV1IvuY9T+NHX+m5EN20GnGynQ4SgfpW7E2ob/WnNYw3rlJ5oxZyyW8LdPukdl21YO8K3oAjyJdDHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fKHzqjAI; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fKHzqjAI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4C62C19425;
+	Tue, 20 Jan 2026 17:58:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768931907;
+	bh=Nk9VnswpvEWj76/iU42LuuRakmT+FfshH+6D9vCd9hQ=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=fKHzqjAIwjHA7/QZSWBOqz8oUkMNNdeeYWJe7XhItW3eP0AfaR0pQXMsf82N1KrBx
+	 CebD3npCjUru2KLNlzU7eKqOvlD0QXZwWzeLuZnuE41Co5vG4bLBL+dECSzpPQV+J0
+	 ZC/1AcxnuphKob8FTzr3LpZlmwY0kLBnhFVasD8vm8qX4WKczYPGvvZmbSBUaqfkgF
+	 v4O/WHZAvRQrk1JnuL94/rxbxRmNXiMi78hLHRzd6KZIGx9OksQxoRPYo7HAcRy9mm
+	 rISMvSAzZT6IKOxxPXmFM1p9bLkMdoptgekLqpCgNKJn5A2d9/gnjMAIDjGE3sYKZ2
+	 94ZfTz5q41BlQ==
+From: Mark Brown <broonie@kernel.org>
+To: Han Xu <han.xu@nxp.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Haibo Chen <haibo.chen@nxp.com>
+Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev, 
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20260114-xspi-imx952-v1-0-acc60a5a2a9d@nxp.com>
+References: <20260114-xspi-imx952-v1-0-acc60a5a2a9d@nxp.com>
+Subject: Re: (subset) [PATCH 0/3] Add MT35XU01G SPI NOR flash on
+ i.MX952-EVK board
+Message-Id: <176893190467.701694.2959767523548654547.b4-ty@kernel.org>
+Date: Tue, 20 Jan 2026 17:58:24 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="4BCuffH8cCdM3zc9"
-Content-Disposition: inline
-In-Reply-To: <aW-seUXIJv4Lz7bK@gmail.com>
-X-Cookie: Slippery when wet.
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-47773
 
+On Wed, 14 Jan 2026 14:49:44 +0800, Haibo Chen wrote:
+> on i.MX952 EVK board, there is MT35XU01G SPI NOR, i.MX952 control
+> this nor device through XSPI controller.
+> 
+> 
 
---4BCuffH8cCdM3zc9
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Applied to
 
-On Tue, Jan 20, 2026 at 08:49:23AM -0800, Breno Leitao wrote:
-> On Tue, Jan 20, 2026 at 11:22:42AM +0000, Vishwaroop A wrote:
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-> -       if (!tqspi->curr_xfer)
-> +       if (!tqspi->curr_xfer) {
-> +               /* Spurious interrupt - transfer not ready */
-> +               if (!(status & QSPI_RDY))
-> +                       return IRQ_HANDLED;
-> +               /* Real interrupt, already handled by timeout path */
->                 return IRQ_NONE;
-> +       }
+Thanks!
 
-IRQ_NONE means that there was no interrupt flagged by the hardware, if
-there was an interrupt you should return IRQ_HANDLED.  You might confuse
-genirq if you flag it spuriously.
+[1/3] spi: dt-bindings: nxp,imx94-xspi: add nxp,imx952-xspi
+      commit: 3495a5df94a9ad7a8940bcb3ebfda58255f5b952
 
---4BCuffH8cCdM3zc9
-Content-Type: application/pgp-signature; name="signature.asc"
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
------BEGIN PGP SIGNATURE-----
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmlvsuQACgkQJNaLcl1U
-h9D8FQf+NkYChgWwqjcsZfFdF/vvQsvS8zmlpHHQwO4TKImqgDFA6yN854wf9MZ/
-JA45cUZha9G/kqfgK983F5w1WdLGxc15OG0/DzCihsS1D+t/NOwKKObwHwxAhzYa
-FfADNvXYEegiprKwRNpFwX1QwK4xB3g1cBhg6tr5yQAYnvScRJtBEajHi1Yi2IxH
-4jO+zYzgrSiVlrnEOX7r/GFQ/jkLSXoaqfbvbKgx1lWpjsLP+XwyyfG6OzZIg+P6
-AzWIDTlvUifvCi/7tGk+NPWOrAatuj68KGr2hpEV6k1wBnAjt0x6hB+prDFef14J
-5dSnyIZlVeRzBaWeb0LxnG8IkZjQjw==
-=dVgB
------END PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---4BCuffH8cCdM3zc9--
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+

@@ -1,34 +1,33 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC4D036405E;
-	Tue, 20 Jan 2026 20:41:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A97E2C3261;
+	Tue, 20 Jan 2026 20:49:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768941701; cv=none; b=pKkJ2Z1xRtBPpLHUMkt2eoB/obORI2GZePI2bqINk1nvpj6KppVhKTpiPZw8/rGAiPCZ4qPqB+WiKCgl6B8Nu1XOZT2AvLchvRVI+YqvEB//xUzzNYgm4IwdeMCbn0zz1yAC26x9yS9paz6CXI8l/9W4QTPiJ9at2CPUMz/nYWw=
+	t=1768942153; cv=none; b=T0HgvBtUuoLaDGdunLGhVOHnuryrZww0fxaJMe3UtBS8/UnP+usQ8Qd34ojo+b56fcjRWAUE+ZyqrAMNEBDQQFpBjacO3jKQH5h/ruTn2o+qjFs6XZGwvtcso+DPlqS73GJyGN1DNY1Wh0BqAxTct9jWpb/JjlSmu2pEDkDbsLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768941701; c=relaxed/simple;
-	bh=ZWfdevqTNbiZTckXQ6BXrXWjanD5Y4ab+Ef+eJx9Es8=;
+	s=arc-20240116; t=1768942153; c=relaxed/simple;
+	bh=y07lUXXR9I+hg1dVmuu/CxuRNF3OcrvhEbQJ+/flGe8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gMd/ftA9HJ/Qfwe/E20k6MJpNbmiecdSruMuhv2iJkis8yEiePfEkJfjo1juH5UYKv8YPlKEoojYU79Q4SEx23sJiC0rRy4Y6FLzwbVq0b33VVOT/X+F7RWHj/EaBOQ2hDK01Co39zVTJlfgDQwJZ5iP3eKKqZ7JZs1/Jj+/k8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=hBkg/u0d; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=JyyInvqHoTMMI/zfpyjyuzSnCrCvIMNssGAcCNBXZLWW6VixGeVk9oRw6K1H7uSFXwSIlT88j36jjCLsV2WwB0DuW6mYybQzz16Janv1wD+T6UJ3SpEYIk1S1F4YRlsnC316EKF3r4XsvT7XhZJF7sr3n017PqBMbTa6LrrMO2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=B9NFqMHs; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="hBkg/u0d"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="B9NFqMHs"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=YqoCEoGScXb2qskUTOfF9b2CQAOOiVd4gaLNwGWvgJY=; b=hB
-	kg/u0dhM/724wh3XOQtS8EBwpbdjgjLsydQVhl9LgXH+98jKP+CDn45O3PMMCyGTsyOI69ZENlcdp
-	ns/C4Z7Yt9zwqP37Ae7MCfd/y/lgembYDR04JGZepifzETU1oJ0jZufh46MPqbE7nh1pl56IOItIk
-	OkdN5BEcG6RJygI=;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=XuShmbIsWHkVNMchEJAOvTV/LRlfC3PDeUwV/9Gb9tw=; b=B9NFqMHsuVdpi53LPqtVcEevCC
+	vkkuVm0zCdGkepUf/uYbkRE6zxo7T5lmJqRmj/OZUc1hl9Gu5g+4uNZIZGReL6zGdq/aBJTSeq3kZ
+	4ZJEv/DtTs5Z/QKrFMqLppeGw/Bg5zzQvAatuwl4JlXXYb8+l8nl5VAhsKrzUZQoxkA8=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1viIXX-003ikT-7c; Tue, 20 Jan 2026 21:41:27 +0100
-Date: Tue, 20 Jan 2026 21:41:27 +0100
+	id 1viIes-003inO-RL; Tue, 20 Jan 2026 21:49:02 +0100
+Date: Tue, 20 Jan 2026 21:49:02 +0100
 From: Andrew Lunn <andrew@lunn.ch>
 To: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 Cc: Mark Brown <broonie@kernel.org>, Michal Simek <michal.simek@amd.com>,
@@ -39,7 +38,7 @@ Cc: Mark Brown <broonie@kernel.org>, Michal Simek <michal.simek@amd.com>,
 	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v3 3/3] spi: xilinx: use device property accessors.
-Message-ID: <d5909def-1ce8-409e-a5cd-2405da89e5e2@lunn.ch>
+Message-ID: <e8259a1b-ad3a-4f87-ae56-00eb3f4aa4a1@lunn.ch>
 References: <b9ad8ab8-7985-4c89-a82b-c7f31d32c167@sirena.org.uk>
  <a6d57890-89c1-445e-836c-d8239d20c621@amd.com>
  <b03307f7-93f6-4680-9241-cf28b5456fd0@sirena.org.uk>
@@ -56,34 +55,23 @@ List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <80A8F67E-7A01-4F9F-9D84-29722678A2CE@nexthop.ai>
 
-> We could, but we don’t own the Xilinx IP blocks. Are we not justified in using PRP0001
-> hack until the driver owner adds the HIDs? Wasn’t PRP0001 created as an escape hatch for
-> these kind of scenarios?
+> This is not for a normal off the shelf server. In our case we are
+> building an embedded switch with an AMD CPU and Xilinx FPGAs that
+> happens to use EDK2 based BIOS and ACPI.
 
-I suspect your wording is wrong here. You probably have a license for
-the Xilinx IP blocks, you are using in your synthesising for use in
-your FPGA.
+I would actually say, that is the core of your problem.
 
-That i think you are trying to say is that you don't own the software
-driver for the Xilinx IP blocks? But that should not matter. The Linux
-community Maintains these drivers, and can make modifications to them.
-You as part of this community can propose a patch which adds the
-needed IDs to the driver.
+Look around at the networking world. Nobody uses x86 for core
+networking. Nobody uses ACPI. Everything is MIPS, ARM, or Risc-V and
+using DT.  Linux has mature and complex DT bindings for networking,
+ACPI has nothing.
 
-The "escape hatch" is generally used when there is a mature DT
-binding, but nothing for ACPI. Linux has a mature and complex set of
-DT bindings around network device sub-components, where Linux drivers
-all the sub-components. ACPI has nothing in this area, because network
-devices used in the ACPI world tend to use firmware, not Linux to
-drive the hardware. In such a case, using the escape hatch makes
-sense. However, I2C, SPI, etc all have well established ACPI bindings
-and are part of the basic ACPI standard. It makes no sense to use the
-"escape hatch" hatch for such devices. Please follow the ACPI
-standard.
+You might want to consider using DT with x86. It is possible. Take a
+look at drivers/misc/lan966x_pci.dtso, which is used for networking,
+and can be used on x86.
 
-       Andrew
+    Andrew

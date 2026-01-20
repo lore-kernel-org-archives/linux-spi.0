@@ -1,244 +1,199 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1719D44CAFE
-	for <linux-spi@vger.kernel.org>; Tue, 20 Jan 2026 19:11:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5C0D478876;
+	Tue, 20 Jan 2026 19:22:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768936318; cv=none; b=pRQa0IK0OM4erVsHPtUZrlUfDwHAPkMAKwyCNCAqiL7JgEcQC7mVZAheWXTg2WI1HLB3fkN3dVG+X7Ro4/qRFfBwu6KGyZP1YuykKATVRds4UW/83fSsfzXALG1fp1/+4FZF51UeBR5jyzuu4LS/Ii625Zcx+teXd/Phya8ZQdo=
+	t=1768936959; cv=none; b=a6+qCrlqUVUAn7YeBDK2lLmdbzGS/f2rU6h/xnCAPUxWzj0T7gcnWQHVO3Sjbe63wMimZpU7Lb/jN4WBenvGSVliUNKobIwHqxToBk/hB+obHLMkbS3AlFRrKqoW0sMJAFJcvXDOjMu2RhX4xoT6NCL7ehXV+3QvVReMTvb8iA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768936318; c=relaxed/simple;
-	bh=XUTTZ+LQ8ip5e05hxZlANkRvBkum9oiZ0Z+yc+zZoDU=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=cScz6WgC2D/rYVLggdVlidIiLWwTj/QJKZyZ8W2jA4lImfiKNC/8TAZPRzTk3M/f1XR8IezMODOiU4Le0CPgOo9dKGmdAD28C1lScHmUt+/NjzGOtuD+zZfsX3ketpcdVbIfDUJ6Ys9pC1SvIz4L15P4141UptYePFQ5VRZJkrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nexthop.ai; spf=pass smtp.mailfrom=nexthop.ai; dkim=pass (2048-bit key) header.d=nexthop.ai header.i=@nexthop.ai header.b=ZA7c3uoi; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nexthop.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nexthop.ai
+	s=arc-20240116; t=1768936959; c=relaxed/simple;
+	bh=OVmbkw3k7fJ26f3GTMylBqqrvRkFQLNjf2AcM9UevMU=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=spci6KxDjVDn1GUZvW3mSJy/+UvS0QNjQlktC4mtcKMfkgiNPDovvhHKOOCAXr5LMLTrqvBu71hWhjFhYwZ9wH24CCXdim/Vfh9egJ3rPR+8UkBkjL0mYsIjIbSshK+qXbdsrxle0vpu04tfbyITPt6bFwQ/bcgqzmpajIXNabc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YlIDWci6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nexthop.ai header.i=@nexthop.ai header.b="ZA7c3uoi"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-81f42a49437so2882939b3a.0
-        for <linux-spi@vger.kernel.org>; Tue, 20 Jan 2026 11:11:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nexthop.ai; s=google; t=1768936316; x=1769541116; darn=vger.kernel.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ub8N3tY8GwCy8TqVlqK7eFFGB7gNEjREB31fE0IlsTg=;
-        b=ZA7c3uoiMSZWwTlRM4WmuRk+7pB6wSBc4pw/xD6IFTRB7g8zjejFCIjFefLhIZdj/C
-         I4y3mwuWtf12iCXyINo6re4QpV8bMzVYxeVuzvv2eR8aboxALlIqwq6WaPqo9jQY4SVA
-         B+RmkaXB5tOEke/DTdeLQx3XvbsJqm6Gxe1mVGMiczyO0T3kyzpIIMniLRh4TPpoo90C
-         6iRTp94Cx9TbtySnIipFDbXQlhS6KM6O1abNa/85DzJlZeqbnaaHWbtb4e5IfwgV90BN
-         xnLQSUUq/+91m1iywRYNsN1dH/yOPNioo5fr24tbR3CoEuoUFOp3nSxT1MFhQnFfYIrZ
-         InIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768936316; x=1769541116;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Ub8N3tY8GwCy8TqVlqK7eFFGB7gNEjREB31fE0IlsTg=;
-        b=uY1R21EzMNo3idRUdS4NrB9Pc8ASw1WgbZwB99wFsIRbnPqMM9VzZ/2NsgQhjEsHfw
-         Js6tompWl0AV+VjHsqH7ioFi4QC+Agk/G+/AKJntY2hyKo2X0vwbhYNZJzQGsQeeWFN+
-         9CAwvjO2ukJBcQbVUHA3rPAJeFqEeBBkUxTy2IyB98UPomBHVXDW1wyam1zgl608S+dn
-         WAt7t1mayl5pOYVPUiuS2eetq0WRBmaII6MN8xZaDekT4/60A6YHm0FqHwJfW0zui+pv
-         X6Sbk028xc7X9XKSwjwgIVCM9YpvGZYnHgEukAtBpxBV+545yShfJR3Gad/Z1AelB5tn
-         Il0A==
-X-Forwarded-Encrypted: i=1; AJvYcCVP9TO2WqhKJveSc/e1iohrEwyuaOj82MtBr258ewRSHOWbKOu0vLAd8UezNxmzUwG0TafUpFUD5Ts=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7KjiHn7/0Kja6/e8X8IVPyIUoXGOGV7ceGDL8aokRfai4Aism
-	1LVMI0UO2m1utwWClmiUwIs4FbImwRUxlQTRp9xkh1uhiExpuZTYJeVUKOijH2YLBxI=
-X-Gm-Gg: AY/fxX7KDJaQXMaHySYgUNdbajkGD7KJ2snVkh9dwVqv5abFw8I6JaaYl46TylyKvY1
-	QgInIlouqNMlJKSo+2DHAX3oFE7E0PymeRIiFqAcfrVtMVWksfK5ud/+VbfdN6ibhOi2ILmDyy/
-	y6HzxFMhCt7d35Mp3eQdTZ3QcchWJhH6ge5LHorRTARU1AApfjzpNgbkdiPAtCDiQtyRNTNvKt2
-	wrin3RxwvS6Tj3iYsMuubQbotqBXFyLUKlqBMseulbiOFCOEWhxNoOVZJ3rLXwveaJE3MOXsUHC
-	SVmEVOB5CCrK8+WDv1tnPGscsiton2UdXORWfOTnSSa9css9cI9Wj2r5vBgRGTl6TQbOXLHtRIs
-	38tN1s5IhuDntQMjQcEpwwNwfeijdBpbrJYkqF2JDQA2bJCNH9baSENxQuRodet0PeoVgfdlnqZ
-	HdhYvOUtwy4Ap2E91MJM44gDfAXYubUS9up3GDozkmiTfB9udeg4kCdGfTk0CnqoOP74V02UI=
-X-Received: by 2002:a05:6a21:7305:b0:36c:2cf5:9b06 with SMTP id adf61e73a8af0-38e45eacbfamr2933705637.79.1768936316195;
-        Tue, 20 Jan 2026 11:11:56 -0800 (PST)
-Received: from smtpclient.apple (c-24-16-26-157.hsd1.wa.comcast.net. [24.16.26.157])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c5edf354b24sm12357331a12.28.2026.01.20.11.11.55
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 20 Jan 2026 11:11:55 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YlIDWci6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3BB5C19422;
+	Tue, 20 Jan 2026 19:22:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768936958;
+	bh=OVmbkw3k7fJ26f3GTMylBqqrvRkFQLNjf2AcM9UevMU=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=YlIDWci6NaIrYvDjAq2yhQz8tWegT2Dg6owXkPTtWwCCNZy6TIGjxdkf0SjWMqrBS
+	 HZ1OYluozzxuGUb+8XWZyPhjHzhZZBTdn+x4fAQviriIGxbMX1dqT/c1f/SDma9EII
+	 glDqd9riC4rVx6B2QSNL57WNsH5WjpCsMft/TEmFUb+YsHy2dFuwVHN2w/p0QKAC/w
+	 5Sj7i2icD1/pyQOPwPNE/B2LChkgA736lCjfJaMApcMxmC8AfGe77IDEawz4zO7gsp
+	 7BnFoBJwZbhJtt0PHorTsf9ENVZR5l7hg6xF7YMzjdh3zo3J0vrT/Hr5cse6h9pQHI
+	 VNOGdReIfciTA==
+From: Mark Brown <broonie@kernel.org>
+To: Varshini Rajendran <varshini.rajendran@microchip.com>, 
+ Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Sunny Luo <sunny.luo@amlogic.com>, Janne Grunau <j@jannau.net>, 
+ Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>, CL Wang <cl634@andestech.com>, 
+ Manikandan Muralidharan <manikandan.m@microchip.com>, 
+ David Lechner <dlechner@baylibre.com>, 
+ Florian Fainelli <florian.fainelli@broadcom.com>, 
+ Jonas Gorski <jonas.gorski@gmail.com>, Hang Zhou <929513338@qq.com>, 
+ Jun Guo <jun.guo@cixtech.com>, Philipp Stanner <phasta@kernel.org>, 
+ Charles Keepax <ckeepax@opensource.cirrus.com>, 
+ Bartosz Golaszewski <brgl@kernel.org>, 
+ =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>, 
+ Shiji Yang <yangshiji66@outlook.com>, James Clark <james.clark@linaro.org>, 
+ Jonathan Marek <jonathan@marek.ca>, Carlos Song <carlos.song@nxp.com>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Huacai Chen <chenhuacai@kernel.org>, 
+ Xianwei Zhao <xianwei.zhao@amlogic.com>, 
+ Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>, 
+ Sergio Perez Gonzalez <sperezglz@gmail.com>, 
+ Miquel Raynal <miquel.raynal@bootlin.com>, 
+ Qianfeng Rong <rongqianfeng@vivo.com>, Haibo Chen <haibo.chen@nxp.com>, 
+ Gabor Juhos <j4g8y7@gmail.com>, Md Sadre Alam <quic_mdalam@quicinc.com>, 
+ Rosen Penev <rosenp@gmail.com>, Luis de Arquer <luis.dearquer@inertim.com>, 
+ Geert Uytterhoeven <geert+renesas@glider.be>, 
+ Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>, 
+ Tudor Ambarus <tudor.ambarus@linaro.org>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, Longbin Li <looong.bin@gmail.com>, 
+ Patrice Chotard <patrice.chotard@foss.st.com>, 
+ =?utf-8?q?Cl=C3=A9ment_Le_Goffic?= <clement.legoffic@foss.st.com>, 
+ Alessandro Grassi <alessandro.grassi@mailbox.org>, 
+ Chen-Yu Tsai <wens@kernel.org>, Darshan R <rathod.darshan.0896@gmail.com>, 
+ Aaron Kling <webgeek1234@gmail.com>, Vishwaroop A <va@nvidia.com>, 
+ Haixu Cui <quic_haixcui@quicinc.com>, 
+ Darshan Rathod <darshanrathod475@gmail.com>, linux-spi@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-amlogic@lists.infradead.org, asahi@lists.linux.dev, 
+ linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org, 
+ linux-rpi-kernel@lists.infradead.org, linux-sound@vger.kernel.org, 
+ patches@opensource.cirrus.com, imx@lists.linux.dev, 
+ linux-arm-msm@vger.kernel.org, linux-riscv@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org, linux-rockchip@lists.infradead.org, 
+ linux-renesas-soc@vger.kernel.org, linux-samsung-soc@vger.kernel.org, 
+ linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev, 
+ linux-tegra@vger.kernel.org, virtualization@lists.linux.dev, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+ Lorenzo Bianconi <lorenzo@kernel.org>, Ray Liu <ray.liu@airoha.com>, 
+ Sven Peter <sven@kernel.org>, Neal Gompa <neal@gompa.dev>, 
+ =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
+ Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
+ Ryan Wanner <ryan.wanner@microchip.com>, 
+ Michael Hennerich <michael.hennerich@analog.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Kamal Dasu <kamal.dasu@broadcom.com>, 
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+ Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, 
+ William Zhang <william.zhang@broadcom.com>, 
+ Kursad Oney <kursad.oney@broadcom.com>, 
+ Anand Gore <anand.gore@broadcom.com>, 
+ =?utf-8?q?Rafa=C5=82_Mi=C5=82ecki?= <rafal@milecki.pl>, 
+ David Rhodes <david.rhodes@cirrus.com>, 
+ Richard Fitzgerald <rf@opensource.cirrus.com>, 
+ Vladimir Oltean <olteanv@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
+ Jean-Marie Verdun <verdun@hpe.com>, Nick Hawkins <nick.hawkins@hpe.com>, 
+ Yang Shen <shenyang39@huawei.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Lixu Zhang <lixu.zhang@intel.com>, 
+ Yinbo Zhu <zhuyinbo@loongson.cn>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+ Conor Dooley <conor.dooley@microchip.com>, 
+ Daire McNamara <daire.mcnamara@microchip.com>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ Avi Fishman <avifishman70@gmail.com>, Tomer Maimon <tmaimon77@gmail.com>, 
+ Tali Perry <tali.perry1@gmail.com>, Patrick Venture <venture@google.com>, 
+ Nancy Yuen <yuenn@google.com>, Benjamin Fair <benjaminfair@google.com>, 
+ Han Xu <han.xu@nxp.com>, Yogesh Gaur <yogeshgaur.83@gmail.com>, 
+ Linus Walleij <linusw@kernel.org>, Daniel Mack <daniel@zonque.org>, 
+ Haojian Zhuang <haojian.zhuang@gmail.com>, 
+ Robert Jarzmik <robert.jarzmik@free.fr>, 
+ Chris Packham <chris.packham@alliedtelesis.co.nz>, 
+ Heiko Stuebner <heiko@sntech.de>, 
+ Fabrizio Castro <fabrizio.castro.jz@renesas.com>, 
+ Andi Shyti <andi.shyti@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
+ Paul Walmsley <pjw@kernel.org>, Samuel Holland <samuel.holland@sifive.com>, 
+ Orson Zhai <orsonzhai@gmail.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Chunyan Zhang <zhang.lyra@gmail.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Alain Volmat <alain.volmat@foss.st.com>, 
+ Jernej Skrabec <jernej.skrabec@gmail.com>, Li-hao Kuo <lhjeff911@gmail.com>, 
+ Masahisa Kojima <masahisa.kojima@linaro.org>, 
+ Jassi Brar <jaswinder.singh@linaro.org>, 
+ Laxman Dewangan <ldewangan@nvidia.com>, 
+ Thierry Reding <thierry.reding@gmail.com>, 
+ Jonathan Hunter <jonathanh@nvidia.com>, 
+ Sowjanya Komatineni <skomatineni@nvidia.com>, 
+ Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, 
+ =?utf-8?q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>, 
+ Michal Simek <michal.simek@amd.com>, Max Filippov <jcmvbkbc@gmail.com>
+In-Reply-To: <20260108203004.3538449-1-andriy.shevchenko@linux.intel.com>
+References: <20260108203004.3538449-1-andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v1 0/4] spi: Make SPI core to take care of fwnode
+ assignment
+Message-Id: <176893693352.778248.9155805475563647239.b4-ty@kernel.org>
+Date: Tue, 20 Jan 2026 19:22:13 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
-Subject: Re: [PATCH v3 3/3] spi: xilinx: use device property accessors.
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-In-Reply-To: <c3fc04a4-4b09-4c6a-a0f1-e5aa92a22976@sirena.org.uk>
-Date: Tue, 20 Jan 2026 11:11:44 -0800
-Cc: Michal Simek <michal.simek@amd.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Andrew Lunn <andrew@lunn.ch>,
- linux-spi@vger.kernel.org,
- devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <80A8F67E-7A01-4F9F-9D84-29722678A2CE@nexthop.ai>
-References: <b1b79de0-a078-486d-b3e9-96899354407c@sirena.org.uk>
- <3D1B59A7-6E57-4C8C-AA95-EA7AA115264F@nexthop.ai>
- <b9ad8ab8-7985-4c89-a82b-c7f31d32c167@sirena.org.uk>
- <a6d57890-89c1-445e-836c-d8239d20c621@amd.com>
- <b03307f7-93f6-4680-9241-cf28b5456fd0@sirena.org.uk>
- <a3fcef3a-d1e9-4b46-b114-3a82575e052e@amd.com>
- <980ad372-a2c7-417c-91f9-4958d3d1aaca@sirena.org.uk>
- <4831B269-DFC1-40E0-96B7-67981AC72562@nexthop.ai>
- <6e06696e-09a4-46e0-98fa-252690b888e0@sirena.org.uk>
- <BF71A04E-7FFB-42D1-8C8D-6FD13415EED5@nexthop.ai>
- <c3fc04a4-4b09-4c6a-a0f1-e5aa92a22976@sirena.org.uk>
-To: Mark Brown <broonie@kernel.org>
-X-Mailer: Apple Mail (2.3864.300.41.1.7)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.15-dev-47773
 
+On Thu, 08 Jan 2026 21:23:37 +0100, Andy Shevchenko wrote:
+> It seems all of the SPI drivers want to propagate fwnode (or of_node)
+> of the physical device to the SPI device. Make sure we don't duplicate
+> it over and over in each new driver (+2 in this cycle) by making core
+> to take care of that. Note, similar is done already by IIO and
+> I²C subsystems.
+> 
+> There is one noticeable and quite specific case that is taken care in
+> the first patch and would be nice to have a confirmation from Cirrus
+> that everything is okay. The rest is just a mechanical conversion.
+> 
+> [...]
 
+Applied to
 
-> On Jan 20, 2026, at 10:45=E2=80=AFAM, Mark Brown <broonie@kernel.org> =
-wrote:
->=20
-> On Mon, Jan 19, 2026 at 04:20:06PM -0800, Abdurrahman Hussain wrote:
->=20
-> To repeat once again:
->=20
-> | Please fix your mail client to word wrap within paragraphs at =
-something
-> | substantially less than 80 columns.  Doing this makes your messages =
-much
-> | easier to read and reply to.
->=20
->>> On Jan 19, 2026, at 3:20=E2=80=AFPM, Mark Brown <broonie@kernel.org> =
-wrote:
->=20
->>>> But rather, to re-use the existing drivers as much as possible by =
-relying on the
->>>> special DT namespace link "PRP0001":
->=20
->>> What is the goal in avoiding using native ACPI bindings?  PRP0001 is =
-a
->>> workaround for cases where you have things that ACPI has never =
-dreamed
->>> of and can't abstract well but which have already been handled by =
-DT,
->>> it is not something we're aiming.  The hardware you have described
->>> seems like fairly normal server style hardware and like it should =
-fit
->>> well with normal ACPI.  Adding ACPI IDs to existing drivers is =
-pretty
->>> common and standard, I'd class that as reuse.
->=20
->> I did not intentionally avoid introducing new ACPI _HIDs, but at the =
-same time
->> don=E2=80=99t understand the need to, especially when PRP0001 =
-workaround works and
->> it works well. We don=E2=80=99t own the spi-xilinx driver and neither =
-do we own the i2c-xiic.
->> These are standard Xilinx IP platform drivers that could be made =
-usable on ACPI platforms
->> by just switching to device_property APIs. Which is what these series =
-is trying to do.
->=20
-> It's just not idiomatic ACPI, indeed some other OSs actively reject =
-the
-> idea of binding to PRP0001 described devices.  In general we don't =
-want
-> to encourage people needlessly creating unusual hardware descriptions,
-> that provides better future proofing so we're less likely to have to
-> work around our own past decisions and avoids causing hassle for other
-> OS vendors with having to deal with Linux special firmware =
-descriptions.
->=20
->>> As far as I can see from the example you posted the devices are all
->>> fairly standard and just need IDs assigning to work naturally with =
-ACPI.
->>> There's possibly an argument for using PRP0001 for the flash given =
-that
->>> it's not especially idiomatic to have OS visible flash on ACPI =
-systems,
->>> usually flash would only be visible to UEFI, but equally the =
-description
->>> would trivial and systems wouldn't have to use it.
->=20
->> You mention =E2=80=9Cidiomatic=E2=80=9D a lot. Are you implying the =
-SPI NOR-flash devices should
->> not be exposed to user-space? Then why does the spi-nor driver even =
-exist?
->=20
-> Flashes are widely used on non-ACPI systems where exposing them to the
-> OS is a perfectly normal and standard thing to do.  Usually on a =
-system
-> with ACPI NOR flashes would be purely for the firmware to store itself
-> and it's data, storage exposed to the OS would be at least eMMC or
-> something.  ACPI has a very strong idea of what the systems it is used
-> with should look like.
->=20
->> We have a SPI device that needs to be accessible from users-space in =
-order to
->> =E2=80=9Cflash" various FPGAs. How do you suggest we do that?
->=20
-> You should probably register the device, it's just a question of if =
-it's
-> weird enough that it does actually fit with PRP0001 or if it's =
-something
-> with general enough application in ACPI systems that a HID should be
-> allocated.
->=20
->> Also, there are hundreds of drivers in the DT namespace that are =
-missing the ACPI IDs today.
->> Do you suggest adding ACPI IDs to every driver just so it=E2=80=99s =
-more =E2=80=9Cidiomatic=E2=80=9D to use?
->=20
-> To drivers that are used on ACPI systems, yes.  Many devices wouldn't =
-be
-> used on ACPI systems, or would be expected to be exposed differently
-> (for example, hidden behind AML).
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-This is not for a normal off the shelf server. In our case we are =
-building an embedded
-switch with an AMD CPU and Xilinx FPGAs that happens to use EDK2 based =
-BIOS and ACPI.
+Thanks!
 
-We, as a vendor, have full control of the BIOS/ACPI and would like to =
-use it describe
-hardware and make as much use of the standard Linux drivers as possible. =
-We have dozens of
-I2C devices like temp sensors, voltage regulators, DCDC converters, =
-EEPROMS, SPI-NOR flash
-devices behind the Xilinx IP blocks. Most of the devices we use don=E2=80=99=
-t have proper ACPI _HIDs.
+[1/4] spi: Propagate default fwnode to the SPI controller device
+      commit: f2d1a3318eb1ec860999db48cb8d13b43261624d
+[2/4] spi: Drop duplicate of_node assignment
+      commit: 3974a585be78a1dc90a19d5cf1846a99954e3842
+[3/4] spi: Drop duplicate fwnode assignment
+      commit: 103c510e1c6832720059756d155dd13a42baa7ab
+[4/4] spi: Drop duplicate device_set_node() call
+      commit: 37fbc1ab0f225d23f0839260a11375b4f1f7cf8c
 
->=20
->> I am just trying to get this 2-line small change merged so we can =
-start using the standard spi-xilinx driver today. I am not trying to =
-boil the ocean.
->=20
-> I mean, adding a HID wouldn't take substantially more code.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-We could, but we don=E2=80=99t own the Xilinx IP blocks. Are we not =
-justified in using PRP0001
-hack until the driver owner adds the HIDs? Wasn=E2=80=99t PRP0001 =
-created as an escape hatch for
-these kind of scenarios?
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
->=20
->>> There is the bit where there's a PCI bus in the way and you don't =
-use
->>> ACPI particularly idiomatically...  I can see the dodging out on the =
-PCI
->>> bus description, but the way the devices behind the PCI bus are
->>> described seems confusing.
->=20
->> What exactly about this usage is not idiomatic? Our PCI device =
-description in ACPI looks like
->> this (GPP5 is the PCIe bridge under which the FPGA is located):
->=20
-> The use of PRP0001.
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-Understood.
-
+Thanks,
+Mark
 

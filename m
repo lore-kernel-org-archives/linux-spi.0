@@ -1,42 +1,42 @@
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D41421F18;
-	Wed, 21 Jan 2026 17:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB8348BD39
+	for <linux-spi@vger.kernel.org>; Wed, 21 Jan 2026 17:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769015118; cv=none; b=goyOX1/zFgkcIHGKOXx/bZjT5kXAFivnGzUtjmm89c45kNIYbBUAW01bDnKLYYqzh4hc/DrPlBMMLMtx9oPzJDMm1J8Qe0sWEKI+/lPxn4u3bDFs4zZlVUbxZ6v8UxcOiwKb1ebxgbu6L3Gzwqx9b9N1VGifBfxngCW00w2ivxg=
+	t=1769015120; cv=none; b=KAvIt3F0lylyBoSaHS4ePHPB5qRRh9KTkE58dkCfgm2KSSOn5gg/j6fHuZjcMUHmXXjdNqejS6OcY8H9tBdrYMB8+r7ZVZ7VUe8MKfSGDVQPodxUMZjmXWskYJjm1dwOkSmzG35aR/S8QsPS7IenHaizsosqZo+r9Nz7IKVa/ao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769015118; c=relaxed/simple;
-	bh=aTWmaBXa7MhE/ICorPqq2ogaGH1Gh12fy/ipBZoQKGE=;
+	s=arc-20240116; t=1769015120; c=relaxed/simple;
+	bh=bWZrmSiM6YWTx+i5vVQsu6mdes0U+efV52esmGFE7UA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=N29pPlHxglls/EobAOXcM4uHZcEbyGhJuid8wMNJEL5M8b6G+mo2GdfL2OLxCIb8B0BNFjVTjL3O7DAzt5ziyQ7dygGMIClDWBMfA0c7LFpltJRaaGZoJEEiE7SIxl28LoYTyiEvB/sKssrcnkcPCw0QTT6H1f1kG1uhrlATwjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=1qkkQkfK; arc=none smtp.client-ip=185.246.84.56
+	 In-Reply-To:To:Cc; b=DOiT7ot3PxmmKs3SkWDCULGMoU0zTJq6HPDmJ7EYeD1jpn9KLbOKoq4ZXGwTgw1YzhHAG1J6qJKPc2MGzxfhzyXOGq3JpMoxMGvktp7vz4aaTw5IPSsX43TFGZ6FoblopHVBb8nBvdBCTKPk8zKqWRhAr5Kn40vfmpBtbQClJL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=mjSpX5z/; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="1qkkQkfK"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="mjSpX5z/"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 8D1871A2965;
-	Wed, 21 Jan 2026 17:05:14 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 6488B1A298C;
+	Wed, 21 Jan 2026 17:05:16 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 62D916070A;
-	Wed, 21 Jan 2026 17:05:14 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0F64E119B1874;
-	Wed, 21 Jan 2026 18:05:11 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 39FF16070A;
+	Wed, 21 Jan 2026 17:05:16 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D1389119B1881;
+	Wed, 21 Jan 2026 18:05:13 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769015113; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1769015115; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=KYcVrYYRRRVGg2zik0u1NSU2KMI85alPMqm6GdgYfj4=;
-	b=1qkkQkfK3IrLlptljZnTiDT4YeZ91bRDVYmOk8+55RG/kmeZDg603ruOLVRi97MRbj69DN
-	w4rvb6YafKhu9hJWChJQqkvgNdqT2lLokAyaCN2EUNfirJ+m4ElEVFGdXrSRu8VXcHE9DC
-	qzYT1JdY+7cUg9XLrpk6WfC1Vtk2Z8uQqELxkv/2ApJax1ECBV1E4T0IoQUkyyKM8dmXR3
-	BMr7ahmMWo0iBxwcnQLobJ1pzZYgWrwVJXHj9jFy0kkuehOXzNhxlmIduloFJaPZcllXWW
-	sfUbAbgK7sMZ1T+trg/R41S9Y6LKYdb4uGD6/x3sd58qXO+gP7Uj0ecbyf/XNg==
+	bh=EGJbdGn0SD0aoabG2saaXwDhMHD4aEi0DEPAXPkHNUE=;
+	b=mjSpX5z/wEIGdhf70w6GO7ghYg1Rd7bJ+R/Ngq/OBCQxSSuuNibsdryr2sWg4463F6ZQy7
+	rdAkjKKvS2LZ1U7d0TUhfZcyBME8w5yQYCLY8AU4kB4E7PU5mtXTkVwAC62J1aB4BG4/6V
+	MZ8FdOH+uNTpOF3NoYNILsKSBeKTc4ubc1UMuvbkQmprA5NwXNe+Lxx6QjrVZ9dOnSn5ym
+	oRrWP8CY3pwEbyQSqYmSlj4j4DgW2Pbg2Ems/RDAziI1raCFo997VQLcDO1v0FPWkzWeNl
+	xoEe4k2AvD9+vml5GEz4gJ4TUpFaL+hiNzCtpvDXvfmi3y8TEqoCe5syfitv7A==
 From: "Miquel Raynal (Schneider Electric)" <miquel.raynal@bootlin.com>
-Date: Wed, 21 Jan 2026 18:04:57 +0100
-Subject: [PATCH v3 01/17] spi: dt-bindings: cdns,qspi-nor: Remove
- duplicated constraints
+Date: Wed, 21 Jan 2026 18:04:58 +0100
+Subject: [PATCH v3 02/17] spi: dt-bindings: cdns,qspi-nor: Drop label in
+ example
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260121-schneider-6-19-rc1-qspi-v3-1-43e70fab4444@bootlin.com>
+Message-Id: <20260121-schneider-6-19-rc1-qspi-v3-2-43e70fab4444@bootlin.com>
 References: <20260121-schneider-6-19-rc1-qspi-v3-0-43e70fab4444@bootlin.com>
 In-Reply-To: <20260121-schneider-6-19-rc1-qspi-v3-0-43e70fab4444@bootlin.com>
 To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -65,38 +65,27 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-The if/then/else block sets the restrictions in all cases for
-resets/reset-names, very much like it does for other properties as well
-such as cdns,fifo-depth. Drop the constraints from the place where these
-constraints are simply ignored.
+The label is useless here. Plus, if there are several examples with the
+same label, we'll get very useless yet annoying warnings.
 
 Signed-off-by: Miquel Raynal (Schneider Electric) <miquel.raynal@bootlin.com>
 ---
- Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml | 11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+ Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml b/Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml
-index 53a52fb8b819..b85dba351822 100644
+index b85dba351822..123caef8f61e 100644
 --- a/Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml
 +++ b/Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml
-@@ -136,15 +136,8 @@ properties:
-   power-domains:
-     maxItems: 1
+@@ -165,7 +165,7 @@ unevaluatedProperties: false
  
--  resets:
--    minItems: 2
--    maxItems: 3
--
--  reset-names:
--    minItems: 2
--    maxItems: 3
--    items:
--      enum: [ qspi, qspi-ocp, rstc_ref ]
-+  resets: true
-+  reset-names: true
- 
- patternProperties:
-   "^flash@[0-9a-f]+$":
+ examples:
+   - |
+-    qspi: spi@ff705000 {
++    spi@ff705000 {
+         compatible = "intel,socfpga-qspi", "cdns,qspi-nor";
+         #address-cells = <1>;
+         #size-cells = <0>;
 
 -- 
 2.51.1

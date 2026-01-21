@@ -1,42 +1,41 @@
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59D6E4D2EF5;
-	Wed, 21 Jan 2026 17:05:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F9D4949FD;
+	Wed, 21 Jan 2026 17:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769015134; cv=none; b=hc5OiRLtuI+lH/Jz3iie0rD3yWSajtAlOSLE5pDigv5/vcYtEhalqV1Qa2ML19RsuBZF89fncfhSB29+fcBFutAnv7YuzsIbpbSAKezzvlKeAJLxOtwH4u+7ip5Zhy7kJj2XXrUrmxmsDWqHNAh/JtpKc2QxvkuyzXn7uDoA50k=
+	t=1769015135; cv=none; b=QtPwB6JujNdDTcZ+Zv9icsoDkVAWO58VDaAt0rNNbAG7pJkEmQ7Lhfftm3VM4bo61nLVrtiQjeumhFEMq5PvuXDala7yMFHZLNGWblnHmkf+WzzIT+7Fyo0uA6Gpd12VRaeFmiBRFhfamWNJ8fD+dsOh33G0ivMCYv1AOwPdB3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769015134; c=relaxed/simple;
-	bh=wqzgTKFg6ppbuBFV3yXjEvMJbs7TMKIWizW6DK2qIQw=;
+	s=arc-20240116; t=1769015135; c=relaxed/simple;
+	bh=bm9R2Lb2fFoSME4oOP2tzvaj3qQ5iES+rkam/nGTCOw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=fkvyZz9mIHXNrwib1NIm6Gi7XZezvffLCiLxn1KZ/6btkWUaYBC8fbR7WQSefnF9IE8ulYAaVijjHZhMH+BMsG9bK7IAzP+gusZdjWeC3yD41IkdJPuX6iopM8vw9bemBeV6CYme5hxzQb72PrwYHuunuZgx3OJTx63FkWWJWow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=FxLSSiiw; arc=none smtp.client-ip=185.171.202.116
+	 In-Reply-To:To:Cc; b=utVrfH1e3pSP5BFSoG23UQWeUVJrLQe5EYW9pTpa/lbbQqSozyCpIUmSnzhrHdxwQr/fMByPuMmb+BhXK8nF5UehOkqoLUPMFm7e8Ukgpx3LsCI/uFhxjmE/OvjpYexr3G0nIFI7DeZsxGqp9IQDUGf6lO/6bTWx6X4y3zGcpig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Oa/3vuDV; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="FxLSSiiw"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Oa/3vuDV"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 77D2EC21A8F;
-	Wed, 21 Jan 2026 17:05:03 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 5EDC5C21A91;
+	Wed, 21 Jan 2026 17:05:05 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id AD0966070A;
-	Wed, 21 Jan 2026 17:05:30 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8AB74119B18A9;
-	Wed, 21 Jan 2026 18:05:28 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 94DBA6070A;
+	Wed, 21 Jan 2026 17:05:32 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 24726119B18AF;
+	Wed, 21 Jan 2026 18:05:30 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769015129; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1769015131; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=y4t0ZhlqcETe6yz8RMe/Zn2ajMMv2vHDxX8bYifqwF8=;
-	b=FxLSSiiw6RWTVyMA2PNLzSywT1RZ0gFCHZV3OuUyikzYyfrPVAoxtEN828bJvKRvBsiOfA
-	U7tMydIAhfz++FPXhY/PobGinpmrtiVaVEeE1zQ6F4g8WxlODp57CTiMVcaZeWlA5Y09PV
-	Cmza1tahJCpBsKP0s39SWqkKZQA25VJ7G/vU0LpVtswM9nNki2spiWw6frBJjgCfzZRDoZ
-	aPMMEER3HPK5vGUzmu1e6W0EEdkUGX0W9Er20a+accoyZMoydXS3kJqnZCbfeLk/HDDHGl
-	mcAjP0Zkx40l2kutj1JiPNxuLXLVRNSmCXw9kIXvwF1BhArxflIJV+u2hmRvrw==
+	bh=1dYR1lsf1+/uGCewQmsxVMEPBYVxpmGk/RUoFKBx98M=;
+	b=Oa/3vuDVkLixO+cszqRJW52q8p0WgR9CVLP0eQJ2VatcLv2vRRAIky/lhhRBOe7CkEOpXL
+	nXP8LeZKytELVom3L77genXNHPCPMUM8RxN7CwOuyVfMw2bGpiFhCjy5oXtDVo1qCmw0s4
+	4FPl/SnvKIoQ22IZhzBi1URW6DATnwI5t/rzitifI+Av6uTQz5MjEzT7Jc+V7byUl++iVB
+	H9jnxjUc/uCpPC62Dr4Zj/rcvZC/SA1OVBd9YAWeX4HmTg1rkqrpRt6uI21q/piJJpYLJ3
+	gDcW56WruNstbBdQxaCuOdJSf0O8oQp6V9VzAH8kT9hxGQyrgfDIbdiQfXOW0w==
 From: "Miquel Raynal (Schneider Electric)" <miquel.raynal@bootlin.com>
-Date: Wed, 21 Jan 2026 18:05:06 +0100
-Subject: [PATCH v3 10/17] spi: cadence-qspi: Fix probe error path and
- remove
+Date: Wed, 21 Jan 2026 18:05:07 +0100
+Subject: [PATCH v3 11/17] spi: cadence-qspi: Try hard to disable the clocks
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -45,7 +44,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260121-schneider-6-19-rc1-qspi-v3-10-43e70fab4444@bootlin.com>
+Message-Id: <20260121-schneider-6-19-rc1-qspi-v3-11-43e70fab4444@bootlin.com>
 References: <20260121-schneider-6-19-rc1-qspi-v3-0-43e70fab4444@bootlin.com>
 In-Reply-To: <20260121-schneider-6-19-rc1-qspi-v3-0-43e70fab4444@bootlin.com>
 To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -65,156 +64,44 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-The probe has been modified by many different users, it is hard to track
-history, but for sure its current state is partially broken. One easy
-rule to follow is to drop/free/release the resources in the opposite
-order they have been queried.
+In the remove path, we should try hard to perform all steps as we simply
+cannot fail.
 
-Fix the labels, the order for freeing the resources, and add the
-missing DMA channel step. Replicate these changes in the remove path as
-well.
+The "no runtime PM" quirk must only alter the state of the RPM core, but
+the clocks should still be disabled if that is possible. Move the
+disable call outside of the RPM quirk.
 
 Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Miquel Raynal (Schneider Electric) <miquel.raynal@bootlin.com>
 ---
- drivers/spi/spi-cadence-quadspi.c | 44 ++++++++++++++++++++++-----------------
- 1 file changed, 25 insertions(+), 19 deletions(-)
+ drivers/spi/spi-cadence-quadspi.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index fc9f6e8dd549..4bfe65af458e 100644
+index 4bfe65af458e..af0ad24d8d39 100644
 --- a/drivers/spi/spi-cadence-quadspi.c
 +++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -1890,7 +1890,7 @@ static int cqspi_probe(struct platform_device *pdev)
- 	ret = clk_prepare_enable(cqspi->clk);
- 	if (ret) {
- 		dev_err(dev, "Cannot enable QSPI clock.\n");
--		goto probe_clk_failed;
-+		goto disable_rpm;
- 	}
+@@ -2039,6 +2039,7 @@ static void cqspi_remove(struct platform_device *pdev)
+ 	const struct cqspi_driver_platdata *ddata;
+ 	struct cqspi_st *cqspi = platform_get_drvdata(pdev);
+ 	struct device *dev = &pdev->dev;
++	int ret = 0;
  
- 	/* Obtain QSPI reset control */
-@@ -1898,14 +1898,14 @@ static int cqspi_probe(struct platform_device *pdev)
- 	if (IS_ERR(rstc)) {
- 		ret = PTR_ERR(rstc);
- 		dev_err(dev, "Cannot get QSPI reset.\n");
--		goto probe_reset_failed;
-+		goto disable_clk;
- 	}
+ 	ddata = of_device_get_match_data(dev);
  
- 	rstc_ocp = devm_reset_control_get_optional_exclusive(dev, "qspi-ocp");
- 	if (IS_ERR(rstc_ocp)) {
- 		ret = PTR_ERR(rstc_ocp);
- 		dev_err(dev, "Cannot get QSPI OCP reset.\n");
--		goto probe_reset_failed;
-+		goto disable_clk;
- 	}
- 
- 	if (of_device_is_compatible(pdev->dev.of_node, "starfive,jh7110-qspi")) {
-@@ -1913,7 +1913,7 @@ static int cqspi_probe(struct platform_device *pdev)
- 		if (IS_ERR(rstc_ref)) {
- 			ret = PTR_ERR(rstc_ref);
- 			dev_err(dev, "Cannot get QSPI REF reset.\n");
--			goto probe_reset_failed;
-+			goto disable_clk;
- 		}
- 		reset_control_assert(rstc_ref);
- 		reset_control_deassert(rstc_ref);
-@@ -1955,7 +1955,7 @@ static int cqspi_probe(struct platform_device *pdev)
- 		if (ddata->jh7110_clk_init) {
- 			ret = cqspi_jh7110_clk_init(pdev, cqspi);
- 			if (ret)
--				goto probe_reset_failed;
-+				goto disable_clk;
- 		}
- 		if (ddata->quirks & CQSPI_DISABLE_STIG_MODE)
- 			cqspi->disable_stig_mode = true;
-@@ -1963,7 +1963,7 @@ static int cqspi_probe(struct platform_device *pdev)
- 		if (ddata->quirks & CQSPI_DMA_SET_MASK) {
- 			ret = dma_set_mask(&pdev->dev, DMA_BIT_MASK(64));
- 			if (ret)
--				goto probe_reset_failed;
-+				goto disable_clks;
- 		}
- 	}
- 
-@@ -1974,7 +1974,7 @@ static int cqspi_probe(struct platform_device *pdev)
- 			       pdev->name, cqspi);
- 	if (ret) {
- 		dev_err(dev, "Cannot request IRQ.\n");
--		goto probe_reset_failed;
-+		goto disable_clks;
- 	}
- 
- 	cqspi_wait_idle(cqspi);
-@@ -2001,31 +2001,36 @@ static int cqspi_probe(struct platform_device *pdev)
- 		ret = cqspi_request_mmap_dma(cqspi);
- 		if (ret == -EPROBE_DEFER) {
- 			dev_err_probe(&pdev->dev, ret, "Failed to request mmap DMA\n");
--			goto probe_setup_failed;
-+			goto disable_controller;
- 		}
- 	}
- 
- 	ret = spi_register_controller(host);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to register SPI ctlr %d\n", ret);
--		goto probe_setup_failed;
-+		goto release_dma_chan;
- 	}
+@@ -2058,8 +2059,10 @@ static void cqspi_remove(struct platform_device *pdev)
+ 		cqspi_jh7110_disable_clk(pdev, cqspi);
  
  	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM)))
- 		pm_runtime_put_autosuspend(dev);
- 
- 	return 0;
--probe_setup_failed:
--	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM)))
--		pm_runtime_disable(dev);
-+
-+release_dma_chan:
-+	if (cqspi->rx_chan)
-+		dma_release_channel(cqspi->rx_chan);
-+disable_controller:
- 	cqspi_controller_enable(cqspi, 0);
--probe_reset_failed:
-+disable_clks:
- 	if (cqspi->is_jh7110)
- 		cqspi_jh7110_disable_clk(pdev, cqspi);
--
-+disable_clk:
- 	if (pm_runtime_get_sync(&pdev->dev) >= 0)
- 		clk_disable_unprepare(cqspi->clk);
--probe_clk_failed:
-+disable_rpm:
-+	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM)))
-+		pm_runtime_disable(dev);
-+
- 	return ret;
- }
- 
-@@ -2043,18 +2048,19 @@ static void cqspi_remove(struct platform_device *pdev)
- 		cqspi_wait_idle(cqspi);
- 
- 	spi_unregister_controller(cqspi->host);
--	cqspi_controller_enable(cqspi, 0);
- 
- 	if (cqspi->rx_chan)
- 		dma_release_channel(cqspi->rx_chan);
- 
--	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM)))
 -		if (pm_runtime_get_sync(&pdev->dev) >= 0)
 -			clk_disable(cqspi->clk);
-+	cqspi_controller_enable(cqspi, 0);
- 
- 	if (cqspi->is_jh7110)
- 		cqspi_jh7110_disable_clk(pdev, cqspi);
- 
-+	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM)))
-+		if (pm_runtime_get_sync(&pdev->dev) >= 0)
-+			clk_disable(cqspi->clk);
++		ret = pm_runtime_get_sync(&pdev->dev);
 +
++	if (ret >= 0)
++		clk_disable(cqspi->clk);
+ 
  	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
  		pm_runtime_put_sync(&pdev->dev);
- 		pm_runtime_disable(&pdev->dev);
 
 -- 
 2.51.1

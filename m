@@ -1,70 +1,99 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A1D6304BBD;
-	Wed, 21 Jan 2026 02:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59FA5329385;
+	Wed, 21 Jan 2026 02:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768963137; cv=none; b=XNVr0msRZgpKwoJdFqsbFiTWlL79T8SplgVi8k8XIarnny3DeUp2ycm5wl3iltuHgQHg6l/QrqNbEoe07mkx2i28Pn/GqJ+xukpjE0MVXabMcR1Z8pa+EaflBRt5Vodueei2CnW4q9/7hsNEZFwzFjwyEHtiLD8RB7AaTtSVGPw=
+	t=1768963204; cv=none; b=NGVbz/85+BP3fbsjD2j58vdtmJgwsNCgzm3cxYFg1Obr72qXF4D3Iuf8MJArLQbx5kLGLzgEgzf1dtCs3MtkmGnwJaV8NzLAxR+KDRBUBy8N34TaK8r1M8bX1Cefk+7CzxBvDn05czC122WwKAIFE5YXtOYvsf1x4qLWv5CTGE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768963137; c=relaxed/simple;
-	bh=foy09YRZdpfh+UcvVsh4GRT12EVN+LC1837tCHo1aB0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fbgiu2fdhdH8yjuBGjYUjEo8tKX+edQe3nNJuZrq7rXquwxRKtkUxaR1HQT5tmH/ZdK/Q2eFsriIqpsiapq5UI0Ho/m45lcDVnKojMJ9GFdYuFAp0LaZSfAICXdeBUrkd+YN3fh7hJoLuVV9dLC7vKPW38lGiz7+IdFSofRCQ3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zsc44AFd; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768963204; c=relaxed/simple;
+	bh=+kYehEeL0rHC2CLtfdhajEXhmnfOr//n+Q/64DRdOXI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kS+t6zHI6LFReS6QVOCNr1YMuLD59aqS6te+mrAx0OHt63Px3viWpxo5yoid5qhF38F4m1o1TFQkI+lkMxW8NGDf0jBxLp0p76VFGNLvujtQvrOVtMEEgDMqCIEqj6hm0/AklYa+FXCsBlMKMNA2MQCI4eCJCfdvK4pCRlGLy+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W3yHlX6G; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zsc44AFd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CD04C16AAE;
-	Wed, 21 Jan 2026 02:38:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W3yHlX6G"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEDA1C16AAE;
+	Wed, 21 Jan 2026 02:40:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768963137;
-	bh=foy09YRZdpfh+UcvVsh4GRT12EVN+LC1837tCHo1aB0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Zsc44AFdV6aDzxB8ptj2ODzyAk7zE3+OCht8aqOT44hN5GbKU+JeVpIbIrn2g/GN8
-	 4/fLK+lG8MCcwcUWkqCxxClmt4EX2qoraqPd/JAeH1SlBV9HKWW+58XoYxQRkGK02U
-	 /016TPWTUAhYJzlFkKtl3gm4wDQNZMMX+hJtuoOIESP6Wan3HxnFcZ1Hy8BjAFDHjd
-	 GEdyz6rTKNlkUZs0XDFRNsIzU0BoVZ44kHTR3qmB3Ph/PObQMuPxJA5kyq75BLCExQ
-	 C66UzmFDFHMukn8rFhja+D6XJ2RQZoTOSMedQitO2/WKhsPfJOS6nM2nEMQ/cIseuz
-	 7fh0vyKP4VmCg==
-Date: Tue, 20 Jan 2026 18:38:54 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Robert Marko <robert.marko@sartura.hr>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- nicolas.ferre@microchip.com, alexandre.belloni@bootlin.com,
- claudiu.beznea@tuxon.dev, herbert@gondor.apana.org.au, davem@davemloft.net,
- lee@kernel.org, andrew+netdev@lunn.ch, edumazet@google.com,
- pabeni@redhat.com, Steen.Hegelund@microchip.com,
- daniel.machon@microchip.com, UNGLinuxDriver@microchip.com,
- linusw@kernel.org, olivia@selenic.com, richard.genoud@bootlin.com,
- radu_nicolae.pirea@upb.ro, gregkh@linuxfoundation.org,
- richardcochran@gmail.com, horatiu.vultur@microchip.com,
- Ryan.Wanner@microchip.com, tudor.ambarus@linaro.org,
- kavyasree.kotagiri@microchip.com, lars.povlsen@microchip.com,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
- netdev@vger.kernel.org, linux-gpio@vger.kernel.org,
- linux-spi@vger.kernel.org, linux-serial@vger.kernel.org,
- luka.perkov@sartura.hr
-Subject: Re: [PATCH v5 10/11] dt-bindings: net: sparx5: do not require phys
- when RGMII is used
-Message-ID: <20260120183854.7d081aec@kernel.org>
-In-Reply-To: <20260115114021.111324-11-robert.marko@sartura.hr>
-References: <20260115114021.111324-1-robert.marko@sartura.hr>
-	<20260115114021.111324-11-robert.marko@sartura.hr>
+	s=k20201202; t=1768963203;
+	bh=+kYehEeL0rHC2CLtfdhajEXhmnfOr//n+Q/64DRdOXI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=W3yHlX6GldOjZe0vr0DQP/Bo9VeeugQY0W2qB2WKa3FZ2juQ8Eh34BHHFwLa/LzVf
+	 wJzVWOSbIlBq7cJwzj2sMygGhCSFWXJFi6Dc1nF1c5h1O0iOfmOc/vWTj5oiMzO6Ub
+	 DCmO1QaiM4CNyPnrHXWv4kDBsBzWAEONBjoXjmEiaaW8oJnQZbXI//HLCPbycQQT5H
+	 Wmh4MgTCVCOeeJUTxOol89pTYoI48I6AgZVkSEFWxWTlDHMBPmaGdd5GW0y96bqM7v
+	 VwTxvxzXc/e5dMmfuOB4cDJp55oiqP61dXc0OXINn0tmGqTXVHhEOCxQu8gM9doSwY
+	 bCadwb1P/jKmA==
+Date: Tue, 20 Jan 2026 20:40:02 -0600
+From: Rob Herring <robh@kernel.org>
+To: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
+	Mark Brown <broonie@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Vaishnav Achath <vaishnav.a@ti.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	=?iso-8859-1?Q?Herv=E9?= Codina <herve.codina@bootlin.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Santhosh Kumar K <s-k6@ti.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Pascal Eberhard <pascal.eberhard@se.com>, linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH v2 01/13] spi: dt-bindings: cdns,qspi-nor: Add Renesas
+ RZ/N1D400 to the list
+Message-ID: <20260121024002.GA1845406-robh@kernel.org>
+References: <20260115-schneider-6-19-rc1-qspi-v2-0-7e6a06e1e17b@bootlin.com>
+ <20260115-schneider-6-19-rc1-qspi-v2-1-7e6a06e1e17b@bootlin.com>
+ <CAMuHMdW5hwNu-07-7xvyWdcGKUZy+pCX0=W=JNgd4h7m72wQFg@mail.gmail.com>
+ <87qzrpucae.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87qzrpucae.fsf@bootlin.com>
 
-On Thu, 15 Jan 2026 12:37:35 +0100 Robert Marko wrote:
-> LAN969x has 2 dedicated RGMII ports, so regular SERDES lanes are not used
-> for RGMII.
+On Fri, Jan 16, 2026 at 10:39:21AM +0100, Miquel Raynal wrote:
+> Hello Geert,
 > 
-> So, lets not require phys to be defined when any of the rgmii phy-modes are
-> set.
+> >> --- a/Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml
+> >> +++ b/Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml
+> >> @@ -80,6 +80,10 @@ properties:
+> >>            # controllers are meant to be used with flashes of all kinds,
+> >>            # ie. also NAND flashes, not only NOR flashes.
+> >>            - const: cdns,qspi-nor
+> >> +      - items:
+> >> +          - const: renesas,r9a06g032-qspi
+> >> +          - const: renesas,rzn1-qspi
+> >> +          - const: cdns,qspi-nor
+> >
+> > Doesn't the need for (at least) the CQSPI_NO_INDIRECT_MODE flag mean
+> > that this device is not compatible with cdns,qspi-nor, and thus the
+> > cdns,qspi-nor fallback must not be used?
+> 
+> I understand the question. It is true that I use driver data to limit
+> the number of features the IP can use and this data is associated to the
+> Renesas compatible, but I believe all other flavours of this IP would
+> also not work without driver data attached to their front
+> compatible. None of the SoCs with the Cadence QSPI IP actually would run
+> without their own driver data. For me the fallback compatible is
+> relevant because it describes the hardware as "this is a derivative of
+> the Cadence controller" (and it is clearly the case, and this is also
+> mentioned in the reference manual), even though I agree using
+> cdns,qspi-nor would definitely not work alone. But again, none of the
+> other flavours would anyway.
 
-Applied, thanks!
+Fallbacks should be usable on their own. We've generally moved away from 
+having these generic licensed IP compatibles because they always have 
+per platform changes.
+
+Rob

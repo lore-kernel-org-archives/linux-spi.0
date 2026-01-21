@@ -1,42 +1,41 @@
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1D77495518;
-	Wed, 21 Jan 2026 17:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F9704D2EF8
+	for <linux-spi@vger.kernel.org>; Wed, 21 Jan 2026 17:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769015126; cv=none; b=YOzFdLDCa5kxccBMnxWcGiXJYsWLP+eT05bhImHaiE3sjc9e5B9JonxKotRdzA/g4XFpN1+IFSo5/RLtO2xnh+yYmtAM1hhtD1LbqBNegDdERIFuT4fW3eiGl14cu6uCAehL4DDTZkaZhlgFKUpSwdDCdERs1Z28YDqBl1oFV34=
+	t=1769015128; cv=none; b=eWVH395YlZGzUjFKrIun7TzXulNC9xtvsptDUJaGelVlDykcM14TphDeVMwQWxMQrx3Ebaz4gsYzahRjiPSUdu4Ey8hX+t9ymNfLYwg00fAqILKGvr7MmZbdYSBpBEpVc5OtYncdXTLcb+2+Q087sP3Uwvo21a9z922aDjyAP28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769015126; c=relaxed/simple;
-	bh=JD9J15FD3+7Fo755XEIaI+M7RJcrkXyMm5ZCiSP5OnY=;
+	s=arc-20240116; t=1769015128; c=relaxed/simple;
+	bh=UBxp+mVMENkbjzOOwcVuVl5Ky0LH3WVdPATL+cPvJLw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SxQEWoJMa/l4NfrD41G+oil7gCwqOw4HCGGAMRuHZTPm142f8E8c1scFieKJU/dlaq14950X+gNF21MuqkA2wTagrgP4GnDWiR/oggJjLjp6mPHA1rps+K8bB87yuHY3Tdu1Ymt0VHjX7aLT/sxxwhrXqlesCVTYGp2/EeYVHxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OiL+xRge; arc=none smtp.client-ip=185.171.202.116
+	 In-Reply-To:To:Cc; b=s0Igya37UVW+tfTmt2Hc9UsHbPy1FbcMC63gOR93iv7CSEN8jBD9vLsQ55SFmg+zfLukNDaPnHtANov3c0K0rw7AXFN32/l2SH6OcDugxGIzGluNxLgvqat3T7+2UxB5dcfYKor9RlefeciqgwrnGImerlBDT+RSBQa4kjdKjtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Q4IzLQLo; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OiL+xRge"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Q4IzLQLo"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id CAA29C21A8F;
-	Wed, 21 Jan 2026 17:04:55 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id D36DAC21A90;
+	Wed, 21 Jan 2026 17:04:57 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 0AF2F6070A;
-	Wed, 21 Jan 2026 17:05:23 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 94B3B119B17EB;
-	Wed, 21 Jan 2026 18:05:20 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 13CCF6070A;
+	Wed, 21 Jan 2026 17:05:25 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 690C4119B189F;
+	Wed, 21 Jan 2026 18:05:22 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769015122; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1769015124; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=+kIY2+d5nqykmYBPmHAWFbCHhJxDmjtvUjwEBEl1LRg=;
-	b=OiL+xRge1aqQnB8S8GrCz9ysflX0nUlOu+Zev8BYic+nQ1YVdMZ4Jcm/12CMUr35xlq7uo
-	x58fOF+P5NvTMog948BfS2h4BPy/l8T6eG5Idi10Pe1kPCJqgDY3SMtu57Ow64hHjdo+ul
-	d3T7POxNpjdQByCGiVg9SGlQRbKS++0qKqTvg1bjZd8SD+cnxCaVXQA1iKA+NIDYLTSNlD
-	xUQijJS7K6PKgVCrhDy8vAllkNwHYBRwUQghoJ0fr79fM7YNvKHkQyujEXFDclVPypYPb8
-	fnYCVcBrvf/5IsliwiBkubLm2nd9SFm79coXwkT0qIrmEIFFBltGBlLA/pmUIQ==
+	bh=fO0SkS9+T7rGUtUKsShIOFxIB6cpqmbBl3frX7gVrxI=;
+	b=Q4IzLQLoRHUKeOoPctDHrTAobYppyWxnB7QetEmeIvYtio6xj+zlrU/VjDm+bsN/JmvITz
+	z/+62aqN6iFcpEEKlH4Kh+2Clzm6fAT+svz6B4gMwEFUPDtOTZPwMCc2Dxjy8q3xvtrYtv
+	L/Zaz7VIVFF0kFQJd19bk63YzQJPX9Do+vklg/2fT4ZvtQsmfr6Zkdr9HKI6Pe6PNPPRW6
+	0oWWnYZnOVE2qY4pxdmXM6SOLwe51MMk/gzg6KPC1URxfbflXNrRRhkFz7DIxShjRn4rqc
+	UXvB75qN7CdhBEr5aKgcWhQ09oUdpSFfSzUmJ3+IR53u/N/iczkWJkp/awqerQ==
 From: "Miquel Raynal (Schneider Electric)" <miquel.raynal@bootlin.com>
-Date: Wed, 21 Jan 2026 18:05:02 +0100
-Subject: [PATCH v3 06/17] spi: cadence-qspi: Fix style and improve
- readability
+Date: Wed, 21 Jan 2026 18:05:03 +0100
+Subject: [PATCH v3 07/17] spi: cadence-qspi: Fix ORing style and alignments
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -45,7 +44,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260121-schneider-6-19-rc1-qspi-v3-6-43e70fab4444@bootlin.com>
+Message-Id: <20260121-schneider-6-19-rc1-qspi-v3-7-43e70fab4444@bootlin.com>
 References: <20260121-schneider-6-19-rc1-qspi-v3-0-43e70fab4444@bootlin.com>
 In-Reply-To: <20260121-schneider-6-19-rc1-qspi-v3-0-43e70fab4444@bootlin.com>
 To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -65,45 +64,66 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-It took me several seconds to correctly understand this block. I
-understand the goal: showing that we are in the if, or in one of the two
-other cases. Improve the organization of the code to both improve
-readability and fix the style.
+These definitions do not follow the standard patterns. Alignments are
+incoherent and the logical OR symbols '|' are misplaced. Reorganize
+these definitions.
 
-Suggested-by: Pratyush Yadav <pratyush@kernel.org>
+There is no functional change.
+
+Acked-by: Pratyush Yadav <pratyush@kernel.org>
 Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Miquel Raynal (Schneider Electric) <miquel.raynal@bootlin.com>
 ---
- drivers/spi/spi-cadence-quadspi.c | 15 +++++----------
- 1 file changed, 5 insertions(+), 10 deletions(-)
+ drivers/spi/spi-cadence-quadspi.c | 19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index cc28da7fc686..c0a507953c58 100644
+index c0a507953c58..8eb80b4b76eb 100644
 --- a/drivers/spi/spi-cadence-quadspi.c
 +++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -374,17 +374,12 @@ static irqreturn_t cqspi_irq_handler(int this_irq, void *dev)
- 	/* Clear interrupt */
- 	writel(irq_status, cqspi->iobase + CQSPI_REG_IRQSTATUS);
+@@ -2130,26 +2130,23 @@ static const struct cqspi_driver_platdata intel_lgm_qspi = {
+ };
  
--	if (cqspi->use_dma_read && ddata && ddata->get_dma_status) {
--		if (ddata->get_dma_status(cqspi)) {
--			complete(&cqspi->transfer_complete);
--			return IRQ_HANDLED;
--		}
--	}
--
--	else if (!cqspi->slow_sram)
--		irq_status &= CQSPI_IRQ_MASK_RD | CQSPI_IRQ_MASK_WR;
--	else
-+	if (cqspi->use_dma_read && ddata && ddata->get_dma_status)
-+		irq_status = ddata->get_dma_status(cqspi);
-+	else if (cqspi->slow_sram)
- 		irq_status &= CQSPI_IRQ_MASK_RD_SLOW_SRAM | CQSPI_IRQ_MASK_WR;
-+	else
-+		irq_status &= CQSPI_IRQ_MASK_RD | CQSPI_IRQ_MASK_WR;
+ static const struct cqspi_driver_platdata socfpga_qspi = {
+-	.quirks = CQSPI_DISABLE_DAC_MODE
+-			| CQSPI_NO_SUPPORT_WR_COMPLETION
+-			| CQSPI_SLOW_SRAM
+-			| CQSPI_DISABLE_STIG_MODE
+-			| CQSPI_DISABLE_RUNTIME_PM,
++	.quirks = CQSPI_DISABLE_DAC_MODE | CQSPI_NO_SUPPORT_WR_COMPLETION |
++		  CQSPI_SLOW_SRAM | CQSPI_DISABLE_STIG_MODE |
++		  CQSPI_DISABLE_RUNTIME_PM,
+ };
  
- 	if (irq_status)
- 		complete(&cqspi->transfer_complete);
+ static const struct cqspi_driver_platdata versal_ospi = {
+ 	.hwcaps_mask = CQSPI_SUPPORTS_OCTAL,
+-	.quirks = CQSPI_DISABLE_DAC_MODE | CQSPI_SUPPORT_EXTERNAL_DMA
+-			| CQSPI_DMA_SET_MASK,
++	.quirks = CQSPI_DISABLE_DAC_MODE | CQSPI_SUPPORT_EXTERNAL_DMA |
++		  CQSPI_DMA_SET_MASK,
+ 	.indirect_read_dma = cqspi_versal_indirect_read_dma,
+ 	.get_dma_status = cqspi_get_versal_dma_status,
+ };
+ 
+ static const struct cqspi_driver_platdata versal2_ospi = {
+ 	.hwcaps_mask = CQSPI_SUPPORTS_OCTAL,
+-	.quirks = CQSPI_DISABLE_DAC_MODE | CQSPI_SUPPORT_EXTERNAL_DMA
+-			| CQSPI_DMA_SET_MASK
+-			| CQSPI_SUPPORT_DEVICE_RESET,
++	.quirks = CQSPI_DISABLE_DAC_MODE | CQSPI_SUPPORT_EXTERNAL_DMA |
++		  CQSPI_DMA_SET_MASK | CQSPI_SUPPORT_DEVICE_RESET,
+ 	.indirect_read_dma = cqspi_versal_indirect_read_dma,
+ 	.get_dma_status = cqspi_get_versal_dma_status,
+ };
+@@ -2166,7 +2163,7 @@ static const struct cqspi_driver_platdata pensando_cdns_qspi = {
+ static const struct cqspi_driver_platdata mobileye_eyeq5_ospi = {
+ 	.hwcaps_mask = CQSPI_SUPPORTS_OCTAL,
+ 	.quirks = CQSPI_DISABLE_DAC_MODE | CQSPI_NO_SUPPORT_WR_COMPLETION |
+-			CQSPI_RD_NO_IRQ,
++		  CQSPI_RD_NO_IRQ,
+ };
+ 
+ static const struct of_device_id cqspi_dt_ids[] = {
 
 -- 
 2.51.1

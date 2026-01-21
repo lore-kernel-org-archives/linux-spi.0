@@ -1,244 +1,196 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012020.outbound.protection.outlook.com [40.93.195.20])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AA643563E8;
-	Wed, 21 Jan 2026 08:15:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.20
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768983311; cv=fail; b=qhQsqpbNE0U6WcAo+I03afOdjDC7VbaZ9giWGv7zZOXOajMbmBee8ojOO/e8tGKtO/H/piF0yRkwyavHy4HLF5W0XRc+vKB9Ar1PSeU1DFYOfGzd2bJSmPN5jCC4D1ebq3I08f3LVgLoVZZxKL/0lgmKNpqK2AfQfEa6yZBURsM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768983311; c=relaxed/simple;
-	bh=+URF00vjq3ESu9kLZ/mmvsoTZmqxk1eUi8kN2yHo+v8=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=LDk/E+hRe+PxDNLN7Vsu3OHtKECmYn9s5Q5LIieBv0DGxcGB91vHmBH+vu7d8dv8+RjyofkVHraQVBgyEHe7y4ni0Ofo6PshGllbiebS79MKJQPFpjE9zAoXGmit6DT/BGcGmJZpy73iXwa5pDc1bYSwD3kccj8+bbgGt5/wURg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=OV1jEfnA; arc=fail smtp.client-ip=40.93.195.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7DDC32B9B9;
+	Wed, 21 Jan 2026 08:40:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768984831; cv=none; b=q8myEVX0DCf40TUDh6yh2JhsAafzzngUEoFEhmsfnSvJGozh8n6IrvR4VQ6PQYuXQW8DOPdkVCiP9k39CT8OagDFIdqFx135xxvio9NujkfuhBsFqf0S8v2lpT0yagSz/nHjrv0Va9FxNNoVxKhqIoX+0lqdPqF4IHgBpFu21WI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768984831; c=relaxed/simple;
+	bh=QIWNhkI3vNpRRJeiND+NuOqGf5F4BCHhNEQazA0NT4s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ao4Xfmw4lbBXOqdrCyoX1QvseOFk+z/G7GWA25ESMq9iogDLk1OtGGG6q/G3JPL9zCfDnAcGa92057ojWqayKGOiyN+im4lKL+FsYVX4tA7/dQG7Iap5ZpWcq4MGIhLPKL/Qx6dnS4OGvscMpXb1+qUDYnhfREnyDHKpaXTIFLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bD5wum9q; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="OV1jEfnA"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FMSXfFCtP6zTNRVc2bo1TIBElP8g36ToxlLUUoSHySAQn+DlG60bRNLGMjHpexXqNP6sUHRzDbXBwJBgOTltw9oZ4oa4YL2YJYuh9Yv7GtJOy9YN063iNIb+tOJwpy+cIfqCDFcnJB14TiYYOIzKllN+DFeHyk79Tth0ASBWdf0YzX8v/l0E9iSkVHPXTaS4JQOlpE/ppml1yvZx7l/1HsYfX92Hy4Oei/LVPLFzYKNy9+ftXhg32dth4qDgqulXMIE6/qB6rz1SbVUE51TvWgEZLvCiSuaK2+VdMrrS1vU8oT+HyqCz85eKqxbVkAk1GTu+vWV68fViby5xqBBZww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rJH0uWYcJ5cvSiCgRJKrCBtUQ8O1B7HsDNCBE65NPOk=;
- b=MlCyoBV7Azxb9gMawa+FOq2XVnEJ5ErImKXG89o+VbHFOPiVYYOKdzyo3UUslWLYf4lykq8IbjOOmgZ+6hqtnvTBVAsQO9qIYG8cBxm87r0fdDByyQzTY+jr/PMZ1UpkdfZRdBH+kGMQ7v92wJroyNWJvUbZPA+f/oUAscmIU+OA5piNgwPHwlNtPbdGrPrPrMDTQjLFEG7pYbAb74Hz1eoc2TYVuL3w+YzVOuOMIghgv9L7MF6gKt/itAB78hEDJQHuFx374ylgK+8skAVPNRetAUPfI2wfjsWImvrou6QdX3F2x+oD8g0Xfay+x+4uNFwaYAidmGt/DxO20p7pbw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rJH0uWYcJ5cvSiCgRJKrCBtUQ8O1B7HsDNCBE65NPOk=;
- b=OV1jEfnA/awJ2g7Swd3Ezrow+uFs4JP6ys6X2GLMId+/5q3cjf59JQcvwJhOBrqJvet1jVbJ5hvicRfWXLzeWPZ7LQesZCi5yKzPIkXvNLqKCKbpeDvUFB0BHw0jQkaA2BsEy+kfv6UsXn8bVeK8/aDU6LeFsz4tjlOcfA953NY=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SJ2PR12MB8109.namprd12.prod.outlook.com (2603:10b6:a03:4f5::8)
- by SA3PR12MB7924.namprd12.prod.outlook.com (2603:10b6:806:313::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.9; Wed, 21 Jan
- 2026 08:15:06 +0000
-Received: from SJ2PR12MB8109.namprd12.prod.outlook.com
- ([fe80::7f35:efe7:5e82:5e30]) by SJ2PR12MB8109.namprd12.prod.outlook.com
- ([fe80::7f35:efe7:5e82:5e30%4]) with mapi id 15.20.9542.008; Wed, 21 Jan 2026
- 08:15:06 +0000
-Message-ID: <c0288962-6a11-4274-9e93-91bd5a6997c5@amd.com>
-Date: Wed, 21 Jan 2026 09:15:02 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: (subset) [PATCH v3 0/3] spi: xilinx: switch to device properties
- and make IRQs optional
-To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20260119-spi-xilinx-v3-0-4566c33bac0d@nexthop.ai>
- <176893698361.778248.6867023245726406177.b4-ty@kernel.org>
-Content-Language: en-US
-From: Michal Simek <michal.simek@amd.com>
-Autocrypt: addr=michal.simek@amd.com; keydata=
- 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
- mpwx1d8=
-In-Reply-To: <176893698361.778248.6867023245726406177.b4-ty@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR13CA0147.namprd13.prod.outlook.com
- (2603:10b6:a03:2c6::32) To SJ2PR12MB8109.namprd12.prod.outlook.com
- (2603:10b6:a03:4f5::8)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bD5wum9q"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768984829; x=1800520829;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=QIWNhkI3vNpRRJeiND+NuOqGf5F4BCHhNEQazA0NT4s=;
+  b=bD5wum9q9eB6LF4XhHzSkhc/4wl5a/SFCzFdNEgxWYHrwOUWxT27OhFN
+   9rIYT4LqQnWp5b3XEBb8SzcVh0Y7aL/hmxbtSeC0DRk85w/3kcMS6JKd2
+   xtHb1IrSqi+YA3AJIiZZwUM9cbv9ctq4m4d2vPThQrq+0JaIEZBkuHl9P
+   8KCKOii6txypIRkhYJOYGo9XqPpFSxwjOuUp3sT64aVevxGOWmqh7cqDv
+   lBTJaj6ihwKaph+MFGlEikQGWYqCDlf9C6pWuJ20eQizCoVv4lV79ftNz
+   WV0SxLCJrNT95oJm3KlldrJOOx9bZGWIHGI9SFOuyL3LJg4l0iEkE7OAf
+   w==;
+X-CSE-ConnectionGUID: DmMDsh4PQLmMYSpGYjlEkQ==
+X-CSE-MsgGUID: JLIXZwy4RIO+bGNb0KFEeA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11677"; a="81316360"
+X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; 
+   d="scan'208";a="81316360"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2026 00:40:28 -0800
+X-CSE-ConnectionGUID: cPftjnRsTHem2pg/uuQD2g==
+X-CSE-MsgGUID: SbSHcbw/R06YH6NTRflvTA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; 
+   d="scan'208";a="205527668"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.73])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2026 00:40:25 -0800
+Date: Wed, 21 Jan 2026 10:40:22 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Michal Simek <michal.simek@amd.com>
+Cc: Mark Brown <broonie@kernel.org>,
+	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+	linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 3/3] spi: xilinx: use device property accessors.
+Message-ID: <aXCQ9jcpheMub8u3@smile.fi.intel.com>
+References: <980ad372-a2c7-417c-91f9-4958d3d1aaca@sirena.org.uk>
+ <4831B269-DFC1-40E0-96B7-67981AC72562@nexthop.ai>
+ <6e06696e-09a4-46e0-98fa-252690b888e0@sirena.org.uk>
+ <BF71A04E-7FFB-42D1-8C8D-6FD13415EED5@nexthop.ai>
+ <c3fc04a4-4b09-4c6a-a0f1-e5aa92a22976@sirena.org.uk>
+ <80A8F67E-7A01-4F9F-9D84-29722678A2CE@nexthop.ai>
+ <817bcc43-7f10-4329-8924-6c375eb73ff2@sirena.org.uk>
+ <aW_zjaRLtewa_NV1@smile.fi.intel.com>
+ <aW_1zlEdaPNwiXuI@smile.fi.intel.com>
+ <6ad4387f-08b7-40e2-a2eb-1346d8af6ea3@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR12MB8109:EE_|SA3PR12MB7924:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5c520e4b-30ca-430c-ad6f-08de58c52f82
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?NU81dDZrdjZ4NWgrMDdMeXhNUXVKaGdLUVpmN3NGU3hTRkZlY3lCbUlrRG5h?=
- =?utf-8?B?TnVOTmZzN21vU21SakRGd2R2a3NJdUNlemxFb2xLeFEvNmNhM1Y3M2p6OFpC?=
- =?utf-8?B?TGs2ZUo3VnA4NE92T0JxMHYxQmJRd3AzcjMzUUptRTBXb1ZRL21QalhTN000?=
- =?utf-8?B?a1J5cEVTdERORHplMmp6Z0pYY0FqUjh6UUtmQkRTWVgwcnAxSGNsU3BycytL?=
- =?utf-8?B?c3RYdEpiNnp3dFlJYTd1TGUrZHFnTWkwM3V6S2lxUWRZWHBqY2VDZzNXMkZj?=
- =?utf-8?B?Q3B5dEhnRHg0T1FhU283N3BnaVBlazlMblpUSTNIWmFHNjBHbDJRQi90dUZP?=
- =?utf-8?B?S3NodGViZXBMWFdFV2dHOFlFUU5HTDhxQkxQN29WbzFjTU5VdEVuNjBWNnAx?=
- =?utf-8?B?QVY1cnJpY1RjVTREaG1BdGdDeFY1cHdiZWcyZHJPQ0p1aVJlY0FNNEx0ZkFp?=
- =?utf-8?B?eCtBWlZhY3VHazJXSlhtZmx4KzFYR0dtZ3M2RURyYXhlei9ueFFkalRPc3NO?=
- =?utf-8?B?b21aby8wSUNyRG1zdWZ5ejhpL3djekMvTGNVRjUyUXhhZGtLK1pzU2ZPUGJJ?=
- =?utf-8?B?a1lPZGp5SHY3TTVsVHRMVnFEVm04L2FXL3VtQTg4eGgreEhFclYvNWlRWDB6?=
- =?utf-8?B?Q3pCYXN4cUxPOEliT3lydkFGdVU4WG5JRUlRUW1YK2x6VGZlV1NlMnE4bzRT?=
- =?utf-8?B?dWwxRXY3eUlvb095R3loeGpmTlV4VnNEVHJCa24xV25wRUlROWVUMVoxZlFM?=
- =?utf-8?B?ZmZmOXpIUkV5bUhNNmp6WllLV01LNVV4dHNobHVFVnRpZjZPNlpOUHE3UmdM?=
- =?utf-8?B?SC8zakRzRDdNODFiU1dpb1RhRHR0UnVaTnVZajJ5U21NZ3FVQUEzNVRuSjAy?=
- =?utf-8?B?OHV3dUdHSDNRQXZlVlRaODFhNnFJUlJ0bnR4azVsV2NvUG1CTktqa2Nrd1Iz?=
- =?utf-8?B?Um1ZaUhBaXFBVmhldU5kTDFoUE4vZjFYSHFOYTNFMks2Y0ZxK1pQNnRMa1NK?=
- =?utf-8?B?ejI5dk1nTm1janVWSUpPbE5xYWJDZWh3b00yYUJGYTVkaHhPbVVFeEpEM2t0?=
- =?utf-8?B?dnh1Nk02WXROL3VCbkRIVTB5ZmpMbENzWU1aYzY3Q0hoZVJ4eGprYi8vV1py?=
- =?utf-8?B?czJZQmdmZ3FHMGlSMVM3U2dPWVNWTjY1YzdPUmM2QzB3KzRNU0g5QTlvREFt?=
- =?utf-8?B?eUY1ZmNCd2JLOFAzWEZaNllqbHhmeFpYUmNHN0NxRUZZeUlCaGtjUk9YS3Vi?=
- =?utf-8?B?bzYxWDdsay9ldzNiTW9xenR0NGMzNllDNk9ObDlkTXlXR3MrWTJtM090bEpx?=
- =?utf-8?B?QTdzTm4yTGZjMFlWdlVtZmYwUlZ5QzJNWCtRRXI0bUZOZ290WWVFMUZUTCty?=
- =?utf-8?B?UE9mSm9VTm5vQkVpMW00ajdRZ0RGbDRTUmhPaHdiL0tENEh0SHBqZjlJakZh?=
- =?utf-8?B?RmxCTFFGejV5ZWFqbG95eEpWd2lPcFR5NkY5ZGpDNmVhaitiekFHamlOdzRz?=
- =?utf-8?B?Vm5Udi9ibit0L2hRQ1FuemFET0c5SUdxMDRSKzRxOHR0NGlFWW40cFZESWY0?=
- =?utf-8?B?NXViN2RsUHlVYWlvakphMUZZMTlra0kybTluaEtvUC9ibExuc2xRNER6MmVB?=
- =?utf-8?B?WFIxTXJkZURvdWNadVd2VXYwV0VseFpnZzNmMHZpanFsangxV2xpSStTdTVH?=
- =?utf-8?B?dmdXWi9KeVVOT2JGSE42bVo0UTZXbkpqRk1HVHBVTXdnZ3NRWnN1MzU5S1hx?=
- =?utf-8?B?cFY3S3dpelhOTm91SFdPYjI2UW03ekwxQllLM0RoUGczTEswR01ra3E0VEZU?=
- =?utf-8?B?K0c4RmY1Wnl5VkNpT29BMExkeER6ZElJbEdJNEMwV210cytjVzVTNTdRemVz?=
- =?utf-8?B?bzVCV25Ed3IzWTI1US9jWUJHU0pyT2I3NHJYbm4vY1M5N0t6VzlIeW5yVGZV?=
- =?utf-8?B?UFM4aTdselNKa1ZZQkp6akttT0NlUU12ZVpjWFB4SVIrRzFLTVM3Y1Frd3Y0?=
- =?utf-8?B?aVVIZnY3ZzFtL3VIL1JMcHdnL3lnd2JrTVZ5MTNIRGx5Y1B4TXAwSTRZVEJ0?=
- =?utf-8?B?ZlRYUitRM0dQUGJJaGdFUlNkejgrK0NlcDNaVm14NUtTaHdjZ0tzakFFbDRD?=
- =?utf-8?Q?jYm3NQk4Wh9FwBpwv6lde/SIn?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR12MB8109.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?a0ZZMElCSjk2M3hXZ1U4TGpndEFIUmVRdDlYZ01ZSUtIWkt2L2FubE5zbVhC?=
- =?utf-8?B?REtpOWVsNzlZRFJRUVpSSzdaOFY5RXZxaExJaG4wRitmYVMxbXNQa3Z6dy95?=
- =?utf-8?B?VnF1cVRMQzluZysybi9jSy9wWUovUE9JdWRUSit3OGRacG5xYjR5WnM0aGlD?=
- =?utf-8?B?Y000Y3FRb1RXL2FCYUVLT01UcElFSmNCTW5aUWsrSkhibTh4R0ZTMWlPL2Uz?=
- =?utf-8?B?TFFhVTMyblhycEhrRnp4cHhialRjNlR0eElObjRzWkM0czVpcTgvN29iaFZk?=
- =?utf-8?B?ZUlRTkxhL0F6K2tZRVc5SkkyQ1ZON2dRckIxandYckpKcWhHY1h5Tm1tcFVa?=
- =?utf-8?B?cVJpM0YrRFhoR2dlNmQyVXR0NTY4N1BYem90MDk3V05GWnBhcnA1dy9WcW5B?=
- =?utf-8?B?S1ZPQnpkVnhnYStJWWFNM0pKUUlnR0FPYVFjYXNmUEhJaVh3Z3dzVlNDTnRK?=
- =?utf-8?B?a0g5eVBQZEJsUTFUVkd1UjhmUlBPVnFwR3h1c3V4QUtreWVDbENlakswT2sz?=
- =?utf-8?B?Y3M0SVVJVklWK0pIbm40N29TdzNSVXhaMStLM2hST08zeHBEL3ZhK0R4NWRi?=
- =?utf-8?B?QWhOZFVEdFR1U2U5eDgvR3NMWjdCdlI2S0hRUmoxYzBnNEtJVkwyVExzOE81?=
- =?utf-8?B?cG5IQktIMEJMVkhvYkxwb1NIeVVOSFQ3QTNsUkpKTU1MS2tvRFlPZC9GazYy?=
- =?utf-8?B?aGd2d0hpQWJnazAwV0ZiT0EvUVRHQTlEcVlkY3hWUXlib3Q5MXFqWC9NaUFn?=
- =?utf-8?B?Qk5yZVZETGdpYi9hVkxWcUZuSG1uQzRJZ0xYc293cUpjSDd5c1d6QlJtSnFR?=
- =?utf-8?B?NVVLeG16a3lwSENhbW1uTWYxVW5XeGhHZkFhdklFMDZseS9BQ3AvK3J6Z0c5?=
- =?utf-8?B?Vm1OcVRLaFVtVlY0MCtKcjl2SVVjV0gxZW8yeHl0cy9NQkZQL2JqMW1najVI?=
- =?utf-8?B?akh4N0hkL2hjalRkRnFid1U1U2xuM3dZR0Y4UVJZRHVsOStJd0hGUmJJeWlK?=
- =?utf-8?B?MFg2eFFYU1JhdmtIazkwelpkOU9yZXVCWXhYcWJ4MUQ1SnZ6ZlJxY3k1RnRM?=
- =?utf-8?B?WnJ0VDlpRzZvejhhZEJwZ2xkdFQyODJRV1I0UWtEclpxWDZEMWVnVjROTDcv?=
- =?utf-8?B?L2o2RS9iWTBzQjVaeXRNUnRldERzNk82U25naUlXN1c5WmdRTi9Sczd6VGFt?=
- =?utf-8?B?eVl1YUlsSVVlbzVUeDVxZ2hsd1lTYlMvM0F5ODhFK2xQUXNwREpNMlhQNFRZ?=
- =?utf-8?B?cHMwRXJKQ05PbmRZQWtWUHI3YnZXZWUybmJERzdxWEFqVGhFQmVxNGNITzhH?=
- =?utf-8?B?YjFVZnVvY2hWanY3dHFQREhtN3Y5R1Fzbi9LTGplS3BwSEE4WkoxMmxhOUNX?=
- =?utf-8?B?VzJXaUNnZ2hVYVBMZi9YNWZCWWxjK1dXY0lMRHBucXpRUzdOVUJSWWRHb2hz?=
- =?utf-8?B?VDRzcDYxakp0WlE2Q3F6N3Qyb2NKZ0tsNTg3M3gzSlVFL0crOGZ2eUtRSTY0?=
- =?utf-8?B?WlVicTJVNmZ0cTBsVzFvek9hNkczaUNQSEpXdGRGMi8vQ2pTRjZoVGJLU0Jv?=
- =?utf-8?B?VmJKK2Q5MG8zT3VMR0dUQkxLSGFWaXBoaVlQLythdkZTbkp5YXZSYnVoM0hE?=
- =?utf-8?B?NkhNS0ZrYXNhTDk1S2lRbXpFR1ViRmVkUEJRaGxaRU1LNGVIQlZLNElOM3Az?=
- =?utf-8?B?NFkwU2N3MG8vaU9jVGVuZzIxbHNuMFNzTTZmWHFaL0pQUmE1U2h4RXlCT2Jy?=
- =?utf-8?B?RWo2QUZXRTNsSTI5R2VCZ09BMzJnVDd1ZFpwWE14OW00bW5JZ1BkQUo1YzJB?=
- =?utf-8?B?bGp5Wk9USm9xSlZqSzFaTDV2YllvQTBtZFVSZlhQb3hBRnF4N1cwYzZ2SDQ1?=
- =?utf-8?B?VEx3UFJyOS8vbit1Sm1YS2c4aEtGQkRvN0xsZEMwdy9XTExEVDBKakhVMC8r?=
- =?utf-8?B?SFp5MENjVDIxT3ppTmFTWXptcmtpcjZvWjBJMTZOemtzS1Y5ZUwxcXk2TFdV?=
- =?utf-8?B?WUE2cTVSVUNWOG1TMmZ2VHNZUGNqSXc2N2FqMitXSjk4a0szRzRFWHBnejFP?=
- =?utf-8?B?aDk5bnJyZFlRby82OXkzekxsVkk3TG5WeGM5MFdFN1NzTnNET2FRWEpCQkxZ?=
- =?utf-8?B?dndTZmVLbGRjSVpJeFhPNE9lalRFYVpMbW1iQ0syNHFSejZxZ1V6bVk0d2hu?=
- =?utf-8?B?RlZXZHdtZ0Y3K1R4UlhUdWJCTE0wRExNQWwvNDFGWDNEM3ZNeTljTmM2QW5N?=
- =?utf-8?B?dWdMN080dXRyOGJOZVRObHYxQnlYNzRISVZTc0Fvd1dtVm5UVmNxNHJOYm1V?=
- =?utf-8?B?bjQybklzOFVTSnBJN3IxWGpjcGRwemxweEhjdElHVVFaTjVqUEN2dz09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5c520e4b-30ca-430c-ad6f-08de58c52f82
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB8109.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jan 2026 08:15:06.2943
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /xK5LEn88N/dutuL9D1F/niKj5S6tSmVlH6l0wKKO0nenCBf3N2Aaz3k+yNwzTWr
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7924
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <6ad4387f-08b7-40e2-a2eb-1346d8af6ea3@amd.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Hi Mark
-
-On 1/20/26 20:23, Mark Brown wrote:
-> On Mon, 19 Jan 2026 07:06:21 +0000, Abdurrahman Hussain wrote:
->> Transition the driver to use the generic device property API.
->>
->> Additionally, make interrupts optional to allow the driver to fall back
->> to its existing polling mode on systems where interrupts are either missing
->> or broken.
->>
->> Abdurrahman Hussain (3):
->>    spi: xilinx: use device property accessors.
->>    spi: xilinx: make irq optional
->>    spi: dt-bindings: xilinx: make interrupts optional
->>
->> [...]
+On Wed, Jan 21, 2026 at 09:11:04AM +0100, Michal Simek wrote:
+> On 1/20/26 22:38, Andy Shevchenko wrote:
+> > On Tue, Jan 20, 2026 at 11:28:50PM +0200, Andy Shevchenko wrote:
+> > > On Tue, Jan 20, 2026 at 09:04:58PM +0000, Mark Brown wrote:
+> > > > On Tue, Jan 20, 2026 at 11:11:44AM -0800, Abdurrahman Hussain wrote:
+> > > > > > On Jan 20, 2026, at 10:45 AM, Mark Brown <broonie@kernel.org> wrote:
+> > > > > > On Mon, Jan 19, 2026 at 04:20:06PM -0800, Abdurrahman Hussain wrote:
+> > > > 
+> > > > Let me once more renew my plea:
+> > > > 
+> > > > > > To repeat once again:
+> > > > 
+> > > > > > | Please fix your mail client to word wrap within paragraphs at something
+> > > > > > | substantially less than 80 columns.  Doing this makes your messages much
+> > > > > > | easier to read and reply to.
+> > > > 
+> > > > > > To drivers that are used on ACPI systems, yes.  Many devices wouldn't be
+> > > > > > used on ACPI systems, or would be expected to be exposed differently
+> > > > > > (for example, hidden behind AML).
+> > > > 
+> > > > > This is not for a normal off the shelf server. In our case we are building an embedded
+> > > > > switch with an AMD CPU and Xilinx FPGAs that happens to use EDK2 based BIOS and ACPI.
+> > > > 
+> > > > Sure, AFAICT it's mostly a PCI card with a bunch of stuff on it from a
+> > > > software point of view.
+> > > > 
+> > > > > > > I am just trying to get this 2-line small change merged so we can start using the standard spi-xilinx driver today. I am not trying to boil the ocean.
+> > > > 
+> > > > > > I mean, adding a HID wouldn't take substantially more code.
+> > > > 
+> > > > > We could, but we don’t own the Xilinx IP blocks. Are we not justified in using PRP0001
+> > > > > hack until the driver owner adds the HIDs? Wasn’t PRP0001 created as an escape hatch for
+> > > > > these kind of scenarios?
+> > > > 
+> > > > No, it's more there for the cases where embedded ACPI systems need to
+> > > > import non-trivial DT bindings so they can avoid having to respecify
+> > > > things that ACPI really doesn't cope with or for local hacks.  See
+> > > > Andy's reply earlier in the thread:
+> > > > 
+> > > >     https://lore.kernel.org/r/aW9JihlsjnJ-uBul@black.igk.intel.com
+> > > > 
+> > > > AFAICT for ACPI the HID assigment is a bit of a free for all in practice
+> > > > - board vendors generally seem perfectly happy to just pick something if
+> > > > the silicon vendor didn't do something.  Just look at all the parts with
+> > > > INTxxxx IDs!  That said Michal is on the thread so hopefully that's not
+> > > 
+> > > INTxxxx was a (historical) mistake, but look at the correct one INTCxxxx
+> > > which has listed several components Intel doesn't own. Because ACPI HID
+> > > it's not only about the component in use, it's also about integration of
+> > > that component in the platform environment. Hence it might require (platform)
+> > > specific quirks.
+> > 
+> > Btw, you can look at the MIPI I3C HCI case. MIPI as an owner allocated generic
+> > ID (which is usually represented as _CID in ACPI), AMD allocated their own one
+> > _HID (compatible with _CID) exactly for the purpose of having platform quirks.
+> > 
+> > TL;DR: if you are 100% sure you have no HW integration issues, requirements, etc
+> > and everything works as is, you can use Xilinx allocated id (assuming it will come)
+> > for the given IP and use it directly as _HID, otherwise use that as _CID and
+> > allocate your own for _HID.
 > 
-> Applied to
-> 
->     https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
-> 
-> Thanks!
-> 
-> [1/3] spi: dt-bindings: xilinx: make interrupts optional
->        commit: b603500de20fbe15ee54580481c1df4212a4ec44
+> I got in touch with respective AMD team about ACPI ID allocation. I also
+> don't think it is going to be a problem to get unique one. And I expect
+> device properties should pretty much match DT property names to be able to
+> use the same device_property_read* helper function to read them. Andy:
+> Correct?
 
-Are you sure about this one based on my discussion with Rob in past?
-https://lore.kernel.org/all/20250605130331.GA2370690-robh@kernel.org/
+Yes, the main issue I see is the enumeration by PRP0001 instead of by ACPI
+_HID. Also note, whatever ACPI has supported in _CRS (resources) should be
+used that way (memory, interrupts, DMA channels, etc).
 
-I don't really mind but would be good to do it in a consistent way.
+> I am still trying to wrap my head around all these possible solutions for
+> this problem or if we can solve it in a more generic way.
+> 
+> I can't see any problem with patches which are switching from
+> of_property_read* to device_property_read.
 
-Thanks,
-Michal
+Technically there is no issue with that, indeed.
+
+> If driver also works without IRQ
+> I think it is fine to make irq optional (which is 2/3 patch in this series).
+> The patch 1/3 is the same as mine I sent in past
+> https://lore.kernel.org/all/a527f5adffc6efe4c1ad2ccc40e1e095d73efe74.1749027112.git.michal.simek@amd.com/
+> and it was rejected by Rob.
+
+I think Rob is correct. But what's the problem to describe IRQ natively in _CRS
+in ACPI via Interrupt() or GpioInt() resource? You mean there is no actual wire
+connection to it?
+
+> Andrew: thanks for sharing link to pcie driver with DT which is one solution
+> which requires writing one PCIe driver and that's pretty much it.
+> Obviously enable DT on x86 but that's not a problem for product based on
+> embedded x86. But it can be a problem for standard distributions.
+> 
+> Then this ACPI way where it is not clear to me yet how to get information
+> about clocks. The i2c Abdurrahman's patch is making clk optional
+> https://lore.kernel.org/r/20260115002846.25389-1-abdurrahman@nexthop.ai
+> But input_clk is used in reinit code that's why maybe it is working for the
+> first time but in case of error not sure if driver really works properly.
+> On PCIe clock for spi/i2c is likely only one and ACPI device property can be
+> created to pass that information and call devm_clk_get_enabled() only in DT
+> case.
+
+On ACPI the clock are usually managed by firmware, but in new specification
+we also have ClockInput() resource. I dunno if there is still a gap between
+ACPICA and CCF to integrate that.
+
+> And then you have DFL (drivers/fpga/dfl*) and aux bus
+> (drivers/misc/keba/cp500.c) which pretty much targets similar setup.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+

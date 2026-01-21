@@ -1,42 +1,42 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD094DA525
-	for <linux-spi@vger.kernel.org>; Wed, 21 Jan 2026 17:05:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF764D2EF5
+	for <linux-spi@vger.kernel.org>; Wed, 21 Jan 2026 17:05:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769015139; cv=none; b=d9C/ifmafLsdCQq4cv0GtXSJFaVnJvaIwp7CmJASl5Ca5iehvMC+UR9bWHznCOUkbe207Z9DFZ1IKUeP+9HRpEhjMkIGTKW9LcNYYiNsMif5zQeByXkIKy3TBpR0RpzVR+joWKojoQrQ9mKdf5+G3WGA1gB4ZkW/uIzwjxBmEZs=
+	t=1769015142; cv=none; b=KDnmY689HU4MxYzHMIi0/nspLaXZiIXqWUv0HUt0DGsngLRNZb+YTdQ0oCfj3sKBN4nWro52BRJoZx2xsC6gw0vb4e++Y2oO66nMSmL5ZV2xo20eN9KrxAMW8iYHxRrzETXKYR5ciad2pWfvcjQoV50UGy/xn10cKGKpDyNDlJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769015139; c=relaxed/simple;
-	bh=7UMMSpTRFRksgUS7dSZabu6uzWVcK75/uzorszirfjQ=;
+	s=arc-20240116; t=1769015142; c=relaxed/simple;
+	bh=s5qeqBhzqXvBR0yVd6ehmw1JmdAeCogqylKOKRTU5a0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Pw2WyTK7Np5XtYWI8kgBTZZSnU+JDqNAxQvau21tp4WwBzmfPLTiFxMnE4b95O9onvOBxTQQA0pOqkRC0Kf5+SqnauKev2oQ/O32yRIzoCkfuXEH6oN04GIMmM2DvG3ghZ714J0g+mAXYVTJAD90+wrzew6Mp3iqxNftamq6vpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=JN1wMIae; arc=none smtp.client-ip=185.246.84.56
+	 In-Reply-To:To:Cc; b=f0bbNVrccTBlb56I8QPV3BvXRxtxizl/+gs2NDGLX9m+rtUeKmg6QRWJRReZ8hSFJdmY5+Ktu1S1qJpH3HXl4qixBVhFzaSCd1LulZpK3wdbKK2Vt8vLgnlUEqU4bW+rs4V+WcqBYxBU8MaUhFiU0N+N8sBSaqKUnG00t0QVss0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=L5om0/kD; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="JN1wMIae"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="L5om0/kD"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 2C2241A28FD;
-	Wed, 21 Jan 2026 17:05:36 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id A07A2C21A91;
+	Wed, 21 Jan 2026 17:05:10 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 0164F6070A;
-	Wed, 21 Jan 2026 17:05:36 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9C017119B18D4;
-	Wed, 21 Jan 2026 18:05:33 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D61C36070A;
+	Wed, 21 Jan 2026 17:05:37 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5ABF7119B18DD;
+	Wed, 21 Jan 2026 18:05:35 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769015135; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1769015136; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=WIFqPskiDM9IjrZs85Iqodhn/D6pSUk1OJXi0KZ7anY=;
-	b=JN1wMIaeDUKDCERcrdVvdA9LjV3So1tTmGvPS6HNjf5KaPDaWm0CaeDoXYXv6SecjnZcyv
-	Ht4SZs2EwQATmllbldoBEFLZTaNx+1wHG5odMmYiw5u3pfV0ruv4xUCFowOrzf5nC0mfIk
-	UYf8MKXajxdRi0F0u0WD0boGRtOcYYo2N2bq/AFkfmO7sEJRLjZ2/wwztpXrnvRbhuKrg2
-	6lGQvGfzD85R5aIt6J8q8+jPZtBUUexLKO4c3kNXrUMBBCT9KNHH8WPdqfjTcwYXKa9AqC
-	WNZ1gLRrybHfDAe/b+J1K4udaqMc8cXMMRj4AAoLMtvICWWaoGpxgyrrNHEb1g==
+	bh=QegLxnXsPbyMpFnnOsyJbRiNNWksSHe1X3JonRazV2o=;
+	b=L5om0/kDVbhd1Yu4xbOO0TP9ULP8vxO2C7fdJX48QBoU8YOdmxkBsy71mWfMJsEcn6GsqL
+	1JafuysnawmyHfVsYjsETPnCxcuYp5j0zZjxJSk+awzMrtWstLCxnQDbr67wMsmltAdOsF
+	bO/rKJe97Z6vgGoP0DOZxb9aipfg+LqWdS5IMckJV+nBlr4x73oq5NP1zMkjLWyGSeqCn3
+	bDy3Q2M+yAXrDFI8KciJ0IFefv9+eij3WoPYW8M5kChR/34vk+DCk1PPm9Ej0W2usEm2+I
+	W51qtCmQhcNCOThat3ltU5sQzPG2PF30M8A7XHhqIFwdyMnJ9UuHLx+RaAmrig==
 From: "Miquel Raynal (Schneider Electric)" <miquel.raynal@bootlin.com>
-Date: Wed, 21 Jan 2026 18:05:09 +0100
-Subject: [PATCH v3 13/17] spi: cadence-qspi: Add a flag for controllers
- without indirect access support
+Date: Wed, 21 Jan 2026 18:05:10 +0100
+Subject: [PATCH v3 14/17] spi: cadence-qspi: Make sure write protection is
+ disabled
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260121-schneider-6-19-rc1-qspi-v3-13-43e70fab4444@bootlin.com>
+Message-Id: <20260121-schneider-6-19-rc1-qspi-v3-14-43e70fab4444@bootlin.com>
 References: <20260121-schneider-6-19-rc1-qspi-v3-0-43e70fab4444@bootlin.com>
 In-Reply-To: <20260121-schneider-6-19-rc1-qspi-v3-0-43e70fab4444@bootlin.com>
 To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -66,72 +66,53 @@ X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
 Renesas RZ/N1 QSPI controllers embed the Cadence IP with some
-limitations/simplifications. One of the is that only direct access is
-supported, none of the registers related to indirect writes are
-populated, so create a flag to avoid these accesses and make sure only
-direct accessors are called.
+modifications. For instance, they feature a write protection of the
+direct mapping at the controller level, with this feature all data
+writes to the AHB region are aborted.
+
+Despite the fact that the flag setting write protection is disabled by
+default, Bootloaders may (and actually do) set it, so mark this feature
+as being available with a specific flag to, if applicable, make sure it
+is disabled.
 
 Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Miquel Raynal (Schneider Electric) <miquel.raynal@bootlin.com>
 ---
- drivers/spi/spi-cadence-quadspi.c | 29 ++++++++++++++++-------------
- 1 file changed, 16 insertions(+), 13 deletions(-)
+ drivers/spi/spi-cadence-quadspi.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
 diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index 35379546c3b4..e1ec20684b0a 100644
+index e1ec20684b0a..e0e4423baed9 100644
 --- a/drivers/spi/spi-cadence-quadspi.c
 +++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -47,6 +47,7 @@ static_assert(CQSPI_MAX_CHIPSELECT <= SPI_DEVICE_CS_CNT_MAX);
- #define CQSPI_SUPPORT_DEVICE_RESET	BIT(8)
+@@ -48,6 +48,7 @@ static_assert(CQSPI_MAX_CHIPSELECT <= SPI_DEVICE_CS_CNT_MAX);
  #define CQSPI_DISABLE_STIG_MODE		BIT(9)
  #define CQSPI_DISABLE_RUNTIME_PM	BIT(10)
-+#define CQSPI_NO_INDIRECT_MODE		BIT(11)
+ #define CQSPI_NO_INDIRECT_MODE		BIT(11)
++#define CQSPI_HAS_WR_PROTECT		BIT(12)
  
  /* Capabilities */
  #define CQSPI_SUPPORTS_OCTAL		BIT(0)
-@@ -1423,7 +1424,8 @@ static ssize_t cqspi_read(struct cqspi_flash_pdata *f_pdata,
- 	if (ret)
- 		return ret;
+@@ -218,6 +219,8 @@ struct cqspi_driver_platdata {
+ #define CQSPI_REG_IRQSTATUS			0x40
+ #define CQSPI_REG_IRQMASK			0x44
  
--	if (cqspi->use_direct_mode && ((from + len) <= cqspi->ahb_size))
-+	if ((cqspi->use_direct_mode && ((from + len) <= cqspi->ahb_size)) ||
-+	    (cqspi->ddata && cqspi->ddata->quirks & CQSPI_NO_INDIRECT_MODE))
- 		return cqspi_direct_read_execute(f_pdata, buf, from, len);
++#define CQSPI_REG_WR_PROT_CTRL			0x58
++
+ #define CQSPI_REG_INDIRECTRD			0x60
+ #define CQSPI_REG_INDIRECTRD_START_MASK		BIT(0)
+ #define CQSPI_REG_INDIRECTRD_CANCEL_MASK	BIT(1)
+@@ -1641,6 +1644,10 @@ static void cqspi_controller_init(struct cqspi_st *cqspi)
+ 		       cqspi->iobase + CQSPI_REG_INDIRECTWRWATERMARK);
+ 	}
  
- 	if (cqspi->use_dma_read && ddata && ddata->indirect_read_dma &&
-@@ -1624,19 +1626,20 @@ static void cqspi_controller_init(struct cqspi_st *cqspi)
- 	/* Disable all interrupts. */
- 	writel(0, cqspi->iobase + CQSPI_REG_IRQMASK);
- 
--	/* Configure the SRAM split to 1:1 . */
--	writel(cqspi->fifo_depth / 2, cqspi->iobase + CQSPI_REG_SRAMPARTITION);
-+	if (!(cqspi->ddata && cqspi->ddata->quirks & CQSPI_NO_INDIRECT_MODE)) {
-+		/* Configure the SRAM split to 1:1 . */
-+		writel(cqspi->fifo_depth / 2, cqspi->iobase + CQSPI_REG_SRAMPARTITION);
-+		/* Load indirect trigger address. */
-+		writel(cqspi->trigger_address,
-+		       cqspi->iobase + CQSPI_REG_INDIRECTTRIGGER);
- 
--	/* Load indirect trigger address. */
--	writel(cqspi->trigger_address,
--	       cqspi->iobase + CQSPI_REG_INDIRECTTRIGGER);
--
--	/* Program read watermark -- 1/2 of the FIFO. */
--	writel(cqspi->fifo_depth * cqspi->fifo_width / 2,
--	       cqspi->iobase + CQSPI_REG_INDIRECTRDWATERMARK);
--	/* Program write watermark -- 1/8 of the FIFO. */
--	writel(cqspi->fifo_depth * cqspi->fifo_width / 8,
--	       cqspi->iobase + CQSPI_REG_INDIRECTWRWATERMARK);
-+		/* Program read watermark -- 1/2 of the FIFO. */
-+		writel(cqspi->fifo_depth * cqspi->fifo_width / 2,
-+		       cqspi->iobase + CQSPI_REG_INDIRECTRDWATERMARK);
-+		/* Program write watermark -- 1/8 of the FIFO. */
-+		writel(cqspi->fifo_depth * cqspi->fifo_width / 8,
-+		       cqspi->iobase + CQSPI_REG_INDIRECTWRWATERMARK);
-+	}
- 
++	/* Disable write protection at controller level */
++	if (cqspi->ddata && cqspi->ddata->quirks & CQSPI_HAS_WR_PROTECT)
++		writel(0, cqspi->iobase + CQSPI_REG_WR_PROT_CTRL);
++
  	/* Disable direct access controller */
  	if (!cqspi->use_direct_mode) {
+ 		reg = readl(cqspi->iobase + CQSPI_REG_CONFIG);
 
 -- 
 2.51.1

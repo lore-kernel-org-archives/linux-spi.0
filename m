@@ -1,38 +1,38 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3DA9344024;
-	Thu, 22 Jan 2026 14:21:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8126C32E698
+	for <linux-spi@vger.kernel.org>; Thu, 22 Jan 2026 14:35:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769091673; cv=none; b=q7MsGVghZkoLtgFQ+3YQMs2SQ69l3vhEfuZcHmTKEpoSO954uSxfeXswFdGCjiTQCLAUk6UXbzVNebTZmqp5A0yrlWDWyqDij3P2OBS2P9oKI4XC35B8F6aJeX21P2px/AYqVCbjLxgSx+UA9Cgjvs8TpvyMEHBH2YWlEupb0iU=
+	t=1769092553; cv=none; b=TkILCSiKmrA3VZvfhGgruIMSf9q5PxI1ZEYDolnoMc+dKX4WIEHTwFC2zhqXoD7RGCA2CjwP3YAvhjGETHxWLvBmno/URWtLJ1nvmVRQne6yCOwr1V3jgACiq4GJ2F2znNYAJi/Fz3gyyKBGeYkxDmEy6cN+VS71gQXDE7zfO5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769091673; c=relaxed/simple;
-	bh=F+5aNniE9B3U4nh1z1zfWzIiTm1JAwc6qCs+DV9yMEo=;
+	s=arc-20240116; t=1769092553; c=relaxed/simple;
+	bh=6JKagdpu1NW0MWhde9QrcjagRAxxNS3tGFdkj/BcMwc=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=tmFDEOgFoJFNI7t55QehFQlmRBunhNb4j+4DaU8fxYhn4U5zFC9/zrwXbTubQTEqtUf5kJKj6CZEFIAsNIMnOT3oCD/p5iSJfHgFV5HOJaIFsa5mkDF2KYLRXZgtDq+AQVX8WER1SccTsWAQ+6keMlEspMBTIJpRmG7Ige/jBsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=N4+eDW3E; arc=none smtp.client-ip=185.246.84.56
+	 MIME-Version:Content-Type; b=KjhU8AVwsyMbSD/jj4hXeD4lCzyRBjgHuj6UMSO9hq7SSyXwo8ob9o9EZSl/atPjBG8qylgcOw9BTWDsVBb8q4dBFFvb0NacoJf37eKG3Zc1NNwatL6sWshW9evDsoTozE3RN5b1BzNL44PmGzFiiszU8Ott16zncNcO/6nw7wA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=e9yOhMb/; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="N4+eDW3E"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="e9yOhMb/"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 34B811A2A91;
-	Thu, 22 Jan 2026 14:21:10 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 9B9DEC21AA4;
+	Thu, 22 Jan 2026 14:35:49 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 00A86606B6;
-	Thu, 22 Jan 2026 14:21:10 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 95040119B81B3;
-	Thu, 22 Jan 2026 15:21:05 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id C2DE0606B6;
+	Thu, 22 Jan 2026 14:35:49 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B05FA119B828C;
+	Thu, 22 Jan 2026 15:35:44 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769091669; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1769092548; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=TsNML+3xOwrc4+PpSLQW2hjh0yxYNzlX5rpJRRrE/NU=;
-	b=N4+eDW3E48c+twnL6eSo5849Eho0y6eB9EAEbXs2hSaEYg7OHh+jtUki6YGSBYpHNsLvmy
-	U39Dl7CQFBPebANR5xLQhMZcjgK/S1tC8zY8/3IiruKeklqcrbyYu8JwaXWQXxzz9x65Rs
-	t+dbwbeNPhhHIX8qqcGVnfwfIIg93kRqnoivzBboja/HrqvBmn/Kw5CWXETzDafOhVsp2s
-	Jx9ml11sewsgF9jpsjOj/gOgrfez5ydlg3O9z45TnTfQLT8ey4YYCBOgalPT9feDcLc0uK
-	24Qlv9GwbqKOFU0wgZ+MYtdirkoO2aVidsvqB8JOKWMCrTm1MTmXiSZa5jp7SA==
+	bh=FMQ6v9PWs/W6+3N3+tONMG1XpsHmPJ52wzgsGbqmIs4=;
+	b=e9yOhMb/V7CMe2+OK/aVHvBNkZ19aKgRlCFCK3B8oYkqO89HRlqzo3Bbw2X58ds2W4eCeP
+	N6AXTv1lsHrNgv+yWnlw0Jg3oJVE5yhSMjZE9en5+iGDzTxQ8ILeMzhqezmdrf6ZQoOrPJ
+	iXcCXmULKYoVhNBU+mJ9ZKb2e46Ol7GSYaMyemA3u5IC3oKimT81X3gFh16lBJn9biLF5u
+	HDKHQu8d2bynyWD/P7JJT38btHyIsLDAIc0bHDSXdD8LMY9xd0RK2qdO7iva3I+0M/3uFu
+	pE3UVdhSaaV4x1J0ElDa7GvRfl4cIrIDYZjZ8oNEFoIRVtibS3RaHvWimJqjVQ==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
 To: Rob Herring <robh@kernel.org>
 Cc: Mark Brown <broonie@kernel.org>,  Krzysztof Kozlowski
@@ -46,16 +46,16 @@ Cc: Mark Brown <broonie@kernel.org>,  Krzysztof Kozlowski
  <pratyush@kernel.org>,  Pascal Eberhard <pascal.eberhard@se.com>,
   linux-spi@vger.kernel.org,  devicetree@vger.kernel.org,
   linux-kernel@vger.kernel.org,  linux-renesas-soc@vger.kernel.org
-Subject: Re: [PATCH v3 01/17] spi: dt-bindings: cdns,qspi-nor: Remove
- duplicated constraints
-In-Reply-To: <20260121221400.GA218496-robh@kernel.org> (Rob Herring's message
-	of "Wed, 21 Jan 2026 16:14:00 -0600")
+Subject: Re: [PATCH v3 03/17] spi: dt-bindings: cdns,qspi-nor: Add examples
+ for testing the specific cases
+In-Reply-To: <20260121230759.GA223990-robh@kernel.org> (Rob Herring's message
+	of "Wed, 21 Jan 2026 17:07:59 -0600")
 References: <20260121-schneider-6-19-rc1-qspi-v3-0-43e70fab4444@bootlin.com>
-	<20260121-schneider-6-19-rc1-qspi-v3-1-43e70fab4444@bootlin.com>
-	<20260121221400.GA218496-robh@kernel.org>
+	<20260121-schneider-6-19-rc1-qspi-v3-3-43e70fab4444@bootlin.com>
+	<20260121230759.GA223990-robh@kernel.org>
 User-Agent: mu4e 1.12.7; emacs 30.2
-Date: Thu, 22 Jan 2026 15:21:04 +0100
-Message-ID: <87a4y5pw33.fsf@bootlin.com>
+Date: Thu, 22 Jan 2026 15:35:44 +0100
+Message-ID: <874iodpven.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -66,38 +66,76 @@ Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-Last-TLS-Session-Version: TLSv1.3
 
-On 21/01/2026 at 16:14:00 -06, Rob Herring <robh@kernel.org> wrote:
+Hi Rob,
 
-> On Wed, Jan 21, 2026 at 06:04:57PM +0100, Miquel Raynal (Schneider Electr=
+On 21/01/2026 at 17:07:59 -06, Rob Herring <robh@kernel.org> wrote:
+
+> On Wed, Jan 21, 2026 at 06:04:59PM +0100, Miquel Raynal (Schneider Electr=
 ic) wrote:
->> The if/then/else block sets the restrictions in all cases for
->> resets/reset-names, very much like it does for other properties as well
->> such as cdns,fifo-depth. Drop the constraints from the place where these
->> constraints are simply ignored.
+>> It is very painful to modify this file because the core IP described is
+>> so common, it has been implemented in many SoCs from different
+>> architectures. Both `dtbs_check` and `dt_binding_check` are rather long
+>> commands, even when restricted to a single schema files, and letting
+>> this file evolve without risking to break other DTSs is painful, because
+>> there are arm, arm64 and riscv platforms impacted and no way to check
+>> all of them at the same time.
 >
-> But they aren't.
+> OTOH, examples aren't meant to be exhaustive test cases of all=20
+> possibilities. If it was me, I'd actually just get rid of all the=20
+> examples. They are generally just a copy from some .dts we already
+> have.
 
-I looked deeper. Indeed the two constraints are applied, and it works
-because the constraints in "if" blocks must be subsets of what is
-already a constraint in the main body.
+I will align with this idea the day `make dtbs_check` (or something
+similarly simple) is exhaustive and cross platform :-)
 
-...
+Maybe cdns,qspi-nor is an exception, but it impacts different
+architectures, which means the output of `make dtbs_check` is
+meaningless because it only covers a subset of the possible cases. Hence
+my attempt to gather all specific cases in the bindings, so I could run
+all the meaningful checks I wanted more easily.
 
->> -  resets:
->> -    minItems: 2
->> -    maxItems: 3
->> -
->> -  reset-names:
->> -    minItems: 2
->> -    maxItems: 3
->> -    items:
->> -      enum: [ qspi, qspi-ocp, rstc_ref ]
+I think this patch has its usefulness, but I don't mind dropping it.
+
+>> +  - |
+>> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+>> +    #include <dt-bindings/reset/starfive,jh7110-crg.h>
+>> +    #include <dt-bindings/clock/starfive,jh7110-crg.h>
+>> +    spi@13010000 {
+>> +        compatible =3D "starfive,jh7110-qspi", "cdns,qspi-nor";
+>> +        reg =3D <0x13010000 0x10000>, <0x21000000 0x400000>;
+>> +        interrupts =3D <25>;
+>> +        clocks =3D <&syscrg JH7110_SYSCLK_QSPI_REF>, <&syscrg JH7110_SY=
+SCLK_QSPI_AHB>,
+>> +                 <&syscrg JH7110_SYSCLK_QSPI_APB>;
+>> +        clock-names =3D "ref", "ahb", "apb";
+>> +        resets =3D <&syscrg JH7110_SYSRST_QSPI_APB>, <&syscrg JH7110_SY=
+SRST_QSPI_AHB>,
+>> +                 <&syscrg JH7110_SYSRST_QSPI_REF>;
+>> +        reset-names =3D "qspi", "qspi-ocp", "rstc_ref";
+>> +        #address-cells =3D <1>;
+>> +        #size-cells =3D <0>;
+>> +        cdns,fifo-depth =3D <256>;
+>> +        cdns,fifo-width =3D <4>;
+>> +        cdns,trigger-address =3D <0x0>;
+>> +    };
+>> +
+>> +  - |
+>> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+>> +    spi@2400 {
+>> +        compatible =3D "amd,pensando-elba-qspi", "cdns,qspi-nor";
+>> +        reg =3D <0x2400 0x400>, <0x7fff0000 0x1000>;
+>> +        interrupts =3D <GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH>;
+>> +        clocks =3D <&flash_clk>;
+>> +        #address-cells =3D <1>;
+>> +        #size-cells =3D <0>;
+>> +        cdns,fifo-depth =3D <1024>;
+>> +        cdns,fifo-width =3D <4>;
+>> +        cdns,trigger-address =3D <0x7fff0000>;
 >
-> The primary reason to keep this is to prevent making up other names. If=20
-> the names are only in if/then schemas then anything is allowed and it's=20
-> not visible in reviews.
+> This one really just looks like a subset of the others.
 
-Makes sense. I will drop this patch.
+The fifo-depth possibilities are extended just for this
+compatible. Basically I captured in the examples every specific case
+covered with an 'if' schema.
 
-Thanks,
 Miqu=C3=A8l

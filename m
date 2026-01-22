@@ -1,41 +1,42 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8472A36C0C7;
-	Thu, 22 Jan 2026 15:14:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3E83378D94;
+	Thu, 22 Jan 2026 15:14:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769094843; cv=none; b=qqtqISDMvlVcNmUGsexic0K/sNXAu3fRlucEHc0mWXPofditCz44bIOw/LJT/LTPtHDbRDSEKsLIy/DvwI6iXGnksFR0biZx+aQcluyWAOjMXwKQPPJfZ7mOa7BY9bhd8cYz5o8fGNfydCXYGVpm//dUCRaqsBPiMS1UMPcLjpU=
+	t=1769094846; cv=none; b=Yfo41+d1zY2eVkg8FHP7i5WCM1e9n+bpZDKxuQIzPKZiigDdilCaL2FndI/vfSdnrmZay9FqiMxMDW9nrorm8vufPI2vi6xaiDP6UTJw3hnVRQcY0/tzWGd1feSJfIjl1RMJ2cUK9u4TDwJP4Fc1cXHBRKqPKJ4PCAhV0dQiql4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769094843; c=relaxed/simple;
-	bh=hVZFluRZ9aIsCPx5D6aaUpTyU1txgrMGDGVXFg02iu0=;
+	s=arc-20240116; t=1769094846; c=relaxed/simple;
+	bh=JD9J15FD3+7Fo755XEIaI+M7RJcrkXyMm5ZCiSP5OnY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=CO2aEyGeLa2jdcm31ntIL7VtTdM0Scgr+sB69OqNl+4oz94fV9iFloxLKio0FyFwjkejaYx3yQr4qFhI+tWykztbW7T2FU6NC9nPOo0qpgg6Z2S68AOu2mnAQB/uFO10tFsgIZhrUXGSwmA5wMoUhXMLO25M3wsdyqyNi8Am/y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Hn29qmpa; arc=none smtp.client-ip=185.246.84.56
+	 In-Reply-To:To:Cc; b=F8cwE+zjOGxnbelSGQ8DjcoB71ydSoi8FMHaQ6IXgAbShdPMMYoAvBjZGaPzkFRKKiMvhTD4bNpE59gaILcRc4YeLnh2Yw+gGbUU7JeDC9Qc5F6w7e6ErRBhFs5QTCc+jmWoFCpJn01ttSIzmfR7nlxTPCsC2q1KJANGjSb3QkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=w0SnOLTR; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Hn29qmpa"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="w0SnOLTR"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 32ABD1A2A60;
-	Thu, 22 Jan 2026 15:14:00 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 565AB4E421F2;
+	Thu, 22 Jan 2026 15:14:02 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 09000606B6;
-	Thu, 22 Jan 2026 15:14:00 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 243B5119B82CA;
-	Thu, 22 Jan 2026 16:13:57 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 2C40F606B6;
+	Thu, 22 Jan 2026 15:14:02 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 420A0119B82C1;
+	Thu, 22 Jan 2026 16:13:59 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769094838; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1769094841; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=kXE2QNu4DkvbYU2g9MAcoHt1LXhYlHoQoJg0JPWeVww=;
-	b=Hn29qmpa+xU4Qihj652rJWpMPl9+i9vQjgtAd80xBcwOoE2jDNzsuhhW+aHex/K+YUkG/I
-	acP9qkin/bw5bA69IFg71F1rt7lkjmvQTe1OHJ01ExtWU+f2C1cdxS3sMEZPaoULIVr3uU
-	nsaB+iPn6Pmmr+5KHOW9PP5OgJMesfH6X/qfEqfbtugxaH6rhjZAwpUDsMkcEMztpU3CaD
-	b/PgjMrZIznXbat0+ypBD4zImmRuLn8fRgOO8iaq8yfx8/dAWjzH9pLAvvtOoRZz2QT5u5
-	/zbjx40e8cx0oTngJ18aBzVaQWftmUFSNIA3+KGjpyc7vT0xbdR5EGjWx74BBw==
+	bh=+kIY2+d5nqykmYBPmHAWFbCHhJxDmjtvUjwEBEl1LRg=;
+	b=w0SnOLTRxT0OH53Rq8wTI/+GZs5AEISLfobmHtrkNHxDziP8uyWrftxs2upQcukBeIfLCa
+	pRurbmrLk4e7AWrD4ioOwpHQOLV6u8MqFlTbYumGVvBusbk0w2SHr5vSSWs3V7vM4dIudl
+	wilPtl22x2bnUAh/P7x4l2iMjkJtJm+3i1BrfKMZTFk0zCoFxwyVqyzmQCHc2sNw/sAj2i
+	81t3bsbPk7Mn4oPYHBNGog36mio4+t49cimwm72PQCzSSOcMKMPX17IjoYw3nlt41Rmlxc
+	bAyRFzyt1v9CCb3aGnKxWnI0Z6Tol6XbCIoP6a2qvJZ4GfEF91srbLDHfMEiUg==
 From: "Miquel Raynal (Schneider Electric)" <miquel.raynal@bootlin.com>
-Date: Thu, 22 Jan 2026 16:13:28 +0100
-Subject: [PATCH v4 03/15] spi: cadence-qspi: Align definitions
+Date: Thu, 22 Jan 2026 16:13:29 +0100
+Subject: [PATCH v4 04/15] spi: cadence-qspi: Fix style and improve
+ readability
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -44,7 +45,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260122-schneider-6-19-rc1-qspi-v4-3-f9c21419a3e6@bootlin.com>
+Message-Id: <20260122-schneider-6-19-rc1-qspi-v4-4-f9c21419a3e6@bootlin.com>
 References: <20260122-schneider-6-19-rc1-qspi-v4-0-f9c21419a3e6@bootlin.com>
 In-Reply-To: <20260122-schneider-6-19-rc1-qspi-v4-0-f9c21419a3e6@bootlin.com>
 To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -64,28 +65,45 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-Fix alignment on the #defines.
+It took me several seconds to correctly understand this block. I
+understand the goal: showing that we are in the if, or in one of the two
+other cases. Improve the organization of the code to both improve
+readability and fix the style.
 
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+Suggested-by: Pratyush Yadav <pratyush@kernel.org>
 Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Miquel Raynal (Schneider Electric) <miquel.raynal@bootlin.com>
 ---
- drivers/spi/spi-cadence-quadspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-cadence-quadspi.c | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index b1cf182d6566..cc28da7fc686 100644
+index cc28da7fc686..c0a507953c58 100644
 --- a/drivers/spi/spi-cadence-quadspi.c
 +++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -40,7 +40,7 @@ static_assert(CQSPI_MAX_CHIPSELECT <= SPI_DEVICE_CS_CNT_MAX);
- #define CQSPI_DISABLE_DAC_MODE		BIT(1)
- #define CQSPI_SUPPORT_EXTERNAL_DMA	BIT(2)
- #define CQSPI_NO_SUPPORT_WR_COMPLETION	BIT(3)
--#define CQSPI_SLOW_SRAM		BIT(4)
-+#define CQSPI_SLOW_SRAM			BIT(4)
- #define CQSPI_NEEDS_APB_AHB_HAZARD_WAR	BIT(5)
- #define CQSPI_RD_NO_IRQ			BIT(6)
- #define CQSPI_DMA_SET_MASK		BIT(7)
+@@ -374,17 +374,12 @@ static irqreturn_t cqspi_irq_handler(int this_irq, void *dev)
+ 	/* Clear interrupt */
+ 	writel(irq_status, cqspi->iobase + CQSPI_REG_IRQSTATUS);
+ 
+-	if (cqspi->use_dma_read && ddata && ddata->get_dma_status) {
+-		if (ddata->get_dma_status(cqspi)) {
+-			complete(&cqspi->transfer_complete);
+-			return IRQ_HANDLED;
+-		}
+-	}
+-
+-	else if (!cqspi->slow_sram)
+-		irq_status &= CQSPI_IRQ_MASK_RD | CQSPI_IRQ_MASK_WR;
+-	else
++	if (cqspi->use_dma_read && ddata && ddata->get_dma_status)
++		irq_status = ddata->get_dma_status(cqspi);
++	else if (cqspi->slow_sram)
+ 		irq_status &= CQSPI_IRQ_MASK_RD_SLOW_SRAM | CQSPI_IRQ_MASK_WR;
++	else
++		irq_status &= CQSPI_IRQ_MASK_RD | CQSPI_IRQ_MASK_WR;
+ 
+ 	if (irq_status)
+ 		complete(&cqspi->transfer_complete);
 
 -- 
 2.51.1

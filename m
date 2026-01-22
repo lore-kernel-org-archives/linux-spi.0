@@ -1,141 +1,147 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8126C32E698
-	for <linux-spi@vger.kernel.org>; Thu, 22 Jan 2026 14:35:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373853382CF
+	for <linux-spi@vger.kernel.org>; Thu, 22 Jan 2026 15:10:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769092553; cv=none; b=TkILCSiKmrA3VZvfhGgruIMSf9q5PxI1ZEYDolnoMc+dKX4WIEHTwFC2zhqXoD7RGCA2CjwP3YAvhjGETHxWLvBmno/URWtLJ1nvmVRQne6yCOwr1V3jgACiq4GJ2F2znNYAJi/Fz3gyyKBGeYkxDmEy6cN+VS71gQXDE7zfO5g=
+	t=1769094620; cv=none; b=l1UtWOqxBrklTwZ2pBoM2X17h3ZIuALf497TkpunjdniQL95N+4v3siJ/ldh2fXL88M6uBhGOihTxcOKf/SCRYJB1ocle4A5p6NnGzLUnQhE2ovQncivL65NuOw94PwlE3SVwxlLTBVoLMInEmIYeYKr9NRTblfbqyb8tAHi0X0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769092553; c=relaxed/simple;
-	bh=6JKagdpu1NW0MWhde9QrcjagRAxxNS3tGFdkj/BcMwc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=KjhU8AVwsyMbSD/jj4hXeD4lCzyRBjgHuj6UMSO9hq7SSyXwo8ob9o9EZSl/atPjBG8qylgcOw9BTWDsVBb8q4dBFFvb0NacoJf37eKG3Zc1NNwatL6sWshW9evDsoTozE3RN5b1BzNL44PmGzFiiszU8Ott16zncNcO/6nw7wA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=e9yOhMb/; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1769094620; c=relaxed/simple;
+	bh=jAvXhPad+799i4jevYzF1yKIxwEIkQVxLwFv/54MkTg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WV8zWzmjOBdMHJSwgcuczl5sXNJhie7gZlOYD397QrSXJrUKb14H+hrMe9RiTLlCbI92tV9zahX6Ktvw2t2kAC90qz5prJIXlyQhdpHjSEhKf5jHTzEy0XtHcKjtWbrnrVGJralR/QqiA0jCEn58ps3ll3ZOGtLR9mv2zUCFhKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=SpnE9AnP; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=NzKsAXK8; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="e9yOhMb/"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 9B9DEC21AA4;
-	Thu, 22 Jan 2026 14:35:49 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C2DE0606B6;
-	Thu, 22 Jan 2026 14:35:49 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B05FA119B828C;
-	Thu, 22 Jan 2026 15:35:44 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769092548; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=FMQ6v9PWs/W6+3N3+tONMG1XpsHmPJ52wzgsGbqmIs4=;
-	b=e9yOhMb/V7CMe2+OK/aVHvBNkZ19aKgRlCFCK3B8oYkqO89HRlqzo3Bbw2X58ds2W4eCeP
-	N6AXTv1lsHrNgv+yWnlw0Jg3oJVE5yhSMjZE9en5+iGDzTxQ8ILeMzhqezmdrf6ZQoOrPJ
-	iXcCXmULKYoVhNBU+mJ9ZKb2e46Ol7GSYaMyemA3u5IC3oKimT81X3gFh16lBJn9biLF5u
-	HDKHQu8d2bynyWD/P7JJT38btHyIsLDAIc0bHDSXdD8LMY9xd0RK2qdO7iva3I+0M/3uFu
-	pE3UVdhSaaV4x1J0ElDa7GvRfl4cIrIDYZjZ8oNEFoIRVtibS3RaHvWimJqjVQ==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Rob Herring <robh@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>,  Krzysztof Kozlowski
- <krzk+dt@kernel.org>,  Conor Dooley <conor+dt@kernel.org>,  Geert
- Uytterhoeven <geert+renesas@glider.be>,  Magnus Damm
- <magnus.damm@gmail.com>,  Vaishnav Achath <vaishnav.a@ti.com>,  Thomas
- Petazzoni <thomas.petazzoni@bootlin.com>,  =?utf-8?Q?Herv=C3=A9?= Codina
- <herve.codina@bootlin.com>,  Wolfram Sang
- <wsa+renesas@sang-engineering.com>,  Vignesh Raghavendra
- <vigneshr@ti.com>,  Santhosh Kumar K <s-k6@ti.com>,  Pratyush Yadav
- <pratyush@kernel.org>,  Pascal Eberhard <pascal.eberhard@se.com>,
-  linux-spi@vger.kernel.org,  devicetree@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  linux-renesas-soc@vger.kernel.org
-Subject: Re: [PATCH v3 03/17] spi: dt-bindings: cdns,qspi-nor: Add examples
- for testing the specific cases
-In-Reply-To: <20260121230759.GA223990-robh@kernel.org> (Rob Herring's message
-	of "Wed, 21 Jan 2026 17:07:59 -0600")
-References: <20260121-schneider-6-19-rc1-qspi-v3-0-43e70fab4444@bootlin.com>
-	<20260121-schneider-6-19-rc1-qspi-v3-3-43e70fab4444@bootlin.com>
-	<20260121230759.GA223990-robh@kernel.org>
-User-Agent: mu4e 1.12.7; emacs 30.2
-Date: Thu, 22 Jan 2026 15:35:44 +0100
-Message-ID: <874iodpven.fsf@bootlin.com>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="SpnE9AnP";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="NzKsAXK8"
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60M84gN4791167
+	for <linux-spi@vger.kernel.org>; Thu, 22 Jan 2026 15:10:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=1WLTfBIUbrm278eAVvCdHgvSff8YTBI4fGO
+	M84er2nk=; b=SpnE9AnPGW6FtUg2xwGhPzth55qJcfyC3oJ8QrqwHpGEr/MbJhR
+	/01+p+TskkdI4n4avLJx0OoXhw0K7+skd6aEKHppO2te0OftDnSzZtG2vI8uFvq3
+	1jgfhvlu2n7TjnRoOF1yF1M3EoAvZvTD4EaYmfurZk/sHfPbpPk4+uqDXwfWTIxO
+	cQuGgpvr6Zfsct656HNnI1Pm0c4IHtAzDdOMUeN5zUzf+ivsFELKhcfBp5m6xKZ0
+	DRvP7txcZ/j5rB8bzfUWjHDbQoV1+BtuRWvDZbGqM6NmHz91t3frrrInQOHb+GgI
+	Q1HRKHMVjRWLXsyBeK6mJhw+NOJrBMOtssA==
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bu6p1jvar-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-spi@vger.kernel.org>; Thu, 22 Jan 2026 15:10:18 +0000 (GMT)
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-c6133262e4eso750557a12.2
+        for <linux-spi@vger.kernel.org>; Thu, 22 Jan 2026 07:10:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1769094617; x=1769699417; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=1WLTfBIUbrm278eAVvCdHgvSff8YTBI4fGOM84er2nk=;
+        b=NzKsAXK8nHQP7maksfHFF0ycpRz8lAtL5UBxozuqLxjrhEPefVOICrYippWPK9x5TY
+         SFz1K1VLMimwjaFZy8hRDgnZDPKXRxlmqkgYUIBo8ZZjgbihfhGf+xkh4AALaQMBqZ4r
+         fy5dhmfC2K8roBe6OqmsO2XZWpNhyC26N5xfUBkfGY1dckH5u3/jJ+00k4vpGF4gNnuY
+         7VhhHXLTXgJprGwifIaoSAOwrsHd9OK6/LkNgxgSaxXso/TwocnklhYn2uot+2OOgqbf
+         mlB7ovsjNbl+AoAwXqulEzraiiwHY/aTNzcDoSKME5csFcGvuc+n4wWVJwbI7VghHlap
+         Vnvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769094617; x=1769699417;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1WLTfBIUbrm278eAVvCdHgvSff8YTBI4fGOM84er2nk=;
+        b=FJADzg4uPxK7g3jvWKYTulUfMrdD/Degm7Hhyt9XDTkh2h53lkUy35sJSYmbpTsHKn
+         b94Wuf+FA8p+0kk0UJB1p7Oeg/pGi7y48L6i/honOLAA/sD29RuXLRYCWD2tW3oAf32+
+         sbWzvugkZGHw/0otNGkB9eza00nlqplS3aSsoThFL3Zu38SnKhtXN+Jaz3y/xiSHlK4J
+         8NFmJ3yFn4hFSCNGom0iPaOkNBPy+Damy0UEiWCu78ySsQfDxNwH6g9lSPjfne4jVCTO
+         05Fjqlapdxt/pmI4QnMQzZRN/u9X/4BiCepNSl6mN0kQYc8XDWqXPCgUSqIl/w13zfez
+         svCw==
+X-Forwarded-Encrypted: i=1; AJvYcCVq3xHub07Rz6L4s/RWNULG7FzJ21eK0pXw1DBZJjXivQj2r8F6WICVJ4riSRmiV+mApt+wpHithFU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxvJvZgj2q3VEaXijVFI8OgYv3FmXY+AXgo2e9zsX6BCq2i2877
+	hq3iAT4fHwXfAgcaAhnYC92OQz0MdiJny/iywyTVLB82mP/IcDgHryQycC76VoLMsXdAS/SoXRG
+	Rmu0Cil2pvUUlGkjeB+YSBhwZ5HmZ8/oya1ZipuEipIahP0eR0CtYDrePj1VMFdY=
+X-Gm-Gg: AZuq6aKvWB2sazX//JVPG1xizI8m0BtTbS/7XSx3WRX+a04Nu0gUy6OXN80gx7Ohqnb
+	5UBcj7Qk+Txbg6nDpqPDiBFTQH7rHqeeG8RjE5gcHRocUeDrodH/1Xp0vpktxg69wl9THHZMExn
+	uRHpGBxWntf172S7+74lnlgMgrg3MiC5E7habsJHT34GB8nrHe7PtU5+KA5enjtriJKDEbp0Yjn
+	krPwmKXEtK0yIXivofbDCoMq6zQDwRQOMavH1pbD+jikpBswMbUi67I/RZAI/qORlMWtbWFFntE
+	EOSke27us1wmo4nHqiOl0dxsbA9QeW0zE4wrD2j5Xp23SmjsklcjadFfU8SeVg8eHCpmG6QRRGy
+	U6s7eEHSz4JTWYxCpn431zuGsv/EKlZSUJ3UzTROlPl4=
+X-Received: by 2002:a05:6a00:3d08:b0:81f:33a6:e9cd with SMTP id d2e1a72fcca58-81fa03855b0mr17466512b3a.57.1769094616972;
+        Thu, 22 Jan 2026 07:10:16 -0800 (PST)
+X-Received: by 2002:a05:6a00:3d08:b0:81f:33a6:e9cd with SMTP id d2e1a72fcca58-81fa03855b0mr17466480b3a.57.1769094616352;
+        Thu, 22 Jan 2026 07:10:16 -0800 (PST)
+Received: from hu-ptalari-hyd.qualcomm.com ([202.46.22.19])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8217c258fa7sm4328182b3a.17.2026.01.22.07.10.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Jan 2026 07:10:15 -0800 (PST)
+From: Praveen Talari <praveen.talari@oss.qualcomm.com>
+To: Mark Brown <broonie@kernel.org>, linux-arm-msm@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        bjorn.andersson@oss.qualcomm.com, dmitry.baryshkov@oss.qualcomm.com,
+        konrad.dybcio@oss.qualcomm.com
+Cc: prasad.sodagudi@oss.qualcomm.com, mukesh.savaliya@oss.qualcomm.com,
+        quic_vtanuku@quicinc.com, aniket.randive@oss.qualcomm.com,
+        chandana.chiluveru@oss.qualcomm.com, jyothi.seerapu@oss.qualcomm.com,
+        Praveen Talari <praveen.talari@oss.qualcomm.com>
+Subject: [PATCH v1 0/3] Improve SPI target mode support and error handling
+Date: Thu, 22 Jan 2026 20:40:05 +0530
+Message-Id: <20260122151008.2149252-1-praveen.talari@oss.qualcomm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-ORIG-GUID: q8OIV-uGtjIBvFrEFPXU36_hCbSPSWWR
+X-Authority-Analysis: v=2.4 cv=N7ck1m9B c=1 sm=1 tr=0 ts=69723dda cx=c_pps
+ a=rz3CxIlbcmazkYymdCej/Q==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+ a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=fVkAZgIkOhdXw_bALp8A:9 a=bFCP_H2QrGi7Okbo017w:22
+X-Proofpoint-GUID: q8OIV-uGtjIBvFrEFPXU36_hCbSPSWWR
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIyMDExNiBTYWx0ZWRfXwwEouHufJor0
+ dHEZFeUNgWbhZQhUaI5hM/v8XchFlF6EFEfBrgQnKRz0SGgrZ15sfdiYOxAgsGeHjVVxxEeSbpl
+ yDzwm273Wz5qmB0ktVGh24+VePGP+M3Suq+qhZjeC2+4j0cYmRLvtKeU4DbHOIHHTgHgw73kog7
+ y31H/7wabCMug1vw8/kiec1Bjc4Qgh9bJip9r4ot4E6h2A5feI4bHx04WIHPhLAVuBUCpvRNicG
+ jXnneNBX6irQv9vE3d4eM9P0JAXxuDtTfxrIHe3QGLXY2D01dyv380+yv1cxjo++HocVYMN2eua
+ Z6AcVpsjll/Ni9CYdfJYQzwShl3gipCtgNdJh8Zmm3GH+2tQlLX2yTtb5pSiOQvF9ZFQK/QBOLq
+ 9CSdYuic83KJevOihlHYhdgxC8KAMR/zOs5DzhnSdZU15Hys4HKvCTymuJ3e+8DIuR32jNOyxro
+ 6eFjgn5HL3pachafqng==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
+ definitions=2026-01-22_02,2026-01-22_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 lowpriorityscore=0 phishscore=0 clxscore=1015 priorityscore=1501
+ malwarescore=0 adultscore=0 impostorscore=0 suspectscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2601220116
 
-Hi Rob,
+Enhance the Qualcomm GENI SPI driver's target mode support and improve 
+error handling for serial engine operations.
 
-On 21/01/2026 at 17:07:59 -06, Rob Herring <robh@kernel.org> wrote:
+The current implementation has issues with incorrect controller allocation
+for target mode, missing abort sequence execution during error recovery,
+and lack of graceful abort mechanism for target operations. These problems
+can lead to serial engine undefined behavior and improper resource
+cleanup.
 
-> On Wed, Jan 21, 2026 at 06:04:59PM +0100, Miquel Raynal (Schneider Electr=
-ic) wrote:
->> It is very painful to modify this file because the core IP described is
->> so common, it has been implemented in many SoCs from different
->> architectures. Both `dtbs_check` and `dt_binding_check` are rather long
->> commands, even when restricted to a single schema files, and letting
->> this file evolve without risking to break other DTSs is painful, because
->> there are arm, arm64 and riscv platforms impacted and no way to check
->> all of them at the same time.
->
-> OTOH, examples aren't meant to be exhaustive test cases of all=20
-> possibilities. If it was me, I'd actually just get rid of all the=20
-> examples. They are generally just a copy from some .dts we already
-> have.
+Fix controller allocation to use proper target APIs, ensure abort sequence
+always executes for error recovery, and add target abort support for 
+graceful transfer cancellation.
 
-I will align with this idea the day `make dtbs_check` (or something
-similarly simple) is exhaustive and cross platform :-)
+Praveen Talari (3):
+  spi: geni-qcom: Improve target mode allocation by using proper
+    allocation functions
+  spi: geni-qcom: Fix abort sequence execution for serial engine errors
+  spi: geni-qcom: Add target abort support
 
-Maybe cdns,qspi-nor is an exception, but it impacts different
-architectures, which means the output of `make dtbs_check` is
-meaningless because it only covers a subset of the possible cases. Hence
-my attempt to gather all specific cases in the bindings, so I could run
-all the meaningful checks I wanted more easily.
+ drivers/spi/spi-geni-qcom.c | 32 ++++++++++++++++++++++++--------
+ 1 file changed, 24 insertions(+), 8 deletions(-)
 
-I think this patch has its usefulness, but I don't mind dropping it.
 
->> +  - |
->> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
->> +    #include <dt-bindings/reset/starfive,jh7110-crg.h>
->> +    #include <dt-bindings/clock/starfive,jh7110-crg.h>
->> +    spi@13010000 {
->> +        compatible =3D "starfive,jh7110-qspi", "cdns,qspi-nor";
->> +        reg =3D <0x13010000 0x10000>, <0x21000000 0x400000>;
->> +        interrupts =3D <25>;
->> +        clocks =3D <&syscrg JH7110_SYSCLK_QSPI_REF>, <&syscrg JH7110_SY=
-SCLK_QSPI_AHB>,
->> +                 <&syscrg JH7110_SYSCLK_QSPI_APB>;
->> +        clock-names =3D "ref", "ahb", "apb";
->> +        resets =3D <&syscrg JH7110_SYSRST_QSPI_APB>, <&syscrg JH7110_SY=
-SRST_QSPI_AHB>,
->> +                 <&syscrg JH7110_SYSRST_QSPI_REF>;
->> +        reset-names =3D "qspi", "qspi-ocp", "rstc_ref";
->> +        #address-cells =3D <1>;
->> +        #size-cells =3D <0>;
->> +        cdns,fifo-depth =3D <256>;
->> +        cdns,fifo-width =3D <4>;
->> +        cdns,trigger-address =3D <0x0>;
->> +    };
->> +
->> +  - |
->> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
->> +    spi@2400 {
->> +        compatible =3D "amd,pensando-elba-qspi", "cdns,qspi-nor";
->> +        reg =3D <0x2400 0x400>, <0x7fff0000 0x1000>;
->> +        interrupts =3D <GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH>;
->> +        clocks =3D <&flash_clk>;
->> +        #address-cells =3D <1>;
->> +        #size-cells =3D <0>;
->> +        cdns,fifo-depth =3D <1024>;
->> +        cdns,fifo-width =3D <4>;
->> +        cdns,trigger-address =3D <0x7fff0000>;
->
-> This one really just looks like a subset of the others.
+base-commit: e3b32dcb9f23e3c3927ef3eec6a5842a988fb574
+-- 
+2.34.1
 
-The fifo-depth possibilities are extended just for this
-compatible. Basically I captured in the examples every specific case
-covered with an 'if' schema.
-
-Miqu=C3=A8l

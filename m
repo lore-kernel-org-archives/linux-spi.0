@@ -1,67 +1,66 @@
-Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
+Received: from mail-oa1-f67.google.com (mail-oa1-f67.google.com [209.85.160.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C212E973A
-	for <linux-spi@vger.kernel.org>; Fri, 23 Jan 2026 20:38:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F55129B8E0
+	for <linux-spi@vger.kernel.org>; Fri, 23 Jan 2026 20:38:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.67
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769200730; cv=none; b=PeuS1I4H7EUBdLewKNiwoEOWi3iEF2AoUcMyD22icvjrpkSWuxPHzojh4R90WqhQWEXba20mUczEPx6HNGw3MolqmqmD8y9i6iMDYLEIbxbLSw9UU6+yBcnSIFDy2q1OY/zZYx8s16s+RTfXI5LqxBeLH2g4WeuRTyAf5FOkxdY=
+	t=1769200732; cv=none; b=J/6sWWMqoXlxeQ/eFtTCSYK0uXbdBfGhHTVLVh8A4d9Bk2ld2nPgt86lpsChmvC89z9Xq7OfELFCF1GBmg7NOPrQtevC8qYDCsgKlrZsSsm2+Y768ISPS+PeQJPejOWka1G5iP4D42ke1CMZfVS9fi/KhjXpDAYP58kcktwhB0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769200730; c=relaxed/simple;
-	bh=6K+Y2EpItjAFEVDHoZvaznPDbPUDrOkWEh/VhUaPTSM=;
+	s=arc-20240116; t=1769200732; c=relaxed/simple;
+	bh=O20ziRwhKmAnSP9ctsHkGnisWSjXJS1ux9ZdETkvqns=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=GXq4RSEFqjOvkj8kd+GqnprxaZ1H2n77Dt0v0v0tlmiyx5FGkDwySksFlM37tAJ0C+CgahGs987oDIV9F51zkhZlctA64NCz/rp4fP66K27GrcRZG1Bll8uRBvgpMRcfMOu0t5+i+6cJBtxMhwqEZbHlnQ9JyvnAttRMtk9xNTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=aHuYTRoA; arc=none smtp.client-ip=209.85.160.53
+	 In-Reply-To:To:Cc; b=EHwdB2MnIXywxpHKlb7JFbqofOy+uh9EReio8hq7e9/5UZHAPk3DmXFIoutBf1179NRGWdFr2uSbDcphZB7zOCfy5f5iaH7YIySXF3E+YbOgUqzE0Rr12Jm8w92shqDMAipxl+YU9hUvBWQHBXimdsvOv8iQJUM4XgOn+58eGgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=mfRb2TZM; arc=none smtp.client-ip=209.85.160.67
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="aHuYTRoA"
-Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-40438e0cba6so1675386fac.1
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="mfRb2TZM"
+Received: by mail-oa1-f67.google.com with SMTP id 586e51a60fabf-404308dd5d6so919877fac.1
         for <linux-spi@vger.kernel.org>; Fri, 23 Jan 2026 12:38:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1769200726; x=1769805526; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1769200728; x=1769805528; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=w6oXy9SAavgg4QtAir0K2/dqpzLAUs+ACA4F9zQ5oKI=;
-        b=aHuYTRoA/YoRQxZBudut92S/EjpBHG+zzZRndDuCaX+T8h/jK4Dolhntf0jaMqGQB7
-         WNNINYqsPLGKBD/+7TIwh2EdUDo1GdXA4c1cNx5s+6Awr3laRexp03vtOT+zn/DAM6xU
-         6U3aXYg8VoNLyO2gMbfawha4KAV60BQ9CRvvHSUJe+nCQk6VVBHnjTnqR5V4pThbzepX
-         ZJi9V7vS70MA/oGORPVKp9tQ6b4AAUwZJP5d/+hkXOEI1sCyATaM2Nuet/fY7U3Po/tA
-         GhnK9IAjzzBIkP5LX1vJQ6RqBIaOd7dmx+pFU+KfFQfxOppesVJl+g/FCaZ1yQ8jfcAo
-         7F7Q==
+        bh=dmX79GnzdywzPzH2+K8k/JNfqckElyoOXGWVtE/G7r0=;
+        b=mfRb2TZMcu/lPqzyzfsw5M4yKbBcKWt5gSmVomJoiF7GuGC5xcx5hS4jDdnfj7tytY
+         ihNc22/DHk8G+HfNoj3/UEzlHvZIhUT4qUt2/Dh/1qVhV3q42AveWkgDJeWFerDHmRDA
+         evsS3d0BcZ8LUC3c6qwv1z3fvnzynw45u7hUHIkUwOzkTNBgXUOxvmlZOZqP5TZjgna4
+         2rLGRHDiqfEFLx84ydMtLk0zczJwYxLhwF6QJS7zZusVkdSSrDMdl2aSIYLj5n+uui4L
+         a6POlTONvKAMdEPqYCqiJPw7lyQSZ14nAvj5H4oObZajjvT/PQ2VbWc9OJwY8lly80nv
+         UFhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769200727; x=1769805527;
+        d=1e100.net; s=20230601; t=1769200728; x=1769805528;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=w6oXy9SAavgg4QtAir0K2/dqpzLAUs+ACA4F9zQ5oKI=;
-        b=RyOUMPK/l04EiCSBizGyY14aY/JgNFxPEWoBLMvYU0kleabsqloszNg+LNE/75umLH
-         IioqxB/Ag23knPRvcbTnMbsetq9PSLyXn1uEhN8UasaFekQxSda1z9uuIweMCyLaJXrG
-         K7cohZh9J/yZ65EgjOiExWhoHA+Hot1j14usxb7H76+cGMxTojc36L3QEe9GqqFTelTv
-         0npsjT8MeBh2tDH6au74wd0vvm0LFFmmvZfny1Bzp2K8B7l2FDOxMYIENSltX13zph+J
-         7GfnNT77k0UKUQaTDes6fBc4+C8o7KW2B5fGdZC8IT4z9DCebM41rSS6cofKR4V3s+Ux
-         Pk9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVDFM8qzxJhTsQnYO1kyju6FTYaIOUi1bflJMgQ2ep5v7WTfeTJh2y5x5Gm99NMDDXHe2Nrac11hDA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzE2BxXUZPz58jsWIzyDPQ/rEDrm+EwaZWduOOSCozoKb08Qv3l
-	JxCKwQckXGT7J7GzyxiiRm9hFDMxT3WpEM2szQsMj3wBTTTDM+trvq3FVwGg9CmZSlY=
-X-Gm-Gg: AZuq6aJ9xk71niMOTBo4OnRN0U4mSqFj5NFUxrgr1QFiWuA9iAz4QGSMUKEV1asYpZN
-	2hINOV8Vkaqy+L41YXZafTxNIpsUMAR2B4rIbUyAZuSWt06bHcY7onTSE7RH4WuuHrd0BDGyhvk
-	Jun9QRE+3Hu1D8fyfH5/4VIh0kw616bfxqnYZwRn9XBJNznaE8RATEFBVREGKHDTzSLNo3qh1ZO
-	J37c6IoEnZy9pU7aTxjPnDP5o96Ps6h/s3Na/C9+8G/6kEqVVltdA3namKKYbSxoR5Zvn2D53kN
-	JiZpCtZiZnCP+zXXJenZP0Q11pXw6pTk1miw5eLd8VtdhjfBrUwOW8snV0X+SyALnc42YO/2KnC
-	QBa5AkSReSJRFrgiiNlPFVV8NUeJJ7pQA5IAZzBhWF1SZflV6cTKtxgnNUKdAUoQebrg/ViKwe1
-	Poiu+DA1txTMwznw==
-X-Received: by 2002:a05:6871:2e89:b0:404:43c1:28b5 with SMTP id 586e51a60fabf-408ab4e60f2mr2227571fac.14.1769200726621;
-        Fri, 23 Jan 2026 12:38:46 -0800 (PST)
+        bh=dmX79GnzdywzPzH2+K8k/JNfqckElyoOXGWVtE/G7r0=;
+        b=BcBWeme9XRYsRozMWusj21NlOsuVeDctB5+yWRO7eemyM06fJMhomX3uMEVQ6lGohg
+         SsnCTT0SAv9OhCyO6HQC6PQy41WZNEiwRp+/r6J4ADmAvYO438SgfK171iMxuBEWwXk7
+         imT+fe2XKjusM8bECc9w5b7Ho1kbS3owdXQOctB2Q6hR9pO/eGJ60isBvSP3Hnem3W6I
+         E/lOSM+GsWPgiJrQDPjcfQO+9/1dwHu+WGpSVc1IHm929V/ItAP0Niau1SmfLqFEdTCu
+         Vc53WcAtg+RZ8YKjw2hWuuFi7S/6DAokwQwJp0sXZnCWWq4pvv3K3YnI0XzV/u8QGHhp
+         tERg==
+X-Forwarded-Encrypted: i=1; AJvYcCUk9ayewRo3jyZXVROuMtsTGEe3WyCD1EJ4OB1Uyl0UyPzZuZxNsf0kJHZJLcGJaflVpJNui/X5qHE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2PHLmw3EJ5XFUyUBVy5lfCo3P+68SelpfdJ7N0GXnr/5woFwI
+	mb3DOlp/1CL0MBcrxC1F6KpwkVW8Uu6uI3/z++VX9bGLawLmpvxUUW2EMMEfI7fucoc=
+X-Gm-Gg: AZuq6aJG0/lAgGKaMC7TJMpRxFlg7Gjc4XM3y3IpRvOhS0/s3XVtt2OMgCPqUvoiQnY
+	bkOp+2gZGUjSkc2mKKKitYaAp1hINghjYYhdEnx2JXUENfAXAL5MPozhdu/BTyj5yh7uVA7ZxU4
+	Z8OXcNbpYAlifSJR1xhxsX+NYD11/9q1nanOL5/U1S37lcl8cTzFc2p2m5ADUKrU4X5mOnKoOrg
+	ukvk9aVdJW9lMVV/f17ss0qlRoDjjP/RAFQpqEPjwmdI4Ts5b1A1yAhNu8NqJ+ay58MVewLaGzs
+	1x6+r0Wm0UaRxnLG2Stu/rEQl0BMX/FHHg1xuqqiesQB1FIkDO15NK9EaoHJL3xej9BJp/SGczA
+	ZVG2d8qoKgS4ccjCzMT+KlG0aS3OtO2aLwTDusJjFBBkMHcrfb7rLgnYOBH0svPupQTqoDDnK6b
+	vXrnxbqyEv1Ok/uFdf2DpdQPmT
+X-Received: by 2002:a05:6870:ac22:b0:3e8:3176:a342 with SMTP id 586e51a60fabf-408ab4fffdemr2009501fac.22.1769200727566;
+        Fri, 23 Jan 2026 12:38:47 -0800 (PST)
 Received: from [127.0.1.1] ([2600:8803:e7e4:500:198f:2b50:c48:1875])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-408af888da1sm2167805fac.6.2026.01.23.12.38.44
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-408af888da1sm2167805fac.6.2026.01.23.12.38.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Jan 2026 12:38:46 -0800 (PST)
+        Fri, 23 Jan 2026 12:38:47 -0800 (PST)
 From: David Lechner <dlechner@baylibre.com>
-Date: Fri, 23 Jan 2026 14:37:27 -0600
-Subject: [PATCH v6 4/9] spi: add multi_lane_mode field to struct
- spi_transfer
+Date: Fri, 23 Jan 2026 14:37:28 -0600
+Subject: [PATCH v6 5/9] spi: Documentation: add page on multi-lane support
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -69,8 +68,8 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260123-spi-add-multi-bus-support-v6-4-12af183c06eb@baylibre.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260123-spi-add-multi-bus-support-v6-5-12af183c06eb@baylibre.com>
 References: <20260123-spi-add-multi-bus-support-v6-0-12af183c06eb@baylibre.com>
 In-Reply-To: <20260123-spi-add-multi-bus-support-v6-0-12af183c06eb@baylibre.com>
 To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -82,76 +81,276 @@ To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
  Jonathan Cameron <jic23@kernel.org>, Andy Shevchenko <andy@kernel.org>
 Cc: Sean Anderson <sean.anderson@linux.dev>, linux-spi@vger.kernel.org, 
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-iio@vger.kernel.org, David Lechner <dlechner@baylibre.com>, 
- Jonathan Cameron <jonathan.cameron@huawei.com>
+ linux-iio@vger.kernel.org, David Lechner <dlechner@baylibre.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2129; i=dlechner@baylibre.com;
- h=from:subject:message-id; bh=6K+Y2EpItjAFEVDHoZvaznPDbPUDrOkWEh/VhUaPTSM=;
- b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBpc9wjnXMHw1tRGqZ6YNmZ5UlrWYkzHUgSrhuv1
- MEsWa4upC6JATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaXPcIwAKCRDCzCAB/wGP
- wJnnCACUe2jk1jNjSGdqZBZ5TKEPO/eu3xkCUafz2SJHfCZ181UY0qHmVMtSnWIf+S3V+/f+bsJ
- Oj66B//o16b1cSeRpLS652IOro4mwCasABG8beWtnXI/1HrY5nBdzOTcRVdkMEuLfeOfXzLSJwD
- pn7iOLhz+saxfqw6GRfPfrZ7zNyFjahc+lQ8Zp+7oHG5dkEDUUXaI57zx5/iYuzYQjaEIo8IQD0
- lUcVQGnPgkV3RuTKADBgWSZpp4Dv5Bewg8EBSIY/iwgTFBYVK9wz7ahq6dvAo5wMJKia1g1lGwR
- bKzuUnupvn21goJfbbBqv9+k4al0iIxyJak54Xr3Db74duIP
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8955; i=dlechner@baylibre.com;
+ h=from:subject:message-id; bh=O20ziRwhKmAnSP9ctsHkGnisWSjXJS1ux9ZdETkvqns=;
+ b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBpc9wqO06xg6Gv9V7NIzeqeI+yHWovm7g6//+Km
+ /CjYq8yIb6JATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaXPcKgAKCRDCzCAB/wGP
+ wEX0CACDUlrSXSQQrT8YI6wCrnl/g5281Wzf1uIzVnQiRSpt+2z8h06M/wqpOLVoTMwJCv+Xdo4
+ Ys9+rw9ELNHoUcTOwWXZT26XZIWOW81wqYAj4DQrJEauin+WvKIaAb0G32MF62OCeHBLPwHDUl7
+ 09luXjPNI2st81Cmxhw2TvHum9LXqcsgJfPsR82+xsI6IFqA/wJCiq8e4eoIdY6q7RRoehSvuMS
+ 5nm3Au3tOA5ODP07aPczyqTd5qNzKvTTlU8u+zYKDW32s1WLqeJm4YAerFrQfd2lEJl1lgOrtZP
+ x303RGtPHWV3XWqETvfGseVAJm9MBxHrCKxzs34w+TJDl7IE
 X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
  fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
 
-Add a new multi_lane_mode field to struct spi_transfer to allow
-peripherals that support multiple SPI lanes to be used with a single
-SPI controller.
+Add a new page to Documentation/spi/ describing how multi-lane SPI
+support works. This is uncommon functionality so it deserves its own
+documentation page.
 
-This requires both the peripheral and the controller to have multiple
-serializers connected to separate data lanes. It could also be used with
-a single controller and multiple peripherals that are functioning as a
-single logical device (similar to parallel memories).
-
-Acked-by: Nuno Sá <nuno.sa@analog.com>
-Acked-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
 
-v6 changes: none
+v6 changes:
+* Fix copy/paste typo of wrong property names.
 
-v5 changes: none
+v5 changes:
+* Fix tx/rx typo in stripe mode example.
 
 v4 changes:
-* Shortened commit message (useful info will be in docs instead).
-* Added whitespace to create clear grouping of macros and the field.
-
-v3 changes:
-* Renamed "buses" to "lanes" to reflect devicetree property name change.
+* New patch in v4.
 ---
- include/linux/spi/spi.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ Documentation/spi/index.rst               |   1 +
+ Documentation/spi/multiple-data-lanes.rst | 217 ++++++++++++++++++++++++++++++
+ 2 files changed, 218 insertions(+)
 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index ec8a03ee0d4c..fd8dce4169f7 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -990,6 +990,8 @@ struct spi_res {
-  *      (SPI_NBITS_SINGLE) is used.
-  * @rx_nbits: number of bits used for reading. If 0 the default
-  *      (SPI_NBITS_SINGLE) is used.
-+ * @multi_lane_mode: How to serialize data on multiple lanes. One of the
-+ *      SPI_MULTI_LANE_MODE_* values.
-  * @len: size of rx and tx buffers (in bytes)
-  * @speed_hz: Select a speed other than the device default for this
-  *      transfer. If 0 the default (from @spi_device) is used.
-@@ -1126,6 +1128,12 @@ struct spi_transfer {
- 	unsigned	cs_change:1;
- 	unsigned	tx_nbits:4;
- 	unsigned	rx_nbits:4;
+diff --git a/Documentation/spi/index.rst b/Documentation/spi/index.rst
+index 824ce42ed4f0..2c89b1ee39e2 100644
+--- a/Documentation/spi/index.rst
++++ b/Documentation/spi/index.rst
+@@ -9,6 +9,7 @@ Serial Peripheral Interface (SPI)
+ 
+    spi-summary
+    spidev
++   multiple-data-lanes
+    butterfly
+    spi-lm70llp
+    spi-sc18is602
+diff --git a/Documentation/spi/multiple-data-lanes.rst b/Documentation/spi/multiple-data-lanes.rst
+new file mode 100644
+index 000000000000..69cb532d052f
+--- /dev/null
++++ b/Documentation/spi/multiple-data-lanes.rst
+@@ -0,0 +1,217 @@
++====================================
++SPI devices with multiple data lanes
++====================================
 +
-+#define SPI_MULTI_LANE_MODE_SINGLE	0 /* only use single lane */
-+#define SPI_MULTI_LANE_MODE_STRIPE	1 /* one data word per lane */
-+#define SPI_MULTI_LANE_MODE_MIRROR	2 /* same word sent on all lanes */
-+	unsigned	multi_lane_mode: 2;
++Some specialized SPI controllers and peripherals support multiple data lanes
++that allow reading more than one word at a time in parallel. This is different
++from dual/quad/octal SPI where multiple bits of a single word are transferred
++simultaneously.
 +
- 	unsigned	timestamped:1;
- 	bool		dtr_mode;
- #define	SPI_NBITS_SINGLE	0x01 /* 1-bit transfer */
++For example, controllers that support parallel flash memories have this feature
++as do some simultaneous-sampling ADCs where each channel has its own data lane.
++
++---------------------
++Describing the wiring
++---------------------
++
++The ``spi-tx-bus-width`` and ``spi-rx-bus-width`` properties in the devicetree
++are used to describe how many data lanes are connected between the controller
++and how wide each lane is. The number of items in the array indicates how many
++lanes there are, and the value of each item indicates how many bits wide that
++lane is.
++
++For example, a dual-simultaneous-sampling ADC with two 4-bit lanes might be
++wired up like this::
++
++    +--------------+    +----------+
++    | SPI          |    | AD4630   |
++    | Controller   |    | ADC      |
++    |              |    |          |
++    |          CS0 |--->| CS       |
++    |          SCK |--->| SCK      |
++    |          SDO |--->| SDI      |
++    |              |    |          |
++    |        SDIA0 |<---| SDOA0    |
++    |        SDIA1 |<---| SDOA1    |
++    |        SDIA2 |<---| SDOA2    |
++    |        SDIA3 |<---| SDOA3    |
++    |              |    |          |
++    |        SDIB0 |<---| SDOB0    |
++    |        SDIB1 |<---| SDOB1    |
++    |        SDIB2 |<---| SDOB2    |
++    |        SDIB3 |<---| SDOB3    |
++    |              |    |          |
++    +--------------+    +----------+
++
++It is described in a devicetree like this::
++
++    spi {
++        compatible = "my,spi-controller";
++
++        ...
++
++        adc@0 {
++            compatible = "adi,ad4630";
++            reg = <0>;
++            ...
++            spi-rx-bus-width = <4>, <4>; /* 2 lanes of 4 bits each */
++            ...
++        };
++    };
++
++In most cases, lanes will be wired up symmetrically (A to A, B to B, etc). If
++this isn't the case, extra ``spi-rx-lane-map`` and ``spi-tx-lane-map``
++properties are needed to provide a mapping between controller lanes and the
++physical lane wires.
++
++Here is an example where a multi-lane SPI controller has each lane wired to
++separate single-lane peripherals::
++
++    +--------------+    +----------+
++    | SPI          |    | Thing 1  |
++    | Controller   |    |          |
++    |              |    |          |
++    |          CS0 |--->| CS       |
++    |         SDO0 |--->| SDI      |
++    |         SDI0 |<---| SDO      |
++    |        SCLK0 |--->| SCLK     |
++    |              |    |          |
++    |              |    +----------+
++    |              |
++    |              |    +----------+
++    |              |    | Thing 2  |
++    |              |    |          |
++    |          CS1 |--->| CS       |
++    |         SDO1 |--->| SDI      |
++    |         SDI1 |<---| SDO      |
++    |        SCLK1 |--->| SCLK     |
++    |              |    |          |
++    +--------------+    +----------+
++
++This is described in a devicetree like this::
++
++    spi {
++        compatible = "my,spi-controller";
++
++        ...
++
++        thing1@0 {
++            compatible = "my,thing1";
++            reg = <0>;
++            ...
++        };
++
++        thing2@1 {
++            compatible = "my,thing2";
++            reg = <1>;
++            ...
++            spi-tx-lane-map = <1>; /* lane 0 is not used, lane 1 is used for tx wire */
++            spi-rx-lane-map = <1>; /* lane 0 is not used, lane 1 is used for rx wire */
++            ...
++        };
++    };
++
++
++The default values of ``spi-rx-bus-width`` and ``spi-tx-bus-width`` are ``<1>``,
++so these properties can still be omitted even when ``spi-rx-lane-map`` and
++``spi-tx-lane-map`` are used.
++
++----------------------------
++Usage in a peripheral driver
++----------------------------
++
++These types of SPI controllers generally do not support arbitrary use of the
++multiple lanes. Instead, they operate in one of a few defined modes. Peripheral
++drivers should set the :c:type:`struct spi_transfer.multi_lane_mode <spi_transfer>`
++field to indicate which mode they want to use for a given transfer.
++
++The possible values for this field have the following semantics:
++
++- :c:macro:`SPI_MULTI_BUS_MODE_SINGLE`: Only use the first lane. Other lanes are
++    ignored. This means that it is operating just like a conventional SPI
++    peripheral. This is the default, so it does not need to be explicitly set.
++
++    Example::
++
++        tx_buf[0] = 0x88;
++
++        struct spi_transfer xfer = {
++            .tx_buf = tx_buf,
++            .len = 1,
++        };
++
++        spi_sync_transfer(spi, &xfer, 1);
++
++    Assuming the controller is sending the MSB first, the sequence of bits
++    sent over the tx wire would be (right-most bit is sent first)::
++
++        controller    > data bits >     peripheral
++        ----------   ----------------   ----------
++            SDO 0    0-0-0-1-0-0-0-1    SDI 0
++
++- :c:macro:`SPI_MULTI_BUS_MODE_MIRROR`: Send a single data word over all of the
++    lanes at the same time. This only makes sense for writes and not
++    for reads.
++
++    Example::
++
++        tx_buf[0] = 0x88;
++
++        struct spi_transfer xfer = {
++            .tx_buf = tx_buf,
++            .len = 1,
++            .multi_lane_mode = SPI_MULTI_BUS_MODE_MIRROR,
++        };
++
++        spi_sync_transfer(spi, &xfer, 1);
++
++    The data is mirrored on each tx wire::
++
++        controller    > data bits >     peripheral
++        ----------   ----------------   ----------
++            SDO 0    0-0-0-1-0-0-0-1    SDI 0
++            SDO 1    0-0-0-1-0-0-0-1    SDI 1
++
++- :c:macro:`SPI_MULTI_BUS_MODE_STRIPE`: Send or receive two different data words
++    at the same time, one on each lane. This means that the buffer needs to be
++    sized to hold data for all lanes. Data is interleaved in the buffer, with
++    the first word corresponding to lane 0, the second to lane 1, and so on.
++    Once the last lane is used, the next word in the buffer corresponds to lane
++    0 again. Accordingly, the buffer size must be a multiple of the number of
++    lanes. This mode works for both reads and writes.
++
++    Example::
++
++        struct spi_transfer xfer = {
++            .rx_buf = rx_buf,
++            .len = 2,
++            .multi_lane_mode = SPI_MULTI_BUS_MODE_STRIPE,
++        };
++
++        spi_sync_transfer(spi, &xfer, 1);
++
++    Each rx wire has a different data word sent simultaneously::
++
++        controller    < data bits <     peripheral
++        ----------   ----------------   ----------
++            SDI 0    0-0-0-1-0-0-0-1    SDO 0
++            SDI 1    1-0-0-0-1-0-0-0    SDO 1
++
++    After the transfer, ``rx_buf[0] == 0x11`` (word from SDO 0) and
++    ``rx_buf[1] == 0x88`` (word from SDO 1).
++
++
++-----------------------------
++SPI controller driver support
++-----------------------------
++
++To support multiple data lanes, SPI controller drivers need to set
++:c:type:`struct spi_controller.num_data_lanes <spi_controller>` to a value
++greater than 1.
++
++Then the part of the driver that handles SPI transfers needs to check the
++:c:type:`struct spi_transfer.multi_lane_mode <spi_transfer>` field and implement
++the appropriate behavior for each supported mode and return an error for
++unsupported modes.
++
++The core SPI code should handle the rest.
 
 -- 
 2.43.0

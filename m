@@ -1,60 +1,60 @@
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F1EC1D9A54;
-	Tue, 27 Jan 2026 15:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E9C2FF675;
+	Tue, 27 Jan 2026 15:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769527802; cv=none; b=mv1LpcIAaMkFed83rnF3plUgyyksTJmP+CvEfMwDhalv78KVZ+1pPmVXGYv6Dkm9nUanZik3ZGPE9L7TQOBJTLgK1GMdFM60Q+CVuzEBYL9hT5UINaAqou+F3kq9ATiuUhdkhk7YrbdSU/Y/disCKiqfAwVvM8yl04ltCis0HV8=
+	t=1769527874; cv=none; b=YkO8+qIR7EMQ71h89ySCsMMHLJJ3npSEdNF6e5kujsf3Z5j7GTEPkcL0XSjOAlPE8EtPk2ABBWJAetxSUJcFgG32A71oSaGf9Rmu8K+fk7bxBQCKQjYAtOxp8JCeu7eTux1MVOQpErarcQ70yMwsmUZPZGxZnxn9XBO25a1Sbzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769527802; c=relaxed/simple;
-	bh=VMBikvQSm5+neQ6/ngeoWcn+36GOcw2gEABPUq/7xV0=;
+	s=arc-20240116; t=1769527874; c=relaxed/simple;
+	bh=mKMgqTHIao3cqh5a5VAqibt0COVUzLmPfGS+shLM+dk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MIXCjdLo4SZx1ECOqc8aflrq1jAnsormurpLnCj//sD+dElyyxJSRqCn3hiWtQozrROgmkRqYbpnpLcflZ69ybxKPjXYvZLhfH+EnT//wLsj/jPkKR1BpyWb+tDow2aKhKIWwGAe8cxrvribu8iG+Chm//oef1tgV3gllIt4DOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=oGF5/MYG; arc=none smtp.client-ip=148.163.158.5
+	 In-Reply-To:Content-Type; b=KnrZpTQayszviOyD+FKPW0GlOJV+LyRSExPYQPT3lth2V6b3iV1Ui/gQ5HWkAdB7BeZpvSjwZXkUHQINo3IJw44zHn37PfCCRNltOMrIuYJPMAnhC7hEeplJFmocozMvTEUKyZRX80uskO5Z5cbazgDQSMG7IRSYnHsm0JufgLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=iCH3j8ia; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="oGF5/MYG"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60R6w2hm024977;
-	Tue, 27 Jan 2026 15:29:55 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="iCH3j8ia"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60R53arZ031029;
+	Tue, 27 Jan 2026 15:31:05 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=ASwTXh
-	s+jmy0BoPy4ymzDGB3dpSHmLSNMF0r2bdu4sc=; b=oGF5/MYGhXxMYawnpiJBjx
-	0P8A+qJe1cJ1qFd6KGREF+tN6BmYfRjtdtNldbT8ci1afLHQ6LNVKPQyMQlLEPAA
-	SrDh4VS7uL3+PaRDof9c/Kj/Z+3drih+n+M6uQYiofaow9Xep/RDynJ7jQzTj+tc
-	YTuzY6GO3G9BJ1i5QHlCoCb5r6ge4xa1KN803Om3Zcc4NET6DAvESUXp85aIwNFq
-	714OzY//CJvJRBbfBv8K6Uaa0/CvgfvkuLsDCtBbNe8n+hWialcedpfhakmPNvkF
-	9jGLMtEMRR+asuF/4c8ydci0Z3rcNJFuegYfi22F6h/qJLMDNoZ19GwwquZkhObQ
+	:message-id:mime-version:references:subject:to; s=pp1; bh=CcuRSY
+	pvHj6NoHofQbMK93lkeOoKjGd3IwYs/c/IxcQ=; b=iCH3j8ia3qRRLntKhAZHwU
+	WbCNDPZtVaxKK4wvgFSTcNtRgfu60RXVXdxYtMsZVJq22XZ0OP2pauAY+ynIxuGq
+	eGkG8UCNBbVACirf8pobSq2rN90OGqzww7XxnyVkjUcPj+ldyzcf+At3EYETmxQJ
+	zQhLJZ/HzcuGz9mGRGTV1V2EI7yn/FXVXQN7P1HGlvAbCxzAVg7JWiOkdWfHn62d
+	d01/x5wf4JUgIHkSL2U1Xmh8uJXuGebLmSq6mmRTVFPu1DHB1Sf/IOseSFAqeNa3
+	Y6vwxTHRwzFVqlcXTtzvJIoz9gSYJ4umc/UHMj9OVp3RYH4E1X1PBsyvmncJREfQ
 	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bvmgfvgxe-1
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bvnr64ajh-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 27 Jan 2026 15:29:54 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60REPhtm023625;
-	Tue, 27 Jan 2026 15:29:53 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bwamjryx5-1
+	Tue, 27 Jan 2026 15:31:05 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60RDBBYE006725;
+	Tue, 27 Jan 2026 15:31:04 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4bw8sy994r-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 27 Jan 2026 15:29:53 +0000
+	Tue, 27 Jan 2026 15:31:04 +0000
 Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60RFTqLU39191070
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60RFV4Cv31785556
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 27 Jan 2026 15:29:53 GMT
+	Tue, 27 Jan 2026 15:31:04 GMT
 Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AFD625805D;
-	Tue, 27 Jan 2026 15:29:52 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id F219C5805D;
+	Tue, 27 Jan 2026 15:31:03 +0000 (GMT)
 Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7AF4258052;
-	Tue, 27 Jan 2026 15:29:52 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 9BC2458052;
+	Tue, 27 Jan 2026 15:31:03 +0000 (GMT)
 Received: from [9.61.135.234] (unknown [9.61.135.234])
 	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 27 Jan 2026 15:29:52 +0000 (GMT)
-Message-ID: <e852b379-eb7b-4088-ad47-471ea1d755e2@linux.ibm.com>
-Date: Tue, 27 Jan 2026 09:29:52 -0600
+	Tue, 27 Jan 2026 15:31:03 +0000 (GMT)
+Message-ID: <e29b29d7-b002-4d18-a476-dd129154ba08@linux.ibm.com>
+Date: Tue, 27 Jan 2026 09:31:03 -0600
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -62,88 +62,91 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 13/13] spi: fsi: Convert to fsi bus probe mechanism
-To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+Subject: Re: [PATCH v2 00/13] fsi: Convert to bus probe mechanism
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
 Cc: Ninad Palsule <ninad@linux.ibm.com>, linux-fsi@lists.ozlabs.org,
-        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+        linux-kernel@vger.kernel.org, Andi Shyti <andi.shyti@kernel.org>,
+        linux-i2c@vger.kernel.org, openbmc@lists.ozlabs.org,
+        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
 References: <cover.1765279318.git.u.kleine-koenig@baylibre.com>
- <fc2a758ef00844dd5bd614a25b36a4a38355d12d.1765279318.git.u.kleine-koenig@baylibre.com>
+ <rwvoi4v3wcrfcbj2sg6mknlasp5klrlpacgwgl2jvwh6ub6vls@iovrqjblvz44>
 Content-Language: en-US
 From: Eddie James <eajames@linux.ibm.com>
-In-Reply-To: <fc2a758ef00844dd5bd614a25b36a4a38355d12d.1765279318.git.u.kleine-koenig@baylibre.com>
+In-Reply-To: <rwvoi4v3wcrfcbj2sg6mknlasp5klrlpacgwgl2jvwh6ub6vls@iovrqjblvz44>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=Z4vh3XRA c=1 sm=1 tr=0 ts=6978d9f2 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI3MDEyNSBTYWx0ZWRfX5+4qhV5CuyMd
+ 6mz2ij7H/90BTOVTToBPAGimZNpON3mEFuu8RYU2ei3t1OzD0z66dwXvU1ojN/gMNAcx+qORL6O
+ CUbQh0t0u2qfpUZM7/KJzRESq3SAw9r2FQrk5uIyTv1CDnB3iAFpLrvMUdfCTULY38usEWFRHl4
+ DWYOHv9Eg6qLc2C/wrZPFid4htoWdr9duOKeYK+S2bPRdasBX/DFXB8ZED6R3+kPSCQpF+Xh8tN
+ QeCeA/8RasupiV36oqfT6e9L7Iy5YB9eorhwCY96vQL5uvOCD8DkdzgclNTqt/OT8VhReX+uiIu
+ 5uVv0HagKt7VT/ArPdu/m9DoiJhbgHngy1rPgD77rrWgPxAPDxzSgjNUJWs3aFcZMa5PWxzaKid
+ VLTBl2vvO0ph746qScEeAj92RY2pwlJ8fx02QGbmM7ZUq8AQ+L+7UFW6ursd4HR5sivvvIq3J+G
+ /fBR64CN2AxZWKNjD8w==
+X-Proofpoint-GUID: OrbwkcODKPI3bhAADLWK0Xbh4LjB6tbb
+X-Proofpoint-ORIG-GUID: OrbwkcODKPI3bhAADLWK0Xbh4LjB6tbb
+X-Authority-Analysis: v=2.4 cv=X+Vf6WTe c=1 sm=1 tr=0 ts=6978da39 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
  a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VnNF1IyMAAAA:8 a=IpJZQVW2AAAA:8 a=VwQbUJbxAAAA:8 a=pbzB7dRMngX6iMUxCd8A:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=IawgGOuG5U0WyFbmm1f5:22
-X-Proofpoint-GUID: sVRmaPvr_PcABlahgqsIsKl0dz9afe2r
-X-Proofpoint-ORIG-GUID: sVRmaPvr_PcABlahgqsIsKl0dz9afe2r
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI3MDEyNSBTYWx0ZWRfX8sboilql3Sot
- 7IplFzLChXS8ynBOoOZymUzjBXSqjf/kn1yYxC5WDdm2m48hcSHidHQnDdKVoqwZ8d/hcbR17De
- HluFJ5NXlJaUsTG8TD1PSkRd/dayosuYiULUse/Fy8R0GZvlqkS8D+lmdVyyMGlXO5j7qrp5hxZ
- phj5mrxc8TnvVHPSoD0NDZyVbg9gxi1B/k9G8Mki0lELhr2YAMgXe+3BIJ4lPpqHl80/yp1Goar
- PeHyvFb4j4Y3Ie3Bjhve3/rBH7psXZqCLzkGcOPYMhrBtV14T3L2LdkQyatr0Ve1vlizyH7jZyl
- fuf3gGZFFWNqIx66ek1JMDwhfiTqj8MPXY3982cKzxX/qCChfL4MFADbM9YFBxqguS86a5sx4pu
- eN+2W+E0+e/ZCx4N6IvAgLXWEHU2zHb2mAbH68BFr77jlGET06stbR3N2R9gMW7HMSTXslxnUan
- ZxGH7BVjw3lpas4DBog==
+ a=VwQbUJbxAAAA:8 a=NN-yl_if-6FwqtqQtZUA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-01-27_03,2026-01-27_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 malwarescore=0 phishscore=0 priorityscore=1501 bulkscore=0
- adultscore=0 clxscore=1011 lowpriorityscore=0 impostorscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2601150000 definitions=main-2601270125
+ priorityscore=1501 suspectscore=0 impostorscore=0 lowpriorityscore=0
+ clxscore=1011 spamscore=0 adultscore=0 malwarescore=0 bulkscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2601150000
+ definitions=main-2601270125
 
 
-On 12/9/25 5:40 AM, Uwe Kleine-König wrote:
-> The fsi bus got a dedicated probe function. Make use of that. This fixes
-> a runtime warning about the driver needing to be converted to the bus
-> probe method.
+On 1/12/26 3:47 AM, Uwe Kleine-König wrote:
+> Hello Eddie,
+>
+> On Tue, Dec 09, 2025 at 12:39:28PM +0100, Uwe Kleine-König wrote:
+>> Hello,
+>>
+>> this is the 2nd installment of the series converting the fsi bus to use
+>> bus methods for .probe and .remove. The changes since the first
+>> iteration---that can be found at
+>> https://lore.kernel.org/lkml/cover.1764434226.git.ukleinek@kernel.org/
+>> --- are:
+>>
+>>   - (trivially) rebase to v6.18
+>>   - add tags by Andi (for the i2c parts) and Mark Brown (for the spi
+>>     parts)
+>>   - Add a patch converting drivers/fsi/i2cr-scom.c (#8)
+>>
+>> In the earlier thread I thought I made a mistake for (implicit) v1, but
+>> I confused fsi with fsl and the problem doesn't apply here as it doesn't
+>> touch the shutdown callback.
+>>
+>> This series is not urgent, but it would be great to get this into
+>> v6.19-rc1.  With Mark's Acks and Andi's tags (though they are not an
+>> Ack) this should be fine to be picked up in one go by Eddie.
+>>
+>> As before there are two commit refs that should refer to the commit for
+>> patch #2 ("fsi: Assign driver's bus in fsi_driver_register()"). As I
+>> cannot know the commit hash yet, I wrote "FIXME" and these need updating
+>> when the series is picked up.
+> gentle ping. While my quest to drop .probe() and .remove() is still in
+> early stages, I'd like to see this series go in before it bitrots. It
+> should have all the acks necessary to merge it.
 
 
-Acked-by: Eddie James <eajames@linux.ibm.com>
+So sorry for the delay. Thank you very much for the series! Greg, please 
+merge at your earliest convenience.
+
+
+Thanks!
+
+Eddie
 
 
 >
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-> Acked-by: Mark Brown <broonie@kernel.org>
-> ---
->   drivers/spi/spi-fsi.c | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
+> Alternatively, should I ask Greg (added to Cc:) to merge?
 >
-> diff --git a/drivers/spi/spi-fsi.c b/drivers/spi/spi-fsi.c
-> index f9c15b99dba5..07dc3d24f2c9 100644
-> --- a/drivers/spi/spi-fsi.c
-> +++ b/drivers/spi/spi-fsi.c
-> @@ -528,13 +528,13 @@ static size_t fsi_spi_max_transfer_size(struct spi_device *spi)
->   	return SPI_FSI_MAX_RX_SIZE;
->   }
->   
-> -static int fsi_spi_probe(struct device *dev)
-> +static int fsi_spi_probe(struct fsi_device *fsi)
->   {
->   	int rc;
->   	struct device_node *np;
->   	int num_controllers_registered = 0;
->   	struct fsi2spi *bridge;
-> -	struct fsi_device *fsi = to_fsi_dev(dev);
-> +	struct device *dev = &fsi->dev;
->   
->   	rc = fsi_spi_check_mux(fsi, dev);
->   	if (rc)
-> @@ -593,9 +593,9 @@ MODULE_DEVICE_TABLE(fsi, fsi_spi_ids);
->   
->   static struct fsi_driver fsi_spi_driver = {
->   	.id_table = fsi_spi_ids,
-> +	.probe = fsi_spi_probe,
->   	.drv = {
->   		.name = "spi-fsi",
-> -		.probe = fsi_spi_probe,
->   	},
->   };
->   module_fsi_driver(fsi_spi_driver);
+> Best regards
+> Uwe

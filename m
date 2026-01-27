@@ -1,90 +1,86 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AA2D22425B;
-	Tue, 27 Jan 2026 16:01:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11AA335DCEE;
+	Tue, 27 Jan 2026 16:07:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769529718; cv=none; b=NRorQ/hHOSHv2F+ywqXdtMWv+xKv55g6SjpUhg4iJuO2HRcSlAKMUwYEWjdTrL17zXsNznaAQ14dR8rS1OJ9UTF19diQReP+Cn6GY8FK8JyF5sKXX/bYXXNHcCt9qWG8rH+TXB8fZCmj+w7RCepA+sJT98Gq8VOHRNUzL6Pr8xU=
+	t=1769530037; cv=none; b=P0STO8si3onOqbV0UjgkwUkTEKxpeZoRgaDzIz2ZHHa6rC6vut4V+6Dh4KoPuzPm1Z7c9yuApDOzmPOB9w0EigXaIopxdQ71vBT7P9NrzqRAHyUwq4AMDGv1WQEXUcF6Lb61npUDE4DYXo3KpgpYJchOcEFm4p/xp+eoT7UZUlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769529718; c=relaxed/simple;
-	bh=hNYWK9LXZ5vvecy7a9W+Vn+YofGNDK3NnbrGCkkzoas=;
+	s=arc-20240116; t=1769530037; c=relaxed/simple;
+	bh=8pjznKbhY4l0ckZhG6GITaPAcQ5j5pPvTJWZ16JgFPQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VfmMu/jjiuDfWcLRzSVM+w6ELtVX6+3g60dJz5wD/7rAi8uHKGeyvw7eNGKipZQnU8zvE32h9dXrvXr6JSzPKuCfRM/BP67/RdBM9XQt7jaRQ/lQUnQKwCQiyL/RmvkokX5uTXYoK9yCcruK3z0uV8bd/65npVqp/G4p3PpUoNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WqWl/Bhc; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=EAW0A1v2x+vtHyprda8jz3ee/YQd0eWi80gwEKsS442+Igc9HNeYMwLMyRyxr2ITg1IiyfXAtXGxVZBoeAC8GyGCJEMGZEujal/ELhwI36IC0LzkqeI7yVQws1my2xhlrM06x3LcyKxlqqZfQ6zpqe01sWUxnDUft2FDZCuwiis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hROvFkwE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WqWl/Bhc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769529717; x=1801065717;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=hNYWK9LXZ5vvecy7a9W+Vn+YofGNDK3NnbrGCkkzoas=;
-  b=WqWl/BhczMVRfh57XZPS97PEuQkATb0qCrnPfmm2UOniPisbsmicVQCC
-   2ZBmi6ckIXmmA1v8uNKF0Dxke30QONDHQPHHm77VWn1GwjwexFUN5T865
-   rrZJEnUj23ztSnxXJAfA8nV+v7lMTDj/JohZ0HeyEzaAhPu9E3tHXOBj+
-   Ei9F1mglueaqnhMwZlOgGHFVoWTFDXkySwsn12wWmn3XTAsEMGUuKmwT1
-   2Rbct60W7IxCS9az/lgaQyugZI6tOa6Lb9eou32bffa1c4Iyu7JcxIRgC
-   3der6btIWeGB+CZmXmXOXtGKOyJlylCtfVy0aPrQ8JkZGbMGmxkbcV7t4
-   g==;
-X-CSE-ConnectionGUID: 483UKY3ZQnq3O87yTxL9ww==
-X-CSE-MsgGUID: 2cA3N/mnQKeTaJ/Jz/ZAzQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11684"; a="88306626"
-X-IronPort-AV: E=Sophos;i="6.21,257,1763452800"; 
-   d="scan'208";a="88306626"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2026 08:01:56 -0800
-X-CSE-ConnectionGUID: ECun5qIlSDS9aOsQ2PDy2g==
-X-CSE-MsgGUID: KwRyYQfmTYyVmLnES9mlxw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,257,1763452800"; 
-   d="scan'208";a="207909829"
-Received: from black.igk.intel.com ([10.91.253.5])
-  by fmviesa006.fm.intel.com with ESMTP; 27 Jan 2026 08:01:55 -0800
-Received: by black.igk.intel.com (Postfix, from userid 1003)
-	id B2B1598; Tue, 27 Jan 2026 17:01:54 +0100 (CET)
-Date: Tue, 27 Jan 2026 17:01:54 +0100
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Mark Brown <broonie@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hROvFkwE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AA5DC116C6;
+	Tue, 27 Jan 2026 16:07:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769530036;
+	bh=8pjznKbhY4l0ckZhG6GITaPAcQ5j5pPvTJWZ16JgFPQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hROvFkwEBXvN694FgAAl6vEPBLylXC4naK4OYWeeJy8IT58im8FEFVcc32/a1Xlpe
+	 GgoVeWv0gnJ5Rag5t6KW/Vul8sO9O2Thad0tw1795LfxGBxUfsFKnd4EMvtaXFPXH8
+	 k6fHvaxHVxJSp/svX4qg68i+l1Qo5w2m32yMWgA1SBZ4FXCu8694f/F6iAV992qsQi
+	 NOh859XxU5pQ6BdFub2V0KVy9NNT8PHt3d1lq4QzuqEm9UMG17uMiM3OP2cnVyeyW6
+	 DnGVHRm4xDq2lUmPP4Y+8K7NozXBRg2tuONpwhWirslJTz2ZXidu5fmtfa+1EbPP7w
+	 uu1qtlOL0RukQ==
+Date: Tue, 27 Jan 2026 16:07:11 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
 Cc: Jisheng Zhang <jszhang@kernel.org>, linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] spi: dw-mmio: support suspend/resume
-Message-ID: <aXjhcijjig79ocks@black.igk.intel.com>
+Message-ID: <6b89afd5-9e6c-45ed-835d-6e0d1906aa14@sirena.org.uk>
 References: <20260122155046.12848-1-jszhang@kernel.org>
  <d0bd831a-08dd-4c2c-97e8-896f885cdbe8@sirena.org.uk>
+ <aXjhcijjig79ocks@black.igk.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="G9j7QTNVjI3gUjGL"
+Content-Disposition: inline
+In-Reply-To: <aXjhcijjig79ocks@black.igk.intel.com>
+X-Cookie: I brake for chezlogs!
+
+
+--G9j7QTNVjI3gUjGL
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <d0bd831a-08dd-4c2c-97e8-896f885cdbe8@sirena.org.uk>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Thu, Jan 22, 2026 at 05:57:42PM +0000, Mark Brown wrote:
-> On Thu, Jan 22, 2026 at 11:50:46PM +0800, Jisheng Zhang wrote:
+On Tue, Jan 27, 2026 at 05:01:54PM +0100, Andy Shevchenko wrote:
+> On Thu, Jan 22, 2026 at 05:57:42PM +0000, Mark Brown wrote:
 
-...
+> > These were allocated using devm_clk_get_prepare_enable() so we shouldn't
+> > really be fiddling with the state at runtime.  In practice this should
+> > always be fine I think but it's not really something we're supposed to
+> > be doing, in theory we could fail to resume and then end up doing a
+> > double disable on removal.  Probably the open coded version would have
+> > the same issue though so perhaps this is pedantic...
 
-> > +	clk_disable_unprepare(dwsmmio->pclk);
-> > +	clk_disable_unprepare(dwsmmio->clk);
-> 
-> These were allocated using devm_clk_get_prepare_enable() so we shouldn't
-> really be fiddling with the state at runtime.  In practice this should
-> always be fine I think but it's not really something we're supposed to
-> be doing, in theory we could fail to resume and then end up doing a
-> double disable on removal.  Probably the open coded version would have
-> the same issue though so perhaps this is pedantic...
+> We clearly can call clk_disable(), but I'm not sure unprepare is the stage that
+> has no side-effects here.
 
-We clearly can call clk_disable(), but I'm not sure unprepare is the stage that
-has no side-effects here.
+What makes you say that disable is OK?
 
--- 
-With Best Regards,
-Andy Shevchenko
+--G9j7QTNVjI3gUjGL
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAml44q4ACgkQJNaLcl1U
+h9CSMwf9HTvw5A8HWEnARv4XhxpJ1kEzH9vglGqWQIcJKuW5KLfA9BGJ3gHj0UlX
+laNuGnwojmKppYFxZLaXS9/itbRk10yjn9HkQdQE3wEYfEPSZQwf5/vl3dSyaan8
+WsOvUE9AeSJGq57NlJU7xxHqGzFx842PpPapFd7qY0GdK5fyS0Ur6K52JDuiidN3
+Ufhdj5BO3+81IZ9/rkyNZ8jvGqjhjPNea/LFNpFG1vQBY+z/vYeNlzvag0rmjR8s
+Z+Ip1+qZmverTbkL10DSYnqpFby1cNVsgPjONpW7+D9NB+i3gNnmTTu5hOvWdGBE
+fMkQgy0fpZXm++oNMIbupEpvh4uhzw==
+=zNcJ
+-----END PGP SIGNATURE-----
+
+--G9j7QTNVjI3gUjGL--

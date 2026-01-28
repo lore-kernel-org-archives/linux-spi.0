@@ -1,24 +1,24 @@
-Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FACC2EC0A3;
-	Wed, 28 Jan 2026 21:52:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.172
+Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B221B33B6CD;
+	Wed, 28 Jan 2026 21:52:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769637163; cv=none; b=l7NY+LFjs9vVEbAMiDv/Qrfpd/Qm1dihTIFVBoOIVJDHGXRaURW4oj+ElCdcwo5wEVDVbMP2B8LDvhiM7mHJ2bG9XYZQM1mOW9LcPF7TgirxvZjmiiuScd5wLMFIg/oSDqdy4IbY4nktLTz7L9O7KOp6WAZpUua0n39s9rvy6d4=
+	t=1769637165; cv=none; b=RhGpMOcjkVcTY8BgKsJ/XhfRu40PeO/oxaPtr/Roq6Y2Dac1G6cx4dbTaTV/BytdEk8XrzwK7xp6FL6trFZOMr+1Z7KS2RI+NfH13EUbo8+rTynwiA6pgJV2QQ5NXL4xW4/x8zNsKW6n1FFM6Xodfv5JQYYUtJBefmKEIrTZhLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769637163; c=relaxed/simple;
-	bh=jnJMzLc1I79LAa7AGEwtS4d5b7aIHGIqVNJ48Y9+KtE=;
+	s=arc-20240116; t=1769637165; c=relaxed/simple;
+	bh=uTrULJ8aJSpXyvMsV9/PAe8y/ntDL0VojKifbduqPtM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hScFIB3gAHDC8recOhL7GmLATMj9Y8VNJMhlX2f+2UCUYi5jAJ1WpihKt4qHs4hqN7zAynbS6rKY4DsA3MWX/oASMIMIj5VeMR9H9NwEEUrIyY7fE2sH9jT9YNyp0yZde33hPH0IZZJ3upLR6+oA5VzBW4bfKSiv4oUQL+dEnxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; arc=none smtp.client-ip=210.160.252.172
+	 MIME-Version; b=fciv2w+ue2IDBktcjgapR5kmgSwKFTTHXjJCyILuR7kGM7V7jzvc3+Oeac6gaYeHNWD0oPCn2+lqdTPoTbBaS926W2xSEyWPCoBN6HNvEei8S9889AT3OYACipk+1A//4UgcUucvP7kW8ybK0ag19rpfCHTSWZZN7X56dNLlbh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; arc=none smtp.client-ip=210.160.252.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
-X-CSE-ConnectionGUID: MoubSkylT86Ab4fM6LEA5A==
-X-CSE-MsgGUID: 3aPy9+SDTHKooAQNk6/fNg==
+X-CSE-ConnectionGUID: 21J3LKGLRsGVKfy72+xo8Q==
+X-CSE-MsgGUID: ZTQ8BbJbQKqpVPX3rGn8xA==
 Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
-  by relmlie6.idc.renesas.com with ESMTP; 29 Jan 2026 06:52:31 +0900
+  by relmlie5.idc.renesas.com with ESMTP; 29 Jan 2026 06:52:41 +0900
 Received: from demon-pc.localdomain (unknown [10.226.92.19])
-	by relmlir6.idc.renesas.com (Postfix) with ESMTP id D0B3540C0B84;
-	Thu, 29 Jan 2026 06:52:27 +0900 (JST)
+	by relmlir6.idc.renesas.com (Postfix) with ESMTP id BDCA940C0B68;
+	Thu, 29 Jan 2026 06:52:37 +0900 (JST)
 From: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
 To: Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
 	Mark Brown <broonie@kernel.org>,
@@ -32,9 +32,9 @@ Cc: linux-spi@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
-Subject: [PATCH v3 1/3] dt-bindings: spi: renesas,rzv2h-rspi: allow multiple DMAs
-Date: Wed, 28 Jan 2026 23:51:30 +0200
-Message-ID: <20260128215132.1353381-2-cosmin-gabriel.tanislav.xa@renesas.com>
+Subject: [PATCH v3 3/3] arm64: dts: renesas: r9a09g087: wire up DMA support for SPI
+Date: Wed, 28 Jan 2026 23:51:32 +0200
+Message-ID: <20260128215132.1353381-4-cosmin-gabriel.tanislav.xa@renesas.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260128215132.1353381-1-cosmin-gabriel.tanislav.xa@renesas.com>
 References: <20260128215132.1353381-1-cosmin-gabriel.tanislav.xa@renesas.com>
@@ -46,82 +46,71 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-All supported SoCs have multiple DMA controllers that can be used with
-the RSPI peripheral. The current bindings only allow a single pair of RX
-and TX DMAs.
+RZ/N2H (R9A09G087) has three DMA controllers that can be used by
+peripherals like SPI to offload data transfers from the CPU.
 
-The DMA core allows specifying multiple DMAs with the same name, and it
-will pick the first available one.
-
-There is an exception in the base dt-schema rules specifically for
-allowing this behavior (dtschema/schemas/dma/dma.yaml).
-
-dma-names:
-  anyOf:
-    - uniqueItems: true
-    - items:
-        # Hack around Renesas bindings which repeat entries to support
-        # multiple possible DMA providers
-        enum: [rx, tx]
-
-Allow multiple DMAs to have the same name and only restrict the possible
-names of the DMA channels, not their count.
-
-For RZ/T2H and RZ/N2H SoCs, limit the number of DMA channels to 6, as
-they have 3 DMA controllers.
-
-For RZ/V2H and RZ/V2N SoCs, limit the number of DMA channels to 10, as
-they have 5 DMA controllers.
+Wire up the DMA channels for the SPI peripherals.
 
 Signed-off-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
 
 V3:
- * impose proper maxItems for each device
- * impose maxItems for dmas property
+ * no changes
 
 V2:
- * new patch
+ * wire up all DMA controllers
 
- .../bindings/spi/renesas,rzv2h-rspi.yaml         | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/renesas/r9a09g087.dtsi | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/spi/renesas,rzv2h-rspi.yaml b/Documentation/devicetree/bindings/spi/renesas,rzv2h-rspi.yaml
-index a588b112e11e..cf8b733b766d 100644
---- a/Documentation/devicetree/bindings/spi/renesas,rzv2h-rspi.yaml
-+++ b/Documentation/devicetree/bindings/spi/renesas,rzv2h-rspi.yaml
-@@ -58,12 +58,16 @@ properties:
-       - const: tresetn
- 
-   dmas:
--    maxItems: 2
-+    minItems: 2
-+    maxItems: 10
- 
-   dma-names:
-+    minItems: 2
-+    maxItems: 10
-     items:
--      - const: rx
--      - const: tx
-+      enum:
-+        - rx
-+        - tx
- 
-   power-domains:
-     maxItems: 1
-@@ -121,6 +125,12 @@ allOf:
-         resets: false
-         reset-names: false
- 
-+        dmas:
-+          maxItems: 6
-+
-+        dma-names:
-+          maxItems: 6
-+
- unevaluatedProperties: false
- 
- examples:
+diff --git a/arch/arm64/boot/dts/renesas/r9a09g087.dtsi b/arch/arm64/boot/dts/renesas/r9a09g087.dtsi
+index 4a1339561332..7d1c669ad262 100644
+--- a/arch/arm64/boot/dts/renesas/r9a09g087.dtsi
++++ b/arch/arm64/boot/dts/renesas/r9a09g087.dtsi
+@@ -200,6 +200,10 @@ rspi0: spi@80007000 {
+ 			clocks = <&cpg CPG_CORE R9A09G087_CLK_PCLKM>,
+ 				 <&cpg CPG_MOD 104>;
+ 			clock-names = "pclk", "pclkspi";
++			dmas = <&dmac0 0x267a>, <&dmac0 0x267b>,
++			       <&dmac1 0x267a>, <&dmac1 0x267b>,
++			       <&dmac2 0x267a>, <&dmac2 0x267b>;
++			dma-names = "rx", "tx", "rx", "tx", "rx", "tx";
+ 			power-domains = <&cpg>;
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
+@@ -218,6 +222,10 @@ rspi1: spi@80007400 {
+ 			clocks = <&cpg CPG_CORE R9A09G087_CLK_PCLKM>,
+ 				 <&cpg CPG_MOD 105>;
+ 			clock-names = "pclk", "pclkspi";
++			dmas = <&dmac0 0x267f>, <&dmac0 0x2680>,
++			       <&dmac1 0x267f>, <&dmac1 0x2680>,
++			       <&dmac2 0x267f>, <&dmac2 0x2680>;
++			dma-names = "rx", "tx", "rx", "tx", "rx", "tx";
+ 			power-domains = <&cpg>;
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
+@@ -236,6 +244,10 @@ rspi2: spi@80007800 {
+ 			clocks = <&cpg CPG_CORE R9A09G087_CLK_PCLKM>,
+ 				 <&cpg CPG_MOD 106>;
+ 			clock-names = "pclk", "pclkspi";
++			dmas = <&dmac0 0x2684>, <&dmac0 0x2685>,
++			       <&dmac1 0x2684>, <&dmac1 0x2685>,
++			       <&dmac2 0x2684>, <&dmac2 0x2685>;
++			dma-names = "rx", "tx", "rx", "tx", "rx", "tx";
+ 			power-domains = <&cpg>;
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
+@@ -254,6 +266,10 @@ rspi3: spi@81007000 {
+ 			clocks = <&cpg CPG_CORE R9A09G087_CLK_PCLKM>,
+ 				 <&cpg CPG_MOD 602>;
+ 			clock-names = "pclk", "pclkspi";
++			dmas = <&dmac0 0x2689>, <&dmac0 0x268a>,
++			       <&dmac1 0x2689>, <&dmac1 0x268a>,
++			       <&dmac2 0x2689>, <&dmac2 0x268a>;
++			dma-names = "rx", "tx", "rx", "tx", "rx", "tx";
+ 			power-domains = <&cpg>;
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
 -- 
 2.52.0

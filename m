@@ -1,43 +1,34 @@
-Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2A6E338925;
-	Wed, 28 Jan 2026 21:52:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23D918027
+	for <linux-spi@vger.kernel.org>; Wed, 28 Jan 2026 21:56:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769637166; cv=none; b=Ie4SbOUzkFcX8YzoZAsLVoNzcyBgjOVO6UBuM4FpX1y0cObKgJrYF4uggtvbBZ3JiYB1LRs4eQDTmecb5VrPgcFm/kdNNMhHihU3F1JLjc5Ao/bYLRk7okqnxCLP9+1MF9l+sbEEQ3cMV8Sn8zlWCMAwPveLt6eeAinYhWGcPZM=
+	t=1769637397; cv=none; b=Dn8mCUCCKVzHSH78LB6swUQhbPcqr2nC25pV0dJcBHVz1oMKJuZkBs64tc/MEgvYl1Vh0bTjwQqKABrggdoDptQO3nQ0G8BGKjj+xftl6FCI7mqv1dctY7EC67KEtUWKDhW0zO3Y/gajD0yVCMceQvREufyoYdYtMgqw9WVzaD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769637166; c=relaxed/simple;
-	bh=p45FhIOPq/qep+pt6ysojP4K2PfFPQ2/qQkqRPTw1Ew=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GQTeYgG8X477TSqi1IPRbWFHxExCofX8GtkETmQXOx6stBNePRrVKDqFsbqOMXuOy0LjvAsc2hku8SgVv5RRWzq4UX8Bx9/7Drk1/UGMTuWkv6k3+weeBXQr9thSP5m3Tgw5fw/L25/2hGFB2v7xu0Rfe4nHAkuGdUaPJe7gTCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; arc=none smtp.client-ip=210.160.252.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
-X-CSE-ConnectionGUID: TxMLTiH+RwyeOwNCalY64A==
-X-CSE-MsgGUID: CcpxWbMFRfe6E2lTNleUHQ==
-Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
-  by relmlie6.idc.renesas.com with ESMTP; 29 Jan 2026 06:52:36 +0900
-Received: from demon-pc.localdomain (unknown [10.226.92.19])
-	by relmlir6.idc.renesas.com (Postfix) with ESMTP id C8E3540C0B68;
-	Thu, 29 Jan 2026 06:52:32 +0900 (JST)
-From: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
-To: Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>
-Cc: linux-spi@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
-Subject: [PATCH v3 2/3] arm64: dts: renesas: r9a09g077: wire up DMA support for SPI
-Date: Wed, 28 Jan 2026 23:51:31 +0200
-Message-ID: <20260128215132.1353381-3-cosmin-gabriel.tanislav.xa@renesas.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128215132.1353381-1-cosmin-gabriel.tanislav.xa@renesas.com>
-References: <20260128215132.1353381-1-cosmin-gabriel.tanislav.xa@renesas.com>
+	s=arc-20240116; t=1769637397; c=relaxed/simple;
+	bh=nXtsY5FqOFKtBqCFuCnrvTiWVT8kHhO7frxh7iTTAyM=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=tGg/psmUAeBnfvcav7/Mj/X5YuCTH+aBjyqz2nksRlNIKIzBy5eFQDY6SRBlgt+h3edE4uTP8fr4Q8n+JqeE9u8T0BrT7aXIqzvyHOpN7lt7I33eR0AA6AVoxiwj1IrCTvvdjBmzBd02/4wLvQ7TimAKwCYzDf3wzRipCkUg/fE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ilxhx36S; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ilxhx36S"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FE7EC4CEF1;
+	Wed, 28 Jan 2026 21:56:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769637396;
+	bh=nXtsY5FqOFKtBqCFuCnrvTiWVT8kHhO7frxh7iTTAyM=;
+	h=Subject:From:Date:To:From;
+	b=Ilxhx36Sx8u7ppUseaceVFKpN6s31XdRPuRSN4j2YolYTNjp2cI5rpBVqB75f848z
+	 EDDKzxE5EwGFRvAmvCgd9ktvjALb9mNHJtAkfcd2sd0lE5f+nhjxNa7JkmjO/hq5Yt
+	 VGNc6MSUUDY/OXKzW9dwdd05+I5Y+49VM8LYjgcBEqUiJ1WYP/XO0x/xlSo0y2mK8U
+	 8a3pihWaNG2NluPvjM/t5bMd+rRw7luVosGdH58TRsRV5CIxvIVUJ0epX1r6ndqbdj
+	 frauYPvA28JPrPZaMPucKlmt5pGAaxBA0+iLOFGAbI8cQudMhq4YTAMP5pxtyQJWyZ
+	 tNhkDBMmY+tQA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 11A9A39EF953;
+	Wed, 28 Jan 2026 21:56:31 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -45,72 +36,21 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <176963738963.2246921.15871975938617263267.git-patchwork-housekeeping@kernel.org>
+Date: Wed, 28 Jan 2026 21:56:29 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-RZ/T2H (R9A09G077) has three DMA controllers that can be used by
-peripherals like SPI to offload data transfers from the CPU.
+Latest series: [v3] Add DMA support for RZ/T2H RSPI (2026-01-28T21:51:29)
+  Superseding: [v2] Add DMA support for RZ/T2H RSPI (2026-01-27T20:17:03):
+    [v2,1/3] dt-bindings: spi: renesas,rzv2h-rspi: allow multiple DMAs
+    [v2,2/3] arm64: dts: renesas: r9a09g077: wire up DMA support for SPI
+    [v2,3/3] arm64: dts: renesas: r9a09g087: wire up DMA support for SPI
 
-Wire up the DMA channels for the SPI peripherals.
 
-Signed-off-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
----
-
-V3:
- * no changes
-
-V2:
- * wire up all DMA controllers
-
- arch/arm64/boot/dts/renesas/r9a09g077.dtsi | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/renesas/r9a09g077.dtsi b/arch/arm64/boot/dts/renesas/r9a09g077.dtsi
-index 14d7fb6f8952..0e44b01a56c7 100644
---- a/arch/arm64/boot/dts/renesas/r9a09g077.dtsi
-+++ b/arch/arm64/boot/dts/renesas/r9a09g077.dtsi
-@@ -200,6 +200,10 @@ rspi0: spi@80007000 {
- 			clocks = <&cpg CPG_CORE R9A09G077_CLK_PCLKM>,
- 				 <&cpg CPG_MOD 104>;
- 			clock-names = "pclk", "pclkspi";
-+			dmas = <&dmac0 0x267a>, <&dmac0 0x267b>,
-+			       <&dmac1 0x267a>, <&dmac1 0x267b>,
-+			       <&dmac2 0x267a>, <&dmac2 0x267b>;
-+			dma-names = "rx", "tx", "rx", "tx", "rx", "tx";
- 			power-domains = <&cpg>;
- 			#address-cells = <1>;
- 			#size-cells = <0>;
-@@ -218,6 +222,10 @@ rspi1: spi@80007400 {
- 			clocks = <&cpg CPG_CORE R9A09G077_CLK_PCLKM>,
- 				 <&cpg CPG_MOD 105>;
- 			clock-names = "pclk", "pclkspi";
-+			dmas = <&dmac0 0x267f>, <&dmac0 0x2680>,
-+			       <&dmac1 0x267f>, <&dmac1 0x2680>,
-+			       <&dmac2 0x267f>, <&dmac2 0x2680>;
-+			dma-names = "rx", "tx", "rx", "tx", "rx", "tx";
- 			power-domains = <&cpg>;
- 			#address-cells = <1>;
- 			#size-cells = <0>;
-@@ -236,6 +244,10 @@ rspi2: spi@80007800 {
- 			clocks = <&cpg CPG_CORE R9A09G077_CLK_PCLKM>,
- 				 <&cpg CPG_MOD 106>;
- 			clock-names = "pclk", "pclkspi";
-+			dmas = <&dmac0 0x2684>, <&dmac0 0x2685>,
-+			       <&dmac1 0x2684>, <&dmac1 0x2685>,
-+			       <&dmac2 0x2684>, <&dmac2 0x2685>;
-+			dma-names = "rx", "tx", "rx", "tx", "rx", "tx";
- 			power-domains = <&cpg>;
- 			#address-cells = <1>;
- 			#size-cells = <0>;
-@@ -254,6 +266,10 @@ rspi3: spi@81007000 {
- 			clocks = <&cpg CPG_CORE R9A09G077_CLK_PCLKM>,
- 				 <&cpg CPG_MOD 602>;
- 			clock-names = "pclk", "pclkspi";
-+			dmas = <&dmac0 0x2689>, <&dmac0 0x268a>,
-+			       <&dmac1 0x2689>, <&dmac1 0x268a>,
-+			       <&dmac2 0x2689>, <&dmac2 0x268a>;
-+			dma-names = "rx", "tx", "rx", "tx", "rx", "tx";
- 			power-domains = <&cpg>;
- 			#address-cells = <1>;
- 			#size-cells = <0>;
 -- 
-2.52.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+

@@ -1,137 +1,157 @@
-Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [217.72.192.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AA773168F7
-	for <linux-spi@vger.kernel.org>; Thu, 29 Jan 2026 13:52:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996521BBBFC;
+	Thu, 29 Jan 2026 15:10:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769694760; cv=none; b=L1wmhO3IcDXXKcBy2ARKgdveXUMkA3QYil85is6Dtr3zX/mHC+OCbdVGmKSqJwto5BM2L3H8GMJ7Mc/24VjUfxhLBYUQlRD1asvZLtqrC71YOBp9seuTwHqln8G/Hkv6Omg7VE8fOZp4u9G0zETlDyTYxIZbcxZrc3hGJIz1QX0=
+	t=1769699439; cv=none; b=lFlX6PLizhFxM+Id5ELoJFW0H6PZpvjL0CBZ6IfgjGwjbNNZjYCEs5taKekNYmQ0jo54wEUZ58267EVGRgOG+CrkKHVle/Pm9kdzF3ZpNwqGTvzmR2Nd8pNyU0sUnRgbaxlBmiLyCz36xwDJIQ1+Ai9px7mvpQ/TGsIrkYgNyI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769694760; c=relaxed/simple;
-	bh=OXzBgdseIChVS+vJW71bIGbvoMjbawETEFTQgROB3B0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ekNpmOvHnIMDSmn7ZTlp5QcewS6cN5fecied6Y9NG7KRE/XhYXGZoXoCoT5Qmzt/WvEJs1c3D1qJO2bPmUAKfl39XFNE4hEOguelEAjyM3VmNLVWWeuTyEIxSGEPCR3H9DxTLzjl/IHHSsZ57iQj4/bY1oh66sR0/11Sfd1iYSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-56376c3e866so699323e0c.3
-        for <linux-spi@vger.kernel.org>; Thu, 29 Jan 2026 05:52:38 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769694758; x=1770299558;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Si+kB15qA+G+h2zKRmC1fubtEccV/Y2DT6Bt85BeRM0=;
-        b=LL+Zr8I+4gAq0ch2+ui5AlbdPmCcoXUdRpXa3WO3vlIIVLnEmeLL04irbAGC4aSxpy
-         Bnyz1YCWKpisI+pN6xgxAKGdby0Qs4dI4uVL5XB/NqkPSZFRAdap0DP/UX1xLrFiRBsz
-         tOyy+9KuB8MFR+mstLDblgCqWdbf44A873tbRpQpOqW2t2hi2XswZso3MJ3wYqjxYL5Q
-         NsJ2SkrnEUndT8+gb5emQis2vXvvUpu3rYpeeHRtNB+PmONkvjX4Ci326BfMiz7JGTZq
-         JzIEk8SMGG282sxKzJ2FsC/XUGbc6PczGJVSl3jNP2EsN6eJRULII2yTrkp6wfXrTU5P
-         QcYw==
-X-Forwarded-Encrypted: i=1; AJvYcCWg9cjsoWiiXxLtkVUNj8OWYgoPpOWY1xS1nLK9iQjPrfPuPU2y+bz8bwIghoBp3ir+XlzWIQW3N4I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwY72bsPJNl2tdv33C+wo9cgQuXCVcYoA4iSYe4M6gwKQh7IWZl
-	2s35ShwYWtCOWaFwo8BIfst7SFzumCZijA3MPg87WtZ9rvCVllSX3nqF13VA06DM
-X-Gm-Gg: AZuq6aLyiP4bnqTZs3EvJXb1cVbWsgJixqvyR+qE3v13ZvfWzbJm3xWDf2tyuSQuldB
-	RZKCh+JM3nkFA9tCuBIC7Jb5bwHKhhHf+FTnluKlToBokSSJoJyYOvfkYWAzdU9VgcQYFJR6bfP
-	PvuIVw7lrSgPU2fkgLQSJaGJQAeCfd9QBk64MyaMu1qq0KCqKEId58Mti5zd/t+s4yi5U2zkXHK
-	ZPsWbG9yFl1aL66kMRbnXJq486hdDPAeGfdSxZLcDigfO4yornx7XURVEaQ63Y4kMs8rfoOYR4B
-	NR5I2Du8HFon0y+PkBBiz42JLZsBejpdmjpQoFnZosO+aWBtTt34h9+R/hbcsCcQxKd3v6Is50J
-	zQv17oYrDhgchxXhVrnXojFi1jKomM5ApqGDstTSLjdtPihzvn+iTTtlB/LyC7v+Sq5ZQRR1kgx
-	uZvXWt/58vhadm7flPN0PZISfz2AJmBKqCU9I0/BRB49/30e06
-X-Received: by 2002:a05:6123:14b:b0:557:b52a:d553 with SMTP id 71dfb90a1353d-566794f2c4bmr2965368e0c.7.1769694757939;
-        Thu, 29 Jan 2026 05:52:37 -0800 (PST)
-Received: from mail-ua1-f51.google.com (mail-ua1-f51.google.com. [209.85.222.51])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-56685d09648sm1170143e0c.17.2026.01.29.05.52.37
-        for <linux-spi@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Jan 2026 05:52:37 -0800 (PST)
-Received: by mail-ua1-f51.google.com with SMTP id a1e0cc1a2514c-93f5761e09aso585803241.1
-        for <linux-spi@vger.kernel.org>; Thu, 29 Jan 2026 05:52:37 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCW1L2WYdnWHFCPSl2obNuh+KHu2qghSpEZSBRWtGRAgbJwZ3abVAs6dSl7f6+qh9Ci9U6/JktQHh10=@vger.kernel.org
-X-Received: by 2002:a05:6122:4d89:b0:566:2fc9:6c89 with SMTP id
- 71dfb90a1353d-5667959f794mr2859782e0c.10.1769694287318; Thu, 29 Jan 2026
- 05:44:47 -0800 (PST)
+	s=arc-20240116; t=1769699439; c=relaxed/simple;
+	bh=IRHR5iQWIdeZaSG8skB+OmLU3CRMfWy31KvWkdkrpmM=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=t0puQ/fgMlTcGHjR5XvyHYhafDOOQbpzbouTtUG8Mw+vu5E64vvanZ6QqkAAjjenLH8jybO9twWF011rOP7bWUXU+8ZjcW0GcTDnXLp/rT3/WcJB8TSMySw0KKE3D5SLJe4jmOK6QVAyEJND6VkhY4EVYP9FpkgVlgGQEM68fpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=BBeN9Gd3; arc=none smtp.client-ip=217.72.192.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="BBeN9Gd3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1769699430; x=1770304230; i=markus.elfring@web.de;
+	bh=IRHR5iQWIdeZaSG8skB+OmLU3CRMfWy31KvWkdkrpmM=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=BBeN9Gd3fqHO3PZKIr5aHfEFm3gfWGraXQzJJAd/uGBqi35ecXfN3wJKbbW7AIRj
+	 Olq42SSb9nC47Pa7YHzjuzrlp9nZu8+ZI4bLOnsHQH6t+b4uIQ401T0ywSSkPHD+k
+	 8HD5SWpSuWu46Fviv7qWOs++u1K378o2tff2kRQYmbtINBLM7XxypMq4tQC6lNPPp
+	 o1XXWo7l7BSj70FMk8i1mW/ZeDLzgj7TlyVcnIiG4ANk9z0aitOC7w5cee9vQG8vr
+	 uoFYKY6SibX4VrxVpCUOKNHYUaDIQdc34uzBghPrfnXMSHLmr2VJLc+Ag4pbZJ4DV
+	 t960TytNe/+g0Qvmqw==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.92.239]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MCXVZ-1vbp0n1Wi3-000aa2; Thu, 29
+ Jan 2026 16:10:30 +0100
+Message-ID: <5795f914-e01d-4b85-82da-0e4762c81cc3@web.de>
+Date: Thu, 29 Jan 2026 16:10:27 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260122-schneider-6-19-rc1-qspi-v4-0-f9c21419a3e6@bootlin.com> <20260122-schneider-6-19-rc1-qspi-v4-14-f9c21419a3e6@bootlin.com>
-In-Reply-To: <20260122-schneider-6-19-rc1-qspi-v4-14-f9c21419a3e6@bootlin.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 29 Jan 2026 14:44:36 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdU1QV6Ww--D8kycUmL_sFen_Qf+SXHAZJnF31J0NRtsAA@mail.gmail.com>
-X-Gm-Features: AZwV_QhJgRHOyRufUmk7eheHuZ8kMGAesh49iuPJzs_rWC6vXd0jVMaBYCvLTBM
-Message-ID: <CAMuHMdU1QV6Ww--D8kycUmL_sFen_Qf+SXHAZJnF31J0NRtsAA@mail.gmail.com>
-Subject: Re: [PATCH v4 14/15] spi: cadence-qspi: Add support for the Renesas
- RZ/N1 controller
-To: "Miquel Raynal (Schneider Electric)" <miquel.raynal@bootlin.com>
-Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
-	Vaishnav Achath <vaishnav.a@ti.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
-	=?UTF-8?Q?Herv=C3=A9_Codina?= <herve.codina@bootlin.com>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, Vignesh Raghavendra <vigneshr@ti.com>, 
-	Santhosh Kumar K <s-k6@ti.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	Pascal Eberhard <pascal.eberhard@se.com>, linux-spi@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+To: Praveen Talari <praveen.talari@oss.qualcomm.com>,
+ linux-spi@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Mark Brown <broonie@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ Aniket Randive <aniket.randive@oss.qualcomm.com>,
+ Chandana Chiluveru <chandana.chiluveru@oss.qualcomm.com>,
+ Jyothi Kumar Seerapu <jyothi.seerapu@oss.qualcomm.com>,
+ Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>,
+ Prasad Sodagudi <prasad.sodagudi@oss.qualcomm.com>,
+ Visweswara Tanuku <quic_vtanuku@quicinc.com>
+References: <20260122151008.2149252-3-praveen.talari@oss.qualcomm.com>
+Subject: Re: [PATCH 2/3] spi: geni-qcom: Fix abort sequence execution for
+ serial engine errors
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20260122151008.2149252-3-praveen.talari@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:loZby3KIyGpFeJspHQFrROPYnc6jxUFh2bEXPlm5Vt4VbiFKtvm
+ hP9ZOCWqvyXmnsfyVMNoTjQ+UodgUnkQffvys5PoiwYbyAFxaOjz8PpUyoOhwKkJVVDK0Nw
+ W1qUdo4NdIWb5XSB7QyamJWKb+UNO8QKDnTlMuaeBWAsuyA0gy8LRGhqCNe82X+TCyjNvYh
+ 5LwOSL5MwQF9pgFUWt9ag==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:Q7WFC7noZ2Q=;DBy63u3ZTQP9As+fXA/J7n5g6kJ
+ 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
+ P5NSGTFw=
 
-Hi Miqu=C3=A8l,
+> Fix this by ensuring the abort sequence and DMA reset always execute dur=
+ing
+> error recovery, as both are required for proper serial engine error
+> handling.
 
-Thanks for your patch!
+How do you think about to add any tags (like =E2=80=9CFixes=E2=80=9D and =
+=E2=80=9CCc=E2=80=9D) accordingly?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?h=3Dv6.19-rc7#n145
 
-On Thu, 22 Jan 2026 at 16:14, Miquel Raynal (Schneider Electric)
-<miquel.raynal@bootlin.com> wrote:
-> Renesas RZ/N1 QSPI controllers embed a modified version of the Cadence
-> IP with the following settings:
-> - a limited bus clock range
-> - no DTR support
-> - no DMA
-> - no useful interrupt flag
-> - only direct accesses (no INDAC mode)
-> - write protection
->
-> The controller has been tested by running the SPI NOR check list with a
-> custom RZ/N1D400 based board mounted with a Spansion s25fl128s1 quad
-
-"RZN1D-DB"?
-
-> SPI.
->
-> Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-> Signed-off-by: Miquel Raynal (Schneider Electric) <miquel.raynal@bootlin.=
-com>
-
-> --- a/drivers/spi/spi-cadence-quadspi.c
-> +++ b/drivers/spi/spi-cadence-quadspi.c
-> @@ -110,6 +110,7 @@ struct cqspi_st {
->         bool                    apb_ahb_hazard;
->
->         bool                    is_jh7110; /* Flag for StarFive JH7110 So=
-C */
-> +       bool                    is_rzn1; /* Flag for Renesas RZN1 SoC */
-
-RZ/N1
-
-
->         bool                    disable_stig_mode;
->         refcount_t              refcount;
->         refcount_t              inflight_ops;
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+Regards,
+Markus

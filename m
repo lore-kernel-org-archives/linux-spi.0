@@ -1,86 +1,86 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 377DA7E105
-	for <linux-spi@vger.kernel.org>; Thu, 29 Jan 2026 15:45:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8495D7E105
+	for <linux-spi@vger.kernel.org>; Thu, 29 Jan 2026 15:49:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769701520; cv=none; b=OTwMhmNStTpdSRNwpvEC6aPnNisy9rlKMk0GfcqIpzb5rqpYgB7Shw/s2nbyGCjhE400qjdjy5Ldg9x7H1qiMxOK/D+gnHWfuATZ6MR2YzP2csmw2H+rj+wMRz5Lf7z8T3W+gNtNJNwWPVZX28eO1LZj2bLzV+/OiN2ljb5qK4Y=
+	t=1769701753; cv=none; b=REsr45xye3Z4y3bI9CxEmjDfHzcUFcY8lRkQBMtAe60JaxVfTpbta1M0GE5k3LAfbBeVqvJoDQE4UDzOsnxKlskZzsLxJwK/gdwiVpz6eNPY7rHFaB+6hChk46y1FyiKyjHkSV5oEbvEh20GIpzl9KQsPzWxv/L5u3jCynkpjxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769701520; c=relaxed/simple;
-	bh=0ygmEQM+uXYQUqBj7JsWwXJ7b7Kzre4X9O7SloOWm4E=;
+	s=arc-20240116; t=1769701753; c=relaxed/simple;
+	bh=wcTESOf7AidL9TI2v50Z1dwmr64aG7bhXo2++sRShtg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gtt2K/4uL0NaiJcwwgPJveT/HMNNqDBkbe3PoFctRVcEWPELKVcFHYQfX+5bm9ShkLnnTKxMpQRFoUFIy7bhsEBuJ8TQ3i7mgmkwOoGj9sCzl1f+rRG4KOE5JQNKQ/4B3j3xrGulmzI4nntYjt+WVkKT43AF28JMoe9oTcbJwk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=PibzQ4CJ; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=a9SbKDPp; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:Content-Type; b=N999kUHXB+4GLNIVBNvj6KQyjn8tNA42DxVL8cBjljXDh6XfoeIaaHr+9fPDfCw2nJ/V7RdieTPR2yleZPRMt/SRhiNcYmW+3YVIyCazlbDqo6YzrBKeRNik5uH/ADG1f6+QG+2Luj6gNYLav2WZRypQeSN8zd47Yn+QWcV0HsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=pjqwH6xP; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=LNjBzL/S; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="PibzQ4CJ";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="a9SbKDPp"
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60TAKVbV3673990
-	for <linux-spi@vger.kernel.org>; Thu, 29 Jan 2026 15:45:18 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="pjqwH6xP";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="LNjBzL/S"
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60TAQwAX2501987
+	for <linux-spi@vger.kernel.org>; Thu, 29 Jan 2026 15:49:11 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	kvLiGYJjsQay7+umkOjbbZzrGr1HQQCSJ8GYCT4p4Yo=; b=PibzQ4CJCCEXO47n
-	Mj3vgIX15EAe4ca2hCochgvknJja6DjMgTL9+UDwDXLOTFMNAA5BuoiimOHj1WCt
-	niTHuISWVvDcfiB96eUnEpxBN6pDjRNecefdZhoMW43tXHlv78MKyi9hMedvQHfd
-	285QCGgdIYFQ3RikjhibkKn4ao7y33sIn8vifddsm0lIquBX5v4LaUXW6NfOeVMt
-	TdBcxtrHTUT+RwOsSEsmkn2nwusZXONHu6TVctffeZ30ecKA3stXVfwBSycvc97P
-	Lt6MjUrT6s4dJmHYVXqbkEIpGM4JccQtwYcn154cg99DS/1jM3/RJyZ8vUhrqlGB
-	n35HQA==
+	9l3lRufO4nmq9wcYZ7mtP19dWxQPitgYMjCxPzwqxjg=; b=pjqwH6xPOOqRpE/y
+	czy200ckVhFRUSxnQPjs2AibbZuYeW45qXCo3dIFua5hGhczNQZBVp94Ztm7HyWa
+	nQDhUgIsNaqbuAFsjLV72NxVPcyLfGN8vUaFt77Ooh5XDc4wy5AsTCiBtAfAFQ7w
+	zrcySNRPMQVIJWfc49+Xtejfkt8OreSaNzWw7Q3u/7IcO98BFsgRM7y+W9HBmY1S
+	MYB6MLPJ6mblXmC4/wvzdsq3moTffGqsSXD2R7WF+cFYw9wO5ebrYvv9ZX6IlaQE
+	J7N4Akj9RHCwaJ7+JUzoCOzmkX9Ed4oNeyUq+4Te4Mp6BlRUnxcC5jDeOrjS8V6h
+	Z1QOSQ==
 Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4c05q7h0fm-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4c05tbs08q-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-spi@vger.kernel.org>; Thu, 29 Jan 2026 15:45:18 +0000 (GMT)
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-c337cde7e40so688791a12.1
-        for <linux-spi@vger.kernel.org>; Thu, 29 Jan 2026 07:45:18 -0800 (PST)
+	for <linux-spi@vger.kernel.org>; Thu, 29 Jan 2026 15:49:11 +0000 (GMT)
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-bce224720d8so737248a12.1
+        for <linux-spi@vger.kernel.org>; Thu, 29 Jan 2026 07:49:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1769701518; x=1770306318; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1769701750; x=1770306550; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=kvLiGYJjsQay7+umkOjbbZzrGr1HQQCSJ8GYCT4p4Yo=;
-        b=a9SbKDPpyd0g3AZ7AJo/IbBUVxK3FXkGeLCCYHbS9sWsy3ZNaxiZaDc/wIcb/XxORP
-         amhf8x8inOceLoDdt0PgqtadZINABkimk+bLzyNZCBUBcMpQImkgzLIbkRjqilSMXyJL
-         NZBkSd8SICdt1NzWYlJZiHics8sCndBozUnxr1uvjl1QC7Vo1TSwvj6c3oYaskCubPl+
-         0PqCFh/bq73dAHwvbS81rrBcpVfSCFLUH3t9aqlu338ISWflJlOIj6EAejFngvangFnY
-         dqDdL4yAU+fZs432tU7sCXd8auFevxUSkCujUcr3TJEJ23WSIeF69QMdIAx5zkjIo2ds
-         SJFA==
+        bh=9l3lRufO4nmq9wcYZ7mtP19dWxQPitgYMjCxPzwqxjg=;
+        b=LNjBzL/SdUQ6vESIBAH7o/HWS7qJwEclvouGLGijYoKW5eyBmHzlhSHAlW1xTeCIs9
+         Rg1/EIt+sCOHK50n9vjDa3Xi+SD9mv/pPHHZkmfFY40YMcMnH+xl/7jxdqlQEM4ixb+A
+         bmcZ5Nbr5T7AO+zF0N03gQR+yQtfQyY+B6CefLlwk/IOpEG4aMcg5xcqaZ9Lahg6jVF2
+         fkFkoEpkrQbzn7ddcb0MFAMe7CXnz0rq8QN4b5o/YZJfk21M01gmdx73jU8bXStoZXSV
+         N0SgD4U77ox8zzlm2ppyYMXCJCYmi53+kbjVPXTTRKbvnLVwdBJ5Eo9ms3DH4Oc2LbM8
+         ekOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769701518; x=1770306318;
+        d=1e100.net; s=20230601; t=1769701750; x=1770306550;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=kvLiGYJjsQay7+umkOjbbZzrGr1HQQCSJ8GYCT4p4Yo=;
-        b=KvLqc9iemo+ARuHYaufBj6CBc6sgCKlUT0cMMjMSX0cTjymz/QOGnkoaDOViaSjMsQ
-         hI98TPVdQ8CNbE5WVACkj9wtWRfoSgFYoLee/AKnLod9L5eO8URSH6rj8QxT5HtMSCVt
-         wSIZnn0wX3KWM3OPuKbuOEPm/WoXvRfSDx7pO7h6Cvocb9yS+9fdlbxTp4s8X0KuorBq
-         J1OkTXyH6TeIxbQSux/TwBHoYMLLGqEDI17/m+6LQv53y6VQITjD6ebghgwCBiSzNzJJ
-         nEPFztbS1aQB1AaBJxOXpxOpgIfAPB4vNmmJtVApxBOSW/WQUjaOvl22ENc872NAWWNX
-         8/PQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWbMkYLjliH0sYKTg50NUWX00eI2gQCThN3mysLR5if9kZvZcVG0pClNo9kUzMYtzD0NRGp3yol/As=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxwrbdcJ/Tk4cjarqm1DskT5TtxCscyfG7LTGhmP6dHpm3kt7sq
-	rOmonNZ5vb6hCyZXWLhD6//KAyl8b6MdhEdE9lUbYxClQU235oahp3Snai5cEtUe9AvNCJnBBeB
-	kVA7ajbTQg6HMphLQGI4JnZY1g8Yr87F+BbRHZUP6TSdkG4/Mao08gJd0rLir8oE=
-X-Gm-Gg: AZuq6aJjieW5+WBK/E/Jgub3n/wkLS114HA9GsJBNfTlEiVQnkhYDh21jx8ujmMdIOd
-	o7BbRjVGd5C51Io3NU4K1j2Ccvc5N6na/D5wEtmYWNZiwU3rnIeZovQZz8AaW1IZkbQNM0rYdRf
-	reCKXUdhQ4fUl70T6tG2+Ua1jnEbBtaLa8LZ1odetXeEnCavjCBJcpiI7G0ZeWBXjzFIwxM7NGk
-	PyWntHBNgHbKCRqjdbLkodCSallKGGhVorzgv3sUSPo9/BCF1fM9Kkg7gUuv3HGAYHv8J1R+wJ/
-	gjVzz/DrGicxR8PGnipjMhrSCHGXcx4xHfCao5Odotm86u9dSGbDba81WB28HKxA0ThzqJBMvkg
-	l79frgh+XKRCwwPJBmpE9ehzliORvfwhcILXVvzAUAw==
-X-Received: by 2002:a05:6a20:9151:b0:34f:241f:aa1e with SMTP id adf61e73a8af0-38ec62e4127mr8136279637.31.1769701517407;
-        Thu, 29 Jan 2026 07:45:17 -0800 (PST)
-X-Received: by 2002:a05:6a20:9151:b0:34f:241f:aa1e with SMTP id adf61e73a8af0-38ec62e4127mr8136248637.31.1769701516673;
-        Thu, 29 Jan 2026 07:45:16 -0800 (PST)
+        bh=9l3lRufO4nmq9wcYZ7mtP19dWxQPitgYMjCxPzwqxjg=;
+        b=P09aMyv9m2+e446YDJpX9ntTMsjL+B79I5r8U5DdEmKNVSpFsPwqYL+JWAI/URVOLG
+         EPpWXqjzMhEDrCUY521F/39KHqbWUqU8yNSfvMbhL/+pKQpqGLXwjrHI9EdaXPBqUZ1p
+         xfGcNuVuU0aFd/PMZbv+Ey+eEeLqwbtLjQhY3qflf+Bllx63MY0KXIXyp7uSInQ7j7y9
+         JONlF5deZszfNkaQFFnEDuLRthI2G0NukdfZBtpLXtliCfhZkXUUwrrZHHBCzX0DDGKy
+         BiFsBUztAjllhSabJqDfvYmqsjRp0wkKUq0biAm/ZPxoA8BjnyGMcWsyueTlx5mr/WoR
+         XA9A==
+X-Forwarded-Encrypted: i=1; AJvYcCXiP6u4fu1RORsQMlvR4aNVSB8qIB8PoxK7yepTXHixq2vlnW9oWgoO4NAiDuFcRdO2TycnQS71KYs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzRLKM0j5iMOQBZlc5RAo0INPN0j1kGs10zOG8VfI6iqdpdGZ3s
+	lZ/5bElvJda2PiEjj51TdmeAr07u2AMiA4B0MSMLIB+Hp6BRiXg3qmi52xGO7Hpzl+J+9OaBv3S
+	dQIlSKt9Rw9DOs/6j05f8roe4tj/V6ySYKHdlWDKgcUVoIfwYqCMqmom95YmESNY=
+X-Gm-Gg: AZuq6aJHkwaJgn5P4mS531X56XD6La6vWpvy4Uf8vcL21TmWBxk7sHWmrpfY/zPWXbG
+	3nWZ56liojK/oGZ+P2Ldxh/n6x2QQOdd+jAVBQ/MYinaXNVLbLL3LZtfc/xm8+SUcRYbOQrPx4y
+	rENOkcUG59y8eKtTkOh0AXfvbzerflznRoRvCfsQbuM+CJzPp4S8SFdhwadDxPkka7xjJDaQUos
+	jiNfGID5bFxwZ4KvfDC2y5wwnbyt+rJ4pKCZLuEh4ub6osGGu2tfjGFKWJr0KJV5A3RJ723WI78
+	9UNQ76XknrWVL2XpYvu8EggrWfACdMDg98u//2txTD3UjkinJ3PlynusOu7qEOYxsUwj9FfImB2
+	GU//kzR/k1Uo70Tu0cJy9bXc/ot44XEpWowYyIaCLgA==
+X-Received: by 2002:a05:6a20:7350:b0:343:af1:9a57 with SMTP id adf61e73a8af0-38ec655cc0emr7712048637.56.1769701750337;
+        Thu, 29 Jan 2026 07:49:10 -0800 (PST)
+X-Received: by 2002:a05:6a20:7350:b0:343:af1:9a57 with SMTP id adf61e73a8af0-38ec655cc0emr7712011637.56.1769701749595;
+        Thu, 29 Jan 2026 07:49:09 -0800 (PST)
 Received: from [192.168.1.2] ([49.204.110.251])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c642add55adsm5038069a12.32.2026.01.29.07.45.11
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c64276efbb7sm5048588a12.2.2026.01.29.07.49.04
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Jan 2026 07:45:16 -0800 (PST)
-Message-ID: <57cb30cf-2da6-4df9-954d-953955969b02@oss.qualcomm.com>
-Date: Thu, 29 Jan 2026 21:15:08 +0530
+        Thu, 29 Jan 2026 07:49:08 -0800 (PST)
+Message-ID: <565a54cb-32cf-41d8-87fb-d60be63cca95@oss.qualcomm.com>
+Date: Thu, 29 Jan 2026 21:19:03 +0530
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -88,8 +88,8 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/3] spi: geni-qcom: Improve target mode allocation by
- using proper allocation functions
+Subject: Re: [PATCH v1 2/3] spi: geni-qcom: Fix abort sequence execution for
+ serial engine errors
 To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
         Mark Brown <broonie@kernel.org>, linux-arm-msm@vger.kernel.org,
         linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -98,117 +98,166 @@ Cc: prasad.sodagudi@oss.qualcomm.com, mukesh.savaliya@oss.qualcomm.com,
         quic_vtanuku@quicinc.com, aniket.randive@oss.qualcomm.com,
         chandana.chiluveru@oss.qualcomm.com, jyothi.seerapu@oss.qualcomm.com
 References: <20260122151008.2149252-1-praveen.talari@oss.qualcomm.com>
- <20260122151008.2149252-2-praveen.talari@oss.qualcomm.com>
- <847290c3-d5aa-45cf-a75b-ff119b608433@oss.qualcomm.com>
- <bece7d32-5f62-4ed8-8dd1-0de9102648cb@oss.qualcomm.com>
- <d9fc3b0c-7fe7-4845-b55d-ce6d0053f48d@oss.qualcomm.com>
+ <20260122151008.2149252-3-praveen.talari@oss.qualcomm.com>
+ <9d9d4d3d-42bf-4f4a-99d3-19df73f89c30@oss.qualcomm.com>
+ <95bdb386-1635-4f8b-84dd-b5123d271b7d@oss.qualcomm.com>
+ <0fddd038-185a-4cc0-b080-d12ba973cce3@oss.qualcomm.com>
 Content-Language: en-US
 From: Praveen Talari <praveen.talari@oss.qualcomm.com>
-In-Reply-To: <d9fc3b0c-7fe7-4845-b55d-ce6d0053f48d@oss.qualcomm.com>
+In-Reply-To: <0fddd038-185a-4cc0-b080-d12ba973cce3@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: JEkC8zD0TDEWoylVJU_gT37hMY04ooSV
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI5MDEwOSBTYWx0ZWRfX7rVokmCwosaQ
- WSP0A8dmS0uR5dgHreJitW0UnXOQbPcRXs2516Xx/Vr9HLHQ1lGSJ4UmHyxC2BROXqm2r/Qn1sJ
- pg3CJNSmg5sJqu88MM9g7lHPBWbPy/ANUfrkbxHyfC1C79wQkCA7fWdYrZmhKNJpExDLRJRZ+Sw
- Rhlqm5nUU3BcvUW5h/aqAZqoi0M4szX2glfls1FwnCPIw745/ATBzd/i2efIM7zET/iQIQrrWy1
- RZwpYdeHVy2MskKcVq2aetgXtjK9MPWEEa6kuNEygnVo0LgMstDQz/JnR5b9HeT3nExwYQGIdhd
- fM9f0o5t64sfOs1Oo/V1znNfKJDXeesT0dMOAgP202Vr2PbZ6HApKwCl7Gy4rOHTC3uc4Nwzhx/
- oDLY+tjwAkrMDl2w4S5S77F9TsgXOaWnsZaLGUnbCXHKfAPT/ORSzZXz/hrpiGIDG9orwENmkN+
- saT/x9ovTWYaAq5wpeQ==
-X-Authority-Analysis: v=2.4 cv=donWylg4 c=1 sm=1 tr=0 ts=697b808e cx=c_pps
+X-Proofpoint-GUID: nolMw5JfvFuIAiJFROmy9dA6g8nNzwFS
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI5MDEwOSBTYWx0ZWRfX6E/xnPxsMU4p
+ XTaJu3t7X6rYnowpWYXAaFc5IFhQeRClFm9JqgtiqLrapI8EEO7MGLv394AzQjTff4Z0FwESuQw
+ z8OAZ0WP9/aQZhC3/LFyATDCdSOvUB/1o74cELj9Byrq+HaFMpQH6kbqrqrPHakVrCqo1a4B1D3
+ crfXO5nVmfyGbeIPXnNt036VxZ6wNrOdQLbcBflFHsGmKIvIFYblPyBrwh302Xb+Tbi0zOq8KQ/
+ 2TJxXpUL6Wg8Vj6Z/DlroqYeCxvC3iu5bSTGjcfy32Je/ezk5qC3+zNkGaj5QhWSKNjYyOMhCt3
+ a0/r3U8mfl+NolD8AjKFvtZS+dx8+8jdzPsvXIZlODhwLofjpfeQDRz/tV5n9vvIUvHjAdKDTjp
+ gyODrAHcXmORXIOMtehr3ozUO3+ldUkqHf5RvmNBKAGW+lQiQr6JAaYn0pdgR72t8qBP1pBCaKw
+ xz4BjSHqGiLXQoo1OTQ==
+X-Proofpoint-ORIG-GUID: nolMw5JfvFuIAiJFROmy9dA6g8nNzwFS
+X-Authority-Analysis: v=2.4 cv=betmkePB c=1 sm=1 tr=0 ts=697b8177 cx=c_pps
  a=Qgeoaf8Lrialg5Z894R3/Q==:117 a=hmzEZbfuJy6/QR5cQt8XuQ==:17
  a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8 a=Wb7jJ4ESybac-VDgsCgA:9
+ a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8 a=LZ84-7LdfmDJ-_vHDukA:9
  a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=x9snwWr2DeNwDh03kgHS:22
-X-Proofpoint-ORIG-GUID: JEkC8zD0TDEWoylVJU_gT37hMY04ooSV
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-01-29_02,2026-01-28_03,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 clxscore=1015 suspectscore=0 spamscore=0 impostorscore=0
- bulkscore=0 priorityscore=1501 phishscore=0 lowpriorityscore=0 malwarescore=0
+ suspectscore=0 spamscore=0 phishscore=0 lowpriorityscore=0 malwarescore=0
+ impostorscore=0 bulkscore=0 adultscore=0 priorityscore=1501 clxscore=1015
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2601290109
 
 Hi Konrad,
 
-On 1/29/2026 5:12 PM, Konrad Dybcio wrote:
-> On 1/28/26 5:32 PM, Praveen Talari wrote:
->> Hi Konrad
+On 1/29/2026 5:18 PM, Konrad Dybcio wrote:
+> On 1/28/26 5:22 PM, Praveen Talari wrote:
+>> HI Konrad,
 >>
->> On 1/27/2026 6:45 PM, Konrad Dybcio wrote:
+>> Thank you for review.
+>>
+>> On 1/27/2026 6:47 PM, Konrad Dybcio wrote:
 >>> On 1/22/26 4:10 PM, Praveen Talari wrote:
->>>> The current implementation always allocates a host controller and sets the
->>>> target flag later when the "spi-slave" device tree property is present.
->>>> This approach is suboptimal as it doesn't utilize the dedicated allocation
->>>> functions designed for target mode.
+>>>> The driver currently skips the abort sequence for target mode when serial
+>>>> engine errors occur. This leads to improper error recovery as the serial
+>>>> engine may remain in an undefined state without proper cleanup, potentially
+>>>> causing subsequent operations to fail or behave unpredictably.
 >>>>
->>>> Use devm_spi_alloc_target() when "spi-slave" device tree property is
->>>> present, otherwise use devm_spi_alloc_host(). This replaces the previous
->>>> approach of always allocating a host controller and setting target flag
->>>> later.
+>>>> Fix this by ensuring the abort sequence and DMA reset always execute during
+>>>> error recovery, as both are required for proper serial engine error
+>>>> handling.
 >>>>
 >>>> Signed-off-by: Praveen Talari <praveen.talari@oss.qualcomm.com>
 >>>> ---
->>>>    drivers/spi/spi-geni-qcom.c | 15 ++++++++-------
->>>>    1 file changed, 8 insertions(+), 7 deletions(-)
+>>>>    drivers/spi/spi-geni-qcom.c | 3 ++-
+>>>>    1 file changed, 2 insertions(+), 1 deletion(-)
 >>>>
 >>>> diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
->>>> index 0e5fd9df1a8f..f5d05025b196 100644
+>>>> index f5d05025b196..e5320e2fb834 100644
 >>>> --- a/drivers/spi/spi-geni-qcom.c
 >>>> +++ b/drivers/spi/spi-geni-qcom.c
->>>> @@ -1017,6 +1017,14 @@ static int spi_geni_probe(struct platform_device *pdev)
->>>>        struct clk *clk;
->>>>        struct device *dev = &pdev->dev;
->>>>    +    if (device_property_read_bool(dev, "spi-slave"))
->>>> +        spi = devm_spi_alloc_target(dev, sizeof(*mas));
->>>> +    else
->>>> +        spi = devm_spi_alloc_host(dev, sizeof(*mas));
->>>> +
->>>> +    if (!spi)
->>>> +        return -ENOMEM;
->>>> +
->>>>        irq = platform_get_irq(pdev, 0);
->>>>        if (irq < 0)
->>>>            return irq;
->>>> @@ -1033,10 +1041,6 @@ static int spi_geni_probe(struct platform_device *pdev)
->>>>        if (IS_ERR(clk))
->>>>            return PTR_ERR(clk);
->>>>    -    spi = devm_spi_alloc_host(dev, sizeof(*mas));
->>>> -    if (!spi)
->>>> -        return -ENOMEM;
+>>>> @@ -167,7 +167,7 @@ static void handle_se_timeout(struct spi_controller *spi,
+>>>>             * doesn`t support CMD Cancel sequnece
+>>>>             */
+>>>>            spin_unlock_irq(&mas->lock);
+>>>> -        goto reset_if_dma;
+>>>> +        goto abort;
+>>>>        }
+>>>>          reinit_completion(&mas->cancel_done);
+>>>> @@ -178,6 +178,7 @@ static void handle_se_timeout(struct spi_controller *spi,
+>>>>        if (time_left)
+>>>>            goto reset_if_dma;
+>>>>    +abort:
+>>>>        spin_lock_irq(&mas->lock);
 >>>
->>> Is there a reason you're moving this code to the top of the function?
+>>> Now that the jump is just 5 LoC, you can dispose of the goto and change it
+>>> to an if-statement
 >>
->> When CONFIG_SPI_SLAVE is disabled, the call returns NULL; therefore, I placed this check at the start of the probe() function.
+>> Is the modification below good?
 >>
->> ref:
->> static inline struct spi_controller *devm_spi_alloc_target(struct device *dev, unsigned int size)
->> {
->>      if (!IS_ENABLED(CONFIG_SPI_SLAVE))
->>          return NULL;
+>> diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
+>> index f5d05025b196..4feaf24d47ea 100644
+>> --- a/drivers/spi/spi-geni-qcom.c
+>> +++ b/drivers/spi/spi-geni-qcom.c
+>> @@ -167,16 +167,15 @@ static void handle_se_timeout(struct spi_controller *spi,
+>>                   * doesn`t support CMD Cancel sequnece
+>>                   */
+>>                  spin_unlock_irq(&mas->lock);
+>> -               goto reset_if_dma;
+>> -       }
+>> -
+>> -       reinit_completion(&mas->cancel_done);
+>> -       geni_se_cancel_m_cmd(se);
+>> -       spin_unlock_irq(&mas->lock);
+>> +       } else {
+>> +               reinit_completion(&mas->cancel_done);
+>> +               geni_se_cancel_m_cmd(se);
+>> +               spin_unlock_irq(&mas->lock);
 >>
->>      return __devm_spi_alloc_controller(dev, size, true);
->> }
+>> -       time_left = wait_for_completion_timeout(&mas->cancel_done, HZ);
+>> -       if (time_left)
+>> -               goto reset_if_dma;
+>> +               time_left = wait_for_completion_timeout(&mas->cancel_done, HZ);
+>> +               if (time_left)
+>> +                       goto reset_if_dma;
+>> +       }
+>>
+>>          spin_lock_irq(&mas->lock);
+>>          reinit_completion(&mas->abort_done);
 > 
-> That doesn't really matter since spi is not accessed beforehand
-> and it'd return a NULL if it failed to allocate either way
-I agree. I had also reviewed other SPI drivers as a reference for this 
-implementation.
+> I think we can make it even shorter:
+> 
+> diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
+> index 231fd31de048..59567ef6759e 100644
+> --- a/drivers/spi/spi-geni-qcom.c
+> +++ b/drivers/spi/spi-geni-qcom.c
+> @@ -161,25 +161,20 @@ static void handle_se_timeout(struct spi_controller *spi,
+>          xfer = mas->cur_xfer;
+>          mas->cur_xfer = NULL;
+>   
+> -       if (spi->target) {
+> -               /*
+> -                * skip CMD Cancel sequnece since spi target
+> -                * doesn`t support CMD Cancel sequnece
+> -                */
+> +       /* The controller doesn't support the Cancel commnand in target mode */
+> +       if (!spi->target) {
+> +               reinit_completion(&mas->cancel_done);
+> +               geni_se_cancel_m_cmd(se);
+> +
+>                  spin_unlock_irq(&mas->lock);
+> -               goto abort;
+> +
+> +               time_left = wait_for_completion_timeout(&mas->cancel_done, HZ);
+> +               if (time_left)
+> +                       goto reset_if_dma;
+> +
+> +               spin_lock_irq(&mas->lock);
+>          }
+>   
+> -       reinit_completion(&mas->cancel_done);
+> -       geni_se_cancel_m_cmd(se);
+> -       spin_unlock_irq(&mas->lock);
+> -
+> -       time_left = wait_for_completion_timeout(&mas->cancel_done, HZ);
+> -       if (time_left)
+> -               goto reset_if_dma;
+> -
+> -abort:
+> -       spin_lock_irq(&mas->lock);
+>          reinit_completion(&mas->abort_done);
+>          geni_se_abort_m_cmd(se);
+>          spin_unlock_irq(&mas->lock);
 
-Do you want me to keep the change where earlier the host allocation was 
-present, or is the current modification acceptable?
-
-Please help on this.
+Thank you for help. will review and update in next patch.
 
 Thanks,
 Praveen
+
 > 
-> I'm not sure this is a concern nowadays with fw_devlink and
-> friends, but today the allocation happens after we get a clock
-> reference, which could throw an eprobe_defer, which I think would
-> cause the memory to be de-allocated again, wasting cycles
 > 
 > Konrad
 

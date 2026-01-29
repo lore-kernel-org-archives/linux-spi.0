@@ -1,54 +1,61 @@
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855E8312837
-	for <linux-spi@vger.kernel.org>; Thu, 29 Jan 2026 19:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 147732FABE1;
+	Thu, 29 Jan 2026 19:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769714622; cv=none; b=RzXJsHyCHfQIB3IFMZruUsZz/uscHyoB4ZQdfKev6QwQS7qn+6Q92RGkbmvR4Fy2XyIMwZkiB4+z9DmUeOHSt8LNMsSSTq+51kiTCq0nHKnsIOrmO8TOAKaTfu2kfrApCCAoeYH0q7ixHLdUpM3p4TvsnV9RJwRKU9h8a2iZYuo=
+	t=1769714833; cv=none; b=MXzL1Wvt6mPLbnFPhXLdM5oDZHRSNtmObcBSFj85NKIM1i3qpZ6LADGZLjkE64XZMlFVj2AaQ2a+nnh2C4M8YZpDyVCt2Zs3KW2ES3c/RLJ3EfAwAQhEFGb1b5V3JKD+mMMESpunjSSmyxlKnBS9RddjiDIeDmJsLWhppIIhk3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769714622; c=relaxed/simple;
-	bh=3h18MXcv7FLSoQRnlCqA7PGpmOGvq3lOZnMX/1ADDII=;
+	s=arc-20240116; t=1769714833; c=relaxed/simple;
+	bh=P/CpqQ1Va8KQ+bDForuk/5CwJLf99XVBWIRctB7o8tg=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=l2OG1aR32ZIwDtS6RxR9iGX7/dYRxqZzf4b6GdeiiXiMXGrHr5aQxV2Jy9XWSfidYqLSwII72ByZPh2LyrA6A3ns214nXwoSDayxkC0y0IgJappjxSrM8unlNrOSvbereJHwLA14sFyqconhE/oQO00iOmzwF7GB9zqYROP9H8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=r90XEPuL; arc=none smtp.client-ip=185.246.84.56
+	 MIME-Version:Content-Type; b=EnbzhlQTHfty1THaC5Wa4OTlgJLdrS0zp39zv1ODzLEpT1hBq/7H/UFlLMF7toEBGFnGlYcC5WwadUT6NogOIaYQqPEqGzilIf3vokMK4eWfDmAtPG94ZJ/3fAfQDqnFwPBugppurhNKrLCAdPXpy2dicOnaig590lQWzV0EOk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=TFSmtDqU; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="r90XEPuL"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="TFSmtDqU"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id F2A5D1A2B03;
-	Thu, 29 Jan 2026 19:23:38 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 935D01A2B0F;
+	Thu, 29 Jan 2026 19:27:10 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id B60C460746;
-	Thu, 29 Jan 2026 19:23:38 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 346A4119A880F;
-	Thu, 29 Jan 2026 20:23:34 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 6416560746;
+	Thu, 29 Jan 2026 19:27:10 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 24A61119A880F;
+	Thu, 29 Jan 2026 20:27:02 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769714618; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1769714828; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=V4sMXfQabzM8ew4a1pHZXG0oIC/3oBNgcTNU5oZGmoU=;
-	b=r90XEPuLuPgXkQegwgnFNxAjLw8xlg/WgwDlwHS93WDObGkqtZ2KjpDu15VUAgPYchP3g5
-	qkVyrs8NhFxT8DZ8yab022HRn1SCXihmGhQymQ7anFCXliFt+j55uzqEdc872dlmfkaqJM
-	Pg9ANqP7E8NvXxP/ycRet0bsXMB+F1kORIiwQ2a1a9vSr15uyruNki107kcnGFcrAwhQ+I
-	HaFI/ewtCjjeYWbJk8T7qM7kq+yLm4L/WinJL1cLQR0qS4GvEs689DUZmEWEjMXfgm3TIV
-	k9uP4ImDWcgi4EwWqAd7K+nUrtrFZIiynBK0qeZB5uNPIJEIKyOtJiDiaynWKA==
+	bh=Ru8ksjKNHNdXsJAL8P7+zHtIeOmioD7a81kSF85U4bI=;
+	b=TFSmtDqUhRvJRkmUhK6FDy4SogHujGGBb70slhbZidAwG8w4I6SZ41Hl87JQAtssxJZq7Y
+	NB3Cn6DpAFDYMmf90geQCxR8s0VCxIHTPy3hp06icSc2vqz4kBvldGCFdbJadOeJml3hBH
+	dhbZP7iH0DAWxLoKUSt0JmqChZNW2+9vaOVyhL6FCZpoHehKuly/hKWua5cCE5EXT/68nD
+	ykFZoW0vVrZNDRKlenFFhcOX7jmzP8bppM7OQU1GsJMe1rXNExuJQgkH2zbKo2HZsoAB56
+	kCC53GQZCAHuxc5I6h2UvWnlLP1VGNT7kCOQckEcFoJa11J1r5f6mIFPqHBbxA==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: Richard Weinberger <richard@nod.at>,  Vignesh Raghavendra
- <vigneshr@ti.com>,  Tudor Ambarus <tudor.ambarus@linaro.org>,  Pratyush
- Yadav <pratyush@kernel.org>,  Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>,  Steam Lin <STLin2@winbond.com>,  Santhosh
- Kumar K <s-k6@ti.com>,  linux-spi@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  linux-mtd@lists.infradead.org
-Subject: Re: [PATCH v2 00/27] mtd: spinand: Octal DTR support
-In-Reply-To: <61a547d0-592c-4cf5-ae4f-54456b08e83d@sirena.org.uk> (Mark
-	Brown's message of "Wed, 14 Jan 2026 11:25:32 +0000")
-References: <20260109-winbond-v6-17-rc1-oddr-v2-0-1fff6a2ddb80@bootlin.com>
-	<61a547d0-592c-4cf5-ae4f-54456b08e83d@sirena.org.uk>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Mark Brown <broonie@kernel.org>,  Rob Herring <robh@kernel.org>,
+  Krzysztof Kozlowski <krzk+dt@kernel.org>,  Conor Dooley
+ <conor+dt@kernel.org>,  Geert Uytterhoeven <geert+renesas@glider.be>,
+  Magnus Damm <magnus.damm@gmail.com>,  Vaishnav Achath
+ <vaishnav.a@ti.com>,  Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+  =?utf-8?Q?Herv=C3=A9?= Codina <herve.codina@bootlin.com>,  Wolfram Sang
+ <wsa+renesas@sang-engineering.com>,  Vignesh Raghavendra
+ <vigneshr@ti.com>,  Santhosh Kumar K <s-k6@ti.com>,  Pratyush Yadav
+ <pratyush@kernel.org>,  Pascal Eberhard <pascal.eberhard@se.com>,
+  linux-spi@vger.kernel.org,  devicetree@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH v4 14/15] spi: cadence-qspi: Add support for the Renesas
+ RZ/N1 controller
+In-Reply-To: <CAMuHMdU1QV6Ww--D8kycUmL_sFen_Qf+SXHAZJnF31J0NRtsAA@mail.gmail.com>
+	(Geert Uytterhoeven's message of "Thu, 29 Jan 2026 14:44:36 +0100")
+References: <20260122-schneider-6-19-rc1-qspi-v4-0-f9c21419a3e6@bootlin.com>
+	<20260122-schneider-6-19-rc1-qspi-v4-14-f9c21419a3e6@bootlin.com>
+	<CAMuHMdU1QV6Ww--D8kycUmL_sFen_Qf+SXHAZJnF31J0NRtsAA@mail.gmail.com>
 User-Agent: mu4e 1.12.7; emacs 30.2
-Date: Thu, 29 Jan 2026 20:23:32 +0100
-Message-ID: <87y0lgjk97.fsf@bootlin.com>
+Date: Thu, 29 Jan 2026 20:27:02 +0100
+Message-ID: <87sebojk3d.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -59,26 +66,53 @@ Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hello all,
+On 29/01/2026 at 14:44:36 +01, Geert Uytterhoeven <geert@linux-m68k.org> wr=
+ote:
 
-> The following changes since commit 0f61b1860cc3f52aef9036d7235ed1f0176321=
-93:
+> Hi Miqu=C3=A8l,
 >
->   Linux 6.19-rc5 (2026-01-11 17:03:14 -1000)
+> Thanks for your patch!
 >
-> are available in the Git repository at:
+> On Thu, 22 Jan 2026 at 16:14, Miquel Raynal (Schneider Electric)
+> <miquel.raynal@bootlin.com> wrote:
+>> Renesas RZ/N1 QSPI controllers embed a modified version of the Cadence
+>> IP with the following settings:
+>> - a limited bus clock range
+>> - no DTR support
+>> - no DMA
+>> - no useful interrupt flag
+>> - only direct accesses (no INDAC mode)
+>> - write protection
+>>
+>> The controller has been tested by running the SPI NOR check list with a
+>> custom RZ/N1D400 based board mounted with a Spansion s25fl128s1 quad
 >
->   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/sp=
-i-octal-dtr
->
-> for you to fetch changes up to 8618271887ca10ac5108fe7e1d82ba8f1b152cf9:
->
->   spi: spi-mem: Limit octal DTR constraints to octal DTR situations
->   (2026-01-12 12:40:30 +0000)
+> "RZN1D-DB"?
 
-Pulled in nand/next!
+I am indeed talking about the RZ/N1D400 here which is the "nice"
+official name of the SoC. The board I was using is a custom board, not
+the publicly available DB.
 
-I then applied the rest of the series on top of it.
+>
+>> SPI.
+>>
+>> Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+>> Signed-off-by: Miquel Raynal (Schneider Electric) <miquel.raynal@bootlin=
+.com>
+>
+>> --- a/drivers/spi/spi-cadence-quadspi.c
+>> +++ b/drivers/spi/spi-cadence-quadspi.c
+>> @@ -110,6 +110,7 @@ struct cqspi_st {
+>>         bool                    apb_ahb_hazard;
+>>
+>>         bool                    is_jh7110; /* Flag for StarFive JH7110 S=
+oC */
+>> +       bool                    is_rzn1; /* Flag for Renesas RZN1 SoC */
+>
+> RZ/N1
+
+Crap :-) I will rebase the two patches Mark couldn't apply and add this
+typo fix as a follow-up.
 
 Thanks,
 Miqu=C3=A8l

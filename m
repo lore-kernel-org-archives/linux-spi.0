@@ -1,64 +1,84 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F00B62F1FEC
-	for <linux-spi@vger.kernel.org>; Thu, 29 Jan 2026 18:30:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855E8312837
+	for <linux-spi@vger.kernel.org>; Thu, 29 Jan 2026 19:23:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769711411; cv=none; b=q/Vs0vGgikCkZMO8CdThkZHCuPU/rOl4SvyGCGgrLOHhCJrVloMoAAv8vv2wNETb9Jmwb94/XVcT0bG2D86ZGpLHeS79DNdX3ChHMx0G1TlHtDSZUDPPcvqLSeC1+rYRYJzQeW90QJ0UeFk8wVTCgHmse+FPNlu0GBjUUykyXvQ=
+	t=1769714622; cv=none; b=RzXJsHyCHfQIB3IFMZruUsZz/uscHyoB4ZQdfKev6QwQS7qn+6Q92RGkbmvR4Fy2XyIMwZkiB4+z9DmUeOHSt8LNMsSSTq+51kiTCq0nHKnsIOrmO8TOAKaTfu2kfrApCCAoeYH0q7ixHLdUpM3p4TvsnV9RJwRKU9h8a2iZYuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769711411; c=relaxed/simple;
-	bh=yTpJ5Z6lzG/Y1pgoBl7yTrF31bdU4NieD+wBpDUEqVA=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=P9lpHXjZdaV6MsB3N9eh7rbunCNpVoETcwPcG4kB97ildHo5mPFp4RSGDTazAMaY9FembLZ/3oKuJ9u/ObIBo8vYNacqtqJl5m+rN681UonHJ3KOImjUJwNscewz5rC8pSATIwWsOmbuJABDQdfD3u2V4B666I0y1eCDYRJk/yc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c/odRm6N; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769714622; c=relaxed/simple;
+	bh=3h18MXcv7FLSoQRnlCqA7PGpmOGvq3lOZnMX/1ADDII=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=l2OG1aR32ZIwDtS6RxR9iGX7/dYRxqZzf4b6GdeiiXiMXGrHr5aQxV2Jy9XWSfidYqLSwII72ByZPh2LyrA6A3ns214nXwoSDayxkC0y0IgJappjxSrM8unlNrOSvbereJHwLA14sFyqconhE/oQO00iOmzwF7GB9zqYROP9H8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=r90XEPuL; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c/odRm6N"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90590C4CEF7;
-	Thu, 29 Jan 2026 18:30:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769711410;
-	bh=yTpJ5Z6lzG/Y1pgoBl7yTrF31bdU4NieD+wBpDUEqVA=;
-	h=Subject:From:Date:To:From;
-	b=c/odRm6NnKfevCZuPtS5YT/VMj46bGSiGO73+bUByjKeYWZ2v38/fCYe0erWc0lKZ
-	 FF6WefYpatoiH2dKHOnUoFltc/35wizAbFyzUZEFPCS2MjnbpZ9n+KBZYDogGDO+n7
-	 LWEoV0By8iEBuJEehwcPU/MyD/7cT+Bv+WHP40qU/XTUd9vn5jqGxTunMHAeSQadgp
-	 9cjqzhzxM4e126JmXrzMFOWOdIUXPIwylZ9PNhNTuWn2/pa8WbL8jCiyNWU3JgI24i
-	 ZuZ1o7ZMG9Fbnnx0i4FArpt20gEusEL1kQ3ohEb8c8GRYSsripdUURYEiNwS7i2m+S
-	 qzFLCseRVwa4w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 8E4B7380CED5;
-	Thu, 29 Jan 2026 18:30:04 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="r90XEPuL"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id F2A5D1A2B03;
+	Thu, 29 Jan 2026 19:23:38 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B60C460746;
+	Thu, 29 Jan 2026 19:23:38 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 346A4119A880F;
+	Thu, 29 Jan 2026 20:23:34 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1769714618; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=V4sMXfQabzM8ew4a1pHZXG0oIC/3oBNgcTNU5oZGmoU=;
+	b=r90XEPuLuPgXkQegwgnFNxAjLw8xlg/WgwDlwHS93WDObGkqtZ2KjpDu15VUAgPYchP3g5
+	qkVyrs8NhFxT8DZ8yab022HRn1SCXihmGhQymQ7anFCXliFt+j55uzqEdc872dlmfkaqJM
+	Pg9ANqP7E8NvXxP/ycRet0bsXMB+F1kORIiwQ2a1a9vSr15uyruNki107kcnGFcrAwhQ+I
+	HaFI/ewtCjjeYWbJk8T7qM7kq+yLm4L/WinJL1cLQR0qS4GvEs689DUZmEWEjMXfgm3TIV
+	k9uP4ImDWcgi4EwWqAd7K+nUrtrFZIiynBK0qeZB5uNPIJEIKyOtJiDiaynWKA==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: Richard Weinberger <richard@nod.at>,  Vignesh Raghavendra
+ <vigneshr@ti.com>,  Tudor Ambarus <tudor.ambarus@linaro.org>,  Pratyush
+ Yadav <pratyush@kernel.org>,  Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>,  Steam Lin <STLin2@winbond.com>,  Santhosh
+ Kumar K <s-k6@ti.com>,  linux-spi@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  linux-mtd@lists.infradead.org
+Subject: Re: [PATCH v2 00/27] mtd: spinand: Octal DTR support
+In-Reply-To: <61a547d0-592c-4cf5-ae4f-54456b08e83d@sirena.org.uk> (Mark
+	Brown's message of "Wed, 14 Jan 2026 11:25:32 +0000")
+References: <20260109-winbond-v6-17-rc1-oddr-v2-0-1fff6a2ddb80@bootlin.com>
+	<61a547d0-592c-4cf5-ae4f-54456b08e83d@sirena.org.uk>
+User-Agent: mu4e 1.12.7; emacs 30.2
+Date: Thu, 29 Jan 2026 20:23:32 +0100
+Message-ID: <87y0lgjk97.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <176971140305.2992881.4796742842574274184.git-patchwork-summary@kernel.org>
-Date: Thu, 29 Jan 2026 18:30:03 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hello:
+Hello all,
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (for-next):
+> The following changes since commit 0f61b1860cc3f52aef9036d7235ed1f0176321=
+93:
+>
+>   Linux 6.19-rc5 (2026-01-11 17:03:14 -1000)
+>
+> are available in the Git repository at:
+>
+>   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/sp=
+i-octal-dtr
+>
+> for you to fetch changes up to 8618271887ca10ac5108fe7e1d82ba8f1b152cf9:
+>
+>   spi: spi-mem: Limit octal DTR constraints to octal DTR situations
+>   (2026-01-12 12:40:30 +0000)
 
-Patch: [v1,1/1] spi: dw: Remove not-going-to-be-supported code for Baikal SoC
-  Submitter: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1047784
-  Lore link: https://lore.kernel.org/r/20260127210541.4068379-1-andriy.shevchenko@linux.intel.com
+Pulled in nand/next!
 
+I then applied the rest of the series on top of it.
 
-Total patches: 1
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Thanks,
+Miqu=C3=A8l

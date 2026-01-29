@@ -1,230 +1,165 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com [209.85.221.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A1A5344046;
-	Wed, 28 Jan 2026 22:33:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CE2E280327
+	for <linux-spi@vger.kernel.org>; Thu, 29 Jan 2026 08:04:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769639636; cv=none; b=ZaCCBlPpsOY3LdEuPAZhS5m8LJYgsbtsu0JC1UT1ekhGtfv2AC+KZ85KVI93H+JDH7NGIIPS0BroWwnXiGDU+gcgzU+VkM6/3GW8ji9vhwq4e7csPB0qNJr4MtLtA/MRw+1MsQe9uyMkGJnEUbSo8Vu7xLCoXe+3+u9jFY3M7ns=
+	t=1769673901; cv=none; b=qrBhwUnnz04fxTHP5S6SVci96f4VyL4noPjg4PGF62u9lQA9yM/grmuwJvdLbxRxeeVjT6SWrAg11aWgwErql50hnJ1LaMnrWxN3uEaYCaP+xNvlDEWD+caQtj020fb6RJPIr39RQxsbNvF52qrwh9OIJL+jgg7wwz4X9Gy3udE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769639636; c=relaxed/simple;
-	bh=fegejkVL+lLJoLfhYf6xVkGHeRs3KVjJLWElAzTPWGs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DZFXBeDO8DR+6E/Z7tRpbCbZk8zZEeq5zAIn7lp4z4Gf2Vq4a0cJlxOLui3nEqpCcq/MSVbzDnXPzOmqBSKpO7x4QwoE8BydpnwSKHwyXqZxRPcUwZ0380BGkWfmOwartx/ZsmlFxPFGTXcWHR2kCKSoGy7BcUXJ3sHSDlrArDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IC2ilDMi; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IC2ilDMi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC6EDC116C6;
-	Wed, 28 Jan 2026 22:33:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769639635;
-	bh=fegejkVL+lLJoLfhYf6xVkGHeRs3KVjJLWElAzTPWGs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IC2ilDMigqz8dzMh8n1Mla4S8l21EqMFhyoRH8ln5OxIhUKCdE54nO6VmO+LLbPWV
-	 iIfehy+chvZDJHcln0LklFo05FmKLG+VhEJZrWLAlFG+98PFsR85f3GNogzfUF3znR
-	 4IdbZwiiwyBzHAR00WjD6sGkexmzqLLzIrnI0Bjrz0IIsucraBtepansXGvVZ3PUiz
-	 o+skM4G1lhj4rOsP3f8os8QXlJYUrGhEdlk2MoE6J0f2/sq8w1eMTjk+9unYMInNN+
-	 8ulQC01CP7QrMUrdBG+DR3EQxBgy2y7v93Sb3kBTOBDVzHAp1ppGKWkQYTlbTZlpqU
-	 /m8YeHBMysKEw==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18] spi: intel-pci: Add support for Nova Lake SPI serial flash
-Date: Wed, 28 Jan 2026 17:33:10 -0500
-Message-ID: <20260128223332.2806589-12-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260128223332.2806589-1-sashal@kernel.org>
-References: <20260128223332.2806589-1-sashal@kernel.org>
+	s=arc-20240116; t=1769673901; c=relaxed/simple;
+	bh=91tVL5mKuNj73Dz7moYY7OGxZC1gqClrSFgk0jV0cNc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gZpb9l6dgrSCXLeUOj70KFLXLU31kIUNHpwkDF55AJEc0BdxZMaiuUSEsjXO1eIcwT/pwaAMexRghMtw40cUO2qkhXvlpx/rWTZ78SpRnX0x533jeCtxcVEGsO0X24cAGnIuI8vYqlgzCFl85eJJSKz2yw2qp8Wt+T1jH2OZhLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f176.google.com with SMTP id 71dfb90a1353d-563497c549cso360467e0c.3
+        for <linux-spi@vger.kernel.org>; Thu, 29 Jan 2026 00:04:59 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769673898; x=1770278698;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=v0gR7dZCHphDKOV6AbU9UOkdND+zeoXCfVO1M2NTZUU=;
+        b=vO+eVPVamvn28+REDY857pzmZ9CvCO3QEzHDis+cFJkUTizsnuzfPL3kIqNhMPP78e
+         mCHPD52HQqy2e26y2f/KM56O/2nh5VnvP37qsjJBkg+zcOBOrEvTkFz3DzyRTFOD7bcP
+         ukyh2ixRQH+ehdsWc+MfvPmqQgXOiyYVV2TleDZEBlFs9kgGUqLm3cQBOOLACPhqtuXI
+         Msr70BZNv2wfbdH73imdsJOSr6z8xMVd/OT67h3noZzWkjGJN4VGN/qfLjoWOssEOzpk
+         dJr5ltOe34l82aw+tlPd1+hyVuokXGLyZcordz8ioDkbsh9NIcXxI3gfwP/bWF8tjY6g
+         b+DQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWDEwLzT6/2ZyM8VGTOct2W6nHejgVwffcEYoNHLLUY36wZCvyEyHZWQLjn5Yk7Spsj41Y+eRo+zqo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx9vLs5Bph+bhti/p7JvJX+PCQvde+JnX4SKKW0HEmA4Mv4Eu6E
+	MnJYPTmHyPgtsACQZdfwuAP6oOR45iVY94BhP2NsvrLMB3MXpfuTFgJ7tel4POUb
+X-Gm-Gg: AZuq6aJzUbKxUix5/XYD1imR5xZ3pNFwCo8n8CWjJq1jjett8M9U9zdz2UIQcUU2emS
+	N+VkroWgoKDSrMovyEP8JHeLzzAAK+lVRgFv7Hw6QQWJBENlJ/uCH/g0uyaEBCPslleQp+BWfzN
+	m5shljfHrk2HhpXiN9pZa/GqT9/EwyC+job5khl4TlNAcdSgh6GVoL2fqDuB8Qr2dfhzuO2SPw0
+	zXQuDe8bK/stJVr2Hrpe1X40GgE8x1bMYu8P9zLo7186glXNnKFCI7l3bPHSkaaqnqKAmex40ve
+	AkvBX15vziFC7S3cYlZlV7c5DVVeMwd61PUUIQbJo9Nn55Z865ufYQnM9Ru892R6n6oMYTk9oP2
+	WpqzPkbr2l5joo1kl3bIuM0hEyLsNDxN+vd8k5nzFoLDPwQZnsKIqaVHwUqSzHUEUehVGsRJ9cJ
+	nEwevZWOPl7dlneVLImGWg5eXv0cPI3C83NvWIVCDxtW+ahbJ6J742
+X-Received: by 2002:a05:6122:506:b0:566:2741:2e5f with SMTP id 71dfb90a1353d-566794aa60emr3288098e0c.3.1769673898115;
+        Thu, 29 Jan 2026 00:04:58 -0800 (PST)
+Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com. [209.85.221.178])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-56685d07b42sm1087168e0c.18.2026.01.29.00.04.57
+        for <linux-spi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 29 Jan 2026 00:04:57 -0800 (PST)
+Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-566360cab02so476024e0c.2
+        for <linux-spi@vger.kernel.org>; Thu, 29 Jan 2026 00:04:57 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXtZIbZxXKEAW7ejRfLG7HxGpywyu4LVd8909pTtPP9ayxMRoh7LIaFp2PTlMOULvi88hwqqzht3bw=@vger.kernel.org
+X-Received: by 2002:a05:6102:54a6:b0:5df:b7f3:5875 with SMTP id
+ ada2fe7eead31-5f7236eb1d3mr2932320137.3.1769673897247; Thu, 29 Jan 2026
+ 00:04:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.18.7
-Content-Transfer-Encoding: 8bit
+References: <20260127201706.616374-1-cosmin-gabriel.tanislav.xa@renesas.com>
+ <20260127201706.616374-2-cosmin-gabriel.tanislav.xa@renesas.com>
+ <20260128-sequence-platypus-59ae3318318a@spud> <TYRPR01MB15619DCD987445778003A81588591A@TYRPR01MB15619.jpnprd01.prod.outlook.com>
+ <20260128-debatable-scribe-4e55c208b31a@spud>
+In-Reply-To: <20260128-debatable-scribe-4e55c208b31a@spud>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Thu, 29 Jan 2026 09:04:45 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdWYKFoBnGaCfvVJFwYXEvtVyxXiAzHC2JvmTCwc5H91wQ@mail.gmail.com>
+X-Gm-Features: AZwV_QjTTisPi414sjhCr82V_-8ygcgoSAfE-Ll893eiMx8FQNA9_dDyqKpLyMg
+Message-ID: <CAMuHMdWYKFoBnGaCfvVJFwYXEvtVyxXiAzHC2JvmTCwc5H91wQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] dt-bindings: spi: renesas,rzv2h-rspi: allow
+ multiple DMAs
+To: Conor Dooley <conor@kernel.org>
+Cc: Cosmin-Gabriel Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>, 
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>, Mark Brown <broonie@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, "magnus.damm" <magnus.damm@gmail.com>, 
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>, 
+	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>, 
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-From: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
+Hi Conor,
 
-[ Upstream commit caa329649259d0f90c0056c9860ca659d4ba3211 ]
+On Wed, 28 Jan 2026 at 21:09, Conor Dooley <conor@kernel.org> wrote:
+> On Wed, Jan 28, 2026 at 06:51:48PM +0000, Cosmin-Gabriel Tanislav wrote:
+> > > From: Conor Dooley <conor@kernel.org>
 
-Add Intel Nova Lake PCH-S SPI serial flash PCI ID to the list of
-supported devices. This is the same controller found in previous
-generations.
+> > > On Tue, Jan 27, 2026 at 10:17:04PM +0200, Cosmin Tanislav wrote:
+> > > > The Renesas RZ/T2H and RZ/N2H SoCs have multiple DMA controllers that
+> > > > can be used with the RSPI peripheral. The current bindings only allow a
+> > > > single pair of RX and TX DMAs.
+> > > >
+> > > > Allow multiple DMAs by only restricting the possible names of the DMA
+> > > > channels.
+> > >
+> > > > All '.*-names$' properties must conform to the string-array.yaml
+> > > > meta-schema, which requires both minItems and maxItems properties to be
+> > > > present before the items can be a schema. Otherwise, the items need to
+> > > > be an array.
+> > >
+> > > Why is this in the commit message?
+> >
+> > To provide a context for the maxItems that are needed below, even if
+> > there's not really a maximum. Which is why having a maxItems does not
+> > really make sense but it is expected by the meta-schema so we can
+> > constrain the names of the DMA channels.
+> >
+> > dtschema/meta-schemas/string-array.yaml:
+> >
+> > if:
+> >   not:
+> >     required:
+> >       - minItems
+> >       - maxItems
+> > then:
+> >   properties:
+> >     items:
+> >       type: array
+>
+> Right. You can probably remove all that since I'm asking you to add
+> actual constraints to the property.
+>
+> > > > Declare a generous maxItems of 32, which should be enough for 16 DMA
+> > > > controllers, so that we don't have to update this value ever again, even
+> > > > if currently the maximum number of DMA controllers on a Renesas SoC is
+> > > > 5.
+> > >
+> > > Huh, No. The binding should constrain this to fit what the actual
+> > > devices do.
 
-Signed-off-by: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Link: https://patch.msgid.link/20260115120305.10080-1-alan.borzeszkowski@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
+The device is the SPI controller, or the SoC where the SPI controller
+is integrated?
 
-LLM Generated explanations, may be completely bogus:
+> >
+> > Should the binding for SPI be updated if a device ever comes up with
+> > 6 DMA controllers? It seems a bit unrelated to me. In this case, should
+> > we constrain the number of dmas and dma-names per SoC? Some may have 2
+> > DMA controllers, while others may have 5. Please let me know your
+> > thoughts, taking into account that I only added maxItems to satisfy the
+> > meta-schema.
+>
+> Yes, I think you should constrain it to the correct number of providers
+> for each device.
+> Whether that's done or not, there's not all that much reason to set it
+> above whatever the current maximum is, since the binding will have to be
+> updated to add the compatible for whatever device exceeds the current max
+> and the limit can be increased then.
 
-## Comprehensive Backport Analysis
+The actual maximum number of dmas pairs does not depend on the SPI
+controller, but on the SoC integration.  I think the (single) DMA
+request signal from the SPI controller is just wired to all DMACs
+present (on this SoC, IIRC there were some Renesas SoCs where some
+ DMA clients are wired to only a single DMAC).
 
-### 1. COMMIT MESSAGE ANALYSIS
+Gr{oetje,eeting}s,
 
-**Subject:** "spi: intel-pci: Add support for Nova Lake SPI serial
-flash"
+                        Geert
 
-**Key information from message:**
-- Adds a new PCI ID for Intel Nova Lake PCH-S SPI serial flash
-  controller
-- Explicitly states: "This is the same controller found in previous
-  generations"
-- Has proper sign-offs from Intel developer and maintainer
-  acknowledgment
-- Link to patch message provided for traceability
-
-**Notable:** No Fixes: tag or Cc: stable tag, but as noted in the
-analysis guidelines, this is expected for commits requiring manual
-review.
-
-### 2. CODE CHANGE ANALYSIS
-
-The diff shows a **single-line addition**:
-```c
-{ PCI_VDEVICE(INTEL, 0x6e24), (unsigned long)&cnl_info },
-```
-
-This adds PCI device ID `0x6e24` to the `intel_spi_pci_ids[]` table,
-using the existing `cnl_info` configuration structure (Cannon Lake
-info).
-
-**Technical details:**
-- The change adds one entry to the PCI device ID table
-- Uses the well-established `PCI_VDEVICE()` macro
-- References `cnl_info`, which already exists and is used by many other
-  device IDs in this driver
-- The insertion is alphabetically ordered (0x6e24 is placed between
-  0x5825 and 0x7723)
-- No new code paths, functions, or logic introduced
-
-### 3. CLASSIFICATION
-
-**This is a NEW DEVICE ID addition** - one of the explicitly listed
-exceptions in the stable kernel rules.
-
-From the guidelines:
-> **NEW DEVICE IDs (Very Common):**
-> - Adding PCI IDs, USB IDs, ACPI IDs, etc. to existing drivers
-> - These are trivial one-line additions that enable hardware support
-> - Rule: The driver must already exist in stable; only the ID is new
-
-This commit fits this exception perfectly:
-- The `spi-intel-pci` driver already exists in stable kernels
-- Only the PCI ID is being added
-- Uses existing configuration (`cnl_info`)
-
-### 4. SCOPE AND RISK ASSESSMENT
-
-**Scope:**
-- **Lines changed:** 1 line added
-- **Files touched:** 1 file (`drivers/spi/spi-intel-pci.c`)
-- **Complexity:** Minimal - just a table entry
-
-**Risk assessment:**
-- **Extremely LOW risk** - This is one of the safest possible changes
-- The new ID only matches Nova Lake hardware
-- Existing hardware continues to work exactly as before
-- If the ID is somehow wrong, only Nova Lake devices would be affected
-- The `cnl_info` structure is already well-tested with many other Intel
-  platforms
-
-### 5. USER IMPACT
-
-**Who benefits:**
-- Users with Intel Nova Lake PCH-S systems
-- Enterprise customers deploying on newer Intel hardware
-- Without this patch, SPI flash on Nova Lake systems won't be recognized
-
-**Impact assessment:**
-- **Positive impact:** Enables SPI flash access on new hardware
-- **Negative impact potential:** None for existing users
-- **Hardware scope:** This is a platform-level chipset, so all Nova Lake
-  systems are affected
-
-### 6. STABILITY INDICATORS
-
-- **Acked-by:** Mika Westerberg (Intel kernel maintainer) - positive
-  signal
-- **Signed-off-by:** Mark Brown (SPI subsystem maintainer) - indicates
-  proper review
-- The commit message explicitly states this uses the "same controller
-  found in previous generations" - this suggests the hardware is
-  compatible and doesn't need new code
-
-### 7. DEPENDENCY CHECK
-
-**Dependencies:** None
-- This commit is completely self-contained
-- It only adds an entry to an existing table
-- No prerequisites needed - the driver infrastructure is already in
-  place
-
-**Stable tree compatibility:**
-- The `spi-intel-pci.c` driver has been in the kernel for years
-- The `cnl_info` structure exists in all relevant stable trees
-- This patch will apply cleanly to any stable kernel that has this
-  driver
-
-### 8. VERDICT REASONING
-
-**Why this SHOULD be backported:**
-
-1. **Explicitly allowed by stable rules:** New device IDs are a
-   documented exception that IS appropriate for stable trees
-
-2. **Zero regression risk:** Adding a new PCI ID to a table cannot
-   possibly break existing functionality
-
-3. **Minimal change:** Single line addition is as small and contained as
-   possible
-
-4. **Real user benefit:** Users with Nova Lake hardware need this to
-   have functional SPI flash support
-
-5. **Mature driver:** The intel-spi-pci driver is well-established and
-   the cnl_info configuration is used by many other platforms
-
-6. **Proper review:** Has maintainer acks from both Intel and SPI
-   subsystem maintainers
-
-**No concerns:**
-- No dependencies
-- No backport adjustments needed
-- Will apply cleanly
-- No new code paths or features
-
-This is a textbook example of a commit that should be backported to
-stable - it's a trivial device ID addition that enables hardware support
-using existing, well-tested driver code.
-
-**YES**
-
- drivers/spi/spi-intel-pci.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/spi/spi-intel-pci.c b/drivers/spi/spi-intel-pci.c
-index b8c572394aac2..bce3d149bea18 100644
---- a/drivers/spi/spi-intel-pci.c
-+++ b/drivers/spi/spi-intel-pci.c
-@@ -81,6 +81,7 @@ static const struct pci_device_id intel_spi_pci_ids[] = {
- 	{ PCI_VDEVICE(INTEL, 0x54a4), (unsigned long)&cnl_info },
- 	{ PCI_VDEVICE(INTEL, 0x5794), (unsigned long)&cnl_info },
- 	{ PCI_VDEVICE(INTEL, 0x5825), (unsigned long)&cnl_info },
-+	{ PCI_VDEVICE(INTEL, 0x6e24), (unsigned long)&cnl_info },
- 	{ PCI_VDEVICE(INTEL, 0x7723), (unsigned long)&cnl_info },
- 	{ PCI_VDEVICE(INTEL, 0x7a24), (unsigned long)&cnl_info },
- 	{ PCI_VDEVICE(INTEL, 0x7aa4), (unsigned long)&cnl_info },
 -- 
-2.51.0
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

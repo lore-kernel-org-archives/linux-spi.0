@@ -1,180 +1,126 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D263937F8B1;
-	Thu, 29 Jan 2026 09:16:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E4E3793D9;
+	Thu, 29 Jan 2026 11:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769678186; cv=none; b=QPxSZ+SGYM4QULVP5ENDP8VHdDMnZfpkURC9TYUe3/zJXZVah+atbHh5jIRKxL1VjJYqqHY8H5yLhkZ49ijLrdLi5LE+ss3G/acTPntqWuSEam5vpjuMMY5ToLZw1auOzQHmlyPJUwy3FMyGsg2Zlp1zJ8L6VLe+dLpvnBO2OK0=
+	t=1769685236; cv=none; b=Q+nS1T3wDPe8B2MKYdpyxu1Z+qVBK9zLf/e6pmZXsK1RfbmHH8n+OMNOKvr/uPkINwdjnftWIFaiJdXOVyFunIhFKWAmddI6XkaiUhz++VzMp23nX9hAetQmZza7FRDtg54iOsiPl4HFwgR8PDcy71+OCqb1IGa+sv3dP+Pwwbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769678186; c=relaxed/simple;
-	bh=1HIOr9VqVgD+lxbUBD7uTKdPs29LMRiAJ8svnoIwY04=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TCRGc5O8iJwQ+Q0761viD+OSErPazEd7enS03WgZmK6BSkw6qPZfmz+cy3SWkLkWT6aYXyqiydTr0bR89LGC1obGb+K5itu9BEGF7HASvPr2ktR6eMQjp6wNLaJT2uuSAmfiuPuNhMAQB4Cu4L4YHmY94JusU7CSOFMcN/Av2Gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mr7IhBj2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769685236; c=relaxed/simple;
+	bh=zfJWVAxG9Q672zCrZytwBLKjJfe7fxZIheGtzUrbzso=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=LPa82ocuRoFBG4Z6hFCRYy3CHmiFOxcmzQ5k4m/TyIF4Vj4OaEOi0B2lZHSYALY60rJNh+ucnyTSotwmndBXGdHOa9ABQ2lTqZL0t2meKUjIZC618znTTJJXEHjnn4RLrQrltos2b23k0GVTfhQaFIQ+/rGyJ92rk0PKRS4ZXy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MFljJ7uc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mr7IhBj2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6619C4CEF7;
-	Thu, 29 Jan 2026 09:16:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MFljJ7uc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 158FFC4CEF7;
+	Thu, 29 Jan 2026 11:13:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769678186;
-	bh=1HIOr9VqVgD+lxbUBD7uTKdPs29LMRiAJ8svnoIwY04=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Mr7IhBj2Pzbp5FXotoHGbmDxEe2LdR34si8ZN7qog3ATafMGOeWQGczCYUXpkUiGL
-	 UkPFclrsLSw05vg53pCEAY1OYevxG8oD36d3uistZ7vxnR3kAJ0BBiVDqNjKTdVy3z
-	 YWBaEP2aVhgJwYXDj8jnXyaBzX4EDmqjEAT9fjJqnrvnyNiTYQ0YiejFjTzcZYlPVi
-	 /6bDH7AUIqWvzqk/yW7JrocQuK+jrQ7vpdqfNmzpwU8RRBzAvYckGtsOeEGBN3upRm
-	 2zR/t0CUQBdymskYWs8QHKpMJ7VB/3XlnlvxUzuKI5MEo9/uY1V0DbEWBAMRaWQ1pW
-	 qRlHL002bzgsA==
-Date: Thu, 29 Jan 2026 09:16:21 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Cosmin-Gabriel Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	"magnus.damm" <magnus.damm@gmail.com>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 1/3] dt-bindings: spi: renesas,rzv2h-rspi: allow
- multiple DMAs
-Message-ID: <20260129-public-musty-ff00b2f8dda7@spud>
-References: <20260127201706.616374-1-cosmin-gabriel.tanislav.xa@renesas.com>
- <20260127201706.616374-2-cosmin-gabriel.tanislav.xa@renesas.com>
- <20260128-sequence-platypus-59ae3318318a@spud>
- <TYRPR01MB15619DCD987445778003A81588591A@TYRPR01MB15619.jpnprd01.prod.outlook.com>
- <20260128-debatable-scribe-4e55c208b31a@spud>
- <CAMuHMdWYKFoBnGaCfvVJFwYXEvtVyxXiAzHC2JvmTCwc5H91wQ@mail.gmail.com>
+	s=k20201202; t=1769685236;
+	bh=zfJWVAxG9Q672zCrZytwBLKjJfe7fxZIheGtzUrbzso=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=MFljJ7ucKl3VuJJ5LbKELVc9mhCH6g9olm8EMiF0KHxvi394aVjA8lxxh7wVNLmBY
+	 WkBLHVcmkIWY9rT0D+DmsBycwXCmc3JMj7Ed1gVnccBC/yf9BPWFqqDKxP7GrRuP1I
+	 ItsiJl4IrJ630+Pj02Q1U3g+zC6zpw6u3V20cDJ0P1PzF8BrYc/BO/mrGotNbiYK9x
+	 WoIXfnKhq0Uf5Cp4FfGfkiIOt16QN5YqOeg0P0nDTzsuvcigf+DqKa8nFVAU8dcV4d
+	 /0uptfk3KRyzMqtfZgL2mKocFheX3IInv3m/msIA/32TlfWRCka1K0IJhUfcfPE6BU
+	 Q9eE4HkZKOZMg==
+From: Mark Brown <broonie@kernel.org>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Geert Uytterhoeven <geert+renesas@glider.be>, 
+ Magnus Damm <magnus.damm@gmail.com>, Vaishnav Achath <vaishnav.a@ti.com>, 
+ "Miquel Raynal (Schneider Electric)" <miquel.raynal@bootlin.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ =?utf-8?q?Herv=C3=A9_Codina?= <herve.codina@bootlin.com>, 
+ Wolfram Sang <wsa+renesas@sang-engineering.com>, 
+ Vignesh Raghavendra <vigneshr@ti.com>, Santhosh Kumar K <s-k6@ti.com>, 
+ Pratyush Yadav <pratyush@kernel.org>, 
+ Pascal Eberhard <pascal.eberhard@se.com>, linux-spi@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-renesas-soc@vger.kernel.org
+In-Reply-To: <20260122-schneider-6-19-rc1-qspi-v4-0-f9c21419a3e6@bootlin.com>
+References: <20260122-schneider-6-19-rc1-qspi-v4-0-f9c21419a3e6@bootlin.com>
+Subject: Re: (subset) [PATCH v4 00/15] spi: cadence-qspi: Add Renesas RZ/N1
+ support
+Message-Id: <176968523282.21695.1970063208785534195.b4-ty@kernel.org>
+Date: Thu, 29 Jan 2026 11:13:52 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="b/mrbCtz2k8FTwAK"
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdWYKFoBnGaCfvVJFwYXEvtVyxXiAzHC2JvmTCwc5H91wQ@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-47773
 
+On Thu, 22 Jan 2026 16:13:25 +0100, Miquel Raynal (Schneider Electric) wrote:
+> This series adds support for the QSPI controller available on Renesas
+> RZ/N1S and RZ/N1D SoC. It has been tested with a custom board (see last
+> SPI patch for details), but has been tested by Wolfram (thank you!) on
+> the DB board.
+> Link: https://lore.kernel.org/linux-devicetree/20260116114852.52948-2-wsa+renesas@sang-engineering.com/
+> 
+> Adding support for this SoC required a few adaptations in the Cadence
+> QSPI driver. The bulk of the work is in the few last patches. Everything
+> else is just misc style fixes and improvements which bothered me while I
+> was wandering.
+> 
+> [...]
 
---b/mrbCtz2k8FTwAK
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Applied to
 
-On Thu, Jan 29, 2026 at 09:04:45AM +0100, Geert Uytterhoeven wrote:
-> Hi Conor,
->=20
-> On Wed, 28 Jan 2026 at 21:09, Conor Dooley <conor@kernel.org> wrote:
-> > On Wed, Jan 28, 2026 at 06:51:48PM +0000, Cosmin-Gabriel Tanislav wrote:
-> > > > From: Conor Dooley <conor@kernel.org>
->=20
-> > > > On Tue, Jan 27, 2026 at 10:17:04PM +0200, Cosmin Tanislav wrote:
-> > > > > The Renesas RZ/T2H and RZ/N2H SoCs have multiple DMA controllers =
-that
-> > > > > can be used with the RSPI peripheral. The current bindings only a=
-llow a
-> > > > > single pair of RX and TX DMAs.
-> > > > >
-> > > > > Allow multiple DMAs by only restricting the possible names of the=
- DMA
-> > > > > channels.
-> > > >
-> > > > > All '.*-names$' properties must conform to the string-array.yaml
-> > > > > meta-schema, which requires both minItems and maxItems properties=
- to be
-> > > > > present before the items can be a schema. Otherwise, the items ne=
-ed to
-> > > > > be an array.
-> > > >
-> > > > Why is this in the commit message?
-> > >
-> > > To provide a context for the maxItems that are needed below, even if
-> > > there's not really a maximum. Which is why having a maxItems does not
-> > > really make sense but it is expected by the meta-schema so we can
-> > > constrain the names of the DMA channels.
-> > >
-> > > dtschema/meta-schemas/string-array.yaml:
-> > >
-> > > if:
-> > >   not:
-> > >     required:
-> > >       - minItems
-> > >       - maxItems
-> > > then:
-> > >   properties:
-> > >     items:
-> > >       type: array
-> >
-> > Right. You can probably remove all that since I'm asking you to add
-> > actual constraints to the property.
-> >
-> > > > > Declare a generous maxItems of 32, which should be enough for 16 =
-DMA
-> > > > > controllers, so that we don't have to update this value ever agai=
-n, even
-> > > > > if currently the maximum number of DMA controllers on a Renesas S=
-oC is
-> > > > > 5.
-> > > >
-> > > > Huh, No. The binding should constrain this to fit what the actual
-> > > > devices do.
->=20
-> The device is the SPI controller, or the SoC where the SPI controller
-> is integrated?
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-Whether the SoC's number of dma controllers is the limiter or whether it's
-the number of inputs to the spi controller isn't something I know the
-answer to (and which it is in theory could vary between SoCs), so I used
-device instead of "SoC integration of the spi controller represented by
-a given compatible".
+Thanks!
 
-> > > Should the binding for SPI be updated if a device ever comes up with
-> > > 6 DMA controllers? It seems a bit unrelated to me. In this case, shou=
-ld
-> > > we constrain the number of dmas and dma-names per SoC? Some may have 2
-> > > DMA controllers, while others may have 5. Please let me know your
-> > > thoughts, taking into account that I only added maxItems to satisfy t=
-he
-> > > meta-schema.
-> >
-> > Yes, I think you should constrain it to the correct number of providers
-> > for each device.
-> > Whether that's done or not, there's not all that much reason to set it
-> > above whatever the current maximum is, since the binding will have to be
-> > updated to add the compatible for whatever device exceeds the current m=
-ax
-> > and the limit can be increased then.
->=20
-> The actual maximum number of dmas pairs does not depend on the SPI
-> controller, but on the SoC integration.  I think the (single) DMA
-> request signal from the SPI controller is just wired to all DMACs
-> present (on this SoC, IIRC there were some Renesas SoCs where some
->  DMA clients are wired to only a single DMAC).
+[01/15] spi: dt-bindings: cdns,qspi-nor: Drop label in example
+        commit: ade3f7f883723cca5e1c967e574680b410226566
+[02/15] spi: dt-bindings: cdns,qspi-nor: Add Renesas RZ/N1D400 to the list
+        (no commit info)
+[03/15] spi: cadence-qspi: Align definitions
+        commit: 9dfc9c1c830717686908e2c16867d8dfae5cf5e7
+[04/15] spi: cadence-qspi: Fix style and improve readability
+        commit: aac733a9663682387013350b4470a81344960f5d
+[05/15] spi: cadence-qspi: Fix ORing style and alignments
+        commit: ec2da8bb0bc518ca5458d36de9aeec493ed5a790
+[06/15] spi: cadence-qspi: Remove an useless operation
+        commit: 453c5d60d896398c32854b683aff6d5b8386fa03
+[07/15] spi: cadence-qspi: Make sure we filter out unsupported ops
+        commit: bee085476d277e1f993cdec57e3c730f536594f0
+[08/15] spi: cadence-qspi: Fix probe error path and remove
+        commit: f18c8cfa4f1af2cf7d68d86989a7d6109acfa1bb
+[09/15] spi: cadence-qspi: Try hard to disable the clocks
+        commit: 612227b392eed94a3398dc03334a84a699a82276
+[10/15] spi: cadence-qspi: Kill cqspi_jh7110_clk_init
+        (no commit info)
+[11/15] spi: cadence-qspi: Add a flag for controllers without indirect access support
+        commit: ae62e7cf6ab52cebc83feb0bcb374082eaabbf5e
+[12/15] spi: cadence-qspi: Make sure write protection is disabled
+        commit: 590f2430733f1302a78ac405370b8f01038adbf5
+[13/15] spi: cadence-qspi: Use a default value for cdns,fifo-width
+        commit: 77ee3ba5d4152f01ba4674b0e0ae51f8a51250bf
+[14/15] spi: cadence-qspi: Add support for the Renesas RZ/N1 controller
+        (no commit info)
 
-Right, that's largely what I had gathered from Cosmin-Gabriel's comments
-and the patch itself. I think the comments I made here are all still
-applicable? If there's a new SoC, there'll be a new compatible for the
-spi controller's integration on that SoC and the limit can be bumped
-then.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-Cheers,
-Conor.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---b/mrbCtz2k8FTwAK
-Content-Type: application/pgp-signature; name="signature.asc"
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
------BEGIN PGP SIGNATURE-----
+Thanks,
+Mark
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaXslYQAKCRB4tDGHoIJi
-0uKTAP4/jiLNrrz+gQV2hmFeqaAc7+mUUn6ERJZQEFt0ivyM/QD+PtCjUjHX5RKk
-aSa0BCvzov2G0mJ8s4yiTFXGlOtjgAU=
-=hJtA
------END PGP SIGNATURE-----
-
---b/mrbCtz2k8FTwAK--

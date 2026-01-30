@@ -1,207 +1,311 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012011.outbound.protection.outlook.com [52.101.48.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82BC6331234
-	for <linux-spi@vger.kernel.org>; Fri, 30 Jan 2026 11:22:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769772172; cv=none; b=XQ3OwTQ29GxjaBWa/N6LANyOrZ8ap5pzMj7cPKV6Tb7WvPFU8EjJrI/jZc0VbA99OxEl5dcBFelmaiuLUqXXauiMLq4/dcPLalsYARjKOjK3t3CBXOJ10vWGX0DPAx1K8xQd4nMeNlYGGUutOaGfluycI3tPduq+sb3tXZO4RXI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769772172; c=relaxed/simple;
-	bh=dVjadyquaKeik+5XqUpXlDz1A5y0JMoA9NMOSF7QWGs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nm8hk3G6Yzgu9s8ZhExUDLuVN657MzfwrSszx8Ka0ImF/SL/G0XO16UwWR2b5I5ztBcxxc5Xs1eijvDJ8MKBD/xMNf1iG1HJKArXEs5riSEeXRqeZZPCV4H3KWvJ4k190IlfF5zTv3GJnByRZqfj4a0MVoiseRxZA/+n9tAPpOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=aG74lj8t; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=idWDXjZv; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 421122D23A6;
+	Fri, 30 Jan 2026 13:41:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769780514; cv=fail; b=MC1KbtI0dyq0XWA7L8Azv0whYmIBFn3g6bcQZvRA5DWojIQnK72Llhh7PXaZ4Dfs6yfxDojHpHTyyHGVwmS/8okezPXFje2yO8QRKlmV5rry688A+Yuj65ggCRVRVpIoilR7ArAnb1wy8ctXUYz5qO2qQidkq/SJi8MYxyDaoRM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769780514; c=relaxed/simple;
+	bh=cLvj4ZdMdZTrEezjBTZBsvqKwsMT9AGalP8lI96sGgg=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=nw42pH3IWN3JsYdgxGsslhistnKxWzONhcUKaVvZeaCu5SNCBfDvUUoQXiw4yXiivKEcJODfEjruDtShcJ2T4nguU5UIj+ugtv60kIBwPG0h4UiBIq8H102fWG9OASX8oNstVVqUVEG40jzvgkB2RLTFMuQ212F2CKoPzfFd6J4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=PhsHMMvO; arc=fail smtp.client-ip=52.101.48.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="aG74lj8t";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="idWDXjZv"
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60U52eTR555437
-	for <linux-spi@vger.kernel.org>; Fri, 30 Jan 2026 11:22:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	q2Pmi2PxduAkYx18ZQxB/YX4MWuCY7zbCFQhTQcTLeI=; b=aG74lj8tZWyRJQ6r
-	NXobRax75yiwrtGA64xgv01k7CoP9CKBIG7x1wOWGC+Mea73DMGqDE7c/HgrX7A3
-	fjsrAW0SenF/F/DbXVvls5xZMvg3DR3wQ/xRwC4+Cs4qwo6UvolYw1Oiu6Ze3F6z
-	XFbK60uSskLJNq1q3qHBBna7A7Dao+y/dQiEuRzi/nQo37lEfSRq5F5QerFechqy
-	Kaa3w8UvBMNCnbKGu0QURP7SJUC+bUgDFouPfzyt5mrobmTGEEGECyJKqy7LvcqC
-	tiM9CJYobk2Ryni80qIJcyFtx1Bhxh8JQXxi35AF82d9r3HFg8UsC7JzrTsiK5vN
-	OUKEgg==
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4c0p59h3hg-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-spi@vger.kernel.org>; Fri, 30 Jan 2026 11:22:48 +0000 (GMT)
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-502a477885dso1151091cf.1
-        for <linux-spi@vger.kernel.org>; Fri, 30 Jan 2026 03:22:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1769772168; x=1770376968; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=q2Pmi2PxduAkYx18ZQxB/YX4MWuCY7zbCFQhTQcTLeI=;
-        b=idWDXjZvE6KkJtYNytgCWEgVkDquZV9BwksT/muPjijcDtM1eAArh7UGNl8gtQHeuU
-         mEAa1r/LvrYeLVOIE49FsBhMIXiaIUrtkpJglsribsZ+sPs5R900yBHq+sh9jOF344EN
-         X6q+WJwAAr05t2dnHYm6PZOHzRpcXiEL3PZWkyKedoNec7QjRkNGxbpAnzfAoEIQQGkO
-         sVtRVk08QWiA5SVMpyZgi1kHBX+6sqOfwl6ZNtt7MtjYcwbpIRYyqrUaWBnZEyPXwPiD
-         eMQOkTfOSeQhC+i0TuLkbaqOcYZB3s2XggPuAUrvbFobL0OoZIS1I5dEVPF1wDDUOVLI
-         FuLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769772168; x=1770376968;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=q2Pmi2PxduAkYx18ZQxB/YX4MWuCY7zbCFQhTQcTLeI=;
-        b=vBR4FYr02M6ooTkZf6oI8NWsm+bE0BWssNgbfJrDXTMll0XQPEal50P2p0azRSHwBO
-         vx4Ejc4i+s3dDXk+dU+48fl6CMFFyWFN7Od6ORIn7BgpMsKA4JR6QEBfeIvejbF1qVKB
-         Onfk/NKNgNwk+OZdkSfmjfNLhUx3upihFjU2gVG7WyAra1umcJgYWSirH9kxEsy+l5aq
-         ej0TO5z2KwIw6jj0pVidRyWDpyHRgILcInxyXMaP+BhnVGhhlk79Q7FolOHmtlb8MCCP
-         Uli6w6Cpu/RgOBYaCo2yeVHtuJJE26hV01ZsSf9BtMrEHLIotlabzgj+yZxVH55odlQV
-         tMrg==
-X-Forwarded-Encrypted: i=1; AJvYcCWqT8A3cYrVghxqc4+gz2a4h2Wi8BL/VNcAUHlVk78XnZKxztt0Ckpb3puQpZEUNycBqxXdkaHGIDw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyhkFwVDpVUpHpLZjT0fdUUpIdYocy0olWMaKhLwHlMDaKzMpSc
-	bqdmsTuvxvN4DE3Iih5RPxpz33tmhuXr+OHgoJTRWqzPeRiSv7X+WBQsCnbK0RUwoSyb56qnnej
-	UcCipxZ3yBQ4xjOKSs7x/bVI3XlXx+0iQa8UmDYvH1Exj4+6VOWABGG1TOfjZ9zM=
-X-Gm-Gg: AZuq6aJ/N1RxKMFOHP6POImLuS86wPRNjhSZtnLgoAhMWOzhC+sQ5BtRgKFRMwCsX50
-	tw3N68Ooa0rsZmakRZj9E32+1hMcKEBpboEcWfNL0diHqxAN1GCq2BH6K63V+nDzDyFCT6SdnYG
-	2Yn0wnYRuYqWfdHPDJofnhrvvzNPczUIFLsRGIN+C1lstEgZ94/yIaFL3wllEh0hg1auCtfLeBJ
-	zOFKOOfBa5dYEJktjESh41CmA7r+JhgMwTTl8BGPyzGQvk9ZtaGzT1YFDtSetfi7fTOWTbeuON7
-	PGRg8XTTRdGVoSx5v27iXnzzbb1FnX5hnZ2wD/8FOz/sKLAlNtGzF00v+f4uchclyysllHUAA2Z
-	1e9Qxf0DikItf2GsJinnXeAR0r6TnnQusQaj3RxOXHcKi0vsZaTfXUI5jmcYvQgekBAQ=
-X-Received: by 2002:ae9:e710:0:b0:8c9:eb7f:b6d with SMTP id af79cd13be357-8c9eb7f16d1mr199456185a.4.1769772167755;
-        Fri, 30 Jan 2026 03:22:47 -0800 (PST)
-X-Received: by 2002:ae9:e710:0:b0:8c9:eb7f:b6d with SMTP id af79cd13be357-8c9eb7f16d1mr199454985a.4.1769772167343;
-        Fri, 30 Jan 2026 03:22:47 -0800 (PST)
-Received: from [192.168.119.254] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8de46abf6fsm226693366b.52.2026.01.30.03.22.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 30 Jan 2026 03:22:46 -0800 (PST)
-Message-ID: <32eb6d3c-835f-44cd-9852-96ddc8661113@oss.qualcomm.com>
-Date: Fri, 30 Jan 2026 12:22:43 +0100
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="PhsHMMvO"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MQ6NsUI06IyiOVuNqeSR3U+3YhpF0qsaD4ErNLx6TOfAINWwxnN2Epsrc5QG9Y53sLI85JjsrhLDJld11/AVjOPFZuqWjYxOAChaEIhSRJ+Kh62iF8yiL5Zbxhr70vdq8qpkxpB4BkvYOt+ke3GeV27qWFC+OZGhsSp5NNdvVsPKmZaD6JF50pxT5AuZRLf5a1yFu8RROLs12ShgPmlnpqgKxIykeJziKptW7CNWi9ArlmroBKTd+KN6mzH+SfPISLk/qgNaWrgXjrNoToAFztu+Ki97w4G0yFfiGgIGat6dlyFkp5Criwancd/4B3ZN4EUbC3rtnYZIFZCERP78+g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ioqwMYzZ3i0DJYqThy1OUO1aIUNQmL2XJEyPHOzPrcU=;
+ b=LL3HdSE2fifRUtWyg/NKtxNep+xURrL0H26hYlsn7V0XbiJcCEYEMPKWhqHaN133w5KWEMBpGfnAffXLLd35tVkAk4cOHRS0lJE4i/TdZiAdpbC/I62HCXsuwxVJcfghJITSj/1lab+tAgG7oHvqwhfvDbR9eCBoONx6syfR+ogzvU7qtIIeFVEisOWG4PCcODaE63ZLHRTtWLqgbUIJnUFI75IjglffbRun71O89mMhhddbFweSgv9gp/Pm7no1t4+y8L3AEkZLvnsWwggAXrxGqTx4+Atn1RycEOiHDfM83suMqPYuNf23i2ulva8rmmwkhVrrSzmhF81TTCDvuA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ioqwMYzZ3i0DJYqThy1OUO1aIUNQmL2XJEyPHOzPrcU=;
+ b=PhsHMMvOeaFHwL4abWiw56J64SkwpHl6Nururm+5aRuBd1r+DkCNzH0WuiE1jyYVvna8oP54kRvTxHos3+bKX+bfOhuIi2H3Bwi1OY7V5TJZactzfZ91n5ftLXxqi8Vs+iMW1S+1mICwycZM6szG8zsxTb09irtuQ1Dezs/uR5aix5dJXlmFM8n1+1WFpUiHjhyhbp1I+ydiUGEIgDOgonWFitmJ0OdaOfn/B0y8B6Ir/M29McZdy/zn5jfwDaSfcWi9CdBkW4Z4Ka9gvAQyv8+5qJSsarWwvYEH3wEmREtyc+6Fp2Py8Pi1XTlIbBDAJBtQoxxfc3FY2IE4wctHOQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS2PR12MB9750.namprd12.prod.outlook.com (2603:10b6:8:2b0::12)
+ by SA3PR12MB7858.namprd12.prod.outlook.com (2603:10b6:806:306::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.7; Fri, 30 Jan
+ 2026 13:41:49 +0000
+Received: from DS2PR12MB9750.namprd12.prod.outlook.com
+ ([fe80::56a8:d6bf:e24c:b391]) by DS2PR12MB9750.namprd12.prod.outlook.com
+ ([fe80::56a8:d6bf:e24c:b391%5]) with mapi id 15.20.9564.010; Fri, 30 Jan 2026
+ 13:41:49 +0000
+Message-ID: <57a63922-e194-4882-aa52-9447255ea1a3@nvidia.com>
+Date: Fri, 30 Jan 2026 13:41:44 +0000
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/6] spi: tegra-qspi: Fix race condition causing NULL
+ pointer dereference and spurious IRQ
+To: Thierry Reding <thierry.reding@kernel.org>,
+ Breno Leitao <leitao@debian.org>
+Cc: Thierry Reding <thierry.reding@gmail.com>,
+ Sowjanya Komatineni <skomatineni@nvidia.com>,
+ Laxman Dewangan <ldewangan@nvidia.com>, Mark Brown <broonie@kernel.org>,
+ Vishwaroop A <va@nvidia.com>, Thierry Reding <treding@nvidia.com>,
+ linux-tegra@vger.kernel.org, linux-spi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com, soto@nvidia.com
+References: <20260126-tegra_xfer-v2-0-6d2115e4f387@debian.org>
+ <aXyE1kfP4GeOdYs5@orome>
+From: Jon Hunter <jonathanh@nvidia.com>
+Content-Language: en-US
+In-Reply-To: <aXyE1kfP4GeOdYs5@orome>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P265CA0049.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2ac::12) To DS2PR12MB9750.namprd12.prod.outlook.com
+ (2603:10b6:8:2b0::12)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/3] spi: geni-qcom: Improve target mode allocation by
- using proper allocation functions
-To: Praveen Talari <praveen.talari@oss.qualcomm.com>,
-        Mark Brown <broonie@kernel.org>, linux-arm-msm@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        bjorn.andersson@oss.qualcomm.com, dmitry.baryshkov@oss.qualcomm.com
-Cc: prasad.sodagudi@oss.qualcomm.com, mukesh.savaliya@oss.qualcomm.com,
-        quic_vtanuku@quicinc.com, aniket.randive@oss.qualcomm.com,
-        chandana.chiluveru@oss.qualcomm.com, jyothi.seerapu@oss.qualcomm.com
-References: <20260122151008.2149252-1-praveen.talari@oss.qualcomm.com>
- <20260122151008.2149252-2-praveen.talari@oss.qualcomm.com>
- <847290c3-d5aa-45cf-a75b-ff119b608433@oss.qualcomm.com>
- <bece7d32-5f62-4ed8-8dd1-0de9102648cb@oss.qualcomm.com>
- <d9fc3b0c-7fe7-4845-b55d-ce6d0053f48d@oss.qualcomm.com>
- <57cb30cf-2da6-4df9-954d-953955969b02@oss.qualcomm.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <57cb30cf-2da6-4df9-954d-953955969b02@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: _S1VSXQhytTXnzp6w8WZaVQN2p3-G0mm
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTMwMDA5MiBTYWx0ZWRfX0ObsWPkDZRgW
- LweWvUICA45H9fcY3VR+HdbspHjQnolUEkmP3dpGVD2AvHomExUsu5GbL+hUwjS6ld3MME3oFNW
- Km5a+SzlPttUv1kzw6UwK3Cwwq/1noINCbzjZfVULh9KkpkYVtzBu+lVUqWDVKLz2xo6MjHt4YM
- 6p4Vo1VTZAGpgcc4k0Itze2gVTDqB/j7aIA2WblCxGjKhvy5atigP3NbyzRIBbnxagcTPaxnFrl
- BTBb3cq2NVRGB9+nThBERwD+kwVtMpx0PAeJgBNu/R0y5BHgIh+gWUH0Q73YLqbOeTiL8kgOmCr
- at9yM2KwCrtzdaGwoeW+Tms5PE+Z3ZJN6YIl7gfHcz7Z0SZGriVEReRRiGF5ZT40s9wd+n4u6hd
- RkMTiMBus1bi68RN9dxNZHLsbuV8xR7D120tyRIPz1I3AQ4kv9rTB+VwreuFt+5Iyuhkusxhe01
- y/UZJBf2XGVtyZtfJng==
-X-Proofpoint-GUID: _S1VSXQhytTXnzp6w8WZaVQN2p3-G0mm
-X-Authority-Analysis: v=2.4 cv=Re+dyltv c=1 sm=1 tr=0 ts=697c9488 cx=c_pps
- a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8 a=DI4xcUXyGD7WBy4uMMEA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=a_PwQJl-kcHnX1M80qC6:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-01-30_01,2026-01-29_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 malwarescore=0 suspectscore=0 clxscore=1015 bulkscore=0
- adultscore=0 impostorscore=0 priorityscore=1501 lowpriorityscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2601300092
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS2PR12MB9750:EE_|SA3PR12MB7858:EE_
+X-MS-Office365-Filtering-Correlation-Id: c8db4470-4b5b-404e-d767-08de60055142
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|10070799003|1800799024|376014|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?cDdrQ1ZpNlpvMXQxcUMyMkJUOFIyMnZzLzdJM3FnRE5tMi9DNDZzTFZ1VThP?=
+ =?utf-8?B?WkppNXk1SER1bmVvZXppY0dzcFhPRzdqOWpXN1JyekE2aWUrc3RYRmdVTVht?=
+ =?utf-8?B?K2NBSmxQd3BxNFlvbi9vaTcycUJ0RjE3MVVqNFRkV3crNTRSVUs4RmIrN25I?=
+ =?utf-8?B?YndlU0ZLcXF6S3M4ZVNBREJaa2xwdUNLWGl0azl3dTREQlF1N3RXVS9Hc1NR?=
+ =?utf-8?B?OTVydFFldDlkVmlpNGdSVHptd3ZqQjBqcVJHYjhPVjNhY0p2UkgwMGZTTDBX?=
+ =?utf-8?B?T3RvaXB6Q0pORlk0YjNmQ29jZWpZdElyWnV3VVZrUDNwTUphek1ZZVRDZ29j?=
+ =?utf-8?B?MHA2ZnZTeTJyZE5FR0V0eGxwMFlndjVpR1RkQ3M2NFd3NFB3MVdWZjB4d2RC?=
+ =?utf-8?B?V25VOFZqN0ErTFV5Qm5rTU41emUwbTRYT3dzNGFsYi9uR0djdTdrQWNKcTNh?=
+ =?utf-8?B?dXozWk5WL01BZHNoKzJXL1kwOUJwQ1FjdkVVc3U5a1R6SjJyY3UxV29ickxT?=
+ =?utf-8?B?NFp5VWMza1RER3RVZkFaMlFUdncvWklUQWE5ZTh4d2M1QjlxcXRvcFl6QjB1?=
+ =?utf-8?B?cHFjTUJ4cGpOWkluNk9jQVJveHBUamkxZnVhbXdxWDF0eFUwb21xZllESkZm?=
+ =?utf-8?B?MFhDL3k0K1hrZ25xMkVsbWQ5Y21pMGcwMHN4SzQvekFaRC9LRVk3eW52YUxk?=
+ =?utf-8?B?SjBSd3lERTE1dVVlcldUSGdXVWJhNUlhTEFXMFlNajlLeFBCMmQ1Wk1HNVk1?=
+ =?utf-8?B?YlpITktOajNLUGoyNkh1UzZyTG5lbzZmNWVmQThmUkY3MmRtNWdUR0hvbTk4?=
+ =?utf-8?B?WERSUmVZOHViakZZTXBudkpwNy9YTnk2YXRhWDNIYVRnNXFTbW9YVm9RaG1I?=
+ =?utf-8?B?NGFxaDdBVFFuem1pSFRWdTFMUUdOTGlhWFV1WjBpQVRCUWxjaTJtZmY4b2I1?=
+ =?utf-8?B?eWs1cGpFVFlkSHJReVJJbkR0VTVXTUlPS09oTG42dlFQdHZWbmJrNnhJL2hW?=
+ =?utf-8?B?Rk80czQ5NTNFVi9qRDBaOWhyYmI3Y1cvVHQ3aVFseFA3OElBR3dvRi94Z24z?=
+ =?utf-8?B?WDYydkpWaDVKOEY1Q1lDSEpGU3V6ZnJURlNTNU4zTEhXZEZsLzVPakZqMGhH?=
+ =?utf-8?B?UFRDTUpmSlBST1B3MFhSRGlQSS9QaXBWbEduM25pbkI2VnBPYTFtL0d2VjBN?=
+ =?utf-8?B?Yy9EMmJtWWFpV1B3ZVlScDNTczVLenhubkVEbXU4Sk9HeEE0WWVSK0xtaSs5?=
+ =?utf-8?B?YkNTb1NnUENQRVJIY2xMUng3TXNNSjBZN1JaTjZqRnhCeHNFM0tHbGVpMFRu?=
+ =?utf-8?B?TE5RV3ozZzZQK1pRR2JrZkNrZEZyLzdrbHpQMSt4bUh6OURZN3A3OENCVzFx?=
+ =?utf-8?B?MnFiaEU0Tkx1V0ZLVnpkNUNPdjB3OGFIYkxaYi9BR3RuZ3ZndTUxZkU2Y1d3?=
+ =?utf-8?B?aVU3cy9JckV3SlZkSk5COHhqWWtGTUMrbWM0bEtmM1QvWWdmcy92eU1SeDlG?=
+ =?utf-8?B?cEVmZ3BrTXNDeitvK1U2aTZ4TXBSQzVQdHBNbW1vTFE1dDdLWDJHK3JqdzR5?=
+ =?utf-8?B?VXNrR3lCNXorWDM3K0NPWVhmYW5iMnRzMU5ZbjZxL1l2UjR5OFd4OTZNd1JD?=
+ =?utf-8?B?Y1FXL25uYVJRMUROM0F5ak51UVpZNU1DZmJoNzNXSnp1cC9MQWxjNE1td2FG?=
+ =?utf-8?B?ZEZUZWFIZHMxU3Y1WnJMOE90YXNJUHQ2ZnRoYjhFSEF4RTJZUTVOK0M5KzZ4?=
+ =?utf-8?B?Yy9MU2QrV0Vpd3o1MmZ2ckdBajRnL3pjeGVFSHEvVy9HTFRNMEZwNDBpVldp?=
+ =?utf-8?B?a3ZWdmNRaFRLV0dmVllWRWFxY2dSRkUxcjU2NGxSRzJiZGMxVEd4enU3SXVO?=
+ =?utf-8?B?WVk5bHRad3VEYm1tdlV3VEtXL0k0a0h6NzdoR1RwdVdWcmJHL1VvNTZUNUIw?=
+ =?utf-8?B?cm10N0NTc3F2aEg1MXJoVU1RcllnR0s5Y0t4QUE0VGx4S3NzMkxiTG5lWmZW?=
+ =?utf-8?B?RHdlVEd1NjV3Z1VhcFMydmU3UERIU3NzMFVtSU5mWE1xZEJZdFExMUJ2bW14?=
+ =?utf-8?B?Z3VZM09VbkQva3Vsc0MyRmxhZ3VRQms3aGJpUGJlZGlZb2FPRU9KYXNhRDBD?=
+ =?utf-8?Q?JnHAGr6Hu1XPgZmNSPLA+6L3S?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS2PR12MB9750.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(1800799024)(376014)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?QzNVZFFuOWljY0dmbkQvNlppd1ZNbnNjWWwwc09XTVhuLzdLQU9ydUdldHcr?=
+ =?utf-8?B?dWQvbDk4MEt4UDNCZ2NZT1VSYnBjL3UvaHZuTlVRYXcxWEtHVUttMlZNSC9o?=
+ =?utf-8?B?MkJPTEpMbFMwMkRlYXN5bVl3Q0xyQXZKbDNSRkoxVWc4V2pITmlsWTdkM1dq?=
+ =?utf-8?B?dktiWFloMVhMejNCZXBCeHhzbmJSSkw4ZUg1NlpGNjJkNDVleXYyb25EbFlG?=
+ =?utf-8?B?U1BzWFdlYThoVkYwWGN6S05nVzBYeCtRU3BFZTNLMm83N1JyaGZDUXVMVXRM?=
+ =?utf-8?B?ckM0UktKbVZCOHNSaE9ISEdwejBLZk1RSktvQUFUWStIbWNWK3M2YkRVbmhG?=
+ =?utf-8?B?Y2xib1Nvb0ZUVStYUW5rbndjTDJrQ1NIdkVaR0J6eDRSSFdQMDRKZm1rd1Y0?=
+ =?utf-8?B?ZTd6LzdCYVE1eWZybVJTLzI5eE5ZV2pQNVhaaVg2bGhMUmt2WFhzZU5mZGZP?=
+ =?utf-8?B?VXYwTzhPbTBmV3Y0U1FDMTVDdlN0akwycWhDcTlScnUydXVDcXZNQnNZb3Bv?=
+ =?utf-8?B?bFQydmxXL1EvWG8xR05FTVJjMGJNSnRrNGhEcDFSSlppNDZ4Mmp0UysyYlBn?=
+ =?utf-8?B?TUhtOVlIenlCdjRWYXlQMEtGT0V6bGoySVFHN3hHaWxyQWtySCtYUHcrakQ0?=
+ =?utf-8?B?QkNXVjhyTERjanhJbHl1b1FFaW1mZXlBWllQWThZS1FNdXo2V2I4QnMvL1pJ?=
+ =?utf-8?B?aFZJcWh6STh2d1NJbVhGcFdJcFdPRzF0eTBEWW11OTZZUWdkTjB4cjd2WGtH?=
+ =?utf-8?B?aE9jQmlSYktvMnpYdzhjUEVGWGJsYXVHamJhVnI3dTZMN09TVUgyUlRoZjFa?=
+ =?utf-8?B?Y04xRTVxZ1NKaTFFK1dvSUV5S1NrQS9qOFRvZkNRcnBMS3NoOHhkVFhPYVhS?=
+ =?utf-8?B?WVFOM0xORWpKSG9XSXFoZ0xweUpnM0RkdGNWeU9qMjNRSWNTdll4dythRWJh?=
+ =?utf-8?B?cURJaDh0U21QRmR5WnFmWWtDelJoSWhmOHhnOGNLTityQnhnMGNMZTFnMVdq?=
+ =?utf-8?B?Yy9Ya0VscDJFb2MzcWhPUC96MHNMTWRORjVCUXlzYVVXUXI5QTQ0S013ZFVl?=
+ =?utf-8?B?Witmd3RQWDBTOE9aZ0M2ZkY3alFtdVJSSFNIdFBYdUlOT0h5OTBha0I3NEx3?=
+ =?utf-8?B?d3BjNTJ0aktLRHJTWlBOZVdvUUZZNlVtRm9JeVBtdWZlbTJoTVJXbDc5L2dj?=
+ =?utf-8?B?aXE5RW5WNU8weCtRelNOWjFmQSthS0luRmc4ZlVWalczYnppSGJvZG1jMjU2?=
+ =?utf-8?B?anZrNWdLTlkzNG05YWdaNTN6VDE3VVFzWGhEaGFsU3h3UFhvd3c0UjcvMG9q?=
+ =?utf-8?B?bzhBNFlvRGl2Qmx5WGl4RVFYeXpORGpuaVNiN3hoYi9wMzVORnBYMEcvaVBo?=
+ =?utf-8?B?ZW43eEZ6QWxPeGJ1c2xITmtrcWhvSDA1TkdnaHhteGQyVXo0V01uaTBjdHhZ?=
+ =?utf-8?B?ZVcyRkJHM3MwWFNnZlhhWC9hUnAzMmRtN044ZFdGRnlVVmE5ei9hQWYrc1lW?=
+ =?utf-8?B?OW41cDBJTm9EcW1lekw2TDhPWmlkQ3VOa05QT3FVZThKRmFraXJ5anQwREhy?=
+ =?utf-8?B?cE4wTFpEcUV3N3pYbHVLNDFWZ3BKVGgxRzFoTVZJTHJrWDludStpRW1NdjIy?=
+ =?utf-8?B?RFdLK2d4M1Ezd3pJK09oeStHYTJuVklMN3plWWpSMm5ZVFN2elQrejMweXly?=
+ =?utf-8?B?RU4wMVl4NjZGZlNiK0xiOUk0TWExZ3ZyQ0dLS2MrZWVNNFRwZFU4c2tObzE0?=
+ =?utf-8?B?cXU1YWhNSFUxdWR6K2tQdElYRXRMZEUvTUJsUDhNaHVUREYxbVNhZXBIQU9Y?=
+ =?utf-8?B?Q2lEQ0JDSDIva1VFUkkxUUw4Z1dMdUpZLy9YYy9xQ2RJOEI4MEZrU0VGcHlQ?=
+ =?utf-8?B?WUMybmVBUHZaYlkzR0JEbGIzUHNYVnhpOVBJZ0VZYStDbk8wclhwb2MwWjlD?=
+ =?utf-8?B?OThwcGNDTjdjbDZ6QkVyQUM0V1hHUmdIYTRkbytCWE1oQmZxcUpzTEg5NU1y?=
+ =?utf-8?B?djgra0d0RU0xRzlLN3h2T0JRbU5UWVVFcktPYnNNVW84REwxaHFaNlAwbDdY?=
+ =?utf-8?B?WUw0bGd2ZU1FeUpVVVBSalNLM0hMS0xDdm00WExiUjJzV0R3d0s0RFA0ejNX?=
+ =?utf-8?B?R002bTJLZFBvdEJEVnRpRXUvc0ZtZHdYSEkzYU4zakM2ZnFvOVV6T1kxTitW?=
+ =?utf-8?B?cFcwY3JvRy9YY2RHdGN6eXpxWGkzUGVNZWZHUWExejI5VmZ3RlFydWdYajJM?=
+ =?utf-8?B?enByUndnT2wxeWlMditiMkllRmNmV3ZKSENJMlY2a2NOSWdtYUhCYXExZ0k5?=
+ =?utf-8?B?NStZbWRkUTBURVFmWjRqZFdYVDdGcjlmS3F6ZmJEaU1IQ1JsZmh4STNlYm5L?=
+ =?utf-8?Q?8iCH6QoT1D4pG3eB5mQky4oaQKcyzgh33ePxwicNFtH4c?=
+X-MS-Exchange-AntiSpam-MessageData-1: TeJfB0AsFeEamQ==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c8db4470-4b5b-404e-d767-08de60055142
+X-MS-Exchange-CrossTenant-AuthSource: DS2PR12MB9750.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jan 2026 13:41:48.8979
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /QqV6NSc99DFHs3JaEOEYGjnPst13NbwARTpiCsvhfxOeW5so3mptCYhQr0rbrSikRkOh4sbpP6WztH5PPU82A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7858
 
-On 1/29/26 4:45 PM, Praveen Talari wrote:
-> Hi Konrad,
-> 
-> On 1/29/2026 5:12 PM, Konrad Dybcio wrote:
->> On 1/28/26 5:32 PM, Praveen Talari wrote:
->>> Hi Konrad
->>>
->>> On 1/27/2026 6:45 PM, Konrad Dybcio wrote:
->>>> On 1/22/26 4:10 PM, Praveen Talari wrote:
->>>>> The current implementation always allocates a host controller and sets the
->>>>> target flag later when the "spi-slave" device tree property is present.
->>>>> This approach is suboptimal as it doesn't utilize the dedicated allocation
->>>>> functions designed for target mode.
->>>>>
->>>>> Use devm_spi_alloc_target() when "spi-slave" device tree property is
->>>>> present, otherwise use devm_spi_alloc_host(). This replaces the previous
->>>>> approach of always allocating a host controller and setting target flag
->>>>> later.
->>>>>
->>>>> Signed-off-by: Praveen Talari <praveen.talari@oss.qualcomm.com>
->>>>> ---
->>>>>    drivers/spi/spi-geni-qcom.c | 15 ++++++++-------
->>>>>    1 file changed, 8 insertions(+), 7 deletions(-)
->>>>>
->>>>> diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
->>>>> index 0e5fd9df1a8f..f5d05025b196 100644
->>>>> --- a/drivers/spi/spi-geni-qcom.c
->>>>> +++ b/drivers/spi/spi-geni-qcom.c
->>>>> @@ -1017,6 +1017,14 @@ static int spi_geni_probe(struct platform_device *pdev)
->>>>>        struct clk *clk;
->>>>>        struct device *dev = &pdev->dev;
->>>>>    +    if (device_property_read_bool(dev, "spi-slave"))
->>>>> +        spi = devm_spi_alloc_target(dev, sizeof(*mas));
->>>>> +    else
->>>>> +        spi = devm_spi_alloc_host(dev, sizeof(*mas));
->>>>> +
->>>>> +    if (!spi)
->>>>> +        return -ENOMEM;
->>>>> +
->>>>>        irq = platform_get_irq(pdev, 0);
->>>>>        if (irq < 0)
->>>>>            return irq;
->>>>> @@ -1033,10 +1041,6 @@ static int spi_geni_probe(struct platform_device *pdev)
->>>>>        if (IS_ERR(clk))
->>>>>            return PTR_ERR(clk);
->>>>>    -    spi = devm_spi_alloc_host(dev, sizeof(*mas));
->>>>> -    if (!spi)
->>>>> -        return -ENOMEM;
->>>>
->>>> Is there a reason you're moving this code to the top of the function?
->>>
->>> When CONFIG_SPI_SLAVE is disabled, the call returns NULL; therefore, I placed this check at the start of the probe() function.
->>>
->>> ref:
->>> static inline struct spi_controller *devm_spi_alloc_target(struct device *dev, unsigned int size)
->>> {
->>>      if (!IS_ENABLED(CONFIG_SPI_SLAVE))
->>>          return NULL;
->>>
->>>      return __devm_spi_alloc_controller(dev, size, true);
->>> }
+
+On 30/01/2026 10:16, Thierry Reding wrote:
+> On Mon, Jan 26, 2026 at 09:50:25AM -0800, Breno Leitao wrote:
+>> The tegra-quad-spi driver is crashing on some hosts. Analysis revealed
+>> the following failure sequence:
 >>
->> That doesn't really matter since spi is not accessed beforehand
->> and it'd return a NULL if it failed to allocate either way
-> I agree. I had also reviewed other SPI drivers as a reference for this implementation.
+>> 1) After running for a while, the interrupt gets marked as spurious:
+>>
+>>      irq 63: nobody cared (try booting with the "irqpoll" option)
+>>      Disabling IRQ #63
+>>
+>> 2) The IRQ handler (tegra_qspi_isr_thread->handle_cpu_based_xfer) is
+>>     responsible for signaling xfer_completion.
+>>     Once the interrupt is disabled, xfer_completion is never completed, causing
+>>     transfers to hit the timeout:
+>>
+>>      WARNING: CPU: 64 PID: 844224 at drivers/spi/spi-tegra210-quad.c:1222 tegra_qspi_transfer_one_message+0x7a0/0x9b0
+>>
+>> 3) The timeout handler completes the transfer:
+>>
+>>      tegra-qspi NVDA1513:00: QSPI interrupt timeout, but transfer complete
+>>
+>> 4) Later, the ISR thread finally runs and crashes trying to dereference
+>>     curr_xfer which the timeout handler already set to NULL:
+>>
+>>      Unable to handle kernel NULL pointer dereference at virtual address 0000000000000008
+>>      pc : handle_cpu_based_xfer+0x90/0x388 [spi_tegra210_quad]
+>>      lr : tegra_qspi_handle_timeout+0xb4/0xf0 [spi_tegra210_quad]
+>>      Call trace:
+>>        handle_cpu_based_xfer+0x90/0x388 [spi_tegra210_quad] (P)
+>>
+>> Root cause analysis identified three issues:
+>>
+>> 1) Race condition on tqspi->curr_xfer
+>>
+>>     The curr_xfer pointer can change during ISR execution without proper
+>>     synchronization. The timeout path clears curr_xfer while the ISR
+>>     thread may still be accessing it.
+>>
+>>     This is trivially reproducible by decreasing QSPI_DMA_TIMEOUT and
+>>     adding instrumentation to tegra_qspi_isr_thread() to check curr_xfer
+>>     at entry and exit - the value changes mid-execution. I've used the
+>>     following test to reproduce this issue:
+>>
+>>     https://github.com/leitao/debug/blob/main/arm/tegra/tpm_torture_test.sh
+>>
+>>     The existing comment in the ISR acknowledges this race but the
+>>     protection is insufficient:
+>>
+>>         /*
+>>          * Occasionally the IRQ thread takes a long time to wake up (usually
+>>          * when the CPU that it's running on is excessively busy) and we have
+>>          * already reached the timeout before and cleaned up the timed out
+>>          * transfer. Avoid any processing in that case and bail out early.
+>>          */
+>>
+>>     This is bad because tqspi->curr_xfer can just get NULLed
+>>
+>> 2) Incorrect IRQ_NONE return causing spurious IRQ detection
+>>
+>>     When the timeout handler processes a transfer before the ISR thread
+>>     runs, tegra_qspi_isr_thread() returns IRQ_NONE.
+>>
+>>     After enough IRQ_NONE returns, the kernel marks the interrupt as spurious
+>>     and disables it - but these were legitimate interrupts that happened to be
+>>     processed by the timeout path first.
+>>
+>>     Interrupt handlers shouldn't return IRQ_NONE, if the driver somehow handled
+>>     the interrupt (!?)
+>>
+>> 3) Complex locking makes full protection difficult
+>>
+>>     Ideally the entire tqspi structure would be protected by tqspi->lock,
+>>     but handle_dma_based_xfer() calls wait_for_completion_interruptible_timeout()
+>>     which can sleep, preventing the lock from being held across the entire
+>>     ISR execution.
+>>
+>>     Usama Arif has some ideas here, and he can share more.
+>>
+>> This patchset addresses these issues:
+>>
+>> Return IRQ_HANDLED instead of IRQ_NONE when the timeout path has
+>> already processed the transfer. Use the QSPI_RDY bit in
+>> QSPI_TRANS_STATUS (same approach as tegra_qspi_handle_timeout()) to
+>> distinguish real interrupts from truly spurious ones.
+>>
+>> Protect curr_xfer access with spinlock everywhere in the code, given
+>> Interrupt handling can run in parallel with timeout and transfer.
+>> This prevents the NULL pointer dereference by ensuring curr_xfer cannot
+>> be cleared while being checked.
+>>
+>> While this may not provide complete protection for all tqspi fields
+>> (which might be necessary?!), it fixes the observed crashes and prevents
+>> the spurious IRQ detection that was disabling the interrupt entirely.
+>>
+>> This was tested with a simple TPM application, where the TPM lives
+>> behind the tegra qspi driver:
+>>
+>> https://github.com/leitao/debug/blob/main/arm/tegra/tpm_torture_test.sh
+>>
+>> A special thanks for Usama Arif for his help investigating the problem
+>> and helping with the fixes.
+>>
+>> Signed-off-by: Breno Leitao <leitao@debian.org>
+>> ---
+>> Changes in v2:
+>> - Replaced the TODO comment to clarify why the lock is being released.
+>> - Link to v1: https://patch.msgid.link/20260116-tegra_xfer-v1-0-02d96c790619@debian.org
+>>
+>> ---
+>> Breno Leitao (6):
+>>        spi: tegra210-quad: Return IRQ_HANDLED when timeout already processed transfer
+>>        spi: tegra210-quad: Move curr_xfer read inside spinlock
+>>        spi: tegra210-quad: Protect curr_xfer assignment in tegra_qspi_setup_transfer_one
+>>        spi: tegra210-quad: Protect curr_xfer in tegra_qspi_combined_seq_xfer
+>>        spi: tegra210-quad: Protect curr_xfer clearing in tegra_qspi_non_combined_seq_xfer
+>>        spi: tegra210-quad: Protect curr_xfer check in IRQ handler
+>>
+>>   drivers/spi/spi-tegra210-quad.c | 56 ++++++++++++++++++++++++++++++++++++++---
+>>   1 file changed, 52 insertions(+), 4 deletions(-)
 > 
-> Do you want me to keep the change where earlier the host allocation was present, or is the current modification acceptable?
+> For the series:
+> 
+> Acked-by: Thierry Reding <treding@nvidia.com>
 
-Please move it back
+This also resolves a NULL pointer deference I see on Tegra194 Jetson 
+Xavier NX and so ...
 
-Konrad
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Acked-by: Jon Hunter <jonathanh@nvidia.com>
+
+Thanks!
+Jon
+
+-- 
+nvpublic
 

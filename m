@@ -1,311 +1,197 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012011.outbound.protection.outlook.com [52.101.48.11])
+Received: from mx0b-001ae601.pphosted.com (mx0a-001ae601.pphosted.com [67.231.149.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 421122D23A6;
-	Fri, 30 Jan 2026 13:41:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2959D2D8376
+	for <linux-spi@vger.kernel.org>; Fri, 30 Jan 2026 15:22:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.149.25
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769780514; cv=fail; b=MC1KbtI0dyq0XWA7L8Azv0whYmIBFn3g6bcQZvRA5DWojIQnK72Llhh7PXaZ4Dfs6yfxDojHpHTyyHGVwmS/8okezPXFje2yO8QRKlmV5rry688A+Yuj65ggCRVRVpIoilR7ArAnb1wy8ctXUYz5qO2qQidkq/SJi8MYxyDaoRM=
+	t=1769786523; cv=fail; b=g6XC1liJ5T0048is8j7O/PIKJcQ6UobOOM3gp6DMNApsU8ArJkGIvd9R3PGu82DhVOD6r1RfSHTfThBZtZ4mqaAm1xPB8Masi+dH3kDLsrGqUREVQMKUrbAJUxhkwJAci84srZZEgeoCK6dPrIJD3QmFeIFPgatqHnGKkkvCyJw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769780514; c=relaxed/simple;
-	bh=cLvj4ZdMdZTrEezjBTZBsvqKwsMT9AGalP8lI96sGgg=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=nw42pH3IWN3JsYdgxGsslhistnKxWzONhcUKaVvZeaCu5SNCBfDvUUoQXiw4yXiivKEcJODfEjruDtShcJ2T4nguU5UIj+ugtv60kIBwPG0h4UiBIq8H102fWG9OASX8oNstVVqUVEG40jzvgkB2RLTFMuQ212F2CKoPzfFd6J4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=PhsHMMvO; arc=fail smtp.client-ip=52.101.48.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1769786523; c=relaxed/simple;
+	bh=X4vzg9UZBjJa/DszkYDkcEBLUYHQPQgRcaF89OiK7Yk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qiLRWoCJUSfQT7hENU5yaKZ8YT1hMTi279zc8Ir0remayHr3kwiPLwnP2+4m6ntPLadke5UdYKRIVc5JAcDEvpbyp9lbYRg66M/Xss2bZdM1KTWaETf/GwTaussq2Rdn6n7wTld1xahilEoeTH8VBJ4hTNrfJmwMuWb4Gy7O59c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com; spf=pass smtp.mailfrom=opensource.cirrus.com; dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b=JZJ1ZPVa; dkim=pass (1024-bit key) header.d=cirrus4.onmicrosoft.com header.i=@cirrus4.onmicrosoft.com header.b=IY9FIntO; arc=fail smtp.client-ip=67.231.149.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensource.cirrus.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="PhsHMMvO"
+	dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b="JZJ1ZPVa";
+	dkim=pass (1024-bit key) header.d=cirrus4.onmicrosoft.com header.i=@cirrus4.onmicrosoft.com header.b="IY9FIntO"
+Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
+	by mx0a-001ae601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60U7QMRl3276726;
+	Fri, 30 Jan 2026 09:21:59 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=PODMain02222019; bh=xtz/uJYcQEnZYVwy
+	0fPWf1R6WAaEnYHFTa+kDM4yCgQ=; b=JZJ1ZPVacg9nH5mCh1OkZPXPA72vSXtE
+	4RLY0MvgELuIKRRUvtyEn57TgwD+gBLD7sU8mC/IG9ia/WLOXqZDNhCsYCbDbstx
+	cNoT9WNpZcgLsq1cWDQDB9nJWa3Z2vLsUtYmQClJL36/X1+0BFdRJ/VUjCiIrYuI
+	OBiaJ8H4iR0DGV5WlnXdSUGvXfIS/AZndUa3mqkIJd7q8DAgQh2TN83dMlFVFvyw
+	NPypBcOw7EOWVj6/sliUGT+RJq0IaJZ1/1OpQkB9FRsEgLiGxOkBqzVp7XfkPzDO
+	EzL4fG0ctmFyJrXZe44mH3I8XPR8NHy9JtlEgQZGfNQTNk46/kJ2Uw==
+Received: from bl2pr02cu003.outbound.protection.outlook.com (mail-eastusazon11021097.outbound.protection.outlook.com [52.101.52.97])
+	by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 4bvvc06vyk-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 30 Jan 2026 09:21:59 -0600 (CST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MQ6NsUI06IyiOVuNqeSR3U+3YhpF0qsaD4ErNLx6TOfAINWwxnN2Epsrc5QG9Y53sLI85JjsrhLDJld11/AVjOPFZuqWjYxOAChaEIhSRJ+Kh62iF8yiL5Zbxhr70vdq8qpkxpB4BkvYOt+ke3GeV27qWFC+OZGhsSp5NNdvVsPKmZaD6JF50pxT5AuZRLf5a1yFu8RROLs12ShgPmlnpqgKxIykeJziKptW7CNWi9ArlmroBKTd+KN6mzH+SfPISLk/qgNaWrgXjrNoToAFztu+Ki97w4G0yFfiGgIGat6dlyFkp5Criwancd/4B3ZN4EUbC3rtnYZIFZCERP78+g==
+ b=gsETlAijY7KBkHwVWC/VK5p8xtYVq31VfAEKcvMUsTNNjWrDI5VZPO1VFrQCy9xW1O1ZYjBqdhEnGsfSqJKsPWKEQ2CuXCMR43sd/vPRptjLnnBqO7hCBPolRI+m7ABMq9QEYhc9FruwihKPmXQPlzR/zNStI72YAj4nAb+zoso/R6SbU69g/szmzAp1WVA3OKFv9zQBDbFdlexbIOpFWg7Jc4nf/jMsrloLEiKwImg/xkroDt454dQ3BUKVpNFbPWAmBWIEake4Rk6gQo3EU4e6O0lSvriI3ZG4MAC10tizzKJZEhwGixtCl87qXVsVzY96XdLUeCMCKDanMSjMhw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ioqwMYzZ3i0DJYqThy1OUO1aIUNQmL2XJEyPHOzPrcU=;
- b=LL3HdSE2fifRUtWyg/NKtxNep+xURrL0H26hYlsn7V0XbiJcCEYEMPKWhqHaN133w5KWEMBpGfnAffXLLd35tVkAk4cOHRS0lJE4i/TdZiAdpbC/I62HCXsuwxVJcfghJITSj/1lab+tAgG7oHvqwhfvDbR9eCBoONx6syfR+ogzvU7qtIIeFVEisOWG4PCcODaE63ZLHRTtWLqgbUIJnUFI75IjglffbRun71O89mMhhddbFweSgv9gp/Pm7no1t4+y8L3AEkZLvnsWwggAXrxGqTx4+Atn1RycEOiHDfM83suMqPYuNf23i2ulva8rmmwkhVrrSzmhF81TTCDvuA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
+ bh=xtz/uJYcQEnZYVwy0fPWf1R6WAaEnYHFTa+kDM4yCgQ=;
+ b=JSS45v20YuS9cGniQRXxhSClNGr3Q7eREw9TdBXbyKJQtNroOEiGS67bdUf51M3brSeb0DllKovpgOsPsrNKrpTbA3oqtXLkz5b2GjFoxMiMFESRluS1+J3sIou1urIKjFshQJbWA3DKOw/cIfkCJoTfABQ1Y1nnaKii6h1eALoPy023UMLyTlI0665bW0AYVSSGF53EI2XA9Yy8LU8CQYSNoJOzLmCIHzFwbDQItSEU3X78PkIov9d2s5ypLR97JOwHcaEPPLVz0uinmRP/B/uBvwF0oQK8f0Imo9ZxCwuT8Z1YClLKB4Nxkefi856TX6rqiwewKP/gNQjdP8sWlQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
+ 84.19.233.75) smtp.rcpttodomain=cirrus.com
+ smtp.mailfrom=opensource.cirrus.com; dmarc=fail (p=reject sp=reject pct=100)
+ action=oreject header.from=opensource.cirrus.com; dkim=none (message not
+ signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cirrus4.onmicrosoft.com; s=selector2-cirrus4-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ioqwMYzZ3i0DJYqThy1OUO1aIUNQmL2XJEyPHOzPrcU=;
- b=PhsHMMvOeaFHwL4abWiw56J64SkwpHl6Nururm+5aRuBd1r+DkCNzH0WuiE1jyYVvna8oP54kRvTxHos3+bKX+bfOhuIi2H3Bwi1OY7V5TJZactzfZ91n5ftLXxqi8Vs+iMW1S+1mICwycZM6szG8zsxTb09irtuQ1Dezs/uR5aix5dJXlmFM8n1+1WFpUiHjhyhbp1I+ydiUGEIgDOgonWFitmJ0OdaOfn/B0y8B6Ir/M29McZdy/zn5jfwDaSfcWi9CdBkW4Z4Ka9gvAQyv8+5qJSsarWwvYEH3wEmREtyc+6Fp2Py8Pi1XTlIbBDAJBtQoxxfc3FY2IE4wctHOQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS2PR12MB9750.namprd12.prod.outlook.com (2603:10b6:8:2b0::12)
- by SA3PR12MB7858.namprd12.prod.outlook.com (2603:10b6:806:306::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.7; Fri, 30 Jan
- 2026 13:41:49 +0000
-Received: from DS2PR12MB9750.namprd12.prod.outlook.com
- ([fe80::56a8:d6bf:e24c:b391]) by DS2PR12MB9750.namprd12.prod.outlook.com
- ([fe80::56a8:d6bf:e24c:b391%5]) with mapi id 15.20.9564.010; Fri, 30 Jan 2026
- 13:41:49 +0000
-Message-ID: <57a63922-e194-4882-aa52-9447255ea1a3@nvidia.com>
-Date: Fri, 30 Jan 2026 13:41:44 +0000
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/6] spi: tegra-qspi: Fix race condition causing NULL
- pointer dereference and spurious IRQ
-To: Thierry Reding <thierry.reding@kernel.org>,
- Breno Leitao <leitao@debian.org>
-Cc: Thierry Reding <thierry.reding@gmail.com>,
- Sowjanya Komatineni <skomatineni@nvidia.com>,
- Laxman Dewangan <ldewangan@nvidia.com>, Mark Brown <broonie@kernel.org>,
- Vishwaroop A <va@nvidia.com>, Thierry Reding <treding@nvidia.com>,
- linux-tegra@vger.kernel.org, linux-spi@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com, soto@nvidia.com
-References: <20260126-tegra_xfer-v2-0-6d2115e4f387@debian.org>
- <aXyE1kfP4GeOdYs5@orome>
-From: Jon Hunter <jonathanh@nvidia.com>
-Content-Language: en-US
-In-Reply-To: <aXyE1kfP4GeOdYs5@orome>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P265CA0049.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2ac::12) To DS2PR12MB9750.namprd12.prod.outlook.com
- (2603:10b6:8:2b0::12)
+ bh=xtz/uJYcQEnZYVwy0fPWf1R6WAaEnYHFTa+kDM4yCgQ=;
+ b=IY9FIntO6jZPDtmd6BXNS8ANbs/Ohzstw2XkNn4x06V0cHAClxOj7N7GHTFYb1Jg993M6NuX9yJxUK27cFPuQRfkwAjYLPXy4neTWAXOGKBPUE4ZwE/JvtHHLvuDKWhrdVsHVxmJIeD39xrPZm7mYWlb9pT/X2NE3P7tdqu5svc=
+Received: from DS2PEPF00004559.namprd21.prod.outlook.com
+ (2603:10b6:f:fc00::512) by SA1PR19MB4944.namprd19.prod.outlook.com
+ (2603:10b6:806:1a2::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.12; Fri, 30 Jan
+ 2026 15:21:55 +0000
+Received: from DS3PEPF000099D9.namprd04.prod.outlook.com
+ (2603:10b6:2c:400:0:1000:0:a) by DS2PEPF00004559.outlook.office365.com
+ (2603:10b6:f:fc00::512) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9587.4 via Frontend Transport; Fri,
+ 30 Jan 2026 15:21:55 +0000
+X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 84.19.233.75)
+ smtp.mailfrom=opensource.cirrus.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=oreject header.from=opensource.cirrus.com;
+Received-SPF: Fail (protection.outlook.com: domain of opensource.cirrus.com
+ does not designate 84.19.233.75 as permitted sender)
+ receiver=protection.outlook.com; client-ip=84.19.233.75;
+ helo=edirelay1.ad.cirrus.com;
+Received: from edirelay1.ad.cirrus.com (84.19.233.75) by
+ DS3PEPF000099D9.mail.protection.outlook.com (10.167.17.10) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9564.3
+ via Frontend Transport; Fri, 30 Jan 2026 15:21:55 +0000
+Received: from ediswmail9.ad.cirrus.com (ediswmail9.ad.cirrus.com [198.61.86.93])
+	by edirelay1.ad.cirrus.com (Postfix) with ESMTPS id E8086406542;
+	Fri, 30 Jan 2026 15:21:53 +0000 (UTC)
+Received: from ediswws07.ad.cirrus.com (ediswws07.ad.cirrus.com [198.90.208.14])
+	by ediswmail9.ad.cirrus.com (Postfix) with ESMTPSA id DBFD4820259;
+	Fri, 30 Jan 2026 15:21:53 +0000 (UTC)
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
+To: broonie@kernel.org
+Cc: linux-spi@vger.kernel.org, patches@opensource.cirrus.com
+Subject: [PATCH] spi: cs42l43: Don't support sidecar properties on device tree systems
+Date: Fri, 30 Jan 2026 15:21:49 +0000
+Message-ID: <20260130152149.3086658-1-ckeepax@opensource.cirrus.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS2PR12MB9750:EE_|SA3PR12MB7858:EE_
-X-MS-Office365-Filtering-Correlation-Id: c8db4470-4b5b-404e-d767-08de60055142
+X-MS-TrafficTypeDiagnostic: DS3PEPF000099D9:EE_|SA1PR19MB4944:EE_
+Content-Type: text/plain
+X-MS-Office365-Filtering-Correlation-Id: 27e2bcc0-9ee6-4d79-bffa-08de60134d6e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|10070799003|1800799024|376014|13003099007;
+	BCL:0;ARA:13230040|36860700013|61400799027|376014|82310400026|54012099003;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?cDdrQ1ZpNlpvMXQxcUMyMkJUOFIyMnZzLzdJM3FnRE5tMi9DNDZzTFZ1VThP?=
- =?utf-8?B?WkppNXk1SER1bmVvZXppY0dzcFhPRzdqOWpXN1JyekE2aWUrc3RYRmdVTVht?=
- =?utf-8?B?K2NBSmxQd3BxNFlvbi9vaTcycUJ0RjE3MVVqNFRkV3crNTRSVUs4RmIrN25I?=
- =?utf-8?B?YndlU0ZLcXF6S3M4ZVNBREJaa2xwdUNLWGl0azl3dTREQlF1N3RXVS9Hc1NR?=
- =?utf-8?B?OTVydFFldDlkVmlpNGdSVHptd3ZqQjBqcVJHYjhPVjNhY0p2UkgwMGZTTDBX?=
- =?utf-8?B?T3RvaXB6Q0pORlk0YjNmQ29jZWpZdElyWnV3VVZrUDNwTUphek1ZZVRDZ29j?=
- =?utf-8?B?MHA2ZnZTeTJyZE5FR0V0eGxwMFlndjVpR1RkQ3M2NFd3NFB3MVdWZjB4d2RC?=
- =?utf-8?B?V25VOFZqN0ErTFV5Qm5rTU41emUwbTRYT3dzNGFsYi9uR0djdTdrQWNKcTNh?=
- =?utf-8?B?dXozWk5WL01BZHNoKzJXL1kwOUJwQ1FjdkVVc3U5a1R6SjJyY3UxV29ickxT?=
- =?utf-8?B?NFp5VWMza1RER3RVZkFaMlFUdncvWklUQWE5ZTh4d2M1QjlxcXRvcFl6QjB1?=
- =?utf-8?B?cHFjTUJ4cGpOWkluNk9jQVJveHBUamkxZnVhbXdxWDF0eFUwb21xZllESkZm?=
- =?utf-8?B?MFhDL3k0K1hrZ25xMkVsbWQ5Y21pMGcwMHN4SzQvekFaRC9LRVk3eW52YUxk?=
- =?utf-8?B?SjBSd3lERTE1dVVlcldUSGdXVWJhNUlhTEFXMFlNajlLeFBCMmQ1Wk1HNVk1?=
- =?utf-8?B?YlpITktOajNLUGoyNkh1UzZyTG5lbzZmNWVmQThmUkY3MmRtNWdUR0hvbTk4?=
- =?utf-8?B?WERSUmVZOHViakZZTXBudkpwNy9YTnk2YXRhWDNIYVRnNXFTbW9YVm9RaG1I?=
- =?utf-8?B?NGFxaDdBVFFuem1pSFRWdTFMUUdOTGlhWFV1WjBpQVRCUWxjaTJtZmY4b2I1?=
- =?utf-8?B?eWs1cGpFVFlkSHJReVJJbkR0VTVXTUlPS09oTG42dlFQdHZWbmJrNnhJL2hW?=
- =?utf-8?B?Rk80czQ5NTNFVi9qRDBaOWhyYmI3Y1cvVHQ3aVFseFA3OElBR3dvRi94Z24z?=
- =?utf-8?B?WDYydkpWaDVKOEY1Q1lDSEpGU3V6ZnJURlNTNU4zTEhXZEZsLzVPakZqMGhH?=
- =?utf-8?B?UFRDTUpmSlBST1B3MFhSRGlQSS9QaXBWbEduM25pbkI2VnBPYTFtL0d2VjBN?=
- =?utf-8?B?Yy9EMmJtWWFpV1B3ZVlScDNTczVLenhubkVEbXU4Sk9HeEE0WWVSK0xtaSs5?=
- =?utf-8?B?YkNTb1NnUENQRVJIY2xMUng3TXNNSjBZN1JaTjZqRnhCeHNFM0tHbGVpMFRu?=
- =?utf-8?B?TE5RV3ozZzZQK1pRR2JrZkNrZEZyLzdrbHpQMSt4bUh6OURZN3A3OENCVzFx?=
- =?utf-8?B?MnFiaEU0Tkx1V0ZLVnpkNUNPdjB3OGFIYkxaYi9BR3RuZ3ZndTUxZkU2Y1d3?=
- =?utf-8?B?aVU3cy9JckV3SlZkSk5COHhqWWtGTUMrbWM0bEtmM1QvWWdmcy92eU1SeDlG?=
- =?utf-8?B?cEVmZ3BrTXNDeitvK1U2aTZ4TXBSQzVQdHBNbW1vTFE1dDdLWDJHK3JqdzR5?=
- =?utf-8?B?VXNrR3lCNXorWDM3K0NPWVhmYW5iMnRzMU5ZbjZxL1l2UjR5OFd4OTZNd1JD?=
- =?utf-8?B?Y1FXL25uYVJRMUROM0F5ak51UVpZNU1DZmJoNzNXSnp1cC9MQWxjNE1td2FG?=
- =?utf-8?B?ZEZUZWFIZHMxU3Y1WnJMOE90YXNJUHQ2ZnRoYjhFSEF4RTJZUTVOK0M5KzZ4?=
- =?utf-8?B?Yy9MU2QrV0Vpd3o1MmZ2ckdBajRnL3pjeGVFSHEvVy9HTFRNMEZwNDBpVldp?=
- =?utf-8?B?a3ZWdmNRaFRLV0dmVllWRWFxY2dSRkUxcjU2NGxSRzJiZGMxVEd4enU3SXVO?=
- =?utf-8?B?WVk5bHRad3VEYm1tdlV3VEtXL0k0a0h6NzdoR1RwdVdWcmJHL1VvNTZUNUIw?=
- =?utf-8?B?cm10N0NTc3F2aEg1MXJoVU1RcllnR0s5Y0t4QUE0VGx4S3NzMkxiTG5lWmZW?=
- =?utf-8?B?RHdlVEd1NjV3Z1VhcFMydmU3UERIU3NzMFVtSU5mWE1xZEJZdFExMUJ2bW14?=
- =?utf-8?B?Z3VZM09VbkQva3Vsc0MyRmxhZ3VRQms3aGJpUGJlZGlZb2FPRU9KYXNhRDBD?=
- =?utf-8?Q?JnHAGr6Hu1XPgZmNSPLA+6L3S?=
+	=?us-ascii?Q?E5LjaF7+9oL+Qpl02HUw7nWfQ8Eogj6BBxC3gOyhopTC70VfarEYpK9cLMYm?=
+ =?us-ascii?Q?hbHTToMFegefwNmOA7TqUkSlE4a3HHsbnKoHG1WBQIwXR2j3EB44ceSfAwpe?=
+ =?us-ascii?Q?5GdxFwmACUAwuI3aLL7ygEn2n6B3SmcgZnc9H38OmpFNTzNKqMCMcKFKnt1k?=
+ =?us-ascii?Q?yxeq7NDyQMbIAmzZKJsXhh9elJEk0IWoFwcRadpaa74cS+ell9mjqVmqrcSZ?=
+ =?us-ascii?Q?e74ygGiJrjmBjOx4un3VyO7d/dsMWXv9BBb1ALZ4iJRFXsfuBLIMZ/iiW8A6?=
+ =?us-ascii?Q?hr1NzjDESvHEF6CkZw0TsRlCva33Cl5Nd8Ii0/3t3jvQtOZwt512TrokJQ+C?=
+ =?us-ascii?Q?DgTy8Tb7+XwWsa5b5YEbcFq/bHObyeKnBPzF1eQ0gnLgg8r78oWulIYxO05Y?=
+ =?us-ascii?Q?d2U1oHI/Z4opWnu9PhL962NTp4dxqrqwhVyAYWNQZ2IBqDoFIow/RVEeYroJ?=
+ =?us-ascii?Q?tl9snh6PCzbcKsxiQDiYPtkKxZR9s7p1HiCXjLyG4dE6V90wtu3neBd2dbNH?=
+ =?us-ascii?Q?pHlSjXtUVTZpTBRSacPkQPBf2Lbf/1ug+RbUI2OKfX/05Ys/Cnp2Mqe0Samd?=
+ =?us-ascii?Q?8egL9vL1QeQ5b2dZ+ginEOQMIrp1ZWQVHIGMGNNcA8Nh35tklx180xdWnkYY?=
+ =?us-ascii?Q?RKHTyEycaor/xdIxCZXpawEFddXXkGj0xlB0HIEiqAgKsuve1BQEpuiaCnS+?=
+ =?us-ascii?Q?+KxKpB3S+LYc3cQqJPePbZ5gYY3Q30pXdc3B4uMCmk9BAufDaUByPplhMWPM?=
+ =?us-ascii?Q?7yG2uRSUH7m5w/9P7HwEYsj/dDxicK+mOdqrNo3S0gIIRxPuD3pm2tUcOKRK?=
+ =?us-ascii?Q?YjVrsGuA0ZbIYimOSmzRPIkzHWZfEeNdHolQYsHrVz0fej1db6nf50Sk0D6Q?=
+ =?us-ascii?Q?Csz96B2vqqi16NbUw3QMhaUblx3vDjBdujHvrkYAdwLOSBlnTufMGpwjPtYl?=
+ =?us-ascii?Q?41iW22HYzhe0fm3klfUUTvb4DuS3l7xHCQkOslpC3FVlikLgDq7OgY8Z/mqn?=
+ =?us-ascii?Q?MMQjPcXpHUsQLgicgfbhp+UEoN9gHg37MZWygBghaoIWOUI8sx3Z+qyUbh8o?=
+ =?us-ascii?Q?gKbI0oATjdkLMR6nmPl1Qaim2VUu7Ih4lkdlZ8GSnFaLEHH/lWFLV3msKYLO?=
+ =?us-ascii?Q?GErkL59xIFd2ln2c79wHiB/ah6usWE3Az6Xj1cmhpbo5X4ealQbEqJN5nDZ0?=
+ =?us-ascii?Q?QYD1ySGU2L//MKEWL4SgU+BbSmgHDtRHCd+J92eY7mMmZP5OUPv3OjTD9p14?=
+ =?us-ascii?Q?cVENHTeXTJhMOmXvJksf3EAB0TORQyd83IrNnzug8ARD710TwIpuifJRmusq?=
+ =?us-ascii?Q?mYtCXyoAF+1bY8rN7BStJGU/PmEqOfWMrK889zlhEVCXw1iCfsDQgRE5KaCh?=
+ =?us-ascii?Q?0o935gGyLoNTlUNmet7PEWewJwqxjq4qanhcFwdiT+qG8d78KAZOarmJBw/x?=
+ =?us-ascii?Q?d9vMca0hd7U3GgzJ/qnjlzSw96kEbfsHYJZTpUbChQfVD0pwC7m+ZiMoZrE1?=
+ =?us-ascii?Q?B+WjbVUPOH2BZBub/fd2k3oyO+8Oc9xhkytV3Mt04wb4FNjZAR2RcSIq0ooa?=
+ =?us-ascii?Q?PBh4s+b29pAGhS7yXpqxQ6yupyqXpeiUOaW0vv2SJeeIZaoD1w3ODCmEoRzo?=
+ =?us-ascii?Q?kCK+RgewLabmASBjdZFfn+IsKghvhRXUqNaHIqFHXOZkvtrwo1V8gBUhHWjL?=
+ =?us-ascii?Q?RBPxQQ=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS2PR12MB9750.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(1800799024)(376014)(13003099007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+	CIP:84.19.233.75;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:edirelay1.ad.cirrus.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(61400799027)(376014)(82310400026)(54012099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QzNVZFFuOWljY0dmbkQvNlppd1ZNbnNjWWwwc09XTVhuLzdLQU9ydUdldHcr?=
- =?utf-8?B?dWQvbDk4MEt4UDNCZ2NZT1VSYnBjL3UvaHZuTlVRYXcxWEtHVUttMlZNSC9o?=
- =?utf-8?B?MkJPTEpMbFMwMkRlYXN5bVl3Q0xyQXZKbDNSRkoxVWc4V2pITmlsWTdkM1dq?=
- =?utf-8?B?dktiWFloMVhMejNCZXBCeHhzbmJSSkw4ZUg1NlpGNjJkNDVleXYyb25EbFlG?=
- =?utf-8?B?U1BzWFdlYThoVkYwWGN6S05nVzBYeCtRU3BFZTNLMm83N1JyaGZDUXVMVXRM?=
- =?utf-8?B?ckM0UktKbVZCOHNSaE9ISEdwejBLZk1RSktvQUFUWStIbWNWK3M2YkRVbmhG?=
- =?utf-8?B?Y2xib1Nvb0ZUVStYUW5rbndjTDJrQ1NIdkVaR0J6eDRSSFdQMDRKZm1rd1Y0?=
- =?utf-8?B?ZTd6LzdCYVE1eWZybVJTLzI5eE5ZV2pQNVhaaVg2bGhMUmt2WFhzZU5mZGZP?=
- =?utf-8?B?VXYwTzhPbTBmV3Y0U1FDMTVDdlN0akwycWhDcTlScnUydXVDcXZNQnNZb3Bv?=
- =?utf-8?B?bFQydmxXL1EvWG8xR05FTVJjMGJNSnRrNGhEcDFSSlppNDZ4Mmp0UysyYlBn?=
- =?utf-8?B?TUhtOVlIenlCdjRWYXlQMEtGT0V6bGoySVFHN3hHaWxyQWtySCtYUHcrakQ0?=
- =?utf-8?B?QkNXVjhyTERjanhJbHl1b1FFaW1mZXlBWllQWThZS1FNdXo2V2I4QnMvL1pJ?=
- =?utf-8?B?aFZJcWh6STh2d1NJbVhGcFdJcFdPRzF0eTBEWW11OTZZUWdkTjB4cjd2WGtH?=
- =?utf-8?B?aE9jQmlSYktvMnpYdzhjUEVGWGJsYXVHamJhVnI3dTZMN09TVUgyUlRoZjFa?=
- =?utf-8?B?Y04xRTVxZ1NKaTFFK1dvSUV5S1NrQS9qOFRvZkNRcnBMS3NoOHhkVFhPYVhS?=
- =?utf-8?B?WVFOM0xORWpKSG9XSXFoZ0xweUpnM0RkdGNWeU9qMjNRSWNTdll4dythRWJh?=
- =?utf-8?B?cURJaDh0U21QRmR5WnFmWWtDelJoSWhmOHhnOGNLTityQnhnMGNMZTFnMVdq?=
- =?utf-8?B?Yy9Ya0VscDJFb2MzcWhPUC96MHNMTWRORjVCUXlzYVVXUXI5QTQ0S013ZFVl?=
- =?utf-8?B?Witmd3RQWDBTOE9aZ0M2ZkY3alFtdVJSSFNIdFBYdUlOT0h5OTBha0I3NEx3?=
- =?utf-8?B?d3BjNTJ0aktLRHJTWlBOZVdvUUZZNlVtRm9JeVBtdWZlbTJoTVJXbDc5L2dj?=
- =?utf-8?B?aXE5RW5WNU8weCtRelNOWjFmQSthS0luRmc4ZlVWalczYnppSGJvZG1jMjU2?=
- =?utf-8?B?anZrNWdLTlkzNG05YWdaNTN6VDE3VVFzWGhEaGFsU3h3UFhvd3c0UjcvMG9q?=
- =?utf-8?B?bzhBNFlvRGl2Qmx5WGl4RVFYeXpORGpuaVNiN3hoYi9wMzVORnBYMEcvaVBo?=
- =?utf-8?B?ZW43eEZ6QWxPeGJ1c2xITmtrcWhvSDA1TkdnaHhteGQyVXo0V01uaTBjdHhZ?=
- =?utf-8?B?ZVcyRkJHM3MwWFNnZlhhWC9hUnAzMmRtN044ZFdGRnlVVmE5ei9hQWYrc1lW?=
- =?utf-8?B?OW41cDBJTm9EcW1lekw2TDhPWmlkQ3VOa05QT3FVZThKRmFraXJ5anQwREhy?=
- =?utf-8?B?cE4wTFpEcUV3N3pYbHVLNDFWZ3BKVGgxRzFoTVZJTHJrWDludStpRW1NdjIy?=
- =?utf-8?B?RFdLK2d4M1Ezd3pJK09oeStHYTJuVklMN3plWWpSMm5ZVFN2elQrejMweXly?=
- =?utf-8?B?RU4wMVl4NjZGZlNiK0xiOUk0TWExZ3ZyQ0dLS2MrZWVNNFRwZFU4c2tObzE0?=
- =?utf-8?B?cXU1YWhNSFUxdWR6K2tQdElYRXRMZEUvTUJsUDhNaHVUREYxbVNhZXBIQU9Y?=
- =?utf-8?B?Q2lEQ0JDSDIva1VFUkkxUUw4Z1dMdUpZLy9YYy9xQ2RJOEI4MEZrU0VGcHlQ?=
- =?utf-8?B?WUMybmVBUHZaYlkzR0JEbGIzUHNYVnhpOVBJZ0VZYStDbk8wclhwb2MwWjlD?=
- =?utf-8?B?OThwcGNDTjdjbDZ6QkVyQUM0V1hHUmdIYTRkbytCWE1oQmZxcUpzTEg5NU1y?=
- =?utf-8?B?djgra0d0RU0xRzlLN3h2T0JRbU5UWVVFcktPYnNNVW84REwxaHFaNlAwbDdY?=
- =?utf-8?B?WUw0bGd2ZU1FeUpVVVBSalNLM0hMS0xDdm00WExiUjJzV0R3d0s0RFA0ejNX?=
- =?utf-8?B?R002bTJLZFBvdEJEVnRpRXUvc0ZtZHdYSEkzYU4zakM2ZnFvOVV6T1kxTitW?=
- =?utf-8?B?cFcwY3JvRy9YY2RHdGN6eXpxWGkzUGVNZWZHUWExejI5VmZ3RlFydWdYajJM?=
- =?utf-8?B?enByUndnT2wxeWlMditiMkllRmNmV3ZKSENJMlY2a2NOSWdtYUhCYXExZ0k5?=
- =?utf-8?B?NStZbWRkUTBURVFmWjRqZFdYVDdGcjlmS3F6ZmJEaU1IQ1JsZmh4STNlYm5L?=
- =?utf-8?Q?8iCH6QoT1D4pG3eB5mQky4oaQKcyzgh33ePxwicNFtH4c?=
-X-MS-Exchange-AntiSpam-MessageData-1: TeJfB0AsFeEamQ==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c8db4470-4b5b-404e-d767-08de60055142
-X-MS-Exchange-CrossTenant-AuthSource: DS2PR12MB9750.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jan 2026 13:41:48.8979
+	QjecYz+bLVYMrlcYjS6ubsThDxBIYOUGOl7t2217C0Yn2uJfIhwXC9xjPg/F8gTex0hunoB8ml6tIgWtoq6ofrbnlMQEwJBznOwSHu1v8HiobdvHl2Zzi9KXKXl4knJuwK5pylWrTbfEnlygQGZjkBqWxaZpZoKIB7LOyIj+BnuoQTmgBHFEx1r02+WGSwxm9OMsv115wmPKg4vnt/poFRgFlZO+tvzPzicFT3j10ib1sCoIwJkJ5j7sQP2w+eBNU5ZSvDWK1eiUq7FUKukNZTw2F0xxlMM2crU3NubgRjM7KRX9VncyCFtPEoaWzqk+pD9TyfWkMOowzsjOMXa2QBz6L38LULCzrQEk+Q5qW2YuC3xM2ANsqQ8jGXLOME7+cyHsk/ZLmVd/1JnQNErqabtcMQjithfbCHTrEuAkVnIXaRwSZaox7r3L1rgOVhwJ
+X-OriginatorOrg: opensource.cirrus.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jan 2026 15:21:55.0376
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /QqV6NSc99DFHs3JaEOEYGjnPst13NbwARTpiCsvhfxOeW5so3mptCYhQr0rbrSikRkOh4sbpP6WztH5PPU82A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7858
+X-MS-Exchange-CrossTenant-Network-Message-Id: 27e2bcc0-9ee6-4d79-bffa-08de60134d6e
+X-MS-Exchange-CrossTenant-Id: bec09025-e5bc-40d1-a355-8e955c307de8
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=bec09025-e5bc-40d1-a355-8e955c307de8;Ip=[84.19.233.75];Helo=[edirelay1.ad.cirrus.com]
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TreatMessagesAsInternal-DS3PEPF000099D9.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR19MB4944
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTMwMDEyNiBTYWx0ZWRfXy92jxkY8GtJq
+ iWFr1qDzbuoPXZi/ZIqAPqyskVRdTno+aRxeweEOmjX3cIEnyGbu0piJgxPjclVP3pLaNQUpZUj
+ BVnvP6k3TBIxy+XUjMfgGDfsEzVejA6M3v0E7veSWNhKMCA98Onpw0G3HzwRMfMC3MDJJRl4XLj
+ oCkL09+pR8oFJFTZ+2BceNPnzeSD+lAHxGLVi+TP3oxAMrJZhVZIKSoM5gaow7H0JGwnK/oChtM
+ 60SQhaUb7FtwvKj8ko1gC5db57whmykfSsOQEko1OWj8dKYoooPU/aEqGfuKPn3ngoTyJem3Sru
+ VJqDCnlY8OKJf6zpC9rgFfUpYjtrFvaoCyOA6EcyqVk7OuvSyfAcXQru1hzWuKUJaE+5RdSmaDq
+ ALx6vJMKKQFRPBddWMV9V/DI/3FroaYRmyQdBzuSNVZaeCVBNgyo6XLhHxrjR42Ur5iOyfr+xgI
+ 3wfFkU8Mavu1oJWR2gQ==
+X-Proofpoint-GUID: 1TQuAXx_pyOYa2cx-ALXVsTFOR1hPYLR
+X-Authority-Analysis: v=2.4 cv=KvBAGGWN c=1 sm=1 tr=0 ts=697ccc97 cx=c_pps
+ a=is7RXpa33aREoC4jGqxG7A==:117 a=h1hSm8JtM9GN1ddwPAif2w==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=vUbySO9Y5rIA:10 a=s63m1ICgrNkA:10 a=RWc_ulEos4gA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=w1d2syhTAAAA:8 a=T9bqrr72WB-eOfrobEAA:9
+X-Proofpoint-ORIG-GUID: 1TQuAXx_pyOYa2cx-ALXVsTFOR1hPYLR
+X-Proofpoint-Spam-Reason: safe
 
+On some systems the cs42l43 has amplifiers attached to its
+SPI controller that are not properly defined in ACPI. However,
+this exists to provide compatibility with existing Windows ACPI.
 
-On 30/01/2026 10:16, Thierry Reding wrote:
-> On Mon, Jan 26, 2026 at 09:50:25AM -0800, Breno Leitao wrote:
->> The tegra-quad-spi driver is crashing on some hosts. Analysis revealed
->> the following failure sequence:
->>
->> 1) After running for a while, the interrupt gets marked as spurious:
->>
->>      irq 63: nobody cared (try booting with the "irqpoll" option)
->>      Disabling IRQ #63
->>
->> 2) The IRQ handler (tegra_qspi_isr_thread->handle_cpu_based_xfer) is
->>     responsible for signaling xfer_completion.
->>     Once the interrupt is disabled, xfer_completion is never completed, causing
->>     transfers to hit the timeout:
->>
->>      WARNING: CPU: 64 PID: 844224 at drivers/spi/spi-tegra210-quad.c:1222 tegra_qspi_transfer_one_message+0x7a0/0x9b0
->>
->> 3) The timeout handler completes the transfer:
->>
->>      tegra-qspi NVDA1513:00: QSPI interrupt timeout, but transfer complete
->>
->> 4) Later, the ISR thread finally runs and crashes trying to dereference
->>     curr_xfer which the timeout handler already set to NULL:
->>
->>      Unable to handle kernel NULL pointer dereference at virtual address 0000000000000008
->>      pc : handle_cpu_based_xfer+0x90/0x388 [spi_tegra210_quad]
->>      lr : tegra_qspi_handle_timeout+0xb4/0xf0 [spi_tegra210_quad]
->>      Call trace:
->>        handle_cpu_based_xfer+0x90/0x388 [spi_tegra210_quad] (P)
->>
->> Root cause analysis identified three issues:
->>
->> 1) Race condition on tqspi->curr_xfer
->>
->>     The curr_xfer pointer can change during ISR execution without proper
->>     synchronization. The timeout path clears curr_xfer while the ISR
->>     thread may still be accessing it.
->>
->>     This is trivially reproducible by decreasing QSPI_DMA_TIMEOUT and
->>     adding instrumentation to tegra_qspi_isr_thread() to check curr_xfer
->>     at entry and exit - the value changes mid-execution. I've used the
->>     following test to reproduce this issue:
->>
->>     https://github.com/leitao/debug/blob/main/arm/tegra/tpm_torture_test.sh
->>
->>     The existing comment in the ISR acknowledges this race but the
->>     protection is insufficient:
->>
->>         /*
->>          * Occasionally the IRQ thread takes a long time to wake up (usually
->>          * when the CPU that it's running on is excessively busy) and we have
->>          * already reached the timeout before and cleaned up the timed out
->>          * transfer. Avoid any processing in that case and bail out early.
->>          */
->>
->>     This is bad because tqspi->curr_xfer can just get NULLed
->>
->> 2) Incorrect IRQ_NONE return causing spurious IRQ detection
->>
->>     When the timeout handler processes a transfer before the ISR thread
->>     runs, tegra_qspi_isr_thread() returns IRQ_NONE.
->>
->>     After enough IRQ_NONE returns, the kernel marks the interrupt as spurious
->>     and disables it - but these were legitimate interrupts that happened to be
->>     processed by the timeout path first.
->>
->>     Interrupt handlers shouldn't return IRQ_NONE, if the driver somehow handled
->>     the interrupt (!?)
->>
->> 3) Complex locking makes full protection difficult
->>
->>     Ideally the entire tqspi structure would be protected by tqspi->lock,
->>     but handle_dma_based_xfer() calls wait_for_completion_interruptible_timeout()
->>     which can sleep, preventing the lock from being held across the entire
->>     ISR execution.
->>
->>     Usama Arif has some ideas here, and he can share more.
->>
->> This patchset addresses these issues:
->>
->> Return IRQ_HANDLED instead of IRQ_NONE when the timeout path has
->> already processed the transfer. Use the QSPI_RDY bit in
->> QSPI_TRANS_STATUS (same approach as tegra_qspi_handle_timeout()) to
->> distinguish real interrupts from truly spurious ones.
->>
->> Protect curr_xfer access with spinlock everywhere in the code, given
->> Interrupt handling can run in parallel with timeout and transfer.
->> This prevents the NULL pointer dereference by ensuring curr_xfer cannot
->> be cleared while being checked.
->>
->> While this may not provide complete protection for all tqspi fields
->> (which might be necessary?!), it fixes the observed crashes and prevents
->> the spurious IRQ detection that was disabling the interrupt entirely.
->>
->> This was tested with a simple TPM application, where the TPM lives
->> behind the tegra qspi driver:
->>
->> https://github.com/leitao/debug/blob/main/arm/tegra/tpm_torture_test.sh
->>
->> A special thanks for Usama Arif for his help investigating the problem
->> and helping with the fixes.
->>
->> Signed-off-by: Breno Leitao <leitao@debian.org>
->> ---
->> Changes in v2:
->> - Replaced the TODO comment to clarify why the lock is being released.
->> - Link to v1: https://patch.msgid.link/20260116-tegra_xfer-v1-0-02d96c790619@debian.org
->>
->> ---
->> Breno Leitao (6):
->>        spi: tegra210-quad: Return IRQ_HANDLED when timeout already processed transfer
->>        spi: tegra210-quad: Move curr_xfer read inside spinlock
->>        spi: tegra210-quad: Protect curr_xfer assignment in tegra_qspi_setup_transfer_one
->>        spi: tegra210-quad: Protect curr_xfer in tegra_qspi_combined_seq_xfer
->>        spi: tegra210-quad: Protect curr_xfer clearing in tegra_qspi_non_combined_seq_xfer
->>        spi: tegra210-quad: Protect curr_xfer check in IRQ handler
->>
->>   drivers/spi/spi-tegra210-quad.c | 56 ++++++++++++++++++++++++++++++++++++++---
->>   1 file changed, 52 insertions(+), 4 deletions(-)
-> 
-> For the series:
-> 
-> Acked-by: Thierry Reding <treding@nvidia.com>
+On device tree systems this functionality should never be used,
+there is no reason not to specify the amplifiers properly through
+device tree.  Make this more clear by only allowing the "sidecar"
+functionality to be used on non-DT systems.
 
-This also resolves a NULL pointer deference I see on Tegra194 Jetson 
-Xavier NX and so ...
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+---
+ drivers/spi/spi-cs42l43.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Acked-by: Jon Hunter <jonathanh@nvidia.com>
-
-Thanks!
-Jon
-
+diff --git a/drivers/spi/spi-cs42l43.c b/drivers/spi/spi-cs42l43.c
+index 4b6b65f450a86..b3a55c3ed1b68 100644
+--- a/drivers/spi/spi-cs42l43.c
++++ b/drivers/spi/spi-cs42l43.c
+@@ -367,10 +367,10 @@ static int cs42l43_spi_probe(struct platform_device *pdev)
+ 		ret = devm_add_action_or_reset(priv->dev, cs42l43_release_of_node, fwnode);
+ 		if (ret)
+ 			return ret;
++	} else {
++		fwnode_property_read_u32(xu_fwnode, "01fa-sidecar-instances", &nsidecars);
+ 	}
+ 
+-	fwnode_property_read_u32(xu_fwnode, "01fa-sidecar-instances", &nsidecars);
+-
+ 	if (nsidecars) {
+ 		struct software_node_ref_args args[] = {
+ 			SOFTWARE_NODE_REFERENCE(fwnode, 0, GPIO_ACTIVE_LOW),
 -- 
-nvpublic
+2.47.3
 

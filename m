@@ -1,42 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0C062D8DD1;
-	Mon,  2 Feb 2026 21:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31EDE3164D6;
+	Mon,  2 Feb 2026 21:47:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770068823; cv=none; b=tpglGsnvEV0QhE8O943lLMQksC7xIWCvSrwQOTpN4jvzat2DzeOi4QmQvz4jafib6N3icdk6dgSNYvhebcMXLYPFWXY7vN8wEp4L/5IRP0YwNJC/GX3u4BWIi6nlYDWRAUeCUmOiu55e6d6tGoPJf6VAJUFSqVtC8wwdV7Al01k=
+	t=1770068840; cv=none; b=uQnE32/TWPdu7gWXIP0s4xTgdr26RdgQKUUcl1LIFIDn+02KaCxj/Lm0NnD42eyKDBlP7JQP6XMcx9JFngP2fO7LtCjJqSTXhHQFUCw5wC6RmaUfZzHbJXMSTVO2TLOvhTsexP6xlvLa0gKxuVpOj/HDXSDJheuDvmcC3yiIMu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770068823; c=relaxed/simple;
-	bh=yMmc+gE/TeEIykfimutfHJ9UuR39OimXvChOlxkMweM=;
+	s=arc-20240116; t=1770068840; c=relaxed/simple;
+	bh=fegejkVL+lLJoLfhYf6xVkGHeRs3KVjJLWElAzTPWGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uCCMeYq9B9nRlvPMAqKgVstAlrhrBKcw5pgZJw9E7Q3wntp80Mdbdll+jpXb4ET+inuWdsCUTV4RxioJd5oZRUM2AxNpJrjh/XLgiL4NK4IK7IV/5f4D7mcxwp/kfHBKF5dcrcch6+s5WmgyQFjrhvHtErvH/7ajYCDdf/O5m14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p5w/LoB1; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=idK+82QcZP/YID2acTC2j3YxmrRH9YbkXRogXu0xDOXOcQOmpP4+2UByy7b6yVYWNAmz7dES1H7PINhZed3tHS4AG4YrYn6mme48D5UXtMRK/X/5w6fv2XkAwb7B3PnjajoSpdU2+NuvKH14jhDjtdta+5Iv10jr0324Q8JNNe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qFav1RVr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p5w/LoB1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5565C19421;
-	Mon,  2 Feb 2026 21:47:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qFav1RVr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57308C19421;
+	Mon,  2 Feb 2026 21:47:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770068822;
-	bh=yMmc+gE/TeEIykfimutfHJ9UuR39OimXvChOlxkMweM=;
+	s=k20201202; t=1770068840;
+	bh=fegejkVL+lLJoLfhYf6xVkGHeRs3KVjJLWElAzTPWGs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p5w/LoB1rQ5xrffwr8k1ObXK2oeFKK28VJ5FMXY88XD6+8mjG+wqub7/K98M46BCX
-	 tyPcQOlFWA92S1K6ljFMvNxGQMZdDyZXzRkr/WCPgwXf8tSMjxxdTpXz6zv0rvD5h9
-	 92HQbNIPM9WVmlkVl+HZJRFm9dE1qOjekEwhapGZ6PtXNcNGGX/yXGAUJoTFTWu6W5
-	 O39KN0I7hm+/kkq08SJ45R8wJQ7AVbjxN8KR+2HiN2puu6PSzsxb5XKBkmCZoCWtv6
-	 QGg80vXdTmDO5Ofz3Ghm4JODTA7sE/IjH/Ffcv2C43Z9wM8QGrX6xVzsXefYCMV1BP
-	 9IfCeMsBhelhg==
+	b=qFav1RVr94huZI2w0ReeYLORkxcA35dMioBH1mTjIMaKkZDqbX9D4rAaveX+iUPna
+	 QgY5J0CcMVWbOl5EqbUgtwOp7qAV+OWRgO1Oa/JOHtGwRIykAoRnrWpGTKIc1riAdz
+	 Bw4WsMn/qSBCCjdpH8y6hFWcoui5vmVMAH8BQjqSlhju8Ysy4G/vewhXiq8zaElRYo
+	 Z35qtlEgUxE0iZv5w8bKGwPAvouTNzhB5J81xKsZ/+ca3iH5KlWEGVfcmIEbnb8JRP
+	 sySmpgpI3qechey8bWNpW2d5RkT05LciThskH4yJDZtvaicOIPxo62hx8f0xSLYtFE
+	 c6cvTdVz/vmEw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Devyn Liu <liudingyuan@h-partners.com>,
-	Yang Shen <shenyang39@huawei.com>,
+Cc: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-6.6] spi: hisi-kunpeng: Fixed the wrong debugfs node name in hisi_spi debugfs initialization
-Date: Mon,  2 Feb 2026 16:46:03 -0500
-Message-ID: <20260202214643.212290-8-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18] spi: intel-pci: Add support for Nova Lake SPI serial flash
+Date: Mon,  2 Feb 2026 16:46:12 -0500
+Message-ID: <20260202214643.212290-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260202214643.212290-1-sashal@kernel.org>
 References: <20260202214643.212290-1-sashal@kernel.org>
@@ -49,145 +49,182 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.18.8
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Devyn Liu <liudingyuan@h-partners.com>
+From: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
 
-[ Upstream commit b062a899c997df7b9ce29c62164888baa7a85833 ]
+[ Upstream commit caa329649259d0f90c0056c9860ca659d4ba3211 ]
 
-In hisi_spi_debugfs_init, spi controller pointer is calculated
-by container_of macro, and the member is hs->dev. But the host
-cannot be calculated offset directly by this. (hs->dev) points
-to (pdev->dev), and it is the (host->dev.parent) rather than
-(host->dev) points to the (pdev->dev), which is set in
-__spi_alloc_controller.
+Add Intel Nova Lake PCH-S SPI serial flash PCI ID to the list of
+supported devices. This is the same controller found in previous
+generations.
 
-In this patch, this issues is fixed by getting the spi_controller
-data from pdev->dev by dev_get_drvdata() directly. (dev->driver_data)
-points to the spi controller data in the probe stage.
-
-Signed-off-by: Devyn Liu <liudingyuan@h-partners.com>
-Reviewed-by: Yang Shen <shenyang39@huawei.com>
-Link: https://patch.msgid.link/20260108075323.3831574-1-liudingyuan@h-partners.com
+Signed-off-by: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
+Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Link: https://patch.msgid.link/20260115120305.10080-1-alan.borzeszkowski@linux.intel.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-In `struct spi_controller`, `dev` is at offset 0. So when `container_of`
-is used with an incorrect pointer, it will calculate the "base" of the
-spi_controller by subtracting 0 from the address - meaning it will use
-`hs->dev` (pdev->dev) directly as if it were an spi_controller!
-
-This would cause the access to `host->bus_num` (used in the snprintf for
-creating debugfs directory name) to read from the wrong memory location.
-Looking at struct spi_controller, `bus_num` is at around offset 72-80
-bytes (after `dev` and `list`), so it would be reading random data from
-the platform_device structure.
-
-Let me analyze the severity:
-
-1. **Best case**: Random garbage `bus_num` value → debugfs directory
-   created with garbage name like "hisi_spi-1234567" or some nonsense
-2. **Worst case**: Could potentially read out of bounds if pdev->dev is
-   at the end of an allocation
-
-The fix is simple, correct, and uses the proper method to retrieve the
-spi_controller pointer.
-
-## Summary Analysis
+## Comprehensive Backport Analysis
 
 ### 1. COMMIT MESSAGE ANALYSIS
-The commit message clearly explains:
-- The bug: `container_of` is incorrectly used - `hs->dev` points to
-  `pdev->dev`, not `host->dev`
-- The fix: Use `dev_get_drvdata()` to correctly get the spi_controller
-  pointer
+
+**Subject:** "spi: intel-pci: Add support for Nova Lake SPI serial
+flash"
+
+**Key information from message:**
+- Adds a new PCI ID for Intel Nova Lake PCH-S SPI serial flash
+  controller
+- Explicitly states: "This is the same controller found in previous
+  generations"
+- Has proper sign-offs from Intel developer and maintainer
+  acknowledgment
+- Link to patch message provided for traceability
+
+**Notable:** No Fixes: tag or Cc: stable tag, but as noted in the
+analysis guidelines, this is expected for commits requiring manual
+review.
 
 ### 2. CODE CHANGE ANALYSIS
-**The Bug:**
-- `hs->dev = dev` where `dev = &pdev->dev` (platform device's device)
-- `host = container_of(hs->dev, struct spi_controller, dev)` computes
-  wrong offset
-- Since `dev` is at offset 0 in spi_controller, this treats `pdev->dev`
-  as if it were the spi_controller
-- Accessing `host->bus_num` reads garbage from wrong memory location
 
-**The Fix:**
-- Uses `dev_get_drvdata(hs->dev)` to correctly retrieve the
-  spi_controller pointer
-- This works because `platform_set_drvdata(pdev, host)` was called in
-  probe
+The diff shows a **single-line addition**:
+```c
+{ PCI_VDEVICE(INTEL, 0x6e24), (unsigned long)&cnl_info },
+```
 
-**The fix is obviously correct:** It mirrors how other parts of the
-driver (e.g., interrupt handler) retrieve the spi_controller.
+This adds PCI device ID `0x6e24` to the `intel_spi_pci_ids[]` table,
+using the existing `cnl_info` configuration structure (Cannon Lake
+info).
+
+**Technical details:**
+- The change adds one entry to the PCI device ID table
+- Uses the well-established `PCI_VDEVICE()` macro
+- References `cnl_info`, which already exists and is used by many other
+  device IDs in this driver
+- The insertion is alphabetically ordered (0x6e24 is placed between
+  0x5825 and 0x7723)
+- No new code paths, functions, or logic introduced
 
 ### 3. CLASSIFICATION
-- **Bug fix**: Yes, this fixes a real bug where incorrect memory is
-  accessed
-- **Category**: Bug fix for incorrect pointer calculation
+
+**This is a NEW DEVICE ID addition** - one of the explicitly listed
+exceptions in the stable kernel rules.
+
+From the guidelines:
+> **NEW DEVICE IDs (Very Common):**
+> - Adding PCI IDs, USB IDs, ACPI IDs, etc. to existing drivers
+> - These are trivial one-line additions that enable hardware support
+> - Rule: The driver must already exist in stable; only the ID is new
+
+This commit fits this exception perfectly:
+- The `spi-intel-pci` driver already exists in stable kernels
+- Only the PCI ID is being added
+- Uses existing configuration (`cnl_info`)
 
 ### 4. SCOPE AND RISK ASSESSMENT
-- **Lines changed**: Net -4 lines, very small change
-- **Files touched**: 1 driver file
-- **Risk**: Very low - changes a local variable initialization in a
-  debugfs init function
-- **Could break something else?**: No, this is a purely local fix
+
+**Scope:**
+- **Lines changed:** 1 line added
+- **Files touched:** 1 file (`drivers/spi/spi-intel-pci.c`)
+- **Complexity:** Minimal - just a table entry
+
+**Risk assessment:**
+- **Extremely LOW risk** - This is one of the safest possible changes
+- The new ID only matches Nova Lake hardware
+- Existing hardware continues to work exactly as before
+- If the ID is somehow wrong, only Nova Lake devices would be affected
+- The `cnl_info` structure is already well-tested with many other Intel
+  platforms
 
 ### 5. USER IMPACT
-- **Who is affected**: Users of HiSilicon Kunpeng SoC SPI controllers
-  with debugfs enabled
-- **Severity**: The bug causes incorrect debugfs directory naming and
-  potentially reads garbage memory
-- **Hardware support**: This driver is for specific Kunpeng server SoCs
+
+**Who benefits:**
+- Users with Intel Nova Lake PCH-S systems
+- Enterprise customers deploying on newer Intel hardware
+- Without this patch, SPI flash on Nova Lake systems won't be recognized
+
+**Impact assessment:**
+- **Positive impact:** Enables SPI flash access on new hardware
+- **Negative impact potential:** None for existing users
+- **Hardware scope:** This is a platform-level chipset, so all Nova Lake
+  systems are affected
 
 ### 6. STABILITY INDICATORS
-- Has "Reviewed-by:" tag from another Huawei engineer
-- The fix is straightforward and mirrors existing patterns in the driver
+
+- **Acked-by:** Mika Westerberg (Intel kernel maintainer) - positive
+  signal
+- **Signed-off-by:** Mark Brown (SPI subsystem maintainer) - indicates
+  proper review
+- The commit message explicitly states this uses the "same controller
+  found in previous generations" - this suggests the hardware is
+  compatible and doesn't need new code
 
 ### 7. DEPENDENCY CHECK
-- The driver exists since v5.13, so this is relevant for 5.15.y, 6.1.y,
-  6.6.y, etc.
-- No dependencies on other commits - standalone fix
 
-## Conclusion
+**Dependencies:** None
+- This commit is completely self-contained
+- It only adds an entry to an existing table
+- No prerequisites needed - the driver infrastructure is already in
+  place
 
-This commit fixes a real bug in pointer calculation that causes
-incorrect memory access. The fix is:
-- Small and surgical (changes one variable initialization)
-- Obviously correct (uses the same pattern as other code in the driver)
-- Fixes a real bug (incorrect container_of usage)
-- Low risk (only affects debugfs, but still fixes incorrect memory
-  access)
+**Stable tree compatibility:**
+- The `spi-intel-pci.c` driver has been in the kernel for years
+- The `cnl_info` structure exists in all relevant stable trees
+- This patch will apply cleanly to any stable kernel that has this
+  driver
 
-The bug could cause reading garbage values or potentially undefined
-behavior. While debugfs is primarily a debugging interface, the
-incorrect memory access is still a real bug that should be fixed in
-stable trees.
+### 8. VERDICT REASONING
+
+**Why this SHOULD be backported:**
+
+1. **Explicitly allowed by stable rules:** New device IDs are a
+   documented exception that IS appropriate for stable trees
+
+2. **Zero regression risk:** Adding a new PCI ID to a table cannot
+   possibly break existing functionality
+
+3. **Minimal change:** Single line addition is as small and contained as
+   possible
+
+4. **Real user benefit:** Users with Nova Lake hardware need this to
+   have functional SPI flash support
+
+5. **Mature driver:** The intel-spi-pci driver is well-established and
+   the cnl_info configuration is used by many other platforms
+
+6. **Proper review:** Has maintainer acks from both Intel and SPI
+   subsystem maintainers
+
+**No concerns:**
+- No dependencies
+- No backport adjustments needed
+- Will apply cleanly
+- No new code paths or features
+
+This is a textbook example of a commit that should be backported to
+stable - it's a trivial device ID addition that enables hardware support
+using existing, well-tested driver code.
 
 **YES**
 
- drivers/spi/spi-hisi-kunpeng.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/spi/spi-intel-pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-hisi-kunpeng.c b/drivers/spi/spi-hisi-kunpeng.c
-index dadf558dd9c0c..80a1a15de0bc3 100644
---- a/drivers/spi/spi-hisi-kunpeng.c
-+++ b/drivers/spi/spi-hisi-kunpeng.c
-@@ -161,10 +161,8 @@ static const struct debugfs_reg32 hisi_spi_regs[] = {
- static int hisi_spi_debugfs_init(struct hisi_spi *hs)
- {
- 	char name[32];
-+	struct spi_controller *host = dev_get_drvdata(hs->dev);
- 
--	struct spi_controller *host;
--
--	host = container_of(hs->dev, struct spi_controller, dev);
- 	snprintf(name, 32, "hisi_spi%d", host->bus_num);
- 	hs->debugfs = debugfs_create_dir(name, NULL);
- 	if (IS_ERR(hs->debugfs))
+diff --git a/drivers/spi/spi-intel-pci.c b/drivers/spi/spi-intel-pci.c
+index b8c572394aac2..bce3d149bea18 100644
+--- a/drivers/spi/spi-intel-pci.c
++++ b/drivers/spi/spi-intel-pci.c
+@@ -81,6 +81,7 @@ static const struct pci_device_id intel_spi_pci_ids[] = {
+ 	{ PCI_VDEVICE(INTEL, 0x54a4), (unsigned long)&cnl_info },
+ 	{ PCI_VDEVICE(INTEL, 0x5794), (unsigned long)&cnl_info },
+ 	{ PCI_VDEVICE(INTEL, 0x5825), (unsigned long)&cnl_info },
++	{ PCI_VDEVICE(INTEL, 0x6e24), (unsigned long)&cnl_info },
+ 	{ PCI_VDEVICE(INTEL, 0x7723), (unsigned long)&cnl_info },
+ 	{ PCI_VDEVICE(INTEL, 0x7a24), (unsigned long)&cnl_info },
+ 	{ PCI_VDEVICE(INTEL, 0x7aa4), (unsigned long)&cnl_info },
 -- 
 2.51.0
 

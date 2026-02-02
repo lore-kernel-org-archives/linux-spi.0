@@ -1,230 +1,116 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31EDE3164D6;
-	Mon,  2 Feb 2026 21:47:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A4F330B30;
+	Mon,  2 Feb 2026 22:49:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770068840; cv=none; b=uQnE32/TWPdu7gWXIP0s4xTgdr26RdgQKUUcl1LIFIDn+02KaCxj/Lm0NnD42eyKDBlP7JQP6XMcx9JFngP2fO7LtCjJqSTXhHQFUCw5wC6RmaUfZzHbJXMSTVO2TLOvhTsexP6xlvLa0gKxuVpOj/HDXSDJheuDvmcC3yiIMu0=
+	t=1770072543; cv=none; b=jDBraZw0QFp7pYCkRr05HBI49+Pk69l978Ix5EaqhYyyM1OgTzj1tk5Kde3qen/HGVZzNw/+T2YNSYqNHh4uwzvXDnvPeSlY+Cz+2e8z8aD8N1HxAUHzeUC8bAe/KmDJ47jpgVplryJ4Kt9uVXILdpzpUxUpYl0NAgsuY9qrtbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770068840; c=relaxed/simple;
-	bh=fegejkVL+lLJoLfhYf6xVkGHeRs3KVjJLWElAzTPWGs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=idK+82QcZP/YID2acTC2j3YxmrRH9YbkXRogXu0xDOXOcQOmpP4+2UByy7b6yVYWNAmz7dES1H7PINhZed3tHS4AG4YrYn6mme48D5UXtMRK/X/5w6fv2XkAwb7B3PnjajoSpdU2+NuvKH14jhDjtdta+5Iv10jr0324Q8JNNe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qFav1RVr; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770072543; c=relaxed/simple;
+	bh=ZsoD2vl1E06oYSAcnI6EVM/cXK5Ab1V7TGQu/No2s9o=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=mK9BkD8IgaExfretV2JJnhcLCqnGRM8kIAGh9Eic/iyz0HsUYrqRUtPtMFjRCEFxnmW6ace2OVh8/sjwLWHzdA0tf6m8n9qw0j5UeufD5HFHCzanJy90c4V30xK5To70cm9NBcq7PVJkp6IMWyU/cMLmM/nWj5U3ZPydtlIAwTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dstfJg26; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qFav1RVr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57308C19421;
-	Mon,  2 Feb 2026 21:47:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dstfJg26"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8D32C116C6;
+	Mon,  2 Feb 2026 22:49:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770068840;
-	bh=fegejkVL+lLJoLfhYf6xVkGHeRs3KVjJLWElAzTPWGs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qFav1RVr94huZI2w0ReeYLORkxcA35dMioBH1mTjIMaKkZDqbX9D4rAaveX+iUPna
-	 QgY5J0CcMVWbOl5EqbUgtwOp7qAV+OWRgO1Oa/JOHtGwRIykAoRnrWpGTKIc1riAdz
-	 Bw4WsMn/qSBCCjdpH8y6hFWcoui5vmVMAH8BQjqSlhju8Ysy4G/vewhXiq8zaElRYo
-	 Z35qtlEgUxE0iZv5w8bKGwPAvouTNzhB5J81xKsZ/+ca3iH5KlWEGVfcmIEbnb8JRP
-	 sySmpgpI3qechey8bWNpW2d5RkT05LciThskH4yJDZtvaicOIPxo62hx8f0xSLYtFE
-	 c6cvTdVz/vmEw==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18] spi: intel-pci: Add support for Nova Lake SPI serial flash
-Date: Mon,  2 Feb 2026 16:46:12 -0500
-Message-ID: <20260202214643.212290-17-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260202214643.212290-1-sashal@kernel.org>
-References: <20260202214643.212290-1-sashal@kernel.org>
+	s=k20201202; t=1770072543;
+	bh=ZsoD2vl1E06oYSAcnI6EVM/cXK5Ab1V7TGQu/No2s9o=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=dstfJg26Ge6HFusPvD7+mzzfPJjvLq+jWT66JQI2ukQGkK0td0/8+vcyrtmwiDBQQ
+	 FW73CWg3oZO37COMCqQXRzGtvaGAc73tw/hvd/nN2m+faUe3ZJ5HItIRKVlPsxTgvd
+	 +ybxRizMS64c7PSWILAkZ9w14wg1jGejZH5t7R2wzJ2El0WEHKHOdk6QPFOOpFGcia
+	 7n7ar/YlEjorCSSoZMK6nC0Inl1+aZaagBo7YI8RW3tI1jRrgFsGV+d17qdzZ5EWZW
+	 gXoUtvaDlPWjGbm7pSVZd2lMu1svhb6DW+0O1IGalYDivpKqcQ3bq5zid1YUOygCOK
+	 YIeiS/g6NGTkw==
+From: Mark Brown <broonie@kernel.org>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Marcelo Schmitt <marcelo.schmitt@analog.com>, 
+ Michael Hennerich <michael.hennerich@analog.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, Andy Shevchenko <andy@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>
+Cc: Sean Anderson <sean.anderson@linux.dev>, linux-spi@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-iio@vger.kernel.org, Jonathan Cameron <jonathan.cameron@huawei.com>
+In-Reply-To: <20260123-spi-add-multi-bus-support-v6-0-12af183c06eb@baylibre.com>
+References: <20260123-spi-add-multi-bus-support-v6-0-12af183c06eb@baylibre.com>
+Subject: Re: (subset) [PATCH v6 0/9] spi: add multi-lane support
+Message-Id: <177007254040.964046.276664033882680983.b4-ty@kernel.org>
+Date: Mon, 02 Feb 2026 22:49:00 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.18.8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-47773
 
-From: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
+On Fri, 23 Jan 2026 14:37:23 -0600, David Lechner wrote:
+> This series is adding support for SPI controllers and peripherals that
+> have multiple SPI data lanes (data lanes being independent sets of
+> SDI/SDO lines, each with their own serializer/deserializer).
+> 
+> This series covers this specific use case:
+> 
+> +--------------+    +---------+
+> | SPI          |    | SPI     |
+> | Controller   |    | ADC     |
+> |              |    |         |
+> |          CS0 |--->| CS      |
+> |         SCLK |--->| SCLK    |
+> |          SDO |--->| SDI     |
+> |         SDI0 |<---| SDOA    |
+> |         SDI1 |<---| SDOB    |
+> |         SDI2 |<---| SDOC    |
+> |         SDI3 |<---| SDOD    |
+> +--------------+     +--------+
+> 
+> [...]
 
-[ Upstream commit caa329649259d0f90c0056c9860ca659d4ba3211 ]
+Applied to
 
-Add Intel Nova Lake PCH-S SPI serial flash PCI ID to the list of
-supported devices. This is the same controller found in previous
-generations.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-Signed-off-by: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Link: https://patch.msgid.link/20260115120305.10080-1-alan.borzeszkowski@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
+Thanks!
 
-LLM Generated explanations, may be completely bogus:
+[1/9] spi: dt-bindings: change spi-{rx,tx}-bus-width to arrays
+      commit: 37bb4033e48b8a0ddee66fd77f9e12a9a930681b
+[2/9] spi: dt-bindings: add spi-{tx,rx}-lane-map properties
+      commit: 31eab8425110b933dd7c818809cb4ffa3b2c6d82
+[3/9] spi: support controllers with multiple data lanes
+      commit: 002d561f89c3a61ee17d38070e48ea4eb1243732
+[4/9] spi: add multi_lane_mode field to struct spi_transfer
+      commit: 5621a7bc851658ea2f8e015060f8bb5d27739b06
+[5/9] spi: Documentation: add page on multi-lane support
+      commit: 05c3bd745bb065223201824f0044455558541bdc
+[6/9] spi: dt-bindings: adi,axi-spi-engine: add multi-lane support
+      commit: 2e706f86a5aa94702694774efb7d8b151c6d724f
+[7/9] spi: axi-spi-engine: support SPI_MULTI_LANE_MODE_STRIPE
+      commit: 0ec5ed7c95d1ba6a74491928ff38abb351dbed36
 
-## Comprehensive Backport Analysis
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-### 1. COMMIT MESSAGE ANALYSIS
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-**Subject:** "spi: intel-pci: Add support for Nova Lake SPI serial
-flash"
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-**Key information from message:**
-- Adds a new PCI ID for Intel Nova Lake PCH-S SPI serial flash
-  controller
-- Explicitly states: "This is the same controller found in previous
-  generations"
-- Has proper sign-offs from Intel developer and maintainer
-  acknowledgment
-- Link to patch message provided for traceability
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-**Notable:** No Fixes: tag or Cc: stable tag, but as noted in the
-analysis guidelines, this is expected for commits requiring manual
-review.
-
-### 2. CODE CHANGE ANALYSIS
-
-The diff shows a **single-line addition**:
-```c
-{ PCI_VDEVICE(INTEL, 0x6e24), (unsigned long)&cnl_info },
-```
-
-This adds PCI device ID `0x6e24` to the `intel_spi_pci_ids[]` table,
-using the existing `cnl_info` configuration structure (Cannon Lake
-info).
-
-**Technical details:**
-- The change adds one entry to the PCI device ID table
-- Uses the well-established `PCI_VDEVICE()` macro
-- References `cnl_info`, which already exists and is used by many other
-  device IDs in this driver
-- The insertion is alphabetically ordered (0x6e24 is placed between
-  0x5825 and 0x7723)
-- No new code paths, functions, or logic introduced
-
-### 3. CLASSIFICATION
-
-**This is a NEW DEVICE ID addition** - one of the explicitly listed
-exceptions in the stable kernel rules.
-
-From the guidelines:
-> **NEW DEVICE IDs (Very Common):**
-> - Adding PCI IDs, USB IDs, ACPI IDs, etc. to existing drivers
-> - These are trivial one-line additions that enable hardware support
-> - Rule: The driver must already exist in stable; only the ID is new
-
-This commit fits this exception perfectly:
-- The `spi-intel-pci` driver already exists in stable kernels
-- Only the PCI ID is being added
-- Uses existing configuration (`cnl_info`)
-
-### 4. SCOPE AND RISK ASSESSMENT
-
-**Scope:**
-- **Lines changed:** 1 line added
-- **Files touched:** 1 file (`drivers/spi/spi-intel-pci.c`)
-- **Complexity:** Minimal - just a table entry
-
-**Risk assessment:**
-- **Extremely LOW risk** - This is one of the safest possible changes
-- The new ID only matches Nova Lake hardware
-- Existing hardware continues to work exactly as before
-- If the ID is somehow wrong, only Nova Lake devices would be affected
-- The `cnl_info` structure is already well-tested with many other Intel
-  platforms
-
-### 5. USER IMPACT
-
-**Who benefits:**
-- Users with Intel Nova Lake PCH-S systems
-- Enterprise customers deploying on newer Intel hardware
-- Without this patch, SPI flash on Nova Lake systems won't be recognized
-
-**Impact assessment:**
-- **Positive impact:** Enables SPI flash access on new hardware
-- **Negative impact potential:** None for existing users
-- **Hardware scope:** This is a platform-level chipset, so all Nova Lake
-  systems are affected
-
-### 6. STABILITY INDICATORS
-
-- **Acked-by:** Mika Westerberg (Intel kernel maintainer) - positive
-  signal
-- **Signed-off-by:** Mark Brown (SPI subsystem maintainer) - indicates
-  proper review
-- The commit message explicitly states this uses the "same controller
-  found in previous generations" - this suggests the hardware is
-  compatible and doesn't need new code
-
-### 7. DEPENDENCY CHECK
-
-**Dependencies:** None
-- This commit is completely self-contained
-- It only adds an entry to an existing table
-- No prerequisites needed - the driver infrastructure is already in
-  place
-
-**Stable tree compatibility:**
-- The `spi-intel-pci.c` driver has been in the kernel for years
-- The `cnl_info` structure exists in all relevant stable trees
-- This patch will apply cleanly to any stable kernel that has this
-  driver
-
-### 8. VERDICT REASONING
-
-**Why this SHOULD be backported:**
-
-1. **Explicitly allowed by stable rules:** New device IDs are a
-   documented exception that IS appropriate for stable trees
-
-2. **Zero regression risk:** Adding a new PCI ID to a table cannot
-   possibly break existing functionality
-
-3. **Minimal change:** Single line addition is as small and contained as
-   possible
-
-4. **Real user benefit:** Users with Nova Lake hardware need this to
-   have functional SPI flash support
-
-5. **Mature driver:** The intel-spi-pci driver is well-established and
-   the cnl_info configuration is used by many other platforms
-
-6. **Proper review:** Has maintainer acks from both Intel and SPI
-   subsystem maintainers
-
-**No concerns:**
-- No dependencies
-- No backport adjustments needed
-- Will apply cleanly
-- No new code paths or features
-
-This is a textbook example of a commit that should be backported to
-stable - it's a trivial device ID addition that enables hardware support
-using existing, well-tested driver code.
-
-**YES**
-
- drivers/spi/spi-intel-pci.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/spi/spi-intel-pci.c b/drivers/spi/spi-intel-pci.c
-index b8c572394aac2..bce3d149bea18 100644
---- a/drivers/spi/spi-intel-pci.c
-+++ b/drivers/spi/spi-intel-pci.c
-@@ -81,6 +81,7 @@ static const struct pci_device_id intel_spi_pci_ids[] = {
- 	{ PCI_VDEVICE(INTEL, 0x54a4), (unsigned long)&cnl_info },
- 	{ PCI_VDEVICE(INTEL, 0x5794), (unsigned long)&cnl_info },
- 	{ PCI_VDEVICE(INTEL, 0x5825), (unsigned long)&cnl_info },
-+	{ PCI_VDEVICE(INTEL, 0x6e24), (unsigned long)&cnl_info },
- 	{ PCI_VDEVICE(INTEL, 0x7723), (unsigned long)&cnl_info },
- 	{ PCI_VDEVICE(INTEL, 0x7a24), (unsigned long)&cnl_info },
- 	{ PCI_VDEVICE(INTEL, 0x7aa4), (unsigned long)&cnl_info },
--- 
-2.51.0
+Thanks,
+Mark
 

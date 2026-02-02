@@ -1,87 +1,64 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D47B287276;
-	Mon,  2 Feb 2026 23:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABEB728136F
+	for <linux-spi@vger.kernel.org>; Mon,  2 Feb 2026 23:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770075215; cv=none; b=Yqj9EoWSOaKTloYu9SNAGdQ5AQgWa1hHA6UmUruRaEi8kfbayVAuFbrB7jLtse0zFD2vp1Dt3EE7mBB8UpIIG6IjV3U4beDp5OPfJBchpq5UFIxjqDb+hS0sWZvQtaw/lhImzN99ETd7IDq5ktiqxdEzi7X/HWUbhlZVqwreyOw=
+	t=1770075834; cv=none; b=ASjGjUXDElusX/09fsf/kKMuo93aBdXZTL8o5aYjuWO3KLRc4O4PoooxkwbD/t28nRw2ITHA7mENbs5t3LLB/blTfqacYQCkjhgXApjV/c7Mij4Obm37rXckpPvuQbhcG7F57GNjW1ELljfjHEt7VIRW8LEAtU5TIsdeUg9X4rg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770075215; c=relaxed/simple;
-	bh=uTcauUUxDk1QARIIvO0Qay0BsuBOJtklwhWuhR3nLeQ=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=j1Yo+ObyuEoIQSe8XYREqkOOytu8YAA44RqY0bMD0xvZGc6jk7B/pgGZXG3q5vfssQZogC0QM67lYf9EZuao3Oorl9Yf68LKxjmt1QVoiQDCKAj3lET/y0uBdBvUUY2W/QZjpHK2sjzXzd3eIsfsskelBDUQAOUQcNjMC/Dahjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oua6foBw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770075834; c=relaxed/simple;
+	bh=LfgQXhKmrKc+n7Za+i5c0iMiXwfbU5RLs6xKrG/kXe0=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=l2U7/MOOT4CCj3k69FtjN6bzoi+d+cn8rNOjmu7J1g+cwpubMnJVeXZtdjTQRklZY9QSvmAmdMbn+qhJWaTMs065s9lMbJky926GRhlOlgOoaZt6esbv2Ur0CEwnoiW35t2668o65DyTV1L58fGqFtZkZdOeeteFFq0/YpObAeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YRbxzn0A; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oua6foBw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F77CC116C6;
-	Mon,  2 Feb 2026 23:33:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YRbxzn0A"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90419C116C6;
+	Mon,  2 Feb 2026 23:43:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770075214;
-	bh=uTcauUUxDk1QARIIvO0Qay0BsuBOJtklwhWuhR3nLeQ=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=Oua6foBw/m3uiwlJSorc5z9Y5AdmMFtpWfazjLam89utlAtWk1wmEN4ScLjtq3R2D
-	 i5aShUL8WrntIQK7deCwDMY8DZxNORyRdUAEcu4YNSyd73tG/T1Ul86oA+Fh3nhQva
-	 drqSqR3lIJMEdx4AxvGo7cbZE20N7R8cr0i4SdO4Zq6XLTUGy2UnTPkGYee8viwruA
-	 Jxnm/A/MNWLuxZmlB+UZjrwQiT7/wGvTgIs5lTqdBNoEwlMGSN+T0lXmLn2xXNqTop
-	 8xP4rqoligv2GtN8LLZ0sfZk0Kv+LzKDi8dQx4NWWAWXx8ncQ2CRoEQkfaKBtD+ahU
-	 MCzHKa+Y4fujA==
-From: Mark Brown <broonie@kernel.org>
-To: Laxman Dewangan <ldewangan@nvidia.com>, 
- Thierry Reding <thierry.reding@gmail.com>, 
- Jonathan Hunter <jonathanh@nvidia.com>, 
- Zhang Shurong <zhang_shurong@foxmail.com>, 
- Helen Koike <helen.koike@collabora.com>, Felix Gu <ustc.gu@gmail.com>
-Cc: linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20260202-slink-v1-1-eac50433a6f9@gmail.com>
-References: <20260202-slink-v1-1-eac50433a6f9@gmail.com>
-Subject: Re: [PATCH] spi: tegra: Fix a memory leak in tegra_slink_probe()
-Message-Id: <177007521299.976788.8413773321991263199.b4-ty@kernel.org>
-Date: Mon, 02 Feb 2026 23:33:32 +0000
+	s=k20201202; t=1770075834;
+	bh=LfgQXhKmrKc+n7Za+i5c0iMiXwfbU5RLs6xKrG/kXe0=;
+	h=Subject:From:Date:To:From;
+	b=YRbxzn0AJMQZ6FWFuASdEfeZ3wMBPP7Zpq+qxDB82dMftIasL8Qa3oaIjkkOv63U8
+	 j5kPGFiyPVW7koSMwwKK+FKm0HCqXtEpRZ9QeMzoyIfusPY+cnJVIDYPkjs3hjyPeB
+	 xznsdyGmz6nH89Fy8tuvA/h6FMZXJXI7/qnoiZzxOSnCuRdR6dXjkBTXCyOuG1pHhE
+	 QVOFUYsHJChAyf8BKQ6dVcIv11vr4jIm24lwAG53LaBm1zYPIf629dqNKRYV8MZwHT
+	 2s8H69P4YSXCu8R7K8M8Jn+u512sRWpLHsFv1sd4SDd0tJUtzg/P3D6sRF2UdL96Yc
+	 jz0MBO6EeidSQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 911E53808200;
+	Mon,  2 Feb 2026 23:43:52 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-47773
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <177007583123.1233804.15497556398474331076.git-patchwork-summary@kernel.org>
+Date: Mon, 02 Feb 2026 23:43:51 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-On Mon, 02 Feb 2026 23:15:09 +0800, Felix Gu wrote:
-> In tegra_slink_probe(), when platform_get_irq() fails, it directly
-> returns from the function with an error code, which causes a memory leak.
-> 
-> Replace it with a goto label to ensure proper cleanup.
-> 
-> 
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+Patch: spi: tegra: Fix a memory leak in tegra_slink_probe()
+  Submitter: Felix Gu <ustc.gu@gmail.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1049836
+  Lore link: https://lore.kernel.org/r/20260202-slink-v1-1-eac50433a6f9@gmail.com
 
-Thanks!
 
-[1/1] spi: tegra: Fix a memory leak in tegra_slink_probe()
-      commit: 41d9a6795b95d6ea28439ac1e9ce8c95bbca20fc
+Total patches: 1
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
 

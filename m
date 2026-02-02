@@ -1,143 +1,126 @@
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384DB30F957;
-	Sat, 31 Jan 2026 02:57:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.181.231.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CE13378D8B
+	for <linux-spi@vger.kernel.org>; Mon,  2 Feb 2026 15:15:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769828268; cv=none; b=oPC9WGgm2q8WZyDHztglc5zD1qjB/L5XwownJwEzMmcshnG/09L0JA/lQf/lCTx0OnfJlA5YBYwXeqyjG/XVYvxAIYXYSI7pu1BjiGSvs1JgKiSrchPYn+jx9hhWxX7GhcfWBtzRITXPAoFBSXBNFSOnAcOvZ59ixxlaGhsAQHI=
+	t=1770045317; cv=none; b=HPoPxBnf18w4JA774rTCl60QY7Z4KGEl+zPgqoRdD6tgYx/YBm+8nYYTrXNzC+uQImC9I7WVP+XUo55UE+/QBooB5VyrKkEHyNA+zAIo15oIjKS38f8WxxOWbXuIW3GpFGggj3H4VFtfI4PlzQNi3EfuPnfmwQD0+600qxsY88I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769828268; c=relaxed/simple;
-	bh=Hv6fVzSSkS5TMg+Bv/8xYIUfDlpPRu1M7eFCPb4nc2o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=npSi1hlmzrAMTO9qLz1iZ4t4vVhvo9LrsnSHyX1W7gila6v6RSiNwdwLfGJWXoAf71E8t9nSrCx8RAQy23PK6HWMAmndYxLdhtK+OQnsFaL/RiVsqIlO4fnSd8Tvgr/i1Tu00SafRW5doxES1k4zg4S4eARkHD6XW2h1yGEhDMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b=By+Agdnc; arc=none smtp.client-ip=180.181.231.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+	s=arc-20240116; t=1770045317; c=relaxed/simple;
+	bh=bvebXC9I1YunyVizTunm4VUkYNAA0NAldv/+neltggY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ba59ymoNwCmFhAHO+ajcvoj3/QC1MP5Bgijl84vv9OO0PbAdcBTl2WaWTe7AWdFAyTs2FVcgnh/HyXh9VT6/V0onceyI6D5/4bqtGRC5DOUCNHNE68XOeNAg7I9jVdfZLd/VjT2iMQq4EIgplqo6yJVqh9ynr/g3uszCsZu1sik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G0Pope1q; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b="By+Agdnc"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
-	from:content-type:reply-to; bh=3wOThwjVEjG7NQ8lLaWkkzYwTr8y0NPlBDgaBGr3XXw=; 
-	b=By+AgdncMdzlIMzRIK30y3oQ0fLmq1VtJRb1xEb5FzqSPF7oVWGxezbu5+8YmMtVgwHU0zk/kAH
-	d6Xq9+oXd+hdFXjmSoPWZ6BwJqTbbdpg0mkukIXiNJu0KaVjn6T3b9xSe8hNCMO2VMSOhotdrU5dk
-	VlcLB8YmlQFCmpvYTh1QAeUrxploNeXWZvVVtOdE9lxpo5P6VQoQhFEWizfUXbKojAgcjvO6jkw6i
-	fb7BbYvOGfl11Zh6hxEw86K/wHQDIzMzb+o+Lq1PRkqA4CH6Bsj7POkXoeUiX40Z4Pjcm9GlpDL2c
-	h2DtyGc/oFK7fPwNmziDuPkSL8LhPqyLpnDQ==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1vm1Aa-003S1b-1y;
-	Sat, 31 Jan 2026 10:57:09 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Sat, 31 Jan 2026 10:57:08 +0800
-Date: Sat, 31 Jan 2026 10:57:08 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Robert Marko <robert.marko@sartura.hr>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	nicolas.ferre@microchip.com, alexandre.belloni@bootlin.com,
-	claudiu.beznea@tuxon.dev, davem@davemloft.net, lee@kernel.org,
-	andrew+netdev@lunn.ch, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, Steen.Hegelund@microchip.com,
-	daniel.machon@microchip.com, UNGLinuxDriver@microchip.com,
-	linusw@kernel.org, olivia@selenic.com, richard.genoud@bootlin.com,
-	radu_nicolae.pirea@upb.ro, gregkh@linuxfoundation.org,
-	richardcochran@gmail.com, horatiu.vultur@microchip.com,
-	Ryan.Wanner@microchip.com, tudor.ambarus@linaro.org,
-	kavyasree.kotagiri@microchip.com, lars.povlsen@microchip.com,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-	netdev@vger.kernel.org, linux-gpio@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-serial@vger.kernel.org,
-	luka.perkov@sartura.hr
-Subject: Re: [PATCH v5 00/11] Add support for Microchip LAN969x
-Message-ID: <aX1vhJ7SCu5JB2ga@gondor.apana.org.au>
-References: <20260115114021.111324-1-robert.marko@sartura.hr>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G0Pope1q"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-8230f8f27cfso2371522b3a.0
+        for <linux-spi@vger.kernel.org>; Mon, 02 Feb 2026 07:15:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770045316; x=1770650116; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=u9kCP8AYJvV0FCCtJryUeF0RXTCUXttv4p0WQQ6IQJY=;
+        b=G0Pope1qOKuzGTOQaQ2SnSjC3CGLk/J83Vt72SUKlRazsjymZ3w7fdzL5YfBzn2JS3
+         VVlFYexvf/ASavja3tjkamYIfmeoM+LwKRl03SEgH58a496iaJ4cd2EFzqlOdbq7cJnj
+         28psD+xi/rnn6I05bpmqVNcR4b8M2Mpao5cAAA7dStP3MTWeIA355JaSanX5trjMEWtD
+         tlvhk3sB6rfG3qbVz6cTm3ZILD7pE7/JxFieOsjWzuitHpzqMWgcbBbssLlDw/517vSW
+         c/TGtoASKNpQxOcV5RWBAcTnqj7lgZyqRZRWnpWvKPNgMdyFKlSFVtSJDMwayD995cFp
+         Z5Mg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770045316; x=1770650116;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=u9kCP8AYJvV0FCCtJryUeF0RXTCUXttv4p0WQQ6IQJY=;
+        b=tsTrbGfsJswyD3SYFM+F3KfeksfYHHI/XXzTXIl6CeNuM4pfqqF5ojHrJUURycvyuI
+         bHYw+jsvceB46wsseTtm490HQFwbQvoPCmCwv5qpCuOaF8ykCDPrxRjHz4/boFjc3W1h
+         7YrnUCsFdlRX5U13hfUXlx+uB6VyYSlD8KpuKC51cYNtTGP822EsmrnwAC/28kGAz07J
+         iVnZsXh9NqcdOlpEB+IYMsaraNBOpPMCFs8JflaagdQtNbg3ye9WLzprobwjV7Z8ATjw
+         HnwvIWkgS16PlBSWrNCvncUUogPkbJjZpkGDrOCQqXiGgURzyS69ObXBMUQzpiiti9g9
+         Xr7w==
+X-Gm-Message-State: AOJu0YzSWHWRG/WA/WVdTNC4WSlmMdzrXpGMa9hIeTfiAibVkZyXB/uT
+	P4n5Vy/EZtaZeNABeDQ4Tils/0paP7yeZdGkMSWDZOkP2y60nMb6U0vu8Rtg2MaK
+X-Gm-Gg: AZuq6aKZRHNjgmqPzOREzogMp3PbODWWS6oMk2DLrSRiwmwzGROMfPmc2ndOR2qptuR
+	+tpeL7iNrSW4Mcn666MeIg+kEDpCSnJGG94Ixuv2+eAMij2FomZWhfvuVLgcZ5Lh7cW1N0mQbC2
+	xox2aSCmGMzzQAX10k+LTJt1D4HIlTCIpKx1I/i0Q8p5UjSaXvGjfGdGPpxqiOtVAofHNq3AUGt
+	qnZhAC49yuqkmVKP91BTvm1QcdW8pBCgTrSANvKGYrahxoI51vALC9IL4v19OcRAvgXNnpnkOXq
+	jQMvU15JcasXkrSUTPTdzX+8C6SxQrtTz3+maNeXUPxeNk+AAlKiSrK0pHd5pwAhyl61nYfoEOq
+	XrPu6vjJYo+YK12B4iqo33wVnGfs22F56Emu5S5Hh3BUFTGf5+U7JuSLNaN47+pgFalmBpRtHGY
+	km6HYXevNHsqWWAiBqaiCkPPng
+X-Received: by 2002:a05:6a00:430c:b0:81f:45d3:adcc with SMTP id d2e1a72fcca58-823ab6711b2mr10981332b3a.18.1770045315622;
+        Mon, 02 Feb 2026 07:15:15 -0800 (PST)
+Received: from junjungu-PC.localdomain ([2408:820c:9008:ba52:75c1:2c3:72bc:6bca])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82379b6b277sm20326364b3a.29.2026.02.02.07.15.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Feb 2026 07:15:15 -0800 (PST)
+From: Felix Gu <ustc.gu@gmail.com>
+Date: Mon, 02 Feb 2026 23:15:09 +0800
+Subject: [PATCH] spi: tegra: Fix a memory leak in tegra_slink_probe()
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260115114021.111324-1-robert.marko@sartura.hr>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260202-slink-v1-1-eac50433a6f9@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAHy/gGkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDIKFbnJOZl62baGRkmWZuYGFmaJiiBFRbUJSallkBNic6trYWANEcs91
+ XAAAA
+X-Change-ID: 20260202-slink-a229f708611d
+To: Laxman Dewangan <ldewangan@nvidia.com>, Mark Brown <broonie@kernel.org>, 
+ Thierry Reding <thierry.reding@gmail.com>, 
+ Jonathan Hunter <jonathanh@nvidia.com>, 
+ Zhang Shurong <zhang_shurong@foxmail.com>, 
+ Helen Koike <helen.koike@collabora.com>
+Cc: linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Felix Gu <ustc.gu@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1770045312; l=1186;
+ i=ustc.gu@gmail.com; h=from:subject:message-id;
+ bh=bvebXC9I1YunyVizTunm4VUkYNAA0NAldv/+neltggY=;
+ b=SrKmfrJJu5wdKj/0AnKy6+wPl99HR0H45uHq+W266gYBHWR7sR1GNHvYcZbohI42hJhC81YLz
+ rEgRi3wC5MgC5EwMrgt8aZaK7zorFByUycB7MkGLuzPhlCNPB5+zMNj
+X-Developer-Key: i=ustc.gu@gmail.com; a=ed25519;
+ pk=fjUXwmjchVN7Ja6KGP55IXOzFeCl9edaHoQIEUA+/hw=
 
-On Thu, Jan 15, 2026 at 12:37:25PM +0100, Robert Marko wrote:
-> This series adds support for the Microchip LAN969x switch SoC family.
-> 
-> Series is a bit long since after discussions in previous versions, it was
-> recommended[1][2] to add SoC specific compatibles for device nodes so it
-> includes the required bindings updates.
-> 
-> [1] https://lore.kernel.org/all/20251203-splendor-cubbyhole-eda2d6982b46@spud/
-> [2] https://lore.kernel.org/all/173412c8-c2fb-4c38-8de7-5b1c2eebdbf9@microchip.com/
-> [3] https://lore.kernel.org/all/20251203-duly-leotard-86b83bd840c6@spud/
-> [4] https://lore.kernel.org/all/756ead5d-8c9b-480d-8ae5-71667575ab7c@kernel.org/
-> 
-> Signed-off-by: Robert Marko <robert.marko@sartura.hr>
-> 
-> Changes in v5:
-> * Picked Acked-by and Reviewed-by tags
-> * Change clock header license to match the DTSI one
-> * Alphabetize EV23X71A pin nodes
-> * Remove the requirment for all ethernet-port nodes to have phys property
-> as when RGMII is used there is no SERDES being used
-> * Drop phys from RGMII port on EV23X71A
-> * Drop USB, DMA, MIIM, SPI and I2C bindings as those were already picked
-> 
-> Changes in v4:
-> * Pick Acked-by from Andi for I2C bindings
-> * Move clock indexes from dt-bindings into a DTS header as suggested by
-> Krzysztof[4]
-> 
-> Changes in v3:
-> * Pick Acked-by from Conor
-> * Drop HWMON binding as it was picked into hwmon already
-> * Document EV23X71A into AT91 binding
-> * Drop SparX-5 and AT91 bindings merge
-> * Apply remark from Conor on DMA binding regarding merging cases
-> 
-> Changes in v2:
-> * Change LAN969x wildcards to LAN9691 in patches
-> * Split SoC DTSI and evaluation board patches
-> * Add the suggested binding changes required for SoC specific compatibles
-> * Merge SparX-5 and AT91 bindings as suggested[3]
-> 
-> Robert Marko (11):
->   dt-bindings: mfd: atmel,sama5d2-flexcom: add microchip,lan9691-flexcom
->   dt-bindings: serial: atmel,at91-usart: add microchip,lan9691-usart
->   dt-bindings: rng: atmel,at91-trng: add microchip,lan9691-trng
->   dt-bindings: crypto: atmel,at91sam9g46-aes: add microchip,lan9691-aes
->   dt-bindings: crypto: atmel,at91sam9g46-sha: add microchip,lan9691-sha
->   dt-bindings: pinctrl: pinctrl-microchip-sgpio: add LAN969x
->   arm64: dts: microchip: add LAN969x clock header file
->   arm64: dts: microchip: add LAN969x support
->   dt-bindings: arm: AT91: document EV23X71A board
->   dt-bindings: net: sparx5: do not require phys when RGMII is used
->   arm64: dts: microchip: add EV23X71A board
-> 
->  .../devicetree/bindings/arm/atmel-at91.yaml   |   6 +
->  .../crypto/atmel,at91sam9g46-aes.yaml         |   1 +
->  .../crypto/atmel,at91sam9g46-sha.yaml         |   1 +
->  .../bindings/mfd/atmel,sama5d2-flexcom.yaml   |   1 +
->  .../bindings/net/microchip,sparx5-switch.yaml |  15 +-
->  .../pinctrl/microchip,sparx5-sgpio.yaml       |  20 +-
->  .../bindings/rng/atmel,at91-trng.yaml         |   1 +
->  .../bindings/serial/atmel,at91-usart.yaml     |   1 +
->  arch/arm64/boot/dts/microchip/Makefile        |   1 +
->  arch/arm64/boot/dts/microchip/clk-lan9691.h   |  24 +
->  arch/arm64/boot/dts/microchip/lan9691.dtsi    | 488 +++++++++++
->  .../boot/dts/microchip/lan9696-ev23x71a.dts   | 756 ++++++++++++++++++
->  12 files changed, 1309 insertions(+), 6 deletions(-)
->  create mode 100644 arch/arm64/boot/dts/microchip/clk-lan9691.h
->  create mode 100644 arch/arm64/boot/dts/microchip/lan9691.dtsi
->  create mode 100644 arch/arm64/boot/dts/microchip/lan9696-ev23x71a.dts
-> 
-> -- 
-> 2.52.0
+In tegra_slink_probe(), when platform_get_irq() fails, it directly
+returns from the function with an error code, which causes a memory leak.
 
-Patches 4-5 applied.  Thanks.
+Replace it with a goto label to ensure proper cleanup.
+
+Fixes: eb9913b511f1 ("spi: tegra: Fix missing IRQ check in tegra_slink_probe()")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+---
+ drivers/spi/spi-tegra20-slink.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
+index 7d6f3fe8b7e3..8c608abd6076 100644
+--- a/drivers/spi/spi-tegra20-slink.c
++++ b/drivers/spi/spi-tegra20-slink.c
+@@ -1086,8 +1086,10 @@ static int tegra_slink_probe(struct platform_device *pdev)
+ 	reset_control_deassert(tspi->rst);
+ 
+ 	spi_irq = platform_get_irq(pdev, 0);
+-	if (spi_irq < 0)
+-		return spi_irq;
++	if (spi_irq < 0) {
++		ret = spi_irq;
++		goto exit_pm_put;
++	}
+ 	tspi->irq = spi_irq;
+ 	ret = request_threaded_irq(tspi->irq, tegra_slink_isr,
+ 				   tegra_slink_isr_thread, IRQF_ONESHOT,
+
+---
+base-commit: 4c87cdd0328495759f6e9f9f4e1e53ef8032a76f
+change-id: 20260202-slink-a229f708611d
+
+Best regards,
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+Felix Gu <ustc.gu@gmail.com>
+

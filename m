@@ -1,54 +1,123 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26D67156C6A
-	for <linux-spi@vger.kernel.org>; Tue,  3 Feb 2026 02:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C7A39B4AA;
+	Tue,  3 Feb 2026 10:04:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770087438; cv=none; b=kCv61Lxw1Mt0LhKzcIs2DpPebCNeBFMW2pzMnqfU7gnfG2Wugf806Nnc4uplGcXAsrhkTOviT6taPCVLbRgkK5EboQOqBtPPnf+C3ebEs9z2Nb3gyJKbLSdsjpmSh63ObDaHGxaz7h4s1KRHwhgkogdfjc3Ad4xy2wmXTcxogEg=
+	t=1770113095; cv=none; b=FiF/5/XjTpxpYLQ6JPBzceSzvp1wyHwcVc79WJHw5l3eZ8O3OXf3csNCOCJ3TNDVYQP+v+oA65ApDe5D2f+WyiTYv9e6suLJFBXnVoBkKpNvWdejOGxyBKdKLvTKWTlJqk42+04mLPLUCtxYUIEwIiHocFvuPTHkvyiUYd8wpb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770087438; c=relaxed/simple;
-	bh=rfbkATSKnwAt2+Yeq0Vts0/o1P+so+lQZO0e/PSZrUQ=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=WqPGfJWwgV+uRB8qBGTHbW+JwDoZ/RILyPZb9lI1DE1YkjR68k5WcZmgTK1RofMjMEAlFguZmy+s6vSacyXMqyc+liLWyhlsolIRw1kICRxV0GmdvqrkMeNs8XLiskISdoiEaz9rI5A6K1PoQh4CEnUfcyKdqjfmBDHokdFMtcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KdQ4OpEr; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770113095; c=relaxed/simple;
+	bh=cCc3RPrMLTwTgTOa+BQG6iu6tz4SnNTh7rKUlCzcrfg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=B+BlhoGankumZWFSEjm4Y7qQFKcq00p8JPlw5ktmxQ6uBGDAd702nZROaHtk56FdYl9ZHTC98RHaNjWHdDqOYPxvH5j6IMlHiZSX4pjjKgxSx5FDSLMZnxVmMKXeWXkMuLQtxSin5BxI4sq0+kkh85INMqrfVHn+w3mww2cC3wE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ItKIC6TZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KdQ4OpEr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1928C116C6;
-	Tue,  3 Feb 2026 02:57:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ItKIC6TZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC36AC116D0;
+	Tue,  3 Feb 2026 10:04:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770087437;
-	bh=rfbkATSKnwAt2+Yeq0Vts0/o1P+so+lQZO0e/PSZrUQ=;
-	h=Subject:From:Date:To:From;
-	b=KdQ4OpEr3Zw9lADQj+cQUIRvQZu35Nff9XJW+rb+eDrgVzSYXV8ISqYdC+l6tbpT/
-	 IaPPdBHr42abeea6Agu02Fkf+HAwddqpoO6cLA/65sDg7xHGYPek0fQ7am/xDJaWyL
-	 AJYOGYnz0bESyB6vqK0oWy0OqKgNsadZRuOWPuYvvuJqo/xcPDrxrzYjYZ87m7c5ce
-	 56dg5oB/GgxAYl1347mMntxY9xerRdTPXztKMRofzPnESUXpD1kBplA8BgmrKyuu7n
-	 2WIXxHIy7UEc/76bDnfx3w3pHJlrm+OyEZN/h+PyFomVG0LlmUq3CVp94nRLULQScJ
-	 GCN0crUnL+ZLA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 90FC63808200;
-	Tue,  3 Feb 2026 02:57:15 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1770113095;
+	bh=cCc3RPrMLTwTgTOa+BQG6iu6tz4SnNTh7rKUlCzcrfg=;
+	h=From:Date:Subject:To:Cc:From;
+	b=ItKIC6TZ1SCDFaceV76fUbbRV1xfNl8K9ikKnAULfC41+8gNvKMQm91FhoKWoYyea
+	 xoK5/iFxVeIAjYbbytI4OVU18D4G9gvrq2Cnq1Y/dcrkt0H6XpPyoYO+2Se7sRphfL
+	 kIsc5mqoQ1QAo04p09rlSKib7CwqYa0AzKO2PKB8xknMyxQa8HZUDj0g8+EYt4qrNL
+	 c6d6hrtI4fOOJr9A0fHOoKGV7hJl6/5aPlqGpAwQ3E9pvuOHZ9706kTczUy4fj5j/T
+	 oRCJsBXJ+5dAUt/ciiTcPd1b8OnXOcMryFWb7C5M6bVsQkrs/jcrDlh4RfefouZYDf
+	 qbviO1RF+xikQ==
+From: Linus Walleij <linusw@kernel.org>
+Date: Tue, 03 Feb 2026 11:04:51 +0100
+Subject: [PATCH] dt-bindings: spi: Add binding for Faraday FTSSP010
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <177008743423.1289463.16872023439470352162.git-patchwork-housekeeping@kernel.org>
-Date: Tue, 03 Feb 2026 02:57:14 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260203-gemini-ssp-bindings-v1-1-6d85c9c72371@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQqDMBBG4avIrB2IsRX0KuIiTabpv3CUDEhBv
+ LvB5bd47ySTAjGampOKHDBsWtG1DcVf0CyMVE3e+cF513OWFQo22/kDTdBs3MVXSJL8O8SRark
+ X+eL/XOflum47e5C0ZQAAAA==
+X-Change-ID: 20260203-gemini-ssp-bindings-1c4aded25ac9
+To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org, 
+ Linus Walleij <linusw@kernel.org>
+X-Mailer: b4 0.14.3
 
-Latest series: [v4] spi: xilinx: use device property accessors. (2026-02-03T01:55:12)
-  Superseding: [v3] spi: xilinx: use device property accessors. (2026-01-22T09:00:29):
-    [v3] spi: xilinx: use device property accessors.
+This adds a binding for the Faraday FTSSP010 SSP controller,
+a pretty straight-forward syncronous serial port and SPI
+controller.
 
+The bindings are submitted separately because the one device
+that has this is using it in a "nonstandard way" with regards
+to the electronics, and does not make it possible to develop
+or test a proper driver. However we want to be able to add
+this resource to the device trees and it's not complex.
 
+Signed-off-by: Linus Walleij <linusw@kernel.org>
+---
+ .../devicetree/bindings/spi/faraday,ftssp010.yaml  | 43 ++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/spi/faraday,ftssp010.yaml b/Documentation/devicetree/bindings/spi/faraday,ftssp010.yaml
+new file mode 100644
+index 000000000000..678598de3400
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/faraday,ftssp010.yaml
+@@ -0,0 +1,43 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/spi/faraday,ftssp010.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Faraday FTSSP010 SPI Controller
++
++maintainers:
++  - Linus Walleij <linusw@kernel.org>
++
++properties:
++  compatible:
++    const: faraday,ftssp010
++
++  interrupts:
++    maxItems: 1
++
++  reg:
++    maxItems: 1
++
++  cs-gpios: true
++
++required:
++  - compatible
++  - interrupts
++  - reg
++
++allOf:
++  - $ref: spi-controller.yaml#
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    spi@4a000000 {
++        compatible = "faraday,ftssp010";
++        #address-cells = <1>;
++        #size-cells = <0>;
++        reg = <0x4a000000 0x1000>;
++        interrupts = <0>;
++    };
+
+---
+base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+change-id: 20260203-gemini-ssp-bindings-1c4aded25ac9
+
+Best regards,
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Linus Walleij <linusw@kernel.org>
 

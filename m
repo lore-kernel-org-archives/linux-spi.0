@@ -1,123 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C7A39B4AA;
-	Tue,  3 Feb 2026 10:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AC61345753;
+	Tue,  3 Feb 2026 12:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770113095; cv=none; b=FiF/5/XjTpxpYLQ6JPBzceSzvp1wyHwcVc79WJHw5l3eZ8O3OXf3csNCOCJ3TNDVYQP+v+oA65ApDe5D2f+WyiTYv9e6suLJFBXnVoBkKpNvWdejOGxyBKdKLvTKWTlJqk42+04mLPLUCtxYUIEwIiHocFvuPTHkvyiUYd8wpb0=
+	t=1770122929; cv=none; b=h6XyB5g96gYaXsiN7PEVbYpgcMqxzdFGUqMlo5yzvYB9dL1moppTimJ2jS0NoMwcwVNTwvn8nrsSLEEyHZyKDaI+pKGOhjwQMxYDp6x0YegZXKv7LomzxYiD/Eq00gDIvQivnPo+WYK1E+fJfgVBahgvxng4Xw+bjvzff83mshE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770113095; c=relaxed/simple;
-	bh=cCc3RPrMLTwTgTOa+BQG6iu6tz4SnNTh7rKUlCzcrfg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=B+BlhoGankumZWFSEjm4Y7qQFKcq00p8JPlw5ktmxQ6uBGDAd702nZROaHtk56FdYl9ZHTC98RHaNjWHdDqOYPxvH5j6IMlHiZSX4pjjKgxSx5FDSLMZnxVmMKXeWXkMuLQtxSin5BxI4sq0+kkh85INMqrfVHn+w3mww2cC3wE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ItKIC6TZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770122929; c=relaxed/simple;
+	bh=GoQEXTMZ9Ikue95Hghv2U4KfjvZP3qi4h7j/Au2GuAc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VQoX+rI4CprezlnTmUG6WOzE8GOAq6EEt0AsA2Eq0ctXtlQ8xLLGgAMMrzUU20ZaEDiOFk3vtGNtaii1yPp76ETFGndBTtcKT46J5/lxKee3zLAV+LJMOgY54kswbpGyWGRPJIB+5JnF6FMMAp41Y3peZ0bc8TjnJb4m0BO+WfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ALpjSkom; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ItKIC6TZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC36AC116D0;
-	Tue,  3 Feb 2026 10:04:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ALpjSkom"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED7BCC19421;
+	Tue,  3 Feb 2026 12:48:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770113095;
-	bh=cCc3RPrMLTwTgTOa+BQG6iu6tz4SnNTh7rKUlCzcrfg=;
-	h=From:Date:Subject:To:Cc:From;
-	b=ItKIC6TZ1SCDFaceV76fUbbRV1xfNl8K9ikKnAULfC41+8gNvKMQm91FhoKWoYyea
-	 xoK5/iFxVeIAjYbbytI4OVU18D4G9gvrq2Cnq1Y/dcrkt0H6XpPyoYO+2Se7sRphfL
-	 kIsc5mqoQ1QAo04p09rlSKib7CwqYa0AzKO2PKB8xknMyxQa8HZUDj0g8+EYt4qrNL
-	 c6d6hrtI4fOOJr9A0fHOoKGV7hJl6/5aPlqGpAwQ3E9pvuOHZ9706kTczUy4fj5j/T
-	 oRCJsBXJ+5dAUt/ciiTcPd1b8OnXOcMryFWb7C5M6bVsQkrs/jcrDlh4RfefouZYDf
-	 qbviO1RF+xikQ==
-From: Linus Walleij <linusw@kernel.org>
-Date: Tue, 03 Feb 2026 11:04:51 +0100
-Subject: [PATCH] dt-bindings: spi: Add binding for Faraday FTSSP010
+	s=k20201202; t=1770122929;
+	bh=GoQEXTMZ9Ikue95Hghv2U4KfjvZP3qi4h7j/Au2GuAc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ALpjSkomsKM3SQ34jEsx3t1EKwY1yvq9CrzOJwoVGQVtHWHml3CP7puEaQH0Er3zH
+	 brdEcWlTNROiVmuvM9FxuLtgloWaNNekO2pQp1I5tMMx2GgY3CDtDRZN1xqztkAT46
+	 h14cqQcqDUtSqAteqhgYWfA/eEI+oMWpIZCv1kj5KRVC1JWQ6c1p1yHwgalPDpwade
+	 XqLFET29PEZ4zDK/6H7gej50jpnogTUmU5A+TN7dBZ3LqUbbNcawWMKWWg95iuFsgf
+	 LC4VM6/iKvS5NWJn5Sv2T0FG+dGvvNQ4gHWv8rtuocabvyTD3iL4OibYPKf8rNm42g
+	 022BEijLBGadA==
+Date: Tue, 3 Feb 2026 12:48:45 +0000
+From: Mark Brown <broonie@kernel.org>
+To: abdurrahman@nexthop.ai
+Cc: Michal Simek <michal.simek@amd.com>, linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4] spi: xilinx: use device property accessors.
+Message-ID: <849bf95a-133e-4faa-973c-19342afca327@sirena.org.uk>
+References: <20260203-spi-xilinx-v4-1-42f7c326061b@nexthop.ai>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260203-gemini-ssp-bindings-v1-1-6d85c9c72371@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQqDMBBG4avIrB2IsRX0KuIiTabpv3CUDEhBv
- LvB5bd47ySTAjGampOKHDBsWtG1DcVf0CyMVE3e+cF513OWFQo22/kDTdBs3MVXSJL8O8SRark
- X+eL/XOflum47e5C0ZQAAAA==
-X-Change-ID: 20260203-gemini-ssp-bindings-1c4aded25ac9
-To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org, 
- Linus Walleij <linusw@kernel.org>
-X-Mailer: b4 0.14.3
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="t84k7qtBs9ObTbmj"
+Content-Disposition: inline
+In-Reply-To: <20260203-spi-xilinx-v4-1-42f7c326061b@nexthop.ai>
+X-Cookie: Do you know Montana?
 
-This adds a binding for the Faraday FTSSP010 SSP controller,
-a pretty straight-forward syncronous serial port and SPI
-controller.
 
-The bindings are submitted separately because the one device
-that has this is using it in a "nonstandard way" with regards
-to the electronics, and does not make it possible to develop
-or test a proper driver. However we want to be able to add
-this resource to the device trees and it's not complex.
+--t84k7qtBs9ObTbmj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Signed-off-by: Linus Walleij <linusw@kernel.org>
----
- .../devicetree/bindings/spi/faraday,ftssp010.yaml  | 43 ++++++++++++++++++++++
- 1 file changed, 43 insertions(+)
+On Tue, Feb 03, 2026 at 01:55:12AM +0000, Abdurrahman Hussain via B4 Relay wrote:
+> ---
+> Changes in v4:
+> - Removed patches making the irq optional.
+> - Link to v3: https://lore.kernel.org/r/20260122-spi-xilinx-v3-1-8cea20e82f0b@nexthop.ai
+> ---
 
-diff --git a/Documentation/devicetree/bindings/spi/faraday,ftssp010.yaml b/Documentation/devicetree/bindings/spi/faraday,ftssp010.yaml
-new file mode 100644
-index 000000000000..678598de3400
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/faraday,ftssp010.yaml
-@@ -0,0 +1,43 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/spi/faraday,ftssp010.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Faraday FTSSP010 SPI Controller
-+
-+maintainers:
-+  - Linus Walleij <linusw@kernel.org>
-+
-+properties:
-+  compatible:
-+    const: faraday,ftssp010
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  reg:
-+    maxItems: 1
-+
-+  cs-gpios: true
-+
-+required:
-+  - compatible
-+  - interrupts
-+  - reg
-+
-+allOf:
-+  - $ref: spi-controller.yaml#
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+    spi@4a000000 {
-+        compatible = "faraday,ftssp010";
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+        reg = <0x4a000000 0x1000>;
-+        interrupts = <0>;
-+    };
+That was the changelog for v3 as well (and you dropped the changelog for
+v3...).
 
----
-base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-change-id: 20260203-gemini-ssp-bindings-1c4aded25ac9
+--t84k7qtBs9ObTbmj
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Best regards,
--- 
-Linus Walleij <linusw@kernel.org>
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmB7qwACgkQJNaLcl1U
+h9DYngf/a0dtVE9bwl62OCn814HhMa027S2vocFd+4LOvRmwR9AeCktln2ffod7m
+YWPa3ktlAM/7mZizlo30Ge5BtbvE9yTXL/NfDUXHTaQqrF/UtT3IUqjs4Uaq3Ibk
+kRSpWxx0Z8SxEUTwwYuRQO3zVT/bfRrYIrMDOz/HFAQSBTZqU8EdIfn1RFmvhryG
+WGNPeU1L9Ixw6SZH7j0QCOnUA5RWSXtqj4cz7Gw7PXoJxoWEATddFo/nnpwp5Abq
+UmS+VaBYFNMRGlVkv9o94IYWVGwd/CuiYieO7JOf7qY3MZQTnnaiPkOny3xR1kTb
+ktzCfDcYpvLk+VmDAOVMLp91WedA9A==
+=1d7o
+-----END PGP SIGNATURE-----
+
+--t84k7qtBs9ObTbmj--

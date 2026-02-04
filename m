@@ -1,81 +1,78 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BCA73ED10D;
-	Wed,  4 Feb 2026 12:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 231412BE639
+	for <linux-spi@vger.kernel.org>; Wed,  4 Feb 2026 12:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770206471; cv=none; b=eDEjB1A98ewWm+ULi7YEE9piAQYsmfxCbtrOAtrtaVEi7gQPV+4z5sLTFu3gaO/NGjADhpAbeGPncoaqtPufZG3Ppl5TQE/vV8KncLZ8PyN2qR/Xt+pVn44XZcDjFSXadHvY1NA3Sd2DxqZXAltde9egMh5ty6F/gA3uBhelhwk=
+	t=1770207012; cv=none; b=gtzWVDLZoctoQSPqZXve56nFLng8E6nNo8sp4oXnNmjTRDld4Bkm1Yp3dY/UDyyxBN/tE3RSOtFKDQh55ndD9Pd6YiFyq3PDAD4XZHVjAWh3TkUhYRTDlTlHHNVkY53QZz46wH+LejbZu8zRL/gK2moBbubSgSLXzFFLn+Zo52k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770206471; c=relaxed/simple;
-	bh=lH9HiQe1icK5XV1tUanZj5QknosMljGA5uHaf6rP8m0=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=f9EV+jC0O7hOCryyZYOnysD+68LQh+GzEA6DuIYeiIjI+QsghXLesTVhV1Lls9VFawFVrkKxcJhoPTWQd840zKqXehWYi1lSZxLyq4PQBnadbA8vKqjzPFXqwwmBRQ8W4U+Ml1FYbaIBfet/ILyC5ypRHC1iQzkvBg4SvbLLJ24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bnpkVKXq; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770207012; c=relaxed/simple;
+	bh=cS/NI687MmaSvGKGqvY7cvEPM/RXH3nr46FT+A3L+Co=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=pQxWtbIA6k/RQdNebcP0ET0Xw0J3/07+wVw/Ib3XyzzKHnUVep5oQ6sLXkTzG7bcyHTOw3/44Da+hp7ao+1a4GZctMcBldPTCMszv+HkWLRU3l0CA4KAR7q4kgbU2y+nsiT5a3oeVYEaI6R1vB4ec+pN2nOMZawgW2iU+v3s7ZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pxgtCH53; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bnpkVKXq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D674CC4CEF7;
-	Wed,  4 Feb 2026 12:01:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pxgtCH53"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABB61C4CEF7;
+	Wed,  4 Feb 2026 12:10:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770206470;
-	bh=lH9HiQe1icK5XV1tUanZj5QknosMljGA5uHaf6rP8m0=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=bnpkVKXq5h15PAsjSTSPDSsEdh7lZDngaFg/U/5F12w7+fW73XQPtblt2JvCdle3A
-	 YPljGeR1CbxodJm7wh/a3geWpw3P2qi6f+bC20hQZ+7oSBJAxBlcHg/jUQgdRtb2wH
-	 jDV8CGa/r89NepR+LSHoQPe5fiwtdzFXkANps8X8FqblRG/B2fjWMOxyyaKhDpgPK6
-	 vfFmRRhfLBXDS5zKHTV/jxix1akvDDe5/7EpwTHm6JkkBAmm4xdhCRhbjGJkoWuNuJ
-	 ta6p57Vvh/6dEPSdS3A+YoA81SlFZi2y/oSjGSa4X2cXchqrZ8YkPp2o0TUbncK1sk
-	 P5ve/YyqgGKKA==
-From: Mark Brown <broonie@kernel.org>
-To: Michal Simek <michal.simek@amd.com>, 
- Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20260203-spi-xilinx-v4-1-42f7c326061b@nexthop.ai>
-References: <20260203-spi-xilinx-v4-1-42f7c326061b@nexthop.ai>
-Subject: Re: [PATCH v4] spi: xilinx: use device property accessors.
-Message-Id: <177020646960.61613.6842316976047547845.b4-ty@kernel.org>
-Date: Wed, 04 Feb 2026 12:01:09 +0000
+	s=k20201202; t=1770207011;
+	bh=cS/NI687MmaSvGKGqvY7cvEPM/RXH3nr46FT+A3L+Co=;
+	h=Subject:From:Date:To:From;
+	b=pxgtCH53jlUgjyiP7xgyKP20K4mVPab0GUXCiXLxTWbF8rpHg4UZzkW9PEFKpZjAq
+	 KiaglIMXe28Z0Mwp7/vW2BP9uIqdzIoo5iw8GoQOjfg3gbTSGS46LdoAz9XFGkb9KX
+	 WaVx1eUP15/A4PkLO023rLprqh1bbG3JDVucJ9MMye8RqNapEpzPkW5ovMdpUpAO5D
+	 06ZhYWY9hypYbguFzjobXLTfcssHx7ed7CMnfj05aYWat/bHCe4aa1hXhow8YKj1pj
+	 XIPZX4Zb8REBAPkMUzXazwY1btGuFF8d8Alcf+J2SBY/2xIN/sNJg7o6OU5klSQ+Sc
+	 +DQK48AeOrCDA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0B1D3808200;
+	Wed,  4 Feb 2026 12:10:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-47773
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <177020700733.2316570.8280060949120470599.git-patchwork-summary@kernel.org>
+Date: Wed, 04 Feb 2026 12:10:07 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-On Tue, 03 Feb 2026 01:55:12 +0000, Abdurrahman Hussain wrote:
-> Switch to device property accessors.
-> 
-> 
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+Series: spi: xilinx: make it work on non-OF platforms
+  Submitter: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1043574
+  Lore link: https://lore.kernel.org/r/20260117012136.265220-1-abdurrahman@nexthop.ai
+    Patches: [v2,1/3] spi: xilinx: use device property accessors.
 
-Thanks!
+Series: spi: xilinx: switch to device properties and make IRQs optional
+  Submitter: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1043946
+  Lore link: https://lore.kernel.org/r/20260119-spi-xilinx-v3-0-4566c33bac0d@nexthop.ai
+    Patches: [v3,1/3] spi: dt-bindings: xilinx: make interrupts optional
+             [v3,3/3] spi: xilinx: use device property accessors.
 
-[1/1] spi: xilinx: use device property accessors.
-      commit: 4cc4ace709860c37f7f8019e950380a4694eb101
+Patch: [v4] spi: xilinx: use device property accessors.
+  Submitter: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1050017
+  Lore link: https://lore.kernel.org/r/20260203-spi-xilinx-v4-1-42f7c326061b@nexthop.ai
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+Total patches: 4
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
 

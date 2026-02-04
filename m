@@ -1,64 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBD7F2E11AA
-	for <linux-spi@vger.kernel.org>; Tue,  3 Feb 2026 21:34:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B07D3B8D46;
+	Wed,  4 Feb 2026 09:51:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770154491; cv=none; b=PEgh+P4jUYfnLwVw5g3TRzEEJlBUBRIx2hJ3KsF9xU+dyiCxgcPZwKYWhfLL1iZNXUA4JInMjvAr33QH3cb63rSU3y4AywdeMWpPv97jgsk1HUWxBX2TPvp4lboHRY//P5xLUJYsDDdOchyrcXyoSXDPGhw/up2Vd+4DUq7K2N8=
+	t=1770198707; cv=none; b=f70RtcNS290hKheYsmRZOoJjahm8deaCF1x1hxSszyJ8BkgFSJhj93wazK5Qfa3SBAtIDsdUVHKLjPteshjhd2R7G4gJ1lHPd3bb0dnTmiEojvVFt7Qh/Dn09oyazuuo3j2T5qvIRqS1ZlXvRjmcLknMjxWcSxyx/729crG/0SQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770154491; c=relaxed/simple;
-	bh=9O+nlgHvNVaEF3oH8nfbc7j6kbZw/IjEFzpj6eWn3VI=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=QWZBNDihEGdzTM3VkdEl4IJYT04bc56EnICp2YXCeg99yKSPDAy255LoWtjE8xqdHFdanNi0jyD40K1bWsqqxjtvwqPkC3Dkbmc1mKC1TaBESYjWQWaPObcwKaTEflzoOvFx6h15LuLk1hQpeshhqeKt69WjRG2dDWPwtES6mkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dwxvtfs/; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dwxvtfs/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8574AC116D0;
-	Tue,  3 Feb 2026 21:34:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770154491;
-	bh=9O+nlgHvNVaEF3oH8nfbc7j6kbZw/IjEFzpj6eWn3VI=;
-	h=Subject:From:Date:To:From;
-	b=dwxvtfs/5a8h6EFX9HZ0/oUj5AO2Bq9DF2zsE+zRu8JZp2q2Xp1tlkZJtl+HWRrHf
-	 /hufRFYJSOQ+htzENcsBSOGskU7dTDfBTIBPx3AksG5Vk4vzBIjAViVkoCA0iwxrVn
-	 7xc09BCDOafovERjjmRL9UROvWOXEI3T3b6Wf+yg6UYtXs6Q6NSVZ529tfs+ELjXjR
-	 PklkC0ZDoNYpVhSJbhzH1aoadLHDs2YBgKdkUY8hr8S6ba57MqLVyBKp+J9bPxDK/h
-	 xwtg/nnICIsUnkfOBXs57jyNI5SnRhj8u5CPbNqZYtcv05CYMzXZu6M64FJ/QjIlcp
-	 da7biW6Enls6A==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 16E013808200;
-	Tue,  3 Feb 2026 21:34:49 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1770198707; c=relaxed/simple;
+	bh=SOv3O413mHtdS43oewVVfmQ5gJEc8/SvynJ2iIQJ87w=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=S8ZNmOSx4lnaOKULLQyqUpsCLbNdjSr9nnpwIQgKMxFst0ipkSiKCfh3P8479/fiWR0ATVxPxR278k598FYgfIoIfL235VN8uX5QRbr3TMzorVK8fZEVugkUoYceLlMwAT0DtUCLt+AECOzGflj1nMDDlcUEsk7v2r14Nz64QKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.224.83])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4f5bFp56H3zJ46cs;
+	Wed,  4 Feb 2026 17:50:54 +0800 (CST)
+Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
+	by mail.maildlp.com (Postfix) with ESMTPS id 88AE840569;
+	Wed,  4 Feb 2026 17:51:43 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
+ (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 4 Feb
+ 2026 09:51:42 +0000
+Date: Wed, 4 Feb 2026 09:51:41 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Abdurrahman Hussain via B4 Relay
+	<devnull+abdurrahman.nexthop.ai@kernel.org>
+CC: <abdurrahman@nexthop.ai>, Mark Brown <broonie@kernel.org>, Michal Simek
+	<michal.simek@amd.com>, <linux-spi@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4] spi: xilinx: use device property accessors.
+Message-ID: <20260204095141.0000479a@huawei.com>
+In-Reply-To: <20260203-spi-xilinx-v4-1-42f7c326061b@nexthop.ai>
+References: <20260203-spi-xilinx-v4-1-42f7c326061b@nexthop.ai>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <177015448774.2033762.1968063150264774133.git-patchwork-summary@kernel.org>
-Date: Tue, 03 Feb 2026 21:34:47 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100010.china.huawei.com (7.191.174.197) To
+ dubpeml500005.china.huawei.com (7.214.145.207)
 
-Hello:
+On Tue, 03 Feb 2026 01:55:12 +0000
+Abdurrahman Hussain via B4 Relay <devnull+abdurrahman.nexthop.ai@kernel.org> wrote:
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (for-next):
+> From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+> 
+> Switch to device property accessors.
+> 
+> Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+> ---
+> Switch to generic device property accessors.
+> 
+> 2.52.0
+> 
+> base-commit: 944aacb68baf7624ab8d277d0ebf07f025ca137c
+> ---
+> Changes in v4:
+> - Removed patches making the irq optional.
+> - Link to v3: https://lore.kernel.org/r/20260122-spi-xilinx-v3-1-8cea20e82f0b@nexthop.ai
+> ---
+>  drivers/spi/spi-xilinx.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
+> index c86dc56f38b4..c4b70e95b695 100644
+> --- a/drivers/spi/spi-xilinx.c
+> +++ b/drivers/spi/spi-xilinx.c
+> @@ -405,11 +405,11 @@ static int xilinx_spi_probe(struct platform_device *pdev)
+>  		bits_per_word = pdata->bits_per_word;
+>  		force_irq = pdata->force_irq;
+>  	} else {
+> -		of_property_read_u32(pdev->dev.of_node, "xlnx,num-ss-bits",
+> -					  &num_cs);
+> -		ret = of_property_read_u32(pdev->dev.of_node,
+> -					   "xlnx,num-transfer-bits",
+> -					   &bits_per_word);
+> +		device_property_read_u32(&pdev->dev, "xlnx,num-ss-bits",
+> +					 &num_cs);
+> +		ret = device_property_read_u32(&pdev->dev,
 
-Patch: dt-bindings: spi: Add binding for Faraday FTSSP010
-  Submitter: Linus Walleij <linusw@kernel.org>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1050211
-  Lore link: https://lore.kernel.org/r/20260203-gemini-ssp-bindings-v1-1-6d85c9c72371@kernel.org
+Nothing useful is done with ret after this point, so could simplify to
+the pattern of setting the default then overriding it if the property
+can be successfully read.
 
+		bits_per_word = 8;
+		device_property_read_u32(&pdev->dev,
+					 "xlnx,num-transfer-bits",
+					 &bits_per_word);
 
-Total patches: 1
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+> +					       "xlnx,num-transfer-bits",
+> +					       &bits_per_word);
+>  		if (ret)
+>  			bits_per_word = 8;
+>  	}
+> 
+> ---
+> base-commit: 944aacb68baf7624ab8d277d0ebf07f025ca137c
+> change-id: 20260118-spi-xilinx-1b884d5b6519
+> 
+> Best regards,
 

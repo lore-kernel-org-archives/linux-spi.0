@@ -1,156 +1,98 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89545347BCA
-	for <linux-spi@vger.kernel.org>; Wed,  4 Feb 2026 17:02:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B5233985;
+	Wed,  4 Feb 2026 22:12:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770224544; cv=none; b=b+v4vVBV005v62NGd2Zs+0v15K1zG/p3yKXmG43DrdcjxhKI1MaYGwqscYMYHKTs4Wz3kSgDrDjPo7JuVbULancZCrWtfHwZJraeaT9fHtRBKU/3nJJvXPrrYs536TiJAnS4UNs5PWTvrkKlJ2RNJ3dPpc9QdgRQEmnO8sbYyQk=
+	t=1770243128; cv=none; b=hngBf3OVvWVuXJ0lxqT72kn6uvtBZn8AfqRz3nXvJlI0rbBAtu8PYB8EX3vMYRS2Z6Vq4CL1PwhuG+m/YQwHw7PUqb6HQl4AGXSS6mlVJ2HsWbfw0ssH83I7Tx6QoPuF067l32pCyylbtyu//+2Wg1kO36Tefy7c2VPz9oEbItA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770224544; c=relaxed/simple;
-	bh=nnHZV7AAqXqUQe1d4STMvjxcVhLgLzrieyguTS3hyRs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pYPHbUBhbjqbzue7gAhQkUBxJtvkAyRcAQuQEqFqwcanvhWJ8JU9QWXZ5vu/iJ/vFuCnQc0jsSXeRBxDSHk2EEp4rXd1PwEMkYEXcifOPzs+ZguZQFFz091Ka35mPz4Rfd5DenprC+H/An0ZuGV54f/csQd+g2tjbTantY/7Dfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=nVIWh3Td; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=bvQ62GRa; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1770243128; c=relaxed/simple;
+	bh=vpcR8WLMO+0F9KREUdrKC5t30Gxwf5z71iGLdTSJbbo=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=QLZz30KGOBXTT3BXFfVd4vjeXkMk7IyGnGBmUyR12Z1UTihIGFCIWCQ3vZJJNdV+XNx02pa5u/eB24VOGXPstMfzN2ZXWD2bhIm7RuejFBBw2ihvl5vaoYvCguOwyXvbzD3ccjJEX8sHpwJGuVW9ZcYJCpRpB4PU/NI+6m/HvN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lZj/HDAv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="nVIWh3Td";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="bvQ62GRa"
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 614CIeKa2167677
-	for <linux-spi@vger.kernel.org>; Wed, 4 Feb 2026 17:02:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	l7TtHj/lcyNRtk/zB9O7SKyf9AfO0zCvDPAlhMJjLD4=; b=nVIWh3TdH4xB2dME
-	o7yG7ali2uxi1kbp8C7BSvguGE0KNKwxGm6+vHAbmNGvRyXFQ6hHW5LLd/xjaeiw
-	fO+xiMThzB6PIe7TPRB4PClittPLJauPhkii4n6RUtMztWh0yHZN4yLhcdmMJX6k
-	Zvw5+lIbsZaxiJxsxnLFfbL/K6e4/dj2b2i4Cqj7efbg/Tmj9xsjvpxjGAPxRzwr
-	lJMnnWKuyln/Wj54dzdEAndlyMKbS1cKOQH/MwtxQFU5esDv7vOEnqHmPdGDiwTR
-	X9Oj7Af8DhnsF85UQYcPyUMdto0JV6hByLcy+z0JArZDChEzmCbJvjfPEUXLq62g
-	g3G+Wg==
-Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com [209.85.210.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4c45nvgynb-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-spi@vger.kernel.org>; Wed, 04 Feb 2026 17:02:23 +0000 (GMT)
-Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-7cfd4b12d78so8129a34.1
-        for <linux-spi@vger.kernel.org>; Wed, 04 Feb 2026 09:02:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1770224543; x=1770829343; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=l7TtHj/lcyNRtk/zB9O7SKyf9AfO0zCvDPAlhMJjLD4=;
-        b=bvQ62GRaJ2cGTMBCt8FFGPy3Eyw9n7cCHa1HpYvHQzh2stPtG3q0SsK8Yn/Sk1fKVa
-         MKfjh3PtOeuw+HZJ0QQ+2ovak3YRQJwmoP3TyBoCtz4AYuUrPpvwQfbPE9xD/dSgkIlT
-         Io6ZnqtiN7nzzA+NWSNu2YKm1anmd87mm7ishz13sekjnQ9qjopZs7A9ZJJ5G82T+srI
-         69QNozrjC9vPYT4J0YE3Fj79vsed7cnnDO7lVBcilZCh0Qw+Fam/30Jssx5ZjyunwHBS
-         F/6cBsVNTXuw7UnL/+D095CafiyjHHRZ3+Pdsv3YhdHquI0dQkdOwDjunFSpUTaBG51p
-         OIEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770224543; x=1770829343;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=l7TtHj/lcyNRtk/zB9O7SKyf9AfO0zCvDPAlhMJjLD4=;
-        b=EFw1mArMUuduLutnIssAN+DFN9lwvobXrI4xiO2Xvs4NnjjkP9wSNzE0tnXjYFVMuo
-         gFvPnJP4uQ4HPOEh4FwLw99OZReRKh20Bj7VvMXIeOYlZ0xj0HgdUyyCZEW5cGvmcpLe
-         m0p69SINiUwvMnb0hMYQeGlCt5XxTf7BZdBPtNb2JVWnwTbXmpt7qU2Ny2ZPq3uLZkNe
-         dZdLd5Odrv7wNLt+QEc+Xl/ldEYHEXV7u6glHcpz1Cxasg0I51Qrp/hu1Vgx4GMibkU9
-         AHag0jq7/w2U5bCxy9piZRnFKgxDQ3GfLH4Se+25KmDZ5v4fqy12TpBVeO8YQ1FWk+FB
-         rmFg==
-X-Forwarded-Encrypted: i=1; AJvYcCXtObIgjx5xVl2Q8XT/3b1H7n4vi9coJVbcxOrfOoAWzXJSTatcwOAj/owEWFGnde+QOkDlOAqqddw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/2DyicFNpH/AbVJDX65NgKdeHYGDmNyb5cspspMNqYJbKs8mj
-	JbOfKPXcIHQqq4DP8JD4NBzDVz7tRUMso5fooSXn2jD9U1hB5Hj8O1h1GRrwM0eeUVIYRo2DSgM
-	HWHE6PNt4cDaSW3LSmt0yOQpFaG2WO5LKj14gjIhEQdLQmUVyIIwDo1GcCpcOzx8=
-X-Gm-Gg: AZuq6aJxgbOTYfL3nUB9zHz4QzOFRrMvZAWuBZbeyVBMrSyBIwtzaayJYeCS2dp64jt
-	psq1KaHEkrQNXwCIYY9XRVlkL41SPFhqi+/uPozTxIErET8nC4RP8y0lbY1fDoLZZVkh4/nke9b
-	J1i2ZhG78iXYxrhPMx/mwSpRfPHAsA76XXpSKqHHXoy1wgaR69ouPoWTSHiUX5ih1Bh3VabEfn7
-	F+DoRvT2xs5lB47FMPW/7PF/to/9gx+iT7pppUR/+u0yBZcCmFzljUfhMYlFR0Dp8N+Eo91c8fo
-	WzHxb4R0Ha3mrD1Ty9/OaxFudJf6iggpQo/MfVJR0B3q9lKfeQHBkfKQuKTpkRWQLY2lezCXTtv
-	diwqzF/wa2vgp61Bopz6U/bJhOItE0RvlzLQ2jwe8D0S2P/SXe6xSOsBWYVfJqMExUuQ=
-X-Received: by 2002:a05:6830:3153:b0:7cf:d9a3:12c9 with SMTP id 46e09a7af769-7d44906702dmr1774032a34.7.1770224541751;
-        Wed, 04 Feb 2026 09:02:21 -0800 (PST)
-X-Received: by 2002:a05:6830:3153:b0:7cf:d9a3:12c9 with SMTP id 46e09a7af769-7d44906702dmr1773924a34.7.1770224539871;
-        Wed, 04 Feb 2026 09:02:19 -0800 (PST)
-Received: from [192.168.119.254] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6594a228ed0sm1492639a12.29.2026.02.04.09.02.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Feb 2026 09:02:17 -0800 (PST)
-Message-ID: <3ec4b87c-f967-41c0-805d-27c62093e990@oss.qualcomm.com>
-Date: Wed, 4 Feb 2026 18:02:13 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lZj/HDAv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6CBEC4CEF7;
+	Wed,  4 Feb 2026 22:12:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770243128;
+	bh=vpcR8WLMO+0F9KREUdrKC5t30Gxwf5z71iGLdTSJbbo=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=lZj/HDAvuc+mHWg4wzfIk3C/Qj9ANQDQo8FU2BDufJqy5x+LYAoAlX5qhxiWW5olw
+	 DOxz2j+/DoYdzsXXK+pc5ky9xJjarwbcZvXFhIbs9O7EqNhT2nwpApMSfbdmGoCty1
+	 9wdsHlc05QME3SZOCLLpbuYxNXDQgc7j9yA5UgsIM+1jgUlv8NjTDZ2PA4G3Q7KqjR
+	 fRdco9SsqARdXZQ+PKPDLp9ZzMyEGEjsAawEDiOLtbvUEGJ0LOv0E6Lkx1OJGPMW8l
+	 3DJHO/SxfWs+MJICNDSqviWbuDE0v9F0VTXKXwMdwGMuAUoV6uuhNijv9rsSnSOapW
+	 cGOHUpuedgW/A==
+From: Mark Brown <broonie@kernel.org>
+To: linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, bjorn.andersson@oss.qualcomm.com, 
+ dmitry.baryshkov@oss.qualcomm.com, konrad.dybcio@oss.qualcomm.com, 
+ Praveen Talari <praveen.talari@oss.qualcomm.com>
+Cc: prasad.sodagudi@oss.qualcomm.com, mukesh.savaliya@oss.qualcomm.com, 
+ quic_vtanuku@quicinc.com, aniket.randive@oss.qualcomm.com, 
+ chandana.chiluveru@oss.qualcomm.com, jyothi.seerapu@oss.qualcomm.com
+In-Reply-To: <20260204162854.1206323-1-praveen.talari@oss.qualcomm.com>
+References: <20260204162854.1206323-1-praveen.talari@oss.qualcomm.com>
+Subject: Re: [PATCH v2 0/4] Improve SPI target mode support and error
+ handling
+Message-Id: <177024312540.380254.1461688590164454858.b4-ty@kernel.org>
+Date: Wed, 04 Feb 2026 22:12:05 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/4] spi: geni-qcom: Fix abort sequence execution for
- serial engine errors
-To: Praveen Talari <praveen.talari@oss.qualcomm.com>,
-        Mark Brown <broonie@kernel.org>, linux-arm-msm@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        bjorn.andersson@oss.qualcomm.com, dmitry.baryshkov@oss.qualcomm.com
-Cc: prasad.sodagudi@oss.qualcomm.com, mukesh.savaliya@oss.qualcomm.com,
-        quic_vtanuku@quicinc.com, aniket.randive@oss.qualcomm.com,
-        chandana.chiluveru@oss.qualcomm.com, jyothi.seerapu@oss.qualcomm.com
-References: <20260204162854.1206323-1-praveen.talari@oss.qualcomm.com>
- <20260204162854.1206323-3-praveen.talari@oss.qualcomm.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20260204162854.1206323-3-praveen.talari@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA0MDEyOSBTYWx0ZWRfXzCCA0fqezSYD
- WgkNkYd53yR/VKCceW4uk1VeNi1fO8sn5pve1a+qHc/pgQySEgHEorNNYU8z+BKyt8k3rHlO+EH
- OgPnUwEh5FaBt7kUZLpoLnjQFWbHtHcVz53XkGwLbZtK2uilYXMbKPqNb7rCyG7ElMnW9dTL2Yg
- unjxYRE6dp44r5GQv0lv/hITE6Wy5tLgtxiTAXP7c4jOgp+r0Pnwlm1ngDgHZgODbKkymEOLWZj
- IHzG8hdPujLzn7wVBaYdMiUkwTZELL77fMrZzX+3QELJNsYhINlQDDx4traZzv9QDZaZ3u7aUOO
- zTXolLZ7omYYhDbVaO8Uvoo0xenL3nJDWkBxkNgKZOZgrjY8zdr8wQ7T15iHnk5oKQ6r9gNZLyp
- OpxjGnPdRT7YDBr/ZdXuAcJC8VFdprEch/I83wxN8ftLZTK21TpcBWwquze2jXH/Xmv28mGv9CU
- n8y9fpRAJXOh4wcGlVg==
-X-Authority-Analysis: v=2.4 cv=DLmCIiNb c=1 sm=1 tr=0 ts=69837b9f cx=c_pps
- a=+3WqYijBVYhDct2f5Fivkw==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8 a=2ADkXApKhB2aXO0F1dwA:9
- a=QEXdDO2ut3YA:10 a=eYe2g0i6gJ5uXG_o6N4q:22
-X-Proofpoint-GUID: L-7Mr8LkM4zpOvOgjTfVUu3Tsla526dJ
-X-Proofpoint-ORIG-GUID: L-7Mr8LkM4zpOvOgjTfVUu3Tsla526dJ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-04_06,2026-02-04_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 bulkscore=0 clxscore=1015 priorityscore=1501 impostorscore=0
- suspectscore=0 spamscore=0 phishscore=0 lowpriorityscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602040129
+X-Mailer: b4 0.15-dev-47773
 
-On 2/4/26 5:28 PM, Praveen Talari wrote:
-> The driver currently skips the abort sequence for target mode when serial
-> engine errors occur. This leads to improper error recovery as the serial
-> engine may remain in an undefined state without proper cleanup, potentially
-> causing subsequent operations to fail or behave unpredictably.
+On Wed, 04 Feb 2026 21:58:50 +0530, Praveen Talari wrote:
+> Enhance the Qualcomm GENI SPI driver's target mode support and improve
+> error handling for serial engine operations.
 > 
-> Fix this by ensuring the abort sequence and DMA reset always execute during
-> error recovery, as both are required for proper serial engine error
-> handling.
+> The current implementation has issues with incorrect controller allocation
+> for target mode, missing abort sequence execution during error recovery,
+> and lack of graceful abort mechanism for target operations. These problems
+> can lead to serial engine undefined behavior and improper resource
+> cleanup.
 > 
-> Co-developed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-> Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+> [...]
 
-Well I never left such a tag, but let's say I won't object too much..
+Applied to
 
-(it potentially carries legal meaning)
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-it's fine not to leave any sort of attribution for small changes or
-suggestions you receive during review, perhaps suggested-by if someone
-says "oh btw could you please look into fixing x in xyz.c too"
+Thanks!
 
-for the code:
+[1/4] spi: geni-qcom: Improve target mode allocation by using proper allocation functions
+      commit: 50464497b5874b7c2f3ab991cec81e916d40743c
+[2/4] spi: geni-qcom: Fix abort sequence execution for serial engine errors
+      commit: 96e041647bb0f9d92f95df1d69cb7442d7408b79
+[3/4] spi: qcom-geni: Drop unused msg parameter from timeout handlers
+      commit: 9934383f98c91d8dfdf16d0e980431041c2d17ee
+[4/4] spi: geni-qcom: Add target abort support
+      commit: 6516169fa7f6110ce42a5958c921255f2d0968bc
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-Konrad
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+

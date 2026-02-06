@@ -1,201 +1,232 @@
-Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010058.outbound.protection.outlook.com [52.101.201.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83969318BA5;
-	Fri,  6 Feb 2026 16:08:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770394088; cv=none; b=mO+kRM93cMWrUHHBMkWxhh8GC9ib2OhXVJ7IhbNR1zjBHiUXsjyGtNxKP/hiTPtVgrXfn7gtEQjBLerD4OoSoRcfzKUd75A5bjpJzzkol/Ow1G5xnIZIm4kx6MouDz63UOD4us8HPfykRUrNf/rELtvAqzxdq9DjrrMaElLrPrg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770394088; c=relaxed/simple;
-	bh=gUFNeiRe8VlWcTt7/ZpjKDl9rspSkpeHKX+epwrPkMY=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mYm+RkSqU8BFltXa0rMeyRf12Dtyz3tkcg7YylAJ0SrQsc22pzLlNLWDCxGkSShLnWUmMHtJiZHwwsuLu5QBdHJuzs3iqtwKA2dlJixt0P9WPf9nSOA0DCleipMIMUhnWEabDGw/tNUOgtm8acCetZXJ1Ygr8kHBUUWKhzjlw20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=RBjayxo5; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD0CA23D7E3;
+	Fri,  6 Feb 2026 19:23:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.58
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770405798; cv=fail; b=mEbbkNdQm0j1AClik1KWFdKNCx/YaIuJCzoaNh8WRDg0fCZ3KpLJl+xIjU1UOOOOKP7fgo5IHM7M+yLQpISFAjTHtjefp6ZU70QVfz8dbkFxp9yZ81RAPkfXw1X4+S+/5VK9HFmCZh292BjWZUCJoTQDTEpCs4lgwnXxl0WWdJ8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770405798; c=relaxed/simple;
+	bh=IAZYNFsPuIpFD8fRCkGl+6MG6dJVcPq7/iFItG+nHus=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=jQB5wGl00KhmjaHvdlNTKWbXZ98TMWDzG4wZgC3wk8EBFjk+myuhob/Bak0p6dPhTKsVi8h6OfgL6m4LG4xtJLzORxkJxqqnCUh3Z6T991eUGG+Ha6Usx4ozJEtjiLGKKgdcOMeompeBcvJxopWQPB637XoBV6FCRTrMP+qbNi8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=sv5/tgwB; arc=fail smtp.client-ip=52.101.201.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="RBjayxo5"
-Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
-	by mx0b-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6169sMkQ897366;
-	Fri, 6 Feb 2026 11:07:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=VFbCV
-	GNdv2yThIeAGDi2mdyQ+gW2WPqNqQTksbU/6Jk=; b=RBjayxo5bFhvJpUZuW+8F
-	3OusLlJcF4aVQ4Fh+Rda9kYjggb6hOCvVsx1KF3ROCOD3F7htRUVPYMMJVJpjvZS
-	vKtLtL516MZrDI4BRKhY2oSHq2U4ulpE9KEMmUZxh0IMujpOTC63YEYJrZ90veSq
-	tqWz8216GmcOG3I07eKv8mzZi0BqtprBXO4fn202iYV33DrpvKNjTEgyEtjms8A/
-	pq9Gnnqcg1RLw8LRoOKeR+WWgNHnDc3BjecDOsUhxDKPsM0n1idRbdKIHSmPbK+p
-	awb+F4CszLhGzbFXyDeT3GyT151+I/GIev3xPpyGzlzpnczmIiri1Co6XGldaBvh
-	w==
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 4c5e32h4ya-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 06 Feb 2026 11:07:44 -0500 (EST)
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 616G7h3P057147
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 6 Feb 2026 11:07:43 -0500
-Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
- ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.37; Fri, 6 Feb 2026 11:07:43 -0500
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
- ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.37; Fri, 6 Feb 2026 11:07:43 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.1748.37 via Frontend
- Transport; Fri, 6 Feb 2026 11:07:43 -0500
-Received: from HYB-b1tGeUj4GP1.ad.analog.com (HYB-b1tGeUj4GP1.ad.analog.com [10.48.65.247])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 616G7MAm000370;
-	Fri, 6 Feb 2026 11:07:36 -0500
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>,
-        Lars-Peter Clausen
-	<lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        "Jonathan Cameron" <jic23@kernel.org>,
-        David Lechner <dlechner@baylibre.com>,
-        =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-        Andy Shevchenko
-	<andy@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski
-	<krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Olivier Moysan
-	<olivier.moysan@foss.st.com>,
-        Mark Brown <broonie@kernel.org>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>
-Subject: [PATCH v2 2/4] iio: backend: add devm_iio_backend_get_by_index()
-Date: Fri, 6 Feb 2026 18:07:14 +0200
-Message-ID: <550323d752213f177b7673bdd42e667f1d2228cb.1770393792.git.antoniu.miclaus@analog.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1770393792.git.antoniu.miclaus@analog.com>
-References: <cover.1770393792.git.antoniu.miclaus@analog.com>
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="sv5/tgwB"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PFoxLQbRn32+g6MkxORbNVdU3pHCxYr7zusHmiZ3NDJzEXO3+mv90bEDrnb1vPdAqcRBsffSj+e2lVcjPo8bFdCYgm+kKg7qM/fVuvUu4T9F1TRP9aPkG9MkqN0xbbN5XdSMdW3a2c8UDO6HOUk8qQ+4inCye2B7IkQ4RzJJPEyKgSVKoo3DknIvdcpSpz/nHrMY0jlhZHZtwyH0iMByRD5APR2wpOpoLSk30mrl7scw0v+lJz3OewSCIFvY6Ua1O2NchtHZWkA52KVkOmw0uJia0hCJ6AdpAmKa2wRs0WtIYqjRCDWmjQIQbYqL3wReitzMa5Tu9AWqu4uMyUjMKA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cgoOM6lAV3k64IYQQGV5llq9GZJioKG2YUcoxIP9IyU=;
+ b=ut5DMmMYzFc+upMjZl55pVjYwgsN7kLnWFOsXLGwE3K5iljZ35Q2lLyqqAECsnzyXqlcgNSU7cJqL/HBitNifSacsYKOI3I9WMEi581PPOWZpzJPK9Mrz/GNeSPE5xbzWksnfzK9jUq6wlDN0xwxY4BaZU9DD7h0zHWqxrQIV9WvKgSFXr2kGw7goBREyaTafjDAL1GBQgm/nm2IC03Z82Pt83WpDsAU7F9lW8Rd/5IyMnHZYopzqH4GJ/zkCc7PLe6b/aBLK5lHx/Os0F59rR9WKHuXV/qQWhR3MggMRlGCqdo4XMXQ8pvOW8KcvYiMA7YXMgDTlQG5Wj2dNArIpQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 198.47.23.195) smtp.rcpttodomain=lists.infradead.org smtp.mailfrom=ti.com;
+ dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cgoOM6lAV3k64IYQQGV5llq9GZJioKG2YUcoxIP9IyU=;
+ b=sv5/tgwBFIrGWx/T9wAZLq25hhL2dbLhjmV2M8dFyqujakuJKWCQi7I8ZytPG9TvHkjxAqWwcr7+klNIRaI9R/vgJ1J/AfFAMkvBSOEvPqJGeZoHKZ5qoW4v7RUh9u/9k0or2bliT5WWf14MK88x1f9sRBKALWjZkHX+BxP/l/s=
+Received: from SN6PR2101CA0005.namprd21.prod.outlook.com
+ (2603:10b6:805:106::15) by DS7PR10MB5184.namprd10.prod.outlook.com
+ (2603:10b6:5:38e::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.15; Fri, 6 Feb
+ 2026 19:23:14 +0000
+Received: from SA2PEPF00001508.namprd04.prod.outlook.com
+ (2603:10b6:805:106:cafe::bf) by SN6PR2101CA0005.outlook.office365.com
+ (2603:10b6:805:106::15) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9611.3 via Frontend Transport; Fri, 6
+ Feb 2026 19:23:14 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.23.195)
+ smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
+ action=none header.from=ti.com;
+Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
+ 198.47.23.195 as permitted sender) receiver=protection.outlook.com;
+ client-ip=198.47.23.195; helo=lewvzet201.ext.ti.com; pr=C
+Received: from lewvzet201.ext.ti.com (198.47.23.195) by
+ SA2PEPF00001508.mail.protection.outlook.com (10.167.242.40) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9587.10 via Frontend Transport; Fri, 6 Feb 2026 19:23:13 +0000
+Received: from DLEE215.ent.ti.com (157.170.170.118) by lewvzet201.ext.ti.com
+ (10.4.14.104) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 6 Feb
+ 2026 13:23:11 -0600
+Received: from DLEE205.ent.ti.com (157.170.170.85) by DLEE215.ent.ti.com
+ (157.170.170.118) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 6 Feb
+ 2026 13:23:11 -0600
+Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DLEE205.ent.ti.com
+ (157.170.170.85) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Fri, 6 Feb 2026 13:23:11 -0600
+Received: from [172.24.233.254] (santhoshkumark.dhcp.ti.com [172.24.233.254])
+	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 616JN6J51835842;
+	Fri, 6 Feb 2026 13:23:06 -0600
+Message-ID: <fc8d1ac0-c713-40ee-b818-47548f9d1818@ti.com>
+Date: Sat, 7 Feb 2026 00:53:05 +0530
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 03/12] mtd: spinand: perform controller tuning
+ during probe
+To: Miquel Raynal <miquel.raynal@bootlin.com>
+CC: <broonie@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+	<conor+dt@kernel.org>, <richard@nod.at>, <vigneshr@ti.com>,
+	<tudor.ambarus@linaro.org>, <pratyush@kernel.org>, <mwalle@kernel.org>,
+	<linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
+	<praneeth@ti.com>, <u-kumar1@ti.com>, <p-mantena@ti.com>, <a-dutta@ti.com>,
+	<s-k6@ti.com>
+References: <20260113141617.1905039-1-s-k6@ti.com>
+ <20260113141617.1905039-4-s-k6@ti.com> <87tsvvgkks.fsf@bootlin.com>
+Content-Language: en-US
+From: Santhosh Kumar K <s-k6@ti.com>
+In-Reply-To: <87tsvvgkks.fsf@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: JJ-AgCM_M_qyH0cFBrszPr9GlaYrv-wB
-X-Proofpoint-ORIG-GUID: JJ-AgCM_M_qyH0cFBrszPr9GlaYrv-wB
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA2MDExNyBTYWx0ZWRfXyGfleE23ghY6
- dWOwcRS4F75XVjwfFjOSUCfoYSaB/9OENdQmH6+nvf2EZORgcihnZvdDbz5CFh6lMo7W9NM0wfq
- ern4XD6cqU/li2OuU5DcbfwPpfLgRCKjaMvrmvyZEla5tX2ZQ5imfaqkg1qFYrfR3B63YgKJgku
- 8CZs2MWwiWF2n4QXZYtDM/LHjTg1Kez8BD5lkXizi+qq72+xfzrmLdwdefOQv2VvSpn7jN0bVvp
- VngA8dbFbF4+l+le224lBJsJeHjQ7rKNKvgxrnNKfq8ZXcrReeyp/GCC7E2NtRG/Z7f4LxF8O5o
- R5+YNJEks+upnIKGYQi89g1rotkUZ9ZhXDBVwFllyGXjzyDyvVsYYGHaMNVRxxp3R8UK/MakO62
- ej+h5RIG8jUp0FYbr1orhJWnPhoQYAngmVO/rDIPp1avACjT/3SIMrsFMAbl/HK99xwjxSm99Uc
- JP/ewpu1h1SCAfwRTYg==
-X-Authority-Analysis: v=2.4 cv=NPzYOk6g c=1 sm=1 tr=0 ts=698611d0 cx=c_pps
- a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17
- a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22
- a=GgsMoib0sEa3-_RKJdDe:22 a=gAnH3GRIAAAA:8 a=uDLBfjgilch4dD8VpdgA:9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-06_04,2026-02-05_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 spamscore=0 lowpriorityscore=0 bulkscore=0 phishscore=0
- suspectscore=0 adultscore=0 malwarescore=0 impostorscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602060117
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PEPF00001508:EE_|DS7PR10MB5184:EE_
+X-MS-Office365-Filtering-Correlation-Id: df51f4a3-eb77-4a09-8265-08de65b52c4f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700013|82310400026|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?TEVsSTIrajVub1BJU2d5OCtIQkU3dmpLSDZrOElzNkJOdCtodFdnd01GYzIy?=
+ =?utf-8?B?RWpDK1JpYnVyWVBMOG9tbHNUOU93ZWsvWXpvOHZaVUt2UmhZSFpGSU5ocC9V?=
+ =?utf-8?B?RFZJbUhqMkdUTDZzN2t5N3BwOTFTNEtTT2VpUzFENk5LUVp0Rm16aEZVODNi?=
+ =?utf-8?B?YTh4OU1pRnpDdTNyM1VZMnVsaURKMVVCWkVrYmszZFF6cHZQOUdXRUJqbDky?=
+ =?utf-8?B?ZGdGTTMwZnFIY0xmZmU2d25ENUprWjFTbTQ3MzhTZ2VTUmt3MXJHSG5LRzNC?=
+ =?utf-8?B?TzhWU0Z6WW9lK3NMZjg2VkJiR29oV2JrcmY5MFdoeEpndUFtemlSSG9WeEpp?=
+ =?utf-8?B?anIwMURtZk80a09LRGhKUjdxS1FJenExVkRmUTlLMW9zclFjSmQxK2xMNWxZ?=
+ =?utf-8?B?QVh4ZVl4MjQ0Ukd5RHdBc1YzZEZ6TXluTmpkNjk4MDB1Q3hxU0NEdGljM2pp?=
+ =?utf-8?B?WWVtWDlaN1UvNEthVEllVlpWM1IvZ1RPYzdNcG1VY21jeTFTODN2MmRPYzlH?=
+ =?utf-8?B?WnA3dDh4enZkWGN3eDAyTGtSNFh4OWZWZE5YL1ZGYlROaXZCaTNKSVljUnNa?=
+ =?utf-8?B?Q1NGbUtJNUExTjdJa2U0c3pkOU9VTWhqcDhYcUU0dThsYnlEOUpsMWFuKzBM?=
+ =?utf-8?B?K0tjckFtUnFWMytuN0U5NEE0TCtnRDE2eHJTWVdRY2htbzl0KzN6dkEyUENx?=
+ =?utf-8?B?THpreEIySmNjQTV0WkdzNmtJclR6M1BZOGJPakV5UEVvWGtOVWVFMDAwQlN4?=
+ =?utf-8?B?b2ViWlB2VTZiYUxtd3IrMkRxNTlKUHZjMDE5ZXdzLzJVSWtiSXg5Vlp1U3E4?=
+ =?utf-8?B?SE4zM0xFTUlyQmpLYml4VGtUdVZzWG1vNU12VXFtaVE0dkxtcy9pV3c5Rlhi?=
+ =?utf-8?B?NE1SQjlCUHIyaEZqaWpCcENnUUs5czBYSThCL25nem1kVVpGNVNvUEVuanlQ?=
+ =?utf-8?B?cVEwTThzL1Q1STRhUlVET01acjdUSm13YXFGeHV4Q3g2SC9Vb1V5alVTMXNX?=
+ =?utf-8?B?NXJ3ZnUxdkJ4c0c4cEh4WktvMFRWOFZWU3NpR2FDanNBOFAxMk1HSC91dDVX?=
+ =?utf-8?B?Tlh4eTdXOWFPUXdhR3I2QXNZamdvR05acEhyeFkyOWV4bG9xRkhGWldTVXV6?=
+ =?utf-8?B?UEJjUnd6aUQvdzRhdFpHMXQzL2txdmtZNEFKc3AzWnVzcmoxa0k4MzN2VGxJ?=
+ =?utf-8?B?Szk3djFBcWtob2R2NlA5VG9SOFZGUzNobUo3ZjJFTFhsckRIWXU1UUkrcFVF?=
+ =?utf-8?B?bkt1aS9JeVJ2ZTExK3JyQ0pvb3RXWHlyY0cwWXdhUEoyVmEzellnNlQ4MXF1?=
+ =?utf-8?B?VHJEdGVQNnowaDFldkdvT0ZiMkxqUkZPRkdXMUIyRVp3c3JJbWF3Zk5CeXly?=
+ =?utf-8?B?SHU5RzBEaWhvblZoR1FjcWJuVUExV2NYemV4NDRlZnB0NnlyUjIrN1FBdE9D?=
+ =?utf-8?B?T24wcE5iNjg3Y1RLQUFRUU9FKzJ0cWtQWGlnMUlSYUV0QXRnNDQ0NmQrc0hJ?=
+ =?utf-8?B?WEpHNmM1WThPTXlNTURRVXFuUk5ZbDVndSt1VmJueVVZOGZJamFjMVFneEt2?=
+ =?utf-8?B?UFlMNS8xcEN1c1ozOEVXWGVBQmlHV2FFN1F0aXkzUHpqclB6cjJxa0V0bnlM?=
+ =?utf-8?B?N3ZMeTdqQWRpcHh5VGViZ252VzBFVXF1UXlWUzBlTTI5Tlh2dmx2VzVwZ3Jz?=
+ =?utf-8?B?VWgvNkx0aVFwckZ4OW1jM1hzeFFIV2tJeXFmOXk1WXBXa1Zad2hUZkRoRmts?=
+ =?utf-8?B?NlZEallnekhSN0xVNUxOMW9qM2p3L0RVUThVVHVzejhacGJ0TVgzbnJpaGRv?=
+ =?utf-8?B?c0JxeVlmbWgzM1k5MWVlZE9iWlN6ZWRacFJ0cDNWb1pudERuVmtJV1ZucHV4?=
+ =?utf-8?B?alBEV2xOb2w0STk1RHRxRS9WYmlURDcrelk2Ym1iem05TFptL2VKcWZrRGFo?=
+ =?utf-8?B?OXNZckFlclR2QjR2VjM2Y0llcmdaKzNFK2g1VGZRRnl1T3lCK2c0ZkVlT2ll?=
+ =?utf-8?B?UW5oQzk3WThJYTZPZzZ6WldBZFhOTlpaMkF6OEJQVU8zWHZncCsyek1ydCtk?=
+ =?utf-8?B?ek9UakVvaVIvOU0vY0dMYTFtSjlra1ZGWmNUM0pLWHRlc2VvQlUrWmFmNmpM?=
+ =?utf-8?B?SkVoWFpBOXN4dHR5c1A5Yzc2dVpLT2hPdXFjR2xobjBsVTV2VWoxRlRQKzE5?=
+ =?utf-8?B?WVYvbmFHaWJGS1lCTXYxNGZHSnp6aU8yejFURDlOdWtUM2RyVFY0UHRheFZK?=
+ =?utf-8?B?N1VUaEpSV1VXZkJnWjNPWDN5ejN3PT0=?=
+X-Forefront-Antispam-Report:
+	CIP:198.47.23.195;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:lewvzet201.ext.ti.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(82310400026)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	d0BTbG3IPxfD1Odg+20owAN3l30ZZr1WdMZPBcKhuOkc2F6M2SessOqzqEEsatOpviRsdzpjsj31YfBb2LiIryMDTwQMQUcoJd1iMZghLswGeE05PfRpi+oz7vIN5xG7MCoRgHVsA/xE3xVuVgOYJLPNkstvu0WivG2E/xXUaR5mPeQaoLm5wcDhKqX6v+evqQDKnvtItRSfJokKxOlQSmZPexvSsL0PQ5s2ICz5bDnHZeaWVELUsG4/0sRJsde0TJifJF8u+in6CknGCvPLvxQxSss8WH8+nA5YN5UXh47mO8mWbc/HwYmiDiGR+qltlfvPHSIwAVYqiACL0mTQCtk5skfOBSbxylh60nI/mVYTWqHRCK6eE4Ei8/6Q/hrH4Wr+vtu81F/JYL6h41F+mADkluWr0aT99RMqS9EGR0/S4R0I0+m6xe7Xe8X+iwTi
+X-OriginatorOrg: ti.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Feb 2026 19:23:13.9375
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: df51f4a3-eb77-4a09-8265-08de65b52c4f
+X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.23.195];Helo=[lewvzet201.ext.ti.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SA2PEPF00001508.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR10MB5184
 
-Add a new function to get an IIO backend by its index in the
-io-backends device tree property. This is useful for multi-channel
-devices that have multiple backends, where looking up by index is
-more straightforward than using named backends.
+Hi Miquel,
 
-The new function directly uses the index to find the backend reference
-in the io-backends property, avoiding the need for io-backend-names.
+On 05/02/26 23:05, Miquel Raynal wrote:
+> Hi Santhosh,
+> 
+> On 13/01/2026 at 19:46:08 +0530, Santhosh Kumar K <s-k6@ti.com> wrote:
+> 
+>> SPI controllers may need tuning for reliable high-speed operation.
+>> Without it, controllers use conservative timing that limits performance.
+>>
+>> Call spi_mem_execute_tuning() during probe to optimize timing for
+>> the device's read and write operations. Failures are non-fatal as
+>> controllers fall back to default timing.
+>>
+>> Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
+>> ---
+>>   drivers/mtd/nand/spi/core.c | 14 ++++++++++++++
+>>   1 file changed, 14 insertions(+)
+>>
+>> diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
+>> index 0346916b032b..2a45d1047736 100644
+>> --- a/drivers/mtd/nand/spi/core.c
+>> +++ b/drivers/mtd/nand/spi/core.c
+>> @@ -1658,6 +1658,7 @@ static int spinand_probe(struct spi_mem *mem)
+>>   {
+>>   	struct spinand_device *spinand;
+>>   	struct mtd_info *mtd;
+>> +	struct spi_mem_op read_op, write_op;
+>>   	int ret;
+>>   
+>>   	spinand = devm_kzalloc(&mem->spi->dev, sizeof(*spinand),
+>> @@ -1676,6 +1677,19 @@ static int spinand_probe(struct spi_mem *mem)
+>>   	if (ret)
+>>   		return ret;
+>>   
+>> +	read_op = *spinand->op_templates.read_cache;
+>> +	write_op = *spinand->op_templates.write_cache;
+> 
+> These will become:
+> 
+>   +	read_op = *spinand->op_templates->read_cache;
+>   +	write_op = *spinand->op_templates->write_cache;
+> 
+> after rebasing on nand/next or next -rc1.
 
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
----
- drivers/iio/industrialio-backend.c | 51 ++++++++++++++++++++++++++++++
- include/linux/iio/backend.h        |  2 ++
- 2 files changed, 53 insertions(+)
+Noted!
 
-diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industrialio-backend.c
-index 447b694d6d5f..3b692d48481e 100644
---- a/drivers/iio/industrialio-backend.c
-+++ b/drivers/iio/industrialio-backend.c
-@@ -1008,6 +1008,57 @@ struct iio_backend *devm_iio_backend_get(struct device *dev, const char *name)
- }
- EXPORT_SYMBOL_NS_GPL(devm_iio_backend_get, "IIO_BACKEND");
- 
-+static struct iio_backend *
-+__devm_iio_backend_fwnode_get_by_index(struct device *dev,
-+				       struct fwnode_handle *fwnode,
-+				       unsigned int index)
-+{
-+	struct fwnode_handle *fwnode_back;
-+	struct iio_backend *back;
-+	int ret;
-+
-+	fwnode_back = fwnode_find_reference(fwnode, "io-backends", index);
-+	if (IS_ERR(fwnode_back))
-+		return dev_err_cast_probe(dev, fwnode_back,
-+					  "Cannot get Firmware reference\n");
-+
-+	guard(mutex)(&iio_back_lock);
-+	list_for_each_entry(back, &iio_back_list, entry) {
-+		if (!device_match_fwnode(back->dev, fwnode_back))
-+			continue;
-+
-+		fwnode_handle_put(fwnode_back);
-+		ret = __devm_iio_backend_get(dev, back);
-+		if (ret)
-+			return ERR_PTR(ret);
-+
-+		back->idx = index;
-+
-+		return back;
-+	}
-+
-+	fwnode_handle_put(fwnode_back);
-+	return ERR_PTR(-EPROBE_DEFER);
-+}
-+
-+/**
-+ * devm_iio_backend_get_by_index - Device managed backend device get by index
-+ * @dev: Consumer device for the backend
-+ * @index: Index of the backend in the io-backends property
-+ *
-+ * Get's the backend at @index associated with @dev.
-+ *
-+ * RETURNS:
-+ * A backend pointer, negative error pointer otherwise.
-+ */
-+struct iio_backend *devm_iio_backend_get_by_index(struct device *dev,
-+						  unsigned int index)
-+{
-+	return __devm_iio_backend_fwnode_get_by_index(dev, dev_fwnode(dev),
-+						      index);
-+}
-+EXPORT_SYMBOL_NS_GPL(devm_iio_backend_get_by_index, "IIO_BACKEND");
-+
- /**
-  * devm_iio_backend_fwnode_get - Device managed backend firmware node get
-  * @dev: Consumer device for the backend
-diff --git a/include/linux/iio/backend.h b/include/linux/iio/backend.h
-index 7f815f3fed6a..8f18df0ca896 100644
---- a/include/linux/iio/backend.h
-+++ b/include/linux/iio/backend.h
-@@ -237,6 +237,8 @@ int iio_backend_extend_chan_spec(struct iio_backend *back,
- 				 struct iio_chan_spec *chan);
- void *iio_backend_get_priv(const struct iio_backend *conv);
- struct iio_backend *devm_iio_backend_get(struct device *dev, const char *name);
-+struct iio_backend *devm_iio_backend_get_by_index(struct device *dev,
-+						  unsigned int index);
- struct iio_backend *devm_iio_backend_fwnode_get(struct device *dev,
- 						const char *name,
- 						struct fwnode_handle *fwnode);
--- 
-2.43.0
+> 
+>> +
+>> +	ret = spi_mem_execute_tuning(mem, &read_op, &write_op);
+>> +	if (ret && ret != -EOPNOTSUPP) {
+>> +		dev_warn(&mem->spi->dev, "Failed to execute PHY tuning: %d\n",
+>> +			 ret);
+>> +		/*
+>> +		 * Tuning failure is non-fatal; the controller falls back to
+>> +		 * default timing, reducing speed but ensuring operation.
+>> +		 */
+>> +	}
+> 
+> Can we move the comment before spi_mem_execute_timing()? Then no more
+> brackets needed and it will be easier to read (imo).
+
+Yeah, I agree on the readability concern - will move them in v3.
+
+Thanks,
+Santhosh.
+
+> 
+> LGTM otherwise.
+> 
+> Thanks,
+> Miquèl
 

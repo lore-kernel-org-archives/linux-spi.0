@@ -1,51 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02104CA4E;
-	Fri,  6 Feb 2026 00:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D861EBA14;
+	Fri,  6 Feb 2026 00:19:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770337141; cv=none; b=lweKwvuXKcQDuOt6cekBjW1nv33bkgyh6mY7KDCBpDcqgIDXnLlrjctHoIswCvPquzb9pekUIDbDJpVmAViCPmR++VhLyDkVc0IG176XMbd42EHwB5Bqp7iJWNHHhcC0/md5Wd1D3YE0dXdkEhm+/tbM5+UpWhbwQHtAIJSBIN0=
+	t=1770337142; cv=none; b=GT3x0HhZ0u6pFFzjBITZAwG6P0U2b9J3KyIQd+6Ioel8MfUPzqTxOntR/4w+FHC4iwVpAmRZ0+zBNg6ooMpuLvoHxXtJzNkN27ZydmoyBEmNYinSoRguNXoG/xSApWA+AeFXZwZuocFfSgOIJk5q0E+aGSjitnjcXKYXCwRw5V0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770337141; c=relaxed/simple;
-	bh=V8opFpQ39R30vQfM2h6i3ZrP+S7JGt1EHVc/iQHSGPI=;
+	s=arc-20240116; t=1770337142; c=relaxed/simple;
+	bh=lrhlkyeGAXpmAIBptKCG2tGQTvtZb2+82G0pxM3E4q0=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=VkZuC8KDqkqRdugVWbNs3kd+W1PXg9cq6AcTJz5tCEHljNSK70xjDpPep4XSKhd4mYi8pSWwj2fKNbDa8FEKOqZcRKVzm7NUdhyCJNYK2r8qcB7r6CSNHlyp3BEhW/vcaBhxV2XYYY/+hQD+Pne1h5exJUXjuPVUazls0KioHCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zrgdw+iR; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=BIbz7tH/KRF5CfryNagsSHoAKTLP3xASW2npBHXzEuCNmI80jJ8BZgZBC+0avuAS//AvB/lokS0UO8xfYBNaXPnrzLjDWq+LHn2slOxVz35g6HN1Lq24+QHvxi0VfeR8I/bg3p4mSDcsFBYIWDvf3lyzILOa0M5zLTfUpqSRV1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OJDT4KVJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zrgdw+iR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70F94C4CEF7;
-	Fri,  6 Feb 2026 00:18:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OJDT4KVJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1799EC19421;
+	Fri,  6 Feb 2026 00:19:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770337140;
-	bh=V8opFpQ39R30vQfM2h6i3ZrP+S7JGt1EHVc/iQHSGPI=;
+	s=k20201202; t=1770337142;
+	bh=lrhlkyeGAXpmAIBptKCG2tGQTvtZb2+82G0pxM3E4q0=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=Zrgdw+iRA1ATXi9YtrIOUNfoEGQyYcVZflrperRFRa7onPiiZVy/Z2Uh5CCr6oqxT
-	 2mzx/Fb2hQDFQT42VmM9KoTfxJUFSyhrmj7SxJe4t6By/burc8tdjmHVORQjS2G6/j
-	 B8vUO912/d/BKqOQRmV+9F0H78jmRLwiTBcAc5dh7kfZk9YYwjiSrNKqF/euwtwk2O
-	 P2HXmmrNc7Pjktu9GEtFNFvRnKELssJKl5oj5Ujb3mQVnZfZYNsi45FWnsDGPmej4B
-	 8qhksnacuaRzyzN5ayXz6WkjiDBiT1VJR4wcNxi6xWDdjTBzCOZooiueUT8EKUS35b
-	 cwhrWilWdVDCw==
+	b=OJDT4KVJPvx8N6S9if0Y+WHSzcXQDAvKB6zdOMpB06gbfcvzBRGqJTQ1XFklonWG3
+	 ittjInDq0R/MEFPDw/1CV2SJ0auN0u63tXfWj5S/KZVzgdVGY2eczqloFeaDwzpzok
+	 5kXNJ34EH3AFIj5OeYzDtTtLy1E3PPf6LakN8lZgqzRs+ka/KqBkus/uQpMtZMJn+d
+	 QXC9HuJ76BsxEFGT7vBV7u0FWB1Z/nxAKB35kC3AwTQkFtUxbzxWXwyOX0qOxkeq60
+	 Br43QO6J4rxf1/WN3fpilc36ihJpfo51E4PyA/TxMZyiDw/1T29usQKmgGFhxVFkw6
+	 aao2Atu80yvcg==
 From: Mark Brown <broonie@kernel.org>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Geert Uytterhoeven <geert+renesas@glider.be>, 
- Magnus Damm <magnus.damm@gmail.com>, Vaishnav Achath <vaishnav.a@ti.com>, 
- "Miquel Raynal (Schneider Electric)" <miquel.raynal@bootlin.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- =?utf-8?q?Herv=C3=A9_Codina?= <herve.codina@bootlin.com>, 
- Wolfram Sang <wsa+renesas@sang-engineering.com>, 
- Vignesh Raghavendra <vigneshr@ti.com>, Santhosh Kumar K <s-k6@ti.com>, 
- Pratyush Yadav <pratyush@kernel.org>, 
- Pascal Eberhard <pascal.eberhard@se.com>, linux-spi@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-renesas-soc@vger.kernel.org
-In-Reply-To: <20260205-schneider-6-19-rc1-qspi-v5-0-843632b3c674@bootlin.com>
-References: <20260205-schneider-6-19-rc1-qspi-v5-0-843632b3c674@bootlin.com>
-Subject: Re: (subset) [PATCH v5 0/4] spi: cadence-qspi: Add Renesas RZ/N1
- support
-Message-Id: <177033713720.233295.10091402789767547570.b4-ty@kernel.org>
-Date: Fri, 06 Feb 2026 00:18:57 +0000
+To: Vishwaroop A <va@nvidia.com>
+Cc: Laxman Dewangan <ldewangan@nvidia.com>, 
+ Thierry Reding <thierry.reding@gmail.com>, 
+ Jonathan Hunter <jonathanh@nvidia.com>, linux-spi@vger.kernel.org, 
+ linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260204141212.1540382-1-va@nvidia.com>
+References: <20260204141212.1540382-1-va@nvidia.com>
+Subject: Re: [PATCH] spi: tegra114: Preserve SPI mode bits in
+ def_command1_reg
+Message-Id: <177033714083.233295.17808462615832612540.b4-ty@kernel.org>
+Date: Fri, 06 Feb 2026 00:19:00 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -56,17 +48,13 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.15-dev-47773
 
-On Thu, 05 Feb 2026 19:09:47 +0100, Miquel Raynal (Schneider Electric) wrote:
-> This series adds support for the QSPI controller available on Renesas
-> RZ/N1S and RZ/N1D SoC. It has been tested with a custom board (see last
-> SPI patch for details), but has been tested by Wolfram (thank you!) on
-> the DB board.
-> Link: https://lore.kernel.org/linux-devicetree/20260116114852.52948-2-wsa+renesas@sang-engineering.com/
-> 
-> Adding support for this SoC required a few adaptations to the Cadence
-> QSPI driver which have already been merged (except one regarding clocks
-> handling). This series contains the remaining patches, the ones actually
-> adding support for the RZ/N1 flavour.
+On Wed, 04 Feb 2026 14:12:12 +0000, Vishwaroop A wrote:
+> The COMMAND1 register bits [29:28] set the SPI mode, which controls
+> the clock idle level. When a transfer ends, tegra_spi_transfer_end()
+> writes def_command1_reg back to restore the default state, but this
+> register value currently lacks the mode bits. This results in the
+> clock always being configured as idle low, breaking devices that
+> need it high.
 > 
 > [...]
 
@@ -76,12 +64,8 @@ Applied to
 
 Thanks!
 
-[1/4] spi: dt-bindings: cdns,qspi-nor: Add Renesas RZ/N1D400 to the list
-      commit: 2b97f5cd1a956a9ac948ec57775600158988dadd
-[2/4] spi: cadence-qspi: Kill cqspi_jh7110_clk_init
-      commit: 324ecc7788c2e21d0d9197a8c015ff75382122d9
-[3/4] spi: cadence-qspi: Add support for the Renesas RZ/N1 controller
-      commit: a40236feb62ccbf2b36d288550a483122b3205e5
+[1/1] spi: tegra114: Preserve SPI mode bits in def_command1_reg
+      commit: a0a75b40c919b9f6d3a0b6c978e6ccf344c1be5a
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

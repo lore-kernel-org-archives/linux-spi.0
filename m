@@ -1,66 +1,66 @@
-Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A382EAD10
-	for <linux-spi@vger.kernel.org>; Sat,  7 Feb 2026 18:09:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2BC28151C
+	for <linux-spi@vger.kernel.org>; Sat,  7 Feb 2026 18:13:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770487779; cv=none; b=uWPPi2C/JTMy21W+nHdln3zNTruc+FS4InwGbyaPBrO1+w5tk/9zCsamLMy7zPqc6tSXRer0Rnf92lI2zONel7KkMdQBxuB3fdoqBjMxLK3tCddjSUSTCstHT8fj7KL0wpZx8YowwPb6gyRLAZiNW2xdic2pp/Dn/q4ZoQd3uQc=
+	t=1770488026; cv=none; b=BsgRgc/1lOJ26l6GMfTzqBqAHhImkO5ugqh0h5prorNdalfPUlRB2G7qXGWXB1YIs4CN0L/8OZLziNqxPHJAc2LxQ9kinI7u/Jhoh03njcd/HS+WFN8Z7lZTw7yvwOB8XE1I+AvhrLQadN51zod3dCocp3+qBsERCs7UGuHCqE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770487779; c=relaxed/simple;
-	bh=Z1RlCkvjAKV6GMKhbwoWjgZvhZGNQ0TOlPqMxvRH9eY=;
+	s=arc-20240116; t=1770488026; c=relaxed/simple;
+	bh=VVehCyZb7ZKZZHn5tlvmr/MsuVCnRwTQpqyQj4UtmHY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=NxjnGiGVo+TZNZUnz1u/9w3055IPnRibGoRzDsWn+hdyojSCvKWW6M2I1ieyqubZf4trD31stvicUZnejHXEJtqwr6Wex3bmPMZ1KTNsoxeBVOMzR8hqW6Tgk1bn8IN0Xnt6Gxjkpesk2UwgPdjjAXlzv67JEOkbBOpRAIid9zY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=YasdDXT+; arc=none smtp.client-ip=209.85.160.47
+	 In-Reply-To:Content-Type; b=tm1uUf7qcCUvR2EYJegod5+vfV5MDUXWyX282ouKvW3opjU3hJ3Dy+yQG9brIDcTwmt4oI1wJJ1InSzyA7kq4Dpi8uOdtZLcbJKXA1JlCZ+0w703XJMEG9FLDLzCd8+TFPsx84p2/7l3k1Ioy5GbtiGLMrhdJgb3AMAmO1XIBV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=WAzKmzuy; arc=none smtp.client-ip=209.85.210.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="YasdDXT+"
-Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-4094b31a037so1902723fac.1
-        for <linux-spi@vger.kernel.org>; Sat, 07 Feb 2026 10:09:38 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="WAzKmzuy"
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-7d45d37f8e4so1533283a34.0
+        for <linux-spi@vger.kernel.org>; Sat, 07 Feb 2026 10:13:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1770487778; x=1771092578; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1770488024; x=1771092824; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:to:subject:user-agent:mime-version:date:message-id:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=doeEscZbmqUzRLkmGbD2wulpXvhEwLpY3gZ7s/QLWDw=;
-        b=YasdDXT+PSQGxVL4yqiV6baqDWcuTn+aeYlC+08D6q3bByU6qswlUJW1KJvBtFfb8G
-         ddtfvmCXJoFMI8tHG61s7X+7EFfJD0mgiXEPxghWHI5g42E2/crplxnXzmXurq/drRAA
-         zek9l3gXbx1r0F8SPaEbUxDTGs/75oBfhJgLq8degjPmTGBWglKMfvPvQ9ZHA2UQsavj
-         yk9Hhw8lwi4K31syJ7STbd1o57+POIfmgrJfgYaSywTWdi4UVmeg7jgR+e1Oi/JkrSa0
-         /CikZAy0wJzfW6f/2MZ8A6EZvnzrahxEvfj/7YHUIHbATVWzqD0oBLLLwAkUnaUNF4Pb
-         WM/A==
+        bh=tgp/KQONA+9TwYMY5yMwLxiWV0XsEspUSrew8y64ohg=;
+        b=WAzKmzuyYMhPqB5ap6uwtTqxHSbEdEW8WwtEfJiXSG0R6zailiFCKvXc5OhHNsflvd
+         mItnM0U9lYzTLCuUBaf7MM+f90BpLDsE/XmNz9SIHkQoW8ITWWcsBs62Q7QW+SV+GnUi
+         6tKPU0KGOmYvm4UIGST2ZnHAxDzIcs2J53rBFvFPPsAvs+4PbQky4ePJyoPwlvlC9tUE
+         ki6Yg5J3VWZZ6WUB/mijSieASK8lMeV70Kpoo8qLxYzbgaqmoR2s5/r/pWoPaUanrVZK
+         xWC2xdKJOAoMbIpJEWTCFPlzVZiq38vN8pG3Ji4ZEUkKQJO7VH2qP3qW1sJVQuNrAWzm
+         gG3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770487778; x=1771092578;
+        d=1e100.net; s=20230601; t=1770488024; x=1771092824;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=doeEscZbmqUzRLkmGbD2wulpXvhEwLpY3gZ7s/QLWDw=;
-        b=d4kX9xs/d/mq2h8o108qD8cf5UF3I3NnmCZu3RNzDBHte0LWQteWql3GRpgvstK6cp
-         BzSejo+x1c3ck7JBg848x/b7MxzQEKmirxEihSI15cCzx6N0ym4/b2QQczG+56QMZJQv
-         pNkXjXxoDxgNwhyNnTlfMS1FxFdaVic8kP2TF28HfvffBOds09viy93HcEspUvFyyOwK
-         9XvOqk67ngaaKUk66UAWIYRFRheNw5Q3oqTixE3IA+PSAvlymmVFpcRgOp5QuIxB4gTk
-         KHEHTLG77lcDJYHRAkBXXk0wLliJPJqoeX3/aTB0mTrIrPOqmurZpyfwTYBEeG+T++nE
-         aX0g==
-X-Forwarded-Encrypted: i=1; AJvYcCVkWvxbWuh8iLmuO38o2bKGCRaM7+2hf6p+GT9NbFxVT7mF0vy5FfU0Mfna83sAPHs6vH13yoFLbBY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxl+P7BYEFT4EaMF8S9liHQZCw4xJZoI/gd2/dhXDsH9rqdbob/
-	Xjf9jNShECo+MH516jQFb9NSup4gvRzDNnrLP8azCuTaQk8CLEzF3TEDR1PjGKNMfrg=
-X-Gm-Gg: AZuq6aJvCBX7zWF6faZrInaNdNxAlyasw2jNf7/gPbVx/wGGhpiCrGQRFZk9HU+WDBP
-	0pkwq4iSx4HmfWwjHvw+/A9STjZoVSM4gpHS7axBZ+oc5fCNBBiM6cqL8XONtp1lkvVR7bYra22
-	pYp2sQrQJareZaug+T1Zd4bW0JPMPWCAZ5N7Kzxwkk4VA2p63ZtAugOGf5mgWbCcABz8xLLxokj
-	t1GgSgvElreFmIhJf/ObVXKUKSVXfWWEIkGE0Y0qEBt+Sa9XtnziHJS9q794FF2oL3YzuZUfNcG
-	JmBCFP20GAijFrRA85R5HRPt26axpTLI+Y5I/3r32wS6HuykGDm1QzYYtBvOZDqTR/ENBT6k3Pf
-	QE10BPz8TKdZlXrbx4LUs42SwqqVTXR5Rp5l61NEC5n6kPPbMrb0jp11hjUJXcMzaasCR3gLaHl
-	2G7iXojMGu2kpH4pmT3/q/rtgGJ8eEPzQWUq3xPao4UR21W71XnSUxab09KV6dwURSanlT
-X-Received: by 2002:a05:6870:799a:b0:3ec:321c:b2ac with SMTP id 586e51a60fabf-40a9777b8c4mr3621662fac.37.1770487778043;
-        Sat, 07 Feb 2026 10:09:38 -0800 (PST)
+        bh=tgp/KQONA+9TwYMY5yMwLxiWV0XsEspUSrew8y64ohg=;
+        b=YUE/RVJ5ha9L8hL8J5bwFV3k8Z4XXr/N6VCjLjTk+GS64ENL9XXoEyIhd0C4Symd0i
+         J4WaxCt/lDjsVRy9hI9CwbtAXvF2g9wjl+6rKpIG602KC1lh9KdxiSkSAHyD0YbgElMi
+         1AGiH2fB8xizai+odk3nWJC23/RyWKgYlS30xC+JQlf0eWDLrmbWiRtIPS1c4+1dWeJ4
+         AjJN1A0y6h35cIGt5SgUKJavyhp5fbdDCpWaQP5T0rw6fQkj1twaqaNx/n1UK/RmgLKn
+         yNWIX78VySTUyPqPbwu9pEiOEKRn5q3BtdahzaJrHbTSjEXd2FmVnPVuHuwvyd35raE4
+         w33Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXtPdiAXe2KbV7p16funCjwXT59qqX7CW0/lxCsS6Nb8DN/5+dOlqhlPjMllvza8UEmhCnYBzRNL88=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQoEvG8D8ZBLg2T7XtEFQGdrTBx9h+jIe52iP9Z2nehgJuNfIO
+	3cCsA97Lc6ZIlwgi/BNHtKRrY4bDvB5lXSSmMQBAybvkRJ17gnMmQQ7zeKlQNuBu3SM=
+X-Gm-Gg: AZuq6aJkdGf9SHc1982ZQjYD0cgTofwOiChjDZR6iDeu2kpswoNi2bN3thWGTXi9WG/
+	beuNj0imdlWytUJmFuQHQvbK0h2y4nL7FRe4sXIDHYFccpedUGonQXqxSJr8PWtQm0Npr+bFSDR
+	E3uU2hinMhhqAB13kLv+dXt6REYGUIBLwFGkjAgsz8ZunS3RYWQUjFCFa1Q4GAdq663+vTmF5VS
+	XC8nZ0VIuwW7bwCB0xOBAbewovZfWSQ4kSbBmLTzjcdBZqpVxCbzBwvn4yiGBUa1UsMfM45BTTp
+	60X91WQbnHAfUoEEs1g4a4mIT3F+TdLG/ddhHRGajHLeghVAhqg9lj/0O+Vq5i/7Haq6tVIC2gw
+	0IUcWwjlK3DFYcnS9SWpCAAh/ZCCc0vV7thHt9Mr1s9mLyHsnWuVGh4dwiEfFHeIKgogcyn/2eP
+	Jk69Lf2OzaVHQYUXxH9UHyR6cVMdPclGEogd9nBnyfiRvEd+ENLqlTyKqWP0PK4cBV3KB5
+X-Received: by 2002:a05:6830:638c:b0:7d1:4e51:e45 with SMTP id 46e09a7af769-7d464485cdcmr4167077a34.17.1770488024677;
+        Sat, 07 Feb 2026 10:13:44 -0800 (PST)
 Received: from ?IPV6:2600:8803:e7e4:500:74a6:843b:f33:21ae? ([2600:8803:e7e4:500:74a6:843b:f33:21ae])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-40a99787738sm4509503fac.15.2026.02.07.10.09.35
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d464785674sm4115004a34.19.2026.02.07.10.13.43
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 07 Feb 2026 10:09:36 -0800 (PST)
-Message-ID: <8fbfcf7c-4acd-4a7f-a5a5-34baad84e1b2@baylibre.com>
-Date: Sat, 7 Feb 2026 12:09:34 -0600
+        Sat, 07 Feb 2026 10:13:44 -0800 (PST)
+Message-ID: <ce4849c0-eb27-4268-8c4f-090a6396513b@baylibre.com>
+Date: Sat, 7 Feb 2026 12:13:43 -0600
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -68,8 +68,7 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] spi: allow ancillary devices to share parent's
- chip selects
+Subject: Re: [PATCH v2 2/4] iio: backend: add devm_iio_backend_get_by_index()
 To: Antoniu Miclaus <antoniu.miclaus@analog.com>,
  Lars-Peter Clausen <lars@metafoo.de>,
  Michael Hennerich <Michael.Hennerich@analog.com>,
@@ -81,45 +80,68 @@ To: Antoniu Miclaus <antoniu.miclaus@analog.com>,
  <broonie@kernel.org>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
 References: <cover.1770393792.git.antoniu.miclaus@analog.com>
- <bcb1eb34fc5e86fd5dbb4472ad1d3ea3cf3e9779.1770393792.git.antoniu.miclaus@analog.com>
+ <550323d752213f177b7673bdd42e667f1d2228cb.1770393792.git.antoniu.miclaus@analog.com>
 Content-Language: en-US
 From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <bcb1eb34fc5e86fd5dbb4472ad1d3ea3cf3e9779.1770393792.git.antoniu.miclaus@analog.com>
+In-Reply-To: <550323d752213f177b7673bdd42e667f1d2228cb.1770393792.git.antoniu.miclaus@analog.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 2/6/26 10:07 AM, Antoniu Miclaus wrote:
-> When registering an ancillary SPI device, the current code flags a chip
-> select conflict with the parent device. This happens because the
-> ancillary device intentionally uses one of the parent's chip selects,
-> but __spi_add_device() checks against all existing devices including
-> the parent.
+> Add a new function to get an IIO backend by its index in the
+> io-backends device tree property. This is useful for multi-channel
+> devices that have multiple backends, where looking up by index is
+> more straightforward than using named backends.
 > 
-> Allow this by passing the parent device pointer to __spi_add_device()
-> and skipping the conflict check when the existing device is the parent.
+> The new function directly uses the index to find the backend reference
+> in the io-backends property, avoiding the need for io-backend-names.
 > 
-
-...
-
->  static int spi_dev_check(struct device *dev, void *data)
->  {
->  	struct spi_device *spi = to_spi_device(dev);
-> -	struct spi_device *new_spi = data;
-> +	struct spi_dev_check_info *info = data;
-> +	struct spi_device *new_spi = info->new_spi;
->  	int status, idx;
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> ---
+>  drivers/iio/industrialio-backend.c | 51 ++++++++++++++++++++++++++++++
+>  include/linux/iio/backend.h        |  2 ++
+>  2 files changed, 53 insertions(+)
+> 
+> diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industrialio-backend.c
+> index 447b694d6d5f..3b692d48481e 100644
+> --- a/drivers/iio/industrialio-backend.c
+> +++ b/drivers/iio/industrialio-backend.c
+> @@ -1008,6 +1008,57 @@ struct iio_backend *devm_iio_backend_get(struct device *dev, const char *name)
+>  }
+>  EXPORT_SYMBOL_NS_GPL(devm_iio_backend_get, "IIO_BACKEND");
 >  
-> +	/*
-> +	 * When registering an ancillary device, skip checking against the
-> +	 * parent device since the ancillary is intentionally using one of
-> +	 * the parent's chip selects.
-> +	 */
-> +	if (info->parent && spi == info->parent)
-
-spi should never be NULL (or we would get a segfault later), so
-if `(spi == info->parent)` should be enough.
-
-> +		return 0;
+> +static struct iio_backend *
+> +__devm_iio_backend_fwnode_get_by_index(struct device *dev,
+> +				       struct fwnode_handle *fwnode,
+> +				       unsigned int index)
+> +{
+> +	struct fwnode_handle *fwnode_back;
+> +	struct iio_backend *back;
+> +	int ret;
 > +
-Reviewed-by: David Lechner <dlechner@baylibre.com>
+> +	fwnode_back = fwnode_find_reference(fwnode, "io-backends", index);
+> +	if (IS_ERR(fwnode_back))
+> +		return dev_err_cast_probe(dev, fwnode_back,
+> +					  "Cannot get Firmware reference\n");
+> +
+> +	guard(mutex)(&iio_back_lock);
+> +	list_for_each_entry(back, &iio_back_list, entry) {
+> +		if (!device_match_fwnode(back->dev, fwnode_back))
+> +			continue;
+> +
+> +		fwnode_handle_put(fwnode_back);
+> +		ret = __devm_iio_backend_get(dev, back);
+> +		if (ret)
+> +			return ERR_PTR(ret);
+> +
+> +		back->idx = index;
+> +
+> +		return back;
+> +	}
+> +
+> +	fwnode_handle_put(fwnode_back);
+> +	return ERR_PTR(-EPROBE_DEFER);
+> +}
 
+This duplicates most of __devm_iio_backend_fwnode_get(), so we could modify
+__devm_iio_backend_fwnode_get() to call this function too.

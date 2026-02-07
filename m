@@ -1,66 +1,66 @@
-Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
+Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2BC28151C
-	for <linux-spi@vger.kernel.org>; Sat,  7 Feb 2026 18:13:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA154086A
+	for <linux-spi@vger.kernel.org>; Sat,  7 Feb 2026 18:29:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770488026; cv=none; b=BsgRgc/1lOJ26l6GMfTzqBqAHhImkO5ugqh0h5prorNdalfPUlRB2G7qXGWXB1YIs4CN0L/8OZLziNqxPHJAc2LxQ9kinI7u/Jhoh03njcd/HS+WFN8Z7lZTw7yvwOB8XE1I+AvhrLQadN51zod3dCocp3+qBsERCs7UGuHCqE0=
+	t=1770489000; cv=none; b=MiUgwZjEtGUMmkcJysmCVviibhRv+pHuNp+A7B0gdN12cwvi1IeSeAiqUkFyBfe75YUdy4CE4g51T/W268/euuPKkDOxg15YXWAAaazjTLP0VzN3qiWIn0sPRZrRYh1kaGAN2gR8ZACYvfcXGKkKlHIPHtljYZlyVcRs1RdJFS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770488026; c=relaxed/simple;
-	bh=VVehCyZb7ZKZZHn5tlvmr/MsuVCnRwTQpqyQj4UtmHY=;
+	s=arc-20240116; t=1770489000; c=relaxed/simple;
+	bh=uh7byIWYb33iGmTL/H3fo9DQqCmVUzHqkr5paC+gcr8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=tm1uUf7qcCUvR2EYJegod5+vfV5MDUXWyX282ouKvW3opjU3hJ3Dy+yQG9brIDcTwmt4oI1wJJ1InSzyA7kq4Dpi8uOdtZLcbJKXA1JlCZ+0w703XJMEG9FLDLzCd8+TFPsx84p2/7l3k1Ioy5GbtiGLMrhdJgb3AMAmO1XIBV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=WAzKmzuy; arc=none smtp.client-ip=209.85.210.45
+	 In-Reply-To:Content-Type; b=OXTPo+diu12pj1YEWsWldQY+GGh+idged2JF+2RWh6lp6Uzsn49Rwu174h2SAK3V1Xj0vPoVVznISN+oEvNhYX8DEChvOx+cpuenWbZ1ifEZQbBwSdlop04La3A9aSxuB4IYGLn4+p4TuuKUYX6T3+9fdLDVxDdqckIB3lItnt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=RXzyOrB+; arc=none smtp.client-ip=209.85.161.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="WAzKmzuy"
-Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-7d45d37f8e4so1533283a34.0
-        for <linux-spi@vger.kernel.org>; Sat, 07 Feb 2026 10:13:45 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="RXzyOrB+"
+Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-66a12c77a2cso1791545eaf.3
+        for <linux-spi@vger.kernel.org>; Sat, 07 Feb 2026 10:29:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1770488024; x=1771092824; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1770488999; x=1771093799; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:to:subject:user-agent:mime-version:date:message-id:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=tgp/KQONA+9TwYMY5yMwLxiWV0XsEspUSrew8y64ohg=;
-        b=WAzKmzuyYMhPqB5ap6uwtTqxHSbEdEW8WwtEfJiXSG0R6zailiFCKvXc5OhHNsflvd
-         mItnM0U9lYzTLCuUBaf7MM+f90BpLDsE/XmNz9SIHkQoW8ITWWcsBs62Q7QW+SV+GnUi
-         6tKPU0KGOmYvm4UIGST2ZnHAxDzIcs2J53rBFvFPPsAvs+4PbQky4ePJyoPwlvlC9tUE
-         ki6Yg5J3VWZZ6WUB/mijSieASK8lMeV70Kpoo8qLxYzbgaqmoR2s5/r/pWoPaUanrVZK
-         xWC2xdKJOAoMbIpJEWTCFPlzVZiq38vN8pG3Ji4ZEUkKQJO7VH2qP3qW1sJVQuNrAWzm
-         gG3Q==
+        bh=qFRUlZH5q2I0e9gz1CToCErzc9pGDkWhvEbaw5FlmCA=;
+        b=RXzyOrB+DfCYb3LafFNRQ6J/lrqylxFnBqrBGQ6+InPuJX9rHTn1Eh9QVaJgar3aDM
+         BFE9QosNICEkLAf+mMWKonVYI4BfVdSiWNYXQmEEjUQi79pMJtg1PGKgD4Cn0x+3uZgB
+         BXQXmD5Va3sxIegpeFp912Hi8JHzU+tAJxonWDpCs/WmATfSVZAEct1YcDbDoH9akJ37
+         gY77G5cPIkxnW5clpHLK0WG+RgwQmRLoHOBOrUSPlg/zodk93UzWR+SCLmLctVWjXcOB
+         VIRj/53o+wjI5FNykjxmG5PkhHHlb9fmikvRKar3JTMFsfybV9Kbtufu+G0bqxPYZd8V
+         zM1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770488024; x=1771092824;
+        d=1e100.net; s=20230601; t=1770488999; x=1771093799;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=tgp/KQONA+9TwYMY5yMwLxiWV0XsEspUSrew8y64ohg=;
-        b=YUE/RVJ5ha9L8hL8J5bwFV3k8Z4XXr/N6VCjLjTk+GS64ENL9XXoEyIhd0C4Symd0i
-         J4WaxCt/lDjsVRy9hI9CwbtAXvF2g9wjl+6rKpIG602KC1lh9KdxiSkSAHyD0YbgElMi
-         1AGiH2fB8xizai+odk3nWJC23/RyWKgYlS30xC+JQlf0eWDLrmbWiRtIPS1c4+1dWeJ4
-         AjJN1A0y6h35cIGt5SgUKJavyhp5fbdDCpWaQP5T0rw6fQkj1twaqaNx/n1UK/RmgLKn
-         yNWIX78VySTUyPqPbwu9pEiOEKRn5q3BtdahzaJrHbTSjEXd2FmVnPVuHuwvyd35raE4
-         w33Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXtPdiAXe2KbV7p16funCjwXT59qqX7CW0/lxCsS6Nb8DN/5+dOlqhlPjMllvza8UEmhCnYBzRNL88=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQoEvG8D8ZBLg2T7XtEFQGdrTBx9h+jIe52iP9Z2nehgJuNfIO
-	3cCsA97Lc6ZIlwgi/BNHtKRrY4bDvB5lXSSmMQBAybvkRJ17gnMmQQ7zeKlQNuBu3SM=
-X-Gm-Gg: AZuq6aJkdGf9SHc1982ZQjYD0cgTofwOiChjDZR6iDeu2kpswoNi2bN3thWGTXi9WG/
-	beuNj0imdlWytUJmFuQHQvbK0h2y4nL7FRe4sXIDHYFccpedUGonQXqxSJr8PWtQm0Npr+bFSDR
-	E3uU2hinMhhqAB13kLv+dXt6REYGUIBLwFGkjAgsz8ZunS3RYWQUjFCFa1Q4GAdq663+vTmF5VS
-	XC8nZ0VIuwW7bwCB0xOBAbewovZfWSQ4kSbBmLTzjcdBZqpVxCbzBwvn4yiGBUa1UsMfM45BTTp
-	60X91WQbnHAfUoEEs1g4a4mIT3F+TdLG/ddhHRGajHLeghVAhqg9lj/0O+Vq5i/7Haq6tVIC2gw
-	0IUcWwjlK3DFYcnS9SWpCAAh/ZCCc0vV7thHt9Mr1s9mLyHsnWuVGh4dwiEfFHeIKgogcyn/2eP
-	Jk69Lf2OzaVHQYUXxH9UHyR6cVMdPclGEogd9nBnyfiRvEd+ENLqlTyKqWP0PK4cBV3KB5
-X-Received: by 2002:a05:6830:638c:b0:7d1:4e51:e45 with SMTP id 46e09a7af769-7d464485cdcmr4167077a34.17.1770488024677;
-        Sat, 07 Feb 2026 10:13:44 -0800 (PST)
+        bh=qFRUlZH5q2I0e9gz1CToCErzc9pGDkWhvEbaw5FlmCA=;
+        b=DeCGkhGh4Ut2Xj8ONcM5jShoEZia8eE/v6I/ZJ2+Iv2/gx97TOLWgWPgVrltBvHR5h
+         tkbvFDTYx8pios5PNDEeBZ/Zxnjc0TKB12r0xvhHsrPsVzdKGLtRxrgzGw19Jmz82pYW
+         jxQLCqA4Mpcm/Y3YfWOPaAT+DMMCZrvRwuvIs3x18ZxYjH8ZVDALt2rm9WpCi1SHEfyW
+         8ZErnEhVBtKe+SQilXadRTaIw6Y37iwA+uex2XdWynGzGaNO1FJgJpBk861395vNzrd+
+         EaGr3yP0wtnqy7r6oc2H24ZwNazbUQsV2a0gj2GurDJ447s+rJZQaZHu8Zk4O6+hvmbJ
+         6aiA==
+X-Forwarded-Encrypted: i=1; AJvYcCVoS38OCR+caILldfkI8QhgeLEkn0yuhmpqV1j+26ircRj2AYNiupP4+/HrMfW0H2c1GUZSDFnYMlQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/0aPv0LOcntM980H+bbdA4MDIoIZWjOrP+hOejOaVmWGw5dFq
+	ggA0M77M6mKnUbwEkd2bv3GR5Dy8jvmYlVXAlPcvcUre7YOBfZCsFkTNeAGzBWfWoW0=
+X-Gm-Gg: AZuq6aJIuxpYc3H76xVnDjsZaRAPB1BEvb4PYZf9TwbDuJjIpoa8A66v+S8VQgKq5k+
+	EZD0embxCtONae0fd/2pvrB5aqXPDhgL8khgGbqebfMf13kGXVEeFgtgDYBqgyRT7pLmZp5BqhJ
+	vzGtXuacwqZxV78vk3Fw8GKJIFqTjN9ZXH2G7J/V31WDSaiXzwwKrnJ35RClzSl2eg6UPPm9A63
+	kXPwDnL0ZzLasF/0XPKOGvGm85H4icSahPGK5qvIwE+d7mIaAJcTTvqUuolzqhFi+9CJ+jkjHds
+	Kf9S3teiUqbXuOVhGOWUaIAin28EQ6ZIR/1N7e11iYfWq1aCIShYMFf0/iiikgljWovwtEDJZPV
+	+LXe4ur8mTLMY9V7tOpTLp7AkPt396voC/ZpAf2wYol80q70Bv4XOCpVbbG5Bf19k5QuSzYW039
+	0XlfpoysDlJH47MjeTIwJfKVTXuaxw3JLh7k9um5aZFRDaRj+wmz/VEbPBcA==
+X-Received: by 2002:a05:6820:1808:b0:662:fa52:9302 with SMTP id 006d021491bc7-66d0a093d47mr2896617eaf.23.1770488998988;
+        Sat, 07 Feb 2026 10:29:58 -0800 (PST)
 Received: from ?IPV6:2600:8803:e7e4:500:74a6:843b:f33:21ae? ([2600:8803:e7e4:500:74a6:843b:f33:21ae])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d464785674sm4115004a34.19.2026.02.07.10.13.43
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-66fdf303607sm122595eaf.14.2026.02.07.10.29.58
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 07 Feb 2026 10:13:44 -0800 (PST)
-Message-ID: <ce4849c0-eb27-4268-8c4f-090a6396513b@baylibre.com>
-Date: Sat, 7 Feb 2026 12:13:43 -0600
+        Sat, 07 Feb 2026 10:29:58 -0800 (PST)
+Message-ID: <fbddf502-c6e3-4bf9-aaff-baee2aa83ef4@baylibre.com>
+Date: Sat, 7 Feb 2026 12:29:57 -0600
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -68,7 +68,8 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/4] iio: backend: add devm_iio_backend_get_by_index()
+Subject: Re: [PATCH v2 4/4] iio: adc: ad4080: add support for AD4880
+ dual-channel ADC
 To: Antoniu Miclaus <antoniu.miclaus@analog.com>,
  Lars-Peter Clausen <lars@metafoo.de>,
  Michael Hennerich <Michael.Hennerich@analog.com>,
@@ -80,68 +81,21 @@ To: Antoniu Miclaus <antoniu.miclaus@analog.com>,
  <broonie@kernel.org>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
 References: <cover.1770393792.git.antoniu.miclaus@analog.com>
- <550323d752213f177b7673bdd42e667f1d2228cb.1770393792.git.antoniu.miclaus@analog.com>
+ <8685e3e53667e82c7cdfd66ee6fb1ec3d3c009cd.1770393792.git.antoniu.miclaus@analog.com>
 Content-Language: en-US
 From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <550323d752213f177b7673bdd42e667f1d2228cb.1770393792.git.antoniu.miclaus@analog.com>
+In-Reply-To: <8685e3e53667e82c7cdfd66ee6fb1ec3d3c009cd.1770393792.git.antoniu.miclaus@analog.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 2/6/26 10:07 AM, Antoniu Miclaus wrote:
-> Add a new function to get an IIO backend by its index in the
-> io-backends device tree property. This is useful for multi-channel
-> devices that have multiple backends, where looking up by index is
-> more straightforward than using named backends.
+> Add support for the AD4880, a dual-channel 20-bit 40MSPS SAR ADC with
+> integrated fully differential amplifiers (FDA).
 > 
-> The new function directly uses the index to find the backend reference
-> in the io-backends property, avoiding the need for io-backend-names.
+> The AD4880 has two independent ADC channels, each with its own SPI
+> configuration interface. The driver uses spi_new_ancillary_device() to
+> create an additional SPI device for the second channel, allowing both
+> channels to share the same SPI bus with different chip selects.
 > 
-> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-> ---
->  drivers/iio/industrialio-backend.c | 51 ++++++++++++++++++++++++++++++
->  include/linux/iio/backend.h        |  2 ++
->  2 files changed, 53 insertions(+)
-> 
-> diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industrialio-backend.c
-> index 447b694d6d5f..3b692d48481e 100644
-> --- a/drivers/iio/industrialio-backend.c
-> +++ b/drivers/iio/industrialio-backend.c
-> @@ -1008,6 +1008,57 @@ struct iio_backend *devm_iio_backend_get(struct device *dev, const char *name)
->  }
->  EXPORT_SYMBOL_NS_GPL(devm_iio_backend_get, "IIO_BACKEND");
->  
-> +static struct iio_backend *
-> +__devm_iio_backend_fwnode_get_by_index(struct device *dev,
-> +				       struct fwnode_handle *fwnode,
-> +				       unsigned int index)
-> +{
-> +	struct fwnode_handle *fwnode_back;
-> +	struct iio_backend *back;
-> +	int ret;
-> +
-> +	fwnode_back = fwnode_find_reference(fwnode, "io-backends", index);
-> +	if (IS_ERR(fwnode_back))
-> +		return dev_err_cast_probe(dev, fwnode_back,
-> +					  "Cannot get Firmware reference\n");
-> +
-> +	guard(mutex)(&iio_back_lock);
-> +	list_for_each_entry(back, &iio_back_list, entry) {
-> +		if (!device_match_fwnode(back->dev, fwnode_back))
-> +			continue;
-> +
-> +		fwnode_handle_put(fwnode_back);
-> +		ret = __devm_iio_backend_get(dev, back);
-> +		if (ret)
-> +			return ERR_PTR(ret);
-> +
-> +		back->idx = index;
-> +
-> +		return back;
-> +	}
-> +
-> +	fwnode_handle_put(fwnode_back);
-> +	return ERR_PTR(-EPROBE_DEFER);
-> +}
+Reviewed-by: David Lechner <dlechner@baylibre.com>
 
-This duplicates most of __devm_iio_backend_fwnode_get(), so we could modify
-__devm_iio_backend_fwnode_get() to call this function too.

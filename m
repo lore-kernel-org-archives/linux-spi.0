@@ -1,173 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A243242AA;
-	Sat,  7 Feb 2026 10:41:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF7912D9EE2;
+	Sat,  7 Feb 2026 12:43:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770460908; cv=none; b=s1sbGxFyGCBRu3Boi7iqnbAWsTLODo2+XlqKUpq9+JibIH/rVO7tqylgybyJ4ONtOeWobppKO+k9kMEI5dyQvMqH81TEJRPjXAbof3akqOZWkGjCTV7xz5gabk69T5bmuNULXS2mqyM/TNY1BIWSu9Vh19FjO426erENGtgEihw=
+	t=1770468192; cv=none; b=YcFYVDm4MFX+pCZidzvokERO8vm9gC5CHF2qhYTHP4EJmWmNV+ab3tMUChfZ5kx7icX5hi1icPn2+qcmv8l7C7XQBaLbPbRfSUiWWD+QJ1cV0nGhJHH9g1PSQsmDb/1XkfvsataavZDXybOihtKtFfxUbS87ix2kIwrALZx3hhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770460908; c=relaxed/simple;
-	bh=JFn5XByg+LkSSHOnxd5LTp3rBc3AjzTjLsHUyvk/Szw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CcXQvk0MAJKGTsHjL+DnpcEoapKjNG2/+zSgqqPGvTo6xj2x0YGBzIASWzXmhECNwpP8h1nj8m4z+lK7Ug4V0AmxxgahIjqodKVizR1UOHu6sUpqUHMvYImZHR6I25JNSrPBQWDU8wzN63MDcyt2J2/9d5xhMx3ehO3qqBwjAE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FcrciDW5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770468192; c=relaxed/simple;
+	bh=mf3/j1/bT8ZRrs8nb0KGW/ZMx8OvEGnLLupyKZJurPg=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=gPYDiX3D8Nl7Deg56FlwKUr7H/0Wt589pHPy9MyeJzbvpIiBKkSFAySUxYySUXqi71qVC7CSzIo1Zc3V8yww39Et2W1D0jjnYLl5psGHcAHGG6TqOKQI9hdB2hep+3TdCr5c3nVszpSnzpM7h9msSwTw++ldq6KVdgeuYzfd7qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CIiSomAA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FcrciDW5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 823E4C116D0;
-	Sat,  7 Feb 2026 10:41:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CIiSomAA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D824C116D0;
+	Sat,  7 Feb 2026 12:43:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770460908;
-	bh=JFn5XByg+LkSSHOnxd5LTp3rBc3AjzTjLsHUyvk/Szw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FcrciDW5Rfzo9FII8PA8KEe609jdNZxD5APEVrmL2SVisLslKqID7yeT6AwXWQHB2
-	 fyf62qb8hMsZWMtJxe5TOaUA7kZQCbaC1md3ehz9I8CVbl1qqD0Pa/hNFkzkVt/SrL
-	 7xNOEezmVzOtPws63OcPQHPvvf2h1B+CD+Q0q5mRbUrqylnNbjbg+l6PfHyYqvHntA
-	 UL3J4FnIraV3n97NiJe9gmH34pX5tZkGZtzKZfqyj8AuqFEvlC7FOTAbmtIWXo0C6S
-	 rLLbWJI5khA3zt/2aQiR7e6aXqR4yLdWGzH1CNWyf31aV2r5Mr1kq4brxft4Deypp0
-	 Ovc/JowuyZ9XQ==
-Date: Sat, 7 Feb 2026 11:41:45 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
-	David Lechner <dlechner@baylibre.com>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Olivier Moysan <olivier.moysan@foss.st.com>, Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-Subject: Re: [PATCH v2 3/4] dt-bindings: iio: adc: ad4080: add AD4880 support
-Message-ID: <20260207-evasive-mastodon-of-apotheosis-e663a1@quoll>
-References: <cover.1770393792.git.antoniu.miclaus@analog.com>
- <290f35bcbd2f1ee68333ff65f89b54ec7fbb9c53.1770393792.git.antoniu.miclaus@analog.com>
+	s=k20201202; t=1770468192;
+	bh=mf3/j1/bT8ZRrs8nb0KGW/ZMx8OvEGnLLupyKZJurPg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=CIiSomAAjku6Mxw4rRcZrKqXHJOflNvKDeJYN1S4roRtaBkDZHmnCuQXl7NeAS6wk
+	 TpN7jiYXUeO9vDpD7ASYSmZHQJGfsKWRR0ywxWtEdr9jJxr1vnohMyr3DF7+ARIoNc
+	 jwoCoeEjcAT9QPw0ax7z+yMj2g8ZJ+AOJSHwjdVK22iUwY54TdP6Mk8UFW3re71LMX
+	 nX22gC+qQGwE7pcBKfiZPta1RAgJ65ymmhGApK0NEDWuLOIih8/mjf/txzP2Gm5jNg
+	 5joeySWXNBJ2pwKc7nrsVTtgVRsAEP6XXirZSkReSSN7Swgu2pOshRF9rSae3i+sbq
+	 ICWWq7p4/7Z7g==
+Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
+	id 7508F1AC57ED; Sat, 07 Feb 2026 12:43:09 +0000 (GMT)
+From: Mark Brown <broonie@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
+Subject: [GIT PULL] SPI fixes for v6.19-rc8
+Date: Sat, 07 Feb 2026 12:43:02 +0000
+Message-Id: <20260207124309.7508F1AC57ED@finisterre.sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <290f35bcbd2f1ee68333ff65f89b54ec7fbb9c53.1770393792.git.antoniu.miclaus@analog.com>
 
-On Fri, Feb 06, 2026 at 06:07:15PM +0200, Antoniu Miclaus wrote:
-> Add support for the AD4880, a dual-channel 20-bit 40MSPS SAR ADC
-> with integrated fully differential amplifiers (FDA).
-> 
-> The AD4880 has two independent ADC channels, each with its own SPI
-> configuration interface. This requires:
-> - Two entries in reg property for primary and secondary channel chip selects
+The following changes since commit 63804fed149a6750ffd28610c5c1c98cce6bd377:
 
-Please wrap commit message according to Linux coding style / submission
-process (neither too early nor over the limit):
-https://elixir.bootlin.com/linux/v6.4-rc1/source/Documentation/process/submitting-patches.rst#L597
+  Linux 6.19-rc7 (2026-01-25 14:11:24 -0800)
 
-Please run scripts/checkpatch.pl on the patches and fix reported
-warnings.
+are available in the Git repository at:
 
-> - Two io-backends entries for the two data channels
-> 
-> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-> ---
-> Changes in v2:
->   - Replace custom adi,aux-spi-cs property with standard reg property
->     containing two entries for multi-channel devices
->   - Add conditional schema validation for reg and io-backends based on
->     compatible string
->   - Update example to use reg = <0 1> instead of adi,aux-spi-cs
->   - Add AD4880 datasheet link
-> 
->  .../bindings/iio/adc/adi,ad4080.yaml          | 51 ++++++++++++++++++-
->  1 file changed, 49 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad4080.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad4080.yaml
-> index ccd6a0ac1539..7108a91bb0bf 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad4080.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad4080.yaml
-> @@ -18,7 +18,11 @@ description: |
->    service a wide variety of precision, wide bandwidth data acquisition
->    applications.
->  
-> +  The AD4880 is a dual-channel variant with two independent ADC channels,
-> +  each with its own SPI configuration interface.
-> +
->    https://www.analog.com/media/en/technical-documentation/data-sheets/ad4080.pdf
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad4880.pdf
->  
->  $ref: /schemas/spi/spi-peripheral-props.yaml#
->  
-> @@ -31,9 +35,15 @@ properties:
->        - adi,ad4084
->        - adi,ad4086
->        - adi,ad4087
-> +      - adi,ad4880
->  
->    reg:
-> -    maxItems: 1
-> +    minItems: 1
-> +    maxItems: 2
-> +    description:
-> +      SPI chip select(s). For single-channel devices, one chip select.
-> +      For multi-channel devices like AD4880, two chip selects are required
-> +      as each channel has its own SPI configuration interface.
->  
->    spi-max-frequency:
->      description: Configuration of the SPI bus.
-> @@ -57,7 +67,8 @@ properties:
->    vrefin-supply: true
->  
->    io-backends:
-> -    maxItems: 1
-> +    minItems: 1
-> +    maxItems: 2
+  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v6.19-rc8
 
-Instead list the items with minItems, so the order is defined.
+for you to fetch changes up to a0a75b40c919b9f6d3a0b6c978e6ccf344c1be5a:
 
->  
->    adi,lvds-cnv-enable:
->      description: Enable the LVDS signal type on the CNV pin. Default is CMOS.
-> @@ -78,6 +89,25 @@ required:
->    - vdd33-supply
->    - vrefin-supply
->  
-> +allOf:
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: adi,ad4880
-> +    then:
-> +      properties:
-> +        reg:
-> +          minItems: 2
-> +        io-backends:
-> +          minItems: 2
-> +    else:
-> +      properties:
-> +        reg:
-> +          maxItems: 1
-> +        io-backends:
-> +          maxItems: 1
-> +
->  additionalProperties: false
->  
->  examples:
-> @@ -98,4 +128,21 @@ examples:
->            io-backends = <&iio_backend>;
->          };
->      };
-> +  - |
-> +    spi {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        adc@0 {
-> +          compatible = "adi,ad4880";
-> +          reg = <0 1>;
+  spi: tegra114: Preserve SPI mode bits in def_command1_reg (2026-02-05 19:29:36 +0000)
 
-<0>, <1>, no? You want two separate chip selects, right? (size-cells is
-0).
+----------------------------------------------------------------
+spi: Fixes for v6.19
 
-Best regards,
-Krzysztof
+One final batch of fixes for the Tegra SPI drivers, the main one is a
+batch of fixes for races with the interrupts in the Tegra210 QSPI driver
+that Breno has been working on for a while.
 
+----------------------------------------------------------------
+Breno Leitao (6):
+      spi: tegra210-quad: Return IRQ_HANDLED when timeout already processed transfer
+      spi: tegra210-quad: Move curr_xfer read inside spinlock
+      spi: tegra210-quad: Protect curr_xfer assignment in tegra_qspi_setup_transfer_one
+      spi: tegra210-quad: Protect curr_xfer in tegra_qspi_combined_seq_xfer
+      spi: tegra210-quad: Protect curr_xfer clearing in tegra_qspi_non_combined_seq_xfer
+      spi: tegra210-quad: Protect curr_xfer check in IRQ handler
+
+Felix Gu (1):
+      spi: tegra: Fix a memory leak in tegra_slink_probe()
+
+Vishwaroop A (1):
+      spi: tegra114: Preserve SPI mode bits in def_command1_reg
+
+ drivers/spi/spi-tegra114.c      |  3 +++
+ drivers/spi/spi-tegra20-slink.c |  6 +++--
+ drivers/spi/spi-tegra210-quad.c | 56 ++++++++++++++++++++++++++++++++++++++---
+ 3 files changed, 59 insertions(+), 6 deletions(-)

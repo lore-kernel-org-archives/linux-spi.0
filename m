@@ -1,101 +1,182 @@
-Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA154086A
-	for <linux-spi@vger.kernel.org>; Sat,  7 Feb 2026 18:29:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B50833D516
+	for <linux-spi@vger.kernel.org>; Sun,  8 Feb 2026 09:15:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770489000; cv=none; b=MiUgwZjEtGUMmkcJysmCVviibhRv+pHuNp+A7B0gdN12cwvi1IeSeAiqUkFyBfe75YUdy4CE4g51T/W268/euuPKkDOxg15YXWAAaazjTLP0VzN3qiWIn0sPRZrRYh1kaGAN2gR8ZACYvfcXGKkKlHIPHtljYZlyVcRs1RdJFS0=
+	t=1770542104; cv=none; b=p0hHTSOngxkHpB8gNSK3LoBcnS9JN/BBErx9m2O/S3JKtKhYnHUeWnjhg5fBUh6pBqz4L/TtZY0T11dT0rMRepIjd6nhcfcSCBWwmXvX4ecinkBVOTMIvcpm6GgJTbhwCutsprKjmerF5BN2p8vrR5Vw6Slg3cHv5lKUJiGGgeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770489000; c=relaxed/simple;
-	bh=uh7byIWYb33iGmTL/H3fo9DQqCmVUzHqkr5paC+gcr8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=OXTPo+diu12pj1YEWsWldQY+GGh+idged2JF+2RWh6lp6Uzsn49Rwu174h2SAK3V1Xj0vPoVVznISN+oEvNhYX8DEChvOx+cpuenWbZ1ifEZQbBwSdlop04La3A9aSxuB4IYGLn4+p4TuuKUYX6T3+9fdLDVxDdqckIB3lItnt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=RXzyOrB+; arc=none smtp.client-ip=209.85.161.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	s=arc-20240116; t=1770542104; c=relaxed/simple;
+	bh=07P0GHy06LjBjv72WxbCcNhfOqTwzCff4ji2MZrUdWk=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=BNH2sFzejZkRlsn1LMC8+iF2plV3nmUnKBqy+C//QfJUI88TSSPFLjPj5UjKlTeEwuAPdKXPAI3DvuS9Lqi2t7YITqW4sDOSi07MSKv42Rgosa0hs9Zm4c/zb8JjlEpJmAIwtW3ac0b0GKrWM3YmKpRWs3jU+QlBBwd88oCcexE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z4/eSa/k; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="RXzyOrB+"
-Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-66a12c77a2cso1791545eaf.3
-        for <linux-spi@vger.kernel.org>; Sat, 07 Feb 2026 10:29:59 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z4/eSa/k"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4806f3fc50bso23015105e9.0
+        for <linux-spi@vger.kernel.org>; Sun, 08 Feb 2026 01:15:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1770488999; x=1771093799; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=qFRUlZH5q2I0e9gz1CToCErzc9pGDkWhvEbaw5FlmCA=;
-        b=RXzyOrB+DfCYb3LafFNRQ6J/lrqylxFnBqrBGQ6+InPuJX9rHTn1Eh9QVaJgar3aDM
-         BFE9QosNICEkLAf+mMWKonVYI4BfVdSiWNYXQmEEjUQi79pMJtg1PGKgD4Cn0x+3uZgB
-         BXQXmD5Va3sxIegpeFp912Hi8JHzU+tAJxonWDpCs/WmATfSVZAEct1YcDbDoH9akJ37
-         gY77G5cPIkxnW5clpHLK0WG+RgwQmRLoHOBOrUSPlg/zodk93UzWR+SCLmLctVWjXcOB
-         VIRj/53o+wjI5FNykjxmG5PkhHHlb9fmikvRKar3JTMFsfybV9Kbtufu+G0bqxPYZd8V
-         zM1g==
+        d=gmail.com; s=20230601; t=1770542102; x=1771146902; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=07P0GHy06LjBjv72WxbCcNhfOqTwzCff4ji2MZrUdWk=;
+        b=Z4/eSa/kl3x/7nqPQiXj5nxNsC4HB3n9kfT7eyF8Ulb47Ez74sZgHjcOi4Ry7LPRe+
+         fP3v3/isBjft8s/1OMMuw6ioQKP9rsvqdbBQkh60aIQ3ji7vqgKsq8cLhwPa0GyA9+au
+         PJ5NltvG1rqEC9TDQNpb4vlXUC7hfNIIkYAtMYHua/r6GAiJL7v8lL4XmnB0xln60/jt
+         m7T8VFU1tV281JBJeE9YS+dc5flAuF9oRrJM3N+/lq1ey+pzN38+nMayc2IXP4vNuGiJ
+         eZLzs26j/Od8UGXnbIaosHBwoQJjyS7s82oN7thYWIpLZ4v6O2zzXdigzI+k1AqbnVR1
+         kDcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770488999; x=1771093799;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qFRUlZH5q2I0e9gz1CToCErzc9pGDkWhvEbaw5FlmCA=;
-        b=DeCGkhGh4Ut2Xj8ONcM5jShoEZia8eE/v6I/ZJ2+Iv2/gx97TOLWgWPgVrltBvHR5h
-         tkbvFDTYx8pios5PNDEeBZ/Zxnjc0TKB12r0xvhHsrPsVzdKGLtRxrgzGw19Jmz82pYW
-         jxQLCqA4Mpcm/Y3YfWOPaAT+DMMCZrvRwuvIs3x18ZxYjH8ZVDALt2rm9WpCi1SHEfyW
-         8ZErnEhVBtKe+SQilXadRTaIw6Y37iwA+uex2XdWynGzGaNO1FJgJpBk861395vNzrd+
-         EaGr3yP0wtnqy7r6oc2H24ZwNazbUQsV2a0gj2GurDJ447s+rJZQaZHu8Zk4O6+hvmbJ
-         6aiA==
-X-Forwarded-Encrypted: i=1; AJvYcCVoS38OCR+caILldfkI8QhgeLEkn0yuhmpqV1j+26ircRj2AYNiupP4+/HrMfW0H2c1GUZSDFnYMlQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/0aPv0LOcntM980H+bbdA4MDIoIZWjOrP+hOejOaVmWGw5dFq
-	ggA0M77M6mKnUbwEkd2bv3GR5Dy8jvmYlVXAlPcvcUre7YOBfZCsFkTNeAGzBWfWoW0=
-X-Gm-Gg: AZuq6aJIuxpYc3H76xVnDjsZaRAPB1BEvb4PYZf9TwbDuJjIpoa8A66v+S8VQgKq5k+
-	EZD0embxCtONae0fd/2pvrB5aqXPDhgL8khgGbqebfMf13kGXVEeFgtgDYBqgyRT7pLmZp5BqhJ
-	vzGtXuacwqZxV78vk3Fw8GKJIFqTjN9ZXH2G7J/V31WDSaiXzwwKrnJ35RClzSl2eg6UPPm9A63
-	kXPwDnL0ZzLasF/0XPKOGvGm85H4icSahPGK5qvIwE+d7mIaAJcTTvqUuolzqhFi+9CJ+jkjHds
-	Kf9S3teiUqbXuOVhGOWUaIAin28EQ6ZIR/1N7e11iYfWq1aCIShYMFf0/iiikgljWovwtEDJZPV
-	+LXe4ur8mTLMY9V7tOpTLp7AkPt396voC/ZpAf2wYol80q70Bv4XOCpVbbG5Bf19k5QuSzYW039
-	0XlfpoysDlJH47MjeTIwJfKVTXuaxw3JLh7k9um5aZFRDaRj+wmz/VEbPBcA==
-X-Received: by 2002:a05:6820:1808:b0:662:fa52:9302 with SMTP id 006d021491bc7-66d0a093d47mr2896617eaf.23.1770488998988;
-        Sat, 07 Feb 2026 10:29:58 -0800 (PST)
-Received: from ?IPV6:2600:8803:e7e4:500:74a6:843b:f33:21ae? ([2600:8803:e7e4:500:74a6:843b:f33:21ae])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-66fdf303607sm122595eaf.14.2026.02.07.10.29.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 07 Feb 2026 10:29:58 -0800 (PST)
-Message-ID: <fbddf502-c6e3-4bf9-aaff-baee2aa83ef4@baylibre.com>
-Date: Sat, 7 Feb 2026 12:29:57 -0600
+        d=1e100.net; s=20230601; t=1770542102; x=1771146902;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=07P0GHy06LjBjv72WxbCcNhfOqTwzCff4ji2MZrUdWk=;
+        b=cST3+cH8yidGiXzNGP3u6G3LxQ4crCy8rW09Fn/Kj5YUgvzvQM1QUj69Myh9C5aDX7
+         uQXWR6hXwPlT9S5N2oPdaqYtChV1xYjdL2j1qnceX96h/5WluOA0GiGUPVsDZBsS5JQq
+         JEKplJYvMYDl631arEjlMBFm3nozchnAWSnflQTIE+pquSiN+o7PE92KS+Y8RnQpq4FQ
+         0WZ0MzzI5rTn0oDJAsSihsas35pM1jWW+OeSX82Mdl4ELGJACk/Ab05Vhp/VwiDvlZvU
+         l/rMYgt9fxlA/zWRRENiGqt9cNIdL+Lh4cZ/TTxmVsbn2oYeEg+VcNHoff4hIQ3YJK9R
+         B7oA==
+X-Forwarded-Encrypted: i=1; AJvYcCU01n5mv2gBvo6wNWk0y5oTCxMFAtHWZo8gMbFBY6XsO+RuT35SRrpzPwmk2iwo9y8oa6imsDiUALI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzgJq/DjoNsqL+kwsO7KxAKVQDtN5ohjaCxobbSj9wYQMHxFary
+	V4kOlFeRVOw1sE9x3PJITkkv5Zq1nZvYMoQHHUmcGYKhyNQESrs99guA
+X-Gm-Gg: AZuq6aLZIBKNiEniauQJ8YDKsOfGlL8MyB0z88PCvUBavI2EQ4BVx7sjdJu/PAFCGEe
+	8k5R0hvJmK1hfa1P2Vy8bLNApOPCOffKZO54ytHp99JrfR0rXgaFvU9eflQmWkk7kg8jvrReTMq
+	Uhh2ghghtsj2XTPy+2KWPFu1czlNkwSN3UIAJIHTS26hJrC3Vzdbu+PO4FfboMU0y3MAp5r0ilu
+	wtRZClw0dm46dAx76zTw/qmHf3ql0LTEnTzMfdLyIPn5597nPcGmzQ+/A4Das95OXSLbkcAnwOF
+	A2570Xg52OTuwy3C/WC/XpEnjePATrVgPS6UguWLIwoBFw7L5M2Xz1nQDQsX7PQ2tnKYPj6pN14
+	K2hUlcVvWVE0Blc+wDYkwytKc3Y+xWTa2l1s3Gb0+U0fC14ieVVwM1iu6YDLZHZw6P29Hu15eAV
+	TeMhj45aEDvBUffh392ZX/zDZjbB5JmDlmfSZwZHncOYvtUuVgdhFPR+q+Co+ZMzOSM+QcDg==
+X-Received: by 2002:a05:600c:468b:b0:46e:4b79:551 with SMTP id 5b1f17b1804b1-48320229220mr115256145e9.31.1770542102400;
+        Sun, 08 Feb 2026 01:15:02 -0800 (PST)
+Received: from ?IPv6:2001:818:ea56:d000:94c4:fb0e:28f:2a8d? ([2001:818:ea56:d000:94c4:fb0e:28f:2a8d])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48323c0296dsm163879985e9.1.2026.02.08.01.15.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Feb 2026 01:15:02 -0800 (PST)
+Message-ID: <b3571244f058133a7a0f3b5ca6ef7dc377e3fac8.camel@gmail.com>
+Subject: Re: [PATCH v2 3/4] dt-bindings: iio: adc: ad4080: add AD4880 support
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>, Antoniu Miclaus
+	 <antoniu.miclaus@analog.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich	
+ <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, David
+ Lechner <dlechner@baylibre.com>, Nuno =?ISO-8859-1?Q?S=E1?=
+ <nuno.sa@analog.com>, Andy Shevchenko	 <andy@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski	 <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Olivier Moysan	 <olivier.moysan@foss.st.com>, Mark
+ Brown <broonie@kernel.org>, 	linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, 	linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org
+Date: Sun, 08 Feb 2026 09:16:06 +0000
+In-Reply-To: <20260207-evasive-mastodon-of-apotheosis-e663a1@quoll>
+References: <cover.1770393792.git.antoniu.miclaus@analog.com>
+	 <290f35bcbd2f1ee68333ff65f89b54ec7fbb9c53.1770393792.git.antoniu.miclaus@analog.com>
+	 <20260207-evasive-mastodon-of-apotheosis-e663a1@quoll>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/4] iio: adc: ad4080: add support for AD4880
- dual-channel ADC
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Olivier Moysan <olivier.moysan@foss.st.com>, Mark Brown
- <broonie@kernel.org>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-References: <cover.1770393792.git.antoniu.miclaus@analog.com>
- <8685e3e53667e82c7cdfd66ee6fb1ec3d3c009cd.1770393792.git.antoniu.miclaus@analog.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <8685e3e53667e82c7cdfd66ee6fb1ec3d3c009cd.1770393792.git.antoniu.miclaus@analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 2/6/26 10:07 AM, Antoniu Miclaus wrote:
-> Add support for the AD4880, a dual-channel 20-bit 40MSPS SAR ADC with
-> integrated fully differential amplifiers (FDA).
-> 
-> The AD4880 has two independent ADC channels, each with its own SPI
-> configuration interface. The driver uses spi_new_ancillary_device() to
-> create an additional SPI device for the second channel, allowing both
-> channels to share the same SPI bus with different chip selects.
-> 
-Reviewed-by: David Lechner <dlechner@baylibre.com>
+On Sat, 2026-02-07 at 11:41 +0100, Krzysztof Kozlowski wrote:
+> On Fri, Feb 06, 2026 at 06:07:15PM +0200, Antoniu Miclaus wrote:
+> > Add support for the AD4880, a dual-channel 20-bit 40MSPS SAR ADC
+> > with integrated fully differential amplifiers (FDA).
+> >=20
+> > The AD4880 has two independent ADC channels, each with its own SPI
+> > configuration interface. This requires:
+> > - Two entries in reg property for primary and secondary channel chip se=
+lects
+>=20
+> Please wrap commit message according to Linux coding style / submission
+> process (neither too early nor over the limit):
+> https://elixir.bootlin.com/linux/v6.4-rc1/source/Documentation/process/su=
+bmitting-patches.rst#L597
+>=20
+> Please run scripts/checkpatch.pl on the patches and fix reported
+> warnings.
+>=20
+> > - Two io-backends entries for the two data channels
+> >=20
+> > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> > ---
+> > Changes in v2:
+> > =C2=A0 - Replace custom adi,aux-spi-cs property with standard reg prope=
+rty
+> > =C2=A0=C2=A0=C2=A0 containing two entries for multi-channel devices
+> > =C2=A0 - Add conditional schema validation for reg and io-backends base=
+d on
+> > =C2=A0=C2=A0=C2=A0 compatible string
+> > =C2=A0 - Update example to use reg =3D <0 1> instead of adi,aux-spi-cs
+> > =C2=A0 - Add AD4880 datasheet link
+> >=20
+> > =C2=A0.../bindings/iio/adc/adi,ad4080.yaml=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 51 ++++++++++++++++++-
+> > =C2=A01 file changed, 49 insertions(+), 2 deletions(-)
+> >=20
+> > diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad4080.yaml
+> > b/Documentation/devicetree/bindings/iio/adc/adi,ad4080.yaml
+> > index ccd6a0ac1539..7108a91bb0bf 100644
+> > --- a/Documentation/devicetree/bindings/iio/adc/adi,ad4080.yaml
+> > +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad4080.yaml
+> > @@ -18,7 +18,11 @@ description: |
+> > =C2=A0=C2=A0 service a wide variety of precision, wide bandwidth data a=
+cquisition
+> > =C2=A0=C2=A0 applications.
+> > =C2=A0
+> > +=C2=A0 The AD4880 is a dual-channel variant with two independent ADC c=
+hannels,
+> > +=C2=A0 each with its own SPI configuration interface.
+> > +
+> > =C2=A0=C2=A0 https://www.analog.com/media/en/technical-documentation/da=
+ta-sheets/ad4080.pdf
+> > +=C2=A0 https://www.analog.com/media/en/technical-documentation/data-sh=
+eets/ad4880.pdf
+> > =C2=A0
+> > =C2=A0$ref: /schemas/spi/spi-peripheral-props.yaml#
+> > =C2=A0
+> > @@ -31,9 +35,15 @@ properties:
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - adi,ad4084
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - adi,ad4086
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - adi,ad4087
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - adi,ad4880
+> > =C2=A0
+> > =C2=A0=C2=A0 reg:
+> > -=C2=A0=C2=A0=C2=A0 maxItems: 1
+> > +=C2=A0=C2=A0=C2=A0 minItems: 1
+> > +=C2=A0=C2=A0=C2=A0 maxItems: 2
+> > +=C2=A0=C2=A0=C2=A0 description:
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 SPI chip select(s). For single-channel =
+devices, one chip select.
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 For multi-channel devices like AD4880, =
+two chip selects are required
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 as each channel has its own SPI configu=
+ration interface.
+> > =C2=A0
+> > =C2=A0=C2=A0 spi-max-frequency:
+> > =C2=A0=C2=A0=C2=A0=C2=A0 description: Configuration of the SPI bus.
+> > @@ -57,7 +67,8 @@ properties:
+> > =C2=A0=C2=A0 vrefin-supply: true
+> > =C2=A0
+> > =C2=A0=C2=A0 io-backends:
+> > -=C2=A0=C2=A0=C2=A0 maxItems: 1
+> > +=C2=A0=C2=A0=C2=A0 minItems: 1
+> > +=C2=A0=C2=A0=C2=A0 maxItems: 2
+>=20
+> Instead list the items with minItems, so the order is defined.
+>=20
 
+Also looks like we now need 'io-backend-names'.
+
+- Nuno S=C3=A1
+
+> >=20

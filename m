@@ -1,126 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A90E4C6C;
-	Sun,  8 Feb 2026 10:24:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB6FA15539A;
+	Sun,  8 Feb 2026 12:50:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770546264; cv=none; b=ERwzjkKwZihCdPHHrlMghhpNYLiLnWbaO88JAv34ilaEYz4g+r+7QgDtQSrn4C2iboZ7VGdHwZp4l8cZmHvohglIBiKDUzvR4vnVoHluWmZu6zC5HfRNkJ/vbgn3jn7xReAvCeRCTwPpVRxGvj2hNomxehlFiRdA71CujsNFllY=
+	t=1770555030; cv=none; b=cPCsevAFir3ZHawC94vxCdfG9TgX/dN/LnBMY6WA6B3yJQmPG140k0ZN+0OGA05Hl7/YkZ7oSu9+Kq9/g9GRb16W2AkWkur/D16rH9y5A3ZvamUsnK/Mwc7ve6AlB8MAsJk4T94RKxd9EYGI3BlQrpmeYNV9bXG1wQMQiRCFRy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770546264; c=relaxed/simple;
-	bh=76L6sj/ZbLNs6H7pO+qSYRr0AEiBZoSRz3QqA2vnTPM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=j4LbYnLuZiFIz31U8d0huXrVXw8xYQHtF+bmjv17QvgdolNkCOVezLNWRazCgM7NQIfgXnulFBMxfe/aX8F3jM34nHWU4kDdSmcVVvlx56HgD5sc5Jf3LzhOTqKylk3GE4EXWJ0vuy5bxednwoxbX44eJ0+lgrmlDYOYXBllfdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XT1TprO4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770555030; c=relaxed/simple;
+	bh=JDhBqjGxxCVe2GelWRzpb8jVah7+fsaWHDvNEZtLR+U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ukVsRKKZhQeHUEickScxLo6spEjWFpUYmjFHhYuelVNuiwdNQfsC4zDBA1YADJEzZa0wC+Pf2NM3ZJMAaneH6YHpSnhbGLRDvctcTvtwYxMHsA74Vj/1Tb8YA1yvtgE9pRi9wFGv+YKNik+Xr7nCZ+AVnJYlV4bn1j5rLAp2Hy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a3ag4DHr; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XT1TprO4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88D24C4CEF7;
-	Sun,  8 Feb 2026 10:24:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770546263;
-	bh=76L6sj/ZbLNs6H7pO+qSYRr0AEiBZoSRz3QqA2vnTPM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=XT1TprO4NIV04qmfy/peL3F8iFiYcuZ2tRCT05h0CVQNo5fQyWrXaH4Be1LmrVY+X
-	 HWkyFSuBj3Q8YAEgalsYL1KJlg+v+M67MMVHjHtT+lu9MSPMYYGbBmcYQVPlwhCGsO
-	 HEbySIdLR/N4K5hwCf0gOVH5Ru+xyWewkL2vf+JC/EUMGH6S6gprjZa/eVSJV5v5n1
-	 0HLy0SGTufc+VVJKSZAHPOaLwVpk5DMZaMECePAVQnaQ38tDG+ZHfFUF3U/nbD8jiY
-	 w2liUTLFx7+pOOaffEauMGT4NiHHalQkSJ03FR8yLMOBPMjHOVZRl1GeGRqwXMh6mW
-	 oBdBxHLXxrwlQ==
-Message-ID: <04018e01-6aa0-4a7e-9c8b-59d868099f83@kernel.org>
-Date: Sun, 8 Feb 2026 11:24:18 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a3ag4DHr"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770555030; x=1802091030;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=JDhBqjGxxCVe2GelWRzpb8jVah7+fsaWHDvNEZtLR+U=;
+  b=a3ag4DHrS+CTeiJdbUaRL7Fe6uyA8m1P8151INinE7oEPVwWgr6DXQwI
+   N6mYHHQ8m5MjNWz8ywk4XNQRBJpNfZOhnrkqG3z16TyGU5GQDQtIQKIMC
+   X1LmRbeA3RVBacJK0qne6DB3HabC34vKMrTn6pb/h773oFeu9SJCXPoPx
+   MaKqpaiq1IwUqkNZSF9+4HRTP+eQZ2fxrY1YdxBI/0tMVmxDgOUqna+z5
+   zQ30DlcFWpEgD0YBYmCLks23uxC6EHS4SGtkjxt+o683H/xYEZNDpjp3p
+   HEzr6NUN34LSXwreOlkrRt56fTLHVljDKTZo0Bn7nyDmh5/q6ZLhhLwnh
+   g==;
+X-CSE-ConnectionGUID: XYrkzJ57S2+unEtT3m+8Kg==
+X-CSE-MsgGUID: WsP0G5OPTgevuDR9lJpZgQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11694"; a="75309503"
+X-IronPort-AV: E=Sophos;i="6.21,280,1763452800"; 
+   d="scan'208";a="75309503"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2026 04:50:30 -0800
+X-CSE-ConnectionGUID: 2W9zX3N1RGOQFowoOS+jFQ==
+X-CSE-MsgGUID: +UKhbakQQVWSUaYyghdvXQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,280,1763452800"; 
+   d="scan'208";a="215510793"
+Received: from fpallare-mobl4.ger.corp.intel.com (HELO localhost) ([10.245.245.100])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2026 04:50:25 -0800
+Date: Sun, 8 Feb 2026 14:50:23 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org
+Subject: Re: [PATCH v2 0/4] iio: adc: ad4080: add support for AD4880
+ dual-channel ADC
+Message-ID: <aYiGj_TYelvJdVaR@smile.fi.intel.com>
+References: <cover.1770393792.git.antoniu.miclaus@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] spi: dt-bindings: nxp,imx94-xspi: add nxp,imx952-xspi
-To: Frank Li <Frank.li@nxp.com>
-Cc: Haibo Chen <haibo.chen@nxp.com>, Han Xu <han.xu@nxp.com>,
- Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, linux-spi@vger.kernel.org,
- imx@lists.linux.dev, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20260114-xspi-imx952-v1-0-acc60a5a2a9d@nxp.com>
- <20260114-xspi-imx952-v1-1-acc60a5a2a9d@nxp.com>
- <c605c5f7-45b7-4e15-9d80-8bd224624b27@kernel.org>
- <aWlXLzBri8o4YQ1t@lizhi-Precision-Tower-5810>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <aWlXLzBri8o4YQ1t@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1770393792.git.antoniu.miclaus@analog.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On 15/01/2026 22:07, Frank Li wrote:
-> On Thu, Jan 15, 2026 at 09:55:57PM +0100, Krzysztof Kozlowski wrote:
->> On 14/01/2026 07:49, Haibo Chen wrote:
->>> Document i.MX952 XSPI compatible, which is derived from
->>> i.MX94 XSPI.
->>>
->>> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
->>> ---
->>>  Documentation/devicetree/bindings/spi/nxp,imx94-xspi.yaml | 4 ++++
->>>  1 file changed, 4 insertions(+)
->>
+On Fri, Feb 06, 2026 at 06:07:12PM +0200, Antoniu Miclaus wrote:
+> Add support for the AD4880, a dual-channel 20-bit 40MSPS SAR ADC from
+> the same family as AD4080.
 > 
-> Krzysztof:
-> 
-> 	You sent an empty message here.
-> 
-> Frank
->>
+> The AD4880 has two independent ADC channels, each with its own SPI
+> configuration interface and LVDS data output. The driver uses
+> spi_new_ancillary_device() for the second channel's SPI and requires
+> two io-backend instances for the data interfaces.
 
-Thanks, second try:
+I believe there is a better approach, what you need is rather a flag
+to SPI core to tell that this is the device with shared CS.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+-- 
+With Best Regards,
+Andy Shevchenko
 
-Best regards,
-Krzysztof
+

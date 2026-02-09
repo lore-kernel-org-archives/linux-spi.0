@@ -1,88 +1,83 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91F1D36EAB0;
-	Mon,  9 Feb 2026 13:28:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2CAE2222B2;
+	Mon,  9 Feb 2026 14:31:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770643702; cv=none; b=KD8mANSL0rNvxZVCHGMVHs/stAY2hv0+1ICt9rroaiK5vpByLGBcDAPeitkO87tACE0l20ZOfP0TzUJmglyEVNLNZ71gD1YP9k8LEv2CQrrxf7yJBrCE80wOhCqjDHHrmYIBuRV86YRA7Ji3glFAeCO5FVoKSxwGQ/azkZPeDz0=
+	t=1770647504; cv=none; b=MSL75pLmUSeTiuoWky6IZEJa5pUdR3iL9xzvSExmazz50xfjnbiWdfg1NDshhOYfJhKc6QRuvTZJhBbgO7MMAbpKfHeZBmxOxwyPPl2SH+xwttcmqJgpTt589KjsVn8rYNfSFo+IsWlUpduGYZbLYbtwc3HnmVUy+tKl+MlvkFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770643702; c=relaxed/simple;
-	bh=TyHXhjhKIZ4jF+IssHH0ukgke8PH/IJg9cisxhd+Myo=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QPKyRn+qDa/HCKOzhZJ/irlQ/MFIyrSal1V0VuNtUvJPlWItQuPJPdl/8bxsB1OYi2pAyt1Ker+0WvbYKMRaAUId+WGkdCisSuUVTwqMeIcqWjHnYr/4taJW1v08RZ7Il2+m1i6kmmDt16cjAzXX+GCRQdZxL6ehNHEX9owEe7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=fGgrvZoT; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1770647504; c=relaxed/simple;
+	bh=6HDfdo+vOdo3tUWeu7ARlrw5+jPvCyD9bhcH1iQ3rz0=;
+	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=DO3hF+hOLuSQL4jGdxRZDNFhufgAt4ayNfl0Ttp0shVDOqSJNKGkHphT8Sfd1Sdus4YBvdaUQRJ2/DLHW4r2//EEgTMFdKbvLgbW8yjapaIg9o52Es8Gl4+En5lSoS1OCWUwL3vNdQSJ+VFnPPJ5rXZFAUpL80J0UYwKCNap278=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JI6VZjCd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="fGgrvZoT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1770643703; x=1802179703;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=TyHXhjhKIZ4jF+IssHH0ukgke8PH/IJg9cisxhd+Myo=;
-  b=fGgrvZoTluMcgUv2X45QHQx2IsrjN2GtTQ1ozt3AC5vzn/A30GVPCYbi
-   6006Z38ANka7FXbenwIK09reSCX4ZHPeFw9Y8lnf8vo8+LvvOADi9Pjr4
-   DaJwtYYjl2iJGFMtpbJnZl3OLolI1Y7f4bic4VLjRx+TYYaNwGBbSPG0Z
-   dEm8mBfE2sYF99XT+VOpBzOkOuVYDt18Mw1o/wJ0x2TCJn8LC5b9iFqo4
-   sKXYOADDRaUgcJVtxoeHdjo9UO/EUSPAsZeZ5UIfHj05bDqHcFAeLko19
-   5JGzGdDqZvuOSox3ZwnraXUWdLnYo4mQTmpSSK5ctSz5r+MP3kBOPnReq
-   g==;
-X-CSE-ConnectionGUID: 62xkbNDBQQ69o78CWVJMmA==
-X-CSE-MsgGUID: hsKOhGa8SmOnAx65M7ZSKw==
-X-IronPort-AV: E=Sophos;i="6.21,282,1763449200"; 
-   d="scan'208";a="53132515"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 09 Feb 2026 06:28:22 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Mon, 9 Feb 2026 06:27:41 -0700
-Received: from DEN-DL-M70577 (10.10.85.11) by chn-vm-ex03.mchp-main.com
- (10.10.85.151) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Mon, 9 Feb 2026 06:27:35 -0700
-Date: Mon, 9 Feb 2026 14:27:34 +0100
-From: Daniel Machon <daniel.machon@microchip.com>
-To: Robert Marko <robert.marko@sartura.hr>
-CC: <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
-	<nicolas.ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
-	<claudiu.beznea@tuxon.dev>, <herbert@gondor.apana.org.au>,
-	<davem@davemloft.net>, <lee@kernel.org>, <andrew+netdev@lunn.ch>,
-	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<Steen.Hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>,
-	<linusw@kernel.org>, <olivia@selenic.com>, <richard.genoud@bootlin.com>,
-	<radu_nicolae.pirea@upb.ro>, <gregkh@linuxfoundation.org>,
-	<richardcochran@gmail.com>, <horatiu.vultur@microchip.com>,
-	<Ryan.Wanner@microchip.com>, <tudor.ambarus@linaro.org>,
-	<kavyasree.kotagiri@microchip.com>, <lars.povlsen@microchip.com>,
-	<devicetree@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
-	<linux-spi@vger.kernel.org>, <linux-serial@vger.kernel.org>,
-	<luka.perkov@sartura.hr>
-Subject: Re: [PATCH v5 11/11] arm64: dts: microchip: add EV23X71A board
-Message-ID: <20260209132734.i2yx3b3qjbeqd43t@DEN-DL-M70577>
-References: <20260115114021.111324-1-robert.marko@sartura.hr>
- <20260115114021.111324-12-robert.marko@sartura.hr>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JI6VZjCd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6321FC116C6;
+	Mon,  9 Feb 2026 14:31:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770647504;
+	bh=6HDfdo+vOdo3tUWeu7ARlrw5+jPvCyD9bhcH1iQ3rz0=;
+	h=From:To:In-Reply-To:References:Subject:Date:From;
+	b=JI6VZjCdlK7PcwrCfjv90OCGmjd+Zy5NEMJl+vkHBn9Q9TP1qgG3XCMosTS8v+mak
+	 8MDMnN974OJHiRhoavzQFTl2mRz8ofJiASqo9JE8hBaChf249mNWlpNIShAM9pEZPQ
+	 c8DaE0tbM4ULtn3/gVEEJ2L7pkVjGOwMh08yCT5JJbxy/zVnp/YuiRzBPJUlnSqlqh
+	 dJL3y3eX4BvcsiWT58YXFGU++mYfROd+q+QQ4sNslnJPCxQ9PUbNJLg/19sdBPMgQB
+	 FOcXNq8571q4JF+GPHraYQ6UIuriLMZzwclUVK4aH6P0aEvahT09++qNnRhUNSqMaU
+	 v/sJr6y0zZoxw==
+From: Mark Brown <broonie@kernel.org>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Francesco Lavra <flavra@baylibre.com>
+In-Reply-To: <20260209095001.556495-1-flavra@baylibre.com>
+References: <20260209095001.556495-1-flavra@baylibre.com>
+Subject: Re: [PATCH] spi: tools: Add include folder to .gitignore
+Message-Id: <177064749793.791218.15160710873715001964.b4-ty@kernel.org>
+Date: Mon, 09 Feb 2026 14:31:37 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260115114021.111324-12-robert.marko@sartura.hr>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-47773
 
-Hi Robert,
+On Mon, 09 Feb 2026 10:50:01 +0100, Francesco Lavra wrote:
+> The Makefile for the SPI tools creates an include/linux/spi folder and some
+> symlinks inside it. After running `make -C spi/tools`, this folder shows up
+> as untracked in the git status.
+> Add the above folder to the .gitignore file.
+> 
+> 
 
-Tested on EV23X71A.
+Applied to
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
 Thanks!
 
-> Microchip EV23X71A is an LAN9696 based evaluation board.
+[1/1] spi: tools: Add include folder to .gitignore
+      commit: 5af56f30c4fcbade4a92f94dadfea517d1db9703
 
-Acked-by: Daniel Machon <daniel.machon@microchip.com>
-Tested-by: Daniel Machon <daniel.machon@microchip.com>
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+

@@ -1,411 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55419B672;
-	Mon,  9 Feb 2026 16:26:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1C038550B
+	for <linux-spi@vger.kernel.org>; Mon,  9 Feb 2026 16:43:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770654413; cv=none; b=K89CYIoBSKKT55HdU3zgkNTJDK65SjOmXP3RPngtKi7g4kKteql7evq3CLtmumlT+hn2elZACbsk1dqG127Fv3Z5QqrWLnvE9RlhPXkuLqg6dHqD44gGEKBUj8/Mgtc1v1RdUe01mNI9YJkD6fm0K0qNDZeD0nxd06ldXfGqKZU=
+	t=1770655391; cv=none; b=cbuezXCj4hLsv3QwwzolOOivHqC1lUzJRUnSwuoY7cTNFBNy4Wm6aI/2cUoThElBNgTvOfZfBdMQLBiTR3HwlBemVsaoL46P5KI9bNZcmiXl1vvm3v9QkpTbDorxreOD9p5bGhGSTIpIGggpG55qA3cxyfrwD+WfgMy3ed6n96E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770654413; c=relaxed/simple;
-	bh=H29pwCXl4e+9rLbXXVtWutOEOmiJvQufCHB8B7cVBlI=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=LcLqiIKvB7lkAjEE8drqTfbuqvZdZAC+vZ69I5N2uDr4HZDFWEPdYbuUU20EN0/XVJRqOvweqjUEEx0eXjCkSIaRVAhSzJnsXzZFBtEx50cyUYvd0So7mMXA1BZmmCTkK9VNOPuY//4QUGBv3ER7H27ilMKvEk109h3Bu5UyH5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ENv1KZ6S; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770655391; c=relaxed/simple;
+	bh=HO4NVWU1cpyt+WaP5Xl/YtJ0mNO+RC4cmc+HXwcf+h4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=sMZZm9G7Jxp9nHkev2KCq94jhaG3MdFaHZoI5UIy019EnlkEez4eZAZUFNWWh2qv0dSl5nbrmY08JiniQXnMean4fR4bbLDv2UngTAqxTo5+xN82RjlaH0E7rRDmHY/Vxo8vUbNMtqxY7NGtIISs7JyyaMhaT7SyINEZ51hsV9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KfaX8d48; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ENv1KZ6S"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEE88C116C6;
-	Mon,  9 Feb 2026 16:26:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770654413;
-	bh=H29pwCXl4e+9rLbXXVtWutOEOmiJvQufCHB8B7cVBlI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ENv1KZ6Sg8GO9KGrJUSJbVJxVTJiwgfQn9umveDi9rTis0DYH0kPnPG8wVXoSKMD2
-	 QjIPl3E03D7Urx8pe2V95juooJk8afTScCqIqP6GLGXPHmpadpzfabDoS7WAmQEhx+
-	 vii6iOWm2lByy0eMtkitHy/Tn3L0dV8CsM0I64sdL3L+hctAYAr4FvffssSIhpmcSb
-	 ODTKD3tLTuh0vJKMN82p8gD6s7BrDBZVgKlgsPoKlHhsm4eBGX/z2mURkLCkOvFAj3
-	 ScGPZ4gqZl2dUzXil8Ifn5/KdNZlCHvywnYQEq8+yV94pQMdLpbjzGxYrqCTo3LwkS
-	 SIieS8GsrqT4A==
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-	id EE5881AC57EB; Mon, 09 Feb 2026 16:26:49 +0000 (GMT)
-From: Mark Brown <broonie@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
-Subject: [GIT PULL] SPI updates for v6.20
-Date: Mon, 09 Feb 2026 16:26:45 +0000
-Message-Id: <20260209162649.EE5881AC57EB@finisterre.sirena.org.uk>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KfaX8d48"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4801c2fae63so38992615e9.2
+        for <linux-spi@vger.kernel.org>; Mon, 09 Feb 2026 08:43:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770655389; x=1771260189; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=HO4NVWU1cpyt+WaP5Xl/YtJ0mNO+RC4cmc+HXwcf+h4=;
+        b=KfaX8d48STSV+Fv2rbb5mGVr85TCATG/q0pEWghYzNJKzkVszCFql3ik+ndQDQrAgT
+         0Df363I9gM7EJiKrelanrKOGaO/17Z4pF/5IEPPzr9Ua7nNIhDb2MqaG+lQP/vbRIofH
+         uxNfuc+KOFQe1S1TlN69ML91U9wDgZ8NR/w+A82+ZNQRwi8tjv8Cj5UnHFlU2Cgr10dp
+         zq+kDXq7ZZm0KvaQbL9/x0FcZaF7tokRJ7W3nJs3mJO6UwsbEjceA232bdzCyX4BWbtb
+         j47SZrzVmRRWUYuack+erLbHnP6XMvMU8Y0/Ifrb4TcB5DWqzYCldYWq6p63+YTC1nd0
+         xqGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770655389; x=1771260189;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HO4NVWU1cpyt+WaP5Xl/YtJ0mNO+RC4cmc+HXwcf+h4=;
+        b=InMeppLielrfbGLAehnFMWYJGOx4kxaU4V3rZT48CzH7QSel6ReeCzbyijAQ73dQjV
+         Z6UTNHAWFIDjU8h//gCDrKKkhGZym02BChDTGF7q1Vtt/8rHme821KLuBgl3SfNGQv0P
+         /oMayobETzgtINKH6Mv3xXxH0PEoY0oetZcffxReuNSgWsNVJbZnkwSfqJvuMYP2mzVc
+         yP8Rl/VHGiRPcTb2YuQnNFvhjYiMdklvqBPgmJAp74nh8Ecw564RcQcUARHIQwkElVBV
+         SNVhrNn9wTzML7M0bazzvLT8y4sXHOh1Txa+3ZvO0M+kF7dDtKgF4l1LZ4bNLDEFnSbV
+         X0cw==
+X-Forwarded-Encrypted: i=1; AJvYcCXzxFswcCnpXDCxVwflBs2i1Upngjs/JyNGrcK2WNp7uZdUwiijnqx7o3YGc6UdAOQiqW++7rpaE5E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjrnWJH2DjQb/XOUx0vHUh0qRl1khopYZlNlf1JG/UK6jcmwsQ
+	WKE2/k+soLgWfPfut+iLLy5atOCRLXicnE8ovnvZzUcvJlXUJAv6Ygzz
+X-Gm-Gg: AZuq6aL64j/J807oC75ANKPOhB0Mz/URNKxofE151DMG/skkieqqSFB/ErLVnBmhR7H
+	BZfJv5TlmO+vhwqn57tGodQ1YyB4QK9JaL85HKTcICpTl+TdhAy+6h2LRy0fCXpQ5JmsEbKt4Fg
+	26OyFoU084wd8AvD4qbkIbaxrkMWlh50qVRgr4To5tcqiVX5C0NJz6Ym1E17IGyZUC0Rmr0CwXf
+	ZCgriF6P1IoyP/La8NN32p9VvQqN0sUHznHz7ZiKs9jeIQZ9ulMWAxdE4TWt0bKPhuiawVAa9Z8
+	vUXRbWjEWd2u992jdrVS8wpQjy0fIUmRVInHRIbrZIj/fBPOjRontIORN4qY2Ee1CtjGydJGT1J
+	piiU9tIBbDe5e+4IMX4++7mnLsgSROleeGzkvZ4qO4RLB7N7XWSneJ7UakVw5xN4FjjhcGlwNoW
+	AYapR+MPmOhA6Z197ipS0=
+X-Received: by 2002:a05:600d:640f:10b0:477:a1a2:d829 with SMTP id 5b1f17b1804b1-483201dd24dmr135515485e9.13.1770655388817;
+        Mon, 09 Feb 2026 08:43:08 -0800 (PST)
+Received: from [192.168.1.187] ([148.63.225.166])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4376806626fsm14707030f8f.37.2026.02.09.08.43.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Feb 2026 08:43:08 -0800 (PST)
+Message-ID: <6b33ddfce874006bd10e223701802dec52fdddf9.camel@gmail.com>
+Subject: Re: [PATCH v2 3/4] dt-bindings: iio: adc: ad4080: add AD4880 support
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>, Antoniu Miclaus
+	 <antoniu.miclaus@analog.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich	
+ <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, David
+ Lechner <dlechner@baylibre.com>, Nuno =?ISO-8859-1?Q?S=E1?=
+ <nuno.sa@analog.com>, Andy Shevchenko	 <andy@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski	 <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Olivier Moysan	 <olivier.moysan@foss.st.com>, Mark
+ Brown <broonie@kernel.org>, 	linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, 	linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org
+Date: Mon, 09 Feb 2026 16:43:51 +0000
+In-Reply-To: <be3808e2-ef17-4191-8c1c-5acb53114863@kernel.org>
+References: <cover.1770393792.git.antoniu.miclaus@analog.com>
+	 <290f35bcbd2f1ee68333ff65f89b54ec7fbb9c53.1770393792.git.antoniu.miclaus@analog.com>
+	 <20260207-evasive-mastodon-of-apotheosis-e663a1@quoll>
+	 <b3571244f058133a7a0f3b5ca6ef7dc377e3fac8.camel@gmail.com>
+	 <be3808e2-ef17-4191-8c1c-5acb53114863@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.2 
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
 
-The following changes since commit 63804fed149a6750ffd28610c5c1c98cce6bd377:
+On Sun, 2026-02-08 at 10:20 +0100, Krzysztof Kozlowski wrote:
+> On 08/02/2026 10:16, Nuno S=C3=A1 wrote:
+> > > > =C2=A0
+> > > > =C2=A0=C2=A0 io-backends:
+> > > > -=C2=A0=C2=A0=C2=A0 maxItems: 1
+> > > > +=C2=A0=C2=A0=C2=A0 minItems: 1
+> > > > +=C2=A0=C2=A0=C2=A0 maxItems: 2
+> > >=20
+> > > Instead list the items with minItems, so the order is defined.
+> > >=20
+> >=20
+> > Also looks like we now need 'io-backend-names'.
+>=20
+> No. Just define the order here.
+>=20
 
-  Linux 6.19-rc7 (2026-01-25 14:11:24 -0800)
+Things are still not really defined on the code side (I know bindings don't=
+ care about the driver
+side) but io-backend-names is a standard property and we might actually end=
+ up using it so that
+we know how to map the backend to a given channel. Unless what you're sayin=
+g is that in here, -names
+doesn't really makes sense given that we just want n io-backends for n adc =
+channels and having=C2=A0
+-names as "adc1", "adc2", "adcn" is arguably useless.
 
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-v6.20
-
-for you to fetch changes up to 5af56f30c4fcbade4a92f94dadfea517d1db9703:
-
-  spi: tools: Add include folder to .gitignore (2026-02-09 12:27:31 +0000)
-
-----------------------------------------------------------------
-spi: Updates for v7.0
-
-The highlight here is that David Lechner has added support for multi-lane
-SPI devices.  Unlike the existing dual/quad SPI support this is for
-devices (typically ADCs/DACs) which support multiple independent data
-streams over multiple data lanes, instead of sending one data stream N
-times as fast they simultaneously transfer N different data streams.
-This is very similar to the case where multiple devices are grouped
-together but in this case it's a single device in a way that's visible
-to software.
-
-Otherwise there's been quite a bit of work on existing drivers, both
-cleanup and feature improvement, and a reasonable collection of new
-drivers.
-
- - Support for multi-lane SPI devices.
- - Preparatory work for some memory mapped flash improvements that will
-   happen in the MTD subsystem.
- - Several conversions to fwnode APIs.
- - A bunch of cleanup and hardening work on the ST drivers.
- - Support for DMA mode on Renesas RZV2H and i.MX target mode.
- - Support for ATCSPI200, AXIADO AX300, NXP XPI and Renesas RZ/N1.
-
-----------------------------------------------------------------
-Abdurrahman Hussain (3):
-      spi: dt-bindings: xilinx: make interrupts optional
-      spi: xilinx: make irq optional
-      spi: xilinx: use device property accessors.
-
-Akif Ejaz (1):
-      spi: cadence-qspi: Remove redundant pm_runtime_mark_last_busy call
-
-Alain Volmat (7):
-      spi: dt-bindings: st,stm32-spi: add 'power-domains' property
-      spi: stm32: properly fail on dma_request_chan error
-      spi: stm32: perform small transfer in polling mode
-      spi: st: remove __maybe_unused for suspend/resume
-      spi: stm32-ospi: avoid __maybe_unused and use pm_ptr
-      spi: stm32-qspi: avoid __maybe_unused and use pm_ptr
-      spi: stm32: avoid __maybe_unused and use pm_ptr
-
-Andy Shevchenko (10):
-      spi: cadence-xspi: Replace ACPI specifics by agnostic APIs
-      spi: cadence-xspi: Replace OF/ACPI specifics by agnostic APIs
-      spi: microchip-core: use XOR instead of ANDNOT to fix the logic
-      spi: Simplify devm_spi_*_controller()
-      spi: Propagate default fwnode to the SPI controller device
-      spi: Drop duplicate of_node assignment
-      spi: Drop duplicate fwnode assignment
-      spi: Drop duplicate device_set_node() call
-      spi: dw: Remove duplicate error message
-      spi: dw: Remove not-going-to-be-supported code for Baikal SoC
-
-CL Wang (3):
-      spi: atcspi200: Add ATCSPI200 SPI controller driver
-      spi: dt-bindings: Add support for ATCSPI200 SPI controller
-      MAINTAINERS: Add MAINTAINERS entry for the ATCSPI200 SPI controller driver
-
-Carlos Song (7):
-      spi: imx: group spi_imx_dma_configure() with spi_imx_dma_transfer()
-      spi: imx: introduce helper to clear DMA mode logic
-      spi: imx: avoid dmaengine_terminate_all() on TX prep failure
-      spi: imx: handle DMA submission errors with dma_submit_error()
-      spi: imx: support dynamic burst length for ECSPI DMA mode
-      spi: imx: enable DMA mode for target operation
-      spi: spi-fsl-lpspi: convert min_t() to simple min()
-
-Chen Ni (2):
-      spi: stm32-ospi: Remove unneeded semicolon
-      spi: stm32-qspi: Remove unneeded semicolon
-
-Chin-Ting Kuo (2):
-      spi: spi-mem: Protect dirmap_create() with spi_mem_access_start/end
-      spi: aspeed: Add support for non-spi-mem devices
-
-Cosmin Tanislav (11):
-      spi: rzv2h-rspi: fix rzv2h_rspi_transfer_one() indentation
-      spi: rzv2h-rspi: remove call to spi_finalize_current_transfer()
-      spi: rzv2h-rspi: do not set SPI_TRANS_FAIL_IO
-      spi: rzv2h-rspi: use device-managed APIs
-      spi: rzv2h-rspi: store RX interrupt in state
-      spi: rzv2h-rspi: set MUST_RX/MUST_TX
-      spi: rzv2h-rspi: set TX FIFO threshold to 0
-      spi: rzv2h-rspi: enable TX buffer empty interrupt
-      spi: rzv2h-rspi: split out PIO transfer
-      spi: dt-bindings: renesas,rzv2h-rspi: document optional support for DMA
-      spi: rzv2h-rspi: add support for DMA mode
-
-David Lechner (7):
-      spi: dt-bindings: change spi-{rx,tx}-bus-width to arrays
-      spi: dt-bindings: add spi-{tx,rx}-lane-map properties
-      spi: support controllers with multiple data lanes
-      spi: add multi_lane_mode field to struct spi_transfer
-      spi: Documentation: add page on multi-lane support
-      spi: dt-bindings: adi,axi-spi-engine: add multi-lane support
-      spi: axi-spi-engine: support SPI_MULTI_LANE_MODE_STRIPE
-
-Deepak Kumar (1):
-      spi: stm32: fix Overrun issue at < 8bpw
-
-Francesco Lavra (1):
-      spi: tools: Add include folder to .gitignore
-
-Gabor Juhos (1):
-      spi: spi-qpic-snand: remove superfluous qcom_spi_set_read_loc() calls
-
-Geert Uytterhoeven (1):
-      spi: SPI_AXIADO should depend on ARCH_AXIADO
-
-Haibo Chen (3):
-      spi: dt-bindings: nxp,imx94-xspi: Document imx94 xspi
-      spi: add driver for NXP XSPI controller
-      spi: dt-bindings: nxp,imx94-xspi: add nxp,imx952-xspi
-
-Jisheng Zhang (2):
-      spi: cadence-xspi: support suspend/resume
-      spi: dw-mmio: support suspend/resume
-
-Jonas Gorski (1):
-      spi: bcm63xx-hsspi: add support for 1-2-2 read ops
-
-Jonathan Marek (5):
-      spi-geni-qcom: remove manual CS control
-      spi-geni-qcom: don't set max clock in setup_fifo_params
-      spi-geni-qcom: use xfer->bits_per_word for can_dma()
-      spi-geni-qcom: initialize mode related registers to 0
-      spi-geni-qcom: rework setup_fifo_params
-
-Krzysztof Kozlowski (2):
-      spi: virtio: Fix confusing cleanup.h syntax
-      spi: fsi: Simplify with scoped for each OF child loop
-
-Linus Walleij (1):
-      dt-bindings: spi: Add binding for Faraday FTSSP010
-
-Marek Vasut (1):
-      spi: spi-fsl-lpspi: Handle clock polarity and phase
-
-Mark Brown (17):
-      spi: cadence-quadspi: Parse DT for flashes with the rest of the DT parsing
-      spi: stm32: Update for OSPI and QSPI drivers
-      Support ECSPI dynamic burst feature for DMA mode
-      Add DMA support for RZ/T2H RSPI
-      Add support for NXP XSPI
-      spi: atcspi200: Add support for Andes ATCSPI200 SPI
-      spi: stm32: stability & performance enhancements
-      spi: st: use pm_ptr and remove __maybe_unused
-      Axiado AX3000 SoC SPI DB controller driver
-      mtd: spinand: Octal DTR support
-      spi: rockchip: Use plain request_irq()
-      spi: Make SPI core to take care of fwnode
-      spi: xilinx: make IRQs optional
-      spi: aspeed: Improve handling of shared SPI
-      spi: cadence-qspi: Add Renesas RZ/N1 support
-      spi: add multi-lane support
-      spi: cadence-qspi: Add Renesas RZ/N1 support
-
-Miquel Raynal (3):
-      spi: spi-mem: Make the DTR command operation macro more suitable
-      spi: spi-mem: Create a repeated address operation
-      spi: spi-mem: Limit octal DTR constraints to octal DTR situations
-
-Miquel Raynal (Schneider Electric) (14):
-      spi: dt-bindings: cdns,qspi-nor: Drop label in example
-      spi: cadence-qspi: Align definitions
-      spi: cadence-qspi: Fix style and improve readability
-      spi: cadence-qspi: Fix ORing style and alignments
-      spi: cadence-qspi: Remove an useless operation
-      spi: cadence-qspi: Make sure we filter out unsupported ops
-      spi: cadence-qspi: Fix probe error path and remove
-      spi: cadence-qspi: Try hard to disable the clocks
-      spi: cadence-qspi: Add a flag for controllers without indirect access support
-      spi: cadence-qspi: Make sure write protection is disabled
-      spi: cadence-qspi: Use a default value for cdns,fifo-width
-      spi: dt-bindings: cdns,qspi-nor: Add Renesas RZ/N1D400 to the list
-      spi: cadence-qspi: Kill cqspi_jh7110_clk_init
-      spi: cadence-qspi: Add support for the Renesas RZ/N1 controller
-
-Patrice Chotard (8):
-      spi: stm32-ospi: Set DMA maxburst dynamically
-      spi: stm32-ospi: Optimize FIFO accesses using u16 or u32
-      spi: stm32-ospi: Remove CR_TCIE and CR_TEIE irq usage
-      spi: stm32-ospi: Simplify SMIE interrupt test
-      spi: stm32-qspi: Set DMA maxburst dynamically
-      spi: stm32-qspi: Optimize FIFO accesses using u16 or u32
-      spi: stm32-qspi: Remove CR_TCIE and CR_TEIE irq usage
-      spi: stm32-qspi: Simplify SMIE interrupt test
-
-Praveen Talari (4):
-      spi: geni-qcom: Improve target mode allocation by using proper allocation functions
-      spi: geni-qcom: Fix abort sequence execution for serial engine errors
-      spi: geni-qcom: Drop unused msg parameter from timeout handlers
-      spi: geni-qcom: Add target abort support
-
-Robert Marko (1):
-      spi: dt-bindings: at91: add microchip,lan9691-spi
-
-Vladimir Moravcevic (3):
-      spi: dt-bindings: axiado,ax3000-spi: Add binding for Axiado SPI DB controller
-      spi: axiado: Add driver for Axiado SPI DB controller
-      MAINTAINERS: Add entries for the Axiado SPI DB controller
-
-Vladimir Zapolskiy (1):
-      spi: dt-bindings: nxp,lpc3220-spi: Add DMA specific properties
-
- .../bindings/display/panel/sitronix,st7789v.yaml   |    5 +-
- .../devicetree/bindings/iio/adc/adi,ad4030.yaml    |   42 +-
- .../devicetree/bindings/iio/adc/adi,ad4695.yaml    |    5 +-
- .../bindings/spi/adi,axi-spi-engine.yaml           |   15 +
- .../bindings/spi/allwinner,sun4i-a10-spi.yaml      |    6 +-
- .../bindings/spi/allwinner,sun6i-a31-spi.yaml      |    6 +-
- .../bindings/spi/andestech,ae350-spi.yaml          |   87 ++
- .../bindings/spi/atmel,at91rm9200-spi.yaml         |    1 +
- .../devicetree/bindings/spi/axiado,ax3000-spi.yaml |   73 ++
- .../devicetree/bindings/spi/cdns,qspi-nor.yaml     |   21 +-
- .../devicetree/bindings/spi/faraday,ftssp010.yaml  |   43 +
- .../bindings/spi/nvidia,tegra210-quad.yaml         |    6 +-
- .../devicetree/bindings/spi/nxp,imx94-xspi.yaml    |   92 ++
- .../devicetree/bindings/spi/nxp,lpc3220-spi.yaml   |    8 +
- .../bindings/spi/renesas,rzv2h-rspi.yaml           |    8 +
- .../bindings/spi/spi-peripheral-props.yaml         |   40 +-
- .../devicetree/bindings/spi/spi-xilinx.yaml        |    1 -
- .../devicetree/bindings/spi/st,stm32-spi.yaml      |    3 +
- Documentation/spi/index.rst                        |    1 +
- Documentation/spi/multiple-data-lanes.rst          |  217 +++
- MAINTAINERS                                        |   26 +
- drivers/spi/Kconfig                                |   57 +-
- drivers/spi/Makefile                               |    4 +-
- drivers/spi/atmel-quadspi.c                        |    1 -
- drivers/spi/spi-airoha-snfi.c                      |    1 -
- drivers/spi/spi-altera-platform.c                  |    2 -
- drivers/spi/spi-amlogic-spifc-a1.c                 |    1 -
- drivers/spi/spi-amlogic-spisg.c                    |    1 -
- drivers/spi/spi-apple.c                            |    1 -
- drivers/spi/spi-ar934x.c                           |    1 -
- drivers/spi/spi-armada-3700.c                      |    4 +-
- drivers/spi/spi-aspeed-smc.c                       |  135 +-
- drivers/spi/spi-atcspi200.c                        |  679 ++++++++++
- drivers/spi/spi-ath79.c                            |    1 -
- drivers/spi/spi-atmel.c                            |    1 -
- drivers/spi/spi-axi-spi-engine.c                   |  146 ++-
- drivers/spi/spi-axiado.c                           | 1007 ++++++++++++++
- drivers/spi/spi-axiado.h                           |  133 ++
- drivers/spi/spi-bcm-qspi.c                         |    1 -
- drivers/spi/spi-bcm2835.c                          |    1 -
- drivers/spi/spi-bcm2835aux.c                       |    1 -
- drivers/spi/spi-bcm63xx-hsspi.c                    |   65 +-
- drivers/spi/spi-bcm63xx.c                          |    1 -
- drivers/spi/spi-bcmbca-hsspi.c                     |    1 -
- drivers/spi/spi-cadence-quadspi.c                  |  292 ++---
- drivers/spi/spi-cadence-xspi.c                     |   77 +-
- drivers/spi/spi-cadence.c                          |    1 -
- drivers/spi/spi-cavium-octeon.c                    |    1 -
- drivers/spi/spi-cavium-thunderx.c                  |    1 -
- drivers/spi/spi-clps711x.c                         |    1 -
- drivers/spi/spi-cs42l43.c                          |    8 +
- drivers/spi/spi-davinci.c                          |    1 -
- drivers/spi/spi-dln2.c                             |    3 -
- drivers/spi/spi-dw-bt1.c                           |  331 -----
- drivers/spi/spi-dw-core.c                          |    2 -
- drivers/spi/spi-dw-mmio.c                          |   37 +-
- drivers/spi/spi-ep93xx.c                           |    1 -
- drivers/spi/spi-falcon.c                           |    1 -
- drivers/spi/spi-fsi.c                              |    7 +-
- drivers/spi/spi-fsl-dspi.c                         |    1 -
- drivers/spi/spi-fsl-espi.c                         |    1 -
- drivers/spi/spi-fsl-lib.c                          |    1 -
- drivers/spi/spi-fsl-lpspi.c                        |   65 +-
- drivers/spi/spi-geni-qcom.c                        |  188 +--
- drivers/spi/spi-gpio.c                             |    1 -
- drivers/spi/spi-gxp.c                              |    1 -
- drivers/spi/spi-hisi-kunpeng.c                     |    1 -
- drivers/spi/spi-img-spfi.c                         |    1 -
- drivers/spi/spi-imx.c                              |  626 +++++++--
- drivers/spi/spi-ingenic.c                          |    1 -
- drivers/spi/spi-lantiq-ssc.c                       |    1 -
- drivers/spi/spi-ljca.c                             |    1 -
- drivers/spi/spi-loongson-core.c                    |    1 -
- drivers/spi/spi-lp8841-rtc.c                       |    1 -
- drivers/spi/spi-mem.c                              |   26 +-
- drivers/spi/spi-meson-spicc.c                      |    1 -
- drivers/spi/spi-meson-spifc.c                      |    1 -
- drivers/spi/spi-microchip-core-spi.c               |    3 +-
- drivers/spi/spi-mpc512x-psc.c                      |    2 -
- drivers/spi/spi-mpc52xx-psc.c                      |    2 -
- drivers/spi/spi-mpc52xx.c                          |    1 -
- drivers/spi/spi-mpfs.c                             |    1 -
- drivers/spi/spi-mt65xx.c                           |    1 -
- drivers/spi/spi-mt7621.c                           |    1 -
- drivers/spi/spi-mtk-nor.c                          |    1 -
- drivers/spi/spi-mtk-snfi.c                         |    1 -
- drivers/spi/spi-mux.c                              |    1 -
- drivers/spi/spi-mxic.c                             |    1 -
- drivers/spi/spi-npcm-fiu.c                         |    1 -
- drivers/spi/spi-npcm-pspi.c                        |    1 -
- drivers/spi/spi-nxp-fspi.c                         |    2 -
- drivers/spi/spi-nxp-xspi.c                         | 1384 ++++++++++++++++++++
- drivers/spi/spi-oc-tiny.c                          |    1 -
- drivers/spi/spi-orion.c                            |    1 -
- drivers/spi/spi-pl022.c                            |    1 -
- drivers/spi/spi-pxa2xx.c                           |    2 -
- drivers/spi/spi-qcom-qspi.c                        |    1 -
- drivers/spi/spi-qpic-snand.c                       |    5 -
- drivers/spi/spi-qup.c                              |    1 -
- drivers/spi/spi-rb4xx.c                            |    1 -
- drivers/spi/spi-realtek-rtl-snand.c                |    1 -
- drivers/spi/spi-realtek-rtl.c                      |    1 -
- drivers/spi/spi-rockchip-sfc.c                     |    1 -
- drivers/spi/spi-rockchip.c                         |    5 +-
- drivers/spi/spi-rspi.c                             |    1 -
- drivers/spi/spi-rzv2h-rspi.c                       |  279 +++-
- drivers/spi/spi-rzv2m-csi.c                        |    2 -
- drivers/spi/spi-s3c64xx.c                          |    1 -
- drivers/spi/spi-sc18is602.c                        |    2 -
- drivers/spi/spi-sg2044-nor.c                       |    1 -
- drivers/spi/spi-sh-hspi.c                          |    1 -
- drivers/spi/spi-sh-msiof.c                         |    1 -
- drivers/spi/spi-sifive.c                           |    1 -
- drivers/spi/spi-slave-mt27xx.c                     |    1 -
- drivers/spi/spi-sn-f-ospi.c                        |    1 -
- drivers/spi/spi-sprd-adi.c                         |    1 -
- drivers/spi/spi-sprd.c                             |    1 -
- drivers/spi/spi-st-ssc4.c                          |    4 +-
- drivers/spi/spi-stm32-ospi.c                       |  123 +-
- drivers/spi/spi-stm32-qspi.c                       |  127 +-
- drivers/spi/spi-stm32.c                            |  122 +-
- drivers/spi/spi-sun4i.c                            |    1 -
- drivers/spi/spi-sun6i.c                            |    1 -
- drivers/spi/spi-sunplus-sp7021.c                   |    1 -
- drivers/spi/spi-synquacer.c                        |    3 -
- drivers/spi/spi-tegra114.c                         |    1 -
- drivers/spi/spi-tegra20-sflash.c                   |    1 -
- drivers/spi/spi-tegra20-slink.c                    |    1 -
- drivers/spi/spi-tegra210-quad.c                    |    1 -
- drivers/spi/spi-ti-qspi.c                          |    1 -
- drivers/spi/spi-uniphier.c                         |    1 -
- drivers/spi/spi-virtio.c                           |    6 +-
- drivers/spi/spi-wpcm-fiu.c                         |    1 -
- drivers/spi/spi-xcomm.c                            |    1 -
- drivers/spi/spi-xilinx.c                           |   13 +-
- drivers/spi/spi-xlp.c                              |    1 -
- drivers/spi/spi-xtensa-xtfpga.c                    |    1 -
- drivers/spi/spi.c                                  |  192 ++-
- include/linux/spi/spi-mem.h                        |   14 +-
- include/linux/spi/spi.h                            |   30 +
- tools/spi/.gitignore                               |    1 +
- 141 files changed, 5800 insertions(+), 1199 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/spi/andestech,ae350-spi.yaml
- create mode 100644 Documentation/devicetree/bindings/spi/axiado,ax3000-spi.yaml
- create mode 100644 Documentation/devicetree/bindings/spi/faraday,ftssp010.yaml
- create mode 100644 Documentation/devicetree/bindings/spi/nxp,imx94-xspi.yaml
- create mode 100644 Documentation/spi/multiple-data-lanes.rst
- create mode 100644 drivers/spi/spi-atcspi200.c
- create mode 100644 drivers/spi/spi-axiado.c
- create mode 100644 drivers/spi/spi-axiado.h
- delete mode 100644 drivers/spi/spi-dw-bt1.c
- create mode 100644 drivers/spi/spi-nxp-xspi.c
+- Nuno S=C3=A1
+> Best regards,
+> Krzysztof

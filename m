@@ -1,93 +1,93 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB6FA15539A;
-	Sun,  8 Feb 2026 12:50:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B24B36606B;
+	Mon,  9 Feb 2026 09:48:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770555030; cv=none; b=cPCsevAFir3ZHawC94vxCdfG9TgX/dN/LnBMY6WA6B3yJQmPG140k0ZN+0OGA05Hl7/YkZ7oSu9+Kq9/g9GRb16W2AkWkur/D16rH9y5A3ZvamUsnK/Mwc7ve6AlB8MAsJk4T94RKxd9EYGI3BlQrpmeYNV9bXG1wQMQiRCFRy8=
+	t=1770630506; cv=none; b=c72BBiTJOHheDPdBinTp+aEC2kyYgAEO9BI/hz3/ZNLtr+3h3dNKY3kZdsnLEua+fB8TjTsKZsMjZlOw83QFMTl+2zkLRyk1MC7vlDBOUWhSvn01JgvrtlHioAut2VW3ND3x93BKDNuXDwlOcqsXYdttZa1eeakvIIVXLV1YeXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770555030; c=relaxed/simple;
-	bh=JDhBqjGxxCVe2GelWRzpb8jVah7+fsaWHDvNEZtLR+U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ukVsRKKZhQeHUEickScxLo6spEjWFpUYmjFHhYuelVNuiwdNQfsC4zDBA1YADJEzZa0wC+Pf2NM3ZJMAaneH6YHpSnhbGLRDvctcTvtwYxMHsA74Vj/1Tb8YA1yvtgE9pRi9wFGv+YKNik+Xr7nCZ+AVnJYlV4bn1j5rLAp2Hy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a3ag4DHr; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1770630506; c=relaxed/simple;
+	bh=w/k37mANKnb9tE0V6Kub9ubfuIj32EQidedBAveARXk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:From:To:
+	 References:In-Reply-To; b=DKTeX7stZ6Q4IKLaNYcGy51RJmPwKWBF2GxlkoUng4pkZd6QYwT2XWP9ODAOIgSfLefo2NjZXK8WgC24iXnU+7qOoOU7yAXhzQIZKHwLLb/vPi7qKht6K65fpmwTGrVEkBkiAnzYocbOIMVhEDEKB6OhKWN5ueoWXLycRwlkR14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sl+XPEEP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a3ag4DHr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770555030; x=1802091030;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=JDhBqjGxxCVe2GelWRzpb8jVah7+fsaWHDvNEZtLR+U=;
-  b=a3ag4DHrS+CTeiJdbUaRL7Fe6uyA8m1P8151INinE7oEPVwWgr6DXQwI
-   N6mYHHQ8m5MjNWz8ywk4XNQRBJpNfZOhnrkqG3z16TyGU5GQDQtIQKIMC
-   X1LmRbeA3RVBacJK0qne6DB3HabC34vKMrTn6pb/h773oFeu9SJCXPoPx
-   MaKqpaiq1IwUqkNZSF9+4HRTP+eQZ2fxrY1YdxBI/0tMVmxDgOUqna+z5
-   zQ30DlcFWpEgD0YBYmCLks23uxC6EHS4SGtkjxt+o683H/xYEZNDpjp3p
-   HEzr6NUN34LSXwreOlkrRt56fTLHVljDKTZo0Bn7nyDmh5/q6ZLhhLwnh
-   g==;
-X-CSE-ConnectionGUID: XYrkzJ57S2+unEtT3m+8Kg==
-X-CSE-MsgGUID: WsP0G5OPTgevuDR9lJpZgQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11694"; a="75309503"
-X-IronPort-AV: E=Sophos;i="6.21,280,1763452800"; 
-   d="scan'208";a="75309503"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2026 04:50:30 -0800
-X-CSE-ConnectionGUID: 2W9zX3N1RGOQFowoOS+jFQ==
-X-CSE-MsgGUID: +UKhbakQQVWSUaYyghdvXQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,280,1763452800"; 
-   d="scan'208";a="215510793"
-Received: from fpallare-mobl4.ger.corp.intel.com (HELO localhost) ([10.245.245.100])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2026 04:50:25 -0800
-Date: Sun, 8 Feb 2026 14:50:23 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org
-Subject: Re: [PATCH v2 0/4] iio: adc: ad4080: add support for AD4880
- dual-channel ADC
-Message-ID: <aYiGj_TYelvJdVaR@smile.fi.intel.com>
-References: <cover.1770393792.git.antoniu.miclaus@analog.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sl+XPEEP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EA2AC16AAE;
+	Mon,  9 Feb 2026 09:48:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770630505;
+	bh=w/k37mANKnb9tE0V6Kub9ubfuIj32EQidedBAveARXk=;
+	h=Date:Subject:Cc:From:To:References:In-Reply-To:From;
+	b=sl+XPEEPcBuTtRE9+reIUogcwKdqmLbonc5R0mA77HsibgCIvB9G9qucr/m42/oRE
+	 w0GPdS7CvYZ4+2i2SVMeXXrA50euzmgBq29E1Q6kUSQXdwSSo4P2NBgpk47BnJ2TlH
+	 X/0tSpo5+xw48Je5vD7LGbEX0d+ldPSA6kq0GIF4Gv3zOsaanSedgduJEOfM9g5sLk
+	 r1/t9vIiITBneOxgIxElQtvJqbTQjJacJBpwmYCB3BGi5IpdoVUm+Spfxgwt5I4EwE
+	 OLQES1Y7EaJKp9mOmW6FXvS3hfQDDzg1n6syAPe8cFAMBtB725DnlNUpM2FdWdlC9z
+	 Q1NGlffK9b7Ig==
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1770393792.git.antoniu.miclaus@analog.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Mime-Version: 1.0
+Content-Type: multipart/signed;
+ boundary=3fae006473f93b202e9fe7468c884ebf0118ef603a7a5dbb515b94d9e3be;
+ micalg=pgp-sha384; protocol="application/pgp-signature"
+Date: Mon, 09 Feb 2026 10:48:21 +0100
+Message-Id: <DGAC4N62UZQQ.3R7TLX87PECU3@kernel.org>
+Subject: Re: [RFC PATCH v2 09/12] spi: cadence-quadspi: add PHY tuning
+ infrastructure
+Cc: <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
+ <praneeth@ti.com>, <u-kumar1@ti.com>, <p-mantena@ti.com>, <a-dutta@ti.com>
+From: "Michael Walle" <mwalle@kernel.org>
+To: "Santhosh Kumar K" <s-k6@ti.com>, <broonie@kernel.org>,
+ <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
+ <miquel.raynal@bootlin.com>, <richard@nod.at>, <vigneshr@ti.com>,
+ <tudor.ambarus@linaro.org>, <pratyush@kernel.org>
+X-Mailer: aerc 0.20.0
+References: <20260113141617.1905039-1-s-k6@ti.com>
+ <20260113141617.1905039-10-s-k6@ti.com>
+In-Reply-To: <20260113141617.1905039-10-s-k6@ti.com>
 
-On Fri, Feb 06, 2026 at 06:07:12PM +0200, Antoniu Miclaus wrote:
-> Add support for the AD4880, a dual-channel 20-bit 40MSPS SAR ADC from
-> the same family as AD4080.
-> 
-> The AD4880 has two independent ADC channels, each with its own SPI
-> configuration interface and LVDS data output. The driver uses
-> spi_new_ancillary_device() for the second channel's SPI and requires
-> two io-backend instances for the data interfaces.
+--3fae006473f93b202e9fe7468c884ebf0118ef603a7a5dbb515b94d9e3be
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
 
-I believe there is a better approach, what you need is rather a flag
-to SPI core to tell that this is the device with shared CS.
+On Tue Jan 13, 2026 at 3:16 PM CET, Santhosh Kumar K wrote:
+> +static int cqspi_get_phy_pattern_offset(struct device *dev, u32 *offset)
 
--- 
-With Best Regards,
-Andy Shevchenko
+..
 
+> +	partition_np =3D of_get_child_by_name(flash_np, "partitions");
+> +	if (!partition_np) {
+> +		of_node_put(flash_np);
+> +		return -ENODEV;
+> +	}
+> +
+> +	for_each_child_of_node(partition_np, part_np) {
+> +		if (of_property_read_string(part_np, "label", &label) ||
+> +		    !strstr(label, "phypattern"))
+> +			continue;
 
+There was already a review comment on the last version. Moving this
+into the driver doesn't make it any better. In fact this might
+create a (bad) precedent for future drivers.
+
+-michael
+
+--3fae006473f93b202e9fe7468c884ebf0118ef603a7a5dbb515b94d9e3be
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iKgEABMJADAWIQTIVZIcOo5wfU/AngkSJzzuPgIf+AUCaYmtZhIcbXdhbGxlQGtl
+cm5lbC5vcmcACgkQEic87j4CH/g3nQF/ZehnFdPDNUb+qGtsugnARG8Gyx1wWmE7
+KDHWkQsA/FeRC0O99ri4eyaI0daM3gcQAX9e7sCThdOPCBfvyBk7S8UhyVXKTiGF
+1O3T7/Re6avtBysjtj8ooo9Fia8wiIqdViM=
+=4bKt
+-----END PGP SIGNATURE-----
+
+--3fae006473f93b202e9fe7468c884ebf0118ef603a7a5dbb515b94d9e3be--

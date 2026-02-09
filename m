@@ -1,100 +1,114 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21D9D30F927
-	for <linux-spi@vger.kernel.org>; Mon,  9 Feb 2026 09:50:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 490B736C5BE
+	for <linux-spi@vger.kernel.org>; Mon,  9 Feb 2026 11:14:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770630605; cv=none; b=Tmn7s81zws2gJpExEHmcZjTULsP8HwDDFnIJNcsjvoBTGSRsZa6S3ldA6patErhvp5k1HXeB15td9nngsZlE4RpFHz3vBzovej0/puKSJ54qTQgcbSDfE6ToB3HwOyKQ2PVzmmsH0/9fuOdET409B0LcvAsSs4Tbg1XB2RPvfd4=
+	t=1770635698; cv=none; b=GD1i96Nc7LIMAa58mYf1+xnyn2m+vzXqvF1JGueD9mljn4+7vynACz7I3PlsW34raKGH5DWuNLk6GOSGiNoXOFp8HoB6U7bI0CQRncxQ1jpoq4M9aI8zp8YObvBLMILugJ0wv76iRMA19YLXVihyZjdLY5qK1+AWPO5+hKmq/Us=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770630605; c=relaxed/simple;
-	bh=FKuGCI70l5OyuRPWKZHe/fQbeGoZhbYIYCioBwk5EQE=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version; b=kFkJeP58Sm9dhiowBQoG1B6BjhOLYOkHmSSQXMDv+COABf3CQa4m5Iz3Q1rLMIACYqwxxOkFpuKnds0nVswPDCQVAz5YL/ke+JFpSlSrluFzpEKRl3zwLixbI3Znbeo9M02kmw6MrttZmJ5Depxyt1tzxmpx1s0EfrNLqTaX/C4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=BfXAqkMk; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	s=arc-20240116; t=1770635698; c=relaxed/simple;
+	bh=OVdS08gW0bB1ClYIfSFtOyc9cg1QAZlOhyvl9iZaeXo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AZfg/Mh++kfFFfwb+qm9RPDFHZPEz7JAZQh6mpM9hx3R2Et1403qU9t/uMMndv+BurgrrXuTn/d2iulXy2YfH+Bkm1oWaxtorKdehSluKZ3T+u2GVO+12gh7O8jsV16krh1rt7z6V6uSC25ngsrU/K0LaaZItbaUHEtbmbjYrNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=k8VPT7hv; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="BfXAqkMk"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-48068ed1eccso42138855e9.2
-        for <linux-spi@vger.kernel.org>; Mon, 09 Feb 2026 01:50:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1770630603; x=1771235403; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=o0nR1XwmgwW/lra1bMoEkgIFa7LZKv7Hh/PRz7una/k=;
-        b=BfXAqkMkhep3ZETxXCMBfSWs8yT35rueVkm5Znh+bLlClcC8jvCPgKaeTdsTdynq0a
-         LRf6P2JMgW8CWaQAMCqoJfA3aU3LX/fTyg8Pbx7mC9sy6vlJB578FYhWU3lCIfv8Ni5w
-         o43IAx/hU/LIBEpULlzpZx3cu5K2JGl/so5jmUq0U2Gy7KZs24mPt4iMDmM6yY/lFEwn
-         mdIhMOxbqc89jnQHoEJmtPnIk+Gc+6qV7R7Puvguc5Q43kG0kojXbsZYNAjJv6iS8bwm
-         RaB6FXq+OMZXWz3Mr3x8PFpfwMuWH6KgwEwUuUUfDhln86iNYKVvdPNdDJ6eqhpc6kQC
-         Bj3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770630603; x=1771235403;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=o0nR1XwmgwW/lra1bMoEkgIFa7LZKv7Hh/PRz7una/k=;
-        b=oUScSvkmv2DYnjr3DfRX1196BX5aDUax+1SRhvRC5tRDnEqa5i+Px9X2PfWCiZ54se
-         PJjtgWi1Ed3+6B7cm/Tly+6gjV5Q+9AIq6uosJccbozVT60O+SqfxGkGv5qZ+2tb6Gbo
-         qKxBVPAt4QYboSxbzF36rKCKsF3/2i8NMPvVGRDYQdBNEODDb9r/ec7fCFw1IbzhGDvl
-         Rt1B7EGUIQ6ZrrXYnB7SdfOV6mwmPNpIQQ9Vk8Gl7HfGgzjX1n/KazouemNMy+XWo7bH
-         I/hZlBK0KK/BVq8nzz5VzRuXv7H+FJaLXg+OFGFXoJqmEWlgngPvlgjcus7YrEwK6wp3
-         C32w==
-X-Forwarded-Encrypted: i=1; AJvYcCUqBp2vaX+fjoqqNbNMIwXa+8inAfL3PuFEsUYdhRWtNXtwOgSFUpVZ2p+3T+xkldMbfIrjbi5L/Zk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyisYz5ONbvKqedY0YF43renhzAUUuzmNOlXlPxnMW2UZhngSRu
-	3/ug71K/RfddP5XnkyK+qbC5mQT8u576qkHSjOkJiSWyk8g+RqhKjSFjfxdAeeeg7L8=
-X-Gm-Gg: AZuq6aIKJO6VnyzdV2Q92bz/61iqWBIH8D721/o+v27pwvgUT+5qRfaMZhXsUMukDja
-	wT/a6JrJt4AT6JWdrs7+Zu5thQSHUdT6FZR+mGR0N6QP7aA3p0rYMEZPR8xSouc40GEgeHH5BgP
-	oBamPlslEiVenhVuYESFzQJDmnHYHkgdtV1iqifaodiv+CJDAF6IKywpt0G0YqThKvqTfbR6ECR
-	mJEetAczB+zceCJ1/kWq91d7V3d7feCNL1Fnq1psSoC3Zml4Yko8on5M5M1Qr3BUrwBKqIOqF91
-	EFoNfeUTUOdq1Nyiu69EAEk61NYIUz/4HqjbUNtYXJadaleuQHp4aahLsGa+eNA+mqQZd85W/da
-	Z0BDjirEWR3N1K1iDFuAqQrtzFNCX2lRO49B6SQrEG4U14YQPXg1+XHs9EEfDiEizdJkIfJydFK
-	cE
-X-Received: by 2002:a05:600c:3b03:b0:477:93f7:bbc5 with SMTP id 5b1f17b1804b1-483201e496dmr164726095e9.10.1770630603429;
-        Mon, 09 Feb 2026 01:50:03 -0800 (PST)
-Received: from localhost ([151.57.91.229])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48320961701sm166117755e9.5.2026.02.09.01.50.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Feb 2026 01:50:03 -0800 (PST)
-From: Francesco Lavra <flavra@baylibre.com>
-To: Mark Brown <broonie@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] spi: tools: Add include folder to .gitignore
-Date: Mon,  9 Feb 2026 10:50:01 +0100
-Message-Id: <20260209095001.556495-1-flavra@baylibre.com>
-X-Mailer: git-send-email 2.39.5
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="k8VPT7hv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=hyJp
+	fMLiM1wKpMBA2O+7vpAMxxFPZoy9mfo7m5xJgDI=; b=k8VPT7hvskJ17pNTGk/p
+	OMUecbFTEQv8Q3W4Co99Lq0BZhs/NomreXe6Xrlxk2T42voNhbTUQl1jNoHJns8j
+	ehXryUyaUi3lJ+B4WVkq3K9s8XVt6QJlmVYeD4ngmlSojEp7lsJ/PLJsF4MsKDNj
+	bEve9pBnnmEn2pnjaOVhCUjCSXae0BJZYfhm7nu05rYE1vYq6Qh4hrmR9COFayUX
+	1YhnGJcKfaoMR00FaNv1ZG+r8cg5D2kUGIF2gBX+fqnYI2l0XrEAhOtfOgFIvAIG
+	0eybVyRgjShP2dHKMGSbwAQmGYaTB9ay5AXzTWOeEqOVDh94mir23iNibMod6Z+J
+	Nw==
+Received: (qmail 1143365 invoked from network); 9 Feb 2026 12:14:53 +0100
+Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 9 Feb 2026 12:14:53 +0100
+X-UD-Smtp-Session: l3s3148p1@2nmBP2JKPNgujnuv
+Date: Mon, 9 Feb 2026 12:14:52 +0100
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: linux-renesas-soc@vger.kernel.org,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Antonio Borneo <antonio.borneo@foss.st.com>,
+	Arnd Bergmann <arnd@arndb.de>, Boqun Feng <boqun.feng@gmail.com>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Konrad Dybcio <konradybcio@kernel.org>, Lee Jones <lee@kernel.org>,
+	Linus Walleij <linusw@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-gpio@vger.kernel.org,
+	linux-iio@vger.kernel.org, linux-omap@vger.kernel.org,
+	linux-remoteproc@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-sunxi@lists.linux.dev, Mark Brown <broonie@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>,
+	Orson Zhai <orsonzhai@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Samuel Holland <samuel@sholland.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Srinivas Kandagatla <srini@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, Waiman Long <longman@redhat.com>,
+	Wilken Gottwalt <wilken.gottwalt@posteo.net>,
+	Will Deacon <will@kernel.org>
+Subject: Re: [RFC PATCH 0/4] hwspinlock: refactor headers into public
+ provider/consumer pair
+Message-ID: <aYnBrN0JRCf9-UjB@ninjato>
+References: <20260125184654.17843-6-wsa+renesas@sang-engineering.com>
+ <aXc7DxsqiCGdfzxi@smile.fi.intel.com>
+ <aXc-Zxw05XQLb1Dy@ninjato>
+ <aXdAB2bLTy6u8G8c@smile.fi.intel.com>
+ <aXdCBu6kzdw1NWay@ninjato>
+ <aXikZ5wc6bvgRqF6@ninjato>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=686; i=flavra@baylibre.com; h=from:subject; bh=FKuGCI70l5OyuRPWKZHe/fQbeGoZhbYIYCioBwk5EQE=; b=owEB7QES/pANAwAKAe3xO3POlDZfAcsmYgBpia2UV0WJ6jwE9DTobvVNETH7xE5TLiVePn74M /UQtkK+AceJAbMEAAEKAB0WIQSGV4VPlTvcox7DFObt8TtzzpQ2XwUCaYmtlAAKCRDt8TtzzpQ2 XwzRC/9Oj4DMGW/nAoGtJEhigXUl58mVaC6Ae9TrYPnwoRn7e7XtAPqeXb2mdTCFWeAej2HVxnQ Wnw7U6g2iTq+Vclk+Q0V6nsBQtViIJ0e+Bf5GcVUMXYGlo/5NzkKqq/LuWIoiSRItkuALVS+3Ne +p6GJEkxZEeoSp4MZ2YTl1z0aanXC96dOMSVijC/dQIOEAwVar1Ta9ioKp805NiiDxp+nbJNFqm f/sXymCjspml1BqWOwYprp4gqCQ1IcGVxKwwgDWL+G71fZYYZU3P6faatTJLK2uIFYlkZFz18Eu FkLaCWy8R3MkHYp9wlnWGJ9wdyjCY1dgLjiNPbUyQt4HjU1Jm96YmfOeW1XjCzVyFrJhcIzt+vB eMYI3h/AeVn5VKeikyGEz/xVqzcWNiYvOGqKx5VPMWSayNW8vPXZ+Iy8XCRDNlVo+7cPkisv+3q d7xcUXek1s0RwE0Zch7jOcgB6Vx2BnLo1E8rnJTZm/duqGwE1C+opXafp7knRo50bHY+E=
-X-Developer-Key: i=flavra@baylibre.com; a=openpgp; fpr=8657854F953BDCA31EC314E6EDF13B73CE94365F
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aXikZ5wc6bvgRqF6@ninjato>
 
-The Makefile for the SPI tools creates an include/linux/spi folder and some
-symlinks inside it. After running `make -C spi/tools`, this folder shows up
-as untracked in the git status.
-Add the above folder to the .gitignore file.
+Hi Bjorn, Baolin Wang,
 
-Fixes: f325b73dc4db ("spi: tools: move to tools buildsystem")
-Signed-off-by: Francesco Lavra <flavra@baylibre.com>
----
- tools/spi/.gitignore | 1 +
- 1 file changed, 1 insertion(+)
+> > > > Providers need it, especially the 'priv' member. Consumers won't see it.
+> > > 
+> > > But can't we make it opaque?
+> > > 
+> > > We may have getters and setters for the priv member...
+> > 
+> > I think we could do that.
+> > 
+> > Two drivers use the bank member, but only for the device
+> > (lock->bank->dev). That can probably be refactored away, I'd guess.
+> 
+> I am willing to develop this series in the above direction. Before
+> though, I'd like to know from hwspinlock maintainers if they agree to
+> this refactoring in general.
 
-diff --git a/tools/spi/.gitignore b/tools/spi/.gitignore
-index 14ddba3d2195..038261b34ed8 100644
---- a/tools/spi/.gitignore
-+++ b/tools/spi/.gitignore
-@@ -1,3 +1,4 @@
- # SPDX-License-Identifier: GPL-2.0-only
- spidev_fdx
- spidev_test
-+include/
--- 
-2.39.5
+Moving maintainers from CC to To ;) Do you, in general, approve this
+change to the headers? I think it is more modern and e.g. the mailbox
+subsystem has a similar structure, a header for the client and a header
+for the controller. And do you also prefer an opaque 'priv' member?
+
+Happy hacking,
+
+   Wolfram
 

@@ -1,75 +1,57 @@
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84BF038757A
-	for <linux-spi@vger.kernel.org>; Mon,  9 Feb 2026 19:51:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80F8526ED48;
+	Mon,  9 Feb 2026 21:38:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770666720; cv=none; b=VVpm89Y60dBW1qL+ZOUmb91tjbckbF3twQfJOSHC7R+kNDxheBCrBzu1YBhuN2nxD08K7lkUwZE1DvCcjlHk9Y9Lmy9avwKGZ3ZfRagrhD6CZLIw5mKAtr7snH3A01eilZp+BGF5YX6F+s4lsWya5E/f6EEmlHZP56pazhCfvrY=
+	t=1770673080; cv=none; b=caIojxXY2QUt5CjQOoEsp/3r9bX8fsW2IwTb6fMi7coaqUnGnU5PcJmi9ofA9M3wMtTP8coPlXhhWK5JOSu9jjxEPuhO8l3M5n04nlBO1mxohEUvfd307dTnW24IuMcbU3jKvPKjbU274ldeHErhu6sx8R6sQrI2N5T+K4Nc6NI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770666720; c=relaxed/simple;
-	bh=QbNxuK3tOvIXgmDYwedzBVTlP19K/BzDnWCsg1LTqx0=;
+	s=arc-20240116; t=1770673080; c=relaxed/simple;
+	bh=V5k7yronzuPg2/sQDnDLiZPJmoREh3DS6In0CZNegm4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B2aZ0szTAAe5lEQr+dTDe6UdQo9LaV/Jh8G90nI8ahh+LlBE6HeEUM49YIu7w+pi8F2x1v3QBxitGEFmU0VueEG6Bce6ruZdUE3a7PWBeqjzVCMPDHCm3Amgk8lgXboNHvrhEy1FqXU/zwHB4HEvMGUJpgjZ0UeFbL7vKRzvYi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=c8DMBDkx; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=piIlRZXY6Mfu2eSviplCwfkkE1eyLvZlHb5WAAdiz5D8cEWL6R4c9WEq10XxKgE96lg++MZbd9bJ2PKqg/3XTGAxxu51oSsLX4DHYgBfH0wLngNYTNL1fjs4EN4VXK7e+pwYhEBMg30ozZkxS+eVUOdA4c0f86TSIaNIJCZ/cws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R2/CxZyE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="c8DMBDkx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=KT3v
-	PAr9+jvW3mi9x8Y66vturr8FwJVBhekG/tpC6Zk=; b=c8DMBDkxMXgjYFjg5hpl
-	di8EsVNS7YfG/wjaG4AjbGVDMKBYDw/F0jtxz1N8dV1hw7uq4pHlU6Ohlhp+4BvD
-	qhMtxNA/ZaXedTK6SvYQGoZMiGaDveLpLtUI3o33sUlK/C85dvD2YjO41B8DhvmO
-	pADRlu/On51sYmfx+BtG5svy13expgCyNbZXBcxl9oQXI1rcs4LciDgwCp5bm9i4
-	SbWspMzL8Nfs3Zy+Qy59J+2HEsehECs6xvPy0dvH5hDnlEFAiumfgWX3m4vJezU7
-	OupUsVSileDb1YP07j1KmpxYDFQ6+eYo1RNTrWvWHCBuilb0So9QcHdPDwtpBiIN
-	Qw==
-Received: (qmail 1421036 invoked from network); 9 Feb 2026 20:51:47 +0100
-Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 9 Feb 2026 20:51:47 +0100
-X-UD-Smtp-Session: l3s3148p1@B1IbeGlKqNoujnuv
-Date: Mon, 9 Feb 2026 20:51:46 +0100
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: Bjorn Andersson <andersson@kernel.org>
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	linux-renesas-soc@vger.kernel.org,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Antonio Borneo <antonio.borneo@foss.st.com>,
-	Arnd Bergmann <arnd@arndb.de>, Boqun Feng <boqun.feng@gmail.com>,
-	Chen-Yu Tsai <wens@kernel.org>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Konrad Dybcio <konradybcio@kernel.org>, Lee Jones <lee@kernel.org>,
-	Linus Walleij <linusw@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-gpio@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux-omap@vger.kernel.org,
-	linux-remoteproc@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-sunxi@lists.linux.dev, Mark Brown <broonie@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>,
-	Orson Zhai <orsonzhai@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Samuel Holland <samuel@sholland.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Waiman Long <longman@redhat.com>,
-	Wilken Gottwalt <wilken.gottwalt@posteo.net>,
-	Will Deacon <will@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R2/CxZyE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A991C116C6;
+	Mon,  9 Feb 2026 21:37:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770673080;
+	bh=V5k7yronzuPg2/sQDnDLiZPJmoREh3DS6In0CZNegm4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=R2/CxZyE7D7NuC7727GzKNmG8L0gFdn827lwUEFhrk1GcDYwfKzMWilh9KCwLySN2
+	 tDMTyIgjKpNBsz+CrnFUB8QrkqCqmuexDnRgYALsArlPL7MYxDDAkqQGMRry/iQQEz
+	 tXkZ9aLz2eqJBLP0lhFLwX/6MjqEStYuaBxUaPzS36VebR2KunZkZR9O1OXhOtXp8N
+	 y7WKLM3eEtcCOQ9wRj+umXbC0jg6B9FNMdR1WBBVMG3pafl6iUuxvb1YkCeBuik/q3
+	 twvcXwcELPoyngclQnEGLBF2iDgahBFNYk+KVc3S2d7b59tHFINf47IiCuGxldwxT1
+	 EqvORhp9jn0CQ==
+Date: Mon, 9 Feb 2026 15:37:54 -0600
+From: Bjorn Andersson <andersson@kernel.org>
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, linux-renesas-soc@vger.kernel.org, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Andy Shevchenko <andy@kernel.org>, 
+	Antonio Borneo <antonio.borneo@foss.st.com>, Arnd Bergmann <arnd@arndb.de>, Boqun Feng <boqun.feng@gmail.com>, 
+	Chen-Yu Tsai <wens@kernel.org>, Chunyan Zhang <zhang.lyra@gmail.com>, 
+	Danilo Krummrich <dakr@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Ingo Molnar <mingo@redhat.com>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Jonathan Cameron <jic23@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Lee Jones <lee@kernel.org>, Linus Walleij <linusw@kernel.org>, 
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, linux-iio@vger.kernel.org, linux-omap@vger.kernel.org, 
+	linux-remoteproc@vger.kernel.org, linux-spi@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev, Mark Brown <broonie@kernel.org>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
+	Orson Zhai <orsonzhai@gmail.com>, Peter Zijlstra <peterz@infradead.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Samuel Holland <samuel@sholland.org>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Srinivas Kandagatla <srini@kernel.org>, 
+	Thomas Gleixner <tglx@kernel.org>, Waiman Long <longman@redhat.com>, 
+	Wilken Gottwalt <wilken.gottwalt@posteo.net>, Will Deacon <will@kernel.org>
 Subject: Re: [RFC PATCH 0/4] hwspinlock: refactor headers into public
  provider/consumer pair
-Message-ID: <aYo60vooftdem4Lt@ninjato>
+Message-ID: <epechyewxhlkp2dgw7yxmz5duak3illbmjpeux5jgt2ewskc3j@cre3vpa5wnhy>
 References: <20260125184654.17843-6-wsa+renesas@sang-engineering.com>
  <aXc7DxsqiCGdfzxi@smile.fi.intel.com>
  <aXc-Zxw05XQLb1Dy@ninjato>
@@ -78,6 +60,7 @@ References: <20260125184654.17843-6-wsa+renesas@sang-engineering.com>
  <aXikZ5wc6bvgRqF6@ninjato>
  <aYnBrN0JRCf9-UjB@ninjato>
  <yl4bbbev7lgrmnqys2izkolo5egzg24faukvqar5eh26q5ra7p@42rcegfpqqt6>
+ <aYo60vooftdem4Lt@ninjato>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -86,30 +69,43 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <yl4bbbev7lgrmnqys2izkolo5egzg24faukvqar5eh26q5ra7p@42rcegfpqqt6>
+In-Reply-To: <aYo60vooftdem4Lt@ninjato>
 
-Hi Bjorn,
-
-thanks for the reply!
-
-> > Moving maintainers from CC to To ;) Do you, in general, approve this
-> > change to the headers?
+On Mon, Feb 09, 2026 at 08:51:46PM +0100, Wolfram Sang wrote:
+> Hi Bjorn,
 > 
-> Certainly, I don't think we should force unnatural slicing of drivers
-> across the source tree.
+> thanks for the reply!
+> 
+> > > Moving maintainers from CC to To ;) Do you, in general, approve this
+> > > change to the headers?
+> > 
+> > Certainly, I don't think we should force unnatural slicing of drivers
+> > across the source tree.
+> 
+> Cool, glad you like it.
+> 
+> > I've always found the current model unergonomic, resolving this part
+> > might very well have the side effect that Andy is looking for (and I'd
+> > welcome that).
+> 
+> Yeah probably, but frankly the task of redesigning hwlock-allocation is
+> a bit exceeding my bandwidth for this project. Can we make this a second
+> step on top of this series?
 
-Cool, glad you like it.
+I'm okay with that. It's winter and the yak might need its fur.
 
-> I've always found the current model unergonomic, resolving this part
-> might very well have the side effect that Andy is looking for (and I'd
-> welcome that).
+> And if so, would be this series acceptable
+> as-is then (modulo the better include-sorting mentioned by Andy)?
+> 
 
-Yeah probably, but frankly the task of redesigning hwlock-allocation is
-a bit exceeding my bandwidth for this project. Can we make this a second
-step on top of this series? And if so, would be this series acceptable
-as-is then (modulo the better include-sorting mentioned by Andy)?
+Sounds good, I'll pick up your v2 once we get out of the merge window
+and share a immutable branch for the other subsystems.
 
-Hope you are well,
+> Hope you are well,
+> 
 
-   Wolfram
+Likewise,
+Bjorn
 
+>    Wolfram
+> 
